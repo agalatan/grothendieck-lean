@@ -502,8 +502,24 @@ For $\varepsilon>0$, $0<\tau<1$, and complex $r,x$, it proves
 The proof combines a finite degree-controlled Hermite expansion, its Gaussian
 norm identity, the complex Mehler bound, and a change of Gaussian rate to
 $\varepsilon(1+\tau)/\tau$. The real-coordinate exponent cancels exactly.
-The production-phase instantiation and certified twisted remainders remain
-separate obligations; the generic theorem uses only standard axioms.
+The generic theorem uses only standard axioms.
+\lean{UpperQuad.PhasePolynomialComplex} applies it to the actual phase:
+at fixed real $y$, the polynomial in $(r,x)$ has degree at most $35$ and retains
+$e^{-\varepsilon y^2}$ in its coefficients. The continuation is jointly complex
+analytic and agrees with the production phase on real slices. For every positive
+integer $j$, the bound applies directly with degree $35j$ and damping
+$j\varepsilon$, with the same $(1-\tau)^{-2}$ prefactor. Its certificate
+dependencies are the existing registered phase-cover facts.
+Integration of finite Mehler also gives
+\[
+ \|P(\sqrt L\,\cdot)\|_{L^2(\gamma)}^2
+ \le \|P\|_{L^2(\gamma)}^2
+       \frac{\tau^{-N}}{(1-\tau)(1-(2L-1)\tau)},
+ \qquad L\ge1,\quad (2L-1)\tau<1.
+\]
+\lean{UpperQuad.PolynomialDilationNorm} supplies this standard-axiom bound and
+its normalized Hermite-column specialization. Certified contour bounds and
+twisted quadrature remainders remain separate obligations.
 
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
