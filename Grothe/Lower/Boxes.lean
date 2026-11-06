@@ -467,9 +467,8 @@ lemma J_combo_endpoint (P Q : MPoly) (w0 w1 : ℝ) (hw0 : 0 ≤ w0) (hw1 : 0 ≤
     intro y; simp only [MPoly.J, hK, ha, hb]; push_cast; ring
   have hb0 : 0 ≤ b := by
     rw [hb]; exact mul_nonneg hC6 (add_nonneg (mul_nonneg hw0 hP) (mul_nonneg hw1 hQ))
-  have := cubic_endpoint_le a b x xlo xhi hb0 hx0 h1 h2
   rw [hJ x, hJ, hJ]
-  rcases le_max_iff.1 this with h | h
+  rcases le_max_iff.1 (cubic_endpoint_le a b x xlo xhi hb0 hx0 h1 h2) with h | h
   · exact le_max_of_le_left (by linarith)
   · exact le_max_of_le_right (by linarith)
 
@@ -479,7 +478,7 @@ lemma chord_le_xPart (Lm Lp : MPoly) (D sl su xh : ℚ) (hslsu : sl < su) (τ : 
     ((su : ℝ) - τ) / (su - sl) * Lm.J 0 1 xh + (τ - sl) / (su - sl) * Lp.J 0 1 xh
       - D * τ ^ 2 ≤ (xPart Lm Lp D sl su xh : ℚ) := by
   have e : ∀ P : MPoly, ((P.Jq 0 1 xh : ℚ) : ℝ) = P.J 0 1 xh := fun P => by
-    have := MPoly.Jq_cast P 0 1 xh; push_cast at this; exact this
+    exact_mod_cast MPoly.Jq_cast P 0 1 xh
   have h := chord_le_chordMax (Lm.Jq 0 1 xh) (Lp.Jq 0 1 xh) D sl su hslsu τ hτl hτu
   rwa [e, e] at h
 
@@ -782,9 +781,7 @@ lemma mixData_sound (θ : ℚ) (hv : ‖v‖ ^ 2 = 2) (d0 d1 : Option (VRow × M
     obtain ⟨Φa, hca, hVa, hTma, hTpa⟩ := h0 _ rfl
     obtain ⟨Φb, hcb, hVb, hTmb, hTpb⟩ := h1 _ rfl
     have hθ0R : (0 : ℝ) ≤ θ := by exact_mod_cast hθ.1
-    have hw0 : (0 : ℝ) ≤ 1 - θ := by
-      have : (θ : ℝ) ≤ 1 := by exact_mod_cast hθ.2
-      linarith
+    have hw0 : (0 : ℝ) ≤ 1 - θ := sub_nonneg.2 (by exact_mod_cast hθ.2)
     refine ⟨fun s => (1 - θ) * Φa s + θ * Φb s, convexOn_mix hca hcb _ _ hw0 hθ0R,
       VHolds.mix θ hθ.1 hθ.2 hv hVa hVb, ?_, ?_⟩
     · show TB μ U _ sl ((MPoly.lin (1 - θ) θ Lm Mm).J 0 1 x)
@@ -818,9 +815,7 @@ lemma compRef_sound (rows : List Row) (batches : List JBatch)
   have hcaps : ∀ r ∈ rows, CapsHold (fun s => Ψ r s - capPad) r.nodeList r.smax :=
     fun r hr => (hΨ r hr).1
   have hθ0R : (0 : ℝ) ≤ c.θ := by exact_mod_cast hθ.1
-  have hw0 : (0 : ℝ) ≤ 1 - c.θ := by
-    have : (c.θ : ℝ) ≤ 1 := by exact_mod_cast hθ.2
-    linarith
+  have hw0 : (0 : ℝ) ≤ 1 - c.θ := sub_nonneg.2 (by exact_mod_cast hθ.2)
   have hδi : (0 : ℝ) ≤ Ri.delta := by exact_mod_cast (checkRow_node Ri (hrows Ri mi)).1.le
   have hδj : (0 : ℝ) ≤ Rj.delta := by exact_mod_cast (checkRow_node Rj (hrows Rj mj)).1.le
   exact compData_sound _ _ c.refs c.s0 c.s1
