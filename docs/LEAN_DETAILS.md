@@ -1653,6 +1653,25 @@ value at most `630 * M`. The module has strict standard-axiom guards. Identifyin
 the actual phase polynomial, enclosing its samples, and transporting this bound
 to the physical quadrature panels remain separate obligations.
 
+`UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le` gives a generic
+complex growth bound for a polynomial times a Gaussian. If `P` has total degree
+at most `N` and `‖P(z, conjugate z)‖ ≤ exp(ε |z|²)` for every complex `z`, then,
+for `ε > 0`, `0 < τ < 1`, and arbitrary complex `r,x`,
+
+```
+‖P(r+i*x,r−i*x) exp(−ε(r²+x²))‖²
+  ≤ τ^(−N) (1−τ)^(−2) exp(4ε((Im r)²+(Im x)²)/(1−τ)).
+```
+
+`PolynomialHermiteDegree` retains the degree cutoff in the finite Hermite
+expansion; `PolynomialHermiteNorm` identifies the squared coefficient sum with
+the actual Gaussian L² norm. `FinitePolynomialMehler` applies the formal complex
+Mehler estimate. `PolynomialRescale` changes the rate to `ε(1+τ)/τ`, and
+`GaussianGrowth` and `GaussianMehlerBound` prove the norm estimate and exact
+cancellation of real-coordinate growth. These results use only standard axioms.
+The production-phase instantiation, contour enclosures, and twisted quadrature
+remainder are separate obligations; this theorem does not close `UpperTarget`.
+
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
 `ConditionalNodeIndices` identifies the contraction's selected pair set and
