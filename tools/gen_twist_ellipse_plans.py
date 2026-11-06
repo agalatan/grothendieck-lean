@@ -246,11 +246,13 @@ def render(rows: list[Certificate], input_sha256: str) -> str:
             for k, row in enumerate(block):
                 comma = "," if k + 1 < len(block) else ""
                 q = lean_q
-                lines.extend([
+                # Keep the complete nested record on one physical line. Breaking
+                # after geometry while dedenting etaY closes Lean's field layout.
+                lines.append(
                     "  { plan := { geometry := { " + f"rho := {q(row.rho)}, m := {row.m}, "
-                    + f"R := {q(row.radius)}, tau := {q(row.tau)}" + " },",
-                    f"      etaY := {q(row.eta_y)}, etaK := {q(row.eta_k)}, mode := .{row.mode}" + " },",
-                    f"    massCap := {q(row.mass_cap)}, errorCap := {q(row.error_cap)}" + " }" + comma])
+                    + f"R := {q(row.radius)}, tau := {q(row.tau)}" + " }, "
+                    + f"etaY := {q(row.eta_y)}, etaK := {q(row.eta_k)}, mode := .{row.mode}" + " }, "
+                    + f"massCap := {q(row.mass_cap)}, errorCap := {q(row.error_cap)}" + " }" + comma)
             lines.extend(["]", ""])
         lines.extend([f"/-- Power {j} certificates in complete source-panel order. -/",
                       f"def j{j}Certificates : Array Certificate :=", "  " + " ++ ".join(blocks), ""])
