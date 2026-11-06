@@ -105,9 +105,8 @@ lemma gramZ_sq_le : gramZ t ^ 2 ≤ gramN t * gramH t := by
     exact (Complex.abs_re_le_norm _).trans (by rw [norm_mul])
   have hCS : (∑ a, ∑ b, ‖ctN t a b‖ * ‖ctH t a b‖) ^ 2
       ≤ (∑ a, ∑ b, ‖ctN t a b‖ ^ 2) * ∑ a, ∑ b, ‖ctH t a b‖ ^ 2 := by
-    have := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (ι × ι))
-      (fun p => ‖ctN t p.1 p.2‖) (fun p => ‖ctH t p.1 p.2‖)
-    simpa only [Fintype.sum_prod_type] using this
+    simpa only [Fintype.sum_prod_type] using Finset.sum_mul_sq_le_sq_mul_sq
+      (Finset.univ : Finset (ι × ι)) (fun p => ‖ctN t p.1 p.2‖) (fun p => ‖ctH t p.1 p.2‖)
   have e1 : gramN t = ∑ a, ∑ b, ‖ctN t a b‖ ^ 2 := by
     simp only [gramN, Complex.normSq_eq_norm_sq]
   have e2 : gramH t = ∑ a, ∑ b, ‖ctH t a b‖ ^ 2 := by
@@ -445,8 +444,6 @@ lemma ctY_cyc3' (a b j c : ι) : ctY t j a b c = ctY t a b j c := by unfold ctY;
 
 /-- `‖Y‖² = ⟨Y, W⟩` (`Y` is the symmetrisation of `W`). -/
 lemma hipY_Y : hip (ctY t) (ctY t) = hip (ctY t) (ctW t) := by
-  have e : ctY t = fun a b j c => (ctW t a b j c + ctW t a j b c + ctW t b a j c
-      + ctW t b j a c + ctW t j a b c + ctW t j b a c) / 6 := rfl
   have e' : hip (ctY t) (ctY t) = hip (ctY t) (fun a b j c => (ctW t a b j c + ctW t a j b c
       + ctW t b a j c + ctW t b j a c + ctW t j a b c + ctW t j b a c) / 6) := rfl
   rw [e', hip_div_right, hip_add_right, hip_add_right, hip_add_right, hip_add_right, hip_add_right]
