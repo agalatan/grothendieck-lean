@@ -9,6 +9,19 @@ conditional rounding gives a bound below `1.404598149141`) is work in progress; 
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
+**Finite twisted-source bundles (work in progress).**
+`UpperQuad/PortFacts/Bundles.lean` packages the production table flags,
+final checks, range facts and phase-degree theorem into `j1FactsOf`,
+`j2FactsOf` and `j3FactsOf`. It uses the `FactsOf` interface from the
+twisted evaluator's soundness bridge; it introduces no additional finite
+computation or analytic hypothesis. The proof dependencies are adopted from
+the pinned `claude-b9ee/port-sound` checkpoint `686f985a` without changing
+the computational kernels. All consumed fact modules are registered in the
+generated root. This combined source checkpoint is awaiting completion of
+the remaining range computations and a full typecheck and axiom audit.
+The quadrature remainder, energy-table accuracy and final upper endpoint
+still require their separate proofs and integration.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational
