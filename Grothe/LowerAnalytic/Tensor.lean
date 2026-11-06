@@ -81,9 +81,8 @@ def remIdx : Fin (n + n) ≃ RemT n := ⟨remTo, remFrom, remFrom_remTo, remTo_r
 /-- Remote functions on `Fin (n + n)`. -/
 def remW : (Fin (n + n) → ℝ) ≃ᵐ (RemT n → ℝ) := MeasurableEquiv.piCongrLeft (fun _ => ℝ) remIdx
 
-lemma measurePreserving_remW : MeasurePreserving (remW (n := n)) (stdGaussian (n + n)) (γW n) := by
-  have := measurePreserving_piCongrLeft (fun _ : RemT n => gaussianReal 0 1) (remIdx (n := n))
-  exact this
+lemma measurePreserving_remW : MeasurePreserving (remW (n := n)) (stdGaussian (n + n)) (γW n) :=
+  measurePreserving_piCongrLeft (fun _ : RemT n => gaussianReal 0 1) (remIdx (n := n))
 
 lemma remW_apply (y : Fin (n + n) → ℝ) (i : Fin (n + n)) : remW y (remIdx i) = y i := by
   simp only [remW, MeasurableEquiv.coe_piCongrLeft]
