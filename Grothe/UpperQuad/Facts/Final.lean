@@ -13,6 +13,9 @@ import Grothe.UpperQuad.Facts.GradeBlock10
 import Grothe.UpperQuad.Facts.GradeBlock11
 import Grothe.UpperQuad.Facts.Budget
 import Grothe.UpperQuad.WatsonSeed
+import Grothe.UpperQuad.Facts.Omitted
+import Grothe.UpperQuad.QuadDecomp
+import Grothe.UpperQuad.QuadEllipseFacts.All
 
 /-!
 # `hclose` from the native facts
@@ -72,5 +75,16 @@ theorem hclose_of_facts_quad (hQuad : QuadHyp) :
       |energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp (Xfun frozenCorrectionFn)) p -
         (energyTable p : ℝ)| ≤ (energyErrQ : ℝ) :=
   hclose_of_blockFacts_numeric blockFacts evenCheck (Watson.watsonHyp 70) hQuad
+
+/-- **`hclose` from the native facts alone**: `QuadHyp` from its three parts, the tail and gaps
+(`Tail.norm_tail_sq_le`), the omitted pairs (`omittedCheck`) and the Gauss–Legendre remainders on the
+covered set (`EllCheck.quadRemainderHyp`, the ellipse checker). -/
+theorem hclose_of_facts_all :
+    ∑ p ∈ headIdx 501,
+      |energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp (Xfun frozenCorrectionFn)) p -
+        (energyTable p : ℝ)| ≤ (energyErrQ : ℝ) :=
+  hclose_of_facts_quad (quadHyp_of_parts
+    (omitted_l2_of_fact (blockFacts 0 (by norm_num)) (Watson.watsonHyp 70) omittedCheck)
+    EllCheck.quadRemainderHyp)
 
 end Grothe.UpperQuad.Facts

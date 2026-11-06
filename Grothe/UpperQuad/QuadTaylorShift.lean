@@ -26,8 +26,8 @@ open scoped Nat
 
 noncomputable section
 
-/-- The triangle `c + d ≤ M`. -/
-def tri (M : ℕ) : Finset (ℕ × ℕ) :=
+/-- The triangle `c + d ≤ M` (irreducible: never let the elaborator evaluate it). -/
+@[irreducible] def tri (M : ℕ) : Finset (ℕ × ℕ) :=
   (Finset.range (M + 1) ×ˢ Finset.range (M + 1)).filter (fun p => p.1 + p.2 ≤ M)
 
 lemma mem_tri {M : ℕ} {p : ℕ × ℕ} : p ∈ tri M ↔ p.1 + p.2 ≤ M := by
@@ -68,7 +68,8 @@ theorem sqSum_Rop_le (M : ℕ) (V : ℕ → ℕ → ℂ) :
     have h1 := norm_add_le (((Real.sqrt (p.1 + 1) : ℝ) : ℂ) * V (p.1 + 1) p.2)
       (((Real.sqrt (p.2 + 1) : ℝ) : ℂ) * V p.1 (p.2 + 1))
     rw [norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs,
-      Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), abs_of_nonneg (Real.sqrt_nonneg _)] at h1
+      Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _),
+      abs_of_nonneg (Real.sqrt_nonneg _)] at h1
     have hs1 : Real.sqrt (p.1 + 1) ^ 2 = p.1 + 1 := Real.sq_sqrt (by positivity)
     have hs2 : Real.sqrt (p.2 + 1) ^ 2 = p.2 + 1 := Real.sq_sqrt (by positivity)
     simp only [hf]
@@ -169,7 +170,8 @@ lemma shiftTerm_nonneg (D : ℕ) {t : ℝ} (ht : 0 ≤ t) (r : ℕ) : 0 ≤ shif
   unfold shiftTerm; positivity
 
 lemma shiftTerm_succ (D : ℕ) {t : ℝ} (_ht : 0 ≤ t) (r : ℕ) :
-    shiftTerm D t (r + 1) = shiftTerm D t r * (t * Real.sqrt (2 * ((D : ℝ) + 1 + r)) / (r + 1)) := by
+    shiftTerm D t (r + 1) =
+      shiftTerm D t r * (t * Real.sqrt (2 * ((D : ℝ) + 1 + r)) / (r + 1)) := by
   unfold shiftTerm raiseProd
   rw [Finset.prod_range_succ, Real.sqrt_mul (Finset.prod_nonneg fun _ _ => by positivity),
     Nat.factorial_succ, pow_succ]

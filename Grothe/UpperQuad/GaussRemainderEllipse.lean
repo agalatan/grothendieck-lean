@@ -350,7 +350,8 @@ def chebApprox (g : ℂ → E) (ρ : ℝ) (N : ℕ) (x : ℝ) : E :=
       (((Polynomial.Chebyshev.T ℝ ((k + 1 : ℕ) : ℤ)).eval x : ℝ) : ℂ) • innerCoeff g ρ k
 
 omit [CompleteSpace E] in
-/-- At `ζ = e^{iθ}`, `x = cos θ`, the Chebyshev approximant is the symmetrised Laurent truncation. -/
+/-- At `ζ = e^{iθ}`, `x = cos θ`, the Chebyshev approximant is the symmetrised Laurent
+truncation. -/
 lemma chebApprox_eq (g : ℂ → E) (ρ : ℝ) (N : ℕ) (θ : ℝ) :
     chebApprox g ρ N (Real.cos θ) =
       (1 / 2 : ℂ) • (laurentTrunc g ρ N (exp (θ * I)) + laurentTrunc g ρ N (exp (θ * I))⁻¹) := by
@@ -382,7 +383,8 @@ lemma integral_poly_smul_eq {n : ℕ} (l h : ℝ) (node weight : Fin n → ℝ)
     (hexact : ∀ p : Polynomial ℝ, p.natDegree < 2 * n →
       ∫ s in l..h, p.eval s = ∑ i, weight i * p.eval (node i))
     (p : Polynomial ℝ) (hp : p.natDegree < 2 * n) (e : E) :
-    ∫ s in l..h, ((p.eval s : ℝ) : ℂ) • e = ∑ i, (weight i : ℂ) • (((p.eval (node i) : ℝ) : ℂ) • e) := by
+    ∫ s in l..h, ((p.eval s : ℝ) : ℂ) • e =
+      ∑ i, (weight i : ℂ) • (((p.eval (node i) : ℝ) : ℂ) • e) := by
   rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_ofReal, hexact p hp,
     Complex.ofReal_sum, Finset.sum_smul]
   apply Finset.sum_congr rfl
@@ -395,7 +397,8 @@ lemma integral_poly_smul_eq {n : ℕ} (l h : ℝ) (node weight : Fin n → ℝ)
 def affPoly (p : Polynomial ℝ) (c r : ℝ) : Polynomial ℝ :=
   p.comp (Polynomial.C r⁻¹ * (Polynomial.X - Polynomial.C c))
 
-lemma affPoly_eval (p : Polynomial ℝ) (c r s : ℝ) : (affPoly p c r).eval s = p.eval ((s - c) / r) := by
+lemma affPoly_eval (p : Polynomial ℝ) (c r s : ℝ) :
+    (affPoly p c r).eval s = p.eval ((s - c) / r) := by
   simp [affPoly, Polynomial.eval_comp, div_eq_inv_mul]
 
 lemma affPoly_natDegree_le (p : Polynomial ℝ) (c r : ℝ) :

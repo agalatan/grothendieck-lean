@@ -29,8 +29,11 @@ lemma nodeTerm_canonical (s W : ℝ) (q c d : ℕ) (hq : q < 251) (hd : d ≤ q)
     nodeTerm s W 531 0 251 (d + 1 - c) (q - d) (if d + 1 - c = 0 then c - 1 else c) =
       W * nodeF q c d s := by
   unfold nodeTerm nodeF
-  rw [pairOf_canonical c d hc, entryGrade_canonical q c d hd hc,
-    if_pos ⟨col_lt_activeCols q c d hq hd hc, Nat.zero_le _, hq, by omega⟩]
+  rw [pairOf_canonical c d hc, entryGrade_canonical q c d hd hc]
+  have hcond : (if d + 1 - c = 0 then c - 1 else c) < activeCols (d + 1 - c) (q - d) ∧
+      0 ≤ q ∧ q < 251 ∧ c + d ≤ 531 :=
+    ⟨col_lt_activeCols q c d hq hd hc, Nat.zero_le _, hq, by omega⟩
+  simp only [hcond, and_self, ↓reduceIte]
   ring
 
 /-- The full Gauss sums as sums over master's source addresses. -/
@@ -49,9 +52,12 @@ theorem gaussCoeffFull_canonical (q c d : ℕ) (hq : q < 251) (hd : d ≤ q) (hc
       ∑ p : Fin sourcePanels.length, ∑ i : Fin (sourcePanels.get p).order,
         sourceWeight ⟨p, i⟩ * nodeF q c d (sourceNode ⟨p, i⟩) := by
   unfold gaussCoeffFull gradeValue rawValue
-  rw [if_pos hc, add_zero, gaussRawFull_eq_sum_address, ← Fintype.sum_sigma]
+  simp only [hc, ↓reduceIte, add_zero]
+  rw [gaussRawFull_eq_sum_address, Fintype.sum_sigma]
   apply Finset.sum_congr rfl
-  intro a _
+  intro p _
+  apply Finset.sum_congr rfl
+  intro i _
   exact nodeTerm_canonical _ _ q c d hq hd hc
 
 end

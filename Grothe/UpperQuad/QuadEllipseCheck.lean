@@ -14,7 +14,8 @@ in the floating dyadic intervals of `GrotheQuadKernel.Basic` (outward rounding):
 * the Taylor coefficients `t_k(x_j)` of the scaled profile `v̂ = π^{1/4} vprof` (a polynomial of
   degree 11 with the coefficients `chatI k`), the deviation `e = Σ_{k≥1} |t_k| R^k`, and checks
   that `v̂` keeps the sign `ε` of the panel with `|v̂| ≥ |t_0| − e > 0` on the disk;
-* `|Ã|² = |z| √π / (κ² |v̂|²)` (upper and lower), the angle defect `κ' = (1 + R/x)/(1 − e/|t_0|)² − 1`
+* `|Ã|² = |z| √π / (κ² |v̂|²)` (upper and lower), the angle defect
+  `κ' = (R/x + r(2 + r))/(1 − r)²`, `r = e/|t_0|`,
   of `Ã²` and from it `β² = (Im Ã)² ≤ |Ã|² κ'²/2` and `θ = |Ã|²/Re Ã² ≤ 1/√(1 − κ'²)`;
 * the two conditional bounds `Υ_Y = (Σ_r shiftTerm 501 (β + δ) r)²` (truncated with the ratio
   test, `TaylorShift.tsum_shiftTerm_le`) and `Υ_K = θ Σ_{m ≤ 501} m! T_m (θ²/|Ã|²)^m`;
@@ -33,17 +34,26 @@ namespace Grothe.UpperQuad.EllCheck
 
 open GrotheQuad
 
+instance : Inhabited Grothe.UpperChaos.Q0GaussAddress.Panel := ⟨⟨0, 0, 0, 0⟩⟩
+
 /-- The working precision (mantissa bits). -/
 def P : Nat := 200
 
 /-- A rational as an interval. -/
 def qI (q : ℚ) : Ival := ratI P q.num q.den
 
+/-- Division, only by a decidedly positive enclosure. -/
+def dv (a b : Ival) : Option Ival := if isPos b then some (divI P a b) else none
+
+/-- A check as an `Option`. -/
+def guard' (b : Bool) : Option Unit := if b then some () else none
+
 /-- `√β_j`, `β_j = (2j)!/(4^j (j!)²)`: `nrmHalf j = π^{1/4} √β_j`. -/
 def sqrtBetaI (j : Nat) : Ival :=
   sqrtI P (divN P (4 ^ j * (factNat j) ^ 2) (ofNat P (factNat (2 * j))))
 
-/-- The contribution of `L_j^{(−1/2)}` to the coefficient of `s^k` of `v̂ = π^{1/4} vprof`. -/
+/-- The contribution of `L_j^{(−1/2)}` to the coefficient of `s^k` of `v̂ = π^{1/4} vprof`
+(`β_j` enclosures are checked positive by `chatOK`). -/
 def chatTerm (k j : Nat) : Ival :=
   if k ≤ j then
     let b := binHalfRat j k
@@ -51,6 +61,9 @@ def chatTerm (k j : Nat) : Ival :=
       (ratI P b.1 b.2))) (sqrtBetaI j)
     if k % 2 == 1 then negI t else t
   else zeroI
+
+/-- The positivity of the twelve `√β_j` enclosures. -/
+def chatOK : Bool := (List.range 12).all fun j => isPos (sqrtBetaI j)
 
 /-- The coefficient of `s^k` of `v̂`. -/
 def chatI (k : Nat) : Ival := sumRangeI P 12 (chatTerm k)
@@ -144,64 +157,81 @@ def planGeomOK (lo hi : ℚ) (pl : Plan) : Bool :=
 /-- The `δ` of the off-axis base point (`2^{−40}`). -/
 def deltaI : Ival := ⟨1, 1, -40⟩
 
-/-- **The bound `M_j²` on one disk** (`none` if a check fails).  `pos` is the panel sign
-(`true`: `vprof > 0`). -/
-def diskM2 (g : List Ival) (pos : Bool) (x R tau : ℚ) : Option Ival :=
-  let xI := qI x
-  let RI := qI R
-  let t0 := taylorI xI 0
-  let e := devI xI RI
+/-- The profile on the disk: `(|t₀|, e)` enclosures with the sign `pos`, if `|t₀| > 0` and
+`|t₀| − e > 0`. -/
+def diskProfile (pos : Bool) (x R : ℚ) : Option (Ival × Ival) :=
+  let t0 := taylorI (qI x) 0
   let at0 := if pos then t0 else negI t0
-  let vlo := subI P at0 e
-  let vhi := addI P at0 e
-  if !(isPos vlo) then none else
-  -- `|z| ≤ |x| + R`, `|z| ≥ max(0, |x| − R)`
-  let zhi := qI (|x| + R)
-  let zlo := qI (max 0 (|x| - R))
-  let k2 := kappa2
-  let a2hi := divI P (mulI P zhi sqrtPiE) (mulI P k2 (sqI P vlo))
-  let a2lo := divI P (mulI P zlo sqrtPiE) (mulI P k2 (sqI P vhi))
-  -- the angle defect (only for `x > R`)
-  let defect : Option Ival :=
-    if decide (R < x) then
-      let r1 := qI (R / x)
-      let r2 := divI P e at0
-      let om := subI P (ofInt P 1) r2
-      if !(isPos om) then none else
-      let kp := subI P (divI P (addI P (ofInt P 1) r1) (sqI P om)) (ofInt P 1)
-      if isPos (subI P (ofInt P 1) kp) ∧ isPos (addI P (ofInt P 1) kp) then some kp else none
-    else none
-  let b2hi := match defect with
-    | some kp => divN P 2 (mulI P a2hi (sqI P kp))
-    | none => a2hi
-  let tI := addI P (sqrtI P (absUpper b2hi)) deltaI
-  let upsY := (ySeries tI 6000 0 (ofInt P 1) zeroI).map (fun y => sqI P y)
-  let upsK : Option Ival := match defect with
-    | some kp =>
-      let c2 := sqrtI P (subI P (ofInt P 1) (sqI P kp))
-      if isPos c2 ∧ isPos a2lo then
-        let th := invI P c2
-        some (mulI P th (horner g (divI P (sqI P th) a2lo)))
-      else none
-    | none => none
-  let ups : Option Ival := match upsY, upsK with
+  let e := devI (qI x) (qI R)
+  if isPos at0 ∧ isPos (subI P at0 e) then some (at0, e) else none
+
+/-- `|A|² ≤ (|x| + R) √π / (κ² (|t₀| − e)²)`. -/
+def a2hiI (x R : ℚ) (at0 e : Ival) : Option Ival :=
+  dv (mulI P (qI (|x| + R)) sqrtPiE) (mulI P kappa2 (sqI P (subI P at0 e)))
+
+/-- `|A|² ≥ max(0, |x| − R) √π / (κ² (|t₀| + e)²)`. -/
+def a2loI (x R : ℚ) (at0 e : Ival) : Option Ival :=
+  dv (mulI P (qI (max 0 (|x| - R))) sqrtPiE) (mulI P kappa2 (sqI P (addI P at0 e)))
+
+/-- The angle defect `κ' = (R/x + r(2 + r))/(1 − r)²`, `r = e/|t₀|`, if `R < x`, `1 − r > 0` and
+`κ' < 1`. -/
+def defectI (x R : ℚ) (at0 e : Ival) : Option Ival := do
+  guard' (decide (R < x))
+  let r2 ← dv e at0
+  let om := subI P (ofInt P 1) r2
+  guard' (isPos om)
+  let kp ← dv (addI P (qI (R / x)) (mulI P r2 (addI P (ofInt P 2) r2))) (sqI P om)
+  guard' (isPos (subI P (ofInt P 1) kp))
+  pure kp
+
+/-- The off-axis majorant squared, from `(Im A)² ≤ b2`. -/
+def upsYI (b2 : Ival) : Option Ival := do
+  let tI := addI P (sqrtI P (absUpper b2)) deltaI
+  guard' (isPos (subI P (ofNat P 400) (sqI P tI)))
+  let y ← ySeries tI 6000 0 (ofInt P 1) zeroI
+  pure (sqI P y)
+
+/-- The large-`|A|` majorant `θ Σ_m G_m (θ²/a)^m`, `θ = 1/√(1 − κ'²)`. -/
+def upsKI (g : List Ival) (kp a2lo : Ival) : Option Ival := do
+  let c2 := sqrtI P (subI P (ofInt P 1) (sqI P kp))
+  guard' (isPos c2)
+  let th := invI P c2
+  let xx ← dv (sqI P th) a2lo
+  pure (mulI P th (horner g xx))
+
+/-- The Mehler factor `τ^{−501} (1−τ²)⁻¹ exp(2τ X2/(1+τ) + 2τ Y2/(1−τ))`. -/
+def mehI (tau x R : ℚ) : Option Ival := do
+  let tI := qI tau
+  guard' (isPos tI)
+  let x2 := qI ((|x| + R + (x + R)) / 2)
+  let y2 := if decide (R < x) then qI (R ^ 2 / (2 * (x - R))) else qI ((|x| + R - (x - R)) / 2)
+  let e1 ← dv (mulN P 2 (mulI P tI x2)) (addI P (ofInt P 1) tI)
+  let e2 ← dv (mulN P 2 (mulI P tI y2)) (subI P (ofInt P 1) tI)
+  let ex ← expUp (addI P e1 e2)
+  let pre ← dv (powB (invI P tI) 501) (subI P (ofInt P 1) (sqI P tI))
+  pure (mulI P pre ex)
+
+/-- The conditional-mass majorant: the minimum of the two bounds where both apply. -/
+def upsI (g : List Ival) (x R : ℚ) (at0 e a2hi : Ival) : Option Ival :=
+  match defectI x R at0 e with
+  | some kp =>
+    let y := upsYI (divN P 2 (mulI P a2hi (sqI P kp)))
+    let k := (a2loI x R at0 e).bind (upsKI g kp)
+    match y, k with
     | some y, some k => some (if isPos (subI P y k) then k else y)
     | some y, none => some y
     | none, some k => some k
     | none, none => none
-  match ups with
-  | none => none
-  | some u =>
-    -- Mehler
-    let tI' := qI tau
-    let x2hi := qI ((|x| + R + x + R) / 2)
-    let y2hi := if decide (R < x) then qI (R ^ 2 / (2 * (x - R))) else qI ((|x| + R - (x - R)) / 2)
-    let expo := addI P (divI P (mulN P 2 (mulI P tI' x2hi)) (addI P (ofInt P 1) tI'))
-      (divI P (mulN P 2 (mulI P tI' y2hi)) (subI P (ofInt P 1) tI'))
-    let pre := divI P (powB (invI P tI') 501) (subI P (ofInt P 1) (sqI P tI'))
-    match expUp expo, expUp (qI (-2 * (x - R))) with
-    | some e1, some e2 => some (mulI P e2 (mulI P (mulI P pre e1) u))
-    | _, _ => none
+  | none => upsYI a2hi
+
+/-- **The bound `M_j²` on one disk** (`none` if a check fails). -/
+def diskM2 (g : List Ival) (pos : Bool) (x R tau : ℚ) : Option Ival := do
+  let (at0, e) ← diskProfile pos x R
+  let a2hi ← a2hiI x R at0 e
+  let u ← upsI g x R at0 e a2hi
+  let m ← mehI tau x R
+  let e2 ← expUp (qI (-2 * (x - R)))
+  pure (mulI P e2 (mulI P m u))
 
 /-- The sum of the disk bounds of a panel (an upper bound of their maximum). -/
 def panelM2 (g : List Ival) (pos : Bool) (lo hi : ℚ) (pl : Plan) : Option Ival :=
@@ -210,7 +240,8 @@ def panelM2 (g : List Ival) (pos : Bool) (lo hi : ℚ) (pl : Plan) : Option Ival
     | some a, some b => some (addI P a b)
     | _, _ => none) (some zeroI)
 
-/-- **The error bound of one panel**: `4 (h − l) M ρ^{−2n} / (1 − ρ⁻¹)` (`none` if a check fails). -/
+/-- **The error bound of one panel**: `4 (h − l) M ρ^{−2n} / (1 − ρ⁻¹)` (`none` if a check
+fails). -/
 def panelErr (g : List Ival) (p : Grothe.UpperChaos.Q0GaussAddress.Panel) (pl : Plan) :
     Option Ival :=
   if !(planGeomOK p.lo p.hi pl) then none else
@@ -222,8 +253,8 @@ def panelErr (g : List Ival) (p : Grothe.UpperChaos.Q0GaussAddress.Panel) (pl : 
   | some m2 =>
     let M := sqrtI P (absUpper m2)
     let rhoInv := qI pl.rho⁻¹
-    some (divI P (mulI P (qI (4 * (p.hi - p.lo))) (mulI P M (powB rhoInv (2 * p.order))))
-      (subI P (ofInt P 1) rhoInv))
+    dv (mulI P (qI (4 * (p.hi - p.lo))) (mulI P M (powB rhoInv (2 * p.order))))
+      (subI P (ofInt P 1) rhoInv)
 
 /-- The sum of the panel errors over a list of (panel, plan) pairs. -/
 def errSum (g : List Ival) (pps : List (Grothe.UpperChaos.Q0GaussAddress.Panel × Plan)) :
@@ -239,7 +270,7 @@ def shardOK (plans : List Plan) (i₀ len : Nat) (budget : ℚ) : Bool :=
   let pps := ((Grothe.UpperChaos.Q0GaussAddressScan.sourcePanels.drop i₀).take len).zip
     ((plans.drop i₀).take len)
   let g := gList
-  pps.length == len &&
+  chatOK && pps.length == len &&
     match errSum g pps with
     | some s => isPos (subI P (qI budget) s)
     | none => false

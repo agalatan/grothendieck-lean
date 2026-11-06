@@ -10,7 +10,8 @@ import Grothe.UpperChaos.F0ConditionalReality
 # The radial form of the covered parts of the F0 coefficients (part (Q) of `hQuad`)
 
 * `partCoefficient_eq_radial`: the part of the F0 coefficient `(q, c, d)` carried by a radial event
-  `S` is the radial integral `∫_{S ∩ (0,∞)} e^{−s} conj(h_{q+1−c,q−d}(√s)) · coefficient s (c, d) ds`
+  `S` is the radial integral
+  `∫_{S ∩ (0,∞)} e^{−s} conj(h_{q+1−c,q−d}(√s)) · coefficient s (c, d) ds`
   (Fubini over the second Gaussian and the exponential law of `|z|²`, as in master's
   `baseGradedCoefficient_eq_radial`, with the indicator of `S`).
 * `partCoefficient_reflection`: for `c > d + 1` the part is `√((d+1)/c)` times the part of the
@@ -46,7 +47,8 @@ theorem partCoefficient_eq_radial {S : Set ℝ} (hS : MeasurableSet S) (q c d : 
   have hS'm : MeasurableSet S' := (measurable_norm.pow_const 2) hS
   set g : ℂ × ℂ → ℂ := fun u => conj (hfun2 i u) * F0 u with hg
   have hgi : Integrable g mu2 := integrable_baseCoefficient i
-  have hind : ∀ u : ℂ × ℂ, (Tail.radialSet S).indicator g u = S'.indicator (fun _ => (1 : ℂ)) u.1 * g u := by
+  have hind : ∀ u : ℂ × ℂ,
+      (Tail.radialSet S).indicator g u = S'.indicator (fun _ => (1 : ℂ)) u.1 * g u := by
     intro u
     by_cases hu : ‖u.1‖ ^ 2 ∈ S
     · have h1 : u ∈ Tail.radialSet S := by simp [Tail.radialSet, hu]
@@ -76,7 +78,8 @@ theorem partCoefficient_eq_radial {S : Set ℝ} (hS : MeasurableSet S) (q c d : 
         filter_upwards with z
         by_cases hz : ‖z‖ ^ 2 ∈ S
         · have h2 : z ∈ S' := hz
-          rw [Set.indicator_of_mem h2, Set.indicator_of_mem hz, one_mul, Real.sqrt_sq (norm_nonneg z)]
+          rw [Set.indicator_of_mem h2, Set.indicator_of_mem hz, one_mul,
+            Real.sqrt_sq (norm_nonneg z)]
           exact baseCoefficientSlice_eq_norm i hi z
         · have h2 : z ∉ S' := hz
           rw [Set.indicator_of_notMem h2, Set.indicator_of_notMem hz, zero_mul]
