@@ -12618,6 +12618,8 @@ Grothe.UpperChaos.toLp_taylorThirdSource
 Grothe.UpperChaos.toLp_thirdCenterFn
 Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
+Grothe.UpperQuad.CentralDerivative.abs_derivative_le
+Grothe.UpperQuad.CentralDerivative.derivative_eq
 Grothe.UpperQuad.Facts.hclose_of_facts
 Grothe.fresh_upper
 Grothe.grouped_head_residual_le

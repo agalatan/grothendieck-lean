@@ -466,6 +466,15 @@ response also proves that both original Gaussian coefficients, including
 their rational frozen corrections, are real. Real interval errors thus
 give the same complex norm errors without a truncation premise.
 
+The finite root-window interpolation step uses an antisymmetric rule at
+$r\pm i/180$ for $1\le i\le18$. For every real polynomial $p$ of degree
+at most $35$, exact rational moment identities express $p'(r)$ as this
+weighted sample sum. The doubled absolute-weight sum is below $630$, hence
+$|p'(r)|\le630M$ when all samples have absolute value at most $M\ge0$.
+\lean{UpperQuad.CentralDerivative} supplies this algebraic step with standard
+axiom guards. The actual phase polynomial, sample enclosures and physical
+panel integration remain separate inputs.
+
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
 The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
