@@ -1,7 +1,7 @@
 import Grothe.UpperQuad.Bridge
 import Grothe.UpperChaos.ConditionalCoefficientReflection
 import Grothe.UpperChaos.F0ConditionalReality
-import GrotheQuadKernel.Omitted
+import GrotheQuadExtKernel.Omitted
 
 /-!
 # The omitted pairs of the cutoffs (part (C) of `hQuad`): the mathematics of one node

@@ -29,8 +29,8 @@ from fractions import Fraction
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
-PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.", "GrotheQuadKernel.")
-PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel")
+PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.", "GrotheQuadKernel.", "GrotheQuadExtKernel.")
+PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel", "GrotheQuadExtKernel")
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
 # The legacy cap-row computation roots. The activated-registry and CapNodes checks below read exactly these:
 # a row root missing from the registry or from CapNodes is an error.

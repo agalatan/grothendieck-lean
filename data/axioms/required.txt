@@ -9925,6 +9925,8 @@ Grothe.Research.RefinedLowerCheck.refined_cover_checked
 Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal
 Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound
 Grothe.Statement.lowerTarget_of_nodeCaps
+Grothe.Statement.lower_target
+Grothe.Statement.main_bounds
 Grothe.Statement.upper_target_of_inputs
 Grothe.Upper.BandComparison.compare
 Grothe.Upper.BandComparison.quadratic_sum_le_grouped
@@ -10719,6 +10721,11 @@ Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_eq
 Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw
 Grothe.UpperChaos.FixedChaosSmoothing.selected_energy_close_of_raw_error
 Grothe.UpperChaos.FixedChaosSmoothing.tensorCompletionDefectNorm_sq
+Grothe.UpperChaos.FixedZPhaseRemainder.fixed_phase_eq
+Grothe.UpperChaos.FixedZPhaseRemainder.integrable_residual_sq
+Grothe.UpperChaos.FixedZPhaseRemainder.measurable_residual
+Grothe.UpperChaos.FixedZPhaseRemainder.norm_actual_residual
+Grothe.UpperChaos.FixedZPhaseRemainder.residual_memLp
 Grothe.UpperChaos.FrozenSource.Grade000.grade_energy
 Grothe.UpperChaos.FrozenSource.Grade000Production.at_eq
 Grothe.UpperChaos.FrozenSource.Grade000Production.coefficient_energy
@@ -12618,6 +12625,8 @@ Grothe.UpperChaos.toLp_taylorThirdSource
 Grothe.UpperChaos.toLp_thirdCenterFn
 Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
+Grothe.UpperQuad.CentralDerivative.abs_derivative_le
+Grothe.UpperQuad.CentralDerivative.derivative_eq
 Grothe.UpperQuad.Facts.hclose_of_facts
 Grothe.fresh_upper
 Grothe.grouped_head_residual_le

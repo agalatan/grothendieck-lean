@@ -1430,7 +1430,7 @@
     },
     "data/caps-m/plan/row-certificates/row15-binding.json": {
       "path": "data/caps-m/plan/row-certificates/row15-binding.json",
-      "sha256": "1ce013ac1b12f54e7e29fe1dc02c3719eb5e329e44e672575e5c36f93d1e2a9a"
+      "sha256": "9e737780eb57a46b47306c69d122e6ae4af1225b7a6f99f2fdfec1d878f27392"
     },
     "data/caps-m/plan/row-certificates/row15-generation.json": {
       "path": "data/caps-m/plan/row-certificates/row15-generation.json",
@@ -1825,8 +1825,8 @@
       "sha256": "5b946f274d6db33983f2e0d4db54786d8cfa8e7f4bcb6a620abef780f500ea39"
     },
     "scripts/caps_stamp.py": {
-      "path": "data/caps-m/plan/noncentre-repairs/row15-original/b627f51a60749a6d149e2fca463e01ad19207a4391276c61abf5dfcab08e201e/scripts/caps_stamp.py",
-      "sha256": "b627f51a60749a6d149e2fca463e01ad19207a4391276c61abf5dfcab08e201e"
+      "path": "data/caps-m/plan/noncentre-repairs/row15-original/6736b61800af4276c7cb32747865a3743a2ebf4974d2fccc57ab0f3ed35c7da8/scripts/caps_stamp.py",
+      "sha256": "6736b61800af4276c7cb32747865a3743a2ebf4974d2fccc57ab0f3ed35c7da8"
     },
     "tools/gen_cap_pieces.py": {
       "path": "data/caps-m/plan/noncentre-repairs/row15-original/7da3ec5828b9f0457d530586c3609808c7ec4206d6ab282b015179d9b0935b11/tools/gen_cap_pieces.py",
@@ -1908,6 +1908,6 @@
   "format": "nodecaps-row15-repaired-source/v1",
   "repair_binding": {
     "path": "data/caps-m/plan/noncentre-repairs/row15-binding.json",
-    "sha256": "0cf5397758abe59d0c7c575f2cac3dbdddbd3eb82ac20ef534b1de80cf65fd09"
+    "sha256": "e3a96593bf7d2e3b329de5e9574c8ba9d35640b47bb8a0449e73b6857d71b518"
   }
 }

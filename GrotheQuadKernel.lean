@@ -4,7 +4,6 @@ import GrotheQuadKernel.Compare
 import GrotheQuadKernel.Contract
 import GrotheQuadKernel.Gauss
 import GrotheQuadKernel.Node
-import GrotheQuadKernel.Omitted
 import GrotheQuadKernel.Pairs
 import GrotheQuadKernel.Profile
 import GrotheQuadKernel.Rotate
