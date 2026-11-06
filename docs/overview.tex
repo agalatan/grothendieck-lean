@@ -481,6 +481,22 @@ $|p'(r)|\le630M$ when all samples have absolute value at most $M\ge0$.
 axiom guards. The actual phase polynomial, sample enclosures and physical
 panel integration remain separate inputs.
 
+The generic complex growth theorem
+\lean{UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le} controls
+a degree-$N$ polynomial $P$ satisfying
+$|P(z,\bar z)|\le\exp(\varepsilon|z|^2)$ for every $z\in\mathbb C$.
+For $\varepsilon>0$, $0<\tau<1$, and complex $r,x$, it proves
+\[
+ \left|P(r+ix,r-ix)e^{-\varepsilon(r^2+x^2)}\right|^2
+ \le \frac{\exp\!\left(\frac{4\varepsilon}{1-\tau}
+       ((\Im r)^2+(\Im x)^2)\right)}{\tau^N(1-\tau)^2}.
+\]
+The proof combines a finite degree-controlled Hermite expansion, its Gaussian
+norm identity, the complex Mehler bound, and a change of Gaussian rate to
+$\varepsilon(1+\tau)/\tau$. The real-coordinate exponent cancels exactly.
+The production-phase instantiation and certified twisted remainders remain
+separate obligations; the generic theorem uses only standard axioms.
+
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
 The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
