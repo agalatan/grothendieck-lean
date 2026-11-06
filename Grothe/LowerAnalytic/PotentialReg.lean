@@ -115,8 +115,7 @@ theorem integrable_pot_comp (hE : E.psdOK = true) (hR : R.psdOK = true) {Ω : Ty
   rw [Real.norm_eq_abs]
   have h2 : |δ * ‖P ω‖| = δ * ‖P ω‖ := abs_of_nonneg (mul_nonneg hδ (norm_nonneg _))
   rw [h2] at h ⊢
-  have := abs_sub_abs_le_abs_sub (pot E R ℓ β a (δ * ‖P ω‖)) (pot E R ℓ β a 0)
-  linarith
+  linarith [abs_sub_abs_le_abs_sub (pot E R ℓ β a (δ * ‖P ω‖)) (pot E R ℓ β a 0)]
 
 end
 
