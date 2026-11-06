@@ -1653,6 +1653,44 @@ value at most `630 * M`. The module has strict standard-axiom guards. Identifyin
 the actual phase polynomial, enclosing its samples, and transporting this bound
 to the physical quadrature panels remain separate obligations.
 
+`UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le` gives a generic
+complex growth bound for a polynomial times a Gaussian. If `P` has total degree
+at most `N` and `‖P(z, conjugate z)‖ ≤ exp(ε |z|²)` for every complex `z`, then,
+for `ε > 0`, `0 < τ < 1`, and arbitrary complex `r,x`,
+
+```
+‖P(r+i*x,r−i*x) exp(−ε(r²+x²))‖²
+  ≤ τ^(−N) (1−τ)^(−2) exp(4ε((Im r)²+(Im x)²)/(1−τ)).
+```
+
+`PolynomialHermiteDegree` retains the degree cutoff in the finite Hermite
+expansion; `PolynomialHermiteNorm` identifies the squared coefficient sum with
+the actual Gaussian L² norm. `FinitePolynomialMehler` applies the formal complex
+Mehler estimate. `PolynomialRescale` changes the rate to `ε(1+τ)/τ`, and
+`GaussianGrowth` and `GaussianMehlerBound` prove the norm estimate and exact
+cancellation of real-coordinate growth. These results use only standard axioms.
+`PhasePolynomialComplex` instantiates this estimate for the actual production
+phase. With real `y` fixed, the polynomial has degree at most 35; its coefficients
+include `exp(−ε*y²)`. The existing checked term list supplies invariant degree
+at most 17, and the global real phase bound supplies the Gaussian growth premise.
+`phaseComplex_real` identifies the continuation with `phiT` on every real slice,
+and `analyticAt_phaseComplex` proves joint complex analyticity. For every positive
+integer `j`, `norm_phaseComplex_pow_sq_le` uses degree `35*j` and damping `j*ε`
+directly, retaining one `(1−τ)^(−2)` factor. Its numerical dependencies are only
+the existing registered phase-cover facts.
+
+`PolynomialDilationNorm` integrates finite Mehler to bound dilation on Gaussian
+L². For `L ≥ 1`, `0 < τ < 1`, and `(2*L−1)*τ < 1`, it proves
+
+```
+‖P(√L ·)‖² ≤ ‖P‖² * τ^(−N) / ((1−τ)*(1−(2*L−1)*τ)).
+```
+
+The normalized Hermite-column corollary has polynomial norm one and degree
+`p+q`. These dilation estimates use only standard axioms. Certified contour
+enclosures and the twisted quadrature remainder remain separate obligations;
+these results do not close `UpperTarget`.
+
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
 `ConditionalNodeIndices` identifies the contraction's selected pair set and
