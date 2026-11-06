@@ -73,6 +73,17 @@ a nonnegative squared cap to the norm cap required by the panel theorem.
 It has no interval-checker dependency or additional native fact; geometric
 certificate soundness and the complete accepted panel sum remain obligations.
 
+`TwistEllipseYVectorSound` connects a successful `diskM2` evaluation in Y mode
+to the actual descended vector on the complete disk. The returned interval
+contains one common squared-norm bound, uniformly for every real panel sign
+of absolute value one. Its upper endpoint therefore supplies the norm cap
+after a squared-cap comparison. The proof includes the fallback to the full
+shift norm when the angle-defect evaluation fails, and the accepted profile
+separation excludes zeros throughout the disk. `TwistEllipseSignedGeometry`
+also transports the accepted lower-norm and angle witnesses to the actual
+signed continuation shift for K consumers. Actual K/automatic-mode bounds,
+complete certificate acceptance and the final panel sum remain separate.
+
 `TwistProfileSign` proves constancy of the production profile sign on any
 zero-free closed real interval. `TwistRadialPanels` fixes the sign at each
 panel's left endpoint and proves `remainder_of_descended_ellipses` from only

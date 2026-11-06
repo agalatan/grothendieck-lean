@@ -13861,7 +13861,9 @@ import Grothe.UpperQuad.TwistEllipsePanelArithmetic
 import Grothe.UpperQuad.TwistEllipsePanelGeometry
 import Grothe.UpperQuad.TwistEllipsePhaseSound
 import Grothe.UpperQuad.TwistEllipsePlans
+import Grothe.UpperQuad.TwistEllipseSignedGeometry
 import Grothe.UpperQuad.TwistEllipseSound
+import Grothe.UpperQuad.TwistEllipseYVectorSound
 import Grothe.UpperQuad.TwistFactorAnalytic
 import Grothe.UpperQuad.TwistFactorPolynomial
 import Grothe.UpperQuad.TwistFactsSound
