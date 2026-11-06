@@ -195,8 +195,7 @@ theorem rowSharedWith_of_bracket (r : Row) {Ω : Type*} [MeasurableSpace Ω] {μ
     rw [hU]; exact scale_sqrt_law p τ r.delta hτ ω
   simp only [RowSharedWith, e]
   refine ⟨hΨ, hΨi, hgi, ?_⟩
-  have := integral_mono_ae hBi hΨi hBk
-  linarith
+  linarith [integral_mono_ae hBi hΨi hBk]
 
 end Grothe.Lower
 
