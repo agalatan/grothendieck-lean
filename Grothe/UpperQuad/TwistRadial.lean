@@ -112,7 +112,7 @@ theorem conj_primary_psiR (q c d : ℕ) (hc : c ≤ q + 1) (hd : d ≤ q) {s : �
     have := congrArg conj hcan
     rw [Complex.conj_conj, Complex.conj_ofReal] at this
     rw [this]
-    congr 2 <;> omega
+    congr 2; omega
 
 /-- **The radial reduction**: `a_j(q,c,d) = ∫_{s>0} e^{−s} ψ_{(q,c,d)}(s) J^{(j)}_{c,d}(s) ds`. -/
 theorem twistCoefficient_eq_radial (j q c d : ℕ) (hc : c ≤ q + 1) (hd : d ≤ q) :
@@ -147,11 +147,11 @@ theorem twistCoefficient_eq_radial (j q c d : ℕ) (hc : c ≤ q + 1) (hd : d �
 /-- The coefficient is real: `a_j(q,c,d) = ∫_{s>0} e^{−s} ψ Re J`. -/
 theorem twistCoefficient_eq_ofReal (j q c d : ℕ) (hc : c ≤ q + 1) (hd : d ≤ q) :
     twistCoefficient j q c d = ((∫ s in Ioi (0 : ℝ), twistIntegrand j q c d s : ℝ) : ℂ) := by
-  rw [twistCoefficient_eq_radial j q c d hc hd, ← integral_ofReal]
+  rw [twistCoefficient_eq_radial j q c d hc hd, ← integral_complex_ofReal]
   apply setIntegral_congr_fun measurableSet_Ioi
   intro s _
   simp only [twistIntegrand]
-  rw [twistCoef_eq_re j s (c, d)]
+  conv_lhs => rw [twistCoef_eq_re j s (c, d)]
   push_cast
   ring
 

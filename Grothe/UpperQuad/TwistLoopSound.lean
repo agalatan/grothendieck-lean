@@ -94,10 +94,10 @@ lemma mem_psiTable (P : ℕ) (hP : 1 ≤ P) (Q : ℕ) (hQ : Q ≤ 502) {s : ℝ}
     (hs : mem s sI) (k m : ℕ) (hkm : k + m ≤ Q) :
     memOut (RadialLaguerre.radialFactor k m s) (psiGet (psiTable P Q sI) k m) := by
   unfold psiGet psiTable
+  dsimp only
   have hk : k < Q + 1 := by omega
   have hm : m < Q + 1 - k := by omega
-  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hk, hm, ↓reduceDIte,
-    Option.getD_some]
+  rw [getD_ofFn _ hk, getD_ofFn _ hm]
   apply memOut_toOut
   exact mem_radialFactorI P hP k m (by omega)
     (mem_lagTable P Q hQ (fun j hj => mem_negExpTerms P hP hs Q j hj) k m (by omega) (by omega))
@@ -108,9 +108,9 @@ lemma memOut_centerOut (center : Array Int) (E q c d : ℕ) (hE : E ≤ KOut) :
   unfold memOut memSc centerOut centerR
   have h : ((center.getD (gradedFlat q c d) 0 : ℤ) : ℝ) / 2 ^ E * (2 : ℝ) ^ KOut =
       ((center.getD (gradedFlat q c d) 0 * pow2 (KOut - E) : ℤ) : ℝ) := by
-    rw [Int.cast_mul, pow2_cast, div_mul_eq_mul_div, mul_div_assoc]
-    congr 1
-    rw [← pow_sub₀ _ (by norm_num) hE]
+    have h2 : (2 : ℝ) ^ KOut = 2 ^ (KOut - E) * 2 ^ E := by rw [← pow_add, Nat.sub_add_cancel hE]
+    rw [Int.cast_mul, pow2_cast, h2]
+    field_simp
   simp only
   rw [h]
   exact ⟨le_rfl, le_rfl⟩
@@ -166,7 +166,7 @@ lemma getJ_eq (P : ℕ) (prm : TwistParams) (tabs : TwistTables) (piI sI : Ival)
 theorem twistNode_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi piI)
     (hW : WatsonHyp 70) {prm : TwistParams} (hprm : ParamsOK prm) {tabs : TwistTables}
     (htab : TwistTablesOK P prm tabs) {s W : ℝ} {sI wI : Ival} {neg : Bool} {aI : Ival}
-    (hnd : NodeData P piI s sI neg aI) (hw : mem W wI)
+    (hnd : NodeData P piI s sI neg aI) (_hw : mem W wI)
     (hfac : mem (Real.exp (-s) * W) (mulI P (expNegI P 400 sI) wI))
     (hexp : expAlphaValid P prm.j sI = true)
     (hA'pos : isPos (mulI P (sqrtI P (lamI P prm.j)) aI) = true)
@@ -201,8 +201,8 @@ theorem twistNode_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi
     simpa only [zero_add] using this
   · intro q c d hq hc hd
     unfold twistNode lowGet
-    simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hq, hc, hd, ↓reduceDIte,
-      Option.getD_some]
+    dsimp only
+    rw [getD_ofFn _ hq, getD_ofFn _ hc, getD_ofFn _ hd]
     have hcd : c + d ≤ prm.Dout := by have := hprm.hlow; have := hprm.hDQ; omega
     unfold nodeLowTerm
     apply memSc_mulFx hF
@@ -276,7 +276,7 @@ theorem twistSpec_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi
       simp only [Option.some.injEq, Prod.mk.injEq] at hshift
       obtain ⟨rfl, rfl⟩ := hshift
       obtain ⟨hv0, hsign, hA⟩ := profileShiftI_sound P hP hpi hpd hs0.le hs hn hps
-      have hnd : NodeData P piI (nodeSR nd) (nodeS P nd) neg aI :=
+      have hnd : NodeData P piI (nodeSR nd) (nodeS P nd) neg' aI' :=
         ⟨hs0, hs, hv0, by rw [hsign]; rfl, hA⟩
       have hfac : mem (Real.exp (-nodeSR nd) * nodeWR nd) (mulI P (expNegI P 400 (nodeS P nd))
           (nodeW P nd)) := by
@@ -317,10 +317,8 @@ theorem twistSpecs_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.p
     obtain ⟨acc₁, h1, h2⟩ := h
     have hstep := twistSpec_sound P hP hpi hW hpd hpv hprm htab nd hacc h1
     have := ih hstep h2
-    simp only [List.map_cons, List.sum_cons]
-    convert this using 2
-    · ring
-    · funext q c d; ring
+    simp only [List.map_cons, List.sum_cons, ← add_assoc]
+    exact this
 
 /-! ### The two checks -/
 

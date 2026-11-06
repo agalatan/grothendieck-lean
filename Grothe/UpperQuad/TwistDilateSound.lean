@@ -86,23 +86,25 @@ def DilRowsOK (μ : ℝ) (e F : ℕ) (rows : Array DilRow) : Prop :=
   ∀ f, f ≤ F → ∀ m, m ≤ min e f →
     mem (dilT μ e f (pairOfMin e f m).1 (pairOfMin e f m).2) ((rows.getD f #[]).getD m zeroI)
 
-lemma pairOfMin_of_charge {e f g h : ℕ} (hge : g ≤ e) (hhf : h ≤ f) (hc : g + f = h + e) :
+lemma pairOfMin_of_charge {e f g h : ℕ} (hge : g ≤ e) (_hhf : h ≤ f) (hc : g + f = h + e) :
     pairOfMin e f (min g h) = (g, h) ∧ min g h ≤ min e f := by
   unfold pairOfMin
   split_ifs with hef
   · refine ⟨?_, by omega⟩
     have : min g h = h := by omega
-    rw [this]; ext <;> simp <;> omega
+    rw [this, Prod.mk.injEq]
+    omega
   · refine ⟨?_, by omega⟩
     have : min g h = g := by omega
-    rw [this]; ext <;> simp <;> omega
+    rw [this, Prod.mk.injEq]
+    omega
 
 lemma mem_tget {μ : ℝ} {e F : ℕ} {rows : Array DilRow} (hr : DilRowsOK μ e F rows) {f : ℕ}
     (hf : f ≤ F) (g h : ℕ) : mem (dilT μ e f g h) (tget e rows f g h) := by
   unfold tget
   by_cases hs : g ≤ e ∧ h ≤ f ∧ g + f = h + e
   · have hb : (g ≤ e && h ≤ f && g + f == h + e) = true := by simp [hs.1, hs.2.1, hs.2.2]
-    rw [if_pos hb]
+    simp only [hb, ↓reduceIte]
     obtain ⟨hp, hm⟩ := pairOfMin_of_charge hs.1 hs.2.1 hs.2.2
     have := hr f hf (min g h) hm
     rwa [hp] at this
@@ -110,16 +112,17 @@ lemma mem_tget {μ : ℝ} {e F : ℕ} {rows : Array DilRow} (hr : DilRowsOK μ e
       by_contra hb'
       simp only [Bool.not_eq_false, Bool.and_eq_true, decide_eq_true_eq, beq_iff_eq] at hb'
       exact hs ⟨hb'.1.1, hb'.1.2, hb'.2⟩
-    rw [if_neg (by simp [hb]), dilT_eq_zero μ e f g h hs]
+    simp only [hb, Bool.false_eq_true, ↓reduceIte]
+    rw [dilT_eq_zero μ e f g h hs]
     exact mem_zeroI
 
 /-- The square-root table: `sq[n] ∋ √n` for `n ≤ M`, with positive lower ends for `1 ≤ n ≤ M`. -/
-def SqOK (P : ℕ) (sq : Array Ival) (M : ℕ) : Prop :=
+def SqOK (sq : Array Ival) (M : ℕ) : Prop :=
   (∀ n, n ≤ M → mem (Real.sqrt (n : ℕ)) (sq.getD n zeroI)) ∧
     ∀ n, 1 ≤ n → n ≤ M → 0 < (sq.getD n zeroI).lo
 
 lemma sqOK_sqrtTable (P M : ℕ) (hpos : ∀ n, n < M → isPos (sqrtNatI P (n + 1)) = true) :
-    SqOK P (sqrtTable P M) M := by
+    SqOK (sqrtTable P M) M := by
   refine ⟨fun n hn => ?_, fun n h1 hn => ?_⟩
   · rw [sqrtTable_getD P M n hn]; exact mem_sqrtNatI P n
   · rw [sqrtTable_getD P M n hn]
@@ -129,13 +132,25 @@ lemma sqOK_sqrtTable (P M : ℕ) (hpos : ∀ n, n < M → isPos (sqrtNatI P (n +
 
 lemma getD_push_lt {α : Type*} (a : Array α) (x d : α) {i : ℕ} (hi : i < a.size) :
     (a.push x).getD i d = a.getD i d := by
-  simp [Array.getD_eq_getD_getElem?, Array.getElem?_push, hi.ne, hi]
+  rw [Array.getD_eq_getD_getElem?, Array.getD_eq_getD_getElem?,
+    Array.getElem?_eq_getElem (by simp; omega), Array.getElem?_eq_getElem hi, Option.getD_some,
+    Option.getD_some, Array.getElem_push_lt]
 
 lemma getD_push_size {α : Type*} (a : Array α) (x d : α) : (a.push x).getD a.size d = x := by
-  simp [Array.getD_eq_getD_getElem?, Array.getElem?_push]
+  simp [Array.getD_eq_getD_getElem?]
+
+lemma getD_push_eq {α : Type*} (a : Array α) (x d : α) {i : ℕ} (hi : i = a.size) :
+    (a.push x).getD i d = x := by
+  rw [hi]; exact getD_push_size a x d
+
+lemma getD_singleton {α : Type*} (x d : α) : (#[x] : Array α).getD 0 d = x := rfl
+
+lemma getD_ofFn {α : Type*} {n : ℕ} (f : Fin n → α) {i : ℕ} (hi : i < n) (d : α) :
+    (Array.ofFn f).getD i d = f ⟨i, hi⟩ := by
+  simp [Array.getD_eq_getD_getElem?, hi]
 
 lemma dilLevel0_spec (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : Array Ival} {D : ℕ}
-    (hsq : SqOK P sq (D + 1)) :
+    (hsq : SqOK sq (D + 1)) :
     ∀ n, n ≤ D →
       let rows := (List.range n).foldl (fun rows f =>
         rows.push #[divI P (mulI P mu (addI P (mulI P (sq.getD (f + 1) zeroI) (tget 0 rows f 0 f))
@@ -166,12 +181,10 @@ lemma dilLevel0_spec (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : Ar
       exact hok f (by omega) 0 (by omega)
     · have hfe : f = n + 1 := by omega
       subst hfe
-      rw [← hsize, getD_push_size]
-      simp only [Array.getD_eq_getD_getElem?, List.getElem?_toArray, List.getElem?_cons_zero,
-        Option.getD_some]
+      rw [getD_push_eq rows _ _ hsize.symm, getD_singleton]
       have hp : pairOfMin 0 (n + 1) 0 = (0, n + 1) := by simp [pairOfMin]
       rw [hp]
-      simp only
+      dsimp only
       rw [dilT_zero_succ]
       have hsqn := hsq.1 (n + 1) (by omega)
       have hsq1 := hsq.1 1 (by omega)
@@ -183,18 +196,18 @@ lemma dilLevel0_spec (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : Ar
       simpa [Nat.add_sub_cancel] using this
 
 lemma dilLevel0_sound (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : Array Ival} {D : ℕ}
-    (hsq : SqOK P sq (D + 1)) : DilRowsOK μ 0 D (dilLevel0 P mu sq D) :=
+    (hsq : SqOK sq (D + 1)) : DilRowsOK μ 0 D (dilLevel0 P mu sq D) :=
   (dilLevel0_spec P hmu hsq D le_rfl).2
 
 lemma dilLevelNext_sound (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : Array Ival} {D e : ℕ}
-    (hsq : SqOK P sq (D + 1)) (he : e < D) {prev : Array DilRow} (hprev : DilRowsOK μ e (D - e) prev) :
+    (hsq : SqOK sq (D + 1)) (he : e < D) {prev : Array DilRow} (hprev : DilRowsOK μ e (D - e) prev) :
     DilRowsOK μ (e + 1) (D - (e + 1)) (dilLevelNext P mu sq D e prev) := by
   intro f hf m hm
   unfold dilLevelNext
   have hf' : f < D - e := by omega
   have hm' : m < min (e + 1) f + 1 := by omega
-  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hf', hm', ↓reduceDIte,
-    Option.getD_some]
+  rw [getD_ofFn _ hf', getD_ofFn _ hm']
+  dsimp only
   set gh := pairOfMin (e + 1) f m with hgh
   rw [dilT_succ]
   have hg : gh.1 ≤ D + 1 := by
@@ -232,7 +245,42 @@ lemma mem_conv_getD (P : ℕ) {c x : ℝ} {cI : Ival} (hc : mem c cI) (rows : Ar
       simp only [Option.map_some, Option.getD_some] at hx ⊢
       exact mem_mulI P hc hx
 
-theorem dilTable_sound (P : ℕ) (hP : 1 ≤ P) {lam : ℝ} {lamI : Ival} (hlam : mem lam lamI)
+/-- The levels of the dilation table as a recursion. -/
+def levels {α : Type*} (step : α → ℕ → α) (l0 : α) : ℕ → α
+  | 0 => l0
+  | e + 1 => step (levels step l0 e) e
+
+lemma foldl_levels {α β : Type*} (step : α → ℕ → α) (conv : α → β) (l0 : α) (n : ℕ) :
+    (((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
+        (l0, #[conv l0])).2.size = n + 1) ∧
+      ∀ e, e ≤ n → ∀ d, ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
+        (l0, #[conv l0])).2.getD e d = conv (levels step l0 e) := by
+  have key : ∀ n, ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
+      (l0, #[conv l0])).1 = levels step l0 n ∧
+      ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
+        (l0, #[conv l0])).2.size = n + 1 ∧
+      ∀ e, e ≤ n → ∀ d, ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
+        (l0, #[conv l0])).2.getD e d = conv (levels step l0 e) := by
+    intro n
+    induction n with
+    | zero =>
+      refine ⟨rfl, rfl, fun e he d => ?_⟩
+      have : e = 0 := by omega
+      subst this; rfl
+    | succ n ih =>
+      obtain ⟨h1, h2, h3⟩ := ih
+      rw [List.range_succ, List.foldl_append, List.foldl_cons, List.foldl_nil]
+      generalize ((List.range n).foldl _ _) = st at h1 h2 h3 ⊢
+      refine ⟨by simp [h1, levels], by simp [h2], fun e he d => ?_⟩
+      rcases Nat.lt_or_ge e (n + 1) with hlt | hge
+      · rw [getD_push_lt _ _ _ (by omega)]; exact h3 e (by omega) d
+      · have : e = n + 1 := by omega
+        subst this
+        rw [getD_push_eq _ _ _ h2.symm, h1]
+        rfl
+  exact ⟨(key n).2.1, (key n).2.2⟩
+
+theorem dilTable_sound (P : ℕ) {lam : ℝ} {lamI : Ival} (hlam : mem lam lamI)
     (hlam0 : 0 < lam) (hpos1 : 0 < lamI.lo) (hpos2 : 0 < (sqrtI P lamI).lo) (D : ℕ)
     (hsqpos : ∀ n, n < D + 2 → isPos (sqrtNatI P (n + 1)) = true) :
     DilTableOK (Real.sqrt lam)⁻¹ lam⁻¹ D (dilTable P lamI D) := by
@@ -242,55 +290,38 @@ theorem dilTable_sound (P : ℕ) (hP : 1 ≤ P) {lam : ℝ} {lamI : Ival} (hlam 
   have hinv : mem lam⁻¹ (invI P lamI) := by
     have := mem_invI P hlam hpos1
     simpa [one_div] using this
-  have hsq : SqOK P (sqrtTable P (D + 2)) (D + 1) := by
+  have hsq : SqOK (sqrtTable P (D + 2)) (D + 1) := by
     have h := sqOK_sqrtTable P (D + 2) hsqpos
     exact ⟨fun n hn => h.1 n (by omega), fun n h1 hn => h.2 n h1 (by omega)⟩
-  unfold dilTable
-  simp only
-  -- the fold invariant
-  have key : ∀ n, n ≤ D →
-      let st := (List.range n).foldl (fun (st : Array DilRow × Array (Array (Array Ival))) e =>
-          let next := dilLevelNext P (invI P (sqrtI P lamI)) (sqrtTable P (D + 2)) D e st.1
-          (next, st.2.push (next.map fun row => row.map fun t => mulI P (invI P lamI) t)))
-        (dilLevel0 P (invI P (sqrtI P lamI)) (sqrtTable P (D + 2)) D,
-          #[(dilLevel0 P (invI P (sqrtI P lamI)) (sqrtTable P (D + 2)) D).map fun row =>
-            row.map fun t => mulI P (invI P lamI) t])
-      DilRowsOK (Real.sqrt lam)⁻¹ n (D - n) st.1 ∧ st.2.size = n + 1 ∧
-        DilTableOK (Real.sqrt lam)⁻¹ lam⁻¹ n st.2 := by
-    intro n
-    induction n with
-    | zero =>
-      intro _
-      have h0 := dilLevel0_sound P hmu hsq (D := D)
-      refine ⟨by simpa using h0, rfl, fun e f m hef hm => ?_⟩
-      have he : e = 0 := by omega
-      subst he
-      simp only [Array.getD_eq_getD_getElem?, List.getElem?_toArray, List.getElem?_cons_zero,
-        Option.getD_some]
-      rw [← Array.getD_eq_getD_getElem?]
-      exact mem_conv_getD P hinv _ f m (h0 f (by omega) m hm)
-    | succ n ih =>
-      intro hn
-      obtain ⟨h1, h2, h3⟩ := ih (by omega)
-      rw [List.range_succ, List.foldl_append, List.foldl_cons, List.foldl_nil]
-      generalize ((List.range n).foldl _ _) = st at h1 h2 h3 ⊢
-      have hnext := dilLevelNext_sound P hmu hsq (by omega : n < D) h1
-      refine ⟨hnext, by simp [h2], fun e f m hef hm => ?_⟩
-      rcases Nat.lt_or_ge e (n + 1) with hlt | hge
-      · rw [getD_push_lt _ _ _ (by omega)]
-        exact h3 e f m (by omega) hm
-      · have hen : e = n + 1 := by omega
-        subst hen
-        rw [← h2, getD_push_size]
-        exact mem_conv_getD P hinv _ f m (hnext f (by omega) m hm)
+  -- the levels as a recursion
+  let mu := invI P (sqrtI P lamI)
+  let sq := sqrtTable P (D + 2)
+  let conv : Array DilRow → Array (Array Ival) := fun rows =>
+    rows.map fun row => row.map fun t => mulI P (invI P lamI) t
+  have hfold := foldl_levels (fun rows e => dilLevelNext P mu sq D e rows) conv
+    (dilLevel0 P mu sq D) D
+  have hlev : ∀ e, e ≤ D →
+      DilRowsOK (Real.sqrt lam)⁻¹ e (D - e)
+        (levels (fun rows e => dilLevelNext P mu sq D e rows) (dilLevel0 P mu sq D) e) := by
+    intro e
+    induction e with
+    | zero => intro _; exact dilLevel0_sound P hmu hsq (D := D)
+    | succ e ih =>
+      intro he
+      exact dilLevelNext_sound P hmu hsq (by omega) (ih (by omega))
   intro e f m hef hm
-  exact (key D le_rfl).2.2 e f m hef hm
+  have hdil : dilTable P lamI D = ((List.range D).foldl (fun st e =>
+      ((fun rows e => dilLevelNext P mu sq D e rows) st.1 e,
+        st.2.push (conv ((fun rows e => dilLevelNext P mu sq D e rows) st.1 e))))
+      (dilLevel0 P mu sq D, #[conv (dilLevel0 P mu sq D)])).2 := rfl
+  rw [hdil, hfold.2 e (by omega) #[]]
+  exact mem_conv_getD P hinv _ f m (hlev e (by omega) f (by omega) m hm)
 
 /-! ### The full signed triangle -/
 
-/-- The signed canonical value `σ^{g+h} Re U_{g,h}(A)` (`σ = ±1` from `neg`). -/
-def signedU (neg : Bool) (A : ℝ) (g h : ℕ) : ℝ :=
-  signOf neg ^ (g + h) * (canonicalCoefficient A (g, h)).re
+/-- The scaled signed canonical value `κ σ^{g+h} Re U_{g,h}(A)` (`σ = ±1` from `neg`). -/
+def signedU (κ : ℝ) (neg : Bool) (A : ℝ) (g h : ℕ) : ℝ :=
+  κ * (signOf neg ^ (g + h) * (canonicalCoefficient A (g, h)).re)
 
 lemma mem_reflectI (P : ℕ) (hP : 1 ≤ P) (g h : ℕ) (hg : 0 < g) :
     mem (Real.sqrt (((h + 1 : ℕ) : ℝ) / (g : ℕ))) (reflectI P g h) := by
@@ -298,13 +329,14 @@ lemma mem_reflectI (P : ℕ) (hP : 1 ≤ P) (g h : ℕ) (hg : 0 < g) :
   have := mem_ratI P hP ((h + 1 : ℕ) : ℤ) hg
   exact mem_sqrtI P (by positivity) (by simpa using this)
 
-theorem fullTriangleI_sound (P : ℕ) (hP : 1 ≤ P) {A : ℝ} {neg : Bool} {vals : Array Ival} (D : ℕ)
+theorem fullTriangleI_sound (P : ℕ) (hP : 1 ≤ P) {κ A : ℝ} {neg : Bool} {vals : Array Ival}
+    (D : ℕ)
     (hvals : ∀ i, i < (canonicalPairs D D).size →
-      mem (signOf neg ^ (((canonicalPairs D D).getD i (0, 0)).1 +
+      mem (κ * signOf neg ^ (((canonicalPairs D D).getD i (0, 0)).1 +
           ((canonicalPairs D D).getD i (0, 0)).2) *
         (canonicalCoefficient A ((canonicalPairs D D).getD i (0, 0))).re) (vals.getD i zeroI))
     (g h : ℕ) (hgh : g + h ≤ D) :
-    mem (signedU neg A g h) (ivGet (fullTriangleI P vals D) g h) := by
+    mem (signedU κ neg A g h) (ivGet (fullTriangleI P vals D) g h) := by
   unfold fullTriangleI ivGet ivOfFn
   have hg' : g < D + 1 := by omega
   have hh' : h < D + 1 - g := by omega
@@ -316,6 +348,8 @@ theorem fullTriangleI_sound (P : ℕ) (hP : 1 ≤ P) {A : ℝ} {neg : Bool} {val
     have hi := canonicalRank_lt D D g h hc (by omega) hgh
     have := hvals _ hi
     rw [hr] at this
+    unfold signedU
+    rw [← mul_assoc]
     exact this
   · have hc' : h + 1 ≤ (g - 1) + 1 := by omega
     have hr := canonicalPairs_getD_rank D D (h + 1) (g - 1) hc' (by omega) (by omega)
@@ -330,12 +364,9 @@ theorem fullTriangleI_sound (P : ℕ) (hP : 1 ≤ P) {A : ℝ} {neg : Bool} {val
     rw [hg1] at hcan
     rw [hcan, Complex.re_ofReal_mul]
     have hpar : h + 1 + (g - 1) = g + h := by omega
+    dsimp only at hm
     rw [hpar] at hm
-    have hcast : ((h + 1 : ℕ) : ℝ) / ((g : ℕ) : ℝ) = (((h + 1 : ℕ) : ℝ) / ((g - 1 + 1 : ℕ) : ℝ)) := by
-      rw [hg1]
-    rw [hcast] at hrefl hm
     convert hm using 1
-    push_cast
     ring
 
 /-! ### The dilated, unnormalised functional -/
@@ -354,17 +385,18 @@ lemma ivOfFn_size (D : ℕ) (f : ℕ → ℕ → Ival) (c : ℕ) (hc : c ≤ D) 
   unfold ivOfFn
   refine ⟨by simp; omega, fun d hd => ?_⟩
   have hc' : c < D + 1 := by omega
-  simp [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hc']
+  simp [Array.getD_eq_getD_getElem?, hc']
   omega
 
 /-- The full signed triangle at the scale `2^KDil`. -/
-lemma fullTriangleDil_sound (P : ℕ) (hP : 1 ≤ P) {A : ℝ} {neg : Bool} {vals : Array Ival} (D : ℕ)
+lemma fullTriangleDil_sound (P : ℕ) (hP : 1 ≤ P) {κ A : ℝ} {neg : Bool} {vals : Array Ival}
+    (D : ℕ)
     (hvals : ∀ i, i < (canonicalPairs D D).size →
-      mem (signOf neg ^ (((canonicalPairs D D).getD i (0, 0)).1 +
+      mem (κ * signOf neg ^ (((canonicalPairs D D).getD i (0, 0)).1 +
           ((canonicalPairs D D).getD i (0, 0)).2) *
         (canonicalCoefficient A ((canonicalPairs D D).getD i (0, 0))).re) (vals.getD i zeroI))
     (g h : ℕ) (hgh : g + h ≤ D) :
-    memSc KDil (signedU neg A g h) (twGet (fullTriangleDil P vals D) g h) := by
+    memSc KDil (signedU κ neg A g h) (twGet (fullTriangleDil P vals D) g h) := by
   unfold fullTriangleDil
   obtain ⟨h1, h2⟩ := ivOfFn_size D (fun g h => if g ≤ h + 1 then vals.getD (canonicalRank D g h) zeroI
     else mulI P (vals.getD (canonicalRank D (h + 1) (g - 1)) zeroI) (reflectI P g h)) g (by omega)
@@ -375,15 +407,15 @@ lemma fullTriangleDil_sound (P : ℕ) (hP : 1 ≤ P) {A : ℝ} {neg : Bool} {val
 
 /-- The dilated functional `K_{e,f} = Σ_m dil[e][f][m] · I_{pairOfMin e f m}` encloses
 `Σ_m λ⁻¹ T · σ^{g+h} Re U_{g,h}` at the scale `2^KDil`. -/
-lemma dilateDil_sound {μ c A : ℝ} {neg : Bool} {D : ℕ} {dil : Array (Array (Array (ℤ × ℤ)))}
+lemma dilateDil_sound {μ c κ A : ℝ} {neg : Bool} {D : ℕ} {dil : Array (Array (Array (ℤ × ℤ)))}
     (hdil : ∀ e f m, e + f ≤ D → m ≤ min e f →
       memSc KDil (c * dilT μ e f (pairOfMin e f m).1 (pairOfMin e f m).2)
         (((dil.getD e #[]).getD f #[]).getD m (0, 0)))
-    {I : TwVec} (hI : ∀ g h, g + h ≤ D → memSc KDil (signedU neg A g h) (twGet I g h))
+    {I : TwVec} (hI : ∀ g h, g + h ≤ D → memSc KDil (signedU κ neg A g h) (twGet I g h))
     (e f : ℕ) (hef : e + f ≤ D) :
     memSc KDil (∑ m ∈ Finset.range (min e f + 1),
         (c * dilT μ e f (pairOfMin e f m).1 (pairOfMin e f m).2) *
-          signedU neg A (pairOfMin e f m).1 (pairOfMin e f m).2)
+          signedU κ neg A (pairOfMin e f m).1 (pairOfMin e f m).2)
       (twGet (dilateDil dil D I) e f) := by
   unfold dilateDil
   rw [twGet_twOfFn _ _ e f hef]
@@ -414,9 +446,9 @@ at the rescaled shift `A' = A√λ` (signs `σ` by `neg`), the vector `K'` of `t
 `Kfun j s` on the degree `D`. -/
 theorem unnormalise_represents (P : ℕ) (hP : 1 ≤ P) (j : ℕ) {s : ℝ} (hs : 0 ≤ s)
     (hv : vprof s ≠ 0) {neg : Bool} (hsign : profileSign s = signOf neg) {vals : Array Ival}
-    (D : ℕ) (hD : D ≤ 502)
+    (D : ℕ) (hD : D ≤ 502) (κ : ℝ)
     (hvals : ∀ i, i < (canonicalPairs D D).size →
-      mem (signOf neg ^ (((canonicalPairs D D).getD i (0, 0)).1 +
+      mem (κ * signOf neg ^ (((canonicalPairs D D).getD i (0, 0)).1 +
           ((canonicalPairs D D).getD i (0, 0)).2) *
         (canonicalCoefficient (twistShift j s) ((canonicalPairs D D).getD i (0, 0))).re)
         (vals.getD i zeroI))
@@ -424,20 +456,26 @@ theorem unnormalise_represents (P : ℕ) (hP : 1 ≤ P) (j : ℕ) {s : ℝ} (hs 
     (hdil : ∀ e f m, e + f ≤ D → m ≤ min e f →
       memSc KDil ((lamR j)⁻¹ * dilT (twistMu j) e f (pairOfMin e f m).1 (pairOfMin e f m).2)
         (((dil.getD e #[]).getD f #[]).getD m (0, 0))) :
-    Represents (Kfun j s) D
+    Represents ((κ : ℂ) • Kfun j s) D
       (unnormaliseDil (sqrtFactDil P D) D (dilateDil dil D (fullTriangleDil P vals D))) := by
   intro e f hef
   unfold unnormaliseDil
   rw [twGet_twOfFn _ _ e f hef]
-  rw [re_Kfun_H j hs hv e f]
+  have hsm : (((κ : ℂ) • Kfun j s) (H e f)).re = κ * (Kfun j s (H e f)).re := by
+    rw [AddMonoidHom.smul_apply, smul_eq_mul, Complex.re_ofReal_mul]
+  rw [hsm, re_Kfun_H j hs hv e f]
   have hK := dilateDil_sound hdil (fun g h hgh => fullTriangleDil_sound P hP D hvals g h hgh) e f hef
   have hprod := memSc_mulPair (sqrtFactDil_sound P D hD e f hef) hK
   have hshift := memSc_shift (K := KTw) (s := 2 * KDil - KTw) (by
     rw [show KTw + (2 * KDil - KTw) = 2 * KDil by unfold KTw KDil; norm_num]
     exact hprod)
   rw [memSc_KTw] at hshift
-  convert hshift using 2
-  simp only [signedU, hsign]
+  convert hshift using 1
+  · simp only [signedU, hsign, Finset.mul_sum, Prod.mk.eta]
+    apply Finset.sum_congr rfl
+    intro m _
+    ring
+  · rfl
 
 end
 

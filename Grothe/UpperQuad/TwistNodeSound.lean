@@ -24,7 +24,8 @@ Agent-ID: claude-b9ee. Refs #41, #313.
 
 namespace Grothe.UpperQuad
 
-open GrotheQuad Grothe.UpperChaos Grothe.UpperChaos.F0ConditionalEvaluator MvPolynomial
+open GrotheQuad Grothe.UpperChaos Grothe.Upper Grothe.UpperChaos.F0ConditionalEvaluator MvPolynomial
+open Grothe.UpperChaos.ConditionalSeedNormalization
 
 noncomputable section
 
@@ -78,8 +79,9 @@ lemma dilTableDil_sound (P : ℕ) (hP : 1 ≤ P) (j D : ℕ) (hpos1 : isPos (lam
       memSc KDil ((lamR j)⁻¹ * dilT (twistMu j) e f (pairOfMin e f m).1 (pairOfMin e f m).2)
         ((((dilTableDil P (lamI P j) D).getD e #[]).getD f #[]).getD m (0, 0)) := by
   intro e f m hef hm
-  have h := dilTable_sound P hP (mem_lamI P hP j) (lamR_pos j) (lo_pos_of_isPos hpos1)
+  have h := dilTable_sound P (mem_lamI P hP j) (lamR_pos j) (lo_pos_of_isPos hpos1)
     (lo_pos_of_isPos hpos2) D hsqpos e f m hef hm
+  rw [show (Real.sqrt (lamR j))⁻¹ = twistMu j from rfl] at h
   unfold dilTableDil
   generalize (dilTable P (lamI P j) D) = T at h ⊢
   simp only [Array.getD_eq_getD_getElem?, Array.getElem?_map] at h ⊢
@@ -188,6 +190,33 @@ lemma normalise_sound (P : ℕ) {sqf : Array (Array Ival)} {D : ℕ}
   convert hq using 1
   rw [div_inv_eq_mul, mul_comm]
 
+/-- The canonical array with the seed scalar `1` encloses the signed normalised coefficients
+`σ^{c+d} U_{c,d} / S(A)` (the seed `S(A)` is applied at the end of `twistJ`). -/
+lemma mem_canonicalTriangleI_one (P : ℕ) {A : ℝ} {aI : Ival} (hA : mem A aI) (hA0 : 0 < A)
+    (sq ratios : Array Ival)
+    (hr : ∀ d, mem (OriginalPositiveMoment.ratio d (A ^ 2)) (ratios.getD d ⟨0, 1, 0⟩))
+    (D : ℕ) (hsqT : ∀ n, n ≤ D + 1 → sq.getD n zeroI = sqrtNatI P n)
+    (hsq : ∀ n, 1 ≤ n → n ≤ D → 0 < (sqrtNatI P n).lo)
+    (hden : ∀ c, c < (D + 1) / 2 → 0 < (mulI P aI (sqrtNatI P (c + 1))).lo) (dMax i : ℕ)
+    (hi : i < (canonicalPairs D dMax).size) (neg : Bool) :
+    mem (signOf neg ^ (((canonicalPairs D dMax).getD i (0, 0)).1 +
+        ((canonicalPairs D dMax).getD i (0, 0)).2) *
+        (1 * uRe A ((canonicalPairs D dMax).getD i (0, 0)).1
+          ((canonicalPairs D dMax).getD i (0, 0)).2))
+      ((canonicalTriangleI P (ofInt P 1) neg zeroI aI sq ratios D dMax).getD i zeroI) := by
+  unfold canonicalTriangleI canonicalFrom
+  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hi, ↓reduceDIte, Option.getD_some]
+  rw [← Array.getD_eq_getD_getElem?, ← Array.getD_eq_getD_getElem?]
+  have hz : isZero zeroI = true := rfl
+  simp only [actualCoefficient, hz, ↓reduceIte]
+  have hu := mem_normalizedTriangleI P hA hA0 ratios sq hr D hsqT hsq hden dMax i hi
+  exact mem_signedCoefficient P (mem_one P) hu neg _ _
+
+lemma RealHom.smul {F : CPoly →+ ℂ} (hF : RealHom F) (κ : ℝ) : RealHom ((κ : ℂ) • F) := by
+  intro x p
+  simp only [AddMonoidHom.smul_apply, smul_eq_mul, hF x p]
+  ring
+
 /-- **One node**: the kernel's `twistJ` encloses the real part of the twisted conditional
 coefficients on `c + d ≤ D_out`. -/
 theorem twistJ_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi piI) (hW : WatsonHyp 70)
@@ -227,33 +256,52 @@ theorem twistJ_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi pi
       constructor
       · simp; exact h0.le
       · simpa using h1
-  have hvals := fun i hi => mem_canonicalTriangleI P hA' hA'0 hS (sqrtTable P (Din + 1)) _ hratios
-    Din (fun n hn => sqrtTable_getD P (Din + 1) n hn)
-    (fun n hn1 hnD => lo_pos_of_isPos (by
-      have := hsq (n - 1) (by omega)
-      rwa [Nat.sub_add_cancel hn1] at this))
-    (fun c hc => lo_pos_of_isPos (hden c (by omega))) Din i hi neg
+  have hS0 := seedScalar_pos hA'0
+  have hvals : ∀ i, i < (canonicalPairs Din Din).size →
+      mem ((seedScalar (twistShift j s))⁻¹ * signOf neg ^ (((canonicalPairs Din Din).getD i (0, 0)).1 +
+          ((canonicalPairs Din Din).getD i (0, 0)).2) *
+        (canonicalCoefficient (twistShift j s) ((canonicalPairs Din Din).getD i (0, 0))).re)
+        ((canonicalTriangleI P (ofInt P 1) neg zeroI (mulI P (sqrtI P (lamI P j)) aI)
+          (sqrtTable P (Din + 1)) (ratiosI P (sqI P (mulI P (sqrtI P (lamI P j)) aI))
+            (ratioDepth Din)) Din Din).getD i zeroI) := by
+    intro i hi
+    have h := mem_canonicalTriangleI_one P hA' hA'0 (sqrtTable P (Din + 1)) _ hratios
+      Din (fun n hn => sqrtTable_getD P (Din + 1) n hn)
+      (fun n hn1 hnD => lo_pos_of_isPos (by
+        have := hsq (n - 1) (by omega)
+        rwa [Nat.sub_add_cancel hn1] at this))
+      (fun c hc => lo_pos_of_isPos (hden c (by omega))) Din i hi neg
+    convert h using 1
+    unfold uRe normalizedCoefficient
+    rw [Complex.div_ofReal_re]
+    field_simp
   -- the dilated functional
-  have hK := unnormalise_represents P hP j hs0 hnd.vprof_ne hnd.sign Din hDin hvals
+  have hK := unnormalise_represents P hP j hs0 hnd.vprof_ne hnd.sign Din hDin _ hvals
     (dil := tabs.dil) (by
       rw [hdil]
       exact dilTableDil_sound P hP j Din hl1 hl2 hsq2)
   -- the operator
   have hr : mem (Real.sqrt s) (sqrtI P sI) := mem_sqrtI P hs0 hnd.mem_s
+  rw [← hsqfDil] at hK
   have hJ' := applyQPow_sound (nodeCoefs P tabs.terms sI (sqrtI P sI)) (toTw (divN P 2 (sqrtI P sI)))
     (a := nodeA tabs.terms s) (h := Real.sqrt s / 2)
     (fun j' k hjk => mem_nodeCoefs P hP hT hnd.mem_s hr j' k hjk)
-    (memTw_toTw (mem_divN P hP (by norm_num) hr)) j prm.Dout (realHom_Kfun j s)
-    (by rw [hsqfDil]; exact hK)
+    (memTw_toTw (mem_divN P hP (by norm_num) hr)) j prm.Dout
+    ((realHom_Kfun j s).smul _) hK
   -- the normalisation and the scalar factors
-  have hea := mem_expAlphaI P hP j hs0 hnd.mem_s hexp
+  have hea := mem_mulI P (mem_expAlphaI P hP j hs0 hnd.mem_s hexp) hS
   have hcoef : (twistCoef j s (c, d)).re =
-      (-1) ^ j * (Real.exp (-(j * phaseEpsQ : ℝ) * s) *
-        (nrm c d * (mulLeft (nodeQ tabs.terms s ^ j) (Kfun j s) (H c d)).re)) := by
-    rw [twistCoef_eq_K hT j hs0 c d, Complex.re_ofReal_mul, mulLeft_apply]
-    ring
+      (-1) ^ j * ((Real.exp (-(j * phaseEpsQ : ℝ) * s) * seedScalar (twistShift j s)) *
+        (nrm c d * (mulLeft (nodeQ tabs.terms s ^ j)
+          ((((seedScalar (twistShift j s))⁻¹ : ℝ) : ℂ) • Kfun j s) (H c d)).re)) := by
+    have hSne := hS0.ne'
+    rw [twistCoef_eq_K hT j hs0 c d, Complex.re_ofReal_mul, mulLeft_apply,
+      AddMonoidHom.smul_apply, smul_eq_mul, Complex.re_ofReal_mul]
+    field_simp
   have hn := normalise_sound P (sqf := tabs.sqf) (D := prm.Dout)
-    (fun c d hcd => ⟨by rw [hsqf]; exact mem_sqrtFactTable P Din c d hDin (by omega),
+    (fun c d hcd => ⟨by
+      rw [hsqf]
+      exact mem_sqrtFactTable P Din c d hDin (by simp only [hDinDef, twistDin]; omega),
       lo_pos_of_isPos (hsqfpos c d hcd)⟩) hJ' c d hcd
   unfold twistJ
   simp only

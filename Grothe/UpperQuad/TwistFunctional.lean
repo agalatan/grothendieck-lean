@@ -29,7 +29,7 @@ Agent-ID: claude-b9ee. Refs #41, #313.
 
 namespace Grothe.UpperQuad
 
-open MeasureTheory GrotheQuad Grothe.UpperChaos Grothe.LowerAnalytic MvPolynomial Complex
+open MeasureTheory GrotheQuad Grothe.UpperChaos Grothe.Upper Grothe.LowerAnalytic MvPolynomial Complex
 open Grothe.UpperChaos.F0ConditionalEvaluator
 open scoped ComplexConjugate
 
@@ -44,7 +44,7 @@ lemma lamR_pos (j : ℕ) : 0 < lamR j := by
   unfold lamR; norm_num [phaseEpsQ]; positivity
 
 lemma lamR_eq (j : ℕ) : lamR j = ((20 + 21 * j : ℕ) : ℤ) / ((20 : ℕ) : ℝ) := by
-  unfold lamR; norm_num [phaseEpsQ]; ring
+  unfold lamR; norm_num [phaseEpsQ]; ring_nf
 
 /-- `e^{−jε|w|²} F₀(√s, w)`. -/
 def nodeWeight (j : ℕ) (s : ℝ) (w : ℂ) : ℂ :=
@@ -73,12 +73,6 @@ lemma norm_nodeWeight_le (j : ℕ) (s : ℝ) (w : ℂ) : ‖nodeWeight j s w‖ 
 lemma memLp_nodeWeight (j : ℕ) (s : ℝ) : MemLp (nodeWeight j s) 2 gaussC :=
   MemLp.of_bound (measurable_nodeWeight j s).aestronglyMeasurable 1
     (Filter.Eventually.of_forall (norm_nodeWeight_le j s))
-
-lemma ev_add' (w : ℂ) (p q : CPoly) : ev w (p + q) = ev w p + ev w q := by simp [ev]
-
-lemma ev_mul' (w : ℂ) (p q : CPoly) : ev w (p * q) = ev w p * ev w q := by simp [ev]
-
-lemma ev_pow' (w : ℂ) (p : CPoly) (n : ℕ) : ev w (p ^ n) = ev w p ^ n := by simp [ev]
 
 /-- **The node functional** `K_s(p) = ∫ conj(p(w)) e^{−α|w|²} F₀(√s, w) dγ`. -/
 def Kfun (j : ℕ) (s : ℝ) : CPoly →+ ℂ where
@@ -119,12 +113,14 @@ theorem twistCoef_eq_K {terms : Array PhaseTerm} (hT : TermsOK terms) (j : ℕ) 
   rw [hpow_node hT j hs w]
   simp only [hfun, nodeWeight, nodeQ, ev_mul', ev_pow', map_mul, map_pow, conj_ev_qPoly,
     Complex.conj_ofReal]
+  generalize Real.exp (-(j * phaseEpsQ : ℝ) * s) = A
+  generalize Real.exp (-(j * phaseEpsQ : ℝ) * ‖w‖ ^ 2) = B
+  generalize ev w (qPoly (√s / 2) (nodeA terms s)) = q
   rw [neg_pow]
   have h1 : ((-1 : ℂ) ^ j) * ((-1) ^ j) = 1 := by rw [← mul_pow]; norm_num
   push_cast
-  linear_combination (Real.exp (-(↑j * ↑phaseEpsQ) * s) * nrm c d *
-    (ev w (qPoly (√s / 2) (nodeA terms s))) ^ j * conj (ev w (H c d)) *
-    Real.exp (-(↑j * ↑phaseEpsQ) * ‖w‖ ^ 2) * F0 (↑√s, w) : ℂ) * h1
+  linear_combination (-((nrm c d : ℂ) * conj (ev w (H c d)) * (A : ℂ) * (B : ℂ) * q ^ j *
+    F0 ((Real.sqrt s : ℂ), w))) * h1
 
 /-! ### Reality of the twisted coefficient -/
 
@@ -132,7 +128,7 @@ lemma phiT_conj_snd (a : ℝ) (w : ℂ) : phiT ((a : ℂ), conj w) = -phiT ((a :
   unfold phiT
   simp only [Complex.conj_ofReal, Complex.norm_conj, Complex.mul_im, Complex.mul_re,
     Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im]
-  ring
+  ring_nf
 
 lemma F0_conj_snd (a : ℝ) (w : ℂ) : F0 ((a : ℂ), conj w) = conj (F0 ((a : ℂ), w)) := by
   unfold F0
@@ -154,11 +150,11 @@ lemma integral_conj_symm {f : ℂ → ℂ} (hf : Integrable f gaussC)
     (hconj : ∀ w, f (conj w) = conj (f w)) :
     conj (∫ w, f w ∂gaussC) = ∫ w, f w ∂gaussC := by
   have hfm : AEStronglyMeasurable f (gaussC.map (fun z : ℂ => conj z)) := by
-    rw [Q0GaussianReality.gaussC_map_conj]
+    rw [gaussC_map_conj]
     exact hf.aestronglyMeasurable
   have hmap := integral_map (μ := gaussC)
     Complex.continuous_conj.measurable.aemeasurable hfm
-  rw [Q0GaussianReality.gaussC_map_conj] at hmap
+  rw [gaussC_map_conj] at hmap
   rw [← integral_conj]
   calc
     (∫ w, conj (f w) ∂gaussC) = ∫ w, f (conj w) ∂gaussC := by
@@ -241,7 +237,8 @@ lemma F0_twist {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (j : ℕ) (w : ℂ)
   have he : (profileShift s : ℂ) + (twistMu j : ℂ) * w =
       (twistMu j : ℂ) * ((twistShift j s : ℂ) + w) := by
     unfold twistShift twistMu
-    have hl : Real.sqrt (lamR j) ≠ 0 := (Real.sqrt_pos.mpr (lamR_pos j)).ne'
+    have hl : (Real.sqrt (lamR j) : ℂ) ≠ 0 := by
+      exact_mod_cast (Real.sqrt_pos.mpr (lamR_pos j)).ne'
     push_cast
     field_simp
   rw [he, phase_pos_mul' _ hμ]
@@ -294,12 +291,12 @@ theorem Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f : �
     rw [hsm, F0_twist hs hv j w]
     have hev : ev ((twistMu j : ℂ) * ((profileSign s : ℂ) * w)) (H e f) =
         ((nrm e f)⁻¹ : ℂ) * hfun (e, f) ((twistMu j : ℂ) * ((profileSign s : ℂ) * w)) := by
+      have hn : (nrm e f : ℂ) ≠ 0 := by exact_mod_cast (nrm_pos e f).ne'
       simp only [hfun]
-      rw [← mul_assoc, ← Complex.ofReal_inv, ← Complex.ofReal_mul, inv_mul_cancel₀
-        (nrm_pos e f).ne', Complex.ofReal_one, one_mul]
+      field_simp
     rw [hev, hfun_dilate (twistMu j) e f N le_rfl, boxSum]
     simp only [hfun_profileSign, map_mul, map_sum, Complex.conj_ofReal, map_pow, Finset.mul_sum,
-      Finset.sum_mul]
+      Finset.sum_mul, map_inv₀]
     apply Finset.sum_congr rfl
     intro g _
     apply Finset.sum_congr rfl
@@ -307,23 +304,24 @@ theorem Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f : �
     push_cast
     ring
   simp_rw [hpt]
-  rw [integral_const_mul, integral_finset_sum]
-  · simp only [Complex.real_smul]
-    rw [Finset.mul_sum, Finset.mul_sum]
+  have hint : ∫ w, ∑ g ∈ Finset.range N, ∑ h ∈ Finset.range N,
+      ((dilT (twistMu j) e f g h * profileSign s ^ (g + h) : ℝ) : ℂ) *
+        (conj (hfun (g, h) w) * Grothe.Haag.ph ((twistShift j s : ℂ) + w)) ∂gaussC =
+      ∑ g ∈ Finset.range N, ∑ h ∈ Finset.range N,
+        ((dilT (twistMu j) e f g h * profileSign s ^ (g + h) : ℝ) : ℂ) *
+          canonicalCoefficient (twistShift j s) (g, h) := by
+    rw [integral_finsetSum _ (fun g _ => integrable_finsetSum _ fun h _ =>
+      (integrable_canonical _ g h).const_mul _)]
     apply Finset.sum_congr rfl
     intro g _
-    rw [integral_finset_sum]
-    · rw [Finset.mul_sum, Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro h _
-      rw [integral_const_mul]
-      unfold canonicalCoefficient
-      push_cast
-      ring
-    · intro h _
-      exact (integrable_canonical _ g h).const_mul _
-  · intro g _
-    exact integrable_finset_sum _ fun h _ => (integrable_canonical _ g h).const_mul _
+    rw [integral_finsetSum _ (fun h _ => (integrable_canonical _ g h).const_mul _)]
+    apply Finset.sum_congr rfl
+    intro h _
+    rw [integral_const_mul]
+    rfl
+  rw [integral_const_mul, hint, Complex.real_smul]
+  push_cast
+  ring
 
 /-- The real part of (8.2) in the kernel's index `m = min(g, h)`. -/
 theorem re_Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f : ℕ) :
@@ -343,7 +341,7 @@ theorem re_Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f :
     (fun g h => dilT (twistMu j) e f g h * profileSign s ^ (g + h) *
       (canonicalCoefficient (twistShift j s) (g, h)).re)
     (fun g h hgh => by simp [dilT_eq_zero _ e f g h hgh])]
-  rw [Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]
+  simp only [Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro m _
   ring

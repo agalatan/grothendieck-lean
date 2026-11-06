@@ -1,5 +1,6 @@
 import Grothe.UpperQuad.TwistSound
 import Grothe.UpperChaos.HermiteBasis
+import GrotheQuadKernel.Dilate
 
 /-!
 # The Hermite dilation identity
@@ -61,8 +62,10 @@ theorem dilT_eq_zero (μ : ℝ) (e f g h : ℕ) (hs : ¬(g ≤ e ∧ h ≤ f ∧
   | zero =>
     induction f generalizing g h with
     | zero =>
-      rw [dilT_zero_zero, if_neg]
-      omega
+      rw [dilT_zero_zero]
+      split_ifs with h0
+      · exact absurd ⟨by omega, by omega, by omega⟩ hs
+      · rfl
     | succ f ihf =>
       rw [dilT_zero_succ]
       have h1 : Real.sqrt (h : ℕ) * dilT μ 0 f g (h - 1) = 0 := by
@@ -114,19 +117,21 @@ lemma natMul_nrm_right (g h : ℕ) : (h : ℝ) * nrm g h = Real.sqrt (h : ℕ) *
   rcases Nat.eq_zero_or_pos h with rfl | hp
   · simp
   · obtain ⟨k, rfl⟩ : ∃ k, h = k + 1 := ⟨h - 1, by omega⟩
-    rw [Nat.add_sub_cancel, nrm_succ_right g k, ← mul_assoc]
-    congr 1
-    rw [← Real.mul_self_sqrt (Nat.cast_nonneg (k + 1))]
-    push_cast
+    rw [Nat.add_sub_cancel, nrm_succ_right g k, ← mul_assoc,
+      Real.mul_self_sqrt (Nat.cast_nonneg _)]
 
 lemma natMul_nrm_left (g h : ℕ) : (g : ℝ) * nrm g h = Real.sqrt (g : ℕ) * nrm (g - 1) h := by
   rcases Nat.eq_zero_or_pos g with rfl | hp
   · simp
   · obtain ⟨k, rfl⟩ : ∃ k, g = k + 1 := ⟨g - 1, by omega⟩
-    rw [Nat.add_sub_cancel, nrm_succ_left k h, ← mul_assoc]
-    congr 1
-    rw [← Real.mul_self_sqrt (Nat.cast_nonneg (k + 1))]
-    push_cast
+    rw [Nat.add_sub_cancel, nrm_succ_left k h, ← mul_assoc,
+      Real.mul_self_sqrt (Nat.cast_nonneg _)]
+
+lemma ev_add' (w : ℂ) (p q : CPoly) : ev w (p + q) = ev w p + ev w q := by simp [ev]
+
+lemma ev_mul' (w : ℂ) (p q : CPoly) : ev w (p * q) = ev w p * ev w q := by simp [ev]
+
+lemma ev_pow' (w : ℂ) (p : CPoly) (n : ℕ) : ev w (p ^ n) = ev w p ^ n := by simp [ev]
 
 lemma ev_X0_mul (w : ℂ) (P : CPoly) : ev w (X 0 * P) = w * ev w P := by
   simp [ev, zv]
@@ -143,7 +148,7 @@ theorem w_mul_hfun (g h : ℕ) (w : ℂ) :
       (Real.sqrt (h : ℕ) : ℂ) * hfun (g, h - 1) w := by
   simp only [hfun]
   have he := congrArg (ev w) (X0_mul_H g h)
-  rw [ev_X0_mul, map_add, ev_nsmul] at he
+  rw [ev_X0_mul, ev_add', ev_nsmul] at he
   calc w * ((nrm g h : ℂ) * ev w (H g h)) = (nrm g h : ℂ) * (w * ev w (H g h)) := by ring
     _ = (nrm g h : ℂ) * (ev w (H (g + 1) h) + h * ev w (H g (h - 1))) := by rw [he]
     _ = ((Real.sqrt ((g + 1 : ℕ) : ℝ) * nrm (g + 1) h : ℝ) : ℂ) * ev w (H (g + 1) h) +
@@ -157,7 +162,7 @@ theorem conj_mul_hfun (g h : ℕ) (w : ℂ) :
       (Real.sqrt (g : ℕ) : ℂ) * hfun (g - 1, h) w := by
   simp only [hfun]
   have he := congrArg (ev w) (X1_mul_H g h)
-  rw [ev_X1_mul, map_add, ev_nsmul] at he
+  rw [ev_X1_mul, ev_add', ev_nsmul] at he
   calc conj w * ((nrm g h : ℂ) * ev w (H g h)) = (nrm g h : ℂ) * (conj w * ev w (H g h)) := by ring
     _ = (nrm g h : ℂ) * (ev w (H g (h + 1)) + g * ev w (H (g - 1) h)) := by rw [he]
     _ = ((Real.sqrt ((h + 1 : ℕ) : ℝ) * nrm g (h + 1) : ℝ) : ℂ) * ev w (H g (h + 1)) +
@@ -313,6 +318,7 @@ theorem hfun_dilate (μ : ℝ) (e f N : ℕ) (hN : e + f + 2 ≤ N) (w : ℂ) :
       rw [Finset.mul_sum, Finset.sum_div]
       apply Finset.sum_congr rfl
       intro h _
+      beta_reduce
       rw [dilT_zero_succ]
       push_cast
       ring
@@ -335,6 +341,7 @@ theorem hfun_dilate (μ : ℝ) (e f N : ℕ) (hN : e + f + 2 ≤ N) (w : ℂ) :
     rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]
     apply Finset.sum_congr rfl
     intro h _
+    beta_reduce
     rw [dilT_succ]
     push_cast
     ring
@@ -369,7 +376,7 @@ theorem sum_box_eq_sum_min {M : Type*} [AddCommMonoid M] (e f N : ℕ) (hN : e +
     simp only [pairOfMin] at h12
     split_ifs at h12 <;> omega
   · intro g hg
-    simp only [Finset.coe_filter, Finset.mem_range, Set.mem_setOf_eq] at hg
+    simp only [Finset.coe_filter, Finset.mem_range, Set.mem_ofPred_eq] at hg
     simp only [Finset.coe_range, Set.mem_image, Set.mem_Iio, pairOfMin]
     by_cases hef : f ≤ e
     · exact ⟨g - (e - f), by omega, by simp [hef]; omega⟩

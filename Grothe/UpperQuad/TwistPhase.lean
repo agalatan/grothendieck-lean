@@ -25,7 +25,7 @@ Agent-ID: claude-b9ee. Refs #41, #313.
 
 namespace Grothe.UpperQuad
 
-open GrotheQuad Grothe.UpperChaos MvPolynomial Complex
+open GrotheQuad Grothe.UpperChaos Grothe.Upper MvPolynomial Complex
 open scoped ComplexConjugate
 
 noncomputable section
@@ -116,10 +116,6 @@ lemma Sphase_rows {terms : Array PhaseTerm} (hT : TermsOK terms) (U V W : ℝ) :
   intro k _
   unfold phaseRow
   congr 1
-  congr 1
-  apply List.map_congr_left
-  intro t _
-  split_ifs <;> simp [mul_assoc]
 
 /-! ### The node polynomial -/
 
@@ -134,11 +130,11 @@ lemma ev_qPoly (h : ℝ) (a : ℕ → ℕ → ℝ) (w : ℂ) :
     ev w (qPoly h a) = ((2 * h * w.im * ∑ j ∈ Finset.range 18, ∑ k ∈ Finset.range (17 - j + 1),
       a j k * (‖w‖ ^ 2) ^ j * (2 * w.re) ^ k : ℝ) : ℂ) * I := by
   have h0 : w - conj w = ((2 * w.im : ℝ) : ℂ) * I := by
-    apply Complex.ext <;> simp; ring
+    apply Complex.ext <;> simp [two_mul]
   have h1 : w * conj w = ((‖w‖ ^ 2 : ℝ) : ℂ) := by
-    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]; push_cast; ring
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
   have h2 : w + conj w = ((2 * w.re : ℝ) : ℂ) := by
-    apply Complex.ext <;> simp; ring
+    apply Complex.ext <;> simp [two_mul]
   simp only [qPoly, ev, map_mul, map_sub, map_sum, map_pow, map_add, eval_C, eval_X]
   simp only [zv, Matrix.cons_val_zero, Matrix.cons_val_one]
   rw [h0, h1, h2]
@@ -171,6 +167,7 @@ theorem I_mul_phiT_node {terms : Array PhaseTerm} (hT : TermsOK terms) {s : ℝ}
   have hre : (conj (Real.sqrt s : ℂ) * w).re = Real.sqrt s * w.re := by simp
   have hS := Sphase_rows hT s (‖w‖ ^ 2) (Real.sqrt s * w.re)
   unfold phiT
+  dsimp only
   rw [hr, him, hre, hS]
   have hexp : Real.exp (-(phaseEpsQ : ℝ) * (s + ‖w‖ ^ 2)) =
       Real.exp (-(phaseEpsQ : ℝ) * s) * Real.exp (-(phaseEpsQ : ℝ) * ‖w‖ ^ 2) := by
@@ -187,8 +184,10 @@ theorem I_mul_phiT_node {terms : Array PhaseTerm} (hT : TermsOK terms) {s : ℝ}
     unfold nodeA
     rw [show Real.sqrt s * w.re = (Real.sqrt s / 2) * (2 * w.re) by ring, mul_pow]
     ring
-  rw [hsum]
-  apply Complex.ext <;> simp <;> ring
+  rw [hsum, mul_comm I, show ∀ a b : ℝ, (a : ℂ) * ((b : ℂ) * I) = ((a * b : ℝ) : ℂ) * I from
+    fun a b => by push_cast; ring]
+  congr 2
+  ring
 
 /-- `e^{−jεs}` and `e^{−jε|w|²}`: the factors of `hpow j` at a node. -/
 theorem hpow_node {terms : Array PhaseTerm} (hT : TermsOK terms) (j : ℕ) {s : ℝ} (hs : 0 ≤ s)
@@ -226,17 +225,16 @@ lemma phaseRowCoeff_foldl (P : ℕ) (L : List PhaseTerm) (hL : ∀ t ∈ L, t.i 
     have ht := hL t List.mem_cons_self
     have hL' : ∀ t' ∈ L, t'.i ≤ 17 ∧ 0 < t'.den := fun t' h' => hL t' (List.mem_cons_of_mem t h')
     by_cases hc : t.j = j' ∧ t.k = k
-    · have hb : (t.j == j' && t.k == k) = true := by simp [hc.1, hc.2]
-      rw [if_pos hc, if_pos hb, ← add_assoc]
+    · obtain ⟨h1, h2⟩ := hc
+      simp only [h1, h2, and_self, ↓reduceIte, beq_self_eq_true, Bool.and_self]
+      rw [← add_assoc]
       apply ih hL'
-      exact mem_addI P hacc (mem_mulI P (by
-        have := mem_ratI P hP t.num ht.2
-        simpa [termVal] using this) (hs t.i ht.1))
+      exact mem_addI P hacc (mem_mulI P (mem_ratI P hP t.num ht.2) (hs t.i ht.1))
     · have hb : (t.j == j' && t.k == k) = false := by
         by_contra hb'
         simp only [Bool.not_eq_false, Bool.and_eq_true, beq_iff_eq] at hb'
         exact hc hb'
-      rw [if_neg hc, if_neg (by simp [hb]), add_zero]
+      simp only [hc, ↓reduceIte, hb, Bool.false_eq_true, zero_add]
       exact ih hL' hacc
 
 lemma mem_phaseRowCoeff (P : ℕ) (hP : 1 ≤ P) {terms : Array PhaseTerm} (hT : TermsOK terms)
@@ -254,11 +252,16 @@ lemma mem_phaseRowCoeff (P : ℕ) (hP : 1 ≤ P) {terms : Array PhaseTerm} (hT :
 theorem mem_nodeCoefs (P : ℕ) (hP : 1 ≤ P) {terms : Array PhaseTerm} (hT : TermsOK terms)
     {s : ℝ} {sI rI : Ival} (hs : mem s sI) (hr : mem (Real.sqrt s) rI) (j k : ℕ) (hjk : j + k ≤ 17) :
     memTw (nodeA terms s j k) (((nodeCoefs P terms sI rI).getD j #[]).getD k (0, 0)) := by
-  unfold nodeCoefs
   have hj : j < 18 := by omega
   have hk : k < 18 - j := by omega
-  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hj, hk, ↓reduceDIte,
-    Option.getD_some]
+  have e : ((nodeCoefs P terms sI rI).getD j #[]).getD k (0, 0) =
+      toTw (mulI P (phaseRowCoeff P terms (powTable P sI 17) j k)
+        ((powTable P (divN P 2 rI) 17).getD k zeroI)) := by
+    unfold nodeCoefs
+    dsimp only
+    simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hj, hk, ↓reduceDIte,
+      Option.getD_some]
+  rw [e]
   apply memTw_toTw
   unfold nodeA
   exact mem_mulI P (mem_phaseRowCoeff P hP hT hs j k)
