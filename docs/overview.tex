@@ -481,6 +481,38 @@ $|p'(r)|\le630M$ when all samples have absolute value at most $M\ge0$.
 axiom guards. The actual phase polynomial, sample enclosures and physical
 panel integration remain separate inputs.
 
+The generic complex growth theorem
+\lean{UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le} controls
+a degree-$N$ polynomial $P$ satisfying
+$|P(z,\bar z)|\le\exp(\varepsilon|z|^2)$ for every $z\in\mathbb C$.
+For $\varepsilon>0$, $0<\tau<1$, and complex $r,x$, it proves
+\[
+ \left|P(r+ix,r-ix)e^{-\varepsilon(r^2+x^2)}\right|^2
+ \le \frac{\exp\!\left(\frac{4\varepsilon}{1-\tau}
+       ((\Im r)^2+(\Im x)^2)\right)}{\tau^N(1-\tau)^2}.
+\]
+The proof combines a finite degree-controlled Hermite expansion, its Gaussian
+norm identity, the complex Mehler bound, and a change of Gaussian rate to
+$\varepsilon(1+\tau)/\tau$. The real-coordinate exponent cancels exactly.
+The generic theorem uses only standard axioms.
+\lean{UpperQuad.PhasePolynomialComplex} applies it to the actual phase:
+at fixed real $y$, the polynomial in $(r,x)$ has degree at most $35$ and retains
+$e^{-\varepsilon y^2}$ in its coefficients. The continuation is jointly complex
+analytic and agrees with the production phase on real slices. For every positive
+integer $j$, the bound applies directly with degree $35j$ and damping
+$j\varepsilon$, with the same $(1-\tau)^{-2}$ prefactor. Its certificate
+dependencies are the existing registered phase-cover facts.
+Integration of finite Mehler also gives
+\[
+ \|P(\sqrt L\,\cdot)\|_{L^2(\gamma)}^2
+ \le \|P\|_{L^2(\gamma)}^2
+       \frac{\tau^{-N}}{(1-\tau)(1-(2L-1)\tau)},
+ \qquad L\ge1,\quad (2L-1)\tau<1.
+\]
+\lean{UpperQuad.PolynomialDilationNorm} supplies this standard-axiom bound and
+its normalized Hermite-column specialization. Certified contour bounds and
+twisted quadrature remainders remain separate obligations.
+
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
 The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
@@ -983,7 +1015,41 @@ Using the original head and the raw Hardy tail $36748/10^{12}$ gives residual
 $0.000001783148789608230974208508254864$ and a conditional Grothendieck bound
 strictly below $1.40459988<1.4046$. The whole-error and low-band certificates
 and table agreement remain unproved inputs. This route introduces no new
-native facts and does not change the public target $1.404598149141$.
+native facts and does not change the public target $1.4046$.
+
+The relaxed variant \lean{Statement.upper\_target\_of\_relaxed\_inputs}
+uses raw low-band caps $4001/10^{12}$, $14001/10^{12}$ and
+$70001/10^{12}$, with the second and third divided by $2!$ and $3!$
+in the comparison. The whole-error radii and all other budgets stay fixed.
+Its exact rational endpoint is approximately $1.4045999579847528<1.4046$.
+This permits proposed full quadrature errors $4\cdot10^{-9}$,
+$1.4\cdot10^{-8}$ and $7\cdot10^{-8}$, with a further $10^{-12}$
+allowance for each finite-table low-band excursion. The six Gaussian
+estimates and table accuracy remain explicit inputs; the rational budget
+alone does not prove them. This variant introduces no native facts.
+
+The complex Gaussian shift route now has a formal analytic estimate. For
+$j>0$, $0<\tau<1$, and any finite family of conditional Hermite modes with
+total degree at most $D$, write $A=a+ib$ and $\varepsilon=21/20$. Then
+\[
+ \sum_i |J_i(r,A)|^2 \le
+ e^{2b^2+2|b|\sqrt{2D}}\,
+ \tau^{-35j}(1-\tau)^{-2}
+ \exp\!\left(\frac{4j\varepsilon}{1-\tau}
+              ((\operatorname{Im}r)^2+b^2)\right).
+\]
+There is no factor for the number of selected modes. The finite Hermite
+translation shifts both formal variables together. An exact real Gaussian
+change of variables identifies the coefficient with a fixed-phase integral;
+a locally uniform integrable majorant permits analytic parameter dependence
+and bounded holomorphic substitutions on closed disks. On the production
+real slice, $s\ge0$ and $v(s)\ne0$, the actual coefficient is
+$\sigma J_i(\sqrt{s},\sigma A_+(s))$, where
+$\sigma=\operatorname{sign}v(s)$ and
+$A_+(s)=\sqrt{s}/(\sqrt{1+a_Q^2}|v(s)|)$.
+Certified zero-free domains, contour bounds and quadrature-remainder
+assembly remain separate obligations. These estimates inherit the six
+existing phase-cover facts and introduce no new numerical axiom.
 
 The degree-531 canonical pair table indexes conditional Hermite node values
 by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
