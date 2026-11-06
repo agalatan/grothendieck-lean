@@ -26,29 +26,43 @@ namespace Grothe.UpperQuad.PortFacts
 
 open Grothe.UpperChaos Grothe.Upper
 
+set_option exponentiation.threshold 1100 in
 theorem j1_whole_margin :
-    (phaseMoment2Q + firstEnergyQ - comparisonGroupRadiusQ 1 ^ 2) / 2 + 1 / 10 ^ 12 ≤
+    (phaseMoment2Q + WholeCenterEnergies.firstEnergyQ - comparisonGroupRadiusQ 1 ^ 2) / 2 +
+      1 / 10 ^ 12 ≤
       (j1ThetaNum : ℚ) / 10 ^ 20 := by
-  norm_num [j1ThetaNum, phaseMoment2Q, firstEnergyQ, Fin.sum_univ_succ, firstCenterBandEnergyQ,
+  norm_num [j1ThetaNum, phaseMoment2Q, WholeCenterEnergies.firstEnergyQ, Fin.sum_univ_succ,
+    firstCenterBandEnergyQ,
+    firstCenterBandIntegerEnergy,
     comparisonGroupRadiusQ]
 
+set_option exponentiation.threshold 1100 in
 theorem j2_whole_margin :
-    (phaseMoment4Q + secondEnergyQ - (2 * comparisonGroupRadiusQ 2) ^ 2) / 2 + 5 / 10 ^ 14 ≤
+    (phaseMoment4Q + WholeCenterEnergies.secondEnergyQ - (2 * comparisonGroupRadiusQ 2) ^ 2) / 2 +
+      5 / 10 ^ 14 ≤
       (j2ThetaNum : ℚ) / 10 ^ 20 := by
-  norm_num [j2ThetaNum, phaseMoment4Q, secondEnergyQ, Fin.sum_univ_succ, secondCenterBandEnergyQ,
+  norm_num [j2ThetaNum, phaseMoment4Q, WholeCenterEnergies.secondEnergyQ, Fin.sum_univ_succ,
+    secondCenterBandEnergyQ,
+    secondCenterBandIntegerEnergy,
     comparisonGroupRadiusQ]
 
+set_option exponentiation.threshold 1100 in
 theorem j3_whole_margin :
-    (phaseMoment6Q + thirdEnergyQ - (6 * comparisonGroupRadiusQ 3) ^ 2) / 2 + 3 / 10 ^ 14 ≤
+    (phaseMoment6Q + WholeCenterEnergies.thirdEnergyQ - (6 * comparisonGroupRadiusQ 3) ^ 2) / 2 +
+      3 / 10 ^ 14 ≤
       (j3ThetaNum : ℚ) / 10 ^ 20 := by
-  norm_num [j3ThetaNum, phaseMoment6Q, thirdEnergyQ, thirdCenterEnergyQ, comparisonGroupRadiusQ]
+  norm_num [j3ThetaNum, phaseMoment6Q, WholeCenterEnergies.thirdEnergyQ, thirdCenterEnergyQ,
+    comparisonGroupRadiusQ]
 
+set_option exponentiation.threshold 1100 in
 theorem j1_low_margin : (j1Eps : ℚ) / 2 ^ 1024 ≤ (firstCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 := by
   norm_num [j1Eps, firstCapturedErrorQ]
 
+set_option exponentiation.threshold 1100 in
 theorem j2_low_margin : (j2Eps : ℚ) / 2 ^ 1024 ≤ (secondCapturedErrorQ 0 - 1 / 10 ^ 10) ^ 2 := by
   norm_num [j2Eps, secondCapturedErrorQ]
 
+set_option exponentiation.threshold 1100 in
 theorem j3_low_margin : (j3Eps : ℚ) / 2 ^ 1024 ≤ (thirdCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 := by
   norm_num [j3Eps, thirdCapturedErrorQ]
 
