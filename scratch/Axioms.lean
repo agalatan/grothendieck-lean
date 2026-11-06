@@ -13206,6 +13206,9 @@ import Grothe
 #print axioms Grothe.UpperQuad.GaussianShift.sum_twistCoef_sq_eq
 #print axioms Grothe.UpperQuad.GaussianShift.twistCoef_eq_signed_coefficient
 #print axioms Grothe.UpperQuad.GaussianShift.twistCoef_eq_signed_integral
+#print axioms Grothe.UpperQuad.HermiteRadialVector.sum_grade_product_le
+#print axioms Grothe.UpperQuad.HermiteRadialVector.sum_radial_sq_le
+#print axioms Grothe.UpperQuad.HermiteRadialVector.sum_radial_sq_le_cutoff
 #print axioms Grothe.UpperQuad.HolomorphicIntegral.aestronglyMeasurable_deriv
 #print axioms Grothe.UpperQuad.HolomorphicIntegral.analyticAt_integral_of_closedBall_bound
 #print axioms Grothe.UpperQuad.HolomorphicIntegral.analyticAt_integral_of_locally_dominated
@@ -13251,6 +13254,9 @@ import Grothe
 #print axioms Grothe.UpperQuad.PhasePolynomialComplex.phiT_real_slice
 #print axioms Grothe.UpperQuad.PhasePolynomialComplex.rCoord
 #print axioms Grothe.UpperQuad.PhasePolynomialComplex.xCoord
+#print axioms Grothe.UpperQuad.PhasePolynomialParity.Hf_neg_neg
+#print axioms Grothe.UpperQuad.PhasePolynomialParity.normalizedHf_neg_neg
+#print axioms Grothe.UpperQuad.PhasePolynomialParity.phaseComplex_neg_all
 #print axioms Grothe.UpperQuad.PolynomialDilationNorm.dilate
 #print axioms Grothe.UpperQuad.PolynomialDilationNorm.dilation_prefactor
 #print axioms Grothe.UpperQuad.PolynomialDilationNorm.dilation_rate_lt_one
