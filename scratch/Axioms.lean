@@ -12565,6 +12565,16 @@ import Grothe
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_seventy_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_eq_integral
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_le_exp
+#print axioms Grothe.UpperChaos.TaylorRootWindow.coefficient_error_nearZero_sq_le
+#print axioms Grothe.UpperChaos.TaylorRootWindow.coefficient_error_sq_le
+#print axioms Grothe.UpperChaos.TaylorRootWindow.coefficient_sub_model_eq_inner
+#print axioms Grothe.UpperChaos.TaylorRootWindow.measurableSet_nearZeroWindows
+#print axioms Grothe.UpperChaos.TaylorRootWindow.nearZeroWindows_ge_thirteen
+#print axioms Grothe.UpperChaos.TaylorRootWindow.nearZeroWindows_profile_le
+#print axioms Grothe.UpperChaos.TaylorRootWindow.nearZeroWindows_radius_le
+#print axioms Grothe.UpperChaos.TaylorRootWindow.nearZeroWindows_ratio_le
+#print axioms Grothe.UpperChaos.TaylorRootWindow.norm_residualLp_le
+#print axioms Grothe.UpperChaos.TaylorRootWindow.norm_residualLp_nearZero_le
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_projOn_smooth_source_cutoff_lt
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_source_cutoff_lt
 #print axioms Grothe.UpperChaos.ThirdArrayGrades.all_grade_sums

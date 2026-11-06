@@ -13084,6 +13084,7 @@ import Grothe.UpperChaos.Q0LegendreWeightRule64
 import Grothe.UpperChaos.Q0ListFlattenLookup
 import Grothe.UpperChaos.Q0LiteralChunkAssembly
 import Grothe.UpperChaos.Q0LiteralSourceData
+import Grothe.UpperChaos.Q0NearZeroProfileIntervals
 import Grothe.UpperChaos.Q0NearZeroSource
 import Grothe.UpperChaos.Q0NearZeroSourceCheck
 import Grothe.UpperChaos.Q0NearZeroSourceChunk00
@@ -13193,6 +13194,7 @@ import Grothe.UpperChaos.Q0NodeMassTerm
 import Grothe.UpperChaos.Q0OrdinalCoverage
 import Grothe.UpperChaos.Q0OrdinalSum
 import Grothe.UpperChaos.Q0PhaseMonomialExpansion
+import Grothe.UpperChaos.Q0ProfileRatioBound
 import Grothe.UpperChaos.Q0ProfileRectangleModel
 import Grothe.UpperChaos.Q0RadialDensity
 import Grothe.UpperChaos.Q0RawWickDefs
@@ -13457,6 +13459,8 @@ import Grothe.UpperChaos.TaylorPhase
 import Grothe.UpperChaos.TaylorQuadrature
 import Grothe.UpperChaos.TaylorRadialIntegral
 import Grothe.UpperChaos.TaylorRadialTail
+import Grothe.UpperChaos.TaylorRootWindow
+import Grothe.UpperChaos.TaylorRootWindowBounds
 import Grothe.UpperChaos.TaylorRounding
 import Grothe.UpperChaos.TaylorRoundingData
 import Grothe.UpperChaos.TaylorSecondBandNorms
