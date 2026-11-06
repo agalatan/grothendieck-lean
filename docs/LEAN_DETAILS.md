@@ -9,6 +9,21 @@ conditional rounding gives a bound below `1.404598149141`) is work in progress; 
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
+**Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
+`EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
+coefficient integrals and the full production Gauss sums is at most
+`(1.5·10⁻¹²)²`, with no analytic premise. The proof identifies the entire
+conditional-coefficient extension, bounds its finite coefficient mass off the
+real axis, combines it with a complex Mehler bound, and applies the Banach-space
+Bernstein-ellipse remainder theorem to the actual production panels.
+The interval checker certifies the plans in `data/quad-checker/ellipse-plans.txt`;
+`tools/gen_quad_ellipse_plans.py --check` verifies their Lean representation, and
+`tools/gen_quad_ellipse_facts.py` reproduces the sharded native checks and assembly.
+The canonical panel-error sum is below `1.04·10⁻¹²`; reflection gives the full
+`1.5·10⁻¹²` bound. The axiom audit is covered by the standard axioms and registered
+native facts. This closes the remainder premise in `QuadDecomp.quadHyp_of_parts`;
+the twisted source bounds and final upper-endpoint assembly are separate.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational
@@ -1689,7 +1704,6 @@ value at most `630 * M`. The module has strict standard-axiom guards. Identifyin
 the actual phase polynomial, enclosing its samples, and transporting this bound
 to the physical quadrature panels remain separate obligations.
 
-<<<<<<< HEAD
 `UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le` gives a generic
 complex growth bound for a polynomial times a Gaussian. If `P` has total degree
 at most `N` and `‖P(z, conjugate z)‖ ≤ exp(ε |z|²)` for every complex `z`, then,
@@ -1740,7 +1754,7 @@ times the conditional coefficient square sum, with no mode-count factor.
 This conversion includes the damping `exp(−r²)` and requires only `0<t<1`.
 Identifying the conditional coefficients with their analytic continuation and
 certifying the resulting contour bounds remain necessary.
-=======
+
 `UpperQuad.EvenSquareDescent.analyticOnNhd_descend` handles the square-root
 coordinate at the origin abstractly. For a complex Banach-valued function `F`
 analytic on `‖r‖ < R`, with `R > 0` and `F(−r)=F(r)` on that ball, it proves
@@ -1751,7 +1765,6 @@ removable-singularity theorem supply zero. `descend_sq` recovers `F(r)` at
 All these results use standard axioms. Applying this tool to the twisted
 integrand still requires its concrete parity and analyticity in `r`, as well
 as certified contour bounds and quadrature assembly.
->>>>>>> 4e751904dcbc80095127884725d03827fc7a0069
 
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.

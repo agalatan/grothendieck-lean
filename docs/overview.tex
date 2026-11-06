@@ -108,6 +108,14 @@ these give exact integration for polynomials of degree below $2n$ at order $n$.
 The certificates use kernel reduction and are part of the main Lean build.
 The selected numerical nodes and the analytic remainder require separate
 proofs; this algebraic result alone does not finish the upper endpoint.
+For the energy table, \texttt{EllCheck.quadRemainderHyp} now proves the covered-set
+quadrature error bound $\|G^{\mathrm c}-G_{\mathrm{full}}\|_{\ell^2}\le1.5\cdot10^{-12}$.
+The proof combines an entire conditional-coefficient extension, a finite complex
+Mehler bound and a Banach-space Bernstein-ellipse remainder theorem. Sharded
+interval checks of the committed panel plans certify a canonical error sum below
+$1.04\cdot10^{-12}$; reflection gives the full bound. Its axiom report uses the
+standard axioms and registered native facts. The twisted-source estimates and
+the final upper-endpoint assembly remain separate obligations.
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[
@@ -481,7 +489,6 @@ $|p'(r)|\le630M$ when all samples have absolute value at most $M\ge0$.
 axiom guards. The actual phase polynomial, sample enclosures and physical
 panel integration remain separate inputs.
 
-<<<<<<< HEAD
 The generic complex growth theorem
 \lean{UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le} controls
 a degree-$N$ polynomial $P$ satisfying
@@ -522,7 +529,7 @@ Its squared norm is bounded by the primary finite-Mehler factor, including
 $e^{-2\operatorname{Re}(r^2)}$, times the conditional coefficient energy,
 with no factor for the number of modes. These results use standard axioms;
 actual-source continuation and certified contour bounds are still required.
-=======
+
 \lean{UpperQuad.EvenSquareDescent.analyticOnNhd_descend} removes the origin
 square-root singularity for an even analytic complex Banach-valued function.
 If $F$ is analytic on $|r|<R$, $R>0$, and $F(-r)=F(r)$ there, then
@@ -531,7 +538,6 @@ The square map is locally invertible away from zero; continuity and the
 removable-singularity theorem handle zero. Uniform norm bounds transport
 unchanged, including on closed balls. The concrete twisted integrand's parity,
 analyticity and certified contour bounds remain separate inputs.
->>>>>>> 4e751904dcbc80095127884725d03827fc7a0069
 
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
