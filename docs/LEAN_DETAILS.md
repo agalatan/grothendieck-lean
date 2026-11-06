@@ -725,7 +725,22 @@ three independent whole-error bounds and actual frozen-response table
 accuracy. These analytic inputs remain open under task #295. The standard
 analytic cores and concrete adapters keep their explicit inherited trust
 allowances; no new native fact is introduced. The public `UpperTarget`
-`1.404598149141` is unchanged.
+threshold remains `1.4046`.
+
+`RelaxedThreeBandBudget`, `RelaxedThreeBandComparison` and
+`RelaxedThreeBandUpper` use that threshold's remaining room. The three raw
+low-band allowances are `4001/10^12`, `14001/10^12` and `70001/10^12`;
+the second and third enter the comparison divided by `2!` and `3!`.
+The whole-error radii, mass caps, energy tolerance and Hardy tail stay fixed.
+`Statement.upper_target_of_relaxed_inputs` derives the same strict public
+target from these three low-band bounds, the three original whole-error
+bounds and table accuracy. Its exact rational endpoint is approximately
+`1.4045999579847528`. The proposed full quadrature tolerances are
+`4e-9`, `1.4e-8`, `7e-8`, leaving `1e-12` per low band for finite-table
+excursions and reserving `1e-15` of each quadrature tolerance for tails and
+root gaps. The budget does not establish those quadrature estimates or the
+whole-error bounds; they remain analytic obligations under tasks #333–#335.
+No new native fact is introduced.
 
 **Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
 `ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`
