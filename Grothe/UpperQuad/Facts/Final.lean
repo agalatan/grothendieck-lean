@@ -11,6 +11,8 @@ import Grothe.UpperQuad.Facts.GradeBlock08
 import Grothe.UpperQuad.Facts.GradeBlock09
 import Grothe.UpperQuad.Facts.GradeBlock10
 import Grothe.UpperQuad.Facts.GradeBlock11
+import Grothe.UpperQuad.Facts.Budget
+import Grothe.UpperQuad.WatsonSeed
 
 /-!
 # `hclose` from the native facts
@@ -61,5 +63,14 @@ theorem hclose_of_facts
   · rw [hsum12]; exact hδ
   · exact hsmoothing
   · rw [hsum12, add_zero]; exact hbudget
+
+/-- **`hclose` from the native facts and the quadrature hypothesis alone**: the thirteen facts, the
+numeric constants of `Facts/Budget.lean`, S2 proved (`WatsonSeed.watsonHyp`), and `QuadHyp` (the
+exact Gauss–Legendre sums approximate the F0 coefficients in ℓ² within `ρ₀ = 1.55·10⁻¹²`). -/
+theorem hclose_of_facts_quad (hQuad : QuadHyp) :
+    ∑ p ∈ headIdx 501,
+      |energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp (Xfun frozenCorrectionFn)) p -
+        (energyTable p : ℝ)| ≤ (energyErrQ : ℝ) :=
+  hclose_of_blockFacts_numeric blockFacts evenCheck (Watson.watsonHyp 70) hQuad
 
 end Grothe.UpperQuad.Facts

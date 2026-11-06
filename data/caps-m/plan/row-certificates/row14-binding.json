@@ -148,7 +148,7 @@
   },
   "source_manifest_sha256": "82f05b0359d25f2bdd38154d6d14ce5e44717fe4fcda0ba655013ee655f74622",
   "tools_sha256": {
-    "scripts/caps_stamp.py": "4eb8b0bc45a54243e9353fe21d68caa29d283f064857d751f9149a9f8720b51b",
+    "scripts/caps_stamp.py": "6736b61800af4276c7cb32747865a3743a2ebf4974d2fccc57ab0f3ed35c7da8",
     "tools/gen_cap_pieces.py": "7da3ec5828b9f0457d530586c3609808c7ec4206d6ab282b015179d9b0935b11",
     "tools/gen_cap_prepared_rows.py": "69683a8220ac1e94b5db6e5a893d58417f80772cda9d7afe4a78be14a620a8d3",
     "tools/nodecaps_prepared_renderers.py": "79c9fa69f3ccf8210313b9ee941a97b20d20c3f584cfa8702f813f2b1495db94",

@@ -566,7 +566,7 @@
     },
     "data/caps-m/plan/row-certificates/row14-binding.json": {
       "path": "data/caps-m/plan/noncentre-repairs/baseline/row14-binding.json",
-      "sha256": "b05904799cc171c6461ca6c3705230cff183695866af34417b14451dfd03cffe"
+      "sha256": "adfc0586e72436de18b56f9f2800c33d5651b8398c4e63d21561d47b7319fb5a"
     },
     "data/caps-m/plan/row-certificates/row14-generation.json": {
       "path": "data/caps-m/plan/row-certificates/row14-generation.json",
@@ -602,7 +602,7 @@
     },
     "scripts/caps_stamp.py": {
       "path": "scripts/caps_stamp.py",
-      "sha256": "4eb8b0bc45a54243e9353fe21d68caa29d283f064857d751f9149a9f8720b51b"
+      "sha256": "6736b61800af4276c7cb32747865a3743a2ebf4974d2fccc57ab0f3ed35c7da8"
     },
     "tools/gen_cap_pieces.py": {
       "path": "tools/gen_cap_pieces.py",
@@ -777,7 +777,7 @@
     },
     "14": {
       "path": "data/caps-m/plan/noncentre-repairs/row14-binding.json",
-      "sha256": "bda1aa1347ba0c8c5d023e974c35b2ab8406ad9fbffe3c36936776635401ac38"
+      "sha256": "d1e56da8bcf9c443699338b2b03681ff8190ce9f869e055d66dab03625a2d14a"
     }
   }
 }
