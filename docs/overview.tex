@@ -521,6 +521,19 @@ Integration of finite Mehler also gives
 its normalized Hermite-column specialization. Certified contour bounds and
 twisted quadrature remainders remain separate obligations.
 
+The twisted conditional coefficient also has a finite entire factorization.
+For $\lambda=1+j\varepsilon$, its matrix is the normalized Hermite expansion of
+$H_{d,c}Q_r^j$ after rescaling by $\sqrt\lambda$, multiplied by
+$\lambda^{-1}e^{-j\varepsilon r^2}$. The polynomial $Q_r$ includes the factor $i$,
+and the support is $g+h\le c+d+35j$. The swapped extraction index $(h,g)$
+pairs with $U_{g,h}(\sqrt\lambda A)$. The real signed-shift integral determines
+this continuation uniquely, identifying it with the shifted Gaussian
+coefficient. Each matrix column is an actual Hermite inner-product family;
+Bessel bounds its squared norm by the production phase envelope times the
+Hermite dilation bound, with no second Jacobian. These statements provide
+the analytic finite-factorization estimate, while certified contour suprema
+and twisted quadrature remainders remain separate obligations.
+
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
 The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
