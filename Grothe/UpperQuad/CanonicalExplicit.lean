@@ -708,6 +708,151 @@ theorem sum_norm_Uext_sq_le {A : ℂ} (hr : 0 < (A ^ 2).re) (D : ℕ) :
         push_cast
         ring
 
+/-! ### The sharper per-pair bound (E5') -/
+
+/-- `C(c+d−i, d) ≤ C(c+d, d) (c/(c+d))^i` for `i ≤ c`. -/
+lemma choose_sub_le (c d : ℕ) {i : ℕ} (hi : i ≤ c) :
+    ((c + d - i).choose d : ℝ) ≤ ((c + d).choose d : ℝ) * ((c : ℝ) / (c + d)) ^ i := by
+  induction i with
+  | zero => simp
+  | succ i ih =>
+    have ih' := ih (by omega)
+    have hm : (0 : ℝ) < (c : ℝ) + d := by
+      have : (0 : ℝ) < c := by exact_mod_cast (show 0 < c by omega)
+      positivity
+    -- `C(m−i−1, d) (m − i) = C(m−i, d) (c − i)`
+    have hrat := Nat.choose_mul_succ_eq (c + d - (i + 1)) d
+    rw [show c + d - (i + 1) + 1 = c + d - i by omega,
+      show c + d - i - d = c - i by omega] at hrat
+    have hrat' : ((c + d - (i + 1)).choose d : ℝ) * ((c : ℝ) + d - i) =
+        ((c + d - i).choose d : ℝ) * ((c : ℝ) - i) := by
+      have := congrArg (fun n : ℕ => (n : ℝ)) hrat
+      push_cast [Nat.cast_sub (show i ≤ c + d by omega), Nat.cast_sub (show i ≤ c by omega)] at this
+      linarith
+    have hmi : (0 : ℝ) < (c : ℝ) + d - i := by
+      have : (i : ℝ) < c := by exact_mod_cast (show i < c by omega)
+      linarith
+    have hfrac : ((c : ℝ) - i) / ((c : ℝ) + d - i) ≤ (c : ℝ) / (c + d) := by
+      rw [div_le_div_iff₀ hmi hm]
+      have : (0 : ℝ) ≤ (i : ℝ) * d := by positivity
+      nlinarith
+    have hC0 : (0 : ℝ) ≤ ((c + d - i).choose d : ℝ) := by positivity
+    calc ((c + d - (i + 1)).choose d : ℝ)
+        = ((c + d - i).choose d : ℝ) * (((c : ℝ) - i) / ((c : ℝ) + d - i)) := by
+          field_simp; linarith
+      _ ≤ ((c + d - i).choose d : ℝ) * ((c : ℝ) / (c + d)) :=
+          mul_le_mul_of_nonneg_left hfrac hC0
+      _ ≤ ((c + d).choose d : ℝ) * ((c : ℝ) / (c + d)) ^ i * ((c : ℝ) / (c + d)) :=
+          mul_le_mul_of_nonneg_right ih' (by positivity)
+      _ = _ := by ring
+
+lemma sum_choose_pow_le (c d : ℕ) {x : ℝ} (hx : 0 ≤ x) :
+    ∑ i ∈ Finset.range (c + 1), ((d + 1).choose i : ℝ) * x ^ i ≤ (1 + x) ^ (d + 1) := by
+  have h : ∀ k, ∑ i ∈ Finset.range k, ((d + 1).choose i : ℝ) * x ^ i ≤ (1 + x) ^ (d + 1) := by
+    intro k
+    calc ∑ i ∈ Finset.range k, ((d + 1).choose i : ℝ) * x ^ i
+        ≤ ∑ i ∈ Finset.range (k + (d + 2)), ((d + 1).choose i : ℝ) * x ^ i :=
+          Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.mpr (by omega))
+            (fun _ _ _ => by positivity)
+      _ = (1 + x) ^ (d + 1) := by
+          rw [add_comm k, Finset.sum_range_add]
+          have h0 : ∑ i ∈ Finset.range k, ((d + 1).choose (d + 2 + i) : ℝ) * x ^ (d + 2 + i) = 0 :=
+            Finset.sum_eq_zero fun i _ => by rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
+          rw [h0, add_zero, add_comm 1 x, add_pow]
+          apply Finset.sum_congr rfl
+          intro i _
+          ring
+  exact h (c + 1)
+
+/-- The sharper coefficient sum: `Σ_i C(c,i) (d+1)↓i (c+d−i)! θ^{c+d−i} ≤
+θ^{c+d} c! d! C(c+d, d) (1 + c/(c+d))^{d+1}` for `θ ≥ 1`. -/
+lemma sum_coeff_theta_le (c d : ℕ) {θ : ℝ} (hθ : 1 ≤ θ) :
+    ∑ i ∈ Finset.range (c + 1), (c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) *
+        ((c + d - i).factorial : ℝ) * θ ^ (c + d - i) ≤
+      θ ^ (c + d) * ((c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) *
+        (1 + (c : ℝ) / (c + d)) ^ (d + 1)) := by
+  have hx : 0 ≤ (c : ℝ) / (c + d) := by positivity
+  calc ∑ i ∈ Finset.range (c + 1), (c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) *
+        ((c + d - i).factorial : ℝ) * θ ^ (c + d - i)
+      ≤ ∑ i ∈ Finset.range (c + 1), θ ^ (c + d) * ((c.factorial : ℝ) * d.factorial *
+          ((c + d).choose d : ℝ) * (((d + 1).choose i : ℝ) * ((c : ℝ) / (c + d)) ^ i)) := by
+        apply Finset.sum_le_sum
+        intro i hi
+        rw [Finset.mem_range] at hi
+        rw [coeff_factorial_eq c d i (by omega)]
+        have h1 : θ ^ (c + d - i) ≤ θ ^ (c + d) := pow_le_pow_right₀ hθ (by omega)
+        have h2 := choose_sub_le c d (i := i) (by omega)
+        have h0 : (0 : ℝ) ≤ (c.factorial : ℝ) * d.factorial * ((d + 1).choose i : ℝ) := by
+          positivity
+        calc (c.factorial : ℝ) * d.factorial * ((c + d - i).choose d : ℝ) * ((d + 1).choose i : ℝ) *
+              θ ^ (c + d - i)
+            ≤ (c.factorial : ℝ) * d.factorial * (((c + d).choose d : ℝ) *
+                ((c : ℝ) / (c + d)) ^ i) * ((d + 1).choose i : ℝ) * θ ^ (c + d) := by
+              gcongr
+          _ = _ := by ring
+    _ = θ ^ (c + d) * ((c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) *
+          ∑ i ∈ Finset.range (c + 1), ((d + 1).choose i : ℝ) * ((c : ℝ) / (c + d)) ^ i) := by
+        rw [Finset.mul_sum, Finset.mul_sum]
+    _ ≤ _ := by gcongr; exact sum_choose_pow_le c d hx
+
+/-- **(E5') The sharper per-pair bound**: for `Re A² > 0`, `m = c + d`, `θ = ‖A‖²/Re A²`,
+`‖U_{c,d}(A)‖ ≤ ‖A‖^{−m} θ^m √θ (m!/√(c! d!)) (1 + c/m)^{d+1}`. -/
+theorem norm_Uext_le (c d : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
+    ‖Uext c d A‖ ≤ ‖A‖⁻¹ ^ (c + d) * (‖A‖ ^ 2 / (A ^ 2).re) ^ (c + d) *
+      Real.sqrt (‖A‖ ^ 2 / (A ^ 2).re) *
+      (((c + d).factorial : ℝ) / Real.sqrt ((c.factorial : ℝ) * d.factorial)) *
+      (1 + (c : ℝ) / (c + d : ℕ)) ^ (d + 1) := by
+  have ha := norm_pos_of_re_sq_pos hr
+  have hθ : 1 ≤ ‖A‖ ^ 2 / (A ^ 2).re := by
+    rw [le_div_iff₀ hr, one_mul]; exact re_sq_le_norm_sq A
+  set θ := ‖A‖ ^ 2 / (A ^ 2).re with hθdef
+  have hpi : 0 < Real.pi := Real.pi_pos
+  have hcd : 0 < (c.factorial : ℝ) * d.factorial := by positivity
+  -- the bound of `Dcd`
+  have hD : ‖A‖ ^ (c + d) * ‖Dcd c d A‖ ≤ Real.sqrt Real.pi * Real.sqrt θ * (θ ^ (c + d) *
+      ((c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) *
+        (1 + (c : ℝ) / (c + d)) ^ (d + 1))) := by
+    calc ‖A‖ ^ (c + d) * ‖Dcd c d A‖
+        ≤ ∑ i ∈ Finset.range (c + 1), ‖A‖ ^ (c + d) * ‖term c d i A‖ := by
+          rw [Dcd_eq_sum_term, ← Finset.mul_sum]
+          exact mul_le_mul_of_nonneg_left (norm_sum_le _ _) (by positivity)
+      _ ≤ ∑ i ∈ Finset.range (c + 1), Real.sqrt Real.pi * Real.sqrt θ *
+            ((c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) * ((c + d - i).factorial : ℝ) *
+              θ ^ (c + d - i)) :=
+          Finset.sum_le_sum fun i _ => norm_term_le c d i hr
+      _ = Real.sqrt Real.pi * Real.sqrt θ * ∑ i ∈ Finset.range (c + 1),
+            (c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) * ((c + d - i).factorial : ℝ) *
+              θ ^ (c + d - i) := by rw [Finset.mul_sum]
+      _ ≤ _ := by gcongr; exact sum_coeff_theta_le c d hθ
+  -- `c! d! C(c+d, d) = (c+d)!`
+  have hcf : (c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) = (c + d).factorial := by
+    have := Nat.choose_mul_factorial_mul_factorial (n := c + d) (k := d) (by omega)
+    rw [show c + d - d = c by omega] at this
+    rw [← this]; push_cast; ring
+  have hU : ‖Uext c d A‖ = ‖Dcd c d A‖ / Real.sqrt ((c.factorial : ℝ) * d.factorial * Real.pi) := by
+    unfold Uext
+    rw [norm_div, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
+  have hsq : Real.sqrt ((c.factorial : ℝ) * d.factorial * Real.pi) =
+      Real.sqrt ((c.factorial : ℝ) * d.factorial) * Real.sqrt Real.pi :=
+    Real.sqrt_mul hcd.le _
+  have hs1 : 0 < Real.sqrt ((c.factorial : ℝ) * d.factorial) := Real.sqrt_pos.mpr hcd
+  have hs2 : 0 < Real.sqrt Real.pi := Real.sqrt_pos.mpr hpi
+  have hcast : ((c + d : ℕ) : ℝ) = (c : ℝ) + d := by push_cast; ring
+  rw [hU, hsq, hcast, div_le_iff₀ (by positivity)]
+  have hA : ‖A‖⁻¹ ^ (c + d) * ‖A‖ ^ (c + d) = 1 := by
+    rw [← mul_pow, inv_mul_cancel₀ ha.ne', one_pow]
+  have hfin : ‖Dcd c d A‖ = ‖A‖⁻¹ ^ (c + d) * (‖A‖ ^ (c + d) * ‖Dcd c d A‖) := by
+    rw [← mul_assoc, hA, one_mul]
+  rw [hfin]
+  calc ‖A‖⁻¹ ^ (c + d) * (‖A‖ ^ (c + d) * ‖Dcd c d A‖)
+      ≤ ‖A‖⁻¹ ^ (c + d) * (Real.sqrt Real.pi * Real.sqrt θ * (θ ^ (c + d) *
+          ((c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) *
+            (1 + (c : ℝ) / (c + d)) ^ (d + 1)))) :=
+        mul_le_mul_of_nonneg_left hD (by positivity)
+    _ = _ := by
+        rw [← hcf]
+        field_simp
+
 /-! ### The explicit formula of the canonical coefficients (real shifts) -/
 
 /-- On the real axis, `Φ_n` is the real integral of master's moment integrand. -/

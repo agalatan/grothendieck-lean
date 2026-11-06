@@ -13080,6 +13080,7 @@ import Grothe
 #print axioms Grothe.UpperQuad.Explicit.hasDerivAt_Dcd
 #print axioms Grothe.UpperQuad.Explicit.hasDerivAt_Phi
 #print axioms Grothe.UpperQuad.Explicit.norm_Phi_le_gamma
+#print axioms Grothe.UpperQuad.Explicit.norm_Uext_le
 #print axioms Grothe.UpperQuad.Explicit.norm_Uext_sq_le
 #print axioms Grothe.UpperQuad.Explicit.sum_norm_Uext_sq_le
 #print axioms Grothe.UpperQuad.Facts.evenCheck
