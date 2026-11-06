@@ -140,6 +140,20 @@ endpoint. Consequently,
 profile nonvanishing through each closed ellipse, boundary norm caps and
 their summed numerical remainder. These certificates and their total remain
 open inputs to the unconditional upper endpoint.
+The analytic Y adapter now bounds this actual vector from coordinate bounds
+$r^2=s$, $S_{\rm lo}\le\Re s$, $(\Re r)^2\le X$, $(\Im r)^2\le Y$ and
+$(\Im A)^2\le B^2$, where $A$ is the signed production shift. For
+$0<t,\eta<1$, $|\sigma|=1$ and $D=D_{\rm out}$, its squared bound is
+\[
+ e^{-2S_{\rm lo}}\frac{t^{-D}}{1-t^2}
+ e^{\frac{2tX}{1+t}+\frac{2tY}{1-t}}
+ \frac{\eta^{-35j}}{(1-\eta)^2}
+ e^{\frac{4j(21/20)(Y+B^2)}{1-\eta}}
+ e^{2B^2+2\sqrt{2D}\sqrt{B^2}}.
+\]
+This pointwise theorem also supplies a norm cap from a certified squared cap.
+It introduces no interval premise or new native fact; enclosure soundness and
+the complete panel sum are still needed.
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[

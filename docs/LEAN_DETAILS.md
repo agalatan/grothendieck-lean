@@ -51,6 +51,16 @@ mode-count factor. The signed continuation shift and the disk-geometry shift
 differ only by a sign, so their squared norms, imaginary squares and complex
 squares agree.
 
+`GaussianShiftEnvelope` and `TwistYEnvelope` turn these pointwise estimates into
+the explicit Y expression used by the numerical certificate. For any `r² = s`,
+the assumptions `Slo ≤ Re(s)`, `Re(r)² ≤ X`, `Im(r)² ≤ Y`, and
+`Im(shift(r))² ≤ B2`, with `t, eta ∈ (0,1)` and `|sigma| = 1`, bound the actual
+full vector by the radial Gaussian, degree-`Dout` Mehler factor, degree-`35*j`
+phase factor, and Gaussian translation factor. The adapter also converts
+a nonnegative squared cap to the norm cap required by the panel theorem.
+It has no interval-checker dependency or additional native fact; geometric
+certificate soundness and the complete accepted panel sum remain obligations.
+
 `TwistProfileSign` proves constancy of the production profile sign on any
 zero-free closed real interval. `TwistRadialPanels` fixes the sign at each
 panel's left endpoint and proves `remainder_of_descended_ellipses` from only
