@@ -2,8 +2,10 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The sole target interval is `1.401697117301 < K < 1.404598149141`.
-Both endpoints are work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
+The target interval is `1.401697117301 < K_G^ℂ < 1.4046` (`main_bounds`,
+`Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
+(`lower_target`); the upper endpoint (`UpperTarget`, threshold `1.4046`; the
+conditional rounding gives a bound below `1.404598149141`) is work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
@@ -1843,7 +1845,9 @@ manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
 
 `capRowsDone` includes every row index. `CapsRest` retains any excluded-node
-caps of the original range-checked rows; those exclusion lists are empty.
+caps of the original range-checked rows; those exclusion lists are empty
+(`capExcl_eq_nil`), so `capsRest : CapsRest` (`Grothe/MainResult.lean`) is
+proved, and with it `lower_target : LowerTarget`.
 Rows 0.84, 0.845, 0.85 and 0.855 (indices 12–15) have complete
 localized-piece and anchor assemblies for canonical CI verification. Their
 inputs retain the unchanged cap pad and exact rational grids. Row14 uses the

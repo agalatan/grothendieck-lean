@@ -9925,6 +9925,8 @@ Grothe.Research.RefinedLowerCheck.refined_cover_checked
 Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal
 Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound
 Grothe.Statement.lowerTarget_of_nodeCaps
+Grothe.Statement.lower_target
+Grothe.Statement.main_bounds
 Grothe.Statement.upper_target_of_inputs
 Grothe.Upper.BandComparison.compare
 Grothe.Upper.BandComparison.quadratic_sum_le_grouped
