@@ -13694,6 +13694,10 @@ import Grothe.UpperQuad.OmittedTotal
 import Grothe.UpperQuad.PairsSound
 import Grothe.UpperQuad.Partition
 import Grothe.UpperQuad.PiSound
+import Grothe.UpperQuad.PortFacts.Common
+import Grothe.UpperQuad.PortFacts.Margins
+import Grothe.UpperQuad.PortFacts.TablesFlags
+import Grothe.UpperQuad.PortFacts.Thresholds
 import Grothe.UpperQuad.ProfileSound
 import Grothe.UpperQuad.QuadDecomp
 import Grothe.UpperQuad.QuadRadial
