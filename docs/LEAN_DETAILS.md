@@ -1654,8 +1654,40 @@ the actual Gaussian L² norm. `FinitePolynomialMehler` applies the formal comple
 Mehler estimate. `PolynomialRescale` changes the rate to `ε(1+τ)/τ`, and
 `GaussianGrowth` and `GaussianMehlerBound` prove the norm estimate and exact
 cancellation of real-coordinate growth. These results use only standard axioms.
-The production-phase instantiation, contour enclosures, and twisted quadrature
-remainder are separate obligations; this theorem does not close `UpperTarget`.
+`PhasePolynomialComplex` instantiates this estimate for the actual production
+phase. With real `y` fixed, the polynomial has degree at most 35; its coefficients
+include `exp(−ε*y²)`. The existing checked term list supplies invariant degree
+at most 17, and the global real phase bound supplies the Gaussian growth premise.
+`phaseComplex_real` identifies the continuation with `phiT` on every real slice,
+and `analyticAt_phaseComplex` proves joint complex analyticity. For every positive
+integer `j`, `norm_phaseComplex_pow_sq_le` uses degree `35*j` and damping `j*ε`
+directly, retaining one `(1−τ)^(−2)` factor. Its numerical dependencies are only
+the existing registered phase-cover facts.
+
+`PolynomialDilationNorm` integrates finite Mehler to bound dilation on Gaussian
+L². For `L ≥ 1`, `0 < τ < 1`, and `(2*L−1)*τ < 1`, it proves
+
+```
+‖P(√L ·)‖² ≤ ‖P‖² * τ^(−N) / ((1−τ)*(1−(2*L−1)*τ)).
+```
+
+The normalized Hermite-column corollary has polynomial norm one and degree
+`p+q`. These dilation estimates use only standard axioms. Certified contour
+enclosures and the twisted quadrature remainder remain separate obligations;
+these results do not close `UpperTarget`.
+
+`PhasePolynomialParity` proves that reversing `y`, `r`, and `x` together
+preserves `phaseComplex`, and that reversing both formal Hermite arguments
+multiplies the result by `(-1)^(p+q)`. These source identities use only standard
+axioms and supply the parity factors for the origin argument.
+`HermiteRadialVector.sum_radial_sq_le_cutoff` controls the full graded vector
+with `q<Q`, `c≤q+1`, and `d≤q`. The map to primary and conditional Hermite
+indices is injective into the product of the degree triangles `p+q≤2*Q−1`.
+The squared vector norm is therefore at most the primary finite-Mehler bound
+times the conditional coefficient square sum, with no mode-count factor.
+This conversion includes the damping `exp(−r²)` and requires only `0<t<1`.
+Identifying the conditional coefficients with their analytic continuation and
+certifying the resulting contour bounds remain necessary.
 
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
