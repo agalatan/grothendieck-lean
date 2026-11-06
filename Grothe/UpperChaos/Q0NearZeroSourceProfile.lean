@@ -1,3 +1,4 @@
+import Grothe.UpperChaos.Q0NearZeroProfileIntervals
 import Grothe.UpperChaos.Q0SourceProfileRatio
 import Grothe.UpperChaos.Q0SourceExceptionGeometry
 import Grothe.UpperChaos.Q0SourcePanelOrderAll
@@ -28,43 +29,6 @@ def nearZeroPanel (p : ℕ) : Prop :=
   (102 ≤ p ∧ p ≤ 318) ∨
     (521 ≤ p ∧ p ≤ 720) ∨
       (933 ≤ p ∧ p ≤ 1118)
-
-/-- A common rational cap for the scaled physical profile on these blocks. -/
-def profileBound : ℚ := 1 / 10 ^ 10
-
-/-- The first near-zero block, using its actual source endpoints. -/
-def block0 : ProfileRootScreen.Row :=
-  ⟨(sourcePanels.get ⟨102, by decide +kernel⟩).lo,
-    (sourcePanels.get ⟨318, by decide +kernel⟩).hi, false⟩
-
-/-- The second near-zero block, using its actual source endpoints. -/
-def block1 : ProfileRootScreen.Row :=
-  ⟨(sourcePanels.get ⟨521, by decide +kernel⟩).lo,
-    (sourcePanels.get ⟨720, by decide +kernel⟩).hi, false⟩
-
-/-- The third near-zero block, using its actual source endpoints. -/
-def block2 : ProfileRootScreen.Row :=
-  ⟨(sourcePanels.get ⟨933, by decide +kernel⟩).lo,
-    (sourcePanels.get ⟨1118, by decide +kernel⟩).hi, false⟩
-
-/-- Exact centered interval arithmetic on the first near-zero block. -/
-theorem block0_checked : rowAbsOK block0 profileBound = true := by
-  decide +kernel
-
-/-- Exact centered interval arithmetic on the second near-zero block. -/
-theorem block1_checked : rowAbsOK block1 profileBound = true := by
-  decide +kernel
-
-/-- Exact centered interval arithmetic on the third near-zero block. -/
-theorem block2_checked : rowAbsOK block2 profileBound = true := by
-  decide +kernel
-
-/-- Each near-zero block starts at squared radius at least 13. -/
-theorem block_starts :
-    (13 : ℚ) ≤ (sourcePanels.get ⟨102, by decide +kernel⟩).lo ∧
-    (13 : ℚ) ≤ (sourcePanels.get ⟨521, by decide +kernel⟩).lo ∧
-    (13 : ℚ) ≤ (sourcePanels.get ⟨933, by decide +kernel⟩).lo := by
-  decide +kernel
 
 /-- Upper endpoints increase with actual source panel positions. -/
 theorem panel_upper_mono (i j : Fin sourcePanels.length)
