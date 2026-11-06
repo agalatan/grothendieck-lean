@@ -153,7 +153,10 @@ lemma sum_center_reindex (Q Dout : ℕ) (hDQ : Dout + 1 = 2 * Q) (F : ℕ → �
     ∑ c ∈ Finset.range (Dout + 1), ∑ d ∈ Finset.range (Dout + 1 - c),
       ∑ i ∈ Finset.range (Q - max (c - 1) d), F (max (c - 1) d + i) c d =
     ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1), F q c d := by
-  simp_rw [sum_range_sub_shift]
+  have hin : ∀ c d, ∑ i ∈ Finset.range (Q - max (c - 1) d), F (max (c - 1) d + i) c d =
+      ∑ q ∈ Finset.range Q, if max (c - 1) d ≤ q then F q c d else 0 :=
+    fun c d => sum_range_sub_shift _ _ (fun q => F q c d)
+  simp_rw [hin]
   rw [Finset.sum_congr rfl fun c _ => Finset.sum_comm, Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro q hq
@@ -225,16 +228,13 @@ lemma inner_gradedHermite_left (N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) (F : 
   apply Finset.sum_congr rfl; intro q _
   apply Finset.sum_congr rfl; intro c _
   apply Finset.sum_congr rfl; intro d _
-  rw [inner_smul_left, Complex.conj_ratCast]
+  rw [inner_smul_left, map_ratCast]
   congr 2
-  unfold gradedHermiteCoeff gradedMode
-  have hd := d.isLt
-  simp only
-  congr 1
-  omega
+  simp only [gradedHermiteCoeff, gradedMode]
+  rw [Nat.sub_add_cancel (by have := d.isLt; omega)]
 
 lemma chargeOne_hpowL2 (j : ℕ) : ChargeOne (hpowL2 j) :=
-  chargeOne_toLp _ fun c u hc => hpow_rot2 hc j u
+  chargeOne_toLp _ fun _c u hc => hpow_rot2 hc j u
 
 /-- `Re⟨c, hpow j⟩ = Σ_i c(i) a_j(i)` for a graded center with `M ≤ Q_j`-many grades. -/
 lemma re_inner_center (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :
@@ -332,7 +332,7 @@ theorem band_le_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTable} 
   apply Real.sqrt_le_sqrt
   rw [norm_projOn_chargeOne_sub_graded_sq B (hpowL2 j) (chargeOne_hpowL2 j) (qlow j) M a hdegree]
   rw [Fintype.sum_sigma]
-  simp only [Fintype.sum_prod_type, hB, ↓reduceIte]
+  simp only [Fintype.sum_prod_type, hB, ↓reduceIte, gradedIdx]
   rw [FixedChaosSmoothing.sum_bounded_graded_eq_range (qlow j)
     (fun q c d => ‖⟪hvec2 (gradedMode q c d), hpowL2 j⟫_ℂ -
       (if q < M then (a q c d : ℂ) else 0)‖ ^ 2)]

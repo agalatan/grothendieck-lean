@@ -38,25 +38,19 @@ theorem twist_j3_whole_margin :
       (j3ThetaNum : ℚ) / 10 ^ 20 := by
   norm_num [j3ThetaNum, phaseMoment6Q, thirdEnergyQ, thirdCenterEnergyQ, comparisonGroupRadiusQ]
 
+set_option exponentiation.threshold 1100 in
 theorem twist_j1_low_margin :
     (j1Eps : ℚ) / 2 ^ 1024 ≤ (firstCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 := by
-  have h : (j1Eps : ℚ) / 2 ^ 1024 = 1 / 2 ^ 82 := by
-    rw [j1Eps, div_eq_div_iff (by positivity) (by positivity), one_mul]; push_cast; rw [← pow_add]
-  rw [h]
-  norm_num [firstCapturedErrorQ]
+  norm_num [j1Eps, firstCapturedErrorQ]
 
+set_option exponentiation.threshold 1100 in
 theorem twist_j2_low_margin :
     (j2Eps : ℚ) / 2 ^ 1024 ≤ (secondCapturedErrorQ 0 - 1 / 10 ^ 10) ^ 2 := by
-  have h : (j2Eps : ℚ) / 2 ^ 1024 = 1 / 2 ^ 84 := by
-    rw [j2Eps, div_eq_div_iff (by positivity) (by positivity), one_mul]; push_cast; rw [← pow_add]
-  rw [h]
-  norm_num [secondCapturedErrorQ]
+  norm_num [j2Eps, secondCapturedErrorQ]
 
+set_option exponentiation.threshold 1100 in
 theorem twist_j3_low_margin :
     (j3Eps : ℚ) / 2 ^ 1024 ≤ (thirdCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 := by
-  have h : (j3Eps : ℚ) / 2 ^ 1024 = 1 / 2 ^ 89 := by
-    rw [j3Eps, div_eq_div_iff (by positivity) (by positivity), one_mul]; push_cast; rw [← pow_add]
-  rw [h]
-  norm_num [thirdCapturedErrorQ]
+  norm_num [j3Eps, thirdCapturedErrorQ]
 
 end Grothe.UpperQuad
