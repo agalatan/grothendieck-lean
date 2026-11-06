@@ -2,8 +2,9 @@
 
 *Issues #313 (epic), #41 (task). Agent-ID: claude-b9ee (worker). Written at master `1401a7b6`,
 4–5 November 2026. Design spike: statements first (§1–§5), then a numerical prototype (§6),
-then the Lean port design (§7). Nothing here is a Lean proof; every number in §3 is quoted from
-committed data or from the inherited certificate and says where it comes from.*
+then the Lean port design (§7), then the port itself (§8, 5 November 2026: the exact design of the
+kernel extension, with a correction of §7.1). Nothing here is a Lean proof; every number in §3 is
+quoted from committed data or from the inherited certificate and says where it comes from.*
 
 ## 0. What is open
 
@@ -400,7 +401,11 @@ the loaded big droplet (8 niced shards; 40–60 min wall per power).
 The six hypotheses are statements about the Hermite coefficients `a_j(i) = ⟨hvec2 i, hpow j⟩`
 (§2.3). Three ways to certify them in Lean were weighed; the first is recommended.
 
-### 7.1 Route E (recommended): the inherited multiplier structure on the checker's `F₀` coefficients
+### 7.1 Route E (recommended in the spike; **superseded by §8.0**): the inherited multiplier structure on the checker's `F₀` coefficients
+
+*Correction (§8.0): the truncation estimate of this subsection ("≈ 10⁻²⁵") is wrong by sixteen
+orders of magnitude; the route is unusable at the needed accuracy. The port is the per-node
+operator of §8 (Route C with the checker's partition and recurrences), not this one.*
 
 `(iφ)^j F₀ = e^{−jε(U+V)} P_j(u) · F₀` with `P_j = (i D S)^j` a polynomial of degree `36j`. Expand
 `F₀ = Σ_{i'} f(i') hvec2 i'` (Parseval, `HermiteC2Basis`) and let `M_j(i, i') = ⟨hvec2 i, (iφ)^j hvec2 i'⟩`:
@@ -494,3 +499,330 @@ reuse the checker's exact conditional machinery.
 Do not start the port before milestone 4 of #304 lands (the kernel's interval layer and the raw
 vector's soundness are its prerequisites); the prototype's `a_j(i)` (coefficient files under
 `handoff/upper-closure/`) are the expected values to test the kernel against.
+
+## 8. The port (claude-b9ee worker, 5 November 2026, PR stacked on #318 and #316)
+
+*Branch `claude-b9ee/upper-closure-port`, cut from `claude-b9ee/quad-checker-bridge` (the checker,
+#318) and merged with `claude-b9ee/upper-closure-spike` (#316). Refs #41, #313.*
+
+### 8.0 Why not Route E: the truncation at degree 501 is 10⁻¹⁰, not 10⁻²⁵
+
+Route E (§7.1) writes `a_j(i) = Σ_{deg i' ≤ 501} M_j(i,i') f(i') + ⟨(iφ)^j h_i, P_{>501} F₀⟩` and
+estimated the second term from the decay of the Gaussian factor as `0.76^{(502−181−108)} ≈ 10⁻²⁵`.
+That exponent counts degrees; the dilation matrix `T_k[j,n]` (eq. (2) of
+`GAUSSIAN_POLYNOMIAL_NORM.md`) is a **binomial distribution in the radial index**, and the coupling of
+the radial index `n = 108` (degree 217, the top of `(iφ)h_i` for `deg i ≤ 181`) to `m = 250` (degree
+500) is `T_0[108, 250] = C(250,108) r^{108} (1−r)^{142} ≈ 9·10⁻³` (`r = 1/λ = 0.488`): 1.4 standard
+deviations from the mode, not small at all. The honest quantity is the Hermite tail of the smooth
+function `g = e^{−α|u|²} q(u)`, `q = P_j h_i`, and it was computed exactly (rational arithmetic, one
+radial coordinate, charge 0, `tools`-free script `tailtest.py` of this session) for
+`g(x) = e^{−1.05 x} x^{17} L_{90}(x)` in `L²(e^{−x}dx)` (radial degree 107, i.e. total degree 214):
+
+| radial cutoff `M` | 200 | 225 | 250 | 275 | 300 |
+|---|---|---|---|---|---|
+| `‖P_{>M} g‖ / ‖g‖` | 4.8·10⁻⁶ | 1.0·10⁻⁷ | **1.1·10⁻⁹** | 1.2·10⁻¹¹ | 7.3·10⁻¹⁴ |
+
+(`‖g‖ = 2.6·10¹²` for this un-normalised toy; the ratio is what matters since `‖(iφ)^j h_i‖ ≤ 1`.)
+The decay is `≈ 0.83` per radial index, i.e. `(α/λ)^{1/2}` slowed by the polynomial factor. So
+`‖P_{>501}((iφ) h_i)‖ ≈ 10⁻⁹` for the top of the first center, and with `‖P_{>501} F₀‖ = √(1 −
+0.994707²) = 0.103` (the committed raw vector's ℓ² norm; `‖F₀‖ = 1`) the truncation error of Route E
+is **≈ 10⁻¹⁰ per coefficient**, three orders above the `10⁻¹³` target of §5 (and `j = 3`, `α = 3.15`,
+decays slower still). Pushing the cutoff to degree ≈ 600 would need a new checker partition and new
+cutoffs; not an option. The deeper reason is the one §7.3 gives against monomials: `P_j` is an
+unbounded multiplier (its Hermite matrix has entries `≈ 10^{25}–10^{37}` at degree 217, since
+`|DS| ≈ e^{ε|u|²}` is only tamed by the Gaussian), and any finite truncation of `F₀` before the
+Gaussian factor is applied loses the cancellation that makes `(iφ)^j` bounded.
+
+**Route C has no such term.** Per radial node the `w`-integral is exact: the Gaussian factor is a
+*dilation* of the polynomial side (lower triangular, degree-decreasing), so the conditional
+coefficients `I_{c,d}(A√λ)` are needed only up to the finite degree `D' = D_out + 35j`, and in the
+`z`-direction the radial factors `ψ_{k,m}(s)` are evaluated pointwise at the nodes: `F₀` is never
+expanded. What remains is the Gauss–Legendre remainder of the radial integral, the same obligation
+as the checker's S6b/c, for the twisted integrands (§8.6). Everything below is Route C on the
+checker's committed partition, with its recurrences, its data binding and its proof layers reused.
+
+### 8.1 The per-node identity
+
+Fix a node `s > 0` of the partition with `r = √s`, `v = vprof s ≠ 0`, `σ = profileSign s`,
+`b = κ v`, `A = profileShift s = r/(κ|v|)`; fix the power `j ∈ {1,2,3}`, `α = jε = 21j/20`,
+`λ = 1 + α` and the **rescaled shift** `A' = A√λ`. With `U = s`, `V = |w|²`, `W = r·Re w`,
+`D = r·Im w` (`PhiProductionDefs.phiT`),
+
+```
+(iφ(r,w))^j F₀(r,w) = e^{−αs} · e^{−α|w|²} · Q_r(w)^j · ph(r + b w),
+Q_r(w) := i·r·Im(w)·Sphase(s, |w|², r·Re w) = (r/2)(w − w̄) · Sphase(s, w w̄, (r/2)(w + w̄)),
+```
+
+a polynomial in `(w, w̄)` with **real** coefficients (`i·Im w = (w − w̄)/2`), of degree `≤ 35`
+(`Sphase` has degree 17 in `(U,V,W)`; the `w`-degree of `U^i V^j W^k D` is `2j + k + 1 ≤ 35`), and
+`Q_r` is imaginary-valued, so `conj Q_r = −Q_r`. For a polynomial `p(w, w̄)` define the functional
+
+```
+K_s(p) := ∫ conj(p(w)) · e^{−α|w|²} · ph(r + b w) dγ(w)          (γ = gaussC).
+```
+
+Then the twisted conditional coefficient and its dilation are
+
+```
+J^{(j)}_{c,d}(s) := ∫ conj(h_{c,d}(w)) (iφ(r,w))^j F₀(r,w) dγ = (−1)^j e^{−αs} · K_s(Q_r^j · h_{c,d}),   (8.1)
+K_s(h_{e,f}) = λ^{−1} Σ_{(g,h)} T^λ[e,f; g,h] · σ^{g+h} · Re canonicalCoefficient(A') (g,h),              (8.2)
+```
+
+where (8.2) is `DampedMoments.integral_gaussC_tilt` (`∫ e^{−(λ−1)|w|²} F(w) dγ = λ⁻¹ ∫ F(w/√λ) dγ`,
+on master), the **dilation identity** `h_{e,f}(w/√λ) = Σ T^λ[e,f; g,h] h_{g,h}(w)` (finite: `g − h =
+e − f`, `g ≤ e`, `h ≤ f`), `ph(r + b w/√λ) = ph(A' + σ w)` (`phase_pos_mul`), and the sign rotation
+`w ↦ σ w` (`integral_rot_gaussC`, `hfun_neg`, as in `coefficient_eq_signed`). The dilation
+coefficients are defined by the recurrence that mirrors the ladders (`T[0,0; g,h] = δ`,
+`λ^{-1/2}` written `μ`):
+
+```
+T[e+1,f; g,h] = ( μ (√g T[e,f; g−1,h] + √(h+1) T[e,f; g,h+1]) − √f T[e,f−1; g,h] ) / √(e+1)
+T[0,f+1; g,h] = ( μ (√h T[0,f; g,h−1] + √(g+1) T[0,f; g+1,h]) ) / √(f+1)
+```
+
+(from `w h_{e,f} = √(e+1) h_{e+1,f} + √f h_{e,f−1}`, `w̄ h_{e,f} = √(f+1) h_{e,f+1} + √e h_{e−1,f}`,
+which are `ComplexHermite.A0/A1` plus `pderiv1_H_succ`/`pderiv0_H_succ` and `H_succ_right`); the
+closed form `T = λ^{−k/2} (−1)^{n+m} √(C(n+k,n)/C(m+k,m)) C(n,m) r^m (1−r)^{n−m}` (`k = e−f ≥ 0`,
+`n = f`, `m = h`, `r = 1/λ`) is the numerical cross-check, not the definition. The non-canonical
+coefficients `g > h + 1` come from `canonicalCoefficient_reflection` (`I_{g,h} = √((h+1)/g)
+I_{h+1,g−1}`, on master).
+
+**The operator as a functional transpose.** The kernel never forms `Q_r^j h_{c,d}`. A vector
+`K : (e,f) ↦ ℝ` on `{e + f ≤ D'}` *represents the functional* `p ↦ K_s(p)` on
+`span{h_{e,f} : e+f ≤ D'}` through `K_{e,f} = K_s(h_{e,f})`; multiplying the argument by `w`, `w̄`,
+`w w̄` or a real scalar acts on the vector by the **transposed ladders**
+
+```
+(wᵀK)_{c,d}   = √(c+1) K_{c+1,d} + √d K_{c,d−1}
+(w̄ᵀK)_{c,d}   = √(d+1) K_{c,d+1} + √c K_{c−1,d}
+((ww̄)ᵀK)_{c,d} = (c+d+1) K_{c,d} + √((c+1)(d+1)) K_{c+1,d+1} + √(cd) K_{c−1,d−1}
+```
+
+(each defined on one degree less), and `(a p + b q)ᵀ = a pᵀ + b qᵀ`. With `Sphase = Σ_t C_t U^i V^j W^k`
+(the 1,140 terms of `phaseTerms`, exactly master's definition) the node operator is
+
+```
+Q_rᵀ K = (r/2)(wᵀ − w̄ᵀ) Σ_{(i,j,k)} C_{ijk} s^i ((ww̄)ᵀ)^j ((r/2)(wᵀ + w̄ᵀ))^k K,
+J^{(j)}(s) = (−1)^j e^{−αs} (Q_rᵀ)^j K    on c + d ≤ D_out.                                        (8.3)
+```
+
+Evaluation order (Krylov in both commuting operators, nothing recomputed): for `j' = 0..17` keep
+`V_{j'} := ((ww̄)ᵀ)^{j'} K` (one `(ww̄)ᵀ` step from `V_{j'−1}`), and for `k = 0..34 − 2j'` the vectors
+`X_k := ((r/2)(wᵀ+w̄ᵀ))^k V_{j'}` (one step each), accumulating `P_{j'k}(s) · X_k` into the running
+sum, `P_{j'k}(s) := Σ_i C_{ij'k} s^i` (an interval per node, 171 of them); finally one `(r/2)(wᵀ − w̄ᵀ)`.
+Every vector is truncated to the degrees that can still reach an output (`e + f ≤ D_out + (35 − 2j' − k)`
+for `X_k`), so the intermediate sizes shrink. For `j ≥ 2` the whole of (8.3) is applied `j` times
+with `D_out` growing by 35 at each inner stage (`K` on `≤ D_out + 35j`). *Optional 2.4× speed-up
+(not in the first version):* regroup `(w+w̄)^k (w−w̄)` by angular charge, `Q_r = (r/2) Σ_{k≥1}
+(w^k − w̄^k) R_k(ww̄)` with `R_k` of degree `≤ 17` (the Laguerre–angular structure of
+`phase-laguerre.json`, derived from the monomials by `(w+w̄)^k = Σ'_κ C(k,(k−κ)/2) |w|^{k−κ}(w^κ+w̄^κ)`);
+then Horner in `wᵀ` and `w̄ᵀ` costs 36 ladder steps instead of 170. It needs one regrouping lemma;
+the monomial form needs none.
+
+**Radial assembly.** For `i = gradedMode q c d` (`c ≤ q+1`, `d ≤ q`), by the new radial reduction
+(§8.3, the `j ≥ 1` analogue of `baseGradedCoefficient_eq_radial`),
+
+```
+a_j(i) = ⟨hvec2 i, hpow j⟩ = ∫₀^∞ e^{−s} ψ_i(s) J^{(j)}_{c,d}(s) ds,
+ψ_i(s) = conj h_{q+1−c, q−d}(√s) = radialFactor (d+1−c) (q−d) s   (c ≤ d+1;  `conj_primary_laguerre`)
+       = radialFactor (c−d−1) (q+1−c) s                            (c > d+1;  `conj_ev_H_swap`),
+I_j = Re⟨c_j, hpow j⟩ = Σ_i c_j(i) a_j(i) = ∫₀^∞ e^{−s} G_j(s) ds,   G_j(s) = Σ_{c,d} V_{c,d}(s) J^{(j)}_{c,d}(s),
+V_{c,d}(s) = Σ_q c_j(q,c,d) ψ_{gradedMode q c d}(s).
+```
+
+The kernel evaluates the Gauss–Legendre sums of these over the checker's 21,577 nodes
+(`partitionSpecs`, `nodeS`, `nodeW`, `nodeShift`, the Laguerre table `lagTable`/`radialFactorI`
+for `ψ`), and the analytic remainder is the hypothesis of §8.6.
+
+### 8.2 Kernel modules (`GrotheQuadKernel/`, Mathlib-free, no `partial`, no `Task.spawn`)
+
+| module | content |
+|---|---|
+| `Phase.lean` | the phase terms `(i, j, k, num, den)` (the 1,140 monomials, a literal generated from `phaseStrs`), `nodePhaseCoeffs P s : Array (Array Ival)` = `P_{j'k}(s)` for `2j'+k ≤ 34`, the exponents `λ_j = (20 + 21j)/20`, `μ_j = λ_j^{-1/2}`, `e^{−αs}` (`expNegI` on `α s`) |
+| `Twist.lean` | the triangular vector `TwVec := Array (Array Fx)` (`[c][d]`, `c + d ≤ D`; `Fx` at the scale `2^KTw`, `KTw = 256`, products exact at `2^512` then rounded outward, as `Rotate.mulSA`), the `√n` table as `Fx`, the three transposed ladders `stepW`, `stepWbar`, `stepV` (each output degree `D − 1`/`D − 2`), `axpy`/`scale` by an `Ival` turned `Fx`, `applyQ P coeffs r s D_out K` = one application of (8.3) with the Krylov order, `applyQPow j` |
+| `Dilate.lean` | the dilation table `dilTable P μ D' : Array (Array (Array Fx))` indexed `[charge + D'][n][m]` by the recurrence of §8.1 (computed once per process; `≈ D'³/12 ≈ 8.5·10⁵` entries for `D' = 216`, `≈ 5 s`), `dilate D' tbl I` : `K_{e,f} = λ⁻¹ Σ_m T·σ^{g+h} I_{g,h}` on `e + f ≤ D'`, restricted to a charge band `[κLo, κHi)` |
+| `TwistNode.lean` | one node: `nodeShift` (reused) → `(σ, A)`; `A' = mulI (sqrtI λ) A`; the seed `seedScalarI` and the ratios `ratiosI` at `A'`; `canonicalTriangleI` at `A'` with cutoff `D'` and `dMax = D'` (all canonical pairs `c ≤ d+1`), the reflection to `c > d+1` (`reflectFx`, from `Rotate`), the signed full triangle as a `TwVec`; `dilate`; `applyQPow`; `e^{−αs}`; the node's low-band contributions `W e^{−s} ψ_i(s) J_{c,d}(s)` for `2q+1 ≤ D_low` and the node's `I`-partial `W e^{−s} Σ_{(c,d) ∈ block} V_{c,d}(s) J_{c,d}(s)` (the center coefficients are exact dyadics `m·2^{−206}`/`2^{−105}`, passed in as `Array Int`; `V_{c,d}(s)` by exact products with the `Fx` radial factors); the validity flags `twistValid` (= the checker's `nodeValid` flags at `A'` instead of `A`, plus `isPos` of `λ`'s enclosures) |
+| `TwistLoop.lean` | the accumulator `TwAcc := (Int × Int) × Array (Array (Array (Int × Int)))` (the `I`-partial at scale `2^{2 KTw}` and the low-band entries `[q][c][d]`), `twistSpec`/`twistSpecs` over `List NodeSpec` with `Option.bind` (the checker's pattern), the two final checks `iPartialOK acc Imin : Bool` (`acc.lo/2^{2KTw} ≥ Imin`, `Imin` a rational given as `(num, den)`) and `lowBandOK acc center eps : Bool` (`Σ_{i ∈ low ∩ block} excursion(acc_i, c_j(i))² ≤ eps`) |
+
+Driver (`QuadRun.lean`): `quadrun twist <j> <kLo> <kHi> <nNodes> [P]` (times the loop on the first
+`n` nodes for the charge block `[kLo, kHi)` and prints the `I`-partial, the low-band checksum and the
+widest enclosure), `quadrun twistnode <j> <ordinal> [P]` (one node: `J_{c,d}(s)` for the low band as
+decimals, for the comparison with the prototype's `Node.J`), `quadrun twistall <j> <shards>`
+(the full run in shards, results to `handoff/upper-closure/twist/`, for the validation of §8.7).
+
+### 8.3 Soundness modules (`Grothe/UpperQuad/`, Mathlib + the kernel, kernel-checked)
+
+| module | statements |
+|---|---|
+| `HermiteLadder.lean` | `X 0 * H p q = H (p+1) q + q • H p (q−1)`, `X 1 * H p q = H p (q+1) + p • H (p−1) q` (from `A0`, `A1`, `pderiv*_H_*`, `H_succ_right`), their `hfun` forms with `√`, `ww̄ hfun`; the **dilation identity** `hfun (e,f) (μ w) = Σ_{g,h} T[e,f;g,h] hfun (g,h) w` for `T` defined by the recurrence (induction on `e`, then `f`), and `T = 0` off the support |
+| `TwistPhase.lean` | `(I * phiT (r, w))^j * F0 (r, w) = e^{−αs} e^{−α|w|²} (evQ_r w)^j ph(r + bw)` with `Q_r` the `CPoly` built from `phaseTerms` (unfolding `phiT`, `Sphase`, `F0`, `basePhaseArgument`); `conjP Q_r = −Q_r` |
+| `TwistFunctional.lean` | `mem`/`memFx` semantics of a `TwVec` for a functional `K : CPoly → ℝ` (`∀ e f, e+f ≤ D → memFx (K (hfun e f)) (v[e][f])`), the step lemmas `stepW_sound : … → memFx (K (X 0 * hfun c d)) ((stepW v)[c][d])` etc., `axpy_sound`, hence `applyQ_sound : represents K on D → represents (K ∘ (Q_r ·)) on D − 35` and `applyQPow_sound` |
+| `TwistDilate.lean` | `K_s` as a functional, (8.2) from `integral_gaussC_tilt`, the dilation identity, `phase_pos_mul`, `integral_rot_gaussC`, `hfun_neg`, `canonicalCoefficient_reflection`; `dilate_sound : memFx (K_s (hfun e f)) (dilate …)[e][f]` given the triangle enclosure at `A'` (`mem_canonicalTriangleI` at `A'`, S2 at `A'²`) |
+| `TwistNodeSound.lean` | (8.1): `J_{c,d}(s) = (−1)^j e^{−αs} K_s(Q_r^j hfun c d)` (Fubini-free: pointwise identity under the integral), `node_sound : memFx (J_{c,d}(s)) (twistNode …)[c][d]` from `applyQPow_sound`, `dilate_sound`, `mem_expNegI`; the node's `I`-partial and low-band terms (`memFx2` products with `mem_radialFactorI`) |
+| `TwistRadial.lean` | the radial reduction for charge-one pairs: `⟪toLp c, toLp (hpow j)⟫ = ∫_{s>0} e^{−s} (∫ conj(c(√s,w)) hpow j (√s,w) dγ) ds` for `c = hfun2 i` and `c = gradedHermiteFn N a` (Fubini on `mu2`, `integral_rot_gaussC` for the `z`-angle as in `baseGradedCoefficient_eq_radial`, `integral_gaussC_norm_sq_complex`), hence `a_j(i)` and `I_j` as radial integrals of `ψ_i J_{c,d}` and `G_j` |
+| `TwistLoopSound.lean` | `twistSpecs_sound`: the accumulator encloses the exact Gauss sums `Σ_n W_n e^{−s_n} ψ_i(s_n) J_{c,d}(s_n)` (low band) and `Σ_n W_n e^{−s_n} Σ_{block} V J` (the `I`-partial), given a root in every bracket (`rootOf_mem_of_accepted`), `profileAgrees`, S2 at every node |
+| `TwistBridge.lean` | **consumers**: `hwhole_j` from `Σ_b Imin_b − ρ_I ≥ I_j^min` (rationals, `decide +kernel`) through `norm_hpow_sub_sq`, `norm_hpow_one/two/three_sq`, `norm_firstCenter_sq_exact` etc.; `hlow_j` from `Σ_i |a_j(i) − c_j(i)|² ≤ (√(Σ_b eps_b) + ρ_low)²` by Parseval on the band (`norm_projOn_chargeOne_sub_graded_sq`, `ChargeOne` of `toLp (hpow j)`) and Minkowski on the finite sum, then `≤ cap²` |
+| `Facts/TwistCommon.lean`, `Facts/TwistJ1Block00…`, `…J2…`, `…J3…` | `twistFact j b Imin eps : Bool` (profile flags ∧ the node loop restricted to the charge block ∧ `iPartialOK` ∧ `lowBandOK`), `twistFact_spec`, the block boundaries, and `hwhole_of_twistFacts`/`hlow_of_twistFacts`; one `native_decide` per module |
+
+Reused from master unchanged: `canonicalCoefficient`, `coefficient_eq_signed`'s ingredients,
+`canonicalCoefficient_reflection`, `integral_gaussC_tilt`, `integral_rot_gaussC`,
+`integral_gaussC_norm_sq_complex`, `conj_primary_laguerre`/`conj_ev_H_swap`, the Hermite calculus of
+`ComplexHermite`/`HermiteConjugation`, `norm_hpow_sub_sq`, the exact center energies, Parseval on
+bands, and from #318 the whole kernel (`Basic`…`Node`), `IntervalSound`, `SeedSound`, `RatioSound`,
+`PairsSound`, `ProfileSound`, `GaussSound`, `NodeSound` (node, weight, shift), `Partition`
+(`partitionSpecs`, `rootOf`, `rootOf_mem_of_accepted`).
+
+### 8.4 Error budget
+
+Per power `j`, the certified statements are `Î_j^{lo} − ρ_I ≥ I_j^min` and
+`(√(Σ_b eps_b) + ρ_low)² ≤ cap_j²`, where `Î_j` is the kernel's enclosure of the Gauss sum of `G_j`
+and `eps_b` the per-block sums of squared excursions of the low-band Gauss sums from the centers.
+
+| source | size | where it enters |
+|---|---|---|
+| interval widths of the triangle at `A'` (P = 512) | `≤ 2^{−290}` (the checker's measurement at `A`; `A' = A√λ` keeps the series/Watson regimes) | `K`, then `J` |
+| the dilation table and the fixed-point operator (`2^{−256}` per entry per step, `≤ 34j` steps, intermediate magnitudes `≤ 2^{170}` at `D' = 216`, ladder factors `≤ 652`) | `≲ 2^{−90}` absolute on `J_{c,d}(s)` in the worst case, `≈ 2^{−200}` in practice; the kernel reports the widest enclosure, to be measured | `J`, `Î_j`, the low-band enclosures |
+| the seed enclosure `J₀(A'²) ∈ seedJ0I` | an explicit hypothesis (S2 of #303 at the argument `A'²`) | every node |
+| the Gauss–Legendre remainder of the radial integrals (twisted S6b/c) | the hypotheses `ρ_I`, `ρ_low` of §8.6: `ρ_I = 10⁻¹², 5·10⁻¹⁴, 3·10⁻¹⁴`; `ρ_low = 10⁻¹¹, 10⁻¹⁰, 10⁻¹¹` | the final inequalities |
+| **margins** (prototype values, §6.3/PR #316) | `I_j − I_j^min = 7.58·10⁻¹², 3.51·10⁻¹³, 2.61·10⁻¹³`; low-band `‖a − c‖ = 7.3·10⁻¹⁷, 2.9·10⁻¹⁷, 3.8·10⁻¹⁸` against `cap = 4.0·10⁻¹¹, 3.8·10⁻¹⁰, 4.8·10⁻¹¹` | after `ρ_I`: `6.6·10⁻¹²`, `3.0·10⁻¹³`, `2.3·10⁻¹³` to spare; the low bands are not close |
+
+The prototype's evidence for the remainder hypotheses: `E φ^{2j}` by the same radial rule to
+`3·10⁻¹⁶`/`3·10⁻¹⁵`/`6·10⁻¹⁵` relative (`8·10⁻²²` absolute for `j = 1`) and `I_j` by the two routes
+to `1.7·10⁻²¹`, `7·10⁻²⁵`, `5·10⁻²⁷`; the chosen `ρ_I` are `10⁹` above that. The tolerances
+`Imin_b`, `eps_b` of the facts are fixed from a `quadrun twistall` run before the facts are
+written (as `epsBlock`/`bndBlock` were for the checker).
+
+### 8.5 Cost and sharding (estimates; the measured numbers are in §8.8)
+
+Per node and power (fixed point, `≈ 0.4 µs` per exact product-and-add as measured in the
+checker's accumulation; `N = (D'+1)(D'+2)/2 ≈ 23.7k` entries for `D' = 216`):
+
+| step | `j = 1` (`D_out = 181`, `D' = 216`) | `j = 2` (`91`, `161`) | `j = 3` (`51`, `156`) |
+|---|---|---|---|
+| seed, ratios, triangle at `A'` (floating, P = 512) | 0.4 s | 0.25 s | 0.25 s |
+| dilation (`D'³/12` products) | 0.35 s | 0.15 s | 0.15 s |
+| operator (8.3): ≈ 170 ladder steps × `N` entries × ≈ 1.5 µs + 171 `axpy` × `N` × 0.4 µs | 7 s | 2 × 2.5 s | 3 × (shrinking) ≈ 7 s |
+| radial factors, center contraction, low band | 0.3 s | 0.2 s | 0.1 s |
+| **per node** | **≈ 8 s** | **≈ 6 s** | **≈ 8 s** |
+| × 21,577 nodes | 48 CPU-h | 36 CPU-h | 48 CPU-h |
+
+Total ≈ 130 CPU-h single-fact (≈ 55 with the charge regrouping of §8.1), to be measured on big in
+step 3 before the facts are cut.
+
+**Sharding (no committed data, the checker's decision (i) of `docs/QUAD_CHECKER.md` §11.4):** by
+output angular charge `κ = c − d`. Each fact runs the full node loop (triangle and dilation of
+every node) but computes `J_{c,d}` only for `κ ∈ [κ_b, κ_{b+1})`, which needs `K` on the charges
+`[κ_b − 18j, κ_{b+1} + 18j)` (the operator shifts the charge by `≤ 18` per application): the
+overhead over a single fact is `Σ_b (w_b + 36j)/(2 D_out + 1)`. The `I`-partial and the low band
+are partitioned with the pairs, so the final theorem only adds rationals. Proposed cuts:
+`j = 1`: 8 blocks of width ≈ 45 over `κ ∈ [−181, 181]` (overhead 1.8×, ≈ 11 h each);
+`j = 2`: 4 blocks of width ≈ 46 over `[−91, 91]` (2.6×, ≈ 24 h each — or 3 blocks);
+`j = 3`: 2 blocks over `[−51, 51]` (2.1×, ≈ 50 h each) or one fact (48 h; droplet only).
+About 14 facts, ≈ 250 CPU-h in all, once, cached by CI like the cap rows and the twelve grade
+blocks. *Alternative with data:* node-range shards with committed partials — here the partials
+are small (one scalar plus 6,552/6,552/112 dyadic intervals per range: ≈ 260 KB per range, ≈ 3 MB
+per power for 12 ranges), no recomputation (≈ 130 CPU-h in all, any fact size); the final fact adds
+the tables. The user's standing preference is no intermediate data; the choice is theirs once the
+per-node time is measured.
+
+### 8.6 What stays an explicit hypothesis (analytic debt)
+
+1. **S2 at `A'²`** (the seed enclosure `J₀(x) ∈ seedJ0I`), at every node — the same unproved lemma as
+   the checker's, at the argument `λ A²` instead of `A²`.
+2. **The twisted Gauss–Legendre remainder** (new, the analogue of S6b/c for the integrands
+   `e^{−s} ψ_i(s) J^{(j)}_{c,d}(s)` and `e^{−s} G_j(s)`), stated as two hypotheses per power:
+   `|I_j − Î_j^{Gauss}| ≤ ρ_I` and `Σ_{i ∈ low} |a_j(i) − â_j^{Gauss}(i)|² ≤ ρ_low²`. The ingredients
+   of a proof are the checker's (Mehler for `ψ`, `|I_{c,d}(A)| ≤ exp((Im A)² + √(2(c+d))|Im A|)` for
+   complex `A`, the analyticity of `A(s)` away from the profile zeros) plus the explicit polynomial
+   `Q_r` and the dilation (entire in `s`); whoever discharges S6b/c for `F₀` discharges these with
+   the same tools. Route E's claim of "no new analytic obligation" was tied to its truncation
+   estimate and falls with it (§8.0).
+
+Everything else is proved: the interval layer, the seed/ratio/pair recurrences (S3, S4), the
+node and weight enclosures, the profile binding, the Hermite ladders and the dilation identity,
+the phase identity, the functional transposes, the radial reduction, the Gauss-sum accumulation,
+and the two consumers.
+
+### 8.7 Validation plan (step 3, before any proof)
+
+On big (`~/claude-b9ee-upper-port`, ≤ 8 cores, `nice -n 10`, the `ProductionRetainedEnergy`
+closure copied from `~/claude-b9ee-quad-m4/repo/.lake/build`):
+1. `quadrun twistnode j <ordinal>` at the row-227 node and at nodes near the three profile zeros,
+   against the prototype's per-node `J` (`Node.J` of `tools/upper_closure_spike.py`, float64):
+   agreement to `≈ 10⁻¹⁴` on the low band (`c + d ≤ 51`), and the Parseval check
+   `Σ_{c,d} J_{c,d}² ≤ E_w[φ^{2j}]` per node.
+2. The dilation table against the closed form (Python, exact rationals with `√` as floats) and
+   the kernel's `applyQ` against a direct float64 Hermite-matrix product at one node.
+3. `quadrun twistall j 40`: `Î_j` against the prototype's `I` (`2.5684893045809268e-6`,
+   `5.6671933554229e-10`, `1.278653939268252e-11`) to `10⁻¹²`, `5·10⁻¹⁴`, `3·10⁻¹⁴`; the assembled
+   low-band coefficients against `assemble-j{j}-checker-coeffs.npz` to `10⁻¹³`; the widest
+   enclosure and the per-node time (the inputs of §8.5 and of the tolerances `Imin_b`, `eps_b`).
+
+### 8.8 Status of the implementation (claude-b9ee worker, 5 November 2026, 06:00 Bucharest)
+
+**Kernel** (`GrotheQuadKernel/Twist, Dilate, Phase, TwistNode, TwistLoop`, driver `quadrun twistnode |
+twist | twistdump | twistshard | twistmerge`, data `data/quad-checker/phase.txt` and
+`handoff/quad-checker/center-{1,2,3}.txt` from `tools/quad_gen_phase.py`). Two changes of design against
+§8.2, both forced by measurements:
+
+* **The operator runs in the unnormalised basis `H_{c,d} = √(c! d!) h_{c,d}`.** In the normalised basis
+  the transposed ladders carry the irrational factors `√(c+1), √d, …`, so every step rounds; at the
+  fixed scale `2^256` the ladder amplification (`≤ 652` per `(ww̄)ᵀ`, `≤ 35` per `(w ± w̄)ᵀ`, up to 51
+  steps) turned the rounding `2^{−256}` into widths `2^{−21}` on `J` entries of size `2^{−22}`: the
+  Krylov vectors span a dynamic range of `2^{300}` and absolute rounding is the wrong arithmetic. In
+  the unnormalised basis the ladders are **integer** (`(wᵀK')_{c,d} = K'_{c+1,d} + d K'_{c,d−1}`,
+  `((ww̄)ᵀK')_{c,d} = K'_{c+1,d+1} + (c+d+1) K'_{c,d} + c d K'_{c−1,d−1}`), so the whole Krylov
+  computation is exact; the only roundings are the input `K'` (scale `2^KTw`, `KTw = 512`), the 171
+  node scalars, and two per application. Measured widths of `J` at node 227: `2^{−343}` (j = 1),
+  `2^{−282}` (j = 2), `2^{−187}` (j = 3).
+* **The dilation runs in fixed point at `2^KDil`, `KDil = 1024`**, not in floating intervals: the
+  dilated functional's tiny high-degree entries are multiplied by `√(e! f!) ≤ 2^{550}`, so the
+  absolute rounding must be below `2^{−1000}`; at that scale the exact products are 3× faster than the
+  interval arithmetic and the results are identical to every printed digit.
+* The Krylov loops run over `j' + k ≤ 17` (171 nonzero scalars: `Sphase` has total degree 17), not
+  `2j' + k ≤ 34` as §8.1 wrote (that bound is the `w`-degree, attained only at `j' = 17`).
+
+**Per-node cost, measured** (`quadrun twistnode j 227`, P = 512; big = one EPYC core of the big
+droplet at load ≈ 24 under `nice 10`, laptop = one Apple core):
+
+| j | triangle at A' | dilation | operator (j applications) | whole J, big | whole J, laptop | mean over the 56 sample nodes, big (before the dilation fix) |
+|---|---|---|---|---|---|---|
+| 1 | 0.5 s | 2.2 s | 15.3 s | 17.5 s | 7.5 s | 13.9 s |
+| 2 | 0.2 s | ≈ 1.0 s | 9.4 s | ≈ 11 s | ≈ 6 s | — |
+| 3 | 0.2 s | 1.0 s | 10.5 s | 11.6 s | 5.7 s | 8.3 s |
+
+Node 227 (`s = 1.51`) is among the slowest nodes (large `K'` entries); the sample means are 30 %
+lower. Full partition on big, single fact: ≈ 70 / 50 / 45 CPU-h (j = 1, 2, 3), **≈ 165 CPU-h in all**
+(≈ 85 on laptop-class cores); the operator is 85 % of it, and within the operator the 171 scalar
+products of a big-integer coefficient with an N-vector per application (not the ladder steps)
+dominate, so the charge regrouping of §8.1 saves ≈ 25 % of the operator, not 2.4×. The sharding
+overhead of output-charge blocks is as in §8.5; node ranges with the ≈ 3 MB partials have none.
+
+**Validation (§8.7), done:**
+1. Node 227, j = 3: every `J_{c,d}` (`c + d ≤ 51`) within `9.9·10⁻²⁴` of the prototype's `Node.J`
+   (all inside the enclosures, widths `≤ 6·10⁻³⁶`); the node's `I`-term `W e^{−s} Σ V J` agrees to
+   `4·10⁻¹⁶` relative; Parseval at the node `Σ J² = 2.341007·10⁻¹⁵ ≤ E_w φ⁶ = 2.341021·10⁻¹⁵`.
+2. The dilation recurrence of `Dilate.lean` against the closed form (2): max difference `≤ 2·10⁻⁵⁵`
+   over 6,391–20,336 entries (`D ≤ 60`, all three `λ_j`; `tools`-free check in 60-digit decimals).
+3. A sample of 56 nodes per power (every 500th ordinal, 227, 771, the three nodes nearest to each
+   profile zero, the last node; `quadrun twistdump`, `tools/quad_twist_sample.py` against the
+   prototype's per-node arrays on big): `|J_kernel − J_proto| ≤ 10⁻¹⁴` at 42 of 56 nodes
+   (`10⁻²⁹ … 10⁻¹⁵` absolute, i.e. float64 accuracy), and `1·10⁻¹³ … 4·10⁻¹²` at the 14 nodes with
+   `s ∈ [20.8, 25.2]` where `|J| ≈ 0.07 … 0.2`: there the **prototype** loses `≈ 10⁻¹¹` relative in the
+   phase polynomial (`S ≈ 10¹⁰` at `U ≈ 25` with cancelling terms), while the kernel's enclosures
+   have widths `≤ 2^{−105}`; the per-node `I`-terms agree to `≤ 3.3·10⁻²³` (j = 1), `7.7·10⁻²⁷`
+   (j = 2), `2.3·10⁻²⁷` (j = 3). So the kernel reproduces the prototype to the prototype's accuracy
+   everywhere, and the prototype's `I_j` (whose per-node errors sum to `≲ 10⁻¹⁸`) are a valid
+   reference for the full sums at `10⁻¹²`.
+4. The full runs (`quadrun twistshard`, 8 shards × powers 3, 2, 1 in sequence, cores 40–47 of big,
+   `nice 10`; outputs `~/claude-b9ee-upper-port/full/twist-j{j}-{i}.txt`, logs `shard-{i}.log`)
+   were launched on 5 November 05:46 Bucharest; ≈ 21 h wall. `quadrun twistmerge j 8 <dir>` then
+   gives `I_j` (to compare with `2.5684893045809268e-6`, `5.6671933554229e-10`,
+   `1.278653939268252e-11`) and the low-band comparison with the centers.
+
+**Soundness, started:** `Grothe/UpperQuad/TwistSound.lean` (built): the exact ladders `X0_mul_H`,
+`X1_mul_H`, `X0_X1_mul_H`; `Represents F D v` (a `TwVec` encloses `(F (H c d)).re`, `F : CPoly →+ ℂ`)
+and the soundness of `stepW/stepWbar/stepX/stepY/stepV` (as `mulLeft m F`), `axpy`, `twZero`,
+`roundVec`, `scaleTw`. Next: the loop lemmas (`rowLoop`, `rowsLoop`, `applyQ`, `applyQPow`), the
+phase identity, the dilation (`integral_gaussC_tilt` + the recurrence by induction), the radial
+reduction, the node and loop theorems, the consumers (§8.3).
