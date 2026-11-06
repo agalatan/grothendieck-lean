@@ -13704,6 +13704,7 @@ import Grothe.UpperQuad.GaussianGrowth
 import Grothe.UpperQuad.GaussianMehlerBound
 import Grothe.UpperQuad.GaussianShiftAnalytic
 import Grothe.UpperQuad.GaussianShiftDomination
+import Grothe.UpperQuad.GaussianShiftEnvelope
 import Grothe.UpperQuad.GaussianShiftIntegral
 import Grothe.UpperQuad.GaussianShiftMeasure
 import Grothe.UpperQuad.GaussianShiftParity
@@ -13795,5 +13796,6 @@ import Grothe.UpperQuad.TwistRadialVector
 import Grothe.UpperQuad.TwistSix
 import Grothe.UpperQuad.TwistSound
 import Grothe.UpperQuad.TwistTail
+import Grothe.UpperQuad.TwistYEnvelope
 import Grothe.UpperQuad.WatsonSeed
 import Grothe.UpperTarget
