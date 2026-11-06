@@ -221,8 +221,7 @@ lemma Cop_symm_Cop (u : L2G m) : Cop W.symm (Cop W u) = u := by
   simp only [Phi_Phi_symm]
 
 lemma Cop_Cop_symm (u : L2G m) : Cop W (Cop W.symm u) = u := by
-  have := Cop_symm_Cop W.symm u
-  simpa using this
+  simpa using Cop_symm_Cop W.symm u
 
 /-- A unitary preserving `K` together with its inverse commutes with `Π_K`. -/
 lemma starProjection_Cop (K : Submodule ℂ (L2G m)) [K.HasOrthogonalProjection]
