@@ -1,4 +1,5 @@
 import GrotheQuadKernel
+import GrotheQuadExtKernel
 
 /-!
 # `quadrun`: the batch driver of the quadrature checker (milestone 2 of issue #303)
