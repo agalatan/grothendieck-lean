@@ -13739,8 +13739,11 @@ import Grothe.UpperQuad.TwistEllipseCertificate
 import Grothe.UpperQuad.TwistEllipseCertificateSound
 import Grothe.UpperQuad.TwistEllipseCheck
 import Grothe.UpperQuad.TwistEllipseColumnSound
+import Grothe.UpperQuad.TwistEllipseDiskGeometry
 import Grothe.UpperQuad.TwistEllipseGeometry
+import Grothe.UpperQuad.TwistEllipseKSound
 import Grothe.UpperQuad.TwistEllipseMajorantSound
+import Grothe.UpperQuad.TwistEllipsePanelArithmetic
 import Grothe.UpperQuad.TwistEllipsePhaseSound
 import Grothe.UpperQuad.TwistEllipseSound
 import Grothe.UpperQuad.TwistSound
