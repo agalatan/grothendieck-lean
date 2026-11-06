@@ -70,7 +70,8 @@ theorem hwholeFirst_of_facts {bounds : List ℕ} {ts : List PartialTable}
       ℝ) ≤ ((j1ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by exact_mod_cast twist_j1_whole_margin
   push_cast at hm hI
   rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
-  exact whole_of_inner (ρI := 1 / 10 ^ 12) norm_hpow_one_sq norm_firstCenter_sq_exact norm_firstCenter_le
+  exact whole_of_inner (ρI := 1 / 10 ^ 12) norm_hpow_one_sq norm_firstCenter_sq_exact
+    norm_firstCenter_le
     (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
 
 theorem hwholeSecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
@@ -83,7 +84,8 @@ theorem hwholeSecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
     exact_mod_cast twist_j2_whole_margin
   push_cast at hm hI
   rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
-  exact whole_of_inner (ρI := 5 / 10 ^ 14) norm_hpow_two_sq norm_secondCenter_sq_exact norm_secondCenter_le
+  exact whole_of_inner (ρI := 5 / 10 ^ 14) norm_hpow_two_sq norm_secondCenter_sq_exact
+    norm_secondCenter_le
     (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
 
 theorem hwholeThird_of_facts {bounds : List ℕ} {ts : List PartialTable}
@@ -96,7 +98,8 @@ theorem hwholeThird_of_facts {bounds : List ℕ} {ts : List PartialTable}
     exact_mod_cast twist_j3_whole_margin
   push_cast at hm hI
   rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
-  exact whole_of_inner (ρI := 3 / 10 ^ 14) norm_hpow_three_sq norm_thirdCenter_sq_exact norm_thirdCenter_le
+  exact whole_of_inner (ρI := 3 / 10 ^ 14) norm_hpow_three_sq norm_thirdCenter_sq_exact
+    norm_thirdCenter_le
     (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
 
 /-! ### The low bands -/
