@@ -13705,6 +13705,7 @@ import Grothe.UpperQuad.GaussianShiftReal
 import Grothe.UpperQuad.GaussianShiftSource
 import Grothe.UpperQuad.GaussianShiftUniqueness
 import Grothe.UpperQuad.GaussianShiftVector
+import Grothe.UpperQuad.HermiteRadialVector
 import Grothe.UpperQuad.HolomorphicIntegral
 import Grothe.UpperQuad.IntervalSound
 import Grothe.UpperQuad.NodeSound
@@ -13713,6 +13714,7 @@ import Grothe.UpperQuad.OmittedTotal
 import Grothe.UpperQuad.PairsSound
 import Grothe.UpperQuad.Partition
 import Grothe.UpperQuad.PhasePolynomialComplex
+import Grothe.UpperQuad.PhasePolynomialParity
 import Grothe.UpperQuad.PiSound
 import Grothe.UpperQuad.PolynomialDilationNorm
 import Grothe.UpperQuad.PolynomialGaussianGrowth

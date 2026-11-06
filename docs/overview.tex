@@ -513,6 +513,15 @@ Integration of finite Mehler also gives
 its normalized Hermite-column specialization. Certified contour bounds and
 twisted quadrature remainders remain separate obligations.
 
+\lean{UpperQuad.PhasePolynomialParity} proves simultaneous phase parity and
+the degree sign of the formal Hermite factors. The full graded radial vector
+is controlled by \lean{UpperQuad.HermiteRadialVector}: its index map is
+injective into the product of two degree triangles of cutoff $2Q-1$.
+Its squared norm is bounded by the primary finite-Mehler factor, including
+$e^{-2\operatorname{Re}(r^2)}$, times the conditional coefficient energy,
+with no factor for the number of modes. These results use standard axioms;
+actual-source continuation and certified contour bounds are still required.
+
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
 The actual conditional Gaussian coefficients satisfy a joint Bessel bound;

@@ -1727,6 +1727,19 @@ The normalized Hermite-column corollary has polynomial norm one and degree
 enclosures and the twisted quadrature remainder remain separate obligations;
 these results do not close `UpperTarget`.
 
+`PhasePolynomialParity` proves that reversing `y`, `r`, and `x` together
+preserves `phaseComplex`, and that reversing both formal Hermite arguments
+multiplies the result by `(-1)^(p+q)`. These source identities use only standard
+axioms and supply the parity factors for the origin argument.
+`HermiteRadialVector.sum_radial_sq_le_cutoff` controls the full graded vector
+with `q<Q`, `c≤q+1`, and `d≤q`. The map to primary and conditional Hermite
+indices is injective into the product of the degree triangles `p+q≤2*Q−1`.
+The squared vector norm is therefore at most the primary finite-Mehler bound
+times the conditional coefficient square sum, with no mode-count factor.
+This conversion includes the damping `exp(−r²)` and requires only `0<t<1`.
+Identifying the conditional coefficients with their analytic continuation and
+certifying the resulting contour bounds remain necessary.
+
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
 `ConditionalNodeIndices` identifies the contraction's selected pair set and
