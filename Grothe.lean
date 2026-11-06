@@ -13690,6 +13690,7 @@ import Grothe.UpperQuad.FinitePolynomialMehler
 import Grothe.UpperQuad.GaussSound
 import Grothe.UpperQuad.GaussianGrowth
 import Grothe.UpperQuad.GaussianMehlerBound
+import Grothe.UpperQuad.HermiteRadialVector
 import Grothe.UpperQuad.IntervalSound
 import Grothe.UpperQuad.NodeSound
 import Grothe.UpperQuad.OmittedSound
@@ -13697,6 +13698,7 @@ import Grothe.UpperQuad.OmittedTotal
 import Grothe.UpperQuad.PairsSound
 import Grothe.UpperQuad.Partition
 import Grothe.UpperQuad.PhasePolynomialComplex
+import Grothe.UpperQuad.PhasePolynomialParity
 import Grothe.UpperQuad.PiSound
 import Grothe.UpperQuad.PolynomialDilationNorm
 import Grothe.UpperQuad.PolynomialGaussianGrowth

@@ -13111,6 +13111,9 @@ import Grothe
 #print axioms Grothe.UpperQuad.GaussianMehlerBound.gaussian_mehler_exponent
 #print axioms Grothe.UpperQuad.GaussianMehlerBound.gaussian_mehler_prefactor
 #print axioms Grothe.UpperQuad.GaussianMehlerBound.norm_damped_sq_le_of_mehler
+#print axioms Grothe.UpperQuad.HermiteRadialVector.sum_grade_product_le
+#print axioms Grothe.UpperQuad.HermiteRadialVector.sum_radial_sq_le
+#print axioms Grothe.UpperQuad.HermiteRadialVector.sum_radial_sq_le_cutoff
 #print axioms Grothe.UpperQuad.Mehler.Hf_eq_integral
 #print axioms Grothe.UpperQuad.Mehler.continuous_uC
 #print axioms Grothe.UpperQuad.Mehler.continuous_vC
@@ -13151,6 +13154,9 @@ import Grothe
 #print axioms Grothe.UpperQuad.PhasePolynomialComplex.phiT_real_slice
 #print axioms Grothe.UpperQuad.PhasePolynomialComplex.rCoord
 #print axioms Grothe.UpperQuad.PhasePolynomialComplex.xCoord
+#print axioms Grothe.UpperQuad.PhasePolynomialParity.Hf_neg_neg
+#print axioms Grothe.UpperQuad.PhasePolynomialParity.normalizedHf_neg_neg
+#print axioms Grothe.UpperQuad.PhasePolynomialParity.phaseComplex_neg_all
 #print axioms Grothe.UpperQuad.PolynomialDilationNorm.dilate
 #print axioms Grothe.UpperQuad.PolynomialDilationNorm.dilation_prefactor
 #print axioms Grothe.UpperQuad.PolynomialDilationNorm.dilation_rate_lt_one
