@@ -13105,6 +13105,17 @@ import Grothe
 #print axioms Grothe.UpperQuad.CentralDerivative.derivative_eq
 #print axioms Grothe.UpperQuad.CentralDerivative.moments
 #print axioms Grothe.UpperQuad.CentralDerivative.twice_weight_norm
+#print axioms Grothe.UpperQuad.EvenSquareDescent.analyticOnNhd_descend
+#print axioms Grothe.UpperQuad.EvenSquareDescent.analyticOnNhd_descend_of_even
+#print axioms Grothe.UpperQuad.EvenSquareDescent.descend
+#print axioms Grothe.UpperQuad.EvenSquareDescent.descend_sq
+#print axioms Grothe.UpperQuad.EvenSquareDescent.descend_sq_of_even
+#print axioms Grothe.UpperQuad.EvenSquareDescent.norm_descend_le
+#print axioms Grothe.UpperQuad.EvenSquareDescent.norm_descend_le_closedBall
+#print axioms Grothe.UpperQuad.EvenSquareDescent.norm_sqrt_sq
+#print axioms Grothe.UpperQuad.EvenSquareDescent.sqrt_mem_ball
+#print axioms Grothe.UpperQuad.EvenSquareDescent.sqrt_mem_closedBall
+#print axioms Grothe.UpperQuad.EvenSquareDescent.sqrt_sq
 #print axioms Grothe.UpperQuad.Facts.evenCheck
 #print axioms Grothe.UpperQuad.Facts.gradeBlock00
 #print axioms Grothe.UpperQuad.Facts.gradeBlock01
