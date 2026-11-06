@@ -113,6 +113,7 @@ def tables_module(j):
             "One `native_decide` (seconds).\n\n"
             "Agent-ID: claude-b9ee. Refs #41, #313.\n-/\n\n"
             "namespace Grothe.UpperQuad.PortFacts\n\n"
+            "open GrotheQuad\n\n"
             f"theorem j{j}TablesValid : tablesFlags P0 (twistParams {j}) (tables {j}) = true := by\n"
             "  native_decide\n\n"
             "end Grothe.UpperQuad.PortFacts\n")
