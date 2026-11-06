@@ -38,12 +38,59 @@ def compact(text):
 
 
 def without_comments(text):
-    # All inspected declarations have ordinary, non-nested block comments.
-    return re.sub(r"--[^\n]*|/-.*?-/", "", text, flags=re.S)
+    """Remove Lean comments without interpreting markers inside string data."""
+    out = []
+    i = 0
+    while i < len(text):
+        if text[i] == '"':
+            start = i
+            i += 1
+            while i < len(text):
+                if text[i] == "\\":
+                    i += 2
+                elif text[i] == '"':
+                    i += 1
+                    out.append(text[start:i])
+                    break
+                else:
+                    i += 1
+            else:
+                raise AuditError("unterminated Lean string")
+        elif text.startswith("--", i):
+            end = text.find("\n", i)
+            i = len(text) if end < 0 else end
+        elif text.startswith("/-", i):
+            depth = 1
+            out.append(" ")
+            i += 2
+            while depth and i < len(text):
+                if text.startswith("/-", i):
+                    depth += 1
+                    i += 2
+                elif text.startswith("-/", i):
+                    depth -= 1
+                    i += 2
+                else:
+                    if text[i] == "\n":
+                        out.append("\n")
+                    i += 1
+            require(depth == 0, "unterminated Lean comment")
+        else:
+            out.append(text[i])
+            i += 1
+    return "".join(out)
 
 
 def declaration(text, name, kind="def"):
     clean = without_comments(text)
+    # Reject shadowing or a second, unsupported declaration form. This parser
+    # intentionally supports only the generated forms below, not arbitrary Lean.
+    target = r"\.".join(rf"(?:{re.escape(part)}|«{re.escape(part)}»)"
+                        for part in name.split("."))
+    mentions = re.findall(
+        r"\b(?:def|abbrev|instance|theorem|lemma|structure|inductive|opaque)\s+"
+        rf"(?:(?:«[^»]+»|[^\s.:(«»]+)\.)*{target}(?=$|[\s:({{])", clean)
+    require(len(mentions) == 1, f"expected one declaration of {name}")
     found = re.findall(
         rf"^(?:noncomputable )?{kind} {re.escape(name)}\b(.*?)"
         r"(?=^(?:noncomputable )?(?:def |theorem |lemma |structure |inductive |end |set_option )|\Z)",
@@ -64,12 +111,12 @@ def bind(text, name, expected):
 
 def integer(text, name):
     value = body(text, name)
-    require(re.fullmatch(r"-?\d+", value), f"expected integer literal: {name}")
+    require(re.fullmatch(r"-?[0-9]+", value), f"expected integer literal: {name}")
     return int(value)
 
 
 def rational_literal(value, label):
-    match = re.fullmatch(r"\(?(-?\d+)/(\d+)\)?", compact(value))
+    match = re.fullmatch(r"\(?(-?[0-9]+)/([0-9]+)\)?", compact(value))
     require(match is not None, f"expected rational literal: {label}")
     n, d = map(int, match.groups())
     require(d > 0, f"zero denominator: {label}")
@@ -80,7 +127,7 @@ def cases(text, name, count):
     decl = compact(declaration(text, name))
     match = re.fullmatch(rf":Fin{count}→[ℤℚℕ](.*)", decl)
     require(match is not None, f"unsupported cases: {name}")
-    rows = re.findall(r"\|([\d_]+)=>([^|]+)", match[1])
+    rows = re.findall(r"\|([0-9_]+)=>([^|]+)", match[1])
     require("".join("|" + k + "=>" + v for k, v in rows) == match[1],
             f"malformed cases: {name}")
     require([k for k, _ in rows] == [str(i) for i in range(count - 1)] + ["_"],
@@ -118,7 +165,7 @@ def center_values(inputs, power, q, exponent):
         values = []
         for chunk in re.findall(r'"([^"\\]*)"', packed):
             for token in chunk.split(","):
-                match = re.fullmatch(r"(-?\d+):(\d+)", token)
+                match = re.fullmatch(r"(-?[0-9]+):([0-9]+)", token)
                 require(match is not None, "malformed center dyadic")
                 m, e = map(int, match.groups())
                 require(0 <= e <= exponent and abs(m) < 2**53, "invalid center dyadic")
@@ -142,7 +189,7 @@ def center_values(inputs, power, q, exponent):
             row = []
             for ref in refs:
                 literal = body(src, ref)
-                require(re.fullmatch(r"#\[-?\d+(?:,-?\d+)*\]", literal), "bad third-center array")
+                require(re.fullmatch(r"#\[-?[0-9]+(?:,-?[0-9]+)*\]", literal), "bad third-center array")
                 row.extend(map(int, literal[2:-1].split(",")))
             require(len(row) == (grade + 1) * (grade + 2), "third-center grade size mismatch")
             values.extend(row)
@@ -162,13 +209,13 @@ def read_tables(inputs, j, bounds, nlow):
     require(len(lines) == 2 * (len(bounds) - 1), f"j{j}: missing/extra table rows")
     rows = []
     for r in range(len(bounds) - 1):
-        match = re.fullmatch(r"range (\d+) (\d+) (\d+) (-?\d+) (\d+) (\d+)", lines[2*r])
+        match = re.fullmatch(r"range ([0-9]+) ([0-9]+) ([0-9]+) (-?[0-9]+) ([0-9]+) ([0-9]+)", lines[2*r])
         require(match is not None, f"j{j} range {r}: malformed header")
         ordinal, lo, hi, mid, irad, lrad = map(int, match.groups())
         require((ordinal, lo, hi) == (r, bounds[r], bounds[r+1]),
                 f"j{j} range {r}: order/boundary mismatch")
         raw = lines[2*r+1]
-        require(re.fullmatch(r"-?\d+(?:,-?\d+)*", raw), f"j{j} range {r}: malformed integer")
+        require(re.fullmatch(r"-?[0-9]+(?:,-?[0-9]+)*", raw), f"j{j} range {r}: malformed integer")
         low = list(map(int, raw.split(",")))
         require(len(low) == nlow, f"j{j} range {r}: expected {nlow} low entries")
         rows.append(dict(lo=lo, hi=hi, iMid=mid, iRad=irad, lowRad=lrad, low=low))
@@ -179,12 +226,12 @@ def bind_margin(src, j, prefix):
     statement = compact(declaration(src, f"j{j}_whole_margin", "theorem").split(":=", 1)[0])
     radius = f"comparisonGroupRadiusQ{j}^2" if j == 1 else f"({math.factorial(j)}*comparisonGroupRadiusQ{j})^2"
     pattern = (rf":\(phaseMoment{2*j}Q\+WholeCenterEnergies\.{prefix}EnergyQ-{re.escape(radius)}\)/2\+"
-               rf"(\d+)/10\^(\d+)≤\(j{j}ThetaNum:ℚ\)/10\^20")
+               rf"([0-9]+)/10\^([0-9]+)≤\(j{j}ThetaNum:ℚ\)/10\^20")
     match = re.fullmatch(pattern, statement)
     require(match is not None, f"unsupported whole margin statement j{j}")
     rho_i = Fraction(int(match[1]), 10**int(match[2]))
     statement = compact(declaration(src, f"j{j}_low_margin", "theorem").split(":=", 1)[0])
-    match = re.fullmatch(rf":\(j{j}Eps:ℚ\)/2\^1024≤\({prefix}CapturedErrorQ0-(\d+)/10\^(\d+)\)\^2", statement)
+    match = re.fullmatch(rf":\(j{j}Eps:ℚ\)/2\^1024≤\({prefix}CapturedErrorQ0-([0-9]+)/10\^([0-9]+)\)\^2", statement)
     require(match is not None, f"unsupported low margin statement j{j}")
     return rho_i, Fraction(int(match[1]), 10**int(match[2]))
 
@@ -282,6 +329,70 @@ def bind_arithmetic(inputs, common, node):
                 f"unsupported structure binding: {name}")
 
 
+def partition_node_count(inputs):
+    """Count the actual bracket lists expanded by the committed panel source.
+
+    The bindings establish that partitionSpecs is a flatMap and that panelSpecs
+    produces exactly one spec per rule bracket. Cutoff and bracket endpoint
+    values affect the specs but cannot affect this count under these bindings.
+    No root validity, quadrature acceptance or analytic property is checked.
+    """
+    partition = inputs.read("Grothe/UpperQuad/Partition.lean")
+    bind(partition, "partitionSpecs",
+         "Q0GaussAddressScan.sourcePanels.flatMap (panelSpecs PartitionData.cutoffs)")
+    bind(partition, "panelSpecs", """(ruleBrackets p.order).zipIdx.map fun bi =>
+      ⟨p.lo.num, p.lo.den, p.hi.num, p.hi.den, p.order, ⟨bi.1.1, bi.1.2, 640⟩,
+        min (cutoffs.getD (p.offset + bi.2) 532) 531⟩""")
+    expected_rules = ": ℕ → List (ℤ × ℤ)" + "".join(
+        f" | {order} => Q0LegendreRule{order:02d}.brackets"
+        for order in range(1, 65)) + " | _ => []"
+    require(compact(declaration(partition, "ruleBrackets")) == compact(expected_rules),
+            "unsupported partition ruleBrackets binding")
+
+    panels_source = inputs.read("Grothe/UpperChaos/Q0GaussAddress.lean")
+    require(compact(declaration(panels_source, "Panel", "structure")) == compact(
+        "where lo : ℚ hi : ℚ order : ℕ offset : ℕ deriving DecidableEq"),
+        "unsupported partition Panel structure")
+    scan_source = inputs.read("Grothe/UpperChaos/Q0GaussAddressScan.lean")
+    refs = body(scan_source, "sourcePanels").split("++")
+    require(refs and all(re.fullmatch(r"panelBlock[0-9]+\.toList", ref)
+                         for ref in refs), "unsupported sourcePanels concatenation")
+    # Use the listed blocks, in their actual order. No fixed block count or
+    # assumption that every block contains 64 panels is used in the count.
+    panel_pattern = re.compile(
+        r"⟨\(\((-?[0-9]+):ℚ\)/([0-9]+)\),"
+        r"\(\((-?[0-9]+):ℚ\)/([0-9]+)\),([0-9]+),([0-9]+)⟩")
+    orders = []
+    block_orders = {}
+    for ref in refs:
+        name = ref.removesuffix(".toList")
+        if name not in block_orders:
+            decl = compact(declaration(panels_source, name))
+            require(decl.startswith(":ArrayPanel:="),
+                    f"unsupported panel block declaration: {name}")
+            literal = body(panels_source, name)
+            rows = list(panel_pattern.finditer(literal))
+            require(literal == "#[" + ",".join(row.group() for row in rows) + "]",
+                    f"malformed panel literal: {name}")
+            block_orders[name] = [int(row[5]) for row in rows]
+        orders.extend(block_orders[name])
+    require(orders and all(1 <= order <= 64 for order in orders),
+            "unsupported partition panel order")
+
+    bracket_counts = {}
+    for order in sorted(set(orders)):
+        rule_source = inputs.read(f"Grothe/UpperChaos/Q0LegendreRule{order:02d}.lean")
+        decl = compact(declaration(rule_source, "brackets"))
+        require(decl.startswith(":List(ℤ×ℤ):="),
+                f"unsupported bracket declaration for rule {order}")
+        literal = body(rule_source, "brackets")
+        pairs = re.findall(r"\(-?[0-9]+,-?[0-9]+\)", literal)
+        require(literal == "[" + ",".join(pairs) + "]",
+                f"malformed bracket literal for rule {order}")
+        bracket_counts[order] = len(pairs)
+    return sum(bracket_counts[order] for order in orders)
+
+
 def audit(root, generator_check=False):
     inputs = Inputs(root)
     common = inputs.read("Grothe/UpperQuad/PortFacts/Common.lean")
@@ -291,6 +402,7 @@ def audit(root, generator_check=False):
     bind(node, "twistParams", "if j == 1 then ⟨1, 181, 51, 91, 206⟩ else if j == 2 then "
          "⟨2, 91, 51, 46, 206⟩ else ⟨3, 51, 11, 26, 105⟩")
     bind_arithmetic(inputs, common, node)
+    nnodes = partition_node_count(inputs)
     bounds_all = json.loads(inputs.read("data/port-facts/ranges.json"),
                             object_pairs_hook=unique_object)
     require(set(bounds_all) == {"1", "2", "3"}, "expected exactly three powers")
@@ -301,8 +413,8 @@ def audit(root, generator_check=False):
     groups = inputs.read("Grothe/Upper/ComparisonGroups.lean")
     energy_defs = inputs.read("Grothe/UpperChaos/WholeCenterEnergies.lean")
     energy_data = inputs.read("Grothe/UpperChaos/TaylorCenterBandData.lean")
-    radii = re.fullmatch(r"ifg=0then1/1000000000000000000elseifg=1then(\d+)/(\d+)"
-                        r"elseifg=2then(\d+)/(\d+)else(\d+)/(\d+)", body(groups, "comparisonGroupRadiusQ"))
+    radii = re.fullmatch(r"ifg=0then1/1000000000000000000elseifg=1then([0-9]+)/([0-9]+)"
+                        r"elseifg=2then([0-9]+)/([0-9]+)else([0-9]+)/([0-9]+)", body(groups, "comparisonGroupRadiusQ"))
     require(radii is not None, "unsupported group radii")
     require(all(int(radii[2*j]) > 0 for j in (1, 2, 3)), "zero group radius denominator")
     result = {}
@@ -311,8 +423,8 @@ def audit(root, generator_check=False):
         bounds = bounds_all[str(j)]
         require(isinstance(bounds, list) and len(bounds) >= 2 and
                 all(type(x) is int for x in bounds), f"j{j}: invalid boundaries")
-        require(bounds[0] == 0 and bounds[-1] == 21577 and all(a < b for a,b in zip(bounds,bounds[1:])),
-                f"j{j}: ranges must strictly tile 0..21577")
+        require(bounds[0] == 0 and bounds[-1] == nnodes and all(a < b for a,b in zip(bounds,bounds[1:])),
+                f"j{j}: ranges must strictly tile 0..{nnodes}")
         rows = read_tables(inputs, j, bounds, count_modes(qlow))
         centers = center_values(inputs, j, q, exponent)
         energy = Fraction(sum(x*x for x in centers), 1 << (2*exponent))
@@ -326,8 +438,9 @@ def audit(root, generator_check=False):
         require(energy == target, f"j{j}: center energy does not match Lean target")
         ilo = Fraction(sum(t["iMid"]-t["iRad"] for t in rows), 2**64)
         theta_num = integer(thresholds, f"j{j}ThetaNum")
-        require(theta_num == ilo.numerator * 10**20 // ilo.denominator, f"j{j}: threshold mismatch")
-        eps_match = re.fullmatch(r"2\^(\d+)", body(thresholds, f"j{j}Eps"))
+        require(Fraction(theta_num, 10**20) <= ilo, f"j{j}: table lower bound is below threshold")
+        theta_convention = theta_num == ilo.numerator * 10**20 // ilo.denominator
+        eps_match = re.fullmatch(r"2\^([0-9]+)", body(thresholds, f"j{j}Eps"))
         require(eps_match is not None, f"j{j}: expected power-of-two tolerance")
         eps = 1 << int(eps_match[1])
         low_rad = sum(t["lowRad"] for t in rows)
@@ -337,7 +450,8 @@ def audit(root, generator_check=False):
             lo, hi = (mid-low_rad) << 448, (mid+low_rad) << 448
             center <<= 512-exponent
             excursion_sq += max(hi-center, center-lo, 0)**2
-        require(eps == 1 << max(excursion_sq.bit_length(), 1), f"j{j}: excursion tolerance mismatch")
+        require(excursion_sq <= eps, f"j{j}: low excursion exceeds tolerance")
+        eps_convention = eps == 1 << max(excursion_sq.bit_length(), 1)
         moment = rational_literal(body(moments, f"phaseMoment{2*j}Q"), "phase moment")
         cap = rational_literal(cases(tails, prefix + "CapturedErrorQ", bands)[0], "low cap")
         radius = Fraction(int(radii[2*j-1]), int(radii[2*j]))
@@ -350,7 +464,8 @@ def audit(root, generator_check=False):
         require(low_slack >= 0, f"j{j}: insufficient low-band margin")
         result[j] = dict(rows=rows, bounds=bounds, theta_num=theta_num, eps=eps,
                          excursion_sq=excursion_sq, ilo=ilo, imin=imin, whole_slack=whole_slack,
-                         low_slack=low_slack, rho_i=rho_i, rho_low=rho_low, cap=cap)
+                         low_slack=low_slack, rho_i=rho_i, rho_low=rho_low, cap=cap,
+                         theta_convention=theta_convention, eps_convention=eps_convention)
     if generator_check:
         inputs.read("tools/gen_port_facts.py")
         for name in ("arb_first_phase_D181.npz", "arb_phase_power2_D151.npz", "arb_phase_power3_D51.npz"):
@@ -397,6 +512,8 @@ def main(argv=None):
                 excursion_sq=fraction_report(Fraction(r["excursion_sq"],2**1024)),
                 whole_margin=fraction_report(r["whole_slack"]), low_squared_margin=fraction_report(r["low_slack"]),
                 assumed_whole_remainder=fraction_report(r["rho_i"]), assumed_low_remainder=fraction_report(r["rho_low"]))
+            report["powers"][str(j)]["generator_rounding_conventions"] = dict(
+                theta_matches=r["theta_convention"], eps_matches=r["eps_convention"])
         if args.lean_output:
             require(args.lean_output.suffix == ".lean", "--lean-output must name a .lean file")
             require(args.lean_output.resolve() not in {args.repo.resolve()/p for p in hashes}, "output would overwrite an input")
@@ -410,6 +527,8 @@ def main(argv=None):
             for j, r in results.items():
                 print(f"j={j}: {len(r['rows'])} ranges, whole margin {float(r['whole_slack']):.6e}, "
                       f"low excursion {math.isqrt(r['excursion_sq']) / 2**512:.6e}")
+                if not (r["theta_convention"] and r["eps_convention"]):
+                    print("  INFO: valid inequalities use different generator rounding conventions.")
             print(f"SHA256 recorded for {len(hashes)} inputs (use --json for hashes and exact values).")
             if args.lean_output:
                 print(f"Wrote {args.lean_output}; Lean has not been run.")

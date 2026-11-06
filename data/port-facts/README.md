@@ -16,8 +16,11 @@ python3 tools/audit_port_tables.py --lean-output handoff/port-audit/TableArithme
 ```
 
 The independent preflight reads the exact center literals in the Lean sources,
-checks dimensions and range coverage, computes the whole-error and low-band
+checks dimensions and range coverage against the actual panel and bracket
+lists defining `partitionSpecs`, computes the whole-error and low-band
 margins using exact rational arithmetic, and reports hashes of its inputs.
+Acceptance checks the required inequalities; any difference from the generator's
+threshold and tolerance rounding conventions is reported separately.
 The optional generator cross-check also uses the committed center NPZ inputs.
 The generated scratch Lean file checks the actual `finalFact` predicates with
 inline copies of these tables, without importing any expensive range theorem:

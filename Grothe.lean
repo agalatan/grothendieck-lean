@@ -13695,6 +13695,9 @@ import Grothe.UpperQuad.PairsSound
 import Grothe.UpperQuad.Partition
 import Grothe.UpperQuad.PiSound
 import Grothe.UpperQuad.PortFacts.Common
+import Grothe.UpperQuad.PortFacts.J1Tables
+import Grothe.UpperQuad.PortFacts.J2Tables
+import Grothe.UpperQuad.PortFacts.J3Tables
 import Grothe.UpperQuad.PortFacts.Margins
 import Grothe.UpperQuad.PortFacts.TablesFlags
 import Grothe.UpperQuad.PortFacts.Thresholds

@@ -72,7 +72,6 @@ Grothe.UpperQuad.PortFacts.J1Range35
 Grothe.UpperQuad.PortFacts.J1Range36
 Grothe.UpperQuad.PortFacts.J1Range37
 Grothe.UpperQuad.PortFacts.J1Range38
-Grothe.UpperQuad.PortFacts.J1Tables
 Grothe.UpperQuad.PortFacts.J2Final
 Grothe.UpperQuad.PortFacts.J2Range00
 Grothe.UpperQuad.PortFacts.J2Range01
@@ -96,7 +95,6 @@ Grothe.UpperQuad.PortFacts.J2Range18
 Grothe.UpperQuad.PortFacts.J2Range19
 Grothe.UpperQuad.PortFacts.J2Range20
 Grothe.UpperQuad.PortFacts.J2Range21
-Grothe.UpperQuad.PortFacts.J2Tables
 Grothe.UpperQuad.PortFacts.J3Final
 Grothe.UpperQuad.PortFacts.J3Range00
 Grothe.UpperQuad.PortFacts.J3Range01
@@ -120,7 +118,6 @@ Grothe.UpperQuad.PortFacts.J3Range18
 Grothe.UpperQuad.PortFacts.J3Range19
 Grothe.UpperQuad.PortFacts.J3Range20
 Grothe.UpperQuad.PortFacts.J3Range21
-Grothe.UpperQuad.PortFacts.J3Tables
 Grothe.UpperQuad.Row227Check
 GrotheKernel.BandMass
 GrotheKernel.HeadWeight
