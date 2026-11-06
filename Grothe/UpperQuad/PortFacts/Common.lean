@@ -12,7 +12,7 @@ The six hypotheses `hfirst/hsecond/hthird`, `hwholeFirst/Second/Third` of
 committed partition (`docs/UPPER_CLOSURE.md` §8): per power `j`, the `I_j`-sum
 `Σ_n W e^{−s} Σ_{c,d} V_{c,d}(s) J_{c,d}(s)` and the low-band sums `Σ_n W e^{−s} ψ_i(s) J_{c,d}(s)`.
 The kernel's node loop `twistSpecs` encloses them; it costs ≈ 60–90 CPU-h per power, so the facts
-are sharded **by node ranges with committed partials** (§8.9):
+are sharded **by node ranges with committed partials** (§8.5):
 
 * the range fact `rangeFact j lo hi t` runs `twistSpecs` over the nodes `[lo, hi)` of
   `partitionSpecs` (with master's phase terms and master's center array of the power) and checks

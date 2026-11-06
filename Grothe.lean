@@ -13787,6 +13787,8 @@ import Grothe.UpperQuad.PortFacts.J3Range29
 import Grothe.UpperQuad.PortFacts.J3Range30
 import Grothe.UpperQuad.PortFacts.J3Range31
 import Grothe.UpperQuad.PortFacts.J3Range32
+import Grothe.UpperQuad.PortFacts.Margins
+import Grothe.UpperQuad.PortFacts.Thresholds
 import Grothe.UpperQuad.ProfileSound
 import Grothe.UpperQuad.RatioSound
 import Grothe.UpperQuad.RotateSound

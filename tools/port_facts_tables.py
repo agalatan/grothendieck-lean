@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The committed partial tables of the upper-closure port facts (docs/UPPER_CLOSURE.md §8.9).
+"""The committed partial tables of the upper-closure port facts (docs/UPPER_CLOSURE.md §8.5: node ranges with committed partials).
 
 The native facts `Grothe.UpperQuad.PortFacts.J<j>Range<rr>` run the kernel's twisted node loop
 (`GrotheQuad.twistSpecs`) over one range `[lo, hi)` of the 21,577 nodes of the committed partition
@@ -45,7 +45,7 @@ NNODES = 21577
 KT = 64                     # scale of the committed tables
 KACC = 512                  # scale of the kernel accumulators (2 KOut)
 PARAMS = {1: dict(Dout=181, Dlow=51, Q=91), 2: dict(Dout=91, Dlow=51, Q=46), 3: dict(Dout=51, Dlow=11, Q=26)}
-# radii of the tables, in units of 2^-64 (fixed after `check`, see docs/UPPER_CLOSURE.md §8.9)
+# radii of the tables, in units of 2^-64 (fixed after `check`: 70x and 4000x the worst prototype-kernel difference of the mod-8 classes)
 I_RAD = 2 ** 8              # 1.4e-17 on every range's I-partial
 LOW_RAD = 2 ** 11           # 1.1e-16 on every low-band entry of every range
 DATA = os.path.join(ROOT, "data/port-facts")
