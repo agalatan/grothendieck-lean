@@ -1773,6 +1773,17 @@ This conversion includes the damping `exp(−r²)` and requires only `0<t<1`.
 Identifying the conditional coefficients with their analytic continuation and
 certifying the resulting contour bounds remain necessary.
 
+`UpperQuad.EvenSquareDescent.analyticOnNhd_descend` handles the square-root
+coordinate at the origin abstractly. For a complex Banach-valued function `F`
+analytic on `‖r‖ < R`, with `R > 0` and `F(−r)=F(r)` on that ball, it proves
+that `s ↦ F(Complex.sqrt s)` is analytic on `‖s‖ < R²`. The inverse-function
+theorem for squaring supplies analyticity away from zero; continuity and the
+removable-singularity theorem supply zero. `descend_sq` recovers `F(r)` at
+`s=r²`, and uniform norm bounds transport unchanged on open or closed balls.
+All these results use standard axioms. Applying this tool to the twisted
+integrand still requires its concrete parity and analyticity in `r`, as well
+as certified contour bounds and quadrature assembly.
+
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
 `ConditionalNodeIndices` identifies the contraction's selected pair set and

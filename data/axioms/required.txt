@@ -12662,6 +12662,11 @@ Grothe.UpperQuad.CentralDerivative.derivative_eq
 Grothe.UpperQuad.EllCheck.panelErr_sound
 Grothe.UpperQuad.EllCheck.quadRemainderHyp
 Grothe.UpperQuad.EllCheck.shardOK_sound
+Grothe.UpperQuad.EvenSquareDescent.analyticOnNhd_descend
+Grothe.UpperQuad.EvenSquareDescent.analyticOnNhd_descend_of_even
+Grothe.UpperQuad.EvenSquareDescent.descend_sq
+Grothe.UpperQuad.EvenSquareDescent.norm_descend_le
+Grothe.UpperQuad.EvenSquareDescent.norm_descend_le_closedBall
 Grothe.UpperQuad.Explicit.canonicalCoefficient_eq_Uext
 Grothe.UpperQuad.Explicit.hasDerivAt_Dcd
 Grothe.UpperQuad.Explicit.hasDerivAt_Phi

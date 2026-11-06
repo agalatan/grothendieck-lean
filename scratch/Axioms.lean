@@ -13118,6 +13118,17 @@ import Grothe
 #print axioms Grothe.UpperQuad.EllCheck.shard06
 #print axioms Grothe.UpperQuad.EllCheck.shard07
 #print axioms Grothe.UpperQuad.EllCheck.shardOK_sound
+#print axioms Grothe.UpperQuad.EvenSquareDescent.analyticOnNhd_descend
+#print axioms Grothe.UpperQuad.EvenSquareDescent.analyticOnNhd_descend_of_even
+#print axioms Grothe.UpperQuad.EvenSquareDescent.descend
+#print axioms Grothe.UpperQuad.EvenSquareDescent.descend_sq
+#print axioms Grothe.UpperQuad.EvenSquareDescent.descend_sq_of_even
+#print axioms Grothe.UpperQuad.EvenSquareDescent.norm_descend_le
+#print axioms Grothe.UpperQuad.EvenSquareDescent.norm_descend_le_closedBall
+#print axioms Grothe.UpperQuad.EvenSquareDescent.norm_sqrt_sq
+#print axioms Grothe.UpperQuad.EvenSquareDescent.sqrt_mem_ball
+#print axioms Grothe.UpperQuad.EvenSquareDescent.sqrt_mem_closedBall
+#print axioms Grothe.UpperQuad.EvenSquareDescent.sqrt_sq
 #print axioms Grothe.UpperQuad.Explicit.canonicalCoefficient_eq_Uext
 #print axioms Grothe.UpperQuad.Explicit.hasDerivAt_Dcd
 #print axioms Grothe.UpperQuad.Explicit.hasDerivAt_Phi
