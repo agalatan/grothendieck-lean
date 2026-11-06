@@ -9192,7 +9192,7 @@
   "execution_source_sha256": {
     "scripts/build_caps_batches.py": "01be24510be4e3022fa3a49073c6c8cfc02f94b513b5b65f2248796100d8cdfa",
     "scripts/caps_coexist.py": "8ede79b1881aaf8a35ff3196e2ec2f07e85ce3a062c40dbf3c7959864ee7af52",
-    "scripts/caps_stamp.py": "a2745a91e7b513a1e99b0a5853a18e1f22a32d73e8eb387d8a57f7ce2c790bc3"
+    "scripts/caps_stamp.py": "6736b61800af4276c7cb32747865a3743a2ebf4974d2fccc57ab0f3ed35c7da8"
   },
   "format": "caps-bounded-build-v2",
   "input_sha256": {

@@ -38,7 +38,8 @@ ROW_TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
 # The quadrature checker's native facts (Grothe/UpperQuad/Facts): one block of the energy table each,
 # about ten hours single-threaded; built once on the droplet and cached like the cap rows. They are hashed
 # alongside the cap rows but are not cap-row roots: the registry and CapNodes checks use ROW_TOPS only.
-QUAD_TOPS = [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + ["Grothe.UpperQuad.Facts.Even"]
+QUAD_TOPS = [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + ["Grothe.UpperQuad.Facts.Even",
+                                                                             "Grothe.UpperQuad.Facts.Omitted"]
 # Every fixed root of the hashed computation closure. The localized cap pieces (row 14's node-150 proof included)
 # are not listed here: they enter through the activated-leaf registry (activated_sources).
 TOPS = ROW_TOPS + QUAD_TOPS

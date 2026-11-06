@@ -380,6 +380,25 @@ def cmdBlock (qLo qHi n P : Nat) : IO UInt32 := do
     IO.println s!"block [{qLo},{qHi}) over {specs.length} nodes at P = {P}: {t1 - t0} ms ({(t1 - t0) / specs.length} ms per node); checksum {cs % 1000000007}"
   return 0
 
+/-- `quadrun omitted <lo> <hi> [P]`: the omitted-pair bounds `√(Z_a m̄_a)` of the nodes `[lo, hi)`
+(`omittedBoundSum`, the kernel function of part (C) of `hQuad`), timed. -/
+def cmdOmitted (lo hi P : Nat) : IO UInt32 := do
+  let (panels, addrs, cutoffs, pd) ← loadAll
+  let piI := piMachinI P (P / 3 + 20)
+  let hi := min hi addrs.size
+  let specs := (List.range' lo (hi - lo)).map (specOf panels addrs cutoffs)
+  let t0 ← IO.monoMsNow
+  match omittedBoundSum P piI pd specs 0 with
+  | none => throw (IO.userError "omitted: a node was rejected (a flag failed)")
+  | some s =>
+    let t1 ← IO.monoMsNow
+    IO.println s!"omitted bound over nodes [{lo},{hi}) at P = {P}: {s} / 2^256 ≈ {sciString ⟨s, s, -(2 * KFix : Int)⟩}; {t1 - t0} ms ({(t1 - t0) / max 1 (hi - lo)} ms per node)"
+    for nd in specs do
+      match omittedNodeBound P piI pd nd with
+      | some b => IO.println s!"  cutoff {nd.cutoff}: bound {sciString ⟨b, b, -(2 * KFix : Int)⟩}"
+      | none => IO.println s!"  cutoff {nd.cutoff}: rejected"
+  return 0
+
 /-- Read `energy-table.txt` (`n m num den`) into a `502 × 502` table of enclosures at scale `2^256`
 (`⌊num·2^256/den⌋, ⌈…⌉`; `(0, 0)` for the absent bidegrees). -/
 def readTable (path : String) : IO (Array (Array (Int × Int))) := do
@@ -683,6 +702,8 @@ def main (args : List String) : IO UInt32 := do
   | ["rules"] => cmdRules
   | ["node", o] => cmdNode (parseNat! o) precisions
   | ["node", o, p] => cmdNode (parseNat! o) [parseNat! p]
+  | ["omitted", lo, hi] => cmdOmitted (parseNat! lo) (parseNat! hi) 512
+  | ["omitted", lo, hi, p] => cmdOmitted (parseNat! lo) (parseNat! hi) (parseNat! p)
   | ["shard", i, n, d] => cmdShard (parseNat! i) (parseNat! n) d
   | ["merge", n, d] => cmdMerge (parseNat! n) d
   | _ =>
@@ -690,5 +711,6 @@ def main (args : List String) : IO UInt32 := do
     IO.println "       quadrun smat <i> <n> <outdir> | rotate <i> <n> <smatdir> <rawfile> <frozenfile> <outdir>"
     IO.println "       quadrun block <qLo> <qHi> <n> [P]   (the node loop of n nodes restricted to a grade block)"
     IO.println "       quadrun check <rawfile> <frozenfile> <tablefile> <qLo> <qHi>   (the block checks on a stored raw vector)"
+    IO.println "       quadrun omitted <lo> <hi> [P]   (the omitted-pair bounds of the nodes [lo, hi))"
     IO.println "       quadrun twistnode <j> <ordinal> [P] | twist <j> <n> [P] | twistshard <j> <i> <n> <outdir> [P] | twistmerge <j> <n> <outdir>"
     return 2
