@@ -481,6 +481,15 @@ $|p'(r)|\le630M$ when all samples have absolute value at most $M\ge0$.
 axiom guards. The actual phase polynomial, sample enclosures and physical
 panel integration remain separate inputs.
 
+\lean{UpperQuad.EvenSquareDescent.analyticOnNhd_descend} removes the origin
+square-root singularity for an even analytic complex Banach-valued function.
+If $F$ is analytic on $|r|<R$, $R>0$, and $F(-r)=F(r)$ there, then
+$g(s)=F(\sqrt{s})$ is analytic on $|s|<R^2$, with $g(r^2)=F(r)$.
+The square map is locally invertible away from zero; continuity and the
+removable-singularity theorem handle zero. Uniform norm bounds transport
+unchanged, including on closed balls. The concrete twisted integrand's parity,
+analyticity and certified contour bounds remain separate inputs.
+
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
 The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
