@@ -42,6 +42,18 @@ degree `m` by `2 √θ √(m!) (√8 θ / ‖A‖)^m`, where
 panel assembly inherits the registered phase-cover facts and introduces no
 new native fact.
 
+`TwistKVector` applies this shell estimate to the finite twisted factorization.
+Outputs of degree at most `D` use the common input triangle through `D + 35*j`.
+If their squared matrix-column energies are at most `E * N2(m)`, the squared
+output norm is at most
+`4 * E * theta * (sum_m (m+1) * sqrt(m! * N2(m)) * z^m)^2`, with
+`theta = norm(A)^2 / Re(A^2)` and
+`z = sqrt(8) * theta / (sqrt(rate(j)) * norm(A))`.
+The canonical domain is `Re(A^2) > 0`. Padding and the Euclidean triangle
+inequality introduce no output-mode count; Gaussian scaling introduces no
+additional inverse-rate factor. Concrete column and disk-geometry bounds
+must still be substituted to obtain the certificate's K majorant.
+
 `TwistRadialVector` supplies this assembly with the actual descended radial
 components. Its complete vector is analytic wherever `vC(s) ≠ 0`, including
 zero; the real slice equals `twistIntegrand`. The squared norm is bounded by

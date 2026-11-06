@@ -13581,6 +13581,14 @@ import Grothe
 #print axioms Grothe.UpperQuad.TwistFactorization.sum_norm_matrixCoefficient_sq_le_production
 #print axioms Grothe.UpperQuad.TwistFactorization.totalDegree_sourcePolynomial_le
 #print axioms Grothe.UpperQuad.TwistFactorization.twistCoef_eq_Jext
+#print axioms Grothe.UpperQuad.TwistKVector.sqrt_sum_norm_Jext_sq_le_of_column_bound
+#print axioms Grothe.UpperQuad.TwistKVector.sqrt_sum_norm_Jext_sq_le_shells
+#print axioms Grothe.UpperQuad.TwistKVector.sum_indices_eq_shells
+#print axioms Grothe.UpperQuad.TwistKVector.sum_norm_Jext_sq_le_coarse
+#print axioms Grothe.UpperQuad.TwistKVector.sum_norm_Jext_sq_le_of_column_bound
+#print axioms Grothe.UpperQuad.TwistKVector.sum_norm_Jext_sq_le_phase_shells
+#print axioms Grothe.UpperQuad.TwistKVector.sum_norm_Jext_sq_le_shells
+#print axioms Grothe.UpperQuad.TwistKVector.weighted_canonical_sum_le_shells
 #print axioms Grothe.UpperQuad.TwistPanels.Vector
 #print axioms Grothe.UpperQuad.TwistPanels.continuousOn_of_ellipse
 #print axioms Grothe.UpperQuad.TwistPanels.errorVector

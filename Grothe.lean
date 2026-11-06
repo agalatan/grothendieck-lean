@@ -13868,6 +13868,7 @@ import Grothe.UpperQuad.TwistFactsSound
 import Grothe.UpperQuad.TwistFiniteExtension
 import Grothe.UpperQuad.TwistFiniteVector
 import Grothe.UpperQuad.TwistFunctional
+import Grothe.UpperQuad.TwistKVector
 import Grothe.UpperQuad.TwistLoopSound
 import Grothe.UpperQuad.TwistMargins
 import Grothe.UpperQuad.TwistMatrixBessel
