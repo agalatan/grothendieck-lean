@@ -13735,6 +13735,14 @@ import Grothe.UpperQuad.RotateSound
 import Grothe.UpperQuad.SeedAnalytic
 import Grothe.UpperQuad.SeedSound
 import Grothe.UpperQuad.TailBound
+import Grothe.UpperQuad.TwistEllipseCertificate
+import Grothe.UpperQuad.TwistEllipseCertificateSound
+import Grothe.UpperQuad.TwistEllipseCheck
+import Grothe.UpperQuad.TwistEllipseColumnSound
+import Grothe.UpperQuad.TwistEllipseGeometry
+import Grothe.UpperQuad.TwistEllipseMajorantSound
+import Grothe.UpperQuad.TwistEllipsePhaseSound
+import Grothe.UpperQuad.TwistEllipseSound
 import Grothe.UpperQuad.TwistSound
 import Grothe.UpperQuad.WatsonSeed
 import Grothe.UpperTarget
