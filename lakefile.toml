@@ -25,6 +25,13 @@ precompileModules = true
 name = "GrotheQuadKernel"
 precompileModules = true
 
+# Extensions of the quadrature checker (the upper-closure port's twisted kernel, the omitted pairs, ...): their own
+# precompiled library, so that GrotheQuadKernel stays frozen. The 13 energy-table facts import GrotheQuadKernel, and any
+# module added to or changed in that library makes them all recompile (about ten hours each).
+[[lean_lib]]
+name = "GrotheQuadExtKernel"
+precompileModules = true
+
 [[lean_lib]]
 name = "GrotheKernel"
 precompileModules = true

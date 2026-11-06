@@ -2,7 +2,7 @@ import Grothe.UpperQuad.Partition
 import Grothe.UpperQuad.PiSound
 import Grothe.UpperChaos.TaylorCenters
 import Grothe.UpperChaos.PhaseTermsDefs
-import GrotheQuadKernel.TwistLoop
+import GrotheQuadExtKernel.TwistLoop
 
 /-!
 # The native facts of the upper-closure port: the common definitions

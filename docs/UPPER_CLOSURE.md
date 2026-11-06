@@ -760,7 +760,7 @@ closure copied from `~/claude-b9ee-quad-m4/repo/.lake/build`):
 
 ### 8.8 Status of the implementation (claude-b9ee worker, 5 November 2026, 06:00 Bucharest)
 
-**Kernel** (`GrotheQuadKernel/Twist, Dilate, Phase, TwistNode, TwistLoop`, driver `quadrun twistnode |
+**Kernel** (`GrotheQuadExtKernel/Twist, Dilate, Phase, TwistNode, TwistLoop`, driver `quadrun twistnode |
 twist | twistdump | twistshard | twistmerge`, data `data/quad-checker/phase.txt` and
 `handoff/quad-checker/center-{1,2,3}.txt` from `tools/quad_gen_phase.py`). Two changes of design against
 §8.2, both forced by measurements:
