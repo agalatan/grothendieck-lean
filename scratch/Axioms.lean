@@ -13457,12 +13457,16 @@ import Grothe
 #print axioms Grothe.UpperQuad.TwistEllCheck.columnCoeffs_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.diskPoint_shift_im_sq_le_sharp
 #print axioms Grothe.UpperQuad.TwistEllCheck.errorCaps_of_shards_and_total
+#print axioms Grothe.UpperQuad.TwistEllCheck.exists_disk_of_planGeomOK
 #print axioms Grothe.UpperQuad.TwistEllCheck.maxUpper_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.mehI_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.minResult_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.phaseSqI_sound
+#print axioms Grothe.UpperQuad.TwistEllCheck.sgn_eq_panelSign_of_planGeomOK
+#print axioms Grothe.UpperQuad.TwistEllCheck.sgn_eq_profileSign_of_planGeomOK
 #print axioms Grothe.UpperQuad.TwistEllCheck.shardOK_spec
 #print axioms Grothe.UpperQuad.TwistEllCheck.shiftImSqI_sound
+#print axioms Grothe.UpperQuad.TwistEllCheck.sign_pos_of_planGeomOK
 #print axioms Grothe.UpperQuad.TwistEllCheck.sqrt_im_sq_le_disk
 #print axioms Grothe.UpperQuad.TwistEllCheck.sum_errorCap_eq_totalCap
 #print axioms Grothe.UpperQuad.TwistEllCheck.sum_errorCap_le_of_totalOK
@@ -13470,6 +13474,7 @@ import Grothe
 #print axioms Grothe.UpperQuad.TwistEllCheck.totalOK_spec
 #print axioms Grothe.UpperQuad.TwistEllCheck.upperQ_cast
 #print axioms Grothe.UpperQuad.TwistEllCheck.upsYI_sound
+#print axioms Grothe.UpperQuad.TwistEllCheck.vC_ne_zero_of_planGeomOK
 #print axioms Grothe.UpperQuad.TwistPanels.Vector
 #print axioms Grothe.UpperQuad.TwistPanels.continuousOn_of_ellipse
 #print axioms Grothe.UpperQuad.TwistPanels.errorVector

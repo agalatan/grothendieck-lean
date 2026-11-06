@@ -78,6 +78,14 @@ caps. Overlapping shards do not duplicate terms in this sum. This supplies
 the finite coverage and budget interface; acceptance facts and the analytic
 interpretation of each accepted certificate remain separate obligations.
 
+`TwistEllipsePanelGeometry` transports accepted plan geometry and strict
+profile separation on every covering disk to the whole closed Bernstein
+ellipse. It proves that the profile is nonzero there and that the checker
+sign agrees with the physical sign throughout the real panel, including
+the left endpoint used by `TwistRadialPanels`. This geometry layer uses only
+the standard axioms; it assumes neither an untwisted integrand bound nor
+a numerical norm cap.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational

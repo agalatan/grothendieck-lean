@@ -12734,7 +12734,10 @@ Grothe.UpperQuad.TaylorShift.sqSum_shift_le
 Grothe.UpperQuad.TaylorShift.tsum_shiftTerm_le
 Grothe.UpperQuad.TwistEllCheck.certificates_of_shards
 Grothe.UpperQuad.TwistEllCheck.errorCaps_of_shards_and_total
+Grothe.UpperQuad.TwistEllCheck.exists_disk_of_planGeomOK
+Grothe.UpperQuad.TwistEllCheck.sgn_eq_panelSign_of_planGeomOK
 Grothe.UpperQuad.TwistEllCheck.sum_errorCap_le_of_totalOK
+Grothe.UpperQuad.TwistEllCheck.vC_ne_zero_of_planGeomOK
 Grothe.UpperQuad.TwistPanels.errorVector_eq_sum
 Grothe.UpperQuad.TwistPanels.norm_errorVector_sq
 Grothe.UpperQuad.TwistPanels.remainder_of_ellipses

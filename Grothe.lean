@@ -13783,6 +13783,7 @@ import Grothe.UpperQuad.TwistEllipseCheck
 import Grothe.UpperQuad.TwistEllipseColumnSound
 import Grothe.UpperQuad.TwistEllipseGeometry
 import Grothe.UpperQuad.TwistEllipseMajorantSound
+import Grothe.UpperQuad.TwistEllipsePanelGeometry
 import Grothe.UpperQuad.TwistEllipsePhaseSound
 import Grothe.UpperQuad.TwistEllipseSound
 import Grothe.UpperQuad.TwistFactsSound
