@@ -13691,9 +13691,12 @@ import Grothe.UpperQuad.Facts.GradeBlock10
 import Grothe.UpperQuad.Facts.GradeBlock11
 import Grothe.UpperQuad.Facts.Omitted
 import Grothe.UpperQuad.Facts.OmittedDefs
+import Grothe.UpperQuad.FinitePolynomialMehler
 import Grothe.UpperQuad.GaussRemainderDisk
 import Grothe.UpperQuad.GaussRemainderEllipse
 import Grothe.UpperQuad.GaussSound
+import Grothe.UpperQuad.GaussianGrowth
+import Grothe.UpperQuad.GaussianMehlerBound
 import Grothe.UpperQuad.IntervalSound
 import Grothe.UpperQuad.NodeSound
 import Grothe.UpperQuad.OmittedSound
@@ -13701,6 +13704,10 @@ import Grothe.UpperQuad.OmittedTotal
 import Grothe.UpperQuad.PairsSound
 import Grothe.UpperQuad.Partition
 import Grothe.UpperQuad.PiSound
+import Grothe.UpperQuad.PolynomialGaussianGrowth
+import Grothe.UpperQuad.PolynomialHermiteDegree
+import Grothe.UpperQuad.PolynomialHermiteNorm
+import Grothe.UpperQuad.PolynomialRescale
 import Grothe.UpperQuad.ProfileSound
 import Grothe.UpperQuad.QuadDecomp
 import Grothe.UpperQuad.QuadDiskBound
