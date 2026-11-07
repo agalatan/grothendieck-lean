@@ -30,12 +30,12 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697117301\;<\;\KG\;<\;1.404598149141$\\[6pt]
-\normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
-analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is unconditional (\lean{lower\_target}); the upper bound, stated in Lean as
-$\KG<1.4046$ (\lean{main\_bounds}), still rests on its fourteen finite-band Gaussian estimates
-and energy-table accuracy.\vspace{4pt}
+\Large $1.401697117301\;<\;\KG\;<\;1.4046$\\[6pt]
+\normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
+(\lean{main\_bounds}); the computer-assisted inputs are native finite checks listed in
+the axiom report (Section~\ref{sec:trust}).\\[4pt]
+The lower bound is \lean{lower\_target}; the upper bound \lean{upper\_target} gives a
+Grothendieck bound below $1.40459996$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -43,6 +43,14 @@ The source-node rounding ledger verifies its exact rational arithmetic and
 transfers a squared-mass cap to a norm cap. Its application to the actual
 Gaussian coefficient table still requires the input estimates and the
 operation-error model; it does not complete the upper endpoint.
+
+The finite twisted-source bundle module packages the production table flags,
+range checks, final checks and phase-degree bound for powers $j=1,2,3$ into
+the soundness bridge's exact finite-fact interface. This source checkpoint
+retains the computational kernels and remains work in progress pending the
+remaining finite computations, a combined typecheck and its axiom audit.
+The analytic quadrature remainders, energy-table accuracy and endpoint
+assembly remain separate obligations.
 
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
@@ -108,6 +116,99 @@ these give exact integration for polynomials of degree below $2n$ at order $n$.
 The certificates use kernel reduction and are part of the main Lean build.
 The selected numerical nodes and the analytic remainder require separate
 proofs; this algebraic result alone does not finish the upper endpoint.
+For the energy table, \texttt{EllCheck.quadRemainderHyp} now proves the covered-set
+quadrature error bound $\|G^{\mathrm c}-G_{\mathrm{full}}\|_{\ell^2}\le1.5\cdot10^{-12}$.
+The proof combines an entire conditional-coefficient extension, a finite complex
+Mehler bound and a Banach-space Bernstein-ellipse remainder theorem. Sharded
+interval checks of the committed panel plans certify a canonical error sum below
+$1.04\cdot10^{-12}$; reflection gives the full bound. Its axiom report uses the
+standard axioms and registered native facts. The twisted-source estimates and
+the final upper-endpoint assembly remain separate obligations.
+For the twisted source, \texttt{TwistPanels.remainder\_of\_ellipses} reduces the
+covered-set remainder to complex extensions and boundary caps on every actual
+production panel. The Euclidean vector retains every mode
+$q<Q$, $c\le q+1$, $d\le q$; its panel errors are summed without a reflection
+factor. The theorem assumes differentiability through each closed ellipse,
+agreement on the positive real slice, and the numerical bound on the total
+Gauss remainder. These analytic and numerical inputs remain to be supplied.
+The auxiliary canonical shell bound, with $\theta=|A|^2/\Re(A^2)$ and
+$\Re(A^2)>0$, is
+\[
+ \sum_{g=0}^{m}|U_{g,m-g}(A)|
+ \le 2\sqrt{\theta}\,(m+1)\sqrt{m!}
+       \left(\frac{\sqrt{8}\,\theta}{|A|}\right)^m.
+\]
+For the twisted factorization, columns with squared energies at most
+$E N_m^2$ give the squared output-vector bound
+\[
+ 4E\theta\left(\sum_{m=0}^{D+35j}(m+1)\sqrt{m!N_m^2}
+       \left(\frac{\sqrt8\,\theta}{\sqrt{\lambda}|A|}\right)^m\right)^2,
+ \qquad \lambda=1+j\varepsilon,\quad \Re(A^2)>0.
+\]
+The common-triangle padding and Euclidean triangle inequality add no
+output-dimension factor. Concrete column and geometric bounds are separate
+inputs to the certificate application.
+The K adapter instantiates the production column estimates and identifies
+the factorization with the actual Gaussian-shift coefficients. Upper bounds
+for $\theta$ and the imaginary square, and a positive lower bound for
+$|A|^2$, give exactly the checker expression \texttt{coarseKSq}; multiplying
+by the primary radial envelope bounds the actual full descended vector.
+No column-energy premise remains in this adapter.
+The concrete descended twisted vector now supplies the analytic extension
+in this reduction, including at the origin wherever $v_C$ is nonzero.
+Its finite-Mehler estimate retains the full graded vector and combines
+directly with the coupled Gaussian-translation Y bound. The actual profile
+sign is constant on each zero-free real panel and may be fixed at its left
+endpoint. Consequently,
+\lean{UpperQuad.TwistRadialExt.remainder_of_descended_ellipses} requires only
+profile nonvanishing through each closed ellipse, boundary norm caps and
+their summed numerical remainder. These certificates and their total remain
+open inputs to the unconditional upper endpoint.
+The analytic Y adapter now bounds this actual vector from coordinate bounds
+$r^2=s$, $S_{\rm lo}\le\Re s$, $(\Re r)^2\le X$, $(\Im r)^2\le Y$ and
+$(\Im A)^2\le B^2$, where $A$ is the signed production shift. For
+$0<t,\eta<1$, $|\sigma|=1$ and $D=D_{\rm out}$, its squared bound is
+\[
+ e^{-2S_{\rm lo}}\frac{t^{-D}}{1-t^2}
+ e^{\frac{2tX}{1+t}+\frac{2tY}{1-t}}
+ \frac{\eta^{-35j}}{(1-\eta)^2}
+ e^{\frac{4j(21/20)(Y+B^2)}{1-\eta}}
+ e^{2B^2+2\sqrt{2D}\sqrt{B^2}}.
+\]
+This pointwise theorem also supplies a norm cap from a certified squared cap.
+It introduces no interval premise or new native fact; enclosure soundness and
+the complete panel sum are still needed.
+The finite assembly fixes one power and one certificate array across all
+accepted shards. Explicit coverage of every source index and the checked
+array length give every actual panel predicate; the checked rational total
+bounds the real sum of those same error caps. Overlapping shards do not
+duplicate a panel in this sum. The finite acceptance facts and their analytic
+interpretation remain required.
+Accepted disk-cover geometry and strict profile separation on every disk
+also give nonvanishing throughout the closed ellipse. The same separation
+identifies the checker's sign with the physical profile sign at every real
+panel point and hence with the continuation's fixed left-endpoint sign.
+Certificate acceptance itself now supplies this geometry and the exact
+real Gauss error. Together with complete acceptance and the checked total,
+the actual remainder follows from the remaining interpretation of each
+certificate's squared mass cap on its ellipse boundary.
+
+For the twisted sources, exact panel certificates for all three production powers
+are stored in \texttt{data/twist-ellipse/plans.json}. Registered native checks
+verify their disk-majorant caps and total error budgets, with a reserve of
+$10^{-15}$ below each relaxed radius. Arithmetic soundness and disk-geometry
+lemmas expose the checked expressions. Their identification with the actual
+twisted vector, the analytic remainder, and the final upper endpoint remain
+separate proof steps.
+
+For an accepted Y-mode disk evaluation, the geometric and interval witnesses
+now bound the actual descended vector throughout the disk, uniformly for
+every real sign of absolute value one. The proof covers the fallback that
+bounds the imaginary shift by its full norm when the angle check fails.
+The same profile separation excludes every profile zero in the disk.
+Accepted lower-norm and angle witnesses also transport to the signed shift
+for K consumers. Actual K and automatic-mode soundness and the final
+remainder assembly remain separate obligations.
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[
@@ -480,6 +581,69 @@ $|p'(r)|\le630M$ when all samples have absolute value at most $M\ge0$.
 \lean{UpperQuad.CentralDerivative} supplies this algebraic step with standard
 axiom guards. The actual phase polynomial, sample enclosures and physical
 panel integration remain separate inputs.
+
+The generic complex growth theorem
+\lean{UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le} controls
+a degree-$N$ polynomial $P$ satisfying
+$|P(z,\bar z)|\le\exp(\varepsilon|z|^2)$ for every $z\in\mathbb C$.
+For $\varepsilon>0$, $0<\tau<1$, and complex $r,x$, it proves
+\[
+ \left|P(r+ix,r-ix)e^{-\varepsilon(r^2+x^2)}\right|^2
+ \le \frac{\exp\!\left(\frac{4\varepsilon}{1-\tau}
+       ((\Im r)^2+(\Im x)^2)\right)}{\tau^N(1-\tau)^2}.
+\]
+The proof combines a finite degree-controlled Hermite expansion, its Gaussian
+norm identity, the complex Mehler bound, and a change of Gaussian rate to
+$\varepsilon(1+\tau)/\tau$. The real-coordinate exponent cancels exactly.
+The generic theorem uses only standard axioms.
+\lean{UpperQuad.PhasePolynomialComplex} applies it to the actual phase:
+at fixed real $y$, the polynomial in $(r,x)$ has degree at most $35$ and retains
+$e^{-\varepsilon y^2}$ in its coefficients. The continuation is jointly complex
+analytic and agrees with the production phase on real slices. For every positive
+integer $j$, the bound applies directly with degree $35j$ and damping
+$j\varepsilon$, with the same $(1-\tau)^{-2}$ prefactor. Its certificate
+dependencies are the existing registered phase-cover facts.
+Integration of finite Mehler also gives
+\[
+ \|P(\sqrt L\,\cdot)\|_{L^2(\gamma)}^2
+ \le \|P\|_{L^2(\gamma)}^2
+       \frac{\tau^{-N}}{(1-\tau)(1-(2L-1)\tau)},
+ \qquad L\ge1,\quad (2L-1)\tau<1.
+\]
+\lean{UpperQuad.PolynomialDilationNorm} supplies this standard-axiom bound and
+its normalized Hermite-column specialization. Certified contour bounds and
+twisted quadrature remainders remain separate obligations.
+
+\lean{UpperQuad.PhasePolynomialParity} proves simultaneous phase parity and
+the degree sign of the formal Hermite factors. The full graded radial vector
+is controlled by \lean{UpperQuad.HermiteRadialVector}: its index map is
+injective into the product of two degree triangles of cutoff $2Q-1$.
+Its squared norm is bounded by the primary finite-Mehler factor, including
+$e^{-2\operatorname{Re}(r^2)}$, times the conditional coefficient energy,
+with no factor for the number of modes. These results use standard axioms;
+actual-source continuation and certified contour bounds are still required.
+
+\lean{UpperQuad.EvenSquareDescent.analyticOnNhd_descend} removes the origin
+square-root singularity for an even analytic complex Banach-valued function.
+If $F$ is analytic on $|r|<R$, $R>0$, and $F(-r)=F(r)$ there, then
+$g(s)=F(\sqrt{s})$ is analytic on $|s|<R^2$, with $g(r^2)=F(r)$.
+The square map is locally invertible away from zero; continuity and the
+removable-singularity theorem handle zero. Uniform norm bounds transport
+unchanged, including on closed balls. The concrete twisted integrand's parity,
+analyticity and certified contour bounds remain separate inputs.
+
+The twisted conditional coefficient also has a finite entire factorization.
+For $\lambda=1+j\varepsilon$, its matrix is the normalized Hermite expansion of
+$H_{d,c}Q_r^j$ after rescaling by $\sqrt\lambda$, multiplied by
+$\lambda^{-1}e^{-j\varepsilon r^2}$. The polynomial $Q_r$ includes the factor $i$,
+and the support is $g+h\le c+d+35j$. The swapped extraction index $(h,g)$
+pairs with $U_{g,h}(\sqrt\lambda A)$. The real signed-shift integral determines
+this continuation uniquely, identifying it with the shifted Gaussian
+coefficient. Each matrix column is an actual Hermite inner-product family;
+Bessel bounds its squared norm by the production phase envelope times the
+Hermite dilation bound, with no second Jacobian. These statements provide
+the analytic finite-factorization estimate, while certified contour suprema
+and twisted quadrature remainders remain separate obligations.
 
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
@@ -995,6 +1159,45 @@ $1.4\cdot10^{-8}$ and $7\cdot10^{-8}$, with a further $10^{-12}$
 allowance for each finite-table low-band excursion. The six Gaussian
 estimates and table accuracy remain explicit inputs; the rational budget
 alone does not prove them. This variant introduces no native facts.
+
+The complex Gaussian shift route now has a formal analytic estimate. For
+$j>0$, $0<\tau<1$, and any finite family of conditional Hermite modes with
+total degree at most $D$, write $A=a+ib$ and $\varepsilon=21/20$. Then
+\[
+ \sum_i |J_i(r,A)|^2 \le
+ e^{2b^2+2|b|\sqrt{2D}}\,
+ \tau^{-35j}(1-\tau)^{-2}
+ \exp\!\left(\frac{4j\varepsilon}{1-\tau}
+              ((\operatorname{Im}r)^2+b^2)\right).
+\]
+There is no factor for the number of selected modes. The finite Hermite
+translation shifts both formal variables together. An exact real Gaussian
+change of variables identifies the coefficient with a fixed-phase integral;
+a locally uniform integrable majorant permits analytic parameter dependence
+and bounded holomorphic substitutions on closed disks. On the production
+real slice, $s\ge0$ and $v(s)\ne0$, the actual coefficient is
+$\sigma J_i(\sqrt{s},\sigma A_+(s))$, where
+$\sigma=\operatorname{sign}v(s)$ and
+$A_+(s)=\sqrt{s}/(\sqrt{1+a_Q^2}|v(s)|)$.
+Certified zero-free domains, contour bounds and quadrature-remainder
+assembly remain separate obligations. These estimates inherit the six
+existing phase-cover facts and introduce no new numerical axiom.
+
+The full twisted radial component is now identified with
+\[
+ e^{-r^2}\,\sigma\,
+ h_{q-d,q+1-c}(r,r)\,
+ J_{c,d}\!\left(r,\frac{r}{\kappa v_C(r^2)}\right),
+ \qquad c\le q+1,\quad d\le q.
+\]
+Here the formal Hermite factor is normalized. This is the integrand in
+$ds$ with $s=r^2$, so no extra radial Jacobian is inserted. Its simultaneous
+phase and Hermite parity makes it globally even in $r$. Local square
+descent proves analyticity as a function of $s$ at every point with
+$v_C(s)\ne0$, for $j>0$, including the origin when its profile is nonzero.
+The result crosses the principal square-root cut; the real-slice equality
+retains the explicit fixed panel sign. Profile exclusion certificates,
+contour estimates and quadrature aggregation remain necessary.
 
 The degree-531 canonical pair table indexes conditional Hermite node values
 by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
