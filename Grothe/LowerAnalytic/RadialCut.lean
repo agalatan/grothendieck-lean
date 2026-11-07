@@ -140,10 +140,8 @@ lemma cutAux_deriv (cv : List ℚ) : ∀ (vs : List ℚ) (a t c Phi : ℚ) (i : 
         funext y; rw [hpick]; split_ifs <;> rfl
       rw [e1, hpick]
       split_ifs with hu
-      · simp only [hu, ↓reduceIte] at h
-        exact h
-      · simp only [hu, ↓reduceIte] at h
-        exact h
+      · simpa only [hu, ↓reduceIte] using h
+      · simpa only [hu, ↓reduceIte] using h
     · rw [hpick]
       simp only [htw, ↓reduceIte]
       rw [cellPrim, hA, hB, hE]; ring

@@ -166,8 +166,7 @@ theorem priced_pair (z : ℂ) (p : ℂ) :
       ≥ pr.g z / 16 * (4 * X - (pr.A z ^ 2 - pr.B z ^ 2)) ^ 2 := by
     have h1 : pr.g z / 16 ≤ 1 / (2 * D) := by
       rw [div_le_div_iff₀ (by norm_num) (by positivity)]
-      have := pr.hg z
-      linarith
+      linarith [pr.hg z]
     rw [div_eq_mul_one_div ((4 * X - (pr.A z ^ 2 - pr.B z ^ 2)) ^ 2), mul_comm]
     exact mul_le_mul_of_nonneg_right h1 (sq_nonneg _)
   have hYA : (‖Lf ℓ β z + p‖ ^ 2 + pr.A z ^ 2) / (2 * pr.A z)
@@ -176,16 +175,14 @@ theorem priced_pair (z : ℂ) (p : ℂ) :
     have e : (‖Lf ℓ β z + p‖ ^ 2 + pr.A z ^ 2) / (2 * pr.A z)
         = (1 / pr.A z) * ‖Lf ℓ β z + p‖ ^ 2 / 2 + pr.A z / 2 := by field_simp
     rw [e]
-    have := mul_le_mul_of_nonneg_right h1 (sq_nonneg ‖Lf ℓ β z + p‖)
-    linarith
+    linarith [mul_le_mul_of_nonneg_right h1 (sq_nonneg ‖Lf ℓ β z + p‖)]
   have hYB : (‖Lf ℓ β z - p‖ ^ 2 + pr.B z ^ 2) / (2 * pr.B z)
       ≤ pr.nB z * ‖Lf ℓ β z - p‖ ^ 2 / 2 + pr.B z / 2 := by
     have h1 : 1 / pr.B z ≤ pr.nB z := by rw [div_le_iff₀ hB]; exact pr.hnB z
     have e : (‖Lf ℓ β z - p‖ ^ 2 + pr.B z ^ 2) / (2 * pr.B z)
         = (1 / pr.B z) * ‖Lf ℓ β z - p‖ ^ 2 / 2 + pr.B z / 2 := by field_simp
     rw [e]
-    have := mul_le_mul_of_nonneg_right h1 (sq_nonneg ‖Lf ℓ β z - p‖)
-    linarith
+    linarith [mul_le_mul_of_nonneg_right h1 (sq_nonneg ‖Lf ℓ β z - p‖)]
   have e2 := normSq_add_eq (Lf ℓ β z) p
   have e3 := normSq_sub_eq (Lf ℓ β z) p
   simp only [nuF, dnuF, delF]
@@ -356,8 +353,7 @@ lemma integrable_c0F : Integrable (c0F ℓ β pr) gaussC := by
         rw [← sq_abs]; exact pow_le_pow_left₀ (abs_nonneg _) hd 2
       have e : 0 ≤ pr.g z * delF pr z ^ 2 / 16 := by positivity
       have e2 : pr.g z * delF pr z ^ 2 / 16 ≤ pr.c * (pr.c ^ 2) ^ 2 / 16 := by
-        have := mul_le_mul hg1 hd2 (sq_nonneg _) (hg0.trans hg1)
-        linarith
+        linarith [mul_le_mul hg1 hd2 (sq_nonneg _) (hg0.trans hg1)]
       rw [abs_le]; constructor <;> linarith)
     (integrable_const 1)
   refine (h1.add h2).congr (Filter.Eventually.of_forall fun z => ?_)

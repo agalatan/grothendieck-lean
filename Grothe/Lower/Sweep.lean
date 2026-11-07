@@ -74,8 +74,7 @@ lemma piece_ok (k : ℕ) (v gv maj cpv c0 c1 Ψv : ℝ) (hk : k = 0 ∨ 0 < v)
     · positivity
   have h1 : 0 ≤ v ^ shOf k * (maj - c0 - c1 * v - gv) := by
     rw [mul_sub, hg]; linarith
-  have := nonneg_of_mul_nonneg_right h1 hpos
-  linarith
+  linarith [nonneg_of_mul_nonneg_right h1 hpos]
 
 /-- Slope of the chord of two nodes. -/
 def slope (n n' : ℚ × ℚ) : ℚ := (n'.2 - n.2) / (n'.1 - n.1)

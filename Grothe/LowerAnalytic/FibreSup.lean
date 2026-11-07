@@ -202,9 +202,8 @@ lemma integrable_norm_L_add (v : Fib) (σ : ℝ) :
   exact add_le_add (norm_Lf_le ℓ β z) (mul_le_mul_of_nonneg_left (v.norm_fn_le z) (abs_nonneg _))
 
 lemma integrable_norm_L_pfn (y : Fib) (s σ : ℝ) :
-    Integrable (fun z => ‖Lf ℓ β z + (σ : ℂ) * pfn E R a y s z‖) gaussC := by
-  have := integrable_norm_L_add ℓ β ((Fib.M E R y).add (a.smul s)) σ
-  exact this
+    Integrable (fun z => ‖Lf ℓ β z + (σ : ℂ) * pfn E R a y s z‖) gaussC :=
+  integrable_norm_L_add ℓ β ((Fib.M E R y).add (a.smul s)) σ
 
 lemma integrable_norm_L_plus (y : Fib) (s : ℝ) :
     Integrable (fun z => ‖Lf ℓ β z + pfn E R a y s z‖) gaussC := by
@@ -223,6 +222,14 @@ def fibreExpr (f g : ℂ → ℂ) (s : ℝ) : ℝ :=
   Fib.quad E R (coefFib fun z => (f z - g z) / 2)
     + 2 * (∫ z, conj (Lf ℓ β z) * ((f z + g z) / 2) ∂gaussC).re
     + 2 * s * Fib.ip a (coefFib fun z => (f z - g z) / 2)
+
+lemma re_integral_conj_mul_le {F u : ℂ → ℂ} (hF : Integrable F gaussC)
+    (hu : AEStronglyMeasurable u gaussC) (hub : ∀ z, ‖u z‖ ≤ 1) :
+    (∫ z, conj (F z) * u z ∂gaussC).re ≤ ∫ z, ‖F z‖ ∂gaussC := by
+  refine (Complex.re_le_norm _).trans ((norm_integral_le_integral_norm _).trans
+    (integral_mono (integrable_mul_k hu hub (integrable_conj_of hF)).norm hF.norm fun z => ?_))
+  simp only [norm_mul, Complex.norm_conj]
+  exact mul_le_of_le_one_right (norm_nonneg _) (hub z)
 
 section pair
 
@@ -277,19 +284,12 @@ theorem fibreExpr_le_Jpot (s : ℝ) :
   have hsplit := payoff_split ℓ β hfm hgm hfb hgb (pfn E R a K s) (continuous_pfn E R a K s) C hC
   have hpair := re_integral_conj_fn_mul hkm hkb ((Fib.M E R K).add (a.smul s))
   rw [Fib.ip_add_smul, Fib.ip_M_self] at hpair
-  have hre_le : ∀ (F : ℂ → ℂ) (u : ℂ → ℂ), Integrable F gaussC → AEStronglyMeasurable u gaussC →
-      (∀ z, ‖u z‖ ≤ 1) → (∫ z, conj (F z) * u z ∂gaussC).re ≤ ∫ z, ‖F z‖ ∂gaussC := by
-    intro F u hF hu hub
-    refine (Complex.re_le_norm _).trans ((norm_integral_le_integral_norm _).trans
-      (integral_mono (integrable_mul_k hu hub (integrable_conj_of hF)).norm hF.norm fun z => ?_))
-    simp only [norm_mul, Complex.norm_conj]
-    exact mul_le_of_le_one_right (norm_nonneg _) (hub z)
   have hLP : Integrable (fun z => Lf ℓ β z + pfn E R a K s z) gaussC :=
     (integrable_Lf ℓ β).add (integrable_of_le_qw _ (continuous_pfn E R a K s) C hC)
   have hLM : Integrable (fun z => Lf ℓ β z - pfn E R a K s z) gaussC :=
     (integrable_Lf ℓ β).sub (integrable_of_le_qw _ (continuous_pfn E R a K s) C hC)
-  have hA := hre_le _ f hLP hfm hfb
-  have hB := hre_le _ g hLM hgm hgb
+  have hA := re_integral_conj_mul_le hLP hfm hfb
+  have hB := re_integral_conj_mul_le hLM hgm hgb
   have hI : ∫ z, (‖Lf ℓ β z + pfn E R a K s z‖ + ‖Lf ℓ β z - pfn E R a K s z‖) ∂gaussC
       = ∫ z, ‖Lf ℓ β z + pfn E R a K s z‖ ∂gaussC + ∫ z, ‖Lf ℓ β z - pfn E R a K s z‖ ∂gaussC :=
     integral_add hLP.norm hLM.norm
@@ -300,14 +300,6 @@ theorem fibreExpr_le_Jpot (s : ℝ) :
   linarith
 
 end pair
-
-lemma re_integral_conj_mul_le {F u : ℂ → ℂ} (hF : Integrable F gaussC)
-    (hu : AEStronglyMeasurable u gaussC) (hub : ∀ z, ‖u z‖ ≤ 1) :
-    (∫ z, conj (F z) * u z ∂gaussC).re ≤ ∫ z, ‖F z‖ ∂gaussC := by
-  refine (Complex.re_le_norm _).trans ((norm_integral_le_integral_norm _).trans
-    (integral_mono (integrable_mul_k hu hub (integrable_conj_of hF)).norm hF.norm fun z => ?_))
-  simp only [norm_mul, Complex.norm_conj]
-  exact mul_le_of_le_one_right (norm_nonneg _) (hub z)
 
 /-- `‖L ± p‖` integrated, as the real part of the payoff of the phase. -/
 lemma integral_norm_eq_re (F : ℂ → ℂ) (_hF : Continuous F) :
@@ -340,10 +332,8 @@ theorem Jpot_le_fibreExpr (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) 
   have hsplit := payoff_split ℓ β hfm hgm hfb hgb (pfn E R a y s) hpc C hC
   have hpair : (∫ z, conj (pfn E R a y s z) * ((ph (Lf ℓ β z + pfn E R a y s z)
       - ph (Lf ℓ β z - pfn E R a y s z)) / 2) ∂gaussC).re
-      = Fib.ip (Fib.M E R y) K + s * Fib.ip a K := by
-    have := re_integral_conj_fn_mul hkm hkb ((Fib.M E R y).add (a.smul s))
-    rw [Fib.ip_add_smul] at this
-    exact this
+      = Fib.ip (Fib.M E R y) K + s * Fib.ip a K :=
+    (re_integral_conj_fn_mul hkm hkb _).trans (Fib.ip_add_smul _ _ _ _)
   have hsq := Fib.quad_nonneg E R hE hR (y.sub K)
   rw [Fib.quad_sub] at hsq
   have hLP : Integrable (fun z => Lf ℓ β z + pfn E R a y s z) gaussC :=
@@ -376,9 +366,8 @@ lemma coefFib_le {k : ℂ → ℂ} (hkm : AEStronglyMeasurable k gaussC) (hkb : 
       ‖(coefFib k).z1‖ ≤ cq ∧ ‖(coefFib k).z2‖ ≤ cq ∧ ‖(coefFib k).d‖ ≤ cq := by
   have h1 : ∀ z, (1 : ℝ) ≤ qw z := fun z => by unfold qw; nlinarith [Complex.normSq_nonneg z]
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
-  · have := norm_coef_le hkm hkb (G := fun _ => (1 : ℂ)) continuous_const
+  · simpa [coefFib] using norm_coef_le hkm hkb (G := fun _ => (1 : ℂ)) continuous_const
       (fun z => by simp; linarith [h1 z])
-    simpa [coefFib] using this
   · exact norm_coef_le hkm hkb (Complex.continuous_conj.comp continuous_fB1)
       (fun z => by simpa using (norm_fB1_le z).trans (by linarith [qw_nonneg z]))
   · rw [coefFib, Complex.norm_conj]
@@ -492,8 +481,7 @@ lemma Jpot_convex (y : Fib) (s t θ : ℝ) (h0 : 0 ≤ θ) (h1 : θ ≤ 1) :
         Real.norm_eq_abs, abs_of_nonneg h0, abs_of_nonneg (by linarith)]
     rw [e1, e2]
     have := n (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z + pfn E R a y t z)
-    have := n (Lf ℓ β z - pfn E R a y s z) (Lf ℓ β z - pfn E R a y t z)
-    linarith
+    linarith [n (Lf ℓ β z - pfn E R a y s z) (Lf ℓ β z - pfn E R a y t z)]
   have hm := integral_mono (integrable_Jint E R ℓ β a y _)
     (((integrable_Jint E R ℓ β a y s).const_mul θ).add
       ((integrable_Jint E R ℓ β a y t).const_mul (1 - θ))) hpt
@@ -533,8 +521,7 @@ lemma Jpot_lip (y : Fib) (s t : ℝ) (hst : s ≤ t) :
       rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith)]
     rw [e1, e2]
     have := norm_add_le (Lf ℓ β z + pfn E R a y s z) (((t - s : ℝ) : ℂ) * a.fn z)
-    have := norm_sub_le (Lf ℓ β z - pfn E R a y s z) (((t - s : ℝ) : ℂ) * a.fn z)
-    linarith
+    linarith [norm_sub_le (Lf ℓ β z - pfn E R a y s z) (((t - s : ℝ) : ℂ) * a.fn z)]
   have hm := integral_mono (integrable_Jint E R ℓ β a y t)
     ((integrable_Jint E R ℓ β a y s).add (hA.const_mul (2 * (t - s)))) hpt
   have hsum : ∫ z, ((‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖)
@@ -665,10 +652,8 @@ theorem capsHold_rowPot (k : ℕ) (hk : k < rowData.length)
     exact h.1.1
   have hsmR : 2 * (|1 + ((rowData.getD k row01).b1 : ℝ)| + 7358 / 10000 * |((rowData.getD k row01).b2 : ℝ)|
       + 707107 / 1000000 * |((rowData.getD k row01).b3 : ℝ)|) ≤ ((rowData.getD k row01).smax : ℝ) := by
-    have := (Rat.cast_le (K := ℝ)).2 hsm
-    simp only [Rat.cast_mul, Rat.cast_add, Rat.cast_abs, Rat.cast_one, Rat.cast_ofNat,
-      Rat.cast_div] at this
-    exact this
+    simpa only [Rat.cast_mul, Rat.cast_add, Rat.cast_abs, Rat.cast_one, Rat.cast_ofNat,
+      Rat.cast_div] using (Rat.cast_le (K := ℝ)).2 hsm
   exact capsHold_pot _ _ _ _ _ _ _ hg.1.1 hR _ _ hsmR hcaps
 
 end

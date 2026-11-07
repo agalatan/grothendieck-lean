@@ -217,9 +217,8 @@ theorem gaussian_gramInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
       ← integral_const_mul]
     refine integral_mono (memLp_radR a b).integrable_sq
       (((integrable_eval _).add (integrable_eval _)).const_mul _) fun x => ?_
-    have h := radR_sq_le a b x
     simp only [map_mul]
-    linarith
+    linarith [radR_sq_le a b x]
   have e3 : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) = gaussE d (radU a b * radU a b) := by
     rw [gaussE_apply]
     exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_mul]; ring)

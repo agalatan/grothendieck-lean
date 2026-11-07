@@ -59,8 +59,7 @@ variable {ι : Type*} [Fintype ι]
 
 /-- Hilbert–Schmidt submultiplicativity for the symmetrized contraction. -/
 lemma tenT4_le (f : ι → ι → ι → ℝ) : tenT4 f ≤ tenH f ^ 2 := by
-  have h := ip4_comp_le (kerS f) (kerS f)
-  simpa only [tenT4, kerS2, comp, ip4, tenH, sq] using h
+  simpa only [tenT4, kerS2, comp, ip4, tenH, sq] using ip4_comp_le (kerS f) (kerS f)
 
 /-- The cubic trace estimate does not require `kerS f` to be positive. -/
 lemma tenT3_le (f : ι → ι → ι → ℝ) (hf : ∀ a b c, f a b c = f b a c) :
@@ -105,8 +104,8 @@ lemma trace_cube_le {α : Type*} [Fintype α] (A : α → α → ℝ) :
   have hs : 0 ≤ s := by dsimp [s]; positivity
   have hB : (∑ a, ∑ c, B a c ^ 2) ≤ s ^ 2 := by
     calc
-      _ ≤ ∑ a, ∑ c, (∑ b, A a b ^ 2) * (∑ b, A b c ^ 2) := by
-        exact Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun c _ =>
+      _ ≤ ∑ a, ∑ c, (∑ b, A a b ^ 2) * (∑ b, A b c ^ 2) :=
+        Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun c _ =>
           Finset.sum_mul_sq_le_sq_mul_sq _ _ _
       _ = s ^ 2 := by
         simp only [← Finset.mul_sum, ← Finset.sum_mul]
@@ -193,8 +192,7 @@ lemma young {s h t : ℝ} (hs : 0 ≤ s) (hh : 0 ≤ h) (ht : 0 < t) :
     rw [mul_sub, mul_add, mul_div_cancel₀ _ (ne_of_gt ht)]
     rw [sub_sq, mul_pow, Real.sq_sqrt hs, Real.sq_sqrt hh]
     ring
-  have := (mul_nonneg_iff_of_pos_left ht).1 (he.symm ▸ hsq)
-  linarith
+  linarith [(mul_nonneg_iff_of_pos_left ht).1 (he.symm ▸ hsq)]
 
 /-- The scalar passage from J5 to J2. -/
 lemma j2_of_j5 {s h x m : ℝ} (hs : 0 ≤ s) (hh : 0 ≤ h) (hx : 0 ≤ x)

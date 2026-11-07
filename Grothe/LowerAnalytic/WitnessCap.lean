@@ -404,9 +404,7 @@ theorem integral_norm_le_rho_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n)
         = ((1 : ℝ) : ℂ) := by rw [h]; norm_num
     exact Complex.ofReal_injective h3
   have hAB : ∫ x, eval x A ^ 2 ∂(stdGaussian (n + n)) = ∫ x, eval x B ^ 2 ∂(stdGaussian (n + n)) := by
-    have := hc.gE_sq_eq hE
-    rw [gaussE_apply, gaussE_apply] at this
-    simpa only [map_mul, sq] using this
+    simpa only [gaussE_apply, map_mul, sq] using hc.gE_sq_eq hE
   have hiA : Integrable (fun x => eval x A ^ 2) (stdGaussian (n + n)) :=
     (integrable_eval (A ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
   have hiB : Integrable (fun x => eval x B ^ 2) (stdGaussian (n + n)) :=

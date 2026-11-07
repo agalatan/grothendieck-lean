@@ -353,9 +353,7 @@ theorem covariance_order (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) {
     ← Finset.sum_mul, ← Finset.mul_sum] at hsum
   have z1 : ∑ i, ∑ k, E (gam (ai i) (bi k) * gam (ai i) (bi k))
       = ∑ i, ∑ k, E (gam (ai i) (ai k) * gam (bi i) (bi k)) := by
-    have h := congrArg E (sum_C_sq a b)
-    simp only [map_sum] at h
-    exact h
+    simpa only [map_sum] using congrArg E (sum_C_sq a b)
   have z2 : ∑ i, ∑ k, E (gam (ai k) (bi i) * gam (ai k) (bi i))
       = ∑ i, ∑ k, E (gam (ai i) (bi k) * gam (ai i) (bi k)) := Finset.sum_comm
   have z3 : ∑ i, ∑ k, E (gam (ai k) (bi i)) ^ 2 = ∑ i, ∑ k, E (gam (ai i) (bi k)) ^ 2 :=
