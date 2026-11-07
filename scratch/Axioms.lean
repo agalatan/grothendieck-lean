@@ -13184,8 +13184,6 @@ import Grothe
 #print axioms Grothe.UpperQuad.PolynomialRescale.eval_rescale_scaled_pair
 #print axioms Grothe.UpperQuad.PolynomialRescale.rescale
 #print axioms Grothe.UpperQuad.PolynomialRescale.totalDegree_rescale_le
-#print axioms Grothe.UpperQuad.Mehler.mehlerExp_diag_re
-#print axioms Grothe.UpperQuad.Mehler.sum_mehler_le
 #print axioms Grothe.UpperQuad.Quad.canonicalCoefficient_neg
 #print axioms Grothe.UpperQuad.Quad.gauss_remainder_of_poly_approx
 #print axioms Grothe.UpperQuad.Quad.panel_exactness
