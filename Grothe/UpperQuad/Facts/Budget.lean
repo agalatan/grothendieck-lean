@@ -1,6 +1,7 @@
 import Grothe.UpperQuad.Facts.Common
 import Grothe.UpperQuad.SeedAnalytic
 import Grothe.UpperQuad.OmittedTotal
+import Grothe.UpperQuad.Facts.OmittedDefs
 
 /-!
 # The numeric instantiation of the block facts
@@ -79,13 +80,6 @@ lemma seed_of_shift (hW : WatsonHyp 70) (hpv : profileValid P0 piI profile = tru
     exact mem_seedJ0I_moment P0 (by decide) mem_piI (sq_nonneg _) hsq hW
 
 /-! ### The omitted pairs (part (C) of `hQuad`) -/
-
-/-- The bound of the omitted-pair check at scale `2^256`: `10⁶³ / 2²⁵⁶ ≈ 8.6·10⁻¹⁵` (the measured sum
-over the 10,322 nodes with a cutoff is `≈ 10⁻²⁰`). -/
-def omittedBoundNum : ℤ := 10 ^ 63
-
-/-- The omitted-pair fact: `Σ_a √(Z_a m̄_a) ≤ omittedBoundNum / 2²⁵⁶` over the committed partition. -/
-def omittedFact : Bool := omittedOK P0 piI profile partitionSpecs omittedBoundNum
 
 /-- The `ℓ²` distance between the exact Gauss sums with and without the cutoffs, from the omitted-pair
 fact (S2 from the Watson remainder, the roots from block 0). -/
