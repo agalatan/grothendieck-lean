@@ -245,14 +245,13 @@ theorem coverOK_sound (M : List (List ℚ)) (nx ny : ℕ) (hM : fitsDeg M nx ny 
     rw [eval2_eq_sum M nx ny hM]
     refine bern2_lower _ nx ny xl xh yl yh x y 0 h1 h2 (by exact_mod_cast hx) h3 h4
       (by exact_mod_cast hy) fun m hm m' hm' => ?_
-    have := hb m (Finset.mem_range.1 hm) m' (Finset.mem_range.1 hm')
     have hc : ((bern2 M nx ny xl xh yl yh m m' : ℚ) : ℝ)
         = bern1 (fun j => bern1 (fun k => ((mc M k j : ℚ) : ℝ)) nx xl xh m) ny yl yh m' := by
       simp only [bern2]
       rw [bern1_cast]
       simp only [bern1_cast]
     rw [← hc]
-    exact_mod_cast this.le
+    exact_mod_cast (hb m (Finset.mem_range.1 hm) m' (Finset.mem_range.1 hm')).le
   | .splitX l r, xl, xh, yl, yh, hT, x, y, h1, h2, h3, h4 => by
     simp only [coverOK, Bool.and_eq_true] at hT
     rcases le_total x (((xl + xh) / 2 : ℚ) : ℝ) with hx | hx

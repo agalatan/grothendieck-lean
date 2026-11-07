@@ -97,9 +97,8 @@ lemma rowCapAt_sound (r : Row) {Ψ : ℝ → ℝ} (hΨ : CapsHold Ψ r.nodeList 
     rw [hn] at hhead hsort
     simp only [headZero, beq_iff_eq] at hhead
     have hcaps : ∀ m ∈ n :: rest, Ψ m.1 ≤ m.2 := by rw [← hn]; exact hΨ.caps
-    have := capAt_sound r.smax hΨ.convex hΨ.lip rest n (r.delta * z) hsort hcaps hhead.ge
+    exact_mod_cast capAt_sound r.smax hΨ.convex hΨ.lip rest n (r.delta * z) hsort hcaps hhead.ge
       (by rw [hhead]; exact mul_nonneg hδ hz)
-    exact_mod_cast this
 
 /-- **The node caps of a mixture.**  For `F(s) = (1−θ)(Ψᵢ(δᵢ s) − pad) + θ(Ψⱼ(δⱼ s) − pad)`, a node
 table whose caps dominate the mixed interpolants of the component caps, and a Lipschitz constant

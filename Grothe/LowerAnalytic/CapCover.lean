@@ -51,8 +51,7 @@ lemma vec_ng (w : Fib) (i : ℕ) : w.ng.vec i = if 6 ≤ i ∧ i < 12 then -w.ve
 
 lemma getD_zero_of_suppOK {d : List ℚ} {blk : List ℕ} (h : suppOK d blk = true) {i : ℕ}
     (hi : i < 12) (hb : i ∉ blk) : d.getD i 0 = 0 := by
-  have := List.all_eq_true.1 h i (List.mem_range.2 hi)
-  simpa [hb] using this
+  simpa [hb] using List.all_eq_true.1 h i (List.mem_range.2 hi)
 
 /-- `τ` under a coordinate sign change that fixes, or flips, every coordinate of the support. -/
 lemma tau_sign (E : Sym3) (R : Sym2) (d : List ℚ) (blk : List ℕ) (hd : suppOK d blk = true)

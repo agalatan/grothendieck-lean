@@ -63,8 +63,7 @@ theorem nodeCap_of_pieceCaps (x : ℕ × ℕ × List String × List String)
     obtain ⟨pc, hpc, hy⟩ := capCover_sound r.E (rowR x.1) hcov y
     refine Jpot_le_of_mem_symOrbit r.E (rowR x.1) r.ell r.beta _ (aFib_cj _ _ _) (aFib_ng _ _ _)
       _ _ _ (fun w hw => ?_) hy
-    have := hp pc hpc w hw
-    linarith
+    linarith [hp pc hpc w hw]
   dsimp only
   linarith
 

@@ -625,8 +625,7 @@ lemma gE_cauchy_schwarz_pair (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P
       linarith
     rw [← not_lt]
     intro hc
-    have := mul_pos hIpos (sub_pos.mpr hc)
-    linarith
+    linarith [mul_pos hIpos (sub_pos.mpr hc)]
   · have hy : E (y * y) = 0 := by linarith [hpos y, hpos z]
     have hz : E (z * z) = 0 := by linarith [hpos y, hpos z]
     rw [hy, mul_zero] at c1 c3

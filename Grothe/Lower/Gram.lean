@@ -183,10 +183,9 @@ theorem gram_budget_of_scalars (lam mu : ℚ) (g : GramData) (hg : gramCert lam 
     (hX : X2 = (80 * n + 20 * h + 16 * b + 96 * y + 32 * z) / 9)
     (hC : C2 = (128 * b + 96 * y) / 9) :
     (lam : ℝ) * X2 + mu * C2 ≤ g.A * P + g.B * Q := by
-  have hbudget := reserved_gram_budget lam mu g ⟨0, 0, 0, 0, 0⟩
-    ((zero_reserve lam mu g).2 hg) n h b y z P Q X2 C2
-    hn hh hb hy hz hbn hyz hG0 hG1a hG1b hP hQ hX hC
-  simpa only [Reserve.value, Rat.cast_zero, zero_mul, zero_add, add_zero] using hbudget
+  simpa only [Reserve.value, Rat.cast_zero, zero_mul, zero_add, add_zero] using
+    reserved_gram_budget lam mu g ⟨0, 0, 0, 0, 0⟩ ((zero_reserve lam mu g).2 hg) n h b y z P Q X2
+      C2 hn hh hb hy hz hbn hyz hG0 hG1a hG1b hP hQ hX hC
 
 lemma gramCert_nonneg {lam mu : ℚ} {g : GramData} (h : gramCert lam mu g = true) :
     0 ≤ lam ∧ 0 ≤ mu := by

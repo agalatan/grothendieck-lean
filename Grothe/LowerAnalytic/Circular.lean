@@ -279,23 +279,21 @@ lemma sum_mul_sum_factor {α β γ : Type*} [Fintype α] [Fintype β] [Fintype �
 lemma sum_factor_212 (P : ι → ι → ι → ι → ℝ) (Q : ι → ι → ι → ℝ) :
     ∑ a, ∑ b, ∑ c, ∑ e, ∑ e', P a b e e' * Q c e e'
       = ∑ e, ∑ e', (∑ a, ∑ b, P a b e e') * ∑ c, Q c e e' := by
-  have := sum_mul_sum_factor (α := ι × ι) (β := ι) (γ := ι × ι)
+  simpa only [Fintype.sum_prod_type] using sum_mul_sum_factor (α := ι × ι) (β := ι) (γ := ι × ι)
     (fun x z => P x.1 x.2 z.1 z.2) (fun y z => Q y z.1 z.2)
-  simpa only [Fintype.sum_prod_type] using this
 
 lemma sum_factor_222 (P Q : ι → ι → ι → ι → ℝ) :
     ∑ a, ∑ b, ∑ c, ∑ d, ∑ e, ∑ e', P a b e e' * Q c d e e'
       = ∑ e, ∑ e', (∑ a, ∑ b, P a b e e') * ∑ c, ∑ d, Q c d e e' := by
-  have := sum_mul_sum_factor (α := ι × ι) (β := ι × ι) (γ := ι × ι)
-    (fun x z => P x.1 x.2 z.1 z.2) (fun y z => Q y.1 y.2 z.1 z.2)
-  simpa only [Fintype.sum_prod_type] using this
+  simpa only [Fintype.sum_prod_type] using sum_mul_sum_factor (α := ι × ι) (β := ι × ι)
+    (γ := ι × ι) (fun x z => P x.1 x.2 z.1 z.2) (fun y z => Q y.1 y.2 z.1 z.2)
 
 lemma sum_factor_214 (P : ι → ι → ι → ι → ι → ι → ℝ) (Q : ι → ι → ι → ι → ι → ℝ) :
     ∑ a, ∑ b, ∑ c, ∑ d, ∑ e, ∑ d', ∑ e', P a b d e d' e' * Q c d e d' e'
       = ∑ d, ∑ e, ∑ d', ∑ e', (∑ a, ∑ b, P a b d e d' e') * ∑ c, Q c d e d' e' := by
-  have := sum_mul_sum_factor (α := ι × ι) (β := ι) (γ := ι × ι × ι × ι)
-    (fun x z => P x.1 x.2 z.1 z.2.1 z.2.2.1 z.2.2.2) (fun y z => Q y z.1 z.2.1 z.2.2.1 z.2.2.2)
-  simpa only [Fintype.sum_prod_type] using this
+  simpa only [Fintype.sum_prod_type] using sum_mul_sum_factor (α := ι × ι) (β := ι)
+    (γ := ι × ι × ι × ι) (fun x z => P x.1 x.2 z.1 z.2.1 z.2.2.1 z.2.2.2)
+    (fun y z => Q y z.1 z.2.1 z.2.2.1 z.2.2.2)
 
 lemma kerG_symm (c d : ι) : kerG f c d = kerG f d c :=
   Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _
@@ -445,23 +443,20 @@ theorem Chaos3.gE_sq_eq_kernel {F : MvPolynomial ι ℝ} (hF : Chaos3 F) :
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [hF.pderiv3_eq, ← map_mul, gE_C hE, sq]
   have e : E (F * F) = ∑ i, ∑ j, ∑ k, kern F k j i ^ 2 / 6 := by
-    have := h3
-    unfold gam at this
-    rw [map_sum] at this
-    rw [show E (F * F) = (∑ i, E (pderiv i F * pderiv i F)) / 3 by linarith]
-    rw [Finset.sum_div]
+    unfold gam at h3
+    rw [map_sum] at h3
+    rw [show E (F * F) = (∑ i, E (pderiv i F * pderiv i F)) / 3 by linarith, Finset.sum_div]
     refine Finset.sum_congr rfl fun i _ => ?_
     have hi := h2 i
     unfold gam at hi
     rw [map_sum] at hi
     rw [show E (pderiv i F * pderiv i F) = (∑ j, E (pderiv j (pderiv i F) * pderiv j (pderiv i F))) / 2
-      by linarith]
-    rw [Finset.sum_div, Finset.sum_div]
+      by linarith, Finset.sum_div, Finset.sum_div]
     refine Finset.sum_congr rfl fun j _ => ?_
     have hj := h1 i j
     rw [h0] at hj
-    rw [show E (pderiv j (pderiv i F) * pderiv j (pderiv i F)) = ∑ k, kern F k j i ^ 2 by linarith]
-    rw [Finset.sum_div, Finset.sum_div]
+    rw [show E (pderiv j (pderiv i F) * pderiv j (pderiv i F)) = ∑ k, kern F k j i ^ 2 by linarith,
+      Finset.sum_div, Finset.sum_div]
     refine Finset.sum_congr rfl fun k _ => ?_
     ring
   rw [e, Finset.mul_sum]
@@ -578,8 +573,7 @@ include hc
 
 /-- `E ab = 0` for a circular pair. -/
 lemma Circular.gaussian_mul : ∫ x, eval x a * eval x b ∂(stdGaussian d) = 0 := by
-  have h := hc.gE_mul (gaussE_isGaussianExpectation d)
-  simpa only [gaussE_apply, map_mul] using h
+  simpa only [gaussE_apply, map_mul] using hc.gE_mul (gaussE_isGaussianExpectation d)
 
 /-- `E b² = E a²` for a circular pair. -/
 lemma Circular.gaussian_sq_eq (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) :
@@ -597,8 +591,8 @@ theorem Circular.gaussian_sixth (ha : Chaos3 a)
         + C6 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) ^ ((3 : ℝ) / 2) := by
   have haa' : gaussE d (a * a) = 1 / 2 := by
     rw [gaussE_apply, ← haa]; simp only [map_mul, sq]
-  have h := sixth_moment_circular (gaussE_isGaussianExpectation d) ha hc haa' hT
-  simpa only [gaussE_apply, map_pow] using h
+  simpa only [gaussE_apply, map_pow] using
+    sixth_moment_circular (gaussE_isGaussianExpectation d) ha hc haa' hT
 
 end gaussian
 

@@ -43,9 +43,8 @@ theorem gramN_le_tensorNormSq_sq (t : ι → ι → ι → ℂ) :
     _ ≤ ∑ a, ∑ b, (∑ j, ∑ k, Complex.normSq (t a j k)) *
         (∑ j, ∑ k, Complex.normSq (t b j k)) := by
       refine Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ => ?_
-      have h := normSq_sum_mul_conj_le (fun p : ι × ι => t a p.1 p.2)
-        (fun p : ι × ι => t b p.1 p.2)
-      simpa only [Fintype.sum_prod_type] using h
+      simpa only [Fintype.sum_prod_type] using normSq_sum_mul_conj_le
+        (fun p : ι × ι => t a p.1 p.2) (fun p : ι × ι => t b p.1 p.2)
     _ = _ := by
       simp only [← Finset.mul_sum, ← Finset.sum_mul]
       ring
