@@ -13662,6 +13662,7 @@ import Grothe.UpperChaos.WholeCenterEnergies
 import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
+import Grothe.UpperFinal
 import Grothe.UpperQuad.Bridge
 import Grothe.UpperQuad.CanonicalExplicit
 import Grothe.UpperQuad.CanonicalShellBound
@@ -13949,6 +13950,7 @@ import Grothe.UpperQuad.TwistEllipseFacts.J3Total
 import Grothe.UpperQuad.TwistEllipseGeometry
 import Grothe.UpperQuad.TwistEllipseKSound
 import Grothe.UpperQuad.TwistEllipseMajorantSound
+import Grothe.UpperQuad.TwistEllipseMassSound
 import Grothe.UpperQuad.TwistEllipsePanelArithmetic
 import Grothe.UpperQuad.TwistEllipsePanelGeometry
 import Grothe.UpperQuad.TwistEllipsePhaseSound

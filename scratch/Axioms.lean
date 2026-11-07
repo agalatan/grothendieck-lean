@@ -10074,6 +10074,7 @@ import Grothe
 #print axioms Grothe.Statement.main_bounds
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upperBelow_of_constant_lt
+#print axioms Grothe.Statement.upper_target
 #print axioms Grothe.Statement.upper_target_of_inputs
 #print axioms Grothe.Statement.upper_target_of_relaxed_inputs
 #print axioms Grothe.Upper.BandComparison.compare
@@ -13157,6 +13158,10 @@ import Grothe
 #print axioms Grothe.UpperQuad.Facts.hclose_of_facts_quad
 #print axioms Grothe.UpperQuad.Facts.omittedCheck
 #print axioms Grothe.UpperQuad.Facts.omitted_l2_of_fact
+#print axioms Grothe.UpperQuad.Final.hclose_final
+#print axioms Grothe.UpperQuad.Final.twistRemainder1
+#print axioms Grothe.UpperQuad.Final.twistRemainder2
+#print axioms Grothe.UpperQuad.Final.twistRemainder3
 #print axioms Grothe.UpperQuad.FinitePolynomialMehler.mehlerExp_pair_re
 #print axioms Grothe.UpperQuad.FinitePolynomialMehler.mehlerExp_scaled_pair_re
 #print axioms Grothe.UpperQuad.FinitePolynomialMehler.norm_normalizedHf_sq
@@ -13540,6 +13545,8 @@ import Grothe
 #print axioms Grothe.UpperQuad.TwistEllCheck.certificates_of_shards
 #print axioms Grothe.UpperQuad.TwistEllCheck.checkedMass_geometry
 #print axioms Grothe.UpperQuad.TwistEllCheck.checkedMass_spec
+#print axioms Grothe.UpperQuad.TwistEllCheck.coefEnergy_le_coarseKSq
+#print axioms Grothe.UpperQuad.TwistEllCheck.coefEnergy_le_upsYSq
 #print axioms Grothe.UpperQuad.TwistEllCheck.columnCoeffI_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.columnCoeffs_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.defectI_disk_theta
@@ -13554,10 +13561,16 @@ import Grothe
 #print axioms Grothe.UpperQuad.TwistEllCheck.mem_horner_columnCoeffs
 #print axioms Grothe.UpperQuad.TwistEllCheck.minResult_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.norm_descendedVector_le_of_diskM2_y
+#print axioms Grothe.UpperQuad.TwistEllCheck.norm_descendedVector_sq_le_coefEnergy
+#print axioms Grothe.UpperQuad.TwistEllCheck.norm_descendedVector_sq_le_diskM2
 #print axioms Grothe.UpperQuad.TwistEllCheck.norm_descendedVector_sq_le_diskM2_y
+#print axioms Grothe.UpperQuad.TwistEllCheck.norm_descendedVector_sq_le_massCap
 #print axioms Grothe.UpperQuad.TwistEllCheck.panelM2_spec
 #print axioms Grothe.UpperQuad.TwistEllCheck.phaseSqI_sound
+#print axioms Grothe.UpperQuad.TwistEllCheck.prodShards_cover
 #print axioms Grothe.UpperQuad.TwistEllCheck.remainder_of_certificates_of_mass_bounds
+#print axioms Grothe.UpperQuad.TwistEllCheck.remainder_of_prodShards
+#print axioms Grothe.UpperQuad.TwistEllCheck.remainder_of_shards
 #print axioms Grothe.UpperQuad.TwistEllCheck.remainder_of_shards_of_mass_bounds
 #print axioms Grothe.UpperQuad.TwistEllCheck.sgn_eq_panelSign_of_planGeomOK
 #print axioms Grothe.UpperQuad.TwistEllCheck.sgn_eq_profileSign_of_planGeomOK

@@ -30,12 +30,12 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697117301\;<\;\KG\;<\;1.404598149141$\\[6pt]
-\normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
-analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is unconditional (\lean{lower\_target}); the upper bound, stated in Lean as
-$\KG<1.4046$ (\lean{main\_bounds}), still rests on its fourteen finite-band Gaussian estimates
-and energy-table accuracy.\vspace{4pt}
+\Large $1.401697117301\;<\;\KG\;<\;1.4046$\\[6pt]
+\normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
+(\lean{main\_bounds}); the computer-assisted inputs are native finite checks listed in
+the axiom report (Section~\ref{sec:trust}).\\[4pt]
+The lower bound is \lean{lower\_target}; the upper bound \lean{upper\_target} gives a
+Grothendieck bound below $1.40459996$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 

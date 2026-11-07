@@ -4,10 +4,24 @@ This file lists, module by module, what the Lean development proves and which in
 
 The target interval is `1.401697117301 < K_G^ℂ < 1.4046` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
-(`lower_target`); the upper endpoint (`UpperTarget`, threshold `1.4046`; the
-conditional rounding gives a bound below `1.404598149141`) is work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
-the remaining project-specific Lean obligations. Shared Gaussian
+(`lower_target`), and so is the upper endpoint (`upper_target`, `Grothe/UpperFinal.lean`:
+a Grothendieck bound below `1.40459996`, threshold `1.4046`). Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
+
+**Upper endpoint assembly.** `upper_target` applies
+`RelaxedTwist.upper_target_of_facts` to the port-fact bundles
+`PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
+`Final.twistRemainder1/2/3` and the energy-table accuracy `Final.hclose_final`.
+Each twisted remainder comes from the 21 shard facts and the total fact of its
+power (`TwistEllCheck.remainder_of_prodShards`); the totals equal the relaxed
+panel radii `relaxedPanelRadiusQ`. `TwistEllipseMassSound` supplies the step
+from acceptance to the actual vector: every accepted disk, in Y, K or automatic
+mode, bounds the squared norm of the actual descended vector on the whole disk
+by its upper endpoint (`norm_descendedVector_sq_le_diskM2`), so an accepted
+certificate bounds it on its closed Bernstein ellipse by its mass cap
+(`norm_descendedVector_sq_le_massCap`). `hclose_final` combines the thirteen
+energy facts (`Facts.hclose_of_facts_quad`) with `quadHyp_of_parts`: the tail,
+the omitted-pair fact and `EllCheck.quadRemainderHyp`.
 
 **Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
 `EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
