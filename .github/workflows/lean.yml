@@ -428,7 +428,9 @@ jobs:
           echo "CapPieces outputs now present: $(ls .lake/build/lib/lean/Grothe/LowerAnalytic/CapPieces/*.olean 2>/dev/null | wc -l)"
 
       - name: Build caps prerequisites in bounded single-threaded groups (droplet)
-        if: env.LEAN == 'true' && env.DROPLET == 'true'
+        # Only when the caps really have to be built (no verified cache): with one, the restored or warm build holds
+        # them and the build below replays them. Its guard pauses on Lean of other runner slots of the same machine.
+        if: env.LEAN == 'true' && env.DROPLET == 'true' && needs.route.outputs.caps_build == 'true'
         # Source preparation only. The complete Grothe build, strict audit,
         # Bridge probe and successful cache upload below decide verification.
         # leaves at once and the RSS budget follow the runner's CPUs and RAM (scripts/build_caps_batches.py)

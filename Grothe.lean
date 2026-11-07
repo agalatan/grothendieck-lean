@@ -10035,6 +10035,7 @@ import Grothe.Upper.IntervalSound
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.RelaxedComparisonData
+import Grothe.Upper.RelaxedThreeBandBudget
 import Grothe.Upper.Residual
 import Grothe.Upper.ThreeBandBudget
 import Grothe.Upper.ThreeBandEndpointCore
@@ -13360,6 +13361,8 @@ import Grothe.UpperChaos.RectangleReciprocalCertificate
 import Grothe.UpperChaos.RelaxedComparison
 import Grothe.UpperChaos.RelaxedEnergy
 import Grothe.UpperChaos.RelaxedRationalReference
+import Grothe.UpperChaos.RelaxedThreeBandComparison
+import Grothe.UpperChaos.RelaxedThreeBandUpper
 import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
 import Grothe.UpperChaos.RetainedMeshReality
