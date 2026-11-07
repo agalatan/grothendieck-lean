@@ -1,4 +1,4 @@
-import Grothe.UpperQuad.Facts.Budget
+import Grothe.UpperQuad.Facts.OmittedDefs
 
 /-!
 # Native fact: the omitted pairs of the cutoffs (part (C) of `hQuad`)
@@ -8,7 +8,8 @@ beyond each node's cutoff (`GrotheQuadExtKernel/Omitted.lean`; `Z_a` from the no
 Bessel deficit of the retained coefficients and their reflections) sum to at most
 `omittedBoundNum / 2²⁵⁶ ≈ 8.6·10⁻¹⁵` (measured: `≈ 10⁻²⁰`).  Only the 10,322 nodes with a cutoff
 below `501` cost anything (≈ 1 s each at `P = 512`).  One `native_decide`, one process; consumed by
-`omitted_l2_of_fact` (`Grothe/UpperQuad/Facts/Budget.lean`).
+`omitted_l2_of_fact` (`Grothe/UpperQuad/Facts/Budget.lean`); the definitions are in
+`Facts/OmittedDefs.lean`, so this fact imports the computation only.
 
 Agent-ID: claude-b9ee. Refs #303, #21.
 -/
