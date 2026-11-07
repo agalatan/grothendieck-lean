@@ -12656,12 +12656,11 @@ Grothe.UpperQuad.Explicit.norm_Uext_le
 Grothe.UpperQuad.Facts.hclose_of_facts
 Grothe.UpperQuad.FinitePolynomialMehler.norm_sum_normalizedHf_sq_le
 Grothe.UpperQuad.GaussianGrowth.norm_sq_le_of_exp_bound
+Grothe.UpperQuad.Mehler.mehlerExp_diag_re
 Grothe.UpperQuad.Mehler.sum_mehler_le
 Grothe.UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le
 Grothe.UpperQuad.PolynomialHermite.exists_normalized_evaluation_of_totalDegree_le
 Grothe.UpperQuad.PolynomialHermite.norm_eval_sq_le
-Grothe.UpperQuad.Mehler.mehlerExp_diag_re
-Grothe.UpperQuad.Mehler.sum_mehler_le
 Grothe.UpperQuad.QuadRem.Fext_ofReal
 Grothe.UpperQuad.QuadRem.differentiableAt_Fext
 Grothe.UpperQuad.QuadRem.disk_bound_K
