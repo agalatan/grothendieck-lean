@@ -999,7 +999,18 @@ Using the original head and the raw Hardy tail $36748/10^{12}$ gives residual
 $0.000001783148789608230974208508254864$ and a conditional Grothendieck bound
 strictly below $1.40459988<1.4046$. The whole-error and low-band certificates
 and table agreement remain unproved inputs. This route introduces no new
-native facts and does not change the public target $1.404598149141$.
+native facts and does not change the public target $1.4046$.
+
+The relaxed variant \lean{Statement.upper\_target\_of\_relaxed\_inputs}
+uses raw low-band caps $4001/10^{12}$, $14001/10^{12}$ and
+$70001/10^{12}$, with the second and third divided by $2!$ and $3!$
+in the comparison. The whole-error radii and all other budgets stay fixed.
+Its exact rational endpoint is approximately $1.4045999579847528<1.4046$.
+This permits proposed full quadrature errors $4\cdot10^{-9}$,
+$1.4\cdot10^{-8}$ and $7\cdot10^{-8}$, with a further $10^{-12}$
+allowance for each finite-table low-band excursion. The six Gaussian
+estimates and table accuracy remain explicit inputs; the rational budget
+alone does not prove them. This variant introduces no native facts.
 
 The degree-531 canonical pair table indexes conditional Hermite node values
 by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
