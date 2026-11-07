@@ -760,11 +760,11 @@ bound, and the assembly's `ρ` (inherited 1.55·10⁻¹²).
 ## 12. Milestone 4b: the obligations after the facts (claude-b9ee, 5 November 2026)
 
 Branch `claude-b9ee/quad-checker-analytic` (stacked on `claude-b9ee/quad-checker-bridge`, PR #318).
-Of the four items (root identification, numeric instantiation, S2, `hQuad`) the first three are
-**proved**; the fourth is reduced below to a decomposition with explicit lemmas and numbers. The Lean
-chain now ends at `Grothe/UpperQuad/Facts/Final.lean : hclose_of_facts_quad (hQuad : QuadHyp) : hclose`:
-the thirteen native facts and **one** analytic hypothesis, `QuadHyp` (§12.4), give the hypothesis
-`hclose` of `upper_of_three_low_three_whole` literally.
+Root identification, numeric instantiation and S2 are proved. The energy quadrature decomposition
+now also has its analytic remainder theorem, `EllCheck.quadRemainderHyp` (§12.4).
+`Grothe/UpperQuad/Facts/Final.lean : hclose_of_facts_quad (hQuad : QuadHyp) : hclose` supplies the
+energy-table hypothesis of `upper_of_three_low_three_whole`; `quadHyp_of_parts` combines the
+proved remainder with the tail bound and the registered omitted-pair check.
 
 ### 12.1 Root identification (proved: `Grothe/UpperQuad/RootIdent.lean`, `QuadDecomp.lean`)
 
@@ -841,118 +841,53 @@ moment 0 x ∈ seedJ0I P piI xI`, and `Watson.watsonHyp N : WatsonHyp N` for eve
   `|∫₀¹ t^{−1/2} R_N e^{−xt}| ≤ ∫_{(0,∞)} t^{N+½} e^{−xt} = Γ(N+3/2) x^{−N−3/2}` (`setIntegral_mono_set`).
   Axioms: `propext`, `Classical.choice`, `Quot.sound` only.
 
-### 12.4 `hQuad`: the statement, the decomposition and the remaining lemmas (open)
+### 12.4 The proved energy quadrature remainder
 
-**Statement** (`Facts/Budget.lean`): `QuadHyp : Σ_{q<251} Σ_{c<q+2} Σ_{d<q+1} ‖B_{qcd} − G_{qcd}‖² ≤ ρ₀²`,
-`ρ₀ = 1.55·10⁻¹²`, where `B_{qcd} = baseGradedCoefficient q c d` and `G_{qcd} = gaussCoeff
-partitionSpecs rootOf q c d`. By §12.1 and master's radial identities this is a statement about the
-production nodes: with `k = d+1−c`, `j = q−d` and the real integrand
-```
-f_{qcd}(s) := e^{−s} · ψ_{k,j}(s) · σ(s)^{c+d} · Re U_{c,d}(A(s)),
-  ψ = RadialLaguerre.radialFactor k j, σ = profileSign, A = profileShift = √s/(κ|vprof s|),
-  U = canonicalCoefficient (real: canonicalCoefficient_eq_ofReal_re),
-```
-for the canonical entries `c ≤ d+1`: `B_{qcd} = ∫_{(0,∞)} f_{qcd}` (`baseGradedCoefficient_eq_radial`,
-`conj_primary_laguerre`, `coefficient_eq_signed` at `vprof s ≠ 0`, i.e. a.e.) and `G_{qcd} = Σ_a W_a
-f_{qcd}(s_a) [c+d ≤ D_a]` (`gaussRaw_eq_sum_address`, `nodeTerm`; `W_a = sourceWeight a`, `s_a =
-sourceNode a`, `D_a = addressCutoff a`); the reflected entries `c > d+1` are `√((d+1)/c) ≤ 1` times the
-canonical partner `(d+1, c−1)` on both sides (`radialBaseCoefficient_reflection`, `gradeValue`), so
-**`QuadHyp ⟸ Σ_{canonical} |B − G|² ≤ ρ₀²/2`**.
+`QuadHyp` is the squared coefficient-error bound with radius `rhoQ = 1.55·10⁻¹²`.
+`QuadDecomp.quadHyp_of_parts` splits this error into the omitted tail and root gaps,
+the covered-set Gauss remainder, and the conditional pairs omitted by the node cutoffs.
+`TailBound` proves the first bound; `OmittedSound` and `OmittedTotal` interpret the
+registered omitted-pair check. The remaining covered-set premise is now the theorem
+`Grothe.UpperQuad.EllCheck.quadRemainderHyp`, with radius `1.5·10⁻¹²`.
 
-**Decomposition.** The partition covers `[0, 100]` except three gaps of width `2.54·10⁻²⁶` at the roots
-`s₁ = 13.82758…`, `s₂ = 20.81999…`, `s₃ = 25.20393…` of `vprof` (`data/quad-checker/panels.txt`; around
-each root the panels form a geometric sequence of widths `4·10⁻¹⁶ → 6·10⁻²⁷`, orders `6,5,4,3,2,1` then
-`1`). With `S := (100, ∞) ∪ gaps` and the panels `P`:
-```
-B − G = T + Σ_P E_P − C,
-  T_{qcd}  = ∫_S f_{qcd}                                   (tail and gaps)
-  E_P,qcd  = ∫_P f_{qcd} − Σ_{a∈P} W_a f_{qcd}(s_a)         (Gauss–Legendre remainder, all pairs)
-  C_{qcd}  = Σ_a W_a f_{qcd}(s_a) [c+d > D_a]               (the omitted pairs)
-```
-and `‖B − G‖_{ℓ²} ≤ ‖T‖ + Σ_P ‖E_P‖ + ‖C‖`. Budget proposal: `‖T‖ ≤ 10⁻²⁰`, `‖C‖ ≤ 10⁻¹⁴`,
-`Σ_P ‖E_P‖ ≤ 1.05·10⁻¹²` (so that the total is `≤ ρ₀/√2 = 1.096·10⁻¹²`).
+The proof uses the actual source nodes, weights, panels and coefficient functions:
 
-**(T) Tail and gaps: a Bessel inequality, no analysis of the integrand.** For every measurable
-`S ⊆ (0,∞)`, `T_{qcd} = ⟨h_{gradedMode q c d}, F₀ · 1_{|z|² ∈ S}⟩_{L²(mu2)}` (the radial reduction of
-`baseGradedCoefficient_eq_radial` with the indicator: `CompactTaylorQuadrature.integral_gaussC_norm_sq_cut_complex`,
-`RadialCutoff.gaussC_radial_cutoff`), so by Bessel in the Hilbert basis `hermiteBasis2`
-(`HermiteC2Basis.hasSum_energy2`, `EnergyBlock.energy_sum_le_norm_sq`) and `|F₀| ≤ 1`:
-```
-‖T‖² ≤ ‖F₀ 1_{|z|²∈S}‖² ≤ mu2(|z|² ∈ S) = ∫_S e^{−s} ds
-     = e^{−100} + Σ_{i≤3} (e^{−lo_i} − e^{−hi_i}) ≤ 3.8·10⁻⁴⁴ + 3 · 2.6·10⁻²⁶ · e^{−13.8} ≤ 10⁻³¹.
-```
-Lemma to prove: `norm_tail_sq_le (S) : Σ_{qcd} ‖∫_S f_{qcd}‖² ≤ ∫_S e^{−s}`; then `‖T‖ ≤ 10⁻¹⁵` with room.
-This is the cleanest of the three (medium size; all ingredients on master).
+- `CanonicalExplicit` identifies the entire extension `Uext` with the real canonical
+  coefficients. `QuadUpsilon` bounds its finite triangular square sum by either a Taylor
+  shift from the real axis or a large-shift estimate with `Re(A²) > 0`.
+- `QuadMehler.sum_mehler_le` bounds finite sums of complex Hermite polynomials with
+  independent arguments. `QuadIntegrandExt` writes the radial integrand without square
+  roots, so the extension is analytic at the first panel's endpoint `s = 0`.
+  `QuadIntegrandBound` combines the Mehler and conditional-coefficient estimates.
+- `Remainder.gauss_remainder_ellipse` in `GaussRemainderEllipse.lean` proves, for a complex Banach-space-valued
+  integrand bounded by `M` on a Bernstein ellipse of parameter `rho > 1`, the error bound
+  `4 (h-l) M rho^(-2n) / (1-rho⁻¹)`. The rule must have nonnegative weights, nodes in
+  `[l,h]`, and exactness through degree `2n-1`. `QuadRemainderRule` proves these exactness
+  premises for the selected production rules.
+- `QuadEllipseGeom` covers each ellipse by real-centred disks. `QuadEllipseCheck` uses
+  outward-rounded interval arithmetic to certify the profile sign, disk geometry and
+  the integrand bounds. Its `panelM2` **sums** the nonnegative squared bounds of the
+  covering disks, which bounds every individual disk. `QuadEllipseSound`,
+  `QuadEllipseDiskSound`, `QuadEllipsePanelSound` and `QuadEllipseTotal` prove soundness.
+  The same checker covers the panels next to the excluded root gaps, using the
+  large-shift estimate where appropriate.
+- `QuadRemainderRadial`, `QuadPanelCover` and `QuadPanelChain` identify the covered
+  integrals and full Gauss sums panel by panel. `QuadRemainderFinal` applies Minkowski
+  to the canonical coefficient vector, then bounds its reflected entries.
 
-**(C) The omitted pairs: the Bessel deficit at each node.** At a node the coefficients
-`U_{c,d}(A_a)`, `(c,d) ∈ ℕ²`, are the Hermite coefficients of `ph(A_a + ·)` in `L²(gaussC)`, of total
-mass `1` (`‖canonicalPhaseLp‖ = 1`, the 1D Hilbert basis of `HermiteBasis.lean`;
-`sum_sq_canonicalCoefficient_le_one` is the `≤` half), so the omitted mass is `m_a := Σ_{c+d>D_a} |U_{c,d}
-(A_a)|² = 1 − Σ_{c+d≤D_a} |U_{c,d}(A_a)|²`, a quantity the kernel's enclosures bound at every node
-(the Bessel sums were `≤ 1` in milestone 2). With the Cauchy–Schwarz over the nodes (weights
-`W_a e^{−s_a}`, total `< 1.07`: `Q0GaussNodeMass.mass_lt`) and the Mehler bound
-`Σ_{n+m≤501} |h_{n,m}(√s)|² ≤ τ^{−501}(1−τ²)^{−1} e^{2τs/(1+τ)}` (`τ = 99/100`: `≤ 7.7·10³ e^{0.995 s}`):
-```
-‖C‖² ≤ 1.07 · Σ_a W_a e^{−s_a} · 7.7·10³ e^{0.995 s_a} · m_a ≤ 8.3·10³ · (Σ_a W_a) · max_a m_a ≤ 8.3·10⁵ max_a m_a,
-```
-so `‖C‖ ≤ 10⁻¹⁴` needs `max_a m_a ≤ 1.2·10⁻³⁴`. The archived cutoffs were chosen for omitted
-*amplitudes* `≤ 10⁻²⁷` per coefficient (masses `≲ 10⁻⁵⁴`), so the margin is large, but the fact must be
-established: either (i) a native fact `omittedMassOK : ∀ a, 1 − Σ_{c+d≤D_a} U² ≤ ε` from the node loop's
-own enclosures (≈ 6 CPU-hours: the triangle at every node; it could be folded into a thirteenth block-like
-fact), or (ii) an analytic bound on the Hermite coefficients of `ph(A + ·)` beyond degree `D` as a
-function of `A` (the raising identity of S5, `|U_{c,d}| ≤ 1`, and the asymptotics `U_{c,d}(A) = O(A^{−1})`
-for `(c,d) ≠ (0,0)`), used only at the 10,322 nodes with `D_a < 531`. Lemmas: `omitted_mass_eq`
-(Parseval), `norm_omitted_sq_le` (Cauchy–Schwarz + Mehler), and the per-node input (i) or (ii).
+The data in `data/quad-checker/ellipse-plans.txt` specify the ellipse parameter, disk
+cover and Mehler parameter for every source panel. The floating-point search only
+chooses those parameters. `tools/gen_quad_ellipse_plans.py --check` checks the generated
+Lean data; `tools/gen_quad_ellipse_facts.py` reproduces the sharded native facts and their
+assembly. The Lean checker verifies all enclosures independently of the search predictions.
 
-**(Q) The Gauss–Legendre remainders: the analytic core.** For a panel `P = [l, h]` of order `n` (the
-`n`-point rule is exact through degree `2n−1`: `Q0GaussPolynomialCertificates`, `Q0GaussExactness`) and
-an integrand `g` analytic in the Bernstein ellipse `E_ρ(P)` with `|g| ≤ M` there,
-```
-|∫_P g − Σ_{a∈P} W_a g(s_a)| ≤ (h−l) · (64/15) · M · ρ^{−2n} / (ρ² − 1)          (Trefethen, Thm. 19.3)
-```
-(`gauss_remainder_bernstein`: Chebyshev coefficients `|a_k| ≤ 2Mρ^{−k}`, exactness, the tail; S6b). The
-ℓ²-over-modes version needs `M_P² := sup_{z∈E_ρ(P)} Σ_{qcd} |f_{qcd}(z)|²` for the **complex
-extension** of `f_{qcd}`: `ψ_{k,j}(z)` is entire in `z` for even `k` and has `√z` for odd `k`, but the
-product `ψ_{k,j}(z) U_{c,d}(A(z))` is analytic at `z = 0` because `U_{c,d}(A)` has the parity of
-`c+d+1` in `A` and `k + c + d + 1 = 2d + 2` is even (the first panel `[0, 1/10]` has order 60); `A(z) =
-√z/(κ|vprof z|)` is analytic where `vprof` has no zero in the ellipse (the sign `|·|` is constant on a
-panel), and `U_{c,d}(A)` extends to an entire function of `A` (Gaussian integral; `|U_{c,d}(A)| ≤
-exp((Im A)² + √(2(c+d)) |Im A|)`, S6c). With the Mehler bound for `Σ|ψ_{k,j}(z)|²` on the ellipse and
-`Σ_{c,d}|U|² ≤ 35,777 · exp(2(Im A)² + 2√1064 |Im A|)`, `M_P` is an explicit function of the panel's
-`ρ` and of `max_{E_ρ} |Im A(z)|`, i.e. of `min_{E_ρ} |vprof|`: an **external interval computation over the
-1,289 panels** (a Python/interval script like the archived one), its outputs committed as data and
-checked by a native fact, with the analytic lemmas (`gauss_remainder_bernstein`, the Mehler bound
-`mehler_sum_sq_le`, the entire extension and bound `norm_canonicalCoefficient_complex_le`, the parity
-`canonicalCoefficient_parity`) proved in Lean. Away from the root windows the panels are wide (`≤ 2.25`)
-and of order up to 64, so `ρ ≈ 1.5–3` and `ρ^{−2n} ≤ 10⁻¹⁰…10⁻⁴⁰` give `Σ_P ‖E_P‖ ≤ 10⁻¹²` with the
-archived margins (the inherited `ρ₀` came from exactly this accounting).
-
-**The root windows** (the 381 order-1 panels and the orders 2–6 around them, widths `≤ 5·10⁻¹⁶`): here
-`A → ∞` and `A(z)` is not analytic at the root, so Bernstein ellipses give nothing for order 1. The right
-tool is the expansion in `t := 1/A = κ|vprof s|/√s` (S8, `ZeroProfilePhaseLinearization`): `ph(A + w) =
-1 + (t/2)(w − w̄) + O(t²|w|²)`, so `U_{0,0} = 1 + O(t²)`, `U_{1,0}, U_{0,1} = O(t)`, all others `O(t²)`
-(this is why the archived cutoffs are `1` or `2` there), and `U_{c,d}(1/t)` is `C^∞` at `t = 0`. The
-remainder of an `n`-point rule on a panel of width `w` is then bounded by the Peano form
-`|E_P(g)| ≤ c_n w^{2n+1} ‖g^{(2n)}‖_∞` with derivative bounds of `f_{qcd}` from those of `U(1/t)` and of
-`t(s)` (linear in `s − s₀` to first order, `|vprof'(s₀)|` from `ProfileRootSound`); with `w ≤ 5·10⁻¹⁶`
-even crude bounds `‖f^{(2)}‖ ≤ 10¹⁵` (order 1) give `10⁻³²` per panel. Lemmas: `phase_t_expansion`
-(the `O(t²)` remainder with an explicit constant, S8 has the `L²` version), `derivative_bounds_window`,
-`gauss_remainder_peano n`. The per-window bookkeeping (≈ 140 panels per root) is a second external
-table.
-
-**Status (budget ledger, 5 November 2026, evening).**
-
-| part | bound (`ℓ²`) | status | Lean |
-|---|---|---|---|
-| decomposition | `‖B − G‖ ≤ ‖T‖ + ‖Gᶜ − G_full‖ + ‖G_full − G‖` | proved | `QuadDecomp.quadHyp_of_parts : (C-bound) → QuadRemainderHyp → QuadHyp` with `4·10⁻¹⁶ + 1.5·10⁻¹² + 10⁶³/2²⁵⁶ ≤ ρ₀` |
-| (T) tail `(100,∞)` and the three gaps | `‖T‖² ≤ 10⁻³¹` | **proved** | `TailBound.norm_tail_sq_le` (Bessel in `hermiteBasis2`, `\|F₀\| ≤ 1`, the exponential law of `\|z\|²`, `e^{−100} + Σ_i w_i e^{−13}`) |
-| (C) omitted pairs of the cutoffs | `‖G_full − G‖ ≤ 10⁶³/2²⁵⁶ = 8.6·10⁻¹⁵` | kernel + soundness **proved** (compiled); the native fact `omittedCheck` written, running privately on the big droplet, not yet run in CI | `GrotheQuadExtKernel/Omitted.lean` (`omittedNodeBound = √(Z m̄)`, `omittedBoundSum`, `omittedOK`); `OmittedSound.lean` (`sum_sq_omitted_le`, `rowSum_le_factorsSqHi`, `deficitFx_sound` via Bessel over the canonical pairs, their reflections and the omitted pairs; `omittedNodeBound_sound`); `OmittedTotal.lean` (`omittedOK_sound`, Minkowski in `EuclideanSpace ℝ (GradedIdx 251)`); `Facts/Budget.lean : omitted_l2_of_fact`; `Facts/Omitted.lean : omittedCheck` (measured: ≈ 1 s per node with a cutoff, 10,322 nodes ≈ 3 CPU-h; the bound per node is `≈ 10⁻³²…6·10⁻²⁵`, the sum `≈ 10⁻²⁰`) |
-| (Q) Gauss–Legendre remainders on the covered set | `‖Gᶜ − G_full‖ ≤ 1.5·10⁻¹²` | **open** (`QuadRemainderHyp`); the first pure-mathematics lemmas proved in `QuadRemainder.lean` (below) | proved: `canonicalCoefficient_neg` (the parity `U_{c,d}(−A) = (−1)^{c+d+1} U_{c,d}(A)`), `gauss_remainder_of_poly_approx` (an `n`-point rule with nonnegative weights, exact through degree `2n−1`, integrates `f` within `2 (h−l) ε` when `f` is uniformly `ε`-close to such a polynomial on the panel), `integral_panel_eq_affine`, `panel_exactness` (the physical rule of a panel is exact through degree `2n−1` when the reference rule is: `panelNode`, `panelWeight`). To prove: the radial reduction of `partCoefficient` on a set (`partCoefficient_eq_radial`), the panel cover of `tailSetᶜ ∩ (0, ∞)` and the regrouping of `gaussCoeffFull` by panel, the Bernstein-ellipse (or Taylor-disk) coefficient decay for the complex extension of the integrand, the entire extension of `U_{c,d}` with `\|U\| ≤ exp((Im A)² + √(2(c+d))\|Im A\|)`, the Mehler sum bound, the `t = 1/A` expansion with Peano remainders in the root windows, and the external panel table as a native fact |
-
-`Gᶜ` is `Tail.partCoefficient Tail.tailSetᶜ` (the F0 coefficient restricted to the covered radial set),
-`G_full = gaussCoeffFull` (the exact Gauss sums without the cutoffs), `G = gaussCoeff` (with the cutoffs).
-`QuadHyp` is the single hypothesis of `hclose_of_facts_quad`; with `quadHyp_of_parts` and `omittedCheck`
-it reduces to `QuadRemainderHyp`.
+`EllCheck.allShards` in `QuadEllipseFacts/All.lean` certifies that the sum of panel errors is below
+`1.04·10⁻¹²`. This is below the canonical budget `1.06·10⁻¹²` used by
+`QuadRem.quadRemainderHyp_of_panels`; reflection gives
+`2 (1.06·10⁻¹²)² ≤ (1.5·10⁻¹²)²`. Thus `EllCheck.quadRemainderHyp` has no analytic
+premise. Its targeted build and axiom audit pass, with only the standard axioms and
+registered native facts. The separate twisted-source estimates needed for the final
+upper endpoint do not follow from this energy remainder theorem.
 
 **Lean note (5 November 2026).** A statement that mentions `Finset.range 252 ×ˢ Finset.range 252` (or any
 product of ranges with tens of thousands of elements), even `(h : kj ∈ s) : kj ∈ s := h`, fails with
