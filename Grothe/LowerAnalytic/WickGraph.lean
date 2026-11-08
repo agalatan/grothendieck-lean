@@ -265,8 +265,7 @@ theorem gsum_iso {φ : (Fin N → List ι) → ℝ} (hφ : PermInv φ)
   have hbij : Function.Bijective π := Finite.injective_iff_bijective.mp fun a b => hinj a b
   set σ : Fin N ≃ Fin N := Equiv.ofBijective π hbij
   rw [← hsort, relabelSort, gsum_perm hφ (List.perm_insertionSort _ _), gsum_map_normP hφ]
-  have := gsum_relabel σ (hφπ σ) es (fun _ => [])
-  exact this.symm
+  exact (gsum_relabel σ (hφπ σ) es (fun _ => [])).symm
 
 /-! ### The Gaussian value and the edge step -/
 

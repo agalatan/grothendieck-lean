@@ -152,8 +152,7 @@ theorem inner_T_left (j : Fin 6) (r : L2G n) (u : L2G (n + 1))
   simp only [T, LinearMap.coe_mk, AddHom.coe_mk, Tfun]
   rw [inner_tensorL_left, inner_L2]
   refine integral_congr_ae ?_
-  have h2 := ae_split2 hu
-  filter_upwards [h2, cfL_ae hkm hkb j] with y hy hc
+  filter_upwards [ae_split2 hu, cfL_ae hkm hkb j] with y hy hc
   rw [hc, cf]
   congr 1
   exact integral_congr_ae (by filter_upwards [hy] with z hz; rw [hz])

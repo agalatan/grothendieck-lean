@@ -63,9 +63,7 @@ theorem law_of_unit_H21 (m : ℕ) {ψ : L2G m} (hψ : ψ ∈ H21 m) (h1 : ‖ψ�
     exact Complex.ofReal_injective h3
   have hAB : ∫ x, eval x (reP m c) ^ 2 ∂(stdGaussian (m + m))
       = ∫ x, eval x (imP m c) ^ 2 ∂(stdGaussian (m + m)) := by
-    have := hc.gE_sq_eq hE
-    rw [gaussE_apply, gaussE_apply] at this
-    simpa only [map_mul, sq] using this
+    simpa only [gaussE_apply, map_mul, sq] using hc.gE_sq_eq hE
   have hiA : Integrable (fun x => eval x (reP m c) ^ 2) (stdGaussian (m + m)) :=
     (integrable_eval (reP m c ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
   have hiB : Integrable (fun x => eval x (imP m c) ^ 2) (stdGaussian (m + m)) :=
@@ -214,10 +212,9 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
     rw [h1, Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs,
       abs_of_nonneg hδ, h2, mul_assoc, hsq]
   have iQ : Integrable (fun y => Ψ ‖Qe y‖) (stdGaussian (n + n)) := by
-    have := integrable_pot_comp (E := r.E) (R := R) (ℓ := r.ell) (β := r.beta)
+    simpa using integrable_pot_comp (E := r.E) (R := R) (ℓ := r.ell) (β := r.beta)
       (a := aFib r.b1 r.b2 r.b3) hE hR (Lp.memLp Qe).aestronglyMeasurable
       ((Lp.memLp Qe).integrable one_le_two).norm 1 zero_le_one
-    simpa using this
   obtain ⟨igate, hgate⟩ := integral_gate r p (X2e hfm hgm hfb hgb) (X3e hfm hgm hfb hgb) hX1
   refine ⟨hcaps, iQ.congr (hQae.mono fun y hy => hy.symm), igate, ?_⟩
   rw [integral_congr_ae hQae, hgate]

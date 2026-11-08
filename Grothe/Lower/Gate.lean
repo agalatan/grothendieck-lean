@@ -67,8 +67,7 @@ lemma real_completion (n w1 w2 m22 m23 m33 p u v : ℝ) (h22 : 0 < m22)
       ≤ n * p ^ 2 + 2 * w1 * p * u + 2 * w2 * p * v + m22 * u ^ 2 + 2 * m23 * u * v
         + m33 * v ^ 2 := by
   obtain ⟨d, hd⟩ : ∃ d : ℝ, d = m22 * m33 - m23 ^ 2 := ⟨_, rfl⟩
-  rw [← hd]
-  rw [← hd] at hdet
+  rw [← hd] at hdet ⊢
   have hdne : d ≠ 0 := hdet.ne'
   have key : d * m22 * ((n * p ^ 2 + 2 * w1 * p * u + 2 * w2 * p * v + m22 * u ^ 2
       + 2 * m23 * u * v + m33 * v ^ 2)
@@ -83,8 +82,7 @@ lemma real_completion (n w1 w2 m22 m23 m33 p u v : ℝ) (h22 : 0 < m22)
       - (n - (m33 * w1 ^ 2 - 2 * m23 * w1 * w2 + m22 * w2 ^ 2) / d) * p ^ 2) := by
     rw [key]
     positivity
-  have := (mul_nonneg_iff_of_pos_left hpos).1 h0
-  linarith
+  linarith [(mul_nonneg_iff_of_pos_left hpos).1 h0]
 
 /-- **The fixed-first-coordinate completion**: `G(X) ≥ gatePrice · |X₁|²`. -/
 theorem gateForm_ge (N : Sym3) (g1 g2 g3 : ℚ) (hok : gateOK N = true) (X1 X2 X3 : ℂ) :

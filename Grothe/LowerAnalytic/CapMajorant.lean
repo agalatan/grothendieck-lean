@@ -69,8 +69,7 @@ theorem anchored_real {A B A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : 0 �
       - (A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * D) - (A + B)) := by
     rw [key]; positivity
   have h2D : 0 < 2 * D * A0 * B0 := by positivity
-  have := (mul_nonneg_iff_of_pos_left h2D).1 hpos
-  linarith
+  linarith [(mul_nonneg_iff_of_pos_left h2D).1 hpos]
 
 lemma norm_add_sub_norm_sub_le (L p : ℂ) : |‖L + p‖ - ‖L - p‖| ≤ 2 * ‖L‖ := by
   rw [abs_le]

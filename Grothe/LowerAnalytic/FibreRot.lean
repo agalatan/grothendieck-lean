@@ -125,9 +125,8 @@ theorem fibreExprC_le_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.
     fibreExprC E R ℓ β b1 b2 b3 f g u ≤ pot E R ℓ β (aFib b1 b2 b3) ‖u‖ := by
   by_cases hu : u = 0
   · subst hu
-    have := fibreExpr_le_pot E R ℓ β (aFib b1 b2 b3) hE hR hfm.aestronglyMeasurable
-      hgm.aestronglyMeasurable hfb hgb 0
-    simpa [fibreExpr, fibreExprC] using this
+    simpa [fibreExpr, fibreExprC] using fibreExpr_le_pot E R ℓ β (aFib b1 b2 b3) hE hR
+      hfm.aestronglyMeasurable hgm.aestronglyMeasurable hfb hgb 0
   have hn : (‖u‖ : ℂ) ≠ 0 := by exact_mod_cast norm_ne_zero_iff.2 hu
   set c := u / (‖u‖ : ℂ) with hcdef
   have hc : ‖c‖ = 1 := by

@@ -165,8 +165,7 @@ theorem integral_split {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     rw [← hm.integral_comp' (fun p => G ((splitE n).symm p))]
     simp
   have hi : Integrable (fun p => G ((splitE n).symm p)) ((γW n).prod (γP n)) := by
-    have := hm.symm (splitE n)
-    exact (this.integrable_comp_emb (splitE n).symm.measurableEmbedding).2 hG
+    exact ((hm.symm (splitE n)).integrable_comp_emb (splitE n).symm.measurableEmbedding).2 hG
   rw [h1, integral_prod _ hi]
   congr 1
   funext w

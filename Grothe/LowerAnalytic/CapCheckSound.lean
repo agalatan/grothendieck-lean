@@ -100,10 +100,9 @@ lemma angC_natAbs (a b : ℝ) (n : ℤ) : angC a b n = angC a b (n.natAbs : ℤ)
 
 lemma mem_angCAt {Nr N : ℕ} {h : ℚ} {T : Tables} (hT : TablesOK Nr N h T) {j : ℕ} (hj : j < N)
     {n : ℤ} (hn : n.natAbs ≤ 12) : mem (angC (thN N j) (thN N (j + 1)) n) (T.angCAt j n) := by
-  have := (hT.2.2 j hj n.natAbs hn).1
   unfold Tables.angCAt
   rw [angC_natAbs]
-  exact_mod_cast this
+  exact_mod_cast (hT.2.2 j hj n.natAbs hn).1
 
 lemma mem_angSAt {Nr N : ℕ} {h : ℚ} {T : Tables} (hT : TablesOK Nr N h T) {j : ℕ} (hj : j < N)
     {n : ℤ} (hn : n.natAbs ≤ 12) : mem (angS (thN N j) (thN N (j + 1)) n) (T.angSAt j n) := by
@@ -122,8 +121,7 @@ lemma mem_angSAt {Nr N : ℕ} {h : ℚ} {T : Tables} (hT : TablesOK Nr N h T) {j
 lemma ediv_pow_le (x : ℤ) (k : ℕ) : ((x / 2 ^ k : ℤ) : ℝ) ≤ (x : ℝ) / 2 ^ k := by
   have hk : (0 : ℤ) < 2 ^ k := by positivity
   rw [le_div_iff₀ (by positivity)]
-  have := Int.ediv_mul_le x hk.ne'
-  exact_mod_cast this
+  exact_mod_cast Int.ediv_mul_le x hk.ne'
 
 lemma le_neg_ediv_neg_pow (x : ℤ) (k : ℕ) : (x : ℝ) / 2 ^ k ≤ ((-((-x) / 2 ^ k) : ℤ) : ℝ) := by
   have h := ediv_pow_le (-x) k

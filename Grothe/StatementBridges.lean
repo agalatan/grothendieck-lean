@@ -46,9 +46,8 @@ theorem constant_lt_of_upperBelow {c : ℝ} (h : UpperBelow c) : complexGrothend
 
 /-- Conversely, once some Grothendieck bound exists, `K_G^ℂ < c` gives a bound below `c`. -/
 theorem upperBelow_of_constant_lt {c : ℝ} (hne : ∃ K, IsBound K)
-    (h : complexGrothendieckConstant < c) : UpperBelow c := by
-  obtain ⟨K, hK, hlt⟩ := exists_lt_of_csInf_lt hne h
-  exact ⟨K, hK, hlt⟩
+    (h : complexGrothendieckConstant < c) : UpperBelow c :=
+  exists_lt_of_csInf_lt hne h
 
 /-- `LowerAbove c` gives `c ≤ K_G^ℂ`, once some Grothendieck bound exists. -/
 theorem le_constant_of_lowerAbove {c : ℝ} (hne : ∃ K, IsBound K) (h : LowerAbove c) :

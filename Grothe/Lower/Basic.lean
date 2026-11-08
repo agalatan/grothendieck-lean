@@ -147,8 +147,6 @@ theorem quadVal_le_quadMax (c0 c1 c2 α β : ℚ) (t : ℝ) (hα : (α : ℝ) �
       rw [eα, eβ]; ring
     have h1 : 0 ≤ ((β : ℝ) - α) * (max qα qβ - (c0 + c1 * t + c2 * t ^ 2)) := by
       rw [key]
-      have := le_max_left qα qβ
-      have := le_max_right qα qβ
       have := mul_nonneg (mul_nonneg (sub_nonneg.2 hαβ) (sub_nonneg.2 hα)) (sub_nonneg.2 hβ)
       have := mul_nonneg (sub_nonneg.2 hβ) (sub_nonneg.2 (le_max_left qα qβ))
       have := mul_nonneg (sub_nonneg.2 hα) (sub_nonneg.2 (le_max_right qα qβ))

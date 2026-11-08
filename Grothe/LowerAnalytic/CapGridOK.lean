@@ -44,8 +44,7 @@ lemma mkGrid_cell (ell beta : ℚ) (r : Recipe) {Nr N : ℕ} (h : ℚ) (T : Tabl
 lemma ceil_div_mul (a p : ℕ) (hp : 1 ≤ p) : a ≤ (a + p - 1) / p * p := by
   have := Nat.lt_div_mul_add (a := a + p - 1) (b := p) (by omega)
   have h2 : (a + p - 1) / p * p + p > a + p - 1 := by
-    have := Nat.lt_div_mul_add (by omega : 0 < p) (a := a + p - 1)
-    linarith
+    linarith [Nat.lt_div_mul_add (by omega : 0 < p) (a := a + p - 1)]
   omega
 
 lemma majN_ge (pA pB R : ℕ) : (pA + pB) ^ 3 ≤ majN pA pB R := by

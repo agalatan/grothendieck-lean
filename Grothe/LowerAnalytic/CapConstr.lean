@@ -181,8 +181,7 @@ theorem pot_le_of_pieces (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : 
     obtain ⟨hh, hN, hNr⟩ := hG x hx
     refine Jpot_le_of_mem_symOrbit r.E Rg r.ell r.beta _ (aFib_cj _ _ _) (aFib_ng _ _ _) s _ _
       (fun w hw => ?_) hy
-    have := Jpot_le_of_nodeOKc r Rg s c x.1 _ _ _ _ x.2.2.2 (hT x hx) hh hN hNr (hchk x hx) w hw
-    linarith
+    linarith [Jpot_le_of_nodeOKc r Rg s c x.1 _ _ _ _ x.2.2.2 (hT x hx) hh hN hNr (hchk x hx) w hw]
   linarith
 
 end
