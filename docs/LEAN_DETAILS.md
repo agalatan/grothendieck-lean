@@ -4,10 +4,24 @@ This file lists, module by module, what the Lean development proves and which in
 
 The target interval is `1.401697117301 < K_G^ℂ < 1.4046` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
-(`lower_target`); the upper endpoint (`UpperTarget`, threshold `1.4046`; the
-conditional rounding gives a bound below `1.404598149141`) is work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
-the remaining project-specific Lean obligations. Shared Gaussian
+(`lower_target`), and so is the upper endpoint (`upper_target`, `Grothe/UpperFinal.lean`:
+a Grothendieck bound below `1.40459996`, threshold `1.4046`). Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
+
+**Upper endpoint assembly.** `upper_target` applies
+`RelaxedTwist.upper_target_of_facts` to the port-fact bundles
+`PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
+`Final.twistRemainder1/2/3` and the energy-table accuracy `Final.hclose_final`.
+Each twisted remainder comes from the 21 shard facts and the total fact of its
+power (`TwistEllCheck.remainder_of_prodShards`); the totals equal the relaxed
+panel radii `relaxedPanelRadiusQ`. `TwistEllipseMassSound` supplies the step
+from acceptance to the actual vector: every accepted disk, in Y, K or automatic
+mode, bounds the squared norm of the actual descended vector on the whole disk
+by its upper endpoint (`norm_descendedVector_sq_le_diskM2`), so an accepted
+certificate bounds it on its closed Bernstein ellipse by its mass cap
+(`norm_descendedVector_sq_le_massCap`). `hclose_final` combines the thirteen
+energy facts (`Facts.hclose_of_facts_quad`) with `quadHyp_of_parts`: the tail,
+the omitted-pair fact and `EllCheck.quadRemainderHyp`.
 
 **Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
 `EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
@@ -23,6 +37,131 @@ The canonical panel-error sum is below `1.04·10⁻¹²`; reflection gives the f
 `1.5·10⁻¹²` bound. The axiom audit is covered by the standard axioms and registered
 native facts. This closes the remainder premise in `QuadDecomp.quadHyp_of_parts`;
 the twisted source bounds and final upper-endpoint assembly are separate.
+
+**Twisted panel assembly.** `UpperQuad/TwistPanelRemainder.lean` identifies the
+covered twisted discrepancy with the sum of the actual production panel errors
+in the Euclidean space of all modes `q < Q`, `c ≤ q + 1`, `d ≤ q`.
+`TwistPanels.remainder_of_ellipses` proves `TwistRemainderHyp j ρ` for
+`j ∈ {1,2,3}` from a complex extension on each panel, differentiability on the
+closed Bernstein ellipse, its boundary norm cap, and the sum of the resulting
+Gauss remainder bounds. The real-slice identities are required only at positive
+arguments; continuity includes zero. The sum uses every production panel and
+the full graded vector, with no reflection factor. Actual extensions, caps and
+their numerical sum remain inputs to this theorem.
+
+`UpperQuad/CanonicalShellBound.lean` bounds one canonical coefficient of total
+degree `m` by `2 √θ √(m!) (√8 θ / ‖A‖)^m`, where
+`θ = ‖A‖² / Re(A²)` and `Re(A²) > 0`. Its shell norm sum includes the
+`m + 1` pairs of that degree. These bounds use only the standard axioms; the
+panel assembly inherits the registered phase-cover facts and introduces no
+new native fact.
+
+`TwistKVector` applies this shell estimate to the finite twisted factorization.
+Outputs of degree at most `D` use the common input triangle through `D + 35*j`.
+If their squared matrix-column energies are at most `E * N2(m)`, the squared
+output norm is at most
+`4 * E * theta * (sum_m (m+1) * sqrt(m! * N2(m)) * z^m)^2`, with
+`theta = norm(A)^2 / Re(A^2)` and
+`z = sqrt(8) * theta / (sqrt(rate(j)) * norm(A))`.
+The canonical domain is `Re(A^2) > 0`. Padding and the Euclidean triangle
+inequality introduce no output-mode count; Gaussian scaling introduces no
+additional inverse-rate factor. Concrete column and disk-geometry bounds
+must still be substituted to obtain the certificate's K majorant.
+
+`TwistKEnvelope` supplies that substitution for the actual production columns.
+It identifies the finite factorization with the Gaussian-shift coefficients,
+uses the checker's rational column parameters, and bounds the actual full
+vector by `primaryBoundSq * coarseKSq`. Its geometric inputs are the same
+`Slo`, `X`, and `Y` coordinate bounds as for Y, together with
+`Re(shift^2) > 0`, an upper bound on `norm(shift)^2 / Re(shift^2)`, and a
+positive lower bound on `norm(shift)^2`. No matrix-column premise remains.
+
+`TwistRadialVector` supplies this assembly with the actual descended radial
+components. Its complete vector is analytic wherever `vC(s) ≠ 0`, including
+zero; the real slice equals `twistIntegrand`. The squared norm is bounded by
+the radial finite-Mehler factor times the conditional coefficient energy.
+Its Y specialization uses the coupled Gaussian-translation estimate with no
+mode-count factor. The signed continuation shift and the disk-geometry shift
+differ only by a sign, so their squared norms, imaginary squares and complex
+squares agree.
+
+`GaussianShiftEnvelope` and `TwistYEnvelope` turn these pointwise estimates into
+the explicit Y expression used by the numerical certificate. For any `r² = s`,
+the assumptions `Slo ≤ Re(s)`, `Re(r)² ≤ X`, `Im(r)² ≤ Y`, and
+`Im(shift(r))² ≤ B2`, with `t, eta ∈ (0,1)` and `|sigma| = 1`, bound the actual
+full vector by the radial Gaussian, degree-`Dout` Mehler factor, degree-`35*j`
+phase factor, and Gaussian translation factor. The adapter also converts
+a nonnegative squared cap to the norm cap required by the panel theorem.
+It has no interval-checker dependency or additional native fact; geometric
+certificate soundness and the complete accepted panel sum remain obligations.
+
+`TwistEllipseYVectorSound` connects a successful `diskM2` evaluation in Y mode
+to the actual descended vector on the complete disk. The returned interval
+contains one common squared-norm bound, uniformly for every real panel sign
+of absolute value one. Its upper endpoint therefore supplies the norm cap
+after a squared-cap comparison. The proof includes the fallback to the full
+shift norm when the angle-defect evaluation fails, and the accepted profile
+separation excludes zeros throughout the disk. `TwistEllipseSignedGeometry`
+also transports the accepted lower-norm and angle witnesses to the actual
+signed continuation shift for K consumers. Actual K/automatic-mode bounds,
+complete certificate acceptance and the final panel sum remain separate.
+
+`TwistProfileSign` proves constancy of the production profile sign on any
+zero-free closed real interval. `TwistRadialPanels` fixes the sign at each
+panel's left endpoint and proves `remainder_of_descended_ellipses` from only
+profile nonvanishing throughout each closed ellipse, boundary norm caps for
+the actual vector, and the summed numerical remainder bound. Analyticity,
+square-root descent and real-slice identification are supplied by the proof.
+The profile and norm certificates and their accepted total remain required;
+the unconditional upper target is not yet established.
+
+`TwistEllipseAssembly` connects finite shard checks to every production panel.
+All shards use the same power and certificate array; explicit index coverage
+and the checked array length rule out missing panels and default entries.
+The executable rational total equals the real sum of the corresponding error
+caps. Overlapping shards do not duplicate terms in this sum. This supplies
+the finite coverage and budget interface; acceptance facts and the analytic
+interpretation of each accepted certificate remain separate obligations.
+
+`TwistEllipsePanelGeometry` transports accepted plan geometry and strict
+profile separation on every covering disk to the whole closed Bernstein
+ellipse. It proves that the profile is nonzero there and that the checker
+sign agrees with the physical sign throughout the real panel, including
+the left endpoint used by `TwistRadialPanels`. This geometry layer uses only
+the standard axioms; it assumes neither an untwisted integrand bound nor
+a numerical norm cap.
+
+`TwistCertificateRemainder` extracts closed-ellipse nonvanishing and the
+exact real Gauss error from certificate acceptance. With complete acceptance
+and the checked total, its `remainder_of_certificates_of_mass_bounds` proves
+the actual `TwistRemainderHyp`; its only additional analytic input is that
+the certificate's squared mass cap bounds the actual descended vector on
+the ellipse boundary. Geometry, analyticity, real-slice identification,
+Gauss exactness and summation are supplied internally.
+
+**Twisted ellipse certificates.** `UpperQuad/TwistEllipseFacts/Checks.lean` imports
+the source-indexed interval checks for all three production powers. Their exact
+plans and caps are in `data/twist-ellipse/plans.json`; the generators
+`gen_twist_ellipse_plans.py` and `gen_twist_ellipse_facts.py` reproduce the arrays,
+range checks, total checks, and native-fact registration manifest. The complete
+cap totals are below the respective relaxed radii minus the reserved `10⁻¹⁵`.
+The arithmetic soundness modules prove the phase, translation, column, K, primary
+Mehler, disk-geometry, selection, maximum, and capped-error interfaces. The finite
+checks use registered native facts. Connecting these expressions to the actual
+twisted vector and assembling its analytic remainder are separate obligations;
+these certificates alone do not remove the hypothesis of `main_bounds`.
+**Finite twisted-source bundles (work in progress).**
+`UpperQuad/PortFacts/Bundles.lean` packages the production table flags,
+final checks, range facts and phase-degree theorem into `j1FactsOf`,
+`j2FactsOf` and `j3FactsOf`. It uses the `FactsOf` interface from the
+twisted evaluator's soundness bridge; it introduces no additional finite
+computation or analytic hypothesis. The proof dependencies are adopted from
+the pinned `claude-b9ee/port-sound` checkpoint `686f985a` without changing
+the computational kernels. All consumed fact modules are registered in the
+generated root. This combined source checkpoint is awaiting completion of
+the remaining range computations and a full typecheck and axiom audit.
+The quadrature remainder, energy-table accuracy and final upper endpoint
+still require their separate proofs and integration.
 
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
@@ -756,6 +895,78 @@ excursions and reserving `1e-15` of each quadrature tolerance for tails and
 root gaps. The budget does not establish those quadrature estimates or the
 whole-error bounds; they remain analytic obligations under tasks #333–#335.
 No new native fact is introduced.
+
+`RelaxedTwistMargins` and `RelaxedTwistSix` connect those radii to the actual
+port soundness chain. The whole-source charge uses the exact product of the
+center-norm bound and quadrature radius. The conditional
+`RelaxedTwist.upper_target_of_facts` still requires the three port-fact
+witnesses, three analytic panel-remainder estimates, and independent
+energy-table closeness.
+
+**Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
+and `HermiteTranslationBessel` prove the finite Hermite translation bound
+`exp(|delta|*sqrt(2D))`. Both formal variables move by the same displacement;
+the first inner-product slot conjugates that displacement. There is no
+mode-count factor in the resulting squared coefficient bound.
+For `j > 0`, `0 < tau < 1`, a finite set of modes with total degree at most
+`D`, and complex parameters `r` and `A = a + I*b`,
+`GaussianShift.sum_coefficient_sq_le` proves
+
+```
+sum_i |J_i(r,A)|^2 <= exp(2*b^2 + 2*|b|*sqrt(2D))
+  * tau^(-35*j) * (1-tau)^(-2)
+  * exp(4*j*phaseEpsQ/(1-tau) * ((Im r)^2+b^2)).
+```
+
+The coefficient is identified exactly with a fixed-phase Gaussian integral.
+Its integrand has an integrable bound `C*exp(normSq(w)/2)` uniformly over
+bounded complex parameter sets. `HolomorphicIntegral` proves integration of
+locally dominated analytic families using measurable difference quotients
+and Cauchy's estimate. `GaussianShiftAnalytic` therefore proves analytic
+dependence on each parameter and on bounded holomorphic substitutions on a
+closed disk. The real production identity, for `s >= 0` and `vprof s != 0`,
+is `twistCoef j s i = profileSign(s) * J_i(sqrt(s),
+profileSign(s)*profileShift(s))`; the signed shift is essential on negative
+profile intervals. This proves the analytic Y estimate, but does not certify
+any profile domain, contour supremum, or Gauss quadrature remainder. The
+phase bounds inherit exactly the six registered phase-cover facts; the
+translation and generic holomorphic integration results use standard axioms.
+
+`TwistRadialExt.radial` now uses the actual signed complex profile ratio
+`r/(kappa*vC(r^2))`, the swapped primary Hermite indices
+`(q-d,q+1-c)`, the fixed panel sign, and only the outside damping `exp(-r^2)`.
+`TwistRadialReal` proves exact agreement with `twistIntegrand` at `r=sqrt(s)`
+for every natural power, `s >= 0`, nonzero profile, and valid graded indices.
+There is no additional `2r`, `pi`, or factorial factor in this `ds` integrand.
+`GaussianShiftParity` and `TwistRadialParity` prove that the full component
+is globally even in `r`, including its totalized values at profile zeros.
+`EvenSquareDescentLocal` extends the square-descent tool to any point of a
+globally even function. `TwistRadialDescent.analyticAt_descended` proves that
+the resulting function of `s` is analytic wherever `vC(s) != 0`, for `j > 0`
+and valid graded indices. This includes the origin if its profile is nonzero
+and imposes no principal-square-root branch-cut condition. The real-slice
+identity still explicitly fixes the panel sign. Certifying profile
+nonvanishing and contour bounds on the required ellipses remains separate
+from these analytic results.
+
+**Finite twisted factorization.** `TwistFactorization.Jext` uses the explicit
+normalized Hermite coefficients of
+`nrm(c,d) * rescale(sqrt(lambda))(H(d,c) * Q_r^j)`, where
+`lambda = 1 + j*phaseEpsQ`. Its finite support is `g+h <= c+d+35*j`.
+Extraction at `(h,g)` pairs with `Uext(g,h,sqrt(lambda)*A)`; the matrix
+coefficient already contains the single factor
+`lambda^(-1) * exp(-j*phaseEpsQ*r^2)`. The polynomial `Q_r` includes `I`,
+so no additional sign or factorial appears. The coefficient family and
+finite extension are entire, and `Jext_real` identifies the literal integral
+at real `r` and nonzero real signed `A`. `Jext_eq_gaussianShift` uses entire
+uniqueness to identify this factorization with the preceding Gaussian
+coefficient for every complex pair when `j > 0`.
+`TwistMatrixBessel` identifies each matrix column with an actual Hermite
+inner product. `sum_norm_matrixCoefficient_sq_le_production` bounds any
+finite column by the production phase envelope times the normalized Hermite
+dilation bound. Bessel adds no further inverse-rate factor. Certified
+profile domains, contour suprema and twisted quadrature remainders remain
+separate obligations.
 
 **Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
 `ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`
@@ -1684,8 +1895,51 @@ the actual Gaussian L² norm. `FinitePolynomialMehler` applies the formal comple
 Mehler estimate. `PolynomialRescale` changes the rate to `ε(1+τ)/τ`, and
 `GaussianGrowth` and `GaussianMehlerBound` prove the norm estimate and exact
 cancellation of real-coordinate growth. These results use only standard axioms.
-The production-phase instantiation, contour enclosures, and twisted quadrature
-remainder are separate obligations; this theorem does not close `UpperTarget`.
+`PhasePolynomialComplex` instantiates this estimate for the actual production
+phase. With real `y` fixed, the polynomial has degree at most 35; its coefficients
+include `exp(−ε*y²)`. The existing checked term list supplies invariant degree
+at most 17, and the global real phase bound supplies the Gaussian growth premise.
+`phaseComplex_real` identifies the continuation with `phiT` on every real slice,
+and `analyticAt_phaseComplex` proves joint complex analyticity. For every positive
+integer `j`, `norm_phaseComplex_pow_sq_le` uses degree `35*j` and damping `j*ε`
+directly, retaining one `(1−τ)^(−2)` factor. Its numerical dependencies are only
+the existing registered phase-cover facts.
+
+`PolynomialDilationNorm` integrates finite Mehler to bound dilation on Gaussian
+L². For `L ≥ 1`, `0 < τ < 1`, and `(2*L−1)*τ < 1`, it proves
+
+```
+‖P(√L ·)‖² ≤ ‖P‖² * τ^(−N) / ((1−τ)*(1−(2*L−1)*τ)).
+```
+
+The normalized Hermite-column corollary has polynomial norm one and degree
+`p+q`. These dilation estimates use only standard axioms. Certified contour
+enclosures and the twisted quadrature remainder remain separate obligations;
+these results do not close `UpperTarget`.
+
+`PhasePolynomialParity` proves that reversing `y`, `r`, and `x` together
+preserves `phaseComplex`, and that reversing both formal Hermite arguments
+multiplies the result by `(-1)^(p+q)`. These source identities use only standard
+axioms and supply the parity factors for the origin argument.
+`HermiteRadialVector.sum_radial_sq_le_cutoff` controls the full graded vector
+with `q<Q`, `c≤q+1`, and `d≤q`. The map to primary and conditional Hermite
+indices is injective into the product of the degree triangles `p+q≤2*Q−1`.
+The squared vector norm is therefore at most the primary finite-Mehler bound
+times the conditional coefficient square sum, with no mode-count factor.
+This conversion includes the damping `exp(−r²)` and requires only `0<t<1`.
+Identifying the conditional coefficients with their analytic continuation and
+certifying the resulting contour bounds remain necessary.
+
+`UpperQuad.EvenSquareDescent.analyticOnNhd_descend` handles the square-root
+coordinate at the origin abstractly. For a complex Banach-valued function `F`
+analytic on `‖r‖ < R`, with `R > 0` and `F(−r)=F(r)` on that ball, it proves
+that `s ↦ F(Complex.sqrt s)` is analytic on `‖s‖ < R²`. The inverse-function
+theorem for squaring supplies analyticity away from zero; continuity and the
+removable-singularity theorem supply zero. `descend_sq` recovers `F(r)` at
+`s=r²`, and uniform norm bounds transport unchanged on open or closed balls.
+All these results use standard axioms. Applying this tool to the twisted
+integrand still requires its concrete parity and analyticity in `r`, as well
+as certified contour bounds and quadrature assembly.
 
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.

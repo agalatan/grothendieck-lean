@@ -120,19 +120,30 @@ def unnormalise (P : Nat) (sqf : Array (Array Ival)) (D : Nat) (K : IvVec) : TwV
 def normalise (P : Nat) (sqf : Array (Array Ival)) (D : Nat) (J' : TwVec) : IvVec :=
   ivOfFn D fun c d => divI P (ofFixed KTw (twGet J' c d).1 (twGet J' c d).2) (ivGet sqf c d)
 
-/-- The twisted conditional coefficients `J_{c,d}(s)` on `D_out` from the node data (intervals). -/
+/-- The twisted conditional coefficients `J_{c,d}(s)` on `D_out` from the node data (intervals).
+
+Everything from the canonical triangle to `J` is linear in the seed scalar `S(A')` (the triangle is
+`S(A') · σ^{c+d} U_{c,d}`, then the dilation, the unnormalisation, the operator and the
+normalisation), so the triangle is computed with the scalar `1` and `S(A')` multiplies `J` at the end,
+together with `(−1)^j e^{−jεs}`.  Applying the seed first (as the checker does) turns its relative
+error into absolute widths of the cancelling sums: the Watson form of `seedJ0I` at `x = A'² ≥ 150` has
+the relative error `Γ(71.5)/x^{71.5}` (`2^{−211}` at `x = 212`), the dilation and the unnormalisation by
+`√(e! f!) ≤ 2^{351}` amplified it to widths `2^{−8}` on `J` at node 500 for `j = 3` (`A' = 14.6`), and the
+full `j = 3` loop had widths `≈ 10⁶` (claude-b9ee port-facts worker, 6 November 2026). -/
 def twistJ (P : Nat) (prm : TwistParams) (tabs : TwistTables) (piI s : Ival) (neg : Bool) (aI : Ival) :
     IvVec :=
   let Din := twistDin prm
   let lam := lamI P prm.j
   let aI' := mulI P (sqrtI P lam) aI
-  let vals := canonicalTriangleI P (seedScalarI P piI aI') neg zeroI aI' (sqrtTable P (Din + 1))
+  -- the triangle of the normalised coefficients `σ^{c+d} U_{c,d}` (seed scalar `1`); the computation
+  -- is linear in the seed, which is applied at the end (see the docstring)
+  let vals := canonicalTriangleI P (ofInt P 1) neg zeroI aI' (sqrtTable P (Din + 1))
     (ratiosI P (sqI P aI') (ratioDepth Din)) Din Din
   let K := dilateDil tabs.dil Din (fullTriangleDil P vals Din)
   let r := sqrtI P s
   let J' := applyQPow (nodeCoefs P tabs.terms s r) (toTw (divN P 2 r)) prm.Dout prm.j
     (unnormaliseDil tabs.sqfDil Din K)
-  let ea := expAlphaI P prm.j s
+  let ea := mulI P (expAlphaI P prm.j s) (seedScalarI P piI aI')
   let J := normalise P tabs.sqf prm.Dout J'
   ivOfFn prm.Dout fun c d =>
     if prm.j % 2 == 1 then negI (mulI P ea (ivGet J c d)) else mulI P ea (ivGet J c d)
