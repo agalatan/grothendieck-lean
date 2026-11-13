@@ -70,10 +70,7 @@ theorem localized_comparison_grouped {G X : Lp ℂ 2 mu2} (h : ComparisonInputs 
     (fun j => bandIndices (comparisonBand j)) a e ((∑ g : Fin 4, r g) ^ 2)
     (fun p _ => comparisonWeight_bounds p)
     (fun p _ => by rw [← energyBlock_sub, h.difference, energyBlock_sum])
-    (fun j _ p hp hpb => by
-      have hn : (comparisonBand j).contains p.1 p.2 = false := by
-        simpa [bandIndices, hS, hp] using hpb
-      exact hz j p hn)
+    (fun j _ p hp hpb => hz j p (by simpa [bandIndices, hS, hp] using hpb))
     (fun j _ => ha j) (fun j _ => he j)
     (fun j _ => by
       have hh := actual_band_mass (by simpa only [hS] using hclose) (comparisonBand_mem j)

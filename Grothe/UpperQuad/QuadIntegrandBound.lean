@@ -84,9 +84,9 @@ theorem norm_FextV_sq_le (ε : ℝ) (hε : |ε| = 1) {z ζ : ℂ} (hζ : ζ ^ 2 
       field_simp
     rw [key]
     have hdeg : n + m ≤ 501 := by simp only [n, m]; omega
-    have hτp : τ ^ 501 ≤ τ ^ (n + m) := pow_le_pow_of_le_one hτ0.le hτ1.le hdeg
     have hone : 1 ≤ τ⁻¹ ^ 501 * τ ^ (n + m) := by
-      rw [inv_pow, le_inv_mul_iff₀ (by positivity), mul_one]; exact hτp
+      rw [inv_pow, le_inv_mul_iff₀ (by positivity), mul_one]
+      exact pow_le_pow_of_le_one hτ0.le hτ1.le hdeg
     have hrhs : ‖Complex.exp (-z)‖ ^ 2 * τ⁻¹ ^ 501 * (h (n, m) * U x.2.1 x.2.2) =
         ‖Complex.exp (-z)‖ ^ 2 * (τ⁻¹ ^ 501 * τ ^ (n + m)) *
           (‖Hf n m ζ ζ‖ ^ 2 / ((n.factorial : ℝ) * m.factorial)) *

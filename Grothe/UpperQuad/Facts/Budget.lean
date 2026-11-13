@@ -79,6 +79,27 @@ lemma seed_of_shift (hW : WatsonHyp 70) (hpv : profileValid P0 piI profile = tru
     rw [← sq] at hsq
     exact mem_seedJ0I_moment P0 (by decide) mem_piI (sq_nonneg _) hsq hW
 
+/-- Block 0 accepts every node of the partition: the profile is valid, every root lies in its
+bracket, and S2 holds at every node shift (from the Watson remainder). -/
+private lemma accepted_of_block0 (hf0 : blockFact 0 epsBlock bndBlock = true)
+    (hW : WatsonHyp 70) :
+    profileValid P0 piI profile = true ∧
+      (∀ nd ∈ partitionSpecs, mem (rootOf nd) nd.bracket.toIval) ∧
+      ∀ nd ∈ partitionSpecs, ∀ neg aI, nodeShift P0 piI profile nd = some (neg, aI) →
+        mem (OriginalPositiveMoment.moment 0 (profileShift (specNode nd (rootOf nd)) ^ 2))
+          (seedJ0I P0 piI (sqI P0 aI)) := by
+  obtain ⟨hpv, R0, hR0, -, -⟩ := blockFact_spec hf0
+  have hvalid :=
+    accumulateSpecs_valid P0 piI profile (bounds 0) (bounds 1) partitionSpecs rawZero R0 hR0
+  have hx : ∀ nd ∈ partitionSpecs, mem (rootOf nd) nd.bracket.toIval :=
+    rootOf_mem_of_accepted P0 piI profile (bounds 0) (bounds 1) partitionSpecs R0 hR0
+  refine ⟨hpv, hx, fun nd hnd neg aI hshift => ?_⟩
+  obtain ⟨neg', aI', hshift', hv⟩ := hvalid nd hnd
+  rw [hshift] at hshift'
+  simp only [Option.some.injEq, Prod.mk.injEq] at hshift'
+  obtain ⟨rfl, rfl⟩ := hshift'
+  exact seed_of_shift hW hpv nd hshift hv (hx nd hnd)
+
 /-! ### The omitted pairs (part (C) of `hQuad`) -/
 
 /-- The `ℓ²` distance between the exact Gauss sums with and without the cutoffs, from the omitted-pair
@@ -88,19 +109,7 @@ theorem omitted_l2_of_fact (hf0 : blockFact 0 epsBlock bndBlock = true) (hW : Wa
     ∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
       (gaussCoeffFull partitionSpecs rootOf q c d - gaussCoeff partitionSpecs rootOf q c d) ^ 2 ≤
       ((omittedBoundNum : ℝ) / (2 : ℝ) ^ (2 * KFix)) ^ 2 := by
-  obtain ⟨hpv, R0, hR0, -, -⟩ := blockFact_spec hf0
-  have hvalid := accumulateSpecs_valid P0 piI profile (bounds 0) (bounds 1) partitionSpecs rawZero R0 hR0
-  have hx : ∀ nd ∈ partitionSpecs, mem (rootOf nd) nd.bracket.toIval :=
-    rootOf_mem_of_accepted P0 piI profile (bounds 0) (bounds 1) partitionSpecs R0 hR0
-  have hJ : ∀ nd ∈ partitionSpecs, ∀ neg aI, nodeShift P0 piI profile nd = some (neg, aI) →
-      mem (OriginalPositiveMoment.moment 0 (profileShift (specNode nd (rootOf nd)) ^ 2))
-        (seedJ0I P0 piI (sqI P0 aI)) := by
-    intro nd hnd neg aI hshift
-    obtain ⟨neg', aI', hshift', hv⟩ := hvalid nd hnd
-    rw [hshift] at hshift'
-    simp only [Option.some.injEq, Prod.mk.injEq] at hshift'
-    obtain ⟨rfl, rfl⟩ := hshift'
-    exact seed_of_shift hW hpv nd hshift hv (hx nd hnd)
+  obtain ⟨hpv, hx, hJ⟩ := accepted_of_block0 hf0 hW
   exact omittedOK_sound P0 (by decide) mem_piI profile_agrees hpv partitionSpecs rootOf hx hJ hO
 
 /-- **`hclose` from the twelve block facts and the even fact, with the numeric constants**, S2 from
@@ -114,21 +123,9 @@ theorem hclose_of_blockFacts_numeric
   have hsum12 : ∀ z : ℤ, (∑ _b ∈ Finset.range 12, z) = 12 * z := by
     intro z; simp [Finset.sum_const, Finset.card_range]
   -- every node of the partition is accepted by the loop of block 0
-  obtain ⟨hpv, R0, hR0, -, -⟩ := blockFact_spec (hf 0 (by norm_num))
-  have hvalid := accumulateSpecs_valid P0 piI profile (bounds 0) (bounds 1) partitionSpecs rawZero R0 hR0
-  have hx : ∀ nd ∈ partitionSpecs, mem (rootOf nd) nd.bracket.toIval :=
-    rootOf_mem_of_accepted P0 piI profile (bounds 0) (bounds 1) partitionSpecs R0 hR0
-  have hJ : ∀ nd ∈ partitionSpecs, ∀ neg aI, nodeShift P0 piI profile nd = some (neg, aI) →
-      mem (OriginalPositiveMoment.moment 0 (profileShift (specNode nd (rootOf nd)) ^ 2))
-        (seedJ0I P0 piI (sqI P0 aI)) := by
-    intro nd hnd neg aI hshift
-    obtain ⟨neg', aI', hshift', hv⟩ := hvalid nd hnd
-    rw [hshift] at hshift'
-    simp only [Option.some.injEq, Prod.mk.injEq] at hshift'
-    obtain ⟨rfl, rfl⟩ := hshift'
-    exact seed_of_shift hW hpv nd hshift hv (hx nd hnd)
-  apply hclose_of_blockFacts (fun _ => epsBlock) (fun _ => bndBlock) hf (evenFact_spec hEven) hJ hQuad
-    (by norm_num [deltaQ] : (0 : ℝ) ≤ (deltaQ : ℝ))
+  obtain ⟨-, -, hJ⟩ := accepted_of_block0 (hf 0 (by norm_num)) hW
+  apply hclose_of_blockFacts (fun _ => epsBlock) (fun _ => bndBlock) hf (evenFact_spec hEven) hJ
+    hQuad (by norm_num [deltaQ] : (0 : ℝ) ≤ (deltaQ : ℝ))
   · rw [hsum12]; exact budget_width
   · exact budget_smoothing
   · rw [hsum12, add_zero]; exact budget_energy

@@ -57,16 +57,14 @@ theorem production_reflected_coefficient (s : ℝ) (hs : 0 ≤ s)
     F0ConditionalNode.coefficient s (c, d) =
       (Real.sqrt (((d + 1 : ℕ) : ℝ) / (c : ℝ)) : ℂ) *
         F0ConditionalNode.coefficient s (d + 1, c - 1) := by
-  have hc : 1 ≤ c := by omega
-  simpa only [Nat.sub_add_cancel hc] using coefficient_reflection s hs hv d (c - 1)
+  simpa only [Nat.sub_add_cancel (by omega : 1 ≤ c)] using coefficient_reflection s hs hv d (c - 1)
 
 /-- Exact reflected entries never amplify the canonical coefficient error.
 The floating square root and multiplication still need separate enclosures. -/
 theorem production_reflection_factor_le_one (c d : ℕ) (h : d + 1 < c) :
     Real.sqrt (((d + 1 : ℕ) : ℝ) / (c : ℝ)) ≤ 1 := by
-  apply Real.sqrt_le_one.mpr
-  apply (div_le_one (by exact_mod_cast (show 0 < c by omega))).mpr
-  exact_mod_cast (show d + 1 ≤ c by omega)
+  exact Real.sqrt_le_one.mpr ((div_le_one (by exact_mod_cast (show 0 < c by omega))).mpr
+    (by exact_mod_cast (show d + 1 ≤ c by omega)))
 
 end
 end Grothe.UpperChaos.F0ConditionalEvaluator

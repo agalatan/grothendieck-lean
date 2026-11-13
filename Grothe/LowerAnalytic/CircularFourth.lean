@@ -60,6 +60,12 @@ theorem gramH_le_tensorNormSq_sq (t : ι → ι → ι → ℂ) :
   rw [he]
   simpa only [hs] using gramN_le_tensorNormSq_sq (fun i j k => t j k i)
 
+private lemma sum_kerGs_self (f : ι → ι → ι → ℝ) :
+    ∑ i, kerGs f f i i = ∑ i, ∑ j, ∑ k, f i j k ^ 2 := by
+  unfold kerGs
+  simp only [← sq]
+  exact Finset.sum_congr rfl fun _ _ => Finset.sum_comm
+
 section circular
 
 variable [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
@@ -92,15 +98,7 @@ theorem Circular.cubicTensorNormSq_eq : cubicTensorNormSq (gramT J a b) = E (a *
   have hsum := Finset.sum_congr rfl fun i (_ : i ∈ Finset.univ) => hfg i
   simp only [← Finset.sum_div, Finset.sum_add_distrib, ← Finset.mul_sum] at hsum
   rw [hN, hH] at hsum
-  have hft : (∑ i, kerGs f f i i) = ∑ i, ∑ j, ∑ k, f i j k ^ 2 := by
-    unfold kerGs
-    simp only [← sq]
-    exact Finset.sum_congr rfl fun _ _ => Finset.sum_comm
-  have hgt : (∑ i, kerGs g g i i) = ∑ i, ∑ j, ∑ k, g i j k ^ 2 := by
-    unfold kerGs
-    simp only [← sq]
-    exact Finset.sum_congr rfl fun _ _ => Finset.sum_comm
-  rw [hft, hgt] at hsum
+  rw [sum_kerGs_self, sum_kerGs_self] at hsum
   dsimp [t] at hsum
   linarith
 
@@ -115,7 +113,7 @@ theorem Circular.fourth_moment_contractions :
   have hh := hc.jointH0_eq
   unfold jointS0 at hs
   unfold jointH0 at hh
-  nlinarith
+  linarith
 
 /-- Sharp dimension-free fourth-moment bound at an arbitrary scale. -/
 theorem Circular.fourth_moment_le : E (radU a b ^ 2) ≤ 176 * E (a * a) ^ 2 := by
@@ -129,9 +127,8 @@ theorem Circular.fourth_moment_le : E (radU a b ^ 2) ≤ 176 * E (a * a) ^ 2 := 
   have hyz : gramY t ≤ gramZ t := gramT_symm J a b
   have hzsq := gramZ_sq_le t
   have hh0 := gramH_nonneg t
-  have hz : gramZ t ≤ A := by
-    apply le_of_sq_le_sq' hA
-    exact hzsq.trans (by simpa [sq] using mul_le_mul hn hh hh0 hA)
+  have hz : gramZ t ≤ A :=
+    le_of_sq_le_sq' hA (hzsq.trans (by simpa [sq] using mul_le_mul hn hh hh0 hA))
   have hy : gramY t ≤ A := hyz.trans hz
   have h := hc.fourth_moment_contractions hE ha
   change E (radU a b ^ 2) - 8 * A =
@@ -151,10 +148,7 @@ theorem Circular.fourth_moment_le_variance :
 
 /-- The normalized bound used by the lower reduction. -/
 theorem Circular.fourth_moment_le_44 (haa : E (a * a) = 1 / 2) : E (radU a b ^ 2) ≤ 44 := by
-  have h := hc.fourth_moment_le hE ha
-  rw [haa] at h
-  norm_num at h
-  exact h
+  exact (hc.fourth_moment_le hE ha).trans (by rw [haa]; norm_num)
 
 end circular
 

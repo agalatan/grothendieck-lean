@@ -63,10 +63,8 @@ theorem norm_sq_le_of_exp_bound {f : ℂ → ℂ} (hf : MemLp f 2 gaussC)
     (hbound : ∀ z, ‖f z‖ ≤ Real.exp (c * normSq z)) :
     ‖hf.toLp f‖ ^ 2 ≤ (1 - 2 * c)⁻¹ := by
   rw [norm_toLp_sq, ← integral_exp_normSq (2 * c) hc]
-  apply integral_mono
-    ((memLp_two_iff_integrable_sq_norm hf.aestronglyMeasurable).mp hf)
-    (integrable_exp_normSq (2 * c) hc)
-  intro z
+  refine integral_mono ((memLp_two_iff_integrable_sq_norm hf.aestronglyMeasurable).mp hf)
+    (integrable_exp_normSq (2 * c) hc) fun z => ?_
   calc
     ‖f z‖ ^ 2 ≤ (Real.exp (c * normSq z)) ^ 2 :=
       pow_le_pow_left₀ (norm_nonneg _) (hbound z) 2

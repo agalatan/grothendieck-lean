@@ -35,8 +35,7 @@ theorem measurable_fixedPhaseIntegrand (j : ℕ) (r A : ℂ) (i : ℕ × ℕ) :
     Measurable (fixedPhaseIntegrand j r A i) := by
   have hvars : Continuous (fun w : ℂ ↦
       ![(w.re : ℂ) - A + I * (w.im : ℂ), (w.re : ℂ) - A - I * (w.im : ℂ)]) := by
-    apply continuous_pi
-    intro k
+    refine continuous_pi fun k => ?_
     fin_cases k <;> dsimp <;> fun_prop
   have hpoly := (MvPolynomial.continuous_eval (conjP (normalizedPolynomial i))).comp hvars
   have hmap : Continuous (fun w : ℂ ↦ (w.im, r, (w.re : ℂ) - A)) := by fun_prop
@@ -55,8 +54,7 @@ theorem analyticAt_fixedPhaseIntegrand (j : ℕ) (i : ℕ × ℕ) (w : ℂ) (p :
       ![(w.re : ℂ) - q.2 + I * (w.im : ℂ), (w.re : ℂ) - q.2 - I * (w.im : ℂ)] k) p := by
     fin_cases k <;> dsimp <;> fun_prop
   have hpoly := AnalyticAt.aeval_mvPolynomial hvars (conjP (normalizedPolynomial i))
-  have hmap : AnalyticAt ℂ (fun q : ℂ × ℂ ↦ (q.1, (w.re : ℂ) - q.2)) p := by
-    fun_prop
+  have hmap : AnalyticAt ℂ (fun q : ℂ × ℂ ↦ (q.1, (w.re : ℂ) - q.2)) p := by fun_prop
   have hphase := (PhasePolynomialComplex.analyticAt_phaseComplex w.im
     (p.1, (w.re : ℂ) - p.2)).comp (f := fun q : ℂ × ℂ ↦ (q.1, (w.re : ℂ) - q.2)) hmap
   have he : AnalyticAt ℂ (fun q : ℂ × ℂ ↦
@@ -119,14 +117,12 @@ theorem coefficient_eq_fixedPhaseIntegral (j : ℕ) (r : ℂ) (a b : ℝ) (i : �
           conj (ev w (simultaneousShift (I * (b : ℂ)) (normalizedPolynomial i))) *
             source j r a b w ∂gaussC := by
       rw [coefficient_eq_integral, ← integral_const_mul]
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall fun w ↦ by ring
+      exact integral_congr_ae (Filter.Eventually.of_forall fun w ↦ by ring)
     _ = ∫ w, Complex.exp (-((a : ℂ) ^ 2)) *
         (fixedPhaseIntegrand j r ((a : ℂ) + I * (b : ℂ)) i (w + (a : ℂ)) *
           Complex.exp (2 * (-(a : ℂ)) * (w.re : ℂ))) ∂gaussC := by
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall fun w ↦
-        (fixedPhaseIntegrand_real_translate j r a b i w).symm
+      exact integral_congr_ae (Filter.Eventually.of_forall fun w ↦
+        (fixedPhaseIntegrand_real_translate j r a b i w).symm)
     _ = _ := by rw [integral_const_mul]; exact hshift.symm
 
 end

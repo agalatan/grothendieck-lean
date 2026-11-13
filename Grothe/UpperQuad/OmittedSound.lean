@@ -199,13 +199,9 @@ lemma sum_head_eq_sum_pairs (g : ℕ → ℕ → ℕ → ℝ) :
     have h1 : (Finset.range 252).filter (· < q + 2) = Finset.range (q + 2) := by
       ext c; simp only [Finset.mem_filter, Finset.mem_range]; omega
     have h2 : ∑ c ∈ (Finset.range 252).filter (fun c => ¬ c < q + 2),
-        ∑ d ∈ Finset.range 251, (if c < q + 2 ∧ d < q + 1 then g q c d else 0) = 0 := by
-      apply Finset.sum_eq_zero
-      intro c hc
-      simp only [Finset.mem_filter] at hc
-      apply Finset.sum_eq_zero
-      intro d _
-      simp [hc.2]
+        ∑ d ∈ Finset.range 251, (if c < q + 2 ∧ d < q + 1 then g q c d else 0) = 0 :=
+      Finset.sum_eq_zero fun c hc => Finset.sum_eq_zero fun d _ => by
+        simp [(Finset.mem_filter.mp hc).2]
     rw [h1, h2, add_zero]
     apply Finset.sum_congr rfl
     intro c hc
@@ -214,20 +210,15 @@ lemma sum_head_eq_sum_pairs (g : ℕ → ℕ → ℕ → ℝ) :
     have h3 : (Finset.range 251).filter (· < q + 1) = Finset.range (q + 1) := by
       ext d; simp only [Finset.mem_filter, Finset.mem_range]; omega
     have h4 : ∑ d ∈ (Finset.range 251).filter (fun d => ¬ d < q + 1),
-        (if c < q + 2 ∧ d < q + 1 then g q c d else 0) = 0 := by
-      apply Finset.sum_eq_zero
-      intro d hd
-      simp only [Finset.mem_filter] at hd
-      simp [hd.2]
+        (if c < q + 2 ∧ d < q + 1 then g q c d else 0) = 0 :=
+      Finset.sum_eq_zero fun d hd => by simp [(Finset.mem_filter.mp hd).2]
     rw [h3, h4, add_zero]
     apply Finset.sum_congr rfl
     intro d hd
     rw [Finset.mem_range] at hd
     simp [hc, hd]
   rw [Finset.sum_congr rfl hc, Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro p _
-  rw [Finset.sum_filter]
+  exact Finset.sum_congr rfl fun p _ => by rw [Finset.sum_filter]
 
 set_option linter.constructorNameAsVariable false in
 /-- **The squared `ℓ²` norm of a node's omitted graded coefficients is at most `Z · m`.** -/
@@ -260,11 +251,10 @@ theorem sum_sq_omitted_le (s W : ℝ) (D : ℕ) :
     unfold rowSum
     apply Finset.sum_le_sum_of_subset_of_nonneg
     · intro kj hkj
-      rw [Finset.mem_image] at hkj
-      obtain ⟨q, hq, rfl⟩ := hkj
+      obtain ⟨q, hq, rfl⟩ := Finset.mem_image.mp hkj
       simp only [Finset.mem_filter, Finset.mem_range] at hq
       exact rowOf_mem_activeRows q p.1 p.2 hq.1 hq.2.1 hq.2.2
-    · intros; exact sq_nonneg _
+    · exact fun _ _ _ => sq_nonneg _
   · simp [hD]
 
 /-! ### The kernel's bounds: the squared node factors -/
@@ -332,8 +322,7 @@ lemma mem_activeRows {kj : ℕ × ℕ} :
 lemma activeRows_subset_allRows : activeRows ⊆ allRows := by
   intro kj h
   rw [mem_activeRows] at h
-  rw [mem_allRows]
-  exact And.intro h.1 h.2.1
+  exact mem_allRows.mpr ⟨h.1, h.2.1⟩
 
 lemma sum_allRows (g : ℕ × ℕ → ℝ) :
     ∑ kj ∈ allRows, g kj = ∑ k ∈ Finset.range numCharges, ∑ j ∈ Finset.range (blockSide k), g (k, j) := by
@@ -373,10 +362,8 @@ theorem rowSum_le_factorsSqHi_of (F : Array (Array Fx)) {s W : ℝ}
 theorem rowSum_le_factorsSqHi (P : ℕ) (hP : 1 ≤ P) {s W : ℝ} {sI wI : Ival} (hs0 : 0 ≤ s)
     (hs : mem s sI) (hw : mem W wI) (hv : nodeFactorsValid P sI = true) :
     rowSum s W * (2 : ℝ) ^ (2 * KFix) ≤ (factorsSqHi (nodeFactors P sI wI 0 251) : ℝ) := by
-  apply rowSum_le_factorsSqHi_of
-  intro kj hkj
+  refine rowSum_le_factorsSqHi_of _ fun kj hkj => ?_
   rw [mem_activeRows] at hkj
-  unfold rowFactor
   exact memFx_nodeFactors P hP hs0 hs hw hv 0 251 kj.1 kj.2 hkj.1.1 hkj.2.1 hkj.2.2
 
 /-! ### The kernel's bounds: the Bessel deficit -/
@@ -425,8 +412,7 @@ lemma canonicalPairs_toFinset (D : ℕ) : (canonicalPairs D 265).toList.toFinset
     have := canonicalPairs_mem h
     omega
   · rintro ⟨⟨hc, hd⟩, hcd, hD⟩
-    have := canonicalPairs_rank D 265 p.1 p.2 hcd (by omega) hD
-    exact Array.mem_iff_getElem?.mpr ⟨_, this⟩
+    exact Array.mem_iff_getElem?.mpr ⟨_, canonicalPairs_rank D 265 p.1 p.2 hcd (by omega) hD⟩
 
 lemma canonicalPairs_nodup (D dMax : ℕ) : (canonicalPairs D dMax).toList.Nodup := by
   unfold canonicalPairs
@@ -476,9 +462,8 @@ theorem besselLowerFx_sound (D : ℕ) {s : ℝ} {valsFx : Array Fx}
   apply Finset.sum_le_sum
   intro i hi
   rw [Finset.mem_range] at hi
-  have h := pairTermLo_sound (s := s) ((canonicalPairs D 265).getD i (0, 0)).1
+  simpa using pairTermLo_sound (s := s) ((canonicalPairs D 265).getD i (0, 0)).1
     ((canonicalPairs D 265).getD i (0, 0)).2 (hvals i hi)
-  simpa using h
 
 /-- The reflection `(c, d) ↦ (d+1, c−1)`. -/
 def reflPair (p : ℕ × ℕ) : ℕ × ℕ := (p.2 + 1, p.1 - 1)
@@ -492,12 +477,9 @@ lemma mem_refSet {D : ℕ} {p : ℕ × ℕ} :
   unfold refSet
   rw [Finset.mem_image]
   constructor
-  · intro h
-    obtain ⟨q, hq, hqe⟩ := h
-    rw [Finset.mem_filter] at hq
-    exact ⟨q, hq.1, hq.2, hqe⟩
-  · intro h
-    obtain ⟨q, hq, h1, hqe⟩ := h
+  · rintro ⟨q, hq, hqe⟩
+    exact ⟨q, (Finset.mem_filter.mp hq).1, (Finset.mem_filter.mp hq).2, hqe⟩
+  · rintro ⟨q, hq, h1, hqe⟩
     exact ⟨q, Finset.mem_filter.mpr ⟨hq, h1⟩, hqe⟩
 
 lemma mem_omitPairs {D : ℕ} {p : ℕ × ℕ} :
@@ -517,9 +499,7 @@ lemma besselReal_eq (A : ℝ) (D : ℕ) :
     split_ifs with h
     · unfold reflPair
       rw [norm_canonicalCoefficient_sq_reflect A (p.2 + 1) (p.1 - 1) (by omega)]
-      have e1 : p.1 - 1 + 1 = p.1 := by omega
-      have e2 : p.2 + 1 - 1 = p.2 := by omega
-      rw [e1, e2]
+      rw [Nat.sub_add_cancel (by omega : 1 ≤ p.1), Nat.add_sub_cancel]
       push_cast
       field_simp
     · have h1 : ((p.2 + 1 : ℕ) : ℝ) / ((p.2 : ℝ) + 1) = 1 := by
@@ -586,9 +566,8 @@ theorem deficitFx_sound (D : ℕ) {s : ℝ} {valsFx : Array Fx}
 lemma deficitFx_nonneg (D : ℕ) (valsFx : Array Fx) : 0 ≤ deficitFx D valsFx := le_max_left _ _
 
 lemma factorsSqHi_nonneg (factors : Array (Array Fx)) : 0 ≤ factorsSqHi factors := by
-  have h := factorsSqHi_eq factors
   have : (0 : ℝ) ≤ (factorsSqHi factors : ℝ) := by
-    rw [h]
+    rw [factorsSqHi_eq]
     exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by exact_mod_cast sqHiFx_nonneg _
   exact_mod_cast this
 
@@ -654,8 +633,7 @@ theorem omittedNodeBound_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem 
       have hsq : ((Z * m : ℤ) : ℝ) ≤ ((isqrtUp (Z * m).toNat : ℕ) : ℝ) ^ 2 := by
         have h := le_isqrtUp (Z * m).toNat
         have hn : (((Z * m).toNat : ℕ) : ℝ) = ((Z * m : ℤ) : ℝ) := by
-          have := Int.toNat_of_nonneg hZm
-          exact_mod_cast this
+          exact_mod_cast Int.toNat_of_nonneg hZm
         calc ((Z * m : ℤ) : ℝ) = (((Z * m).toNat : ℕ) : ℝ) := hn.symm
           _ = (Real.sqrt (((Z * m).toNat : ℕ) : ℝ)) ^ 2 := (Real.sq_sqrt (Nat.cast_nonneg _)).symm
           _ ≤ ((isqrtUp (Z * m).toNat : ℕ) : ℝ) ^ 2 := pow_le_pow_left₀ (Real.sqrt_nonneg _) h 2
@@ -664,9 +642,8 @@ theorem omittedNodeBound_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem 
           ≤ rowSum (specNode nd x) (specWeight nd x) * omittedMass (profileShift (specNode nd x)) nd.cutoff :=
             sum_sq_omitted_le _ _ _
         _ ≤ ((Z : ℝ) / 2 ^ (2 * KFix)) * ((m : ℝ) / 2 ^ (2 * KFix)) := by
-            apply mul_le_mul _ _ (omittedMass_nonneg _ _) (by positivity)
-            · rw [le_div_iff₀ hpos]; exact hZ
-            · rw [le_div_iff₀ hpos]; exact hm
+            exact mul_le_mul ((le_div_iff₀ hpos).mpr hZ) ((le_div_iff₀ hpos).mpr hm)
+              (omittedMass_nonneg _ _) (by positivity)
         _ = ((Z * m : ℤ) : ℝ) / ((2 : ℝ) ^ (2 * KFix)) ^ 2 := by push_cast; ring
         _ ≤ ((isqrtUp (Z * m).toNat : ℕ) : ℝ) ^ 2 / ((2 : ℝ) ^ (2 * KFix)) ^ 2 :=
             div_le_div_of_nonneg_right hsq (by positivity)

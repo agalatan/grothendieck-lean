@@ -63,14 +63,13 @@ lemma chart_integral_le {r : ℝ} (hr : (rhoQ : ℝ) < r)
         gF F G neg θ ≤ 273 / 100 := by
     intro k₀ hk hok
     obtain ⟨x, hx, hle⟩ := partOK_spec hok
-    · have i := chartSum_integral hFm hGm hF hG hint 1024 k₀ x hk hx
-      refine i.trans ?_
-      rw [div_le_iff₀ hD]
-      have : ((273 * D / 100 : ℤ) : ℝ) ≤ 273 / 100 * D := by
-        have := Int.ediv_mul_le (273 * D) (by norm_num : (100 : ℤ) ≠ 0)
-        have h' : (((273 * D / 100 : ℤ) : ℝ)) * 100 ≤ 273 * D := by exact_mod_cast this
-        linarith
-      exact (by exact_mod_cast hle : (x : ℝ) ≤ ((273 * D / 100 : ℤ) : ℝ)).trans this
+    refine (chartSum_integral hFm hGm hF hG hint 1024 k₀ x hk hx).trans ?_
+    rw [div_le_iff₀ hD]
+    have : ((273 * D / 100 : ℤ) : ℝ) ≤ 273 / 100 * D := by
+      have := Int.ediv_mul_le (273 * D) (by norm_num : (100 : ℤ) ≠ 0)
+      have h' : (((273 * D / 100 : ℤ) : ℝ)) * 100 ≤ 273 * D := by exact_mod_cast this
+      linarith
+    exact (by exact_mod_cast hle : (x : ℝ) ≤ ((273 * D / 100 : ℤ) : ℝ)).trans this
   have b0 := bound 0 (by norm_num) h0
   have b1 := bound 1024 (by norm_num) h1
   rw [pieceLo_0, zero_add, pieceLo_1024] at b0
@@ -108,8 +107,7 @@ theorem hmean_of_parts_sharp {r : ℝ} (hr : (4149 / 4000 : ℝ) < r)
     push_cast
     rw [add_mul, Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]
   have hshift : ∫ θ in (0 : ℝ)..2 * π, gF F G false θ = ∫ θ in (-(π / 2))..(-(π / 2) + 2 * π), gF F G false θ := by
-    have := hper.intervalIntegral_add_eq 0 (-(π / 2))
-    simpa using this
+    simpa using hper.intervalIntegral_add_eq 0 (-(π / 2))
   rw [hshift, ← intervalIntegral.integral_add_adjacent_intervals (hint false _ _) (hint false _ _) (b := π / 2)]
   -- the second half is the other chart: e^{i(θ+π)} = −e^{iθ}
   have hsecond : ∫ θ in (π / 2)..(-(π / 2) + 2 * π), gF F G false θ = ∫ θ in (-(π / 2))..(π / 2), gF F G true θ := by

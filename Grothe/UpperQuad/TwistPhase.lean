@@ -90,16 +90,12 @@ lemma sum_regroup (L : List PhaseTerm) (hL : ∀ t ∈ L, t.j + t.k ≤ 17) (g :
       · simp
       · intro k _ hk
         simp [Ne.symm hk]
-      · intro hk
-        exfalso
-        exact hk (Finset.mem_range.mpr (by omega))
+      · exact fun hk => absurd (Finset.mem_range.mpr (by omega)) hk
     · intro j _ hj
       apply Finset.sum_eq_zero
       intro k _
       simp [Ne.symm hj]
-    · intro hj
-      exfalso
-      exact hj (Finset.mem_range.mpr (by omega))
+    · exact fun hj => absurd (Finset.mem_range.mpr (by omega)) hj
 
 /-- `Sphase` in the row form of the kernel. -/
 lemma Sphase_rows {terms : Array PhaseTerm} (hT : TermsOK terms) (U V W : ℝ) :
@@ -228,12 +224,8 @@ lemma phaseRowCoeff_foldl (P : ℕ) (L : List PhaseTerm) (hL : ∀ t ∈ L, t.i 
     · obtain ⟨h1, h2⟩ := hc
       simp only [h1, h2, and_self, ↓reduceIte, beq_self_eq_true, Bool.and_self]
       rw [← add_assoc]
-      apply ih hL'
-      exact mem_addI P hacc (mem_mulI P (mem_ratI P hP t.num ht.2) (hs t.i ht.1))
-    · have hb : (t.j == j' && t.k == k) = false := by
-        by_contra hb'
-        simp only [Bool.not_eq_false, Bool.and_eq_true, beq_iff_eq] at hb'
-        exact hc hb'
+      exact ih hL' (mem_addI P hacc (mem_mulI P (mem_ratI P hP t.num ht.2) (hs t.i ht.1)))
+    · have hb : (t.j == j' && t.k == k) = false := by simpa using hc
       simp only [hc, ↓reduceIte, hb, Bool.false_eq_true, zero_add]
       exact ih hL' hacc
 
@@ -263,10 +255,8 @@ theorem mem_nodeCoefs (P : ℕ) (hP : 1 ≤ P) {terms : Array PhaseTerm} (hT : T
     simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hj, hk, ↓reduceDIte,
       Option.getD_some]
   rw [e]
-  apply memTw_toTw
-  unfold nodeA
-  exact mem_mulI P (mem_phaseRowCoeff P hP hT hs j k)
-    (mem_powTable P (mem_divN P hP (by norm_num) hr) 17 k (by omega))
+  exact memTw_toTw (mem_mulI P (mem_phaseRowCoeff P hP hT hs j k)
+    (mem_powTable P (mem_divN P hP (by norm_num) hr) 17 k (by omega)))
 
 end
 

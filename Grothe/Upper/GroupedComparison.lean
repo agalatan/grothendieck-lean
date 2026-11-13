@@ -43,12 +43,11 @@ theorem quadratic_sum_le_grouped (S : Finset ι) (J : Finset κ) (G : Finset α)
     have heq : (∑ j ∈ Jg g, ∑ k ∈ Jg g,
         if decide (j = k) then e j * e k else 0) =
         ∑ j ∈ Jg g, e j ^ 2 := by
-      apply sum_congr rfl
-      intro j hj
+      refine sum_congr rfl fun j hj => ?_
       simp [hj, pow_two]
     exact heq ▸ hh |>.trans (hradius g hg).2
-  have hsum (i : ι) : (∑ g ∈ G, ∑ j ∈ Jg g, d j i) = ∑ j ∈ J, d j i := by
-    exact sum_fiberwise_of_maps_to hgroup (fun j => d j i)
+  have hsum (i : ι) : (∑ g ∈ G, ∑ j ∈ Jg g, d j i) = ∑ j ∈ J, d j i :=
+    sum_fiberwise_of_maps_to hgroup (fun j => d j i)
   have hh := quadratic_sum_le_overlap S G (fun g i => ∑ j ∈ Jg g, d j i)
     radius (fun _ _ => true) (fun g hg => (hradius g hg).1) hblock
     (by simp)
@@ -57,9 +56,7 @@ theorem quadratic_sum_le_grouped (S : Finset ι) (J : Finset κ) (G : Finset α)
   have hq : (∑ g ∈ G, ∑ h ∈ G, radius g * radius h) =
       (∑ g ∈ G, radius g) ^ 2 := by
     rw [pow_two, sum_mul]
-    apply sum_congr rfl
-    intro g hg
-    rw [mul_sum]
+    exact sum_congr rfl fun g _ => (mul_sum _ _ _).symm
   rwa [hq] at hh
 
 end Grothe.Upper.BandComparison

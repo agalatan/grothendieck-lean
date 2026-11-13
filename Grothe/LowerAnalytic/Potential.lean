@@ -37,7 +37,7 @@ lemma integrable_gaussC_of_bound' (F : ℂ → ℂ) (hF : Continuous F) (c0 c1 c
       + c3 * Complex.normSq z ^ 3) : Integrable F gaussC := by
   refine (integrable_gaussC_of_bound (fun z => ‖F z‖) hF.norm c0 c1 c2 c3 fun z => ?_).mono'
     hF.aestronglyMeasurable (Filter.Eventually.of_forall fun z => le_rfl)
-  rw [abs_of_nonneg (norm_nonneg _)]; exact h z
+  exact (abs_norm (F z)).trans_le (h z)
 
 /-! ### Moments -/
 
@@ -57,11 +57,11 @@ lemma integral_normSq_gaussC : ∫ z, Complex.normSq z ∂gaussC = 1 := by
 
 lemma integral_stdGaussian_two (F : ℝ × ℝ → ℝ) (hF : Continuous F) :
     ∫ x, F (x 0, x 1) ∂(stdGaussian 2) = ∫ p, F p ∂gauss2 := by
-  have h := (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq
   calc ∫ x, F (x 0, x 1) ∂(stdGaussian 2)
       = ∫ p, F p ∂((stdGaussian 2).map MeasurableEquiv.finTwoArrow) :=
         (integral_map (by fun_prop) hF.aestronglyMeasurable).symm
-    _ = ∫ p, F p ∂gauss2 := by rw [stdGaussian, h]
+    _ = ∫ p, F p ∂gauss2 := by
+        rw [stdGaussian, (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq]
 
 /-- The antiderivative `G(r) = (r²/2) e^{−r²/2}` of `(1 − r²/2) r e^{−r²/2}`. -/
 lemma hasDerivAt_G (r : ℝ) :

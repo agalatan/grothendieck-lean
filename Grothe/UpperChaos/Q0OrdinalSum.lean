@@ -22,8 +22,7 @@ theorem rows_sum {α : Type*} (index : α → ℕ) (rows : List α) (n : ℕ)
     (rows.map (fun r => f (index r))).sum = ∑ i : Fin n, f i.val := by
   have hm : rows.map (fun r => f (index r)) = (List.range' 0 n).map f := by
     simpa only [List.map_map, Function.comp_def] using congrArg (List.map f) h
-  rw [hm, ← List.range_eq_range']
-  exact range_sum f n
+  rw [hm, ← List.range_eq_range', range_sum]
 
 
 /-- A finite equivalence reindexes the ledger sum without changing terms. -/
@@ -34,10 +33,7 @@ theorem rows_sum_equiv {α β : Type*} [Fintype β] (index : α → ℕ)
     (rows.map (fun r => f (index r))).sum = ∑ b : β, g b := by
   calc
     _ = ∑ i : Fin n, f i.val := rows_sum index rows n h f
-    _ = ∑ i : Fin n, g (e i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact hfg i
+    _ = ∑ i : Fin n, g (e i) := Finset.sum_congr rfl fun i _ => hfg i
     _ = ∑ b : β, g b := e.sum_comp g
 
 end Grothe.UpperChaos.Q0OrdinalSum

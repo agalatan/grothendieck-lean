@@ -136,9 +136,8 @@ theorem weighted_error_energy_le {ι : Type*} (nodes : Finset ι)
   calc
     _ ≤ ∑ j ∈ nodes, w j * (2 * ∑ i ∈ CanonicalReconstructionNorm.canonical q,
         ‖F0ConditionalNode.coefficient (s j) i - a j i‖ ^ 2) := by
-      apply sum_le_sum
-      intro j hj
-      exact mul_le_mul_of_nonneg_left (actual_error_energy_le (s j) (hs j hj) q (a j)) (hw j hj)
+      exact sum_le_sum fun j hj =>
+        mul_le_mul_of_nonneg_left (actual_error_energy_le (s j) (hs j hj) q (a j)) (hw j hj)
     _ = _ := by
       conv_rhs => rw [mul_sum]
       apply sum_congr rfl
@@ -157,11 +156,11 @@ theorem weighted_error_norm_le {ι : Type*} (nodes : Finset ι)
           ‖F0ConditionalNode.coefficient (s j) i - a j i‖ ^ 2)) := by
   have hc : 0 ≤ ∑ j ∈ nodes, w j *
       (∑ i ∈ CanonicalReconstructionNorm.canonical q,
-        ‖F0ConditionalNode.coefficient (s j) i - a j i‖ ^ 2) := by
-    exact sum_nonneg fun j hj => mul_nonneg (hw j hj) (sum_nonneg fun _ _ => sq_nonneg _)
+        ‖F0ConditionalNode.coefficient (s j) i - a j i‖ ^ 2) :=
+    sum_nonneg fun j hj => mul_nonneg (hw j hj) (sum_nonneg fun _ _ => sq_nonneg _)
   have hf : 0 ≤ ∑ j ∈ nodes, w j * (∑ i ∈ CanonicalReconstructionNorm.grade q,
-      ‖F0ConditionalNode.coefficient (s j) i - reconstruct (a j) i‖ ^ 2) := by
-    exact sum_nonneg fun j hj => mul_nonneg (hw j hj) (sum_nonneg fun _ _ => sq_nonneg _)
+      ‖F0ConditionalNode.coefficient (s j) i - reconstruct (a j) i‖ ^ 2) :=
+    sum_nonneg fun j hj => mul_nonneg (hw j hj) (sum_nonneg fun _ _ => sq_nonneg _)
   apply (sq_le_sq₀ (Real.sqrt_nonneg _) (mul_nonneg (by norm_num) (Real.sqrt_nonneg _))).mp
   rw [mul_pow, Real.sq_sqrt hf, Real.sq_sqrt hc]
   nlinarith [weighted_error_energy_le nodes s w q a hs hw]

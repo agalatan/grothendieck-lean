@@ -31,19 +31,15 @@ theorem analyticAt_descend_of_even {F : ℂ → E} (heven : Function.Even F) {s 
     have hlocal : AnalyticOnNhd ℂ F (ball 0 R) := fun r hr ↦ hball hr
     exact analyticOnNhd_descend_of_even hR hlocal heven 0
       (mem_ball_self (sq_pos_of_pos hR))
-  · have hr0 : Complex.sqrt s ≠ 0 := by
-      intro h
-      have hsq := sqrt_sq s
-      rw [h, zero_pow (by decide)] at hsq
-      exact hs0 hsq.symm
+  · have hr0 : Complex.sqrt s ≠ 0 := fun h ↦ hs0 (by rw [← sqrt_sq s, h, zero_pow two_ne_zero])
     have hcomp : F =ᶠ[𝓝 (Complex.sqrt s)] descend F ∘ (fun r : ℂ ↦ r ^ 2) :=
       Filter.Eventually.of_forall fun r ↦ (descend_sq_of_even heven r).symm
     have hsq : AnalyticAt ℂ (fun r : ℂ ↦ r ^ 2) (Complex.sqrt s) := analyticAt_id.pow 2
     have hderiv : deriv (fun r : ℂ ↦ r ^ 2) (Complex.sqrt s) ≠ 0 := by
       simpa only [deriv_pow_field, Nat.cast_ofNat, Nat.reduceSub, pow_one] using
         mul_ne_zero (by norm_num : (2 : ℂ) ≠ 0) hr0
-    have ha := (analyticAt_comp_iff_of_deriv_ne_zero hsq hderiv).mp (hF.congr hcomp)
-    simpa only [sqrt_sq] using ha
+    simpa only [sqrt_sq] using
+      (analyticAt_comp_iff_of_deriv_ne_zero hsq hderiv).mp (hF.congr hcomp)
 
 end
 

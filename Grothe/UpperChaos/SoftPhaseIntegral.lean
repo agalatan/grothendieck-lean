@@ -59,8 +59,8 @@ theorem norm_softPhaseLaplaceKernel_le (η : ℝ) (z : ℂ) (t : ℝ) (ht : 0 �
     ‖softPhaseLaplaceKernel η z t‖ ≤ ‖Grothe.Haag.phaseLaplaceKernel z t‖ := by
   rw [softPhaseLaplaceKernel, norm_mul, Complex.norm_real,
     Real.norm_of_nonneg (Real.exp_pos _).le]
-  apply mul_le_of_le_one_left (norm_nonneg _)
-  exact Real.exp_le_one_iff.mpr (neg_nonpos.mpr (mul_nonneg (sq_nonneg η) ht))
+  exact mul_le_of_le_one_left (norm_nonneg _)
+    (Real.exp_le_one_iff.mpr (neg_nonpos.mpr (mul_nonneg (sq_nonneg η) ht)))
 
 /-- The softened kernel is absolutely integrable for every complex argument. -/
 theorem integrableOn_softPhaseLaplaceKernel (η : ℝ) (z : ℂ) :
@@ -71,7 +71,7 @@ theorem integrableOn_softPhaseLaplaceKernel (η : ℝ) (z : ℂ) :
   refine (Grothe.Haag.integrableOn_phaseLaplaceKernel z).norm.mono'
     hm.aestronglyMeasurable ?_
   filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht
-  exact norm_softPhaseLaplaceKernel_le η z t ht.le
+    using norm_softPhaseLaplaceKernel_le η z t ht.le
 
 /-- Its absolute auxiliary integral is the exact softened modulus times `sqrt π`. -/
 theorem integral_norm_softPhaseLaplaceKernel (η : ℝ) (hη : 0 < η) (z : ℂ) :
@@ -93,7 +93,7 @@ theorem integral_norm_softPhaseLaplaceKernel_le (η : ℝ) (z : ℂ) :
   apply integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _)
     (Grothe.Haag.integrableOn_phaseLaplaceKernel z).norm
   filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht
-  exact norm_softPhaseLaplaceKernel_le η z t ht.le
+    using norm_softPhaseLaplaceKernel_le η z t ht.le
 
 /-- Softening gives a uniform exponential tail in the auxiliary parameter. -/
 theorem integral_norm_softPhaseLaplaceKernel_tail_le (η : ℝ) (z : ℂ)
@@ -115,9 +115,9 @@ theorem integral_norm_softPhaseLaplaceKernel_tail_le (η : ℝ) (z : ℂ)
       filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht
       rw [softPhaseLaplaceKernel, norm_mul, Complex.norm_real,
         Real.norm_of_nonneg (Real.exp_pos _).le]
-      apply mul_le_mul_of_nonneg_right _ (norm_nonneg _)
-      exact Real.exp_le_exp.mpr
-        (neg_le_neg (mul_le_mul_of_nonneg_left ht.le (sq_nonneg η)))
+      exact mul_le_mul_of_nonneg_right
+        (Real.exp_le_exp.mpr (neg_le_neg (mul_le_mul_of_nonneg_left ht.le (sq_nonneg η))))
+        (norm_nonneg _)
     _ = Real.exp (-(η ^ 2 * T)) *
         ∫ t : ℝ in Ioi T, ‖Grothe.Haag.phaseLaplaceKernel z t‖ := integral_const_mul _ _
     _ ≤ _ := mul_le_mul_of_nonneg_left htail (Real.exp_pos _).le

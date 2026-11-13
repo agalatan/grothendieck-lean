@@ -71,10 +71,12 @@ structure ProfileFacts (pos : Bool) (x R : ℚ) (at0 e : Ival) (T Dv : ℝ) : Pr
   hgap : 0 < T - Dv
   hsgn : devR x R < sgn pos * tcoef 0 x
 
+private lemma devR_nonneg {x R : ℝ} (hR : 0 ≤ R) : 0 ≤ devR x R :=
+  Finset.sum_nonneg fun _ _ => mul_nonneg (abs_nonneg _) (pow_nonneg hR _)
+
 lemma ProfileFacts.dev_nonneg {pos : Bool} {x R : ℚ} {at0 e : Ival} {T Dv : ℝ}
-    (hR : 0 ≤ (R : ℝ)) (_h : ProfileFacts pos x R at0 e T Dv) : 0 ≤ devR x R := by
-  unfold devR
-  exact Finset.sum_nonneg fun k _ => mul_nonneg (abs_nonneg _) (pow_nonneg hR _)
+    (hR : 0 ≤ (R : ℝ)) (_h : ProfileFacts pos x R at0 e T Dv) : 0 ≤ devR x R :=
+  devR_nonneg hR
 
 lemma ProfileFacts.mk' (hc : chatOK = true) {pos : Bool} {x R : ℚ} (hR : 0 ≤ (R : ℝ))
     {at0 e : Ival} (h : diskProfile pos x R = some (at0, e)) :
@@ -301,14 +303,7 @@ lemma mehI_sound {tau x R : ℚ} {m : Ival} (h : mehI tau x R = some m) :
   have hpos : 0 ≤ (tau : ℝ)⁻¹ ^ 501 * (1 - (tau : ℝ) ^ 2)⁻¹ := by
     have : 0 < 1 - (tau : ℝ) ^ 2 := by nlinarith
     exact mul_nonneg (pow_nonneg (inv_nonneg.mpr hτ0.le) _) (inv_nonneg.mpr this.le)
-  calc (tau : ℝ)⁻¹ ^ 501 * ((1 - (tau : ℝ) ^ 2)⁻¹ *
-        Real.exp (2 * tau * ((|(x : ℝ)| + R + (x + R)) / 2) / (1 + tau) +
-          2 * tau * Y2 x R / (1 - tau)))
-      = (tau : ℝ)⁻¹ ^ 501 * (1 - (tau : ℝ) ^ 2)⁻¹ *
-        Real.exp (2 * tau * ((|(x : ℝ)| + R + (x + R)) / 2) / (1 + tau) +
-          2 * tau * Y2 x R / (1 - tau)) := by
-        ring
-    _ ≤ (tau : ℝ)⁻¹ ^ 501 * (1 - (tau : ℝ) ^ 2)⁻¹ * v := mul_le_mul_of_nonneg_left hexp hpos
+  exact (mul_assoc _ _ _).symm.trans_le (mul_le_mul_of_nonneg_left hexp hpos)
 
 lemma kB_nonneg {θ a : ℝ} (hθ : 0 ≤ θ) (ha : 0 ≤ a) : 0 ≤ kB θ a := by
   unfold kB
@@ -318,8 +313,7 @@ lemma kB_nonneg {θ a : ℝ} (hθ : 0 ≤ θ) (ha : 0 ≤ a) : 0 ≤ kB θ a := 
 lemma diskPoint_kp_nonneg {ε x R : ℝ} {z ζ : ℂ} (h : DiskPoint ε x R z ζ) (hxR : R < x) :
     0 ≤ DiskPoint.kp ε x R := by
   unfold DiskPoint.kp
-  have hd0 : 0 ≤ devR x R := by
-    unfold devR; exact Finset.sum_nonneg fun k _ => mul_nonneg (abs_nonneg _) (pow_nonneg h.hR _)
+  have hd0 : 0 ≤ devR x R := devR_nonneg h.hR
   have he : 0 < ε * tcoef 0 x := lt_of_le_of_lt hd0 h.hsgn
   have hx0 : 0 < x := lt_of_le_of_lt h.hR hxR
   apply div_nonneg _ (sq_nonneg _)
@@ -345,11 +339,9 @@ lemma upsI_sound (_hc : chatOK = true) {pos : Bool} {x R : ℚ} (hR : 0 ≤ (R :
     rw [hdef] at h
     obtain ⟨U, hUm, hU⟩ := upsYI_sound h
     refine ⟨U, hUm, (sq_nonneg _).trans hU, fun z ζ hd => ?_⟩
-    have hb : (ζ / wC (sgn pos) z).im ^ 2 ≤ bval a2hi := by
-      have h1 := Complex.abs_im_le_norm (ζ / wC (sgn pos) z)
-      have h2 : (ζ / wC (sgn pos) z).im ^ 2 ≤ ‖ζ / wC (sgn pos) z‖ ^ 2 := by
-        rw [← sq_abs]; exact pow_le_pow_left₀ (abs_nonneg _) h1 2
-      exact h2.trans ((hAle z ζ hd).trans ((le_abs_self _).trans (abs_le_bval hAm)))
+    have hb : (ζ / wC (sgn pos) z).im ^ 2 ≤ bval a2hi :=
+      (sq_le_sq.mpr ((Complex.abs_im_le_norm _).trans (le_abs_self _))).trans
+        ((hAle z ζ hd).trans ((le_abs_self _).trans (abs_le_bval hAm)))
     refine (disk_bound_Y hd hτ0 hτ1 hδ hb).trans ?_
     exact mul_le_mul_of_nonneg_left hU (mul_nonneg (Real.exp_pos _).le (mehB_nonneg hτ0 hτ1 _ _))
   | some kp =>
@@ -397,25 +389,20 @@ lemma upsI_sound (_hc : chatOK = true) {pos : Bool} {x R : ℚ} (hR : 0 ≤ (R :
       have hk0 := diskPoint_kp_nonneg hd (by exact_mod_cast hxR)
       have h1 : 0 < 1 - KP ^ 2 := by nlinarith
       have h2 : 1 - KP ^ 2 ≤ 1 - DiskPoint.kp (sgn pos) x R ^ 2 := by nlinarith
-      apply kB_mono (by positivity) _ hApos le_rfl
-      apply one_div_le_one_div_of_le (Real.sqrt_pos.mpr h1)
-      exact Real.sqrt_le_sqrt h2
+      exact kB_mono (by positivity)
+        (one_div_le_one_div_of_le (Real.sqrt_pos.mpr h1) (Real.sqrt_le_sqrt h2)) hApos le_rfl
     -- the choice
-    cases hy : upsYI (divN P 2 (mulI P a2hi (sqI P kp))) with
-    | none =>
-      cases hk : (a2loI x R at0 e).bind (upsKI gList kp) with
-      | none => rw [hy, hk] at h; simp at h
-      | some k =>
-        rw [hy, hk] at h; simp only [Option.some.injEq] at h; subst h; exact hKprop hk
-    | some y =>
-      cases hk : (a2loI x R at0 e).bind (upsKI gList kp) with
-      | none =>
-        rw [hy, hk] at h; simp only [Option.some.injEq] at h; subst h; exact hYprop hy
-      | some k =>
-        rw [hy, hk] at h; simp only [Option.some.injEq] at h; subst h
-        split_ifs
-        · exact hKprop hk
-        · exact hYprop hy
+    split at h
+    · rename_i hy hk
+      obtain rfl := Option.some.inj h
+      split_ifs
+      · exact hKprop hk
+      · exact hYprop hy
+    · rename_i hy _
+      exact Option.some.inj h ▸ hYprop hy
+    · rename_i _ hk
+      exact Option.some.inj h ▸ hKprop hk
+    · exact absurd h (by simp)
 
 /-- **One accepted disk.** -/
 theorem diskM2_sound (hc : chatOK = true) {pos : Bool} {x R tau : ℚ} (hR : 0 ≤ (R : ℝ))
@@ -437,14 +424,11 @@ theorem diskM2_sound (hc : chatOK = true) {pos : Bool} {x R tau : ℚ} (hR : 0 �
   have hd : DiskPoint (sgn pos) x R z ζ := ⟨hR, hz, hζ, sgn_cases pos, hf.hsgn⟩
   refine (hU z ζ hd).trans ?_
   have hexp : Real.exp (-2 * (x - R)) ≤ v2 := by
-    have : ((-2 * (x - R) : ℚ) : ℝ) = -2 * ((x : ℝ) - R) := by push_cast; ring
-    rw [this] at hv2; exact hv2
+    rwa [show ((-2 * (x - R) : ℚ) : ℝ) = -2 * ((x : ℝ) - R) by push_cast; ring] at hv2
   have hmeh0 : 0 ≤ mehB tau x R := by
     unfold mehB; have : 0 < 1 - (tau : ℝ) ^ 2 := by nlinarith
     positivity
-  calc Real.exp (-2 * (x - R)) * mehB tau x R * U ≤ v2 * M * U := by
-        apply mul_le_mul_of_nonneg_right _ hU0
-        exact mul_le_mul hexp hM hmeh0 ((Real.exp_pos _).le.trans hexp)
-    _ = v2 * (M * U) := by ring
+  exact (mul_le_mul_of_nonneg_right (mul_le_mul hexp hM hmeh0 ((Real.exp_pos _).le.trans hexp))
+    hU0).trans_eq (mul_assoc _ _ _)
 
 end Grothe.UpperQuad.EllCheck

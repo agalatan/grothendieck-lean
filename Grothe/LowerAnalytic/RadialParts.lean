@@ -87,13 +87,9 @@ lemma RadialTest.integrable' (p q : MvPolynomial (Fin d) ℝ)
   have h2 := hT.bound' _ hU
   have h3 : |eval x p * H' (eval x (radU a b))|
       ≤ |eval x q| * |eval x (radU a b) * H' (eval x (radU a b))| := by
-    rw [abs_mul, abs_mul, abs_of_nonneg hU]
-    calc |eval x p| * |H' (eval x (radU a b))|
-        ≤ eval x (radU a b) * eval x q * |H' (eval x (radU a b))| :=
-          mul_le_mul_of_nonneg_right (hpq x) (abs_nonneg _)
-      _ = eval x q * (eval x (radU a b) * |H' (eval x (radU a b))|) := by ring
-      _ ≤ |eval x q| * (eval x (radU a b) * |H' (eval x (radU a b))|) :=
-          mul_le_mul_of_nonneg_right (le_abs_self _) (mul_nonneg hU (abs_nonneg _))
+    rw [abs_mul, abs_mul, abs_of_nonneg hU, mul_left_comm, ← mul_assoc]
+    exact mul_le_mul_of_nonneg_right
+      ((hpq x).trans (mul_le_mul_of_nonneg_left (le_abs_self _) hU)) (abs_nonneg _)
   have h4 : |eval x q| * |eval x (radU a b) * H' (eval x (radU a b))|
       ≤ (1 + eval x q * eval x q) * (M * (1 + eval x (radU a b))) :=
     mul_le_mul h1 h2 (abs_nonneg _) (by nlinarith [mul_self_nonneg (eval x q)])

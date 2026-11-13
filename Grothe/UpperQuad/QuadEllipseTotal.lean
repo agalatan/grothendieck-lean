@@ -44,7 +44,7 @@ lemma errSum_fold_sound (hc : chatOK = true) :
             | _, _ => none) none = none := by
         intro l; induction l with
         | nil => rfl
-        | cons _ _ ih' => rw [List.foldl_cons]; exact ih'
+        | cons _ _ ih' => exact ih'
       simp only at h
       rw [this] at h; simp at h
     | some E =>
@@ -57,8 +57,7 @@ lemma errSum_fold_sound (hc : chatOK = true) :
         | zero => simpa using hgood
         | succ k =>
           simp only [Nat.succ_ne_zero, ite_false, Nat.add_sub_cancel]
-          have := hf k (by simp at hk; omega)
-          simpa using this
+          simpa using hf k (by simp at hk; omega)
       · rw [List.length_cons, Finset.sum_range_succ']
         simp only [ite_true, Nat.succ_ne_zero, ite_false, Nat.add_sub_cancel]
         convert hs using 1
@@ -82,9 +81,8 @@ theorem shardOK_sound {plans : List Plan} {i₀ len : ℕ} {budget : ℚ}
     simp only at h
     obtain ⟨f, hf, hsum⟩ := errSum_fold_sound hc pps zeroI s 0 ((mem_zeroI_iff 0).2 rfl) hs
     refine ⟨f, fun k hk => ?_, ?_⟩
-    · have hk' : k < pps.length := by rw [hlen]; exact hk
-      have := hf k hk'
-      convert this using 2
+    · have hk' : k < pps.length := hlen ▸ hk
+      convert hf k hk' using 2
       have hl1 :
           k < ((Grothe.UpperChaos.Q0GaussAddressScan.sourcePanels.drop i₀).take len).length := by
         have := hk'; rw [hpps, List.length_zip] at this; omega

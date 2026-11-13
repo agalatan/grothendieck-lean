@@ -101,8 +101,8 @@ theorem witnessCap_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts box
     (hextra : extraBatches.all (checkBatch rowData) = true)
     (hcover : checkCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
     (hcaps : NodeCaps) (n : ℕ) (hn : 2 ≤ n) : WitnessCap n (B : ℝ) := by
-  apply witnessCap_of_law_nodes_reduction extraBatches B cuts boxes hextra hcover n
-  intro f g hf hg _
+  refine witnessCap_of_law_nodes_reduction extraBatches B cuts boxes hextra hcover n
+    fun f g hf hg _ => ?_
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
   exact reductionHyp_of_nodeCaps hcaps (by omega) f g hf hg
 

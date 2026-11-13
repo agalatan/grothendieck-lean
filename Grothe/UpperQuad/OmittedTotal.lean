@@ -40,10 +40,7 @@ lemma gaussRawFull_eq (specs : List NodeSpec) (x : NodeSpec → ℝ) (k j cIdx :
   unfold gaussRawFull gaussRaw omittedRaw
   rw [← List.sum_map_add]
   congr 1
-  apply List.map_congr_left
-  intro nd _
-  unfold specTerm
-  exact (nodeTerm_add_omittedTerm _ _ _ k j cIdx).symm
+  exact List.map_congr_left fun nd _ => (nodeTerm_add_omittedTerm _ _ _ k j cIdx).symm
 
 /-! ### Linearity of the graded coefficients in the raw vector -/
 
@@ -85,9 +82,7 @@ lemma norm_vecOf_sq (v : ℕ → ℕ → ℕ → ℝ) :
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
   simp only [vecOf, PiLp.toLp_apply, Real.norm_eq_abs, sq_abs]
   rw [Fintype.sum_sigma, ← sum_bounded_graded_eq_range 251 (fun q c d => v q c d ^ 2)]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [Fintype.sum_prod_type]
+  exact Finset.sum_congr rfl fun q _ => by rw [Fintype.sum_prod_type]
 
 lemma vecOf_zero : vecOf (fun _ _ _ => (0 : ℝ)) = 0 := by
   ext i; simp [vecOf]
@@ -130,13 +125,12 @@ lemma norm_omittedVec_le (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.p
         (seedJ0I P piI (sqI P aI)))
     {b : ℤ} (hb : omittedNodeBound P piI pd nd = some b) :
     ‖omittedVec nd x‖ ≤ (b : ℝ) / (2 : ℝ) ^ (2 * KFix) := by
-  have h := omittedNodeBound_sound P hP hpi hpd hpv nd hx hJ hb
   have hb0 : (0 : ℝ) ≤ (b : ℝ) / (2 : ℝ) ^ (2 * KFix) := by
     have := omittedNodeBound_nonneg hb
     positivity
   apply le_of_sq_le_sq _ hb0
   rw [omittedVec, norm_vecOf_sq]
-  exact h
+  exact omittedNodeBound_sound P hP hpi hpd hpv nd hx hJ hb
 
 /-- **Minkowski over the nodes**: the kernel's running sum bounds the norm of the summed omitted
 vectors. -/
@@ -205,9 +199,8 @@ theorem omittedOK_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi
     exact gradeValue_listSum specs
       (fun nd => omittedTerm (specNode nd (x nd)) (specWeight nd (x nd)) nd.cutoff) q c d
   rw [← norm_vecOf_sq, hvec]
-  have hS' : ((S : ℤ) : ℝ) / 2 ^ (2 * KFix) ≤ (bound : ℝ) / 2 ^ (2 * KFix) := by
-    apply div_le_div_of_nonneg_right _ (by positivity)
-    exact_mod_cast hle
+  have hS' : ((S : ℤ) : ℝ) / 2 ^ (2 * KFix) ≤ (bound : ℝ) / 2 ^ (2 * KFix) :=
+    div_le_div_of_nonneg_right (by exact_mod_cast hle) (by positivity)
   exact pow_le_pow_left₀ (norm_nonneg _) (hnorm.trans hS') 2
 
 end Grothe.UpperQuad

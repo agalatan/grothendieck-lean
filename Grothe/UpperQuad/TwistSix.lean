@@ -61,46 +61,39 @@ lemma whole_of_inner {F c : Lp ℂ 2 mu2} {m E θ R Cn ρ ρI : ℝ} (hF : ‖F�
   have h3 : ‖F - c‖ ^ 2 ≤ R ^ 2 := by rw [h1]; nlinarith
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) hR (by norm_num)).mp h3
 
+/-- The whole error of the power `j` from its port facts, the center coefficients, the norms and
+the margin. -/
+private lemma whole_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTable} {num eps : ℤ}
+    (hF : FactsOf j bounds ts num (10 ^ 20) eps) {ρ : ℝ} (hρ : 0 ≤ ρ) (hQ : TwistQuadHyp j ρ)
+    (a : ℕ → ℕ → ℕ → ℚ) (ha : ∀ q c d, q < (twistParams j).Q → c < q + 2 → d < q + 1 →
+      (a q c d : ℝ) = centerR (centerInts j) (twistParams j).E q c d)
+    {m E Cn R ρI : ℝ} (hm : ‖hpowL2 j‖ ^ 2 = m) (hE : ‖gradedHermite (twistParams j).Q a‖ ^ 2 = E)
+    (hCn : ‖gradedHermite (twistParams j).Q a‖ ≤ Cn) (hρI : Cn * ρ ≤ ρI) (hR : 0 ≤ R)
+    (hmargin : (m + E - R ^ 2) / 2 + ρI ≤ (num : ℝ) / 10 ^ 20) :
+    ‖hpowL2 j - gradedHermite (twistParams j).Q a‖ ≤ R :=
+  whole_of_inner hm hE hCn hρ hρI hR
+    (by exact_mod_cast re_inner_ge_of_facts hF (by norm_num) hρ hQ a ha) hmargin
+
 theorem hwholeFirst_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 1 bounds ts j1ThetaNum (10 ^ 20) j1Eps) (hQ : TwistQuadHyp 1 (1 / 10 ^ 11)) :
-    ‖firstTaylorL2 - firstCenter‖ ≤ (comparisonGroupRadiusQ 1 : ℝ) := by
-  have hI := re_inner_ge_of_facts hF (by norm_num) (by norm_num) hQ firstCenterCoeff
-    (fun q c d _ _ _ => firstCenter_coeff q c d)
-  have hm : (((phaseMoment2Q + firstEnergyQ - comparisonGroupRadiusQ 1 ^ 2) / 2 + 1 / 10 ^ 12 : ℚ) :
-      ℝ) ≤ ((j1ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by exact_mod_cast twist_j1_whole_margin
-  push_cast at hm hI
-  rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
-  exact whole_of_inner (ρI := 1 / 10 ^ 12) norm_hpow_one_sq norm_firstCenter_sq_exact
-    norm_firstCenter_le
-    (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
+    ‖firstTaylorL2 - firstCenter‖ ≤ (comparisonGroupRadiusQ 1 : ℝ) :=
+  whole_of_facts hF (by norm_num) hQ firstCenterCoeff (fun q c d _ _ _ => firstCenter_coeff q c d)
+    norm_hpow_one_sq norm_firstCenter_sq_exact norm_firstCenter_le (ρI := ((1 / 10 ^ 12 : ℚ) : ℝ))
+    (by norm_num) (by norm_num [comparisonGroupRadiusQ]) (by exact_mod_cast twist_j1_whole_margin)
 
 theorem hwholeSecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 2 bounds ts j2ThetaNum (10 ^ 20) j2Eps) (hQ : TwistQuadHyp 2 (1 / 10 ^ 10)) :
-    ‖secondTaylorL2 - secondCenter‖ ≤ 2 * (comparisonGroupRadiusQ 2 : ℝ) := by
-  have hI := re_inner_ge_of_facts hF (by norm_num) (by norm_num) hQ secondCenterCoeff
-    (fun q c d _ _ _ => secondCenter_coeff q c d)
-  have hm : (((phaseMoment4Q + secondEnergyQ - (2 * comparisonGroupRadiusQ 2) ^ 2) / 2 +
-      5 / 10 ^ 14 : ℚ) : ℝ) ≤ ((j2ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by
-    exact_mod_cast twist_j2_whole_margin
-  push_cast at hm hI
-  rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
-  exact whole_of_inner (ρI := 5 / 10 ^ 14) norm_hpow_two_sq norm_secondCenter_sq_exact
-    norm_secondCenter_le
-    (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
+    ‖secondTaylorL2 - secondCenter‖ ≤ 2 * (comparisonGroupRadiusQ 2 : ℝ) :=
+  whole_of_facts hF (by norm_num) hQ secondCenterCoeff (fun q c d _ _ _ => secondCenter_coeff q c d)
+    norm_hpow_two_sq norm_secondCenter_sq_exact norm_secondCenter_le (ρI := ((5 / 10 ^ 14 : ℚ) : ℝ))
+    (by norm_num) (by norm_num [comparisonGroupRadiusQ]) (by exact_mod_cast twist_j2_whole_margin)
 
 theorem hwholeThird_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 3 bounds ts j3ThetaNum (10 ^ 20) j3Eps) (hQ : TwistQuadHyp 3 (1 / 10 ^ 11)) :
-    ‖thirdTaylorL2 - thirdCenter‖ ≤ 6 * (comparisonGroupRadiusQ 3 : ℝ) := by
-  have hI := re_inner_ge_of_facts hF (by norm_num) (by norm_num) hQ thirdCenterCoeff
-    (fun q c d _ _ _ => thirdCenter_coeff q c d)
-  have hm : (((phaseMoment6Q + thirdEnergyQ - (6 * comparisonGroupRadiusQ 3) ^ 2) / 2 +
-      3 / 10 ^ 14 : ℚ) : ℝ) ≤ ((j3ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by
-    exact_mod_cast twist_j3_whole_margin
-  push_cast at hm hI
-  rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
-  exact whole_of_inner (ρI := 3 / 10 ^ 14) norm_hpow_three_sq norm_thirdCenter_sq_exact
-    norm_thirdCenter_le
-    (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
+    ‖thirdTaylorL2 - thirdCenter‖ ≤ 6 * (comparisonGroupRadiusQ 3 : ℝ) :=
+  whole_of_facts hF (by norm_num) hQ thirdCenterCoeff (fun q c d _ _ _ => thirdCenter_coeff q c d)
+    norm_hpow_three_sq norm_thirdCenter_sq_exact norm_thirdCenter_le (ρI := ((3 / 10 ^ 14 : ℚ) : ℝ))
+    (by norm_num) (by norm_num [comparisonGroupRadiusQ]) (by exact_mod_cast twist_j3_whole_margin)
 
 /-! ### The low bands -/
 
@@ -110,11 +103,26 @@ lemma low_of_margin {x ρ ρL cap e : ℝ} (hx : x ≤ ρ + Real.sqrt e) (hρ : 
   linarith
 
 set_option exponentiation.threshold 1100 in
+/-- The low-band error of the power `j` from its port facts and the margin. -/
+private lemma low_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTable} {num eps : ℤ}
+    (hF : FactsOf j bounds ts num (10 ^ 20) eps) {ρ : ℝ} (hρ : 0 ≤ ρ) (hQ : TwistQuadHyp j ρ)
+    (M : ℕ) (hM : qlow j ≤ M) (a : ℕ → ℕ → ℕ → ℚ)
+    (ha : ∀ q c d, q < qlow j → c < q + 2 → d < q + 1 →
+      (a q c d : ℝ) = centerR (centerInts j) (twistParams j).E q c d)
+    (B : Set Idx2) [DecidablePred (· ∈ B)] (hB : ∀ i : GradedIdx (qlow j), gradedIdx i ∈ B)
+    (hdegree : ∀ i ∈ B, (bideg i).1 + (bideg i).2 < 2 * qlow j) (heps : 0 ≤ eps) {cap : ℝ}
+    (hcap : ρ ≤ cap) (hmargin : (eps : ℝ) / 2 ^ 1024 ≤ (cap - ρ) ^ 2) :
+    ‖projOn B (hpowL2 j - gradedHermite M a)‖ ≤ cap :=
+  low_of_margin
+    (by simpa [KOut] using band_le_of_facts hF (by norm_num) hρ hQ M hM a ha B hB hdegree heps)
+    le_rfl hcap hmargin
+
+set_option exponentiation.threshold 1100 in
 theorem hfirst_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 1 bounds ts j1ThetaNum (10 ^ 20) j1Eps) (hQ : TwistQuadHyp 1 (1 / 10 ^ 11)) :
     ‖projOn (firstCenterBandModes 0) (firstTaylorL2 - firstCenter)‖ ≤
-      (firstCapturedErrorQ 0 : ℝ) := by
-  have h := band_le_of_facts hF (by norm_num) (by norm_num) hQ 91 (by decide) firstCenterCoeff
+      (firstCapturedErrorQ 0 : ℝ) :=
+  low_of_facts hF (by norm_num) hQ 91 (by decide) firstCenterCoeff
     (fun q c d _ _ _ => firstCenter_coeff q c d) (firstCenterBandModes 0)
     (fun i => by
       show _ < _ ∧ _ ≤ _
@@ -128,20 +136,18 @@ theorem hfirst_of_facts {bounds : List ℕ} {ts : List PartialTable}
       simp only [firstCenterBandHi] at this
       change _ < 2 * 26
       omega)
-    (by norm_num [j1Eps])
-  have hm : ((j1Eps / 2 ^ 1024 : ℚ) : ℝ) ≤
-      ((((firstCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 : ℚ)) : ℝ) := by
-    exact_mod_cast twist_j1_low_margin
-  push_cast at hm
-  have h' : ‖projOn (firstCenterBandModes 0) (firstTaylorL2 - firstCenter)‖ ≤ _ := h
-  exact low_of_margin (by simpa [KOut] using h') le_rfl (by norm_num [firstCapturedErrorQ]) hm
+    (by norm_num [j1Eps]) (by norm_num [firstCapturedErrorQ])
+    (by
+      have h := (Rat.cast_le (K := ℝ)).2 twist_j1_low_margin
+      push_cast at h
+      exact h)
 
 set_option exponentiation.threshold 1100 in
 theorem hsecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 2 bounds ts j2ThetaNum (10 ^ 20) j2Eps) (hQ : TwistQuadHyp 2 (1 / 10 ^ 10)) :
     ‖projOn (secondCenterBandModes 0) (secondTaylorL2 - secondCenter)‖ ≤
-      (secondCapturedErrorQ 0 : ℝ) := by
-  have h := band_le_of_facts hF (by norm_num) (by norm_num) hQ 46 (by decide) secondCenterCoeff
+      (secondCapturedErrorQ 0 : ℝ) :=
+  low_of_facts hF (by norm_num) hQ 46 (by decide) secondCenterCoeff
     (fun q c d _ _ _ => secondCenter_coeff q c d) (secondCenterBandModes 0)
     (fun i => by
       show _ < _ ∧ _ ≤ _
@@ -155,20 +161,18 @@ theorem hsecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
       simp only [secondCenterBandHi] at this
       change _ < 2 * 26
       omega)
-    (by norm_num [j2Eps])
-  have hm : ((j2Eps / 2 ^ 1024 : ℚ) : ℝ) ≤
-      ((((secondCapturedErrorQ 0 - 1 / 10 ^ 10) ^ 2 : ℚ)) : ℝ) := by
-    exact_mod_cast twist_j2_low_margin
-  push_cast at hm
-  have h' : ‖projOn (secondCenterBandModes 0) (secondTaylorL2 - secondCenter)‖ ≤ _ := h
-  exact low_of_margin (by simpa [KOut] using h') le_rfl (by norm_num [secondCapturedErrorQ]) hm
+    (by norm_num [j2Eps]) (by norm_num [secondCapturedErrorQ])
+    (by
+      have h := (Rat.cast_le (K := ℝ)).2 twist_j2_low_margin
+      push_cast at h
+      exact h)
 
 set_option exponentiation.threshold 1100 in
 theorem hthird_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 3 bounds ts j3ThetaNum (10 ^ 20) j3Eps) (hQ : TwistQuadHyp 3 (1 / 10 ^ 11)) :
     ‖projOn (thirdCenterBandModes 0) (thirdTaylorL2 - thirdCenter)‖ ≤
-      (thirdCapturedErrorQ 0 : ℝ) := by
-  have h := band_le_of_facts hF (by norm_num) (by norm_num) hQ 26 (by decide) thirdCenterCoeff
+      (thirdCapturedErrorQ 0 : ℝ) :=
+  low_of_facts hF (by norm_num) hQ 26 (by decide) thirdCenterCoeff
     (fun q c d _ _ _ => thirdCenter_coeff q c d) (thirdCenterBandModes 0)
     (fun i => by
       show _ < _ ∧ _ ≤ _
@@ -182,13 +186,11 @@ theorem hthird_of_facts {bounds : List ℕ} {ts : List PartialTable}
       simp only [thirdCenterBandHi] at this
       change _ < 2 * 6
       omega)
-    (by norm_num [j3Eps])
-  have hm : ((j3Eps / 2 ^ 1024 : ℚ) : ℝ) ≤
-      ((((thirdCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 : ℚ)) : ℝ) := by
-    exact_mod_cast twist_j3_low_margin
-  push_cast at hm
-  have h' : ‖projOn (thirdCenterBandModes 0) (thirdTaylorL2 - thirdCenter)‖ ≤ _ := h
-  exact low_of_margin (by simpa [KOut] using h') le_rfl (by norm_num [thirdCapturedErrorQ]) hm
+    (by norm_num [j3Eps]) (by norm_num [thirdCapturedErrorQ])
+    (by
+      have h := (Rat.cast_le (K := ℝ)).2 twist_j3_low_margin
+      push_cast at h
+      exact h)
 
 /-! ### The six hypotheses from the covered-set remainders
 
@@ -197,8 +199,8 @@ proved, `norm_twistTail_sq_le`) with `ρ = 10⁻¹¹ − 10⁻¹⁵` (`j = 1, 3`
 -/
 
 lemma quad_of_rem (j : ℕ) {ρ R : ℝ} (hρ : 0 ≤ ρ) (hR : 1 / 10 ^ 15 + ρ = R)
-    (h : TwistRemainderHyp j ρ) : TwistQuadHyp j R := by
-  rw [← hR]; exact twistQuadHyp_of_remainder j hρ h
+    (h : TwistRemainderHyp j ρ) : TwistQuadHyp j R :=
+  hR ▸ twistQuadHyp_of_remainder j hρ h
 
 /-- **The six hypotheses of `upper_of_three_low_three_whole`**, from the port facts of the three
 powers and the three covered-set remainder hypotheses. -/

@@ -37,9 +37,7 @@ private lemma ev_phaseSum_pair (r w : ℂ) :
     ring
   unfold TwistFactorPolynomial.phaseSum
   simp only [ev, map_list_sum, List.map_map, Function.comp_def]
-  apply congrArg List.sum
-  apply List.map_congr_left
-  intro t _
+  refine congrArg List.sum (List.map_congr_left fun t _ => ?_)
   change ev w (TwistFactorPolynomial.phaseTerm r t) = _
   rw [TwistFactorPolynomial.ev_phaseTerm, Complex.mul_conj, hnorm, hreal]
 
@@ -154,11 +152,10 @@ theorem integral_norm_columnSource_sq_le (j : ℕ) (hj : 0 < j) (r : ℂ) (g h :
   calc
     (∫ w, ‖columnSource j r g h w‖ ^ 2 ∂gaussC) ≤
         ∫ w, E * ‖hfun (g, h) ((Real.sqrt (rate j) : ℂ) * w)‖ ^ 2 ∂gaussC := by
-      apply integral_mono
+      refine integral_mono
         ((memLp_two_iff_integrable_sq_norm
           (memLp_columnSource j r g h).aestronglyMeasurable).mp
-            (memLp_columnSource j r g h)) (hH.const_mul E)
-      intro w
+            (memLp_columnSource j r g h)) (hH.const_mul E) fun w => ?_
       change ‖multiplier j r w * hfun (g, h) ((Real.sqrt (rate j) : ℂ) * w)‖ ^ 2 ≤
         E * ‖hfun (g, h) ((Real.sqrt (rate j) : ℂ) * w)‖ ^ 2
       rw [norm_mul, mul_pow]

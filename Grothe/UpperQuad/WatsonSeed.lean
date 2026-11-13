@@ -79,9 +79,7 @@ lemma binA_le_half : ∀ N, binA N ≤ 1 / 2
     rw [binA_succ]
     have h1 : ((N : ℝ) + 1 / 2) / (N + 1) ≤ 1 := by
       rw [div_le_one (by positivity)]; linarith
-    calc binA N * (((N : ℝ) + 1 / 2) / (N + 1)) ≤ binA N * 1 :=
-          mul_le_mul_of_nonneg_left h1 (binA_pos N).le
-      _ ≤ 1 / 2 := by rw [mul_one]; exact binA_le_half N
+    exact (mul_le_of_le_one_right (binA_pos N).le h1).trans (binA_le_half N)
 
 lemma binP_succ (N : ℕ) (t : ℝ) : binP (N + 1) t = binP N t + binC (N + 1) * t ^ (N + 1) := by
   unfold binP; rw [Finset.sum_range_succ]
@@ -119,8 +117,8 @@ lemma hasDerivAt_binP (N : ℕ) (t : ℝ) : HasDerivAt (binP N) (binQ N t) t := 
     rw [this]
     simpa [binQ] using hasDerivAt_const t (1 : ℝ)
   | succ N ih =>
-    have hf : binP (N + 1) = fun s => binP N s + binC (N + 1) * s ^ (N + 1) := by
-      funext s; exact binP_succ N s
+    have hf : binP (N + 1) = fun s => binP N s + binC (N + 1) * s ^ (N + 1) :=
+      funext (binP_succ N)
     rw [hf, binQ_succ]
     have h2 := (hasDerivAt_pow (N + 1) t).const_mul (binC (N + 1))
     convert ih.add h2 using 1
@@ -197,60 +195,40 @@ lemma deriv_binU_div_nonneg {N : ℕ} {t : ℝ} (ht0 : 0 ≤ t) (ht : t < 1) :
   apply mul_nonneg htN
   nlinarith
 
+/-- A function with nonpositive derivative on `[0, 1)` decreases on `[0, t]`, `t < 1`. -/
+private lemma le_of_hasDerivAt_nonpos {f f' : ℝ → ℝ} {t : ℝ} (ht0 : 0 ≤ t) (ht : t < 1)
+    (hf : ∀ y < 1, HasDerivAt f (f' y) y) (hf' : ∀ y, 0 ≤ y → y < 1 → f' y ≤ 0) :
+    f t ≤ f 0 := by
+  have hlt : ∀ y ∈ Icc (0 : ℝ) t, y < 1 := fun y hy => hy.2.trans_lt ht
+  refine antitoneOn_of_deriv_nonpos (convex_Icc 0 t)
+    (fun y hy => (hf y (hlt y hy)).continuousAt.continuousWithinAt)
+    (fun y hy => (hf y (hlt y (interior_subset hy))).differentiableAt.differentiableWithinAt)
+    (fun y hy => ?_) (left_mem_Icc.2 ht0) ⟨ht0, le_rfl⟩ ht0
+  have hy' := interior_subset hy
+  rw [(hf y (hlt y hy')).deriv]
+  exact hf' y hy'.1 (hlt y hy')
+
 /-- **The binomial remainder**: `|√(1 − t) − p_N(t)| ≤ t^{N+1}` on `[0, 1]`. -/
 theorem abs_binR_le (N : ℕ) {t : ℝ} (ht0 : 0 ≤ t) (ht1 : t ≤ 1) : |binR N t| ≤ t ^ (N + 1) := by
   rcases ht1.lt_or_eq with ht | rfl
   · -- the two monotone quotients on `[0, t]`
     have hs : 0 < √(1 - t) := Real.sqrt_pos.2 (by linarith)
-    have hD : Convex ℝ (Icc (0 : ℝ) t) := convex_Icc 0 t
-    have hlt : ∀ y ∈ Icc (0 : ℝ) t, y < 1 := fun y hy => lt_of_le_of_lt hy.2 ht
     -- upper bound: `r_N ≤ 0`
-    have hv : AntitoneOn (fun y => binR N y * (√(1 - y))⁻¹) (Icc 0 t) := by
-      apply antitoneOn_of_deriv_nonpos hD
-      · intro y hy
-        exact (hasDerivAt_binR_div (hlt y hy)).continuousAt.continuousWithinAt
-      · intro y hy
-        rw [interior_Icc] at hy
-        exact (hasDerivAt_binR_div (hlt y (Ioo_subset_Icc_self hy))).differentiableAt.differentiableWithinAt
-      · intro y hy
-        rw [interior_Icc] at hy
-        rw [(hasDerivAt_binR_div (hlt y (Ioo_subset_Icc_self hy))).deriv]
-        exact deriv_binR_div_nonpos hy.1.le (hlt y (Ioo_subset_Icc_self hy))
     have hv0 : binR N 0 * (√(1 - 0))⁻¹ = 0 := by simp [binR, binP_zero]
     have hvt : binR N t * (√(1 - t))⁻¹ ≤ binR N 0 * (√(1 - 0))⁻¹ :=
-      hv (left_mem_Icc.2 ht0) ⟨ht0, le_rfl⟩ ht0
+      le_of_hasDerivAt_nonpos ht0 ht (fun _ hy => hasDerivAt_binR_div hy)
+        fun _ hy0 hy1 => deriv_binR_div_nonpos hy0 hy1
     rw [hv0] at hvt
-    have hr_le : binR N t ≤ 0 := by
-      have := hvt
-      rcases le_or_gt (binR N t) 0 with h | h
-      · exact h
-      · exfalso
-        have : 0 < binR N t * (√(1 - t))⁻¹ := mul_pos h (inv_pos.2 hs)
-        linarith
+    have hr_le : binR N t ≤ 0 := nonpos_of_mul_nonpos_left hvt (inv_pos.2 hs)
     -- lower bound: `t^{N+1} + r_N ≥ 0`
-    have hw : MonotoneOn (fun y => (y ^ (N + 1) + binR N y) * (√(1 - y))⁻¹) (Icc 0 t) := by
-      apply monotoneOn_of_deriv_nonneg hD
-      · intro y hy
-        exact (hasDerivAt_binU_div (hlt y hy)).continuousAt.continuousWithinAt
-      · intro y hy
-        rw [interior_Icc] at hy
-        exact (hasDerivAt_binU_div (hlt y (Ioo_subset_Icc_self hy))).differentiableAt.differentiableWithinAt
-      · intro y hy
-        rw [interior_Icc] at hy
-        rw [(hasDerivAt_binU_div (hlt y (Ioo_subset_Icc_self hy))).deriv]
-        exact deriv_binU_div_nonneg hy.1.le (hlt y (Ioo_subset_Icc_self hy))
     have hw0 : ((0 : ℝ) ^ (N + 1) + binR N 0) * (√(1 - 0))⁻¹ = 0 := by simp [binR, binP_zero]
     have hwt : ((0 : ℝ) ^ (N + 1) + binR N 0) * (√(1 - 0))⁻¹ ≤
         (t ^ (N + 1) + binR N t) * (√(1 - t))⁻¹ :=
-      hw (left_mem_Icc.2 ht0) ⟨ht0, le_rfl⟩ ht0
+      neg_le_neg_iff.mp <| le_of_hasDerivAt_nonpos ht0 ht
+        (fun _ hy => (hasDerivAt_binU_div hy).neg)
+        fun _ hy0 hy1 => neg_nonpos.mpr (deriv_binU_div_nonneg hy0 hy1)
     rw [hw0] at hwt
-    have hu_ge : 0 ≤ t ^ (N + 1) + binR N t := by
-      rcases le_or_gt 0 (t ^ (N + 1) + binR N t) with h | h
-      · exact h
-      · exfalso
-        have : (t ^ (N + 1) + binR N t) * (√(1 - t))⁻¹ < 0 :=
-          mul_neg_of_neg_of_pos h (inv_pos.2 hs)
-        linarith
+    have hu_ge : 0 ≤ t ^ (N + 1) + binR N t := nonneg_of_mul_nonneg_left hwt (inv_pos.2 hs)
     rw [abs_le]
     constructor <;> linarith
   · -- the endpoint `t = 1`: `r_N(1) = −p_N(1) = −2 a_N`
@@ -340,8 +318,7 @@ lemma tail_nonneg {n : ℕ} {x : ℝ} :
     0 ≤ ∫ t in Ioi (1 : ℝ), t ^ ((n : ℝ) - 1 / 2) * Real.exp (-x * t) := by
   apply setIntegral_nonneg measurableSet_Ioi
   intro t ht
-  have ht1 : (1 : ℝ) < t := ht
-  have ht0 : 0 < t := by linarith
+  have ht0 : 0 < t := zero_lt_one.trans ht
   positivity
 
 lemma tail_le {n : ℕ} {x : ℝ} (hx : 2 * (n : ℝ) ≤ x) (hx0 : 0 < x) :
@@ -391,9 +368,8 @@ lemma integral_Ioc_rpow_mul_exp {n : ℕ} {x : ℝ} (hx0 : 0 < x) :
   have hsplit := setIntegral_union (f := fun t : ℝ => t ^ ((n : ℝ) - 1 / 2) * Real.exp (-x * t))
     (μ := volume) (Set.Ioc_disjoint_Ioi le_rfl) measurableSet_Ioi
     (hint.mono_set Ioc_subset_Ioi_self) (hint.mono_set (Ioi_subset_Ioi zero_le_one))
-  rw [Set.Ioc_union_Ioi_eq_Ioi zero_le_one, integral_rpow_mul_exp ha hx0] at hsplit
-  have : (n : ℝ) - 1 / 2 + 1 = (n : ℝ) + 1 / 2 := by ring
-  rw [this] at hsplit
+  rw [Set.Ioc_union_Ioi_eq_Ioi zero_le_one, integral_rpow_mul_exp ha hx0,
+    show (n : ℝ) - 1 / 2 + 1 = (n : ℝ) + 1 / 2 by ring] at hsplit
   linarith
 
 /-! ### The Watson remainder -/
@@ -532,9 +508,6 @@ theorem watsonHyp (N : ℕ) : WatsonHyp N := by
     show watsonBound N x = 2 / Real.pi * (watsonU N x + 4 * (Real.exp (-x) * (1 / x))) by
       unfold watsonBound; ring]
   apply mul_le_mul_of_nonneg_left _ (by positivity)
-  calc |(∫ t in Ioc (0 : ℝ) 1, e t) - ∑ n ∈ Finset.range (N + 1), binC n * ∫ t in Ioi (1 : ℝ), f n t|
-      ≤ |∫ t in Ioc (0 : ℝ) 1, e t| + |∑ n ∈ Finset.range (N + 1), binC n * ∫ t in Ioi (1 : ℝ), f n t| :=
-        abs_sub _ _
-    _ ≤ watsonU N x + 4 * (Real.exp (-x) * (1 / x)) := add_le_add hE hT
+  exact (abs_sub _ _).trans (add_le_add hE hT)
 
 end Grothe.UpperQuad.Watson

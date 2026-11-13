@@ -52,10 +52,8 @@ theorem panelSign_eq_of_ellipse (p : Fin sourcePanels.length) {ρ : ℝ}
         (sourcePanels.get p).hi w) ≠ 0)
     {s : ℝ} (hs : s ∈ Icc ((sourcePanels.get p).lo : ℝ) (sourcePanels.get p).hi) :
     panelSign p = profileSign s := by
-  apply TwistProfileSign.profileSign_eq_of_nonzero_Icc
-    ⟨le_rfl, (source_panel_lt p).le⟩ hs
-  intro x hx
-  exact profile_nonzero_real_of_ellipse p hρ hv hx
+  exact TwistProfileSign.profileSign_eq_of_nonzero_Icc ⟨le_rfl, (source_panel_lt p).le⟩ hs
+    fun _ hx ↦ profile_nonzero_real_of_ellipse p hρ hv hx
 
 /-- Profile nonvanishing and boundary caps for the concrete descended vectors discharge the
 full covered-set twisted remainder. The theorem applies to the origin panel as well. -/
@@ -73,14 +71,12 @@ theorem remainder_of_descended_ellipses (j : ℕ) (hj : j = 1 ∨ j = 2 ∨ j = 
       (2 * cap p * ((radius p)⁻¹) ^ (2 * (sourcePanels.get p).order) /
         (1 - (radius p)⁻¹)) ≤ ρ) : TwistRemainderHyp j ρ := by
   have hj0 : 0 < j := by omega
-  apply TwistPanels.remainder_of_ellipses j hj
+  exact TwistPanels.remainder_of_ellipses j hj
     (fun p ↦ descendedVector j (panelSign p)) radius cap hradius
     (fun p w h1 h2 ↦ differentiableAt_descendedVector j hj0 (panelSign p) (hv p w h1 h2))
-    hcap _ hsum
-  intro p x s hs hs0
-  exact descendedVector_real j (panelSign p) s hs0.le
-    (profile_nonzero_real_of_ellipse p (hradius p) (hv p) hs)
-    (panelSign_eq_of_ellipse p (hradius p) (hv p) hs) x
+    hcap (fun p x s hs hs0 ↦ descendedVector_real j (panelSign p) s hs0.le
+      (profile_nonzero_real_of_ellipse p (hradius p) (hv p) hs)
+      (panelSign_eq_of_ellipse p (hradius p) (hv p) hs) x) hsum
 
 end
 

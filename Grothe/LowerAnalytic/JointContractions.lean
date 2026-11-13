@@ -64,8 +64,8 @@ lemma hip_sym_tau (f g : ι → ι → ι → ℝ) :
     simp only [csym4_im, ccon_tauC_im]
     change sym4 (con f g + con g f) a b c d = _
     rw [add_comm]
-  simp only [hip, Complex.re_sum, Complex.mul_re, Complex.conj_re, Complex.conj_im, mul_neg, sub_neg_eq_add, hre, him, ip4,
-    ← Finset.sum_add_distrib]
+  simp only [hip, Complex.re_sum, Complex.mul_re, Complex.conj_re, Complex.conj_im, mul_neg,
+    sub_neg_eq_add, hre, him, ip4, ← Finset.sum_add_distrib]
 
 end JointSixth
 
@@ -87,9 +87,8 @@ lemma sum_re_sq_B : ∑ m, ∑ n, ((ctB 𝓽 m n).re) ^ 2 = gramB 𝓽 / 2 := by
     simp only [Complex.normSq_apply, Complex.mul_re]; ring
   have vBB : ∀ m, ∑ n, ctB 𝓽 m n * ctB 𝓽 m n = 0 := fun m =>
     Chg.sum_mul_eq_zero hA (chg_B2 hJ f g m) (chg_B2 hJ f g m) two_I_ne_zero
-  have r : ∑ m, ∑ n, (ctB 𝓽 m n * ctB 𝓽 m n).re = 0 := by
-    simp only [← Complex.re_sum, vBB, Complex.zero_re, Finset.sum_const_zero]
-  simp only [e, ← Finset.sum_div, Finset.sum_add_distrib, r, add_zero, gramB]
+  simp only [e, ← Finset.sum_div, Finset.sum_add_distrib, ← Complex.re_sum, vBB, Complex.zero_re,
+    add_zero, gramB]
 
 include hJ in
 /-- `Σ Re(H + 2N) Re B = 0` (charge conservation in one slot of each pairing). -/
@@ -119,15 +118,8 @@ lemma sum_re_K_re_B :
       simp only [Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im,
         Complex.re_ofNat, Complex.im_ofNat]
       ring
-  have r1 : ∑ m, ∑ n, (ctH 𝓽 m n * ctB 𝓽 m n).re = 0 := by
-    simp only [← Complex.re_sum, vHB, Complex.zero_re]
-  have r2 : ∑ m, ∑ n, (ctN 𝓽 m n * ctB 𝓽 m n).re = 0 := by
-    simp only [← Complex.re_sum, vNB, Complex.zero_re]
-  have r3 : ∑ m, ∑ n, (ctH 𝓽 m n * conj (ctB 𝓽 m n)).re = 0 := by
-    simp only [← Complex.re_sum, vHcB, Complex.zero_re]
-  have r4 : ∑ m, ∑ n, (ctN 𝓽 m n * conj (ctB 𝓽 m n)).re = 0 := by
-    simp only [← Complex.re_sum, vNcB, Complex.zero_re]
-  simp only [e, ← Finset.sum_div, Finset.sum_add_distrib, ← Finset.mul_sum, r1, r2, r3, r4]
+  simp only [e, ← Finset.sum_div, Finset.sum_add_distrib, ← Finset.mul_sum, ← Complex.re_sum, vHB,
+    vNB, vHcB, vNcB, Complex.zero_re]
   ring
 
 include hJ hsym ht in
@@ -264,8 +256,8 @@ theorem Circular.joint_sixth (haa : E (a * a) = 1 / 2) (young : Bool) {al : ℝ}
   cases young
   · simpa only [jointA, jointB, Bool.false_eq_true, ↓reduceIte] using
       JointSixth.circular_j2 hE ha hc haa hal
-  · have h := JointSixth.circular_j3 hE ha hc haa hal
-    simpa only [jointA, jointB, ↓reduceIte, div_mul_eq_mul_div] using h
+  · simpa only [jointA, jointB, ↓reduceIte, div_mul_eq_mul_div] using
+      JointSixth.circular_j3 hE ha hc haa hal
 
 end circular
 

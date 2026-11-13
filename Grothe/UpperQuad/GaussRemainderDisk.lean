@@ -49,11 +49,9 @@ lemma norm_coeff_cauchy_le (f : ℂ → E) (c : ℂ) {R : ℝ≥0} (hR : 0 < R) 
   have hint : ∫ θ : ℝ in (0 : ℝ)..2 * Real.pi, ‖f (circleMap c R θ)‖ ≤
       ∫ θ : ℝ in (0 : ℝ)..2 * Real.pi, M := by
     apply intervalIntegral.integral_mono_on (by positivity)
-    · -- integrability of the norm: bounded measurable on a compact interval
-      apply ContinuousOn.intervalIntegrable
-      apply ContinuousOn.norm
-      exact hc.comp_continuous (continuous_circleMap c R) (fun θ => circleMap_mem_sphere c hR'.le θ)
-        |>.continuousOn
+    · -- integrability of the norm: continuous on a compact interval
+      exact (hc.comp_continuous (continuous_circleMap c R)
+        fun θ => circleMap_mem_sphere c hR'.le θ).norm.intervalIntegrable _ _
     · exact intervalIntegrable_const
     · intro θ _
       apply hM
@@ -86,9 +84,7 @@ lemma norm_sub_taylorTrunc_le (f : ℂ → E) (c : ℂ) {R : ℝ≥0} (hR : 0 < 
   have hb := htail.norm_le_of_bounded hgeo (fun m => by
     rw [norm_smul, norm_pow]
     have hc := norm_coeff_cauchy_le f c hR hcont hM (m + N)
-    have hM0 : 0 ≤ M := by
-      have := hM (c + R) (by simp [abs_of_pos hR'])
-      exact (norm_nonneg _).trans this
+    have hM0 : 0 ≤ M := (norm_nonneg _).trans (hM (c + R) (by simp [abs_of_pos hR']))
     calc ‖z - c‖ ^ (m + N) * ‖(cauchyPowerSeries f c R).coeff (m + N)‖
         ≤ (t * R) ^ (m + N) * (M * ((R : ℝ)⁻¹) ^ (m + N)) :=
           mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) hz _) hc (norm_nonneg _) (by positivity)
@@ -114,10 +110,8 @@ lemma integral_taylorTrunc_eq {n : ℕ} (l h : ℝ) (node weight : Fin n → ℝ
         ((((s - c₀) ^ m : ℝ)) : ℂ) • (cauchyPowerSeries f c₀ R).coeff m := by
     intro m _ s; push_cast; rfl
   have hint : ∀ m ∈ Finset.range (2 * n), IntervalIntegrable
-      (fun s : ℝ => ((s : ℂ) - c₀) ^ m • (cauchyPowerSeries f c₀ R).coeff m) volume l h := by
-    intro m _
-    apply Continuous.intervalIntegrable
-    fun_prop
+      (fun s : ℝ => ((s : ℂ) - c₀) ^ m • (cauchyPowerSeries f c₀ R).coeff m) volume l h :=
+    fun _ _ => Continuous.intervalIntegrable (by fun_prop) _ _
   rw [intervalIntegral.integral_finsetSum hint]
   simp_rw [Finset.smul_sum]
   rw [Finset.sum_comm]
@@ -164,8 +158,7 @@ theorem gauss_remainder_disk {n : ℕ} (hn : 0 < n) (l h : ℝ) (hlh : l < h) (n
     constructor <;> linarith [hs.1, hs.2]
   have happrox : ∀ s ∈ Set.Icc l h, ‖f s - P s‖ ≤ ε := by
     intro s hs
-    apply norm_sub_taylorTrunc_le f (c₀ : ℂ) hR'pos (by rw [hRR]; exact hf)
-      (by rw [hRR]; exact hM) (2 * n) ht0 ht1
+    apply norm_sub_taylorTrunc_le f (c₀ : ℂ) hR'pos hf hM (2 * n) ht0 ht1
     rw [← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, hRR, ht,
       div_mul_cancel₀ _ hR0.ne', abs_le]
     constructor <;> linarith [hs.1, hs.2]
@@ -175,10 +168,9 @@ theorem gauss_remainder_disk {n : ℕ} (hn : 0 < n) (l h : ℝ) (hlh : l < h) (n
     simp only [Polynomial.eval_C, mul_one] at h1
     rw [intervalIntegral.integral_const, smul_eq_mul, mul_one] at h1
     linarith
-  have hfint : IntervalIntegrable (fun s : ℝ => f s) volume l h := by
-    apply ContinuousOn.intervalIntegrable
-    rw [Set.uIcc_of_le hlh.le]
-    exact (hf.continuousOn.comp Complex.continuous_ofReal.continuousOn hball)
+  have hfint : IntervalIntegrable (fun s : ℝ => f s) volume l h :=
+    (hf.continuousOn.comp Complex.continuous_ofReal.continuousOn hball).intervalIntegrable_of_Icc
+      hlh.le
   have hPint : IntervalIntegrable (fun s : ℝ => P s) volume l h := by
     apply Continuous.intervalIntegrable
     rw [hP]; unfold taylorTrunc
@@ -193,10 +185,8 @@ theorem gauss_remainder_disk {n : ℕ} (hn : 0 < n) (l h : ℝ) (hlh : l < h) (n
   rw [hdiff]
   have hI : ‖∫ s in l..h, (f s - P s)‖ ≤ ε * (h - l) := by
     have := intervalIntegral.norm_integral_le_of_norm_le_const (a := l) (b := h) (C := ε)
-      (f := fun s : ℝ => f s - P s) (fun s hs => by
-        have hs' : s ∈ Set.Icc l h := by
-          rw [← Set.uIcc_of_le hlh.le]; exact Set.uIoc_subset_uIcc hs
-        exact happrox s hs')
+      (f := fun s : ℝ => f s - P s)
+      (fun s hs => happrox s ((Set.uIcc_of_le hlh.le).subset (Set.uIoc_subset_uIcc hs)))
     rwa [abs_of_nonneg (sub_nonneg.mpr hlh.le)] at this
   have hS : ‖∑ i, (weight i : ℂ) • (P (node i) - f (node i))‖ ≤ ε * (h - l) := by
     calc ‖∑ i, (weight i : ℂ) • (P (node i) - f (node i))‖

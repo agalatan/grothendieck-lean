@@ -22,17 +22,15 @@ theorem row_address (r : Row) (hr : r ∈ Grothe.UpperChaos.Q0GaussPhysicalAll.r
   obtain ⟨hi, heq⟩ := List.getElem?_eq_some_iff.mp hlookup
   refine ⟨⟨r.panel, hi⟩, rfl, ?_, ?_⟩
   · change r.rule < sourcePanels[r.panel].order
-    rw [heq]
-    exact hrule
+    rwa [heq]
   · change r.index = sourcePanels[r.panel].offset + r.rule
-    rw [heq]
-    exact hord
+    rwa [heq]
 
 theorem unique_row_for_source_address (i : Fin sourcePanels.length) (j : ℕ)
     (hj : j < (sourcePanels.get i).order) :
     ∃! r : Row, r ∈ Grothe.UpperChaos.Q0GaussPhysicalAll.rows ∧
-      r.panel = i.val ∧ r.rule = j := by
-  exact Grothe.UpperChaos.Q0GaussScheduleCoverage.unique_row_for_address
+      r.panel = i.val ∧ r.rule = j :=
+  Grothe.UpperChaos.Q0GaussScheduleCoverage.unique_row_for_address
     sourcePanels Grothe.UpperChaos.Q0GaussPhysicalAll.rows 21577 complete_scan
     Grothe.UpperChaos.Q0GaussOrdinal.indices row_address i j hj
 

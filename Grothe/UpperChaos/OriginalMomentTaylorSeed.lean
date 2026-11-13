@@ -64,8 +64,7 @@ theorem zeroTaylorCoeff_succ (n : ℕ) :
         (2 * ((n : ℝ) + 1) * ((n : ℝ) + 2)) := by
   have hn1 : (n : ℝ) + 1 ≠ 0 := by positivity
   have hn2 : (n : ℝ) + 2 ≠ 0 := by positivity
-  have hf : (n.factorial : ℝ) ≠ 0 := by
-    exact_mod_cast Nat.factorial_ne_zero n
+  have hf : (n.factorial : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero n)
   unfold zeroTaylorCoeff
   rw [moment_zero_succ, Nat.factorial_succ]
   push_cast
@@ -109,8 +108,7 @@ private theorem angular_density_taylor_error (x : ℝ) (hx : 0 ≤ x) (N : ℕ) 
       ∑ n ∈ Finset.range (N + 1),
         ((-x) ^ n / (n.factorial : ℝ)) * PositiveMomentTheta.density n 0 t := by
     rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro n _
+    refine Finset.sum_congr rfl fun n _ => ?_
     simp only [PositiveMomentTheta.density, neg_zero, zero_mul,
       Real.exp_zero, mul_one, mul_pow, ← pow_mul]
     ring
@@ -142,8 +140,8 @@ private theorem angular_zero_taylor_error (x : ℝ) (hx : 0 ≤ x) (N : ℕ) :
         PositiveMomentTheta.moment (N + 1) 0 := by
   let P : ℝ → ℝ := fun t => ∑ n ∈ Finset.range (N + 1),
     ((-x) ^ n / (n.factorial : ℝ)) * PositiveMomentTheta.density n 0 t
-  have hP : Continuous P := by
-    exact continuous_finsetSum _ fun n _ =>
+  have hP : Continuous P :=
+    continuous_finsetSum _ fun n _ =>
       continuous_const.mul (PositiveMomentTheta.density_continuous n 0)
   have hPi : IntervalIntegrable P volume 0 (Real.pi / 2) :=
     hP.intervalIntegrable 0 (Real.pi / 2)
@@ -179,11 +177,9 @@ private theorem angular_zero_taylor_error (x : ℝ) (hx : 0 ≤ x) (N : ℕ) :
     _ ≤ ∫ t in (0 : ℝ)..(Real.pi / 2),
         (x ^ (N + 1) / ((N + 1).factorial : ℝ)) *
           PositiveMomentTheta.density (N + 1) 0 t := by
-      apply intervalIntegral.integral_mono_on Real.pi_div_two_pos.le
+      exact intervalIntegral.integral_mono_on Real.pi_div_two_pos.le
         (herror.abs.intervalIntegrable 0 (Real.pi / 2))
-        (hmajor.intervalIntegrable 0 (Real.pi / 2))
-      intro t _
-      exact angular_density_taylor_error x hx N t
+        (hmajor.intervalIntegrable 0 (Real.pi / 2)) fun t _ => angular_density_taylor_error x hx N t
     _ = _ := by
       rw [intervalIntegral.integral_const_mul]
       rfl
@@ -199,9 +195,7 @@ theorem moment_zero_taylor_error (x : ℝ) (hx : 0 ≤ x) (N : ℕ) :
       (4 / Real.pi) * (∑ n ∈ Finset.range (N + 1),
         ((-x) ^ n / (n.factorial : ℝ)) * PositiveMomentTheta.moment n 0) := by
     rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro n _
-    ring
+    exact Finset.sum_congr rfl fun n _ => by ring
   simp only [moment_eq_angular]
   rw [hsum, ← mul_sub, abs_mul, abs_of_nonneg hscale]
   calc

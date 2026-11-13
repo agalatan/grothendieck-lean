@@ -27,10 +27,9 @@ theorem profile_unit_mem (s : ℝ) (h0 : 0 ≤ s) (h1 : s ≤ 1) :
     Grothe.Upper.mem
       (Real.sqrt (1 + (Grothe.Upper.aQ : ℝ) ^ 2) * vprof s)
       (evalRow unitRow) := by
-  have h := row_horner_mem unitRow s
+  simpa only [centered_horner_profile] using row_horner_mem unitRow s
     (by simpa only [unitRow, Rat.cast_zero] using h0)
     (by simpa only [unitRow, Rat.cast_one] using h1)
-  simpa only [centered_horner_profile] using h
 
 end ProfileRootScreen
 

@@ -61,9 +61,7 @@ theorem sqrt_sum_norm_Jext_sq_le (S : Finset (ℕ × ℕ)) (D : ℕ)
     simp only [WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul, Pi.smul_apply,
       smul_eq_mul]
     rw [Jext_eq_sum_of_degree_le j r A cd.1.1 cd.1.2 D (hS cd.1 cd.2)]
-    apply Finset.sum_congr rfl
-    intro gh _
-    exact mul_comm _ _
+    exact Finset.sum_congr rfl fun _ _ ↦ mul_comm _ _
   calc
     Real.sqrt (∑ cd ∈ S, ‖Jext j r A cd.1 cd.2‖ ^ 2) = ‖v‖ :=
       (norm_finiteVector S _).symm

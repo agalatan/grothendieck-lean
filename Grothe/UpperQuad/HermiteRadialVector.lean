@@ -68,8 +68,8 @@ theorem sum_grade_product_le (Q D : ℕ) (hQD : 2 * Q ≤ D + 1)
       H (q - d, q + 1 - c) * U (c, d)) ≤
         (∑ i ∈ indices D, H i) * ∑ i ∈ indices D, U i := by
   have hinj : ∑ i ∈ gradeIndices Q, H (splitIndex i).1 * U (splitIndex i).2 ≤
-      ∑ p ∈ indices D ×ˢ indices D, H p.1 * U p.2 := by
-    exact Finset.sum_le_sum_of_injOn splitIndex (splitIndex_injOn Q)
+      ∑ p ∈ indices D ×ˢ indices D, H p.1 * U p.2 :=
+    Finset.sum_le_sum_of_injOn splitIndex (splitIndex_injOn Q)
       (splitIndex_image_subset hQD) (fun _ _ ↦ le_rfl)
       (fun p _ _ ↦ mul_nonneg (hH p.1) (hU p.2))
   simpa only [gradeIndices, Finset.sum_sigma, Finset.sum_product, splitIndex,

@@ -88,33 +88,31 @@ lemma term_choose_out (c d : ℕ) (A : ℂ) : term c d (c + 1) A = 0 := by
   unfold term
   simp [Nat.choose_succ_self]
 
+/-- `C(c, i+1) (i+1) = C(c, i) (c−i)`, in `ℤ`. -/
+private lemma choose_succ_mul_int {c i : ℕ} (hc : i ≤ c) :
+    ((c.choose (i + 1) : ℕ) : ℤ) * ((i : ℤ) + 1) = (c.choose i : ℤ) * ((c : ℤ) - i) := by
+  have := congrArg (fun n : ℕ => (n : ℤ)) (Nat.choose_succ_right_eq c i)
+  push_cast [Nat.cast_sub hc] at this
+  linarith
+
 /-- The charge identity of the coefficients, in `ℤ`. -/
 lemma coeff_charge (c d i : ℕ) :
     (((c + 1).choose (i + 1) * (d + 1).descFactorial (i + 1) : ℕ) : ℤ) -
       ((c.choose (i + 1) * (d + 1 + 1).descFactorial (i + 1) : ℕ) : ℤ) =
       ((d : ℤ) + 1 - c) * ((c.choose i * (d + 1).descFactorial i : ℕ) : ℤ) := by
-  have h1 := Nat.choose_succ_succ' c i
-  have h2 := Nat.descFactorial_succ (d + 1) i
-  have h3 := Nat.succ_descFactorial_succ (d + 1) i
-  have h4 := Nat.choose_succ_right_eq c i
-  rw [h1, h2, h3]
+  rw [Nat.choose_succ_succ' c i, Nat.descFactorial_succ (d + 1) i,
+    Nat.succ_descFactorial_succ (d + 1) i]
   by_cases hc : i ≤ c
   · by_cases hd : i ≤ d + 1
-    · have h4' : ((c.choose (i + 1) : ℕ) : ℤ) * ((i : ℤ) + 1) =
-          (c.choose i : ℤ) * ((c : ℤ) - i) := by
-        have := congrArg (fun n : ℕ => (n : ℤ)) h4
-        push_cast [Nat.cast_sub hc] at this
-        linarith
+    · have h4' := choose_succ_mul_int hc
       have hi : ((i : ℤ) + 1) ≠ 0 := by positivity
       apply mul_left_cancel₀ hi
       push_cast [Nat.cast_sub hd]
       linear_combination (((d : ℤ) + 1 - i) * ((d + 1).descFactorial i : ℤ) -
         ((d : ℤ) + 1 + 1) * ((d + 1).descFactorial i : ℤ)) * h4'
-    · have : (d + 1).descFactorial i = 0 := Nat.descFactorial_eq_zero_iff_lt.mpr (by omega)
-      simp [this]
-  · have h0 : c.choose i = 0 := Nat.choose_eq_zero_of_lt (by omega)
-    have h0' : c.choose (i + 1) = 0 := Nat.choose_eq_zero_of_lt (by omega)
-    simp [h0, h0']
+    · simp [Nat.descFactorial_eq_zero_iff_lt.mpr (show d + 1 < i by omega)]
+  · simp [Nat.choose_eq_zero_of_lt (show c < i by omega),
+      Nat.choose_eq_zero_of_lt (show c < i + 1 by omega)]
 
 /-- The derivative identity of the coefficients, in `ℕ`. -/
 lemma coeff_deriv (c d i : ℕ) :
@@ -122,29 +120,20 @@ lemma coeff_deriv (c d i : ℕ) :
       c.choose (i + 1) * (d + 1 + 1).descFactorial (i + 1) =
       2 * (c.choose (i + 1) * (d + 1).descFactorial (i + 1)) +
         (c + d + 1 - 2 * i) * (c.choose i * (d + 1).descFactorial i) := by
-  have h1 := Nat.choose_succ_succ' c i
-  have h2 := Nat.descFactorial_succ (d + 1) i
-  have h3 := Nat.succ_descFactorial_succ (d + 1) i
-  have h4 := Nat.choose_succ_right_eq c i
-  rw [h1, h2, h3]
+  rw [Nat.choose_succ_succ' c i, Nat.descFactorial_succ (d + 1) i,
+    Nat.succ_descFactorial_succ (d + 1) i]
   by_cases hc : i ≤ c
   · by_cases hd : i ≤ d + 1
-    · have h4' : ((c.choose (i + 1) : ℕ) : ℤ) * ((i : ℤ) + 1) =
-          (c.choose i : ℤ) * ((c : ℤ) - i) := by
-        have := congrArg (fun n : ℕ => (n : ℤ)) h4
-        push_cast [Nat.cast_sub hc] at this
-        linarith
+    · have h4' := choose_succ_mul_int hc
       have hi : ((i : ℤ) + 1) ≠ 0 := by positivity
       zify [hd, show 2 * i ≤ c + d + 1 by omega]
       apply mul_left_cancel₀ hi
       linear_combination (((d : ℤ) + 1 - i) * ((d + 1).descFactorial i : ℤ) +
         ((d : ℤ) + 1 + 1) * ((d + 1).descFactorial i : ℤ) -
         2 * ((d : ℤ) + 1 - i) * ((d + 1).descFactorial i : ℤ)) * h4'
-    · have : (d + 1).descFactorial i = 0 := Nat.descFactorial_eq_zero_iff_lt.mpr (by omega)
-      simp [this]
-  · have h0 : c.choose i = 0 := Nat.choose_eq_zero_of_lt (by omega)
-    have h0' : c.choose (i + 1) = 0 := Nat.choose_eq_zero_of_lt (by omega)
-    simp [h0, h0']
+    · simp [Nat.descFactorial_eq_zero_iff_lt.mpr (show d + 1 < i by omega)]
+  · simp [Nat.choose_eq_zero_of_lt (show c < i by omega),
+      Nat.choose_eq_zero_of_lt (show c < i + 1 by omega)]
 
 lemma sum_succ_left (c d : ℕ) (A : ℂ) :
     Dcd (c + 1) d A =
@@ -230,8 +219,7 @@ lemma norm_cexp_neg_mul_le {x : ℂ} {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) 
   apply Real.exp_le_exp.mpr
   calc (-x * t).re ≤ ‖-x * t‖ := Complex.re_le_norm _
     _ = ‖x‖ * t := by rw [norm_mul, norm_neg, Complex.norm_real, Real.norm_of_nonneg ht.1]
-    _ ≤ ‖x‖ * 1 := mul_le_mul_of_nonneg_left ht.2 (norm_nonneg _)
-    _ = ‖x‖ := mul_one _
+    _ ≤ ‖x‖ := mul_le_of_le_one_right (norm_nonneg _) ht.2
 
 /-- **(E1)** `Φ_n' = −Φ_{n+1}`. -/
 theorem hasDerivAt_Phi (n : ℕ) (x : ℂ) : HasDerivAt (Phi n) (-Phi (n + 1) x) x := by
@@ -335,6 +323,13 @@ lemma zd_zero (c d : ℕ) (A : ℂ) : zd c d 0 A = 2 * term c (d + 1) 0 A := by
   push_cast
   ring
 
+/-- The coefficient `C(c, i) (d+1)↓i` vanishes outside `i ≤ c`, `i ≤ d + 1`. -/
+private lemma choose_mul_descFactorial_eq_zero {c d i : ℕ} (h : ¬(i ≤ c ∧ i ≤ d + 1)) :
+    (c.choose i : ℂ) * ((d + 1).descFactorial i : ℂ) = 0 := by
+  rcases not_and_or.mp h with h | h
+  · simp [Nat.choose_eq_zero_of_lt (Nat.lt_of_not_le h)]
+  · simp [Nat.descFactorial_eq_zero_iff_lt.mpr (Nat.lt_of_not_le h)]
+
 lemma zd_succ (c d i : ℕ) (A : ℂ) :
     zd c d (i + 1) A = 2 * ((c.choose (i + 1) : ℂ) * ((d + 1).descFactorial (i + 1) : ℂ)) *
       X c d i A := by
@@ -346,12 +341,8 @@ lemma zd_succ (c d i : ℕ) (A : ℂ) :
       show c + d - i = (c + d - (i + 1)) + 1 by omega, pow_succ, pow_succ (A : ℂ)]
     push_cast
     ring
-  · have h0 : (c.choose (i + 1) : ℂ) * ((d + 1).descFactorial (i + 1) : ℂ) = 0 := by
-      rcases not_and_or.mp h with h | h
-      · rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
-      · rw [Nat.descFactorial_eq_zero_iff_lt.mpr (by omega)]; simp
-    unfold zd
-    rw [h0]
+  · unfold zd
+    rw [choose_mul_descFactorial_eq_zero h]
     simp
 
 lemma zd_out (c d : ℕ) (A : ℂ) : zd c d (c + 1) A = 0 := by
@@ -406,10 +397,8 @@ lemma norm_Phi_le (n : ℕ) (x : ℂ) :
 lemma integral_rpow_exp_Ioi (n : ℕ) {r : ℝ} (hr : 0 < r) :
     ∫ t in Set.Ioi 0, t ^ ((n : ℝ) - 1 / 2) * Real.exp (-(r * t)) =
       (1 / r) ^ ((n : ℝ) + 1 / 2) * Real.Gamma ((n : ℝ) + 1 / 2) := by
-  have ha : (0 : ℝ) < (n : ℝ) + 1 / 2 := by positivity
-  have h := Real.integral_rpow_mul_exp_neg_mul_Ioi ha hr
-  rw [show (n : ℝ) + 1 / 2 - 1 = (n : ℝ) - 1 / 2 by ring] at h
-  exact h
+  rw [← show (n : ℝ) + 1 / 2 - 1 = (n : ℝ) - 1 / 2 by ring]
+  exact Real.integral_rpow_mul_exp_neg_mul_Ioi (by positivity) hr
 
 lemma integrableOn_rpow_exp_Ioi (n : ℕ) {r : ℝ} (hr : 0 < r) :
     IntegrableOn (fun t : ℝ => t ^ ((n : ℝ) - 1 / 2) * Real.exp (-(r * t))) (Set.Ioi 0) := by
@@ -452,10 +441,8 @@ theorem norm_Phi_le_gamma (n : ℕ) {x : ℂ} (hx : 0 < x.re) :
         unfold wt
         rw [neg_mul]
         apply mul_le_mul_of_nonneg_right _ (Real.exp_pos _).le
-        calc t ^ ((n : ℝ) - 1 / 2) * Real.sqrt (1 - t) ≤ t ^ ((n : ℝ) - 1 / 2) * 1 :=
-              mul_le_mul_of_nonneg_left (Real.sqrt_le_one.mpr (by linarith [ht.1]))
-                (Real.rpow_nonneg ht.1 _)
-          _ = _ := mul_one _
+        exact mul_le_of_le_one_right (Real.rpow_nonneg ht.1 _)
+          (Real.sqrt_le_one.mpr (by linarith [ht.1]))
     _ = ∫ t in Set.Ioc 0 1, t ^ ((n : ℝ) - 1 / 2) * Real.exp (-(x.re * t)) :=
         intervalIntegral.integral_of_le zero_le_one
     _ ≤ ∫ t in Set.Ioi 0, t ^ ((n : ℝ) - 1 / 2) * Real.exp (-(x.re * t)) := by
@@ -470,16 +457,11 @@ theorem norm_Phi_le_gamma (n : ℕ) {x : ℂ} (hx : 0 < x.re) :
 
 /-! ### The bound of the explicit coefficients for `Re A² > 0` -/
 
-lemma re_sq_le_norm_sq (A : ℂ) : (A ^ 2).re ≤ ‖A‖ ^ 2 := by
-  calc (A ^ 2).re ≤ ‖A ^ 2‖ := Complex.re_le_norm _
-    _ = ‖A‖ ^ 2 := norm_pow _ _
+lemma re_sq_le_norm_sq (A : ℂ) : (A ^ 2).re ≤ ‖A‖ ^ 2 :=
+  (Complex.re_le_norm _).trans_eq (norm_pow _ _)
 
-lemma norm_pos_of_re_sq_pos {A : ℂ} (hr : 0 < (A ^ 2).re) : 0 < ‖A‖ := by
-  have := re_sq_le_norm_sq A
-  by_contra h
-  have h0 : ‖A‖ = 0 := le_antisymm (not_lt.mp h) (norm_nonneg _)
-  rw [h0] at this
-  linarith
+lemma norm_pos_of_re_sq_pos {A : ℂ} (hr : 0 < (A ^ 2).re) : 0 < ‖A‖ :=
+  norm_pos_iff.mpr fun h => by simp [h] at hr
 
 /-- The powers of `‖A‖` and `(Re A²)^{−k−½}` combine into `θ^k √θ`. -/
 lemma pow_mul_rpow_eq {a r : ℝ} (ha : 0 < a) (hr : 0 < r) (n p k : ℕ) (hnp : n + p = 2 * k + 1) :
@@ -516,11 +498,7 @@ lemma norm_term_le (c d i : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
             ((c + d - i).factorial : ℝ)) * (‖A‖ ^ (c + d) * ‖A‖ ^ (c + d + 1 - 2 * i) *
             (1 / (A ^ 2).re) ^ (((c + d - i : ℕ) : ℝ) + 1 / 2)) := by ring
       _ = _ := by rw [hk]; ring
-  · have h0 : (c.choose i : ℂ) * ((d + 1).descFactorial i : ℂ) = 0 := by
-      rcases not_and_or.mp h with h | h
-      · rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
-      · rw [Nat.descFactorial_eq_zero_iff_lt.mpr (by omega)]; simp
-    have : term c d i A = 0 := by unfold term; rw [h0]; simp
+  · have : term c d i A = 0 := by unfold term; rw [choose_mul_descFactorial_eq_zero h]; simp
     rw [this, norm_zero, mul_zero]
     positivity
 
@@ -556,19 +534,16 @@ lemma coeff_factorial_eq (c d i : ℕ) (hc : i ≤ c) :
 
 lemma sum_choose_le (c d : ℕ) :
     ∑ i ∈ Finset.range (c + 1), ((d + 1).choose i : ℝ) ≤ 2 ^ (d + 1) := by
-  have h : ∀ k, ∑ i ∈ Finset.range k, ((d + 1).choose i : ℝ) ≤ 2 ^ (d + 1) := by
-    intro k
-    calc ∑ i ∈ Finset.range k, ((d + 1).choose i : ℝ)
-        ≤ ∑ i ∈ Finset.range (k + (d + 2)), ((d + 1).choose i : ℝ) :=
-          Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.mpr (by omega))
-            (fun _ _ _ => by positivity)
-      _ = 2 ^ (d + 1) := by
-          rw [add_comm k, Finset.sum_range_add]
-          have h0 : ∑ i ∈ Finset.range k, ((d + 1).choose (d + 2 + i) : ℝ) = 0 :=
-            Finset.sum_eq_zero fun i _ => by rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
-          rw [h0, add_zero]
-          exact_mod_cast Nat.sum_range_choose (d + 1)
-  exact h (c + 1)
+  calc ∑ i ∈ Finset.range (c + 1), ((d + 1).choose i : ℝ)
+      ≤ ∑ i ∈ Finset.range (c + 1 + (d + 2)), ((d + 1).choose i : ℝ) :=
+        Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.mpr (by omega))
+          (fun _ _ _ => by positivity)
+    _ = 2 ^ (d + 1) := by
+        rw [add_comm (c + 1), Finset.sum_range_add]
+        have h0 : ∑ i ∈ Finset.range (c + 1), ((d + 1).choose (d + 2 + i) : ℝ) = 0 :=
+          Finset.sum_eq_zero fun i _ => by rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
+        rw [h0, add_zero]
+        exact_mod_cast Nat.sum_range_choose (d + 1)
 
 /-- The coefficient sum: `Σ_i C(c,i) (d+1)↓i (c+d−i)! ≤ c! d! C(c+d, d) 2^{d+1}`. -/
 lemma sum_coeff_le (c d : ℕ) :
@@ -580,7 +555,7 @@ lemma sum_coeff_le (c d : ℕ) :
       = ∑ i ∈ Finset.range (c + 1),
           (c.factorial : ℝ) * d.factorial * ((c + d - i).choose d : ℝ) * ((d + 1).choose i : ℝ) :=
         Finset.sum_congr rfl fun i hi =>
-          coeff_factorial_eq c d i (by rw [Finset.mem_range] at hi; omega)
+          coeff_factorial_eq c d i (Nat.le_of_lt_succ (Finset.mem_range.mp hi))
     _ ≤ ∑ i ∈ Finset.range (c + 1),
           (c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) * ((d + 1).choose i : ℝ) := by
         apply Finset.sum_le_sum
@@ -592,64 +567,67 @@ lemma sum_coeff_le (c d : ℕ) :
           ∑ i ∈ Finset.range (c + 1), ((d + 1).choose i : ℝ) := by rw [Finset.mul_sum]
     _ ≤ _ := by gcongr; exact sum_choose_le c d
 
+/-- The termwise bound of `Dcd`:
+`‖A‖^{c+d} ‖Dcd‖ ≤ √π √θ Σ_i C(c,i) (d+1)↓i (c+d−i)! θ^{c+d−i}`. -/
+private lemma norm_Dcd_le_sum (c d : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
+    ‖A‖ ^ (c + d) * ‖Dcd c d A‖ ≤ Real.sqrt Real.pi * Real.sqrt (‖A‖ ^ 2 / (A ^ 2).re) *
+      ∑ i ∈ Finset.range (c + 1), (c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) *
+        ((c + d - i).factorial : ℝ) * (‖A‖ ^ 2 / (A ^ 2).re) ^ (c + d - i) := by
+  rw [Dcd_eq_sum_term]
+  refine (mul_le_mul_of_nonneg_left (norm_sum_le _ _) (by positivity)).trans ?_
+  rw [Finset.mul_sum, Finset.mul_sum]
+  exact Finset.sum_le_sum fun i _ => norm_term_le c d i hr
+
 /-- The bound of `Dcd`: `‖A‖^{c+d} ‖Dcd‖ ≤ √π √θ θ^{c+d} c! d! C(c+d, d) 2^{d+1}`. -/
 theorem norm_Dcd_le (c d : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
     ‖A‖ ^ (c + d) * ‖Dcd c d A‖ ≤
       Real.sqrt Real.pi * Real.sqrt (‖A‖ ^ 2 / (A ^ 2).re) * (‖A‖ ^ 2 / (A ^ 2).re) ^ (c + d) *
         ((c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) * 2 ^ (d + 1)) := by
   have ha := norm_pos_of_re_sq_pos hr
-  have hθ : 1 ≤ ‖A‖ ^ 2 / (A ^ 2).re := by
-    rw [le_div_iff₀ hr, one_mul]; exact re_sq_le_norm_sq A
+  have hθ : 1 ≤ ‖A‖ ^ 2 / (A ^ 2).re := (one_le_div hr).mpr (re_sq_le_norm_sq A)
   set θ := ‖A‖ ^ 2 / (A ^ 2).re with hθdef
   calc ‖A‖ ^ (c + d) * ‖Dcd c d A‖
-      ≤ ∑ i ∈ Finset.range (c + 1), ‖A‖ ^ (c + d) * ‖term c d i A‖ := by
-        rw [Dcd_eq_sum_term, ← Finset.mul_sum]
-        exact mul_le_mul_of_nonneg_left (norm_sum_le _ _) (by positivity)
-    _ ≤ ∑ i ∈ Finset.range (c + 1), Real.sqrt Real.pi * Real.sqrt θ *
-          ((c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) * ((c + d - i).factorial : ℝ) *
-            θ ^ (c + d - i)) :=
-        Finset.sum_le_sum fun i _ => norm_term_le c d i hr
-    _ ≤ ∑ i ∈ Finset.range (c + 1), Real.sqrt Real.pi * Real.sqrt θ *
-          ((c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) * ((c + d - i).factorial : ℝ) *
-            θ ^ (c + d)) := by
-        apply Finset.sum_le_sum
-        intro i _
-        have : θ ^ (c + d - i) ≤ θ ^ (c + d) := pow_le_pow_right₀ hθ (by omega)
+      ≤ Real.sqrt Real.pi * Real.sqrt θ * ∑ i ∈ Finset.range (c + 1),
+          (c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) * ((c + d - i).factorial : ℝ) *
+            θ ^ (c + d) := by
+        refine (norm_Dcd_le_sum c d hr).trans
+          (mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => ?_) (by positivity))
+        have : θ ^ (c + d - i) ≤ θ ^ (c + d) := pow_le_pow_right₀ hθ (Nat.sub_le _ _)
         gcongr
     _ = Real.sqrt Real.pi * Real.sqrt θ * θ ^ (c + d) * ∑ i ∈ Finset.range (c + 1),
           (c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) * ((c + d - i).factorial : ℝ) := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro i _
+        rw [← Finset.sum_mul]
         ring
     _ ≤ _ := by gcongr; exact sum_coeff_le c d
+
+/-- `c! d! C(c+d, d) = (c+d)!`. -/
+private lemma factorial_mul_choose (c d : ℕ) :
+    (c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) = (c + d).factorial := by
+  rw [← Nat.add_choose_mul_factorial_mul_factorial c d]
+  push_cast
+  ring
+
+private lemma norm_Uext_eq (c d : ℕ) (A : ℂ) :
+    ‖Uext c d A‖ = ‖Dcd c d A‖ / Real.sqrt ((c.factorial : ℝ) * d.factorial * Real.pi) := by
+  rw [Uext, norm_div, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
 
 /-- The bound of one normalised coefficient: `‖U_{c,d}(A)‖² ≤ 4θ m! (8θ²/‖A‖²)^m`, `m = c + d`. -/
 theorem norm_Uext_sq_le (c d : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
     ‖Uext c d A‖ ^ 2 ≤ 4 * (‖A‖ ^ 2 / (A ^ 2).re) * ((c + d).factorial : ℝ) *
       (8 * (‖A‖ ^ 2 / (A ^ 2).re) ^ 2 / ‖A‖ ^ 2) ^ (c + d) := by
   have ha := norm_pos_of_re_sq_pos hr
-  have hθ : 1 ≤ ‖A‖ ^ 2 / (A ^ 2).re := by
-    rw [le_div_iff₀ hr, one_mul]; exact re_sq_le_norm_sq A
+  have hθ : 1 ≤ ‖A‖ ^ 2 / (A ^ 2).re := (one_le_div hr).mpr (re_sq_le_norm_sq A)
   have hD := norm_Dcd_le c d hr
   set θ := ‖A‖ ^ 2 / (A ^ 2).re with hθdef
   set a := ‖A‖ with hadef
   have hθ0 : 0 ≤ θ := by linarith
   have hpi : 0 < Real.pi := Real.pi_pos
   have hfac : 0 < (c.factorial : ℝ) * d.factorial * Real.pi := by positivity
-  -- `c! d! C(c+d,d) = (c+d)!`
-  have hcf : (c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) = (c + d).factorial := by
-    have := Nat.choose_mul_factorial_mul_factorial (n := c + d) (k := d) (by omega)
-    rw [show c + d - d = c by omega] at this
-    rw [← this]; push_cast; ring
   have hch : ((c + d).choose d : ℝ) ≤ 2 ^ (c + d) := by
     exact_mod_cast Nat.choose_le_two_pow (c + d) d
   have h4 : (4 : ℝ) ^ (d + 1) ≤ 4 * 4 ^ (c + d) := by
     rw [pow_succ, mul_comm]
     exact mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (by norm_num) (by omega)) (by norm_num)
-  have hU : ‖Uext c d A‖ = ‖Dcd c d A‖ / Real.sqrt ((c.factorial : ℝ) * d.factorial * Real.pi) := by
-    unfold Uext
-    rw [norm_div, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
   -- square the bound of `Dcd`
   have hD2 : (a ^ (c + d) * ‖Dcd c d A‖) ^ 2 ≤ (Real.sqrt Real.pi * Real.sqrt θ * θ ^ (c + d) *
       ((c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) * 2 ^ (d + 1))) ^ 2 :=
@@ -661,11 +639,12 @@ theorem norm_Uext_sq_le (c d : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
           4 ^ (d + 1)) := by
     have h42 : (4 : ℝ) ^ (d + 1) = (2 ^ (d + 1)) ^ 2 := by
       rw [← pow_mul, show (4 : ℝ) = 2 ^ 2 by norm_num, ← pow_mul, mul_comm]
-    rw [mul_pow, mul_pow, mul_pow, Real.sq_sqrt hpi.le, Real.sq_sqrt hθ0, ← hcf, h42]
+    rw [mul_pow, mul_pow, mul_pow, Real.sq_sqrt hpi.le, Real.sq_sqrt hθ0,
+      ← factorial_mul_choose c d, h42]
     ring
   have hmain : a ^ (2 * (c + d)) * ‖Uext c d A‖ ^ 2 ≤
       θ * (θ ^ 2) ^ (c + d) * ((c + d).factorial : ℝ) * ((c + d).choose d : ℝ) * 4 ^ (d + 1) := by
-    rw [hU, div_pow, Real.sq_sqrt hfac.le, pow_mul, ← mul_div_assoc, div_le_iff₀ hfac]
+    rw [norm_Uext_eq, div_pow, Real.sq_sqrt hfac.le, pow_mul, ← mul_div_assoc, div_le_iff₀ hfac]
     calc (a ^ 2) ^ (c + d) * ‖Dcd c d A‖ ^ 2 = (a ^ (c + d) * ‖Dcd c d A‖) ^ 2 := by ring
       _ ≤ _ := hD2.trans (le_of_eq hsq)
       _ = _ := by ring
@@ -679,12 +658,9 @@ theorem norm_Uext_sq_le (c d : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
           rw [show (8 : ℝ) * θ ^ 2 = 2 * 4 * θ ^ 2 by norm_num, mul_pow, mul_pow]
           ring
   have hapos : 0 < a ^ (2 * (c + d)) := by positivity
-  have hfin : ‖Uext c d A‖ ^ 2 ≤
-      4 * θ * ((c + d).factorial : ℝ) * (8 * θ ^ 2) ^ (c + d) / a ^ (2 * (c + d)) := by
-    rw [le_div_iff₀ hapos]
-    linarith [hmain2, mul_comm (a ^ (2 * (c + d))) (‖Uext c d A‖ ^ 2)]
-  calc ‖Uext c d A‖ ^ 2 ≤ _ := hfin
-    _ = _ := by rw [div_pow, ← pow_mul]; ring
+  refine ((le_div_iff₀' hapos).mpr hmain2).trans_eq ?_
+  rw [div_pow, ← pow_mul]
+  ring
 
 /-- **(E5) The large-`|A|` bound**: for `Re A² > 0` and `θ = ‖A‖²/Re A²`,
 `Σ_{m ≤ D} Σ_{c ≤ m} ‖U_{c,m−c}(A)‖² ≤ 4θ Σ_{m ≤ D} (m+1) m! (8θ²/‖A‖²)^m`. -/
@@ -748,21 +724,19 @@ lemma choose_sub_le (c d : ℕ) {i : ℕ} (hi : i ≤ c) :
 
 lemma sum_choose_pow_le (c d : ℕ) {x : ℝ} (hx : 0 ≤ x) :
     ∑ i ∈ Finset.range (c + 1), ((d + 1).choose i : ℝ) * x ^ i ≤ (1 + x) ^ (d + 1) := by
-  have h : ∀ k, ∑ i ∈ Finset.range k, ((d + 1).choose i : ℝ) * x ^ i ≤ (1 + x) ^ (d + 1) := by
-    intro k
-    calc ∑ i ∈ Finset.range k, ((d + 1).choose i : ℝ) * x ^ i
-        ≤ ∑ i ∈ Finset.range (k + (d + 2)), ((d + 1).choose i : ℝ) * x ^ i :=
-          Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.mpr (by omega))
-            (fun _ _ _ => by positivity)
-      _ = (1 + x) ^ (d + 1) := by
-          rw [add_comm k, Finset.sum_range_add]
-          have h0 : ∑ i ∈ Finset.range k, ((d + 1).choose (d + 2 + i) : ℝ) * x ^ (d + 2 + i) = 0 :=
-            Finset.sum_eq_zero fun i _ => by rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
-          rw [h0, add_zero, add_comm 1 x, add_pow]
-          apply Finset.sum_congr rfl
-          intro i _
-          ring
-  exact h (c + 1)
+  calc ∑ i ∈ Finset.range (c + 1), ((d + 1).choose i : ℝ) * x ^ i
+      ≤ ∑ i ∈ Finset.range (c + 1 + (d + 2)), ((d + 1).choose i : ℝ) * x ^ i :=
+        Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.mpr (by omega))
+          (fun _ _ _ => by positivity)
+    _ = (1 + x) ^ (d + 1) := by
+        rw [add_comm (c + 1), Finset.sum_range_add]
+        have h0 :
+            ∑ i ∈ Finset.range (c + 1), ((d + 1).choose (d + 2 + i) : ℝ) * x ^ (d + 2 + i) = 0 :=
+          Finset.sum_eq_zero fun i _ => by rw [Nat.choose_eq_zero_of_lt (by omega)]; simp
+        rw [h0, add_zero, add_comm 1 x, add_pow]
+        apply Finset.sum_congr rfl
+        intro i _
+        ring
 
 /-- The sharper coefficient sum: `Σ_i C(c,i) (d+1)↓i (c+d−i)! θ^{c+d−i} ≤
 θ^{c+d} c! d! C(c+d, d) (1 + c/(c+d))^{d+1}` for `θ ≥ 1`. -/
@@ -803,42 +777,23 @@ theorem norm_Uext_le (c d : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
       (((c + d).factorial : ℝ) / Real.sqrt ((c.factorial : ℝ) * d.factorial)) *
       (1 + (c : ℝ) / (c + d : ℕ)) ^ (d + 1) := by
   have ha := norm_pos_of_re_sq_pos hr
-  have hθ : 1 ≤ ‖A‖ ^ 2 / (A ^ 2).re := by
-    rw [le_div_iff₀ hr, one_mul]; exact re_sq_le_norm_sq A
+  have hθ : 1 ≤ ‖A‖ ^ 2 / (A ^ 2).re := (one_le_div hr).mpr (re_sq_le_norm_sq A)
   set θ := ‖A‖ ^ 2 / (A ^ 2).re with hθdef
   have hpi : 0 < Real.pi := Real.pi_pos
   have hcd : 0 < (c.factorial : ℝ) * d.factorial := by positivity
   -- the bound of `Dcd`
   have hD : ‖A‖ ^ (c + d) * ‖Dcd c d A‖ ≤ Real.sqrt Real.pi * Real.sqrt θ * (θ ^ (c + d) *
       ((c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) *
-        (1 + (c : ℝ) / (c + d)) ^ (d + 1))) := by
-    calc ‖A‖ ^ (c + d) * ‖Dcd c d A‖
-        ≤ ∑ i ∈ Finset.range (c + 1), ‖A‖ ^ (c + d) * ‖term c d i A‖ := by
-          rw [Dcd_eq_sum_term, ← Finset.mul_sum]
-          exact mul_le_mul_of_nonneg_left (norm_sum_le _ _) (by positivity)
-      _ ≤ ∑ i ∈ Finset.range (c + 1), Real.sqrt Real.pi * Real.sqrt θ *
-            ((c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) * ((c + d - i).factorial : ℝ) *
-              θ ^ (c + d - i)) :=
-          Finset.sum_le_sum fun i _ => norm_term_le c d i hr
-      _ = Real.sqrt Real.pi * Real.sqrt θ * ∑ i ∈ Finset.range (c + 1),
-            (c.choose i : ℝ) * ((d + 1).descFactorial i : ℝ) * ((c + d - i).factorial : ℝ) *
-              θ ^ (c + d - i) := by rw [Finset.mul_sum]
-      _ ≤ _ := by gcongr; exact sum_coeff_theta_le c d hθ
-  -- `c! d! C(c+d, d) = (c+d)!`
-  have hcf : (c.factorial : ℝ) * d.factorial * ((c + d).choose d : ℝ) = (c + d).factorial := by
-    have := Nat.choose_mul_factorial_mul_factorial (n := c + d) (k := d) (by omega)
-    rw [show c + d - d = c by omega] at this
-    rw [← this]; push_cast; ring
-  have hU : ‖Uext c d A‖ = ‖Dcd c d A‖ / Real.sqrt ((c.factorial : ℝ) * d.factorial * Real.pi) := by
-    unfold Uext
-    rw [norm_div, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
+        (1 + (c : ℝ) / (c + d)) ^ (d + 1))) :=
+    (norm_Dcd_le_sum c d hr).trans
+      (mul_le_mul_of_nonneg_left (sum_coeff_theta_le c d hθ) (by positivity))
   have hsq : Real.sqrt ((c.factorial : ℝ) * d.factorial * Real.pi) =
       Real.sqrt ((c.factorial : ℝ) * d.factorial) * Real.sqrt Real.pi :=
     Real.sqrt_mul hcd.le _
   have hs1 : 0 < Real.sqrt ((c.factorial : ℝ) * d.factorial) := Real.sqrt_pos.mpr hcd
   have hs2 : 0 < Real.sqrt Real.pi := Real.sqrt_pos.mpr hpi
   have hcast : ((c + d : ℕ) : ℝ) = (c : ℝ) + d := by push_cast; ring
-  rw [hU, hsq, hcast, div_le_iff₀ (by positivity)]
+  rw [norm_Uext_eq, hsq, hcast, div_le_iff₀ (by positivity)]
   have hA : ‖A‖⁻¹ ^ (c + d) * ‖A‖ ^ (c + d) = 1 := by
     rw [← mul_pow, inv_mul_cancel₀ ha.ne', one_pow]
   have hfin : ‖Dcd c d A‖ = ‖A‖⁻¹ ^ (c + d) * (‖A‖ ^ (c + d) * ‖Dcd c d A‖) := by
@@ -850,7 +805,7 @@ theorem norm_Uext_le (c d : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
             (1 + (c : ℝ) / (c + d)) ^ (d + 1)))) :=
         mul_le_mul_of_nonneg_left hD (by positivity)
     _ = _ := by
-        rw [← hcf]
+        rw [← factorial_mul_choose c d]
         field_simp
 
 /-! ### The explicit formula of the canonical coefficients (real shifts) -/
@@ -886,19 +841,17 @@ lemma canonicalCoefficient_zero_row_eq (A : ℝ) (d : ℕ) :
   simp only [zero_add, Finset.range_one, Finset.sum_singleton, Nat.choose_zero_right,
     Nat.descFactorial_zero, Nat.cast_one, one_mul, Nat.sub_zero, mul_zero, Nat.factorial_zero]
   have hpi : 0 < Real.pi := Real.pi_pos
-  have hsp : 0 < Real.sqrt Real.pi := Real.sqrt_pos.mpr hpi
-  have hsd : 0 < Real.sqrt (d.factorial : ℝ) := Real.sqrt_pos.mpr (by positivity)
   have hs : Real.sqrt ((d.factorial : ℝ) * Real.pi) =
       Real.sqrt (d.factorial : ℝ) * Real.sqrt Real.pi := Real.sqrt_mul (by positivity) _
-  have hpi2 : Real.pi = Real.sqrt Real.pi * Real.sqrt Real.pi := (Real.mul_self_sqrt hpi.le).symm
   have hm := moment_eq_Phi d (A ^ 2)
   push_cast at hm ⊢
   rw [hs, hm]
   push_cast
-  have hspc : (Real.sqrt Real.pi : ℂ) ≠ 0 := by exact_mod_cast hsp.ne'
-  have hsdc : (Real.sqrt (d.factorial : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hsd.ne'
+  have hspc : (Real.sqrt Real.pi : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr hpi).ne'
+  have hsdc : (Real.sqrt (d.factorial : ℝ) : ℂ) ≠ 0 :=
+    Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr (by positivity)).ne'
   have hpic : (Real.pi : ℂ) = (Real.sqrt Real.pi : ℂ) * (Real.sqrt Real.pi : ℂ) := by
-    exact_mod_cast hpi2
+    exact_mod_cast (Real.mul_self_sqrt hpi.le).symm
   rw [hpic]
   field_simp
   ring
@@ -923,14 +876,14 @@ theorem canonicalCoefficient_eq_Uext (A : ℝ) (hA : A ≠ 0) (c d : ℕ) :
         Real.sqrt ((d + 1 : ℕ) : ℝ) * s := by
       rw [hs_def, ← Real.sqrt_mul (by positivity), Nat.factorial_succ]
       push_cast; ring_nf
-    have hc1 : 0 < Real.sqrt ((c + 1 : ℕ) : ℝ) := Real.sqrt_pos.mpr (by positivity)
-    have hd1 : 0 < Real.sqrt ((d + 1 : ℕ) : ℝ) := Real.sqrt_pos.mpr (by positivity)
     unfold Uext
     rw [hs1, hs2, Complex.ofReal_mul, Complex.ofReal_mul]
     have hE := Dcd_charge c d (A : ℂ)
     have hsc : (s : ℂ) ≠ 0 := by exact_mod_cast hs.ne'
-    have hc1c : (Real.sqrt ((c + 1 : ℕ) : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hc1.ne'
-    have hd1c : (Real.sqrt ((d + 1 : ℕ) : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hd1.ne'
+    have hc1c : (Real.sqrt ((c + 1 : ℕ) : ℝ) : ℂ) ≠ 0 :=
+      Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr (by positivity)).ne'
+    have hd1c : (Real.sqrt ((d + 1 : ℕ) : ℝ) : ℂ) ≠ 0 :=
+      Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr (by positivity)).ne'
     generalize (Real.sqrt ((c + 1 : ℕ) : ℝ) : ℂ) = P at *
     generalize (Real.sqrt ((d + 1 : ℕ) : ℝ) : ℂ) = Q at *
     generalize (s : ℂ) = S at *

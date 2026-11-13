@@ -35,8 +35,7 @@ theorem diskProfile_signed_k_geometry (hc : EllCheck.chatOK = true)
   obtain ⟨T, Dv, hf⟩ := EllCheck.ProfileFacts.mk' hc hR hprof
   obtain ⟨Alo, hAm, hA⟩ := a2loI_disk_bound hR hf ha2
   obtain ⟨_, KP, hKm, hK0, hK1, htheta⟩ := defectI_disk_theta hR hf hdef
-  refine ⟨hf.hsgn, KP, Alo, hKm, hAm, hK0, hK1, ?_⟩
-  intro z r hz hr
+  refine ⟨hf.hsgn, KP, Alo, hKm, hAm, hK0, hK1, fun z r hz hr => ?_⟩
   have hd : DiskPoint (EllCheck.sgn pos) x R z r :=
     ⟨hR, hz, hr, EllCheck.sgn_cases pos, hf.hsgn⟩
   obtain ⟨hX, hY⟩ := diskPoint_root_sq_bounds hd
@@ -46,9 +45,7 @@ theorem diskProfile_signed_k_geometry (hc : EllCheck.chatOK = true)
       ((r / wC (EllCheck.sgn pos) z) ^ 2).re := by
     simpa only [hr] using TwistRadialExt.shift_sq_re_eq _ (EllCheck.sgn_cases pos) r
   obtain ⟨hpos, hratio⟩ := htheta z r hd
-  refine ⟨hX, hY, ?_, ?_, ?_⟩
-  · rw [hn]
-    exact hA z r hd
+  refine ⟨hX, hY, (hA z r hd).trans_eq hn.symm, ?_, ?_⟩
   · rwa [hre]
   · rwa [hn, hre]
 

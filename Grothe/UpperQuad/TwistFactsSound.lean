@@ -122,11 +122,9 @@ lemma accOK_foldl_tables (j : ℕ) (hj : j = 1 ∨ j = 2 ∨ j = 3) (hdeg : Phas
   induction ts with
   | nil =>
     intro b0 bs hlen _ _ I L acc hacc
-    have hbs : bs = [] := List.eq_nil_of_length_eq_zero hlen
-    subst hbs
+    obtain rfl : bs = [] := List.eq_nil_of_length_eq_zero hlen
     simp only [List.getLast_singleton, List.foldl_nil]
-    have he : rangeSpecs b0 b0 = [] := by simp [rangeSpecs]
-    rw [he]
+    rw [show rangeSpecs b0 b0 = [] by simp [rangeSpecs]]
     simpa [specsI, specsLow] using hacc
   | cons t ts ih =>
     intro b0 bs hlen hchain hfacts I L acc hacc
@@ -145,8 +143,7 @@ lemma accOK_foldl_tables (j : ℕ) (hj : j = 1 ∨ j = 2 ∨ j = 3) (hdeg : Phas
       List.getLast_cons (by simp)
     have hle : b1 ≤ (b1 :: bs').getLast (by simp) := chainLe_getLast b1 bs' hchain'
     rw [hlast, ← rangeSpecs_append h01 hle]
-    simp only [specsI, specsLow, List.map_append, List.sum_append, ← add_assoc] at hrest ⊢
-    exact hrest
+    simpa only [specsI, specsLow, List.map_append, List.sum_append, ← add_assoc] using hrest
 
 /-- **The facts of the power `j`**: the sum of the committed tables encloses the exact Gauss sums of
 the whole partition, and it passes the two checks. -/
@@ -176,10 +173,7 @@ theorem accOK_of_facts (j : ℕ) (hj : j = 1 ∨ j = 2 ∨ j = 3) (hdeg : PhaseD
     simpa using hlast
   have h := accOK_foldl_tables j hj hdeg htv ts 0 bs (by simp at hlen; omega) hchain hr
     (accOK_zero (qlow j))
-  rw [hl] at h
-  have hrs : rangeSpecs 0 partitionSpecs.length = partitionSpecs := by
-    simp [rangeSpecs]
-  rw [hrs] at h
+  rw [hl, show rangeSpecs 0 partitionSpecs.length = partitionSpecs by simp [rangeSpecs]] at h
   unfold sumTables
   simpa only [zero_add] using h
 
@@ -229,25 +223,15 @@ theorem lowBandOK_sound {Qlow E : ℕ} (hE : E ≤ 2 * KOut) {acc : TwAcc} {L : 
   push_cast at h'
   refine le_trans ?_ h'
   rw [Finset.sum_mul]
-  apply Finset.sum_le_sum
-  intro q hq
+  refine Finset.sum_le_sum fun q hq => ?_
   rw [Finset.sum_mul]
-  apply Finset.sum_le_sum
-  intro c hc
+  refine Finset.sum_le_sum fun c hc => ?_
   rw [Finset.sum_mul]
-  apply Finset.sum_le_sum
-  intro d hd
+  refine Finset.sum_le_sum fun d hd => ?_
   simp only [Finset.mem_range] at hq hc hd
   have hb := abs_sub_le_excursionTw (hL q c d hq hc hd)
     (center.getD (gradedFlat q c d) 0 * pow2 (2 * KOut - E))
-  have hc' : ((center.getD (gradedFlat q c d) 0 * pow2 (2 * KOut - E) : ℤ) : ℝ) / 2 ^ (2 * KOut) =
-      centerR center E q c d := by
-    unfold centerR
-    have h2 : (2 : ℝ) ^ (2 * KOut) = 2 ^ (2 * KOut - E) * 2 ^ E := by
-      rw [← pow_add, Nat.sub_add_cancel hE]
-    rw [Int.cast_mul, pow2_cast, h2]
-    field_simp
-  rw [hc'] at hb
+  rw [centerR_eq_scaled center hE] at hb
   have h2K : (2 : ℝ) ^ (4 * KOut) = ((2 : ℝ) ^ (2 * KOut)) ^ 2 := by rw [← pow_mul]; ring_nf
   rw [h2K, ← mul_pow]
   have hp2 : (0 : ℝ) < 2 ^ (2 * KOut) := by positivity
@@ -256,8 +240,7 @@ theorem lowBandOK_sound {Qlow E : ℕ} (hE : E ≤ 2 * KOut) {acc : TwAcc} {L : 
         pow2 (2 * KOut - E)) : ℝ) := by
     rw [abs_mul, abs_of_pos hp2]
     rwa [le_div_iff₀ hp2] at hb
-  have := sq_le_sq' (abs_le.mp hx).1 (abs_le.mp hx).2
-  simpa using this
+  simpa using sq_le_sq' (abs_le.mp hx).1 (abs_le.mp hx).2
 
 end
 

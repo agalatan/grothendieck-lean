@@ -91,12 +91,10 @@ lemma pairOfMin_of_charge {e f g h : ℕ} (hge : g ≤ e) (_hhf : h ≤ f) (hc :
   unfold pairOfMin
   split_ifs with hef
   · refine ⟨?_, by omega⟩
-    have : min g h = h := by omega
-    rw [this, Prod.mk.injEq]
+    rw [min_eq_right (by omega), Prod.mk.injEq]
     omega
   · refine ⟨?_, by omega⟩
-    have : min g h = g := by omega
-    rw [this, Prod.mk.injEq]
+    rw [min_eq_left (by omega), Prod.mk.injEq]
     omega
 
 lemma mem_tget {μ : ℝ} {e F : ℕ} {rows : Array DilRow} (hr : DilRowsOK μ e F rows) {f : ℕ}
@@ -140,8 +138,8 @@ lemma getD_push_size {α : Type*} (a : Array α) (x d : α) : (a.push x).getD a.
   simp [Array.getD_eq_getD_getElem?]
 
 lemma getD_push_eq {α : Type*} (a : Array α) (x d : α) {i : ℕ} (hi : i = a.size) :
-    (a.push x).getD i d = x := by
-  rw [hi]; exact getD_push_size a x d
+    (a.push x).getD i d = x :=
+  hi ▸ getD_push_size a x d
 
 lemma getD_singleton {α : Type*} (x d : α) : (#[x] : Array α).getD 0 d = x := rfl
 
@@ -162,9 +160,8 @@ lemma dilLevel0_spec (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : Ar
   | zero =>
     intro _
     refine ⟨rfl, fun f hf m hm => ?_⟩
-    have hf0 : f = 0 := by omega
-    have hm0 : m = 0 := by omega
-    subst hf0; subst hm0
+    obtain rfl : f = 0 := by omega
+    obtain rfl : m = 0 := by omega
     simp only [pairOfMin, ge_iff_le, le_refl, ↓reduceIte, Nat.sub_self, add_zero, dilT_zero_zero,
       and_self]
     simpa using mem_one P
@@ -174,13 +171,11 @@ lemma dilLevel0_spec (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : Ar
     rw [List.range_succ, List.foldl_append, List.foldl_cons, List.foldl_nil]
     generalize ((List.range n).foldl _ #[#[ofInt P 1]]) = rows at hsize hok ⊢
     refine ⟨by simp [hsize], fun f hf m hm => ?_⟩
-    have hm0 : m = 0 := by omega
-    subst hm0
+    obtain rfl : m = 0 := by omega
     rcases Nat.lt_or_ge f (n + 1) with hlt | hge
     · rw [getD_push_lt rows _ _ (by omega)]
       exact hok f (by omega) 0 (by omega)
-    · have hfe : f = n + 1 := by omega
-      subst hfe
+    · obtain rfl : f = n + 1 := by omega
       rw [getD_push_eq rows _ _ hsize.symm, getD_singleton]
       have hp : pairOfMin 0 (n + 1) 0 = (0, n + 1) := by simp [pairOfMin]
       rw [hp]
@@ -268,8 +263,8 @@ lemma foldl_levels {α β : Type*} (step : α → ℕ → α) (conv : α → β)
     induction n with
     | zero =>
       refine ⟨rfl, rfl, fun e he d => ?_⟩
-      have : e = 0 := by omega
-      subst this; rfl
+      obtain rfl : e = 0 := by omega
+      rfl
     | succ n ih =>
       obtain ⟨h1, h2, h3⟩ := ih
       rw [List.range_succ, List.foldl_append, List.foldl_cons, List.foldl_nil]
@@ -277,8 +272,7 @@ lemma foldl_levels {α β : Type*} (step : α → ℕ → α) (conv : α → β)
       refine ⟨by simp [h1, levels], by simp [h2], fun e he d => ?_⟩
       rcases Nat.lt_or_ge e (n + 1) with hlt | hge
       · rw [getD_push_lt _ _ _ (by omega)]; exact h3 e (by omega) d
-      · have : e = n + 1 := by omega
-        subst this
+      · obtain rfl : e = n + 1 := by omega
         rw [getD_push_eq _ _ _ h2.symm, h1]
         rfl
   exact ⟨(key n).2.1, (key n).2.2⟩
@@ -288,11 +282,9 @@ theorem dilTable_sound (P : ℕ) {lam : ℝ} {lamI : Ival} (hlam : mem lam lamI)
     (hsqpos : ∀ n, n < D + 2 → isPos (sqrtNatI P (n + 1)) = true) :
     DilTableOK (Real.sqrt lam)⁻¹ lam⁻¹ D (dilTable P lamI D) := by
   have hmu : mem (Real.sqrt lam)⁻¹ (invI P (sqrtI P lamI)) := by
-    have := mem_invI P (mem_sqrtI P hlam0.le hlam) hpos2
-    simpa [one_div] using this
+    simpa [one_div] using mem_invI P (mem_sqrtI P hlam0.le hlam) hpos2
   have hinv : mem lam⁻¹ (invI P lamI) := by
-    have := mem_invI P hlam hpos1
-    simpa [one_div] using this
+    simpa [one_div] using mem_invI P hlam hpos1
   have hsq : SqOK (sqrtTable P (D + 2)) (D + 1) := by
     have h := sqOK_sqrtTable P (D + 2) hsqpos
     exact ⟨fun n hn => h.1 n (by omega), fun n h1 hn => h.2 n h1 (by omega)⟩
@@ -329,8 +321,7 @@ def signedU (κ : ℝ) (neg : Bool) (A : ℝ) (g h : ℕ) : ℝ :=
 lemma mem_reflectI (P : ℕ) (hP : 1 ≤ P) (g h : ℕ) (hg : 0 < g) :
     mem (Real.sqrt (((h + 1 : ℕ) : ℝ) / (g : ℕ))) (reflectI P g h) := by
   unfold reflectI
-  have := mem_ratI P hP ((h + 1 : ℕ) : ℤ) hg
-  exact mem_sqrtI P (by positivity) (by simpa using this)
+  exact mem_sqrtI P (by positivity) (by simpa using mem_ratI P hP ((h + 1 : ℕ) : ℤ) hg)
 
 theorem fullTriangleI_sound (P : ℕ) (hP : 1 ≤ P) {κ A : ℝ} {neg : Bool} {vals : Array Ival}
     (D : ℕ)
@@ -425,8 +416,7 @@ lemma dilateDil_sound {μ c κ A : ℝ} {neg : Bool} {D : ℕ} {dil : Array (Arr
   rw [twGet_twOfFn _ _ e f hef]
   apply memSc_shift (K := KDil) (s := KDil)
   rw [show KDil + KDil = 2 * KDil by ring]
-  apply memSc_sumPairs
-  intro m hm
+  refine memSc_sumPairs _ fun m hm => ?_
   have hgh : (pairOfMin e f m).1 + (pairOfMin e f m).2 ≤ D := by
     unfold pairOfMin; split_ifs <;> simp <;> omega
   exact memSc_mulPair (hdil e f m hef (by omega)) (hI _ _ hgh)
@@ -442,8 +432,7 @@ lemma sqrtFactDil_sound (P D : ℕ) (hD : D ≤ 502) (c d : ℕ) (hcd : c + d �
   apply memSc_toFixed
   unfold nrm
   rw [inv_inv, factT_eq c (by omega), factT_eq d (by omega)]
-  have := mem_sqrtI P (by positivity) (mem_ofNat P (c.factorial * d.factorial))
-  simpa using this
+  simpa using mem_sqrtI P (by positivity) (mem_ofNat P (c.factorial * d.factorial))
 
 /-- **The kernel's input vector represents the node functional**: for the canonical array `vals`
 at the rescaled shift `A' = A√λ` (signs `σ` by `neg`), the vector `K'` of `twistJ` represents
@@ -477,9 +466,7 @@ theorem unnormalise_represents (P : ℕ) (hP : 1 ≤ P) (j : ℕ) {s : ℝ} (hs 
   rw [memSc_KTw] at hshift
   convert hshift using 1
   · simp only [signedU, hsign, Finset.mul_sum, Prod.mk.eta]
-    apply Finset.sum_congr rfl
-    intro m _
-    ring
+    exact Finset.sum_congr rfl fun m _ => by ring
   · rfl
 
 end

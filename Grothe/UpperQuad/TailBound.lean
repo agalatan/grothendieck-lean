@@ -120,8 +120,7 @@ lemma gaussC_real_radial {S : Set ℝ} (hS : MeasurableSet S) :
     push_cast
     rfl
   rw [hr] at hc
-  have hc' := Complex.ofReal_inj.mp hc
-  rw [hc']
+  rw [Complex.ofReal_inj.mp hc]
   have hpoint : ∀ s : ℝ, Real.exp (-s) * S.indicator (fun _ => (1 : ℝ)) s =
       S.indicator (fun s => Real.exp (-s)) s := by
     intro s
@@ -177,62 +176,51 @@ lemma integral_Ioi_exp_neg_le : ∫ s in Ioi (100 : ℝ), Real.exp (-s) ≤ (10 
   rw [integral_exp_neg_Ioi]
   exact_mod_cast exp_neg_nat_le 100
 
+/-- The three gaps lie in increasing order between `13` and `100`, with the checkpoints `20` and
+`25` below the second and third. -/
+private lemma gaps_ordered :
+    (13 : ℝ) ≤ gap1lo ∧ (gap1lo : ℝ) ≤ gap1hi ∧ (gap1hi : ℝ) < gap2lo ∧
+      (20 : ℝ) ≤ gap2lo ∧ (gap2lo : ℝ) ≤ gap2hi ∧ (gap2hi : ℝ) < gap3lo ∧
+      (25 : ℝ) ≤ gap3lo ∧ (gap3lo : ℝ) ≤ gap3hi ∧ (gap3hi : ℝ) < 100 := by
+  norm_num [gap1lo, gap1hi, gap2lo, gap2hi, gap3lo, gap3hi]
+
 /-- `∫_{tailSet} e^{−s} ds ≤ 10⁻³¹`. -/
 theorem integral_tailSet_le : ∫ s in tailSet ∩ Ioi 0, Real.exp (-s) ≤ 1 / 10 ^ 31 := by
-  have hpos : tailSet ∩ Ioi 0 = tailSet := by
-    apply inter_eq_left.mpr
-    intro s hs
-    simp only [tailSet, mem_union, mem_Ioi, mem_Ioo] at hs
-    simp only [mem_Ioi]
-    rcases hs with ((h | h) | h) | h
-    · linarith
-    · have := h.1; norm_num [gap1lo] at this; linarith
-    · have := h.1; norm_num [gap2lo] at this; linarith
-    · have := h.1; norm_num [gap3lo] at this; linarith
-  rw [hpos]
+  obtain ⟨g1, g11, g12, g2, g22, g23, g3, g33, g3h⟩ := gaps_ordered
+  have hg1 : Ioo (gap1lo : ℝ) gap1hi ⊆ Ioi 0 := fun s hs => mem_Ioi.mpr (by linarith [hs.1])
+  have hg2 : Ioo (gap2lo : ℝ) gap2hi ⊆ Ioi 0 := fun s hs => mem_Ioi.mpr (by linarith [hs.1])
+  have hg3 : Ioo (gap3lo : ℝ) gap3hi ⊆ Ioi 0 := fun s hs => mem_Ioi.mpr (by linarith [hs.1])
+  have h100 : Ioi (100 : ℝ) ⊆ Ioi 0 := Ioi_subset_Ioi (by norm_num)
+  unfold tailSet
+  rw [inter_eq_left.mpr (union_subset (union_subset (union_subset h100 hg1) hg2) hg3)]
   have hint : IntegrableOn (fun s : ℝ => Real.exp (-s)) (Ioi 0) :=
     (integrableOn_exp_mul_Ioi (by norm_num : (-1 : ℝ) < 0) 0).congr_fun (fun s _ => by simp)
       measurableSet_Ioi
   have hsub : ∀ T ⊆ Ioi (0 : ℝ), IntegrableOn (fun s : ℝ => Real.exp (-s)) T :=
     fun T hT => hint.mono_set hT
-  have hg1 : Ioo (gap1lo : ℝ) gap1hi ⊆ Ioi 0 := fun s hs => by
-    have := hs.1; simp only [mem_Ioi]; norm_num [gap1lo] at this; linarith
-  have hg2 : Ioo (gap2lo : ℝ) gap2hi ⊆ Ioi 0 := fun s hs => by
-    have := hs.1; simp only [mem_Ioi]; norm_num [gap2lo] at this; linarith
-  have hg3 : Ioo (gap3lo : ℝ) gap3hi ⊆ Ioi 0 := fun s hs => by
-    have := hs.1; simp only [mem_Ioi]; norm_num [gap3lo] at this; linarith
-  have h100 : Ioi (100 : ℝ) ⊆ Ioi 0 := Ioi_subset_Ioi (by norm_num)
   -- the four pieces are pairwise disjoint
-  have d1 : Disjoint (Ioi (100 : ℝ)) (Ioo (gap1lo : ℝ) gap1hi) := by
-    rw [Set.disjoint_left]; intro s h1 h2; have := h2.2; norm_num [gap1hi] at this; simp at h1; linarith
-  have d2 : Disjoint (Ioi (100 : ℝ) ∪ Ioo (gap1lo : ℝ) gap1hi) (Ioo (gap2lo : ℝ) gap2hi) := by
-    rw [Set.disjoint_left]; intro s h1 h2
-    have h2a := h2.1; have h2b := h2.2
-    norm_num [gap2lo, gap2hi] at h2a h2b
-    rcases h1 with h1 | h1
-    · simp at h1; linarith
-    · have := h1.2; norm_num [gap1hi] at this; linarith
+  have d1 : Disjoint (Ioi (100 : ℝ)) (Ioo (gap1lo : ℝ) gap1hi) :=
+    Set.disjoint_left.mpr fun s h1 h2 => by linarith [mem_Ioi.mp h1, h2.2]
+  have d2 : Disjoint (Ioi (100 : ℝ) ∪ Ioo (gap1lo : ℝ) gap1hi) (Ioo (gap2lo : ℝ) gap2hi) :=
+    Set.disjoint_left.mpr fun s h1 h2 => by
+      rcases h1 with h1 | h1
+      · linarith [mem_Ioi.mp h1, h2.2]
+      · linarith [h1.2, h2.1]
   have d3 : Disjoint (Ioi (100 : ℝ) ∪ Ioo (gap1lo : ℝ) gap1hi ∪ Ioo (gap2lo : ℝ) gap2hi)
-      (Ioo (gap3lo : ℝ) gap3hi) := by
-    rw [Set.disjoint_left]; intro s h1 h2
-    have h2a := h2.1; have h2b := h2.2
-    norm_num [gap3lo, gap3hi] at h2a h2b
-    rcases h1 with (h1 | h1) | h1
-    · simp at h1; linarith
-    · have := h1.2; norm_num [gap1hi] at this; linarith
-    · have := h1.2; norm_num [gap2hi] at this; linarith
-  unfold tailSet
+      (Ioo (gap3lo : ℝ) gap3hi) :=
+    Set.disjoint_left.mpr fun s h1 h2 => by
+      rcases h1 with (h1 | h1) | h1
+      · linarith [mem_Ioi.mp h1, h2.2]
+      · linarith [h1.2, h2.1]
+      · linarith [h1.2, h2.1]
   rw [setIntegral_union d3 measurableSet_Ioo (hsub _ (union_subset (union_subset h100 hg1) hg2))
       (hsub _ hg3),
     setIntegral_union d2 measurableSet_Ioo (hsub _ (union_subset h100 hg1)) (hsub _ hg2),
     setIntegral_union d1 measurableSet_Ioo (hsub _ h100) (hsub _ hg1)]
   have e0 := integral_Ioi_exp_neg_le
-  have e1 := integral_Ioo_exp_neg_le (a := (gap1lo : ℝ)) (b := gap1hi) 13
-    (by norm_num [gap1lo, gap1hi]) (by norm_num [gap1lo])
-  have e2 := integral_Ioo_exp_neg_le (a := (gap2lo : ℝ)) (b := gap2hi) 20
-    (by norm_num [gap2lo, gap2hi]) (by norm_num [gap2lo])
-  have e3 := integral_Ioo_exp_neg_le (a := (gap3lo : ℝ)) (b := gap3hi) 25
-    (by norm_num [gap3lo, gap3hi]) (by norm_num [gap3lo])
+  have e1 := integral_Ioo_exp_neg_le 13 g11 (by exact_mod_cast g1)
+  have e2 := integral_Ioo_exp_neg_le 20 g22 (by exact_mod_cast g2)
+  have e3 := integral_Ioo_exp_neg_le 25 g33 (by exact_mod_cast g3)
   have hnum : (10 / 27 : ℝ) ^ 100 + ((gap1hi : ℝ) - gap1lo) * (10 / 27 : ℝ) ^ 13 +
       ((gap2hi : ℝ) - gap2lo) * (10 / 27 : ℝ) ^ 20 + ((gap3hi : ℝ) - gap3lo) * (10 / 27 : ℝ) ^ 25 ≤
       1 / 10 ^ 31 := by

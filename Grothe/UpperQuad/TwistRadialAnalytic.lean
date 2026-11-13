@@ -58,12 +58,8 @@ theorem analyticAt_profileCoefficient (j : ℕ) (hj : 0 < j) (i : ℕ × ℕ)
     filter_upwards [hs.eventually_analyticAt, hnorm_id, hnorm_shift] with z hz hzi hzs
     refine ⟨hz, ?_, ?_⟩ <;> dsimp [M] <;> linarith [norm_nonneg r, norm_nonneg (shift r)]
   obtain ⟨R, hR, hball⟩ := Metric.nhds_basis_closedBall.mem_iff.mp hgood
-  apply GaussianShift.analyticAt_coefficient_comp j hj i hR differentiableOn_id
-    (M := M)
-  · intro z hz
-    exact (hball hz).1.differentiableAt.differentiableWithinAt
-  · intro z hz
-    exact (hball hz).2
+  exact GaussianShift.analyticAt_coefficient_comp j hj i hR differentiableOn_id (M := M)
+    (fun z hz => (hball hz).1.differentiableAt.differentiableWithinAt) fun z hz => (hball hz).2
 
 /-- Every positive-power radial component is analytic wherever the squared profile is nonzero. -/
 theorem analyticAt_radial (j q c d : ℕ) (σ : ℝ) (hj : 0 < j)

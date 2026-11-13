@@ -96,20 +96,18 @@ lemma mem_expSq {y : ℝ} {a : Ival} (hy0 : 0 ≤ y) (hy : mem y a) (k : ℕ)
 lemma expUp_sound {y : ℝ} {a u : Ival} (hy : mem y a) (h : expUp a = some u) :
     ∃ v, mem v u ∧ Real.exp y ≤ v := by
   have hhi : y ≤ (a.hi : ℝ) * (2 : ℝ) ^ a.e := hy.2
-  set Y : ℝ := (a.hi : ℝ) * (2 : ℝ) ^ a.e with hY
+  set Y : ℝ := (a.hi : ℝ) * (2 : ℝ) ^ a.e
   have hYm : mem Y ⟨a.hi, a.hi, a.e⟩ := ⟨le_rfl, le_rfl⟩
   unfold expUp at h
   simp only at h
   split_ifs at h with h0 h1 h1
   · simp only [Option.some.injEq] at h
     subst h
-    have hY0 : 0 ≤ Y := by
-      rw [hY]; exact mul_nonneg (by exact_mod_cast h0) (two_zpow_pos _).le
+    have hY0 : 0 ≤ Y := mul_nonneg (by exact_mod_cast h0) (two_zpow_pos _).le
     exact ⟨Real.exp Y, mem_expSq hY0 hYm 10 h1, Real.exp_le_exp.mpr hhi⟩
   · simp only [Option.some.injEq] at h
     subst h
-    have hY0 : Y < 0 := by
-      rw [hY]; exact mul_neg_of_neg_of_pos (by exact_mod_cast (not_le.mp h0)) (two_zpow_pos _)
+    have hY0 : Y < 0 := mul_neg_of_neg_of_pos (by exact_mod_cast (not_le.mp h0)) (two_zpow_pos _)
     have hneg : mem (-Y) (negI ⟨a.hi, a.hi, a.e⟩) := mem_negI hYm
     have hv : expPosValid P 24 ⟨(negI ⟨a.hi, a.hi, a.e⟩).lo, (negI ⟨a.hi, a.hi, a.e⟩).hi,
         (negI ⟨a.hi, a.hi, a.e⟩).e - 10⟩ = true := by
@@ -143,10 +141,8 @@ lemma ySeries_sound {t : ℝ} (ht : 0 ≤ t) {tI : Ival} (htI : mem t tI) :
         (mem_mulN P (8 * (502 + r)) (mem_sqI P htI)))
       have hR : 2 * t ^ 2 * ((501 : ℕ) + 1 + r : ℝ) ≤ (1 / 2 : ℝ) ^ 2 * ((r : ℝ) + 1) ^ 2 := by
         push_cast at hc ⊢; nlinarith
-      have := tsum_shiftTerm_le 501 ht r (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num) hR
-      calc _ ≤ _ := this
-        _ = ∑ i ∈ Finset.range r, shiftTerm 501 t i + (2 : ℕ) * shiftTerm 501 t r := by
-          push_cast; ring
+      exact (tsum_shiftTerm_le 501 ht r (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num) hR).trans_eq
+        (by push_cast; ring)
     · apply ih (r + 1) _ _ y _ _ h
       · rw [shiftTerm_succ 501 ht r]
         have hs := mem_sqrtI P (by positivity) (mem_ofNat P (2 * (502 + r)))
@@ -171,15 +167,13 @@ lemma mem_horner {x : ℝ} {xI : Ival} (hx : mem x xI) :
       simp only [List.length_cons, Nat.add_right_cancel_iff] at hl
       have ha := hm 0 (by simp)
       simp only [List.getD_cons_zero] at ha
-      have hrest := ih G hl (fun m hm' => by
-        have := hm (m + 1) (by simp; omega); simpa using this)
+      have hrest := ih G hl (fun m hm' => by simpa using hm (m + 1) (by simp; omega))
       unfold horner at hrest ⊢
       rw [List.foldr_cons, List.length_cons, Finset.sum_range_succ']
       have := mem_addI P ha (mem_mulI P hx hrest)
       convert this using 1
       simp only [List.getD_cons_succ, List.getD_cons_zero, pow_zero, mul_one, pow_succ]
-      rw [Finset.mul_sum]
-      rw [add_comm]
+      rw [Finset.mul_sum, add_comm]
       congr 1
       apply Finset.sum_congr rfl
       intro m _

@@ -35,50 +35,48 @@ theorem baseCoefficientSlice_eq (i : Idx2) (z : ℂ) :
   simp_rw [hfun2_eq_coordinate_product, map_mul, mul_assoc]
   rw [integral_const_mul]
 
+/-- Charge cancellation for any integrand of charge one: its slice against a charge-one mode is
+invariant under unit rotations of the first variable. -/
+theorem chargeSlice_rot {G : ℂ × ℂ → ℂ} (hG : ∀ c : ℂ, ‖c‖ = 1 → ∀ u, G (rot2 c u) = c * G u)
+    (i : Idx2) (hi : i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1) (c z : ℂ) (hc : ‖c‖ = 1) :
+    ∫ w, conj (hfun2 i (c * z, w)) * G (c * z, w) ∂gaussC =
+      ∫ w, conj (hfun2 i (z, w)) * G (z, w) ∂gaussC := by
+  have hcc : conj c * c = 1 := by
+    rw [← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, hc]
+    norm_num
+  refine (integral_rot_gaussC c hc fun w : ℂ ↦ conj (hfun2 i (c * z, w)) * G (c * z, w)).symm.trans
+    (integral_congr_ae (Filter.Eventually.of_forall fun w ↦ ?_))
+  change conj (hfun2 i (rot2 c (z, w))) * G (rot2 c (z, w)) = _
+  rw [hfun2_rot2_of_charge i hi c (z, w) hc, hG c hc, map_mul, mul_mul_mul_comm, hcc, one_mul]
+
+/-- A function invariant under unit rotations depends only on the modulus. -/
+theorem eq_norm_of_rot_invariant {f : ℂ → ℂ} (hf : ∀ c z : ℂ, ‖c‖ = 1 → f (c * z) = f z)
+    (z : ℂ) : f z = f (‖z‖ : ℂ) := by
+  by_cases hz : z = 0
+  · simp [hz]
+  · have hn : (‖z‖ : ℂ) ≠ 0 := by exact_mod_cast (norm_ne_zero_iff.mpr hz)
+    let c : ℂ := z / (‖z‖ : ℂ)
+    have hc : ‖c‖ = 1 := by
+      dsimp only [c]
+      rw [norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (norm_nonneg z)]
+      exact div_self (norm_ne_zero_iff.mpr hz)
+    have he : c * (‖z‖ : ℂ) = z := div_mul_cancel₀ z hn
+    have h := hf c (‖z‖ : ℂ) hc
+    rw [he] at h
+    exact h
+
 /-- Charge cancellation concerns the full actual integrand, so it needs
 neither a nonzero radial profile nor a divided conditional parameter. -/
 theorem baseCoefficientSlice_rot (i : Idx2)
     (hi : i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1)
     (c z : ℂ) (hc : ‖c‖ = 1) :
-    baseCoefficientSlice i (c * z) = baseCoefficientSlice i z := by
-  have hcc : conj c * c = 1 := by
-    rw [← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, hc]
-    norm_num
-  have hrot := integral_rot_gaussC c hc (fun w : ℂ =>
-    conj (hfun2 i (c * z, w)) * F0 (c * z, w))
-  calc
-    _ = ∫ w, conj (hfun2 i (c * z, c * w)) * F0 (c * z, c * w) ∂gaussC :=
-      hrot.symm
-    _ = _ := by
-      apply integral_congr_ae
-      filter_upwards [] with w
-      change conj (hfun2 i (rot2 c (z, w))) * F0 (rot2 c (z, w)) = _
-      rw [hfun2_rot2_of_charge i hi c (z, w) hc, F0_rot2 hc]
-      simp only [map_mul]
-      calc
-        (conj c * conj (hfun2 i (z, w))) * (c * F0 (z, w)) =
-            (conj c * c) * (conj (hfun2 i (z, w)) * F0 (z, w)) := by ring
-        _ = _ := by rw [hcc, one_mul]
+    baseCoefficientSlice i (c * z) = baseCoefficientSlice i z :=
+  chargeSlice_rot (fun _ hc u ↦ F0_rot2 hc u) i hi c z hc
 
 theorem baseCoefficientSlice_eq_norm (i : Idx2)
     (hi : i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1) (z : ℂ) :
-    baseCoefficientSlice i z = baseCoefficientSlice i (‖z‖ : ℂ) := by
-  by_cases hz : z = 0
-  · simp [hz]
-  · have hn : (‖z‖ : ℂ) ≠ 0 := by
-      exact_mod_cast (norm_ne_zero_iff.mpr hz)
-    let c : ℂ := z / (‖z‖ : ℂ)
-    have hc : ‖c‖ = 1 := by
-      dsimp only [c]
-      rw [norm_div, Complex.norm_real, Real.norm_eq_abs,
-        abs_of_nonneg (norm_nonneg z)]
-      exact div_self (norm_ne_zero_iff.mpr hz)
-    have he : c * (‖z‖ : ℂ) = z := by
-      dsimp only [c]
-      exact div_mul_cancel₀ z hn
-    have h := baseCoefficientSlice_rot i hi c (‖z‖ : ℂ) hc
-    rw [he] at h
-    exact h
+    baseCoefficientSlice i z = baseCoefficientSlice i (‖z‖ : ℂ) :=
+  eq_norm_of_rot_invariant (fun c z hc ↦ baseCoefficientSlice_rot i hi c z hc) z
 
 /-- The physical first-radius integrand, with its Gaussian density once. -/
 def radialBaseCoefficient (q c d : ℕ) : ℂ :=
@@ -98,8 +96,8 @@ theorem baseGradedCoefficient_eq_radial {N : ℕ} (q : Fin N)
     (measurable_baseCoefficientSlice i).comp
       (Complex.measurable_ofReal.comp Real.continuous_sqrt.measurable)
   calc
-    _ = ∫ z, baseCoefficientSlice i z ∂gaussC := by
-      exact integral_prod _ (integrable_baseCoefficient i)
+    _ = ∫ z, baseCoefficientSlice i z ∂gaussC :=
+      integral_prod _ (integrable_baseCoefficient i)
     _ = ∫ z, baseCoefficientSlice i (Real.sqrt (‖z‖ ^ 2) : ℂ) ∂gaussC := by
       apply integral_congr_ae
       filter_upwards [] with z

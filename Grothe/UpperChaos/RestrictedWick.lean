@@ -109,10 +109,7 @@ theorem integral_cut_invariant (rate L : ℚ) (hr : 0 < rate) (hL : 0 ≤ L)
     simp only [invariantMonomial, Complex.ofReal_mul, Complex.ofReal_pow]
     rw [invariant_monomial_expansion]
     simp only [Finset.sum_mul]
-    apply Finset.sum_congr rfl
-    intro s hs
-    apply Finset.sum_congr rfl
-    intro t ht
+    refine Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_
     have he : -((rate : ℝ) - 1) * (Complex.normSq u.1 + Complex.normSq u.2) =
         -((rate : ℝ) - 1) * Complex.normSq u.1 -
           ((rate : ℝ) - 1) * Complex.normSq u.2 := by ring

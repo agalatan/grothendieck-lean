@@ -76,8 +76,8 @@ theorem integral_taylorInnerSource_conditional (j N : ℕ) (a : ℕ → ℕ → 
       phaseLaplaceKernel (basePhaseArgument (z, w)) t ∂gaussC) =
         taylorConditionalWick j N a t z := by
   dsimp only [taylorConditionalWick]
-  rw [taylorSource_kernel_eq, integral_const_mul]
-  rw [integral_affine_phaseLaplace_polynomial _ _ _ _ _ (taylor_source_rate_pos j) ht]
+  rw [taylorSource_kernel_eq, integral_const_mul,
+    integral_affine_phaseLaplace_polynomial _ _ _ _ _ (taylor_source_rate_pos j) ht]
 
 end
 end Grothe.UpperChaos

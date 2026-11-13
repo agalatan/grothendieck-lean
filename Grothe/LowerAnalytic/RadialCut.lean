@@ -138,10 +138,8 @@ lemma cutAux_deriv (cv : List ℚ) : ∀ (vs : List ℚ) (a t c Phi : ℚ) (i : 
           = fun u => if u < (w : ℝ) ^ 2 then cellPrim c0 u
             else cellPrim (tail.getD (pickIdx rest (√u)) ⟨0, 0, 0⟩) u := by
         funext y; rw [hpick]; split_ifs <;> rfl
-      rw [e1, hpick]
-      split_ifs with hu
-      · simpa only [hu, ↓reduceIte] using h
-      · simpa only [hu, ↓reduceIte] using h
+      rw [e1, hpick, apply_ite (cellPhi · u)]
+      exact h
     · rw [hpick]
       simp only [htw, ↓reduceIte]
       rw [cellPrim, hA, hB, hE]; ring
@@ -289,8 +287,7 @@ lemma radR_mul (a b : MvPolynomial (Fin d) ℝ) (x : Fin d → ℝ) :
     radR a b x * eval x (radU a b) = eval x (radN a b) / 3 := by
   unfold radR
   split_ifs with h
-  · have h' := h
-    rw [eval_radU] at h'
+  · rw [eval_radU] at h
     have ha : eval x a = 0 := by nlinarith [mul_self_nonneg (eval x a), mul_self_nonneg (eval x b)]
     have hb : eval x b = 0 := by nlinarith [mul_self_nonneg (eval x a), mul_self_nonneg (eval x b)]
     simp only [radN, map_add, map_mul, map_sub, ha, hb]
@@ -307,15 +304,9 @@ private lemma r_bound (A B α β : ℝ) (h : α * α + β * β ≠ 0) :
       ≤ (A * A + B * B) / 9 := by
   have hU : 0 < α * α + β * β :=
     lt_of_le_of_ne (by nlinarith [mul_self_nonneg α, mul_self_nonneg β]) (Ne.symm h)
-  rw [div_pow, div_le_iff₀ (by positivity)]
-  have h1 : (A * (α * α - β * β) + B * (2 * (α * β))) ^ 2
-      ≤ (A * A + B * B) * ((α * α - β * β) ^ 2 + (2 * (α * β)) ^ 2) := by
-    nlinarith [sq_nonneg (A * (2 * (α * β)) - B * (α * α - β * β))]
-  have h2 : (α * α - β * β) ^ 2 + (2 * (α * β)) ^ 2 = (α * α + β * β) ^ 2 := by ring
-  have h3 : (A * A + B * B) / 9 * (3 * (α * α + β * β)) ^ 2
-      = (A * A + B * B) * (α * α + β * β) ^ 2 := by ring
-  rw [h3, ← h2]
-  exact h1
+  rw [div_pow, div_le_iff₀ (by positivity), show (A * A + B * B) / 9 * (3 * (α * α + β * β)) ^ 2
+      = (A * A + B * B) * ((α * α - β * β) ^ 2 + (2 * (α * β)) ^ 2) by ring]
+  nlinarith [sq_nonneg (A * (2 * (α * β)) - B * (α * α - β * β))]
 
 /-- `r² ≤ c_R² + c_I²`, with `3c_R = radA` and `3c_I = radB`. -/
 lemma radR_sq_le (a b : MvPolynomial (Fin d) ℝ) (x : Fin d → ℝ) :

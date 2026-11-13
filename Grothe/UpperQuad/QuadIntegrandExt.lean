@@ -44,16 +44,13 @@ lemma vC_ofReal (s : ℝ) : vC (s : ℂ) = (vprof s : ℂ) := by
   push_cast
   simp_rw [Finset.sum_mul]
   rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro j hj
-  rw [Finset.mul_sum, Finset.sum_div]
-  rw [← Finset.sum_range_add_sum_Ico _ (show j + 1 ≤ 12 by
+  refine Finset.sum_congr rfl fun j hj => ?_
+  rw [Finset.mul_sum, Finset.sum_div, ← Finset.sum_range_add_sum_Ico _ (show j + 1 ≤ 12 by
     have := Finset.mem_range.mp hj; omega)]
   rw [Finset.sum_eq_zero (s := Finset.Ico (j + 1) 12) (fun k hk => by
     have := (Finset.mem_Ico.mp hk).1
     simp [show ¬ k ≤ j by omega]), add_zero]
-  apply Finset.sum_congr rfl
-  intro k hk
+  refine Finset.sum_congr rfl fun k hk => ?_
   have hkj : k ≤ j := by have := Finset.mem_range.mp hk; omega
   simp only [hkj, ite_true]
   push_cast
@@ -71,14 +68,12 @@ def Qp (k j : ℕ) (z : ℂ) : ℂ :=
 
 lemma Hf_diag (k j : ℕ) (ζ : ℂ) : Hf (j + k) j ζ ζ = ζ ^ k * Qp k j (ζ ^ 2) := by
   unfold Hf Qp
-  rw [Finset.mul_sum]
-  rw [← Finset.sum_range_add_sum_Ico _ (show j + 1 ≤ j + k + 1 by omega)]
+  rw [Finset.mul_sum, ← Finset.sum_range_add_sum_Ico _ (show j + 1 ≤ j + k + 1 by omega)]
   rw [Finset.sum_eq_zero (s := Finset.Ico (j + 1) (j + k + 1)) (fun t ht => by
     have := (Finset.mem_Ico.mp ht).1
     rw [Nat.descFactorial_eq_zero_iff_lt.mpr (by omega)]
     simp), add_zero]
-  apply Finset.sum_congr rfl
-  intro t ht
+  refine Finset.sum_congr rfl fun t ht => ?_
   have htj : t ≤ j := by have := Finset.mem_range.mp ht; omega
   rw [← pow_mul, show j + k - t = k + (j - t) by omega,
     show 2 * (j - t) = (j - t) + (j - t) by ring,
@@ -109,8 +104,7 @@ theorem Gcd_eq (ε : ℝ) (c d : ℕ) (hc : c ≤ d + 1) {z ζ : ℂ} (hζ : ζ 
   unfold Gcd Uext Dcd
   rw [mul_div_assoc', Finset.mul_sum]
   congr 1
-  apply Finset.sum_congr rfl
-  intro i hi
+  refine Finset.sum_congr rfl fun i hi => ?_
   have hic : i ≤ c := by have := Finset.mem_range.mp hi; omega
   by_cases hid : i ≤ d + 1
   · have hpow : ζ ^ (d + 1 - c) * (ζ / wC ε z) ^ (c + d + 1 - 2 * i) =
@@ -149,9 +143,7 @@ theorem differentiableAt_Fext (ε : ℝ) (hε : ε ≠ 0) (q c d : ℕ) {z : ℂ
   refine DifferentiableAt.mul ?_ (DifferentiableAt.div_const ?_ _)
   · exact ((((differentiableAt_id.neg.cexp).mul_const _).mul_const _).mul
       ((differentiable_Qp _ _) z))
-  · apply DifferentiableAt.fun_sum
-    intro i _
-    apply DifferentiableAt.mul
+  · refine DifferentiableAt.fun_sum fun i _ => DifferentiableAt.mul ?_ ?_
     · exact (differentiableAt_const _).mul ((differentiableAt_id.pow _).mul (hinv.pow _))
     · exact ((differentiable_Phi _) _).comp z (differentiableAt_id.mul (hinv.pow _))
 

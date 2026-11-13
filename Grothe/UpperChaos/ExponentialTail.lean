@@ -46,16 +46,13 @@ theorem exp_moment_tail (n : ℕ) (L : ℝ) {a : ℝ} (ha : 0 < a) :
         exp (-(a * L)) * ∑ k ∈ range (n + 1),
           ((n.choose k : ℝ) * L ^ (n - k)) * (x ^ k * exp (-(a * x))) := by
     rw [add_pow, hexp, sum_mul, mul_sum]
-    apply sum_congr rfl
-    intro k hk
+    refine sum_congr rfl fun k _ => ?_
     ring
   rw [translate_Ioi]
   calc
     _ = ∫ x : ℝ in Ioi 0, exp (-(a * L)) * ∑ k ∈ range (n + 1),
-        ((n.choose k : ℝ) * L ^ (n - k)) * (x ^ k * exp (-(a * x))) := by
-          apply setIntegral_congr_fun measurableSet_Ioi
-          intro x hx
-          exact hexpand x
+        ((n.choose k : ℝ) * L ^ (n - k)) * (x ^ k * exp (-(a * x))) :=
+          setIntegral_congr_fun measurableSet_Ioi fun x _ => hexpand x
     _ = exp (-(a * L)) * ∑ k ∈ range (n + 1),
         ((n.choose k : ℝ) * L ^ (n - k)) * ((k.factorial : ℝ) / a ^ (k + 1)) := by
           rw [integral_const_mul, integral_finsetSum _ (fun k hk =>

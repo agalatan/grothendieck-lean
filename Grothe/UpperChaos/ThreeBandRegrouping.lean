@@ -77,56 +77,49 @@ theorem threeBandOf_spec (p : Fin 4) {n m : ℕ} (hd : 1 ≤ n + m) :
     threeBandPower (threeBandOf p (n + m)) = p ∧
       (threeBandBands (threeBandOf p (n + m))).contains n m = true := by
   fin_cases p
-  · constructor
-    · rfl
-    · rw [contains_iff]
-      change 0 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
-      exact ⟨by omega, Or.inl rfl⟩
+  · refine ⟨rfl, ?_⟩
+    rw [contains_iff]
+    change 0 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
+    exact ⟨by omega, Or.inl rfl⟩
   · change threeBandPower (threeBandOf 1 (n + m)) = 1 ∧
       (threeBandBands (threeBandOf 1 (n + m))).contains n m = true
     by_cases h : n + m ≤ 51
     · rw [show threeBandOf 1 (n + m) = 1 by simp [threeBandOf, h]]
-      constructor
-      · rfl
-      · rw [contains_iff]
-        change 0 < n + m ∧ ((51 : ℕ) = 0 ∨ n + m ≤ 51)
-        exact ⟨by omega, Or.inr h⟩
+      refine ⟨rfl, ?_⟩
+      rw [contains_iff]
+      change 0 < n + m ∧ ((51 : ℕ) = 0 ∨ n + m ≤ 51)
+      exact ⟨by omega, Or.inr h⟩
     · rw [show threeBandOf 1 (n + m) = 2 by simp [threeBandOf, h]]
-      constructor
-      · rfl
-      · rw [contains_iff]
-        change 51 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
-        exact ⟨by omega, Or.inl rfl⟩
+      refine ⟨rfl, ?_⟩
+      rw [contains_iff]
+      change 51 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
+      exact ⟨by omega, Or.inl rfl⟩
   · change threeBandPower (threeBandOf 2 (n + m)) = 2 ∧
       (threeBandBands (threeBandOf 2 (n + m))).contains n m = true
     by_cases h : n + m ≤ 51
     · rw [show threeBandOf 2 (n + m) = 3 by simp [threeBandOf, h]]
-      constructor
-      · rfl
-      · rw [contains_iff]
-        change 0 < n + m ∧ ((51 : ℕ) = 0 ∨ n + m ≤ 51)
-        exact ⟨by omega, Or.inr h⟩
+      refine ⟨rfl, ?_⟩
+      rw [contains_iff]
+      change 0 < n + m ∧ ((51 : ℕ) = 0 ∨ n + m ≤ 51)
+      exact ⟨by omega, Or.inr h⟩
     · rw [show threeBandOf 2 (n + m) = 4 by simp [threeBandOf, h]]
-      constructor
-      · rfl
-      · rw [contains_iff]
-        change 51 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
-        exact ⟨by omega, Or.inl rfl⟩
+      refine ⟨rfl, ?_⟩
+      rw [contains_iff]
+      change 51 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
+      exact ⟨by omega, Or.inl rfl⟩
   · change threeBandPower (threeBandOf 3 (n + m)) = 3 ∧
       (threeBandBands (threeBandOf 3 (n + m))).contains n m = true
     by_cases h : n + m ≤ 11
     · rw [show threeBandOf 3 (n + m) = 5 by simp [threeBandOf, h]]
-      constructor
-      · rfl
-      · rw [contains_iff]
-        change 0 < n + m ∧ ((11 : ℕ) = 0 ∨ n + m ≤ 11)
-        exact ⟨by omega, Or.inr h⟩
+      refine ⟨rfl, ?_⟩
+      rw [contains_iff]
+      change 0 < n + m ∧ ((11 : ℕ) = 0 ∨ n + m ≤ 11)
+      exact ⟨by omega, Or.inr h⟩
     · rw [show threeBandOf 3 (n + m) = 6 by simp [threeBandOf, h]]
-      constructor
-      · rfl
-      · rw [contains_iff]
-        change 11 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
-        exact ⟨by omega, Or.inl rfl⟩
+      refine ⟨rfl, ?_⟩
+      rw [contains_iff]
+      change 11 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
+      exact ⟨by omega, Or.inl rfl⟩
 
 theorem threeBands_disjoint : ∀ j k : Fin 7,
     threeBandPower j = threeBandPower k → j ≠ k →
@@ -162,10 +155,8 @@ theorem sum_threePiece_fiber (hφ : PhiBound) (p : Fin 4) :
         rw [bideg_eq_idx0 (i := i) (by omega)]
         exact inner_idx0_source hφ p)
     obtain ⟨hp, hb⟩ := threeBandOf_spec p hd
-    refine ⟨threeBandOf p ((bideg i).1 + (bideg i).2),
-      ⟨mem_filter.2 ⟨mem_univ _, hp⟩, hb⟩, ?_⟩
-    intro k hk
-    exact threeBand_unique ((mem_filter.1 hk.1).2.trans hp.symm) hk.2 hb
+    exact ⟨threeBandOf p ((bideg i).1 + (bideg i).2), ⟨mem_filter.2 ⟨mem_univ _, hp⟩, hb⟩,
+      fun k hk => threeBand_unique ((mem_filter.1 hk.1).2.trans hp.symm) hk.2 hb⟩
   · exact threeBand_unique ((mem_filter.1 hj).2.trans (mem_filter.1 hk).2.symm) hij hik
 
 /-- The original decomposition is also the sum of its four unsplit sources. -/
@@ -231,8 +222,7 @@ theorem old_group_indices_disjoint (j : Fin 7) :
   unfold bandIndices
   generalize headIdx 501 = S
   intro k hk l hl hkl
-  apply Finset.disjoint_left.2
-  intro p hp hq
+  refine Finset.disjoint_left.2 fun p hp hq => ?_
   have hk' : threeBandOldGroup k = j := (mem_filter.1 hk).2
   have hl' : threeBandOldGroup l = j := (mem_filter.1 hl).2
   have hpw : pw k = pw l := by
@@ -296,8 +286,8 @@ theorem actual_threeBand_mass (hf : OriginalFiniteChecks) {EX : ℕ × ℕ → �
   rw [threeBand_indices_union, sum_biUnion (old_group_indices_disjoint j)]
   calc
     _ ≤ ∑ k ∈ (univ : Finset (Fin 18)).filter (fun k => threeBandOldGroup k = j),
-        ((comparisonBand k).norm : ℝ) ^ 2 := by
-      exact sum_le_sum fun k _ => actual_band_mass_of_checks hf hclose (comparisonBand_mem k)
+        ((comparisonBand k).norm : ℝ) ^ 2 :=
+      sum_le_sum fun k _ => actual_band_mass_of_checks hf hclose (comparisonBand_mem k)
     _ ≤ ((threeBandBands j).norm : ℝ) ^ 2 := by
       rw [sum_filter]
       have h := threeBand_mass_caps j
@@ -371,8 +361,7 @@ theorem rawSource_two (hφ : PhiBound) :
     chargeFn_secondCenterFn.memLp (2 : ℂ)
     (chargeFn_srcP hφ chargeFn_frozenCorrectionFn chargeFn_firstCenterFn
       chargeFn_secondCenterFn chargeFn_thirdCenterFn 2).memLp
-  rw [toLp_secondCenterFn] at h
-  exact h
+  rwa [toLp_secondCenterFn] at h
 
 theorem rawSource_three (hφ : PhiBound) :
     rawSource hφ 3 = (1 / 6 : ℂ) • (taylorL2 hφ 3 - thirdCenter) := by
@@ -380,8 +369,7 @@ theorem rawSource_three (hφ : PhiBound) :
     chargeFn_thirdCenterFn.memLp (6 : ℂ)
     (chargeFn_srcP hφ chargeFn_frozenCorrectionFn chargeFn_firstCenterFn
       chargeFn_secondCenterFn chargeFn_thirdCenterFn 3).memLp
-  rw [toLp_thirdCenterFn] at h
-  exact h
+  rwa [toLp_thirdCenterFn] at h
 
 section Inputs
 
@@ -421,8 +409,8 @@ theorem norm_source_le (p : Fin 4) :
     linarith
 
 theorem norm_threePiece_whole_le (j : Fin 7) :
-    ‖threePiece hφ j‖ ≤ (comparisonGroupRadiusQ (threeBandPower j) : ℝ) := by
-  exact ((modeSpace (bandModes (threeBandBands j))).norm_starProjection_apply_le _).trans
+    ‖threePiece hφ j‖ ≤ (comparisonGroupRadiusQ (threeBandPower j) : ℝ) :=
+  ((modeSpace (bandModes (threeBandBands j))).norm_starProjection_apply_le _).trans
     (norm_source_le hφ hf hwholeFirst hwholeSecond hwholeThird _)
 
 include hfirst hsecond hthird in
@@ -485,10 +473,8 @@ theorem quadratic_threeBand_le :
     exact (norm_sum_le _ _).trans
       (sum_le_sum fun g _ => norm_source_le hφ hf hwholeFirst hwholeSecond hwholeThird g)
   calc
-    _ = ∑ p ∈ S, energy (productionG hφ - productionX hφ) p := by
-      apply sum_congr rfl
-      intro p _hp
-      rw [← energyBlock_sub, norm_energyBlock_sq]
+    _ = ∑ p ∈ S, energy (productionG hφ - productionX hφ) p :=
+      sum_congr rfl fun p _ => by rw [← energyBlock_sub, norm_energyBlock_sq]
     _ ≤ ‖productionG hφ - productionX hφ‖ ^ 2 := energy_sum_le_norm_sq _ _
     _ ≤ _ := pow_le_pow_left₀ (norm_nonneg _) hn 2
 
@@ -503,21 +489,14 @@ theorem localized_comparison_three_band_of_checks
   generalize hS : headIdx 501 = S at hclose ⊢
   let a : Fin 7 → ℝ := fun j => ((threeBandBands j).norm : ℝ)
   let e : Fin 7 → ℝ := fun j => ((threeBandBands j).error : ℝ)
-  have ha : ∀ j, 0 ≤ a j := by
-    intro j
-    change 0 ≤ ((threeBandBands j).norm : ℝ)
-    exact_mod_cast (threeBand_nonneg j).1
-  have he : ∀ j, 0 ≤ e j := by
-    intro j
-    change 0 ≤ ((threeBandBands j).error : ℝ)
-    exact_mod_cast (threeBand_nonneg j).2
+  have ha (j : Fin 7) : 0 ≤ a j := Rat.cast_nonneg.mpr (threeBand_nonneg j).1
+  have he (j : Fin 7) : 0 ≤ e j := Rat.cast_nonneg.mpr (threeBand_nonneg j).2
   have hz (j : Fin 7) (p : ℕ × ℕ)
       (hp : (threeBandBands j).contains p.1 p.2 = false) :
       energyBlock (threePiece hφ j) p = 0 := by
     have hh : ‖energyBlock (threePiece hφ j) p‖ ^ 2 = 0 :=
       (norm_energyBlock_sq _ _).trans (threePiece_support hφ j p hp)
-    apply norm_eq_zero.mp
-    nlinarith [norm_nonneg (energyBlock (threePiece hφ j) p)]
+    exact norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp hh)
   have hc := BandComparison.weighted_compare S (univ : Finset (Fin 7))
     comparisonWeight (energyBlock (productionX hφ)) (energyBlock (productionG hφ))
     (fun j => energyBlock (threePiece hφ j)) (fun j => bandIndices (threeBandBands j))

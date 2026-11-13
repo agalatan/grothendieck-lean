@@ -119,9 +119,8 @@ theorem partCoefficient_reflection {S : Set ℝ} (hS : MeasurableSet S) (q c d :
       (Real.sqrt (((d + 1 : ℕ) : ℝ) / (c : ℝ)) : ℂ) * Tail.partCoefficient S q (d + 1) (c - 1) := by
   rw [partCoefficient_eq_radial hS q c d hc hd,
     partCoefficient_eq_radial hS q (d + 1) (c - 1) (by omega) (by omega), ← integral_const_mul]
-  apply setIntegral_congr_fun (hS.inter measurableSet_Ioi)
-  intro s hs
-  exact radialIntegrand_reflection q c d href hs.2
+  exact setIntegral_congr_fun (hS.inter measurableSet_Ioi) fun s hs =>
+    radialIntegrand_reflection q c d href hs.2
 
 /-- **The canonical radial integrand is the kernel's real node integrand.** -/
 theorem radialIntegrand_eq_node (q c d : ℕ) (hd : d ≤ q) (hc : c ≤ d + 1) {s : ℝ} (hs : 0 < s)

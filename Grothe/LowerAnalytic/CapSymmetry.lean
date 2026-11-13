@@ -223,8 +223,7 @@ theorem pot_le_sup'_of_cover {ι : Type*} [Fintype ι] [Nonempty ι] (P : ι →
     pot E R ℓ β a s ≤ Finset.univ.sup' Finset.univ_nonempty q := by
   refine pot_le_of_cover E R ℓ β a Finset.univ P q _ s hc hn (fun y => ?_) (fun i _ => hb i)
     (fun i _ => Finset.le_sup' q (Finset.mem_univ i))
-  have : y ∈ ⋃ i, symOrbit (P i) := hcov ▸ mem_univ y
-  obtain ⟨i, hi⟩ := mem_iUnion.1 this
+  obtain ⟨i, hi⟩ := mem_iUnion.1 (eq_univ_iff_forall.1 hcov y)
   exact ⟨i, Finset.mem_univ i, hi⟩
 
 end

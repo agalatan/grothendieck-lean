@@ -37,21 +37,20 @@ theorem norm_source_sq_le (r : ℝ) (hr : 0 ≤ r) (j : ℕ) :
     (integrable_const 1).indicator (measurableSet_singularSet r)
   calc
     _ ≤ ∫ u, (singularSet r).indicator (fun _ => (1 : ℝ)) u ∂mu2 := by
-      apply integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _) hI
-      exact Filter.Eventually.of_forall fun u => by
-        by_cases hu : u ∈ singularSet r
-        · simp only [source, Set.indicator_of_mem hu]
-          nlinarith [norm_hpow_le_one j u, norm_nonneg (hpow j u)]
-        · simp [source, hu]
+      refine integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _) hI
+        (Filter.Eventually.of_forall fun u => ?_)
+      by_cases hu : u ∈ singularSet r
+      · simp only [source, Set.indicator_of_mem hu]
+        exact pow_le_one₀ (norm_nonneg _) (norm_hpow_le_one j u)
+      · simp [source, hu]
     _ = mu2.real (singularSet r) := integral_indicator_one (measurableSet_singularSet r)
     _ ≤ _ := basePhaseArg_smallBall r hr
 
 /-- The excision bound applies to the base source too (`j = 0`). -/
 theorem norm_source_le (r : ℝ) (hr : 0 ≤ r) (j : ℕ) :
     ‖(source_memLp r j).toLp (source r j)‖ ≤ (10 / 3 : ℝ) * r := by
-  have h := norm_source_sq_le r hr j
-  have hpos : 0 ≤ (10 / 3 : ℝ) * r := mul_nonneg (by norm_num) hr
-  nlinarith [norm_nonneg ((source_memLp r j).toLp (source r j))]
+  exact (sq_le_sq₀ (norm_nonneg _) (by positivity)).1
+    ((norm_source_sq_le r hr j).trans_eq (by ring))
 
 /-- A fixed singular cutoff has L² error strictly less than the allocated tolerance. -/
 theorem norm_source_cutoff_lt (j : ℕ) :

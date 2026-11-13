@@ -14,8 +14,8 @@ theorem norm_band_error_le_shared_approx (B : Set Idx2)
     (F Y C : Lp ℂ 2 mu2) (ε δ : ℝ)
     (happrox : ‖F - Y‖ ≤ ε) (hfinite : ‖projOn B (Y - C)‖ ≤ δ) :
     ‖projOn B (F - C)‖ ≤ ε + δ := by
-  have hcontract : ‖projOn B (F - Y)‖ ≤ ‖F - Y‖ := by
-    exact (modeSpace B).norm_starProjection_apply_le (F - Y)
+  have hcontract : ‖projOn B (F - Y)‖ ≤ ‖F - Y‖ :=
+    (modeSpace B).norm_starProjection_apply_le (F - Y)
   have hid : F - C = (F - Y) + (Y - C) := by abel
   rw [hid, map_add]
   exact (norm_add_le _ _).trans (add_le_add (hcontract.trans happrox) hfinite)

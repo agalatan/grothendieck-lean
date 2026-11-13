@@ -64,8 +64,8 @@ theorem sum_cappedGaussError_le {g : Power} {cs : Array Certificate} {budget : �
     (htotal : totalOK cs budget = true) :
     (∑ p : Fin sourcePanels.length,
       cappedGaussError (sourcePanels.get p) (cs[p.val]!)) ≤ (budget : ℝ) := by
-  apply le_trans (Finset.sum_le_sum fun p _ ↦ (certificateOK_error (hcert p)).2)
-  exact sum_errorCap_le_of_totalOK htotal
+  exact (Finset.sum_le_sum fun p _ ↦ (certificateOK_error (hcert p)).2).trans
+    (sum_errorCap_le_of_totalOK htotal)
 
 /-- Once accepted mass caps bound the actual descended vector, the complete certificate
 array gives the actual covered-set remainder. All geometry and error arithmetic are internal. -/
@@ -92,8 +92,7 @@ theorem remainder_of_certificates_of_mass_bounds (g : Power) (cs : Array Certifi
   calc
     _ = ∑ p : Fin sourcePanels.length,
         cappedGaussError (sourcePanels.get p) (cs[p.val]!) := by
-      apply Finset.sum_congr rfl
-      intro p _
+      refine Finset.sum_congr rfl fun p _ => ?_
       unfold cappedGaussError
       ring
     _ ≤ (budget : ℝ) := sum_cappedGaussError_le hcert htotal

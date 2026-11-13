@@ -42,7 +42,7 @@ theorem angle_defect {ε : ℂ} {k : ℝ} (hk : k < 1) (hε : ‖ε‖ ≤ k) :
     have hb : b ^ 2 * (1 - k ^ 2) ≤ (k ^ 2 - a ^ 2) * (1 - k ^ 2) :=
       mul_le_mul_of_nonneg_right (by linarith) hk1
     nlinarith [sq_nonneg (a + k ^ 2)]
-  refine ⟨by rw [him, hn]; exact h1, ?_⟩
+  refine ⟨by rwa [him, hn], ?_⟩
   have ha1 : 0 < 1 + a := by nlinarith [sq_nonneg b]
   rw [hre]
   have hk2 : 0 ≤ 1 - k ^ 2 := by nlinarith
@@ -64,8 +64,7 @@ theorem ratio_defect {δ₁ δ₂ : ℂ} {r₁ r₂ : ℝ} (h1 : ‖δ₁‖ ≤
   have hsq : (1 + δ₂) ^ 2 ≠ 0 := pow_ne_zero _ hne
   rw [div_sub_one hsq, norm_div, norm_pow]
   have hnum : ‖1 + δ₁ - (1 + δ₂) ^ 2‖ ≤ r₁ + r₂ * (2 + r₂) := by
-    have e : 1 + δ₁ - (1 + δ₂) ^ 2 = δ₁ - δ₂ * (2 + δ₂) := by ring
-    rw [e]
+    rw [show 1 + δ₁ - (1 + δ₂) ^ 2 = δ₁ - δ₂ * (2 + δ₂) by ring]
     refine (norm_sub_le _ _).trans ?_
     rw [norm_mul]
     have : ‖2 + δ₂‖ ≤ 2 + r₂ := by

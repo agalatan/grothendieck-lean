@@ -49,17 +49,14 @@ theorem positive_factor_between_of_square_bounds
     (hUpper : A ≤ U ^ 2 * (pLo * b)) :
     L ≤ g ∧ g ≤ U := by
   have hpb : 0 < p * b := mul_pos hp hb
-  constructor
-  · apply (sq_le_sq₀ hL hg.le).1
-    apply le_of_mul_le_mul_right _ hpb
-    calc
+  refine ⟨(sq_le_sq₀ hL hg.le).1 (le_of_mul_le_mul_right ?_ hpb),
+    (sq_le_sq₀ hg.le hU).1 (le_of_mul_le_mul_right ?_ hpb)⟩
+  · calc
       L ^ 2 * (p * b) ≤ L ^ 2 * (pHi * b) :=
         mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hpHi hb.le) (sq_nonneg L)
       _ ≤ A := hLower
       _ = g ^ 2 * (p * b) := hEq.symm
-  · apply (sq_le_sq₀ hg.le hU).1
-    apply le_of_mul_le_mul_right _ hpb
-    calc
+  · calc
       g ^ 2 * (p * b) = A := hEq
       _ ≤ U ^ 2 * (pLo * b) := hUpper
       _ ≤ U ^ 2 * (p * b) :=

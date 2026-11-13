@@ -297,12 +297,11 @@ theorem exists_Cop_eq (hm : 0 < m) {ζ : L2G m} (hζ : ζ ∈ H10 m) (h1 : ‖ζ
   have hu1 : ‖u‖ = 1 := by
     have h2 := norm_sq_sum_zL α
     rw [h1, one_pow] at h2
-    have : ‖u‖ ^ 2 = 1 := by
-      rw [EuclideanSpace.norm_sq_eq]
-      simp only [hu, PiLp.toLp_apply, norm_mul, Complex.norm_conj, Complex.norm_real,
-        Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), mul_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
-      rw [← Finset.mul_sum]; linarith
-    nlinarith [norm_nonneg u]
+    refine (pow_eq_one_iff_of_nonneg (norm_nonneg u) two_ne_zero).mp ?_
+    rw [EuclideanSpace.norm_sq_eq]
+    simp only [hu, PiLp.toLp_apply, norm_mul, Complex.norm_conj, Complex.norm_real,
+      Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), mul_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
+    rw [← Finset.mul_sum]; linarith
   -- an orthonormal basis with `b i0 = u`
   let v : Fin m → EuclideanSpace ℂ (Fin m) := fun i => if i = i0 then u else 0
   have hv : Orthonormal ℂ (({i0} : Set (Fin m)).domRestrict v) := by

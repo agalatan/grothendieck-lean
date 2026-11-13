@@ -158,8 +158,7 @@ lemma cutPolys_getD (vs z : List ℚ) (v : ℝ) :
           (z.getD vs.length 0) (z.getD (vs.length + 1) 0) := by
   have h := cutPolysFrom_getD (z.getD vs.length 0) (z.getD (vs.length + 1) 0) (cutCells vs z) 0
     (pickIdx vs v) (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
-  rw [zero_add] at h
-  exact h
+  rwa [zero_add] at h
 
 /-- The polynomial piece on the `k`-th mesh cell of a combination of cuts given by their
 weights and polynomial pieces. -/
@@ -309,8 +308,7 @@ lemma specPolys_getD (vs z : List ℚ) (lam mu t be nu : ℚ) (v : ℝ) :
           lam mu t be nu := by
   have h := specPolysFrom_getD lam mu t be nu (cutCells vs z) 0 (pickIdx vs v)
     (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
-  rw [zero_add] at h
-  exact h
+  rwa [zero_add] at h
 
 /-! ### The general spectral cut: budget shifts -/
 
@@ -437,8 +435,7 @@ lemma gspecPolys_getD (vs z : List ℚ) (lam mu t be nu af ag : ℚ) (v : ℝ) :
           lam mu t be nu af ag := by
   have h := gspecPolysFrom_getD lam mu t be nu af ag (cutCells vs z) 0 (pickIdx vs v)
     (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
-  rw [zero_add] at h
-  exact h
+  rwa [zero_add] at h
 
 /-! ### The joint cut: the term `ζ(−u³ + 9u² − 12)` -/
 
@@ -491,7 +488,6 @@ lemma jspecPolys_getD (vs z : List ℚ) (lam mu t be nu af ag ze : ℚ) (v : ℝ
           lam mu t be nu af ag) (jointPolyV (pickIdx vs v) ze) := by
   have h := jspecPolysFrom_getD lam mu t be nu af ag ze (cutCells vs z) 0 (pickIdx vs v)
     (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
-  rw [zero_add] at h
-  exact h
+  rwa [zero_add] at h
 
 end Grothe.Lower

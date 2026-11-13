@@ -69,8 +69,7 @@ lemma norm_nodeWeight_le (j : ℕ) (s : ℝ) (w : ℂ) : ‖nodeWeight j s w‖ 
       positivity
     linarith
   have h2 : ‖F0 ((Real.sqrt s : ℂ), w)‖ ≤ 1 := by unfold F0; exact Grothe.Haag.norm_ph_le _
-  calc _ ≤ 1 * 1 := mul_le_mul h1 h2 (norm_nonneg _) zero_le_one
-    _ = 1 := one_mul 1
+  exact (mul_le_mul h1 h2 (norm_nonneg _) zero_le_one).trans_eq (one_mul 1)
 
 lemma memLp_nodeWeight (j : ℕ) (s : ℝ) : MemLp (nodeWeight j s) 2 gaussC :=
   MemLp.of_bound (measurable_nodeWeight j s).aestronglyMeasurable 1
@@ -150,19 +149,8 @@ lemma hpow_conj_snd (j : ℕ) (a : ℝ) (w : ℂ) :
 
 lemma integral_conj_symm {f : ℂ → ℂ} (hf : Integrable f gaussC)
     (hconj : ∀ w, f (conj w) = conj (f w)) :
-    conj (∫ w, f w ∂gaussC) = ∫ w, f w ∂gaussC := by
-  have hfm : AEStronglyMeasurable f (gaussC.map (fun z : ℂ => conj z)) := by
-    rw [gaussC_map_conj]
-    exact hf.aestronglyMeasurable
-  have hmap := integral_map (μ := gaussC)
-    Complex.continuous_conj.measurable.aemeasurable hfm
-  rw [gaussC_map_conj] at hmap
-  rw [← integral_conj]
-  calc
-    (∫ w, conj (f w) ∂gaussC) = ∫ w, f (conj w) ∂gaussC := by
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall fun w => (hconj w).symm
-    _ = ∫ w, f w ∂gaussC := hmap.symm
+    conj (∫ w, f w ∂gaussC) = ∫ w, f w ∂gaussC :=
+  integral_conj_of_symmetric hf hconj
 
 lemma memLp_hpow_slice (j : ℕ) (s : ℝ) :
     MemLp (fun w : ℂ => hpow j ((Real.sqrt s : ℂ), w)) 2 gaussC := by
@@ -181,8 +169,7 @@ lemma memLp_hpow_slice (j : ℕ) (s : ℝ) :
     exact abs_le.mpr ⟨by nlinarith, by nlinarith⟩
   have h1 : |phiT ((Real.sqrt s : ℂ), w)| ^ j ≤ 1 := pow_le_one₀ (abs_nonneg _) hφ
   have h2 : ‖F0 ((Real.sqrt s : ℂ), w)‖ ≤ 1 := by unfold F0; exact Grothe.Haag.norm_ph_le _
-  calc _ ≤ 1 * 1 := mul_le_mul h1 h2 (norm_nonneg _) zero_le_one
-    _ = 1 := one_mul 1
+  exact (mul_le_mul h1 h2 (norm_nonneg _) zero_le_one).trans_eq (one_mul 1)
 
 /-- The twisted conditional coefficients are real. -/
 theorem twistCoef_im (j : ℕ) (s : ℝ) (i : ℕ × ℕ) : (twistCoef j s i).im = 0 := by
@@ -301,10 +288,8 @@ theorem Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f : �
     rw [hev, hfun_dilate (twistMu j) e f N le_rfl, boxSum]
     simp only [hfun_profileSign, map_mul, map_sum, Complex.conj_ofReal, map_pow, Finset.mul_sum,
       Finset.sum_mul, map_inv₀]
-    apply Finset.sum_congr rfl
-    intro g _
-    apply Finset.sum_congr rfl
-    intro h _
+    refine Finset.sum_congr rfl fun g _ => ?_
+    refine Finset.sum_congr rfl fun h _ => ?_
     push_cast
     ring
   simp_rw [hpt]
@@ -316,11 +301,9 @@ theorem Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f : �
           canonicalCoefficient (twistShift j s) (g, h) := by
     rw [integral_finsetSum _ (fun g _ => integrable_finsetSum _ fun h _ =>
       (integrable_canonical _ g h).const_mul _)]
-    apply Finset.sum_congr rfl
-    intro g _
+    refine Finset.sum_congr rfl fun g _ => ?_
     rw [integral_finsetSum _ (fun h _ => (integrable_canonical _ g h).const_mul _)]
-    apply Finset.sum_congr rfl
-    intro h _
+    refine Finset.sum_congr rfl fun h _ => ?_
     rw [integral_const_mul]
     rfl
   rw [integral_const_mul, hint, Complex.real_smul]
@@ -337,8 +320,8 @@ theorem re_Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f :
   have hre : ∀ g h, (((dilT (twistMu j) e f g h * profileSign s ^ (g + h) : ℝ) : ℂ) *
       canonicalCoefficient (twistShift j s) (g, h)).re =
       dilT (twistMu j) e f g h * profileSign s ^ (g + h) *
-        (canonicalCoefficient (twistShift j s) (g, h)).re := by
-    intro g h; rw [Complex.re_ofReal_mul]
+        (canonicalCoefficient (twistShift j s) (g, h)).re :=
+    fun g h => Complex.re_ofReal_mul _ _
   rw [Complex.re_ofReal_mul, Complex.re_sum]
   simp only [Complex.re_sum, hre]
   rw [sum_box_eq_sum_min e f (e + f + 2) le_rfl
@@ -346,9 +329,7 @@ theorem re_Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f :
       (canonicalCoefficient (twistShift j s) (g, h)).re)
     (fun g h hgh => by simp [dilT_eq_zero _ e f g h hgh])]
   simp only [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro m _
-  ring
+  exact Finset.sum_congr rfl fun m _ => by ring
 
 end
 

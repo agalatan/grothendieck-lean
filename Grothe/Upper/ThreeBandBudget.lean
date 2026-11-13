@@ -120,8 +120,8 @@ theorem threeBandValueQ_lt : threeBandValueQ < (140459988 : ℚ) / 100000000 := 
   decide +kernel
 
 theorem threeBand_positive_denominator :
-    0 < (slopeQ : ℝ) - (threeBandResidualQ : ℝ) := by
-  exact sub_pos.mpr (by exact_mod_cast threeBandResidualQ_lt_slopeQ)
+    0 < (slopeQ : ℝ) - (threeBandResidualQ : ℝ) :=
+  sub_pos.mpr (by exact_mod_cast threeBandResidualQ_lt_slopeQ)
 
 theorem threeBand_real_reciprocal :
     1 / ((slopeQ : ℝ) - (threeBandResidualQ : ℝ)) = (threeBandValueQ : ℝ) := by
@@ -134,9 +134,8 @@ theorem threeBand_real_value_lt : (threeBandValueQ : ℝ) < (1.40459988 : ℝ) :
     _ = (1.40459988 : ℝ) := by norm_num
 
 theorem threeBand_real_reciprocal_lt :
-    1 / ((slopeQ : ℝ) - (threeBandResidualQ : ℝ)) < (1.40459988 : ℝ) := by
-  rw [threeBand_real_reciprocal]
-  exact threeBand_real_value_lt
+    1 / ((slopeQ : ℝ) - (threeBandResidualQ : ℝ)) < (1.40459988 : ℝ) :=
+  threeBand_real_reciprocal.trans_lt threeBand_real_value_lt
 
 theorem threeBand_decimal_inside_target :
     (1.4045 : ℝ) < 1.40459988 ∧ (1.40459988 : ℝ) < 1.4046 := by norm_num

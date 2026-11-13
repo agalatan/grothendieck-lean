@@ -67,15 +67,13 @@ theorem diskM2_y_sound (hc : EllCheck.chatOK = true) {g : Power} {coeffs : List 
   have hM0 := hprimary0.trans hM
   have hE0 := (Real.exp_pos _).le.trans hE
   refine ⟨hsgn, E * (M * U),
-    mem_mulI EllCheck.P hEm (mem_mulI EllCheck.P hMm hUm), ?_⟩
-  intro σ hσ z hz
+    mem_mulI EllCheck.P hEm (mem_mulI EllCheck.P hMm hUm), fun σ hσ z hz => ?_⟩
   obtain ⟨r, hr⟩ := IsAlgClosed.exists_pow_nat_eq z (by norm_num : 0 < 2)
   have hd : DiskPoint (EllCheck.sgn pos) x pl.geometry.R z r :=
     ⟨hR, hz, hr, EllCheck.sgn_cases pos, hsgn⟩
   obtain ⟨hX, hY, hB⟩ := hgeom z r hz hr
   have hBshift : (TwistRadialExt.shift r).im ^ 2 ≤ B2 := by
-    rw [TwistRadialExt.shift_im_sq_eq _ (EllCheck.sgn_cases pos) r, hr]
-    exact hB
+    rwa [TwistRadialExt.shift_im_sq_eq _ (EllCheck.sgn_cases pos) r, hr]
   have hactual := TwistRadialExt.norm_descendedVector_sq_le_yBoundSq
     (powerNat g) (by simp [powerNat]) σ hσ hr
     ht0 ht1 heta0 heta1 hd.re_ge hX hY hBshift

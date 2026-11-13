@@ -41,8 +41,7 @@ theorem integral_damped_phase (rate : ℝ) (hrate : 0 < rate) (A : ℝ) (P : CPo
   filter_upwards with w
   rw [ev_rescale]
   congr 1
-  have hs : (Real.sqrt rate : ℂ) ≠ 0 := by
-    exact_mod_cast (Real.sqrt_pos.mpr hrate).ne'
+  have hs : (Real.sqrt rate : ℂ) ≠ 0 := by exact_mod_cast (Real.sqrt_pos.mpr hrate).ne'
   have he : (A : ℂ) + (Real.sqrt rate : ℂ)⁻¹ * w =
       ((Real.sqrt rate)⁻¹ : ℝ) * (((A * Real.sqrt rate : ℝ) : ℂ) + w) := by
     push_cast

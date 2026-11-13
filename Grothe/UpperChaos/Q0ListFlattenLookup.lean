@@ -27,16 +27,11 @@ theorem getElem?_flatten_of_full_prefix {α : Type*} (blocks : List (List α))
     | cons head tail =>
       have hhead : head.length = 64 := hfull 0 (by omega) head (by simp)
       have htail : tail[k]? = some block := by simpa using hblock
-      have hfulltail : ∀ j < k, ∀ b, tail[j]? = some b → b.length = 64 := by
-        intro j hj b hb
-        exact hfull (j + 1) (by omega) b (by simpa using hb)
-      have hindex : head.length ≤ 64 * (k + 1) + m := by rw [hhead]; omega
-      simp only [List.flatten_cons]
-      rw [List.getElem?_append_right hindex]
-      have heq : 64 * (k + 1) + m - head.length = 64 * k + m := by
-        rw [hhead]
-        omega
-      rw [heq]
+      have hfulltail : ∀ j < k, ∀ b, tail[j]? = some b → b.length = 64 :=
+        fun j hj b hb => hfull (j + 1) (by omega) b (by simpa using hb)
+      have hindex : head.length ≤ 64 * (k + 1) + m := by omega
+      rw [List.flatten_cons, List.getElem?_append_right hindex,
+        show 64 * (k + 1) + m - head.length = 64 * k + m by omega]
       exact ih tail hfulltail htail
 
 end Grothe.UpperChaos.Q0ListFlattenLookup
