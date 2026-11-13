@@ -301,15 +301,7 @@ theorem Tint_grid (I J : ℕ) :
           (thN gd.N (j + 1)) z * Tz ell beta (gridPrices hok) z I J
         + tailInd (gd.Nr * gd.h) z * Tz ell beta (gridPrices hok) z I J := by
     intro z
-    have hp := partition hh hN gd.Nr z
-    calc Tz ell beta (gridPrices hok) z I J
-        = (∑ i ∈ range gd.Nr, ∑ j ∈ range gd.N, cellInd (i * gd.h) ((i + 1) * gd.h) (thN gd.N j)
-            (thN gd.N (j + 1)) z + tailInd (gd.Nr * gd.h) z) * Tz ell beta (gridPrices hok) z I J := by
-          rw [hp, one_mul]
-      _ = _ := by
-          rw [add_mul, Finset.sum_mul]
-          congr 1
-          exact Finset.sum_congr rfl fun i _ => Finset.sum_mul _ _ _
+    simp only [← Finset.sum_mul, ← add_mul, partition hh hN gd.Nr z, one_mul]
   have hint : ∀ f : ℂ → ℝ, Measurable f → (∀ z, |f z| ≤ 1) →
       Integrable (fun z => f z * Tz ell beta (gridPrices hok) z I J) gaussC := fun f hf hf1 =>
     integrable_bdd_mul' hf 1 hf1 (integrable_Tz _ _ _ I J)

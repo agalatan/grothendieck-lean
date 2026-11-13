@@ -70,37 +70,30 @@ theorem integral_gaussC_norm_sq_complex (f : ℝ → ℂ) (hf : Measurable f) :
   simp only [show (2 : ℝ) - 1 = 1 by norm_num, Real.rpow_one,
     Real.rpow_two, Complex.real_smul] at h
   rw [← h, ← integral_const_mul]
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro r hr
+  refine setIntegral_congr_fun measurableSet_Ioi fun r _ => ?_
   push_cast
   ring
 
 /-- Measurability comes from the exact conditional source integral. -/
 theorem measurable_taylorConditionalWick (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
     (t : ℝ) (ht : 0 < t) : Measurable (taylorConditionalWick j N a t) := by
-  let hc : ChargeFn (gradedHermiteFn N a) :=
-    ⟨measurable_gradedHermiteFn N a, memLp_gradedHermiteFn N a,
-      gradedHermiteFn_rot2 N a⟩
   have hm : Measurable (fun u : ℂ × ℂ => taylorInnerSource j (gradedHermiteFn N a) u *
       Haag.phaseLaplaceKernel (basePhaseArgument u) t) :=
-    (measurable_taylorInnerSource hc j).mul
+    (measurable_taylorInnerSource (chargeFn_gradedHermiteFn N a) j).mul
       (Haag.measurable_phaseLaplaceKernel.comp
         (measurable_basePhaseArgument.prodMk measurable_const))
   have he : taylorConditionalWick j N a t = fun z =>
       ∫ w, taylorInnerSource j (gradedHermiteFn N a) (z, w) *
-        Haag.phaseLaplaceKernel (basePhaseArgument (z, w)) t ∂gaussC := by
-    funext z
-    exact (integral_taylorInnerSource_conditional j N a t z ht).symm
+        Haag.phaseLaplaceKernel (basePhaseArgument (z, w)) t ∂gaussC :=
+    funext fun z => (integral_taylorInnerSource_conditional j N a t z ht).symm
   rw [he]
   exact hm.stronglyMeasurable.integral_prod_right'.measurable
 
 /-- Absolute integrability is inherited from the production Gaussian source. -/
 theorem integrable_taylorConditionalWick (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
     (t : ℝ) (ht : 0 < t) : Integrable (taylorConditionalWick j N a t) gaussC := by
-  let hc : ChargeFn (gradedHermiteFn N a) :=
-    ⟨measurable_gradedHermiteFn N a, memLp_gradedHermiteFn N a,
-      gradedHermiteFn_rot2 N a⟩
-  have h := (integrable_taylorInnerSource_kernel phiBound hc j t ht).integral_prod_left
+  have h := (integrable_taylorInnerSource_kernel phiBound
+    (chargeFn_gradedHermiteFn N a) j t ht).integral_prod_left
   simpa only [integral_taylorInnerSource_conditional j N a t _ ht] using h
 
 /-- Exact removal of the first Gaussian angle from the finite Wick evaluator. -/
@@ -111,9 +104,8 @@ theorem integral_taylorConditionalWick_eq_radial (j N : ℕ) (a : ℕ → ℕ �
         taylorConditionalWick j N a t (r : ℂ) := by
   have hm := (measurable_taylorConditionalWick j N a t ht).comp Complex.measurable_ofReal
   calc
-    _ = ∫ z, taylorConditionalWick j N a t (‖z‖ : ℂ) ∂gaussC := by
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall (taylorConditionalWick_eq_norm j N a t ht)
+    _ = ∫ z, taylorConditionalWick j N a t (‖z‖ : ℂ) ∂gaussC :=
+      integral_congr_ae (Filter.Eventually.of_forall (taylorConditionalWick_eq_norm j N a t ht))
     _ = _ := integral_gaussC_radial_complex _ hm
 
 /-- In squared radius the production evaluator has the elementary exponential weight. -/
@@ -140,9 +132,8 @@ theorem inner_gradedHermite_hpow_eq_sq_radial (j N : ℕ) (a : ℕ → ℕ → �
           taylorConditionalWick j N a t (sqrt s : ℂ) := by
   rw [inner_gradedHermite_hpow_eq_wick phiBound]
   congr 1
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro t ht
-  exact integral_taylorConditionalWick_eq_sq_radial j N a t ht
+  exact setIntegral_congr_fun measurableSet_Ioi fun t ht =>
+    integral_taylorConditionalWick_eq_sq_radial j N a t ht
 
 end
 

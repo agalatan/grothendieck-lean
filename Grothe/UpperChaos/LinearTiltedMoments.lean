@@ -95,8 +95,8 @@ theorem integral_linear_tilt (F : ℂ → ℂ) (hF : Measurable F)
         (mean rate a)).symm
     _ = ∫ z : ℂ, c * ((π⁻¹ * Real.exp (-Complex.normSq z)) • H z) :=
       integral_congr_ae (Filter.Eventually.of_forall hpoint)
-    _ = c * ∫ z : ℂ, (π⁻¹ * Real.exp (-Complex.normSq z)) • H z := by
-      rw [integral_const_mul]
+    _ = c * ∫ z : ℂ, (π⁻¹ * Real.exp (-Complex.normSq z)) • H z :=
+      integral_const_mul c _
     _ = c * ∫ z, H z ∂gaussC := by
       rw [← integral_gaussC_eq_volume_complex H hH]
 
@@ -174,8 +174,7 @@ theorem integral_finite_mixed_polynomial {ι : Type*} (s : Finset ι)
   rw [integral_finsetSum s fun i _ => by
     simpa only [mul_assoc] using
       (integrable_shifted_monomial_damped (p i) (q i) (mean rate a) hrate).const_mul (c i)]
-  apply Finset.sum_congr rfl
-  intro i hi
+  refine Finset.sum_congr rfl fun i hi => ?_
   rw [integral_const_mul]
   congr 1
   simpa only [mul_assoc] using

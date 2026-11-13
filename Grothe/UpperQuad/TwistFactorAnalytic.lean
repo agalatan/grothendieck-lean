@@ -74,23 +74,14 @@ private lemma eval_parameterQ_list (ts : List ((ℕ × ℕ × ℕ) × ℚ)) (r :
     eval_parameterSum]
 
 lemma eval_parameterQ (r : ℂ) : parameterQ.eval (C r) = TwistFactorPolynomial.Q r := by
-  calc
-    parameterQ.eval (C r) = (parameterQFor phaseTerms).eval (C r) :=
-      congrArg (Polynomial.eval (C r)) parameterQ_def
-    _ = C (r / 2) * (X 0 - X 1) *
-        (phaseTerms.map (TwistFactorPolynomial.phaseTerm r)).sum :=
-      eval_parameterQ_list phaseTerms r
-    _ = C (r / 2) * (X 0 - X 1) * TwistFactorPolynomial.phaseSum r :=
-      congrArg (fun P : CPoly ↦ C (r / 2) * (X 0 - X 1) * P) (phaseSum_def r).symm
-    _ = TwistFactorPolynomial.Q r := (Q_def r).symm
+  rw [parameterQ_def, eval_parameterQ_list, ← phaseSum_def, ← Q_def]
 
 /-- A linear functional applied to a formal radial polynomial is a finite scalar polynomial. -/
 theorem linear_eval_eq_sum (L : CPoly →ₗ[ℂ] ℂ) (P : Polynomial CPoly) (r : ℂ) :
     L (P.eval (C r)) = ∑ n ∈ P.support, r ^ n * L (P.coeff n) := by
   classical
   rw [Polynomial.eval_eq_sum, Polynomial.sum_def, map_sum]
-  apply Finset.sum_congr rfl
-  intro n _
+  refine Finset.sum_congr rfl fun n _ => ?_
   rw [← map_pow, mul_comm, ← smul_eq_C_mul, map_smul]
   rfl
 
@@ -111,13 +102,8 @@ theorem analyticAt_linear_Q_pow (L : CPoly →ₗ[ℂ] ℂ) (j : ℕ) (r : ℂ) 
 /-- The real auxiliary-variable rescaling is complex linear in the polynomial. -/
 def rescaleLinear (scale : ℝ) : CPoly →ₗ[ℂ] CPoly where
   toFun := rescale scale
-  map_add' P R := by
-    apply MvPolynomial.funext
-    intro v
-    simp only [eval_rescale, map_add]
-  map_smul' a P := by
-    apply MvPolynomial.funext
-    intro v
+  map_add' P R := MvPolynomial.funext fun v => by simp only [eval_rescale, map_add]
+  map_smul' a P := MvPolynomial.funext fun v => by
     simp only [eval_rescale, smul_eval, RingHom.id_apply]
 
 lemma rescaleLinear_apply (scale : ℝ) (P : CPoly) :

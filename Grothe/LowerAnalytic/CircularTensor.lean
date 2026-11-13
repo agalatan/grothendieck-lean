@@ -143,9 +143,7 @@ lemma ouL_rotD [DecidableEq ι] (hJ : ∀ i j, J i j = -J j i) (P : MvPolynomial
       rw [← Finset.sum_neg_distrib]
       refine Finset.sum_congr rfl fun p _ => ?_
       rw [hJ p i, pderiv_pderiv_comm, map_neg]; ring
-    have h2 : (2 : ℝ) • ∑ i, ∑ p, C (J i p) * pderiv i (pderiv p P) = 0 := by
-      rw [two_smul]; linear_combination h
-    exact (smul_eq_zero.1 h2).resolve_left two_ne_zero
+    linear_combination (norm := module) (1 / 2 : ℝ) • h
   have hA : ∀ i, pderiv i (pderiv i (rotD J P)) = rotD J (pderiv i (pderiv i P))
       + (∑ p, C (J i p) * pderiv p (pderiv i P) + ∑ p, C (J i p) * pderiv i (pderiv p P)) :=
     fun i => by
@@ -257,40 +255,24 @@ lemma matJ_sq (hd : ∀ i, ∑ j, J i j * J j i = -1) (ho : ∀ i k, i ≠ k →
   · subst h; simp [hd i]
   · simp [h, ho i k h]
 
-/-- **`‖G_anti‖² ≤ s/2`**: `2 tenGa − s = tr(G J G J) = tr(N²)` with `N = F J Fᵀ` antisymmetric. -/
-theorem tenGa_le_half (hJ : ∀ i j, J i j = -J j i) (hd : ∀ i, ∑ j, J i j * J j i = -1)
-    (ho : ∀ i k, i ≠ k → ∑ j, J i j * J j k = 0) : tenGa f J ≤ tenS f / 2 := by
+/-- `tr(G J G J) = 2η − s`. -/
+private lemma trace_GJGJ_aux (hJ : ∀ i j, J i j = -J j i) (hd : ∀ i, ∑ j, J i j * J j i = -1)
+    (ho : ∀ i k, i ≠ k → ∑ j, J i j * J j k = 0) :
+    (matG f * (matJ J * matG f * matJ J)).trace = 2 * tenGa f J - tenS f := by
   have hJt := matJ_transpose hJ
   have hJJ := matJ_sq hd ho
   set Jm := matJ J with hJm
   set G := matG f with hG
-  set F := matF f with hF
   have hGt : Gᵀ = G := matG_transpose f
-  have hJJt : Jm * Jmᵀ = 1 := by rw [hJt, Matrix.mul_neg, hJJ, neg_neg]
-  have hJtJ : Jmᵀ * Jm = 1 := by rw [hJt, Matrix.neg_mul, hJJ, neg_neg]
-  -- `(JGJ)ᵀ = JGJ`
   have hsym : (Jm * G * Jm)ᵀ = Jm * G * Jm := by
     rw [Matrix.transpose_mul, Matrix.transpose_mul, hJt, hGt, Matrix.neg_mul, Matrix.mul_neg,
       Matrix.mul_neg, neg_neg, Matrix.mul_assoc]
-  -- `tr((JGJ)ᵀ JGJ) = tr(G G)`
-  have h2 : ((Jm * G * Jm)ᵀ * (Jm * G * Jm)).trace = (G * G).trace := by
-    rw [hsym, show Jm * G * Jm * (Jm * G * Jm) = Jm * G * (Jm * Jm) * G * Jm by
+  have h2 : ((Jm * G * Jm) * (Jm * G * Jm)).trace = (G * G).trace := by
+    rw [show Jm * G * Jm * (Jm * G * Jm) = Jm * G * (Jm * Jm) * G * Jm by
       simp only [Matrix.mul_assoc], hJJ, Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul,
       Matrix.neg_mul, Matrix.trace_neg, Matrix.trace_mul_comm (Jm * G * G) Jm,
       show Jm * (Jm * G * G) = (Jm * Jm) * G * G by simp only [Matrix.mul_assoc], hJJ,
       Matrix.neg_mul, Matrix.neg_mul, Matrix.one_mul, Matrix.trace_neg, neg_neg]
-  -- `tr(G J G J) = tr(N N)`, `N = F J Fᵀ`
-  have h3 : (G * (Jm * G * Jm)).trace = ((F * Jm * Fᵀ) * (F * Jm * Fᵀ)).trace := by
-    rw [hG, matG_eq, ← hF, show Fᵀ * F * (Jm * (Fᵀ * F) * Jm) = Fᵀ * (F * Jm * Fᵀ * (F * Jm)) by
-      simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]
-    simp only [Matrix.mul_assoc]
-  have hN : (F * Jm * Fᵀ)ᵀ = -(F * Jm * Fᵀ) := by
-    rw [Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hJt,
-      Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]
-  have h4 : ((F * Jm * Fᵀ) * (F * Jm * Fᵀ)).trace ≤ 0 := by
-    have := trace_transpose_mul_self_nonneg (F * Jm * Fᵀ)
-    rw [hN, Matrix.neg_mul, Matrix.trace_neg] at this
-    linarith
   have hS : tenS f = (G * G).trace := by rw [tenS_eq_trace, hGt]
   have hM : (G + Jm * G * Jm)ᵀ = G + Jm * G * Jm := by rw [Matrix.transpose_add, hGt, hsym]
   have hGa : tenGa f J = 1 / 4 * ((G * G).trace + (G * (Jm * G * Jm)).trace
@@ -299,8 +281,26 @@ theorem tenGa_le_half (hJ : ∀ i j, J i j = -J j i) (hd : ∀ i, ∑ j, J i j *
       Matrix.trace_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.trace_add,
       Matrix.trace_add, Matrix.trace_add, smul_eq_mul]
     ring
-  rw [hsym] at h2
-  rw [hGa, Matrix.trace_mul_comm (Jm * G * Jm) G, h2, h3, hS]
+  rw [hGa, Matrix.trace_mul_comm (Jm * G * Jm) G, h2, hS]
+  ring
+
+/-- **`‖G_anti‖² ≤ s/2`**: `2 tenGa − s = tr(G J G J) = tr(N²)` with `N = F J Fᵀ` antisymmetric. -/
+theorem tenGa_le_half (hJ : ∀ i j, J i j = -J j i) (hd : ∀ i, ∑ j, J i j * J j i = -1)
+    (ho : ∀ i k, i ≠ k → ∑ j, J i j * J j k = 0) : tenGa f J ≤ tenS f / 2 := by
+  have h2 := trace_GJGJ_aux f hJ hd ho
+  have hJt := matJ_transpose hJ
+  set Jm := matJ J
+  set F := matF f with hF
+  -- `tr(G J G J) = tr(N N) ≤ 0`, `N = F J Fᵀ` antisymmetric
+  have h3 : (matG f * (Jm * matG f * Jm)).trace = ((F * Jm * Fᵀ) * (F * Jm * Fᵀ)).trace := by
+    rw [matG_eq, ← hF, show Fᵀ * F * (Jm * (Fᵀ * F) * Jm) = Fᵀ * (F * Jm * Fᵀ * (F * Jm)) by
+      simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]
+    simp only [Matrix.mul_assoc]
+  have hN : (F * Jm * Fᵀ)ᵀ = -(F * Jm * Fᵀ) := by
+    rw [Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hJt,
+      Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]
+  have h4 := trace_transpose_mul_self_nonneg (F * Jm * Fᵀ)
+  rw [hN, Matrix.neg_mul, Matrix.trace_neg] at h4
   linarith
 
 end matrices
@@ -646,12 +646,7 @@ lemma charge_one_e2 {T : ι → ι → ι → ℝ} (hT : der3 J (der3 J T) = -T)
     sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T) = T := by
   have h := der3_sq hJ T
   rw [hT] at h
-  have h' : (2 : ℝ) • (sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T)) = (2 : ℝ) • T := by
-    rw [← sub_eq_zero]
-    have : -(3 : ℝ) • T + (2 : ℝ) • (sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T))
-        - -T = 0 := by rw [← h]; abel
-    rw [← this]; module
-  exact smul_right_injective _ (two_ne_zero) h'
+  linear_combination (norm := module) (-1 / 2 : ℝ) • h
 
 /-- **Charge one**: if `δ² T = −T` then `J₁J₂J₃ T = δ T`. -/
 lemma sl_triple_of_charge_one {T : ι → ι → ι → ℝ} (hT : der3 J (der3 J T) = -T) :
@@ -970,10 +965,7 @@ lemma sq₄_con (T T' : ι → ι → ι → ℝ) : sq₄ J (con T T') = con T (
 lemma con_sl₃ (T T' : ι → ι → ι → ℝ) : con (sl₃ J T) T' + con T (sl₃ J T') = 0 := by
   funext a b c d
   simp only [con, sl₃_apply, Pi.add_apply, Pi.zero_apply]
-  have h := anti_slot0 hJ.anti (fun p => T a b p) (fun x => T' c d x)
-  have e : ∑ x, T a b x * ∑ p, J x p * T' c d p = -∑ x, (∑ p, J x p * T a b p) * T' c d x := by
-    rw [h, neg_neg]
-  rw [e]; ring
+  rw [anti_slot0 hJ.anti (T a b) (T' c d), neg_add_cancel]
 
 /-- `(J₃U) ⋆ (J₃U') = U ⋆ U'` (`JᵀJ = 1`). -/
 lemma con_sl₃_sl₃ (T T' : ι → ι → ι → ℝ) : con (sl₃ J T) (sl₃ J T') = con T T' := by
@@ -994,11 +986,7 @@ lemma der4_con (T T' : ι → ι → ι → ℝ) :
     der4 J (con T T') = con (der3 J T) T' + con T (der3 J T') := by
   rw [der4_apply, sq₁_con, sq₂_con, sq₃_con, sq₄_con, der3_apply', der3_apply', con_add_left,
     con_add_left, con_add_right, con_add_right]
-  have h := con_sl₃ hJ T T'
-  calc con (sl₁ J T) T' + con (sl₂ J T) T' + con T (sl₁ J T') + con T (sl₂ J T')
-      = con (sl₁ J T) T' + con (sl₂ J T) T' + con T (sl₁ J T') + con T (sl₂ J T')
-        + (con (sl₃ J T) T' + con T (sl₃ J T')) := by rw [h, add_zero]
-    _ = _ := by abel
+  linear_combination (norm := module) -con_sl₃ hJ T T'
 
 omit hJ in
 /-- `δ` commutes with the symmetrisation. -/
@@ -1042,12 +1030,10 @@ lemma om4_sym4 (T : T4 ι) : om4 J (sym4 T) = sym4 (om4 J T) := by
     refine Finset.sum_congr rfl fun q _ => ?_
     conv_rhs => rw [Finset.sum_comm]
     exact Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun s _ => by ring
-  have hs : sym4 T = (1 / 3 : ℝ) • (T + (fun a b c d => T a c b d) + fun a b c d => T a d b c) := by
+  have hs : ∀ T : T4 ι, sym4 T = (1 / 3 : ℝ) • (T + (fun a b c d => T a c b d)
+      + fun a b c d => T a d b c) := fun T => by
     funext a b c d; simp only [sym4, Pi.smul_apply, Pi.add_apply, smul_eq_mul]; ring
-  have hs' : sym4 (om4 J T) = (1 / 3 : ℝ) • (om4 J T + (fun a b c d => om4 J T a c b d)
-      + fun a b c d => om4 J T a d b c) := by
-    funext a b c d; simp only [sym4, Pi.smul_apply, Pi.add_apply, smul_eq_mul]; ring
-  rw [hs, hs', map_smul, map_add, map_add, e23 T, e234 T]
+  rw [hs T, hs (om4 J T), map_smul, map_add, map_add, e23 T, e234 T]
 
 /-! Slot permutations. -/
 
@@ -1191,12 +1177,17 @@ lemma ip4_kerSmm (hJ : IsCplx J) (f : ι → ι → ι → ℝ) :
     ip4_K12 hJ, ip4_K34 hJ, K12_sq hJ, K34_sq hJ, K12_K34]
   ring
 
-/-- **The charge-two block of `S`** for a pair of symmetric kernels with `δf = −g`, `δg = f`:
-`tt = h/6 − ‖M‖²/24`, `M = Sym(g ⋆ f + f ⋆ g)`. -/
-theorem tenTT_eq_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
+/-- The charge data of `S = kerS f`: with `h = ‖S‖²` and `m = ‖M‖²`,
+`⟨S, K₁₂ S⟩ = ⟨S, K₃₄ S⟩ = (4h − m)/12`, `⟨S, Ω S⟩ = h − m/2`. -/
+lemma kerS_charge_data (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
     (hf : ∀ a b c, f a b c = f b a c) (hdf : der3 J f = -g) (hdg : der3 J g = f) :
-    tenTT f J = tenH f / 6
-      - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 24 := by
+    ip4 (kerS f) (sq₁ J (sq₂ J (kerS f)))
+        = (4 * ip4 (kerS f) (kerS f)
+          - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g))) / 12
+    ∧ ip4 (kerS f) (sq₃ J (sq₄ J (kerS f))) = ip4 (kerS f) (sq₁ J (sq₂ J (kerS f)))
+    ∧ ip4 (kerS f) (sq₁ J (sq₂ J (sq₃ J (sq₄ J (kerS f)))))
+        = ip4 (kerS f) (kerS f)
+          - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 2 := by
   have h1 : der4 J (kerS f) = -sym4 (con g f + con f g) := by
     rw [kerS_eq_sym4, der4_sym4, der4_con hJ, hdf, con_neg_left, con_neg_right, ← neg_add,
       sym4_neg]
@@ -1211,8 +1202,7 @@ theorem tenTT_eq_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
     rw [ip4_der4_sq hJ, h1, ip4_neg_left, ip4_neg_right, neg_neg]
   have h5 : ip4 (kerS f) (sym4 (con g g))
       = ip4 (kerS f) (kerS f) - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 2 := by
-    have := h4
-    rw [h3, ip4_add_right, ip4_smul_right, ip4_smul_right] at this
+    rw [h3, ip4_add_right, ip4_smul_right, ip4_smul_right] at h4
     linarith
   have h6 : ip4 (kerS f) (der4 J (der4 J (kerS f)))
       = -4 * ip4 (kerS f) (kerS f) + 12 * ip4 (kerS f) (sq₁ J (sq₂ J (kerS f))) := by
@@ -1225,10 +1215,18 @@ theorem tenTT_eq_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
   have h7 : om4 J (kerS f) = sym4 (con g g) := by
     rw [kerS_eq_sym4, om4_sym4, om4_con hJ, sl_triple_of_charge_one hJ hff, hdf, con_neg_left,
       con_neg_right, neg_neg]
-  have h8 : ip4 (kerS f) (sq₃ J (sq₄ J (sq₁ J (sq₂ J (kerS f))))) = ip4 (kerS f) (sym4 (con g g)) := by
-    rw [← K12_K34, ← om4_apply, h7]
-  rw [tenTT_eq_ip4, ip4_kerSmm hJ, tenH_eq_ip4, ip4_K34_eq (kerS_swP' hf), h8, h5]
-  linarith
+  refine ⟨by linarith, ip4_K34_eq (kerS_swP' hf), ?_⟩
+  rw [← om4_apply, h7, h5]
+
+/-- **The charge-two block of `S`** for a pair of symmetric kernels with `δf = −g`, `δg = f`:
+`tt = h/6 − ‖M‖²/24`, `M = Sym(g ⋆ f + f ⋆ g)`. -/
+theorem tenTT_eq_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
+    (hf : ∀ a b c, f a b c = f b a c) (hdf : der3 J f = -g) (hdg : der3 J g = f) :
+    tenTT f J = tenH f / 6
+      - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 24 := by
+  obtain ⟨hk, hk', hw⟩ := kerS_charge_data hJ hf hdf hdg
+  rw [tenTT_eq_ip4, ip4_kerSmm hJ, tenH_eq_ip4, hk', ← K12_K34, hw, hk]
+  ring
 
 /-- `tt ≤ h/6` for a pair of symmetric kernels with `δf = −g`, `δg = f`. -/
 theorem tenTT_le_sixth_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
@@ -1245,6 +1243,12 @@ theorem tenTT_le_sixth [DecidableEq ι] {a b : MvPolynomial ι ℝ} (hc : Circul
 end block
 
 
+
+omit [Fintype ι] in
+/-- The `(23)` symmetry of a kernel symmetric under `(12)` and `(13)`. -/
+private lemma hf23_of {f : ι → ι → ι → ℝ} (hf : ∀ a b c, f a b c = f b a c)
+    (hf13 : ∀ a b c, f a b c = f c b a) (a b c : ι) : f a c b = f a b c := by
+  rw [hf13 a c b, hf b c a, ← hf13 a b c]
 
 /-! ### Sum bookkeeping -/
 
@@ -1388,8 +1392,7 @@ lemma sumK_identity (hf : ∀ a b c, f a b c = f b a c) (hf13 : ∀ a b c, f a b
         + 36 * kerC f p i q i * (36 * kerC f p l q l) + 36 * kerC f p i q l * (36 * kerC f p l q i))
         - 1 / 2 * (∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l))))
     = 324 * (∑ i, ∑ j, ∑ k, f i j k ^ 2) ^ 2 + 3240 * tenS f + 1296 * cQ f := by
-  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
-    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  have hf23 := hf23_of hf hf13
   have hcyc : ∀ a b c, f a b c = f b c a := fun a b c => by rw [hf a b c, hf23 b a c]
   -- the seven sums
   have T1 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i p i * (36 * kerC f q l q l)
@@ -1406,23 +1409,23 @@ lemma sumK_identity (hf : ∀ a b c, f a b c = f b a c) (hf13 : ∀ a b c, f a b
   have T3 : ∑ i, ∑ l, (∑ p, 36 * kerC f p i p i) * (∑ q, 36 * kerC f q l q l)
       = (36 * ∑ i, ∑ j, ∑ k, f i j k ^ 2) ^ 2 := by
     simp only [Finset.sum_mul_sum]; exact T1
+  have hG : ∑ i, ∑ l, 36 * kerG f i l * (36 * kerG f i l) = 1296 * tenS f := by
+    unfold tenS
+    simp only [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
   have T4 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i p l * (36 * kerC f q i q l) = 1296 * tenS f := by
     have e : ∀ i l, ∑ p, ∑ q, 36 * kerC f p i p l * (36 * kerC f q i q l)
         = (36 * kerG f i l) * (36 * kerG f i l) := fun i l => by
       rw [← Finset.sum_mul_sum, ← Finset.mul_sum, sum_kerC_trace hf23]
     simp only [e]
-    unfold tenS
-    simp only [Finset.mul_sum]
-    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
+    exact hG
   have T5 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i q i * (36 * kerC f p l q l) = 1296 * tenS f := by
     rw [← swap4 (fun p q i l => 36 * kerC f p i q i * (36 * kerC f p l q l))]
     have e : ∀ p q, ∑ i, ∑ l, 36 * kerC f p i q i * (36 * kerC f p l q l)
         = (36 * kerG f p q) * (36 * kerG f p q) := fun p q => by
       rw [← Finset.sum_mul_sum, ← Finset.mul_sum, sum_kerC_trace' hcyc]
     simp only [e]
-    unfold tenS
-    simp only [Finset.mul_sum]
-    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
+    exact hG
   have T6 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i q l * (36 * kerC f p l q i) = 1296 * cQ f := by
     rw [sum4_reorder (fun a b c d => 36 * kerC f a b c d * (36 * kerC f a d c b)), ← sum_C13 hf]
     simp only [Finset.mul_sum]
@@ -1434,9 +1437,7 @@ lemma sumK_identity (hf : ∀ a b c, f a b c = f b a c) (hf13 : ∀ a b c, f a b
         = (36 * kerG f i l) * (36 * kerG f i l) := fun i l => by
       rw [← Finset.mul_sum, sum_kerC_trace hf23]
     simp only [e]
-    unfold tenS
-    simp only [Finset.mul_sum]
-    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
+    exact hG
   -- split the sum
   have split : ∀ i l, (1 / 2 * ((∑ p, ∑ q, (36 * kerC f p i p i * (36 * kerC f q l q l)
         + 36 * kerC f p i q l * (36 * kerC f p i q l) + 36 * kerC f p i q l * (36 * kerC f p i q l))
@@ -1512,8 +1513,7 @@ theorem Chaos3.wick4 {F : MvPolynomial ι ℝ} (hF : Chaos3 F) :
   have hf12 : ∀ a b c, cubicKernel F a b c = cubicKernel F b a c := cubicKernel_symm12 F
   have hf13 : ∀ a b c, cubicKernel F a b c = cubicKernel F c b a := fun a b c => by
     unfold cubicKernel; rw [kern_rev]
-  have hf23 : ∀ a b c, cubicKernel F a c b = cubicKernel F a b c := fun a b c => by
-    rw [hf13 a c b, hf12 b c a, ← hf13 a b c]
+  have hf23 := hf23_of hf12 hf13
   have hcyc : ∀ a b c, cubicKernel F a b c = cubicKernel F b c a := fun a b c => by
     rw [hf12 a b c, hf23 b a c]
   -- first-chaos data
@@ -1646,8 +1646,7 @@ theorem Chaos3.wick4 {F : MvPolynomial ι ℝ} (hF : Chaos3 F) :
       - 9 * E (F * F) ^ 2 := by
     have e1 : J4 E F = gam F F - 2 * comp2 E F F - C (3 * E (F * F)) := by rw [hΓd]; ring
     have h1 : E (J4 E F * J4 E F) = E (J4 E F * gam F F) := by
-      conv_lhs => rw [show J4 E F * J4 E F
-        = J4 E F * (gam F F - 2 * comp2 E F F - C (3 * E (F * F))) by rw [← e1]]
+      nth_rw 2 [e1]
       rw [mul_sub, mul_sub, map_sub, map_sub,
         show J4 E F * (2 * comp2 E F F) = 2 * (J4 E F * comp2 E F F) by ring, ofNat_mul_apply,
         o42, mul_comm (J4 E F) (C _), C_mul_apply, m4]
@@ -1800,8 +1799,7 @@ include hJ hf hf13 hdf hdg
 
 omit hJ hdf hdg in
 lemma Q4_K13_eq : Q4 (sl₁ J (sl₃ J f)) f f f = Q4 (sl₁ J (sl₂ J f)) f f f := by
-  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
-    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  have hf23 := hf23_of hf hf13
   rw [Q4_swap24 (sl₁ J (sl₂ J f)) f f f]
   congr 1
   · funext a b x
@@ -1814,8 +1812,7 @@ lemma Q4_K13_eq : Q4 (sl₁ J (sl₃ J f)) f f f = Q4 (sl₁ J (sl₂ J f)) f f 
 
 omit hJ hdf hdg in
 lemma Q4_K23_eq : Q4 (sl₂ J (sl₃ J f)) f f f = Q4 (sl₁ J (sl₂ J f)) f f f := by
-  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
-    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  have hf23 := hf23_of hf hf13
   rw [Q4_swap23 (sl₁ J (sl₂ J f)) f f f]
   congr 1
   · funext a b x
@@ -1847,8 +1844,7 @@ lemma Q4_sl₃_sl₃ : Q4 (sl₃ J f) f (sl₃ J f) f = 0 := by
 
 omit hdf hdg in
 lemma Q4_sl₁_sl₂ : Q4 (sl₁ J f) (sl₂ J f) f f = 0 := by
-  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
-    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  have hf23 := hf23_of hf hf13
   rw [Q4_swap23, ← Q4_sl₃_sl₃ hJ hf]
   congr 1
   · funext a b x; simp only [sl₁_apply, sl₃_apply]
@@ -1860,8 +1856,7 @@ lemma Q4_sl₁_sl₂ : Q4 (sl₁ J f) (sl₂ J f) f f = 0 := by
 
 omit hdf hdg in
 lemma Q4_sl₂_sl₁ : Q4 (sl₂ J f) (sl₁ J f) f f = 0 := by
-  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
-    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  have hf23 := hf23_of hf hf13
   have h0 : Q4 (sl₃ J f) f f (sl₃ J f) = 0 := by
     have := Q4_sl₃' hJ (sl₃ J f) f f f
     rw [Q4_sl₃_sl₃ hJ hf] at this
@@ -1993,18 +1988,20 @@ lemma three_ip4_sym4 {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
   rw [sum_X13 hX]
   ring
 
-/-- `0 ≤ ‖X − θ Sym X‖² = ‖X‖² + k_θ ‖Sym X‖²`. -/
-lemma sector_nonneg {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
-    0 ≤ ip4 X X + kC * ip4 (sym4 X) (sym4 X) := by
-  have h := ip4_self_nonneg (X - thetaC • sym4 X)
-  rw [ip4_sub_left, ip4_sub_right, ip4_sub_right, ip4_smul_left, ip4_smul_right, ip4_smul_left,
-    ip4_smul_right, ip4_comm (sym4 X) X] at h
+/-- `‖X − θ Sym X‖² = ‖X‖² + k_θ ‖Sym X‖²`. -/
+private lemma sector_eq {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
+    ip4 (X - thetaC • sym4 X) (X - thetaC • sym4 X) = ip4 X X + kC * ip4 (sym4 X) (sym4 X) := by
   have h1 := three_ip4_sym4 hX
   have h2 := nine_sym4_sq hX
   have hXP : ip4 X (sym4 X) = ip4 (sym4 X) (sym4 X) := by linarith
-  rw [hXP] at h
-  unfold kC
-  linarith
+  rw [ip4_sub_left, ip4_sub_right, ip4_sub_right, ip4_smul_left, ip4_smul_right, ip4_smul_left,
+    ip4_smul_right, ip4_comm (sym4 X) X, hXP, kC]
+  ring
+
+/-- `0 ≤ ‖X − θ Sym X‖² = ‖X‖² + k_θ ‖Sym X‖²`. -/
+lemma sector_nonneg {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
+    0 ≤ ip4 X X + kC * ip4 (sym4 X) (sym4 X) :=
+  sector_eq hX ▸ ip4_self_nonneg _
 
 variable {J : ι → ι → ℝ} (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
   (hf : ∀ a b c, f a b c = f b a c) (hg : ∀ a b c, g a b c = g b a c)
@@ -2311,14 +2308,7 @@ lemma charge0_sum (T : T4 ι) (hT : om4 J T = T) (hd : der4 J T = 0) :
     T = sq₁ J (sq₂ J T) + sq₁ J (sq₃ J T) + sq₁ J (sq₄ J T) := by
   have h := der4_sq hJ T
   rw [hd, map_zero, K34_of_om hJ T hT, K24_of_om hJ T hT, K23_of_om hJ T hT] at h
-  have key : (0 : T4 ι) = -(4 : ℝ) • T + (2 : ℝ) • (sq₁ J (sq₂ J T) + sq₁ J (sq₃ J T)
-      + sq₁ J (sq₄ J T) + sq₁ J (sq₄ J T) + sq₁ J (sq₃ J T) + sq₁ J (sq₂ J T)) := h
-  have h2 : (4 : ℝ) • T = (4 : ℝ) • (sq₁ J (sq₂ J T) + sq₁ J (sq₃ J T) + sq₁ J (sq₄ J T)) := by
-    rw [← sub_eq_zero, show (4 : ℝ) • T - (4 : ℝ) • (sq₁ J (sq₂ J T) + sq₁ J (sq₃ J T) + sq₁ J (sq₄ J T))
-      = -(-(4 : ℝ) • T + (2 : ℝ) • (sq₁ J (sq₂ J T) + sq₁ J (sq₃ J T)
-      + sq₁ J (sq₄ J T) + sq₁ J (sq₄ J T) + sq₁ J (sq₃ J T) + sq₁ J (sq₂ J T))) by module, ← key,
-      neg_zero]
-  exact smul_right_injective _ (by norm_num : (4 : ℝ) ≠ 0) h2
+  linear_combination (norm := module) (1 / 4 : ℝ) • h
 
 end permtool
 
@@ -2517,31 +2507,8 @@ include hJ
 
 /-- `tr(G J G J) = 2η − s`. -/
 lemma trace_GJGJ [DecidableEq ι] (f : ι → ι → ι → ℝ) :
-    (matG f * (matJ J * matG f * matJ J)).trace = 2 * tenGa f J - tenS f := by
-  have hJt := matJ_transpose hJ.anti
-  have hJJ := matJ_sq hJ.sq_diag hJ.sq_off
-  set Jm := matJ J with hJm
-  set G := matG f with hG
-  have hGt : Gᵀ = G := matG_transpose f
-  have hsym : (Jm * G * Jm)ᵀ = Jm * G * Jm := by
-    rw [Matrix.transpose_mul, Matrix.transpose_mul, hJt, hGt, Matrix.neg_mul, Matrix.mul_neg,
-      Matrix.mul_neg, neg_neg, Matrix.mul_assoc]
-  have h2 : ((Jm * G * Jm) * (Jm * G * Jm)).trace = (G * G).trace := by
-    rw [show Jm * G * Jm * (Jm * G * Jm) = Jm * G * (Jm * Jm) * G * Jm by
-      simp only [Matrix.mul_assoc], hJJ, Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul,
-      Matrix.neg_mul, Matrix.trace_neg, Matrix.trace_mul_comm (Jm * G * G) Jm,
-      show Jm * (Jm * G * G) = (Jm * Jm) * G * G by simp only [Matrix.mul_assoc], hJJ,
-      Matrix.neg_mul, Matrix.neg_mul, Matrix.one_mul, Matrix.trace_neg, neg_neg]
-  have hS : tenS f = (G * G).trace := by rw [tenS_eq_trace, hGt]
-  have hM : (G + Jm * G * Jm)ᵀ = G + Jm * G * Jm := by rw [Matrix.transpose_add, hGt, hsym]
-  have hGa : tenGa f J = 1 / 4 * ((G * G).trace + (G * (Jm * G * Jm)).trace
-      + ((Jm * G * Jm) * G).trace + ((Jm * G * Jm) * (Jm * G * Jm)).trace) := by
-    rw [tenGa_eq_trace, Matrix.transpose_smul, hM, Matrix.smul_mul, Matrix.mul_smul, smul_smul,
-      Matrix.trace_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.trace_add,
-      Matrix.trace_add, Matrix.trace_add, smul_eq_mul]
-    ring
-  rw [hGa, Matrix.trace_mul_comm (Jm * G * Jm) G, h2, hS]
-  ring
+    (matG f * (matJ J * matG f * matJ J)).trace = 2 * tenGa f J - tenS f :=
+  trace_GJGJ_aux f hJ.anti hJ.sq_diag hJ.sq_off
 
 omit hJ in
 /-- `⟨T₁ ⋆ T₂, T₃ ⋆ T₄⟩ = Σ_{e e'} (T₁ᵀT₃)_{e e'} (T₂ᵀT₄)_{e e'}`. -/
@@ -3050,6 +3017,21 @@ lemma ip4_K34_eq_K12_of_swP (Y : T4 ι) (hs : swP Y = Y ∨ swP Y = -Y) :
   · rw [h]
   · rw [h, map_neg, map_neg, ip4_neg_left, ip4_neg_right, neg_neg]
 
+/-- `⟨X, K₁₂ X⟩ = ⟨X₀, K₁₂ X₀⟩` for `X` symmetric or antisymmetric under the pair swap. -/
+private lemma ip4_K12_ch0 (X : T4 ι) (hs : swP X = X ∨ swP X = -X) :
+    ip4 X (sq₁ J (sq₂ J X)) = ip4 (ch0 J X) (sq₁ J (sq₂ J (ch0 J X))) := by
+  have h0 : ip4 (ch0 J X) (sq₁ J (sq₂ J (ch2 J X))) = 0 := by
+    rw [← ch2_sq₂, ← ch2_sq₁, ip4_ch0_ch2 hJ]
+  have h2 : ip4 (ch2 J X) (sq₁ J (sq₂ J (ch2 J X))) = 0 :=
+    ip4_K12_charge2 hJ _ (om4_ch2 hJ _) (ip4_K34_eq_K12_of_swP hJ _ (hs.imp
+      (fun h => by rw [← ch2_swP, h]) (fun h => by rw [← ch2_swP, h, ch2_neg])))
+  have h3 : ip4 (ch2 J X) (sq₁ J (sq₂ J (ch0 J X))) = 0 := by rw [← ip4_K12 hJ, ip4_comm, h0]
+  have e : ip4 (ch0 J X + ch2 J X) (sq₁ J (sq₂ J (ch0 J X + ch2 J X)))
+      = ip4 (ch0 J X) (sq₁ J (sq₂ J (ch0 J X))) := by
+    rw [map_add, map_add, ip4_add_left, ip4_add_right, ip4_add_right, h0, h2, h3]
+    ring
+  rwa [ch0_add_ch2] at e
+
 include hf hg hf13 hdf hdg
 
 local notation "aC" => ch0 J (con f f)
@@ -3377,32 +3359,12 @@ local notation "x₁" => (1 / 2 : ℝ) • (ch0 J (con f f) - sq₁ J (ch0 J (te
 local notation "yy" => ch0 J (con f f) - sq₁ J (sq₂ J (ch0 J (con f f)))
 
 /-- `⟨C, K₁₂ C⟩ = ⟨a, K₁₂ a⟩`. -/
-lemma ip4_C_K12C : ip4 (con f f) (sq₁ J (sq₂ J (con f f))) = ip4 aC (sq₁ J (sq₂ J aC)) := by
-  have h0 : ip4 aC (sq₁ J (sq₂ J (ch2 J (con f f)))) = 0 := by
-    rw [← ch2_sq₂, ← ch2_sq₁, ip4_ch0_ch2 hJ]
-  have h2 : ip4 (ch2 J (con f f)) (sq₁ J (sq₂ J (ch2 J (con f f)))) = 0 :=
-    ip4_K12_charge2 hJ _ (om4_ch2 hJ _) (ip4_K34_eq_K12_of_swP hJ _ (Or.inl (by
-      rw [← ch2_swP, swP_C])))
-  have h3 : ip4 (ch2 J (con f f)) (sq₁ J (sq₂ J aC)) = 0 := by rw [← ip4_K12 hJ, ip4_comm, h0]
-  have e : ip4 (aC + ch2 J (con f f)) (sq₁ J (sq₂ J (aC + ch2 J (con f f))))
-      = ip4 aC (sq₁ J (sq₂ J aC)) := by
-    rw [map_add, map_add, ip4_add_left, ip4_add_right, ip4_add_right, h0, h2, h3]
-    ring
-  rwa [ch0_add_ch2] at e
+lemma ip4_C_K12C : ip4 (con f f) (sq₁ J (sq₂ J (con f f))) = ip4 aC (sq₁ J (sq₂ J aC)) :=
+  ip4_K12_ch0 hJ _ (Or.inl swP_C)
 
 /-- `⟨B, K₁₂ B⟩ = ⟨b, K₁₂ b⟩`. -/
-lemma ip4_B_K12B : ip4 (tenB J f) (sq₁ J (sq₂ J (tenB J f))) = ip4 bB (sq₁ J (sq₂ J bB)) := by
-  have h0 : ip4 bB (sq₁ J (sq₂ J (ch2 J (tenB J f)))) = 0 := by
-    rw [← ch2_sq₂, ← ch2_sq₁, ip4_ch0_ch2 hJ]
-  have h2 : ip4 (ch2 J (tenB J f)) (sq₁ J (sq₂ J (ch2 J (tenB J f)))) = 0 :=
-    ip4_K12_charge2 hJ _ (om4_ch2 hJ _) (ip4_K34_eq_K12_of_swP hJ _ (Or.inr (by
-      rw [← ch2_swP, swP_B hJ, ch2_neg])))
-  have h3 : ip4 (ch2 J (tenB J f)) (sq₁ J (sq₂ J bB)) = 0 := by rw [← ip4_K12 hJ, ip4_comm, h0]
-  have e : ip4 (bB + ch2 J (tenB J f)) (sq₁ J (sq₂ J (bB + ch2 J (tenB J f))))
-      = ip4 bB (sq₁ J (sq₂ J bB)) := by
-    rw [map_add, map_add, ip4_add_left, ip4_add_right, ip4_add_right, h0, h2, h3]
-    ring
-  rwa [ch0_add_ch2] at e
+lemma ip4_B_K12B : ip4 (tenB J f) (sq₁ J (sq₂ J (tenB J f))) = ip4 bB (sq₁ J (sq₂ J bB)) :=
+  ip4_K12_ch0 hJ _ (Or.inr (swP_B hJ))
 
 /-- **The `G`-level square** `‖G₀ − 3 J M₀‖² ≥ 0`, as `0 ≤ 10 ‖a‖² − 8 ‖C₂‖² − 4η − 6κ`. -/
 lemma gsquare_nonneg [DecidableEq ι] :
@@ -3644,8 +3606,7 @@ lemma ip4_eq_sum_row (X X' : T4 ι) : ip4 X X' = ∑ a, ∑ b, ip2 (row X a b) (
 lemma ip2_sq_le (v w : T2 ι) : ip2 v w ^ 2 ≤ ip2 v v * ip2 w w := by
   have := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (ι × ι)) (fun p => v p.1 p.2)
     (fun p => w p.1 p.2)
-  simp only [ip2, Fintype.sum_prod_type, sq] at this ⊢
-  exact this
+  simpa only [ip2, Fintype.sum_prod_type, sq] using this
 
 /-- `‖X v‖² ≤ ‖X‖² ‖v‖²`. -/
 lemma ip2_ap4_le (X : T4 ι) (v : T2 ι) : ip2 (ap4 X v) (ap4 X v) ≤ ip4 X X * ip2 v v := by
@@ -3674,8 +3635,7 @@ lemma ip2_ap4_self_sq_le (X : T4 ι) (v : T2 ι) :
 lemma ip4_sq_le (X Y : T4 ι) : ip4 X Y ^ 2 ≤ ip4 X X * ip4 Y Y := by
   have := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (ι × ι × ι × ι))
     (fun p => X p.1 p.2.1 p.2.2.1 p.2.2.2) (fun p => Y p.1 p.2.1 p.2.2.1 p.2.2.2)
-  simp only [ip4, Fintype.sum_prod_type, sq] at this ⊢
-  exact this
+  simpa only [ip4, Fintype.sum_prod_type, sq] using this
 
 /-! The complex structure `𝒥 = J ⊗ 1` on pairs. -/
 
@@ -3836,6 +3796,18 @@ lemma K13_compswP (Y : T4 ι) :
   exact Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun f _ =>
     Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => by ring
 
+/-- The sums behind `ip4_lin_compswP_le` and `ip4_anti_compswP_le`. -/
+private lemma compswP_sums (Y : T4 ι) :
+    ip4 (comp Y (swP Y)) (sq₁ J (sq₃ J (comp Y (swP Y))))
+        = ∑ e, ∑ f, ∑ e', ∑ f', ip2 (col Y e f) (jp J (col Y e' f')) ^ 2
+      ∧ ip4 Y Y ^ 2 = ∑ e, ∑ f, ∑ e', ∑ f',
+        ip2 (col Y e f) (col Y e f) * ip2 (col Y e' f') (col Y e' f') := by
+  refine ⟨by simp only [K13_compswP, ip4_compswP, col_sq₁], ?_⟩
+  rw [ip4_eq_sum_col, sq, Finset.sum_mul_sum]
+  refine Finset.sum_congr rfl fun e _ => ?_
+  simp only [Finset.sum_mul_sum]
+  rw [Finset.sum_comm]
+
 include hJ
 
 /-- `2 ‖((Y Yᵀ) + K₁₃ (Y Yᵀ))/2‖² ≤ ‖Y‖⁴`. -/
@@ -3843,10 +3815,7 @@ lemma ip4_lin_compswP_le (Y : T4 ι) :
     2 * ip4 ((1 / 2 : ℝ) • (comp Y (swP Y) + sq₁ J (sq₃ J (comp Y (swP Y)))))
       ((1 / 2 : ℝ) • (comp Y (swP Y) + sq₁ J (sq₃ J (comp Y (swP Y)))))
       ≤ ip4 Y Y ^ 2 := by
-  have hK : ip4 (comp Y (swP Y)) (sq₁ J (sq₃ J (comp Y (swP Y))))
-      = ∑ e, ∑ f, ∑ e', ∑ f', ip2 (col Y e f) (jp J (col Y e' f')) ^ 2 := by
-    rw [K13_compswP, ip4_compswP]
-    simp only [col_sq₁]
+  obtain ⟨hK, hY⟩ := compswP_sums (J := J) Y
   have hS := ip4_compswP Y Y
   have e : ip4 ((1 / 2 : ℝ) • (comp Y (swP Y) + sq₁ J (sq₃ J (comp Y (swP Y)))))
       ((1 / 2 : ℝ) • (comp Y (swP Y) + sq₁ J (sq₃ J (comp Y (swP Y)))))
@@ -3858,12 +3827,6 @@ lemma ip4_lin_compswP_le (Y : T4 ι) :
         = ip4 (comp Y (swP Y)) (comp Y (swP Y)) := by rw [ip4_K13 hJ, K13_sq hJ]
     rw [ip4_smul_left, ip4_smul_right, ip4_add_left, ip4_add_right, ip4_add_right, e1, e2]
     ring
-  have hY : ip4 Y Y ^ 2 = ∑ e, ∑ f, ∑ e', ∑ f',
-      ip2 (col Y e f) (col Y e f) * ip2 (col Y e' f') (col Y e' f') := by
-    rw [ip4_eq_sum_col, sq, Finset.sum_mul_sum]
-    refine Finset.sum_congr rfl fun e _ => ?_
-    simp only [Finset.sum_mul_sum]
-    rw [Finset.sum_comm]
   rw [e, hK, hS, hY, ← Finset.sum_add_distrib]
   simp only [← Finset.sum_add_distrib]
   rw [mul_div_cancel₀ _ (two_ne_zero)]
@@ -3875,10 +3838,7 @@ lemma ip4_anti_compswP_le (Y : T4 ι) :
     2 * ip4 ((1 / 2 : ℝ) • (comp Y (swP Y) - sq₁ J (sq₃ J (comp Y (swP Y)))))
       ((1 / 2 : ℝ) • (comp Y (swP Y) - sq₁ J (sq₃ J (comp Y (swP Y)))))
       ≤ ip4 Y Y ^ 2 := by
-  have hK : ip4 (comp Y (swP Y)) (sq₁ J (sq₃ J (comp Y (swP Y))))
-      = ∑ e, ∑ f, ∑ e', ∑ f', ip2 (col Y e f) (jp J (col Y e' f')) ^ 2 := by
-    rw [K13_compswP, ip4_compswP]
-    simp only [col_sq₁]
+  obtain ⟨hK, hY⟩ := compswP_sums (J := J) Y
   have hS := ip4_compswP Y Y
   have e : ip4 ((1 / 2 : ℝ) • (comp Y (swP Y) - sq₁ J (sq₃ J (comp Y (swP Y)))))
       ((1 / 2 : ℝ) • (comp Y (swP Y) - sq₁ J (sq₃ J (comp Y (swP Y)))))
@@ -3890,12 +3850,6 @@ lemma ip4_anti_compswP_le (Y : T4 ι) :
         = ip4 (comp Y (swP Y)) (comp Y (swP Y)) := by rw [ip4_K13 hJ, K13_sq hJ]
     rw [ip4_smul_left, ip4_smul_right, ip4_sub_left, ip4_sub_right, ip4_sub_right, e1, e2]
     ring
-  have hY : ip4 Y Y ^ 2 = ∑ e, ∑ f, ∑ e', ∑ f',
-      ip2 (col Y e f) (col Y e f) * ip2 (col Y e' f') (col Y e' f') := by
-    rw [ip4_eq_sum_col, sq, Finset.sum_mul_sum]
-    refine Finset.sum_congr rfl fun e _ => ?_
-    simp only [Finset.sum_mul_sum]
-    rw [Finset.sum_comm]
   rw [e, hK, hS, hY, ← Finset.sum_sub_distrib]
   simp only [← Finset.sum_sub_distrib]
   rw [mul_div_cancel₀ _ (two_ne_zero)]
@@ -3978,22 +3932,28 @@ lemma ip4_Q0_Q2 (X Y : T4 ι) : ip4 (Q0 J X) (Q2 J Y) = 0 := by
     conv_lhs => rw [← K34_Q0 hJ X, ip4_K34 hJ, K34_Q2 hJ, ip4_neg_right]
   linarith
 
+/-- Polarisation of the block decomposition: `⟨X, Y⟩ = Σ_{ac} ⟨X_{ac}, Y_{ac}⟩`. -/
+lemma ip4_blocks (X Y : T4 ι) :
+    ip4 X Y = ip4 (P0 J (Q0 J X)) (P0 J (Q0 J Y)) + ip4 (P0 J (Q2 J X)) (P0 J (Q2 J Y))
+      + ip4 (P2 J (Q0 J X)) (P2 J (Q0 J Y)) + ip4 (P2 J (Q2 J X)) (P2 J (Q2 J Y)) := by
+  have hQ : ∀ X Y : T4 ι, ip4 X Y = ip4 (Q0 J X) (Q0 J Y) + ip4 (Q2 J X) (Q2 J Y) := fun X Y => by
+    conv_lhs => rw [← Q0_add_Q2 (J := J) X, ← Q0_add_Q2 (J := J) Y]
+    rw [ip4_add_left, ip4_add_right, ip4_add_right, ip4_Q0_Q2 hJ, ip4_comm (Q2 J X) (Q0 J Y),
+      ip4_Q0_Q2 hJ]
+    ring
+  have hP : ∀ X Y : T4 ι, ip4 X Y = ip4 (P0 J X) (P0 J Y) + ip4 (P2 J X) (P2 J Y) := fun X Y => by
+    conv_lhs => rw [← P0_add_P2 (J := J) X, ← P0_add_P2 (J := J) Y]
+    rw [ip4_add_left, ip4_add_right, ip4_add_right, ip4_P0_P2 hJ, ip4_comm (P2 J X) (P0 J Y),
+      ip4_P0_P2 hJ]
+    ring
+  rw [hQ X Y, hP (Q0 J X) (Q0 J Y), hP (Q2 J X) (Q2 J Y)]
+  ring
+
 /-- `‖X‖² = ‖X₀₀‖² + ‖X₀₂‖² + ‖X₂₀‖² + ‖X₂₂‖²`. -/
 lemma ip4_self_blocks (X : T4 ι) :
     ip4 X X = ip4 (P0 J (Q0 J X)) (P0 J (Q0 J X)) + ip4 (P0 J (Q2 J X)) (P0 J (Q2 J X))
-      + ip4 (P2 J (Q0 J X)) (P2 J (Q0 J X)) + ip4 (P2 J (Q2 J X)) (P2 J (Q2 J X)) := by
-  have hQ : ∀ Y : T4 ι, ip4 Y Y = ip4 (Q0 J Y) (Q0 J Y) + ip4 (Q2 J Y) (Q2 J Y) := fun Y => by
-    conv_lhs => rw [← Q0_add_Q2 (J := J) Y]
-    rw [ip4_add_left, ip4_add_right, ip4_add_right, ip4_Q0_Q2 hJ, ip4_comm (Q2 J Y) (Q0 J Y),
-      ip4_Q0_Q2 hJ]
-    ring
-  have hP : ∀ Y : T4 ι, ip4 Y Y = ip4 (P0 J Y) (P0 J Y) + ip4 (P2 J Y) (P2 J Y) := fun Y => by
-    conv_lhs => rw [← P0_add_P2 (J := J) Y]
-    rw [ip4_add_left, ip4_add_right, ip4_add_right, ip4_P0_P2 hJ, ip4_comm (P2 J Y) (P0 J Y),
-      ip4_P0_P2 hJ]
-    ring
-  rw [hQ X, hP (Q0 J X), hP (Q2 J X)]
-  ring
+      + ip4 (P2 J (Q0 J X)) (P2 J (Q0 J X)) + ip4 (P2 J (Q2 J X)) (P2 J (Q2 J X)) :=
+  ip4_blocks hJ X X
 
 /-! Blocks and composition: `K₃₄` on the input of `X` is `K₁₂` on the output of `Y`. -/
 
@@ -4114,6 +4074,21 @@ lemma block_comp (X Y : T4 ι) (Pa : T4 ι → T4 ι) (Qc : T4 ι → T4 ι)
     Pa (Qc (comp X Y)) = comp (Q0 J (Pa X)) (P0 J (Qc Y)) + comp (Q2 J (Pa X)) (P2 J (Qc Y)) := by
   rw [hQ, hP, comp_blocks hJ]
 
+/-- The four blocks of `X ∘ X`. -/
+private lemma blocks_comp_self (X : T4 ι) :
+    P0 J (Q0 J (comp X X))
+        = comp (P0 J (Q0 J X)) (P0 J (Q0 J X)) + comp (P0 J (Q2 J X)) (P2 J (Q0 J X))
+      ∧ P0 J (Q2 J (comp X X))
+        = comp (P0 J (Q0 J X)) (P0 J (Q2 J X)) + comp (P0 J (Q2 J X)) (P2 J (Q2 J X))
+      ∧ P2 J (Q0 J (comp X X))
+        = comp (P2 J (Q0 J X)) (P0 J (Q0 J X)) + comp (P2 J (Q2 J X)) (P2 J (Q0 J X))
+      ∧ P2 J (Q2 J (comp X X))
+        = comp (P2 J (Q0 J X)) (P0 J (Q2 J X)) + comp (P2 J (Q2 J X)) (P2 J (Q2 J X)) :=
+  ⟨by rw [block_comp hJ X X (P0 J) (Q0 J) P0_comp Q0_comp, ← P0_Q0, ← P0_Q2],
+    by rw [block_comp hJ X X (P0 J) (Q2 J) P0_comp Q2_comp, ← P0_Q0, ← P0_Q2],
+    by rw [block_comp hJ X X (P2 J) (Q0 J) P2_comp Q0_comp, ← P2_Q0, ← P2_Q2],
+    by rw [block_comp hJ X X (P2 J) (Q2 J) P2_comp Q2_comp, ← P2_Q0, ← P2_Q2]⟩
+
 /-! Transposes of blocks. -/
 
 omit hJ in
@@ -4207,47 +4182,6 @@ lemma K13_Q2 [Fintype ι] (X : T4 ι) : sq₁ J (sq₃ J (Q2 J X)) = Q2 J (sq₁
 
 include hJ hf hdf hdg
 
-/-- The charge data of `S = kerS f`: with `h = ‖S‖²` and `m = ‖M‖²`,
-`⟨S, K₁₂ S⟩ = ⟨S, K₃₄ S⟩ = (4h − m)/12`, `⟨S, Ω S⟩ = h − m/2`. -/
-lemma kerS_charge_data :
-    ip4 (kerS f) (sq₁ J (sq₂ J (kerS f)))
-        = (4 * ip4 (kerS f) (kerS f)
-          - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g))) / 12
-    ∧ ip4 (kerS f) (sq₃ J (sq₄ J (kerS f))) = ip4 (kerS f) (sq₁ J (sq₂ J (kerS f)))
-    ∧ ip4 (kerS f) (sq₁ J (sq₂ J (sq₃ J (sq₄ J (kerS f)))))
-        = ip4 (kerS f) (kerS f)
-          - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 2 := by
-  have h1 : der4 J (kerS f) = -sym4 (con g f + con f g) := by
-    rw [kerS_eq_sym4, der4_sym4, der4_con hJ, hdf, con_neg_left, con_neg_right, ← neg_add,
-      sym4_neg]
-  have h2 : der4 J (sym4 (con g f + con f g)) = (2 : ℝ) • (kerS f - sym4 (con g g)) := by
-    rw [der4_sym4, map_add, der4_con hJ, der4_con hJ, hdf, hdg, con_neg_left, con_neg_right,
-      show con f f + -con g g + (-con g g + con f f) = (2 : ℝ) • (con f f - con g g) by module,
-      sym4_smul, sym4_sub, kerS_eq_sym4]
-  have h3 : der4 J (der4 J (kerS f)) = -(2 : ℝ) • kerS f + (2 : ℝ) • sym4 (con g g) := by
-    rw [h1, map_neg, h2]; module
-  have h4 : ip4 (kerS f) (der4 J (der4 J (kerS f)))
-      = -ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) := by
-    rw [ip4_der4_sq hJ, h1, ip4_neg_left, ip4_neg_right, neg_neg]
-  have h5 : ip4 (kerS f) (sym4 (con g g))
-      = ip4 (kerS f) (kerS f) - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 2 := by
-    have := h4
-    rw [h3, ip4_add_right, ip4_smul_right, ip4_smul_right] at this
-    linarith
-  have h6 : ip4 (kerS f) (der4 J (der4 J (kerS f)))
-      = -4 * ip4 (kerS f) (kerS f) + 12 * ip4 (kerS f) (sq₁ J (sq₂ J (kerS f))) := by
-    rw [der4_sq hJ, ip4_add_right, ip4_smul_right, ip4_smul_right, ip4_add_right, ip4_add_right,
-      ip4_add_right, ip4_add_right, ip4_add_right, ip4_K13_eq (kerS_sw23' hf),
-      ip4_K14_eq (kerS_sw24' hf), ip4_K23_eq (kerS_sw13' hf), ip4_K24_eq (kerS_sw14' hf),
-      ip4_K34_eq (kerS_swP' hf)]
-    ring
-  have hff : der3 J (der3 J f) = -f := by rw [hdf, map_neg, hdg]
-  have h7 : om4 J (kerS f) = sym4 (con g g) := by
-    rw [kerS_eq_sym4, om4_sym4, om4_con hJ, sl_triple_of_charge_one hJ hff, hdf, con_neg_left,
-      con_neg_right, neg_neg]
-  refine ⟨by linarith, ip4_K34_eq (kerS_swP' hf), ?_⟩
-  rw [← om4_apply, h7, h5]
-
 local notation "S" => kerS f
 local notation "τ" => tenTT f J
 local notation "hh" => ip4 (kerS f) (kerS f)
@@ -4301,9 +4235,7 @@ lemma K13_S22 : sq₁ J (sq₃ J (P2 J (Q2 J S))) = P2 J (Q2 J S) := by
     rw [ip4_sub_left, ip4_sub_right, ip4_sub_right, e3, e1, e2,
       ip4_comm (sq₁ J (sq₃ J (P2 J (Q2 J S)))) (P2 J (Q2 J S)), e1]
     ring
-  have := ip4_self_eq_zero h0
-  rw [sub_eq_zero] at this
-  exact this.symm
+  exact (sub_eq_zero.1 (ip4_self_eq_zero h0)).symm
 
 end Sblocks
 
@@ -4362,15 +4294,7 @@ theorem trace4_of_der : tenT4 f ≤ tenH f ^ 2 / 2 + 8 * tenH f * tenTT f J - 48
   have hK := K13_S22 hJ hf hdf hdg
   have hT := S02_eq_swP (J := J) hf
   -- the blocks of `S²`
-  have b00 : P0 J (Q0 J (comp S S))
-      = comp (P0 J (Q0 J S)) (P0 J (Q0 J S)) + comp (P0 J (Q2 J S)) (P2 J (Q0 J S)) := by
-    rw [block_comp hJ S S (P0 J) (Q0 J) P0_comp Q0_comp, ← P0_Q0, ← P0_Q2]
-  have b20 : P2 J (Q0 J (comp S S))
-      = comp (P2 J (Q0 J S)) (P0 J (Q0 J S)) + comp (P2 J (Q2 J S)) (P2 J (Q0 J S)) := by
-    rw [block_comp hJ S S (P2 J) (Q0 J) P2_comp Q0_comp, ← P2_Q0, ← P2_Q2]
-  have b22 : P2 J (Q2 J (comp S S))
-      = comp (P2 J (Q0 J S)) (P0 J (Q2 J S)) + comp (P2 J (Q2 J S)) (P2 J (Q2 J S)) := by
-    rw [block_comp hJ S S (P2 J) (Q2 J) P2_comp Q2_comp, ← P2_Q0, ← P2_Q2]
+  obtain ⟨b00, -, b20, b22⟩ := blocks_comp_self hJ S
   have b02 : P0 J (Q2 J (comp S S)) = swP (P2 J (Q0 J (comp S S))) := by
     rw [swP_P2, swP_Q0, swP_comp, kerS_swP' hf, P0_Q2]
   -- bounds
@@ -4446,8 +4370,7 @@ theorem trace4_of_der : tenT4 f ≤ tenH f ^ 2 / 2 + 8 * tenH f * tenTT f J - 48
     linarith [hA', hL', hN', a3, a3', o1, o1', o2, o2']
   -- assemble
   rw [hT4, ip4_self_blocks hJ (comp S S), hH]
-  have := add_le_add (add_le_add (add_le_add B00 B02) B20) B22
-  linarith [this]
+  linarith
 
 end trace4
 
@@ -4464,24 +4387,6 @@ section trace3
 
 variable {J : ι → ι → ℝ} (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
   (hf : ∀ a b c, f a b c = f b a c) (hdf : der3 J f = -g) (hdg : der3 J g = f)
-
-include hJ in
-/-- Polarisation of the block decomposition: `⟨X, Y⟩ = Σ_{ac} ⟨X_{ac}, Y_{ac}⟩`. -/
-lemma ip4_blocks (X Y : T4 ι) :
-    ip4 X Y = ip4 (P0 J (Q0 J X)) (P0 J (Q0 J Y)) + ip4 (P0 J (Q2 J X)) (P0 J (Q2 J Y))
-      + ip4 (P2 J (Q0 J X)) (P2 J (Q0 J Y)) + ip4 (P2 J (Q2 J X)) (P2 J (Q2 J Y)) := by
-  have hQ : ∀ X Y : T4 ι, ip4 X Y = ip4 (Q0 J X) (Q0 J Y) + ip4 (Q2 J X) (Q2 J Y) := fun X Y => by
-    conv_lhs => rw [← Q0_add_Q2 (J := J) X, ← Q0_add_Q2 (J := J) Y]
-    rw [ip4_add_left, ip4_add_right, ip4_add_right, ip4_Q0_Q2 hJ, ip4_comm (Q2 J X) (Q0 J Y),
-      ip4_Q0_Q2 hJ]
-    ring
-  have hP : ∀ X Y : T4 ι, ip4 X Y = ip4 (P0 J X) (P0 J Y) + ip4 (P2 J X) (P2 J Y) := fun X Y => by
-    conv_lhs => rw [← P0_add_P2 (J := J) X, ← P0_add_P2 (J := J) Y]
-    rw [ip4_add_left, ip4_add_right, ip4_add_right, ip4_P0_P2 hJ, ip4_comm (P2 J X) (P0 J Y),
-      ip4_P0_P2 hJ]
-    ring
-  rw [hQ X Y, hP (Q0 J X) (Q0 J Y), hP (Q2 J X) (Q2 J Y)]
-  ring
 
 include hJ hf hdf hdg
 
@@ -4517,18 +4422,7 @@ theorem trace3_of_der : tenT3 f ≤ √(tenTT f J) * (9 * tenH f / 2 - 17 * tenT
   have hT := S02_eq_swP (J := J) hf
   have h22T := swP_S22 (J := J) hf
   -- the blocks of `S²`
-  have b00 : P0 J (Q0 J (comp S S))
-      = comp (P0 J (Q0 J S)) (P0 J (Q0 J S)) + comp (P0 J (Q2 J S)) (P2 J (Q0 J S)) := by
-    rw [block_comp hJ S S (P0 J) (Q0 J) P0_comp Q0_comp, ← P0_Q0, ← P0_Q2]
-  have b02 : P0 J (Q2 J (comp S S))
-      = comp (P0 J (Q0 J S)) (P0 J (Q2 J S)) + comp (P0 J (Q2 J S)) (P2 J (Q2 J S)) := by
-    rw [block_comp hJ S S (P0 J) (Q2 J) P0_comp Q2_comp, ← P0_Q0, ← P0_Q2]
-  have b20 : P2 J (Q0 J (comp S S))
-      = comp (P2 J (Q0 J S)) (P0 J (Q0 J S)) + comp (P2 J (Q2 J S)) (P2 J (Q0 J S)) := by
-    rw [block_comp hJ S S (P2 J) (Q0 J) P2_comp Q0_comp, ← P2_Q0, ← P2_Q2]
-  have b22 : P2 J (Q2 J (comp S S))
-      = comp (P2 J (Q0 J S)) (P0 J (Q2 J S)) + comp (P2 J (Q2 J S)) (P2 J (Q2 J S)) := by
-    rw [block_comp hJ S S (P2 J) (Q2 J) P2_comp Q2_comp, ← P2_Q0, ← P2_Q2]
+  obtain ⟨b00, b02, b20, b22⟩ := blocks_comp_self hJ S
   -- `(00)`
   have C00 : ip4 (P0 J (Q0 J (comp S S))) (P0 J (Q0 J S)) ≤ 8 * t ^ 3 + 2 * t * ρ := by
     rw [b00, ip4_add_left]
@@ -4711,9 +4605,7 @@ lemma K13_P2Q2_of (X : T4 ι) (h34 : ip4 X (sq₃ J (sq₄ J X)) = ip4 X (sq₁ 
     rw [ip4_sub_left, ip4_sub_right, ip4_sub_right, e3, e1, e2,
       ip4_comm (sq₁ J (sq₃ J (P2 J (Q2 J X)))) (P2 J (Q2 J X)), e1]
     ring
-  have := ip4_self_eq_zero h0
-  rw [sub_eq_zero] at this
-  exact this.symm
+  exact (sub_eq_zero.1 (ip4_self_eq_zero h0)).symm
 
 include hf hdf hdg
 
@@ -4732,16 +4624,7 @@ lemma sumK_C : sq₁ J (sq₂ J C) + sq₁ J (sq₃ J C) + sq₁ J (sq₄ J C) +
       map_sub, map_sub, K12_sq hJ, K34_sq hJ, ← om4_apply, ← K12_K34, ← om4_apply]
     module
   rw [h2] at h1
-  have h3 : (2 : ℝ) • (sq₁ J (sq₂ J C) + sq₁ J (sq₃ J C) + sq₁ J (sq₄ J C) + sq₂ J (sq₃ J C)
-      + sq₂ J (sq₄ J C) + sq₃ J (sq₄ J C)) = (2 : ℝ) • (C + om4 J C) := by
-    rw [← sub_eq_zero]
-    have : (2 : ℝ) • (sq₁ J (sq₂ J C) + sq₁ J (sq₃ J C) + sq₁ J (sq₄ J C) + sq₂ J (sq₃ J C)
-        + sq₂ J (sq₄ J C) + sq₃ J (sq₄ J C)) - (2 : ℝ) • (C + om4 J C)
-        = (-(4 : ℝ) • C + (2 : ℝ) • (sq₁ J (sq₂ J C)
-          + sq₁ J (sq₃ J C) + sq₁ J (sq₄ J C) + sq₂ J (sq₃ J C) + sq₂ J (sq₄ J C)
-          + sq₃ J (sq₄ J C))) - (-(2 : ℝ) • C + (2 : ℝ) • om4 J C) := by module
-    rw [this, ← h1, sub_self]
-  exact smul_right_injective _ (two_ne_zero) h3
+  linear_combination (norm := module) (-1 / 2 : ℝ) • h1
 
 /-- `K₁₃ C₂₂ = C₂₂`. -/
 lemma K13_C22 : sq₁ J (sq₃ J (P2 J (Q2 J C))) = P2 J (Q2 J C) := by
@@ -4802,7 +4685,6 @@ theorem chargeSplit_of_der : tenU2 f ≤ thetaC * tenT3 f
         * (9 * tenH f * tenTT f J - 54 * tenTT f J ^ 2)) := by
   obtain ⟨hs, hhS, hq, hm, htt, hC0, hC2, hS0, hS2, hS0n, hS2n⟩ :=
     sector_data hJ hf hg hf13 hdf hdg
-  have hk : kC = thetaC ^ 2 - 2 * thetaC := rfl
   have hH : tenH f = hh := tenH_eq_ip4 f
   have hτ0 : 0 ≤ τ := tenTT_nonneg f J
   -- `W = C − θ S`
@@ -4822,12 +4704,7 @@ theorem chargeSplit_of_der : tenU2 f ≤ thetaC * tenT3 f
       rw [map_sub, map_smul, kerS_eq_sym4, om4_sym4, om4_C hJ hdf hdg]; module
     have hXs : ∀ a b c d, X a b d c = X a b c d := fun a b c d => by
       rw [hX0]; simp only [Pi.smul_apply, Pi.add_apply, con, hf d c, hg d c]
-    have h1 := three_ip4_sym4 hXs
-    have h2 := nine_sym4_sq hXs
-    have e2 : ip4 X (sym4 X) = ip4 (sym4 X) (sym4 X) := by linarith
-    rw [e0]
-    simp only [ip4_sub_left, ip4_sub_right, ip4_smul_left, ip4_smul_right]
-    rw [ip4_comm (sym4 X) X, e2, hS0n, hC0, hs, hhS, htt, hk]
+    rw [e0, sector_eq hXs, hS0n, hC0, hs, hhS, htt]
     linarith [hq, hm]
   have hA2 : ip4 (ch2 J W) (ch2 J W)
       = tenS f / 3 + (2 + kC) * tenH f - (18 + 6 * kC) * tenTT f J := by
@@ -4839,12 +4716,7 @@ theorem chargeSplit_of_der : tenU2 f ≤ thetaC * tenT3 f
       rw [map_sub, map_smul, kerS_eq_sym4, om4_sym4, om4_C hJ hdf hdg]; module
     have hXs : ∀ a b c d, X a b d c = X a b c d := fun a b c d => by
       rw [hX0]; simp only [Pi.smul_apply, Pi.sub_apply, con, hf d c, hg d c]
-    have h1 := three_ip4_sym4 hXs
-    have h2 := nine_sym4_sq hXs
-    have e2 : ip4 X (sym4 X) = ip4 (sym4 X) (sym4 X) := by linarith
-    rw [e0]
-    simp only [ip4_sub_left, ip4_sub_right, ip4_smul_left, ip4_smul_right]
-    rw [ip4_comm (sym4 X) X, e2, hS2n, hC2, hs, hhS, htt, hk]
+    rw [e0, sector_eq hXs, hS2n, hC2, hs, hhS, htt]
     linarith [hq, hm]
   have hA0nn : 0 ≤ ip4 (ch0 J W) (ch0 J W) := ip4_self_nonneg _
   have hA2nn : 0 ≤ ip4 (ch2 J W) (ch2 J W) := ip4_self_nonneg _
@@ -4859,15 +4731,7 @@ theorem chargeSplit_of_der : tenU2 f ≤ thetaC * tenT3 f
   have hK := K13_S22 hJ hf hdf hdg
   have hT := S02_eq_swP (J := J) hf
   -- the blocks of `S²`
-  have b00 : P0 J (Q0 J (comp S S))
-      = comp (P0 J (Q0 J S)) (P0 J (Q0 J S)) + comp (P0 J (Q2 J S)) (P2 J (Q0 J S)) := by
-    rw [block_comp hJ S S (P0 J) (Q0 J) P0_comp Q0_comp, ← P0_Q0, ← P0_Q2]
-  have b20 : P2 J (Q0 J (comp S S))
-      = comp (P2 J (Q0 J S)) (P0 J (Q0 J S)) + comp (P2 J (Q2 J S)) (P2 J (Q0 J S)) := by
-    rw [block_comp hJ S S (P2 J) (Q0 J) P2_comp Q0_comp, ← P2_Q0, ← P2_Q2]
-  have b22 : P2 J (Q2 J (comp S S))
-      = comp (P2 J (Q0 J S)) (P0 J (Q2 J S)) + comp (P2 J (Q2 J S)) (P2 J (Q2 J S)) := by
-    rw [block_comp hJ S S (P2 J) (Q2 J) P2_comp Q2_comp, ← P2_Q0, ← P2_Q2]
+  obtain ⟨b00, -, b20, b22⟩ := blocks_comp_self hJ S
   have b02 : P0 J (Q2 J (comp S S)) = swP (P2 J (Q0 J (comp S S))) := by
     rw [swP_P2, swP_Q0, swP_comp, kerS_swP' hf, P0_Q2]
   -- bounds on the blocks of `S²`

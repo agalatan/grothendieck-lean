@@ -36,8 +36,8 @@ lemma ph_neg (a : ℂ) : Grothe.Haag.ph (-a) = -Grothe.Haag.ph a := by
 theorem canonicalCoefficient_neg (A : ℝ) (i : ℕ × ℕ) :
     canonicalCoefficient (-A) i = (-1 : ℂ) ^ (i.1 + i.2 + 1) * canonicalCoefficient A i := by
   unfold canonicalCoefficient
-  rw [← integral_rot_gaussC (-1 : ℂ) (by simp) (fun w => conj (hfun i w) * Grothe.Haag.ph ((A : ℂ) + w))]
-  rw [← integral_const_mul]
+  rw [← integral_rot_gaussC (-1 : ℂ) (by simp)
+      (fun w => conj (hfun i w) * Grothe.Haag.ph ((A : ℂ) + w)), ← integral_const_mul]
   apply integral_congr_ae
   filter_upwards with w
   simp only [neg_one_mul]
@@ -59,9 +59,7 @@ theorem gauss_remainder_of_poly_approx {n : ℕ} (l h : ℝ) (hlh : l ≤ h) (no
     (f : ℝ → ℝ) (hf : IntervalIntegrable f volume l h) (p : Polynomial ℝ) (hp : p.natDegree < 2 * n)
     {ε : ℝ} (hε : ∀ s ∈ Set.Icc l h, |f s - p.eval s| ≤ ε) :
     |(∫ s in l..h, f s) - ∑ i, weight i * f (node i)| ≤ 2 * (h - l) * ε := by
-  have hε0 : 0 ≤ ε := by
-    have := hε l (Set.left_mem_Icc.mpr hlh)
-    exact (abs_nonneg _).trans this
+  have hε0 : 0 ≤ ε := (abs_nonneg _).trans (hε l (Set.left_mem_Icc.mpr hlh))
   have hsum : ∑ i, weight i = h - l := by
     have h1 := hexact (Polynomial.C 1) (by simp; omega)
     simp only [Polynomial.eval_C, mul_one] at h1
@@ -92,27 +90,20 @@ theorem gauss_remainder_of_poly_approx {n : ℕ} (l h : ℝ) (hlh : l ≤ h) (no
           rw [abs_mul, abs_of_nonneg (hweight i), abs_sub_comm]
           exact mul_le_mul_of_nonneg_left (hε (node i) (hnode i)) (hweight i)
       _ = ε * (h - l) := by rw [← Finset.sum_mul, hsum, mul_comm]
-  calc |(∫ s in l..h, (f s - p.eval s)) + ∑ i, weight i * (p.eval (node i) - f (node i))|
-      ≤ |∫ s in l..h, (f s - p.eval s)| + |∑ i, weight i * (p.eval (node i) - f (node i))| :=
-        abs_add_le _ _
-    _ ≤ ε * (h - l) + ε * (h - l) := add_le_add hI hS
-    _ = 2 * (h - l) * ε := by ring
+  exact (abs_add_le _ _).trans ((add_le_add hI hS).trans_eq (by ring))
 
 /-! ### The affine transfer to the reference interval -/
 
 /-- `∫_l^h g = ((h − l)/2) ∫_{−1}^{1} g(panelNode l h x) dx`. -/
 theorem integral_panel_eq_affine (l h : ℝ) (hlh : l < h) (g : ℝ → ℝ) :
     ∫ s in l..h, g s = ((h - l) / 2) * ∫ x in (-1 : ℝ)..1, g (panelNode l h x) := by
-  have hc : (h - l) / 2 ≠ 0 := by
-    have : 0 < h - l := by linarith
-    positivity
+  have hc : (h - l) / 2 ≠ 0 := div_ne_zero (sub_ne_zero.mpr hlh.ne') two_ne_zero
   have hg : ∀ x, g (panelNode l h x) = g (((h - l) / 2) * x + (l + (h - l) / 2)) := by
     intro x; unfold panelNode; ring_nf
   simp_rw [hg]
   rw [intervalIntegral.integral_comp_mul_add g hc (l + (h - l) / 2), smul_eq_mul]
   have e1 : (h - l) / 2 * (-1) + (l + (h - l) / 2) = l := by ring
   have e2 : (h - l) / 2 * 1 + (l + (h - l) / 2) = h := by ring
-  have hne : h - l ≠ 0 := by linarith
   rw [e1, e2, ← mul_assoc, mul_inv_cancel₀ hc, one_mul]
 
 /-- The physical rule of a panel is exact on the polynomials of degree `< 2n` when the reference

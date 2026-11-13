@@ -170,7 +170,7 @@ lemma linL_ae (c : Fin n → ℂ) :
       filter_upwards [Lp.coeFn_smul (c l) (zL n l), MemLp.coeFn_toLp (memLp_zc n l)] with x hx hz
       rw [hx, Pi.smul_apply, smul_eq_mul, zL, hz]
   filter_upwards [h1, h2] with x hx hx2
-  rw [hx]; exact Finset.sum_congr rfl fun l _ => hx2 l
+  exact hx.trans (Finset.sum_congr rfl fun l _ => hx2 l)
 
 /-- **The first chaos is Gaussian**: `E|w| = (√π/2) ‖w‖` for `w = Σₗ cₗ zₗ`. -/
 lemma integral_norm_linL (c : Fin n → ℂ) :
@@ -221,34 +221,38 @@ lemma integral_norm_linL (c : Fin n → ℂ) :
       · ring
       · exact Integrable.comp_fst (integrable_pow_gaussian 2) _
       · exact Integrable.comp_snd (integrable_pow_gaussian 2) _
-    have h4 : ((‖w‖ ^ 2 : ℝ) : ℂ) = ((2 * s ^ 2 : ℝ) : ℂ) := by
-      rw [Complex.ofReal_pow, ← h3]; exact h.symm
-    exact Complex.ofReal_injective h4
+    exact Complex.ofReal_injective (by rw [Complex.ofReal_pow, ← h3]; exact h.symm)
   have e3 : ‖w‖ = √2 * s := by
     rw [← Real.sqrt_sq (norm_nonneg w), e2, Real.sqrt_mul (by norm_num), Real.sqrt_sq hs.le]
   rw [e1, e3]; ring
+
+/-- `‖Π h‖² = Re⟪h, Π h⟫ ≤ E|Π h|` for a projection of a function bounded by one. -/
+private lemma norm_sq_starProjection_le_integral (K : Submodule ℂ (L2G n))
+    [K.HasOrthogonalProjection] {h : L2G n} (hh : ∀ᵐ x ∂(stdGaussian (n + n)), ‖h x‖ ≤ 1) :
+    ‖K.starProjection h‖ ^ 2 ≤ ∫ x, ‖K.starProjection h x‖ ∂(stdGaussian (n + n)) := by
+  rw [← re_inner_starProjection K h]
+  calc (inner ℂ h (K.starProjection h)).re ≤ ‖inner ℂ h (K.starProjection h)‖ :=
+        Complex.re_le_norm _
+    _ ≤ ∫ x, ‖conj (h x) * K.starProjection h x‖ ∂(stdGaussian (n + n)) := by
+        rw [inner_L2]
+        exact norm_integral_le_integral_norm _
+    _ ≤ _ := integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _)
+        ((Lp.memLp _).integrable one_le_two).norm (by
+          filter_upwards [hh] with x hx
+          rw [norm_mul, Complex.norm_conj]
+          exact mul_le_of_le_one_left (norm_nonneg _) hx)
 
 /-- **`‖P₁,₀ h‖ ≤ √π/2` for `|h| ≤ 1` a.e.** (the paper's `t ≤ E|z₁| = √π/2`): `‖Ph‖² = Re⟪h, Ph⟫
 ≤ E|Ph| = (√π/2)‖Ph‖` since `Ph` is a complex Gaussian. -/
 theorem norm_starProjection_H10_le (h : L2G n) (hh : ∀ᵐ x ∂(stdGaussian (n + n)), ‖h x‖ ≤ 1) :
     ‖(H10 n).starProjection h‖ ≤ √Real.pi / 2 := by
   obtain ⟨w, hw⟩ : ∃ w : L2G n, w = (H10 n).starProjection h := ⟨_, rfl⟩
-  have hmem : w ∈ H10 n := by rw [hw, Submodule.starProjection_apply]; exact Submodule.coe_mem _
-  obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hmem
+  obtain ⟨c, hc⟩ :=
+    (Submodule.mem_span_range_iff_exists_fun ℂ).1 (hw ▸ (H10 n).starProjection_apply_mem h)
   have hw2 : ‖w‖ ^ 2 ≤ (√Real.pi / 2) * ‖w‖ := by
-    have e := re_inner_starProjection (H10 n) h
+    have e := norm_sq_starProjection_le_integral n (H10 n) hh
     rw [← hw] at e
-    rw [← e]
-    calc (inner ℂ h w).re ≤ ‖inner ℂ h w‖ := Complex.re_le_norm _
-      _ ≤ ∫ x, ‖conj (h x) * w x‖ ∂(stdGaussian (n + n)) := by
-          rw [inner_L2]; exact norm_integral_le_integral_norm _
-      _ ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) :=
-          integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _)
-            ((Lp.memLp w).integrable one_le_two).norm (by
-              filter_upwards [hh] with x hx
-              rw [norm_mul, Complex.norm_conj]
-              exact mul_le_of_le_one_left (norm_nonneg _) hx)
-      _ = (√Real.pi / 2) * ‖w‖ := by rw [← hc]; exact integral_norm_linL n c
+    exact e.trans_eq (by rw [← hc]; exact integral_norm_linL n c)
   rw [← hw]
   rcases (norm_nonneg w).eq_or_lt with h0 | h0
   · rw [← h0]; positivity
@@ -313,8 +317,7 @@ theorem exists_wick_repr {ψ : L2G n} (hψ : ψ ∈ H21 n) :
     Submodule.sub_mem _ h2 (Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _
       (Submodule.mem_inf.1 (wickL_mem_H21 n _ _ _)).2)
   have h0 := Submodule.mem_inf.2 ⟨hmem, hperp⟩
-  rw [Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot, sub_eq_zero] at h0
-  exact h0
+  rwa [Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot, sub_eq_zero] at h0
 
 /-- The real part of `Σ_p c_p W_p`. -/
 def reP (c : Fin n × Fin n × Fin n → ℂ) : MvPolynomial (Fin (n + n)) ℝ :=
@@ -354,9 +357,7 @@ lemma wickL_ae (a b c : Fin n) :
     MemLp.coeFn_toLp (memLp_zc n b), MemLp.coeFn_toLp (memLp_zc n a)] with x h1 h2 h3 h4 h5 h6 h7
   rw [wickL, h1, Pi.sub_apply, h2, Pi.sub_apply, h3, h4, Pi.smul_apply, Pi.smul_apply, wL, h5, zL,
     zL, h6, h7, smul_eq_mul, smul_eq_mul]
-  apply Complex.ext
-  · simp only [eval_reW]
-  · simp only [eval_imW]
+  exact Complex.ext (by simp only [eval_reW]) (by simp only [eval_imW])
 
 lemma repr_ae (c : Fin n × Fin n × Fin n → ℂ) :
     ⇑(∑ p, c p • wickL n p.1 p.2.1 p.2.2 : L2G n) =ᵐ[stdGaussian (n + n)]
@@ -376,17 +377,17 @@ lemma repr_ae (c : Fin n × Fin n × Fin n → ℂ) :
     simp [reP, imP, Complex.re_sum, Complex.im_sum, Complex.mul_re, Complex.mul_im, map_sum,
       map_sub, map_add, map_mul, eval_C]
 
-/-- **The first-moment bound on `H₂,₁`**: `E|ψ| ≤ ρ` for every unit `ψ ∈ H₂,₁`. -/
-theorem integral_norm_le_rho_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n)
-    (h1 : ‖ψ‖ = 1) : ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) ≤ ρ := by
-  obtain ⟨c, rfl⟩ := exists_wick_repr n hψ
+/-- A unit combination `Σ_p c_p W_p` of Wick cubics has `E (Re)² = 1/2`. -/
+theorem integral_reP_sq_eq_half (c : Fin n × Fin n × Fin n → ℂ)
+    (h1 : ‖(∑ p, c p • wickL n p.1 p.2.1 p.2.2 : L2G n)‖ = 1) :
+    ∫ x, eval x (reP n c) ^ 2 ∂(stdGaussian (n + n)) = 1 / 2 := by
   obtain ⟨A, hA⟩ : ∃ A, A = reP n c := ⟨_, rfl⟩
   obtain ⟨B, hB⟩ : ∃ B, B = imP n c := ⟨_, rfl⟩
   obtain ⟨ψ, hψe⟩ : ∃ ψ : L2G n, ψ = ∑ p, c p • wickL n p.1 p.2.1 p.2.2 := ⟨_, rfl⟩
-  rw [← hψe] at h1 ⊢
+  rw [← hψe] at h1
+  rw [← hA]
   have hae : ⇑ψ =ᵐ[stdGaussian (n + n)] fun x => (⟨eval x A, eval x B⟩ : ℂ) := by
     rw [hψe, hA, hB]; exact repr_ae n c
-  have hA3 : Chaos3 A := hA ▸ chaos3_reP n c
   have hc : Circular (Jstd n) A B := hA ▸ hB ▸ circular_reP_imP n c
   have hE := gaussE_isGaussianExpectation (n + n)
   have hnorm : ∫ x, (eval x A ^ 2 + eval x B ^ 2) ∂(stdGaussian (n + n)) = 1 := by
@@ -400,20 +401,25 @@ theorem integral_norm_le_rho_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n)
       rw [hx, Complex.conj_mul', ← Complex.ofReal_pow, Complex.sq_norm, Complex.normSq_mk]
       push_cast; ring
     rw [h2] at h
-    have h3 : ((∫ x, (eval x A ^ 2 + eval x B ^ 2) ∂(stdGaussian (n + n)) : ℝ) : ℂ)
-        = ((1 : ℝ) : ℂ) := by rw [h]; norm_num
-    exact Complex.ofReal_injective h3
-  have hAB : ∫ x, eval x A ^ 2 ∂(stdGaussian (n + n)) = ∫ x, eval x B ^ 2 ∂(stdGaussian (n + n)) := by
+    exact Complex.ofReal_injective (by rw [h]; norm_num)
+  have hAB : ∫ x, eval x A ^ 2 ∂(stdGaussian (n + n))
+      = ∫ x, eval x B ^ 2 ∂(stdGaussian (n + n)) := by
     simpa only [gaussE_apply, map_mul, sq] using hc.gE_sq_eq hE
   have hiA : Integrable (fun x => eval x A ^ 2) (stdGaussian (n + n)) :=
     (integrable_eval (A ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
   have hiB : Integrable (fun x => eval x B ^ 2) (stdGaussian (n + n)) :=
     (integrable_eval (B ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
-  have hAA : ∫ x, eval x A ^ 2 ∂(stdGaussian (n + n)) = 1 / 2 := by
-    rw [integral_add hiA hiB] at hnorm; linarith
-  have hM := gaussian_moments A B hA3 hAA hc
+  rw [integral_add hiA hiB] at hnorm
+  linarith
+
+/-- **The first-moment bound on `H₂,₁`**: `E|ψ| ≤ ρ` for every unit `ψ ∈ H₂,₁`. -/
+theorem integral_norm_le_rho_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n)
+    (h1 : ‖ψ‖ = 1) : ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) ≤ ρ := by
+  obtain ⟨c, rfl⟩ := exists_wick_repr n hψ
+  have hM := gaussian_moments _ _ (chaos3_reP n c) (integral_reP_sq_eq_half n c h1)
+    (circular_reP_imP n c)
   refine le_trans (le_of_eq ?_) hM.mh
-  refine integral_congr_ae (hae.mono fun x hx => ?_)
+  refine integral_congr_ae ((repr_ae n c).mono fun x hx => ?_)
   simp only at hx ⊢
   rw [hx, Complex.norm_def, Complex.normSq_mk, radU]
   simp only [map_add, map_mul]
@@ -435,8 +441,7 @@ lemma norm_kOf_le {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
 theorem norm_starProjection_H21_le_rho {c : L2G n}
     (hc : ∀ᵐ x ∂(stdGaussian (n + n)), ‖c x‖ ≤ 1) : ‖(H21 n).starProjection c‖ ≤ ρ := by
   obtain ⟨w, hw⟩ : ∃ w : L2G n, w = (H21 n).starProjection c := ⟨_, rfl⟩
-  have hmem : w ∈ H21 n := by
-    rw [hw, Submodule.starProjection_apply]; exact Submodule.coe_mem _
+  have hmem : w ∈ H21 n := hw ▸ (H21 n).starProjection_apply_mem c
   rw [← hw]
   rcases (norm_nonneg w).eq_or_lt with h0 | h0
   · rw [← h0]; unfold ρ; norm_num
@@ -450,19 +455,8 @@ theorem norm_starProjection_H21_le_rho {c : L2G n}
     filter_upwards [Lp.coeFn_smul ((‖w‖ : ℂ)⁻¹) w] with x hx
     rw [hx, Pi.smul_apply, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm]
   rw [h4, inv_mul_le_iff₀ h0] at h3
-  have hw2 : ‖w‖ ^ 2 ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) := by
-    have e2 := re_inner_starProjection (H21 n) c
-    rw [← hw] at e2
-    rw [← e2]
-    calc (inner ℂ c w).re ≤ ‖inner ℂ c w‖ := Complex.re_le_norm _
-      _ ≤ ∫ x, ‖conj (c x) * w x‖ ∂(stdGaussian (n + n)) := by
-          rw [inner_L2]; exact norm_integral_le_integral_norm _
-      _ ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) :=
-          integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _)
-            ((Lp.memLp w).integrable one_le_two).norm (by
-              filter_upwards [hc] with x hx
-              rw [norm_mul, Complex.norm_conj]
-              exact mul_le_of_le_one_left (norm_nonneg _) hx)
+  have hw2 : ‖w‖ ^ 2 ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) :=
+    hw ▸ norm_sq_starProjection_le_integral n (H21 n) hc
   nlinarith
 
 /-- **The crude-row input** `‖P₂,₁ k‖ ≤ ρ` for a unimodular pair (L3), from the first-moment bound

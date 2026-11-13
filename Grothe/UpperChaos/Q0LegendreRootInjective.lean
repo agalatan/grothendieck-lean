@@ -12,14 +12,8 @@ theorem injective_of_ordered_brackets {n : ℕ} (lo hi : Fin n → ℝ)
   intro i j heq
   by_contra hne
   rcases lt_or_gt_of_ne hne with hij | hji
-  · have h := hsep i j hij
-    have hi := (hroot i).2
-    have hj := (hroot j).1
-    linarith
-  · have h := hsep j i hji
-    have hj := (hroot j).2
-    have hi := (hroot i).1
-    linarith
+  · linarith [hsep i j hij, (hroot i).2, (hroot j).1]
+  · linarith [hsep j i hji, (hroot j).2, (hroot i).1]
 
 
 /-- The same fact for an ordered list of integer brackets over a positive
@@ -38,8 +32,7 @@ theorem injective_of_ordered_integer_brackets (n : ℕ) (brackets : List (ℤ ×
     have hi : i.val < brackets.length := by simp [hcount, i.isLt]
     have hj : j.val < brackets.length := by simp [hcount, j.isLt]
     have hpair := hordered.rel_getElem_of_lt hi hj hij
-    have hDr : (0 : ℝ) < D := by exact_mod_cast hD
-    exact div_lt_div_of_pos_right (by exact_mod_cast hpair) hDr
+    exact div_lt_div_of_pos_right (by exact_mod_cast hpair) (by exact_mod_cast hD)
   · exact hroot
 
 end Grothe.UpperChaos.Q0LegendreInteger

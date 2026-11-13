@@ -74,8 +74,7 @@ theorem reflected_energy_le (q : ℕ) (e : ℕ × ℕ → ℂ) :
       ∑ i ∈ canonical q, ‖e i‖ ^ 2 := by
   calc
     _ ≤ ∑ i ∈ reflected q, ‖e (partner i)‖ ^ 2 := by
-      apply sum_le_sum
-      intro i hi
+      refine sum_le_sum fun i hi => ?_
       have hf0 : 0 ≤ factor i := Real.sqrt_nonneg _
       have hn : ‖(factor i : ℂ) * e (partner i)‖ ≤ ‖e (partner i)‖ := by
         rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hf0]
@@ -88,8 +87,7 @@ theorem reflected_energy_le (q : ℕ) (e : ℕ × ℕ → ℂ) :
       · intro i hi
         obtain ⟨j, hj, rfl⟩ := mem_image.mp hi
         exact partner_mem_canonical hj
-      · intro i _ _
-        exact sq_nonneg _
+      · exact fun _ _ _ => sq_nonneg _
 
 /-- Abstract squared-norm bound for the two disjoint output halves. -/
 theorem reconstruction_energy_le (q : ℕ) (e : ℕ × ℕ → ℂ) :
@@ -127,18 +125,13 @@ theorem full_head_reconstruction_norm_le (e : ℕ → ℕ × ℕ → ℂ) :
       (∑ i ∈ reflected q, ‖(factor i : ℂ) * e q (partner i)‖ ^ 2))) ≤
       2 * ∑ q ∈ range 251, ∑ i ∈ canonical q, ‖e q i‖ ^ 2 := by
     rw [mul_sum]
-    apply sum_le_sum
-    intro q _
-    exact reconstruction_energy_le q (e q)
+    exact sum_le_sum fun q _ => reconstruction_energy_le q (e q)
   have ha0 : 0 ≤ ∑ q ∈ range 251, ∑ i ∈ canonical q, ‖e q i‖ ^ 2 :=
     sum_nonneg (fun q _ => ha q)
   have ht0 : 0 ≤ ∑ q ∈ range 251,
       ((∑ i ∈ canonical q, ‖e q i‖ ^ 2) +
       (∑ i ∈ reflected q, ‖(factor i : ℂ) * e q (partner i)‖ ^ 2)) :=
-    by
-      apply sum_nonneg
-      intro q _
-      exact add_nonneg (ha q) (hb q)
+    sum_nonneg fun q _ => add_nonneg (ha q) (hb q)
   apply (sq_le_sq₀ (Real.sqrt_nonneg _)
     (mul_nonneg (by norm_num) (Real.sqrt_nonneg _))).mp
   rw [mul_pow, Real.sq_sqrt ht0, Real.sq_sqrt ha0]

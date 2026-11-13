@@ -58,6 +58,6 @@ theorem RowHolds.mix {ε ℓi βi Ci ℓj βj Cj V t : ℝ} (hε : 0 < ε) {Qh v
 lemma RowHolds.le {ε ℓ β C V t : ℝ} (hε : 0 ≤ ε) {Qh v : E} (h : RowHolds ε ℓ β C V t Qh v) :
     V ≤ t ^ 2 - 2 * ℓ * t + C := by
   unfold RowHolds at h
-  nlinarith [mul_nonneg hε (sq_nonneg ‖Qh + (β / ε) • v‖)]
+  linarith [mul_nonneg hε (sq_nonneg ‖Qh + (β / ε) • v‖)]
 
 end Grothe.LowerAnalytic

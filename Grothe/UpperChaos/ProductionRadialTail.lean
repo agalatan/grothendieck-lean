@@ -26,12 +26,12 @@ theorem norm_source_sq_le_exp (L : ℝ) (hL : 0 ≤ L) (j : ℕ) :
     (integrable_const 1).indicator (measurableSet_cutoffSet L)
   calc
     _ ≤ ∫ u, (cutoffSet L).indicator (fun _ => (1 : ℝ)) u ∂mu2 := by
-      apply integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _) hI
-      exact Filter.Eventually.of_forall fun u => by
-        by_cases hu : u ∈ cutoffSet L
-        · simp only [source, Set.indicator_of_mem hu]
-          nlinarith [TaylorSingularCut.norm_hpow_le_one j u, norm_nonneg (hpow j u)]
-        · simp [source, hu]
+      refine integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _) hI
+        (Filter.Eventually.of_forall fun u => ?_)
+      by_cases hu : u ∈ cutoffSet L
+      · simp only [source, Set.indicator_of_mem hu]
+        nlinarith [TaylorSingularCut.norm_hpow_le_one j u, norm_nonneg (hpow j u)]
+      · simp [source, hu]
     _ = mu2.real (cutoffSet L) := integral_indicator_one (measurableSet_cutoffSet L)
     _ = _ := measure_cutoffSet L hL
 
@@ -51,9 +51,8 @@ theorem norm_base_source_sq_eq_exp (L : ℝ) (hL : 0 ≤ L) :
 theorem exp_neg_seventy_lt : Real.exp (-70) < (5 / 10 ^ 15 : ℝ) ^ 2 := by
   have hp : (148 : ℝ) ^ 14 < Real.exp 70 := by
     calc
-      (148 : ℝ) ^ 14 < (Real.exp 5) ^ 14 := by
-        gcongr
-        exact exp_five_gt_148
+      (148 : ℝ) ^ 14 < (Real.exp 5) ^ 14 :=
+        pow_lt_pow_left₀ exp_five_gt_148 (by norm_num) (by norm_num)
       _ = Real.exp 70 := by
         rw [← Real.exp_nat_mul]
         norm_num

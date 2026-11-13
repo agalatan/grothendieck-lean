@@ -33,9 +33,7 @@ theorem shiftImSqI_sound {Ahi KP : ℝ} {ai ki u : Ival}
   have hden := mem_mulN EllCheck.P 2
     (mem_addI EllCheck.P (mem_one EllCheck.P) hsqrt)
   obtain ⟨hm, -⟩ := EllCheck.mem_dv (mem_mulI EllCheck.P hA hk2) hden h
-  constructor
-  · simpa only [sq] using hompos
-  · simpa only [sq, Nat.cast_ofNat] using hm
+  exact ⟨by simpa only [sq] using hompos, by simpa only [sq, Nat.cast_ofNat] using hm⟩
 
 /-- The primary Mehler expression, with the production degree and natural inverse powers. -/
 noncomputable def primarySq (g : Power) (tau X Y : ℝ) : ℝ :=

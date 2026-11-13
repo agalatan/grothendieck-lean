@@ -105,8 +105,7 @@ lemma degree_phaseTerm_le (y : ℝ) (t : (ℕ × ℕ × ℕ) × ℚ)
   have hR : (rCoord ^ (2 * t.1.1)).totalDegree ≤ 2 * t.1.1 := by
     simpa only [Nat.mul_one] using degree_pow_le degree_rCoord_le (2 * t.1.1)
   have hV : (xCoord ^ 2 + C ((y : ℂ) ^ 2)).totalDegree ≤ 2 := by
-    apply (totalDegree_add _ _).trans
-    apply max_le
+    refine (totalDegree_add _ _).trans (max_le ?_ ?_)
     · simpa only [Nat.mul_one] using degree_pow_le degree_xCoord_le 2
     · exact (totalDegree_C ((y : ℂ) ^ 2)).le.trans (by omega)
   have hW : (rCoord * xCoord).totalDegree ≤ 2 :=
@@ -127,8 +126,7 @@ private lemma degree_list_sum_le (l : List CPoly) (N : ℕ)
         (ih fun Q hQ ↦ hl Q (List.mem_cons_of_mem _ hQ)))
 
 lemma degree_phaseSum_le (y : ℝ) : (phaseSum y).totalDegree ≤ 34 := by
-  apply degree_list_sum_le
-  intro P hP
+  refine degree_list_sum_le _ _ fun P hP => ?_
   obtain ⟨t, ht, rfl⟩ := List.mem_map.mp hP
   exact degree_phaseTerm_le y t (phaseTerms_degree t ht)
 
@@ -163,10 +161,7 @@ lemma ev_phaseSum (y : ℝ) (z : ℂ) :
   simp only [ev, map_list_sum, List.map_map, Function.comp_def]
   rw [hcast]
   simp only [List.map_map, Function.comp_def]
-  apply congrArg List.sum
-  apply List.map_congr_left
-  intro t _
-  exact ev_phaseTerm y t z
+  exact congrArg List.sum (List.map_congr_left fun t _ => ev_phaseTerm y t z)
 
 lemma ev_phasePolynomial (y : ℝ) (z : ℂ) :
     ev z (phasePolynomial y) =
@@ -216,9 +211,8 @@ theorem norm_ev_phasePolynomial_le (y : ℝ) (z : ℂ) :
   have heq := congrArg norm (ev_phasePolynomial_damped y z)
   simp only [norm_mul, Complex.norm_real, Real.norm_eq_abs,
     abs_of_pos (Real.exp_pos _)] at heq
-  have hprod : ‖ev z (phasePolynomial y)‖ * Real.exp (-ε * normSq z) ≤ 1 := by
-    rw [heq]
-    exact hφ
+  have hprod : ‖ev z (phasePolynomial y)‖ * Real.exp (-ε * normSq z) ≤ 1 :=
+    heq.trans_le hφ
   calc
     ‖ev z (phasePolynomial y)‖ =
         (‖ev z (phasePolynomial y)‖ * Real.exp (-ε * normSq z)) *
@@ -278,10 +272,7 @@ theorem analyticAt_phaseComplex (y : ℝ) (z : ℂ × ℂ) :
     · change AnalyticAt ℂ (fun w : ℂ × ℂ ↦ w.1 - I * w.2) z
       fun_prop
   have hp := AnalyticAt.aeval_mvPolynomial hv (phasePolynomial y)
-  have he : AnalyticAt ℂ (fun w : ℂ × ℂ ↦
-      Complex.exp (-((ε : ℂ) * (w.1 ^ 2 + w.2 ^ 2)))) z := by
-    fun_prop
-  exact hp.mul he
+  exact hp.mul (by fun_prop)
 
 /-- The jointly analytic continuation is complex differentiable everywhere. -/
 theorem differentiable_phaseComplex (y : ℝ) :
@@ -292,8 +283,8 @@ theorem differentiable_phaseComplex (y : ℝ) :
 theorem norm_phaseComplex_sq_le (y : ℝ) {τ : ℝ} (hτ0 : 0 < τ) (hτ1 : τ < 1)
     (r x : ℂ) :
     ‖phaseComplex y r x‖ ^ 2 ≤ (τ ^ 35)⁻¹ * ((1 - τ) ^ 2)⁻¹ *
-      Real.exp (4 * ε / (1 - τ) * (r.im ^ 2 + x.im ^ 2)) := by
-  exact PolynomialGaussianGrowth.norm_damped_eval_sq_le (phasePolynomial y)
+      Real.exp (4 * ε / (1 - τ) * (r.im ^ 2 + x.im ^ 2)) :=
+  PolynomialGaussianGrowth.norm_damped_eval_sq_le (phasePolynomial y)
     (degree_phasePolynomial_le y) (by norm_num [Grothe.Upper.phaseEpsQ])
     hτ0 hτ1 (norm_ev_phasePolynomial_le y) r x
 

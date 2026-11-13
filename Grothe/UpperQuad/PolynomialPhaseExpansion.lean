@@ -64,8 +64,7 @@ theorem phaseMoment_eq_sum (A : ℝ) (P : CPoly) {N : ℕ} (hP : P.totalDegree �
       phaseMoment A (hermiteCoeff P pq • ((nrm pq.1 pq.2 : ℂ) • H pq.1 pq.2)) =
         hermiteCoeff P pq * canonicalCoefficient A (pq.2, pq.1) := by
     rw [map_smul, phaseMoment_normalized_H, smul_eq_mul]
-  have h := congrArg (phaseMoment A) (normalized_expansion P hP)
-  simpa only [map_sum, hterm] using h.symm
+  simpa only [map_sum, hterm] using (congrArg (phaseMoment A) (normalized_expansion P hP)).symm
 
 /-- The finite entire continuation, indexed by the canonical coefficient rather than its swap. -/
 def phaseExtension (N : ℕ) (P : CPoly) (A : ℂ) : ℂ :=
@@ -90,9 +89,8 @@ theorem phaseExtension_real (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N)
 theorem differentiable_phaseExtension (N : ℕ) (P : CPoly) :
     Differentiable ℂ (phaseExtension N P) := by
   unfold phaseExtension
-  apply Differentiable.fun_sum
-  intro pq _
-  exact (differentiable_const _).mul (QuadRem.differentiable_Uext pq.1 pq.2)
+  exact Differentiable.fun_sum fun pq _ =>
+    (differentiable_const _).mul (QuadRem.differentiable_Uext pq.1 pq.2)
 
 /-- The finite extension is bounded by the sum of coefficient and canonical-extension norms. -/
 theorem norm_phaseExtension_le (N : ℕ) (P : CPoly) (A : ℂ) :

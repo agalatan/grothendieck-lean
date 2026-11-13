@@ -114,8 +114,7 @@ lemma mem_sqrtFactTable (P D c d : ℕ) (hD : D ≤ 502) (hcd : c + d ≤ D) :
     Option.getD_some]
   unfold nrm
   rw [inv_inv, factT_eq c (by omega), factT_eq d (by omega)]
-  have := mem_sqrtI P (by positivity) (mem_ofNat P (c.factorial * d.factorial))
-  simpa using this
+  simpa using mem_sqrtI P (by positivity) (mem_ofNat P (c.factorial * d.factorial))
 
 /-! ### The node flags -/
 
@@ -312,17 +311,9 @@ theorem twistJ_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi pi
   rw [ivGet_ivOfFn _ _ c d hcd, hcoef]
   have hm := mem_mulI P hea hn
   split_ifs with hodd
-  · have hpow : ((-1 : ℝ) ^ j) = -1 := by
-      have : j % 2 = 1 := by simpa using hodd
-      rw [← Nat.div_add_mod j 2, this, pow_add, pow_mul]; simp
-    rw [hpow, neg_one_mul]
+  · rw [Odd.neg_one_pow (Nat.odd_iff.mpr (by simpa using hodd)), neg_one_mul]
     exact mem_negI hm
-  · have hpow : ((-1 : ℝ) ^ j) = 1 := by
-      have : j % 2 = 0 := by
-        have := Nat.mod_two_eq_zero_or_one j
-        simp at hodd; omega
-      rw [← Nat.div_add_mod j 2, this, add_zero, pow_mul]; simp
-    rw [hpow, one_mul]
+  · rw [Even.neg_one_pow (Nat.even_iff.mpr (by simpa using hodd)), one_mul]
     exact hm
 
 end

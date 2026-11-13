@@ -46,8 +46,7 @@ theorem Hf_eq_integral (p q : ℕ) (a b : ℂ) :
           (ξ ^ i * conj ξ ^ j) := by
     intro ξ
     rw [add_comm a, add_comm b, add_pow, add_pow, Finset.sum_mul_sum]
-    apply Finset.sum_congr rfl; intro i _
-    apply Finset.sum_congr rfl; intro j _
+    refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
     rw [mul_pow, mul_pow, pow_add]
     ring
   simp_rw [hexp]
@@ -56,8 +55,7 @@ theorem Hf_eq_integral (p q : ℕ) (a b : ℂ) :
   simp_rw [integral_finsetSum _ (fun j _ => (integrable_monomial _ j).const_mul _),
     integral_const_mul, integral_moment]
   unfold Hf
-  apply Finset.sum_congr rfl
-  intro i hi
+  refine Finset.sum_congr rfl fun i _ => ?_
   rw [Finset.sum_eq_single i]
   · simp only [ite_true]
     by_cases hiq : i ≤ q
@@ -292,9 +290,8 @@ theorem sum_mehler_le (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ < 1) (a b : ℂ) (
     have h := (hexpC (uC τ a ω)).mul (hexpC (vC τ b ω)) hs
     unfold mehTerm
     exact h
-  have hmeas : ∀ pq, AEStronglyMeasurable (mehTerm τ a b pq) μ := by
-    intro pq
-    exact ((((continuous_uC τ a).pow pq.1).div_const _).mul
+  have hmeas : ∀ pq, AEStronglyMeasurable (mehTerm τ a b pq) μ := fun pq =>
+    ((((continuous_uC τ a).pow pq.1).div_const _).mul
       (((continuous_vC τ b).pow pq.2).div_const _)).aestronglyMeasurable
   have hbound : ∀ pq, ∀ᵐ ω ∂μ, ‖mehTerm τ a b pq ω‖ ≤ mehBnd τ a b pq ω := by
     intro pq
@@ -303,13 +300,9 @@ theorem sum_mehler_le (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ < 1) (a b : ℂ) (
   have hbint : Integrable (fun ω => ∑' pq, mehBnd τ a b pq ω) μ := by
     have h1 := integrable_exp_sq τ hτ0 hτ1 (‖a‖ + ‖b‖)
     refine (h1.mul_prod h1).mono' ?_ (Filter.Eventually.of_forall fun ω => ?_)
-    · refine (Continuous.aestronglyMeasurable ?_)
-      have : (fun ω => ∑' pq, mehBnd τ a b pq ω) =
-          fun ω => Real.exp ‖uC τ a ω‖ * Real.exp ‖vC τ b ω‖ := by
-        funext ω; exact (hbndsum ω).tsum_eq
-      rw [this]
-      exact (Real.continuous_exp.comp (continuous_uC τ a).norm).mul
-        (Real.continuous_exp.comp (continuous_vC τ b).norm)
+    · rw [funext fun ω => (hbndsum ω).tsum_eq]
+      exact ((Real.continuous_exp.comp (continuous_uC τ a).norm).mul
+        (Real.continuous_exp.comp (continuous_vC τ b).norm)).aestronglyMeasurable
     · rw [(hbndsum ω).tsum_eq, Real.norm_eq_abs, abs_of_pos (by positivity)]
       exact exp_norm_uv_le τ hτ0 a b ω
   have hHS := hasSum_integral_of_dominated_convergence (mehBnd τ a b) hmeas hbound
@@ -330,10 +323,7 @@ theorem sum_mehler_le (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ < 1) (a b : ℂ) (
   have hre := Complex.hasSum_re hHS
   simp only [Complex.ofReal_re] at hre
   have hle := sum_le_hasSum T (fun pq _ => by positivity) hre
-  refine hle.trans ?_
-  have : (((1 - τ ^ 2 : ℝ) : ℂ)⁻¹ * cexp (mehlerExp τ a b)).re ≤
-      ‖((1 - τ ^ 2 : ℝ) : ℂ)⁻¹ * cexp (mehlerExp τ a b)‖ := Complex.re_le_norm _
-  refine this.trans (le_of_eq ?_)
+  refine hle.trans ((Complex.re_le_norm _).trans (le_of_eq ?_))
   rw [norm_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs,
     abs_of_pos (by nlinarith), Complex.norm_exp]
 

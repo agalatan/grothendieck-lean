@@ -28,9 +28,8 @@ def rescale (scale : ℝ) (P : CPoly) : CPoly :=
 theorem totalDegree_rescale_le (scale : ℝ) (P : CPoly) :
     (rescale scale P).totalDegree ≤ P.totalDegree := by
   unfold rescale
-  apply totalDegree_finsetSum_le
-  intro s hs
-  exact (totalDegree_monomial_le _ _).trans (le_totalDegree hs)
+  exact totalDegree_finsetSum_le fun s hs ↦
+    (totalDegree_monomial_le _ _).trans (le_totalDegree hs)
 
 /-- Evaluation after rescaling is evaluation at the inversely scaled variables. -/
 theorem eval_rescale (scale : ℝ) (P : CPoly) (v : Fin 2 → ℂ) :
@@ -46,8 +45,7 @@ theorem eval_rescale (scale : ℝ) (P : CPoly) (v : Fin 2 → ℂ) :
     _ = eval (fun i ↦ (scale : ℂ)⁻¹ * v i) P := by
       conv_rhs => rw [P.as_sum]
       simp only [eval_sum, eval_monomial, hprod]
-      apply Finset.sum_congr rfl
-      intro s _
+      refine Finset.sum_congr rfl fun s _ ↦ ?_
       simp only [mul_pow, pow_add]
       ring
 

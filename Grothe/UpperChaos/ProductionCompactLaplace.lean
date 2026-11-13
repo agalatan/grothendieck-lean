@@ -15,12 +15,11 @@ theorem norm_source_eighty_le (j : ℕ) :
     ‖(TaylorRadialTail.source_memLp 80 j).toLp (TaylorRadialTail.source 80 j)‖ ≤
       (1 / 10 ^ 17 : ℝ) := by
   apply (sq_le_sq₀ (norm_nonneg _) (by positivity : (0 : ℝ) ≤ 1 / 10 ^ 17)).mp
-  have he : Real.exp (-80) = (Real.exp (-40)) ^ 2 := by
-    rw [pow_two, ← Real.exp_add]
-    norm_num
   calc
     _ ≤ Real.exp (-80) := TaylorRadialTail.norm_source_sq_le_exp 80 (by norm_num) j
-    _ = (Real.exp (-40)) ^ 2 := he
+    _ = (Real.exp (-40)) ^ 2 := by
+      rw [pow_two, ← Real.exp_add]
+      norm_num
     _ ≤ _ := pow_le_pow_left₀ (Real.exp_pos _).le exp_neg_forty_le 2
 
 /-- The production source with both the radial and auxiliary domains cut off. -/
@@ -64,10 +63,10 @@ theorem norm_compactLaplaceError_le (η T L : ℝ) (hη : 0 < η) (hT : 0 ≤ T)
   rw [heq, MemLp.toLp_add (TaylorRadialTail.source_memLp L j)
     ((finiteLaplaceError_memLp η T hη hT j).indicator
       (TaylorRadialTail.measurableSet_cutoffSet L).compl)]
-  refine (norm_add_le _ _).trans (add_le_add le_rfl ?_)
-  exact (norm_toLp_indicator_le (finiteLaplaceError_memLp η T hη hT j)
-    (TaylorRadialTail.measurableSet_cutoffSet L).compl).trans
-      (norm_finiteLaplaceError_le η T hη hT j)
+  exact (norm_add_le _ _).trans (add_le_add le_rfl
+    ((norm_toLp_indicator_le (finiteLaplaceError_memLp η T hη hT j)
+      (TaylorRadialTail.measurableSet_cutoffSet L).compl).trans
+        (norm_finiteLaplaceError_le η T hη hT j)))
 
 /-- The full error from softening, radial cutoff and auxiliary cutoff meets
 one production reserve. The finite interior quadrature is still a separate task. -/
@@ -77,10 +76,9 @@ theorem norm_compactLaplaceError_cutoff_lt (j : ℕ) :
       (compactLaplaceError finiteLaplaceEta finiteLaplaceCutoff 80 j)‖ < (5 / 10 ^ 15 : ℝ) := by
   have h := norm_compactLaplaceError_le finiteLaplaceEta finiteLaplaceCutoff 80
     finiteLaplaceEta_pos finiteLaplaceCutoff_nonneg j
-  have hr := norm_source_eighty_le j
-  have ht := exp_neg_scaled_finiteLaplaceCutoff_le
-  exact h.trans_lt ((add_le_add hr (add_le_add le_rfl ht)).trans_lt
-    (by norm_num [finiteLaplaceEta]))
+  exact h.trans_lt ((add_le_add (norm_source_eighty_le j)
+    (add_le_add le_rfl exp_neg_scaled_finiteLaplaceCutoff_le)).trans_lt
+      (by norm_num [finiteLaplaceEta]))
 
 /-- The compact-domain reduction controls every band after actual smoothing. -/
 theorem norm_projOn_smooth_compactLaplaceError_cutoff_lt (B : Set Idx2) (j : ℕ) :

@@ -37,10 +37,8 @@ theorem leaf_bound {neg : Bool} {lo hi : ℤ} {v : ℤ}
   have hθ2 : θ < π := by have := arctan_lt_pi_div_two ((hi : ℝ) / D); linarith
   have he := exp_eq_chart hθ1 hθ2
   set τ := tan (θ / 2)
-  have hτ : mem τ ⟨lo, hi⟩ := by
-    refine ⟨?_, ?_⟩
-    · have := (div_le_iff₀ hD).1 hlo; simpa [mul_comm] using this
-    · have := (le_div_iff₀ hD).1 hhi; simpa [mul_comm] using this
+  have hτ : mem τ ⟨lo, hi⟩ := ⟨by simpa [mul_comm] using (div_le_iff₀ hD).1 hlo,
+    by simpa [mul_comm] using (le_div_iff₀ hD).1 hhi⟩
   have hchart := memC_circleBox (mem_ofRatI rhoQ) hτ hpos neg
   have hpt : chartPt (rhoQ : ℝ) neg τ = HardyArcSound.sig neg * ((rhoQ : ℝ) : ℂ) * Complex.exp (θ * Complex.I) := by
     rw [he, chartPt]; push_cast; ring
@@ -81,10 +79,9 @@ omit hFm hGm hF hG in
 lemma arcLen_le {lo hi : ℤ} (hlh : lo ≤ hi) (hs : 0 ≤ lo ∨ hi ≤ 0) :
     2 * arctan ((hi : ℝ) / D) - 2 * arctan ((lo : ℝ) / D) ≤ (arcLenUp lo hi : ℝ) / D := by
   have hD := D_pos
-  have hsR : 0 ≤ (lo : ℝ) / D ∨ (hi : ℝ) / D ≤ 0 := by
-    rcases hs with hs | hs
-    · left; exact div_nonneg (by exact_mod_cast hs) hD.le
-    · right; exact div_nonpos_of_nonpos_of_nonneg (by exact_mod_cast hs) hD.le
+  have hsR : 0 ≤ (lo : ℝ) / D ∨ (hi : ℝ) / D ≤ 0 :=
+    hs.imp (fun hs => div_nonneg (by exact_mod_cast hs) hD.le)
+      fun hs => div_nonpos_of_nonpos_of_nonneg (by exact_mod_cast hs) hD.le
   have h3 := arctan_sub_le (div_le_div_of_nonneg_right (by exact_mod_cast hlh) hD.le) hsR
   have hm : (0 : ℤ) ≤ min (lo * lo) (hi * hi) := le_min (mul_self_nonneg _) (mul_self_nonneg _)
   have hDD : (0 : ℤ) < D * D + min (lo * lo) (hi * hi) := by have := D_pos_int; positivity
@@ -136,37 +133,31 @@ theorem cover_integral {neg : Bool} {w tol : ℤ}
     ∀ (depth : ℕ) (lo hi x : ℤ), lo ≤ hi → (0 ≤ lo ∨ hi ≤ 0) →
       cover (ofRatI jQ) (ofRatI rhoQ) hardyData neg w tol depth lo hi = some x →
       ∫ θ in (2 * arctan ((lo : ℝ) / D))..(2 * arctan ((hi : ℝ) / D)), gF F G neg θ ≤ (x : ℝ) / D := by
-  intro depth
-  induction depth with
-  | zero =>
-    intro lo hi x hlh hs h
+  intro depth lo hi x hlh hs h
+  induction depth generalizing lo hi x
+  on_goal 2 => rename_i d ih
+  all_goals
     unfold cover at h
     split at h
     · rename_i x' hx'
       obtain rfl : x' = x := Option.some.inj h
       exact leaf_integral hFm hGm hF hG hlh hs hx' (hint _ _)
+  · exact absurd h (by simp)
+  · simp only at h
+    split at h
+    · rename_i x1 x2 h1 h2
+      obtain rfl : x1 + x2 = x := Option.some.inj h
+      set mid := (lo + hi) / 2
+      have hm1 : lo ≤ mid := by omega
+      have hm2 : mid ≤ hi := by omega
+      have hs1 : 0 ≤ lo ∨ mid ≤ 0 := by omega
+      have hs2 : 0 ≤ mid ∨ hi ≤ 0 := by omega
+      rw [← intervalIntegral.integral_add_adjacent_intervals (hint _ _) (hint _ _)
+        (b := 2 * arctan ((mid : ℝ) / D))]
+      push_cast
+      rw [add_div]
+      exact add_le_add (ih lo mid x1 hm1 hs1 h1) (ih mid hi x2 hm2 hs2 h2)
     · exact absurd h (by simp)
-  | succ d ih =>
-    intro lo hi x hlh hs h
-    unfold cover at h
-    split at h
-    · rename_i x' hx'
-      obtain rfl : x' = x := Option.some.inj h
-      exact leaf_integral hFm hGm hF hG hlh hs hx' (hint _ _)
-    · simp only at h
-      split at h
-      · rename_i x1 x2 h1 h2
-        obtain rfl : x1 + x2 = x := Option.some.inj h
-        set mid := (lo + hi) / 2
-        have hm1 : lo ≤ mid := by omega
-        have hm2 : mid ≤ hi := by omega
-        have hs1 : 0 ≤ lo ∨ mid ≤ 0 := by omega
-        have hs2 : 0 ≤ mid ∨ hi ≤ 0 := by omega
-        rw [← intervalIntegral.integral_add_adjacent_intervals (hint _ _) (hint _ _) (b := 2 * arctan ((mid : ℝ) / D))]
-        push_cast
-        rw [add_div]
-        exact add_le_add (ih lo mid x1 hm1 hs1 h1) (ih mid hi x2 hm2 hs2 h2)
-      · exact absurd h (by simp)
 
 omit hFm hGm hF hG in
 lemma pieceLo_succ (n k : ℕ) (hn : n = 1024) : pieceLo n (k + 1) = pieceLo n k + D / 1024 := by

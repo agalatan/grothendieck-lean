@@ -29,39 +29,30 @@ private theorem tablesValid_of_flags {P : ℕ} {prm : TwistParams} {tabs : Twist
     (h : tablesFlags P prm tabs = true) : twistTablesValid P prm tabs = true := h
 
 /-- All finite inputs for the first production power. -/
-theorem j1FactsOf : FactsOf 1 j1Bounds j1Tables j1ThetaNum (10 ^ 20) j1Eps := by
-  refine
-    { hj := Or.inl rfl
-      deg := phaseDegOK
-      tablesValid := tablesValid_of_flags j1TablesValid
-      final := j1Final
-      ranges := ?_ }
-  intro r hr
-  exact j1RangeFacts r (by
-    simpa only [j1Tables, List.length_cons, List.length_nil] using hr)
+theorem j1FactsOf : FactsOf 1 j1Bounds j1Tables j1ThetaNum (10 ^ 20) j1Eps :=
+  { hj := Or.inl rfl
+    deg := phaseDegOK
+    tablesValid := tablesValid_of_flags j1TablesValid
+    final := j1Final
+    ranges := fun r hr ↦ j1RangeFacts r (by
+      simpa only [j1Tables, List.length_cons, List.length_nil] using hr) }
 
 /-- All finite inputs for the second production power. -/
-theorem j2FactsOf : FactsOf 2 j2Bounds j2Tables j2ThetaNum (10 ^ 20) j2Eps := by
-  refine
-    { hj := Or.inr (Or.inl rfl)
-      deg := phaseDegOK
-      tablesValid := tablesValid_of_flags j2TablesValid
-      final := j2Final
-      ranges := ?_ }
-  intro r hr
-  exact j2RangeFacts r (by
-    simpa only [j2Tables, List.length_cons, List.length_nil] using hr)
+theorem j2FactsOf : FactsOf 2 j2Bounds j2Tables j2ThetaNum (10 ^ 20) j2Eps :=
+  { hj := Or.inr (Or.inl rfl)
+    deg := phaseDegOK
+    tablesValid := tablesValid_of_flags j2TablesValid
+    final := j2Final
+    ranges := fun r hr ↦ j2RangeFacts r (by
+      simpa only [j2Tables, List.length_cons, List.length_nil] using hr) }
 
 /-- All finite inputs for the third production power. -/
-theorem j3FactsOf : FactsOf 3 j3Bounds j3Tables j3ThetaNum (10 ^ 20) j3Eps := by
-  refine
-    { hj := Or.inr (Or.inr rfl)
-      deg := phaseDegOK
-      tablesValid := tablesValid_of_flags j3TablesValid
-      final := j3Final
-      ranges := ?_ }
-  intro r hr
-  exact j3RangeFacts r (by
-    simpa only [j3Tables, List.length_cons, List.length_nil] using hr)
+theorem j3FactsOf : FactsOf 3 j3Bounds j3Tables j3ThetaNum (10 ^ 20) j3Eps :=
+  { hj := Or.inr (Or.inr rfl)
+    deg := phaseDegOK
+    tablesValid := tablesValid_of_flags j3TablesValid
+    final := j3Final
+    ranges := fun r hr ↦ j3RangeFacts r (by
+      simpa only [j3Tables, List.length_cons, List.length_nil] using hr) }
 
 end Grothe.UpperQuad.PortFacts

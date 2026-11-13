@@ -45,9 +45,7 @@ theorem gaussC_radial_cutoff (L : ℝ) (hL : 0 ≤ L) (g : ℝ → ℝ) (hg : Me
     simpa only [show (2 : ℝ)⁻¹ = 1 / 2 by norm_num, ← Real.sqrt_eq_rpow,
       show (2 : ℝ) - 1 = 1 by norm_num, Real.rpow_one, Real.rpow_two, smul_eq_mul] using h
   rw [hleft, integral_gaussC_radial f hf, hcut, ← hsub, ← integral_const_mul]
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro r hr
-  ring
+  exact setIntegral_congr_fun measurableSet_Ioi fun r _ => by ring
 
 /-- Specialization to a polynomial moment under a positive Gaussian tilt.
 This also requires the separately checked `ExponentialTail.exp_moment_tail`. -/
@@ -60,8 +58,7 @@ theorem gaussC_radial_exp_tail (n : ℕ) (L a : ℝ) (hL : 0 ≤ L) (ha : 0 < a)
   simp only [← pow_mul] at h
   have htilt : (∫ s : ℝ in Ioi L, exp (-s) * (s ^ n * exp (-(a - 1) * s))) =
       ∫ s : ℝ in Ioi L, s ^ n * exp (-(a * s)) := by
-    apply setIntegral_congr_fun measurableSet_Ioi
-    intro s hs
+    refine setIntegral_congr_fun measurableSet_Ioi fun s _ => ?_
     calc
       _ = s ^ n * (exp (-s) * exp (-(a - 1) * s)) := by ring
       _ = _ := by rw [← exp_add]; congr 2; ring

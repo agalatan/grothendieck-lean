@@ -52,8 +52,7 @@ theorem conj_ev_imaginaryShift (w : ℂ) (b : ℝ) (P : CPoly) :
       eval ![(w.re : ℂ) - I * (b : ℂ) + I * (w.im : ℂ),
         (w.re : ℂ) - I * (b : ℂ) - I * (w.im : ℂ)] (conjP P) := by
   rw [conj_ev_simultaneousShift]
-  apply congrArg (fun v : Fin 2 → ℂ ↦ eval v (conjP P))
-  funext i
+  refine congrArg (fun v : Fin 2 → ℂ ↦ eval v (conjP P)) (funext fun i => ?_)
   fin_cases i <;>
     apply Complex.ext <;>
     simp [Complex.mul_re, Complex.mul_im] <;>

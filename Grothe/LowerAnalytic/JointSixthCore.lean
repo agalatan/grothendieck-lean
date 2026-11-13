@@ -39,8 +39,7 @@ lemma joint_scalar {s0 h0 x al c1 c2 c3 : ℝ} (hs : 0 ≤ s0) (hh : 0 ≤ h0) (
   have t3 : c3 * (q ^ 2 * p) ≤ c3 * (q ^ 2 * (5 * x / 8)) :=
     mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hp (sq_nonneg q)) h3
   have t2 : c2 * (p ^ 2 * q) ≤ c2 * (5 * x / 8 * ((al * p ^ 2 + q ^ 2 / al) / 2)) := by
-    have e : p ^ 2 * q = p * (p * q) := by ring
-    rw [e]
+    rw [show p ^ 2 * q = p * (p * q) by ring]
     refine mul_le_mul_of_nonneg_left ?_ h2
     calc p * (p * q) ≤ 5 * x / 8 * (p * q) :=
           mul_le_mul_of_nonneg_right hp (mul_nonneg hp0 hq0)
@@ -83,9 +82,7 @@ lemma tenQ_le (f : ι → ι → ι → ℝ) :
   have hh := Real.sq_sqrt (tenH_nonneg f)
   have hp : 0 ≤ tenS f * Real.sqrt (tenH f) := by positivity
   apply le_of_sq_le_sq' hp
-  calc
-    tenQ f ^ 2 ≤ tenS f * (tenH f * tenS f) := h
-    _ = (tenS f * Real.sqrt (tenH f)) ^ 2 := by rw [mul_pow, hh]; ring
+  exact h.trans_eq (by rw [mul_pow, hh]; ring)
 
 /-- `‖SF‖² ≤ h √s`. -/
 lemma tenU2_le (f : ι → ι → ι → ℝ) (hf : ∀ a b c, f a b c = f b a c) :
@@ -166,14 +163,11 @@ lemma tensor_j5 (f : ι → ι → ι → ℝ) (hf : ∀ a b c, f a b c = f b a 
   have hDsq : (Real.sqrt (tenV f) * Real.sqrt (tenU2 f)) ^ 2
       ≤ (tenS f * Real.sqrt (tenH f)) ^ 2 := by
     have h := mul_le_mul hV hU (tenU2_nonneg f) (by positivity)
-    rw [mul_pow, Real.sq_sqrt (tenV_nonneg f), Real.sq_sqrt (tenU2_nonneg f)]
-    calc
-      tenV f * tenU2 f ≤ _ := h
-      _ = (tenS f * Real.sqrt (tenH f)) ^ 2 := by
-        rw [mul_pow, Real.sq_sqrt hh]
-        calc
-          _ = tenS f * tenH f * (Real.sqrt (tenS f)) ^ 2 := by ring
-          _ = _ := by rw [Real.sq_sqrt hs]; ring
+    rw [mul_pow, mul_pow, Real.sq_sqrt (tenV_nonneg f), Real.sq_sqrt (tenU2_nonneg f),
+      Real.sq_sqrt hh]
+    refine h.trans_eq ?_
+    rw [mul_mul_mul_comm, Real.mul_self_sqrt hs]
+    ring
   have hD' : tenDU f ≤ tenS f * Real.sqrt (tenH f) := by
     have hp : 0 ≤ tenS f * Real.sqrt (tenH f) := by positivity
     nlinarith [sq_nonneg (Real.sqrt (tenV f) * Real.sqrt (tenU2 f)
@@ -189,8 +183,8 @@ lemma young {s h t : ℝ} (hs : 0 ≤ s) (hh : 0 ≤ h) (ht : 0 < t) :
   have hsq := sq_nonneg (t * Real.sqrt s - Real.sqrt h)
   have he : t * (t * s + h / t - 2 * Real.sqrt s * Real.sqrt h)
       = (t * Real.sqrt s - Real.sqrt h) ^ 2 := by
-    rw [mul_sub, mul_add, mul_div_cancel₀ _ (ne_of_gt ht)]
-    rw [sub_sq, mul_pow, Real.sq_sqrt hs, Real.sq_sqrt hh]
+    rw [mul_sub, mul_add, mul_div_cancel₀ _ (ne_of_gt ht), sub_sq, mul_pow, Real.sq_sqrt hs,
+      Real.sq_sqrt hh]
     ring
   linarith [(mul_nonneg_iff_of_pos_left ht).1 (he.symm ▸ hsq)]
 
@@ -226,7 +220,7 @@ lemma circular_j1 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
       + 4 * (1296 * tenH (cubicKernel a)) := by
   have h4 := ha.wick4 hE
   have hr := hc.gE_pow_four hE
-  have h2 : E (a ^ 2) = 1 / 2 := by rw [sq]; exact haa
+  have h2 : E (a ^ 2) = 1 / 2 := (congrArg E (sq a)).trans haa
   rw [hr, h2] at h4
   linarith
 
@@ -242,7 +236,7 @@ lemma circular_wick6 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
   have h6 := ha.wick6 hE
   have h4 := hc.gE_pow_four hE
   have hr := hc.gE_pow_six hE
-  have h2 : E (a ^ 2) = 1 / 2 := by rw [sq]; exact haa
+  have h2 : E (a ^ 2) = 1 / 2 := (congrArg E (sq a)).trans haa
   rw [hr, h4, h2] at h6
   linarith
 
@@ -260,8 +254,7 @@ theorem circular_j5 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
         + 480 * (1296 * tenS (cubicKernel a)) * Real.sqrt (1296 * tenH (cubicKernel a))
         + 144 * (1296 * tenH (cubicKernel a)) * Real.sqrt (1296 * tenS (cubicKernel a)) := by
   rw [circular_wick6 hE ha hc haa, sqrt_1296, sqrt_1296]
-  have h := tensor_j5 (cubicKernel a) (cubicKernel_symm12 a)
-  linarith
+  linarith [tensor_j5 (cubicKernel a) (cubicKernel_symm12 a)]
 
 /-- J6 for the kernel of a normalized circular cubic. -/
 theorem circular_j6 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
@@ -272,8 +265,7 @@ theorem circular_j6 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
         + 216 * (1296 * tenS (cubicKernel a)) * Real.sqrt (1296 * tenH (cubicKernel a))
         + 1665 / 4 * (1296 * tenH (cubicKernel a)) * Real.sqrt (1296 * tenS (cubicKernel a)) := by
   rw [circular_wick6 hE ha hc haa, sqrt_1296, sqrt_1296]
-  have h := tensor_j6 (cubicKernel a) (cubicKernel_symm12 a)
-  linarith
+  linarith [tensor_j6 (cubicKernel a) (cubicKernel_symm12 a)]
 
 /-- J2, with the exact real-tensor interface and no additional tensor hypotheses. -/
 theorem circular_j2 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}

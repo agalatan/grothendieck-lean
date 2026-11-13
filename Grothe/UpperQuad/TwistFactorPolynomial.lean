@@ -72,8 +72,7 @@ private lemma degree_list_sum_le (l : List CPoly) (N : ℕ)
         (ih fun R hR ↦ hl R (List.mem_cons_of_mem _ hR)))
 
 lemma totalDegree_phaseSum_le (r : ℂ) : (phaseSum r).totalDegree ≤ 34 := by
-  apply degree_list_sum_le
-  intro P hP
+  refine degree_list_sum_le _ _ fun P hP => ?_
   obtain ⟨t, ht, rfl⟩ := List.mem_map.mp hP
   exact totalDegree_phaseTerm_le r t (PhasePolynomialComplex.phaseTerms_degree t ht)
 
@@ -116,10 +115,7 @@ lemma ev_phaseSum_real (r : ℝ) (w : ℂ) :
   simp only [ev, map_list_sum, List.map_map, Function.comp_def]
   rw [hcast]
   simp only [List.map_map, Function.comp_def]
-  apply congrArg List.sum
-  apply List.map_congr_left
-  intro t _
-  exact ev_phaseTerm_real r w t
+  exact congrArg List.sum (List.map_congr_left fun t _ => ev_phaseTerm_real r w t)
 
 lemma ev_Q (r w : ℂ) : ev w (Q r) = r / 2 * (w - conj w) * ev w (phaseSum r) := by
   simp [Q, ev, zv]
@@ -139,10 +135,7 @@ lemma ev_phaseTerm_neg (r w : ℂ) (t : (ℕ × ℕ × ℕ) × ℚ) :
 lemma ev_phaseSum_neg (r w : ℂ) : ev w (phaseSum (-r)) = ev (-w) (phaseSum r) := by
   unfold phaseSum
   simp only [ev, map_list_sum, List.map_map, Function.comp_def]
-  apply congrArg List.sum
-  apply List.map_congr_left
-  intro t _
-  exact ev_phaseTerm_neg r w t
+  exact congrArg List.sum (List.map_congr_left fun t _ => ev_phaseTerm_neg r w t)
 
 /-- Negating the formal radial parameter agrees with negating the auxiliary variable. -/
 theorem ev_Q_neg (r w : ℂ) : ev w (Q (-r)) = ev (-w) (Q r) := by

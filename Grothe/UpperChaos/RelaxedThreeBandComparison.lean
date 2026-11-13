@@ -110,10 +110,7 @@ theorem localized_comparison_relaxed_of_checks
     a e ((∑ g : Fin 4, (comparisonGroupRadiusQ g : ℝ)) ^ 2)
     (fun p _ ↦ comparisonWeight_bounds p)
     (fun p _ ↦ by rw [← energyBlock_sub, difference_threePieces, energyBlock_sum])
-    (fun j _ p hp hpb ↦ by
-      have hn : (threeBandBands j).contains p.1 p.2 = false := by
-        simpa [bandIndices, hS, hp] using hpb
-      exact hz j p hn)
+    (fun j _ p hp hpb ↦ hz j p (by simpa [bandIndices, hS, hp] using hpb))
     (fun j _ ↦ ha j) (fun j _ ↦ he j)
     (fun j _ ↦ by
       have hm := actual_threeBand_mass hf (by simpa only [hS] using hclose) j
@@ -157,8 +154,8 @@ theorem localized_comparison_relaxed_three_band
     ∑ p ∈ headIdx 501, comparisonWeight p *
       |energy ((memLp_GT phiBound).toLp GT) p -
         energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
-          (Xfun frozenCorrectionFn)) p| ≤ (relaxedThreeBandCompareQ : ℝ) := by
-  exact localized_comparison_relaxed_of_checks phiBound productionFiniteChecks
+          (Xfun frozenCorrectionFn)) p| ≤ (relaxedThreeBandCompareQ : ℝ) :=
+  localized_comparison_relaxed_of_checks phiBound productionFiniteChecks
     hfirst hsecond hthird hwholeFirst hwholeSecond hwholeThird hclose
 
 end

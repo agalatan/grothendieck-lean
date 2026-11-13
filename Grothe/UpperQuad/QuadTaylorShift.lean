@@ -33,9 +33,7 @@ noncomputable section
 lemma mem_tri {M : ℕ} {p : ℕ × ℕ} : p ∈ tri M ↔ p.1 + p.2 ≤ M := by
   unfold tri
   rw [Finset.mem_filter, Finset.mem_product, Finset.mem_range, Finset.mem_range]
-  constructor
-  · exact fun h => h.2
-  · intro h; exact ⟨⟨by omega, by omega⟩, h⟩
+  exact ⟨fun h => h.2, fun h => ⟨⟨by omega, by omega⟩, h⟩⟩
 
 /-- The raising operator. -/
 def Rop (V : ℕ → ℕ → ℂ) : ℕ → ℕ → ℂ := fun c d =>
@@ -77,7 +75,6 @@ theorem sqSum_Rop_le (M : ℕ) (V : ℕ → ℕ → ℂ) :
     set y := Real.sqrt (p.2 + 1) * ‖V p.1 (p.2 + 1)‖
     have hx : x ^ 2 = (p.1 + 1) * ‖V (p.1 + 1) p.2‖ ^ 2 := by rw [mul_pow, hs1]
     have hy : y ^ 2 = (p.2 + 1) * ‖V p.1 (p.2 + 1)‖ ^ 2 := by rw [mul_pow, hs2]
-    have h0 := norm_nonneg (Rop V p.1 p.2)
     calc _ ≤ (x + y) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) h1 2
       _ ≤ 2 * x ^ 2 + 2 * y ^ 2 := by nlinarith [sq_nonneg (x - y)]
       _ = _ := by rw [hx, hy]
@@ -97,8 +94,7 @@ theorem sqSum_Rop_le (M : ℕ) (V : ℕ → ℕ → ℂ) :
     simpa only [Nat.cast_add, Nat.cast_one] using this
   have hC : ∑ p ∈ tri (M + 1), ((p.1 : ℝ) * f p + (p.2 : ℝ) * f p) ≤
       ∑ p ∈ tri (M + 1), ((M + 1 : ℝ) * f p) := by
-    apply Finset.sum_le_sum
-    intro p hp
+    refine Finset.sum_le_sum fun p hp => ?_
     rw [mem_tri] at hp
     rw [← add_mul]
     apply mul_le_mul_of_nonneg_right _ (sq_nonneg _)
@@ -130,14 +126,12 @@ theorem sqSum_iterate_Rop_le (r : ℕ) : ∀ (D : ℕ) (V : ℕ → ℕ → ℂ)
   | succ r ih =>
     intro D V
     rw [Function.iterate_succ_apply]
-    have h1 := ih D (Rop V)
-    have h2 := sqSum_Rop_le (D + r) V
     have hP : raiseProd D (r + 1) = raiseProd D r * (2 * ((D : ℝ) + 1 + r)) := by
       unfold raiseProd; rw [Finset.prod_range_succ]
     rw [hP, show D + (r + 1) = D + r + 1 by ring]
-    calc _ ≤ raiseProd D r * sqSum (D + r) (Rop V) := h1
+    calc _ ≤ raiseProd D r * sqSum (D + r) (Rop V) := ih D (Rop V)
       _ ≤ raiseProd D r * (2 * ((D + r : ℕ) + 1) * sqSum (D + r + 1) V) :=
-          mul_le_mul_of_nonneg_left h2 (raiseProd_nonneg D r)
+          mul_le_mul_of_nonneg_left (sqSum_Rop_le (D + r) V) (raiseProd_nonneg D r)
       _ = _ := by push_cast; ring
 
 /-- **The derivatives of a raising family are the powers of the raising operator.** -/
@@ -210,8 +204,7 @@ lemma summable_shiftTerm (D : ℕ) {t : ℝ} (ht : 0 ≤ t) : Summable (shiftTer
         _ = t * Real.sqrt (2 * ((D : ℝ) + 1)) * (Real.sqrt ((r : ℝ) + 1))⁻¹ * ((r : ℝ) + 1) := by
             field_simp
             rw [sq, hss]
-  have hev := (hlim.eventually (gt_mem_nhds (by norm_num : (0 : ℝ) < 1 / 2)))
-  filter_upwards [hev] with r hr
+  filter_upwards [hlim.eventually (gt_mem_nhds (by norm_num : (0 : ℝ) < 1 / 2))] with r hr
   rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (shiftTerm_nonneg D ht _),
     abs_of_nonneg (shiftTerm_nonneg D ht _), shiftTerm_succ D ht r]
   have h0 := shiftTerm_nonneg D ht r
@@ -230,20 +223,17 @@ theorem sqSum_shift_le (U : ℕ → ℕ → ℂ → ℂ) (hU : ∀ c d, Differen
   have hnormW : ∀ (f : S → ℂ), ‖(WithLp.toLp 2 f : EuclideanSpace ℂ S)‖ ^ 2 =
       ∑ p ∈ S, ‖(fun q : ℕ × ℕ => if h : q ∈ S then f ⟨q, h⟩ else 0) p‖ ^ 2 := by
     intro f
-    rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
-    rw [← Finset.sum_coe_sort S]
-    apply Finset.sum_congr rfl
-    intro p _
-    simp [p.2]
+    rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _),
+      ← Finset.sum_coe_sort S]
+    exact Finset.sum_congr rfl fun p _ => by simp [p.2]
   set v : ℕ → EuclideanSpace ℂ S := fun r => WithLp.toLp 2 (fun p : S =>
     ((r ! : ℂ)⁻¹ • z ^ r • iteratedDeriv r (U p.1.1 p.1.2) α)) with hv
   have hsum : HasSum v (W (α + z)) := by
     have hpi : HasSum (fun r => (fun p : S => ((r ! : ℂ)⁻¹ • z ^ r •
         iteratedDeriv r (U p.1.1 p.1.2) α))) (fun p : S => U p.1.1 p.1.2 (α + z)) := by
-      rw [Pi.hasSum]
-      intro p
-      have h := Complex.hasSum_taylorSeries_of_entire (hU p.1.1 p.1.2) α (α + z)
-      simpa only [add_sub_cancel_left] using h
+      refine Pi.hasSum.mpr fun p => ?_
+      simpa only [add_sub_cancel_left] using
+        Complex.hasSum_taylorSeries_of_entire (hU p.1.1 p.1.2) α (α + z)
     have := (EuclideanSpace.equiv S ℂ).symm.toContinuousLinearMap.hasSum hpi
     convert this using 1 <;> rfl
   have hbound : ∀ r, ‖v r‖ ≤ shiftTerm D ‖z‖ r := by
@@ -260,16 +250,14 @@ theorem sqSum_shift_le (U : ℕ → ℕ → ℂ → ℂ) (hU : ∀ c d, Differen
           norm_inv, norm_pow, Complex.norm_natCast]
         ring
       rw [Finset.sum_congr rfl hpt, ← Finset.mul_sum]
-      have h1 := sqSum_iterate_Rop_le r D (fun c d => U c d α)
-      have h2 := hα (D + r)
       have hP := raiseProd_nonneg D r
       unfold shiftTerm
       rw [show (‖z‖ ^ r * Real.sqrt (raiseProd D r) / (r ! : ℝ)) ^ 2 =
         (‖z‖ ^ r) ^ 2 * raiseProd D r / (r ! : ℝ) ^ 2 by rw [div_pow, mul_pow, Real.sq_sqrt hP]]
       have hS : ∑ p ∈ S, ‖(Rop^[r] (fun c d => U c d α)) p.1 p.2‖ ^ 2 ≤ raiseProd D r := by
         calc _ = sqSum D (Rop^[r] (fun c d => U c d α)) := rfl
-          _ ≤ raiseProd D r * sqSum (D + r) (fun c d => U c d α) := h1
-          _ ≤ raiseProd D r * 1 := mul_le_mul_of_nonneg_left h2 hP
+          _ ≤ raiseProd D r * sqSum (D + r) (fun c d => U c d α) := sqSum_iterate_Rop_le r D _
+          _ ≤ raiseProd D r * 1 := mul_le_mul_of_nonneg_left (hα (D + r)) hP
           _ = raiseProd D r := mul_one _
       calc (‖z‖ ^ r / (r ! : ℝ)) ^ 2 * ∑ p ∈ S, ‖(Rop^[r] (fun c d => U c d α)) p.1 p.2‖ ^ 2
           ≤ (‖z‖ ^ r / (r ! : ℝ)) ^ 2 * raiseProd D r :=
@@ -281,8 +269,7 @@ theorem sqSum_shift_le (U : ℕ → ℕ → ℂ → ℂ) (hU : ∀ c d, Differen
   have hW : sqSum D (fun c d => U c d (α + z)) = ‖W (α + z)‖ ^ 2 := by
     rw [hnormW]
     unfold sqSum
-    apply Finset.sum_congr rfl
-    intro p hp
+    refine Finset.sum_congr rfl fun p hp => ?_
     have hp' : p ∈ S := hp
     simp only [hp', dite_true]
   rw [hW]

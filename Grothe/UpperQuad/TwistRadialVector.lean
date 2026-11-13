@@ -50,8 +50,7 @@ theorem analyticAt_descendedVector (j : ℕ) (hj : 0 < j) (σ : ℝ) {s : ℂ}
   have hpi : AnalyticAt ℂ
       (fun z : ℂ ↦ fun x : idx3 (twistParams j).Q ↦
         descended j x.1.1 x.1.2.1 x.1.2.2 σ z) s := by
-    apply AnalyticAt.pi
-    intro x
+    refine AnalyticAt.pi fun x ↦ ?_
     obtain ⟨_, hc, hd⟩ := mode_bounds x
     exact analyticAt_descended j _ _ _ hj hc hd σ hv
   exact ((EuclideanSpace.equiv (idx3 (twistParams j).Q) ℂ).symm.analyticAt _).comp hpi
@@ -81,9 +80,7 @@ theorem descendedVector_real_of_sign (j : ℕ) (σ s : ℝ) (hs : 0 ≤ s)
     (x : idx3 (twistParams j).Q) :
     descendedVector j σ (s : ℂ) x =
       (twistIntegrand j x.1.1 x.1.2.1 x.1.2.2 s : ℂ) := by
-  have hv : vprof s ≠ 0 := by
-    intro h
-    simp only [h, mul_zero, lt_self_iff_false] at hpos
+  have hv : vprof s ≠ 0 := right_ne_zero_of_mul hpos.ne'
   apply descendedVector_real j σ s hs hv _ x
   rcases hσ with rfl | rfl
   · have hn : ¬vprof s < 0 := by nlinarith only [hpos]
@@ -129,8 +126,8 @@ theorem norm_descendedVector_sq_le (j : ℕ) (σ : ℝ) (hσ : |σ| = 1)
       intro c hc
       apply Finset.sum_congr rfl
       intro d hd
-      have hc' : c ≤ q + 1 := by simp only [Finset.mem_range] at hc; omega
-      have hd' : d ≤ q := by simp only [Finset.mem_range] at hd; omega
+      have hc' : c ≤ q + 1 := Nat.le_of_lt_succ (Finset.mem_range.mp hc)
+      have hd' : d ≤ q := Nat.le_of_lt_succ (Finset.mem_range.mp hd)
       rw [descended_sq j q c d hc' hd' σ r]
       simp only [radial, norm_mul, hσn, mul_one]
     _ ≤ _ := HermiteRadialVector.sum_radial_sq_le

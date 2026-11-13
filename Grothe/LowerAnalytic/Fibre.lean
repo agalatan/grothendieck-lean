@@ -87,9 +87,9 @@ lemma visC_im (u : VisT n → ℝ) : (visC n u).im = u (a1 n) / √2 := by
   simp [visC, Complex.div_ofReal_im]
 
 lemma VisT_cases (i : VisT n) : i = a0 n ∨ i = a1 n := by
-  rcases i with ⟨i, h | h⟩
-  · left; subst h; rfl
-  · right; subst h; rfl
+  rcases i with ⟨i, rfl | rfl⟩
+  · exact Or.inl rfl
+  · exact Or.inr rfl
 
 lemma visU_visC (u : VisT n → ℝ) : visU n (visC n u) = u := by
   funext i
@@ -140,9 +140,8 @@ lemma join_i0 (z : ℂ) (w : RemT n → ℝ) : join n z w (i0 n) = √2 * z.re :
   exact ite_eq_left rfl
 
 lemma join_i1 (z : ℂ) (w : RemT n → ℝ) : join n z w (i1 n) = √2 * z.im := by
-  rw [join, splitE_symm_apply, dite_eq_left (show isVis n (i1 n) from Or.inr rfl), visU, ite_eq_right]
-  intro e
-  exact i0_ne_i1 n (congrArg Subtype.val e).symm
+  rw [join, splitE_symm_apply, dite_eq_left (show isVis n (i1 n) from Or.inr rfl), visU]
+  exact ite_eq_right fun e => i0_ne_i1 n (congrArg Subtype.val e).symm
 
 /-- The visible coordinate of `join z w` is `√2 z`, i.e. `ζ = z₀/√2 = z`. -/
 lemma zc_join (z : ℂ) (w : RemT n → ℝ) : zc (n + 1) 0 (join n z w) = (√2 : ℝ) * z := by
@@ -164,8 +163,8 @@ theorem integral_split {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
       = ∫ p, G ((splitE n).symm p) ∂((γW n).prod (γP n)) := by
     rw [← hm.integral_comp' (fun p => G ((splitE n).symm p))]
     simp
-  have hi : Integrable (fun p => G ((splitE n).symm p)) ((γW n).prod (γP n)) := by
-    exact ((hm.symm (splitE n)).integrable_comp_emb (splitE n).symm.measurableEmbedding).2 hG
+  have hi : Integrable (fun p => G ((splitE n).symm p)) ((γW n).prod (γP n)) :=
+    ((hm.symm (splitE n)).integrable_comp_emb (splitE n).symm.measurableEmbedding).2 hG
   rw [h1, integral_prod _ hi]
   congr 1
   funext w
@@ -184,8 +183,7 @@ theorem ae_split {P : (Fin ((n + 1) + (n + 1)) → ℝ) → Prop}
   filter_upwards [Measure.ae_ae_of_ae_prod h2] with w hw
   rw [← map_visE n, (visE n).measurableEmbedding.ae_map_iff]
   filter_upwards [hw] with u hu
-  rw [splitE_symm_eq] at hu
-  exact hu
+  rwa [splitE_symm_eq] at hu
 
 /-- The fibre sections of an integrable function are integrable for a.e. `w`. -/
 theorem integrable_split {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]

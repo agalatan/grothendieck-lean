@@ -99,16 +99,13 @@ lemma monomial_mem {N : ℕ} (s : Fin 2 →₀ ℕ) (a : ℂ) (hs : s 0 + s 1 �
 theorem mem_span_of_totalDegree_le (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N) :
     P ∈ span N := by
   rw [P.as_sum]
-  apply (span N).sum_mem
-  intro s hs
-  apply monomial_mem
-  have hdeg := (MvPolynomial.le_totalDegree hs).trans hP
-  simpa [Finsupp.sum_fintype, Fin.sum_univ_two] using hdeg
+  refine (span N).sum_mem fun s hs ↦ monomial_mem _ _ ?_
+  simpa [Finsupp.sum_fintype, Fin.sum_univ_two] using (MvPolynomial.le_totalDegree hs).trans hP
 
 /-- The Hermite expansion can be indexed by the finite degree triangle. -/
 theorem exists_expansion_of_totalDegree_le (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N) :
-    ∃ a : indices N → ℂ, ∑ pq, a pq • H pq.1.1 pq.1.2 = P := by
-  exact (Submodule.mem_span_range_iff_exists_fun ℂ).mp (mem_span_of_totalDegree_le P hP)
+    ∃ a : indices N → ℂ, ∑ pq, a pq • H pq.1.1 pq.1.2 = P :=
+  (Submodule.mem_span_range_iff_exists_fun ℂ).mp (mem_span_of_totalDegree_le P hP)
 
 /-- The same finite expansion with coefficients defined on all pairs of natural numbers. -/
 theorem exists_finset_expansion_of_totalDegree_le (P : CPoly) {N : ℕ}

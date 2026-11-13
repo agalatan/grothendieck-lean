@@ -33,9 +33,7 @@ lemma vC_taylor (x : ℝ) (h : ℂ) :
     rw [add_comm (x : ℂ) h, add_pow, Finset.mul_sum, ← Finset.sum_range_add_sum_Ico _ hi12]
     rw [Finset.sum_eq_zero (s := Finset.Ico (i + 1) 12) (fun k hk => by
       rw [Nat.choose_eq_zero_of_lt (by have := (Finset.mem_Ico.mp hk).1; omega)]; simp), add_zero]
-    apply Finset.sum_congr rfl
-    intro k _
-    ring
+    exact Finset.sum_congr rfl fun k _ => by ring
   rw [Finset.sum_congr rfl hexp, Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro k hk
@@ -54,6 +52,9 @@ lemma vC_taylor (x : ℝ) (h : ℂ) :
 
 /-- The deviation majorant `Σ_{1 ≤ k ≤ 11} |t_k(x)| R^k`. -/
 def devR (x R : ℝ) : ℝ := ∑ k ∈ Finset.range 11, |tcoef (k + 1) x| * R ^ (k + 1)
+
+private lemma devR_nonneg (x : ℝ) {R : ℝ} (hR : 0 ≤ R) : 0 ≤ devR x R :=
+  Finset.sum_nonneg fun _ _ => mul_nonneg (abs_nonneg _) (pow_nonneg hR _)
 
 lemma norm_vC_sub_le (x : ℝ) {R : ℝ} (_hR : 0 ≤ R) {z : ℂ} (hz : ‖z - x‖ ≤ R) :
     ‖vC z - (tcoef 0 x : ℂ)‖ ≤ devR x R := by
@@ -100,22 +101,19 @@ lemma abs_eps : |ε| = 1 := by rcases h.hε with h | h <;> simp [h]
 lemma eps_sq : ε ^ 2 = 1 := by rcases h.hε with h | h <;> simp [h]
 
 lemma abs_t0 : |tcoef 0 x| = ε * tcoef 0 x := by
-  have hd : 0 ≤ devR x R := by
-    unfold devR; exact Finset.sum_nonneg fun k _ => mul_nonneg (abs_nonneg _) (pow_nonneg h.hR _)
-  have hpos : 0 < ε * tcoef 0 x := lt_of_le_of_lt hd h.hsgn
+  have hpos : 0 < ε * tcoef 0 x := lt_of_le_of_lt (devR_nonneg x h.hR) h.hsgn
   rcases h.hε with he | he <;> subst he
   · rw [one_mul] at hpos ⊢; exact abs_of_pos hpos
   · rw [neg_one_mul] at hpos ⊢; exact abs_of_neg (by linarith)
 
-lemma re_ge : x - R ≤ z.re := by
+private lemma abs_re_sub_le : |z.re - x| ≤ R := by
   have h1 := Complex.abs_re_le_norm (z - x)
   simp only [Complex.sub_re, Complex.ofReal_re] at h1
-  have := abs_le.mp (h1.trans h.hz); linarith
+  exact h1.trans h.hz
 
-lemma re_le : z.re ≤ x + R := by
-  have h1 := Complex.abs_re_le_norm (z - x)
-  simp only [Complex.sub_re, Complex.ofReal_re] at h1
-  have := abs_le.mp (h1.trans h.hz); linarith
+lemma re_ge : x - R ≤ z.re := by linarith [(abs_le.mp h.abs_re_sub_le).1]
+
+lemma re_le : z.re ≤ x + R := by linarith [(abs_le.mp h.abs_re_sub_le).2]
 
 lemma im_sq_le : z.im ^ 2 ≤ R ^ 2 := by
   have h1 := Complex.abs_im_le_norm (z - x)
@@ -154,13 +152,12 @@ lemma zeta_im_sq_le : ζ.im ^ 2 ≤ Y2 x R := by
     have hdiff : ‖z‖ - z.re = z.im ^ 2 / (‖z‖ + z.re) := by
       field_simp; nlinarith [hn]
     rw [hdiff]
-    have him := h.im_sq_le
     have h2 : 2 * (x - R) ≤ ‖z‖ + z.re := by
       have := Complex.re_le_norm z; linarith
     have hxR : 0 < 2 * (x - R) := by linarith
     calc z.im ^ 2 / (‖z‖ + z.re) / 2 ≤ R ^ 2 / (2 * (x - R)) / 2 := by
           apply div_le_div_of_nonneg_right _ (by norm_num)
-          exact div_le_div₀ (sq_nonneg _) him hxR h2
+          exact div_le_div₀ (sq_nonneg _) h.im_sq_le hxR h2
       _ ≤ R ^ 2 / (2 * (x - R)) := by
           have : 0 ≤ R ^ 2 / (2 * (x - R)) := by positivity
           linarith
@@ -169,8 +166,7 @@ lemma zeta_im_sq_le : ζ.im ^ 2 ≤ Y2 x R := by
 lemma norm_vC_ge : ε * tcoef 0 x - devR x R ≤ ‖vC z‖ := by
   have hd := norm_vC_sub_le x h.hR h.hz
   have := norm_sub_norm_le (tcoef 0 x : ℂ) (vC z)
-  rw [norm_sub_rev] at this
-  rw [Complex.norm_real, Real.norm_eq_abs, h.abs_t0] at this
+  rw [norm_sub_rev, Complex.norm_real, Real.norm_eq_abs, h.abs_t0] at this
   linarith
 
 lemma norm_vC_le : ‖vC z‖ ≤ ε * tcoef 0 x + devR x R := by
@@ -192,21 +188,17 @@ lemma norm_shift_sq_le :
     ‖ζ / wC ε z‖ ^ 2 ≤ (|x| + R) / (kappa ^ 2 * (ε * tcoef 0 x - devR x R) ^ 2) := by
   rw [h.norm_shift_sq]
   have hv0 : 0 < ε * tcoef 0 x - devR x R := by linarith [h.hsgn]
-  have hk := kappa_pos
-  apply div_le_div₀ (add_nonneg (abs_nonneg _) h.hR) h.norm_le
-    (mul_pos (pow_pos hk 2) (pow_pos hv0 2))
-  apply mul_le_mul_of_nonneg_left _ (by positivity)
-  exact pow_le_pow_left₀ hv0.le h.norm_vC_ge 2
+  exact div_le_div₀ (add_nonneg (abs_nonneg _) h.hR) h.norm_le
+    (mul_pos (pow_pos kappa_pos 2) (pow_pos hv0 2))
+    (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hv0.le h.norm_vC_ge 2) (by positivity))
 
 lemma norm_shift_sq_ge :
     max 0 (|x| - R) / (kappa ^ 2 * (ε * tcoef 0 x + devR x R) ^ 2) ≤ ‖ζ / wC ε z‖ ^ 2 := by
   rw [h.norm_shift_sq]
   have hv0 : 0 < ε * tcoef 0 x - devR x R := by linarith [h.hsgn]
-  have hk := kappa_pos
   have hvz : 0 < ‖vC z‖ := lt_of_lt_of_le hv0 h.norm_vC_ge
-  apply div_le_div₀ (norm_nonneg _) h.norm_ge (mul_pos (pow_pos hk 2) (pow_pos hvz 2))
-  apply mul_le_mul_of_nonneg_left _ (by positivity)
-  exact pow_le_pow_left₀ (norm_nonneg _) h.norm_vC_le 2
+  exact div_le_div₀ (norm_nonneg _) h.norm_ge (mul_pos (pow_pos kappa_pos 2) (pow_pos hvz 2))
+    (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) h.norm_vC_le 2) (by positivity))
 
 /-- The angle defect of the shift (for `R < x`). -/
 def kp (ε x R : ℝ) : ℝ :=
@@ -220,9 +212,7 @@ theorem shift_angle (hxR : R < x) (hk : kp ε x R < 1) :
       ‖ζ / wC ε z‖ ^ 2 / ((ζ / wC ε z) ^ 2).re ≤ 1 / Real.sqrt (1 - kp ε x R ^ 2) := by
   set t0 := tcoef 0 x with ht0
   set dev := devR x R with hdev
-  have hd0 : 0 ≤ dev := by
-    rw [hdev]; unfold devR
-    exact Finset.sum_nonneg fun k _ => mul_nonneg (abs_nonneg _) (pow_nonneg h.hR _)
+  have hd0 : 0 ≤ dev := devR_nonneg x h.hR
   have he0 : 0 < ε * t0 := lt_of_le_of_lt hd0 h.hsgn
   have hx0 : 0 < x := lt_of_le_of_lt h.hR hxR
   have ht0ne : t0 ≠ 0 := by rintro h0; rw [h0, mul_zero] at he0; exact lt_irrefl _ he0
@@ -265,7 +255,6 @@ theorem shift_angle (hxR : R < x) (hk : kp ε x R < 1) :
     push_cast
     rw [hz]
     have hk0 : (kappa : ℂ) ≠ 0 := by exact_mod_cast kappa_pos.ne'
-    have ht : (t0 : ℂ) ≠ 0 := by exact_mod_cast ht0ne
     field_simp
   have hn2 : ‖ζ / wC ε z‖ ^ 2 = c * ‖u‖ := by
     rw [← norm_pow, hA2, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hcpos]
@@ -276,12 +265,8 @@ theorem shift_angle (hxR : R < x) (hk : kp ε x R < 1) :
     have : 0 ≤ r2 := div_nonneg hd0 he0.le
     exact add_nonneg (div_nonneg h.hR hx0.le) (mul_nonneg this (by linarith))
   have hsq : 0 < Real.sqrt (1 - kp ε x R ^ 2) := Real.sqrt_pos.mpr (by nlinarith)
-  have hupos : 0 < ‖u‖ := by
-    rcases (norm_nonneg u).lt_or_eq with h0 | h0
-    · exact h0
-    · exfalso
-      have : u = 0 := norm_eq_zero.mp h0.symm
-      rw [this] at hu; simp at hu; linarith
+  have hupos : 0 < ‖u‖ := norm_pos_iff.mpr fun h0 => by
+    rw [h0] at hu; simp at hu; linarith
   have hurepos : 0 < u.re := lt_of_lt_of_le (mul_pos hsq hupos) hre
   refine ⟨?_, ?_, ?_⟩
   · rw [im_sq_eq, hn2, hre2]
@@ -321,8 +306,7 @@ lemma kB_mono {θ θ' a a' : ℝ} (hθ : 0 ≤ θ) (hθθ : θ ≤ θ') (ha : 0 
   unfold kB
   apply mul_le_mul hθθ _ (Finset.sum_nonneg fun m _ => mul_nonneg (mul_nonneg (Nat.cast_nonneg _)
     (Tm_nonneg m)) (pow_nonneg (div_nonneg (sq_nonneg _) (ha.le.trans haa)) _)) (hθ.trans hθθ)
-  apply Finset.sum_le_sum
-  intro m _
+  refine Finset.sum_le_sum fun m _ => ?_
   apply mul_le_mul_of_nonneg_left _ (mul_nonneg (by positivity) (Tm_nonneg m))
   apply pow_le_pow_left₀ (div_nonneg (sq_nonneg _) (ha.le.trans haa))
   exact div_le_div₀ (sq_nonneg _) (pow_le_pow_left₀ hθ hθθ 2) ha haa
@@ -347,21 +331,18 @@ lemma norm_FextV_sq_le_meh (h : DiskPoint ε x R z ζ) {τ : ℝ} (hτ0 : 0 < τ
     rw [Complex.norm_exp, ← Real.exp_nat_mul]
     apply Real.exp_le_exp.mpr
     simp only [Complex.neg_re]; push_cast; linarith [h.re_ge]
+  have h1τ : 0 < 1 - τ ^ 2 := by nlinarith
   have hm : τ⁻¹ ^ 501 * ((1 - τ ^ 2)⁻¹ * Real.exp (mehlerExp τ ζ ζ).re) ≤ mehB τ x R := by
-    have h1τ : 0 < 1 - τ ^ 2 := by nlinarith
     unfold mehB
     apply mul_le_mul_of_nonneg_left _ (pow_nonneg (inv_nonneg.mpr hτ0.le) _)
     apply mul_le_mul_of_nonneg_left _ (inv_nonneg.mpr h1τ.le)
     apply Real.exp_le_exp.mpr
     rw [mehlerExp_diag_re τ hτ1 hτ0.le]
-    have h1 : 0 < 1 + τ := by linarith
-    have h2 : 0 < 1 - τ := by linarith
     apply add_le_add
-    · apply div_le_div_of_nonneg_right _ h1.le
+    · apply div_le_div_of_nonneg_right _ (by linarith)
       exact mul_le_mul_of_nonneg_left h.zeta_re_sq_le (by positivity)
-    · apply div_le_div_of_nonneg_right _ h2.le
+    · apply div_le_div_of_nonneg_right _ (by linarith)
       exact mul_le_mul_of_nonneg_left h.zeta_im_sq_le (by positivity)
-  have h1τ : 0 < 1 - τ ^ 2 := by nlinarith
   exact mul_le_mul he hm (mul_nonneg (pow_nonneg (inv_nonneg.mpr hτ0.le) _)
     (mul_nonneg (inv_nonneg.mpr h1τ.le) (Real.exp_pos _).le)) (Real.exp_pos _).le
 

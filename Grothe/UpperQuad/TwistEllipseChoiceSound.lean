@@ -102,40 +102,11 @@ theorem upsI_sound {g : Power} {coeffs : List Ival} {x : ℚ} {pl : Plan}
       upsKI g coeffs pl.etaK (EllCheck.qI (sqrtImSqQ x pl.geometry.R)) kp a2lo = some u →
       U ≤ (upperQ u : ℝ))
     (h : upsI g coeffs x pl at0 e a2hi = some r) : U ≤ (upperQ r : ℝ) := by
-  let y : Option Ival := do
-    let b2 ← match EllCheck.defectI x pl.geometry.R at0 e with
-      | some kp => shiftImSqI a2hi kp
-      | none => some a2hi
-    upsYI g pl.etaY (EllCheck.qI (sqrtImSqQ x pl.geometry.R)) b2
-  let k : Option Ival := do
-    let kp ← EllCheck.defectI x pl.geometry.R at0 e
-    let a2lo ← EllCheck.a2loI x pl.geometry.R at0 e
-    upsKI g coeffs pl.etaK (EllCheck.qI (sqrtImSqQ x pl.geometry.R)) kp a2lo
-  have hy' : ∀ u, y = some u → U ≤ (upperQ u : ℝ) := by
-    intro u hu
-    cases hkp : EllCheck.defectI x pl.geometry.R at0 e with
-    | none =>
-      apply hy a2hi u (by simp only [hkp])
-      simpa [y, hkp] using hu
-    | some kp =>
-      have hu' : (shiftImSqI a2hi kp).bind
-          (fun b2 ↦ upsYI g pl.etaY (EllCheck.qI (sqrtImSqQ x pl.geometry.R)) b2) =
-          some u := by simpa [y, hkp] using hu
-      obtain ⟨b2, hb2, hu⟩ := Option.bind_eq_some_iff.mp hu'
-      exact hy b2 u (by simpa only [hkp] using hb2) hu
-  have hk' : ∀ u, k = some u → U ≤ (upperQ u : ℝ) := by
-    intro u hu
-    change Option.bind _ _ = some u at hu
-    obtain ⟨kp, hkp, hu⟩ := Option.bind_eq_some_iff.mp hu
-    obtain ⟨a2lo, ha2lo, hu⟩ := Option.bind_eq_some_iff.mp hu
-    exact hk kp a2lo u hkp ha2lo hu
-  change (match pl.mode with
-    | .y => y
-    | .k => k
-    | .auto => minResult y k) = some r at h
-  cases hm : pl.mode with
-  | y => exact hy' r (by simpa only [hm] using h)
-  | k => exact hk' r (by simpa only [hm] using h)
-  | auto => exact minResult_sound hy' hk' (by simpa only [hm] using h)
+  rcases upsI_success_cases h with
+    ⟨b2, u, hb2, hu, rfl | rfl⟩ | ⟨kp, a2lo, u, hkp, ha2lo, hu, rfl | rfl⟩
+  · exact hy b2 _ hb2 hu
+  · exact hy b2 u hb2 hu
+  · exact hk kp a2lo _ hkp ha2lo hu
+  · exact hk kp a2lo u hkp ha2lo hu
 
 end Grothe.UpperQuad.TwistEllCheck

@@ -44,7 +44,7 @@ theorem pot_neg (hE : E.psdOK = true) (hR : R.psdOK = true) (s : ℝ) :
   · have := Jpot_neg E R ℓ β a (y.smul (-1)) s
     have e : (y.smul (-1)).smul (-1) = y := by cases y; simp [Fib.smul]
     rw [e] at this
-    rw [this]; exact Jpot_le_pot E R ℓ β a hE hR _ s
+    exact this.trans_le (Jpot_le_pot E R ℓ β a hE hR _ s)
   · rw [← Jpot_neg]; exact Jpot_le_pot E R ℓ β a hE hR _ _
 
 variable {E R ℓ β a}
@@ -54,7 +54,7 @@ theorem pot_mono (hE : E.psdOK = true) (hR : R.psdOK = true) {s t : ℝ} (hs : 0
     pot E R ℓ β a s ≤ pot E R ℓ β a t := by
   have ht : 0 ≤ t := hs.trans hst
   rcases ht.eq_or_lt with h0 | h0
-  · have : s = t := le_antisymm hst (h0 ▸ hs); rw [this]
+  · rw [le_antisymm hst (h0 ▸ hs)]
   set θ := (t + s) / (2 * t) with hθ
   have hθ0 : 0 ≤ θ := by positivity
   have hθ1 : θ ≤ 1 := by rw [hθ, div_le_one (by positivity)]; linarith
@@ -68,8 +68,8 @@ theorem pot_mono (hE : E.psdOK = true) (hR : R.psdOK = true) {s t : ℝ} (hs : 0
 /-- The Lipschitz constant `2 E|B·a|`. -/
 def lipC (a : Fib) : ℝ := 2 * ∫ z, ‖a.fn z‖ ∂gaussC
 
-lemma lipC_nonneg : 0 ≤ lipC a := by
-  unfold lipC; exact mul_nonneg two_pos.le (integral_nonneg fun _ => norm_nonneg _)
+lemma lipC_nonneg : 0 ≤ lipC a :=
+  mul_nonneg two_pos.le (integral_nonneg fun _ => norm_nonneg _)
 
 lemma pot_abs_dist (hE : E.psdOK = true) (hR : R.psdOK = true) (x y : ℝ) :
     abs (pot E R ℓ β a |x| - pot E R ℓ β a |y|) ≤ lipC a * |x - y| := by
@@ -82,20 +82,18 @@ lemma pot_abs_dist (hE : E.psdOK = true) (hR : R.psdOK = true) (x y : ℝ) :
     unfold lipC; linarith
   have hab : |(|x| - |y|)| ≤ |x - y| := abs_abs_sub_abs_le_abs_sub x y
   rcases le_total |x| |y| with h | h
-  · have := key |x| |y| (abs_nonneg x) h
-    rw [abs_sub_comm]
-    refine this.trans (mul_le_mul_of_nonneg_left ?_ lipC_nonneg)
+  · rw [abs_sub_comm]
+    refine (key |x| |y| (abs_nonneg x) h).trans (mul_le_mul_of_nonneg_left ?_ lipC_nonneg)
     rw [abs_sub_comm] at hab
     exact (le_abs_self _).trans hab
-  · have := key |y| |x| (abs_nonneg y) h
-    refine this.trans (mul_le_mul_of_nonneg_left ((le_abs_self _).trans hab) lipC_nonneg)
+  · exact (key |y| |x| (abs_nonneg y) h).trans
+      (mul_le_mul_of_nonneg_left ((le_abs_self _).trans hab) lipC_nonneg)
 
 /-- `s ↦ Ψ_r(|s|)` is continuous. -/
 theorem continuous_pot_abs (hE : E.psdOK = true) (hR : R.psdOK = true) :
     Continuous fun s : ℝ => pot E R ℓ β a |s| := by
-  refine (LipschitzWith.of_dist_le_mul (K := ⟨lipC a, lipC_nonneg⟩) fun x y => ?_).continuous
-  simp only [Real.dist_eq]
-  exact pot_abs_dist hE hR x y
+  exact (LipschitzWith.of_dist_le_mul (K := ⟨lipC a, lipC_nonneg⟩) fun x y =>
+    pot_abs_dist hE hR x y).continuous
 
 /-- **Integrability of `Ψ_r(δ|P|)`** for an integrable `|P|`. -/
 theorem integrable_pot_comp (hE : E.psdOK = true) (hR : R.psdOK = true) {Ω : Type*}

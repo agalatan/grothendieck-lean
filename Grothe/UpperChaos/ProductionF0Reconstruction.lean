@@ -140,13 +140,11 @@ theorem actual_tensor_error_energy_le (q : ℕ) (a : ℕ × ℕ → ℂ) :
             e (CanonicalReconstructionNorm.partner i)‖ ^ 2 := by
       rw [grade_eq_union, sum_union (canonical_disjoint_reflected q)]
       congr 1
-      · apply sum_congr rfl
-        intro i hi
+      · refine sum_congr rfl fun i hi => ?_
         have hb := (mem_filter.mp hi).1
         have hc := (CanonicalReconstructionNorm.mem_canonical.mp hi).2.2
         rw [he i hb, ConditionalReconstruction.reconstruct, ite_eq_left hc]
-      · apply sum_congr rfl
-        intro i hi
+      · refine sum_congr rfl fun i hi => ?_
         have hb := (mem_filter.mp hi).1
         have hr := (CanonicalReconstructionNorm.mem_reflected.mp hi).2.2
         rw [he i hb, ConditionalReconstruction.reconstruct, ite_eq_right (by omega)]
@@ -185,20 +183,17 @@ theorem tensorCompletionDefectNorm_sq (a0 : ℕ → ℕ → ℕ → ℚ) :
         (CanonicalReconstructionNorm.factor i *
           (a0 q (i.2 + 1) (i.1 - 1) : ℝ) - (a0 q i.1 i.2 : ℝ)) ^ 2 := by
   rw [tensorCompletionDefectNorm, norm_tensorVector_sq]
-  apply sum_congr rfl
-  intro q _
+  refine sum_congr rfl fun q _ => ?_
   rw [grade_eq_union, sum_union (canonical_disjoint_reflected q)]
   have hzero : (∑ i ∈ CanonicalReconstructionNorm.canonical q,
       ‖ConditionalReconstruction.reconstruct (fun k => (a0 q k.1 k.2 : ℂ)) i -
         (a0 q i.1 i.2 : ℂ)‖ ^ 2) = 0 := by
-    apply sum_eq_zero
-    intro i hi
+    refine sum_eq_zero fun i hi => ?_
     have hc := (CanonicalReconstructionNorm.mem_canonical.mp hi).2.2
     simp only [ConditionalReconstruction.reconstruct, ite_eq_left hc,
       sub_self, norm_zero, zero_pow (by omega : 2 ≠ 0)]
   rw [hzero, zero_add]
-  apply sum_congr rfl
-  intro i hi
+  refine sum_congr rfl fun i hi => ?_
   have hr := (CanonicalReconstructionNorm.mem_reflected.mp hi).2.2
   rw [ConditionalReconstruction.reconstruct, ite_eq_right (by omega)]
   change ‖(CanonicalReconstructionNorm.factor i : ℂ) *
@@ -214,9 +209,8 @@ theorem tensorCompletionDefectNorm_le (a0 : ℕ → ℕ → ℕ → ℚ) {η : �
       (CanonicalReconstructionNorm.factor i *
         (a0 q (i.2 + 1) (i.1 - 1) : ℝ) - (a0 q i.1 i.2 : ℝ)) ^ 2) ≤ η ^ 2) :
     tensorCompletionDefectNorm a0 ≤ η := by
-  have hsq : tensorCompletionDefectNorm a0 ^ 2 ≤ η ^ 2 := by
-    rw [tensorCompletionDefectNorm_sq]
-    exact herror
+  have hsq : tensorCompletionDefectNorm a0 ^ 2 ≤ η ^ 2 :=
+    (tensorCompletionDefectNorm_sq a0).trans_le herror
   exact (sq_le_sq₀
     (show 0 ≤ tensorCompletionDefectNorm a0 from norm_nonneg _) hη).mp hsq
 
@@ -244,15 +238,13 @@ theorem norm_productionF0Head_sub_le_canonical (a0 : ℕ → ℕ → ℕ → ℚ
         ∑ i ∈ CanonicalReconstructionNorm.canonical q, ‖trueA q i - a q i‖ ^ 2 :=
       sum_nonneg fun _ _ => sum_nonneg fun _ _ => sq_nonneg _
     have hsqrt : canonicalTensorErrorNorm a0 ^ 2 = ∑ q ∈ range 251,
-        ∑ i ∈ CanonicalReconstructionNorm.canonical q, ‖trueA q i - a q i‖ ^ 2 := by
-      exact Real.sq_sqrt hnonneg
+        ∑ i ∈ CanonicalReconstructionNorm.canonical q, ‖trueA q i - a q i‖ ^ 2 :=
+      Real.sq_sqrt hnonneg
     have hsq : ‖tensorVector (fun q i => trueA q i - exactA q i)‖ ^ 2 ≤
         ((10 / 7 : ℝ) * canonicalTensorErrorNorm a0) ^ 2 := by
       rw [mul_pow, hsqrt]
       exact hs.trans (mul_le_mul_of_nonneg_right (by norm_num) hnonneg)
-    have hcan : 0 ≤ canonicalTensorErrorNorm a0 := Real.sqrt_nonneg _
-    exact (sq_le_sq₀ (norm_nonneg _)
-      (mul_nonneg (by norm_num) hcan)).mp hsq
+    exact (sq_le_sq₀ (norm_nonneg _) (mul_nonneg (by norm_num) (Real.sqrt_nonneg _))).mp hsq
   have hsplit : tensorVector (fun q i => trueA q i - a q i) =
       tensorVector (fun q i => trueA q i - exactA q i) +
         tensorVector (fun q i => exactA q i - a q i) := by
@@ -262,24 +254,9 @@ theorem norm_productionF0Head_sub_le_canonical (a0 : ℕ → ℕ → ℕ → ℚ
       (exactA i.1 (i.2.1, i.2.2) - a i.1 (i.2.1, i.2.2))
     ring
   have hdefect : tensorCompletionDefectNorm a0 =
-      ‖tensorVector (fun q i => exactA q i - a q i)‖ := by rfl
+      ‖tensorVector (fun q i => exactA q i - a q i)‖ := rfl
   rw [hnorm, hsplit, hdefect]
-  have hadd :
-      ‖tensorVector (fun q i => trueA q i - exactA q i) +
-        tensorVector (fun q i => exactA q i - a q i)‖ ≤
-      ‖tensorVector (fun q i => trueA q i - exactA q i)‖ +
-        ‖tensorVector (fun q i => exactA q i - a q i)‖ :=
-    norm_add_le (tensorVector (fun q i => trueA q i - exactA q i))
-      (tensorVector (fun q i => exactA q i - a q i))
-  have hright :
-      ‖tensorVector (fun q i => trueA q i - exactA q i)‖ +
-        ‖tensorVector (fun q i => exactA q i - a q i)‖ ≤
-      (10 / 7 : ℝ) * canonicalTensorErrorNorm a0 +
-        ‖tensorVector (fun q i => exactA q i - a q i)‖ :=
-    add_right_real ‖tensorVector (fun q i => trueA q i - exactA q i)‖
-      ((10 / 7 : ℝ) * canonicalTensorErrorNorm a0)
-      ‖tensorVector (fun q i => exactA q i - a q i)‖ hrec
-  exact le_trans hadd hright
+  exact (norm_add_le _ _).trans (add_right_real _ _ _ hrec)
 
 end
 end Grothe.UpperChaos.FixedChaosSmoothing

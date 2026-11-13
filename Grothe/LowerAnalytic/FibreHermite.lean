@@ -92,233 +92,173 @@ theorem fibreGram_eq (i j : Fin 6) : fibreGram i j = if i = j then 1 else 0 := b
   · -- (0,0)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 1 0 0 0).trans ?_)
-    · try simp only [map_one]
+    · simp only [map_one]
       push_cast
       ring
     · push_cast; ring
   · -- (0,1)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 (-1) 1 0 0).trans ?_)
-    · try simp only [fB1, map_one]
+    · simp only [fB1, map_one]
       push_cast
       ring
     · push_cast; ring
   · -- (0,2)
     refine integral_eq_zero_of_rot _ Complex.I (by simp) fun z => ?_
     simp only [fB2]
-    try ring_nf
-    try simp only [Complex.I_sq, mul_one, neg_mul, mul_neg]
-    try ring_nf
+    ring_nf
+    simp only [Complex.I_sq, mul_one, neg_mul, mul_neg]
   · -- (0,3)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [mul_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
   · -- (0,4)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB4, Complex.normSq_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (0,5)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [map_neg, mul_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
   · -- (1,0)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 (-1) 1 0 0).trans ?_)
-    · try simp only [fB1,
-        Complex.conj_ofReal]
+    · simp only [fB1, Complex.conj_ofReal]
       push_cast
       ring
     · push_cast; ring
   · -- (1,1)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 1 (-2) 1 0).trans ?_)
-    · try simp only [fB1,
-        Complex.conj_ofReal]
+    · simp only [fB1, Complex.conj_ofReal]
       push_cast
       ring
     · push_cast; ring
   · -- (1,2)
     refine integral_eq_zero_of_rot _ Complex.I (by simp) fun z => ?_
     simp only [fB1, fB2, map_mul, Complex.conj_ofReal, Complex.normSq_I, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, mul_one, neg_mul, mul_neg]
-    try ring_nf
+    ring_nf
+    simp only [Complex.I_sq, mul_one, neg_mul, mul_neg]
   · -- (1,3)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB1, Complex.conj_ofReal, Complex.normSq_neg, mul_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
   · -- (1,4)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB1, fB4, Complex.conj_ofReal, Complex.normSq_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (1,5)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB1, map_neg, Complex.conj_ofReal, Complex.normSq_neg, mul_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
   · -- (2,0)
     refine integral_eq_zero_of_rot _ Complex.I (by simp) fun z => ?_
     simp only [fB2, map_mul, map_div₀, map_pow, Complex.conj_ofReal, Complex.conj_I, neg_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, one_mul, neg_mul]
-    try ring_nf
+    ring_nf
+    simp only [Complex.I_sq, one_mul, neg_mul]
   · -- (2,1)
     refine integral_eq_zero_of_rot _ Complex.I (by simp) fun z => ?_
     simp only [fB1, fB2, map_mul, map_div₀, map_pow, Complex.conj_ofReal, Complex.conj_I, neg_mul, Complex.normSq_I, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, one_mul, neg_mul]
-    try ring_nf
+    ring_nf
+    simp only [Complex.I_sq, one_mul, neg_mul]
   · -- (2,2)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 0 0 (1/2) 0).trans ?_)
-    · try simp only [fB2, map_div₀, map_pow,
-        Complex.conj_ofReal]
+    · simp only [fB2, map_div₀, map_pow, Complex.conj_ofReal]
       push_cast
       linear_combination ((√2 : ℝ) : ℂ)⁻¹ ^ 2 * (conj z * z + ((Complex.normSq z : ℝ) : ℂ)) * nsq z + ((Complex.normSq z : ℝ) : ℂ) ^ 2 * hinv
     · push_cast; ring
   · -- (2,3)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB2, map_neg, map_div₀, map_pow, Complex.conj_ofReal, mul_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (2,4)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB2, fB4, map_neg, map_div₀, map_pow, Complex.conj_ofReal, Complex.normSq_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (2,5)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB2, map_neg, map_div₀, map_pow, Complex.conj_ofReal, mul_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (3,0)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [map_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
   · -- (3,1)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB1, map_neg, Complex.normSq_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
   · -- (3,2)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB2, map_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (3,3)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 0 1 0 0).trans ?_)
-    · try simp only [fB1, fB2, fB4, map_mul, map_div₀, map_pow, map_sub, map_one,
-        Complex.conj_ofReal, Complex.conj_conj]
-      push_cast
+    · push_cast
       linear_combination nsq z
     · push_cast; ring
   · -- (3,4)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 0 (-2/√2) (1/√2) 0).trans ?_)
-    · try simp only [fB4]
+    · simp only [fB4]
       push_cast
       linear_combination ((√2 : ℝ) : ℂ)⁻¹ * (((Complex.normSq z : ℝ) : ℂ) - 2) * nsq z
     · push_cast; ring
   · -- (3,5)
     refine integral_eq_zero_of_rot _ Complex.I (by simp) fun z => ?_
     simp only [map_mul, Complex.conj_I, mul_neg, neg_mul, neg_neg]
-    try ring_nf
-    try simp only [Complex.I_sq, one_mul, neg_mul]
-    try ring_nf
+    ring_nf
+    simp only [Complex.I_sq, one_mul, neg_mul]
   · -- (4,0)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB4, map_mul, map_neg, map_div₀, Complex.conj_ofReal, Complex.normSq_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (4,1)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB1, fB4, map_mul, map_neg, map_div₀, Complex.conj_ofReal, Complex.normSq_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (4,2)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB2, fB4, map_mul, map_neg, map_div₀, Complex.conj_ofReal, Complex.normSq_neg, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (4,3)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 0 (-2/√2) (1/√2) 0).trans ?_)
-    · try simp only [fB4, map_mul, map_div₀,
-        Complex.conj_ofReal]
+    · simp only [fB4, map_mul, map_div₀, Complex.conj_ofReal]
       push_cast
       linear_combination ((√2 : ℝ) : ℂ)⁻¹ * (((Complex.normSq z : ℝ) : ℂ) - 2) * nsq z
     · push_cast; ring
   · -- (4,4)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 0 2 (-2) (1/2)).trans ?_)
-    · try simp only [fB4, map_mul, map_div₀,
-        Complex.conj_ofReal]
+    · simp only [fB4, map_mul, map_div₀, Complex.conj_ofReal]
       push_cast
       linear_combination ((√2 : ℝ) : ℂ)⁻¹ ^ 2 * (((Complex.normSq z : ℝ) : ℂ) - 2) ^ 2 * nsq z + ((Complex.normSq z : ℝ) : ℂ) * (((Complex.normSq z : ℝ) : ℂ) - 2) ^ 2 * hinv
     · push_cast; ring
   · -- (4,5)
     refine integral_eq_zero_of_rot _ Complex.I (by simp) fun z => ?_
     simp only [fB4, map_mul, map_div₀, Complex.conj_ofReal, Complex.conj_I, mul_neg, neg_mul, Complex.normSq_I, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, one_mul, neg_mul]
-    try ring_nf
+    ring_nf
+    simp only [Complex.I_sq, one_mul, neg_mul]
   · -- (5,0)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [map_neg, Complex.conj_conj, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
   · -- (5,1)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB1, map_neg, Complex.normSq_neg, Complex.conj_conj, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
   · -- (5,2)
     refine integral_eq_zero_of_rot _ (-1) (by simp) fun z => ?_
     simp only [fB2, map_neg, Complex.conj_conj, neg_mul, one_mul]
-    try ring_nf
-    try simp only [Complex.I_sq, Complex.I_pow_four, Complex.normSq_I, one_mul, mul_one, neg_mul, mul_neg, neg_neg]
-    try ring_nf
+    ring_nf
   · -- (5,3)
     refine integral_eq_zero_of_rot _ Complex.I (by simp) fun z => ?_
     simp only [map_mul, map_neg, Complex.conj_I, Complex.conj_conj, neg_mul, neg_neg]
-    try ring_nf
-    try simp only [Complex.I_sq, one_mul, neg_mul]
-    try ring_nf
+    ring_nf
+    simp only [Complex.I_sq, one_mul, neg_mul]
   · -- (5,4)
     refine integral_eq_zero_of_rot _ Complex.I (by simp) fun z => ?_
     simp only [fB4, map_mul, map_neg, Complex.conj_I, Complex.conj_conj, neg_mul, Complex.normSq_I, one_mul, neg_neg]
-    try ring_nf
-    try simp only [Complex.I_sq, one_mul, neg_mul]
-    try ring_nf
+    ring_nf
+    simp only [Complex.I_sq, one_mul, neg_mul]
   · -- (5,5)
     refine (integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)).trans
       ((rad3 0 1 0 0).trans ?_)
-    · try simp only [
-        Complex.conj_conj]
+    · simp only [Complex.conj_conj]
       push_cast
       linear_combination nsq z
     · push_cast; ring

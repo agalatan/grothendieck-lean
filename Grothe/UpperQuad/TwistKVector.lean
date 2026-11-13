@@ -28,13 +28,12 @@ theorem sum_indices_eq_shells (N : ℕ) (f : ℕ × ℕ → ℝ) :
       ∑ m ∈ Finset.range (N + 1), ∑ g ∈ Finset.range (m + 1), f (g, m - g) := by
   have hmap : ∀ gh ∈ indices N, gh.1 + gh.2 ∈ Finset.range (N + 1) := by
     rintro ⟨g, h⟩ hgh
-    simp only [mem_indices] at hgh
-    simp only [Finset.mem_range]
+    simp only [mem_indices, Finset.mem_range] at hgh ⊢
     omega
   rw [← Finset.sum_fiberwise_of_maps_to hmap f]
   apply Finset.sum_congr rfl
   intro m hm
-  have hmN : m ≤ N := by have := Finset.mem_range.mp hm; omega
+  have hmN : m ≤ N := Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)
   have hf : (indices N).filter (fun gh ↦ gh.1 + gh.2 = m) =
       Finset.HasAntidiagonal.antidiagonal m := by
     ext ⟨g, h⟩
@@ -49,9 +48,8 @@ theorem sqrt_sum_norm_Jext_sq_le_of_column_bound (S : Finset (ℕ × ℕ)) (D : 
       ∑ cd ∈ S, ‖matrixCoefficient j r cd.1 cd.2 gh.1 gh.2‖ ^ 2 ≤ B (gh.1 + gh.2)) :
     Real.sqrt (∑ cd ∈ S, ‖Jext j r A cd.1 cd.2‖ ^ 2) ≤
       ∑ gh ∈ indices (D + 35 * j), Real.sqrt (B (gh.1 + gh.2)) *
-        ‖Uext gh.1 gh.2 ((Real.sqrt (rate j) : ℂ) * A)‖ := by
-  apply (sqrt_sum_norm_Jext_sq_le S D hS j r A).trans
-  exact Finset.sum_le_sum fun gh hgh ↦
+        ‖Uext gh.1 gh.2 ((Real.sqrt (rate j) : ℂ) * A)‖ :=
+  (sqrt_sum_norm_Jext_sq_le S D hS j r A).trans <| Finset.sum_le_sum fun gh hgh ↦
     mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt (hB gh hgh)) (norm_nonneg _)
 
 /-- Squaring the column-norm estimate introduces no extra output-dimension factor. -/
@@ -82,9 +80,8 @@ theorem weighted_canonical_sum_le_shells (N : ℕ) (B : ℕ → ℝ) {A : ℂ}
       rw [Finset.mul_sum]
       apply Finset.sum_congr rfl
       intro g hg
-      have hdeg : g + (m - g) = m := by
-        have := Finset.mem_range.mp hg
-        omega
+      have hdeg : g + (m - g) = m :=
+        Nat.add_sub_of_le (Nat.lt_succ_iff.mp (Finset.mem_range.mp hg))
       simp only [hdeg]
     _ ≤ Real.sqrt (B m) *
         (2 * Real.sqrt (‖A‖ ^ 2 / (A ^ 2).re) * ((m : ℝ) + 1) *
@@ -198,9 +195,8 @@ theorem sum_norm_Jext_sq_le_coarse (S : Finset (ℕ × ℕ)) (D : ℕ)
           Real.sqrt ((m.factorial : ℝ) * N2 m) *
             (Real.sqrt 8 * (‖A‖ ^ 2 / (A ^ 2).re) /
               (Real.sqrt (rate j) * ‖A‖)) ^ m) ^ 2 := by
-  have hr' : 0 < (((Real.sqrt (rate j) : ℂ) * A) ^ 2).re := by
-    rw [sqrt_mul_sq_re (rate_pos j).le]
-    exact mul_pos (rate_pos j) hr
+  have hr' : 0 < (((Real.sqrt (rate j) : ℂ) * A) ^ 2).re :=
+    (mul_pos (rate_pos j) hr).trans_eq (sqrt_mul_sq_re (rate_pos j).le A).symm
   have h := sum_norm_Jext_sq_le_phase_shells S D hS j r A E hE N2 hB hr'
   simp only [theta_sqrt_mul (rate_pos j)] at h
   simpa only [norm_sqrt_mul] using h

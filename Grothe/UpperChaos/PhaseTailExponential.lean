@@ -16,9 +16,8 @@ theorem exp_five_gt_148 : (148 : ℝ) < Real.exp 5 := by
 theorem exp_neg_155_lt : Real.exp (-155) < 1 / (148 : ℝ) ^ 31 := by
   have hp : (148 : ℝ) ^ 31 < Real.exp 155 := by
     calc
-      (148 : ℝ) ^ 31 < (Real.exp 5) ^ 31 := by
-        gcongr
-        exact exp_five_gt_148
+      (148 : ℝ) ^ 31 < (Real.exp 5) ^ 31 :=
+        pow_lt_pow_left₀ exp_five_gt_148 (by norm_num) (by norm_num)
       _ = Real.exp 155 := by
         rw [← Real.exp_nat_mul]
         norm_num
@@ -35,9 +34,8 @@ theorem phase_tail_scalar_bound {B : ℚ} (hB0 : 0 ≤ B)
       (Rat.cast_lt (K := ℝ)).2 hB
     push_cast at hc
     exact hc
-  have hdiv : (B : ℝ) / 148 ^ 31 < (5 / 10 ^ 15 : ℝ) ^ 2 := by
-    apply (div_lt_iff₀ (show (0 : ℝ) < 148 ^ 31 by positivity)).2
-    simpa only [mul_comm] using hb
+  have hdiv : (B : ℝ) / 148 ^ 31 < (5 / 10 ^ 15 : ℝ) ^ 2 :=
+    (div_lt_iff₀ (show (0 : ℝ) < 148 ^ 31 by positivity)).2 (by simpa only [mul_comm] using hb)
   calc
     Real.exp (-155) * (B : ℝ) ≤ (1 / (148 : ℝ) ^ 31) * B :=
       mul_le_mul_of_nonneg_right exp_neg_155_lt.le hb0

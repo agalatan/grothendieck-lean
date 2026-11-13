@@ -23,11 +23,9 @@ noncomputable section
 /-- The finite factorization is the same entire coefficient as the shifted Gaussian integral. -/
 theorem Jext_eq_gaussianShift (j : ℕ) (hj : 0 < j) (r A : ℂ) (c d : ℕ) :
     Jext j r A c d = GaussianShift.coefficient j r A.re A.im (c, d) := by
-  symm
-  apply GaussianShift.coefficient_eq_of_real_positive j hj (c, d)
-  · exact fun r A ↦ analyticAt_Jext_shift j c d r A
-  · exact fun r A ↦ analyticAt_Jext_radial j c d r A
-  · exact fun r A hA ↦ Jext_real j c d r A hA.ne'
+  exact (GaussianShift.coefficient_eq_of_real_positive j hj (c, d)
+    (fun r A ↦ analyticAt_Jext_shift j c d r A) (fun r A ↦ analyticAt_Jext_radial j c d r A)
+    (fun r A hA ↦ Jext_real j c d r A hA.ne') r A).symm
 
 /-- The literal production coefficient uses the signed shift and one outer profile sign. -/
 theorem twistCoef_eq_Jext (j : ℕ) (hj : 0 < j) (s : ℝ) (hs : 0 ≤ s)

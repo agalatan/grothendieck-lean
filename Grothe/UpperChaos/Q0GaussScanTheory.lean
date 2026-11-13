@@ -27,9 +27,7 @@ theorem scan_pairwise (ps : List Panel) (start finish : ℕ)
   | nil => simp
   | cons p ps ih =>
     obtain ⟨hp, ht⟩ := scan_cons_sound p ps start finish h
-    apply List.pairwise_cons.mpr
-    refine ⟨?_, ih (start + p.order) ht⟩
-    intro q hq
+    refine List.pairwise_cons.mpr ⟨fun q hq => ?_, ih (start + p.order) ht⟩
     have hb := (scan_member_bounds ps (start + p.order) finish ht q hq).1
     omega
 

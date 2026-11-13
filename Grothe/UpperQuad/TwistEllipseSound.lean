@@ -26,8 +26,7 @@ theorem upperQ_cast (a : Ival) :
   · push_cast
     rw [pow2_cast_zpow, Int.toNat_of_nonneg h]
   · push_cast
-    rw [pow2_cast_zpow, Int.toNat_of_nonneg (by omega : 0 ≤ -a.e)]
-    rw [zpow_neg, div_inv_eq_mul]
+    rw [pow2_cast_zpow, Int.toNat_of_nonneg (by omega : 0 ≤ -a.e), zpow_neg, div_inv_eq_mul]
 
 /-- Making the upper endpoint thin does not change its value. -/
 @[simp] theorem upperQ_upperI (a : Ival) : upperQ (upperI a) = upperQ a := rfl
@@ -38,11 +37,7 @@ theorem mem_upperI_iff {x : ℝ} {a : Ival} :
   rw [upperQ_cast]
   change ((a.hi : ℝ) * (2 : ℝ) ^ a.e ≤ x ∧
     x ≤ (a.hi : ℝ) * (2 : ℝ) ^ a.e) ↔ x = (a.hi : ℝ) * (2 : ℝ) ^ a.e
-  constructor
-  · exact fun h ↦ le_antisymm h.2 h.1
-  · intro h
-    subst x
-    exact ⟨le_rfl, le_rfl⟩
+  exact ⟨fun h ↦ le_antisymm h.2 h.1, fun h ↦ ⟨h.ge, h.le⟩⟩
 
 /-- The real upper endpoint belongs to its thin interval. -/
 theorem mem_upperI (a : Ival) : mem (upperQ a : ℝ) (upperI a) :=
@@ -64,18 +59,12 @@ theorem upperQ_maxUpper (a b : Ival) :
 /-- The maximum dominates the first real upper endpoint. -/
 theorem le_maxUpper_left (a b : Ival) :
     (upperQ a : ℝ) ≤ (upperQ (maxUpper a b) : ℝ) := by
-  have h : upperQ a ≤ upperQ (maxUpper a b) := by
-    rw [upperQ_maxUpper]
-    exact le_max_left _ _
-  exact_mod_cast h
+  exact_mod_cast (le_max_left _ _).trans_eq (upperQ_maxUpper a b).symm
 
 /-- The maximum dominates the second real upper endpoint. -/
 theorem le_maxUpper_right (a b : Ival) :
     (upperQ b : ℝ) ≤ (upperQ (maxUpper a b) : ℝ) := by
-  have h : upperQ b ≤ upperQ (maxUpper a b) := by
-    rw [upperQ_maxUpper]
-    exact le_max_right _ _
-  exact_mod_cast h
+  exact_mod_cast (le_max_right _ _).trans_eq (upperQ_maxUpper a b).symm
 
 /-- Taking the maximum preserves both supplied real upper bounds. -/
 theorem maxUpper_sound {x y : ℝ} {a b : Ival}
@@ -104,23 +93,19 @@ theorem minResult_sound {a b : Option Ival} {r : Ival} {x : ℝ}
     cases b with
     | none => simp [minResult] at h
     | some b =>
-      have hr : b = r := Option.some.inj h
-      rw [← hr]
+      obtain rfl : b = r := Option.some.inj h
       exact hb b rfl
   | some a =>
     cases b with
     | none =>
-      have hr : a = r := Option.some.inj h
-      rw [← hr]
+      obtain rfl : a = r := Option.some.inj h
       exact ha a rfl
     | some b =>
       simp only [minResult] at h
       split_ifs at h with hab
-      · have hr : upperI a = r := Option.some.inj h
-        rw [← hr, upperQ_upperI]
+      · obtain rfl : upperI a = r := Option.some.inj h
         exact ha a rfl
-      · have hr : upperI b = r := Option.some.inj h
-        rw [← hr, upperQ_upperI]
+      · obtain rfl : upperI b = r := Option.some.inj h
         exact hb b rfl
 
 end Grothe.UpperQuad.TwistEllCheck

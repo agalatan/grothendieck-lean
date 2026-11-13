@@ -80,8 +80,7 @@ lemma coefFib_rot (k : ℂ → ℂ) :
     linear_combination (-(z * conj c * k (c * z))) * h1
 
 lemma hre_conj_mul (a b : ℂ) : hre (conj c * a) (conj c * b) = hre a b := by
-  have h1 := conj_mul_self_of_norm hc
-  have h2 : c * conj c = 1 := by rw [mul_comm]; exact h1
+  have h2 : c * conj c = 1 := (mul_comm _ _).trans (conj_mul_self_of_norm hc)
   unfold hre
   rw [show conj (conj c * a) * (conj c * b) = (c * conj c) * (conj a * b) by
     rw [map_mul, Complex.conj_conj]; ring, h2, one_mul]

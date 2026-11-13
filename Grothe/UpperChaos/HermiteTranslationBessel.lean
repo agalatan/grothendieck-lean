@@ -85,10 +85,8 @@ theorem synthesis_eq (D : ℕ) (δ : ℂ) (S : Finset (ℕ × ℕ)) (a : ℕ × 
 
 theorem polynomialCombination_mem_of_support (D : ℕ) (S : Finset (ℕ × ℕ))
     (a : ℕ × ℕ → ℂ) (hD : ∀ i ∈ S, i.1 + i.2 ≤ D) :
-    polynomialCombination S a ∈ polynomialSpace D := by
-  apply Submodule.sum_mem
-  intro i hi
-  exact Submodule.smul_mem _ _ (normalizedPolynomial_mem D i (hD i hi))
+    polynomialCombination S a ∈ polynomialSpace D :=
+  Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (normalizedPolynomial_mem D i (hD i hi))
 
 /-- The finite translated family has the exponential synthesis bound. -/
 theorem norm_synthesis_sq_le (D : ℕ) (δ : ℂ) (S : Finset (ℕ × ℕ))
@@ -99,8 +97,7 @@ theorem norm_synthesis_sq_le (D : ℕ) (δ : ℂ) (S : Finset (ℕ × ℕ))
   have h := norm_finiteTaylor_le D δ (polynomialCombination S a)
     (polynomialCombination_mem_of_support D S a hD)
   have hs := pow_le_pow_left₀ (norm_nonneg _) h 2
-  rw [mul_pow, evalL2_polynomialCombination, norm_combination_sq] at hs
-  exact hs
+  rwa [mul_pow, evalL2_polynomialCombination, norm_combination_sq] at hs
 
 /-- Every selected translated Hermite coefficient is controlled together, independently
 of the size of the mode set. -/
@@ -119,8 +116,7 @@ theorem sum_inner_simultaneousShift_sq_le (D : ℕ) (δ : ℂ) (S : Finset (ℕ 
       Real.exp (‖δ‖ * Real.sqrt (2 * D)) ^ 2 * ‖f‖ ^ 2 := by
   calc
     _ = ∑ i ∈ S, ‖⟪taylorVector D δ i, f⟫_ℂ‖ ^ 2 := by
-      apply Finset.sum_congr rfl
-      intro i hi
+      refine Finset.sum_congr rfl fun i hi => ?_
       simp only [taylorVector, simultaneousShift_eq_finiteTaylor D δ (normalizedPolynomial i)
         (normalizedPolynomial_mem D i (hD i hi))]
     _ ≤ _ := sum_inner_taylorVector_sq_le D δ S hD f

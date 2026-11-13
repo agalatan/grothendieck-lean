@@ -71,13 +71,10 @@ lemma panelM2_sound (hc : chatOK = true) {pos : Bool} {lo hi : ℚ} {pl : Plan}
 lemma differentiableAt_FextV {ε : ℝ} (hε : ε ≠ 0) {z : ℂ} (hv : vC z ≠ 0) :
     DifferentiableAt ℂ (FextV ε) z := by
   have h : FextV ε = fun z => (EuclideanSpace.equiv canon ℂ).symm
-      (fun x : canon => Fext ε x.1.1 x.1.2.1 x.1.2.2 z) := by
-    funext z; rfl
+      (fun x : canon => Fext ε x.1.1 x.1.2.1 x.1.2.2 z) := rfl
   rw [h]
-  apply (EuclideanSpace.equiv canon ℂ).symm.differentiableAt.comp z
-  rw [differentiableAt_pi]
-  intro x
-  exact differentiableAt_Fext ε hε _ _ _ hv
+  exact (EuclideanSpace.equiv canon ℂ).symm.differentiableAt.comp z
+    (differentiableAt_pi.mpr fun x => differentiableAt_Fext ε hε _ _ _ hv)
 
 /-- On an accepted disk the profile does not vanish. -/
 lemma vC_ne_zero_of_disk {ε x R : ℝ} (hR : 0 ≤ R) (hsgn : devR x R < ε * tcoef 0 x)
@@ -111,6 +108,50 @@ lemma planGeomOK_spec {lo hi : ℚ} {pl : Plan} (h : planGeomOK lo hi pl = true)
   simp only [Bool.and_eq_true, decide_eq_true_eq] at h
   tauto
 
+/-- Accepted plan geometry covers every point of the closed annulus image by a plan disk. -/
+theorem planGeomOK_disk_cover {lo hi : ℚ} {pl : Plan} (hgeo : planGeomOK lo hi pl = true)
+    {w : ℂ} (h1 : (pl.rho : ℝ)⁻¹ ≤ ‖w‖) (h2 : ‖w‖ ≤ (pl.rho : ℝ)) :
+    ∃ i : ℕ, i < pl.m ∧ ‖ellipsePt lo hi w - (diskCentre lo hi pl i : ℝ)‖ ≤ (pl.R : ℝ) := by
+  obtain ⟨hρ, hm, hR, hcov, -, -, hlh⟩ := planGeomOK_spec hgeo
+  have hR' : (0 : ℝ) ≤ pl.R := by exact_mod_cast hR
+  have hlh' : (lo : ℝ) < hi := by exact_mod_cast hlh
+  have hρ' : (1 : ℝ) < pl.rho := by exact_mod_cast hρ
+  obtain ⟨A, hA⟩ : ∃ A : ℝ, A = ((halfAxes lo hi pl).1 : ℝ) := ⟨_, rfl⟩
+  obtain ⟨B, hB⟩ : ∃ B : ℝ, B = ((halfAxes lo hi pl).2 : ℝ) := ⟨_, rfl⟩
+  have hAe : A = ((hi : ℝ) - lo) / 2 *
+      (((pl.rho : ℝ) + (pl.rho : ℝ)⁻¹) / 2) := by
+    rw [hA]
+    unfold halfAxes
+    push_cast
+    ring
+  have hBe : B = ((hi : ℝ) - lo) / 2 *
+      (((pl.rho : ℝ) - (pl.rho : ℝ)⁻¹) / 2) := by
+    rw [hB]
+    unfold halfAxes
+    push_cast
+    ring
+  have hA0 : 0 < A := by
+    rw [hAe]
+    have h1 : 0 < (pl.rho : ℝ) := by linarith
+    have h2 : 0 < ((hi : ℝ) - lo) / 2 := by linarith
+    positivity
+  have hm' : 0 < pl.m := by omega
+  have hcov' : (A / pl.m) ^ 2 + B ^ 2 ≤ (pl.R : ℝ) ^ 2 := by
+    rw [hA, hB]
+    exact_mod_cast hcov
+  obtain ⟨hre, him⟩ := ellipsePt_re_im_le hlh'.le hρ' h1 h2
+  rw [← hAe] at hre
+  rw [← hBe] at him
+  obtain ⟨i, hi', hiz⟩ := exists_disk_cover hA0 hm' hcov' hR' hre him
+  refine ⟨i, hi', ?_⟩
+  have hx : ((diskCentre lo hi pl i : ℚ) : ℝ) =
+      ((lo : ℝ) + hi) / 2 - A + 2 * A / pl.m * (i + 1 / 2) := by
+    unfold diskCentre
+    rw [hA]
+    push_cast
+    ring
+  rwa [hx]
+
 /-- The conclusion for one panel: a sign `ε` of the profile on the panel and the remainder bound
 `Ev` for every admissible rule. -/
 def PanelGood (p : Grothe.UpperChaos.Q0GaussAddress.Panel) (Ev : ℝ) : Prop :=
@@ -135,7 +176,7 @@ theorem panelErr_sound (hc : chatOK = true) (p : Grothe.UpperChaos.Q0GaussAddres
   | some m2 =>
     rw [hm2] at h
     simp only at h
-    obtain ⟨hρ, hm, hR, hcov, -, -, hlh⟩ := planGeomOK_spec hgeo
+    obtain ⟨hρ, -, hR, -, -, -, hlh⟩ := planGeomOK_spec hgeo
     set pos := isPos (taylorI (qI ((p.lo + p.hi) / 2)) 0) with hpos
     have hR' : (0 : ℝ) ≤ pl.R := by exact_mod_cast hR
     obtain ⟨S, hSm, hall⟩ := panelM2_sound hc hR' hm2
@@ -144,32 +185,10 @@ theorem panelErr_sound (hc : chatOK = true) (p : Grothe.UpperChaos.Q0GaussAddres
     have hε0 : ε ≠ 0 := by rcases hε with h | h <;> rw [h] <;> norm_num
     have hlh' : (p.lo : ℝ) < p.hi := by exact_mod_cast hlh
     have hρ' : (1 : ℝ) < pl.rho := by exact_mod_cast hρ
-    obtain ⟨A, hA⟩ : ∃ A : ℝ, A = ((halfAxes p.lo p.hi pl).1 : ℝ) := ⟨_, rfl⟩
-    obtain ⟨B, hB⟩ : ∃ B : ℝ, B = ((halfAxes p.lo p.hi pl).2 : ℝ) := ⟨_, rfl⟩
-    have hAe : A = ((p.hi : ℝ) - p.lo) / 2 * (((pl.rho : ℝ) + (pl.rho : ℝ)⁻¹) / 2) := by
-      rw [hA]; unfold halfAxes; push_cast; ring
-    have hBe : B = ((p.hi : ℝ) - p.lo) / 2 * (((pl.rho : ℝ) - (pl.rho : ℝ)⁻¹) / 2) := by
-      rw [hB]; unfold halfAxes; push_cast; ring
-    have hA0 : 0 < A := by
-      rw [hAe]
-      have h1 : 0 < (pl.rho : ℝ) := by linarith
-      have h2 : 0 < ((p.hi : ℝ) - p.lo) / 2 := by linarith
-      positivity
-    have hm' : 0 < pl.m := by omega
-    have hcov' : (A / pl.m) ^ 2 + B ^ 2 ≤ (pl.R : ℝ) ^ 2 := by
-      rw [hA, hB]; exact_mod_cast hcov
     -- every point of the closed ellipse lies in an accepted disk
     have hdisk : ∀ w : ℂ, (pl.rho : ℝ)⁻¹ ≤ ‖w‖ → ‖w‖ ≤ pl.rho →
-        ∃ j, j < pl.m ∧ ‖ellipsePt p.lo p.hi w - (diskCentre p.lo p.hi pl j : ℝ)‖ ≤ pl.R := by
-      intro w h1 h2
-      obtain ⟨hre, him⟩ := ellipsePt_re_im_le hlh'.le hρ' h1 h2
-      rw [← hAe] at hre; rw [← hBe] at him
-      obtain ⟨j, hj, hjz⟩ := exists_disk_cover hA0 hm' hcov' hR' hre him
-      refine ⟨j, hj, ?_⟩
-      have hx : ((diskCentre p.lo p.hi pl j : ℚ) : ℝ) =
-          ((p.lo : ℝ) + p.hi) / 2 - A + 2 * A / pl.m * (j + 1 / 2) := by
-        unfold diskCentre; rw [hA]; push_cast; ring
-      rw [hx]; exact hjz
+        ∃ j, j < pl.m ∧ ‖ellipsePt p.lo p.hi w - (diskCentre p.lo p.hi pl j : ℝ)‖ ≤ pl.R :=
+      fun _ h1 h2 => planGeomOK_disk_cover hgeo h1 h2
     set Mv := Real.sqrt (bval m2) with hMv
     have hMm : mem Mv (sqrtI P (absUpper m2)) := mem_sqrtI P (bval_nonneg _) (mem_absUpper _)
     obtain ⟨hEm, hden⟩ := mem_dv (mem_mulI P (mem_qI (4 * (p.hi - p.lo)))

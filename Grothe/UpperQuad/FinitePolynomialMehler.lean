@@ -45,10 +45,8 @@ theorem sum_norm_normalizedHf_sq_le (S : Finset (ℕ × ℕ)) (N : ℕ)
     τ ^ N * ∑ pq ∈ S, ‖normalizedHf pq.1 pq.2 z₁ z₂‖ ^ 2 =
         ∑ pq ∈ S, τ ^ N * ‖normalizedHf pq.1 pq.2 z₁ z₂‖ ^ 2 := by
           rw [Finset.mul_sum]
-    _ ≤ ∑ pq ∈ S, τ ^ (pq.1 + pq.2) * ‖normalizedHf pq.1 pq.2 z₁ z₂‖ ^ 2 := by
-      apply Finset.sum_le_sum
-      intro pq hpq
-      exact mul_le_mul_of_nonneg_right
+    _ ≤ ∑ pq ∈ S, τ ^ (pq.1 + pq.2) * ‖normalizedHf pq.1 pq.2 z₁ z₂‖ ^ 2 :=
+      Finset.sum_le_sum fun pq hpq => mul_le_mul_of_nonneg_right
         (pow_le_pow_of_le_one hτ0.le hτ1.le (hdegree pq hpq)) (sq_nonneg _)
     _ ≤ (1 - τ ^ 2)⁻¹ * Real.exp (Mehler.mehlerExp τ z₁ z₂).re := by
       simpa only [norm_normalizedHf_sq, mul_div_assoc] using

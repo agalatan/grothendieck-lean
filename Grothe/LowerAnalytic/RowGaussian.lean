@@ -42,33 +42,8 @@ theorem law_of_unit_H21 (m : ℕ) {ψ : L2G m} (hψ : ψ ∈ H21 m) (h1 : ‖ψ�
       ∫ x, eval x A ^ 2 ∂(stdGaussian (m + m)) = 1 / 2 ∧
       ⇑ψ =ᵐ[stdGaussian (m + m)] fun x => (⟨eval x A, eval x B⟩ : ℂ) := by
   obtain ⟨c, rfl⟩ := exists_wick_repr m hψ
-  refine ⟨reP m c, imP m c, chaos3_reP m c, circular_reP_imP m c, ?_, repr_ae m c⟩
-  have hae := repr_ae m c
-  have hc := circular_reP_imP m c
-  have hE := gaussE_isGaussianExpectation (m + m)
-  have hnorm : ∫ x, (eval x (reP m c) ^ 2 + eval x (imP m c) ^ 2) ∂(stdGaussian (m + m)) = 1 := by
-    have h := inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (∑ p, c p • wickL m p.1 p.2.1 p.2.2)
-    rw [inner_L2, h1] at h
-    have h2 : ∫ x, conj ((∑ p, c p • wickL m p.1 p.2.1 p.2.2 : L2G m) x)
-          * (∑ p, c p • wickL m p.1 p.2.1 p.2.2 : L2G m) x ∂(stdGaussian (m + m))
-        = ((∫ x, (eval x (reP m c) ^ 2 + eval x (imP m c) ^ 2) ∂(stdGaussian (m + m)) : ℝ) : ℂ) := by
-      rw [← integral_complex_ofReal]
-      refine integral_congr_ae (hae.mono fun x hx => ?_)
-      simp only at hx ⊢
-      rw [hx, Complex.conj_mul', ← Complex.ofReal_pow, Complex.sq_norm, Complex.normSq_mk]
-      push_cast; ring
-    rw [h2] at h
-    have h3 : ((∫ x, (eval x (reP m c) ^ 2 + eval x (imP m c) ^ 2) ∂(stdGaussian (m + m)) : ℝ) : ℂ)
-        = ((1 : ℝ) : ℂ) := by rw [h]; norm_num
-    exact Complex.ofReal_injective h3
-  have hAB : ∫ x, eval x (reP m c) ^ 2 ∂(stdGaussian (m + m))
-      = ∫ x, eval x (imP m c) ^ 2 ∂(stdGaussian (m + m)) := by
-    simpa only [gaussE_apply, map_mul, sq] using hc.gE_sq_eq hE
-  have hiA : Integrable (fun x => eval x (reP m c) ^ 2) (stdGaussian (m + m)) :=
-    (integrable_eval (reP m c ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
-  have hiB : Integrable (fun x => eval x (imP m c) ^ 2) (stdGaussian (m + m)) :=
-    (integrable_eval (imP m c ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
-  rw [integral_add hiA hiB] at hnorm; linarith
+  exact ⟨reP m c, imP m c, chaos3_reP m c, circular_reP_imP m c,
+    integral_reP_sq_eq_half m c h1, repr_ae m c⟩
 
 /-- A polynomial representative of an element of `H₂,₁` with its circular law: for every
 `p ∈ H₂,₁` there is a circular cubic `(A, B)` with `E A² = 1/2` and `p = ‖p‖ (A + iB)` a.e.
@@ -114,9 +89,8 @@ abbrev pres : L2G n := (H21 n).starProjection (cK hfm hgm hfb hgb 0)
 abbrev X2e : L2G n := (H21 n).starProjection (cK hfm hgm hfb hgb 1)
 abbrev X3e : L2G n := (H21 n).starProjection (conjL (cK hfm hgm hfb hgb 2))
 
-lemma pres_mem : pres hfm hgm hfb hgb ∈ H21 n := by
-  show (H21 n).starProjection _ ∈ H21 n
-  rw [Submodule.starProjection_apply]; exact Submodule.coe_mem _
+lemma pres_mem : pres hfm hgm hfb hgb ∈ H21 n :=
+  (H21 n).starProjection_apply_mem _
 
 lemma inner_pres_proj (w : L2G n) :
     inner ℂ (pres hfm hgm hfb hgb) w = inner ℂ (pres hfm hgm hfb hgb) ((H21 n).starProjection w) := by
@@ -238,9 +212,8 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
   have hLs : (inner ℂ (((r.ell : ℝ) : ℂ) • zeta0 n + ((r.beta : ℝ) : ℂ) • vL (n + 1) 0)
       (hOf (n + 1) f g)).re = (∫ y, Lsec r.ell r.beta (ft := ft) (gt := gt) y ∂(stdGaussian (n + n))).re := by
     rw [hL]; rfl
-  have hpp : (inner ℂ p p).re = ‖p‖ ^ 2 := re_inner_self p
   simp only [QkOf, PkOf] at hV
-  rw [hpp]
+  rw [re_inner_self]
   rw [hc] at hFib
   push_cast at hV hFib hK hLs ⊢
   nlinarith [hV, hFib, hK, hLs]

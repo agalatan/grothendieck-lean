@@ -74,9 +74,8 @@ lemma Tfun_ae' (j : Fin 6) (r : L2G n) {R : (Fin (n + n) → ℝ) → ℂ}
 lemma lp_eq_of_joinR {u v : L2G (n + 1)} {f g : (Fin ((n + 1) + (n + 1)) → ℝ) → ℂ}
     (hu : ⇑u =ᵐ[stdGaussian ((n + 1) + (n + 1))] f) (hv : ⇑v =ᵐ[stdGaussian ((n + 1) + (n + 1))] g)
     (h : ∀ z y, f (joinR z y) = g (joinR z y)) : u = v := by
-  refine Lp.ext (hu.trans ?_)
-  rw [funext_joinR h]
-  exact hv.symm
+  rw [funext_joinR h] at hu
+  exact Lp.ext (hu.trans hv.symm)
 
 lemma Tfun_add (j : Fin 6) (r s : L2G n) : Tfun n j (r + s) = Tfun n j r + Tfun n j s := by
   refine lp_eq_of_joinR (Tfun_ae' j (r + s) (Lp.coeFn_add r s))
@@ -129,9 +128,9 @@ omit hkb in
 lemma stronglyMeasurable_cf (j : Fin 6) : StronglyMeasurable (cf n j k) := by
   have hf : StronglyMeasurable fun p : (Fin (n + n) → ℝ) × ℂ =>
       conj (fibreB j p.2) * k (joinR p.2 p.1) := by
-    refine (((Complex.continuous_conj.comp (continuous_fibreB j)).measurable.comp
-      measurable_snd).mul (hkm.comp ?_)).stronglyMeasurable
-    exact split2.symm.measurable.comp (measurable_fst.prodMk measurable_snd)
+    exact (((Complex.continuous_conj.comp (continuous_fibreB j)).measurable.comp
+      measurable_snd).mul (hkm.comp (split2.symm.measurable.comp
+        (measurable_fst.prodMk measurable_snd)))).stronglyMeasurable
   exact hf.integral_prod_right'
 
 lemma memLp_cf (j : Fin 6) : MemLp (cf n j k) 2 (stdGaussian (n + n)) :=
@@ -301,7 +300,7 @@ theorem wick_rep (a b c : Fin (n + 1)) :
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (zbL_ae n c)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
     simp only [joinR_zc0, joinR_zc_succ, ite_false, fibreB, Matrix.cons_val, Fin.isValue, (Fin.succ_ne_zero _).symm, fB2, zero_mul, sub_zero]
-    try simp only [div_eq_mul_inv, s_inv]
+    simp only [div_eq_mul_inv, s_inv]
     ring
   · -- (0,b+1,0)
     refine ⟨1, 2, zL n b, zL_mem_H10 n b, ?_⟩
@@ -309,14 +308,12 @@ theorem wick_rep (a b c : Fin (n + 1)) :
     rw [wickFn_joinR, tensorFn_joinR]
     simp only [joinR_zc0, joinR_zc_succ, map_mul, Complex.conj_ofReal, ite_true, ite_false, fibreB, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_ne_zero, fB1, zero_mul, sub_zero]
     push_cast
-    try simp only [div_eq_mul_inv, s_inv]
     linear_combination (zc n b y * z * conj z) * hs2 + (2 * zc n b y) * nsq z
   · -- (0,b+1,c+1)
     refine ⟨3, ((√2 : ℝ) : ℂ), qL n b c, Submodule.subset_span ⟨(b, c), rfl⟩, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (qL_ae n b c)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
     simp only [joinR_zc0, joinR_zc_succ, ite_false, fibreB, Matrix.cons_val, Fin.isValue, Fin.succ_inj, (Fin.succ_ne_zero _).symm, zero_mul, sub_zero]
-    try simp only [div_eq_mul_inv, s_inv]
     split_ifs <;> ring
   · -- (a+1,0,0)
     refine ⟨1, 2, zL n a, zL_mem_H10 n a, ?_⟩
@@ -324,28 +321,24 @@ theorem wick_rep (a b c : Fin (n + 1)) :
     rw [wickFn_joinR, tensorFn_joinR]
     simp only [joinR_zc0, joinR_zc_succ, map_mul, Complex.conj_ofReal, ite_true, ite_false, fibreB, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_ne_zero, fB1, zero_mul, sub_zero]
     push_cast
-    try simp only [div_eq_mul_inv, s_inv]
     linear_combination (zc n a y * z * conj z) * hs2 + (2 * zc n a y) * nsq z
   · -- (a+1,0,c+1)
     refine ⟨3, ((√2 : ℝ) : ℂ), qL n a c, Submodule.subset_span ⟨(a, c), rfl⟩, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (qL_ae n a c)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
     simp only [joinR_zc0, joinR_zc_succ, ite_false, fibreB, Matrix.cons_val, Fin.isValue, Fin.succ_inj, (Fin.succ_ne_zero _).symm, zero_mul, sub_zero]
-    try simp only [div_eq_mul_inv, s_inv]
     split_ifs <;> ring
   · -- (a+1,b+1,0)
     refine ⟨5, ((√2 : ℝ) : ℂ), zzL n a b, Submodule.subset_span ⟨(a, b), rfl⟩, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (zzL_ae n a b)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
     simp only [joinR_zc0, joinR_zc_succ, map_mul, Complex.conj_ofReal, ite_false, fibreB, Matrix.cons_val, Fin.isValue, Fin.succ_ne_zero, zero_mul, sub_zero]
-    try simp only [div_eq_mul_inv, s_inv]
     ring
   · -- (a+1,b+1,c+1)
     refine ⟨0, 1, wickL n a b c, wickL_mem_H21 n a b c, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (wickL_ae' n a b c)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
     simp only [joinR_zc_succ, fibreB, Matrix.cons_val_zero, Fin.isValue, Fin.succ_inj, one_mul, mul_one]
-    try simp only [div_eq_mul_inv, s_inv]
     simp only [wickFn, wc]
 
 lemma finiteDimensional_Kspace (j : Fin 6) : FiniteDimensional ℂ (Kspace n j) := by
@@ -397,9 +390,8 @@ theorem norm_sq_starProjection_H21_le {k : (Fin ((n + 1) + (n + 1)) → ℝ) →
     (hkb : ∀ x, ‖k x‖ ≤ 1) (u : L2G (n + 1)) (hu : ⇑u =ᵐ[stdGaussian ((n + 1) + (n + 1))] k) :
     ‖(H21 (n + 1)).starProjection u‖ ^ 2
       ≤ ∑ j, ‖(Kspace n j).starProjection (cfL n hkm hkb j)‖ ^ 2 := by
-  set ψ := (H21 (n + 1)).starProjection u with hψdef
-  have hψ : ψ ∈ H21 (n + 1) := by
-    rw [hψdef, Submodule.starProjection_apply]; exact Submodule.coe_mem _
+  set ψ := (H21 (n + 1)).starProjection u
+  have hψ : ψ ∈ H21 (n + 1) := (H21 (n + 1)).starProjection_apply_mem u
   obtain ⟨R, hR, hrep⟩ := exists_piece_repr hψ
   have h1 : (inner ℂ u ψ).re = ‖ψ‖ ^ 2 := re_inner_starProjection _ u
   have h2 : ‖ψ‖ ^ 2 = ∑ j, ‖R j‖ ^ 2 := by rw [hrep, norm_sq_sum_T]

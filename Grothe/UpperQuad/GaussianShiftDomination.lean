@@ -102,11 +102,8 @@ theorem exists_phase_shift_majorant (j : ℕ) (hj : 0 < j) (R : ℝ) :
   have hsum : r.im ^ 2 + A.im ^ 2 ≤ 2 * R ^ 2 := by
     nlinarith [sq_nonneg r.re, sq_nonneg A.re]
   have he : 4 * ((j : ℝ) * ε) / (1 - (1 / 2 : ℝ)) *
-      (r.im ^ 2 + A.im ^ 2) ≤ 16 * ((j : ℝ) * ε) * R ^ 2 := by
-    calc
-      _ ≤ (4 * ((j : ℝ) * ε) / (1 - (1 / 2 : ℝ))) * (2 * R ^ 2) :=
-        mul_le_mul_of_nonneg_left hsum (by positivity)
-      _ = _ := by ring
+      (r.im ^ 2 + A.im ^ 2) ≤ 16 * ((j : ℝ) * ε) * R ^ 2 :=
+    (mul_le_mul_of_nonneg_left hsum (by positivity)).trans_eq (by ring)
   have h := PhasePolynomialComplex.norm_phaseComplex_pow_sq_le j hj w.im
     (τ := 1 / 2) (by norm_num) (by norm_num) r ((w.re : ℂ) - A)
   simp only [Complex.sub_im, Complex.ofReal_im, zero_sub, neg_sq] at h
@@ -131,8 +128,8 @@ theorem exists_fixedPhaseIntegrand_majorant (j : ℕ) (hj : 0 < j) (i : ℕ × �
   simp only [fixedPhaseIntegrand, norm_mul]
   calc
     _ ≤ ((1 * (Cp * Real.exp (normSq w / 4))) * Cf) *
-        (Real.exp (5 * R ^ 2) * Real.exp (normSq w / 4)) := by
-      exact mul_le_mul
+        (Real.exp (5 * R ^ 2) * Real.exp (normSq w / 4)) :=
+      mul_le_mul
         (mul_le_mul (mul_le_mul hph hpoly (norm_nonneg _) (by norm_num)) hphase
           (norm_nonneg _) (by positivity)) hgauss (norm_nonneg _) (by positivity)
     _ = (Cp * Cf * Real.exp (5 * R ^ 2)) * Real.exp (normSq w / 2) := by
