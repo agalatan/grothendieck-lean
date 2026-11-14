@@ -1413,14 +1413,19 @@ L² norm at most two. Every true coefficient is within `5ρ²` of the centers
 `1,ρ/2,-ρ/2` at modes `(0,0),(1,0),(0,1)` and zero centers elsewhere. This does
 not set the other true coefficients to zero and does not certify saved bytes.
 `ZeroProfilePhaseSharp` uses the orthogonality of `h₀₀` and `h₁₁` to prove that
-this majorant has norm exactly `sqrt(2)`. Consequently the whole Gaussian
-remainder and each conditional coefficient error are at most
-`(5*sqrt(2)/2)ρ²`. Its saved-center bound retains the parameter and saved-model
-errors as explicit inputs. The rational relaxation `(15/4)ρ²` proves the same
-strict `10⁻¹²` accuracy for `|ρ| ≤ 1/3000000`, parameter error at most `10⁻¹³`,
-and saved-model error at most `1/(2*10¹²)`. This enlarges the previous profile
-interval by `4/3`; it does not change the production certificates or the
-headline endpoint. These theorems use only the standard axioms.
+this majorant has norm exactly `sqrt(2)`. `Haagerup/PhaseTaylorSharp` improves
+the global pointwise Taylor coefficient from `5/2` to `2`, including the zero
+perturbed point. `Haagerup/PhaseTaylorOptimal` proves `Grothe.Haag.phase_taylor_bound_iff`: the
+uniform bound holds exactly for coefficients at least `2`; the obstruction
+comes from approaching zero along the negative real axis.
+Together these give whole-Gaussian and conditional-coefficient errors at most
+`2*sqrt(2)*ρ²`. The rational relaxation `(17/6)ρ²` proves strict `10⁻¹²`
+saved-center accuracy for `|ρ| ≤ 1/2510000`, parameter error at most `10⁻¹³`,
+and saved-model error at most `1/(2*10¹²)`. The exact budget is
+`(3779033/3780060)*10⁻¹²`. This enlarges the original profile interval by
+`400/251`; it does not change the production certificates or the headline
+endpoint. The earlier `5*sqrt(2)/2` and `15/4` interfaces remain available.
+These theorems use only the standard axioms.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.

@@ -8,6 +8,9 @@ import Grothe.Haagerup.PhaseLaplace
 import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.Haagerup.PhaseStability
+import Grothe.Haagerup.PhaseTaylorAlgebra
+import Grothe.Haagerup.PhaseTaylorOptimal
+import Grothe.Haagerup.PhaseTaylorSharp
 import Grothe.ListPoly
 import Grothe.Lower.Basic
 import Grothe.Lower.Boxes
