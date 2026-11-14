@@ -12727,6 +12727,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.bandProj_smoothOp_comm
 #print axioms Grothe.UpperChaos.basePhaseArg_ne_zero_ae
 #print axioms Grothe.UpperChaos.basePhaseArg_smallBall
+#print axioms Grothe.UpperChaos.cancellationRefund_mono
+#print axioms Grothe.UpperChaos.cancellationRefund_nonneg
 #print axioms Grothe.UpperChaos.charFunDual_gaussC
 #print axioms Grothe.UpperChaos.chargeFn_firstCenterFn
 #print axioms Grothe.UpperChaos.chargeFn_frozenCorrectionFn
@@ -12735,6 +12737,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.chargeOne_compactTaylorL2
 #print axioms Grothe.UpperChaos.chargeOne_profileIntervalL2
 #print axioms Grothe.UpperChaos.coeFn_gradedHermite
+#print axioms Grothe.UpperChaos.collectiveTailBudget_add_refund
+#print axioms Grothe.UpperChaos.collectiveTailBudget_antitone
+#print axioms Grothe.UpperChaos.collective_tail_le
+#print axioms Grothe.UpperChaos.collective_tail_le_cap_sub_refund
 #print axioms Grothe.UpperChaos.compactLaplaceHpow_rot
 #print axioms Grothe.UpperChaos.compactTaylorQuadratureValue_eq_dyadic
 #print axioms Grothe.UpperChaos.compactTaylorQuadratureValue_unit_eq_rectangle
@@ -13130,6 +13136,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 #print axioms Grothe.UpperChaos.walk_sound
+#print axioms Grothe.UpperChaos.weighted_tail_le_cap_sub_refund
 #print axioms Grothe.UpperQuad.CanonicalShellBound.norm_Uext_le_shell
 #print axioms Grothe.UpperQuad.CanonicalShellBound.sum_norm_Uext_shell_le
 #print axioms Grothe.UpperQuad.CentralDerivative.abs_derivative_le

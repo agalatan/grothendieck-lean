@@ -261,6 +261,22 @@ production phase. Regular evaluator bounds, floating operations, contraction,
 omitted-domain estimates, tails and the final energy-table fit are still
 separate requirements for the upper endpoint.
 
+\paragraph{Collective coefficient tails.}
+For a finite family of absolutely summable real sequences $a_{i,n}$,
+\path{UpperChaos/CollectiveTail} retains cancellation in any finite window:
+\[
+ \sum_{n\ge N}\left|\sum_i a_{i,n}\right|
+ \le \sum_{N\le n<N+K}\left|\sum_i a_{i,n}\right|
+    +\sum_i\sum_{n\ge N+K}|a_{i,n}|.
+\]
+The difference between the original separate-tail budget and this budget is
+exactly the nonnegative finite refund
+$\sum_{N\le n<N+K}(\sum_i|a_{i,n}|-|\sum_i a_{i,n}|)$.
+Consequently the exact budget decreases as $K$ increases, and existing
+individual tail caps can be reused with this refund subtracted. Real weights
+are absorbed into the coefficients; the weighted-cap theorem charges their
+absolute values. This reusable estimate does not change the current endpoint.
+
 For selected regular nodes near a profile zero, the whole Gaussian slice
 remainder is projected by Bessel before aggregating coefficients. Its vector
 radius remains $5\rho^2$, without a mode-count factor. The two-coordinate

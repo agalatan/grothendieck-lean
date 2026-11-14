@@ -38,6 +38,17 @@ The canonical panel-error sum is below `1.04·10⁻¹²`; reflection gives the f
 native facts. This closes the remainder premise in `QuadDecomp.quadHyp_of_parts`;
 the twisted source bounds and final upper-endpoint assembly are separate.
 
+**Collective coefficient tails.** `UpperChaos/CollectiveTail` keeps finite
+mixture coefficients together before taking absolute values. It bounds the
+tail by a collective finite window followed by separate branch tails, and
+proves that this exact budget decreases as the window grows. Its cancellation
+refund is the finite sum of `sum_i |a_i,n| - |sum_i a_i,n|`; subtracting this
+nonnegative refund from existing separate-tail caps yields a certified
+improvement without new infinite-tail estimates. The weighted corollary allows
+arbitrary real weights and charges their absolute values in the original caps.
+The assumptions require absolute summability of each branch. These analytic
+theorems use standard axioms only and leave the current endpoint unchanged.
+
 **Twisted panel assembly.** `UpperQuad/TwistPanelRemainder.lean` identifies the
 covered twisted discrepancy with the sum of the actual production panel errors
 in the Euclidean space of all modes `q < Q`, `c ≤ q + 1`, `d ≤ q`.
