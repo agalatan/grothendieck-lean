@@ -131,6 +131,18 @@ private theorem totalDegree_fallingPolynomial_le (A : MvPolynomial ι ℝ)
     exact (totalDegree_mul _ _).trans
       (add_le_add ih ((totalDegree_sub_C_le A _).trans hA))
 
+/-- A falling factorial of a subset sum vanishes under a higher-order finite difference. -/
+theorem alternatingSum_falling_eq_zero (t : Finset ι) (w : ι → ℝ) {r : ℕ}
+    (hr : r < t.card) :
+    ∑ u ∈ t.powerset, (-1 : ℝ) ^ (t.card - u.card) *
+      (descPochhammer ℝ r).eval (∑ a ∈ u, w a) = 0 := by
+  have h := alternatingSum_eval_eq_zero t (fallingPolynomial (subsetLinear t w) r)
+    ((totalDegree_fallingPolynomial_le _ (totalDegree_subsetLinear_le t w) r).trans_lt hr)
+  convert h using 1
+  apply Finset.sum_congr rfl
+  intro u hu
+  rw [eval_fallingPolynomial, eval_subsetLinear t u w (Finset.mem_powerset.mp hu)]
+
 private noncomputable def dividedFalling (A B : MvPolynomial ι ℝ) :
     ℕ → MvPolynomial ι ℝ
   | 0 => 0
