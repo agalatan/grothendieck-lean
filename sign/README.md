@@ -31,6 +31,7 @@ lake env lean scratch/SignAxioms.lean     # its axiom report
 
 ## Conventions
 
-The rules of `AGENTS.md` apply (own branch and worktree, pull request, task issue). New modules go under
+The rules of `AGENTS.md` apply (own branch and worktree, pull request, task issue); its section 15 is about this
+package and section 13 explains why the root lake files must not change. New modules go under
 `sign/GrotheSign/` and are imported by `sign/GrotheSign.lean`; every headline theorem gets a line in
 `sign/scratch/SignAxioms.lean`. No `sorry`, no new axioms.
