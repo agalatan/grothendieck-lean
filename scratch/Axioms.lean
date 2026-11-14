@@ -19,6 +19,7 @@ import Grothe
 #print axioms Grothe.Haag.norm_real_add_remainder
 #print axioms Grothe.Haag.ph_eq_phaseLaplace
 #print axioms Grothe.Haag.phaseMoment_weighted
+#print axioms Grothe.Haag.phase_taylor_bound_at_radius_iff
 #print axioms Grothe.Haag.phase_taylor_bound_iff
 #print axioms Grothe.Haag.phase_taylor_polynomial_le
 #print axioms Grothe.Haag.two_le_phase_taylor_constant

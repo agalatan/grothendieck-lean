@@ -1415,11 +1415,14 @@ not set the other true coefficients to zero and does not certify saved bytes.
 `ZeroProfilePhaseSharp` uses the orthogonality of `h₀₀` and `h₁₁` to prove that
 this majorant has norm exactly `sqrt(2)`. `Haagerup/PhaseTaylorSharp` improves
 the global pointwise Taylor coefficient from `5/2` to `2`, including the zero
-perturbed point. `Haagerup/PhaseTaylorOptimal` proves `Grothe.Haag.phase_taylor_bound_iff`: the
-uniform bound holds exactly for coefficients at least `2`; the obstruction
-comes from approaching zero along the negative real axis.
+perturbed point. `Haagerup/PhaseTaylorOptimal` proves
+`Grothe.Haag.phase_taylor_bound_at_radius_iff`: at each fixed positive radius,
+the bound holds for all perturbations exactly when its coefficient is at least `2`.
+The global `phase_taylor_bound_iff` follows. The obstruction comes from
+approaching zero along the negative real axis.
 Together these give whole-Gaussian and conditional-coefficient errors at most
-`2*sqrt(2)*ρ²`. The rational relaxation `(17/6)ρ²` proves strict `10⁻¹²`
+`2*sqrt(2)*ρ²`; this Gaussian constant is not claimed optimal.
+The rational relaxation `(17/6)ρ²` proves strict `10⁻¹²`
 saved-center accuracy for `|ρ| ≤ 1/2510000`, parameter error at most `10⁻¹³`,
 and saved-model error at most `1/(2*10¹²)`. The exact budget is
 `(3779033/3780060)*10⁻¹²`. This enlarges the original profile interval by

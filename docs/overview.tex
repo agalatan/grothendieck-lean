@@ -274,10 +274,11 @@ The scalar saved-center interface has a sharper quadratic estimate in
 \texttt{ZeroProfilePhaseSharp}. The Wick vectors representing $1$ and
 $|w|^2-1$ are orthonormal, so the Gaussian $L^2$ norm of their sum is exactly
 $\sqrt2$. The global pointwise phase-Taylor coefficient is $2$, proved in
-\texttt{PhaseTaylorSharp} and shown optimal in \texttt{PhaseTaylorOptimal}
-by perturbations approaching zero along the negative real axis.
+\texttt{PhaseTaylorSharp} and shown optimal at each fixed positive radius in
+\texttt{PhaseTaylorOptimal} by perturbations approaching zero along the negative real axis.
 The whole slice remainder and each coefficient error are therefore
-at most $2\sqrt2\,\rho^2$. Using the rational relaxation $(17/6)\rho^2$,
+at most $2\sqrt2\,\rho^2$; this Gaussian constant is not claimed optimal.
+Using the rational relaxation $(17/6)\rho^2$,
 the same parameter tolerance $10^{-13}$ and saved-model tolerance
 $1/(2\cdot10^{12})$ give error strictly below $10^{-12}$ for
 $|\rho|\le 1/2510000$, extending the original interval by a factor $400/251$.

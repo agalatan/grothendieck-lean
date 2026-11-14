@@ -9,6 +9,7 @@ The quadratic majorant `|w|²` is the sum of the two orthonormal Wick vectors fo
 pointwise Taylor constant `2`, this bounds the Gaussian error by `2 √2 ρ²`, uniformly
 over all conditional modes. The rational relaxation `17 ρ² / 6` enlarges the range of
 the saved-center certificate. Weaker coefficient interfaces are retained as corollaries.
+Optimality is proved for the pointwise constant; the Gaussian constant is not claimed optimal.
 
 Agent-ID: codex-c8a4. Refs #369.
 -/
@@ -126,17 +127,9 @@ theorem norm_coefficient_sub_linear_sharp (s : ℝ) (hs : 0 < s) (i : ℕ × ℕ
 theorem norm_coefficient_sub_linear_sqrt_two (s : ℝ) (hs : 0 < s) (i : ℕ × ℕ) :
     ‖F0ConditionalNode.coefficient s i - linearCoefficient s i‖ ≤
       (5 / 2 : ℝ) * Real.sqrt 2 * signedProfileRatio s ^ 2 := by
-  have heq : F0ConditionalNode.coefficient s i - linearCoefficient s i =
-      ⟪hvec i, F0ConditionalNode.phaseSliceLp s - linearSliceLp s⟫_ℂ := by
-    rw [inner_sub_right, ← linearCoefficient_eq_inner]
-    rfl
-  rw [heq]
-  calc
-    _ ≤ ‖hvec i‖ * ‖F0ConditionalNode.phaseSliceLp s - linearSliceLp s‖ :=
-      norm_inner_le_norm _ _
-    _ = ‖F0ConditionalNode.phaseSliceLp s - linearSliceLp s‖ := by
-      rw [orthonormal_hvec.norm_eq_one i, one_mul]
-    _ ≤ _ := norm_phaseSliceLp_sub_linear_sqrt_two s hs
+  refine (norm_coefficient_sub_linear_sharp s hs i).trans ?_
+  gcongr
+  norm_num
 
 /-- Separate the sharper Gaussian remainder from the parameter and stored-center errors. -/
 theorem actual_saved_error_bound_sqrt_two (s : ℝ) (hs : 0 < s) (r saved : ℝ)
@@ -166,7 +159,7 @@ theorem norm_coefficient_sub_linear_rat (s : ℝ) (hs : 0 < s) (i : ℕ × ℕ) 
       (15 / 4 : ℝ) * signedProfileRatio s ^ 2 := by
   have hroot : Real.sqrt 2 ≤ (3 / 2 : ℝ) := by
     nlinarith [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2)]
-  refine (norm_coefficient_sub_linear_sqrt_two s hs i).trans ?_
+  refine (norm_coefficient_sub_linear_sharp s hs i).trans ?_
   exact mul_le_mul_of_nonneg_right (by linarith) (sq_nonneg _)
 
 /-- An exact rational relaxation of the improved Gaussian coefficient bound. -/
@@ -218,31 +211,8 @@ theorem actual_saved_error_lt_of_ratio_le (s : ℝ) (hs : 0 < s) (r saved : ℝ)
     (hparameter : |signedProfileRatio s - r| ≤ 1 / 10 ^ 13)
     (hsaved : ‖linearCenter r i - (saved : ℂ)‖ ≤ 1 / (2 * 10 ^ 12)) :
     ‖F0ConditionalNode.coefficient s i - (saved : ℂ)‖ < 1 / 10 ^ 12 := by
-  have hsq : signedProfileRatio s ^ 2 ≤ (1 / 3000000 : ℝ) ^ 2 := by
-    simpa only [sq_abs] using pow_le_pow_left₀ (abs_nonneg _) hρ 2
-  have hquad : ‖F0ConditionalNode.coefficient s i - linearCoefficient s i‖ ≤
-      (15 / 4 : ℝ) * (1 / 3000000) ^ 2 :=
-    (norm_coefficient_sub_linear_rat s hs i).trans
-      (mul_le_mul_of_nonneg_left hsq (by norm_num))
-  have hparameter' : ‖linearCoefficient s i - linearCenter r i‖ ≤
-      (1 / 10 ^ 13 : ℝ) / 2 :=
-    (linearCoefficient_parameter_error s r i).trans
-      (div_le_div_of_nonneg_right hparameter (by norm_num))
-  calc
-    _ ≤ ‖F0ConditionalNode.coefficient s i - linearCoefficient s i‖ +
-        ‖linearCoefficient s i - (saved : ℂ)‖ := by
-      simpa only [dist_eq_norm] using dist_triangle (F0ConditionalNode.coefficient s i)
-        (linearCoefficient s i) (saved : ℂ)
-    _ ≤ (15 / 4 : ℝ) * (1 / 3000000) ^ 2 +
-        (‖linearCoefficient s i - linearCenter r i‖ +
-          ‖linearCenter r i - (saved : ℂ)‖) :=
-      add_le_add hquad (by
-        simpa only [dist_eq_norm] using dist_triangle (linearCoefficient s i)
-          (linearCenter r i) (saved : ℂ))
-    _ ≤ (15 / 4 : ℝ) * (1 / 3000000) ^ 2 +
-        ((1 / 10 ^ 13) / 2 + 1 / (2 * 10 ^ 12)) :=
-      add_le_add le_rfl (add_le_add hparameter' hsaved)
-    _ < _ := by norm_num
+  exact actual_saved_error_lt_sharp s hs r saved i
+    (hρ.trans (by norm_num)) hparameter hsaved
 
 end
 

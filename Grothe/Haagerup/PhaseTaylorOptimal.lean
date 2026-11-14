@@ -42,6 +42,35 @@ theorem two_le_phase_taylor_constant {C : ℝ}
   dsimp [t] at hbound hCt
   nlinarith
 
+/-- At each positive base radius, the zero-safe quadratic phase-Taylor estimate holds exactly
+for coefficients at least two. -/
+theorem phase_taylor_bound_at_radius_iff (r : ℝ) (hr : 0 < r) (C : ℝ) :
+    (∀ h : ℂ, ‖ph ((r : ℂ) + h) - 1 - (h - (h.re : ℂ)) / (r : ℂ)‖ ≤
+      C * ‖h‖ ^ 2 / r ^ 2) ↔ 2 ≤ C := by
+  constructor
+  · intro hC
+    apply two_le_phase_taylor_constant
+    intro z
+    have hr0 : (r : ℂ) ≠ 0 := by exact_mod_cast hr.ne'
+    have hphase (w : ℂ) : ph ((r : ℂ) * w) = ph w := by
+      simp only [ph, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr,
+        Complex.ofReal_mul]
+      exact mul_div_mul_left w (↑‖w‖) hr0
+    have harg : (r : ℂ) + (r : ℂ) * z = (r : ℂ) * (1 + z) := by ring
+    have hlinear : ((r : ℂ) * z - (((r : ℂ) * z).re : ℂ)) / (r : ℂ) =
+        z - (z.re : ℂ) := by
+      simp only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul,
+        sub_zero, Complex.ofReal_mul]
+      field_simp [hr0]
+    have hquot : C * (r * ‖z‖) ^ 2 / r ^ 2 = C * ‖z‖ ^ 2 := by
+      field_simp [hr.ne']
+    simpa only [harg, hphase, hlinear, norm_mul, Complex.norm_real,
+      Real.norm_of_nonneg hr.le, hquot] using hC ((r : ℂ) * z)
+  · intro hC h
+    exact (norm_ph_real_add_sub_linear_sharp r hr h).trans
+      (div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hC (sq_nonneg _))
+        (sq_nonneg _))
+
 /-- The global zero-safe quadratic phase-Taylor estimate holds exactly for coefficients
 at least two. -/
 theorem phase_taylor_bound_iff (C : ℝ) :
@@ -50,12 +79,8 @@ theorem phase_taylor_bound_iff (C : ℝ) :
         C * ‖h‖ ^ 2 / r ^ 2) ↔ 2 ≤ C := by
   constructor
   · intro h
-    apply two_le_phase_taylor_constant
-    intro z
-    simpa only [Complex.ofReal_one, one_pow, div_one] using h 1 zero_lt_one z
-  · intro hC r hr h
-    exact (norm_ph_real_add_sub_linear_sharp r hr h).trans
-      (div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hC (sq_nonneg _))
-        (sq_nonneg _))
+    exact (phase_taylor_bound_at_radius_iff 1 zero_lt_one C).mp (h 1 zero_lt_one)
+  · intro hC r hr
+    exact (phase_taylor_bound_at_radius_iff r hr C).mpr hC
 
 end Grothe.Haag

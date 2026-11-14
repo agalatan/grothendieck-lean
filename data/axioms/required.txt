@@ -17,6 +17,7 @@ Grothe.Haag.norm_phaseLaplaceKernel_le
 Grothe.Haag.norm_real_add_remainder
 Grothe.Haag.ph_eq_phaseLaplace
 Grothe.Haag.phaseMoment_weighted
+Grothe.Haag.phase_taylor_bound_at_radius_iff
 Grothe.Haag.phase_taylor_bound_iff
 Grothe.Haag.phase_taylor_polynomial_le
 Grothe.Haag.two_le_phase_taylor_constant
