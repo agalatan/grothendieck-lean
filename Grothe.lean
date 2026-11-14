@@ -8,6 +8,10 @@ import Grothe.Haagerup.PhaseLaplace
 import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.Haagerup.PhaseStability
+import Grothe.Haagerup.PhaseTaylorAlgebra
+import Grothe.Haagerup.PhaseTaylorCubic
+import Grothe.Haagerup.PhaseTaylorOptimal
+import Grothe.Haagerup.PhaseTaylorSharp
 import Grothe.ListPoly
 import Grothe.Lower.Basic
 import Grothe.Lower.Boxes
@@ -10014,6 +10018,7 @@ import Grothe.Research.RefinedCoverResult
 import Grothe.Statement
 import Grothe.StatementBridges
 import Grothe.Transfer
+import Grothe.TransferHilbert
 import Grothe.Upper.BandComparison
 import Grothe.Upper.Bivariate
 import Grothe.Upper.ComparisonData
@@ -13659,7 +13664,9 @@ import Grothe.UpperChaos.UnitSquaredQuadrature
 import Grothe.UpperChaos.UnitSquaredQuadratureConditional
 import Grothe.UpperChaos.UnitSquaredRadiusProfile
 import Grothe.UpperChaos.WholeCenterEnergies
+import Grothe.UpperChaos.ZeroProfilePhaseCubic
 import Grothe.UpperChaos.ZeroProfilePhaseLinearization
+import Grothe.UpperChaos.ZeroProfilePhaseSharp
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
 import Grothe.UpperFinal

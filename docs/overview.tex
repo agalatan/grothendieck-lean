@@ -72,6 +72,12 @@ the first over unimodular scalars, the second over unit vectors in any complex H
 Grothendieck proved in 1953 that $V(A)\le K\,C(A)$ for a constant $K$ independent of $m$, $n$ and the dimension. The smallest
 such $K$ is the \emph{complex Grothendieck constant} $\KG$.
 
+The finite-dimensional reduction is explicit in
+\texttt{Grothe/TransferHilbert.lean}: a finite family has a Euclidean realization
+preserving all norms and inner products in dimension at most its cardinality.
+Thus the formal inequality applies to unit vectors, and also vectors in the
+closed unit ball, in any complex inner product space; completeness is not needed.
+
 \paragraph{Why it matters.}
 \begin{itemize}
 \item \emph{Optimisation.} $V(A)$ is a semidefinite program; $C(A)$ is a hard combinatorial problem. $\KG$ is the best
@@ -263,6 +269,34 @@ radius $\varepsilon$ gives $5\rho^2+|\rho-r|+\varepsilon$. The hybrid source
 budget combines those selected nodes with explicit squared-error budgets on
 all other regular nodes, using the same physical Gaussian weights. Actual
 parameter and saved-vector certificates remain required.
+
+The scalar saved-center interface has a sharper quadratic estimate in
+\texttt{ZeroProfilePhaseSharp}. The Wick vectors representing $1$ and
+$|w|^2-1$ are orthonormal, so the Gaussian $L^2$ norm of their sum is exactly
+$\sqrt2$. The global pointwise phase-Taylor coefficient is $2$, proved in
+\texttt{PhaseTaylorSharp} and shown optimal at each fixed positive radius in
+\texttt{PhaseTaylorOptimal} by perturbations approaching zero along the negative real axis.
+The whole slice remainder and each coefficient error are therefore
+at most $2\sqrt2\,\rho^2$; this Gaussian constant is not claimed optimal.
+Using the rational relaxation $(17/6)\rho^2$,
+the same parameter tolerance $10^{-13}$ and saved-model tolerance
+$1/(2\cdot10^{12})$ give error strictly below $10^{-12}$ for
+$|\rho|\le 1/2510000$, extending the original interval by a factor $400/251$.
+This improves the analytic certificate interface without changing the stored
+production certificates or the numerical Grothendieck endpoint.
+
+For small ratios, \texttt{PhaseTaylorCubic} and \texttt{ZeroProfilePhaseCubic}
+give a stronger estimate. Writing $q=\|h\|/r$, the phase remainder is at most
+$q^2+2q^3$: coefficient one suffices when the perturbed point has norm at least
+$r/2$, and the cubic term covers the complementary region. The cubic Wick
+majorant $\sqrt2\,h_{21}+2h_{10}=|w|^2w$ has Gaussian $L^2$ norm $\sqrt6$.
+Consequently the whole slice and each coefficient have error at most
+$\sqrt2\,\rho^2+2\sqrt6\,|\rho|^3$.
+The rational relaxation $(17/12)\rho^2+5|\rho|^3$ certifies the same saved-center
+tolerance for $|\rho|\le1/1780000$, with exact budget
+$(84353029/84596280)\,10^{-12}$. This interval is $200/89$ times the original.
+The purely quadratic constant two remains optimal; no optimality is claimed
+for the Gaussian estimate, and the stored certificates and headline endpoint are unchanged.
 
 For complex $z\ne 0$, rotation by $z/|z|$ transports the real-slice
 constant-plus-linear model to the physical phase $F_0(z,w)$. In the Gaussian
