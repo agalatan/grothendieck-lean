@@ -1,0 +1,296 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch19-spectral-review.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 19). Owner: lower-bound/07-remote-spectral.tex
+\section{Spectral obstruction: audit, quantitative scope, and extra charges (GPT review package \code{spectral-handoff-review}, 15 October 18:27)}
+\label{ch:spectral-review}
+\chapsummary{Artificial radial laws expose limits of the scalar moment/Stein relaxation. These are not counterexamples to cubic-chaos K. The spectral identities and quantitative obstruction are retained.}
+
+\paragraph{Provenance (IDE note, 15 October, evening).} This chapter is lower-bound GPT's \code{tex\_proposed/ch19-spectral-review.tex} from
+\pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/spectral-handoff-review-20261015/} (zip \code{conjecture-k-spectral-reviewed.zip}), ported verbatim except for this header and the closing
+reading note; the review, both versions of the reviewed note, the standalone \code{spectral\_review.tex}, the patches and logs are archived in
+\pathref{handoff/research-third-decimal/gpt-reviews/spectral-20261015/}. \emph{What is reviewed}: not one of our chapters but an external ``spectral Conjecture K handoff'' (built on our
+bundle of 16:45) which (i) constructs artificial radial laws $p_b=e^{-u}(1-bL_4+b^2h)$ that satisfy all the scalar inputs of the lower certificate (the moment constraints of
+\autoref{ch:certified}, $\E\sqrt U<\rho$, the fluctuation budget and \emph{every} radial Stein cut) yet beat the Gaussian payoff at $\sigma^*$, so exact K-a is not provable from that scalar
+relaxation; (ii) excludes them by the Azmoodeh--Malicet--Mijoule--Poly spectral inequalities for third chaos; (iii) proposes a joint spectral hierarchy retaining the mixed content.
+GPT's review repairs a false uniform density bound in (i), proves the optimised excess of the whole family is $<4.65\cdot10^{-6}$, confirms (ii)--(iii) and adds the exact remainder (S6)
+and the charge-three block (S7). Our replay: all four shipped verifiers PASS under \code{python3 -I} from an isolated directory (the received checker also passes, since its endpoint test
+misses the false uniform claim); own exact checks of $L_4(64)=536321$, the $y=u-32$ identity, the seven Bernstein coefficients, the rational bound $5325076801/1146880000000000$ and
+$723420b+424/3\le692$; Monte Carlo of $M_6\ge3M_4^2/(2v)+2\|\Pi_{1,0}R\|^2$ on random $\Hc21(\C^2)$ tensors (slack far above noise). Log \pathref{kattack-2026-10-15/gpt\_spectral\_replay.log},
+script \code{spectral\_own\_check.py}. Status labels: \st{P} GPT for the analytic statements, \st{C} for the exact finite checks (replayed), \st{F} for the quadrature remarks.
+\textbf{No endpoint changes} (certified bound at the time $\KG>1.40160592$; the current Lean bound is $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}).
+
+\paragraph{Status.}
+The received spectral handoff gives an obstruction to exact Gaussian
+domination by a scalar relaxation, not a counterexample to Conjecture K.
+Its uniform density estimate needs the repair below. The spectral identities
+are valid. This chapter also proves an upper bound of $4.65\cdot10^{-6}$
+on the optimized excess of the entire constructed artificial family, and
+adds a charge-three matrix constraint using moments already present in the
+proposed degree-two hierarchy. None of these results changes a numerical
+Grothendieck endpoint or proves the required $K_\eta$ for general cubic chaos.
+The analytic arguments are not newly formalized in Lean.
+
+\subsection{Repair of the uniform density estimate}
+
+Let $L_j$ be the ordinary Laguerre polynomial and set
+\[
+ h=L_4^2-1+8L_1-42L_2+152L_3,\qquad
+ P_b=1-bL_4+b^2h,\qquad 0<b\le10^{-4}.
+\]
+Write $h=L_4^2+C_3$, where
+\[
+ C_3(u)=117-380u+207u^2-\frac{76}{3}u^3,
+ \qquad C=\frac{3163103}{3}.
+\]
+The original proof claimed $P_b(u)\ge3/4-Cb^2$ globally. This is false:
+at $u=64$ and $b=1/1072642=1/(2L_4(64))$,
+\[
+ L_4(64)=536321,\qquad C_3(64)=-\frac{17451937}{3}<-C,
+\]
+so $P_b(64)=3/4+b^2C_3(64)<3/4-Cb^2$.
+The original verifier compared its two regional lower bounds only at
+$b=10^{-4}$, which does not establish that comparison throughout the interval.
+
+The replacement
+\[
+ \boxed{P_b(u)\ge D_b:=\frac34-106b\ge0.7394}
+ \tag{S1}
+\]
+holds uniformly. On $[0,32]$, completing the square gives
+$P_b\ge3/4-Cb^2\ge D_b$. For $u\ge32$, put $y=u-32$. The exact identity
+\[
+ L_4(u)-\frac{u^4}{48}
+ =2945+\frac{2612}{3}y+67y^2+2y^3+\frac{y^4}{48}
+\]
+proves $L_4(u)\ge u^4/48$. Consequently
+\[
+ |C_3(u)|\le33u^3\le\frac{99}{2}L_4(u),
+\]
+and a second square completion yields
+\[
+ P_b(u)\ge\frac34-\frac{99}{4}b-\frac{9801}{16}b^2\ge D_b.
+\]
+For the density $p_b(u)=e^{-u}P_b(u)$, the original Laguerre calculation of
+the scalar Stein kernel $w_b$ now gives the valid estimate
+\[
+ \operatorname{Var}(w_b)
+ \le b^2\frac{1-692b+723420b^2}{3/4-106b}
+ \le\frac43b^2.
+ \tag{S2}
+\]
+The final inequality is precisely $723420b+424/3\le692$ and holds on the
+whole stated interval. Thus the obstruction and its parameter range survive.
+The corrected checker also tests the exact failure of the old denominator.
+
+In the visible-profile argument, the assumptions should explicitly be
+$\beta\ge0$ and $\ell-2\beta>0$. They imply that
+$L=Z(\ell+\beta(|Z|^2-2))$ is a proper Gaussian variance mixture,
+$L\mid V\sim\sqrt V W$. The peak parameters satisfy these assumptions.
+
+\subsection{The obstruction has uniformly small optimized excess}
+
+Define, for $\sigma>0$,
+\[
+ f_\sigma(u)=2\mathbb E|L+\sigma\sqrt u|,
+ \qquad I_n(\sigma)=\int_0^\infty e^{-u}f_\sigma(u)L_n(u)\,du.
+\]
+For every integer $n\ge1$, the exact identity is
+\[
+ \boxed{-I_n(\sigma)=
+ \frac{\Gamma(n-\tfrac12)}{2\Gamma(n+1)}\,
+ \sigma\,\mathbb E\left[
+ \left(\frac{\sigma^2}{V+\sigma^2}\right)^{n-1/2}\right].}
+ \tag{S3}
+\]
+To prove it, use the Laplace representation of the square root and the
+Gaussian integral conditionally on $V$. The Laguerre transform leaves
+\[
+ \frac{\sigma^{2n}}{\sqrt\pi}
+ \int_0^\infty\frac{t^{n-3/2}}{(1+t(V+\sigma^2))^{n+1}}\,dt.
+\]
+The beta integral evaluates this expression as (S3). Subtracting the
+constant term before the Laguerre integral, or using the integrability
+condition of the Bernstein representation, justifies interchange.
+
+Put $x=\sigma^2/(V+\sigma^2)$. Since
+\[
+ h=2L_2+346L_4-520L_5+500L_6-280L_7+70L_8,
+\]
+formula (S3) gives
+\[
+ \int_0^\infty e^{-u}f_\sigma(u)h(u)\,du
+ =-\sqrt\pi\,\sigma\,\mathbb E[x^{3/2}P(x)],
+\]
+where
+\[
+ P(x)=\frac14+\frac{865}{64}x^2-\frac{455}{32}x^3
+ +\frac{2625}{256}x^4-\frac{1155}{256}x^5
+ +\frac{15015}{16384}x^6.
+\]
+The degree-six Bernstein coefficients of $P$ on $[0,1]$ are
+\[
+ \left(\frac14,\frac14,\frac{221}{192},\frac{287}{128},
+ \frac{895}{256},\frac{7399}{1536},\frac{101671}{16384}\right).
+\]
+In particular, $P\ge1/4$, so the second-order payoff perturbation is
+negative. The first-order coefficient satisfies
+$-I_4\le(5\sqrt\pi/128)\sigma$. With $c=5\sqrt\pi/128$, therefore,
+\[
+ \mathbb E_b f_\sigma(U)
+ \le\mathbb E_{\mathrm{Exp}(1)}f_\sigma(U)+cb\sigma.
+ \tag{S4}
+\]
+
+Write
+\[
+ B(\sigma)=\sqrt\pi\,\mathbb E\sqrt{V+\sigma^2}
+             -\frac{\sigma^2}{\varepsilon},\qquad
+ S=\sup_{\sigma\ge0}B(\sigma).
+\]
+For $\sigma>0$,
+$B'(\sigma)\le\sqrt\pi-2\sigma/\varepsilon$. Consequently the upper
+envelope $B(\sigma)+cb\sigma$ is decreasing past
+$R=\varepsilon(\sqrt\pi+cb)/2$, and (S4) proves
+\[
+ \boxed{\sup_{\sigma\ge0}
+ \left[\mathbb E_b f_\sigma(U)-\frac{\sigma^2}{\varepsilon}\right]-S
+ \le\varepsilon\frac{5\pi}{256}b\left(1+\frac{5b}{128}\right).}
+ \tag{S5}
+\]
+At $\varepsilon=1891/2500$ and $b\le10^{-4}$, using $\pi<22/7$, this is at most
+\[
+ \frac{5325076801}{1146880000000000}<4.65\cdot10^{-6}.
+\]
+Thus this entire family is compatible with the useful $10^{-4}$ slack,
+although it disproves exact domination in the old unrestricted relaxation.
+Its kurtosis excess is at most $4b^2\le4\cdot10^{-8}$, outside the stated
+application window $0.06\le\mathbb E U^2-2\le4$.
+No bound on all other laws in the relaxation is asserted here.
+
+\subsection{The retained content and its exact remainder}
+
+Let $q\ne0$ belong to $\mathcal H_{2,1}$, let $Nq=3q$ for the positive
+Gaussian number operator, and set
+\[
+ U=|q|^2,\quad v=\mathbb E U,\quad M_4=\mathbb E U^2,
+ \quad M_6=\mathbb E U^3,\quad R=qU,\quad\mu=M_4/v.
+\]
+The received hierarchy implies
+\[
+ M_6\ge\frac{3M_4^2}{2v}+2\|\Pi_{1,0}R\|_2^2.
+\]
+The following exact identity identifies all discarded terms:
+\begin{align*}
+ M_6-\frac{3M_4^2}{2v}-2\|\Pi_{1,0}R\|_2^2
+ ={}&\frac32\|\Pi_{2,1}R-\mu q\|_2^2
+      +\|\Pi_{3,2}R\|_2^2+\frac12\|\Pi_{4,3}R\|_2^2\\
+ &+\frac16\|\Pi_{3,0}(q^3)\|_2^2
+      +\frac19\|\Pi_{4,1}(q^3)\|_2^2
+      +\frac1{18}\|\Pi_{5,2}(q^3)\|_2^2.
+ \tag{S6}
+\end{align*}
+Indeed, if $A=\mathbb E[U^2\Gamma(q,\bar q)]$, integration by parts gives
+\begin{align*}
+ \langle R-\mu q,(9-N)(R-\mu q)\rangle
+    &=3M_6+A-6M_4^2/v,\\
+ \langle q^3,(9-N)q^3\rangle&=9(M_6-A).
+\end{align*}
+Add one ninth of the second identity to the first, subtract
+$8\|\Pi_{1,0}R\|_2^2$, and divide by four. The allowed spectral degrees
+give (S6). This is dimension independent. It is an explanation of the
+received scalar inequality, not a new constraint beyond its degree-one
+hierarchy and upper bound on $a_2$.
+
+\subsection{A stronger matrix using the same moment variables}
+
+Now use the normalized notation
+\[
+ \mathbb E|q|^2=1,\quad w=\Gamma(q,\bar q)/3,
+ \quad m_j=\mathbb E U^j,\quad a_j=\mathbb E[wU^j].
+\]
+The received charge-one hierarchy uses $qU^i$. At $i\le2$, its variables
+already include $m_1,\ldots,m_5$ and $a_0,\ldots,a_4$. With no additional
+moments one can impose
+\[
+ \boxed{\begin{pmatrix}
+ 15m_3-27a_2&12m_4-24a_3\\
+ 12m_4-24a_3&9m_5-21a_4
+ \end{pmatrix}\succeq0.}
+ \tag{S7}
+\]
+This is the quadratic form $15-N$ on $\{q^3,q^3U\}$, both of degree at most
+15. The three energy entries are $27a_2$, $3m_4+24a_3$, and
+$6m_5+21a_4$, respectively. This proves (S7).
+
+For precision, (S7) is not implied by the displayed charge-one constraints
+alone. An exact finite-matrix example is
+\begin{align*}
+ (m_0,\ldots,m_5)&=(1,1,4,1268/49,91296/343,8039120/2401),\\
+ (a_0,\ldots,a_4)&=(1,2,300/49,7608/343,1607824/2401).
+\end{align*}
+Take $Q_1=xx^*$, $Q_4=yy^*$, all other $Q_r=0$, where
+\[
+ x=(1,4,1268/49),\qquad y=(0,22/7,2536/49).
+\]
+These satisfy the received sums, spectral supports, and $a_j$ bounds,
+basic radial and $w$-weighted moment positivity, and the degree-four real
+spectral matrix. But the determinant in (S7) is
+$-412117447680/117649<0$.
+This example is not asserted to be a realizable joint law or a cubic chaos.
+The received report already recommends including the full real spectral
+hierarchy; the example explains why it should not be dropped.
+
+The general extension is explicit. For $k\ge1$, put $F_i=q^kU^i$,
+$t=k+i+j-1$, and, when $t>0$,
+\[
+ h=\frac{k(i+j)+2ij}{t}.
+\]
+Its Gram and energy matrices are
+\[
+ G_{ij}=m_{k+i+j},\qquad
+ D_{ij}=3\bigl[h\,m_{t+1}+(k^2-h)a_t\bigr].
+ \tag{S8}
+\]
+The sole exception is $k=1,i=j=0$, with $D_{00}=3m_1$.
+To verify (S8), apply the chain rule to $F_i,\overline{F_j}$ and use
+\[
+ m_{t+1}=(t+1)a_t+
+ t\,\mathbb E[(\Gamma(q,q)/3)\bar q^{\,2}U^{t-1}].
+\]
+The last expectation is real by self-adjointness. The charge-$k$ spectral
+blocks have eigenvalues $k+2r$, row $i$ supported on $r\le k+3i$;
+their sums, unweighted and weighted by these eigenvalues, equal $G$ and $D$.
+
+\paragraph{Implementation limits.}
+The degree-two charge-three block is a cheap strengthening of the proposed
+relaxation. It does not prove the optimum has the desired value.
+The actual profiles still need rigorous approximation and tail errors.
+Finite polynomial spectral cutoffs cannot be applied directly to
+nonpolynomial profiles. The older exact-profile annihilators use
+\emph{unnormalized} $\Gamma$; conversion to the present $w$ requires the
+factor three. None of these finite checks replaces the analytic proof or
+the missing finite-amplitude mixed-sector estimates.
+
+\paragraph{Source and replay.}
+The spectral moment method is due to Azmoodeh, Malicet, Mijoule and Poly,
+\emph{Generalization of the Nualart--Peccati criterion},
+Annals of Probability 44 (2016), 924--954, Theorem 3.1,
+\url{https://arxiv.org/pdf/1305.6579}.
+The accompanying files \texttt{corrected/verify\_obstruction.py},
+\texttt{check\_scope\_bound.py}, and
+\texttt{check\_spectral\_extensions.py} run with isolated standard-library
+Python. They check the repaired constants, positive Bernstein coefficients,
+exact matrix example, and the Wick instance of (S6), whose remainder is 8192.
+
+\subsection{IDE reading note}\label{sec:spectral-reading}
+\emph{Relation to our chapters.} (a) \autoref{ch:certs}, Task~B, found that the Lean-proved moment constraints \emph{alone} give a negative deficit near $\sigma^*$ ($d=-6\cdot10^{-5}$ at
+$x\to0$ in the HiGHS solve; the exact optimum is $d\ge-9.8\cdot10^{-6}$, \autoref{ch:rescub}). The reviewed note shows more: even after adding the fluctuation budget and the entire radial Stein-cut family, the scalar relaxation still admits laws above $S$, so exact K-a
+($\eta=0$) cannot be certified from radial moments and cuts, however many; GPT's bound (S5) shows this particular family exceeds $S$ by at most $4.65\cdot10^{-6}$, well inside the $K_\eta$
+budget, consistent with the ``genuine moment-only loss $\approx10^{-5}$'' recorded in the K report. (b) Nothing here contradicts \autoref{ch:kjoint}--\autoref{ch:shared-residual-review}:
+the certificates use the cuts as valid inequalities with their own slack and never claim exact domination; the exact-profile annihilators of \autoref{ch:crossbound} use the unnormalised
+$\Gamma$ while this chapter uses $w=\Gamma(q,\bar q)/3$ (a factor $3$ to carry when combining them). (c) \emph{Lean relevance.} No Lean-proved statement is touched: the lower theorem assumes
+\code{Moments} and \code{SteinInputs} as hypotheses for the abstract law (since commit \code{2c54991} inside \code{SharedReduction}\stale{22 Oct}{proved in Lean: \code{sharedReduction\_frame}, \code{reductionHyp\_of\_nodeCaps}; only \code{NodeCaps} remains}) and proves $V\le B$; the artificial laws satisfy those hypotheses and the conclusion is still true for them (the
+certificate's slack absorbs their $<4.65\cdot10^{-6}$), so there is no error anywhere. No hypothesis changes. \emph{Possibly sharper inputs:} the spectral inequalities (9), (10) of the reviewed
+note and (S7) here are rigorous necessary conditions for third chaos (AMMP, Theorem~3.1, \st{P} literature) and could be added to the residual layer (\code{Moments}) as further cuts, which
+would exclude exactly the laws that make Task~B's deficit negative; the received note's caveat applies (lower moment bounds alone need not improve an unbounded-support optimisation without
+upper tail information), and no quantified gain exists yet, so this is a candidate, not a result. (d) The joint spectral hierarchy of the reviewed note is a numerical research proposal for
+(T$_0$) (\autoref{ch:weighted}); it needs certified profile approximation and tail errors, and is complementary to the exact-profile routes of \autoref{ch:kjoint} and \autoref{ch:crossbound}.

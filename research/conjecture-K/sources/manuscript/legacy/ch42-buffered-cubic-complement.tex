@@ -1,0 +1,328 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch42-buffered-cubic-complement.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 42). Owner: lower-bound/09-one-driver.tex
+\section{A buffered Wick core with all internal interactions and a coupled complement}
+\label{ch:buffered-cubic-complement}
+\chapsummary{Buffered one-driver cores with simultaneous sectors and conditionally centered coupled complements. Keep the core intervals, fresh buffer and complement cost.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch42-buffered-cubic-complement.tex} from
+\pathref{gpt-reviews/k-buffered-complement-20261020/}, ported verbatim apart from this paragraph. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py} (Python standard library and
+Node.js 24) from an unrelated directory: \textbf{PASS all new checks in 342\,s}. This covers the manifest (68 files), the anchor, the external and even Gram reductions, the extended box, the
+basis, the combined bound, the trace family, the resource dual, and the full no-$B$ face (47 parameter intervals, both tails).
+
+
+\subsection{Statement and explicit scope}
+Throughout this chapter,
+\[
+ p=\frac{2500}{1891},\quad a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+ L=Z(a+b|Z|^2),
+\]
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2,\qquad
+ S=\sup_{v\ge0}\{2\E|L+\sqrt vU|-pv\}.
+\]
+The variables $Z,X,U$ and the coordinates of an arbitrary finite vector $V$ are mutually independent standard proper complex Gaussians. Define the unit cubic polynomials
+\begin{align*}
+ H_c&=H(X)=X(|X|^2-2)/\sqrt2,&
+ H_A&=(|Z|^2-1)X,& H_B&=Z^2\overline X/\sqrt2,\\
+ H_Y&=Z(|X|^2-1),& H_W&=\overline Z X^2/\sqrt2,&
+ H_\nu&=H(Z).
+\end{align*}
+They are an orthonormal basis of $H_{2,1}(Z,X)$. Let
+\[
+ Q=cH_c+\alpha H_A+\beta H_B+yH_Y+wH_W+\nu H_\nu+J,\qquad G=Q+gU,
+\]
+where $J\in H_{2,1}(Z,X,V)$ and $\E[J\mid Z,X]=0$. Thus $J$ may depend on the visible variable and the Wick driver; it need not be independent of any internal sector. The fresh buffer $U$ is independent of every argument of $Q$. Put
+\[
+ A_2=|\alpha|^2+|\beta|^2,\quad E_2=|y|^2+|w|^2+|\nu|^2,\quad W_J=\E|J|^2,
+\]
+\[
+ \kappa_0=\frac{401}{200}-p=\frac{258291}{378200},\qquad
+ \tau_0=p-\frac{117}{100}=\frac{28753}{189100}>\frac3{20}.
+\]
+
+\begin{theorem}[All internal interactions and a coupled complement, \st{P,C}]
+\label{thm:buffered-complement}
+Suppose $3/16\le g\le7/32$. For each row of the following table, at every complex $\alpha,\beta,y,w,\nu$, one has
+\begin{equation}
+ \boxed{\Lambda(G)<S-\delta-\gamma A_2-\tau_0 E_2+\kappa_0W_J.}
+ \label{eq:buffered-complement}
+\end{equation}
+\begin{center}
+\begin{tabular}{ccc}\toprule
+interval for $c$ & $\delta$ & $\gamma$\\\midrule
+$[3/32,5/32]$ & $1/5000$ & $1/200$\\
+$[47/512,41/256]$ & $1/11000$ & $1/200$\\
+$[3/32,7/64]$ & $1/6250$ & $1/20$\\
+$[3/32,7/64]$ & $1/8000$ & $3/50$\\\bottomrule
+\end{tabular}
+\end{center}
+An arbitrary phase of the Wick coefficient can be absorbed into $X$, rotating the other unrestricted coefficients and $J$ accordingly.
+\end{theorem}
+
+\begin{corollary}[Two nonlinear drivers and more, \st{P,C}]
+On the first interval, if $\|J\|_2\le1/50$, then
+\[
+ \Lambda(G)<S+\frac{69191}{945500000}-\frac{A_2}{200}-\tau_0E_2.
+\]
+This error is strictly below the supplied budget
+\[
+ \eta_{AB}=\frac{240297199}{2651182000000},\qquad
+ \eta_{AB}-\frac{69191}{945500000}=\frac{298617}{17104400000}>0.
+\]
+If $\|J\|_2\le1/60$, exact K holds with a deficit greater than $1/100000$.
+\end{corollary}
+For example, $J=dH(V_1)$ is a second self-interacting driver, but the statement also allows cross tensors involving $Z,X,V$; only their combined orthogonal-complement variance is charged.
+
+\begin{corollary}[A variance budget paid by the internal sectors, \st{P,C}]
+On $c\in[3/32,7/64]$, if
+\[
+ W_J\le\frac1{10000}+\frac{A_2}{20}+\frac{E_2}{10},
+\]
+then
+\[
+ \Lambda(G)<S-\frac9{100000}-\frac3{200}A_2-\frac2{25}E_2.
+\]
+\end{corollary}
+The full inequality~\eqref{eq:buffered-complement} is stronger than these convenient sufficient conditions. In particular, it retains the core's deficit rather than conditioning it away.
+
+\subsection{The global buffered tangent and the anchor}
+Write $\psi_g(z)=\E_U|z+gU|=\rho_g(|z|^2)$. The independently supplied Rice derivative has the positive representation
+\[
+ K_g(u):=2\rho'_g(u)=\frac1{g\sqrt\pi}\int_0^1
+ e^{-ut/g^2}\sqrt{\frac{1-t}{t}}\,dt.
+\]
+It is decreasing, so $\rho_g$ is concave. Consequently, for all complex $F,D$,
+\begin{equation}
+ 2\psi_g(F+D)\le2\psi_g(F)+2K_g(|F|^2)\Re(\overline FD)+K_g(|F|^2)|D|^2.
+ \label{eq:rice-global}
+\end{equation}
+This inequality has no restriction on $D$. It averages the independent buffer first and does not assert fibrewise Gaussian domination for a cubic law.
+
+Set
+\[
+ c_0=3/32,\quad \alpha_0=1/128,\quad O_0=c_0H_c+\alpha_0H_A,\quad F=L+O_0.
+\]
+The preceding all-amplitude certificate supplies the single anchor input, uniformly over $g\in[3/16,7/32]$,
+\begin{equation}
+ \Lambda(O_0+gU)\le S-\frac1{4000}-\frac{\alpha_0^2}{200}.
+ \label{eq:ch42-anchor}
+\end{equation}
+The archived preceding certificate is an explicit dependency. This continuation does not estimate $S$ numerically or claim that its anchor input follows from the new coefficient integrals alone.
+
+For $h=c-c_0$, $\xi=\alpha-\alpha_0$, $\zeta=\beta$, the odd perturbation is $D_o=hH_c+\xi H_A+\zeta H_B$. Averaging~\eqref{eq:rice-global} and subtracting the price yields
+\[
+ \Lambda(O_0+D_o+gU)\le\Lambda(O_0+gU)+2\Re\sum_i d_i\delta_i+\delta^*M\delta,
+\]
+\[
+ M_{ij}=\E[K_g(|F|^2)\overline{H_i}H_j]-p\delta_{ij},\qquad
+ d_i=\E[K_g(|F|^2)\overline FH_i]-p(c_0,\alpha_0,0)_i.
+\]
+Conjugation makes $M,d$ real; the perturbation coefficients remain arbitrary complex numbers. The fresh directed replay gives the exact rational bounds
+\begin{gather*}
+ M_{cc}\le.348,\quad M_{AA}\le-.1044,\quad M_{BB}\le-.5668,\\
+ |M_{cA}|\le.0964,\quad |M_{cB}|\le.01955,\quad |M_{AB}|\le.00087,\\
+ -.017465\le d_c\le-.01556,\quad |d_A|\le.00169,\quad |d_B|\le.001596.
+\end{gather*}
+Every terminating decimal here is a rational acceptance threshold checked against the full outward interval, not a rounded integration result.
+
+Completing the two complex squares after adding $\gamma A_2$ gives
+\begin{equation}
+ \Lambda(O_0+D_o+gU)+\gamma A_2\le S-\frac1{4000}+P_\gamma(h),
+ \label{eq:odd-completion}
+\end{equation}
+where
+\begin{align*}
+ P_\gamma(h)={}&j(h)+.348h^2
+ +\frac{(.00169+\gamma/128+.0964|h|)^2}{.10353-\gamma}\\
+ &+\frac{(.001596+.01955|h|)^2}{.56593-\gamma}
+ +\frac{\gamma-1/200}{128^2},\\
+ j(h)={}&\begin{cases}-.03112h,&h\ge0,\\-.03493h,&h\le0.\end{cases}
+\end{align*}
+On each half-line this is a convex quadratic. Its maximum over an interval occurs at an endpoint or at zero if the interval crosses zero. Exact rational comparisons therefore prove all four $(c,\delta,\gamma)$ rows of Theorem~\ref{thm:buffered-complement}, before adding $E$ and $J$.
+
+\subsection{The simultaneous interaction identity}
+\begin{lemma}[Odd/even cancellation about the fixed anchor, \st{P}]
+Let $O=cH_c+\alpha H_A+\beta H_B$ and $E=yH_Y+wH_W+\nu H_\nu$. Decompose $J=J_o+J_e$ into odd and even parts under $(X,V)\mapsto(-X,-V)$, with $Z$ fixed. Then the original two-sign payoff equals
+\[
+ \E\{\psi_g(L+O+J_o+E+J_e)+\psi_g(L+O+J_o-E-J_e)\}.
+\]
+Writing $D=O-O_0+J_o$ and $B=E+J_e$, it is at most
+\begin{equation}
+ 2\E\psi_g(F)+2\E[K_g(|F|^2)\Re(\overline FD)]
+       +\E[K_g(|F|^2)(|D|^2+|B|^2)].
+ \label{eq:ch42-parity}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Apply the measure-preserving half-turn to the second term of the original expectation. The odd part changes sign and the even part does not. Apply half of~\eqref{eq:rice-global} to $D+B$ and $D-B$, and add. The even linear terms and all odd/even quadratic cross terms cancel by
+$|D+B|^2+|D-B|^2=2|D|^2+2|B|^2$.
+\end{proof}
+Both $J_o,J_e$ stay in $H_{2,1}$, have zero conditional mean given $Z,X$, and are orthogonal in unweighted $L^2$. Since $F,K_g(|F|^2)$ are measurable in $Z,X$, conditional centering removes the remaining linear $J_o$ term and the cross terms with $O-O_0$ and $E$, including the price cross terms. Thus, in addition to the odd quadratic majorant, only
+\begin{equation}
+ \E[K_g(|F|^2)|E|^2]-p\|E\|_2^2
+ +\E[K_g(|F|^2)(|J_o|^2+|J_e|^2)]-p\|J\|_2^2
+ \label{eq:ch42-extra}
+\end{equation}
+remains. This cancellation holds at every target amplitude and phase. No conditional orthogonality of the target $A/B$ and even sectors is assumed.
+
+\subsection{The two weighted Gram certificates}
+Put $s=|Z|^2$, $t=|X|^2$, $\theta=\arg X-\arg Z$, and
+\[
+ R=\sqrt s(a+bs),\qquad h=c_0\sqrt t(t-2)/\sqrt2+\alpha_0(s-1)\sqrt t,
+\]
+\[
+ k_j(s,t)=\E_\theta[K_g(R^2+h^2+2Rh\cos\theta)\cos(j\theta)].
+\]
+Expectations in the following matrices are over the two independent exponential variables $s,t$.
+
+\subsubsection{Internal even directions}
+The matrix on $(H_Y,H_W,H_\nu)$ is
+\[
+ \begin{pmatrix}
+ \E s(t-1)^2k_0&\E st(t-1)k_2/\sqrt2&\E s(t-1)(s-2)k_0/\sqrt2\\
+ *&\E st^2k_0/2&\E st(s-2)k_2/2\\
+ *&*&\E s(s-2)^2k_0/2
+ \end{pmatrix}.
+\]
+\textbf{Certificate \st{C}.} All three absolute row sums are strictly below $117/100$, uniformly for every $g\in[3/16,7/32]$. The largest directed row upper bound is less than $1.168633$. Therefore
+\[
+ \E[K_g(|F|^2)|E|^2]\le\frac{117}{100}\|E\|_2^2.
+\]
+This is a Hermitian-form bound, so it covers arbitrary complex coefficients.
+
+\subsubsection{The arbitrary-dimensional complement}
+Expand $J$ in normalized external complex Hermite polynomials. The coefficient of the external constant is zero. The possibilities are exactly
+\begin{center}
+\begin{tabular}{cc}\toprule
+external bidegree & internal coefficient space\\\midrule
+$(1,0)$ & $H_{1,1}(Z,X)$\\
+$(0,1)$ & $H_{2,0}(Z,X)$\\
+$(1,1)$ & $H_{1,0}(Z,X)$\\
+$(2,0)$ & $H_{0,1}(Z,X)$\\
+$(2,1)$ & constants\\\bottomrule
+\end{tabular}
+\end{center}
+External orthogonality eliminates cross terms even with the internal weight $K_g(|F|^2)$. Hence the weighted norm of $J$ is bounded by the maximum of five internal operator norms, regardless of the number of external variables. This is a product-space identity: it can be checked directly from the generating functions $\exp(uz+v\overline z-uv)$ and $\E z^r\overline z^s=\delta_{rs}r!$. No inference from a finite list of dimensions is used.
+
+On $H_{1,1}$ use the orthonormal basis
+$(s-1,t-1,\sqrt{2st}\cos\theta,\sqrt{2st}\sin\theta)$. Angular parity separates a $3\times3$ block
+\[
+ \begin{pmatrix}
+ \E(s-1)^2k_0&\E(s-1)(t-1)k_0&\E\sqrt{2st}(s-1)k_1\\
+ *&\E(t-1)^2k_0&\E\sqrt{2st}(t-1)k_1\\
+ *&*&\E st(k_0+k_2)
+ \end{pmatrix}
+\]
+and the scalar $\E st(k_0-k_2)$. On $H_{2,0}$ the matrix is
+\[
+ \begin{pmatrix}
+ \E s^2k_0/2&\E s\sqrt{st/2}k_1&\E stk_2/2\\
+ *&\E stk_0&\E t\sqrt{st/2}k_1\\
+ *&*&\E t^2k_0/2
+ \end{pmatrix}.
+\]
+The $H_{1,0}$ matrix is
+$\left(\begin{smallmatrix}\E sk_0&\E\sqrt{st}k_1\\ *&\E tk_0\end{smallmatrix}\right)$;
+$H_{0,1}$ has its conjugate matrix, and the constant block is $\E k_0$.
+
+\textbf{Certificate \st{C}.} The seventeen distinct entries are enclosed uniformly in $g$. Weighted Gershgorin with weights $(2,2,1)$ on the first $3\times3$ block, and unit weights elsewhere, bounds every block strictly below $401/200$. The bottleneck is the constant block, whose certified upper bound is below $2.004521$. Consequently
+\[
+ \E[K_g(|F|^2)|J|^2]\le\frac{401}{200}\|J\|_2^2.
+\]
+Apply this separately to $J_o,J_e$ in~\eqref{eq:ch42-extra}. The result is
+$-\tau_0E_2+\kappa_0W_J$. Combining with~\eqref{eq:odd-completion} proves Theorem~\ref{thm:buffered-complement}.
+
+\subsection{Analytic remainders and reproducibility}
+\st{C} The coefficient verifiers use the audited Rice-kernel code from the supplied \texttt{shared-driver-extension.zip}, with the explicit polynomial weights replaced by the matrices above. They use exact $2^{-256}$ endpoint arithmetic, explicitly inflated IEEE754 binary64 balls, twenty and ten radial panels with24-point Gauss rules,256 angular points, and ten Chebyshev nodes in $g$. The classification is directed computation, not a Lean proof or a bare numerical scan.
+
+Analytic continuation to radial Bernstein ellipses and an angular strip bounds quadrature errors. All polynomial weights are bounded in complex modulus before use. On the complex-$g$ ellipse the real part of $g^{-2}$ is positive and $|K_g|<6$; the normalized basis vectors therefore give coefficient modulus at most6 by Cauchy--Schwarz. The existing conservative bound8 gives the degree9 interpolation remainder. No sampled orientation or interpolation-shape assumption is made.
+
+Let $\mu_k=\int_{25}^\infty t^ke^{-t}\,dt$. For the three even directions, squared tail bounds outside the radial square $[0,5]^2$ are
+\[
+ U_Y=\mu_2-\mu_1+\mu_0,\quad U_W=\mu_1+\mu_2/2,\quad
+ U_\nu=(\mu_3-4\mu_2+4\mu_1)/2+\mu_0.
+\]
+Multiply a diagonal tail by5 and bound a cross tail by $5(U_i+U_j)/2$. For the complementary Gram blocks the corresponding bounds are
+\[
+ U_s=\mu_2-2\mu_1+2\mu_0,\quad U_m=2\mu_1,\quad
+ U_q=\mu_2/2+\mu_0,\quad U_l=\mu_1+\mu_0,\quad U_c=2\mu_0.
+\]
+These account for both infinite radial tails. Complete formulas and the arithmetic audit are in the Markdown companions and self-contained verifiers.
+
+Run \texttt{python3 -I verify\_all.py} from any directory. It verifies the manifest, reruns the three new directed integrations, and checks the exact completions, block bounds, polynomial identities, and stated budget comparisons. It needs Python3 and Node.js20+, without installed packages. The prior anchor package is included; \texttt{--with-anchor} also extracts and fully replays its unchanged Python/C++17 certificate. Fresh replay logs are separated from the immutable recorded logs.
+
+\subsection{A complete matrix face without a buffer: no remote cubic and no B}
+\label{sec:ch42-no-B-face}
+\begin{theorem}[The full no-remote, no-B face, \st{P,C}]
+At the same peak profile, let
+\[
+ Q=(|Z|^2-1)A(X)+ZY(X)+\overline ZW(X)+\nu H(Z),
+\]
+where $A$ is an arbitrary remote first-chaos linear form, $Y\in H_{1,1}$, $W\in H_{2,0}$, and $\nu\in\C$. The remote polynomials may share every driver in any dimension. At every amplitude,
+\[
+ \Lambda(Q)<S-\frac1{250000}.
+\]
+There is no independent buffer requirement in this theorem. Its restrictions are zero remote cubic projection and zero B sector.
+\end{theorem}
+
+A unitary change of remote coordinates makes $A(X)=\sqrt dX_1$. Let $j$ denote the B variance (zero for this theorem), $e^2$ the even/diagonal variance, and $P=\Lambda-S$. Existing inequalities and fresh trace tangents give
+\begin{align*}
+ P&\le .181d-.749j+.119\sqrt{dj}-.128e^2-.002074,\\
+ P&\le-.1d-.25j+(\lambda_*-p)e^2,\\
+ P&\le(1.37503-S_{\rm lo})+.09217d-.56602j-.15819e^2,\\
+ P&\le(1.37912-S_{\rm lo})-.04909d-.57306j-.17821e^2,
+\end{align*}
+where $S_{\rm lo}=96683367193980/2^{46}\le S$ and $\lambda_*$ is the inverse-radius Gram norm. All decimal coefficients are exact outward rational thresholds.
+
+Multiply the first, third and second inequalities by $1,19/10,18/5$, respectively. Use $\sqrt{dj}\le d/32+8j$. At $\lambda_*\le36/25$, every variable coefficient is negative, and the constant divided by $13/2$ is less than $-1/250000$. Larger $d$ allows a weaker Gram threshold: put $\xi=(\lambda_*-p)/.17821$ and combine the last inequality with the Gaussian odd bound. Exact rational arithmetic gives
+\begin{center}
+\begin{tabular}{cc}\toprule
+lower bound for $d$ & sufficient upper bound for $\lambda_*$\\\midrule
+$1/32$ & $147/100$\\
+$9/256$ & $3/2$\\
+$3/64$ & $8/5$\\
+$7/128$ & $17/10$\\\bottomrule
+\end{tabular}
+\end{center}
+Each implication retains a margin larger than $1/250000$ and remains valid for $j\ge0$; it can therefore simplify a future general-B cover. Small $d\le1/100$ is excluded by the anisotropic bound. A trace tangent at $d_0=7/100$ excludes $d\ge73/1024$ with margin $1/2500$.
+
+For completeness, the one-parameter certificate on the remaining strip uses $t=|Z|^2$, $\ell=\sqrt t(a+bt)$, $k=\sqrt d(t-1)$ and the Laplace variable $s=u^2$. Under the Gaussian posterior,
+\[
+ D=1+u^2k^2,\quad C=D^{-1},\quad z=u^2\ell^2/D,\quad
+ m_2=z(1-C),\quad Z_0=e^{-z}/D.
+\]
+On the quadratic basis $(|X|^2-1,X^2/\sqrt2)$ write $q=m_2+C-1$ and $v=2Cm_2+C^2$. The diagonal posterior Gram entries are $q^2+v$ and $m_2^2/2+v$; the off-diagonal modulus squared is $m_2^2(q+2C)^2/2$. Let $\lambda_q$ be this matrix's top eigenvalue. With
+\[
+ d\mu=(2/\sqrt\pi)te^{-t}Z_0\,dt\,du,\qquad c(t)=(t-2)/\sqrt2,
+\]
+set
+\begin{align*}
+ n_0&=\int\lambda_q\,d\mu,&
+ n_1&=\int|c(t)|\sqrt{q^2+m_2^2/2}\,d\mu,&
+ n_2&=\int c(t)^2d\mu,\\
+ n_m&=\int(C+2m_2)d\mu,&n_e&=\int d\mu.
+\end{align*}
+The dimension-free external Hermite reduction gives
+\[
+ \lambda_*\le\max\left\{\lambda_{\max}
+ \begin{pmatrix}n_0&n_1\\n_1&n_2\end{pmatrix},n_m,n_e\right\}.
+\]
+A C++17 outward fixed-point integrator encloses these five positive integrals on every complete parameter interval. It uses no floating acceptance test. The mesh is $128$ cells per unit in $t\in[0,40]$, $64$ cells on $u\in[0,1]$, and multiplicative steps of at most $65/64$ through $u=2^{16}$. The parameter cover has47 intervals:31 of width $1/1024$ and16 of width $2/1024$. Each interval uses the threshold selected by its left endpoint.
+
+Here is a simple uniform infinite-tail bound particular to the proper Gaussian face. Gaussian density enlargement bounds the combined trace by $tP(t)Z_2$, with
+\[
+ P(t)=28+2(t-2)^2,\qquad
+ Z_2=\frac{\exp[-u^2\ell^2/(1+2u^2k^2)]}{1+2u^2k^2}
+ \le\frac1{eu^2\ell^2}.
+\]
+The last inequality is $xe^{-x}\le1/e$. Since $\ell^2\ge a^2t$ and $\E P(t)=32$, the $u>U$ tail is at most $(2/\sqrt\pi)32/(ea^2U)$. The remaining $t>40,u\le U$ tail is at most
+\[
+ \frac{2U}{\sqrt\pi}e^{-40}
+ \left(\frac{40^3+3\cdot40^2+6\cdot40+6}{2}+7(40+1)\right).
+\]
+At $U=2^{16}$ their sum is below $1/300$, checked rationally using $2/\sqrt\pi<56419/50000$ and $e^{-1}<3/8$. Large-exponent finite cells are charged to the same trace majorant. The complete interval cover and final $2\times2$ determinants, including both tails, are replayed by the accompanying checker. The general $B\ne0$ matrix cover remains open.
+
+\subsection{What this changes, and what it does not}
+The old application-box entry in the consolidated state no longer needs a small-$A$ restriction. In the enlarged box, all internal even and diagonal interactions are also proved, not merely tested. A second nonlinear driver and arbitrary cross tensors are allowed with an explicit variance budget. This is a deficit-preserving gluing theorem; it is not the failed equal-variance peeling comparison.
+
+The independent Gaussian buffer is still essential. General cubics need not possess it, or a Wick coefficient in the stated intervals, or a small complementary projection. The unrestricted finite-amplitude multi-driver problem remains open. The no-remote matrix face with $B=0$ is also proved globally, without a buffer. The general-B matrix problem has sharper trace and resource-dual reductions, but its full parameter certificate remains unfinished. None of these results supplies the central-row envelope required for a new endpoint. The project's quoted certified interval remains $1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$.

@@ -1,0 +1,369 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/d1/d1-note.tex (file dated 2026-11-05). Only this line was added.
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\sgn}{\operatorname{sign}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\Gam}{\operatorname{Gamma}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\Hil}{\mathcal H}
+
+\title{Gaussian quadratic forms are less concentrated than the Gaussian:\\
+$\E|X|\le\sqrt{2/\pi}\,\|X\|_2$ on the second Wiener chaos}
+\author{Research note (grothe project)}
+\date{5 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $X=\sum_{i}\lambda_i(g_i^2-1)$ with $g_i$ i.i.d.\ standard Gaussian, i.e.\ an arbitrary element of the second Wiener chaos.
+We prove $\E|X|\le\sqrt{2/\pi}\,\|X\|_2$, with strict inequality for every $X\neq0$ and equality only in the limit of many equal
+eigenvalues. Equivalently, $\sup_{|u|\le1}\|\Pi_2u\|_2^2=2/\pi$, where $\Pi_2$ is the projection onto the second chaos: the
+level-$2$ Hermite energy of a bounded function is at most that of a half-space at level~$1$. The same proof gives
+$\E|\sum_i\theta_i(\Gamma_i-a_i)+bG|\le\sqrt{2/\pi}\,(\sum_i\theta_i^2a_i+b^2)^{1/2}$ for independent Gammas with arbitrary shapes
+$a_i$ and signed scales $\theta_i$. The argument interpolates $X$ to a Gaussian along the Ornstein--Uhlenbeck path
+$cX+\sqrt{1-c^2}\,G$; the derivative is $2p_s(0)\,\E[X_2\mid X+G_s=0]$ with $X_2=\sum_i\theta_i^2(\Gamma_i-a_i)$, and the sign of
+this conditional expectation follows from the linearity of Gamma Stein kernels, exponential size-biasing, a one-line Laplace-transform
+lemma, and Yamazato's theorem that self-decomposable laws are unimodal.
+\end{abstract}
+
+\section{Results}
+
+Throughout, $g,g_1,g_2,\dots$ are i.i.d.\ standard Gaussians, $\Gamma_i\sim\Gam(a_i,1)$ are independent with $a_i>0$,
+$E,E_1,E_2,\dots\sim\Exp(1)$, $G\sim N(0,1)$ and $G_s\sim N(0,s^2)$ are independent of everything else, and
+$\varphi$, $\Phi$ are the standard normal density and distribution function. Recall $g^2\sim 2\,\Gam(\tfrac12,1)$, so
+\[
+\sum_{i\le d}\lambda_i(g_i^2-1)\;\overset{d}{=}\;\sum_{i\le d}\theta_i(\Gamma_i-\tfrac12),\qquad \theta_i:=2\lambda_i,\ a_i=\tfrac12 ,
+\]
+and every element of the second Wiener chaos $\Hil_2$ of a Gaussian Hilbert space has this form (diagonalise the symmetric matrix of
+the quadratic form; infinite spectra with $\sum\lambda_i^2<\infty$ are $L^2$-limits). Its variance is $2\sum\lambda_i^2=\sum\theta_i^2 a_i$.
+
+\begin{theorem}[$D_1$ for the real second chaos]\label{thm:A}
+For every $X\in\Hil_2$, $X\neq 0$,
+\[
+\E|X|<\sqrt{\tfrac{2}{\pi}}\;\|X\|_2 .
+\]
+The constant is sharp: for $\lambda_i\equiv(2d)^{-1/2}$, $i\le d$, one has $\E|X|=\sqrt{2/\pi}\,e^{-\mu(d/2)}\uparrow\sqrt{2/\pi}$,
+where $\mu$ is Binet's function.
+\end{theorem}
+
+\begin{theorem}[weighted sums of Gammas]\label{thm:B}
+Let $\theta_i\in\R\setminus\{0\}$, $a_i>0$ ($i\le d$), $b\ge0$, and $X=\sum_i\theta_i(\Gamma_i-a_i)+bG$. Then
+$\E|X|\le\sqrt{2/\pi}\,\big(\sum_i\theta_i^2a_i+b^2\big)^{1/2}$, with strict inequality as soon as $d\ge1$.
+\end{theorem}
+
+\begin{corollary}[level-$2$ inequality]\label{cor:dual}
+For every measurable $u:\R^d\to[-1,1]$, $\|\Pi_2u\|_{L^2(\gamma_d)}^2\le 2/\pi$, and $\sup_{d,\,u}\|\Pi_2u\|_2^2=2/\pi$.
+Consequently, for every measurable $A\subset\R^d$ (symmetric or not),
+\[
+\|\Pi_21_A\|_2^2=\tfrac12\sum_{i}\Big(\int_A(1-x_i^2)\dd\gamma_d\Big)^2+\sum_{i<j}\Big(\int_Ax_ix_j\dd\gamma_d\Big)^2\le\frac1{2\pi},
+\]
+that is, $\sum_{i}\big(\int_A(1-x_i^2)\dd\gamma_d\big)^2+\sum_{i\ne j}\big(\int_Ax_ix_j\dd\gamma_d\big)^2\le1/\pi$,
+and the coefficient of $\rho^2$ in the Gaussian noise stability $\int1_A\,T_\rho1_A\dd\gamma_d$, $T_\rho f(x)=\E f(\rho x+\sqrt{1-\rho^2}\,G)$, is at most $1/(2\pi)$.
+\end{corollary}
+
+Theorem~\ref{thm:A} is Theorem~\ref{thm:B} with $a_i=\tfrac12$, $b=0$. For $k=1$ the analogue of Theorem~\ref{thm:A} is the identity
+$\E|\langle a,g\rangle|=\sqrt{2/\pi}\,|a|$; for $k=2$ we found no statement in the literature (see Section~\ref{sec:remarks} for the
+closely related fixed-measure problem of Heilman, where the analogous statement is false).
+
+\section{Preliminaries}\label{sec:prelim}
+
+\paragraph{Gamma Stein identity.}
+Let $f_a(\gamma)=\gamma^{a-1}e^{-\gamma}/\Gamma(a)$ on $(0,\infty)$. For $h\in C^1(\R)$ of polynomial growth,
+\begin{equation}\label{eq:gammastein}
+\E[\Gamma h'(\Gamma)]=\int_0^\infty\gamma h'(\gamma)f_a(\gamma)\dd\gamma
+=-\int_0^\infty h(\gamma)\,\frac{(a\gamma^{a-1}-\gamma^{a})e^{-\gamma}}{\Gamma(a)}\dd\gamma=\E[(\Gamma-a)h(\Gamma)],
+\end{equation}
+the boundary terms $\gamma^a e^{-\gamma}h(\gamma)$ vanishing at $0$ and $\infty$. For $Y=\theta(\Gamma-a)$, $\theta\ne0$, and $R$
+independent of $Y$, applying \eqref{eq:gammastein} to $\gamma\mapsto h(\theta(\gamma-a)+R)$ conditionally on $R$ gives
+\begin{equation}\label{eq:Ystein}
+\E[Y h(Y+R)]=\theta^2\,\E[\Gamma\,h'(Y+R)]=\E[\tau_Y(Y)\,h'(Y+R)],\qquad \tau_Y(y)=\theta^2\big(\tfrac y\theta+a\big)=\theta y+\theta^2 a .
+\end{equation}
+Thus the Stein kernel $\tau_Y$ of a (signed) scaled centred Gamma is \emph{linear}, with slope $\theta$ and mean value $\E\tau_Y(Y)=\theta^2a=\Var Y$.
+
+\paragraph{Size biasing.} Since $\gamma f_a(\gamma)=a f_{a+1}(\gamma)$ and $\Gam(a+1,1)\overset d=\Gam(a,1)+\Exp(1)$,
+for bounded measurable $k$ and $R$ independent of $(\Gamma,E)$,
+\begin{equation}\label{eq:sizebias}
+\E[\Gamma\,k(\Gamma+R)]=a\,\E[k(\Gamma+E+R)] .
+\end{equation}
+Combining \eqref{eq:Ystein} and \eqref{eq:sizebias} (the shift $\Gamma\mapsto\Gamma+E$ shifts $Y$ by $\theta E$):
+\begin{equation}\label{eq:Ysb}
+\E[Y h(Y+R)]=\theta^2a\,\E[h'(Y+R+\theta E)] .
+\end{equation}
+
+\paragraph{Gaussian identities.} $\E[G\,k(G+R)]=\E[k'(G+R)]$ (Gaussian integration by parts); for $G_s=sG$, $\E[G_sh(G_s+R)]=s^2\E[h'(G_s+R)]$.
+For $a\in\R$, $\sigma>0$, since $\int_c^\infty g\varphi(g)\dd g=\varphi(c)=-\int_{-\infty}^cg\varphi(g)\dd g$,
+\begin{equation}\label{eq:gausssign}
+\E[\sgn(a+\sigma G)\,G]=\int_{-a/\sigma}^\infty g\varphi(g)\dd g-\int_{-\infty}^{-a/\sigma}g\varphi(g)\dd g=2\varphi(a/\sigma),
+\qquad \E[\sgn(a+\sigma G)]=2\Phi(a/\sigma)-1 .
+\end{equation}
+
+\paragraph{The Stein kernel of $X_s$.} Let $X=\sum_{i\le d}\theta_i(\Gamma_i-a_i)+bG_0$ with $v:=\Var X=\sum_i\theta_i^2a_i+b^2$, and
+$X_s:=X+G_s$ ($s\ge0$). Summing \eqref{eq:Ysb} over $i$ and adding the Gaussian terms,
+\begin{equation}\label{eq:steinXs}
+\E[X_sh(X_s)]=\sum_i\theta_i^2a_i\,\E[h'(X_s+\theta_iE_i)]+(b^2+s^2)\,\E[h'(X_s)] .
+\end{equation}
+Put $X_2:=\sum_i\theta_i\cdot\theta_i(\Gamma_i-a_i)=\sum_i\theta_i^2(\Gamma_i-a_i)$ (the Gaussian has slope $0$). By \eqref{eq:Ystein},
+$\E[Xh(X)]=\E[\tau_X(X)h'(X)]$ with
+\begin{equation}\label{eq:tauX}
+\tau_X(x)=\E\Big[\sum_i(\theta_iY_i+\theta_i^2a_i)+b^2\;\Big|\;X=x\Big]=v+\E[X_2\mid X=x],\qquad Y_i:=\theta_i(\Gamma_i-a_i).
+\end{equation}
+Note $\E X_2=0$ and $\E[X_2X^2]=\sum_i\theta_i^4\,\E[(\Gamma_i-a_i)^3]=2\sum_i\theta_i^4a_i>0$.
+
+\paragraph{Self-decomposability.} $\E e^{iz\Gamma}=(1-iz)^{-a}=\exp\!\big(a\int_0^\infty(e^{izx}-1)e^{-x}x^{-1}\dd x\big)$ (Frullani), so
+$\theta(\Gamma-a)$ is infinitely divisible with L\'evy measure $a\,e^{-|x|/|\theta|}|x|^{-1}\dd x$ on $\sgn x=\sgn\theta$. Hence $X_s$ is
+infinitely divisible with Gaussian variance $b^2+s^2$ and L\'evy measure $k(x)|x|^{-1}\dd x$,
+\[
+k(x)=\sum_{\theta_i>0}a_ie^{-x/\theta_i}\ (x>0),\qquad k(x)=\sum_{\theta_i<0}a_ie^{-|x|/|\theta_i|}\ (x<0),
+\]
+which is nonincreasing on $(0,\infty)$ and nondecreasing on $(-\infty,0)$. By the characterisation of class $L$
+\cite[Cor.~15.11]{Sato}, $X_s$ is \emph{self-decomposable}: for every $c\in(0,1)$ there is a law $\rho_c$ with $\hat\mu(z)=\hat\mu(cz)\hat\rho_c(z)$.
+
+\begin{theorem}[Yamazato \cite{Yamazato}; {\cite[Thm.~53.1]{Sato}}]\label{thm:yamazato}
+Every self-decomposable distribution on $\R$ is unimodal: there is $m_0\in\R$ such that its distribution function is convex on
+$(-\infty,m_0)$ and concave on $(m_0,\infty)$.
+\end{theorem}
+For $s>0$ the law of $X_s$ has a $C^\infty$ bounded density $p_s$ (convolution with a Gaussian), so Theorem~\ref{thm:yamazato} says:
+$p_s$ is nondecreasing on $(-\infty,m_0]$ and nonincreasing on $[m_0,\infty)$.
+
+\paragraph{A Laplace-transform lemma.}
+\begin{lemma}\label{lem:laplace}
+Let $H:(0,\infty)\to\R$ be bounded and suppose there is $u_1\in[0,\infty]$ with $H\ge0$ on $(0,u_1)$ and $H\le0$ on $(u_1,\infty)$.
+Put $\Lambda(r)=\int_0^\infty e^{-ru}H(u)\dd u$, $r>0$. Then there is $r^*\in[0,\infty]$ with $\Lambda\le0$ on $(0,r^*)$ and
+$\Lambda\ge0$ on $(r^*,\infty)$.
+\end{lemma}
+\begin{proof}
+If $u_1=\infty$ then $\Lambda\ge0$; if $u_1=0$ then $\Lambda\le0$. Otherwise $e^{ru_1}\Lambda(r)=\int_0^\infty e^{-r(u-u_1)}H(u)\dd u$ is
+differentiable for $r>0$ (dominated convergence) with derivative $-\int_0^\infty(u-u_1)e^{-r(u-u_1)}H(u)\dd u\ge0$, because
+$(u-u_1)H(u)\le0$ for all $u$. So $e^{ru_1}\Lambda(r)$ is nondecreasing: $\Lambda(r)<0$ implies $\Lambda(r')<0$ for $r'<r$, and
+$\Lambda(r)>0$ implies $\Lambda(r')>0$ for $r'>r$.
+\end{proof}
+
+\section{The Ornstein--Uhlenbeck path}\label{sec:OU}
+
+Normalise $v=\Var X=1$. For $c\in(0,1)$ let $\sigma:=\sqrt{1-c^2}$, $s:=\sigma/c\in(0,\infty)$ and
+\[
+X_c:=cX+\sigma G,\qquad N(c):=\E|X_c| .
+\]
+$N(0^+)=\E|G|=\sqrt{2/\pi}$ and $N(c)\to\E|X|$ as $c\uparrow1$.
+
+\begin{proposition}\label{prop:derivative}
+For $c\in(0,1)$, with $p_s$ the density of $X_s=X+G_s$,
+\begin{equation}\label{eq:derivative}
+N'(c)=2\,p_s(0)\,\E[X_2\mid X_s=0] .
+\end{equation}
+\end{proposition}
+\begin{proof}
+Since $x\mapsto|x|$ is Lipschitz, $\sigma'(c)=-c/\sigma$, and $X_c$ has a density, $N'(c)=\E[\sgn(X_c)\,(X-\tfrac c\sigma G)]$.
+Conditioning on $X$ and using \eqref{eq:gausssign} with $a=cX$:
+\[
+\E[\sgn(X_c)G]=2\,\E[\varphi(cX/\sigma)],\qquad \E[\sgn(X_c)X]=\E[X\,h(X)],
+\]
+where $h(x):=2\Phi(cx/\sigma)-1$, so that $h'(x)=\tfrac{2c}{\sigma}\varphi(cx/\sigma)$.
+By the Stein identity \eqref{eq:tauX} for $X$, $\E[Xh(X)]=\E[\tau_X(X)h'(X)]=\tfrac{2c}\sigma\E[\tau_X(X)\varphi(cX/\sigma)]$. Hence
+\[
+N'(c)=\tfrac{2c}{\sigma}\,\E\big[(\tau_X(X)-1)\varphi(cX/\sigma)\big]=\tfrac{2c}{\sigma}\,\E\big[X_2\,\varphi(X/s)\big],
+\]
+using $\tau_X(X)-1=\E[X_2\mid X]$ and that $\varphi(cX/\sigma)$ is $X$-measurable. Finally $\varphi(x/s)=s\varphi_s(x)$ with $\varphi_s$
+the $N(0,s^2)$ density, and $\E[X_2\varphi_s(X)]=\int\E[X_2\mid X=x]\,p_X(x)\varphi_s(-x)\dd x=p_s(0)\,\E[X_2\mid X_s=0]$, the conditional
+density of $X$ given $X_s=0$ being $p_X(x)\varphi_s(-x)/p_s(0)$. Since $\tfrac{2c}{\sigma}s=2$, \eqref{eq:derivative} follows.
+\end{proof}
+
+\section{The key lemma}\label{sec:key}
+
+\begin{lemma}[Key Lemma]\label{lem:key}
+Let $X=\sum_{i\le d}\theta_i(\Gamma_i-a_i)+bG_0$ and $s>0$. Then $\E[X_2\mid X_s=0]\le0$.
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1: one-sided exponential averages.} For $\theta>0$ define
+\[
+\delta_s(\theta):=\int_0^\infty e^{-u/\theta}\big[p_s(-u)-p_s(0)\big]\dd u,\qquad
+\delta_s^-(\theta):=\int_0^\infty e^{-u/\theta}\big[p_s(u)-p_s(0)\big]\dd u .
+\]
+Let $q_i$ be the density of $X_s+\theta_iE_i$. For $\theta_i>0$, $q_i(x)=\theta_i^{-1}\int_0^\infty e^{-u/\theta_i}p_s(x-u)\dd u$, and since
+$\frac{\dd}{\dd u}p_s(-u)=-p_s'(-u)$, an integration by parts gives
+\begin{equation}\label{eq:ibp1}
+q_i'(0)=\frac1{\theta_i}\int_0^\infty e^{-u/\theta_i}p_s'(-u)\dd u
+=-\frac1{\theta_i}\Big(\big[e^{-u/\theta_i}p_s(-u)\big]_0^\infty+\frac1{\theta_i}\int_0^\infty e^{-u/\theta_i}p_s(-u)\dd u\Big)
+=-\frac{\delta_s(\theta_i)}{\theta_i^2},
+\end{equation}
+using $\int_0^\infty e^{-u/\theta}\dd u=\theta$. For $\theta_i<0$, $\vartheta:=|\theta_i|$, $q_i(x)=\vartheta^{-1}\int_0^\infty e^{-u/\vartheta}p_s(x+u)\dd u$ and likewise
+\begin{equation}\label{eq:ibp2}
+q_i'(0)=\frac1\vartheta\int_0^\infty e^{-u/\vartheta}p_s'(u)\dd u
+=\frac1{\vartheta}\Big(\big[e^{-u/\vartheta}p_s(u)\big]_0^\infty+\frac1{\vartheta}\int_0^\infty e^{-u/\vartheta}p_s(u)\dd u\Big)
+=\frac{\delta_s^-(\vartheta)}{\vartheta^2}.
+\end{equation}
+
+\emph{Step 2: two identities.} Taking $h\in C_c^\infty$ in \eqref{eq:Ysb} and writing $\E[h'(X_s+\theta_iE_i)]=-\int h\,q_i'$, we read off the
+density of the signed measure $\E[Y_i;\,X_s\in\dd x]$: $\E[Y_i\mid X_s=x]\,p_s(x)=-\theta_i^2a_i\,q_i'(x)$; similarly, from
+\eqref{eq:steinXs}, $x\,p_s(x)=-\sum_i\theta_i^2a_iq_i'(x)-(b^2+s^2)p_s'(x)$. All functions are continuous, so we may evaluate at $x=0$.
+With $P=\{i:\theta_i>0\}$, $N=\{i:\theta_i<0\}$ and \eqref{eq:ibp1}--\eqref{eq:ibp2}:
+\begin{align}
+p_s(0)\,\E[X_2\mid X_s=0]&=\sum_i\theta_i\,\E[Y_i\mid X_s=0]\,p_s(0)=-\sum_i\theta_i^3a_iq_i'(0)\notag\\
+&=\sum_{i\in P}a_i\theta_i\,\delta_s(\theta_i)+\sum_{i\in N}a_i|\theta_i|\,\delta_s^-(|\theta_i|),\label{eq:I2}\\
+0&=-\sum_i\theta_i^2a_iq_i'(0)-(b^2+s^2)p_s'(0),\quad\text{i.e.}\notag\\
+&\phantom{=}\ \sum_{i\in P}a_i\delta_s(\theta_i)-\sum_{i\in N}a_i\delta_s^-(|\theta_i|)=(b^2+s^2)\,p_s'(0).\label{eq:I1}
+\end{align}
+
+\emph{Step 3: sign structure from unimodality.} Let $m_0$ be a mode of $p_s$ (Theorem~\ref{thm:yamazato}) and
+$H_s(u):=p_s(-u)-p_s(0)$, $H_s^-(u):=p_s(u)-p_s(0)$ for $u>0$, so that $\delta_s(\theta)=\int e^{-u/\theta}H_s$, $\delta_s^-(\theta)=\int e^{-u/\theta}H_s^-$.
+\begin{itemize}
+\item If $m_0<0$: $p_s$ is nonincreasing on $[m_0,\infty)\ni0$, so $H_s^-\le0$ and $p_s'(0)\le0$. As $u$ increases from $0$ to $|m_0|$ the point $-u$
+moves from $0$ to the mode, so $p_s(-u)$ is nondecreasing; for $u>|m_0|$ it is nonincreasing and tends to $0$. Hence $H_s\ge0$ on $(0,u_1)$ and
+$H_s\le0$ on $(u_1,\infty)$ for a unique $u_1\in(|m_0|,\infty)$.
+\item If $m_0>0$: by symmetry $H_s\le0$, $p_s'(0)\ge0$, and $H_s^-$ changes sign once, from $+$ to $-$.
+\item If $m_0=0$: $H_s\le0$ and $H_s^-\le0$.
+\end{itemize}
+By Lemma~\ref{lem:laplace} (with $r=1/\theta$): whenever $H_s$ has the one-change structure there is $\theta^*\in[0,\infty]$ with
+$\delta_s\ge0$ on $(0,\theta^*)$ and $\delta_s\le0$ on $(\theta^*,\infty)$; if $H_s\le0$ then $\delta_s\le0$ everywhere; and the same for $H_s^-,\delta_s^-$.
+
+\emph{Step 4: bookkeeping.} \emph{Case $m_0<0$.} Every $\delta_s^-(|\theta_i|)\le0$ ($i\in N$). With $\theta^*$ as above,
+\[
+\sum_{i\in P}a_i\theta_i\delta_s(\theta_i)=\sum_{i\in P}a_i(\theta_i-\theta^*)\delta_s(\theta_i)+\theta^*\sum_{i\in P}a_i\delta_s(\theta_i)
+\le\theta^*\Big[(b^2+s^2)p_s'(0)+\sum_{i\in N}a_i\delta_s^-(|\theta_i|)\Big]\le0,
+\]
+since each $(\theta_i-\theta^*)\delta_s(\theta_i)\le0$ and we used \eqref{eq:I1}; if $\theta^*=\infty$ all $\delta_s(\theta_i)\ge0$ and
+\eqref{eq:I1} forces them to vanish, so the sum is $0$. By \eqref{eq:I2}, $p_s(0)\E[X_2\mid X_s=0]\le\sum_{i\in N}a_i|\theta_i|\delta_s^-(|\theta_i|)\le0$.
+\emph{Case $m_0>0$.} All $\delta_s(\theta_i)\le0$, and with the threshold $\theta^{**}$ of $\delta_s^-$,
+$\sum_{N}a_i|\theta_i|\delta_s^-(|\theta_i|)\le\theta^{**}\sum_Na_i\delta_s^-(|\theta_i|)=\theta^{**}\big[\sum_Pa_i\delta_s(\theta_i)-(b^2+s^2)p_s'(0)\big]\le0$.
+\emph{Case $m_0=0$.} All terms in \eqref{eq:I2} are $\le0$.
+\end{proof}
+
+\section{Proofs of the theorems}
+
+\begin{proof}[Proof of Theorem~\ref{thm:B}]
+Scale so that $\Var X=1$. By Proposition~\ref{prop:derivative} and Lemma~\ref{lem:key} (applied to $X_s=X+G_s$, whose Gaussian variance is
+$b^2+s^2$), $N'(c)\le0$ on $(0,1)$, hence $\E|X|=N(1^-)\le N(0^+)=\E|G|=\sqrt{2/\pi}$.
+Strictness: as $s\to\infty$, $p_s(0)\E[X_2\mid X_s=0]=\E[X_2\varphi_s(X)]=\frac{1}{s\sqrt{2\pi}}\E\big[X_2e^{-X^2/2s^2}\big]
+=-\frac{\E[X_2X^2]}{2s^3\sqrt{2\pi}}+O(s^{-5})$ with $\E[X_2X^2]=2\sum_i\theta_i^4a_i>0$ (the remainder is bounded by $\E[|X_2|X^4]/(8s^5\sqrt{2\pi})$),
+so $N'<0$ on a neighbourhood of $c=0^+$ and $\E|X|<\E|G|$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:A}]
+The inequality is Theorem~\ref{thm:B} with $a_i=\frac12$, $\theta_i=2\lambda_i$, $b=0$ (finite spectra; infinite spectra by $L^2$-approximation,
+$\E|\cdot|$ being $L^2$-continuous). For the closed form, let $Y\sim\Gam(a,1)$ with distribution function $F_a$. Since $\E[Y-a]=0$,
+\[
+\E|Y-a|=2\E[(a-Y)^+]=2\Big(aF_a(a)-\int_0^a\gamma f_a(\gamma)\dd\gamma\Big)=2a\big(F_a(a)-F_{a+1}(a)\big)=\frac{2a^{a}e^{-a}}{\Gamma(a)},
+\]
+because $\gamma f_a=af_{a+1}$ and $F_a(x)-F_{a+1}(x)=x^ae^{-x}/\Gamma(a+1)$ (both sides vanish at $0$ and have derivative $f_a-f_{a+1}$).
+With $\chi^2_d=2\,\Gam(d/2,1)$: $\E|\chi^2_d-d|=4(d/2)^{d/2}e^{-d/2}/\Gamma(d/2)$ and, for $a=d/2$,
+\[
+\frac{\E|\chi^2_d-d|}{\|\chi^2_d-d\|_2}=\frac{2a^{a-1/2}e^{-a}}{\Gamma(a)}=\sqrt{\tfrac2\pi}\,e^{-\mu(a)},
+\]
+\[
+\mu(a)=\log\Gamma(a)-(a-\tfrac12)\log a+a-\tfrac12\log2\pi=\int_0^\infty\Big(\frac1{e^t-1}-\frac1t+\frac12\Big)\frac{e^{-at}}{t}\dd t,
+\]
+Binet's function, which is positive and strictly decreasing to $0$ ($\mu(a)\sim1/(12a)$) since the integrand is positive. The values are
+$0.68440,\,0.73576,\,0.75533,\dots,\,0.79127$ ($d=1,2,3,\dots,20$).
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:dual}]
+$\|\Pi_2u\|_2=\sup\{\E[uX]:X\in\Hil_2,\ \|X\|_2=1\}\le\sup\{\E|X|:X\in\Hil_2,\|X\|_2=1\}\le\sqrt{2/\pi}$ by Theorem~\ref{thm:A}.
+Conversely, for $X_d=(\chi_d^2-d)/\sqrt{2d}$ and $u=\sgn X_d$, $\|\Pi_2u\|_2\ge\E[uX_d]=\E|X_d|\to\sqrt{2/\pi}$.
+For the second form, write $1_A=\tfrac12(1+u)$ with $u:=2\cdot1_A-1$, so $|u|\le1$ and, since $\Pi_21=0$,
+$\|\Pi_21_A\|_2^2=\tfrac14\|\Pi_2u\|_2^2\le\tfrac14\cdot\tfrac2\pi=\tfrac1{2\pi}$. Expanding $1_A$ in the orthonormal degree-$2$ Hermite basis
+$\{(x_i^2-1)/\sqrt2\}_i\cup\{x_ix_j\}_{i<j}$ gives $\|\Pi_21_A\|_2^2=\tfrac12\sum_i(\int_A(x_i^2-1)\dd\gamma_d)^2+\sum_{i<j}(\int_Ax_ix_j\dd\gamma_d)^2$,
+and doubling turns $\sum_{i<j}$ into $\tfrac12\sum_{i\ne j}$. Finally, by Mehler's formula $\int f\,T_\rho f\dd\gamma_d=\sum_{k\ge0}\rho^k\|\Pi_kf\|_2^2$,
+so the $\rho^2$-coefficient of the noise stability of $A$ is $\|\Pi_21_A\|_2^2$ (for symmetric $A$ the $\rho^1$ term vanishes and this is the leading
+correction to $\gamma_d(A)^2$; cf.\ \cite[eq.~(10)]{Heilman}, where $\frac{d^2}{d\rho^2}\big|_0\int fT_\rho f\dd\gamma_n=2\|\Pi_2f\|_2^2$ with the same
+normalisations of $\gamma_n$ and $T_\rho$).
+\end{proof}
+
+\section{Remarks}\label{sec:remarks}
+
+\begin{remark}[fixed measure: Heilman's counterexamples]
+Heilman \cite{Heilman} studies, for symmetric $A\subset\R^n$ of \emph{fixed} Gaussian measure, the maximisers of the noise stability for small
+$\rho$, i.e.\ of $\|\Pi_21_A\|_2^2$; in dimension two he works with $F(A)=\sum_{i=1}^2\big(\int_A(1-x_i^2)\dd\gamma_2\big)^2$ \cite[eq.~(4)]{Heilman},
+which equals $2\|\Pi_21_A\|_2^2$ for sets whose matrix $\int_Axx^T\dd\gamma_2$ is diagonal (balls, axis-parallel ellipses and strips), so
+Corollary~\ref{cor:dual} gives $F(A)\le1/\pi\approx0.318$ for every symmetric $A$, in every dimension, with no measure constraint.
+He proves that the ball $B(0,r)$ or its complement is a local maximiser at fixed measure iff $r^2\le n+2$, and that for $r^2>n+2$ it is not;
+at measure $\gamma_2(B(0,2.4))\approx0.944$ the ball has $F=\tfrac12r^4e^{-r^2}\approx0.0523$, while the ellipse $x_1^2/2.5^2+x_2^2/2.31394^2\le1$
+has $F\approx0.0525$ and the strip $\{|x_1|\le1.90999\}$ has $F\approx0.0605$.
+Our extremal sets $\{\sum\lambda_ig_i^2<\sum\lambda_i\}$ are the balls of radius$^2$ $=d\le d+2$, and the corollary concerns the free-measure
+supremum, which the counterexamples do not touch. It does mean that a proof cannot go through ``Schur-concavity at every level'' (false), and
+indeed the natural pairwise statement fails already at the mean level: for $X=a\xi_1+b\xi_2+W$ one computes exactly
+$\partial_\vartheta\E|X|=-8ab(b-a)\,p'_{\tilde X}(0)$ along $(a,b)=r(\cos\vartheta,\sin\vartheta)$, with $\tilde X=a(\chi^2_3-1)+b(\chi'^2_3-1)+W$,
+and for $W=\xi_3+\xi_4+\xi_5$, $r\le0.3$, equalising the pair \emph{decreases} $\E|X|$. The Ornstein--Uhlenbeck path is monotone where
+pair-equalisation is not.
+\end{remark}
+
+\begin{remark}[cumulant positivity is not enough]
+$X$ has all cumulants $\kappa_k=2^{k-1}(k-1)!\sum\lambda_i^k>0$ (positive spectrum) and is spectrally positive infinitely divisible, but neither
+property implies the theorem: for $N\sim\mathrm{Poisson}(\nu)$, $\E|N-\nu|=2\nu^{\lfloor\nu\rfloor+1}e^{-\nu}/\lfloor\nu\rfloor!$, so
+$\E|N-\nu|/\sqrt\nu=0.858>\sqrt{2/\pi}$ at $\nu=\tfrac12$ (and $>\sqrt{2/\pi}$ for $\nu\in(0.2,0.85)$). What the proof uses is: linear Stein kernels
+(so that $\tau_X(0)-\Var X$ is again a conditional expectation of a weighted Gamma sum $X_2$), \emph{exponential} size-bias shifts (so that the
+one-sided averages are Laplace transforms, which are variation diminishing), and class $L$ (unimodality). The $|x|^{-1}$ singularity of the
+Gamma L\'evy measure is what fails for Poisson.
+\end{remark}
+
+\begin{remark}[a general criterion, and what does not extend]
+Proposition~\ref{prop:derivative} holds for any centred $X$ with $\Var X=1$ admitting a Stein kernel $\tau_X$ ($\E[Xh(X)]=\E[\tau_X(X)h'(X)]$),
+in the form $N'(c)=\tfrac{2c}\sigma\E[(\tau_X(X)-1)\varphi(cX/\sigma)]$. Hence: \emph{if $\E[(\tau_X(X)-\Var X)\,\varphi_s(X)]\le0$ for all $s>0$, then
+$\E|X|\le\sqrt{2/\pi}\|X\|_2$.} For $X$ in the $k$-th Wiener chaos, $\tau_X(x)=\frac1k\E[|DX|^2\mid X=x]$, so the target for $k\ge3$ is
+$\E\big[|DX|^2\varphi_s(X)\big]\le k\,\Var(X)\,\E[\varphi_s(X)]$ for all $s>0$. The present proof does not extend: for $k\ge3$ the summands of a
+diagonalised chaos element are not independent, the law of $X$ is not self-decomposable in general, and $\tau_X$ is not linear in the summands,
+so Steps~1--2 of Lemma~\ref{lem:key} have no analogue. The complex charge-one statement $\E|q|\le(\sqrt\pi/2)\|q\|_2$ is likewise open; the
+conditional-expectation formulation above is the statement to aim for.
+\end{remark}
+
+\appendix
+\section{Numerical checks}
+
+All computations use the characteristic function $\varphi_X(t)=\prod_i e^{-i\lambda_it}(1-2i\lambda_it)^{-1/2}$ and the formulas
+$\E|X|=\frac2\pi\int_0^\infty(1-\Re\varphi_X)t^{-2}\dd t$, $p(x)=\frac1\pi\int_0^\infty\Re[e^{-itx}\varphi(t)]\dd t$, with adaptive quadrature
+(\texttt{scipy.integrate.quad}); scripts \texttt{d1\_num1.py}--\texttt{d1\_num8.py} in the same folder. Spectra are normalised to $\|X\|_2=1$.
+\begin{itemize}
+\item \texttt{d1\_num1.py}: the closed form $\E|\chi_d^2-d|=4(d/2)^{d/2}e^{-d/2}/\Gamma(d/2)$ agrees with the integral to $10^{-8}$ for $d=1,2,3,5,8,20$.
+\item \texttt{d1\_num5.py} (check of \eqref{eq:derivative}): for $\lambda=(0.402,0.402,0.402,0.021,0.119)$ and $c=0.8$, the finite difference of
+$N$ is $-0.096501$ and the right-hand side of \eqref{eq:derivative} is $-0.096501$. For $16$ spectra (positive, mixed, and the ones where pair
+equalisation fails) $N$ is strictly decreasing on the grid $c\in\{1,0.98,0.95,0.9,0.8,0.7,0.5,0.3,0.1\}$ and $\E[X_2e^{-X^2/2\sigma^2}]<0$ for
+$\sigma\in[0.02,20]$.
+\item \texttt{d1\_num8.py} (checks of \eqref{eq:I1}--\eqref{eq:I2}; the left sides are computed independently, from
+$p_s(0)\E[\xi_i\mid X_s=0]=\frac1\pi\int_0^\infty\Re\big[2i\lambda_it\,\varphi_{X_s}(t)/(1-2i\lambda_it)\big]\dd t$ and
+$p_s'(0)=\frac1\pi\int_0^\infty t\,\Im\varphi_{X_s}(t)\dd t$):
+\end{itemize}
+\begin{center}\small
+\begin{tabular}{llrrrr}
+\toprule
+$\lambda$ (normalised) & $s$ & \eqref{eq:I1} lhs & $2s^2p_s'(0)$ & \eqref{eq:I2} lhs & \eqref{eq:I2} rhs\\
+\midrule
+$(0.617,0.309,0.154)$ & $0.7$ & $-0.147376$ & $-0.147376$ & $-0.087000$ & $-0.087000$\\
+$(0.407,0.407,0.407,0.041,0.041)$ & $0.3$ & $-0.051756$ & $-0.051756$ & $-0.022434$ & $-0.022434$\\
+$(0.611,-0.305,0.183)$ & $0.5$ & $-0.115754$ & $-0.115754$ & $-0.157969$ & $-0.157969$\\
+$(0.577,-0.289,-0.289)$ & $0.2$ & $-0.039130$ & $-0.039130$ & $-0.328965$ & $-0.328965$\\
+$(-0.598,-0.359,0.120)$ & $0.6$ & $+0.148746$ & $+0.148746$ & $-0.091149$ & $-0.091149$\\
+$(0.668,0.067\times12)$ & $0.1$ & $-0.011654$ & $-0.011654$ & $-0.083697$ & $-0.083697$\\
+\bottomrule
+\end{tabular}
+\end{center}
+(For $a_i=\frac12$ the identities carry a factor $\frac12$: \eqref{eq:I1} reads $\sum_P\delta_s-\sum_N\delta_s^-=2s^2p_s'(0)$ and
+\eqref{eq:I2} reads $p_s(0)\E[X_2\mid X_s=0]=\frac12[\sum_P\theta_i\delta_s(\theta_i)+\sum_N|\theta_i|\delta_s^-(|\theta_i|)]$.)
+In every case $\theta\mapsto\delta_s(\theta)$ on the grid $\{0.02,\dots,5\}$ shows exactly the sign pattern of Step~3: one change from $+$ to $-$
+when $m_0<0$ with $\delta_s^-\le0$ throughout, the mirror image when $m_0>0$ (the fifth row), and no change for a symmetric spectrum.
+\texttt{d1\_num6.py} confirms $\E[X_2\mid X_s=0]\le0$ in $40$ cases, and shows that the naive ordering ``$\E[Y_i\mid X_s=0]$ decreasing in
+$\theta_i$'' fails in $11$ of them, which is why the proof uses the threshold structure of $\delta_s$ rather than Chebyshev's sum inequality.
+
+\begin{thebibliography}{9}
+\bibitem{Heilman} S.~Heilman, \emph{Low correlation noise stability of symmetric sets}, J. Theoret. Probab. \textbf{34} (2021), 2192--2240; arXiv:1511.00382.
+\bibitem{Sato} K.~Sato, \emph{L\'evy Processes and Infinitely Divisible Distributions}, Cambridge Studies in Advanced Mathematics 68, Cambridge University Press, 1999 (Cor.~15.11, Thm.~53.1).
+\bibitem{Yamazato} M.~Yamazato, \emph{Unimodality of infinitely divisible distribution functions of class $L$}, Ann. Probab. \textbf{6} (1978), 523--531.
+\end{thebibliography}
+
+\end{document}

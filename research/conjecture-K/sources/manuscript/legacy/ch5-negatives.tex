@@ -1,0 +1,136 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch5-negatives.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 5). Owner: lower-bound/04-witness-certificates.tex
+\section{Negative results on the lower side (do not repeat)}\label{ch:negatives}
+\chapsummary{Negative results and their diagnoses are retained as proof safeguards. Numerical loss decompositions are dated; the current endpoint is in \autoref{ch:certified}.}
+
+Each result below has a precise diagnosis; together they locate the loss of the gated certificate in one place (\S\ref{sec:lossmap}). All
+numbers \st{F} unless stated. The float emulation of the exact certificate (\pathref{pipeline/}, index \code{INDEX.md}) is accurate to
+$\approx10^{-4}$ and calibrated against HJM's certified rows (reproduces $0.714240$ as $0.714246$).
+
+\begin{negative}[$\varepsilon=0.756$ with the HJM-type gates]\label{neg:eps}
+Motivation: the slack at $0.74$ was $3\cdot10^{-4}$ while the ceiling moves by $6\cdot10^{-4}$ towards $0.756$. The price/gate pipeline was rebuilt
+(\pathref{pipeline/lower-eps/}: dual-ascent price optimiser reproducing HJM's 997 node caps to $3\cdot10^{-5}$; \code{gateopt2.py} projected onto the
+feasible gate set; \code{MAP.md} is the map of the whole certified pipeline). Findings: transferring rows with the lossy $\varepsilon$-transfer
+formula gives $B=0.7234$; re-optimising gates with frozen prices gives $B\approx0.88$ (the dominance condition $M_E\succeq\mathrm{diag}(\varepsilon-\delta,0,0)$
+forces the gate up with $\varepsilon$, and the frozen prices made $D=M^{-1}-G$ nearly singular at $0.74$); with prices re-optimised too, the node layer at
+$0.756$ is as good as at $0.74$ (the $q=0$ part of the binding row improves $0.71028\to0.70965$, tracking the true norm) but the moment-cover increment
+nearly doubles ($0.0028\to0.0051$) because $\delta$ is forced up ($0.50\to0.56$) and the residual penalty $-\sigma^2/\delta$ weakens. Rows at their own $t$:
+$0.7139$ (H0.5), $0.7150$, $0.7157$ (H0.7), $0.7146$ (H0.78), $0.7141$ (H0.84), $0.7132$ (H0.865); small-$t$ profiles worse than the crude row
+$\varepsilon\rho^2=0.7166$. $C_6=0$ and $\rho=0.886$ move the binding row by $<10^{-4}$: the moment constants are not the mid-$t$ bottleneck; $\rho$ matters only
+at small $t$. (\code{RESULTS.md}, NOTE \S9.)
+\end{negative}
+
+\begin{negative}[degree-5 witness with any HJM-type reduction]\label{neg:deg5}
+With $\eta=-\varepsilon_2>0$: $\Re\langle f,Tg\rangle=t^2-\varepsilon_1\|Qh\|^2+\eta\|Rh\|^2-\|Pk\|^2+\varepsilon_1\|Qk\|^2-\eta\|Rk\|^2$, $R=\Pc32$. One must keep
+$-\eta\|Rk\|^2$ (it lowers the true norm from $0.7235$ to $0.7124$) and bound $\eta\|Rh\|^2$ (twelve $h$-coefficients of bidegrees $(a,b)$, $a\le3,b\le2$, each
+carrying $+\eta$ at some $W$-shell). First prototype at $(0.8494,-0.2830)$: optimistic envelope $\approx0.7149$, worse than the cubic cap. Engineered pass
+(\pathref{pipeline/deg5/METHOD5.md}, \code{REPORT5.md}; \pathref{pipeline/d5/RESULTS.md}, \code{DERIVATION5.md}): common residual $q=\delta Q_wc_1$ credited
+through the weakened gate $N=E-\mathrm{diag}(\varepsilon_1-\delta,-\eta,-\eta)\succeq0$, $h$-side $(3,2)$ shells gated with fraction $\theta$, exact LP moment cover.
+Loss table (Gaussian-ideal residual, no moment or price loss):
+\begin{center}\scriptsize\setlength\tabcolsep{3pt}
+\begin{tabular}{lcccccc}\toprule
+ & cubic $(0.7564,0)$ & $\eta=0.02$ & $0.05$ & $0.10$ & $0.20$ & main $(0.8494,0.283)$\\\midrule
+model norm & 0.713136 & & & $\approx0.71297$ & $\approx0.7126$--$0.7128$ & 0.712427\\
+gated rows, $h$-shells idealised ($\theta=0$) & 0.713291 & 0.713249 & 0.713202 & 0.713127 & $\ge0.714146$ & $\ge0.7179$\\
+sound rows (all twelve $h$-gates $=\eta$) & 0.713291 & 0.713370 & 0.713498 & 0.714580 & $\ge0.715957$ & $\ge0.7322$\\\bottomrule
+\end{tabular}
+\end{center}
+Sound scheme: worse than the cubic for every $\eta>0$ (the $h$-gates cost $\approx6\cdot10^{-3}$ per unit $\eta$ at the peak against a norm gain of
+$1.7\cdot10^{-3}$). With a perfect $h$-side lemma the best point is $\eta\approx0.1$ at $0.713127$, no better than the cubic model norm; for $\eta\ge0.2$ the
+mid-$t$ rows ($0.72$--$0.80$) exceed the cubic ideal because the $k$-gates lose $3$--$4\cdot10^{-3}$ there while the true profile is flat. Per-shell cost of
+the $h$-gates sits in the even-charge coefficients $c_z$ ($7.1\cdot10^{-3}$), $c_H$ ($2.7\cdot10^{-3}$), $c_{\bar z}$ ($7.5\cdot10^{-4}$): pure non-Gaussianity of
+remote shells of order 4, 2, 4. Degree-5 rows carry a residual coupling $b\approx0.2$ (vs $\approx0$ at degree 3), which costs a further
+$2.5\cdot10^{-3}$--$10^{-2}$ with the existing moment lemma. Other points $(0.82,-0.20)$, $(0.85,-0.25)$, $(0.88,-0.30)$: no better. Centred gates fail
+($+2.7\cdot10^{-2}$). \textbf{Verdict: degree 5 with gates is dead; the obstacle is the $k$-side gate-plus-one-residual structure at $\varepsilon_1\approx0.85$.}
+GPT's quintic leakage theorem $\|P_{3,2}h\|^2-|x_3|^2\le(123\pi/512)\sigma^4(m-2)$ is exactly the $h$-side statement needed for one special $h$ and keeps the
+residual layer one-dimensional.
+\end{negative}
+
+\begin{negative}[the residual (moment-cover) layer]\label{neg:residual}
+\pathref{pipeline/residual/RESULTS.md}, \code{RESULTS2.md}, \code{momlp.py}. (i) The degree-6 polynomial majorant is already optimal: the cover is the LP
+dual of the moment problem over laws of $s=|q|$ with $\E s^2=\sigma^2$, $\E s^4=(2+x^2)\sigma^4$, $\E s^6\le M_6(x)\sigma^6$, $\E s\le\rho\sigma$; no majorant loss.
+(ii) The LP maximum is interior ($x\approx0.5$--$1$, $\sigma\approx0.15$--$0.3$). (iii) The extremal laws are fake: two or three atoms, a bulk of nearly
+constant modulus ($\approx0.95\sigma$, probability $\approx0.99$) plus a remote atom ($\approx4\sigma$, probability $\approx0.5\%$) supplying the kurtosis;
+$\Psi(\sqrt u)$ is concave in $u=s^2$. (iv) Loss over the Gaussian ideal on HJM's rows at $0.74$: H0.78 $0.712692/0.712984/0.713294$
+(Gaussian / exact LP / recorded); H0.84 $0.713414/0.713660/0.713769$; H0.865 $0.713696/0.713707/0.713742$. (v) Best case of the whole scheme (true
+potential, no price loss, optimal gates, pair mixtures, rows re-optimised for the exact moment objective): $0.71382$ ($0.74$), $0.71380$ ($0.75$), $0.71390$
+($0.756$); the certificate of the time ($0.713755$) sat at the scheme's optimum; the loss grows with $\varepsilon$ and cancels the true-norm gain.
+(vi) The loss is informational: for actual chaos $q=aX+\sqrt{1-a^2}G$ ($X$ a Wick monomial, $z_1^2\bar z_2/\sqrt2$ or $z_1z_2\bar z_3$) the value is
+below the Gaussian ideal for every $a$. (vii) Constraint scan: $\Var(\log u)\ge v$, $\E\log u\le$ Gaussian, shell anti-concentration with exponent
+$\le1/2$, $\E u^{3/2}/\E u^{1/2}$, $\E|u^2-1|\ge0.5$--$0.7$, Hölder chains: each moves the $0.756$ envelope by $<2\cdot10^{-4}$. Only a bounded density of
+$u$ at the Gaussian constant $0.86$ on $[0.3,2.5]$ reaches $0.71360$ ($K\approx1.4013$), and that bound is \emph{false} for pure chaos (fold points of the
+modulus: density $3.6$--$5.2$ for the Wick monomial); the kurtosis-dependent version $0.86+0.03(m-2)$ gains far less. (viii) Structural reason: the
+reduction linearises the coupling $2s\Re(a\cdot\xi)$ and bounds $\E\Psi(|q|)$ through the law of $|q|$ alone, whereas the true extremiser's residual is
+jointly Gaussian with $\xi$; the lost information is two-dimensional. Superseded on 10 October by the Stein cuts (\autoref{ch:stein}), which recover
+75--85\% of this loss unconditionally.
+\end{negative}
+
+\begin{negative}[degree-5 witness with a paired-support architecture]\label{neg:deg5-support}
+The paired support $\frac12(\E|A+B|+\E|A-B|)$ is the exact pointwise support function of the complex response set
+$\{(h,k)=(e^{i\alpha}\cos\theta,\,ie^{i\alpha}\sin\theta)\}$, since $(|A+B|+|A-B|)^2=4\max_\theta|A\cos\theta-iB\sin\theta|^2$ \st{P}. Taking as tests the
+response's own components ($Rh/\|Rh\|$, $Qk/\|Qk\|$) together with negative-coefficient tests for every retained penalty (visible and remote parts of $Qh$,
+$Rk$, $\langle Z,k\rangle$), with Gaussian-ansatz support values and the adversary's penalty minimised exactly by a convex programme, the cubic game
+$\epsilon=0.7564$ gives $0.713182$ (model norm $0.713136$), but the degree-5 game $(\epsilon_1,\eta)=(0.8494,0.283)$ gives $\ge0.7327$ against its model norm
+$0.712427$ \st{F} (\texttt{attack-20261022/step15b\_support\_full.py}). The loss $\ge2\cdot10^{-2}$ equals that of the gated rows above. \textbf{Mechanism:} in
+the model the $k$-side cubic gain $\epsilon_1\|Qk\|^2$ is paid by $\eta\|Rk\|^2$, because a bounded response with a large cubic part must carry a degree-5
+part (through the visible fibre, $Qk$ sees the $Z$-average of the remote coefficient profile and $Rk$ its $(|Z|^2-1)$ profile, which boundedness forces to vary).
+Certificates that treat the chaos grades as independent lose this coupling; a degree-$\ge5$ certificate needs a multi-grade fibre.
+The coupling is \emph{driver sharing} \st{F}: in the dimension-limit fibre model (\texttt{attack-20261022/step16\_deg5\_fibre\_model.py}) the degree-5 game has
+norm $0.7124294$ (corrected: the original plain Gauss--Hermite grid was $3.5\cdot10^{-5}$ high; polar grid of \texttt{pd\_engine.py}, which also gives the visible-only value $0.7124283$, so at this game the shared sectors gain only $\approx10^{-6}$) when the degree-5 mixed sectors $(|Z|^2-1)W_3$, $Z^2\bar W_3/\sqrt2$ use the cubic's own remote driver $W_3$, and $0.72460$ (recomputed; old grid $0.724753$) when they use
+independent drivers (the optimum then drops every degree-5 coefficient). The independent value is not attained by any real pair: its optimiser, a sign-flip pair $\ph(A_0\pm0.467W_3)$, carries these degree-5 parts on its own driver and then scores $0.71089$ \st{F}. A degree-$\ge5$ certificate must therefore let one remote residual feed the fibre at
+degree $3$ and at degree $5$, as the A- and B-sectors of the cubic rows already do.
+\end{negative}
+
+\begin{negative}[stop-loss conjecture CX]
+Natural statement: $M(a):=\E(|q|^2/\sigma^2-a)_+-e^{-a}\ge0$ for all $a\ge0$. FALSE: $q_\theta=z_0[\cos\theta(|z_0|^2-2)/\sqrt2+i\sin\theta(|z_1|^2-1)]$, $\theta\approx0.47$,
+has density of $|q|^2$ at $0$ equal to $0.85<1$, $M(0.15)=-5.9\cdot10^{-4}$, $M<0$ only for $a<0.22$ (needs the relative phase $i$ between the diagonal Wick and
+off-diagonal parts). The window form W (all kurtosis, $a\ge1/2$) had no violation in adversarial search ($d=2,3$; min relative margin $+4.65\cdot10^{-2}$ for
+$a\ge0.5$) and would give $\approx1.4016$--$1.4018$; proved cases (GPT): Wick monomial, Gaussian scale mixtures, closure under Gaussian smoothing;
+corrected Stein identity $M=\E[(w-1)f_a(u)]+\Re\E[C\bar q^2k_a(u)]$. Superseded by the Stein cuts, which match or beat it unconditionally.
+(\pathref{pipeline/coupled/COUPLED.md}, \pathref{conjecture\_handoff.tex}.) Also from COUPLED: \emph{for fixed gates HJM's reduction is exact}
+(value $=\sup$ over cubic chaos $q$ of $\E\Psi(|q|)-\sigma^2/\delta$); the only loss is ``$q$ is a chaos $\to$ moment constraints''.
+\end{negative}
+
+\begin{negative}[no proven shell/spread theorem for cubic chaos]
+Uniform over all $(2,1)$-chaos and all dimensions, the only explicit facts are $\E|q|^4\ge2\sigma^4$ and the complex fourth-moment bound
+$d_W(q,CN(0,\sigma^2))\le\sqrt2\sqrt{\E|q|^4-2\sigma^4}$ \cite{CCL23} (useless here: error $\approx10^{-1}$ where $10^{-4}$ is needed). Anti-concentration
+via Carbery--Wright / Nazarov--Sodin--Volberg on the degree-6 polynomial $|q|^2-r^2$ gives exponent $1/6$; bounded-density results are not
+dimension-uniform; sharper exponents exist only for quadratics; line-restriction methods provably cannot give exponent $\ge1/3$ on shells
+($q(x+ty)=r+ib(t-t_0)^3$ is a legitimate cubic). See the bibliography of \pathref{lower\_bound\_report.tex} \S7.
+\end{negative}
+
+\begin{negative}[$C_6$ and $\rho$ are not the lever]
+By Wick's theorem and charge balance $\E|q|^6=6+9(m-2)+\kappa_{3,3}(q)$ for unit $q\in\Hc21$; the Wick monomial has $m=44$, $\kappa_{3,3}=10968$, ratio
+$\kappa_{3,3}/\kappa_{2,2}^{3/2}=40.30$ (176 admissible Feynman matchings for $\E|q|^4$, 90,816 for $\E|q|^6$, 87,744 connected), so $C_6=40.45313$ is within
+$0.4\%$ of optimal. $\rho$ matters only at small $t$ (the true $\sup\E|q|$ over unit cubic chaos is probably $\sqrt\pi/2=0.886$, unproved; GPT's universal
+bound is $0.9718$, unused). An eighth-moment bound and $m\le44$ are not binding.
+\end{negative}
+
+\begin{negative}[Janson's extremal question]
+The statement ``the Gaussian maximises $\E|q|$ over the unit $(2,1)$-chaos'', which HJM assert can be shown in the real case, is not in the reachable
+literature: Janson Remark~5.11 (best constant in $\|X\|_q\le c(p,q)^n\|X\|_p$ known only for $p=2<q$), Cor.~7.36 (for even moments the extremal element of
+the $n$-th chaos is the single Hermite polynomial $:\xi^n:$), Thm~5.19 ($\|:\xi^n:\|_1/\|:\xi^n:\|_2\asymp n^{-1/4}$: at $p=1$ the junta is the worst case and
+the Gaussian the presumed best, no theorem). Larsson-Cohn (Ark.\ Mat.\ 40, 2002) treats Janson's question for $L^p$ norms of Hermite polynomials; we could
+not read the paper (fetch returned empty). This matters only mildly: the $q$-only part of Conjecture~K is provable without it (\S\ref{sec:Ka}).
+\end{negative}
+
+\subsection{Where the gated certificate loses (the loss map)}\label{sec:lossmap}
+Starting from the model norm $N(0.745)=0.713288$ ($K=1.401958$):
+\begin{center}\small
+\begin{tabular}{p{5.2cm}p{2.6cm}p{2.9cm}p{4.6cm}}\toprule
+layer & value after layer & loss (cap units) & source\\\midrule
+model norm & 0.713288 & & KSIDE \S3\\
+gated rows, true potential, Gaussian residual (best re-optimised) & $\approx0.71340$--$0.71342$ & \textbf{$\approx1.2$--$1.3\cdot10^{-4}$ (gates)} & phase/RESULTS \S3; at $\varepsilon=0.7564$ gated ideal $0.713291$ vs $0.713139$: $1.5\cdot10^{-4}$\\
+residual law with Stein cuts (vs Gaussian) & included above & $\approx1$--$5\cdot10^{-5}$ & stein logs: Gaussian/moment/Stein $0.713317/0.714002/0.713470$ at $(0.756,0.84)$\\
+caps (price+anchors+hull), discretisation, chords & 0.713467 & $\approx5$--$6\cdot10^{-5}$ & R1: price layer tight for $s\le0.15$ and $s\ge0.8$, loses $2\cdot10^{-4}$--$10^{-2}$ on $0.2\le s\le0.6$ where $\approx6\%$ of the extremal mass sits\\
+choice $\varepsilon=0.745$ instead of $0.7564$ & & $1.5\cdot10^{-4}$ in $N$ & the gated scheme is worse at $0.756$\\\bottomrule
+\end{tabular}
+\end{center}
+Total $B-N(0.745)=1.79\cdot10^{-4}$, i.e.\ $3.5\cdot10^{-4}$ in $K$; against the degree-3 ceiling $3.32\cdot10^{-4}$ in $B$, $6.5\cdot10^{-4}$ in $K$
+(cert-0745b of 15 October; for the current $B=0.7134326$ the totals are $1.45\cdot10^{-4}$ in $B$, $2.8\cdot10^{-4}$ in $K$, and $3.0\cdot10^{-4}$/$5.8\cdot10^{-4}$
+against the ceiling; \autoref{ch:certified}, dated sections).
+\textbf{Three independent computations agree that the loss is the gates} (KSIDE \S4; D5 RESULTS \S5; residual RESULTS \S2): they charge every $w$-chaos shell
+of each fibre coefficient while the truth charges one shell. Concretely $E_{22},E_{33}\ge\varepsilon$ pays for the nonlinear parts $\Delta_A(\sigma W)$,
+$\Delta_B(\sigma W)$ with $\E|\Delta_A(\sigma W)|^2=1.5\cdot10^{-4},9.4\cdot10^{-4},6.4\cdot10^{-3}$ at $\sigma=0.14,0.2,0.3$. Rearranging gates (\code{gatex.py}:
+$\delta=\varepsilon$, $E=\mathrm{diag}(0,\varepsilon,\varepsilon)$, no $R$: Gaussian ideal $0.713519$) or centring them does not help: \emph{one has to stop charging the wrong
+shells}, which is what the gate-free row of \autoref{ch:K} does.

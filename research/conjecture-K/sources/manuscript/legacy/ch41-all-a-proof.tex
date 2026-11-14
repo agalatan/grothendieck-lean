@@ -1,0 +1,215 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch41-all-a-proof.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Every complex A and B amplitude on the application Wick box}
+\label{sec:all-amplitude-application-wick}
+\paragraph{Status and scope.} [P]+[C]; all 140 point certificates and the complete 25-patch interpolation pass. This extends the finite A-box of \autoref{ch:self-interacting-ab} to \emph{every} complex A coefficient, while continuing to allow every complex B coefficient. It preserves the nonlinear shared driver. It does not cover all Wick coefficients and Gaussian buffers, additional interacting sectors, or a complete row envelope.
+
+Put $\varepsilon=1891/2500$, $a=699/1250$, $b=179/1250$, $p=1/\varepsilon$, and $\ell(T)=\sqrt T(a+bT)$. Let $T$ be exponential of mean one, and let $X,U$ be independent standard proper complex Gaussians, independent of $T$. Set
+\[
+ H(X)=\frac{X(|X|^2-2)}{\sqrt2},\qquad
+ R_T=cH(X)+\alpha(T-1)X+\frac{\beta T}{\sqrt2}\overline X+gU.
+\]
+The two norm signs have equal expectations, and
+\[
+ \Lambda=2\mathbb E|\ell(T)+R_T|
+       -p(c^2+g^2+|\alpha|^2+|\beta|^2).
+\]
+The benchmark is $S=\sup_v\{2\mathbb E|L+\sqrt vU|-pv\}$.
+
+\begin{theorem}[All amplitudes on the application Wick box]
+For
+\[
+ \frac3{32}\le c\le\frac7{64},\qquad
+ \frac3{16}\le g\le\frac7{32},\qquad
+ \alpha,\beta\in\mathbb C,
+\]
+one has
+\[
+ \boxed{\quad \Lambda\le S-\frac1{4000}
+       -\frac{|\alpha|^2+|\beta|^2}{200}.\quad}
+\]
+\end{theorem}
+The coefficient phases and amplitudes are unrestricted. An arbitrary complex Wick coefficient reduces to $c\ge0$ by rotating its driver. The normalized fourth moment of the remote part $cH(X)+gU$ lies in
+\[
+ \left[\frac{5065}{1682},\frac{175340}{37249}\right]
+ \subset[3,5].
+\]
+
+\subsubsection{The retained ring oracle}
+Write $X=\sqrt R E$, where $R$ is exponential and $E$ uniform on the circle. With
+\[
+ x=\ell(T),\quad
+ m=\sqrt R\left(\frac{c(R-2)}{\sqrt2}+\alpha(T-1)\right),
+ \quad z=x+mE+gU,
+\]
+define
+\begin{align*}
+ J&=2\mathbb E|z|-p(c^2+g^2+|\alpha|^2),\\
+ C&=\mathbb E\frac{T\sqrt R}{\sqrt2}\overline E\frac{\overline z}{|z|},
+ &K&=\mathbb E\frac{T^2R}{2|z|},\\
+ I_0&=\frac1{\sqrt{3a^2+24ab+60b^2+g^2}
+       +\sqrt{4c^2+4\sqrt2c\Re\alpha+14|\alpha|^2}},
+ &k&=p-K+I_0/5.
+\end{align*}
+The opposite-frequency ring remainder proved in \autoref{ch:self-interacting-ab} gives, globally in $\beta$,
+\[
+ \Lambda\le J+2\Re(\beta C)-k|\beta|^2.
+\]
+At every integrated vertex the checker proves $k>1/200$. Hence, with $\gamma=1/200$,
+\[
+ \sup_\beta\{\Lambda+\gamma(|\alpha|^2+|\beta|^2)\}
+ \le J+\frac{|C|^2}{k-\gamma}+\gamma|\alpha|^2.
+\]
+The norm oracle, global Rice envelope, retained-square lower bound, and infinite tails are inherited unchanged from \autoref{ch:self-interacting-ab}. The signed content and inverse radius are evaluated more efficiently by the following second-order rule.
+
+\subsubsection{Gaussian-cell barycenters}
+\paragraph{Lemma [P].}
+Let $\mu$ be a probability measure supported on a real interval, with mean $m$ and variance $V$. For a twice continuously differentiable vector-valued function $f$,
+\[
+ \left\|\int f\,d\mu-f(m)\right\|
+ \le\frac V2\sup\|f''\|.
+\]
+Taylor's integral remainder proves the statement: the linear term integrates to zero. Applying it successively to two independent cell measures gives
+\[
+ \|\mathbb EF(t,r)-F(m_t,m_r)\|
+ \le\tfrac12\{V_t\sup\|F_{tt}\|+V_r\sup\|F_{rr}\|\}.
+\]
+The derivative bounds may be taken over the full product cell. Enclosing $m_t,m_r$ by intervals does not invalidate the estimate.
+
+For the radial Gaussian measure $2r e^{-r^2}\,dr$ on $[l,l+d]$, let $w_0,\ldots,w_3$ be the certified integrals of the cubic Bernstein basis. Then its unnormalized mass and first two moments are
+\begin{align*}
+ M_0&=\sum_jw_j,\qquad
+ M_1=\sum_j(l+jd/3)w_j,\\
+ M_2&=l^2w_0+(l^2+2ld/3)w_1
+ +\bigl((l+d)^2-2(l+d)d/3\bigr)w_2+(l+d)^2w_3.
+\end{align*}
+Thus the cell mean and variance follow by directed rational division and subtraction. The generator checks that every mass is positive. The standalone algebra checker proves these Bernstein identities as identities in three formal variables, not by sampling.
+
+\subsubsection{The exact derivative bounds used by the oracle}
+Put $t=\sqrt T$, $r=\sqrt R$, and
+\[
+ B=\frac{t^2r}{\sqrt2},\qquad
+ z_0=t(a+bt^2)+\left[\frac{cr(r^2-2)}{\sqrt2}
+                       +\alpha(t^2-1)r\right]E.
+\]
+For $\psi_g(z)=\mathbb E|z+gU|$, the Fourier estimates from \autoref{ch:self-interacting-ab} are
+\[
+ \|D\psi_g\|\le1,\quad
+ \|D^2\psi_g\|\le\frac{\sqrt\pi}{2g}<\frac{1773}{2000g},\quad
+ \|D^3\psi_g\|\le\frac8{3\pi g^2}<\frac1{g^2}.
+\]
+Write the latter rational bounds as $H_2,H_3$. For the complex content integrand $F=B\overline E\,\overline{\nabla\psi_g(z_0)}$, the product and chain rules imply
+\[
+ \|F_{jj}\|\le |B_{jj}|+2|B_j|H_2|(z_0)_j|
+       +BH_3|(z_0)_j|^2+BH_2|(z_0)_{jj}|.
+\]
+The explicit terms are
+\begin{align*}
+ B_r&=t^2/\sqrt2,& B_{rr}&=0,&
+ B_t&=\sqrt2tr,& B_{tt}&=\sqrt2r,\\
+ |(z_0)_r|&=\left|c(3r^2-2)/\sqrt2+\alpha(t^2-1)\right|,
+ &|(z_0)_{rr}|&=3\sqrt2cr,\\
+ |(z_0)_t|&\le a+3bt^2+2|\alpha|tr,
+ &|(z_0)_{tt}|&\le6bt+2|\alpha|r.
+\end{align*}
+All terms are enclosed on the full cell. The Gaussian-cell variances multiply these nonnegative bounds before large factors are formed; this prevents overflow without changing the inequality.
+
+The same construction sharpens the inverse-radius integral. Let $\mathcal H_g(z)=\mathbb E|z+gU|^{-1}$. Its Fourier representation gives
+\[
+ \|\mathcal H_g\|_\infty\le\frac{\sqrt\pi}{g},\qquad
+ \|D\mathcal H_g\|_\infty\le\frac4{\pi g^2},\qquad
+ \|D^2\mathcal H_g\|_\infty\le\frac{\sqrt\pi}{g^3}.
+\]
+Indeed its Fourier integral has radial weight $e^{-g^2s^2/4}$; the angular integrals for orders zero, one and two are bounded by $2\pi,4,\pi$, respectively. Denote the rational upper replacements by
+\[
+ A_0=\frac{1773}{1000g},\quad A_1=\frac4{3g^2},\quad
+ A_2=\frac{1773}{1000g^3}.
+\]
+For $Q=B^2=t^4r^2/2$,
+\[
+ |(Q\mathcal H_g(z_0))_{jj}|
+ \le |Q_{jj}|A_0+2|Q_j|A_1|(z_0)_j|
+       +QA_2|(z_0)_j|^2+QA_1|(z_0)_{jj}|,
+\]
+where
+\[
+ Q_r=t^4r,\quad Q_{rr}=t^4,\quad
+ Q_t=2t^3r^2,\quad Q_{tt}=6t^2r^2.
+\]
+Here both cell masses are incorporated into each variance remainder before large curvature factors are multiplied. These are the full weighted errors and are accumulated separately.
+
+For $N=256$ angular midpoints the inverse-radius angular error is at most
+\[
+ \frac{\pi^2}{6N^2}\left(A_2P+A_1\sqrt P\right),\qquad
+ P=4c^2+4\sqrt2c\Re\alpha+14|\alpha|^2.
+\]
+This follows from $\mathbb E[Q|m|^2]=P$ and $\mathbb E Q=1$, with Cauchy--Schwarz in the probability measure $Q\,d\mathbb P$. The signed-content angular error and both unbounded radial tails remain exactly those of \autoref{ch:self-interacting-ab}. The checker takes the minimum of the old full-cell inverse-radius bound and this new barycenter bound.
+
+\subsubsection{Twenty-five patches cover every coefficient phase}
+Let $y=(c,\Re\alpha,\Im\alpha,g)$ and
+\[
+ F_\gamma(y)=\sup_\beta\{\Lambda+\gamma(|\alpha|^2+|\beta|^2)\}.
+\]
+The function $F_\gamma(y)+p\|y\|^2$ is convex: after the price cancellation it is a supremum of convex norm expectations minus $(p-\gamma)|\beta|^2$, plus the convex term $\gamma|\alpha|^2$. This is the function interpolated; no convexity of the scalar oracle is assumed.
+
+Conjugation reduces to $\Im\alpha\ge0$. Inside the square $|\Re\alpha|,|\Im\alpha|\le1/2$, use the central square of half-side $1/128$ and the six square annuli with successive radii
+\[
+ 1/128,\ 1/64,\ 1/32,\ 1/16,\ 1/8,\ 1/4,\ 1/2.
+\]
+Each upper-half annulus is covered by four patches between adjacent rays
+\[
+ (1,0),\ (1,1),\ (0,1),\ (-1,1),\ (-1,0).
+\]
+On each patch $\alpha$ is bilinear in the normalized radius and ray parameters. Including the affine $c,g$ coordinates gives a multiaffine map $y:[0,1]^4\to\mathbb R^4$. Certified vertex values $U_v\ge F_\gamma(y_v)$ give
+\[
+ F_\gamma(y(t))\le
+ P(t):=\sum_v\lambda_v(t)U_v
+       +p\left(\sum_v\lambda_v(t)\|y_v\|^2-\|y(t)\|^2\right).
+\]
+For each coordinate separately, $P$ has second derivative
+$-2p\|\partial_i y\|^2$. Therefore an $N^4$ grid, with $N=8$, has rigorous continuum error
+\[
+ \frac p{4N^2}\sum_i\sup\|\partial_i y\|^2.
+\]
+The squared norm of each bilinear derivative is bounded by the larger of its two endpoint values. Every one of the $9^4$ values on each of the 25 patches, and its continuum correction, is compared with $S_{\rm low}-1/4000$ by integer arithmetic. The smallest certified surplus below $S_{\rm low}$ is
+\[
+ \frac{19606304479639071}{68130455162860863488}>\frac1{4000}.
+\]
+
+There are 140 vertices: 100 inner vertices use $120\times88$ radial cells, and 40 outer vertices use $240\times176$ cells. All use 256 angular midpoints. The unbounded complement is handled by the following tail.
+
+\subsubsection{The complete coefficient tail and replay}
+Let $V=c^2+g^2+|\alpha|^2+|\beta|^2$ and $M=1181331/1562500$. Orthogonality and Cauchy--Schwarz give
+\[
+ \Lambda+\gamma(|\alpha|^2+|\beta|^2)
+ \le2\sqrt{M+V}-(p-\gamma)V.
+\]
+For $V\ge1$ the right side is decreasing and strictly below $4/3$. The checker verifies these assertions by squaring positive quantities and rational arithmetic. This is a valid auxiliary tail, but its interpolation on the annulus from half-side $1/2$ to $1$ is too loose. That annulus is not accepted numerically.
+
+Instead, put $u=c^2+g^2$, $d=|\alpha|^2$, and $j=|\beta|^2$. Orthogonality gives exactly
+\[
+ \mathbb E[R_T\mid T]=0,\qquad
+ \mathbb E[|R_T|^2\mid T]=u+d(T-1)^2+jT^2/2.
+\]
+Here $H(X)$ is orthogonal to $X$, $\mathbb EX^2=0$, and $U$ is independent. Thus the affine variance-profile theorem of \autoref{ch:global-local-coupled-K} applies also with this independent Gaussian buffer: it uses this conditional second moment, not a pure-third-chaos assumption. It gives
+\[
+ \Lambda+\gamma(d+j)\le
+ \frac{347}{250}+\frac{111}{200}u-\frac{39}{200}(d+j).
+\]
+If $|\alpha|\ge1/2$, then $d\ge1/4$ and $u\le245/4096$, so
+\[
+ \Lambda+\gamma(d+j)\le\frac{5621543}{4096000}
+ < S_{\rm low}-\frac1{4000}.
+\]
+This proves the entire complement of the half-side-$1/2$ square. The standalone replay regenerates the affine tangent certificate with exact rational integrals.
+
+Each C++ invocation recomputes the Gaussian benchmark using its 4096 visible-radius Bernstein cells. Its lower bound is
+\[
+ \frac{96683367401312}{2^{46}}
+ \ge S_{\rm low}:=\frac{96683367193980}{2^{46}},
+ \qquad S\ge S_{\rm low}>\frac43+\frac1{4000}.
+\]
+The interpolation checker requires the fresh benchmark receipts, exactly 100 and 40 point receipts, and the complete expected set of vertices.
+
+The portable \texttt{a\_all\_amplitudes/verify\_all.py} regenerates every consumed table, compiles the C++17 fixed-point checker, replays all 140 directed vertices, and checks all 25 continuum patches. It uses only Python's standard library and a C++17 compiler with \texttt{\_\_int128}; no solver output or floating-point threshold decides acceptance.
+
+The theorem also permits square-integrable random coefficients, jointly dependent among themselves but independent of $(T,X,U)$, satisfying the $c,g$ bounds almost surely: condition and average. It does not permit conditioning away the shared driver or making the coefficients depend on its radius or phase. No new Grothendieck endpoint follows without the other cubic classes, interactions, and full row cover.

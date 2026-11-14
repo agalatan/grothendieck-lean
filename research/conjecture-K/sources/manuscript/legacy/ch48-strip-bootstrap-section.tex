@@ -1,0 +1,98 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch48-strip-bootstrap-section.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Wider global strips by retaining the directional A penalty}
+\label{sec:milestone-global-strips}
+\paragraph{Status \textup{[P,C]}.}
+At the peak parameters, let \(Z,X,U\) be independent standard proper
+complex Gaussians, and put
+\[
+G=cH(X)+gU+\alpha(|Z|^2-1)X+\beta Z^2\overline X/\sqrt2,
+\qquad H(X)=X(|X|^2-2)/\sqrt2 .
+\]
+The new conclusions, valid for every \(c,g\ge0\) and every
+\(\beta\in\mathbb C\), are
+\[
+\boxed{|\alpha|\le1/100\ \Longrightarrow\ \Lambda(G)\le S,}
+\qquad
+\boxed{|\alpha|\le1/84\ \Longrightarrow\ \Lambda(G)<S+1/12500.}
+\]
+They enlarge the incoming exact strip \(1/128\) and its slack strip
+\(1/100\), respectively. No Grothendieck endpoint is asserted.
+
+Let \(q=cH(X)+gU\), \(r=|\alpha|\), and let \(d_A,d_B\ge0\) denote
+the independent-baseline contents. The accepted directional A cost
+and actual-content transport from \autoref{ch:radial-directional-bootstrap} give
+\[
+\Lambda(q+\alpha(T-1)X)
+\le\Lambda(q)+2d_A r-\frac{19}{100}r^2+10^{-11},
+\qquad |d_B^A|\le d_B+\frac45r.
+\]
+A fresh scalar replay extends the shifted B cost \(7/20\) to
+\(r\le1/80\), with error below \(10^{-12}\).
+Completing the complex B square therefore gives
+\begin{equation}\label{eq:milestone-strip-envelope}
+\Lambda(G)-S\le\Lambda(q)-S+2d_A r-\frac{19}{100}r^2+
+\frac{20}{7}\left(d_B+\frac45r\right)^2+\frac{11}{10^{12}}.
+\end{equation}
+This uses the actual A-coupled content before transport. Dependence
+of \(q\) on \(X\) is unrestricted. Since
+\(-19/100+(20/7)(4/5)^2>0\), the collected right side is increasing
+in \(r\ge0\).
+
+\paragraph{The new shifted B-cost check.}
+More generally let \(q,r_A,R\) be remote and independent of \(Z\),
+with \(q\) square integrable and \(r_A,\overline R\) Gaussian linear
+forms. They may share all their drivers. For \(\|r_A\|_2\le1/80\),
+\[
+\Lambda(q+(T-1)r_A+Z^2R/\sqrt2)
+\le\Lambda(q+(T-1)r_A)+2\Re\mathcal B_A
+-\frac7{20}\|R\|_2^2+10^{-12}.
+\]
+The error vanishes with a fresh buffer \(g\ge1/32768\).
+For the accepted radial-shift proof, write \(k_0=\sqrt{3ab}\),
+\[
+K_j=\int_0^{20}\frac{t^je^{-t}}{\sqrt{1-\sqrt t/(80k_0)}}\,dt,
+\quad C=\frac{953}{1000}\max(K_0,K_1),\quad
+\delta=p-C-\frac7{20}.
+\]
+Outward integer cells of width \(1/1024\), with exact exponential
+masses, give \(C<0.969639190321\), \(\delta>0\), and
+\[
+\frac{2[(\sqrt{20}+1/(2\sqrt{20}))^2+1]e^{-40}}{\delta}
+<10^{-12},\qquad
+C+21\cdot32768e^{-20}<p-\frac7{20}.
+\]
+Only the accepted scalar layer bound \(C_B<953/1000\) is inherited.
+
+\paragraph{Continuum certificate and completion.}
+Insert the incoming saturating positive-content bounds and its
+nonperturbative Bernstein deficit into
+\eqref{eq:milestone-strip-envelope}.
+The new replay recomputes all scalar moments, positive Gaussian/Radau
+quadrature bounds, transform tables and \(S-F(0)\).
+It assumes no numerical value of \(S\) and reads no stored coefficients.
+The \(1200\) cells in \(c\in[0,3/10]\) and \(512\) cells in
+\(v=g^2\in[0,(41/250)^2]\) give \(614400\) parameter rectangles.
+Outward-integer comparisons prove
+\[
+\begin{array}{c|c|c}
+r\text{ bound}&\text{computed maximum, display only}&
+\text{certified conclusion}\\\hline
+1/100&-7.222147640457037\cdot10^{-7}&\Lambda<S-1/2000000\\
+1/84& 7.926772948363997\cdot10^{-5}&\Lambda<S+1/12500.
+\end{array}
+\]
+The usual monotonic endpoint choices enclose each parameter cell,
+and monotonicity in \(r\) covers the complete complex disks.
+\autoref{ch:buffer-bootstrap} supplies exact K when \(g\ge41/250\).
+\autoref{ch:zero-buffer-bootstrap} supplies a strict deficit when \(c\ge34/125\), hence when
+\(c\ge3/10\). These two accepted continuation theorems complete the
+global strips; they are not reproved in this package.
+
+\paragraph{Replay and limits.}
+Run \texttt{node verify\_strips.mjs}; it also runs
+\texttt{verify\_shifted\_cost.mjs}. The recorded default replay is
+complete. A \texttt{--fine} mode is supplied but no additional fine
+replay is claimed. The other inputs are the accepted \autoref{ch:radial-directional-bootstrap} A
+cost and transport and the incoming positive-kernel analytic
+derivations. Larger A amplitudes and general shared cubic drivers
+remain unresolved outside earlier certified regions.

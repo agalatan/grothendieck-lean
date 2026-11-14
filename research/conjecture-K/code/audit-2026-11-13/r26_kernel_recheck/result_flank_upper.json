@@ -1,0 +1,22 @@
+{
+  "agent": "codex-a713",
+  "status": "PASS",
+  "rows": {
+    "flank": {
+      "total": 147,
+      "newly_verified": 147,
+      "previously_verified": 0
+    },
+    "upper": {
+      "total": 147,
+      "newly_verified": 147,
+      "previously_verified": 0
+    }
+  },
+  "seconds": 39.50764962499852,
+  "failure": null,
+  "flint_version": "0.9.0",
+  "check": "Every recomputed Arb ball must be a subset of the original stored rational interval",
+  "processes": 1,
+  "precision_bits": 160
+}

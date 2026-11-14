@@ -1,0 +1,231 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/89f-spherical-core-contact.tex (file dated 2026-10-25). Only this line was added.
+% Whole overlapping cubic cores, 22 October 2026. Portable proof and directed replay:
+% handoff/research-third-decimal/spherical-response-contact-20261022/
+\subsection{Whole cubic cores: a two-profile spherical reduction}
+\label{sec:spherical-core-contact}
+
+\paragraph{Scope and status.}
+The \st{P,C} result below treats the entire space
+$\mathcal H_{2,1}(\mathcal A)$ on a remote first-chaos subspace
+$\mathcal A$. Holomorphic and antiholomorphic inputs may overlap
+arbitrarily. This removes the orthogonal-input restriction of
+Theorem~\ref{thm:sharp-decoupled-support} for bounded-dimensional
+cores. The remainder is unrestricted and may share all core and
+visible coordinates. No Gaussian buffer, raw-K theorem or higher-moment
+bound is used. This is a regional original-response theorem, not a
+complete row cover or a new global endpoint.
+
+\begin{lemma}[\st{P}: two radial profiles for every Wick cubic]
+\label{lem:spherical-cubic-profiles}
+For a unit $J\in\mathcal H_{2,1}(\mathbb C^n)$, put $R=\|X\|^2$.
+There is $\tau\in[0,1]$ such that
+\begin{equation}\label{eq:spherical-cubic-profiles}
+ \E[|J|^2\mid R]=(1-\tau)A_n(R)+\tau B_n(R),\qquad
+ A_n(r)=\frac{r^3}{n(n+1)(n+2)},\quad
+ B_n(r)=\frac{r(r-n-1)^2}{n(n+1)}.
+\end{equation}
+Both profiles have mean one under $R\sim\operatorname{Gamma}(n,1)$.
+If $J=P-\Delta_{\mathbb C}P$, with $P$ homogeneous of bidegree $(2,1)$,
+then $\tau=\|\Delta_{\mathbb C}P\|_2^2/(n+1)$.
+\end{lemma}
+\begin{proof}
+Set $\ell=\Delta_{\mathbb C}P/(n+1)$ and $H=P-R\ell$.
+Since $\Delta_{\mathbb C}(R\ell)=(n+1)\ell$, $H$ is harmonic and
+\[
+ J=H+(R-n-1)\ell.
+\]
+The harmonic cubic $H$ and linear $\ell$ are orthogonal on the
+unit sphere. Indeed their Gaussian inner product vanishes by Wick
+orthogonality; polar decomposition then implies sphere orthogonality.
+This remains true with any radial weight. The two displayed summands
+are therefore orthogonal. Their conditional squared norms are
+proportional to $R^3$ and $R(R-n-1)^2$. The exact gamma moments are
+$n(n+1)(n+2)$ and $n(n+1)$, respectively, while
+$\|(R-n-1)\ell\|^2=(n+1)\|\ell\|^2$.
+Normalization proves the formula and $0\le\tau\le1$.
+For $n=1$ the harmonic component is zero and $\tau=1$.
+\end{proof}
+
+\paragraph{Support reduction \st{P}.}
+Let $L=Z(a+b|Z|^2)$, $a>0$, $b,d\ge0$, with $Z$ independent of
+$\mathcal A$. The visible-mixture lemma and the Rice derivative
+formula~\eqref{eq:unit-rice-derivative} imply that
+\[
+ \Psi(v)=\E|L+\sqrt v|=\E\{\sqrt M\,\rho(v/M)\}
+\]
+is increasing and concave, where $L\overset d=\sqrt M W$.
+This is the fixed-shift potential; it is not the different
+Gaussian-noise formula $(\sqrt\pi/2)\E\sqrt{M+v}$.
+Averaging the visible variable first and then applying conditional
+Jensen gives
+\begin{equation}\label{eq:spherical-core-support}
+ \E|L+\sqrt2dJ|
+ \le f_n(\tau):=E_R\Psi\bigl(2d^2[(1-\tau)A_n(R)+\tau B_n(R)]\bigr).
+\end{equation}
+The function $f_n$ is concave on $[0,1]$. Thus all tensor
+coefficients and phases have been replaced by one scalar and one
+gamma variable. No sharpness claim is made for this Jensen bound.
+
+\begin{theorem}[\st{P,C}: full-core response certificate]
+\label{thm:spherical-core-contact}
+Take $\epsilon=1891/2500$, $p=2500/1891$, $Ph=tZ$,
+$F=\epsilon Qk$, $V=\|F\|^2$ and the original objective
+$\mathcal N=t^2+pV-\|Pk\|^2-\epsilon\|Qh\|^2$.
+Throughout $21/25\le t\le851/1000$, every row below implies
+\[
+ \boxed{\mathcal N<2853/4000=0.71325<500/701.}
+\]
+\[
+\begin{array}{c|ccccc}
+ \dim\mathcal A\le n&2&3&4&6&8\\\hline
+ \|\Pi_{\mathcal H_{2,1}(\mathcal A)}F\|^2/V\ge\eta_n
+ &187/200&481/500&122/125&124/125&9999/10000
+\end{array}
+\]
+Here $\mathcal A\perp Z$; the ambient dimension is unrestricted.
+There is no independence assumption on the remainder of $F$.
+\end{theorem}
+\begin{proof}
+Choose a unit $J$ along the indicated projection and put
+$u=\sqrt2|\langle J,F\rangle|$, so $V\le u^2/(2\eta_n)$.
+A smaller core can be embedded in dimension $n$.
+The directed integrator and \eqref{eq:spherical-core-support} give
+these rational upper bounds:
+\[
+\begin{array}{c|cc}
+ n&\E|Z+\sqrt2(6/25)J|<H_0
+ &\E|Z(317/500+(183/1000)T)+\sqrt2(81/500)J|<H\\\hline
+ 2&0.932790&0.834230\\
+ 3&0.934040&0.835120\\
+ 4&0.934700&0.835610\\
+ 6&0.935370&0.836140\\
+ 8&0.935700&0.836410
+\end{array}
+\]
+All decimals denote exact rationals. For both rows the verifier
+encloses $f_n$ at $0,1/20,1/10$, with
+$U(1/20)<L(0)$ and $U(1/10)<L(1/20)$. Concavity proves
+\[
+ \sup_{[0,1]}f_n\le2U(1/20)-L(1/10):
+\]
+the first secant makes all right slopes at $1/20$ negative, and the
+second secant extrapolated to zero bounds the remaining interval.
+
+Set $b=183/1000$, $d=81/500$, $d_0=6/25$.
+The paired two-disk support inequality, reduced to one side only
+because $J$ is remote, gives
+\[
+ u\le U(t)=\frac{H_0-t}{pd_0},\qquad
+ \|Pk\|^2+\epsilon\|Qh\|^2
+ \ge\frac{[t+pdu-H]_+^2}{2pb^2}.
+\]
+The visible test $Z(T-1/10)$ gives the additional cost
+$[(19/10)t-I_0]_+^2/(2p)$, where the rational replay checks
+$I_0=124233393/10^8>\E\sqrt T|T-1/10|$.
+With $u_0=11/50$, use
+\[
+ C_{\rm low}(t)=t^2+\frac{pu_0^2}{2\eta_n}
+                  -\frac{((19/10)t-I_0)^2}{2p}
+ \quad(u\le u_0),
+\]
+and
+\[
+ C(t,u)=t^2+\frac{pu^2}{2\eta_n}
+                   -\frac{(t+pdu-H)^2}{2pb^2}
+ \quad(u\ge u_0).
+\]
+Exact sign and convexity checks reduce the maximum to
+$C_{\rm low}(t_1),C(t_1,u_0),C(t_0,U(t_0)),C(t_1,U(t_1))$,
+where $t_0=21/25,t_1=851/1000$. Their maxima are respectively
+less than $0.713222,0.713191,0.713232,0.713221,0.713232$.
+The negative projection cost is spent only once. When $V=0$ the
+visible-only bound suffices.
+\end{proof}
+
+\paragraph{Directed replay \st{C}.}
+The standard-library checker uses outward integer intervals at scale
+$10^{70}$. Gamma cells at $R=(j/N)^2$ have enclosed moments through
+degree three. Jensen gives an upper atom; a chord in the squared
+radius gives a lower rule. The visible angular norm is convex in
+each radius. Its positive binomial series supplies directed values;
+interpolation is an upper chord in radius and a lower chord in radius
+squared. These different directions are essential.
+The visible tail at $T=36$ is bounded by
+$e^{-36}[(73/12)a+(2702/12)b+dr]$.
+For $R>100$, $\sqrt{2V}\le V+1$ bounds the upper tail by
+$(a+3b/2)\Pr(R>100)+d\E[(V+1)1_{R>100}]$.
+No stored integral is trusted. The checker also audits all
+$144822$ entries of the conditional coefficient matrices for
+$n=1,\ldots,8$; Lemma~\ref{lem:spherical-cubic-profiles} supplies
+the proof in arbitrary dimension. Proof, logs and executable replay:
+\pathref{spherical-response-contact-20261022/}.
+
+\begin{corollary}[\st{P}: an invariant entrance condition]
+\label{cor:spherical-core-influence}
+Let $q$ be the remote part of $F$, $e=\|q\|^2$, and let
+$\lambda_1\ge\lambda_2\ge\cdots$ be the eigenvalues of its
+combined influence operator $I_q$, with $\operatorname{tr}I_q=3e$.
+For any row of Theorem~\ref{thm:spherical-core-contact}, the condition
+\[
+ \boxed{\sum_{j>n}\lambda_j\le e-\eta_n V}
+\]
+is sufficient for its cap.
+\end{corollary}
+\begin{proof}
+For a subspace $\mathcal A$ let $e_j$ be the orthogonal energy with
+exactly $j$ Wick legs outside $\mathcal A$, $j=0,1,2,3$.
+The Gaussian number operator gives
+\[
+ \operatorname{tr}(P_{\mathcal A^\perp}I_q)=e_1+2e_2+3e_3,
+ \qquad
+ \|\Pi_{\mathcal H_{2,1}(\mathcal A)}q\|^2
+ =e-\operatorname{tr}(P_{\mathcal A^\perp}I_q)+e_2+2e_3.
+\]
+Choose a leading $n$-dimensional eigenspace. This uses combined
+influence and allows complete holomorphic/antiholomorphic overlap.
+\end{proof}
+
+\paragraph{What is now covered, and what is not.}
+The unit three-cycle
+$(X_1^2\bar X_2+X_2^2\bar X_3+X_3^2\bar X_1)/\sqrt6$
+belongs to the whole three-coordinate core, so its full
+$3.8\%$-energy concentration neighbourhood is now covered.
+It is no longer an example outside all available concentration tests.
+The $n=8$ row is a moment-free alternative; it need not improve the
+union with the stronger inherited remote-moment bounds.
+
+There is still no concentrated-or-diffuse dichotomy. The exact family
+\[
+ Q_N=\frac{X_1(\sum_{j=1}^N|X_j|^2-N-1)}{\sqrt{N+1}}
+ =\sqrt{\frac2{N+1}}H(X_1)
+  +\frac{X_1\sum_{j=2}^N(|X_j|^2-1)}{\sqrt{N+1}}
+\]
+has norm one and combined influence spectrum
+\[
+ \frac{N+5}{N+1},\quad
+ \underbrace{\frac2{N+1},\ldots,\frac2{N+1}}_{N-1}.
+\]
+For every $k$-dimensional $\mathcal A$,
+\[
+ \|\Pi_{\mathcal H_{2,1}(\mathcal A)}Q_N\|^2
+ =\frac{k+1}{N+1}\|P_{\mathcal A}X_1\|^2.
+\]
+Indeed restriction of all three Wick legs gives
+$(R_{\mathcal A}-k-1)P_{\mathcal A}X_1/\sqrt{N+1}$.
+Thus the largest influence tends to one but every fixed-dimensional
+core share tends to zero. This is not a counterexample to K or a
+claimed high-payoff response. It states why another rank cutoff
+cannot complete the proof: a quantitative same-response comparison
+must glue a self-interacting core to a shared factor component.
+
+
+\paragraph{The rank limit does not prove the diffuse branch.}
+Exactly,
+$\E A_n^2=(n+3)(n+4)(n+5)/[n(n+1)(n+2)]\to1$.
+The trace-free spherical majorant therefore tends to
+$\Psi(2d^2)$, the constant-modulus support. The Gaussian support is
+$\E\Psi(2d^2E)$ with $E\sim\operatorname{Exp}(1)$, strictly smaller
+by concavity when $d>0$. Thus this finite-core theorem cannot be
+extrapolated to a sharp diffuse comparison by increasing its dimension.
+The angular information preserved in the orthogonal-input theorem,
+or another genuine joint-response constraint, remains necessary.

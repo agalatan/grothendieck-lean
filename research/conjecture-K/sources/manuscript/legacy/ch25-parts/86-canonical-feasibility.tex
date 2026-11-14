@@ -1,0 +1,292 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/86-canonical-feasibility.tex (file dated 2026-10-25). Only this line was added.
+% Canonical reassessment, 22 October 2026. No new endpoint.
+% Ready-to-port module; no new chapter number.
+\subsection{A canonical one-function response certificate}
+\label{sec:one-erfc-response}
+\paragraph{Scope.}
+This is \st{P,C}: an analytic all-dimensional theorem and a standalone
+exact arithmetic evaluation. It simplifies the weighted full-energy
+region at a small loss; it is not a new global endpoint.
+Keep the actual-response notation $Ph=tZ$, $F=\epsilon Qk$,
+$p=1/\epsilon$, $V=\|F\|^2$, $T=|Z|^2$, and $R=\sqrt\pi/2$.
+No moment, buffer, or shared-sector independence hypothesis is imposed.
+The analytic formula holds for every $\epsilon>0$; only the numerical
+rectangles below fix $\epsilon=1891/2500$.
+
+For $z>0$ define
+\[
+ M_j(z)=\int_0^\infty\frac{T^{j-1/2}e^{-T}}{T+z}\,dT.
+\]
+One value determines every needed integral:
+\[
+ M_0(z)=\frac{\pi e^z\operatorname{erfc}(\sqrt z)}{\sqrt z},
+ \qquad M_{j+1}(z)=\Gamma(j+1/2)-zM_j(z).
+\]
+\begin{theorem}[\st{P}: exact scalar response envelope]
+For every $z>0$, every actual bounded response satisfies
+\[
+ \boxed{\quad
+ \mathcal N\le t^2+pV-\frac1{2p}
+ \left((z+2)t-R(z+3/2)+\frac{2p^2V}{3M_0(z)}\right)_+^2.
+ \quad}
+\]
+\end{theorem}
+\begin{proof}
+Take $L=bZ(T+z)$ and $\lambda=|L|$, $b>0$.
+Regularization by $\sqrt{|L|^2+\tau}$ and dominated convergence justify
+using the weighted-Gram theorem despite $\lambda(0)=0$.
+For $\tau\le1$ the expectation integrand is dominated by $2\lambda+1$;
+the inverse moments are dominated by $T^{j-1/2}e^{-T}/(bz)$.
+The inverse moments satisfy
+$J_j=M_j/b$, $V_j=J_j/2$, $C_j=3J_j/4$, $D_j=-J_j/4$.
+We claim every scalar or matrix inverse Gram is bounded above by
+$C_0=3M_0/(4b)$.
+
+The Laplace representation
+\[
+ M_j=\Gamma(j+1/2)\int_0^\infty e^{-zs}(1+s)^{-j-1/2}\,ds
+\]
+gives $M_1\le M_0/2$ and $M_2\le3M_1/2$.
+Put $x=M_1/M_0$, $y=M_2/M_0$. Thus $0<x\le1/2$,
+$0<y\le3x/2\le3/4$. Before its positive rank-one correction, the
+A/B Gram satisfies
+\[
+ \frac{4b}{M_0}(C_0I-K_{\rm raw})=
+ \begin{pmatrix}3(2x-y)&(y-x)/\sqrt2\\
+ (y-x)/\sqrt2&3(1-y/2)\end{pmatrix}\succ0.
+\]
+Indeed its determinant is at least
+$9(x/2)(5/8)-x^2/2\ge41x/16>0$.
+The Y/W claims follow from $M_1\le M_0/2$.
+For the visible diagonal it suffices to prove
+$M_3-4M_2+4M_1\le3M_0/2$. Its Laplace integrand, after factoring out
+$\sqrt\pi/(8u^{7/2})$ with $u=1+s\ge1$, has numerator
+\[
+ 15-24u+16u^2-12u^3
+ =-5-28(u-1)-20(u-1)^2-12(u-1)^3<0.
+\]
+The first-chaos corrections only decrease the raw Grams.
+The limiting corrected Grams are positive by weighted linear independence
+of cubic moments modulo first-chaos moments, not merely by a limit of
+positive matrices.
+Consequently weighted Bessel, with all sectors retained together, gives
+\[
+ \mathfrak m(k)+\|Pk\|^2\ge\frac{4b}{3M_0(z)}\|Qk\|^2.
+\]
+The usual $Qh$ completion and $\E|L|=bR(z+3/2)$ now imply
+\[
+ \mathcal N\le t^2+pV+2pb^2
+ -2b\left((z+2)t-R(z+3/2)+\frac{2p^2V}{3M_0(z)}\right).
+\]
+Minimize this quadratic over $b\ge0$; when its minimizer is zero,
+take the limit $b\downarrow0$. This proves the formula.
+\end{proof}
+
+\paragraph{A pi-only limit.}
+As $z\downarrow0$, $M_0(z)\to\infty$, yielding
+\[
+ \mathcal N\le t^2+pV-\frac{(4t-3R)_+^2}{8p}.
+\]
+This is exactly the visible support constraint from $|h|\le1$ and
+$\Re\E[\bar Z(T-2)h]\le3R/2-2t$. The near-pure-cubic auxiliary
+profile in the numerical certificates therefore has a canonical origin.
+
+\paragraph{Exact sample regions \st{C}.}
+At $z=1/12$, the portable standard-library checker encloses
+$M_0\in[8.079984341627734563,8.079984341627734564]$ and proves
+\[
+ \begin{array}{c|c}
+ V\le0.0365,\quad0\le t\le0.8456&\mathcal N<0.713256459\\
+ V\le0.0318,\quad0\le t\le0.851&\mathcal N<0.713253437
+ \end{array}
+\]
+Both caps are below $0.713260<500/701$.
+For each rectangle fix $b$ at the explicit upper-corner optimizer.
+The coefficient of $V$ is positive; the remaining quadratic in $t$
+is convex and is checked at both endpoints. No monotonicity of the
+optimized envelope is assumed. The checker evaluates erfc by an
+alternating erf series and the exponential by a rigorously bounded
+positive series, with integer intervals; there is no quadrature or
+unbounded integration tail. The full-energy cutoff loss against the
+preceding eight-integral certificate is about $2.5\%$ at the peak and
+$2.2\%$ on the whole strip. The remaining response complement is open.
+
+\subsection{The exact loss from an unbounded Gram interpolant}
+\label{sec:clipped-response-feasibility}
+\paragraph{The structural distinction.}
+The norm problem asks which cubic projections can come from the same
+bounded responses. Raw K is a stronger sufficient route. The weighted
+Gram method retains the projection moments but minimizes the quadratic
+cost over an unbounded response. The following identity isolates that
+relaxation, without an extra moment or independence hypothesis.
+
+Use the real Hilbert inner product $\langle u,v\rangle=\Re\E[\bar u v]$.
+Let $M$ be the pointwise positive real-linear weight in the regularized
+two-disk bound, bounded below by a positive constant, and put $A=M+P$.
+Let $U$ embed a finite real orthonormal set of cubic moments,
+$y=U^*k$, and assume $\mathsf G=U^*A^{-1}U$ is positive definite. Define
+\[
+ k_0=A^{-1}U\mathsf G^{-1}y,\qquad
+ d_M(v)=\inf_{|u|\le1}(v-u)^TM(v-u).
+\]
+The required integrals exist for the preceding regularized radial weights.
+In finite Gaussian dimension one may take all cubic moments.
+
+\begin{theorem}[\st{P}: bounded-interpolant correction]
+\label{thm:bounded-interpolant-correction}
+Every actual response satisfies
+\begin{equation}\label{eq:clipped-gram-correction}
+ \langle k,Ak\rangle
+ =y^T\mathsf G^{-1}y+\|k-k_0\|_A^2
+ \ge y^T\mathsf G^{-1}y+\E d_M(k_0).
+\end{equation}
+For the two-disk weights, put $n=v/|v|$ and
+\[
+ \ell_M(v)=\frac{(|v|-1)_+^2}{n^TM^{-1}n},\qquad\ell_M(0)=0.
+ \qquad \frac89d_M(v)\le\ell_M(v)\le d_M(v).
+\]
+The factor $8/9$ is sharp under the eigenvalue-ratio bound $2$.
+\end{theorem}
+\begin{proof}
+Since $U^*k_0=y$ and $Ak_0=U\mathsf G^{-1}y$, the quadratic cross
+term vanishes. Drop $\|P(k-k_0)\|^2$ and use $|k|\le1$.
+
+For $|v|>1$, the support inequality $n\cdot u\le1$ and weighted
+Cauchy--Schwarz give $d_M(v)\ge\ell_M(v)$. The trial point $u=n$
+gives $d_M(v)\le(n^TMn)(|v|-1)^2$. Both quantities vanish inside
+the disk. For eigenvalue ratio $r\in[1,2]$ and $a=n_1^2$,
+\[
+ \frac98-(n^TMn)(n^TM^{-1}n)
+ =\frac{(2r-1)(2-r)/8+(a-1/2)^2(r-1)^2}{r}\ge0.
+\]
+This proves the factor. It is sharp as $v=Rn$, $R\to\infty$,
+with $r=2$, $n_1^2=n_2^2=1/2$. The present eigenvalues are
+$\lambda+l^2/\lambda$ and $\lambda$, with $l=|L|\le\lambda$,
+so their ratio is at most two.
+\end{proof}
+In the phase coordinates of $L$ the closed expression is
+\[
+ \ell_M(v)=
+ \frac{\lambda(\lambda^2+l^2)|v|^2}
+ {\lambda^2|v|^2+l^2\{\Im(e^{-i\arg L}v)\}^2}
+ (|v|-1)_+^2.
+\]
+Set it to zero at $v=0$; the phase is irrelevant when $l=0$.
+Its expectation may be subtracted from the old row cap alongside the
+compatible $Qh$-completion and $h$-phase defects. The original
+$\|Pk\|^2$ penalty is already spent in $A$ and cannot be reused.
+
+\subsubsection{An exact clipped quadratic dual}
+For $M=\operatorname{diag}(m_1,m_2)$ define
+\[
+ \phi_M(d)=\sup_{|u|\le1}\{2d\cdot u-u^TMu\}
+ =\inf_{\rho\ge0}\left\{\rho+
+       \frac{d_1^2}{m_1+\rho}+\frac{d_2^2}{m_2+\rho}\right\}.
+\]
+Square completion proves equality: take $\rho=0$ if $|M^{-1}d|\le1$;
+otherwise the unique positive root of
+$\sum_jd_j^2/(m_j+\rho)^2=1$ gives the maximizing unit vector.
+In particular $d_M(v)=v^TMv-\phi_M(Mv)$.
+For every $\xi$ and $a\in\operatorname{ran}P$,
+\begin{equation}\label{eq:clipped-response-dual}
+ \langle k,Mk\rangle+\|Pk\|^2
+ \ge2\xi^Ty-\|a\|^2-\E\phi_M(U\xi-a).
+\end{equation}
+Indeed $\|Pk\|^2\ge2\langle a,k\rangle-\|a\|^2$, and pointwise
+minimization over the disk finishes the proof. The choice
+$\xi=\mathsf G^{-1}y$, $a=Pk_0$ recovers the Gram bound plus
+$\E d_M(k_0)$. Optimizing can improve this trial value.
+No infinite-dimensional dual-attainment claim is used.
+Only $|k|\le1$ has been added; the full joint disks remain stronger.
+
+\paragraph{Strictness is not a uniform quantitative gap.}
+For radial weights and finite-dimensional cubic data, $k_0$ is polynomial
+in the remote coordinates. A nonzero remote-dependent sector makes it
+nonconstant on a positive-measure set of visible coordinates.
+An unbounded nonconstant polynomial exceeds the disk on an open set;
+Gaussian full support therefore gives $\E d_M(k_0)>0$.
+This does not give a rate uniform over dimension and tensors.
+A useful endpoint needs a quantitative estimate on the survivor set.
+
+\subsection{Exact visible geometry and its rigorous limitation}
+\label{sec:exact-visible-response-geometry}
+Let $R=\sqrt\pi/2$ and $\gamma(s,r)=\int_0^r u^{s-1}e^{-u}\,du$.
+For $0\le t\le R$, let $r(t)$ be the unique nonnegative solution of
+\[
+ t=R-2\gamma(3/2,r),\qquad
+ M(t)=-t/2+2r(t)^{3/2}e^{-r(t)}.
+\]
+Then the sharp marginal penalty is
+\begin{equation}\label{eq:exact-visible-penalty}
+ \inf_{|h|\le1,\,Ph=tZ}\|Qh\|^2=\tfrac12[-M(t)]_+^2.
+\end{equation}
+This is \st{P}. The support bound
+$\Re\E[\bar Z(T-2)h]\le I(r)+(r-2)t$
+is attained by $h=\ph(Z)\operatorname{sign}(T-r)$.
+Integration by parts gives $M(t)$. When $M(t)\ge0$, mix this
+response with $(t/R)\ph(Z)$ to obtain zero visible cubic moment.
+These responses depend only on $Z$, so no other cubic component occurs.
+
+The entire scalar geometry also has an exact description. With
+$K=\E|k|^2$ and $m=\Re\E[\bar Z(T-2)h]$, it is equivalent to
+a real profile $a$ satisfying
+\[
+ |a|\le1,\qquad \E\sqrt T\,a=t,\qquad
+ \E\sqrt T(T-2)a=m,\qquad \E a^2\le1-K.
+\]
+Necessity follows by conditional averaging and the two disks.
+Conversely choose $h=\ph(Z)a(T)$,
+$k=i\ph(Z)\sigma b(T)$, where $\sigma$ is a centered real sign
+independent of $T$, and $b$ is a suitable scalar multiple of
+$\sqrt{1-a^2}$ with squared mean $K$. A remote radial sign realizes
+this also with charge-one symmetry and $Pk=0$.
+The scalar dual has clipped-polynomial optimizers; its integrals
+reduce to incomplete gamma values at roots of
+$T(T-r)^2=4\lambda^2$. The full formula is in the standalone proof.
+
+\paragraph{A stop rule \st{P,C}.}
+Even this exact scalar geometry, supplemented only by
+$V\le\epsilon^2K$, does not prove the cap. Set
+\[
+ t=1057/1250,\quad r=3/25,\quad
+ \delta=\frac{R-t}{\gamma(3/2,r)},\qquad
+ a(T)=1-\delta\mathbf1_{T\le r}.
+\]
+Exact arithmetic proves $1<\delta<2$,
+$(2\delta-\delta^2)(1-e^{-r})>0.075$, and
+\[
+ -.365<m=-R/2-\delta\{\gamma(5/2,r)-2\gamma(3/2,r)\}<-.364.
+\]
+Thus $K=.07$ and formal $V=.04$ pass the scalar conditions, but
+$t^2+p/25-\epsilon m^2/2>.7175>500/701$.
+This is not an actual counterexample: a realizing response has
+$Qk=0$, so its total energy cannot be assigned to the cubic projection.
+The discrepancy persists under charge-one symmetry. Hence optimizing
+the visible marginal alone cannot recover the missing projection data.
+
+\paragraph{Canonical next obligation.}
+Keep the strongest existing regional caps. On their complement,
+lower-bound the clipping loss and compatible completion defects
+for the same response, or optimize \eqref{eq:clipped-response-dual}
+before replacing its data by scalar energies. A sufficient uniform
+rate and the full same-witness cover remain open. This reassessment
+claims no new endpoint or Lean theorem.
+
+\paragraph{Replay and proof ledger.}
+The full proofs, four exact standard-library checkers, and scalar
+obstruction are in
+\pathref{/Users/alingalatan/Documents/Codex/2026-10-10/plea/outputs/canonical-rethink-20261022/}.
+Run \code{python3 -I verify\_all.py}.
+The closed certificates use exact bounded series, not floating quadrature.
+The $8/9$ coefficient identity is checked exactly; the dimension-free
+implication is the analytic proof above.
+
+
+\paragraph{IDE replay and review (22 October).} All four standard-library checkers PASS from an unrelated directory under \code{python3 -I} (0.2\,s; package and
+log in \pathref{gpt-reviews/canonical-rethink-20261022/}). The IDE re-derived by hand: with $L=bZ(T+z)$ and $s_0=0$, $J_j=M_j/b$, $V_j=J_j/2$, $C_j=3J_j/4$, $D_j=-J_j/4$;
+$M_0(z)=\pi e^z\operatorname{erfc}(\sqrt z)/\sqrt z$ and the recurrence; the Laplace representation and the three Gram comparisons ($A/B$ determinant $\ge\frac{41}{16}x$,
+$M_1\le M_0/2$, and $15-24u+16u^2-12u^3<0$ for $u\ge1$); $\ell_0=b(z+2)$, $C_\lambda=2bR(z+\frac32)$; the scalar square in $b$; the numerical cap $0.713256$ at $z=1/12$.
+For the bounded-interpolant correction: the $A$-orthogonal decomposition, the support/Cauchy--Schwarz bounds on $d_M$, and the Kantorovich constant $(r+1)^2/(4r)=9/8$ at eigenvalue ratio
+$r=2$ (hence the sharp $8/9$). For the visible geometry: $M(t)=-t/2+2r^{3/2}e^{-r}$ from $\gamma(5/2,r)=\frac32\gamma(3/2,r)-r^{3/2}e^{-r}$, and the stop-rule value $>0.7175$.
+\emph{Observation (IDE):} at the peak the one-erfc bound has slope $\partial_V\mathcal N\approx1.28$ in the full energy, essentially the $5/4$ of the weighted theorem and the
+$\approx1.25$ slope of actual responses in the asymptotic W-model (\pathref{attack-20261022/NOTES.md}); the loss of these bounds is an intercept of about $4\cdot10^{-3}$, not a slope.

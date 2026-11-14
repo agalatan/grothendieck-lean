@@ -1,0 +1,563 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch57-small-buffer-tensors.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 57). Owner: lower-bound/10-coupled-complements.tex
+\section{Small and zero buffer for arbitrary coupled cubic tensors}\label{ch:small-buffer-tensors}
+\chapsummary{Small/zero-buffer coupled-tensor regions and the stronger derivative-matrix contraction estimate. The all-buffer result has bounded A; the buffered corollaries with unrestricted A/B are distinct.}
+
+\paragraph{Provenance and status (IDE note).} Full-context GPT, 20 October (\code{conjK-small-buffer-tensors-20261020.zip}, archived in
+\pathref{gpt-reviews/small-buffer-tensors-20261020/}). IDE replay \code{python3 -I verify\_all.py} from an unrelated directory, regenerating all tables: the finite tensor
+checks, the 7 cost rows and all 11 continuum claims PASS (147.5\,s; smallest exact margin $3.58\cdot10^{-5}$, largest weak excess $8.82\cdot10^{-5}$). The original $20eh$ influence bound has since been superseded by Theorem~\ref{thm:sharp-influence-audit}; the numerical regions below retain their recorded deficits.
+
+\paragraph{Refinement (IDE note, 20 October, later).} Canonical-core GPT package (\code{conjK-canonical-core-20261020.zip}, archived in
+\pathref{gpt-reviews/canonical-core-20261020/}): the complex matrix cumulant Lemma~\ref{thm:cc-matrix} ($\kappa\le\frac{50}3eh$), the closed-form
+Lemma~\ref{lem:cc-resolvent}, and the updated rows of (SB.3), (SB.5) and Corollary~\ref{cor:sbt-blocks}. IDE replay \code{python3 -I verify\_all.py
+--fresh-dependencies} from an unrelated directory: both older packages regenerated, and their fresh intervals support every endpoint used. 18 exact complex Gram
+audits, the closed-form constants, all five continuum regions and both Poisson constants PASS (389\,s). Margins $9.522\cdot10^{-5}$, $6.941\cdot10^{-5}$,
+$3.757\cdot10^{-5}$; excesses $8.868\cdot10^{-5}$, $8.393\cdot10^{-5}$. The influence-only corollaries become $h\le9e/100$ (deficit $1/12500$) and $h\le e/150$.
+
+\subsection{Small and zero buffer for arbitrary shared cubic tensors}
+\label{sec:sbt}
+
+\paragraph{Status and scope.}
+The analytic arguments are \textbf{[P]}; numerical constants and parameter
+regions are \textbf{[C]}, with fresh directed integration and exact
+rational decisions. All results concern the fixed peak profile.
+They do not supply the row envelope or a new Grothendieck endpoint.
+In particular, the theorem below has an explicit A-amplitude restriction.
+
+Let \(Z,U,X_1,\dots,X_n\) be independent standard proper complex
+Gaussians. Write
+\[
+ a=699/1250,\quad b=179/1250,\quad p=2500/1891,\quad
+ L=Z(a+b|Z|^2),
+\]
+\[
+ \Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|-p\mathbb E|G|^2,
+ \qquad
+ S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt vU|-pv\}.
+\]
+The family is
+\[
+ G=q+gU+(|Z|^2-1)\sum_j\alpha_jX_j+
+       \frac{Z^2}{\sqrt2}\sum_j\beta_j\bar X_j,\qquad
+ q\in H_{2,1}(X),\quad g\ge0.
+ \tag{SB.1}
+\]
+The tensor \(q\) is arbitrary and may share every coordinate with
+both forms. Put \(e=\mathbb E|q|^2\), \(A=\|\alpha\|_2\),
+\(B=\|\beta\|_2\), \(\kappa=\mathbb E|q|^4-2e^2\), and
+\[
+ h=\sup_{\|\ell\|_2=1}
+       \{\|D_\ell q\|_2^2+\|\bar D_\ell q\|_2^2\}.
+ \tag{SB.2}
+\]
+Here \(\ell=\sum u_jX_j\),
+\(D_\ell=\sum\bar u_j\partial_{X_j}\), and
+\(\bar D_\ell=\sum u_j\partial_{\bar X_j}\).
+The supremum is a finite derivative-Gram eigenvalue. Always \(h\le3e\).
+Every B coefficient and every coefficient phase is unrestricted.
+When \(g=0\), no fresh Gaussian is needed in (SB.1).
+
+\begin{theorem}[Exact regions including zero buffer, \textbf{[P,C]}]
+\label{thm:sbt-exact}
+Each row below implies
+\(\Lambda(G)<S-\delta-(A^2+B^2)/2000\):
+\[
+\begin{array}{c|c|c|c|c}
+e\le&A\le&0\le g\le&\text{additional condition}&
+\delta\\ \hline
+1/200&3/125&1/32&\text{none}
+ &1/10000\\
+1/100&7/250&1/32&h\le e/11
+ &1/20000\\
+1/100&29/1000&1/32&h\le e/12
+ &1/30000\\
+1/200&1/100&1/10&\text{none}
+ &1/10000\\
+1/1000&1/100&3/20&\text{none}
+ &1/10000\\
+1/5000&1/200&9/50&\text{none}
+ &1/40000
+\end{array}
+\tag{SB.3}
+\]
+There is no dimension restriction and no independent-block assumption.
+The exact regions use neither the remote \(10^{-5}\) comparison nor
+a sixth-moment estimate.
+\end{theorem}
+
+For example, with independent \(X,Y\), put
+\[
+ H(X)=X(|X|^2-2)/\sqrt2,\qquad
+ q=\frac{H(X)+X^2\bar Y/\sqrt2}{20}.
+\]
+Then \(e=1/200\). The first row applies at \(g=0\), to every A form on
+\((X,Y)\) of norm at most \(3/125\), and to every B form on those
+same coordinates. The nonlinear terms share \(X\); this is not an
+independent sum of Wick monomials.
+
+\begin{theorem}[An all-buffer influence criterion, \textbf{[P,C]}]
+\label{thm:sbt-weak}
+If \(e\le1/25\), then each row below implies
+\[
+ \boxed{\quad
+ \Lambda(G)<S+\frac{89}{10^6}-\frac{A^2+B^2}{2000}
+ \qquad\text{for every }g\ge0.
+ \quad} \tag{SB.4}
+\]
+\[
+\begin{array}{c|c}
+ h/e\text{ at most}&A\text{ at most}\\ \hline
+1/32&3/4000\\
+1/170&1/200\\
+1/300&3/500\\
+1/10000&1/100
+\end{array}
+\tag{SB.5}
+\]
+At \(e=0\) these conditions mean \(h=0\).
+No separate kurtosis assumption is needed.
+This theorem uses the established dimension-free remote comparison
+\(\Lambda(q+gU)<S+10^{-5}\) before inserting either shared sector.
+\end{theorem}
+
+The second row (originally \(h/e\le1/200\); the matrix bound of
+\S\ref{sec:sbt-kappa} extends it to \(1/170\)) is a useful buffer-free replacement for a portion of
+the preceding buffered-tensor theorem: A may have norm \(1/200\),
+B has arbitrary norm, and the cubic has variance up to \(1/25\).
+The fresh buffer can be identically absent.
+
+\begin{corollary}[Unequal internally coupled blocks, \textbf{[P]}]
+\label{cor:sbt-blocks}
+Let \(q=\sum_jq_j\) on mutually independent remote Gaussian blocks,
+each \(q_j\) an arbitrary pure \(H_{2,1}\) cubic. If
+\[
+ e=\sum_j\|q_j\|_2^2\le1/25,\qquad
+ \max_j\|q_j\|_2^2\le e/510,\qquad A\le1/200,
+\]
+then (SB.4) holds for every buffer, including zero, and all B.
+The A/B forms may use every coordinate of every block.
+\end{corollary}
+\begin{proof}
+The derivative Gram matrix is block diagonal because derivatives of
+distinct cubic blocks are independent centered second-chaos polynomials.
+Its largest eigenvalue is at most \(3\max_j\|q_j\|_2^2\le e/170\).
+(The original share was \(e/600\), matching the original row \(h/e\le1/200\).)
+Apply Theorem~\ref{thm:sbt-weak}.
+\end{proof}
+
+This corollary reaches the originally requested kurtosis window with
+genuine shared nonlinear blocks. For \(600\) independent pairs
+\((X_j,Y_j)\), let
+\[
+ B_j=\frac{3H(X_j)+X_j^2\bar Y_j/\sqrt2}{\sqrt{10}},
+ \qquad q=\frac1{5\sqrt{600}}\sum_{j=1}^{600}B_j.
+\]
+Then
+\[
+ e=1/25,\qquad
+ \frac{\mathbb E|q|^4}{e^2}=2+\frac{119}{1875}
+ =2.0634666\ldots .
+\]
+Indeed, \(\mathbb E|B_j|^4=1002/25\). All A/B drivers may come from
+these same \(1200\) coordinates, and \(g=0\) is allowed.
+
+\subsubsection{A dimension-free fourth-cumulant versus influence bound}
+\label{sec:sbt-kappa}
+With \(d_j=\partial_{X_j}q\) and \(f_j=\partial_{\bar X_j}q\), put
+\[
+ P=\mathbb E[dd^*],\qquad Q=\mathbb E[\bar f f^{\mathsf T}],\qquad
+ C=\mathbb E[dd^{\mathsf T}],\qquad K=P+Q.
+ \tag{SB.6a}
+\]
+Then \(K\) is exactly the directional influence matrix of (SB.2),
+\(h=\|K\|_{\rm op}\), \(\operatorname{tr}P=2e\), \(\operatorname{tr}Q=e\).
+The conjugations matter: substituting \(\mathbb E[ff^*]\) for \(Q\)
+changes \(h\). The symmetric matrix \(C\) is the pseudocovariance of
+the holomorphic derivative.
+
+\begin{lemma}[Complex matrix cumulant bound, \textbf{[P]}]
+\label{thm:cc-matrix}
+Every finite-dimensional pure complex cubic satisfies
+\[
+ \boxed{0\le\kappa\le
+ \min\Bigl\{42e^2,\ \frac{10}3\bigl(\|K\|_{\rm HS}^2+\|C\|_{\rm HS}^2\bigr)\Bigr\}
+ \le\min\Bigl\{42e^2,\ \frac{50}3eh\Bigr\}.} \tag{SB.6}
+\]
+\end{lemma}
+\begin{proof}
+We first give the finite real tensor bookkeeping.
+For a real symmetric three-tensor \(f\) on a finite index set, write
+\(F=I_3(f)\), \(v=\mathbb EF^2=6\|f\|^2\), and put
+\[
+ B_{ij}=\sum_{k,l}f_{ikl}f_{jkl},\qquad
+ T_{ijkl}=\sum_m f_{ijm}f_{klm}.
+\]
+Finite index rearrangement gives \(\|T\|^2=\|B\|^2\).
+Wick pairing, grouped by the number \(r=0,1,2,3\) of contractions
+between the two factors of \(F^2\), gives
+\[
+ \mathbb EF^4
+ =720\|\operatorname{Sym}(f\otimes f)\|^2
+   +1944\|\operatorname{Sym}T\|^2+648\|B\|^2+36\|f\|^4.
+\]
+For clarity, the four coefficients are
+\((r!\binom3r^2)^2(6-2r)!\).
+In the first term, grouping a six-index permutation by the size of
+the intersection of its first triple with the original first triple
+gives multiplicities \(1,9,9,1\). Consequently
+\[
+ 720\|\operatorname{Sym}(f\otimes f)\|^2
+       =72\|f\|^4+648\|B\|^2.
+\]
+Thus
+\[
+ \mathbb EF^4-3v^2
+ =1296\|B\|^2+1944\|\operatorname{Sym}T\|^2
+ \le3240\|B\|^2.
+\]
+Symmetrization is an orthogonal projection, which proves the inequality.
+The derivative Gram matrix \(M_{ij}=\mathbb E[\partial_iF\,\partial_jF]\)
+is \(18B\), is positive semidefinite, and has trace \(3v\).
+Therefore
+\[
+ \mathbb EF^4-3v^2\le10\|M\|_{\rm HS}^2. \tag{SB.6b}
+\]
+
+Now take \(F=\Re q\), with \(X_j=(x_j+iy_j)/\sqrt2\) and real
+standard Gaussian coordinates. Circularity of the pure \(H_{2,1}\)
+law gives \(v=e/2\) and
+\(\mathbb EF^4-3v^2=3\kappa/8\).
+The derivatives \(d\) have common-phase charge zero and \(f\) charge two,
+so every mixed \(d,f\) covariance vanishes and
+\(\mathbb E[ff^{\mathsf T}]=0\). In the ordering
+\((x_1,\dots,x_n,y_1,\dots,y_n)\),
+\[
+ M=\frac14\begin{pmatrix}
+ \Re(K+C)&\Im(K-C)\\
+ -\Im(K+C)&\Re(K-C)
+ \end{pmatrix},\qquad
+ \|M\|_{\rm HS}^2=\frac18\bigl(\|K\|_{\rm HS}^2+\|C\|_{\rm HS}^2\bigr).
+\]
+With (SB.6b) this is the matrix bound in (SB.6).
+For the scalar consequence, \(0\preceq K\preceq hI\) gives
+\(\|K\|_{\rm HS}^2\le h\operatorname{tr}K=3eh\). For each row of \(C\),
+\[
+ \sum_j|\mathbb E[d_id_j]|^2
+ =\sup_{\|u\|=1}\Bigl|\mathbb E\Bigl[d_i\sum_ju_jd_j\Bigr]\Bigr|^2
+ \le h\,\mathbb E|d_i|^2,
+\]
+since \(P\preceq K\); summing, \(\|C\|_{\rm HS}^2\le h\operatorname{tr}P=2eh\).
+The coefficient is \((10/3)(3+2)=50/3\).
+The standard complex cubic fourth-moment bound gives \(\kappa\le42e^2\);
+equivalently, expand \(q^2\) in grades \((4,2),(3,1),(2,0)\)
+and bound the contraction norms by the squared tensor norm.
+\end{proof}
+
+\paragraph{History and comparison.} The first version of this lemma
+(IDE-replayed with the original package) bounded \(\|M\|_{\rm HS}^2\le
+\|M\|_{\rm op}\operatorname{tr}M\) immediately, with \(\|M\|_{\rm op}\le h/2\),
+and obtained \(\kappa\le20eh\); its rows remain a valid record. Retaining
+the complex matrices gains one sixth. For independent Wick terms
+\(q=\sum c_jH(X_j)\), \(K=3\operatorname{diag}(c_j^2)\) and, after phase
+normalization, \(C=2\operatorname{diag}(c_j^2)\): the matrix bound is
+\((130/3)\sum c_j^4\), close to the exact \(42\sum c_j^4\), whereas the
+scalar bound is \(50e\max c_j^2\). Both forms require the \emph{global}
+derivative matrices; restriction to the shared span is not legitimate here.
+IDE check: on 12 random two-variable \(H_{2,1}\) tensors, with moments
+computed by exact tensor Gauss--Hermite quadrature, \(\kappa\) reaches
+\(0.96\) of the matrix bound, so it is nearly sharp.
+
+\input{lower-bound/sharp-influence.tex}
+
+\subsubsection{The actual contents remain small without a fresh buffer}
+The visibly averaged positive kernels satisfy
+\[
+ \mathbb E_Z[(|Z|^2-1)\overline{L+w}/|L+w|]
+       =-\bar w k_A(|w|^2),\qquad
+ \mathbb E_Z[Z^2\overline{L+w}/(\sqrt2|L+w|)]
+       =-w k_B(|w|^2).
+\]
+Both \(k_j\) are completely monotone. Gaussian buffering preserves
+this property: a Laplace atom transforms according to
+\[
+ \mathbb E[(w+gU)e^{-t|w+gU|^2}]
+ =\frac{w}{(1+g^2t)^2}
+          e^{-t|w|^2/(1+g^2t)}.
+\]
+Its first Laplace moment decreases. With \(m_j=-k_j'(0)\), the
+fresh scalar integration in this package proves
+\[
+ m_A<54/25,\qquad m_B<1033/1000. \tag{SB.7}
+\]
+These bounds hold at zero buffer and uniformly at every positive buffer.
+
+For any positive completely monotone kernel \(k\), put \(m=-k'(0)\).
+The following bound concerns the actual shared first-chaos content:
+\[
+ \|P_{1,0}[qk(|q|^2)]\|_2^2\le m^2\Xi,\qquad
+ \Xi=\min\{(e+h)(e^2+\kappa),\,h(6e^2+5\kappa)\}. \tag{SB.8}
+\]
+Here is the proof, to make the dependence explicit.
+For a unit first-chaos \(\ell\), creation/annihilation gives
+\(\mathbb E|\ell|^2|q|^2\le e+h\).
+Subtract \(k(e)q\), whose first-chaos projection vanishes, and use
+\(|k(u)-k(e)|\le m|u-e|\). Cauchy--Schwarz proves the first branch.
+For the second, set \(V=|q|^2\) and use Gaussian integration by parts:
+\[
+ \mathbb E[\bar\ell qk(V)]
+ =\mathbb E[D_\ell q\{k(V)+Vk'(V)\}
+                +q^2k'(V)D_\ell\bar q].
+\]
+The cubic derivatives are centered second chaos.
+The function \(k(u)+uk'(u)\) is \(2m\)-Lipschitz, because
+\(|(x-2)e^{-x}|\le2\) for every \(x\ge0\).
+After centering that profile, two-component Cauchy--Schwarz gives
+\[
+ |\mathbb E[\bar\ell qk(V)]|^2
+ \le h m^2\{4\operatorname{Var}V+\mathbb EV^2\}
+ =h m^2(6e^2+5\kappa).
+\]
+Spectral truncation and dominated convergence justify the integration
+by parts. No inverse power of \(g\) occurs.
+
+\paragraph{Only the shared span need be used in (SB.8).}
+If both forms in (SB.1) use a fixed complex subspace \(\mathcal V\),
+the supremum defining \(h\) may be restricted to that subspace in
+(SB.8). Denote it by \(h_{\mathcal V}\).
+This does \emph{not} permit replacing global \(h\) by \(h_{\mathcal V}\)
+in (SB.6). One useful additional consequence is
+\[
+ e\le1/25,\quad h_{\mathcal V}\le e/5000,\quad A\le47/10000
+ \quad\Longrightarrow\quad\text{(SB.4), for all }g\ge0,
+ \tag{SB.9}
+\]
+using only the universal \(\kappa\le42e^2\).
+Alternatively, global or shared-span \(h\le e/150\) together with
+\(\kappa\le e^2/10\) permits the same A bound.
+
+\subsubsection{Retaining directional curvature, then eliminating B}
+\label{sec:sbt-costs}
+The positive radial tangent loses the negative radial part of the norm
+Hessian. Here we instead use the directional radial-envelope proof.
+It is uniform in the remote center, so no independence of the shared
+drivers from \(q\) is introduced.
+
+For each row of the following table, the directed computation proves
+the A-cost \(a_0\), shifted B-cost \(b_0\), and content transport
+constant \(\chi\), valid when \(A\le r_0\):
+\[
+\begin{array}{c|c|c|c}
+r_0&a_0&b_0&\chi\\ \hline
+1/32&23/100&13/40&11/20\\
+1/40&6/25&167/500&137/250\\
+1/50&49/200&341/1000&109/200\\
+1/64&1/4&347/1000&68/125\\
+1/100&257/1000&355/1000&271/500\\
+1/200&131/500&181/500&27/50\\
+1/500&53/200&183/500&539/1000
+\end{array}
+\tag{SB.10}
+\]
+Each insertion costs an additive error below \(10^{-18}\), including
+at zero buffer. Content transport has no additive error.
+In particular the A coefficient is stronger on these smaller balls
+than the earlier \(19/100\) coefficient on \(A\le1/16\).
+
+Apply the A theorem to \(q+gU\), then the shifted B theorem to the
+actual A-coupled baseline. The transport theorem bounds the change
+in B content by \(\chi AB\). Equation (SB.8) gives
+\[
+ \begin{split}
+ \Lambda(G)\le{}&\Lambda(q+gU)
+   +2m_A\sqrt\Xi A+2(m_B\sqrt\Xi+\chi A)B\\
+   &-a_0A^2-b_0B^2+2\cdot10^{-18}.
+ \end{split} \tag{SB.11}
+\]
+This order of insertion is essential. The A theorem is never applied
+with a visible B term concealed inside its remote baseline.
+Reserve \(\tau=1/2000\) in both sectors and complete the B square:
+\[
+ \boxed{\Lambda(G)\le\Lambda(q+gU)+
+   \mathcal R(\Xi,A)-\tau(A^2+B^2),} \tag{SB.12}
+\]
+\[
+ \mathcal R(x,A)=
+ \frac{m_B^2x}{b_0-\tau}
+ +2\left(m_A+\frac{m_B\chi}{b_0-\tau}\right)\sqrt x\,A
+ +\left(\frac{\chi^2}{b_0-\tau}-a_0+\tau\right)A^2
+ +2\cdot10^{-18}. \tag{SB.13}
+\]
+The checker proves that all coefficients are nonnegative for the
+seven rows. Replacing \(m_A,m_B\) by the rational bounds in (SB.7)
+is therefore legitimate. The same monotonicity proves continuum
+coverage in \(e,A,h,\kappa\) from the listed upper endpoints.
+
+\subsubsection{Scalar baseline and exact acceptance}
+Let
+\[
+ F(v)=2\mathbb E|L+\sqrt vU|-pv.
+\]
+The accepted visible Gaussian-mixture theorem makes
+\(u\mapsto2\mathbb E|L+\sqrt vU+\sqrt u|\) concave.
+Consequently, for every remote law with variance \(e\),
+\[
+ \Lambda(q+\sqrt vU)\le F(v)+F'(v)e. \tag{SB.14}
+\]
+The new scalar integrals prove \(F'(0)<11/100\).
+Concavity of \(F\) gives, for \(0\le g\le1/32\),
+\[
+ \Lambda(q+gU)\le F(0)+\tfrac{11}{100}(e+g^2).
+\]
+At \(g_0=1/10,3/20,9/50\), the fresh calculation proves
+\(F'(g_0^2)>0\); hence for \(g\le g_0\),
+\[
+ \Lambda(q+gU)\le F(g_0^2)+\tfrac{11}{100}e.
+\]
+These inequalities and (SB.12) prove the five exact regions by
+rational endpoint comparisons.
+The internally computed benchmark is
+\[
+ S_{\rm lo}=F(1/25)_{\rm lower}>1.3739533908,\qquad
+ S_{\rm lo}-F(0)>1037/500000.
+\]
+The exact margins before rounding down to (SB.3) exceed respectively
+\[
+ 1.08651\cdot10^{-4},\quad 6.94069\cdot10^{-5},\quad
+ 3.75741\cdot10^{-5},\quad
+ 1.16821\cdot10^{-4},\quad 1.79466\cdot10^{-4},\quad
+ 3.58324\cdot10^{-5}.
+\]
+(The second and third rows use the matrix cumulant bound; with the
+original \(\kappa\le20eh\) the second row held for \(h\le e/12\) with
+margin \(7.24864\cdot10^{-5}\).)
+For the all-buffer claims use the established remote bound
+\(\Lambda(q+gU)<S+10^{-5}\), only before inserting A/B.
+The four rows of (SB.5) have certified excesses below, respectively,
+\[
+ 8.71828\cdot10^{-5},\quad8.86821\cdot10^{-5},\quad
+ 8.68237\cdot10^{-5},\quad8.20004\cdot10^{-5}.
+\]
+All decimals in this paragraph are summaries; decisions use exact
+fractions of directed interval endpoints.
+
+\subsubsection{Numerical ingredients and replay}
+The directional radial theorem bounds the relevant weighted Hessian
+potential by
+\[
+ C(h)=\int_0^\infty B_h(r)(a+3br^2+2hr)\,dr,\qquad
+ B_h(r)=\sup_{t\ge r}
+ \frac{(t^2-1)^2e^{-t^2}}
+ {(a+bt^2)(a+3bt^2-2ht)}.
+\]
+It is valid for \(h<\sqrt{3ab}\), uniformly in the remote shift.
+The proof uses disk layers of the directional Hessian kernel and
+the radial change of variables
+\(z\mapsto L(z)+\zeta(|z|^2-1)\).
+The included dependency proof gives the continuum statement.
+For \(A\le r_0\), truncate the Gaussian linear driver at
+\(|X|^2\le32\). The good A coefficient is at most
+\[
+ \frac13\left[
+  2C(0)(1-33e^{-32})+\int_0^{32}t e^{-t}C(r_0\sqrt t)\,dt
+ \right].
+\]
+The verifier encloses \(C(j/512)\) by a backward radial maximum on
+cells of width \(1/1024\), including the analytic tail beyond \(r=8\).
+It then uses positive exact exponential masses on \(t\)-cells.
+Reserve \(10^{-6}\) for the tail square completion; its A remainder is
+at most \(9\Gamma_{32}^2/(4\cdot10^{-6})<10^{-18}\), where
+\(\Gamma_T\le(\sqrt T+1/(2\sqrt T))e^{-T}\).
+
+The shifted B coefficient uses the already certified independent
+layer constant \(C_B<953/1000\). With \(k_0=\sqrt{3ab}\), its good
+coefficient is bounded by
+\[
+ \frac{953}{1000}\max_{j=0,1}
+ \int_0^{32}\frac{t^j e^{-t}}{\sqrt{1-r_0\sqrt t/k_0}}\,dt.
+\]
+The analogous reserve gives remainder below \(10^{-18}\).
+Directional content transport uses the existing mixed layer bound
+\(C_{AB}<19/25\), with the directional factor \(1/\sqrt2\).
+Integrating the path first replaces its distortion by
+\(2/(1+\sqrt{1-r_0\sqrt t/k_0})\).
+The adaptive cutoff \(32(r_0/A)^2\), Gaussian regression of the two
+linear forms, and the exact Gaussian tail bound give \(\chi\).
+The new verifier recomputes these scalar quantities and every tail;
+it does not infer an interval claim from point samples.
+
+\begin{lemma}[Closed-form zero-buffer constants, \textbf{[P,C]}]
+\label{lem:cc-resolvent}
+For \(a,b>0\) put
+\(I_k=\int_0^\infty t^{-1/2}e^{-t}(a+bt)^{-k}\,dt
+ =2\int_0^\infty e^{-r^2}(a+br^2)^{-k}\,dr\). Then
+\[
+ I_0=\sqrt\pi,\qquad
+ I_1=\frac{\pi}{\sqrt{ab}}e^{a/b}\operatorname{erfc}\sqrt{a/b},\qquad
+ kaI_{k+1}=\frac{I_{k-1}}b+\Bigl(k-\frac12-\frac ab\Bigr)I_k\quad(k\ge1),
+\]
+\[
+ m_A=\frac3{16}(I_3+2bI_4)=\frac{2I_2+(a+5b)I_3}{16a},\qquad
+ m_B=\frac3{16\sqrt2}I_3,\qquad
+ F(0)=\sqrt\pi\Bigl(a+\frac{3b}2\Bigr),\qquad F'(0)=\frac{I_1}2-p.
+\]
+At the peak, rational intervals of width below \(10^{-65}\) give
+\(m_A=2.159180864970276\ldots\), \(m_B=1.032202342636649\ldots\),
+\(F'(0)=0.109921966859914\ldots\).
+\end{lemma}
+\begin{proof}
+For \(I_1\), insert \((a+bt)^{-1}=\int_0^\infty e^{-s(a+bt)}ds\), perform
+the Gaussian integral, and substitute \(u=\sqrt{a/b+s}\). For the recurrence,
+integrate the derivative of \(t^{1/2}e^{-t}(a+bt)^{-k}\); both boundary
+terms vanish. The enclosure uses Machin's formula for \(\pi\), positive
+Taylor bounds for \(e^{a/b}\), the alternating \(\operatorname{erfc}\) series
+and exact integer square roots; the recurrence is evaluated in rational
+interval arithmetic, so cancellation is enclosed.
+\end{proof}
+More generally, partial fractions reduce
+\(\int_0^\infty t^{-1/2}e^{-t}R(t)\,dt\), for rational \(R\) with negative
+real poles, to Gaussian moments and one \(\operatorname{erfc}\) value per
+pole. This does \emph{not} cover the signed Hankel integrals, the
+positive-buffer constants, or the directional radial envelopes, which keep
+their directed certificates. \autoref{ch:coupled-tensor} uses the
+same zero-buffer constants.
+
+\paragraph{Audit cross-check.} The original package computed the same
+\(I_k\) by lower/upper sums of the decreasing integrands on \([0,8]\),
+mesh \(1/65536\), with an explicit Gaussian tail; that independent
+computation agrees with the lemma (IDE: also with adaptive quadrature to
+\(10^{-11}\)).
+The nonzero-buffer scalar benchmark integrals use the inherited
+audited visible Hankel generator, freshly regenerated.
+
+Run \texttt{python3 -I /absolute/path/to/verify\_all.py}.
+Only Python's standard library and a C++17 compiler are required.
+The optional \texttt{--fine} halves the A-envelope radial mesh;
+\texttt{--reuse DIR} explicitly reuses the visible table.
+The assumptions of the interval arithmetic and the inherited
+analytic constants are listed separately in the dependency ledger.
+
+\paragraph{Buffered corollaries and remaining scope.}
+The influence lemma also simplifies the preceding buffered-tensor
+theorem to influence-only corollaries. With the matrix bound (SB.6) and
+a new exact completion (the positive two-by-two matrix completion of
+\autoref{ch:coupled-tensor} re-evaluated on the same directed
+intervals with \(\kappa\le50eh/3\)), \textbf{[P,C]}:
+\[
+ e\le\tfrac1{25},\ g\ge\tfrac9{40},\ h\le\tfrac9{100}e
+ \ \Rightarrow\ \Lambda(G)<S-\tfrac1{12500}-\tfrac{E_{AB}}{2000},
+ \qquad
+ e\le\tfrac1{25},\ g\ge\tfrac15,\ h\le\tfrac e{150}
+ \ \Rightarrow\ \Lambda(G)<S+\tfrac{89}{10^6}-\tfrac{E_{AB}}{2000},
+\]
+with certified deficit \(9.5223\cdot10^{-5}\) and excess
+\(8.3928\cdot10^{-5}\). Both retain unrestricted A/B amplitudes and phases.
+The sharp scalar bound now additionally permits $h\le e/10$, with deficit $1/40000$ (Corollary~\ref{cor:sharp-influence-region}). Scope: these buffered corollaries allow
+unrestricted A; the all-buffer Theorem~\ref{thm:sbt-weak} has bounded A.
+The two must not be merged.
+
+These are finite-amplitude zero-buffer results for arbitrary coupled
+tensors, with an explicit A restriction and unrestricted B.
+They do not settle unrestricted A, arbitrary even/diagonal additions,
+or profile uniformity. (\emph{Later:} \autoref{ch:all-sector-audit-extension} removes the even/diagonal gap in six buffered coupled-cubic regions, not at zero buffer.) A general cubic is never assumed to contain
+an independent Gaussian buffer. The remaining full conjecture and
+the Grothendieck endpoint remain open.

@@ -1,0 +1,98 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/lower-bound/averaged-curvature-transfer.tex (file dated 2026-10-25). Only this line was added.
+\section{A quantitative use of the incoming property-$\mathcal P$ certificate}
+\label{sec:quantitative-P-transfer-20261021}
+The incoming \code{two\_driver\_scripts.tar.gz} proves a useful
+fixed-variance comparison on the uncoupled slice. Its original
+Lipschitz-integral calculation traversed Gauss nodes out of order.
+Sorting the nodes, asserting positive widths, and replacing the cited
+Bessel constant by the elementary Parseval bound $|J_n|\le1/\sqrt2$
+repairs that step. Fresh transforms and the repaired finite and tail
+checks give the following input \st{C}:
+for $0\le c\le29/50$ and
+$f_c(r)=\E|L+cH(X)+r|$,
+\[
+ G_c(r):=f_c'(r)/r-f_c''(r)\ge0\quad(r>0),\qquad
+ G_c(r)/r^2>339/1000\quad(0<r\le1).
+\]
+The certified lower bounds are $0.339524288$ on the latter interval,
+$0.058474800$ for $G_c$ on $[1,12]$, and positive direct-space
+bounds beyond $12$. Thus $\psi_c(u)=f_c(\sqrt u)$ is concave and
+$-\psi_c''(u)\ge339/4000$ on $[0,1]$.
+
+\begin{lemma}[\st{P}: curvature under a fresh Gaussian buffer]
+\label{lem:P-curvature-smoothing-20261021}
+If $\psi$ is concave with bounded second derivative and
+$-\psi''\ge d$ on $[0,1]$, define
+$T_v\psi(u)=\E\psi(|\sqrt u+\sqrt vW|^2)$.
+For $v>0$,
+\[
+ (T_v\psi)''(u)=\E\psi''(v\Gamma_{N+3}),\qquad
+ N\sim\operatorname{Poisson}(u/v).
+\]
+Conditionally on $N$, the gamma variable has unit scale and shape
+$N+3$. Consequently $-(T_v\psi)''(u)\ge d(1-u-3v)_+$.
+\end{lemma}
+\begin{proof}
+The noncentral complex Gaussian radius is $v\Gamma_{N+1}$.
+Two derivatives of its Poisson mixture give the second forward
+difference divided by $v^2$. Coupling successive gamma variables by
+independent exponential increments and integrating twice converts
+this forward difference to $v^2\E\psi''(v\Gamma_{N+3})$.
+The new radius has mean $u+3v$. Markov's inequality, together with
+$\psi''\le0$ outside $[0,1]$, proves the lower bound.
+\end{proof}
+
+\begin{proposition}[\st{P,C}: explicit uncoupled deficits]
+\label{prop:P-two-wick-deficit-20261021}
+Let $H(X)=X(|X|^2-2)/\sqrt2$, and let $Z,X_1,X_2,W$ be independent
+standard complex Gaussians. At the peak profile, for
+$0\le c\le29/50$, $0\le d\le1/10$, and $0\le g\le41/250$,
+\[
+ \Lambda(cH(X_1)+dH(X_2)+gW)
+ \le\operatorname{bench}(c^2+d^2+g^2)-\frac{29}{100}d^4.
+\]
+When $g=0$, replace $29/100$ by $213/100$.
+No shared A/B field is included.
+\end{proposition}
+\begin{proof}
+Write $Z_H=|H(X)|^2$. The all-threshold stop-loss comparison
+$Z_H\ge_{\rm cx}\operatorname{Exp}(1)$ is independently replayed.
+Its moments are $\E Z_H=1$, $\E Z_H^2=44$, and $\E Z_H^3=11352$.
+For
+$\Delta_d(k)=\E(d^2Z_H-k)_+-\E(d^2E-k)_+\ge0$, $E\sim\operatorname{Exp}(1)$,
+\[
+ \int_0^\infty\Delta_d(k)\,dk=21d^4,\qquad
+ \int_0^a\Delta_d(k)\,dk
+ \ge21d^4-\frac{2\cdot11352}{27a}d^6.
+\]
+Indeed, $(x-a)_+^2\le4x^3/(27a)$ and the omitted Gaussian tail is
+nonnegative. The concave comparison deficit for one norm is
+$\int_0^\infty-\psi''(k)\Delta_d(k)\,dk$.
+For $g=0$ use $a=1$ and $d^2\le1/100$; the two-norm deficit is at least
+\[
+ \frac{339}{2000}\left(21-\frac{2\cdot11352}{2700}\right)d^4
+ >\frac{213}{100}d^4.
+\]
+For $g\le41/250$, Lemma~\ref{lem:P-curvature-smoothing-20261021}
+with $a=1/2$ gives instead the coefficient
+\[
+ \frac{339}{2000}\left(\frac12-3(41/250)^2\right)
+ \left(21-\frac{4\cdot11352}{2700}\right)>\frac{29}{100}.
+\]
+This replaces the second driver by Gaussian noise of variance $d^2$.
+The remaining one-driver comparison to the matched Gaussian uses
+concavity of the $L$ potential and Gaussian preservation of that
+concavity. Variance penalties agree throughout.
+\end{proof}
+
+\paragraph{Limits of this input.}
+The new deficit can be spent in a valid joint gluing argument; it does
+not authorize independent replacement of a driver also appearing in
+A/B. The incoming claim of a $c^2$ first-content asymptotic is not
+proved and cannot replace the established $|\partial_\alpha\Lambda|
+\le50c^3$ estimate at the uncoupled one-driver baseline.
+The incoming all-coupling/no-cubic penalty $0.152$ also needs a tail
+repair: its original tails imply only $0.05837$. Enlarging its compact
+range to $u\le1.1$, $g\le1.5$ fixes this gap numerically, but that
+separate computation still uses padded float arithmetic and is
+labelled \st{C$_{\rm float}$}, not an all-Arb certificate here.

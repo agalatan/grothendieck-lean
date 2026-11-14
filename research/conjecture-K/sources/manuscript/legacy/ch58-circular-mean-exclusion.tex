@@ -1,0 +1,145 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch58-circular-mean-exclusion.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 58). Owner: lower-bound/10-coupled-complements.tex
+\section{A circular-mean exclusion for the full odd shared family}\label{ch:circular-mean-exclusion}
+\chapsummary{Analytic circular-mean reduction with reported padded-floating-point plane/slice checks, denoted \st{C$_{\rm float}$}. This status is not a directed-interval certificate; a roundoff ledger is needed before treating the numerical exclusion as such. Even sectors are excluded from the family.}
+
+\paragraph{Provenance and status.} IDE (Opus) result, 20 October, from the fresh-eyes review of the open problem. Scripts and logs:
+\pathref{circular-mean-20261020/}. Plane validity: a C++ box certifier (padded floating point, convex-corner plus Hessian bound, analytic origin ball and far
+field). Slices: a padded floating-point directed integration with monotone factor bounds on 372\,000 $T$-bins and an adaptive box cover. Both are \emph{padded
+floating} certificates, not yet exact-rational replays; the status is therefore \st{C$_{\rm float}$} pending an integer-interval port.
+\emph{Results (21 October):} all ten planes PASS (\texttt{planecheck2.cpp}, locally and on the droplet with g++); the variance slice $e=8/25$, $y+z\le3/50$ PASS
+(172 boxes, worst upper bound $1.3727991$); the energy slice $y+z=3/50$, $0\le e\le8/25$ PASS (13{,}378 boxes, no failure, worst upper bound $1.37294978$ against the
+target $S_{\rm lo}-10^{-3}=1.37295$). The first attempt with $c_*=1/20$ \emph{failed}: near $e\approx0.160$, $y\approx0.0291$, $z\approx0.0209$ the bound exceeds the
+target by $7\cdot10^{-7}$ at maximum depth. The float threshold scan (9 directions, 5 values of $\rho$) had been too coarse.
+
+\subsection{The reduction}
+\label{sec:cm-reduction}
+Put $a=699/1250$, $b=179/1250$, $p=2500/1891$, $L=Z(a+b|Z|^2)$, $T=|Z|^2$, $\ell(T)=\sqrt T(a+bT)=|L|$ and
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2,\qquad S=\sup_{v\ge0}\{2\E|L+\sqrt vU|-pv\}.
+\]
+Let $X=(X_j)$ be independent standard proper complex Gaussians, $U$ a fresh one, and
+\[
+ G=q+gU+(T-1)r_A+\frac{Z^2}{\sqrt2}r_B,\qquad r_A=\sum_j\alpha_jX_j,\quad r_B=\sum_j\beta_j\bar X_j. \tag{CM.1}
+\]
+\emph{Hypotheses on $q$:} $q$ is a square-integrable function of $X$ whose law, jointly with $X$, is invariant under $X\mapsto e^{i\phi}X$, $q\mapsto e^{i\phi}q$
+(charge one), and $\E[q\bar X_j]=\E[qX_j]=0$ for all $j$. Every pure $\Hc21$ tensor qualifies, as does every element of $\bigoplus_{k\ge1}H_{k+1,k}$.
+No independence between $q$ and the drivers of $r_A,r_B$ is assumed. Write
+\[
+ e=\E|q|^2+g^2,\qquad y=\|\alpha\|^2,\qquad z=\|\beta\|^2,\qquad \rho=\Re\sum_j\alpha_j\beta_j\in[-\sqrt{yz},\sqrt{yz}].
+\]
+
+\begin{lemma}[Circular-mean majorant, \st{P}]\label{lem:cm-bound}
+Let $h_k(a,\beta)=c_{0k}+c_{1k}a^2+c_{2k}|\beta|^2+c_{3k}\,a\Re\beta$, with $c_{0k},c_{1k},c_{2k}\ge0$, satisfy $h_k\ge n$ on $[0,\infty)\times\C$. Then
+\[
+ \Lambda(G)\le\mathcal B(e,y,z,\rho):=2\int_0^\infty e^{-T}\min\Bigl\{\min_k\ell\,h_k(s,t,x),\ \ell\sqrt{1+s+t}\Bigr\}\,dT-p(e+y+z),
+\]
+where $h_k(s,t,x)$ means $c_{0k}+c_{1k}s+c_{2k}t+c_{3k}x$ and
+\[
+ s=\frac{e+(T-1)^2y}{\ell^2},\qquad t=\frac{T^2z}{2\ell^2},\qquad x=\frac{(T-1)T\rho}{\sqrt2\,\ell^2}.
+\]
+\end{lemma}
+\begin{proof}
+Condition on $Z$. Put $P_1=q+gU+(T-1)r_A$ and $P_2=Z^2r_B/\sqrt2$. Rotating $X$ and $U$ by a common phase multiplies $P_1$ by $e^{i\phi}$ and $P_2$ by
+$e^{-i\phi}$ and preserves the joint law. Hence
+\[
+ \E|L+G|=\E\,\frac1{2\pi}\int_0^{2\pi}|L+e^{i\phi}P_1+e^{-i\phi}P_2|\,d\phi=\E\bigl[\ell\,n(a,\beta)\bigr],
+\]
+with $a=|P_1|/\ell$ and, after the change of variables $\phi\mapsto-\phi-\arg(P_1/L)$, $\beta=e^{i\arg(P_1/L)}P_2/L$. Thus $|\beta|=|P_2|/\ell$ and
+$a\Re\beta=\Re(P_1P_2/L^2)$. Since $L^2=Z^2(a+bT)^2$,
+\[
+ \ell\,a\Re\beta=\frac{T}{\sqrt2\,\ell}\Re(P_1r_B).
+\]
+Therefore $\E[\ell\,h_k(a,\beta)\mid Z]=\ell c_{0k}+\bigl(c_{1k}\E|P_1|^2+c_{2k}\E|P_2|^2+c_{3k}T\Re\E[P_1r_B]/\sqrt2\bigr)/\ell$.
+Orthogonality gives $\E|P_1|^2=e+(T-1)^2y$, $\E|P_2|^2=T^2z/2$ and $\E[P_1r_B]=(T-1)\sum_j\alpha_j\beta_j$, because
+$\E[q\bar X_j]=0$, $U$ is independent and centred, and $\E[X_i\bar X_j]=\delta_{ij}$. This is $\ell h_k(s,t,x)$. The cap follows from
+$\frac1{2\pi}\int|L+e^{i\phi}P_1+e^{-i\phi}P_2|\le\sqrt{\ell^2+|P_1|^2+|P_2|^2}$ (the cross terms have nonzero frequency) and conditional Jensen.
+Since $G\mapsto-G$ maps $(P_1,P_2)$ to $(-P_1,-P_2)$ and leaves $P_1P_2$ unchanged, $\E|L-G|$ has the same bound. Taking the minimum after the remote
+expectation is legitimate because $\E\min\le\min\E$ for each fixed $Z$. Finally $\E|G|^2=e+y+z$, since $\E(T-1)^2=1$ and $\E T^2/2=1$.
+\end{proof}
+
+The gain over the square-root Jensen bound of \S\ref{sec:full-cubic-profile-exclusion} comes from averaging over the common remote phase first. At the origin,
+$n(a,\beta)=1+\frac{a^2+|\beta|^2}4-\frac{a\Re\beta}2+O(r^4)$, whereas $\sqrt{1+a^2+|\beta|^2}=1+\frac{a^2+|\beta|^2}2+\dots$. The square-root bound
+counts the circular direction twice.
+
+\begin{lemma}[Concavity and slices, \st{P}]\label{lem:cm-slices}
+$\mathcal B$ is jointly concave on the convex cone $\mathcal D=\{e,y,z\ge0,\ \rho^2\le yz\}$, and $\mathcal B(v_*,0,0,0)\ge S$. Hence, if
+$\mathcal B<\theta\le S$ on the two slices
+\[
+ \Sigma_1=\{y+z=c_*,\ 0\le e\le e_*\},\qquad \Sigma_2=\{e=e_*,\ y+z\le c_*\},
+\]
+then $\mathcal B<\theta$ on $\{y+z\ge c_*\}\cup\{e\ge e_*\}$.
+\end{lemma}
+\begin{proof}
+Each branch is affine in $(e,y,z,\rho)$ or the square root of a positive affine function, so the integrand is concave and so is $\mathcal B$.
+The Gaussian $G=\sqrt{v_*}U$ belongs to (CM.1), so Lemma~\ref{lem:cm-bound} gives $\mathcal B(v_*,0,0,0)\ge\Lambda(\sqrt{v_*}U)=S$. The set
+$\mathcal C=\{y+z<c_*,\ e<e_*\}\cap\mathcal D$ is convex and contains $O=(v_*,0,0,0)$, since $v_*<e_*$. For $P$ outside $\mathcal C$, the segment $[O,P]$ leaves
+$\mathcal C$ at a point $P'=(1-\lambda)O+\lambda P$ of $\Sigma_1\cup\Sigma_2$, with $\lambda\in(0,1]$. Concavity gives
+$\theta>\mathcal B(P')\ge(1-\lambda)\mathcal B(O)+\lambda\mathcal B(P)\ge(1-\lambda)\theta+\lambda\mathcal B(P)$.
+\end{proof}
+
+\subsection{Certificates}
+\label{sec:cm-certificates}
+\paragraph{The ten planes.} Coefficients $(c_0,c_1,c_2,c_3)$, exact six-digit decimals, read as rationals:
+\[
+\begin{array}{cccc}
+c_0&c_1&c_2&c_3\\\hline
+1.000201 & 0.367737 & 0.367646 & -0.264618\\
+1.000201 & 0.828179 & 0.303149 & -0.149403\\
+1.001897 & 0.298478 & 38.614001 & -0.330180\\
+1.000775 & 0.298482 & 1.310307 & -0.046552\\
+1.000200 & 0.341384 & 0.427936 & -0.244969\\
+1.000207 & 0.323131 & 0.515606 & -0.221262\\
+1.000334 & 0.311130 & 0.636985 & -0.192392\\
+1.000201 & 0.606419 & 0.313408 & -0.199336\\
+1.000486 & 0.403893 & 0.349534 & -0.252473\\
+1.000548 & 0.301001 & 0.924432 & -0.129077\\
+\end{array}
+\]
+They were found by a cutting-plane linear programme (minimise the plane value at a query point subject to $h\ge n$ on a growing sample, plus the exact
+second-order cone at the origin), then \emph{lifted}. A dense grid with local refinement is \emph{not} a reliable validity test: for $a>1$ the circular mean has
+a linear term in $\Re\beta$, and the true minimum slack of the $c_2=38.6$ plane sits at $\beta\approx0.005$, $a\approx1.46$, a violation of $1.1\cdot10^{-3}$ that a
+$0.04$-grid misses. The final lifts use the rigorous checker as the oracle: whenever a box fails, the worst failing corner slack plus $3\cdot10^{-5}$ is added to $c_0$.
+
+\paragraph{Plane validity (\texttt{planecheck2.cpp}).} Three regions.
+\begin{itemize}
+\item\emph{Origin ball} $a+|\beta|\le r_0=0.15$. With $w=ae^{-i\phi}+\beta e^{i\phi}$ and $u=2\Re w+|w|^2$, use $\sqrt{1+u}\le1+\frac u2-\frac{u^2}8+\frac{u^3}{16}$ ($u>-1$).
+The odd-frequency means vanish. This gives $n\le1+\frac{a^2+|\beta|^2}4-\frac{a\Re\beta}2+\frac{6r^4+r^6}{16}$ with $r=a+|\beta|$. So it suffices that
+$\bigl(\begin{smallmatrix}c_1-\frac14&\frac{c_3}2+\frac14\\\frac{c_3}2+\frac14&c_2-\frac14\end{smallmatrix}\bigr)\succeq0$, $c_2\ge\frac14$ and
+$c_0-1\ge\frac{6r_0^4+r_0^6}{16}$.
+\item\emph{Far field} $a^2+|\beta|^2\ge R^2$: $n\le\sqrt{1+a^2+|\beta|^2}$ and $h\ge c_0+\kappa(a^2+|\beta|^2)$ with $\kappa=\min(c_1,c_2)-|c_3|/2>0$.
+$R$ is chosen so that $c_0+\kappa R^2\ge\sqrt{1+R^2}\ge1/(2\kappa)$, which makes the difference increasing beyond $R$.
+\item\emph{Middle region:} depth-first bisection of $[0,R]\times[-R,R]\times[0,R]$ ($\Im\beta\ge0$ by conjugation symmetry). On a box with corners $c_i$, for $x$
+in the box with product weights $\lambda_i$: $n(x)\le\sum\lambda_in(c_i)$ by convexity, and
+$h(x)\ge\sum\lambda_ih(c_i)-\frac18\sum_dD_dw_d^2$, with the Gershgorin diagonal $D=(2c_1+|c_3|,2c_2+|c_3|,2c_2)\succeq\nabla^2h$. Corner values of $n$ are bounded
+above by the $2048$-point midpoint rule plus per-cell error $\min\{|F'|h/4,\ |F'|^2h^2/(24|F|)\}+(a+|\beta|)h^2/24$, padded by $10^{-10}(1+a+|\beta|)$.
+\end{itemize}
+All ten planes PASS, with 972--1720 boxes each and worst accepted margins $2.5\cdot10^{-7}$--$6.7\cdot10^{-6}$, in under a second each. They PASS again on the droplet
+(g++, identical hashes).
+
+\paragraph{Slices (\texttt{slicecheck2.py}).} The $T$-axis is split into $372\,000$ bins: geometric on $[10^{-6},10^{-2}]$, and widths $10^{-5}$, $5\cdot10^{-5}$,
+$10^{-3}$ up to $T=60$. The first bin is treated analytically, and the tail beyond $60$ is bounded crudely. On each bin a single branch (one plane or the cap) is chosen
+at the box centre. That branch's integrand is bounded above using monotone factors: $e^{-T}\le e^{-T_0}$, $\ell\le\ell(T_1)$, $1/\ell\le1/\ell(T_0)$, and suprema of
+$(T-1)^2$, $T^2$ and $|T-1|T$ on the bin. The parameters enter at their upper box endpoints (the plane coefficients satisfy $c_1,c_2\ge0$). The $\rho$ term is
+bounded by $|c_3|\sqrt{y_Uz_U}$, and the price $-p(e+y+z)$ is taken at the lower endpoints. Acceptance requires the bound to be at most
+$S_{\rm lo}-\frac1{1000}$, where $S_{\rm lo}=\frac{27479}{20000}<1.3739533908<S$ (\autoref{ch:small-buffer-tensors}). This uses padded floating point,
+with absolute padding $10^{-8}$.
+
+
+\subsection{Consequences and limits}
+\label{sec:cm-consequences}
+\begin{theorem}[Circular-mean exclusion, \st{P}+\st{C$_{\rm float}$}]\label{thm:cm-exclusion}
+For the family (CM.1), with every buffer $g\ge0$, all complex $\alpha,\beta$, and $q$ as above,
+\[
+ \boxed{\ \|\alpha\|^2+\|\beta\|^2\ge\frac3{50}\ \ \text{or}\ \ \E|q|^2+g^2\ge\frac8{25}\quad\Longrightarrow\quad\Lambda(G)<S-\frac1{1000}.\ }
+\]
+\end{theorem}
+Thus every remaining odd configuration has $\|\alpha\|^2+\|\beta\|^2<3/50$ (so $\|\alpha\|,\|\beta\|<0.245$) and remote-plus-buffer variance below
+$8/25$. This holds in every dimension, with full sharing and no influence or kurtosis condition. The old thresholds were $4/25$ and $13/20$. Float scans
+of the same majorant give thresholds near $0.0448$ for $\delta=0$ and $0.0472$ for $\delta=10^{-3}$ with the certified (lifted) planes; the variance threshold is near $0.30$.
+
+\paragraph{Scope.} The reduction needs the circular structure: every visible-dependent term must carry a definite remote charge $\pm1$ relative to $L$. The
+even sectors ($ZY$ with $Y\in H_{1,1}$, $\bar ZW$ with $W\in H_{2,0}$, the visible diagonal $\nu Z(T-2)/\sqrt2$) carry charges $0$ and $2$. The charge-zero
+fields move the centre of the circle, and the price is then a factor $1/|{\rm centre}|$ that Jensen cannot absorb. For configurations with even sectors the
+square-root exclusion of \S\ref{sec:full-cubic-profile-exclusion} remains the applicable one. The theorem does not reach the small-amplitude core
+($\|\alpha\|\lesssim0.03$) of \autoref{ch:coupled-tensor}--\autoref{ch:small-buffer-tensors}. Its role is to shrink the outer region those chapters must glue to.

@@ -1,0 +1,116 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/lower-bound/sharp-influence.tex (file dated 2026-10-25). Only this line was added.
+\subsubsection{The sharp global influence coefficient: reconciliation and proof}
+\label{sec:sharp-influence-audit}
+\begin{theorem}[Sharp global influence bound, \st{P,C}]\label{thm:sharp-influence-audit}
+For a finite-dimensional pure complex cubic $q$, let
+\[
+ e=\E|q|^2,\quad \kappa=\E|q|^4-2e^2,\quad
+ I_q=\E[dd^*]+\E[\bar f f^{\mathsf T}],\quad
+ d_j=\partial_{X_j}q,\quad f_j=\partial_{\bar X_j}q.
+\]
+Thus $I_q$ is the matrix $K$ of (SB.6a), not its restriction to the
+shared-driver span. Then
+\[
+ \boxed{\kappa\le\frac{14}{3}\operatorname{tr}(I_q^2)
+                 \le14e\|I_q\|_{\rm op}.}
+\]
+Both constants are sharp. No sixth-moment assumption is used.
+\end{theorem}
+\begin{proof}
+Write $q=\sum t_{abc}{:}X_aX_b\bar X_c{:}$, $t_{abc}=t_{bac}$,
+so $e=2\|t\|^2$. Define
+\[
+ N_{ab}=\sum_{j,k}t_{ajk}\bar t_{bjk},\qquad
+ P_{ab}=\sum_{j,k}t_{jka}\bar t_{jkb},\qquad
+ B_{be}=\sum_{a,d}t_{abd}t_{dea},
+\]
+\[
+ U_{abj;c}=\sum_i t_{abi}t_{jic},\qquad
+ X=\operatorname{Sym}_{a,b,j}U,\qquad z=\operatorname{tr}(NP^{\mathsf T}).
+\]
+The derivative normalization gives $I_q=4N+2P^{\mathsf T}$ and
+$\operatorname{tr}I_q=3e$. Wick expansion gives
+\[
+ \kappa=32\|N\|_{\rm HS}^2+8\|P\|_{\rm HS}^2
+                    +96\|X\|^2+32\|B\|_{\rm HS}^2.             \tag{SI.1}
+\]
+The exact checker enumerates all 176 pairings of the six holomorphic
+and six antiholomorphic legs of $q,q,\bar q,\bar q$, excluding pairs
+within one Wick factor. Eight disconnected pairings contribute $2e^2$.
+For the remainder it identifies contraction graphs under exchanges of
+identical factors, exchanges of the first two tensor slots, and renaming
+of summed indices. The six resulting graph types agree coefficientwise
+with (SI.1), including the nine terms of $\|\operatorname{Sym}U\|^2$.
+This is an identity of finite sums for every index set, rather than a
+numerical check in finitely many dimensions.
+
+Expanding the squared Gram norm now gives the exact slack identity
+\begin{align*}
+ \frac{14}{3}\|I_q\|_{\rm HS}^2-\kappa
+ ={}&32(\|N\|_{\rm HS}^2-\|B\|_{\rm HS}^2)
+       +96(z-\|X\|^2)\\
+    &+\frac{32}{3}\|N-P^{\mathsf T}\|_{\rm HS}^2.                \tag{SI.2}
+\end{align*}
+All three terms are nonnegative. Index rearrangement gives
+$\|U\|^2=z$, and symmetrization is an orthogonal projection.
+For the first term, let the columns of a matrix $R$ be the vectorized
+slices $(t_{abd})_{a,d}$ indexed by $b$, and let $J$ transpose a slice.
+Then $B=R^{\mathsf T}JR$ and the Gram matrix $R^*R$ is $N^{\mathsf T}$.
+The Schatten--H\"older inequality gives
+\[
+ \|B\|_{
+\rm HS}\le\|R^{\mathsf T}\|_4\|JR\|_4
+ =\|R\|_4^2=\|N\|_{\rm HS}.
+\]
+Finally $I_q\succeq0$ and $\operatorname{tr}I_q=3e$ imply
+$\operatorname{tr}(I_q^2)\le3e\|I_q\|_{\rm op}$.
+For $q=N^{-1/2}\sum_{j=1}^NH(X_j)$,
+\[
+ e=1,\quad\kappa=42/N,\quad I_q=(3/N)\operatorname{Id}_N,
+ \quad\operatorname{tr}(I_q^2)=9/N.
+\]
+Both inequalities are equalities. Unequal independent Wick sums still
+saturate the first inequality; equality in the second requires equal
+nonzero squared amplitudes.
+\end{proof}
+
+\paragraph{The fourth-moment cap is a direct consequence.}
+Since $h\le\operatorname{tr}I_q=3e$, the same theorem gives
+$\E|q|^4\le44e^2$. For $e=1$ this is stronger than the cap
+$2+(31/4)^2=993/16$ assumed by \code{Bridge.gaussian\_moments}.
+For the intended $H_{2,1}$ residual, this supplies the mathematical cap.
+The Lean bridge is stated more broadly for two real third-chaos
+polynomials: its signature alone does not encode bidegree $(2,1)$.
+A port must retain that extra structure rather than apply the bound to
+an arbitrary pair of real cubic chaoses.
+
+\paragraph{What is new in this reconciliation.}
+The value $14$ was already recorded in \S\ref{sec:wct-external}; the later
+real-chaos route in (SB.6) retained the weaker $50/3$. The proof and exact
+contraction check above give one canonical statement with consistent
+normalizations. Keep the real-matrix bound as a separate option: it can
+be stronger for particular derivative covariance matrices. Its numerical
+right-hand side need not itself be bounded by $14eh$.
+
+\begin{corollary}[A larger diffuse-tensor region]\label{cor:sharp-influence-region}
+For the full coupled A/B family (CT.1), with arbitrary phases and
+amplitudes, the assumptions
+\[
+ g\ge9/40,\qquad e\le1/25,\qquad h\le e/10
+\]
+imply
+$\Lambda(G)<S-1/40000-E_{AB}/2000$.
+Also $g\ge1/5$, $e\le1/25$, $h\le e/150$ imply (CT.4).
+\end{corollary}
+\begin{proof}
+The original numerical certificate behind Theorem~\ref{thm:ct-influence} treats $h$ and $\kappa$ separately.
+For its exact branch, $14eh\le7e^2/5$; for its weak branch,
+$14eh\le7e^2/75<e^2/10$. These verify every hypothesis without
+rerunning or enlarging the earlier numerical certificate.
+\end{proof}
+The exact branch extends the previously stated influence-only cutoff
+$9e/100$ to $e/10$, with the displayed (smaller) guaranteed deficit.
+The weak branch inherits its accepted remote comparison. By themselves these A/B arguments do not include arbitrary even sectors.
+Corollary~\ref{cor:quadratic-all-sector-refinement} supplies their simultaneous
+even/diagonal extension with explicit penalties. A complete row envelope
+is still missing.

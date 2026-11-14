@@ -1,0 +1,28 @@
+{
+  "original_B": "713420886479/1000000000000",
+  "original_L": "1401697117301/1000000000000",
+  "input_cover": "improvement_cover_v5.json",
+  "actual_upper": "2261603817056712040758851322844120200618409620574822025192154843672242478630850583744036317940488763607039602325217061868242783776895677/3170084006194497222984187373099251683805388993323011660568675753939259219075805164387165719932133986795520000000000000000000000000000000",
+  "binding_boxes": [
+    3830
+  ],
+  "boxes": 11107,
+  "accepted_splits": 126,
+  "frozen": 224,
+  "seconds": 11.36466825000025,
+  "operation": "bisection of an existing box and exact repricing of its existing two-component mixture",
+  "B": "713420784003651/1000000000000000",
+  "L": "17521216483/12500000000",
+  "reciprocal": "1000000000000000/713420784003651",
+  "lower_decimal": 1.40169731864,
+  "status": "EXACT_RATIONAL_COVER_AND_PARTITION_CHECKED_NO_LEAN_BUILD",
+  "agent": "codex-a713",
+  "new_analytic_assumptions": [],
+  "outputs": {
+    "cover": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/improvement_cover_v6.json",
+    "certificate": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/improvement_certificate_v6.json",
+    "replay": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/improvement_replay_v6.json"
+  },
+  "cover_sha256": "aac65b27029aaa0c9887c2daf8e0b05e282f879d6bda376e7921cd44a02cb400",
+  "certificate_sha256": "693f21b4be14c4a49e1e55b6c8556b0f639fbe8ec1d1011700a39542fc89fd77"
+}

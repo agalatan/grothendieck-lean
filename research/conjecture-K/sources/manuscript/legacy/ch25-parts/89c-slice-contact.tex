@@ -1,0 +1,293 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/89c-slice-contact.tex (file dated 2026-10-25). Only this line was added.
+% Dimension-free tensor-subspace certificates, 22 October 2026.
+\subsection{From individual monomials to whole tensor subspaces}
+\label{sec:whole-slice-contact}
+
+\paragraph{Status and scope.}
+The following \st{P,C} results concern actual bounded responses, with
+$\epsilon=1891/2500$, $p=2500/1891$, $Ph=tZ$, $F=\epsilon Qk$,
+$V=\|F\|^2$ and $\mathcal N=t^2+pV-\|Pk\|^2-\epsilon\|Qh\|^2$.
+They allow arbitrary coupled remainders, every visible sector, all
+phases and every finite dimension. There is no fresh-buffer or
+independent-remainder assumption. These are new regions, not a full
+same-witness cover or a new endpoint.
+
+Let $\mathcal H$ be the remote first Gaussian chaos, orthogonal to $Z$.
+For unit $X,Y\in\mathcal H$, define the cubic subspaces
+\[
+ \mathcal S_X=\{\,{:}X^2\bar A{:}/\sqrt2:A\in\mathcal H\,\},
+ \qquad
+ \mathcal A_Y=\bar Y\,\mathcal H_{2,0}(\mathcal H\cap Y^\perp).
+\]
+Here ${:}X^2\bar A{:}=X^2\bar A-2\E[X\bar A]X$.
+Write $\Pi_{\mathcal S_X},\Pi_{\mathcal A_Y}$ for the orthogonal
+projections. The first space keeps one repeated holomorphic direction
+and all antiholomorphic directions; the second keeps one antiholomorphic
+direction and an arbitrary holomorphic quadratic on its orthogonal
+complement. Their dimensions need not be bounded.
+
+\begin{theorem}[\st{P,C}: whole-subspace concentration]
+\label{thm:whole-slice-contact}
+Throughout $21/25\le t\le851/1000$, in every finite dimension,
+\[
+ \boxed{\begin{aligned}
+ \|\Pi_{\mathcal S_X}F\|^2\ge\frac9{10}V
+   &\quad\Longrightarrow\quad\mathcal N<\frac{14263}{20000}=0.71315,\\
+ \|\Pi_{\mathcal A_Y}F\|^2\ge\frac{99}{100}V
+   &\quad\Longrightarrow\quad\mathcal N<\frac{14261}{20000}=0.71305,\\
+ \|\Pi_{\mathcal A_Y}F\|^2\ge\frac{197}{200}V
+   &\quad\Longrightarrow\quad\mathcal N<\frac{28529}{40000}=0.713225.
+ \end{aligned}}
+\]
+Each conclusion is below $35663/50000<500/701$.
+The remainder orthogonal to the indicated subspace may share all its
+coordinates and all visible sectors. There is no separate amplitude
+restriction. The latter two statements allow holomorphic quadratic
+rank tending to infinity.
+\end{theorem}
+
+\subsubsection{The support lemma separates the test from the remainder}
+Let $J$ be a unit remote cubic test and choose its phase so that
+$u=\langle\sqrt2J,F\rangle=\sqrt2|\langle J,F\rangle|\ge0$.
+For
+\[
+ L=Z\{\ell+b(|Z|^2-2)\},\quad D=\sqrt2dJ,\quad
+ m=\Re\langle Z(|Z|^2-2),h\rangle,
+\]
+the circular test law gives $\E|L+D|=\E|L-D|$.
+The two-disk support lemma therefore gives
+\[
+ \ell t+bm+pdu\le\E|L+D|.
+\]
+If the right side is at most $H$ and $b>0$, then
+\begin{equation}\label{eq:slice-support-penalty}
+ \|Pk\|^2+\epsilon\|Qh\|^2
+ \ge\frac{[\ell t+pdu-H]_+^2}{2pb^2}.
+\end{equation}
+For $b=0$ it gives a feasibility cut. This spends the existing penalty
+once; it is not an additional charge to combine with another bound on
+the same square. Only the known test law is integrated. No law of the
+unknown remainder is replaced or assumed independent.
+
+\subsubsection{Visible averaging supplies the needed concavity}
+For $a>0$, $b\ge0$, set
+\[
+ \Phi(v)=\E|Z(a+b|Z|^2)+\sqrt v|,\qquad v\ge0.
+\]
+This is increasing and concave \st{P}. Here is a self-contained route
+to the analytic input, also used in Lemma~\ref{lem:gsm}.
+The inverse $\tau$ of $t\mapsto t(a+bt)^2$ satisfies
+$\tau'=G\circ\tau$, where
+$G(t)=1/((a+bt)(a+3bt))$ is completely monotone.
+Induction in the chain-rule formula gives
+$(-1)^{j-1}\tau^{(j)}\ge0$ for all $j\ge1$.
+The density $e^{-\tau(v)}\tau'(v)$ is consequently completely
+monotone. Bernstein's representation theorem, normalized by its
+integral, identifies the circular visible variable as $\sqrt R\,N$
+in law, with $R>0$ independent of a proper standard Gaussian $N$.
+For a fixed $g>0$, the Rice mean $\rho_g(v)=\E|\sqrt v+gN|$ has
+\[
+ 2\rho_g'(v)=\frac1{g\sqrt\pi}
+   \int_0^1e^{-vt/g^2}\sqrt{\frac{1-t}{t}}\,dt,
+\]
+so it is increasing and concave. Mixtures preserve these properties.
+This argument concerns the \emph{visibly averaged} potential.
+The analogous fixed-radius angular mean need not be concave in squared
+radius, and is not used as if it were.
+
+\subsubsection{The whole holomorphic slice has one mixing parameter}
+The map $A\mapsto{:}X^2\bar A{:}/\sqrt2$ is an antilinear isometry.
+Choose its unit vector aligned with $\Pi_{\mathcal S_X}F$.
+If $V=0$, use the visible test below directly; otherwise the
+concentration hypothesis makes the selected projection nonzero.
+Gaussian phase changes reduce its law to that of
+\[
+ \psi_w=\sqrt w\,X(|X|^2-2)+\sqrt{1-w}\,X^2\bar Y,
+ \qquad 0\le w\le1,\quad X\perp Y,Z,
+\]
+before division by $\sqrt2$. Its squared norm is $2$.
+Write $T=|X|^2$, $S=|Y|^2$; these are independent exponentials.
+First integrate the visible variable, and then average the relative
+phase of $X,Y$. Concavity gives the uniform test majorant
+\begin{equation}\label{eq:slice-concave-relaxation}
+ \E|L+d\psi_w|\le B(w):=
+ \E_{T,S}\Phi\!\left(d^2\{wT(T-2)^2+(1-w)T^2S\}\right).
+\end{equation}
+The cross term has zero phase mean. Moreover $B$ is concave in $w$,
+since its argument is affine in $w$. No monotonicity in $w$ is asserted.
+The computer certificate proves
+\[
+\begin{array}{c|c|c|c}
+ \ell&b&d&\sup_{0\le w\le1}B(w)<H\\\hline
+ 1&0&1/4&93533/100000\\
+ 1&37/200&87/500&8367/10000
+\end{array}
+\]
+using directed lower and upper values at only
+$w\in\{0,1/20,1/10,1/5,1\}$.
+
+\paragraph{How five enclosures cover the continuum.}
+For concave $B$, a secant through $x_{i-1},x_i$ extrapolated to the
+right is an upper bound, and a secant through $x_{i+1},x_{i+2}$
+extrapolated to the left is an upper bound. If $l_i\le B(x_i)\le h_i$,
+the corresponding certified lines are
+\[
+ h_i+\frac{h_i-l_{i-1}}{x_i-x_{i-1}}(x-x_i),\qquad
+ h_{i+1}+\frac{l_{i+2}-h_{i+1}}{x_{i+2}-x_{i+1}}(x-x_{i+1}).
+\]
+On each interval use whichever lines are available and take their
+minimum. Its maximum occurs at an endpoint or the intersection of the
+two lines. All those comparisons are rational. This proves the
+continuum claim from the ten fresh integral enclosures.
+
+\subsubsection{An arbitrary holomorphic quadratic needs no rank cutoff}
+\begin{lemma}[\st{P}: a quadratic-block support comparison]
+\label{lem:quadratic-block-support}
+Let $Q_2\in\mathcal H_{2,0}$ have norm $1$ and use only remote
+coordinates orthogonal to $Y$. Let $G_1,G_2$ be independent proper
+standard complex Gaussians. For every increasing concave $\Phi$ for
+which these expectations exist,
+\[
+ \E\Phi(s|\bar YQ_2|^2)
+       \le\E\Phi(s|G_1G_2|^2),\qquad s\ge0.
+\]
+\end{lemma}
+\begin{proof}
+Takagi diagonalization writes $Q_2=\sum_j\lambda_j X_j^2$ in law,
+with $\lambda_j\ge0$, independent standard $X_j$, and
+$2\sum_j\lambda_j^2=1$. For complex $z$ its characteristic function is
+\[
+ \E e^{i\Re(\bar zQ_2)}
+       =\prod_j(1+\lambda_j^2|z|^2)^{-1/2}.
+\]
+Hence $Q_2\overset d=\sqrt W\,G_1$, where
+$W=4\sum_j\lambda_j^2\Gamma_j$, the $\Gamma_j$ are independent
+$\operatorname{Gamma}(1/2,1)$ variables, and $\E W=1$.
+Take this representation independent of $Y$ and condition on $G_1,Y$.
+Jensen in $W$ proves the inequality. This is a comparison for the
+test polynomial's law, not an insertion of a fresh buffer in $F$.
+\end{proof}
+
+Apply the lemma to the visibly averaged potential with $s=2d^2$.
+Every unit test $J=\bar YQ_2\in\mathcal A_Y$ satisfies
+\[
+ \E|L+\sqrt2dJ|\le\E|L+\sqrt2dG_1\bar G_2|.
+\]
+This product comparison is sharp over unbounded quadratic rank \st{P}.
+Indeed $Q_N=(2N)^{-1/2}\sum_{j=1}^NX_j^2$ has mixing variable
+$W_N=(2/N)\sum_{j=1}^N\Gamma_j$, with
+$\E W_N=1$ and $\operatorname{Var}(W_N)=2/N$. Coupling
+$Q_N=\sqrt{W_N}G_1$ in law gives, by the norm's Lipschitz property,
+\[
+ 0\le \E|L+\sqrt2dG_1\bar Y|-\E|L+\sqrt2dQ_N\bar Y|
+ \le\frac{2d}{\sqrt N}.
+\]
+Here $|\sqrt w-1|\le|w-1|$ and $\E|G_1\bar Y|\le1$.
+Thus the product integral equals the supremum over all such unit
+quadratics. This is sharpness of the test-law comparison only, not of
+the resulting response cap or of the global Grothendieck bound.
+Two directed product-integral certificates give
+\[
+\begin{array}{c|c|c|c}
+ \ell&b&d&\E|L+\sqrt2dG_1\bar G_2|<H\\\hline
+ 1&0&1/4&93868/100000\\
+ 1&37/200&87/500&83925/100000
+\end{array}
+\]
+The default upper values are below $0.938672025190$ and
+$0.839242280558$. Their proofs use the convex product-amplitude
+cubature from \S\ref{sec:mixed-contact-concentration}, now for
+$\sqrt2|G_1||G_2|$.
+
+\subsubsection{The actual-response cap remains a four-endpoint proof}
+For either pair of integral bounds, put $d_0=1/4$,
+$b=37/200$, $d=87/500$, and let $H_0,H$ be its first and second bounds.
+With $\eta$ the asserted projection share, set
+\[
+ U(t)=\frac{H_0-t}{pd_0},\qquad
+ C_\eta(t,u)=t^2+\frac{pu^2}{2\eta}
+                 -\frac{(t+pdu-H)^2}{2pb^2}.
+\]
+Use $u_0=47/200$ for $\mathcal S_X$ and $u_0=49/200$ for
+$\mathcal A_Y$. Projection onto the chosen unit test gives
+$V\le u^2/(2\eta)$, while the first support gives $u\le U(t)$.
+For $u\le u_0$ use the visible test $Z(|Z|^2-1/10)$ with its
+independently recomputed integral bound $I_0=124233393/10^8$.
+For $u\ge u_0$, the bracket in $C_\eta$ is positive.
+Exactly as in \eqref{eq:mixed-contact-canonical-cap}, convexity in $u$
+reduces to $u_0,U(t)$, the first endpoint increases in $t$, and the
+second is convex in $t$. The checker verifies every sign and the four
+endpoint comparisons with fractions. This proves
+Theorem~\ref{thm:whole-slice-contact}.
+
+\paragraph{Directed integration, including lower values and tails.}
+To enclose $B(w)$, partition the two exponential variables into radial
+cells up to radius $6$. Cell masses and the first three exponential
+moments are exact incomplete-gamma polynomials times $e^{-t}$.
+The mean of the squared-radius argument is
+$w\E[T(T-2)^2]+(1-w)\E[T^2]\E[S]$ on each product cell.
+For upper bounds, group cells by approximate mean radius and apply
+concavity to each group's \emph{exact} mass and first moment.
+Any grouping is valid; no correctness assertion depends on a floating
+classification. For lower bounds, the chord between the minimum and
+maximum squared radius gives two endpoint atoms; compress these on a
+rational squared-radius grid by another concave chord bound.
+Then enclose the visibly averaged $\Phi$ using convex amplitude
+cubature, with its lower bound supplied by Jensen on each visible
+radial cell. The positive angular series and directed Gaussian
+primitives are the same as in the preceding subsection.
+
+This order matters: concavity is used for the true \emph{already
+visibly averaged} $\Phi$, before substituting numerical upper or lower
+enclosures. No false pointwise squared-radius concavity is invoked.
+All arithmetic decisions are integer/rational. The explicit union-tail
+bound uses
+$\sqrt{wT(T-2)^2+(1-w)T^2S}\le\sqrt T|T-2|+T\sqrt S$;
+the package gives the full formula, including all three unbounded tails.
+
+\subsubsection{What this removes, and the new explicit obstruction}
+The antiholomorphic-block theorem is not a finite-rank result.
+For example
+\[
+ F_N=\bar Y\,\frac1{\sqrt{2N}}\sum_{j=1}^NX_j^2
+\]
+is unit, lies entirely in $\mathcal A_Y$, and has largest
+$\mathcal S_X$ projection share $1/N$. Thus an arbitrarily spread
+holomorphic quadratic block is covered, with a coupled remainder up
+to the stated energy fraction. The former example
+$X_1X_2\bar X_3$ also lies in $\mathcal A_{X_3}$ and is now covered
+as a concentrated direction.
+
+The cone union is still not exhaustive. A useful geometric obstruction is
+\[
+ F_0=\tfrac12(X_1^2\bar X_2+X_2^2\bar X_1),\qquad\|F_0\|=1.
+\]
+Its largest $\mathcal S_X$ projection share is $1/2$:
+the contraction norm is
+$\tfrac12(|x_1|^4+|x_2|^4)\le1/2$.
+Its largest $\mathcal A_Y$ share is also $1/2$: before restricting
+the holomorphic variables to $Y^\perp$, the contraction has norm
+squared $\tfrac12(|y_1|^2+|y_2|^2)\le1/2$, and equality is attained
+at $Y=X_1$. Its maximal directional influence, with the combined
+holomorphic and antiholomorphic convention, is $3/2$.
+These facts concern tensor geometry; $F_0$ is not asserted to be a
+counterexample or a high-payoff actual response.
+
+Every central survivor must now escape both entire-subspace cones,
+in addition to the stronger earlier individual tests where applicable.
+The missing step is a proved dimension-free alternative controlling
+the genuinely coupled complement, together with the remaining flank
+rows at the same witness parameter. Small influence or an independent
+buffer does not follow from these projection exclusions.
+
+\paragraph{Replay and port.}
+The package \code{grothendieck-slice-contact-20261022.zip} contains
+\code{verify\_all.py}, exact integer-interval sources, proof and
+Markdown handoff, default/fine replay logs, manifest and source snapshots.
+Run with \code{python3 -I /absolute/path/verify\_all.py --jobs 2};
+\code{--fine} refines the quadratures and product grids.
+The analytic dependencies are the two-disk support lemma, orthogonal
+Gaussian projections, the two scale-mixture proofs above, Rice
+concavity and elementary convex cubature. No higher chaos moment
+bound or raw-K theorem is assumed. None of this is newly compiled Lean
+code or a new global endpoint.

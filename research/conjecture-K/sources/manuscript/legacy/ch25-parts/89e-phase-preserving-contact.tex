@@ -1,0 +1,265 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/89e-phase-preserving-contact.tex (file dated 2026-10-25). Only this line was added.
+% Sharp support for a quadratic holomorphic block times orthogonal linear inputs.
+\subsection{A sharp tensor support that preserves the Gaussian phase}
+\label{sec:phase-preserving-contact}
+
+\paragraph{Scope and status.}
+The \st{P,C} theorem below keeps the phase discarded by
+Lemma~\ref{lem:multislice-support-reduction}, for a different whole
+subspace. Let $\mathcal A,\mathcal B$ be mutually orthogonal complex
+first-chaos spaces, both orthogonal to the visible coordinate $Z$, and
+put
+\[
+ \mathcal D(\mathcal A,\mathcal B)
+   =\mathcal H_{2,0}(\mathcal A)\mathcal H_{0,1}(\mathcal B).
+\]
+The holomorphic block includes mixed products $X_iX_j$; the
+antiholomorphic rank is unrestricted. Orthogonality of the two blocks
+is essential. It is a condition on the selected support-test subspace,
+not an independence assumption on the unknown response remainder.
+
+\begin{theorem}[\st{P}: sharp support and its extremizer]
+\label{thm:sharp-decoupled-support}
+Let $m=\dim\mathcal A\ge1$, $a>0$, $b,d\ge0$, and
+$L=Z(a+b|Z|^2)$. For every unit $J\in\mathcal D(\mathcal A,\mathcal B)$,
+\begin{equation}\label{eq:sharp-decoupled-support}
+ \E|L+\sqrt2dJ|
+ \le I_m(a,b,d):=
+ \E\left|L+d\sqrt{\frac{2}{m(m+1)}}R_mG\right|,
+ \qquad R_m\sim\operatorname{Gamma}(m,1),
+\end{equation}
+where $R_m,G,Z$ are independent and $G$ is a standard proper Gaussian.
+The bound is attained when the antiholomorphic block has dimension at
+least $m(m+1)/2$. An extremizer, with independent standard $Y_{ij}$, is
+\[
+ J_{\rm iso}=
+ \frac{\sum_iX_i^2\bar Y_{ii}
+       +\sqrt2\sum_{i<j}X_iX_j\bar Y_{ij}}{\sqrt{m(m+1)}}.
+\]
+The numbers $I_m$ increase with $m$ and converge to
+$I_\infty=\E|L+\sqrt2dG|$. For $d>0$ this increase is strict, and
+\[
+ 0\le I_\infty-I_m\le
+ d\sqrt{\frac\pi2}\left(1-\sqrt{\frac m{m+1}}\right).
+\]
+\end{theorem}
+
+\begin{proof}
+Write $J=\sum_\nu Q_\nu(X)\bar Y_\nu$ in an orthonormal basis of
+$\mathcal B$, with homogeneous holomorphic quadratics $Q_\nu$.
+Conditionally on $X$, $J$ is a proper Gaussian with variance
+$V(X)=\sum_\nu|Q_\nu(X)|^2$. By the visible scale-mixture proof in
+\S\ref{sec:whole-slice-contact}, $L$ has the law $\sqrt M N$,
+$M>0$, with $N$ proper standard Gaussian independent of $M$. Hence
+\[
+ K(v):=\E|L+\sqrt vG|=\frac{\sqrt\pi}{2}\E\sqrt{M+v}
+\]
+is increasing and strictly concave. The required integral is
+$\E K(2d^2V(X))$. Put $R=\|X\|^2$. Gaussian polar decomposition
+makes $X/\sqrt R$ independent of $R$, and homogeneity gives
+\[
+ \E[V(X)\mid R]=\frac{R^2}{m(m+1)},
+\]
+since $\E V=1$ and $\E R^2=m(m+1)$. Conditional Jensen proves
+\eqref{eq:sharp-decoupled-support}. In the displayed extremizer the
+conditional variance of the numerator is
+$\sum_i|X_i|^4+2\sum_{i<j}|X_i|^2|X_j|^2=R^2$,
+so equality holds and the norm is one.
+
+Put $W_m=R_m^2/[m(m+1)]$. Couple
+$R_{m+1}=R_m+E$, $E\sim\operatorname{Exp}(1)$ independent.
+Conditionally on $R_{m+1}$, the fraction $R_m/R_{m+1}$ is
+$\operatorname{Beta}(m,1)$ and its second moment is $m/(m+2)$.
+Thus $\E[W_m\mid R_{m+1}]=W_{m+1}$; concavity proves monotonicity,
+strictly for $d>0$. Also $\E W_m=1$ and
+$\operatorname{Var}W_m=(4m+6)/[m(m+1)]$. Jensen gives $I_m\le I_\infty$,
+and the sharper displayed error follows without inverse moments.
+For $s=2d^2>0$ put
+$j(x)=\sqrt{x+s}-\E\sqrt{x+sW_m}$. For $x>0$,
+$j'(x)\le0$ by convexity of $y\mapsto y^{-1/2}$.
+Thus $j(x)\le j(0)=\sqrt s(1-\E\sqrt{W_m})$.
+Since $\E\sqrt{W_m}=\sqrt{m/(m+1)}$, average over $x=M$
+and multiply by $\sqrt\pi/2$. The case $d=0$ is immediate.
+\end{proof}
+
+\paragraph{Exact norms of the extremizer \st{P}.}
+The conditional Gaussian law also gives
+\[
+ \E|J_{\rm iso}|=\frac{\sqrt\pi}{2}\sqrt{\frac m{m+1}},
+ \qquad
+ \E|J_{\rm iso}|^4=\frac{2(m+2)(m+3)}{m(m+1)}.
+\]
+The first expression is the sharp $L^1/L^2$ norm on this subspace,
+by the same spherical Jensen proof with zero visible term.
+The support convergence estimate above is $O(m^{-1})$.
+
+\paragraph{The same formula at other degrees \st{P}.}
+For a homogeneous holomorphic degree-$k$ block times an orthogonal
+antiholomorphic linear block, replace $R_m^2/[m(m+1)]$ by
+$R_m^k/(m)_k$. The extremizer has coefficients
+$\sqrt{k!/\alpha!}$ on $X^\alpha\bar Y_\alpha$, divided by
+$\sqrt{(m)_k}$. The multinomial theorem gives conditional variance
+$R_m^k/(m)_k$. The conditional Beta moment proves the same dimension
+monotonicity. Only degree two is used in the following certificate.
+
+\begin{theorem}[\st{P,C}: response concentration through 24 inputs]
+\label{thm:phase-preserving-contact}
+Use $\epsilon=1891/2500$, $p=2500/1891$, $Ph=tZ$,
+$F=\epsilon Qk$, $V=\|F\|^2$, and
+$\mathcal N=t^2+pV-\|Pk\|^2-\epsilon\|Qh\|^2$ as above.
+For $21/25\le t\le851/1000$, each row below is sufficient for
+\[
+ \boxed{\mathcal N<\frac{2853}{4000}=0.71325<\frac{500}{701}.}
+\]
+\[
+\begin{array}{c|ccccc}
+ \dim\mathcal A\le m&2&4&8&16&24\\\hline
+ \|\Pi_{\mathcal D(\mathcal A,\mathcal B)}F\|^2/V\ge\eta
+ &191/200&49/50&99/100&499/500&1999/2000
+\end{array}
+\]
+The ambient dimension and $\dim\mathcal B$ are arbitrary. Every
+coefficient phase and every coupled remainder, including all visible
+sectors, is allowed. There is no fresh-buffer or higher-moment input.
+For $V=0$ the conclusion follows from the visible-only test below.
+\end{theorem}
+
+\begin{proof}
+Choose a unit $J$ aligned with the indicated projection. Put
+$u=\sqrt2|\langle J,F\rangle|$, so $V\le u^2/(2\eta)$.
+Dimension monotonicity permits replacing $\dim\mathcal A$ by $m$.
+Theorem~\ref{thm:sharp-decoupled-support} and the directed integrator
+prove these rational support ceilings:
+\[
+\begin{array}{c|c|c}
+ m&I_m(1,0,6/25)<H_0&I_m(317/500,183/1000,81/500)<H\\\hline
+ 2&0.933570&0.834773\\
+ 4&0.934677&0.835589\\
+ 8&0.935277&0.836055\\
+ 16&0.935586&0.836305\\
+ 24&0.935690&0.836390
+\end{array}
+\]
+All terminating decimals in this table denote exact rationals.
+Set $b=183/1000$, $d=81/500$, $d_0=6/25$. The two-disk support
+inequality, followed by Cauchy--Schwarz against the norm-$\sqrt2$
+visible Wick cubic, gives
+\[
+ u\le U(t)=\frac{H_0-t}{pd_0},\qquad
+ \|Pk\|^2+\epsilon\|Qh\|^2
+    \ge\frac{[t+pdu-H]_+^2}{2pb^2}.
+\]
+This is the same-response cost, spent once.
+
+Use $u_0=49/200$. The visible test $Z(|Z|^2-1/10)$ has norm integral
+less than the independently checked $I_0=124233393/10^8$. Thus for
+$u\le u_0$ use
+\[
+ L_\eta(t)=t^2+\frac{pu_0^2}{2\eta}
+                    -\frac{(1.9t-I_0)^2}{2p}.
+\]
+For $u\ge u_0$ use
+\[
+ C_\eta(t,u)=t^2+\frac{pu^2}{2\eta}
+                  -\frac{(t+pdu-H)^2}{2pb^2}.
+\]
+The checker proves exactly that the bracket is positive, $L_\eta$
+increases on the interval, $C_\eta$ is convex in $u$,
+$C_\eta(t,u_0)$ increases in $t$, and $C_\eta(t,U(t))$ is convex in
+$t$. Only four endpoints remain. Their maxima, rounded upward for
+presentation, are respectively
+\[
+ 0.712981,\quad0.712948,\quad0.713191,\quad0.713160,\quad0.713225.
+\]
+Every exact fraction is below $2853/4000$.
+\end{proof}
+
+\paragraph{Replay and tail control \st{C}.}
+The standard-library verifier recomputes all ten support integrals.
+It integrates $\Phi(d^2kU^2E)$, $k=2/[m(m+1)]$,
+$U\sim\operatorname{Gamma}(m,1)$ and $E\sim\operatorname{Exp}(1)$,
+using exact truncated moments. Concavity of the visibly averaged
+$\Phi$ permits grouped conditional-mean upper atoms. Convexity in the
+visible amplitude gives its endpoint chord rule. The positive angular
+series has its tail bounded by the exact sum $4/\pi$. All arithmetic
+is rational or outward fixed-point integer arithmetic at scale $10^{70}$.
+For $R=\lceil\sqrt m\rceil+6$, put $x=e^{-36}$,
+$j_2=(73/12)x$, $j_4=(1801/8)x$,
+$P_U=\Pr(U>R^2)$ and $M_U=\E[U\mathbf1_{U>R^2}]$.
+An explicit bound for the union of all three tails is
+\[
+ a j_2+b j_4+(a+3b/2)(P_U+x)
+            +\frac{3d}{2}(x+j_2+M_U/m).
+\]
+It follows from the triangle inequality, Gaussian tail integration by
+parts, and $\sqrt{k}\le3/(2m)$. No sampled maximum or floating-point
+acceptance test is used. The package is
+\texttt{handoff/research-third-decimal/phase-preserving-contact-20261022/};
+its proof, rational endpoints, fresh replay logs and manifest are portable.
+
+\begin{corollary}[\st{P}: a spectral entrance test]
+\label{cor:phase-contact-spectral}
+Let $q$ be the remote projection of $F$, $e=\|q\|^2$, and let
+$H_q,A_q$ be the derivative Gram operators defined by
+\[
+ \operatorname{tr}(P_{\mathcal A}H_q)
+ =\sum_{X\in\operatorname{ONB}(\mathcal A)}\|\partial_Xq\|^2,
+ \qquad
+ \operatorname{tr}(P_{\mathcal A}A_q)
+ =\sum_{X\in\operatorname{ONB}(\mathcal A)}\|\partial_{\bar X}q\|^2.
+\]
+Both act on the same remote first-chaos space; these basis-independent
+trace formulas fix the antiholomorphic coordinate convention.
+Put $K_q=H_q-A_q$, so $\operatorname{tr}K_q=e$.
+Let $s_m(K)$ be the sum of its largest at most $m$ positive eigenvalues.
+Each row $(m,\eta)$ of Theorem~\ref{thm:phase-preserving-contact} is
+implied by the dimension-free invariant test
+\[
+ \boxed{s_m(K_q)\ge e+\eta\|F\|^2.}
+\]
+\end{corollary}
+\begin{proof}
+For a remote $\mathcal A$ put $\mathcal B=\mathcal A^\perp$ within
+remote first chaos. Decompose $q$ into six orthogonal sectors
+$q_{ij}$ having $i\in\{0,1,2\}$ holomorphic and $j\in\{0,1\}$
+antiholomorphic legs in $\mathcal A$, and put $e_{ij}=\|q_{ij}\|^2$.
+The Hermite derivative count gives the exact identity
+\[
+ \|\Pi_{\mathcal D(\mathcal A,\mathcal B)}q\|^2
+ =\operatorname{tr}(P_{\mathcal A}K_q)-e
+      +e_{00}+2e_{01}+e_{11}
+ \ge\operatorname{tr}(P_{\mathcal A}K_q)-e.
+\]
+Indeed the trace is $\sum(i-j)e_{ij}$; after subtracting $e$ the
+three displayed additions leave precisely $e_{20}$.
+Choose $\mathcal A$ from the largest positive eigenvalues of $K_q$
+(Ky Fan's variational principle). Its dimension is at most $m$.
+The projection of $F$ equals that of $q$, so the theorem applies.
+\end{proof}
+This is a sufficient condition, not an equivalence. On the separated
+class the identity is tight. If $K_q\succeq0$, however,
+$s_m(K_q)\le e$, so the spectral test cannot trigger for nonzero $F$.
+More generally it requires
+$\operatorname{tr}(K_q)_-\ge\eta\|F\|^2$.
+This locates the influence overlap that this method still leaves
+uncontrolled; failure of this test does not imply failure of all
+geometric projection tests.
+
+\paragraph{Rank-free continuation.}
+Theorem~\ref{thm:conditional-response-contact} below covers this entire
+separated class at arbitrary ranks with the uniform energy share
+$499/500$, and also allows the holomorphic linear times centered
+$(1,1)$-quadratic channel. It covers all visible rows. The present
+finite-rank theorem retains its better concentration thresholds at
+small ranks and its sharp extremizer formulas.
+
+\paragraph{What this does and does not cover.}
+The sharp comparison reaches the Gaussian limit instead of a
+constant-modulus limit: the conditional Gaussian phase survives.
+It supplies whole-subspace response certificates well beyond two
+repeated-holomorphic slices. Cubics reusing a direction on both the
+holomorphic and antiholomorphic sides need not have a large projection
+into this class. Nor must a diffuse tensor concentrate on finitely many
+holomorphic inputs. An exhaustive alternative for that coupled
+complement, and the same-$\epsilon$ flank rows, remain open. These
+regional caps do not change the complete Grothendieck endpoint.

@@ -1,0 +1,762 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch27-shared-sector-refinements.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 27). Owner: lower-bound/07-remote-spectral.tex
+\section{Shared-sector comparisons under symmetry, a common-shift diagonal, and a law-sensitive rotation cost (lower-bound GPT, 15 October 23:28)}
+\label{ch:shared-sector-refinements}
+\chapsummary{Symmetry-based sector comparisons, diagonal refinements and law-sensitive rotation costs. Each addition theorem retains its stated baseline and dependence assumptions.}
+
+\paragraph{Provenance and status (IDE note, 15 October, 23:55).} This chapter is lower-bound GPT's \code{tex/ch27-shared-sector-refinements.tex} (numbering coincides with ours) from
+\pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/grothendieck-shared-sector-refinements-20261015/} (zip of the same name, mtime 23:28:05), ported verbatim except for this header, the
+promotion of its first subsection to a section (marked ``IDE''), and the closing reading note (\S\ref{sec:sharedsector-reading}). Notes, proofs, checkers and replay receipts are archived in
+\pathref{handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/}. Statements \st{P} (GPT, written proofs with exact/directed finite certificates); \emph{our replay} \st{C}:
+\code{SHA256SUMS.json} 42/42; \code{verify\_all.py} under \code{python -I} (venv with NumPy, needed for the two even-sector interval checks) from an isolated directory: \textbf{all 12 acceptance checks
+PASS, 49\,s} (diagonal density envelope 64,000 cells, common-shift diagonal 10,001 nodes and both tails, even-sector density box and $2\times2$ matrix certificate, combined rational constants, ring
+polynomial, four-point inequality and the exact moment $80640$, A-density 98,304 rectangles, B-density 65,536 cells, rotation algebra, bounded response, local gate); log
+\pathref{kattack-2026-10-15/gpt\_sharedsector\_replay.log}; own float checks \pathref{kattack-2026-10-15/sharedsector\_own\_check.log}. All comparisons hold on the \emph{profile box} at the peak
+($\varepsilon=1891/2500$, $a\in[0.55919,0.55921]$, $b\in[0.14319,0.14321]$; the even constant on the larger box). \textbf{No endpoint changes}; the repository bound is that of
+\autoref{ch:certified} (now $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}). What is new \st{P}: (i) diagonal real penalty $0.462\to0.571$ (imaginary $0.265$ unchanged), joint $Y/W$ cost $1.30\to1.28$ (penalty $0.022\to0.042$), predictive
+thresholds $J_{\rm pred}\le J/41$ (real $\nu$), $J/123$ (complex); (ii) the $A$-sector at every amplitude under the finite symmetry $(Q,A)\overset{d}=(Q,iA)$, penalty $999/302560\approx0.0033$
+(under full conditional circularity $0.03917$); (iii) the $B$-sector at every amplitude under $\E[B\mid Q]=0$, penalty $609/1891\approx0.322$, and simultaneously with $Y,W,\nu(Q)H$ under the sign
+symmetry $(Q,B,Y,W)\overset{d}=(Q,-B,Y,W)$; (iv) a rotation cost retaining remote variance and kurtosis, for the certificate regeneration.
+
+This chapter proves stronger comparison inequalities and a stronger rotation
+cost. It asserts no new complete numerical lower bound and no proof of
+Conjecture K. The previous external certificate remains
+$K_G^{\mathbb C}>1.401621059539$, under its inherited analytic inputs;
+this chapter is not a Lean formalization. (IDE, as of \code{20eb917}: that external certificate
+is not merged in Lean and is superseded by the Lean bound $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$,
+\S\ref{sec:certcombinede}.) All random variables called remote
+are jointly independent of the visible standard proper complex Gaussian.
+The comparisons apply on the displayed profile boxes. Converting them to
+an improved endpoint additionally requires an admissible complete row cover.
+% Proposed subsection for ch24-remote-diagonal.tex. Do not overwrite ch25.
+% IDE: promoted to a section of this chapter (GPT proposed it as a subsection of \autoref{ch:remote-cubic-refinement}).
+\subsection{A common-shift certificate for the diagonal channel}
+\label{sec:diagonal-common-shift}
+Let $\varepsilon=1891/2500$, $L=Z(a+b|Z|^2)$,
+$H=Z(|Z|^2-2)/\sqrt2$, and
+$\Lambda(G)=\mathbb E(|L+G|+|L-G|)-\varepsilon^{-1}\mathbb E|G|^2$.
+Uniformly on
+$a\in[55919/100000,55921/100000]$ and
+$b\in[14319/100000,14321/100000]$, for every jointly distributed
+square-integrable remote pair $(Q,\nu)$ independent of $Z$,
+\begin{equation}\label{eq:common-shift-diagonal}
+ \boxed{\Lambda(Q+\nu H)\le\Lambda(Q)
+ -\frac{1079859}{1891000}\mathbb E(\Re\nu)^2
+ -\frac{501213}{1891000}\mathbb E(\Im\nu)^2.}
+\end{equation}
+The real penalty is $0.5710518244\ldots$, an increase of exactly
+$109/1000$ over the preceding $0.4620518244\ldots$.
+The imaginary penalty is unchanged. This does not improve a complete
+Grothendieck certificate by itself.
+
+\paragraph{Retain the common shift.}
+For the positive quadratic majorant
+\[
+ \mathcal Q_x(y)=\frac{3|y|^2}{4|x|}
+ -\frac{\Re(y^2\overline x^2)}{4|x|^3},
+ \qquad |x+y|+|x-y|\le2|x|+\mathcal Q_x(y),
+\]
+the exact Gaussian real-channel identity is
+\[
+ \mathbb E\mathcal Q_{G+s}(G)=\frac{\sqrt\pi}{4}B(|s|^2),
+ \quad B(x)=\mathbb E[(1+4xT)e^{-xT}],\quad
+ T\sim\operatorname{Beta}(1/2,1/2).
+\]
+Use the same eleven-term rational positive density envelope as the
+preceding section, with coefficients $c_j$ and rates $\lambda_j$.
+Unlike a sum of separate suprema, its all-shift bound is
+\[
+ \mathbb E\mathcal Q_{L+s}(H)\le R(|s|^2)+\tau,
+ \quad R(z)=\frac12\sum_j w_j B(\lambda_j z),
+ \quad w_j=\frac{\sqrt\pi}{2}c_j\lambda_j^{-3/2},
+\]
+where the unchanged radial tail satisfies $\tau<0.000085223$.
+The common-shift verifier proves
+\[
+ \sup_{z\ge0}R(z)+\tau
+ <0.750662732667456<\frac{751}{1000}.
+\]
+The imaginary cost remains bounded by $1057/1000$. Conjugation symmetry
+kills the real--imaginary cross term after rotating the shift, leaving the
+multiplier $\nu$ unchanged. Conditioning on $(Q,\nu)$, using the visible
+half-turn, and using
+$\mathbb E|Q+\nu H|^2=\mathbb E|Q|^2+\mathbb E|\nu|^2$
+proves \eqref{eq:common-shift-diagonal}.
+
+\paragraph{Finite arithmetic and tails.}
+The cancellation-free expansion
+\[
+ B(x)=e^{-x}\sum_{n=0}^\infty
+ \frac{\binom{2n}{n}}{4^n n!}x^n
+ \left(1+\frac{2x}{n+1}\right)
+\]
+follows by expanding $e^{x(1-T)}$. On $0\le x<10$ the verifier uses
+terms through $n=64$. If $t_{64}=\binom{128}{64}x^{64}/(4^{64}64!)$
+and $r=x/65$, the omitted sum before the last factor is at most
+$t_{64}r/(1-r)$; multiplying by $1+2x$ bounds the full omitted part.
+For $x\ge10$, splitting the beta integral at $1/2$ gives
+\[
+ B(x)\le3\sqrt{\frac{2}{\pi x}}+
+          \frac{1+4x}{2}e^{-x/2}.
+\]
+Both terms decrease on that range, and $B(x)\le2$ globally.
+Furthermore $|B'(x)|\le3/2$, so
+$|R'(z)|\le(3/4)\sum_j w_j\lambda_j<4.512$.
+The verifier checks $10{,}001$ nodes $z=j/5000$ on $[0,2]$ and pays
+$4.512/10000$ between nodes. For $z\ge2$ each term with
+$2\lambda_j\ge10$ uses its decreasing tail at $2\lambda_j$, and the
+other terms use $B\le2$. The radial $t\ge16$ tail is recomputed from
+its density and mass, independently of this unbounded-shift tail.
+The program uses only directed Decimal arithmetic from Python's standard
+library. The unchanged density envelope was independently replayed on all
+$64{,}000$ cells throughout the profile box.
+
+\paragraph{Simultaneous even channels.}
+The inherited $13/10$ quadratic bound holds on the larger profile box
+$a\in[0.5591,0.5593]$, $b\in[0.1431,0.1433]$, which contains the box above.
+For a remote triple $(Q,Y,W)$ put
+\[
+ J=\mathbb E|Y|^2+\mathbb E|W|^2,
+ \qquad J_{\rm pred}=\mathbb E|\mathbb E[Y\mid Q]|^2+
+                         \mathbb E|\mathbb E[W\mid Q]|^2.
+\]
+Cauchy--Schwarz for the positive quadratic form and optimization over real
+square-integrable functions $\nu(Q)$ yield
+\[
+ \sup_\nu\Lambda(Q+ZY+\overline ZW+\nu(Q)H)
+ \le\Lambda(Q)-\frac{417}{18910}J
+ +\frac{18461833}{10798590}J_{\rm pred}.
+\]
+In particular,
+\[
+ J_{\rm pred}\le J/79
+ \quad\Longrightarrow\quad
+ \sup_\nu\Lambda(Q+ZY+\overline ZW+\nu(Q)H)
+ \le\Lambda(Q)-J/2500.
+\]
+This weakens the preceding sufficient condition $J_{\rm pred}\le J/112$.
+It does not assert that arbitrary cubic kernels satisfy that condition.
+The missing visible shared $A/B$ comparison is unaffected: there the shift
+itself depends on $Z$, so the all-remote theorem cannot be applied.
+
+\paragraph{A further certified improvement of the even constant.}
+Refining the unchanged positive density-envelope matrix certificate gives
+\[
+ \mathbb E_Z\mathcal Q_{L+s}(uZ+v\overline Z)
+ \le\frac{32}{25}(|u|^2+|v|^2)
+\]
+on the larger profile box stated above. The new verifier retains all
+Gaussian integral parameters as intervals on $4{,}096$ radial cells and
+$162$ shift intervals covering $[0,5]$. Both real and imaginary $2\times2$
+blocks lie below $(32/25-1/15000)I$; the least certified determinant exceeds
+$3.96\cdot10^{-5}$. The unchanged density witness was replayed on all
+$12{,}000$ cells throughout the profile box. Its omitted radial tail is
+less than $1/15000$ and its unbounded-shift estimate is below $23/20$.
+Thus the joint even variance penalty improves to
+$1988/47275=0.0420518244\ldots$ from $0.0220518244\ldots$.
+Combining with \eqref{eq:common-shift-diagonal} gives the stronger statements
+\[
+ \sup_{\nu:\mathbb C\to\mathbb R}\Lambda(Q+ZY+\overline ZW+\nu(Q)H)
+ \le\Lambda(Q)-\frac{1988}{47275}J
+       +\frac{45444512}{26996475}J_{\rm pred},
+\]
+\[
+ J_{\rm pred}\le J/41\quad\Longrightarrow\quad
+ \sup_{\nu:\mathbb C\to\mathbb R}\Lambda(Q+ZY+\overline ZW+\nu(Q)H)
+ \le\Lambda(Q)-J/1100.
+\]
+For complex-valued $\nu(Q)$, a valid price is $63961184/12530325$, so
+$J_{\rm pred}\le J/123$ yields a net deficit $J/2000$.
+If the conditional means vanish, one retains the separate even, real
+ diagonal, and imaginary diagonal penalties. The finite rational comparisons
+are checked separately. These sufficient conditions are not assertions
+about all cubic kernels and do not remove the shared $A/B$ obstruction.
+
+
+\subsection{An all-amplitude A-sector addition theorem under conditional circularity}
+\label{sec:circular-a-addition}
+
+Set $\epsilon=1891/2500$ and let $Z$ be standard proper complex Gaussian,
+$T=|Z|^2$ and $L=Z(a+bT)$, where
+\[
+ a\in[0.55919,0.55921],\qquad b\in[0.14319,0.14321].
+\]
+Let $(Q,A)$ be any square-integrable complex random pair independent of
+$Z$, whose law is invariant under $(Q,A)\mapsto(Q,e^{i\theta}A)$ for
+every real $\theta$. For
+$\Lambda(R)=\mathbb E(|L+R|+|L-R|)-\mathbb E|R|^2/\epsilon$, we prove
+\begin{equation}\label{eq:circular-a-theorem}
+ \boxed{\Lambda(Q+(T-1)A)\le\Lambda(Q)
+       -\frac{231481}{5909375}\mathbb E|A|^2.}
+\end{equation}
+The coefficient exceeds $0.03917$. No Gaussianity, small-amplitude
+condition, or independence between $Q$ and $|A|$ is required.
+
+\paragraph{A global ring estimate.}
+For $u>0,v\ge0$,
+\begin{equation}\label{eq:circular-ring-bound}
+ M(u,v):=\frac1{2\pi}\int_0^{2\pi}|u+ve^{i\theta}|\,d\theta
+ \le u+\frac{38}{125}\frac{v^2}{u}.
+\end{equation}
+For $0\le r\le1$, the positive binomial series
+\[
+ M(1,r)=\sum_{k\ge0}\binom{1/2}{k}^{\!2}r^{2k}
+ \le1+(4/\pi-1)r^2\le1+\frac{137}{500}r^2
+\]
+uses $M(1,1)=4/\pi$ and $\pi>157/50$. For $r\ge1$,
+$M(1,r)=rM(1,1/r)\le r+137/(500r)$. To complete the proof put
+\[
+ P(r)=\frac{38}{125}r^3-r^2+r-\frac{137}{500},\qquad x=r-7/5.
+\]
+For $x\ge0$ the exact positive identity is
+\[
+ P(r)=\frac{38}{125}x^3+
+ \frac{173}{625}\left(x-\frac{39}{1730}\right)^2+
+ \frac{191}{5406250}>0.
+\]
+For $-2/5\le x\le0$, its expanded form gives
+\[
+ P(r)=x^2\left(\frac{173}{625}+\frac{38}{125}x\right)
+ -\frac{39}{3125}x+\frac{11}{62500}
+ \ge\frac{97}{625}x^2+\frac{11}{62500}>0.
+\]
+Homogeneity proves \eqref{eq:circular-ring-bound}.
+
+\paragraph{The uniform inverse-distance certificate.}
+Throughout the profile box,
+\begin{equation}\label{eq:circular-a-kernel}
+ K_A:=\sup_{s\in\mathbb C}\mathbb E
+ \frac{(T-1)^2}{|L+s|}<\frac{211}{100}.
+\end{equation}
+Here is the reduction to the supplied directed interval checker.
+Put $p(t)=a+bt$, $D(t)=a+3bt$, and $r(t)=\sqrt t\,p(t)$; use subscript
+$0$ for the lower profile endpoint and subscript $1$ for the upper one.
+The weighted pushforward under $z\mapsto L(z)$ has planar density
+\[
+ \frac1\pi\rho_{a,b}(r(t)),\qquad
+ \rho_{a,b}(r(t))=\frac{e^{-t}(t-1)^2}{p(t)D(t)}
+ \le\rho_0(t):=\frac{e^{-t}(t-1)^2}{p_0(t)D_0(t)}.
+\]
+Let $l=16/25$, $r_0=5/2$ and $H=\rho_0(l)$. Replace $\rho_0$ by the
+constant $H$ on $[l,r_0]$, leaving it unchanged elsewhere. The resulting
+function of the physical radius $r(t)$ is decreasing: $\rho_0$ decreases
+on $[0,1)$; 8,192 interval rectangles give
+\[
+ \sup_{1\le t\le5/2}\rho_0(t)<0.123883<1/8<H;
+\]
+and on $[5/2,3]$ its logarithmic derivative is at most
+\[
+ \frac13-\frac{b_0}{a_0+3b_0}-\frac{3b_0}{a_0+9b_0}<0.
+\]
+Beyond $3$ the logarithmic derivative is automatically negative.
+
+The convolution of two nonnegative radial decreasing functions is largest
+at the common center. This follows by writing their level sets as disks
+and observing that the overlap of two disks is maximal when concentric;
+Tonelli and truncation cover the kernel $1/|w|$. Thus the desired supremum
+is at most $2\int_0^\infty\widehat\rho(u)\,du$. The inequality
+$D(t)/D_0(t)\le b_1/b_0$, and the change of variable $x=\sqrt t$, bound this by
+\begin{align*}
+ &\frac{b_1}{b_0}\left[
+ \int_0^{4/5}\frac{2e^{-x^2}(x^2-1)^2}{a_0+b_0x^2}\,dx+
+ \int_{\sqrt{5/2}}^\infty\frac{2e^{-x^2}(x^2-1)^2}{a_0+b_0x^2}\,dx
+ \right]\\
+ &\qquad+2H\left[
+ a_1(\sqrt{5/2}-4/5)+b_1((5/2)\sqrt{5/2}-64/125)
+ \right].
+\end{align*}
+The checker bounds the two finite radial integrals on 98,304 rational
+rectangles and bounds the tail beyond $x=4$ analytically by
+\[
+ \frac{e^{-16}(16^2+2\cdot16+2)}{4a_0}.
+\]
+The total directed upper bound is
+\[
+ 2.106737818390345870252<2.11.
+\]
+Grid coordinates, their squares and centered subtractions are checked
+against exact rational arithmetic. Products forming squared numerators
+are rounded upward. Exponentials and square roots are rounded correctly
+at fifty decimal digits and then moved outward once. The verifier is
+self-contained and uses only the Python standard library.
+
+\paragraph{Completion of the addition theorem.}
+Conditional circularity permits averaging the phase of $A$ while holding
+$(Q,|A|,Z)$ fixed. Equation \eqref{eq:circular-ring-bound} bounds the sum
+of the two norm increases by
+\[
+ \frac{38}{125}\mathbb E\left[
+ |A|^2(T-1)^2\left(\frac1{|L+Q|}+\frac1{|L-Q|}\right)\right]
+ \le\frac{76}{125}\frac{211}{100}\mathbb E|A|^2.
+\]
+The variance increases by $\mathbb E|A|^2$, since
+$\mathbb E(T-1)=0$ and $\mathbb E(T-1)^2=1$. Therefore
+\[
+ \frac1\epsilon-\frac{76}{125}\frac{211}{100}
+ =\frac{231481}{5909375}>0,
+\]
+which proves \eqref{eq:circular-a-theorem}.
+
+\paragraph{New shared-driver family and remaining gap.}
+For independent proper Gaussians $X,Y$, the cubic
+$Q=Y(|X|^2-1)$ with $A=\alpha X$ satisfies conditional circularity for
+every $\alpha$. The residual shares the modulus of the sector driver,
+and is not linear in that driver with an independent coefficient.
+An independent circular A driver over any remote residual is covered as
+well, at every amplitude. The coherent Wick junta
+$Q=cX(|X|^2-2)$, $A=\alpha X$ fails the circularity hypothesis.
+General simultaneous B interactions and the complete row envelope remain
+separate obligations; no new global numerical endpoint is asserted here.
+
+
+\subsection{Fourfold symmetry suffices for the A-sector}
+\label{sec:c4-a-addition}
+
+The conditional circularity assumption in the preceding A-sector theorem
+can be weakened to the finite symmetry
+\[
+ (Q,A)\overset{\rm law}=(Q,iA).
+\]
+For the same visible profile box, the same $\epsilon=1891/2500$, and every
+square-integrable remote pair with this symmetry, we have the all-amplitude
+comparison
+\begin{equation}\label{eq:c4-a-theorem}
+ \boxed{\Lambda(Q+(|Z|^2-1)A)\le\Lambda(Q)
+       -\frac{999}{302560}\mathbb E|A|^2.}
+\end{equation}
+The coefficient is positive, approximately $0.0033018244$. Under the
+stronger circularity assumption the preceding larger deficit remains valid.
+
+\paragraph{The exact four-point inequality.}
+For every $z\ne0$ and $w\in\mathbb C$,
+\[
+ \frac14\sum_{k=0}^3|z+i^kw|
+ \le |z|+\frac5{16}\frac{|w|^2}{|z|}.
+\]
+By scaling and rotation, take $z=1$, $w=re^{i\theta}$. Put $a=1+r^2$ and
+$f(t)=\sqrt{2a+2\sqrt{a^2-t}}$ on $[0,a^2]$. The function $f$ is
+concave, as a composition of increasing concave square root with the
+concave function $2a+2\sqrt{a^2-t}$. Pairing opposite points and using
+$4r^2\le a^2$, we obtain
+\[
+ \frac14\sum_{k=0}^3|1+i^kre^{i\theta}|
+ =\frac{f(4r^2\cos^2\theta)+f(4r^2\sin^2\theta)}4
+ \le\sqrt{\frac{1+r^2+\sqrt{1+r^4}}2}.
+\]
+The angular maximum is attained at $\theta=\pi/4$. With $y=r^2$, two
+positive squarings reduce the desired upper bound $1+5y/16$ to
+\[
+ \left(1+\frac y4+\frac{25y^2}{128}\right)^2-(1+y^2)
+ =\frac{y}{16384}P(y)\ge0,
+ \quad P(y)=8192-8960y+1600y^2+625y^3.
+\]
+Indeed,
+\[
+ P'(y)=(75y-112)(25y+80),\qquad
+ \min_{y\ge0}P(y)=P(112/75)=\frac{311296}{675}>0.
+\]
+
+\paragraph{Application to A.}
+Average both norms over the four conditional phases of $A$. Their total
+increase is at most
+\[
+ \frac58 K_A\mathbb E|A|^2
+ \le\frac58\frac{211}{100}\mathbb E|A|^2,
+\]
+using the already certified all-shift inverse-distance bound. The variance
+increases by exactly $\mathbb E|A|^2$. Hence
+\[
+ \frac1\epsilon-\frac58\frac{211}{100}
+ =\frac{999}{302560}>0,
+\]
+proving \eqref{eq:c4-a-theorem}.
+
+\paragraph{A genuinely new shared-driver cubic family.}
+Let $X,U,V$ be independent proper standard complex Gaussians and set
+\[
+ Q=X^2\bar U+U^2\bar V+V(|V|^2-2),\qquad A=X.
+\]
+Every summand of $Q$ is in $\mathcal H_{2,1}$. The Gaussian unitary
+$(X,U,V)\mapsto(iX,-U,V)$ fixes $Q$ and sends $A$ to $iA$.
+This proves the symmetry required above, at every scalar amplitude of $A$.
+The pair is not conditionally circular: exact Gaussian moments give
+\[
+ \mathbb E[Q^5\bar Q\bar A^4]=80640\ne0.
+\]
+Writing the three summands as $q_1,q_2,q_3$, the contribution with
+$\bar q_3$ is
+$30\cdot24\cdot2\cdot32=46080$; the contribution with $\bar q_2$ is
+$30\cdot24\cdot24\cdot2=34560$; the contribution with $\bar q_1$ vanishes.
+Here
+\[
+ \mathbb E[T^2(T-2)^3]=32,\qquad
+ \mathbb E[T^2(T-2)]=2,\qquad
+ \mathbb E[T(T-2)]=0
+\]
+for standard exponential $T$. Conditional circularity would force the
+displayed mixed moment to vanish. A separate standard-library checker
+expands all 189 nonzero polynomial terms and verifies the expectation
+exactly, as well as the four-point polynomial inequality.
+
+The coherent Wick junta and general simultaneous A/B couplings remain
+outside the theorem. This enlarges a proved class of the conjecture but
+does not itself supply a new complete numerical lower bound.
+
+% Proposed report section; no new global endpoint is asserted.
+\subsection{A non-Gaussian shared $B$ case, including simultaneous even channels}
+\label{sec:shared-b-symmetry}
+Let $\epsilon=1891/2500$, $L=Z(a+b|Z|^2)$, and
+\[
+ a\in[55919/100000,55921/100000],\qquad
+ b\in[14319/100000,14321/100000].
+\]
+The visible $Z$ is standard proper complex Gaussian. All other random
+variables in this section are jointly independent of $Z$; arbitrary
+mutual dependence is allowed. Write
+\[
+ \Lambda(G)=\mathbb E(|L+G|+|L-G|)-\epsilon^{-1}\mathbb E|G|^2.
+\]
+
+\paragraph{A certified all-shift cost.}
+Uniformly throughout this profile box,
+\begin{equation}\label{eq:shared-b-inverse}
+ \sup_{s\in\mathbb C}\mathbb E_Z\frac{|Z|^4}{2|L+s|}<1.
+\end{equation}
+The standalone, standard-library checker \texttt{check\_b\_channel.py}
+proves an outward upper bound $0.999851769051099$ using $65\,536$ radial
+cells and an explicit infinite tail.
+
+Here is the dimension-free analytic reduction. Set $X=a+bt$, $D=a+3bt$
+and $r(t)=\sqrt tX$. The pushforward under $w=L(Z)$ of
+$(|Z|^4/2)d\gamma(Z)$ has density, relative to $dA(w)/\pi$,
+\[
+ \rho(r(t))=\frac{e^{-t}t^2}{2XD}.
+\]
+The sign of its derivative is the sign of
+$P(t)=a^2(2-t)+4abt(1-t)-3b^2t^3$.
+Exact rational comparisons and Descartes' rule place its unique positive
+zero in $[l,u]=[1.26308,1.26315]$ throughout the box. Put
+\[
+ \rho_0=\frac{e^{-l}u^2}
+ {2(a_{\min}+b_{\min}l)(a_{\min}+3b_{\min}l)}.
+\]
+Replacing the density inside $r(u)$ by $\rho_0$ gives a radial decreasing
+majorant. Its convolution with $1/|w|$ is maximal at zero: by layer cake,
+this follows from the fact that the intersection of two disks has largest
+area when their centres coincide. Hence the left side of
+\eqref{eq:shared-b-inverse} is bounded by
+\[
+ 2\rho_0\sqrt u(a_{\max}+b_{\max}u)
+ +\int_u^\infty\frac{e^{-t}t^{3/2}}{2(a_{\min}+b_{\min}t)}\,dt.
+\]
+The integrand is decreasing after $u$. Left rectangles certify its
+integral through $16$; the remaining integral is at most
+$17e^{-16}/(8b_{\min})$, using $\sqrt t\le t/4$ for $t\ge16$.
+
+\paragraph{Conditional centering suffices for $B$ alone.}
+For every square-integrable remote pair $(Q,B)$ satisfying
+$\mathbb E[B\mid Q]=0$,
+\begin{equation}\label{eq:shared-b-centered}
+ \boxed{\quad
+ \Lambda(Q+Z^2B/\sqrt2)
+ \le\Lambda(Q)-\frac{609}{1891}\mathbb E|B|^2.
+ \quad}
+\end{equation}
+There is no Gaussianity, chaos, small-amplitude or kurtosis hypothesis.
+Indeed, the visible half-turn identifies the two payoff signs. Apply
+\[
+ 2|x+y|\le2|x|+2\operatorname{Re}(\bar xy)/|x|+|y|^2/|x|
+\]
+with $x=L+Q$, $y=Z^2B/\sqrt2$. Conditional centering removes the linear
+term; \eqref{eq:shared-b-inverse} bounds the quadratic term by
+$\mathbb E|B|^2$. The variance cross term vanishes since $\mathbb EZ^2=0$.
+
+\paragraph{A simultaneous interaction theorem.}
+Suppose instead that the full remote law obeys
+\[
+ (Q,B,Y,W)\overset{\rm law}=(Q,-B,Y,W).
+\]
+Using the established even-channel quadratic bound with constant $32/25$,
+\begin{equation}\label{eq:shared-b-even}
+ \boxed{\begin{aligned}
+ &\Lambda(Q+Z^2B/\sqrt2+ZY+\bar ZW)\\
+ &\qquad\le\Lambda(Q)-\frac{609}{1891}\mathbb E|B|^2
+       -\frac{1988}{47275}(\mathbb E|Y|^2+\mathbb E|W|^2).
+ \end{aligned}}
+\end{equation}
+This controls the finite-amplitude interaction directly. To see this,
+put $x=L+Q$, $b_0=Z^2B/\sqrt2$, $e_0=ZY+\bar ZW$.
+The visible half-turn and the remote symmetry express the payoff as
+$\frac12\mathbb E\sum_{s,t\in\{-1,1\}}|x+sb_0+te_0|$.
+For the established positive quadratic form
+\[
+ \mathcal Q_x(y)=\frac{3|y|^2}{4|x|}
+     -\frac{\operatorname{Re}(y^2\bar x^2)}{4|x|^3},
+\]
+pair opposite terms, use
+$|x+y|+|x-y|\le2|x|+\mathcal Q_x(y)$, and apply the parallelogram
+identity. The result is bounded by
+$2\mathbb E|L+Q|+\mathbb E\mathcal Q_{L+Q}(b_0)
++\mathbb E\mathcal Q_{L+Q}(e_0)$.
+Equation~\eqref{eq:shared-b-inverse} bounds the first cost; the newly certified
+$32/25$ even-channel lemma bounds the second. Visible orthogonality makes
+all variance prices additive.
+
+\paragraph{Compatibility with the improved diagonal theorem.}
+The same proof permits $e_0=ZY+\bar ZW+\nu(Q)H$, since this remains odd
+under the visible half-turn. Consequently the previous joint
+ even-plus-diagonal quadratic-form comparisons remain valid with the
+additional deficit $(609/1891)\mathbb E|B|^2$. For example, let
+\[
+ J=\mathbb E|Y|^2+\mathbb E|W|^2,\qquad
+ J_{\rm pred}=\mathbb E|\mathbb E[Y\mid Q]|^2+
+               \mathbb E|\mathbb E[W\mid Q]|^2.
+\]
+For real $\nu(Q)$, the common-shift sharpened diagonal theorem gives
+\[
+ \sup_\nu\Lambda(Q+Z^2B/\sqrt2+ZY+\bar ZW+\nu(Q)H)
+ \le\Lambda(Q)-\frac{609}{1891}\mathbb E|B|^2
+ -\frac{1988}{47275}J+\frac{45444512}{26996475}J_{\rm pred}.
+\]
+In particular $J_{\rm pred}\le J/41$ leaves a deficit at least $J/1100$.
+For complex $\nu(Q)$ the threshold $J_{\rm pred}\le J/123$
+leaves $J/2000$. These statements use this round's newly certified
+$32/25$ even-channel bound and common-shift diagonal theorem. The combined
+theorem is restricted to the smaller profile box certified above.
+
+\paragraph{A shared-driver cubic family.}
+With independent remote standard proper Gaussians $X,U$, take
+\[
+ Q=cX^2\bar U+dH(U)+q_{\rm even},\qquad B=\lambda\bar X,
+ \qquad Y=\eta(|X|^2-1),\qquad W=\theta X^2,
+\]
+where $q_{\rm even}$ is any remote charge-one cubic invariant under
+$X\mapsto-X$. That transformation fixes $Q,Y,W$ and negates $B$.
+Thus \eqref{eq:shared-b-even} applies at every amplitude, including
+self-interacting non-Gaussian $Q$. An independent buffer can be added.
+For a different example, $Q=cX^2\bar U+dU^2\bar X$, $B=\lambda\bar X$
+has conditional centering by the order-three symmetry
+$(X,U)\mapsto(\omega X,\omega^2U)$, $\omega^3=1$, so
+\eqref{eq:shared-b-centered} applies; order three alone does not provide
+the sign symmetry required for \eqref{eq:shared-b-even}.
+
+Combining these results with the remote-cubic theorem gives its same
+remote slack (less than $10^{-5}$ at the peak under the project's
+sixth-moment input) for these additional shared-driver classes.
+Symmetry-breaking $A/B$ content, the other interactions, and a compatible
+full envelope remain necessary for a new global endpoint. This section
+asserts no such endpoint.
+
+
+\subsection{A rotation gate using the remote variance and kurtosis}
+\label{sec:remote-sensitive-rotation}
+
+The universal estimate $\|D_pG\|_2^2\le9\|G\|_2^2$ discards the
+visible Hermite degree of the remote cubic. Retaining that degree yields
+a stronger denominator without adding a hypothesis on the residual law.
+The result applies simultaneously to all visible sectors; it does not
+prove Conjecture K or constitute a new full numerical envelope.
+
+\paragraph{Theorem.}
+Let $G\in\mathcal H_{2,1}$, let $q$ be its orthogonal projection onto the
+cubics independent of the visible coordinate $Z$, and suppose
+$\|G\|_2^2\le V$. Put
+\[
+ v_0=\|q\|_2^2,\qquad R=V-v_0,\qquad
+ \kappa_q=\mathbb E|q|^4-2v_0^2,\qquad
+ \mu=\min\{3v_0,\sqrt{3\kappa_q}/2\}.
+\]
+For every unit remote first-chaos direction $p$,
+\begin{equation}\label{eq:remote-rotation-omega}
+ \|D_pG\|_2^2\le
+ \Omega:=9R+3\mu-2(\sqrt\mu-\sqrt R)_+^2
+ \le9R+3\mu\le9V.
+\end{equation}
+The only moment input is the established influence contraction bound
+\[
+ I_p(q):=\|\partial_pq\|_2^2+\|\bar\partial_pq\|_2^2
+ \le\min\{3v_0,\sqrt{3\kappa_q}/2\}.
+\]
+In particular, this uses the full remote cubic cumulant, never the
+cumulant of a conditional mixed slice.
+
+\paragraph{Proof.}
+Decompose $G=G_0+G_1+G_2+G_3$ by its total visible Hermite degree, where
+\[
+ G_0=q,\quad G_1=YZ+W\bar Z,\quad
+ G_2=r_A(|Z|^2-1)+r_BZ^2/\sqrt2,\quad
+ G_3=\nu Z(|Z|^2-2)/\sqrt2.
+\]
+The generator changes visible degree by one, so
+$D_p(G_0+G_2)\perp D_p(G_1+G_3)$. Writing $s=\|G_2\|_2^2$, the required
+finite tensor bounds are
+\[
+ \|D_pG_2\|_2^2\le7s,\qquad
+ |\langle D_pq,D_pG_2\rangle|\le2\sqrt{I_p(q)s},\qquad
+ \|D_p(G_1+G_3)\|_2^2\le9(\|G_1\|_2^2+\|G_3\|_2^2).
+\]
+To prove them in every dimension, embed the Wick tensor isometrically in
+three labelled one-particle slots. Split each slot into the plane
+$\operatorname{span}\{Z,p\}$ and its orthogonal complement. After a harmless
+sign convention for the generator, on each summand with $m\le3$ active
+slots it has the form $D=A-A^*$, where $A$ changes $p$ to $Z$.
+For the basis indexed by visible subsets $S$ of these slots,
+\[
+ (Af)_T=\sum_{i\in T}f_{T\setminus\{i\}},\qquad |T|=k+1.
+\]
+Cauchy--Schwarz followed by counting the $m-k$ successors of each source
+gives
+\[
+ \|A|_k\|^2\le(k+1)(m-k),\qquad
+ \|A^*|_k\|^2\le k(m-k+1).
+\]
+The two output degrees are orthogonal. At $k=2$ the sum of these bounds
+is at most $7$, and the three one-particle operator norms give
+$\|D\|\le3$. Since $A^*q=0$, one has $Dq=Aq$ and
+$\|Aq\|^2=I_p(q)$. Moreover
+\[
+ |\langle Dq,DG_2\rangle|
+ =|\langle A^2q,G_2\rangle|
+ \le2\|Aq\|\|G_2\|,
+\]
+because the degree-one to degree-two raising norm is at most $2$.
+These estimates remain valid upon restricting to the symmetric Wick
+tensor subspace.
+
+Consequently, for $0\le s\le R$,
+\[
+ \|D_pG\|^2\le\mu+7s+4\sqrt{\mu s}+9(R-s)
+ =9R+3\mu-2(\sqrt s-\sqrt\mu)^2.
+\]
+The maximum is at $s=\min\{\mu,R\}$, proving
+\eqref{eq:remote-rotation-omega}. The last inequality follows from
+$\mu\le3v_0$. This also covers $v_0=0$.
+
+\paragraph{Sharp elementary form.}
+If no cumulant information is used, set $\mu=3v_0$. The exact largest
+rotation cost given only $V$ and $v_0$ is
+\[
+ \Omega_0(V,v_0)=
+ \begin{cases}
+ 9V,&v_0\le V/4,\\
+ 7V-4v_0+4\sqrt{3v_0(V-v_0)},&v_0\ge V/4.
+ \end{cases}
+\]
+Indeed, the fully symmetric three-slot block on visible degrees $0,2$
+has compression, up to the sign of one basis vector,
+\[
+ \begin{pmatrix}3&\sqrt{12}\\\sqrt{12}&7\end{pmatrix}
+\]
+with eigenvalues $1,9$. Its top eigenvector has degree-zero mass fraction
+$1/4$. The degree-$1,3$ block also has top eigenvalue $9$, and supplies
+any remaining variance. The cumulant-dependent estimate above may have
+additional slack in its separate influence input.
+
+\paragraph{Exact scaling in the pinned certificate.}
+The pinned remote coordinate is $p_0=P_{2,1}^{\rm rem}k$, whereas
+$q=\epsilon p_0$. With
+\[
+ \tau=\|p_0\|_2,\quad
+ x=\sqrt{\mathbb E|p_0|^4/\tau^4-2},\quad
+ V=\epsilon^2\gamma(t),\quad
+ \gamma(t)=\frac{272665900591}{10^{11}}-3t,
+\]
+we have $v_0=\epsilon^2\tau^2$ and
+$\mu=\epsilon^2\tau^2\min\{3,\sqrt3x/2\}$. Thus
+\begin{equation}\label{eq:rotation-law-factor}
+ \|J_G\|^2\le\epsilon^2
+ \left[9\gamma(t)-\bigl(9-3\min\{3,\sqrt3x/2\}\bigr)\tau^2\right].
+\end{equation}
+The omitted nonnegative term from
+\eqref{eq:remote-rotation-omega} can strengthen this further.
+
+For a gate used only when $\tau\ge\tau_-$ and $0\le x\le x_+$, define
+\[
+ \bar c=\min\{3,7x_+/8\},\qquad
+ F_{\rm box}(t)=9\gamma(t)-(9-3\bar c)\tau_-^2.
+\]
+Since $\sqrt3/2<7/8$, this is an all-rational upper bound for the
+bracket in \eqref{eq:rotation-law-factor}. The positivity of
+$F_{\rm box}$ is checked over the gate's $t$ interval. At
+$(t,\tau,x)=(17/20,61/250,18/25)$ the direct rational version has ratio
+\[
+ \frac{F_+}{9\gamma(t)}=
+ \frac{12962556591}{17665900591}<0.734.
+\]
+Thus the rotation coefficient grows by more than $36.2\%$ there.
+This percentage concerns the gate coefficient, not the Grothendieck bound.
+
+\paragraph{Gate insertion and square accounting.}
+At a global maximizer the same Ward identity as before gives
+\[
+ \epsilon\|H\|^2\ge
+ \frac{\|t x_0+2\beta x_A+\sqrt2\beta x_B\|^2}
+      {\epsilon F_{\rm box}(t)}.
+\]
+For an allocation $0\le a\le1$, the new admissible first gate is
+\[
+ E\succeq\operatorname{diag}(-1,\epsilon,\epsilon)
+ -\frac{a}{\epsilon F_{\rm box}(t)}
+ v_\beta(t)v_\beta(t)^T,
+ \qquad v_\beta(t)=(t,2\beta,\sqrt2\beta)^T.
+\]
+All other gates and the pinned price are unchanged. The seven principal
+minor numerators remain quadratic over $\mathbb Q(\sqrt2)$, because
+$F_{\rm box}$ is affine in $t$. The retained $h$ square is spent only
+once; no old two-square penalty or later mixture discount is appended.
+Source profiles are combined before applying the new gate, as in the
+previous rotation construction.
+
+The complete cover checker must authenticate the additional
+$(\tau,x)$ domain and verify that every selected cell and every node
+interpolation segment lies inside it. Improved matrices require newly
+checked potential rebasing and law nodes. A successful local gate check
+alone is not an improved global lower-bound certificate.
+
+\paragraph{Exact audits.}
+The accompanying self-contained checker verifies the four active-slot
+cases, eighteen rational positive-semidefinite bounds, 4,913 scalar
+comparisons, and the displayed rational factor. The dimension-free
+argument is the tensor proof above, not the finite audit.
+
+
+\subsection{IDE reading note}\label{sec:sharedsector-reading}
+\paragraph{What the symmetry hypotheses assume, and which of our test residuals satisfy them.} Both $A$ theorems are statements about the \emph{joint law} of the remote pair: a measure-preserving
+map of the remote space must fix $Q$ and rotate $A$ by $i$ (or by every phase). Since a remote cubic is charge one, a global phase never fixes $Q$; the symmetry must come from a nontrivial stabiliser of $Q$
+in the remote unitary group, which a \emph{generic} cubic does not have. Hence:
+\begin{itemize}[leftmargin=1.5em,itemsep=1pt]
+\item \emph{Coherent Wick junta} $q=cH(X)+sW$ with $A=\alpha X$ (the family of \autoref{ch:weighted}, \autoref{ch:abattack}, \autoref{ch:weakk} on which the measured $A/B$ gains live): \textbf{fails} (GPT says so).
+Same for $B=\lambda\bar X$: $\E[B\mid Q]\ne0$; exactly, $\E[\bar X\,H|H|^2]=\E[T^2(T-2)^3]/(2\sqrt2)=32/(2\sqrt2)\ne0$, so $\E[\bar X\mid q]\ne0$ at $s=0$ \st{C}. This is the same obstruction as in the
+reading note of \autoref{ch:remote-cubic-refinement}: conditional centring of coefficients that share drivers with $q$ is \emph{not} automatic, and here it fails on exactly the binding family.
+\item \emph{The (T) counterexample} $q=(7/(20\sqrt2))X^2\bar Y$ of \autoref{ch:weighted}: the torus $(X,Y)\mapsto(e^{i\phi}X,e^{2i\phi}Y)$ fixes $q$, so $A=\alpha X$ (take $\phi=\pi/2$, $Y\to-Y$) and
+$A=\alpha Y$ ($\phi=\pi/4$) each satisfy the fourfold symmetry, and $B=\lambda\bar X$ or $\lambda\bar Y$ is conditionally centred; a \emph{mixed} $A=\alpha X+\alpha'Y$ does not satisfy $(Q,A)\overset{d}=(Q,iA)$
+(no single torus element multiplies both by $i$) although its first-chaos content still vanishes by the torus average. So the theorem covers it coordinate by coordinate, not in general position.
+\item \emph{Independent drivers} ($A$, $B$ built on coordinates independent of $Q$): covered (already covered by the Gaussian-factor theorems of \autoref{ch:kjoint} when $Q$ is Gaussian; new when $Q$ is not).
+\item \emph{L2 maximisers and the coupled kernels} of \autoref{ch:kjoint}, \autoref{ch:crossbound} (buffered coupled $n=2$ kernel, coupled L2 maximisers at $n=2$--$6$): generic, no stabiliser; \textbf{not covered}.
+\end{itemize}
+\paragraph{How much of the measured junta/L2 gains would they pay?} If the hypotheses held, \emph{all} of it: the symmetry kills the first-order content $\E[F_D(Q)\,\bar A]$ (phase average), which is
+precisely the measured mixed gain of \autoref{ch:abattack} and \autoref{ch:weakk}, and leaves a negative quadratic. Read the other way: a family with a nonzero measured gain (the coherent junta, e.g.\ gain
+$\approx10^{-3}$ at $(c,s)=(0.2,0)$, of which K$_{\rm rot}$ pays a quarter to a half) necessarily violates both hypotheses, so these theorems contribute nothing on the families that bind (T$_0$). They
+consume none of the $9.06\cdot10^{-5}$ budget either: on the covered classes K$_\eta$ holds with the remote $\eta<10^{-5}$ alone. The certified quadratic penalties are moreover method-limited \st{F}
+(\code{sharedsector\_own\_check.py}): the four-point constant $5/16$ is sharp to $0.4\%$ (true $0.3112$) and the ring constant $38/125$ to $2\%$ (true $0.2988$), but the all-shift kernels are
+loose---$\sup_sE[(T-1)^2/|L+s|]\approx2.027$ (certified $<2.107$) and $\sup_sE[T^2/(2|L+s|)]\approx0.917$ at $|s|\approx1.26$ (certified $<0.99985$, via the radial-decreasing rearrangement)---so the true
+penalties are about $0.06$ (fourfold $A$), $0.11$ (circular $A$) and $0.41$ ($B$) per unit variance, against the certified $0.0033$, $0.039$, $0.322$. The fourfold-$A$ margin
+$1/\varepsilon-\tfrac58\cdot2.11=0.0033$ is thin; it is a proof of sign, not a quantitative resource.
+
+\paragraph{The diagonal $0.462\to0.571$: what changed.} Nothing in the density envelope. In \S\ref{sec:gaussian-sharpening} the eleven Gaussian components of the envelope were each charged their own
+worst shift (``one-channel lemma'', the method limit we recorded there: envelope ratio $\ge1.0017$, finer cells useless). Here the \emph{same} shift $s$ is kept across all eleven terms until after
+summation, $\sup_z\sum_jw_jB(\lambda_jz)/2$ instead of $\sum_j\sup$; the real cost drops $0.860\to0.751$, penalty $1/\varepsilon-0.751=0.571$. Our directional quadrature (\autoref{ch:remote-cubic-refinement})
+gave a true real cost $\approx0.715$, so $0.751$ is now within $0.036$ of the truth; the imaginary channel ($1.057$ certified vs.\ $0.992$ true) was not reworked. The common-shift identity
+$\E\mathcal Q_{G+s}(G)=\frac{\sqrt\pi}4B(|s|^2)$ is GPT's; its series and tails are exact/directed and replayed.
+
+\paragraph{The sharper rotation denominator.} \autoref{ch:weakk} had $\varepsilon^2t^2+9\varepsilon\|G\|^2$ (both squares), \autoref{ch:rotation-gate-refinement} $9\varepsilon\gamma(t)$ (retained $H$-square only,
+$\|G\|^2\le\varepsilon^2\gamma(t)$). The new tensor bound $\|D_pG\|^2\le9R+3\mu-2(\sqrt\mu-\sqrt R)_+^2$, $R=V-v_0$, $\mu=\min\{3v_0,\sqrt{3\kappa_q}/2\}$, uses that the remote cubic $q$ (visible degree $0$)
+is rotated only through its influence $I_p(q)\le\mu$, and degree two only with norm $\sqrt7$; in the pinned variables it is $\varepsilon[9\gamma(t)-(9-3\min\{3,\sqrt3x/2\})\tau^2]$. At $(t,\tau,x)=(0.85,0.244,0.72)$
+the bracket is $0.733\cdot9\gamma$ (we recomputed: $v_0/V=\tau^2/\gamma=0.34>1/4$, so even the variance-only sharp form helps), i.e.\ $+36\%$ on the gate coefficient. Unlike ch.~\autoref{ch:weakk}'s
+$\omega=\min\{9v,3\sqrt{3\kappa/2}\}$, which ``changed nothing'' on the junta data (tiny junta variances), this one bites at the certificate's binding law because the pinned $\tau$ is not small. It needs a
+$(\tau,x)$-authenticated cover (the local gate demo checks one box; no cover checker yet). This is the part relevant to the certificate worker; the endpoint gain is unknown \st{?} (as of \code{20eb917} still untried: the combined certificates of
+\S\ref{sec:certcombinede} use no rotation gates, which would need the extra hypothesis \code{RotShared}).
+
+\paragraph{Judgement.} The proofs are short and, as far as we can see, correct (the ring/four-point inequalities are elementary and checked; the rearrangement step ``convolution of radial decreasing
+densities is maximal at the centre'' is standard). The symmetric $A/B$ classes enlarge the proved part of K but avoid exactly the coherent shared-driver content that (T$_0$) is about; the open crux
+is unchanged. Most useful now: the rotation cost (iv) for the regeneration, and the diagonal $0.571$.

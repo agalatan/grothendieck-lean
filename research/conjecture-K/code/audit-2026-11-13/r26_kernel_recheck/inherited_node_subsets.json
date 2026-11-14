@@ -1,0 +1,30 @@
+{
+  "r23_r25_certificate/r23_r25_certificate": {
+    "peak": {
+      "all_nodes_identical_subset": true,
+      "count": 127
+    },
+    "flank": {
+      "all_nodes_identical_subset": true,
+      "count": 127
+    },
+    "upper": {
+      "all_nodes_identical_subset": true,
+      "count": 127
+    }
+  },
+  "gaussian_factor_content/vector_content": {
+    "peak": {
+      "all_nodes_identical_subset": true,
+      "count": 127
+    },
+    "flank": {
+      "all_nodes_identical_subset": true,
+      "count": 127
+    },
+    "upper": {
+      "all_nodes_identical_subset": true,
+      "count": 127
+    }
+  }
+}

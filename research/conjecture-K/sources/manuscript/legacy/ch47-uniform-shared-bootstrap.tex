@@ -1,0 +1,212 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch47-uniform-shared-bootstrap.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 47). Owner: lower-bound/09-one-driver.tex
+\section{Uniform shared-driver bounds and coupled cubic complements}
+\label{ch:uniform-shared-bootstrap}
+\chapsummary{One-driver exterior bounds, full-sector energy exclusions and coupled complements. The previously uncovered one-driver core is closed in \autoref{ch:complete-coherent-driver}.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/chapter-uniform-bootstrap.tex} and its three section files from
+\pathref{gpt-reviews/uniform-coupled-bootstrap-20261020/}, ported verbatim apart from this summary, this paragraph and the renamed \code{\textbackslash input}s. \emph{Our replay} \st{C}:
+the \emph{full} \code{python3 -I verify\_all.py}, run from an unrelated directory, \textbf{ALL NEW REPLAYS PASS in 734\,s}. It rebuilds the moments and Rice tables, compiles the C++17
+engine with \code{-ffp-contract=off}, recomputes all 40 anchor matrices, and checks the 2{,}590-box complex cover, the profile planes, the comparator, the five Hermite blocks at eight anchors
+and the rational deductions. Inherited inputs: \autoref{ch:buffer-bootstrap} and \autoref{ch:zero-buffer-bootstrap}. The method builds on the context-free uniform-regions certificate
+(\S\ref{sec:zero-buffer-cold}).
+
+\paragraph{Status.}
+All new claims below are \textbf{[P,C]}: an analytic proof together with
+a replayable exact or directed computation. Floating design experiments
+are not proof inputs. The results are at the peak profile only. There is
+no new Grothendieck endpoint; the reported certified interval remains
+$1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\mathbb C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$.
+
+\subsection{Main theorem and its global extension}
+Put
+\[
+ \epsilon=\frac{1891}{2500},\quad p=\frac1\epsilon,\quad
+ a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+ L=Z(a+b|Z|^2),\quad H(X)=X(|X|^2-2)/\sqrt2.
+\]
+All standard complex Gaussians are proper, with second moment one.
+For independent $Z,X,U$, define
+\[
+ Q_0=cH(X)+\alpha(|Z|^2-1)X+\beta Z^2\bar X/\sqrt2,
+\]
+\[
+ \Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|-p\mathbb E|G|^2,
+ \qquad S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt vU|-pv\}.
+\]
+The new uniform result is
+\[
+ \boxed{c\ge\frac{19}{100},\quad g\ge0,\quad
+ \alpha,\beta\in\mathbb C
+ \quad\Longrightarrow\quad
+ \Lambda(Q_0+gU)<S-\frac1{25000}.}
+\]
+It removes every A/B amplitude and phase restriction above $c=0.19$.
+The previously accepted unrestricted threshold was $c=34/125=0.272$.
+
+The freshly computed compact part is
+\[
+ \boxed{\frac{19}{100}\le c\le\frac{34}{125},\quad
+ 0\le g\le\frac{41}{250},\quad|\alpha|\le\frac25,\quad
+ \beta\in\mathbb C
+ \quad\Longrightarrow\quad
+ \Lambda(Q_0+gU)<S-\frac3{5000}.}
+ \tag{U}
+\]
+The exact cover gives an absolute upper bound less than
+$1.373118558$. Independently, a newly recomputed one-dimensional
+Gaussian comparator proves $S>5495/4000=1.37375$.
+
+The extension from (U) uses precisely these accepted inputs:
+\begin{enumerate}
+\item \autoref{ch:buffer-bootstrap}, for $g\ge41/250$:
+\[
+ \Lambda(Q_0+gU)\le S-\frac{\min(c^4,c^2)}{32}
+                         -\frac{|\alpha|^2+|\beta|^2}{2000}.
+\]
+\item \autoref{ch:zero-buffer-bootstrap}, for $c\ge34/125$, every buffer and coupling:
+$\Lambda(Q_0+gU)\le S-1/8000$.
+\end{enumerate}
+The new profile theorem below covers $|\alpha|\ge2/5$ with deficit
+$1/5000$, regardless of every other sector. These cases exhaust the
+domain of the main theorem. The rational comparison
+$(19/100)^4/32>1/25000$ completes its proof.
+
+\input{ch47-profile-planes-section}
+
+\subsection{Complex anchors and the exact compact cover}
+\paragraph{The new anchor set.}
+Use
+\[
+ c_0=\frac6{25},\qquad
+ \alpha_0\in
+ \left\{0,\frac3{50},\frac9{50},-\frac9{50},
+ \frac{9i}{50},\frac{17}{50},-\frac{17}{50},\frac{17i}{50}\right\},
+ \qquad\beta_0=0.
+\]
+Conjugating every Gaussian yields the reflected bounds without further
+integration. In particular the nonreal anchors retain, rather than
+discard, the orientation of the A coupling.
+
+After the common phase rotation set $Z=r$, $X=x+iy$, $t=x^2+y^2$, and
+\[
+ \ell=ar+br^3,\quad H=(x+iy)(t-2)/\sqrt2,\quad
+ A=(r^2-1)(x+iy),\quad B=r^2(x-iy)/\sqrt2.
+\]
+The variables have density $2r e^{-r^2-x^2-y^2}/\pi$.
+The relative angle is present in $(x,y)$. All four Cartesian quadrants
+are integrated.
+
+For $\rho_g(u)=\mathbb E|\sqrt u+gU|$ and $K_g=2\rho_g'$, concavity gives,
+on every integration cell $j$,
+\[
+ 2\mathbb E_j\rho_g(|\ell+cH+\alpha A+\beta B|^2)
+ \le2\rho_g(q_j)+K_g(q_j)
+ \{\mathbb E_j|\ell+cH+\alpha A+\beta B|^2-q_j\},
+\]
+where $q_j=\mathbb E_j|\ell+c_0H+\alpha_0A|^2>0$.
+This is an inequality on the entire cell, not midpoint quadrature.
+The three unknown fields are orthonormal in complex $L^2$.
+Their exact variance price is therefore $p(c^2+|\alpha|^2+|\beta|^2)$.
+
+Partition each positive coordinate interval $[0,6]$ into $64$ equal
+cells. The complement of the resulting bounded domain $D$ is covered by
+\[
+ 2\mathbb E[|\ell+cH+\alpha A+\beta B+gU|1_{D^c}]
+ \le P+L_T+g^2P+(c^2+|\alpha|^2+|\beta|^2)T_D,
+\]
+where $P=\mathbb P(D^c)$, $L_T=\mathbb E[\ell^2 1_{D^c}]$, and
+$T_D=\mathbb E[(|H|^2+|A|^2+|B|^2)1_{D^c}]$.
+These follow from $2|w|\le1+|w|^2$, symmetry and Cauchy--Schwarz.
+The quadratic dependence is essential when eliminating an unbounded
+coupling.
+
+The resulting global majorant is
+\[
+ C+2\Re(b_Hc+b_A\alpha+b_B\beta)
+ +(c,\alpha,\beta)^*M(c,\alpha,\beta).
+\]
+Here $M$ is Hermitian; its off-diagonal entries and the linear
+coefficients may be complex. The implementation encloses all of them.
+The convention is
+$b_i=\mathbb E[K\ell H_i]$, $M_{ij}=\mathbb E[K\bar H_iH_j]-p\delta_{ij}$,
+with the specified cell weights and tail additions.
+
+\paragraph{Complex B elimination.}
+Every computed matrix has $k=-M_{BB}>0$. Its B-dependent part is
+\[
+ 2\Re\{\beta(b_B+cM_{HB}+\bar\alpha M_{AB})\}-k|\beta|^2.
+\]
+Its supremum is
+$|b_B+cM_{HB}+\bar\alpha M_{AB}|^2/k$.
+In particular, the reduced coefficients are
+\[
+ b'_A=b_A+\frac{b_B\overline{M_{AB}}}{k},
+ \qquad
+ M'_{HA}=M_{HA}+\frac{M_{HB}\overline{M_{AB}}}{k},
+ \qquad
+ M'_{AA}=M_{AA}+\frac{|M_{AB}|^2}{k}.
+\]
+The real $c$-linear term and constant receive the corresponding real
+cross term and $|b_B|^2/k$. No real-only maximization is substituted for
+this complex square.
+
+\paragraph{Continuum verification.}
+The forty endpoint matrices use the five buffer values
+$0,1/25,2/25,3/25,41/250$.
+After elimination the variables are $c,\Re\alpha,\Im\alpha$.
+Conjugation permits $\Im\alpha\ge0$. The exact checker covers the A disk
+by $2590$ intersecting rectangles of side $1/100$, keeping the full
+$c$ interval $[19/100,34/125]$ on each.
+For a reduced quadratic with diagonal coefficients $q_{cc},q_{AA},q_{AA}$,
+its maximum over such a box is at most its largest vertex value plus
+\[
+ \frac{\max(0,-q_{cc}^{\rm low})}{4}(\Delta c)^2+
+ \frac{\max(0,-q_{AA}^{\rm low})}{4}
+       \{(\Delta\Re\alpha)^2+(\Delta\Im\alpha)^2\}.
+\]
+This follows from tensor-product linear interpolation; all cross terms
+are reproduced exactly. The checker rounds coefficient intervals
+outward to multiples of $10^{-12}$ and performs subsequent comparisons
+with integers.
+
+For adjacent buffers $g_i,g_{i+1}$, convexity of the unpenalized norm
+in the amplitude gives, for $g=(1-u)g_i+ug_{i+1}$,
+\[
+ \Lambda(g)\le(1-u)B_i+uB_{i+1}
+                 +p\,u(1-u)(g_{i+1}-g_i)^2.
+\]
+The maximum of this quadratic in $u\in[0,1]$ is checked exactly.
+Minimizing valid anchor bounds separately at each endpoint is legitimate
+because each endpoint bound holds throughout the whole parameter box.
+
+The displayed absolute cap is a rational comparison, not a rounded
+optimization output. The scalar comparator for $S$ uses $g=1/5$,
+conditional Jensen on the radial cells, and a nonnegative omitted tail.
+It encloses its lower approximant in
+$[1.3737559771922547,1.373758128167349]$ and verifies the strict rational
+comparison $S>5495/4000$.
+
+\paragraph{Numerical primitives.}
+The Gaussian cell moments are recomputed from finite rational Taylor
+sums with explicit remainders. Rice values and derivatives use positive
+series with geometric remainder bounds, concavity/convexity interpolation,
+and large-argument bounds with explicit tails. The accompanying incoming
+proof gives their formulas. The new C++17 engine retains all four signs
+of $(x,y)$ and uses outward IEEE interval arithmetic. Every square-root
+bracket is checked by integer arithmetic. The independent continuum
+checker uses rational intervals and integers, not floating tolerances.
+
+In the following two lifting sections, $Q$ denotes the one-driver core
+$Q_0$, rather than the arbitrary cubic of the profile section. The
+application's allowed shared-sector excess is
+$\eta_{AB}=240297199/2651182000000$.
+\input{ch47-cylinder-lifting-section}
+\input{ch47-complex-complement-section}
+
+\subsection{Scope after the one-driver closure}
+The one-driver points formerly left open here are covered by
+\autoref{ch:complete-coherent-driver}. The conditional-complement costs and
+profile exclusions above remain useful with their stated hypotheses.
+They do not close arbitrary coupled cubics or provide a complete row
+cover. Current obligations are in \autoref{ch:K-state}.

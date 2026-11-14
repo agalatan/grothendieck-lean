@@ -1,0 +1,323 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/ai-notes/chatgpt-thread2-gaussian_domination_note.tex (file dated 2026-11-05). Only this line was added.
+% output/pdf/gaussian_domination_note.tex
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,mathtools}
+\usepackage[a4paper,top=23mm,bottom=23mm,left=25mm,right=25mm,headheight=14pt]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,urlcolor=ink,linkcolor=ink]{hyperref}
+\definecolor{ink}{HTML}{233B53}
+\definecolor{muted}{HTML}{505C65}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted} Gaussian domination in cubic chaos}
+\fancyhead[R]{\small\color{muted} 5 November 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{5pt plus 2pt minus 1pt}
+\setlength{\belowdisplayskip}{5pt plus 2pt minus 1pt}
+\allowdisplaybreaks[2]
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\heading}[1]{\par\smallskip{\large\bfseries\color{ink}#1}\par\smallskip}
+\newcommand{\subhead}[1]{\par\smallskip{\bfseries\color{ink}#1}\enspace}
+\newcommand{\qed}{\hfill\(\square\)}
+\hypersetup{pdftitle={Gaussian domination in the charge-one cubic chaos}}
+\begin{document}
+\thispagestyle{plain}
+{\LARGE\bfseries\color{ink} Gaussian domination in the\\[2pt] charge-one cubic chaos\par}
+\vspace{3pt}
+{\color{muted} A counterexample for unrestricted parameters and two comparison theorems\par}
+\medskip
+
+Let \(T=|z_1|^2\), \(a=\ell-2\beta>0\), \(L=z_1(a+\beta T)\), and
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-\varepsilon^{-1}\E|G|^2,\qquad
+ S=\sup_{\sigma\ge0}\Lambda(\sigma W).
+\]
+All complex standard Gaussians have second absolute moment one. Write
+\(B(v)=2\E|L+\sqrt v\,W|\) for \(v\ge0\), with \(W\) independent of the inputs.
+
+\textbf{Results.} A specific \(G\in H_{2,1}(\C^2)\) and positive \((\varepsilon,\ell,\beta)\) give
+\(\Lambda(G)>S\). In the application box we prove same-norm domination for conditionally
+proper Gaussian perturbations with the variance profiles in Section 3. The family includes a
+remote cubic that shares a Gaussian coordinate with \((T-1)z_2\).
+Section 4 proves the scalar Stein-sign inequality at every scale for the real cubic \(H_3(X)\).
+The uniform \(10^{-4}\) bound for arbitrary cubic tensors in the box remains open here.
+
+\heading{1. Which variances can be Gaussian optimizers?}
+The density of \(L\) on the plane is radial. At \(r(t)=\sqrt t\,(a+\beta t)\) its value is
+\[
+ p_L(r(t))=\frac{e^{-t}}{\pi(a+\beta t)(a+3\beta t)}.
+\]
+This follows from \(T\sim\mathrm{Exp}(1)\), the uniform phase, and the derivative of \(r(t)^2\).
+In particular, \(p_L\) is strictly decreasing in the radius. The planar heat equation with
+generator \(\Delta/4\), together with \(\Delta|x|=|x|^{-1}\) in distributions, gives
+\[
+ B'(v)=\tfrac12\E |L+\sqrt v\,W|^{-1}\quad(v>0),\qquad
+ B'(0+)=\tfrac12\int_0^\infty\frac{e^{-t}}{\sqrt t(a+\beta t)}\,dt.
+\]
+The convolution \(p_L*|\cdot|^{-1}\) is continuous, finite and strictly radially decreasing.
+For the monotonicity, write both factors by their disk superlevel sets. The area of overlap
+of two disks decreases with the distance between their centers, and for any two distinct
+distances there is a positive-measure set of radii for which it decreases strictly.
+Thus \(B'(v)\) decreases strictly by coupling the radii \(\sqrt v\,|W|\); it tends to zero
+as \(v\to\infty\), since \(\sup_x\E|x+\sqrt v W|^{-1}=\sqrt{\pi/v}\).
+Consequently \(B\) is strictly concave. For each \(v>0\), the choice
+\[
+ \boxed{\quad\varepsilon=1/B'(v)=2\big/\E |L+\sqrt v\,W|^{-1}\quad}
+\]
+makes \(v\) the unique maximizing variance. For fixed \(a,\beta\), domination for
+\emph{every} penalty is therefore equivalent to the same-norm comparison at every variance.
+
+The application box includes a zero optimizer. At
+\((\varepsilon,\ell,\beta)=(0.74,0.90,0.12)\),
+\(B'(0+)<\sqrt\pi/(2\cdot0.66)<1/0.74\), so \(\sigma_*=0\).
+For comparison, numerical quadrature of the derivative gives
+\(\sigma_*\simeq0.35601144\) at \((0.76,0.76,0.16)\) and
+\(\sigma_*\simeq0.20086017\) at \((0.7564,0.8456,0.1432)\).
+Only the zero-optimizer example is used in this argument.
+
+\newpage
+\heading{2. An explicit two-coordinate counterexample}
+Take \(\sigma=10^{-15}\), \(a=\sigma^2\), \(\beta=1\), \(\ell=2+a\), and choose
+\(\varepsilon=1/B'(\sigma^2)\) for this profile. Put \(X=z_2,\ U=|X|^2,\ d=1/12\), and
+\[
+ P(t,X)=\frac{X[(t-1)+d(U-2)]}{\sqrt{1+2d^2}},\qquad G=\sigma P(T,X).
+\]
+The two summands are Wick cubics, orthogonal with squared norms \(1\) and \(2\)
+before multiplication by their coefficients. Hence \(\|G\|_2=\sigma\).
+Replacing \(X\) with \(-X\) gives the equality of the two signs in \(\Lambda(G)\).
+
+\subhead{The moment at \(t=0\).}
+Write \(q=5/3\) and \(M=\E|W|^q=\Gamma(1+q/2)\).
+The tangent bound \(|1-dx|^q\ge1-qdx\) and the identity
+\(\E U^{q/2}(U-2)=(q/2-1)M\) give
+\[
+ \frac{\E|P(0,X)|^q}{M}
+ \ \ge\ \frac{1+5d/18}{(1+2d^2)^{5/6}}
+ \ \ge\ \frac{1+5d/18}{1+5d^2/3}=\frac{442}{437}.
+\]
+Also \(\E|P(0,X)|^2=1\). Since \(M\ge\mathbb P(|W|\ge1)=1/e\),
+the excess in the \(q\)-moment exceeds \(1/300\).
+
+\subhead{Converting the moment excess into a norm excess.}
+Let \(h(r,y)=\E_\theta|r e^{i\theta}+y|-r\), with \(\theta\) uniform and \(r,y\ge0\).
+Then \(0\le h(r,y)\le\min(y,y^2/(2r))\) for \(r>0\), by Jensen and the triangle inequality.
+Convexity in \(y\) also gives
+\(0\le \partial_y^+h(r,y)\le[h(r,2y)-h(r,y)]/y\le2y/r\).
+In particular \(|h(r,y)-h(r,w)|\le |y^2-w^2|/r\). By homogeneity and scaling,
+\[
+ \int_0^\infty h(t^{3/2},\sigma y)\,dt=C\,\sigma^{5/3} y^{5/3},\qquad
+ C=\int_0^\infty h(t^{3/2},1)\,dt>1/5 .
+\]
+The integral is finite by the bounds above. For \(t\le1/4\), Jensen gives
+\(h(t^{3/2},1)\ge 1-t^{3/2}\ge7/8\), proving the lower bound on \(C\).
+
+First set \(a=0\), so \(|L|=T^{3/2}\). Averaging the phase gives the gain
+\[
+ \E|L+G|-\E|L|=\int_0^\infty e^{-t}\E h(t^{3/2},\sigma|P(t,X)|)\,dt .
+\]
+Replacing \(P(t,X)\) by \(P(0,X)\) costs at most
+\[
+ \sigma^2\int_0^\infty e^{-t}\frac{2t+t^2}{t^{3/2}}\,dt
+ =\tfrac52\sqrt\pi\,\sigma^2 .
+\]
+Indeed \(P(t,X)-P(0,X)=tX/\sqrt{1+2d^2}\), and Cauchy--Schwarz bounds the expected
+absolute difference of squared moduli by \(2t+t^2\). Replacing \(e^{-t}\) by \(1\)
+costs at most \(\tfrac12\sigma^2\int_0^\infty(1-e^{-t})t^{-3/2}\,dt=\sqrt\pi\,\sigma^2\).
+For the Gaussian comparator, using \(1\) in place of \(e^{-t}\) gives an upper bound.
+Finally restoring \(a=\sigma^2\) changes the difference of the two mean norms by at
+most \(2a\E|z_1|=\sqrt\pi\,\sigma^2\). Altogether,
+\[
+ \E|L+G|-\E|L+\sigma W|
+ > \frac{\sigma^{5/3}}{1500}-9\sigma^2>0 .
+\]
+The equal penalties and Section 1 now give \(\Lambda(G)>\Lambda(\sigma W)=S\).
+The witness has \(\ell-2\beta=10^{-30}\), outside the required box.\qed
+
+\newpage
+\heading{3. A same-norm theorem in the application range}
+Suppose \(0<a/\beta\le11/2\). This contains the entire stated box.
+Let \(\mathcal F\) be independent of \(z_1\). Assume that, conditionally on
+\((z_1,\mathcal F)\), \(G\) has a centered proper complex Gaussian law of variance
+\[
+ h(T)=s+u(T-1)^2+bT+cT^2,\qquad s,u,b,c\ge0.
+\]
+The coefficients can be arbitrary \(\mathcal F\)-measurable random variables with
+\(\E(s+u+b+2c)<\infty\). The Gaussian can be degenerate. Then
+\[
+ \boxed{\ \E|L+G|+\E|L-G|\ \le\ 2\E|L+\|G\|_2 W|.\ }
+\]
+In particular \(\Lambda(G)\le S\) for every \(\varepsilon>0\).
+It suffices to prove the claim for deterministic coefficients. Indeed, the conditional
+mean variance is \(\bar h=s+u+b+2c\); conditional comparison followed by Jensen
+for the concave \(B\) gives \(\E B(\bar h)\le B(\E\bar h)\).
+
+\subhead{Two bounds on the inverse-radius kernel.}
+For \(w>0\), let \(M_w(r)=\E|r+\sqrt w W|\) and \(K_w(r)=\E|r+\sqrt w W|^{-1}\).
+The heat equation gives \(\partial_w M_w=K_w/4\). With \(x=r^2/(2w)\),
+\[
+ K_w(r)=\sqrt{\pi/w}\,e^{-x}I_0(x),\qquad
+ m(x)=2x\big(1-I_1(x)/I_0(x)\big).
+\]
+The kernel formula follows by integrating the Gaussian Laplace transform against
+\(y^{-1/2}dy/\sqrt\pi\) and substituting \(wy/(1+wy)\). Logarithmic differentiation gives
+\[
+ \partial_{\log r}\log K=-m,\qquad
+ \partial_{\log w}\log K=(m-1)/2,\qquad
+ m'=2-2m+m^2/(2x).
+\]
+We use the elementary estimates
+\[
+ 0<m(x)<13/10,\qquad \sup_{r,w>0} r K_w(r) <6/5 .
+\]
+For the first one, put \(D=13/10,\ x_*=D^2/[4(D-1)]=169/120\).
+The recurrence \(I_0-I_2=2I_1/x\) and the series estimate \(I_2/I_1<x/4\) give
+\(I_1/I_0>x/(2+x^2/4)\). At \(x=x_*\) this lower bound exceeds
+\(7/13=1-D/(2x_*)\), so \(m(x_*)<D\).
+At a crossing of \(D\), the differential equation gives \(m'>0\) to the left
+of \(x_*\) and \(m'<0\) to its right. Since \(m(0)=0\), \(m\) stays below \(D\).
+Positivity follows from \(I_1<I_0\).
+
+For the second estimate, \(rK_w(r)=\sqrt{2\pi x}\,e^{-x}I_0(x)\), whose logarithmic
+derivative in \(x\) is \((1-m)/(2x)\). The series gives \(I_1(1)<I_0(1)/2\), hence
+\(m(1)>1\). Every crossing of \(1\) has positive derivative, so the ratio decreases
+for \(x\ge1\). On \(0<x\le1\), use \(I_0(x)\le e^{x^2/4}\).
+The upper bound \(\sqrt{2\pi x}\,e^{-x+x^2/4}\) is increasing there, with value
+\(\sqrt{2\pi}e^{-3/4}<6/5\) at \(x=1\).
+The same crossing argument shows that as a function of \(w\), \(K_w(r)\) has at most
+one interior extremum, a maximum. Hence for \(0\le w\le w_0\) and \(r>0\),
+\[
+ K_w(r)\ \ge\ \min\{1/r,K_{w_0}(r)\}.
+\]
+Here \(K_0(r)=1/r\) by the zero-variance limit. The Bessel identities used above are
+also recorded in NIST DLMF, \href{https://dlmf.nist.gov/10.25}{\S10.25},
+\href{https://dlmf.nist.gov/10.29}{\S10.29}, and \href{https://dlmf.nist.gov/10.32}{\S10.32}.
+
+\newpage
+\heading{Proof of the comparison}
+First replace the constant variance contribution \(u\) by \(u(t-1)^2\) along the path
+\[
+ w_d(t)=s+bt+ct^2+u\{1-d+d(t-1)^2\},\qquad 0\le d\le1.
+\]
+The derivative of the mean norm is
+\[
+ \frac u4\int_0^\infty e^{-t}t(t-2)K_{w_d(t)}(r(t))\,dt .
+\]
+For \(u>0\), differentiation is justified on each compact subinterval of \(d<1\)
+by \(w_d\ge u(1-d)\). Continuity gives the comparison at \(d=1\).
+The integral of \(e^{-t}t(t-2)\) is zero. We show the kernel is at least its value
+at \(t=2\) for \(t<2\), and at most that value for \(t>2\).
+
+For \(t\ge3/2\), \(w_d'(t)\ge0\) and \(w_d'/w_d\le 2/(t-1)\). This holds term by
+term for the nonnegative summands. Also,
+\[
+ (t-1)\frac{r'(t)}{r(t)}
+ =\frac{t-1}{2t}+\frac{t-1}{a/\beta+t}
+ \ \ge\ \frac16+\frac1{14}=\frac5{21}>\frac3{13}.
+\]
+Therefore \(K_{w_d(t)}(r(t))\) decreases in \(t\) on this interval. In detail, its
+logarithmic derivative is \(-m r'/r+(m-1)w_d'/(2w_d)\). It is negative when \(m\le1\).
+When \(1<m<13/10\), use \((m-1)/m<3/13\) and the two preceding estimates.
+
+For \(0<t\le3/2\), we have \(w_d(t)\le w_d(2)\) and
+\[
+ \frac{r(t)}{r(2)}\le\frac{r(3/2)}{r(2)}
+ \le\frac{7\sqrt3}{15}<\frac56 .
+\]
+At \(w=w_d(2)\) the kernel decreases with \(r\). The bounds on the preceding page
+also give \(1/r(t) \ge (6/5)/r(2)>K_{w_d(2)}(r(2))\). Taking the minimum of these
+two endpoint bounds proves the desired comparison. It follows that the derivative
+in \(d\) is nonpositive. For \(G=\alpha(T-1)z_2\) alone, taking \(d=\rho^2\) proves
+monotonicity along the stated Ornstein--Uhlenbeck interpolation at every norm.
+
+We are left with the variance \(s+u+bt+ct^2\). Interpolate this from its mean
+\(\bar h\) by the affine path
+\(\widetilde w_d(t)=(1-d)\bar h+d(s+u+bt+ct^2)\).
+Here \(0\le\widetilde w_d'/\widetilde w_d\le2/t\), and \(r'/r\ge1/(2t)\).
+The logarithmic derivative of the kernel is again negative: for \(m>1\) it is
+at most \((m/2-1)/t<0\), and for \(m\le1\) its sign is immediate.
+The derivative of the mean norm is therefore nonpositive, since
+\(b(t-1)+c(t^2-2)\) is increasing with exponential mean zero, and the kernel is
+decreasing. Both variance replacements decrease the mean norm when moving away
+from the constant variance. This proves the theorem.\qed
+
+\subhead{A shared remote coordinate.}
+For any real \(\alpha,\lambda\), consider
+\[
+ G=z_2\{\alpha(|z_1|^2-1)+i\lambda(|z_3|^2-1)\}.
+\]
+This is a sum of two charge-one Wick cubics. The remote cubic and the visible-dependent
+cubic share \(z_2\). Given \(z_1,z_3\), their sum is proper Gaussian of variance
+\(\alpha^2(T-1)^2+\lambda^2(|z_3|^2-1)^2\), so the theorem applies at every amplitude.
+The example with \(\lambda=0\) already gives a nonconstant, nonmonotone conditional
+variance. For a general cubic the conditional Gaussian hypothesis can fail, for example
+when a remote term is \(z_2(|z_2|^2-2)\) and shares \(z_2\) with \((T-1)z_2\).
+
+\newpage
+\heading{4. The real cubic \(H_3\) at every scale}
+Let \(X\sim N(0,1)\), \(Y=H_3(X)=X^3-3X\), and
+\(A=|DY|^2/3=3(X^2-1)^2\). Then \(\E A=\E Y^2=6\). In fact,
+\[
+ \boxed{\qquad \E[(A-6)\ind_{\{|Y|\le h\}}]<0\quad\text{for every }0<h<\infty .\qquad}
+\]
+By layer cake this gives \(\operatorname{Cov}(A,\varphi(bY))<0\) for every \(b\ne0\).
+Since conditioning \(A\) on \(Y\) preserves this covariance, it gives precisely the
+Stein-kernel inequality at every scale for every nonzero element of the third chaos
+on one real Gaussian coordinate.
+
+To prove the boxed statement, put \(F(x)=x(x^2+1)e^{-x^2/2}\). Up to a positive
+constant, the signed density on the positive half-line is
+\[
+ (x^4-2x^2-1)e^{-x^2/2}=-F'(x).
+\]
+If \(h\ge2\), the positive sublevel set is one interval \([0,r]\); its signed mass
+is \(-F(r)<0\). For \(0<h<2\), it is \([0,r_1]\cup[r_2,r_3]\), with
+\[
+ 0<r_1<1<r_2<\sqrt3<r_3<2,\qquad r_3=r_1+r_2.
+\]
+Indeed \(r_1,r_2,-r_3\) are the three roots of \(x^3-3x+h=0\).
+The signed mass is therefore \(-F(r_1)+F(r_2)-F(r_3)\).
+
+On \([0,1]\), \((1+x^2)e^{-x^2/2}\ge1\), so \(F(r_1)\ge r_1\).
+On \([1,2]\), \(-F'(x)\le7e^{-2}<1\).
+For this bound, differentiate \(-F'\); the derivative has the sign of
+\(x(-x^4+6x^2-3)\), which is positive on this interval. Consequently
+\[
+ F(r_2)-F(r_3)\le7e^{-2}(r_3-r_2)<r_1\le F(r_1).
+\]
+Symmetry gives the claim on the full line.\qed
+
+\subhead{Relation to the formulation with \(\Phi\).}
+For \(Y_b=bY\), Gaussian integration by parts in the third chaos gives
+\(\E[Y_b f(Y_b)]=\E[b^2 A f'(Y_b)]\). Applying this to \(f(y)=2\Phi(y)-1\) yields
+\[
+ \E\!\left[|Y_b|(2\Phi(|Y_b|)-1)\right]
+ < 2\,\E[Y_b^2]\,\E[\varphi(Y_b)]\qquad(b\ne0).
+\]
+The rank-one result allows a direct proof even though the cubic has turning points
+at \(x=\pm1\). A different family in any dimension also satisfies the inequality:
+if \(Y\) is conditionally centered real Gaussian with random variance \(V\), integrating
+by parts conditionally gives
+\[
+ \begin{aligned}
+ &\E\!\left[|Y|(2\Phi(|Y|)-1)\right]-2\,\E[Y^2]\,\E[\varphi(Y)]\\
+ &\hspace{18mm}=\frac{2}{\sqrt{2\pi}}\operatorname{Cov}
+       \left(V,(1+V)^{-1/2}\right)\le0 .
+ \end{aligned}
+\]
+This covers, for example, cubics linear in an independent block of real Gaussian
+coordinates, with quadratic coefficients in the other block. The scalar inequality
+for general third-order tensors and general higher orders remains unresolved here.
+
+For the original complex problem at \(L=0\), \(S=\pi\varepsilon/4\).
+Optimizing \(\Lambda(bG)\) over real \(b\ge0\) shows that this endpoint of K is exactly
+the assertion \(\E|G|\le(\sqrt\pi/2)\|G\|_2\) for the charge-one cubic chaos.
+The all-scale scalar Stein-sign conjecture would additionally control the interpolation.
+\end{document}

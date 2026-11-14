@@ -1,0 +1,16 @@
+NEXT TASK (S1): sharpen the A-content certificates. Why: the A+B core closes ROBUSTLY (no statement about the A/B mixed term) once
+   C_A(q)^2 <= 0.10 [B(u) - F(q)]      (and with room 1.6e-2 for any mixed term m in [0.05, 0.118] already at 0.15),
+using only the certified diagonal costs kappa_A = 0.24 (|r_A|^2 <= 0.0113) and kappa_B = 0.26 (global) and the B content
+C_B^2 <= 0.1195 Delta (Gaussian-factor class, certified) or C_B <= 0.5053 C_A + 0.007 sqrt u (common-centre kernel bound, to certify).
+The J3 route through a near-exact mixed coefficient is abandoned (your audit: fragile, and the B-cost does not apply at q + A).
+Current certified A constants (all aimed at 0.24, never minimised): 11/50 = 0.22 for q = XP(Y), any complex quadratic P (reweighted
+Cauchy-Schwarz, affine weight w(y) = 3/10 + 7y/10, moment polynomial Q); 0.239 for the Gaussian-factor class sum_j X_j P_j(Y);
+23/100 for the self-interaction family X[c(|X|^2-2) + Y*AY - tr A], real c, Hermitian A, every share, u in [0.03, 0.0463]; 9/40 for
+any centred P with Wick share >= 4/5. True ratios: <= 0.088 at u = 0.0463 (Wick monomial, saddle excess 1.3e-4), lower elsewhere.
+Use the refined residual target where it helps: S - Lambda(q) = [B(u) - F(q)] + [S - B(u) + pu] (benchmark slack, >= 0); on
+u <= 0.03 the slack dominates, so the hard range is u in [0.03, 0.0463].
+Requests, in order: (1) for q = XP(Y): the smallest constant your reweighted envelope certifies on [0.03, 0.0463] (optimise
+the weight w and the polynomial Q for the target, not for 0.24); (2) the same for the Gaussian-factor class (vector moment inequality);
+(3) the same for the Hermitian self-interaction family (joint majorants of F + 2 l C with the target constant in place of 23/100);
+(4) the common-centre kernel bound |g_B(v) - 0.5053 g(v)| <= 0.007 for all v >= 0 at the three rows (or the best constant).
+Deliverable per class: the certified constant, the replayable checker, logs. Target: <= 0.10 on each class (0.15 already useful).

@@ -1,0 +1,817 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch34-gpt-shared-nongaussian.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 34). Owner: lower-bound/10-coupled-complements.tex
+\section{Lower-bound GPT: shared non-Gaussian $A/B$ couplings and a quantitative weak form of K (20 October)}
+\label{ch:shared-nongaussian-new}
+\chapsummary{Shared non-Gaussian comparisons, independent-block bounds and joint replacement tools. Smaller regions remain dependencies; current coverage is in \autoref{ch:K-state}.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{proof/ch34-shared-nongaussian.tex} from \pathref{gpt-reviews/shared-nongaussian-20261020/}, ported
+verbatim apart from this header. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py} from an unrelated directory: \textbf{PASS complete portable replay in 152.5\,s}, including
+the inherited Gaussian-covariance certificate and the characteristic-function inequality. The signed Hankel signs are the visible-averaging principle of \autoref{ch:forest} in
+Bessel form. Item (iii) is a block version of the replacement gap $D$ of \autoref{ch:polarized-profile-certificate}.
+
+\noindent At the peak, write $\Lambda(R)=\mathbb E(|\ell(T)+R|+|\ell(T)-R|)-\mathbb E|R|^2/\varepsilon$, and $S=\sup_{v\ge0}\{2\mathbb E|\ell(T)+\sqrt vG|-v/\varepsilon\}$. All new results below concern this exact profile. The independent benchmark certificate gives $S>1.37395328457$.\par
+
+
+\subsection{Finite shared B and simultaneous A/B couplings}
+\label{sec:finite-shared-ab}
+This section proves new finite-amplitude, non-Gaussian cases of
+Conjecture K. It does not change the global Grothendieck endpoint.
+Keep the exact peak parameters
+\[
+ a=699/1250,\quad b=179/1250,\quad \varepsilon=1891/2500,
+ \quad \ell(t)=\sqrt t(a+bt),\quad A(t)=t-1,\quad B(t)=t/\sqrt2.
+\]
+Write $H(X)=X(|X|^2-2)/\sqrt2$, and let $S$ be the diffuse Gaussian
+benchmark. All Gaussians below are independent standard proper complex
+Gaussians unless a shared driver is explicitly displayed.
+
+\begin{theorem}[Unequal Wick sums with shared B]
+Let $q=\sum_jc_jH(X_j)$ and
+$R=q+\sqrt vG+B(T)\sum_j\beta_j\overline{X_j}$, where
+$T=|Z|^2$. Put $u=\sum|c_j|^2$, $c_*=\max|c_j|$,
+$B_4=\sum|c_j|^4$, and $r=\|\beta\|_2$. If
+\[
+ 7/200\le v\le9/200,\qquad u\le1/50,\qquad
+ c_*\le1/25,\qquad r\le1/100,
+\]
+then
+\[
+ \Lambda(R)\le S-\frac{27}{10}B_4-\frac{r^2}{20}.
+\]
+The number of coordinates and all coefficient phases are unrestricted.
+\end{theorem}
+
+\begin{theorem}[Simultaneous shared A/B]
+Let
+\[
+ R=\sum_jc_jH(X_j)+\sqrt vG
+   +A(T)\sum_j\alpha_jX_j+B(T)\sum_j\beta_j\overline{X_j},
+ \qquad r^2=\|\alpha\|_2^2+\|\beta\|_2^2.
+\]
+If
+\[
+ 7/200\le v\le9/200,\qquad
+ \sum_j|c_j|^2\le16/2500,\qquad
+ \max_j|c_j|\le1/50,\qquad r\le1/1000,
+\]
+then
+\[
+ \boxed{\Lambda(R)\le S-\frac34\sum_j|c_j|^4-\frac{r^2}{200}.}
+\]
+There is no restriction on the relative directions of the two driver
+coefficient vectors.
+\end{theorem}
+\paragraph{Update (IDE note, 20 October evening).} Theorem~\ref{thm:buffered-review-anyn} (\autoref{ch:buffered-drivers}) removes the restriction
+$r\le1/1000$ on the same variance, coefficient and buffer range and raises the quartic coefficient to $2$ (and allows $e\le1/100$ with $49/100$), at the price of the
+weaker $A/B$ penalty $E_{AB}/2000$. On $r\le1/1000$ the penalty $r^2/200$ above remains the stronger statement. The visible-kernel signs of this chapter are inputs
+to the new theorem.
+
+\paragraph{Scope.}
+The B theorem allows twelve coefficients $c_j=1/25$ and $v=7/200$;
+their normalized fourth moment is $179138/73441>2.439$.
+The simultaneous theorem allows sixteen coefficients $c_j=1/50$ and
+$v=7/200$; their normalized fourth moment exceeds $2.0627$.
+Thus both cover genuine shared cubic examples in the application's
+kurtosis range. The Gaussian buffer and finite-amplitude restrictions
+remain essential to the present proof.
+
+\subsubsection{Positive Hankel representations after visible averaging}
+Put $h(t)=t(a+bt)^2$, $d(t)=h'(t)$, and $\tau=h^{-1}$.
+The functions
+\[
+ b_1(h(t))=\frac{e^{-t}}{(a+bt)^2},\quad
+ b_2(h(t))=\frac{e^{-t}}{\sqrt2(a+bt)^3(a+3bt)},\quad
+ b_4(h(t))=\frac{e^{-t}}{2(a+bt)^5(a+3bt)}
+\]
+are completely monotone. Indeed $d^{-1}$ is completely monotone in
+$t$, and the operation $-d^{-1}\partial_t$ preserves that property.
+Induction proves all alternating derivative inequalities after
+composition with $\tau$. Write $b_j(y)=\int e^{-sy}\mu_j(ds)$ with
+positive measures.
+
+For
+$\Psi_A(k)=\mathbb E[A(T)J_0(k\ell(T))]$ and
+$\Psi_B(k)=\mathbb E[B(T)J_2(k\ell(T))]$, integration by parts and the
+elementary Gaussian Hankel integrals give
+\[
+ \Psi_A(k)=-\frac{k^2}{4}\int s^{-2}e^{-k^2/(4s)}\mu_1(ds)\le0,
+ \qquad
+ \Psi_B(k)=\frac{k^2}{4}\int s^{-3}e^{-k^2/(4s)}\mu_2(ds)\ge0.
+\]
+In particular,
+\begin{align*}
+ I_A:=\int_0^\infty k^2|\Psi_A(k)|\,dk
+ &=3\int_0^\infty
+ \frac{e^{-t}(a+bt+2b)}{\sqrt t(a+bt)^4}\,dt,\\
+ I_B:=\int_0^\infty k^2\Psi_B(k)\,dk
+ &=\frac3{\sqrt2}\int_0^\infty
+ \frac{e^{-t}}{\sqrt t(a+bt)^3}\,dt<17.
+\end{align*}
+Let $R_X=|X|^2$ and $h_X=\sqrt{R_X}(R_X-2)/\sqrt2$. The content
+integrals contain $\mathbb E[\sqrt{R_X}J_1(kch_X)]/k$.
+Use
+\[
+ \mathbb E\sqrt{R_X}h_X=0,\quad
+ |J_1(x)-x/2|\le|x|^3/16,\quad
+ \mathbb E\sqrt{R_X}|h_X|^3
+ =\frac{-32+480e^{-2}}{2\sqrt2}.
+\]
+The exact scalar checker proves
+$I_A\mathbb E\sqrt{R_X}|h_X|^3/8<51$ and
+$I_B\mathbb E\sqrt{R_X}|h_X|^3/8<25$. Consequently, with
+$B_6=\sum|c_j|^6$,
+\[
+ \|\nabla_\alpha\Lambda|_0\|_2\le51\sqrt{B_6},\qquad
+ \|\nabla_\beta\Lambda|_0\|_2\le25\sqrt{B_6}.
+\]
+These bounds hold with any independent circular buffer: its radial
+characteristic function has absolute value at most one, and the other
+Wick blocks can be included in that buffer.
+
+\subsubsection{B curvature and the mixed entry}
+For $\psi_g(x)=\mathbb E|x+gG|$, define
+\[
+ M_B(x)[p,p]=\mathbb E_{T,\theta}B(T)^2
+ D^2\psi_g(\ell(T)e^{i\theta}+x)
+ [e^{2i\theta}\bar p,e^{2i\theta}\bar p].
+\]
+This field is even in $x$. The harmonic-zero and harmonic-four
+transforms of its visible source are, with $z=k^2/(4s)$,
+\[
+ \Psi_0(k)=\int s^{-3}e^{-z}(2-4z+z^2)\mu_4(ds),\quad
+ \Psi_4(k)=\int s^{-3}e^{-z}z^2\mu_4(ds)\ge0.
+\]
+Fourier differentiation and the angular integral give
+\[
+ |M_B(x)[p,p]-M_B(0)[p,p]|
+ \le\frac{|x|^2|p|^2}{8}
+       \int_0^\infty k^2(|\Psi_0|+\Psi_4)\,dk
+ <10|x|^2|p|^2.
+\]
+For the last inequality use
+$|2-4z+z^2|+z^2\le2+4z+2z^2$ and
+\[
+ \frac18\int k^2(|\Psi_0|+\Psi_4)\,dk
+ \le\frac{31}{8}\int_0^\infty
+        \frac{\sqrt t e^{-t}}{(a+bt)^3}\,dt
+ <\frac{31}{8}\frac52<10.
+\]
+The Gaussian convolution preserves this uniform derivative bound.
+
+The analogous mixed field has weight $AB$ and one direction $p$,
+the other $e^{2i\theta}\bar z$. Its source is $z^2b_{AB}(|z|^2)/\pi$,
+where
+\[
+ b_{AB}(h(t))=
+ \frac{(t-1)e^{-t}}{\sqrt2(a+bt)^3(a+3bt)}.
+\]
+It is the difference $b_{(2)}/b-(a/b+1)b_{(3)}$ of two completely
+monotone functions, where
+$b_{(p)}(h(t))=e^{-t}/[\sqrt2(a+bt)^p(a+3bt)]$.
+Set
+\[
+ I_p=\frac3{\sqrt2}\int_0^\infty
+          \frac{e^{-t}}{\sqrt t(a+bt)^p}\,dt.
+\]
+The angular estimate
+$\int\cos^2(\phi-e)|\cos(\phi-p)\cos(\phi-z)|\,d\phi\le3\pi/4$
+and evenness of the mixed field yield
+\[
+ |M_{AB}(x)-M_{AB}(0)|
+ \le\frac3{16}\left[I_2/b+(a/b+1)I_3\right]|x|^2|p||z|
+ <29|x|^2|p||z|.
+\]
+This is a direct mixed estimate; it is not inferred from diagonal
+bounds for a possibly indefinite Hessian difference.
+
+\subsubsection{Finite Taylor estimates and completion}
+Put $D=u+3c_*^2$. The exact Wick identity
+$\mathbb E|q|^2|P|^2\le D\|P\|_2^2$ holds for every proper linear
+driver $P$. The earlier averaged A curvature costs at most $12D$;
+the new B and mixed costs are $10D$ and $29D$.
+The Gaussian local certificates give diagonal penalties $2/5,9/10$
+and signed mixed coefficient of absolute value at most $17/100$.
+At $D\le19/2500$, the matrix
+\[
+ \begin{pmatrix}2/5-12D&-(17/100+29D)\\
+ -(17/100+29D)&9/10-10D\end{pmatrix}
+ \succeq\frac{49}{500}I.
+\]
+All principal-minor comparisons are rational.
+
+The inherited derivative bound is $\|D^4\psi_g\|\le204$.
+For a normalized pair of proper linear drivers, put
+$P_T=AP+B\bar Q$, $\|P\|_2^2+\|Q\|_2^2=1$.
+Circle charge and Gaussian moments give
+\[
+ \mathbb E|q||P_T|^3\le\frac52\sqrt{3D},\qquad
+ \mathbb E|P_T|^4\le27.
+\]
+The odd third derivative vanishes at $q=0$. Taylor's theorem therefore
+proves
+\[
+ \Lambda(R)\le\Lambda(q+\sqrt vG)+\sqrt{3226B_6}\,r
+ -\left(\frac{49}{500}-170\sqrt{3D}\,r-459r^2\right)r^2.
+\]
+For $r\le1/1000$ the bracket exceeds $1/200+1/15$.
+The earlier unequal-Wick Fourier deficit gives
+$\Lambda(q+\sqrt vG)\le S-(17/3)B_4$ in this parameter range.
+Completing the square costs at most
+$(15/4)3226B_6\le4.839B_4$, leaving more than $3B_4/4$ and $r^2/200$.
+
+For B alone, the sharper remainder is
+\[
+ \Lambda(R)\le\Lambda(q+\sqrt vG)+25\sqrt{B_6}\,r
+ -\left(\frac9{10}-10D-204\sqrt D\,r-204r^2\right)r^2.
+\]
+The fresh elementary estimate
+$\phi_H(s)\ge\exp(-s^2/4+(2/5)s^4)$ for $0\le s\le1/5$,
+together with the inherited $\phi_H\ge e^{-s^2/4}$ on $[0,4]$,
+gives a pure deficit at least $(37/10)B_4$ for $u\le1/50,c_*\le1/25$.
+Its low-frequency integral is bounded below by
+\[
+ \int_0^5 k^2e^{-(33/160)k^2}\,dk>93/20;
+\]
+the complete high-frequency loss is below $B_4/1000$.
+On the B theorem's box its curvature bracket exceeds $3/10$.
+Reserve $r^2/20$ and use
+$25\sqrt{B_6}r-r^2/4\le625B_6\le B_4$.
+This proves the first theorem.
+
+\paragraph{Verification and dependencies.}
+The standalone standard-library script \texttt{check\_b\_constants.py}
+checks every new scalar bound using rational upper sums, rational
+exponential bounds, and exact polynomial comparisons. The full
+derivations are in \texttt{B\_SECTOR\_PROOF.md} and
+\texttt{JOINT\_AB\_PROOF.md}. The inherited characteristic-function,
+A-curvature, and Gaussian-derivative certificates are explicit inputs.
+The signed Gaussian mixed-coefficient bound is supplied by this round's
+\texttt{polarized-audit-20261020/check\_support.cpp}.
+
+\subsubsection{Larger B-only coefficient ranges}
+Retaining the absolute Laguerre integral sharpens the B curvature
+constant from $10$ to $17/5$. The exact positive upper sums prove
+\[
+ \int_0^\infty \sqrt z e^{-z}|z^2-4z+2|\,dz<3/2,
+ \qquad \int s^{-3/2}\mu_4(ds)<7/5.
+\]
+Since $\Gamma(7/2)<10/3$, the preceding Fourier bound is at most
+$\tfrac12(7/5)(3/2+10/3)<17/5$. Hence globally
+\[
+ \Lambda(R)\le\Lambda(q+\sqrt vG)+25\sqrt{B_6}r
+ -\left(\frac9{10}-\frac{17}{5}D-204\sqrt D\,r-204r^2\right)r^2.
+\]
+For $u\le1/50$ and $v\in[7/200,9/200]$ this yields
+\begin{align*}
+ c_*\le3/50,\ r\le1/100
+ &\quad\Longrightarrow\quad
+ \Lambda(R)\le S-3B_4/2-r^2/40,\\
+ c_*\le2/25,\ r\le1/1000
+ &\quad\Longrightarrow\quad
+ \Lambda(R)\le S-B_4/2-r^2/100.
+\end{align*}
+The pure-deficit low bands are respectively $[0,10/3]$ and $[0,5/2]$.
+Exact Taylor lower integration gives
+\[
+ \int_0^{10/3}k^2e^{-(33/160)k^2}\,dk>94/25,\qquad
+ \int_0^{5/2}k^2e^{-(33/160)k^2}\,dk>127/50.
+\]
+After the separately checked infinite-frequency allowance $B_4/1000$,
+the pure deficits exceed $3B_4$ and $2B_4$. The finite-coupling
+curvatures exceed $1/40+3/8$ and $18/25$. Completing squares costs
+at most $3B_4/2$ and $100B_4/71$, respectively.
+Five coefficients $3/50$ with $v=7/200$ have normalized fourth moment
+about $2.969$; three coefficients $2/25$ give about $3.75684$.
+Both are genuine finite shared-B cases in the desired kurtosis range.
+They do not enlarge the simultaneous A/B box without further work.
+
+
+\subsection{A fourth-order replacement theorem for independent shared-driver blocks}
+\label{sec:gamma-block-replacement}
+
+This section proves a sufficient form of Conjecture K for independent
+blocks whose cubics and linear coupling drivers may have arbitrary
+internal dependence.  The replacement error is fourth order in each
+block, so equal blocks cost $N^{-1}$ rather than $N^{-1/2}$.
+A concrete shared A/B family lies in the application's kurtosis window.
+This does not prove K for general coupled kernels and does not change
+the Grothendieck endpoint by itself.  The numerical Gaussian covariance
+theorem proved in the preceding polarized-profile package is an input.
+
+\subsubsection{An exact scalar identity}
+Let $S$ be an odd polynomial of finitely many independent standard real
+Gaussians. Write $\mathcal L$ for their Ornstein--Uhlenbeck generator and
+$\mathcal A=-\mathcal L^{-1}$, with constants sent to zero. Put
+\[
+ v=\mathbb E S^2,\qquad
+ \tau=\langle DS,D\mathcal AS\rangle,\qquad H=\tau-v,
+\]
+\[
+ K=\langle DS,D\mathcal AH\rangle,\qquad
+ J=\langle DS,D\mathcal AK\rangle.
+\]
+Here $H$ is centered and even, while $K$ is odd and hence centered.
+If $N$ is an independent real Gaussian of variance $v$, then
+\begin{equation}\label{eq:block-interpolation}
+ \mathbb Ef(S)-\mathbb Ef(N)
+ =\frac12\int_0^1 s\,
+  \mathbb E\left[Jf^{(4)}(\sqrt{s}S+\sqrt{1-s}N)\right]ds
+\end{equation}
+for every $C^4$ test with bounded fourth derivative and polynomially
+bounded lower derivatives. In particular,
+\[
+ |\mathbb Ef(S)-\mathbb Ef(N)|
+ \le\frac14\|f^{(4)}\|_\infty\mathbb E|J|.
+\]
+To prove the identity, set $Y_s=\sqrt{s}S+\sqrt{1-s}N$.
+Coordinate Gaussian integration by parts gives
+\[
+ \frac d{ds}\mathbb Ef(Y_s)=\frac12\mathbb E[Hf''(Y_s)].
+\]
+For any centered polynomial $P$, Hermite expansion and coordinate
+integration by parts give
+$\mathbb E[PF]=\mathbb E\langle D\mathcal AP,DF\rangle$.
+Applying this first to $H$, then to $K$, yields
+\[
+ \mathbb E[Hf''(Y_s)]=\sqrt{s}\mathbb E[Kf'''(Y_s)]
+                   =s\mathbb E[Jf^{(4)}(Y_s)].
+\]
+Integration proves~\eqref{eq:block-interpolation}; approximation handles
+the endpoints. Degenerate $v=0$ is trivial. The normalization is
+\[
+ \mathbb EJ=\frac{\mathbb ES^4-3v^2}{6},
+\]
+since $\mathbb ES^4=3\mathbb E[\tau S^2]$,
+$\mathbb E[HS^2]=2\mathbb E[KS]$, and $\mathbb E[KS]=\mathbb EJ$.
+The polynomial $J$ need not be nonnegative, so its absolute expectation
+cannot simply be replaced by its mean. This is the explicit
+iterated-Gamma mechanism in smooth cumulant estimates; compare
+Bierm\'e--Bonami--Nourdin--Peccati, arXiv:1109.1546.
+
+\subsubsection{A joint block comparison, with the interpolating Gaussian retained}
+Use
+\[
+ \epsilon=\frac{1891}{2500},\quad
+ \ell(t)=\sqrt t\left(\frac{699}{1250}+\frac{179}{1250}t\right),
+ \quad A(t)=t-1,\quad B(t)=t/\sqrt2,
+\]
+and the Gaussian benchmark
+\[
+ S_* =\sup_{v\ge0}\left\{2\mathbb E|\ell(T)+\sqrt vG|-v/\epsilon\right\},
+ \qquad T\sim\operatorname{Exp}(1).
+\]
+On mutually independent Gaussian blocks take
+$q_j\in H_{2,1}$, $U_j\in H_{1,0}$, $V_j\in H_{0,1}$.
+All internal dependence is permitted. Set
+\[
+ R_T=gG+\sum_j(q_j+A(T)U_j+B(T)V_j),\qquad g>0,
+\]
+\[
+ p=\sum_j\|q_j\|_2^2,\quad
+ \alpha^2=\sum_j\|U_j\|_2^2,\quad
+ \beta^2=\sum_j\|V_j\|_2^2.
+\]
+For each $t,\theta$ construct $J_{j,t,\theta}$ as above from
+\[
+ S_{j,t,\theta}=\operatorname{Re}\left(e^{-i\theta}
+                   (q_j+A(t)U_j+B(t)V_j)\right).
+\]
+Angular brackets denote uniform averaging over $[0,2\pi]$. Write
+\[
+ \mathcal B_j=\mathbb E_T\langle\mathbb E|J_{j,T,\theta}|\rangle,
+ \qquad
+ C(g,p)=\frac{4\sqrt\pi}{g(g+\sqrt{g^2+p})^2}.
+\]
+If $\mathcal D$ is the signed difference between the two-sign norm
+payoff and its matched Gaussian payoff, then
+\begin{equation}\label{eq:block-error}
+ \boxed{\mathcal D\le C(g,p)\sum_j\mathcal B_j.}
+\end{equation}
+The Gaussian covariance theorem therefore implies
+\begin{equation}\label{eq:block-K}
+ \boxed{\Lambda(R)\le S_*-\alpha^2/10-\beta^2/4
+                         +C(g,p)\sum_j\mathcal B_j.}
+\end{equation}
+
+Indeed, the quantities $H,K,J$ add over independent blocks: mixed
+coordinate gradients vanish and the inverse generator is additive.
+The total scalar variance $v_\theta(t)$ is at least $p/2$, since the
+cubic part is proper and orthogonal to its linear drivers. At
+interpolation time $s$, retain the independent interpolating Gaussian
+inside the smoothing variance, which is
+\[
+ g^2/2+(1-s)v_\theta(t)\ge[g^2+(1-s)p]/2.
+\]
+For a real standard Gaussian $N_0$,
+\[
+ \left\|\frac{d^4}{dx^4}\mathbb E|x+\sigma N_0|\right\|_\infty
+ =\sqrt{2/\pi}\,\sigma^{-3}.
+\]
+This follows directly from
+$\sup_u|(u^2-1)e^{-u^2/2}|=1$. The projection identity
+$2|z|=\pi\langle|\operatorname{Re}(e^{-i\theta}z)|\rangle$,
+odd symmetry, and~\eqref{eq:block-interpolation} give
+\[
+ \mathcal D\le
+ 2\sqrt\pi\int_0^1\frac{s\,ds}{[g^2+(1-s)p]^{3/2}}
+ \sum_j\mathcal B_j.
+\]
+The integral equals $2/[g(g+\sqrt{g^2+p})^2]$, also at $p=0$ by
+continuity. This proves~\eqref{eq:block-error}. Keeping this Gaussian
+improves the cruder coefficient $\sqrt\pi/g^3$ by the factor
+$4g^2/(g+\sqrt{g^2+p})^2$.
+
+Chaos orthogonality gives the matched Gaussian covariance
+\[
+ V(t)=g^2+p+\alpha^2A(t)^2+\beta^2B(t)^2,
+ \qquad |P(t)|\le2\alpha\beta|A(t)B(t)|.
+\]
+Thus it belongs to the proved Gaussian covariance class; its price is
+unchanged, proving~\eqref{eq:block-K}. For $N$ equal blocks scaled by
+$N^{-1/2}$, the last polynomial scales by $N^{-2}$, so its total
+budget is the one-block budget divided by $N$.
+
+\subsubsection{An explicit Wick polynomial and its budget}
+Let $X=(x+iy)/\sqrt2$ and
+$H(X)=X(|X|^2-2)/\sqrt2$, where $x,y$ are standard real Gaussians.
+For the scalar polynomial
+\[
+ S=c\operatorname{Re}H(X)+ax+by,
+ \qquad \operatorname{Re}H(X)=(x^3+xy^2-4x)/4,
+\]
+the last polynomial in~\eqref{eq:block-interpolation} is exactly
+\[
+ J=ca(a^2+b^2)+c^2Q_{22}+c^3(aP+bQ)+c^4R,
+\]
+where
+\begin{align*}
+Q_{22}={}&(27a^2/16+61b^2/144)x^2
+ +(61a^2/144+3b^2/16)y^2+(37ab/36)xy\\
+ &+7a^2/18-b^2/9,\\
+P={}&27x^4/32+29x^2y^2/45+27x^2/40
+       +73y^4/1440+91y^2/360-23/90,\\
+Q={}&xy(301x^2+121y^2-56)/720,\\
+R={}&27x^6/256+577x^4y^2/3840+23x^4/80
+ +179x^2y^4/3840+7x^2y^2/40+67x^2/240\\
+ &+7y^6/3840+y^4/80+49y^2/240-17/15.
+\end{align*}
+Exact finite polynomial expansion verifies this identity and gives
+\[
+ \mathbb E|Q_{22}|\le\frac52a^2+\frac{13}{18}b^2,
+ \quad \mathbb E|P|\le\frac{203}{45},
+ \quad \mathbb E|Q|\le\frac5{2\pi},
+ \quad \mathbb E|R|\le\frac{587}{120}.
+\]
+For $Q_{22}$, its quadratic part is positive semidefinite: its
+$144^2$-scaled determinant is
+$14823a^4+4806a^2b^2+1647b^4$.
+Its constant is at least $-b^2/9$ and its expectation is
+$5a^2/2+b^2/2$. For $P,R$, every nonconstant coefficient is
+nonnegative; their means are $4,21/8$ and their constants are
+$-23/90,-17/15$. Finally the absolute first and third Gaussian moments
+prove the estimate for $Q$.
+
+For the complex block
+\[
+ cH(X)+\sqrt2a_0A(T)X+2b_0B(T)\overline X,
+ \qquad c\ge0,\quad a_0,b_0\in\mathbb C,
+\]
+rotation gives the scalar coefficients
+\[
+ a=u(T-1)+|b_0|T\cos2\theta,\qquad b=w(T-1)+|b_0|T\sin2\theta,
+ \quad u^2+w^2=|a_0|^2.
+\]
+In the following budget the arguments $a_0,b_0$ denote their nonnegative
+moduli. A valid one-block budget, uniform in all relative phases, is
+\begin{align*}
+ \mathfrak B(c,a_0,b_0)={}&c\left[
+ \frac{12}{\pi}b_0^3+\frac{21}{\pi}a_0^2b_0
+                          +(12/e-2)|a_0|^3\right]\\
+ &+c^2\left[\frac52a_0^2+\frac{29}{9}b_0^2\right]\\
+ &+c^3\left[\frac{46}{5e}|a_0|
+       +\left(\frac{406}{45\pi}+\frac5{\pi^2}\right)b_0\right]
+ +\frac{587}{120}c^4.
+\end{align*}
+The only nontrivial angular bound used here is
+\[
+ \left\langle|a+b\cos\theta|(a^2+2ab\cos\theta+b^2)\right\rangle
+ \le|a|^3+\frac7\pi a^2b+\frac2\pi b^3,\qquad b\ge0.
+\]
+For $0\le r=|a|/b\le1$, the left side is $2b^3F(r)/\pi$, where
+\[
+ F(r)=(1+2r^2)\sqrt{1-r^2}+r(r^2+2)\arcsin r.
+\]
+Now $F(0)=1,F'(0)=0,F''(0)=7$ and
+$F'''(r)=6\arcsin r-r/\sqrt{1-r^2}\le3\pi$; Taylor's integral
+remainder proves the bound. For $r\ge1$ the exact answer is
+$|a|^3+2|a|b^2$, and $\pi<7/2$ suffices. For a complex centre $x+iy$ of modulus $r$, the angular average of
+$|\operatorname{Re}(x+iy+b e^{i\theta})|\,|x+iy+b e^{i\theta}|^2$
+is $(r^2+b^2)I_0(x,b)+2bxI_1(x,b)$, where
+$I_0=\langle|x+b\cos\theta|\rangle$ and
+$I_1=\langle\cos\theta|x+b\cos\theta|\rangle$.
+Both $I_0$ and $xI_1$ increase with $|x|$, so this is maximized at
+$x=r,y=0$. For $0\le x\le b$,
+$I_1=[x\sqrt{1-x^2/b^2}+b\arcsin(x/b)]/\pi$
+and $I_1'=2\sqrt{1-x^2/b^2}/\pi\ge0$; for $x\ge b$, $I_1=b/2$.
+The cubic A coefficient follows from
+$\sqrt{(203/45)^2+(5/(2\pi))^2}<23/5$.
+Thus the bound includes all relative phases. The required exponential
+moments are
+\[
+ \mathbb E|T-1|=2/e,\quad \mathbb E|T-1|^3=12/e-2,
+ \quad \mathbb E[(T-1)^2T]=3,\quad\mathbb ET^3=6.
+\]
+
+\subsubsection{Finite shared A/B examples in the application window}
+Take independent proper Gaussians and set
+\[
+ q_N=\frac3{25\sqrt N}\sum_{j=1}^N H(X_j)+\frac9{50}G,
+ \quad
+ U_N=\frac{\sqrt2}{100\sqrt N}\sum_{j=1}^N X_j,
+ \quad
+ V_N=\frac{48}{125\sqrt N}\sum_{j=1}^N\overline{X_j}.
+\]
+Arbitrary unit phases may multiply the A and B coefficients, independently
+for each summand. The checker
+proves exactly
+\[
+ C(9/50,(3/25)^2)\mathfrak B(3/25,1/100,24/125)
+ <\frac{8987}{5000}.
+\]
+Hence
+\[
+ \boxed{\Lambda(q_N+AU_N+BV_N)
+ \le S_*-\frac{9221}{250000}+\frac{8987}{5000N}
+ <S_*-10^{-4}\quad(N\ge49).}
+\]
+The remote variance is $117/2500$, and its normalized fourth moment is
+\[
+ 2+\frac{42(3/25)^4}{N(117/2500)^2}.
+\]
+It belongs to the stated window $[2.06,6]$ for $49\le N\le66$.
+The B amplitude $.384$ provides a substantial profile deficit;
+this does not settle the small-coupling obstruction near a maximizer.
+
+There is also an explicit finite pure-cubic version. Replace the buffer
+by $(9/(50\sqrt M))\sum_{k=1}^M H(Y_k)$, using independent $Y_k$.
+The exact Wick Stein identity is
+\[
+ \mathbb E\|\Gamma_H-I_2/2\|_{\rm HS}^2=13/2,
+\]
+so the multivariate Gaussian Stein bound gives Wasserstein error at most
+$\sqrt{13/M}$ for the normalized sum. The two-sign payoff is
+$2$-Lipschitz and the variance price does not change. Exact squaring
+verifies
+\[
+ 2(9/50)\sqrt{13/20000}
+ <\frac{9221}{250000}-\frac{8987}{5000\cdot66}-10^{-4}.
+\]
+Thus, writing this new pure-cubic remote residual as
+$\widetilde q_{N,M}$,
+\[
+ \boxed{\Lambda(\widetilde q_{N,M}+AU_N+BV_N)<S_*-10^{-4}
+                  \quad(N\ge66,\ M\ge20000).}
+\]
+At $N=66,M=20000$ its remote normalized fourth moment is
+$2.0612539537\ldots$; for $N=66$ it remains in $[2.06,6]$ for all
+larger $M$. The checker retains the larger rational deficit
+$283/600000$: the buffered deficit is $3619/375000$ and the buffer
+error is below $9179/1000000$. No high-dimensional numerical integration is used.
+An optional calibration replaces the coefficient $48/125$ of $V_N$
+by $3/5$. Its cost is below $243281/(50000N)$ and its profile penalty
+is $4501/50000$; $N\ge66,M\ge7000$ then retain the same $10^{-4}$
+deficit. Its normalized fourth moment at those minimal dimensions is
+$2.0631231845\ldots$. Its retained rational deficit is
+$5171/6600000$, subtracting buffer error $3103/200000$ from the
+buffered deficit $10757/660000$.
+
+\subsubsection{Verification and limitation}
+The standard-library script \texttt{check\_gamma\_replacement.py}
+reconstructs $J$ using exact rational Hermite expansions, verifies all
+polynomial identities, positivity claims, moments and rational
+constants, and passes under isolated Python mode from another
+directory. It does not certify general coupled kernels, even Y/W
+interactions, the diagonal term, or a full row envelope. The remaining
+mathematical opportunity is to retain the signed pairing with $J$ in
+\eqref{eq:block-interpolation} instead of replacing it by
+$\mathbb E|J|$. The global Grothendieck endpoint remains unchanged.
+
+
+\subsection{Structural consequences of the signed visible average}
+\label{sec:signed-structural-ab}
+The two preceding calculations distinguish two useful mechanisms.
+For small shared couplings, the true first-order content is paid by the
+non-Gaussian residual's deficit. For independent blocks, the cubic and
+its linear drivers are replaced jointly, with a fourth-order error.
+Neither mechanism uses Gaussian domination at each fixed visible shift;
+that stronger statement is false.
+
+\subsubsection{A completely monotone formula for the actual A profile}
+The following identity holds for every $a>0,b\ge0$, not only the peak.
+Let $T\sim\mathrm{Exp}(1)$, let $\theta$ be independent and uniform,
+and put
+\[
+ h(t)=t(a+bt)^2,\qquad L=\sqrt{h(T)}e^{i\theta},\qquad
+ F_A(u)=\E[(T-1)|L+x|],\quad u=|x|^2.
+\]
+As above, $b_1(h(t))=e^{-t}/(a+bt)^2$ is completely monotone;
+write $b_1(y)=\int e^{-sy}\mu_1(ds)$ with $\mu_1\ge0$.
+Then
+\begin{equation}\label{eq:cm-actual-a-profile}
+ \boxed{F_A(u)=\frac{\sqrt\pi}{4}\int s^{-3/2}
+       e^{-su/2}I_0(su/2)\,\mu_1(ds).}
+\end{equation}
+In particular $F_A$ is positive, decreasing and completely monotone
+in $u$, and
+\[
+ F_A(0)=\sqrt\pi(a/4+9b/8),\qquad F_A(u)\longrightarrow0.
+\]
+Indeed exponential integration by parts and the Gaussian Hankel integral give
+\[
+ \Psi_A(k):=\E[(T-1)J_0(k\sqrt{h(T)})]
+ =-\frac{k^2}{4}\int s^{-2}e^{-k^2/(4s)}\mu_1(ds)\le0.
+\]
+Apply the planar norm Fourier identity to $F_A(u)-F_A(0)$ and use
+\[
+ \int_0^\infty e^{-k^2/(4s)}J_0(k\sqrt u)\,dk
+   =\sqrt{\pi s}\,e^{-su/2}I_0(su/2).
+\]
+The integration constant is fixed by the limit at infinity.
+For that limit, subtract $|x|$, use $\E(T-1)=0$, and dominate by
+$|T-1||L|$; the pointwise directional limit has zero angular mean.
+All required moments are finite. Finally
+\[
+ e^{-su/2}I_0(su/2)=\frac1{2\pi}\int_0^{2\pi}
+                   e^{-su\cos^2\vartheta}\,d\vartheta
+\]
+exhibits a positive Laplace mixture and proves complete monotonicity.
+The finite value at zero justifies the positive-mixture exchanges.
+The standard integral identities are available in
+\href{https://dlmf.nist.gov/10.22.E51}{DLMF 10.22.51} and
+\href{https://dlmf.nist.gov/10.32.E1}{DLMF 10.32.1}.
+
+This identity concerns the exact averaged A profile. It does not by
+itself bound its first-chaos projection when $q$ and the A driver share
+coordinates. In particular it must not be turned into a pointwise
+Gaussian comparison for the whole perturbed payoff.
+
+\subsubsection{Gaussian-buffer closure does not add a separate conjecture}
+Let $\rho=\sqrt\pi/2$. The following two universal assertions are equivalent:
+\begin{enumerate}
+\item Every finite-dimensional $q\in H_{2,1}$ satisfies
+      $\E|q|\le\rho\sqrt{\E|q|^2}$.
+\item For every such $q$, every $v\ge0$ and an independent proper
+      standard Gaussian $G$,
+      $\E|q+\sqrt vG|\le\rho\sqrt{\E|q|^2+v}$.
+\end{enumerate}
+Only the first implication requires proof. On fresh independent coordinates put
+\[
+ G_N=N^{-1/2}\sum_{j=1}^N H(X_j).
+\]
+Then $q+\sqrt vG_N$ is still a finite $H_{2,1}$ polynomial, with
+variance $\E|q|^2+v$, and converges in law to $q+\sqrt vG$ by the
+two-dimensional central limit theorem. Its uniform second-moment
+bound gives uniform integrability of the absolute value. Pass to the
+limit in assertion 1. The converse takes $v=0$.
+
+The same argument applies to real third chaos. Thus the Gaussian-buffer
+PVD statement in the preceding chapter is equivalent to the original
+sharp dimension-free complex $L^1$ inequality; it is not a weaker
+technical lemma. The visible Gaussian variance-mixture representation
+makes it sufficient for remote K, but dependence of the A/B sectors
+on the visible coordinate remains outside this reduction.
+
+\subsection{A phase-sensitive Gaussian-factor dual: proved local and tail parts}
+\label{sec:shared-factor-local-dual}
+This section records useful finite-dimensional reductions. Its compact
+global cover is unfinished, so no global Gaussian-factor A/B theorem
+is asserted here.
+For deterministic $s,\alpha,\beta\in\mathbb C$, $g\ge0$, define
+\[
+ R_T=(s+\alpha A(T))X+\beta B(T)\overline X+gG,
+ \quad V_0=|s|^2+g^2+|\alpha|^2+|\beta|^2,
+\]
+\[
+ D=2\E|\ell(T)+R_T|-V_0/\varepsilon
+      +\frac75\Re(s\overline\alpha)+\frac57\Re(\beta s).
+\]
+Its actual conditional covariance data are
+\[
+ V(T)=g^2+|s+\alpha A|^2+|\beta|^2B^2,
+ \qquad P(T)=2\beta B(s+\alpha A).
+\]
+If $D\le S+\eta$ were proved for every deterministic parameter,
+then conditioning and averaging would prove the same comparison for
+every centered latent $s$ independent of $X,G,T$: both supporting
+linear terms have mean zero. Maximizing the orientation of $P(T)$
+separately would destroy this cancellation and is not legitimate.
+
+\paragraph{Unbounded parameters.}
+The supporting quadratic form is at most $4V_0/5$, since
+$49/25+25/49=3026/1225<64/25$. Cauchy--Schwarz gives
+\[
+ D\le2\sqrt{19/25+V_0}-(1/\varepsilon-4/5)V_0<27/20<S
+ \quad(V_0\ge10).
+\]
+The final inequality and monotonicity on this range are exact rational
+comparisons in the supplied checker.
+
+\paragraph{Regression Hessian lemma.}
+If centered real planar Gaussian vectors $R,D_0$ are jointly Gaussian
+and $\operatorname{Cov}(R)\ge\lambda I$, then
+\[
+ \sup_z\E\frac{|D_0|^2}{|z+R|}
+ \le\frac8{3\sqrt\lambda}\E|D_0|^2.
+\]
+Write $R=C^{1/2}Y$, $D_0=KY+\xi$ by Gaussian regression.
+For a unit vector $e$, the pointwise density bound
+$(e\cdot y)^2\phi_I(y)\le(8/e)\phi_{2I}(y)$ and
+$\sup_z\E|z+\sqrt2Y|^{-1}=\sqrt\pi/2$ give
+$4\sqrt\pi/e<8/3$ for every row of $K$.
+The independent $\xi$ term uses
+$\sup_z\E|z+Y|^{-1}=\sqrt{\pi/2}<8/3$.
+Scaling by the least covariance eigenvalue proves the claim.
+Regularization of the norm consequently yields
+\[
+ \frac{d^2}{dt^2}2\E|z+R+tD_0|
+ \le\frac{16}{3\sqrt\lambda}\E|D_0|^2
+\]
+whenever the covariance along the segment stays above $\lambda I$.
+
+\paragraph{Uniform local support.}
+The exact integral checker proves
+\[
+ |7/5+2\E[A w_v]|\le1/10,\qquad
+ |5/7+2\E[B k_v]|\le1/10,
+\]
+and $|\E[ABk_v]|\le17/100$, for $7/200\le v\le9/200$.
+Here $w_v$ and $k_v$ are respectively the angular mean and its
+$\cos(2\theta)$ coefficient of
+$\sqrt\pi\exp(-\ell(T)^2\cos^2\theta/v)/(2\sqrt v)$.
+It follows that
+\[
+ \boxed{D\le S+\frac3{500000}}
+\]
+whenever $7/200\le|s|^2+g^2\le9/200$ and
+$|\alpha|,|\beta|\le10^{-4}$, uniformly in phases and including $g=0$.
+Indeed the supported first derivative is at most $1/200000$.
+On $T\le32$, the covariance along the coupling segment is at least
+$vI/8$, so the regression bound gives Taylor remainder
+$45(|\alpha|^2+|\beta|^2)\le9/10^7$.
+The omitted tail of payoff difference minus first derivative is below
+$6\cdot10^{-12}$ by the norm Lipschitz bound and exponential moments.
+Their sum is less than $3/500000$; discarding the negative coupling
+price only increases the bound.
+
+\subsection{Uniform transport of the finite pure-cubic examples}
+The finite examples extend to a profile rectangle without another
+high-dimensional calculation. Keep $\varepsilon=1891/2500$, and let
+$S_{a,b}$ denote the Gaussian benchmark for $L=Z(a+b|Z|^2)$.
+For every fixed residual construction $R$ of the types above,
+\[
+ \Lambda_{a,b}(R)-S_{a,b}
+ \le\Lambda_{a_0,b_0}(R)-S_{a_0,b_0}
+     +2\sqrt\pi|a-a_0|+3\sqrt\pi|b-b_0|.
+\]
+Indeed the two-sign payoff changes by at most $2\E|L-L_0|$;
+the supremum defining the benchmark changes by the same bound.
+Use $\E|Z|=\sqrt\pi/2$ and $\E|Z|^3=3\sqrt\pi/4$.
+There is no need to know the maximizing Gaussian variance.
+
+For the main finite family $N\ge66,M\ge20000$, exact squaring of
+the buffer error gives the stronger retained peak deficit
+\[
+ \frac{9221}{250000}-\frac{8987}{5000\cdot66}
+     -\frac{9179}{10^6}=\frac{283}{600000},
+ \qquad 2\frac9{50}\sqrt{\frac{13}{20000}}<\frac{9179}{10^6}.
+\]
+Therefore, throughout
+\[
+ |a-a_0|,|b-b_0|\le\frac1{25000},
+\]
+the actual finite-cubic family still satisfies
+$\Lambda_{a,b}(R)<S_{a,b}-10^{-4}$.
+This follows from $\sqrt\pi<1773/1000$ and
+\[
+ \frac{283}{600000}-\frac{5\cdot1773}{1000\cdot25000}>10^{-4}.
+\]
+For the optional B amplitude $3/5$, the peak deficit exceeds
+$5171/6600000$; the same argument permits half-width $3/40000$
+while retaining $10^{-4}$. The rational comparisons are replayed by
+\texttt{check\_transport.py}. This is profile uniformity for these
+proved families, not a complete all-residual row envelope.
+
+\subsection{Verification and the remaining endpoint obligation}
+The package contains exact rational scalar checks, exact polynomial
+coefficient checks, and the signed Gaussian integral checker.
+It also bundles the inherited characteristic-function and Gaussian
+profile certificates, with separate replay commands and provenance.
+The current results are mathematical proofs with external numerical
+certificates; they have not been formalized in Lean.
+
+The block criterion is a proved sufficient condition for K, and the
+finite-amplitude Wick results cover additional cases. A general
+coupled cubic does not necessarily decompose into independent blocks.
+Nor do these statements settle arbitrary simultaneous even-sector
+interactions or a complete admissible row envelope. Therefore no
+larger Grothendieck lower endpoint follows from this package alone.

@@ -1,0 +1,138 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch11-structure.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 11). Owner: lower-bound/08-shared-structure.tex
+\section{The structure behind Conjecture K: visible sectors, the theorem of 15 October, and what remains}\label{ch:structure}
+\chapsummary{The visible-frequency decomposition and shared-driver formulas remain useful. Later corrections in this source are essential; current proved scopes belong to \autoref{ch:K-state}.}
+
+This chapter records the understanding reached on the evening of 15 October after GPT's visible-coordinate comparison theorem arrived
+(\pathref{\~{}/\allowbreak Documents/\allowbreak Codex/\allowbreak 2026-10-10/\allowbreak plea/\allowbreak outputs/\allowbreak graded-orbits-20261015/\allowbreak }: \code{README.md}, \code{graded/\allowbreak VISIBLE\_FACTOR\_COMPARISON.md},
+\code{graded/CENTERED\_RADIAL\_COMPARISON.md}, independent audits in \code{regular/}). It is written to explain \emph{why} things are true, not only that they are.
+
+\subsection{The theorem}
+\begin{theorem}[visible-factor comparison, \st{P} GPT, audited]\label{thm:visible}
+Let $Z,G$ be independent standard complex Gaussians, $T=|Z|^2$, $L=Zf(T)$ with $f\ge0$ nondecreasing ($f(t)=a+bt$ for us, $a=\ell-2\beta>0$, $b=\beta$). Let $(Y,W,B,S)$,
+$S\ge0$, be jointly distributed with an arbitrary joint law, independent of $(Z,G)$, and
+\[
+Q=ZY+\bar ZW+Z^2B+\sqrt S\,G,\qquad v=\E|Q|^2=\E S+\E|Y|^2+\E|W|^2+2\E|B|^2 .
+\]
+Then $\E(|L+Q|+|L-Q|)\le2\E|L+\sqrt v\,G|$; hence $\Lambda(Q)\le S(\ell,\beta)$ for every $\varepsilon$. Moreover $|L+\eta Q|^2\succeq_{cx}|L+\sqrt vG|^2$ ($\eta$ an independent sign), and with
+$L=0$ the stop-loss inequality $\E(|Q|^2-a)_+\ge ve^{-a/v}$ holds for all $a\ge0$ (the original CX, true on this family without kurtosis restriction).
+\end{theorem}
+\begin{theorem}[centered sector, \st{P} GPT, audited]\label{thm:centered}
+With $Z'$ a further independent Gaussian, $Q=\alpha(T-1)Z'+\sqrt sG$ satisfies the same comparison whenever $b\ge a/5$ and $|\alpha|^2\le a^2/2$ (at the peak row $|\alpha|\le0.395$);
+and $Q=ZY+\bar ZW+Z^2B+\alpha(T-1)Z'+\sqrt SG$ with $Z'$ independent of all latent coefficients satisfies it under the same bound on $\alpha$.
+\end{theorem}
+In our notation (\S\ref{sec:exactrow}): $Y=r_z$, $W=r_{\bar z}$, $B=r_B/\sqrt2$, $\alpha Z'=r_A$, $\sqrt SG$ = a conditionally Gaussian residual $q$ with random variance. What is \emph{not} covered: a
+general (non-Gaussian) cubic residual $q_0$; $r_A$ sharing Gaussian drivers with the other coefficients; the diagonal term $\nu H(z_1)$; and interference between sectors sharing drivers.
+
+\subsection{Why it is true: three mechanisms}\label{sec:why}
+\begin{enumerate}
+\item \textbf{Concavity in the squared radius and the perpendicular idealisation.} Conditionally on $Z$ and the latents, $Q$ is Gaussian with mean $A=ZY+\bar ZW+Z^2B$ and variance $S$;
+the payoff is $F_S(|L+A|^2)+F_S(|L-A|^2)$ with $F_s(u)=\E|\sqrt u+\sqrt sG|$, which is \emph{concave in $u$} (Laplace integral $F_s(u)=\frac1{2\sqrt\pi}\int_0^\infty[1-\frac{e^{-tu/(1+st)}}{1+st}]t^{-3/2}dt$) and
+satisfies the complex heat equation $\partial_sF=\partial_uF+u\partial_{uu}F$. Since $\frac12(|L+A|^2+|L-A|^2)=|L|^2+|A|^2$, concavity gives $\le2F_S(|L|^2+|A|^2)$: the structured part is replaced by a
+residual \emph{pointwise perpendicular} to $L$. This is an upper bound that is tight exactly for the adversary's preferred geometry (near $u=0$, $|L+u|+|L-u|\approx2|L|+|u|^2\sin^2\phi/|L|$, so the
+adversary wants $u\perp L$ and $|L|$ small). The fresh Gaussian is \emph{not} idealised: it stays inside $F_S$. So the theorem says that even a structured adversary who could always
+point perpendicular to $L$ loses to the honest Gaussian.
+\item \textbf{Phase averaging separates sectors by frequency.} Writing $Z=\sqrt Te^{i\theta}$ and factoring $e^{i\theta}$ out of $L+Q$, the sectors carry the $\theta$-frequencies
+$Y:0$, $W:-2$, $B:+1$, while a $Z$-independent residual $q_0$ and the centered sector $(T-1)r_A$ both carry frequency $-1$. Distinct frequencies kill all cross terms in
+$\E[|A|^2\mid T]=v_1T+v_2T^2$ \emph{whatever the dependence among the latents}. This is why arbitrary joint laws of $(Y,W,B)$ are allowed. It is also why $r_A$ and $q_0$ interfere: they
+share the frequency, and their cross term $2\Re(\bar q_0(T-1)r_A)$ has zero mean but a law that depends on the joint law of $(q_0,r_A)$, i.e.\ the first-chaos content.
+\item \textbf{Structured variance sits where $|L|$ is large.} The sectors add squared radius $H(T)=v_1T+v_2T^2$, increasing in $T$, i.e.\ exactly where $|L|^2=Tf(T)^2$ is large and the
+concave payoff gains least; independent Gaussian variance of the same mean $m=\E H(T)$ is spread uniformly. The exponential integration-by-parts identity
+$\E[(H(T)-m)a(T)]=\E[T\tau_H(T)a'(T)]$ with $\tau_H\ge m$ and $tH'\ge H$ makes this exact: along $J(\beta)=\E F_{s+m(1-\beta)}(Tf^2+\beta H)$, $J'(\beta)=\E F_{uu}[T(\tau_H-m)f^2+2T^2\tau_Hff'+\beta(T\tau_HH'-mH)]\le0$.
+The condition is that $H(t)/t$ be nonnegative and increasing: satisfied by $t$, $t^2$; \emph{violated} by the centered profiles $(t-1)^2$ (sector $A$) and $(t-2)^2$ (diagonal $\nu$), which move
+variance towards $T\approx0$ where $L$ vanishes. That is the whole reason the $A$-sector is the hard one, and why its separate proof needs $|\alpha|^2\le a^2/2$: the residual variance at
+$T\to0$, $|\alpha|^2$, must stay below half the linear scale $a^2$ of $|L|^2\approx a^2T$.
+\end{enumerate}
+
+\subsection{The $A$-sector in one line, and where shared drivers enter}\label{sec:Aline}
+Since $A(z_1)=T-1$ is real and $q_0$ is $Z$-free, both have frequency $-1$ and the $\theta$-average is a single phase-averaged norm:
+\begin{equation}\label{eq:Aline}
+\boxed{\begin{gathered}\Lambda(q_0+r_AA)=2\,\E_{T,w}\,\mathrm{mabs}\bigl(\sqrt T f(T),\ |q_0(w)+(T-1)r_A(w)|\bigr)-\frac{\sigma_0^2+\|r_A\|^2}\varepsilon,\\
+\mathrm{mabs}(x,s)=\tfrac2\pi(x+s)E_{\rm ell}\Bigl(\tfrac{4xs}{(x+s)^2}\Bigr)\end{gathered}}
+\end{equation}
+(both signs give the same term; checked numerically against the direct evaluation, \code{checkA.py}). So Conjecture~K restricted to the $A$-sector is a statement about the
+\emph{one-parameter family of laws of $|q_0+c\,r_A|$, $c=T-1\in[-1,\infty)$}, weighted by the sensitivity of the phase-averaged norm at radius $\sqrt Tf(T)$. The second moment
+$\E|q_0+cr_A|^2=\sigma_0^2+c^2\|r_A\|^2$ has no cross term (chaos orthogonality); the fourth moment has the term $4c\,\Re\E[|q_0|^2\bar q_0r_A]=4c\,\Re\langle r_A,\Pi_{1,0}(q_0|q_0|^2)\rangle$, linear in $c$:
+\emph{this is where shared drivers enter, and it is the cubic-tensor content of \S\ref{sec:Kproved} (sharp constant conjecturally $0.4775$, proved $3.674$)}. For $r_A$ independent of
+$q_0$ it vanishes and Theorem~\ref{thm:centered} applies. A proof of K for the $A$-sector therefore needs: the moment-level (K-a) argument at each $T$ for the law of $|q_0+cr_A|$,
+with the content term controlled against the fourth-moment excess, i.e.\ L2 (sharp cubic contraction) plus the saturation regime. Nothing else is in the way for this sector.
+
+\subsection{The frequency rule: which sectors carry content}\label{sec:freqrule}
+Factor $e^{i\theta}$ out of $L\pm G$. Under $\theta\mapsto\theta+\pi$ the sectors of odd relative frequency ($q_0$ and $A$: $-1$; $B$: $+1$) change sign while those of even
+frequency ($Y$: $0$; $W$: $-2$; $\nu H(z_1)$: $0$) do not. Hence $|L-G|(\theta)=|L+G|(\theta+\pi)$ with the even sectors fixed, and the first-order coupling of an even sector to
+$q_0$ cancels between the two signs, while for the odd sectors it adds. This is the structural reason behind K1's observation $c_z=c_H=c_{\bar z}\equiv0$, $c_A,c_B\neq0$ at the $q$-only
+point: \textbf{the content problem lives exactly in the two odd sectors $A$ and $B$}; the even sectors have no first-order coupling and second-order constants $0.62$--$1.13<1.32$.
+For $A$ the frequency equals $q_0$'s and the two add coherently, giving \eqref{eq:Aline}; for $B$ the frequencies are opposite and, using the common $w$-rotation $\alpha$
+(under which $q_0\to e^{i\alpha}q_0$, $r_B\to e^{-i\alpha}r_B$), the honest payoff is $E_\psi|x+\beta e^{i\psi}+se^{-i\psi+i\Gamma}|$ with a single effective angle $\psi=\theta-\alpha$ and
+$\Gamma=\arg r_B+\arg q_0$: the content is the dependence of the joint law of $(|r_B|,|q_0|,\Gamma)$ on $\Gamma$.
+
+\subsection{A correction, and what the $Y$-sector test actually shows}\label{sec:idealBY}
+In a first write-up of this chapter I claimed that the $B$- and $Y$-sectors could be ``idealised'' (added in quadrature to $L$) while keeping $q_0$ honest, and computed
+\[\begin{gathered}
+I_B:=2\E\,\Psi\bigl(Tf^2+T^2|r_B|^2,|q_0|\bigr)-\tfrac{\sigma_0^2+2\E|r_B|^2}\varepsilon,\\
+ I_Y:=2\E\,\Psi\bigl(Tf^2+T|r_z|^2,|q_0|\bigr)-\tfrac{\sigma_0^2+\E|r_z|^2}\varepsilon,\\
+\Psi(u,s)=\mathrm{mabs}(\sqrt u,s),
+\end{gathered}\]
+on the junta family $q_0=\sigma(aH(w_2)+\sqrt{1-a^2}W)$ with $r_B=c\,\bar w_2$, $r_z=c(|w_2|^2-1)$ sharing the driver (\code{idealBY.py}). Both are below $S$ at every tested point
+(deficit $\approx-1.15c^2$ for $B$, $-0.23c^2$ for $Y$, independent of $a$). \textbf{But the two inequalities this rested on are false} (\code{pointwise.py}, dense scans):
+(i) $u\mapsto\mathrm{mabs}(\sqrt u,s)$ is \emph{not} concave; it is convex on $u<1.21s^2$ (second difference up to $+0.68$) and concave beyond; (ii) the pointwise bound
+$E_\psi|x+\beta e^{i\psi}+se^{-i\psi+i\Gamma}|\le\mathrm{mabs}(\sqrt{x^2+\beta^2},s)$ fails by up to $6.7\%$ (at $x\approx\beta\approx s\approx0.03$, $\Gamma=\pi$), and its $W$-analogue by $9.3\%$.
+So $I_B$ is \emph{not} a proven upper bound of the honest $B$-sector payoff when $q_0$ is non-Gaussian (it is when $q_0$ is Gaussian, by Theorem~\ref{thm:visible}, because the fresh
+Gaussian is never idealised). The trivial radius bound $\mathrm{mabs}(\sqrt{u+H},s)\le\mathrm{mabs}(\sqrt u,s)+H/(2\sqrt u)$ (from $\partial_x E_\phi|x+se^{i\phi}|\le1$) gives, for the
+even sector $Y$, gain $\le c^2\E[\sqrt T/f]$ against price $c^2/\varepsilon$, and $\E[\sqrt T/f]<1/\varepsilon$ holds at the peak ($1.09$ vs $1.32$) but fails at the box corner
+$(\varepsilon,\ell,\beta)=(0.74,0.76,0.1432)$ ($1.356$ vs $1.351$); for $B$, $\E[T^{3/2}/f]\le1.70<2/\varepsilon$ everywhere in the box, but the step needs the false inequality (ii).
+
+What survives, and is in fact exact: for the $Y$-sector the $\theta$-average is a single phase-averaged norm with \emph{no} idealisation,
+\[
+\Lambda(q_0+r_zz_1)=\E_{T,w}\bigl[\mathrm{mabs}(\sqrt T|f+r_z|,|q_0|)+\mathrm{mabs}(\sqrt T|f-r_z|,|q_0|)\bigr]-\tfrac{\sigma_0^2+\|r_z\|^2}\varepsilon,
+\]
+which depends on the joint law of $(|f\pm r_z|,|q_0|)$ only (content-free, as the frequency rule predicts). For purely imaginary $r_z$ (the dangerous direction, constant $1.126$)
+$|f\pm r_z|^2=f^2+|r_z|^2$ and the two signs coincide, so $I_Y$ \emph{is} the honest payoff: the table rows for the $Y$-sector are a genuine (float) verification of K for
+$q_0+i\,c(|w_2|^2-1)z_1$ with shared drivers, all $a$ and $c\le0.4$. For real $r_z$ the midpoint quantity exceeds the honest payoff by $10^{-2}$--$7\cdot10^{-2}$ in expectation at
+every tested point, so there $I_Y$ is a valid but loose bound (not proven in general). The $B$-table remains a formal quantity without a theorem behind it.
+
+\subsection{Lower-bound GPT's shared-driver package (received during this session)}\label{sec:shareddriver}
+\pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/shared-driver-20261015/} (README, 11 stdlib checkers pass under \code{python3 -I}; proofs independently audited; no new bound).
+(1) \emph{Quantitative norm deficit}: for a centered conditional real Gaussian residual with $|Q_0|^2=A\,E$ in law ($E$ exponential), $\E[(A-v)^2A]\le B\Var(A)$, $B\ge v$, and $L$
+independent of the residual with a proper Gaussian variance-mixture law,
+$g(v)-2\E|L+Q_0|\ge\frac{\kappa}{2(B-v)^2}[g(v)+(B-v)g'(v)-g(B)]$, $g(v)=2\E|L+\sqrt vG|$, $\kappa=\E|Q_0|^4-2v^2$ (at $B=v$: $-\kappa g''(v)/4$). Usable $B$: $5v$ (proper
+bilinear/affine Gaussian-factor kernels), $63v$ (pure-quadratic coefficients times independent linear drivers), $\min\{5v,v+4\sqrt{2\kappa/3}\}$ (central proper bilinear).
+This deficit pays for a cubic core $P$ sharing the latent coordinates: sufficient $\E|P|^2\le0.1\kappa$ (quadratic coefficients, full box, $v\le1/4$), $0.45\kappa$ (bilinear),
+$1.2\kappa$ (bilinear, peak), tenfold better than before. \emph{Independence of the whole residual from the visible variable is still required.}
+(2) \emph{Explicit all-threshold stop-loss} for unit globally proper bilinear kernels $Q=X^{\top}CY+d^{\top}Z$: $\E(|Q|^2-a)_+\ge e^{-a}(1+\frac{a^2\kappa}{2(10+a)})$, leading
+coefficient $a^2e^{-a}\kappa/4$; quadratic coefficients: denominator $2(126+a)$; degree $\le2$ coefficients: $2(152+a)$.
+(3) \emph{Joint results with the visible coordinate}, residual $Q=X[Y+\alpha(|Z|^2-1)]+\frac\beta{\sqrt2}Z^2\bar X+\sqrt sG$: a global orthogonal-phase case ($\beta=0$, $Y$ real,
+$\alpha$ imaginary, or $\Re(Y\bar\alpha)=0$) under $b\ge a/5$, $|\alpha|^2\le a^2/2$; complete simultaneous local stability for a \emph{linear} visible term $aZ$ (five real
+directions, every $s$, every variance ratio); for the actual cubic visible term, 396 negative Hessians (float), one-dimensional Hessian formulas available for certification.
+(4) \emph{Obstruction}: the sum $Z(a+b|Z|^2)+\alpha(|Z|^2-1)X$ is \emph{not} a Gaussian variance mixture (its radial characteristic function oscillates like
+$k^{-3/2}\cos(k(a+b)-\pi/4)$), so the ``represent the whole sum as a mixture'' shortcut is closed. Their stated next target coincides with \S\ref{sec:Aline}: the joint comparison for
+the nonlinear visible term, i.e.\ K for the $A$-sector with shared drivers.
+
+
+\subsection{Lower-bound GPT's profile-slack package: the even sectors are proved}\label{sec:profileslack}
+\pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/profile-slack-20261015/} (received at the end of this session; checks: exact integer arithmetic over 116,000 rectangles for the
+nonlinear Hessian, outward-rounded intervals for the even-sector certificate, isolated-mode portability). Main theorem \st{P} (audited by them, not read line by line here): at the
+profile $L=Z(a+b|Z|^2)$ with $a\in[0.5591,0.5593]$, $b\in[0.1431,0.1433]$ (and, by scaling, $(a,b)=c(a_0,b_0)$ with constant $13/(10c)$), for every $\varepsilon$,
+\[
+\boxed{\ \Lambda(q+Zr_Y+\bar Zr_W)\ \le\ \Lambda(q)-\Bigl(\frac1\varepsilon-\frac{13}{10}\Bigr)\bigl(\E|r_Y|^2+\E|r_W|^2\bigr)\ }
+\]
+for \emph{arbitrary} dependence among $q,r_Y,r_W$ (independent of the visible $Z$), at every perturbation size; the penalty is $\ge3/190$ for $\varepsilon\le0.76$ and $417/18910$ at $\varepsilon=0.7564$. The key tool is the sharp diagonal quadratic majorant $|x+y|+|x-y|\le2|x|+|y|^2/|x|-(\Re(y\bar x))^2/(2|x|^3)$ applied after the visible half-turn; a positive Gaussian envelope of the visible pushforward density reduces the global bound to two explicit Gaussian matrix integrals. This is exactly the global statement for the even sectors that the
+frequency rule (\S\ref{sec:freqrule}) predicted and that my modulus-only attempt (\S\ref{sec:idealBY}) failed to prove; their proof does not use concavity. Note the scope: \textbf{the theorem removes the even sectors around a $q$-only baseline} ($q$ $Z$-free); their interaction with simultaneous $A/B$ sectors (which depend on $Z$) and with the diagonal $\nu$ term is an open obligation, so K is not thereby reduced to the odd sectors. Also in the package: local simultaneous $A/B$ stability for coupled cubic kernels
+$q=\sum_jX_jS_j$ with shared latent variables (Janson's hypercontractivity removes the boundedness assumption; thresholds implicit), and an exact reduction of the enlarged content
+optimisation for the Gaussian-factor class to centered three-point laws in $\R^2$ (a five-parameter inequality, not yet certified). Their caveat is ours: the $Y/W$ theorem starts from
+a $q$-only baseline; simultaneous interaction with $A/B$, general coupled cores and the full row envelope remain open, so $1.402$ is not established.
+
+\subsection{Where this leaves Conjecture K}
+\begin{itemize}
+\item Sectors $Y,W,B$ with arbitrary latent dependence and a conditionally Gaussian residual: \textbf{proved} (Theorem~\ref{thm:visible}).
+\item Sector $A$ with an independent Gaussian driver, $|\alpha|^2\le a^2/2$: \textbf{proved} (Theorem~\ref{thm:centered}); the bound covers the whole needed box.
+\item Even sectors $Y$, $W$ added to a $q$-only baseline ($q$ $Z$-free, arbitrary law, shared drivers allowed): \textbf{proved} on the peak profile box (\S\ref{sec:profileslack}, deficit $\ge\frac{417}{18910}$ per unit sector variance). Open: $Y$, $W$ on top of simultaneous $A/B$ sectors, and the diagonal $\nu$. Sector $B$ with shared drivers: open (first-order coupling through $\Gamma$); the idealisation of \S\ref{sec:idealBY} is not available.
+\item Pure $q_0$ of arbitrary law (K-a): numerically from the moments, slack $\propto m-2$. \emph{Later:} proved \st{P} for all of $\Hc21(\C^2)$ and the one-coordinate star (\S\ref{sec:knext-star}), with a deficit for the nonzero-frequency sectors of one coordinate (Theorem~\ref{thm:kfull}); the moment constraints alone do \emph{not} certify it near $\sigma^*$, the Stein cuts are needed (\S\ref{sec:certs-Ka}). \emph{Update 15 Oct, 20:01:} \textbf{proved at the peak with slack $2.2\cdot10^{-5}$} for every remote cubic, buffer and diagonal $\nu$ (\autoref{ch:rescub}, \st{P}+\st{C}); the row box is not covered (later sharpened to $\eta<10^{-5}$, \autoref{ch:remote-cubic-refinement}).
+\item Sector $A$ sharing drivers with $q_0$: \textbf{the main open piece} (with $B$), reduced by \eqref{eq:Aline} to the laws of $|q_0+cr_A|$ and, at the fourth-moment level, to the cubic
+tensor inequality L2. The diagonal $\nu$ (profile $(t-2)^2$) is a parameter of the base profile and is numerically harmless ($|\nu|=0.05$ costs $10^{-3}$). \emph{Later:} weak forms proved on the Wick junta and on Gaussian factors (\autoref{ch:kjoint}); the dimension-free weighted reduction of \autoref{ch:weighted} leaves the single inequality (T$_0$), whose scalar weakening (T) is false (\S\ref{sec:wct-false}); $\nu$ is globally harmless on conditionally Gaussian baselines (\S\ref{sec:knext-diag}).
+\end{itemize}
+The consolidated list of what remains, after the four afternoon packages and \autoref{ch:weighted}--\autoref{ch:certs}, is \S\ref{sec:kfull-remains}.
+The anchored-cap replay (\S\ref{sec:critical}, item 1) is now closed: GPT reports all 13 bundles replayed, 1,268 anchors, no failures, and exact reconstruction of all 1,960 adopted caps
+and profile fields against the Lean sources (\code{anchor-replay/}). (At the time the Gaussian reduction H1 and the transfer H5 were the only unformalised hypotheses of the lower theorem besides the
+moment lemmas; since 15 Oct, 17:35 the transfer itself is proved in Lean, and the hypotheses are \code{SharedReduction}\stale{22 Oct}{proved in Lean: \code{sharedReduction\_frame}, \code{reductionHyp\_of\_nodeCaps}; only \code{NodeCaps} remains}, the cap tables, the moment bounds and the two Stein inputs\stale{22 Oct}{proved in Lean for the Gaussian law: \code{gaussian\_steinInputs}} for the law of $U$, and \code{TransferInputsL2}\stale{22 Oct}{proved in Lean: \code{transferInputs\_of\_witnessCap}, \code{witnessCap\_of\_reduction}, \code{lower\_bound\_of\_reduction}}; \autoref{ch:certified}.) GPT's $U(2)$ spherical constraints (a signed 12-point icosahedral cut $\sum\Gamma_kw_k\le4591/5000$ and a continuous constraint $\|P_1f\|^2+\lambda\|P_3f\|^2\le\frac89+\frac{16\lambda}{225}$)
+are rigorous and nonvacuous, but the matched cubic and quintic gate optimisations assigned them multiplier zero: no cap improvement.

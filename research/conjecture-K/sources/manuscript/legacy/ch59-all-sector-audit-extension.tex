@@ -1,0 +1,427 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch59-all-sector-audit-extension.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 59). Owner: lower-bound/10-coupled-complements.tex
+\section{All-sector anchors and a coupled-cubic extension}
+\label{ch:all-sector-audit-extension}
+\chapsummary{All-sector extensions on the stated cores and buffered tensor regions. Preserve the exceptional fresh mixed block and the branch-dependent retained deficits; there is no unrestricted even-sector removal.}
+
+\paragraph{Provenance and status (IDE note, 21 October).} Lower-bound GPT all-sectors audit extension (\code{conjK-all-sector-audit-extension-20261021.zip}, archived in
+\pathref{gpt-reviews/all-sector-audit-20261021/}). IDE replay \code{python -I verify\_all.py --full --jobs 6} (pinned \code{python-flint 0.9.0}, unrelated directory): ALL AUDIT AND
+EXTENSION CHECKS PASS in 318\,s, with every incoming integral regenerated, all 46 one-driver anchors present, eight malformed-input rejections, the six arbitrary-cubic
+all-sector regions, and the any-$N$ penalty $3/20$. IDE check of Lemma (Quadratic multiplication bounds): the sharp cases give exactly $17$ and $12$
+($\E[|H|^2(|X|^2-1)^2]=17$, $\E[|H|^2|X|^4/2]=12$), and on 30 random coupled tensors on $\C^2$ (exact Gauss--Hermite moments) the largest ratios to the then-used $17e$, $e+10h$, $12e$
+and $e+9h$ were $0.78$, $0.46$, $0.80$ and $0.37$. The canonical multiplication lemma below now replaces those influence coefficients.
+
+\subsection{Scope and audit of the received result}
+The input is \texttt{conjK-all-sectors-20261020.zip}. Its full source is
+preserved in the accompanying audit directory. Statements labelled
+\textbf{[P]} are analytic deductions; \textbf{[C]} denotes exact rational
+checks using directed integral enclosures. These are not Lean results.
+
+The assertion about all of $H_{2,1}(\mathbb C^2)$ means two coordinates
+\emph{including} the visible coordinate: $(Z,X)$. It is not a theorem for
+an arbitrary cubic on two remote coordinates together with $Z$.
+The input proves, at the peak profile,
+\[
+ Q\in H_{2,1}(Z,X),\quad g\ge0
+ \quad\Longrightarrow\quad \Lambda(Q+gU)\le S.
+\]
+Here $U$ is fresh. The six coefficients of $Q$ are unrestricted.
+This strengthens the earlier small-buffer all-sector core theorem.
+The earlier quantitative conditional-complement neighborhoods remain
+useful and are not superseded by this membership statement.
+
+The extension to arbitrary external even fields has an exception:
+for one Wick driver, the block
+\[
+ \operatorname{span}\{Z\bar X V_i,\bar Z X V_i\}
+\]
+must be absent in the input theorem when
+$c>19/100$, $g<41/250$, and $|\alpha|<2/5$.
+This exception is absent on $(Z,X)$ alone. For two Wick drivers,
+the input retains an even penalty $1/20$ on its anchor covers, not on
+every branch of its global theorem. The trace branch gives only
+$S-1/2000$; the large-buffer branch gives
+$S-\|Q\|^2/2000$. The README and suggested insertion must carry these
+qualifications, already present in its main theorem statement.
+
+\paragraph{Checker qualification.}
+The original one-driver scalar checker accepts two files containing only
+\texttt{END 0}. This is a coverage-validation omission, not a
+counterexample to the matrix bounds. The supplied audit adds a guard
+requiring exactly the 37 compact and 9 prior anchors, no duplicates,
+correct end counts and all matrix fields; it tests malformed inputs too.
+The full replay and the guard are separate from the dependency theorems:
+the incoming package does not reprove its older odd-sector covers.
+
+\subsection{A common tangent permits simultaneous additions [P]}
+Fix the peak parameters
+\[
+ a=699/1250,\quad b=179/1250,\quad p=2500/1891,
+ \qquad L=Z(a+b|Z|^2).
+\]
+All Gaussian coordinates are proper with second moment one.
+The visible $Z$ is independent of the remote Gaussian vector $X$;
+$U$ is independent of both. Set
+\[
+ \begin{split}
+ O&=q+(|Z|^2-1)r_A+Z^2r_B/\sqrt2,\\
+ E&=ZY+\bar ZW+\nu H(Z),\qquad
+ G=O+E+gU,
+ \end{split}
+\]
+where $q\in H_{2,1}(X)$, $r_A\in H_{1,0}(X)$,
+$r_B\in H_{0,1}(X)$, $Y\in H_{1,1}(X)$, and
+$W\in H_{2,0}(X)$. All remote fields may depend on every same
+coordinate; there is no mutual independence hypothesis.
+Write $E_{AB}=\|r_A\|^2+\|r_B\|^2$ and
+$E_{\rm ev}=\|Y\|^2+\|W\|^2+|\nu|^2$.
+
+Put $\rho_g(u)=\mathbb E|\sqrt u+gU|$,
+$K_g(u)=2\rho_g'(u)$ and $F_0=L+q$. Define the actual common tangent
+\[
+ \mathcal M_g(O;q)=\mathbb E\{2\rho_g(|F_0|^2)
+       +K_g(|F_0|^2)(|L+O|^2-|F_0|^2)\}
+       -p(\|O\|^2+g^2).
+\]
+Remote half-turn parity, followed by concavity of $\rho_g$, gives
+\begin{equation}\label{eq:ase-parity}
+ \Lambda(G)\le\mathcal M_g(O;q)
+       +\mathbb E[K_g(|L+q|^2)|E|^2]-pE_{\rm ev}.
+\end{equation}
+Indeed the two smoothed arguments are $L+O+E$ and $L+O-E$.
+Their squared norms sum to $2|L+O|^2+2|E|^2$.
+This is an inequality for the \emph{common tangent}; a black-box
+inequality only for $\Lambda(O+gU)$ cannot be substituted for it.
+The proofs of the buffered coupled-tensor bounds do bound this same
+$\mathcal M_g$, by bounding its contents and completing the A/B square.
+
+\subsection{Multiplication by second chaos [P]}
+\label{sec:quadratic-multiplication-refined}
+Write $q=\sum T_{ij,k}{:}X_iX_j\bar X_k{:}$, with $T_{ij,k}=T_{ji,k}$,
+and put $e=\|q\|^2=2\sum|T_{ij,k}|^2$ and
+$\kappa=\E|q|^4-2e^2$. For the annihilators
+$a_i=\partial_{X_i}$ and $b_i=\partial_{\bar X_i}$ set
+\[
+ d=(a_iq)_i,\quad f=(b_iq)_i,\quad
+ P=\E[dd^*],\quad Q=\E[\bar f f^{\mathsf T}],\quad
+ I=P+Q,\quad h=\|I\|_{\rm op},\quad
+ p_*=\|P\|_{\rm op},\quad r_*=\|Q\|_{\rm op}.
+\]
+The conjugation in $Q$ puts both Grams in the same coordinate convention.
+Thus $\operatorname{tr}P=2e$, $\operatorname{tr}Q=e$, $h\le3e$,
+$p_*\le\min(h,2e)$, and $r_*\le\min(h,e)$.
+The sharp influence theorem gives $\kappa\le14eh\le42e^2$.
+
+\begin{lemma}[Refined quadratic multiplication bounds]
+\label{lem:quadratic-multiplication-refined}
+For every complex $Y\in H_{1,1}$ and $W\in H_{2,0}$ on the same
+remote coordinates as $q$,
+\begin{align}
+ \E|qY|^2&\le (e+4h+2p_*)\|Y\|^2\le M_Y\|Y\|^2,
+ &M_Y&=e+4h+2\min(h,2e),\label{eq:ase-MY}\\
+ \E|qW|^2&\le (e+\tfrac{10}{3}h+r_*)\|W\|^2\le M_W\|W\|^2,
+ &M_W&=e+\tfrac{10}{3}h+\min(h,e).\label{eq:ase-MW}
+\end{align}
+In particular $M_Y\le\min(17e,e+6h)$ and
+$M_W\le\min(12e,e+13h/3)$. The variance constants $17,12$ are sharp;
+no sharpness assertion is made for $6,13/3$.
+No independence between $q,Y,W$ is assumed.
+\end{lemma}
+\begin{proof}
+On the orthogonal complex Hermite basis,
+$a_iH_{\mu,\nu}=\mu_iH_{\mu-e_i,\nu}$,
+$a_i^*H_{\mu,\nu}=H_{\mu+e_i,\nu}$ and
+$\|H_{\mu,\nu}\|^2=\mu!\nu!$, with the analogous formulas for $b_i$.
+Multiplication by $X_i$ is $a_i^*+b_i$.
+
+First let $Y$ be real. Its Hermitian coefficient matrix can be
+unitarily diagonalized, so $Y=\sum_i\alpha_i(|X_i|^2-1)$ with real
+$\alpha_i$ and $A^2=\sum\alpha_i^2=\|Y\|^2$.
+The three orthogonal output grades of $qY$ are
+\[
+ Cq,\ Nq,\ Dq,\qquad
+ C=\sum\alpha_i a_i^*b_i^*,\quad
+ N=\sum\alpha_i(a_i^*a_i+b_i^*b_i),\quad
+ D=\sum\alpha_i b_i a_i.
+\]
+Since $C^*=D$ and
+$[D,C]=\sum\alpha_i^2(1+a_i^*a_i+b_i^*b_i)$,
+\begin{equation}\label{eq:quadratic-Y-identity}
+ \|qY\|^2=eA^2+\sum_i\alpha_i^2 I_{ii}+\|Nq\|^2+2\|Dq\|^2.
+\end{equation}
+On a degree-three basis vector write $m_i=\mu_i+\nu_i$.
+Then $(\sum\alpha_i m_i)^2\le3\sum\alpha_i^2m_i$, hence
+$\|Nq\|^2\le3\sum\alpha_i^2 I_{ii}\le3hA^2$.
+The output coefficient of $X_\ell$ in $Dq$ is
+$2\sum_i\alpha_iT_{i\ell,i}$. Contracting the output against a unit
+vector $v$, put $S_{ik}=\sum_\ell\bar v_\ell T_{i\ell,k}$.
+Then
+\[
+ |2\sum_i\alpha_i S_{ii}|^2\le4A^2\sum_{i,k}|S_{ik}|^2
+ =A^2\|\sum_\ell\bar v_\ell a_\ell q\|^2\le p_*A^2.
+\]
+This proves the first bound for real $Y$. Apply it separately to
+$\Re Y,\Im Y$ and add, using $|qY|^2=|q|^2((\Re Y)^2+(\Im Y)^2)$,
+to cover every complex $Y$.
+
+For $W$, unitary Takagi diagonalization gives
+$W=\sum\beta_iX_i^2$, $\beta_i\ge0$, and
+$\|W\|^2=2B^2$ with $B^2=\sum\beta_i^2$.
+Its two output grades are $C_Bq$ and $2Mq$, where
+\[
+ C_B=\sum\beta_i(a_i^*)^2,\quad D_B=C_B^*=\sum\beta_i a_i^2,
+ \quad M=\sum\beta_i a_i^*b_i.
+\]
+Put $x=\sum\beta_i^2\|a_iq\|^2$ and $z=\sum\beta_i^2\|b_iq\|^2$.
+Commuting once gives
+\[
+ \|C_Bq\|^2=2eB^2+4x+\|D_Bq\|^2,\quad
+ \|Mq\|^2=z+S,\quad
+ S=\sum_{i,j}\beta_i\beta_j\langle a_jb_iq,a_ib_jq\rangle.
+\]
+The sum $S$ is real. Cauchy--Schwarz, assigning the weights to either
+factor, gives both
+\[
+ S\le\sum_{i,j}\beta_i^2\|a_jb_iq\|^2=2z,
+ \qquad S\le\sum_{i,j}\beta_i^2\|a_ib_jq\|^2=x.
+\]
+Therefore $S\le\min(x,2z)\le2(x+z)/3$ and
+$x+z=\sum\beta_i^2 I_{ii}\le hB^2$.
+The output coefficient of $\bar X_k$ in $D_Bq$ is
+$2\sum_i\beta_iT_{ii,k}$. Dualizing the remaining $k$ index and
+applying Cauchy--Schwarz over $(i,j)$ gives
+$\|D_Bq\|^2\le2r_*B^2$. Consequently
+\begin{equation}\label{eq:quadratic-W-identity}
+ \|qW\|^2=2eB^2+4(x+z)+4S+\|D_Bq\|^2
+ \le(2e+20h/3+2r_*)B^2.
+\end{equation}
+Divide by $2B^2$. For the variance sharpness take
+$q=H(X)$, $Y=|X|^2-1$, $W=X^2/\sqrt2$.
+Then $e=1$, $h=3$, $p_*=2$, $r_*=1$, and the two products have
+squared norms $17$ and $12$ by the exponential moment table.
+\end{proof}
+
+\paragraph{Retaining the separate influence norms [P].}
+The same proof gives the additional refinements
+\begin{align*}
+ M_Y^{\rm dir}&=e+h+\min\{3h,(\sqrt{2p_*}+\sqrt{r_*})^2\}+2p_*,\\
+ M_W^{\rm dir}&=e+2h+2\min\{p_*,2r_*,2h/3\}+r_*.
+\end{align*}
+For $Y$, the holomorphic and antiholomorphic number-operator parts of
+$Nq$ have norm at most $\sqrt{2p_*}A$ and $\sqrt{r_*}A$.
+For $W$, retain $x\le p_*B^2$ and $z\le r_*B^2$ when bounding $S$.
+These refinements help anisotropic tensors without changing the
+scalar $(e,h)$ envelopes used in the certificates below.
+
+\paragraph{Calibration and exact audit.}
+For $q=N^{-1/2}\sum H(X_j)$ and the corresponding normalized sums
+$Y=N^{-1/2}\sum(|X_j|^2-1)$, $W=(2N)^{-1/2}\sum X_j^2$,
+\[
+ e=1,\quad h=3/N,\quad \E|qY|^2=1+16/N,\quad
+ \E|qW|^2=1+11/N.
+\]
+Thus any coefficients in universal bounds $e+C_Yh,e+C_Wh$ must satisfy
+$C_Y\ge16/3$, $C_W\ge11/3$, even in the diffuse limit. We do not
+claim these lower limits are universal upper bounds.
+The portable checker verifies both exact operator identities on 240
+Gaussian-integer Hermite polynomials in dimensions one through six,
+and these sharpness formulas. These finite checks audit normalization;
+the dimension-free proof is the operator argument above.
+The refinement was supplied in \code{quadratic-multiplication.pdf};
+this section replaces the former $e+10h,e+9h$ proof.
+
+\subsection{A three-by-three majorant for every coupled cubic [P]}
+Use the visible transforms and nonnegative spectral weight from the
+received certificate:
+\[
+ K_g(|w|^2)=\int_0^\infty W_g(k)J_0(k|w|)\,dk,
+ \qquad W_g(k)=e^{-x^2}-\sqrt\pi x\,\operatorname{erfc}(x),\quad x=gk/2.
+\]
+The visible transforms are
+\[
+ V_T=\mathbb E[TJ_0(k|L|)],\quad
+ V_n=\mathbb E[T(T-2)^2J_0(k|L|)/2],\quad
+ V_{2T}=\mathbb E[TJ_2(k|L|)],
+\]
+\[
+ V_{Tn}=\mathbb E[T(T-2)J_0(k|L|)/\sqrt2],\quad
+ V_{2Tn}=\mathbb E[T(T-2)J_2(k|L|)/\sqrt2].
+\]
+At a lower buffer $g_0>0$ let $K_T=\int W_{g_0}V_T$,
+$K_n=\int W_{g_0}V_n$, and define
+\[
+ N_T=\int k^2W_{g_0}(V_T)_-,\quad
+ N_n=\int k^2W_{g_0}(V_n)_-,\quad
+ N_{2T}=\int k^2W_{g_0}|V_{2T}|,
+\]
+\[
+ N_{Tn}=\int k^2W_{g_0}|V_{Tn}|,\qquad
+ N_{2Tn}=\int k^2W_{g_0}|V_{2Tn}|.
+\]
+All integrals have domain $[0,\infty)$.
+Define the real symmetric matrix
+\[
+ \mathcal Q=
+ \begin{pmatrix}
+ K_T+N_TM_Y/4&N_{2T}\sqrt{M_YM_W}/4&N_{Tn}\sqrt{e^2+\kappa}/4\\
+ N_{2T}\sqrt{M_YM_W}/4&K_T+N_TM_W/4&N_{2Tn}\sqrt{2e^2+\kappa}/8\\
+ N_{Tn}\sqrt{e^2+\kappa}/4&N_{2Tn}\sqrt{2e^2+\kappa}/8&K_n+N_ne/4
+ \end{pmatrix}.
+\]
+
+\begin{theorem}[General even-sector extension]
+For every $g\ge g_0$, and arbitrary shared remote coefficients,
+\[
+ \mathbb E[K_g(|L+q|^2)|E|^2]
+ \le (\|Y\|,\|W\|,|\nu|)\mathcal Q
+                  (\|Y\|,\|W\|,|\nu|)^\top.
+\]
+Consequently $\mathcal Q\preceq(p-\tau)I$ gives
+\[
+ \Lambda(O+E+gU)\le\mathcal M_g(O;q)-\tau E_{\rm ev}.
+\]
+\end{theorem}
+
+\begin{proof}
+First take $g=g_0$. The common remote phase has charges
+1 for $q$, 0 for $Y$ and 2 for $W$. The diagonal Fourier
+factors are $\mathbb E[\cos(k\Re q)|Y|^2]$ and its $W$
+analogue. Their deviations from their unweighted values lie
+between $-k^2\mathbb E|qY|^2/4$ and zero. This follows from
+$1-\cos t\le t^2/2$ and phase averaging. Thus only the
+negative parts of the visible transforms contribute to an
+upper bound. The $\nu$ diagonal is the same argument with $e$.
+For the $Y,W$ cross term the unweighted expectation vanishes;
+Cauchy--Schwarz with the common nonnegative weight
+$1-\cos(k\Re q)$ gives $k^2\sqrt{M_YM_W}/4$.
+
+For the $Y,\nu$ cross term, phase averaging gives
+$\mathbb E[YJ_0(k|q|)]$. The function
+$u\mapsto J_0(k\sqrt u)$ is $k^2/4$-Lipschitz, including at
+zero, since $|J_1(t)|\le |t|/2$. The independent-copy
+variance identity implies
+\[
+ \operatorname{Var}(J_0(k|q|))
+ \le k^4\operatorname{Var}(|q|^2)/16
+ = k^4(e^2+\kappa)/16.
+\]
+Use $\mathbb EY=0$ and Cauchy--Schwarz.
+For $W,\nu$, the charged phase average is a unit phase times
+$J_2(k|q|)$. The integral representation of $J_2$ gives
+$|J_2(t)|\le t^2/8$, so this term is bounded by
+$k^2\sqrt{\mathbb E|q|^4}\|W\|/8$.
+Integration against the corresponding absolute visible transforms
+proves the matrix claim. These steps use no factorization of $q$.
+
+Finally $K_g(u)$ decreases pointwise in $g$, by its positive
+Laplace representation. Hence the whole nonnegative quadratic
+form $\mathbb E[K_g|E|^2]$ is bounded by its value at $g_0$.
+No sign assumption on an individual Hankel transform is used.
+\end{proof}
+
+\subsection{Certified consequences [P,C]}
+The directed visible tables are freshly generated from the incoming
+engine. Buffer endpoints are rounded \emph{down} before evaluation.
+The checker \texttt{check\_general.py} uses exact fractions and
+integer-square-root bounds, and checks all three positive pivots of
+$(p-\tau)I-\mathcal Q_{\rm up}$. Entrywise upper bounds are used
+only on the nonnegative norm vector, not asserted to be Loewner bounds.
+Monotonicity in $e,h,\kappa$ covers the entire parameter rectangles.
+
+The existing common-tangent A/B proofs therefore extend as follows.
+In every row below, $q$ is an \emph{arbitrary} coupled remote cubic
+in any dimension and $r_A,r_B,Y,W,\nu$ are unrestricted. The
+conclusion is $\Lambda(G)<S+\delta-E_{AB}/2000-\tau E_{\rm ev}$:
+\[
+\begin{array}{c|c|c|c}
+g\text{ at least}& e\text{ at most}&\delta&\tau\\\hline
+37/200&9/4000&89/10^6&1/10\\
+1/5&7/2500&89/10^6&1/10\\
+9/40&49/10000&-1/200000&2/25\\
+1/4&9/1000&-1/200000&1/40
+\end{array}
+\]
+These use the variance-only coupled-tensor results (CT.5) as
+common-tangent inputs. There are also the influence-only extensions
+\[
+ \boxed{g\ge9/40,\ e\le1/25,\ h\le9e/100
+ \ \Longrightarrow\
+ \Lambda(G)<S-1/12500-E_{AB}/2000-E_{\rm ev}/20,}
+\]
+\[
+ \boxed{g\ge1/5,\ e\le1/25,\ h\le e/150
+ \ \Longrightarrow\
+ \Lambda(G)<S+89/10^6-E_{AB}/2000-9E_{\rm ev}/100.}
+\]
+The older certificates used $\kappa\le50eh/3$; the canonical bound
+$\kappa\le14eh$ now gives ratios $63/50$ and $7/75$ instead.
+No additional independence among the remote fields is introduced.
+
+\begin{corollary}[Larger all-sector influence region and stronger penalties, \st{P,C}]
+\label{cor:quadratic-all-sector-refinement}
+For the same arbitrary coupled-cubic family, with all A/B/even/diagonal
+amplitudes and phases unrestricted,
+\[
+ \begin{array}{c|c|c|c|c}
+ g\text{ at least}&e\text{ at most}&h/e\text{ at most}&\delta&\tau\\\hline
+ 9/40&1/25&9/100&-1/12500&19/200\\
+ 9/40&1/25&1/10&-1/40000&9/100\\
+ 1/5&1/25&1/150&89/10^6&99/1000
+ \end{array}
+\]
+Each row proves $\Lambda(G)<S+\delta-E_{AB}/2000-\tau E_{\rm ev}$.
+In particular the first retained even penalty rises from $1/20$ to
+$19/200$, and the middle row adds every even and diagonal sector to
+Corollary~\ref{cor:sharp-influence-region}.
+\end{corollary}
+\begin{proof}
+Insert the new $M_Y,M_W$ and $\kappa\le14eh$ into $\mathcal Q$.
+The exact checker verifies all three positive LDL pivots of
+$(p-\tau)I-\mathcal Q_{\rm up}$ at each endpoint; monotonicity covers
+the whole parameter rectangle and every larger fresh buffer.
+Combine with the existing common-tangent A/B bounds, including the
+$h\le e/10$ completion of Corollary~\ref{cor:sharp-influence-region}.
+The weak row retains that completion's remote-comparison dependency.
+The four variance-only rows above are also replayed unchanged.
+
+The old matrix certificates remain valid: $\mathcal Q$ has nonnegative
+off-diagonal entries, and every changed entry decreases. For real $v$,
+$v^\top\mathcal Q_{\rm new}v\le|v|^\top\mathcal Q_{\rm new}|v|
+\le|v|^\top\mathcal Q_{\rm old}|v|$.
+This is not an assertion that their difference is positive semidefinite.
+\end{proof}
+The exact rational replay and optional fresh visible-integral generator
+are \code{verify\_quadratic.py} and \code{regenerate\_quadratic.py} in
+\pathref{/Users/alingalatan/Documents/Codex/2026-10-10/plea/outputs/k-lower-audit-20261021/}.
+They keep the directed quadrature engine and all odd-sector dependencies
+explicit; they do not reprove the historical anchor covers.
+
+\paragraph{A stronger penalty in the received any-$N$ theorem.}
+For $\max c_j\le1/50$, $e\le1/100$ and
+$7/200\le g^2\le9/200$, the input's same $3\times3$ Wick matrix
+satisfies $\mathcal Q_{\rm Wick}\prec(p-3/20)I$.
+The checker verifies this for each of its three variance thresholds.
+Therefore its retained even penalty can be increased from $1/10$
+to $3/20$, with every other coefficient and hypothesis unchanged.
+This is a 50 percent improvement to that penalty, not to the
+Grothendieck lower bound.
+
+\subsection{What this changes in the endpoint strategy}
+These are simultaneous all-sector statements; they avoid inserting an
+even-sector comparison after an A/B baseline has become visible-dependent.
+They remove that interaction obligation in the displayed coupled-tensor
+regions as well as in the received Wick regions.
+They do not remove the fresh-buffer hypothesis. An arbitrary finite
+cubic need not contain such a buffer.
+
+The actual-response constraints from the preceding work remain relevant:
+at $t\ge1057/1250$, remote variance is less than $0.040726$ and
+total cubic energy is less than $0.071981$. In particular a remote
+Wick coefficient must be below $\sqrt{0.040726}<0.202$.
+The downward region $\max c_j\ge0.315$ is therefore irrelevant to
+actual responses at that peak, although it is a valid raw-K theorem.
+The important open region remains a general shared cubic with small or
+zero fresh buffer. The original-response support and projection cuts
+address precisely that broader region and should remain the main plan.
+No new endpoint follows until an exhaustive reduction and the complete
+row cover have been supplied.

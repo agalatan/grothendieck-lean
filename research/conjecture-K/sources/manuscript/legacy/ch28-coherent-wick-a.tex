@@ -1,0 +1,780 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch28-coherent-wick-a.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 28). Owner: lower-bound/09-one-driver.tex
+\section{Exact Conjecture K for coherent Wick A-couplings and a dimension-free finite-coupling extension}
+\label{ch:coherent-wick-a}
+\chapsummary{Exact coherent one-driver A comparison, unequal-sum neighborhoods and profile transport. This proof remains an input to the complete A/B theorem in \autoref{ch:complete-coherent-driver}; its earlier coverage limitations are local to this contribution.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{proof/chapters/ch28-coherent-wick-a.tex} from the package
+\pathref{gpt-reviews/coherent-wick-a-20261020/grothendieck-coherent-wick-a-20261020.zip}, ported verbatim except for this header and the closing reading note. \emph{Our replay} \st{C}:
+\code{python3 -I verify\_all.py} (Python 3.12, mpmath 1.3.0, NumPy 2.3.5, Apple clang 17) from an unrelated directory: \textbf{PASS FULL EXACT-K PACKAGE in 771\,s}
+(4{,}538 numerical boxes, 11{,}189 vertices, 994 analytic leaves, 106 tail leaves, 5{,}637 splits; strict numerical clearance $1152257/2^{46}$; analytic constants, Hessian, Rice envelope,
+Wick/Fourier constants, finite unequal-$A$ completion, transport and the independent tree audit all PASS); log \pathref{gpt-reviews/coherent-wick-a-20261020/replay\_ide.log}.
+
+
+This chapter concerns a genuinely shared driver. It proves exact
+Conjecture K for the complete one-driver coherent Wick A-family,
+with no amplitude or phase restriction. An explicit analytic neighborhood
+joins a certified numerical exterior. The proof also gives a finite-coupling
+theorem for unequal Wick sums in arbitrary dimension, and transports the
+one-driver result to the supplied profile rectangle with slack less than
+$10^{-4}$. These are special-class results, not a complete proof of
+Conjecture K for arbitrary cubics or a new Grothendieck
+endpoint. The current repository manuscript records the separate bound
+$K_G^{\C}>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$; none of the statements below changes that endpoint.
+
+\subsection{Definitions and the exact all-amplitude result}
+Let $Z,X,G$ be independent standard proper complex Gaussians, normalized
+by $\E|Z|^2=1$. Set
+\[
+ T=|Z|^2,\qquad H(X)=X(|X|^2-2)/\sqrt2,
+ \qquad Q=cH(X)+\alpha(T-1)X+gG.
+\]
+Here $c,g\ge0$ and $\alpha\in\C$. Arbitrary complex coefficients of
+$H$ and $G$ reduce to this form by rotations of their Gaussian drivers.
+For $L_{a,b}=Z(a+bT)$ define
+\[
+ \Lambda_{a,b,\varepsilon}(Q)
+ =\E\bigl(|L_{a,b}+Q|+|L_{a,b}-Q|\bigr)
+    -\frac{\E|Q|^2}{\varepsilon},
+\]
+\[
+ S(a,b,\varepsilon)
+ =\sup_{v\ge0}\left(2\E|L_{a,b}+\sqrt vG|
+                  -v/\varepsilon\right).
+\]
+The price is exactly
+$\E|Q|^2=c^2+|\alpha|^2+g^2$; in particular the coherent sum is not
+replaced by an independent sum. Write
+\[
+ (a_0,b_0,\varepsilon_0)
+   =(699/1250,179/1250,1891/2500),\qquad
+ S_0=S(a_0,b_0,\varepsilon_0),
+ \quad \eta_0=\frac{703312310}{2^{46}}<10^{-5}.
+\]
+
+\begin{theorem}[Exact coherent Wick A comparison]
+\label{thm:coherent-a-exact}
+For every $c,g\ge0$ and $\alpha\in\C$,
+\[
+ \boxed{\Lambda_{a_0,b_0,\varepsilon_0}
+       \bigl(cH(X)+\alpha(T-1)X+gG\bigr)\le S_0.}
+\]
+The supremum over this complete family equals $S_0$. Every maximizer
+has $c=\alpha=0$ and $g^2$ equal to the unique maximizing Gaussian
+variance.
+\end{theorem}
+The analytic neighborhood is proved in
+Theorem~\ref{thm:coherent-sharp}; the exhaustive exterior certificate
+and the proof of the exact conclusion are described below. We first
+record the independently replayed numerical comparison from which the
+exact cover was refined.
+
+\begin{theorem}[A purely numerical comparison, retained as a checkpoint]
+\label{thm:coherent-a-global}
+For every $c,g\ge0$ and $\alpha\in\C$,
+\[
+ \Lambda_{a_0,b_0,\varepsilon_0}(Q)
+ \le \frac{96684070713622}{2^{46}}
+ \le S_0+\eta_0<S_0+10^{-5}.
+\]
+\end{theorem}
+
+\paragraph{Exact radial reduction.}
+Let $R=|X|^2$ and let $\theta$ be uniform on $[0,2\pi]$, independent
+of $T,R$. Put
+\[
+ x=\sqrt T(a_0+b_0T),\quad
+ m=\sqrt R\bigl(c(R-2)/\sqrt2+\alpha(T-1)\bigr),
+ \quad F_w(u)=\E|\sqrt u+\sqrt wG|.
+\]
+The two signs in the payoff have equal integrals, and the exact norm
+term is $2\E F_{g^2}(|x+me^{i\theta}|^2)$. This formula retains the
+relative phase between the Wick and centered A terms. Conditionally
+rotate the uniform angle by $\arg m$ (arbitrarily when $m=0$).
+Since $F_w$ is
+increasing and concave in $u$, its integral on an angular cell with
+midpoint $\theta_j$ and half-width $d$ is at most
+\[
+ F_w\left(x^2+|m|^2+2x|m|\frac{\sin d}{d}\cos\theta_j\right).
+\]
+This is conditional Jensen applied to the exact squared displacement.
+There is no pointwise optimization of the relative phase and no
+ellipse-ordering assumption.
+
+\paragraph{Radial integration and complete parameter cover.}
+In the radii $r=\sqrt T,s=\sqrt R$, all affine inputs to the norm are
+polynomials of degree at most three in each variable. Positive tensor
+Bernstein integration bounds the norm by the weighted norm of its
+controls. The complex control $cH_k+\alpha A_jX_k$ is formed before
+taking its modulus. The exact norm term being bounded is convex in
+$(c,\Re\alpha,\Im\alpha,g)$. On a parameter box of side lengths $h_i$,
+\[
+ \sup_{\text{box}}\Lambda
+ \le\max_{\text{vertices}}\Lambda
+          +\frac1{4\varepsilon_0}\sum_i h_i^2.
+\]
+The quadratic correction follows directly by interpolating the
+negative sum-of-squares price. It does not require the numerical
+majorant itself to be convex.
+
+Conjugation permits $\Im\alpha\ge0$. If $V=c^2+|\alpha|^2+g^2<1$,
+the parameters lie in $[0,1]\times[-1,1]\times[0,1]\times[0,1]$.
+If $V\ge1$, Cauchy--Schwarz gives
+\[
+ \Lambda\le 2\sqrt{M+V}-V/\varepsilon_0<4/3,
+ \qquad M=a_0^2+4a_0b_0+6b_0^2=1181331/1562500.
+\]
+The last expression decreases on $V\ge1$. Thus the unbounded parameter
+tail is covered. For $V<1$, discarding either radius above six loses
+at most $4e^{-18}<2^{-23}$ in the two-sign norm; every oracle call
+pays this allowance.
+
+\paragraph{Certificate and replay obligations.}
+The fixed binary tree has 5,259 accepted boxes and 106 variance-tail
+boxes, separated by 5,364 splits; 12,353 distinct vertices are evaluated.
+All acceptance comparisons use outward integer arithmetic with scale
+$2^{-46}$. The universal Rice barrier, its interpolation bounds, and
+positive radial and angular data are independently checked and regenerated.
+The Gaussian lower benchmark is
+\[
+ B=96683367401312/2^{46}\le S_0,
+\]
+obtained at variance $1/25$ by Jensen in visible amplitude on 4,096
+radial cells. Subtracting $B$ from the achieved upper bound gives
+exactly $\eta_0$. The accompanying fixed-tree checker never refines the
+tree. Its runner reconstructs the integration data, checks every leaf
+and both unbounded tails, and verifies $100000(703312310)<2^{46}$.
+The written reduction together with these checks proves
+Theorem~\ref{thm:coherent-a-global}; this is not a Lean formalization.
+
+\subsection{Profile transport and conditional mixtures}
+\begin{lemma}[Transport of an excess over a Gaussian benchmark]
+\label{lem:coherent-transport}
+For square-integrable visible terms $L,L_0$ on the same probability
+space and any admissible $Q$,
+\[
+ |\Lambda_{L,\varepsilon}(Q)-\Lambda_{L_0,\varepsilon}(Q)|
+ \le2\E|L-L_0|.
+\]
+Their Gaussian benchmarks satisfy the same bound. Consequently a
+uniform comparison $\Lambda_{L_0,\varepsilon}(Q)\le S_{L_0,\varepsilon}+\eta$
+transports to
+\[
+ \Lambda_{L,\varepsilon}(Q)\le S_{L,\varepsilon}
+                         +\eta+4\E|L-L_0|.
+\]
+No independence between $Q$ and the visible coordinate is required.
+\end{lemma}
+\begin{proof}
+Apply the reverse triangle inequality to each of the two norms. Their
+prices cancel. Apply the same bound for each Gaussian variance and
+then take the supremum to compare the benchmarks. Adding the two
+inequalities proves the conclusion.
+\end{proof}
+
+\begin{corollary}[The complete supplied profile rectangle]
+\label{cor:coherent-profile}
+For $a\in[0.55919,0.55921]$, $b\in[0.14319,0.14321]$, and
+$\varepsilon=\varepsilon_0$, all coherent Wick A-couplings satisfy
+\[
+ \boxed{\Lambda_{a,b,\varepsilon_0}(Q)
+       < S(a,b,\varepsilon_0)+\frac{1773}{20000000}
+       =S(a,b,\varepsilon_0)+0.00008865.}
+\]
+Relative to the fixed peak benchmark one also has
+$\Lambda_{a,b,\varepsilon_0}(Q)<S_0+0.000044325$.
+\end{corollary}
+\begin{proof}
+Gaussian radial moments give $\E|Z|=\sqrt\pi/2$ and
+$\E|Z|^3=3\sqrt\pi/4$. Hence
+\[
+ 4\E|L_{a,b}-L_{a_0,b_0}|
+ \le2\sqrt\pi|a-a_0|+3\sqrt\pi|b-b_0|
+ <\frac{1773}{20000000},
+\]
+using $\sqrt\pi<1773/1000$ and the zero-slack peak theorem.
+When the reference benchmark stays $S_0$, only the first Lipschitz
+bound is needed, halving the transport cost.
+\end{proof}
+
+\begin{corollary}[Simultaneous rescaling of the profile and price]
+For any $\lambda>0$, put $\varepsilon=\lambda\varepsilon_0$.
+For all members of the same coherent family,
+\[
+ \Lambda_{a,b,\varepsilon}(Q)
+ \le S(a,b,\varepsilon)
+     +2\sqrt\pi|a-\lambda a_0|+3\sqrt\pi|b-\lambda b_0|.
+\]
+\end{corollary}
+\begin{proof}
+The exact scaling identity is
+$\Lambda_{\lambda L_0,\lambda\varepsilon_0}(Q)
+=\lambda\Lambda_{L_0,\varepsilon_0}(Q/\lambda)$; the Gaussian
+benchmark scales in the same way. The family is closed under division
+by $\lambda$. Now use Lemma~\ref{lem:coherent-transport}.
+\end{proof}
+
+The exact all-amplitude and transported bounds also hold for
+\[
+ Q=C H(X)+A(T-1)X+\sqrt V G
+\]
+when $(C,A,V)$ is jointly random, independent of $(Z,X,G)$, $V\ge0$,
+and $\E(|C|^2+|A|^2+V)<\infty$. Condition on the coefficients and
+integrate the deterministic comparison. This permits dependence
+among the remote coefficients, but not dependence of those coefficients
+on $X$ or $Z$. It does not identify an arbitrary cubic buffer with a
+Gaussian variance mixture.
+
+\begin{corollary}[Improper Gaussian buffers and conditional covariance]
+\label{cor:coherent-improper}
+Let $\mathcal F$ be independent of $(Z,X)$. Let $C,A$ and a positive
+semidefinite real $2$-by-$2$ matrix $\Sigma$ be $\mathcal F$-measurable.
+Conditionally on $\mathcal F$, let $B$ be a centered complex Gaussian,
+independent of $(Z,X)$, with real covariance $\Sigma$. If
+$\E(|C|^2+|A|^2+\operatorname{tr}\Sigma)<\infty$, then
+\[
+ \Lambda_{a_0,b_0,\varepsilon_0}
+       \bigl(CH(X)+A(T-1)X+B\bigr)\le S_0.
+\]
+This includes a real Gaussian buffer. Equality requires $C=A=0$ and
+$\Sigma=(v_*/2)I$ almost surely, where $v_*$ is the unique Gaussian
+maximizing variance.
+\end{corollary}
+\begin{proof}
+Condition on $\mathcal F$. Simultaneously rotating $Z$ and $X$ shows
+that each of $L\pm(CH(X)+A(T-1)X)$ has a circular law. Its expected
+norm after adding an independent buffer therefore depends only on
+the buffer's radius. An independent uniform phase may be applied to
+$B$ without changing either norm or its variance.
+
+Let $\lambda_1,\lambda_2\ge0$ be the eigenvalues of $\Sigma$ and
+$\Theta$ an independent uniform angle. Rotational averaging of the
+Gaussian characteristic function shows that the phase-randomized
+buffer has the law $\sqrt V G$, where
+\[
+ V=2(\lambda_1\cos^2\Theta+\lambda_2\sin^2\Theta),
+ \qquad \E[V\mid\mathcal F]=\operatorname{tr}\Sigma.
+\]
+Condition on $V$ and apply Theorem~\ref{thm:coherent-a-exact}. Averaging
+preserves the quadratic price exactly. Equality in the averaged
+comparison requires $C=A=0$ and $V=v_*$ almost surely. The latter
+forces $\lambda_1=\lambda_2=v_*/2$.
+\end{proof}
+The covariance may depend on independent latents, but not on the
+coherent driver $X$ or visible variable $Z$. Conditional nonzero
+means and arbitrary non-Gaussian buffers are not covered by this
+corollary. The transported profile bounds above apply to this class
+as well.
+
+\begin{proposition}[Quantitative loss of improper Gaussian noise]
+For a centered complex Gaussian $B$ independent of $Z$, put
+$v=\E|B|^2$, $p=|\E B^2|$, $M=\E|L|^2$, and
+$f(v)=2\E|L+\sqrt vG|$. At the peak profile,
+\[
+ \Lambda(B)\le f(v)-v/\varepsilon_0
+       -\frac{\sqrt\pi\,p^2}{16(M+v+p)^{3/2}}.
+\]
+This additional penalty is asserted only for the pure-buffer case.
+\end{proposition}
+\begin{proof}
+The preceding phase randomization represents the buffer by a proper
+variance mixture $V=v+p\cos(2\Theta)$, with mean $v$, variance $p^2/2$,
+and range $[v-p,v+p]$. The visible mixture formula gives
+$f(w)=\sqrt\pi\,\E\sqrt{R_0+w}$ with $\E R_0=M$. Jensen implies
+\[
+ -f''(w)\ge\frac{\sqrt\pi}{4(M+w)^{3/2}}
+          \ge\frac{\sqrt\pi}{4(M+v+p)^{3/2}}
+\]
+throughout the mixing interval away from zero; continuity extends
+the corresponding strong concavity to zero. Its Jensen deficit is
+at least half this constant times $\operatorname{Var}(V)=p^2/2$.
+Since $\Lambda(B)=\E f(V)-v/\varepsilon_0$, the result follows.
+\end{proof}
+
+\subsection{An explicit exact-K neighborhood}
+\label{sec:coherent-local}
+The small-amplitude conclusion is stronger than a slack bound.
+\begin{theorem}[Exact comparison near the Gaussian buffer]
+\label{thm:coherent-local}
+At the exact peak profile, if
+\[
+ \frac7{200}\le g^2\le\frac9{200},\qquad
+ 0\le c\le\frac1{250},\qquad |\alpha|\le\frac1{65},
+\]
+then $\Lambda(Q)\le S_0-(2/5)c^4$.
+On the smaller interval $0\le c\le1/425$, with the other ranges
+unchanged, one has
+\[
+ \boxed{\Lambda(Q)\le S_0-2c^4-|\alpha|^2/8.}
+\]
+Both conclusions allow every complex relative phase.
+\end{theorem}
+
+\paragraph{The exact profile yields a fourth-order deficit.}
+The positive Gaussian scale-mixture representation for the marginal
+law of $L$ gives $L\overset d=\sqrt R G_0$, with
+$\E R=M$. Use this representation only in the remote-only payoff,
+never for the joint pair $(L,T)$ in an A term. With
+$f(v)=2\E|L+\sqrt vG|=\sqrt\pi\E\sqrt{R+v}$,
+\[
+ -f''(v)>3/5,\qquad
+ \frac{f'''(v)}{-f''(v)}\le\frac3{2v}
+ \quad (7/200\le v\le9/200).
+\]
+The first inequality is Jensen using $M+v<81/100$.
+For a fixed shift, $P_v(u)=2\E|L+\sqrt vG+\sqrt u|$ is a Bernstein
+function. Its derivatives at zero satisfy
+$P_v^{(n)}(0)=f^{(n)}(v)/n!$, so the global cubic majorant is
+\[
+ P_v(u)\le f(v)+u f'(v)+u^2f''(v)/4+u^3f'''(v)/36.
+\]
+The Wick moments are $1,44,11352$ at orders two, four, six. Comparing
+the resulting expectation to $f(v+c^2)$ gives
+\[
+ \Lambda(cH+gG)
+ \le S_0-[-f''(g^2)]\left(\frac{21}{2}
+                       -\frac{473c^2}{g^2}\right)c^4
+ \le S_0-\frac{63}{10}c^4+\frac{56760}{7}c^6
+\]
+for $c\le1/40$. The supplied mixture proof and Laplace formula justify
+the derivative signs; a fixed shift is not replaced by added Gaussian
+noise.
+
+\paragraph{The coherent content starts at cubic order.}
+Set $\psi_g(z)=\E|z+gG|$ and $J_c(\alpha)=\Lambda(Q)$.
+Its full fourth derivative has operator norm at most
+$3\sqrt\pi/(4g^3)<204$ on this buffer interval. This follows by
+differentiating the absolutely convergent Fourier integral for the
+smoothed norm. In $D_\alpha J_c(0)$ the terms of degrees zero, one,
+and two in $c$ vanish: respectively by centering, Wick orthogonality,
+and the circular phase. Thus
+\[
+ \|\nabla_\alpha J_c(0)\|
+ \le\frac{204}{3}c^3\E|T-1|\E(|H|^3|X|)<600c^3.
+\]
+Here $\E|T-1|=2/e<3/4$ and
+$\E(|H|^3|X|)=(-32+480e^{-2})/(2\sqrt2)<35/3$.
+
+\paragraph{Uniform curvature and square completion.}
+The independently replayed directed-interval Hessian certificate gives
+$\tfrac12D_h^2J_0(0)<-7/20$ for every complex unit direction $h$ and
+every buffer variance in the interval. Its checked integrand is
+\[
+ 2\E[D_g(T)(T-1)^2]-1/\varepsilon_0,\qquad
+ D_g(T)=\frac{\sqrt\pi}{4g}e^{-x}I_0(x),\quad
+ x=\frac{T(a_0+b_0T)^2}{2g^2}.
+\]
+Taylor's formula for the Hessian, circular cancellation of its linear
+term, and the fourth derivative bound give
+\[
+ \tfrac12D_h^2J_c(\alpha)
+ \le-\frac7{20}
+       +102\bigl(4c^2+4\sqrt2c\Re\alpha+18|\alpha|^2\bigr).
+\]
+Integrating along $t\alpha$ retains the Taylor weight, and with
+$r=|\alpha|$ yields the useful master inequality
+\begin{align*}
+ \Lambda(Q)\le S_0-\frac{63}{10}c^4+\frac{56760}{7}c^6
+ +600c^3r
+ -\left[\frac7{20}-102(4c^2+2cr+3r^2)\right]r^2.
+\end{align*}
+On $c\le1/250$, $r\le1/65$, the bracket exceeds $1/4$.
+Use $600c^3r-r^2/4\le360000c^6$ and the exact comparison
+\[
+ \frac{63}{10}
+ -\frac{56760/7+360000}{250^2}
+ =\frac{17949}{43750}>\frac25.
+\]
+To retain the A penalty, use
+$600c^3r-r^2/8\le720000c^6$ and
+\[
+ \frac{63}{10}
+ -\frac{56760/7+720000}{425^2}
+ =\frac{1147521}{505750}>2.
+\]
+This proves Theorem~\ref{thm:coherent-local}. The accompanying expanded
+proof gives the Gaussian Fourier identities and every Wick moment;
+the rational checker verifies these constants. The Hessian replay
+covers the whole variance interval and the infinite radial tail.
+
+\subsection{Averaging the visible profile first: stronger content and curvature}
+The preceding explicit neighborhood can be enlarged substantially. This
+section retains the visible average before bounding derivatives, in both
+the signed A profile and the A-squared profile. In the notation above,
+put $r=|\alpha|$ and keep $g^2\in[7/200,9/200]$.
+
+\begin{theorem}[A stronger quantitative coherent comparison]
+\label{thm:coherent-sharp}
+For every $c,r\ge0$ the following global polynomial upper bound holds:
+\begin{align*}
+ \Lambda(Q)\le S_0-21c^4+\frac{20812}{3}c^6
+ +76c^3|\Re\alpha|
+ -\left(\frac7{20}-48c^2-357cr-306r^2\right)r^2.
+\end{align*}
+In particular, $\Lambda(Q)\le S_0-2c^4$ throughout each of the rectangles
+\[
+ (c,r)\in[0,1/30]\times[0,1/100],\quad
+ [0,1/32]\times[0,1/80],\quad
+ [0,1/36]\times[0,1/65].
+\]
+One also has $\Lambda(Q)\le S_0-6c^4-r^2/50$ for
+$c\le1/40$, $r\le1/65$.
+\end{theorem}
+
+\paragraph{Signed visible densities and radial convolution.}
+Set $h(t)=t(a_0+b_0t)^2$ and $d(t)=h'(t)$. For $j=1,2$ define
+\[
+ F_{j,g}(x)=\E[(T-1)^j|L+x+gG|]=K_{j,g}(|x|^2).
+\]
+Before Gaussian convolution its source density on the plane is
+$k_j(|x|^2)/\pi$, where
+\[
+ k_j(h(t))=(t-1)^j e^{-t}/d(t).
+\]
+Distributionally $\Delta|x|=1/|x|$ in two dimensions; there is no atom
+at zero, because the flux across a circle of radius $\rho$ tends to
+zero with $\rho$. Therefore
+\[
+ \Delta^2F_{j,0}=(\Delta(k_j(|\cdot|^2)/\pi))*|\cdot|^{-1}.
+\]
+For a radial nonincreasing majorant $\bar m_j(\rho^2)$ of
+$4|k_j'(\rho^2)+\rho^2k_j''(\rho^2)|$, layer-cake integration of
+intersections of balls gives
+\[
+ \|\Delta^2F_{j,0}\|_\infty
+ \le2\int_0^\infty\bar m_j(\rho^2)\,d\rho.
+\]
+Gaussian convolution cannot enlarge this bound. The standalone
+rational checker constructs 800 cells for each weight and includes
+the infinite tails, obtaining respectively
+\[
+ \|\Delta^2F_{1,g}\|_\infty<52,\qquad
+ \|\Delta^2F_{2,g}\|_\infty<64.
+\]
+For a radial function $F(x)=K(u)$, $u=|x|^2$,
+$\Delta^2F=16(u^2K'')''$. Twice integrating from zero proves
+\[
+ \|K_{1,g}''\|_\infty<13/8,\qquad
+ \|K_{2,g}''\|_\infty<2.
+\]
+This avoids taking a separate large derivative supremum for every
+visible Gaussian value. The source polynomials, positive decreasing
+majorants, and tail formulas are printed in the expanded proof.
+
+\paragraph{The content bound, with its phase retained.}
+With $R=|X|^2$, the exact directional derivative is
+\[
+ D_\zeta J_c(0)
+ =2\sqrt2 c\Re\zeta\,
+   \E\left[R(R-2)K_{1,g}'\bigl(c^2R(R-2)^2/2\bigr)\right].
+\]
+Since $\E[R(R-2)]=0$, subtract $K_{1,g}'(0)$ and use its Lipschitz
+bound. The result is
+\[
+ |D_\zeta J_c(0)|
+ \le \sqrt2\frac{13}{8}(-32+480e^{-2})c^3|\Re\zeta|
+ <76c^3|\Re\zeta|.
+\]
+The derivative in the imaginary A direction is exactly zero. This is
+a bound on the true coherent content, not a replacement by an
+independent-driver calculation.
+
+\paragraph{Inverse moments strengthen the pure residual deficit.}
+For the visible mixing variable $R_0$ let $Y=1/R_0$. Its first three
+moments, computed from the visible radial density at zero, are
+\[
+ m_1=a_0^{-2},\quad m_2=a_0^{-4}+4b_0a_0^{-5},\quad
+ m_3=a_0^{-6}+12b_0a_0^{-7}+42b_0^2a_0^{-8}.
+\]
+H\"older applied to $Y=[Y/(1+vY)](1+vY)$ gives
+\[
+ \E\left(\frac{Y}{1+vY}\right)^{3/2}
+ \ge\frac{m_1^{3/2}}{\sqrt{1+3vm_1+3v^2m_2+v^3m_3}}.
+\]
+Together with the maximum
+$\sup_{y\ge0}y^{1/2}/(1+vy)^{5/2}=16/(25\sqrt{5v})$,
+exact rational comparisons imply $-f''(v)>2$ and $f'''(v)<22$ on
+the buffer interval. Substitution in the Bernstein majorant proves,
+for every $c\ge0$,
+\[
+ \Lambda(cH+\sqrt vG)\le S_0-21c^4+(20812/3)c^6.
+\]
+
+\paragraph{The A-squared average strengthens the curvature.}
+The radial Hessian identity gives
+\[
+ \|D^2F_{2,g}(x)-D^2F_{2,g}(0)\|
+ \le6\|K_{2,g}''\|_\infty |x|^2<12|x|^2.
+\]
+Using $\E(|X|^2|H|^2)=4$, the A curvature at $\alpha=0$ is at most
+$-7/20+48c^2$, replacing the old cost $408c^2$.
+For every complex unit direction $\zeta$, expansion in $\alpha$ then gives
+\[
+ \tfrac12D_\zeta^2J_c(\alpha)
+ \le-7/20+48c^2+1071cr+1836r^2.
+\]
+Here the linear term at $c=0$ vanishes by the X phase; the fourth
+derivative bound $204$ and the moments
+$\E|T-1|^3<5/2$, $\E(|H||X|^3)<21/10$ give $1071$.
+The quadratic term uses $\E(T-1)^4=9$ and $\E|X|^4=2$.
+Integrating along the A segment divides the last two coefficients
+by three and six respectively. This proves the polynomial bound in
+Theorem~\ref{thm:coherent-sharp}.
+
+For the three rectangles, replace the bracket by its value at their
+upper-right corner and complete the square in $r$. The exact
+remaining quartic coefficients are respectively
+\[
+ \frac{1773616}{744525}>2,\qquad
+ \frac{2339375}{1138944}>2,\qquad
+ \frac{58173389}{19509012}>2.
+\]
+Retaining $r^2/50$ before completing the square proves the last
+assertion. For a purely imaginary A coefficient, the linear term
+vanishes, giving the further region
+\[
+ c\le1/20,\quad |\alpha|\le1/100,\quad\Re\alpha=0
+ \quad\Longrightarrow\quad
+ \Lambda(Q)\le S_0-3c^4-|\alpha|^2/50.
+\]
+All rectangle comparisons are replayed with exact fractions.
+
+\begin{corollary}[Dimension-free first variation for unequal Wick sums]
+\label{cor:coherent-diffuse-content}
+Let $X_1,\ldots,X_n$ be independent proper complex Gaussians, and let
+$B$ be an independent circular square-integrable random variable.
+For $q=\sum_j c_jH(X_j)+B$ and
+$Q_{\boldsymbol\alpha}=q+(T-1)\sum_j\alpha_jX_j$,
+\[
+ \left\|\nabla_{\boldsymbol\alpha}
+          \Lambda(Q_{\boldsymbol\alpha})\big|_{\boldsymbol\alpha=0}
+ \right\|_2
+ \le76\left(\sum_j|c_j|^6\right)^{1/2}.
+\]
+In particular, coefficients $c_j=c/\sqrt n$ give $76|c|^3/n$.
+\end{corollary}
+\begin{proof}
+Convolution by any circular probability law preserves radiality and
+the bound $\|\Delta^2F_1\|_\infty<52$. Thus the signed-visible content
+proof works with any independent circular square-integrable buffer,
+not just a Gaussian buffer. For coordinate $j$, regard the remaining
+summands and $B$ as that buffer; the corresponding gradient block
+has Euclidean norm at most $76|c_j|^3$. Sum the squares of these
+blocks. The price has zero first derivative because of Wick
+orthogonality and centering. The smooth visible density justifies
+the derivatives also for a nonsmooth buffer law, by convolution and
+dominated differentiation.
+\end{proof}
+
+\subsection{Closing the all-amplitude coherent family}
+The exact cover uses the same verified norm oracle, parameter root,
+radial tails, and variance tail as the purely numerical checkpoint.
+Its leaf types have different mathematical conclusions and must not
+be conflated:
+\begin{itemize}
+\item A numerical leaf bounds its exact payoff by $B\le S_0$.
+\item An analytic leaf is contained in one of the three rectangles of
+Theorem~\ref{thm:coherent-sharp}, including the whole buffer-variance
+interval condition. It gives $\Lambda\le S_0-2c^4$ directly.
+\item A variance-tail leaf gives $\Lambda<4/3<B\le S_0$.
+\end{itemize}
+The exact binary cover contains 4,538 numerical leaves, 994 analytic
+leaves, and 106 variance-tail leaves, with 5,637 splits. The checker
+verifies the analytic membership conditions using the maximum squared
+complex A modulus on each box, not the modulus of its midpoint. It
+also checks the minimum and maximum squared buffer amplitudes. All
+tree descendants, the absence of trailing records, and all tail
+conditions are checked from the original root box.
+
+The fixed-tree replay regenerates the integration data, reruns the
+analytic scalar and Hessian certificates, and recompiles its C++
+checker with assertions enabled. Its receipt separates the maximum
+\emph{numerical exterior} upper bound from the analytic bound $S_0$.
+That numerical maximum is not an upper bound on the full family,
+because the analytic leaves contain the Gaussian maximizer.
+
+Every parameter belongs to one of these leaves or to the unbounded
+variance tail. Therefore $\Lambda\le S_0$ everywhere, proving the
+inequality in Theorem~\ref{thm:coherent-a-exact}. Conversely the family
+contains every $gG$, so its supremum is exactly $S_0$.
+
+The numerical leaves have strictly positive clearance below $B$;
+the replay reports their exact rational maximum. On an analytic leaf,
+the sharper local polynomial bound is strictly below $S_0$ if $c>0$.
+If $c=0$ and $\alpha\ne0$, it gives
+\[
+ \Lambda(Q)\le S_0-\bigl(7/20-306|\alpha|^2\bigr)|\alpha|^2<S_0.
+\]
+Thus every maximizer is Gaussian. Finally
+$f(v)=\sqrt\pi\E\sqrt{R_0+v}$ is strictly concave, and
+$f(v)-v/\varepsilon_0\to-\infty$ as $v\to\infty$; its maximizing
+variance is unique. The cover places it in $[7/200,9/200]$.
+
+This argument closes the exact one-driver A conjecture by combining
+analytic estimates with a complete exterior computation. It does not
+deduce a global zero-slack comparison from the earlier small numerical
+slack alone.
+
+\begin{corollary}[Uniform stability within the coherent family]
+For every $c,g\ge0$ and $\alpha\in\C$ at the peak profile,
+\[
+ S_0-\Lambda(Q)\ge
+ \min\left\{10^{-10},\,2c^4+\frac{|\alpha|^2}{10000}\right\}.
+\]
+\end{corollary}
+\begin{proof}
+On each analytic rectangle reserve $|\alpha|^2/10000$ in the sharp
+polynomial inequality before completing the square. The three retained
+quartic coefficients are
+\[
+ \frac{7067548}{2976075},\qquad
+ \frac{58134775}{28449024},\qquad
+ \frac{11565279133}{3897367164},
+\]
+all greater than $2$. Thus the second term in the minimum is a lower
+bound on every analytic leaf. The complete fixed-tree replay gives
+maximum numerical exterior upper numerator $96683366249055$, so its
+clearance below $B$ is
+\[
+ \frac{1152257}{2^{46}}>10^{-10}.
+\]
+The variance tail has $B-4/3>10^{-10}$. These comparisons, including
+the retained quartic coefficients, are checked with exact fractions
+by the independent partition audit.
+\end{proof}
+
+\subsection{Finite shared A-couplings in arbitrary dimension}
+The preceding first-variation bound can also pay for finite couplings,
+with no bound on the number of unequal Wick blocks.
+\begin{theorem}[Unequal Wick sums with simultaneous coherent A]
+\label{thm:coherent-unequal}
+Let $X_1,\ldots,X_n,Z,G$ be independent standard proper complex
+Gaussians, let $c_j,\alpha_j\in\C$, and set
+\[
+ q=\sum_jc_jH(X_j),\quad
+ Q=q+\sqrt vG+(T-1)\sum_j\alpha_jX_j,\quad
+ B_4=\sum_j|c_j|^4.
+\]
+At the exact peak profile, assume
+\[
+ \frac7{200}\le v\le\frac9{200},\qquad
+ u:=\sum_j|c_j|^2\le\frac1{100},\qquad
+ c_*:=\max_j|c_j|\le\frac1{50},\qquad
+ r:=\left(\sum_j|\alpha_j|^2\right)^{1/2}\le\frac1{1000}.
+\]
+Then
+\[
+ \boxed{\Lambda(Q)\le S_0-2B_4-r^2/50.}
+\]
+\end{theorem}
+
+\paragraph{A sharper buffered Fourier deficit.}
+The inherited characteristic-function certificate proves
+$\phi(s)=\E e^{is\Re H(X)}\ge e^{-s^2/4}$ for $0\le s\le4$.
+The included replay checks this continuous interval with outward
+interval arithmetic, verified quadrature nodes, and analytic tails.
+An elementary stronger estimate, using the sixth-order cosine lower
+bound and the quadratic exponential upper bound, gives
+\[
+ \phi(s)\ge\exp(-s^2/4+(3/5)s^4),\qquad 0\le s\le1/10.
+\]
+Indeed the difference of those polynomial bounds divided by $s^4$,
+with $t=s^2$, is
+$9/160-(473/96-3/20)t-9t^2/50>0$ on $[0,1/100]$.
+
+The visible characteristic function $\psi(k)$ is positive by its
+Gaussian-mixture representation and satisfies
+$\psi(k)\ge e^{-Mk^2/4}$. The exact norm Fourier identity, together
+with independence, gives a low-frequency deficit at least
+\[
+ \frac65 B_4 I,\qquad
+ I=\int_0^5 k^2e^{-(M+11/200)k^2/4}\,dk>4.7686.
+\]
+The lower bound is a rational integral of the degree-25 lower Taylor
+polynomial for the exponential. Frequencies between $5$ and
+$K=4/c_*$ give nonnegative deficit. Beyond $K$, retaining the
+Gaussian buffer bounds the possibly negative contribution by
+\[
+ \frac4K e^{-vK^2/4}
+ =c_*e^{-4v/c_*^2}<\frac{B_4}{1000}.
+\]
+For the last inequality use $B_4\ge c_*^4$, $v\ge7/200$, and
+monotonicity of $x^{-3}e^{-7/(50x^2)}$ on $x\le1/50$; its maximum
+is $125000e^{-350}<1/1000$. The case $B_4=0$ is Gaussian and is
+handled directly. The resulting pure-residual estimate is
+\[
+ \Lambda(q+\sqrt vG)\le S_0-\frac{17}{3}B_4.
+\]
+
+\paragraph{Paying for all shared directions at once.}
+For a unit vector $h$, write $P_h=\sum_jh_jX_j$. Wick orthogonality
+gives the exact mixed moment
+\[
+ \E(|q|^2|P_h|^2)=u+3\sum_j|c_j|^2|h_j|^2
+ \le D:=u+3c_*^2.
+\]
+The averaged A-squared estimate therefore gives A curvature at zero
+at most $-7/20+12D$. In its variation along the coupling segment,
+weighted Cauchy--Schwarz gives
+$\E(|q||P_h|^3)\le\sqrt{2D}$. The same fourth-derivative argument
+as before proves
+\[
+ \Lambda(Q)\le\Lambda(q+\sqrt vG)
+ +76\sqrt{B_6}\,r
+ -\left(\frac7{20}-12D-170\sqrt{2D}\,r-306r^2\right)r^2,
+ \quad B_6=\sum_j|c_j|^6.
+\]
+The bracket exceeds $9/50$ on the displayed parameter set. Reserve
+$r^2/50$ and complete the square with the remaining $4r^2/25$:
+\[
+ 76\sqrt{B_6}\,r-\frac4{25}r^2\le9025B_6
+ \le\frac{361}{100}B_4.
+\]
+Since $17/3-361/100=617/300>2$, the theorem follows.
+
+For a concrete application-range example, take 25 coefficients
+$c_j=1/50$ and Gaussian variance $v=7/200$. The remote residual has
+normalized fourth moment
+\[
+ 2+\frac{42B_4}{(u+v)^2}=2+\frac{56}{675}
+ =2.08296296\ldots.
+\]
+At $v=1/25$ the value is $2.0672$. Thus this finite-coupling theorem
+enters the lower end of the application's kurtosis window. Its
+restriction $\|\boldsymbol\alpha\|_2\le10^{-3}$ remains essential to
+the present proof; it is not an all-amplitude or all-cubic result.
+
+\subsection{What this resolves and what still blocks the endpoint}
+The coherent family violates the conditional phase symmetries used in
+the preceding shared-sector comparisons. The exact theorem therefore
+adds a different case; it does not follow by declaring the Wick residual
+conditionally Gaussian. A weak coherent-A comparison was already
+available with larger slack. It is now superseded by an exact comparison
+at the peak, with a complete all-amplitude cover.
+
+The arbitrary-dimensional theorem also covers finite coherent A
+couplings on unequal Wick sums, including examples in the requested
+kurtosis window, but with explicit coefficient and coupling restrictions.
+All-amplitude A/B couplings for the coherent one-driver family are
+subsequently closed in \autoref{ch:complete-coherent-driver}; the applicable
+even-sector extensions are in \autoref{ch:all-sector-audit-extension}.
+Arbitrary cubic self-interaction and unrestricted simultaneous
+visible-sector interactions remain outside those theorems.
+The profile-rectangle error below $10^{-4}$ applies only to the
+one-driver A family. A complete admissible row envelope and a comparison
+for all remaining residuals are still required before changing
+$K_G^{\C}$. In particular, the numerical B phase relaxation must not be
+reused as if it were the honest coherent B payoff: its artificial
+quadratic gain obstructs an exact comparison before any numerical
+resolution issue arises.
+
+\subsection{IDE reading note}\label{sec:coherent-reading}
+\paragraph{Independent check \st{F}.} Our own code (\pathref{forest-2026-10-20/coherent\_a\_own\_check.py}, not GPT's) evaluates $\Lambda$ by quadrature after the joint phase rotation
+($T$ Gauss--Laguerre $120$, $X$ polar $120\times96$, the buffer integrated in closed form by the Rice function), optimising $g$ for each of $190$ points
+$c\in\{0,\dots,0.5\}$, $|\alpha|\in\{0,\dots,0.3\}$ and four phases. Result: $\max(\Lambda-S)=-2\cdot10^{-16}$ (no violation), and $S-\Lambda\ge2c^4$ at every tested point of the analytic
+neighbourhood ($c\le1/30$, $|\alpha|\le1/100$, $g^2\in[.035,.045]$). Example: $S-\Lambda=2.33\cdot10^{-7}$ at $(c,\alpha)=(0.01,0)$ against $2c^4=2\cdot10^{-8}$. The phase of $\alpha$
+matters little ($\le15\%$ of $S-\Lambda$), and $\alpha=0.005$ already costs $1.16\cdot10^{-5}$, the profile loss of \autoref{ch:forest}.
+\paragraph{What it settles.} \autoref{ch:kjoint}'s Wick-junta $A$-only bound $S+7.3\cdot10^{-5}$ is now exact ($\eta=0$), so this family uses none of the budget $\eta_{AB}$. Still open:
+$B$ with a shared driver; interactions with $Y,W,\nu$; several shared drivers at finite amplitude (the dimension-free theorem of this chapter needs $\sum c_j^2\le0.01$ and $\|\alpha\|\le10^{-3}$,
+i.e.\ $\sigma_q\le0.1$, far from $\sigma^*\approx0.2$). The method, averaging the visible coordinate before bounding derivatives, is the principle of \autoref{ch:forest}~(a): it is the
+reason this proof closed where the pointwise constants ($600c^3$, $408c^2$) could not.

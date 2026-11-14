@@ -1,0 +1,153 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch60-l1l2-chaos21.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 60). Owner: lower-bound/07-remote-spectral.tex
+\section{A dimension-free $L^1/L^2$ bound on $\Hc21$ via a two-plane small-ball estimate}\label{ch:l1l2-chaos21}
+\chapsummary{Dimension-free small-ball method and an inherited-moment radius bound. It certifies the $t=0$ row, not all small rows. The proposed $S^5$ lemma is refuted in \autoref{ch:spherical-kernel-cut}; the improved radius and finite interval are there.}
+
+\paragraph{Provenance and status (IDE note, 21 October).} Produced by a context-free GPT from the self-contained prompt
+\pathref{PROMPT\_GPT\_PVD.md}; files \code{proof.md} and \code{verify.mjs} archived in \pathref{gpt-reviews/l1l2-chaos21-20261021/}. The Node
+verifier imports only \code{node:assert} and uses BigInt fractions; it PASSES. IDE checks:
+\begin{itemize}
+\item an independent exact-fraction script confirms the factorisation of $h_b$ coefficient by coefficient for all six values of $b$,
+$c_4<0<c_6$, $J_b>0$, all six table entries, interval coverage ($\frac{13}2>\sqrt{42}$) and endpoint maximisation;
+\item by hand: the covariance $z^2\bar z$; the kernel split $z|z|^2=\frac13K_1+\frac1{12}K_3$ with $K_3(u,u)=4=\dim V_3$; the derivative constants
+$2$ and $12+16=28$ in both horizontal directions; horizontality of the connecting arc; the winding argument; the small-ball inequality, including
+Jensen (convex in $L^2$); the Tonelli step; and monotonicity of $h_b$ (the positive term in its log-derivative is $<2/(r+b+1)<2/(b-r)$).
+\end{itemize}
+\emph{Inputs:} $\E|q|^4\le44\|q\|^4$ (Lemma~\ref{thm:cc-matrix}: $\kappa\le42e^2$) and the sixth-moment bound with $C_6=40.45313<41$
+(the project's scalar Lean consequence of a cumulant tensor hypothesis, \autoref{ch:certified}). No other assumption is used.
+
+\subsection{Statement}
+Let $X=(X_1,\dots,X_n)$ be independent standard proper complex Gaussians and $q\in\Hc21(\C^n)$, normalised so that $\E|q|^2=1$; put $R=|q|$.
+Then $\E R^4=2+x^2$ with $0\le x\le\sqrt{42}$, and
+\begin{equation}\label{eq:l1l2-m6}
+\E R^6\le6+9x^2+41x^3.
+\end{equation}
+\begin{theorem}[\st{P}+\st{C}]\label{thm:l1l2}
+For every $n$ and every $q\in\Hc21(\C^n)$, $\E|q|\le\frac{134869621}{138937500}\|q\|_2<0.97073\|q\|_2$. Hence
+$\frac{\sqrt\pi}2\le\rho^*\le\frac{134869621}{138937500}$.
+\end{theorem}
+
+\subsection{A structural small-ball estimate}
+\begin{lemma}[\st{P}]\label{lem:l1l2-smallball}
+$\Pr(R\le r)\ge\dfrac{r^2}{D+r^2}$ for all $r\ge0$, with $D=\frac{32+8\sqrt7}3<18$. In particular $\Pr(R\le r)\ge r^2/19$ for $0\le r\le1$.
+\end{lemma}
+\begin{proof}
+Let $Y$ be an independent copy of $X$. For $u$ in the unit sphere $S^3\subset\C^2$ (normalised Haar measure $\mu$) put $f(u)=q(u_1X+u_2Y)$. For
+fixed $u$, $u_1X+u_2Y$ is a standard Gaussian vector, so $f(u)\overset d=q$. With $z=\langle u,v\rangle=u_1\bar v_1+u_2\bar v_2$, Wick pairing gives
+$\E[f(u)\overline{f(v)}]=z^2\bar z$.
+
+Let $V_1$ be the restrictions to $S^3$ of holomorphic linear polynomials, and $V_3$ the restrictions of harmonic bihomogeneous polynomials of bidegree
+$(2,1)$ (complex dimensions $2$ and $4$). Every realisation of $f$ lies in $V_1\oplus V_3$: for a homogeneous $(2,1)$ polynomial $P$,
+$P-\frac{|u|^2}3\Delta_\C P$ is harmonic because $\Delta_\C(|u|^2\ell)=3\ell$, and on the sphere the removed term is linear. Write $f=f_1+f_3$. The
+reproducing kernels are $K_1=2z$ and $K_3=12z|z|^2-8z$; an orthonormal basis of $V_3$ is $\sqrt{12}u_1^2\bar u_2$, $\sqrt{12}u_2^2\bar u_1$,
+$2u_1(|u_1|^2-2|u_2|^2)$, $2u_2(|u_2|^2-2|u_1|^2)$. Since $z|z|^2=\frac13K_1+\frac1{12}K_3$, taking covariance traces gives
+$\E\|f_1\|_{L^2(\mu)}^2=\frac23$ and $\E\|f_3\|_{L^2(\mu)}^2=\frac13$.
+
+\emph{A zero always exists.} Since $f(e^{it}u)=e^{it}f(u)$, if $f$ had no zero then $f/|f|:S^3\to S^1$ would map the loop $t\mapsto(e^{it},0)$ to a
+loop of winding number one. That loop is contractible in $S^3$ via $(t,s)\mapsto(\sqrt{1-s^2}e^{it},s)$, a contradiction.
+
+\emph{Horizontal Lipschitz bound.} For a horizontal unit tangent $v$ at $u$ ($u^*v=0$, $|v|=1$) the reproducing kernels give
+$|D_vf_1(u)|\le\sqrt2\|f_1\|$ and $|D_vf_3(u)|\le\sqrt{28}\|f_3\|$. At $u=(1,0)$ the squared derivatives of the basis functions sum to $2$, respectively
+$12+16=28$, in both real horizontal directions; unitary invariance gives the rest. Put $L=\sqrt2\|f_1\|+\sqrt{28}\|f_3\|$. By Cauchy--Schwarz,
+$\E L^2\le\frac43+\frac{28}3+2\sqrt{56}\sqrt{\frac29}=D$.
+
+Choose a zero $u_0$. After a phase rotation, which does not change $|f|$, every $u\in S^3$ is $\cos\theta\,u_0+\sin\theta\,v$ with $u_0^*v=0$,
+$|v|=1$, $\theta\in[0,\frac\pi2]$. The arc $s\mapsto\cos s\,u_0+\sin s\,v$ is horizontal and unit-speed, so $|f(u)|\le L\theta$. For uniform $u$,
+$\cos^2\theta=|\langle u,u_0\rangle|^2$ is uniform on $[0,1]$. Therefore
+$\mu\{|f|\le r\}\ge\sin^2(\min\{r/L,\frac\pi2\})\ge r^2/(L^2+r^2)$, using $\arctan t\le t$ and $\sin(\arctan t)=t/\sqrt{1+t^2}$. Averaging over
+$(X,Y)$ and applying Jensen to the convex map $L^2\mapsto r^2/(L^2+r^2)$ gives $\Pr(R\le r)\ge r^2/(\E L^2+r^2)\ge r^2/(D+r^2)$.
+\end{proof}
+
+\subsection{A polynomial majorant with a forced gap}
+Fix $b>1$, put $s=b+1$, $d=2bs^3$, and
+$c_0=\frac{b^2(s^2+b)}d$, $c_2=\frac{s^4-bs^2+3b^2}d$, $c_4=\frac{3b-2s^2}d$, $c_6=\frac1d$. Then $h_b(r)=c_0+c_2r^2+c_4r^4+c_6r^6-r$ factors as
+\[
+h_b(r)=\frac{(r-1)^2(r-b)^2\bigl((r+b+1)^2+b\bigr)}{2b(b+1)^3}\ge0,
+\]
+and $h_b$ decreases on $[0,1]$, since $\frac{h_b'}{h_b}=-\frac2{1-r}-\frac2{b-r}+\frac{2(r+b+1)}{(r+b+1)^2+b}<0$ there. Because $h_b(1)=0$,
+Tonelli and Lemma~\ref{lem:l1l2-smallball} give
+\[
+\E h_b(R)\ge\int_0^1(-h_b'(r))\Pr(R\le r)\,dr\ge\frac1{19}\int_0^1(-h_b'(r))r^2\,dr=\frac{J_b}{19},\qquad
+J_b=c_0+\frac{c_2}2+\frac{c_4}3+\frac{c_6}4-\frac23 .
+\]
+With $c_4<0<c_6$ and \eqref{eq:l1l2-m6},
+\[
+\E R\le c_0+c_2+c_4(2+x^2)+c_6(6+9x^2+41x^3)-\frac{J_b}{19}=:B_b(x).
+\]
+The subtracted $J_b/19$ is exactly what the moment-only argument cannot see: the small-ball estimate forces probability into the region where the
+majorant has a positive gap.
+
+\subsection{Six exact checks}
+$B_b(x)=A+\alpha x^2+\beta x^3$ with $\beta=41c_6>0$, so on any interval of $x\ge0$ its maximum is attained at an endpoint. Exactly:
+\[
+\begin{array}{c|c|c}
+x\in&b&\max B_b\\\hline
+{}[0,\frac9{10}]&4&\frac{55269493}{57000000}\\
+{}[\frac9{10},\frac65]&\frac{11}2&\frac{668420089}{688759500}\\
+{}[\frac65,\frac32]&\frac{13}2&\frac{134869621}{138937500}\\
+{}[\frac32,2]&\frac{15}2&\frac{858307}{884340}\\
+{}[2,3]&9&\frac{794719}{820800}\\
+{}[3,\frac{13}2]&12&\frac{23294929}{24043968}
+\end{array}
+\]
+The largest entry is $\frac{134869621}{138937500}=0.9707215186\ldots$, and $\frac{13}2>\sqrt{42}$ covers every admissible $x$. Rescaling proves
+Theorem~\ref{thm:l1l2}. \qed
+
+\subsection{A second, moment-free route (independent cold-start AI)}\label{sec:l1l2-second}
+\paragraph{Provenance (IDE note).} A second cold-start AI given the same prompt (\code{chaos-gap-partial-proof.zip}, archived in
+\pathref{gpt-reviews/l1l2-chaos21-20261021/second-ai/}) did \emph{not} reach $0.9711$, but proved three partial results. All are IDE-checked. Its Node verifier
+(only \code{node:assert}, BigInt) PASSES; an independent float evaluation agrees, with smallest matrix margin $\approx8.6\cdot10^{-7}$.
+
+\paragraph{A moment-free universal bound \st{P}+\st{C}.} $\E|q|\le\frac{1973}{2000}\|q\|_2=0.9865\|q\|_2$ for every $q\in\mathcal H_{1,0}+\Hc21$, using \emph{no}
+moment input. As above, restrict to $F(z)=q(z_1X+z_2Y)$ on $S^3$; a deterministic $\|F\|_{L^1(S^3)}\le C\|F\|_{L^2(S^3)}$ transfers to every dimension. Every $F$ has a zero
+(the winding argument); moving it to $(0,1)$ leaves
+$F=az_1|z_1|^2+bz_1|z_2|^2+cz_2|z_1|^2+ez_1^2\bar z_2+fz_2^2\bar z_1$. The five monomials carry phase characters $e^{i\alpha}$ ($a,b$), $e^{i\beta}$,
+$e^{i(2\alpha-\beta)}$, $e^{i(2\beta-\alpha)}$, so with $s=|z_1|^2$ uniform the phase average is $sQ(s)$,
+$Q(s)=|as+b(1-s)|^2+(|c|^2+|e|^2)s(1-s)+|f|^2(1-s)^2$. With the weight
+$v(s)=\sqrt{s(8701031-18280443s+10971859s^2)/10^6}$ the certified inequalities $\int v<\lambda$,
+$(\int s^{k+l+1}/v)_{k,l\le1}\prec\lambda\bigl(\begin{smallmatrix}1/2&1/3\\1/3&1/4\end{smallmatrix}\bigr)$ and $\int(s^2-s^3)/v<\lambda/12$ ($\lambda=\frac{1973}{2000}$) give
+$\int sQ/v\le\lambda\int sQ$. Weighted Cauchy--Schwarz then gives $\|F\|_1\le\lambda\|F\|_2$. This is weaker than Theorem~\ref{thm:l1l2}, but it is an
+assumption-free fallback that does not rely on the Lean $C_6$.
+
+\paragraph{The sharp constant for conditionally Gaussian cubics \st{P}.} If, conditionally on a $\sigma$-algebra $\mathcal A$, $q$ is a centred complex Gaussian,
+possibly improper, with real covariance eigenvalues $\lambda_1,\lambda_2$, then $\E(|q|\mid\mathcal A)=\E\sqrt{\lambda_1G_1^2+\lambda_2G_2^2}$. This is symmetric and
+concave in $(\lambda_1,\lambda_2)$, hence at most its value at $\lambda_1=\lambda_2$, which is $\frac{\sqrt\pi}2\sqrt{\E(|q|^2\mid\mathcal A)}$; Jensen then gives
+$\E|q|\le\frac{\sqrt\pi}2\|q\|_2$. This covers every $q=\sum_j[X_jA_j(Y)+\bar X_jB_j(Y)]$ with $A_j\in H_{1,1}(Y)$, $B_j\in H_{2,0}(Y)$ on independent blocks, in
+particular all decoupled trilinear forms. It strictly extends the Gaussian scale-mixture case (improper conditional laws are allowed). The single Wick monomial is
+not of this form.
+
+\paragraph{A reduction on $S^5$ \st{P} and a refuted concluding lemma.} With three independent copies, $P_X(z)=q(\sum_{a\le3}z_aX^{(a)})$ on $S^5$ has covariance
+$\langle z,w\rangle|\langle z,w\rangle|^2$, so $\E\|(P_X)_1\|^2=3\E|\langle z,w\rangle|^4=\frac12=\E\|(P_X)_3\|^2$. Hence the deterministic inequality
+$\|P\|_{L^1(S^5)}^2\le\frac{942841}{1050000}(\frac{11}{10}\|P_1\|^2+\|P_3\|^2)$, for every homogeneous $(2,1)$ form on $\C^3$ (18 complex coefficients), would give
+$\rho^*\le0.971$. \textbf{It is false: exact counterexample} (\autoref{ch:spherical-kernel-cut}): $P(u)=u_1\bigl(|u|^2+\frac{-1167+319i}{802}|u_1|^2\bigr)$ has
+equal linear and harmonic energies and $L^1/L^2>0.973$. More generally, a deterministic quadratic inequality in the two component energies alone transfers
+a radius above $0.9863$ on $S^3$ and above $0.973$ on $S^5$; that is a limitation of the proof architecture, not a lower bound for $\rho^*$. \emph{General $m$} (same AI, follow-up, IDE-checked):
+on $S^{2m-1}$ with $m$ independent copies, $\E\|(P_X)_1\|^2=m\E|z_1|^4=\frac2{m+1}$ and $\E\|(P_X)_3\|^2=\frac{m-1}{m+1}$. With
+$\ell=\frac2{m+1}\sum_jd_jz_j$, $d_j=\sum_iA_{ij,i}$, one has $P_1=\ell$. Hence any deterministic $\|P\|_1^2\le a\|P_1\|^2+b\|P_3\|^2$ on $S^{2m-1}$ gives
+$(\E|q|)^2\le\frac{2a+(m-1)b}{m+1}$, and the linear-harmonic share vanishes as $m\to\infty$. References for the decomposition and kernels (they do not give the
+inequality): Menegatto--de Oliveira, \emph{Orthogonal bases for spaces of complex spherical harmonics}, eq.~(1.8); De Bie--Sommen--Wutzig, arXiv:1702.00611,
+§2.2 Lemma~3 and Thm.~4; Defant--Galicer--Mansilla--Masty{\l}o--Muro, arXiv:2411.12579, Thm.~2.3.
+
+\paragraph{Later improvement (21 October).} A subsequent zero-conditioned-kernel argument (\autoref{ch:spherical-kernel-cut}) improves the usable small-ball cut
+to $\Pr(|q|\le r\|q\|)\ge\frac{18}{319}r^2+\frac7{2500}r^4$ on $[0,1]$ (no moment input) and, with the same $C_6$ input, $\rho\le\frac{96951}{100000}$. It uses no K hypothesis. The
+proof and table above are kept as the earlier result.
+
+\subsection{Consequences and what remains}
+\begin{itemize}
+\item \emph{Small-$t$ rows (M5).} The crude row value $\varepsilon\rho^2$ at $\varepsilon=0.7564$ is $0.712756<500/701=0.713267$ (margin
+$5.1\cdot10^{-4}$), so the $t=0$ obstruction for the K-route at the optimal $\varepsilon$ is removed; previously $\rho\le0.9711$ was needed and
+$\varepsilon\le0.7525$ was the fallback. The later radius bound and original-response ellipse give additional small-$t$ and small-energy regions (\autoref{ch:spherical-kernel-cut}, \S\ref{sec:canonical-response-ellipse}); their complement still needs a cover.
+\item \emph{Lean.} Replacing \code{Lower.rho} needs the small-ball lemma, which uses spherical harmonics on $S^3$, reproducing kernels and a winding
+argument, plus the rational table. The table is \code{native\_decide}-ready; the topology is the substantial part.
+\item \emph{Open.} The sharp constant $\rho^*=\sqrt\pi/2$ (PVD$_0$); proved for conditionally Gaussian cubics (\S\ref{sec:l1l2-second}). The small-ball constant $D$ and the moment-majorant degree are not optimised.
+\end{itemize}
+
+\paragraph{A Stein-constrained dual (cold-start AI, 21 October; single point only).} Another AI (\code{chaos\_L1L2\_certificates.zip}, archived in
+\pathref{gpt-reviews/chaos-l1l2-20261021/}) adds a Stein constraint to the moment dual of this chapter. It works with $F=\Re q$, $\E F^2=\frac12$, $\kappa_4=3x^2/8$.
+It claims, via Nourdin--Peccati, $\operatorname{Var}\Gamma\le x^2/12$ for $\Gamma=|DF|^2/3$, so that $\E[Fg(F)-\frac12g'(F)-\frac12g'(F)^2]\le x^2/24$ for $C^1$ test functions. It combines this with
+the moments $2,4$ and the sixth-moment bound. Its float SOCP optimum is $\le0.9503$ for all $x^2\in[0,42]$. Only one certificate is rigorous:
+at $x^2=4.5$, $\E|q|\le0.9527\|q\|_2$ (arb, adaptive bisection plus an analytic tail; IDE replay PASS in 86\,s, minimum certified slack $1.8\cdot10^{-8}$).
+\emph{Superseded the same evening:} a continuation proves the uniform version, $\rho\le0.95133$ (Theorem~\ref{thm:real-stein-radius-20261021}),
+with thirteen exact rows covering $s\in[0,42]$ (the last on $[20,42]$, closing $[26,33]$). The $\operatorname{Var}\Gamma$ premise holds in the sharper form
+$\operatorname{Var}\Gamma=(4A+B)/9\le\frac29\kappa_4$, which the IDE checked from the contraction coefficients. The IDE replay \code{verify\_all.py} PASSES in 231\,s, and an independent
+float check of the 13 majorants by direct angular quadrature gives minima $\ge6\cdot10^{-4}$.

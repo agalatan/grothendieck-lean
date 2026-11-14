@@ -1,0 +1,38 @@
+[
+  {
+    "family": "gaussian_factor_replay",
+    "row": "peak",
+    "status": "PASS",
+    "seconds": 94.58900094032288
+  },
+  {
+    "family": "gaussian_factor_replay",
+    "row": "flank",
+    "status": "PASS",
+    "seconds": 19.986154794692993
+  },
+  {
+    "family": "gaussian_factor_replay",
+    "row": "upper",
+    "status": "PASS",
+    "seconds": 4.14317512512207
+  },
+  {
+    "family": "r23_replay",
+    "row": "peak",
+    "status": "PASS",
+    "seconds": 46.742932081222534
+  },
+  {
+    "family": "r23_replay",
+    "row": "flank",
+    "status": "PASS",
+    "seconds": 7.885272741317749
+  },
+  {
+    "family": "r23_replay",
+    "row": "upper",
+    "status": "PASS",
+    "seconds": 1.2130279541015625
+  }
+]

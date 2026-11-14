@@ -1,0 +1,306 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/50-weighted-complement.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Covering a support-interior region of the original response problem}
+\label{sec:response-interior-operator}
+\paragraph{Provenance (IDE note, 21 October).} Lower-bound GPT support-interior package (\code{conjK-support-interior-20261021.zip}, archived in
+\pathref{gpt-reviews/support-interior-20261021/}). IDE replays \code{python3 -I verify\_all.py} and \code{--fine} (standard library, unrelated directory): ALL CLAIMS
+PASS (1{,}733 and 5{,}238 cells; 3.3\,s and 10\,s). IDE re-derivation \st{P}: \eqref{eq:sio-coercivity} is weighted Cauchy--Schwarz per remote Hermite block, with the
+first-chaos square entering through the rank-one correction in the $(1,0)$ and $(0,0)$ blocks (each cubic coefficient of $F=\varepsilon Qk$ is $p$ times a projection
+of $k$). For \eqref{eq:sio-general}: the row identity $\mathcal N=t^2-\|Pk\|^2-\varepsilon\|Qh\|^2+p\|F\|^2$, the split $L_0=(a+2b)Z+bZ(T-2)$ (the $t$-terms cancel),
+$2\Re\langle L_0,h\rangle\le\E\lambda|h|^2+\E|L_0|^2/\lambda$ and $|h|^2\le1-|k|^2$. The auxiliary $(a,b)=(0.4503,0.15357)$ are dual parameters, not a change of profile.
+This is not a raw-K region.
+
+
+\paragraph{Status.}
+[P] denotes an analytic proof and [C] an exact directed calculation.
+This section proves a dimension-free regional cap for the \emph{original
+bounded responses}, with every visible sector present. It complements
+Section~\ref{sec:cumulant-response-cap}'s small support-gap criterion;
+it does not cover its whole complement. No fourth- or sixth-moment
+hypothesis, remote-payoff theorem, raw Conjecture K, stationarity, or
+independent Gaussian buffer is used. A complete row cover and transfer
+are still required for a new Grothendieck endpoint.
+
+\subsubsection{The result [P,C]}
+Fix $\epsilon=1891/2500$ and $p=1/\epsilon$. Write
+\[
+ h=(f_++f_-)/2,\quad k=(f_+-f_-)/2,\quad |f_\pm|\le1,
+ \qquad Ph=tZ,\quad F=\epsilon Qk,
+\]
+where $P=P_{1,0}$ and $Q=P_{2,1}$ are Gaussian Wick projections.
+The standard proper complex Gaussian $Z$ is independent of the remote
+Gaussian space $X$. Decompose
+\[
+ F=q+(T-1)r_A+\frac{Z^2}{\sqrt2}r_B+ZY+\bar ZW+\nu H(Z),
+ \quad T=|Z|^2,\quad H(Z)=Z(T-2)/\sqrt2.
+\]
+The five remote fields have bidegrees $(2,1),(1,0),(0,1),(1,1),(2,0)$,
+respectively; their dependence on one another is unrestricted. Put
+\[
+ e=\|q\|_2^2,\quad A_2=\|r_A\|_2^2,\quad B_2=\|r_B\|_2^2,
+ \quad YW_2=\|Y\|_2^2+\|W\|_2^2.
+\]
+The original objective is
+\[
+ \mathcal N=t^2+p\|F\|_2^2-\|Pk\|_2^2-\epsilon\|Qh\|_2^2.
+\]
+For every such response, the following bound holds:
+\begin{equation}\label{eq:sio-rational}
+\boxed{\begin{aligned}
+ \mathcal N\le{}&t^2-\frac{4734}{3125}t+\frac{6350267}{5000000}
+       +\frac{361}{500}e\\
+ &-\frac9{250}A_2-\frac{777}{1000}B_2
+       -\frac3{100000}YW_2-\frac{13}{20}|\nu|^2.
+\end{aligned}}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:sio-region}
+\boxed{\begin{gathered}
+ \frac{83}{125}\le t\le\frac{851}{1000},\qquad e\le\frac{113}{10000}
+ \\\Longrightarrow\quad
+ \mathcal N\le\frac{17831253}{25000000}
+       =0.71325012<\frac{500}{701}.
+\end{gathered}}
+\end{equation}
+This includes the whole previously targeted central interval
+$[21/25,851/1000]$.
+
+There is a larger region retaining the shared-sector penalties. Define
+\[
+ \mathcal E_{\mathrm{adj}}=e-\frac{18}{361}A_2-\frac{777}{722}B_2
+             -\frac3{72200}YW_2-\frac{325}{361}|\nu|^2.
+\]
+On the central interval, the same cap follows from
+\begin{equation}\label{eq:sio-adjusted}
+ \boxed{\quad
+ \mathcal E_{\mathrm{adj}}\le\frac{113}{10000}
+       +\frac9{40}\left(\frac{851}{1000}-t\right).
+ \quad}
+\end{equation}
+Thus the theorem is not restricted to a small remote variance when the
+retained sector penalties are substantial.
+
+\subsubsection{Why the first-chaos penalty matters [P]}
+For an arbitrary positive radial weight $\lambda(T)$ let
+\[
+ J_j=\mathbb E\frac{T^j}{\lambda(T)},\qquad 0\le j\le3,
+\]
+and assume these integrals are finite. Define
+\begin{align*}
+ K_A&=J_2-2J_1+J_0-\frac{(J_1-J_0)^2}{1+J_0},&
+ K_B&=J_2/2,\\
+ K_Y&=J_1,&
+ K_H&=\frac{J_3-4J_2+4J_1}{2}
+                  -\frac{(J_2-2J_1)^2}{2(1+J_1)}.
+\end{align*}
+Whenever the displayed quantities are positive, weighted Cauchy--Schwarz
+and remote-chaos orthogonality give
+\begin{equation}\label{eq:sio-coercivity}
+\boxed{\begin{aligned}
+ \mathbb E\lambda(T)|k|^2+\|Pk\|_2^2\ge p^2\bigg\{&
+ \frac{e}{J_0}+\frac{A_2}{K_A}+\frac{B_2}{K_B}
+ +\frac{YW_2}{K_Y}+\frac{|\nu|^2}{K_H}\bigg\}.
+\end{aligned}}
+\end{equation}
+This statement holds with arbitrary shared remote drivers.
+
+Here are the details of the dimension-free decomposition. Expand $k$ in
+an orthonormal remote Hermite basis, leaving each coefficient a function
+of $Z$. Multiplication by $\lambda(T)$ preserves each remote basis block.
+The selected cubic coefficient and available first-chaos penalty in the
+five types of block are
+\[
+\begin{array}{c|c|c}
+ \text{remote bidegree}&\text{visible cubic basis function}
+     &\text{visible basis function charged by }\|Pk\|^2\\\hline
+ (2,1)&1&\text{none}\\
+ (1,0)&T-1&1\\
+ (0,1)&Z^2/\sqrt2&\text{none}\\
+ (1,1),(2,0)&Z,\ \bar Z&\text{none}\\
+ (0,0)&Z(T-2)/\sqrt2&Z
+\end{array}
+\]
+All unlisted remote components contribute a nonnegative weighted norm.
+For a visible coefficient function $u$, the elementary Hilbert-space
+identity behind the second and last rows is
+\[
+ |\langle a,u\rangle|^2\le
+ \left(\langle a,\lambda^{-1}a\rangle
+ -\frac{|\langle b,\lambda^{-1}a\rangle|^2}
+             {1+\langle b,\lambda^{-1}b\rangle}\right)
+ \left(\mathbb E\lambda|u|^2+|\langle b,u\rangle|^2\right).
+\]
+It follows by applying Cauchy--Schwarz in the inner product on the second
+factor, or by one rank-one inverse. Substitute $a=T-1,b=1$ or
+$a=Z(T-2)/\sqrt2,b=Z$. The other rows use ordinary weighted
+Cauchy--Schwarz. Summing proves~\eqref{eq:sio-coercivity}.
+
+This is the key difference from dropping $\|Pk\|^2$ early. At our
+certified weight, the uncorrected A entry is approximately $1.934$,
+which exceeds $p=1.32205\ldots$. Keeping the negative first-chaos square
+reduces it to $K_A<1.287<p$. Consequently all visible sectors can be
+removed simultaneously, with retained positive penalties.
+
+\subsubsection{A general original-response certificate [P]}
+Choose any real $a,b$ and let
+\[
+ L_0=Z(a+bT),\qquad \ell_0=a+2b,\qquad
+ \mathcal B=bZ(T-2).
+\]
+These are auxiliary dual parameters; they do not change the witness
+$P-\epsilon Q$ or the peak profile in the statement of Conjecture K.
+Completing the existing $Qh$ square exactly gives
+\[
+ -\epsilon\|Qh\|^2
+ =2\operatorname{Re}\langle\mathcal B,h\rangle+2pb^2
+       -\epsilon\|Qh+p\mathcal B\|^2.
+\]
+The pointwise disk constraints imply $|h|^2+|k|^2\le1$. Therefore
+\[
+ 2\operatorname{Re}\langle L_0,h\rangle
+ \le\mathbb E\lambda|h|^2+\mathbb E|L_0|^2/\lambda.
+\]
+Combine these two facts with~\eqref{eq:sio-coercivity}. The result is
+\begin{equation}\label{eq:sio-general}
+\boxed{\begin{aligned}
+ \mathcal N\le{}&t^2-2\ell_0t+C_\lambda+
+               (p-p^2/J_0)e-\epsilon\|Qh+p\mathcal B\|^2\\
+ &-p^2(K_A^{-1}-\epsilon)A_2-p^2(K_B^{-1}-\epsilon)B_2\\
+ &-p^2(K_Y^{-1}-\epsilon)YW_2-p^2(K_H^{-1}-\epsilon)|\nu|^2,
+\end{aligned}}
+\end{equation}
+where
+\[
+ C_\lambda=2pb^2+\mathbb E\{\lambda+|L_0|^2/\lambda\}.
+\]
+No signs on $K_j^{-1}-\epsilon$ were required for the identity's
+upper-bound direction. Our numerical certificate makes all four positive.
+The extra negative square in~\eqref{eq:sio-general} is compatible with
+all displayed sector penalties: it was never used in their derivation.
+It must not be subtracted a second time from a different dual already
+retaining the same square.
+
+\subsubsection{Four integrals certify all dimensions [C]}
+Use the exact rational parameters
+\[
+ a=\frac{4503}{10000},\quad b=\frac{15357}{100000},\quad
+ s_0=\frac{291}{125000},\quad d=\frac{2759}{100000},
+\]
+and the strictly positive weight
+\[
+ \lambda(T)=\sqrt{T(a+bT)^2+s_0+dT}.
+\]
+Then $2\ell_0=4734/3125$, and only four integrals are needed, since
+\[
+ \mathbb E\{\lambda+|L_0|^2/\lambda\}
+ =s_0J_0+(2a^2+d)J_1+4abJ_2+2b^2J_3.
+\]
+The independent replay certifies
+\[
+ \begin{array}{c|c}
+ \text{quantity}&\text{rational conclusion}\\\hline
+ C_\lambda&<6350267/5000000\\
+ p-p^2/J_0&0<\cdot<361/500\\
+ p^2(K_A^{-1}-\epsilon)&>9/250\\
+ p^2(K_B^{-1}-\epsilon)&>777/1000\\
+ p^2(K_Y^{-1}-\epsilon)&>3/100000\\
+ p^2(K_H^{-1}-\epsilon)&>13/20
+ \end{array}
+\]
+These prove~\eqref{eq:sio-rational}. Convexity in $t$ reduces
+\eqref{eq:sio-region} to its two endpoints; the larger is $t=851/1000$.
+For~\eqref{eq:sio-adjusted}, substitution gives a quadratic whose derivative
+is positive on the whole central interval; its maximum is again the
+upper endpoint. All these comparisons use rational arithmetic.
+
+For reproducibility, the integrands are
+$t^j e^{-t}/\sqrt{P(t)}$, where
+\[
+ P(t)=s_0+(a^2+d)t+2abt^2+b^2t^3.
+\]
+The verifier integrates on $[0,40]$ by adaptive Simpson panels with
+interval bounds on the fourth derivative. If $P_j$ and $u_j$ are local
+Taylor coefficients of $P$ and $u=P^{-1/2}$, the identity
+$2Pu'+P'u=0$ yields
+\[
+ u_0=P_0^{-1/2},\qquad
+ u_{n+1}=-\frac{\sum_{j=1}^{\min(3,n+1)}(2n-j+2)P_j u_{n+1-j}}
+                   {2(n+1)P_0}.
+\]
+Interval evaluation of these coefficients over each entire panel bounds
+the derivatives there. A panel of length $h$ has error at most
+$h^5\sup|f^{(4)}|/2880$. On the unbounded tail,
+$P(t)\ge b^2t^3$ and $t\ge40\ge1$ give
+\[
+ 0\le\int_{40}^\infty\frac{t^je^{-t}}{\sqrt{P(t)}}\,dt
+ \le\frac{j!e^{-40}}b\sum_{k=0}^j\frac{40^k}{k!}.
+\]
+Every arithmetic operation is outward-rounded using Python integers at
+scale $10^{40}$. Exponentials use a positive Taylor series at $t/64$,
+an explicit geometric remainder, inversion and repeated squaring.
+Square roots use integer square roots. No floating quadrature, solver
+output, or stored integral is trusted. A finer replay reduces the error
+tolerance by a factor of $100$.
+
+\subsubsection{What part of the complement is now closed [P,C]}
+At $q=0$, every remote Rice test has
+\[
+ D_t(v;0)=\mathbb E\rho(|v|^2)-t\ge R-t>0.015,
+ \qquad R=\sqrt\pi/2,
+\]
+throughout the central interval. Thus the preceding small-gap criterion
+cannot handle these responses with any test. The present theorem covers
+them, and a uniform neighborhood $\|q\|^2\le0.0113$, regardless of
+normalized kurtosis or support gap.
+
+The region is nonempty. For any central $t$, take
+$h=(t/R)\operatorname{phase}(Z)$ and $k=0$. More generally take any
+bounded $k$ with $\|k\|_\infty\le1/100$, leaving this $h$ unchanged.
+The elementary bound $\pi>3$ implies $t/R+1/100<1$, so $f_\pm=h\pm k$
+are admissible. Since $\|q\|^2\le\epsilon^2/10000$, these responses lie
+inside the new region. For example $k=\operatorname{phase}(H(X))/100$
+produces a nonzero pure-Wick remote cubic, with normalized fourth moment
+$44$; there is no small-kurtosis premise.
+
+There is also a direct interpretation in terms of the preceding intrinsic
+support test $v=(p/t)q$. The global Rice tangent
+$\rho(u)\le R+(R/2)u$ gives, for $t>R/2$,
+\[
+ D_t((p/t)q;q)\le R-t-\gamma(t)e,\qquad
+ \gamma(t)=\frac{p^2(2t-R)}{2t^2}>0.
+\]
+Consequently the new certificate can be written
+\[
+\begin{aligned}
+ \mathcal N\le{}&t^2-1.51488t+1.2700534
+ +\frac{0.722}{\gamma(t)}\{R-t-D_t((p/t)q;q)\}\\
+ &-0.036A_2-0.777B_2-0.00003YW_2-0.65|\nu|^2.
+\end{aligned}
+\]
+Thus a \emph{large} intrinsic support gap gives a negative deduction in
+this certificate. In particular the central-row implication
+\[
+ D_t((p/t)q;q)\ge R-t-0.0113\,\gamma(t)
+ \quad\Longrightarrow\quad \mathcal N\le0.71325012
+\]
+is valid without a cumulant restriction. Together with the preceding
+small-gap theorem, this controls opposite ends of the support-gap range;
+it does not cover the intermediate range.
+
+Conversely any actual central response violating $\mathcal N<500/701$
+must now obey
+\begin{equation}\label{eq:sio-survivor}
+ \boxed{\quad
+ \mathcal E_{\mathrm{adj}}\ge
+ \frac{500/701-t^2+(4734/3125)t-6350267/5000000}{361/500}.
+ \quad}
+\end{equation}
+(The rational relaxation alone gives $\ge$ for a putative $\mathcal N\ge
+500/701$; the strict integral bounds can sharpen it.) The right side is
+approximately $0.0140063$ at $t=0.84$, $0.0126822$ at $t=0.8456$, and
+$0.0113230$ at $t=0.851$. The exact replay prints directed enclosures.
+Survivors must \emph{also} evade every previous cumulant/support test.
+The intermediate-variance support-interior region and the larger
+cumulant/influence region remain unproved. This is a new complete
+regional original-response certificate, not a complete central-row
+certificate or a new endpoint.
+

@@ -1,0 +1,97 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch47-cylinder-lifting-section.tex (file dated 2026-10-25). Only this line was added.
+\subsection{A finite cylinder lifting in arbitrary dimension}
+\label{sec:uniform-complement}
+Let $J\in\mathcal H_{2,1}$ satisfy $\mathbb E[J\mid Z,X]=0$ and let the fresh buffer be independent of every coordinate of $J$. The following algebra explains why the core cell majorants can control arbitrary additional dimensions. No independence of the core and complement is used.
+\paragraph{Step 1: retain both signs.}
+On a cell measurable in $(Z,X)$, let $q_{j,\pm}$ be the incoming
+anchor second moments and put $F_\pm=L\pm Q$. Concavity of the Rice
+mean gives
+\[
+\begin{split}
+ \mathbb E_j\rho_g(|F_\pm\pm J|^2)
+ \le{}&\rho_g(q_{j,\pm})+\frac{K_g(q_{j,\pm})}{2}
+ \bigl(\mathbb E_j|F_\pm|^2-q_{j,\pm}+\mathbb E_j|J|^2\bigr).
+\end{split}
+\]
+Conditional centering eliminates the cross term. Both signs are needed:
+$Q+J$ need not have the one-driver sign symmetry. Their extra contribution
+is $\mathbb E[W_g|J|^2]$, with the cellwise weight
+\[
+ W_g=\tfrac12\bigl(K_g(q_{j,+})+K_g(q_{j,-})\bigr).
+\]
+Set $W_g=1$ outside the bounded cell domain. The original inequality
+$2|w|\le1+|w|^2$ gives this same extra tail contribution; conditional
+centering eliminates tail cross terms as well. Orthogonality supplies
+an additional penalty $-p\|J\|_2^2$. Thus every original majorant
+$M(Q,g)$ satisfies
+\[
+ \Lambda(Q+J+gU)\le M(Q,g)+\mathbb E[(W_g-p)|J|^2].
+\]
+Moreover
+\[
+ K_g(u)=\frac1{\sqrt\pi}\int_0^{1/g^2}
+ e^{-ut}t^{-1/2}\sqrt{1-g^2t}\,dt\le u^{-1/2}=K_0(u),
+\]
+so $W_g\le W_0$ for every buffer.
+
+\paragraph{Step 2: five matrices suffice in every dimension.}
+Expand in the normalized complex Hermite basis of the additional
+coordinates $V$:
+\[
+ J=\sum_{\gamma,\delta}j_{\gamma\delta}(Z,X)
+ \mathsf H_{\gamma\delta}(V),\qquad
+ j_{\gamma\delta}\in
+ \mathcal H_{2-|\gamma|,1-|\delta|}(\mathbb C^2).
+\]
+The constant remote label is zero by conditional centering. Orthogonality
+and the fact that $W_0$ depends only on $(Z,X)$ give
+\[
+ \mathbb E[W_0|J|^2]
+ =\sum_{\gamma,\delta}\mathbb E[W_0|j_{\gamma\delta}|^2],
+ \qquad
+ \|J\|_2^2=\sum_{\gamma,\delta}\|j_{\gamma\delta}\|_2^2.
+\]
+The possible coefficient spaces are precisely
+\[
+ \mathcal H_{1,1},\quad\mathcal H_{2,0},\quad
+ \mathcal H_{0,1},\quad\mathcal H_{1,0},\quad\mathcal H_{0,0},
+\]
+of dimensions $4,3,2,2,1$. Arbitrarily many remote labels repeat these
+same matrices, rather than creating a dimension-dependent estimate.
+
+\paragraph{Step 3: explicit block entries.}
+Remove the common phase and write $Z=r$, $X=x+iy$, $s=r^2$,
+$t=x^2+y^2$. For a real anchor the paired weight is even in $x$ and $y$ separately; the next section retains the complex entries for nonreal anchors.
+Write $\mathbb E_W f=\mathbb E[W_0f]$. In the orthonormal basis
+$(s-1,Z\overline X,X\overline Z,t-1)$, the $\mathcal H_{1,1}$ matrix
+splits into
+\[
+ \begin{pmatrix}
+ \mathbb E_W(s-1)^2&\mathbb E_W(s-1)(t-1)\\
+ \mathbb E_W(s-1)(t-1)&\mathbb E_W(t-1)^2
+ \end{pmatrix},\qquad
+ \begin{pmatrix}
+ \mathbb E_Wst&\mathbb E_Ws(x^2-y^2)\\
+ \mathbb E_Ws(x^2-y^2)&\mathbb E_Wst
+ \end{pmatrix}.
+\]
+In the basis $(Z^2/\sqrt2,ZX,X^2/\sqrt2)$, the $\mathcal H_{2,0}$
+matrix splits into
+\[
+ \begin{pmatrix}
+ \mathbb E_Ws^2/2&\mathbb E_Ws(x^2-y^2)/2\\
+ \mathbb E_Ws(x^2-y^2)/2&\mathbb E_Wt^2/2
+ \end{pmatrix}
+\]
+and the singleton $\mathbb E_Wst$. The other matrices are
+$\operatorname{diag}(\mathbb E_Ws,\mathbb E_Wt)$, its conjugate,
+and the singleton $\mathbb E_W1$.
+
+Each matrix is evaluated as
+\[
+ I+\sum_{j\subset D}p_j(w_j-1)\mathbb E_j[\Phi\Phi^*].
+\]
+This incorporates the unbounded complement exactly, since $W_0=1$
+there. It only needs conditional polynomial moments of degree at most
+four, in addition to the original anchor moments of degree six.
+

@@ -1,0 +1,1345 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch55-buffered-drivers.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 55). Owner: lower-bound/10-coupled-complements.tex
+\providecommand{\Sd}{\textup{[S]}}\providecommand{\cert}[1]{\texttt{#1}}
+
+\section{Buffered drivers: two drivers at every buffer $g\ge0.164$, and any number of small drivers}\label{ch:buffered-drivers}
+\chapsummary{Buffered two-driver and small-driver comparisons with retained deficits, plus joint tangents and conditional-mean-zero costs. The exact thresholds below have different hypotheses and should not be merged by taking coordinatewise maxima.}
+
+\paragraph{Provenance and status (IDE note).} The two-driver certificate (Theorems~\ref{tdb-thm:A}, \ref{tdb-thm:B}) came from another AI working from the
+state-of-the-art bundle (\code{two-driver-buffered}); ``Lemma/Theorem $n$'' and \Sd{} refer to \code{conjK\_state.pdf} in \pathref{bundles/conjK-state-20261020.zip}
+(Lemma~3 visible mixture, 5 buffered tangent, 6 variance exclusion, 9 convex interpolation in $g$, 13 Bernstein deficit, Theorem~18 large buffer). The full-context GPT
+audited and replayed it (two printed constants corrected below: $K\le17050$, exact $x_L$; the conclusion $2.58$ survives), then added
+\S\ref{sec:buffered-review-anyn}--\S\ref{sec:tdb-downward}. Package \pathref{gpt-reviews/buffered-drivers-20261020/}. IDE replay \code{python3 -I verify\_all.py
+--jobs 2} from an unrelated directory, regenerating all tables and anchors: plan A (1{,}609 boxes, worst margin $3.46\cdot10^{-8}$), plan B (455 boxes, $4.0\cdot10^{-5}$), the strengthened exact assertions (local coefficient $-2.5899$, $K=17048.5$, exact $x_L$), the trace, the seven visible constants and positive matrix, and all eight buffer-extension claims PASS (1014\,s; 17\,min wall). IDE checks \st{P}: the covariance bounds of
+\eqref{eq:buffered-review-covariance}; the three final square completions in exact arithmetic ($u^\top P^{-1}u/2500=3.659,4.627,5.173$ against
+$17/3-2,\,17/3-1,\,17/3-49/100$); the heat-transfer inequality $H'\ge1/H$.
+
+\subsection{Results}
+
+\subsubsection{Setting and what is used from the state document}
+Notation is that of \Sd: $\varepsilon=1891/2500$, $p=1/\varepsilon$, $a=699/1250$, $b=179/1250$, $L=Z(a+bT)$, $T=|Z|^2$,
+$H(X)=X(|X|^2-2)/\sqrt2$, $\Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2$, $S=\sup_vF(v)$, $F(v)=2\E|L+\sqrt vU|-pv$,
+$\rho_g(u)=\E|\sqrt u+gU|$, $K_g=2\rho_g'$. The family above is denoted $\mathcal F_2$; write $\theta=(c_1,c_2,\alpha_1,\alpha_2,\beta_1,\beta_2)$,
+$s=c_1^2+c_2^2$ and $V=\E|G|^2=s+\sum_k(|\alpha_k|^2+|\beta_k|^2)+g^2$.
+
+From \Sd\ we use exactly:
+\begin{itemize}
+\item Lemma~3 (the visible law is a Gaussian scale mixture; $F$ is strictly concave) --- for the monotonicity of $C(v)=-h''(v)$ and
+of $B(v)=h'''(v)/(3C(v))$ in Theorem~\ref{tdb-thm:local};
+\item Lemma~5 (concavity of $\rho_g$ and the Laplace representation of $K_g$) --- for the pointwise tangent and for the Fourier transform of $K_g$;
+\item Lemma~6 (cell-tangent majorant), used with point cells, i.e.\ the pointwise tangent of the concave $\rho_g$;
+\item Lemma~9 (exact convex interpolation in the buffer);
+\item Lemma~13 (nonperturbative baseline deficit) --- its proof, applied to a general remote cubic (Corollary~\ref{tdb-cor:bern2});
+\item Theorem~18 (large buffer, $g\ge0.477$);
+\item the reduction $\Lambda(G+gU)=2\E\rho_g(|L+G|^2)-p(\E|G|^2+g^2)$ for families closed under negation (Section~3 of \Sd).
+\end{itemize}
+Theorems~16, 19, 20, 21 are \emph{not} used. (The checker implements an optional energy shift that would invoke Theorem~19; no box needs it.)
+
+\subsubsection{Statements}
+
+\begin{theorem}[Buffered two-driver family, \st{P,C}]\label{tdb-thm:A}
+For every $G\in\mathcal F_2$ with $g\ge41/250$,
+\[
+\Lambda(G)\le S .
+\]
+More precisely: for $g\ge0.477$ this is Theorem~18 of \Sd; for $41/250\le g\le0.477$,
+\begin{enumerate}
+\item if $V\ge13/20$ then $\Lambda(G)<S-1/2000$ (Lemma~\ref{tdb-lem:trace});
+\item if $0.185\le g\le0.22$ and $c_1,c_2\le0.03$ then $\Lambda(G)\le S-2.58\,(c_1^4+c_2^4)$ (Theorem~\ref{tdb-thm:local}; here $0.03$ means $\mathrm{fl}(0.03)$);
+\item otherwise $\Lambda(G)\le S-3.4\cdot10^{-8}$ (Section~\ref{tdb-sec:cover}).
+\end{enumerate}
+Equality holds only at the Gaussian benchmark $G=\sqrt{v_*}\,U$.
+\end{theorem}
+
+\begin{theorem}[Small buffers, one large cubic, \st{P,C}]\label{tdb-thm:B}
+Let $G\in\mathcal F_2$ with $\mathrm{fl}(0.1)\le g\le41/250$ (where $\mathrm{fl}(0.1)=\frac1{10}+5.6\cdot10^{-18}$) and $\max(c_1,c_2)\ge\hat c(g)$, where
+\begin{center}\small
+\begin{tabular}{l|ccccccc}
+$g\in$ & $[0.1,0.105]$ & $[0.105,0.12]$ & $[0.12,0.135]$ & $[0.135,0.145]$ & $[0.145,0.155]$ & $[0.155,0.16]$ & $[0.16,41/250]$\\\hline
+$\hat c(g)$ & $0.4$ & $0.35$ & $0.3$ & $0.25$ & $0.2$ & $0.15$ & $0.1$
+\end{tabular}
+\end{center}
+(at a common endpoint either value applies). Then $\Lambda(G)<S-4\cdot10^{-5}$. All $\alpha_k,\beta_k\in\C$ and the other cubic coefficient are
+unrestricted.
+\end{theorem}
+The thresholds are the binary64 numbers $\mathrm{fl}(j\cdot0.1)$ and $\mathrm{fl}(\tfrac12(\mathrm{fl}(j\cdot0.1)+\mathrm{fl}((j+1)\cdot0.1)))$ of the quadtree
+grid, which exceed the decimals shown by less than $5\cdot10^{-17}$; the same convention applies to all decimal constants below
+(buffer nodes, the local square side $0.03$, which is $\mathrm{fl}(0.03)<0.03$, and so on). Every check uses the exact rational value of the binary64 number.
+
+\begin{remark}[What remains open in the two-driver family]
+After Theorems~\ref{tdb-thm:A}, \ref{tdb-thm:B} and Theorems~19--21 of \Sd, the open part of $\mathcal F_2$ is
+\[
+0\le g<41/250,\qquad \max(c_1,c_2)<\hat c(g),
+\]
+with $\hat c$ the threshold of Theorem~\ref{tdb-thm:B} for $g\ge\mathrm{fl}(0.1)$ (and no restriction on $c$ for $g<\mathrm{fl}(0.1)$), intersected with $\sum_k(|\alpha_k|^2+|\beta_k|^2)<4/25$, $V<13/20$, and, for each $k$, $152c_k^2+66|\alpha_k|^2>52|\beta_k|^2$ (otherwise
+Theorem~21 applies with driver $k$ as the block). Section~\ref{tdb-sec:obstruction} explains why the present method stops there.
+\end{remark}
+
+%======================================================================
+\subsection{Reductions}\label{tdb-sec:red}
+
+\begin{lemma}[Real form, \st{P}]\label{tdb-lem:real}
+Rotating each $X_k$ by a phase we may take $c_k\ge0$. Rotating all coordinates by the phase of $Z$ (measure preserving), every
+expectation is over $r=|Z|$ with density $2re^{-r^2}$, $\ell(r)=r(a+br^2)$, and independent standard complex $Y_k=x_ke^{i\vartheta_k}$:
+\begin{multline*}
+L+G\ \overset{d}{=}\ e^{i\arg Z}\Bigl(\ell(r)+\sum_k\bigl[c_k\psi(x_k)e^{i\vartheta_k}+\alpha_k(r^2-1)x_ke^{i\vartheta_k}+\beta_k\tfrac{r^2}{\sqrt2}x_ke^{-i\vartheta_k}\bigr]\Bigr)+gU,\\
+\psi(x)=\frac{x(x^2-2)}{\sqrt2}.
+\end{multline*}
+$\mathcal F_2$ is closed under negation ($G(X)\mapsto G(-X)$) and under $X_1\leftrightarrow X_2$, so $\Lambda(G)=2\E\rho_g(|F|^2)-p(\E|G-gU|^2+g^2)$
+with $F=\ell+\sum_k[\cdots]$, and it suffices to treat $c_2\le c_1$. Complex conjugation of $(Y_1,Y_2)$ maps $F$ at real parameters to $\bar F$;
+hence all coefficients of the majorants below are real.
+\end{lemma}
+\begin{proof}
+$H(e^{i\phi}Y)=e^{i\phi}H(Y)$, $(T-1)e^{i\phi}Y$, $Z^2\overline{e^{i\phi}Y}=e^{-i\phi}Z^2\bar Y$, so rotating $X_k$ multiplies $c_k,\alpha_k$ by $e^{i\phi}$
+and $\beta_k$ by $e^{-i\phi}$; choose $\phi$ with $c_ke^{i\phi}\ge0$. With $Z=re^{i\omega}$ and $Y_k=e^{-i\omega}X_k$ every term acquires the
+common factor $e^{i\omega}$. The rest is \Sd, Section~3.
+\end{proof}
+
+\begin{lemma}[Trace exclusion, \st{P,C}]\label{tdb-lem:trace}
+For $G\in\mathcal F_2$, $\Lambda(G)\le J(V):=2\E\sqrt{T(a+bT)^2+V}-pV$. Moreover $J(13/20)<1.3713318<S-1/2000$ and $J'(V)\le V^{-1/2}-p<0$ for $V\ge13/20$.
+Hence $V\ge13/20$ implies $\Lambda(G)<S-1/2000$.
+\end{lemma}
+\begin{proof}
+$|l+w|+|l-w|\le2\sqrt{|l|^2+|w|^2}$ and $\sqrt{P+|G|^2}\le\sqrt{P+V}+(|G|^2-V)/(2\sqrt{P+V})$ with $P=T(a+bT)^2$. Given $Z$, the terms of
+$G$ are centred and pairwise orthogonal ($\E[H(X)\bar X]=\E|X|^4-2=0$, $\E[H(X)X]=\E X^2=0$), so
+$\E[|G|^2\mid Z]-V=\sum_k|\alpha_k|^2((T-1)^2-1)+|\beta_k|^2(T^2/2-1)$. The weight $w(T)=1/(2\sqrt{P(T)+V})$ is decreasing, and the probability
+measures $(t-1)^2e^{-t}dt$, $\tfrac{t^2}2e^{-t}dt$ stochastically dominate $e^{-t}dt$ (tails $(x^2+1)e^{-x}$, $(x^2/2+x+1)e^{-x}$ versus $e^{-x}$).
+Hence $\E[(T-1)^2w]\le\E w$ and $\E[\tfrac{T^2}2w]\le\E w$, and the error term is $\le0$. The value $J(13/20)$ is an upper Riemann sum on
+$600{,}000$ cells of $[0,60]$ (the integrand is increasing in $t$) plus an explicit tail, in interval arithmetic (\cert{trace.cpp});
+$S\ge S_{\rm lo}>1.37395352558$ (Section~\ref{tdb-sec:cover}). $J$ is concave and $J'(V)=\E(P+V)^{-1/2}-p\le V^{-1/2}-p$.
+\end{proof}
+This recovers, for $\mathcal F_2$, the variance exclusion of \autoref{ch:buffer-bootstrap} of \Sd; we reprove it to keep the certificate independent.
+
+%======================================================================
+\subsection{The exact Wick-anchor majorant}
+
+Fix $g>0$ and an anchor $c^0=(c_1^0,c_2^0)$, $c_k^0\ge0$, and put $F_0=\ell(r)+\sum_kc^0_k\psi(x_k)e^{i\vartheta_k}$ (no $A/B$ part).
+Order the directions as $\Phi=(H_1,H_2,A_1,A_2,B_1,B_2)$ with $H_k=\psi(x_k)e^{i\vartheta_k}$, $A_k=(r^2-1)x_ke^{i\vartheta_k}$,
+$B_k=\tfrac{r^2}{\sqrt2}x_ke^{-i\vartheta_k}$ (orthonormal), so $F=F_0+\sum_j\delta_j\Phi_j$ with $\delta=\theta-\theta^0$, $\theta^0=(c^0,0,0,0,0)$.
+
+\begin{lemma}[Global quadratic majorant, \st{P}]\label{tdb-lem:maj}
+With $K=K_g(|F_0|^2)$, define the real numbers
+\[
+L_0=2\E\rho_g(|F_0|^2)-p(|c^0|^2+g^2),\qquad b_j=\E[K\bar F_0\Phi_j]-p\theta^0_j,\qquad M_{ij}=\E[K\bar\Phi_i\Phi_j]-p\delta_{ij}.
+\]
+Then for \emph{every} parameter value, with $u=\Re\delta$, $v=\Im\delta$ (note $v_H=0$),
+\[
+\Lambda(G)\le L_0+2b\cdot u+u^{\!\top}Mu+v^{\!\top}Mv .
+\]
+Let $h=c-c^0$, $w(h)=b_{ab}+M_{ab,c}h$ and $\lambda'\ge0$ with $\lambda' I-M_{ab}\succ0$. Then
+\[
+\sup_{\alpha,\beta}\Lambda\le L_0+2b_c\cdot h+h^{\!\top}M_{cc}h+w(h)^{\!\top}(\lambda'I-M_{ab})^{-1}w(h)+\lambda'R^2,
+\]
+where the supremum is over all $\alpha,\beta$ if $\lambda'=0$, and over $\sum_k(|\alpha_k|^2+|\beta_k|^2)\le R^2$ otherwise.
+\end{lemma}
+\begin{proof}
+By Lemma~5 $\rho_g$ is concave, so pointwise $\rho_g(|F|^2)\le\rho_g(|F_0|^2)+\tfrac12K(|F|^2-|F_0|^2)$ (Lemma~6 with point cells).
+Expand $|F|^2-|F_0|^2=2\Re(\bar F_0\sum\delta_j\Phi_j)+|\sum\delta_j\Phi_j|^2$ and $\E|G-gU|^2-|c^0|^2=2\theta^0\cdot u+|\delta|^2$ (orthonormality).
+By Lemma~\ref{tdb-lem:real} $b$ and $M$ are real, so $\Re\sum_j b_j\delta_j=b\cdot u$ and $\delta^*M\delta=u^\top Mu+v^\top Mv$.
+For the second statement complete the square in $u_{ab}$ for the matrix $M_{ab}-\lambda' I\prec0$ and use $v_{ab}^\top(M_{ab}-\lambda'I)v_{ab}\le0$,
+$\lambda'(|u_{ab}|^2+|v_{ab}|^2)\le\lambda'R^2$ (Lemma~8 of \Sd).
+\end{proof}
+The majorant is exact at the anchor ($\delta=0$) and its gradient is exact; it overestimates the curvature in $c$ ($M_{cc}\approx0.66$ at the
+benchmark versus the true value $F'(v_*)=0$). This is why the cover needs small boxes near $c=0$, and why the benchmark corner needs
+Theorem~\ref{tdb-thm:local}.
+
+\begin{lemma}[Exact box bound, \st{P}]\label{tdb-lem:box}
+Let $L_0,b,M$ be given by interval enclosures and let $Q$ be the box $[c_{1a},c_{1b}]\times[c_{2a},c_{2b}]$. Let $N$ be a rational symmetric
+$4\times4$ matrix and $\epsilon\ge\|(\lambda'I-M_{ab})-N\|_F$ for all matrices in the enclosure; if $N-\epsilon I\succ0$ (exact $LDL^\top$),
+put $P=(N-\epsilon I)^{-1}$. Then $(\lambda'I-M_{ab})^{-1}\preceq P$, and with $w=w_0(h)+e$, $|e_i|\le\rho_i(h)$,
+\[
+w^\top(\lambda'I-M_{ab})^{-1}w\le w_0^\top Pw_0+2\textstyle\sum_i|(Pw_0)_i|\rho_i+\sum_{ij}|P_{ij}|\rho_i\rho_j .
+\]
+The resulting bound is a quadratic $q_0+2q_1\cdot h+h^\top Q_2h$ with exact rational coefficients plus an error term monotone in $|h_i|$;
+its maximum over the rectangle is taken exactly (corners; critical points on edges when the edge coefficient is negative; the interior
+critical point when $Q_2\prec0$).
+\end{lemma}
+\begin{proof}
+$\lambda'I-M_{ab}=N-\Delta\succeq N-\epsilon I\succ0$ and inversion is operator monotone decreasing. The expansion of $w^\top Pw$ is exact
+and the remaining steps are triangle inequalities. A quadratic on a rectangle attains its maximum at a corner, at a critical point of
+its restriction to an edge, or at an interior critical point, which exists as a maximum only if $Q_2\prec0$; degenerate concave cases
+attain the maximum on the boundary.
+\end{proof}
+
+%======================================================================
+\subsection{Hankel factorisation of the anchor coefficients}
+
+Write $r$ and $x$ for independent variables with density $2te^{-t^2}$ on $(0,\infty)$. The universal tables are
+\[
+R^{(N)}_P(k)=\E\bigl[P(r)J_N(k\ell(r))\bigr],\qquad D^{(n)}_q(s)=\E\bigl[q(x)J_n(s\psi(x))\bigr],
+\]
+for the visible weights
+\[
+(P,N)\in\{(1,0),\,(r^2-1,0),\,((r^2-1)^2,0),\,(r^4/2,0),\,(r^2/\sqrt2,2),\,((r^2-1)r^2/\sqrt2,2)\},
+\]
+denoted $R_1,R_A,R_{AA},R_{BB},R_B,R_{AB}$, and the driver weights
+\[
+(q,n)\in\{(1,0),\,(\psi^2,0),\,(x\psi,0),\,(x\psi,2),\,(x^2,0),\,(x^2,2),\,(\psi,1),\,(x,1)\},
+\]
+denoted $D_1,D_{HH},D_{HX},D^{(2)}_{HX},D_{XX},D^{(2)}_{XX},D^{(1)}_H,D^{(1)}_X$.
+In addition, with $\kappa_Q(z)=(1-J_0(z))/z^2$, $\kappa_1(z)=J_1(z)/z$, $\kappa_R(z)=(J_1(z)/z-\tfrac12)/z^2$:
+\begin{gather*}
+R_Q(k)=\E[\ell^2\kappa_Q(k\ell)],\qquad Q_H(s)=\E[\psi^2\kappa_Q(s\psi)],\\
+Y_H(s)=\E[\psi^2\kappa_1(s\psi)],\qquad Y_X(s)=\E[x\psi\,\kappa_1(s\psi)],\qquad Y_R(s)=\E[x\psi^3\kappa_R(s\psi)],
+\end{gather*}
+so that $D^{(1)}_H(s)=sY_H(s)$, $D^{(1)}_X(s)=sY_X(s)$, $Y_X(s)=s^2Y_R(s)$ (because $\E[x\psi]=0$). On the real line every table is bounded by $1$:
+$|J_n|\le1$, $|\kappa_1|\le\frac12$, $0\le\kappa_Q\le\frac14$, and $\E|P(r)|\le1$, $\E|q(x)|\le1$ for all weights above (Cauchy--Schwarz with
+$\E(r^2-1)^2=\E r^4/2=\E\psi^2=\E x^2=1$); moreover $|Y_R|\le\E[x|\psi|^3]/16\le\sqrt{\E x^2\psi^2\,\E\psi^4}/16=\sqrt{176}/16<0.83$.
+
+\begin{proposition}[Hankel factorisation, \st{P}]\label{tdb-prop:hankel}
+Let $g>0$, $x=gk/2$ and
+\[
+W_g(k)=e^{-x^2}-\sqrt\pi\,x\,\mathrm{erfc}(x),\qquad E_g(k)=e^{-g^2k^2/4}.
+\]
+Then, with $D(\cdot)$ evaluated at $c_1k$ for driver~1 and at $c_2k$ for driver~2 ($c=c^0$),
+\begin{align*}
+\E|F_0+gU|&=\int_0^\infty\Bigl[R_Q+R_1c_1^2Q_H(c_1k)+R_1D_1(c_1k)c_2^2Q_H(c_2k)+R_1D_1(c_1k)D_1(c_2k)\frac{1-E_g(k)}{k^2}\Bigr]dk,\\
+b_{H_1}+pc_1&=c_1\!\int_0^\infty E_gR_1\,Y_H(c_1k)D_1(c_2k)\,dk,\qquad
+b_{A_1}=c_1\!\int_0^\infty E_gR_A\,Y_X(c_1k)D_1(c_2k)\,dk,\\
+b_{B_1}&=-c_1\!\int_0^\infty E_gR_B\,Y_X(c_1k)D_1(c_2k)\,dk,
+\end{align*}
+symmetrically for driver~2, and $M_{ij}+p\delta_{ij}=\int_0^\infty W_g(k)\,m_{ij}(k)\,dk$ with
+\begin{center}\small
+\begin{tabular}{llll}\toprule
+same driver $k$ (other $o$) & $m_{ij}$ & cross pair & $m_{ij}$\\\midrule
+$H_kH_k$ & $R_1D_{HH}(c_k\cdot)D_1(c_o\cdot)$ & $H_1H_2$ & $-R_1D^{(1)}_H(c_1\cdot)D^{(1)}_H(c_2\cdot)$\\
+$H_kA_k$ & $R_AD_{HX}(c_k\cdot)D_1(c_o\cdot)$ & $H_1A_2$, $A_1H_2$ & $-R_AD^{(1)}_HD^{(1)}_X$, $-R_AD^{(1)}_XD^{(1)}_H$\\
+$H_kB_k$ & $R_BD^{(2)}_{HX}(c_k\cdot)D_1(c_o\cdot)$ & $H_1B_2$, $B_1H_2$ & $+R_BD^{(1)}_HD^{(1)}_X$, $+R_BD^{(1)}_XD^{(1)}_H$\\
+$A_kA_k$ & $R_{AA}D_{XX}(c_k\cdot)D_1(c_o\cdot)$ & $A_1A_2$ & $-R_{AA}D^{(1)}_XD^{(1)}_X$\\
+$A_kB_k$ & $R_{AB}D^{(2)}_{XX}(c_k\cdot)D_1(c_o\cdot)$ & $A_1B_2$, $B_1A_2$ & $+R_{AB}D^{(1)}_XD^{(1)}_X$\\
+$B_kB_k$ & $R_{BB}D_{XX}(c_k\cdot)D_1(c_o\cdot)$ & $B_1B_2$ & $-R_{BB}D^{(1)}_XD^{(1)}_X$\\\bottomrule
+\end{tabular}
+\end{center}
+(in the cross column the first table is at $c_1k$, the second at $c_2k$). All integrals converge absolutely.
+\end{proposition}
+\begin{proof}
+\emph{Transforms.} For $w\in\C=\R^2$ and $\xi=ke^{i\tau}$ write $\langle\xi,w\rangle=\Re(\bar\xi w)$. In two dimensions
+$|w|=\frac1{2\pi}\int(1-\cos\langle\xi,w\rangle)|\xi|^{-3}d\xi$; for a circular law with radial characteristic function $\chi$ this gives
+$\E|W|=\int_0^\infty(1-\chi(k))k^{-2}dk$. Undoing the rotation of Lemma~\ref{tdb-lem:real}, $\E|F_0+gU|=\E|L+c_1H(X_1)+c_2H(X_2)+gU|$ is the
+mean modulus of a sum of four independent circular variables, so $\chi(k)=R_1(k)D_1(c_1k)D_1(c_2k)E_g(k)$, since $\E J_0(k|L|)=R_1(k)$,
+$\E J_0(k|cH|)=D_1(ck)$ and $\E J_0(kg|U|)=E_g(k)$. The splitting
+$1-\chi=(1-R_1)+R_1(1-D_1)+R_1D_1(1-D_1)+R_1D_1D_1(1-E_g)$ with $(1-R_1(k))/k^2=R_Q(k)$ and $(1-D_1(ck))/k^2=c^2Q_H(ck)$ is exact and free of
+cancellation.
+
+By Lemma~5, $K_g(|w|^2)=\frac1{g\sqrt\pi}\int_0^1e^{-t|w|^2/g^2}\sqrt{(1-t)/t}\,dt$; the planar transform of $e^{-t|w|^2/g^2}$ is
+$(\pi g^2/t)e^{-g^2k^2/(4t)}$, hence
+\[
+\widehat{K_g}(k)=g\sqrt\pi\int_0^1t^{-3/2}(1-t)^{1/2}e^{-g^2k^2/(4t)}dt=\frac{2\pi}{k}\,W_g(k),
+\]
+the last identity by $t=1/(1+\sigma)$ and $\int_0^\infty\sigma^{1/2}e^{-x^2\sigma}(1+\sigma)^{-1}d\sigma=\sqrt\pi/x-\pi e^{x^2}\mathrm{erfc}(x)$.
+In particular $0<W_g\le1$, $W_g$ is decreasing in $k$ and in $g$, $\int_0^\infty W_g=\sqrt\pi/(2g)$, and $W_g(k)\le e^{-x^2}/(2x^2)$.
+For the gradient, $\varphi(w)=\E|w+gU|$ satisfies $K_g(|w|^2)\bar w=2\partial_w\varphi(w)$ and $\widehat\varphi(k)=-2\pi k^{-3}E_g(k)$.
+
+\emph{Angular integrals.} For a radial variable $t$ and an integer $m$, $\E_\vartheta[e^{im\vartheta}e^{ikt\cos(\vartheta-\tau)}]=i^me^{im\tau}J_m(kt)$,
+and $\int_0^{2\pi}e^{-iM\tau}e^{iz\cos\tau}d\tau=2\pi i^{-M}J_M(z)$. Insert the Fourier representations, integrate first over $\vartheta_1,\vartheta_2$
+(each direction $\Phi_j$ carries the angular mode $+1$ for $H_k,A_k$ and $-1$ for $B_k$, the product $\bar\Phi_i\Phi_j$ the difference of
+modes), then over $\tau$, which produces $J_N(k\ell)$ with $N$ the total driver mode, and finally over $r$, $x_1$, $x_2$. For example
+\begin{align*}
+\E[K\bar F_0B_1]&=\frac1{(2\pi)^2}\!\int_0^\infty\!\!\int_0^{2\pi}\widehat\varphi(k)\,ike^{-i\tau}\,\E_r\Bigl[\tfrac{r^2}{\sqrt2}e^{ik\ell\cos\tau}\Bigr]e^{-i\tau}\,i\,D^{(1)}_X(c_1k)D_1(c_2k)\,k\,d\tau\,dk\\
+&=-\!\int_0^\infty\!\frac{E_g(k)}{k}R_B(k)D^{(1)}_X(c_1k)D_1(c_2k)\,dk,
+\end{align*}
+which is the stated formula since $D^{(1)}_X(s)=sY_X(s)$. The other entries are identical computations; the signs collect $i^m$ factors
+and $D^{(n)}_q(-s)=(-1)^nD^{(n)}_q(s)$. Absolute convergence: $|\widehat{K_g}(k)|\le2\pi/k$, $|\widehat\varphi(k)|k\le2\pi k^{-2}E_g$, the remaining
+factors are bounded by moments, and Fubini applies.
+\end{proof}
+
+\begin{remark}[Independent validation, \st{F}]
+A direct product Gauss quadrature in $(r,x_1,\vartheta_1,x_2,\vartheta_2)$ (no Fourier transform) converges to the certified values as the
+resolution grows: at $(c_1,c_2,g)=(0.1,0.05,0.17)$ the differences in $(L_0,b,M)$ are
+$(2.7\cdot10^{-8},9.5\cdot10^{-7},8.8\cdot10^{-5})$, $(8.2\cdot10^{-10},4.2\cdot10^{-8},5.6\cdot10^{-6})$, $(1.9\cdot10^{-11},4.3\cdot10^{-9},1.1\cdot10^{-7})$,
+$(2.2\cdot10^{-11},3.0\cdot10^{-10},1.9\cdot10^{-8})$ at $32^3,48^3,64^3,80\cdot72\cdot64$ nodes, and similarly at $(0.7,0.2,0.17)$.
+This checks every sign in Proposition~\ref{tdb-prop:hankel}.
+\end{remark}
+
+%======================================================================
+\subsection{Rigorous evaluation}\label{tdb-sec:rig}
+All arithmetic is binary64 with every operation rounded outward by one ulp (\cert{ia.hpp}), compiled with \texttt{-ffp-contract=off}
+and without fast-math (enforced by a preprocessor check).
+
+\paragraph{Elementary functions and Bessel functions.} $\exp$ by $n\ln2$ reduction and Taylor degree 24 with Lagrange remainder;
+$\cos,\sin$ by $2\pi$ reduction and Taylor to degree 35; $\mathrm{erfc}$ by the alternating series for $x\le2$ and by two consecutive convergents of
+its Stieltjes continued fraction (which bracket the value) for $x>2$. $J_n$ ($n\le2$) by the power series for $x\le12$ (alternating tail
+bounded by the first omitted term once the term ratio is below $\frac12$) and by the Hankel expansion with ten terms in each of $P,Q$
+and the remainder bound of DLMF 10.17(iii) for $x>12$. The kernels $\kappa_1,\kappa_Q,\kappa_R$ use their power series for $|z|\le12$ and
+the Hankel $J_0,J_1$ otherwise. Interval arguments are widened by the real Lipschitz constants $|J_n'|\le1$, $|\kappa_1'|\le\frac13\cdot\frac2\pi<\frac14$,
+$|\kappa_Q'|\le\frac2{9\pi}<\frac14$, $|\kappa_R'|\le\frac{4}{90\pi}<\frac1{64}$ (from $\kappa_1(z)=\frac2\pi\int_0^1\sqrt{1-u^2}\cos(zu)du$,
+$\kappa_Q(z)=\frac2\pi\int_0^1u^2k_q(zu)\frac{du}{\sqrt{1-u^2}}$, $\kappa_R(z)=-\frac2\pi\int_0^1\sqrt{1-u^2}\,u^2k_q(zu)du$, $k_q(w)=\int_0^1(1-t)\cos(wt)dt$,
+$|k_q'|\le\frac16$). In complex strips: $|J_n(\zeta)|\le e^{|\Im\zeta|}$, $|\kappa_1(\zeta)|,|\kappa_Q(\zeta)|\le2e^{|\Im\zeta|}$, $|\kappa_R(\zeta)|\le\frac14e^{|\Im\zeta|}$.
+
+\paragraph{Quadrature.} The $30$-point Gauss--Legendre rule is generated in exact rational arithmetic: each node is bracketed by two
+adjacent binary64 numbers with a strict sign change of $P_{30}$, and each weight $2/((1-x^2)P_{30}'(x)^2)$ is enclosed from exact endpoint values
+and a second-derivative bound; the weight sum encloses $2$ (\cert{gen\_gauss.py}). If $f$ is analytic inside the Bernstein ellipse $E_2$ of
+$[a,b]$ with $|f|\le M$, then $|\int_a^bf-Q_{30}f|\le8(b-a)M4^{-30}$; $E_2$ lies in the rectangle $|\Re z-m|\le1.25h$, $|\Im z|\le0.75h$
+($m,h$ the midpoint and half-length).
+
+\paragraph{Tables.} Each table integral is truncated at $r,x\le6.5$ (tails bounded through $\Gamma(j/2+1,42.25)$ by
+$8.8\cdot10^{-16}$ for the visible and $2.0\cdot10^{-14}$ for the driver family) and computed by adaptive Gauss panels with the Bernstein bound
+(integrand bounds from $|e^{-z^2}|\le e^{Y^2-x_{\min}^2}$, polynomial weights, and the strip bounds of the kernels). The visible tables are
+computed at the $8{,}400$ Gauss nodes of the $k$-integral ($280$ panels of length $\frac14$ on $[0,70]$), the driver tables at $25$
+first-kind Chebyshev nodes on each of $560$ panels of length $\frac1{10}$ on $[0,56]$, and $Y_R$ on $30$ panels on $[0,3]$. Node values
+are computed at the midpoint of the node enclosure and widened by its radius times the Lipschitz constant
+$\int_0^{6.5}|P||{\rm phase}|\,2te^{-t^2}dt$ ($\le6.69$ visible, $\le61.6$ driver, $\le23.1$ for $Y_R$ including $|\kappa_R'|\le\frac1{64}$).
+Strip bounds $B(\delta)=2\int_0^{6.5}|P|\,2te^{-t^2}e^{\delta|{\rm phase}|}dt$ (upper Riemann sums) are $B_V(0.1)\le11.53$, $B_D(0.05)\le26.65$,
+$B_D(0.1)\le42.57$, $B_{Y_R}(0.1)\le1201.2$.
+
+\paragraph{Chebyshev panels.} On a panel of half-length $h=\frac1{20}$ the interpolant in $25$ first-kind nodes has error at most
+$4B_D(0.1)\rho^{-24}/(\rho-1)\le4.8\cdot10^{-14}$ with $\rho=2+\sqrt5$ (the ellipse with semi-minor axis $0.1$; for first-kind nodes the
+aliasing identity $T_{2N\pm k}\equiv-T_k$ on the nodes gives $\|f-p\|\le2\sum_{k\ge N}|c_k|$). The interpolant is evaluated at a
+binary64 point $u\in[-1,1]$ by the float recurrence $t_{m+1}=2ut_m-t_{m-1}$ with the forward bound
+$|t_k-T_k(u)|\le\sum_{m<k}(k-m)E_m$, $E_m\le1.12\cdot10^{-16}(4|t_m|+|t_{m-1}|)$ (the local errors propagate through $U_{k-1-m}$, $|U_j|\le j+1$),
+followed by an interval dot product. (Interval Clenshaw is not used: its wrapping effect inflates radii by $(1+\sqrt2)^{24}$.)
+
+\paragraph{The $k$-integral.} On each $k$-panel the integrands of Proposition~\ref{tdb-prop:hankel} are bounded on the rectangle of $E_2$ by
+$|R|\le B_V(0.094)$, $|D(ck)|\le B_D(\max(0.05,0.094c))$, $|E_g(k)|\le e^{-g^2\Re(k^2)/4}$, $|(1-E_g)/k^2|\le\frac{g^2}4\max(1,e^{-g^2\Re(k^2)/4})$, and
+$|W_g(k)|\le(|k|/k')W_g(k')$ with $k'=\sqrt{\Re k^2}$ when $\Re k^2>0$ (from the integral representation of $W_g$), otherwise
+$|W_g|\le e^{\tau^2}+\sqrt\pi|x|(1+\frac2{\sqrt\pi}|x|e^{\tau^2})$, $\tau=\Im x$. Replacing the tables by their truncations costs at most
+$(t_V+2t_D)\int W_g$ (resp.\ $\int E_g$); the tail $k>70$ costs at most $\int_{70}^\infty W_g\le\frac2ge^{-x_0^2}/(4x_0^3)$,
+$\int_{70}^\infty E_g\le\frac2ge^{-x_0^2}/(2x_0)$, $x_0=35g$, and for $L_0$ the exact tail $\int_{70}^\infty k^{-2}=1/70$ minus
+$|\int_{70}^\infty\chi k^{-2}|\le70^{-2}\int_{70}^\infty E_g$. Typical radii of the anchor enclosures: $6\cdot10^{-11}$ ($L_0$), $10^{-12}$ ($b$),
+$2\cdot10^{-11}$ ($M$).
+
+%======================================================================
+\subsection{Proof of Theorem~\ref{tdb-thm:A}}\label{tdb-sec:cover}
+
+\subsubsection{The lower bound for $S$}
+$S\ge F(g_{\rm ref}^2)$ for $g_{\rm ref}=0.20086$, and the enclosure of $L_0$ at $c=0$, $g=g_{\rm ref}$ gives
+\[
+S\ge S_{\rm lo}=\tfrac{3093868292922215}{2251799813685248}=1.373953525583988\ldots
+\]
+(consistent with $S>1.37395$ of \Sd). All cover bounds are compared with $S_{\rm lo}$.
+
+\subsubsection{The cover}
+Buffer nodes: $g_0$ the largest binary64 number below $41/250$, then $0.165,0.17,\dots,0.23$ (step $0.005$), $0.24,0.25,\dots,0.28$, $0.30,0.32,0.34$,
+$0.37,0.40,0.44,0.478$ (27 nodes, 26 intervals). For each interval $[g_i,g_{i+1}]$, a quadtree refinement of the $0.1$-grid of $[0,0.8]^2$
+provides boxes $Q$ with anchor $c^0$ at the centre. For each box, Lemma~\ref{tdb-lem:box} gives exact rational bounds $U_i,U_{i+1}$ for
+$\sup_{c\in Q,\alpha,\beta}\Lambda$ at $g_i$ and $g_{i+1}$, and Lemma~9 of \Sd\ gives, for every fixed $G$ with $c\in Q$ and
+$g=(1-t)g_i+tg_{i+1}$,
+\[
+\Lambda(G+gU)\le\max_{t\in[0,1]}\bigl[(1-t)U_i+tU_{i+1}+p\,t(1-t)(g_{i+1}-g_i)^2\bigr]\le S_{\rm lo},
+\]
+the maximum being computed exactly. Coverage is checked by replaying the quadtree with exact rational tests: a cell is either a certified
+box, or lies in $c_2>c_1$ (symmetry), or satisfies $c_{1}^2+c_{2}^2\ge13/20-g_i^2$ at its lower-left corner (Lemma~\ref{tdb-lem:trace}), or lies in
+$[0,0.03]^2$ for an interval inside $[0.185,0.22]$ (Theorem~\ref{tdb-thm:local}). All boxes use $\lambda'=0$: the $A/B$ block is certified negative
+definite at every anchor, so no restriction on $\alpha,\beta$ and no use of Theorem~19 is needed.
+
+\begin{center}\small
+\begin{tabular}{lrr@{\qquad}lrr}\toprule
+buffer interval & boxes & $\max\text{bound}-S_{\rm lo}$ & buffer interval & boxes & $\max\text{bound}-S_{\rm lo}$\\\midrule
+$[g_0,0.165]$ & 85 & $-3.29\cdot10^{-5}$ & $[0.215,0.22]$ & 64 & $-5.40\cdot10^{-6}$\\
+$[0.165,0.17]$ & 85 & $-4.50\cdot10^{-5}$ & $[0.22,0.225]$ & 62 & $-1.61\cdot10^{-5}$\\
+$[0.17,0.175]$ & 79 & $-1.52\cdot10^{-5}$ & $[0.225,0.23]$ & 62 & $-6.99\cdot10^{-5}$\\
+$[0.175,0.18]$ & 79 & $-1.01\cdot10^{-5}$ & $[0.23,0.24]$ & 56 & $-1.14\cdot10^{-5}$\\
+$[0.18,0.185]$ & 103 & $-1.44\cdot10^{-6}$ & $[0.24,0.25]$ & 50 & $-1.42\cdot10^{-4}$\\
+$[0.185,0.19]^\ast$ & 90 & $-3.01\cdot10^{-7}$ & $[0.25,0.26]$ & 44 & $-3.23\cdot10^{-5}$\\
+$[0.19,0.195]^\ast$ & 95 & $-1.95\cdot10^{-6}$ & $[0.26,0.27]$ & 41 & $-1.36\cdot10^{-4}$\\
+$[0.195,0.2]^\ast$ & 104 & $-3.46\cdot10^{-8}$ & $[0.27,0.28]$ & 37 & $-7.01\cdot10^{-5}$\\
+$[0.2,0.205]^\ast$ & 90 & $-1.08\cdot10^{-7}$ & $[0.28,0.30]$ & 37 & $-6.15\cdot10^{-4}$\\
+$[0.205,0.21]^\ast$ & 81 & $-1.15\cdot10^{-7}$ & $[0.30,0.32]$ & 34 & $-2.64\cdot10^{-4}$\\
+$[0.21,0.215]^\ast$ & 73 & $-1.24\cdot10^{-5}$ & $[0.32,0.34]$ & 34 & $-1.71\cdot10^{-3}$\\
+ & & & $[0.34,0.37]$ & 34 & $-3.48\cdot10^{-3}$\\
+ & & & $[0.37,0.40]$ & 32 & $-6.85\cdot10^{-3}$\\
+ & & & $[0.40,0.44]$ & 29 & $-1.11\cdot10^{-2}$\\
+ & & & $[0.44,0.478]$ & 29 & $-1.85\cdot10^{-2}$\\\bottomrule
+\end{tabular}
+
+{\footnotesize $^\ast$: the square $[0,0.03]^2$ is excluded (Theorem~\ref{tdb-thm:local}). Total: 1{,}609 boxes.}
+\end{center}
+
+\emph{Binding cells.} The refinement is greedy (a box is accepted as soon as it passes), so the smallest slack, $3.5\cdot10^{-8}$, sits on
+the large box $[0.10,0.15]\times[0,0.05]$ at $[0.195,0.2]$. The structurally tight cells are those just outside the local square near the
+benchmark buffer: $c_1\in[0.025,0.0375]$, $c_2\le0.019$ for $0.195\le g\le0.21$ (slack $1\cdot10^{-7}$ to $2\cdot10^{-6}$, box side down to
+$1/320$). There the true deficit is only $\approx20(c_1^4+c_2^4)$, while the majorant overestimates the curvature in $c$ by $\approx0.66\,|h|^2$.
+
+\subsubsection{The local theorem at the benchmark corner}
+
+\begin{corollary}[Lemma~13 for a remote cubic, \st{P}]\label{tdb-cor:bern2}
+Let $q$ be independent of $(Z,U)$ with $\E|q|^2<\infty$. Then
+$\Lambda(q+\sqrt vU)\le F(v)+F'(v)\E|q|^2-\frac{C(v)}{2B(v)^2}\E\,\mathcal E_1(B(v)|q|^2)$, $\mathcal E_1(y)=y-1+e^{-y}$.
+\end{corollary}
+\begin{proof}
+The proof of Lemma~13 in \Sd\ shows $f_v(u)=2\E|L+\sqrt vU+\sqrt u|\le h(v)+h'(v)u-\frac C{2B^2}\mathcal E_1(Bu)$ for deterministic $u\ge0$. Since
+$L+\sqrt vU$ is circular and independent of $q$, $2\E|L+\sqrt vU+q|=\E f_v(|q|^2)$; take expectations and subtract $p(v+\E|q|^2)$.
+\end{proof}
+
+\begin{theorem}[Local theorem, \st{P,C}]\label{tdb-thm:local}
+For $0.185\le g\le0.22$, $c_1,c_2\in[0,0.03]$ and all $\alpha_k,\beta_k\in\C$: $\ \Lambda(G)\le S-2.58\,(c_1^4+c_2^4)$.
+\end{theorem}
+\begin{proof}
+Put $q=c_1H(X_1)+c_2H(X_2)$, $v=g^2$, and apply Lemma~\ref{tdb-lem:maj} at the \emph{exact} anchor $c^0=c$ with only the $A/B$ directions free:
+\[
+\Lambda(G)\le\Lambda(q+gU)+b_{ab}^\top(-M_{ab})^{-1}b_{ab}\le\Lambda(q+gU)+\frac{|b_{ab}|^2}{\mu},
+\]
+provided $-M_{ab}(c,g)\succeq\mu I$ uniformly. \emph{Uniform enclosures} (\cert{local.cpp}): the integrals of Proposition~\ref{tdb-prop:hankel} are
+evaluated with interval inputs over the whole box $c\in[0,0.03]^2$, $g\in[0.185,0.22]$: $W_g,E_g$ are monotone in $g$; the driver tables over
+$s\in[c_ak,c_bk]$ are bounded panel by panel by the value at the centre plus the Markov bound $\sum_k|a_k|k^2$ times the half-width (plus
+interpolation error); the Gauss remainders use the largest $c$ and the extreme $g$. This gives $-M_{ab}\succeq\frac1{50}I$ (exact $LDL^\top$ with
+the Frobenius radius $0.0735$), and, writing $b_{A_k}=c_k^3\beta_{A_k}$, $b_{B_k}=c_k^3\beta_{B_k}$ with
+$\beta_{A_k}=\int E_gR_Ak^2Y_R(c_kk)D_1(c_ok)dk$, $\beta_{B_k}=-\int E_gR_Bk^2Y_R(c_kk)D_1(c_ok)dk$,
+\[
+|\beta_{A_k}|\le16.611,\quad|\beta_{B_k}|\le8.066,\qquad |b_{ab}|^2/\mu\le K(c_1^6+c_2^6),\quad K=\tfrac{16.611^2+8.066^2}{1/50}\le17050 .
+\]
+\emph{The remote part.} By Corollary~\ref{tdb-cor:bern2} and $F(v)+F'(v)s\le F(v+s)+\frac{C(v)}2s^2\le S+\frac{C(v)}2s^2$ ($F''=-C$, $C$ decreasing),
+\[
+\Lambda(q+gU)\le S+\tfrac{C(v)}2s^2-\tfrac{C(v)}{2B(v)^2}\,\E\,\mathcal E_1(B(v)|q|^2).
+\]
+By Lemma~3 of \Sd, $h(v)=\sqrt\pi\,\E\sqrt{V+v}$, so $C(v)=\frac{\sqrt\pi}4\E(V+v)^{-3/2}$ is decreasing and
+$B(v)=\frac12\E(V+v)^{-5/2}/\E(V+v)^{-3/2}$ is decreasing (moment ratios of $1/(V+v)$ are increasing). Hence on the box
+$C(v)\le\bar C:=C(0.185^2)\le2.376528$, $C(v)\ge C_{\rm lo}:=C(0.22^2)\ge2.133631$, $B(v)\le B_{\rm hi}:=h'''(0.185^2)/(3C(0.185^2))\le2.700426$, with
+$C(v)=\frac18\int k^2R_1e^{-vk^2/4}dk$, $h'''(v)=\frac1{32}\int k^4R_1e^{-vk^2/4}dk$ enclosed as above. The map $B\mapsto B^{-2}\E\mathcal E_1(B|q|^2)$
+is decreasing ($\mathcal E_1(y)/y^2$ decreases). Averaging over the relative phase of the two cubics (Jensen, $\mathcal E_1$ convex) and using
+$\mathcal E_1(x+y)=\mathcal E_1(x)+\mathcal E_1(y)+(1-e^{-x})(1-e^{-y})$,
+\[
+\E\,\mathcal E_1(B|q|^2)\ge\mathcal E(Bc_1^2)+\mathcal E(Bc_2^2)+(1-\phi(Bc_1^2))(1-\phi(Bc_2^2)),\qquad \phi(x)=\E e^{-xZ_3(T)},\ \mathcal E(x)=x-1+\phi(x),
+\]
+with $Z_3(t)=t(t-2)^2/2=|H|^2$. Since $\mathcal E(x)/x^2$ and $(1-\phi(x))/x$ are decreasing, for $x\le x_L=5626541823773821/2^{61}\approx0.0024401235\ge B_{\rm hi}\,0.03^2$:
+$\mathcal E(x)\ge\gamma x^2$, $1-\phi(x)\ge\gamma'x$ with $\gamma\ge18.5823$, $\gamma'\ge0.95465$ ($\phi(x_L)$ enclosed by Gauss quadrature).
+Collecting, with $c_1^2c_2^2\le\frac12(c_1^4+c_2^4)$ and $c_k^6\le0.03^2c_k^4$,
+\[
+\Lambda(G)-S\le(c_1^4+c_2^4)\Bigl[\tfrac{\bar C-C_{\rm lo}\gamma}{2}+\tfrac12\max\bigl(0,\bar C-\tfrac12C_{\rm lo}\gamma'^2\bigr)+K\,0.03^2\Bigr]\le-2.5898\,(c_1^4+c_2^4).
+\]
+All constants are checked in exact rational arithmetic (\cert{check\_local.py}).
+\end{proof}
+
+\subsubsection{Assembly}
+For $g\ge0.477$ use Theorem~18 of \Sd. For $41/250\le g\le0.477$ (the cover runs up to $\mathrm{fl}(0.478)>0.477$): by symmetry $c_2\le c_1$; if $c_1^2+c_2^2+g^2\ge13/20$ then $V\ge13/20$ and
+Lemma~\ref{tdb-lem:trace} applies; in the local square Theorem~\ref{tdb-thm:local} applies; every other $(c,g)$ lies in a certified box of its buffer
+interval. Equality: the cover and trace bounds are strict, and in the local square $\Lambda=S$ forces $c=0$, then
+$\Lambda(J+gU)\le F(g^2)$ with $J$ the $A/B$ part and the strict concavity of $F$ (Lemma~3) and of the $A/B$ quadratic force $g^2=v_*$, $J=0$.
+\qed
+
+%======================================================================
+\subsection{Small buffers: proof of Theorem~\ref{tdb-thm:B}}\label{tdb-sec:B}
+The same machinery applies for $g\ge0.1$ (the $k$-tail bound is effective for $35g\ge3.5$). Buffer nodes $0.1,0.105,0.11,\dots,0.16$ (step $0.005$), $0.162$, $0.164$
+($\mathrm{fl}(0.164)\ge41/250$); on each interval the claimed region is $\{c_2\le c_1,\ c_1\ge\hat c\}$ minus the trace region, and cells with
+$c_1\le\hat c$ are recorded as unclaimed. The exact check passes with 455 boxes, all with $\lambda'=0$:
+\begin{center}\small
+\begin{tabular}{lccc}\toprule
+buffers & $\hat c$ & boxes & $\max\text{bound}-S_{\rm lo}$\\\midrule
+$[0.100,0.105]$ & $0.40$ & $23$ & $-3.4\cdot10^{-2}$\\
+$[0.105,0.110]$, $[0.110,0.115]$, $[0.115,0.120]$ & $0.35$ & $3\times28$ & $-4.2\cdot10^{-3}$, $-6.4\cdot10^{-3}$, $-8.2\cdot10^{-3}$\\
+$[0.120,0.125]$, $[0.125,0.130]$, $[0.130,0.135]$ & $0.30$ & $3\times28$ & $-9.7\cdot10^{-3}$, $-1.1\cdot10^{-2}$, $-1.2\cdot10^{-2}$\\
+$[0.135,0.140]$, $[0.140,0.145]$ & $0.25$ & $2\times33$ & $-2.0\cdot10^{-3}$, $-2.5\cdot10^{-3}$\\
+$[0.145,0.150]$, $[0.150,0.155]$ & $0.20$ & $2\times32$ & $-3.8\cdot10^{-4}$, $-9.4\cdot10^{-4}$\\
+$[0.155,0.160]$ & $0.15$ & $37$ & $-2.2\cdot10^{-4}$\\
+$[0.160,0.162]$, $[0.162,0.164]$ & $0.10$ & $50+47$ & $-4.0\cdot10^{-5}$, $-6.9\cdot10^{-5}$\\\bottomrule
+\end{tabular}
+\end{center}
+Below these thresholds the anchors near the claimed boundary either have an indefinite $A/B$ block or an exact-anchor value above $S$
+(Section~\ref{tdb-sec:obstruction}); the thresholds are therefore close to optimal for this majorant.
+
+%======================================================================
+\subsection{Where and why the method stops}\label{tdb-sec:obstruction}
+
+\paragraph{The positive $A$-curvature of the pointwise tangent \st{C at the listed nodes, F in between}.}
+At $c=0$ the anchor coefficients are diagonal: $M_{A_kA_k}=\E[K_g(\ell^2)(r^2-1)^2]-p$, $M_{B_kB_k}=\E[K_g(\ell^2)r^4/2]-p$, $M_{H_kH_k}=\E K_g(\ell^2)-p$:
+\begin{center}\small
+\begin{tabular}{lrrrrrrrrr}\toprule
+$g$ & 0.10 & 0.12 & 0.14 & 0.15 & 0.16 & 0.164 & 0.17 & 0.20 & 0.24\\\midrule
+$M_{AA}(0)$ & $+0.212$ & $+0.139$ & $+0.073$ & $+0.042$ & $+0.012$ & $+0.0002$ & $-0.017$ & $-0.095$ & $-0.184$\\
+$M_{BB}(0)$ & $-0.561$ & $-0.563$ & $-0.565$ & $-0.565$ & $-0.566$ & $-0.567$ & $-0.568$ & $-0.571$ & $-0.577$\\
+$M_{HH}(0)$ & $1.041$ & $0.955$ & $0.875$ & $0.836$ & $0.798$ & $0.783$ & $0.762$ & $0.657$ & $0.531$\\
+$S-F(g^2)$ & $1.1\!\cdot\!10^{-3}$ & $8.2\!\cdot\!10^{-4}$ & $5.2\!\cdot\!10^{-4}$ & $3.8\!\cdot\!10^{-4}$ & $2.6\!\cdot\!10^{-4}$ & $2.1\!\cdot\!10^{-4}$ & $1.5\!\cdot\!10^{-4}$ & $1.3\!\cdot\!10^{-7}$ & $3.2\!\cdot\!10^{-4}$\\\bottomrule
+\end{tabular}
+\end{center}
+$M_{AA}(0,g)$ changes sign at $g\approx0.16407$. For smaller $g$ the majorant of Lemma~\ref{tdb-lem:maj} is unbounded in $\alpha$ near $c=0$; restricting the
+$A/B$ energy to $4/25$ (Theorem~19) costs $\frac{4}{25}M_{AA}$, more than the margin $S-F(g^2)$ as soon as $M_{AA}\gtrsim1.6\cdot10^{-3}$, i.e.\ for
+$g\lesssim0.1637$. The true second variation in the $A$ direction is negative (at the optimum this is Theorem~23 of \Sd; elsewhere the floating landscape
+shows margins $\ge10^{-3}$ at $g=0.1$); the pointwise tangent loses the radial part of the Hessian ($\rho_g''<0$), roughly a factor~2 where
+$\ell\gtrsim g$. At larger $c$ the anchors have $M_{ab}\prec0$, which gives Theorem~\ref{tdb-thm:B}.
+Map of the exact-anchor value $V(c,g)=L_0+b_{ab}^\top(-M_{ab})^{-1}b_{ab}$ on a grid ($c_1,c_2$ in steps of $0.02$--$0.05$, $c_2\le c_1$;
+enclosures from the engine, interpolation between grid points \st{F}): $V<S$ at every grid point with $c_1\ge0.08$ for $g=0.16$, $c_1\ge0.2$ for
+$g=0.15$, $c_1\ge0.25$ for $g=0.14$, $c_1\ge0.3$ for $g=0.12$, $c_1\ge0.4$ for $g=0.1$; for smaller $c_1$ there are grid points where the $A/B$ block
+is indefinite or $V>S$ (e.g.\ $V-S=+2.1\cdot10^{-4}$ at $c=(0.16,0)$, $g=0.15$).
+
+\paragraph{What is needed below $41/250$.} The one-driver core of \Sd\ (Theorem~20, item~4) overcame the same obstruction with nontrivial cells in the
+visible radius and the driver coordinate and with \emph{complex $A$ anchors}, covering $\alpha$ by boxes on which the positive curvature is paid by
+the margin ($\ge10^{-3}$ at $g=0.1$). For two drivers this requires anchors with $\alpha^0_1,\alpha^0_2\ne0$; then the driver laws depend on $r$ and the
+Hankel factorisation of Proposition~\ref{tdb-prop:hankel} no longer separates into one-dimensional tables (one needs two-variable driver tables
+$\E[q(x)J_n(k|c\psi(x)+\alpha(r^2-1)x|)]$ in $(k,\alpha(r^2-1)/c)$). This is the concrete next step; the float landscape (margins $\ge10^{-3}$ at $g=0.1$,
+$\ge1.9\cdot10^{-4}$ at $g=0.164$ for the true $\Lambda$) shows no sign of a violation.
+
+\paragraph{No violation found.} All floating-point scans (Nelder--Mead and grid, over $(c_1,c_2,\alpha,\beta,g)$ with complex phases) stayed below $S$;
+there is nothing to re-validate.
+
+%======================================================================
+\subsection{Certificate and replay}
+Directory \cert{two-driver-buffered/}:
+\begin{itemize}
+\item \cert{src/}: \cert{ia.hpp, bessel.hpp, kernels.hpp, gauss.hpp, engine.hpp} (interval core), \cert{tables.cpp} (universal tables), \cert{anchors.cpp}
+(anchor enclosures), \cert{local.cpp} (uniform enclosures, $C$, $h'''$, $\phi$), \cert{trace.cpp}; \cert{gen\_gauss.py}, \cert{boxcheck.py},
+\cert{check\_cover.py}, \cert{check\_local.py} (exact rationals, \texttt{fractions} only).
+\item \cert{data/}: \cert{plan\_A.json} (Theorem~\ref{tdb-thm:A}), \cert{plan\_B.json} (Theorem~\ref{tdb-thm:B}), \cert{local.jobs}. The plans list buffer nodes,
+boxes and anchors only; they were produced by the floating-point planner in \cert{planner/}, which is not part of the proof.
+\item \cert{verify\_all.py}: compiles, regenerates the Gauss rule and \emph{all} tables, recomputes every anchor, and runs the exact checks.
+\end{itemize}
+Command: \texttt{python3 -I /path/to/two-driver-buffered/verify\_all.py --out DIR --jobs 2}, from an unrelated directory. Requirements: Python~3
+standard library and a C++17 compiler (no fast-math). The final clean replay took 1{,}815\,s on two cores (tables 1{,}735\,s, anchors 42\,s, exact checks 22\,s); the
+log is \cert{replay.log}.
+
+\paragraph{Independent audit.} The code was audited by a separate reviewer that had not written it, re-deriving every formula and
+testing every primitive (elementary functions, Bessel functions and kernels against high-precision references; Gauss rule; strip and
+ellipse bounds; the 21 entries of $M$, the 6 of $b$ and $L_0$ against a direct five-dimensional integration; the box bound against
+brute force over random members of the enclosures; Lemma~9 and coverage logic; the local-theorem chain). No fatal or possibly-fatal
+issue was found. It reported rounding gaps of relative size $\le3\cdot10^{-14}$, all now closed: the continued-fraction branch of
+$\mathrm{erfc}$ used a rounded $x^2$; the table quadrature used a rounded panel midpoint and half-length and a non-outward ellipse rectangle;
+two complex bounds for $e^{-g^2k^2/4}$ rounded the wrong way when $\Re k^2<0$; the Riemann upper sums used a rounded $-a^2$ in $e^{-a^2}$; and
+the range evaluation in \cert{local.cpp} lacked a distance term for a few-ulp gap at panel ends. Duplicate-line detection and a
+consistency check of the local exclusion against the local-theorem region were added. The final replay was run after these fixes;
+the plans and all conclusions are unchanged (the table values moved by at most $10^{-15}$).
+
+%======================================================================
+
+\subsection{Unrestricted shared couplings on arbitrarily many small Wick drivers}
+\label{sec:buffered-review-anyn}
+\paragraph{Status and scope.}
+The analytic argument below is \textbf{[P]}; the seven visible integrals
+have a directed certificate \textbf{[C]}.  The retained remote deficit
+is an explicit input from \autoref{ch:shared-nongaussian-new},
+not a conclusion of the new numerical check.
+All parameters are the fixed peak parameters
+\[
+ a=699/1250,\quad b=179/1250,\quad p=2500/1891,\quad
+ L=Z(a+b|Z|^2),\quad H(X)=X(|X|^2-2)/\sqrt2.
+\]
+The variables \(Z,U,X_1,\ldots,X_N\) are independent standard proper
+complex Gaussians.  The integer \(N\) is arbitrary and finite.
+
+\begin{theorem}[Unrestricted \(A/B\), any number of small Wick drivers]
+\label{thm:buffered-review-anyn}
+Put \(q=\sum_{j=1}^N c_jH(X_j)\), with \(c_j\ge0\), and
+\[
+ G=q+gU+(|Z|^2-1)\sum_j\alpha_jX_j+
+       \frac{Z^2}{\sqrt2}\sum_j\beta_j\overline{X_j}.
+\]
+Take \(g\ge0\), and write \(e=\sum_jc_j^2\).
+If
+\[
+ \sum_jc_j^2\le\frac{16}{2500},\qquad
+ \max_j c_j\le\frac1{50},\qquad
+ \frac7{200}\le g^2\le\frac9{200},
+\]
+then, for every \(\alpha,\beta\in\mathbb C^N\), without an amplitude
+or phase restriction,
+\[
+ \boxed{\quad
+ \Lambda(G)\le S-2\sum_jc_j^4-
+                  \frac{\|\alpha\|_2^2+\|\beta\|_2^2}{2000}.
+ \quad}
+\]
+More generally, the variance allowance can be increased to \(e\le1/100\),
+with the quartic coefficient \(2\) replaced by \(49/100\).
+On \(e\le9/1000\) the quartic coefficient \(1\) is valid.
+The conclusion also covers \(c=0\). It is not a theorem for an arbitrary
+internally coupled cubic tensor.
+\end{theorem}
+
+\paragraph{What changes.}
+The earlier theorem in \autoref{ch:shared-nongaussian-new} imposed
+\(\|\alpha\|^2+\|\beta\|^2\le10^{-6}\) on this same
+remote-variance, coefficient and buffer range.  The present argument
+removes that restriction and improves its quartic deficit from
+\(3/4\) to \(2\).  It uses a global tangent inequality, rather than a
+finite Taylor expansion in the couplings.
+
+\subsubsection{A dimension-free Fourier covariance estimate \textbf{[P]}}
+Write \(e=\sum c_j^2\), and, for \(k\ge0\), set
+\[
+ D(k)=\mathbb E[XX^*\cos(k\Re q)],\qquad
+ C(k)=\mathbb E[XX^\top\cos(k\Re q)].
+\]
+Then
+\begin{equation}
+ 0\preceq I-D(k)\preceq k^2eI,\qquad
+ \|C(k)\|_{\mathrm{op}}\le k^2e.
+ \label{eq:buffered-review-covariance}
+\end{equation}
+Indeed, first-chaos orthogonality of each Wick monomial gives the
+exact finite-sum identity
+\[
+ \mathbb E[|q|^2XX^*]
+       =\operatorname{diag}(e+3c_1^2,\ldots,e+3c_N^2).
+\]
+Under the common phase rotation \(X\mapsto e^{i\theta}X\), the
+terms involving \(q^2\) and \(\bar q^2\) in
+\(\mathbb E[XX^*(\Re q)^2]\) vanish. Thus this matrix is half
+the displayed diagonal matrix. Applying
+\(0\le1-\cos t\le t^2/2\) proves the first assertion.
+For the second, \(\mathbb E XX^\top=0\), so \(C=-\mathbb E[XX^\top w]\),
+where \(w=1-\cos(k\Re q)\ge0\).
+Weighted Cauchy--Schwarz bounds its operator norm by that of
+\(\mathbb E[XX^*w]=I-D\).  No entrywise summation depending on \(N\)
+is used.
+
+\subsubsection{Visible averaging before estimating the matrix \textbf{[P,C]}}
+After the joint phase rotation of \(Z\) and the remote variables,
+put \(\ell(T)=\sqrt T(a+bT)\), and define
+\[
+ R_{AA}(k)=\mathbb E[(T-1)^2J_0(k\ell(T))],\quad
+ R_{BB}(k)=\mathbb E[T^2J_0(k\ell(T))/2],
+\]
+\[
+ R_{AB}(k)=\mathbb E[T(T-1)J_2(k\ell(T))/\sqrt2].
+\]
+Let
+\[
+ W_g(k)=e^{-g^2k^2/4}
+       -\sqrt\pi\,\frac{gk}{2}\operatorname{erfc}(gk/2).
+\]
+For \(K_g(u)=2\partial_u\mathbb E|\sqrt u+gU|\), the global
+tangent inequality at \(\ell+q\) gives
+\begin{equation}
+ \Lambda(G)\le\Lambda(q+gU)
+       +2\Re(b_A\cdot\alpha+b_B\cdot\beta)
+       +(\alpha,\beta)^*M(q,g)(\alpha,\beta).
+ \label{eq:buffered-review-global-tangent}
+\end{equation}
+The matrix is interpreted with the harmless conjugations in the
+\(B\) coordinates dictated by the displayed model. The bound below
+is invariant under those conjugations.
+The Fourier representation of \(K_g\), followed by the visible
+angular average, gives diagonal blocks
+\(\int W_gR_{AA}D\,dk-pI\) and the transpose/conjugate
+of \(\int W_gR_{BB}D\,dk-pI\).
+Its cross block is \(\int W_gR_{AB}C\,dk\), up to a sign and
+conjugation.  These formulas follow from
+\(\mathbb E_\theta e^{im\theta+it\cos\theta}=i^mJ_m(t)\).
+In particular, at \(q=0\) the cross block is zero.
+
+For \(g_0=37/200\), define
+\[
+ N_A=\int_0^\infty k^2W_{g_0}(R_{AA})_-\,dk,\quad
+ N_B=\int_0^\infty k^2W_{g_0}(R_{BB})_-\,dk,\quad
+ N_{AB}=\int_0^\infty k^2W_{g_0}|R_{AB}|\,dk.
+\]
+Equation~\eqref{eq:buffered-review-covariance} proves, with
+\(A=\|\alpha\|_2,\ B=\|\beta\|_2\),
+\[
+ (\alpha,\beta)^*[M(q,g)-M(0,g)](\alpha,\beta)
+ \le e(N_AA^2+2N_{AB}AB+N_BB^2).
+\]
+Here \(W_g\le W_{g_0}\) for \(g\ge g_0\).
+Also \(M(0,g)\preceq M(0,g_0)\): the positive representation
+\[
+ K_g(u)=\frac1{\sqrt\pi}\int_0^{1/g^2}
+             s^{-1/2}\sqrt{1-g^2s}\,e^{-us}\,ds
+\]
+shows that \(K_g(u)\) decreases with \(g\), pointwise in \(u\).
+
+The directed checker proves
+\[
+ M_{AA}(0,g_0)<-\frac{57}{1000},\qquad
+ M_{BB}(0,g_0)<-\frac{569}{1000},
+\]
+\[
+ N_A<\frac{2097}{1000},\qquad N_B<\frac{2939}{1000},\qquad
+ N_{AB}<\frac{2791}{500}.
+ \tag{*}
+\]
+For clarity, it does not apply an analytic quadrature remainder to
+the nonsmooth functions \(R_-\) or \(|R|\).
+With \(d\mu=k^2W_{g_0}(k)\,dk\) and
+\(\mu(\mathbb R_+)=\sqrt\pi/(2g_0^3)\), it uses
+\[
+ \int R_-\,d\mu\le
+ \frac{\sqrt{\mu(\mathbb R_+)\int R^2\,d\mu}-\int R\,d\mu}{2},
+ \qquad
+ \int |R|\,d\mu\le
+ \sqrt{\mu(\mathbb R_+)\int R^2\,d\mu}.
+\]
+Only the analytic integrands \(R\) and \(R^2\) are quadrature inputs.
+
+\subsubsection{Contents and the exact square completion \textbf{[P,C]}}
+Set \(k_r=\sum_jc_j^r\).  The cancellation
+\(\mathbb E[\overline X H(X)]=0\), the Bessel remainder
+\(|J_1(t)-t/2|\le |t|^3/16\), and
+\(\mathbb E|XH(X)^3|\le\sqrt{176}\) give
+\[
+ \|b_A\|_2\le \frac{9283}{500}\sqrt{k_6},\qquad
+ \|b_B\|_2\le \frac{1127}{125}\sqrt{k_6}.
+ \tag{**}
+\]
+To check these constants, use the proved signs
+\(R_A=\mathbb E[(T-1)J_0(k\ell)]\le0\) and
+\(R_B=\mathbb E[TJ_2(k\ell)/\sqrt2]\ge0\).
+The respective upper integrals are
+\[
+ \frac{\sqrt{176}}{16}\int_0^\infty k^2e^{-g_0^2k^2/4}
+                  (-R_A(k))\,dk,\quad
+ \frac{\sqrt{176}}{16}\int_0^\infty k^2e^{-g_0^2k^2/4}
+                  R_B(k)\,dk.
+\]
+All other Wick factors contribute characteristic functions of modulus
+at most one. Hence these bounds are independent of \(N\).
+
+Put \(e_0=16/2500,\ \tau=1/2000,\ u=(9283/500,1127/125)^\top\), and
+\[
+ P=
+ \begin{pmatrix}57/1000&0\\0&569/1000\end{pmatrix}
+ -e_0
+ \begin{pmatrix}2097/1000&2791/500\\2791/500&2939/1000\end{pmatrix}
+ -\tau I .
+\]
+This rational matrix is positive definite. The quadratic bound
+above is valid for the nonnegative vector \((A,B)\); replacing \(e\)
+by \(e_0\) only increases its upper bound on that quadrant.
+The retained remainder in~\eqref{eq:buffered-review-global-tangent}
+is at most
+\[
+ 2\sqrt{k_6}\,u^\top(A,B)^\top-(A,B)P(A,B)^\top
+ \le k_6u^\top P^{-1}u.
+\]
+The previously certified remote Fourier deficit is
+\[
+ \Lambda(q+gU)\le S-\frac{17}{3}k_4
+\]
+on exactly the coefficient, variance and buffer range of the theorem.
+Finally \(k_6\le k_4/2500\), and exact rational arithmetic gives
+\[
+ \frac{17}{3}-\frac{u^\top P^{-1}u}{2500}
+ =\frac{35141036731739}{17503094800500}>2.
+\]
+This proves Theorem~\ref{thm:buffered-review-anyn}.
+The remote deficit actually holds up to \(e=1/100\), as proved in
+the ``sharper buffered Fourier deficit'' subsection of the coherent
+Wick chapter. Replacing \(e_0\) in the same rational matrix by
+\(9/1000\) or \(1/100\) gives remaining quartic coefficients greater
+than \(1.0399\) or \(0.49405\), respectively. The exact checker
+compares these fractions with \(1\) and \(49/100\).
+
+\subsubsection{An unrestricted-amplitude reduction for arbitrary coupled cubics}
+\label{sec:buffered-review-general}
+The matrix part of the argument is not restricted to independent
+Wick sums.  If \(q\) is any pure remote \(H_{2,1}\) polynomial
+with variance \(e\), and \(\ell\) is any unit first-chaos direction,
+then
+\[
+ \mathbb E[|\ell|^2|q|^2]
+  =e+\|D_\ell q\|_2^2+\|\bar D_\ell q\|_2^2\le4e.
+\]
+For a direct finite-coefficient proof, rotate \(\ell\) to \(X_1\)
+and expand \(q=\sum_{|\mu|=2,|\nu|=1}a_{\mu,\nu}H_{\mu,\nu}\).
+Multiplication by \(X_1\) splits into orthogonal degrees four
+and two. The squared norm of the creation term is
+\(\sum |a_{\mu,\nu}|^2\mu!\nu!(\mu_1+1)\), and that of
+the annihilation term is
+\(\sum |a_{\mu,\nu}|^2\mu!\nu!\nu_1\).
+Their sum is at most \(4e\). Thus
+the operator inequalities~\eqref{eq:buffered-review-covariance}
+hold for arbitrary pure \(H_{2,1}\) cubics.
+
+\begin{proposition}[All amplitudes, arbitrary shared cubic, \textbf{[P,C]}]
+Let \(q\in H_{2,1}(\mathbb C^n)\) be independent of the visible \(Z\),
+and let \(U\) be fresh. Assume \(e=\mathbb E|q|^2\le16/2500\)
+and \(g\ge37/200\). For arbitrary coefficient vectors
+\(\alpha,\beta\in\mathbb C^n\), put
+\[
+ D=(|Z|^2-1)\sum_j\alpha_jX_j+
+       Z^2\sum_j\beta_j\bar X_j/\sqrt2 .
+\]
+Use the actual buffered baseline in the first variation:
+\[
+ {\cal C}_q(D)=\mathbb E\!\left[
+   K_g(|L+q|^2)\operatorname{Re}(\overline{L+q}\,D)\right].
+\]
+Then
+\[
+ \boxed{\quad
+ \Lambda(q+gU+D)\le
+ \Lambda(q+gU)+2{\cal C}_q(D)
+       -\frac{\|\alpha\|_2^2+\|\beta\|_2^2}{25}.
+ \quad}
+\]
+There is no independence assumption between \(q\) and the linear
+drivers in \(D\).
+With the larger allowance \(e\le1/100\), the same conclusion holds
+with \(1/25\) replaced by \(1/40\).
+\end{proposition}
+\begin{proof}
+The terms in \(q+D\) change sign under \(X\mapsto-X\), with \(Z\)
+fixed; also replace \(U\) by \(-U\). Thus the two norm terms agree.
+Alternatively apply the tangent argument to both signs separately.
+Apply the preceding covariance estimate and (*).
+For the nonnegative norm vector \((A,B)\), the residual matrix is
+\[
+ P_0=
+ \begin{pmatrix}57/1000&0\\0&569/1000\end{pmatrix}
+ -\frac{16}{2500}
+ \begin{pmatrix}2097/1000&2791/500\\2791/500&2939/1000\end{pmatrix}.
+\]
+The diagonal entries of \(P_0-I/25\) are positive, and its
+determinant is exactly \(214770369/390625000000>0\).
+Thus \(P_0\succeq I/25\), proving the claim.
+For the larger variance allowance, replace \(16/2500\) by \(1/100\)
+and check the two principal minors of \(P_0-I/40\); both are positive
+in exact rational arithmetic.
+\end{proof}
+\paragraph{What this does not prove.}
+The proposition removes the finite-amplitude difficulty on this
+small-variance range, but the actual contents still have to be paid
+by the remote deficit for a general coupled tensor.
+It does not assert a Gaussian comparison for arbitrary \(q\), or
+reuse the Wick-specific bound (**) for such \(q\).
+
+\paragraph{Paid coupled complements, any number of core coordinates.}
+Let \(Q\) denote the nonbuffered expression in
+Theorem~\ref{thm:buffered-review-anyn}, let
+\(\mathcal A=\sigma(Z,X_1,\ldots,X_N)\), and suppose that \(J\in L^2\) and
+\(\mathbb E[J\mid\mathcal A]=0\), with \(U\) independent of
+\((\mathcal A,J)\). The conditional-complement lemma below gives
+an additional cost of less than \((7/2)\|J\|_2^2\).
+Consequently, in the \(e\le1/100\) region, exact K still holds for
+the genuinely coupled residual \(Q+J+gU\) whenever
+\[
+ \|J\|_2^2\le\frac7{50}k_4+
+          \frac{\|\alpha\|_2^2+\|\beta\|_2^2}{7000}.
+\]
+In the \(e\le16/2500\) region, replace \(7/50\) by \(4/7\).
+The complement need not be independent of the core and may contain
+mixed core/external-coordinate cubic monomials.
+
+\paragraph{Replay and limitations.}
+\texttt{visible\_constants.cpp} reads the freshly generated visible
+Hankel table, with its Gauss-node enclosures, analytic remainders and
+tails, and computes the seven directed bounds in (*) and (**).
+\texttt{check\_constants.py} verifies the comparisons and the final
+rational matrix calculation.
+The new argument uses neither the two-driver cover nor an assumption
+that the actual residual is a Gaussian variance mixture.
+It does use the established remote Fourier deficit and visible-kernel
+signs. Its scope does not include arbitrary mixed cubic tensors or
+unrestricted small-buffer amplitudes. The later even/diagonal extensions
+and their exceptions are in \autoref{ch:all-sector-audit-extension}; a
+complete row cover is still required.
+
+\subsection{Retaining the local shared-sector deficit and paying for a coupled complement}
+\label{sec:buffered-two-driver-retained}
+
+Write
+\[
+ Q=\sum_{j=1}^2\left[c_jH(X_j)+\alpha_j(T-1)X_j+
+                  \beta_jZ^2\bar X_j/\sqrt2\right],\qquad
+ k_4=c_1^4+c_2^4,\quad
+ e_{AB}=\sum_{j=1}^2(|\alpha_j|^2+|\beta_j|^2).
+\]
+Here \(Z,X_1,X_2,U\) are independent standard proper complex
+Gaussians, \(T=|Z|^2\), and the buffer \(gU\) is fresh.
+In this section the local endpoints \(c_L,g_-,g_+\) mean exactly
+the binary64 numbers
+\[
+ c_L=\mathrm{fl}(0.03),\qquad
+ g_-=\mathrm{fl}(0.185),\qquad
+ g_+=\mathrm{fl}(0.22).
+\]
+In particular \(c_L<3/100\) and \(g_->1849/10000\).
+The interval computations are the same ones as the incoming local
+theorem; all subsequent inequalities below are rational arithmetic.
+
+\begin{theorem}[Retained local \(A/B\) penalty]
+\label{thm:buffered-two-driver-retained}
+For \(0\le c_1,c_2\le c_L\), \(g_-\le g\le g_+\), and every
+\(\alpha_j,\beta_j\in\mathbb C\),
+\[
+ \boxed{\Lambda(Q+gU)\le S-2k_4-\frac{e_{AB}}{2000}.}
+\]
+The alternative bound
+\[
+ \Lambda(Q+gU)\le S-\frac52k_4-\frac{e_{AB}}{10000}
+\]
+also holds.
+\end{theorem}
+\begin{proof}
+Set \(q=c_1H(X_1)+c_2H(X_2)\).
+The local computation certifies \(-M_{AB}\succeq\mu I\),
+\(\mu=1/50\), and
+\[
+ \|b_{AB}\|^2\le
+ (16.611^2+8.066^2)(c_1^6+c_2^6).
+\]
+These are conservative rational upper bounds on the exact enclosures.
+The baseline part of the incoming proof gives
+\[
+ \Lambda(q+gU)\le S-Dk_4,
+\]
+where the following rational number is admissible:
+\[
+ D=-\frac{2.376528-2.133631(18.5823)}2
+   -\frac12\max\left\{0,\,
+        2.376528-\frac{2.133631(0.95465)^2}{2}\right\}
+  =\frac{28693571761768519}{1600000000000000}.
+\]
+For \(z=(\alpha_1,\alpha_2,\beta_1,\beta_2)=u+iv\), the simultaneous
+complex-sector tangent, at the exact cubic anchor, is
+\[
+ \Lambda(Q+gU)
+ \le\Lambda(q+gU)+2b_{AB}^{\mathsf T}u
+                   -\mu(\|u\|^2+\|v\|^2).
+\]
+For \(0<\tau<\mu\), completing only \(\mu-\tau\) of this square gives
+\[
+ 2b_{AB}^{\mathsf T}u-\mu(\|u\|^2+\|v\|^2)
+ \le\frac{\|b_{AB}\|^2}{\mu-\tau}-\tau e_{AB}.
+\]
+Since \(c_j^6\le(3/100)^2c_j^4\),
+\[
+ \Lambda(Q+gU)\le
+ S-\left[D-
+ \frac{(16.611^2+8.066^2)(3/100)^2}{\mu-\tau}\right]k_4-\tau e_{AB}.
+\]
+For \(\tau=1/2000\), the bracket is exactly
+\[
+ \frac{45670182982990747}{20800000000000000}>2.19568>2.
+\]
+For \(\tau=1/10000\), it is
+\[
+ \frac{799827031791935281}{318400000000000000}>2.51201>\frac52.
+\]
+Thus both conclusions retain positive slack even after the
+deliberately conservative scalar rounding.
+\end{proof}
+
+\begin{lemma}[Conditional mean-zero complement cost]
+\label{lem:buffered-conditional-complement}
+Let \(\mathcal A\) be a sigma algebra with respect to which \(L,Q\)
+are measurable. Let \(J\in L^2(\mathbb C)\) satisfy
+\(\mathbb E[J\mid\mathcal A]=0\), and let \(U\) be a standard proper
+complex Gaussian independent of the joint variables
+\((\mathcal A,J)\). For \(g>0\),
+\[
+ \boxed{\Lambda(Q+J+gU)
+ \le \Lambda(Q+gU)
+       +\left(\frac{\sqrt\pi}{2g}-p\right)\|J\|_2^2.}
+\]
+No independence of \(J\) from \(Q\) is assumed.
+\end{lemma}
+\begin{proof}
+Put \(\Psi_g(w)=\mathbb E_U|w+gU|=\rho_g(|w|^2)\).
+The tangent of the concave function \(\rho_g\), with
+\(K_g=2\rho_g'\), gives for deterministic \(w,j\in\mathbb C\)
+\[
+ \Psi_g(w+j)\le
+ \Psi_g(w)+K_g(|w|^2)\Re(\bar wj)
+                  +\tfrac12K_g(|w|^2)|j|^2.
+\]
+Apply this once with \((w,j)=(L+Q,J)\), and once with
+\((w,j)=(L-Q,-J)\). The linear terms vanish after conditioning on
+\(\mathcal A\). The two quadratic terms together are at most
+\[
+ K_g(0)\mathbb E|J|^2
+ =\frac{\sqrt\pi}{2g}\|J\|_2^2,
+\]
+because \(K_g\) is decreasing and its Laplace representation gives
+\[
+ K_g(0)=\frac1{g\sqrt\pi}
+       \int_0^1t^{-1/2}(1-t)^{1/2}\,dt
+       =\frac{\sqrt\pi}{2g}.
+\]
+Conditional centering also gives
+\(\mathbb E(\bar QJ)=0\), while the fresh buffer is orthogonal to
+both \(Q\) and \(J\). Consequently the variance price increases by
+exactly \(p\|J\|_2^2\). This proves the inequality, directly for both
+signs in \(\Lambda\), without a symmetry assumption on \(J\).
+\end{proof}
+
+\begin{corollary}[A coupled complement around the two-driver local core]
+\label{cor:buffered-two-driver-complement}
+In the region of Theorem~\ref{thm:buffered-two-driver-retained},
+let \(\mathcal A=\sigma(Z,X_1,X_2)\), and let \(J\) satisfy the
+conditions of Lemma~\ref{lem:buffered-conditional-complement}.
+Then
+\[
+ \Lambda(Q+J+gU)
+ \le S-2k_4-\frac{e_{AB}}{2000}+\frac72\|J\|_2^2.
+\]
+In particular exact K holds whenever
+\[
+ \boxed{\|J\|_2^2\le\frac47k_4+\frac{e_{AB}}{7000}.}
+\]
+This applies to arbitrary-dimensional cubic complements containing
+mixed core/external-coordinate terms, provided their conditional
+expectation onto the core vanishes.
+\end{corollary}
+\begin{proof}
+Using \(\pi<22/7<(1773/1000)^2\), \(p=2500/1891\), and
+\(g>1849/10000\), the complement cost is less than
+\[
+ \frac{1773/1000}{2(1849/10000)}-\frac{2500}{1891}
+ =\frac{12141215}{3496459}<\frac72.
+\]
+Combine the preceding two results.
+\end{proof}
+
+\begin{corollary}[Paid complement in the small-buffer large-cubic region]
+Assume the conditions of incoming Theorem T2, so that
+\(\Lambda(Q+gU)<S-4\cdot10^{-5}\), with \(g\ge\mathrm{fl}(0.1)\).
+For a complement as in Lemma~\ref{lem:buffered-conditional-complement},
+\[
+ \|J\|_2^2\le\frac1{200000}
+ \quad\Longrightarrow\quad \Lambda(Q+J+gU)<S.
+\]
+\end{corollary}
+\begin{proof}
+The same rational comparison gives
+\(\sqrt\pi/(2g)-p<8\).
+The added cost is therefore less than
+\(8/200000=4\cdot10^{-5}\), which is paid by the certified core
+deficit.
+\end{proof}
+
+\subsection{Downward transfer in the buffer and new two-driver regions}\label{sec:tdb-downward}
+
+This note derives a further consequence of the new two-driver anchor
+certificate. It does not assume any independence between a cubic and its
+own A/B terms. The only new variable is the same fresh proper Gaussian
+buffer already present in the family.
+
+Let \(Q\) be square integrable and let \(U\) be a fresh proper standard
+complex Gaussian independent of \((L,Q)\). Write
+\[
+ e=\mathbb E|Q|^2,\quad
+ H(v)=\mathbb E|L+Q+\sqrt vU|
+      +\mathbb E|L-Q+\sqrt vU|,\qquad
+ \Lambda_v=H(v)-p(e+v),\quad p=2500/1891.
+\]
+The function \(H\) increases, by conditioning on the added Gaussian
+increment and Jensen's inequality. In particular, for \(0\le v\le w\),
+\[
+ \Lambda_v\le\Lambda_w+p(w-v).
+\]
+The following improved transfer spends less of a retained deficit:
+\[
+ \boxed{\quad
+ \Lambda_w\le M\le11/8,\quad
+ e+v<13/20,\quad
+ 0\le v\le w\le(41/250+10^{-15})^2
+ \quad\Longrightarrow\quad
+ \Lambda_v\le M+(p-11/25)(w-v).
+ \quad}                                                     \tag{HT}
+\]
+
+Indeed, Gaussian convolution with variance parameter \(t\) has generator
+\(\tfrac14\Delta\), and \(\Delta|z|=1/|z|\) in the plane. Thus, for \(t>0\),
+\[
+ H'(t)=\frac14\left(
+  \mathbb E|L+Q+\sqrt tU|^{-1}
+ +\mathbb E|L-Q+\sqrt tU|^{-1}\right)\ge\frac1{H(t)}.
+\]
+The inequality follows from Jensen for each reciprocal and
+\((1/x+1/y)/4\ge1/(x+y)\).
+The distributional identity \(\Delta|z|=1/|z|\), whose right-hand
+side is locally integrable in the plane, justifies the derivative
+after Gaussian convolution at \(t>0\); Tonelli permits expectation.
+Continuity at \(t=0\) follows from the Lipschitz property of the norm.
+Monotonicity gives, for \(v<t<w\),
+\[
+ H(t)\le H(w)\le M+p(e+w)
+ < \frac{11}8+p\left(\frac{13}{20}
+              +(41/250+10^{-15})^2\right)<\frac{25}{11}.
+\]
+The last inequality is checked with exact fractions. Hence
+\(H'(t)>11/25\); integration and continuity at \(t=0\) prove (HT).
+No rotational symmetry or independence of \(L,Q\) is needed.
+
+\paragraph{The trace shell must be covered at the lower buffer.}
+An anchor cover at \(w\) normally discards
+\(c_1^2+c_2^2+w\ge13/20\). This exclusion cannot simply be
+carried down to \(v\). The additional checker instead covers every
+rational cell with
+\[
+ c_1^2+c_2^2+v_{\min}<13/20,
+\]
+using the same globally valid anchor quadratics at \(w\), and uses
+the trace theorem only for the \emph{original} law when its total
+variance is at least \(13/20\). It also extends the coordinate
+square beyond \(0.8\), because at zero buffer the trace radius is
+\(\sqrt{13/20}>0.8\).
+
+\paragraph{Certificate design.}
+The new checker reads regenerated interval anchor data, never the
+decimal margins in the author log. Its exact rational grid covers
+\([c_{\min},0.9]\times[0,0.9]\), after symmetry, and recursively
+bisects a cell only when needed. Every accepted cell satisfies
+\[
+ U_{\rm anchor}+(p-11/25)(g_{\rm anchor}^2-g_{\min}^2)
+ \le S_{\rm lo}-d.
+\]
+The quadratic elimination is the original exact rational
+\texttt{box\_bound} with no A/B energy shift. All A and B coefficients
+therefore remain unrestricted and complex.
+
+\paragraph{Certified extension theorem [P,C].}
+For the incoming two-driver family, with every complex A/B coefficient
+unrestricted, the following regions satisfy \(\Lambda(G)\le S\):
+\[
+\begin{array}{c|c|c}
+ \text{condition on }\max(c_1,c_2)&
+ \text{allowed buffers }g&\text{new compact cells}\\ \hline
+ \ge63/200=0.315&[0,\infty)&29\\
+ \ge3/10&[57/1000,\infty)&29\\
+ \ge1/4&[31/250,\infty)&32\\
+ \ge1/5&[143/1000,\infty)&34\\
+ \ge3/20&[771/5000,\infty)&36\\
+ \ge1/10&[3997/25000,\infty)&46\\
+ \text{unrestricted}&[16389/100000,\infty)&81
+\end{array}
+\]
+In addition, without any cubic-amplitude restriction,
+\[
+ \boxed{\quad g\ge8179/50000=0.16358
+   \quad\Longrightarrow\quad \Lambda(G)<S+89/10^6.\quad}
+\]
+The latter check uses \(81\) cells. All displayed thresholds are exact
+rationals, not binary64 conventions.
+
+The anchor buffers for the first six rows are respectively the exact
+binary64 values of \(0.13,0.13,0.135,0.145,0.155,0.16\).
+For the unrestricted rows the anchor is the incoming first A node,
+\(\mathrm{nextdown}(\mathrm{fl}(0.164))
+ =0\mathrm{x}1.4fdf3b645a1cap{-}3<41/250\).
+The new covers have been replayed against the independently regenerated
+anchor matrices. Their respective retained compact deficits, rounded
+here only for reporting, are
+\[
+ 4.17526\cdot10^{-6},\quad9.38731\cdot10^{-5},\quad
+ 7.05794\cdot10^{-5},\quad1.07094\cdot10^{-4},\quad
+ 4.99012\cdot10^{-6},\quad6.20256\cdot10^{-6},\quad
+ 1.07457\cdot10^{-6}.
+\]
+Every exact-K row adopts only the strict compact deficit \(10^{-6}\).
+The weak row has exact certified excess less than
+\(8.84676\cdot10^{-5}<89/10^6\). The trace branch of the
+\emph{original} law has deficit \(1/2000\).
+
+\paragraph{Joining the full buffer half-lines.}
+For each of the first six rows, the new argument covers the interval
+from the displayed lower buffer through its anchor buffer. The incoming
+T2 intervals then cover continuously up to \(41/250\), and T1 covers
+\([41/250,\infty)\).
+Some T2 cubic thresholds exceed the displayed exact decimal by less
+than \(10^{-15}\). If necessary raise one cubic coefficient by
+\(\delta\le10^{-15}\). On the original compact branch \(c<1\), and
+the triangle inequality, \(\mathbb E|H|\le1\), and the orthogonal
+variance price imply
+\[
+ \Lambda(c)\le\Lambda(c+\delta)
+          +2\delta+p(2c\delta+\delta^2)
+ <\Lambda(c+\delta)+6\cdot10^{-15}.
+\]
+This is absorbed by T2's \(4\cdot10^{-5}\) deficit. This argument is
+used only to join source thresholds, not to accept a new grid cell.
+
+For the unrestricted rows, the incoming first A interval starts at the
+same binary64 node used by the new endpoint check and extends beyond
+\(41/250\). It has no local-square exception. Its checked complete
+cover supplies the tiny joining interval below the rational T1
+threshold; T1 supplies the remaining half-line.
+The function \texttt{verify\_halfline\_gluing} checks every finite
+interval join, the source cubic thresholds, and the rounding budget
+using exact fractions. It explicitly asserts that the source intervals
+reach the rational T1 threshold.
+
+\paragraph{Inputs and replay.}
+The analytic numerical inputs are the incoming results named
+\emph{Global quadratic majorant}, \emph{Exact box bound},
+\emph{Trace exclusion}, T1 (\emph{Buffered two-driver family}) and
+T2 (\emph{Small buffers, one large cubic}), together with their
+regenerated interval anchor data. The inherited state document's
+Lemma~9 (\emph{exact convex interpolation in the buffer}) and
+Theorem~18 (\emph{large buffer}) enter only through the accepted
+source T1/T2 cover. The new endpoint calculation does not interpolate
+in a cubic coefficient or duplicate a Gaussian buffer.
+
+The only imported numerical helper is the incoming
+\texttt{src/boxcheck.py}; no exploratory script is imported.
+The new checker reads exact binary64 endpoints as rational fractions,
+uses unshifted A/B elimination, and records every accepted cell.
+It rejects unknown selected claim names and checks that the output
+claim set equals the requested set. The outer replay regenerates the
+incoming data and verifies its source claims before this extension
+checker is run.
+
+\paragraph{An immediate weak-K region using T1 alone.}
+The simpler monotone transfer already gives the completely global
+consequence
+\[
+ \boxed{\quad g\ge819/5000=0.1638
+ \quad\Longrightarrow\quad
+ \Lambda(G)<S+87/10^6<S+89/10^6.\quad}                         \tag{WK}
+\]
+This allows every \(c_1,c_2\) and every complex A/B coefficient.
+For \(g\ge41/250\) use T1 directly. Otherwise apply T1 at
+\(g_0=41/250\) and note that the exact rational expression
+\[
+ p\left((41/250)^2-(819/5000)^2\right)
+ =\frac{1639}{18910000}<87/10^6
+\]
+is the maximum price of removing the Gaussian increment. Because T1
+is a global bound, this argument has no trace-shell gap and needs no
+slab-specific margin. The exact identity and all scalar inequalities
+are replayed by \texttt{check\_analytic.py}.
+
+\subsection{Coefficient disks: what complex analysis actually buys}
+\label{sec:cc-poisson}
+\paragraph{Provenance and status (IDE note).} From the canonical-core GPT package (20 October,
+\code{conjK-canonical-core-20261020.zip}, archived in \pathref{gpt-reviews/canonical-core-20261020/}); \st{P} for the theorem, \st{C} for (CC.12).
+An available interpolation tool for certified covers, \emph{not} a completed new cover. IDE checks: the Laplacian of $|w+\zeta H|$ is $|H|^2/|w+\zeta H|$,
+the Cauchy--Schwarz step $\E[|H|^2/X]\ge(\E|H|)^2/\E X$, $\E|L|^2=a^2+4ab+6b^2=1181331/1562500$, $c_A=0.17932$, $c_B=0.16559$.
+The Gaussian input polynomial is not holomorphic, so maximum modulus
+cannot be applied to its input coordinates. However, dependence on its
+\emph{coefficients} is holomorphic before taking absolute values.
+This gives a legitimate Poisson comparison, provided the price is retained.
+
+\begin{theorem}[A corrected coefficient-disk bound, \textbf{[P]}]
+\label{thm:cc-poisson}
+Let \(G_\zeta=G_0+\zeta H\), \(|\zeta|\le R\), with square-integrable
+random variables. Suppose
+\[
+ \mathbb E[L\overline{G_\zeta}]=0,
+ \qquad \mathbb E|G_\zeta|^2\le V_0 \quad(|\zeta|\le R).
+\]
+Set \(n=\mathbb E|H|^2\), \(m=\mathbb E|H|\),
+\(M=\mathbb E|L|^2+V_0\), and \(c=m^2/(2\sqrt M)\).
+For \(|\zeta|<R\),
+\[
+ \boxed{\quad
+ \Lambda(G_\zeta)\le
+ \int_0^{2\pi}\frac{R^2-|\zeta|^2}{|Re^{it}-\zeta|^2}
+               \Lambda(G_{Re^{it}})\frac{dt}{2\pi}
+ +(pn-c)(R^2-|\zeta|^2).
+ \quad} \tag{CC.11}
+\]
+No independence between \(G_0\) and \(H\) is required.
+\end{theorem}
+\begin{proof}
+For \(P(\zeta)=\mathbb E|L+G_\zeta|+\mathbb E|L-G_\zeta|\),
+the distributional Laplacian is
+\[
+ \Delta P=\mathbb E\left[|H|^2
+       \left(\frac1{|L+G_\zeta|}+\frac1{|L-G_\zeta|}\right)\right].
+\]
+The formula is understood by smoothing the norms if necessary.
+Cauchy--Schwarz and the hypotheses give, for each sign,
+\[
+ \mathbb E\frac{|H|^2}{|L\pm G_\zeta|}
+ \ge\frac{(\mathbb E|H|)^2}{\mathbb E|L\pm G_\zeta|}
+ \ge\frac{m^2}{\sqrt M}.
+\]
+For a completely regular argument use \(\sqrt{|w|^2+\delta^2}\): its
+Laplacian is at least \(|H|^2/\sqrt{|w|^2+\delta^2}\), and then let
+\(\delta\downarrow0\). Thus \(P-c|\zeta|^2\) is subharmonic.
+The Laplacian of \(\mathbb E|G_\zeta|^2\) is \(4n\), even when
+\(G_0,H\) are correlated. Consequently
+\(\Lambda(G_\zeta)+(pn-c)|\zeta|^2\) is subharmonic. Poisson's
+inequality proves (CC.11).
+\end{proof}
+
+In the current remote-plus-A/B family, the orthogonality condition holds.
+For a unit A direction, \(H=(|Z|^2-1)X\),
+\(n=1\) and \(m=\sqrt\pi/\mathrm e\). For a unit B direction,
+\(H=Z^2\bar X/\sqrt2\), \(m=\sqrt\pi/(2\sqrt2)\).
+On any coefficient disk with total variance at most \(13/20\),
+\(\mathbb E|L|^2=1181331/1562500\), and exact rational checks give
+\[
+ c_A>179/1000,\qquad c_B>165/1000. \tag{CC.12}
+\]
+Thus a boundary upper bound fills an A disk with error at most
+\((p-179/1000)(R^2-|\zeta|^2)\), instead of the plain subharmonic
+error \(p(R^2-|\zeta|^2)\). The corresponding B coefficient is
+\(p-165/1000\). This reduces that interpolation allowance by at least
+\(13.5\%\) and \(12.4\%\), respectively.
+Applying (CC.11) successively in several coefficients gives the product
+Poisson boundary average on a polydisk, with the sum of the corresponding
+quadratic errors. The same variance bound must hold on the whole
+polydisk, including its boundary. Thus both A directions can be treated
+together without assuming independent drivers.
+A sufficient disk-variance check is
+\(\|G_0\|^2+2R|\mathbb E[G_0\bar H]|+R^2n\le13/20\).
+The result requires a certified \emph{continuous} boundary bound;
+finite phase samples alone do not suffice. It does not eliminate
+phase variables or prove unrestricted A.
+
+\paragraph{Why ordinary maximum modulus would be wrong.}
+For \(p>1\), even the deterministic function
+\[
+ J(\zeta)=|1+\zeta|+|1-\zeta|-p|\zeta|^2
+\]
+has its strict global maximum at the interior point \(0\). Indeed,
+\[
+ |1+\zeta|+|1-\zeta|\le2\sqrt{1+|\zeta|^2}
+ \le2+|\zeta|^2,
+\]
+so \(J(\zeta)<J(0)=2\) for \(\zeta\ne0\).
+This refutes the proposed maximum-principle shortcut for penalized
+norms; it is not a counterexample to K.
+
+\subsection{Cold-start regions in the open small-buffer part}\label{sec:tdb-coldstart-regions}
+\paragraph{Provenance and status (IDE note, 21 October).} A context-free AI answered the self-contained prompt \pathref{PROMPT\_GPT\_LARGE\_A\_SMALL\_BUFFER.md}
+(archived in \pathref{gpt-reviews/two-driver-small-buffer-20261021/}). Its exact BigInt certificate (\code{gaussian-coupling-certificate.zip}) was only a sandbox link
+and is \emph{not} available to the IDE, so the three rational certificates below are the AI's \st{C}, not replayed here. IDE checks: the conditional second moment
+$\Phi$ by hand, and the global affine bounds and the three regions by an independent float quadrature of the double integral (3{,}000 random points; worst
+gaps $-0.0011$, $-0.0022$, $-0.0039$ below the affine bounds; at least $0.0016$ below $2\E|L|$ on the region boundaries). Status: \st{P}+\st{C (AI)}+\st{F (IDE)}.
+
+\paragraph{The conditioning.} For $G\in\mathcal F_2$ put $C=c_1^2+c_2^2$, $A=|\alpha|^2$, $B=|\beta|^2$, $w=g^2$, $V=C+A+B+w$, $R=|X_1|^2+|X_2|^2$ and
+$\eta=\sqrt2\Re\sum_jc_j\bar\alpha_j$ (so $\eta^2\le2CA$). Given $R=r$, each $|X_j|^2$ is uniform on $[0,r]$ and the driver phases are independent, so
+$\E[|H(X_j)|^2\mid r]=\frac{r^3}8-\frac{2r^2}3+r$, $\E[H(X_j)\bar X_j\mid r]=\frac{1}{\sqrt2}(\frac{r^2}3-r)$, and
+\[
+\Phi(t,r)=\E[|L+G|^2\mid T=t,R=r]=t(a+bt)^2+C\Bigl(\tfrac{r^3}8-\tfrac{2r^2}3+r\Bigr)+A(t-1)^2\tfrac r2+Bt^2\tfrac r4+\eta(t-1)\Bigl(\tfrac{r^2}3-r\Bigr)+w,
+\]
+which keeps the cubic--$A$ interference $\eta$ (the dependence lost by treating the coupling as fresh noise). Every other cross term vanishes by visible or
+independent driver phase averaging. Conditional Cauchy--Schwarz gives $\Lambda(G)\le2\iint\sqrt{\Phi}\,re^{-t-r}\,dr\,dt-pV$, and
+$2\sqrt\Phi\le h+\Phi/h$ with piecewise-constant rational $h$ gives affine bounds. After eliminating $\eta$ by $|\eta|\le\sqrt{2CA}$:
+\[
+\Lambda(G)\le\min\bigl\{1.42391-0.4495A-0.6508B+0.2216w,\ 1.46028-0.3893C-0.6676B+0.1208w,\ 1.46212-0.36(C+A)-0.67328B+0.08554w\bigr\}
+\]
+for every $g\ge0$.
+
+\begin{theorem}[\st{P}+\st{C (AI)}]\label{tdb-thm:coldstart}
+For $G\in\mathcal F_2$ with $0\le g\le0.164$ and all complex phases, each of $A+B\ge0.116+0.494g^2$, or $C\ge0.236$, or $V\ge0.285$ implies
+$\Lambda(G)<2\E|L|=\frac{387}{500}\sqrt\pi\le S$. These hold without the $\hat c$ caps or the per-driver inequalities.
+\end{theorem}
+This improves the energy exclusion $|\alpha|^2+|\beta|^2\ge4/25$ to about $0.13$, and the variance exclusion $V\ge13/20$ to $V\ge0.285$, on this family. It also
+covers $g<0.1$, where Theorem~\ref{tdb-thm:B} gave no cubic threshold, whenever $c_1^2+c_2^2\ge0.236$.
+
+\paragraph{Spherical decomposition (same AI, \st{P}).} Writing $(X_1,X_2)=\sqrt R\,\omega$ with $\omega$ uniform on $S^3$,
+$H(\sqrt r\omega_j)=\frac{r^{3/2}}{\sqrt2}h_j(\omega)+\sqrt{2r}(\frac r3-1)\omega_j$ with harmonic $h_j=\omega_j(|\omega_j|^2-\frac23)$. The cubic's linear spherical
+component merges with the $A$-coupling before the absolute value is taken. The zonal-kernel $L^1$ norm is \emph{not} a valid bound even for $Y_1+Y_2$:
+exactly $\|Y_1+Y_2\|_1/\|Y_1+Y_2\|_2>\|Y_1\|_1/\|Y_1\|_2$. The projection constants of Defant et al.\ are $C(\mathbb S)$ operator norms, not $L^2\to L^1$ bounds.
+The rest of the open region is unresolved.
+
+\paragraph{Two further cold-start answers (IDE-replayed, 21 October).} Two more context-free AIs answered the same prompt; their packages
+\code{two-driver-partial-proof.zip} and \code{two-driver-certificate.zip} are archived in \pathref{gpt-reviews/two-driver-small-buffer-20261021/}. Both Node certificates
+(\code{node:assert} only, BigInt outward intervals, exact tail moments) PASS in the IDE: 3.4\,s and 18\,s, the latter over about $3.1\cdot10^5$ cells. Both condition on
+$(T,|X_1|^2,|X_2|^2)$ and retain the cubic--$A$ cross term $K=\sqrt2\sum_jc_j\Re\alpha_j$. They prove the global affine bounds
+\[
+\begin{aligned}
+\Lambda&\le1.4215-0.4399A-0.6430B+0.2466w, &\Lambda&\le1.4430-0.3650C-0.0336A-0.6456B+0.2219w,\\
+\Lambda&\le1.4476-.3917C-.6518B+.1894w, &\Lambda&\le1.4204-.4382A-.6442B+.2505w,\\
+\Lambda&\le1.3981-.6374B+.4800w, &\Lambda&\le1.4540-.3714(C+A)-.6617B+.1310w,
+\end{aligned}
+\]
+with benchmarks $S\ge1.3739269$ (Jensen cells) and $S\ge1.373145$. IDE float check: all six bounds lie at least $0.0035$ above
+$2\E\sqrt{\E[|Y|^2\mid T,S_1,S_2]}-pV$ at 1{,}500 random points of $\mathcal F_2$. \textbf{Combined regions} (with $g\le0.164$, all phases): $\Lambda<S$ whenever
+$C\ge0.2$, or $A+B\ge0.124$, or $A+1.46B\ge0.1233$, or $B\ge0.06$, or $C+A+B\ge0.228$, or $V\ge0.285$, or $\min$ of the affine bounds $\le1.3739$. The remaining open
+part of the small-buffer two-driver region lies inside $C<0.2$, $A+B<0.116$, $B<0.06$, $C+A+B<0.228$. The second AI also reports a normalisation erratum in
+Defant et al., Thms~5.2--5.3 (denominator $2^{n-1+|p-q|/2}$, not $2^{n+|p-q|/2}$), and the harmonic split $Q=\mathcal H+(R^2/4-1)\kappa$,
+$\kappa=\sum_j(\sqrt2c_j+\alpha_j)X_j$, which shows the $A$-coupling entering the radial component.
+
+
+\paragraph{The coupling-free slice, ideal target (fourth cold-start AI, IDE-replayed, 21 October).} A fourth context-free AI answered the same prompt
+(\code{two\_driver\_slice\_proof.zip}, archived in \pathref{gpt-reviews/two-driver-small-buffer-20261021/slice-proof/}). For $\alpha=\beta=0$, $G$ is
+independent of $Z$ and rotation invariant. From $\E|W|=\int_0^\infty(1-\E J_0(k|W|))k^{-2}\,dk$ in $\mathbb R^2$ it gets
+\[
+\Lambda=2\int_0^\infty\bigl(1-\Xi(k)\Psi(c_1k)\Psi(c_2k)e^{-g^2k^2/4}\bigr)\frac{dk}{k^2}-p(c_1^2+c_2^2+g^2),\qquad
+\Xi(k)=\E J_0(k|L|),\ \Psi(t)=\E J_0(t|H|).
+\]
+\textbf{Theorem \st{P}+\st{C (AI)}.} If $\alpha=\beta=0$, $g\le0.164$, $\max(c_1,c_2)\le\hat c(g)$ for $g\ge0.1$ and $c_1^2+c_2^2+g^2\le0.65$, then
+$\Lambda\le S-10^{-4}$. This sharpens fact~6 of the prompt ($S+10^{-5}$) to the ideal target on this slice. \emph{Ingredients} (arb balls, python-flint):
+$S\ge s(0.040345)\ge1.3739535256614$; $\Xi$ at the 4\,200 nodes of composite 3-point Gauss--Legendre on $[0,70]$ ($h=1/20$); $\Psi,\Psi'$ at $t=j/100$,
+$j\le5651$, with cubic Hermite interpolation ($|\Psi''''|\le\E|H|^4=44$) and a degree-7 Taylor series for $t\le0.01$; the GL3 error through
+$|((1-\Phi)/k^2)^{(6)}|\le\E|L+G|^8/56$ (Minkowski); the tail $|\Xi(k)|\le\|\Delta^3f_L\|_1k^{-6}\le29860.39\,k^{-6}$. Convexity of $2\E|L+G|$ in $(c_1,c_2,g)$
+bounds each box by the trilinear interpolant of its vertices: 323 boxes, minimum gap $1.02\cdot10^{-4}$, at $g\uparrow0.164$, $c_1=c_2\approx0.026$.
+\emph{IDE replay:} both covering parts PASS (20\,s and 5\,s); \code{s\_lower.py} and \code{lap\_rig.py} reproduce $S_{\rm low}$ and $29860.3807$; 50 random entries of the $\Xi$, $\Psi$ and $\Psi'$ tables
+agree with independent mpmath quadrature to $5\cdot10^{-15}$. The IDE checked by hand the radial formula, the Hermite, Taylor and GL3 remainders,
+$\E|H|^4=44$, and $\Delta=4\partial_u(u\,\partial_u)$ for the density $f_L=e^{-T}/(\pi u'(T))$.
+\emph{Not proved:} shared couplings break the factorisation. There each driver has a three-variable characteristic function over 11 parameters. The AI's float
+evidence: near the slice maximum the second variation in $(\alpha,\beta)$ is negative definite (about $-0.43|\alpha|^2-0.94|\beta|^2+0.29|\alpha||\beta|$ at $g=0.164$). Shared $A$-couplings gain
+only where $c\ge0.2$, which is already $\ge8\cdot10^{-3}$ below $S$. Sixty random coupled points give $\Lambda-S\le-7.2\cdot10^{-3}$.
