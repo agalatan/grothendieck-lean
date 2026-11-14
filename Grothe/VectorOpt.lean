@@ -89,10 +89,12 @@ theorem norm_pairing_le_sum_norm_column (A : Fin m → Fin n → ℂ)
     (mul_le_of_le_one_right (norm_nonneg _) (hy j))
 
 /-- Every one-sided unit-vector response, in any complex inner product space, is bounded by
-the vector optimum. A positive number of rows supplies a unit vector for zero responses. -/
-theorem sum_norm_column_le_vectorOpt (A : Fin m → Fin n → ℂ) (hm : 0 < m)
+the vector optimum, including the empty family. -/
+theorem sum_norm_column_le_vectorOpt (A : Fin m → Fin n → ℂ)
     {x : Fin m → H} (hx : ∀ i, ‖x i‖ = 1) :
     ∑ j, ‖∑ i, conj (A i j) • x i‖ ≤ vectorOpt A := by
+  rcases Nat.eq_zero_or_pos m with rfl | hm
+  · simpa using vectorOpt_nonneg A
   choose y hy hresp using fun j ↦
     exists_unit_response (x ⟨0, hm⟩) (hx _) (∑ i, conj (A i j) • x i)
   have h := le_vectorOpt_of_innerProductSpace A hx hy
@@ -102,12 +104,12 @@ theorem sum_norm_column_le_vectorOpt (A : Fin m → Fin n → ℂ) (hm : 0 < m)
 
 /-- Bounding the vector optimum is equivalent to bounding one-sided responses in the fixed
 ambient dimension given by the number of rows. -/
-theorem vectorOpt_le_iff (A : Fin m → Fin n → ℂ) (hm : 0 < m) (B : ℝ) :
+theorem vectorOpt_le_iff (A : Fin m → Fin n → ℂ) (B : ℝ) :
     vectorOpt A ≤ B ↔ ∀ x : Fin m → EuclideanSpace ℂ (Fin m),
       (∀ i, ‖x i‖ = 1) → ∑ j, ‖∑ i, conj (A i j) • x i‖ ≤ B := by
   constructor
   · intro h x hx
-    exact (sum_norm_column_le_vectorOpt A hm hx).trans h
+    exact (sum_norm_column_le_vectorOpt A hx).trans h
   · intro h
     apply csSup_le (vectorSet_nonempty A)
     rintro _ ⟨ι, _, x, y, hx, hy, rfl⟩
@@ -128,7 +130,7 @@ theorem vectorOpt_le_iff (A : Fin m → Fin n → ℂ) (hm : 0 < m) (B : ℝ) :
       _ ≤ B := h w hw'
 
 /-- The vector optimum is an attained maximum of one-sided responses in dimension `m`. -/
-theorem exists_vectorOpt_eq_sum_norm (A : Fin m → Fin n → ℂ) (hm : 0 < m) :
+theorem exists_vectorOpt_eq_sum_norm (A : Fin m → Fin n → ℂ) :
     ∃ x : Fin m → EuclideanSpace ℂ (Fin m), (∀ i, ‖x i‖ = 1) ∧
       vectorOpt A = ∑ j, ‖∑ i, conj (A i j) • x i‖ := by
   let S : Set (Fin m → EuclideanSpace ℂ (Fin m)) := {x | ∀ i, ‖x i‖ = 1}
@@ -137,20 +139,19 @@ theorem exists_vectorOpt_eq_sum_norm (A : Fin m → Fin n → ℂ) (hm : 0 < m) 
       isCompact_sphere (0 : EuclideanSpace ℂ (Fin m)) 1) using 1
     ext x
     simp [S]
-  have hne : S.Nonempty :=
-    ⟨fun _ ↦ EuclideanSpace.single ⟨0, hm⟩ 1, fun _ ↦ by simp⟩
+  have hne : S.Nonempty := ⟨fun i ↦ EuclideanSpace.single i 1, fun _ ↦ by simp⟩
   have hc : Continuous (fun x : Fin m → EuclideanSpace ℂ (Fin m) ↦
       ∑ j, ‖∑ i, conj (A i j) • x i‖) := by fun_prop
   obtain ⟨x, hx, hmax⟩ := hS.exists_isMaxOn hne hc.continuousOn
-  refine ⟨x, hx, le_antisymm ?_ (sum_norm_column_le_vectorOpt A hm hx)⟩
-  exact (vectorOpt_le_iff A hm _).2 fun x' hx' ↦ hmax hx'
+  refine ⟨x, hx, le_antisymm ?_ (sum_norm_column_le_vectorOpt A hx)⟩
+  exact (vectorOpt_le_iff A _).2 fun x' hx' ↦ hmax hx'
 
 /-- The original vector optimum is attained in dimension equal to the number of rows. -/
 theorem exists_vectorOpt (A : Fin m → Fin n → ℂ) (hm : 0 < m) :
     ∃ (x : Fin m → EuclideanSpace ℂ (Fin m)) (y : Fin n → EuclideanSpace ℂ (Fin m)),
       (∀ i, ‖x i‖ = 1) ∧ (∀ j, ‖y j‖ = 1) ∧
       vectorOpt A = ‖∑ i, ∑ j, A i j * inner ℂ (x i) (y j)‖ := by
-  obtain ⟨x, hx, hA⟩ := exists_vectorOpt_eq_sum_norm A hm
+  obtain ⟨x, hx, hA⟩ := exists_vectorOpt_eq_sum_norm A
   choose y hy hresp using fun j ↦
     exists_unit_response (x ⟨0, hm⟩) (hx _) (∑ i, conj (A i j) • x i)
   refine ⟨x, y, hx, hy, ?_⟩
