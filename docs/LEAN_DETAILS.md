@@ -1412,6 +1412,15 @@ to the actual Gaussian phase slice. The majorant uses `h₀₀+h₁₁=|w|²` an
 L² norm at most two. Every true coefficient is within `5ρ²` of the centers
 `1,ρ/2,-ρ/2` at modes `(0,0),(1,0),(0,1)` and zero centers elsewhere. This does
 not set the other true coefficients to zero and does not certify saved bytes.
+`ZeroProfilePhaseSharp` uses the orthogonality of `h₀₀` and `h₁₁` to prove that
+this majorant has norm exactly `sqrt(2)`. Consequently the whole Gaussian
+remainder and each conditional coefficient error are at most
+`(5*sqrt(2)/2)ρ²`. Its saved-center bound retains the parameter and saved-model
+errors as explicit inputs. The rational relaxation `(15/4)ρ²` proves the same
+strict `10⁻¹²` accuracy for `|ρ| ≤ 1/3000000`, parameter error at most `10⁻¹³`,
+and saved-model error at most `1/(2*10¹²)`. This enlarges the previous profile
+interval by `4/3`; it does not change the production certificates or the
+headline endpoint. These theorems use only the standard axioms.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
@@ -1492,6 +1501,14 @@ floating reconstruction and final table agreement are separate obligations.
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
+`Grothe/TransferHilbert.lean` proves that a finite family in any complex inner
+product space admits Euclidean coordinates preserving every norm and Gram
+entry, in dimension at most the family cardinality. Applying this to the
+combined row and column families formally extends `vectorOpt` and every
+`IsGrothendieckBound` inequality to unit vectors and closed-unit-ball vectors
+in arbitrary complex inner product spaces. Neither completeness nor finite
+dimension of the original space is assumed. The proof uses only the standard
+axioms and leaves the definitions of both optima unchanged.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
 `IsGrothendieckBound (500000000000000000/355973699960428191)` for the concrete rounding,

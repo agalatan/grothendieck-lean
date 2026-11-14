@@ -72,6 +72,12 @@ the first over unimodular scalars, the second over unit vectors in any complex H
 Grothendieck proved in 1953 that $V(A)\le K\,C(A)$ for a constant $K$ independent of $m$, $n$ and the dimension. The smallest
 such $K$ is the \emph{complex Grothendieck constant} $\KG$.
 
+The finite-dimensional reduction is explicit in
+\texttt{Grothe/TransferHilbert.lean}: a finite family has a Euclidean realization
+preserving all norms and inner products in dimension at most its cardinality.
+Thus the formal inequality applies to unit vectors, and also vectors in the
+closed unit ball, in any complex inner product space; completeness is not needed.
+
 \paragraph{Why it matters.}
 \begin{itemize}
 \item \emph{Optimisation.} $V(A)$ is a semidefinite program; $C(A)$ is a hard combinatorial problem. $\KG$ is the best
@@ -263,6 +269,17 @@ radius $\varepsilon$ gives $5\rho^2+|\rho-r|+\varepsilon$. The hybrid source
 budget combines those selected nodes with explicit squared-error budgets on
 all other regular nodes, using the same physical Gaussian weights. Actual
 parameter and saved-vector certificates remain required.
+
+The scalar saved-center interface has a sharper quadratic estimate in
+\texttt{ZeroProfilePhaseSharp}. The Wick vectors representing $1$ and
+$|w|^2-1$ are orthonormal, so the Gaussian $L^2$ norm of their sum is exactly
+$\sqrt2$. The whole slice remainder and each coefficient error are therefore
+at most $(5\sqrt2/2)\rho^2$. Using the rational relaxation $(15/4)\rho^2$,
+the same parameter tolerance $10^{-13}$ and saved-model tolerance
+$1/(2\cdot10^{12})$ give error strictly below $10^{-12}$ for
+$|\rho|\le 1/3000000$, extending the previous interval by a factor $4/3$.
+This improves the analytic certificate interface without changing the stored
+production certificates or the numerical Grothendieck endpoint.
 
 For complex $z\ne 0$, rotation by $z/|z|$ transports the real-slice
 constant-plus-linear model to the physical phase $F_0(z,w)$. In the Gaussian

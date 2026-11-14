@@ -17,6 +17,8 @@ import Grothe
 #print axioms Grothe.Haag.norm_real_add_remainder
 #print axioms Grothe.Haag.ph_eq_phaseLaplace
 #print axioms Grothe.Haag.phaseMoment_weighted
+#print axioms Grothe.IsGrothendieckBound.innerProductSpace
+#print axioms Grothe.IsGrothendieckBound.innerProductSpace_ball
 #print axioms Grothe.Lower.VHolds.mix
 #print axioms Grothe.Lower.batch_sound
 #print axioms Grothe.Lower.box_sound
@@ -12678,15 +12680,21 @@ import Grothe
 #print axioms Grothe.UpperChaos.WholeCenterEnergies.third_compact_cutoff_cost
 #print axioms Grothe.UpperChaos.WholeCenterEnergies.third_whole_error_sq
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.actual_saved_error_bound
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.actual_saved_error_bound_sqrt_two
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.actual_saved_error_lt
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.actual_saved_error_lt_of_ratio_le
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearCoefficient_eq_inner
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearCoefficient_parameter_error
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearSliceLp_coe
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_constant
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear_rat
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear_small
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear_sqrt_two
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_phaseSliceLp_sub_constant
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_phaseSliceLp_sub_linear
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_phaseSliceLp_sub_linear_sqrt_two
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_quadraticMajorant
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.phaseSlice_sub_linear_bound
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.phaseSlice_sub_one_bound
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.saved_error_budget
@@ -13732,6 +13740,7 @@ import Grothe
 #print axioms Grothe.UpperQuad.twist_j3_low_margin
 #print axioms Grothe.UpperQuad.twist_j3_whole_margin
 #print axioms Grothe.UpperQuad.unnormalise_represents
+#print axioms Grothe.exists_euclidean_gram
 #print axioms Grothe.fresh_upper
 #print axioms Grothe.grouped_head_residual_le
 #print axioms Grothe.haagerup_dominated
@@ -13740,6 +13749,8 @@ import Grothe
 #print axioms Grothe.head_check
 #print axioms Grothe.head_le
 #print axioms Grothe.head_residual_le
+#print axioms Grothe.le_vectorOpt_of_innerProductSpace
+#print axioms Grothe.le_vectorOpt_of_innerProductSpace_ball
 #print axioms Grothe.linear_lower
 #print axioms Grothe.residual_split
 #print axioms Grothe.tail_le
