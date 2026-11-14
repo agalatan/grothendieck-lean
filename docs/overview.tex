@@ -236,6 +236,21 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
+\paragraph{Signed-reference tail estimate.}
+The reusable module \path{Upper/SignedTail} proves, for a summable positive
+reference $a_n$ and a uniform bound $E$ on partial sums of
+$(k_n-a_n)^2/a_n$ beyond $N$,
+\[
+ \sum_{n\ge N}|k_n|
+ \le \sum_{n\ge0}k_n-\sum_{n<N}k_n+\frac E2.
+\]
+The same assumptions imply absolute summability of $k$, so the signed sums
+are justified. The pointwise inequality is
+$|k|\le k+(k-a)^2/(2a)$ for $a>0$; the actual coefficients may have either
+sign. Three separate error budgets can be combined with positive Young
+parameters. These analytic lemmas do not change the current endpoint or
+its certificate inputs.
+
 The conditional-node table has 21,577 rows of binary64 conditional Hermite
 approximations. Row $i$ uses the degree-531 canonical pairs $0\le c\le266$,
 $0\le d\le265$, $c\le d+1$, in $(c+d,c)$ order, retaining

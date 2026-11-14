@@ -10110,6 +10110,7 @@ import Grothe
 #print axioms Grothe.Upper.RelaxedComparisonData.transfer_value_lt
 #print axioms Grothe.Upper.RelaxedComparisonData.upper_lt_decimal
 #print axioms Grothe.Upper.ThreeBandDirectInputs
+#print axioms Grothe.Upper.abs_le_self_add_sq_sub_div
 #print axioms Grothe.Upper.actual_band_mass
 #print axioms Grothe.Upper.actual_band_mass_of_energy_error
 #print axioms Grothe.Upper.bivarKernel_sub
@@ -10125,6 +10126,7 @@ import Grothe
 #print axioms Grothe.Upper.head_residual_le
 #print axioms Grothe.Upper.head_residual_le_weighted
 #print axioms Grothe.Upper.memB_bivarT
+#print axioms Grothe.Upper.quadratic_reference_constant_is_optimal
 #print axioms Grothe.Upper.relaxedLowErrorQ
 #print axioms Grothe.Upper.relaxedLowErrorQ_literals
 #print axioms Grothe.Upper.relaxedPanelRadiusQ
@@ -10139,7 +10141,11 @@ import Grothe
 #print axioms Grothe.Upper.relaxedThreeBandValueQ_lt
 #print axioms Grothe.Upper.relaxedThreeBand_real_reciprocal
 #print axioms Grothe.Upper.relaxedThreeBand_real_value_lt
+#print axioms Grothe.Upper.signed_tail_le_of_quadratic_budget
+#print axioms Grothe.Upper.signed_tail_le_of_three_quadratic_budgets
+#print axioms Grothe.Upper.sq_add_three_le_weighted
 #print axioms Grothe.Upper.summable_abs_bivarKernel
+#print axioms Grothe.Upper.summable_abs_of_reference_quadratic
 #print axioms Grothe.Upper.tabPoly_coeff
 #print axioms Grothe.Upper.threeBandBands
 #print axioms Grothe.Upper.threeBandCompareQ
@@ -10180,6 +10186,8 @@ import Grothe
 #print axioms Grothe.Upper.threeBand_tail_le
 #print axioms Grothe.Upper.threeBand_upper_from_inputs
 #print axioms Grothe.Upper.tsum_abs_bivarKernel_le
+#print axioms Grothe.Upper.tsum_abs_le_signed_add_of_quadratic_budget
+#print axioms Grothe.Upper.tsum_abs_le_signed_add_quadratic
 #print axioms Grothe.UpperChaos.ActualCoherentHermiteJets.gate_normalization_eq
 #print axioms Grothe.UpperChaos.ActualCoherentHermiteJets.integrable_actual_physical_jet
 #print axioms Grothe.UpperChaos.ActualCoherentHermiteJets.integral_actual_physical_jet

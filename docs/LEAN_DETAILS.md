@@ -23,6 +23,16 @@ certificate bounds it on its closed Bernstein ellipse by its mass cap
 energy facts (`Facts.hclose_of_facts_quad`) with `quadHyp_of_parts`: the tail,
 the omitted-pair fact and `EllCheck.quadRemainderHyp`.
 
+**Signed coefficient tails.** `Upper/SignedTail` proves
+`|k| ≤ k + (k-a)²/(2a)` for a positive reference `a`, then lifts it to
+infinite coefficient tails. A summable positive reference and uniformly bounded
+partial quadratic-error sums imply absolute summability of the actual
+coefficients; their positivity is not assumed. The tail bound retains the
+total signed sum minus the finite signed head. Its three-component form accepts
+separate quadratic budgets and positive Young parameters, allowing exact
+rational choices without square roots. These are reusable analytic theorems,
+with standard axioms only; they do not alter `upper_target` or its certificates.
+
 **Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
 `EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
 coefficient integrals and the full production Gauss sums is at most
