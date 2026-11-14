@@ -39,6 +39,11 @@ precompileModules = true
 [[lean_lib]]
 name = "Grothe"
 
+# Independent research target: beta-preservation coefficient positivity.
+# Deliberately absent from defaultTargets and from the Grothe import graph.
+[[lean_lib]]
+name = "GrotheSign"
+
 
 # The batch driver of the quadrature checker (issue #303): a native executable over GrotheQuadKernel.
 # Not a default target; CI never builds it.
