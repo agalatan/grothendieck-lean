@@ -205,9 +205,10 @@ without a PR (`RFC`/`WIP` labels for early feedback).
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
 4. **Documentation:** **do not write in `README.md` for now** (user, 3 November 2026): every concurrent PR used to
    add its paragraph there and they conflicted on every merge. The PR description and its comments carry the
-   context of a change; `README.md` is revised in one pass later. Never write counts of the axiom report or of
-   native facts into documents (they conflict with every concurrent PR; the lists in `data/axioms/` and
-   `scratch/Axioms.lean` are the record). If a bound, a hypothesis or the axiom report changed, update
+   context of a change. `README.md` was revised in one pass on 15 November 2026 (#374); the freeze still holds for
+   every other PR. Never write counts of the axiom report or of native facts into documents (they conflict with
+   every concurrent PR; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a bound, a
+   hypothesis or the axiom report changed, update
    `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same PR. **Never build or commit `OVERVIEW.pdf`:**
    CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
    (`merge=ours` in `.gitattributes`).

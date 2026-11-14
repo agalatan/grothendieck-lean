@@ -173,11 +173,11 @@ $= 1/(c - \delta) = 1.40459995\ldots$ with $c = 0.7119483103461$ (`Grothe/Upper/
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
 | `Grothe/MainResult.lean`, `Grothe/UpperFinal.lean` | `lower_target` and `main_bounds`; `upper_target` |
-| `Grothe/Transfer.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality of the upper bound |
+| `Grothe/Transfer.lean`, `Grothe/TransferHilbert.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality of the upper bound; a Grothendieck bound also controls unit vectors of any complex inner-product space |
 | `Grothe/Lower/` | the lower certificate: its checker in exact rational arithmetic with the soundness of rows, Stein cuts, node certificates and boxes; the generated row data; the transfer to finite matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis of the lower bound: the witness, chaos projections, the law of cubic chaos (moments, spectral and Gram budgets, Wick expansions), the potentials $\Psi_r$ and the row reduction; the node caps (`Cap*.lean`, the generated rows `CapRowKK` and pieces `CapPieces/`) |
 | `Grothe/Research/` | the box cover of the lower certificate, further node certificates, and the resulting theorem `lower_bound_of_refined_cover_data` |
-| `Grothe/Haagerup/` | the phase $z/\lvert z \rvert$ of a complex Gaussian: Hermite coefficients, kernel, Laplace representation |
+| `Grothe/Haagerup/` | the phase $z/\lvert z \rvert$ of a complex Gaussian: Hermite coefficients, kernel, Laplace representation; Taylor bounds for the phase of a perturbed argument |
 | `Grothe/Upper/` | the upper bound apart from Gaussian analysis: two-coordinate kernels, disk-valued roundings, tensor realisation of the preprocessors, soundness of the head computation, residual and tail arithmetic, comparison budgets; `Data.lean` holds the rounding parameters, the preprocessors and the energy table |
 | `Grothe/UpperChaos/` | chaos calculus on $\mathbb{C}^2$ (Hermite basis, Mehler formula, charge, energies), the rounding, the phase cover, the Hardy tail, the comparison with $X$, the stored Hermite expansions, and generated certificate modules |
 | `Grothe/UpperQuad/` | the quadrature: soundness of its checkers, the energy, port and ellipse facts, the Gauss–Legendre remainder on Bernstein ellipses |
