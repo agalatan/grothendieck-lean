@@ -1429,6 +1429,20 @@ and saved-model error at most `1/(2*10¹²)`. The exact budget is
 `400/251`; it does not change the production certificates or the headline
 endpoint. The earlier `5*sqrt(2)/2` and `15/4` interfaces remain available.
 These theorems use only the standard axioms.
+`Haagerup/PhaseTaylorCubic` improves the small-perturbation estimate: with
+`q = ‖h‖/r`, the global phase remainder is at most `q² + 2q³`. The quadratic
+coefficient one holds when the perturbed point has norm at least `r/2`;
+the cubic term covers the remaining region using the optimal global coefficient two.
+`ZeroProfilePhaseCubic` combines this with the orthogonal cubic Wick majorant
+`sqrt(2)*h₂₁ + 2*h₁₀ = |w|²w`, whose Gaussian L² norm is `sqrt(6)`.
+Taking pointwise norms in L² and using the triangle inequality gives whole-slice
+and conditional-coefficient errors at most `sqrt(2)*ρ² + 2*sqrt(6)*|ρ|³`.
+The rational relaxation `(17/12)*ρ² + 5*|ρ|³` gives saved-center accuracy
+strictly below `10⁻¹²` for `|ρ| ≤ 1/1780000`, with the same parameter and
+saved-model tolerances. Its exact budget is `(84353029/84596280)*10⁻¹²`,
+and its interval is `200/89` times the original. This is a quadratic-plus-cubic
+bound, so it does not contradict optimality of the purely quadratic constant two.
+No Gaussian optimality or change to the production certificates or headline endpoint is claimed.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.

@@ -9,6 +9,7 @@ import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.Haagerup.PhaseStability
 import Grothe.Haagerup.PhaseTaylorAlgebra
+import Grothe.Haagerup.PhaseTaylorCubic
 import Grothe.Haagerup.PhaseTaylorOptimal
 import Grothe.Haagerup.PhaseTaylorSharp
 import Grothe.ListPoly
@@ -13663,6 +13664,7 @@ import Grothe.UpperChaos.UnitSquaredQuadrature
 import Grothe.UpperChaos.UnitSquaredQuadratureConditional
 import Grothe.UpperChaos.UnitSquaredRadiusProfile
 import Grothe.UpperChaos.WholeCenterEnergies
+import Grothe.UpperChaos.ZeroProfilePhaseCubic
 import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseSharp
 import Grothe.UpperChaos.ZeroProfilePhaseStability

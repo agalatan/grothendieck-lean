@@ -285,6 +285,19 @@ $|\rho|\le 1/2510000$, extending the original interval by a factor $400/251$.
 This improves the analytic certificate interface without changing the stored
 production certificates or the numerical Grothendieck endpoint.
 
+For small ratios, \texttt{PhaseTaylorCubic} and \texttt{ZeroProfilePhaseCubic}
+give a stronger estimate. Writing $q=\|h\|/r$, the phase remainder is at most
+$q^2+2q^3$: coefficient one suffices when the perturbed point has norm at least
+$r/2$, and the cubic term covers the complementary region. The cubic Wick
+majorant $\sqrt2\,h_{21}+2h_{10}=|w|^2w$ has Gaussian $L^2$ norm $\sqrt6$.
+Consequently the whole slice and each coefficient have error at most
+$\sqrt2\,\rho^2+2\sqrt6\,|\rho|^3$.
+The rational relaxation $(17/12)\rho^2+5|\rho|^3$ certifies the same saved-center
+tolerance for $|\rho|\le1/1780000$, with exact budget
+$(84353029/84596280)\,10^{-12}$. This interval is $200/89$ times the original.
+The purely quadratic constant two remains optimal; no optimality is claimed
+for the Gaussian estimate, and the stored certificates and headline endpoint are unchanged.
+
 For complex $z\ne 0$, rotation by $z/|z|$ transports the real-slice
 constant-plus-linear model to the physical phase $F_0(z,w)$. In the Gaussian
 variable $w$ the residual has $L^2$ norm at most $5t^2$, where
