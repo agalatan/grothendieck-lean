@@ -20,7 +20,7 @@ and fast-forwards master to exactly that tree only if green. **The author lands,
 timer (a recurring check of your branches and PRs: red checks, review comments, conflicts) until each one is landed
 or closed.
 
-**The six rules that matter most:**
+**The seven rules that matter most:**
 1. Never commit or push to `master`. Work in your own worktree on `<agent-id>/<topic>`; land through a PR and
    `/land` (§7). Only CI moves `master`. Build the modules you changed locally (§7); CI checks everything else.
 2. Before every push, sync with master and combine with it (§6).
@@ -31,6 +31,9 @@ or closed.
    may merge master into another agent's conflicting PR branch, §7.)
 6. **At most 2 CI jobs per agent at a time** (proof checks of your branches and cloud shards, §8). Check with
    `scripts/ci_active.sh <agent-id> <your branches>`.
+7. **Never change `lakefile.toml`, `lake-manifest.json` or `lean-toolchain`.** The node-cap registry pins their
+   hashes; any change makes every proof check ask for a rebuild of all node caps (§13). Work that is not part of the
+   `Grothe` target goes in its own Lake package, like `sign/` (§15).
 
 ## 1. Work items live in GitHub Issues
 
@@ -363,7 +366,8 @@ Also:
 - **Changing the node caps:** a change in their import closure (`scripts/caps_stamp.py --list`) makes the next check
   run on the droplet; it builds the caps once for exactly the tree that will be merged. After the merge, master's
   check also runs on the droplet (master has no cache for the new caps yet) and finds them already built in the same
-  workspace. Never run a separate manual caps verification, and avoid touching that closure casually.
+  workspace. Never run a separate manual caps verification, and avoid touching that closure casually. The closure
+  also contains `lakefile.toml`, `lake-manifest.json` and `lean-toolchain` (§13).
 - **Step by step, when a PR changes the node caps** (e.g. a new cap row):
   1. Your branch checks fail at once with "needs the droplet" (they do not occupy it). Build the changed modules
      locally or with `scripts/cloud.sh lean` while you work; when the PR is approved, `/land` it.
@@ -479,6 +483,19 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - The same holds for the quadrature checker `GrotheQuadKernel/`: the 13 energy-table facts import it, and any module
   added to or changed in it recompiles all of them (about ten hours each). Keep it frozen; new kernel code for the
   upper bound (the port's twisted kernel, the omitted pairs, ...) goes in `GrotheQuadExtKernel/`.
+- **The lake files are pinned.** The node-cap registry (`source_sha256` in
+  `data/caps-m/plan/row-certificates/row12-build.json`) records the hash of every file in the caps closure, and that
+  closure contains `lakefile.toml`, `lake-manifest.json` and `lean-toolchain` besides the Lean sources. If one of them
+  changes, `python3 scripts/caps_stamp.py --digest` fails (`materialized registry source/order mismatch`), the route
+  job of every proof check gets an empty digest, and each check asks for a rebuild of all node caps on the droplets
+  (hours, and nothing lands meanwhile). This happened on 14 November 2026 when a second library was added to
+  `lakefile.toml` (#371). So:
+  - do not add a library, an executable, a dependency or an option to the root lake files. A target that `Grothe` does
+    not import belongs in a separate Lake package in its own directory (§15);
+  - if you touched any file of the closure, run `python3 scripts/caps_stamp.py --digest` before pushing (about 40
+    seconds); it must print a `sha256` line;
+  - a real change of the lake files (a new Mathlib version, a new toolchain) is a planned operation: agree it with the
+    user first, regenerate the registry with its generator, and expect one full node-cap build.
 
 ## 14. Cleaning up: leave nothing behind
 
@@ -510,3 +527,31 @@ the user.
 
 **Check periodically:** `AGENT_ID=<your id> scripts/sync_master.sh` (the branch audit), `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
 `df -h`. Leave the machines at least as clean as you found them.
+
+## 15. The separate package `sign/` (GrotheSign)
+
+`sign/` is a Lake package of its own: Lean proofs about the signs of the coefficients of inverse kernel series (the
+beta-preservation argument; issues #362, #363). It is **separate work**. It is not part of the `Grothe` target, of
+`scratch/Axioms.lean` or of the proof check, and no bound of this repository depends on it. `sign/README.md` is the
+entry point; the points an agent needs are these.
+
+- **Where things go.** Modules under `sign/GrotheSign/`, imported by `sign/GrotheSign.lean`; the axiom report of the
+  package is `sign/scratch/SignAxioms.lean` (one `#print axioms` line per headline theorem). Nothing of it goes into
+  `Grothe/`, `Grothe.lean`, `scratch/Axioms.lean`, `data/axioms/` or the root lake files (§13), and `Grothe` never
+  imports it. If a result of this package is ever needed by the main proof, that is a decision for the user: the
+  modules would then move into `Grothe/` through an ordinary PR, without a new library in `lakefile.toml`.
+- **Building.** Run `lake exe cache get` once in the repository root (or use a worktree with the shared packages
+  linked, §5); then `cd sign && lake build`, and `lake env lean scratch/SignAxioms.lean` for the axiom report. The
+  package takes Mathlib by path from the root's `.lake/packages`, so the build compiles only its own modules. The
+  first build clones the small packages Mathlib depends on into `sign/.lake/packages` (about 400 MB, one to two
+  minutes). This build is light and may run on the laptop; rule 3 concerns the `Grothe` target.
+- **CI does not check it.** The `sorry` scan, the roots check and the axiom report cover the `Grothe*` trees only, and
+  a change under `sign/` alone is routed as "no proof change" (the status then says so; it is not a proof check). So
+  the author's local build is the check: paste the output of `lake build` and of the axiom report in the PR, and a
+  reviewer rebuilds the package before approving. The rules of §13 apply unchanged: no `sorry`, no new axiom, no
+  `implemented_by`/`extern`/`unsafe`, warning-free.
+- **Process.** Everything else is as for any other work: a task issue, your own branch and worktree, a PR, review,
+  landing (§1, §3, §7). Pushes that touch only `sign/` may carry `[skip ci]`.
+- **After a change of the Mathlib version in the root** (a planned operation, §13): run `lake update` in `sign/` and
+  commit `sign/lake-manifest.json` and `sign/lean-toolchain`, which must equal the root toolchain file.
+
