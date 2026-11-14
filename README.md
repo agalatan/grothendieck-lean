@@ -1,11 +1,12 @@
 # The complex Grothendieck constant, in Lean
 
-A Lean 4 + Mathlib development targeting these bounds on the complex
-Grothendieck constant:
+A Lean 4 + Mathlib proof of these bounds on the complex Grothendieck constant:
 
-$$1.401697117301 < K_G^{\mathbb{C}} < 1.404598149141$$
+$$1.401697117301 < K_G^{\mathbb{C}} < 1.4046$$
 
-Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
+Both inequalities are one theorem without hypotheses, `Grothe.Statement.main_bounds`
+([`Grothe/MainResult.lean`](Grothe/MainResult.lean)). Its proof uses the three standard axioms of Lean and
+finite exact computations evaluated by compiled code (`native_decide`); see
 [what is proved](#what-is-proved).
 
 | year | who | lower bound | upper bound |
@@ -15,26 +16,14 @@ Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.404598149141}$ |
+| Oct–Nov 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.4046}$ |
 
 Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
 $\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
-it lies inside the interval, $2.22 \cdot 10^{-5}$ below our upper bound.
+it lies inside the interval, $2.4 \cdot 10^{-5}$ below our upper bound.
 
-**The only active upper-bound target is $K_G^{\mathbb C}<1.404598149141$.**
-Both endpoints are **work in progress**. For the upper endpoint, fourteen actual
-Gaussian finite-band estimates and energy-table discrepancy at most
-`6847009/(5·10^17)` still need Lean proofs. The direct-kernel route instead needs
-a proved numerical head estimate. Our own numerical obligations are not accepted
-external inputs. A bound is **done** only when its complete Lean proof and final
-verification pass. The active work now prioritizes the upper endpoint.
-
-The original Gauss quadrature orders 1 through 64 have a finite polynomial
-exactness certificate in `UpperChaos/Q0GaussPolynomialCertificates.lean`.
-It connects LeanCert rational polynomial checks to integration and the original
-Legendre weight formula. The complete family is included in the main Lean root,
-but verification of this combined delivery remains work in progress. The
-selected-node bindings and analytic remainder are separate proof obligations.
+The lower endpoint is `Grothe.Statement.lower_target`. The upper endpoint is `Grothe.Statement.upper_target`
+([`Grothe/UpperFinal.lean`](Grothe/UpperFinal.lean)); the Grothendieck bound it exhibits is below `1.40459996`.
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -61,18 +50,23 @@ classical and quantum correlations in two-party Bell experiments (real case).
 
 **The statement** is [`Grothe/Statement.lean`](Grothe/Statement.lean). It imports only Mathlib and holds only
 definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as their infimum, `UpperBelow c`
-(some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the two targets at the current thresholds,
-`UpperTarget = UpperBelow 1.404598149141` and `LowerTarget = LowerAbove 1.401697117301`. A compiled theorem whose
+(some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the two targets
+`UpperTarget = UpperBelow 1.4046` and `LowerTarget = LowerAbove 1.401697117301`. A compiled theorem whose
 type is one of these targets and whose axiom report is clean proves exactly that claim.
 [`Grothe/StatementBridges.lean`](Grothe/StatementBridges.lean) proves what the targets say about the constant:
-`UpperBelow c` gives $K_G^{\mathbb C} < c$; `LowerAbove c` gives $c \le K_G^{\mathbb C}$ and, because the set of bounds
-is closed, $c < K_G^{\mathbb C}$, both once some bound exists (an unconditional bound is not yet proved in Lean, so
-that existence stays a hypothesis). [`Grothe/LowerTarget.lean`](Grothe/LowerTarget.lean) proves `LowerTarget` from
-`NodeCaps` (`Grothe.Statement.lowerTarget_of_nodeCaps`; `lower_bound_of_capsRest` reduces `NodeCaps` to the
-rows CI certifies).
-[`Grothe/UpperTarget.lean`](Grothe/UpperTarget.lean) proves `UpperTarget` from the inputs not yet proved in Lean,
-listed as the hypotheses of `Grothe.Statement.upper_target_of_inputs` (the finite-band Gaussian error estimates of
-the three Taylor centers and the energy-table accuracy).
+`UpperBelow c` gives $K_G^{\mathbb C} < c$, and `LowerAbove c` gives $c < K_G^{\mathbb C}$ once some bound exists
+(the set of bounds is closed).
+
+**The theorems** are `lower_target : LowerTarget`, `upper_target : UpperTarget` and
+`main_bounds : 1.401697117301 < K_G^ℂ < 1.4046`, all in the namespace `Grothe.Statement` and without hypotheses
+([`Grothe/MainResult.lean`](Grothe/MainResult.lean), [`Grothe/UpperFinal.lean`](Grothe/UpperFinal.lean)). Their axiom
+report (`scratch/Axioms.lean`, checked by `scripts/check_axioms.py`) contains `propext`, `Classical.choice`,
+`Quot.sound` and the `native_decide` facts listed in `data/axioms/native.txt`: finite exact computations on
+certificate data, evaluated by compiled code, which trusts the Lean compiler.
+
+The rest of this section describes the two proofs part by part. It was written while they were assembled: where a
+paragraph below calls an input a hypothesis or work in progress, the status above and the inventory in
+[docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md) are the current ones.
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
@@ -762,6 +756,7 @@ The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAI
 | `tools/` | generators of the data modules and numerical cross-checks |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 | `docs/` | `LEAN_DETAILS.md` (inventory) and `overview.tex` (source of `OVERVIEW.pdf`) |
+| `sign/` | GrotheSign, a separate Lake package: independent work on the coefficient signs of inverse kernel series. Not part of `Grothe`, of its axiom report or of CI; see [`sign/README.md`](sign/README.md) |
 
 About 32,000 lines of hand-written Lean and 12,000 lines of generated data.
 
@@ -772,6 +767,8 @@ lake exe cache get   # Mathlib v4.34.1 (toolchain leanprover/lean4:v4.34.1)
 lake build
 lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
 ```
+
+The directory `sign/` is a separate Lake package with its own instructions; these commands do not build it.
 
 `lake build` builds the single target `Grothe`, heavy cap rows included
 (about 21 CPU-hours cold; CI replays them from its verified cache). For

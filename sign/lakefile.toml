@@ -1,0 +1,17 @@
+# GrotheSign: an independent Lake package (issues #362, #363, #371).
+#
+# It is separate work: nothing here is part of the `Grothe` target, of its axiom report or of the proof check in CI,
+# and the repository's main `lakefile.toml` does not mention it.
+#
+# Its only dependency is Mathlib, taken by path from the main checkout so that no second copy of Mathlib is needed:
+# run `lake exe cache get` in the repository root once, then `lake build` in this directory (see README.md here).
+# The toolchain is the repository's `lean-toolchain` (elan finds it in the parent directory).
+name = "grotheSign"
+defaultTargets = ["GrotheSign"]
+
+[[require]]
+name = "mathlib"
+path = "../.lake/packages/mathlib"
+
+[[lean_lib]]
+name = "GrotheSign"
