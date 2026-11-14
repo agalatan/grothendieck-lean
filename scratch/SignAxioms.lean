@@ -29,3 +29,31 @@ import GrotheSign
 #print axioms GrotheSign.beta_preserves_inverseSeries_sign
 #print axioms GrotheSign.beta_preserves_inverse_pos
 #print axioms GrotheSign.beta_preserves_inverseSeries_strict_sign
+
+/-! Hypergeometric specialization and finite Haagerup starting case (issue #367). -/
+
+#print axioms GrotheSign.betaFamily_hypergeometricRadial
+#print axioms GrotheSign.coeff_one_inverseProfile_hypergeometricRadial_two
+#print axioms GrotheSign.coeff_hypergeometricRadial_succ
+#print axioms GrotheSign.hypergeometric_dimension_inverseSeries_sign_of_base
+#print axioms GrotheSign.hypergeometric_dimension_inverseSeries_strict_sign_of_base
+#print axioms GrotheSign.coeff_inv_pow_recurrence
+#print axioms GrotheSign.coeff_haagerup_reciprocal
+#print axioms GrotheSign.haagerup_base_nonneg_first_eight
+#print axioms GrotheSign.haagerup_base_second_eq_zero
+#print axioms GrotheSign.beta_preserves_inverse_nonneg_up_to
+#print axioms GrotheSign.beta_preserves_inverse_pos_up_to
+#print axioms GrotheSign.hypergeometric_dimension_inverseSeries_sign_first_eight
+#print axioms GrotheSign.hypergeometric_dimension_inverseSeries_strict_sign_first_eight
+#print axioms GrotheSign.coeff_inverseSeries_C_mul
+#print axioms GrotheSign.kernelScale_pos
+#print axioms GrotheSign.kernelScale_two
+#print axioms GrotheSign.kernel_inverseSeries_linear_pos
+#print axioms GrotheSign.kernel_inverseSeries_even_eq_zero
+#print axioms GrotheSign.kernel_inverseSeries_sign_of_base
+#print axioms GrotheSign.kernel_inverseSeries_strict_sign_of_base
+#print axioms GrotheSign.kernel_inverseSeries_sign_first_eight
+#print axioms GrotheSign.kernel_inverseSeries_strict_sign_first_eight
+#print axioms GrotheSign.haagerup_tail_ratio_lt_real
+#print axioms GrotheSign.haagerup_exponential_factor_lt
+#print axioms GrotheSign.haagerup_prefactor_gt
