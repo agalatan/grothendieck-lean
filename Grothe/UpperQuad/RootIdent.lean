@@ -29,8 +29,7 @@ open GrotheQuad Grothe.UpperChaos Grothe.UpperChaos.Q0LegendreInteger
 
 /-- The bracket list of every rule has the rule's order as its length. -/
 theorem ruleBrackets_length (n : ℕ) (hn : 1 ≤ n ∧ n ≤ 64) : (ruleBrackets n).length = n := by
-  have hlo : 1 ≤ n := hn.1
-  have hhi : n ≤ 64 := hn.2
+  obtain ⟨hlo, hhi⟩ := hn
   interval_cases n
   · exact Grothe.UpperChaos.Q0LegendreRule01.count
   · exact Grothe.UpperChaos.Q0LegendreRule02.count
@@ -480,10 +479,8 @@ theorem sourceRoot_spec (cutoffs : Array ℕ) (a : Address) :
     mem (sourceRoot a) (addressSpec cutoffs a).bracket.toIval ∧
       legendreP (sourceRoot a) (addressSpec cutoffs a).order = 0 := by
   have hs := selected_root_spec (sourcePanels.get a.1).order (source_order_bounds a) a.2
-  refine ⟨(mem_bracket_iff _ _ _).2 hs.1, ?_⟩
-  show legendreP (sourceRoot a) (sourcePanels.get a.1).order = 0
-  rw [legendreP_eq_realPair _ _ (source_order_bounds a).1]
-  exact hs.2.1
+  exact ⟨(mem_bracket_iff _ _ _).2 hs.1,
+    (legendreP_eq_realPair _ _ (source_order_bounds a).1).trans hs.2.1⟩
 
 /-- **The root chosen by the partition is master's selected root** (by the uniqueness of the root in
 the bracket; no kernel flag is needed, the existence being master's). -/
@@ -494,10 +491,8 @@ theorem rootOf_addressSpec (cutoffs : Array ℕ) (a : Address) :
       legendreP y (addressSpec cutoffs a).order = 0 :=
     ⟨sourceRoot a, sourceRoot_spec cutoffs a⟩
   have hroot := Classical.epsilon_spec hex
-  apply hs.2.2
-  · exact (mem_bracket_iff _ _ _).1 hroot.1
-  · rw [← legendreP_eq_realPair _ _ (source_order_bounds a).1]
-    exact hroot.2
+  exact hs.2.2 _ ((mem_bracket_iff _ _ _).1 hroot.1)
+    ((legendreP_eq_realPair _ _ (source_order_bounds a).1).symm.trans hroot.2)
 
 /-- The chosen root lies in its bracket (without the kernel's `bracketOK`). -/
 theorem rootOf_addressSpec_mem (cutoffs : Array ℕ) (a : Address) :

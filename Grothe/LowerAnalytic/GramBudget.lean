@@ -309,9 +309,7 @@ theorem gaussian_gramInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
       have h8 : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d) - 6
           - 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2)
           ≤ j.xs * (j.cA * jointS0 (gramT J a b) + j.cB * jointH0 (gramT J a b)) := by linarith
-      calc _ ≤ (j.ze : ℝ) * (j.xs * (j.cA * jointS0 (gramT J a b) + j.cB * jointH0 (gramT J a b))) :=
-            mul_le_mul_of_nonneg_left h8 hzeR
-        _ = _ := by ring
+      exact (mul_le_mul_of_nonneg_left h8 hzeR).trans_eq (by ring)
     have he := mul_le_mul_of_nonneg_left e2 hmuR
     linarith
   refine ⟨⟨_, radR a b, hv, memLp_radR a b, hv0, ?_, ?_, ?_, ?_, fun vs z h =>

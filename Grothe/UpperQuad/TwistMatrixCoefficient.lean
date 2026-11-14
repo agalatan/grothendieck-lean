@@ -27,12 +27,8 @@ lemma rate_pos (j : ℕ) : 0 < rate j := by
   unfold rate
   positivity
 
-lemma one_le_rate (j : ℕ) : 1 ≤ rate j := by
-  have hε : 0 ≤ (Grothe.Upper.phaseEpsQ : ℝ) := by norm_num [Grothe.Upper.phaseEpsQ]
-  have hprod : 0 ≤ (j : ℝ) * (Grothe.Upper.phaseEpsQ : ℝ) :=
-    mul_nonneg (Nat.cast_nonneg j) hε
-  unfold rate
-  linarith
+lemma one_le_rate (j : ℕ) : 1 ≤ rate j :=
+  le_add_of_nonneg_right (mul_nonneg (Nat.cast_nonneg j) (by norm_num [Grothe.Upper.phaseEpsQ]))
 
 /-- The degree bound before the change of Gaussian scale. -/
 theorem totalDegree_normalized_source_le (j : ℕ) (r : ℂ) (c d : ℕ) :
@@ -114,8 +110,7 @@ theorem sum_norm_matrixCoefficient_sq (j : ℕ) (r : ℂ) (c d : ℕ) :
       change (g, h) ∈ indices (c + d + 35 * j) ↔ (h, g) ∈ indices (c + d + 35 * j)
       simp only [mem_indices]
       omega
-    · intro pq _
-      rfl
+    · exact fun _ _ ↦ rfl
   have hterm (pq : ℕ × ℕ) :
       ‖matrixCoefficient j r c d pq.1 pq.2‖ ^ 2 =
         ‖(rate j : ℂ)⁻¹ *

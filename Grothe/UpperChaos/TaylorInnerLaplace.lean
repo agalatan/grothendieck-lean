@@ -74,8 +74,7 @@ theorem inner_hpow_eq_phaseLaplace {c : ℂ × ℂ → ℂ} (hφ : PhiBound)
   calc
     (∫ u, conj (c u) * hpow j u ∂mu2) =
         ∫ u, taylorInnerSource j c u * Haag.ph (basePhaseArgument u) ∂mu2 := by
-      apply integral_congr_ae
-      refine Filter.Eventually.of_forall (fun u => ?_)
+      refine integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)
       change conj (c u) * ((I * (phiT u : ℂ)) ^ j * F0 u) =
         (conj (c u) * (I * (phiT u : ℂ)) ^ j) * F0 u
       ring

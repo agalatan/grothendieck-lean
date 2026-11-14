@@ -70,9 +70,8 @@ theorem im_sq_le_sharp_of_theta {A : ℂ} {k Ahi : ℝ}
     (hA : ‖A‖ ^ 2 ≤ Ahi) :
     A.im ^ 2 ≤ Ahi * k ^ 2 / (2 * (1 + Real.sqrt (1 - k ^ 2))) := by
   have hs : 0 < Real.sqrt (1 - k ^ 2) := Real.sqrt_pos.mpr (by nlinarith)
-  have hcos := (div_le_div_iff₀ hre hs).1 hθ
-  apply im_sq_le_sharp_of_re_sq hk0 hk1 _ hA
-  simpa only [one_mul, mul_one, mul_comm] using hcos
+  exact im_sq_le_sharp_of_re_sq hk0 hk1
+    (by simpa only [one_mul, mul_one, mul_comm] using (div_le_div_iff₀ hre hs).1 hθ) hA
 
 /-- A checked upper defect `KP` and upper squared norm `Ahi` give the sharper disk bound.
 The hypotheses fit the witnesses produced by `EllCheck.defectI_sound` and `a2hiI_sound`. -/
@@ -85,8 +84,8 @@ theorem diskPoint_shift_im_sq_le_sharp {ε x R KP Ahi : ℝ} {z ζ : ℂ}
   have hsq : DiskPoint.kp ε x R ^ 2 ≤ KP ^ 2 := pow_le_pow_left₀ hkp0 hkp 2
   have hs : 0 < Real.sqrt (1 - KP ^ 2) := Real.sqrt_pos.mpr (by nlinarith)
   have hθ' : ‖ζ / wC ε z‖ ^ 2 / ((ζ / wC ε z) ^ 2).re ≤
-      1 / Real.sqrt (1 - KP ^ 2) := by
-    exact hθ.trans (one_div_le_one_div_of_le hs (Real.sqrt_le_sqrt (by linarith)))
+      1 / Real.sqrt (1 - KP ^ 2) :=
+    hθ.trans (one_div_le_one_div_of_le hs (Real.sqrt_le_sqrt (by linarith)))
   exact im_sq_le_sharp_of_theta hK0 hK1 hre hθ' hA
 
 end Grothe.UpperQuad.TwistEllCheck

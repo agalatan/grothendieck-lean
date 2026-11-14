@@ -108,12 +108,9 @@ theorem norm_projOn_chargeOne_sub_graded_sq (B : Set Idx2)
       if i.1.val < M then (a i.1 i.2.1 i.2.2 : ℂ) else 0 := by
     have hcond : ((gradedIdx i).1.2 + (gradedIdx i).2.2 < M ∧
         (gradedIdx i).1.1 + (gradedIdx i).2.1 =
-          (gradedIdx i).1.2 + (gradedIdx i).2.2 + 1) ↔ i.1.val < M := by
-      constructor
-      · intro h
-        simpa only [gradedIdx_antidegree] using h.1
-      · intro h
-        exact ⟨by simpa only [gradedIdx_antidegree] using h, gradedIdx_charge i⟩
+          (gradedIdx i).1.2 + (gradedIdx i).2.2 + 1) ↔ i.1.val < M :=
+      ⟨fun h => by simpa only [gradedIdx_antidegree] using h.1,
+        fun h => ⟨by simpa only [gradedIdx_antidegree] using h, gradedIdx_charge i⟩⟩
     simp only [inner_hvec2_gradedHermite, hcond]
     rw [gradedIdx_antidegree]
     rfl
@@ -137,10 +134,9 @@ theorem norm_hpow_band_sub_graded_le_compact (B : Set Idx2)
     (hcert : compactTaylorBandEnergy B j N M a ≤ δ ^ 2) :
     ‖projOn B ((chargeFn_hpow phiBound j).memLp.toLp (hpow j) - gradedHermite M a)‖ ≤
       (5 / 10 ^ 15 : ℝ) + δ := by
-  apply norm_band_error_le_shared_approx B _ (compactTaylorL2 j) (gradedHermite M a)
-    _ δ (norm_hpow_sub_compactTaylorL2_lt j).le
-  rw [← norm_projOn_compactTaylor_sub_graded_sq B j N M a hdegree] at hcert
-  exact (sq_le_sq₀ (norm_nonneg _) hδ).mp hcert
+  exact norm_band_error_le_shared_approx B _ (compactTaylorL2 j) (gradedHermite M a)
+    _ δ (norm_hpow_sub_compactTaylorL2_lt j).le ((sq_le_sq₀ (norm_nonneg _) hδ).mp
+      ((norm_projOn_compactTaylor_sub_graded_sq B j N M a hdegree).trans_le hcert))
 
 end
 end Grothe.UpperChaos

@@ -94,16 +94,12 @@ theorem mem_seedJ0SeriesI_moment (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {x : ℝ} {x
   apply mem_seedJ0SeriesI P hP N hx0 hx hv
   have hden : mem ((N : ℝ) + 3 - x) (seedDen P N xI) := by
     unfold seedDen
-    have := mem_subI P (mem_ofNat P (N + 3)) (mem_clampI hx0 hx)
-    push_cast at this
-    exact this
+    exact_mod_cast mem_subI P (mem_ofNat P (N + 3)) (mem_clampI hx0 hx)
   have hpos : (0 : ℝ) < (N : ℝ) + 3 - x := pos_of_isPos hv hden
   have h1 : (1 : ℝ) ≤ (N + 3) / ((N : ℝ) + 3 - x) := by
     rw [le_div_iff₀ hpos]
     linarith
-  calc _ ≤ |seedTerm x (N + 1)| := moment_sub_seedSeries_le x hx0 N
-    _ = |seedTerm x (N + 1)| * 1 := (mul_one _).symm
-    _ ≤ _ := mul_le_mul_of_nonneg_left h1 (abs_nonneg _)
+  exact (moment_sub_seedSeries_le x hx0 N).trans (le_mul_of_one_le_right (abs_nonneg _) h1)
 
 /-! ### The Watson branch (`x ≥ 150`): the real quantities -/
 
@@ -160,12 +156,10 @@ lemma abs_watsonW_le : ∀ n, |watsonW n| ≤ watsonG n := by
   | zero => simp [watsonW_zero, watsonG_zero]
   | succ n ih =>
     have hg := watsonG_pos n
-    have h1 : |(2 * (n : ℝ) - 1)| ≤ 2 * n + 2 := by
-      rw [abs_le]; constructor <;> linarith
+    have h1 : |(2 * (n : ℝ) - 1)| ≤ 2 * n + 2 := abs_le.mpr ⟨by linarith, by linarith⟩
     have hn1 : (0 : ℝ) < 4 * (n + 1) := by positivity
-    rw [watsonW_succ, watsonG_succ]
-    rw [abs_div, abs_mul, abs_mul, abs_of_pos hn1, abs_of_pos (by positivity : (0 : ℝ) < 2 * n + 1),
-      div_le_iff₀ hn1]
+    rw [watsonW_succ, watsonG_succ, abs_div, abs_mul, abs_mul, abs_of_pos hn1,
+      abs_of_pos (by positivity : (0 : ℝ) < 2 * n + 1), div_le_iff₀ hn1]
     calc |watsonW n| * (|2 * (n : ℝ) - 1| * (2 * n + 1))
         ≤ watsonG n * ((2 * n + 2) * (2 * n + 1)) := by gcongr
       _ = watsonG n * (2 * n + 1) / 2 * (4 * (n + 1)) := by ring
@@ -182,15 +176,14 @@ lemma watsonG_mul_inv_pow_le {N : ℕ} {x : ℝ} (hx : 2 * (N : ℝ) + 2 ≤ x) 
     have hih := ih (by omega)
     have hnN : (n : ℝ) ≤ N := by exact_mod_cast (show n ≤ N by omega)
     have hfac : (2 * (n : ℝ) + 1) / 2 * (1 / x) ≤ 1 / 2 := by
-      rw [div_mul_eq_mul_div, div_le_div_iff_of_pos_right (by norm_num)]
-      rw [mul_one_div, div_le_one hx0]
+      rw [div_mul_eq_mul_div, div_le_div_iff_of_pos_right (by norm_num), mul_one_div,
+        div_le_one hx0]
       linarith
     have hg := watsonG_pos n
     calc watsonG (n + 1) * (1 / x) ^ (n + 1)
         = (watsonG n * (1 / x) ^ n) * ((2 * n + 1) / 2 * (1 / x)) := by
           rw [watsonG_succ]; ring
-      _ ≤ (1 / 2) ^ n * (1 / 2) := by
-          apply mul_le_mul hih hfac (by positivity) (by positivity)
+      _ ≤ (1 / 2) ^ n * (1 / 2) := mul_le_mul hih hfac (by positivity) (by positivity)
       _ = (1 / 2) ^ (n + 1) := by ring
 
 /-- `|Σ_{n ≤ N} w_n x^{−n}| ≤ 2` for `x ≥ 2N + 2`. -/
@@ -253,9 +246,7 @@ lemma watsonBound_le_four {N : ℕ} {x : ℝ} (hx : 2 * (N : ℝ) + 2 ≤ x) : w
   have he : Real.exp (-x) * (1 / x) ≤ 1 / 2 := by
     have h1 : Real.exp (-x) ≤ 1 := Real.exp_le_one_iff.mpr (by linarith)
     have h2 : 1 / x ≤ 1 / 2 := one_div_le_one_div_of_le (by norm_num) hx2
-    calc Real.exp (-x) * (1 / x) ≤ 1 * (1 / 2) :=
-          mul_le_mul h1 h2 (by positivity) (by norm_num)
-      _ = 1 / 2 := by ring
+    exact (mul_le_mul h1 h2 (by positivity) (by norm_num)).trans_eq (one_mul _)
   unfold watsonBound
   rw [div_le_iff₀ Real.pi_pos]
   nlinarith [Real.pi_gt_three]
@@ -311,8 +302,7 @@ lemma mem_watsonSum (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {x : ℝ} {xI : Ival} (hx
     simpa [watsonW_zero] using mem_one P
   have hs0 : mem (∑ n ∈ Finset.range (0 + 1), watsonW n * (1 / x) ^ n) (ofInt P 1) := by
     simpa [watsonW_zero] using mem_one P
-  have := watsonLoop_sound P hP hinv N 0 _ _ h0 hs0
-  simpa [watsonSum, watsonS] using this
+  simpa [watsonSum, watsonS] using watsonLoop_sound P hP hinv N 0 _ _ h0 hs0
 
 lemma mem_watsonGamma (P : ℕ) (hP : 1 ≤ P) : ∀ n, mem (watsonG n) (watsonGamma P n) := by
   intro n
@@ -331,9 +321,7 @@ lemma exp_neg_le_two_zpow {x : ℝ} {L : ℤ} (hx : 0 ≤ x) (hL : (L : ℝ) ≤
     Real.exp (-x) ≤ (2 : ℝ) ^ (-L) := by
   rcases le_or_gt 0 L with hL0 | hL0
   · obtain ⟨n, rfl⟩ : ∃ n : ℕ, L = n := ⟨L.toNat, (Int.toNat_of_nonneg hL0).symm⟩
-    have h2e : (2 : ℝ) ≤ Real.exp 1 := by
-      have := Real.add_one_le_exp (1 : ℝ)
-      linarith
+    have h2e : (2 : ℝ) ≤ Real.exp 1 := by linarith [Real.add_one_le_exp (1 : ℝ)]
     have hpow : (2 : ℝ) ^ n ≤ Real.exp n := by
       rw [← Real.exp_one_pow]
       exact pow_le_pow_left₀ (by norm_num) h2e n
@@ -341,16 +329,12 @@ lemma exp_neg_le_two_zpow {x : ℝ} {L : ℤ} (hx : 0 ≤ x) (hL : (L : ℝ) ≤
       _ = (Real.exp n)⁻¹ := by rw [Real.exp_neg]
       _ ≤ ((2 : ℝ) ^ n)⁻¹ := inv_anti₀ (by positivity) hpow
       _ = (2 : ℝ) ^ (-(n : ℤ)) := by rw [zpow_neg, zpow_natCast]
-  · have h1 : Real.exp (-x) ≤ 1 := Real.exp_le_one_iff.mpr (by linarith)
-    have h2 : (1 : ℝ) ≤ (2 : ℝ) ^ (-L) := one_le_zpow₀ (by norm_num) (by omega)
-    exact h1.trans h2
+  · exact (Real.exp_le_one_iff.mpr (by linarith)).trans (one_le_zpow₀ (by norm_num) (by omega))
 
 /-- The kernel's enclosure `[0, 2^{−⌊x_lo⌋}]` of `e^{−x}`. -/
 lemma mem_expTerm {x : ℝ} {xI : Ival} (hx0 : 0 ≤ x) (hx : mem x xI) :
     mem (Real.exp (-x)) ⟨0, 1, -(toFixedLo 0 xI)⟩ := by
-  have hL : ((toFixedLo 0 xI : ℤ) : ℝ) ≤ x := by
-    have := toFixedLo_le 0 hx
-    simpa using this
+  have hL : ((toFixedLo 0 xI : ℤ) : ℝ) ≤ x := by simpa using toFixedLo_le 0 hx
   unfold mem
   simp only [Int.cast_zero, zero_mul, Int.cast_one, one_mul]
   exact ⟨(Real.exp_pos _).le, exp_neg_le_two_zpow hx0 hL⟩
@@ -386,21 +370,15 @@ lemma mem_watsonErr (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {piI xI : Ival} (hpi : me
         (mulI P (powI P xI (N + 1)) (sqrtI P xI))) := by
     apply mem_divI_or_huge P (mem_mulI P (mem_sqrtI P Real.pi_pos.le hpi) (mem_watsonGamma P hP (N + 1)))
       (mem_mulI P (mem_powI P hx (N + 1)) (mem_sqrtI P hx0 hx))
-    change |watsonU N x| ≤ _
-    rw [abs_of_nonneg (watsonU_nonneg hx0)]
-    exact (watsonU_le_two hxN).trans (by linarith)
+    exact (abs_of_nonneg (watsonU_nonneg hx0)).trans_le ((watsonU_le_two hxN).trans (by linarith))
   have hT : mem (4 * (Real.exp (-x) * (1 / x)))
       (mulN P 4 (mulI P ⟨0, 1, -(toFixedLo 0 xI)⟩ (invI P xI))) := by
-    have := mem_mulN P 4 (mem_mulI P (mem_expTerm hx0 hx) (mem_invI P hx hlo))
-    push_cast at this
-    exact this
+    exact_mod_cast mem_mulN P 4 (mem_mulI P (mem_expTerm hx0 hx) (mem_invI P hx hlo))
   have hsum := mem_mulN P 2 (mem_addI P hU hT)
   push_cast at hsum
   unfold watsonErr watsonBound
   apply mem_divI_or_huge P hsum hpi
-  change |watsonBound N x| ≤ _
-  rw [abs_of_nonneg (watsonBound_nonneg hx0)]
-  exact (watsonBound_le_four hxN).trans h4
+  exact (abs_of_nonneg (watsonBound_nonneg hx0)).trans_le ((watsonBound_le_four hxN).trans h4)
 
 /-- The main term of the Watson form is enclosed (for `x ≥ 2N + 2`). -/
 lemma mem_watsonMainI (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {piI xI : Ival} (hpi : mem Real.pi piI) {x : ℝ}
@@ -430,8 +408,7 @@ theorem mem_seedJ0AsymI_moment (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {piI xI : Ival
   have herr := mem_watsonErr P hP N hpi hx hlo hxN.le
   have hy : |moment 0 x - watsonMain N x| ≤ bval (watsonErr P N piI xI) :=
     (hW x hxN).trans ((le_abs_self _).trans (abs_le_bval herr))
-  have := mem_widen P hmain hy
-  simpa using this
+  simpa using mem_widen P hmain hy
 
 /-- **S2 for the kernel's seed enclosure** `seedJ0I` (the series with 800 terms below `x = 150`, the
 Watson form with 70 terms above), from the Watson remainder `WatsonHyp 70`. -/

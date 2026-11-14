@@ -88,10 +88,8 @@ theorem exists_normalized_expansion_of_totalDegree_le (P : CPoly) {N : ℕ}
     ∑ pq ∈ indices N, (b pq / (nrm pq.1 pq.2 : ℂ)) •
         ((nrm pq.1 pq.2 : ℂ) • H pq.1 pq.2) =
         ∑ pq ∈ indices N, b pq • H pq.1 pq.2 := by
-      apply Finset.sum_congr rfl
-      intro pq _
-      have hn : (nrm pq.1 pq.2 : ℂ) ≠ 0 := by
-        exact_mod_cast (nrm_pos pq.1 pq.2).ne'
+      refine Finset.sum_congr rfl fun pq _ ↦ ?_
+      have hn : (nrm pq.1 pq.2 : ℂ) ≠ 0 := by exact_mod_cast (nrm_pos pq.1 pq.2).ne'
       rw [smul_smul, div_mul_cancel₀ _ hn]
     _ = P := hb
 
@@ -112,8 +110,7 @@ theorem exists_normalized_evaluation_of_totalDegree_le (P : CPoly) {N : ℕ}
           polynomialLp (a pq • ((nrm pq.1 pq.2 : ℂ) • H pq.1 pq.2)) =
             a pq • hvec pq := by
         rw [map_smul, polynomialLp_normalized_H]
-      have h := congrArg polynomialLp ha
-      simpa only [map_sum, hterm] using h
+      simpa only [map_sum, hterm] using congrArg polynomialLp ha
     rw [← hLp, norm_sum_hvec_sq]
 
 /-- Polynomial evaluation is controlled by its Gaussian norm and the finite Mehler kernel. -/

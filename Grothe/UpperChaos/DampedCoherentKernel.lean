@@ -58,8 +58,8 @@ theorem integral_cexp_complex_linear {rate : ℝ} (hrate : 0 < rate) (a b : ℂ)
       (volume_preserving_equiv_real_prod.symm.integral_comp
         measurableEquivRealProd.symm.measurableEmbedding _).symm
     _ = ∫ p : ℝ × ℝ, Gauss2.g (2 * rate) 0 (2 * rate)
-        (a + b) ((a - b) * I) p := by
-      exact integral_congr_ae (Filter.Eventually.of_forall hpoint)
+        (a + b) ((a - b) * I) p :=
+      integral_congr_ae (Filter.Eventually.of_forall hpoint)
     _ = _ := by
       rw [Gauss2.integral_g (by positivity) hdet, hsqrt]
       have hpref : ((2 * Real.pi / (2 * rate) : ℝ) : ℂ) =

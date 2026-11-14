@@ -71,9 +71,8 @@ theorem radial_primary_le_primaryBoundSq (D : ℕ) {t : ℝ}
     Real.exp_le_exp.mpr (by linarith only [hSlo])
   have hprimary :
       Real.exp (2 * t * r.re ^ 2 / (1 + t) + 2 * t * r.im ^ 2 / (1 - t)) ≤
-        Real.exp (2 * t * X / (1 + t) + 2 * t * Y / (1 - t)) := by
-    apply Real.exp_le_exp.mpr
-    exact add_le_add
+        Real.exp (2 * t * X / (1 + t) + 2 * t * Y / (1 - t)) :=
+    Real.exp_le_exp.mpr <| add_le_add
       (div_le_div_of_nonneg_right
         (mul_le_mul_of_nonneg_left hX (by positivity)) hplus.le)
       (div_le_div_of_nonneg_right

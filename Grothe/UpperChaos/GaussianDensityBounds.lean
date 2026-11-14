@@ -31,19 +31,17 @@ theorem gaussian_affine_small_ball_density_bound
   have hd : 0 < d := by dsimp [d]; linarith
   have hσ2 : 0 < σ ^ 2 := sq_pos_of_ne_zero hσ
   have htriangle : ‖z‖ ≤ ‖z + (σ : ℂ) * w‖ + ‖(σ : ℂ) * w‖ := by
-    have h := norm_add_le (z + (σ : ℂ) * w) (-((σ : ℂ) * w))
-    simpa only [add_neg_cancel_right, norm_neg] using h
+    simpa only [add_neg_cancel_right, norm_neg] using
+      norm_add_le (z + (σ : ℂ) * w) (-((σ : ℂ) * w))
   have htail : d ≤ |σ| * ‖w‖ := by
     dsimp [d]
     rw [norm_mul, Complex.norm_real, Real.norm_eq_abs] at htriangle
     linarith
   have hsq : d ^ 2 ≤ σ ^ 2 * ‖w‖ ^ 2 := by
     have ht0 : 0 ≤ |σ| * ‖w‖ := mul_nonneg (abs_nonneg _) (norm_nonneg _)
-    have hp := sq_le_sq₀ hd.le ht0 |>.2 htail
-    simpa only [mul_pow, sq_abs] using hp
-  have hfrac : d ^ 2 / σ ^ 2 ≤ ‖w‖ ^ 2 := by
-    apply (div_le_iff₀ hσ2).2
-    simpa only [mul_comm] using hsq
+    simpa only [mul_pow, sq_abs] using (sq_le_sq₀ hd.le ht0).2 htail
+  have hfrac : d ^ 2 / σ ^ 2 ≤ ‖w‖ ^ 2 :=
+    (div_le_iff₀ hσ2).2 (by simpa only [mul_comm] using hsq)
   have hexp : Real.exp (-‖w‖ ^ 2) ≤ Real.exp (-(d ^ 2 / σ ^ 2)) :=
     Real.exp_le_exp.mpr (neg_le_neg hfrac)
   calc
@@ -78,10 +76,7 @@ theorem sqrt_ratio_deficit_le (x y : ℝ) (hx : 0 < x) (hy : 0 ≤ y) :
     nlinarith
   have hden : 2 * x ≤ b * (b + a) := by
     nlinarith [mul_nonneg (sub_nonneg.mpr hab) (show 0 ≤ b + 2 * a by positivity)]
-  constructor
-  · rw [hfactor]
-    exact div_nonneg hy hbplus.le
-  · rw [hfactor]
-    exact div_le_div_of_nonneg_left hy (by positivity) hden
+  rw [hfactor]
+  exact ⟨div_nonneg hy hbplus.le, div_le_div_of_nonneg_left hy (by positivity) hden⟩
 
 end Grothe.UpperChaos

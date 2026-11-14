@@ -35,9 +35,8 @@ No square-root branch-cut or nonzero-coordinate assumption is required. -/
 theorem analyticAt_descended (j q c d : ℕ) (hj : 0 < j)
     (hc : c ≤ q + 1) (hd : d ≤ q) (σ : ℝ) {s : ℂ} (hv : QuadRem.vC s ≠ 0) :
     AnalyticAt ℂ (descended j q c d σ) s := by
-  apply EvenSquareDescent.analyticAt_descend_of_even (radial_even j q c d hc hd σ)
-  apply analyticAt_radial j q c d σ hj
-  simpa only [EvenSquareDescent.sqrt_sq] using hv
+  exact EvenSquareDescent.analyticAt_descend_of_even (radial_even j q c d hc hd σ)
+    (analyticAt_radial j q c d σ hj (by simpa only [EvenSquareDescent.sqrt_sq] using hv))
 
 /-- A profile nonvanishing certificate on any set supplies analyticity at
 every point of that set. -/
@@ -52,8 +51,7 @@ theorem descended_real (j q c d : ℕ) (hc : c ≤ q + 1) (hd : d ≤ q)
     (σ s : ℝ) (hs : 0 ≤ s) (hv : Grothe.UpperChaos.vprof s ≠ 0)
     (hσ : σ = profileSign s) :
     descended j q c d σ (s : ℂ) = (twistIntegrand j q c d s : ℂ) := by
-  have hsq : (Real.sqrt s : ℂ) ^ 2 = (s : ℂ) := by
-    exact_mod_cast Real.sq_sqrt hs
+  have hsq : (Real.sqrt s : ℂ) ^ 2 = (s : ℂ) := by exact_mod_cast Real.sq_sqrt hs
   rw [← hsq, descended_sq j q c d hc hd]
   exact radial_real_of_sign j q c d hc hd σ s hs hv hσ
 

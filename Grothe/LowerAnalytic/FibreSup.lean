@@ -62,11 +62,9 @@ lemma quad_le (c : ℝ) (y : Fib) (h1 : ‖y.e1‖ ≤ c) (h2 : ‖y.e2‖ ≤ c
   have hc : 0 ≤ c := (norm_nonneg _).trans h1
   have b : ∀ u v : ℂ, ‖u‖ ≤ c → ‖v‖ ≤ c → ∀ m : ℝ, m * hre u v ≤ |m| * c ^ 2 := by
     intro u v hu hv m
-    have h := abs_hre_le u v
     have : ‖u‖ * ‖v‖ ≤ c ^ 2 := by rw [sq]; exact mul_le_mul hu hv (norm_nonneg _) hc
-    calc m * hre u v ≤ |m * hre u v| := le_abs_self _
-      _ = |m| * |hre u v| := abs_mul _ _
-      _ ≤ |m| * c ^ 2 := mul_le_mul_of_nonneg_left (h.trans this) (abs_nonneg _)
+    calc m * hre u v ≤ |m| * |hre u v| := (le_abs_self _).trans_eq (abs_mul _ _)
+      _ ≤ |m| * c ^ 2 := mul_le_mul_of_nonneg_left ((abs_hre_le u v).trans this) (abs_nonneg _)
   have hd : ε * ‖y.d‖ ^ 2 ≤ 1 * c ^ 2 := by
     have : ‖y.d‖ ^ 2 ≤ c ^ 2 := pow_le_pow_left₀ (norm_nonneg _) h6 2
     have hε0 : (0 : ℝ) ≤ ε := by unfold ε; norm_num
@@ -231,6 +229,11 @@ lemma re_integral_conj_mul_le {F u : ℂ → ℂ} (hF : Integrable F gaussC)
   simp only [norm_mul, Complex.norm_conj]
   exact mul_le_of_le_one_right (norm_nonneg _) (hub z)
 
+private lemma norm_half_le {u v : ℂ} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1) :
+    ‖(u - v) / 2‖ ≤ 1 ∧ ‖(u + v) / 2‖ ≤ 1 := by
+  rw [norm_div, norm_div, Complex.norm_two, div_le_one two_pos, div_le_one two_pos]
+  exact ⟨(norm_sub_le _ _).trans (by linarith), (norm_add_le _ _).trans (by linarith)⟩
+
 section pair
 
 variable {f g : ℂ → ℂ} (hfm : AEStronglyMeasurable f gaussC) (hgm : AEStronglyMeasurable g gaussC)
@@ -251,12 +254,8 @@ lemma payoff_split (p : ℂ → ℂ) (hp : Continuous p) (C : ℝ) (hC : ∀ z, 
     integrable_of_le_qw _ (Complex.continuous_conj.comp hp) C (by simpa using hC)
   have hkm : AEStronglyMeasurable (fun z => (f z - g z) / 2) gaussC := by fun_prop
   have hhm : AEStronglyMeasurable (fun z => (f z + g z) / 2) gaussC := by fun_prop
-  have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => by
-    rw [norm_div, Complex.norm_two, div_le_one two_pos]
-    exact (norm_sub_le _ _).trans (by linarith [hfb z, hgb z])
-  have hhb : ∀ z, ‖(f z + g z) / 2‖ ≤ 1 := fun z => by
-    rw [norm_div, Complex.norm_two, div_le_one two_pos]
-    exact (norm_add_le _ _).trans (by linarith [hfb z, hgb z])
+  have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).1
+  have hhb : ∀ z, ‖(f z + g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).2
   have i1 := integrable_mul_k hfm hfb (hLc.add hPc)
   have i2 := integrable_mul_k hgm hgb (hLc.sub hPc)
   have i3 := integrable_mul_k hhm hhb hLc
@@ -276,9 +275,7 @@ theorem fibreExpr_le_Jpot (s : ℝ) :
     fibreExpr E R ℓ β a f g s ≤ Jpot E R ℓ β a (coefFib fun z => (f z - g z) / 2) s := by
   set K := coefFib fun z => (f z - g z) / 2 with hK
   have hkm : AEStronglyMeasurable (fun z => (f z - g z) / 2) gaussC := by fun_prop
-  have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => by
-    rw [norm_div, Complex.norm_two, div_le_one two_pos]
-    exact (norm_sub_le _ _).trans (by linarith [hfb z, hgb z])
+  have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).1
   obtain ⟨C, hC⟩ : ∃ C, ∀ z, ‖pfn E R a K s z‖ ≤ C * qw z :=
     ⟨_, fun z => Fib.norm_fn_le _ z⟩
   have hsplit := payoff_split ℓ β hfm hgm hfb hgb (pfn E R a K s) (continuous_pfn E R a K s) C hC
@@ -325,9 +322,7 @@ theorem Jpot_le_fibreExpr (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) 
   have hkm : AEStronglyMeasurable (fun z => (ph (Lf ℓ β z + pfn E R a y s z)
       - ph (Lf ℓ β z - pfn E R a y s z)) / 2) gaussC := by fun_prop
   have hkb : ∀ z, ‖(ph (Lf ℓ β z + pfn E R a y s z) - ph (Lf ℓ β z - pfn E R a y s z)) / 2‖ ≤ 1 :=
-    fun z => by
-      rw [norm_div, Complex.norm_two, div_le_one two_pos]
-      exact (norm_sub_le _ _).trans (by linarith [hfb z, hgb z])
+    fun z => (norm_half_le (hfb z) (hgb z)).1
   obtain ⟨C, hC⟩ : ∃ C, ∀ z, ‖pfn E R a y s z‖ ≤ C * qw z := ⟨_, fun z => Fib.norm_fn_le _ z⟩
   have hsplit := payoff_split ℓ β hfm hgm hfb hgb (pfn E R a y s) hpc C hC
   have hpair : (∫ z, conj (pfn E R a y s z) * ((ph (Lf ℓ β z + pfn E R a y s z)
@@ -401,13 +396,9 @@ lemma fibreExpr_le_cap {f g : ℂ → ℂ} (hfm : AEStronglyMeasurable f gaussC)
     (hgm : AEStronglyMeasurable g gaussC) (hfb : ∀ z, ‖f z‖ ≤ 1) (hgb : ∀ z, ‖g z‖ ≤ 1) (s : ℝ) :
     fibreExpr E R ℓ β a f g s ≤ fibreCap E R ℓ β a s := by
   have hkm : AEStronglyMeasurable (fun z => (f z - g z) / 2) gaussC := by fun_prop
-  have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => by
-    rw [norm_div, Complex.norm_two, div_le_one two_pos]
-    exact (norm_sub_le _ _).trans (by linarith [hfb z, hgb z])
+  have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).1
   have hhm : AEStronglyMeasurable (fun z => (f z + g z) / 2) gaussC := by fun_prop
-  have hhb : ∀ z, ‖(f z + g z) / 2‖ ≤ 1 := fun z => by
-    rw [norm_div, Complex.norm_two, div_le_one two_pos]
-    exact (norm_add_le _ _).trans (by linarith [hfb z, hgb z])
+  have hhb : ∀ z, ‖(f z + g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).2
   obtain ⟨c1, c2, c3, c4, c5, c6⟩ := coefFib_le hkm hkb
   have hq := Fib.quad_le E R cq _ c1 c2 c3 c4 c5 c6
   have hL := re_integral_conj_mul_le (integrable_Lf ℓ β) hhm hhb
@@ -434,13 +425,12 @@ lemma fibreExpr_le_cap {f g : ℂ → ℂ} (hfm : AEStronglyMeasurable f gaussC)
 /-- **`Ψ_r` is finite**: `J_r(·, s)` is bounded above. -/
 theorem Jpot_le_cap (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) (s : ℝ) :
     Jpot E R ℓ β a y s ≤ fibreCap E R ℓ β a s := by
-  refine (Jpot_le_fibreExpr E R ℓ β a hE hR y s).trans (fibreExpr_le_cap E R ℓ β a ?_ ?_ ?_ ?_ s)
+  refine (Jpot_le_fibreExpr E R ℓ β a hE hR y s).trans (fibreExpr_le_cap E R ℓ β a ?_ ?_
+    (fun _ => norm_ph_le _) (fun _ => norm_ph_le _) s)
   · exact (measurable_ph.comp ((continuous_Lf ℓ β).add
       (continuous_pfn E R a y s)).measurable).aestronglyMeasurable
   · exact (measurable_ph.comp ((continuous_Lf ℓ β).sub
       (continuous_pfn E R a y s)).measurable).aestronglyMeasurable
-  · exact fun z => norm_ph_le _
-  · exact fun z => norm_ph_le _
 
 lemma bddAbove_Jpot (hE : E.psdOK = true) (hR : R.psdOK = true) (s : ℝ) :
     BddAbove (range fun y => Jpot E R ℓ β a y s) :=
@@ -491,9 +481,8 @@ lemma Jpot_convex (y : Fib) (s t θ : ℝ) (h0 : 0 ≤ θ) (h1 : θ ≤ 1) :
         + (1 - θ) * ∫ z, (‖Lf ℓ β z + pfn E R a y t z‖ + ‖Lf ℓ β z - pfn E R a y t z‖) ∂gaussC := by
     rw [integral_add ((integrable_Jint E R ℓ β a y s).const_mul θ)
       ((integrable_Jint E R ℓ β a y t).const_mul (1 - θ)), integral_const_mul, integral_const_mul]
-  have hm' := hm.trans_eq hsum
   unfold Jpot
-  nlinarith [hm']
+  linarith [hm.trans_eq hsum]
 
 /-- **`Ψ_r` is convex.** -/
 theorem pot_convexOn (hE : E.psdOK = true) (hR : R.psdOK = true) :
@@ -529,9 +518,8 @@ lemma Jpot_lip (y : Fib) (s t : ℝ) (hst : s ≤ t) :
       = ∫ z, (‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖) ∂gaussC
         + 2 * (t - s) * ∫ z, ‖a.fn z‖ ∂gaussC := by
     rw [integral_add (integrable_Jint E R ℓ β a y s) (hA.const_mul _), integral_const_mul]
-  have hm' := hm.trans_eq hsum
   unfold Jpot
-  linarith [hm']
+  linarith [hm.trans_eq hsum]
 
 /-- **The Lipschitz bound of `Ψ_r`** with constant `2 E|B·a|`. -/
 theorem pot_lip (hE : E.psdOK = true) (hR : R.psdOK = true) (s t : ℝ) (hst : s ≤ t) :
@@ -608,18 +596,14 @@ theorem capsHold_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.psdOK
   caps := hcaps
   lip := by
     intro s t _ hst
-    have h := pot_lip E R ℓ β (aFib b1 b2 b3) hE hR s t hst
-    have hI := integral_norm_aFib_le b1 b2 b3
-    have he := two_div_exp_one_le
-    have hq := inv_sqrt_two_le
     have hc : ∫ z, ‖(aFib b1 b2 b3).fn z‖ ∂gaussC
         ≤ |1 + b1| + 7358 / 10000 * |b2| + 707107 / 1000000 * |b3| := by
-      refine hI.trans ?_
-      nlinarith [abs_nonneg b2, abs_nonneg b3, mul_le_mul_of_nonneg_left he (abs_nonneg b2),
-        mul_le_mul_of_nonneg_left hq (abs_nonneg b3)]
+      refine (integral_norm_aFib_le b1 b2 b3).trans ?_
+      linarith [mul_le_mul_of_nonneg_left two_div_exp_one_le (abs_nonneg b2),
+        mul_le_mul_of_nonneg_left inv_sqrt_two_le (abs_nonneg b3)]
     have hts : 0 ≤ t - s := by linarith
-    have := mul_le_mul_of_nonneg_left hc (by linarith : (0 : ℝ) ≤ 2 * (t - s))
-    nlinarith
+    linarith [pot_lip E R ℓ β (aFib b1 b2 b3) hE hR s t hst, mul_le_mul_of_nonneg_right hsm hts,
+      mul_le_mul_of_nonneg_left hc (by linarith : (0 : ℝ) ≤ 2 * (t - s))]
 
 /-! ### The potentials of the 19 rows -/
 

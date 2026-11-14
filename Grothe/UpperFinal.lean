@@ -43,8 +43,7 @@ theorem twistRemainder1 : TwistRemainderHyp 1 (relaxedPanelRadiusQ 0 : ℝ) := b
     Facts.j1Total
   have hb : (((3999999 : ℚ) / 1000000000000000 : ℚ) : ℝ) = (relaxedPanelRadiusQ 0 : ℝ) := by
     norm_num [relaxedPanelRadiusQ, relaxedQuadRadiusQ]
-  rw [hb] at h
-  exact h
+  exact hb ▸ h
 
 /-- The twisted remainder of the second power, from its shard and total facts. -/
 theorem twistRemainder2 : TwistRemainderHyp 2 (relaxedPanelRadiusQ 1 : ℝ) := by
@@ -59,8 +58,7 @@ theorem twistRemainder2 : TwistRemainderHyp 2 (relaxedPanelRadiusQ 1 : ℝ) := b
     Facts.j2Total
   have hb : (((13999999 : ℚ) / 1000000000000000 : ℚ) : ℝ) = (relaxedPanelRadiusQ 1 : ℝ) := by
     norm_num [relaxedPanelRadiusQ, relaxedQuadRadiusQ]
-  rw [hb] at h
-  exact h
+  exact hb ▸ h
 
 /-- The twisted remainder of the third power, from its shard and total facts. -/
 theorem twistRemainder3 : TwistRemainderHyp 3 (relaxedPanelRadiusQ 2 : ℝ) := by
@@ -75,8 +73,7 @@ theorem twistRemainder3 : TwistRemainderHyp 3 (relaxedPanelRadiusQ 2 : ℝ) := b
     Facts.j3Total
   have hb : (((69999999 : ℚ) / 1000000000000000 : ℚ) : ℝ) = (relaxedPanelRadiusQ 2 : ℝ) := by
     norm_num [relaxedPanelRadiusQ, relaxedQuadRadiusQ]
-  rw [hb] at h
-  exact h
+  exact hb ▸ h
 
 /-- **The energy-table accuracy** (`hclose`), from the 13 energy facts, the omitted-pair fact and
 the proved covered-set quadrature remainder. -/

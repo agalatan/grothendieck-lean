@@ -68,9 +68,8 @@ lemma inner_pad (x y : EuclideanSpace ℂ ι) : inner ℂ (pad 0 x) (pad 1 y) = 
 theorem le_vectorOpt_of_ball (A : Fin m → Fin n → ℂ) {x : Fin m → EuclideanSpace ℂ ι}
     {y : Fin n → EuclideanSpace ℂ ι} (hx : ∀ i, ‖x i‖ ≤ 1) (hy : ∀ j, ‖y j‖ ≤ 1) :
     ‖∑ i, ∑ j, A i j * inner ℂ (x i) (y j)‖ ≤ vectorOpt A := by
-  have := le_vectorOpt A (x := fun i => pad 0 (x i)) (y := fun j => pad 1 (y j))
-    (fun i => norm_pad 0 _ (hx i)) (fun j => norm_pad 1 _ (hy j))
-  simpa only [inner_pad] using this
+  simpa only [inner_pad] using le_vectorOpt A (x := fun i => pad 0 (x i))
+    (y := fun j => pad 1 (y j)) (fun i => norm_pad 0 _ (hx i)) (fun j => norm_pad 1 _ (hy j))
 
 end Ball
 
@@ -78,9 +77,8 @@ end Ball
 theorem _root_.Grothe.IsGrothendieckBound.one_le {K : ℝ} (hK : IsGrothendieckBound K) : 1 ≤ K := by
   let A : Fin 1 → Fin 1 → ℂ := fun _ _ => 1
   have hV : 1 ≤ vectorOpt A := by
-    have := le_vectorOpt A (ι := Unit) (x := fun _ => EuclideanSpace.single () 1)
+    simpa [A] using le_vectorOpt A (ι := Unit) (x := fun _ => EuclideanSpace.single () 1)
       (y := fun _ => EuclideanSpace.single () 1) (fun _ => by simp) (fun _ => by simp)
-    simpa [A] using this
   have hC : scalarOpt A ≤ 1 := by
     apply csSup_le (scalarSet_nonempty A)
     rintro r ⟨ε, δ, hε, hδ, rfl⟩

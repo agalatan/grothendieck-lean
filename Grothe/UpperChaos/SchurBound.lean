@@ -88,9 +88,6 @@ noncomputable def w4 (Y : V) : ℝ≥0∞ := ENNReal.ofReal (w1 B C Y.1 * w1 B C
 lemma measurable_P4 : Measurable (Function.uncurry (P4 B C)) := by
   have hc : Continuous fun p : V × V => P1 B C p.1.1 p.2.1 * P1 B C p.1.2 p.2.2 := by
     simp only [P1, q, bil]; fun_prop
-  have e : Function.uncurry (P4 B C) = fun p : V × V => ENNReal.ofReal (P1 B C p.1.1 p.2.1 * P1 B C p.1.2 p.2.2) :=
-    funext fun p => rfl
-  rw [e]
   exact hc.measurable.ennreal_ofReal
 
 lemma measurable_w4 : Measurable (w4 B C) := by

@@ -319,15 +319,13 @@ lemma rowLoop_state (coefs : Array (ℤ × ℤ)) (kMax DV Dacc : ℕ) {F G : CPo
         Nat.sub_zero] at h1 h2 ⊢
       simp only [Finset.range_zero, Finset.sum_empty, add_zero] at h2
       refine ⟨h1, ?_⟩
-      have := axpy_sound (ha 0 (by omega)) h1 h2 (by omega)
       rw [zero_add, Finset.sum_range_one, pow_zero, mulLeft_one', add_comm]
-      exact this
+      exact axpy_sound (ha 0 (by omega)) h1 h2 (by omega)
     · simp only [h0, ↓reduceIte, Nat.add_sub_cancel]
       have hX := stepX_sound (D := DV - (n - 1)) (by omega) h1
       rw [mulLeft_mulLeft, ← pow_succ, Nat.sub_add_cancel (by omega : 1 ≤ n)] at hX
       have hX' : Represents (mulLeft ((X 0 + X 1) ^ n) F) (DV - n) (stepX (DV - (n - 1)) st.1) := by
-        have he : DV - (n - 1) - 1 = DV - n := by omega
-        rwa [he] at hX
+        rwa [show DV - (n - 1) - 1 = DV - n by omega] at hX
       refine ⟨hX', ?_⟩
       have := axpy_sound (ha n (by omega)) hX' h2 (by omega)
       rw [Finset.sum_range_succ]
@@ -377,16 +375,14 @@ lemma rowsLoop_state (coefs : Array (Array (ℤ × ℤ))) (Din Dacc : ℕ) {F : 
       simp only [↓reduceIte, Nat.sub_self, Nat.zero_sub, pow_zero, mulLeft_one', mul_zero,
         Nat.sub_zero, Finset.range_zero, Finset.sum_empty, zero_add] at h1 h2 ⊢
       refine ⟨h1, ?_⟩
-      have := rowLoop_sound (coefs.getD 0 #[]) 17 Din Dacc h1 h2 (a := a 0)
+      simpa only [zero_add] using rowLoop_sound (coefs.getD 0 #[]) 17 Din Dacc h1 h2 (a := a 0)
         (fun k hk => ha 0 k (by omega)) (by omega)
-      simpa only [zero_add] using this
     · simp only [h0, ↓reduceIte, Nat.add_sub_cancel]
       have hV := stepV_sound (D := Din - 2 * (n - 1)) (by omega) h1
       rw [mulLeft_mulLeft, ← pow_succ, Nat.sub_add_cancel (by omega : 1 ≤ n)] at hV
       have hV' : Represents (mulLeft ((X 0 * X 1) ^ n) F) (Din - 2 * n)
           (stepV (Din - 2 * (n - 1)) st.1) := by
-        have he : Din - 2 * (n - 1) - 2 = Din - 2 * n := by omega
-        rwa [he] at hV
+        rwa [show Din - 2 * (n - 1) - 2 = Din - 2 * n by omega] at hV
       exact ⟨hV', rowLoop_sound (coefs.getD n #[]) (17 - n) (Din - 2 * n) Dacc hV' h2 (a := a n)
         (fun k hk => ha n k (by omega)) (by omega)⟩
 
@@ -428,19 +424,12 @@ lemma applyQ_fun_eq {F : CPoly →+ ℂ} (hF : RealHom F) (h : ℝ) (a : ℕ →
       C (h : ℂ) * ∑ j ∈ Finset.range 18, ∑ k ∈ Finset.range (17 - j + 1),
         C (a j k : ℂ) * ((X 0 * X 1) ^ j * ((X 0 + X 1) ^ k * ((X 0 - X 1) * p))) := by
     simp only [Finset.mul_sum, Finset.sum_mul]
-    apply Finset.sum_congr rfl
-    intro j _
-    apply Finset.sum_congr rfl
-    intro k _
-    ring
+    exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring
   rw [e, hF, map_sum]
   congr 1
-  apply Finset.sum_congr rfl
-  intro j _
+  refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_sum]
-  apply Finset.sum_congr rfl
-  intro k _
-  rw [hF]
+  exact Finset.sum_congr rfl fun k _ => (hF _ _).symm
 
 /-- One application of the node operator. -/
 theorem applyQ_sound (coefs : Array (Array (ℤ × ℤ))) (half : ℤ × ℤ) (Dout : ℕ) {F : CPoly →+ ℂ}
@@ -453,8 +442,8 @@ theorem applyQ_sound (coefs : Array (Array (ℤ × ℤ))) (half : ℤ × ℤ) (D
   apply scaleTw_sound hh
   apply roundVec_sound
   have h1 := rowsLoop_sound coefs (Dout + 35) (Dout + 1) hK ha (by omega)
-  have h2 := stepY_sound2 (F := rowsFun a F) (D := Dout + 1) (by omega) h1
-  simpa only [Nat.add_sub_cancel] using h2
+  simpa only [Nat.add_sub_cancel] using
+    stepY_sound2 (F := rowsFun a F) (D := Dout + 1) (by omega) h1
 
 /-- `(Q_rᵀ)^j`: `j` applications, the input on the degree `Dout + 35 j`. -/
 theorem applyQPow_sound (coefs : Array (Array (ℤ × ℤ))) (half : ℤ × ℤ) {a : ℕ → ℕ → ℝ} {h : ℝ}
@@ -469,11 +458,8 @@ theorem applyQPow_sound (coefs : Array (Array (ℤ × ℤ))) (half : ℤ × ℤ)
     simpa only [pow_zero, mulLeft_one', mul_zero, add_zero, applyQPow] using hK
   | succ j ih =>
     intro Dout F K hF hK
-    have h1 := ih (Dout + 35) hF (by
-      have he : Dout + 35 + 35 * j = Dout + 35 * (j + 1) := by ring
-      rw [he]; exact hK)
+    have h1 := ih (Dout + 35) hF (by rwa [show Dout + 35 + 35 * j = Dout + 35 * (j + 1) by ring])
     have h2 := applyQ_sound coefs half Dout (hF.mulLeft (qPoly h a ^ j)) h1 ha hh
-    rw [mulLeft_mulLeft, ← pow_succ] at h2
-    exact h2
+    rwa [mulLeft_mulLeft, ← pow_succ] at h2
 
 end Grothe.UpperQuad

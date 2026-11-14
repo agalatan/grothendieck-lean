@@ -52,10 +52,8 @@ lemma norm_hpow_le_one (j : ℕ) (u : ℂ × ℂ) : ‖hpow j u‖ ≤ 1 := by
     have := phiBound u; rw [← sq_le_one_iff_abs_le_one]; linarith
   rw [hpow, norm_mul, norm_pow, norm_mul, Complex.norm_I, one_mul, Complex.norm_real,
     Real.norm_eq_abs]
-  calc |phiT u| ^ j * ‖F0 u‖ ≤ 1 * 1 :=
-        mul_le_mul (pow_le_one₀ (abs_nonneg _) hφu) (Grothe.Haag.norm_ph_le _) (norm_nonneg _)
-          zero_le_one
-    _ = 1 := one_mul 1
+  exact (mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ (abs_nonneg _) hφu)).trans
+    (Grothe.Haag.norm_ph_le _)
 
 lemma norm_hpowPart_sq_le (j : ℕ) {S : Set ℝ} (hS : MeasurableSet S) :
     ‖hpowPart j S hS‖ ^ 2 ≤ mu2.real (radialSet S) := by
@@ -177,14 +175,12 @@ theorem twistQuadHyp_of_remainder (j : ℕ) {ρ : ℝ} (hρ : 0 ≤ ρ) (h : Twi
         ‖twistPart j tailSet q c d‖ + ‖twistPart j tailSetᶜ q c d - (twistGauss j q c d : ℂ)‖ := by
       rw [← Real.norm_eq_abs, ← Complex.norm_real, h2]
       exact norm_add_le _ _
-    rw [← sq_abs]
-    exact pow_le_pow_left₀ (abs_nonneg _) h3 2
+    exact sq_le_sq.mpr (h3.trans (le_abs_self _))
   have hsum := Finset.sum_le_sum fun q hq => Finset.sum_le_sum fun c hc => Finset.sum_le_sum
     fun d hd => hterm q c d (Finset.mem_range.mp hq) (Finset.mem_range.mp hc)
       (Finset.mem_range.mp hd)
   refine hsum.trans (sum3_add_sq_le Q _ _ (by norm_num) hρ ?_ h)
-  calc _ ≤ (1 : ℝ) / 10 ^ 31 := norm_twistTail_sq_le j Q
-    _ ≤ (1 / 10 ^ 15) ^ 2 := by norm_num
+  exact (norm_twistTail_sq_le j Q).trans (by norm_num)
 
 end
 

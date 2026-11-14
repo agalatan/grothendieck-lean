@@ -57,15 +57,14 @@ theorem norm_phase_sub_softPhase_bounds (η : ℝ) (hη : 0 < η) (z : ℂ) :
     rw [hfactor, norm_mul, hunit, one_mul, Complex.norm_real,
       Real.norm_eq_abs, abs_of_nonneg hdef.1]
   rw [he]
-  constructor
-  · exact sub_le_self _ (div_nonneg hR.le hB.le)
-  · have h := (le_div_iff₀ (show 0 < 2 * ‖z‖ ^ 2 by positivity)).mp hdef.2
-    nlinarith
+  refine ⟨sub_le_self _ (div_nonneg hR.le hB.le), ?_⟩
+  have h := (le_div_iff₀ (show 0 < 2 * ‖z‖ ^ 2 by positivity)).mp hdef.2
+  nlinarith
 
 lemma norm_softPhaseError_bounds (η : ℝ) (hη : 0 < η) (u : ℂ × ℂ) :
     ‖softPhaseError η u‖ ≤ 1 ∧
-      ‖softPhaseError η u‖ * ‖basePhaseArg u‖ ^ 2 ≤ η ^ 2 / 2 := by
-  exact norm_phase_sub_softPhase_bounds η hη (basePhaseArg u)
+      ‖softPhaseError η u‖ * ‖basePhaseArg u‖ ^ 2 ≤ η ^ 2 / 2 :=
+  norm_phase_sub_softPhase_bounds η hη (basePhaseArg u)
 
 lemma softPhaseError_memLp (η : ℝ) (hη : 0 < η) :
     MemLp (softPhaseError η) 2 mu2 :=
@@ -128,7 +127,7 @@ theorem integral_softPhaseError_sq_le (η : ℝ) (hη : 0 < η) :
     _ ≤ ∫ t in Ioc (0 : ℝ) 1, (50 / 9 : ℝ) * η ^ 2 * t ^ (-(1 / 2 : ℝ)) := by
       apply integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => measureReal_nonneg) hg.1
       filter_upwards [ae_restrict_mem measurableSet_Ioc] with t ht
-      exact softPhaseError_tail η hη t ht.1
+        using softPhaseError_tail η hη t ht.1
     _ = (100 / 9 : ℝ) * η ^ 2 := by
       rw [← intervalIntegral.integral_of_le (by norm_num : (0 : ℝ) ≤ 1),
         intervalIntegral.integral_const_mul,
@@ -195,13 +194,9 @@ theorem norm_softTaylorError_le (η : ℝ) (hη : 0 < η) (j : ℕ) :
       (100 / 9 : ℝ) * η ^ 2 := by
     rw [norm_toLp_sq_eq_integral]
     refine le_trans ?_ (integral_softPhaseError_sq_le η hη)
-    apply integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _)
-      (integrable_softPhaseError_sq η hη)
-    exact Filter.Eventually.of_forall fun u => by
-      have hp := norm_softTaylorError_pointwise_le η j u
-      have h1 := norm_nonneg (softTaylorError η j u)
-      have h2 := norm_nonneg (softPhaseError η u)
-      nlinarith
+    exact integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _)
+      (integrable_softPhaseError_sq η hη) (Filter.Eventually.of_forall fun u =>
+        pow_le_pow_left₀ (norm_nonneg _) (norm_softTaylorError_pointwise_le η j u) 2)
   apply (sq_le_sq₀ (norm_nonneg _) (by positivity : 0 ≤ (10 / 3 : ℝ) * η)).mp
   convert h using 1
   ring

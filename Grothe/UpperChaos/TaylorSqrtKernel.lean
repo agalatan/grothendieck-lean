@@ -82,13 +82,11 @@ theorem inner_gradedHermite_softHpow_eq_regular (η : ℝ) (hη : 0 < η)
           ∫ z, taylorRegularWick j N a u z ∂gaussC := by
   rw [inner_gradedHermite_softHpow_eq_wick η hη j N a, integral_auxiliary_square]
   congr 1
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro u hu
+  refine setIntegral_congr_fun measurableSet_Ioi fun u hu => ?_
   have he : (∫ z, taylorRegularWick j N a u z ∂gaussC) =
       (2 * u : ℂ) * ∫ z, taylorConditionalWick j N a (u ^ 2) z ∂gaussC := by
     simp_rw [taylorRegularWick_eq j N a u hu]
     rw [integral_const_mul]
-  dsimp only
   rw [he]
   ring
 

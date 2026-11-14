@@ -86,8 +86,8 @@ lemma normR_le {p q t : ℝ} (hp : |p| ≤ t) (hq : |q| ≤ t) (x₁ x₂ : ℝ)
   rw [e1, e2]
   have h1 := normM_le (p * y₁) (q * y₂)
   have h2 := normM_le x₁ x₂
-  have hp2 : p ^ 2 ≤ t ^ 2 := by rw [← sq_abs]; exact pow_le_pow_left₀ (abs_nonneg _) hp 2
-  have hq2 : q ^ 2 ≤ t ^ 2 := by rw [← sq_abs]; exact pow_le_pow_left₀ (abs_nonneg _) hq 2
+  have hp2 : p ^ 2 ≤ t ^ 2 := sq_le_sq' (abs_le.mp hp).1 (abs_le.mp hp).2
+  have hq2 : q ^ 2 ≤ t ^ 2 := sq_le_sq' (abs_le.mp hq).1 (abs_le.mp hq).2
   have h3 : (p * y₁) ^ 2 + (q * y₂) ^ 2 ≤ t ^ 2 * (y₁ ^ 2 + y₂ ^ 2) := by
     rw [mul_pow, mul_pow]; nlinarith [sq_nonneg y₁, sq_nonneg y₂]
   have h4 : t ^ 2 * (y₁ ^ 2 + y₂ ^ 2) ≤ t ^ 2 * (x₁ ^ 2 + x₂ ^ 2) :=

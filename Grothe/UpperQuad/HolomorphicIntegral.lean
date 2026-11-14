@@ -43,11 +43,8 @@ theorem hasDerivAt_integral_of_closedBall_bound
         (∫ w, deriv (fun z ↦ F z w) z₀ ∂μ) z₀ := by
   have hhalf : 0 < R / 2 := half_pos hR
   have hsub {z : ℂ} (hz : z ∈ ball z₀ (R / 2)) :
-      closedBall z (R / 2) ⊆ closedBall z₀ R := by
-    intro u hu
-    rw [mem_closedBall] at hu ⊢
-    have hz' := mem_ball.mp hz
-    exact (dist_triangle u z z₀).trans (by linarith)
+      closedBall z (R / 2) ⊆ closedBall z₀ R :=
+    closedBall_subset_closedBall' (by linarith [mem_ball.mp hz])
   have hdiff {z : ℂ} (hz : z ∈ ball z₀ (R / 2)) (w : Ω) :
       DifferentiableAt ℂ (fun t ↦ F t w) z :=
     ((hFdiff w).mono (hsub hz)).differentiableAt (closedBall_mem_nhds z hhalf)
@@ -59,10 +56,9 @@ theorem hasDerivAt_integral_of_closedBall_bound
       (Eventually.of_forall (hbound z₀ (mem_closedBall_self hR.le)))
   · exact aestronglyMeasurable_deriv hFmeas (hdiff (mem_ball_self hhalf))
   · refine Eventually.of_forall fun w z hz ↦ ?_
-    apply norm_deriv_le_of_forall_mem_sphere_norm_le hhalf
+    exact norm_deriv_le_of_forall_mem_sphere_norm_le hhalf
       ((hFdiff w).mono (closure_ball_subset_closedBall.trans (hsub hz))).diffContOnCl
-    intro u hu
-    exact hbound u (hsub hz (sphere_subset_closedBall hu)) w
+      fun u hu => hbound u (hsub hz (sphere_subset_closedBall hu)) w
   · exact Eventually.of_forall fun w z hz ↦ (hdiff hz w).hasDerivAt
 
 /-- Holomorphy and domination on one closed disk make the integral analytic at its center. -/
@@ -76,11 +72,8 @@ theorem analyticAt_integral_of_closedBall_bound
   refine DifferentiableOn.analyticAt (s := ball z₀ (R / 2)) ?_
     (ball_mem_nhds z₀ hhalf)
   intro z hz
-  have hsub : closedBall z (R / 2) ⊆ closedBall z₀ R := by
-    intro u hu
-    rw [mem_closedBall] at hu ⊢
-    have hz' := mem_ball.mp hz
-    exact (dist_triangle u z z₀).trans (by linarith)
+  have hsub : closedBall z (R / 2) ⊆ closedBall z₀ R :=
+    closedBall_subset_closedBall' (by linarith [mem_ball.mp hz])
   exact (hasDerivAt_integral_of_closedBall_bound hFmeas hhalf
     (fun w ↦ (hFdiff w).mono hsub) hB
     (fun u hu ↦ hbound u (hsub hu))).2.differentiableAt.differentiableWithinAt

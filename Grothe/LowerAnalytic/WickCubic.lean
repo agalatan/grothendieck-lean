@@ -152,11 +152,8 @@ lemma integrable_coord_mul_wc (a b c : Fin n) (j : Fin (n + n)) :
   integrable_of_norm_le_rad_pow n
     (((Complex.continuous_ofReal.comp (continuous_apply j)).mul
       (continuous_wc n a b c)).aestronglyMeasurable) 1 zero_le_one 4 fun x => by
-    have hr := rad_nonneg n x
-    rw [one_mul, norm_mul]
-    calc ‖((x j : ℝ) : ℂ)‖ * ‖wc n a b c x‖ ≤ rad n x * rad n x ^ 3 :=
-          mul_le_mul (norm_coord_le n x j) (norm_wc_le n a b c x) (norm_nonneg _) hr
-      _ = rad n x ^ 4 := by ring
+    rw [one_mul, norm_mul, pow_succ']
+    exact mul_le_mul (norm_coord_le n x j) (norm_wc_le n a b c x) (norm_nonneg _) (rad_nonneg n x)
 
 lemma continuous_D3 (a b c : Fin n) (j : Fin (n + n)) : Continuous (D3 n a b c j) := by
   unfold D3
@@ -179,21 +176,13 @@ lemma integrable_D3 (a b c : Fin n) (j : Fin (n + n)) :
     simp only [norm_mul, Complex.norm_conj]
     have e1 : ‖dz n a j‖ * ‖zc n b x‖ * ‖zc n c x‖ ≤ rad n x ^ 2 := by
       rw [pow_two]
-      calc ‖dz n a j‖ * ‖zc n b x‖ * ‖zc n c x‖ ≤ 1 * rad n x * rad n x :=
-            mul_le_mul (mul_le_mul d1 h2 (norm_nonneg _) zero_le_one) h3 (norm_nonneg _)
-              (by linarith)
-        _ = rad n x * rad n x := by ring
+      exact mul_le_mul ((mul_le_of_le_one_left (norm_nonneg _) d1).trans h2) h3 (norm_nonneg _) hr
     have e2 : ‖zc n a x‖ * ‖dz n b j‖ * ‖zc n c x‖ ≤ rad n x ^ 2 := by
       rw [pow_two]
-      calc ‖zc n a x‖ * ‖dz n b j‖ * ‖zc n c x‖ ≤ rad n x * 1 * rad n x :=
-            mul_le_mul (mul_le_mul h1 d2 (norm_nonneg _) hr) h3 (norm_nonneg _) (by linarith)
-        _ = rad n x * rad n x := by ring
+      exact mul_le_mul ((mul_le_of_le_one_right (norm_nonneg _) d2).trans h1) h3 (norm_nonneg _) hr
     have e3 : ‖zc n a x‖ * ‖zc n b x‖ * ‖dz n c j‖ ≤ rad n x ^ 2 := by
       rw [pow_two]
-      calc ‖zc n a x‖ * ‖zc n b x‖ * ‖dz n c j‖ ≤ rad n x * rad n x * 1 :=
-            mul_le_mul (mul_le_mul h1 h2 (norm_nonneg _) hr) d3 (norm_nonneg _)
-              (mul_nonneg hr hr)
-        _ = rad n x * rad n x := by ring
+      exact (mul_le_of_le_one_right (by positivity) d3).trans (mul_le_mul h1 h2 (norm_nonneg _) hr)
     linarith
 
 lemma integrable_zc (b : Fin n) : Integrable (zc n b) (stdGaussian (n + n)) :=
@@ -207,6 +196,14 @@ lemma integrable_coord_mul_zc (b : Fin n) (j : Fin (n + n)) :
       (continuous_zc n b)).aestronglyMeasurable) 1 zero_le_one 2 fun x => by
     rw [one_mul, norm_mul, pow_two]
     exact mul_le_mul (norm_coord_le n x j) (norm_zc_le n b x) (norm_nonneg _) (rad_nonneg n x)
+
+private lemma integrable_zc_mul_conj (b c : Fin n) :
+    Integrable (fun x => zc n b x * conj (zc n c x)) (stdGaussian (n + n)) :=
+  integrable_of_norm_le_rad_pow n ((continuous_zc n b).mul
+    (Complex.continuous_conj.comp (continuous_zc n c))).aestronglyMeasurable 1 zero_le_one 2
+    fun x => by
+      rw [one_mul, norm_mul, Complex.norm_conj, pow_two]
+      exact mul_le_mul (norm_zc_le n b x) (norm_zc_le n c x) (norm_nonneg _) (rad_nonneg n x)
 
 /-! ### The complex integration by parts and the Wick identities -/
 
@@ -258,19 +255,8 @@ theorem integral_conj_zc_mul_wc (i a b c : Fin n) :
   rw [← integral_const_mul, ← integral_sub (integrable_D3 n a b c _)
     ((integrable_D3 n a b c _).const_mul _)]
   simp_rw [hpt]
-  have hbc : Integrable (fun x => zc n b x * conj (zc n c x)) (stdGaussian (n + n)) :=
-    integrable_of_norm_le_rad_pow n ((continuous_zc n b).mul
-      (Complex.continuous_conj.comp (continuous_zc n c))).aestronglyMeasurable 1 zero_le_one 2
-      fun x => by
-        rw [one_mul, norm_mul, Complex.norm_conj, pow_two]
-        exact mul_le_mul (norm_zc_le n b x) (norm_zc_le n c x) (norm_nonneg _) (rad_nonneg n x)
-  have hac : Integrable (fun x => zc n a x * conj (zc n c x)) (stdGaussian (n + n)) :=
-    integrable_of_norm_le_rad_pow n ((continuous_zc n a).mul
-      (Complex.continuous_conj.comp (continuous_zc n c))).aestronglyMeasurable 1 zero_le_one 2
-      fun x => by
-        rw [one_mul, norm_mul, Complex.norm_conj, pow_two]
-        exact mul_le_mul (norm_zc_le n a x) (norm_zc_le n c x) (norm_nonneg _) (rad_nonneg n x)
-  rw [integral_add (hbc.const_mul _) (hac.const_mul _), integral_const_mul, integral_const_mul,
+  rw [integral_add ((integrable_zc_mul_conj n b c).const_mul _)
+    ((integrable_zc_mul_conj n a c).const_mul _), integral_const_mul, integral_const_mul,
     integral_zc_mul_conj, integral_zc_mul_conj]
   ring
 

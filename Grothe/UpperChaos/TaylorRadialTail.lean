@@ -21,13 +21,13 @@ noncomputable section
 def cutoffSet (L : ℝ) : Set (ℂ × ℂ) :=
   {z : ℂ | L < ‖z‖ ^ 2} ×ˢ Set.univ
 
-lemma measurableSet_cutoffSet (L : ℝ) : MeasurableSet (cutoffSet L) := by
-  exact (isOpen_lt continuous_const (continuous_norm.pow 2)).measurableSet.prod
+lemma measurableSet_cutoffSet (L : ℝ) : MeasurableSet (cutoffSet L) :=
+  (isOpen_lt continuous_const (continuous_norm.pow 2)).measurableSet.prod
     MeasurableSet.univ
 
 lemma muCut_eq_restrict (L : ℝ) :
-    RestrictedWick.muCut L = mu2.restrict (cutoffSet L) := by
-  exact Measure.restrict_prod_eq_prod_univ _
+    RestrictedWick.muCut L = mu2.restrict (cutoffSet L) :=
+  Measure.restrict_prod_eq_prod_univ _
 
 lemma muCut_le_mu2 (L : ℝ) : RestrictedWick.muCut L ≤ mu2 := by
   rw [muCut_eq_restrict]
@@ -47,12 +47,10 @@ lemma phiT_even_pow_le_sq {j : ℕ} (hj : 0 < j) (u : ℂ × ℂ) :
 /-- One radial phase-energy estimate controls every positive Taylor source. -/
 lemma integral_hpow_sq_cut_le {j : ℕ} (hj : 0 < j) (L : ℝ) :
     (∫ u, ‖hpow j u‖ ^ 2 ∂(RestrictedWick.muCut L)) ≤
-      ∫ u, phiT u ^ 2 ∂(RestrictedWick.muCut L) := by
-  apply integral_mono_of_nonneg
-    (Filter.Eventually.of_forall fun _ => sq_nonneg _)
-    (integrable_phiT_pow_cut L 2)
-  exact Filter.Eventually.of_forall fun u =>
-    (norm_hpow_sq_eq hj u).le.trans (phiT_even_pow_le_sq hj u)
+      ∫ u, phiT u ^ 2 ∂(RestrictedWick.muCut L) :=
+  integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _)
+    (integrable_phiT_pow_cut L 2) <| Filter.Eventually.of_forall fun u =>
+      (norm_hpow_sq_eq hj u).le.trans (phiT_even_pow_le_sq hj u)
 
 /-- The actual restricted squared source integral needs no new numeric check. -/
 theorem integral_hpow_sq_cut_fifty_lt {j : ℕ} (hj : 0 < j) :
@@ -64,8 +62,8 @@ theorem integral_hpow_sq_cut_fifty_lt {j : ℕ} (hj : 0 < j) :
 def source (L : ℝ) (j : ℕ) : ℂ × ℂ → ℂ :=
   (cutoffSet L).indicator (hpow j)
 
-lemma source_memLp (L : ℝ) (j : ℕ) : MemLp (source L j) 2 mu2 := by
-  exact (chargeFn_hpow phiBound j).memLp.indicator (measurableSet_cutoffSet L)
+lemma source_memLp (L : ℝ) (j : ℕ) : MemLp (source L j) 2 mu2 :=
+  (chargeFn_hpow phiBound j).memLp.indicator (measurableSet_cutoffSet L)
 
 /-- The indicator's original-space energy equals the restricted source energy. -/
 lemma norm_source_sq_eq_integral (L : ℝ) (j : ℕ) :
@@ -74,9 +72,8 @@ lemma norm_source_sq_eq_integral (L : ℝ) (j : ℕ) :
   rw [norm_toLp_sq_eq_integral]
   calc
     (∫ u, ‖source L j u‖ ^ 2 ∂mu2) =
-        ∫ u, (cutoffSet L).indicator (fun u => ‖hpow j u‖ ^ 2) u ∂mu2 := by
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall fun u => by
+        ∫ u, (cutoffSet L).indicator (fun u => ‖hpow j u‖ ^ 2) u ∂mu2 :=
+      integral_congr_ae <| Filter.Eventually.of_forall fun u => by
         by_cases hu : u ∈ cutoffSet L <;> simp [source, hu]
     _ = _ := by
       rw [integral_indicator (measurableSet_cutoffSet L), muCut_eq_restrict]
@@ -89,8 +86,8 @@ theorem norm_source_fifty_sq_lt {j : ℕ} (hj : 0 < j) :
 
 /-- Every positive Taylor source has radial L² tail strictly below 5e-15. -/
 theorem norm_source_fifty_lt {j : ℕ} (hj : 0 < j) :
-    ‖(source_memLp 50 j).toLp (source 50 j)‖ < (5 / 10 ^ 15 : ℝ) := by
-  exact (sq_lt_sq₀ (norm_nonneg _) (by positivity)).mp (norm_source_fifty_sq_lt hj)
+    ‖(source_memLp 50 j).toLp (source 50 j)‖ < (5 / 10 ^ 15 : ℝ) :=
+  (sq_lt_sq₀ (norm_nonneg _) (by positivity)).mp (norm_source_fifty_sq_lt hj)
 
 end
 

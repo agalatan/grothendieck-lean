@@ -85,11 +85,10 @@ theorem norm_dilate_sq_le (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N)
     (∫ z, ‖ev z (dilate L P)‖ ^ 2 ∂gaussC) ≤
         ∫ z, ‖polynomialLp P‖ ^ 2 * ((τ ^ N)⁻¹ * ((1 - τ ^ 2)⁻¹ *
           Real.exp ((2 * L * τ / (1 + τ)) * normSq z))) ∂gaussC := by
-      apply integral_mono
+      exact integral_mono
         ((memLp_two_iff_integrable_sq_norm (memLp_ev (dilate L P)).aestronglyMeasurable).mp
           (memLp_ev (dilate L P)))
-        ((((GaussianGrowth.integrable_exp_normSq _ hc).const_mul _).const_mul _).const_mul _)
-      exact hpoint
+        ((((GaussianGrowth.integrable_exp_normSq _ hc).const_mul _).const_mul _).const_mul _) hpoint
     _ = _ := by
       rw [integral_const_mul, integral_const_mul, integral_const_mul,
         GaussianGrowth.integral_exp_normSq _ hc, dilation_prefactor hτ0]
@@ -122,8 +121,7 @@ theorem norm_dilate_normalized_H_sq_le (p q : ℕ) {L τ : ℝ} (hL : 1 ≤ L)
   have hdeg : ((nrm p q : ℂ) • H p q).totalDegree ≤ p + q :=
     (totalDegree_smul_le _ _).trans (totalDegree_H_le p q)
   have h := norm_dilate_sq_le _ hdeg hL hτ0 hτ1 hrate
-  rw [polynomialLp_normalized_H (p, q), orthonormal_hvec.norm_eq_one, one_pow, one_mul] at h
-  exact h
+  rwa [polynomialLp_normalized_H (p, q), orthonormal_hvec.norm_eq_one, one_pow, one_mul] at h
 
 end
 

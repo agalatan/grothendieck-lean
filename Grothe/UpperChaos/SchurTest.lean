@@ -104,8 +104,6 @@ theorem lintegral_le (P : X → X → ℝ≥0∞) (hPm : Measurable (Function.un
           rw [lintegral_add_left (by fun_prop)]
       _ = A + A := by rw [hB]
       _ = 2 * A := by ring
-  have : ∫⁻ x, ∫⁻ z, a x * a z * P x z ∂μ ∂μ ≤ A :=
-    (ENNReal.mul_le_mul_iff_right (by norm_num) (by simp)).1 h2
-  exact this.trans hAle
+  exact ((ENNReal.mul_le_mul_iff_right (by norm_num) (by simp)).1 h2).trans hAle
 
 end Grothe.UpperChaos.SchurTest

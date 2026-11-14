@@ -138,15 +138,15 @@ include hAB
 def remd (u : L2G n) : L2G n := u - A.starProjection u - B.starProjection u
 
 lemma inner_projA_projB (a b : L2G n) : inner ℂ (A.starProjection a) (B.starProjection b) = 0 := by
-  have ha : A.starProjection a ∈ Bᗮ := hAB (by rw [Submodule.starProjection_apply]; exact Submodule.coe_mem _)
-  have hb : B.starProjection b ∈ B := by rw [Submodule.starProjection_apply]; exact Submodule.coe_mem _
-  rw [← inner_conj_symm, (Submodule.mem_orthogonal _ _).1 ha _ hb, map_zero]
+  have ha : A.starProjection a ∈ Bᗮ := hAB (A.starProjection_apply_mem a)
+  rw [← inner_conj_symm, (Submodule.mem_orthogonal _ _).1 ha _ (B.starProjection_apply_mem b),
+    map_zero]
 
 omit hAB in
 lemma inner_proj_proj_self (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] (a b : L2G n) :
     inner ℂ (K.starProjection a) (K.starProjection b) = inner ℂ (K.starProjection a) b := by
-  rw [← Submodule.inner_starProjection_left_eq_right, Submodule.starProjection_eq_self_iff.2
-    (by rw [Submodule.starProjection_apply]; exact Submodule.coe_mem _)]
+  rw [← Submodule.inner_starProjection_left_eq_right,
+    Submodule.starProjection_eq_self_iff.2 (K.starProjection_apply_mem a)]
 
 lemma inner_projA_remd (a b : L2G n) : inner ℂ (A.starProjection a) (remd A B b) = 0 := by
   rw [remd, inner_sub_right, inner_sub_right, inner_proj_proj_self, inner_projA_projB A B hAB]
@@ -272,7 +272,7 @@ lemma norm_oneL : ‖oneL n‖ = 1 := by
   rw [e] at h
   have h2' : ((‖oneL n‖ ^ 2 : ℝ) : ℂ) = 1 := by rw [Complex.ofReal_pow]; exact h.symm
   have h2 : ‖oneL n‖ ^ 2 = 1 := by exact_mod_cast h2'
-  nlinarith [norm_nonneg (oneL n)]
+  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2
 
 lemma inner_oneL (u : L2G n) : inner ℂ (oneL n) u = ∫ y, u y ∂(stdGaussian (n + n)) := by
   rw [inner_L2]

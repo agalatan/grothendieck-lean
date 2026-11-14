@@ -59,10 +59,8 @@ theorem integral_taylorInnerSource_kernel_rot {f : ℂ × ℂ → ℂ} (hf : Cha
   calc
     _ = ∫ w : ℂ, taylorInnerSource j f (c * z, c * w) *
         Haag.phaseLaplaceKernel (basePhaseArgument (c * z, c * w)) t ∂gaussC := h.symm
-    _ = _ := by
-      apply integral_congr_ae
-      filter_upwards [] with w
-      exact taylorSource_kernel_rot hf j t c (z, w) hc
+    _ = _ := integral_congr_ae <| Filter.Eventually.of_forall fun w ↦
+      taylorSource_kernel_rot hf j t c (z, w) hc
 
 /-- The finite conditional Wick evaluator is radial, including at zero. -/
 theorem taylorConditionalWick_rot (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
@@ -81,20 +79,16 @@ theorem taylorConditionalWick_eq_norm (j N : ℕ) (a : ℕ → ℕ → ℕ → �
       taylorConditionalWick j N a t (‖z‖ : ℂ) := by
   by_cases hz : z = 0
   · simp [hz]
-  · have hn : (‖z‖ : ℂ) ≠ 0 := by
-      exact_mod_cast (norm_ne_zero_iff.mpr hz)
+  · have hn : (‖z‖ : ℂ) ≠ 0 := by exact_mod_cast (norm_ne_zero_iff.mpr hz)
     let c : ℂ := z / (‖z‖ : ℂ)
     have hc : ‖c‖ = 1 := by
       dsimp only [c]
       rw [norm_div, Complex.norm_real, Real.norm_eq_abs,
         abs_of_nonneg (norm_nonneg z)]
       exact div_self (norm_ne_zero_iff.mpr hz)
-    have he : c * (‖z‖ : ℂ) = z := by
-      dsimp only [c]
-      exact div_mul_cancel₀ z hn
+    have he : c * (‖z‖ : ℂ) = z := div_mul_cancel₀ z hn
     have h := taylorConditionalWick_rot j N a t ht c (‖z‖ : ℂ) hc
-    rw [he] at h
-    exact h
+    rwa [he] at h
 
 end
 end Grothe.UpperChaos

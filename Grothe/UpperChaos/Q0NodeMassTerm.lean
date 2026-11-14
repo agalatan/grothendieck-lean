@@ -37,8 +37,8 @@ node and weight enclosures have independently been proved. -/
 theorem valid_weighted_node_bound (r : Row) (h : valid r = true)
     {s w : ℝ} (hnode : (r.nodeLower : ℝ) / 10^9 ≤ s)
     (hw : 0 ≤ w) (hweight : w ≤ (r.weightUpper : ℝ) / 10^12) :
-    w * Real.exp (-s) ≤ (r.termUpper : ℝ) / 10^18 := by
-  exact (Q0NodeMassMajorant.weighted_node_le (by positivity) hnode hw hweight).trans
+    w * Real.exp (-s) ≤ (r.termUpper : ℝ) / 10^18 :=
+  (Q0NodeMassMajorant.weighted_node_le (by positivity) hnode hw hweight).trans
     (valid_real_bound r h)
 
 /-- Add all checked row bounds, retaining every list occurrence. -/

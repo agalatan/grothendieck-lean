@@ -60,15 +60,14 @@ theorem two_circle_cauchy (g : ℂ → E) {ρ : ℝ} (hρ : 1 < ρ)
     intro w hw
     simp only [Set.mem_sdiff, mem_closedBall, dist_zero_right, mem_ball, not_lt] at hw
     exact (hg w hw.2 hw.1).continuousAt.continuousWithinAt
-  have hcF : ContinuousOn F (closedBall (0 : ℂ) ρ \ ball 0 ρ⁻¹) := by
-    apply continuousOn_id.smul
-    exact (continuousOn_dslope hnhd).mpr ⟨hgcont, hgζ⟩
+  have hcF : ContinuousOn F (closedBall (0 : ℂ) ρ \ ball 0 ρ⁻¹) :=
+    continuousOn_id.smul ((continuousOn_dslope hnhd).mpr ⟨hgcont, hgζ⟩)
   have hdF : ∀ z ∈ (ball (0 : ℂ) ρ \ closedBall 0 ρ⁻¹) \ {ζ}, DifferentiableAt ℂ F z := by
     intro z hz
     simp only [Set.mem_sdiff, mem_ball, dist_zero_right, mem_closedBall, not_le,
       Set.mem_singleton_iff] at hz
-    apply differentiableAt_id.smul
-    exact (differentiableAt_dslope_of_ne hz.2).mpr (hg z hz.1.2.le hz.1.1.le)
+    exact differentiableAt_id.smul
+      ((differentiableAt_dslope_of_ne hz.2).mpr (hg z hz.1.2.le hz.1.1.le))
   have hann := circleIntegral_sub_center_inv_smul_eq_of_differentiable_on_annulus_off_countable
     hρi0 hle (Set.countable_singleton ζ) hcF hdF
   -- on both circles, `w⁻¹ • F w = (w − ζ)⁻¹ • g w − (w − ζ)⁻¹ • g ζ`
@@ -98,9 +97,8 @@ theorem two_circle_cauchy (g : ℂ → E) {ρ : ℝ} (hρ : 1 < ρ)
     intro w hw
     rw [mem_sphere, dist_zero_right] at hw
     exact (hg w (hw ▸ hR2) (hw ▸ hR3)).continuousAt.continuousWithinAt
-  have hint2 : ∀ R : ℝ, 0 < R → R ≠ 1 → CircleIntegrable (fun w => (w - ζ)⁻¹ • g ζ) 0 R := by
-    intro R hR hR1
-    exact ContinuousOn.circleIntegrable hR.le ((hinvc R hR1).smul continuousOn_const)
+  have hint2 : ∀ R : ℝ, 0 < R → R ≠ 1 → CircleIntegrable (fun w => (w - ζ)⁻¹ • g ζ) 0 R :=
+    fun R hR hR1 => ContinuousOn.circleIntegrable hR.le ((hinvc R hR1).smul continuousOn_const)
   rw [circleIntegral.integral_sub (hint ρ hρ0 hρ.ne' hle le_rfl) (hint2 ρ hρ0 hρ.ne'),
     circleIntegral.integral_sub (hint ρ⁻¹ hρi0 hρi.ne le_rfl hle) (hint2 ρ⁻¹ hρi0 hρi.ne),
     circleIntegral.integral_smul_const, circleIntegral.integral_smul_const,
@@ -123,8 +121,7 @@ theorem two_circle_cauchy (g : ℂ → E) {ρ : ℝ} (hρ : 1 < ρ)
 /-- The outer geometric expansion: `(w − ζ)⁻¹ = Σ_{k<N} ζ^k w^{−k−1} + (ζ/w)^N (w − ζ)⁻¹`. -/
 lemma inv_sub_outer {w ζ : ℂ} (hw : w ≠ 0) (hwζ : w ≠ ζ) (N : ℕ) :
     (w - ζ)⁻¹ = ∑ k ∈ Finset.range N, ζ ^ k * (w ^ (k + 1))⁻¹ + (ζ / w) ^ N * (w - ζ)⁻¹ := by
-  have hx : ζ / w ≠ 1 := by
-    intro h; apply hwζ; rw [div_eq_one_iff_eq hw] at h; exact h.symm
+  have hx : ζ / w ≠ 1 := fun h => hwζ ((div_eq_one_iff_eq hw).mp h).symm
   have hsum : ∑ k ∈ Finset.range N, ζ ^ k * (w ^ (k + 1))⁻¹ =
       w⁻¹ * ∑ k ∈ Finset.range N, (ζ / w) ^ k := by
     rw [Finset.mul_sum]
@@ -141,8 +138,7 @@ lemma inv_sub_outer {w ζ : ℂ} (hw : w ≠ 0) (hwζ : w ≠ ζ) (N : ℕ) :
 /-- The inner geometric expansion: `(w − ζ)⁻¹ = −Σ_{k<N} w^k ζ^{−k−1} + (w/ζ)^N (w − ζ)⁻¹`. -/
 lemma inv_sub_inner {w ζ : ℂ} (hζ : ζ ≠ 0) (hwζ : w ≠ ζ) (N : ℕ) :
     (w - ζ)⁻¹ = -∑ k ∈ Finset.range N, w ^ k * (ζ ^ (k + 1))⁻¹ + (w / ζ) ^ N * (w - ζ)⁻¹ := by
-  have hy : w / ζ ≠ 1 := by
-    intro h; apply hwζ; rw [div_eq_one_iff_eq hζ] at h; exact h
+  have hy : w / ζ ≠ 1 := fun h => hwζ ((div_eq_one_iff_eq hζ).mp h)
   have hsum : ∑ k ∈ Finset.range N, w ^ k * (ζ ^ (k + 1))⁻¹ =
       ζ⁻¹ * ∑ k ∈ Finset.range N, (w / ζ) ^ k := by
     rw [Finset.mul_sum]
@@ -227,12 +223,7 @@ theorem norm_sub_laurentTrunc_le (g : ℂ → E) {ρ : ℝ} (hρ : 1 < ρ)
     rw [circleIntegral.integral_add _ hr, circleIntegral.integral_fun_sum hk]
     · simp_rw [circleIntegral.integral_smul]
       rfl
-    · apply ContinuousOn.circleIntegrable hρ0.le
-      apply continuousOn_finsetSum
-      intro k hk'
-      apply continuousOn_const.smul
-      apply ContinuousOn.smul _ (hgc ρ (Or.inl rfl))
-      exact (continuousOn_id.pow _).inv₀ (fun w hw => pow_ne_zero _ (hne0 ρ hρ0 w hw))
+    · exact CircleIntegrable.fun_sum _ hk
   -- inner circle
   set Iin := ∮ w in C(0, ρ⁻¹), ((w / ζ) ^ (N - 1) * (w - ζ)⁻¹) • g w with hIin
   set Sin := ∑ k ∈ Finset.range (N - 1), (ζ ^ (k + 1))⁻¹ • ∮ w in C(0, ρ⁻¹), w ^ k • g w
@@ -264,22 +255,15 @@ theorem norm_sub_laurentTrunc_le (g : ℂ → E) {ρ : ℝ} (hρ : 1 < ρ)
     rw [circleIntegral.integral_sub hr, circleIntegral.integral_fun_sum hk]
     · simp_rw [circleIntegral.integral_smul]
       rfl
-    · apply ContinuousOn.circleIntegrable hρi0.le
-      apply continuousOn_finsetSum
-      intro k _
-      exact continuousOn_const.smul ((continuousOn_id.pow _).smul (hgc ρ⁻¹ (Or.inr rfl)))
+    · exact CircleIntegrable.fun_sum _ hk
   -- the truncation
   have h2pi : (2 * π * I : ℂ) ≠ 0 := by simp [Real.pi_ne_zero, I_ne_zero]
   have hP : (2 * π * I : ℂ) • laurentTrunc g ρ N ζ = Sout + Sin := by
     unfold laurentTrunc outerCoeff innerCoeff
     rw [smul_add, Finset.smul_sum, Finset.smul_sum]
     congr 1
-    · apply Finset.sum_congr rfl
-      intro k _
-      rw [smul_comm, smul_inv_smul₀ h2pi]
-    · apply Finset.sum_congr rfl
-      intro k _
-      rw [smul_comm, smul_inv_smul₀ h2pi]
+    · exact Finset.sum_congr rfl fun k _ => by rw [smul_comm, smul_inv_smul₀ h2pi]
+    · exact Finset.sum_congr rfl fun k _ => by rw [smul_comm, smul_inv_smul₀ h2pi]
   have hdiff : g ζ - laurentTrunc g ρ N ζ = (2 * π * I : ℂ)⁻¹ • (Iout - Iin) := by
     apply (smul_right_injective E h2pi)
     simp only
@@ -292,7 +276,7 @@ theorem norm_sub_laurentTrunc_le (g : ℂ → E) {ρ : ℝ} (hρ : 1 < ρ)
   have hbout : ‖Iout‖ ≤ 2 * π * ρ * ((ρ⁻¹) ^ N * (ρ - 1)⁻¹ * M) := by
     apply circleIntegral.norm_integral_le_of_norm_le_const hρ0.le
     intro w hw
-    have hw' : ‖w‖ = ρ := by rw [mem_sphere, dist_zero_right] at hw; exact hw
+    have hw' : ‖w‖ = ρ := mem_sphere_zero_iff_norm.mp hw
     have hd : ρ - 1 ≤ ‖w - ζ‖ := by
       have := norm_sub_norm_le w ζ
       rw [hw', hζ] at this; exact this
@@ -303,7 +287,7 @@ theorem norm_sub_laurentTrunc_le (g : ℂ → E) {ρ : ℝ} (hρ : 1 < ρ)
   have hbin : ‖Iin‖ ≤ 2 * π * ρ⁻¹ * ((ρ⁻¹) ^ (N - 1) * (1 - ρ⁻¹)⁻¹ * M) := by
     apply circleIntegral.norm_integral_le_of_norm_le_const hρi0.le
     intro w hw
-    have hw' : ‖w‖ = ρ⁻¹ := by rw [mem_sphere, dist_zero_right] at hw; exact hw
+    have hw' : ‖w‖ = ρ⁻¹ := mem_sphere_zero_iff_norm.mp hw
     have hd : 1 - ρ⁻¹ ≤ ‖w - ζ‖ := by
       have := norm_sub_norm_le ζ w
       rw [hw', hζ, norm_sub_rev] at this; exact this
@@ -464,12 +448,9 @@ theorem gauss_remainder_ellipse {n : ℕ} (hn : 0 < n) (l h : ℝ) (hlh : l < h)
     unfold ellipsePt
     fun_prop (disch := exact hw0)
   have hMg : ∀ w : ℂ, ‖w‖ = ρ ∨ ‖w‖ = ρ⁻¹ → ‖g w‖ ≤ M := by
-    intro w hw
-    rcases hw with hw | hw
+    rintro w (hw | hw)
     · exact hM w hw
-    · have : ‖w⁻¹‖ = ρ := by rw [norm_inv, hw, inv_inv]
-      have h := hM w⁻¹ this
-      simp only [hgdef]
+    · have h := hM w⁻¹ (by rw [norm_inv, hw, inv_inv])
       rwa [ellipsePt_inv] at h
   set ε : ℝ := 2 * M * (ρ⁻¹) ^ N / (1 - ρ⁻¹) with hε
   set Q : ℝ → E := fun s => chebApprox g ρ N ((s - c₀) / r) with hQ
@@ -531,8 +512,7 @@ theorem gauss_remainder_ellipse {n : ℕ} (hn : 0 < n) (l h : ℝ) (hlh : l < h)
   have hsumint : ∀ (S : Finset ℕ) (p : ℕ → Polynomial ℝ) (e : ℕ → E),
       IntervalIntegrable (fun s : ℝ => ∑ k ∈ S, (((p k).eval s : ℝ) : ℂ) • e k) volume l h := by
     intro S p e
-    have := IntervalIntegrable.sum S (fun k _ => hpolyint (p k) (e k))
-    simpa only [Finset.sum_fn] using this
+    simpa only [Finset.sum_fn] using IntervalIntegrable.sum S (fun k _ => hpolyint (p k) (e k))
   have hexQ : ∫ s in l..h, Q s = ∑ i, (weight i : ℂ) • Q (node i) := by
     simp_rw [hQsum]
     rw [intervalIntegral.integral_add, intervalIntegral.integral_finsetSum,
@@ -540,14 +520,12 @@ theorem gauss_remainder_ellipse {n : ℕ} (hn : 0 < n) (l h : ℝ) (hlh : l < h)
     · simp_rw [smul_add, Finset.smul_sum]
       rw [Finset.sum_add_distrib, Finset.sum_comm, Finset.sum_comm (s := Finset.univ)]
       congr 1
-      · apply Finset.sum_congr rfl
-        intro k hk
-        exact integral_poly_smul_eq l h node weight hexact _ (hdeg1 k hk) _
-      · apply Finset.sum_congr rfl
-        intro k hk
-        exact integral_poly_smul_eq l h node weight hexact _ (hdeg2 k hk) _
-    · intro k _; exact hpolyint _ _
-    · intro k _; exact hpolyint _ _
+      · exact Finset.sum_congr rfl fun k hk =>
+          integral_poly_smul_eq l h node weight hexact _ (hdeg1 k hk) _
+      · exact Finset.sum_congr rfl fun k hk =>
+          integral_poly_smul_eq l h node weight hexact _ (hdeg2 k hk) _
+    · exact fun k _ => hpolyint _ _
+    · exact fun k _ => hpolyint _ _
     · exact hsumint _ _ _
     · exact hsumint _ _ _
   have hball : ∀ s ∈ Set.Icc l h, DifferentiableAt ℂ f (s : ℂ) := by
@@ -561,12 +539,7 @@ theorem gauss_remainder_ellipse {n : ℕ} (hn : 0 < n) (l h : ℝ) (hlh : l < h)
     intro s hs
     exact ((hball s hs).continuousAt.comp Complex.continuous_ofReal.continuousAt).continuousWithinAt
   have hQint : IntervalIntegrable Q volume l h := by
-    have : Q = fun s => (∑ k ∈ Finset.range N,
-        (((affPoly (Polynomial.Chebyshev.T ℝ k) c₀ r).eval s : ℝ) : ℂ) • outerCoeff g ρ k) +
-        ∑ k ∈ Finset.range (N - 1),
-          (((affPoly (Polynomial.Chebyshev.T ℝ ((k + 1 : ℕ) : ℤ)) c₀ r).eval s : ℝ) : ℂ) •
-            innerCoeff g ρ k := funext hQsum
-    rw [this]
+    rw [show Q = _ from funext hQsum]
     exact (hsumint _ _ _).add (hsumint _ _ _)
   have hdiff : (∫ s in l..h, f s) - ∑ i, (weight i : ℂ) • f (node i) =
       (∫ s in l..h, (f s - Q s)) + ∑ i, (weight i : ℂ) • (Q (node i) - f (node i)) := by

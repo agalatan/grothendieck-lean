@@ -125,16 +125,14 @@ theorem D_le_span_H (n : ℕ) : D n ≤ Hspan n := by
         simpa [H_zero_zero] using H_mem_Hspan (p := 0) (q := 0) (Nat.zero_le n)
       · have hlow : H a b - X 0 ^ a * X 1 ^ b ∈ Hspan n :=
           Hspan_mono (by omega) (ih (a + b - 1) (by omega) (H_sub_monomial_mem a b h0))
-        have e : (X 0 ^ a * X 1 ^ b : CPoly) = H a b - (H a b - X 0 ^ a * X 1 ^ b) := by ring
-        rw [e]
+        rw [← sub_sub_cancel (H a b) (X 0 ^ a * X 1 ^ b)]
         exact Submodule.sub_mem _ (H_mem_Hspan hab) hlow
     intro f hf
     rw [f.as_sum]
     refine Submodule.sum_mem _ fun s hs => ?_
     rw [mem_restrictTotalDegree] at hf
     have hdeg : s 0 + s 1 ≤ n := by
-      have := (le_totalDegree hs).trans hf
-      simpa [Finsupp.sum_fintype, Fin.sum_univ_two] using this
+      simpa [Finsupp.sum_fintype, Fin.sum_univ_two] using (le_totalDegree hs).trans hf
     rw [monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two, ← smul_eq_C_mul]
     exact Submodule.smul_mem _ _ (hmon _ _ hdeg)
 

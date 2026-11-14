@@ -26,8 +26,8 @@ def hermiteCoeff (P : CPoly) (pq : ℕ × ℕ) : ℂ :=
 
 /-- The coefficient is the actual Gaussian integral against the conjugate basis function. -/
 theorem hermiteCoeff_eq_integral (P : CPoly) (pq : ℕ × ℕ) :
-    hermiteCoeff P pq = ∫ w, conj (hfun pq w) * ev w P ∂gaussC := by
-  exact inner_toLp (memLp_hfun pq) (memLp_ev P)
+    hermiteCoeff P pq = ∫ w, conj (hfun pq w) * ev w P ∂gaussC :=
+  inner_toLp (memLp_hfun pq) (memLp_ev P)
 
 @[simp]
 lemma hermiteCoeff_zero (pq : ℕ × ℕ) : hermiteCoeff 0 pq = 0 := by
@@ -74,13 +74,7 @@ theorem normalized_expansion (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N) :
   have hcoeff (pq : ℕ × ℕ) (hpq : pq ∈ indices N) : hermiteCoeff P pq = a pq := by
     rw [← ha, hermiteCoeff_sum_normalized_H]
     simp [hpq]
-  calc
-    ∑ pq ∈ indices N, hermiteCoeff P pq • ((nrm pq.1 pq.2 : ℂ) • H pq.1 pq.2) =
-        ∑ pq ∈ indices N, a pq • ((nrm pq.1 pq.2 : ℂ) • H pq.1 pq.2) := by
-      apply Finset.sum_congr rfl
-      intro pq hpq
-      rw [hcoeff pq hpq]
-    _ = P := ha
+  exact (Finset.sum_congr rfl fun pq hpq ↦ by rw [hcoeff pq hpq]).trans ha
 
 /-- A polynomial has no Hermite coefficient above its total-degree bound. -/
 theorem hermiteCoeff_eq_zero_of_degree_lt (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N)
@@ -98,8 +92,8 @@ theorem eval_eq_sum_hermiteCoeff (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N
     (z₁ z₂ : ℂ) :
     eval ![z₁, z₂] P =
       ∑ pq ∈ indices N, hermiteCoeff P pq * normalizedHf pq.1 pq.2 z₁ z₂ := by
-  have h := congrArg (eval ![z₁, z₂]) (normalized_expansion P hP)
-  simpa only [map_sum, smul_eval, eval_H, normalizedHf] using h.symm
+  simpa only [map_sum, smul_eval, eval_H, normalizedHf] using
+    (congrArg (eval ![z₁, z₂]) (normalized_expansion P hP)).symm
 
 /-- Evaluation on the Gaussian plane is the finite sum of the normalized Hermite functions. -/
 theorem ev_eq_sum_hermiteCoeff (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N) (z : ℂ) :
@@ -115,8 +109,7 @@ theorem sum_norm_hermiteCoeff_sq (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N
         polynomialLp (hermiteCoeff P pq • ((nrm pq.1 pq.2 : ℂ) • H pq.1 pq.2)) =
           hermiteCoeff P pq • hvec pq := by
       rw [map_smul, polynomialLp_normalized_H]
-    have h := congrArg polynomialLp (normalized_expansion P hP)
-    simpa only [map_sum, hterm] using h
+    simpa only [map_sum, hterm] using congrArg polynomialLp (normalized_expansion P hP)
   rw [← hLp, norm_sum_hvec_sq]
 
 end

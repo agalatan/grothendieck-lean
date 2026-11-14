@@ -28,8 +28,7 @@ theorem gaussRaw_eq_sum_address (k j cIdx : ℕ) :
       ∑ a : Address, nodeTerm (sourceNode a) (sourceWeight a) (addressCutoff a) 0 251 k j cIdx := by
   unfold gaussRaw
   rw [sum_partitionSpecs]
-  apply Finset.sum_congr rfl
-  intro a _
+  refine Finset.sum_congr rfl fun a _ => ?_
   unfold specTerm
   rw [specNode_rootOf, specWeight_rootOf]
   rfl
@@ -59,8 +58,7 @@ lemma norm_cvecOf_sq (v : ℕ → ℕ → ℕ → ℂ) :
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
   simp only [cvecOf, PiLp.toLp_apply]
   rw [Fintype.sum_sigma, ← sum_bounded_graded_eq_range 251 (fun q c d => ‖v q c d‖ ^ 2)]
-  apply Finset.sum_congr rfl
-  intro q _
+  refine Finset.sum_congr rfl fun q _ => ?_
   rw [Fintype.sum_prod_type]
 
 lemma cvecOf_add (v w : ℕ → ℕ → ℕ → ℂ) :
@@ -70,9 +68,7 @@ lemma cvecOf_add (v w : ℕ → ℕ → ℕ → ℂ) :
 lemma norm_cvecOf_le_of_sq_le {v : ℕ → ℕ → ℕ → ℂ} {b : ℝ} (hb : 0 ≤ b)
     (h : ∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
       ‖v q c d‖ ^ 2 ≤ b ^ 2) : ‖cvecOf v‖ ≤ b := by
-  apply le_of_sq_le_sq _ hb
-  rw [norm_cvecOf_sq]
-  exact h
+  exact le_of_sq_le_sq ((norm_cvecOf_sq v).trans_le h) hb
 
 /-- **The Gauss–Legendre remainder hypothesis (part (Q), open)**: on the covered set (the panels), the
 F0 coefficients and the exact Gauss sums of the partition without the cutoffs differ by at most
@@ -102,9 +98,8 @@ theorem quadHyp_of_parts
     rw [Tail.baseGradedCoefficient_eq_part_add Tail.measurableSet_tailSet q c d]
     push_cast
     ring
-  have hT : ‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSet q c d)‖ ≤ 4 / 10 ^ 16 := by
-    apply norm_cvecOf_le_of_sq_le (by norm_num)
-    exact Tail.norm_tail_sq_le.trans (by norm_num)
+  have hT : ‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSet q c d)‖ ≤ 4 / 10 ^ 16 :=
+    norm_cvecOf_le_of_sq_le (by norm_num) (Tail.norm_tail_sq_le.trans (by norm_num))
   have hQ' : ‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSetᶜ q c d -
       ((gaussCoeffFull partitionSpecs rootOf q c d : ℝ) : ℂ))‖ ≤ 15 / 10 ^ 13 :=
     norm_cvecOf_le_of_sq_le (by norm_num) hQ
@@ -128,7 +123,6 @@ theorem quadHyp_of_parts
     funext q c d
     exact hsplit q c d
   rw [← norm_cvecOf_sq, hv]
-  have hρ0 : (0 : ℝ) ≤ (Facts.rhoQ : ℝ) := by norm_num [Facts.rhoQ]
   apply pow_le_pow_left₀ (norm_nonneg _) _ 2
   calc ‖_ + (_ + _)‖ ≤ ‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSet q c d)‖ +
         (‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSetᶜ q c d -

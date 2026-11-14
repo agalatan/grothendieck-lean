@@ -75,8 +75,7 @@ lemma mem_seedSeries (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {x : ℝ} {xI : Ival} (h
   have h1 : mem (seedTerm x 0) (ofInt P 1) := by rw [seedTerm_zero]; exact mem_one P
   have h2 : mem (∑ n ∈ Finset.range (0 + 1), seedTerm x n) (ofInt P 1) := by
     simp [seedTerm_zero]; exact mem_one P
-  have := seedLoop_sound P hP hneg N 0 _ _ h1 h2
-  simpa [seedSeries] using this
+  simpa [seedSeries] using seedLoop_sound P hP hneg N 0 _ _ h1 h2
 
 lemma mem_seedNext (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {x : ℝ} {xI : Ival} (hx0 : 0 ≤ x) (hx : mem x xI) :
     mem (seedTerm x (N + 1)) (seedNext P N xI) := by
@@ -98,9 +97,7 @@ lemma mem_seedJ0SeriesI (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {x J : ℝ} {xI : Iva
     mem J (seedJ0SeriesI P N xI) := by
   have hden : mem ((N : ℝ) + 3 - x) (seedDen P N xI) := by
     unfold seedDen
-    have := mem_subI P (mem_ofNat P (N + 3)) (mem_clampI hx0 hx)
-    push_cast at this
-    exact this
+    exact_mod_cast mem_subI P (mem_ofNat P (N + 3)) (mem_clampI hx0 hx)
   have hpos : (0 : ℝ) < (N : ℝ) + 3 - x := pos_of_isPos hv hden
   have hU : mem ((N + 3 : ℕ) * bval (seedNext P N xI)) (mulN P (N + 3) (absUpper (seedNext P N xI))) :=
     mem_mulN P (N + 3) (mem_absUpper _)
@@ -117,11 +114,7 @@ lemma mem_seedJ0SeriesI (P : ℕ) (hP : 1 ≤ P) (N : ℕ) {x J : ℝ} {xI : Iva
       push_cast
       rw [mul_div_assoc', div_le_div_iff_of_pos_right hpos]
       nlinarith [bval_nonneg (seedNext P N xI), abs_nonneg (seedTerm x (N + 1))]
-    calc _ ≤ _ := hJ
-      _ ≤ (N + 3 : ℕ) * bval (seedNext P N xI) / ((N : ℝ) + 3 - x) := hTv
-      _ ≤ |(N + 3 : ℕ) * bval (seedNext P N xI) / ((N : ℝ) + 3 - x)| := le_abs_self _
-      _ ≤ _ := hb
-  have := mem_widen P (mem_seedSeries P hP N hx0 hx).1 hy
-  simpa using this
+    exact hJ.trans (hTv.trans ((le_abs_self _).trans hb))
+  simpa using mem_widen P (mem_seedSeries P hP N hx0 hx).1 hy
 
 end Grothe.UpperQuad

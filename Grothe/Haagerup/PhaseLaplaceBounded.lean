@@ -25,11 +25,10 @@ theorem norm_phaseLaplaceKernel_le (z : ℂ) (t : ℝ) (ht : 0 < t) :
   have hxexp : (‖z‖ ^ 2 * t) * Real.exp (-(‖z‖ ^ 2 * t)) ≤ 1 := by
     have hx : ‖z‖ ^ 2 * t ≤ Real.exp (‖z‖ ^ 2 * t) := by
       linarith [Real.add_one_le_exp (‖z‖ ^ 2 * t)]
-    have h := mul_le_mul_of_nonneg_right hx he
-    simpa only [← Real.exp_add, add_neg_cancel, Real.exp_zero] using h
-  have hsq : ‖z‖ ^ 2 * Real.exp (-(‖z‖ ^ 2 * t)) ≤ 1 / t := by
-    apply (le_div_iff₀ ht).mpr
-    nlinarith [hxexp]
+    simpa only [← Real.exp_add, add_neg_cancel, Real.exp_zero] using
+      mul_le_mul_of_nonneg_right hx he
+  have hsq : ‖z‖ ^ 2 * Real.exp (-(‖z‖ ^ 2 * t)) ≤ 1 / t :=
+    (le_div_iff₀ ht).mpr (by nlinarith [hxexp])
   have hr : ‖z‖ ≤ 1 + ‖z‖ ^ 2 := by
     nlinarith [sq_nonneg (‖z‖ - (1 / 2 : ℝ))]
   have hprofile : Real.exp (-(‖z‖ ^ 2 * t)) * ‖z‖ ≤ 1 + 1 / t := by
@@ -51,9 +50,9 @@ theorem integrable_mul_phaseLaplaceKernel_at {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) {P f : Ω → ℂ} (hf : Measurable f) (hP : Integrable P μ)
     (t : ℝ) (ht : 0 < t) :
     Integrable (fun u => P u * phaseLaplaceKernel (f u) t) μ := by
-  apply hP.mul_bdd
+  exact hP.mul_bdd
     (measurable_phaseLaplaceKernel.comp (hf.prodMk measurable_const)).aestronglyMeasurable
-  exact Filter.Eventually.of_forall (fun u => norm_phaseLaplaceKernel_le (f u) t ht)
+    (Filter.Eventually.of_forall fun u => norm_phaseLaplaceKernel_le (f u) t ht)
 
 end
 end Grothe.Haag

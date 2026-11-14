@@ -52,8 +52,7 @@ theorem ellipsePt_re_im_le {l h : ℝ} (hlh : l ≤ h) {ρ : ℝ} (hρ : 1 < ρ)
     have : t * (t + t⁻¹) ≤ t * (ρ + ρ⁻¹) := by nlinarith
     exact le_of_mul_le_mul_left this ht0
   have hdiff : |t - t⁻¹| ≤ ρ - ρ⁻¹ := by
-    have h1' : t⁻¹ ≤ ρ := by
-      rw [inv_le_comm₀ ht0 hρ0]; exact h1
+    have h1' : t⁻¹ ≤ ρ := (inv_le_comm₀ ht0 hρ0).mpr h1
     have h2' : ρ⁻¹ ≤ t⁻¹ := inv_anti₀ ht0 h2
     rw [abs_le]; constructor <;> linarith
   constructor

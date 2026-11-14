@@ -104,11 +104,6 @@ namespace Grothe.LowerAnalytic
 noncomputable section
 
 lemma eval_bCP (j : ℕ) (z : ℂ) : (bCP j).eval z = Bfun j z := by
-  have hs : ((1 / √2 : ℝ) : ℂ) = 1 / ((√2 : ℝ) : ℂ) := by push_cast; ring
-  have h2 : ((√2 : ℝ) : ℂ) ≠ 0 := by exact_mod_cast (by positivity : (√2 : ℝ) ≠ 0)
-  have hsq : ((√2 : ℝ) : ℂ) * ((√2 : ℝ) : ℂ) = 2 := by
-    rw [← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num
-  have hn : ((Complex.normSq z : ℝ) : ℂ) = z * conj z := by rw [Complex.mul_conj]
   rcases j with _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | _ | j <;>
     simp only [bCP, Bfun, CP.eval_cons, CP.eval_nil, fB1, fB2, fB4] <;>
     simp only [KC.val, KQ.val, kInvSqrt2, KQ.zero, KQ.ofRat, KQ.neg, KC.ofRat, KC.I, KC.neg] <;>
@@ -153,13 +148,7 @@ lemma pow_mul_conj_pow (z : ℂ) (a b : ℕ) :
         Complex.conj_I]
       ring_nf
     rw [hc, mul_pow, ← Complex.exp_nat_mul]
-  rw [h1, h2]
-  have e : (‖z‖ : ℂ) ^ a * Complex.exp (a * (Complex.arg z * Complex.I))
-      * ((‖z‖ : ℂ) ^ b * Complex.exp (b * -(Complex.arg z * Complex.I)))
-      = ((‖z‖ : ℂ) ^ a * (‖z‖ : ℂ) ^ b)
-        * Complex.exp (a * (Complex.arg z * Complex.I) + b * -(Complex.arg z * Complex.I)) := by
-    rw [Complex.exp_add]; ring
-  rw [e, ← pow_add]
+  rw [h1, h2, mul_mul_mul_comm, ← Complex.exp_add, ← pow_add]
   push_cast
   congr 2
   ring

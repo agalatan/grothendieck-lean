@@ -211,15 +211,15 @@ theorem sweep_sound (Ψ : ℝ → ℝ) (smax σ : ℚ) (hσ : 0 < σ) (maj : Lis
             have e : ((n.2 - slope n n' * n.1 : ℚ) : ℝ) + ((slope n n' * σ : ℚ) : ℝ) * v
                 = n.2 + ((n'.2 : ℝ) - n.2) / (n'.1 - n.1) * (σ * v - n.1) := by
               simp only [slope]; push_cast; ring
-            rw [e]; exact h1
+            exact h1.trans_eq e.symm
           exact piece_ok k v (g v) _ _ _ _ _ hk' hgv hP hΨ
         · have hvh' : (st.1 : ℝ) ≤ v := not_lt.1 hvh
           have hst0 : 0 ≤ st.1 := hlo.trans hlt.le
           refine ih st.1 st.2.1 st.2.2.1 st.2.2.2 hrec hst0 ?_ ?_ ?_ v hvh'
           · intro m hm
             rcases s4 with h4 | ⟨h4, _⟩
-            · exact hcaps m (by rw [h4] at hm; exact hm)
-            · exact hcaps m (by rw [h4] at hm; exact List.mem_cons_of_mem _ hm)
+            · exact hcaps m (h4 ▸ hm)
+            · exact hcaps m (List.mem_cons_of_mem _ (h4 ▸ hm))
           · intro m hm
             rcases s4 with h4 | ⟨h4, h5⟩
             · rw [h4] at hm

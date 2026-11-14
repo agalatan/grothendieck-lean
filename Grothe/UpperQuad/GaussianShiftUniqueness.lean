@@ -42,18 +42,13 @@ theorem coefficient_eq_of_real_positive_coefficient (j : ℕ) (hj : 0 < j) (i : 
     (hJradial : ∀ r A, AnalyticAt ℂ (fun z ↦ J z A) r)
     (hreal : ∀ r a : ℝ, 0 < a → coefficient j (r : ℂ) a 0 i = J (r : ℂ) (a : ℂ))
     (r A : ℂ) : coefficient j r A.re A.im i = J r A := by
-  have hshift (s : ℝ) : (fun z ↦ coefficient j (s : ℂ) z.re z.im i) = J (s : ℂ) := by
-    apply eq_of_entire_of_eq_on_positive_reals
-    · exact fun z ↦ analyticAt_coefficient_shift j hj (s : ℂ) z i
-    · exact hJshift (s : ℂ)
-    · intro a ha
-      simpa only [Complex.ofReal_re, Complex.ofReal_im] using hreal s a ha
-  have hradial : (fun z ↦ coefficient j z A.re A.im i) = (fun z ↦ J z A) := by
-    apply eq_of_entire_of_eq_on_positive_reals
-    · exact fun z ↦ analyticAt_coefficient_radial j hj z A i
-    · exact fun z ↦ hJradial z A
-    · intro s _
-      exact congrFun (hshift s) A
+  have hshift (s : ℝ) : (fun z ↦ coefficient j (s : ℂ) z.re z.im i) = J (s : ℂ) :=
+    eq_of_entire_of_eq_on_positive_reals (fun z ↦ analyticAt_coefficient_shift j hj (s : ℂ) z i)
+      (hJshift (s : ℂ)) fun a ha ↦ by
+        simpa only [Complex.ofReal_re, Complex.ofReal_im] using hreal s a ha
+  have hradial : (fun z ↦ coefficient j z A.re A.im i) = (fun z ↦ J z A) :=
+    eq_of_entire_of_eq_on_positive_reals (fun z ↦ analyticAt_coefficient_radial j hj z A i)
+      (fun z ↦ hJradial z A) fun s _ ↦ congrFun (hshift s) A
   exact congrFun hradial r
 
 /-- The bare real integral uniquely identifies a separately entire common extension with
@@ -66,8 +61,8 @@ theorem coefficient_eq_of_real_positive (j : ℕ) (hj : 0 < j) (i : ℕ × ℕ)
       ∫ w, conj (hfun i w) * (I * (phiT ((r : ℂ), w) : ℂ)) ^ j *
         Haag.ph ((a : ℂ) + w) ∂gaussC)
     (r A : ℂ) : coefficient j r A.re A.im i = J r A := by
-  apply coefficient_eq_of_real_positive_coefficient j hj i hJshift hJradial
-    (fun s a ha ↦ (coefficient_real_zero j s a i).trans (hreal s a ha).symm)
+  exact coefficient_eq_of_real_positive_coefficient j hj i hJshift hJradial
+    (fun s a ha ↦ (coefficient_real_zero j s a i).trans (hreal s a ha).symm) r A
 
 end Grothe.UpperQuad.GaussianShift
 

@@ -27,47 +27,8 @@ theorem exists_disk_of_planGeomOK {lo hi : ℚ} {pl : EllCheck.Plan}
     (hgeo : EllCheck.planGeomOK lo hi pl = true) {w : ℂ}
     (h1 : (pl.rho : ℝ)⁻¹ ≤ ‖w‖) (h2 : ‖w‖ ≤ (pl.rho : ℝ)) :
     ∃ i : ℕ, i < pl.m ∧
-      ‖ellipsePt lo hi w - (EllCheck.diskCentre lo hi pl i : ℝ)‖ ≤ (pl.R : ℝ) := by
-  obtain ⟨hρ, hm, hR, hcov, -, -, hlh⟩ := EllCheck.planGeomOK_spec hgeo
-  have hR' : (0 : ℝ) ≤ pl.R := by exact_mod_cast hR
-  have hlh' : (lo : ℝ) < hi := by exact_mod_cast hlh
-  have hρ' : (1 : ℝ) < pl.rho := by exact_mod_cast hρ
-  obtain ⟨A, hA⟩ : ∃ A : ℝ, A = ((EllCheck.halfAxes lo hi pl).1 : ℝ) := ⟨_, rfl⟩
-  obtain ⟨B, hB⟩ : ∃ B : ℝ, B = ((EllCheck.halfAxes lo hi pl).2 : ℝ) := ⟨_, rfl⟩
-  have hAe : A = ((hi : ℝ) - lo) / 2 *
-      (((pl.rho : ℝ) + (pl.rho : ℝ)⁻¹) / 2) := by
-    rw [hA]
-    unfold EllCheck.halfAxes
-    push_cast
-    ring
-  have hBe : B = ((hi : ℝ) - lo) / 2 *
-      (((pl.rho : ℝ) - (pl.rho : ℝ)⁻¹) / 2) := by
-    rw [hB]
-    unfold EllCheck.halfAxes
-    push_cast
-    ring
-  have hA0 : 0 < A := by
-    rw [hAe]
-    have h1 : 0 < (pl.rho : ℝ) := by linarith
-    have h2 : 0 < ((hi : ℝ) - lo) / 2 := by linarith
-    positivity
-  have hm' : 0 < pl.m := by omega
-  have hcov' : (A / pl.m) ^ 2 + B ^ 2 ≤ (pl.R : ℝ) ^ 2 := by
-    rw [hA, hB]
-    exact_mod_cast hcov
-  obtain ⟨hre, him⟩ := ellipsePt_re_im_le hlh'.le hρ' h1 h2
-  rw [← hAe] at hre
-  rw [← hBe] at him
-  obtain ⟨i, hi', hiz⟩ := exists_disk_cover hA0 hm' hcov' hR' hre him
-  refine ⟨i, hi', ?_⟩
-  have hx : ((EllCheck.diskCentre lo hi pl i : ℚ) : ℝ) =
-      ((lo : ℝ) + hi) / 2 - A + 2 * A / pl.m * (i + 1 / 2) := by
-    unfold EllCheck.diskCentre
-    rw [hA]
-    push_cast
-    ring
-  rw [hx]
-  exact hiz
+      ‖ellipsePt lo hi w - (EllCheck.diskCentre lo hi pl i : ℝ)‖ ≤ (pl.R : ℝ) :=
+  EllCheck.planGeomOK_disk_cover hgeo h1 h2
 
 /-- Strict separation on all covering disks makes the actual profile nonzero on the ellipse. -/
 theorem vC_ne_zero_of_planGeomOK {lo hi : ℚ} {pl : EllCheck.Plan} {pos : Bool}

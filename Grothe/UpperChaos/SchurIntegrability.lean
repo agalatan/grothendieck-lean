@@ -117,6 +117,11 @@ lemma norm_gw_le {G : ℂ × ℂ → ℂ} (hG : ∀ u, ‖G u‖ ≤ 1) (hj : 0 
   rw [gw, norm_mul, Complex.norm_of_nonneg (phih_nonneg j hj Y)]
   exact mul_le_of_le_one_left (phih_nonneg j hj Y) (hG _)
 
+lemma measurable_gw {G : ℂ × ℂ → ℂ} (hGm : Measurable G) : Measurable (gw j G) := by
+  unfold gw
+  exact (hGm.comp (by unfold toC2; fun_prop : Continuous fun Y : V => toC2 Y.1 Y.2).measurable).mul
+    (Complex.measurable_ofReal.comp (continuous_phih j).measurable)
+
 lemma continuous_L1 : Continuous fun p : (ℝ × ℝ) × (ℝ × ℝ) => L1 B C p.1 p.2 := by
   unfold L1; simp only [Sym2C.form]; fun_prop
 
@@ -131,10 +136,7 @@ theorem integrable_tri (hZ : (Z B).PD) (hT : (T B C).PD) (hj : 0 < j) {G : ℂ �
     (hGm : Measurable G) (hG : ∀ u, ‖G u‖ ≤ 1) (c : ℂ) :
     Integrable (LstarL.tri (L4 B C c) (gw j G)) ((volume : Measure V).prod ((volume : Measure V).prod volume)) := by
   have hL := continuous_L1 B C
-  have hgm : Measurable (gw j G) := by
-    unfold gw
-    exact (hGm.comp (by unfold toC2; fun_prop : Continuous fun Y : V => toC2 Y.1 Y.2).measurable).mul
-      (Complex.measurable_ofReal.comp (continuous_phih j).measurable)
+  have hgm := measurable_gw j hGm
   have hL4 : Measurable fun p : V × V => L4 B C c p.1 p.2 := by
     unfold L4
     exact (measurable_const.mul ((hL.comp (by fun_prop : Continuous fun p : V × V => (p.1.1, p.2.1))).mul

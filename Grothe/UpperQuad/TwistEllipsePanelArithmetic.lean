@@ -60,10 +60,7 @@ private theorem maxFold_spec (f : Nat → Option Ival) (n : Nat) {acc : Ival}
   | zero =>
     simp only [List.range_zero, List.foldl_nil, Option.some.injEq] at h
     subst h
-    constructor
-    · norm_num [upperQ, zeroI]
-    · intro i hi
-      exact (Nat.not_lt_zero i hi).elim
+    exact ⟨by norm_num [upperQ, zeroI], fun i hi => (Nat.not_lt_zero i hi).elim⟩
   | succ n ih =>
     rw [foldl_range_succ] at h
     generalize hprev : (List.range n).foldl (fun a i ↦
@@ -80,18 +77,12 @@ private theorem maxFold_spec (f : Nat → Option Ival) (n : Nat) {acc : Ival}
         simp only [Option.some.injEq] at h
         subst h
         obtain ⟨ha0, hall⟩ := ih hprev
-        constructor
-        · rw [upperQ_maxUpper]
-          exact ha0.trans (le_max_left _ _)
-        · intro i hi
-          rcases Nat.lt_succ_iff_lt_or_eq.mp hi with hi | rfl
-          · obtain ⟨d, hd, hda⟩ := hall i hi
-            refine ⟨d, hd, ?_⟩
-            rw [upperQ_maxUpper]
-            exact hda.trans (le_max_left _ _)
-          · refine ⟨b, hd, ?_⟩
-            rw [upperQ_maxUpper]
-            exact le_max_right _ _
+        rw [upperQ_maxUpper]
+        refine ⟨ha0.trans (le_max_left _ _), fun i hi => ?_⟩
+        rcases Nat.lt_succ_iff_lt_or_eq.mp hi with hi | rfl
+        · obtain ⟨d, hd, hda⟩ := hall i hi
+          exact ⟨d, hd, hda.trans (le_max_left _ _)⟩
+        · exact ⟨b, hd, le_max_right _ _⟩
 
 /-- An accepted panel maximum contains every actual disk evaluation, each below its
 nonnegative upper endpoint. This statement needs no analytic interpretation of a disk result. -/
@@ -99,8 +90,8 @@ theorem panelM2_spec {g : Power} {cs : List Ival} {pos : Bool} {lo hi : ℚ}
     {pl : Plan} {mass : Ival} (h : panelM2 g cs pos lo hi pl = some mass) :
     0 ≤ upperQ mass ∧ ∀ i, i < pl.geometry.m → ∃ d,
       diskM2 g cs pos (EllCheck.diskCentre lo hi pl.geometry i) pl = some d ∧
-        upperQ d ≤ upperQ mass := by
-  exact maxFold_spec
+        upperQ d ≤ upperQ mass :=
+  maxFold_spec
     (fun i ↦ diskM2 g cs pos (EllCheck.diskCentre lo hi pl.geometry i) pl)
     pl.geometry.m h
 
@@ -111,9 +102,7 @@ theorem panelM2_disk_le {g : Power} {cs : List Ival} {pos : Bool} {lo hi : ℚ}
     (hd : diskM2 g cs pos (EllCheck.diskCentre lo hi pl.geometry i) pl = some d) :
     upperQ d ≤ upperQ mass := by
   obtain ⟨d', hd', hle⟩ := (panelM2_spec h).2 i hidx
-  have heq : d' = d := Option.some.inj (hd'.symm.trans hd)
-  subst d'
-  exact hle
+  rwa [Option.some.inj (hd'.symm.trans hd)] at hle
 
 /-- Any real value enclosed by an accepted disk is below the real panel upper endpoint. -/
 theorem panelM2_mem_le {g : Power} {cs : List Ival} {pos : Bool} {lo hi : ℚ}

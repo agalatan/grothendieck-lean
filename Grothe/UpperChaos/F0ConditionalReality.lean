@@ -43,7 +43,8 @@ theorem canonicalIntegrand_conj (A : ℝ) (i : ℕ × ℕ) (w : ℂ) :
   rw [he, phase_conj, hfun_conj_argument]
   simp only [map_mul, Complex.conj_conj]
 
-private theorem integral_conj_of_symmetric {f : ℂ → ℂ} (hf : Integrable f gaussC)
+/-- A conjugation-symmetric integrand has a real Gaussian integral. -/
+theorem integral_conj_of_symmetric {f : ℂ → ℂ} (hf : Integrable f gaussC)
     (hconj : ∀ w, f (conj w) = conj (f w)) :
     conj (∫ w, f w ∂gaussC) = ∫ w, f w ∂gaussC := by
   have hfm : AEStronglyMeasurable f (gaussC.map (fun z : ℂ => conj z)) := by
@@ -54,9 +55,8 @@ private theorem integral_conj_of_symmetric {f : ℂ → ℂ} (hf : Integrable f 
   rw [gaussC_map_conj] at hmap
   rw [← integral_conj]
   calc
-    (∫ w, conj (f w) ∂gaussC) = ∫ w, f (conj w) ∂gaussC := by
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall fun w => (hconj w).symm
+    (∫ w, conj (f w) ∂gaussC) = ∫ w, f (conj w) ∂gaussC :=
+      integral_congr_ae (Filter.Eventually.of_forall fun w => (hconj w).symm)
     _ = ∫ w, f w ∂gaussC := hmap.symm
 
 theorem canonicalCoefficient_conj (A : ℝ) (i : ℕ × ℕ) :
@@ -75,10 +75,8 @@ theorem canonicalCoefficient_im_eq_zero (A : ℝ) (i : ℕ × ℕ) :
   linarith
 
 theorem canonicalCoefficient_eq_ofReal_re (A : ℝ) (i : ℕ × ℕ) :
-    canonicalCoefficient A i = ((canonicalCoefficient A i).re : ℂ) := by
-  apply Complex.ext
-  · simp
-  · simp [canonicalCoefficient_im_eq_zero]
+    canonicalCoefficient A i = ((canonicalCoefficient A i).re : ℂ) :=
+  Complex.ext (by simp) (by simp [canonicalCoefficient_im_eq_zero])
 
 theorem norm_canonicalCoefficient_sub_real (A r : ℝ) (i : ℕ × ℕ) :
     ‖canonicalCoefficient A i - (r : ℂ)‖ = |(canonicalCoefficient A i).re - r| := by
@@ -118,10 +116,8 @@ theorem norm_coefficient_sub_real (s r : ℝ)
     ‖F0ConditionalNode.coefficient s i - (r : ℂ)‖ =
       |(F0ConditionalNode.coefficient s i).re - r| := by
   have he : F0ConditionalNode.coefficient s i =
-      ((F0ConditionalNode.coefficient s i).re : ℂ) := by
-    apply Complex.ext
-    · simp
-    · simp [coefficient_im_eq_zero s i]
+      ((F0ConditionalNode.coefficient s i).re : ℂ) :=
+    Complex.ext (by simp) (by simp [coefficient_im_eq_zero s i])
   rw [he, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]
 
 end

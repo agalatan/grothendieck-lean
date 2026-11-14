@@ -39,11 +39,10 @@ theorem Jext_eq_phaseExtension (j : ℕ) (r A : ℂ) (c d : ℕ) :
 theorem differentiable_Jext (j c d : ℕ) :
     Differentiable ℂ (fun z : ℂ × ℂ ↦ Jext j z.1 z.2 c d) := by
   unfold Jext
-  apply Differentiable.fun_sum
-  intro gh _
-  exact ((differentiable_matrixCoefficient j c d gh.1 gh.2).comp differentiable_fst).mul
-    ((QuadRem.differentiable_Uext gh.1 gh.2).comp
-      ((differentiable_const _).mul differentiable_snd))
+  exact Differentiable.fun_sum fun gh _ =>
+    ((differentiable_matrixCoefficient j c d gh.1 gh.2).comp differentiable_fst).mul
+      ((QuadRem.differentiable_Uext gh.1 gh.2).comp
+        ((differentiable_const _).mul differentiable_snd))
 
 /-- At a fixed radial parameter, the continuation is entire in the signed shift. -/
 theorem analyticAt_Jext_shift (j c d : ℕ) (r A : ℂ) :

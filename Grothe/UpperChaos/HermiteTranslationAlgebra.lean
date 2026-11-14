@@ -112,11 +112,7 @@ theorem shiftPath_coeff (P : CPoly) (k : ℕ) :
       shiftPath_eval_zero,
       zero_add, Nat.descFactorial_self, Nat.cast_smul_eq_nsmul] using hcoeff.symm
   have hk : (k.factorial : ℂ) ≠ 0 := by exact_mod_cast k.factorial_ne_zero
-  calc
-    (shiftPath P).coeff k =
-        ((k.factorial : ℂ)⁻¹) • ((k.factorial : ℂ) • (shiftPath P).coeff k) := by
-      rw [smul_smul, inv_mul_cancel₀ hk, one_smul]
-    _ = _ := by rw [h]
+  rw [← h, smul_smul, inv_mul_cancel₀ hk, one_smul]
 
 private theorem shiftPath_monomial_natDegree_le (m : Fin 2 →₀ ℕ) (a : ℂ) :
     (shiftPath (MvPolynomial.monomial m a)).natDegree ≤ m.sum (fun _ n ↦ n) := by
@@ -138,9 +134,8 @@ private theorem shiftPath_monomial_natDegree_le (m : Fin 2 →₀ ℕ) (a : ℂ)
 /-- Common translation introduces no path degree beyond the original total degree. -/
 theorem shiftPath_natDegree_le (P : CPoly) : (shiftPath P).natDegree ≤ P.totalDegree := by
   conv_lhs => rw [P.as_sum, map_sum]
-  apply Polynomial.natDegree_sum_le_of_forall_le
-  intro m hm
-  exact (shiftPath_monomial_natDegree_le m (P.coeff m)).trans (MvPolynomial.le_totalDegree hm)
+  exact Polynomial.natDegree_sum_le_of_forall_le _ _ fun m hm ↦
+    (shiftPath_monomial_natDegree_le m (P.coeff m)).trans (MvPolynomial.le_totalDegree hm)
 
 /-- The formal common shift is exactly the finite series through any total-degree bound. -/
 theorem simultaneousShift_eq_finiteTaylor_of_totalDegree
@@ -149,8 +144,7 @@ theorem simultaneousShift_eq_finiteTaylor_of_totalDegree
   have hd : (shiftPath P).natDegree < d + 1 :=
     lt_of_le_of_lt ((shiftPath_natDegree_le P).trans hP) (Nat.lt_succ_self d)
   rw [← shiftPath_eval, Polynomial.eval_eq_sum_range' hd, finiteTaylor]
-  apply Finset.sum_congr rfl
-  intro k _
+  refine Finset.sum_congr rfl fun k _ ↦ ?_
   rw [shiftPath_coeff]
   simp only [smul_eq_C_mul, div_eq_mul_inv, map_mul, map_pow]
   ring
@@ -166,9 +160,8 @@ theorem polynomialSpace_le_D (d : ℕ) : polynomialSpace d ≤ Grothe.UpperChaos
 theorem simultaneousShift_eq_finiteTaylor (d : ℕ) (δ : ℂ) (P : CPoly)
     (hP : P ∈ polynomialSpace d) :
     simultaneousShift δ P = finiteTaylor d δ P := by
-  apply simultaneousShift_eq_finiteTaylor_of_totalDegree d δ P
-  have hd := polynomialSpace_le_D d hP
-  rwa [MvPolynomial.mem_restrictTotalDegree] at hd
+  exact simultaneousShift_eq_finiteTaylor_of_totalDegree d δ P
+    ((MvPolynomial.mem_restrictTotalDegree ..).mp (polynomialSpace_le_D d hP))
 
 /-- Exact common substitution therefore has the Gaussian exponential norm bound. -/
 theorem norm_simultaneousShift_le (d : ℕ) (δ : ℂ) (P : CPoly)

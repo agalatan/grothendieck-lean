@@ -31,8 +31,6 @@ theorem unique_row_for_address (panels : List Panel) (rows : List Row) (n : ℕ)
   · intro s hs
     obtain ⟨is, hspanel, hsrule, hsindex⟩ := haddress s hs.1
     have his : is = i := Fin.ext (hspanel.symm.trans hs.2.1)
-    apply hunique s
-    refine ⟨hs.1, ?_⟩
-    simpa [his, hs.2.2] using hsindex
+    exact hunique s ⟨hs.1, by simpa [his, hs.2.2] using hsindex⟩
 
 end Grothe.UpperChaos.Q0GaussScheduleCoverage

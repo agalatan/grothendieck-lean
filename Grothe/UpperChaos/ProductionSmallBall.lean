@@ -31,9 +31,8 @@ theorem basePhaseArg_fibre_smallBall (z : ℂ) (r : ℝ) (hr : 0 ≤ r) :
       have hσ : 3 / 10 < σ := (profile_unit_bounds (‖z‖ ^ 2) (sq_nonneg _) hzsq).1
       have hσ0 : σ ≠ 0 := ne_of_gt (by linarith)
       have hb := affine_gaussian_smallBall z σ r hσ0 hr
-      have hrec : 1 / σ ^ 2 ≤ (100 / 9 : ℝ) := by
-        apply (div_le_iff₀ (sq_pos_of_ne_zero hσ0)).2
-        nlinarith [sq_nonneg (σ - 3 / 10)]
+      have hrec : 1 / σ ^ 2 ≤ (100 / 9 : ℝ) :=
+        (div_le_iff₀ (sq_pos_of_ne_zero hσ0)).2 (by nlinarith [sq_nonneg (σ - 3 / 10)])
       calc
         _ ≤ r ^ 2 / σ ^ 2 := hb
         _ = (1 / σ ^ 2) * r ^ 2 := by ring
@@ -42,16 +41,13 @@ theorem basePhaseArg_fibre_smallBall (z : ℂ) (r : ℝ) (hr : 0 ≤ r) :
       have hfar : 2 * r < ‖z‖ := by linarith
       have hb := affine_gaussian_smallBall_far z σ r hr hfar
       have hnormsq : 1 ≤ ‖z‖ ^ 2 := by nlinarith
-      have hrec : 4 / ‖z‖ ^ 2 ≤ (100 / 9 : ℝ) := by
-        apply (div_le_iff₀ (by positivity : 0 < ‖z‖ ^ 2)).2
-        linarith
+      have hrec : 4 / ‖z‖ ^ 2 ≤ (100 / 9 : ℝ) :=
+        (div_le_iff₀ (by positivity : 0 < ‖z‖ ^ 2)).2 (by linarith)
       calc
         _ ≤ 4 * r ^ 2 / ‖z‖ ^ 2 := hb
         _ = (4 / ‖z‖ ^ 2) * r ^ 2 := by ring
         _ ≤ (100 / 9 : ℝ) * r ^ 2 := mul_le_mul_of_nonneg_right hrec (sq_nonneg r)
-  · have hprob : gaussC.real {w : ℂ | ‖z + (σ : ℂ) * w‖ ≤ r} ≤ 1 := measureReal_le_one
-    have hlarge : 1 ≤ (100 / 9 : ℝ) * r ^ 2 := by nlinarith
-    exact hprob.trans hlarge
+  · exact measureReal_le_one.trans (by nlinarith)
 
 /-- The actual two-coordinate Gaussian phase argument satisfies a quadratic small-ball bound. -/
 theorem basePhaseArg_smallBall (r : ℝ) (hr : 0 ≤ r) :
@@ -63,9 +59,9 @@ theorem basePhaseArg_smallBall (r : ℝ) (hr : 0 ≤ r) :
   have hfib (z : ℂ) :
       (∫ w, S.indicator (fun _ => (1 : ℝ)) (z, w) ∂gaussC) =
         gaussC.real {w : ℂ | ‖basePhaseArg (z, w)‖ ≤ r} := by
-    have hSz : MeasurableSet {w : ℂ | ‖basePhaseArg (z, w)‖ ≤ r} := by
-      apply measurableSet_le _ measurable_const
-      exact (continuous_basePhaseArg.comp (continuous_const.prodMk continuous_id)).norm.measurable
+    have hSz : MeasurableSet {w : ℂ | ‖basePhaseArg (z, w)‖ ≤ r} := measurableSet_le
+      (continuous_basePhaseArg.comp (continuous_const.prodMk continuous_id)).norm.measurable
+      measurable_const
     convert integral_indicator_one (μ := gaussC) hSz using 1
     apply integral_congr_ae
     exact Filter.Eventually.of_forall fun w => by
@@ -76,9 +72,8 @@ theorem basePhaseArg_smallBall (r : ℝ) (hr : 0 ≤ r) :
   simp_rw [hfib]
   calc
     _ ≤ ‖∫ z, gaussC.real {w : ℂ | ‖basePhaseArg (z, w)‖ ≤ r} ∂gaussC‖ := le_abs_self _
-    _ ≤ ((100 / 9 : ℝ) * r ^ 2) * gaussC.real Set.univ := by
-      apply norm_integral_le_of_norm_le_const
-      exact Filter.Eventually.of_forall fun z => by
+    _ ≤ ((100 / 9 : ℝ) * r ^ 2) * gaussC.real Set.univ :=
+      norm_integral_le_of_norm_le_const <| Filter.Eventually.of_forall fun z => by
         rw [Real.norm_eq_abs, abs_of_nonneg measureReal_nonneg]
         exact basePhaseArg_fibre_smallBall z r hr
     _ = (100 / 9 : ℝ) * r ^ 2 := by simp
@@ -86,9 +81,8 @@ theorem basePhaseArg_smallBall (r : ℝ) (hr : 0 ≤ r) :
 /-- The singular set of the actual base phase has zero Gaussian measure. -/
 theorem basePhaseArg_ne_zero_ae : ∀ᵐ u ∂mu2, basePhaseArg u ≠ 0 := by
   have h := basePhaseArg_smallBall 0 le_rfl
-  have hzero : mu2.real {u : ℂ × ℂ | basePhaseArg u = 0} = 0 := by
-    have hle : mu2.real {u : ℂ × ℂ | basePhaseArg u = 0} ≤ 0 := by simpa using h
-    exact le_antisymm hle measureReal_nonneg
+  have hzero : mu2.real {u : ℂ × ℂ | basePhaseArg u = 0} = 0 :=
+    le_antisymm (by simpa using h) measureReal_nonneg
   rw [ae_iff]
   simpa using (measureReal_eq_zero_iff).mp hzero
 

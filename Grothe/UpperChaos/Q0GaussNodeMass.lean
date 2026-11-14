@@ -22,9 +22,8 @@ theorem rowAt_spec (i : Fin 21577) :
 
 theorem rowAt_eq (r : Row) (hr : r ∈ Grothe.UpperChaos.Q0GaussPhysicalAll.rows)
     (hi : r.index < 21577) : rowAt ⟨r.index, hi⟩ = r := by
-  apply (Grothe.UpperChaos.Q0GaussOrdinal.unique_row r.index hi).unique
-  · exact rowAt_spec ⟨r.index, hi⟩
-  · exact ⟨hr, rfl⟩
+  exact (Grothe.UpperChaos.Q0GaussOrdinal.unique_row r.index hi).unique
+    (rowAt_spec ⟨r.index, hi⟩) ⟨hr, rfl⟩
 
 theorem row_index_lt (r : Row) (hr : r ∈ Grothe.UpperChaos.Q0GaussPhysicalAll.rows) :
     r.index < 21577 := by

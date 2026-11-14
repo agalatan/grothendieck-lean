@@ -64,16 +64,8 @@ theorem inner_lower0Basis (i j : ℕ × ℕ) :
           inner_hvec, ↓reduceIte, mul_one, Complex.conj_ofReal]
         rw [← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]
         norm_cast
-      · have hn : (c + 1, d) ≠ (e + 1, f) := by
-          intro he
-          apply h
-          apply Prod.ext
-          · have hh := congrArg Prod.fst he
-            dsimp only at hh
-            omega
-          · have hd : d = f := by
-              simpa only using congrArg (fun p : ℕ × ℕ ↦ p.2) he
-            exact hd
+      · have hn : (c + 1, d) ≠ (e + 1, f) := fun he ↦
+          h (Prod.ext (Nat.add_right_cancel (Prod.mk.inj he).1) (Prod.mk.inj he).2)
         rw [ite_eq_right hn]
         simp only [lower0Basis, Nat.succ_sub_one, inner_smul_left, inner_smul_right,
           inner_hvec, ite_eq_right h, mul_zero]
@@ -94,16 +86,8 @@ theorem inner_lower1Basis (i j : ℕ × ℕ) :
           inner_hvec, ↓reduceIte, mul_one, Complex.conj_ofReal]
         rw [← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]
         norm_cast
-      · have hn : (c, d + 1) ≠ (e, f + 1) := by
-          intro he
-          apply h
-          apply Prod.ext
-          · have hc : c = e := by
-              simpa only using congrArg (fun p : ℕ × ℕ ↦ p.1) he
-            exact hc
-          · have hh := congrArg Prod.snd he
-            dsimp only at hh
-            omega
+      · have hn : (c, d + 1) ≠ (e, f + 1) := fun he ↦
+          h (Prod.ext (Prod.mk.inj he).1 (Nat.add_right_cancel (Prod.mk.inj he).2))
         rw [ite_eq_right hn]
         simp only [lower1Basis, Nat.succ_sub_one, inner_smul_left, inner_smul_right,
           inner_hvec, ite_eq_right h, mul_zero]
@@ -116,12 +100,10 @@ private theorem norm_sum_sq_of_inner {ι : Type*} [DecidableEq ι]
   have he : ⟪∑ i ∈ s, a i • v i, ∑ i ∈ s, a i • v i⟫_ℂ =
       ∑ i ∈ s, conj (a i) * a i * (w i : ℂ) := by
     simp_rw [sum_inner, inner_smul_left]
-    apply Finset.sum_congr rfl
-    intro i hi
+    refine Finset.sum_congr rfl fun i hi ↦ ?_
     simp [inner_sum, inner_smul_right, hv, hi, mul_assoc]
   rw [@norm_sq_eq_re_inner ℂ, he, RCLike.re_to_complex, Complex.re_sum]
-  apply Finset.sum_congr rfl
-  intro i _
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
   rw [Complex.conj_mul', ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re]
   ring
 
@@ -147,8 +129,7 @@ theorem lowering_energy_le (D : ℕ) (s : Finset (ℕ × ℕ)) (a : ℕ × ℕ �
     ‖lower0 s a‖ ^ 2 + ‖lower1 s a‖ ^ 2 ≤ (D : ℝ) * ‖combination s a‖ ^ 2 := by
   rw [norm_lower0_sq, norm_lower1_sq, norm_combination_sq, ← Finset.sum_add_distrib,
     Finset.mul_sum]
-  apply Finset.sum_le_sum
-  intro i hi
+  refine Finset.sum_le_sum fun i hi ↦ ?_
   have h : (i.1 : ℝ) + (i.2 : ℝ) ≤ (D : ℝ) := by exact_mod_cast hD i hi
   calc
     _ = ((i.1 : ℝ) + (i.2 : ℝ)) * ‖a i‖ ^ 2 := by ring
@@ -300,23 +281,14 @@ theorem derivativeX_mem (D : ℕ) (P : CPoly) (hP : P ∈ polynomialSpace D) :
     derivativeX P ∈ polynomialSpace D := by
   obtain ⟨a, ha⟩ := (Submodule.mem_span_image_finset_iff_exists_fun' ℂ).mp hP
   rw [← ha, derivativeX, map_sum, map_sum]
-  apply Submodule.add_mem
-  · apply Submodule.sum_mem
-    intro i hi
-    rw [Derivation.map_smul, pderiv0_normalizedPolynomial]
-    apply Submodule.smul_mem
-    apply Submodule.smul_mem
-    apply normalizedPolynomial_mem
+  refine Submodule.add_mem _ (Submodule.sum_mem _ fun i hi ↦ ?_)
+    (Submodule.sum_mem _ fun i hi ↦ ?_)
+  · rw [Derivation.map_smul, pderiv0_normalizedPolynomial]
     have h := (mem_modes D i).1 hi
-    omega
-  · apply Submodule.sum_mem
-    intro i hi
-    rw [Derivation.map_smul, pderiv1_normalizedPolynomial]
-    apply Submodule.smul_mem
-    apply Submodule.smul_mem
-    apply normalizedPolynomial_mem
+    exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (normalizedPolynomial_mem D _ (by omega)))
+  · rw [Derivation.map_smul, pderiv1_normalizedPolynomial]
     have h := (mem_modes D i).1 hi
-    omega
+    exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (normalizedPolynomial_mem D _ (by omega)))
 
 /-- The derivative bound on the entire finite Hermite polynomial space. -/
 theorem norm_derivativeX_le_of_mem (D : ℕ) (P : CPoly) (hP : P ∈ polynomialSpace D) :
@@ -364,11 +336,8 @@ theorem norm_finiteTaylor_le (D : ℕ) (δ : ℂ) (P : CPoly) (hP : P ∈ polyno
         ‖evalL2 ((δ ^ k / (k.factorial : ℂ)) • (derivativeX^[k]) P)‖ := norm_sum_le _ _
     _ ≤ ∑ k ∈ range (D + 1),
         ((‖δ‖ * Real.sqrt (2 * D)) ^ k / (k.factorial : ℝ)) * ‖evalL2 P‖ := by
-      apply Finset.sum_le_sum
-      intro k _
-      rw [map_smul, norm_smul, norm_div, norm_pow]
-      have hfac : ‖(k.factorial : ℂ)‖ = (k.factorial : ℝ) := by simp
-      rw [hfac]
+      refine Finset.sum_le_sum fun k _ ↦ ?_
+      rw [map_smul, norm_smul, norm_div, norm_pow, Complex.norm_natCast]
       calc
         _ ≤ (‖δ‖ ^ k / (k.factorial : ℝ)) *
             (Real.sqrt (2 * D) ^ k * ‖evalL2 P‖) :=

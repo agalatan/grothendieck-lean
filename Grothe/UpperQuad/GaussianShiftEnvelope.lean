@@ -54,13 +54,10 @@ theorem phaseEnvelopeSq_le_phaseBoundSq (j : ℕ) {eta : ℝ}
   have hden : 0 < 1 - eta := sub_pos.mpr heta1
   have heps : 0 ≤ (Grothe.Upper.phaseEpsQ : ℝ) := by
     norm_num [Grothe.Upper.phaseEpsQ]
-  have hweight : 0 ≤ 4 * ((j : ℝ) * (Grothe.Upper.phaseEpsQ : ℝ)) / (1 - eta) := by
-    positivity
+  have hweight : 0 ≤ 4 * ((j : ℝ) * (Grothe.Upper.phaseEpsQ : ℝ)) / (1 - eta) := by positivity
   unfold phaseEnvelopeSq phaseBoundSq
-  apply mul_le_mul_of_nonneg_left
-    (Real.exp_le_exp.mpr
-      (mul_le_mul_of_nonneg_left (add_le_add hY hB2) hweight))
-  positivity
+  exact mul_le_mul_of_nonneg_left
+    (Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_left (add_le_add hY hB2) hweight)) (by positivity)
 
 /-- The translation factor increases with its squared imaginary bound. -/
 theorem translationFactor_le (D : ℕ) (b : ℝ) {B2 : ℝ} (hB2 : b ^ 2 ≤ B2) :

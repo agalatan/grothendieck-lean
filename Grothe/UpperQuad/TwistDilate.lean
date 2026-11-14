@@ -92,7 +92,6 @@ theorem dilT_eq_zero (μ : ℝ) (e f g h : ℕ) (hs : ¬(g ≤ e ∧ h ≤ f ∧
 lemma nrm_succ_left (g h : ℕ) : nrm g h = Real.sqrt ((g + 1 : ℕ) : ℝ) * nrm (g + 1) h := by
   unfold nrm
   rw [Nat.factorial_succ]
-  have hpos : (0 : ℝ) < ((g.factorial * h.factorial : ℕ) : ℝ) := by positivity
   have hs : Real.sqrt (((g + 1) * g.factorial * h.factorial : ℕ) : ℝ) =
       Real.sqrt ((g + 1 : ℕ) : ℝ) * Real.sqrt ((g.factorial * h.factorial : ℕ) : ℝ) := by
     rw [← Real.sqrt_mul (by positivity)]
@@ -205,25 +204,21 @@ theorem w_mul_boxSum {N : ℕ} {c : ℕ → ℕ → ℂ} (hc : BoxSupp N c) (hN 
   · -- the raising part: reindex `g + 1 ↦ g`
     rw [Finset.sum_comm, Finset.sum_comm (f := fun g h => (Real.sqrt (g : ℕ) : ℂ) * c (g - 1) h *
       hfun (g, h) w)]
-    apply Finset.sum_congr rfl
-    intro h _
+    refine Finset.sum_congr rfl fun h _ => ?_
     rw [sum_range_last (fun g => c g h * (Real.sqrt ((g + 1 : ℕ) : ℝ) : ℂ) * hfun (g + 1, h) w)
       (by simp [hc M h (Or.inl le_rfl)]),
       sum_range_shift_down (fun g => (Real.sqrt (g : ℕ) : ℂ) * c (g - 1) h * hfun (g, h) w)
       (by simp)]
-    apply Finset.sum_congr rfl
-    intro g _
+    refine Finset.sum_congr rfl fun g _ => ?_
     simp only [Nat.add_sub_cancel]
     ring
   · -- the lowering part: reindex `h − 1 ↦ h`
-    apply Finset.sum_congr rfl
-    intro g _
+    refine Finset.sum_congr rfl fun g _ => ?_
     rw [sum_range_shift_down (fun h => c g h * (Real.sqrt (h : ℕ) : ℂ) * hfun (g, h - 1) w)
       (by simp),
       sum_range_last (fun h => (Real.sqrt ((h + 1 : ℕ) : ℝ) : ℂ) * c g (h + 1) * hfun (g, h) w)
       (by simp [hc g (M + 1) (Or.inr (by omega))])]
-    apply Finset.sum_congr rfl
-    intro h _
+    refine Finset.sum_congr rfl fun h _ => ?_
     simp only [Nat.add_sub_cancel]
     ring
 
@@ -249,20 +244,17 @@ theorem conj_mul_boxSum {N : ℕ} {c : ℕ → ℕ → ℂ} (hc : BoxSupp N c) (
       (by simp [hc g M (Or.inr le_rfl)]),
       sum_range_shift_down (fun h => (Real.sqrt (h : ℕ) : ℂ) * c g (h - 1) * hfun (g, h) w)
       (by simp)]
-    apply Finset.sum_congr rfl
-    intro h _
+    refine Finset.sum_congr rfl fun h _ => ?_
     simp only [Nat.add_sub_cancel]
     ring
   · rw [Finset.sum_comm, Finset.sum_comm (f := fun g h => (Real.sqrt ((g + 1 : ℕ) : ℝ) : ℂ) *
       c (g + 1) h * hfun (g, h) w)]
-    apply Finset.sum_congr rfl
-    intro h _
+    refine Finset.sum_congr rfl fun h _ => ?_
     rw [sum_range_shift_down (fun g => c g h * (Real.sqrt (g : ℕ) : ℂ) * hfun (g - 1, h) w)
       (by simp),
       sum_range_last (fun g => (Real.sqrt ((g + 1 : ℕ) : ℝ) : ℂ) * c (g + 1) h * hfun (g, h) w)
       (by simp [hc (M + 1) h (Or.inl (by omega))])]
-    apply Finset.sum_congr rfl
-    intro g _
+    refine Finset.sum_congr rfl fun g _ => ?_
     simp only [Nat.add_sub_cancel]
     ring
 
@@ -293,31 +285,26 @@ theorem hfun_dilate (μ : ℝ) (e f N : ℕ) (hN : e + f + 2 ≤ N) (w : ℂ) :
       unfold boxSum
       rw [Finset.sum_eq_single 0, Finset.sum_eq_single 0]
       · simp [dilT_zero_zero, hfun_zero_zero]
-      · intro h _ hh; simp [dilT_zero_zero, hh]
-      · intro hh; exfalso; exact hh (Finset.mem_range.mpr (by omega))
-      · intro g _ hg
-        apply Finset.sum_eq_zero
-        intro h _
-        simp [dilT_zero_zero, hg]
-      · intro hh; exfalso; exact hh (Finset.mem_range.mpr (by omega))
+      · intro h _ hh
+        simp [dilT_zero_zero, hh]
+      · exact fun hh => absurd (Finset.mem_range.mpr (by omega)) hh
+      · exact fun g _ hg => Finset.sum_eq_zero fun h _ => by simp [dilT_zero_zero, hg]
+      · exact fun hh => absurd (Finset.mem_range.mpr (by omega)) hh
     | succ f ihf =>
       have hl := conj_mul_hfun 0 f ((μ : ℂ) * w)
       simp only [Nat.zero_sub, Real.sqrt_zero, Nat.cast_zero, Complex.ofReal_zero, zero_mul,
         add_zero] at hl
       have hx : hfun (0, f + 1) ((μ : ℂ) * w) =
           (μ : ℂ) * (conj w * hfun (0, f) ((μ : ℂ) * w)) / (Real.sqrt ((f + 1 : ℕ) : ℝ) : ℂ) := by
-        rw [eq_div_iff (sqrt_succ_ne f)]
-        rw [show (μ : ℂ) * (conj w * hfun (0, f) ((μ : ℂ) * w)) =
+        rw [eq_div_iff (sqrt_succ_ne f), show (μ : ℂ) * (conj w * hfun (0, f) ((μ : ℂ) * w)) =
           conj ((μ : ℂ) * w) * hfun (0, f) ((μ : ℂ) * w) by simp [map_mul]; ring, hl]
         ring
       rw [hx, ihf (by omega), conj_mul_boxSum (dilT_boxSupp μ (by omega)) (by omega)]
       unfold boxSum
       rw [Finset.mul_sum, Finset.sum_div]
-      apply Finset.sum_congr rfl
-      intro g _
+      refine Finset.sum_congr rfl fun g _ => ?_
       rw [Finset.mul_sum, Finset.sum_div]
-      apply Finset.sum_congr rfl
-      intro h _
+      refine Finset.sum_congr rfl fun h _ => ?_
       beta_reduce
       rw [dilT_zero_succ]
       push_cast
@@ -328,19 +315,16 @@ theorem hfun_dilate (μ : ℝ) (e f N : ℕ) (hN : e + f + 2 ≤ N) (w : ℂ) :
         ((μ : ℂ) * (w * hfun (e, f) ((μ : ℂ) * w)) -
           (Real.sqrt (f : ℕ) : ℂ) * hfun (e, f - 1) ((μ : ℂ) * w)) /
           (Real.sqrt ((e + 1 : ℕ) : ℝ) : ℂ) := by
-      rw [eq_div_iff (sqrt_succ_ne e)]
-      rw [show (μ : ℂ) * (w * hfun (e, f) ((μ : ℂ) * w)) =
+      rw [eq_div_iff (sqrt_succ_ne e), show (μ : ℂ) * (w * hfun (e, f) ((μ : ℂ) * w)) =
         (μ : ℂ) * w * hfun (e, f) ((μ : ℂ) * w) by ring, hl]
       ring
     rw [hx, ihe f (by omega), ihe (f - 1) (by omega),
       w_mul_boxSum (dilT_boxSupp μ (by omega)) (by omega)]
     unfold boxSum
     rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]
-    apply Finset.sum_congr rfl
-    intro g _
+    refine Finset.sum_congr rfl fun g _ => ?_
     rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]
-    apply Finset.sum_congr rfl
-    intro h _
+    refine Finset.sum_congr rfl fun h _ => ?_
     beta_reduce
     rw [dilT_succ]
     push_cast
@@ -359,11 +343,9 @@ theorem sum_box_eq_sum_min {M : Type*} [AddCommMonoid M] (e f N : ℕ) (hN : e +
     intro g _
     split_ifs with hg
     · rw [Finset.sum_eq_single (g + f - e)]
-      · intro h _ hh; exact hX g h (by omega)
-      · intro hh; exfalso; exact hh (Finset.mem_range.mpr (by omega))
-    · apply Finset.sum_eq_zero
-      intro h _
-      exact hX g h (by omega)
+      · exact fun h _ hh => hX g h (by omega)
+      · exact fun hh => absurd (Finset.mem_range.mpr (by omega)) hh
+    · exact Finset.sum_eq_zero fun h _ => hX g h (by omega)
   rw [Finset.sum_congr rfl hinner, Finset.sum_ite, Finset.sum_const_zero, add_zero]
   -- the remaining `g` are `e − min(e,f) + m`
   symm

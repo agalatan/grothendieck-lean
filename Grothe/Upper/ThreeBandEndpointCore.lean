@@ -64,8 +64,8 @@ theorem threeBand_head_residual_le {E EX : ℕ × ℕ → ℝ}
   simpa only [kernelCoeff, threeBandHeadQ, Rat.cast_add] using hh
 
 theorem threeBand_tail_le {E EX : ℕ × ℕ → ℝ} (h : ThreeBandDirectInputs E EX) :
-    ∑' n, |kernelCoeff E (n + 251)| ≤ (threeBandRawTailQ : ℝ) := by
-  exact Grothe.hardy_tail (kernelCoeff E) (4149 / 4000 : ℝ) (by norm_num)
+    ∑' n, |kernelCoeff E (n + 251)| ≤ (threeBandRawTailQ : ℝ) :=
+  Grothe.hardy_tail (kernelCoeff E) (4149 / 4000 : ℝ) (by norm_num)
     (7 / 4) h.hardy 251 (threeBandRawTailQ : ℝ)
     (by norm_num [threeBandRawTailQ]) threeBand_raw_hardy_numeric
 
@@ -83,8 +83,7 @@ theorem threeBand_upper_from_inputs {E EX : ℕ × ℕ → ℝ}
     exact_mod_cast threeBandResidualQ_lt_slopeQ
   have hu := Grothe.transfer (kernelCoeff E) (Grothe.summable_kernelCoeff h.summable)
     h.valid hdelta (threeBand_residual_le h)
-  rw [threeBand_real_reciprocal] at hu
-  exact hu
+  rwa [threeBand_real_reciprocal] at hu
 
 theorem threeBand_endpoint_from_inputs {E EX : ℕ × ℕ → ℝ}
     (h : ThreeBandDirectInputs E EX) :

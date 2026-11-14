@@ -77,9 +77,8 @@ theorem radial_real (j q c d : ℕ) (hc : c ≤ q + 1) (hd : d ≤ q)
 /-- A fixed panel sign can be supplied through its equality with the actual profile sign. -/
 theorem radial_real_of_sign (j q c d : ℕ) (hc : c ≤ q + 1) (hd : d ≤ q)
     (σ s : ℝ) (hs : 0 ≤ s) (hv : vprof s ≠ 0) (hσ : σ = profileSign s) :
-    radial j q c d σ (Real.sqrt s : ℂ) = (twistIntegrand j q c d s : ℂ) := by
-  rw [hσ]
-  exact radial_real j q c d hc hd s hs hv
+    radial j q c d σ (Real.sqrt s : ℂ) = (twistIntegrand j q c d s : ℂ) :=
+  hσ ▸ radial_real j q c d hc hd s hs hv
 
 end
 

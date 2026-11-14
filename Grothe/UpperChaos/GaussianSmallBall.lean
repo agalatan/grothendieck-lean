@@ -31,8 +31,8 @@ theorem affine_gaussian_smallBall_of_density (z : ℂ) (σ r C : ℝ)
       Real.exp (-‖w‖ ^ 2) / σ ^ 2 ≤ C) :
     gaussC.real {w : ℂ | ‖z + (σ : ℂ) * w‖ ≤ r} ≤ C * r ^ 2 := by
   let S : Set ℂ := {w | ‖z + (σ : ℂ) * w‖ ≤ r}
-  have hS : MeasurableSet S := by
-    exact measurableSet_le (by fun_prop : Measurable fun w : ℂ => ‖z + (σ : ℂ) * w‖)
+  have hS : MeasurableSet S :=
+    measurableSet_le (by fun_prop : Measurable fun w : ℂ => ‖z + (σ : ℂ) * w‖)
       measurable_const
   have hball : S = Metric.closedBall (-z / (σ : ℂ)) (r / |σ|) :=
     affine_smallBall_eq_closedBall z σ r hσ
@@ -45,11 +45,10 @@ theorem affine_gaussian_smallBall_of_density (z : ℂ) (σ r C : ℝ)
     finiteness
   have hσ2 : 0 < σ ^ 2 := sq_pos_of_ne_zero hσ
   have hnorm : ∀ᵐ w ∂(volume : Measure ℂ), w ∈ S →
-      ‖Real.pi⁻¹ * Real.exp (-Complex.normSq w)‖ ≤ Real.pi⁻¹ * (C * σ ^ 2) := by
-    exact Filter.Eventually.of_forall fun w hw => by
+      ‖Real.pi⁻¹ * Real.exp (-Complex.normSq w)‖ ≤ Real.pi⁻¹ * (C * σ ^ 2) :=
+    Filter.Eventually.of_forall fun w hw => by
       rw [Real.norm_eq_abs, abs_of_nonneg (by positivity), Complex.normSq_eq_norm_sq]
-      apply mul_le_mul_of_nonneg_left _ (by positivity)
-      exact (div_le_iff₀ hσ2).mp (hden w hw)
+      exact mul_le_mul_of_nonneg_left ((div_le_iff₀ hσ2).mp (hden w hw)) (by positivity)
   have hi : gaussC.real S = ∫ w in S, Real.pi⁻¹ * Real.exp (-Complex.normSq w) := by
     calc
       _ = ∫ w, S.indicator (fun _ : ℂ => (1 : ℝ)) w ∂gaussC :=
@@ -59,9 +58,8 @@ theorem affine_gaussian_smallBall_of_density (z : ℂ) (σ r C : ℝ)
         integral_gaussC_eq_volume _ (measurable_const.indicator hS)
       _ = _ := by
         rw [← integral_indicator hS]
-        apply integral_congr_ae
-        exact Filter.Eventually.of_forall fun w => by
-          by_cases hw : w ∈ S <;> simp [hw]
+        refine integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)
+        by_cases hw : w ∈ S <;> simp [hw]
   rw [hi]
   calc
     _ ≤ ‖∫ w in S, Real.pi⁻¹ * Real.exp (-Complex.normSq w)‖ := le_abs_self _

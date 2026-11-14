@@ -54,37 +54,12 @@ lemma measurable_twistSlice (j : ℕ) (i : Idx2) : Measurable (twistSlice j i) :
   exact hm.stronglyMeasurable.integral_prod_right'.measurable
 
 lemma twistSlice_rot (j : ℕ) (i : Idx2) (hi : i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1) (c z : ℂ)
-    (hc : ‖c‖ = 1) : twistSlice j i (c * z) = twistSlice j i z := by
-  have hcc : conj c * c = 1 := by
-    rw [← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, hc]
-    norm_num
-  have hrot := integral_rot_gaussC c hc (fun w : ℂ => conj (hfun2 i (c * z, w)) * hpow j (c * z, w))
-  calc
-    _ = ∫ w, conj (hfun2 i (c * z, c * w)) * hpow j (c * z, c * w) ∂gaussC := hrot.symm
-    _ = _ := by
-      apply integral_congr_ae
-      filter_upwards [] with w
-      change conj (hfun2 i (rot2 c (z, w))) * hpow j (rot2 c (z, w)) = _
-      rw [hfun2_rot2_of_charge i hi c (z, w) hc, hpow_rot2 hc]
-      simp only [map_mul]
-      calc (conj c * conj (hfun2 i (z, w))) * (c * hpow j (z, w)) =
-          (conj c * c) * (conj (hfun2 i (z, w)) * hpow j (z, w)) := by ring
-        _ = _ := by rw [hcc, one_mul]
+    (hc : ‖c‖ = 1) : twistSlice j i (c * z) = twistSlice j i z :=
+  chargeSlice_rot (fun _ hc u ↦ hpow_rot2 hc j u) i hi c z hc
 
 lemma twistSlice_eq_norm (j : ℕ) (i : Idx2) (hi : i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1) (z : ℂ) :
-    twistSlice j i z = twistSlice j i (‖z‖ : ℂ) := by
-  by_cases hz : z = 0
-  · simp [hz]
-  · have hn : (‖z‖ : ℂ) ≠ 0 := by exact_mod_cast (norm_ne_zero_iff.mpr hz)
-    let c : ℂ := z / (‖z‖ : ℂ)
-    have hc : ‖c‖ = 1 := by
-      dsimp only [c]
-      rw [norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (norm_nonneg z)]
-      exact div_self (norm_ne_zero_iff.mpr hz)
-    have he : c * (‖z‖ : ℂ) = z := by dsimp only [c]; exact div_mul_cancel₀ z hn
-    have h := twistSlice_rot j i hi c (‖z‖ : ℂ) hc
-    rw [he] at h
-    exact h
+    twistSlice j i z = twistSlice j i (‖z‖ : ℂ) :=
+  eq_norm_of_rot_invariant (fun c z hc ↦ twistSlice_rot j i hi c z hc) z
 
 lemma twistSlice_eq (j : ℕ) (i : Idx2) (s : ℝ) :
     twistSlice j i (Real.sqrt s : ℂ) = conj (hfun i.1 (Real.sqrt s : ℂ)) * twistCoef j s i.2 := by

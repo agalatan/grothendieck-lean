@@ -39,9 +39,7 @@ theorem norm_Uext_le_shell (g h : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
     ring
   have hnonneg : 0 ≤ 2 * Real.sqrt θ * Real.sqrt ((g + h).factorial : ℝ) *
       (Real.sqrt 8 * θ / ‖A‖) ^ (g + h) := by positivity
-  apply (sq_le_sq₀ (norm_nonneg _) hnonneg).mp
-  rw [hmajor]
-  exact norm_Uext_sq_le g h hr
+  exact (sq_le_sq₀ (norm_nonneg _) hnonneg).mp ((norm_Uext_sq_le g h hr).trans_eq hmajor.symm)
 
 /-- The norm sum of the `m + 1` canonical pairs of total degree `m`. -/
 theorem sum_norm_Uext_shell_le (m : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
@@ -53,11 +51,8 @@ theorem sum_norm_Uext_shell_le (m : ℕ) {A : ℂ} (hr : 0 < (A ^ 2).re) :
     _ ≤ ∑ _g ∈ Finset.range (m + 1),
         2 * Real.sqrt (‖A‖ ^ 2 / (A ^ 2).re) * Real.sqrt (m.factorial : ℝ) *
           (Real.sqrt 8 * (‖A‖ ^ 2 / (A ^ 2).re) / ‖A‖) ^ m := by
-      apply Finset.sum_le_sum
-      intro g hg
-      have hdeg : g + (m - g) = m := by
-        have := Finset.mem_range.mp hg
-        omega
+      refine Finset.sum_le_sum fun g hg => ?_
+      have hdeg : g + (m - g) = m := Nat.add_sub_of_le (Finset.mem_range_succ_iff.mp hg)
       simpa only [hdeg] using norm_Uext_le_shell g (m - g) hr
     _ = _ := by
       simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, Nat.cast_add, Nat.cast_one]

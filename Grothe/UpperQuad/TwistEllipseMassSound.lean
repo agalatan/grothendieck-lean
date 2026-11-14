@@ -162,9 +162,7 @@ theorem norm_descendedVector_sq_le_massCap {g : Power}
       ((EllCheck.diskCentre p.lo p.hi c.plan.geometry i : ℚ) : ℂ)‖ ≤ c.plan.geometry.R := by
     simpa only [Complex.ofReal_ratCast] using hdist
   have hb := norm_descendedVector_sq_le_diskM2 hc hcs hR' hd σ hσ hz
-  have hle' : (upperQ d : ℝ) ≤ (upperQ mass : ℝ) := by exact_mod_cast hle
-  have hcap' : (upperQ mass : ℝ) ≤ (c.massCap : ℝ) := by exact_mod_cast hcap
-  exact hb.trans (hle'.trans hcap')
+  exact hb.trans (by exact_mod_cast hle.trans hcap)
 
 /-- **Accepted covering shards and an accepted total prove the actual covered-set remainder.** -/
 theorem remainder_of_shards (g : Power) (cs : Array Certificate)

@@ -74,14 +74,12 @@ theorem cutMoment2_spec {rate L : ℚ} (hrate : 0 < rate) (hL : 0 ≤ L)
   refine integral_horner (RestrictedWick.muCut (L : ℝ)) (fun u => Complex.normSq u.2)
     (fun n => cutMomentWeight rate L j a n 0)
     (fun row u => he1 row (conj u.1 * u.2).re)
-    (fun n row => cutMoment1 rate L j a n 0 row) ?_ ?_ ?_ p b
-  · intro n u
-    simp only [cutMomentWeight, momentWeight, invariantMonomial, pow_succ]
-    ring
-  · intro n row
-    exact (cutMoment1_spec hrate hL j a n 0 row).1
-  · intro n row
-    exact (cutMoment1_spec hrate hL j a n 0 row).2
+    (fun n row => cutMoment1 rate L j a n 0 row) ?_
+    (fun n row => (cutMoment1_spec hrate hL j a n 0 row).1)
+    (fun n row => (cutMoment1_spec hrate hL j a n 0 row).2) p b
+  intro n u
+  simp only [cutMomentWeight, momentWeight, invariantMonomial, pow_succ]
+  ring
 
 theorem cutMoment3_spec {rate L : ℚ} (hrate : 0 < rate) (hL : 0 ≤ L)
     (j a : ℕ) (p : List (List (List ℤ))) :
@@ -94,14 +92,12 @@ theorem cutMoment3_spec {rate L : ℚ} (hrate : 0 < rate) (hL : 0 ≤ L)
   refine integral_horner (RestrictedWick.muCut (L : ℝ)) (fun u => Complex.normSq u.1)
     (fun n => cutMomentWeight rate L j n 0 0)
     (fun row u => he2 row (Complex.normSq u.2) (conj u.1 * u.2).re)
-    (fun n row => cutMoment2 rate L j n 0 row) ?_ ?_ ?_ p a
-  · intro n u
-    simp only [cutMomentWeight, momentWeight, invariantMonomial, pow_succ]
-    ring
-  · intro n row
-    exact (cutMoment2_spec hrate hL j n 0 row).1
-  · intro n row
-    exact (cutMoment2_spec hrate hL j n 0 row).2
+    (fun n row => cutMoment2 rate L j n 0 row) ?_
+    (fun n row => (cutMoment2_spec hrate hL j n 0 row).1)
+    (fun n row => (cutMoment2_spec hrate hL j n 0 row).2) p a
+  intro n u
+  simp only [cutMomentWeight, momentWeight, invariantMonomial, pow_succ]
+  ring
 
 /-- The cutoff integral of any integer invariant polynomial, obtained using
 `integral_horner` rather than expanding the concrete phase polynomial. -/
@@ -126,10 +122,7 @@ theorem integral_polynomial_cut_damped {rate L : ℚ} (hrate : 0 < rate) (hL : 0
   have hc : Real.exp (-((rate : ℝ) * (L : ℝ))) *
       Real.exp ((rate : ℝ) * (L : ℝ)) = 1 := by
     rw [← Real.exp_add, neg_add_cancel, Real.exp_zero]
-  calc
-    _ = (Real.exp (-((rate : ℝ) * (L : ℝ))) *
-        Real.exp ((rate : ℝ) * (L : ℝ))) * _ := by rw [hc, one_mul]
-    _ = _ := by rw [mul_assoc, h]
+  rw [← h, ← mul_assoc, hc, one_mul]
 
 /-- Finite exact cutoff moment for any rational term list and damping parameter. -/
 theorem integral_phaseOfTerms_pow_cut {ts : List ((ℕ × ℕ × ℕ) × ℚ)}

@@ -72,18 +72,9 @@ theorem anchored_real {A B A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : 0 �
   linarith [(mul_nonneg_iff_of_pos_left h2D).1 hpos]
 
 lemma norm_add_sub_norm_sub_le (L p : ℂ) : |‖L + p‖ - ‖L - p‖| ≤ 2 * ‖L‖ := by
-  rw [abs_le]
-  constructor
-  · have : ‖L - p‖ ≤ ‖L + p‖ + 2 * ‖L‖ := by
-      calc ‖L - p‖ = ‖2 * L - (L + p)‖ := by ring_nf
-        _ ≤ ‖2 * L‖ + ‖L + p‖ := norm_sub_le _ _
-        _ = ‖L + p‖ + 2 * ‖L‖ := by rw [norm_mul]; norm_num; ring
-    linarith
-  · have : ‖L + p‖ ≤ ‖L - p‖ + 2 * ‖L‖ := by
-      calc ‖L + p‖ = ‖2 * L - (L - p)‖ := by ring_nf
-        _ ≤ ‖2 * L‖ + ‖L - p‖ := norm_sub_le _ _
-        _ = ‖L - p‖ + 2 * ‖L‖ := by rw [norm_mul]; norm_num; ring
-    linarith
+  calc |‖L + p‖ - ‖L - p‖| = |‖L + p‖ - ‖p - L‖| := by rw [norm_sub_rev L p]
+    _ ≤ ‖L + p - (p - L)‖ := abs_norm_sub_norm_le _ _
+    _ = 2 * ‖L‖ := by rw [show L + p - (p - L) = 2 * L by ring, norm_mul]; norm_num
 
 lemma normSq_add_eq (L p : ℂ) : ‖L + p‖ ^ 2 = ‖L‖ ^ 2 + ‖p‖ ^ 2 + 2 * (p * conj L).re := by
   rw [← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq,
@@ -103,8 +94,7 @@ theorem anchored_pair (L p : ℂ) {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (h
     rw [normSq_add_eq, normSq_sub_eq]; ring
   have h := anchored_real hA hB ((norm_nonneg L).trans hR)
     ((norm_add_sub_norm_sub_le L p).trans (by linarith))
-  rw [hT] at h
-  exact h
+  rwa [hT] at h
 
 /-- **The anchored-pair majorant as a polynomial in `p`**: with `x = Re(p L̄)`,
 `|L + p| + |L − p| ≤ ν(|L|² + |p|²) + 2δν x + (A₀ + B₀)/2 − (4x − (A₀² − B₀²))²/(2D)`,

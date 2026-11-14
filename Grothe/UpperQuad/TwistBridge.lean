@@ -50,9 +50,7 @@ lemma sum3_eq (Q : ℕ) (f : ℕ → ℕ → ℕ → ℝ) :
       ∑ p ∈ idx3 Q, f p.1 p.2.1 p.2.2 := by
   unfold idx3
   rw [Finset.sum_sigma]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [Finset.sum_product]
+  exact Finset.sum_congr rfl fun q _ => (Finset.sum_product _ _ fun p => f q p.1 p.2).symm
 
 /-- Cauchy–Schwarz on the graded triangle. -/
 lemma sum3_mul_sq_le (Q : ℕ) (x y : ℕ → ℕ → ℕ → ℝ) :
@@ -63,6 +61,14 @@ lemma sum3_mul_sq_le (Q : ℕ) (x y : ℕ → ℕ → ℕ → ℝ) :
           y q c d ^ 2) := by
   rw [sum3_eq, sum3_eq, sum3_eq]
   exact Finset.sum_mul_sq_le_sq_mul_sq _ _ _
+
+/-- Termwise equality on the graded triangle. -/
+private lemma sum3_congr {M : Type*} [AddCommMonoid M] {Q : ℕ} {f g : ℕ → ℕ → ℕ → M}
+    (h : ∀ q c d, q < Q → c < q + 2 → d < q + 1 → f q c d = g q c d) :
+    ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1), f q c d =
+      ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1), g q c d :=
+  Finset.sum_congr rfl fun q hq ↦ Finset.sum_congr rfl fun c hc ↦ Finset.sum_congr rfl fun d hd ↦
+    h q c d (Finset.mem_range.mp hq) (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)
 
 /-- Minkowski on the graded triangle: `Σ (x + y)² ≤ (√X + √Y)²` from `Σ x² ≤ X²`, `Σ y² ≤ Y²`. -/
 lemma sum3_add_sq_le (Q : ℕ) (x y : ℕ → ℕ → ℕ → ℝ) {X Y : ℝ} (hX : 0 ≤ X) (hY : 0 ≤ Y)
@@ -79,32 +85,26 @@ lemma sum3_add_sq_le (Q : ℕ) (x y : ℕ → ℕ → ℕ → ℝ) {X Y : ℝ} (
     y q c d ^ 2
   set Sxy := ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
     x q c d * y q c d
-  have hsx : 0 ≤ Sx := by
-    simp only [Sx]; apply Finset.sum_nonneg; intro q _; apply Finset.sum_nonneg; intro c _
-    apply Finset.sum_nonneg; intro d _; positivity
-  have hsy : 0 ≤ Sy := by
-    simp only [Sy]; apply Finset.sum_nonneg; intro q _; apply Finset.sum_nonneg; intro c _
-    apply Finset.sum_nonneg; intro d _; positivity
+  have hsx : 0 ≤ Sx := Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
+    Finset.sum_nonneg fun _ _ => sq_nonneg _
+  have hsy : 0 ≤ Sy := Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
+    Finset.sum_nonneg fun _ _ => sq_nonneg _
   have hexp : ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
       (x q c d + y q c d) ^ 2 = Sx + 2 * Sxy + Sy := by
     simp only [Sx, Sy, Sxy, Finset.mul_sum, ← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl; intro q _; apply Finset.sum_congr rfl; intro c _
-    apply Finset.sum_congr rfl; intro d _; ring
+    exact sum3_congr fun _ _ _ _ _ _ ↦ by ring
   rw [hexp]
   have hxy : Sxy ≤ X * Y := by
-    have h1 : Sxy ^ 2 ≤ (X * Y) ^ 2 := by
-      calc Sxy ^ 2 ≤ Sx * Sy := hcs
-        _ ≤ X ^ 2 * Y ^ 2 := mul_le_mul hx hy hsy (by positivity)
-        _ = (X * Y) ^ 2 := by ring
+    have h1 : Sxy ^ 2 ≤ (X * Y) ^ 2 :=
+      (hcs.trans (mul_le_mul hx hy hsy (by positivity))).trans_eq (mul_pow X Y 2).symm
     exact abs_le_of_sq_le_sq' h1 (by positivity) |>.2
   nlinarith
 
 lemma sum3_le_of_le {Q Q' : ℕ} (hQ : Q ≤ Q') (f : ℕ → ℕ → ℕ → ℝ) (hf : ∀ q c d, 0 ≤ f q c d) :
     ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1), f q c d ≤
       ∑ q ∈ Finset.range Q', ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1), f q c d := by
-  apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.mpr hQ)
-  intro q _ _
-  apply Finset.sum_nonneg; intro c _; apply Finset.sum_nonneg; intro d _; exact hf q c d
+  exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.mpr hQ) fun q _ _ =>
+    Finset.sum_nonneg fun c _ => Finset.sum_nonneg fun d _ => hf q c d
 
 /-! ### The exact Gauss sums and the remainder hypothesis -/
 
@@ -241,13 +241,8 @@ lemma re_inner_center (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :
     Complex.re ⟪gradedHermite N a, hpowL2 j⟫_ℂ =
       ∑ q ∈ Finset.range N, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
         (a q c d : ℝ) * ∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s := by
-  rw [inner_gradedHermite_left, Complex.re_sum]
-  apply Finset.sum_congr rfl; intro q hq
-  rw [Complex.re_sum]
-  apply Finset.sum_congr rfl; intro c hc
-  rw [Complex.re_sum]
-  apply Finset.sum_congr rfl; intro d hd
-  simp only [Finset.mem_range] at hc hd
+  simp only [inner_gradedHermite_left, Complex.re_sum]
+  refine sum3_congr fun q c d _ hc hd ↦ ?_
   have h := twistCoefficient_eq_ofReal j q c d (by omega) (by omega)
   unfold twistCoefficient at h
   rw [h, ← Complex.ofReal_ratCast, ← Complex.ofReal_mul, Complex.ofReal_re]
@@ -294,13 +289,8 @@ theorem re_inner_ge_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTab
       ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
         (a q c d : ℝ) *
           ((∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d) := by
-    rw [← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl; intro q hq
-    rw [← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl; intro c hc
-    rw [← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl; intro d hd
-    simp only [Finset.mem_range] at hq hc hd
+    simp only [← Finset.sum_add_distrib]
+    refine sum3_congr fun q c d hq hc hd ↦ ?_
     rw [← ha q c d hq hc hd]
     ring
   rw [hsplit]
@@ -314,7 +304,7 @@ theorem re_inner_ge_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTab
       (a q c d : ℝ) *
         ((∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d)) ^ 2 ≤
       (‖gradedHermite Q a‖ * ρ) ^ 2 :=
-    le_trans hcs (by rw [mul_pow]; exact mul_le_mul_of_nonneg_left hQ (sq_nonneg _))
+    hcs.trans ((mul_le_mul_of_nonneg_left hQ (sq_nonneg _)).trans_eq (mul_pow _ _ 2).symm)
   have hb := abs_le_of_sq_le_sq' h2 (by positivity)
   linarith [hb.1]
 
@@ -340,11 +330,12 @@ theorem band_le_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTable} 
   rw [FixedChaosSmoothing.sum_bounded_graded_eq_range (qlow j)
     (fun q c d => ‖⟪hvec2 (gradedMode q c d), hpowL2 j⟫_ℂ -
       (if q < M then (a q c d : ℂ) else 0)‖ ^ 2)]
-  have hterm : ∀ q c d, q < qlow j → c < q + 2 → d < q + 1 →
+  have hsum : ∑ q ∈ Finset.range (qlow j), ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
       ‖⟪hvec2 (gradedMode q c d), hpowL2 j⟫_ℂ - (if q < M then (a q c d : ℂ) else 0)‖ ^ 2 =
+      ∑ q ∈ Finset.range (qlow j), ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
         (((∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d) +
           (twistGauss j q c d - centerR (centerInts j) (twistParams j).E q c d)) ^ 2 := by
-    intro q c d hq hc hd
+    refine sum3_congr fun q c d hq hc hd ↦ ?_
     have h := twistCoefficient_eq_ofReal j q c d (by omega) (by omega)
     unfold twistCoefficient at h
     have hqM : q < M := by omega
@@ -352,16 +343,6 @@ theorem band_le_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTable} 
     rw [h, ← Complex.ofReal_ratCast, ← Complex.ofReal_sub, Complex.norm_real,
       Real.norm_eq_abs, sq_abs, ha q c d hq hc hd]
     ring
-  have hsum : ∑ q ∈ Finset.range (qlow j), ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
-      ‖⟪hvec2 (gradedMode q c d), hpowL2 j⟫_ℂ - (if q < M then (a q c d : ℂ) else 0)‖ ^ 2 =
-      ∑ q ∈ Finset.range (qlow j), ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
-        (((∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d) +
-          (twistGauss j q c d - centerR (centerInts j) (twistParams j).E q c d)) ^ 2 := by
-    apply Finset.sum_congr rfl; intro q hq
-    apply Finset.sum_congr rfl; intro c hc
-    apply Finset.sum_congr rfl; intro d hd
-    simp only [Finset.mem_range] at hq hc hd
-    exact hterm q c d hq hc hd
   rw [hsum]
   apply sum3_add_sq_le _ _ _ hρ (Real.sqrt_nonneg _)
   · exact le_trans (sum3_le_of_le hlowQ _ fun _ _ _ => sq_nonneg _) hQ

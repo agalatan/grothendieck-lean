@@ -44,8 +44,8 @@ theorem norm_damped_eval_sq_le (P : CPoly) {N : ℕ} (hP : P.totalDegree ≤ N)
         Real.exp (4 * ε / (1 - τ) * (r.im ^ 2 + x.im ^ 2)) := by
   let Q := rescale (Real.sqrt (gaussianRate ε τ)) P
   have hQ : Q.totalDegree ≤ N := (totalDegree_rescale_le _ P).trans hP
-  have hnorm : ‖polynomialLp Q‖ ^ 2 ≤ (1 - 2 * (ε / gaussianRate ε τ))⁻¹ := by
-    exact GaussianGrowth.norm_sq_le_of_exp_bound (memLp_ev Q)
+  have hnorm : ‖polynomialLp Q‖ ^ 2 ≤ (1 - 2 * (ε / gaussianRate ε τ))⁻¹ :=
+    GaussianGrowth.norm_sq_le_of_exp_bound (memLp_ev Q)
       (damping_ratio_lt_half hε hτ0 hτ1) (norm_rescale_le P hε hτ0 hbound)
   have hrate := gaussianRate_pos hε hτ0
   have hsqrt : Real.sqrt (gaussianRate ε τ) ≠ 0 := (Real.sqrt_pos.2 hrate).ne'

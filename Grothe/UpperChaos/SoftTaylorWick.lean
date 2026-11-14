@@ -50,9 +50,7 @@ theorem integral_gradedHermite_softHpow_eq_wick (η : ℝ) (hη : 0 < η)
       (Real.sqrt Real.pi : ℂ)⁻¹ * ∫ t : ℝ in Ioi 0,
         (Real.exp (-(η ^ 2 * t)) : ℂ) *
           ∫ z, taylorConditionalWick j N a t z ∂Grothe.LowerAnalytic.gaussC := by
-  let hc : ChargeFn (gradedHermiteFn N a) :=
-    ⟨measurable_gradedHermiteFn N a, memLp_gradedHermiteFn N a,
-      gradedHermiteFn_rot2 N a⟩
+  have hc := chargeFn_gradedHermiteFn N a
   have he : (fun u => conj (gradedHermiteFn N a u) * softHpow η j u) =
       fun u => taylorInnerSource j (gradedHermiteFn N a) u *
         softPhase η (basePhaseArgument u) := by
@@ -63,22 +61,19 @@ theorem integral_gradedHermite_softHpow_eq_wick (η : ℝ) (hη : 0 < η)
     (measurable_taylorInnerSource hc j) measurable_basePhaseArgument
     (integrable_taylorInnerSource phiBound hc j)]
   congr 1
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro t ht
+  refine setIntegral_congr_fun measurableSet_Ioi fun t ht => ?_
   calc
     _ = (Real.exp (-(η ^ 2 * t)) : ℂ) *
         ∫ u, taylorInnerSource j (gradedHermiteFn N a) u *
           Grothe.Haag.phaseLaplaceKernel (basePhaseArgument u) t ∂mu2 := by
       rw [← integral_const_mul]
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall fun u => by
-        unfold softPhaseLaplaceKernel
-        ring
+      refine integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)
+      unfold softPhaseLaplaceKernel
+      ring
     _ = _ := by
       rw [integral_taylorInnerSource_kernel_prod phiBound hc j t ht]
       congr 1
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall fun z =>
+      exact integral_congr_ae <| Filter.Eventually.of_forall fun z =>
         integral_taylorInnerSource_conditional j N a t z ht
 
 /-- The finite Wick integral is the coefficient pairing in the original Gaussian L² space. -/

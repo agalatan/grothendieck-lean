@@ -34,10 +34,8 @@ lemma memSc_mulFx {x y : ℝ} {a b : Fx} (hx : memOut x a) (hy : memOut y b) :
     memSc (2 * KOut) (x * y) (mulFx a b) :=
   memSc_mulPair (p := (a.lo, a.hi)) (q := (b.lo, b.hi)) hx hy
 
-lemma memOut_roundOut {x : ℝ} {p : ℤ × ℤ} (hx : memSc (2 * KOut) x p) : memOut x (roundOut p) := by
-  have := memSc_shift (K := KOut) (s := KOut)
-    (by rw [show KOut + KOut = 2 * KOut by ring]; exact hx)
-  exact this
+lemma memOut_roundOut {x : ℝ} {p : ℤ × ℤ} (hx : memSc (2 * KOut) x p) : memOut x (roundOut p) :=
+  memSc_shift (K := KOut) (s := KOut) (by rw [show KOut + KOut = 2 * KOut by ring]; exact hx)
 
 lemma memSc_foldl_add {K : ℕ} {f : ℕ → ℝ} {g : ℕ → ℤ × ℤ} (n : ℕ)
     (h : ∀ k, k < n → memSc K (f k) (g k)) {x : ℝ} {acc : ℤ × ℤ} (hacc : memSc K x acc) :
@@ -101,21 +99,22 @@ lemma mem_psiTable (P : ℕ) (hP : 1 ≤ P) (Q : ℕ) (hQ : Q ≤ 502) {s : ℝ}
   have hk : k < Q + 1 := by omega
   have hm : m < Q + 1 - k := by omega
   rw [getD_ofFn _ hk, getD_ofFn _ hm]
-  apply memOut_toOut
-  exact mem_radialFactorI P hP k m (by omega)
+  exact memOut_toOut <| mem_radialFactorI P hP k m (by omega)
     (mem_lagTable P Q hQ (fun j hj => mem_negExpTerms P hP hs Q j hj) k m (by omega) (by omega))
     (mem_powTable P (mem_sqrtI P hs0 hs) Q k (by omega))
 
+/-- The dyadic rescaling of a center entry: `(m 2^{K−E}) / 2^K = m / 2^E` for `E ≤ K`. -/
+lemma centerR_eq_scaled (center : Array Int) {E K : ℕ} (hE : E ≤ K) (q c d : ℕ) :
+    ((center.getD (gradedFlat q c d) 0 * pow2 (K - E) : ℤ) : ℝ) / 2 ^ K =
+      centerR center E q c d := by
+  have h2 : (2 : ℝ) ^ K = 2 ^ (K - E) * 2 ^ E := by rw [← pow_add, Nat.sub_add_cancel hE]
+  rw [centerR, Int.cast_mul, pow2_cast, h2]
+  field_simp
+
 lemma memOut_centerOut (center : Array Int) (E q c d : ℕ) (hE : E ≤ KOut) :
     memOut (centerR center E q c d) (centerOut center E q c d) := by
-  unfold memOut memSc centerOut centerR
-  have h : ((center.getD (gradedFlat q c d) 0 : ℤ) : ℝ) / 2 ^ E * (2 : ℝ) ^ KOut =
-      ((center.getD (gradedFlat q c d) 0 * pow2 (KOut - E) : ℤ) : ℝ) := by
-    have h2 : (2 : ℝ) ^ KOut = 2 ^ (KOut - E) * 2 ^ E := by rw [← pow_add, Nat.sub_add_cancel hE]
-    rw [Int.cast_mul, pow2_cast, h2]
-    field_simp
-  simp only
-  rw [h]
+  unfold memOut memSc centerOut
+  rw [← centerR_eq_scaled center hE, div_mul_cancel₀ _ (by positivity)]
   exact ⟨le_rfl, le_rfl⟩
 
 lemma memOut_centerV (P : ℕ) (hP : 1 ≤ P) (prm : TwistParams) (hQ : prm.Q ≤ 502)
@@ -322,9 +321,8 @@ theorem twistSpecs_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.p
     rw [twistSpecs_cons, Option.bind_eq_some_iff] at h
     obtain ⟨acc₁, h1, h2⟩ := h
     have hstep := twistSpec_sound P hP hpi hW hpd hpv hprm htab nd hacc h1
-    have := ih hstep h2
     simp only [List.map_cons, List.sum_cons, ← add_assoc]
-    exact this
+    exact ih hstep h2
 
 /-! ### The two checks -/
 
@@ -353,7 +351,7 @@ lemma abs_sub_le_excursionTw {x : ℝ} {e : ℤ × ℤ} (hx : memSc (2 * KOut) x
   unfold excursionTw
   push_cast
   rw [abs_le]
-  constructor <;> [skip; skip] <;>
+  constructor <;>
     nlinarith [hx.1, hx.2, le_max_left (max ((e.2 : ℝ) - t) (t - e.1)) 0,
       le_max_right (max ((e.2 : ℝ) - t) (t - e.1)) 0, le_max_left ((e.2 : ℝ) - t) (t - e.1),
       le_max_right ((e.2 : ℝ) - t) (t - e.1)]

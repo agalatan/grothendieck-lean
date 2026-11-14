@@ -54,8 +54,7 @@ def errorVector (j : ℕ) : Vector j := WithLp.toLp 2 fun x ↦
 
 private lemma mem_mode {j : ℕ} (x : idx3 (twistParams j).Q) :
     x.1.1 < (twistParams j).Q ∧ x.1.2.1 < x.1.1 + 2 ∧ x.1.2.2 < x.1.1 + 1 := by
-  have hx := x.2
-  simpa only [idx3, Finset.mem_sigma, Finset.mem_product, Finset.mem_range] using hx
+  simpa only [idx3, Finset.mem_sigma, Finset.mem_product, Finset.mem_range] using x.2
 
 /-- The Euclidean norm is precisely the nested square sum in the target hypothesis. -/
 theorem norm_errorVector_sq (j : ℕ) :
@@ -83,10 +82,8 @@ theorem panelError_apply (j : ℕ) (p : Fin sourcePanels.length) (F : ℂ → Ve
         twistIntegrand j x.1.1 x.1.2.1 x.1.2.2 (sourceNode ⟨p, i⟩) : ℝ) : ℂ) := by
   have hlh := source_panel_lt p
   have hint : IntervalIntegrable (fun s : ℝ ↦ F (s : ℂ)) volume
-      ((sourcePanels.get p).lo : ℝ) (sourcePanels.get p).hi := by
-    apply ContinuousOn.intervalIntegrable
-    rw [uIcc_of_le hlh.le]
-    exact hcont
+      ((sourcePanels.get p).lo : ℝ) (sourcePanels.get p).hi :=
+    hcont.intervalIntegrable_of_Icc hlh.le
   unfold panelError
   rw [PiLp.sub_apply]
   refine congrArg₂ (fun a b : ℂ ↦ a - b) ?_ ?_
@@ -136,10 +133,8 @@ theorem errorVector_eq_sum (j : ℕ) (hj : j = 1 ∨ j = 2 ∨ j = 3)
       have hlh := source_panel_lt p
       have hcpt := (EuclideanSpace.proj (𝕜 := ℂ) x).continuous.comp_continuousOn (hcont p)
       have hint : IntervalIntegrable (fun s : ℝ ↦ F p (s : ℂ) x) volume
-          ((sourcePanels.get p).lo : ℝ) (sourcePanels.get p).hi := by
-        apply ContinuousOn.intervalIntegrable
-        rw [uIcc_of_le hlh.le]
-        exact hcpt
+          ((sourcePanels.get p).lo : ℝ) (sourcePanels.get p).hi :=
+        hcpt.intervalIntegrable_of_Icc hlh.le
       apply hint.congr
       rw [uIoc_of_le hlh.le]
       intro s hs
@@ -222,10 +217,9 @@ theorem remainder_of_ellipses (j : ℕ) (hj : j = 1 ∨ j = 2 ∨ j = 3)
     (hsum : ∑ p, 2 * (((sourcePanels.get p).hi : ℝ) - (sourcePanels.get p).lo) *
       (2 * cap p * ((radius p)⁻¹) ^ (2 * (sourcePanels.get p).order) /
         (1 - (radius p)⁻¹)) ≤ ρ) : TwistRemainderHyp j ρ := by
-  apply remainder_of_panel_bounds j hj F
-    (fun p ↦ continuousOn_of_ellipse j p (F p) (hradius p) (hF p)) hslice _ _ hsum
-  intro p
-  exact norm_panelError_le_of_ellipse j p (F p) (hradius p) (hF p) (hcap p)
+  exact remainder_of_panel_bounds j hj F
+    (fun p ↦ continuousOn_of_ellipse j p (F p) (hradius p) (hF p)) hslice _
+    (fun p ↦ norm_panelError_le_of_ellipse j p (F p) (hradius p) (hF p) (hcap p)) hsum
 
 end
 

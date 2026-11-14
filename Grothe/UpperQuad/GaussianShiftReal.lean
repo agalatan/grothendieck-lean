@@ -51,13 +51,12 @@ theorem twistCoef_eq_signed_integral (j : ℕ) (s : ℝ) (hs : 0 ≤ s)
         ((I * (phiT ((Real.sqrt s : ℂ), w) : ℂ)) ^ j *
           Haag.ph (((profileSign s * profileShift s : ℝ) : ℂ) + w)) ∂gaussC := by
   rw [twistCoef, ← integral_const_mul]
-  apply integral_congr_ae
-  exact Filter.Eventually.of_forall fun w ↦ by
-    change conj (hfun i w) *
-      ((I * (phiT ((Real.sqrt s : ℂ), w) : ℂ)) ^ j *
-        F0 ((Real.sqrt s : ℂ), w)) = _
-    rw [F0_signed_shift s hs hv]
-    ring
+  refine integral_congr_ae (Filter.Eventually.of_forall fun w ↦ ?_)
+  change conj (hfun i w) *
+    ((I * (phiT ((Real.sqrt s : ℂ), w) : ℂ)) ^ j *
+      F0 ((Real.sqrt s : ℂ), w)) = _
+  rw [F0_signed_shift s hs hv]
+  ring
 
 /-- The shifted coefficient agrees with the actual twisted source on its signed real slice. -/
 theorem twistCoef_eq_signed_coefficient (j : ℕ) (s : ℝ) (hs : 0 ≤ s)
@@ -80,9 +79,7 @@ theorem sum_twistCoef_sq_eq (j : ℕ) (s : ℝ) (hs : 0 ≤ s)
     ∑ i ∈ S, ‖twistCoef j s i‖ ^ 2 =
       ∑ i ∈ S,
         ‖coefficient j (Real.sqrt s : ℂ) (profileSign s * profileShift s) 0 i‖ ^ 2 := by
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [norm_twistCoef_eq j s hs hv]
+  exact Finset.sum_congr rfl fun i _ ↦ by rw [norm_twistCoef_eq j s hs hv]
 
 end
 

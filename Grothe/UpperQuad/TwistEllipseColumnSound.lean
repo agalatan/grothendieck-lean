@@ -97,14 +97,12 @@ private lemma mapM_some_spec {α β : Type*} (f : α → Option β) (da : α) (d
         have hy : b :: bs = ys := by simpa [List.mapM_cons, ha, ht] using h
         subst ys
         obtain ⟨hlen, hget⟩ := ih ht
-        constructor
-        · simp [hlen]
-        · intro i hi
-          cases i with
-          | zero => simpa using ha
-          | succ i =>
-            have hi' : i < xs.length := by simpa using hi
-            simpa using hget i hi'
+        refine ⟨by simp [hlen], fun i hi => ?_⟩
+        cases i with
+        | zero => simpa using ha
+        | succ i =>
+          have hi' : i < xs.length := by simpa using hi
+          simpa using hget i hi'
 
 /-- A generated list has the production length and encloses every column expression. -/
 theorem makeColumnCoeffs_sound (g : Power) {cs : List Ival}
@@ -112,11 +110,9 @@ theorem makeColumnCoeffs_sound (g : Power) {cs : List Ival}
     cs.length = totalDegree g + 1 ∧
       ∀ m, m < totalDegree g + 1 → mem (columnCoeff g m) (cs.getD m zeroI) := by
   have hs := mapM_some_spec (columnCoeffI g) 0 zeroI h
-  refine ⟨by simpa using hs.1, ?_⟩
-  intro m hm
-  apply columnCoeffI_sound g m
-  have hget := hs.2 m (by simpa using hm)
-  simpa only [List.getD_eq_getElem?_getD, List.getElem?_range hm, Option.getD_some] using hget
+  refine ⟨by simpa using hs.1, fun m hm => columnCoeffI_sound g m ?_⟩
+  simpa only [List.getD_eq_getElem?_getD, List.getElem?_range hm, Option.getD_some] using
+    hs.2 m (by simpa using hm)
 
 /-- The cached coefficient selection is the generator at the same production power. -/
 lemma columnCoeffs_eq_make (g : Power) : columnCoeffs g = makeColumnCoeffs g := by
@@ -126,8 +122,7 @@ lemma columnCoeffs_eq_make (g : Power) : columnCoeffs g = makeColumnCoeffs g := 
 theorem columnCoeffs_sound (g : Power) {cs : List Ival}
     (h : columnCoeffs g = some cs) :
     cs.length = totalDegree g + 1 ∧
-      ∀ m, m < totalDegree g + 1 → mem (columnCoeff g m) (cs.getD m zeroI) := by
-  apply makeColumnCoeffs_sound g
-  rwa [← columnCoeffs_eq_make]
+      ∀ m, m < totalDegree g + 1 → mem (columnCoeff g m) (cs.getD m zeroI) :=
+  makeColumnCoeffs_sound g (by rwa [← columnCoeffs_eq_make])
 
 end Grothe.UpperQuad.TwistEllCheck

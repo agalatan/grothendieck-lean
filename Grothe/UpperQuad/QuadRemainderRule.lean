@@ -37,14 +37,11 @@ theorem source_rule_exact (p : Fin sourcePanels.length) (q : Polynomial ℝ)
     (hq : q.natDegree < 2 * (sourcePanels.get p).order) :
     ∫ s in ((sourcePanels.get p).lo : ℝ)..(sourcePanels.get p).hi, q.eval s =
       ∑ i : Fin (sourcePanels.get p).order, sourceWeight ⟨p, i⟩ * q.eval (sourceNode ⟨p, i⟩) := by
-  have hb : 1 ≤ (sourcePanels.get p).order ∧ (sourcePanels.get p).order ≤ 64 := by
-    have := scan_member_order_bounds sourcePanels 0 21577 complete_scan
+  have hb : 1 ≤ (sourcePanels.get p).order ∧ (sourcePanels.get p).order ≤ 64 :=
+    scan_member_order_bounds sourcePanels 0 21577 complete_scan
       (sourcePanels.get p) (List.get_mem sourcePanels p)
-    exact this
-  have h := Quad.panel_exactness _ _ (source_panel_lt p)
+  exact Quad.panel_exactness _ _ (source_panel_lt p)
     (fun i => (Q0GaussSelectedChoice.selectedFor _ hb).root i)
     (selected_exact _ hb (Q0GaussSelectedChoice.selectedFor _ hb)) q hq
-  rw [h]
-  rfl
 
 end Grothe.UpperQuad.QuadRem

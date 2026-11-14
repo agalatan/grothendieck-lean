@@ -57,9 +57,8 @@ theorem analyticAt_coefficient_comp (j : ℕ) (hj : 0 < j) (i : ℕ × ℕ)
     (hbound : ∀ z ∈ closedBall z₀ R, ‖r z‖ ≤ M ∧ ‖A z‖ ≤ M) :
     AnalyticAt ℂ (fun z ↦ coefficient j (r z) (A z).re (A z).im i) z₀ := by
   have heq : (fun z ↦ coefficient j (r z) (A z).re (A z).im i) =
-      (fun z ↦ ∫ w, fixedPhaseIntegrand j (r z) (A z) i w ∂gaussC) := by
-    funext z
-    exact coefficient_eq_fixedPhaseIntegral_complex j (r z) (A z) i
+      (fun z ↦ ∫ w, fixedPhaseIntegrand j (r z) (A z) i w ∂gaussC) :=
+    funext fun z ↦ coefficient_eq_fixedPhaseIntegral_complex j (r z) (A z) i
   rw [heq]
   exact analyticAt_fixedPhaseIntegral_comp j hj i hR hr hA hbound
 
@@ -70,10 +69,7 @@ theorem analyticAt_coefficient_shift (j : ℕ) (hj : 0 < j) (r A : ℂ) (i : ℕ
     (by norm_num) (differentiableOn_const r) differentiableOn_id
   intro z hz
   change ‖r‖ ≤ ‖r‖ + ‖A‖ + 1 ∧ ‖z‖ ≤ ‖r‖ + ‖A‖ + 1
-  constructor
-  · linarith [norm_nonneg A]
-  · have h := norm_le_of_mem_closedBall hz
-    linarith [norm_nonneg r]
+  exact ⟨by linarith [norm_nonneg A], by linarith [norm_nonneg r, norm_le_of_mem_closedBall hz]⟩
 
 /-- For a fixed complex shift, the shifted coefficient is entire in its radial coordinate. -/
 theorem analyticAt_coefficient_radial (j : ℕ) (hj : 0 < j) (r A : ℂ) (i : ℕ × ℕ) :
@@ -82,10 +78,7 @@ theorem analyticAt_coefficient_radial (j : ℕ) (hj : 0 < j) (r A : ℂ) (i : �
     (by norm_num) differentiableOn_id (differentiableOn_const A)
   intro z hz
   change ‖z‖ ≤ ‖r‖ + ‖A‖ + 1 ∧ ‖A‖ ≤ ‖r‖ + ‖A‖ + 1
-  constructor
-  · have h := norm_le_of_mem_closedBall hz
-    linarith [norm_nonneg A]
-  · linarith [norm_nonneg r]
+  exact ⟨by linarith [norm_nonneg A, norm_le_of_mem_closedBall hz], by linarith [norm_nonneg r]⟩
 
 end
 

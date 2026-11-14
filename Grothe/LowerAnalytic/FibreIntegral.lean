@@ -165,7 +165,7 @@ lemma integrable_Lsec : Integrable (Lsec ℓ β (ft := ft) (gt := gt)) (stdGauss
         conj (Lf ℓ β p.2) * ((ft (joinR p.2 p.1) + gt (joinR p.2 p.1)) / 2) := by
       have hj : Measurable fun p : (Fin (n + n) → ℝ) × ℂ => joinR p.2 p.1 :=
         split2.symm.measurable.comp (measurable_fst.prodMk measurable_snd)
-      refine (((Complex.continuous_conj.comp (continuous_Lf ℓ β)).measurable.comp
+      exact (((Complex.continuous_conj.comp (continuous_Lf ℓ β)).measurable.comp
         measurable_snd).mul (((hfm.comp hj).add (hgm.comp hj)).div_const _)).stronglyMeasurable
     exact hf.integral_prod_right'
   refine MemLp.integrable one_le_two (MemLp.of_bound hm.aestronglyMeasurable
@@ -221,8 +221,7 @@ theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n
   have iS : Integrable (fun y => A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re + C y)
       (stdGaussian (n + n)) := iAB.add iC
   have hmono := integral_mono_ae iS iP (by
-    filter_upwards [hF] with y hy
-    rw [← hy]; exact hpt y)
+    filter_upwards [hF] with y hy using hy.ge.trans (hpt y))
   rw [integral_add iAB iC, integral_add iA iB] at hmono
   have eA : ∫ y, A y ∂(stdGaussian (n + n))
       = formH3 E (cK hfm hgm hfb hgb 0) (cK hfm hgm hfb hgb 1) (conjL (cK hfm hgm hfb hgb 2))
@@ -244,8 +243,7 @@ theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n
     simpa using integral_re (integrable_Lsec ℓ β hfm hgm hfb hgb)
   have eC : ∫ y, C y ∂(stdGaussian (n + n)) = 2 * (inner ℂ Qe (aXi b1 b2 b3 hfm hgm hfb hgb)).re := by
     rw [hC, integral_const_mul, re_inner_eq_integral]
-  rw [eA, eB, eC] at hmono
-  exact hmono
+  rwa [eA, eB, eC] at hmono
 
 end integrated2
 

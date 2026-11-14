@@ -42,8 +42,7 @@ theorem integral_gaussC_norm_sq_cut_complex (f : ℝ → ℂ) (hf : Measurable f
   calc
     _ = ∫ s in Ioi (0 : ℝ),
         (Iic L).indicator (fun s => (Real.exp (-s) : ℂ) * f s) s := by
-      apply setIntegral_congr_fun measurableSet_Ioi
-      intro s _hs
+      refine setIntegral_congr_fun measurableSet_Ioi fun s _ => ?_
       by_cases hs : s ≤ L <;> simp [hs]
     _ = _ := by
       rw [setIntegral_indicator measurableSet_Iic]
@@ -73,16 +72,13 @@ theorem integral_taylorInnerSource_compact_kernel (j N : ℕ)
       taylorInnerSource j (gradedHermiteFn N a) u *
         Haag.phaseLaplaceKernel (basePhaseArgument u) t ∂mu2) =
       ∫ z in {z : ℂ | ‖z‖ ^ 2 ≤ L}, taylorConditionalWick j N a t z ∂gaussC := by
-  let hc : ChargeFn (gradedHermiteFn N a) :=
-    ⟨measurable_gradedHermiteFn N a, memLp_gradedHermiteFn N a,
-      gradedHermiteFn_rot2 N a⟩
-  have hi := (integrable_taylorInnerSource_kernel phiBound hc j t ht).restrict
+  have hi := (integrable_taylorInnerSource_kernel phiBound
+    (chargeFn_gradedHermiteFn N a) j t ht).restrict
     (s := (TaylorRadialTail.cutoffSet L)ᶜ)
   rw [compactTaylorRegion_eq, mu2, ← Measure.restrict_prod_eq_prod_univ] at hi ⊢
   rw [integral_prod _ hi]
-  apply integral_congr_ae
-  exact Filter.Eventually.of_forall fun z =>
-    integral_taylorInnerSource_conditional j N a t z ht
+  exact integral_congr_ae (Filter.Eventually.of_forall fun z =>
+    integral_taylorInnerSource_conditional j N a t z ht)
 
 /-- The actual compact source pairing is a finite auxiliary/radial Wick integral. -/
 theorem integral_gradedHermite_compactLaplace_eq_wick (η T L : ℝ)
@@ -91,17 +87,14 @@ theorem integral_gradedHermite_compactLaplace_eq_wick (η T L : ℝ)
       (Real.sqrt Real.pi : ℂ)⁻¹ * ∫ t in (0 : ℝ)..T,
         (Real.exp (-(η ^ 2 * t)) : ℂ) * ∫ s in (0 : ℝ)..L,
           (Real.exp (-s) : ℂ) * taylorConditionalWick j N a t (Real.sqrt s : ℂ) := by
-  let hc : ChargeFn (gradedHermiteFn N a) :=
-    ⟨measurable_gradedHermiteFn N a, memLp_gradedHermiteFn N a,
-      gradedHermiteFn_rot2 N a⟩
+  have hc := chargeFn_gradedHermiteFn N a
   have hS := (TaylorRadialTail.measurableSet_cutoffSet L).compl
   have he : (∫ u, conj (gradedHermiteFn N a u) * compactLaplaceHpow η T L j u ∂mu2) =
       ∫ u in (TaylorRadialTail.cutoffSet L)ᶜ,
         taylorInnerSource j (gradedHermiteFn N a) u *
           finiteLaplacePhase η T (basePhaseArgument u) ∂mu2 := by
     rw [← integral_indicator hS]
-    apply integral_congr_ae
-    refine Filter.Eventually.of_forall fun u => ?_
+    refine integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)
     by_cases hu : u ∈ TaylorRadialTail.cutoffSet L
     · simp [compactLaplaceHpow, hu]
     · simp [compactLaplaceHpow, hu, finiteLaplaceHpow, taylorInnerSource,
@@ -110,9 +103,7 @@ theorem integral_gradedHermite_compactLaplace_eq_wick (η T L : ℝ)
     η T hT (measurable_taylorInnerSource hc j) measurable_basePhaseArgument
     (integrable_taylorInnerSource phiBound hc j).restrict]
   congr 1
-  apply intervalIntegral.integral_congr_Ioo_of_le hT
-  intro t ht
-  dsimp only
+  refine intervalIntegral.integral_congr_Ioo_of_le hT fun t ht => ?_
   have hs : (∫ u in (TaylorRadialTail.cutoffSet L)ᶜ,
       taylorInnerSource j (gradedHermiteFn N a) u *
         softPhaseLaplaceKernel η (basePhaseArgument u) t ∂mu2) =
@@ -121,8 +112,7 @@ theorem integral_gradedHermite_compactLaplace_eq_wick (η T L : ℝ)
           taylorInnerSource j (gradedHermiteFn N a) u *
             Haag.phaseLaplaceKernel (basePhaseArgument u) t ∂mu2 := by
     rw [← integral_const_mul]
-    apply setIntegral_congr_fun hS
-    intro u _hu
+    refine setIntegral_congr_fun hS fun u _ => ?_
     unfold softPhaseLaplaceKernel
     ring
   rw [hs, integral_taylorInnerSource_compact_kernel j N a t L ht.1,
@@ -171,13 +161,9 @@ theorem integral_gradedHermite_compactLaplace_eq_quadrature (η T L : ℝ)
     (Real.sqrt T) (Real.sqrt_nonneg T)
   rw [Real.sq_sqrt hT] at hs
   rw [hs]
-  apply intervalIntegral.integral_congr_Ioo_of_le (Real.sqrt_nonneg T)
-  intro u hu
-  dsimp only
+  refine intervalIntegral.integral_congr_Ioo_of_le (Real.sqrt_nonneg T) fun u hu => ?_
   rw [← intervalIntegral.integral_const_mul, ← intervalIntegral.integral_const_mul]
-  apply intervalIntegral.integral_congr_Ioo_of_le hL
-  intro s _hs
-  dsimp only
+  refine intervalIntegral.integral_congr_Ioo_of_le hL fun s _ => ?_
   rw [taylorQuadratureKernel, taylorRegularWick_eq j N a u hu.1]
   ring
 

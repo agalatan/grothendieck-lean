@@ -52,9 +52,7 @@ theorem continuous_phaseComplex :
         (continuous_const : Continuous (fun _ : ℝ × ℂ × ℂ ↦ (0 : ℂ)))
     | cons t l ih =>
       simp only [List.map_cons, List.sum_cons]
-      apply Continuous.add
-      · fun_prop
-      · exact ih
+      exact Continuous.add (by fun_prop) ih
   simp only [PhasePolynomialComplex.phaseComplex,
     PhasePolynomialComplex.eval_phasePolynomial_pair]
   have hs := hsum Grothe.UpperChaos.phaseTerms
@@ -119,10 +117,9 @@ theorem source_memLp (j : ℕ) (r : ℂ) (a b : ℝ) : MemLp (source j r a b) 2 
     exact MemLp.of_bound (measurable_source 0 r a b).aestronglyMeasurable 1
       (Filter.Eventually.of_forall (norm_source_zero_le r a b))
   · have hjpos : 0 < j := Nat.pos_of_ne_zero hj
-    refine MemLp.of_bound (measurable_source j r a b).aestronglyMeasurable
-      (Real.sqrt (phaseEnvelopeSq j (1 / 2) r b)) (Filter.Eventually.of_forall fun w ↦ ?_)
-    exact Real.le_sqrt_of_sq_le
-      (norm_source_sq_le j hjpos (by norm_num) (by norm_num) r a b w)
+    exact MemLp.of_bound (measurable_source j r a b).aestronglyMeasurable
+      (Real.sqrt (phaseEnvelopeSq j (1 / 2) r b)) (Filter.Eventually.of_forall fun w ↦
+        Real.le_sqrt_of_sq_le (norm_source_sq_le j hjpos (by norm_num) (by norm_num) r a b w))
 
 /-- The actual shifted source as a Gaussian `L²` vector, for every natural power. -/
 def sourceLp (j : ℕ) (r : ℂ) (a b : ℝ) : Lp ℂ 2 gaussC :=
@@ -140,12 +137,11 @@ theorem norm_sourceLp_sq_le (j : ℕ) (hj : 0 < j) {τ : ℝ}
   rw [sourceLp, GaussianGrowth.norm_toLp_sq]
   calc
     (∫ w, ‖source j r a b w‖ ^ 2 ∂gaussC) ≤
-        ∫ _ : ℂ, phaseEnvelopeSq j τ r b ∂gaussC := by
-      apply integral_mono
+        ∫ _ : ℂ, phaseEnvelopeSq j τ r b ∂gaussC :=
+      integral_mono
         ((memLp_two_iff_integrable_sq_norm
           (source_memLp j r a b).aestronglyMeasurable).mp (source_memLp j r a b))
-        (integrable_const _)
-      exact norm_source_sq_le j hj hτ0 hτ1 r a b
+        (integrable_const _) (norm_source_sq_le j hj hτ0 hτ1 r a b)
     _ = phaseEnvelopeSq j τ r b := by simp
 
 end

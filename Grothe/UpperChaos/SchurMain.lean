@@ -119,10 +119,7 @@ lemma integral_norm_Lg_sq_le :
   simp_rw [norm_M4 B C hZ c]
   -- the integrand as an `ℝ≥0∞` product
   set a : V → ℝ≥0∞ := fun Y => ENNReal.ofReal ‖gw j G Y‖
-  have hgm : Measurable (gw j G) := by
-    unfold gw
-    exact (hGm.comp (by unfold toC2; fun_prop : Continuous fun Y : V => toC2 Y.1 Y.2).measurable).mul
-      (Complex.measurable_ofReal.comp (continuous_phih j).measurable)
+  have hgm := measurable_gw j hGm
   have ham : Measurable a := hgm.norm.ennreal_ofReal
   have hP1c := continuous_P1 B C
   have hΦm : Measurable fun q : V × V => ‖gw j G q.1‖ * ‖gw j G q.2‖ *
@@ -190,10 +187,6 @@ theorem norm_HholPair_le (hj : 0 < j) (hZ : (Z (Bj R j)).PD) (hT : (T (Bj R j) R
   rw [HholPair_eq R j hj, ← hsq]
   set f := gw j F
   set g := gw j G
-  have hgm : ∀ {H : ℂ × ℂ → ℂ}, Measurable H → Measurable (gw j H) := fun hH => by
-    unfold gw
-    exact (hH.comp (by unfold toC2; fun_prop : Continuous fun Y : V => toC2 Y.1 Y.2).measurable).mul
-      (Complex.measurable_ofReal.comp (continuous_phih j).measurable)
   by_cases hint : Integrable (fun q : V × V => conj (f q.1) * (L4 B C c q.1 q.2 * g q.2))
   swap
   · rw [integral_undef hint, norm_zero]; positivity
@@ -204,7 +197,8 @@ theorem norm_HholPair_le (hj : 0 < j) (hZ : (Z (Bj R j)).PD) (hT : (T (Bj R j) R
   simp_rw [norm_mul, Complex.norm_conj]
   -- the two square-integrable factors
   have hf2 : Integrable fun X : V => ‖f X‖ ^ 2 := by
-    refine (integrable_phih_sq j hj).mono' ((hgm hFm).norm.pow_const 2).aestronglyMeasurable
+    refine (integrable_phih_sq j hj).mono'
+      ((measurable_gw j hFm).norm.pow_const 2).aestronglyMeasurable
       (Filter.Eventually.of_forall fun X => ?_)
     rw [Real.norm_of_nonneg (sq_nonneg _)]
     exact pow_le_pow_left₀ (norm_nonneg _) (norm_gw_le j hF hj X) 2

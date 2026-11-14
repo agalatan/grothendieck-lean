@@ -54,8 +54,7 @@ theorem a2hiI_disk_bound {pos : Bool} {x R : ℚ} (hR : 0 ≤ (R : ℝ))
       ∀ z ζ, DiskPoint (EllCheck.sgn pos) x R z ζ →
         ‖ζ / wC (EllCheck.sgn pos) z‖ ^ 2 ≤ Ahi := by
   obtain ⟨Ahi, hAm, hA⟩ := EllCheck.a2hiI_sound hR hf h
-  refine ⟨Ahi, hAm, ?_, fun z ζ hd ↦ hd.norm_shift_sq_le.trans hA⟩
-  exact le_trans (by positivity) hA
+  exact ⟨Ahi, hAm, le_trans (by positivity) hA, fun z ζ hd ↦ hd.norm_shift_sq_le.trans hA⟩
 
 /-- The accepted lower norm interval contains a lower bound valid throughout the disk.
 Strict positivity is recovered separately when a K division accepts this interval. -/
@@ -78,8 +77,7 @@ theorem defectI_disk_theta {pos : Bool} {x R : ℚ} (hR : 0 ≤ (R : ℝ))
         ‖ζ / wC (EllCheck.sgn pos) z‖ ^ 2 / ((ζ / wC (EllCheck.sgn pos) z) ^ 2).re ≤
           1 / Real.sqrt (1 - KP ^ 2) := by
   obtain ⟨hxR, KP, hKm, hkle, hK1, hK0⟩ := EllCheck.defectI_sound hR hf h
-  refine ⟨hxR, KP, hKm, hK0, hK1, ?_⟩
-  intro z ζ hd
+  refine ⟨hxR, KP, hKm, hK0, hK1, fun z ζ hd => ?_⟩
   obtain ⟨_, hre, hθ⟩ := hd.shift_angle hxR (lt_of_le_of_lt hkle hK1)
   have hk0 := EllCheck.diskPoint_kp_nonneg hd hxR
   have hsq : DiskPoint.kp (EllCheck.sgn pos) x R ^ 2 ≤ KP ^ 2 :=
@@ -105,8 +103,7 @@ theorem shift_choice_disk_bound {pos : Bool} {x R : ℚ} (hR : 0 ≤ (R : ℝ))
   | none =>
     simp only [hdef, Option.some.injEq] at h
     subst b2
-    refine ⟨Ahi, hAm, hA0, ?_⟩
-    intro z ζ hd
+    refine ⟨Ahi, hAm, hA0, fun z ζ hd => ?_⟩
     have him : (ζ / wC (EllCheck.sgn pos) z).im ^ 2 ≤
         ‖ζ / wC (EllCheck.sgn pos) z‖ ^ 2 := by
       rw [← sq_abs]
@@ -116,10 +113,8 @@ theorem shift_choice_disk_bound {pos : Bool} {x R : ℚ} (hR : 0 ≤ (R : ℝ))
     simp only [hdef] at h
     obtain ⟨hxR, KP, hKm, hkle, hK1, hK0⟩ := EllCheck.defectI_sound hR hf hdef
     obtain ⟨_, hBm⟩ := shiftImSqI_sound hAm hKm h
-    refine ⟨_, hBm, ?_, ?_⟩
-    · exact div_nonneg (mul_nonneg hA0 (sq_nonneg KP)) (by positivity)
-    · intro z ζ hd
-      exact diskPoint_shift_im_sq_le_sharp hd hxR hK0 hK1 hkle (hA z ζ hd)
+    exact ⟨_, hBm, div_nonneg (mul_nonneg hA0 (sq_nonneg KP)) (by positivity),
+      fun z ζ hd => diskPoint_shift_im_sq_le_sharp hd hxR hK0 hK1 hkle (hA z ζ hd)⟩
 
 /-- An accepted profile and shift branch supply all Y geometry for actual disk points.
 The complex square root is arbitrary, so this bridge does not assume a square-root branch. -/
@@ -138,8 +133,7 @@ theorem diskProfile_shift_geometry (hc : EllCheck.chatOK = true)
   obtain ⟨T, Dv, hf⟩ := EllCheck.ProfileFacts.mk' hc hR hprof
   obtain ⟨Ahi, hAm, hA0, hA⟩ := a2hiI_disk_bound hR hf ha2
   obtain ⟨B2, hBm, hB0, hB⟩ := shift_choice_disk_bound hR hf hAm hA0 hA hb2
-  refine ⟨hf.hsgn, B2, hBm, hB0, ?_⟩
-  intro z ζ hz hζ
+  refine ⟨hf.hsgn, B2, hBm, hB0, fun z ζ hz hζ => ?_⟩
   have hd : DiskPoint (EllCheck.sgn pos) x R z ζ :=
     ⟨hR, hz, hζ, EllCheck.sgn_cases pos, hf.hsgn⟩
   obtain ⟨hX, hY⟩ := diskPoint_root_sq_bounds hd

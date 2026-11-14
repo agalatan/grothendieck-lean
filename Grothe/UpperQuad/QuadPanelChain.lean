@@ -112,21 +112,15 @@ theorem setIntegral_covered_eq (f : ℝ → ℂ)
     (hint : ∀ p ∈ Q0GaussAddressScan.sourcePanels, IntervalIntegrable f volume (p.lo : ℝ) p.hi) :
     ∫ s in Tail.tailSetᶜ ∩ Ioi 0, f s =
       (Q0GaussAddressScan.sourcePanels.map fun p => ∫ s in (p.lo : ℝ)..p.hi, f s).sum := by
-  have hseg : ∀ L : List Panel, (∀ p ∈ L, p ∈ Q0GaussAddressScan.sourcePanels) →
-      ∀ p ∈ L, IntervalIntegrable f volume (p.lo : ℝ) p.hi := fun L hL p hp => hint p (hL p hp)
   have hs := sourcePanels_eq_segs
-  have m1 : ∀ p ∈ seg1, p ∈ Q0GaussAddressScan.sourcePanels := fun p hp => by
-    rw [hs]; simp [hp]
-  have m2 : ∀ p ∈ seg2, p ∈ Q0GaussAddressScan.sourcePanels := fun p hp => by
-    rw [hs]; simp [hp]
-  have m3 : ∀ p ∈ seg3, p ∈ Q0GaussAddressScan.sourcePanels := fun p hp => by
-    rw [hs]; simp [hp]
-  have m4 : ∀ p ∈ seg4, p ∈ Q0GaussAddressScan.sourcePanels := fun p hp => by
-    rw [hs]; simp [hp]
-  obtain ⟨l1, i1, s1⟩ := segOK_integral f seg1 0 Tail.gap1lo seg1_ok (hseg _ m1)
-  obtain ⟨l2, i2, s2⟩ := segOK_integral f seg2 Tail.gap1hi Tail.gap2lo seg2_ok (hseg _ m2)
-  obtain ⟨l3, i3, s3⟩ := segOK_integral f seg3 Tail.gap2hi Tail.gap3lo seg3_ok (hseg _ m3)
-  obtain ⟨l4, i4, s4⟩ := segOK_integral f seg4 Tail.gap3hi 100 seg4_ok (hseg _ m4)
+  obtain ⟨l1, i1, s1⟩ := segOK_integral f seg1 0 Tail.gap1lo seg1_ok fun p hp =>
+    hint p (by rw [hs]; simp [hp])
+  obtain ⟨l2, i2, s2⟩ := segOK_integral f seg2 Tail.gap1hi Tail.gap2lo seg2_ok fun p hp =>
+    hint p (by rw [hs]; simp [hp])
+  obtain ⟨l3, i3, s3⟩ := segOK_integral f seg3 Tail.gap2hi Tail.gap3lo seg3_ok fun p hp =>
+    hint p (by rw [hs]; simp [hp])
+  obtain ⟨l4, i4, s4⟩ := segOK_integral f seg4 Tail.gap3hi 100 seg4_ok fun p hp =>
+    hint p (by rw [hs]; simp [hp])
   push_cast at l1 i1 s1 l4 i4 s4
   have o2 : (Tail.gap1lo : ℝ) < Tail.gap1hi := by norm_num [Tail.gap1lo, Tail.gap1hi]
   have o4 : (Tail.gap2lo : ℝ) < Tail.gap2hi := by norm_num [Tail.gap2lo, Tail.gap2hi]
@@ -139,16 +133,15 @@ theorem setIntegral_covered_eq (f : ℝ → ℂ)
     (intervalIntegrable_iff_integrableOn_Icc_of_le l3).mp i3
   have I4 : IntegrableOn f (Icc (Tail.gap3hi : ℝ) 100) :=
     (intervalIntegrable_iff_integrableOn_Icc_of_le l4).mp i4
-  have d1 : Disjoint (Ioc 0 (Tail.gap1lo : ℝ)) (Icc (Tail.gap1hi : ℝ) Tail.gap2lo) := by
-    rw [Set.disjoint_left]; intro s h1 h2; linarith [h1.2, h2.1]
+  have d1 : Disjoint (Ioc 0 (Tail.gap1lo : ℝ)) (Icc (Tail.gap1hi : ℝ) Tail.gap2lo) :=
+    Set.disjoint_left.mpr fun _ h1 h2 => by linarith [h1.2, h2.1]
   have d2 : Disjoint (Ioc 0 (Tail.gap1lo : ℝ) ∪ Icc (Tail.gap1hi : ℝ) Tail.gap2lo)
-      (Icc (Tail.gap2hi : ℝ) Tail.gap3lo) := by
-    rw [Set.disjoint_left]; intro s h1 h2
-    rcases h1 with h1 | h1 <;> linarith [h1.2, h2.1]
+      (Icc (Tail.gap2hi : ℝ) Tail.gap3lo) :=
+    Set.disjoint_left.mpr fun _ h1 h2 => by rcases h1 with h1 | h1 <;> linarith [h1.2, h2.1]
   have d3 : Disjoint (Ioc 0 (Tail.gap1lo : ℝ) ∪ Icc (Tail.gap1hi : ℝ) Tail.gap2lo ∪
-      Icc (Tail.gap2hi : ℝ) Tail.gap3lo) (Icc (Tail.gap3hi : ℝ) 100) := by
-    rw [Set.disjoint_left]; intro s h1 h2
-    rcases h1 with (h1 | h1) | h1 <;> linarith [h1.2, h2.1]
+      Icc (Tail.gap2hi : ℝ) Tail.gap3lo) (Icc (Tail.gap3hi : ℝ) 100) :=
+    Set.disjoint_left.mpr fun _ h1 h2 => by
+      rcases h1 with (h1 | h1) | h1 <;> linarith [h1.2, h2.1]
   rw [covered_eq, setIntegral_union d3 measurableSet_Icc ((I1.union I2).union I3) I4,
     setIntegral_union d2 measurableSet_Icc (I1.union I2) I3,
     setIntegral_union d1 measurableSet_Icc I1 I2,

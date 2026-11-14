@@ -85,8 +85,7 @@ theorem integral_mul_finiteLaplacePhase {Ω : Type*} [MeasurableSpace Ω]
     _ = (Real.sqrt Real.pi : ℂ)⁻¹ *
         ∫ u, (∫ t : ℝ in Ioc 0 T, P u * softPhaseLaplaceKernel η (f u) t) ∂μ := by
       rw [← integral_const_mul]
-      apply integral_congr_ae
-      refine Filter.Eventually.of_forall fun u => ?_
+      refine integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)
       dsimp only
       rw [integral_const_mul]
       ring
@@ -137,11 +136,10 @@ theorem norm_finiteLaplaceTailError_le (η T : ℝ) (hη : 0 < η) (hT : 0 ≤ T
   apply (sq_le_sq₀ (norm_nonneg _) (Real.exp_pos _).le).mp
   rw [norm_toLp_sq_eq_integral]
   calc
-    _ ≤ ∫ _u : ℂ × ℂ, (Real.exp (-(η ^ 2 * T))) ^ 2 ∂mu2 := by
-      apply integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _)
-        (integrable_const _)
-      exact Filter.Eventually.of_forall fun u =>
-        pow_le_pow_left₀ (norm_nonneg _) (norm_finiteLaplaceTailError_pointwise_le η T hη hT j u) 2
+    _ ≤ ∫ _u : ℂ × ℂ, (Real.exp (-(η ^ 2 * T))) ^ 2 ∂mu2 :=
+      integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _)
+        (integrable_const _) (Filter.Eventually.of_forall fun u => pow_le_pow_left₀
+          (norm_nonneg _) (norm_finiteLaplaceTailError_pointwise_le η T hη hT j u) 2)
     _ = _ := by simp
 
 /-- The whole error between the actual source and the finite auxiliary integral. -/

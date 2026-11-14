@@ -118,9 +118,7 @@ lemma q_pos_of_PD {S : Sym2R} (h : S.PD) {y : ℝ × ℝ} (hy : y ≠ 0) : 0 < S
 
 /-- Positive away from `0` implies positive definite (`q(−b, a) = a · det`). -/
 lemma PD_of_q_pos {S : Sym2R} (h : ∀ y : ℝ × ℝ, y ≠ 0 → 0 < S.q y) : S.PD := by
-  have ha : 0 < S.a := by
-    have := h (1, 0) (by simp)
-    simpa [q, bil] using this
+  have ha : 0 < S.a := by simpa [q, bil] using h (1, 0) (by simp)
   refine ⟨ha, ?_⟩
   have h2 := h (-S.b, S.a) (by intro e; have := congrArg Prod.snd e; simp at this; linarith)
   have hid : S.q (-S.b, S.a) = S.a * S.det := by simp only [q, bil, det]; ring

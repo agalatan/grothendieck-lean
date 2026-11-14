@@ -72,8 +72,7 @@ lemma zc_join_remote (l : Fin (n + 1)) (hl : l ≠ 0) (z : ℂ) (w : RemT n → 
 
 lemma integrable_conj_zc_mul (l : Fin (n + 1)) (u : L2G (n + 1)) :
     Integrable (fun x => conj (zc (n + 1) l x) * u x) (stdGaussian ((n + 1) + (n + 1))) := by
-  have h := L2.integrable_inner (𝕜 := ℂ) (zL (n + 1) l) u
-  refine h.congr ?_
+  refine (L2.integrable_inner (𝕜 := ℂ) (zL (n + 1) l) u).congr ?_
   filter_upwards [MemLp.coeFn_toLp (memLp_zc (n + 1) l)] with x hx
   rw [RCLike.inner_apply', zL, hx]
 

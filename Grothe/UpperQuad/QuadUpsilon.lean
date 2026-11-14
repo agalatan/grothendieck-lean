@@ -60,8 +60,8 @@ lemma sqSum_Uext_real_le_one {α : ℝ} (hα : α ≠ 0) (M : ℕ) :
 lemma shiftTerm_mono (D r : ℕ) {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) :
     shiftTerm D s r ≤ shiftTerm D t r := by
   unfold shiftTerm
-  apply div_le_div_of_nonneg_right _ (by positivity)
-  exact mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hs hst r) (Real.sqrt_nonneg _)
+  exact div_le_div_of_nonneg_right
+    (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hs hst r) (Real.sqrt_nonneg _)) (by positivity)
 
 /-- **The off-axis bound of the conditional mass.** -/
 theorem sqSum_Uext_le_shift (A : ℂ) {δ : ℝ} (hδ : 0 < δ) (D : ℕ) :
@@ -134,11 +134,10 @@ theorem sqSum_Uext_le_large {A : ℂ} (hr : 0 < (A ^ 2).re) (D : ℕ) :
       θ * ((m.factorial : ℝ) * (if m = 0 then 1 else (m.choose c : ℝ) *
         (1 + (c : ℝ) / m) ^ (2 * (m - c + 1))) * (θ ^ 2 / ‖A‖ ^ 2) ^ m) := by
     intro c hc
-    have hcm : c ≤ m := by have := Finset.mem_range.mp hc; omega
+    have hcm : c ≤ m := Nat.le_of_lt_succ (Finset.mem_range.mp hc)
     have hb := norm_Uext_le c (m - c) hr
     rw [show c + (m - c) = m by omega, ← hθ] at hb
-    have hb0 : 0 ≤ ‖Uext c (m - c) A‖ := norm_nonneg _
-    have hsq := pow_le_pow_left₀ hb0 hb 2
+    have hsq := pow_le_pow_left₀ (norm_nonneg _) hb 2
     refine hsq.trans (le_of_eq ?_)
     have hfc : (0 : ℝ) < (c.factorial : ℝ) * (m - c).factorial := by positivity
     have hchoose : (m.choose c : ℝ) * ((c.factorial : ℝ) * (m - c).factorial) = m.factorial := by

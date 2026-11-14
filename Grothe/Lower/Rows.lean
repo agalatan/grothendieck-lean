@@ -235,9 +235,8 @@ lemma rect_sound (hM : Moments μ U x) (hΨ : CapsHold Ψ nodes smax) (kap cap x
   have hσ : 0 ≤ σ := le_trans (by exact_mod_cast hs0) h1
   have hle : ∀ ω, Ψ (σ * √(U ω)) ≤ evalL (r.P.list.map ((↑) : ℚ → ℝ)) (σ * √(U ω)) := by
     intro ω
-    have := major_sound Ψ nodes smax hΨ 1 r.P.list (fun _ => []) [] (fun _ => 0)
+    simpa using major_sound Ψ nodes smax hΨ 1 r.P.list (fun _ => []) [] (fun _ => 0)
       (by intro v _ _; simp [evalL]) hmaj (σ * √(U ω)) (mul_nonneg hσ (Real.sqrt_nonneg _))
-    simpa using this
   exact (rect_integral μ hM r.P ha1 (checkJ_a6 _ _ _ _ _ _ _ hJ) kap σ hσ _ hf hle).trans
     (checkJ_sound _ _ _ _ _ _ _ hJ σ x h1 h2 hx1 hx2)
 

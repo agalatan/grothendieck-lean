@@ -27,8 +27,7 @@ theorem integral_taylorRegularWick_eq_sq_radial (j N : ℕ)
   simp_rw [taylorRegularWick_eq j N a u hu]
   rw [integral_const_mul, integral_taylorConditionalWick_eq_sq_radial j N a
     (u ^ 2) (sq_pos_of_pos hu), ← integral_const_mul]
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro s _hs
+  refine setIntegral_congr_fun measurableSet_Ioi fun s _ => ?_
   ring
 
 /-- The regular quadrature integrand uses only two real variables and the exact data. -/
@@ -50,12 +49,9 @@ theorem inner_gradedHermite_softHpow_eq_quadrature (η : ℝ) (hη : 0 < η)
   rw [inner_gradedHermite_softHpow_eq_regular η hη j N a]
   unfold taylorQuadratureValue
   congr 1
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro u hu
-  dsimp only
+  refine setIntegral_congr_fun measurableSet_Ioi fun u hu => ?_
   rw [integral_taylorRegularWick_eq_sq_radial j N a u hu, ← integral_const_mul]
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro s _hs
+  refine setIntegral_congr_fun measurableSet_Ioi fun s _ => ?_
   unfold taylorQuadratureKernel
   ring
 

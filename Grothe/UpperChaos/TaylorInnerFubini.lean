@@ -43,9 +43,8 @@ theorem inner_hpow_eq_phaseLaplace_iterated {c : ℂ × ℂ → ℂ}
           Haag.phaseLaplaceKernel (basePhaseArgument (z, w)) t ∂gaussC ∂gaussC := by
   rw [inner_hpow_eq_phaseLaplace hφ hc j]
   congr 1
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro t ht
-  exact integral_taylorInnerSource_kernel_prod hφ hc j t ht
+  exact setIntegral_congr_fun measurableSet_Ioi fun t ht =>
+    integral_taylorInnerSource_kernel_prod hφ hc j t ht
 
 end
 end Grothe.UpperChaos

@@ -42,9 +42,7 @@ theorem gaussRawFull_eq_sum_address (k j cIdx : ℕ) :
       ∑ a : Address, nodeTerm (sourceNode a) (sourceWeight a) 531 0 251 k j cIdx := by
   unfold gaussRawFull
   rw [sum_partitionSpecs]
-  apply Finset.sum_congr rfl
-  intro a _
-  rw [specNode_rootOf, specWeight_rootOf]
+  exact Finset.sum_congr rfl fun a _ ↦ by rw [specNode_rootOf, specWeight_rootOf]
 
 /-- **The canonical Gauss sum, panel by panel.** -/
 theorem gaussCoeffFull_canonical (q c d : ℕ) (hq : q < 251) (hd : d ≤ q) (hc : c ≤ d + 1) :
@@ -54,11 +52,8 @@ theorem gaussCoeffFull_canonical (q c d : ℕ) (hq : q < 251) (hd : d ≤ q) (hc
   unfold gaussCoeffFull gradeValue rawValue
   simp only [hc, ↓reduceIte, add_zero]
   rw [gaussRawFull_eq_sum_address, Fintype.sum_sigma]
-  apply Finset.sum_congr rfl
-  intro p _
-  apply Finset.sum_congr rfl
-  intro i _
-  exact nodeTerm_canonical _ _ q c d hq hd hc
+  exact Finset.sum_congr rfl fun p _ ↦ Finset.sum_congr rfl fun i _ ↦
+    nodeTerm_canonical _ _ q c d hq hd hc
 
 end
 

@@ -65,11 +65,7 @@ private lemma analyticAt_descend_of_ne_zero {F : ℂ → E} {R : ℝ} (hR : 0 < 
     {s : ℂ} (hs : s ∈ ball 0 (R ^ 2)) (hs0 : s ≠ 0) :
     AnalyticAt ℂ (descend F) s := by
   have hroot := sqrt_mem_ball hR hs
-  have hr0 : Complex.sqrt s ≠ 0 := by
-    intro h
-    have hsq := sqrt_sq s
-    rw [h, zero_pow (by decide)] at hsq
-    exact hs0 hsq.symm
+  have hr0 : Complex.sqrt s ≠ 0 := fun h => hs0 (by rw [← sqrt_sq s, h, zero_pow two_ne_zero])
   have hcomp : F =ᶠ[𝓝 (Complex.sqrt s)] descend F ∘ (fun r : ℂ ↦ r ^ 2) := by
     filter_upwards [isOpen_ball.mem_nhds hroot] with r hr
     exact (descend_sq F r (heven r hr)).symm
@@ -77,9 +73,8 @@ private lemma analyticAt_descend_of_ne_zero {F : ℂ → E} {R : ℝ} (hR : 0 < 
   have hderiv : deriv (fun r : ℂ ↦ r ^ 2) (Complex.sqrt s) ≠ 0 := by
     simpa only [deriv_pow_field, Nat.cast_ofNat, Nat.reduceSub, pow_one] using
       mul_ne_zero (by norm_num : (2 : ℂ) ≠ 0) hr0
-  have ha := (analyticAt_comp_iff_of_deriv_ne_zero hsq hderiv).mp
-    ((hF _ hroot).congr hcomp)
-  simpa only [sqrt_sq] using ha
+  simpa only [sqrt_sq] using
+    (analyticAt_comp_iff_of_deriv_ne_zero hsq hderiv).mp ((hF _ hroot).congr hcomp)
 
 /-- Local evenness on the original ball suffices for analytic descent to its squared radius. -/
 theorem analyticOnNhd_descend {F : ℂ → E} {R : ℝ} (hR : 0 < R)

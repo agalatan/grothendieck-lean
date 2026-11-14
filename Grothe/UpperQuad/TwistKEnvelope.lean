@@ -63,9 +63,8 @@ theorem phaseSq_mono (g : Power) {eta : ℝ} (heta0 : 0 < eta) (heta1 : eta < 1)
   have heps : 0 ≤ (Grothe.Upper.phaseEpsQ : ℝ) := by
     norm_num [Grothe.Upper.phaseEpsQ]
   unfold GaussianShift.phaseBoundSq
-  apply mul_le_mul_of_nonneg_left _ (by positivity)
-  exact Real.exp_le_exp.mpr
-    (mul_le_mul_of_nonneg_left hYZ (by positivity))
+  exact mul_le_mul_of_nonneg_left
+    (Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_left hYZ (by positivity))) (by positivity)
 
 /-- Every actual production column is bounded by its checked rational column parameter.
 The phase bound is uniform over all retained output indices. -/
@@ -196,8 +195,7 @@ theorem norm_descendedVector_sq_le_kBoundSq (g : Power)
     (hTheta : ‖shift r‖ ^ 2 / ((shift r) ^ 2).re ≤ Theta)
     (hAlo0 : 0 < Alo) (hAlo : Alo ≤ ‖shift r‖ ^ 2) :
     ‖descendedVector (powerNat g) σ s‖ ^ 2 ≤ kBoundSq g t eta Slo X Y Theta Alo := by
-  have hactual := norm_descendedVector_sq_le_of_sq (powerNat g) σ hσ hr t ht0 ht1
-  refine hactual.trans ?_
+  refine (norm_descendedVector_sq_le_of_sq (powerNat g) σ hσ hr t ht0 ht1).trans ?_
   unfold kBoundSq
   exact mul_le_mul
     (radial_primary_le_primaryBoundSq _ ht0 ht1 s r hSlo hX hY)

@@ -27,8 +27,7 @@ theorem shardOK_spec {g : Power} {first stop : ℕ} {cs : Array Certificate}
   simp only [shardOK, Bool.and_eq_true, decide_eq_true_eq, List.size_toArray,
     List.all_eq_true] at h
   obtain ⟨⟨⟨hfirst, hstop⟩, hsize⟩, hall⟩ := h
-  refine ⟨hfirst, hstop, hsize, ?_⟩
-  intro k hk0 hk1
+  refine ⟨hfirst, hstop, hsize, fun k hk0 hk1 => ?_⟩
   have hoff : k - first < stop - first := by omega
   have hcheck := hall (k - first) (List.mem_range.mpr hoff)
   rw [show first + (k - first) = k by omega] at hcheck
@@ -53,8 +52,7 @@ theorem totalCap_eq_sum (cs : Array Certificate) :
     totalCap cs = ∑ k : Fin cs.size, (cs[k.val]!).errorCap := by
   unfold totalCap
   rw [← Fin.sum_univ_fun_getElem]
-  apply Finset.sum_congr rfl
-  intro k _
+  refine Finset.sum_congr rfl fun k _ => ?_
   rw [getElem!_pos cs k.val k.isLt]
   rfl
 
@@ -70,9 +68,8 @@ theorem sum_errorCap_le_of_totalOK {cs : Array Certificate} {budget : ℚ}
     (h : totalOK cs budget = true) :
     (∑ p : Fin sourcePanels.length, ((cs[p.val]!).errorCap : ℝ)) ≤ (budget : ℝ) := by
   obtain ⟨hsize, hsum⟩ := totalOK_spec h
-  have hq : (∑ p : Fin sourcePanels.length, (cs[p.val]!).errorCap) ≤ budget := by
-    rw [sum_errorCap_eq_totalCap cs hsize]
-    exact hsum
+  have hq : (∑ p : Fin sourcePanels.length, (cs[p.val]!).errorCap) ≤ budget :=
+    (sum_errorCap_eq_totalCap cs hsize).trans_le hsum
   exact_mod_cast hq
 
 /-- Full shard coverage and total acceptance supply nonnegative caps for every panel and
@@ -88,10 +85,8 @@ theorem errorCaps_of_shards_and_total (g : Power) (cs : Array Certificate)
         certificateOK g (sourcePanels.get p) (cs[p.val]!) = true ∧
           0 ≤ ((cs[p.val]!).errorCap : ℝ)) ∧
       (∑ p : Fin sourcePanels.length, ((cs[p.val]!).errorCap : ℝ)) ≤ (budget : ℝ) := by
-  refine ⟨(totalOK_spec htotal).1, ?_, sum_errorCap_le_of_totalOK htotal⟩
-  intro p
+  refine ⟨(totalOK_spec htotal).1, fun p => ?_, sum_errorCap_le_of_totalOK htotal⟩
   have hc := certificates_of_shards g cs shards hshards hcover p
-  refine ⟨hc, ?_⟩
-  exact_mod_cast (certificateOK_spec hc).1
+  exact ⟨hc, by exact_mod_cast (certificateOK_spec hc).1⟩
 
 end Grothe.UpperQuad.TwistEllCheck
