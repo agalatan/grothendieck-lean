@@ -447,7 +447,7 @@ structural bound ‖Π₁[q·h(|q|²)]‖² ≤ (3/4)δ·E m_h(|q|²) for every 
 remainder bound with a Gaussian tail for sectors that only have a restricted Hessian bound [P · 11.32].
 
 **A sharper content coefficient.** The comparison of step 3 also holds with 1/5 in place of 3/10, with η = 6·10⁻⁶
-and the signed deficit, on part of its domain: every χ for u ≤ 1/80, and further rectangles, 68.9% of the (u, χ)
+(with the signed deficit on its coupled and slab rectangles), on part of its domain: every χ for u ≤ 1/80, and further rectangles, 68.9% of the (u, χ)
 area with 40 gap rectangles left. Above u = 1/100 it uses one content envelope per energy slab and interpolates the
 deficit term, whose second derivative is at least −(3/5)(2 + χ) [C author only, interpolation P · codex-8d2f, replayed
 by claude-b9ee · 11.55]. The lemma above does not need it, and neither does the joint bridge of 2.8.
@@ -604,7 +604,7 @@ under the radial weight 1/|L|, give for every G in the six sectors, with arbitra
     Λ̂(G) ≤ 2E|L| + (771/500)u + (43/250)V − (16/125)(W_Q + W_P) − (33/100)W_ν,
 
 so Λ̂(G) < S + 10⁻⁴ when the energy part is at most 1087/500000 [P + C · codex-91d4, re-derived and replayed by
-claude-b9ee · 7.5.1]. This region is a neighbourhood of the zero core (u ≤ 0.0014 or V ≤ 0.0127 alone); the energy
+claude-b9ee · 7.5.1]. This region is a neighbourhood of the zero core (on the axes u ≤ 0.00140 or V ≤ 0.0126); the energy
 u* ≈ 0.0403 where σ vanishes lies far outside it. Elsewhere the central secant is bounded by
 Ψ(X, H) = 2(√(|X|² + |H|²) − |X|) − (Re X·conj H)²/(|X|² + |H|²)^(3/2) [P · 7.5.2], and (P) of 2.8 together with
 the averaged premise
@@ -612,8 +612,9 @@ the averaged premise
     (P_Ψ)   |c|² + E Ψ(X, O − cz₁) − p‖O‖² ≤ 0.01‖U‖² + σ(u) − D₋(q) + 5·10⁻⁵   for one global complex c,
 
 with X = L + E + (3/5)R, would give Λ̂(G) < S + 99·10⁻⁶ for every G at the peak [P + C · 7.5.3]. (P_Ψ) is open. It
-holds for odd energy below 6.2·10⁻¹⁰ [P author only · 7.5.4], every numerical test supports it, and a cutoff with
-separate positive moment charges falls short by a factor of about six near u* [7.5.5]. An anti-concentration bound
+holds for odd energy below 6.16·10⁻¹⁰ [P author only · 7.5.4], every numerical test supports it, and the particular
+cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of about six near
+u* [7.5.5]. An anti-concentration bound
 controls how often the A/B drivers come near a rank-zero visible root [P author only · 7.5.4], but rank-one zero
 curves, and a value defect that vanishes identically outside the energy region above, show that it does not finish
 the proof [7.5.5].
@@ -801,7 +802,8 @@ section 13), where every source is listed.
   signs on a genuine cubic witness (2.9) [P + C].
 - **89. At the common remote trial, the odd increment over an A/B core is paid by 0.01‖r_B − 0.5053r_A‖² + 5·10⁻⁵.**
   A shared witness on one remote coordinate, inside the energy and response caps, exceeds that allowance by more
-  than 10⁻⁴; its absolute value is 0.038 below S, so it does not refute K (2.9) [P + C].
+  than 10⁻⁴; its fixed-trial retained value is about 0.038 below S (numerical), so it does not threaten the all-sector
+  target (2.9) [P + C].
 - **19. The local matrix of the retained functional (tied multiplier) plus I/10 is a global majorant.** Violated by
   more than 97/1000 at an explicit point [R].
 - **47–49. Decoupling, (EC)/(PH)/(PG) and a uniform fibre bound for the even sectors.** False by up to 5.7·10⁻³, or

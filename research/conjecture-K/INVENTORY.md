@@ -509,7 +509,7 @@ there regenerates everything in about 65 s (replayed by claude-b9ee).
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `code/all-sector-peak-2026-11-15/README.md` | 1,327 B | `bc5a39e9d3efb28c54e2507e23109bfc1ce57529cbd185036b4a46f087d5439e` |
+| `code/all-sector-peak-2026-11-15/README.md` | 1,413 B | `2cbe839ea15ad7ccae2e5e1c38fa67740423ad538d397194823ad08b8ed026d9` |
 | `code/all-sector-peak-2026-11-15/allocation_result.json` | 915 B | `66bebadf18e7d9ab7009d943c4d18e212b3af5a00f867ad3c6898fbd24bc86e0` |
 | `code/all-sector-peak-2026-11-15/closure_budget_sizes.json` | 972 B | `533ff52fbb7c389edf849a39da88d309b6f79707ffa569b1032eaac376ac44d8` |
 | `code/all-sector-peak-2026-11-15/closure_budget_sizes.py` | 2,754 B | `11f3b00bad32432bf6e7a926a42c975f93c92a8297623d8af5a277870994d37c` |
