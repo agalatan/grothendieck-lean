@@ -30,14 +30,23 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697117301\;<\;\KG\;<\;1.4046$\\[6pt]
+\Large $1.401697117301\;<\;\KG\;<\;1.404599414629$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
 (\lean{main\_bounds}); the computer-assisted inputs are native finite checks listed in
 the axiom report (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is \lean{lower\_target}; the upper bound \lean{upper\_target} gives a
-Grothendieck bound below $1.40459996$.\vspace{4pt}
+The lower bound is \lean{lower\_target}; the upper bound
+\lean{upper\_below\_tight} gives the displayed strict threshold.\vspace{4pt}
 \end{minipage}}
 \end{center}
+
+The tighter upper estimate reuses the accepted numerical certificates.
+Their actual panel-cap sums fit $8\cdot10^{-15}$, $16\cdot10^{-15}$ and
+$1131\cdot10^{-15}$, checked by kernel reduction. The existing tail and gap reserve,
+exact dyadic table excursions and certified inner-product thresholds give smaller
+low-band and whole-source errors. The finite head also forces a positive linear
+coefficient; its weighted square is deducted from the Hardy budget before bounding
+the infinite tail. The resulting comparison and transfer give the displayed bound
+without additional numerical or analytic hypotheses.
 
 The source-node rounding ledger (\lean{Q0NodeMassLedgerSharp}) verifies its exact
 rational arithmetic and transfers a squared-mass cap to a norm cap. It is an
@@ -48,9 +57,9 @@ proved separately (\lean{Final.hclose\_final}).
 The finite twisted-source bundle module (\lean{UpperQuad.PortFacts.Bundles})
 packages the production table flags, range checks, final checks and
 phase-degree bound for powers $j=1,2,3$ into the soundness bridge's exact
-finite-fact interface. The upper bound \lean{upper\_target} combines these three
-bundles with the proved quadrature remainders
-(\lean{Final.twistRemainder1}--\lean{3}) and the proved energy-table accuracy.
+finite-fact interface. The upper bound \lean{upper\_below\_tight} combines these three
+bundles with the proved tighter quadrature remainders
+(\lean{TightTwist.remainder1}--\lean{3}) and the proved energy-table accuracy.
 
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
@@ -148,15 +157,15 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.4046}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404599414629}$\\\bottomrule
 \end{tabular}
 \end{center}
-The upper bound is stated at the threshold $1.4046$; the Grothendieck bound that Lean exhibits is below $1.40459996$.
+Lean exhibits an exact rational Grothendieck bound strictly below the displayed threshold $1.404599414629$.
 The rounding was designed for a sharper value, below $1.404598149141$, which Lean has only conditionally
 (Section~\ref{sec:trust}).
 Haagerup's integral
 $1/\gamma^\dagger=1.404575934\ldots$, $\gamma^\dagger=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}dt$, has been proposed as the
-exact value. It lies inside our interval, $2.4\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
+exact value. It lies inside our interval, about $2.35\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 
 \section{Two dual constructions}
@@ -259,14 +268,14 @@ certificate's squared mass cap on its ellipse boundary, given below.
 
 For the twisted sources, exact panel certificates for all three production powers
 are stored in \texttt{data/twist-ellipse/plans.json}. Registered native checks
-verify their disk-majorant caps and total error budgets, with a reserve of
-$10^{-15}$ below each relaxed radius. Arithmetic soundness and disk-geometry
+verify their disk-majorant caps. The tighter total error budgets are checked
+by kernel reduction, with a reserve of $10^{-15}$ below each full quadrature radius. Arithmetic soundness and disk-geometry
 lemmas expose the checked expressions. \lean{UpperQuad.TwistEllipseMassSound}
 identifies them with the actual twisted vector: an accepted certificate bounds
 the squared norm of the actual descended vector on its closed ellipse by its
 mass cap. \lean{TwistEllCheck.remainder\_of\_prodShards} then proves the
-covered-set remainders \lean{Final.twistRemainder1}--\lean{3} that
-\lean{upper\_target} uses.
+covered-set remainders \lean{TightTwist.remainder1}--\lean{3} that
+\lean{upper\_below\_tight} uses.
 
 For an accepted Y-mode disk evaluation, the geometric and interval witnesses
 bound the actual descended vector throughout the disk, uniformly for
@@ -291,9 +300,9 @@ The phase certificate checks 119,077 leaves in 512 cubes through six native rang
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, Lean proves that the residual is at most
-$\delta\approx1.8274\cdot10^{-6}$ (the exact rational \lean{relaxedThreeBandResidualQ}):
+$\delta\approx1.5520\cdot10^{-6}$ (the exact rational \lean{tightResidualQ}):
 \[
- \KG\le\frac1{c-\delta}=1.40459995\ldots<1.4046 .
+ \KG\le\frac1{c-\delta}=1.404599414628917\ldots<1.404599414629 .
 \]
 The rounding was designed for the smaller residual $455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$, which
 would give $\KG\le500000000000000000/355973699960428191<1.404598148840$. Lean has this sharper value only as a
@@ -383,6 +392,21 @@ tolerance for $|\rho|\le1/1780000$, with exact budget
 $(84353029/84596280)\,10^{-12}$. This interval is $200/89$ times the original.
 The purely quadratic constant two remains optimal; no optimality is claimed
 for the Gaussian estimate, and the stored certificates and headline endpoint are unchanged.
+
+Retaining the actual quadratic term
+$Q_2(h)=-(\Im h)^2/2-i\Re(h)\Im(h)$ gives the global bound
+$|\operatorname{ph}(1+h)-1-i\Im(h)-Q_2(h)|\le2|h|^3$,
+with optimal constant two even when the perturbed argument can vanish.
+The exact Wick expansion of $Q_2$ has support $(0,0),(1,1),(2,0),(0,2)$
+and Gaussian norm $\sqrt7/4$. Thus the whole-slice error for the existing
+linear centers is at most $(\sqrt7/4)\rho^2+2\sqrt6|\rho|^3$;
+each coefficient error is at most $(3\sqrt2/8)\rho^2+2\sqrt6|\rho|^3$,
+and outside those four modes the quadratic term vanishes.
+The unchanged parameter and saved-model reserves give error below $10^{-12}$
+for $|\rho|\le1/1090000$ in all modes, or $|\rho|\le1/22500$ off that support.
+These results are proved in \texttt{PhaseTaylorQuadratic} and
+\texttt{PhaseQuadraticError}, without new native facts. The improvement of
+the Grothendieck endpoint uses the separate certified-budget argument above.
 
 For complex $z\ne 0$, rotation by $z/|z|$ transports the real-slice
 constant-plus-linear model to the physical phase $F_0(z,w)$. In the Gaussian
@@ -1293,7 +1317,7 @@ for the node caps: the chord nodes, the node ranges of every row (for rows 12--1
 nodes of rows 12--15 their piece ranges, coverage checks and repaired pieces.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
 change, evaluates them on its own runner.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{upper\_target}: some Grothendieck bound is below $1.4046$, without hypotheses; the bound exhibited is below $1.40459996$. The intermediate theorem \lean{Statement.upper\_target\_of\_relaxed\_inputs} keeps six Gaussian estimates and the table accuracy as hypotheses, which \lean{RelaxedTwist.six\_of\_facts} and \lean{Final.hclose\_final} discharge.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599414629$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders; \lean{Final.hclose\_final} supplies table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the explicit decomposition of $G_T-X$
 (\lean{difference\_pieces}) and the weighted comparison; the Hardy tail (holomorphic continuation, Schur bound, circle
@@ -1689,12 +1713,12 @@ in the second.
 
 \section{Open problems}
 Work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound: now \lean{lower\_target}),
-\#17 (inputs of the upper bound: now \lean{upper\_target} for the threshold $1.4046$; the sharper value is item~1 below),
+\#17 (inputs of the upper bound: now \lean{upper\_below\_tight} for the threshold $1.404599414629$; the sharper value is item~1 below),
 \#22 (a better lower bound), \#29 (build infrastructure, closed) and \#34 (research plans).
 \begin{enumerate}
 \item Prove the sharper upper bound that the rounding was designed for, below $1.404598149141$. What is missing are the
  fourteen finite-band Gaussian error estimates with their original caps, the hypotheses of the conditional theorem of
- Section~\ref{sec:trust}; the unconditional theorem uses weaker estimates and exhibits a bound below $1.40459996$.
+ Section~\ref{sec:trust}; the unconditional theorem uses proved estimates and exhibits a bound below $1.404599414629$.
  The energy-table accuracy, the Hermite expansion, the structural analytic bridge and the Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.
