@@ -9,6 +9,7 @@ conjecture is **open**.
 | file | what it is |
 |---|---|
 | `README.md` | this file: statement, why it matters, the layers of a proof, reading order, index |
+| [Fifth audit](sources/fifth-audit-2026-11-15-codex-a7c4/AUDIT.md) | After merged #409: larger certified retained A-core regions, joint shift cutoff 2.9, complete tail-constant provenance, and strict raw/retained remote separation |
 | [Fourth audit](sources/fourth-audit-2026-11-15-codex-a7c4/AUDIT.md) | After merged #403 and resynced #408: corrected remote equivalences and SEI closure; larger remote-profile and shared-A regions; sharper local joint form and smaller open box; central tilted-A subclass |
 | [Third audit](sources/third-audit-2026-11-15-codex-a7c4/AUDIT.md) | After reviewer-updated #399: global peak .007 kernel comparison certified; complete kernel derivations, stronger disjoint cost and content neighbourhood, raw/retained axis results |
 | [Second audit](sources/reaudit-2026-11-15-codex-a7c4/AUDIT.md) | 15 November, codex-a7c4, after PR #397: response/parity scope corrections, explicit odd-sector counterexamples, disjoint-cost replay, larger content neighbourhood and conditional central consumer |
@@ -24,9 +25,11 @@ Status labels (defined in [`../README.md`](../README.md) and at the top of `sour
 **R** read from the record without full independent verification.
 
 The [review of #403](sources/fourth-audit-2026-11-15-codex-a7c4/REVIEW_403_claude-b9ee.md)
-records Claude’s independent re-derivation and replay of the third audit, with its exclusions. New fourth-audit
-arguments are **P by author, not externally reviewed**, with named exact/interval **C** acceptances and
-within-session peer checks recorded separately. The merged #408 tilted-sector review remains its own evidence.
+records Claude’s independent re-derivation and replay of the third audit, with its exclusions. The fourth-audit
+arguments were subsequently re-derived and their five checkers replayed by Claude in the
+[review of #409](sources/fifth-audit-2026-11-15-codex-a7c4/REVIEW_409_claude-b9ee.md). Its exclusions and
+provenance corrections remain explicit. New fifth-audit arguments await external review. The merged #408
+tilted-sector review remains its own evidence.
 
 ## (a) The statement
 
@@ -72,7 +75,8 @@ unimodal addition ([REFORMULATIONS](sources/fourth-audit-2026-11-15-codex-a7c4/R
   with its first-chaos element optimised together with the shells: a margin of about 6 for K and about 40 with the
   penalty retained, on what was tested (remote cubics in one, two and three variables). The ratio for Λ̂ rises
   slowly with the number of remote variables (0.017, 0.021, 0.023 at ‖q‖² = 0.0463) and its limit is not known.
-  These numbers are not bounds, and the remote part is the same statement for both
+  These numbers are not bounds. The same **raw remote cap is a sufficient input** for both functionals;
+  their remote values need not agree: q=cX(\|Y\|²−1) gives a strict retained improvement for every c>0 (3.16)
   (`sources/numerics-kprime-2026-11-15/README.md`; `STATUS.md`, section 11 (c)). A proof of the shell inequality for
   Λ̂ and the A shell was attempted the same day, at a fixed tilt, in a report that its author revised four times. Its
   fifth version, reviewed, proves that the gain of the A shell is at most a constant times the squared tilted content,
@@ -135,27 +139,33 @@ The statuses include the follow-up audit of 15 November; details and scopes are 
 
 | layer | statement | status on 15 November 2026 |
 |---|---|---|
-| **L1** remote part ("K-a") | Λ(q) ≤ S + η for every remote cubic q | **P + C at the peak profile**, η=3.6·10⁻⁷: the stronger October package replayed end to end by codex-a7c4 and again by claude-b9ee, with its existing sixth-moment input identified. External certificate, not Lean (its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions: A15 `REMOTE.md` §3a). The fourth audit adds a one-sided normalized rectangle with error <10⁻⁴: λ=ε/(1891/2500), ε∈[.74,.76], 0≤a/λ−.5592≤.0005 and 0≤b/λ−.1432≤.0016. The older symmetric tube remains valid; the flank/upper rows and full envelope remain open. New transfer: **P by author + C**, external review pending (A15F `REMOTE.md`). Exact K-a (η=0) is open; the separate report of 15 November remains **R**. |
+| **L1** remote part ("K-a") | Λ(q) ≤ S + η for every remote cubic q | **P + C at the peak profile**, η=3.6·10⁻⁷: the stronger October package replayed end to end by codex-a7c4 and again by claude-b9ee, with its existing sixth-moment input identified. External certificate, not Lean (its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions: A15 `REMOTE.md` §3a). The fourth audit adds a one-sided normalized rectangle with error <10⁻⁴: λ=ε/(1891/2500), ε∈[.74,.76], 0≤a/λ−.5592≤.0005 and 0≤b/λ−.1432≤.0016. The older symmetric tube remains valid; the flank/upper rows and full envelope remain open. Transfer **P + C**, re-derived/replayed by claude-b9ee on #409 (A15F `REMOTE.md`). Exact K-a (η=0) is open; the separate report of 15 November remains **R**. |
 | **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1, hence 3.6·10⁻⁷ at the peak; needs mutual independence of z₁,q,U and ‖q‖² + ‖U‖² ≤ ℓ²). The stronger all-amplitude cost form is now **P + C** on the entire application box, with cost at least 3/152 and no energy cutoff (STATUS 4.2, third audit; re-derived and replayed by claude-b9ee on #403). |
-| **L3** core with shared drivers, explicit sufficient regions | Peak shared-A only; q,r remote and orthogonal | **P by author + C**, external review pending: the fourth audit certifies Λ≤B₀+.389644u−.124324w, so u≤.00558+.31907w gives Λ<S+10⁻⁴. Independently, for u≤.0463, w≥.0206 gives Λ<S+10⁻⁴; .0208 gives Λ<S; .02105 gives Λ<S−10⁻⁴. These second-moment results need only visible independence and E[q̄r]=0. The stronger fourth-moment cutoff w≥.01125 remains **R**, with its separate provenance and domain (STATUS 6.1.2). |
+| **L3** core with shared drivers, explicit sufficient regions | Peak shared-A only; q,r remote and orthogonal | **P + C**, re-derived/replayed by claude-b9ee on #409: the fourth audit certifies Λ≤B₀+.389644u−.124324w, so u≤.00558+.31907w gives Λ<S+10⁻⁴. Independently, for u≤.0463, w≥.0206 gives Λ<S+10⁻⁴; .0208 gives Λ<S; .02105 gives Λ<S−10⁻⁴. These second-moment results need only visible independence and E[q̄r]=0. The stronger fourth-moment cutoff w≥.01125 remains **R**, with its separate provenance and domain (STATUS 6.1.2). |
 | **L4** core on the inherited residual R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | The displayed residual uses the separately **R** fourth-moment reduction; the new second-moment strip alone leaves w<.0206. Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. The conditional mixed-character neighbourhood now permits remainder energy D(core)/90 (STATUS 6.3.9b). **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
-| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). The global peak alignment ‖c_B−.5053c_A‖≤.007√u is now **P + C**, re-derived and replayed by claude-b9ee (STATUS 7.1.4). **Missing:** a finite-amplitude joint A/B remainder bound (section 7.4), a general A-content theorem to use with that alignment, and uniform odd-sector control over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). For Λ̂ and the A shell at the tilt 3/5 (**P + C**, reviewed, 15 November): the remainder of the shell has a global quadratic bound, so its gain is at most ‖c‖²/0.312 at every amplitude, with no box and no localisation, where c is a tilted content; open is the comparison ‖c‖² ≤ (3/10)·D₊ + 3/500000 (`STATUS.md`, 11.39 to 11.44). The fourth audit combines those reviewed inputs with the remote cap: if .03≤u≤.0463 and χ=(E\|q\|⁴−2u²)/u²≤.07, then Λ̂(q+(T−1)r)<S+2·10⁻⁵ for every remote linear r, with arbitrary sharing and no amplitude cap (**P by author + C**, external review pending). It is peak-only and adds no B or odd sectors. The joint audit certifies a .08 reserve in the zero-base infinitesimal A/B form and shrinks the remaining shift box from [0,6] to [0,17/4]; the finite-amplitude joint problem stays open. The exact uniform raw joint margin .300 suggested after #408 is false already at zero base: the genuine cubic direction (r_A,r_B)=s(X,−X/5) has limiting normalized cost <.298526024. This does not refute K or the weaker joint target. The scan’s B-energy shares and pointwise five-sector obstruction are qualified in A15F `JOINT.md`. |
+| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). The global peak alignment ‖c_B−.5053c_A‖≤.007√u is now **P + C**, re-derived and replayed by claude-b9ee (STATUS 7.1.4). **Missing:** a finite-amplitude joint A/B remainder bound (section 7.4), a general A-content theorem to use with that alignment, and uniform odd-sector control over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). For Λ̂ and the A shell at the tilt 3/5 (**P + C**, reviewed, 15 November): the remainder of the shell has a global quadratic bound, so its gain is at most ‖c‖²/0.312 at every amplitude, with no box and no localisation, where c is a tilted content; open is the comparison ‖c‖² ≤ (3/10)·D₊ + 3/500000 (`STATUS.md`, 11.39 to 11.44). The fourth audit combines those reviewed inputs with the remote cap: if .03≤u≤.0463 and χ=(E\|q\|⁴−2u²)/u²≤.07, then Λ̂(q+(T−1)r)<S+2·10⁻⁵ for every remote linear r, with arbitrary sharing and no amplitude cap (**P + C**, re-derived/replayed on #409, including the retained trial inequality 11.12). It is peak-only and adds no B or odd sectors. The fifth audit enlarges that retained result: every tensor at u≤.021 has Λ̂<S−.00000276, and every 0<u≤.0463 with χ≤.25 has Λ̂<S+2·10⁻⁵ (11.47–11.48). These new results are **P by author, not externally reviewed + C**; they use fresh Arb inputs and exact continuum acceptance. The joint audit retains the .08 local A/B reserve and now shrinks the remaining shift box to [0,2.9], with the old global/tail inputs freshly certified (7.4.5). Its new proofs also await external review; the finite-amplitude joint problem stays open. The exact uniform raw joint margin .300 suggested after #408 is false already at zero base: the genuine cubic direction (r_A,r_B)=s(X,−X/5) has limiting normalized cost <.298526024. The sharp local peak eigenvalue is now certified in (.298364651634117,.298364651634118), with a genuine cubic minimizing direction (7.4.9). This does not refute K or the weaker joint target. The scan’s B-energy shares and pointwise five-sector obstruction are qualified in A15F `JOINT.md`. Historical scan provenance: the joint four-sector A/B/ZQ/conj(Z)P search reported margin .128 at zero base (**N**, 11.45); this is not a global four-sector certificate. |
 | **L6** row envelope and consumption | A fixed-ε row cover with exact thresholds, coverage of all response regions, then a Lean theorem consuming K_η | **Incomplete.** The single peak row now has an exact conditional central component: all-sector K_η with η≤10⁻⁴ covers t∈[.84,.851], leaving >6.12·10⁻⁷ margin (STATUS 8). Complementary regions and the all-sector premise remain; no `lower_of_K` or `KHyp` exists. A full profile box, including the σ*=0 corner, is needed only if the chosen cover uses it. |
+
+**Advice of the 13 November audit (historical provenance).** Continue as a bounded research programme with
+an explicit decision point; it named the finite-amplitude joint A/B remainder as the next statement to attack.
+The later advice below uses the subsequent tilted-sector results.
 
 The remaining work is a dimension-uniform finite-amplitude content theorem, a finite-amplitude A+B assembly,
 uniform odd-sector control, coverage of the response-feasible regions, and a complete rigorous row consumer;
-the central peak-row calculation is exact. After #408, the fourth audit prioritizes the augmented remote
-certificate for the retained A-core, extending the completed central near-Gaussian subclass. In parallel it
-recommends testing a feasible raw joint cost before certification; .300 is excluded, and .29 remains unproved.
+the central peak-row calculation is exact. After #409, the fifth audit completes larger augmented remote
+regions for the retained A-core. The remaining domain needs sharper bounds: at u=.04,χ=4 every one of the
+154 existing moment polynomials with either reviewed content surcharge exceeds S_upper+.0002. Refinement of
+that bank alone cannot close the target there. Add Stein cuts or sharpen content bounds. In parallel, test
+a feasible raw joint cost before certification; .300 is excluded, and .29 remains unproved.
 
-The fourth-audit results use the merged #403 baseline `2442792ea` and include the subsequent #408 update
-at `9a93fb472`. The reviewed global tilted-A secant bound is available; its generic content-versus-deficit
-comparison, joint A/B assembly and remaining odd sectors are still open. The central near-Gaussian subclass
-above is a completed consequence of those reviewed inputs, not a proof on all central-energy cubics.
+The fifth audit starts from merged #409 at `0882c67d3`. It archives Claude’s approval and addresses its
+provenance corrections. The reviewed global tilted-A secant bound remains available; the generic
+content-versus-deficit comparison, joint A/B assembly and remaining odd sectors are still open. The new
+retained classes do not shrink the unresolved raw L4 region or prove the full central-energy theorem.
 
 ## (d) Reading order
 
-1. This file, parts (a) to (c), then the [fourth audit](sources/fourth-audit-2026-11-15-codex-a7c4/AUDIT.md) for the latest corrections and completed partial results.
+1. This file, parts (a) to (c), then the [fifth audit](sources/fifth-audit-2026-11-15-codex-a7c4/AUDIT.md) for the latest corrections and completed partial results.
 2. [`STATUS.md`](STATUS.md): what is known, with scope; then its list "tried and failed" before trying anything.
 3. `sources/audit-2026-11-13/REPORT.md`: the one-page verdict, section 3 (what was wrong in the record), section 4
    (the statement that is actually missing), section 5 (the numerical experiment).
@@ -215,6 +225,31 @@ above is a completed consequence of those reviewed inputs, not a proof on all ce
 
 Sizes are those of the files in this folder. Descriptions of the notes are taken from the documents themselves
 (title or opening words) unless a status is added; a status in this index is always the one in `STATUS.md`.
+
+### `sources/fifth-audit-2026-11-15-codex-a7c4/`: fifth audit after merged #409
+
+New author proofs await external review; internal peer checks and inherited inputs are named in the notes.
+
+| file | size | contents |
+|---|---:|---|
+| `AUDIT.md` | 16,143 B | Findings, completed results, whole-monograph coverage, #409 review disposition and bounded next work. |
+| `FOUNDATIONS.md` | 11,403 B | Retained trial and symmetry; remote equality criterion; strict genuine-cubic family and exact finite gap. |
+| `JOINT.md` | 12,761 B | Complete joint-tail reduction, exact old inputs, shift cutoff 2.9, local spectral enclosures. |
+| `REMOTE.md` | 12,453 B | Augmented retained A-core covers: all tensors u≤.021, and χ≤.25 up to .0463; fixed-bank limitation. |
+| `REVIEW_409_claude-b9ee.md` | 5,049 B | Exact archived review of #409 with reviewed head, approval, exclusions and requested provenance fixes. |
+
+### `code/fifth-audit-2026-11-15-codex-a7c4/`: fifth-audit checkers and full replay outputs
+
+All default `python3 -I` runs are read-only and reproduce the adjacent JSON. No Lean build is involved.
+
+| file | size | contents |
+|---|---:|---|
+| `joint_tail.py` | 7,393 B | Exact density cells, Gaussian tail reserves, angular shift estimate and local spectra; read-only. |
+| `joint_tail_result.json` | 5,023 B | PASS; three-row constants, cutoff2.9, reserve .007, density/tail/spectral witnesses. |
+| `remote_augmented.py` | 7,860 B | Fresh Arb Hermite inputs and exact Bernstein continuum acceptance; read-only by default. |
+| `remote_augmented_result.json` | 19,083 B | PASS; 17 polynomials, 34 profile nodes, 33 leaves, exact margins and source hashes. |
+| `retained_remote_exact.py` | 3,272 B | Exact derivative budgets, moments and strict raw-minus-retained witness; standard library, read-only. |
+| `retained_remote_exact_result.json` | 844 B | PASS; explicit peak projection/gap and all rational budgets. |
 
 ### `sources/fourth-audit-2026-11-15-codex-a7c4/`: fourth audit after #403 and #408
 
@@ -834,9 +869,9 @@ Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are s
 | `retained_joint.py` | 2.5 KB | The Wick monomial with the A- and B-sectors jointly, with and without the retained element (real amplitudes). |
 | `secant_all_sectors.py` | 5.6 KB | All five visible sectors of K at a remote base (A, B, z₁Q, z̄₁P and the one-coordinate cubic ν·z₁(T − 2)/√2): each sector alone on a grid, then all together by multistart local minimisation of p − Rem/\|r\|², each minimum rechecked on a finer quadrature; the option `--no-nu` leaves out the one-coordinate cubic (`STATUS.md`, 11.45). |
 | `secant_all_sectors_no_nu.log` | 1.7 KB | Its output with `--no-nu`: one sector at a time (A 0.3206, B 0.7052, z₁Q 0.1286, z̄₁P 0.6229, ν 0.3305), then 400 starts: smallest margin 0.1284, in the pure z₁Q direction at the origin. |
-| `secant_all_sectors_with_nu.log` | 1.7 KB | Its output with the one-coordinate cubic: the same single-sector values, then 60 starts: smallest margin −0.3871, in the direction 0.58·z₁Q + 0.42·ν at the origin, and the note on the cross term −0.608. |
-| `secant_joint.log` | 1.4 KB | Its output at the tilts (0, 0), (0.6, 0), (0.5, 0), (0.3434, 0): the margin by share of B and the smallest margin with its place (0.2996 for K, 0.2524 at (0.6, 0), 0.3649 at (0.5, 0), 0.4672 at (0.3434, 0)). |
-| `secant_joint.py` | 4.3 KB | The remainder of the A and B shells together at a remote base, for K and at the tilts (s_A, s_B): the smallest margin p − Rem/\|r\|² over directions (share of B), amplitudes, phases and base values, by grids (`STATUS.md`, 11.45; section 12 of the write-up). |
+| `secant_all_sectors_with_nu.log` | 1.7 KB | Its output with the one-coordinate cubic: the same single-sector values, then 60 starts: smallest margin −0.3871, with energy fractions about .58 in z₁Q and .42 in ν at the origin (not coefficient magnitudes; phases also matter), and the note on the cross term −0.608. |
+| `secant_joint.log` | 1.4 KB | Its output at the tilts (0, 0), (0.6, 0), (0.5, 0), (0.3434, 0): the margin by angle fraction θ/(π/2), where B energy is sin²θ and the smallest margin with its place (0.2996 for K, 0.2524 at (0.6, 0), 0.3649 at (0.5, 0), 0.4672 at (0.3434, 0)). |
+| `secant_joint.py` | 4.3 KB | The remainder of the A and B shells together at a remote base, for K and at the tilts (s_A, s_B): the smallest margin p − Rem/\|r\|² over directions (angle fraction θ/(π/2), not B-energy share), amplitudes, phases and base values, by grids (`STATUS.md`, 11.45; section 12 of the write-up). |
 | `tilt_profiles.log` | 1.6 KB | Its output: j₀, g₀, k_A; (g − g₀)/(j₀ − j) for v from 10⁻⁴ to 10⁴ and its limit 0.58321; unrestricted second-derivative suprema for seven tilts, with the resulting global costs (all negative). Its ratio at v = 10⁻⁴ is a quadrature error of the fixed grid (see `ratio_small_v.log`). |
 | `tilt_profiles.py` | 3.4 KB | The profiles j and g and their ratio, the local cost k(s), and a global bound on the second derivative along the tilted direction. |
 | `tilt_restricted.log` | 579 B | Its output: Θ(R) for R = 0 to 0.5 at the tilts s = 0, 0.2, 0.3434, 0.5, with the budget p − s². |
@@ -846,7 +881,7 @@ Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are s
 
 ### `code/kprime-2026-11-15/search/`: records of the searches over two-variable tensors
 
-Each run has a `.log` (one line per record) and a `.jsonl` (the same records with the tensor: `c_re`, `c_im` are the six coefficients in the basis of `kprime2.py`). Fields of `k_*`, `kp_*` and `fine_*`: `D` the deficit, `gK`, `gP` the K gain and the retained gain, `RK`, `RP` their ratios to D, `C2D` the content ratio C²/D on the same grid, `mu2` = ‖μ‖², `d4` = E\|q\|⁴/u² − 2, `alk`, `alp`, `gap` the optimal amplitudes, `res` the residual of the inner saddle. In a file name the energy is written as a decimal or as four digits (`0463` = 0.0463); `s<n>` is the seed. The working folder was still being written when it was copied.
+Each run has a `.log` (one line per record) and a `.jsonl` (the same records with the tensor: `c_re`, `c_im` are the six coefficients in the basis of `kprime2.py`). Fields of `k_*`, `kp_*` and `fine_*`: `D` the deficit, `gK`, `gP` the K gain and the retained gain, `RK`, `RP` their ratios to D, `C2D` the content ratio C²/D on the same grid, `mu2` = ‖μ‖², `d4` = E\|q\|⁴/u² − 2, `alk`, `alp`, `gap` the optimal amplitudes, `res` the residual of the inner saddle. In a file name the energy is written as a decimal or as four digits (`0463` = 0.0463); `s<n>` is the seed. The initial copy was made while the working folder was being written; #408 refreshed these records after the runs finished (INVENTORY, STATUS 11.20).
 
 50 files, 65 KB.
 
