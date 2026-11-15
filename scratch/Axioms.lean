@@ -10169,7 +10169,6 @@ import Grothe
 #print axioms Grothe.Upper.improved_unshifted_tail
 #print axioms Grothe.Upper.kernel_head_residual_le_of_comparison
 #print axioms Grothe.Upper.l1_dilated_pow_mul_le
-#print axioms Grothe.Upper.localized_comparison_of_weight_mass_radii
 #print axioms Grothe.Upper.memB_bivarT
 #print axioms Grothe.Upper.relaxedLowErrorQ
 #print axioms Grothe.Upper.relaxedLowErrorQ_literals
@@ -12700,6 +12699,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ThreeBandRegrouping.inner_idx0_source
 #print axioms Grothe.UpperChaos.ThreeBandRegrouping.localized_comparison_of_mass_radii
 #print axioms Grothe.UpperChaos.ThreeBandRegrouping.localized_comparison_of_radii
+#print axioms Grothe.UpperChaos.ThreeBandRegrouping.localized_comparison_of_weight_mass_radii
 #print axioms Grothe.UpperChaos.ThreeBandRegrouping.localized_comparison_relaxed_of_checks
 #print axioms Grothe.UpperChaos.ThreeBandRegrouping.localized_comparison_relaxed_three_band
 #print axioms Grothe.UpperChaos.ThreeBandRegrouping.localized_comparison_three_band
