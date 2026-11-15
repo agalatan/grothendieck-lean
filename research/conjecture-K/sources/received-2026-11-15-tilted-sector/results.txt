@@ -1,0 +1,190 @@
+Agent-ID: codex-6e2b
+C exact pi [3.141592653589793, 3.141592653589794]
+C exact I0 [2.863947582582862, 2.863947582582863]
+C exact I1 [1.193675717354603, 1.193675717354604]
+C exact I2 [1.527398493771395, 1.527398493771396]
+C exact j0<179/125; content coefficients 2/25, 3, 19321/10^6.
+SHA256 verify.py 7572574a7357e3dc4772b438fcc7a6b924f24244826e24ea281f6267e9285caf
+SHA256 secant_exact.py 602d6f3255c900b7a652b0ccf7fa2edb201eb0b3d49daa0776941d38cd4efcad
+SHA256 theta_verify.cpp c8ed8c2cf10a05f780f7e0495ba8c1b073fb4f3cb534adb99e781315a54590ef
+SHA256 theta_candidates.txt c2ddf49d99b1a8a3e51a422740ad61ebd5b51bba3bede469c8cc97d730f48a26
+SHA256 localization_circle.hpp aa115bd4e4cc72ef6e19e0afd2fd28df08f065b38aa50bfb0eda5ddd60b67d99
+SHA256 content_profile.py be624d3fa785bd9ab46b1d89a17a1ae23456a9fe1e10834f36b405cc1cc376c5
+SHA256 profile_range.py 155a019564cdf1e873b0464798ea62c8193da2d5fb65042f87f0de96e03ed597
+SHA256 content_next_bound.py f1cde71ce142cc579a49c67af28dce684fde4ea92089ef88f4e5f8fc30872c3b
+SHA256 content_next_m3.py 20e4b9aa6c67050844b7ceac56b90fd37e765b3aecd2360a8d6c791b599ea683
+SHA256 secant_profile_table.py f218f439445163c0b664bae57aa864d998d89155a9118b8581c5fdbaa2c8b7ec
+SHA256 secant_profile_dual.py 7c076bf0a8afd8afa9cd52b89bd715ea96096a3e9584ea09ba65ba9d2a49ae9d
+SHA256 secant_verify.cpp 05587544ff9b3c96a863179185d42925d1c06b7e866b3b9a4bd1bc0911ce3f11
+SHA256 secant_content_verify.py 68025db61f15c4a92cf0853ece74cb5abf3dac30ef0c9cfa9c8f845e3c7e7198
+SHA256 secant_content_witness.json ddb1e7214b8348e2975db9c85050e571938a371c099dacf0300aeed01d8ebf20
+RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_exact.py
+PASS SECANT EXACT: large-amplitude and exterior constants; small-amplitude target and tails; central-content coefficient.
+P-Sec = 59009/189100 ; exterior cap = 3603551/5604000 ; content coefficient = 1077659/27000000
+Conditional assembly: all-tensor u<=196979/10^8; full-energy delta<=2037/12500000; D>=133/10^5.
+python-flint 0.9.0 via /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python
+RUN /usr/bin/clang++ -O2 -std=c++17 -frounding-math -ffp-contract=off -fno-fast-math /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/theta_verify.cpp -o /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-secants-_2ymuplt/theta_verify
+RUN /usr/bin/clang++ -O2 -std=c++17 -frounding-math -ffp-contract=off -fno-fast-math /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_verify.cpp -o /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-secants-_2ymuplt/secant_verify
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-secants-_2ymuplt/theta_verify --certify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/theta_candidates.txt
+C: angular candidate inclusions and both matrix inequalities passed.
+left matrix: [0.74365962957451959,0.74365962957538468] [0.60722634698712453,0.60722634698797107] [0.015255833373980854,0.015255833374020433] 
+right matrix: [0.74532224849003393,0.74532224849092355] [0.63173384525908439,0.63173384525995769] [-0.001410996357076238,-0.0014109963570756289] 
+C: exterior |w|>=23/4 and all y>=5 tails passed.
+progress visited=3000 accepted=1494 pending=13 sec=4.4
+progress visited=7000 accepted=3496 pending=9 sec=11.6
+progress visited=8000 accepted=3996 pending=9 sec=13.0
+progress visited=10000 accepted=4995 pending=11 sec=16.6
+progress visited=11000 accepted=5496 pending=9 sec=18.5
+progress visited=12000 accepted=5996 pending=9 sec=20.4
+PASS C: all 256 scalar envelope triples certified; accepted=6168 visited=12335 maxdepth=24 time=21.49 sec
+P+C conclusion with the accompanying projection/envelope proof: Theta(3/10) <= 3/4 at s=3/5.
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/profile_range.py --certify
+{"dependency": {"claim": "C GLOBAL PROFILE CERTIFICATE", "statement": "sup_R>=0 N_Phi(R) < 1/3", "compact_boxes": 111, "largest_compact_upper": "[0.33332331047418093685746922472253686604131253518 +/- 9.31e-49]", "seconds": 58.86899423599243}}
+{"claim": "C endpoint ranges", "result": {"c0": "[0.024048342160729148377022632064871827420344349 +/- 3.19e-46]", "moment_upper": "[2.3809090560000000000000000000000000000000000000 +/- 2.63e-47]", "Fraw_lower_R>=3": "[0.07090909866666666666666666666666666666666666667 +/- 6.72e-48]", "h_upper_R>=3": "[0.222831688529697052119265984700345553870976268 +/- 5.13e-46]", "small_radius_abs_bound": "[0.023094010767585030580365951220078298225904070051 +/- 2.58e-49]"}}
+{"claim": "C GLOBAL PROFILE RANGE", "statement": "-1/40 < h_(3/5)(v) < 253/1000 for all v>=0", "compact_boxes": 158, "content_squared_u<=.0463": "[0.00089456230000000000000000000000000000000000000000 +/- 7.64e-51]", "content_norm_bound": "3/100", "seconds": 207.21486115455627}
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_profile_table.py --skip-dependency-replay
+CONDITIONAL RUN: N_Phi<1/3 must already be certified by the calling chain.
+{"progress": 25, "total": 602, "R": "47/200", "raw": "[0.0184 +/- 5.82e-5]", "cells": 1315, "seconds": 17.017112970352173}
+{"progress": 50, "total": 602, "R": "97/200", "raw": "[0.0863 +/- 8.89e-5]", "cells": 1348, "seconds": 33.60126090049744}
+{"progress": 75, "total": 602, "R": "147/200", "raw": "[0.1792 +/- 8.01e-5]", "cells": 1392, "seconds": 55.38442611694336}
+{"progress": 100, "total": 602, "R": "197/200", "raw": "[0.2674 +/- 7.60e-5]", "cells": 1394, "seconds": 79.9440369606018}
+{"progress": 125, "total": 602, "R": "247/200", "raw": "[0.3401 +/- 8.87e-5]", "cells": 1391, "seconds": 101.17964506149292}
+{"progress": 150, "total": 602, "R": "297/200", "raw": "[0.3968 +/- 7.44e-5]", "cells": 1409, "seconds": 119.49242806434631}
+{"progress": 175, "total": 602, "R": "347/200", "raw": "[0.4400 +/- 5.63e-5]", "cells": 1417, "seconds": 141.23842215538025}
+{"progress": 200, "total": 602, "R": "397/200", "raw": "[0.4727 +/- 5.23e-5]", "cells": 1403, "seconds": 162.79658889770508}
+{"progress": 225, "total": 602, "R": "447/200", "raw": "[0.4975 +/- 6.33e-5]", "cells": 1385, "seconds": 183.04758095741272}
+{"progress": 250, "total": 602, "R": "497/200", "raw": "[0.5165 +/- 8.49e-5]", "cells": 1375, "seconds": 203.82499599456787}
+{"progress": 275, "total": 602, "R": "547/200", "raw": "[0.5311 +/- 7.84e-5]", "cells": 1374, "seconds": 223.88628888130188}
+{"progress": 300, "total": 602, "R": "597/200", "raw": "[0.5424 +/- 9.44e-5]", "cells": 1377, "seconds": 247.03216791152954}
+{"progress": 325, "total": 602, "R": "647/200", "raw": "[0.5514 +/- 5.47e-5]", "cells": 1380, "seconds": 269.0486888885498}
+{"progress": 350, "total": 602, "R": "697/200", "raw": "[0.5585 +/- 6.75e-5]", "cells": 1370, "seconds": 287.71387910842896}
+{"progress": 375, "total": 602, "R": "747/200", "raw": "[0.5642 +/- 9.63e-5]", "cells": 1355, "seconds": 306.1144320964813}
+{"progress": 400, "total": 602, "R": "797/200", "raw": "[0.5689 +/- 5.34e-5]", "cells": 1342, "seconds": 326.00547313690186}
+{"progress": 425, "total": 602, "R": "847/200", "raw": "[0.5727 +/- 7.78e-5]", "cells": 1331, "seconds": 344.6279208660126}
+{"progress": 450, "total": 602, "R": "897/200", "raw": "[0.5759 +/- 5.07e-5]", "cells": 1321, "seconds": 362.45144605636597}
+{"progress": 475, "total": 602, "R": "947/200", "raw": "[0.5786 +/- 9.64e-5]", "cells": 1316, "seconds": 381.7017910480499}
+{"progress": 500, "total": 602, "R": "997/200", "raw": "[0.5808 +/- 5.58e-5]", "cells": 1311, "seconds": 404.9694700241089}
+{"progress": 525, "total": 602, "R": "1047/200", "raw": "[0.5827 +/- 5.12e-5]", "cells": 1303, "seconds": 423.5352289676666}
+{"progress": 550, "total": 602, "R": "1097/200", "raw": "[0.5843 +/- 8.68e-5]", "cells": 1297, "seconds": 451.15956592559814}
+{"progress": 575, "total": 602, "R": "1147/200", "raw": "[0.5857 +/- 9.93e-5]", "cells": 1292, "seconds": 472.9303481578827}
+{"progress": 600, "total": 602, "R": "1197/200", "raw": "[0.5870 +/- 7.25e-5]", "cells": 1290, "seconds": 494.64337277412415}
+{"progress": 602, "total": 602, "R": "6", "raw": "[0.5870 +/- 9.61e-5]", "cells": 1291, "seconds": 496.10886883735657}
+{"claim": "certified secant beta0 radial table", "nodes": 602, "scale": 100000000, "raw_radius_tolerance": "1/20000", "dependency_replayed_here": false, "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_profile_table.txt", "seconds": 496.11190009117126, "passed": true}
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-secants-_2ymuplt/secant_verify --certify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_profile_table.txt
+progress visited=1000 accepted=492 pruned=0 pending=17 depth=27 points=985 f_calls=668 source_cells=71868 sec=0.6
+progress visited=2000 accepted=991 pruned=42 pending=19 depth=27 points=1901 f_calls=1258 source_cells=116566 sec=1.2
+progress visited=8000 accepted=3995 pruned=360 pending=11 depth=27 points=6859 f_calls=4715 source_cells=405111 sec=3.7
+progress visited=11000 accepted=5494 pruned=482 pending=13 depth=27 points=9174 f_calls=6462 source_cells=546240 sec=4.6
+progress visited=15000 accepted=7494 pruned=811 pending=13 depth=27 points=12643 f_calls=8476 source_cells=737268 sec=6.5
+progress visited=16000 accepted=7993 pruned=928 pending=15 depth=27 points=13530 f_calls=8923 source_cells=776431 sec=6.9
+progress visited=17000 accepted=8494 pruned=1032 pending=13 depth=27 points=14372 f_calls=9341 source_cells=811929 sec=7.2
+progress visited=21000 accepted=10495 pruned=1054 pending=11 depth=27 points=17073 f_calls=12092 source_cells=1021178 sec=9.4
+progress visited=22000 accepted=10994 pruned=1054 pending=13 depth=27 points=17738 f_calls=12830 source_cells=1082202 sec=9.9
+progress visited=26000 accepted=12994 pruned=1054 pending=13 depth=27 points=20223 f_calls=15578 source_cells=1302316 sec=12.1
+progress visited=28000 accepted=13992 pruned=1109 pending=17 depth=27 points=21637 f_calls=16820 source_cells=1411264 sec=13.0
+progress visited=29000 accepted=14493 pruned=1208 pending=15 depth=27 points=22530 f_calls=17284 source_cells=1460128 sec=13.4
+progress visited=33000 accepted=16494 pruned=1503 pending=13 depth=27 points=25930 f_calls=19309 source_cells=1640167 sec=14.8
+progress visited=34000 accepted=16996 pruned=1617 pending=9 depth=27 points=26815 f_calls=19710 source_cells=1677358 sec=15.0
+progress visited=37000 accepted=18493 pruned=1749 pending=15 depth=27 points=29162 f_calls=21456 source_cells=1833616 sec=16.1
+progress visited=40000 accepted=19995 pruned=1935 pending=11 depth=27 points=31575 f_calls=23059 source_cells=1974633 sec=17.1
+progress visited=41000 accepted=20495 pruned=1935 pending=11 depth=27 points=32192 f_calls=23743 source_cells=2027071 sec=17.4
+progress visited=45000 accepted=22496 pruned=2237 pending=9 depth=27 points=35487 f_calls=25767 source_cells=2209825 sec=18.7
+progress visited=46000 accepted=22997 pruned=2337 pending=7 depth=27 points=36309 f_calls=26216 source_cells=2252284 sec=18.9
+progress visited=48000 accepted=23994 pruned=2519 pending=13 depth=27 points=38075 f_calls=27214 source_cells=2356538 sec=19.7
+progress visited=50000 accepted=24996 pruned=2565 pending=9 depth=27 points=39494 f_calls=28560 source_cells=2479650 sec=20.6
+progress visited=51000 accepted=25493 pruned=2565 pending=15 depth=27 points=40216 f_calls=29416 source_cells=2588466 sec=21.6
+progress visited=52000 accepted=25993 pruned=2565 pending=15 depth=27 points=40984 f_calls=30363 source_cells=2736467 sec=22.9
+progress visited=54000 accepted=26996 pruned=2565 pending=9 depth=27 points=42330 f_calls=31964 source_cells=2939852 sec=24.5
+progress visited=56000 accepted=27996 pruned=2565 pending=9 depth=27 points=43646 f_calls=33508 source_cells=3114420 sec=25.8
+progress visited=58000 accepted=28995 pruned=2565 pending=11 depth=27 points=45031 f_calls=35153 source_cells=3329097 sec=27.7
+progress visited=59000 accepted=29496 pruned=2565 pending=9 depth=27 points=45765 f_calls=36023 source_cells=3475915 sec=29.1
+progress visited=62000 accepted=30994 pruned=2565 pending=13 depth=27 points=47854 f_calls=38561 source_cells=3925805 sec=33.7
+progress visited=63000 accepted=31494 pruned=2565 pending=13 depth=27 points=48579 f_calls=39424 source_cells=4069246 sec=34.7
+progress visited=64000 accepted=31994 pruned=2565 pending=13 depth=27 points=49239 f_calls=40213 source_cells=4202361 sec=35.6
+progress visited=65000 accepted=32495 pruned=2565 pending=11 depth=27 points=49892 f_calls=40988 source_cells=4328538 sec=36.8
+progress visited=70000 accepted=34995 pruned=2565 pending=11 depth=27 points=53370 f_calls=45268 source_cells=4963850 sec=41.7
+progress visited=71000 accepted=35495 pruned=2565 pending=11 depth=27 points=54086 f_calls=46162 source_cells=5086572 sec=42.5
+progress visited=74000 accepted=36994 pruned=2565 pending=13 depth=27 points=56007 f_calls=48372 source_cells=5295390 sec=44.6
+progress visited=75000 accepted=37495 pruned=2565 pending=11 depth=27 points=56650 f_calls=49112 source_cells=5362364 sec=45.1
+progress visited=76000 accepted=37992 pruned=2579 pending=17 depth=27 points=57356 f_calls=49837 source_cells=5432541 sec=45.6
+progress visited=79000 accepted=39493 pruned=2807 pending=15 depth=27 points=59787 f_calls=51377 source_cells=5569699 sec=46.6
+progress visited=80000 accepted=39993 pruned=2911 pending=15 depth=27 points=60671 f_calls=51839 source_cells=5617567 sec=46.9
+progress visited=82000 accepted=40998 pruned=3013 pending=5 depth=27 points=62131 f_calls=52985 source_cells=5709791 sec=47.6
+progress visited=83000 accepted=41496 pruned=3066 pending=9 depth=27 points=62950 f_calls=53562 source_cells=5762906 sec=48.1
+progress visited=85000 accepted=42493 pruned=3265 pending=15 depth=27 points=64618 f_calls=54493 source_cells=5849715 sec=48.9
+progress visited=89000 accepted=44495 pruned=3383 pending=11 depth=27 points=67577 f_calls=57257 source_cells=6141937 sec=51.8
+progress visited=91000 accepted=45495 pruned=3383 pending=11 depth=27 points=68947 f_calls=58908 source_cells=6320872 sec=53.2
+progress visited=93000 accepted=46493 pruned=3424 pending=15 depth=27 points=70349 f_calls=60319 source_cells=6447331 sec=54.7
+progress visited=95000 accepted=47493 pruned=3586 pending=15 depth=27 points=71991 f_calls=61348 source_cells=6542164 sec=55.5
+progress visited=97000 accepted=48496 pruned=3756 pending=9 depth=27 points=73629 f_calls=62329 source_cells=6631487 sec=56.2
+progress visited=98000 accepted=48997 pruned=3756 pending=7 depth=27 points=74291 f_calls=63111 source_cells=6702623 sec=56.9
+progress visited=101000 accepted=50496 pruned=3894 pending=9 depth=27 points=76746 f_calls=64801 source_cells=6855345 sec=58.4
+progress visited=103000 accepted=51494 pruned=3894 pending=13 depth=27 points=78284 f_calls=66231 source_cells=7039393 sec=59.7
+progress visited=104000 accepted=51994 pruned=3894 pending=13 depth=27 points=79023 f_calls=67064 source_cells=7137308 sec=60.5
+progress visited=105000 accepted=52495 pruned=3894 pending=11 depth=27 points=79678 f_calls=67831 source_cells=7253745 sec=61.6
+progress visited=106000 accepted=52994 pruned=3894 pending=13 depth=27 points=80330 f_calls=68601 source_cells=7369761 sec=62.5
+progress visited=108000 accepted=53996 pruned=3894 pending=9 depth=27 points=81710 f_calls=70243 source_cells=7605949 sec=65.2
+progress visited=109000 accepted=54492 pruned=3894 pending=17 depth=27 points=82439 f_calls=71128 source_cells=7731828 sec=66.6
+progress visited=110000 accepted=54993 pruned=3894 pending=15 depth=27 points=83106 f_calls=71938 source_cells=7853138 sec=67.7
+progress visited=114000 accepted=56993 pruned=3894 pending=15 depth=27 points=85876 f_calls=75359 source_cells=8340403 sec=72.2
+progress visited=116000 accepted=57994 pruned=3894 pending=13 depth=27 points=87313 f_calls=77160 source_cells=8574160 sec=73.9
+progress visited=118000 accepted=58996 pruned=3894 pending=9 depth=27 points=88782 f_calls=78942 source_cells=8777850 sec=75.5
+progress visited=124000 accepted=61996 pruned=3894 pending=9 depth=27 points=92696 f_calls=83427 source_cells=9152801 sec=78.5
+progress visited=127000 accepted=63496 pruned=3894 pending=9 depth=27 points=94677 f_calls=85761 source_cells=9376681 sec=80.2
+progress visited=128000 accepted=63994 pruned=3894 pending=13 depth=27 points=95348 f_calls=86563 source_cells=9458103 sec=80.8
+progress visited=129000 accepted=64496 pruned=3894 pending=9 depth=27 points=95999 f_calls=87319 source_cells=9525343 sec=81.3
+progress visited=130000 accepted=64996 pruned=3894 pending=9 depth=27 points=96664 f_calls=88112 source_cells=9600418 sec=81.9
+progress visited=135000 accepted=67496 pruned=4032 pending=9 depth=27 points=100591 f_calls=91164 source_cells=9868004 sec=83.9
+progress visited=136000 accepted=67995 pruned=4032 pending=11 depth=27 points=101253 f_calls=91899 source_cells=9928731 sec=84.4
+progress visited=140000 accepted=69994 pruned=4313 pending=13 depth=27 points=104572 f_calls=94066 source_cells=10118188 sec=85.8
+progress visited=141000 accepted=70495 pruned=4405 pending=11 depth=27 points=105252 f_calls=94525 source_cells=10154273 sec=86.0
+progress visited=142000 accepted=70996 pruned=4405 pending=9 depth=27 points=105903 f_calls=95282 source_cells=10218590 sec=86.4
+progress visited=144000 accepted=71997 pruned=4405 pending=7 depth=27 points=107148 f_calls=96678 source_cells=10315976 sec=87.1
+progress visited=146000 accepted=72997 pruned=4405 pending=7 depth=27 points=108380 f_calls=98046 source_cells=10404818 sec=87.8
+progress visited=147000 accepted=73493 pruned=4474 pending=15 depth=27 points=109259 f_calls=98568 source_cells=10454670 sec=88.1
+progress visited=149000 accepted=74497 pruned=4615 pending=7 depth=27 points=110964 f_calls=99607 source_cells=10535231 sec=88.6
+progress visited=150000 accepted=74994 pruned=4724 pending=13 depth=27 points=111806 f_calls=100004 source_cells=10573122 sec=88.9
+progress visited=155000 accepted=77495 pruned=5136 pending=11 depth=27 points=115884 f_calls=102531 source_cells=10771793 sec=90.3
+progress visited=157000 accepted=78494 pruned=5223 pending=13 depth=27 points=117273 f_calls=103712 source_cells=10849614 sec=90.9
+progress visited=160000 accepted=79995 pruned=5223 pending=11 depth=27 points=119193 f_calls=105836 source_cells=10973052 sec=91.9
+progress visited=163000 accepted=81498 pruned=5223 pending=5 depth=27 points=121030 f_calls=107865 source_cells=11091165 sec=92.9
+progress visited=165000 accepted=82496 pruned=5223 pending=9 depth=27 points=122335 f_calls=109306 source_cells=11168570 sec=93.5
+progress visited=166000 accepted=82996 pruned=5223 pending=9 depth=27 points=122987 f_calls=110026 source_cells=11205750 sec=93.8
+progress visited=167000 accepted=83494 pruned=5223 pending=13 depth=27 points=123927 f_calls=110706 source_cells=11258092 sec=94.3
+progress visited=173000 accepted=86495 pruned=5583 pending=11 depth=27 points=128960 f_calls=113746 source_cells=11450936 sec=96.0
+progress visited=174000 accepted=86994 pruned=5583 pending=13 depth=27 points=129577 f_calls=114430 source_cells=11488002 sec=96.3
+progress visited=177000 accepted=88494 pruned=5664 pending=13 depth=27 points=131987 f_calls=116349 source_cells=11609553 sec=97.3
+progress visited=180000 accepted=89995 pruned=5926 pending=11 depth=27 points=134609 f_calls=117737 source_cells=11711717 sec=98.2
+progress visited=183000 accepted=91496 pruned=6263 pending=9 depth=27 points=137075 f_calls=118871 source_cells=11793119 sec=98.8
+progress visited=184000 accepted=91996 pruned=6277 pending=9 depth=27 points=137694 f_calls=119503 source_cells=11832635 sec=99.1
+progress visited=190000 accepted=94993 pruned=6488 pending=15 depth=27 points=142426 f_calls=123161 source_cells=12083429 sec=101.8
+progress visited=193000 accepted=96494 pruned=6773 pending=13 depth=27 points=144863 f_calls=124468 source_cells=12193968 sec=102.4
+progress visited=194000 accepted=96993 pruned=6829 pending=15 depth=27 points=145800 f_calls=125123 source_cells=12242787 sec=102.8
+progress visited=197000 accepted=98493 pruned=7130 pending=15 depth=27 points=148258 f_calls=126314 source_cells=12341402 sec=103.4
+progress visited=198000 accepted=98995 pruned=7215 pending=11 depth=27 points=148999 f_calls=126803 source_cells=12371707 sec=103.5
+progress visited=200000 accepted=99994 pruned=7329 pending=13 depth=27 points=150818 f_calls=127921 source_cells=12458007 sec=104.1
+progress visited=201000 accepted=100494 pruned=7421 pending=13 depth=27 points=151734 f_calls=128419 source_cells=12498943 sec=104.4
+progress visited=202000 accepted=100993 pruned=7533 pending=15 depth=27 points=152471 f_calls=128708 source_cells=12511806 sec=104.4
+progress visited=203000 accepted=101492 pruned=7635 pending=17 depth=27 points=153316 f_calls=129131 source_cells=12551595 sec=104.7
+progress visited=204000 accepted=101994 pruned=7756 pending=13 depth=27 points=154105 f_calls=129454 source_cells=12575716 sec=104.8
+PASS GLOBAL SECANT CORE: accepted=102104 visited=204207 pruned=7788 depth=27 points=154239 f_calls=129496 seconds=104.80
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_profile_dual.py --skip-dependency-replay
+CONDITIONAL RUN: requires profile range/Hessian replay and fresh secant table regeneration in this verification chain.
+{"claim": "Gaussian-probe dual certificate from regenerated secant radial table", "result": {"lambda": "[0.26000000000000000000000000000000000000000000000 +/- 5.21e-49]", "k": "[0.098000000000000000000000000000000000000000000000 +/- 1.02e-49]", "u_max": "[0.046300000000000000000000000000000000000000000000 +/- 6.94e-50]", "compact_expectation": "[0.0077925089873300246388744736245991370232771749 +/- 3.97e-47]", "tail": "[4.4194402629532119082008295680415815619928818758e-8 +/- 5.05e-55]", "content_norm_upper": "[0.0198305531817326541709935556328948174390927948 +/- 6.86e-47]", "passes_1_over_50": true, "table_nodes": 602, "reconstructed_profile_cells": 300, "dependencies_replayed_here": false, "seconds": 2.1915030479431152}}
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_next_m3.py
+{"analytic_tail": {"domain": "[ell(4),infinity)", "ell4": "[2.2640000000000000000000000000000000000000000000 +/- 3.88e-48]", "bound": "[2.5184155479955999647608359028071613377992984329 +/- 8.27e-47]", "passed": true}}
+{"claim": "global |m_s'''| < 13", "compact_coverage": "[0,3]", "evenness": true, "boxes": 120, "compact_max": "[12.945400040541551073402590961732596562257572357 +/- 1.87e-46]", "content_coefficient_upper": "[2.9924257412398975714034508835293321950949864807 +/- 4.75e-47]", "conclusion": "C(q)^2 <= 3 delta^(3/2)", "passed": true, "seconds": 0.1420438289642334}
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_content_verify.py
+{"M4_upper": "[92.107230121880278360257285016816663608512522049 +/- 3.22e-46]", "M4_certified": 1000}
+{"source_outer": {"far": "[0.36386387268362453489718457908438084339681626059 +/- 7.31e-48]", "compact_lower": "[-1.0348925135464004498460460310286356284444096486 +/- 4.19e-47]", "outer_upper": "[0.83338920293445072355483287522136437155559035136 +/- 1.16e-48]"}}
+{"claim": "central-energy content squared <= delta/25", "u": ["3/100", "463/10000"], "cells": 500, "cap": "313/500", "barrier_max": "0.62500000000000000000000000000000000000000000000", "residual_margin": "[1.9371707021929719608373298406739966444848042697e-5 +/- 2.68e-52]", "coefficient": "1077659/27000000", "passed": true, "seconds": 10.36154294013977}
+PASS FULL SECANT REPLAY: global Rem<=13 rho^2/20; global structural, uniform, and third-order content bounds; central-energy content coefficient 1077659/27000000. General content/deficit comparison remains OPEN.
+
+POST-REPLAY: all 14 certificate-source hashes match; regenerated radial table matches the first certified table.
+FINAL SHA256 REPORT.md 94a46ca8b87092365993485844a8c2d7c4c9b685c72c6b93a1cd42a0be6a8213
+FINAL SHA256 secant_proof.md 325c097bd78bd3ef6e59576f31f73ddb6cc342d3b372e6256e3b2efc83a8ee1e
+FINAL SHA256 secant_content_proof.md c379a83ddcdd7b1913127be83713973d4f91fd243e6768497c4e1aac8e310b4d
+FINAL SHA256 secant_assembly.md dcfff6ebaf5e8f0b9f5698513020fa3c23e9455b566bae872c5d787ee6803f4d
+FINAL SHA256 secant_audit_results.md 4113da796bbf623f586360052e3f4b395fa6fb14af0ef57ee7eb8a36832d9157
+FINAL SHA256 secant_profile_table.txt 9a0e3cc961035ca223b0cb81d7c8aa914b5dd938ae1dad268e06afeec2bd3f32
+FINAL SHA256 secant_audit_math.md 97e4313a737a79d7f719dcfebe0aaaec199c80c18c74db981c2079c7c930e1ab

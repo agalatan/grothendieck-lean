@@ -1,0 +1,18 @@
+1. one sector at a time (grid over w in [0, 6] and amplitude in [0.02, 4]): smallest margin p - Rem/|r|^2
+   sector A        smallest margin +0.3206 at w = 0.00, amplitude 0.02, phase 1.57
+   sector B        smallest margin +0.7052 at w = 0.50, amplitude 1.10, phase 0.00
+   sector ZQ       smallest margin +0.1286 at w = 0.00, amplitude 0.02, phase 1.57
+   sector conjZ P  smallest margin +0.6229 at w = 0.00, amplitude 1.00, phase 0.00
+   sector nu       smallest margin +0.3305 at w = 0.00, amplitude 0.02, phase 1.57
+2. all five sectors, 60 random starts with local minimisation (34 s): smallest margins found
+   margin -0.3871 (finer quadrature -0.3871)   w = 0.000   |r| = 0.000   shares A 0.00 B 0.00 ZQ 0.58 cZP 0.00 nu 0.42
+   margin -0.3871 (finer quadrature -0.3871)   w = 0.000   |r| = 0.000   shares A 0.00 B 0.00 ZQ 0.58 cZP 0.00 nu 0.42
+   margin -0.3871 (finer quadrature -0.3871)   w = 0.000   |r| = 0.000   shares A 0.00 B 0.00 ZQ 0.58 cZP 0.00 nu 0.42
+   margin -0.3871 (finer quadrature -0.3871)   w = 0.000   |r| = 0.000   shares A 0.00 B 0.00 ZQ 0.58 cZP 0.00 nu 0.42
+   margin -0.3871 (finer quadrature -0.3871)   w = 0.000   |r| = 0.001   shares A 0.00 B 0.00 ZQ 0.58 cZP 0.00 nu 0.42
+   margin -0.3871 (finer quadrature -0.3871)   w = 0.000   |r| = 0.000   shares A 0.00 B 0.00 ZQ 0.58 cZP 0.00 nu 0.42
+   distribution of the local minima: min -0.3871, 10% -0.3871, median -0.3871
+   Note: with nu the pointwise bound fails at once (margin -0.387 at w = 0, infinitesimal amplitude, direction ZQ + nu):
+   Z kQ and nu Z(T-2) have the same frequency and the cross term E[sqrt(T)(T-2)/(a+bT)]/sqrt 2 = -0.608 is large. In the
+   functional that cross term is nu-bar E[Q] = 0, because nu is a constant and E Q = 0: a pointwise statement cannot see it.
+exit 0

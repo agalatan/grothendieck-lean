@@ -1,0 +1,180 @@
+Agent-ID: codex-6e2b
+Date: 15 November 2026
+COMMAND: python3 -I verify.py
+
+Agent-ID: codex-6e2b
+C checks: exact rational arithmetic; no sampled inequalities.
+pi [3.141592653589793, 3.141592653589794]
+C1 circular majorant: 32 closed intervals cover [0,1]; all Bernstein coefficients positive.
+C1 minimum Bernstein coefficient [0.001366753487070, 0.001366753487071]
+C2 I0 [2.863947582582862, 2.863947582582863]
+C2 I1 [1.193675717354603, 1.193675717354604]
+C2 I2 [1.527398493771395, 1.527398493771396]
+C2 j0 [1.431973791291431, 1.431973791291432]
+C2 g0 [-0.835135932614130, -0.835135932614129]
+C2 J_s [1.030689533100970, 1.030689533100971]
+C2 local cost k(3/5) [0.446707057881032, 0.446707057881033]
+C2 global u coefficient (3/5)I0 [1.718368549549717, 1.718368549549718]
+C2 global coercivity P-(3/5)J_s [0.343638104570935, 0.343638104570936]
+C3 certified constants for REPORT section 2 proof: gain <= (1074/625)u - (859/2500)||r||^2.
+C3 rational corollary of that proof: u<=1/85920 gives s=3/5, kappa=0, eta=1/50000.
+C3 elementary maximizing-radius bound at u=0.0463 [0.481200477850537, 0.481200477850538]
+C4 M=E|T-2/5| [0.740640092071278, 0.740640092071279]
+C4 P-3/4 [0.212051824431517, 0.212051824431518]
+C4 tail(R=.3, sigma=.085) [0.000003597353671, 0.000003597353672]
+C4 simplified certified tail [0.000003642815562, 0.000003642815563]
+C4 with certified curvature and localization, IF strong O-B holds: kappa=1/2, eta=19/10^6.
+C4 tail sensitivity (analytic upper bounds, not actual errors):
+  sigma=17/200 [0.000003597353671, 0.000003597353672]
+  sigma=9/100 [0.000013880672593, 0.000013880672594]
+  sigma=1/10 [0.000115776181637, 0.000115776181638]
+C5 structural coefficient upper bound [847.854315911052997, 847.854315911052998]
+C5 preliminary coefficient 848 for REPORT section 3; superseded by the full replay's coefficient 2/25.
+C5 delta<=3/848000000 implies content^2<=3/10^6.
+C6 arithmetic consequences (depend on full replay): gain <= (1273/1250)u-(859/2500)sigma^2; u<=1/50920 gives kappa=0, eta=1/50000.
+C6 improved maximizing radius at u=.0463 [0.370444467645081, 0.370444467645082]
+C6 content^2 <= min((2/25)delta,(19321/10^6)u); content budget holds if delta<=3/80000 or D_+ >= (19321/100000)u-3/100000.
+C6 endpoint content^2 bound [0.000894562300000, 0.000894562300000]
+C6 endpoint sufficient D_+ threshold [0.008915623000000, 0.008915623000000]
+C7 all-r theorem: u<=1123/10^6, s=3/5, kappa=0, eta=1/50000.
+C7 radius cap at endpoint [0.057692916745538, 0.057692916745539]
+C7 gain main bound [0.00001998770490566037, 0.00001998770490566038]
+C7 rational tail upper bound [0.00000000000179036458, 0.00000000000179036459]
+C7 combined gain upper bound [0.00001998770669602496, 0.00001998770669602497]
+C8 all global maximizers have radius at most [0.084514949720602, 0.084514949720603]
+C8 localized finite-amplitude tail [0.00000311542247008474, 0.00000311542247008475]
+C9 content^2 <= min((2/25)delta,1/2500) throughout u<=.0463.
+C9 IF remaining O-B: content^2 <= D_+/5 + 3/10^6, THEN kappa=50/53, eta=18/10^6 on the full energy range.
+C9 this budget holds when delta<=3/80000 or D_+>=397/200000.
+PASS: all exact algebra assertions. No full tilted-sector proof claimed.
+SHA256 verify.py 985a885b7fe954822c921092eddbf8ed7d4ff50c9425c8d1377e6ed03350b61d
+SHA256 localization_verify.py f19df5180c23f642e79b5336259cde33fc4d6dd4fe66769cfe41dceed8b1e579
+SHA256 theta_verify.cpp c8ed8c2cf10a05f780f7e0495ba8c1b073fb4f3cb534adb99e781315a54590ef
+SHA256 theta_candidates.txt c2ddf49d99b1a8a3e51a422740ad61ebd5b51bba3bede469c8cc97d730f48a26
+SHA256 content_profile.py be624d3fa785bd9ab46b1d89a17a1ae23456a9fe1e10834f36b405cc1cc376c5
+SHA256 profile_range.py 155a019564cdf1e873b0464798ea62c8193da2d5fb65042f87f0de96e03ed597
+SHA256 localization_majorant.cpp 1d9e8fee1719712f4880b040dabf4f89a75a1da0a1e4ec67147e994dbca22748
+SHA256 localization_circle.hpp aa115bd4e4cc72ef6e19e0afd2fd28df08f065b38aa50bfb0eda5ddd60b67d99
+SHA256 content_next_bound.py f1cde71ce142cc579a49c67af28dce684fde4ea92089ef88f4e5f8fc30872c3b
+RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/localization_verify.py
+Agent-ID: codex-6e2b; exact rational localization certificate.
+C: 8192 right-endpoint intervals cover [0,16].
+C: omitted tail is nonnegative; no tail estimate is assumed.
+C: c(463/10000) is strictly greater than 0.702292508353541
+C: c(463/10000) > 7/10.
+C: improved u coefficient = 1273/1250; cost = 859/2500.
+C: any nonnegative-gain radius is at most 0.370444467645082 < 371/1000.
+PASS. This does not prove the required 17/200 localization.
+RUN /usr/bin/clang++ -O2 -std=c++17 -frounding-math -ffp-contract=off -fno-fast-math /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/theta_verify.cpp -o /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-replay-6omdc2hx/theta_verify
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-replay-6omdc2hx/theta_verify --certify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/theta_candidates.txt
+C: angular candidate inclusions and both matrix inequalities passed.
+left matrix: [0.74365962957451959,0.74365962957538468] [0.60722634698712453,0.60722634698797107] [0.015255833373980854,0.015255833374020433] 
+right matrix: [0.74532224849003393,0.74532224849092355] [0.63173384525908439,0.63173384525995769] [-0.001410996357076238,-0.0014109963570756289] 
+C: exterior |w|>=23/4 and all y>=5 tails passed.
+PASS C: all 256 scalar envelope triples certified; accepted=6168 visited=12335 maxdepth=24 time=13.98 sec
+P+C conclusion with the accompanying projection/envelope proof: Theta(3/10) <= 3/4 at s=3/5.
+python-flint 0.9.0 via /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/profile_range.py --certify
+{"dependency": {"claim": "C GLOBAL PROFILE CERTIFICATE", "statement": "sup_R>=0 N_Phi(R) < 1/3", "compact_boxes": 111, "largest_compact_upper": "[0.33332331047418093685746922472253686604131253518 +/- 9.31e-49]", "seconds": 38.41136193275452}}
+{"claim": "C endpoint ranges", "result": {"c0": "[0.024048342160729148377022632064871827420344349 +/- 3.19e-46]", "moment_upper": "[2.3809090560000000000000000000000000000000000000 +/- 2.63e-47]", "Fraw_lower_R>=3": "[0.07090909866666666666666666666666666666666666667 +/- 6.72e-48]", "h_upper_R>=3": "[0.222831688529697052119265984700345553870976268 +/- 5.13e-46]", "small_radius_abs_bound": "[0.023094010767585030580365951220078298225904070051 +/- 2.58e-49]"}}
+{"claim": "C GLOBAL PROFILE RANGE", "statement": "-1/40 < h_(3/5)(v) < 253/1000 for all v>=0", "compact_boxes": 158, "content_squared_u<=.0463": "[0.00089456230000000000000000000000000000000000000000 +/- 7.64e-51]", "content_norm_bound": "3/100", "seconds": 168.64977264404297}
+RUN /usr/bin/clang++ -O2 -std=c++17 -frounding-math -ffp-contract=off -fno-fast-math /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/localization_majorant.cpp -o /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-replay-19ostg3n/localization_majorant
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-replay-19ostg3n/localization_majorant --certify
+C: algebraic exterior regions and .085 localization implication passed.
+PASS GLOBAL GRADIENT: m=4/5 c=63/400 B=1/40; accepted=70373 visited=140745 pruned=3205 depth=25 worst_integral_upper=0.79999684962304463 sec=149.44
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_next_bound.py --skip-dependency-replay
+CONDITIONAL RUN: scalar profile dependencies were not replayed in this process.
+{"progress": 25, "total": 300, "seconds": 35.451003074645996}
+{"progress": 50, "total": 300, "seconds": 60.34909987449646}
+{"progress": 75, "total": 300, "seconds": 80.57287001609802}
+{"progress": 100, "total": 300, "seconds": 100.06181192398071}
+{"progress": 125, "total": 300, "seconds": 117.4783980846405}
+{"progress": 150, "total": 300, "seconds": 133.33506512641907}
+{"progress": 175, "total": 300, "seconds": 148.5612919330597}
+{"progress": 200, "total": 300, "seconds": 166.3156521320343}
+{"progress": 225, "total": 300, "seconds": 179.97863602638245}
+{"progress": 250, "total": 300, "seconds": 195.43372702598572}
+{"progress": 275, "total": 300, "seconds": 208.02783703804016}
+{"progress": 300, "total": 300, "seconds": 221.1982810497284}
+{"claim": "Gaussian-probe dual certificate", "result": {"lambda": "[0.26000000000000000000000000000000000000000000000 +/- 5.21e-49]", "k": "[0.098000000000000000000000000000000000000000000000 +/- 1.02e-49]", "u_max": "[0.046300000000000000000000000000000000000000000000 +/- 6.94e-50]", "compact_expectation": "[0.0077656199906940009590550889768775984104372740 +/- 3.62e-47]", "tail": "[4.4194402629532119082008295680415815619928818758e-8 +/- 5.05e-55]", "content_norm_upper": "[0.0198036641850966304911741709851732788262528939 +/- 6.50e-47]", "passes_1_over_50": true, "seconds": 223.62787199020386, "dependency_replayed_here": false}}
+PASS FULL REPLAY: curvature, structural content, profile range, global localization, Gaussian-probe content, and scalar constants. Only the general content/deficit inequality O-B remains open.
+
+EXIT: 0
+
+ADDITIVE TENSOR EXTENSION REPLAY
+The preceding full run used the earlier orchestrator hash recorded above.
+All its certificate sources are unchanged. verify.py was extended with C10
+and the new scalar derivative checker; the current default command includes both sets.
+COMMAND: python3 -I verify.py --tensor-only
+
+Agent-ID: codex-6e2b
+C checks: exact rational arithmetic; no sampled inequalities.
+pi [3.141592653589793, 3.141592653589794]
+C1 circular majorant: 32 closed intervals cover [0,1]; all Bernstein coefficients positive.
+C1 minimum Bernstein coefficient [0.001366753487070, 0.001366753487071]
+C2 I0 [2.863947582582862, 2.863947582582863]
+C2 I1 [1.193675717354603, 1.193675717354604]
+C2 I2 [1.527398493771395, 1.527398493771396]
+C2 j0 [1.431973791291431, 1.431973791291432]
+C2 g0 [-0.835135932614130, -0.835135932614129]
+C2 J_s [1.030689533100970, 1.030689533100971]
+C2 local cost k(3/5) [0.446707057881032, 0.446707057881033]
+C2 global u coefficient (3/5)I0 [1.718368549549717, 1.718368549549718]
+C2 global coercivity P-(3/5)J_s [0.343638104570935, 0.343638104570936]
+C3 certified constants for REPORT section 2 proof: gain <= (1074/625)u - (859/2500)||r||^2.
+C3 rational corollary of that proof: u<=1/85920 gives s=3/5, kappa=0, eta=1/50000.
+C3 elementary maximizing-radius bound at u=0.0463 [0.481200477850537, 0.481200477850538]
+C4 M=E|T-2/5| [0.740640092071278, 0.740640092071279]
+C4 P-3/4 [0.212051824431517, 0.212051824431518]
+C4 tail(R=.3, sigma=.085) [0.000003597353671, 0.000003597353672]
+C4 simplified certified tail [0.000003642815562, 0.000003642815563]
+C4 with certified curvature and localization, IF strong O-B holds: kappa=1/2, eta=19/10^6.
+C4 tail sensitivity (analytic upper bounds, not actual errors):
+  sigma=17/200 [0.000003597353671, 0.000003597353672]
+  sigma=9/100 [0.000013880672593, 0.000013880672594]
+  sigma=1/10 [0.000115776181637, 0.000115776181638]
+C5 structural coefficient upper bound [847.854315911052997, 847.854315911052998]
+C5 preliminary coefficient 848 for REPORT section 3; superseded by the full replay's coefficient 2/25.
+C5 delta<=3/848000000 implies content^2<=3/10^6.
+C6 arithmetic consequences (depend on full replay): gain <= (1273/1250)u-(859/2500)sigma^2; u<=1/50920 gives kappa=0, eta=1/50000.
+C6 improved maximizing radius at u=.0463 [0.370444467645081, 0.370444467645082]
+C6 content^2 <= min((2/25)delta,(19321/10^6)u); content budget holds if delta<=3/80000 or D_+ >= (19321/100000)u-3/100000.
+C6 endpoint content^2 bound [0.000894562300000, 0.000894562300000]
+C6 endpoint sufficient D_+ threshold [0.008915623000000, 0.008915623000000]
+C7 all-r theorem: u<=1123/10^6, s=3/5, kappa=0, eta=1/50000.
+C7 radius cap at endpoint [0.057692916745538, 0.057692916745539]
+C7 gain main bound [0.00001998770490566037, 0.00001998770490566038]
+C7 rational tail upper bound [0.00000000000179036458, 0.00000000000179036459]
+C7 combined gain upper bound [0.00001998770669602496, 0.00001998770669602497]
+C8 all global maximizers have radius at most [0.084514949720602, 0.084514949720603]
+C8 localized finite-amplitude tail [0.00000311542247008474, 0.00000311542247008475]
+C9 content^2 <= min((2/25)delta,1/2500) throughout u<=.0463.
+C9 IF remaining O-B: content^2 <= D_+/5 + 3/10^6, THEN kappa=50/53, eta=18/10^6 on the full energy range.
+C9 this budget holds when delta<=3/80000 or D_+>=397/200000.
+C10 with certified sup|m_s third derivative|<13: content^2 <= 3 delta^(3/2).
+C10 full-energy content-budget class enlarged to delta<=1/10000.
+C10 all-r theorem: u<=173/100000, s=3/5, kappa=0, eta=1/50000.
+C10 endpoint main upper bound [0.00001995335823362264, 0.00001995335823362265]
+C10 endpoint gain including tail upper bound [0.00001995428955619725, 0.00001995428955619726]
+PASS: all exact algebra assertions. No full tilted-sector proof claimed.
+EXTENSION SHA256 verify.py c2109f2f5f4e03a145f526e8ace8f560469fa5207e3ea232dd8e586982ffa625
+EXTENSION SHA256 content_profile.py be624d3fa785bd9ab46b1d89a17a1ae23456a9fe1e10834f36b405cc1cc376c5
+EXTENSION SHA256 content_next_m3.py 20e4b9aa6c67050844b7ceac56b90fd37e765b3aecd2360a8d6c791b599ea683
+python-flint 0.9.0 via /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_next_m3.py
+{"analytic_tail": {"domain": "[ell(4),infinity)", "ell4": "[2.2640000000000000000000000000000000000000000000 +/- 3.88e-48]", "bound": "[2.5184155479955999647608359028071613377992984329 +/- 8.27e-47]", "passed": true}}
+{"claim": "global |m_s'''| < 13", "compact_coverage": "[0,3]", "evenness": true, "boxes": 120, "compact_max": "[12.945400040541551073402590961732596562257572357 +/- 1.87e-46]", "content_coefficient_upper": "[2.9924257412398975714034508835293321950949864807 +/- 4.75e-47]", "conclusion": "C(q)^2 <= 3 delta^(3/2)", "passed": true, "seconds": 0.385267972946167}
+PASS TENSOR EXTENSION: scalar derivative, third-order content, and .00173 all-r endpoint. Earlier certificates are separate prerequisites.
+
+EXTENSION EXIT: 0
+FINAL SHA256 verify.py c2109f2f5f4e03a145f526e8ace8f560469fa5207e3ea232dd8e586982ffa625
+FINAL SHA256 localization_verify.py f19df5180c23f642e79b5336259cde33fc4d6dd4fe66769cfe41dceed8b1e579
+FINAL SHA256 theta_verify.cpp c8ed8c2cf10a05f780f7e0495ba8c1b073fb4f3cb534adb99e781315a54590ef
+FINAL SHA256 theta_candidates.txt c2ddf49d99b1a8a3e51a422740ad61ebd5b51bba3bede469c8cc97d730f48a26
+FINAL SHA256 content_profile.py be624d3fa785bd9ab46b1d89a17a1ae23456a9fe1e10834f36b405cc1cc376c5
+FINAL SHA256 profile_range.py 155a019564cdf1e873b0464798ea62c8193da2d5fb65042f87f0de96e03ed597
+FINAL SHA256 localization_majorant.cpp 1d9e8fee1719712f4880b040dabf4f89a75a1da0a1e4ec67147e994dbca22748
+FINAL SHA256 localization_circle.hpp aa115bd4e4cc72ef6e19e0afd2fd28df08f065b38aa50bfb0eda5ddd60b67d99
+FINAL SHA256 content_next_bound.py f1cde71ce142cc579a49c67af28dce684fde4ea92089ef88f4e5f8fc30872c3b
+FINAL SHA256 content_next_m3.py 20e4b9aa6c67050844b7ceac56b90fd37e765b3aecd2360a8d6c791b599ea683
+PASS FINAL CERTIFICATE SET: prior full chain plus independently replayed additive tensor extension.

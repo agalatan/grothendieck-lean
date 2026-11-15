@@ -1,5 +1,10 @@
-<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/README.md (file dated 2026-11-15 02:57). Only this line was added. -->
+<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/README.md (file dated 2026-11-15 05:01). Only this line was added. -->
 # The retained first-chaos penalty, optimised together with the sectors
+
+*Wording corrected on 15 November 2026 after the audit of codex-a7c4 (PR #397): "exact" now reads "numerical" where
+it named quadrature and local optimisation, the remote part is stated as Λ(q) ≤ S + η_R, the Gaussian-law benchmark
+and the difference between a coefficient bound and a pointwise bound are spelled out. Section 8 has the final state
+of the three-variable search. No earlier number changed.*
 
 claude-b9ee, 15 November 2026. Numerical work at the peak row, prompted by the external note reviewed in
 `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/external-2026-11-15/REVIEW.md`.
@@ -12,7 +17,8 @@ stated; no interval arithmetic; a search gives the largest value found, not a su
 Conjecture K drops the term −‖P₁,₀k‖² of the row. Keeping it gives the functional Λ̂ ≤ Λ below (Λ_P in the October
 manuscript), for which the row bound still holds. The October record measured what this buys as a subtraction at
 fixed sectors and found little (7–14 % of the mixed-gain allowance). Here the retained element is optimised
-together with the A- and B-sectors. Result, by exact quadrature at the peak row:
+together with the A- and B-sectors. Result, by deterministic quadrature at the peak row (numerical: values at the
+stationary points found, not certified suprema):
 
 | sector gain divided by the deficit D(q) | K | with the penalty retained |
 |---|---|---|
@@ -102,7 +108,7 @@ the first chaos is small. On the Wick monomial at u = 0.0463, c = 0.03250 and μ
 0.63·c at s = 0.343, 0.36·c at s = 0.6, and vanishes near s = 0.94. The cost-optimal tilt (0.34) and the content-
 optimal tilt (0.94) differ; the best compromise on the monomial is s ≈ 0.75.
 
-## 4. Exact values on the Wick monomial (N)
+## 4. Numerically optimised values on the Wick monomial (N)
 
 q = c·y(|y|²−2)/√2, one driver, real amplitudes. `retained_content.py`, `retained_joint.py` (two- and
 three-dimensional quadrature).
@@ -114,12 +120,14 @@ three-dimensional quadrature).
 | 0.0300 | 0.0067831 | 0.1568 | 0.1605 | 0.0210 | 0.0218 |
 | 0.0463 | 0.0120635 | 0.1604 | 0.1653 | 0.0170 | 0.0183 |
 
-Second-order formula of section 3 at u = 0.0463: 0.000205; exact: 0.0002049.
+Second-order formula of section 3 at u = 0.0463: 0.000205; numerical value: 0.0002049. An independent implementation
+(codex-a7c4, 15 November, `sector_numerics.py` in the audit of PR #397) reproduces every ratio of this table to the
+four decimals shown.
 
 ## 5. All tensors in two remote variables (N)
 
 `kprime2.py`: q ∈ H₂,₁(ℂ²) of energy u (6 complex coefficients), A-sector r = ⟨α, y⟩, retained u = ⟨γ, y⟩, all complex.
-Deterministic quadrature (51 200 remote nodes × 48 visible nodes), exact gradients, L-BFGS over the tensor with the
+Deterministic quadrature (51 200 remote nodes × 48 visible nodes), analytic gradients, L-BFGS over the tensor with the
 saddle in (α, γ) solved inside, three restarts per run (near the monomial, near the family below, random).
 Checks: the monomial in rotated coordinates reproduces the one-variable numbers to 3·10⁻⁷ in D; a finer grid
 (196 608 × 72 nodes) moves the ratios by at most one unit in the fourth decimal (0.0237 becomes 0.0236, 0.1609
@@ -179,7 +187,7 @@ where any κ < 1 suffices and the largest value found is κ = 0.024.
 ## 7. The structured family with a bath (N)
 
 `family.py`: q = X[c₁(|X|²−2)/√2 + c₂·S_m/√m], S_m = Σ_{k≤m}(|Y_k|²−1), with real c₁, c₂, c₁² + c₂² = u, for m bath
-variables and for the Gaussian limit of the bath; the sector and the retained element along X; exact quadrature in
+variables and for the Gaussian limit of the bath; the sector and the retained element along X; deterministic quadrature in
 (|X|², S_m, T). Largest gain/D over the mixing angle (`family.log`):
 
 | bath variables m | K, u = 0.0463 | retained, u = 0.02 | retained, u = 0.0463 | retained, u = 0.09 |
@@ -204,20 +212,22 @@ reproduces the monomial ratios 0.1604 and 0.0170 as 0.1601–0.1606 and 0.0170�
 ratio is reliable and the fourth is not). Two structured tensors at u = 0.0463: X[(|X|²−2) + 1.2(|Y|²−1)] gives
 K 0.1443, retained 0.0185; with a second bath variable of the same weight, K 0.1296, retained 0.0178.
 
-Search over all tensors (`search3/`; two restarts per run, at most 60 L-BFGS iterations each). When this was
-written the following had finished: at u = 0.0463 four restarts from three random seeds, at u = 0.02 both restarts
-of one seed, and one restart of the K search (started near a structured tensor). The runs whose first restart
-starts near a structured tensor, among them the only run at u = 0.03, had not.
+Search over all tensors (`search3/`; two restarts per run, at most 60 L-BFGS iterations each). All runs are
+finished: at u = 0.0463 eight restarts from four random seeds; at u = 0.02 four restarts from two seeds; at
+u = 0.03 two restarts from one seed; two restarts of the K search.
 
 | u | retained: largest gain/D found, three variables | two variables (section 5) | one variable |
 |---|---|---|---|
-| 0.0200 | 0.0245 (the two restarts give 0.0241 and 0.0245) | 0.0237 | 0.0225 |
-| 0.0463 | 0.0230 (all four restarts) | 0.0208 | 0.0170 |
+| 0.0200 | 0.0245 (the four restarts give 0.0245, 0.0245, 0.0241, 0.0245) | 0.0237 | 0.0225 |
+| 0.0300 | 0.0247 (both restarts) | 0.0232 | 0.0210 |
+| 0.0463 | 0.0230 (all eight restarts) | 0.0208 | 0.0170 |
 
-For K at u = 0.0463 the largest ratio found in three variables is 0.1611 (two variables: 0.1609; monomial: 0.1604).
+For K at u = 0.0463 the largest ratio found in three variables is 0.1611 (both restarts; two variables: 0.1609;
+monomial: 0.1604). At the retained maximisers the K ratio is 0.139 to 0.148.
 
 The retained ratio rises slowly with the number of remote variables (at u = 0.0463: 0.017, 0.021, 0.023), and the
-maximisers become less far from Gaussian (E|q|⁴/u² − 2 = 42, 19, 13). Nothing is known beyond three variables: the
+maximisers become less far from Gaussian (E|q|⁴/u² − 2 = 42, 19, 13; in three variables it is 17.5, 14.8, 12.7 at
+u = 0.02, 0.03, 0.0463). Nothing is known beyond three variables: the
 limit of this sequence is open, and with it the size of the margin in general. A deterministic grid is too large
 for four variables; a sampling method with variance reduction is needed.
 
@@ -238,6 +248,10 @@ of ρ ↦ E_Z|L + w + (T−1+s)ρ|. The sector stays concave along the segment w
 - Without restriction the second derivative exceeds the budget in every row, in agreement with the record's
   refutation of the local matrix as a global majorant (there at q = 3/4, α = 7/20). Both variants need an a priori
   bound on the sector amplitude. (Grid search, not a certified supremum.)
+- A bound on the coefficient norm ‖r‖ is not a bound on the values |ρ(y)|: a nonzero Gaussian linear form is
+  unbounded. A proof therefore needs a certified second-derivative bound on a compact set of values together with
+  an allowance for the tail (audit of codex-a7c4, PR #397, SECTORS §6). The first half now exists at one tilt:
+  codex-6e2b certified Θ(0.3) ≤ 3/4 at s = 3/5 on 15 November (grid value above: 0.7086).
 
 ## 10. Cauchy–Schwarz on the content (N)
 
@@ -253,7 +267,9 @@ Since Π₁q = 0, ‖Π₁[q h_s(|q|²)]‖² ≤ min over κ of E[|q|²(h_s(|q|
 
 - For K the Cauchy–Schwarz bound exceeds the deficit (1.18): useless. With tilt 0.6 it is 0.076·D on the monomial.
 - It cannot work uniformly: for a nearly Gaussian q the deficit tends to 0 and so does the true content, but the
-  Cauchy–Schwarz bound does not. For the exponential law of |q|² (Gaussian q) at u = 0.0463 the bound divided by
+  Cauchy–Schwarz bound does not. For the exponential law of |q|² (the law of a Gaussian q, used here as the diffuse
+  limit of cubics, with the auxiliary Gaussian excluded from the projection Π₁: a literal first-chaos q has Π₁q ≠ 0
+  and is not meant) at u = 0.0463 the bound divided by
   the cost is 9.9·10⁻⁴ for K and 1.6·10⁻⁴ at the best tilt (s = 0.65). The slack of the target 1.402 over the
   model value is 1.31·10⁻⁴. So Cauchy–Schwarz alone does not prove 1.402 this way either; a structural content
   lemma (content² ≤ κ·D) is still needed, but its constant may be many times the true one.
@@ -263,9 +279,54 @@ Since Π₁q = 0, ‖Π₁[q h_s(|q|²)]‖² ≤ min over κ of E[|q|²(h_s(|q|
 - It changes the sector part of Conjecture K. The inequality gain ≤ D + η has margin 6 for K, and the audit of
   13 November found its proof missing (content bound with margin 1.14, joint remainder bound not proved). With the
   penalty retained the margin is about 40 on everything tested (one to three remote variables).
-- It does not change the remote part: D(q) ≥ 0 with slack, for every remote cubic, is the same statement as before.
+- It does not change the remote part, which is Λ(q) ≤ S + η_R for every remote cubic. (Corrected on 15 November
+  after the audit of codex-a7c4: this is weaker than D(q) ≥ −η_R, because S is the optimised Gaussian value and
+  D(q) = A(u) − Λ(q) compares at the same variance.) At the peak row the cap is now certified with
+  η_R = 3.6·10⁻⁷: the October Stein package, replayed on 15 November by codex-a7c4 and by claude-b9ee (PR #397,
+  `research/conjecture-K/sources/audit-2026-11-15-codex-a7c4/REMOTE.md`). With the sector inequality in the form
+  gain ≤ κ·max(D, 0) + η the two give Λ̂ ≤ S + η_R + η.
 - Open: more than three remote variables, where the ratio may still rise (section 8); the other rows of the cover;
   the even sectors (Y, W, ν), where the retained element can have a component along Z; a proof of any of it.
+
+## 12. The remainder at a remote base has a global quadratic bound (N, 15 November, evening)
+
+Sections 9 and 11 said that a proof needs an a priori bound on the sector amplitude. That was the wrong
+quantity. The second derivative *along* the sector does exceed the budget at nonzero amplitude, but the sector
+inequality only uses the remainder of the expansion at zero amplitude, at a remote base value w = q(y):
+
+    Rem(w; r) = F(w; r) − F(w; 0) − (first-order term at r = 0),      F = the two norm terms of Λ averaged over z₁,
+    Λ(q + sectors) = Λ(q) + 2Re⟨c_A, r_A⟩ + 2Re⟨c_B, r_B⟩ + E_y Rem(q(y); r(y)) − p‖sectors‖².
+
+This is the remainder r_x(α, β) of the note of 13 November (`improvement_joint_tail.md`, STATUS 7.4.5), which
+asks for it on the box |α|, |β| ≤ 0.4 and pays a Gaussian tail. Numerically no box is needed: the bound holds
+for all amplitudes, with a margin close to the local cost.
+
+| what | smallest value of p − Rem/|r|² over all base values and amplitudes | where it is attained | script |
+|---|---|---|---|
+| A-sector, K (s = 0) | 0.320 | origin, infinitesimal (the local cost k_A) | `../gpt-tilted-sector-2026-11-15-review/secant_curvature.py` |
+| A-sector, tilt s = 0.3434 | 0.598 (local 0.607) | ρ = 0.9, w = 0.2 | same |
+| A-sector, tilt s = 0.5 | 0.490 (local 0.547) | ρ = 0.95, w = 0.2 | same |
+| A-sector, tilt s = 0.6 | 0.362 (local 0.447) | ρ = 0.6, w = 0.6 | same |
+| A-sector, tilt s = 0.7 | 0.151 (local 0.297) | ρ = 0.56, w = 0.6 | same |
+| A and B jointly, K | 0.300 (smallest eigenvalue of the local matrix: 0.298) | origin, infinitesimal, 12 % B | `secant_joint.py`, `secant_joint.log` |
+| A and B jointly, tilt (0.6, 0) | 0.252 | w = 0.25i, infinitesimal, 37 % B | same |
+| B alone, K | 0.706 (the record certifies 0.26) | w = 0.5, amplitude 1.1 | `secant_all_sectors.py` |
+| A, B, z₁Q and z̄₁P jointly, K | 0.128 (= k₁, the zero-core cost of Q) | origin, infinitesimal, pure z₁Q | `secant_all_sectors.py --no-nu` (a multistart search) |
+
+Consequences, if these are certified:
+
+- For K itself and for the tilted form, the gain of the A and B sectors is at most (‖c_A‖² + ‖c_B‖²)/m for
+  every amplitude and any sharing, with m about 0.30 (K) or 0.25 (tilt 0.6). This is the finite-amplitude joint
+  remainder bound (STATUS 15, item 1), without a box, a tail or a reserve.
+- The odd sectors z₁Q and z̄₁P have pure cost at least 0.128 over every remote core, jointly with A and B.
+- The one-coordinate cubic ν z₁(T−2) cannot be treated pointwise: it has the frequency of z₁Q, and the cross
+  term E[√T(T−2)/(a+bT)]/√2 = −0.608 makes the pointwise form indefinite (margin −0.387). In the functional that
+  term is ν̄·E[Q·γ(|q|²)], which vanishes at zero core because EQ = 0; at a nonzero core it is a genuine
+  interaction and needs its own estimate.
+- The localisation of the maximiser that the tilted-sector proof was heading for is not needed.
+
+All of this is a grid or a multistart search in floating point at the peak row: it can find violations, not
+exclude them. The statement to certify has three real parameters for one sector and five for A and B.
 
 ## Files
 
@@ -275,3 +336,6 @@ Since Π₁q = 0, ‖Π₁[q h_s(|q|²)]‖² ≤ min over κ of E[|q|²(h_s(|q|
   maximisers as JSON lines).
 - `tilt_profiles.py`, `ratio_small_v.py`, `tilt_restricted.py`, `cs_check.py`, `cs_gauss.py` with their logs.
 - `search3/`: logs and maximisers of the three-variable runs.
+- `tilt_restricted_67.py` with its log: the second-derivative grid at s = 0.6 and 0.7.
+- `secant_joint.py`, `secant_all_sectors.py` with their logs (section 12); the one-sector script `secant_curvature.py`
+  and its log are in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15-review/`.

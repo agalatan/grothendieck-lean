@@ -1,0 +1,8 @@
+1. circular mean: max of C(t) - 1 - 0.3 t^2 = 0.000e+00 at t = 0.0000;  sup (C-1)/t^2 = 0.298834 at t = 1.4525
+   (3/5) I0 = 1.718368550 (report 1.718368549...),  P - (3/5) J_s = 0.343638105 (report 0.343638104...)
+2. global bound (1) on the monomial: max of J - [(1074/625) u - (859/2500) alpha^2] over the grid = -1.718e-05 (must be <= 0)
+3. sup of m_h over v in (0, 60]: 244.39 at v = 0.462   (certified bound: 4*848/3 = 1130.7);  h_s'(0) = 0.9842
+   u = 0.0005: content^2 = 1.4530e-08,  (3/4) delta E m_h = 2.6052e-07  (ratio 18),  delta = 1.050e-05,  D = 7.6370e-06,  content^2/D = 0.0019,  bound/D = 0.0
+   u = 0.0050: content^2 = 3.7333e-06,  (3/4) delta E m_h = 1.7852e-04  (ratio 48),  delta = 1.050e-03,  D = 4.5721e-04,  content^2/D = 0.0082,  bound/D = 0.4
+   u = 0.0200: content^2 = 4.5073e-05,  (3/4) delta E m_h = 8.2176e-03  (ratio 182),  delta = 1.680e-02,  D = 3.8498e-03,  content^2/D = 0.0117,  bound/D = 2.1
+   u = 0.0463: content^2 = 1.3702e-04,  (3/4) delta E m_h = 2.2965e-01  (ratio 1676),  delta = 9.003e-02,  D = 1.2063e-02,  content^2/D = 0.0114,  bound/D = 19.0
