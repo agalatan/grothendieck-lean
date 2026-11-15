@@ -1,0 +1,274 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/89d-two-slice-contact.tex (file dated 2026-10-25). Only this line was added.
+% Original-response certificates for two interacting holomorphic slices.
+\subsection{Two interacting slices and a canonical many-slice reduction}
+\label{sec:two-slice-contact}
+
+\paragraph{Status and scope.}
+This \st{P,C} result continues \S\ref{sec:whole-slice-contact} for
+actual bounded responses at $\epsilon=1891/2500$, $p=2500/1891$,
+$Ph=tZ$, $F=\epsilon Qk$, $V=\|F\|^2$ and
+$\mathcal N=t^2+pV-\|Pk\|^2-\epsilon\|Qh\|^2$.
+For orthonormal remote first-chaos directions $X_1,\ldots,X_r$, let
+\[
+ \mathcal W_r=\mathcal S_{X_1}\oplus\cdots\oplus\mathcal S_{X_r},
+ \qquad \mathcal S_X=\{{:}X^2\bar A{:}/\sqrt2:A\perp Z\}.
+\]
+The sum is orthogonal: different repeated holomorphic directions
+have orthogonal symmetric tensor factors. The antiholomorphic
+directions are arbitrary, and may include all the $X_i$ and any
+additional remote coordinates. This is not the class of all tensors
+supported on $r$ holomorphic coordinates: mixed holomorphic products
+are not silently added to the definition.
+
+\begin{theorem}[\st{P,C}: two-slice concentration]
+\label{thm:two-slice-contact}
+For every finite dimension and $21/25\le t\le851/1000$,
+\[
+ \boxed{\begin{aligned}
+ \|\Pi_{\mathcal W_2}F\|^2\ge\frac{39}{40}V
+       &\ \Longrightarrow\ \mathcal N<\frac{1783}{2500}=0.7132,\\
+ \|\Pi_{\mathcal W_2}F\|^2\ge\frac{49}{50}V
+       &\ \Longrightarrow\ \mathcal N<\frac{713}{1000}=0.7130.
+ \end{aligned}}
+\]
+All phases and arbitrary coupled remainders are allowed, including
+every visible sector. There is no fresh-buffer, higher-moment or
+separate amplitude assumption. In particular the theorem covers
+concentration near any combination of $X_1^2\bar X_2$ and
+$X_2^2\bar X_1$, as well as all other terms in $\mathcal W_2$.
+These are regional caps, not a complete same-witness cover or a new
+Grothendieck endpoint.
+\end{theorem}
+
+\subsubsection{A reduction valid for every number of slices}
+The visibly averaged function
+\[
+ \Phi(v)=\E|Z(a+b|Z|^2)+\sqrt v|,\qquad a>0,\ b\ge0,
+\]
+is increasing and concave by the scale-mixture proof in
+\S\ref{sec:whole-slice-contact}. This is the true visible average,
+not the fixed-radius angular mean.
+
+\begin{lemma}[\st{P}: symmetric three-profile majorant]
+\label{lem:multislice-support-reduction}
+Let $J\in\mathcal W_r$ have norm one, and set $\psi=\sqrt2J$.
+For $r\ge2$ there are $\alpha,\beta,\gamma\ge0$ with
+$\alpha+\beta+\gamma=1$ such that, for independent
+$U,R\sim\operatorname{Gamma}(r,1)$,
+\begin{equation}\label{eq:multislice-support}
+ \E|Z(a+b|Z|^2)+d\psi|
+ \le\E\Phi\bigl(d^2\{\alpha D_r(U)+\beta I_r(U)+\gamma E_r(U,R)\}\bigr),
+\end{equation}
+where
+\begin{align*}
+ D_r(u)&=\frac{6u^3}{r(r+1)(r+2)}
+           -\frac{8u^2}{r(r+1)}+\frac{4u}{r},\\
+ I_r(u)&=\frac{2u^3}{r(r+1)(r+2)},\qquad
+ E_r(u,s)=\frac{2u^2s}{r^2(r+1)}.
+\end{align*}
+All profiles are nonnegative and have mean $2$.
+The right side is a concave function of the three energy weights.
+For $r=1$ the same formula applies with $\beta=0$ and reproduces the
+earlier single-slice phase-Jensen majorant.
+\end{lemma}
+
+\begin{proof}
+Write, before the normalization by $\sqrt2$,
+\[
+ \psi=\sum_{i,j\le r}a_{ij}{:}X_i^2\bar X_j{:}
+           +\sum_{i\le r}X_i^2\bar B_i,
+\]
+where the jointly proper Gaussian vector $(B_i)$ is orthogonal to
+$(Z,X_1,\ldots,X_r)$. Its components need not be independent.
+Orthogonality and the Wick norms give
+\[
+ \sum_{i,j}|a_{ij}|^2+\sum_i\|B_i\|^2=1.
+\]
+Define $\alpha=\sum_i|a_{ii}|^2$, $\beta=\sum_{i\ne j}|a_{ij}|^2$
+and $\gamma=\sum_i\|B_i\|^2$.
+Condition on $T_i=|X_i|^2$ and on $(B_i)$. The distinct phase
+frequencies are $e_i$, $2e_i-e_j$ ($i\ne j$), and $2e_i$.
+All cross terms vanish under the independent $X_i$ phases.
+Jensen for $\Phi$ bounds the support by the expectation of
+\[
+ \Phi\!\left(d^2\left\{
+ \sum_i|a_{ii}|^2T_i(T_i-2)^2
+ +\sum_{i\ne j}|a_{ij}|^2T_i^2T_j
+ +\sum_i T_i^2|B_i|^2\right\}\right).
+\]
+
+For fixed $T$, the last sum has the law
+$\sum_{j=1}^r\lambda_j S_j$, where $S_j$ are independent unit
+exponentials, $\lambda_j\ge0$ and
+$\sum_j\lambda_j=\sum_iT_i^2\|B_i\|^2$.
+Pad the eigenvalues with zeros if necessary. Average their
+permutations and apply concavity: replacing all eigenvalues by their
+mean increases the expectation. Thus this last sum can be replaced
+in the upper bound by
+$(R/r)\sum_iT_i^2\|B_i\|^2$, with $R\sim\operatorname{Gamma}(r,1)$
+independent of $T$.
+
+Now average all permutations of the $T_i$ and apply concavity again.
+The squared radius becomes
+\[
+ \frac\alpha r\sum_iT_i(T_i-2)^2
+ +\frac\beta{r(r-1)}\sum_{i\ne j}T_i^2T_j
+ +\frac{\gamma R}{r^2}\sum_iT_i^2.
+\]
+Condition on $U=\sum_iT_i$. The proportions have the uniform
+Dirichlet law and are independent of $U,R$; their moments give
+\[
+ \E[\sum T_i^2\mid U]=\frac{2U^2}{r+1},\qquad
+ \E[\sum T_i^3\mid U]=\frac{6U^3}{(r+1)(r+2)}.
+\]
+One final conditional Jensen inequality proves the formulas.
+Nonnegativity of the only centered profile is explicit:
+\[
+ 3r(r+1)(r+2)D_r(u)
+ =2u\{3u-2(r+2)\}^2+4(r-1)(r+2)u\ge0.
+\]
+Gamma moments give mean $2$ for all three profiles.
+No step replaces the unknown $F$ by a different law: these are
+upper comparisons only for the known support test $J$.
+\end{proof}
+
+\subsubsection{The two-slice triangle is covered by five values per row}
+For $r=2$ the profiles are
+\[
+ D_2(u)=\frac{u\{(3u-8)^2+8\}}{36},\qquad
+ I_2(u)=\frac{u^3}{12},\qquad E_2(u,s)=\frac{u^2s}{6}.
+\]
+Let $B(\alpha,\beta)$ be the right side of
+\eqref{eq:multislice-support}, with $\gamma=1-\alpha-\beta$.
+It is concave on the coefficient triangle
+$\alpha,\beta\ge0$, $\alpha+\beta\le1$.
+Fresh directed integration at
+\[
+ (1/10,1/10),\ (1/5,1/10),\ (0,1/10),\
+ (1/10,1/5),\ (1/10,0)
+\]
+proves the following uniform support bounds:
+\[
+\begin{array}{c|c|c|c}
+ \ell&b&d&\sup B<H\\\hline
+ 1&0&1/4&93835/100000\\
+ 1&37/200&87/500&83898/100000
+\end{array}
+\]
+Here $a=\ell-2b$, so both visible profiles have $a>0$.
+The first fresh replay gives continuum upper bounds below
+$0.938326630245538$ and $0.838964356881351$.
+
+\paragraph{A finite concave certificate, without derivative estimates.}
+At $x_0=(1/10,1/10)$ choose a supergradient $s$ of the concave $B$.
+Such a vector exists because $x_0$ is interior and $B$ is finite and
+continuous. Write $\delta=1/10$, and use $l,H$ for certified lower
+and upper point values. Concavity forces
+\[
+ \frac{l(x_0+\delta e_j)-H(x_0)}\delta
+ \le s_j\le
+ \frac{H(x_0)-l(x_0-\delta e_j)}\delta.
+\]
+For any $x$ in the whole triangle,
+$B(x)\le H(x_0)+s\cdot(x-x_0)$.
+Maximize the right side over the certified interval for each $s_j$.
+The resulting function of $x$ is convex, so its maximum is at one of
+the three triangle vertices. These three comparisons are rational.
+They certify every coefficient and phase, not a sampled grid.
+
+\subsubsection{Retaining the response cost and certifying the row}
+Choose the unit $J\in\mathcal W_2$ aligned with
+$\Pi_{\mathcal W_2}F$, unless $V=0$, in which case use the visible
+test below directly. The preceding support lemma gives
+\[
+ u=\sqrt2|\langle J,F\rangle|,\quad V\le u^2/(2\eta),\quad
+ u\le U(t)=\frac{H_0-t}{p/4},
+\]
+and the retained cost satisfies
+\[
+ \|Pk\|^2+\epsilon\|Qh\|^2
+   \ge\frac{[t+pdu-H]_+^2}{2pb^2}.
+\]
+Use $u_0=31/125$. For $u\le u_0$, the visible-only test
+$Z(|Z|^2-1/10)$, with freshly checked
+$I_0=124233393/10^8$, gives
+\[
+ \mathcal N\le t^2+\frac{pu_0^2}{2\eta}
+                 -\frac{(1.9t-I_0)^2}{2p}.
+\]
+For $u\ge u_0$ use
+\[
+ C_\eta(t,u)=t^2+\frac{pu^2}{2\eta}
+                 -\frac{(t+pdu-H)^2}{2pb^2}.
+\]
+The same four-endpoint argument as the preceding subsection applies;
+all sign, monotonicity and convexity conditions are checked exactly.
+The largest rational endpoint is below $0.713182679967563$ for
+$\eta=39/40$, and below $0.712969934087370$ for $\eta=49/50$.
+This proves Theorem~\ref{thm:two-slice-contact}. The retained square
+is spent once; complete valid caps may be combined by minimum.
+
+\paragraph{Directed computation and tails.}
+The package recomputes ten two-sided integrals. The two Gamma variables
+have density $ue^{-u}$; truncated moments are exact incomplete-gamma
+polynomials. Cubic Bernstein coefficients bound the extrema of each
+squared-radius polynomial on a cell. Grouped Jensen gives upper
+radius atoms, concave chords give lower atoms, and the positive angular
+series and convex visible-amplitude cubature enclose the visible
+average. All numerical decisions use rational arithmetic or outward
+integer intervals at scale $10^{40}$.
+
+For completeness, beyond the common radius cutoff $6$, put
+$e_{36}=e^{-36}$, $j_2=(73/12)e_{36}$,
+$j_4=(1801/8)e_{36}$ and $j_6=(133421/16)e_{36}$.
+The bound
+\[
+ \sqrt{\alpha D_2(U)+\beta I_2(U)+\gamma E_2(U,R)}
+ \le U^{3/2}+\tfrac32\sqrt U+\tfrac12U\sqrt R
+\]
+yields the following bound for the entire union of the three tails:
+\[
+ a j_2+b j_4+e_{36}\{15d/2+74(a+3b/2)\}
+       +d\{j_6+(5/2)j_4+(2499/2)e_{36}\}.
+\]
+No norm derivatives, floating acceptance decision, cached integral or
+higher-chaos moment estimate enters the certificate.
+
+\subsubsection{What the reduction explains, and what remains}
+The previous two-way tensor
+$(X_1^2\bar X_2+X_2^2\bar X_1)/2$ belongs to $\mathcal W_2$.
+Its entire concentration neighbourhood is now covered. The new theorem
+is larger than a single test for that tensor: it allows every diagonal,
+internal and external antiholomorphic coefficient in both slices.
+
+The reduction also explains its own limitation. As $r\to\infty$,
+$U/r,R/r\to1$ in every fixed $L^p$, and
+$D_r(U),I_r(U),E_r(U,R)\to2$ in $L^1$.
+Thus its right side tends, uniformly over the weight simplex, to
+$\Phi(2d^2)$, the constant-modulus support, rather than the diffuse
+Gaussian support. The norm's Lipschitz property bounds the difference
+by $d\sqrt{\E|\alpha D_r+\beta I_r+\gamma E_r-2|}$.
+Discarding all relative phases cannot supply a sharp diffuse theorem.
+The many-slice reduction is valid, but it is not an unrestricted-K
+proof and is not asserted to retain a useful margin for large $r$.
+
+Even the concentration tests leave explicit coupled shapes. For
+orthogonal remote $X_1,X_2,X_3$, let
+\[
+ F_3=(X_1^2\bar X_2+X_2^2\bar X_3+X_3^2\bar X_1)/\sqrt6.
+\]
+It is unit. Its maximal $\mathcal W_2$ projection share is $2/3$:
+for orthogonal unit $x,y$ the share is
+$\frac13\sum_i(|x_i|^4+|y_i|^4)\le2/3$, with equality at coordinate
+directions. Its maximal single-slice and orthogonal antiholomorphic
+block shares are $1/3$; its combined influence matrix is the identity
+on these three coordinates. This is an obstruction to exhausting the
+tensor space by these concentration tests, not a counterexample to K
+or a constructed high-payoff bounded response.
+
+The remaining obligation is a joint-response bound on the complement,
+or an exhaustive quantitative structural alternative, followed by the
+flank rows at the same witness parameter. The package
+\code{grothendieck-two-slice-contact-20261022.zip} includes the standalone
+\code{verify\_all.py}, proof, exact replays, source snapshots and SHA256
+manifest. It supplies no new Lean theorem and no global endpoint.

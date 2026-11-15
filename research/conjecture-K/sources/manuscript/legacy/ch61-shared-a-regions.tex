@@ -1,0 +1,72 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch61-shared-a-regions.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 61). Owner: lower-bound/10-coupled-complements.tex
+\section{Shared-$A$ coupled cubics: two explicit regions (cold-start AI)}\label{ch:shared-a-regions}
+\chapsummary{Shared-A bounds for arbitrary coupled remote cubics. The new nearly optimal circular-mean coefficient gives $\Lambda\le B_0+0.38968u-0.12432w$, using only visible independence and $\E\bar q r=0$. The enlarged weak region is $u\le0.00551+0.319w$, with its inherited benchmark gap. No B/even sectors are appended.}
+
+\paragraph{Provenance and status (IDE note, 21 October).} A context-free AI answered the self-contained prompt \pathref{PROMPT\_GPT\_SHARED\_A.md}; files
+\code{proof.md}, \code{verify.mjs} and \code{certificate-output.txt} are archived in \pathref{gpt-reviews/shared-a-regions-20261021/}. Its Node certificate (only
+\code{node:assert}, exact and rational-interval arithmetic) PASSES in 25\,s. IDE checks:
+\begin{itemize}
+\item the angular majorant (below) by hand: the series bound and the tail $4/\pi-\frac54<\frac3{125}$;
+\item by float quadrature: $K=2.86395$, $J=2.00399$ below their certified bounds, $\frac35K-p=0.396$, $\frac35J-p=-0.120$,
+$B_0=1.3718793$, $S-B_0=0.002074$;
+\item $m(s)\le1+0.3s$ on a fine grid, where the reduced quintic has minimum $+0.0013$ on $[1,6]$, so the bound is tight.
+\end{itemize}
+The cumulant criterion (§\ref{sec:sar-cumulant}) is the AI's \st{P}; it is not re-derived by the IDE, and its thresholds are too small to matter in practice.
+
+\subsection{Setting}
+With $T\sim\mathrm{Exp}(1)$ independent of $X$, $\ell(T)=\sqrt T(a+bT)$ and $m(s)=\frac1{2\pi}\int_0^{2\pi}|1+\sqrt se^{i\theta}|\,d\theta$, the visible-phase average is exact
+for $G=q+(T-1)r$:
+\[
+\Lambda(q,r)=2\E\bigl[\ell(T)\,m\bigl(|q+(T-1)r|^2/\ell(T)^2\bigr)\bigr]-p(u+w).
+\]
+Only orthogonality is used: $\E|q+(t-1)r|^2=u+(t-1)^2w$, because $q\in\Hc21$ is orthogonal to the first chaos.
+
+\subsection{An unconditional bound}
+The earlier coefficient $3/10$ follows from the sharper global theorem
+\ref{thm:sharp-circular-audit}, proved below. Its two redundant polynomial
+proofs have been removed; the historical integral bounds and strip
+certificate are retained.
+
+With $K=\E[1/\ell]\le\frac{5578637500}{3451269861}\sqrt\pi$ and $J=\E[(T-1)^2/\ell]\le\frac{991820528125}{875535147441}\sqrt\pi$ (from the elementary
+$\int\frac{d\nu}{a+bt}\ge2\int f\,d\nu-\int(a+bt)f^2\,d\nu$ with an optimised affine $f$, all moments rational multiples of $\sqrt\pi$):
+\[
+\boxed{\Lambda(q,r)\le B_0+\bigl(\tfrac35K-p\bigr)u+\bigl(\tfrac35J-p\bigr)w\le B_0+\tfrac25u-\tfrac1{10}w.}
+\]
+Since $S>B_0+0.002$ (certified by monotone rectangles at $v=1/25$): $u\le0.00525+\frac w4\Rightarrow\Lambda<S+10^{-4}$, and $u\le0.005+\frac w4\Rightarrow\Lambda<S$.
+
+\subsection{A full strip of the response-feasible rectangle}
+Let $g(s)=\min\{1+\frac{3s}{10},\sqrt{1+s}\}\ge m(s)$. It is increasing and concave with $0\le g'\le\frac3{10}$. Conditional Jensen gives
+$\Lambda\le V(u,w):=2\E[\ell\,g((u+(T-1)^2w)/\ell^2)]-p(u+w)$ and $\partial_wV\le\frac35J-p\le-\frac1{10}$. A fixed-cutoff upper bound on $V(u,0.024)$ is
+certified increasing in $u$ on $[0,0.0463]$, with endpoint below $B_0+0.0019$. Hence
+\[
+\boxed{u\le0.0463,\quad w\ge0.024\quad\Longrightarrow\quad\Lambda(q,r)<S-10^{-4},}
+\]
+for every coupled cubic. With the response-feasible ceiling $w<0.0328$ (\autoref{ch:K-state}), this covers $0.024\le w<0.0328$ entirely.
+
+\subsection{A cumulant criterion}\label{sec:sar-cumulant}
+With $\eta=(\E|q|^4-2u^2)/u^2$, the AI proves (Stein comparison, with the dependence of $q$ and $r$ controlled by
+$\E\langle DQ,DR\rangle^2\le\frac w4\sqrt{3\kappa/8}$, where $Q=\Re q$, $R=\Re r$, $\kappa=\E|q|^4-2u^2$):
+\[
+\Lambda(q,r)\le S-\frac w{10}+\sqrt{\tfrac{\pi u}3}\sqrt\eta+\tfrac{8\sqrt\pi}{3e}\bigl(\tfrac38\bigr)^{1/4}\eta^{1/4}\sqrt w,
+\]
+so $\Lambda\le S+5\sqrt\eta$ for $u\le0.0463$. It proves the $10^{-4}$ target only for $\eta\le4\cdot10^{-10}$, i.e. essentially Gaussian $q$.
+
+\subsection{A sharper unconditional region and an analytic majorant (second AI)}\label{sec:sar-second}
+A second context-free AI given the same prompt (\code{gaussian-domination-partial-proof.zip}, archived in
+\pathref{gpt-reviews/shared-a-regions-20261021/second-ai/}; Node certificate with only \code{node:assert} PASSES in 2\,s) proves, with sharper certified constants
+$\E[1/\ell]<2.865$, $\E[(T-1)^2/\ell]<2.01$ and $S-2\E\ell>0.0020476$ (Jensen on finitely many radial and angular cells),
+\[
+\boxed{\Lambda(q,r)-S\le0.397v-0.116w-0.0020476,}
+\]
+so $v\le0.00541+0.292w\Rightarrow\Lambda\le S+10^{-4}$, and $v\le0.00515\Rightarrow\Lambda\le S$ for every $r$. It also gives the independent-Gaussian penalty $\partial_wF\le\frac35\E[(T-1)^2/\ell]-p<-0.116$ via
+$\partial_sR(l,s)=\frac{\sqrt\pi}{4\sqrt s}e^{-x}I_0(x)<\frac3{10l}$, and a cumulant criterion $\Lambda\le S+3\sqrt\delta$ ($v\le0.0463$, $\delta=\kappa/v^2$) of the same
+practical scope as \S\ref{sec:sar-cumulant}. It has no strip result.
+
+\input{lower-bound/sharp-circular.tex}
+
+\subsection{Remaining shared-A rectangle}
+Combining the sharper unconditional bound with the new strip, the remaining
+part of $u\le0.0463$, $w\le0.0328$ is contained in
+$w<0.0223$, $u>0.00551+0.319w$. These are shared-A statements only.
+The general original-response cover remains a separate target.

@@ -1,0 +1,220 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/89-contact-concentration.tex (file dated 2026-10-25). Only this line was added.
+% A dimension-free original-response region, 22 October 2026.
+\subsection{An exact contact certificate for a dominant Wick direction}
+\label{sec:contact-concentration-cone}
+\paragraph{Status and scope.}
+The analytic argument is \st{P}; the three support integrals and the
+finite comparisons are \st{C}, freshly replayable with Python's standard
+library. This is a new region for actual responses, not a proof of raw K
+and not a new global endpoint. It implements the joint-support programme
+without approximating the unknown cubic's law. No independence assumption
+is imposed on its remainder, and no moment bound or fresh buffer is used.
+
+Put $\epsilon=1891/2500$, $p=1/\epsilon$, $h=(f_++f_-)/2$,
+$k=(f_+-f_-)/2$, $Ph=tZ$, and $F=\epsilon Qk$, where $|f_\pm|\le1$.
+Let $V=\|F\|^2$ and
+\[
+ \mathcal N=t^2+pV-\|Pk\|^2-\epsilon\|Qh\|^2.
+\]
+For any standard complex Gaussian linear form $X$ orthogonal to $Z$, set
+\[
+ H_X=X(|X|^2-2)/\sqrt2,\qquad
+ c_X=|\langle H_X,F\rangle|.
+\]
+The supremum below is over all such directions in the actual Gaussian
+space, not over a fixed finite list.
+
+\begin{theorem}[\st{P,C}: four-fifths concentration alternative]
+\label{thm:contact-concentration-cone}
+In every finite dimension, if
+\[
+ \frac{21}{25}\le t\le\frac{851}{1000},\qquad
+ c_X^2\ge\frac45\|F\|^2\quad\hbox{for some }X\perp Z,
+\]
+then
+\[
+ \boxed{\quad\mathcal N<\frac{14263}{20000}=0.71315
+            <\frac{35663}{50000}<\frac{500}{701}.\quad}
+\]
+Equivalently, the theorem allows $F=\zeta H_X+R$ with
+$\langle H_X,R\rangle=0$ and $\|R\|\le|\zeta|/2$.
+The remainder may use $X,Z$ and arbitrarily many further coordinates,
+with all phases and visible sectors present. There is no amplitude
+restriction on $\zeta$ and no separate bound on $V$.
+\end{theorem}
+
+\subsubsection{The joint support constraint pays the existing penalty}
+Write $\psi_X=\sqrt2H_X$ and rotate the phase of $X$ so that
+$u=\langle\psi_X,F\rangle=\sqrt2c_X\ge0$ is real. This rotation does
+not affect its joint Gaussian law with $Z$. For rational $\ell,b,d\ge0$
+with $\ell\ge2b$, put
+\[
+ L=Z\{\ell+b(|Z|^2-2)\},\qquad D=d\psi_X,\qquad
+ I(\ell,b,d)=\E|L+D|.
+\]
+The two signs have the same expectation by $X\mapsto-X$.
+For every actual response, the pointwise support inequality gives
+\[
+ 2\Re\E(\bar Lh+\bar Dk)\le\E(|L+D|+|L-D|).
+\]
+With $m=\Re\langle Z(|Z|^2-2),h\rangle$, this becomes
+\begin{equation}\label{eq:contact-concentration-support}
+ \boxed{\quad \ell t+bm+pdu\le I(\ell,b,d).\quad}
+\end{equation}
+The test $D$ is cubic, so its pairing with $k$ is exactly its pairing
+with $pF$; unspecified coefficients do not enter. If $I\le H$ and
+$b>0$, the same response therefore satisfies
+\begin{equation}\label{eq:contact-concentration-penalty}
+ \|Pk\|^2+\epsilon\|Qh\|^2
+ \ge\frac{[\ell t+pdu-H]_+^2}{2pb^2}.
+\end{equation}
+Indeed $\|H_Z\|=1$ and a positive bracket forces $m$ to be negative.
+This is also the exact minimization over a common positive scale of
+$(L,D)$ in the canonical dual. It does not add a second charge for
+$Pk$ or $Qh$; it is a new complete lower bound for their retained cost.
+For $b=0$, \eqref{eq:contact-concentration-support} is a feasibility cut.
+
+The fresh integral certificates are
+\[
+\begin{array}{c|c|c|c}
+ \ell&b&d&I(\ell,b,d)<H\\\hline
+ 1&0&7/25&46999/50000\\
+ 3/5&18/125&111/1000&489287/1000000\\
+ 39/50&37/250&37/250&32621/50000
+\end{array}
+\]
+The default directed upper values are respectively less than
+$0.939978898$, $0.489286432$, and $0.652402237$.
+These decimals are explanatory; the rational entries are the witnesses.
+
+\subsubsection{Reduction of the entire region to seven rational endpoints}
+Here is the complete finite part of the proof. Write $\eta=4/5$,
+$u_0=9/40$, $H_0=46999/50000$, and $d_0=7/25$. Concentration and the
+first support cut imply
+\[
+ V\le u^2/(2\eta),\qquad u\le U(t):=(H_0-t)/(pd_0).
+\]
+If $u\le u_0$, use the independent visible support inequality
+\[
+ J:=\|Pk\|^2+\epsilon\|Qh\|^2
+ \ge\frac1{2p}\left(\frac{19}{10}t-\frac{124233393}{10^8}\right)^2.
+\]
+The bracket is positive on the central interval. The resulting cap is
+increasing there and at $t=851/1000$ is below $0.712970185$.
+For completeness, its sole integral constant is checked afresh from
+\[
+ \E\sqrt T\,|T-1/10|
+ =\frac75\frac{\sqrt\pi}{2}
+ +2(1/10)^{5/2}\sum_{n\ge0}
+ \frac{(-1/10)^n}{n!(n+3/2)(n+5/2)}
+ <\frac{124233393}{10^8}.
+\]
+Thus this branch does not inherit the earlier eight-integral certificate.
+
+For $u\ge u_0$, use the second row on $t\in[.84,.849]$ and the third
+row on $t\in[.849,.851]$. For the selected $(\ell,b,d,H)$ define
+\[
+ C(t,u)=t^2+\frac{pu^2}{2\eta}
+           -\frac{(\ell t+pdu-H)^2}{2pb^2}.
+\]
+The bracket is positive. This quadratic is convex in $u$, since
+$\frac p{2\eta}-\frac{pd^2}{2b^2}>0$. It suffices to consider
+$u=u_0$ and $u=U(t)$. The first endpoint is increasing in $t$ on its
+assigned interval: its second derivative is negative and its first
+derivative remains positive at the right endpoint. The second endpoint
+is convex in $t$, with quadratic coefficient
+\[
+ 1+\frac1{2\eta p d_0^2}
+       -\frac{(\ell-d/d_0)^2}{2pb^2}>0.
+\]
+Consequently only three endpoint comparisons per row remain. Their
+rational values are bounded above, respectively, by
+\[
+ (.711144674,\ .712003698,\ .713147927),\qquad
+ (.713068636,\ .712850849,\ .713070930).
+\]
+Together with the small-$u$ branch these prove the theorem. The checker
+verifies every sign and endpoint with fractions, including the strict
+comparison with $14263/20000$.
+
+\subsubsection{A derivative-free integral certificate}
+Let $M(a,r)=\E_\theta|a+re^{i\theta}|$. This function is convex in each
+nonnegative amplitude. In the radial variables $x=|Z|$, $y=|X|$,
+which have density $2xe^{-x^2}$, the amplitudes are
+\[
+ A(x)=(\ell-2b)x+bx^3,\qquad B(y)=dy|y^2-2|.
+\]
+Partition $[0,6]$ into rational cells. On each cell replace its amplitude
+law by the two endpoint atoms at the amplitude's minimum and maximum,
+with the same mass and first moment. Convexity makes this an upper
+cubature for $M$. Apply the two replacements successively; the test
+variables $Z,X$ are independent, although the unknown remainder is not.
+The extremum at $y=\sqrt{2/3}$ and zero at $y=\sqrt2$ are included
+with directed root bounds, so monotonicity is not assumed across them.
+
+Masses are differences of $e^{-x^2}$. First moments reduce to
+$\int2x^2e^{-x^2}dx$ and $\int2x^4e^{-x^2}dx$, evaluated with outward
+integer intervals using the entire alternating series for
+$\int_0^x e^{-s^2}ds$ and exact recurrences. With $M_*=\max(a,r)$ and
+$z=(\min(a,r)/M_*)^2$, the angular mean has the positive series
+\[
+ M(a,r)=M_*\sum_{n\ge0}a_nz^n,\quad
+ a_0=1,\quad a_n=a_{n-1}\frac{(2n-3)^2}{4n^2},\quad
+ \sum a_n=4/\pi.
+\]
+Hence its upper enclosure is
+\[
+ M_*\left(\sum_{n=0}^Na_nz^n+
+            \left(\frac4\pi-\sum_{n=0}^Na_n\right)z^{N+1}\right).
+\]
+The value at $a=r=0$ is zero. Machin's formula encloses $\pi$.
+The discarded radial tails use $M(a,r)\le a+r$ and
+\[
+ \int_6^\infty2x^2e^{-x^2}dx\le(6+1/12)e^{-36},\qquad
+ \int_6^\infty2x^4e^{-x^2}dx\le(216+9+1/8)e^{-36}.
+\]
+Every bound holds at norm zeros and on the entire unbounded domain.
+No quadrature derivative or smoothness assumption is required.
+
+\paragraph{A second regional consequence.}
+The middle trial at fixed scale also proves
+\[
+ .84\le t\le .84625,\quad c_X\ge71/400,\quad V\le1/25
+ \quad\Longrightarrow\quad\mathcal N<.71325.
+\]
+This consequence and the concentration theorem are separate sufficient
+conditions; neither assumes that every survivor has a large Wick
+projection.
+
+\paragraph{The new necessary condition, and its limit.}
+A central-row response exceeding the design cap must now have
+\[
+ \boxed{\quad\sup_{X\perp Z}|\langle H_X,F\rangle|^2
+                     <\frac45\|F\|^2.\quad}
+\]
+This removes a dimension-free concentrated branch without a fresh-buffer
+hypothesis. It is not a bound on maximal directional influence: for the
+unit coupled monomial $X_1^2\bar X_2/\sqrt2$, the largest squared
+projection onto any $H_X$ is only $4/27$, since
+$4/27-r^2(1-r)=(r-2/3)^2(r+1/3)$ on $[0,1]$.
+Diffuse tensors and such nondiagonal concentrated tensors still need
+certificates, as do the flank rows outside the central interval.
+The manuscript's best complete numerical endpoint remains that of
+\S\ref{sec:finer-spectral-certificate}; this regional proof changes none
+of its integration or transfer status.
+
+\paragraph{Replay and port.}
+The package \code{grothendieck-contact-cone-20261022.zip} contains the
+proof, Markdown twin, standard-library \code{verify\_all.py}, two fresh
+replay logs, and a SHA256 manifest. Default mesh $1/64$, 24 angular terms;
+fine mesh $1/128$, 40 terms. Both regenerate all integrals and then check
+the seven endpoints. No cached vertex values are inputs. The Lean port
+needs the support inequality, cubic projection normalization, the three
+integral enclosures and the displayed rational reduction; it needs no
+new chaos moment or independence axiom.
+
+\paragraph{IDE replay and review (22 October).} \code{verify\_all.py --fine} PASSES from an unrelated directory under \code{python3 -I} (46\,s; package and log in
+\pathref{gpt-reviews/contact-cone-20261022/}): the three directed support integrals by endpoint-atom upper cubature, the alternating-series constant $I(1/10)$, the seven endpoint
+comparisons and the cylinder. The IDE re-derived \S1 by hand: $2\Re\E(\bar Lh+\bar Dk)\le\E(|L+D|+|L-D|)$ from the two disks, $\langle D,k\rangle=p\langle D,F\rangle$ since $D\in\operatorname{ran}Q$,
+$\langle L,h\rangle=\ell t+bm$, hence $\ell t+bm+pdu\le I$; a positive bracket forces $m<0$ and $\|Qh\|^2\ge m^2/2$, giving (1); the hypothesis gives $V\le u^2/(2\eta)$ and the
+$b=0$ trial gives $u\le U(t)$; the $u^2$ coefficient of $C(t,u)$ is positive for both trials, so endpoints suffice. Dimension-free and regional; no bound changes.

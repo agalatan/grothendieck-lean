@@ -1,0 +1,497 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/91-gaussian-point-and-cone-reach.tex (file dated 2026-10-25). Only this line was added.
+% IDE module, 22 October 2026: the Gaussian point of the k-row functional, the sector Hessian, the nu-sector reduction,
+% independent float checks of the contact-cone theorems, and the reach of the support-cone method.
+\subsection{The Gaussian point, the sector Hessian, and the reach of support cones}
+\label{sec:gaussian-point-cone-reach}
+
+\paragraph{Status and scope.}
+This section records the IDE's audit of the 22 October contact-cone
+theorems (\S\ref{sec:mixed-contact-concentration},
+\S\ref{sec:whole-slice-contact}) and three structural facts about the
+remote functional of Conjecture~K. Formulas and reductions are
+\st{P}; every number is a float quadrature \st{F} unless it is quoted
+from a directed certificate. Nothing here changes the complete endpoint
+or the Lean development; the Lean chain does not formalise the
+original-response programme, and none of the statements below is on
+its critical path (which is the sixth-moment tensor bridge, the row
+reductions and the transfer link).
+
+Throughout, $\epsilon=1891/2500$, $p=1/\epsilon$,
+$L=Z(\ell+\beta(T-2))$ with $T=|Z|^2$, $\ell=1057/1250$,
+$\beta=179/1250$ (the peak profile), and for a remote cubic $G$
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-\frac{\|G\|_2^2}{\epsilon},
+ \qquad
+ F(v)=2\E|L+\sqrt v\,U|-\frac v\epsilon,\qquad S=\sup_{v\ge0}F(v),
+\]
+$U$ a standard complex Gaussian independent of $Z$. The circular-mean
+potential of a circular law is
+$\Psi_q(x)=\E|x+q|=\E\,\mathrm{M}(x,|q|)$, with
+$\mathrm M(a,r)=\E_\theta|a+re^{i\theta}|=\frac2\pi(a+r)\,
+\mathrm{E}\!\left(\frac{4ar}{(a+r)^2}\right)$ (complete elliptic
+integral of the second kind).
+
+\subsubsection{The Gaussian family and its closed forms}
+With $x=\lambda^2/v$ and $\lambda=\sqrt T\,(\ell+\beta(T-2))$, the Rice
+formulas give the one-dimensional integrals
+\begin{equation}\label{eq:rice-closed-forms}
+ \E\big[\,|L+\sqrt vU|\;\big|\;T\big]
+ =\frac{\sqrt{\pi v}}2\,e^{-x/2}\big[(1+x)I_0(\tfrac x2)+xI_1(\tfrac x2)\big],
+ \qquad
+ \E\Big[\frac1{|L+\sqrt vU|}\;\Big|\;T\Big]
+ =\sqrt{\frac\pi v}\,e^{-x/2}I_0(\tfrac x2),
+\end{equation}
+and the heat equation $\partial_v=\frac14\Delta$ with $\Delta|y|=1/|y|$
+gives $F'(v)=\frac12\E|L+\sqrt vU|^{-1}-1/\epsilon$ \st{P}.
+Integrating \eqref{eq:rice-closed-forms} against $e^{-T}$
+(Gauss--Legendre panels, 32 nodes per panel) reproduces the rigorous
+enclosure of the cubic-chaos package,
+$1.3739535256614<S<1.3739535256616$, as $S=1.37395352566$ at
+$v^*=0.0403448$, with $F''(v^*)=-2.26$ \st{F}. The package proves
+$-4<F''<0$ on $[0,\infty)$ \st{P} (strict concavity through the heat
+equation and radially decreasing densities), and the sharpness
+$F(v)-6v^2/m\le\Lambda(G_{m,v})\le F(v)$ for the disjoint-product
+construction $G_{m,v}=\sqrt{v/m}\sum_{j\le m}z_{3j-1}z_{3j}\bar z_{3j+1}$
+\st{P}; so $S$ is the supremum over all dimensions if Conjecture~K
+holds, and the proposed relaxation constant $1.3\cdot10^{-4}$ cannot be
+lowered.
+
+\subsubsection{Second variation at the Gaussian point}
+\begin{lemma}[\st{P}: second variation of the modulus]
+\label{lem:second-variation-modulus}
+For $z\ne0$ and $w\in\C$,
+$\frac{d^2}{ds^2}|z+sw|\big|_{s=0}=\Im(we^{-i\arg z})^2/|z|$.
+Consequently, for $G_0$ with $|L\pm G_0|>0$ a.s.\ and a direction
+$G'$ with $\E|G'|^2=1$ for which differentiation under the expectation
+is justified,
+\[
+ \frac{d^2}{ds^2}\Lambda(G_0+sG')\Big|_{s=0}
+ =\E\frac{\Im(e^{-i\theta_+}G')^2}{|L+G_0|}
+ +\E\frac{\Im(e^{-i\theta_-}G')^2}{|L-G_0|}-\frac2\epsilon,
+ \qquad\theta_\pm=\arg(L\pm G_0).
+\]
+\end{lemma}
+\begin{proof}
+$|z+sw|=\sqrt{(|z|+s\Re(we^{-i\arg z}))^2+s^2\Im(we^{-i\arg z})^2}$;
+expand to second order. The second statement adds the two signs and
+differentiates $-\|G_0+sG'\|^2/\epsilon$.
+\end{proof}
+
+Take the Gaussian point $G_0=\sigma^*W$, $W$ a diffuse circular
+Gaussian remote cubic (the $N\to\infty$ limit of $G_{N,v}$), with
+$v^*=\sigma^{*2}$ the maximiser of $F$. Factor the phase of $Z$ so that
+$L=\lambda(T)e^{i\arg Z}$ and $W\mapsto W'$ is again standard. In the
+diffuse limit the Hessian is block diagonal on the six sector directions
+of the decomposition of the cubic-chaos package
+($G=q(w)+(T-1)u(w)+\frac{Z^2}{\sqrt2}v(w)+ZA(w)+\bar ZB(w)+cH(Z)$,
+$H(Z)=Z(T-2)/\sqrt2$): cross terms between components of different
+$Z$-frequency vanish after the $Z$-phase average, except that the
+A-sector $(T-1)u$ (frequency $-1$ relative to $L$) and the B-sector
+$Z^2v/\sqrt2$ (frequency $+1$) are coupled through
+$\E_\theta\Im(\alpha e^{-i\theta})\Im(\beta e^{i\theta})=-\frac12\Re(\alpha\beta)$,
+i.e.\ through $\Re\E[uv]$, which need not vanish ($u\in\Hc10(w)$,
+$v\in\Hc01(w)$ may be conjugates). The table below lists the diagonal
+entries; the off-diagonal A--B entry is bounded in
+\S\ref{sec:local-stability-reported} and the $2\times2$ block stays
+negative definite. Writing
+$w_1=\frac12\big(|\lambda+\sigma^*W'|^{-1}+|\lambda-\sigma^*W'|^{-1}\big)$
+and $\psi_\pm=\arg(\lambda\pm\sigma^*W')$, the unit-norm sector
+directions have \st{P}
+\[
+\begin{array}{ll}
+ \text{remote cubic independent of }W:& h_q=\E w_1-2/\epsilon=2F'(v^*)=0,\\
+ \text{the radial direction }W:&
+   h_W=\E\big[\Im(e^{-i\theta_+}W')^2/|\lambda+\sigma^*W'|
+            +\Im(e^{-i\theta_-}W')^2/|\lambda-\sigma^*W'|\big]-2/\epsilon,\\
+ \text{A-sector }(T-1)X:& h_A=\E[(T-1)^2w_1]-2/\epsilon,\\
+ \text{B-sector }Z^2\bar X/\sqrt2:& h_B=\E[T^2w_1/2]-2/\epsilon,\\
+ \text{Y- and }(2,0)\text{-sectors, circular:}& h_Y=\E[Tw_1]-2/\epsilon,\\
+ \text{Y-sector, real / imaginary }Y:&
+   h_{Y,r}=\E\big[T(\sin^2\psi_+/|\lambda+\sigma^*W'|+\sin^2\psi_-/|\lambda-\sigma^*W'|)\big]-2/\epsilon,
+   \quad h_{Y,i}=\text{(same with }\cos^2),\\
+ \text{visible }\nu H(Z):&
+   h_\nu=\E\big[\tfrac12T(T-2)^2(\sin^2\psi_+/|\lambda+\sigma^*W'|+\sin^2\psi_-/|\lambda-\sigma^*W'|)\big]-2/\epsilon .
+\end{array}
+\]
+The circular ones are one-dimensional integrals by
+\eqref{eq:rice-closed-forms}; the others are three-dimensional
+$(T,|W'|,\arg W')$ quadratures. Their values \st{F}:
+\[
+\begin{array}{l|c|c}
+ \text{direction}&\epsilon=1891/2500,\ (\ell,\beta)=(.8456,.1432)
+ &\epsilon=149/200,\ (\ell,\beta)=(.852239,.144728)\\\hline
+ q\ (\text{Gaussian family, flat})&0&0\\
+ \text{radial }W&-0.366&-0.279\\
+ \text{A-sector}&-0.931&-0.913\\
+ \text{B-sector}&-1.867&-1.917\\
+ \text{Y, }(2,0)\text{ circular}&-1.401&-1.461\\
+ \text{Y real / imaginary}&-2.41\ /\ -0.395&-2.51\ /\ -0.414\\
+ \nu H(Z)&-2.34&-2.45
+\end{array}
+\]
+So the Gaussian point is a strict local maximum of $\Lambda$ in every
+sector direction, the only flat direction being the Gaussian family
+itself, along which $F''<0$. The smallest margins are the radial
+direction (the law of $|W|$ leaving the Rayleigh law) and the imaginary
+Y-sector. For comparison, at $G=0$ the exact second-order coefficients
+of the same sectors are $k_j/2-p$ with the $k_j$ of the cubic-chaos
+package ($A{:}-0.61$, $B{:}-1.84$, $Y{:}-1.42$, $\nu{:}-1.59$): the
+structured sectors become \emph{more} negative as the remote variance
+grows, because Gaussian smoothing of $1/|L+q|$ removes the mass near
+$T=0$ where $1/|L|$ is large. The dangerous regime for structured
+sectors is therefore small remote energy, which is where the
+$G=0$ bounds of the package apply. (The package's pointwise inequality
+$|l+g|+|l-g|\le2|l|+|g|^2/|l|$ is the worst orientation; for a
+component whose conditional law given $Z$ is circular, the exact
+second-order coefficient is half of $k_j$, which is why its
+coefficient $41/20$ for the A-sector exceeds $p$ while the A-sector is
+nevertheless dominated to second order at $G=0$.) This is a local
+statement; it says nothing about the global maximum.
+
+\subsubsection{The visible sector is a profile perturbation of the remote row}
+\begin{lemma}[\st{P}: $\nu$-sector reduction]
+\label{lem:nu-sector-reduction}
+Let $q$ be a remote cubic independent of $Z$ whose law is circular, and
+$\nu\in\C$. Then
+\[
+ \Lambda(q+\nu H)=\sum_{\pm}\E_T\,
+ \Psi_q\!\Big(\sqrt T\,\Big|\ell+\beta(T-2)\pm\nu\frac{T-2}{\sqrt2}\Big|\Big)
+ -\frac{\|q\|^2+|\nu|^2}{\epsilon}.
+\]
+\end{lemma}
+\begin{proof}
+$L\pm\nu H=Z\,(\ell+\beta(T-2)\pm\nu(T-2)/\sqrt2)$ has the phase of $Z$
+up to the phase of the bracket, which is a function of $T$. Condition on
+$T$: the phase of $Z$ is uniform and independent of $q$, and $q$ is
+circular, so $\E[\,|L\pm\nu H+q|\;|\;T]=\Psi_q(\sqrt T\,|\ell+\beta(T-2)\pm\nu(T-2)/\sqrt2|)$.
+Orthogonality gives $\|q+\nu H\|^2=\|q\|^2+|\nu|^2$.
+\end{proof}
+Hence the visible sector is exactly a perturbation of the row profile
+of the remote-only functional, the object the Lean rows bound through
+the gate variable, and to second order it costs
+$|\nu|^2\big(\E_T[\tfrac12T(T-2)^2\,\Psi_q''(\sqrt T f(T))]-1/\epsilon\big)$
+with $f=\ell+\beta(T-2)$. For the Gaussian law the bracket is
+$h_\nu/2=-1.17$ and at $q=0$ it is $k_c-p=-0.29$ \st{F}. For a general
+law $\Psi_q''(x)\le\E|x+q|^{-1}$, which is finite only under a small-ball
+estimate for $q$ (a law with an atom at $-x_0$ makes
+$\E_T\,w(T)/|x(T)-x_0|$ diverge logarithmically). This is the same input
+as the two-plane small-ball estimate of the $t=0$ row and explains why
+the gate price is paid in the certificates rather than derived from
+moments.
+
+\subsubsection{Independent checks of the contact-cone integrals and the slice}
+The two support integrals of
+Theorem~\ref{thm:mixed-contact-concentration} were recomputed by an
+independent float quadrature
+($I(1,0,1/4)=0.9352013$, $I(1,37/200,87/500)=0.8365651$, stable under
+grid doubling) and lie $1\cdot10^{-5}$ below the directed rational caps
+$467607/500000$ and $33463/40000$, as they must. With the same rows and
+$u_0=47/200$, the four-endpoint envelope
+\eqref{eq:mixed-contact-canonical-cap} evaluated along the slice test
+$\psi_\rho=\rho X(|X|^2-2)+\sqrt{1-\rho^2}X^2\bar Y$ of
+\S\ref{sec:whole-slice-contact} gives \st{F}
+\[
+\begin{array}{c|ccccccccc}
+ \rho&0&0.05&0.1&0.2&0.3&0.5&0.7&0.9&1\\\hline
+ I(1,0,1/4,\rho)&.93520&.93519&.93516&.93503&.93480&.93407&.93293&.93130&.93027\\
+ I(1,.185,.174,\rho)&.83657&.83656&.83654&.83646&.83633&.83590&.83520&.83415&.83346\\
+ \eta\text{-threshold for }500/701&.8941&.8939&.8934&.8912&.8876&.8756&.8666&.8666&.8666\\
+ \text{same, rows re-optimised}&.8941&.8939&.8934&.8911&.8873&.8748&.8536&.8208&.8014
+\end{array}
+\]
+Both integrals are even in $\rho$ ($X\mapsto-X$) and decrease
+monotonically from $\rho=0$; so for this proof scheme the pure mixed
+monomial is the worst point of the slice, and the concave majorant
+\eqref{eq:slice-concave-relaxation} loses little
+($0.71315$ certified against $0.7129$ float at $\eta=9/10$). At $\rho=1$
+the re-optimised threshold $0.8014$ reproduces the $4/5$ of the diagonal
+cone (\S\ref{sec:contact-concentration-cone}) from an independent
+implementation. For $\rho\ge0.6$ the small-$u$ branch $L_\eta(t_+)$
+binds at $\eta=9/10$ until $u_0$ is re-optimised.
+
+\subsubsection{The reach of the support-cone method}
+The same two rows applied to the candidate worst unit test of a sum of
+$N$ orthogonal slices $\mathcal S_{X_1}+\dots+\mathcal S_{X_N}$, the
+equal mixed sum $\psi_N=N^{-1/2}\sum_jX_j^2\bar Y_j$ (conditionally
+Gaussian; a random search over unit elements of
+$\mathcal S_{X_1}+\mathcal S_{X_2}$ found no element with a larger
+support integral), give \st{F}
+\[
+\begin{array}{c|cccccc}
+ N&1&2&3&4&8&\text{Gaussian}\\\hline
+ I(1,.185,.174)&.83654&.83808&.83870&.83906&.83969&.84042\\
+ \eta\text{-threshold, GPT rows}&.893&.945&.968&.981&\text{none}&\text{none}\\
+ \eta\text{-threshold, rows re-optimised}&.893&.945&.968&.978&.996&\text{none}
+\end{array}
+\]
+(``none'': this tested envelope is at least $500/701$ even at
+$\eta=1$.) The certified two-slice theorem of \S\ref{sec:two-slice-contact} (shares $39/40$ and $49/50$) sits above this float threshold $0.945$, as its phase-averaged relaxation must. These are exploratory optimizations, not a theorem limiting
+support certificates to four slices or requiring law-only bounds beyond
+eight. Indeed, combining many support rows pointwise ($9\times10$
+pairs $(b,d)$ and eight feasibility rows, the penalties' maximum taken
+for the same response) certifies the fully diffuse Gaussian test at
+share $\eta=1$: $\sup_{t,u}\mathcal N\le0.713172<500/701$ \st{F} (a $19\times21$ grid of rows; the family is near its limit),
+and the mixed sums of $N=2,4,8$ slices down to $\eta=0.95,\,0.98,\,0.99$;
+what remains structural is the loss at $\eta<1$, where the remainder
+orthogonal to the single test is charged $p(1-\eta)V$ with no
+penalty, so that a second test aligned with the remainder, or a law
+row for it, is required; with the test taken to be the response's own
+normalised cubic ($\eta=1$) the scheme reduces the central rows to
+fixed-norm Gaussian domination of the PAIRED support
+$\frac12\big(\E|Z(1+b(T-2))+d\psi|+\E|Z(1+b(T-2))-d\psi|\big)$ over unit
+cubics $\psi$, visible sectors included (the one-sided form is false for visible-dependent $\psi$; see the correction below), for the finitely many $(b,d)$
+rows; a uniform excess of about $5.5\cdot10^{-5}$ per row is tolerated (binding rows $(b,d)\approx(0.14\text{--}0.20,\,0.16\text{--}0.18)$ at $(t,u)\approx(0.845,0.284)$) \st{F}. Theorem~\ref{thm:sharp-decoupled-support} now gives a sharp
+phase-preserving support for a whole orthogonal-input tensor block,
+and Theorem~\ref{thm:phase-preserving-contact} reaches 24 holomorphic
+inputs with two different certified support rows. That class includes
+all mixed holomorphic quadratic terms, but requires the antiholomorphic
+inputs to be orthogonal to them. The general repeated-slice space also
+contains self-interaction and is a different class. The remaining task
+is an exhaustive response cover, not an extrapolation from the sampled
+thresholds in this table.
+
+\subsubsection{An exact real-part reformulation of the remote functional}
+\label{sec:real-part-reformulation}
+The following identity was supplied on 22 October by a second
+assistant answering the Conjecture-K prompt; the proof is complete.
+\begin{lemma}[\st{P}: real-part form]\label{lem:real-part-form}
+For every $G\in\Hc21(\C^n)$,
+\[
+ \Lambda(G)=2\E|L|+\pi\,\E\big(|\Re G|-|\Re z_1|\,a(|z_1|^2)\big)_+-\frac{\|G\|^2}{\epsilon},
+ \qquad a(r)=\ell+\beta(r-2)>0 .
+\]
+Consequently Conjecture~K is equivalent to
+$\pi\,\E(|\Re G|-|\Re L|)_+-\|G\|^2/\epsilon\le s_0:=S-2\E|L|
+=0.00207424506\ldots$, and, writing
+$(|x|-c)_+=\max_{|\tau|\le1}(\tau x-|\tau|c)$ and maximising over $G$
+first, to
+\[
+ \sup_{G}\Lambda(G)-2\E|L|
+ =\sup\Big\{\frac{\pi^2\epsilon}4\|\Pc21t\|_2^2-\pi\,\E\big(|t|\,|\Re L|\big):
+ \ t:\C^n\to[-1,1]\text{ measurable}\Big\},
+\]
+where the supremum may be restricted to $t\in\{-1,0,1\}$-valued
+functions.
+\end{lemma}
+\begin{proof}
+Under the simultaneous rotation $z\mapsto e^{i\varphi}z$ both $L$
+(charge $1$) and $G$ (bidegree $(2,1)$) pick up the factor
+$e^{i\varphi}$, so $L\pm G$ are circularly symmetric and
+$\E|L\pm G|=\frac\pi2\E|\Re(L\pm G)|$. For real $a,b$,
+$|a+b|+|a-b|=2\max(|a|,|b|)=2|a|+2(|b|-|a|)_+$. Hence
+$\E|L+G|+\E|L-G|=\pi\E|\Re L|+\pi\E(|\Re G|-|\Re L|)_+$ and
+$\pi\E|\Re L|=2\E|L|$; finally $\Re L=\Re z_1\,a(|z_1|^2)$.
+For the second form, $\E(\tau\Re G)=\Re\langle\tau,G\rangle
+\le\|\Pc21\tau\|\,\|G\|$ with equality at
+$G\propto\Pc21\tau$, and $\sup_{g\ge0}(\pi\|\Pc21\tau\|g-g^2/\epsilon)
+=\pi^2\epsilon\|\Pc21\tau\|^2/4$; for fixed $G$ the maximising $\tau$ is
+$\operatorname{sign}(\Re G)\,\mathbf 1\{|\Re G|>|\Re L|\}$.
+\end{proof}
+Numerically, at the Gaussian point the gain term is
+$\pi\E(|\Re G|-|\Re L|)_+=0.05541$ and the identity was reproduced to
+$1.4\cdot10^{-6}$ by direct quadrature \st{F}; the whole gain is
+produced near the hyperplane $\Re z_1=0$. The second form shows how
+sharp any proof must be: $1.3\cdot10^{-4}$ is $0.23\%$ of the gain
+term. It also recasts Conjecture~K as a statement about one bounded real
+function, its cubic projection energy against its $|\Re L|$-weighted
+mass, which is the shape of the original-response programme of this
+chapter (bounded responses, cubic projections and retained costs).
+
+Two further points from the same source, recorded with their status.
+(i) \st{F} In its local analysis the worst gain/cost ratio at the
+Gaussian point is $0.852$, in the direction $iz_1Y$ with $Y$ real in
+$\Hc11(w)$; this is the imaginary Y-sector of the table above
+($1-0.395/2.644=0.85$), an independent confirmation. Its global searches
+over $\Hc21(\C^2)$ and $\Hc21(\C^3)$ plus a Gaussian part returned to
+$\sqrt{v^*}U$ within quadrature error. (ii) \st{F} A semidefinite
+computation of the best HJM-type profile-matrix bound at the extremal
+configuration loses at least $2.19\cdot10^{-4}$ for $\Lambda$ as stated
+(more than the $1.3\cdot10^{-4}$ budget) but only $8.8\cdot10^{-5}$ once
+the retained term $-\|\Pc10k\|^2$ of the response functional is kept,
+leaving about $4\cdot10^{-5}$. This agrees with the diagnosis of
+\S\ref{sec:gaussian-point-cone-reach} and of the certificate audit
+(the row/gate structure, not the law relaxation, carries most of the
+loss), and it says again that the target is the response functional
+$\mathcal N$ with its negative squares, not raw $\Lambda$.
+
+\paragraph{Caution.} The same source proposes to settle the
+$z_1$-independent case from the concavity of $\Phi_0(s)=\E|L+\sqrt s|$
+(proved in \S\ref{sec:whole-slice-contact}) together with the convex
+order $|q|^2\ge_{\rm cx}\|q\|^2\,\mathrm{Exp}(1)$ on $\Hc21$. The
+first fact is true and the implication is correct, but the convex order
+is \emph{false}: see the negative register (stop-loss conjecture CX,
+$q_\theta=z_0[\cos\theta(|z_0|^2-2)/\sqrt2+i\sin\theta(|z_1|^2-1)]$,
+density of $|q|^2$ at $0$ equal to $0.85<1$) and the certified Laplace
+counterexample $\E e^{-30|H|^2}<1/31$ in Chapter~\ref{ch:K-state}. The
+$z_1$-independent case therefore has to go through the true constraints
+on the law of $|q|^2$, the moment bounds and the Stein cuts, which is
+exactly what the Lean rows do.
+
+
+\subsubsection{Reported: a uniform local theorem and an improper Gaussian-mixture theorem}
+\label{sec:local-stability-reported}
+The second assistant subsequently proved (22 October) a local theorem
+in two forms. The first form (package
+\texttt{cubic-chaos-local-stability.zip}, not received by the IDE;
+\st{P} as reported) is the following. With
+$K=G-q$, $Q=\|q\|^2$, $D=\|K\|^2$ and
+$\mathcal J_s(G)=\E|L+\sqrt sU+G|+\E|L+\sqrt sU-G|-p(s+\|G\|^2)$
+($U$ a fresh standard complex Gaussian):
+\[
+ \tfrac12\tfrac{d^2}{dt^2}\mathcal J_s(tG)\big|_{t=0}\le F'(s)Q-\tfrac{D}{40}
+ \quad(s>0),\qquad
+ \|G\|\le10^{-6}\ \Longrightarrow\ \mathcal J_{v^*}(G)\le S-\tfrac{D}{80}-\tfrac{Q^2}4 .
+\]
+So at $s=v^*$ the kernel of the Hessian is exactly the $Z$-independent
+cubics, in every dimension and with arbitrary coordinate overlap among
+$q,u,v,A,B,c$. The A--B coupling coefficient is
+$d=-2^{-1/2}\int_0^\infty e^{-t}t(t-1)\,d_s(R(t))\,dt$ with
+$d_s=f_s'/r-f_s''$, $0\le d_s\le1/r$, bounded by $|d|<23/50$ (split at
+$t=1$), and the block
+$\begin{pmatrix}\lambda-123/100&-23/100\\-23/100&\lambda-12/25\end{pmatrix}$,
+$\lambda=p-1/40$, has positive determinant $53919007/28607048000$. The
+fourth-order term along $q$ is $\frac14M''(v^*)\E|q|^4<-\frac12Q^2$
+($M''(v^*)<-2$ by interval arithmetic; $\E|q|^4\ge2Q^2$), and the
+remainder uses the dimension-free Wick bounds $\E|J|^4\le180\|J\|^4$,
+$\E|J|^6\le45360\|J\|^6$. A genuine-cubic consequence: with the
+disjoint-product block $B_{m,v}$,
+$|\Lambda(G+B_{m,v})-\mathcal J_v(G)|\le3\sqrt{\pi v}/(2m)$, hence
+$\Lambda(G+B_{m,v^*})<S$ for $0<\|G\|\le10^{-6}$ and
+$m\ge\lceil3/(5\Delta)\rceil$, $\Delta=D/80+Q^2/4$.
+Separately, an \emph{improper} Gaussian-mixture theorem: if $q$ is
+independent of $Z$ and conditionally (on a $\sigma$-field independent
+of $Z$) a centred real two-dimensional Gaussian with arbitrary
+covariance $(\lambda_1,\lambda_2)$, then $\Lambda(q)\le S$; proof:
+$h(t)=2\E|L+\sqrt t|$ is concave (radially decreasing density of $L$
+and the radial Poisson equation), and exchanging two independent real
+Gaussians gives
+$\E h(\lambda_1N_1^2+\lambda_2N_2^2)\le\E h(\tfrac{\lambda_1+\lambda_2}2(N_1^2+N_2^2))=M(\lambda_1+\lambda_2)$.
+This covers $q=\sum_j(Y_jA_j(X)+\bar Y_jB_j(X))$ with the same $Y_j$
+conjugated and unconjugated and overlapping quadratic coefficients,
+extending the proper case of the cubic-chaos package. The IDE checked
+the arguments as written (the exchange step and the frequency
+computation above are elementary).
+
+The second form is interval-certified and was replayed by the IDE
+\st{P,C} (\texttt{verify\_local\_stability.py}, Arb ball arithmetic at
+100 bits, archived with its logs in
+\texttt{conjecture-K-report/gpt-packages/local-stability-20261022/}).
+With $m_s(x)=\E|x+\sqrt sU|$, whose Hessian has radial and tangential
+eigenvalues $R_s=C_se^{-x}(I_0-I_1)(x)$, $D_s=C_se^{-x}(I_0+I_1)(x)$,
+$C_s=\sqrt\pi/(2\sqrt s)$, $x=r^2/(2s)$, $h_\pm=(R_s\pm D_s)/2$, the
+$t^2$-coefficient of $\E m_s(L+tH)+\E m_s(L-tH)-p(s+t^2M)$ is
+$Q_s(H)=\E[h_+(|L|)|H|^2+h_-(|L|)\Re(e^{-2i\arg Z}H^2)]-pM$, and at
+$s_0=403448/10^7$ the sector coefficients are enclosed as
+\[
+\begin{array}{c|ccccccc}
+ &a_u&a_v&b_{uv}&a_A&a_B&a_{c,R}&a_{c,D}\\\hline
+ \text{certified}&-0.46563&-0.93337&-0.15499&-0.19554&-0.70055&-1.17043&-0.42495\\
+ \text{IDE float }h/2&-0.466&-0.933&\text{(not computed)}&-0.198&-0.700&-1.17&\text{(not computed)}
+\end{array}
+\]
+($a_u=\E[(T-1)^2h_+]-p$, $a_v=\frac12\E[T^2h_+]-p$,
+$b_{uv}=2^{-1/2}\E[T(T-1)h_-]$, $a_A=\E[TD_s]-p$, $a_B=\E[Th_+]-p$,
+$a_{c,R}=\frac12\E[T(T-2)^2R_s]-p$, $a_{c,D}=\frac12\E[T(T-2)^2D_s]-p$;
+the A-row uses $|\E A^2|\le\E|A|^2$, i.e.\ the worst, imaginary, Y-sector).
+The IDE's float table is thus certified entry by entry. Consequences
+proved there: $Q_{v^*}(H)\le-\frac{19}{100}d$ with
+$d=\|H-\E[H\mid w]\|^2$ (transfer from $s_0$ to $v^*$ through
+$\|\partial_sD^2m_s\|\le6s^{-3/2}$); with $\Psi_H(t)$ the value at total
+variance $v^*$ split as $v^*-Mt^2$ Gaussian plus $tH$,
+$Mt^2\le d/(200000M)\Rightarrow\Psi_H(t)\le S-\frac7{200}t^2d$, using
+$\E|H|^4\le62M^2$ and $\|D^4_\xi m_s\|\le20s^{-3/2}$; and for
+$Z$-independent $q$ the quartic coefficient
+$\frac14F''(v^*)(\E|q|^4-2M^2)<0$ strictly ($F''<0$ by the heat
+equation and the radially decreasing density of $L$; $\E|q|^4>2M^2$ by
+the OU product rule). It also certified a Laplace obstruction of the
+same kind as Chapter~\ref{ch:K-state}'s:
+$Q=X(4(|X|^2-2)+3i(|Y|^2-1))/\sqrt{41}$ has
+$\E e^{-20|Q|^2}<0.0453<1/21=\E e^{-20|U|^2}$. These results are consistent with the sector table: they
+turn its float margins into a rigorous, if conservative ($1/40$),
+uniform gap, and they confirm that the only flat direction at the
+benchmark is the Gaussian family.
+\subsubsection{Concentrated remote laws are far from the benchmark}
+Two float scans \st{F} on the droplet complete the picture. Along the
+CLT family $G_N=(2N)^{-1/2}\sum_{j\le N}X_j(|X_j|^2-2)$ the optimum
+$\sup_s\Lambda(sG_N)$ increases monotonically to $S$:
+$S-1.95\cdot10^{-3}$, $-1.85$, $-1.74$, $-1.67$, $-1.53$,
+$-1.30\cdot10^{-3}$ for $N=1,2,3,4,6,10$, with preferred remote energy
+$0.0026,\,0.0048,\,0.0069,\,0.0086,\,0.0114,\,0.0159$ against
+$v^*=0.0403$. Along the slice $\psi_\rho$ the remote-only optimum is
+$S-1.68\cdot10^{-3}$ at $\rho=0$ (the conditionally Gaussian end),
+decreasing to $S-2.02\cdot10^{-3}$ at $\rho=1$, with preferred energy
+$0.005$--$0.008$. Adding a coupled A-sector $\alpha(T-1)X$ on the slice's own driver $X$ and optimising $(s,\alpha)$ gains at most $8\cdot10^{-5}$ (at $\rho=1$, $\alpha\approx0.01$ real; $1.5\cdot10^{-5}$ at $\rho=0.5$, nothing at $\rho=0$; every $|\alpha|\ge0.03$ and every imaginary $\alpha$ loses), i.e.\ at most $4\%$ of the margin. So concentrated cubics gain about $3\cdot10^{-4}$
+over $2\E|L|$ where the Gaussian gains $2.07\cdot10^{-3}$: the
+conjectured maximiser is approached only through diffuseness, slowly
+($N=10$ is still $1.3\cdot10^{-3}$ short), and the construction bound
+$F(v)-6v^2/m\le\Lambda(G_{m,v})$ of the cubic-chaos package is loose by
+a factor of about five at small $m$. The equal mixed sums $\psi_N=N^{-1/2}\sum_{j\le N}X_j^2\bar Y_j$ (conditionally Gaussian) approach $S$ slowly:
+$S-\sup_s\Lambda(s\psi_N)=1.68,\,1.42,\,1.22,\,1.08,\,0.90,\,0.73,\,0.55,\,0.43,\,0.32\cdot10^{-3}$
+for $N=1,2,3,4,6,8,12,16,24$, with $v^*$ rising from $0.008$ to $0.034$. For the response programme this
+means that the concentrated branch of the cover has room of order
+$10^{-3}$ in $\Lambda$, that the band of five to eight slices where the two-row support method fails still has
+$7$--$9\cdot10^{-4}$ of room (five to seven times the whole $1.3\cdot10^{-4}$ allowance, so it needs a certificate that is merely not
+too lossy, not a sharp one), and that only genuinely diffuse laws leave no room at all.
+
+\subsubsection{Moment-only bounds for the independent sector have a floor}
+\label{sec:independent-sector-floor}
+The second assistant also proved \st{P} that $h(x)=2\E|L+\sqrt x|$ is a
+Bernstein function (a positive mixture of $1-e^{-\lambda x}$), so the
+three-moment relaxation $\max\E h(X)$ subject to $\E X=v$,
+$\E X^2=mv^2$, $\E X^3\le nv^3$ is attained by an explicit two-point
+law with atoms $vr_\pm$, $r_\pm=\frac12\big(A\pm\sqrt{(A-2)^2+4(m-1)}\big)$,
+$A=(n-m)/(m-1)$; with the sixth-moment coefficient $1977/40$ it certified
+$\Lambda(q)<S+1.05\cdot10^{-5}$ for $q$ independent of $z_1$ \st{P,C}.
+Evaluating the same two-point formula with the sharper circular constant
+$C_6=40.45313$ (all of whose tensor facts are now proved in Lean) moves
+the worst case to the Gaussian-kurtosis boundary $m\to2$ and gives
+$S+9.76\cdot10^{-6}$ \st{F}: only $3\%$ lower, because at $m=2$ a two-point
+law with the first three moments of $\mathrm{Exp}(1)$ already beats the
+exponential law by about $10^{-5}$, independently of $C_6$. Moment-only
+relaxations of the independent sector therefore stall about $10^{-5}$
+above $S$; below that, chaos-specific constraints near $m=2$ are needed,
+which is what the Stein, spectral and contraction-Gram cuts of the
+complete certificate supply. This has now been done: \S\ref{sec:independent-stein-36e-8} certifies $\Lambda(q)<S+3.6\cdot10^{-7}$ \st{P,C} for every independent cubic, from the sixth-moment theorem, the radial Stein identity, the separate spectral budgets and the covariance order (IDE replay PASS).
+
+An independent audit (22 October, package
+\texttt{cubic-chaos-independent-bound-audited.zip}, replayed) adds three
+facts \st{P,C}. (i) The independent-sector bound survives an independent
+Gaussian summand: $\Lambda(q+gU)<343491/250000<S+1.05\cdot10^{-5}$ for every
+independent $q$ and $g\ge0$, because with $r=A/(A+B)$ ($A=\E|q|^2$,
+$B=g^2$) the normalised moments satisfy $m_W-2=r^2(m_q-2)$ and
+$n_W-9m_W+12=r^3(n_q-9m_q+12)$, so the sixth-moment constant is unchanged.
+(ii) With $r=\|G-\E[G\mid w]\|$, $\Lambda(G)<1.373964+2r-pr^2$; hence the
+relaxed bound $S+1.3\cdot10^{-4}$ holds on the tube $r\le1.19\cdot10^{-4}$
+around the whole independent subspace. (iii) The seven second-variation
+coefficients of \S\ref{sec:local-stability-reported} hold uniformly for
+$v\in[0.040344,0.040346]$ (a derivative bound
+$|\partial_sK_\nu|\le\sqrt\pi/(4s^{3/2})$ with allowance $2.256\cdot10^{-4}$),
+so they are certified at $v^*$ itself.
+
+
+\paragraph{Correction: the general support test must retain both signs
+(22 October, \st{P,C}).}
+The IDE's 07:40 multi-row observation cannot use global negation to
+replace paired support by one modulus when the test depends on $Z$.
+Global negation flips both $L$ and the cubic and preserves each modulus
+separately. The one-sided Gaussian domination it proposed is false:
+with the peak $L=Z(a+bT)$, $a=699/1250$, $b=179/1250$,
+$H=Z(T-2)/\sqrt2$ and $d=1/100$, positivity of the two radial
+coefficients gives exactly
+\[
+ \E|L-dH|=\E|L|+\frac{d\sqrt\pi}{4\sqrt2},\qquad
+ \frac{\E|L-dH|+\E|L+dH|}{2}=\E|L|.
+\]
+For a fresh proper Gaussian $W$, concavity in its variance gives
+\[
+ \E|L+dW|\le\E|L|+\frac{d^2}{4}\E|L|^{-1}
+             \le\E|L|+\frac{d^2\sqrt\pi}{4a}.
+\]
+Thus the one-sided gap exceeds
+$(17/40)((7/10)d-d^2/a)=2533/873750>1/400$.
+The rational checker in
+\pathref{spherical-response-contact-20261022/} verifies the constants.
+This is not a counterexample to K or to the paired support inequality.
+The latter remains the correct target for visible-dependent tests.
+All contact theorems above reduce to one side only for remote tests,
+where negating remote coordinates leaves $L$ fixed.

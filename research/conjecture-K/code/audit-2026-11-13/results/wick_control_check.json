@@ -1,0 +1,9 @@
+{
+  "test": "Wick control cancellation at phase-aligned exact reference",
+  "samples": 1024,
+  "absolute_D_error": 3.469446951953614e-18,
+  "max_absolute_C_error": 3.122502256758253e-17,
+  "seconds": 0.018778499999825726,
+  "status": "passed",
+  "scope": "Formula/implementation smoke check; no accuracy certificate"
+}

@@ -1,0 +1,900 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch40-gpt-global-local-K.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 40). Owner: lower-bound/08-shared-structure.tex
+\section{Conjecture K: global exclusion regions and the full coupled tangent space}
+\label{ch:global-local-coupled-K}
+\chapsummary{Global exclusions, coupled tangent spaces and dimension-uniform local comparisons. A local neighborhood does not establish finite-amplitude K for arbitrary coupled cubics.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch38-global-and-local-K.tex}, renamed \code{ch40-gpt-global-local-K.tex} (the near-maximizer cuts occupy \autoref{ch:nearmax}), from \pathref{gpt-reviews/k-partial-review-20261020/}, ported verbatim apart from this paragraph. \emph{Our replay} \st{C}:
+\code{python3 -I verify\_all.py --external-node} from an unrelated directory: \textbf{PASS all checks in 50.5\,s}. This covers the SHA256 manifest (95 files), the origin algebra, the
+buffered scalar and benchmark, the anisotropic bound, the trace profile and tangent, the Laguerre profile, the even-Gram and Gaussian-posterior algebra, and the cold-start Node checker.
+The scope correction to \autoref{ch:K-state} (the fraction $576/16937$) has been applied there.
+
+
+\subsection{Scope, normalization, and audit}
+Throughout,
+\[
+ \varepsilon=\frac{1891}{2500},\quad a=\frac{699}{1250},\quad
+ b=\frac{179}{1250},\quad L=Z(a+b|Z|^2),
+\]
+where $Z$ is a standard proper complex Gaussian, $\mathbb E|Z|^2=1$.
+Write
+\[
+ \Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|
+                  -\|G\|_2^2/\varepsilon,
+ \qquad
+ S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt vU|-v/\varepsilon\},
+\]
+where $U$ is independent and proper. Cubics belong to a finite-dimensional
+$H_{2,1}$; constants are uniform in that dimension. General remote sectors
+may share every Gaussian driver. Independence is imposed only where explicitly
+stated, notably for the additional Gaussian buffer in the local theorems.
+
+The original external Node checker passed an isolated replay. Its hyperplane
+theorem and origin Hessian are valid, and already recorded in the main
+handoff. We do not count their restatement as a new endpoint improvement.
+The new standard-library Python/C++17 wrapper regenerates all scalar inputs,
+including the independent benchmark and optimizer bracket.
+
+The final reread of \autoref{ch:K-state} also found a later cold-start progress package
+already recorded there. It proves directional stability at the Gaussian
+optimum with a direction-dependent radius, and a finite-amplitude remote-only
+lemma. Our local contribution below is a stronger window-specific spectral
+gap and explicit dimension-uniform radii allowing simultaneous shared sectors.
+We do not claim that qualitative directional stability was previously unknown,
+or that our remote-only radius improves its separate remote-only estimate.
+
+\paragraph{A sharp refinement of the external origin block [P,C].}
+Let $M$ be its normalized $A/B$ Hessian block, and $h_0=I_0/2$.
+Then
+\[
+ M\preceq\left(h_0-\rho I_1\right)I,
+ \qquad \rho=\frac{7-\sqrt{17}}{16}>\frac{179}{1000}.
+\]
+For completeness, under the external Stieltjes representation, the normalized
+integrand block is
+\[
+ N(x)=\begin{pmatrix}
+ 1-x+3x^2/4&(x/2-3x^2/4)/\sqrt2\\
+ (x/2-3x^2/4)/\sqrt2&3x^2/8
+ \end{pmatrix},\quad 0<x\le1.
+\]
+Put $A(x)=(I-N(x))/x$. Direct differentiation gives
+\[
+ -A'(x)=\begin{pmatrix}3/4&-3/(4\sqrt2)\\
+ -3/(4\sqrt2)&x^{-2}+3/8\end{pmatrix}\succ0,
+ \qquad\det(-A'(x))=3/(4x^2).
+\]
+Thus $A(x)\succeq A(1)\succeq\rho I$. Integrating gives the claimed
+bound because the Stieltjes integral of $x$ times the $h_0$ measure is $I_1$.
+At $b=0$, $x=1$ identically, so the coefficient is sharp for this universal
+comparison. This is an origin statement, not deletion of a coupled component
+from a nonzero residual.
+
+\paragraph{The visible marginal mixture [P].}
+The external handoff also gives a short proof used below.
+Let $f(t)=t(a+bt)^2$ and $\psi=f^{-1}$. The survival function of $|L|^2$
+is $e^{-\psi(s)}$. The reciprocal derivative
+\[
+ h(t)=1/f'(t)=\frac1{(a+bt)(a+3bt)}
+\]
+is completely monotone. Starting with $q_0(t)=e^{-t}$ and
+$q_{j+1}=-h q_j'$, induction shows that every $q_j$ is completely monotone
+and nonnegative, and
+$(-1)^j(d/ds)^j e^{-\psi(s)}=q_j(\psi(s))\ge0$.
+Bernstein's Laplace representation therefore expresses this survival
+function as a probability mixture of exponential survivals. Circularity
+gives $L\stackrel d=\sqrt{V_{\rm mix}}\,U$ with $V_{\rm mix}>0$ independent of $U$.
+This is a marginal representation only: it must never be used to replace
+the joint law of $L$ and a coupled cubic. With a fresh independent buffer,
+it does validly give
+\[
+ F(v)=\sqrt\pi\,\mathbb E\sqrt{V_{\rm mix}+v}-v/\varepsilon,
+ \quad F''<0,\quad F'''>0.
+\]
+The mixture has mean $\mathbb EV_{\rm mix}=\mathbb E|L|^2
+=1181331/1562500$.
+% Ready-to-port section. No live manuscript file was edited.
+\subsection{A global variance-profile bound for arbitrary coupled cubics}
+\label{sec:global-trace-profile}
+\paragraph{Status and scope [P,C].}
+The results in this section hold for every finite-dimensional cubic in
+$H_{2,1}$, with arbitrary sharing of the remote Gaussian drivers among all
+sectors. They are global in amplitude, include the diagonal, and do not assume
+conditional Gaussianity. They give exclusion regions for a possible
+counterexample, not a proof of K or a new endpoint.
+
+Set
+\[
+a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+p=\frac{2500}{1891},\quad h(t)=t(a+bt)^2,\quad
+\Lambda_0=\sqrt\pi(a+3b/2)\le S.
+\]
+The orthogonal decomposition relative to the visible coordinate is
+\[
+G=q(y)+ZB(y)+\bar ZC(y)+(T-1)D(y)+Z^2E(y)+cZ(T-2),
+\qquad T=|Z|^2,
+\]
+where the remote bidegrees of $q,B,C,D,E$ are respectively
+$(2,1),(1,1),(2,0),(1,0),(0,1)$. Define
+\[
+u=\|q\|_2^2,\quad d=\|D\|_2^2,\quad
+w=\|B\|_2^2+\|C\|_2^2,\quad j=2\|E\|_2^2,
+\quad n=2|c|^2,\quad V=u+d+w+j+n.
+\]
+Visible phase orthogonality, together with
+$\mathbb E(q\bar D)=0$ and $\mathbb EB=0$, gives the exact identity
+\begin{equation}
+\mathbb E(|G|^2\mid T=t)
+=u+d(t-1)^2+wt+\frac j2t^2+\frac n2t(t-2)^2.
+\label{eq:trace-conditional-variance}
+\end{equation}
+In particular, no independence between the five remote components is used.
+
+For any complex $x,z$,
+$|x+z|+|x-z|\le2\sqrt{|x|^2+|z|^2}$.
+Applying this pointwise and then applying conditional Jensen to
+\eqref{eq:trace-conditional-variance} proves
+\begin{equation}
+\Lambda(G)\le\Phi(u,d,w,j,n)
+:=2\int_0^\infty e^{-t}
+\sqrt{h(t)+u+d(t-1)^2+wt+jt^2/2+nt(t-2)^2/2}\,dt-pV.
+\label{eq:trace-Phi}
+\end{equation}
+The function $\Phi$ is concave in its five nonnegative arguments.
+It is only an upper bound: the true payoff has not been replaced by an
+allegedly equivalent law.
+
+\subsubsection{Simultaneous positive profile penalties [P]}
+Let
+\[
+J(V)=2\int_0^\infty e^{-t}\sqrt{h(t)+V}\,dt-pV.
+\]
+For the profiles $f_A=(t-1)^2$, $f_e=t$, $f_B=t^2/2$,
+and $f_\nu=t(t-2)^2/2$, define
+\[
+P_A=t^2,\qquad P_e=t,\qquad P_B=t+t^2/2,\qquad
+P_\nu=\frac t2(t^2-t+2).
+\]
+Direct differentiation gives
+\begin{equation}
+\int_0^t e^{-s}(f_i(s)-1)\,ds=-e^{-t}P_i(t).
+\label{eq:trace-profile-cumulative}
+\end{equation}
+Every $P_i$ is nonnegative. For the diagonal this follows from
+$t^2-t+2=(t-1/2)^2+7/4$.
+
+Taking the tangent of the square root in \eqref{eq:trace-Phi} at
+$h(t)+V$, and using \eqref{eq:trace-profile-cumulative} to integrate by
+parts, proves the global inequality
+\begin{equation}
+\boxed{\Lambda(G)\le J(V)-dD_A(V)-wD_e(V)-jD_B(V)-nD_\nu(V),}
+\label{eq:trace-profile-penalty}
+\end{equation}
+where
+\[
+D_i(V)=\frac12\int_0^\infty
+\frac{e^{-t}P_i(t)h'(t)}{(h(t)+V)^{3/2}}\,dt>0.
+\]
+For $V>0$ the integration by parts has vanishing boundary terms; $V=0$
+is the zero polynomial. All four $D_i$ decrease with $V$.
+
+This is a statement about simultaneous finite-amplitude interactions.
+The penalties are relative to the constant-profile \emph{Jensen bound}
+$J$, not relative to $S$; confusing these two baselines would give an
+incorrect proof of K.
+
+\subsubsection{A universal variance cutoff [P,C]}
+Exact arithmetic proves
+\[
+J(13/20)<\Lambda_0-1/2000.
+\]
+Moreover $J'(V)\le V^{-1/2}-p<0$ for $V\ge13/20$, since
+$(13/20)p^2>1$. Consequently
+\begin{equation}
+\boxed{V\ge\frac{13}{20}\quad\Longrightarrow\quad
+\Lambda(G)<\Lambda_0-\frac1{2000}\le S-\frac1{2000}.}
+\label{eq:trace-variance-cutoff}
+\end{equation}
+For $0<V\le13/20$, the same checker proves
+\begin{equation}
+D_A(V)>\frac{31}{100},\quad D_e(V)>\frac15,\quad
+D_B(V)>\frac9{25},\quad D_\nu(V)>\frac25.
+\label{eq:trace-explicit-penalties}
+\end{equation}
+All four inequalities can be used simultaneously in
+\eqref{eq:trace-profile-penalty}.
+
+\subsubsection{A trace-sensitive affine certificate [P,C]}
+For a complementary tangent put $d_0=2/25$ and
+$r(t)=h(t)+d_0(t-1)^2$. The tangent inequality in
+\eqref{eq:trace-Phi} gives
+\[
+\Phi\le K_0+(\lambda_0-p)u+(\lambda_A-p)d+
+(\lambda_e-p)w+(\lambda_B-p)j+(\lambda_\nu-p)n,
+\]
+where
+\[
+K_0=\int_0^\infty e^{-t}
+\frac{2h(t)+d_0(t-1)^2}{\sqrt{r(t)}}\,dt,
+\qquad
+\lambda_i=\int_0^\infty e^{-t}\frac{f_i(t)}{\sqrt{r(t)}}\,dt,
+\qquad f_0=1.
+\]
+The exact certificate gives
+\[
+K_0<\frac{347}{250},\qquad
+\lambda_0-p<\frac{111}{200},\qquad
+\lambda_i-p<-\frac15\quad(i=A,e,B,\nu).
+\]
+It follows that every cubic, with all interactions present, satisfies
+\begin{equation}
+\boxed{\Lambda(G)\le\frac{347}{250}+\frac{151}{200}u-\frac15V.}
+\label{eq:trace-affine-cut}
+\end{equation}
+In particular,
+\begin{equation}
+\boxed{V\ge\frac1{12}+\frac{19}{5}u\quad\Longrightarrow\quad
+\Lambda(G)<\Lambda_0-\frac1{2000}-\frac{u}{200}
+\le S-\frac1{2000}-\frac{u}{200}.}
+\label{eq:trace-affine-exclusion}
+\end{equation}
+Indeed \eqref{eq:trace-affine-cut} is then at most
+$2057/1500-u/200$, and the checker proves
+$2057/1500<\Lambda_0-1/2000$.
+This includes every cubic with zero remote projection and variance at
+least $1/12$, with unrestricted A/B/even/diagonal interactions. Unlike
+the hyperplane-vanishing theorem, this statement permits a nonzero
+centered A sector.
+
+\subsubsection{Replay and exactness}
+The standard-library scripts \texttt{check\_trace\_profile.py} and
+\texttt{check\_trace\_tangent.py} run under isolated Python from any
+working directory. They use fractions, integer square roots and
+outward dyadic rounding at denominator $2^{90}$; no floating-point
+comparison decides a mathematical claim. The replay logs are
+\texttt{replay.log} and \texttt{replay\_tangent.log}.
+
+A degree-$30/31$ alternating Taylor bound for $e^{-\Delta}$ gives the
+mesh ratio, which is propagated by outward-rounded integer products.
+Cell masses and polynomial moments use their exact exponential
+antiderivatives. The baseline lower bound uses Machin's arctangent
+formula with rational alternating-series remainders.
+
+For $J(13/20)$, Jensen is applied separately on $1{,}024$ cells of width
+$1/64$ in $[0,16]$. On the tail,
+$\sqrt{h+V}\le\sqrt h+\sqrt V$ and
+$\sqrt t\le t/4$ for $t\ge16$ give an integrable polynomial majorant.
+The four penalty bounds use positive lower sums on $6{,}144$ cells
+of width $1/256$ in $[0,24]$ and discard the nonnegative tail. All
+$P_i$ and $h'$ increase; $P_\nu'=3t^2/2-t+1>0$.
+
+For the affine certificate, $r$ has positive coefficients and hence
+increases. On $65{,}536$ cells of width $1/4096$ in $[0,16]$, exact
+nonnegative numerator integrals are divided by a lower bound for
+$\sqrt r$ at the left endpoint. Slope tails are bounded using the
+exact numerator tail integral divided by $\sqrt{r(16)}$. The intercept
+tail follows from
+$(2h+d_0f_A)/\sqrt r\le2\sqrt r$ and
+$\sqrt r\le\sqrt h+\sqrt{d_0}|t-1|$.
+The full replay takes about ten seconds on the producing machine.
+These certificates have not been formalized in Lean.
+
+\paragraph{Remaining region [?].}
+A counterexample must satisfy both
+$0<V<13/20$ and $V<1/12+(19/5)u$, as well as the stronger functional
+bound \eqref{eq:trace-profile-penalty}. The upper bound $J$ remains too
+large near its maximum to prove K. In particular, these global cuts
+must be combined with a bound retaining the true residual deficit;
+Jensen does not supply that missing ingredient.
+
+\subsection{A sharper global two-sign inequality}
+\label{sec:anisotropic-two-sign-global}
+\paragraph{An elementary sharp inequality [P].}
+For every real $x>0$ and $w=u+iv\in\mathbb C$,
+\begin{equation}
+ |x+w|+|x-w|\le2x+\frac{u^2}{2x}+\frac{v^2}{x}.
+ \label{eq:anisotropic-two-sign}
+\end{equation}
+Both coefficients are sharp: $w=2x$ forces the real coefficient $1/2$,
+and $w=iv$, $v\to0$, forces the imaginary coefficient $1$.
+To prove it, scale to $x=1$ and dualize the two norms with unit vectors
+$p=e^{i(\theta+\phi)}$, $q=e^{i(\theta-\phi)}$.
+Maximizing the resulting expression over $u,v$, after subtracting
+$u^2/2+v^2+2$, gives, with $c=\cos\phi$ and $z=\cos\theta$,
+\[
+ 2cz-2c^2-(1-c^2)z^2=-(c-z)^2-c^2(1-z^2)\le0.
+\]
+This proves the inequality at every amplitude, with no probability assumption.
+
+\paragraph{The full cubic bound [P,C].}
+Use the normalized sector notation
+\[
+ G=q+ZY+\bar ZW+(T-1)A+Z^2B/\sqrt2+\nu Z(T-2)/\sqrt2,
+\]
+where the remote bidegrees of $q,Y,W,A,B$ are
+$(2,1),(1,1),(2,0),(1,0),(0,1)$, respectively.
+All sectors may share all their drivers. Put
+$u=\|q\|_2^2$, $d=\|A\|_2^2$, $j=\|B\|_2^2$,
+$I_A=I_2-2I_1+I_0$, and $h_f=(I_3-4I_2+4I_1)/2$, where
+\[
+ I_k=\int_0^\infty\frac{t^{k-1/2}e^{-t}}{a+bt}\,dt.
+\]
+Let $Q$ denote the exact origin Hessian from the audited external note.
+Applying \eqref{eq:anisotropic-two-sign} after rotation by the visible phase gives
+\[
+ \Lambda(G)\le\Lambda_0+\frac12\mathbb E\frac{|G|^2}{|L|}
+                  +\frac12Q(G)-p\|G\|_2^2.
+\]
+Hermite orthogonality and phase integration give the explicit bound
+\begin{align*}
+ \Lambda(G)-\Lambda_0\le{}&
+ (3I_0/4-p)u+(3I_A/4-p)d+(3I_2/8-p)j\\
+ &+(3I_1/4-p)\|W\|_2^2
+ +(3I_1/4-p)\|Y\|_2^2-\tfrac14I_1\Re\mathbb E Y^2\\
+ &-\frac{I_2-I_1}{2\sqrt2}\Re\mathbb E(AB)
+ +(h_f/2-p)(\Re\nu)^2+(h_f-p)(\Im\nu)^2.
+\end{align*}
+In particular the $A/B$ interference is retained. At the peak, independent
+rational Stieltjes enclosures give
+\begin{align*}
+ \Lambda(G)-\Lambda_0\le{}&
+ .826u+.181d-.749j+.119\sqrt{dj}\\
+ &-.128\|Y\|_2^2-.426\|W\|_2^2
+ -.826(\Re\nu)^2-.330(\Im\nu)^2.
+\end{align*}
+All displayed decimals are exact terminating rationals rounded outward.
+Completing the $A/B$ square yields
+\begin{equation}
+ \boxed{\Lambda(G)\le\Lambda_0+.826u+.186d
+ -.128\|Y\|_2^2-.426\|W\|_2^2-.826(\Re\nu)^2-.330(\Im\nu)^2.}
+ \label{eq:anisotropic-simple}
+\end{equation}
+Consequently, using the separately replayed benchmark lower bound
+$96683367193980/2^{46}\le S$,
+\begin{equation}
+ \boxed{q=0,\quad \|G\|_2^2\le1/100
+ \quad\Longrightarrow\quad \Lambda(G)<S-1/5000.}
+ \label{eq:anisotropic-small-visible}
+\end{equation}
+This allows simultaneous $A/B$, even, and diagonal interactions in every
+dimension and needs no Gaussian buffer. Together with the global trace
+theorem, it proves the entire no-remote class outside the intermediate
+variance window $(1/100,1/12)$. It does not close that entire window.
+The positive remote coefficient in \eqref{eq:anisotropic-simple} is a real
+limitation for a sizeable remote cubic with shared drivers.
+
+The standard-library checker \texttt{check\_anisotropic.py} rebuilds the
+$I_k$ bounds using exact polynomial majorants and minorants, verifies the
+dual sum of squares, and checks every rational comparison. The separate
+scalar replay certifies the benchmark used in
+\eqref{eq:anisotropic-small-visible}. No endpoint is asserted.
+
+% Ready-to-port fragment. Full proof and input audit: BUFFERED_SPECTRUM.md.
+\subsection{The full cubic tangent space at an independent Gaussian buffer}
+\label{sec:buffered-full-tangent}
+\paragraph{Status and scope.}
+The results here are analytic \st{P}, using exact Hessian integrals regenerated by the standalone local
+checker; the new constants pass the rational
+checker \path{check_buffered_local.py} \st{C}. They give a
+uniform local theorem, not a new endpoint or a finite-amplitude solution.
+Fix the exact peak profile and put $p=1/\varepsilon$. Let $G(Z,y)$ be
+an arbitrary finite-dimensional $H_{2,1}$ polynomial. Let $U$ be a fresh
+proper Gaussian, independent of $Z$ and of \emph{every} coordinate used
+by $G$. Define
+\[
+ F(v)=2\mathbb E|L+\sqrt vU|-pv,\quad q=\mathbb E_ZG,\quad H=G-q,
+ \quad u=\|q\|_2^2,\quad h=\|H\|_2^2,\quad r^2=u+h.
+\]
+No independence between $q$ and the shared drivers of $H$ is assumed.
+The buffer is a graded limit object; a Gaussian marginal already
+coupled to those drivers cannot be substituted for it.
+
+\subsubsection{The exact buffered quadratic form}
+Write the orthogonal decomposition
+\[
+ G=q+ZY+\bar ZW+(T-1)A+Z^2B/\sqrt2+\nu H_3(Z),\quad
+ H_3(Z)=Z(T-2)/\sqrt2,
+\]
+where $q,Y,W,A,B$ belong respectively to
+$H_{2,1},H_{1,1},H_{2,0},H_{1,0},H_{0,1}$ on the same remote space.
+Put $d(t)=\sqrt t(t-2)/\sqrt2$ and
+$\psi_v(x)=\mathbb E|x+\sqrt vU|$. At the real point $\ell(t)$, set
+\[
+ w_v=\tfrac12(\psi_{xx}+\psi_{yy}),\qquad
+ k_v=\tfrac12(\psi_{xx}-\psi_{yy})\le0.
+\]
+In terms of normalized averaging on $[0,\pi/2]$,
+\[
+ w_v(t)=\left\langle\frac{\sqrt\pi}{2\sqrt v}
+ e^{-\ell(t)^2\cos^2\theta/v}\right\rangle,
+ \quad k_v(t)=\left\langle\frac{\sqrt\pi}{2\sqrt v}
+ e^{-\ell(t)^2\cos^2\theta/v}\cos2\theta\right\rangle.
+\]
+After the joint phase rotation,
+$R_t=q+(t-1)A+tB/\sqrt2+\sqrt t(Y+W)+\nu d(t)$.
+Hermite orthogonality and circle charges give exactly
+\begin{align*}
+ \mathbb E_y|R_t|^2={}&u+(t-1)^2\|A\|^2+t^2\|B\|^2/2
+ +t(\|Y\|^2+\|W\|^2)+|\nu|^2d(t)^2,\\
+ \mathbb E_yR_t^2={}&\sqrt2t(t-1)\mathbb E(AB)+t\mathbb E Y^2
+ +\nu^2d(t)^2.
+\end{align*}
+Thus the exact quadratic coefficient in
+$\Lambda(\sqrt vU+sG)$ is $Q_v(G)-p\|G\|^2$, where
+\[
+ Q_v(G)=\mathbb E_T\{w_v(T)\mathbb E_y|R_T|^2+
+ k_v(T)\operatorname{Re}\mathbb E_yR_T^2\}.
+\]
+This calculation uses no conditional Gaussianity. The Gaussian
+covariance computation is the exact Hessian of the entire cubic space.
+
+On $7/200\le v\le9/200$, \autoref{ch:polarized-profile-certificate}'s
+certified Hessian integrals bound the A/B price by
+\[
+ -\tfrac25\|A\|^2-\tfrac9{10}\|B\|^2
+ +\tfrac{16}{25}\|A\|\|B\|,
+\]
+and the even price by $-(\|Y\|^2+\|W\|^2)/10$.
+The displayed $2\times2$ matrix dominates $I/10$.
+The standalone local checker bounds the diagonal quadratic norm
+coefficient by $1$, giving price at least $(p-1)|\nu|^2>|\nu|^2/10$.
+There are no cross terms with $\nu$: $\mathbb EY=0$, and all remaining
+charges or Hermite degrees differ. Consequently
+\begin{equation}\label{eq:full-buffer-hessian}
+ \boxed{Q_v(G)-p\|G\|^2\le F'(v)u-h/10.}
+\end{equation}
+
+\paragraph{Remote directions are exactly the top eigenspace.}
+Let $j(v)=F'(v)+p=\mathbb E_Tw_v(T)$ and let $v_*$ maximize $F$.
+The standalone scalar certificate gives
+$7/200<v_*<9/200$. The visible marginal mixture, used only
+with the independent buffer, gives (here $V$ denotes its mixing variance)
+\[
+ j(v)=\frac{\sqrt\pi}{2}\mathbb E(V+v)^{-1/2},\qquad j(v_*)=p.
+\]
+The scalar checker proves $j(9/200)>p-1/60$; monotonicity of $j$
+extends this throughout the buffer window. Hence
+\begin{equation}\label{eq:full-buffer-spectral-gap}
+ \boxed{Q_v(G)\le j(v)\|G\|^2-\|G-q\|^2/12.}
+\end{equation}
+Every remote cubic attains $j(v)$. This is a strict, dimension-uniform
+visible-sector spectral gap throughout the Gaussian buffer window.
+No universal claim for all profiles or all variances is made.
+
+\subsubsection{A uniform full-coupling local theorem}
+\begin{theorem}\label{thm:full-buffer-local}
+If $7/200\le v\le9/200$ and $\|G\|_2\le1/20000$, then
+\[
+ \boxed{\Lambda(\sqrt vU+G)
+ \le F(v)+F'(v)u-u^2/8-h/25.}
+\]
+In particular, at $v=v_*$ this is exact K, with deficit
+$\|q\|_2^4/8+\|G-q\|_2^2/25$.
+\end{theorem}
+\begin{proof}
+For every complex $(2,1)$ chaos $J$,
+\[
+ \mathbb E|J|^4\le44\|J\|_2^4,
+ \qquad\mathbb E|J|^6\le11352\|J\|_2^6.
+\]
+For explicit constants write $J=I_{2,1}(f)$, so $\|J\|^2=2\|f\|^2$.
+Wick multiplication of bidegrees $(p,q),(r,s)$ has coefficients
+$\binom pi\binom si i!\binom qj\binom rj j!$ and output
+$(p+r-i-j,q+s-i-j)$. Contraction and symmetrization are norm
+contractions. Combining equal outputs by the triangle inequality gives
+coefficient bounds $(1,4,4)\|f\|^2$ for $J^2$ in grades
+$(4,2),(3,1),(2,0)$, and $(1,12,42,40)\|f\|^3$ for $J^3$ in
+$(6,3),(5,2),(4,1),(3,0)$. The isometry factors $p!q!$ give the two
+constants. The finite coefficient calculations are checked exactly.
+Also $\mathbb E|q|^4\ge2u^2$, by nonnegativity of the cubic fourth
+cumulant, already implied by the fluctuation theorem.
+
+Gaussian smoothing of the planar norm gives global multilinear bounds
+\[
+ \|D^4\psi_v\|_{op}\le\frac{3\sqrt\pi}{4v^{3/2}}<204,
+ \quad\|D^6\psi_v\|_{op}\le\frac{15\sqrt\pi}{4v^{5/2}}<30000.
+\]
+Fourier differentiation with multiplier $e^{-v|\xi|^2/4}$ proves these:
+the planar norm has radial density $-(2\pi)^{-1}|\xi|^{-3}$, and the
+fourth and sixth angular integrals are $3\pi/4,5\pi/8$. H\"older
+handles distinct directions. All differentiated integrals converge
+absolutely. The rational comparisons use $\pi<22/7$.
+
+Circularity of the remote $q$ gives its exact fourth Taylor term
+$\mathbb E|q|^4F''(v)/4$; indeed the circular fourth tensor contracts
+to $3\mathbb E|q|^4\Delta^2\psi_v/8$, while
+$F''(v)=\mathbb E\Delta^2\psi_v(L)/8$.
+With $M=\mathbb EV=1181331/1562500$, Jensen gives
+\[
+ -F''(v)=\frac{\sqrt\pi}{4}\mathbb E(V+v)^{-3/2}
+ \ge\frac{\sqrt\pi}{4(M+v)^{3/2}}>\frac12,
+\]
+since $3>4(M+9/200)^3$. The remote fourth term is therefore at most
+$-u^2/4$. Taylor expansion, the exact Hessian, and H\"older give
+\begin{align*}
+ \Lambda(\sqrt vU+G)\le{}&F(v)+F'(v)u-h/10-u^2/4\\
+ &+748(4u^{3/2}\sqrt h+6uh+4\sqrt u\,h^{3/2}+h^2)
+ +946000(u+h)^3.
+\end{align*}
+Here $748=204\cdot44/12$ and $946000=30000\cdot11352/360$.
+The symmetry removes every odd term. No independence between $q,H$
+is used. Put $\rho=1/20000$ and use
+\[
+ 2992u^{3/2}\sqrt h\le h/20+5\cdot2992^2u^3,
+\]
+\[
+ 4488uh+2992\sqrt u\,h^{3/2}+748h^2\le8228\rho^2h,
+ \qquad (u+h)^3\le4(u^3+h^3).
+\]
+The added $u^2$ coefficient is
+$(5\cdot2992^2+4\cdot946000)\rho^2=151701/1250000<1/8$.
+The added $h$ coefficient is
+$1/20+8228\rho^2+3784000\rho^4<3/50$.
+These exact rational inequalities prove the theorem.
+\end{proof}
+
+\subsubsection{The variance-compensated tube}
+The fixed-buffer result alone does not address lowering the buffer
+variance to keep the total remote variance at $v_*$. Retain instead
+$\kappa=\mathbb E|q|^4-2u^2$. Since $F'''(v)>0$,
+\[
+ F(v)+F'(v)u+F''(v)u^2/2\le F(v+u).
+\]
+The same proof, keeping the remote fourth coefficient exactly, gives:
+\begin{theorem}\label{thm:buffered-compensated}
+Suppose $7/200\le v\le9/200$, $\|G\|_2\le1/20000$, and
+\[
+ \kappa\ge776709120u^3.
+\]
+Then
+\[
+ \boxed{\Lambda(\sqrt vU+G)\le F(v+u)-\kappa/16-h/25
+ \le S-\kappa/16-h/25.}
+\]
+This allows $v+u=v_*$. A convenient sufficient subcase is
+$\kappa\ge(3/50)u^2$ and $\|G\|_2\le1/120000$.
+\end{theorem}
+\begin{proof}
+The remote quartic term and the Gaussian scalar Taylor terms combine
+to at most $F(v+u)-\kappa/8$. The mixed fourth and sixth remainders
+above cost at most $48544320u^3$ and
+$(1/20+8228\rho^2+3784000\rho^4)h$. The hypothesis is precisely
+$48544320u^3\le\kappa/16$. The remaining sector price is at least
+$h/25$. Finally $776709120/120000^2<3/50$.
+\end{proof}
+
+\paragraph{Limitations.}
+These local radii are tiny. The normalized excess in the last corollary
+belongs to $q$, not to $q+\sqrt vU$; confusing them would exaggerate
+its relevance to the application's kurtosis window. The theorems show
+that arbitrary nonlinear shared cubic interactions are locally stable,
+including variance compensation under an explicit cumulant condition.
+They do not resolve general finite amplitudes, remove the fresh-buffer
+independence, or supply the missing row cover. The endpoint is unchanged.
+
+\subsubsection{A larger simultaneous-visible neighborhood}
+If $q=\mathbb E_ZG=0$, the neutral remote direction is absent.
+Taylor expansion only through degree two and the fourth remainder give
+\[
+ \Lambda(\sqrt vU+G)\le F(v)-h/10+748h^2.
+\]
+Thus, for arbitrary simultaneous A/B/even/diagonal couplings,
+\[
+ \|G\|_2\le1/125,\qquad 7/200\le v\le9/200,
+ \qquad\mathbb E_ZG=0
+\]
+imply
+\[
+ \boxed{\Lambda(\sqrt vU+G)\le F(v)-h/20\le S-h/20.}
+\]
+The comparison $748/125^2<1/20$ is exact. This includes the A sector
+excluded by the cold-start hyperplane-vanishing theorem, but is local
+in amplitude and retains the independent-buffer assumption.
+
+\subsubsection{Standalone local replay}
+The wrapper \texttt{verify\_buffered.py} regenerates all data and checks
+only local scalar integrals; no global parameter tree or external Python
+package is needed. The A/B/even bounds use eight variance cells, 2,048
+radial cells on $0\le\sqrt T\le8$, and 128 angular cells. The added
+diagonal coefficient uses the upper weight
+\[
+ \frac{r_h^2}{2}\max\{(r_l^2-2)^2,(r_h^2-2)^2\}
+\]
+on each radial cell. Its largest upper bound is below $0.997986$,
+and the exact acceptance criterion is at most $1$.
+Its radial tail is bounded by
+$5(64^3+3\cdot64^2+6\cdot64+6)e^{-64}<2^{-46}$.
+
+A separate two-sided positive enclosure of $j(v)$ uses 4,096 radial
+and 1,024 angular cells. Its exact results are
+\begin{align*}
+ j(7/200)&\in[93536705087028,94270212300332]/2^{46},\\
+ j(9/200)&\in[91975231123619,92634056002292]/2^{46}.
+\end{align*}
+The first interval is above $p$; the second is below $p$ and above
+$p-1/60$. Strict concavity brackets $v_*$, while monotonicity of $j$
+proves the claimed uniform spectral gap. All exponentials, angles,
+and square roots are rationally enclosed before integer acceptance.
+The full enclosure method and generated replay receipt accompany the
+Markdown twin. The same wrapper independently regenerates the optional
+benchmark $S\ge96683367193980/2^{46}$ for the accompanying anisotropic
+result, using the included Rice-envelope checker.
+
+\subsubsection{All-order balanced visible profiles: an exact cumulative sum of squares [P]}
+\label{sec:laguerre-profile-sos}
+Let $L_n$ and $L_j^{(1)}$ be the ordinary and associated Laguerre polynomials,
+normalized by
+\[
+L_n(t)=\sum_{k=0}^n\frac{(-1)^k}{k!}\binom nk t^k,
+\qquad L_j^{(1)}(t)=\sum_{k=0}^j\frac{(-1)^k}{k!}\binom{j+1}{j-k}t^k.
+\]
+For every $n\ge1$,
+\begin{equation}
+\boxed{\int_0^t e^{-s}(L_n(s)^2-1)\,ds
+=-e^{-t}t^2\sum_{j=0}^{n-1}\frac{L_j^{(1)}(t)^2}{(j+1)^2}.}
+\label{eq:laguerre-profile-sos}
+\end{equation}
+In fact, the difference between consecutive orders is
+\[
+\int_0^t e^{-s}(L_n(s)^2-L_{n-1}(s)^2)\,ds
+=-e^{-t}\frac{t^2}{n^2}L_{n-1}^{(1)}(t)^2.
+\]
+Thus the probability densities $e^{-t}L_n(t)^2$ are stochastically
+increasing with $n$ and each has at most the exponential mass in $[0,t]$.
+
+\paragraph{Polynomial proof.}
+The coefficient formulas give
+\[
+tL_n''+(1-t)L_n'+nL_n=0,\qquad
+L_n-L_{n-1}=\frac tnL_n',\qquad L_n'=-L_{n-1}^{(1)}.
+\]
+The ODE coefficient identity is
+$(k+1)^2a_{k+1}+(n-k)a_k=0$ for
+$a_k=(-1)^k\binom nk/k!$; the difference identity follows from Pascal's rule.
+For $Q_n=t^2(L_n')^2/n^2$, substitution gives
+\[
+Q_n-Q_n'=\frac{2t}{n}L_nL_n'-\frac{t^2}{n^2}(L_n')^2
+=L_n^2-L_{n-1}^2.
+\]
+Integrating the derivative of $-e^{-t}Q_n$ and using $Q_n(0)=0$ proves
+the adjacent identity. Summation proves \eqref{eq:laguerre-profile-sos}.
+
+For increasing $h$, the penalty associated with the normalized profile
+$L_n(t)^2$ is therefore
+\[
+D_n(V)=\frac12\int_0^\infty
+\frac{e^{-t}P_n(t)h'(t)}{(h(t)+V)^{3/2}}\,dt,
+\qquad
+P_n=t^2\sum_{j=0}^{n-1}\frac{L_j^{(1)}(t)^2}{(j+1)^2}.
+\]
+Since $P_n\ge P_{n-1}\ge P_1=t^2$, these penalties are increasing in
+$n$. In the peak setting they are all greater than $31/100$ when
+$0<V\le13/20$, whenever the profiles enter a diagonal conditional-variance
+sum as above. Balanced visible Wick factors satisfy
+$H_{n,n}(Z)/n!=(-1)^nL_n(|Z|^2)$, so the identity applies to those higher
+visible grades. It does not eliminate conditional cross terms between
+different total chaos grades.
+
+\paragraph{A limitation [P,C].}
+The naive charge-one analogue against its gamma ground state is false:
+\[
+\int_0^t e^{-s}\left(\frac12s(2-s)^2-s\right)ds
+=\frac12e^{-t}t^2(1-t)>0\quad(0<t<1).
+\]
+At $t=1/2$ the difference is exactly $e^{-1/2}/16$. This does not
+contradict the cubic diagonal comparison against the exponential ground
+state. The portable checker \path{check_laguerre_profile.py} audits
+all polynomial identities for $1\le n\le32$ and this counterexample in
+exact rational arithmetic. The proof for all orders is the coefficient
+argument, not the finite audit.
+
+\subsection{A finite Gram problem for all even interactions with no remote cubic}
+\label{sec:even-gram-reduction}
+\paragraph{Status [P] reduction; [?] matrix certificate.}
+Assume that the remote cubic projection vanishes. Write, in joint-phase
+coordinates,
+\[
+O_T=(T-1)\alpha^\top y+\frac{T}{\sqrt2}\beta^\top\bar y,
+\qquad E_T=\sqrt T\,[Y(y)+W(y)]+\nu d(T),
+\quad d(T)=\frac{\sqrt T(T-2)}{\sqrt2},
+\]
+where $Y\in H_{1,1}$ and $W\in H_{2,0}$. Every component may share the
+same remote Gaussian drivers. The involution $y\mapsto-y$ changes the
+sign of $O$ and fixes $E$, so
+\[
+\mathbb E(|\ell+O+E|+|\ell-O-E|)
+=\mathbb E(|\ell+O+E|+|\ell+O-E|).
+\]
+The price cross term also vanishes by parity. The two-sign Young bound
+therefore proves
+\begin{equation}
+\Lambda(O+E)\le\Lambda(O)+
+\mathbb E\frac{|E_T|^2}{|\ell(T)+O_T|}-p\|E\|_2^2.
+\label{eq:even-gram-young}
+\end{equation}
+An infinite nonnegative expectation is permitted on the right; the
+reduction itself does not assume a finite inverse-radius bound.
+
+A unitary transformation puts both linear forms in $O$ into an internal
+proper complex Gaussian vector $x\in\mathbb C^k$, $k\le2$. The remaining
+coordinates $z$ are independent of $(T,x)$. The weight
+$F(T,x)=|\ell(T)+O_T(x)|^{-1}$ is independent of $z$, but all internal
+and mixed parts of $Y,W$ are retained.
+
+Let
+\[
+\mathcal Q_k=\{x_i\bar x_j-\delta_{ij}:1\le i,j\le k\}
+\cup\{x_ix_j/\sqrt{1+\delta_{ij}}:1\le i\le j\le k\},
+\]
+\[
+\phi_0=((\sqrt TQ)_{Q\in\mathcal Q_k},d(T)),\qquad
+\phi_1=\sqrt T(x_1,\ldots,x_k,\bar x_1,\ldots,\bar x_k).
+\]
+Define
+\[
+(M_r)_{ij}=\mathbb E[F\overline{(\phi_r)_i}(\phi_r)_j]
+\quad(r=0,1),\qquad M_2=\mathbb E[TF].
+\]
+The matrix sizes are at most eight and four. If finiteness is not yet
+known, these definitions mean extended nonnegative quadratic forms
+$v\mapsto\mathbb E[F|\sum_i v_i(\phi_r)_i|^2]$.
+
+The external Hermite decomposition gives exactly three types of block.
+External degree zero contains the internal quadratic terms and the
+diagonal, hence $M_0$. For each external $z_a$, its coefficient is an
+arbitrary linear combination of $x_i$ and $\bar x_i$, arising from mixed
+$H_{2,0}$ and $H_{1,1}$ respectively; this gives $M_1$. The coefficient
+of $\bar z_a$ uses only $x_i$ and gives a principal submatrix of $M_1$.
+External second-chaos terms have constant internal coefficients and
+give the scalar $M_2$. External Hermite orthogonality removes all
+cross-block terms before an inequality is applied.
+
+The unweighted price is the sum of squared normalized coefficients:
+$\mathbb ET=1$, $\mathbb Ed(T)^2=1$, and internal quadratics have mean
+zero. Consequently, with
+\[
+\lambda_* =\max\{\lambda_{\max}(M_0),\lambda_{\max}(M_1),M_2\},
+\]
+one has
+\begin{equation}
+\mathbb E[F|E_T|^2]\le\lambda_*\|E\|_2^2.
+\label{eq:even-gram-operator}
+\end{equation}
+When enough external coordinates are allowed, all blocks are realizable,
+so this maximum is the exact operator norm of the unrestricted even
+weighted form. The dimension reduction is independent of the number of
+remote coordinates.
+
+For $A=\|\alpha\|>0$, a convenient four-real-parameter representation is
+\[
+\alpha^\top y=Ax_1,\qquad
+\beta^\top\bar y=b_1\bar x_1+b_2\bar x_2,
+\qquad A,b_2\ge0,\quad b_1\in\mathbb C,
+\quad B^2=|b_1|^2+b_2^2.
+\]
+For $A=0$, one anticomplex driver suffices. The proved Gaussian
+covariance theorem gives
+$\Lambda(O)\le S-A^2/10-B^2/4$. Combining this with
+\eqref{eq:even-gram-young}--\eqref{eq:even-gram-operator} yields
+\[
+\Lambda(O+E)\le S-\frac{A^2}{10}-\frac{B^2}{4}
++(\lambda_*-p)\|E\|_2^2.
+\]
+The trace-sensitive exclusion already handles every no-remote cubic of
+total variance at least $1/12$. Thus the following finite condition
+would suffice to settle all remaining no-remote cubics in every dimension:
+\begin{equation}
+\boxed{(\lambda_*(A,b_1,b_2)-p)_+
+\left(\frac1{12}-A^2-|b_1|^2-b_2^2\right)
+\le\frac{A^2}{10}+\frac{|b_1|^2+b_2^2}{4}}
+\label{eq:even-gram-target}
+\end{equation}
+on $A,b_2\ge0$, $A^2+|b_1|^2+b_2^2<1/12$. The variance boundary is already handled by the trace theorem, so no matrix check or zero-times-infinity convention is needed there.
+This criterion retains the true Gaussian odd-baseline deficit. It has
+not been certified and could fail as a sufficient condition even if
+the true comparison holds.
+
+\paragraph{Singular fibres and scope.}
+At isolated $T$ values an improper conditional Gaussian can lie on a
+real line meeting $-\ell(T)$, and its fixed-$T$ inverse-radius moment
+can diverge. A certificate must therefore control the joint $(T,x)$
+integral, not assume uniform fixed-$T$ boundedness. With a nonlinear
+remote cubic $q$, the weight depends on its nonlinear drivers and the
+two-coordinate reduction fails; this is explicitly a no-remote result.
+The portable \texttt{check\_even\_gram.py} audits Hermite orthogonality,
+normalizations and all block counts in exact arithmetic, but certifies
+no inverse-radius matrix bound.
+
+\subsubsection{A positive two-integral formula for the Gram matrices [P]}
+Write $x_j=(R_{2j-1}+iR_{2j})/\sqrt2$, where $R$ is real standard
+Gaussian of dimension at most four. Let $M_t$ be the real two-row matrix
+with $(\Re O_t,\Im O_t)^\top=M_tR$, and let
+$c_t=(\ell(t),0)^\top$. For $s\ge0$, put
+\[
+A_s=I_2+2sM_tM_t^\top,\qquad
+C_s=(I+2sM_t^\top M_t)^{-1}
+=I-2sM_t^\top A_s^{-1}M_t,
+\]
+\[
+m_s=-2sM_t^\top A_s^{-1}c_t,\qquad
+Z_s=\frac{\exp(-s c_t^\top A_s^{-1}c_t)}{\sqrt{\det A_s}}.
+\]
+Completing the Gaussian square proves
+\[
+\mathbb E[e^{-s|c_t+M_tR|^2}f(R)]
+=Z_s\,\mathbb E_{N(m_s,C_s)}f(R)
+\]
+for nonnegative $f$. Therefore, for every complex quadratic polynomial
+$Q_t$,
+\begin{equation}
+\mathbb E\frac{|Q_T(R)|^2}{|\ell(T)+O_T|}
+=\frac1{\sqrt\pi}\int_0^\infty e^{-t}dt
+\int_0^\infty s^{-1/2}Z_s\,
+\mathbb E_{N(m_s,C_s)}|Q_t(R)|^2\,ds.
+\label{eq:even-gram-laplace}
+\end{equation}
+This follows from the positive Laplace integral for $1/r$ and Tonelli,
+so it is valid even when the quadratic form is infinite. Signed matrix
+entries can be recovered by polarization; bounding positive quadratic
+forms avoids that cancellation. Only a two-by-two inverse is needed.
+
+For an explicit posterior evaluation, write
+$Q(R)=R^\top K R+b^\top R+c$ with complex symmetric $K$. Set
+\[
+q_m=c+b^\top m+m^\top Km+\operatorname{tr}(KC),\qquad b_m=b+2Km.
+\]
+Translation to a centered Gaussian and orthogonality of its constant,
+linear and centered quadratic chaoses give
+\begin{equation}
+\mathbb E_{N(m,C)}|Q(R)|^2
+=|q_m|^2+b_m^*Cb_m+2\operatorname{tr}(KC K^*C).
+\label{eq:even-gram-positive-moment}
+\end{equation}
+All terms are nonnegative. Since every Gram basis polynomial has degree
+at most two, \eqref{eq:even-gram-laplace}--\eqref{eq:even-gram-positive-moment}
+reduce the matrix problem to two positive scalar integrals and elementary
+matrix algebra. The tails and parameter cover are still unproved; this
+is a deterministic reduction, not a numerical certificate.
+
+The standard-library checker \texttt{check\_gaussian\_posterior.py} audits 96 exact complex quadratic moment identities and 12 Gaussian completion, determinant and Woodbury identities. Its passing log is \texttt{replay\_gaussian\_posterior.log}; no integration tail or parameter cover is certified by this algebra audit.
+
+\subsubsection{Exploratory matrix evidence [F], not a certificate}
+The exact Gram reduction has been tested numerically in the one-driver case
+$O_T=(T-1)\alpha X+(T/\sqrt2)\beta\bar X$.
+All three blocks were included. A Laplace calculation integrates the Gaussian
+polynomial moments analytically and then numerically integrates in $T$ and
+the Laplace parameter, splitting at the isolated degenerate Gaussian fibres.
+
+The broad scan used 2,046 points with real $\beta$ (relative phases zero or
+$\pi$), with $\alpha^2+\beta^2$ between $0.02$ and $0.08$. The twelve
+largest sampled criterion ratios were refined. The largest refined ratio was
+approximately $0.90308657$ at $\alpha=\beta=\sqrt{0.027}$, with
+$\lambda_*\approx1.61298937$ and criterion left minus right approximately
+$-0.000915832$. This is a sampled value, not a uniform margin or global optimum.
+
+Direct tensor Gauss--Laguerre quadrature had produced apparent ratios above
+one. They were unstable near the singular fibres and disappeared under the
+split Laplace calculation. They are not counterexamples.
+The numerical calculation truncates $T$ at 40 without an interval tail bound,
+uses floating-point eigenvalues and quadrature, and does not cover arbitrary
+relative phase or the two-driver case. No matrix inequality is certified by
+these experiments. The portable proof replay does not depend on the optional
+NumPy/SciPy exploration. Full data and replay instructions are in
+\path{probe/FLOAT_ONLY.md}.
+
+\subsection{What remains and how to replay}
+\paragraph{Unresolved scope [?].}
+No theorem here controls arbitrary finite-amplitude self-interaction of a
+non-negligible remote cubic with its shared A/B drivers. The global bounds
+restrict that region but do not preserve enough residual deficit to close it;
+the full-cubic buffered radii are explicitly tiny. The complete row cover is
+also absent. No improved Grothendieck endpoint follows from this chapter.
+
+Run \texttt{python3 -I /absolute/path/verify\_all.py} from any directory.
+The checker uses only standard-library Python and C++17 with
+\texttt{\_\_int128}. It regenerates every relevant numerical table and
+records exact acceptance. The original external Node replay is optional
+via \texttt{--external-node}. The package includes a SHA256 manifest,
+frozen replay logs, separate cross audits, and a Markdown twin.
+The finite Laguerre and Wick-product audits supplement the algebraic proofs;
+they do not replace them. None of these new checks is a Lean formalization.

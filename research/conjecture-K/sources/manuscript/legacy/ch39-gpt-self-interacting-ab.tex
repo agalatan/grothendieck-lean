@@ -1,0 +1,862 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch39-gpt-self-interacting-ab.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 39). Owner: lower-bound/09-one-driver.tex
+\section{Self-interacting shared drivers: finite-amplitude A/B and a phase-sensitive reduction}
+\label{ch:self-interacting-ab}
+\chapsummary{Finite self-interacting A/B regions and a retained-square reduction. The all-amplitude one-driver closure is now in \autoref{ch:complete-coherent-driver}; these smaller proofs remain inputs.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch37-self-interacting-ab.tex}, renamed \code{ch39-gpt-self-interacting-ab.tex}
+(the response-stability chapter keeps its file), from \pathref{gpt-reviews/k-self-interaction-20261020/}, ported verbatim apart from this paragraph. \emph{Our replay} \st{C}:
+\code{python3 -I verify\_all.py} (standard library and Apple clang 17) from an unrelated directory: \textbf{PASS all certificates in 625\,s}. This covers the SHA256 manifest (101 files),
+the ring remainder and counterexample, the Fourier remainder, the compact reduction, the local analytic inputs, and the finite-amplitude boxes (604\,s). \emph{Independent float check}
+(\pathref{forest-2026-10-20/selfint\_check.py}, our quadrature): on a 270-point grid of the application box ($c\in[3/32,7/64]$, $g\in[3/16,7/32]$, $|\Re\alpha|,|\Im\alpha|\le1/128$,
+$|\beta|\le0.5$), the minimum of $S-\Lambda-(|\alpha|^2+|\beta|^2)/200$ is $8.8\cdot10^{-4}$, against the certified $1/6000$.
+
+\subsection{Scope and reading guide}
+\paragraph{Status labels.} \st{P} denotes a written proof, \st{C} exact or directed computation with a replayable checker, \st{F} exploratory floating-point evidence, and \st{?} an unverified claim or remaining obligation. Passing local or finite-box checks is not a complete row cover.
+
+At the peak put $\varepsilon=1891/2500$, $a=699/1250$, $b=179/1250$, $\ell(T)=\sqrt T(a+bT)$ and $H(X)=X(|X|^2-2)/\sqrt2$. The one-driver target is
+\[
+R_T=cH(X)+\alpha(T-1)X+\beta T\overline X/\sqrt2+gG,
+\]
+where $T\sim\mathrm{Exp}(1)$ and $X,G$ are mutually independent standard proper complex Gaussians, independent of $T$; $c,g\ge0$ and $\alpha,\beta\in\mathbb C$. Its price is $(c^2+|\alpha|^2+|\beta|^2+g^2)/\varepsilon$. The genuinely shared occurrences of $X$ are never replaced by independent copies.
+
+The previous round's remote-core theorem does not settle this model, because the coefficients of $X$ now depend on the visible radius. The near-maximizer stability reformulation remains a separate option. This chapter works directly with the honest averaged norm.
+
+\subsection{A certified finite-amplitude Wick core with both shared sectors}
+\label{sec:wick-ab-exterior-box}
+
+\paragraph{Scope.} [P]+[C]. This section proves a genuine self-interacting
+shared-driver comparison, uniformly over the entire complex $B$ coefficient.
+It covers the stated finite-amplitude boxes, not every Wick amplitude or a
+new complete row envelope. Let $T,R$ be independent exponential variables
+of mean one, let $E$ be an independent uniform circle variable, and let $G$
+be an independent standard proper complex Gaussian. Set
+\[
+ x=\sqrt T(a+bT),\qquad
+ m=\sqrt R\left(c\frac{R-2}{\sqrt2}+\alpha(T-1)\right),
+ \qquad a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+ \epsilon=\frac{1891}{2500}.
+\]
+Write $z=x+mE+gG$ and $d=\beta T\sqrt R\,\overline E/\sqrt2$.
+This is exactly the one-driver Wick $A/B$ model after the joint phase
+rotation. Its price is $(c^2+|\alpha|^2+|\beta|^2+g^2)/\epsilon$.
+The two norm signs have equal expectations.
+
+\paragraph{Theorem [P]+[C].}
+If
+\[
+ \frac3{16}\le c\le\frac7{32},\qquad
+ |\Re\alpha|,|\Im\alpha|\le\frac1{32},\qquad
+ \frac3{32}\le g\le\frac7{64},
+\]
+then, for \emph{every} $\beta\in\mathbb C$,
+\[
+ \Lambda+\frac{|\alpha|^2+|\beta|^2}{200}
+ \le\frac{96590969513668}{2^{46}}
+       =1.372640234559242\ldots<S-\frac1{1000}.
+\]
+In particular this includes every phase of $\alpha$ with
+$|\alpha|\le1/32$, every relative $B$ phase, and every $B$ amplitude.
+An arbitrary complex Wick coefficient reduces to $c\ge0$ by rotating
+its driver, which rotates the $A$ and $B$ coefficients oppositely.
+For the additional box
+\[
+ \frac3{16}\le c\le\frac7{32},\quad
+ \frac1{32}\le\Re\alpha\le\frac1{16},\quad
+ |\Im\alpha|\le\frac1{64},\quad
+ \frac3{32}\le g\le\frac7{64},
+\]
+the bound is $96463492301119/2^{46}<S-3/1000$.
+
+There is also an application-range box:
+\[
+ \frac3{32}\le c\le\frac7{64},\qquad
+ |\Re\alpha|,|\Im\alpha|\le\frac1{128},\qquad
+ \frac3{16}\le g\le\frac7{32}.
+\]
+For every $\beta\in\mathbb C$ throughout this box,
+\[
+ \Lambda+\frac{|\alpha|^2+|\beta|^2}{200}
+ \le\frac{11699314115727549941}{8516306895357607936}
+ =1.373754405457729\ldots<S-\frac1{6000}.
+\]
+The remote residual $cH(X)+gG$ has normalized fourth moment
+\[
+ 2+42\left(\frac{c^2}{c^2+g^2}\right)^2
+ \in\left[\frac{5065}{1682},\frac{175340}{37249}\right]
+ \subset[3,5].
+\]
+This comparison retains the self-interacting driver and reaches the
+kurtosis range relevant to the lower-bound application. Its proof uses
+the same signed point oracle and the refined vertex interpolation below.
+
+\paragraph{The three scalar quantities.}
+Keep the honest coherent baseline and content:
+\[
+ J=2\mathbb E|z|-\frac{c^2+|\alpha|^2+g^2}{\epsilon},\quad
+ C=\mathbb E\left[\frac{T\sqrt R}{\sqrt2}\overline E
+                       \frac{\overline z}{|z|}\right],\quad
+ K=\mathbb E\frac{T^2R}{2|z|}.
+\]
+The ring remainder of Section~\ref{sec:ch37-ring-remainder} gives
+\[
+ \Lambda\le J+2\Re(\beta C)-k|\beta|^2,\qquad
+ k=\epsilon^{-1}-K+I/5,
+\quad
+ I=\mathbb E\frac{T^2R/2}{\sqrt{x^2+g^2}+|m|}.
+\]
+The weight $T^2R/2$ has expectation one. Weighted Jensen and
+Cauchy--Schwarz therefore give the simple lower bound
+\[
+ I\ge\frac1{\sqrt{M_B+g^2}+
+ \sqrt{4c^2+4\sqrt2c\Re\alpha+14|\alpha|^2}},\qquad
+ M_B=3a^2+24ab+60b^2.
+\]
+At every certified vertex, a directed lower bound proves $k>0$;
+completing the square consequently bounds the entire complex $B$ plane
+by $J+|C|^2/k$.
+
+\paragraph{Why vertex verification suffices.}
+The function
+\[
+ H(c,\Re\alpha,\Im\alpha,g)
+ =\sup_{\beta\in\mathbb C}
+ \left(2\mathbb E|z+d|-|\beta|^2/\epsilon\right)
+\]
+is finite and convex in its four arguments. For a rectangular parameter
+box of side lengths $h_1,\ldots,h_4$, any certified vertex upper values
+$U(v)$ for $\sup_\beta\Lambda$ imply
+\[
+ \sup_{\text{box},\beta}\Lambda
+ \le\max_{v\text{ vertex}}U(v)+\frac1{4\epsilon}\sum_{j=1}^4h_j^2.
+\]
+The proof interpolates $H$ and pays the exact error in the negative
+quadratic price. It does not assume that $J+|C|^2/k$ is convex.
+For the retained penalty $\gamma=1/200$, replace $k$ by $k-\gamma$
+and add $\gamma|\alpha|^2$ at each vertex. The modified envelope is
+still convex, and the same conservative price correction applies. Every
+vertex has a certified positive $k-\gamma$, and the final penalized
+bound is checked strictly below the benchmark minus $1/1000$.
+Conjugation identifies the two imaginary-$\alpha$ endpoints, so eight
+rather than sixteen distinct vertices suffice for each box.
+
+For the moderate-kurtosis box, the coarser maximum-vertex correction is
+not sufficient. Retain instead the individual vertex caps. For normalized
+coordinates $t_i\in[0,1]$, side lengths $h_i$, and multilinear weights
+$\lambda_v(t)$, convexity gives
+\[
+ \Lambda+\gamma(|\alpha|^2+|\beta|^2)
+ \le \sum_v\lambda_v(t)U(v)
+    +\epsilon^{-1}\sum_i h_i^2t_i(1-t_i).
+\]
+The equal imaginary-$\alpha$ endpoint caps allow that coordinate's
+contribution to be bounded by $h_{\rm im}^2/(4\epsilon)$. Subdivide each
+of the other three coordinates into $16$ equal pieces, evaluate the
+displayed interpolant at the $17^3=4913$ grid vertices, and add
+$\sum_{i\ne\rm im}h_i^2/(4\epsilon16^2)$ for the subcell correction.
+The exact rational calculation is supplied by
+\texttt{reduction/check\_vertex\_interpolation.py}. Its input is a
+freshly recomputed log of all eight directed point bounds. No new
+norm integration, and no conjectured convexity of the point oracle,
+is needed for this refinement.
+
+\paragraph{Certified signed content.}
+Let $F_w(u)=\mathbb E|\sqrt u+\sqrt wG|$ and
+$k_g(u)=2F_{g^2}'(u)$. Its positive Laplace formula is
+\[
+ k_g(u)=\frac1{\sqrt\pi}\int_0^{1/g^2}
+ e^{-ut}t^{-1/2}\sqrt{1-g^2t}\,dt.
+\]
+Thus it is decreasing, is at most $1/\sqrt u$ for $u>0$, and
+$k_g(0)=\sqrt\pi/(2g)$. Certified Rice values and concavity give
+\[
+ \frac{2(F(u+h)-F(u))}{h}\le k_g(u)
+ \le\frac{2(F(u)-F(u-h))}{h},
+\]
+where the backward secant is used only when $u\ge h$.
+For $m=m_r+im_i$, the complex content integrand is
+\begin{align*}
+ \frac{T\sqrt R}{\sqrt2}k_g(|x+me^{i\theta}|^2)
+ \bigl[&x\cos\theta+m_r\cos2\theta-m_i\sin2\theta\\
+ &+i(-x\sin\theta-m_r\sin2\theta-m_i\cos2\theta)\bigr].
+\end{align*}
+Its sign and coherent phase are retained. Radial cells use positive
+Gaussian masses and interval ranges of the exact polynomial inputs.
+The angular quadrature uses $256$ rationally enclosed midpoint values.
+
+Put $\psi_g(z)=\mathbb E|z+gG|$. Fourier integration gives
+\[
+ \|D\psi_g\|\le1,\qquad
+ \|D^2\psi_g\|\le\frac{\sqrt\pi}{2g},\qquad
+ \|D^3\psi_g\|\le\frac8{3\pi g^2}<\frac1{g^2}.
+\]
+For the last inequality, the angular integral of the absolute product of
+three unit-direction factors is at most $\int|\cos\theta|^3d\theta=8/3$
+by H\"older; the radial Fourier integral is $2/g^2$.
+The angular midpoint error is at most
+\[
+ \frac{\pi^2}{6N^2}\left[
+ \frac{63}{100}+\frac{3\sqrt\pi}{2g}\sqrt{c^2+|\alpha|^2}
+ +\frac{(8c/7+7|\alpha|/4)^2}{g^2}\right].
+\]
+Here the weighted moments used are
+\[
+ \mathbb E\frac{T\sqrt R}{\sqrt2}|H(X)|^2
+ =\frac{33\sqrt\pi}{32\sqrt2}<(8/7)^2,\qquad
+ \mathbb E\frac{T\sqrt R}{\sqrt2}|(T-1)X|^2
+ =\frac{9\sqrt\pi}{4\sqrt2}<(7/4)^2.
+\]
+The checker pays this whole error in both the real and imaginary
+content intervals.
+
+\paragraph{Inverse radius and unbounded tails.}
+Conditionally on $T,R,E$,
+\[
+ \mathbb E_G|z|^{-1}
+ =\frac{\sqrt\pi}{g}e^{-u/(2g^2)}I_0\bigl(u/(2g^2)\bigr),
+ \qquad u=|x+mE|^2.
+\]
+The kernel is decreasing in $u$. A regenerated positive-Bessel-series
+table encloses it on $u/(2g^2)\in[0,32]$; the analytic exterior bound is
+$126/(125\sqrt u)$. The content and inverse-radius integrations truncate
+$\sqrt T,\sqrt R$ at $4$. On the omitted union,
+\[
+ \mathbb E[(T^2R/2)\mathbf1_{\rm tail}]\le162e^{-16},\qquad
+ \mathbb E[(T\sqrt R/\sqrt2)\mathbf1_{\rm tail}]
+ \le(85/4)e^{-16}.
+\]
+Using $g\ge3/32$ and $e>8/3$ gives allowances $2^{-11}$ and $2^{-18}$,
+respectively, which are included in every evaluation.
+The norm baseline uses the independently checked positive
+Bernstein/Rice oracle with its separate radius-$6$ tail.
+
+\paragraph{Replay and limitations.}
+The portable script \texttt{compute/verify\_box.py} regenerates every
+consumed table, checks the Rice envelope and cache geometry, checks the
+Gaussian inverse-radius estimates and the elementary tail constants,
+compiles the C++17 checker, and verifies all vertex and final-box
+comparisons with integer arithmetic. It then regenerates the finer radial
+grid for the moderate-kurtosis box and passes the fresh vertex bounds to
+the rational interpolation checker. The Gaussian benchmark is recomputed
+at variance $1/25$, rather than trusted as a stored decimal.
+Conditioning allows extra latent coefficients independent of
+$(T,R,E,G)$, with values in a certified box and square-integrable $\beta$.
+It does not permit those coefficients to depend on the shared radius or
+phase, and it does not prove interactions with additional shared drivers.
+
+
+\subsubsection{Keeping the individual vertex values closes the moderate-kurtosis box}
+\label{sec:ch37-vertex-refinement}
+\paragraph{Status \st{P}+\st{C}.}
+The previous maximum-vertex estimate needlessly discards the variation
+between vertex bounds. Keeping that information closes the moderate
+box without any additional integral evaluations.
+Let $p=1/\varepsilon$, $\gamma=1/200$, and
+\[
+ F_\gamma(y)=\sup_\beta\{\Lambda(y,\beta)
+                  +\gamma(|\alpha|^2+|\beta|^2)\},\qquad
+ H_\gamma(y)=F_\gamma(y)+p(c^2+g^2)+(p-\gamma)|\alpha|^2.
+\]
+The function $H_\gamma$ is finite and convex. If $U_v\ge F_\gamma(v)$
+are valid vertex upper values and $y_i=l_i+d_it_i$, then
+\[
+ F_\gamma(y)\le\sum_v\lambda_v(t)U_v
+                 +p\sum_i d_i^2t_i(1-t_i),
+\]
+where $\lambda_v$ are the multilinear interpolation weights.
+The use of $p$ instead of $p-\gamma$ in the two $\alpha$ coordinates
+is conservative.
+
+For
+\[
+ c\in[3/32,7/64],\qquad
+ |\Re\alpha|,|\Im\alpha|\le1/128,\qquad
+ g\in[3/16,7/32],
+\]
+conjugation identifies the two imaginary endpoints. Their price term is
+at most $p(1/64)^2/4$. The remaining three-variable upper polynomial
+is multilinear plus three negative squares, with side lengths
+$(1/64,1/64,1/32)$. On a grid of mesh $1/N$ in these normalized
+coordinates, the exact interpolation error is at most
+\[
+ \frac{p}{4N^2}\bigl((1/64)^2+(1/64)^2+(1/32)^2\bigr).
+\]
+The multilinear part interpolates exactly on each subcube; the displayed
+error follows from the scalar quadratic identity. This argument does
+not assume convexity of the numerical upper polynomial.
+
+For completeness, the eight certified values of $2^{46}U_v$, ordered by
+bits for the upper endpoints of $(c,\Re\alpha,g)$, are
+\[
+\begin{array}{rrrr}
+96639871076375,&96598784145879,&96645380156883,&96608200608242,\\
+96623524364432,&96578251883662,&96628000040062,&96586359820574.
+\end{array}
+\]
+With $N=16$, the largest of the $17^3$ rational grid values occurs
+at indices $(0,10,7)$. Adding the exact subcell error gives
+\[
+ F_\gamma\le
+ \frac{11699314115727549941}{8516306895357607936}
+ =1.373754405457729\ldots
+ <\frac{96683367193980}{2^{46}}-\frac1{6000}
+ \le S-\frac1{6000}.
+\]
+The checker \texttt{reduction/check\_vertex\_interpolation.py} receives
+the freshly regenerated vertex log from \texttt{compute/verify\_box.py}
+and verifies every fraction and continuum error. A saved log without
+replaying the integral bounds is not the certificate.
+
+The normalized fourth moment of the remote residual $q=cH(X)+gG$ is
+\[
+ m=2+\frac{42c^4}{(c^2+g^2)^2},\qquad
+ \frac{5065}{1682}\le m\le\frac{175340}{37249}.
+\]
+Thus the whole box is inside the application's kurtosis range.
+This is a statement about the remote residual, not a claim that the
+mixed law at each visible radius obeys pure-cubic moment constraints.
+
+
+\subsection{A larger analytic neighborhood for coherent self-interacting A/B}
+\label{sec:local-wick-ab-new}
+\paragraph{Status \st{P}, arithmetic replay \st{C}.}
+The following consequence of \autoref{ch:coherent-wick-a} and
+\autoref{ch:shared-nongaussian-new} closes a larger neighborhood of the
+Gaussian maximizer for the actual shared-driver A/B problem. It does not
+assert an all-amplitude comparison.
+
+Let $T\sim\mathrm{Exp}(1)$ and let $X,G$ be independent standard proper
+complex Gaussians, independent of $T$. Set
+\[
+ R_T=cH(X)+\sqrt vG+\alpha(T-1)X
+       +\lambda\frac T{\sqrt2}\overline X,
+ \qquad r^2=|\alpha|^2+|\lambda|^2,
+ \quad c\ge0.
+\]
+All relative phases are arbitrary. The two norm expectations coincide,
+and the exact variance price is $(c^2+v+r^2)/\varepsilon$.
+
+\begin{theorem}[Quantitative local coherent A/B]
+At the peak profile, suppose $7/200\le v\le9/200$. Each row of the
+following table implies $\Lambda(R_T)\le S-dc^4-r^2/200$:
+\[
+\begin{array}{c|c|c}
+ c\le&r\le&d\\\hline
+ 1/30&1/200&4\\
+ 1/40&1/100&9\\
+ 1/45&1/80&9\\
+ 1/36&1/120&8\\
+ 1/28&1/500&4
+\end{array}
+\]
+\end{theorem}
+\begin{proof}
+Put $x=|\alpha|$, $y=|\lambda|$, and $z=(x,y)^T$. The pure-Wick
+estimate of \autoref{ch:coherent-wick-a}, the signed Hankel content
+bounds of \autoref{ch:shared-nongaussian-new}, and its refined B
+curvature give
+\[
+ \Lambda(R_T)\le S-21c^4+\frac{20812}{3}c^6
+   +c^3(51x+25y)-z^TM(c,r)z,
+\]
+where
+\[
+ M(c,r)=
+ \begin{pmatrix}
+ 2/5-48c^2&-(17/100+116c^2)\\
+ -(17/100+116c^2)&9/10-(68/5)c^2
+ \end{pmatrix}-(595cr+459r^2)I.
+\]
+Indeed the exact mixed moment is
+$D=\mathbb E|cH(X)|^2|X|^2=4c^2$. The A, B, and mixed curvature
+costs are respectively $12D,(17/5)D,29D$, and the finite-coupling
+remainder is at most $(170\sqrt{3D}\,r+459r^2)r^2$.
+Use $170\sqrt{12}<595$.
+
+For a row $(C,R,d)$ in the table, put $N=M(C,R)-I/200$.
+Because $x,y\ge0$, entrywise coefficient bounds give
+$z^TM(c,r)z\ge z^TM(C,R)z$ on $c\le C,r\le R$.
+This comparison is only on the positive quadrant; a positive-semidefinite
+ordering is not required or asserted. All five matrices $N$ are positive
+definite. Square completion gives
+\[
+ c^3(51,25)z-z^TNz
+ \le\frac{c^6}{4}(51,25)N^{-1}(51,25)^T.
+\]
+The exact retained quartic coefficients are, in table order,
+\[
+\frac{32117541469972}{7731549900675}>4,\quad
+\frac{283006399523}{28344190800}>9,\quad
+\frac{145332714173669}{15384877132725}>9,\quad
+\frac{8884485269833}{1098935557164}>8,\quad
+\frac{15330785557606405}{3090422452082532}>4.
+\]
+The standard-library checker \texttt{check\_local\_ab.py} verifies
+these rational comparisons, the principal minors, and the Gaussian
+moment identities. The inherited integral certificates remain explicit
+inputs rather than being silently replaced by floating point values.
+\end{proof}
+
+The result also allows random coefficients independent of $(T,X,G)$,
+provided the displayed bounds hold almost surely; condition and average
+the retained $c^4$ and $r^2$ penalties. Coefficients depending on $X$ or
+$T$ are not covered by this conditioning corollary. The self-interaction
+already present in $H(X),X,\overline X$ is fully retained.
+
+
+\subsection{Retaining the buffer in the signed averaged content}
+\label{sec:buffered-content-new}
+\paragraph{Status \st{P}, exact scalar replay \st{C}.}
+The Gaussian buffer may be kept inside the positive Hankel integrals,
+instead of discarded after taking absolute values. This improves the
+true simultaneous A/B first-variation constants in arbitrary dimension.
+
+\begin{theorem}[Buffered shared content]
+Let $q=\sum_jc_jH(X_j)+\sqrt vG+B_0$, where $v\ge7/200$, all the
+$X_j,G$ are independent standard proper complex Gaussians, and $B_0$ is
+an independent circular square-integrable variable. At zero shared
+coupling, with $B_6=\sum_j|c_j|^6$,
+\[
+ \|\nabla_\alpha\Lambda|_0\|_2\le38\sqrt{B_6},\qquad
+ \|\nabla_\beta\Lambda|_0\|_2\le23\sqrt{B_6}.
+\]
+All coefficient phases are allowed. Independence of the buffer from the
+shared drivers is part of the hypothesis.
+\end{theorem}
+\begin{proof}
+Use the positive measures $\mu_1,\mu_2$ of
+\autoref{ch:shared-nongaussian-new}, characterized by
+\[
+ b_1(h(t))=\frac{e^{-t}}{(a+bt)^2},\qquad
+ b_2(h(t))=\frac{e^{-t}}{\sqrt2(a+bt)^3(a+3bt)},
+ \quad b_j(y)=\int e^{-sy}\mu_j(ds).
+\]
+Retaining $e^{-vk^2/4}$ in the signed Hankel integrals gives exactly
+\[
+ I_A(v)=3\sqrt\pi\int\frac{\sqrt s}{(1+vs)^{5/2}}\mu_1(ds),\qquad
+ I_B(v)=3\sqrt\pi\int\frac{s^{-1/2}}{(1+vs)^{5/2}}\mu_2(ds).
+\]
+The corresponding coordinate content bounds are
+$M_3I_A(v)|c_j|^3/8$ and $M_3I_B(v)|c_j|^3/8$, where
+$M_3=(-32+480e^{-2})/(2\sqrt2)$.
+The other independent circular blocks contribute characteristic
+functions of absolute value at most one.
+
+Since $\mu_1$ has mass $a^{-2}$ and
+\[
+ \sup_{s\ge0}\frac{\sqrt s}{(1+vs)^{5/2}}
+ =\frac{16}{25\sqrt{5v}},
+\]
+we have $M_3I_A(v)/8<38$.
+For B, the mass of $\mu_2$ exceeds seven, and its normalized first two
+moments are
+\[
+ m_1=\frac{1+6b/a}{a^2},\qquad
+ m_2=\frac{1+16b/a+72(b/a)^2}{a^4}.
+\]
+Cantelli's inequality and Markov's inequality imply
+\[
+ \frac{\mu_2([1,100])}{\mu_2([0,\infty))}
+ \ge\frac{(m_1-1)^2}{m_2-2m_1+1}-\frac{m_2}{10000}
+ >\frac{29}{50}.
+\]
+For $1\le s\le100$ and $v\ge7/200$,
+\[
+ s^{-1/2}\bigl[1-(1+vs)^{-5/2}\bigr]\ge\frac1{13}.
+\]
+Indeed, after setting $y=\sqrt s$, squaring positive sides reduces this
+to $(1+7y^2/200)^5(13-y)^2-169\ge0$ on $[1,10]$. All its Bernstein
+coefficients are positive; the minimum is
+$40536560263/20000000000$. Together with the previously checked
+$I_B(0)<17$, this gives
+\[
+ I_B(v)<17-\frac{3\sqrt\pi}{13}\,7\,\frac{29}{50},
+ \qquad M_3I_B(v)/8<23.
+\]
+The standard-library checker \texttt{check\_buffered\_content.py}
+verifies all rational comparisons and the degree-twelve polynomial
+barrier. Summing squares over the coordinates proves the result.
+\end{proof}
+
+\begin{corollary}[Strengthened coherent A/B rectangles]
+For the one-driver self-interacting model of
+Section~\ref{sec:local-wick-ab-new}, retain $7/200\le v\le9/200$.
+Each following row gives $\Lambda\le S-dc^4-r^2/200$:
+\[
+\begin{array}{c|c|c}
+ c\le&r\le&d\\\hline
+ 1/25&1/1000&3\\
+ 1/30&1/200&7\\
+ 1/40&1/100&12\\
+ 1/45&1/80&12\\
+ 1/36&1/120&11\\
+ 1/28&1/500&7\\
+ 1/27&1/300&4
+\end{array}
+\]
+\end{corollary}
+\begin{proof}
+Use the same matrix $N$ and replace the content vector $(51,25)$ by
+$(38,23)$ in the exact square completion. The retained quartic
+coefficients are respectively
+\[
+ \frac{782826956228123}{230810557726875},\quad
+ \frac{60108865167472}{7731549900675},\quad
+ \frac{358854578273}{28344190800},\quad
+ \frac{3717406752414911}{292312665521775},\quad
+ \frac{12201763975933}{1098935557164},\quad
+ \frac{48203933143290935}{6180844904165064},\quad
+ \frac{48133835814881215}{10646765602674867}.
+\]
+They exceed the stated integers, as checked with exact fractions in
+\texttt{check\_local\_ab.py}.
+\end{proof}
+
+
+\subsection{An opposite-frequency ring remainder and elimination of the shared B sector}
+\label{sec:ch37-ring-remainder}
+\paragraph{Status and scope.} The statements in this section are \textbf{[P]}, with exact algebraic checks \textbf{[C]}. They apply to the actual self-interacting Wick ring, with every relative phase and amplitude. They do not assert that the remaining four-parameter cover passes, and do not change the Grothendieck endpoint.
+
+\begin{theorem}[A uniform absolute Young improvement for a ring]
+Let $E$ be uniform on the complex unit circle, let $x,u,v\in\mathbb C$, and set $z=x+uE$, $d=v\overline E$ and $M=|x|+|u|>0$. Whenever $\mathbb E|z|^{-1}<\infty$,
+\begin{align*}
+2\mathbb E|z+d|\le 2\mathbb E|z|
+ +2\operatorname{Re}\mathbb E\frac{d\overline z}{|z|}
+ +|v|^2\mathbb E|z|^{-1}-\frac{\chi(x,u)|v|^2}{M},\\
+\chi(x,u)=\frac{|x|^2+|u|^2}{3|x|^2+4|x||u|+3|u|^2}
+\in[1/5,1/3].
+\end{align*}
+In particular one may replace $\chi$ by $1/5$. There is no restriction on $|v|$ or its phase.
+\end{theorem}
+\begin{proof}
+The exact discarded square in Young's inequality is
+\[
+\mathcal G=\mathbb E\frac{(|z+d|-|z|)^2}{|z|}
+=\mathbb E\frac{B^2}{D},\qquad
+B=|z+d|^2-|z|^2,\quad D=|z|(|z+d|+|z|)^2.
+\]
+One has $D\le M(2M+|v|)^2$. Orthogonality of the circle frequencies $-1$ and $-2$ gives
+\[
+\mathbb E B^2=|v|^4+2|v|^2(|x|^2+|u|^2).
+\]
+Put $h^2=2(|x|^2+|u|^2)$. The identity
+\[
+(h^2+4M^2)(|v|^2+h^2)-h^2(|v|+2M)^2=(2M|v|-h^2)^2
+\]
+therefore yields $\mathcal G\ge |v|^2h^2/[M(h^2+4M^2)]$. Finally
+\[
+5\chi(x,u)-1=
+\frac{2(|x|-|u|)^2}{3|x|^2+4|x||u|+3|u|^2}\ge0,
+\]
+and $\chi\le1/3$ follows immediately.
+\end{proof}
+
+\begin{corollary}[An independent buffer]
+Let $U$ be independent of $E$, with $\mathbb EU=0$ and $\mathbb E|U|^2=1$, and let $g\ge0$. For $z=x+uE+gU$, assuming the displayed inverse moment is finite,
+\[
+2\mathbb E|z+v\overline E|\le2\mathbb E|z|
+ +2\operatorname{Re}\mathbb E\frac{v\overline E\overline z}{|z|}
+ +|v|^2\mathbb E|z|^{-1}
+ -\frac{|v|^2}{5(\sqrt{|x|^2+g^2}+|u|)}.
+\]
+In particular this holds for a standard proper Gaussian buffer.
+\end{corollary}
+\begin{proof}
+Condition on $U$ and apply the ring theorem. Jensen and Cauchy--Schwarz give
+\[
+\mathbb E\frac1{|x+gU|+|u|}
+\ge\frac1{\mathbb E|x+gU|+|u|}
+\ge\frac1{\sqrt{|x|^2+g^2}+|u|}.
+\]
+\end{proof}
+
+\paragraph{Application to the actual coherent Wick family.}
+Let $T,R$ be independent mean-one exponentials, $E$ uniform on the circle, and $U$ a standard proper complex Gaussian, all independent. Write
+\[
+x(T)=\sqrt T(a+bT),\qquad
+p(T,R)=\frac{c(R-2)}{\sqrt2}+\alpha(T-1),\qquad
+z=x(T)+\sqrt R\,p(T,R)E+gU.
+\]
+The shared B perturbation is $d=\beta T\sqrt R\overline E/\sqrt2$. Both signs have the same expected norm, and the exact price is $c^2+|\alpha|^2+|\beta|^2+g^2$. Define
+\begin{align*}
+J_A&=2\mathbb E|z|-(c^2+|\alpha|^2+g^2)/\varepsilon,\\
+C&=\mathbb E\left[\frac{T\sqrt R}{\sqrt2}\,
+          \frac{\overline E\overline z}{|z|}\right],\qquad
+B=\mathbb E\frac{T^2R}{2|z|},\\
+I&=\mathbb E\frac{T^2R/2}
+ {\sqrt{x(T)^2+g^2}+\sqrt R|p(T,R)|},\qquad
+k=\varepsilon^{-1}-B+I/5.
+\end{align*}
+Then, for every $\beta\in\mathbb C$,
+\[
+\boxed{\quad\Lambda\le J_A+2\operatorname{Re}(\beta C)-k|\beta|^2.\quad}
+\]
+On every parameter region where $k>0$ is certified, this proves
+\[
+\boxed{\quad\sup_{\beta\in\mathbb C}\Lambda\le J_A+|C|^2/k.\quad}
+\]
+The three scalar integrals retain the visible and core radii and their joint dependence. No Gaussian replacement of the Wick ring has been made. The following tail reduction removes the need for $k>0$. Put $v_0=c^2+|\alpha|^2+g^2$. If $v_0\ge1$, the existing variance tail gives $\Lambda<4/3$ for every $\beta$. If $v_0<1$, set $r_{\max}=\sqrt{1-v_0}$, $h=|C|$, and
+\[
+Q(h,k,r)=\begin{cases}
+h^2/k,&k>0\text{ and }h\le kr,\\
+2hr-kr^2,&\text{otherwise}.
+\end{cases}
+\]
+This is exactly $\max_{0\le s\le r}(2hs-ks^2)$, including $k\le0$. Consequently the unconditional point upper oracle is
+\[
+\boxed{\quad\sup_\beta\Lambda\le
+\max\{4/3,\ J_A+Q(|C|,k,\sqrt{1-v_0})\}.\quad}
+\]
+No positivity condition on $k$ and no subdivision in $\beta$ remain. The obligation is to verify that this upper oracle, or a stronger one, pays the required K budget throughout the four-dimensional domain.
+
+\paragraph{The four-dimensional vertex reduction.}
+For $z_0=(c,\operatorname{Re}\alpha,\operatorname{Im}\alpha,g)$, define
+\[
+\mathcal H(z_0)=\sup_{\beta\in\mathbb C}
+\left\{2\mathbb E|x+\sqrt RpE+gU+\beta T\sqrt R\overline E/\sqrt2|
+ -|\beta|^2/\varepsilon\right\}.
+\]
+This is finite and convex: for each fixed $\beta$ the norm expectation is convex in $z_0$, and Cauchy--Schwarz with the quadratic price proves finiteness. The exact optimized objective is $\mathcal J=\mathcal H-\|z_0\|^2/\varepsilon$. If a box has side lengths $h_1,\ldots,h_4$ and $U(v)$ is any rigorous point upper bound for $\mathcal J$ at each vertex, then
+\[
+\sup_{z_0\text{ in the box}}\mathcal J(z_0)
+\le\max_{v\text{ vertex}}U(v)+\frac{\sum_{j=1}^4h_j^2}{4\varepsilon}.
+\]
+Indeed, interpolate the convex function $\mathcal H$ and correct each negative square by $t_j(1-t_j)h_j^2/\varepsilon$. The chosen upper bound $U$ need not itself be convex. If $c^2+|\alpha|^2+g^2\ge1$, the existing total-variance tail covers every $\beta$ simultaneously. A complete four-parameter cover, including a local Gaussian neighborhood, is still required before this becomes a theorem of K for the entire coherent A/B family.
+
+\paragraph{Conditioning scope.}
+The ring and buffered inequalities may be conditioned on extra latent coefficients independent of $(T,R,E,U)$, with arbitrary dependence among those coefficients. This is not a permission to condition away the Wick radius and then use a Gaussian remainder; the explicit ring remainder above is the ingredient that makes the conditioning valid.
+
+\subsubsection{Why the multiplicative Gaussian remainder cannot be imported}
+Let $\delta=2^{-144}$, $t=\delta^3=2^{-432}$, $z=1+\delta+E$ and $d=t\overline E$. An exact counterexample is
+\[
+2\mathbb E|z+d|-2\mathbb E|z|
+ -2\operatorname{Re}\mathbb E\frac{d\overline z}{|z|}
+ -\frac{15}{16}\mathbb E\frac{|d|^2}{|z|}
+ >\frac{t^2}{20}>0.
+\]
+This is a counterexample to a ring version of the Gaussian Young lemma, not to K. To verify it, set $C=\mathbb E|z|^{-1}$ and
+$R_*=\mathbb E[(\operatorname{Re}(\overline E\overline z))^2/|z|^3]$.
+Elementary angular estimates give
+\[
+C>\frac{4\cdot144}{33},\qquad C<73,\qquad
+R_*<\frac{23}{45}+\frac12+219\delta.
+\]
+For completeness, with $u$ measured from the cancelling angle,
+$|z|^2=\delta^2+2(1+\delta)(1-\cos u)$.
+Integrating over $\delta\le u\le1$ gives the lower bound using
+$\pi<22/7$, $\sqrt3<7/4$ and $\log2>2/3$.
+The inequality $1-\cos u\ge2u^2/\pi^2$ gives
+$C\le\frac12\operatorname{arsinh}(2/\delta)<\frac12\log(5/\delta)<73$.
+Writing $v=1+\cos\Theta$ and
+$\operatorname{Re}(\overline E\overline z)=(2\cos\Theta-1)v+\delta\cos\Theta$, the three terms in the squared numerator are bounded by
+\[
+\frac{23}{15\pi},\qquad3\delta C,\qquad\frac12,
+\]
+respectively. The first is the exact integral obtained from
+$\int_{-1}^1(1-4y^2)^2dy=46/15$.
+Taylor's theorem for $2\mathbb E|z+s\overline E|$, using $|z+s\overline E|\ge\delta/2$ on $0\le s\le t$, leaves an error at most $8t^3/\delta^2$. Hence the normalized excess is larger than
+\[
+\frac{C}{16}-R_*-8\delta
+>\frac{79}{990}-227\,2^{-144}>\frac1{20}.
+\]
+The same argument with $\delta=2^{-n}$ and $n\to\infty$ rules out every fixed ring remainder factor strictly below one. The absolute correction proved above survives precisely because it stays finite near the cancellation ring instead of claiming a fixed fraction of its logarithmically divergent inverse-radius price.
+
+\subsubsection{The buffer may depend on the self-interacting radius}
+The conditional buffer theorem requires independence from the ring phase, not from its radius. Given $(T,R)$ and additional latents, suppose $U_0$ has conditional mean zero and variance $w(T,R)$, and its conditional law is independent of $E$. The correction is then
+\[
+\frac{|v|^2}{5(\sqrt{|x|^2+w(T,R)}+|u|)}.
+\]
+For the reduction of the two signs to one expectation, use conditional central symmetry; without it apply the one-norm inequality separately to each sign.
+
+A concrete family with a genuinely shared nonlinear coefficient is
+\[
+q=cH(X)+d(|X|^2-1)Y+gG,\qquad
+r_A=\alpha_X X+\alpha_Y Y,\qquad
+r_B=\beta_X\overline X+\beta_Y\overline Y,
+\]
+where $X,Y,G$ are independent proper Gaussians. With $X=\sqrt R E$, condition on $(T,R)$. Outside the $X$ ring, the buffer is
+\[
+U_0=[d(R-1)+\alpha_Y(T-1)]Y+\frac{\beta_YT}{\sqrt2}\overline Y+gG,
+\]
+which is centered Gaussian, possibly improper, and independent of $E$. Its variance is
+\[
+w(T,R)=|d(R-1)+\alpha_Y(T-1)|^2+\frac{|\beta_Y|^2T^2}{2}+g^2.
+\]
+The same opposite-frequency bound therefore eliminates $\beta_X$, using this radius-dependent variance. The exact total variance price is
+\[
+c^2+|d|^2+g^2+|\alpha_X|^2+|\alpha_Y|^2+|\beta_X|^2+|\beta_Y|^2.
+\]
+This is a valid reduction for self-interaction plus a Gaussian factor on the same radius; it is not a completed K certificate for that family.
+
+\subsubsection{A phase-polynomial inequality for arbitrary coupled cubics}
+\begin{theorem}[One-sided Fourier baseline, \textbf{[P]}]
+Let $E$ be uniform on the circle and
+\[
+z(E)=\sum_{k=0}^d z_kE^k,\qquad d_0=v\overline E,
+\qquad M=\sum_{k=0}^d|z_k|>0,\quad S_2=\sum_{k=0}^d|z_k|^2.
+\]
+Whenever the inverse term is finite,
+\begin{align*}
+2\mathbb E|z+d_0|\le{}&2\mathbb E|z|
+ +2\operatorname{Re}\mathbb E\frac{d_0\overline z}{|z|}
+ +|v|^2\mathbb E|z|^{-1}
+ -\frac{|v|^2S_2}{M(S_2+2M^2)}. 
+\end{align*}
+The last correction is at least $|v|^2/[(2d+3)M]$.
+\end{theorem}
+\begin{proof}
+The frequencies $-1,\ldots,-(d+1)$ in $d_0\overline z$ are distinct and strictly negative. Consequently
+\[
+\mathbb E(|z+d_0|^2-|z|^2)^2=|v|^4+2|v|^2S_2.
+\]
+Use the same pointwise denominator bound and square completion as in the ring theorem, with $h^2=2S_2$. Finally $M^2\le(d+1)S_2$ proves the simpler constant.
+\end{proof}
+Random coefficients are permitted by conditioning whenever the phase remains uniform; their joint law is unrestricted.
+
+For any cubic $G\in\mathcal H_{2,1}$, choose a remote Gaussian coordinate $X=\sqrt R E$ and condition on its radius, the visible variable, and all other coordinates. The exact phase expansion is
+\[
+G=g_{-1}\overline E+g_0+g_1E+g_2E^2.
+\]
+For each of the two signs, use
+$z_\pm=L\pm(g_0+g_1E+g_2E^2)$ and $v_\pm=\pm g_{-1}$.
+The theorem applies with $d=2$, giving the $1/7$ correction, and the conditional price is exactly
+\[
+\mathbb E_E|G|^2=|g_{-1}|^2+|g_0|^2+|g_1|^2+|g_2|^2.
+\]
+Thus the inequality applies to arbitrary coupled tensors in arbitrary dimension and uses the bidegree constraint explicitly. It introduces no Gaussian-factor assumption. Controlling its remaining content and inverse-radius terms is still necessary before it yields K or an improved endpoint.
+
+\paragraph{The complete negative harmonic must be removed.}
+If a remote residual already contains $D\overline X$, combine it with the new B coefficient in $g_{-1}$. Leaving it in the baseline invalidates the hypothesis. An exact warning is $z(E)=\overline E$, $d_0=(i/10)\overline E$, for which
+\[
+2\mathbb E|z+d_0|-2\mathbb E|z|
+ -2\operatorname{Re}\mathbb E\frac{d_0\overline z}{|z|}
+=2\sqrt{101/100}-2>\frac6{700}.
+\]
+The right side would be the putative $1/7$-improved quadratic remainder. The strict comparison follows from
+$101/100-(703/700)^2=691/490000>0$.
+This refutes only the extension to baselines with negative Fourier frequencies, not Conjecture K.
+
+\paragraph{A finite version with an explicit smoothing budget.}
+Some legitimate baselines have infinite inverse-radius moments, for example when a signed diagonal factor vanishes on a circle. For $\eta>0$, set
+\[
+r_\eta(E)=\sqrt{|z(E)|^2+\eta^2},\qquad
+M_\eta=\sqrt{M^2+\eta^2}.
+\]
+The proof works in $\mathbb R^3$ on $(\operatorname{Re}z,\operatorname{Im}z,\eta)$, perturbed by $(\operatorname{Re}d_0,\operatorname{Im}d_0,0)$. The squared-radius difference $B$ is unchanged. Therefore
+\begin{align*}
+2\mathbb E|z+d_0|\le{}&2\mathbb E|z|
+ +2\operatorname{Re}\mathbb E\frac{d_0\overline z}{r_\eta}
+ +|v|^2\mathbb E\frac1{r_\eta}
+ -\frac{|v|^2S_2}{M_\eta(S_2+2M_\eta^2)}+2\eta.
+\end{align*}
+All terms are finite for square-integrable random coefficients because the denominators are at least $\eta$. The only additional loss is
+$2(\sqrt{|z|^2+\eta^2}-|z|)\le2\eta$.
+Applying the doubled inequality separately to the two signs and dividing by two leaves total slack $2\eta$.
+Thus $\eta=10^{-6}$, for example, gives a universally valid finite constraint with explicit budget $2\cdot10^{-6}$, without derivative or tail assumptions. It is not asserted that this constraint alone establishes K$_\eta$.
+
+
+\subsection{A compact certificate target with the singular boundary removed}
+\label{sec:ch37-compact}
+\paragraph{Status \st{P}, algebra replay \st{C}.}
+The following reductions are global. The final numerical inequality on their compact domain remains an obligation, not a proved conclusion.
+Let $p=1/\varepsilon$, $y=(c,\Re\alpha,\Im\alpha,g)$, $v_0=\|y\|^2$, and use $J_A,C,B,I$ from the preceding ring reduction. Write $h=|C|$, $k=p-B+I/5$.
+
+\paragraph{The variance tail and a truncated completion.}
+Orthogonality gives $\E L\overline Q=0$ and total variance $V=v_0+|\beta|^2$. Consequently
+\[
+ \Lambda(Q)\le2\sqrt{M+V}-pV,\qquad M=\frac{1181331}{1562500}.
+\]
+For $V\ge1$ this is decreasing and strictly below $4/3$, as follows by squaring the positive quantities at $V=1$ and checking $p^2(M+1)>1$.
+For $v_0<1$ set $R=\sqrt{1-v_0}$ and define
+\[
+ \mathcal Q(h,k,R)=
+ \begin{cases}h^2/k,&k>0\ \text{and}\ h\le kR,\\
+ 2hR-kR^2,&\text{otherwise}.
+ \end{cases}
+\]
+This equals $\max_{0\le r\le R}(2hr-kr^2)$ by square completion; in the endpoint branch the difference is $(R-r)[2h-k(R+r)]\ge0$. Thus
+\[
+ \boxed{\sup_{\beta\in\mathbb C}\Lambda(Q)
+ \le\max\{4/3,J_A+\mathcal Q(h,k,\sqrt{1-v_0})\}.}
+\]
+In particular, the elimination of $B$ remains valid when $k\le0$; a separate $B$ subdivision is not required for soundness. The upper bound may still be too loose on a box.
+
+\paragraph{An algebraic lower bound for the retained square.}
+The measure $d\mu=(T^2R/2)d\mathbb P$ is a probability measure. Jensen and Cauchy--Schwarz give
+\[
+ I\ge\frac1{\sqrt{M_B+g^2}+
+  \sqrt{4c^2+4\sqrt2c\Re\alpha+14|\alpha|^2}},
+ \qquad M_B=3a^2+24ab+60b^2=\frac{6391167}{1562500}.
+\]
+Indeed $\E_\mu\ell(T)^2=M_B$ and
+$\E_\mu[R|c(R-2)/\sqrt2+\alpha(T-1)|^2]
+=4c^2+4\sqrt2c\Re\alpha+14|\alpha|^2$. These follow from $\E T^j=j!$. This lower bound avoids a numerical integration of $I$ if desired.
+
+\paragraph{A paid Gaussian regularization.}
+If $g<g_0=1/200$, add independent proper Gaussian noise of variance $g_0^2-g^2$. Conditional Jensen for the norm gives
+\[
+ \Lambda(c,\alpha,\beta,g)
+ \le\Lambda(c,\alpha,\beta,g_0)+p(g_0^2-g^2).
+\]
+The law is changed and the added price is explicitly paid; this is not same-law buffer substitution. The largest cost is exactly
+\[
+ pg_0^2=\frac1{30256},\qquad
+ \eta_{AB}-pg_0^2=\frac{152672199}{2651182000000}>0.
+\]
+A complete bound with the remaining slack, about $5.75865\cdot10^{-5}$, on $g\ge1/200$ would therefore establish the requested one-driver $K_{\eta_{AB}}$ for every buffer.
+
+\paragraph{The correct convex function for a vertex certificate.}
+Define
+\[
+ \mathcal H(y)=\sup_{\beta\in\mathbb C}
+ \left\{2\E\left|\ell+cH(X)+\alpha(T-1)X+
+       \beta T\overline X/\sqrt2+gG\right|-p|\beta|^2\right\}.
+\]
+It is finite and convex in the four real coordinates $y$, being the supremum of convex functions with linear growth in $\beta$ against a negative quadratic. The actual optimized objective is $\mathcal F(y)=\mathcal H(y)-p\|y\|^2$.
+If $U(v)$ is any certified upper bound for $\mathcal F(v)$ at each vertex of a rectangular box with side lengths $d_i$, then
+\[
+ \sup_{y\ \mathrm{in\ the\ box}}\mathcal F(y)
+ \le\max_v U(v)+\frac p4\sum_i d_i^2.
+\]
+This follows by interpolating $\mathcal H$ and using the identity
+$(1-t)l^2+tu^2-((1-t)l+tu)^2=t(1-t)(u-l)^2$.
+It does not assert convexity of the numerical oracle $U$. Different valid oracles may be minimized at each vertex.
+The remaining compact base region lies in
+$[0,1]\times[-1,1]^2\times[1/200,1]$ with $v_0<1$; conjugation permits $\Im\alpha\ge0$. The exact algebra is audited by \texttt{check\_reduction.py}. This reduction by itself is not a full cover. The later complete coherent one-driver proof is in \autoref{ch:complete-coherent-driver}.
+
+
+\subsection{Replay, porting, and the remaining obligation}
+\paragraph{Status and integrity.}
+All \st{C} claims are replayed by the package's \texttt{verify\_all.py},
+using isolated Python with only the standard library and a C++17 compiler
+supporting \texttt{\_\_int128}. The replay regenerates deterministic
+integration tables, checks the unbounded tails and Gaussian benchmark,
+and feeds newly computed vertex bounds to the independent rational
+interpolation checker. Integer comparisons decide every accepted bound.
+The SHA256 manifest and frozen replay logs accompany the sources.
+The analytic local proof includes a minimal copy of its inherited
+\autoref{ch:coherent-wick-a} and \autoref{ch:shared-nongaussian-new} integral certificates; no external archive is needed to
+run them. The numerical checks do not constitute a Lean formalization
+of the analytic arguments.
+
+\paragraph{What is not proved, \st{?}.}
+This package alone does not complete the all-amplitude coherent
+one-driver cover; that is supplied later by \autoref{ch:complete-coherent-driver}.
+Its four-parameter reduction remains an explicit sufficient target, but
+its own numerical oracle is not asserted to pass throughout it.
+Several-driver and interaction results have the restricted scopes listed
+in \autoref{ch:K-state}. General coupled cubics, row uniformity and the
+full row envelope remain open. The universal
+phase inequality preserves the bidegree information but does not yet
+control its remaining signed content in the K budget.
+No new value of $K_G^{\mathbb C}$ is claimed.
+
+\paragraph{Porting.}
+This is a single chapter source with no fragment inputs. Add it as a
+new chapter while preserving the preceding response-stability chapter,
+which has already been ported under a filename beginning with
+\texttt{ch37}. The delivery filename may be renumbered without changing
+its labels. Cross-references to the previous chapters resolve in the
+handoff manuscript; the supplied standalone wrapper compiles this
+chapter independently. The live repository and its existing chapters
+have not been edited by this package.

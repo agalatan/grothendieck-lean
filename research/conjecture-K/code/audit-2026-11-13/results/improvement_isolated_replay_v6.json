@@ -1,0 +1,47 @@
+{
+  "status": "PASS exact saved-v6 replay under isolated Python; NO Lean build",
+  "agent": "codex-a713",
+  "python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+  "python_version": "3.12.3 (v3.12.3:f6650f9ad7, Apr  9 2024, 08:18:47) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "isolated": 1,
+  "boxes": 11107,
+  "actual_upper": "2261603817056712040758851322844120200618409620574822025192154843672242478630850583744036317940488763607039602325217061868242783776895677/3170084006194497222984187373099251683805388993323011660568675753939259219075805164387165719932133986795520000000000000000000000000000000",
+  "binding_boxes": [
+    3830
+  ],
+  "B": "713420784003651/1000000000000000",
+  "L": "17521216483/12500000000",
+  "strict_margin": "447366620567/12500000000000000000000000",
+  "improvement_over_current": "201339/1000000000000",
+  "source_pins": [
+    "data/lower-unshifted/inputs/inherited.json",
+    "data/lower-unshifted/inputs/cover.json",
+    "Grothe/Research/LawNodeData.lean",
+    "Grothe/Lower/MixedData.lean: mixedBatches declaration",
+    "Grothe/Lower/RowData01.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData02.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData03.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData04.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData05.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData06.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData07.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData08.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData09.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData10.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData11.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData12.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData13.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData14.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData15.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData16.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData17.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData18.lean: exact current constructor and inherited node values",
+    "Grothe/Lower/RowData19.lean: exact current constructor and inherited node values"
+  ],
+  "unchanged_input_sha256": {
+    "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/improvement_cover_v6.json": "aac65b27029aaa0c9887c2daf8e0b05e282f879d6bda376e7921cd44a02cb400",
+    "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/improvement_certificate_v6.json": "693f21b4be14c4a49e1e55b6c8556b0f639fbe8ec1d1011700a39542fc89fd77",
+    "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/improvement_independent_check.py": "db3f64d22651da96f4e7f2cb16950d1ed23ee795913a7d6862db43d6ddcdece1"
+  },
+  "seconds": 5.444210417001159
+}

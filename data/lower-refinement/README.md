@@ -1,4 +1,4 @@
-# Exact lower-witness refinement — Lean reflection pending
+# Exact lower-witness refinement — cover reflection pending
 
 This is the acceptance input for task #378. Its complete exact-arithmetic
 replay gives the scalar cap
@@ -10,9 +10,12 @@ K_G^{\mathbb C}\geq\frac{5000000}{3567097}>1.4017000378,
 \]
 
 using the repository's existing analytic reduction and Gaussian transfer.
-There is no Conjecture K premise. **The new certificates and cover have not
-been reflected in Lean.** They are not imported by `Grothe`, and this input
-does not update `MainResult` or the repository's formal lower endpoint.
+There is no Conjecture K premise. The law bank is reflected by
+`LowerRefinementCheck.certRefinementBatches`, and `Lower/FiniteMix.lean`
+proves soundness of arbitrary finite mixture expressions, their box bounds,
+and the corresponding cover checker. **The concrete 14,060-box cover still
+needs Lean reflection and endpoint assembly.** This input does not update
+`MainResult` or the repository's formal lower endpoint.
 
 ## Replay
 
@@ -21,9 +24,12 @@ From the repository root:
 ```sh
 python3 -B -S tools/verify_lower_refinement.py
 python3 -B -S tools/check_lower_refinement_controls.py
+python3 -B -S tools/gen_lower_refinement_lean.py --check
+lake build Grothe.Lower.FiniteMix Grothe.Research.LowerRefinementCheck
+lake env lean scratch/LowerRefinementAxioms.lean
 ```
 
-Both commands use only the Python standard library and existing
+The Python commands use only the standard library and existing
 `tools/rankone_law.py`. They neither access the network nor invoke a numerical
 optimizer. Do not use `-O`: the inherited rational checker uses assertions,
 and the entry points refuse optimized Python. Paths are resolved relative to
@@ -121,19 +127,30 @@ leaf bound, parent maximum, and unchanged original box is rechecked. No
 replacement may worsen its parent. The final maximum is compared with `B`
 and the reciprocal comparison is checked exactly.
 
-## Formal integration still required
+## Lean proofs and remaining integration
 
-The existing `BoxKind` reflection handles at most two row components. This
-input also uses longer finite mixtures. Before promoting the endpoint:
+The existing `BoxKind` reflection handles at most two row components. The
+extension uses `MixTree CompRef` to represent arbitrary finite binary mixing
+expressions. Its resolver calls the existing `mixData` at every internal
+node, so nonconvex weights and invalid leaf references fail closed. The new
+`MixBox` checker embeds old boxes and applies the existing exact slab formula
+to resolved mixtures. `MixTree.resolve_sound`, `MixBox.bound_sound`, and
+`mixCover_sound` prove its soundness without adding analytic hypotheses.
+`mixCover_bound` combines those results into the scalar bound `V ≤ B` for any
+accepted complete cover under the existing common-law assumptions.
 
-1. Reflect the new node bank and its accepted budget/range data.
-2. Extend the finite-mixture checker and prove its soundness, or translate
-   these mixtures to an equivalent supported representation.
-3. Generate the complete new cover and partition certificates, check them in
-   Lean, then update the endpoint and bound documentation in the same change.
+`tools/gen_lower_refinement_lean.py` rechecks and exports the ordered law bank
+byte for byte. `LowerRefinementCheck.certRefinementBatches` uses `native_decide`
+to check it with the existing `checkBatch` implementation, covering the source
+envelopes, budgets, majorants, radial tails, and joint-node ranges. Its native
+fact is recorded in the axiom inventory. The generic mixture proofs use no
+native computation.
 
-The Python result is a computer-assisted arithmetic extension of the existing
-analytic proof. A green CI status saying “no proof change” does not discharge
-these remaining Lean obligations.
+Before promoting the endpoint, the concrete replacement forest must be
+exported to `MixBox` expressions, the entire cover and partition checked in
+Lean, and the new checked cap connected to the scalar-witness transfer.
+
+The numerical endpoint remains a computer-assisted Python extension of the
+existing analytic proof until those remaining Lean obligations are closed.
 
 Agent-ID: codex-df7b

@@ -1,0 +1,355 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/60-anisotropic-cap.tex (file dated 2026-10-25). Only this line was added.
+\subsection{A sharp two-disk majorant and a larger original-response region}
+\label{sec:anisotropic-response-cap}
+\paragraph{Provenance (IDE note, 21 October).} Lower-bound GPT two-disk package (\code{conjK-anisotropic-response-20261021.zip}, archived in
+\pathref{gpt-reviews/anisotropic-response-20261021/}). IDE replays \code{python3 -I verify\_all.py} and \code{--fine} (standard library, unrelated directory): ALL CLAIMS
+PASS (1{,}897 and 5{,}651 panels; 5.3\,s and 15.5\,s), including an exact sum-of-squares identity for the two-disk majorant. IDE check: random search plus local
+maximisation of the pointwise two-disk inequality over complex $h,k$ with $|h\pm k|\le1$, complex $L$ and $\lambda>0$ gives maximum $0$ (sharp, never violated).
+Bookkeeping: the inverse is real-linear (the vector $(r_A,\overline{r_B})$ and its conjugate term are kept); the $\|Pk\|^2$ square is used by the rank-one corrections
+and must not be subtracted again; $(a,b)=(0.4541,0.15245)$ is a dual choice, not a profile change. The older operator theorem stays valid on its slightly wider
+$t$-interval; take minima of valid bounds. Not a raw-K region, not a Lean formalisation.
+
+
+\paragraph{Scope and status.}
+[P] means analytic proof and [C] exact directed computation.
+The statements concern the original bounded-response problem, in every
+finite dimension with all visible sectors and arbitrary shared drivers.
+No fourth- or sixth-moment input, raw Conjecture K, stationarity, or fresh
+Gaussian buffer is assumed. They enlarge the preceding small-remote-variance
+region; they do not cover the complete complement or give a new global
+Grothendieck endpoint.
+
+Fix $\epsilon=1891/2500$, $p=1/\epsilon$, and write
+\[
+ h=(f_++f_-)/2,\quad k=(f_+-f_-)/2,\quad |f_\pm|\le1,
+ \quad Ph=tZ,\quad F=\epsilon Qk,
+\]
+with Gaussian Wick projections $P=P_{1,0}$ and $Q=P_{2,1}$. The visible
+standard proper complex Gaussian $Z$ is independent of the remote Gaussian
+space $X$. Set $T=|Z|^2$ and decompose
+\[
+ F=q+(T-1)r_A+Z^2r_B/\sqrt2+ZY+\bar ZW+\nu H(Z),
+ \qquad H(Z)=Z(T-2)/\sqrt2.
+\]
+The remote bidegrees are $(2,1),(1,0),(0,1),(1,1),(2,0)$ in that order.
+The remote fields need not be independent of one another. Let
+\[
+ e=\|q\|_2^2,\quad A_2=\|r_A\|_2^2,\quad B_2=\|r_B\|_2^2,
+ \quad Y_R=\operatorname{Re}Y,\quad Y_I=\operatorname{Im}Y.
+\]
+The exact original objective is
+\[
+ \mathcal N=t^2+p\|F\|_2^2-\|Pk\|_2^2-\epsilon\|Qh\|_2^2.
+\]
+
+\subsubsection{The new regional theorem [P,C]}
+For every actual response,
+\begin{equation}\label{eq:aniso-rational}
+\boxed{\begin{aligned}
+ \mathcal N\le{}&t^2-\frac{759}{500}t+\frac{1272881}{10^6}
+                   +\frac{27}{50}e-\frac15A_2-\frac9{10}B_2\\
+ &-\frac{1219}{1000}\|Y_R\|^2-\frac1{4000}\|Y_I\|^2
+       -\frac{417}{1000}\|W\|^2\\
+ &-\frac{89}{40}(\operatorname{Re}\nu)^2
+       -\frac{163}{250}(\operatorname{Im}\nu)^2.
+\end{aligned}}
+\end{equation}
+Consequently
+\begin{equation}\label{eq:aniso-region}
+ \boxed{\begin{gathered}
+ \frac{667}{1000}\le t\le\frac{851}{1000},\qquad
+ e\le\frac{37}{2500}=0.0148\\
+ \Longrightarrow\quad
+ \mathcal N\le\frac{89157}{125000}=0.713256<\frac{500}{701}.
+ \end{gathered}}
+\end{equation}
+In particular the entire central interval $[0.84,0.851]$ is included.
+The variance cutoff increases from $0.0113$ to $0.0148$, by more than
+$30\%$, with every sector still unrestricted. This is a regional statement
+about the unnormalized variance of the actual projection
+$q=\mathbb E[F\mid X]$.
+
+The A/B penalty in~\eqref{eq:aniso-rational} can be strengthened to
+\begin{equation}\label{eq:aniso-AB}
+ \mathcal P_{AB}=\frac{57}{125}A_2+
+ \frac{43}{50}\operatorname{Re}\langle r_A,\overline{r_B}\rangle
+       +\frac{1623}{1000}B_2.
+\end{equation}
+The corresponding real symmetric matrix dominates both
+$\operatorname{diag}(1/5,9/10)$ and $(31/100)I$. Thus this is a positive
+penalty at every relative phase; its off-diagonal term must not be discarded
+with an arbitrary sign.
+
+Define
+\[
+\begin{aligned}
+ \mathcal E_{\rm adj}={}&e-\frac{10}{27}A_2-\frac53B_2
+ -\frac{1219}{540}\|Y_R\|^2-\frac1{2160}\|Y_I\|^2
+ -\frac{139}{180}\|W\|^2\\
+ &-\frac{445}{108}(\operatorname{Re}\nu)^2
+ -\frac{163}{135}(\operatorname{Im}\nu)^2.
+\end{aligned}
+\]
+On the central interval, the larger condition
+\begin{equation}\label{eq:aniso-adjusted}
+ \mathcal E_{\rm adj}\le\frac{37}{2500}
+       +\frac3{10}\left(\frac{851}{1000}-t\right)
+\end{equation}
+also gives the cap in~\eqref{eq:aniso-region}. One may replace the two
+A/B terms in $\mathcal E_{\rm adj}$ by $-(50/27)\mathcal P_{AB}$.
+
+\subsubsection{The sharp pointwise inequality [P]}
+The previous energy relaxation used only $|h|^2+|k|^2\le1$.
+The two disks contain more information. For any $L\in\mathbb C$,
+$\lambda>0$, and $|h\pm k|\le1$,
+\begin{equation}\label{eq:aniso-disk}
+ \boxed{\quad
+ 2\operatorname{Re}(\overline Lh)+\lambda|k|^2
+ +\frac{\{\operatorname{Re}(\overline Lk)\}^2}{\lambda}
+ \le\lambda+\frac{|L|^2}{\lambda}.
+ \quad}
+\end{equation}
+For $L\ne0$, this adds the term
+$(|L|^2/\lambda)\{\operatorname{Re}(\overline Lk/|L|)\}^2$.
+Its coefficient is sharp with the other terms fixed: $h=0,k=L/|L|$
+attains equality.
+
+Here is an elementary proof. First take $f_\pm=h\pm k$ on the unit circle,
+rotate $L$ to $l=|L|\ge0$, and write
+$h=e^{i\phi}\cos\psi$, $k=ie^{i\phi}\sin\psi$.
+Put $a_0=\cos\phi$, $c_0=\cos\psi$ and $x=l/\lambda$.
+The difference between right and left sides of~\eqref{eq:aniso-disk},
+divided by $\lambda$, equals
+\[
+\begin{aligned}
+ &1+x^2-2xa_0c_0-(1-c_0^2)-x^2(1-a_0^2)(1-c_0^2)\\
+ &\hspace{15mm}=(c_0-xa_0)^2+x^2c_0^2(1-a_0^2)\ge0.
+\end{aligned}
+\]
+For disks, write each $f_\pm$ as the mean of two antipodal unit-circle
+values. The left side is a convex quadratic function of the pair
+$(f_+,f_-)$, so Jensen extends the inequality. This does not assume
+unimodularity of the original responses. The displayed polynomial identity
+is also checked exactly by the replay.
+
+\subsubsection{The weighted real Hilbert-space reduction [P]}
+Choose $a,b>0$, put
+\[
+ L_0=Z(a+bT),\quad \ell_0=a+2b,\quad
+ \mathcal B=bZ(T-2),\quad l(T)=\sqrt T(a+bT),
+\]
+and choose a positive radial $\lambda(T)$. Applying~\eqref{eq:aniso-disk}
+pointwise leads to the quadratic form
+\[
+ \mathfrak m(k)=\mathbb E\left[\lambda|k|^2+
+ \frac{l^2}{\lambda}\{\operatorname{Re}(e^{-i\arg Z}k)\}^2\right].
+\]
+At $Z=0$ choose the phase arbitrarily. The inverse of its pointwise real
+linear operator is
+\[
+ M^{-1}u=c(T)u+d(T)e^{2i\arg Z}\bar u,
+\]
+where
+\[
+ c(T)=\frac12\left(\lambda^{-1}+\frac{\lambda}{\lambda^2+l^2}\right),
+ \qquad
+ d(T)=\frac12\left(\frac{\lambda}{\lambda^2+l^2}-\lambda^{-1}\right).
+\]
+In particular one must keep the conjugate term; treating the operator as
+complex linear would give incorrect A/B cross terms.
+
+Define, for $0\le j\le3$,
+\[
+ J_j=\mathbb E\frac{T^j}{\lambda},\quad
+ V_j=\mathbb E\frac{T^j\lambda}{\lambda^2+l^2},\quad
+ C_j=(J_j+V_j)/2,\quad D_j=(V_j-J_j)/2,
+\]
+and for any four-vector $U$ put
+\[
+ K_H(U)=\frac{U_3-4U_2+4U_1}{2}
+             -\frac{(U_2-2U_1)^2}{2(1+U_1)}.
+\]
+The coupled A/B block is the real matrix
+\begin{equation}\label{eq:aniso-gram}
+ K=\begin{pmatrix}
+ C_2-2C_1+C_0&(D_2-D_1)/\sqrt2\\
+ (D_2-D_1)/\sqrt2&C_2/2
+ \end{pmatrix}
+ -\frac1{1+C_0}
+ \begin{pmatrix}C_1-C_0\\D_1/\sqrt2\end{pmatrix}
+ \begin{pmatrix}C_1-C_0&D_1/\sqrt2\end{pmatrix}.
+\end{equation}
+If all inverse quantities exist and $K$ is positive definite, then
+\begin{equation}\label{eq:aniso-coercivity}
+\boxed{\begin{aligned}
+ \mathfrak m(k)+\|Pk\|^2\ge p^2\bigg\{&e/C_0+
+ \left\langle\binom{r_A}{\overline r_B},
+ K^{-1}\binom{r_A}{\overline r_B}\right\rangle\\
+ &+\|Y_R\|^2/V_1+\|Y_I\|^2/J_1+\|W\|^2/C_1\\
+ &+(\operatorname{Re}\nu)^2/K_H(V)
+   +(\operatorname{Im}\nu)^2/K_H(J)\bigg\}.
+\end{aligned}}
+\end{equation}
+The matrix quadratic form uses the real part of the complex inner product.
+
+For clarity, the complete block bookkeeping is as follows. Decompose the
+remote Gaussian space into Hermite chaoses and group each chaos with its
+conjugate, since $M^{-1}$ conjugates. The selected moments in different
+listed groups are orthogonal for the inverse weighted form.
+\[
+\begin{array}{c|c|c}
+ \text{selected cubic component}&\text{inverse Gram value}
+       &\text{retained first-chaos correction}\\\hline
+ q&C_0&\text{none}\\
+ (r_A,\overline r_B)&K&\text{remote }P_{1,0}k\\
+ Y_R,\ Y_I&V_1,\ J_1&\text{none}\\
+ W&C_1&\text{none}\\
+ \operatorname{Re}\nu,\ \operatorname{Im}\nu&K_H(V),\ K_H(J)
+       &\text{visible real/imaginary }Pk
+\end{array}
+\]
+For one remote linear coordinate, the selected visible functions are
+$X(T-1)$, $\bar XZ^2/\sqrt2$, and the penalized first-chaos function $X$.
+The raw A/B Gram matrix is the first matrix in~\eqref{eq:aniso-gram};
+its pairings with $X$ are $(C_1-C_0,D_1/\sqrt2)$ and the inverse norm
+of $X$ is $C_0$. Adding $|\langle X,k\rangle|^2$ subtracts the stated
+rank-one term. The real and imaginary coordinate blocks agree after
+conjugating the B coefficient.
+
+The remote $(1,1)$ chaos has a real orthonormal basis of real-valued
+Hermitian quadratic polynomials. On $Z$ times that basis the real inverse
+weight is $\lambda/(\lambda^2+l^2)$ and the imaginary one is
+$\lambda^{-1}$, giving $V_1,J_1$. The remote $(2,0)$ block gives $C_1$;
+its conjugate term has the wrong visible frequency to pair with a selected
+cubic. The visible diagonal gives the two rank-one corrections $K_H$.
+The remote cubic has no selected conjugate-frequency partner, giving
+$C_0$. Weighted Bessel, or minimization of the weighted norm subject to
+these moments, proves~\eqref{eq:aniso-coercivity}. Every unlisted component
+is allowed in that minimization. This proves the bound in arbitrary
+dimension, without independence between any remote fields.
+
+More explicitly, let $A=M+P$ on the real Hilbert space with inner product
+$\operatorname{Re}\mathbb E(\bar u v)$, and let $u_i$ be a real basis of
+the selected cubic moments. If
+$G_{ij}=(u_i,A^{-1}u_j)_{\mathbb R}$ and
+$y_i=(u_i,k)_{\mathbb R}$, then, for every real vector $z$,
+\[
+ (k,Ak)_{\mathbb R}\ge 2z^{\mathsf T}y-z^{\mathsf T}Gz.
+\]
+Maximizing over $z$ gives $y^{\mathsf T}G^{-1}y$. Here $y$ consists of
+$p$ times the coefficients of $F=\epsilon Qk$. The finite-rank identity
+\[
+ (M+P)^{-1}=M^{-1}-M^{-1}P(I+PM^{-1}P)^{-1}PM^{-1}
+\]
+on the range of $P$ gives precisely the corrections above. For the
+certified weight, $\lambda\ge\sqrt{s_0}>0$ and all selected polynomial
+moments are finite. Thus the argument can equivalently be read as a
+finite-dimensional dual minimization, without any boundedness assumption
+on multiplication by $\lambda$.
+
+\subsubsection{Completion of the original objective [P]}
+The identity
+\[
+ -\epsilon\|Qh\|^2
+ =2\operatorname{Re}\langle\mathcal B,h\rangle+2pb^2
+                  -\epsilon\|Qh+p\mathcal B\|^2
+\]
+and $Ph=tZ$ convert the original objective into a support problem for
+$L_0$. Use~\eqref{eq:aniso-disk} and then~\eqref{eq:aniso-coercivity}.
+With
+\[
+ C_\lambda=2pb^2+\mathbb E(\lambda+l^2/\lambda),\qquad
+ \Delta_{AB}=p^2K^{-1}-pI,
+\]
+the result is
+\begin{equation}\label{eq:aniso-general}
+\begin{aligned}
+ \mathcal N\le{}&t^2-2\ell_0t+C_\lambda+(p-p^2/C_0)e
+ -\left\langle\binom{r_A}{\overline r_B},\Delta_{AB}
+                         \binom{r_A}{\overline r_B}\right\rangle\\
+ &-(p^2/V_1-p)\|Y_R\|^2-(p^2/J_1-p)\|Y_I\|^2
+       -(p^2/C_1-p)\|W\|^2\\
+ &-(p^2/K_H(V)-p)(\operatorname{Re}\nu)^2
+       -(p^2/K_H(J)-p)(\operatorname{Im}\nu)^2\\
+ &-\epsilon\|Qh+p\mathcal B\|^2.
+\end{aligned}
+\end{equation}
+All penalties belong to one derivation. The $Qh$ square is still available;
+it was not used in the weighted operator calculation. The parameters
+$a,b$ are free parameters of this original-response dual, not a change
+to the peak profile or the witness in Conjecture K.
+
+\subsubsection{Exact numerical certificate [C]}
+Take
+\[
+ a=\frac{4541}{10000},\quad b=\frac{3049}{20000},\quad
+ s_0=\frac{167}{50000},\quad d=\frac{11}{500},\qquad
+ \lambda(T)=\sqrt{T(a+bT)^2+s_0+dT}.
+\]
+Then $2\ell_0=759/500$. The replay proves
+\[
+ C_\lambda<1.272881,\quad 0<p-p^2/C_0<0.54,\quad
+ \Delta_{AB}\succeq
+ \begin{pmatrix}0.456&0.430\\0.430&1.623\end{pmatrix},
+\]
+and the five remaining penalties in order $(Y_R,Y_I,W,\nu_R,\nu_I)$
+are respectively greater than
+\[
+ 1.219,\qquad0.00025,\qquad0.417,\qquad2.225,\qquad0.652.
+\]
+All decimals in these certified comparisons are exact rationals.
+For the A/B simplification, the matrix minus
+$\operatorname{diag}(0.2,0.9)$ has positive diagonal and determinant
+\[
+ (0.456-0.2)(1.623-0.9)-0.430^2=0.000188>0.
+\]
+Subtracting $0.31I$ also leaves a positive definite matrix.
+This proves~\eqref{eq:aniso-rational} and~\eqref{eq:aniso-AB}.
+The two endpoints $0.667$ and $0.851$ sum to $2\ell_0$; convexity
+in $t$ proves~\eqref{eq:aniso-region}. The margin is exactly
+$943/87625000>10^{-5}$. Substituting~\eqref{eq:aniso-adjusted}
+gives a quadratic nondecreasing on the central interval, with the same
+upper-endpoint value.
+
+Only eight one-dimensional integrals are needed. Write
+\[
+ P(T)=T(a+bT)^2+s_0+dT,\qquad
+ Q_0(T)=2T(a+bT)^2+s_0+dT.
+\]
+The two integrands, apart from $T^je^{-T}$, are $P^{-1/2}$ and
+$\sqrt P/Q_0$. The expectation in $C_\lambda$ is just
+\[
+ s_0J_0+(2a^2+d)J_1+4abJ_2+2b^2J_3.
+\]
+The verifier uses fixed-point integer intervals at scale $10^{40}$ and
+adaptive Simpson panels on $[0,40]$. Fourth derivatives are enclosed over
+the entire panel by Taylor-coefficient recurrences from
+$2Pu'+P'u=0$ and $Q_0v=1$. The panel error is at most
+$h^5\sup|f^{(4)}|/2880$, or $h^5/120$ times the enclosure of the
+normalized fourth coefficient $f^{(4)}/4!$. Exponentials have explicit positive
+Taylor remainders, and square roots use integer square roots.
+Both tails obey
+\[
+ 0\le\int_{40}^\infty T^je^{-T}P^{-1/2}\,dT,
+ \ \int_{40}^\infty T^je^{-T}\frac{\sqrt P}{Q_0}\,dT
+ \le\frac{j!e^{-40}}b\sum_{k=0}^j\frac{40^k}{k!},
+\]
+since $Q_0\ge P\ge b^2T^3$. No stored integral or floating quadrature
+is accepted as proof input. The fine replay decreases the integration
+error target by a factor of $100$.
+
+\subsubsection{The remaining complement}
+Any central-row response with $\mathcal N\ge500/701$ must now satisfy
+\[
+ \mathcal E_{\rm adj}\ge
+ \frac{500/701-t^2+(759/500)t-1272881/10^6}{27/50}.
+\]
+The right side is approximately $0.0183440$ at $t=0.84$,
+$0.0166059$ at $t=0.8456$, and $0.0148199$ at $t=0.851$.
+The full orientation penalty~\eqref{eq:aniso-AB} can strengthen this
+condition. The candidate must also evade every existing cumulant/support
+test and the earlier operator certificates. These necessary conditions
+have not been shown jointly impossible. The intermediate region and the
+full same-$\epsilon$ row cover remain open; the global certified interval
+is unchanged.
+

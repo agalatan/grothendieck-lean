@@ -1,0 +1,131 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch12-L2.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 12). Owner: lower-bound/08-shared-structure.tex
+\section{L2: the sharp cubic contraction constant}\label{ch:L2}
+\chapsummary{Tensor contraction bounds and numerical extremizers, with the successive proved improvements recorded below. A numerical extremizer is not a sharp-constant theorem.}
+
+Code and logs: \pathref{/\allowbreak private/\allowbreak tmp/\allowbreak claude-501/\allowbreak L2/\allowbreak } (copied to \pathref{handoff/\allowbreak research-third-decimal/\allowbreak L2-2026-10-15/\allowbreak }): \code{feyn.py} (exact Feynman evaluator),
+\code{optimize.py} (cold starts), \code{warm.py} (warm-started chain), \code{restricted.py} (sub-families), \code{family.py} (closed form). All values \st{F} but exact in the
+tensor (double precision on polynomial contractions).
+
+\subsection{The object}
+For $q=\sum_{a,b,c}t_{ab\bar c}\,{:}w_aw_b\bar w_c{:}$ with $t$ symmetric in $(a,b)$, $\sigma^2=\E|q|^2=2\|t\|^2$, and
+\[\begin{gathered}
+\kappa:=\E|q|^4-2\sigma^4\quad(\text{the fourth cumulant; }\kappa=\sigma^4x^2=\sigma^4(m-2)),\\
+v_j:=\E[\bar w_j\,q^2\bar q]=\langle w_j,\Pi_{1,0}(q|q|^2)\rangle,\qquad R(t):=\frac{\sum_j|v_j|^2}{\kappa^{3/2}} .
+\end{gathered}\]
+L2 asks for $C^*:=\sup_{n}\sup_{t}R(t)$. Known before today: proved $C^*\le3\sqrt6/2=3.674$ (K2, Corollary~7); numerically ``$0.4775$'' from $n=2$ plus a diffuse part;
+Wick monomial $0.4703$. Received today (upper-GPT, \pathref{handoff-reconciliation-20261015}): \textbf{$C^*\le3\sqrt3/2=2.598$} \st{P}, by keeping the same output direction in the two
+derivative contributions: with $U=\Pi_{1,1}|q|^2$, $V=\Pi_{2,0}q^2$, $A=\|U\|^2$, $B=\|V\|^2$, $\|\Pi_{1,0}(q|q|^2)\|^2\le(4A+B)\sqrt A$ and $4A+2B\le3\kappa$.
+Superseded the same evening by lower-bound GPT's package \pathref{global-a-and-content-20261015/l2/} (\code{SHARPENED\_CONTENT\_BOUND.md}, \code{KURTOSIS\_DEPENDENT\_CONTENT\_BOUND.md};
+exact checker \code{check\_positive\_contractions.py} run here under \code{python3 -I} from a separate directory: 5 PASS lines in $0.75$ s) \st{P}:
+\begin{itemize}
+\item \textbf{Positive cumulant identity.} With $N_{ab}=\sum_{jk}t_{ajk}\bar t_{bjk}$, $M_{ab}=\sum_{jk}t_{jka}\bar t_{jkb}$ (PSD), $K_{be}=\sum_{ad}t_{abd}t_{dea}$ (symmetric),
+$X_{abj;c}=\frac13\sum_{\rm cyc}\sum_it_{abi}t_{jic}$: $\ \kappa=32\|N\|^2+8\|M\|^2+96\|X\|^2+32\|K\|^2$, from $q^2=I_{4,2}(\mathrm{Sym}(t\otimes t))+4I_{3,1}(X)+4I_{2,0}(K)$.
+\item \textbf{Uniform constant} $C^*\le\sqrt{142688/29403}=2.2029158$ (scalar SOS on the budget split; an exact two-coordinate integer tensor with $\kappa=2838784$, $A=1439568$
+refutes the shortcut $\kappa\ge2A$).
+\item \textbf{Kurtosis-dependent bound.} For unit $q$ ($\sigma^2=1$, $0<\kappa\le42$): $V=\|\Pi_{1,0}(q|q|^2)\|^2\le H(\kappa):=\max_{0\le d\le2,\,0\le e\le1}(1+d+e)(\kappa-2d^2-2e^2)$;
+explicitly $H=(1+s)(\kappa-s^2)$, $s=(\sqrt{1+3\kappa}-1)/3$ for $\kappa\le16$ and $H=(d+2)(\kappa-2d^2-2)$, $d=(\sqrt{6\kappa+4}-4)/6$ for $\kappa\ge16$. Hence
+$V/\kappa^{3/2}\le F(\kappa^{-1/2})$ with $F$ increasing: coefficient $2.1126$ for $\kappa\ge1/4$, $1.5615$ ($\ge1/2$), $32/27$ ($\ge1$), $0.9302$ ($\ge2$), $0.7581$ ($\ge4$); sharp at the
+Wick endpoint $\kappa=42$, $V=128$. For $\kappa\to0$, $H(\kappa)=\kappa+\kappa^2/4+O(\kappa^3)$: a second-order bound with leading constant $1$ (asymptotic; not $V\le\kappa$).
+\end{itemize}
+Comparison with the maximisers of \S\ref{sec:L2growth} (true $R$ vs $H(\kappa)/\kappa^{3/2}$ at the maximiser's $\kappa$): $n=2$: $0.4775$ vs $0.5012$; $n=4$: $0.4954$ vs $0.5624$;
+$n=6$: $0.5092$ vs $0.6074$; $n=8$: $0.5211$ vs $0.6493$; $n=9$: $0.5255$ vs $0.6679$. The bound is within $5\%$ at $n=2$ and tracks the \emph{direction} of the growth: the maximisers
+lower $\kappa$ as $n$ grows and $H(\kappa)/\kappa^{3/2}$ increases as $\kappa$ decreases. It is therefore consistent with (and gives an upper envelope for) a limit $\sup_nR$ well above
+$0.53$; only the uniform constant $2.2029$ caps it.
+
+
+\paragraph{Exact evaluation.} By the complex Wick theorem, $v_j$ is a sum over the 32 complete matchings of the legs of $q,q,\bar q,\bar w_j$ with no edge inside a factor, and
+$\E|q|^4$ over the 176 matchings of $q,q,\bar q,\bar q$ (8 of them disconnected, giving $2\sigma^4$). Grouping the 32 by symmetry:
+\[\begin{gathered}
+v_j=8A_j+8B_j+16C_j,\\
+ A_j=\sum t_{abd}t_{dea}\bar t_{bej},\quad B_j=\sum_{a,c}t_{ajc}M_{ac},\ M_{ac}=\sum_{d,e}t_{dea}\bar t_{dec},\\
+ C_j=\sum t_{abc}t_{dja}\bar t_{bdc}
+\end{gathered}\]
+(checked against the generic enumeration to $10^{-13}$; Wick monomial $t_{111}=1/\sqrt2$: $v=32t^3=11.3137$, $\kappa=42$, $R=0.47026$, matching the hand computation
+$\E[\bar w(w^2\bar w-2w)^2(\bar w^2w-2\bar w)]/(2\sqrt2)=32/(2\sqrt2)$).
+
+\paragraph{Two invariances.} $R$ is scale-invariant (degree 6 over degree 6), and \emph{adding an independent diffuse Gaussian to $q$ changes neither $v$ nor $\kappa$}
+($\E|q+W|^4-2(\sigma^2+\sigma_W^2)^2=\E|q|^4-2\sigma^4$; the cross terms of $v$ vanish by independence and centering). Hence $C^*$ is a supremum over finite juntas, and the
+``$n=2$ + diffuse'' value of the notes is just the $n=2$ value. For a sum of \emph{independent} juntas $q=\sum c_kH(w_k)$: $v_k=32c_k^3$, $\kappa=168\sum c_k^4$ (cumulants add),
+so $R=\frac{1024\sum c_k^6}{168^{3/2}(\sum c_k^4)^{3/2}}\le0.4703$, maximal for a single coordinate: \emph{independent sums never help; the gain is in the coupling}.
+
+\subsection{The supremum grows with the dimension}\label{sec:L2growth}
+Cold-start maximisation (L-BFGS, numerical gradients, 30--40 starts) and a warm-started chain (embed the maximiser of $n-1$, perturb, re-optimise):
+\begin{center}\scriptsize\setlength\tabcolsep{3pt}
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lccccccccccc}\toprule
+$n$ & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 12 & 16\\\midrule
+$\sup R$ & 0.477466 & 0.487944 & 0.495370 & 0.502234 & 0.509235 & 0.515665 & 0.521148 & 0.525515 & 0.529677 & 0.539962 & --\\
+$\kappa$ at the maximiser ($\sigma^2=1$) & 30.04 & 20.69 & 16.02 & 12.86 & 10.46 & 8.73 & 7.57 & 6.67 & 5.96 & 4.68 & --\\\bottomrule
+\end{tabular}\end{adjustbox}
+\end{center}
+($n=10$: warm starts on two machines agree. Values up to $n=5$ from cold starts with numerical gradients, reproduced by the warm chain; $n\ge6$ from the analytic-gradient optimiser \code{optg.py} (every start at $n=6$ and $n=8$ returns the same value to $10^{-6}$), $n=5$ energy shares: Wick $0.10$, $w_1\cdot$form $0.25$, cubic$(w')$ $0.43$, rest $0.22$.) Increments per dimension $0.0105$, $0.0074$, $0.0069$, $0.0070$, $0.0064$, $0.0055$, $0.0044$ ($n=2\to9$): the last increments decay roughly like $n^{-2}$, so $R_\infty-R_n\sim c/n$, but the limit is poorly determined by $n\le9$: least-squares fits give $R_\infty=0.53$ ($a-c/n$, residual $7\cdot10^{-3}$), $0.55$ (same, $n\ge5$ only), $0.63$ ($a-c/(n+d)$, residual $8\cdot10^{-4}$), $0.59$ (same, $n\ge5$) \st{F}. The $n=10$ and $n=12$ runs on the droplet finished (values in the table, \code{optg10.log}, \code{optg12.log}); the $n=16$ runs (full and masked) produced no result in $2.4$\,h and were stopped. A momentum-conserving (circulant up to $U(n)$) ansatz $t_{abc}\ne0$ only if $a+b\equiv c\ (\mathrm{mod}\ n)$, with $n(n+1)/2$ instead of $n^2(n+1)/2$ parameters, reaches $0.508651$ at $n=6$ against the full $0.509235$ (gap $6\cdot10^{-4}$) and $0.5183$ at $n=8$ against $0.5211$ (gap $2.8\cdot10^{-3}$), so it is only a rough proxy for larger $n$ (\code{optgm.py}); in the masked frame the whole content sits in a single coordinate ($|v_j|^2=(17.5,0,\ldots,0)$ at $n=6$), which is the $U(n)$ freedom made explicit. \textbf{The sharp constant is therefore not $0.4775$; it is at least $0.54$ ($n=12$) and dimension-dependent}; whether $\sup_nR$ converges to a value well below the
+proved $2.2029$ (earlier $2.598$) is open. The warm-started chain reproduces the cold $n=4$ optimum exactly ($0.495370$), which supports its being the global maximum there; its $n=5$--$7$ values are appended to \code{warm.log} as they complete.
+
+\paragraph{Structure of the maximisers.} $n=2$: $q=\alpha\,{:}w_1^2\bar w_1{:}+\beta\,{:}w_1w_2\bar w_2{:}$ with $\beta/\alpha$ complex (phase $-22^\circ$): one coordinate times a
+centered charge-zero form in the other. $n=3$: Wick term ($t_{000}=0.547$), $w_1$ times a form in $(w_2,w_3)$ with a diagonal part ($0.151$, $0.151$) and an anti-Hermitian
+off-diagonal part ($t_{012}\approx-t_{021}\approx0.08$, i.e.\ $w_1\,\Im(w_2\bar w_3)$), and a pure cubic in $(w_2,w_3)$ with no $w_1$ ($\approx0.1$ each). $n=4$ (warm chain): energy shares
+Wick $0.18$, $w_1\cdot$form$(w')$ $0.27$, cubic$(w')$ $0.36$, $w_1^2\bar w_c$ $0.04$, $w_1w_b\bar w_1$ $0.13$, $w_aw_b\bar w_1$ $0.02$; the content is spread over all four directions
+($|v_j|^2=17.1,2.8,6.6,5.2$). So the maximiser is a genuinely multi-coordinate coupled object, not one coordinate dressed by the others. Restricted maximisations at $n=4$:
+$w_1\cdot$(general centered form in $w'$) only: $0.4852$; diagonal form $+$ pure cubic in $w'$: $0.4917$; general form $+$ cubic: $0.4921$; everything: $0.4954$. The pure cubic in the
+remaining coordinates carries most of the gain beyond the form.
+
+\subsection{A closed-form family}
+For $q=w_1\bigl[\alpha(|w_1|^2-2)+\sum_{c\ge2}\beta_c(|w_c|^2-1)\bigr]$ ($\alpha>0$, $\beta_c\in\C$; $E_c=|w_c|^2-1$ are independent centered exponentials with cumulants $1,2,6$),
+everything factorises. With $P=\sum|\beta_c|^2$, $\Sigma_2=\sum\beta_c^2$, $\Sigma_3=\sum|\beta_c|^2\beta_c$, $\Sigma_4=\sum|\beta_c|^4$:
+\[
+\sigma^2=2\alpha^2+P,\qquad v_1=32\alpha^3+4\alpha P+2\alpha\Sigma_2+4\Sigma_3,\qquad v_{c\ge2}=0\ (\text{charge}),
+\]
+\[
+\kappa=168\alpha^4+16\alpha^2\Re\Sigma_2+24\alpha^2P+16\alpha\Re\Sigma_3+12\Sigma_4+2|\Sigma_2|^2+2P^2 .
+\]
+(Derivation: $\partial_1q=Q+\alpha T_1$, $\partial_1\bar q=\alpha\bar w_1^2$, $v_1=\E[2T_1|Q|^2Q+3\alpha T_1^2|Q|^2]$ for real $\beta$, with the $T_1$-moments $\E T(T-2)^3=4$,
+$\E T^2(T-2)^2=8$, $\E T^2(T-2)^4=176$; complex $\beta$ adds the $\Sigma_2$ terms; the $\Sigma_3,\Sigma_4$ terms are the skewness and excess kurtosis of the exponentials.)
+Consequences: real $\beta$ in the Gaussian-multiplier limit ($\Sigma_3,\Sigma_4\to0$, $\Sigma_2=P=s$): $R(s)=(32+6s)^2/(168+40s+4s^2)^{3/2}$, maximum $0.4717$ at $s=0.352$;
+imaginary $\beta$ ($\Sigma_2=-s$): $R=(32+2s)^2/(168+8s+4s^2)^{3/2}$, maximum $0.4796$ at $s=0.754$; one remote coordinate: $0.477466$ (exactly the $n=2$ optimum, phase $-21.8^\circ$);
+$N$ remote coordinates with optimised complex $\beta_c$: $0.4826$, $0.4852$, $0.4874$, $0.4884$, $0.4894$, $0.4901$ ($N=2,\ldots,8$), saturating at $\approx0.4903$ by $N=12$ (the
+optimiser splits the $\beta_c$ into two conjugate groups at phases $\pm35$--$40^\circ$, exploiting the skewness $\Sigma_3$). So this family explains the $n=2$ optimum exactly and
+is beaten by the general maximiser from $n=3$ on (0.4879 vs 0.4826).
+
+
+\subsection{The content inequality on the L2 maximisers}\label{sec:kcontent}
+All earlier content measurements for K (\S\ref{sec:Kb}, \S\ref{sec:kprime-result}) used junta-plus-diffuse residuals. Here the residual is $q=\sigma\,Q$ with $Q$ the L2 maximiser of
+dimension $n$ ($\sigma^2=1$ normalised; $n=4$--$8$), i.e.\ the cubic chaos with the \emph{largest} content per unit of fourth cumulant known. Method (\code{kcontent.py}): Monte Carlo
+with $8\cdot10^6$ complex Gaussian samples in $n$ dimensions; profiles $c_A,c_B$ from the centred polar quadrature of \code{prof.py} at the peak row; content
+$\sum_j|\E[\bar w_jF_D(q)]|^2$ (MC relative error $\le3\%$ on the content); $q$-only slack $c_1=S-(\E\Phi_0(|q|)-\sigma^2/\varepsilon)$ with $\Phi_0$ from \code{kmodel.Model.Phi} and a
+quadratic control variate in $u=|Q|^2$ using the exact moments $\E u=1$, $\E u^2=2+\kappa$ (MC error on $c_1$ shown). The quantity to compare with $1$ is
+$(\text{content}_A^2+\text{content}_B^2)/[0.292\,(c_1+10^{-4})]$ (Proposition~\ref{prop:R} with $1/\varepsilon-h_X=0.292$).
+\begin{center}\small
+\begin{tabular}{lc|cccc}\toprule
+maximiser & $\kappa=x^2$ & $\sigma=0.14$ & $0.20$ & $0.25$ & $0.30$\\\midrule
+$n=4$ & 16.02 & 0.197 & 0.325 & 0.345 & 0.331\\
+$n=5$ & 12.86 & 0.188 & 0.330 & 0.351 & 0.334\\
+$n=6$ & 10.46 & 0.172 & 0.314 & 0.332 & 0.312\\
+$n=7$ & 8.73 & 0.161 & 0.308 & 0.324 & 0.301\\
+$n=8$ & 7.57 & 0.156 & 0.315 & 0.330 & 0.302\\\bottomrule
+\end{tabular}
+\end{center}
+(Typical values at $n=8$, $\sigma=0.25$: $c_1=6.30\cdot10^{-3}\pm1.9\cdot10^{-4}$, content$_A^2=4.94\cdot10^{-4}$, content$_B^2=1.22\cdot10^{-4}$.) \textbf{The content inequality holds on
+every L2 maximiser with a factor $\ge2.8$ to spare}, ratios $0.16$--$0.35$, essentially the same as on the junta family (K1: $\le0.385$ at fixed $\sigma$). The reason is that these
+residuals are strongly non-Gaussian ($x^2\ge7.6$), so the $q$-only slack $c_1$ is large ($1.6\cdot10^{-3}$--$1.9\cdot10^{-2}$); mixing them with diffuse Gaussian lowers $x$ but, since
+content$^2\propto a^6$ and $c_1\propto a^4x^2$ for small $x$ (mixing weight $a$), the ratio only decreases. The dangerous regime for a proof therefore remains intermediate $x$ with the
+\emph{moment-LP} slack (which is much smaller than the true $c_1$ used here), not the maximal-content residuals.
+
+\subsection{What this means for the K chain}
+The content inequality needs content$^2\le0.292(c_1(q)+\eta)$ with $c_1\approx1.2\cdot10^{-4}x^2$. In the polynomial model of the profiles ($\Delta_A\approx2.12s^3$,
+$\Delta_B\approx1.01s^3$) the content is $(2.12^2+1.01^2)\,C^*\,\sigma^6x^3$, so at $\sigma=0.2$ it is $C^*\cdot3.5\cdot10^{-4}x^3$ against $3.5\cdot10^{-5}x^2+2.9\cdot10^{-5}$: with
+$C^*=0.51$ the polynomial model closes for $x\lesssim0.35$, with $C^*=2.598$ for $x\lesssim0.1$, and with the kurtosis-dependent bound $V\le\sigma^6H(x^2)$ (which behaves like $\sigma^6x^2$ for small $x$, i.e.\ $5.5\cdot6.4\cdot10^{-5}\,H(x^2)\le3.5\cdot10^{-5}x^2+2.9\cdot10^{-5}$) for $x\lesssim0.29$ \st{F}; beyond that only the saturation of the bounded profiles can help, exactly as
+PROOF\_NOTES concluded. The dimension-dependence of $C^*$ found here is a warning for that route: the extremal cubic chaos for the content is a coupled many-coordinate object,
+so the ``junta + diffuse'' families used in all content measurements so far (\autoref{ch:K}) \emph{underestimate} the content by at least $8\%$ ($0.509/0.4703$) and
+possibly more. The content tests of K should be rerun on the $n=4$--$6$ maximisers of this chapter (done in \S\ref{sec:kcontent} and \autoref{ch:weighted}). \emph{Later (\autoref{ch:weighted}):} the dimension dependence disappears in the
+\emph{weighted} form of the inequality, $|\sum_k\bar\alpha_kv_k|^2\le3\kappa\,\alpha^*M\alpha$ with $M$ the influence matrix (Theorem~\ref{thm:W}), whose sharp constant lies in $[2.777,3]$ for all $n$ (Theorem~\ref{thm:quartic}); the
+unweighted growth found here is the growth of a Rayleigh quotient that ignores the influence weights.
+
+\subsection{Received corrections (upper-GPT, same package)}
+(i) In $\E|q+cr|^4$ the shared driver enters the $c^2$ term $4\E|q|^2|r|^2+2\Re\E(\bar q^2r^2)$ and the $c^3$ term $4\Re\E(\bar qr|r|^2)$ as well as the $c$ term, and $q+cr$ is mixed
+chaos: there is an explicit unit cubic in $4097$ coordinates with $\E|q|^4=2.0944$ and a shared linear $r$ with $\E|q-r|^2=73/64$ and \emph{negative} fourth cumulant
+$-353643/81920000$, so pure-cubic moment constraints cannot be applied at each $c=T-1$ separately. (ii) The moment-only $q$-comparison is not lossless: the two-point
+Gauss--Laguerre law (nodes $2\pm\sqrt2$) matches the exponential's moments $1,2,6$ and gives a strictly larger payoff (excess $9.6\cdot10^{-6}$ at the peak, float); fits inside
+$\eta=10^{-4}$. (iii) The $B$-sector failure of \S\ref{sec:idealBY} occurs inside genuine chaos: for $G=\sigma Q_{11}+cZ^2\bar W_1$ the honest payoff has a strictly positive
+$c$-derivative at $c=0$ for small $\sigma$ while the modulus-only bound has derivative zero. (iv) The frequency rule is exact as an identity
+$\E_\theta\{|l+O+E|+|l-O-E|\}=\E_\theta\{|l+O+E|+|l+O-E|\}$ ($O$ odd, $E$ even under $\theta\to\theta+\pi$) and cancels the first variation of the even block, but proves nothing at
+finite amplitude. Their stated next target: the full $A/B$ profile content against the true residual payoff deficit, with a certified fibre majorant.

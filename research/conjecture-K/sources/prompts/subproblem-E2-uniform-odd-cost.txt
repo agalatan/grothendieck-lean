@@ -1,0 +1,41 @@
+SUBPROBLEM E2 (6 Nov 16:00): make the odd-sector cost UNIFORM over the core, with the directional majorant.
+
+Setting (peak row; flank and upper analogous). z standard complex Gaussian, T = |z|^2, L = z(l + b(T-2)), l = 1057/1250, b = 179/1250,
+eps = 1891/2500. w in C^n standard complex Gaussian independent of z. Lambda(G) = E|L+G| + E|L-G| - E|G|^2/eps.
+Even core H = q(w) + (T-1) r_A(w) + z^2 conj(r_B(w))/sqrt 2 (q remote cubic, r_A, r_B holomorphic linear), odd part
+O = z Q(w) + conj(z) P(w) + d z (T-2) (Q in H_{1,1}(w), P in H_{2,0}(w), d in C). Energies add: E|H+O|^2 = E|H|^2 + E|O|^2,
+with E|O|^2 = E|Q|^2 + E|P|^2 + 2|d|^2 and, pointwise in w, E_z|O|^2 = |Q(w)|^2 + |P(w)|^2 + 2|d|^2.
+
+Known. (i) Parity: Lambda(H+O) = Lambda(H-O), so there is no first-order term in O and no mixed Hessian between the
+(q, A, B) block and the (Q, P, d) block. (ii) Zero core: Lambda(O) <= Lambda(0) - k_1(|Q|^2+|P|^2) - k_3 2|d|^2 at every
+amplitude, k_1 = 0.128/0.156/0.166, k_3 = 0.33/0.36/0.36 (certified). (iii) The inverse-norm majorant E[|O|^2/|L+H|] <= (1/eps)|O|^2
+FAILS at H = 0.152 w(R-2) + 0.106(T-1)w + (0.106/sqrt2) z^2 conj(w) (certified), so the subtractive directional term must be
+kept. (iv) The global directional majorant, valid for all complex X, Y with M = |X|^2 + |Y|^2:
+      |X+Y| + |X-Y| - 2|X| <= 2 ( sqrt(M - Re(X conj Y)^2 / M) - |X| ),                                   (D)
+no Taylor remainder, second-order expansion = the directional Hessian, bounded by 2|Y| near X = 0; with it the cost at the
+core of (iii) is certified: Lambda(H + tau O) <= Lambda(H) - 0.063 |tau O|^2 on 0.03 <= |tau| <= 0.04, 0.174 at |tau| = 0.04.
+(v) Numerically the true second-order cost in the worst odd direction is 0.79-1.32 per unit energy on nine cores
+(Wick, A, B and mixtures up to energy 0.06), so E is far from tight.
+
+WHAT WE WANT. Since there is no first-order term, NONINCREASE suffices for Conjecture K:
+   (E2)   Lambda(H + O) <= Lambda(H)   for every even core H with E|H|^2 <= 0.072 - E|O|^2 and every odd O with E|O|^2 > 0,
+(a positive constant kappa_E is welcome but not needed). By (D) a sufficient condition is
+   (E2')  E_z[ sqrt(M - c^2/M) - |L + H| ] <= (1/(2 eps)) E_z|O|^2   pointwise in w,   M = |L+H|^2 + |O|^2, c = Re((L+H) conj O),
+where for fixed w the quantities x = q(w), alpha = r_A(w), beta = r_B(w), Q(w), P(w), d are six complex numbers and the left side
+is a two-dimensional integral over z (radius and phase). (E2') is a scalar inequality in 12 real parameters, uniform in
+the law of w, hence in every dimension and sharing pattern; by rotation of z and w it reduces to 10 real parameters.
+Two routes, in order:
+  (a) If (E2') holds for ALL values of the six parameters (not only those that arise from the chaos), certify it as a
+      12-parameter inequality: the left side is 2 E_theta E_s of an explicit algebraic function of (s, theta) and the parameters,
+      with the same radial-angular reduction and Arb enclosures as the single-core certificate; the unbounded tails in
+      (x, alpha, beta, Q, P, d) must be handled analytically (for large |x| the left side is O(|O|^2/|x|)). Check first
+      numerically whether the ratio left/right stays <= 1 for arbitrary parameter values, especially where |L + x + ...|
+      can vanish on a circle (|x| ~ sqrt T l(T)): the single-core result suggests yes with margin ~5 %.
+  (b) If (E2') fails for some pointwise values that the chaos cannot produce, restrict to the one-driver family
+      (q = c w(|w|^2-2) + w P_1(Y), r_A = a w, r_B = b w, Q in span{|w|^2-1}, P in span{w^2}, d) and certify over the parameter
+      box (energies within the caps) with the actual joint law of w, as in the single-core certificate but with the
+      coefficients as interval parameters; then extend to several drivers by conditioning (the core is conditionally
+      Gaussian-plus-cubic in each driver).
+Deliverable: a replayable certificate (python-flint or exact rationals) of (E2') on its domain, with the analytic tails,
+and a statement of exactly which (H, O) it covers. With E2 and the A+B core (subproblem J), layer L5 is closed and
+Conjecture K reduces to the core content lemma on the certified classes.

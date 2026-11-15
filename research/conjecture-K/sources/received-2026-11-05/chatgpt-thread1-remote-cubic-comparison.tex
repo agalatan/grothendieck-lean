@@ -1,0 +1,460 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/ai-notes/chatgpt-thread1-remote-cubic-comparison.tex (file dated 2026-11-05). Only this line was added.
+% work-k/remote-cubic-comparison.tex
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,mathtools,microtype}
+\usepackage[a4paper,top=22mm,bottom=21mm,left=25mm,right=25mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=black]{hyperref}
+\hypersetup{pdftitle={Remote cubics and a visible-dependent Gaussian term}}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\small\itshape Remote cubics and a visible-dependent Gaussian term}
+\fancyfoot[C]{\small\thepage}\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,d}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\head}[1]{\section*{#1}}
+\begin{document}
+\thispagestyle{plain}
+{\LARGE\bfseries Remote cubics and a visible-dependent\\[2pt] Gaussian term}\par
+\medskip
+Let \(T=|Z|^2\sim\operatorname{Exp}(1)\), \(a(t)=\alpha+\beta t\),
+\(\alpha=\ell-2\beta\), \(r(t)=\sqrt t\,a(t)\), and \(L=Za(T)\). Write
+\[
+ F(G)=\E|L+G|+\E|L-G|,\quad M(v)=2\E|L+\sqrt v W|,\quad
+ S=\sup_{v\ge0}\{M(v)-v/\varepsilon\},
+\]
+where \(W\) is an independent standard complex Gaussian. The box is
+\(\varepsilon\in[0.74,0.76]\), \(\ell\in[0.76,0.90]\), \(\beta\in[0.12,0.16]\).
+In particular \(\varepsilon\le\ell\), \(\alpha/\beta\ge11/4\).
+We use the stated pure-remote case of Conjecture K when passing from a remote
+comparison to the optimized inequality in Section 2.
+
+\head{1. The missing term in the tangent bound}
+Consider \(G=H+G_0\) with \(H\) remote and \(G_0(0,z')=0\). Write \(h=\|H\|_2^2\)
+and use the constants \(C,D,E\) from Theorem 1 of \emph{Gaussian domination for
+two classes of charge-one cubics}. Orthogonality and the phase of \(Z\) give
+\[
+ \E[|G|^2\mid T=t]=h+t\{C+D(t-2)^2+Et\},\qquad v=h+C+2D+2E .
+\]
+Let \(f(t)=(a(t)^2+v)^{-1/2}\), \(J=\int_0^\infty\sqrt t\,e^{-t} f(t)\dd t\).
+In the square-root tangent estimate for \(F(G)/2\), the new term is
+\[
+ \frac h2 I_H,\qquad I_H=\int_0^\infty t^{-1/2}(1-t)e^{-t} f(t)\dd t
+ =\int_0^\infty \sqrt t\,e^{-t}\{f(t)-2f'(t)\}\dd t>0.       \tag{1}
+\]
+The identity follows by integration by parts. In particular the proposed deletion
+of the hypothesis on \(H\) fails at this step. Even with \(G_0=0\), the conditional
+second-moment upper bound is \(\E\sqrt{|L|^2+h}>M(h)/2\) for \(h>0\), by strict
+conditional Jensen for the Gaussian comparator.
+
+There is a quantitative extension without any independence between \(H\) and
+the coefficients of \(G_0\). Since \(-f'/f\le\beta/\alpha\), (1) gives
+\(I_H\le(19/11)J\). The linear and quadratic estimates in the preceding theorem
+bound the \(E,D\) coefficients by \(-J/2,-J/10\), respectively. Consequently
+\[
+ \boxed{\quad \frac{19}{11}h\le \frac{D}{10}+\frac E2
+      \quad\Longrightarrow\quad F(H+G_0)\le M(v).\quad}       \tag{2}
+\]
+Here \(D\) is the squared coefficient of \(Z(T-2)\), and \(E\) the squared norm
+of the linear driver of \(Z^2\bar V\). Pages 2--3 give another extension that
+allows arbitrarily large \(h\).
+
+\newpage
+\head{An independent Gaussian scale mixture}
+\textbf{Claim.} If \(G_0(0,z')=0\) and \(H\) is independent of \((Z,G_0)\) and
+has the law of a centered circular Gaussian scale mixture, then
+\(F(H+G_0)\le M(\|H\|_2^2+\|G_0\|_2^2)\) at all amplitudes.
+For example \(H=XQ\) qualifies when \(X\) is standard complex Gaussian,
+\(Q\) is an independent centered charge-zero quadratic, and the pair is independent
+of the variables used by \(Z,G_0\).
+
+First fix a deterministic Gaussian variance \(s>0\), set \(w=\|G_0\|_2^2\), and write
+\(m_s(y)=\E|y+\sqrt s W|\) for \(y\ge0\), \(g_s(x)=m_s(\sqrt x)\). The Laplace
+representation of the square root and a Gaussian integral give
+\[
+ g_s'(x)=\frac1{2\sqrt\pi}\int_0^{1/s} u^{-1/2}(1-su)^{1/2} e^{-ux}\dd u.       \tag{3}
+\]
+In fact the Laplace transform in the square-root representation is
+\((1+sq)^{-1}\exp[-qx/(1+sq)]\); differentiate and set \(u=q/(1+sq)\).
+Thus \(g_s\) is concave. Apply conditional Jensen to \(g_s(|L\pm G_0|^2)\)
+and take its tangent at \(x(t)=t(a(t)^2+w)\). The two corrections, apart from
+their nonnegative coefficients, are
+\[
+ \int t(t-2)e^{-t}g_s'(x(t))\dd t,\qquad
+ \int t q(t)e^{-t}g_s'(x(t))\dd t,\qquad q(t)=t^2-4t+2 .
+\]
+The first is nonpositive because \(g_s'\circ x\) is decreasing and
+\(\int t(t-2)e^{-t}\dd t=0\). For the second define
+\[
+ X(u)=\int_0^\infty t q(t)e^{-t-u x(t)}\dd t.
+\]
+Here \(X(0)=0\) and \(X'(0)<0\). Indeed \(x(t)\) has positive coefficients in
+degrees one, two and three, and
+\(\int t^{j+1}q(t)e^{-t}\dd t=j(j+1)(j+1)!\) for \(j\ge1\).
+The function \(X\) changes sign just once on \(u>0\), from negative to positive.
+Indeed let \(x_1,x_2\) be the values of \(x\) at \(2-\sqrt2,2+\sqrt2\).
+If \(Y(u)=e^{ux_1}X(u)\), then \(e^{u(x_2-x_1)}Y'(u)\) is strictly increasing,
+since its derivative integrates
+\(tq(t)(x_1-x(t))(x_2-x(t)) e^{-t+u(x_2-x(t))}\ge0\).
+Also \(Y(u)\to+\infty\): a compact interval inside \((0,2-\sqrt2)\) contributes
+exponentially, whereas the negative part is bounded.
+
+At \(s=0\) the preceding theorem proves \(\int_0^\infty u^{-1/2}X(u)\dd u\le0\).
+Multiplication by the nonnegative decreasing weight \((1-su)_+^{1/2}\) preserves
+this inequality: compare the weight on both sides of the unique sign change
+to its value there. All interchanges are justified by absolute integrability
+using \(g'_0(x)=1/(2\sqrt x)\). We have proved
+\[
+ \tfrac12 F(G_0+\sqrt s W)\le \E m_s\bigl(|Z|\sqrt{a(T)^2+w}\bigr).       \tag{4}
+\]
+
+\newpage
+\head{The radial comparison after Gaussian smoothing}
+For any nonnegative nondecreasing profile \(a\) of finite first moment
+against \(|Z|\,d\PP\), with \(R=|Z|\), we have
+\[
+ \E m_s\bigl(R\sqrt{a(T)^2+w}\bigr)\le \E m_{s+w}(Ra(T)).                 \tag{5}
+\]
+For \(s=0\) this is the radial comparison in the preceding theorem. The case
+\(w=0\) is an equality. Suppose \(s,w>0\). For constant profiles \(a=b\),
+both sides equal \(\E R\sqrt{s+w+b^2}\). After differentiating in \(b>0\),
+the difference of the right and left derivatives is the expectation of \(R\) times
+\[
+ m_{s+w}'(bR)-\frac b{\sqrt{b^2+w}}m_s'(R\sqrt{b^2+w}).                  \tag{6}
+\]
+This expression has at most one sign change, from negative to positive.
+To verify this, \(m_s'(y)=m_1'(y/\sqrt s)\), and (3) gives
+\[
+ m_1'(y)=\mathrm{const}\, y\int_0^1 z^{-1/2}(1-z)^{1/2} e^{-y^2z}\dd z .
+\]
+Its logarithmic derivative with respect to \(\log y\) equals \(1-2\E_{\nu_{y^2}}x\),
+where \(\nu_p\) has density proportional to
+\(x^{-1/2}(1-x/p)^{1/2}e^{-x}\ind_{(0,p)}(x)\).
+These laws increase stochastically with \(p\): for \(p_2>p_1\) the density
+ratio increases on \((0,p_1)\), and the support extends to \(p_2\).
+Thus \(m_1'(k_1R)/m_1'(k_2R)\) increases with \(R\) for \(0<k_1<k_2\).
+Apply this with \(k_1=b/\sqrt{s+w}\), \(k_2=\sqrt{b^2+w}/\sqrt s\).
+
+Since the full weighted integral of (6) is zero, its integral restricted to the
+upper tail \(\{a(T)>b\}\) is nonnegative. Integrating in \(b\) proves (5).
+Together with (4) it proves \(F(G_0+\sqrt s W)\le M(w+s)\).
+Condition on the independent mixing variance and apply concavity of \(M\).
+This proves the claim on page 2.
+
+\textbf{A useful property of the visible law.} \(L\) itself is a centered
+circular Gaussian scale mixture. For \(y\ge0\), let \(\psi(y)\) be the inverse of
+\(t\mapsto t(\alpha+\beta t)^2\). Then \(\PP(|L|^2>y)=e^{-\psi(y)}\).
+Differentiating in \(y\) is the operation \(g(t)\partial_t\) with
+\(g(t)=[(\alpha+\beta t)(\alpha+3\beta t)]^{-1}\). Each factor of \(g\) is completely
+monotone. Products and negative derivatives preserve complete monotonicity.
+Starting with \(e^{-t}\) therefore proves that \(e^{-\psi(y)}\) is completely
+monotone in \(y\). Bernstein's theorem represents this survival function as a
+mixture of exponentials. The uniform phase gives the assertion about \(L\).
+The representing measure has mass one and no atom at rate zero, by the values
+at zero and infinity. See Schilling, Song and Vondra\v cek, \emph{Bernstein Functions},
+Theorem 1.4. Also \(M\) is strictly concave since it is a mixture of
+\(\sqrt\pi\sqrt{s+v}\) in \(v\).
+
+\newpage
+\head{2. An independent remote cubic and \((T-1)U\)}
+\textbf{Theorem.} Let \(U\) be centered circular Gaussian, \(b=\E|U|^2\),
+and let \(H\) be any square-integrable complex random variable independent of
+\((Z,U)\), with \(U\) independent of \(Z\). If \(v=b+h\le\ell^2\), \(h=\E|H|^2\), then
+\[
+       \boxed{\quad F(H+(T-1)U)\le F(H+\sqrt b\,W).\quad}                  \tag{7}
+\]
+In fact moving the Gaussian variance from its constant value \(b\) to
+\(b(T-1)^2\) along the affine segment decreases \(F\).
+
+Write \(w_d(t)=b(1+d\,t(t-2))\) for \(0\le d\le1\) and
+\(K_s(x)=\E|x+\sqrt s W|^{-1}\). Let \(\theta\) be an independent uniform angle.
+The derivative of the interpolated \(F\) is
+\[
+ \frac b2\int_0^\infty e^{-t}t(t-2)
+       \E_{\theta,H}K_{w_d(t)}(r(t)e^{i\theta}+H)\dd t.                   \tag{8}
+\]
+This follows from \(\partial_s m_s=K_s/4\) and averaging the phase of \(Z\).
+For \(b>0\), differentiation is justified on compact subintervals of \(d<1\);
+continuity gives the endpoint. We use the previously proved bound
+\(K_s(x)\le6/(5|x|)\).
+
+The positive and negative weights in (8) have equal mass \(N=4e^{-2}\).
+The mean of \(t\) under the normalized negative weight on \((0,2)\) is
+\(m_-=(9-e^2)/2<81/100\). There \(r(t)\le\ell\sqrt t\) and \(w_d(t)\le b\).
+Jensen, first for the reciprocal radius and then in \(t\), bounds the magnitude
+of the negative integral from below by
+\[
+       \frac{N}{\ell\sqrt{m_-+v/\ell^2}}>\frac{37N}{50\ell}.              \tag{9}
+\]
+For the positive integral fix the shift \(H\), set \(y=|H|/\ell\), and reduce
+to radius \(\sqrt t\) as follows. If \(y\le\sqrt2\), set \(p=y\); increasing
+the radius from \(\sqrt t\) to \(r(t)/\ell\) increases its distance to a point
+at radius \(p\) for \(t\ge2\). If \(y>\sqrt2\), choose \(z\ge2\) with
+\(r(z)/\ell=y\), and put \(p=\sqrt z\le y\). On radii at least \(\sqrt2\) the
+map \(x\mapsto xa(x^2)/\ell\) increases both radii and their difference.
+The squared-distance formula therefore gives in both cases
+\[
+       |r(t)e^{i\theta}+\ell y|\ge\ell|\sqrt t\,e^{i\theta}+p|,\qquad p\le y .
+\]
+The estimate on page 5 bounds the positive integral by
+\[
+       \frac{6N}{5\ell}\left(\frac12+\frac{7h}{60\ell^2}\right)
+       \le \frac{37N}{50\ell}.
+\]
+Together with (9) this proves (7), strictly when \(b>0\).
+
+\newpage
+\head{The shifted outer integral}
+Let
+\[
+ P(p)=\frac1N\int_2^\infty t(t-2)e^{-t}
+             \E_\theta|\sqrt t\,e^{i\theta}+p|^{-1}\dd t .
+\]
+We prove \(P(p)\le\frac12+\frac7{60}p^2\) for all \(p\ge0\). First
+\(P(0)=\frac14\E\sqrt{2+X}\le1/2\), \(X\sim\Gamma(2,1)\).
+Put \(y=p^2\). By the binomial series and phase averaging the angular integral is
+\[
+ \max(t,y)^{-1/2}\sum_{n\ge0} a_n
+ \left(\frac{\min(t,y)}{\max(t,y)}\right)^n,\qquad
+ a_n=\left[\binom{2n}{n}/4^n\right]^2 .
+\]
+The logarithmic singularity at \(t=y\) is integrable; nonnegative terms permit
+Tonelli. The \(n=0\) contribution is at most \(P(0)\). Since
+\(\min(t,y)/\max(t,y)\le y/t\), the \(n=1\) contribution is at most
+\(y\,\E(2+X)^{-1/2}/16\le y/(16\sqrt3)\). For the last inequality integrate
+\(x/\sqrt{2+x}\) under an exponential law and apply concavity.
+
+For \(n\ge2\), divide the contribution by \(y\) and set \(s=\log(t/y)\).
+It is bounded by
+\[
+ a_n \sup_{t\ge2}\frac{(t-2)\sqrt t\,e^{-t}}N
+       \left(\frac1{n-1}+\frac1{n+3/2}\right).
+\]
+Indeed on \(t\ge y\) the remaining factor is \(e^{-(n-1)|s|}\), and on \(t<y\)
+it is \(e^{-(n+3/2)|s|}\). The supremum is below \(1/6\): with \(x=t-2\),
+\(\sqrt{2+x}\le\sqrt3 e^{(x-1)/6}\), so \(x\sqrt{2+x}e^{-x}\le
+(6\sqrt3/5)e^{-7/6}<2/3\).
+The coefficient recurrence gives \(a_n\le1/(3n+1)\) by induction. Bounding by
+\(1/(3n)\), replacing \(1/(n+3/2)\) by \(1/(n+1)\), and retaining the improvement
+\(1/6-a_2=5/192\) at \(n=2\), the sum of the coefficients times the two fractions is
+at most \(1/2-5/192\), by telescoping. Finally
+\[
+ \frac1{16\sqrt3}+\frac16\left(\frac12-\frac5{192}\right)<\frac7{60}.
+\]
+This proves the stated bound with elementary inequalities.
+
+\textbf{Consequence for R2.} Along any direction of unit \(L^2\) norm, \(F(sG)\)
+is \(2\)-Lipschitz in \(s\). Thus the penalized functional decreases for
+\(s\ge\varepsilon\), and \(\varepsilon\le\ell\). When \(H\) is a remote cubic,
+the stipulated pure-remote theorem applies also to \(H+\sqrt b W\) by a limit.
+Use \(W_n=(2n)^{-1/2}\sum_{j=1}^n X_j(|X_j|^2-2)\) on fresh remote coordinates.
+The planar central limit theorem gives \(W_n\Rightarrow W\), and bounded second
+moments give convergence of the mean norms. The variances are exactly \(h+b\).
+Consequently \(\Lambda(H+(T-1)U)\le S\) at every amplitude for disjoint coordinates.
+This step uses the pure-remote theorem as an input; the fourth-moment upper bound
+alone does not supply it.
+
+\newpage
+\head{3. Shared coordinates: small amplitudes}
+Let \(G=(T-1)U+H\) with \((U,H)\) independent of \(Z\), where \(U\) is linear
+and \(H\) a remote cubic. In particular \(\E[\bar U H]=0\), including for shared
+coordinates. With \(b=\|U\|_2^2\), \(h=\|H\|_2^2\), \(v=b+h\), averaging the
+phase gives, for a fixed direction with \(b>0\),
+\[
+ F(sG)-M(s^2v)=\frac{s^2 b}{2}
+       \int_0^\infty \frac{t(t-2)e^{-t}}{r(t)}\dd t+o(s^2)<0
+ \quad\text{for all sufficiently small }s>0.                              \tag{10}
+\]
+The integral is strictly negative because \(1/r(t)\) is strictly decreasing,
+and the signed weight changes sign at 2 and has mass zero. The second-order
+expansion follows by dominated convergence from the phase average of the norm;
+its increment is bounded by \(|sG|^2/(2r(t))\).
+
+\textbf{Uniform small amplitudes.} For every fixed \(\delta>0\), (10) extends
+to a uniform same-variance theorem at sufficiently small \(s>0\) on all normalized
+directions \(\|G\|_2=1\) with \(\E|G|^4\ge2+\delta\), throughout the box.
+Together with the stated near-Gaussian result (ii), this gives the penalized
+inequality for all such shared pairs at sufficiently small common amplitude.
+The argument here gives an existence radius, not a radius of \(0.1\).
+
+Here are details of the uniformity. In plane coordinates \(x=L\), write \(t(x)\)
+for the inverse radial parameter and \(p(x)\) for the density of \(L\):
+\[
+ |x|^2=t(\alpha+\beta t)^2,\qquad
+ p(x)=e^{-t}/\bigl[\pi(\alpha+\beta t)(\alpha+3\beta t)\bigr].
+\]
+The even function \(J(u,y)=\E_Z|L+(T-1)u+y|\) has a Taylor expansion in its four
+real arguments through degree four with remainder bounded globally by
+\(C(|u|+|y|)^6\), uniformly on the box. To justify this, \(t(x)\) is smooth by
+the inverse function theorem, \(\nabla t\) is bounded, and its higher derivatives
+are polynomially bounded, uniformly on the box. For small \(u\), the map
+\(x\mapsto x+(t(x)-1)u\) has a smooth global inverse by contraction. Its Jacobian
+is uniformly invertible. Differentiating the inverse and its Jacobian finitely
+many times gives polynomial bounds in \(|x|\), since \(t\) and its derivatives
+have such bounds. The pushed density and its parameter and spatial derivatives
+through order six are consequently bounded by polynomials times
+\(\exp[-c|x|^{2/3}]\) at infinity, uniformly for small \(u\). Translate the
+pushed density by \(y\) before integrating against \(|x|\). This yields uniform
+local \(C^6\) bounds. Evenness removes odd terms; linear growth of \(J\)
+extends the remainder bound outside a neighborhood of zero.
+
+Put \(B(y)=\E|L+y|\). Integration by parts gives
+\[
+ \Delta^2 B(0)=2\pi\int_0^\infty \frac{p(r)-p(0)}{r^2}\dd r<0 ,
+\]
+uniformly separated from zero on the compact box. Indeed \(\Delta|\cdot|=1/|\cdot|\)
+and \(p\) strictly decreases. The pure-remote quartic Taylor coefficient of
+\(F(sG)-M(s^2)\) is \(\Delta^2 B(0)(\E|H|^4-2)/32\); terms containing \(U\) in
+the quartic coefficient are \(O(\sqrt b)\). All constants are dimension-free:
+fixed-order Gaussian hypercontractivity bounds the sixth moments of \(U,H\)
+uniformly, and \(\|(T-1)U\|_4=O(\sqrt b)\).
+
+\newpage
+\head{Shared coordinates: all-amplitude regions}
+To finish the uniform argument, \(|\E|H|^4-\E|G|^4|=O(\sqrt b)\) by Hölder.
+For small \(b\), the quartic coefficient is uniformly negative when the fourth
+excess is at least \(\delta\). For \(b\) bounded below, the strictly negative
+quadratic coefficient in (10) is uniform by compactness. The \(O(s^6)\) remainder
+then proves the assertion.
+
+\textbf{An explicit region for arbitrary sharing.} If \(\|H\|_2\le\|U\|_2/400\),
+then \(\Lambda(G)\le S\) at all amplitudes, and \(F(G)\le M(v)\) when
+\(\sqrt v\le\ell\). To prove it write \(A=(T-1)U\).
+For \(h=0\), the positive bound on page 4 improves to \(3N/(5\ell)\).
+Thus (8)--(9), integrated over \(d\), give
+\[
+         M(b)-F(A)\ge (7e^{-2}/25)b/\ell>(7/200)b/\ell.
+\]
+Let \(j(r,y)=\E_\theta|re^{i\theta}+y|\) for \(y\ge0\).
+Then \(0\le j(r,y)-r\le5y^2/(16r)\). Indeed at \(r=1\) and \(y\le1\) use the
+binomial series with positive squared coefficients and \(j(1,1)=4/\pi\).
+For \(y\ge1\), symmetry and homogeneity bound \(j(1,y)\) by \(y+(4/\pi-1)/y\);
+the minimum of \(y-y^2+5y^3/16\) on \([1,\infty)\) is \(8/27>4/\pi-1\).
+Convexity gives \(j_y'\le5y/(4r)\) by taking the secant to \(2y\). Consequently
+\[
+ F(A+H)-F(A)\le\frac54\left(2\sqrt{bh}\,\E\frac{|T-1|}{r(T)}
+                                   +h\,\E\frac1{r(T)}\right).
+\]
+Since \(\ell/\alpha\le19/11\), the two expectations times \(\ell\) are
+less than \(5,7/2\), respectively, by bounding \(|T-1|\le T+1\).
+With \(\sqrt h\le\sqrt b/400\) this error is below the displayed deficit.
+The amplitude reduction on page 5 applies.
+
+\textbf{The two examples.} Write \(X=z_2\), \(Y=z_3\), and
+\[
+ H_1=X(|X|^2-2),\qquad H_2=X(|Y|^2-1).
+\]
+For \(U=uX,\ H=cH_2\) with \(\Re(\bar u c)=0\), conditioning on \(Z,Y\) gives
+a circular Gaussian with variance \(|u|^2(T-1)^2+|c|^2(|Y|^2-1)^2\).
+This is also the conditional law obtained with independent Gaussian drivers
+for the two summands, so R2 applies at all amplitudes.
+For arbitrary phases, \(|c|\le|u|/16\) suffices: centering over \(Y\) and
+\(|x+y|\le |x|+\Re(\bar x y)/|x|+|y|^2/(2|x|)\) bound the increase in \(F\)
+by \(|c|^2\E[|X|^2/|L+u(T-1)X|]\). The inequality
+\(s e^{-s}\le(2/e)e^{-s/2}\) and \(K_w(r)\le6/(5r)\) bound this by
+\(24|c|^2\E[1/r(T)]/(5e)\), below the pure-\(A\) deficit for the indicated ratio.
+
+\newpage
+\head{What happens near a pure remote direction}
+For \(i=1,2\), \(U=uX,\ H=cH_i\), there is also a constant \(\eta_i>0\)
+such that \(|u|\le\eta_i |c|\) suffices for K at all amplitudes throughout
+the box. This argument supplies no numerical value of \(\eta_i\).
+
+First, both examples obey strict same-variance comparison for \(u=0,\ c\ne0\).
+For \(H_2\) this is strict Jensen for \(M\) in the random variance
+\(|c|^2(|Y|^2-1)^2\).
+For \(H_1\), condition on the Gaussian mixing variance \(s\) of \(L\), as on
+page 3. Concavity of \(g_s\), with tangent at \(2|c|^2t\), compares the expectations
+of \(m_s(|c|\sqrt t|t-2|)\) and \(m_s(\sqrt2|c|\sqrt t)\).
+The correction is proportional to
+\(\int t q(t)e^{-t} g_s'(2|c|^2t)\dd t\). This is strictly negative:
+in (3) the inner integral \(X(u)\) equals
+\[
+        \frac{2k(k-2)}{(1+k)^4},\qquad k=2|c|^2u.
+\]
+At \(s=0\) its integral against \(u^{-1/2}\) is strictly negative because
+\(\int \sqrt t\,q(t)e^{-t}\dd t=-\Gamma(3/2)/4\).
+The decreasing cutoff in (3) preserves strict negativity, also if the cutoff
+vanishes before the sign change. This proves the strict comparison.
+
+Next the two families admit a uniform small-amplitude ball for matched comparison,
+including directions of small fourth excess. For normalized directions whose
+\(b\) stays bounded below, use the quadratic term on page 6. As \(b\to0\) the
+fourth moments converge to those of normalized \(H_1,H_2\), respectively \(44,18\),
+by Hölder. The small-amplitude result on pages 6--7 therefore applies.
+On the remaining compact annulus of amplitudes up to \(\varepsilon\), strict
+comparison on the remote axis and uniform continuity give a positive angular
+neighborhood of that axis. This proves the assertion about \(\eta_i\), including
+larger amplitudes by penalized localization. Intermediate ratios and general
+shared cubics remain unresolved here.
+
+\textbf{Why the independent replacement fails even for these examples.}
+Let \(p_s(r)=(t(r)-1)p(r)\) be a signed density and
+\(D(y)=\int p_s(x)|x+y|\dd x\). All derivatives of \(p_s\) decay rapidly,
+and \(p_s(r)>p_s(0)\) for \(r>0\). As on page 6,
+\[
+       \Delta^2D(0)=2\pi\int_0^\infty [p_s(r)-p_s(0)]r^{-2}\dd r>0 .
+\]
+The radial Taylor expansion is
+\(\nabla D(y)=\Delta D(0)y/2+\Delta^2D(0)|y|^2y/16+O(|y|^5)\).
+The remainder bound holds globally because derivatives of order six are bounded
+(convolve derivatives of \(p_s\) with the bounded gradient of the norm).
+At \(H=cH_i\), \(c>0\) real, differentiation in the real coefficient \(u\) at zero gives
+\[
+ \left.\tfrac12\partial_u F(cH_i+u(T-1)X)\right|_{u=0}
+ =\frac{\Delta^2D(0)}{16}c^3\E[|H_i|^2\Re(\bar XH_i)]+O(c^5).
+\]
+The linear term vanishes by \(\E[\bar XH_i]=0\).
+The cubic moments in this display are \(32\) and \(4\):
+they are \(\E[S^2(S-2)^3]\) for \(S=|X|^2\), and
+\(\E|X|^4\,\E[(|Y|^2-1)^3]\), respectively.
+For each sufficiently small fixed \(c>0\) the derivative is positive, whereas
+\(F(cH_i+uW)\) has derivative zero at \(u=0\). The R2 comparison thus strictly
+reverses for small \(u>0\), even inside the application box. This does not imply
+a reversal against \(S\).
+
+\newpage
+\head{Why marginal moment bounds cannot settle sharing}
+There is a sharper distinction between moment information and the Wick structure.
+Fix a box profile with a positive Gaussian optimizer \(\sigma_*\).
+Such profiles exist analytically: at \((\varepsilon,\ell,\beta)=(0.76,0.76,0.16)\),
+Jensen under \(\Gamma(1/2,1)\) gives
+\(M'(0)\ge\sqrt\pi/[2(\alpha+\beta/2)]>1/\varepsilon\).
+
+Take \(X\) standard complex Gaussian and \(S_X=|X|^2\).
+Choose a sign \(\chi(S_X)\in\{-1,1\}\) and set \(H=\sigma_*\chi(S_X)X,\ U=X\).
+Multiplying each circular shell by a sign preserves the Gaussian law of \(H\).
+Let
+\[
+       k(s)=\frac{D'(\sigma_*\sqrt s)}{\sigma_*\sqrt s},
+\]
+using the radial derivative of \(D\) on page 8. The Taylor expansion and
+\(\Delta^2D(0)>0\) show that \(k\) is nonconstant. Under the nonatomic
+probability measure \(S_X\,d\PP\), take \(\chi=+1\) on the upper half of the
+values of \(k\), and \(\chi=-1\) on the lower half, splitting a level set if needed.
+Then \(\E[S_X\chi]=0\), while \(\E[S_X\chi k(S_X)]>0\). Hence \(U\) and \(H\)
+are orthogonal in \(L^2\), \(\E|H|^4=2\sigma_*^4\), and
+\[
+ \left.\tfrac12\partial_u F(H+u(T-1)U)\right|_{u=0}
+       =\sigma_*\E[S_X\chi k(S_X)]>0.
+\]
+At \(u=0\), \(\Lambda(H)=S\); the added penalty is \(u^2/\varepsilon\).
+Thus the optimized comparison fails in this enlarged class for all sufficiently
+small \(u>0\). This \(H\) has a Gaussian marginal and is a nonconstant radial
+sign transform of \(X\), outside the cubic Wick chaos. The example explains why
+even exact knowledge of a Gaussian remote marginal and its covariance with \(U\)
+does not replace joint information from the chaos.
+
+\medskip
+\textbf{Scope.} The general matched-variance assertion in R1 with arbitrary remote
+\(H\) and the general optimized assertion in R3 at intermediate amplitudes
+and coefficient ratios are open in this argument. R2 is proved throughout the box,
+with the stipulated optimized remote theorem as its only additional conjecture-specific input.
+\end{document}

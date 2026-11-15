@@ -1,0 +1,6 @@
+visible profile L = Z(0.66165 + 0.16917 |Z|^2);  ratio b/a = 0.25568 (peak row of the repository: 0.25608)
+Phi(0) = 0.7120332   sup over Gaussian q: 0.7131355 at E|q|^2 = 0.05723   (cap claimed for all remote cubics with E|q|^2<=1: 0.71325; 500/701 = 0.7132668)
+   Gaussian q with E|q|^2 = 0.25: Phi = 0.707712
+   Gaussian q with E|q|^2 = 0.50: Phi = 0.696371
+   Gaussian q with E|q|^2 = 1.00: Phi = 0.676961
+   Gaussian q with E|q|^2 = 2.00: Phi = 0.653353

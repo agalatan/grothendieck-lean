@@ -1,0 +1,115 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/87-phase-lift-screening.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (GPT phase-cut experiment, 22 October 2026). Owner: ch25-weak-k.tex
+\subsection{A screening theorem and a finite obstruction for phase cuts}
+\label{sec:phase-lift-screening-20261022}
+
+\paragraph{Status and scope.}
+The results below are \st{P,C} restrictions on two particular uses of
+phase-correlation constraints. They give no new lower bound for $\KG$.
+They neither settle the actual-response inequality nor place a ceiling
+on all Gaussian configurations or on the complete certificate cover.
+
+Let
+\[
+ H=\begin{pmatrix}0&-i&i&1\\i&0&-i&1\\-i&i&0&1\\1&1&1&0\end{pmatrix}.
+\]
+The phase inequality $u^*Hu\le6$ is due to Jarre--Lieder--Liu--Lu;
+the small Gram certificate below appears in Sinjorgo--Sotirov--Anjos,
+\emph{Cuts and semidefinite liftings for the complex cut polytope},
+Section~5, Lemma~12 of the Optimization Online preprint
+(arXiv:2402.04731).
+For $u=(1,z_1,z_2,z_3)$ and
+\[
+ v=(1,z_1,z_2,z_3,\overline z_1z_2,\overline z_1z_3)^T,
+ \quad a=(2,0,i,-1,-i,-1)^T,\quad b=(0,0,i,-i,-1,1)^T,
+\]
+one has $6-u^*Hu=(|a^*v|^2+|b^*v|^2)/2$ on the torus, and $H^2=3I$.
+
+\begin{proposition}[Retained-energy screening, \st{P,C}]
+Let $G$ be any complex correlation matrix of order four, and assign
+either response label to each index. Retain any collection of chaos
+blocks of the two responses, with retained energies $e_+,e_-$.
+If $M$ is their transferred covariance matrix, then
+\[
+ \operatorname{tr}(HM)\le\sqrt3\sum_{j=1}^4e_{\sigma_j}.
+\]
+Thus $e_+,e_-\le\sqrt3/2$ makes the retained phase inequality automatic,
+uniformly in the Gaussian dimension and configuration. The statement
+also holds after diagonal unitary conjugation, permutation, or complex
+conjugation of $H$.
+\end{proposition}
+\begin{proof}
+Each retained block is a Schur product of two positive semidefinite
+matrices: the Gaussian chaos kernel and the label-selected response
+Gram matrix. Hence $M\succeq0$, with the indicated diagonal energies.
+Since $H\preceq\sqrt3I$, the trace inequality follows. The transforms
+of $H$ preserve both its spectrum and its phase bound.
+\end{proof}
+
+For $e_+=e_-=1707/2000$, the margin is strictly greater than
+$2421/28000$, using $\sqrt3<97/56$. This also rules out separation by
+the retained inequality with a nonnegative omitted-tail allowance.
+It does not rule out a signed treatment of resolved tail blocks.
+The threshold is sharp for arbitrary positive semidefinite matrices
+with the stated diagonal bound, as shown by $e(I+H/\sqrt3)$; this
+sharpness assertion does not concern actual bounded responses.
+
+\begin{proposition}[One exact twelve-variable lift obstruction, \st{P,C}]
+There is a formal charge-one response profile with blocks
+\[
+ A_0=\frac{289}{400}\begin{pmatrix}1&1\\1&1\end{pmatrix},\qquad
+ A_1=\begin{pmatrix}131/1000&11/1000\\11/1000&131/1000\end{pmatrix},\qquad
+ A_{150}=\frac{293}{2000}I_2,
+\]
+and all other blocks zero, satisfying positivity, Parseval, the
+first-chaos bound and the cubic-radius bound. At the specific
+twelve-variable configuration below it has a feasible square-free
+degree-two moment lift, with eigenvalue margin greater than $9/1000$.
+Its formal objective is $0.714305$ for $\epsilon=149/200$, and
+$0.7141796$ for $\epsilon=1891/2500$.
+\end{proposition}
+\begin{proof}
+Use the six rational unit vectors
+\[
+ u(b,c)=\left(\frac{1-b^2-c^2}{1+b^2+c^2},
+              \frac{2b+2ic}{1+b^2+c^2}\right),\qquad
+ (b,c)\in\{(0,0),(1/2,0),(0,1/2),(1/2,1/2),(2,0),(0,2)\}.
+\]
+Duplicate them and assign labels $+$ and $-$ to the respective copies.
+Their Gram matrix has squared off-site correlations at most $9/10$.
+The lift uses
+$\mathcal B=\{0,e_1,\ldots,e_{11}\}\cup\{e_i+e_j:i<j\}$,
+of cardinality $67$.
+
+The supplied rational certificate constructs a moment matrix $M^0$
+for the first two blocks, with diagonal one, and a rational matrix $L$.
+For $R=M^0-LL^*$, every row satisfies
+\[
+ R_{ii}-\sum_{j\ne i}(|\Re R_{ij}|+|\Im R_{ij}|)>1/100.
+\]
+Thus $M^0\succ(1/100)I$. Adding the last block changes each prescribed
+moment by at most $(293/2000)(9/10)^{150}$; at duplicate sites the
+cross-label change is zero. Copying these changes through the lift
+has operator norm at most $67(293/2000)(9/10)^{150}<1/1000$.
+This proves the asserted margin. All comparisons and the two objective
+values are checked over the rationals by \texttt{verify\_all.py}.
+\end{proof}
+
+\paragraph{Interpretation.}
+The formal profile is not a bounded response pair: its finite nonconstant
+Gaussian chaos expansion would be an unbounded polynomial. Passing this
+lift does not assert membership in the phase body. The result only shows
+that the selected configuration and moment basis cannot distinguish this
+infeasible profile. Its compatibility with the full manuscript relaxation
+has not been established. Floating searches at other configurations remain
+\st{F}; no universal conclusion is drawn from them. No conjectural
+exactness of a moment lift, fresh-buffer independence, or conditional
+Gaussianity assumption is used.
+
+
+\paragraph{Provenance and IDE replay (22 October).} Package \code{grothendieck-asymmetric-phase-tests.zip}, archived with the replay log in
+\pathref{gpt-reviews/phase-tests-20261022/}; its standard-library verifier PASSES under \code{python3 -I} from an unrelated directory (0.5\,s): the four-phase
+SOS identity and $H^2=3I$, the rational PSD profile, the two objective comparisons, the $67\times67$ rational completion with margin $1/100$, the
+degree-301 tail perturbation $<1/1000$, and the manifest. IDE check: $H$ Hermitian with $H^2=3I$ has spectrum $\pm\sqrt3$, so $H\preceq\sqrt3I$ and the
+screening bound $\operatorname{tr}(HM)\le\sqrt3\operatorname{tr}M$ is immediate once $M\succeq0$ (Schur products of PSD blocks). Both results are negative
+(stop rules for the phase-cut route); no bound changes.

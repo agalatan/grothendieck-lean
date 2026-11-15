@@ -1,0 +1,1037 @@
+{
+  "agent": "codex-a713",
+  "snapshot_utc": "2026-11-13T04:39:01.140674+00:00",
+  "status": "Completeness snapshot at the stated time; configuration-level results below determine completion. This snapshot alone does not inspect active processes.",
+  "training": [
+    {
+      "n": 2,
+      "u": 0.02,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n2_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713015
+      ],
+      "max_intrinsic_gradient": 3.754162588887758e-05,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 2,
+      "u": 0.03,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n2_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713015
+      ],
+      "max_intrinsic_gradient": 3.753244202401271e-05,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 2,
+      "u": 0.0463,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n2_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713015
+      ],
+      "max_intrinsic_gradient": null,
+      "intrinsic_gradients_recorded": 0,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 3,
+      "u": 0.02,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n3_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713016
+      ],
+      "max_intrinsic_gradient": 0.0003880555332890793,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 3,
+      "u": 0.03,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n3_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713016
+      ],
+      "max_intrinsic_gradient": 0.00036320710413578425,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 3,
+      "u": 0.0463,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n3_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 35,
+      "messages": {
+        "STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT": 15,
+        "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL": 35
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713016
+      ],
+      "max_intrinsic_gradient": null,
+      "intrinsic_gradients_recorded": 0,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 4,
+      "u": 0.02,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n4_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713017
+      ],
+      "max_intrinsic_gradient": 0.0007721228658330765,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 4,
+      "u": 0.03,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n4_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713017
+      ],
+      "max_intrinsic_gradient": 0.006065233535313898,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 4,
+      "u": 0.0463,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n4_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713017
+      ],
+      "max_intrinsic_gradient": 0.0011465847332658929,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 5,
+      "u": 0.02,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n5_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713018
+      ],
+      "max_intrinsic_gradient": 0.0015981504033960605,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 5,
+      "u": 0.03,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n5_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713018
+      ],
+      "max_intrinsic_gradient": 0.01011368920443658,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 5,
+      "u": 0.0463,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n5_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713018
+      ],
+      "max_intrinsic_gradient": 0.0024612759331494117,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 6,
+      "u": 0.02,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n6_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713019
+      ],
+      "max_intrinsic_gradient": 0.005021413713903535,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 6,
+      "u": 0.03,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n6_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713019
+      ],
+      "max_intrinsic_gradient": 0.001778691354822736,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 6,
+      "u": 0.0463,
+      "refined": false,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_peak_n6_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713019
+      ],
+      "max_intrinsic_gradient": 0.003038384258823088,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 2,
+      "u": 0.02,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n2_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713015
+      ],
+      "max_intrinsic_gradient": 9.765494876803318e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 2,
+      "u": 0.03,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n2_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713015
+      ],
+      "max_intrinsic_gradient": 9.86495019911006e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 2,
+      "u": 0.0463,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n2_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713015
+      ],
+      "max_intrinsic_gradient": 9.680564487391924e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 3,
+      "u": 0.02,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n3_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713016
+      ],
+      "max_intrinsic_gradient": 9.797484832131761e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 3,
+      "u": 0.03,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n3_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713016
+      ],
+      "max_intrinsic_gradient": 9.983078164477589e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 3,
+      "u": 0.0463,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n3_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713016
+      ],
+      "max_intrinsic_gradient": 9.992759619814282e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 4,
+      "u": 0.02,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n4_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713017
+      ],
+      "max_intrinsic_gradient": 9.994211021002783e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 4,
+      "u": 0.03,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n4_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713017
+      ],
+      "max_intrinsic_gradient": 9.828090038913496e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 4,
+      "u": 0.0463,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n4_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713017
+      ],
+      "max_intrinsic_gradient": 9.86490189896149e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 5,
+      "u": 0.02,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n5_u0.02.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713018
+      ],
+      "max_intrinsic_gradient": 9.9337498824537e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 5,
+      "u": 0.03,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n5_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713018
+      ],
+      "max_intrinsic_gradient": 9.988103093345364e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 5,
+      "u": 0.0463,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n5_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713018
+      ],
+      "max_intrinsic_gradient": 9.888125667378704e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 6,
+      "u": 0.02,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n6_u0.02.jsonl",
+      "records": 70,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713019
+      ],
+      "max_intrinsic_gradient": 9.857078375369355e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 6,
+      "u": 0.03,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n6_u0.03.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713019
+      ],
+      "max_intrinsic_gradient": 9.880994821872106e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    },
+    {
+      "n": 6,
+      "u": 0.0463,
+      "refined": true,
+      "log": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optim_refined_peak_n6_u0.0463.jsonl",
+      "records": 50,
+      "unique_restarts": 50,
+      "missing_restarts": [],
+      "unexpected_restarts": [],
+      "all_50_present": true,
+      "converged_flags": 50,
+      "messages": {
+        "intrinsic_gradient_tolerance": 50
+      },
+      "powers": [
+        20
+      ],
+      "seeds": [
+        713019
+      ],
+      "max_intrinsic_gradient": 9.928989410412738e-06,
+      "intrinsic_gradients_recorded": 50,
+      "tensor_files_exist": true
+    }
+  ],
+  "validation": [
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n2_polar_p19_r8.jsonl",
+      "records": 2400,
+      "candidate_configurations": 300,
+      "complete_eight_scrambles": 300,
+      "powers": [
+        19
+      ],
+      "minimum_deficit": 0.00384019518028416
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n2_smoke.jsonl",
+      "records": 2,
+      "candidate_configurations": 1,
+      "complete_eight_scrambles": 0,
+      "powers": [
+        10
+      ],
+      "minimum_deficit": 0.006124046112769853
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n3_polar_p19_r8.jsonl",
+      "records": 2400,
+      "candidate_configurations": 300,
+      "complete_eight_scrambles": 300,
+      "powers": [
+        19
+      ],
+      "minimum_deficit": 0.0038370510867270307
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n4_polar_p19_r8.jsonl",
+      "records": 2400,
+      "candidate_configurations": 300,
+      "complete_eight_scrambles": 300,
+      "powers": [
+        19
+      ],
+      "minimum_deficit": 0.0038306998219326052
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n5_p19_r8.jsonl",
+      "records": 400,
+      "candidate_configurations": 50,
+      "complete_eight_scrambles": 50,
+      "powers": [
+        19
+      ],
+      "minimum_deficit": 0.009747477978463684
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n5_polar_p19_r8.jsonl",
+      "records": 2400,
+      "candidate_configurations": 300,
+      "complete_eight_scrambles": 300,
+      "powers": [
+        19
+      ],
+      "minimum_deficit": 0.0038047668496792057
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n6_p19_r8.jsonl",
+      "records": 400,
+      "candidate_configurations": 50,
+      "complete_eight_scrambles": 50,
+      "powers": [
+        19
+      ],
+      "minimum_deficit": 0.009552386621605903
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n6_polar_p19_r8.jsonl",
+      "records": 2400,
+      "candidate_configurations": 300,
+      "complete_eight_scrambles": 300,
+      "powers": [
+        19
+      ],
+      "minimum_deficit": 0.003543003065497578
+    }
+  ],
+  "holdout": [
+    {
+      "n": 2,
+      "u": 0.02,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n2_u0.02_r08.npz",
+      "digest": "019241d5022fa0288bd0d07c49bfb19234042dcedd1da28aed667347aec48132",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.06914276155391486,
+      "SE": 1.7382946946686542e-07,
+      "halfwidth95": 4.1104137914285733e-07,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n2_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 2,
+      "u": 0.03,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n2_u0.03_r08_refined.npz",
+      "digest": "8c8692c249d39abe04e74f657c3d0aed7513b1fb12b65721ad59088864243a7d",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.07857954391976094,
+      "SE": 1.5738850741354064e-07,
+      "halfwidth95": 3.7216468155204886e-07,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n2_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 2,
+      "u": 0.0463,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n2_u0.0463_r19_refined.npz",
+      "digest": "4fc1d59f9494db4da2f97e813f1aa33e68faf86bc13d77dc333251d99494ef08",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.08760247609892993,
+      "SE": 8.628967674524675e-07,
+      "halfwidth95": 2.0404266229391234e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n2_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 3,
+      "u": 0.02,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n3_u0.02_r09.npz",
+      "digest": "40d660f8e470847239a0814b6ad365659dcfa415b965000410d113ad29ea8f69",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.06913939983342,
+      "SE": 8.039402874065217e-07,
+      "halfwidth95": 1.901016700433934e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n3_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 3,
+      "u": 0.03,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n3_u0.03_r48_refined.npz",
+      "digest": "dbce941a24565a3ab990bd1b6f1308563a4b1d971b7c7e6eb513a5cf822ea08f",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.07857605583860101,
+      "SE": 6.293279421773988e-07,
+      "halfwidth95": 1.4881241142776585e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n3_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 3,
+      "u": 0.0463,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n3_u0.0463_r26_refined.npz",
+      "digest": "56655352ceb4e26500a9d0481d71cb09ee30b54cd132e6a7d8697f9e9632a631",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.08760062073333122,
+      "SE": 7.449550607812402e-07,
+      "halfwidth95": 1.761538803070097e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n3_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 4,
+      "u": 0.02,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n4_u0.02_r18.npz",
+      "digest": "4792ea73e7a42b2fc621dede2ad2c6e6f487039332cf88cc1cfc99b8ee16ed36",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.06912257639563246,
+      "SE": 1.8463510383347733e-06,
+      "halfwidth95": 4.365926442199923e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n4_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 4,
+      "u": 0.03,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n4_u0.03_r35.npz",
+      "digest": "fa4c1f9a83f71980a0dbe70bfa22a833e8336cd06e91420cff646a08d524072f",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.07856165101503963,
+      "SE": 8.553996425428842e-07,
+      "halfwidth95": 2.0226987395607027e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n4_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 4,
+      "u": 0.0463,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n4_u0.0463_r35.npz",
+      "digest": "89e1a792cf568de3e9999dc42ba64b6596c4be332e8c411c04e38146df99117e",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.08758391615585759,
+      "SE": 2.5586163674009737e-06,
+      "halfwidth95": 6.050166312878575e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n4_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 5,
+      "u": 0.02,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n5_u0.02_r35_refined.npz",
+      "digest": "3b526d9e41cf879e052952c5033bd8791c33ac777387d8e48c4d382beeb12697",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.06909907353132533,
+      "SE": 2.3348817601161856e-06,
+      "halfwidth95": 5.521118034572378e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n5_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 5,
+      "u": 0.03,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n5_u0.03_r47.npz",
+      "digest": "9ff82a80db250731381f46447c0a444f696fe9f264370466990e011d7be1bf35",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.07854008464017477,
+      "SE": 1.0380481087248765e-06,
+      "halfwidth95": 2.4545937322108658e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n5_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 5,
+      "u": 0.0463,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n5_u0.0463_r37_refined.npz",
+      "digest": "9da1c47eeb6c98decefbd436cb6369750fc092704b7489917739f67def422cb1",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.08753233149905794,
+      "SE": 4.329424995419134e-06,
+      "halfwidth95": 1.0237463339620061e-05,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n5_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 6,
+      "u": 0.02,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n6_u0.02_r41.npz",
+      "digest": "08fc18c97ccc4e3d339655e29f03ecdb26024b8b84f045a4ee0fae2a7b60b7e6",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.06906288779014925,
+      "SE": 1.248101177577684e-06,
+      "halfwidth95": 2.9512903129417033e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n6_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 6,
+      "u": 0.03,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n6_u0.03_r31.npz",
+      "digest": "8fb3ba8cfae3ac9dc9404750c0e694334621cf674d2340b9d5fc4ae0e24added",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.07849909122087195,
+      "SE": 1.6804798223817816e-06,
+      "halfwidth95": 3.973703342316295e-06,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n6_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 6,
+      "u": 0.0463,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n6_u0.0463_r40.npz",
+      "digest": "03aca4fbb7c8d9aefac1e058bba2f2c1ac4d1b4201164e6d0c0000018b38ed61",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.0874917600822322,
+      "SE": 4.4378907018044225e-06,
+      "halfwidth95": 1.0493943979404858e-05,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n6_polar_p19_r8_winners.json"
+    },
+    {
+      "n": 6,
+      "u": 0.0463,
+      "tensor": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/tensor_peak_n6_u0.0463_r40.npz",
+      "digest": "03aca4fbb7c8d9aefac1e058bba2f2c1ac4d1b4201164e6d0c0000018b38ed61",
+      "complete": true,
+      "replicates": 8,
+      "points_per_replicate": 2097152,
+      "total_points": 16777216,
+      "R": 0.08752154827586708,
+      "SE": 8.03591582582869e-06,
+      "halfwidth95": 1.9001921445512777e-05,
+      "selection_source": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validation_peak_n6_p19_r8_winners.json"
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,619 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch33-gpt-polarized.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 33). Owner: lower-bound/08-shared-structure.tex
+\section{Lower-bound GPT: exact K for the whole Gaussian covariance class of the odd and even sectors (20 October)}
+\label{ch:polarized-profile-certificate}
+\chapsummary{Exact K for the matched Gaussian covariance class, with all stated orientations and penalties. This is a class theorem, not a replacement of a general cubic by a matched Gaussian.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{proof/ch32-polarized-profile.tex} (renumbered: our \autoref{ch:stronger} took the number 32) from
+\pathref{gpt-reviews/polarized-profile-20261020/}, ported verbatim apart from this header and the closing reading note. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py} (standard library
+and Apple clang 17, \code{\_\_int128}) from an unrelated directory: \textbf{PASS in 300\,s}. Both parameter trees were rebuilt from regenerated rational data: the $A/B$ tree (631
+numerical, 17 analytic and 5 tail leaves, 1{,}226 vertices) and the $A/B$ plus improper-even tree (4{,}175 numerical, 66 analytic and 15 tail leaves, 9{,}685 vertices). The worst numerical
+upper is $96683362167072/2^{46}$, below the independent benchmark lower bound $96683367193980/2^{46}\le S$. Log \pathref{gpt-reviews/polarized-profile-20261020/replay\_ide.log}.
+
+\providecommand{\eps}{\varepsilon}
+\providecommand{\E}{\mathbb E}
+% Proposed addition; live manuscript was not modified.
+% Numerical bounds on the Grothendieck constant are unchanged.
+\subsection{Result and precise scope}
+Set
+\[
+ a_0=\frac{699}{1250},\quad b_0=\frac{179}{1250},\quad
+ \eps=\frac{1891}{2500},\quad
+ \ell(t)=\sqrt t(a_0+b_0t),\quad A(t)=t-1,\quad B(t)=t/\sqrt2.
+\]
+Let $T$ be exponential of mean one and $G$ a standard proper complex
+Gaussian, independent of $T$. Write
+\[
+ S=\sup_{v\ge0}\left\{2\E|\ell(T)+\sqrt vG|-v/\eps\right\}.
+\]
+The main result closes the \emph{Gaussian covariance layer} of the odd
+sectors. It does not prove Conjecture K for general non-Gaussian shared
+cubic drivers, and it does not change the certified Grothendieck bound.
+
+\begin{theorem}[All amplitudes, all covariance orientations]\label{polar:main}
+Fix $g,\alpha,\beta\ge0$. Suppose that, conditionally on $T=t$,
+$R$ is a centered real two-dimensional Gaussian, possibly degenerate,
+with complex variance and pseudovariance
+\[
+ V(t)=g^2+\alpha^2 A(t)^2+\beta^2 B(t)^2,
+ \qquad |P(t)|\le 2\alpha\beta |A(t)B(t)|.
+\]
+The argument of $P(t)$ may be an arbitrary measurable function of $t$.
+Then
+\[
+ \boxed{\quad
+ 2\E|\ell(T)+R|-\frac{g^2+\alpha^2+\beta^2}{\eps}
+ \le S-\frac{\alpha^2}{10}-\frac{\beta^2}{4}.
+ \quad}                                                   \tag{1}
+\]
+There are no restrictions on amplitudes or on the number of Gaussian
+drivers. This is a proved mathematical statement with a finite exact
+arithmetic certificate, not a Lean formalization.
+\end{theorem}
+
+For example, (1) applies to
+\[
+ R=gG+A(T)\sum_j u_jX_j+B(T)\sum_jv_j\overline{X_j},
+ \qquad \alpha=\|u\|_2,\quad\beta=\|v\|_2,
+\]
+where $G,X_1,X_2,\ldots$ are independent proper Gaussians. Thus shared
+A/B drivers, every relative phase, and every correlation between their
+coefficient vectors are allowed. More generally, the parameters and
+covariance can be randomized using an arbitrary latent variable
+independent of $T$; conditional Gaussianity and the displayed variance
+conditions must then hold given that latent variable. Averaging (1)
+retains the expected penalties. This permits non-Gaussian unconditional
+mixtures, but does not permit an arbitrary conditional cross covariance
+between the remote residual and the A/B drivers.
+
+\subsection{A stronger Gaussian adversary}
+
+For a centered Gaussian $R$ with variance $V$ and pseudovariance $P$,
+put $p=|P|$. The elementary Gaussian integral gives, for $s>0$,
+\[
+ \E e^{-s|x+R|^2}
+ =D^{-1/2}\exp\left\{-\frac{s x^2(1+sV-s\Re P)}D\right\},
+ \qquad D=(1+sV)^2-s^2p^2,
+\]
+for real $x$. The formula extends to singular covariances by continuity.
+The representation
+\[
+ \sqrt u=\frac1{2\sqrt\pi}\int_0^\infty(1-e^{-su})s^{-3/2}\,ds
+\]
+shows that, at fixed $V,p$, the norm expectation is largest when $P=-p$:
+the larger covariance eigenvalue points perpendicular to the mean.
+We allow this choice separately for every $t$.
+
+For this worst orientation the real projection in direction $\theta$
+has mean $\ell(t)\cos\theta$ and variance
+$[V(t)-p(t)\cos(2\theta)]/2$. Since a Gaussian absolute mean increases
+with its variance, we may further enlarge that variance to
+\[
+ \sigma_\theta(t)^2=\frac12\left[
+ g^2+\alpha^2A(t)^2+\beta^2B(t)^2
+ +2\alpha\beta|A(t)B(t)|(-\cos2\theta)_+\right].             \tag{2}
+\]
+The enlargement is valid also for $p<2\alpha\beta|AB|$; simply replacing
+$p$ by its maximum in both covariance eigenvalues would \emph{not} be a
+valid argument.
+
+Let $F(m,\sigma)=\E|m+\sigma N|$ for a standard real normal $N$.
+For each fixed $\theta$, $F(\ell\cos\theta,\sigma_\theta)$ is convex
+in the four real fields $(\ell,g,\alpha|A|,\beta B)$. Indeed the
+covariance matrix of the last two fields is
+$\left(\begin{smallmatrix}1&c\\c&1\end{smallmatrix}\right)$,
+where $c=(-\cos2\theta)_+\in[0,1]$, so they can be represented by fixed
+correlated real Gaussians. Convexity follows from convexity of the
+absolute value. This is the convexity used in the certificate.
+
+
+\paragraph{The common convex function behind all discretizations.}
+Let $\mathcal N(\ell,g,x,y)$ be the supremum of
+$\E|\ell+gG+xX+y\overline Y|$ over all jointly proper standard
+Gaussians $X,Y$ with $|\E X\overline Y|\le1$, independent of $G$.
+Its possible pseudovariances fill exactly the disk $|P|\le2|xy|$;
+its variance is $g^2+x^2+y^2$.
+For each fixed correlation the norm expectation is convex in the four
+real coefficients, hence so is their supremum $\mathcal N$.
+The integral $2\E_T\mathcal N(\ell(T),g,\alpha|A(T)|,\beta B(T))$
+is therefore a single convex upper bound for every allowed covariance
+law. All numerical levels bound this \emph{same} function at vertices.
+This is why taking the minimum of bounds from different angular or
+radial resolutions remains valid in a parameter-box interpolation.
+Convexity of a particular discretization alone would not justify
+mixing different discretizations in this way.
+
+\subsection{An exact analytic neighborhood}
+We first handle the only region where a numerical upper bound cannot
+separate the supremum from its Gaussian value.
+
+\begin{lemma}\label{polar:local}
+Theorem~\ref{polar:main} holds whenever
+\[
+ \frac7{200}\le g^2\le\frac9{200},\qquad
+ 0\le\alpha,\beta\le\frac1{100}.
+\]
+\end{lemma}
+\begin{proof}
+Put $v=g^2$, and let angular brackets denote uniform averaging over
+$[0,\pi/2]$. Define
+\[
+ J_v(t,\theta)=\frac{\sqrt\pi}{2\sqrt v}
+      e^{-\ell(t)^2\cos^2\theta/v},
+\]
+\[
+ C_A=\E\langle A^2J_v\rangle,\quad
+ C_B=\E\langle B^2J_v\rangle,\quad
+ C_\times=\E\langle |AB|(-\cos2\theta)_+J_v\rangle.
+\]
+The exact checker \texttt{local.cpp} proves, uniformly on the stated
+variance interval,
+\[
+ C_A+\frac25\le\frac1\eps,\qquad
+ C_B+\frac9{10}\le\frac1\eps,\qquad C_\times\le\frac8{25}.    \tag{3}
+\]
+These are elementary positive Gaussian integrals, not assumptions.
+Details of their finite enclosure are given below.
+
+Conditionally on $T$, write $R=gG+D$, with $D$ a centered Gaussian
+independent of $G$, of variance $\alpha^2A^2+\beta^2B^2$ and
+pseudovariance $P$. This decomposition is always possible since
+$|P|\le2\alpha\beta|AB|\le\alpha^2A^2+\beta^2B^2$.
+For $\psi_g(x)=\E|x+gG|$, the quadratic Taylor term of $2\psi_g$
+is $w_v\E|D|^2+k_v\Re\E D^2$, where
+\[
+ w_v=\langle J_v\rangle,\qquad k_v=\langle J_v\cos2\theta\rangle\le0.
+\]
+The last sign follows by pairing $\theta$ with $\pi/2-\theta$.
+Consequently $|k_v|\le\langle J_v(-\cos2\theta)_+\rangle$,
+and (3) bounds the penalized quadratic term by
+\[
+ -\frac25\alpha^2-\frac9{10}\beta^2+\frac{16}{25}\alpha\beta.   \tag{4}
+\]
+
+The fourth derivative of the Gaussian-smoothed planar norm satisfies
+\[
+ \|D^4\psi_g\|_{\mathrm{op}}\le\frac{3\sqrt\pi}{4g^3}<204.
+\]
+For completeness, the planar Fourier representation of the norm has
+radial density $-(2\pi)^{-1}|\xi|^{-3}$. After convolution with $gG$,
+four differentiation factors and polar integration bound a directional
+fourth derivative by
+\[
+ \frac1{2\pi}\left(\int_0^{2\pi}\cos^4\theta\,d\theta\right)
+ \left(\int_0^\infty r^2e^{-g^2r^2/4}\,dr\right)
+ =\frac{3\sqrt\pi}{4g^3}.
+\]
+Holder's inequality gives the same bound for four different unit
+directions. One can equivalently obtain this representation by
+subordinating the Gaussian integral for the norm; the differentiated
+integral is absolutely convergent. The inequality $<204$ follows by
+squaring the rational bound $\sqrt\pi<1773/1000$ at $g^2=7/200$.
+
+The odd Taylor terms vanish. Moreover
+\begin{align*}
+ \E|D|^4
+ &\le3\E(\alpha^2A^2+\beta^2B^2)^2\\
+ &=3(9\alpha^4+14\alpha^2\beta^2+6\beta^4)
+ \le27(\alpha^2+\beta^2)^2.
+\end{align*}
+Thus the fourth-order remainder for $2\psi_g$ is at most
+$459(\alpha^2+\beta^2)^2$.
+Finally,
+\[
+ \frac25\alpha^2+\frac9{10}\beta^2-\frac{16}{25}\alpha\beta
+ \ge\frac{\alpha^2}{10}+\frac{\beta^2}{4}
+                +\frac{\alpha^2+\beta^2}{10},              \tag{5}
+\]
+since the remaining matrix has diagonal $1/5,11/20$, off-diagonal
+$-8/25$, and determinant $19/2500>0$. On the local box,
+$459(\alpha^2+\beta^2)\le459/5000<1/10$.
+Combining (4)--(5), and using the definition of $S$ for the unperturbed
+$gG$, proves the lemma.
+\end{proof}
+
+\subsection{How the global certificate works}
+All acceptance arithmetic is integer or rational. Floating point is
+used only to initialize an integer square-root guess, which is corrected
+and verified by exact inequalities before being used.
+
+\subsubsection{Angular enclosure without quadrature assumptions}
+For an even positive integer $m$ and every $z\in\mathbb C$,
+\[
+ |z|\le\tan\frac\pi{2m}\sum_{j=0}^{m-1}
+             |\Re(e^{-ij\pi/m}z)|.                         \tag{6}
+\]
+Indeed the minimum over the phase of $z$ of the sum, divided by $|z|$,
+is $\cot(\pi/(2m))$, by the finite geometric sum on a phase cell.
+Apply (6) after the worst-orientation reduction and then enlarge each
+projected variance by (2). Reflection symmetry leaves $m/2+1$ distinct
+angles with multiplicities one at the endpoints and two otherwise.
+The certificate uses $m=64,128,256,512$, taking the smallest previously
+computed certified bound when a finer level is required.
+
+\subsubsection{Folded normal enclosure}
+For $s\ge0$,
+\[
+ F(s,1)=\sqrt{2/\pi}\left[
+ 1+\sum_{k=1}^\infty\frac{(-1)^{k-1}s^{2k}}{(2k-1)2^k k!}\right].
+\]
+On the rational grid $s=j/128$, $0\le j\le1024$, the sum through
+$k=201$ is an upper bound, and subtracting the magnitude of term 202
+is a lower bound. Convexity supplies upper chords between grid points.
+For $s\ge8$, $F(s,1)\le s+10^{-13}$, from
+$F(s,1)-s\le\sqrt{2/\pi}e^{-s^2/2}$ and $(8/3)^{32}>10^{13}$.
+The expectation is increasing separately in its nonnegative mean and
+standard deviation; this deals with rounded input intervals.
+Machin's formula bounds $\pi$ by rational arctangent sums. Rational
+Taylor sums bound all sines and cosines. No special-function library
+value enters an acceptance decision.
+
+\subsubsection{Visible integration and parameter boxes}
+Set $r=\sqrt T$. On each cell of $[0,8]$, the fields
+\[
+ r(a_0+b_0r^2),\quad g,\quad\alpha|r^2-1|,\quad\beta r^2/\sqrt2
+\]
+have cubic Bernstein control values; $r=1$ is a mesh boundary at every
+level. Convexity bounds the integrand by the weighted values at these
+controls. The weights are exact outward enclosures of
+$\int 2re^{-r^2}B_j^3\,dr$, computed by rational exponential Taylor
+bounds. There are $64,128,256,512$ radial cells at the four levels.
+
+For $r\ge8$ and $g,\alpha,\beta\le2$, the angular majorant is bounded
+by $r^3+4r^2+r+2$. To see this, use the triangle inequality for each
+folded normal and $m\tan(\pi/(2m))<7/4<\sqrt\pi$.
+The two-sign tail is less than $1600e^{-64}<2^{-46}$.
+
+At each parameter vertex the checker bounds the objective plus
+$\alpha^2/10+\beta^2/4$. Its norm part is convex in $(g,\alpha,\beta)$.
+On a rectangular parameter box of side lengths $d_g,d_A,d_B$, the
+maximum vertex bound plus
+\[
+ \frac{d_g^2+d_A^2+d_B^2}{4\eps}                           \tag{7}
+\]
+is an upper bound throughout the box. The smaller actual price
+coefficients after retaining the penalties only improve (7).
+Starting from $[0,2]^3$, the checker bisects a longest side whenever
+neither the numerical bound nor an analytic rule closes the box.
+
+\subsubsection{Unbounded parameters and the benchmark}
+Write $V_0=g^2+\alpha^2+\beta^2$ and
+$M=\E\ell(T)^2=a_0^2+4a_0b_0+6b_0^2<19/25$.
+Cauchy--Schwarz gives
+\[
+ \Lambda+\alpha^2/10+\beta^2/4
+ \le2\sqrt{M+V_0}-(1/\eps-1/4)V_0<13/10<S
+ \qquad(V_0\ge2).                                       \tag{8}
+\]
+The right side is decreasing there, and its value at two is bounded
+by rational comparisons after squaring positive quantities.
+This also handles every parameter outside the root cube.
+
+The independent Rice-envelope benchmark calculation is regenerated
+with the package. Convex lower integration at $v=1/25$ gives
+\[
+ B_0=\frac{96683367193980}{2^{46}}\le S.                    \tag{9}
+\]
+The inherited degree-96 Rice enclosure is verified by its rational
+differential residual and endpoint inequalities before use. This
+calculation is used only as a lower bound on $S$.
+
+\subsubsection{Acceptance record}
+The full parameter tree closes with
+\[
+ \begin{array}{c|r}
+ \text{numerical leaves}&631\\
+ \text{analytic local leaves}&17\\
+ \text{variance-tail leaves}&5\\
+ \text{bisections}&652\\
+ \text{distinct parameter vertices}&1226
+ \end{array}
+\]
+The largest numerical-leaf upper bound is
+$96683367186193/2^{46}<B_0$. The identity
+$631+17+5=652+1$ is a useful count check; the executable reconstructs
+the entire partition, so the proof does not rely on that count alone.
+Analytic leaves are bounded directly by $S$, not by $B_0$.
+In particular, the largest numerical-leaf bound must \emph{not} be
+reported as a numerical upper bound on the complete Gaussian family.
+Together these three types of leaves prove Theorem~\ref{polar:main}.
+
+\subsection{Enclosure of the local integrals}
+The interval $v\in[7/200,9/200]$ is divided into eight cells with
+endpoints $(28+k)/800$. There are 2048 radial intervals of length
+$1/256$ on $[0,8]$ and 128 angular intervals on $[0,\pi/2]$.
+In each cell, take the lower radial endpoint and upper angular endpoint
+in the exponential of $J_v$, the upper variance endpoint there, and
+the lower variance endpoint in its prefactor. Bound $A^2,B^2,|AB|$
+by their elementary polynomial maxima. The exact radial masses are
+$e^{-r_l^2}-e^{-r_h^2}$. The angular masses are exactly $1/128$.
+
+For the remaining exponential, a rationally generated table of
+$e^{-j/4096}$ uses outward rounding on a $2^{-192}$ lattice and is
+finally rounded outwards to the $2^{-46}$ acceptance lattice. Lookup
+at the lower grid point is an upper bound. Arguments above 64 use
+one acceptance-lattice unit. Tails of all three local integrals are
+less than $5(64^2+2\cdot64+2)e^{-64}<2^{-46}$.
+The largest returned upper bounds across the eight variance cells are,
+for orientation only,
+\[
+ C_A<0.907744,\qquad C_B<0.417183,\qquad C_\times<0.317200.
+\]
+Acceptance uses (3) in exact arithmetic, rather than these decimals.
+
+\subsection{Simultaneous improper even channels}
+The same method closes an enlarged Gaussian model of all the
+zero-diagonal sector covariances, including odd/even interaction.
+
+\begin{theorem}[Gaussian A/B/Y/W comparison]\label{polar:all}
+Let $g,\alpha,\beta,\gamma\ge0$, and suppose that $R\mid T=t$ is
+centered Gaussian with
+\[
+ V(t)=g^2+\alpha^2A(t)^2+\beta^2B(t)^2+\gamma^2t,
+ \qquad |P(t)|\le2\alpha\beta|A(t)B(t)|+\gamma^2t.
+\]
+Then
+\[
+ \boxed{2\E|\ell(T)+R|-\frac{g^2+\alpha^2+\beta^2+\gamma^2}{\eps}
+ \le S-\frac{\alpha^2}{10}-\frac{\beta^2}{4}-\frac{\gamma^2}{25}.} \tag{12}
+\]
+The covariance orientation is unrestricted and may depend on $t$.
+In particular the even Gaussian channel need not be proper.
+\end{theorem}
+\begin{proof}
+Enlarge projected variances to
+\[
+ \frac12\left[g^2+\alpha^2A^2+\beta^2B^2+\gamma^2t
+ +(2\alpha\beta|AB|+\gamma^2t)(-\cos2\theta)_+\right].       \tag{13}
+\]
+The common convex covariance supremum now also allows an independent
+unit-variance Gaussian $H$ with arbitrary pseudovariance in the unit
+disk, multiplied by the fourth field $\gamma\sqrt t$.
+The two disks of pseudovariances add to exactly the disk in the
+hypothesis. Thus the convexity and vertex argument remain valid.
+The linear field $\gamma r$ uses its own exact Bernstein controls
+$r_j=r_l+j(r_h-r_l)/3$; it is not obtained by square-rooting the
+controls of $r^2$.
+
+In the local argument the additional quadratic cost is at least
+$\gamma^2/10$. Indeed \texttt{local\_even.cpp} certifies
+\[
+ C_H:=\E\langle T(1+(-\cos2\theta)_+)J_v\rangle,
+ \qquad C_H+1/10\le1/\eps
+ \quad (7/200\le v\le9/200).
+\]
+Its largest returned upper value is below $1.214750$; acceptance
+again uses rational inequalities. Put $s=\alpha^2+\beta^2$ and
+$h=\gamma^2$. The fourth-order remainder is at most
+\[
+ 459s^2+306sh+102h^2,
+\]
+using $\E A^2T=\E B^2T=3$ and $\E T^2=2$ in the Gaussian
+fourth-moment calculation. Therefore the local analytic rule is
+\[
+ 7/200\le g^2\le9/200,\qquad
+ 459s+306h\le1/10,\qquad102h\le3/50.                      \tag{14}
+\]
+The remainder in this region is at most $s/10+3h/50$, exactly the
+budget left by (5) and the even-channel quadratic penalty after
+retaining the three penalties in (12).
+
+For the exterior, use the same fixed-point enclosure on $[0,2]^4$.
+The parameter-box correction is the sum of all four squared widths
+divided by $4\eps$. With $V_0=g^2+\alpha^2+\beta^2+\gamma^2$, the
+variance-tail rule (8) is unchanged, since every retained price is at
+most $V_0/4$. The visible tail of the angular majorant is bounded by
+$r^3+4r^2+4r+2$, so its two-sign integral is below
+$1700e^{-64}<2^{-46}$.
+
+The complete four-parameter cover passes with 4175 numerical leaves,
+66 analytic leaves, 15 variance-tail leaves, 4255 bisections, and
+9685 distinct vertices. The largest numerical upper bound is
+$96683362167072/2^{46}<B_0$. The identity
+$4175+66+15=4255+1$ agrees with the reconstructed complete tree.
+This proves (12) without numerical slack.
+\end{proof}
+
+\subsection{Consequences for the remaining conjecture}
+For a general remote cubic $q\in H_{2,1}$, first-chaos $U\in H_{1,0}$
+and $V\in H_{0,1}$, set
+\[
+ R_T=q+A(T)U+B(T)V.
+\]
+Hermite orthogonality and the charges give
+\[
+ \E_w|R_T|^2=\|q\|_2^2+A(T)^2\|U\|_2^2+B(T)^2\|V\|_2^2,
+ \qquad \E_w R_T^2=2A(T)B(T)\E(UV).
+\]
+Let $\Gamma_T$ be the centered Gaussian with precisely these two
+conditional moments. Define the \emph{signed, visibly averaged error}
+\[
+ \mathcal D=\E_T\left[
+  \E_w(|\ell(T)+R_T|+|\ell(T)-R_T|)
+                   -2\E|\ell(T)+\Gamma_T|\right].
+\]
+The new theorem gives the rigorous implication
+\[
+ \Lambda(R)\le S-\|U\|_2^2/10-\|V\|_2^2/4+\mathcal D.     \tag{10}
+\]
+Thus a sufficient remaining target for the odd-sector version of
+K$_\eta$ is
+\[
+ \boxed{\quad\mathcal D\le\|U\|_2^2/10+\|V\|_2^2/4+\eta.\quad} \tag{11}
+\]
+Unlike fibrewise domination, (11) allows positive non-Gaussian gains,
+keeps the visible average, and provides a variance-dependent allowance.
+It is \emph{not proved here}. Nor does (10) cover simultaneous $Y/W$
+or deterministic diagonal terms. The matched conditional moments alone
+do not control $\mathcal D$.
+
+Finally, the theorem transports to profiles
+$|a-a_0|,|b-b_0|\le10^{-5}$, with $\eps$ fixed, with additional error
+\[
+ 4\E|Z|\,|a-a_0|+4\E|Z|^3|b-b_0|
+ \le\frac{\sqrt\pi}{20000}<\frac{1773}{20000000}=0.00008865.
+\]
+This follows by applying the norm Lipschitz bound both to the payoff
+and to the Gaussian benchmark. It is uniformity for this proved
+Gaussian class, not a complete row envelope for arbitrary cubic laws.
+
+\subsubsection{The full zero-diagonal non-Gaussian error}
+For $q\in H_{2,1}$, $U\in H_{1,0}$, $V\in H_{0,1}$,
+$Y\in H_{1,1}$ and $W\in H_{2,0}$, all on the remote Gaussian space,
+put
+\[
+ R_T=q+A(T)U+B(T)V+\sqrt T(Y+W).
+\]
+Hermite orthogonality and the circle charges give exactly
+\[
+ \E|R_T|^2=\|q\|_2^2+A^2\|U\|_2^2+B^2\|V\|_2^2
+                  +T(\|Y\|_2^2+\|W\|_2^2),
+ \qquad \E R_T^2=2AB\E(UV)+T\E Y^2.
+\]
+Thus its matched centered Gaussian $\Gamma_T$ satisfies the hypotheses
+of Theorem~\ref{polar:all}. With $\mathcal D$ defined as before for
+this full $R_T$, we obtain
+\[
+ \Lambda(R)\le S-\frac{\|U\|_2^2}{10}-\frac{\|V\|_2^2}{4}
+ -\frac{\|Y\|_2^2+\|W\|_2^2}{25}+\mathcal D.              \tag{15}
+\]
+It therefore suffices to bound the signed visibly averaged
+non-Gaussian error by the three retained penalties plus $\eta$.
+This statement is weaker than fibrewise Gaussian domination and
+makes the allowed positive error explicit. Its general validity is
+still open. A nonzero deterministic diagonal coefficient changes the
+conditional mean and remains outside (15).
+
+\subsection{A quantitative variant for genuinely non-Gaussian shared cubics}
+There is also a rigorous, though currently weak, way of using the
+Gaussian theorem without assuming Gaussianity of the actual residual.
+It approximates the residual \emph{jointly with its coupling drivers}.
+
+Let $q\in H_{2,1}$, $p=\E|q|^2>0$, and
+$\kappa=\E|q|^4-2p^2$. Let $U\in H_{1,0}$ and $V\in H_{0,1}$,
+with $\alpha=\|U\|_2$, $\beta=\|V\|_2$. Choose orthonormal complex
+Gaussian coordinates $X_1,\ldots,X_m$ spanning $U$ and $\overline V$;
+$m\le2$. Write $X_j=(x_{2j-1}+ix_{2j})/\sqrt2$ in standard real
+Gaussian coordinates, and define
+\[
+ J=\sum_{j=1}^{2m}\E|\partial_{x_j}q|^2.
+\]
+No independence of $q$ from these drivers is assumed.
+
+\begin{theorem}[Joint replacement with explicit coupling cost]\label{polar:joint}
+For the actual cubic $R_T=q+A(T)U+B(T)V$,
+\[
+ \Lambda(R)\le S-\frac{\alpha^2}{10}-\frac{\beta^2}{4}
+ +2\sqrt{\bigl[p+(\alpha+\beta)^2\bigr]
+             \left[\frac{2\kappa}{3p^2}+\frac{8J}{9p}\right]}.
+                                                               \tag{16}
+\]
+In particular the inequality K$_\eta$ holds whenever the last error
+is at most $\alpha^2/10+\beta^2/4+\eta$.
+\end{theorem}
+\begin{proof}
+Apply the multivariate Gaussian Stein estimate to the real vector
+consisting of $q/\sqrt p$ and $X_1,\ldots,X_m$. Its covariance is
+$C=I/2$, by Hermite orthogonality. The estimate of
+Nourdin--Peccati--R\'eveillac, Theorem 3.5 and Lemma 3.3
+(\url{https://arxiv.org/abs/0804.1889}), bounds Wasserstein distance
+by $\sqrt2$ times the root mean square Hilbert--Schmidt Stein-matrix
+error. Only the symmetric part of that matrix pairs with a Hessian,
+so its symmetric part can be used in the proof of that estimate.
+
+Here the cubic inverse-generator factor is $1/3$, and the linear
+factor is one. For the cubic $2\times2$ block, the standard circular
+cubic estimate is
+\[
+ \E\|\tfrac13(\langle Dq_i,Dq_j\rangle)_{i,j}-pI/2\|_{HS}^2
+ \le\kappa/3.                                             \tag{17}
+\]
+One direct verification uses the real cubic identities
+$\operatorname{Var}\|DF\|^2=2592A+1944B$ and
+$\kappa_4(F)=1296A+1944B$, where $A,B$ are squared tensor
+contractions. Thus $\operatorname{Var}\|DF\|^2\le2\kappa_4(F)$.
+Circularity gives $\kappa_4(\Re(e^{i\theta}q))=3\kappa/8$;
+averaging the gradient-variance identity over $\theta$ proves (17).
+
+A cross entry in the symmetric Stein matrix is
+$(2/3)\partial_{x_j}q_i/\sqrt{2p}$, and its transpose has the same
+value. All linear--linear entries equal their covariance exactly.
+Consequently
+\[
+ \E\|\Gamma_{\rm sym}-C\|_{HS}^2
+ \le\frac{\kappa}{3p^2}+\frac{4J}{9p}.
+\]
+The target Gaussian has its first complex component independent of
+the retained linear drivers. The visibly averaged norm payoff, as a
+function of this normalized vector, has Lipschitz constant at most
+\[
+ 2\E_T\sqrt{p+(|A(T)|\alpha+|B(T)|\beta)^2}
+ \le2\sqrt{p+(\alpha+\beta)^2}.
+\]
+The price is unchanged, since all cross second moments vanish.
+Combining the joint estimate with Theorem~\ref{polar:main} proves (16).
+Lipschitz tests follow from smooth approximation in the Stein estimate.
+\end{proof}
+
+For a concrete finite, non-Gaussian example, let
+\[
+ q_N=\frac1{5\sqrt N}\sum_{j=1}^N H(X_j),\qquad
+ U=X_1/10,\quad V=\overline{X_1}/10,\qquad
+ H(X)=X(|X|^2-2)/\sqrt2.
+\]
+Then $p=1/25$, $\kappa=42p^2/N$, and $J=3p/N$.
+Formula (16) becomes
+\[
+ \Lambda(R)\le S-\frac7{2000}+\sqrt{\frac{736}{75N}}.
+\]
+The exact Wick Stein block improves this further. In standard real
+coordinates the Jacobian of $H$ has radial and tangential eigenvalues
+$(3T-2)/2$ and $(T-2)/2$, respectively. Hence
+\[
+ \E\|\Gamma_H-I/2\|_{HS}^2
+ =\frac{\E(3T-2)^4+\E(T-2)^4}{144}-\frac12
+ =\frac{1000+8}{144}-\frac12=\frac{13}{2}.
+\]
+For the normalized independent sum this contribution is $13/(2N)$;
+the symmetric cross block with $X_1$ contributes $4/(3N)$.
+The same joint argument therefore gives the stronger bound
+\[
+ \boxed{\Lambda(R)\le S-\frac7{2000}+\sqrt{\frac{376}{75N}}.}
+\]
+It proves exact K for every $N\ge409252$, with no independent
+Gaussian buffer. The integer threshold and the Wick moment calculation
+are checked in exact rational arithmetic. This is a genuine finite-cubic
+consequence, but its kurtosis is extremely close to two; it does
+\emph{not} cover the application's difficult kurtosis range.
+The quantitative Stein error in (16) is still too large to claim a
+new Grothendieck endpoint.
+
+\paragraph{A general joint-Stein sufficient condition.}
+The same mechanism is not confined to linear drivers. Form the real
+vector $F$ underlying $(q,U,V,Y,W)$, discard deterministic zero
+covariance directions, and let $C>0$ be its covariance. Set
+$\Gamma_{ij}=\langle DF_i,-D\mathcal L^{-1}F_j\rangle$, where
+$\mathcal L$ is the real Gaussian Ornstein--Uhlenbeck generator.
+The target Gaussian has exactly the covariance profiles of (15).
+The visibly averaged payoff has Lipschitz constant at most $2\sqrt5$,
+since $\E[1+A^2+B^2+2T]=5$. Therefore (15) holds with the explicit
+upper bound
+\[
+ \mathcal D\le2\sqrt5\,\|C^{-1}\|_{\rm op}\|C\|_{\rm op}^{1/2}
+       \sqrt{\E\|\Gamma_{\rm sym}-C\|_{HS}^2}.              \tag{18}
+\]
+All quantities are finite polynomial contraction data; the output
+dimension is at most ten, independent of the ambient dimension.
+The inverse covariance can make (18) numerically poor. It is a proved
+sufficient condition, not a claim that it meets the required error
+budget for every cubic.
+
+\subsection{IDE reading note}\label{sec:polar-reading}
+\paragraph{Where this leaves K.} \autoref{ch:forest}'s fact (c), the Gaussian-profile layer, was numerical (30 optimiser starts). It is now a theorem for the full covariance class, with
+explicit penalties: $\alpha^2/10$ ($A$), $\beta^2/4$ ($B$) and $\gamma^2/25$ ($Y/W$). The first-order constants of \autoref{ch:forest}, about $0.47\alpha^2$, $0.93\beta^2$ and $0.70\gamma^2$
+at $v^*$, show these certified penalties are deliberately conservative. Every residual now splits as ``matched Gaussian + signed non-Gaussian gap $D$''. The open statement is
+$D\le\alpha^2/10+\beta^2/4+\gamma^2/25+\eta$.
+\paragraph{Relation to \autoref{ch:stronger} (heuristic \st{?}; the split below is not derived, referee 20 Oct).} The Ornstein--Uhlenbeck-type interpolation between the actual $G$ and its matched Gaussian writes $D=-\int_0^{\pi/2}\phi'(\theta)\,d\theta$, and
+$\phi'$ splits into two pieces. The first is the BNC term, which depends on the law of $R_T$ alone and is zero for Gaussian laws; for remote cubics it is the visible-free inequality PVD. The second
+is the visible--residual Malliavin cross term $\E\nabla^2|\cdot|(Y)[DL,DG]$, which is nonzero exactly for sectors whose $Z$-dependence overlaps $D_ZL$. A proof of the target can therefore be
+organised as BNC (no visible variable) plus a bound on the cross energy by the certified penalties above.

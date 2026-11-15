@@ -1,0 +1,89 @@
+{
+  "peak": {
+    "status": "PASS",
+    "J0_ball": "[-1.67027186522825932510196453490779127711917651 +/- 5.07e-45]",
+    "kernel_data_sha256": "2cf4f2b8c0a1ded6bfc40e45bd051b2d9c5089cc22676356abccce6ad32e6e1c",
+    "rational_certificate": {
+      "row": "peak",
+      "status": "PASS",
+      "constant": "11/50",
+      "normalized_gap": "0",
+      "weight": [
+        "3/10",
+        "7/10"
+      ],
+      "Q_parameters": [
+        "59/500",
+        "37/1000",
+        "21/200000"
+      ],
+      "u": [
+        "551/100000",
+        "463/10000"
+      ],
+      "y_cut": "400",
+      "boxes": 5306,
+      "leaves": 2654,
+      "depth": 24,
+      "seconds": 0.25909876823425293
+    }
+  },
+  "flank": {
+    "status": "PASS",
+    "J0_ball": "[-1.668438624511091506380543994135113679143726851 +/- 8.81e-46]",
+    "kernel_data_sha256": "d35bf019b448c6ff30ba161d319185e75cc8e581cce8e7848d0f0b562b0ec3df",
+    "rational_certificate": {
+      "row": "flank",
+      "status": "PASS",
+      "constant": "11/50",
+      "normalized_gap": "0",
+      "weight": [
+        "3/10",
+        "7/10"
+      ],
+      "Q_parameters": [
+        "59/500",
+        "37/1000",
+        "21/200000"
+      ],
+      "u": [
+        "551/100000",
+        "463/10000"
+      ],
+      "y_cut": "400",
+      "boxes": 5376,
+      "leaves": 2689,
+      "depth": 23,
+      "seconds": 0.2551548480987549
+    }
+  },
+  "upper": {
+    "status": "PASS",
+    "J0_ball": "[-1.630875370042060475095075564603466153535232796 +/- 6.42e-46]",
+    "kernel_data_sha256": "45a8ef6237c99d64fa37849eec2543155115903df7dd9373076e7dd4be077567",
+    "rational_certificate": {
+      "row": "upper",
+      "status": "PASS",
+      "constant": "11/50",
+      "normalized_gap": "0",
+      "weight": [
+        "3/10",
+        "7/10"
+      ],
+      "Q_parameters": [
+        "59/500",
+        "7/200",
+        "21/200000"
+      ],
+      "u": [
+        "551/100000",
+        "463/10000"
+      ],
+      "y_cut": "400",
+      "boxes": 1664,
+      "leaves": 833,
+      "depth": 18,
+      "seconds": 0.09219002723693848
+    }
+  }
+}

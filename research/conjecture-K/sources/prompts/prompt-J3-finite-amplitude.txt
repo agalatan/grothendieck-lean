@@ -1,0 +1,40 @@
+NEXT TASK (J3): the finite-amplitude signed A/B cost. The uniform infinitesimal bound is now yours (certified for every remote
+base): -1/2 d^2/ds^2 Lambda(q + s h)|_{s=0} >= 0.241 |r_A|^2 + 0.261 |r_B|^2 + 0.236 Re E[r_A conj r_B], h = (T-1) r_A + z^2 conj(r_B)/sqrt 2.
+We need its finite-amplitude version on the application range: for every remote cubic q with E|q|^2 <= 0.0463 (at least on the
+certified classes: XP(Y), Gaussian-factor, self-interaction) and E|r_A|^2, E|r_B|^2 <= 0.0113, sharing arbitrary,
+   (J3)  Lambda(q + h) <= Lambda(q) + 2 Re<r_A, c_A(q)> + 2 Re<r_B, c_B(q)> - [ kA |r_A|^2 + kB |r_B|^2 + 2 m Re E[r_A conj r_B] ]
+with (kA, kB, m) = (0.24, 0.26, 0.118) minus a loss delta <= 0.07 on the diagonal (the certified margin at q = 0), c_A = Pi_{1,0} F_A(q),
+c_B = Pi_{1,0} F_B(q). With the vector kernel comparison ||c_B - 0.5053 c_A|| <= 0.007 sqrt u and the A-content constant 0.24 this
+gives Lambda(q + A + B) <= S + 5.5e-5 and closes the A+B core.
+Facts to use. (1) Lambda(q + h) = Lambda(q) + first order - int_0^1 (1-s) D^2 Lambda(q + s h)[h, h] ds; your theorem is the s = 0 value.
+(2) POINTWISE in w, the Hessian at the intermediate base x + (t-1) s alpha + t e^{2 i theta} s conj(beta)/sqrt2 (alpha = r_A(w),
+beta = r_B(w)) does NOT satisfy the signed target once |s beta| >= 0.1 (claude-b9ee numerics: min eigenvalue -0.03 at |beta| = 0.1,
+-0.20 at 0.2, -0.84 at 0.3, worst at x = 0.4, |alpha| = 0.3), while it holds with margin >= 0.022 for |beta| <= 0.05; since
+|beta| ~ sqrt(0.0113) = 0.106 is typical, a pointwise five-parameter certificate is out. (3) The crude costs are certified at EVERY
+pointwise amplitude for the total increment: kappa_A = 0.24 for |r_A|^2 <= 0.0113 and kappa_B = 0.26 globally (0.35 locally), with
+the mixed term dropped. (4) The B-cost holds for every base q' that is a function of w alone (independent of z); for the z-dependent base
+q' = q + (T-1) r_A it is NOT yet certified: route (b) needs the B-cost at z-dependent even bases, E_z[T^2/(2|L + x + (T-1) alpha|)]
+<= 1/eps - kappa uniformly in (x, alpha) in C^2 (same density-cap method with one more parameter), or must be replaced by route (a).
+Two admissible routes; pick the one your machinery can certify.
+  (a) Segment-weighted, Gaussian-averaged kernel: certify int_0^1 2(1-s) E_w[ Y^T Kcal(x, s alpha, s beta) Y ] ds >= target form, where
+      (alpha, beta) = (r_A(w), r_B(w)) are jointly Gaussian with variances <= 0.0113 (their joint law depends on the sharing, but
+      each marginal is Gaussian with the stated variance and E[alpha conj beta] = E[r_A conj r_B] is the only cross-moment that
+      enters at second order; higher cross-moments of a Gaussian pair are determined by it). The averaging over the Gaussian
+      law of (alpha, beta) is what removes the pointwise failure at large |beta| (those are 3-sigma events).
+  (b) Lipschitz bound on the B content along the A direction: by (3)-(4),
+      Lambda(q + A + B) <= Lambda(q) + 2 Re<r_A, c_A(q)> + 2 Re<r_B, c_B(q)> - 0.24|r_A|^2 - 0.26|r_B|^2 + 2 Re< r_B, c_B(q + (T-1) r_A) - c_B(q) >,
+      so (J3) follows from  Re< r_B, c_B(q + (T-1) r_A) - c_B(q) > <= -(m - delta) Re E[r_A conj r_B] + delta |r_A| |r_B|  for all r_B,
+      i.e. the derivative of the B content along the A-shell is, within delta, minus m times the identity, uniformly in q and in
+      |r_A|^2 <= 0.0113. Its first-order part is exactly your kernel (the mixed block of the Hessian); the second-order part in r_A
+      is a remainder of the B-content kernel at bases depending on T, which your even-base B-cost machinery can enclose.
+Deliverable: a replayable certificate of (J3) at the three rows with the exact delta and the classes of q covered, plus the
+two scalar kernel bounds for the vector comparison, PER ROW: rho(v) = g_B(v)/g(v) in [rho_0, rho_0 + 0.055] and h(v) = |g(v)|(rho(v) - rho_0)
+<= 0.007, with rho_0 = rho(0) = 0.5053 (peak), 0.502632 (flank), 0.501130 (upper) (the peak numbers were wrongly stated for all rows).
+
+BUDGET (19:10, claude-b9ee): with the A-content constant 0.24 the conclusion is fragile: the excess over S is 5.5e-5 at m = 0.118 but
+1.2e-4 at m = 0.115, 2.9e-4 at 0.11, 8e-4 at 0.10, and k_A = 0.24 must be kept exact (a loss delta on k_A costs Delta*delta/0.24). Loss on
+k_B is tolerable (k_B = 0.19 still gives 8.4e-5). The robust alternative is to SHARPEN THE A-CONTENT CERTIFICATES (truth 0.088 at the
+top energy, certified 0.22-0.24 and never minimised): with C_A^2 <= 0.15 Delta the A+B core closes with room >= 1.6e-2 for any
+m in [0.05, 0.118] (even with the mixed term dropped, provided it is nonnegative); with C_A^2 <= 0.10 Delta it closes in the
+sign-pessimistic form with no statement about m at all. So, in parallel with J3: report the smallest A-content constants your
+envelopes can certify for q = XP(Y) (reweighted), for the Hermitian self-interaction family, and for the Gaussian-factor class.

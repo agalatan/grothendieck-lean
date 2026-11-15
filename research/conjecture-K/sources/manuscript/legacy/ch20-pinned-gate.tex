@@ -1,0 +1,159 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch20-pinned-gate.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 20). Owner: lower-bound/04-witness-certificates.tex
+\section{Pinned gate, $\delta$-free profile optimisation, a local common-law certificate, and a first-chaos dual for K$'$ (upper-side GPT, 15 October 18:36)}\label{ch:pinned}
+\chapsummary{Pinned-gate and price-elimination identities, together with a historical finite certificate. The first-chaos dual keeps response readjustment; its proof remains a dependency.}
+
+\paragraph{Provenance and status (IDE note, 15 October, evening).} Source: the note \code{grothendieck-next-lower-bound.md} and the package \code{grothendieck-pinned-gate-package.zip}
+(both in \pathref{\~{}/Downloads/}, zip mtime 18:36) from the \emph{other} GPT system (the upper-side instance, here working on the lower bound), built on our bundle of 16:45 and on the received
+shared-residual certificate $1/B=1.401615098$ (cap $356731317/5\cdot10^8$, rows at $\varepsilon=149/200$). Archived, minus its copy of our verifier, in
+\pathref{handoff/research-third-decimal/gpt-reviews/pinned-gate-20261015/}. The chapter below is written by us from the note and contains essentially all of its mathematics with the
+original proofs. \emph{Replay} \st{C}: \code{SHA256SUMS.json} 23/23; \code{upstream/verify\_cert.py} is byte-identical to our \pathref{handoff/lower-stein/verify\_cert.py} (sha \code{3801cbb3\ldots});
+\code{pinned\_gate.py} under \code{python3 -I} from an isolated directory against a scratch copy of our \code{cert-0745} and \code{rows\_final.json}: source hashes PASS, the 402 shared boxes and 1,788
+outer cells PASS (received cap reproduced), the pinned correction PASS in all 402 boxes, maximum $0.7134626228693718$, cap $71346262287/10^{11}$, $K>1401615120323/10^{12}$;
+\code{verify\_mixed\_local.py}: three mixed nodes and the local box PASS (needs \code{python3 -E -s}, since under \code{-I} its sibling import fails); the optional \code{--full} mode (full upstream source node/row audit through our own \code{verify\_cert.py}, 5\,min\,47\,s) also PASS. Logs: \pathref{kattack-2026-10-15/gpt\_pinnedgate\_replay.log}; our exact re-derivation of the identities (1), (2), (4), (5) with 200 random rational instances:
+\code{pinned\_own\_check.py}. \textbf{Status of the endpoint}: $1/B>1.401615120323$ is \st{C} by their verifier and by our replay, under the analytic inputs of \autoref{ch:certified}
+in the \emph{shared-law} form of \autoref{ch:shared-residual-review} (the 402 boxes mix rows); never ported to Lean on its own (the pinned price is contained in the merged common-law certificates since commit \code{2c54991}; the repository bound at the time of writing was $\KG>1.40160592$, the current one is $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}).
+\emph{Relation to \autoref{ch:shared-residual-review}}: \S\ref{sec:pinned-gate} is exactly the first refinement there (``this correction alone gives a maximum below $0.713462623$,
+endpoint $1.401615120$''), i.e.\ the pinned gate on the unchanged 402-box cover; the stronger $1.401616861$ of \autoref{ch:shared-residual-review} adds the joint moment/Stein duals and
+three row mixtures on a new 863-box partition, of which \S\ref{sec:pinned-local} below is the local precursor (one mixture, three nodes, one box). New here: the $\delta$-free row
+(\S\ref{sec:pinned-delta}), the local certificate (\S\ref{sec:pinned-local}) and the first-chaos dual with its quantitative $q$-only penalty (\S\ref{sec:pinned-kprime}).
+
+\subsection{Enforce the known coordinate in the gate square}\label{sec:pinned-gate}
+Notation of the shared-residual reduction (\autoref{ch:certified}, \eqref{eq:row}, and \autoref{ch:shared-residual-review}): for an admissible pair $f,g$ put $k=(f-g)/2$,
+$c_1(w)=\E_zk(z,w)$, $p=Q_wc_1$, $\tau=\norm p_2$, $\xi=(c_1,c_A,\overline{c_B})$ and $X=Q_w\xi$. Then, by the definitions (HJM (8.6)),
+\[
+X_1=p .
+\]
+This is not an assumption that different extremisers agree; it is the first coordinate of $X$. The shared-residual certificate kept the common gate square but bounded it below by zero, letting
+its first coordinate vary freely.
+\begin{lemma}[\st{P}, checked exactly here]\label{lem:pinned}
+For $N\succ0$, a vector $g$ and $X_1=p$,
+\begin{equation}\label{eq:pinned1}
+\norm{X+N^{-1}gp}_N^2\ \ge\ \frac{|1+(N^{-1}g)_1|^2}{(N^{-1})_{11}}\,|p|^2 ,
+\end{equation}
+with equality attainable under the single-coordinate constraint.
+\end{lemma}
+\begin{proof}With $Y=X+N^{-1}gp$, Cauchy--Schwarz in the $N$-inner product gives $|Y_1|^2\le(N^{-1})_{11}\norm Y_N^2$, and $Y_1=(1+(N^{-1}g)_1)p$. Equality holds for $Y=N^{-1}e_1\,Y_1/(N^{-1})_{11}$.\end{proof}
+For a row mixture put $N=\sum_i\lambda_iN_i$, $g=\sum_i\lambda_i\delta_ib_i$, $\bar\delta=\sum_i\lambda_i\delta_i$. The old shared-gate price and its replacement are
+\begin{equation}\label{eq:pinned2}
+D_{\rm old}=\bar\delta-g^*N^{-1}g,\qquad D_{\rm pin}=D_{\rm old}+\frac{|1+(N^{-1}g)_1|^2}{(N^{-1})_{11}}\ \ge D_{\rm old},
+\end{equation}
+and the strengthened mixed row is
+\begin{equation}\label{eq:pinned3}
+V\le t^2-2\ell_\lambda t+\frac{2\beta_\lambda^2}\varepsilon+\sum_i\lambda_i\E\Psi_i(\delta_i\tau\sqrt U)-D_{\rm pin}\tau^2 .
+\end{equation}
+All potential bounds and all 402 boxes of the shared-residual certificate are reused; the price only increases, so the outer envelope stays valid. Orientation: for row $0.85$ the first
+component of $N^{-1}g$ is $\approx-0.99625761$ and the correction $\approx1.538\cdot10^{-7}$ per unit $\tau^2$; for row $0.855$ it is $\approx-0.99979327$; the optimised profiles nearly satisfy
+$1+(N^{-1}g)_1=0$, which is why the gain is small. Exact result \st{C}: 402 boxes pass, 1,788 outer cells pass, interior maximum $0.7134626228693718\ldots$, outer maximum
+$0.7134617364535627\ldots$, cap $B=71346262287/10^{11}=0.71346262287$, $1/B=1.4016151203231426\ldots$; the verifier checks the old bounds first and checks \eqref{eq:pinned2} against the
+independent block-Schur formula \eqref{eq:pinned4} in every box; the final rounding is integer arithmetic. As in \autoref{ch:shared-residual-review}, this does not follow from the
+abstract $\forall i\,\exists q_i$ interface: the Gaussian reduction must expose the common $p$, the common $X$ and $X_1=p$, which follow from the definitions and must be proved, not obtained by
+swapping quantifiers.
+
+\subsection{Remove $\delta$ from the profile optimisation}\label{sec:pinned-delta}
+For the real symmetric profiles write
+\[
+E=\begin{pmatrix}e&n^{\mathsf T}\\ n&C\end{pmatrix},\quad C\succ0,\qquad a=\delta(e_1+b)=\begin{pmatrix}a_0\\a_R\end{pmatrix}.
+\]
+The rescaled potential $\widetilde\Psi_a(s)=\Psi_\theta(\delta s)$ depends on $(E,R,\ell,\beta,a)$ and \emph{not separately on $\delta$}: its residual coupling is $2s\Re(a\cdot\xi)$. The corrected
+price is
+\begin{equation}\label{eq:pinned4}
+D_{\rm pin}=e-\varepsilon+2a_0-(n+a_R)^{\mathsf T}C^{-1}(n+a_R).
+\end{equation}
+\begin{proposition}[$\delta$-free row, \st{P}; identity checked exactly here]\label{prop:deltafree}
+With $N=E-(\varepsilon-\delta)e_1e_1^*$ the pre-square gate inequality of \autoref{ch:certified},
+$\varepsilon\norm{Qk}^2-\norm{Pk}^2\le\E(\xi^*E\xi+\zeta^*R\zeta+\varepsilon|d|^2)+\delta\norm p^2-\langle X,NX\rangle$, has, because $X_1=p$,
+\[
+\delta\norm p^2-\langle X,NX\rangle=\varepsilon\norm p^2-\langle X,EX\rangle ,
+\]
+so $\delta$ cancels; and with $X=(p,Y)$ (replacing $\xi$ by $X$ in the pairing with $p$ by projection orthogonality), completing the square in $Y$ only,
+\begin{equation}\label{eq:pinned5}
+\varepsilon\norm p^2-\langle X,EX\rangle=2\Re\,\E\,\bar p\,(a\cdot\xi)-D_{\rm pin}\norm p^2-\norm{Y+C^{-1}(n+a_R)p}_C^2 ,
+\end{equation}
+which proves the row \eqref{eq:pinned3} directly.
+\end{proposition}
+\begin{proof}Expand: $\langle X,EX\rangle=e|p|^2+2\Re(\bar p\,n^{\mathsf T}Y)+Y^*CY$ and $2\Re\bar p(a\cdot X)=2a_0|p|^2+2\Re(\bar p\,a_R^{\mathsf T}Y)$; with $h=n+a_R$,
+$\norm{Y+C^{-1}hp}_C^2=Y^*CY+2\Re(\bar p\,h^{\mathsf T}Y)+h^{\mathsf T}C^{-1}h|p|^2$. Substituting \eqref{eq:pinned4} the right side of \eqref{eq:pinned5} collapses to
+$(\varepsilon-e)|p|^2-2\Re(\bar p\,n^{\mathsf T}Y)-Y^*CY$, which is the left side. (Verified on 200 random rational instances together with \eqref{eq:pinned1}--\eqref{eq:pinned2} and the
+equality $D_{\rm pin}=D_{\rm old}+$gain.)\end{proof}
+Consequences for the next row optimiser: search over $(E,R,a,\ell,\beta)$, 14 real parameters instead of 15, keeping the $E,R$ gate conditions; use $D_{\rm pin}$ and $\tau=\norm p$; no separate
+$N\succ0$ gate is needed (the completion uses $C\succ0$); mixing is a $2\times2$ computation with retained slack $\sum_i\lambda_ih_i^{\mathsf T}C_i^{-1}h_i-\bar h^{\mathsf T}\bar C^{-1}\bar h\ge0$,
+$h_i=n_i+a_{R,i}$; existing node caps stay usable after rescaling their abscissae $r\mapsto r/\delta_i$. The row is valid also when $D_{\rm pin}\le0$; positivity is needed only by the present
+concave-quadratic box maximiser, and all 402 prices are checked positive. This is a reduction of the gate search, not a claim that it reaches $1.402$. (The same simplification appears as
+``$A=\delta(e_1+b)$'' in \autoref{ch:shared-residual-review}.)
+
+\subsection{Optimise the mixed potential against one law: a local certificate}\label{sec:pinned-local}
+The shared-residual certificate adds separately certified bounds on $\E\Psi_i(\delta_i\tau\sqrt U)$, which may be supported by different worst laws even at common $(\tau,x)$. For the mixture
+\begin{equation}\label{eq:pinned6}
+\Phi_\theta(s)=(1-\theta)\Psi_{0.85}(\delta_{0.85}s)+\theta\Psi_{0.855}(\delta_{0.855}s)
+\end{equation}
+rescale the source cap tables to the $s$-variable and add them with weights; the breakpoint union gives a piecewise-affine upper envelope with the source padding added once (no new
+Gaussian integration). New moment/Stein dual coefficients were optimised by LP and then \emph{certified} by the unchanged source verifier (rational Bernstein subdivision, exact Taylor tail):
+three nodes at $\theta=14/125$, $\tau\in\{241/1000,\ 121/500,\ 243/1000\}$, with the global inequality $y_0+y_4v+y_1v^2+y_2v^4+y_3v^6-\widehat\Phi_\theta(\tau v)-\sum_j\mu_jG_j(v^2)\ge0$
+($y_3,y_4,\mu_j\ge0$) for all $v\ge0$; the floating proposals needed upward repairs of $y_0$ by $1.73$, $2.85$, $2.69\cdot10^{-7}$, which are included. With the pinned price this gives the
+exact \emph{local} result \st{C}
+\begin{equation}\label{eq:pinned7}
+t\in[0.851,0.8512],\ \tau\in[0.241,0.243],\ x\in[0.69,0.71]\ \Longrightarrow\ V\le0.7134591683137567\ldots<0.713459169 ,
+\end{equation}
+a local gain of several $10^{-6}$. \textbf{Not a global bound}: the box does not cover the domain and its reciprocal must not be quoted. The global version of this idea, with three mixtures,
+36 nodes and an 863-box partition, is \autoref{ch:shared-residual-review}'s $1.401616861$.
+
+\subsection{A valid first-chaos dual for K$'$}\label{sec:pinned-kprime}
+Two corrections to our own record first. (i) \autoref{ch:K} calls the first-chaos penalty experiment untested, but \code{kattack-2026-10-15/kprime.py} and \code{kprime.log} exist and
+\S\ref{sec:kprime-result} reports them (raw penalty $16$--$31\%$ of the mixed-gain allowance on the junta family). (ii) \code{kprime.py} applies a $C/s$ tail extrapolation to all three profiles,
+including $F_0(s)=\E_z\ph(L(z)+s)$, whereas $F_0(s)\to1$ as $s\to\infty$ (dominated convergence); the note's diagnostic evaluates the angular mean directly. The effect on the $16$--$31\%$
+figures is not quantified \st{F}. (iii) The logical correction already made in \autoref{ch:crossbound}: subtracting $\norm{Pk_G}^2$ at the unpenalised best response does not bound the
+penalised supremum, since the maximisers readjust.
+
+\begin{proposition}[first-chaos dual, \st{P}]\label{prop:LambdaP}
+With $\mathcal F(H)=\E|L+H|+\E|L-H|$ define
+\begin{equation}\label{eq:pinned8}
+\Lambda_P(G)=\inf_{a\in\Hc10}\bigl\{\norm a^2+\mathcal F(G-a)\bigr\}-\frac{\norm G^2}\varepsilon .
+\end{equation}
+Then for the constrained functional $\Lambda'$ of \autoref{ch:K}: $\Lambda'(G)\le\Lambda_P(G)\le\Lambda(G)$.
+\end{proposition}
+\begin{proof}For every $a\in\Hc10$, $-\norm{Pk}^2\le\norm a^2-2\Re\langle a,k\rangle$. Inserting this into the row, the coefficients of $f,g$ become $L+G-a$ and $L-G+a$, whose pointwise suprema over
+unimodular $f,g$ are the two moduli in \eqref{eq:pinned8}; infimise over $a$. Taking $a=0$ gives the second inequality. No exchange of $\sup$ and $\inf$ is used.\end{proof}
+So $\sup_G\Lambda_P(G)\le S+\eta$ is an intermediate target sufficient for K$'$ and weaker than K. \emph{Relation to \autoref{ch:crossbound}}: $\Lambda_P$ is Proposition~\ref{prop:retained-dual}'s
+dual $\mathcal D_G(v)$ restricted to first-chaos trial multipliers $v=a\in\operatorname{ran}P$ (then $Qv=0$ and $\mathcal D_G(a)=\mathcal F(G-a)+\norm a^2-\norm G^2/\varepsilon$); the two statements agree,
+\autoref{ch:crossbound} being more general (cubic-consistency directions). The matrix bound \eqref{eq:pinned11} below is \autoref{ch:crossbound}'s first-chaos-only correction
+$\Lambda'\le\Lambda-\langle Pk_0,(I+K_{PP})^{-1}Pk_0\rangle$. \emph{New} is the explicit $q$-only penalty \eqref{eq:pinned10}. (\autoref{ch:common-law-refinement}, \S\ref{sec:pinned-exact-dual}, later upgrades these duals to equalities in fixed finite dimension.)
+
+\begin{theorem}[quantitative penalty for the $q$-only part, \st{P}]\label{thm:qpenalty}
+Let $G=q(w)$ be independent of the visible coordinate, $L(z)=z(a+b|z|^2)$ with $a>0$, $b\ge0$, $F_0(u)=\E_z\ph(L(z)+u)$ and
+\[
+H_0=\E\frac1{|L|}=2\int_0^\infty\frac{e^{-r^2}}{a+br^2}\,dr\qquad\Bigl(=\frac{\pi e^{a/b}\operatorname{erfc}(\sqrt{a/b})}{\sqrt{ab}}\ \text{for }b>0\Bigr).
+\]
+Then for every square-integrable $q$, with the projection in the remote variables,
+\begin{equation}\label{eq:pinned10}
+\Lambda_P(q)\le\Lambda_q-\frac{\norm{\Pc10F_0(q)}^2}{1+H_0/2}.
+\end{equation}
+\end{theorem}
+\begin{proof}With $\rho=r(a+br^2)$ the planar density of $L$ is $\omega(\rho)=e^{-r^2}/[\pi(a+br^2)(a+3br^2)]$, radially nonincreasing. Hence $h(u)=\E|L+u|^{-1}$, its convolution with
+$1/|u|$, is radial and nonincreasing (write both radial functions as positive superpositions of disc indicators; the intersection area of two discs decreases with their separation;
+truncate to handle the singularity and the infinite support). Let $g(u)=\E|L+u|$: radial, convex, $\Delta g=h$, and
+\[
+\frac{g'(r)}r=\frac1{r^2}\int_0^rsh(s)\,ds\le\frac{H_0}2,\qquad g''(r)=h(r)-\frac{g'(r)}r\le\frac{h(r)}2\le\frac{H_0}2 ,
+\]
+which bound the tangential and radial Hessian eigenvalues; convexity makes them nonnegative, and the limit at $0$ is $H_0/2$. So $\nabla g=F_0$ is globally $H_0/2$-Lipschitz and
+$2g(q-a)\le2g(q)-2\Re(\overline{F_0(q)}a)+\frac{H_0}2|a|^2$. Take $a=\Pc10F_0(q)/(1+H_0/2)$ in \eqref{eq:pinned8} and integrate.\end{proof}
+At the peak profile ($a=0.5592$, $b=0.1432$) $H_0/2\approx1.4319737913$, so the guaranteed multiplier on the squared content is $\approx0.4112$ rather than $1$ \st{F}. For
+$q=0.2\,w(|w|^2-2)/\sqrt2$ the note's one-parameter dual gives: raw squared first-chaos content $9.30685\cdot10^{-4}$, reduction guaranteed by \eqref{eq:pinned10} $3.82687\cdot10^{-4}$, reduction
+from the one-parameter dual $4.18182\cdot10^{-4}$ (quadrature-stable to $8\cdot10^{-8}$) \st{F}. Read against \S\ref{sec:kprime-result}: the usable K$'$ relief is $0.41$--$0.45$ of the raw
+penalty, i.e.\ roughly $7$--$14\%$ of the mixed-gain allowance on the junta family, not $16$--$31\%$.
+
+\paragraph{Matrix version for general $G$ (\st{P}).} Put $w_\pm=L\pm G$, $k_0=(\ph w_+-\ph w_-)/2$, $c=Pk_0$, and on a finite-dimensional first-chaos subspace define $A_G$ by
+$\langle a,A_Ga\rangle=\frac12\E|a|^2(|w_+|^{-1}+|w_-|^{-1})$. When the entries are finite and $w_\pm\ne0$ a.s.,
+\begin{equation}\label{eq:pinned11}
+\Lambda_P(G)\le\Lambda(G)-c^*(I+A_G)^{-1}c ,
+\end{equation}
+by $|w-a|\le|w|-\Re(a\,\overline{\ph w})+|a|^2/(2|w|)$ (from $\sqrt s\le(1+s)/2$) applied to both moduli and minimisation of the positive quadratic. \eqref{eq:pinned10} is stronger in its
+$q$-only setting because it uses the averaged Hessian; \eqref{eq:pinned8} remains valid when the reciprocal-modulus integrals diverge. The $q$-only penalty does not transfer unchanged to coupled $A/B$, even or diagonal sectors, and neither these measurements nor this dual proves the mixed-sector inequality. Later family theorems are listed in \autoref{ch:K-state}.
+
+\subsection{What a Lean port of this intermediate certificate needs}\label{sec:pinned-lean}
+Compared with the Lean certificate of 15 Oct afternoon (\autoref{ch:certified}): (i) the \emph{shared-law} form of H1 of \autoref{ch:shared-residual-review} is required here too, because the 402
+boxes mix the rows $0.85$ and $0.855$ with box-dependent weights (one $p$, one $\tau$, one law $U$, $\sigma_i=\delta_i\tau$); (ii) the identity $X_1=p$ from the definitions and the pinned
+completion \eqref{eq:pinned5} (a Schur-complement square completion in the trailing block, the \code{coupling\_square} pattern with one pinned coordinate); (iii) the box evaluator with
+$D_{\rm pin}$ and the unchanged outer envelope (1,788 cells). \emph{No} new potential caps, node certificates or Gaussian integrations: all 402 boxes reuse the source duals and the source
+node certificates. Relative to the $1.401616861$ certificate it therefore drops the 36 new mixed-node certificates and the new 863-box partition, at the cost of $1.7\cdot10^{-6}$ in the
+endpoint; it is the natural fallback for the branch \code{work/lower-mixed}. [Dated: the fallback was not needed; \code{work/lower-mixed} was merged with the full $1.401616861$ certificate (commit \code{2c54991}), whose \code{SharedReduction} contains $X_1=p$ and the retained gate square.]

@@ -1,0 +1,177 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch16-certificates.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 16). Owner: lower-bound/11-history-literature.tex
+\section{Towards a $K_\eta$ certificate: the fibre majorant L1 measured over the row box, and K-a from the Lean moment constraints alone}\label{ch:certs}
+\chapsummary{Dated numerical tests of the fibre and moment relaxations. These diagnose losses of those relaxations; later remote-cubic theorems are recorded in \autoref{ch:K-state}.}
+
+Code and logs: \pathref{handoff/\allowbreak research-third-decimal/\allowbreak kattack-2026-10-15/\allowbreak }, subfolders \code{l1/\allowbreak } (\code{fibre.py}, \code{summary.py}, \code{fibre\_*.log/\allowbreak json}, \code{droplet/\allowbreak },
+\code{threshold.log}) and \code{ka/\allowbreak } (\code{ka\_dual.py}, \code{ka\_dual\_96.log}, \code{ka\_dual\_192.log}, \code{ka\_dual\_npu*.json} with the dual certificates). Everything in this chapter is \st{F}
+(float, grids stated), written so that the two objects a Lean/interval certificate would formalise (the majorant constants $h_X,h_Y$ and the dual vectors $y$) are explicit. The certified bound is
+unchanged.
+
+\subsection{Task A: the fibre majorant $M(h_X,h_Y)$ (ch.~\autoref{ch:K}, Proposition~\ref{prop:R})}\label{sec:certs-L1}
+\paragraph{Setting and reductions.} $\Phi(s;m)=\E_z[|L+s+m\cdot e(z)|+|L-s-m\cdot e(z)|]$, $L=za(U)$, $a(U)=\ell+\beta(U-2)$, $e=(U-1,\ z^2/\sqrt2,\ z,\ \bar z)$ (the normalisation of
+\code{prof.py}: $F_B$ uses $B=z^2/\sqrt2$), $c_A(s)=\E[(U-1)\ph(L+s)]$, $c_B(s)=\E[\bar z^2\ph(L+s)/\sqrt2]$, i.e.\ $2\Re(\bar c_Am_A+\bar c_Bm_B)$ is the exact $m$-gradient of $\Phi$ at $m=0$
+(computed numerically as $\Re(m\cdot G)$, $G_j=\sum g\,\overline{\ph(w)}e_j$). Two exact reductions: (i) $z\mapsto ze^{i\varphi}$ gives $\Phi(s;m)=\Phi(|s|;m')$ with $m'$ a phase-rotation of $m$, so
+$s\ge0$ real suffices and the directions of $m$ are sampled with full phases; (ii) $z\mapsto-z$ in the second term gives $\Phi=\E|w_++m\cdot e_+|+\E|w_-+m\cdot e_-|$, $w_\pm=za_\pm(U)+s$,
+$e_+=(A,B,z,\bar z)$, $e_-=(A,B,-z,-\bar z)$, with $a_\pm=\ell+(\beta\pm\nu/\sqrt2)(U-2)$ for the diagonal shift; for $\nu=0$ this is $\E[|W+v_Y|+|W-v_Y|]$ with $W=w+v_X$: \emph{the $Y$-block
+enters as a two-sign perturbation around the $X$-perturbed centre}. Quadrature: polar Gauss--Legendre centred at the zero of $w_\pm$ ($20\times6$ radial nodes on $[0,8]$, 144 angles,
+17,280 nodes per term), so the Hessian integrand $(\Im(\overline{\ph w}\,v))^2/|w|$ is bounded; the exact $8\times8$ real Hessian at $m=0$ gives the small-$m$ limits of the secant quotients (the
+quotient $[\Phi-\Phi_0-{\rm lin}]/|m|^2\to\frac12{\rm Hess}[\hat m,\hat m]$). Convergence: against $92{,}160$ nodes the secant quotients agree to $\le2\cdot10^{-3}$ for $|m|\ge0.02$ and
+$\le10^{-2}$ at $|m|=0.01$ (so the $|m|=0.01$ secants are indicative only; the Hessian is the accurate small-$m$ value).
+
+\paragraph{Dense verification.} Per parameter set: 64 values $s\in[0,3]$ (step $0.02$ to $0.6$, $0.05$ to $1.5$, $0.1$ to $3$), 13 radii $|m|\in\{0.01,\ldots,4\}$, 400 random complex unit
+directions in each of three families ($X$-block only, $Y$-block only, mixed) $=1.0\cdot10^6$ points per set, plus the Hessian at every $s$; 15 sets: peak, the four $(\ell,\beta)$ corners
+$\{0.76,0.90\}\times\{0.12,0.16\}$ ($\varepsilon$ does not enter $\Phi$; it enters only through $1/\varepsilon\in[1.322,1.351]$), each with $\nu\in\{0,\pm0.02\}$. $15\cdot10^6$ points, 3 min
+per set (peak locally, the rest on the droplet). Reported: $h_X^*=\sup_{s,m_X}$ of the $X$-secant quotient, $h_Y^*$ likewise, the mixed ratio $[\Phi-\Phi_0-{\rm lin}]/(1.03|m_X|^2+1.20|m_Y|^2)$,
+and the minimum margin $[{\rm RHS}-{\rm LHS}]/|m|^2$ for $(h_X,h_Y)=(1.03,1.20)$.
+
+\paragraph{Peak row.} $h_X^*=1.0237$, $h_Y^*=1.1937$, both attained at $s=0$, $m\to0$ (the Hessian), and both \emph{monotonically decreasing in $s$ and in $|m|$}; the mixed ratio is
+$\le0.967$ (no cross-block gain; the Hessian cross block vanishes exactly by parity). So $M(1.03,1.20)$ holds at the peak with margins $0.006$ in both constants, i.e.\ the targets are the sharp
+values at $(s,m)=(0,0)$ to three digits:
+\begin{center}\scriptsize
+\begin{tabular}{l|cccccccccccc}\toprule
+$|m|$ & 0.02 & 0.05 & 0.1 & 0.2 & 0.3 & 0.5 & 0.7 & 1 & 1.5 & 2 & 3 & 4\\\midrule
+$\max_s q_X$ & 1.025 & 1.023 & 1.016 & 0.999 & 0.979 & 0.929 & 0.878 & 0.813 & 0.723 & 0.630 & 0.491 & 0.399\\
+$\max_s q_Y$ (random dirs) & 1.137 & 1.136 & 1.132 & 1.117 & 1.093 & 1.032 & 0.966 & 0.863 & 0.716 & 0.605 & 0.456 & 0.365\\
+$\max_s$ mixed ratio & 0.959 & 0.956 & 0.944 & 0.914 & 0.888 & 0.856 & 0.825 & 0.772 & 0.676 & 0.594 & 0.469 & 0.382\\\bottomrule
+\end{tabular}
+\end{center}
+{\footnotesize (At $|m|=0.01$ the secants are quadrature noise, $1.034\pm0.01$; the exact small-$m$ limit is the Hessian value $1.0237$. The $Y$ secants over random directions stay below the
+Hessian top eigenvalue $1.1937$ because the top eigenvector, imaginary $m_z$, is rarely hit; $h_Y^*$ is the Hessian value.)}\par
+By $s$ ($h_X(s)=\frac12\lambda_{\max}$ of the $X$-Hessian, $h_Y(s)$ likewise), at $s=0$, $0.08$, $0.16$, $0.24$, $0.32$, $0.40$, $0.56$, $0.90$, $1.30$, $1.90$, $2.70$:
+$h_X=1.024$, $1.010$, $0.975$, $0.928$, $0.881$, $0.840$, $0.780$, $0.680$, $0.555$, $0.411$, $0.311$ and $h_Y=1.194$, $1.182$, $1.148$, $1.100$, $1.046$, $0.997$, $0.925$, $0.822$, $0.694$,
+$0.530$, $0.384$. Large $s$ is harmless ($\lesssim1/s$ decay). \emph{Diagonal shift} $\nu=\pm0.02$: $h_X^*=1.0255$, $h_Y^*=1.1945$
+(changes $+0.002$, $+0.001$), mixed ratio $0.961$; but the gradients in the even directions become nonzero, $|G_z|=|G_{\bar z}|=0.015$ at $\nu=0.02$ (zero at $\nu=0$): with a diagonal in the base
+profile the $Y,W$ sectors acquire first-order coupling $\propto\nu$, which Proposition~\ref{prop:R} must then carry (their content pairs with $\Pi_{1,1}c_z(q)$, $\Pi_{2,0}c_{\bar z}(q)$, no longer
+zero); the quadratic constants themselves are unaffected to $2\cdot10^{-3}$.
+
+\paragraph{The row box: L1 fails at small $\ell$.} Sharp constants (Hessian at $s=0$, which is the maximiser in $s$ everywhere; the finite-$m$ secants agree to $\le0.003$ and the mixed
+ratios follow):
+\begin{center}\footnotesize
+\begin{tabular}{l|cc|cc|cc}\toprule
+$\ell$ & \multicolumn{2}{c|}{$\beta=0.12$: $h_X^*$, $h_Y^*$} & \multicolumn{2}{c|}{$\beta=0.1432$: $h_X^*$, $h_Y^*$} & \multicolumn{2}{c}{$\beta=0.16$: $h_X^*$, $h_Y^*$}\\\midrule
+0.76 & 1.116 & 1.313 & 1.182 & 1.356 & 1.240 & 1.392\\
+0.78 & 1.080 & 1.274 & 1.140 & 1.314 & 1.194 & 1.347\\
+0.80 & 1.046 & 1.237 & 1.102 & 1.275 & 1.151 & 1.306\\
+0.82 & 1.015 & 1.203 & 1.066 & 1.238 & 1.111 & 1.267\\
+0.84 & 0.985 & 1.170 & 1.033 & 1.203 & 1.074 & 1.230\\
+0.85 & 0.971 & 1.154 & 1.017 & 1.186 & 1.056 & 1.212\\
+0.86 & 0.957 & 1.139 & 1.001 & 1.170 & 1.039 & 1.195\\
+0.88 & 0.931 & 1.110 & 0.972 & 1.139 & 1.007 & 1.163\\
+0.90 & 0.906 & 1.082 & 0.944 & 1.110 & 0.977 & 1.132\\\bottomrule
+\end{tabular}
+\end{center}
+($1/\varepsilon=1.322$ at $\varepsilon=0.7564$, $1.351$ at $0.74$. Row $0.76$: $h_Y^*>1/\varepsilon$ for $\beta\ge0.1432$ at $\varepsilon=0.7564$ and for $\beta=0.16$ at every $\varepsilon\le0.76$;
+row $0.78$: $\beta=0.16$ still fails at $\varepsilon=0.7564$; from $0.80$ all constants are below $1/\varepsilon$ but the targets $1.03/1.20$ fail until $\ell=0.85$ ($\beta\le0.1432$), the
+binding rows of the envelope, $t=0.8525$.)
+(full dense verification at the four corners with $\nu\in\{0,\pm0.02\}$: at $(0.76,0.16)$ the minimum margins are $-0.21$ ($X$) and $-0.13$ ($Y$) and the mixed ratio reaches $1.16$; at
+$(0.90,\cdot)$ everything holds with margins $\ge0.05$; $\nu=\pm0.02$ shifts all constants by $\le0.004$.) So: \textbf{the fibre majorant is not uniform over the proposed row box.} The
+$X$-constant stays below $1/\varepsilon$ everywhere (but the denominator $1/\varepsilon-h_X$ of (R) shrinks to $0.08$--$0.21$ at $\ell=0.76$), while the $Y$-constant exceeds $1/\varepsilon$ for
+$\ell\le0.78$ at $\beta\ge0.1432$ and for $\ell\le0.79$ at $\beta=0.16$, where the even sectors cannot be dropped through (R) at all (this is the sharp local version of the box-corner failure of
+the trivial radius bound noted in \S\ref{sec:idealBY}). The targets $h_X\le1.03$, $h_Y\le1.20$ hold exactly on $\ell\ge0.85$ at $\beta\le0.1432$ and on $\ell\ge0.86$ at $\beta=0.16$; the binding rows
+of the present envelope ($\ell\approx0.85$--$0.855$, $\beta\approx0.143$) sit right at this edge. Consequence for a $K_\eta$ certificate: either restrict the rows on which K is invoked to
+$\ell\gtrsim0.80$ (and accept $h_X$ up to $1.16$, $h_Y$ up to $1.31$ there, i.e.\ a denominator $0.16$ in (R); note that the corner $(0.80,0.16)$ of the table has $h_X^*=1.151$, $h_Y^*=1.306$, so $(1.10,1.30)$ is \emph{not} enough on the whole box $\ell\ge0.80$, $\beta\le0.16$: either restrict $\beta\le0.1432$ at $\ell=0.80$ or start the box at $\ell\ge0.82$ (float diagnostics, not certified values)), or use GPT's even-sector theorem (\S\ref{sec:profileslack}, which is proved only
+on the peak profile box) in place of the $Y$-part of L1, or keep the crude row (no K) for $\ell<0.80$, where the envelope is far from binding.
+
+\paragraph{Plan for a rigorous interval certificate of L1 (peak row).}\label{par:L1plan} What must be certified, after reductions (i)--(ii): for $s\in[0,s_{\max}]$ and $m\in\C^4$,
+$\Phi(s;m)-\Phi(s;0)-\Re(m\cdot G(s))\le h_X|m_X|^2+h_Y|m_Y|^2$. \emph{Compactification.} $\Phi$ is $2\E|m\cdot e|\le2\sqrt{\E|m\cdot e|^2}=2\sqrt{|m_A|^2+|m_B|^2+|m_z|^2+|m_{\bar z}|^2}\cdot\sqrt{\ldots}$,
+precisely $\Phi(s;m)-\Phi(s;0)\le2\E|m\cdot e|\le2|m|\,(\E|e|^2)^{1/2}=4|m|$, and $|{\rm lin}|\le2(|c_A|+|c_B|)|m|\le0.95|m|$ ($\sup|c_A|=0.2534$, $\sup|c_B|\le0.22$), so the inequality is trivial for
+$|m|\ge5/h$; for large $s$, $\frac12{\rm Hess}\le\E[|v|^2/|w+v'|]$ with $|w+v'|\ge s-|L|-|v'|$ on the bulk and Gaussian tails elsewhere give $h(s)\lesssim C/s$, so $s_{\max}\approx8$ suffices with an
+explicit tail lemma. \emph{Enclosing the $z$-integral.} $g(z)=|f(z)|$ with $f=w+v$ smooth: on a polar cell use the midpoint value with the curvature allowance $\frac{h^2}{24}\sup(|f''|+|f'|^2/|f|)$
+where $\inf_{\rm cell}|f|\ge h\sup|f'|$ (second order), and the Lipschitz allowance ${\rm Lip}\cdot h\cdot{\rm mass}$ on the $O(1)$ cells containing the (isolated) zero of $f$; Gaussian tail
+beyond $R=8$: $<10^{-27}$. Total error $O(h^2)$: $h=0.02$ ($\approx10^5$ cells) gives $\approx10^{-3}$ on $\Phi$, adequate where the margin $(h_X-q)|m|^2\ge0.01$, i.e.\ $|m|\ge0.3$ at the peak.
+\emph{Covering $(s,m)$.} $\Phi$ is convex in $m$, so on an $m$-box the LHS is bounded by its vertex values plus the interpolation allowance $h\sum_jw_j^2/4$ (as in GPT's covers); $s$ is
+handled by convexity of $\Phi_0$ (tangent lower bounds at cell ends) and a Lipschitz bound $|c'(s)|\le1$ for the linear term, a first-order loss $2w_s|m|$. \emph{Counts.} With the targets
+$(1.03,1.20)$ the margin at the peak is $0.006|m|^2$ as $m\to0$: the vertex method needs $w\le0.08|m|$ and $w_s\le0.003|m|^2$, i.e.\ $\gtrsim10^9$ boxes dominated by small $|m|$: \textbf{infeasible}.
+With relaxed targets $(h_X,h_Y)=(1.10,1.30)$ (denominator $1/\varepsilon-h_X=0.222$ instead of $0.292$, a $24\%$ loss in the content inequality, which has a factor $\ge2.4$ of room on everything
+measured in \autoref{ch:weighted}) the regime $|m|\ge m_0=0.3$ needs $\approx2\cdot10^4$ $m$-boxes per $s$-cell and $\approx600$ $s$-cells: $1.3\cdot10^7$ boxes $\times32$ vertices $\times10^5$
+cells $\approx4\cdot10^{13}$ operations, hours in C++ on the droplet, days in Python; the regime $|m|<m_0$ must be handled analytically: $\Phi(s;m)\le\Phi(s;0)+{\rm lin}+\frac12\sup_{|m'|\le m_0}
+\lambda_{\max}H(s;m')|m|^2$ with the Hessian $H(s;m')=\E[(\Im(\overline{\ph f}\,v))^2/|f|]$, $f=w+m'\cdot e$, whose dependence on $m'$ is only log-Lipschitz (the moving $1/|f|$ singularity, $\int|f|^{-2}$
+diverges logarithmically), so a lemma $\lambda_{\max}H(s;m')\le\lambda_{\max}H(s;0)+K\,m_0\log(1/m_0)$ with explicit $K$ is required and then $m_0$ must satisfy $1.024+\frac K2m_0\log(1/m_0)\le1.10$.
+This lemma (a controlled perturbation of a 2-D integral with an isolated conical singularity) is the real mathematical content of the certificate; it is not a box-count problem. \emph{Decision:}
+the margins at the targets $1.03/1.20$ are $0.6\%$, the row-box uniformity fails, and the small-$m$ regime needs a lemma we do not have, so no certificate run was started \st{F}. Recommended
+targets if one is attempted: $(1.10,1.30)$ on $\ell\in[0.80,0.90]$, $\beta\in[0.12,0.16]$ (both $<1/\varepsilon$ there by the table), peak row first.
+
+\subsection{Task B: K-a from the moment hypotheses of the Lean theorem only}\label{sec:certs-Ka}
+For $U=|q|^2/\sigma^2$ the Lean lower theorem uses as hypotheses on the law of $U$ (\autoref{ch:certified}; the scalar moment certificates are proved standalone from their tensor hypotheses) $\E U=1$, $\E U^2=2+x^2$, $\E U^3\le6+9x^2+C_6x^3$ ($C_6=40.45313$), $\E\sqrt U\le\rho=0.973612157$, $0\le x\le31/4$. The
+largest possible $\E\Phi_0(\sigma\sqrt U)$ under these constraints is bounded by LP duality:
+\[\begin{gathered}
+J(\sigma,x)\le y_0+y_1+y_2(2+x^2)+y_3(6+9x^2+C_6x^3)+y_4\rho\\
+\text{whenever}\quad p_y(u):=y_0+y_1u+y_2u^2+y_3u^3+y_4\sqrt u\ \ge\ \Phi_0(\sigma\sqrt u)\ \ \forall u\ge0,
+\end{gathered}\]
+with $y_3,y_4\ge0$,
+and $d(\sigma,x):=S-(J-\sigma^2/\varepsilon)\le S-\Lambda_q$ is a certified \emph{lower bound} on the deficit of every $q$ with these $(\sigma,x)$ (since $J\ge\E\Phi_0(|q|)$); a negative $d$ therefore means only that these four constraints do not certify a deficit, not that none exists (a matching feasible primal law would be needed for that). \code{ka\_dual.py}: $\Phi_0$ from \code{kmodel.Model} (composite
+Gauss--Legendre in the radius, $96\times8$ and $192\times8$ nodes: all entries agree to $10^{-7}$; $S=1.3739535261$ at $\sigma^*=0.20086$, $\Phi_0(0)=1.371879281$); the 5-variable dual LP is solved
+(HiGHS) on the grid $u=v^2$, $v\in[0,40]$ step $0.0025$, then \emph{re-verified} on the ten times finer grid (maximum violation $8\cdot10^{-7}$, added to $y_0$) and on the tail $v\ge40$ against
+$\Phi_0(s)\le2s+\Phi_0(0)$ (minimum tail margin $>100$). The dual vectors $y$ are in \code{ka\_dual\_npu96.json}: they are the certificate a Lean/Bernstein check would verify (as the 2,325 moment
+rectangles of the 15 Oct certificate do). Results, $d(\sigma,x)$ (first block) and $\gamma_{\rm eff}=d/(\sigma^4x^2)$ (second):
+\begin{center}\scriptsize
+\begin{tabular}{l|rrrrrrr|r}\toprule
+$\sigma\backslash x$ & 0.1 & 0.2 & 0.5 & 1 & 2 & 5 & 7.75 & $x=0$\\\midrule
+0.10 & 1.13e-3 & 1.14e-3 & 1.15e-3 & 1.18e-3 & 1.28e-3 & 1.77e-3 & 2.33e-3 & 1.13e-3\\
+0.14 & 5.07e-4 & 5.13e-4 & 5.46e-4 & 6.17e-4 & 8.61e-4 & 2.00e-3 & 3.27e-3 & 5.05e-4\\
+0.16 & 2.38e-4 & 2.48e-4 & 2.93e-4 & 3.80e-4 & 7.10e-4 & 2.27e-3 & 4.00e-3 & 2.35e-4\\
+0.18 & 4.0e-5 & 5.4e-5 & 1.10e-4 & 2.03e-4 & 6.27e-4 & 2.68e-3 & 4.92e-3 & 3.5e-5\\
+\textbf{0.20} & $\mathbf{-5.5e\text{-}5}$ & $\mathbf{-3.6e\text{-}5}$ & 2.5e-5 & 1.11e-4 & 6.34e-4 & 3.23e-3 & 6.05e-3 & $\mathbf{-6.3e\text{-}5}$\\
+\textbf{0.22} & $\mathbf{-1.6e\text{-}5}$ & 8.4e-6 & 6.7e-5 & 1.29e-4 & 7.53e-4 & 3.95e-3 & 7.41e-3 & $\mathbf{-2.7e\text{-}5}$\\
+0.24 & 1.90e-4 & 2.20e-4 & 2.64e-4 & 2.82e-4 & 1.01e-3 & 4.86e-3 & 9.02e-3 & 1.76e-4\\
+0.26 & 5.95e-4 & 6.31e-4 & 6.45e-4 & 5.94e-4 & 1.42e-3 & 5.98e-3 & 1.09e-2 & 5.78e-4\\
+0.30 & 2.13e-3 & 2.17e-3 & 2.07e-3 & 1.80e-3 & 2.83e-3 & 8.92e-3 & 1.55e-2 & 2.10e-3\\
+0.34 & 4.83e-3 & 4.88e-3 & 4.55e-3 & 3.95e-3 & 5.17e-3 & 1.30e-2 & 2.14e-2 & 4.79e-3\\
+0.40 & 1.16e-2 & 1.16e-2 & 1.07e-2 & 9.41e-3 & 1.09e-2 & 2.15e-2 & 3.30e-2 & 1.15e-2\\\midrule
+$\gamma_{\rm eff}$: 0.16 & 36.4 & 9.47 & 1.79 & 0.58 & 0.27 & 0.14 & 0.10 & \\
+0.18 & 3.84 & 1.30 & 0.42 & 0.19 & 0.15 & 0.10 & 0.08 & \\
+0.20 & $-3.45$ & $-0.57$ & 0.062 & 0.070 & 0.099 & 0.081 & 0.063 & \\
+0.22 & $-0.69$ & 0.089 & 0.114 & 0.055 & 0.080 & 0.067 & 0.053 & \\
+0.24 & 5.73 & 1.66 & 0.32 & 0.085 & 0.076 & 0.059 & 0.045 & \\
+0.30 & 26.3 & 6.71 & 1.02 & 0.22 & 0.087 & 0.044 & 0.032 & \\
+0.40 & 45.2 & 11.3 & 1.68 & 0.37 & 0.11 & 0.034 & 0.021 & \\\bottomrule
+\end{tabular}
+\end{center}
+(columns $x=0.05,0.3,0.7,1.5,3$ and rows $\sigma=0.12,0.28,0.32,0.36,0.38$ omitted, all positive except as shown; full tables in the logs.) Findings. (1) \textbf{\emph{Correction, 15 Oct 20:01 (\autoref{ch:rescub}):} the sizes below near $\sigma^*$ are artefacts of a suboptimal HiGHS solve (ill-scaled $v^6$ column); the exact optimum of this moment relaxation is the two-node law with value $S+9.8\cdot10^{-6}$ at $x=0$, so $d\ge-9.8\cdot10^{-6}$ everywhere and the qualitative conclusion (no exact K-a from moments alone) stands with the right size. The moment constraints alone do not certify K-a near $\sigma^*$}: $d<0$ for
+$\sigma\in\{0.20,0.22\}$ and $x\le0.3$ (resp.\ $x\le0.1$), including $x=0$, with $d(\sigma^*,0)=-6.3\cdot10^{-5}$. The reason is not numerical ($96$ and $192$ radial nodes agree to $10^{-7}$): at
+$x=0$ the four constraints admit laws other than ${\rm Exp}(1)$ (e.g.\ with $\E U^3<6$, $\E\sqrt U<\rho$) whose $\E\Phi_0(\sigma\sqrt U)$ exceeds the Gaussian value by up to $6\cdot10^{-5}$; the
+dual at $\sigma^*$ is $y=(1.371896,\ 0.057678,\ -0.001198,\ 3.0\cdot10^{-5},\ 0)$ ($y_4=0$: the $\sqrt U$ constraint is inactive, $y_3>0$: the sixth moment is the only active inequality). This is
+the ``genuine moment-only loss'' recorded in the K report at a larger size than the $9.6\cdot10^{-6}$ quoted there (different row/functional), and it is why the lower certificate uses the Stein
+cuts (both analytic inputs are proved in Lean for Gaussian third-chaos laws, \code{gaussian\_steinInputs}, but remain hypotheses of the main theorem, stated for an abstract law) in 9,234 node certificates (15 Oct count). Even \emph{all} radial Stein cuts together cannot certify exact K-a ($\eta=0$), \autoref{ch:spectral-review}. (2) Away from $\sigma^*$ the deficit is dominated by the Gaussian variance gap $\Delta(\sigma^2)$ (the $x=0$ column), not by $x$:
+$\gamma_{\rm eff}$ is huge there and meaningless. (3) In the regime that matters ($\sigma\approx\sigma^*$, $x\ge0.5$) the moment-only $\gamma_{\rm eff}$ is $0.06$--$0.10$, against the
+\emph{true} $d_q/\kappa\approx0.33$--$0.38$ measured on the junta in \autoref{ch:weighted}: the LP deficit is $4$--$6$ times too weak, and the minimum over the table where $d>0$ is
+$\gamma_{\rm eff}=0.021$ at $(\sigma,x)=(0.40,7.75)$. (4) Wick junta points $q=\sigma(aH+\sqrt{1-a^2}W)$, $x=\sqrt{42}a^2$, certified $d$ vs the measured $d_q$ of \autoref{ch:weighted}:
+\begin{center}\small
+\begin{tabular}{cc|ccc|ccc|ccc}\toprule
+$\sigma$ & & $a=0.3$ & & & $a=0.6$ & & & $a=1.0$ & & \\
+ & & $d$ & $d_q$ & ratio & $d$ & $d_q$ & ratio & $d$ & $d_q$ & ratio\\\midrule
+0.14 & & 5.6e-4 & 5.6e-4 & 0.99 & 9.6e-4 & 1.2e-3 & 0.80 & 2.7e-3 & 4.2e-3 & 0.64\\
+0.20 & & 3.3e-5 & 1.8e-4 & 0.18 & 8.7e-4 & 2.1e-3 & 0.42 & 4.7e-3 & 9.9e-3 & 0.48\\
+0.25 & & 4.1e-4 & 8.9e-4 & 0.46 & 1.6e-3 & 4.3e-3 & 0.37 & 7.8e-3 & 1.8e-2 & 0.43\\
+0.30 & & 2.0e-3 & 3.1e-3 & 0.64 & 3.4e-3 & 8.5e-3 & 0.40 & 1.2e-2 & 3.0e-2 & 0.41\\\bottomrule
+\end{tabular}
+\end{center}
+At $\sigma=0.14$ the certified and true deficits agree because both are the variance gap; near $\sigma^*$ the moment LP retains $18$--$48\%$ of the true deficit. \textbf{Consequence for the
+$K_\eta$ plan.} The content inequality (T$_0$) of \autoref{ch:weighted} (the unweakened form; its scalar weakening (T) is false, \S\ref{sec:wct-false}) has a factor $2.4$--$3$ of room against the \emph{true} deficit; against the moment-only deficit it would fail near
+$\sigma^*$ (negative deficit at small $x$, factor $4$--$6$ smaller otherwise). A certificate must therefore use the Stein-cut deficit (\code{xscan.py}, the \code{sdp} oracle on the droplet) in the
+residual layer, exactly as the present lower certificate does; the moment-only layer is sufficient only for $|\sigma-\sigma^*|\gtrsim0.04$ or $x\gtrsim0.5$, and even there the retained deficit
+is less than half of the truth.
+
+\subsection{Status}
+Nothing here changes a certified number (Lean bound on 15 Oct afternoon: $\KG>1.40160592$; the current Lean bound is $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}). New and measured \st{F}: the sharp fibre-majorant constants at the peak ($1.0237$, $1.1937$) and over the row box (failure of
+$h_Y<1/\varepsilon$ for $\ell\le0.78$--$0.79$), the first-order even-sector coupling $\propto\nu$ under a diagonal shift, the infeasibility of a brute-force L1 certificate at the targets and the
+lemma it needs, and the quantitative insufficiency of the moment-only residual layer near $\sigma^*$ (certified by explicit dual vectors).
+
+\paragraph{Added 15 Oct, 16:52 (GPT upper-side review, its \S5): a stronger Stein cut from the pointwise cone, no gain \st{F}.}\label{sec:conecut}
+With $q\in\Hc21$ normalised by $\E|q|^2=1$, $U=|q|^2$, $\kappa=\E U^2-2$, $w=\frac13\Gamma(q,\bar q)$, $c=\frac13\Gamma(q,q)$ and
+$r=\Re(c\bar q^{\,2}/U)$, the Stein cuts use $\E w=1$ and $\E[(w-1)^2+r^2/2]\le\kappa/3$ but discard the pointwise cone $w\ge|r|$. GPT derives
+the strengthened cut $\E[G_\alpha(U)-d(a(U),b_0(U))]\ge0$, where $G_\alpha=X^2+2D^2+2\alpha A+\frac{\alpha^2}3(u^2-2)$ is the old nonnegative
+functional ($A=(u-1)h-uh'$, $B=h+uh'$, $D=uh'$, $X=B+b$), $a=|\alpha|-\mathrm{sign}(\alpha)X$, $b_0=2|D|$ and
+$d(a,b_0)=\frac{(b_0-a)_+^2}3+\frac{(-2a-b_0)_+^2}6$ is the squared distance of $(a,-2\,\mathrm{sign}(\alpha)D)$ to the cone $p\ge|q|$ in the
+metric $dp^2+dq^2/2$ after completing the square; it dominates the old cut since $d\ge0$ \st{P} GPT, not checked here. For $h=\Phi/u$ with
+piecewise-linear integrated profiles the correction is piecewise rational, polynomial of degree $\le4$ after multiplying by $u^2$, so an exact
+Bernstein route would exist. Their two-grid test at the peak profile $(\ell,\beta,\varepsilon)=(0.8456,0.1432,0.7564)$, $\sigma=0.2$, six
+exponential test functions $e^{-su}$ plus centering, residual-only objective $\E\Phi_0(\sigma\sqrt U)-\sigma^2/\varepsilon$: cone minus original
+$\approx-10^{-14}$, $-2\cdot10^{-13}$, $+2.3\cdot10^{-12}$ at $x=\sqrt\kappa=0.2,0.5,1.0$, all below the grid effects ($3.3\cdot10^{-11}$,
+$1.8\cdot10^{-10}$, $8.4\cdot10^{-9}$); a denser grid agreed; $x=2$ excluded for convergence problems; Gaussian benchmark $S\approx1.3739535257$ at
+$v\approx0.0403448$. \textbf{Negative result} \st{F}: the pointwise cone is valid additional information but inactive for these objectives near the
+critical variance, so it does not justify a Lean port on the expectation of a better lower endpoint; it can stay an optional separator. The
+companion package (\code{cone\_experiment.py}, \code{cone-comparison-results.json}, \code{verify-exact.mjs}) is on disk under
+\pathref{handoff/research-third-decimal/gpt-reviews/upper-review-20261015/}; the exact checker was replayed here (PASS, including the 2,401 cone
+projection checks) \st{C}, the floating experiment was not rerun.

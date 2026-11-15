@@ -1,0 +1,367 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/lower-bound/obstruction-1402.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Exactly what still obstructs $1.402$}
+\label{sec:obstruction-1402-audit}
+
+\paragraph{A complete gain that does not close this gap.}
+The contraction-Gram certificate of
+\S\ref{sec:contraction-gram-20261022}, at $\epsilon=149/200$,
+gives the current complete endpoint $1.401691989174\stale{23 Oct}{now $\KG>1.401695322458$}$, with
+its Lean integration and analytic-input status in \autoref{ch:certified}.
+It improves the preceding $1.401687463503$ joint refined spectral/covariance
+envelope and is independent of raw K. It does not supply the missing shared-response
+inequality at $\epsilon=1891/2500$ described below; the source-cap,
+Gaussian reduction and transfer inputs retain their stated status.
+
+\paragraph{The target and its quantifiers.}
+Fix one witness $T=P_{1,0}-\epsilon P_{2,1}$, with
+$\epsilon=1891/2500$. The sufficient scalar target is
+\[
+ \sup_{n\ge1}\ \sup_{|f_\pm|\le1}
+ \Re\langle f_+,Tf_-\rangle\le B,\qquad B<500/701.
+\]
+The strict, uniform margin is necessary to assert $K_G^{\mathbb C}>1.402$;
+a cap only equal to $500/701$ yields $K_G^{\mathbb C}\ge1.402$.
+The vector witness in Proposition~\ref{prop:exact-vector-transfer-audit}
+and the functional transfer then give $K_G^{\mathbb C}\ge1/B$.
+One successful peak row, or strict inequalities without a uniform
+margin over all dimensions and rows, do not establish this target.
+
+\paragraph{The exact missing inequality is about actual responses.}
+Put $h=(f_++f_-)/2$, $k=(f_+-f_-)/2$, rotate $Ph=tZ$, and write
+$F=\epsilon Qk$. Necessarily $0\le t\le\sqrt\pi/2$. For fixed
+dimension define the closed convex value function
+\[
+ J_n(t,F)=\inf\{\|Pk\|^2+\epsilon\|Qh\|^2:
+        |h\pm k|\le1,\ Ph=tZ,\ Qk=F/\epsilon\}.
+\]
+The infimum is $+\infty$ for infeasible pairs. The exact norm row is
+$t^2+\|F\|^2/\epsilon-J_n(t,F)$. Thus the precise sufficient target is
+\begin{equation}\label{eq:obstruction-exact-response}
+ \boxed{\quad J_n(t,F)\ge t^2+\|F\|^2/\epsilon-B
+ \quad\text{for every }n,t,F,\qquad B<500/701.\quad}
+\end{equation}
+This is weaker than raw K: it needs no claim about cubics that cannot
+arise from bounded responses. Its support-function dual is already
+proved in \S\ref{sec:canonical-response-cap}; the missing part is a
+uniformly successful family of dual certificates, not duality itself.
+
+\paragraph{What is now available.}
+The sharp influence estimate, fourth-moment cap $44$, sixth-moment
+constant $40.45313$, and radius $0.95133$ are mathematical
+\st{P,C} results for genuine $\mathcal W_{2,1}$ cubics.
+In particular all actual responses with $t\le0.1694$ are covered by
+Theorem~\ref{thm:real-stein-radius-20261021} and its row corollary.
+Independently, the moment-free response ellipse and anisotropic
+certificate cover
+\[
+ e+\frac{191}{500}t^2\le\frac9{40},\qquad\text{or}\qquad
+ 0\le t\le0.851,\quad e\le0.0148,
+ \qquad e=\|\E[F\mid X]\|^2.
+\]
+The response-moment slab of \autoref{thm:response-moment-slab} additionally
+covers a specified six-moment projection box on $0.84\le t\le0.851$
+with full variance $\|F\|^2\le1/20$, giving a cap below $0.7124$.
+It allows arbitrary imaginary coefficients and arbitrary extra coordinates.
+Its full-variance budget must not be substituted for the remote variance $e$
+in the preceding criteria. No theorem yet places every surviving tensor in
+one of these projection boxes.
+The weighted full-energy theorem
+\ref{thm:weighted-full-energy-response} requires no such projection box:
+it gives $\mathcal N\le0.71321135$ for $0\le t\le0.851$ and
+$\mathcal V_*\le0.0325$, or $\mathcal N\le0.71325087$ at the peak
+for $\mathcal V_*\le0.03744$. Its weighted full energy must not be
+substituted for remote $e$ in the other criteria.
+The larger adjusted-energy criterion and the tensor-specific support
+criteria must also be retained. Restricted raw-K theorems give further
+regions only when their buffer, influence, driver and sector hypotheses
+hold. These are upper bounds to take in minimum, not deficits to add.
+
+\paragraph{A quantitatively located central gap.}
+On $0.84\le t\le0.851$, any response not covered by the anisotropic
+theorem must satisfy
+\[
+ \mathcal E_{\rm adj}>0.0148+0.3(0.851-t),
+\]
+with $\mathcal E_{\rm adj}$ exactly as in
+\eqref{eq:aniso-adjusted}. The retained phase and completion defects
+impose the still stronger necessary condition in
+\S\ref{sec:canonical-response-ellipse}.
+The remote feasibility theorem gives $e<0.046266$ throughout this
+central interval (and smaller bounds toward its right end).
+At $t=0.8456$, for example, the uncovered range is contained in
+\[
+ 0.0166059<\mathcal E_{\rm adj}\le e<0.041319.
+\]
+For the stricter design cap $B_*=0.713260$, the new full-energy
+certificate imposes the additional peak condition
+$\mathcal V_*>0.037447304$ on any response with $\mathcal N>B_*$;
+see \eqref{eq:weighted-full-energy-survivor} for the full $t$ dependence.
+This does not conflict with the older full-energy upper bound
+$\|F\|^2<0.071981$, so those scalar constraints alone do not finish
+the cover.
+This is an outer description of the remaining possibilities, not a
+construction of feasible responses and not a counterexample. Such a
+response must additionally evade every applicable support, cumulant,
+influence and restricted-family theorem.
+
+The central remote anchor has
+\[
+ \ell=1057/1250,\quad\beta=179/1250,\quad
+ C'=2747927/2000000,\quad
+ B_0(t)=t^2-2\ell t+2\beta^2/\epsilon+C'.
+\]
+The exact remaining budget is
+\[
+ \min_{0.84\le t\le0.851}\{500/701-B_0(t)\}
+ =\frac{240297199}{2651182000000}
+ =0.00009063776044\ldots .
+\]
+It is room above the certified remote cap $C'$, not above the Gaussian
+value $S$. A raw-K theorem must pay for general shared $A/B$ and their
+simultaneous interactions within this budget; $A$-only statements
+with error $10^{-4}$ do not do so automatically.
+
+\paragraph{A concrete weaker replacement for raw K.}
+The existing joint support theorem supplies another sufficient route.
+Use its notation $D(v)$, $m(v)$, $a_1(v)$, $a_2(v)$, $E_0$ and
+$\theta=250/517$ from \eqref{eq:crc-transfer}. Define
+\[
+\begin{split}
+ \mathcal R_\mu(v)={}&\mu\{D(v)-\theta m(v)^2\}
+ -\frac{\mu\theta}{1+\mu\theta}\|a_1(v)\|^2
+ +\frac{\mu}{\mu/\epsilon-8}\|a_2(v)\|^2\\
+ &-\left(\frac{\mu}{4\epsilon^2}-\frac1\epsilon\right)E_0,
+ \qquad\mu>8\epsilon.
+\end{split}
+\]
+For each actual response, the theorem gives
+$\mathcal N<B_0(t)+\mathcal R_\mu(v)$.
+Consequently it suffices to prove that every surviving central response
+admits a remote cubic test $v$ and $\mu>8\epsilon$ with
+\[
+ \mathcal R_\mu(v)\le500/701-B_0(t)-\zeta
+ \quad\text{for one uniform }\zeta>0.
+\]
+This existence assertion is \st{?}: it is a specific possible covering
+lemma, not a necessary consequence of K or a theorem established here.
+If it fails, the full canonical response dual still remains available.
+Neither choosing $v$ in finitely many tested coordinate dimensions nor
+optimizing it for selected tensors proves the required universal cover.
+Indeed \S\ref{sec:proportional-support-obstruction-20261022} now proves
+that all proportional tests $v=\lambda q$, even combined and with their
+scalar parameters fully optimised, leave a gap in the diffuse
+Gaussian-grade relaxation. At $e=1/25$ their minimum transfer cost is
+$0.0007977136526\ldots$, above the peak allowance. This is not a
+counterexample to the existence assertion with arbitrary $v$, nor to K;
+it is a stop rule for that restricted search family.
+
+\paragraph{The specific quadratic relaxation now identified.}
+The weighted Gram minimizer $k_0$ has the prescribed cubic moments but
+need not obey $|k_0|\le1$. The discarded cost is exactly
+$\|k-k_0\|_{M+P}^2$, and therefore at least
+$\E\operatorname{dist}_M(k_0,\{u:|u|\le1\})^2$.
+\S\ref{sec:clipped-response-feasibility} gives its exact scalar-root
+formula and a closed lower estimate within the sharp factor $8/9$.
+The exact joint defect in \S\ref{sec:joint-response-defect} is stronger:
+it retains both disks $|h\pm k|\le1$ and has an explicit rational
+lower formula within the sharp factor $81/250$. It replaces, rather
+than adds to, the prior clipping and $h$-phase corrections.
+A projected-price refinement now excludes $\mathcal V_*\le0.03748$
+at the peak and $\mathcal V_*\le0.03255$ for $t\le0.851$.
+The rational hierarchy in \S\ref{sec:joint-dual-descent} now retains
+more than $99.99\%$ of this defect with an explicit error, and an
+averaged finite Gram matrix gives a guaranteed descent of the joint
+dual. Thus the factor $81/250$ is no longer an intrinsic approximation
+loss. A uniform bound for those joint-law expectations on the surviving
+complement is still open. The dual is minimized over trial parameters;
+none of its Gaussian-grade diagnostics proves this uniform statement.
+Separately, the exact visible scalar response geometry still admits
+formal objective above $0.7175$ if cubic projection energy is constrained
+only by total response energy; see
+\S\ref{sec:exact-visible-response-geometry}. Hence scalar precision is
+not the only obstruction. The location of energy in the projection,
+and its cost for the same bounded response, must be retained.
+
+\paragraph{Why the scalar improvements have not closed the gap.}
+The law of $|q|$ controls the remote payoff. Shared sectors also depend
+on the joint law and relative phase of $(q,r_A,r_B,Y,W)$ and on the
+negative projections $Pk,Qh$. The new scalar moments restrict the
+first object without determining the others. Conversely, the quadratic
+response certificates retain every sector but leave a positive remote
+variance coefficient, $0.54e$ in \eqref{eq:aniso-rational}, or a positive
+weighted full-energy cost in \eqref{eq:weighted-full-energy-cap}; they
+remain insufficient on the intersection of their high-energy complements.
+The needed improvement must couple these two kinds of information for
+the same response, rather than combine separately optimized losses.
+
+\paragraph{What is not being claimed.}
+No failure of K or of the true norm bound is known here. The positive
+curvatures and failed relaxations are failures of particular upper
+bounds. The present sharper radius does not repair the central gap,
+and the sharp influence theorem does not create a fresh independent
+Gaussian buffer. Even a complete central theorem must be followed by
+a certified cover of the other $t$ rows at this same $\epsilon$.
+Separately, a kernel-checked endpoint requires the bidegree/tensor
+construction and the scalar reduction to be connected to the existing
+Lean transfer theorem. The mathematical coverage gap and those Lean
+assembly obligations are distinct.
+
+\paragraph{Why the stronger multiplication lemma does not finish the cover.}
+Corollary~\ref{cor:quadratic-all-sector-refinement} controls every visible
+sector on arbitrary coupled cubics when a fresh buffer $g\ge9/40$ is
+already present, with $e\le1/25$ and $h\le e/10$.
+An actual cubic need not have this independent component.
+Inserting it by Jensen only gives
+\[
+ \Lambda(G)\le\Lambda(G+gU)+pg^2,
+ \qquad p(9/40)^2=\frac{2025}{30256}>0.0669,
+\]
+where $U$ is independent proper Gaussian and centered.
+Indeed the two norm expectations increase on adding centered noise,
+whereas the variance penalty increases by $pg^2$.
+This valid but crude transfer spends vastly more than the central
+allowance $240297199/2651182000000$.
+Thus the new quadratic multiplication estimates strengthen an actual
+buffered theorem; they do not justify pretending that every cubic has
+such a buffer. A sharper joint deficit/replacement or original-response
+certificate is still needed on the complement above.
+
+\paragraph{The dominant Wick-direction branch is now covered.}
+Theorem~\ref{thm:contact-concentration-cone} now gives an additional,
+dimension-free necessary condition on every central-row survivor:
+\[
+ \sup_{X\perp Z}|\langle H_X,F\rangle|^2<\frac45\|F\|^2.
+\]
+The complementary concentration branch has cap $0.71315$ with arbitrary
+coupled remainder, so it requires neither a raw-K theorem nor an
+independent Gaussian buffer. The proof retains the first/cubic moments
+of the same response pair in a two-coordinate support inequality.
+It does not force the surviving tensors to have small influence: the
+unit mixed monomial $X_1^2\bar X_2/\sqrt2$ has maximal diagonal Wick
+share $4/27$.
+
+\paragraph{The mixed-square branch is now covered too.}
+Theorem~\ref{thm:mixed-contact-concentration} removes the latter
+concentration type with an arbitrary coupled remainder. Every remaining
+central response must also satisfy
+\[
+ \sup_{\substack{X,Y\perp Z\\X\perp Y}}
+ \left|\left\langle X^2\bar Y/\sqrt2,F\right\rangle\right|^2
+       <\frac{179}{200}\|F\|^2.
+\]
+The complementary branch has cap $0.713225$; at share $9/10$ its cap is
+$0.71295$. Two fixed support integrals and four rational comparisons
+suffice, with no independence assumption on the remainder.
+These individual tests did not exhaust concentrated tensors:
+$X_1X_2\bar X_3$ has largest diagonal-Wick share $2/27$ and
+mixed-square share $1/2$. That example is now covered by the following
+whole-subspace branch.
+
+\paragraph{The remaining obstruction after the whole-subspace tests.}
+Theorem~\ref{thm:whole-slice-contact} removes two larger concentration
+types, with arbitrary coupled remainders. Every central survivor must
+also have
+\[
+ \sup_{X\perp Z}\|\Pi_{\mathcal S_X}F\|^2<\tfrac9{10}\|F\|^2,
+ \qquad
+ \sup_{Y\perp Z}\|\Pi_{\mathcal A_Y}F\|^2<\tfrac{197}{200}\|F\|^2,
+\]
+where $\mathcal S_X=\{{:}X^2\bar A{:}/\sqrt2:A\perp Z\}$ and
+$\mathcal A_Y=\bar Y\mathcal H_{2,0}(\{Z,Y\}^\perp)$.
+The two complementary branches have caps $0.71315$ and $0.713225$;
+the latter allows unbounded quadratic rank. It includes the formerly
+uncovered trilinear example and
+$\bar Y\sum_{j=1}^NX_j^2/\sqrt{2N}$ for arbitrary $N$.
+
+An explicit shape escaping both single-subspace tests is
+$F_0=(X_1^2\bar X_2+X_2^2\bar X_1)/2$. It is unit, both largest
+subspace shares are $1/2$, and its largest combined directional
+influence is $3/2$. Theorem~\ref{thm:two-slice-contact} now covers its
+whole two-slice concentration neighbourhood, and adds the necessary
+survivor condition
+\[
+ \sup_{\substack{X_1,X_2\perp Z\\X_1\perp X_2}}
+ \|\Pi_{\mathcal S_{X_1}\oplus\mathcal S_{X_2}}F\|^2
+       <\frac{39}{40}\|F\|^2.
+\]
+The complementary branch has cap $0.7132$; at share $49/50$ it has
+cap $0.7130$. There is no independence assumption on the remainder.
+
+These tests still do not force small influence. The unit three-cycle
+$(X_1^2\bar X_2+X_2^2\bar X_3+X_3^2\bar X_1)/\sqrt6$
+has maximal two-slice share $2/3$, single-slice and orthogonal
+antiholomorphic-block shares $1/3$, and combined directional influence
+$1$. This is geometry of the uncovered concentration complement, not
+a violation of K or an asserted high-payoff response.
+Moreover the canonical many-slice Jensen majorant of
+Lemma~\ref{lem:multislice-support-reduction} loses the diffuse phase
+spread and tends to constant modulus. Increasing its rank cutoff is
+not by itself a route to a sharp dimension-free theorem.
+The phase-preserving theorem adds a different exclusion: for every
+orthogonal remote input split $(\mathcal A,\mathcal B)$, a surviving
+response must have
+\[
+ \|\Pi_{\mathcal H_{2,0}(\mathcal A)\mathcal H_{0,1}(\mathcal B)}F\|^2
+ <\eta_m\|F\|^2,
+ \quad (m,\eta_m)\in
+ \{(2,191/200),(4,49/50),(8,99/100),(16,499/500),(24,1999/2000)\},
+\]
+whenever $\dim\mathcal A\le m$; the complementary branches have cap
+$0.71325$ by Theorem~\ref{thm:phase-preserving-contact}.
+The optimal support for this test class is explicitly attained and
+has the correct Gaussian limit. This repairs the phase-averaging loss
+on that class. It does not put every self-interacting or diffuse
+survivor into one of the projection regions.
+What remains is a joint-response certificate on the coupled complement,
+or an exhaustive structural alternative with a quantitative response
+cost, followed by the flank rows at the same witness parameter.
+
+\paragraph{Updated obstruction after whole-core certification.}
+Theorem~\ref{thm:spherical-core-contact} now covers every overlapping
+cubic on a core of at most eight remote coordinates under its full-energy
+share conditions. It supersedes the three-cycle as an example outside
+all certified concentration regions: the entire three-coordinate core
+is covered at share $481/500$, with arbitrary dependent remainder.
+For a central survivor, necessarily
+\[
+ \sup_{\substack{\mathcal A\perp Z\\\dim\mathcal A\le n}}
+ \|\Pi_{\mathcal H_{2,1}(\mathcal A)}F\|^2<\eta_n V,
+ \quad (n,\eta_n)\in
+ \{(2,187/200),(3,481/500),(4,122/125),(6,124/125),(8,9999/10000)\}.
+\]
+This does not justify a small-influence conclusion. The normalized
+$Q_N=X_1(\sum_j|X_j|^2-N-1)/\sqrt{N+1}$ has maximal influence
+$(N+5)/(N+1)\to1$, while its best $n$-coordinate core share is
+$(n+1)/(N+1)\to0$. These are exact formulas, not a numerical
+counterexample to K. A fixed rank cutoff or a maximal-influence cutoff
+alone therefore does not give an exhaustive structural alternative.
+The following new response branch removes $Q_N$ itself for large $N$.
+
+\paragraph{Rank-free linear--quadratic factors: a complete regional cover.}
+Theorem~\ref{thm:conditional-response-contact} covers all $t$ at
+$\epsilon=1891/2500$ whenever a remote exactly-one-leg module carries
+at least $499/500$ of the full energy. Its cap is $0.71325$, with
+arbitrary quadratic ranks, phases, both conditional covariance channels,
+and a fully dependent remainder. In particular it covers $F=cQ_N$
+for $N\ge999$. Thus that family no longer witnesses an uncovered
+branch, even though its coordinate-core obstruction remains valid.
+Every response exceeding $0.71325$ must additionally satisfy
+\[
+ \sup_{\mathcal A\subset Z^\perp}
+ \norm{\Pi_{\mathcal M(\mathcal A)}F}^2<\frac{499}{500}\norm F^2.
+\]
+The exact entrance statistic is
+$I_1-I_2+I_3/2$ from \eqref{eq:one-leg-projection}; the full rank of
+its quadratic factor does not enter the scalar certificate.
+The paired support identity charges the remaining energy through
+$p\mapsto p\eta$, without an independent-noise substitution.
+
+The open problem is the joint response on the complement of this
+condition and all the earlier tests. No proved alternative puts that
+complement into small influence, independent blocks, or finite cores.
+Cubics can distribute substantial energy among several leg-occupancy
+sectors. This structural gap remains after the new branch's flank rows
+are covered. The one-sided support shortcut is unavailable;
+\S\ref{sec:gaussian-point-cone-reach} retains the paired norm required
+for visible-dependent tests. No global endpoint follows from the new
+regional theorem alone.

@@ -1,0 +1,105 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch13-attemptK.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 13). Owner: lower-bound/11-history-literature.tex
+\section{A direct attempt at Conjecture K (15 October, night)}\label{ch:attemptK}
+\chapsummary{The equal-variance peeling counterexample and its diagnosis are retained. The subsequent one-driver closure is in \autoref{ch:complete-coherent-driver}; the old proposed work plan is historical.}
+
+Code and logs: \pathref{/\allowbreak private/\allowbreak tmp/\allowbreak claude-501/\allowbreak peel/\allowbreak } (\code{peel.py}, \code{peel2.py}), copied to \pathref{handoff/\allowbreak research-third-decimal/\allowbreak kattack-2026-10-15/\allowbreak }. All numbers \st{F}, peak row.
+
+\subsection{The natural proof strategy, and why it fails}
+After the coordinate reduction (\S\ref{sec:coordred}) the shared-driver $A$-sector is a problem in two explicit coordinates: $r_A=c\,w_2$ and, conditional on the other
+coordinates $w''$, the residual is a polynomial of degree $\le3$ in $(w_2,\bar w_2)$ whose coefficients are chaos elements of $w''$. This suggests an induction over
+coordinates: \emph{peel} one coordinate at a time by replacing its contribution to the residual by an independent Gaussian of the same conditional variance.
+\begin{definition}[peeling lemma P, candidate]
+Let the residual depend on one remote Gaussian $w$ through a polynomial with random coefficients independent of $(Z,w)$, plus visible mixed terms in $w$. Then the two-sign payoff
+does not decrease when the $w$-dependence is replaced by an independent Gaussian driver with the same conditional variance profile.
+\end{definition}
+If P held, every $G\in\Hc21(\C^n)$ would be dominated by a Gaussian variance mixture, and Jensen (concavity of the Gaussian benchmark in the variance) would give K.
+GPT's theorems are all of this equal-variance type, so P is the natural conjecture. \textbf{P is false.} Test (\code{peel.py}): $G_{\rm sh}=\sigma(aH(w_2)+\sqrt{1-a^2}W)+\alpha(T-1)w_2$
+(shared driver) against $G_{\rm ind}=\sigma(aH(w_2)+\sqrt{1-a^2}W)+\alpha(T-1)Z'$ ($Z'$ independent; same conditional variance profile $\sigma^2(1-a^2)+|\alpha|^2(T-1)^2$ around the same
+junta core), both with $W,Z'$ integrated in closed form. Over $a\in\{0.3,0.6,1\}$, $\sigma\in\{0.14,0.2,0.3\}$, $|\alpha|\in\{0.05,0.15,0.3\}$ and eight phases:
+$\Lambda(G_{\rm sh})-\Lambda(G_{\rm ind})$ ranges from $-3.6\cdot10^{-2}$ (phase $\pi$) to $+1.96\cdot10^{-2}$ (phase $0$, $a=1$, $\sigma=0.3$, $|\alpha|=0.3$); at phase $\pm\pi/2$ it is
+$\approx-10^{-4}$. So sharing the driver \emph{helps} the adversary by a large amount when $r_A$ is phase-aligned with the junta, and the equal-variance Gaussianisation is not an
+upper bound. (K itself holds at every one of the 216 points: the independent-driver value is already $10^{-2}$--$8\cdot10^{-2}$ below $S$ and absorbs the gain.) Consequently
+\emph{no proof of K can proceed sector by sector or coordinate by coordinate at equal variance}; the content gain of a sector must be weighed against the deficit of the residual it
+couples to. This confirms lower-GPT's current direction (a direct comparison keeping content and deficit together).
+
+\subsection{How much of the margin the content actually uses}
+For fixed $(a,\sigma)$ minimise $S-\Lambda(G_{\rm sh})$ over real $\alpha\ge0$ (the aligned phase) (\code{peel2.py}):
+\begin{center}\small
+\begin{tabular}{cccccc}\toprule
+$a$ & $\sigma$ & $q$-only margin $S-\Lambda(\alpha=0)$ & min margin over $\alpha$ & $\alpha^*$ & gain / $q$-only margin\\\midrule
+0.15 & 0.20 & $1.68\cdot10^{-5}$ & $1.66\cdot10^{-5}$ & 0.0007 & 0.014\\
+0.30 & 0.20 & $2.08\cdot10^{-4}$ & $2.00\cdot10^{-4}$ & 0.0042 & 0.041\\
+0.45 & 0.20 & $8.27\cdot10^{-4}$ & $7.71\cdot10^{-4}$ & 0.0105 & 0.068\\
+0.60 & 0.20 & $2.10\cdot10^{-3}$ & $1.90\cdot10^{-3}$ & 0.0194 & 0.093\\
+0.80 & 0.20 & $5.12\cdot10^{-3}$ & $4.48\cdot10^{-3}$ & 0.0350 & 0.125\\
+1.00 & 0.20 & $9.97\cdot10^{-3}$ & $8.38\cdot10^{-3}$ & 0.0545 & \textbf{0.160}\\
+1.00 & 0.25 & $1.82\cdot10^{-2}$ & $1.53\cdot10^{-2}$ & 0.0687 & 0.155\\\bottomrule
+\end{tabular}
+\end{center}
+(24 points in all, $\sigma\in\{0.14,0.2,0.25,0.3\}$; the ratio is monotone in $a$ and at most $0.160$.) So on the junta family the aligned $A$-sector recovers at most $16\%$ of the
+$q$-only margin, with optimal amplitudes $\alpha^*\le0.08$; near the Gaussian optimum ($a\le0.3$, $\sigma\approx\sigma^*$) it recovers $1$--$4\%$. This is the ``actual gain
+$M_0\le0.18\,T$'' of K3 seen directly. For a proof via the reduction (R) the requirement is content$^2\le(1/\varepsilon-h_X)\,c_1$ with $h_X\approx1.03$; the measured actual gain is
+roughly $0.42$ of that rigorous bound, so (R) has a factor $\approx2.5$ of room on this family, and the inequality to prove is the one everybody has converged on:
+\[
+\|\Pi_{1,0}F_A(q)\|^2+\|\Pi_{1,0}F_B(q)\|^2\ \le\ 0.292\,\bigl(c_1(q)+\eta\bigr)\qquad\text{for all }q\in\Hc21,\ \eta\le10^{-4}.
+\]
+
+\subsection{Why the content is third order: the influence-matrix picture}
+Both sides are controlled by the fluctuation of the carré du champ. With $U=|q|^2=\sum_kU_k$ (chaos parts), $W-\sigma^2=\frac23U_2+\frac13U_4$ and $U_2=\sum_{k,l}M_{kl}{:}\bar w_kw_l{:}$
+with $M=\Gamma+\Gamma'^{\top}$ the \emph{influence matrix} ($\Gamma_{kl}=\E[\partial_kq\,\overline{\partial_lq}]$). The deficit's leading term is the pairing of the fluctuation with $U$
+itself, $\mathrm{Cov}(W,U)=\frac23\|U_2\|^2+\frac13\|U_4\|^2>0$ (the fourth-moment inequality in Stein form), and the Stein cuts bound the whole law deviation by
+$\Var W+\frac12\E|C|^2\le\kappa/3$. The content's leading term is the pairing of the same fluctuation with $\bar w_jq$: $\langle w_j,U_2q\rangle=2\sum_{k,l}t_{jkl}M_{kl}=2(t\cdot M)_j$,
+the tensor contracted with the influence matrix (this is the $B_j$ term of \autoref{ch:L2}). A Cauchy--Schwarz with the full norm of $t$ gives $\sum_j|(t\cdot M)_j|^2\le\frac{\sigma^2}2\|M\|_{HS}^2
+\lesssim\sigma^6x^2$: second order in $x$, the Theorem-4 regime. The truth is third order because $M$ is supported on the influential directions and the mass of $t$ on those directions is
+itself controlled by $M$ ($\Gamma_{kk}$ is the weight of $t$ on direction $k$): on the junta family $M\sim a^2$ on one direction where $t\sim a$, so $t\cdot M\sim a^3\sim x^{3/2}$. A proof of
+the content inequality at the right order is therefore a \emph{weighted} tensor inequality (weights $\Gamma_{kk}$), of which L2 is the pure-cubic prototype; its constant is
+dimension-dependent (\autoref{ch:L2}), which is the warning sign for any constant-chasing approach. The saturation of the bounded profiles handles $x\gtrsim0.5$ and is a separate,
+finite-dimensional estimate.
+
+\subsection{Verdict}
+K was not proved. Established tonight: the coordinate-by-coordinate strategy is dead (P false, with a large explicit counterexample at aligned phase); the problem is
+irreducibly a joint statement about content and deficit of the same residual; on the junta family the mixed gain is at most $16\%$ of the $q$-only deficit, so the conjecture has
+ample room; and the leading-order mechanism of the content is the contraction of the chaos tensor with its own influence matrix, a weighted inequality whose sharp constant
+(L2) grows with the dimension. The route that remains open and sufficient is the content inequality above with the true (Stein-cut) deficit, or GPT's direct comparison.
+
+\subsection{Addendum: the global $A$-sector theorem (received after this chapter)}
+Lower-bound GPT's package \code{global-a-and-content-20261015} (replayed here from an isolated directory, all exact checks PASS in 58 s, log in \code{kattack-2026-10-15/}) proves, at
+the exact peak profile, for $q_0=\sum_jX_jS_j+\sqrt sG$ and $r_A=\sum_j\alpha_jX_j$ with the centered coefficient vector $S$ of arbitrary law independent of the Gaussian drivers:
+$\Lambda(q_0+(T-1)r_A)\le S+10^{-5}-\|\alpha\|^2/200$, with no dimension, amplitude or kurtosis restriction. Mechanism: conditionally the residual is proper Gaussian with variance
+$w(T)=t+2p(T-1)+r(T-1)^2$ ($t=\|S\|^2$, $p=\Re\langle S,\alpha\rangle$, $r=\|\alpha\|^2$); the content variable $p$ is centered, so a supporting multiplier $-\frac75p$ cancels on
+averaging; at fixed $(t+r,p)$ the payoff decreases in $r$ (derivative $<-1/100$), reducing to a rank-one face; the remaining three-parameter dual is covered by 10,697 exact boxes (or 228
+on the face), with the Gaussian benchmark lower-bounded inside the verifier ($1.37395328457$; our float $S=1.37395353$). This is exactly ``content and deficit kept together'' and
+bypasses L2 for this class. It covers the real-Gaussian-multiplier structure of \S\ref{sec:attxi} with shared $r_A$ and all Gaussian-factor residuals; it does not cover the cubic
+self-interaction $cH(X)+\alpha(T-1)X$ probed in this chapter, whose conditional law given $|X|$ is a ring rather than a Gaussian. Also in the package: proper-Gaussian channels
+$uT+vT^2/2$ added on top of the $A$ baseline pay $\ge\frac35\E u+\frac{17}{20}\E v$ when conditionally orthogonal (zero pseudocovariance; shared-driver $B$ only under
+$\sum S_j\beta_j=0$, $\sum\alpha_j\beta_j=0$); L2 improved to $2.2029$ uniformly and to a kurtosis-dependent bound sharp at the Wick endpoint; an exact double-zero example shows no
+uniform Hessian bound exists for the fibre majorant at arbitrary mixed coefficients (L1 as a secant majorant is untouched). The standalone report
+\pathref{conjecture-K-report/conjecture\_K\_report.pdf} carries the updated status table and a proposal for the remaining self-interaction case (one-coordinate junta with shared
+$A/B$ and buffer: a four-to-six-parameter ring-plus-Gaussian dual, certifiable by the same box machinery; and the exact identity content$_A(p)=\E[F_{A,u}(q_0)D_pq_0]+\E[F_{A,\bar u}(q_0)\overline{\bar D_pq_0}]$,
+showing that only the second-chaos parts of the derivative profiles enter).
+
+\subsection{Addendum 2: the junta proposal realised (A-only), and two B results}
+Within the hour, lower-bound GPT's package \code{junta-and-b-20261015} proved, at the exact peak profile: (i) \textbf{the A-only Wick junta}
+$Q=cH(X)+\alpha(T-1)X+gG$ for all $c,g\ge0$, $\alpha\in\C$ (and jointly random coefficients independent of $(Z,X,G)$, Gaussian variance-mixture buffers):
+$\Lambda(Q)\le S+73/10^6$, by the exact ring representation of \S\ref{sec:coordred}--\ref{sec:Aline}, positive Bernstein integration in the two radii, a
+circumscribed-polygon angular oracle and convex interpolation in the four real parameters; 4,256 boxes, 10,198 vertices, integer interval arithmetic (benchmark
+lower $96683367401312/2^{46}$, largest box upper $96688503271133/2^{46}$). This is the weak form of the J1 proposal with slack inside the $\eta\le10^{-4}$ budget; the
+deficit-retention form $\Lambda\le S-(1-\theta)d_q$ is not certified. (ii) \textbf{One shared $B$ driver with arbitrary centered content} $Q=XS_0+\beta Z^2\bar X/\sqrt2$:
+$\Lambda\le S+10^{-5}-|\beta|^2/200$, nonzero pseudocovariance allowed (8,833 boxes, logarithmic Laplace quadrature oracle). (iii) \textbf{Joint $A+B$} with nonzero shared
+content under $\alpha^{\top}\beta=0$, $\E\Re\langle S_0,\alpha\rangle=0$ and a conditional phase-spread hypothesis: deficits $\|\alpha\|^2/200+281\|\beta\|^2/400$ by circularising the
+pseudocovariance and a PSD congruence onto the global-$A$ dual. The ring oracle for the full ellipse $m_1e^{i\theta}+m_2e^{-i\theta}$ is proved, so the six-parameter
+junta with $A$ and $B$ together is within reach of the same machinery but was not run. Still open: $A$ and $B$ simultaneously on the Wick driver, arbitrary coupled
+cubics, the remaining interactions, $\nu$-uniformity, and the full row envelope; the certified bound is unchanged. GPT also corrected a convention in my content
+identity: the second projection is $\Pi_{2,0}$, and for the Wick monomial with $F=u|u|^2$ the two terms are $6\sqrt2+2\sqrt2=8\sqrt2$, matching $v=32t^3$.
+\emph{Superseded (13:13 package, \autoref{ch:kjoint}):} the joint $A{+}B$ statement (iii) above is replaced in its hypotheses by Theorem~\ref{thm:kjoint-complex} (no $\alpha^{\top}\beta=0$, no phase spread, slack $8\cdot10^{-5}$ instead of a deficit), (ii) by Theorem~\ref{thm:kjoint-B} (any dimension, buffer), and the first open item (``$A$ and $B$ simultaneously on the Wick driver'') is closed in weak form by Theorem~\ref{thm:kjoint-junta} (slack $10^{-4}$).
+
+\subsection{Addendum 3: several coordinates of comparable influence with free $A/B$ sectors}
+The last untested class (\code{mjunta.py}, archived in \code{kattack-2026-10-15/}): the L2 maximisers at $n=3,4$ as residual (scaled to $\sigma\in\{0.14,0.2,0.3\}$) with $r_A=\langle\alpha,w\rangle$,
+$r_B=\langle\beta,\bar w\rangle$ free on all coordinates; $(T,\theta)$ by quadrature, remote coordinates by Monte Carlo with common random numbers, L-BFGS over the $4n$ sector parameters.
+Results: $d_q=6.1\cdot10^{-3}$, $2.5\cdot10^{-3}$, $6.1\cdot10^{-3}$, $1.95\cdot10^{-2}$ and maximal sector gains $1.07\cdot10^{-3}$ ($n=3$, $\sigma=.2$), $2.9\cdot10^{-4}$, $8.8\cdot10^{-4}$, $2.5\cdot10^{-3}$
+($n=4$, $\sigma=.14,.2,.3$): gain$/d_q\in[0.118,0.174]$, margins $\ge2.2\cdot10^{-3}$, $|\beta^*|\approx|\alpha^*|/8$. K holds, and the deficit-retention form with $\theta=1/4$ holds on every residual
+class tested. GPT's \code{junta-and-b-20261015} suite was replayed here from an isolated directory: all checks PASS (12 min 40 s; the junta certificate 528 s).
+
+\emph{Where this stands after the evening:} the ``content inequality'' of this chapter is (T$_0$) of \autoref{ch:weighted}; its weighted scalar form (T) is false (\S\ref{sec:wct-false}); the
+consolidated open list is \S\ref{sec:kfull-remains}; the two certificate pieces L1 and K-a were measured in \autoref{ch:certs}.

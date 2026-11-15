@@ -1,0 +1,664 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch45-zero-buffer-bootstrap.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 45). Owner: lower-bound/09-one-driver.tex
+\section{Zero-buffer continuation and positive shared content}
+\label{ch:zero-buffer-bootstrap}
+\chapsummary{Zero-buffer continuation, positive content and radial families. The earlier one-driver amplitude threshold is a proof dependency, not the present uncovered region.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch45-zero-buffer-bootstrap.tex} from \pathref{gpt-reviews/zero-buffer-bootstrap-20261020/}, ported verbatim
+apart from this summary and paragraph. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py --full-dependencies}: \textbf{PASS complete requested replay in 1675\,s}. This covers the buffered
+dependencies, the regenerated coefficient data, the content and density inputs, the new $B$ rearrangement, the radial gamma, heat and phase algebra, and three joint heat-continuation
+certificates. \emph{IDE float check} (\pathref{forest-2026-10-20/zero\_check.py}): over $c\in\{0.272,0.3,0.4,0.6\}$, $g\in\{0,0.05,0.1\}$, $|\alpha|\le1.2$, $|\beta|\le1$, the minimum of
+$S-\Lambda$ is $0.0198$, against the certified $1/8000$.
+
+
+\paragraph{Status.}
+Statements labelled \textbf{[P]} have analytic proofs;
+\textbf{[C]} denotes exact or directed computation with a portable checker.
+No new Grothendieck endpoint or Lean formalization is claimed.
+The previously reported interval remains
+\[
+1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\mathbb C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}.
+\]
+This chapter enlarges proved regions of Conjecture K and improves a
+dimension-free ingredient.  It does not close the general shared-driver
+case or provide the complete row cover required for a new endpoint.
+
+\subsection{Setting and conclusions}
+At the peak put
+\[
+a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+\epsilon=\frac{1891}{2500},\quad p=\epsilon^{-1},\qquad
+L=z(a+b|z|^2).
+\]
+For independent standard proper complex Gaussians \(z,X,Y\), set
+\[
+H(X)=\frac{X(|X|^2-2)}{\sqrt2},\qquad
+Q=cH(X)+\alpha(|z|^2-1)X+\frac{\beta z^2\bar X}{\sqrt2}.
+\]
+Here \(c,g\ge0\) and \(\alpha,\beta\in\mathbb C\).
+The functional and benchmark are
+\[
+\Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2,\qquad
+S=\sup_{v\ge0}\{2\E|L+\sqrt vY|-pv\}.
+\]
+\begin{theorem}[All buffers and all coupling amplitudes; P,C]
+\label{thm:zero-bootstrap-halfline}
+At the peak,
+\[
+\boxed{\Lambda(Q+gY)\le S-\frac1{8000}
+\quad\text{for }c\ge\frac{34}{125},\ g\ge0,\
+\alpha,\beta\in\mathbb C.}
+\]
+\end{theorem}
+This lowers the incoming threshold \(3/10\) to \(34/125=0.272\).
+The incoming stronger margin \(1/2000\) on its old region remains
+available; the theorem does not replace it there.
+The proof preserves the coupling matrix while removing a Gaussian
+buffer.  Three fresh scalar integrations and covers suffice; inherited
+tensor quadratures are reused with explicit provenance.
+
+A second result strengthens the global B penalty from \(21/80\) to
+\(37/100\) at the peak, and from \(1/8\) to \(6/25\) on the full profile
+box.  A third extends content positivity to the radial cubic
+\(X_1(\|X\|^2-n-1)/\sqrt{n+1}\) in every dimension.
+Those results appear below with their distinct scope restrictions.
+
+\subsection{A sharp lower bound for Gaussian smoothing}
+\begin{lemma}[Inverse Rice mean; P]
+\label{lem:inverse-rice-pi}
+For a standard proper complex Gaussian \(Y\), \(D\ge0\), and \(v>0\),
+\[
+\boxed{\E|\sqrt D+\sqrt vY|^{-1}
+\ge(D+v/\pi)^{-1/2}.}
+\]
+The constant \(\pi\) is the largest possible constant in this form.
+\end{lemma}
+\begin{proof}
+Gaussian integration of the positive Laplace formula for the reciprocal
+norm gives
+\[
+\begin{aligned}
+\E|\sqrt D+\sqrt vY|^{-1}
+&=\frac1{\sqrt\pi}\int_0^\infty
+\frac{t^{-1/2}}{1+vt}
+\exp\left(-\frac{Dt}{1+vt}\right)\,dt\\
+&=\sqrt{\frac\pi v}\,\E e^{-(D/v)B},
+\end{aligned}
+\]
+where \(B\sim\operatorname{Beta}(1/2,1/2)\).
+Its density is \(1/(\pi\sqrt{t(1-t)})\) on \((0,1)\).
+The density of \(A\sim\operatorname{Gamma}(1/2,\text{scale }\pi)\)
+is \(e^{-t/\pi}/(\pi\sqrt t)\).  On \((0,1)\) the former dominates
+the latter.  Both have mass one, so \(B\) is stochastically smaller
+than \(A\).  Hence
+\[
+\E e^{-yB}\ge\E e^{-yA}=(1+\pi y)^{-1/2}.
+\]
+This proves the bound.  At \(D=0\) there is equality, proving optimality.
+\end{proof}
+
+\begin{theorem}[Conditional removal of Gaussian buffer; P]
+\label{thm:conditional-heat-pi}
+Let \(F\in L^2\) be complex, let \(\mathcal A\) be a sigma-field, and
+let \(Y\) be independent of \(\sigma(F,\mathcal A)\).
+Put \(D=\E(|F|^2\mid\mathcal A)\).  For \(0\le g\le h\),
+\[
+\boxed{
+2\E(|F+hY|-|F+gY|\mid\mathcal A)
+\ge\pi\left(\sqrt{D+h^2/\pi}-\sqrt{D+g^2/\pi}\right).}
+\]
+\end{theorem}
+\begin{proof}
+For positive variance, the heat identity is
+\[
+\frac{d}{dv}\,2\E|F+\sqrt vY|
+=\frac12\E|F+\sqrt vY|^{-1}.
+\]
+Apply Lemma~\ref{lem:inverse-rice-pi} conditional on \(F\), then
+conditional Jensen to the convex function
+\(u\mapsto(u+v/\pi)^{-1/2}\).  Integrating over
+\([g^2,h^2]\) proves the assertion.  At \(g=0\), pass to the limit
+in \(L^1\).  No negative moment of \(F\) is required.
+\end{proof}
+For any \(0<C\le\pi\) one may replace the right side by
+\[
+f_{C,h,g}(D)=
+C\left(\sqrt{D+h^2/C}-\sqrt{D+g^2/C}\right)
+=\frac{h^2-g^2}
+{\sqrt{D+h^2/C}+\sqrt{D+g^2/C}}.
+\]
+The last expression increases with \(C\).
+The old conditional Jensen comparison is \(C=1\); the first new
+directed continuation uses \(C=3\).
+
+\subsubsection{A stronger region without an asymptotic remainder}
+\begin{lemma}[Second-term inverse Rice minorant; P]
+\label{lem:rice-second-term}
+If \(D\ge2v>0\), then
+\[
+\E|\sqrt D+\sqrt vY|^{-1}
+\ge D^{-1/2}\left(1+\frac{v}{4D}\right).
+\]
+If \(D\ge v>0\), the weaker lower bound \(D^{-1/2}\) holds.
+\end{lemma}
+\begin{proof}
+Compare the beta density with \((1+t/2)/(\pi\sqrt t)\) on the
+whole positive half-line.  Their difference is positive on \((0,1)\)
+and negative on \((1,\infty)\).  The second density has Laplace
+transform \((\pi y)^{-1/2}(1+1/(4y))\).
+At \(y=2\), the beta transform is
+\[
+e^{-1}I_0(1)\ge\frac5{4e}>
+\frac5{11}>\frac9{20}>\frac9{8\sqrt{2\pi}},
+\]
+using \(e<11/4\), \(\pi>25/8\), and the first two terms
+\(I_0(1)\ge1+1/4\).
+For every \(y\ge2\), weighting this signed difference by
+\(e^{-(y-2)t}\) multiplies its positive part by at least
+\(e^{-(y-2)}\), and its negative part by at most that amount.
+Its positive Laplace transform therefore remains positive.
+The beta representation in Lemma~\ref{lem:inverse-rice-pi} proves
+the first claim.  For the weaker claim, compare instead with
+\(1/(\pi\sqrt t)\); at \(y=1\), Jensen gives
+\(\E e^{-B}\ge e^{-1/2}>1/\sqrt\pi\).
+\end{proof}
+The reciprocal Rice mean is completely monotone in \(D\).
+Conditional Jensen can therefore be applied before
+Lemma~\ref{lem:rice-second-term}.  If
+\(D=\E(|F|^2\mid\mathcal A)\ge2h^2\), integration gives
+\begin{equation}
+2\E(|F+hY|-|F+gY|\mid\mathcal A)
+\ge \frac{h^2-g^2}{2\sqrt D}
+ +\frac{h^4-g^4}{16D^{3/2}}.
+\label{eq:rice-heat-two-term}
+\end{equation}
+The condition is on the conditional mean, not every realization of \(F\).
+
+\subsection{Joint continuation of the A/B matrix}
+Let \(h=41/250\), \(T=|z|^2\), and \(P(t)=t(a+bt)^2\).
+For \(F=L+Q\), the exact conditional second moment is
+\[
+D(T)=P(T)+c^2+A(T-1)^2+\frac12BT^2,\qquad
+A=|\alpha|^2,\quad B=|\beta|^2.
+\]
+Orthogonality of \(H(X)\) to \(X,\bar X\), together with
+\(\E X^2=0\), removes the cross terms even for arbitrary complex
+couplings.  The two norm expectations are equal by \(z\mapsto-z\).
+The price changes by \(p(h^2-g^2)\).
+
+Choose a reference
+\[
+D_0(T)=P(T)+c_0^2+A_0(T-1)^2,\qquad A_0=3/50.
+\]
+For any applicable positive decreasing convex lower heat increment
+\(f\), define
+\[
+F_0=\E f(D_0),\quad
+K_q=\E[-f'(D_0)],\quad
+K_A=\E[-f'(D_0)(T-1)^2],\quad
+K_B=\tfrac12\E[-f'(D_0)T^2].
+\]
+Its supporting tangent yields
+\begin{equation}
+\begin{split}
+\Lambda(Q+gY)-S
+\le{}&\Lambda(Q+hY)-S+C_0+
+K_q(c^2-c_0^2)+K_AA+K_BB,\\
+C_0={}&ph^2-F_0-K_AA_0.
+\end{split}
+\label{eq:joint-heat-support}
+\end{equation}
+This bound holds for all \(0\le g\le h\) when the removal correction
+is maximal at zero.  For \(f=f_{C,h,0}\), it suffices to check
+\[
+\E\frac1{2\sqrt{P(T)+c_0^2}}<p.
+\]
+For \eqref{eq:rice-heat-two-term}, it suffices that
+\[
+\left(1+\frac{h^2}{4c_0^2}\right)
+\E\frac1{2\sqrt{P(T)+c_0^2}}<p,\qquad c_0^2\ge2h^2.
+\]
+These checks concern the derived upper bound; no monotonicity of the
+actual payoff in buffer variance is assumed.
+
+The existing buffered anchors have the form
+\[
+\Lambda(Q+hY)-S\le b_i+2d_i^\top\delta+\delta^*M_i\delta,
+\qquad\delta=(c-c_i,\alpha,\beta).
+\]
+Insert \eqref{eq:joint-heat-support} before completing squares.
+Set
+\[
+A_i=-M_{AA}-K_A,\quad C_i=-M_{BB}-K_B,\quad
+B_i=M_{AB},\quad\Delta_i=A_iC_i-B_i^2.
+\]
+If \(A_i,C_i,\Delta_i>0\), the optimized coupling contribution is
+\[
+\frac{C_ix^2+2B_i xy+A_i y^2}{\Delta_i},\qquad
+x=d_A+M_{cA}(c-c_i),\quad y=d_B+M_{cB}(c-c_i).
+\]
+The coefficients are real by conjugation symmetry.  The imaginary
+parts of the couplings have a negative quadratic and no linear
+term, so the completion covers all complex phases.
+
+\subsubsection{Directed verification and the half-line cover [C]}
+The three continuations are:
+\[
+\begin{array}{c|c|c|c}
+c\text{-range}&c_0& f(D)&\text{low-buffer margin}\\ \hline
+{[7/25,9/10]}&7/25&
+\sqrt{D+h^2}-\sqrt D&1/2000\\
+{[11/40,7/25]}&11/40&
+3(\sqrt{D+h^2/3}-\sqrt D)&1/8000\\
+{[34/125,11/40]}&34/125&
+h^2/(2\sqrt D)+h^4/(16D^{3/2})&1/8000
+\end{array}
+\]
+They respectively cover \(6200\), \(50\), and \(30\) full cells of
+width \(1/10000\).  All four scalar integrals and their infinite tails
+are freshly enclosed by directed \(2^{-256}\) arithmetic.
+The scalar meshes are \(1/16384\), \(1/32768\), and \(1/32768\)
+on \([0,16]\).
+Since \(D_0'(t)\ge a^2-2A_0>0\), monotone rectangles give direct
+interval integrals; polynomial weights are enclosed on whole cells.
+Alternating series and exact exponential moments handle the decay
+and tails.
+
+For the final strip, the displayed scalar enclosures are
+\[
+\begin{array}{c|cc}
+ &\text{lower}&\text{upper}\\\hline
+F_0&.022032897290810226&.022034046746131842\\
+K_q&.04477406754414562&.044778566575505996\\
+K_A&.02614994099129309&.026154557421989296\\
+K_B&.005145510960589815&.005146393469816948
+\end{array}
+\]
+The monotonicity upper bound is \(0.959163<p\).
+The worst directed cell bounds in the three strips are, respectively,
+\[
+-.0005220813110250185,\qquad
+-.00014191757367115038,\qquad
+-.00017659334120548992.
+\]
+These decimals are displays only; acceptance uses integer comparisons.
+For \(c\ge9/10\), the preceding trace tail supplies a margin exceeding
+\(0.0039\).  For \(g\ge h\), the retained buffered theorem gives
+\[
+\Lambda(Q+gY)\le
+S-\frac{\min(c^4,c^2)}{32}
+-\frac{|\alpha|^2+|\beta|^2}{2000}.
+\]
+Since \((34/125)^4/32>1/8000\), these ranges prove
+Theorem~\ref{thm:zero-bootstrap-halfline}.
+
+The defining tensor coefficient file is inherited from the preceding
+independently replayed package.  Its hash is recorded in
+\texttt{PORTING.md}.  The default replay checks that file, replays
+its exact postcheck, and recomputes every new scalar integral.
+The optional full replay regenerates inherited quadratures as well.
+
+
+% Ready-to-port section; no document preamble.
+\subsection{A stronger global \(B\)-sector cost by density rearrangement}
+\label{sec:b-density-rearrangement}
+
+\paragraph{Status and scope.}
+\textbf{[P,C]} The analytic reductions below are proved; the finite
+arithmetic certificates are replayable using standard-library Python and
+C++17.  This improves an ingredient of the lower-bound argument, not the
+certified Grothendieck endpoint.  In particular the nonlinear content
+term is retained.
+
+Let \(z\) be a standard proper complex Gaussian,
+\[
+ L=z(a+b|z|^2),\qquad p=1/\epsilon.
+\]
+Let \(U,R\) be any jointly distributed square-integrable complex random
+variables independent of \(z\).  They need not be independent of one
+another or belong to a Gaussian chaos.  Put
+\[
+ T_B(w)=\mathbb E_z\left[
+ \frac{z^2}{\sqrt2}\frac{\overline{L+w}}{|L+w|}\right].
+\]
+At the peak \(a=699/1250\), \(b=179/1250\),
+\(\epsilon=1891/2500\), the new bound is
+\begin{equation}
+ \boxed{\Lambda(U+z^2R/\sqrt2)
+ \leq\Lambda(U)+2\Re\mathbb E[R T_B(U)]
+             -\frac{37}{100}\mathbb E|R|^2.}
+ \label{eq:b-rearrange-peak}
+\end{equation}
+It replaces the previous quadratic cost \(21/80\).
+Uniformly on the profile box
+\[
+ \ell\in[19/25,9/10],\quad b\in[3/25,4/25],\quad
+ a=\ell-2b,\quad 0<\epsilon\leq19/25,
+\]
+the same conclusion holds with cost \(6/25\), replacing \(1/8\).
+An \(A\)-sector term cannot be included in \(U\), since it depends on \(z\).
+
+\paragraph{The rearrangement estimate [P].}
+Set \(P(s)=s(a+bs)^2\).  The pushforward under \(z\mapsto L\) of Gaussian
+measure weighted by \(|z|^4/2\) has planar density \(f_B(|w|^2)/\pi\), where
+\begin{equation}
+ f_B(P(s))=\frac{s^2e^{-s}}{2(a+bs)(a+3bs)}.
+ \label{eq:b-rearrange-density}
+\end{equation}
+For any measurable planar set \(E\) of area \(\pi A\), and any \(u\),
+layer cake gives
+\[
+ \frac1\pi\int_E\frac{dw}{|w-u|}
+ \leq\frac1\pi\int_0^\infty\min(\pi A,\pi/t^2)\,dt=2\sqrt A.
+\]
+Suppose a nonnegative density numerator is bounded on disjoint annuli
+by heights \(b_i\), with respective areas divided by \(\pi\) at most
+\(a_i\).  Sort the heights in decreasing order and set
+\(A_i=\sum_{j\leq i}a_j\), \(A_0=0\).  Applying the preceding inequality
+to all superlevel sets yields
+\begin{equation}
+ \sup_u\int\frac{f_{\rm step}(|w|^2)}{\pi|w-u|}\,dw
+ \leq 2\sum_i b_i(\sqrt{A_i}-\sqrt{A_{i-1}}).
+ \label{eq:b-rearrange-step}
+\end{equation}
+Inflating any \(a_i\) increases every superlevel area, hence increases
+this bound.  This justifies outward area bounds despite the differences
+of square roots in the displayed expression.  A remaining density with
+mass \(m\) and height at most \(M/\pi\) contributes at most \(2\sqrt{mM}\).
+
+\paragraph{The finite certificate [C].}
+Partition \(s\in[0,16]\) into equal cells \([l,r]\); on each cell use
+outward upper bounds for
+\[
+ b_i=\frac{r^2e^{-l}}{2(a+bl)(a+3bl)},\qquad a_i=P(r)-P(l).
+\]
+For the tail \(s\geq16\), its mass is \(145e^{-16}\), and its density
+height is at most \(e^{-16}/(6\pi b^2)\).  The tail is therefore bounded
+by the preceding \(2\sqrt{mM}\) estimate for every shift \(u\).
+With \(65\,536\) cells at the peak the checker proves
+\begin{equation}
+ \sup_u\mathbb E_z\frac{|z|^4/2}{|L+u|}
+ \leq\frac{68597534451673214}{2^{56}}<\frac{119}{125}.
+ \label{eq:b-rearrange-cap}
+\end{equation}
+All arithmetic is outward dyadic at scale \(2^{-56}\).  Sorting compares
+integers; integer square roots are corrected by exact square comparisons;
+exponentials are bounded using
+\[
+ e^{-x}\leq(1+x/2^{24})^{-2^{24}}
+\]
+with a downward denominator, upward reciprocal, and \(24\) upward
+squarings.  No floating comparison decides acceptance.
+
+\paragraph{The complete profile box [P,C].}
+For \(a\geq a_0>0\), \(b\geq b_0>0\), define the radial map
+\[
+ H\bigl(r(a+br^2)e^{i\theta}\bigr)
+       =r(a_0+b_0r^2)e^{i\theta}.
+\]
+Its radial and tangential Jacobian eigenvalues are respectively
+\[
+ \frac{a_0+3b_0r^2}{a+3br^2},\qquad
+ \frac{a_0+b_0r^2}{a+br^2},
+\]
+both at most one.  It is continuously differentiable at zero.  Integrating
+its derivative along a line segment shows that \(H\) is globally
+\(1\)-Lipschitz.  Consequently
+\[
+ |L_{a_0,b_0}(z)-H(u)|\leq|L_{a,b}(z)-u|.
+\]
+Thus the supremum shifted inverse potential, with the same weight
+\(|z|^4/2\), is nonincreasing under componentwise increases of \(a,b\).
+For \(i=0,\ldots,15\), if
+\[
+ b\in[(48+i)/400,(49+i)/400],\qquad \ell\geq19/25,
+\]
+then \((a,b)\) dominates \(((103-i)/200,(48+i)/400)\).
+The checker certifies these sixteen lower profiles, with \(32\,768\)
+cells each.  The largest upper bound is
+\[
+ \frac{77395356534180962}{2^{56}}<\frac{43}{40}.
+\]
+The exact price comparisons are
+\[
+ \frac{2500}{1891}-\frac{119}{125}>\frac{37}{100},
+ \qquad
+ \frac{25}{19}-\frac{43}{40}
+    =\frac{183}{760}>\frac6{25}.
+\]
+
+\paragraph{From inverse potential to sector cost [P].}
+With \(F=L+U\), \(D=z^2R/\sqrt2\), use
+\[
+ 2|F+D|\leq 2|F|
+       +2\Re\frac{\overline F D}{|F|}
+       +\frac{|D|^2}{|F|}.
+\]
+Conditioning on \(U,R\) removes the null exceptional event \(F=0\);
+the uniform inverse-potential bound ensures integrability.  The two
+signs of \(\Lambda\) have equal expectation by \(z\mapsto-z\).
+Moreover \(\mathbb Ez^2=0\) and \(\mathbb E|z|^4/2=1\), so the price
+changes by precisely \(p\mathbb E|R|^2\), even for dependent \(U,R\).
+Taking expectations proves~\eqref{eq:b-rearrange-peak} and its box version.
+
+\paragraph{Two enlarged zero-buffer regions [P,C].}
+This consequence uses the separately identified prior inputs
+\[
+ S-F(0)\geq559/312500,\qquad F'(0)<11/100,\qquad
+ 0\leq d_B(c,g)\leq(117/10)c^3
+\]
+from the \texttt{shared-driver-zero-buffer} package.  They are not
+reproved by this checker.  For independent proper Gaussian \(z,X,Y\),
+put \(H(X)=X(|X|^2-2)/\sqrt2\) and
+\[
+ G=cH(X)+gY+\alpha(|z|^2-1)X+\beta z^2\overline X/\sqrt2,
+ \qquad c,g\geq0,\quad\alpha,\beta\in\mathbb C.
+\]
+Completing the \(B\)-content square using the new cost gives
+\[
+ \Lambda(G)-S
+ \leq-\frac{559}{312500}+\frac{11}{100}(c^2+g^2)
+       +\frac{13689}{37}c^6+\frac{261}{200}|\alpha|-p|\alpha|^2.
+\]
+Here \(13689/37=(117/10)^2/(37/100)\), while
+\[
+ 2\mathbb E\bigl||z|^2-1\bigr|\,\mathbb E|X|
+       =2\sqrt\pi/e<261/200
+\]
+is verified using exact Machin bounds on \(\pi\) and
+\(e>1957/720\).  Dropping the last, favorable term and substituting the
+upper corners gives
+\[
+ \begin{array}{c|c}
+ \text{Conditions, with arbitrary complex }\beta&\text{Conclusion}\\ \hline
+ c\leq3/32,\ g\leq1/32,\ |\alpha|\leq1/4096
+       &\Lambda(G)\leq S-1/7000\\
+ c\leq1/10,\ g\leq1/32,\ |\alpha|\leq1/8192
+       &\Lambda(G)\leq S-1/20000 .
+ \end{array}
+\]
+The first doubles the previous \(A\) allowance; both include \(g=0\).
+These are restricted amplitude regions, not a complete parameter cover.
+
+\paragraph{Replay.}
+Run \texttt{python3 -I /absolute/path/b\_rearrangement/verify\_all.py}.
+The wrapper copies sources into a fresh temporary directory, compiles
+the C++17 checker, and runs both it and the exact rational consequences.
+The isolated replay passed in \(1.341\) seconds: \(589\,824\) radial cells,
+all sixteen profile bins, and all unbounded tails.  The source package
+contains the replay log and SHA256 manifest.
+
+\subsection{Positive content for radial cubics in every dimension}
+\paragraph{Status [P]; exact polynomial audit [C].}
+Let $X=(X_1,\ldots,X_n)$ be standard proper complex Gaussian,
+$m=n+1$, and
+\[
+ Q_n=\frac{X_1(\|X\|^2-m)}{\sqrt m}\in\mathcal H_{2,1},
+ \qquad \|Q_n\|_2=1.
+\]
+Let the visible $Z$, the fresh Gaussian $W$, and a nonnegative random
+variance $V$ be independent of each other and of $X$, with
+$\mathbb EV<\infty$. Put $U_c=cQ_n+\sqrt VW$, $c\ge0$.
+The averaged kernels of the preceding zero-buffer theorem are
+$C_A(w)=-\bar w k_A(|w|^2)$ and $T_B(w)=-w k_B(|w|^2)$,
+with $k_A,k_B$ nonnegative completely monotone.
+For either content $d_j$, $j=A,B$, in the shared first-coordinate
+direction,
+\begin{equation}
+ \boxed{\frac{d_j(c)}{c^3}\text{ is nonnegative completely monotone
+ in }c^2,\qquad
+ d_j(c)\le
+ \frac{2(5m+6)}{m\sqrt m}[-k_j'(0)]c^3.}
+ \label{eq:radial-content-cm}
+\end{equation}
+Every content component in a direction orthogonal to $X_1$ is zero.
+The multiplier equals $8\sqrt2$ for $n=1$ and decreases as
+$10/\sqrt m$.
+
+\paragraph{The Gamma-order lemma.}
+For any real $m>0$, let $R\sim\operatorname{Gamma}(m)$ and
+$Z_m(r)=r(r-m)^2/m$. Then
+\[
+ J_m(x)=\mathbb E[(R-m)e^{-xZ_m(R)}],\qquad
+ -J_m(x)/x=\int_0^\infty e^{-xu}H_m(u)\,du,
+ \quad H_m\ge0,\quad \int H_m=5m+6.
+\]
+Indeed $-(r^me^{-r})/\Gamma(m)$ is an antiderivative of
+$(r-m)r^{m-1}e^{-r}/\Gamma(m)$.
+For $0<u<4m^2/27$, write the three roots of $Z_m(r)=u$ as
+$r_1<m/3<r_2<m<r_3$. They sum to $2m$, and the signed tail is
+\[
+ H_m(u)=
+ \frac{r_3^me^{-r_3}-r_2^me^{-r_2}+r_1^me^{-r_1}}{\Gamma(m)}.
+\]
+Since
+\[
+ \log(r_3/r_2)\ge\frac{2(r_3-r_2)}{r_2+r_3}
+ \ge\frac{r_3-r_2}{m},
+\]
+the first term dominates the second. Above the critical value the
+negative tail is empty. Integration by parts gives the Laplace formula,
+and Gamma moments give
+$\int H_m=\mathbb E[R(R-m)^3]/m=5m+6$.
+This proves the lemma for all shapes without a numerical root argument.
+
+\paragraph{Size bias and content.}
+For $n>1$, $S=\|X\|^2$ and $B=|X_1|^2/S$ are independent
+$\operatorname{Gamma}(n)$ and $\operatorname{Beta}(1,n-1)$ variables.
+Size bias by $SB$, of expectation one, changes them to independent
+$R\sim\operatorname{Gamma}(m)$ and
+$B_*\sim\operatorname{Beta}(2,m-2)$, with $\mathbb EB_*=2/m$.
+For $m=2$ take $B_*=1$.
+Thus
+\[
+ \mathbb E[|X_1|^2(S-m)f(|X_1|^2(S-m)^2/m)]
+ =\mathbb E[(R-m)f(B_*Z_m(R))].
+\]
+After the independent buffer is averaged, write
+$\widetilde k_j(u)=\int e^{-tu}\widetilde\nu_j(dt)$. The exact identity
+\[
+ \frac{d_j(c)}{c^3}
+ =\frac1{\sqrt m}\int t\,\widetilde\nu_j(dt)
+ \,\mathbb E_{B_*}\!
+ \left[B_*\int_0^\infty e^{-tc^2B_*u}H_m(u)\,du\right]
+\]
+proves \eqref{eq:radial-content-cm}. A fixed buffer variance $v$
+changes the Laplace atom to
+$(1+vt)^{-2}e^{-ut/(1+vt)}$, so the first Laplace moment is reduced
+by the factor $(1+vt)^{-3}$. Averaging over $V$ preserves this.
+The other first-chaos components vanish by their coordinate phases.
+
+\paragraph{A global B-sector consequence.}
+At the peak parameters, $I_3<39/5$ and
+$-k_B'(0)=3I_3/(16\sqrt2)$ imply
+\[
+ d_B(c)\le\frac{117(5m+6)}{40\sqrt2\,m\sqrt m}c^3.
+\]
+For $R_B=\sum_j\beta_j\bar X_j$, the improved rearrangement certificate
+gives the global B cost $37/100$, hence for every complex vector $\beta$,
+\[
+ \Lambda(U_c+Z^2R_B/\sqrt2)
+ \le\Lambda(U_c)+2d_B(c)\Re\beta_1
+ -\frac{37}{100}\|\beta\|^2.
+\]
+Completing the complex square therefore gives
+\[
+ \boxed{\sup_\beta\Lambda(U_c+Z^2R_B/\sqrt2)
+ \le\Lambda(U_c)+\frac{13689(5m+6)^2}{1184m^3}c^6.}
+\]
+The coefficient decreases with $m$ and equals $13689/37$ at $m=2$.
+Using only the supplied $21/80$ cost would give instead
+$4563(5m+6)^2/(280m^3)$.
+This retains genuine nonlinear sharing through $\|X\|^2$; it is not an
+independent-factor argument. It supplies content control for both A and
+B, but no finite-amplitude simultaneous A/B cost. The latter and the
+full row cover remain necessary for a new endpoint.
+
+\paragraph{A restricted slack theorem with no buffer floor [P,C].}
+Use the previously established remote-cubic theorem
+\(\Lambda(cQ_n+gW)\le S+10^{-5}\), for every \(c,g\ge0\).
+This is an identified prior analytic input, not an additional claim
+of the content proof.  The preceding B-gain coefficient decreases
+with \(m=n+1\).  Consequently
+\[
+\boxed{\Lambda(cQ_n+gW+Z^2R_B/\sqrt2)<S+9\cdot10^{-5}
+\quad(n\ge43,\ c\le3/20,\ g\ge0,\ \beta\in\mathbb C^n).}
+\]
+In fact exact arithmetic verifies
+\[
+\frac1{100000}+
+\frac{13689(226)^2}{1184(44)^3}\left(\frac3{20}\right)^6
+<\frac9{100000}
+<\frac{240297199}{2651182000000}.
+\]
+All B amplitudes and phases are allowed, and \(g=0\) is included.
+The A sector is absent from this corollary.  The remote-cubic
+input is not re-certified by this package, and this restricted
+comparison is not a replacement for full K.
+
+\subsection{A proved moment refinement for the next continuation}
+\paragraph{Status [P]; no extra numerical region claimed.}
+For $0\le g<h$ and $C>0$, the heat minorant is completely monotone:
+\[
+ f_{C,h,g}(u)=\frac{C}{2\sqrt\pi}\int_0^\infty e^{-ut}
+ (e^{-g^2t/C}-e^{-h^2t/C})t^{-3/2}\,dt.
+\]
+Let $U\ge0$ have moments $m_j=\E U^j$, $j\le3$, and suppose
+$b_1=m_2-m_1^2>0$. Put
+\[
+ a_1=\frac{m_3-2m_1m_2+m_1^3}{b_1},\qquad
+ J=\begin{pmatrix}m_1&\sqrt{b_1}\\ \sqrt{b_1}&a_1\end{pmatrix}.
+\]
+The matrix is positive semidefinite since
+\[
+ a_1=\frac{\E[U(U-m_1)^2]}{b_1}\ge0,\qquad
+ \det J=\frac{m_1m_3-m_2^2}{b_1}\ge0.
+\]
+Let $x_\pm$ be its eigenvalues and $w_\pm$ the weights matching
+mass one and mean $m_1$. Then
+\[
+ \boxed{\E f_{C,h,g}(U)\ge
+ w_-f_{C,h,g}(x_-)+w_+f_{C,h,g}(x_+)
+ \ge f_{C,h,g}(m_1).}
+\]
+The two-node rule matches moments through degree three. Cubic Hermite
+interpolation at the two positive nodes is a global minorant, because
+$f^{(4)}\ge0$ and its remainder contains
+$(u-x_-)^2(u-x_+)^2$. If a node is zero, the equality case of
+$m_1m_3\ge m_2^2$ forces support on zero and one positive point, so
+the rule is exact. If $b_1=0$, use $f(m_1)$ with equality.
+This can be applied after conditioning on one or both radii. The
+companion Markdown proof gives exact Fourier formulas for the three
+moments with general relative phases. No numerical gain from this
+refinement has been claimed here.
+
+\subsection{What is still missing}
+The one-driver region with smaller Wick amplitude and a small fresh
+buffer was not completed by this contribution; the later complete one-driver theorem is \autoref{ch:complete-coherent-driver}.
+The radial theorem controls the content, not the joint finite-amplitude
+A remainder. The global B theorem requires its remote input to be
+independent of the visible coordinate, so it cannot simply be applied
+after inserting an A sector into that input. These scope restrictions
+prevent promotion of this chapter to full Conjecture K. The general
+shared-cubic comparison and the complete row envelope remain necessary
+for a new Grothendieck endpoint.

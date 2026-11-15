@@ -1,0 +1,376 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch14-kjoint.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 14). Owner: lower-bound/11-history-literature.tex
+\section{Four afternoon packages on Conjecture K: joint shared-driver certificates (13:13), the global residual theorem with local K (13:53), quantitative slack with the diagonal (14:47), and exact profiles with the refutation of (T) (15:52)}\label{ch:kjoint}
+\chapsummary{Four dated packages with their analytic statements, source dependencies and replay records. The obsolete open-problem list has been replaced by a current-register pointer.}
+
+Lower-bound GPT's package \code{k-joint-certified-20261015} (\pathref{\~{}/\allowbreak Documents/\allowbreak Codex/\allowbreak 2026-10-10/\allowbreak plea/\allowbreak outputs/\allowbreak k-joint-certified-20261015/\allowbreak }, 87 files, SHA256SUMS; read
+\code{HANDOFF.md}, \code{README.md}, \code{CHECKS.md}, then \code{junta/\allowbreak JOINT\_JUNTA\_CERTIFICATE.md}, \code{junta/\allowbreak PHASE\_RELAXATION\_OBSTRUCTION.md},
+\code{gaussian\_factors/\allowbreak COMPLEX\_JOINT\_CERTIFICATE.md}, \code{gaussian\_factors/\allowbreak B\_BUFFER\_CERTIFICATE.md}, \code{gaussian\_factors/\allowbreak VECTOR\_EXTENSION\_TARGET.md},
+\code{general\_bridge/\allowbreak UNIFIED\_DRIVER\_OBSTRUCTION.md}, \code{ellipse\_phase/\allowbreak POWER\_PHASE\_ORDERING.md}). It closes the first item of the open list of
+\autoref{ch:attemptK} (Addendum~2) in weak form and \textbf{supersedes, in its hypotheses, the joint $A{+}B$ statement (iii) of \code{junta-and-b-20261015}} quoted there.
+Everything is at the exact peak profile $\varepsilon=1891/2500$, $L=Z(a+bT)$, $a=699/1250$, $b=179/1250$, $T=|Z|^2$, $H(X)=X(|X|^2-2)/\sqrt2$,
+$\Lambda(Q)=\E(|L+Q|+|L-Q|)-\E|Q|^2/\varepsilon$, $S=\sup_v\{2\E|L+\sqrt vG|-v/\varepsilon\}$; all Gaussians standard proper complex ($\E|G|^2=1$), independent unless stated.
+\textbf{No certified endpoint changes: $\KG>1.40160592$ stands} (as of 15 Oct, 13:13; the current Lean bound is $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}).
+
+\subsection{Replay}\label{sec:kjoint-replay}
+Treated as untrusted code and run from an isolated scratch directory with \code{python3 -I}. \emph{Quick mode} (local Mac, 0.6\,s): all 87 release hashes match
+(\code{shasum -a 256 -c} independently: 87 OK, 0 failed); the six exact supporting checkers pass (Laurent coefficients of the ellipse, 307,200 Rice-cache geometry cases,
+the phase-obstruction identities, the universal degree-96 Rice envelope with error $\le10^{-9}$, the three analytic tails $V\ge10$, $r\ge8$, $V\ge9/4$, the unified-driver moment
+identities). Quick mode does \emph{not} rerun the covers. \emph{Full mode} (droplet \code{yo}, 8 cores but the checkers are single-threaded, g++ 13.3, \code{-O3 -fno-fast-math
+-ffp-contract=off}): regenerates all rational input tables and replays the three covers; result and timings in \S\ref{sec:kjoint-fullresult}. Logs:
+\pathref{handoff/research-third-decimal/kattack-2026-10-15/gpt\_kjoint\_quick.log}, \code{gpt\_kjoint\_full.log}.
+
+\subsection{The three theorems}\label{sec:kjoint-thms}
+\begin{theorem}[shared Wick junta with simultaneous $A$ and $B$, \st{P} GPT, integer replay]\label{thm:kjoint-junta}
+For $Q=cH(X)+\alpha(T-1)X+\beta Z^2\bar X/\sqrt2+gG$ with $c,g\ge0$ and arbitrary $\alpha,\beta\in\C$ (and, by conditioning, jointly random coefficients $(C,\mathcal A,\mathcal B,V_0)$
+independent of $(Z,X,G)$ with finite second moment, buffer $\sqrt{V_0}G$):
+\[
+\Lambda(Q)\le S+10^{-4}.
+\]
+\end{theorem}
+Proof architecture: remove the visible phase and condition on the two radii $T=|Z|^2$, $R=|X|^2$; the residual is the ellipse $me^{i\psi}+ne^{-i\psi}$ with
+$m=\sqrt R[c(R-2)/\sqrt2+\alpha(T-1)]$, $n=\beta T\sqrt R/\sqrt2$ (the $B$ term has the opposite $Z$-frequency, \S\ref{sec:freqrule}). The \emph{ellipse phase theorem}
+$J(x;m,n,g)\le J(x;|m|,-|n|,g)$ (perpendicular major axis maximises the Gaussian-smoothed mean norm, including $g=0$) removes the relative phase and leaves five real parameters
+$(c,\Re\alpha,\Im\alpha,|\beta|,g)$; the exact envelope is jointly convex in them (a supremum of expectations of norms of affine functions), so vertex interpolation with the
+allowance $\sum h_j^2/(4\varepsilon)$ is valid; positive cubic Bernstein integration in $r=\sqrt T$, $s=\sqrt R$ on five grids (up to $256\times128$ nonuniform radial cells, 64 angular);
+one Rice evaluation per angular cell by conditional Jensen (concavity of $F_w(u)=\E|\sqrt u+\sqrt wG|$ in $u$); parameter tail $V=c^2+|\alpha|^2+|\beta|^2+g^2\ge1$ by
+$\Lambda\le2\sqrt{M+V}-V/\varepsilon<4/3$, radial tail $r,s\le6$ costing $2^{-23}$; all arithmetic in signed 128-bit integers on a $2^{-46}$ lattice, floating values used only as
+guesses that are corrected by integer inequalities. Cover: root box $[0,1]\times[-1,1]\times[0,1]^3$, \textbf{26,446 boxes, 79,159 vertices, 1,508 analytic tail boxes, 27,953 splits};
+largest accepted upper $96690404106435/2^{46}$; internal Gaussian benchmark lower bound $B=96683367401312/2^{46}=1.3739532875\ldots\le S$ (our float $S=1.37395353$); the
+difference is exactly $7036705123/2^{46}=0.99998\cdot10^{-4}$. \emph{So the certified slack is the whole $\eta$ budget of \autoref{ch:attemptK}}, and it is not the truth: on this family
+the true margin $S-\Lambda$ is positive everywhere tested (J1 scan, \S\ref{sec:kjoint-j1}); the slack is intrinsic to the phase relaxation (\S\ref{sec:kjoint-obstr}).
+Not covered: several junta coordinates, even sectors, coefficients depending on the drivers, other profiles (only the exact scaling ray $\lambda L$, $\lambda\varepsilon$).
+
+\begin{theorem}[joint $A{+}B$ on one Gaussian factor with buffer, arbitrary phases, \st{P} GPT, binary64 interval replay]\label{thm:kjoint-complex}
+Let $(S_0,\alpha,\beta,g)$ be jointly random (complex, complex, complex, $g\ge0$), independent of $(X,Z,G)$, with $\E(|S_0|^2+|\alpha|^2+|\beta|^2+g^2)<\infty$ and
+\[
+\E\Re(S_0\bar\alpha)=0,\qquad\E\Re(S_0\beta)=0 .
+\]
+Then $Q=\{S_0+\alpha(T-1)\}X+\beta Z^2\bar X/\sqrt2+gG$ satisfies $\Lambda(Q)\le S+1/12500=S+8\cdot10^{-5}$.
+\end{theorem}
+Deterministic $\alpha,\beta$ with centered $S_0$ satisfy both cancellations automatically; the buffer may be correlated with the coefficients; neither the relative phase of
+$\alpha,\beta$ nor $\alpha\beta$ is restricted. Mechanism: conditionally on the remote state the residual is an \emph{improper} Gaussian with variance $v=|A|^2+|B|^2+z^2$ and
+pseudocovariance $C=2AB$ ($A=r+\alpha'(T-1)$, $B=\beta'T/\sqrt2$ after the gauge $S_0=r\ge0$); the pointwise dual adds $\frac75ra_r+\frac57rb_r$ (which average to zero under the
+two hypotheses) and is covered over six real parameters $(r,z,a_r,a_i,b_r,b_i)$ on $[0,13/4]^2\times[-13/4,13/4]\times[0,13/4]\times[-13/4,13/4]^2$ with a positive
+log-Laplace Rice oracle, four nonuniform Bernstein partitions of $[0,8]$ (52--144 cells), and the Cauchy--Schwarz shortcut $\sqrt{\ell^2+v}$ for $\ell\ge12$. Cover:
+\textbf{236,786 boxes, 898,217 vertices, 1,027,305 norm calls, 132 tail boxes}; largest accepted upper $1.374033275968777$ below the cap $1.374033284570177=B'+1/12500$
+with the separately verified benchmark lower bound $B'=96683367193980/2^{46}=1.373953284570177$. \emph{Vector corollary}: for $Q=\sum_jX_j\{S_j+\alpha_j(T-1)\}+\frac{Z^2}{\sqrt2}\sum_j\beta_j\bar X_j+gG$
+in any dimension with $\E\Re\sum S_j\bar\alpha_j=0$, $\E\Re\sum S_j\beta_j=0$ and \textbf{collinear directions} $\alpha=\kappa\bar\beta$, the same bound: a unitary $U\beta=\|\beta\|e_1$
+puts both sectors on the first driver and the orthogonal proper residual is conditionally exactly a buffer $z_0G_0$, $z_0^2=\|S\|^2-|s|^2+g^2$.
+
+\begin{theorem}[$B$ on any conditionally proper Gaussian-factor residual, with deficit, \st{P} GPT, binary64 interval replay]\label{thm:kjoint-B}
+In any dimension, for $(S,\beta,g)$ jointly random and independent of the drivers, finite second moment, $\E\Re\sum_jS_j\beta_j=0$:
+\[
+Q=\sum_jS_jX_j+\frac{Z^2}{\sqrt2}\sum_j\beta_j\bar X_j+gG\quad\Longrightarrow\quad\Lambda(Q)\le S+10^{-5}-\frac{\E\|\beta\|^2}{200}.
+\]
+\end{theorem}
+Four real parameters after the reduction of Theorem~\ref{thm:kjoint-complex} with $\alpha=0$; bonus $|\beta|^2/200$ added to the left side of the pointwise dual, tail $V\ge9/4$
+exact. Cover: \textbf{24,967 boxes, 58,879 vertices, 62,987 norm calls, 1 tail box}; largest upper $1.373963280269784$ below the cap $1.373963284570177$. It strengthens (ii) of
+\code{junta-and-b} (one driver, no buffer) to arbitrary dimension with a proper buffer and the same deficit $1/200$. The residual must be conditionally \emph{proper}: an
+antiholomorphic part $\sum_jP_j\bar X_j$ on the same drivers (present in a general $q_0\in\Hc21$) is outside the theorem because it cannot be absorbed into the buffer.
+
+\paragraph{Which hypotheses are restrictive.} (1) \emph{Independence of the remote state from the drivers} (all three theorems): in a general cubic the coefficient $S_j$ of
+$X_j$ is a chaos element of the \emph{other} coordinates $X_k$, which are themselves drivers of other terms; the theorems cover ``driver coordinates $\sqcup$ coefficient
+coordinates'' and the one-coordinate self-interaction $cH(X)$, not the coupled case. (2) \emph{Mean cancellation} $\E\Re(S_0\bar\alpha)=\E\Re(S_0\beta)=0$: automatic for
+the chaos problem (deterministic $\alpha,\beta\in\Hc10$-coefficients, centered $S$), so not restrictive for K; it is what makes the content \emph{bilinear} and killable by a
+supporting multiplier. (3) \emph{Collinearity} $\alpha=\kappa\bar\beta$ in dimension $\ge2$: genuinely restrictive; noncollinear $A{+}B$ is the open eight-parameter target below.
+(4) \emph{Conditionally proper residual} (no $\sum P_j\bar X_j$): restrictive for general $q_0$. (5) \emph{No even sectors, no $\nu$, one profile}: as before.
+(6) Theorem~\ref{thm:kjoint-junta} spends the full $10^{-4}$ budget by itself.
+
+\paragraph{Comparison with \code{junta-and-b} (iii).} That statement needed $\alpha^{\top}\beta=0$, $\E\Re\langle S_0,\alpha\rangle=0$ and a conditional phase-spread hypothesis, and
+gave deficits $\|\alpha\|^2/200+281\|\beta\|^2/400$. Theorem~\ref{thm:kjoint-complex} drops $\alpha^{\top}\beta=0$ and the phase spread entirely in one driver (and in any dimension for
+collinear directions) but returns only a slack $+8\cdot10^{-5}$, no deficit; (iii) covered the orthogonal case $\alpha^{\top}\beta=0$ in any dimension under phase spread. The two
+are incomparable in general dimension; for the one-driver and collinear cases the new theorem is the right one and (iii) should no longer be quoted as the joint statement.
+
+\subsection{Two obstructions}\label{sec:kjoint-obstr}
+\paragraph{The phase relaxation has intrinsic positive slack (\st{P} GPT, exact identities replayed).} The junta proof maximises the relative phase of the $B$ term separately at
+each radial pair $(T,R)$, which replaces the honest Wick amplitude $c(R-2)/\sqrt2$ in the mixed term by $c|R-2|/\sqrt2$. Expanding around the Gaussian optimum ($\alpha=0$,
+$g^2=w_*>0$, $w_*$ interior because $\varepsilon\sqrt\pi>2a+b$) to second order in $(c,\beta)$: the pure $c^2$ term vanishes by stationarity, and
+$\Lambda_{\max}(c,0,\beta,\sqrt{w_*})-S=Kc\beta+B\beta^2+o(c^2+\beta^2)$ with $K=-16e^{-2}\E_T[Tu(T)F''_{w_*}(u(T))]>0$ (because $F''<0$ and $\frac12\E[R|R-2|]=4e^{-2}$),
+whereas the honest mixed moment is $\frac12\E[R(R-2)]=0$. Along $\beta=tc$ the relaxed envelope exceeds $S$ at order $c^2$. \emph{Consequence}: no refinement of this verifier
+proves exact K ($\eta=0$) on the junta; it can only prove $K_\eta$ with $\eta$ at least the relaxation gap, and a zero-slack proof must keep the Wick--$B$ phase coupling. The
+mechanism is not specific to the profile (it occurs for $L=aZ$) and is not a counterexample to K (the J1 scan shows positive honest margins).
+
+\paragraph{The two faces cannot be merged by remote centering alone (\st{P} GPT; identity verified here \st{C}).} For $Q_c=cH(X)+S_0X+g(S_0)G$ with real $S_0$,
+$\E S_0=0$, $V=S_0^2+g^2$:
+\[
+\E|Q_c|^2=\E V+c^2,\qquad
+\E|Q_c|^4-2(\E|Q_c|^2)^2=2\Var(V)+4\sqrt2\,c\,\E S_0^3+20c^2\E S_0^2+42c^4 .
+\]
+We re-derived the underlying deterministic identity $\E|Q|^4=2V^2+4\sqrt2cS^3+c^2(4V+20S^2)+32\sqrt2c^3S+44c^4$ exactly (own polynomial expansion over $\mathbb Q[\sqrt2,i]$ with
+Gaussian moments, \code{kjoint/mine/cumulant\_exact.py}, difference $0$), and checked the two-point case by Monte Carlo ($4\cdot10^6$ samples, common random numbers:
+$\kappa=-2.07\cdot10^{-5}$ vs claimed $-2.12\cdot10^{-5}$ at $c=0.002$; $-3.89$ vs $-3.91\cdot10^{-5}$ at $c=0.004$). With the skew two-point law $S_0\in\{r,-2r\}$ (prob.\ $2/3,1/3$),
+$g^2=w_*-S_0^2$, every conditional variance equals $w_*$, so $\E J(0)=S$ exactly, and $\partial_c\E J(0)=-2\sqrt2r^3f''(w_*)>0$ (GPT: $0.00645$ at $r=0.499\sqrt{w_*}$; our MC
+slope $0.0058\pm0.0005$, sign confirmed \st{C}); the convex tangent gives $\E J(c)\ge S+Ac-c^2/\varepsilon>S$, excess $\varepsilon A^2/4\approx7.9\cdot10^{-6}$ \st{F}. Since
+$\kappa(c)=-8\sqrt2cr^3+40c^2r^2+42c^4<0$ for small $c$, the construction is \emph{not} cubic chaos and does not refute K or $K_{10^{-4}}$; it refutes any bridge of the form
+``centered remote coefficient + arbitrary correlated proper buffer'' and any $g$-independent multiplier $\lambda(c)\Re S_0$. A merger of the Wick face and the Gaussian-factor
+face must retain chaos restrictions (fourth cumulant $\ge0$), or fix the buffer and use the necessary multiplier $\partial_c\lambda(0,g)=-\sqrt2(w_*-g^2)f''(w_*)$.
+
+\subsection{Analytic by-products}
+\emph{Power phase ordering} (\st{P}): for $J_p(x;m,n,g)=\E|x+me^{i\Psi}+ne^{-i\Psi}+gG|^p$ the perpendicular orientation maximises all moments $1\le p\le2$ and the parallel one all
+$p\ge2$ (equality at $p=2$); an exact example ($x=1/2$, axes $1,1/2$, no buffer) shows that neither squared radius dominates the other in convex order, so the ordering must not
+be promoted to a stop-loss statement. \emph{Eight-parameter target} (\st{P}, exact algebra): in any dimension the proper Gaussian-factor problem with simultaneous $A,B$ depends only
+on $t=\|S\|^2+g^2$, $r=\|\alpha\|^2$, $s=\|\beta\|^2$, $p=\Re\langle S,\alpha\rangle$, $k=\sum S_j\beta_j$, $\ell=\sum\alpha_j\beta_j$ (variance $t+2p(T-1)+r(T-1)^2+sT^2/2$,
+pseudocovariance $\sqrt2T(k+\ell(T-1))$), feasible iff $t_\perp\ge0$, $r_\perp\ge0$, $p_\perp^2\le t_\perp r_\perp$ (Schur complement of the $3\times3$ Gram cone), realised by two drivers
+$(S_1+\alpha_1A)X_1+\sqrt sB\bar X_1+(x+dA)X_2+hG$; Theorem~\ref{thm:kjoint-complex} is the face $d=0$; the compact tail $V\ge10$ is dimension-free. Replacing the orthogonal factor
+$(x+dA)X_2$ by a constant buffer is \emph{not} valid (\code{IMPROPER\_A\_TRANSFER\_OBSTRUCTION.md}).
+
+\subsection{The J1 scan, finished}\label{sec:kjoint-j1}
+The fine float scan of the six-parameter junta family on the droplet (\code{j1scan.py}, 30/30 points $c\in\{.03,\ldots,.3\}$, $s\in\{0,\ldots,.08\}$, margin minimised over
+$(\alpha,\beta)\in\C^2$; log \code{kattack-2026-10-15/j1scan\_droplet\_fine.log}) \st{F}: minimum margin $S-\Lambda=+3.949\cdot10^{-5}$ at $(c,s)=(0.03,0.035)$, maximum
+gain$/d_q=0.164$ at $(0.20,0)$, all ratios below $0.25$, consistent with the local map of \autoref{ch:attemptK}. Thus the sampled points support positive-margin K and the deficit-retention form with $\theta=1/4$ \st{F}; the certified $10^{-4}$ is $1.4\cdot10^{-4}$ above the worst honest margin.
+
+\subsection{Scope of the first package}\label{sec:kjoint-remains}
+The first package supplied a phase-relaxed junta estimate with slack
+$10^{-4}$ and a restricted Gaussian-factor face. Its former open-problem
+list is superseded by \autoref{ch:K-state}: the complete coherent
+one-driver comparison and the larger Gaussian-factor classes are now
+proved. The formulas and counterexamples above remain useful dependencies.
+For an endpoint, the raw-K route needs a compatible comparison over all
+required cubics and a row cover; the original-response route of
+\autoref{ch:weakk} requires only its smaller response-feasible domain.
+Neither endpoint follows from this package alone.
+
+\subsection{The second package, \code{k-full-20261015} (13:53): a global pure-residual theorem and exact local K}\label{sec:kfull}
+\pathref{\~{}/\allowbreak Documents/\allowbreak Codex/\allowbreak 2026-10-10/\allowbreak plea/\allowbreak outputs/\allowbreak k-full-20261015/\allowbreak } (51 files, \code{.zip} twin; read \code{HANDOFF.md}, \code{README.md}, \code{CHECKS.log},
+\code{unified/\allowbreak FIXED\_BUFFER\_NORM\_COMPARISON.md}, \code{local/\allowbreak FULL\_LOCAL\_THEOREM.md}, \code{content/\allowbreak AUDIT\_LOCAL\_HESSIAN.md}, \code{content/\allowbreak OU\_RESOLVENT\_CONTENT.md},
+\code{vector/LAW\_PRESERVING\_RANK\_REDUCTION.md}, \code{unified/POSITIVE\_CUMULANT\_OBSTRUCTION.md}, \code{unified/FIXED\_BUFFER\_CUMULANTS.md}). Untrusted; replayed from the
+scratch directory with a scratch venv carrying \code{mpmath 1.3.0} (\code{python3 -I}): 48/48 hashes OK, all exact algebra checks PASS, the interval Hessian certificate PASS in 46\,s with the
+optimiser bracket $7/200<v_*<9/200$ and the gaps below; log \pathref{kattack-2026-10-15/gpt\_kfull\_replay.log}. No endpoint changes.
+
+\subsubsection{The global theorem (\st{P} GPT; algebra re-derived here; numerically tested \st{C})}\label{sec:kfull-global}
+\begin{theorem}[fixed-buffer norm comparison]\label{thm:kfull}
+Let $L\overset d=\sqrt{R_0}\,G_0$ be a proper Gaussian variance mixture (every profile $Z(a+b|Z|^2)$, $a>0$, $b\ge0$, is one), $X,G$ independent standard proper Gaussians,
+$S$ an independent centered complex variable with $\E|S|^2=v<\infty$, $g\ge0$ deterministic, $c\in\R$, $k=c^2+v>0$, $f(w)=2\E|L+\sqrt wG|=\sqrt\pi\,\E\sqrt{R_0+w}$. Then
+\[\begin{gathered}
+2\E|L+cH(X)+SX+gG|\le f(g^2+k)-c^2D(k,g),\\
+ D(k,g)=\frac{\sqrt\pi k}{16}\E\frac{4(R_0+g^2)+k}{(R_0+g^2+k)^{5/2}}\ \ge\ \frac{\sqrt\pi k}{16(M+g^2+k)^{3/2}},\quad M=\E|L|^2,
+\end{gathered}\]
+hence $\Lambda(cH(X)+SX+gG)\le S-c^2D(k,g)$ for every $\varepsilon$, every amplitude, every dimension and law of $S$, no fourth moment. Corollary: for
+$Q=cH(X)+SX+T\bar X+CX^2/\sqrt2+gG$ with $(S,T,C)$ arbitrarily dependent, only $\E S=0$, $k=c^2+\E|S|^2+\E|T|^2+\E|C|^2$:
+$\Lambda(Q)\le S-\sqrt\pi k(c^2+2\E|C|^2)/[16(M+g^2+k)^{3/2}]$. Conditional version: $c,g$ $\mathcal F$-measurable, $\E[S\mid\mathcal F]=0$.
+\end{theorem}
+\emph{Proof, checked step by step.} (i) With $X=\sqrt Re^{i\varphi}$, circularity of $L+gG$ gives $2\E|L+Q|=\E_{R,S}P_g\bigl(R|c(R-2)/\sqrt2+S|^2\bigr)$, $P_g(u)=2\E|L+\sqrt u+gG|$.
+(ii) $P_g$ is concave in $u$ because, conditionally on $R_0$, it is the Rice mean $F_{R_0+g^2}(u)$, concave by the Laplace representation (this is exactly the ``concavity in the squared
+radius'' of \S\ref{sec:why}, item~1, with the visible variable itself supplying the Gaussian smoothing, which is why the mixture property of $L$ is essential: for a general circular $L$ and
+$g=0$ the step fails). Jensen over $S$ at fixed $R$ gives $\le\E_RP_g(R[v+c^2(R-2)^2/2])$ since $\E S=0$ kills the cross term; equality holds iff $|c(R-2)/\sqrt2+S|^2$ is a.s.\
+constant given $R$, i.e.\ for $S=\pm i\sqrt v$: the imaginary two-point law is the exact worst centered law at fixed variance (real two-point laws are strictly worse for the adversary).
+(iii) $h(t)=\E_RP_g(R[k+t((R-2)^2/2-1)])$ is concave on $[0,k]$ ($U_t\ge0$ affine), $h(0)=f(g^2+k)$, $h(c^2)$ is the bound of (ii), and by exponential integration by parts
+$I_{j+1}=(j+1)I_j+kI_j'$ ($I_j=\E[R^jP_g'(kR)]$, $I_1=F'$): $h'(0^+)=\frac12I_3-2I_2+I_1=kf''(g^2+k)+\frac12k^2f'''(g^2+k)=-D(k,g)$ (we re-derived (13)--(15) by hand; the signs and
+the factor $16$ are right). The tangent at $0$ bounds the concave $h$. (iv) Domination: $0\le P_g'(u)\le u^{-1/2}$, $|P_g''|\le u^{-3/2}/2$, $|P_g'''|\le\frac34u^{-5/2}$, uniform in the
+buffer, justify $h'(0^+)$ and the boundary terms also at $g=0$. (v) For the corollary the three $X$-frequencies $1,-1,2$ of $SX$, $T\bar X$, $CX^2$ are orthogonal in the phase average, so
+the conditional mean square is $R|c(R-2)/\sqrt2+S|^2+R|T|^2+R^2|C|^2/2$; a two-parameter concave interpolation with $u$-derivative $\frac k2f''=-E_C$ gives the extra deficit. \emph{We find
+no gap.} The one hypothesis that carries everything is the Gaussian-mixture structure of $L$ (complete monotonicity of $v\mapsto e^{-H^{-1}(v)}$, $H(u)=u(a+bu)^2$, proved by a
+derivative induction in \code{GAUSSIAN\_MIXTURE\_CORE.md}; our numerical second differences of $u\mapsto2\E|L+\sqrt u|$ at $g=0$ are all $\le0$ \st{C}).
+
+\paragraph{Independent numerical test \st{C}.} \code{kattack-2026-10-15/kfull\_global\_check.py} (deterministic quadrature: $400\times400$ radial midpoint cells in $\sqrt T,\sqrt R$, 64
+phases, exact Rice mean for $gG$ via \code{scipy} Bessel functions, remote law by its own nodes; the same $T$-grid for $S$, so differences are accurate to $\sim4\cdot10^{-6}$ at $g=0$ and
+$10^{-6}$ for $g>0$; sanity: $c=0$ with $S=\pm i\sigma$ reproduces the equal-variance Gaussian to $6\cdot10^{-7}$). At the peak profile, for $S\in\{\pm i\sigma$, $\pm\sigma$, skew two-point,
+complex Gaussian, uniform phase$\}$ and $(c,\sigma,g)$ with $V=g^2+k$ from $0.03$ to $0.5$ (23 points, 5 laws): the bound $\Lambda\le S-c^2D_{\rm low}$ holds at every point, and so does the sharper
+equal-variance form $2\E|L+Q|\le f(V)-c^2D_{\rm low}$, with ratio (actual deficit)/(certified deficit) between $13$ and $41$ near $V\approx v_*$ and $6$--$16$ far from it
+($(c,\sigma,g)=(0.02,0.19,0.05)$: $-2.97\cdot10^{-5}$ vs $-2.28\cdot10^{-6}$; $(0.19,0.05,0)$: $-8.67\cdot10^{-3}$ vs $-2.18\cdot10^{-4}$; $(0.5,0.5,0)$: $-5.97\cdot10^{-2}$ vs
+$-9.8\cdot10^{-3}$). The imaginary two-point law is the worst law at every tested point (its $\Lambda$ exceeds the real two-point, skew, complex-Gaussian and uniform-phase laws by
+$1$--$5\cdot10^{-4}$ at $c=\sigma=0.1$ and by up to $5\cdot10^{-2}$ at $c=\sigma=0.5$), as the equality case of step (ii) predicts. Pure Wick direction: $\Lambda-S=-1.09\cdot10^{-4}$, $-1.17\cdot10^{-3}$,
+$-4.19\cdot10^{-3}$ at $c=0.05,0.1,0.15$ (quartic prediction $-1.49\cdot10^{-4}$, $-2.38\cdot10^{-3}$, $-1.20\cdot10^{-2}$) against the theorem's $-9.7\cdot10^{-7}$, $-1.6\cdot10^{-5}$, $-7.9\cdot10^{-5}$.
+Log \code{kattack-2026-10-15/kfull\_global\_check.log}.
+
+\paragraph{Scope in our language.} Decompose a cubic $q_0\in\Hc21(\C^n)$ by its $X$-frequency with respect to one coordinate $X$:
+$q_0=cH(X)+X\,S(Y)+\bar X\,T(Y)+\frac{X^2}{\sqrt2}C(Y)+\bigl[(|X|^2-1)V(Y)+q_0'(Y)\bigr]$ with $S\in\Hc11(Y)$, $T\in\Hc20(Y)$, $C\in\Hc01(Y)$, $V\in\Hc10(Y)$, $q_0'\in\Hc21(Y)$.
+Theorem~\ref{thm:kfull} covers the first four terms (all nonzero frequencies), with arbitrary coupling among $S,T,C$ (e.g.\ $S=Y^*AY-\operatorname{tr}A$ for any complex matrix $A$,
+so coupled non-normal kernels are included), at every amplitude, with an explicit deficit of order $c^2k$. Outside: (1) the \emph{frequency-zero} part $(|X|^2-1)V(Y)+q_0'(Y)$, which
+cannot be inserted by phase cancellation (a genuine $(1,1)\times(1,0)$ coupling and the remainder cubic); (2) everything that depends on the visible coordinate: shared visible $A$
+($(T-1)\alpha X$), $B$ ($Z^2\beta\bar X$) and the even sectors $Y,W,\nu$ at finite amplitude; (3) a buffer correlated with $S$ unless $\E[S\mid\mathcal F]=0$ (the unified-driver
+obstruction of \S\ref{sec:kjoint-obstr}). It is a theorem about $Q\perp Z$ only, i.e.\ about K-a for this family, not about the content problem.
+
+\paragraph{Reconciliation with what we had.} (a) It is the one-line formula of \S\ref{sec:Aline} with $r_A=0$: the two signs coincide and the whole payoff is a single phase-averaged
+norm; the new ingredient is to use $L$'s mixture structure to make the phase-averaged norm concave in the squared radius (which my modulus-only attempt in \S\ref{sec:idealBY} lacked,
+because there the honest $q_0$ was not Gaussian-smoothed). (b) The shared-driver package (\S\ref{sec:shareddriver}, item~1) paid for a cubic core sharing latent coordinates only under
+a kurtosis-type condition ($\E|P|^2\le0.1$--$1.2\,\kappa$); for the family of Theorem~\ref{thm:kfull} that condition is now gone. (c) Order: the deficit $c^2D\approx0.156\,c^2k$ at the
+peak ($M=0.756$, $V\approx v_*$) is fourth order in the amplitude, consistent with the local expansion $\Lambda=S+f''(v_*)\kappa(q)t^4/4$ of the second package and with the L2 picture
+(\autoref{ch:L2}); its constant is far from sharp: for the pure Wick direction $\kappa=42c^4$ gives a true quartic coefficient $|f''(v_*)|\cdot42/4\approx23.8$ against $D/k\approx0.156$
+(factor $75$--$150$ numerically), which is the price of two Jensen steps. For K-a this does not matter (any positive deficit is enough); for the content inequality
+(\autoref{ch:attemptK}) a deficit this small would \emph{not} pay for the shared-visible gain, so Theorem~\ref{thm:kfull} is not yet a ``deficit-retention'' tool.
+
+\subsubsection{Exact local K with all sectors (\st{P} GPT, interval replay PASS)}\label{sec:kfull-local}
+For each fixed remote dimension $n$, in the coefficient model $Q=q+H+\sqrt{v_*-\|q\|^2-\|H\|^2}\,G$ with $q\in\Hc21$ remote and
+$H=A(T-1)+BZ^2/\sqrt2+YZ+W\bar Z+\nu Z(T-2)/\sqrt2$ ($A\in\Hc10$, $B\in\Hc01$, $Y\in\Hc11$, $W\in\Hc20$ remote, sharing drivers freely), K holds in a neighbourhood of $q=H=0$ with equality
+only there, also with free total variance $V$ near $v_*$. The second variation (Bessel kernels $D_v=F'+uF''$, $J_v=uF''$ at $v\in[7/200,9/200]$, 2,800 cells of width $1/200$ plus the tail
+$T\ge14$, exact power series, no floating Bessel) is $\le-\frac3{20}(\|A\|^2+\|B\|^2)-\frac1{25}\|Y\|^2-\frac35\|W\|^2-\frac3{10}|\nu|^2$ (interval values $-0.1587$, $-0.0493$, $-0.6130$,
+$-0.3122$; the $A/B$ block via Gershgorin with off-diagonal $\sqrt2\,\E[JT(T-1)]$); the residual directions are neutral at second order and $\Lambda(tq+\sqrt{v_*-t^2\|q\|^2}G)=S+f''(v_*)\kappa(q)t^4/4+O(t^6)$
+with $\kappa(q)\ge\frac43\|R(q)\|_{HS}^2\ge12\|q\|^4/n$; the optimal mixed coefficient is $H(q)=O(\|q\|^3)$ by the implicit-function theorem and oddness, so its gain is $O(\|q\|^6)$ and
+$\Lambda\le S-c_n\|q\|^4-\gamma_n\|H-H(q)\|^2$; $V(q)-v_*=-\frac{f'''}{4f''}\kappa(q)+O(\|q\|^6)>0$. This is the proof of the numerical ``flat at second order, quartic penalty $\propto(m-2)$'' of
+\autoref{ch:evening} and of the even-sector neutrality of \autoref{ch:attemptK} near the Gaussian point; the gaps are consistent with the second-order constants of the \autoref{ch:evening}
+table. \emph{Scope}: the neighbourhood is in the explicit independent-buffer coefficient model and may shrink with $n$; it is not a statement about laws close to Gaussian, and
+nothing at finite amplitude follows.
+
+\subsubsection{Reductions and obstructions in the package}
+\emph{OU resolvent for content} (\st{P}, exact identities replayed): the first-chaos content of $q\,h_0(|q|^2)$ is the $\Pi_{1,0}$ projection of an explicit expression in the carré-du-champ
+fluctuations $A-3v$, $B$ ($\Gamma(q,\bar q)$, $\Gamma(q,q)$; H1: $\E[(A-3v)^2+|B|^2/2]\le3\kappa$) through the resolvent $(I-3R_v)^{-1}$ of the shape-two gamma generator, with smoothing
+factors $1/4$, $1/7$ on the first two derivatives; the missing step is a \emph{weighted coercivity inequality} between the quadratic content allowance and the signed deficit expressed in the
+same fields, stated open. This is the influence-matrix mechanism of \autoref{ch:attemptK}, \S3, made exact. \emph{Law-preserving rank reduction} (\st{P}, any profile): the affine motion
+$t\mapsto t+u/2$, $r\mapsto r+u/2$, $p\mapsto p+u/2$, $s\mapsto s-u$ leaves $v(T)$, $C(T)$ and the price invariant and increases the dual by $\lambda u/2$, so the eight-parameter target of
+\S\ref{sec:kjoint-thms} reduces to its Gram boundary: the certified one-driver family plus a \emph{seven}-real-parameter two-driver family without constant buffer (not certified; the
+accompanying searches are exploratory \st{F}). \emph{Positive-cumulant obstruction} (\st{P}): adding a rare high-variance remote state to the two-point counterexample of
+\S\ref{sec:kjoint-obstr} prescribes any normalised fourth moment in $[2.06,6]$ while keeping $\Lambda>S$, so no fourth-moment restriction alone repairs the unrestricted merger; for genuinely
+quadratic remote coefficients $\kappa(cH(X)+X(Y^*AY-\operatorname{tr}A)+gG)\ge2(c^2+\operatorname{tr}AA^*)^2+40c^4$ (trace-square identities, checked exactly in dimensions $1$--$6$).
+GPT cites arXiv:2609.07066 (optimal Sobolev-rate Gaussian approximation in a fixed chaos, September 2026) as context only \st{?}; it is not used, and it does not supply the uniform explicit
+error needed here.
+
+\subsection{The third package, \code{k-next-20261015} (14:47): quantitative slack, the diagonal, polar $A{+}B$, higher-order content}\label{sec:knext}
+\pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/k-next-20261015/} (132 files incl.\ a \code{background/legacy\_gaussian/} copy of the earlier certificates; \code{.zip} twin). Untrusted;
+replayed from the scratch directory: 132/132 hashes OK, all \textbf{11 checkers PASS in 41\,s} (two scalar Bernstein certificates with 169 and 170 leaves, diagonal constants, polar
+identities, translation algebra, vector tails, 147 exact content identities, the symmetrised interpolation checks, three legacy dependencies); log
+\pathref{kattack-2026-10-15/gpt\_knext\_replay.log}. There is no full mode: the only long cover in the package (seven-parameter vector face) is \textbf{INCOMPLETE} (36,543 boxes, 3.1\% of the
+polar domain) and is used by none of the theorems. No endpoint changes.
+
+\subsubsection{The coupled remote remainder and the one-coordinate star (\st{P} GPT, certificates replayed)}\label{sec:knext-star}
+Setting: $X,G,Z$ independent, remote vector $(q_0,S_0,T_0,C,D)$ arbitrarily dependent internally, independent of $(X,G,Z)$, $\E S_0=0$, $\Re\E(q_0\bar D)=0$ (both automatic for
+$q_0\in\Hc21(Y)$, $S_0\in\Hc11$, $T_0\in\Hc20$, $C\in\Hc01$, $D\in\Hc10$), $c$ real, $g\ge0$ deterministic,
+\[
+Q=q_0+cH(X)+S_0X+T_0\bar X+CX^2/\sqrt2+D(|X|^2-1)+gG,\qquad v_0=\E|q_0|^2,\ k=\E|Q|^2-g^2,\ V=k+g^2 .
+\]
+This is the full frequency decomposition of a cubic with respect to one coordinate $X$ (\S\ref{sec:kfull-global}), now \emph{including} the two frequency-zero terms that
+Theorem~\ref{thm:kfull} excluded. The mechanism: after phase averaging and remote Jensen the argument of the concave $P_g$ is $v_0+R[c^2(R-2)^2/2+\E|S_0|^2+\E|T_0|^2]+\E|C|^2R^2/2+\E|D|^2(R-1)^2$;
+the cross term $2(R-1)\Re\E(q_0\bar D)$ is exactly what the second hypothesis removes; a multi-parameter concave interpolation from the Gaussian profile $kR$ has the four tangent
+derivatives $+D_R$ (constant remote profile: the chord-minus-tangent $D_R=[f(g^2+k)-f(g^2)]/k-f'(g^2+k)>0$ of the concave benchmark, i.e.\ the positive cost of a frequency-zero,
+$R$-independent remainder, which is the obstruction package~2 flagged), $-D_H$ (Wick), $-D_C$ (holomorphic quadratic), $-D_0$ (centered phase-zero $(|X|^2-1)$); the frequency-$\pm1$ channels
+$S_0,T_0$ have the Gaussian profile and contribute neither. The two scalar certificates prove, for $0<k\le1$, every $g\ge0$ and the whole profile box $a\in[.54,.58]$, $b\in[.13,.16]$:
+$D_0\ge D_R/32$ (16 rational majorants in $t=(\sqrt{A+k}-\sqrt A)/\sqrt k$, 170 Bernstein leaves, plus an analytic small-$k$ criterion), hence $D_C\ge\frac{33}{64}D_R$ from the identity
+$D_0=2D_C-D_R$, and $D_H\ge g(33/64)>\frac25D_R$ from the pointwise convex relation $D_H/D_R=g(D_C/D_R)$, $g(z)=2z+6z^2-6z^{3/2}$; the transfer from $g=0$ to every buffer uses that the
+per-state weight is completely monotone (log-convex) so the shifted ratios are increasing in the mixing variance. Result:
+\[
+\boxed{\begin{gathered}\Lambda(Q)\le S-\Delta(V)+D_R(k,g)\,B,\qquad B=v_0-\tfrac25c^2-\tfrac{33}{64}\E|C|^2-\tfrac1{32}\E|D|^2,\\
+0<D_R\le\min\{1.81k,\tfrac27\}\ \text{(peak; $2.1k$ on the box)},\end{gathered}}
+\]
+with $\Delta(V)=S-[f(V)-V/\varepsilon]\ge0$ the Gaussian variance gap; for $V\ge1$ the Cauchy--Schwarz tail gives K outright. So \emph{$B$ is the surplus of the remote-constant variance $v_0$ over
+the certified deficits of the three structured channels, in units of $D_R$}; the coefficients $2/5$, $33/64$, $1/32$ are certified lower ratios, not sharp constants (the phase-zero deficit
+$D_0$ is genuinely weak). Consequences: exact K whenever $B\le0$; $K_\eta$ whenever $\min\{1.81k,2/7\}B_+\le\eta+\Delta(V)$ (at $k=0.04$, $\eta=10^{-4}$: $B_+\le1/724$); with $q_0=0$,
+\textbf{exact K-a for the complete one-coordinate cubic star at every amplitude and buffer} (169-leaf certificate, uniform on the box with $\varepsilon\le0.76$). \emph{Two-coordinate corollary}
+(\st{P}, checked): for $q\in\Hc21(\C^2)$ the coefficient $F(v)$ of the diagonal Wick monomial $H(\langle v,w\rangle)$ is continuous and circle-equivariant on $S^3$; if it never vanished,
+$F/|F|$ restricted to the circle $(e^{i\theta},0)$ would have winding number $\pm1$ while that circle is contractible in $S^3$; so some direction $Y$ has zero diagonal coefficient, and in the
+basis $(X,Y)$ the cubic is exactly the star with $q_0=0$, $(S_0,T_0,C,D)$ functions of $Y$, $\E S_0=0$ automatic. Hence \textbf{exact K-a holds for every two-coordinate cubic residual independent of
+$Z$} (our float \code{gate lowdim} agrees). For $n\ge3$ killing one diagonal coefficient leaves a remote cubic, and \emph{there is no proof that every cubic admits a coordinate meeting the
+budget $B\le0$}; this is the remaining K-a obligation. Everything here is for $Q\perp Z$.
+
+\subsubsection{The visible diagonal on conditionally Gaussian baselines (\st{P} GPT; constants verified here \st{C})}\label{sec:knext-diag}
+If $Q_0$ is, conditionally on $Z$ and remote data, a centered \emph{proper} Gaussian of arbitrary conditional variance, then for every complex $\nu$ and all amplitudes
+\[
+\Lambda\bigl(Q_0+\nu Z(T-2)/\sqrt2\bigr)\le\Lambda(Q_0)-\Bigl(\frac1\varepsilon-C_\nu\Bigr)|\nu|^2,\qquad C_\nu=\E\frac{\sqrt T(T-2)^2}{2(a+bT)}\le\frac{137971905}{134070064}<1.03,
+\]
+deficit $\ge55227/189100=0.2921$ at the peak, $\ge112/475$ on the profile box with $\varepsilon\le0.76$. Proof: conditional concavity of the Rice mean, the parallelogram identity
+($\frac12(|L+\nu H|^2+|L-\nu H|^2)=|L|^2+|\nu H|^2$) and $F_w'(u)\le1/(2\sqrt u)$ (from the Laplace representation, uniform in $w$), i.e.\ exactly the ``trivial radius bound'' of
+\S\ref{sec:idealBY} made rigorous when the residual is conditionally Gaussian, with the exact profile moment; the rational majorant of $1/(a+bt)$ with three half-integer moments
+($7/8$, $33/16$, $345/32$) gives the constant. We recomputed $C_\nu$ with mpmath: $0.991839$ (true) $<1.029103$ (their bound) $<1.03$, and $1/\varepsilon-103/100=55227/189100$ exactly; box corner
+$1.0404<1.0755$. For \emph{real} $\nu$ the baseline may be any conditionally centered Gaussian, improper or singular (squared-translation concavity along a fixed direction,
+\code{GAUSSIAN\_TRANSLATION\_CONCAVITY.md}). \emph{Relation to \autoref{ch:K}}: our conclusion that $\nu$ must be a base-profile parameter rested on the secant constant $1.71>1/\varepsilon$ of
+the fibre majorant in the $(z,H)$ plane at a fixed \emph{non-Gaussian} residual law; GPT's theorem does not contradict it, it refines it: on conditionally Gaussian residuals (all the
+Gaussian-factor/$A$ families, incl.\ the polar family below) the diagonal is globally harmless with deficit $0.29|\nu|^2$, consistent with the local gap $3/10$ of package~2; for a remote junta or general remote cubic, later diagonal theorems in \autoref{ch:remote-cubic-refinement} apply. They do not automatically cover a baseline that already includes shared A/B.
+
+\subsubsection{Polar rank-two $A{+}B$ (\st{P} GPT, exact consequence of the replayed one-driver cover)}\label{sec:knext-polar}
+$Q=sX+d\bar X+gG+(T-1)(\alpha X+\gamma\bar X)+\frac{Z^2}{\sqrt2}(\beta\bar X+\delta X)$, six coefficients with arbitrary joint remote law, $\E\Re(s\bar\alpha+d\bar\gamma)=\E\Re(s\beta+d\delta)=0$:
+$\Lambda\le S+8\cdot10^{-5}$. Proof (checked): with $X=Re^{i\varphi}$, $Z=\sqrt Te^{i\theta}$, multiply by $e^{-i\theta}$ and set $Y=Re^{-i\theta}$, $G_0=e^{-i\theta}G$: $(Y,G_0)$ are independent
+proper Gaussians independent of $(T,\varphi)$, and the residual becomes \emph{exactly} $(s_\varphi+\alpha_\varphi(T-1))Y+\beta_\varphi T\bar Y/\sqrt2+gG_0$ with $s_\varphi=se^{i\varphi}+de^{-i\varphi}$ etc.;
+the $\varphi$-averages of the dual terms and prices reproduce the stated conditions and $|s|^2+|d|^2$, so Theorem~\ref{thm:kjoint-complex} applies conditionally on $\varphi$. This admits a
+conditionally \emph{improper} residual $sX+d\bar X$ (pseudocovariance up to maximal) on one complex driver, closing the ``antiholomorphic residual'' gap in rank two; the trick needs an
+exponential radius, i.e.\ exactly two real drivers, and does not extend to higher rank ($\chi^2_m$ is not a Gaussian variance mixture for $m>2$). $A$-only face with the global-$A$ certificate
+and the diagonal: $\Lambda(Q+\nu H)\le S+10^{-5}-(\E|\alpha|^2+\E|\gamma|^2)/200-\frac{55227}{189100}|\nu|^2$, complex $\nu$, no added slack.
+
+\subsubsection{Higher-order content expansion (\st{P} GPT, audited; identities replayed) and its relation to \autoref{ch:weighted}}\label{sec:knext-content}
+For $q\in\Hc21$, $U=|q|^2$, $F(z)=zh(|z|^2)$ a $C^5$ charge-one profile vector with cost matrix $D$:
+\[
+\Pi_1F(q)=\gamma(q)\,\Pi_1(qU)+R,\qquad \gamma(q)=\E\bigl[h'(U)+2Uh''(U)+\tfrac12U^2h'''(U)\bigr]=\tfrac12\E F_{z\bar z z}(q),
+\]
+$\|R\|_{D^{-1}}\le\frac{9(2+\sqrt3)}{16\cdot6^{1/4}}\kappa^{5/4}\sup\|D^5F\|$, or the law-sensitive $\sqrt{9\sqrt6/8}\,\kappa^{3/4}\sqrt{V_{3,D}}$ ($V_{3,D}$ the variance of the third-derivative tensor), or the
+influence-sensitive $\frac{3(3+2\sqrt3)}8\kappa\sqrt{J(q)}$ with $J(q)=\lambda_{\max}\E[\nabla\Re q\otimes\nabla\Re q]$; also $\|\gamma(q)-\gamma_G(v)\|\le\sqrt\kappa M_5/(24\sqrt2)$ with the explicit Gaussian
+coefficient $\gamma_G(v)=\E[U_G(U_G-2v)h(U_G)]/(2v^3)$. Proof: three real Gaussian integrations by parts give the exact source $\E[X_iF(Q)]=\E\sum F_{abc}(Q)T_i^{abc}$ with $T=54P+I_2(\cdot)+27I_4(\cdot)$,
+dimension-free Schatten bounds on the four tensor contractions ($\le\sqrt{m_am_bm_c}$, $m\le\kappa/3456$), and a nonresonant OU-resolvent lemma $\|\Pi_pH(Q)\|\le\sqrt{\E\|E\|^2}\,\sup\|D^2H\|/(6-p)$,
+$p=2,4$, with H1 ($\E\|E\|_{HS}^2\le3\kappa$). \emph{Relation to our Theorems~\ref{thm:W}--\ref{thm:R}}: (i) their leading coefficient is exactly our ``mean third derivative'': $\gamma(q)=\frac12\E F_{uu\bar u}(q)$
+with $F_{uu\bar u}=2P'+4\rho P''+\rho^2P'''$ (\S\ref{sec:wct-remains}), evaluated under the law of $q$ rather than the Gaussian $\sigma W$ ($m_3(\sigma)=\E F_{uu\bar u}(\sigma W)$; their (22) bounds the
+difference by $\sqrt\kappa M_5/(24\sqrt2)$), and their leading term $\gamma\,\Pi_1(qU)$ is the cubic-model content, whose component along $\alpha$ is the influence contraction $2(t\cdot M)_\alpha$ of
+Theorem~\ref{thm:W}; so the two descriptions of the leading order coincide. (ii) $J(q)$ is the real-coordinate analogue of $\lambda_{\max}(M)$: $\E[\nabla\Re q\otimes\nabla\Re q]$ is the $2n\times2n$
+Gram matrix of $\nabla\Re q$, equal to $\frac14\Re(\Gamma+\Gamma')$ plus the pseudo-Gram $\frac14\Re\E[D_kq\,D_lq]$ in the two real blocks (normalisation $\E|w_k|^2=1$), with trace $\frac32\sigma^2$
+against $\operatorname{tr}M=3\sigma^2$; it is $\le\lambda_{\max}(M)$ and $\approx\lambda_{\max}(M)/2$ when the influence is concentrated. (iii) The statements differ in form: ours is a per-direction
+weighted inequality $|\langle\alpha,\Pi_1F(q)\rangle|^2\le\mathcal C_F(q)I_\alpha$ with the second-order content $\mathcal C_F\sim\kappa$ (and the influence inequality for the cubic model); theirs is a
+vector-norm expansion whose remainder is one order higher ($\kappa\sqrt J\sim\kappa^{5/4}$) because the leading cubic-content term is split off explicitly. Their remainder constants are finite but,
+on their own diagnostic, (18) is $\approx700\times$ the true deficit on the Wick family at $\sigma=0.2$, and no certified $M_5$ for the application profiles exists; so neither their expansion nor our
+(T) is closed ((T) is in fact false, \S\ref{sec:wct-false}), and the obstacle is the same: the sup-norm (or fifth-derivative) control against the law-weighted truth. \emph{Interpolation} (\st{P} for the identities, arXiv:2609.07066 context
+\st{?}): a finite symmetrised version of the Chen--Chen--Liu interpolation with leading correction $\kappa f''(v)/4<0$ for a pure cubic residual; GPT also exhibits an ordered-index error in
+v1's Theorem~2.5 ($\kappa_{1122}=30$ vs $6\E\Gamma_{1122}=42$, $6\E\Gamma_{1212}=24$ for $F_1=(X^3-3X)/\sqrt6$, $F_2=(X^2-1)Y/\sqrt2$; symmetrisation repairs it), checked exactly here; it does not
+affect that paper's main results and is not used.
+
+\subsection{The fourth package, \code{k-weighted-20261015} (15:52): (T) is false, exact positive profiles, coupled zero-content kernels}\label{sec:kweighted}
+\pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/k-weighted-20261015/} (108 files, \code{.zip} twin; read \code{HANDOFF\_FOR\_IDE.md} first). Untrusted; manifest
+\code{SHA256SUMS.json} verified by our own script (100 files, 0 mismatches); \code{verify\_all.py --full} from the scratch directory: the eight exact checkers, the copied global-$A$ benchmark
+cover (10,697 boxes, 18,019 vertices, regenerated and replayed to give $S<1.374$ rigorously) and the new integer-interval countercertificate all \textbf{PASS in 31\,s}
+(\pathref{kattack-2026-10-15/gpt\_kweighted\_replay.log}). Our own checks: \code{kweighted\_own\_check.py/.log}. No endpoint changes.
+
+\paragraph{(1) The unrestricted weakened condition (T) of \autoref{ch:weighted} is false (\st{P} GPT, interval certificate replayed \st{C}).} For the exact cubic
+$q=\frac7{20\sqrt2}X^2\bar Y$ ($v=49/400$, standardised fourth moment $12$) at the peak profile,
+\[\begin{gathered}
+\frac{[\mathcal C_A(q)+\mathcal C_B(q)]\lambda_{\max}(M(q))}{73/250}\ \ge\ \frac{9966174286164}{2^{48}}>0.0354069637,\\
+ d_q+10^{-4}\ \le\ \frac{9764808347989}{2^{48}}<0.0346915682,
+\end{gathered}\]
+a strict violation $>7.15\cdot10^{-4}$, with no floating integration (the benchmark upper bound comes from the replayed cover). Both \emph{actual} odd contents vanish identically, because the
+phases of $X$ and $Y$ are independent symmetries of $q$ (our Monte Carlo: $|\E\bar XF_A(q)|,|\E\bar YF_A(q)|\le7\cdot10^{-5}$ at noise level, kurtosis $12.35\pm0.4$). So the loss is exactly the step
+$|{\rm content}|^2\le\mathcal C_F\lambda_{\max}(M)$ of Theorem~\ref{thm:R}: the directional cancellation of the tensor contraction is discarded. This refutes the sufficient condition, not K;
+the kernel has kurtosis $12$, outside the application window $\le6$, and GPT's float scans inside the window (Gaussian dilutions, a phase-protected quadratic family) show worst ratios
+$\approx0.80$ \st{F}, much closer to $1$ than the $\le0.41$ of \autoref{ch:weighted}'s tables. The coordinator has rewritten \autoref{ch:weighted} accordingly (\S\ref{sec:wct-false}): the target is now
+(T$_0$), with the contraction kept. GPT's exact form of it: with $A_{bc}=\E[F_u(q)(w_b\bar w_c-\delta_{bc})]$, $B_{ab}=\E[F_{\bar u}(q)\bar w_a\bar w_b]$ and $\|(A,B)\|^2=\sum|A_{bc}|^2+\frac12\sum|B_{ab}|^2=\mathcal C_F(q)$,
+the content is the finite coefficient map $c_F=\mathcal B_q(A,B)$, $[\mathcal B_q(A,B)]_k=2\sum_{bc}t_{kbc}A_{bc}+\sum_{ab}\bar t_{abk}B_{ab}$, whose Gram matrix is exactly $M$; one must project
+$(A,B)$ onto the range of $\mathcal B_q^*$ before any influence bound (in the counterexample that projection is zero at every Laplace parameter while $\|(A,B)\|\ne0$).
+
+\paragraph{(2) Exact positive representation of the true profiles (\st{P} GPT; numerically confirmed here \st{C}).} For every $a>0$, $b\ge0$,
+\[
+F_D(u)=-u\int_0^\infty e^{-s|u|^2}\,\mu_D(ds),\qquad \mu_A\ge0,\qquad 0\le\mu_B\le\mu_A/\sqrt2\quad(D=A,B),
+\]
+with all polynomial moments of $\mu_D$ finite: the push-forward of $(T-1)\,dP_Z$ under $Z\mapsto L$ is $-\frac1{2\pi}{\rm div}(z\,g(|z|^2))$ with $g(v)=e^{-t}X^{-2}$ ($v=t(a+bt)^2$,
+$X=a+bt$, $D=a+3bt$), $g$ and $j(v)=e^{-t}X^{-3}D^{-1}$ are completely monotone by the same derivative induction as in \code{GAUSSIAN\_MIXTURE\_CORE.md}, Bernstein's theorem gives the measures,
+and an integration by parts before taking the phase gives the profiles; the domination $\mu_B\le\mu_A/\sqrt2$ comes from $-g'=j+2b\,e^{-t}X^{-4}D^{-1}$. Our check: on the $\rho=|u|^2$ grid
+(step $0.05$ to $6$, profiles from \code{prof.py}) the alternating finite differences $(-1)^k\Delta^k$, $k=1,\ldots,4$, of $-P_A$, $-P_B$ and of $(-P_A)/\sqrt2-(-P_B)$ (where $F_D(u)=uP_D(|u|^2)$) are
+all positive (minima $6.5\cdot10^{-3}$, $2.5\cdot10^{-3}$, $1.3\cdot10^{-3}$, $9\cdot10^{-4}$ for $A$), all three are log-convex, and $(-P_B)/(-P_A)$ increases from $0.505$ at $\rho=0$ to $0.56$ at
+$\rho=12$, below $1/\sqrt2$. \emph{Why this matters for (T$_0$).} Since $\Pi_{1,0}$ is linear and the mixture converges in $L^2$,
+\[\begin{gathered}
+\Pi_{1,0}F_D(q)=-\int_0^\infty\Pi_{1,0}\bigl(q\,e^{-s|q|^2}\bigr)\,\mu_D(ds),\\
+\text{so}\qquad \bigl|\langle\alpha,\Pi_{1,0}F_D(q)\rangle\bigr|\le\int_0^\infty\bigl|\langle\alpha,\Pi_{1,0}(qe^{-s|q|^2})\rangle\bigr|\,\mu_D(ds):
+\end{gathered}\]
+the content of the true profile in any direction is a \emph{positive mixture}, with known weights, of the contents of the one-parameter family of smooth radial profiles $z\mapsto ze^{-s|z|^2}$,
+for which the Gaussian integration by parts of Lemma~\ref{lem:ibp}, the coefficient map $\mathcal B_q$ and the OU-resolvent identities apply at each $s$ with explicit derivatives
+($h(\rho)=e^{-s\rho}$, $h'=-se^{-s\rho}$, \dots). This is the natural exact-profile tool for (T$_0$): it replaces sup-norm bounds on $F_{uu\bar u}$ by $\mu_D$-weighted bounds on
+$s^k e^{-s\rho}$, i.e.\ exactly the ``law-weighted third derivative'' that \S\ref{sec:wct-remains} identified as the single loss; the cubic-model constants (Theorem~\ref{thm:W}) are recovered
+as $s\to0$. GPT also derives from it a stronger dimension-free second-chaos resolvent bound (\code{resolvent/WEIGHTED\_RESOLVENT.md}) retaining both complex channels and the joint law of
+the radial variable and the Malliavin fluctuations, and warns that replacing that joint law by a Gaussian radial average is not justified.
+
+\paragraph{(3) A coupled diffuse family with exactly zero odd content (\st{P} GPT; MC confirmed \st{C}).} $Q_n=(2n)^{-1/2}\sum_iX_i^2\bar X_{i+1}$ (cyclic, $n\ge3$): $\E|Q_n|^2=1$,
+$\E|Q_n|^4=2+18/n$, $M(Q_n)=\frac3nI$, and $\E[\bar X_iF(Q_n)]=0$ for every integrable $F$, because the rotation $X_i\mapsto\zeta^{2^i}X_i$, $\zeta=e^{2\pi i/(2^n-1)}$, fixes $Q_n$ and the Gaussian law
+while multiplying $\bar X_i$ by $\zeta^{-2^i}\ne1$; it survives arbitrary monomial coefficients and independent added noise. Our MC ($3\cdot10^6$ samples, true $F_A$ at $\sigma=0.2$): $\E|Q|^4=8.05$,
+$6.50$ for $n=3,4$ (claims $8$, $6.5$), $\max_i|\E\bar X_iF_A(\sigma Q_n)|\le1.6\cdot10^{-4}$ at noise level $6\cdot10^{-5}$, against $1.0\cdot10^{-2}$ for the junta control $a=0.6$. The family sits in the
+kurtosis window for $5\le n\le300$, has no dominant coordinate, and is \emph{not} covered by K-a theorems so far (with respect to any coordinate the remote remainder has $v_0=(n-2)/n$ against a
+budget $\frac{33}{64n}$, \S\ref{sec:knext-star}); its content obligation is void, so it isolates the pure K-a obligation for a genuinely coupled residual.
+
+\paragraph{(4) Corrections and the scalar obstruction (\st{P}/\st{F}).} Small-core expansion: $\mathcal C_F=\frac{m_3^2}4(4A+B)\delta^4+O(\delta^6)$ with the \emph{full} third-derivative mean $m_3$;
+on the Wick core $\mathcal C_F/\kappa\to11m_3^2/42$, about $2.26$ for the two profiles together at the peak variance \st{F}, above the finite-amplitude values of \autoref{ch:weighted} (the corrections
+in $a$ are large and negative, so the $a\to0$ extrapolation there underestimated the limit). The weighted cubic constant of Theorem~\ref{thm:W} equals $\sup_q(4A+B)/\kappa$ (symmetric $B$ counted
+with weight $\frac12$) and a rational nine-coordinate tensor forces it above $2.579$, inside our bracket $[2.06,3]$ and ruling out any improvement of the constant $3$ below $2.58$; the stronger
+influence-budget ratio exceeds $2.659$. Independent overlap with \S\ref{sec:wct-sharp}; no priority claim either way.
+
+\subsection{Scope of the four packages}\label{sec:kfull-remains}
+The former 15 October open-problem list is obsolete and has been removed.
+The current register is \autoref{ch:K-state}. The replayed theorems and their
+quantitative deficits above remain dependencies. Exact remote K, arbitrary
+finite-amplitude shared tensors, and a complete row cover must not be
+inferred from these restricted packages. The full before-edit source is
+archived with the 21 October manuscript audit.
+
+\subsection{Full replay result of the first package}\label{sec:kjoint-fullresult}
+Droplet \code{yo}, 15 October, sequential \code{run\_checks.py --full} started 10:16 UTC, plus the two Gaussian-factor covers run in parallel from separate verified copies
+(the checkers are single-threaded). All three covers \textbf{PASS} with exactly the package's counts \st{C}:
+\begin{itemize}
+\item Wick junta (Theorem~\ref{thm:kjoint-junta}): data regenerated in 128\,s (Rice interpolation remainder $<2^{-25}$), \code{c++ -O3 -std=c++17 -UNDEBUG}; 26,446 boxes, 79,159 vertices, 1,508 tails,
+27,953 splits; max $96690404106435/2^{46}$, cap $96690404275729/2^{46}$; ``delivered excess $7036705123/2^{46}<1/10000$''; 4,578.7\,s (76\,min) in all.
+\item Joint complex $A{+}B$ (Theorem~\ref{thm:kjoint-complex}): 269,209 input endpoints bit-checked; 236,786 boxes, 898,217 vertices, 1,027,305 norm calls, 132 tail boxes; largest upper
+$1.374033275968777$, benchmark $1.373953284570177$, cap $1.374033284570177$; 62\,min\,48\,s.
+\item $B$-buffer (Theorem~\ref{thm:kjoint-B}): 24,967 boxes, 58,879 vertices, 62,987 calls, 1 tail box; largest upper $1.373963280269784$, cap $1.373963284570177$; 5\,min\,48\,s.
+\end{itemize}
+Quick mode: PASS in 0.6\,s locally. The sequential run was left finishing its own copies of the last two covers (log \code{yo:\~{}/kjoint/full.log}); the archived
+\code{kattack-2026-10-15/gpt\_kjoint\_full.log} contains the sequential log up to the junta PASS and the two completed parallel component logs. Status of the three theorems: \st{P} with
+replayed verifier PASS.

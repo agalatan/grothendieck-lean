@@ -1,0 +1,337 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch15-weighted-content.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 15). Owner: lower-bound/08-shared-structure.tex
+\section{The weighted content inequality: a dimension-free reduction of the odd sectors (15 October, late)}\label{ch:weighted}
+\chapsummary{The weighted contraction theorem and exact reduction stand. The scalar sufficient condition (T) is false; keep its counterexample and do not use it as an input. Exact-profile and directional constraints are different statements.}
+
+Code and logs: \pathref{handoff/\allowbreak research-third-decimal/\allowbreak kattack-2026-10-15/\allowbreak wct/\allowbreak } (\code{wct.py}, \code{optw.py}, \code{optw2.py}, \code{infl.py}, \code{junta\_w.py}, \code{l2w.py}, \code{junta\_gram.py}, \code{l2w\_gram.py}, \code{derivs3.py}, \code{family13.py}, \code{x2ybar.py} and their logs).
+Peak row throughout. Status labels as in the rest of the document; the two theorems of \S\ref{sec:wct-thm} are \st{P} given the influence inequality of \autoref{ch:K} (itself \st{P}; now also \st{L}, \code{Grothe/LowerAnalytic/Influence.lean} on \code{master}),
+everything numerical is \st{F}.
+
+\subsection{Why this chapter exists}
+\autoref{ch:attemptK} ended with the diagnosis that the mixed gain of the odd sectors $A,B$ is ``the contraction of the chaos tensor with its own influence matrix, a weighted
+inequality whose sharp constant (L2) grows with the dimension''. The unweighted inequality L2 (\autoref{ch:L2}) bounds $\sum_j|\E[\bar w_j\,q|q|^2]|^2$ by $C\kappa^{3/2}$ and its
+numerical constant grows with $n$ ($0.4775\to0.54$ and beyond). This chapter writes down the \emph{weighted} inequality, proves it with an explicit constant from ingredients already
+in hand, shows that its sharp constant is dimension-free (between $2.777$ and $3$, Theorem~\ref{thm:quartic}; a first version of this sentence said ``close to $1$'' from the natural tensors alone), and then does the same for the true profiles $F_A,F_B$: the content of a sector direction $\alpha$ is bounded by a
+functional of $q$ alone times the \emph{influence of the direction $\alpha$ on $q$}. The result is an exact, dimension-free reduction of the odd-sector part of Conjecture~K (given the fibre
+majorant L1) to a second-order inequality for $q$ alone, and a precise measurement of how far the available second-order (Stein) bounds are from closing it (a factor of about $100$, for a structural reason).
+
+\subsection{Notation}\label{sec:wct-notation}
+$w\in\C^n$ standard complex Gaussian ($\E|w_k|^2=1$), $q=\sum t_{abc}{:}w_aw_b\bar w_c{:}\in\Hc21$, $t$ symmetric in $(a,b)$, $\sigma^2=\E|q|^2=2\sum|t|^2$,
+$\kappa=\E|q|^4-2\sigma^4\ge0$. $D_k=\partial_{w_k}$, $\bar D_k=\partial_{\bar w_k}$, so $D_kq=2\sum_{bc}t_{kbc}{:}w_b\bar w_c{:}\in\Hc11$ and $\bar D_kq=\sum_{ab}t_{abk}{:}w_aw_b{:}\in\Hc20$.
+\[\begin{gathered}
+\Gamma_{kl}=\E[D_kq\,\overline{D_lq}]=4\sum_{bc}t_{kbc}\bar t_{lbc},\qquad \Gamma'_{kl}=\E[\bar D_kq\,\overline{\bar D_lq}]=2\sum_{ab}t_{abk}\bar t_{abl},\\
+M:=\Gamma+\Gamma'^{\top},\quad \operatorname{tr}M=3\sigma^2 .
+\end{gathered}\]
+$M$ is the influence matrix of \autoref{ch:attemptK}: $\Pi_{1,1}|q|^2=\sum_{kl}M_{kl}{:}w_k\bar w_l{:}$, so $\norm{\Pi_{1,1}|q|^2}^2=\norm M_{HS}^2$ (double integration by parts,
+$\E[|q|^2{:}\bar w_kw_l{:}]=\E[\partial_k\bar\partial_l|q|^2]=\Gamma_{kl}+\Gamma'_{lk}=M_{kl}$ (orientation corrected after GPT's review; norms unaffected), the terms $\E[\bar q\,\partial_k\bar\partial_lq]$ vanishing by chaos orthogonality).
+For $\alpha\in\C^n$ put $D_{\bar\alpha}=\sum\bar\alpha_kD_k$, $\bar D_\alpha=\sum\alpha_k\bar D_k$ and
+\[
+I_\alpha:=\norm{D_{\bar\alpha}q}^2+\norm{\bar D_\alpha q}^2=\alpha^*\Gamma\alpha+\alpha^*\Gamma'^{\top}\alpha=\alpha^*M\alpha ,
+\]
+the \emph{influence of the direction $\alpha$ on $q$}. The two sector drivers are $r_A=\sum\alpha_kw_k\in\Hc10$ and $r_B=\sum\beta_k\bar w_k\in\Hc01$; both contents have the form
+$\E[\bar r_AF_A(q)]=\sum\bar\alpha_k\E[\bar w_kF_A(q)]$ and $\E[r_BF_B(q)]=\sum\beta_k\E[\bar w_kF_B(q)]$ with the charge-one profiles of \S\ref{sec:Kb}, i.e.\ both pair the
+profile with $\bar w_k$ (the $B$ driver is antiholomorphic, which is exactly what makes $\E[\bar w_kF_B(q)]$ charge-neutral).
+
+\begin{lemma}[integration by parts]\label{lem:ibp}
+For $\Psi\in C^1(\C)$ of polynomial growth and $\alpha\in\C^n$,
+\[
+\sum_k\bar\alpha_k\,\E[\bar w_k\Psi(q)]=\E\bigl[\Psi_u(q)\,D_{\bar\alpha}q\bigr]+\E\bigl[\Psi_{\bar u}(q)\,\overline{\bar D_\alpha q}\bigr].
+\]
+\end{lemma}
+\begin{proof}$\E[\bar w_kf]=\E[\partial_kf]$ for the standard complex Gaussian; chain rule, $\partial_k\bar q=\overline{\bar D_kq}$. The pairings are bilinear
+($\E[XY]$, not $\E[X\bar Y]$). Since $D_{\bar\alpha}q\in\Hc11$ and $\overline{\bar D_\alpha q}\in\Hc02$, only the $\Hc11$ part of $\Psi_u(q)$ and the $\Hc20$ part of $\Psi_{\bar u}(q)$
+contribute: $\E[\Psi_u(q)D_{\bar\alpha}q]=\langle D_{\bar\alpha}q,\overline{\Pi_{1,1}\Psi_u(q)}\rangle$ and $\E[\Psi_{\bar u}(q)\overline{\bar D_\alpha q}]=\langle\Pi_{2,0}\Psi_{\bar u}(q),\bar D_\alpha q\rangle$.
+\end{proof}
+
+\subsection{The two theorems}\label{sec:wct-thm}
+\begin{theorem}[weighted content inequality, cubic model, \st{P}]\label{thm:W}
+For all $q\in\Hc21(\C^n)$ and $\alpha\in\C^n$,
+\[
+\Bigl|\sum_k\bar\alpha_k\E[\bar w_k\,q|q|^2]\Bigr|^2\ \le\ \bigl(4\norm{\Pi_{1,1}|q|^2}^2+2\norm{\Pi_{2,0}q^2}^2\bigr)\,\alpha^*\bigl(\Gamma+\tfrac12\Gamma'^{\top}\bigr)\alpha\ \le\ 3\kappa\,\alpha^*\bigl(\Gamma+\tfrac12\Gamma'^{\top}\bigr)\alpha\ \le\ 3\kappa\,I_\alpha .
+\]
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:ibp} with $\Psi(u)=u|u|^2$, $\Psi_u=2|u|^2$, $\Psi_{\bar u}=u^2$: the content equals $2\E[|q|^2D_{\bar\alpha}q]+\E[q^2\overline{\bar D_\alpha q}]$, and by the lemma
+$|\cdot|\le2\norm{\Pi_{1,1}|q|^2}\norm{D_{\bar\alpha}q}+\norm{\Pi_{2,0}q^2}\norm{\bar D_\alpha q}$. Cauchy--Schwarz on the two terms, written as
+$(2a)(b)+(\sqrt2c)(d/\sqrt2)$, gives the first inequality. The second is the influence inequality of \S\ref{sec:Kproved}, $4\norm{\Pi_{1,1}|q|^2}^2+2\norm{\Pi_{2,0}q^2}^2\le3\sigma^4(m-2)=3\kappa$
+(re-checked exactly, \code{infl.py}: on $660$ random tensors at $n=2,3,4$ the left side never exceeds $\frac23$ of $3\kappa$, on the L2 maximisers it is $0.43$--$0.45$ of it, on the Wick monomial $52/126$, and on the tensor of \S\ref{sec:wct-sharp} it reaches $0.70$, and the optimiser at $n=3$ reaches $2.32/3=0.77$; so its sharp constant lies in $[2.32,3]$). The third is $\Gamma'\succeq0$.
+\end{proof}
+The unweighted L2 follows by taking the supremum over $|\alpha|=1$ and $\lambda_{\max}(M)\le\norm M_{HS}=\norm{\Pi_{1,1}|q|^2}\le\sqrt{3\kappa}/2$:
+$\sum_j|\E[\bar w_jq|q|^2]|^2\le\frac{3\sqrt3}2\kappa^{3/2}=2.598\,\kappa^{3/2}$, the constant of \autoref{ch:L2}. \emph{The weighted form is where the dimension independence lives}: the
+constant $3$ does not depend on $n$, whereas the sharp unweighted constant does (\autoref{ch:L2}), because the unweighted sum over directions ignores that the content of a direction is
+paid for by its influence.
+
+\subsubsection*{How sharp is the constant $3$?}\label{sec:wct-sharp}
+Write $C_W(q):=\sup_\alpha|\sum\bar\alpha_kc_k|^2/(\kappa I_\alpha)=c^*M^{-1}c/\kappa$ ($c_k=\E[\bar w_kq|q|^2]$), the generalised Rayleigh quotient of the inequality with
+weight $I_\alpha$; Theorem~\ref{thm:W} says $C_W\le3$. Numerically \st{F} (\code{wct.py}, \code{optw.py}, \code{optw2.py}, exact Feynman evaluation of all moments):
+\begin{center}\scriptsize\setlength\tabcolsep{4pt}
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lccccc}\toprule
+tensor & Wick $H(X)$ & skew $X_1(|X_2|^2-1)$ & L2 maximisers $n=2,\dots,7$ & random $n=2,3$ (550) & optimised\\\midrule
+$C_W(q)$ & $64/63=1.0159$ & $1$ & $1.028,\,1.050,\,1.071,\,1.089,\,1.114,\,1.130$ & $\le1.09$ & $1.141$ ($n=2$), $2.058$ ($n=3$, degenerate)\\\bottomrule
+\end{tabular}\end{adjustbox}
+\end{center}
+On every ``natural'' tensor the ratio is close to $1$ (for the junta family $q=\sigma(aH(X)+\sqrt{1-a^2}W)$ it is $64/63$ for every $a$: content $8\sqrt2\,\sigma^3a^3$, $\kappa=42\sigma^4a^4$,
+$I_X=3\sigma^2a^2$). The supremum is larger and is approached in a \emph{degenerate} regime: the optimiser at $n=3$ finds tensors with $\lambda_{\min}(M)/\lambda_{\max}(M)\approx10^{-5}$,
+i.e.\ $q$ almost independent of one direction $\alpha$, with a content $|c_\alpha|\propto\sqrt{I_\alpha}$ along that direction, and there the first inequality of the proof is tight to $1\%$
+($|c_\alpha|^2=2.175\cdot10^{-3}$ against $(4\norm{\Pi_{1,1}|q|^2}^2+2\norm{\Pi_{2,0}q^2}^2)\,\alpha^*(\Gamma+\frac12\Gamma'^{\top})\alpha=2.198\cdot10^{-3}$) while the influence inequality is
+at $0.70$ of its bound: $C_W=2.058$ (\code{optw\_n3\_0.npy}, archived). So $2.06\le\sup C_W\le3$, the whole remaining loss sits in the influence inequality, and the supremum is a $0/0$ limit along
+directions of vanishing influence, which carry no sector gain. \emph{Added later (15 Oct, evening).} Another AI system working for the project then closed this question up to $7.4\%$; its two statements were re-checked here exactly
+(\code{family13.py}, Feynman evaluation at $n=13$ and $14$) and are recorded with status \st{C} for the identities and \st{P} for the argument, which is elementary.
+
+\begin{theorem}[the sharp weighted constant is a quartic supremum]\label{thm:quartic}
+With $U=\Pi_{1,1}|q|^2$ and $V=\Pi_{2,0}q^2$,
+\[
+C_W:=\sup_{n,\,q}\ \sup_\alpha\frac{|\sum_k\bar\alpha_kc_k|^2}{\kappa\,I_\alpha}\ =\ \sup_{n,\,q}\frac{4\norm U^2+\norm V^2}{\kappa(q)} ,
+\]
+and $3\kappa=4\norm U^2+2\norm V^2+2\norm{\Pi_{2,2}|q|^2}^2+\norm{\Pi_{3,1}q^2}^2$ (Ornstein--Uhlenbeck product rule), so the quartic objective is $3-(\norm V^2+2\norm{\Pi_{2,2}|q|^2}^2+\norm{\Pi_{3,1}q^2}^2)/\kappa$.
+\end{theorem}
+\begin{proof}[Proof sketch]
+``$\le$'' is the first step of Theorem~\ref{thm:W} with the Cauchy--Schwarz written as $(2a)b+cd\le\sqrt{4a^2+c^2}\sqrt{b^2+d^2}$ (weight $I_\alpha$; this is sharper than the form with $4a^2+2c^2$ used
+there, which was chosen to match the influence inequality). ``$\ge$'': the \emph{probe}. Add one fresh coordinate $Z$ and set $q_\varepsilon=q+\varepsilon(2ZU+\bar ZV)\in\Hc21$. Then
+$I_{e_Z}(q_\varepsilon)=\varepsilon^2T$ with $T=4\norm U^2+\norm V^2$ exactly, $c_Z(q_\varepsilon)=\varepsilon T+O(\varepsilon^3)$ by integration by parts, $\kappa(q_\varepsilon)\to\kappa(q)$, so the ratio in the direction $e_Z$
+tends to $T/\kappa(q)$. Checked on the family below: $1.16,\,2.49,\,2.74$ at $\varepsilon=0.1,\,0.03,\,0.01$ against the limit $2.777$. This is exactly the degenerate regime found by the optimiser.
+\end{proof}
+\begin{proposition}[explicit family, \st{C}]\label{prop:family13}
+Thirteen coordinates $s,x_0,y_0,z_0\in\C$, $x,y,z\in\C^3$; $\omega=e^{2\pi i/3}$, $N_X=|x_0|^2+\norm x^2$ etc., $R=N_X+\omega^2N_Y+\omega N_Z$,
+$Q=(x_0y_0+x\cdot y)\bar z_0+y_0\,z\cdot\bar x-(y\cdot z)\bar x_0+(z\times x)\cdot\bar y$ (complex-bilinear products), $q_a=Q+a\,sR$, $a\in\R$. Then $q_a\in\Hc21$ (all contractions vanish: $Q$
+has none, those of $sR$ cancel by $1+\omega+\omega^2=0$), and exactly
+\[\begin{gathered}
+\E|q_a|^2=16+12a^2,\quad \E|q_a|^4=800+960a^2+720a^4,\\
+ \kappa=48(6+4a^2+9a^4),\quad V=0,\quad \norm U^2=192(1+a^2+a^4),
+\end{gathered}\]
+so $(4\norm U^2+\norm V^2)/\kappa=16(1+u+u^2)/(6+4u+9u^2)$, $u=a^2$, maximal at $u_*=(\sqrt{19}-3)/5$ with value $(52+4\sqrt{19})/25=2.77742\ldots$ Hence
+\[
+\boxed{\ 2.7774\le C_W\le3\ }
+\]
+and the constant $3$ of Theorem~\ref{thm:W} cannot be lowered by more than $7.4\%$. ($Q$ is a polynomial harmonic morphism: $\sum_j\partial_jQ\,\bar\partial_jQ=0$ as well as $\sum_j\partial_j\bar\partial_jQ=0$.)
+The family itself has $C_W(q_a)=0$ in its own thirteen directions; all of its content is reached through the probe coordinate.
+\end{proposition}
+For (T) below only the actual values matter, and those are the tables of \S\ref{sec:wct-numerics}.
+
+\begin{theorem}[weighted reduction for the true profiles, \st{P}]\label{thm:R}
+Let $F$ be a charge-one profile ($F_A$ or $F_B$ of \S\ref{sec:Kb}), $C^2$ with bounded derivatives, and define the \emph{second-order content}
+\[
+\mathcal C_F(q):=\norm{\Pi_{1,1}F_u(q)}^2+\norm{\Pi_{2,0}F_{\bar u}(q)}^2 .
+\]
+Then for every $\alpha\in\C^n$: $\bigl|\sum_k\bar\alpha_k\E[\bar w_kF(q)]\bigr|^2\le\mathcal C_F(q)\,I_\alpha$, hence $\norm{\Pi_{1,0}F(q)}^2\le\mathcal C_F(q)\,\lambda_{\max}(M)$ and, with the fibre
+majorant $M(h_X,h_Y)$ of \S\ref{sec:Kb} (L1) and Proposition~\ref{prop:R},
+\[
+\boxed{\ \Lambda(G)\ \le\ \Lambda_q+\frac{\bigl(\mathcal C_{F_A}(q)+\mathcal C_{F_B}(q)\bigr)\,\lambda_{\max}(M(q))}{1/\varepsilon-h_X}\qquad(\nu=0,\ \text{even sectors by \S\ref{sec:profileslack}}).\ }
+\]
+\end{theorem}
+\begin{proof}Lemma~\ref{lem:ibp} and Cauchy--Schwarz on the two pairings, exactly as in Theorem~\ref{thm:W}; then $\sup_{|\alpha|=1}I_\alpha=\lambda_{\max}(M)$.\end{proof}
+Two remarks. (i) $\lambda_{\max}(M)\le\min\{3\sigma^2,\ \norm M_{HS}\}\le\min\{3\sigma^2,\ \tfrac{\sqrt3}2\sqrt\kappa\}$; on a one-coordinate junta it equals $3\sigma^2a^2$. (ii) $\mathcal C_F$ is a
+\emph{second-order} content (it vanishes at the Gaussian law like $\kappa$, not like $\kappa^{3/2}$); the third order of the true content is restored by the factor $\lambda_{\max}(M)$, which is
+$O(\sqrt\kappa)$. This is the structural statement of \autoref{ch:attemptK} (``content $=$ tensor contracted with the influence matrix'') made exact for the true profiles, with no dimension anywhere.
+
+\begin{corollary}[what $K_\eta$ for the odd sectors now needs]\label{cor:T}
+Given L1 ($h_X\le1.03$) and the even-sector theorem (\S\ref{sec:profileslack}), $K_\eta$ for all $G$ with $\nu=0$ follows from the inequality for $q$ alone
+\[
+\textbf{(T)}\qquad \bigl(\mathcal C_{F_A}(q)+\mathcal C_{F_B}(q)\bigr)\,\lambda_{\max}(M(q))\ \le\ 0.292\,\bigl(S-\Lambda_q+\eta\bigr)\qquad\forall q\in\Hc21 .
+\]
+\emph{Warning: (T) is false in general} (counterexample $q=\frac7{20\sqrt2}X^2\bar Y$, \S\ref{sec:wct-false}); the implication is valid but its hypothesis fails, so it cannot be used; the live target is (T$_0$).
+\end{corollary}
+
+\subsection{Three further external results (15 Oct, evening), checked here}\label{sec:wct-external}
+The same external AI system then sent three additions (\code{reverse\_infl.py} for our checks).
+\begin{enumerate}
+\item \textbf{Reverse influence inequality} \st{P}: $\frac43\|M\|_{\rm HS}^2\le\kappa\le\frac{14}3\|M\|_{\rm HS}^2$, hence $\kappa\le14v\lambda_{\max}(M)$ because $\operatorname{tr}M=3v$. The upper bound, its contraction identity and sharpness are now stated once with explicit normalizations in Theorem~\ref{thm:sharp-influence-audit}. The old code \code{reverse\_infl.py} supplied finite floating checks; the new graph checker verifies the dimension-free identity exactly. Diffuse influence forces a small cumulant, but controlling the mixed terms along influential coordinates remains a separate task.
+\item \textbf{The family of Proposition~\ref{prop:family13} has zero content for every profile} \st{P} (their proof; our Monte Carlo \st{F}): $\E[w\mid q_a]=0$, by the exact identity $|A_0|^2+\norm B^2=N_XN_Y$
+($A_0=x_0y_0+x\cdot y$, $B=y_0\bar x-\bar x_0y+x\times\bar y$), the conditional law $Q\mid(N_X,N_Y,N_Z)\overset d=\sqrt{N_XN_YN_Z}\,\xi$ with $\xi$ the first coordinate of a uniform point
+on the unit sphere of $\C^4$, and two symmetries (block sign flips; cyclic permutation of the norms rotating $R$ by $\omega$, compensated on $s$). Hence $\Pi_{1,0}F(q_a)=0$ for both true
+profiles at every scale: the family that pushes $C_W$ to $2.78$ carries no first-chaos gain; only the probe coordinate does. Our Monte Carlo ($10^6$ samples, profiles $u|u|^2$,
+$ue^{-|u|^2/2v}$, $u/|u|$): all contents at the noise level.
+\item \textbf{A signed, dimension-free Edgeworth expansion} \st{?} (not re-derived here): for $q\in\Hc21(\C^n)$ independent of $Z$, $v=\E|q|^2$, $\kappa$ as above, $3\kappa/(2v^2)\le1$,
+\[
+\Bigl|2\E|L+q|-f(v)-\tfrac14f''(v)\kappa\Bigr|\le\frac{77}{v}\norm{\phi'''}_\infty\kappa^{5/4},\qquad f(v)=2\E|L+\sqrt vG|,\ \phi(x)=\pi\E|\Re L+x| ,
+\]
+via circularity ($X=\sqrt{2/v}\,\Re q$ is a real third-chaos variable with $\E X^4-3=3\kappa/2v^2$) and the third-chaos Edgeworth estimate of Bierm\'e--Bonami--Nourdin--Peccati (2012) with
+explicit constants ($\E|\Gamma_4(X)|<65\,\delta^{5/4}$). Since $f''<0$ (Gaussian-mixture representation of $L$), the leading correction is favourable; at the peak, with
+$\norm{\phi'''}_\infty\le2\sqrt{2\pi/e}/a^2<10$ and $|f''|/4>3/20$: $\Lambda(q)\le S-\tfrac3{20}\kappa+22000\,\kappa^{5/4}$, so exact Gaussian domination $\Lambda(q)\le S-\kappa/8$ for
+$\kappa\le10^{-24}$, uniformly in the dimension (zero slack, numerically useless, but the first dimension-independent local statement; the local theorem of \autoref{ch:kjoint} has a
+dimension-dependent radius). The leading coefficient $-f''(v)/4$ is the $\gamma(\sigma)\approx0.38$ we measured (\S\ref{sec:wct-remains}). Their reading of the obstruction agrees with ours: in the
+small-cumulant region the signed deficit is $O(\kappa)$ against a content of $O(\kappa^{3/2})$ and wins; the unresolved region is finite cumulant, where profile content and signed deficit must be
+compared for the same tensor.
+\end{enumerate}
+
+\subsection{Cubic content forces slack in the Stein bound (GPT, evening), checked here}\label{sec:wct-stein}
+Lower-bound GPT's next report (received after the previous section was written) couples the two losses that the certificate so far treats independently: the cubic
+first-chaos content and the slack in the fluctuation bound H1. Notation: $U_j=\Pi_{j,j}|q|^2$, $V_j=\Pi_{j+1,j-1}q^2$, $A=\norm{U_1}^2$, $B=\norm{V_1}^2$, $C=\norm{U_2}^2$, $D=\norm{V_2}^2$,
+$c=\Pi_{1,0}(q|q|^2)$, and the Stein energy $\mathcal E(q)=\Var(\Gamma(q,\bar q)/3)+\tfrac12\E|\Gamma(q,q)/3|^2$ (the quantity bounded by $\kappa/3$ in H1, Lean-proved).
+\begin{enumerate}
+\item \textbf{Exact Stein slack} \st{P} (GPT; our check \st{F}): $\kappa/3-\mathcal E(q)=(2C+D)/18$. This is the identity $3\kappa=4A+2B+2C+D$ of \S\ref{sec:wct-external} in another form:
+from $L|q|^2=-6|q|^2+2\Gamma(q,\bar q)$ and $Lq^2=-6q^2+2\Gamma(q,q)$ one gets $\Gamma(q,\bar q)=3v+2U_1+U_2$ and $\Gamma(q,q)=2V_1+V_2$, so $\mathcal E=(8A+2C+4B+D)/18$, and the two identities
+agree. On the Wick cubic ($v=1$, $\kappa=42$, $A=9$, $B=8$, $C=25$, $D=24$): $\mathcal E=89/9$ against the H1 allowance $14$.
+\item \textbf{Exact content identity} \st{P} (GPT; our check \st{F}): $c=\Pi_{1,0}(qU_2)+\tfrac12\Pi_{1,0}(\bar qV_2)$. (Chaos orthogonality gives $c=\Pi_{1,0}(qU_1)+\Pi_{1,0}(qU_2)=\Pi_{1,0}(\bar qV_1)+\Pi_{1,0}(\bar qV_2)$,
+Gaussian integration by parts gives $c=2\Pi_{1,0}(qU_1)+\Pi_{1,0}(\bar qV_1)$; eliminate.) So the cubic content is carried entirely by the \emph{fourth}-chaos parts of $|q|^2$ and $q^2$, the same
+objects that measure the Stein slack.
+\item \textbf{Sharp content bound} \st{P} (GPT; our check \st{F}): $\norm c\le\sqrt{2vC}+\tfrac12\sqrt{3vD}$, from the creation-operator bounds $\norm{\Pi_{2,2}(\ell\bar q)}^2\le2v$,
+$\norm{\Pi_{3,1}(\ell q)}^2\le3v$ for a unit first-chaos $\ell$, paired with the identity. Equality on the Wick cubic: $\sqrt{50}+\sqrt{72}/2=8\sqrt2$.
+\item \textbf{Coupled Stein bound} \st{P}: $\mathcal E(q)+\dfrac{2}{63\,v}\norm{\Pi_{1,0}(q|q|^2)}^2\le\dfrac\kappa3$ (from $\norm c^2\le\frac{7v}4(2C+D)$ and item 1). Cubic content is a
+compulsory payment inside the H1 budget: on the Wick cubic the allowance drops from $14$ to $626/63=9.937$ against the true $9.889$, recovering $98.8\%$ of the discarded slack.
+\end{enumerate}
+Our checks (\code{stein\_content.py}, Monte Carlo $4\cdot10^6$ with explicit orthonormal Wick bases of $\Hc22$ and $\Hc31$, exact $c$ and $\kappa$ by Feynman evaluation):
+\begin{center}\small
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lcccccccc}\toprule
+$q$ & $\kappa$ & $C$ & $D$ & $\norm c^2$ & (3) residual$/\norm c$ & (1) ratio & $\kappa/3-\mathcal E$ vs $(2C{+}D)/18$ & (2) slack\\\midrule
+Wick cubic & 42 & 25.38 & 24.25 & 128 & 0.019 & 0.993 & 4.090 / 4.168 & $+0.027$\\
+$X_1(|X_2|^2-1)$ & 16 & 7.95 & 7.99 & 16 & 0.010 & 0.622 & 1.339 / 1.327 & $+0.83$\\
+L2 maximiser $n=2$ & 30.04 & 17.91 & 16.66 & 78.63 & 0.026 & 0.932 & 2.860 / 2.915 & $+0.36$\\
+random $n=2$, $n=3$ & -- & -- & -- & -- & $\le0.056$ & $0.55$, $0.19$ & within $6\%$ & $>0$\\\bottomrule
+\end{tabular}\end{adjustbox}
+\end{center}
+(all discrepancies at the Monte Carlo level of the projected quantities). \textbf{Limitation, stated by GPT and shared here:} the certificate's content obligation is on $\Pi_{1,0}F_A(q)$,
+$\Pi_{1,0}F_B(q)$, not on $c$; substituting the cubic content for the true profiles is invalid. What item 4 supplies is a rigorous \emph{coupling constraint} for a joint
+deficit/content certificate, which is where GPT now proposes to go; its numerical tests of stronger scalar Stein constraints (a signed correlation constraint; both complex derivative
+channels with pointwise positivity) gave negligible gains in the binding cells, so sharpening separate worst-case constants is abandoned. \textbf{Lean} \st{L} (branch \code{work/influence}, commits \code{9971dc2}, \code{0249305}; since merged: \code{Influence.lean} is on \code{master} at \code{20eb917} as standalone lemmas, see the repository README): module \code{Grothe/LowerAnalytic/Influence.lean} (885 lines, standard axioms only,
+builds with the whole library) proves, for real third-chaos polynomials $a,b$ with $\E a^2=\E b^2=v/2$, $\E ab=0$ (so $q=a+ib$ circular), with the spectral projections
+$\Pi_2=(L+4)(L+6)/8$, $\Pi_4=-(L+2)(L+6)/4$ as polynomials in the OU generator: \code{quartic\_identity} ($3\kappa=4A+2B+2C+D$), \code{stein\_slack} and
+\code{stein\_energy\_gap} (item 1, the exact form of the Lean-proved fluctuation bound H1: $\E(S-3v)^2+\tfrac12\E(A_{\rm rad}^2+B_{\rm rad}^2)=3\kappa-(2C+D)/2$),
+\code{influence\_bound} ($4A+2B\le3\kappa$) and \code{influence\_pairing} (the weighted content inequality of Theorem~\ref{thm:W} in real form:
+$\E[r\,aU]^2+\E[r\,bU]^2\le(2\sqrt A+\sqrt B)^2\,I_\alpha$ for every real direction $r=\sum\alpha_ix_i$, $I_\alpha=\E(\partial_\alpha a)^2+\E(\partial_\alpha b)^2$). The worker verified
+with exact Gaussian moments that the real pair $(P,Q)=(a^2-b^2,2ab)$ carries the complex norms with no extra factors, and that circularity is necessary (a non-circular pair violates
+the identity). Not formalised: items 2--4 (the $\Pi_4$ content representation reduces to third-order identities needing separate work; the creation-operator constants do not transfer
+to real components, $\norm{\Pi_4(x_ia)}^2/\E a^2$ reaching $7/2$ on the Wick cubic).
+
+\subsection{(T) is false in general; the target is (T$_0$)}\label{sec:wct-false}
+\emph{Added 15 Oct, evening.} Lower-bound GPT (package \code{k-weighted-20261015}, rational interval certificate; re-checked here by Monte Carlo, \code{x2ybar.py}) shows that the
+Cauchy--Schwarz weakening in Theorem~\ref{thm:R} is too lossy for residuals with a phase symmetry. Take $q=cX^2\bar Y$, $c=7/(20\sqrt2)$ ($\sigma^2=0.1225$, normalised fourth moment $12$).
+Both actual odd-sector contents vanish exactly: under $X\mapsto e^{i\theta}X$ the charge-one profile gives $F(q)\mapsto e^{2i\theta}F(q)$ while $\bar X\mapsto e^{-i\theta}\bar X$, so
+$\E[\bar XF(q)]=0$, and similarly $\E[\bar YF(q)]=0$ (Monte Carlo: $|\cdot|\le10^{-4}$, pure noise). Yet $\mathcal C_{F_A}=0.041$, $\mathcal C_{F_B}=0.010$ (the second-order content sits on the
+\emph{diagonal} directions ${:}|X|^2{:}$, ${:}|Y|^2{:}$), $\lambda_{\max}(M)=4c^2=0.245$ ($D_Xq=2cX\bar Y$ sits on the \emph{off-diagonal} direction ${:}X\bar Y{:}$, orthogonal to the
+profile content), and
+\[\begin{gathered}
+\frac{(\mathcal C_{F_A}+\mathcal C_{F_B})\lambda_{\max}(M)}{0.292}=0.043\ (\text{GPT's enclosure}>0.0354)\\
+{}>d_q+10^{-4}=0.032\ (\text{GPT}<0.0347).
+\end{gathered}\]
+So \textbf{(T) fails}, by a comfortable margin, while K itself holds for this $q$ (conditionally Gaussian in $Y$ given $X$) and the actual content is zero. Theorem~\ref{thm:R} is true but
+its Cauchy--Schwarz step destroys an exact orthogonality. The sufficient condition must therefore be stated with the actual contraction, i.e.\ Proposition~\ref{prop:R} itself:
+\[
+\textbf{(T$_0$)}\qquad \norm{\Pi_{1,0}F_A(q)}^2+\norm{\Pi_{1,0}F_B(q)}^2\ \le\ 0.292\,(S-\Lambda_q+\eta)\qquad\forall q\in\Hc21 ,
+\]
+which is what the ``(R) exact'' columns of the tables below measure ($\le0.39\,d_q$ on every tested class, $0$ on $cX^2\bar Y$). GPT notes that (T) is not refuted for residuals with normalised
+fourth moment $\le6$ (the counterexample has $12$), and proves two tools for attacking (T$_0$) with the exact profile: a positive representation $F_D(u)=-u\int_0^\infty e^{-s|u|^2}\mu_D(ds)$,
+$\mu_A\ge0$, $0\le\mu_B\le\mu_A/\sqrt2$, for all $a>0,b\ge0$ (complete monotonicity of $-P_D$; it performs the visible average exactly and lets the tensor contraction stay inside the
+integral), and a coupled zero-content family $Q_n=(2n)^{-1/2}\sum_iX_i^2\bar X_{i+1}$ (cyclic) with $\E[\bar X_iF(Q_n)]=0$ for every profile and $\E|Q_n|^4=2+18/n$. Both are recorded, replayed, with the
+package in \S\ref{sec:kweighted}.
+
+\subsection{How much room (T) has}\label{sec:wct-numerics}
+\paragraph{Junta family} ($q=\sigma(aH(X)+\sqrt{1-a^2}W)$, $r_A=\alpha X$; the diffuse coordinate carries no content in the $\Hc21$ limit, so $\mathcal C_F$ reduces to the two components
+along ${:}|X|^2{:}$ and $X^2/\sqrt2$; Monte Carlo $2\cdot10^6$ with common random numbers and a control variate for $\E\Phi_0$, \code{junta\_w.py}). The identity of Lemma~\ref{lem:ibp} is
+verified against the direct content at every point (agreement within the Monte Carlo error, e.g.\ $9.483\cdot10^{-4}$ vs $9.696\cdot10^{-4}$ at $(a,\sigma)=(0.3,0.14)$, $2.899\cdot10^{-2}$ vs
+$2.882\cdot10^{-2}$ at $(1,0.2)$).
+\begin{center}\small
+\begin{tabular}{cc|ccc|ccc}\toprule
+$a$ & $\sigma$ & $d_q=S-\Lambda_q$ & $\mathcal C_{F_A}/\kappa$ & $\mathcal C_{F_B}/\kappa$ & bound$_A$/$d_q$ & bound$_B$/$d_q$ & actual gain$/d_q$ (\autoref{ch:attemptK})\\\midrule
+0.3 & 0.14 & $5.6\cdot10^{-4}$ & 1.333 & 0.314 & 0.006 & 0.001 & --\\
+0.6 & 0.14 & $1.2\cdot10^{-3}$ & 0.637 & 0.153 & 0.079 & 0.019 & --\\
+1.0 & 0.14 & $4.2\cdot10^{-3}$ & 0.275 & 0.067 & 0.213 & 0.052 & --\\
+0.3 & 0.20 & $1.8\cdot10^{-4}$ & 0.693 & 0.167 & 0.078 & 0.019 & 0.041\\
+0.6 & 0.20 & $2.1\cdot10^{-3}$ & 0.269 & 0.066 & 0.168 & 0.041 & 0.093\\
+1.0 & 0.20 & $9.9\cdot10^{-3}$ & 0.106 & 0.026 & 0.297 & 0.073 & 0.160\\
+0.3 & 0.25 & $8.9\cdot10^{-4}$ & 0.397 & 0.097 & 0.034 & 0.008 & --\\
+0.6 & 0.25 & $4.3\cdot10^{-3}$ & 0.138 & 0.034 & 0.157 & 0.039 & --\\
+1.0 & 0.25 & $1.8\cdot10^{-2}$ & 0.053 & 0.013 & 0.312 & 0.078 & 0.155\\
+0.3 & 0.30 & $3.1\cdot10^{-3}$ & 0.230 & 0.057 & 0.017 & 0.004 & --\\
+0.6 & 0.30 & $8.5\cdot10^{-3}$ & 0.074 & 0.019 & 0.127 & 0.032 & --\\
+1.0 & 0.30 & $3.0\cdot10^{-2}$ & 0.029 & 0.007 & 0.307 & 0.077 & --\\
+\bottomrule
+\end{tabular}
+\end{center}
+(bound$_D=\mathcal C_{F_D}\cdot3\sigma^2a^2/0.292$.) So on the junta family the chain
+``majorant $\to$ weighted Cauchy--Schwarz $\to$ influence'' is within a factor $\approx2$ of the true gain and leaves at least a factor $3$ against the deficit; the
+second-order constant $\mathcal C_{F_A}/\kappa$ tends to a finite limit as $a\to0$ that depends on $\sigma$ ($\approx1.5$ at $\sigma=0.14$, $1.0$ at $0.2$, $0.7$ at $0.25$, $0.44$ at $0.3$) and decays
+in $a$ because the profiles are bounded while $\kappa\propto a^4$.
+\paragraph{Coupled many-coordinate residuals} (the L2 maximisers $n=2,\dots,5$, full projections over all coordinates, \code{l2w.py}):
+\begin{center}\small
+\begin{tabular}{cc|cc|cc|cc}\toprule
+$n$ & $\sigma$ & $\lambda_{\max}(M)/\sigma^2$ & $\mathcal C_{F_A}/\kappa$ & bound$_A$/$d_q$ & bound$_B$/$d_q$ & (R) unweighted $A$ & (R) unweighted $B$\\\midrule
+2 & 0.14 & 2.546 & 0.374 & 0.211 & 0.051 & 0.196 & 0.048\\
+2 & 0.20 & 2.546 & 0.150 & 0.308 & 0.076 & 0.284 & 0.070\\
+2 & 0.30 & 2.546 & 0.044 & 0.329 & 0.082 & 0.286 & 0.072\\
+3 & 0.14 & 2.114 & 0.492 & 0.195 & 0.047 & 0.182 & 0.044\\
+3 & 0.20 & 2.114 & 0.203 & 0.304 & 0.075 & 0.284 & 0.070\\
+3 & 0.30 & 2.114 & 0.058 & 0.304 & 0.076 & 0.289 & 0.072\\
+4 & 0.14 & 1.851 & 0.590 & 0.184 & 0.044 & 0.169 & 0.041\\
+4 & 0.20 & 1.851 & 0.250 & 0.302 & 0.074 & 0.279 & 0.068\\
+4 & 0.30 & 1.851 & 0.072 & 0.294 & 0.073 & 0.275 & 0.069\\
+5 & 0.14 & 1.653 & 0.694 & 0.177 & 0.043 & 0.158 & 0.038\\
+5 & 0.20 & 1.653 & 0.296 & 0.293 & 0.072 & 0.266 & 0.065\\
+5 & 0.30 & 1.653 & 0.087 & 0.286 & 0.071 & 0.268 & 0.067\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here the weighted step loses only about $10\%$ against the unweighted bound $\norm{\Pi_{1,0}F(q)}^2/0.292$ of Proposition~\ref{prop:R} (the sector direction is nearly aligned with the top
+eigenvector of $M$), the $B$ sector is about a quarter of the $A$ sector, and the total ($A$ plus $B$) stays below $0.41$ of the deficit. On every residual class measured here (T) holds with room; it fails on the symmetric kernel $cX^2\bar Y$ of \S\ref{sec:wct-false}, where only the ``(R) exact'' columns, i.e.\ (T$_0$), remain meaningful.
+
+\paragraph{The two-profile Gram refinement (proposed by the same external system; \st{P}, measured here).} With $g_F=(\Pi_{1,1}F_u(q),\Pi_{2,0}F_{\bar u}(q))$ and $d_j=(\overline{D_jq},\bar D_jq)$ one has
+$\E[\bar w_jF(q)]=\langle g_F,d_j\rangle$, and the trace inequality for the rank-two operator $g_{F_A}g_{F_A}^*+g_{F_B}g_{F_B}^*$ against the analysis operator of the $d_j$ gives
+$\norm{\Pi_{1,0}F_A(q)}^2+\norm{\Pi_{1,0}F_B(q)}^2\le m_1\gamma_1+m_2\gamma_2$, with $m_1\ge m_2$ the top eigenvalues of $M$ and $\gamma_1\ge\gamma_2$ those of the $2\times2$ Gram matrix of
+$(g_{F_A},g_{F_B})$; Theorem~\ref{thm:R} uses $m_1(\gamma_1+\gamma_2)$. Measured (\code{junta\_gram.py}, \code{l2w\_gram.py}): on all 24 junta points and all 16 L2-maximiser points
+$\gamma_2/\gamma_1\le2\cdot10^{-5}$, i.e.\ \emph{the second-order content vectors of the two profiles are parallel} ($g_{F_B}\approx\tfrac12g_{F_A}$, as the leading-order formula
+$g_F\approx(m_3M,\tfrac12m_3'\Pi_{2,0}q^2)$ predicts, since only the profile constants differ), so the refinement changes nothing on these classes. The same runs show the whole weighted step
+loses only $2$--$3\%$ against the exact $\norm{\Pi_{1,0}F(q)}^2/0.292$ (e.g.\ $0.377$ vs $0.368$ of $d_q$ at $(a,\sigma)=(1,0.2)$): the factor $\approx2.3$ between the chain and the true gain
+sits entirely in the fibre majorant constant $0.292$ against the true quadratic cost $0.42$--$0.62$.
+
+\subsection{What remains, precisely, and why the Stein bound is a hundred times short}\label{sec:wct-remains}
+(T$_0$), and its weakening (T) where it holds, are inequalities between two functionals of $q$. Its right-hand side is the $q$-only deficit, $d_q\ge\gamma(\sigma)\kappa$ at leading order with $\gamma=-g''(\sigma^{*2})/4\approx0.38$ at
+$\sigma=0.2$ (numerically $d_q/\kappa=0.38,\,0.33,\,0.30$ on the junta at $\sigma=0.2$ for $a=0.3,0.45,0.6$; (K-a) makes this a certificate). Its left-hand side is a second-order content times the
+influence. The proved second-order bound (resolvent identity, \S\ref{sec:Kproved}, with $(3N-2)^{-1}=\frac14$ on $\Hc11$ and $\Hc20$) gives
+\[
+\mathcal C_F(q)\le\tfrac3{16}\bigl(4A_F^2+2B_F^2\bigr)\,\kappa,\qquad A_F=\sup|F_{uu\bar u}|,\ B_F=\sup|F_{uuu}|+\sup|F_{u\bar u\bar u}|,
+\]
+and for the actual profiles the sup norms are large (\code{derivs3.py}, Chebyshev fit of $P_D(\rho)$, $\rho=|u|^2$, from \code{prof.profiles}; $F=uP(\rho)$ gives
+$F_{uu\bar u}=2P'+4\rho P''+\rho^2P'''$, $F_{uuu}=\bar u^2(3P''+\rho P''')$, $F_{u\bar u\bar u}=u^2(3P''+\rho P''')$, $F_{\bar u\bar u\bar u}=u^4P'''$):
+\begin{center}\small
+\begin{tabular}{lccccccc}\toprule
+profile & $P(0)$ & $P'(0)$ & $P''(0)$ & $P'''(0)$ & $A_F=\sup|F_{uu\bar u}|$ & $B_F$ & $(K_F+K'_F)$ in $\mathcal C_F\le(K_F+K'_F)\kappa$\\\midrule
+$F_A$ & $-0.835$ & $2.158$ & $-11.6$ & $\approx100$ & $4.5$--$5.2$ & $8.9$--$10.4$ & $87$--$118$\\
+$F_B$ & $-0.422$ & $1.032$ & $-5.3$ & $\approx45$ & $2.1$--$2.2$ & $3.8$--$4.5$ & $17$--$22$\\\bottomrule
+\end{tabular}
+\end{center}
+(ranges over fit degrees 16 and 20; $K_F=\frac3{16}(4A_F^2+2B_F^2)$ for $\Pi_{1,1}F_u$ and $K'_F$ the analogue for $\Pi_{2,0}F_{\bar u}$). So the proved chain gives
+$\mathcal C_{F_A}+\mathcal C_{F_B}\le\approx105\,\kappa$ against a measured $\mathcal C_{F_A}/\kappa\le1.5$ and $\mathcal C_{F_B}/\kappa\le0.3$: \textbf{a factor $\approx70$--$100$}, not the factor
+$10$ a first version of this paragraph guessed from $A_{F_A}$ alone. The reason is now visible: $P'''(0)\approx100$ means the profiles vary on the scale $\rho\approx0.1$, i.e.\
+$|u|\approx0.3$, while $|q|\approx\sigma\approx0.2$; the derivative expansion of the profile around the law of $q$ does not converge at the relevant amplitude. The law-weighted mean third
+derivative is $m_3(\sigma)=\E F_{A,uu\bar u}(\sigma W)=3.29,\,2.64,\,2.16,\,1.76$ at $\sigma=0.14,0.2,0.25,0.3$ ($1.59,\,1.29,\,1.06,\,0.87$ for $F_B$), and even $m_3^2\norm M_{HS}^2/\kappa$
+overestimates $\mathcal C_{F_A}/\kappa$ because the fluctuation terms (next paragraph) are not small at $\sigma=0.2$. \emph{Consequence}: with sup-norm constants the chain proves $K_\eta$ only for
+$\lambda_{\max}(M)\le0.292\gamma/(105)\,\sigma^2\approx10^{-3}\sigma^2$ (more than $3000$ equally influential coordinates), i.e.\ nothing useful, and no derivative-based bound of this sup-norm type (ours with third derivatives, or the fifth-derivative remainder of GPT's higher-order expansion, \autoref{ch:kjoint}) can close (T$_0$) at $\sigma\approx0.2$. \textbf{At these amplitudes the profile must be treated exactly}; this rules out the global sup-norm chain, not every use of derivatives (the signed local theorem of \S\ref{sec:wct-external} and the weighted resolvent are derivative methods that do work in their regimes). The
+influence inequality adds a further loss of $2$--$3.5$ on the relevant tensors ($\norm M^2_{HS}/\kappa=9/42$ on the Wick monomial against $3/4$).
+
+The exact structure of $\mathcal C_F$ is available for a sharper attack. Double integration by parts gives, for the coefficient of $\Pi_{1,1}F_u(q)$ on ${:}w_k\bar w_l{:}$,
+\[\begin{gathered}
+\E[\partial_k\bar\partial_lF_u(q)]=\E\bigl[F_{uu\bar u}(q)\bigl(D_kq\,\overline{D_lq}+\overline{\bar D_kq}\,\bar D_lq\bigr)\bigr]\\
+{}+\E[F_{uuu}(q)D_kq\,\bar D_lq]+\E[F_{u\bar u\bar u}(q)\overline{\bar D_kq}\,\overline{D_lq}]
++\E[F_{uu}(q)D_k\bar D_lq]+\E[F_{u\bar u}(q)\overline{\bar D_kD_lq}],
+\end{gathered}\]
+whose leading term is $\E[F_{uu\bar u}(q)]\,M_{kl}$ plus the covariance of $F_{uu\bar u}(q)$ with the centred Gram fluctuation $D_kq\overline{D_lq}-\Gamma_{kl}$. So at leading order
+$\mathcal C_{F_A}(q)\approx|\E F_{uu\bar u}(q)|^2\norm M_{HS}^2+\tfrac14|\E F_{\bar uuu}(q)|^2\norm{\Pi_{2,0}q^2}^2$ (for the cubic model $u|u|^2$ both third derivatives equal $2$ and this is exact:
+$\Pi_{1,1}\Psi_u=2\Pi_{1,1}|q|^2$, $\Pi_{2,0}\Psi_{\bar u}=\Pi_{2,0}q^2$), with the \emph{mean} third derivative $m_3(\sigma)=\E F_{uu\bar u}(\sigma W)$, which is what the numerics see. In GPT's
+expansion $\Pi_1F(q)=\gamma(q)\Pi_1(qU)+R$ (\autoref{ch:kjoint}) the leading coefficient is $\gamma(q)=\tfrac12\E F_{uu\bar u}(q)$, i.e.\ $m_3/2$ (a first version of this paragraph
+wrote $m_3$; GPT's audit caught the factor $2$ and the factor on the $\Pi_{2,0}$ term; no theorem or measured number is affected). The global sup-norm derivative chain therefore does not prove (T$_0$) at these amplitudes; a sharper route must retain the weighted correlations, for example by a direct argument on $\mathcal C_F$ with the exact profile, e.g.\ writing
+$F_A(u)=\E_z[(T-1)\ph(L(z)+u)]$ as a mixture over $z$ of phase functions and bounding the first-chaos content of the shifted phase $\ph(L(z)+q)$ with the $z$-average taken before any
+Cauchy--Schwarz (a Cauchy--Schwarz in $z$ loses the smoothing by $|L|\approx0.5$ and is $\approx25\times$ too weak on the junta), or GPT's route of exact conditioning and box covers
+extended to residuals with several influential coordinates and a diffuse remainder. Both are finite statements about $q$ alone, with explicit target constants given above, and neither involves the
+dimension.
+
+\subsection{Relation to the GPT packages, and what this does for the general cubic}
+The GPT theorems of \autoref{ch:structure} and \autoref{ch:kjoint} prove K on classes where the residual is conditionally Gaussian or a one-coordinate Wick cubic, by exact conditioning and box
+covers; the two packages of 15 October 13:13 and after state that the missing bridge is ``a theorem that retains the chaos restrictions for an arbitrary coupled cubic and pays its error from the
+residual deficit''. Theorem~\ref{thm:R} is a bridge of exactly this form for the odd sectors: for an arbitrary $q\in\Hc21$, the mixed gain is paid by $\mathcal C_F(q)\lambda_{\max}(M(q))$, a
+functional of $q$ alone, against the deficit $S-\Lambda_q$ of the same $q$; it costs the fibre majorant L1 (finite-dimensional, certifiable) and it is dimension-free. What it does not do is
+prove (T$_0$); it converts the remaining obligation into the second-order inequality (T) (false in general, \S\ref{sec:wct-false}; the honest obligation is (T$_0$)) with measured constants ($\mathcal C_{F_A}/\kappa\le1.5$, needed $\lesssim0.9\cdot3\sigma^2/\lambda_{\max}$) and
+shows that derivative bounds on the profile cannot reach them (factor $\approx100$), which rules out one whole class of proofs for everybody. The deficit-retention form
+$\Lambda\le S-(1-\theta)d_q$ of \autoref{ch:attemptK} is (T$_0$) with $\eta=0$ and $\theta$ the ratio in the ``(R) exact'' columns: $\theta\le0.39$ on everything measured here, with the $\theta\le0.17$ of the direct
+measurements recovered up to the factor $\approx2.3$ of the fibre majorant.
+
+\paragraph{Verdict.} Not a proof of $K_\eta$. New and proved: the weighted content inequality (Theorem~\ref{thm:W}, constant $3$, sharp constant between $2.777$ and $3$ by Theorem~\ref{thm:quartic} and Proposition~\ref{prop:family13}, dimension-free) and the exact
+weighted reduction of the odd sectors (Theorem~\ref{thm:R}), whose Cauchy--Schwarz weakening (T) is \emph{false} for symmetric residuals (\S\ref{sec:wct-false}). New and measured: the unweakened target (T$_0$) holds with a factor $\ge2.5$ of room on the junta family and the L2 maximisers and with left side $0$ on $cX^2\bar Y$; the derivative-expansion route to
+proving it is dead by a factor $\approx100$ ($P'''(0)\approx100$), so (T$_0$) needs an argument with the exact profile and the actual contraction, for which GPT's positive-Laplace representation of the profiles (\S\ref{sec:kweighted}) is the natural tool. The certified bound is unchanged.
+
+\paragraph{Further exact-profile route (cross-bound handoff).}
+Section~\ref{sec:exact-profile-annihilators} constructs explicit functions
+$(N-1)[q e^{-s|q|^2}]$ whose first-chaos projection vanishes, and uses
+their joint Gram matrix to bound the actual profiles without differentiating
+them. This is a proved certificate format; its encouraging buffered-junta
+and coupled-kernel tests remain \st{F}. Uniform joint weighted-Malliavin
+integral bounds are still required, so it does not close (T$_0$).

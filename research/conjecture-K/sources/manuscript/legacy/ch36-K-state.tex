@@ -1,0 +1,604 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch36-K-state.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 36). Owner: lower-bound/05-targets-register.tex
+\section{Conjecture K: current statement, register and open obligations}\label{ch:K-state}
+\chapsummary{Status: Current (consolidated 21 October). \textbf{The sole current-state register for Conjecture K}: statement and target, exact reductions, one table of
+proved families with their precise scopes, what remains, and one negative-result register. The original-response route now has moment-free all-sector regional caps, without assuming raw K. The complete coherent one-driver $A/B$ family is proved; comparable
+independent Wick drivers and arbitrary-dimensional neighbourhoods of the full two-coordinate core are covered in explicit regions. General coupled cubics and the row
+envelope remain open. The master/CI interval remains $1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<\KG<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$, with hypotheses in \autoref{ch:certified}. Independently of K, the complete covariance-ordered spectral certificate gives $\KG>1.401684875510$ (\S\ref{sec:covariance-envelope-20261022}), integrated in Lean on local master (22 October; CI pending push); the finer $\nu=0$ spectral certificate of \S\ref{sec:finer-spectral-certificate} gives $\KG>1.401685105834$, and its combination with the covariance order (\S\ref{sec:joint-fine-covariance-20261022}) gives $\KG>1.401687463503$ (exact replays PASS; Lean integration in progress). The pre-consolidation table and the cold-start
+reports are archived verbatim in Appendix~\ref{app:K-register-archive}.}
+
+\subsection{Two sufficient routes, with distinct quantifiers}
+At the peak set
+\[
+ a=699/1250,\quad b=179/1250,\quad p=1/\varepsilon=2500/1891,\quad L=Z(a+b|Z|^2),
+\]
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-p\|G\|_2^2,\qquad S=\sup_{v\ge0}\{2\E|L+\sqrt vU|-pv\}\quad(S>1.37395,\ v_*\approx0.0403).
+\]
+Standard complex Gaussians are proper with second moment one, and $U$ is fresh and independent whenever it is used as a buffer.
+\textbf{K at the peak} asks for $\Lambda(G)\le S$ for every finite dimension and every $G\in\Hc21$; \textbf{K$_\eta$} replaces $S$ by $S+\eta$.
+\textbf{Profile uniformity} additionally quantifies over the row parameters. \textbf{A new endpoint} additionally needs a complete row cover and the project
+reduction/transfer chain. The gate-free row identity is Proposition~\ref{prop:row}; the general-profile conjecture is Conjecture~\ref{conj:K}.
+
+\textbf{Target for $1.402$}: K$_\eta$ on the peak box and the central rows, with the visible shared sectors fitting in
+$\eta_{AB}=240297199/2651182000000\approx9.06\cdot10^{-5}$ (\autoref{ch:remote-cubic-refinement}); then the row envelope and a regenerated certificate at
+$\varepsilon\approx0.7564$. The degree-3 ceiling is $1.402258$, so K can deliver at most that. A theorem for a restricted family at the peak does not by itself spend that
+budget for an arbitrary residual. \emph{Corner of the row box:} where $\E[1/(2|L|)]\le1/\varepsilon$ the optimal variance is $v_*=0$ and $S=2\E|L|$ (around
+$\varepsilon\approx0.74$--$0.75$, $\ell\gtrsim0.85$, $\beta\approx0.12$--$0.13$); arguments assuming $v_*>0$ must treat it separately.
+
+\paragraph{The weaker original-response route.}
+The preceding K statements are sufficient, not necessary. For actual bounded
+responses $h=(f_++f_-)/2$, $k=(f_+-f_-)/2$, $Ph=tZ$, and
+$F=\varepsilon Qk$, the exact objective is
+\[
+ \mathcal N=t^2+\varepsilon\|Qk\|^2-\|Pk\|^2-\varepsilon\|Qh\|^2.
+\]
+It is enough to bound this on the convex response body, uniformly in dimension
+and over a complete cover of responses at the same $\varepsilon$.
+\autoref{ch:weakk} develops this route; it retains information discarded
+in raw K. Its regional statements are recorded separately below.
+
+\subsection{Decomposition and exact reductions}
+With $T=|Z|^2$,
+\[
+ G=q+(T-1)r_A+\frac{Z^2r_B}{\sqrt2}+ZY+\bar ZW+\nu H(Z),\qquad H(z)=z(|z|^2-2)/\sqrt2 .
+\]
+The remote bidegrees are $(2,1),(1,0),(0,1),(1,1),(2,0)$, and all remote fields may share coordinates. After removing the visible phase, odd relative frequencies carry the
+$A/B$ content; even frequencies have a different cancellation. Successful comparisons integrate the visible variable first.
+\begin{enumerate}
+\item \emph{One visible variable} \st{P} (\autoref{ch:forest}): a joint phase rotation reduces $\Lambda$ to an average over $T\sim\mathrm{Exp}(1)$ of a remote problem
+with shift $\ell(T)=\sqrt T(a+bT)$; the price identity is exact.
+\item \emph{Gaussian scale mixture} \st{P} (Lemma~\ref{lem:gsm}, \autoref{ch:rescub}): $L\overset d=\sqrt VW$, so $v\mapsto\sqrt\pi\,\E\sqrt{V+v}$ is concave.
+\item \emph{K for every $\varepsilon$} $\iff$ Gaussian domination on every variance sphere (\autoref{ch:stronger}).
+\item \emph{The remote part} \st{P}: for residuals independent of $Z$, exact K for every profile is equivalent to PVD$_0$, $\E|q|\le\frac{\sqrt\pi}2\|q\|_2$ on $\Hc21$,
+which follows from BNC (Proposition~\ref{prop:bnc}). K$_\eta$ for the remote part is proved with slack $<10^{-5}$, so PVD$_0$ is worth only exactness.
+\item \emph{Gaussian layer plus non-Gaussian gap} \st{P} (\autoref{ch:polarized-profile-certificate}): $\Lambda\le S-y/10-z/4-e/25+D$, with $D$ the visibly
+averaged gap to the matched Gaussian. $D$ is not small in general (a cold-start example reaches $D\approx1.2\cdot10^{-2}$, absorbed by the $A$ penalty with ratio
+$0.29$; Appendix~\ref{app:K-register-archive}), so any proof must use the $A$ cost.
+\item \emph{Finite shared spans} \st{P} (\autoref{ch:milestone-map-20261020}): two shared linear directions span at most two coordinates, but the cubic keeps
+coefficient fields of arbitrary variance outside that span; the complement cost is exactly a five-block weighted Gram problem; no universal dominant-coordinate reduction
+exists.
+\end{enumerate}
+
+\subsection{Register of proved families}
+Entries are at the peak profile unless stated otherwise and retain their individual evidence labels. In particular, \st{C$_{\rm float}$} records padded floating-point checks, not a directed replay. Historical IDE replays are not all repeated by this audit. These entries are not Lean theorems. Notation: $y=\|r_A\|^2$, $z=\|r_B\|^2$, $e=\|Y\|^2+\|W\|^2$,
+$d=|\nu|^2$, $V=\|G\|^2$. \textbf{Latent independence assumptions are part of each statement}; results for diagonal independent Wick sums are not results for arbitrary
+cubic tensors, and diagonal/even additions proved on a remote baseline cannot be appended after $A/B$ has introduced visible dependence.
+
+\paragraph{The complete coherent one-driver family} (\autoref{ch:complete-coherent-driver}). For independent $Z,X,U$, every $c,g\ge0$ and every complex
+$\alpha,\beta$,
+\[
+ \Lambda\!\left(cH(X)+gU+\alpha(T-1)X+\beta Z^2\bar X/\sqrt2\right)
+ \le S-\min\!\left\{\frac3{100000},\ \frac{\min(c^4,c^2)}{32}+\frac{|\alpha|^2+|\beta|^2}{2000}\right\},
+\]
+with deficit $3/100000$ for $g\le1/6$; independent latent mixtures and profile transport are included. This supersedes, for membership in K, the earlier one-driver
+regions of \autoref{ch:coherent-wick-a}, \autoref{ch:self-interacting-ab}, \autoref{ch:all-a-matrix}, \autoref{ch:exact-buffered-halfline}--\autoref{ch:uniform-shared-bootstrap};
+those chapters remain proof dependencies, and some keep stronger deficits.
+
+\paragraph{Independent Wick drivers with shared $A/B$} (\autoref{ch:two-driver-cold}). $G=\sum_{j\le N}[c_jH(X_j)+\alpha_j(T-1)X_j+\beta_jZ^2\bar X_j/\sqrt2]+gU$,
+$A=\|\alpha\|_2$, $k_r=\sum_jc_j^r$; every buffer, every complex $\beta$, all phases.
+\begin{itemize}
+\item \textbf{$B$ only, any $N$: $\Lambda<S+75\cdot10^{-6}$} (within $\eta_{AB}$), by the joint scalar dual with Gauss-4/Radau-5 spectral enclosures glued to the diffuse and
+high-cumulant theorems (\S\ref{sec:k-bonly-all}). For $N=2$ exact K.
+\item \textbf{Two drivers, unrestricted $A/B$} (\autoref{ch:buffered-drivers}): exact K for every buffer $g\ge16389/100000$; $\Lambda<S+89\cdot10^{-6}$ for
+$g\ge8179/50000$; exact K at every buffer when $\max(c_1,c_2)\ge0.315$, and for $\max c_k\ge0.3,0.25,0.2,0.15,0.1$ when $g\ge0.057,0.124,0.143,0.1542,0.1599$.
+\item \textbf{With $A$:} two drivers, exact K for $A\le\sqrt{k_4}/20$ at every amplitude, and for $A\le\sqrt{k_4}/8$, $c_k\le0.141$; any $N$, $\Lambda<S-10^{-6}$ for
+$k_4\ge9/10000$, $A\le\sqrt{k_4}/175$ (unnormalised floor), $\Lambda<S+87.2\cdot10^{-6}$ for $k_4\le1/40000$, $A\le1/1000$, and $\Lambda<S+89\cdot10^{-6}$ for $A\le10^{-5}$;
+fixed disks $1/750$ (two drivers, $S+89\cdot10^{-6}$).
+\end{itemize}
+
+\paragraph{Arbitrary coupled remote cubics with a shared $B$ form} (\S\ref{sec:general-coupled-B-cumulant}). For any remote $q\in\Hc21$, fresh buffer, and any
+antiholomorphic Gaussian form $R$ in $q$'s coordinates (full dependence): unnormalised cumulant $\kappa=\E|q|^4-2(\E|q|^2)^2\ge1/100$ gives
+$\Lambda<S-\frac1{50000}-\frac{\|R\|^2}{2000}$, and $\kappa\ge9/2500$ gives $\Lambda<S+89\cdot10^{-6}-\frac{\|R\|^2}{2000}$. Uses the sixth-moment constant and the
+contraction bounds of \autoref{ch:L2}.
+
+\paragraph{Arbitrary coupled cubic tensors with unrestricted $A/B$} (\autoref{ch:coupled-tensor}). Any remote $q\in\Hc21$ in any dimension, fresh buffer,
+$A/B$ forms on any coordinates, all complex amplitudes; $e=\|q\|^2$, $\kappa=\E|q|^4-2e^2$, $h$ the largest directional derivative energy:
+$g\ge\frac9{40}$, $e\le\frac1{25}$, $h\le\frac e{10}\Rightarrow\Lambda<S-\frac1{40000}-\frac{E_{AB}}{2000}$ (no remote input); $g\ge\frac15$,
+$e\le\frac1{25}$, $h\le\frac e{150}\Rightarrow S+89\cdot10^{-6}$; variance-only regions from $g\ge0.18$, $e\le0.002$ up to $g\ge0.45$, $e\le0.07$. For
+$g\ge\sqrt{v_*}$ every remote cubic alone satisfies exact K.
+
+\paragraph{Small and zero buffer, arbitrary coupled tensors} (\autoref{ch:small-buffer-tensors}). Unrestricted $B$: $e\le\frac1{200}$,
+$\|r_A\|\le\frac3{125}$, $0\le g\le\frac1{32}\Rightarrow\Lambda<S-\frac1{10000}-\frac{A^2+B^2}{2000}$ (no influence condition); companion regions to $g\le\frac9{50}$;
+diffuse tensors ($e\le\frac1{25}$, $h\le\frac e{170}$, $\|r_A\|\le\frac1{200}$; independent blocks of share $\le e/510$) give $S+89\cdot10^{-6}$ at every
+buffer including $0$; zero-buffer rows $e\le\frac1{100}$, $g\le\frac1{32}$: $h\le\frac e{11}$, $A\le\frac7{250}$ (deficit $\frac1{20000}$) and $h\le\frac e{12}$,
+$A\le\frac{29}{1000}$ (deficit $\frac1{30000}$). Reusable tensor input (Lemma~\ref{thm:cc-matrix}):
+$\kappa\le\min\{42e^2,\frac{10}3(\|K\|_{\rm HS}^2+\|C\|_{\rm HS}^2)\}\le\frac{50}3eh$, global derivative matrices only. The sharp replacement is $\kappa\le14eh$ (\S\ref{sec:sharp-influence-audit}); CT.3 needs no separate kurtosis hypothesis. Influence-only buffered corollaries:
+$g\ge\frac9{40}$, $e\le\frac1{25}$, $h\le\frac e{10}\Rightarrow S-\frac1{40000}-\frac{E_{AB}}{2000}$ and $g\ge\frac15$, $e\le\frac1{25}$, $h\le\frac e{150}\Rightarrow S+89\cdot10^{-6}$
+(unrestricted $A/B$). \emph{Scope:} the all-buffer theorem has bounded $A$; the buffered corollaries have unrestricted $A/B$. Coefficient-disk Poisson tool:
+\S\ref{sec:cc-poisson}.
+
+\paragraph{All six sectors on one remote coordinate, and coupled complements} (\autoref{ch:two-coordinate-slab-gluing}, \autoref{ch:weighted-complement}). Every
+$Q\in H_{2,1}(Z,X)$ (two coordinates, \emph{including} the visible $Z$), at every fresh buffer $g\ge0$, satisfies exact K (\autoref{ch:all-sector-audit-extension});
+quantitatively, all six coefficients at once have deficit $1/3500$ for buffer $g\le1/49$. With $F$ any $\Hc21$ variable in any dimension, $Q=\E[F\mid Z,X]$ in that
+slab and $r=\|F-Q\|^2+g^2$,
+\[
+ \Lambda(F+gU)<S-\frac{11}{8000}+\frac{1355}{961}\,r\quad(r\le961/10^6),\qquad\text{so}\quad\sqrt r\le0.031\ \Rightarrow\ \Lambda<S-\frac1{50000},
+\]
+with no independence of the complement from the core (this supersedes the radius $0.0035$). It does not replace the buffered core/complement theorem of
+\autoref{ch:buffered-cubic-complement}, which holds on a different region.
+
+\begin{center}\small
+\begin{tabular}{p{6.4cm}p{5.2cm}p{2.4cm}}\toprule
+family (scope) & result & where\\\midrule
+\multicolumn{3}{l}{\emph{Remote and visible-sector additions}}\\
+every remote pure $\Hc21$ cubic, fresh buffer, with diagonal & $\Lambda<S+10^{-5}$ (sixth-moment input $C_6=40.45313$) & \autoref{ch:rescub}, \autoref{ch:remote-cubic-refinement}\\
+remote cubics whose monomials all involve one chosen coordinate; remote cubics on $\C^2$ & exact K; on $\C^2$ penalty $\frac{(1-g^2/w_*)_+}{80}\|q\|^2$ & \autoref{ch:response-stability}\\
+remote radial cubics $X_1(\|X\|^2-n-1)/\sqrt{n+1}$, $B$ only & K$_{9\cdot10^{-5}}$ for $n\ge43$, $c\le3/20$, all $g$, all $\beta$ & \autoref{ch:zero-buffer-bootstrap}\\
+diagonal $\nu H(Z)$, every remote law & penalty $0.571(\Re\nu)^2+0.265(\Im\nu)^2$ & \autoref{ch:shared-sector-refinements}\\
+even sectors on a $q$-only baseline, any dependence & penalty $\ge1/\varepsilon-32/25$ per unit & \autoref{ch:weighted}, \autoref{ch:remote-cubic-refinement}\\
+$A$ under fourfold symmetry; $B$ under $\E[B\mid Q]=0$ & every amplitude & \autoref{ch:shared-sector-refinements}\\
+\multicolumn{3}{l}{\emph{Gaussian-type classes}}\\
+matched Gaussian covariance class, all sectors and orientations & exact K, penalties $y/10+z/4+e/25$ & \autoref{ch:polarized-profile-certificate}\\
+Gaussian factor $C^{\!\top}\!X+gU$, shared $A/B$ on any number of drivers ($C$ centred, independent of $X$) & $\Lambda\le S+5\cdot10^{-5}-(y+z)/200$ & \autoref{ch:gaussian-remainder}\\
+\multicolumn{3}{l}{\emph{Global exclusions for arbitrary coupled cubics}}\\
+total variance & K if $V\ge\frac{13}{20}$ or $V\ge\frac1{12}+\frac{19}5u$, $u=\|\E[G\mid\text{remote}]\|^2$ & \autoref{ch:global-local-coupled-K}\\
+shared energy, all sectors at once & $y+z\ge\frac4{25}\Rightarrow S-\frac1{5000}$; $\sqrt z\ge0.351$ or $y+z+e+d\ge0.217\Rightarrow S-\frac1{10000}$ & \autoref{ch:uniform-shared-bootstrap}\\
+any pure chaos order (mixed orders fail), fresh buffer $g\ge0.477$ & $\Lambda\le S-\|Q\|^2/2000$ & \autoref{ch:exact-buffered-halfline}, \autoref{ch:buffer-bootstrap}\\
+no remote cubic: buffer $g\ge1/6$; or no $B$, no buffer & deficit $\|Q\|^2/200$; resp.\ $\Lambda<S-\frac1{250000}$ & \autoref{ch:exact-buffered-halfline}, \autoref{ch:buffered-cubic-complement}\\
+\multicolumn{3}{l}{\emph{Cores with coupled additions}}\\
+buffered Wick core $c\in[\frac3{32},\frac5{32}]$, $g\in[\frac3{16},\frac7{32}]$, every $A,B,Y,W,\nu$, plus $J$ with $\E[J\mid Z,X]=0$ & exact K for $\|J\|\le\frac1{60}$; $\|J\|\le\frac1{50}$ fits $\eta_{AB}$ & \autoref{ch:buffered-cubic-complement}\\
+coherent core plus an independent internally coupled block (cubic $x$, $A$ $y$, $B$ $z$, even $e$) & exact K on $152x+66y\le52z+9e$ & \autoref{ch:block-gluing-20261020}\\
+any number of independent small blocks (cubic $\le\frac1{100}$, $A/B\le\frac1{600}$), core deficit $3\cdot10^{-5}$, $g\ge\frac18$ & exact K & \autoref{ch:signed-fourth-order-gluing}\\
+any number of small Wick drivers ($c_{\max}\le\frac1{50}$, $e\le\frac1{100}$, $g^2\in[\frac7{200},\frac9{200}]$), \emph{unrestricted} $A/B$ & $\Lambda\le S-\frac{49}{100}k_4-\frac{E_{AB}}{2000}$ ($2k_4$ for $e\le\frac{16}{2500}$); with $E_{AB}\le10^{-6}$ also $-\frac34k_4-\frac{E_{AB}}{200}$ & \autoref{ch:buffered-drivers}, \autoref{ch:shared-nongaussian-new}\\
+independent internally coupled blocks & weak K with $O(1/N)$ error & \autoref{ch:shared-nongaussian-new}\\
+conditionally centred complement $J$ ($\E[J\mid\mathcal A]=0$, fresh buffer) & cost $(\frac{\sqrt\pi}{2g}-p)\|J\|^2$; no independence from the core & \autoref{ch:buffered-drivers}\\
+\multicolumn{3}{l}{\emph{Reusable costs}}\\
+$A$ cost at zero buffer, $\|r_A\|\le\frac1{16}$, any dependence; $B$ content transport, any dimension & cost $\frac{19}{100}$; $|\mathcal B_A-\mathcal B_0|\le0.563\|r_A\|\|R\|$; shifted-$B$ costs $0.27$--$0.368$ by radius & \autoref{ch:radial-directional-bootstrap} (\S\ref{sec:directional-transport-dimfree})\\
+arbitrary coupled remote cubic, $g\ge\frac{37}{200}$: global simultaneous $A/B$ tangent (actual content retained; a reduction, not K) & quadratic cost $\frac1{40}$ ($\|q\|^2\le\frac1{100}$), $\frac1{25}$ ($\le\frac{16}{2500}$) & \S\ref{sec:buffered-review-general}\\
+radial content derivative after independent circular noise & $|\tilde k'(u)|\le m_1\Theta(um_1/m_0)<\min\{m_1,\frac{m_0}{2u}\}$ & \S\ref{sec:kcompact-master}\\
+joint scalar dual: $B$ content paid by Bessel projection, any number of independent drivers & $B$ cost through $\E|q|^{2,4,6}$ and $\|P_{\mathcal D}(q|q|^2)\|^2$ only & \S\ref{sec:k-joint-dual}\\
+local theory: any coupled cubic near the optimal buffer; second variation at $G=0$ & local K, radius $1/20000$; independence maximises $Q(G)$ & \autoref{ch:global-local-coupled-K}, App.~\ref{app:K-register-archive}\\\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{All visible sectors on coupled cubics, buffered} (\autoref{ch:all-sector-audit-extension}). The canonical multiplication bounds are
+$\E|qY|^2\le[e+4h+2\min(h,2e)]\|Y\|^2$ and
+$\E|qW|^2\le[e+10h/3+\min(h,e)]\|W\|^2$.
+The four variance-only regions retain their even penalties
+$1/10,1/10,2/25,1/40$. The influence regions now give
+$g\ge9/40$, $e\le1/25$, $h\le e/10\Rightarrow
+\Lambda<S-1/40000-E_{AB}/2000-9E_{\rm ev}/100$;
+on $h\le9e/100$ retain $1/12500$ and the stronger even penalty
+$19/200$. The weak region $g\ge1/5$, $e\le1/25$, $h\le e/150$
+retains $89\cdot10^{-6}$ and even penalty $99/1000$.
+All permit arbitrary shared dependence and coefficients, with a fresh buffer.
+The solved two-Wick-driver buffer/transfer regions extend to arbitrary A/B and
+even/diagonal fields: $E_{\rm ev}/20$ is retained only in the anchor-covered branches; the trace branch gives $S-1/2000$ and the $g\ge.477$ branch $S-\|Q\|^2/2000$. The
+small-Wick-driver all-even penalty improves from $1/10$ to $3/20$ under unchanged hypotheses. \emph{Exception:} in the one-driver theorem the block
+$\{Z\bar XV_i,\bar ZXV_i\}$ must be absent when $c>19/100$, $g<41/250$, $|\alpha|<2/5$ (no such block exists in $H_{2,1}(Z,X)$); this is \emph{not} unrestricted
+all-dimensional even removal. Zero/small buffer for general shared cubics stays open.
+
+\paragraph{$L^1/L^2$ on $\Hc21$, dimension-free} (\st{P,C}).
+The scalar--Stein certificate of Theorem~\ref{thm:real-stein-radius-20261021}
+proves $\rho\le0.95133$ using $C_6=40.45313$, or $\rho\le0.96018$
+using $C_6=50$. Thirteen entire-half-line radial majorants cover
+$0\le\E|q|^4-2\le42$; the previous $0.969508314$ bound remains valid
+but is superseded. Every actual-response row with $0\le t\le0.1694$
+is below $500/701$ at $\varepsilon=0.7564$, without sector restrictions.
+These are mathematical and Arb-certified results, not a new Lean port
+or a complete row envelope. Sharp $\sqrt\pi/2$ (PVD$_0$) stays open;
+the peak mixed-response obstruction is unchanged.
+
+\paragraph{Two drivers, small buffer: cold-start regions} (\S\ref{sec:tdb-coldstart-regions}, \st{P}+\st{C (AI, not replayed)}). For $\mathcal F_2$ with $g\le0.164$:
+$|\alpha|^2+|\beta|^2\ge0.116+0.494g^2$, or $c_1^2+c_2^2\ge0.236$, or $V\ge0.285$ implies $\Lambda<2\E|L|\le S$, via the exact conditional second moment given $R=|X_1|^2+|X_2|^2$,
+which retains the cubic--$A$ interference. Two further IDE-replayed cold-start certificates extend this: $\Lambda<S$ if $C\ge0.2$, or $A+B\ge0.124$, or $B\ge0.06$,
+or $C+A+B\ge0.228$ (all phases, $g\le0.164$). Open part: inside $C<0.2$, $A+B<0.116$, $B<0.06$, $C+A+B<0.228$.
+
+\paragraph{Circular-mean exclusion for the full odd family} (\autoref{ch:circular-mean-exclusion}, \st{P}+\st{C$_{\rm float}$}). For
+$G=q+gU+(T-1)r_A+Z^2r_B/\sqrt2$ with any circular $q$ orthogonal to the first chaos (any dimension, full sharing), every $g\ge0$ and all $\alpha,\beta$:
+$\|\alpha\|^2+\|\beta\|^2\ge\frac3{50}$ or $\|q\|^2+g^2\ge\frac8{25}$ implies $\Lambda<S-\frac1{1000}$. Even sectors are not included; for those the $\frac4{25}$ exclusion stays.
+
+\paragraph{Sharper orthogonality-only shared-A bound}
+(\S\ref{sec:sharp-circular-audit}, \st{P,C}). For arbitrary square-integrable
+$q,r$ independent of $Z$ with $\E\bar q r=0$, including every remote
+cubic with a shared linear A driver,
+$\Lambda(q+(T-1)r)\le B_0+0.38968u-0.12432w$.
+With the inherited gap $S-B_0>0.0020476$, exact K holds when
+$u\le0.00525+0.319w$, and $S+10^{-4}$ when
+$u\le0.00551+0.319w$. This uses no fourth/sixth moments. Other visible
+sectors are absent. The optimal global affine circular-mean slope is
+enclosed between $0.298834$ and $0.298835$. For $u\le0.0463$, the nonlinear-envelope strip gives
+$S+10^{-4}$ when $w\ge0.0223$, exact K when $w\ge0.0225$, and deficit
+$10^{-4}$ when $w\ge0.0228$ (Theorem~\ref{thm:shared-a-strip-audit}).
+The remaining part of this shared-A rectangle lies in
+$w<0.0223$, $u>0.00551+0.319w$.
+
+\paragraph{Sharp influence and justified moment bounds.}
+Theorem~\ref{thm:sharp-influence-audit} proves
+$\kappa\le(14/3)\operatorname{tr}(I_q^2)\le14e\|I_q\|_{\rm op}$,
+with equality for equal-weight Wick sums. The global matrix is essential;
+no sixth moment is used. This reconciles the old $14$ in
+\S\ref{sec:wct-external} with the later weaker $50/3$ and extends the
+influence-only exact branch to $h\le e/10$ with deficit $1/40000$.
+The scalar--Stein refinement in Theorem~\ref{thm:real-stein-radius-20261021}
+now gives $\rho\le0.95133$ with the genuine-cubic tensor bridge for
+$C_6=40.45313$ in \S\ref{sec:sixth-tensor-bridge-audit}, and a fallback
+$\rho\le0.96018$ with $C_6=50$. It supersedes the previous eleven-row
+and spherical estimates, without claiming that the missing Lean
+bridges or the complete endpoint cover have been supplied.
+The precise $1.402$ obstruction is stated in
+\S\ref{sec:obstruction-1402-audit}.
+
+\subsection{Original-response route: constraints and complete regional rows}
+\paragraph{Original-response feasibility (not a raw-K family)} (\S\ref{sec:fixed-first-remote-feasibility}). For the actual responses $Ph=tZ$, $F=\varepsilon Qk$, and
+$q=\E[F\mid X]$, $e=\|q\|^2$, with all visible sectors and arbitrary remote dependence: $t+\lambda e/\varepsilon\le\E\rho(\lambda^2|q|^2)$ for every $\lambda\ge0$, where
+$\rho(u)=\E|Z+\sqrt u|$. Hence $e<0.046266$ on the central interval, tightening to $0.041319$ at $t\ge0.845$ and $0.035383$ at $t\ge0.851$. The coupled--diffuse
+family $q_N$ ($N\ge20$, with any dependent remote perturbation of norm $\le1/1000$) is infeasible at $t\ge0.8456$. These exclude response configurations at a
+prescribed row; they are \emph{not} statements $\Lambda\le S$. Consequence for the 1.402 chain: K is needed only for responses that can occur, so remote
+energy $e<0.0463$ on the central rows. Further (\S\ref{sec:fixed-first-remote-feasibility} ff.): moment-only law optimisation with all scalar Rice cuts reduces exactly
+to two-point laws. Certified remote caps are $1.3739601$ at $t\ge.847$, $1.3739481$ at $t\ge.849$ and $1.3739276$ at $t\ge.851$; these cover the remote component
+only, not a full row. At the binding peak these scalar inputs still admit payoff above $1.37396307$, so more such cuts alone cannot give a large gain (Stein cuts
+are not included in this limitation). The dimension-free joint projection inequality $\|\E[h\mid X]\|^2+\|\E[k\mid X]-r_\lambda(q)\|^2\le\sqrt\pi D_\lambda$ is proved;
+its all-sector numerical gain is open. The joint constraint now has a directed finite-cubic certificate: $q=\sqrt{e/10}\,(H+3XV_4)$, with $e=31/800$ and normalized fourth moment
+$593/100$, passes every scalar Rice cut at $t=1057/1250$ but violates a noncollinear cubic support cut. This yields a universal bound on its two cubic coefficients,
+with all orthogonal components unrestricted. Nearby in those two coefficients, any original response pays $\|Pk\|^2>10^{-5}$
+(\S\ref{sec:coupled-projection-certificate}). All visible sectors are now jointly constrained by the remote support gap. For every remote test $v$, replace $t$ in the support cut by
+$t+(3\|r_\perp\|^2+2E_{\rm even})/(8\varepsilon^2)$, where $r_\perp=(r_A-\sqrt2\,\overline{r_B})/\sqrt3$ and $E_{\rm even}=\|Y\|^2+\|W\|^2+|\nu|^2$. A complementary profile
+constraint ties the parallel $A/B$ combination to $-(\sqrt\pi/4)P_X[vG(|v|^2)]$, with an explicit positive unit-Rice kernel $G$. The energy ellipsoid
+$\frac{\|q\|^2}4+\frac{\|r_A\|^2}3+\frac{2\|r_B\|^2}3+\frac{\|Y\|^2+\|W\|^2}2+\frac{4|\nu|^2}7\le R\varepsilon^2(R-t)$, $R=\sqrt\pi/2$, gives $\|F\|^2<0.081884$ for $t\ge0.84$ and
+$<0.071981$ for $t\ge0.8456$ (previously $0.163$). These hold in every dimension, with arbitrary shared drivers and all sectors present
+(\S\ref{sec:sector-rice-feasibility}). \emph{Original-response necessary constraints, combined:} for every remote cubic test $v$,
+$\|\bar k-r(v)\|^2/\sqrt\pi+\frac{3p^2}8\|r_\perp\|^2+\frac{p^2}4E_{\rm ev}\le D(v)$, and the same with $\|\bar h\|^2$ added and $E_{\rm ev}$ dropped; arbitrary shared drivers,
+zero buffer allowed. For the certified nine-coordinate cubic at $t=0.8456$, transverse amplitude $1/500$ is excluded although the two displayed tests pass separately. At an
+unconstrained norm maximizer (fixed finite dimension only), a specified configuration pays more than $1/20000$ in the two retained squares
+(\S\ref{sec:joint-response-budget}). These are not raw-K regions; endpoint unchanged.
+
+\emph{A complete regional original-response row} (\S\ref{sec:canonical-response-cap}, \st{P,C}):
+choose any nine orthonormal remote directions and put
+$H=X(|X|^2-2)/\sqrt2$, $J=\frac X2\sum_{j=1}^4Y_j\bar W_j$.
+Under the inherited remote moment input, every actual response with
+$t\ge1057/1250$ and $\Re\langle H+(113/40)J,q\rangle\ge58969/100000$
+satisfies $\mathcal N<713260/10^6-5(\|r_\perp\|^2+E_{\rm ev})<500/701$.
+All visible sectors and all orthogonal remote cubic coefficients are allowed;
+no stationarity or buffer is assumed. Explicit unimodular responses certify
+that this region is nonempty. The result follows by anchoring the response
+dual at $q$ and completing the first-chaos penalty and visible-energy cost
+against the same joint support budget. The full parallel envelope is exactly
+an intersection of convex quadratic cuts. This is a regional original-row
+cap, not raw K or a new global endpoint; coverage of its complement remains open.
+
+\emph{Dimension-free response criterion} (\S\ref{sec:cumulant-response-cap},
+\st{P,C}): for every remote cubic test $v$, put
+$D=\E\rho(|v|^2)-t-p\Re\langle v,q\rangle$,
+$\kappa_v=\E|v|^4-2\|v\|^4$, and
+$\chi=\min\{\kappa_v^{3/4},\sqrt{8\kappa_v I_v/7}\}$.
+Then the complete original row satisfies
+$\mathcal N\le t^2-2\ell t+2p\beta^2+\Lambda(q)
++\varepsilon(2\sqrt D+\chi)^2$.
+Under the inherited remote moment input, on $t\in[0.84,0.851]$,
+existence of a test with $\kappa_v\le1/1000$ and $D\le1/200000$
+gives $\mathcal N<0.713254<500/701$, with all shared sectors allowed.
+The choice $v=(p/t)q$ is intrinsic; more general tests are permitted.
+A stronger influence version certifies nonempty support neighborhoods
+tested by equal Wick sums in unbounded dimension. These are conditions
+on original responses, not raw K. Coverage of the support-interior and
+larger-cumulant/influence complement remains open; endpoint unchanged.
+
+\emph{Earlier isotropic cap.} The $e\le0.0113$ precursor and its proof remain in
+\S\ref{sec:response-interior-operator}. For current coverage use the larger
+anisotropic region and its closed-form extension below; the older number
+is not the current low-variance cutoff.
+
+\emph{Sharper two-disk cap} (\S\ref{sec:anisotropic-response-cap},
+\st{P,C}): at $\varepsilon=1891/2500$, every actual response with
+$t\in[0.667,0.851]$ and $\|q\|^2\le0.0148$ satisfies
+$\mathcal N\le0.713256<500/701$, with all sectors and phases in every
+dimension. The sharp pointwise two-disk inequality retains a parallel
+component of $k$ lost by the energy relaxation. Its real-linear inverse
+produces a coupled A/B penalty matrix dominating both
+$\operatorname{diag}(0.2,0.9)$ and $0.31I$, with additional Y/W/diagonal
+penalties. No moment, raw-K, stationarity or buffer input is used.
+The adjusted-energy extension and explicit survivor condition are in
+\eqref{eq:aniso-adjusted} and the final subsection there.
+The complete complement and same-$\varepsilon$ row cover remain open.
+
+\paragraph{Closed-form response ellipse and complete low-variance strip}
+(\S\ref{sec:canonical-response-ellipse}, \st{P,C}). At
+$\varepsilon=1891/2500$, every actual response with
+$e+(191/500)t^2\le9/40$ satisfies
+$\mathcal N\le14263/20000<500/701$, with all sectors and phases in
+arbitrary dimension and no moment input. Combining this with the preceding
+anisotropic theorem gives $\mathcal N\le0.713256$ on
+$0\le t\le0.851$, $e\le0.0148$. Four weighted moments follow from one
+erfc value; the auxiliary visible profile is eliminated analytically.
+The stronger two-disk inequality also retains the nonnegative $h$-phase
+defect and the compatible $Qh$ completion square. The central cutoff remains
+$0.0148$; the advance is the larger low-$t$ ellipse and the complete strip.
+The new exact replay accompanies the source; an independent IDE replay is
+not asserted by this entry. No endpoint changes.
+
+\subsection{What remains}
+\paragraph{Polynomial-moment response slabs}
+(\S\ref{sec:response-moment-compressions}, \st{P,C}). Multiplication by
+one bounded response is an $L^2$ contraction. Its polynomial compressions
+therefore couple first-, third-, and fifth-chaos moments by explicit PSD
+matrices. For $\varepsilon=1891/2500$, a six-moment two-coordinate
+projection box across $0.84\le t\le0.851$, with full $\|F\|^2\le1/20$,
+gives $\mathcal N<0.7124$ (\autoref{thm:response-moment-slab}).
+All extra coordinates, dependence and imaginary coefficients are allowed
+under that theorem's exact box hypotheses. Three narrower boxes permit
+full energies up to $0.067676$, $0.069794$, and $0.070125$, with caps
+below $0.7132$. Exact rational duals are checked independently of the SDP
+solver. These are original-response regions, not raw-K statements;
+full $F$ energy must not be identified with remote variance $e$.
+No universal orientation or projection-box cover has been proved.
+
+\paragraph{Weighted full-energy response region (22 October).}
+\S\ref{sec:weighted-full-energy-response} proves, in every dimension
+and with every shared sector and phase, a cap $0.71321135$ on
+$0\le t\le0.851$, $\mathcal V_*\le0.0325$, and $0.71325087$ at
+$t=0.8456$, $\mathcal V_*\le0.03744$. Here $\mathcal V_*$ is the
+explicit weighted \emph{full} energy in
+\eqref{eq:weighted-full-energy-definition}; it is at most $\|F\|^2$,
+but differs from both remote $e$ and $\mathcal E_{\rm adj}$.
+The tapered central region and exact survivor inequality are also proved.
+No moment, buffer or tensor-orientation input is used. Fresh default and
+fine exact replays pass; independent IDE replay and Lean port are not
+asserted here. A visible support inequality separates an exact fake
+degree-two moment configuration. Separately, all proportional support
+tests together have a proved relaxation gap in the Gaussian-grade model;
+this rules out mere multiplier tuning, not the full response programme.
+
+\paragraph{Canonical reassessment (22 October).}
+\S\ref{sec:one-erfc-response} replaces eight integral bounds by one erfc
+formula, valid for all dimensions and shared sectors. It certifies full
+energy $V\le0.0365$ for $t\le0.8456$, and $V\le0.0318$ for
+$t\le0.851$, below the design cap. These are simpler sufficient regions,
+slightly weaker than the preceding weighted theorem.
+\autoref{thm:bounded-interpolant-correction} strengthens every regularized
+Gram certificate by the weighted distance of its interpolant from the
+unit disk; an explicit formula captures at least $8/9$ of that distance
+squared. The entire visible scalar geometry is solved in
+\S\ref{sec:exact-visible-response-geometry}, with an exact fake-energy
+obstruction showing why it alone cannot close the gap.
+\S\ref{sec:joint-response-defect} now identifies the exact gain of the
+joint response dual over that Gram trial point. Its defect dominates the
+disk-only correction and has a rational nonnegative-polynomial lower
+formula retaining at least the sharp fraction $81/250$. A separate
+projected-price certificate extends the weighted-energy cutoffs to
+$0.03748$ at the peak and $0.03255$ for $t\le0.851$, below $0.713260$,
+without moment inputs. The smaller-energy old caps remain available.
+\S\ref{sec:joint-dual-descent} removes the fixed approximation loss:
+a rational hierarchy retains more than $99.99\%$ of the exact joint
+defect after 32 steps.
+For the fixed certified weight, 48 steps have absolute expectation error
+less than $1.2\cdot10^{-6}$ on every actual response.
+The same section gives an averaged quadratic update with
+a guaranteed decrease of the exact-support dual. Deterministic
+regularization costs at most $2\delta$ and imposes no buffer assumption.
+The open quantitative task is to enclose the joint-law expectations or
+successful dual trial families uniformly on the surviving coupled
+response set. The Gaussian-grade optimization test remains \st{F};
+per-tensor success supplies no uniform cover and no new endpoint.
+
+\paragraph{Current priority: cover the remaining actual responses.}
+At the same witness parameter, combine the ellipse, anisotropic adjusted-energy
+cap, weighted full-energy cap, and cumulant/support criteria. A surviving response must fail every
+applicable sufficient criterion and satisfy all necessary support constraints;
+the strengthened survivor condition retains the $h$-phase defect and the
+compatible $Qh$ square. These simultaneous conditions have not been shown
+inconsistent. Large-variance lower rows and the remaining flank rows also
+need coverage unless covered by a separately proved exclusion. A restricted
+low-variance strip is not a full row envelope.
+
+\paragraph{Alternative sufficient route: finish raw K.}
+The following are open obligations for the stronger raw-K programme. They
+need not all be solved if a complete original-response cover is proved.
+
+\begin{enumerate}
+\item \textbf{The crux:} general mixed cubic tensors and shared coefficient fields outside the certified independent-Wick, Gaussian-factor, block and paid-complement
+families. Finite targets: two drivers with large $A$ at buffer $g<0.164$ and $\max c_k<0.315$ (outside the tapers and the thresholds above; the
+pointwise tangent has positive $A$-curvature at $c=0$ for $g<0.16407$), many drivers with large $A$ outside the small-driver window, coupled remote cubics with shared $B$ at small
+unnormalised cumulant $\kappa<9/2500$, and monomials mixing core and external coordinates.
+\item Simultaneous unrestricted even/diagonal interactions on an $A/B$ baseline outside the all-sector core neighbourhoods. Without a remote cubic they reduce exactly
+to matrices of size $\le8,4,1$ (\autoref{ch:global-local-coupled-K}); the $B=0$ face is certified, the general-$B$ cover is open (float ratio $0.903$ \st{F}).
+\item A quantitative gluing argument that pays for a \emph{large} coupled remainder; the five-block lemma computes its cost but does not make its norm small.
+\item Profile uniformity and the complete central-row envelope, followed by certificate regeneration.
+\end{enumerate}
+\emph{The budget, exactly (IDE audit, 20 October).} The central-row cap is $(t-\ell)^2-\ell^2+2\beta^2/\varepsilon+\sup\Lambda$, so on $t\in[\frac{21}{25},\frac{851}{1000}]$ the
+sufficient universal statement is
+\[
+ \Lambda(G)\le C'+\eta_{AB}=\frac{2747927}{2000000}+\frac{240297199}{2651182000000}=1.37405413\ldots\approx S+1.0061\cdot10^{-4}\quad\text{for all }G\in\Hc21 .
+\]
+$\eta_{AB}$ is room on top of $C'$, not on top of $S$: the remote theorem's $C'-S\approx9.97\cdot10^{-6}$ is \emph{already paid} inside $C'$. Hence every ``$S+89\cdot10^{-6}$'' weak region
+has about $1.2\cdot10^{-5}$ of unclaimed room. \emph{Open smoothed target (not a proved row):} by Jensen $\Lambda(F)\le J_g(F)+pg^2$, and $p/128^2=625/7745536$, so
+\[
+ M_{1/128}=\sup_{n,F}\Lambda(F+U/128)\le C'+\eta_{AB}-\frac{625}{7745536}=\frac{116564917402667}{84837824000000}\approx S+1.992\cdot10^{-5}
+\]
+suffices (\S\ref{sec:k-fixed-smoothing-response} states the stricter $S+99/10^7$, which double-counts the remote slack). The allowance covers the whole smoothed objective. Profile
+uniformity and the row cover are still needed. \emph{Allocation:} the fixed peak profile on all of $[0.84,0.851]$ spends $(t-\ell)^2\approx3\cdot10^{-5}$ of the room at the interval
+ends. With the profile re-optimised per row (Gaussian ideal, exact K), the allowance $500/701-D''(t)$ is $1.32\cdot10^{-4}$ at $t=0.845$, $1.5$--$1.6\cdot10^{-4}$ at $0.84/0.85$,
+$\ge3.4\cdot10^{-4}$ for $|t-0.845|\ge0.015$, and $\ge7\cdot10^{-4}$ outside $[0.82,0.87]$ \st{F}. Profiles $(\ell,\beta)$ range over $[0.836,0.856]\times[0.140,0.146]$ there. Shrinking the
+peak-profile interval and adding neighbouring profiles trades up to $\approx30\%$ more budget for K at a few more profiles. The realistic K-cap of \autoref{ch:K} ($0.713160$,
+including the envelope loss) leaves $\approx1.07\cdot10^{-4}$.
+
+\emph{Alternatives.} The retained-response/near-maximizer route (\autoref{ch:response-stability}) constrains only near-maximizers and is a weaker target, not a proved
+replacement; its global optimisation is unfinished. Refinement (\S\ref{sec:k-fixed-smoothing-response}): the full one-fresh-coordinate response operator $\mathcal T_{F,g}$ retains the mixed
+phase block, and every $\delta$-near-maximiser of $M_g$ satisfies $\sum_j\|(\mathcal T_{F,g}-pI)v_j\|^2\le3p\delta$, so the remote derivatives are pinned at eigenvalue $p$.
+This is a repackaging of stationarity and symmetry. Its diagnostic has \emph{not} shown benefit beyond the existing scalar cuts (\autoref{ch:nearmax}
+stays as is). The open step is to classify such stable high-payoff cubics. Rotation stationarity (K$_{\rm rot}$, \autoref{ch:weakk}) pays only $13$--$57\%$ of the measured gain.
+PVD$_0$/BNC (exactness of the remote part, worth $\le10^{-5}$) needs a spread lemma for the nodal-set energy of a polynomial chaos (\S\ref{sec:bnc-forms}).
+
+\subsection{Negative-result register (do not retry)}
+\begin{itemize}
+\item the weighted-content reduction (T) (counterexample $X^2\bar Y$; \autoref{ch:weighted});
+\item equal-variance peeling of a shared driver (\autoref{ch:attemptK});
+\item exact K-a from the radial scalar inputs alone (\autoref{ch:spectral-review});
+\item fibrewise Gaussian domination at a fixed shift (\autoref{ch:forest}, \autoref{ch:gpt-averaged});
+\item every single-scale strengthening: heat-kernel, characteristic-function and Laplace domination (\autoref{ch:stronger}); certified counterexample
+$H=z[(|z|^2-2)+i(|w|^2-1)]/\sqrt3$ with $\E e^{-30|H|^2}<1/31$, which also refutes the convex order $|A|^2\ge_{\rm cx}\|A\|^2\mathrm{Exp}(1)$;
+\item buffer doubling, which leaves the law unchanged (\autoref{ch:gpt-averaged});
+\item conditioning without the core's deficit (\autoref{ch:gpt-forest}); law-only shared comparisons; the marginal Gaussian obstruction (\autoref{ch:gaussian-remainder});
+\item monotone Gaussianisation: $\Lambda(G)-\Lambda(\hat G)$ can be $+1.2\cdot10^{-2}$ (Appendix~\ref{app:K-register-archive});
+\item positivity of the signed mixed $AB$ kernel or of a circularly convolved content kernel: neither need be completely monotone; the positive-kernel proofs use absolute
+derivative bounds instead;
+\item a dominant-coordinate reduction (\autoref{ch:milestone-map-20261020}).
+\end{itemize}
+The common lesson: K is an \emph{averaged, multi-scale} statement; the visible variable must be integrated first, and the $A$ sector is the one admissible profile that is
+not scale-local. An unsuccessful envelope or finite cover is not a counterexample to K.
+
+\paragraph{A new concentration branch (22 October, original responses).}
+Theorem~\ref{thm:contact-concentration-cone} proves
+$\mathcal N<0.71315$ throughout $0.84\le t\le0.851$ whenever one
+remote normalized Wick direction $H_X$ satisfies
+$|\langle H_X,F\rangle|^2\ge(4/5)\|F\|^2$.
+This is concentration of the \emph{full} cubic $F=\epsilon Qk$.
+The orthogonal remainder may share every coordinate and sector;
+no buffer, independence, moment hypothesis or amplitude bound is used.
+Three joint-support integrals and seven rational endpoint comparisons
+supply a self-contained \st{P,C} proof. Both fresh replays pass.
+It is a regional alternative, not a new endpoint. A surviving central
+response must now have every diagonal Wick projection below this share;
+nondiagonal concentrated tensors and diffuse tensors still remain.
+
+\paragraph{Mixed-square concentration is also covered (22 October).}
+Theorem~\ref{thm:mixed-contact-concentration} adds a dimension-free
+original-response branch throughout $0.84\le t\le0.851$.
+For orthogonal remote Gaussian directions $X,Y$, a share at least
+$9/10$ of the \emph{full} energy in $J_{X,Y}=X^2\bar Y/\sqrt2$
+gives $\mathcal N<0.71295$; a share at least $179/200$ gives
+$\mathcal N<0.713225$. All coupled remainders and phases are allowed.
+Two fixed support integrals and four rational endpoints prove both
+caps \st{P,C}; the concentration-dependent cap has the closed formula
+\eqref{eq:mixed-contact-canonical-cap}. No raw-K, buffer or moment
+hypothesis is used. Hence a central survivor must have every such
+mixed-square share below $179/200$, as well as every diagonal-Wick share
+below $4/5$. The unit tensor $X_1X_2\bar X_3$ has maxima $1/2$ and
+$2/27$, respectively, so those two individual tests alone are not
+exhaustive. This example is covered by the next, larger-subspace result.
+
+\paragraph{Whole tensor subspaces, including unbounded quadratic rank
+(22 October).}
+Theorem~\ref{thm:whole-slice-contact} proves, on the same central interval,
+\[
+ \begin{aligned}
+ \|\Pi_{\mathcal S_X}F\|^2\ge0.9V&\ \Longrightarrow\ \mathcal N<0.71315,\\
+ \|\Pi_{\mathcal A_Y}F\|^2\ge0.985V&\ \Longrightarrow\ \mathcal N<0.713225.
+ \end{aligned}
+\]
+Here $\mathcal S_X=\{{:}X^2\bar A{:}/\sqrt2:A\perp Z\}$,
+$\mathcal A_Y=\bar Y\mathcal H_{2,0}(\{Z,Y\}^\perp)$ and $X,Y$
+are unit remote directions. At $99\%$ in the second subspace the cap
+is $0.71305$. The remainder may share every coordinate and visible
+sector. The first result covers the entire diagonal/mixed slice;
+the second covers arbitrary quadratic rank, using its Gaussian
+scale-mixture representation. The product-of-Gaussians test comparison
+is exact as a supremum over rank, with error at most $2d/\sqrt N$ for
+equal-rank quadratic sums. Fresh default and finer directed replays
+pass \st{P,C}; no raw-K or higher-moment theorem is used.
+
+The new conditions are still not a small-influence alternative:
+$F_0=(X_1^2\bar X_2+X_2^2\bar X_1)/2$ is unit, has maximal projection
+share $1/2$ in each subspace, and has maximal combined directional
+influence $3/2$. This is an uncovered tensor shape, not a counterexample
+or a high-payoff actual response, for the \emph{single-subspace tests}.
+Its concentration neighbourhood is now covered by the next theorem.
+
+\paragraph{Two interacting slices are now covered (22 October).}
+Theorem~\ref{thm:two-slice-contact} proves, on $0.84\le t\le0.851$,
+\[
+ \|\Pi_{\mathcal S_{X_1}\oplus\mathcal S_{X_2}}F\|^2
+       \ge\tfrac{39}{40}\|F\|^2
+ \quad\Longrightarrow\quad \mathcal N<0.7132,
+\]
+for any orthonormal remote $X_1,X_2$. At share $49/50$ the cap is
+$0.7130$. All antiholomorphic directions, coefficient phases and
+coupled remainders are allowed. Ten directed integral enclosures
+control a concave coefficient triangle; no raw-K or higher-moment
+input is needed \st{P,C}.
+
+Lemma~\ref{lem:multislice-support-reduction} unifies this with the
+one-slice proof and gives a three-profile reduction for any number of
+orthogonal slices. In the large-rank limit this particular upper
+comparison tends to constant modulus, not a Gaussian: it has averaged
+away the phases carrying the diffuse spread. It therefore does not
+supply the missing diffuse theorem.
+The unit three-cycle
+$(X_1^2\bar X_2+X_2^2\bar X_3+X_3^2\bar X_1)/\sqrt6$
+has maximal two-slice share $2/3$ and maximal combined influence $1$.
+It escapes these concentration tests, without being asserted to violate
+K or to realize a high payoff. A uniform joint-response bound on the
+complement and the same-witness flank cover remain open. The global
+endpoint is unchanged.
+
+\paragraph{Sharp support with an orthogonal input split (22 October).}
+Theorem~\ref{thm:sharp-decoupled-support} keeps the conditional Gaussian
+phase for $\mathcal D(\mathcal A,\mathcal B)
+=\mathcal H_{2,0}(\mathcal A)\mathcal H_{0,1}(\mathcal B)$,
+where the two remote first-chaos spaces are orthogonal. For
+$\dim\mathcal A=m$ the sharp unit-test support is the explicit
+Gamma--Gaussian mixture
+$\sqrt{2/[m(m+1)]}R_mG$, with $R_m\sim\operatorname{Gamma}(m,1)$.
+An isotropic quadratic tensor attains the bound in finite dimension.
+The support increases monotonically to the Gaussian support, rather
+than to constant modulus \st{P}.
+
+On $0.84\le t\le0.851$, Theorem~\ref{thm:phase-preserving-contact}
+certifies $\mathcal N<0.71325$ whenever the projection into this
+subspace carries respectively
+$191/200,49/50,99/100,499/500,1999/2000$ of the full cubic energy
+for $m\le2,4,8,16,24$ \st{P,C}. Antiholomorphic rank is unrestricted,
+and the remainder can share every coordinate and visible sector.
+The subspace condition does not include arbitrary self-interaction.
+No exhaustive alternative or same-witness flank cover follows, and
+no new complete endpoint is asserted.
+
+\paragraph{IDE audit, 22 October (\S\ref{sec:gaussian-point-cone-reach}).}
+The Gaussian point $\sigma^*W$ is a strict local maximum of the remote
+functional in every sector direction (second variation $-0.28$ to
+$-2.5$; the Gaussian family is the only flat direction, with $F''<0$)
+\st{F}; the visible $\nu$-sector is exactly a profile perturbation of
+the remote row \st{P}; the contact-cone integrals were reproduced
+independently and the slice threshold decreases monotonically from the
+pure mixed monomial \st{F}. Its exploratory two-row tests lose their
+useful margin after a few slices \st{F}; this is not a limitation theorem
+for support certificates. The sharp orthogonal-block comparison above
+now reaches 24 holomorphic inputs with different certified support rows.
+Neither observation supplies an exhaustive alternative or a new endpoint.
+
+\paragraph{Entire overlapping cubic cores (22 October, \st{P,C}).}
+Theorem~\ref{thm:spherical-core-contact} removes the orthogonal-input
+restriction for bounded-dimensional remote cores. On
+$0.84\le t\le0.851$, a share at least
+$187/200,481/500,122/125,124/125,9999/10000$ of the full energy
+in $\mathcal H_{2,1}(\mathcal A)$, with
+$\dim\mathcal A\le2,3,4,6,8$ respectively, gives
+$\mathcal N<0.71325$. The remainder may share every coordinate and
+visible sector. No raw-K, buffer or higher-moment theorem is required.
+A harmonic/trace decomposition reduces all tensor coefficients to the
+two explicit gamma profiles in
+Lemma~\ref{lem:spherical-cubic-profiles}; the combined-influence tail
+in Corollary~\ref{cor:spherical-core-influence} is an invariant
+sufficient entrance test. In particular the three-cycle tensor cited
+above is now covered with its full $3.8\%$-energy concentration
+neighbourhood. The current obstruction is not that single example.
+The exact family $Q_N$ at the end of the new section shows that
+failure of every fixed-core test still does not imply small maximal
+influence. A shared core--factor gluing estimate and the complete
+same-witness row cover remain missing. The endpoint is unchanged.
+
+\paragraph{Why the bounds stall: the duality view (IDE, 22 October).}
+For the real constant, Heilman--Jones--Malavolta prove the minimax
+$1/K_G=\sup_\mu[c_1(\mu)-\sum_{m\ge3}|c_m(\mu)|]=\inf_Q\mathrm{OPT}(Q)$ over
+rounding schemes $\mu$ (kernel coefficients $c_m$) and Hermite projection
+games $Q=\sum_mq_m\Pi_m$ (arXiv:2610.10477, Thm.~2.2); the complex problem
+has the same structure on charge-one bidegrees $(k+1,k)$. A game supported
+on degrees $\{1,3\}$ only sees the projection of the convex set of
+achievable kernels onto $(c_1,c_3)$: it bounds the best rounding that need
+only cancel the \emph{cubic} coefficient. Under Gaussian extremality its
+value is about $1/0.71313=1.40227$ at the best $\epsilon\approx0.756$, a ceiling
+for every certificate of $P_{1,0}-\epsilon P_{2,1}$. Our upper bound
+$1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$ is only $2.35\cdot10^{-5}$ above Haagerup's integral
+$1/\gamma^\dagger=1.404575935$ (HJM's conjectured value), so the
+$2.9\cdot10^{-3}$ gap is almost entirely the cost of cancelling degrees
+$\ge5$ that the cubic witness cannot see. The real case shows the same
+pattern: its certified game has nonzero coefficients at every odd degree
+$1,\dots,21$, and the certified lower bound lags only because
+$\mathrm{OPT}$ of that game is hard to certify. A degree-nine complex game
+(\S\ref{sec:finite-shared-witness-20261021}) already has best challengers
+$0.712056$, i.e.\ at most $1.40438$. A significant lower-bound move
+therefore needs a higher-degree game with a multi-chaos certificate, and a
+complex primal/dual search (HJM's alternating LP) would locate $K_G^{\C}$ to
+$\sim10^{-4}$ and test $1/\gamma^\dagger$. Full note:
+\pathref{WHY\_THE\_GAP.md}.

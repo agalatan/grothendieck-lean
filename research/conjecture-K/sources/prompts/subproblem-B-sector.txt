@@ -1,0 +1,73 @@
+SUBPROBLEM: the B-shell cost and content lemma (the missing twin of the certified A-shell results)
+
+Setting (peak row; the flank and upper rows are the same with their parameters).
+  z: standard complex Gaussian (E|z|^2 = 1), T = |z|^2, L = z (l + b (T - 2)), l = 1057/1250, b = 179/1250, eps = 1891/2500.
+  w in C^n: standard complex Gaussian vector independent of z (the "remote" coordinates), n arbitrary.
+  H_{2,1}(w): the Wick (chaos) space of polynomials homogeneous of degree 2 in w and degree 1 in conj(w), e.g. w_1(|w_1|^2 - 2),
+     w_1(|w_2|^2 - 1), conj(w_1) w_2^2, (|w_1|^2 - 1) w_2. H_{1,0}(w): linear holomorphic forms r(w) = sum_j a_j w_j.
+  For an adversary G = G(z, w) in the charge-(2,1) chaos of (z, w):
+     Lambda(G) = E|L + G| + E|L - G| - E|G|^2 / eps,     S = sup_{s >= 0} [ 2 E|L + s W| - s^2 / eps ] = 1.3739535  (W standard complex Gaussian).
+  Conjecture K_eta: Lambda(G) <= S + eta for every G, with eta = 1e-4 enough for the application.
+
+Known (certified, replayable): for every remote cubic q in H_{2,1}(w) with E|q|^2 <= 0.0463,
+  (K-a)  Lambda(q) <= S + 1e-5;
+  (A-cost) for the A-shell (T - 1) r(w), r in H_{1,0}(w), E|r|^2 <= 0.0113 (r may share coordinates with q):
+          Lambda(q + (T-1) r) <= Lambda(q) + 2 Re E_w[ conj(r(w)) F_A(q)(w) ] - 0.24 E|r|^2,
+          F_A(q)(w) := E_z[ (T - 1) ph(L + q(w)) ],  ph(x) = x/|x|;
+  (A-content) C_A(q)^2 <= 0.24 (B(u) - F(q)) <= 0.24 (S - Lambda(q)) for large certified classes of q (u = E|q|^2 in
+          [0.00551, 0.0463]; F(q) = E|L+q| + E|L-q|, B(u) = 2E|L + sqrt(u) W|), C_A(q) := sup_{E|r|^2 = 1} Re E[conj(r) F_A(q)],
+          numerically C_A^2/(B - F) <= 0.089 for every cubic tested.
+  Together these give K_eta for the "core" G = q + (T-1) r.
+
+What is missing (this subproblem). The general adversary also has the B-shell
+     G_B = z^2 conj(r_B(w)) / sqrt 2,   r_B in H_{1,0}(w),   E|G_B|^2 = E|r_B|^2,
+which, like the A-shell, has a first-order coupling with q when r_B shares coordinates with q (the Z-shells z Q(w),
+conj(z) P(w) and d z (T - 2) have none, by the frequency rule). STATUS 6 Nov 11:10: (B-cost) is now CERTIFIED at every amplitude for arbitrary remote q, r (pointwise majorant):
+kappa_B = 0.26 (peak), 0.29 (flank), 0.30 (upper) [the phase-averaged curvature is about 0.94, so kappa_B can be
+improved by the averaged method, as kappa_A went 0.19 -> 0.24]. What remains is (B-content) and (joint). NUMERICAL FACT (claude-b9ee, 6 Nov 12:00): the B kernel is half the A kernel:
+F_B(q) = q g_B(|q|^2) with g_B(v)/g(v) in [0.505, 0.56], monotone in v (g_B(0) = -0.42203, g(0) = -0.83514 at the peak), so
+C_B(q) ~ 0.50 C_A(q) for every cubic (measured C_B^2/C_A^2 = 0.235-0.27 on 42 cases) and
+   C_B(q) <= 0.5053 C_A(q) + E[|q| h(|q|^2)] <= 0.5053 C_A(q) + 0.007 sqrt(u),   h(v) = |g(v)| (g_B(v)/g(v) - 0.5053) <= 0.007.
+So (B-content) reduces to certifying these two scalar kernel bounds; then every A-content certificate transfers to B.
+For (joint) the numbers are tight: with kappa_B = 0.26 (pointwise), kappa_AB = 0.118 (uncertified, q = 0 value) and the TRUE
+contents the dual condition holds (worst 0.80 of the allowance at the Wick monomial, u = 0.0463), but with the A content known
+only through its certified constants (0.22-0.235, truth 0.088) it fails by 2x. Needed: a certified kappa_AB; kappa_B raised to
+its phase-averaged value (~0.94); and A-content certificates sharpened to <= 0.189 (with kappa_B = 0.94) or <= 0.110 (with 0.26).
+We want:
+
+  (B-cost)  a constant kappa_B > 0 and an amplitude w_B such that for every remote cubic q with E|q|^2 <= 0.0463 and every
+            r_B with E|r_B|^2 <= w_B (sharing allowed):
+               Lambda(q + z^2 conj(r_B)/sqrt 2) <= Lambda(q) + 2 Re E_w[ conj(r_B(w)) F_B(q)(w) ] - kappa_B E|r_B|^2,
+               F_B(q)(w) := E_z[ (z^2 / sqrt 2) conj(ph(L + q(w))) ]        [the first variation is 2 Re E[conj(r_B) F_B]; the pairing E[r_B F_B] vanishes by circular symmetry];
+  (B-content) C_B(q)^2 <= kappa_B (B(u) - F(q)),   C_B(q) := sup_{E|r|^2 = 1} Re E_w[ conj(r(w)) F_B(q)(w) ] = ||Pi_{1,0} F_B(q)||  (the holomorphic first-chaos part, as for A),
+            on u in [0.00551, 0.0463] (or on the refined residual target S - Lambda(q) + 1e-4);
+  (joint)   with both shells present, G = q + (T-1) r_A + z^2 conj(r_B)/sqrt 2, the FIRST-order terms are separate
+            (different Z-frequencies: the two contents do not add coherently), but the SECOND-order cost is a joint
+            quadratic form in (r_A, r_B): the Hessian of |L + q| is not a Hermitian form (it contains
+            Re(h conj(ph)) Re(k conj(ph)) / |L+q|), and the Fourier expansion of ph(L + q) in the phase of z couples the
+            frequency-0 increment (T-1) r_A with the frequency-2 increment z^2 conj(r_B)/sqrt 2 through its m = 2 mode.
+            So the needed statement is a joint cost
+               Lambda(q + (T-1) r_A + z^2 conj(r_B)/sqrt 2) <= Lambda(q) + 2 Re E[conj(r_A) F_A(q)] + 2 Re E[conj(r_B) F_B(q)] - Q_q(r_A, r_B),
+            with Q_q(r_A, r_B) >= kappa_A |r_A|^2 + kappa_B |r_B|^2 - 2 kappa_AB |r_A| |r_B| (|.| the L^2 norms) and the
+            2x2 matrix [[kappa_A, -kappa_AB], [-kappa_AB, kappa_B]] positive definite, certified at the three rows; then the
+            sufficient condition is the dual quadratic form of (C_A, C_B) under that matrix <= S - Lambda(q) + eta
+            (with kappa_AB = 0 it is C_A^2/kappa_A + C_B^2/kappa_B). The size of kappa_AB is the "mixed gain" the manuscript
+            measured (K_rot pays only 13-57 % of it): it must be certified, not assumed zero.
+
+Why this moves the needle. Without (B-cost)+(B-content), Conjecture K is not a theorem for any adversary containing a
+B-shell even after the A-shell content lemma is complete; with them, and with the (expected easier) statement that the
+even sectors are pure cost, K_eta reduces entirely to the core content lemma, where all the certified work lives.
+Expectations: the manuscript's averaged B-sector curvature is d_B ~ 0.93 against d_A ~ 0.47 (so kappa_B should come out
+near 0.9, four times the A-shell's 0.24), and the B content is smaller than the A content (first-order B profile margin
+0.294 vs 0.648 for A); so the B lemma should hold with a large margin and the joint condition is then dominated by the
+A term, which is already covered. Deliverable: the analogue of the certified A-shell note (ch46 / verify_content_extension):
+the exact one-variable reduction of Lambda(q + z^2 conj(r_B)/sqrt 2) (the B-shell enters E[|G|^2 | T] with the profile
+T^2/2 and E_theta |L + q + e^{2 i theta} T conj(r_B)/sqrt 2| is an explicit angular mean), the scalar inequalities that
+give kappa_B at the three rows, a replayable checker, and then the content inequality for the same classes of q as for A
+(one-driver XP(Y), Gaussian-factor, self-interaction), or a proof that C_B(q) <= c C_A(q) for a universal c.
+
+The twin statement (second subproblem, same value): even sectors are pure cost: for G_even = z Q(w) + conj(z) P(w) +
+d z (T - 2) (Q in H_{1,1}(w), P in H_{2,0}(w), d in C) and any core G_0 = q + (T-1) r_A,
+     Lambda(G_0 + G_even) <= Lambda(G_0)   whenever  E|G_0 + G_even|^2 <= 0.072,
+i.e. Theorem A (same-norm domination for cubics vanishing at z = 0) extended to the presence of a remote part q and an
+A-shell; the obstruction in the known proof is the tangent step, where the remote part enters with the weight (1 - t).

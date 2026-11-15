@@ -1,0 +1,200 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/91b-independent-stein.tex (file dated 2026-10-25). Only this line was added.
+% Insert after the independent-sector background.
+% Uses the existing preamble's \Hc, \E, \st, theorem and proof environments.
+% Delivered by a fresh AI answering subproblem-independent-sector (22 Oct); IDE replay PASS (droplet, 188 s, python-flint).
+\subsection{A spectral Stein certificate below the moment-only floor}
+\label{sec:independent-stein-36e-8}
+
+\begin{theorem}[Independent sector, \st{P,C}]
+\label{thm:independent-stein-36e-8}
+For the original constants
+\[
+ a=\frac{699}{1250},\qquad b=\frac{179}{1250},\qquad
+ p=\frac{2500}{1891},\qquad L=z_1(a+b|z_1|^2),
+\]
+every genuine complex bidegree-\((2,1)\) Wick cubic
+$q\in\Hc21(z_2,\ldots,z_n)$ satisfies
+\[
+ \boxed{\Lambda(q)<\frac{1373953883}{10^9}
+       =1.373953883<S+\frac9{25000000}
+       =S+3.6\cdot10^{-7}.}
+\]
+This holds in every finite dimension, with arbitrary complex coefficients
+and no variance or influence restriction.
+\end{theorem}
+
+\noindent
+\st{P} The proof uses the inherited sixth-moment coefficient
+$C=4045313/100000$, the radial Stein identity, the separate spectral
+budgets, and covariance order. It does not require the additional
+contraction-Gram budget. It therefore also bounds the joint-law
+relaxation retaining all these constraints. It does not establish
+the exact independent-sector conjecture or a bound for arbitrary
+cubics involving $z_1$.
+
+\paragraph{Normalization and the cut \st{P}.}
+For $v=\E|q|^2>0$, put $Q=q/\sqrt v$, $U=|Q|^2$ and
+$x=\sqrt{\E U^2-2}$. Let $X_c,r,P,Q_c$ denote the fluctuation
+variables and covariances, so that
+\[
+ \E X_c=0,\quad 2P+Q_c=x^2,\quad
+ \E X_c^2\le2P/3,\quad \E r^2\le2Q_c/3,\quad Q_c\le x^2/3.
+\]
+The scalar $Q_c$ is distinct from the polynomial $Q$.
+The inherited moment bounds are
+\[
+ 0\le x^2\le60,\qquad
+ \E U^3\le6+9x^2+Cx^3.
+\]
+These moment inputs are used only for genuine $\Hc21$ cubics,
+not arbitrary proper pairs of real cubic chaoses.
+
+Let $\phi$ be continuous piecewise affine and eventually constant, and set
+\[
+ \Phi(u)=\int_0^u\phi(s)\,ds,\quad
+ d(u)=\phi(u)-\Phi(u)/u,\quad A_\phi(u)=\Phi(u)-\phi(u),
+\]
+where $d(0)=0$. The test $\Phi(u)/u$ is $C^1$, with itself, its derivative,
+and $u$ times its derivative bounded. The radial Stein identity gives
+\[
+ \E A_\phi(U)=\E[X_c\phi(U)+r\,d(U)].
+\]
+For $\lambda,\mu>0$, $\nu\ge0$, and $t_0,\beta_0\in\R$, define
+\[
+ f_0=-\tfrac12(\phi+\beta_0)+(2t_0+\lambda/3)u,\qquad
+ g_0=-\tfrac12d+(t_0+\mu/3-\nu/2)u,
+\]
+\[
+ G=f_0^2/\lambda+g_0^2/\mu+A_\phi
+                       +(\nu/3-2t_0)(u^2-2).
+\]
+Expansion proves
+\begin{align*}
+ \E G(U)={}&
+ \E\!\left[\lambda(X_c-f_0(U)/\lambda)^2
+                +\mu(r-g_0(U)/\mu)^2\right]\\
+ &+\lambda(2P/3-\E X_c^2)
+  +\mu(2Q_c/3-\E r^2)+\nu(x^2/3-Q_c)\ge0.
+\end{align*}
+All terms are integrable by the fourth moment and the spectral budgets.
+Consequently, if a cubic $R(u)=\sum_{j=0}^3R_ju^j$ satisfies
+$R_3\ge0$ and $R(u)\ge h(vu)+G(u)$ on $[0,\infty)$, then
+\begin{equation}\label{eq:independent-stein-node}
+ \Lambda(q)\le R_0+R_1+(2+x^2)R_2+
+                        (6+9x^2+Cx^3)R_3-pv.
+\end{equation}
+For fixed $R$, its right side is $c_0+c_2x^2+c_3x^3$ with $c_3\ge0$.
+Its derivative is $x(2c_2+3c_3x)$, so an interior critical point at
+$x>0$ is a minimum. Hence an interval in $x$ is bounded by its endpoints.
+
+\paragraph{A uniform curvature estimate \st{P}.}
+For $A=a+bt$, $B=a+3bt$, the squared-radius density of $L$ is
+$\eta(s)=e^{-t}/(AB)$, where $s=tA^2$ and $ds=AB\,dt$.
+Its complete monotonicity gives a Gaussian variance mixture
+$L\stackrel{\rm law}=\sqrt D\,W$.
+The square-root integral formula gives
+\[
+ h_D(s)-h_D(0)=\frac1{\sqrt\pi}\int_0^\infty
+       \frac{1-e^{-ts/(1+Dt)}}{(1+Dt)t^{3/2}}\,dt.
+\]
+Thus $-h_D''(0)=\sqrt\pi D^{-3/2}/8$. Tonelli and the density formula give
+\begin{align*}
+ \sqrt\pi\,\E D^{-3/2}
+ &=\int_0^\infty\frac{-\eta'(s)}{\sqrt s}\,ds\\
+ &=\int_0^\infty e^{-t}t^{-1/2}
+      (A^{-2}B^{-1}+bA^{-3}B^{-1}+3bA^{-2}B^{-2})\,dt\\
+ &\le\sqrt\pi(a^{-3}+4ba^{-4}).
+\end{align*}
+This proves the required integrability at zero. Since $h''$ increases,
+\[
+ 0<-h''(s)\le-h''(0)
+ \le\frac{\sqrt\pi}{8}(a^{-3}+4ba^{-4})
+ <\frac14(a^{-3}+4ba^{-4})<3.
+\]
+The last inequality is checked in rational arithmetic; $\pi<4$ is elementary.
+
+\paragraph{The central certificate \st{P,C}.}
+The 45 exact variance nodes are
+$v_i=7/200+i/4000$, $0\le i\le44$.
+At each node a rational test and a rational cubic verify
+\eqref{eq:independent-stein-node} for $0\le x\le1/5$.
+For each fixed normalized law in this range, $\E U^2\le51/25$ and
+$J(v)=\E h(vU)-pv$ satisfies $J''(v)\ge-153/25$.
+Subtracting the endpoint chord and
+$(153/50)(v-l)(r-v)$ leaves a convex function vanishing at the endpoints.
+It follows that
+\[
+ J(v)\le\max(J(l),J(r))+\frac{153}{200}(r-l)^2.
+\]
+Adjacent nodes therefore cost only $153/3200000000$.
+Including this allowance, the exact upper bound on
+$[7/200,23/500]\times[0,1/5]$ is
+\[
+ B_{\rm central}=
+ \frac{519629358330379958834713591379}
+      {378200000000000000000000000000}
+ <1.373953883.
+\]
+
+\paragraph{What the verifier checks \st{P,C}.}
+There are 68 rational profile caps on $[0,2]$. Each is an upward
+coefficientwise rounding of a cubic Hermite interpolant to $h,h'$
+at two positive nodes. The global majorant property follows from
+$h^{(4)}<0$ and Hermite's remainder formula; continuity covers zero.
+The verifier recomputes each integral enclosure and each coefficient.
+For $s\ge2$ it checks an upward-rounded tangent to the concave function $h$.
+
+On a test cell, $\phi=A+Bu$ and $\Phi=e+Au+(B/2)u^2$, so
+\begin{align*}
+ u^2G(u)={}&u^2f_0(u)^2/\lambda+(ug_0(u))^2/\mu\\
+ &+u^2\{e-A+(A-B)u+(B/2)u^2\}
+       +(\nu/3-2t_0)(u^4-2u^2).
+\end{align*}
+The primitive is reconstructed by exact integration of the test.
+After merging test and profile cells, multiplication by $u^2$ reduces
+every majorant check to a rational polynomial of degree at most five.
+On the initial cell the exact $u^2$ factor is canceled, covering zero.
+Bernstein coefficients and rational subdivision prove positivity on
+all finite intervals. Nonnegative coefficients in powers of $u-128$
+prove the entire remaining ray. No tail is truncated.
+
+\paragraph{The outer certificate \st{P,C}.}
+For a global Hermite majorant $P(s)=\sum_{j=0}^3P_js^j$, $P_3>0$,
+\[
+ \Lambda(q)\le P_0+(P_1-p)v+P_2(2+x^2)v^2
+                            +P_3(6+9x^2+Cx^3)v^3.
+\]
+The $x$-endpoint rule and four Bernstein coefficients in $v$ bound each
+rectangle. There are 154 such rectangles. Exact containment, disjoint
+interiors and area $93/80$ show that they and the central rectangle
+cover $[0,3/20]\times[0,31/4]$. A finite closed union of full area cannot
+miss a point, since its relative complement would have positive area.
+The exact outer upper bound is
+\[
+ B_{\rm outer}=
+ \frac{85135369756831882044807571219209}
+      {61964288000000000000000000000000}
+ <1.373953883.
+\]
+The verifier also checks $h'(3/20)<p$ and
+$h(3/20)-3p/20<1.373953883$.
+Jensen and concavity then control every $v\ge3/20$.
+At zero variance, $h(0)=387\sqrt\pi/500<1.373953883$.
+These checks prove the absolute bound in the theorem.
+
+\paragraph{Comparison and reproducibility \st{C}.}
+The included Gaussian benchmark verifier recomputes
+$F(403448/10^7)>1.3739535256614$. Finally,
+\[
+ 1.3739535256614+\frac9{25000000}
+             -\frac{1373953883}{10^9}
+ =\frac{13307}{5000000000000}>0.
+\]
+The package \code{independent-stein-new} contains the full proof,
+the rational data, \code{verify.py}, and a fresh \code{verification.log}.
+Acceptance uses only Python's standard library and \code{python-flint};
+every new integral enclosure is recomputed, and every polynomial and
+cover check is rational. The inherited sixth-moment theorem
+$C=4045313/100000$ is explicitly identified as a supplied mathematical
+input; its earlier tensor certificate is not claimed as a new replay.
+The exact conjecture remains unresolved.

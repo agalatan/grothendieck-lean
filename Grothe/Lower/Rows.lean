@@ -1,4 +1,6 @@
+-- Grothe/Lower/Rows.lean
 import Grothe.Lower.Gate
+import Mathlib.Data.List.GetD
 
 /-!
 # Rows: data, the exact checker, and its soundness

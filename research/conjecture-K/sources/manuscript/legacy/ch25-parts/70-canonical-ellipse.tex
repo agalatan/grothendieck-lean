@@ -1,0 +1,310 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/70-canonical-ellipse.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Canonical response geometry, a closed-form ellipse, and a retained phase defect}
+\label{sec:canonical-response-ellipse}
+
+\paragraph{Status and scope.}
+[P] denotes an analytic proof and [C] a directed exact calculation.
+This section reorganizes the original-response route, strengthens its
+pointwise inequality, and proves a new region. All statements allow every
+visible sector, every complex phase, every finite dimension, and arbitrary
+sharing of the remote Gaussian coordinates. No moment inequality,
+stationarity, raw Conjecture K, or fresh Gaussian buffer is assumed.
+The full complement and a new global Grothendieck endpoint remain open.
+
+Fix $\epsilon=1891/2500$ and $p=1/\epsilon$. For disk-valued responses put
+\[
+ h=(f_++f_-)/2,\quad k=(f_+-f_-)/2,\quad |f_\pm|\le1,
+ \quad Ph=tZ,\quad F=\epsilon Qk,
+\]
+where $P=P_{1,0}$ and $Q=P_{2,1}$. The visible proper complex Gaussian
+$Z$ is independent of the remote Gaussian space $X$. Write $T=|Z|^2$ and
+\[
+ F=q+(T-1)r_A+Z^2r_B/\sqrt2+ZY+\bar ZW+\nu H(Z),
+ \qquad H(Z)=Z(T-2)/\sqrt2.
+\]
+The remote bidegrees are $(2,1),(1,0),(0,1),(1,1),(2,0)$, respectively.
+Set $e=\|q\|^2$, $A_2=\|r_A\|^2$, $B_2=\|r_B\|^2$, and
+$E_2=\|Y\|^2+\|W\|^2$. The objective is exactly
+\[
+ \mathcal N=t^2+p\|F\|^2-\|Pk\|^2-\epsilon\|Qh\|^2.
+\]
+In particular, $q=\mathbb E[F\mid X]$ is the actual, unnormalized remote
+projection. It is not an arbitrary unit cubic inserted into this formula.
+
+\subsubsection{The canonical target is a convex response body [P, synthesis]}
+In fixed finite Gaussian dimension set $\mathcal E=\operatorname{ran}P
+\oplus\operatorname{ran}Q$. Let $\mathcal C_n$ be the set of pairs
+$(x,y)=(P h+Qh,Pk+Qk)$ obtained from $|h\pm k|\le1$.
+It is a compact convex set in the underlying finite-dimensional real
+space: it is the continuous finite-moment image of two weak-* compact
+$L^\infty$ disks. For every $u,v\in\mathcal E$ its support function is
+\[
+ \sup_{(x,y)\in\mathcal C_n}2\Re\{\langle u,x\rangle+\langle v,y\rangle\}
+       =\mathbb E|u+v|+\mathbb E|u-v|.
+\]
+Indeed the left side separates into the two disk support functions for
+$f_+$ and $f_-$. Conversely, all these support inequalities characterize
+$\mathcal C_n$, by finite-dimensional separation. Thus the exact norm
+problem is
+\[
+ \sup_{(x,y)\in\mathcal C_n}
+ \{\|Px\|^2-\|Py\|^2-\epsilon\|Qx\|^2+\epsilon\|Qy\|^2\}.
+\]
+The required theorem bounds this quantity uniformly in $n$. Raw K is one
+sufficient relaxation after dropping response constraints and negative
+terms. The response-body formulation retains them; it does not require
+that raw K hold for every abstract cubic. This is a synthesis of the
+existing exact response duals, not an additional endpoint theorem.
+
+\subsubsection{New regions [P,C]}
+For every such response,
+\begin{equation}\label{eq:cre-global-quadratic}
+\boxed{\begin{aligned}
+ \mathcal N\le{}&\frac{1195}{2000}+\frac{1961}{10000}t^2
+       +\frac{257}{500}e
+       -\frac{A_2+E_2}{1250}-\frac{101}{250}B_2
+       -\frac{33}{100}|\nu|^2.
+\end{aligned}}
+\end{equation}
+Thus the following ellipse is proved:
+\begin{equation}\label{eq:cre-ellipse}
+ \boxed{\quad e+\frac{191}{500}t^2\le\frac9{40}
+ \quad\Longrightarrow\quad
+ \mathcal N\le\frac{14263}{20000}=0.71315<\frac{500}{701}.\quad}
+\end{equation}
+For example it allows $e\le0.225$ at $t=0$, $e\le0.1295$ at $t=0.5$,
+and $e\le0.03782$ at $t=0.7$. This does not bound all possible responses
+at those $t$ values, since they can have larger remote variance.
+
+Combining this ellipse with the preceding anisotropic certificate gives
+\begin{equation}\label{eq:cre-union}
+ \boxed{\quad 0\le t\le\frac{851}{1000},\qquad e\le\frac{37}{2500}
+ \quad\Longrightarrow\quad
+ \mathcal N\le\frac{89157}{125000}=0.713256<\frac{500}{701}.\quad}
+\end{equation}
+This extends the earlier interval $[0.667,0.851]$ all the way to zero.
+Indeed the ellipse covers $0\le t\le37/50=0.74$ at $e\le37/2500$,
+and the anisotropic certificate covers $[0.667,0.851]$. Both are
+recomputed by the portable checker; no moment-dependent radius estimate
+is needed for this union.
+
+\subsubsection{The stronger two-disk inequality is one square [P]}
+For every $L\in\mathbb C$, $\lambda>0$, and $|h\pm k|\le1$,
+\begin{equation}\label{eq:cre-full-disk}
+ \boxed{\quad
+ 2\Re(\bar Lh)+\lambda|k|^2+
+ \frac{[\Re(\bar Lk)]^2+[\Im(\bar Lh)]^2}{\lambda}
+ \le \lambda+\frac{|L|^2}{\lambda}.
+ \quad}
+\end{equation}
+The previous two-disk inequality omitted the last, nonnegative term.
+To prove the stronger form, rotate $L$ to $l=|L|$ and first take
+$f_\pm$ on the unit circle. Write
+$h=e^{i\phi}\cos\psi$, $k=ie^{i\phi}\sin\psi$, and set
+$a_0=\cos\phi$, $c_0=\cos\psi$. The gap in
+\eqref{eq:cre-full-disk}, multiplied by $\lambda$, is exactly
+\[
+ \lambda^2+l^2-2\lambda l a_0c_0-
+ \lambda^2(1-c_0^2)-l^2(1-a_0^2)
+       =(\lambda c_0-la_0)^2.
+\]
+For disk-valued $f_\pm$, express each as a convex combination of two
+antipodal circle points and use convexity of the entire left side.
+The new coefficient is sharp with the other terms fixed: take
+$0<a_0<\min\{1,\lambda/l\}$ and $c_0=(l/\lambda)a_0$ when $l>0$.
+Then the gap is zero while $\Im h\ne0$.
+
+This proof needs no Gaussian structure. That structure enters only when
+the resulting weighted norms are projected onto Hermite components.
+
+\subsubsection{Exactly which quadratic majorants are possible [P]}
+The pointwise geometry admits a complete elementary description.
+For $l\ge0$ and $A,B\ge0$, let
+\[
+ \Psi_l(A)=
+ \begin{cases}2l,&0\le A\le l,\\ A+l^2/A,&A>l.\end{cases}
+\]
+When $l=0$, interpret $\Psi_0(0)=0$. Then
+\begin{equation}\label{eq:cre-exact-envelope}
+ \sup_{|h\pm k|\le1}
+ \{2l\Re h+A(\Im k)^2+B(\Re k)^2\}
+       =\max\{B,\Psi_l(A)\}.
+\end{equation}
+Convexity reduces to circle-valued $f_\pm$. In the preceding coordinates
+the expression is
+\[
+ B(1-c_0^2)+2l a_0c_0-(B-A)a_0^2(1-c_0^2).
+\]
+One may take $a_0,c_0\in[0,1]$. If $B\le A$, maximizing in $a_0$
+gives $a_0=1$, followed by $\Psi_l(A)$. If $B>A$, the interior
+maximizer is $a_0=lc_0/((B-A)(1-c_0^2))$ while that value is at most
+one. Substitution, with $u=c_0^2$, gives
+\[
+ B(1-u)+\frac{l^2u}{(B-A)(1-u)}.
+\]
+This is convex in $u$, so its maximum on the interior branch is at an
+endpoint: either $B$, or a boundary value already bounded by
+$\Psi_l(A)$. The lower bounds are attained by $h=0,k=1$ and by the
+$a_0=1$ family, respectively. The case $l=0$ follows directly.
+
+Consequently, for a prescribed constant $C\ge2l$, the largest
+reflection-invariant nonnegative coefficients on the two components of
+$k$ are
+\[
+ B=C,\qquad A=\frac{C+\sqrt{C^2-4l^2}}2.
+\]
+Equivalently, they are $A=\lambda$, $B=\lambda+l^2/\lambda$ with
+$\lambda\ge l$. This characterizes this particular quadratic family;
+it is not a no-go theorem for nonlinear response inequalities. The
+retained $h$ term in \eqref{eq:cre-full-disk} is additional information.
+
+\subsubsection{A two-parameter radial certificate with analytic profile elimination [P]}
+Choose any positive radial weight $\lambda(T)$ with the following
+moments finite:
+\[
+ J_j=\mathbb E\frac{T^j}{\lambda(T)}\quad(0\le j\le3),
+ \qquad W_0=\mathbb E\lambda(T).
+\]
+Define
+\[
+\begin{split}
+ K_A&=J_2-2J_1+J_0-\frac{(J_1-J_0)^2}{1+J_0},\\
+ K_B&=J_2/2,\\
+ K_\nu&=\frac{J_3-4J_2+4J_1}{2}
+       -\frac{(J_2-2J_1)^2}{2(1+J_1)}.
+\end{split}
+\]
+Weighted Bessel with the first-chaos penalty gives
+\begin{equation}\label{eq:cre-isotropic-bessel}
+ \mathbb E\lambda|k|^2+\|Pk\|^2\ge p^2
+ \left\{\frac e{J_0}+\frac{A_2}{K_A}+\frac{B_2}{K_B}
+             +\frac{E_2}{J_1}+\frac{|\nu|^2}{K_\nu}\right\}.
+\end{equation}
+Here all denominators must be positive. The $A$ block couples the two
+visible factors $T-1$ and $1$ on the same remote first-chaos direction;
+the diagonal block couples $Z(T-2)/\sqrt2$ with $Z$. Adding $\|Pk\|^2$
+gives exactly the two displayed rank-one inverse corrections. The other
+remote Hermite blocks are orthogonal, so this proof is dimension-free.
+
+For a real auxiliary profile $L_t=Z(a+bT)$, put
+$\mathcal B_t=bZ(T-2)$. The exact completion
+\[
+ -\epsilon\|Qh\|^2=2\Re\langle\mathcal B_t,h\rangle+2pb^2
+                 -\epsilon\|Qh+p\mathcal B_t\|^2
+\]
+and \eqref{eq:cre-full-disk} imply
+\begin{align*}
+ \mathcal N\le{}&t^2-2(a+2b)t+W_0+a^2J_1+2abJ_2+b^2(J_3+2p)\\
+ &+(p-p^2/J_0)e-(p^2/K_A-p)A_2-(p^2/K_B-p)B_2\\
+ &-(p^2/J_1-p)E_2-(p^2/K_\nu-p)|\nu|^2-\mathcal R_t,
+\end{align*}
+where the nonnegative, compatible remainder is
+\begin{equation}\label{eq:cre-defect}
+ \mathcal R_t=
+ \mathbb E\frac{[\Re(\overline{L_t}k)]^2+
+                    [\Im(\overline{L_t}h)]^2}{\lambda(T)}
+       +\epsilon\|Qh+p\mathcal B_t\|^2.
+\end{equation}
+Only the isotropic $k$ norm was used in
+\eqref{eq:cre-isotropic-bessel}; neither angular term has been charged
+there. The $Pk$ square has been used and must not be subtracted again.
+
+The profile parameters need not be searched over. Let
+\[
+ H=\begin{pmatrix}J_1&J_2\\J_2&J_3+2p\end{pmatrix},\qquad d=\binom12.
+\]
+This matrix is positive definite, by weighted Cauchy--Schwarz and $p>0$.
+Choose $(a,b)^{\mathsf T}=tH^{-1}d$. Then the polynomial part of the bound is
+\begin{equation}\label{eq:cre-master}
+\boxed{\begin{aligned}
+ \mathcal N\le{}&W_0+(1-d^{\mathsf T}H^{-1}d)t^2+(p-p^2/J_0)e\\
+ &-(p^2/K_A-p)A_2-(p^2/K_B-p)B_2\\
+ &-(p^2/J_1-p)E_2-(p^2/K_\nu-p)|\nu|^2-\mathcal R_t.
+\end{aligned}}
+\end{equation}
+This is a reusable certificate, simultaneously for every $t$. It avoids
+row-by-row profile optimization. In the present example $a/t$ and $b/t$
+are positive, but no sign assumption on them was needed for the argument.
+
+\subsubsection{Four moments from one closed form [P,C]}
+For $s,d_0>0$ take $\lambda(T)=\sqrt{s+d_0T}$ and set $z=s/d_0$.
+The complete moment calculation is
+\begin{align*}
+ J_0&=\frac{\sqrt\pi}{\sqrt{d_0}}e^z\operatorname{erfc}(\sqrt z),\\
+ J_1&=(1/2-z)J_0+\frac{\sqrt s}{d_0},\\
+ J_{j+1}&=(j+1/2-z)J_j+jzJ_{j-1}\quad(j=1,2),\\
+ W_0&=\sqrt s+\frac{d_0}2J_0.
+\end{align*}
+The first line is the substitution $u=\sqrt{T+z}$ in the defining
+integral. Integrating the derivative of
+$e^{-T}T^j\sqrt{s+d_0T}$ proves the recurrence, with its boundary term
+retained at $j=0$. Thus there is no quadrature or tail cutoff in this new
+certificate.
+
+Set $s=43/2000$ and $d_0=417/1000$. Exact intervals prove
+\[
+\begin{array}{c|c}
+ W_0&[0.5974205484163568,\ 0.5974205484163569]\\
+ 1-d^{\mathsf T}H^{-1}d&[0.1960124339463171,\ 0.1960124339463172]\\
+ p-p^2/J_0&[0.5136504471928151,\ 0.5136504471928152]
+\end{array}
+\]
+and the penalties for $(A_2,B_2,E_2,|\nu|^2)$ exceed, respectively,
+\[
+ 1/1250,\qquad101/250,\qquad1/1250,\qquad33/100.
+\]
+This proves \eqref{eq:cre-global-quadratic}; the same rational inequality
+can retain $-\mathcal R_t$. Since
+$1961/10000<(257/500)(191/500)$, the ellipse cap is exactly
+\[
+ \frac{1195}{2000}+\frac{257}{500}\frac9{40}
+       =\frac{14263}{20000}<\frac{500}{701}.
+\]
+
+The standalone checker uses integer intervals at scale $10^{40}$.
+It bounds $\pi$ using Machin's identity and alternating arctangent series,
+$e^z$ using a positive series with an explicit remainder, and
+$\operatorname{erf}(\sqrt z)$ using its alternating series. It then
+performs the recurrence and every matrix comparison with outward rounding.
+The union theorem additionally replays the pinned anisotropic certificate.
+
+\subsubsection{An extra term in the preceding anisotropic theorem [P]}
+For that theorem's exact auxiliary profile and weight,
+\[
+ L_*=Z\left(\frac{4541}{10000}+\frac{3049}{20000}T\right),\qquad
+ \lambda_*^2=|L_*|^2+\frac{167}{50000}+\frac{11}{500}T,
+\]
+define
+\[
+ \mathcal A_h=\mathbb E\frac{[\Im(\overline{L_*}h)]^2}{\lambda_*}.
+\]
+Every bound in its derivation can retain $-\mathcal A_h$, together with
+its already available $-\epsilon\|Qh+p\mathcal B_*\|^2$.
+The previous $k$-parallel term was used in its real-linear inverse Gram
+matrix; it cannot also be subtracted a second time.
+In particular a central-row violator must satisfy
+\[
+ \mathcal E_{\rm adj}\ge
+ \frac{500/701-t^2+1.518t-1.272881}{0.54}
+       +\frac{\mathcal A_h+\epsilon\|Qh+p\mathcal B_*\|^2}{0.54},
+\]
+where $\mathcal E_{\rm adj}$ is precisely the preceding anisotropic
+sector-adjusted variance. This is an additional necessary constraint,
+not a proof that the surviving set is empty.
+
+\subsubsection{Canonical bookkeeping and the remaining problem}
+The reusable chain now has three stages: a pointwise response inequality,
+a finite weighted-Gram calculation by remote Hermite type, and a scalar
+or matrix certificate for its coefficients. The last two stages do not
+depend on the ambient dimension. Raw-K families provide different
+certificates on restricted cubic laws; they are not interchangeable with
+conditions on actual projections of bounded responses.
+
+The preceding cumulant/support theorem controls another region and keeps
+its own moment dependency. The present region is moment-free. One may
+take the minimum of the valid upper bounds, but may not add their separate
+penalties if they already spent the same $Pk$ or $Qh$ square.
+The new ellipse, the strengthened anisotropic region, and the support
+criteria do not yet cover all actual responses. The full same-$\epsilon$
+row cover and the existing reduction/transfer chain remain necessary;
+the certified global interval is unchanged.

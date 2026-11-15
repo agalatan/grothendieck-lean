@@ -1,0 +1,232 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/91c-joint-structure.tex (file dated 2026-10-25). Only this line was added.
+% GPT joint-structure package (22 Oct evening); IDE replay PASS (python3 -I, standard library).
+% joint-structure-progress/section.tex
+% Insert as a source module; uses the manuscript's E, KG, st and norm macros.
+\subsection{Joint drivers, cubic-phase tails, and a common certificate}
+\label{sec:joint-structure-progress-20261022}
+
+\paragraph{Status.}
+The results below are analytic \st{P}, with exact finite supporting
+audits \st{C}. They do not change the numerical Grothendieck endpoints.
+They strengthen the interpretation of the radial family already used in
+\autoref{ch:zero-buffer-bootstrap} and the certificate interface in
+\autoref{ch:crossbound}. The uniform claims concern every finite Gaussian
+dimension; no independent-buffer assumption is made.
+
+\paragraph{Shared drivers survive phase truncation.}
+For independent proper standard complex Gaussians $X,Y$, put
+$H(X)=X(|X|^2-2)/\sqrt2$. The pairs $(H(X),X)$ and $(H(Y),X)$ have
+identical marginal laws and zero cross covariances and pseudocovariances.
+Their nonlinear contents are $8\sqrt2$ and zero, respectively:
+\[
+ \E[\bar XH(X)|H(X)|^2]
+ =\frac{\E[T^2(T-2)^3]}{2\sqrt2}=8\sqrt2,
+ \qquad T=|X|^2.
+\]
+For their bounded phase responses the pairings are, respectively,
+$2e^{-2}-1$ and zero. Even their separate Hermite energy sequences agree;
+the mixed coefficients need not agree. Thus separate laws and separate
+noise spectra do not encode the joint response profile.
+
+\begin{theorem}[An exact coordinate-core obstruction, \st{P}]
+\label{thm:joint-radial-core}
+For $X\in\mathbb C^N$ standard proper Gaussian, set
+\[
+ Q_N=\frac{X_1(\norm X^2-N-1)}{\sqrt{N+1}}\in\mathcal H_{2,1},
+ \qquad \norm{Q_N}_2=1.
+\]
+For any complex orthogonal projection $P$ of rank $m$,
+\[
+ \E[Q_N\mid PX]
+ =\frac{(PX)_1(\norm{PX}^2-m-1)}{\sqrt{N+1}},\qquad
+ \norm{\E[Q_N\mid PX]}_2^2
+ =\frac{m+1}{N+1}\norm{Pe_1}^2.
+\]
+Consequently, for $1\le m\le N$,
+\[
+ \inf_{\operatorname{rank}P=m}\inf_{F\in L^2(\sigma(PX))}
+ \norm{Q_N-F}_2^2=1-\frac{m+1}{N+1}.
+\]
+Nevertheless the first-coordinate Wirtinger influence is
+$\norm{\partial_{z_1}Q_N}_2^2+\norm{\partial_{\bar z_1}Q_N}_2^2
+=(N+5)/(N+1)$, tending to one; the total influence is three.
+\end{theorem}
+\begin{proof}
+Write $X=PX+(I-P)X$ as independent proper Gaussians. Conditional
+expectation of the cubic gives the displayed formula. Rotation inside
+the range of $P$ reduces its norm to the same radial Wick calculation
+in dimension $m$, with the extra factor $\norm{Pe_1}^2$.
+Conditional expectation is the best approximation by every
+square-integrable function of $PX$. The maximum of $\norm{Pe_1}^2$ is
+one. Direct differentiation gives the influence identities.
+\end{proof}
+
+In fact $(X_1,Q_N)\Rightarrow(X,XG)$, where $G$ is independent real
+standard Gaussian. Its conditional variance is $|X|^2$ and its
+conditional pseudovariance is $X^2$. The limiting Gaussian driver has
+grade two. A small conditional mean does not license a fresh proper
+Gaussian replacement. The example still has a small description in
+terms of polynomial features: a linear driver and a radial quadratic.
+
+Theorem~\ref{thm:conditional-response-contact} now covers actual responses
+with $F=cQ_N$ for $N\ge999$: their exactly-one-leg share relative to
+$X_1$ is $(N-1)/(N+1)$. This does not alter the fixed-coordinate-core
+obstruction just proved. It replaces the core by the entire quadratic
+factor in the selected response test. The mixed families below are
+not asserted to satisfy that $499/500$ share condition.
+
+The same phenomenon occurs at smaller kurtosis excess. On an independent
+block let $R_M=M^{-1/2}\sum_{j=1}^M H(Y_j)$ and put
+$q=\sqrt a\,Q_N+\sqrt{1-a}\,R_M$. Then
+\[
+ \E|q|^4-2
+ =a^2\left(4+\frac{52}{N+1}+\frac{48}{(N+1)^2}\right)
+ +(1-a)^2\frac{42}{M}\longrightarrow4a^2.
+\]
+The first-coordinate influence tends to $a$. For every rank-$m$
+complex projection of the full space,
+\[
+ \norm{\E[q\mid P(X,Y)]}_2
+ \le\sqrt{\frac{a(m+1)}{N+1}}+\sqrt{\frac{(1-a)m}{M}}.
+\]
+For the second term, projecting the normalized diagonal cubic tensor
+gives squared norm at most
+$M^{-1}\sum_{i,j}|\langle Pe_i,Pe_j\rangle|^2\le m/M$;
+the first term follows from the preceding theorem and independent-noise
+contraction. At $a=17/50$, the limiting kurtosis excess is $0.68^2$
+while the persistent influence is $0.34$. This does not assert
+near-optimal payoff for this family.
+For the explicit finite choice $N=M=100\,000$,
+$0.4626<\E|q|^4-2<0.4627$ and the first-coordinate influence exceeds
+$0.34$, while every 20-dimensional complex-linear observation captures
+less than $1/2500$ of the squared norm, by an exact rational
+square-root comparison.
+
+\begin{theorem}[Exact limiting cubic-phase spectrum, \st{P,C}]
+\label{thm:joint-radial-spectrum}
+For $f_N=\operatorname{phase}(Q_N)$ and each fixed $k$,
+$\norm{P_{k+1,k}f_N}_2^2\to e_k$, where $e_0=0$ and
+\[
+ e_k=\frac12\sum_{j+2\ell=k-1}
+ \frac{(1/2)_j^2}{j!(j+1)!}
+ \frac{\binom{2\ell}{\ell}}{4^\ell(2\ell+1)}\quad(k\ge1).
+\]
+The energies sum to one, and their first nonzero entries are
+$1/2,1/16,41/384,139/6144,8009/163840$.
+\end{theorem}
+\begin{proof}
+Couple $X,X'$ by real noise correlation $\rho\in[0,1)$.
+The remote radial fluctuations converge jointly to real Gaussians with
+correlation $\rho^2$, independent of $(X_1,X_1')$.
+Their sign boundaries have probability zero. Bounded convergence in
+distribution therefore gives the limiting kernel
+\[
+ C(\rho)\frac2\pi\arcsin(\rho^2),\qquad
+ C(\rho)=\frac\pi4\sum_{j\ge0}
+ \frac{(1/2)_j^2}{j!(j+1)!}\rho^{2j+1}.
+\]
+Here $C$ is the complex Gaussian phase kernel: expand the phase in
+$zL_j^1(|z|^2)/\sqrt{j+1}$ and integrate the Laguerre generating
+function. Multiplication by the arcsine series gives the formula.
+Coefficient convergence follows by diagonal subsequences: nonnegative
+coefficient tails at $\rho<1$ are uniformly at most
+$\rho^{2K+3}$, and uniqueness of power series identifies every limit.
+The limiting kernel tends to one at $\rho=1$, proving normalization.
+\end{proof}
+
+\begin{corollary}[A necessary uniform tail cutoff, \st{P,C}]
+\label{cor:joint-cubic-tail-obstruction}
+For every integer $D\ge1$,
+\[
+ \sup_N\sum_{k>D}\norm{P_{k+1,k}\operatorname{phase}(Q_N)}_2^2
+ \ge\frac1{6\sqrt{\lceil D/2\rceil}}.
+\]
+There is no dimension-uniform $o(D^{-1/2})$ estimate for phases of all
+genuine complex Wick cubics. A uniform tail allowance $10^{-4}$
+necessarily requires $D\ge5\,555\,555$.
+\end{corollary}
+\begin{proof}
+Keep $j=0$ and $\ell\ge L:=\lceil D/2\rceil$ in the preceding theorem.
+The elementary bound $\binom{2\ell}{\ell}/4^\ell\ge1/(2\sqrt\ell)$
+follows by induction from $(2\ell+1)^2\ge4\ell(\ell+1)$.
+Thus the tail is at least
+$\frac1{12}\sum_{\ell\ge L}\ell^{-3/2}\ge1/(6\sqrt L)$.
+Finite heads converge and every total energy is one. The numerical
+cutoff follows from $36\cdot2\,777\,777<10^8$.
+\end{proof}
+
+This is an obstruction to a general individual-energy estimate, not
+to a signed mixture or a theorem restricted to near-maximizers. The
+limiting self-pair has cubic-witness payoff $-\varepsilon/2$; reversing
+one response gives $\varepsilon/2$, far from the current norm cap.
+One-sided best-response form alone also does not remove the obstruction.
+For every nonzero $q\in\mathcal H_{2,1}$, the Gram matrix of
+$\mathcal H_{1,0}\oplus\mathcal H_{2,1}$ restricted to a Gaussian ball
+is positive definite. Inverting it and scaling a polynomial truncated
+to that ball produces a bounded charge-one $g$ with
+$(P_{1,0}-\varepsilon P_{2,1})g=aq$, $a>0$.
+Thus $\operatorname{phase}(q)$ is a one-sided best response, although
+its payoff need not be near the global norm.
+
+\begin{proposition}[Common certificate with priced smoothing, \st{P}]
+\label{prop:joint-common-certificate}
+Let $c_k$ be the real coefficients of an actual mixture of bounded
+charge-one response pairs, so $\sum_k|c_k|\le1$. Suppose a witness
+has a global norm certificate $N(\lambda)\le B$.
+If $R\ge\sum_{k>D}|c_k|$ and $0<\rho\le1$, put
+\[
+ A_\rho=\rho c_0-\sum_{k=1}^D\rho^{2k+1}|c_k|
+                  -R\rho^{2D+3}.
+\]
+Whenever $A_\rho>0$, the inherited transfer theorems give
+\[
+ \frac1B\le\KG\le\frac1{A_\rho}.
+\]
+With only certified bounds $c_0\ge a_0>0$, $|c_k|\le u_k$, a valid
+replacement for $A_\rho$ is
+\[
+ (\rho+\rho^{2D+3})a_0
+ -\sum_{k=1}^D(\rho^{2k+1}-\rho^{2D+3})u_k-\rho^{2D+3}.
+\]
+In particular, a truncated score at least $v>0$ gives the score
+$\rho v-(1-v)\rho^{2D+3}$ without a separate tail hypothesis.
+\end{proposition}
+\begin{proof}
+Apply the Ornstein--Uhlenbeck operator of parameter $\rho$ to the left
+response. It preserves the unit disk and multiplies the mixed
+coefficient by $\rho^{2k+1}$. Bound the omitted coefficients and use
+the Chapter~17 transfer. For the interval version first substitute the
+actual Bessel budget $1-c_0-\sum_{1\le k\le D}|c_k|$, and then use
+the signs of the coefficients. For the final statement the retained
+score is at least $\rho v$ and the omitted absolute sum at most $1-v$.
+\end{proof}
+
+For $m=2D+3$ and $0<v<1$, the last score is maximized at
+\[
+ \rho_* =\min\{1,[v/(m(1-v))]^{1/(m-1)}\}.
+\]
+It supplies an explicit $O((\log D)/D)$ cost by changing the responses,
+and does not contradict the tail obstruction for unchanged responses.
+For an exact pool value $v_D$ and a certified global cap $v_D+\delta$,
+the reciprocal interval width is
+$\delta+(1-\rho)v_D+(1-v_D)\rho^{2D+3}$.
+Exact LP optimality is unnecessary; universal norm certification is
+still necessary.
+
+\paragraph{An additional contraction constraint.}
+In the notation of the earlier contraction-Gram certificate,
+$T=(3y-z)/2$ and the two commuting swap operators give
+\[
+ n+b+z-3y=4\norm{(I-J_1)(I-J_2)C/4}^2\ge0.
+\]
+The finite-sum identities are those of
+\S\ref{sec:sixth-tensor-bridge-audit}. This excludes some formal
+two-Gram tuples, but a representative floating node found it inactive.
+No objective improvement or new endpoint is asserted.
+
+\paragraph{Replay and boundary.}
+The accompanying \texttt{verify\_all.py} runs with Python's isolated
+mode and only its standard library. It checks the exact supporting
+arithmetic, coefficient table and manifest; the universal analytic
+proofs are above. The central limit and transfer arguments are not
+claimed to be Lean formalized by this package.

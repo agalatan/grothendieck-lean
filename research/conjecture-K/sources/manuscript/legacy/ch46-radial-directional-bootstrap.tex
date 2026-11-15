@@ -1,0 +1,531 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch46-radial-directional-bootstrap.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 46). Owner: lower-bound/09-one-driver.tex
+\section{Radial directional costs and shared-content transport}
+\label{ch:radial-directional-bootstrap}
+\chapsummary{Directional A costs and B-content transport with arbitrary shared dependence. Later transport constants below supersede the earlier numerical values; the small-ball assumptions remain.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch46-radial-directional-bootstrap.tex} from \pathref{gpt-reviews/radial-directional-bootstrap-20261020/},
+ported verbatim apart from this summary and paragraph. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py} from an unrelated directory: \textbf{ALL REQUESTED REPLAYS PASS in 46\,s}. This
+covers the Jensen bootstrap, transport ($\le0.79789<4/5$), the three zero-buffer boxes, the small-$A$ $B$ cost $7/20$, and the three all-buffer corridors.
+
+\paragraph{Status and scope.}
+Labels \textbf{[P]} and \textbf{[C]} mean an analytic proof and an exact or
+outward-rounded computation, respectively. Floating design values are
+explicitly labelled \textbf{[F]}. This chapter strengthens the incoming
+radial-shift package at the peak profile. It proves new partial regions
+of Conjecture K, including zero buffer and genuinely shared drivers.
+It does not give a full row cover or a new Grothendieck endpoint.
+The previously reported interval remains
+\[
+ 1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\mathbb C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}.
+\]
+
+\subsection{Setting and principal improvements}
+Put
+\[
+ a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+ \epsilon=\frac{1891}{2500},\quad p=\epsilon^{-1},\qquad
+ L=z(a+b|z|^2),\quad s=|z|^2.
+\]
+Every standard proper complex Gaussian has density
+$e^{-|z|^2}/\pi$. Define
+\[
+ \Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|-p\mathbb E|G|^2,
+ \qquad S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt vY|-pv\},
+\]
+with $Y$ fresh and independent. In the one-driver conclusions,
+$z,X,Y$ are independent and
+\[
+ H(X)=X(|X|^2-2)/\sqrt2,\qquad
+ G=cH(X)+gY+\alpha(s-1)X+\beta z^2\bar X/\sqrt2,
+\]
+where $c,g\ge0$ and $\alpha,\beta\in\mathbb C$.
+
+The main dimension-free improvement is the A penalty $19/100$ on
+$\|r_A\|_2\le1/16$, replacing $1/100$; its zero-buffer error is below
+$10^{-11}$. It requires only that the pair $(q,r_A)$ be independent of
+$z$, with $q$ square integrable and $r_A$ a proper Gaussian linear form.
+The dependence of $q$ on $r_A$ is arbitrary. Larger amplitude balls
+also admit positive penalties, as tabulated below.
+
+A second theorem controls the \emph{actual} A-coupled B content:
+\[
+ |\mathcal B_A(q;r_A,R)-\mathcal B_0(q;R)|
+ \le\frac45\|r_A\|_2\|R\|_2,\qquad \|r_A\|_2\le1/16.
+\]
+This has no additive error and no buffer restriction. Both sector
+variables are Gaussian linear forms (with the B variable antiholomorphic),
+but they may share every driver with $q$.
+Combining it with the strengthened costs closes larger strict boxes and
+all-buffer corridors. These are sufficient subsets of the unresolved
+parameter space, not the full conjecture.
+
+The numerical input ledger is explicit. The A-cost theorem needs only
+the radial change of variables and the new scalar replay. The content
+transport additionally uses the incoming layer bound $C_{AB}<19/25$.
+The one-driver conclusions use the previously proved positive content
+bounds $25c^3$ and $117c^3/10$ and the visible Gaussian-mixture theorem.
+The all-buffer corridors also use the exact coherent-A theorem from
+\autoref{ch:coherent-wick-a}. No supplied moment conjecture or numerical value of $S$ is
+assumed.
+
+\subsection{A sharper directional radial envelope}
+\paragraph{Status [P]; scalar constants require their separate replay.}
+For a unit planar vector $e$, let
+$K_e(w)=(|w|^2-(w\cdot e)^2)/|w|^3$.
+If $f\ge0$ is nonincreasing, then
+\begin{equation}
+ \boxed{\sup_{u,e}\int_{\mathbb R^2}
+ \frac{f(|w|^2)}{\pi}K_e(w-u)\,dw
+ =\int_0^\infty f(r^2)\,dr.}
+ \label{eq:directional-radial-sharp}
+\end{equation}
+Equality holds at $u=0$; no normalization of the density is required.
+
+For the proof, use disk layers and rotate $e=(1,0)$.
+The function $y^2(x^2+y^2)^{-3/2}$ is even and decreasing in $|x|$,
+so the parallel displacement of each horizontal disk chord is maximized
+at zero. The remaining perpendicular displacement $u$ gives
+\[
+ \int_{\operatorname{disk}((0,u),R)}K_e(w)\,dw
+ =2R\int_{-1}^1
+ \frac{\sqrt{1-t^2}}{\sqrt{1+(u/R)^2+2(u/R)t}}\,dt
+ =\pi R\,\mathbb E_{\omega\in S^3}|(u/R)e_1-\omega|^{-1}
+ \le\pi R.
+\]
+For completeness, $\phi_\delta(x)=(|x|^2+\delta^2)^{-1/2}$ on
+$\mathbb R^4$ has
+$\Delta\phi_\delta=-(|x|^2+4\delta^2)/(|x|^2+\delta^2)^{5/2}<0$.
+Its spherical average $U_\delta(r)$ satisfies
+$(r^3U_\delta')'\le0$, hence
+$U_\delta(r)\le U_\delta(0)=(1+\delta^2)^{-1/2}$.
+Monotone convergence gives the asserted sphere bound. Layer cake
+proves \eqref{eq:directional-radial-sharp}.
+
+Let $k_0=\sqrt{3ab}$ and $0\le h<k_0$. Define
+\[
+ A_h(r)=r(a+br^2)+hr^2,\quad
+ b_h(r)=\frac{(r^2-1)^2e^{-r^2}}
+ {(a+br^2)(a+3br^2-2hr)},\quad
+ B_h(r)=\sup_{t\ge r}b_h(t).
+\]
+For $F_\zeta(z)=z(a+b|z|^2)+\zeta(|z|^2-1)$, $|\zeta|=h$,
+the global diffeomorphism and its Jacobian lower bound imply that
+the pushforward of $(|z|^2-1)^2d\gamma(z)$ under $F_\zeta+\zeta$
+has density bounded by
+$B_h(A_h^{-1}(|w|))/\pi$.
+Indeed $|F_\zeta(z)+\zeta|\le A_h(|z|)$ and the inverse radius is
+therefore at least $A_h^{-1}(|w|)$.
+Applying \eqref{eq:directional-radial-sharp} gives the uniform estimate
+\[
+ \mathbb E_Z(|Z|^2-1)^2K_e(F_\zeta(Z)+q)\le C(h),\qquad
+ C(h)=\int_0^\infty B_h(r)(a+3br^2+2hr)\,dr.
+\]
+This holds for every center $q$ and direction $e$.
+The function $C$ is increasing and convex: each $b_h(r)$ is increasing
+convex in $h$, suprema preserve both properties, and multiplication by
+the positive increasing affine factor preserves convexity.
+
+Let $q$ be arbitrary square integrable and independent of $Z$, and let
+$r_A$ be any remote Gaussian linear form of norm $u$, with arbitrary
+dependence between $q$ and $r_A$. Choose $u\sqrt T<k_0$ and put
+\[
+ \overline{\mathcal C}(u,T)=
+ \frac{2C(0)[1-(T+1)e^{-T}]
+ +\int_0^Tte^{-t}C(u\sqrt t)\,dt}{3}.
+\]
+Convexity gives
+$2\int_0^1(1-\lambda)C(\lambda h)\,d\lambda
+\le[2C(0)+C(h)]/3$.
+For every $\kappa<p-\overline{\mathcal C}(u,T)$, second-order integration
+on $|r_A|^2\le u^2T$ and a triangle bound on its complement give
+\[
+ \begin{split}
+ \Lambda(q+(|Z|^2-1)r_A)\le {}&\Lambda(q)
+ +2\Re\mathbb E\left[(|Z|^2-1)r_A
+       \frac{\overline{L+q}}{|L+q|}\right]-\kappa u^2\\
+ &+\frac{9\Gamma_T^2}
+ {4[p-\overline{\mathcal C}(u,T)-\kappa]},
+ \qquad
+ \Gamma_T\le\left(\sqrt T+\frac1{2\sqrt T}\right)e^{-T}.
+ \end{split}
+\]
+The bad-event tangent remainder is at most $3u\Gamma_T$.
+With a fresh Gaussian buffer $gY$ inside $q$, independent of all the
+other variables, the error is zero if
+\[
+ \overline{\mathcal C}(u,T)+(T+1)e^{-T}/g\le p-\kappa.
+\]
+The numerical certificate evaluates only the scalar radial envelopes
+and these explicit comparisons. The result does not allow a visible
+B term inside the baseline $q$; the simultaneous A/B content remains
+a separate obligation.
+
+\subsection{Certified costs for the shifted A sector [C]}
+The radial directional lemma and convexity in the shift parameter reduce
+its good-event quadratic coefficient to
+\[
+ C_{\rm good}(u,T)=\frac13\left(
+ 2C(0)(1-(T+1)e^{-T})+\int_0^T t e^{-t} C(u\sqrt t)\,dt\right).
+\]
+The new outward-integer computation gives the following strengthened
+costs. Here $q$ is an arbitrary square-integrable remote variable, $r_A$
+is a Gaussian linear form on its underlying space, and both are
+independent of the visible coordinate $z$. Their mutual dependence is
+unrestricted.
+\[
+\Lambda(q+(|z|^2-1)r_A)\le\Lambda(q)
++2\Re\mathbb E\left[(|z|^2-1)r_A
+ \frac{\overline{L+q}}{|L+q|}\right]
+-\kappa\|r_A\|_2^2+\eta.
+\]
+\[
+\begin{array}{c|c|c|c|c}
+\|r_A\|_2\le&T&\kappa&\eta&\eta=0\text{ if fresh }g\ge\\\hline
+1/16&18&19/100&10^{-11}&1/8192\\
+1/10&18&13/100&10^{-11}&1/8192\\
+1/8&14&2/25&10^{-8}&1/256\\
+3/20&10&3/200&10^{-5}&1/16
+\end{array}
+\]
+A fresh buffer means $q=q_0+gY$ with $Y$ independent of
+$(q_0,r_A,z)$. Without that assumption the displayed nonzero errors
+remain valid, including at zero buffer.
+
+For reproducibility, write
+\[
+ A_h(r)=r(a+br^2)+hr^2,\quad
+ b_h(r)=\frac{(r^2-1)^2e^{-r^2}}
+ {(a+br^2)(a+3br^2-2hr)},\quad
+ B_h(r)=\sup_{t\ge r}b_h(t),
+\]
+so $C(h)=\int_0^\infty B_h(r)A_h'(r)\,dr$.
+The verifier bounds $C(h)$ for $h=j/512$, $0\le j\le244$, using
+radial cells of width $1/1024$ on $[0,8]$. It bounds the density on each
+cell, takes a backwards maximum to dominate $B_h$, and multiplies by
+the exact increment of $A_h$. The quadratic denominator is minimized at
+its vertex when the vertex intersects the cell. For the infinite tail,
+\[
+ b_h(r)\le\frac{e^{-r^2}}{2b^2},\quad r\ge8,
+\]
+and its contribution to $C(h)$ is at most
+\[
+ \frac{e^{-64}}{2b^2}\left(\frac a{16}
+       +3b\left(4+\frac1{32}\right)+h\right).
+\]
+The starting height of this tail is included in the backwards maximum.
+The outer $t$ integral uses cells of width $1/1024$, with exact
+$te^{-t}$ masses and the next higher $h$-grid value. Consequently there
+is no unaccounted quadrature remainder.
+
+The computed upper good coefficients, for display, are
+\[
+ 1.128186088931017,\quad1.187139377317969,\quad
+ 1.236569415286015,\quad1.298528615343392.
+\]
+All decisions use fixed-point outward BigInt intervals. The verifier
+then checks the explicit bounds
+\[
+ \eta\le\frac{9\Gamma_T^2}{4(p-C_{\rm good}-\kappa)},\qquad
+ \Gamma_T\le\left(\sqrt T+\frac1{2\sqrt T}\right)e^{-T},
+\]
+and, for the exact buffered conclusions,
+$C_{\rm good}+(T+1)e^{-T}/g\le p-\kappa$.
+
+\subsection{A Jensen bootstrap for the Gaussian benchmark [P,C]}
+Let $p>0$ and suppose the circular visible variable has a positive
+Gaussian scale mixture $L\stackrel{d}=\sqrt V Z_0$. Write
+\[
+ F(v)=2\mathbb E|L+\sqrt vY|-pv,\qquad
+ D=F'(0)>0,\quad C=-F''(0)>0,\quad A=p+D.
+\]
+Assume $C<\infty$. Then
+\begin{equation}\label{eq:shift-baseline-jensen}
+ F'(v)+p\ge\frac A{\sqrt{1+2Cv/A}},\qquad
+ \sup_{v\ge0}F(v)-F(0)\ge\frac{(p+D)D^2}{2Cp}.
+\end{equation}
+Indeed,
+$F'(v)+p=(\sqrt\pi/2)\mathbb E(V+v)^{-1/2}$.
+Normalize the mixing law tilted by $V^{-1/2}$. Its expectation of
+$1/V$ is $2C/A$, so Jensen applied to the convex function
+$x\mapsto(1+vx)^{-1/2}$ proves the first bound. Integrate and evaluate at
+$v=A((A/p)^2-1)/(2C)$ to obtain the second. This evaluation point need
+not be the actual optimizer.
+
+At the peak parameters, the new scalar replay recomputes
+\[
+ D>\frac{1099218}{10^7},\qquad C<\frac{3345193}{10^6},
+\]
+and therefore certifies
+\begin{equation}\label{eq:shift-gap-improved}
+ S-F(0)>\frac{489}{250000}=0.001956.
+\end{equation}
+This replaces the previous $559/312500=0.0017888$ with no numerical
+assumption on $S$ itself. The scalar computation uses the same rigorously
+bounded Simpson integrals as the incoming package and is independent of
+the long tensor computations.
+
+Keeping the incoming global tangent coefficients unchanged gives
+\[
+\begin{aligned}
+\Lambda(G)-S\le{}&-\frac{489}{250000}
+ +\frac{11}{100}(c^2+g^2)+50c^3|\alpha|\\
+&+\left(\frac{207}{100}-p\right)|\alpha|^2
+ +\frac{\left(\frac{117}{10}c^3+\frac{19}{25}|\alpha|\right)^2}{369/1000}.
+\end{aligned}
+\]
+The right side is increasing in $c,g,|\alpha|$. For
+$c\le3/32$, $g\le1/32$, and every complex $\beta$, exact rational
+comparisons prove
+\[
+\begin{array}{c|c}
+ |\alpha|\text{ upper bound}&\Lambda(G)\text{ upper bound}\\\hline
+ 1/200&S-1/6000\\
+ 1/180&S-1/10000\\
+ 1/160&S-1/30000.
+\end{array}
+\]
+The first two amplitude bounds improve the incoming $1/320$ and $1/256$
+for the same respective deficits. These are partial regions; they do not
+constitute a row cover or a new Grothendieck endpoint.
+
+\subsection{Transport of the actual shared B content, without a tail error}
+\paragraph{Status and scope.} The analytic argument below is \textup{[P]}; its
+scalar constants and rectangle comparisons are \textup{[C]}. All visible
+parameters are at the peak. The inverse-distance layer estimate
+$C_{AB}<19/25$, the shifted B-cost, and the coherent A theorem are
+explicit inputs. No Grothendieck endpoint follows without the full cover.
+
+Let $q$ be any square-integrable remote variable. Let $r_A$ and $\bar R$
+be Gaussian linear forms of the remote proper Gaussian vector; their
+dependence on $q$ is unrestricted. Set $u=\|r_A\|_2$, $\sigma=\|R\|_2$,
+and define
+\[
+ \mathcal B_A=\E\left[\frac{Z^2R}{\sqrt2}
+  \frac{\overline{L+q+(T-1)r_A}}{|L+q+(T-1)r_A|}\right],\qquad
+ \mathcal B_0=\E\left[\frac{Z^2R}{\sqrt2}
+  \frac{\overline{L+q}}{|L+q|}\right].
+\]
+Here $Z$ is independent of all remote variables and $T=|Z|^2$.
+For $0\le u\le1/16$,
+\begin{equation}\label{eq:actual-content-transport}
+ \boxed{|\mathcal B_A-\mathcal B_0|\le\frac45u\sigma.}
+\end{equation}
+There is no additive remainder and no positive-buffer assumption.
+
+\paragraph{Proof.} Write $r_A=uX$, $t=|X|^2$, and truncate at
+$T_u=1/(16u^2)\ge16$. Thus $u\sqrt{T_u}=1/4<k_0=\sqrt{3ab}$.
+The shifted visible map has Jacobian bounded below by
+$(1-|h|/k_0)P'(s)$. Differentiating the unit phase along the A segment
+and applying the AB layer bound gives, on $t\le T_u$,
+\[
+ \frac{19}{25}u\int_0^1\E\left[
+ \frac{|XR|\mathbf1_{t\le T_u}}{\sqrt{1-\lambda u\sqrt t/k_0}}
+ \right]d\lambda.
+\]
+Gaussian regression gives
+$\E(|R|^2\mid X)=\sigma^2(\rho^2t+1-\rho^2)$, so for $f\ge0$,
+\[
+ \E|XR|f(t)\le\sigma\max\{\E f(t),\E tf(t)\}.
+\]
+Define
+\[
+ J_j=\int_0^{16}\frac{t^je^{-t}}{\sqrt{1-\sqrt t/(16k_0)}}dt,
+ \quad F_{\max}=(1-1/(4k_0))^{-1/2},\quad
+ J_* =\max(J_0,J_1)+17F_{\max}e^{-16}.
+\]
+The extra term bounds the part $16<t\le T_u$. Convexity in $\lambda$
+then bounds the good contribution by
+$\frac{19}{50}(1+J_*)u\sigma$.
+On the bad event the difference of unit phases is at most $2$.
+Writing $\Gamma_T=\int_T^\infty\sqrt t e^{-t}dt$, regression gives
+\[
+ |\hbox{bad contribution}|\le\sqrt2\sigma
+ \sqrt{\Gamma_{T_u}^2+e^{-2T_u}},\qquad
+ \Gamma_T\le\left(\sqrt T+\frac1{2\sqrt T}\right)e^{-T}.
+\]
+After division by $u\sigma$, this is at most
+$4\sqrt2e^{-T_u}\sqrt{T_u^2+2T_u+1/4}$, a decreasing function for
+$T_u\ge16$. The exact checker proves
+\[
+ \frac{19}{50}(1+J_*)+2\sqrt{2306}e^{-16}<\frac45.
+\]
+This proves \eqref{eq:actual-content-transport}. Smooth approximation
+justifies differentiation of the phase: on the good event the
+pushforward densities are locally bounded and the inverse-distance
+kernel is locally integrable.
+
+\paragraph{A stronger B-cost on a smaller A ball.}
+For $u\le1/100$, the incoming radial-shift argument gives
+\[
+ \Lambda(q+(T-1)r_A+Z^2R/\sqrt2)
+ \le\Lambda(q+(T-1)r_A)+2\Re\mathcal B_A
+       -\frac7{20}\sigma^2+10^{-12}.
+\]
+The error is zero with a fresh buffer $g\ge1/65536$.
+Indeed, use truncation $20$ and define
+\[
+ K_j=\int_0^{20}\frac{t^je^{-t}}{\sqrt{1-\sqrt t/(100k_0)}}dt,
+ \quad C=\frac{953}{1000}\max(K_0,K_1),
+ \quad\delta=\varepsilon^{-1}-C-\frac7{20}.
+\]
+The checker proves $\delta>0$ and
+\[
+ \frac{2[(\sqrt{20}+1/(2\sqrt{20}))^2+1]e^{-40}}{\delta}
+ <10^{-12},\qquad
+ C+21\cdot65536e^{-20}<\varepsilon^{-1}-\frac7{20}.
+\]
+The first comparison pays the unsmoothed tail; the second gives the
+zero-error buffered version. No amplitude restriction on $q$ or $R$
+is used.
+
+\paragraph{All-buffer corridors.} In the one-driver model let
+$r=|\alpha|$. The accepted uncoupled content bound and
+\eqref{eq:actual-content-transport} give
+\[
+ |d_B^A|\le\frac{117}{10}c^3+\frac45r.
+\]
+The shifted B-cost and exact coherent A theorem imply
+\[
+ \Lambda(G)\le S+\frac{20}{7}
+ \left(\frac{117}{10}c^3+\frac45r\right)^2+10^{-12}.
+\]
+For every $g\ge0$ and complex $\beta$, the excess is less than
+$\eta_{AB}=240297199/2651182000000$ on each rectangle
+\[
+ (c,r)\in[0,1/16]\times[0,1/300],\quad
+ [0,1/20]\times[0,1/200],\quad
+ [0,1/32]\times[0,1/160].
+\]
+
+\paragraph{Stronger strict boxes including zero buffer.}
+Using the new sibling A-cost $19/100$ with error $10^{-11}$ and
+benchmark gain $S-F(0)>489/250000$, together with the incoming
+B cost $21/80$ on the larger ball $r\le1/16$, gives
+\begin{align*}
+ \Lambda(G)-S\le{}&-\frac{489}{250000}
+ +\frac{11}{100}(c^2+g^2)+50c^3r-\frac{19}{100}r^2\\
+ &+\frac{80}{21}\left(\frac{117}{10}c^3+\frac45r\right)^2
+ +11\cdot10^{-11}.
+\end{align*}
+All collected nonconstant coefficients are nonnegative, so exact
+corner checks prove, for $g\le1/32$ and arbitrary complex $\beta$,
+\[
+ \begin{array}{c|c|c}
+ c\text{ upper bound}&r\text{ upper bound}&S-\Lambda(G)\text{ lower bound}\\\hline
+ 1/20&1/48&1/4000\\
+ 1/16&1/56&1/8000\\
+ 1/32&1/40&1/5000
+ \end{array}
+\]
+These trade a smaller Wick amplitude for a larger A amplitude than
+the incoming $c\le3/32$, $r\le1/256$ box.
+
+\paragraph{A positive-kernel shortcut that fails.}
+Writing
+\[
+ \E_Z\left[\frac{(T-1)Z^2}{\sqrt2}
+ \frac{\overline{L+w}}{|L+w|}\right]=-w k_{AB}(|w|^2),
+\]
+the angular expansion yields
+\[
+ k_{AB}'(0)=-\frac3{16\sqrt2}\int_0^\infty
+ \frac{(s-1)e^{-s}}{\sqrt s(a+bs)^3}ds>0.
+\]
+Indeed, integration by parts writes the integral as
+\[
+ -\frac12\int_0^\infty\frac{e^{-s}}{\sqrt s(a+bs)^3}ds
+ -3b\int_0^\infty\frac{\sqrt s e^{-s}}{(a+bs)^4}ds<0.
+\]
+Thus this mixed radial kernel is not completely monotone. This rules
+out that specific positive-Laplace shortcut, not sharper signed
+estimates for the true content.
+
+\subsection{Dimension-free directional content transport [P,C]}\label{sec:directional-transport-dimfree}
+\paragraph{Provenance (IDE note).} Universal-B package of 20 October (\autoref{ch:two-driver-cold}, \S\ref{sec:k-bonly-all}); replayed by the IDE with that package. It extends the one-driver factor $563/1000$ of \autoref{ch:buffer-bootstrap} to arbitrary remote dimension, replacing the generic $4/5$ of the preceding section on $A\le1/16$.
+\paragraph{Status [P,C]; peak profile only.}
+Let $Z$ be independent of all remote variables, let $q$ be arbitrary
+square-integrable, and let $r_A$ and $\bar R$ be holomorphic Gaussian
+linear forms with arbitrary joint dependence on $q$. Put
+$A=\|r_A\|_2$, $B=\|R\|_2$ and define
+\[
+ \mathcal B_A=\mathbb E\left[\frac{Z^2R}{\sqrt2}
+ \frac{\overline{L+q+(|Z|^2-1)r_A}}{|L+q+(|Z|^2-1)r_A|}\right].
+\]
+Then, with no buffer restriction and no additive remainder,
+\[
+ A\le\frac1{16}\quad\Longrightarrow\quad
+ |\mathcal B_A-\mathcal B_0|\le\frac{563}{1000}AB.
+\]
+The one-driver directional constant therefore holds in arbitrary
+remote dimension. This is a norm bound on actual coupled content.
+
+For a unit planar direction $e$, the derivative of
+$\phi(w)=\bar w/|w|$ has modulus
+$H_e(w)=|\sin\angle(w,e)|/|w|$. Its superlevel sets have area
+$\pi/(2t^2)$, so the potential of a density layer of mass $m$ and
+height $M/\pi$ is at most $\sqrt{2mM}$, uniformly in its center and
+direction. This improves the corresponding inverse-distance layer
+bound by $1/\sqrt2$. The radial-shift Jacobian argument multiplies
+both bounds by $(1-|h|/\sqrt{3ab})^{-1/2}$.
+
+Conditional on the remote variables the direction of $r_A$ is fixed;
+$|Z|^2-1$ only reverses it. The complex $B$ factor contributes its
+modulus. With $r_A=AX$, Gaussian regression gives, for $f\ge0$,
+\[
+ \mathbb E[|XR|f(|X|^2)]
+ \le B\max\{\mathbb Ef(|X|^2),\mathbb E[|X|^2f(|X|^2)]\}.
+\]
+Integrate the path parameter before applying this inequality. An
+adaptive Gaussian cutoff $32(r_0/A)^2$ on an $A$ ball of radius $r_0$
+then proves the stated transport bound without a tail remainder.
+The exact scalar checker gives $0.562710958708<563/1000$ at $r_0=1/16$.
+
+The same calculation gives radius-dependent shifted $B$ costs. For
+$A\le r_0$, all $B$ and all $q$ as above,
+\[
+ \Lambda(q+(T-1)r_A+Z^2R/\sqrt2)
+ \le\Lambda(q+(T-1)r_A)+2\Re\mathcal B_A-b_{r_0} B^2+10^{-19}.
+\]
+\[
+\begin{array}{c|c|c}
+ r_0&b_{r_0}&\text{certified upper bound for transport coefficient}\\\hline
+ 1/16&27/100&563/1000\\
+ 1/100&355/1000&541103/10^6\\
+ 1/200&362/1000&539238/10^6\\
+ 1/500&366/1000&538133/10^6\\
+ 1/1000&367/1000&537767/10^6\\
+ 1/2000&368/1000&537584/10^6
+\end{array}
+\]
+All table decisions use outward integer arithmetic, including the
+Gaussian tails. Combining these estimates with the $19/100$ A cost
+has total additive error below $10^{-11}+10^{-19}$.
+
+\subsection{Replay, porting and the remaining obstruction}
+\paragraph{Status [C].}
+The accompanying standard-library Python driver invokes dependency-free
+Node.js 20+ checkers. From any working directory run
+\texttt{python3 -I /absolute/path/to/delivery/verify\_all.py}.
+The default replay recomputes every new radial enclosure, scalar
+benchmark integral, content-transport integral, Gaussian tail and
+rational corner comparison. It reads no stored float coefficient table.
+The optional \texttt{--fine} repeats the radial calculation on half-size
+cells; \texttt{--replay-inputs} also replays the included incoming scalar
+checkers. SHA256 hashes identify all included sources and receipts.
+\autoref{ch:coherent-wick-a}'s coherent-A theorem is an explicit prior dependency, not a
+new replay claim.
+
+The directional radial theorem is proved in every radius by disk layers
+and a four-dimensional superharmonic potential. Its continuum statement
+is not inferred from numerical sampling. The finite computations certify
+only the displayed rational constants and parameter rectangles.
+
+The complete one-driver region below the buffered threshold is still
+open, and a general cubic can be nonlinear in several shared coordinates.
+The present estimates do not close those interactions. In particular,
+the new A cost must not be applied with a visible B term hidden inside
+its remote baseline $q$. The safe composition is to apply the A estimate
+first, then the shifted B estimate with its actual coupled content.
+A full peak inequality and then a full row envelope remain necessary
+before claiming a larger Grothendieck constant lower bound.

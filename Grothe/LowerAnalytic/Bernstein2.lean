@@ -1,4 +1,6 @@
+-- Grothe/LowerAnalytic/Bernstein2.lean
 import Grothe.Lower.Basic
+import Mathlib.Data.Rat.BigOperators
 
 /-!
 # Tensor Bernstein bounds for polynomials in two variables

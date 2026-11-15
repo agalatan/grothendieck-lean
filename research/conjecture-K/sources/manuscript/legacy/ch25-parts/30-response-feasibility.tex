@@ -1,0 +1,1596 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/30-response-feasibility.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Keeping the fixed first moment: remote feasibility and a four-block response dual}
+\label{sec:fixed-first-remote-feasibility}
+\paragraph{Provenance (IDE note, 20 October).} Lower-bound GPT response-feasibility package (\code{conjK-response-feasibility-20261020.zip}, archived in
+\pathref{gpt-reviews/response-feasibility-20261020/}). IDE replay \code{python3 -I verify\_all.py} from an unrelated directory: all exact algebra audits PASS (1.5\,s).
+IDE check \st{P} of the cut: $\langle q,k\rangle=p\langle q,F\rangle=pe$ because $q=\E[F\mid X]$ is the orthogonal remote projection and $q\in\operatorname{ran}Q$;
+$\langle Z,h\rangle=t$ from $Ph=tZ$; then $|f_\pm|\le1$ and conditioning on $X$. The energy ceiling $e\le4\varepsilon^2B(A-t)$ is the optimum $\lambda=p/(2B)$ of the
+tangent form, giving $0.04626$ at $t=0.84$. The package's smoothed cap $858733/625000\approx S+1.93\cdot10^{-5}$ matches the corrected budget of \autoref{ch:K-state}.
+
+\paragraph{Status and scope.}
+The analytic statements below are proved [P]; their rational constants and
+finite algebra audits have a portable exact replay [C]. They constrain the
+\emph{original response problem}, with $Ph=tZ$ and $F=\varepsilon Qk$.
+They do not assert a new inequality for every raw-K cubic, prove K, or
+give a new Grothendieck endpoint. All shared sectors may be present.
+
+Write $P=P_{1,0}$, $Q=P_{2,1}$, $p=1/\varepsilon$ and
+$h=(f_++f_-)/2$, $k=(f_+-f_-)/2$, where $|f_\pm|\le1$.
+Assume $Ph=tZ$, $t\ge0$, and $F=\varepsilon Qk$.
+Let $q=\mathbb E[F\mid X]$ be the remote cubic, with $Z$ independent of
+the remote Gaussian vector $X$, and put $e=\|q\|_2^2$.
+Every other sector of $F$ is unrestricted. Scalar products are
+conjugate-linear in the first argument.
+
+\subsubsection{An exact cut on the remote law [P]}
+Define the unit-variance Rice mean
+\[
+ \rho(u)=\mathbb E_Z|Z+\sqrt u|,\qquad u\ge0.
+\]
+For every $\lambda\ge0$,
+\begin{equation}\label{eq:remote-feasibility-cut}
+ \boxed{\quad t+\lambda pe\le
+       \mathbb E_X\rho(\lambda^2|q|^2).\quad}
+\end{equation}
+In particular, this is a linear constraint on the law of $|q|^2$:
+\[
+ \mathbb E\bigl[\rho(\lambda^2|q|^2)-\lambda p|q|^2\bigr]\ge t.
+\]
+It requires no independence of $q$ from the remote drivers of the other
+sectors, and no fourth- or sixth-moment assumption.
+
+\begin{proof}
+Since $q\in\operatorname{ran}Q$ and is the orthogonal remote component of
+$F$, $\langle q,k\rangle=p\langle q,F\rangle=pe$.
+Also $\langle Z,h\rangle=t$. Consequently,
+\begin{align*}
+ t+\lambda pe
+ &=\frac12\operatorname{Re}\mathbb E\bigl[
+    (\bar Z+\lambda\bar q)f_+
+   +(\bar Z-\lambda\bar q)f_-\bigr]\\
+ &\le\frac12\mathbb E\bigl[|Z+\lambda q|+|Z-\lambda q|\bigr]
+ =\mathbb E_X\rho(\lambda^2|q|^2).
+\end{align*}
+The last equality conditions on $X$ and uses the circular Gaussian law
+of $Z$. Circularity of $q$ itself is unnecessary.
+\end{proof}
+
+More generally, any remote test $v\in\operatorname{ran}Q$ gives
+$t+p\operatorname{Re}\langle v,q\rangle\le\mathbb E\rho(|v|^2)$.
+Thus a negative support gap is a certificate that the proposed response
+moments cannot occur, not a large negative value of the original norm.
+
+The derivative representation
+\begin{equation}\label{eq:unit-rice-derivative}
+ \rho'(u)=\frac1{2\sqrt\pi}\int_0^1
+       e^{-us}\sqrt{\frac{1-s}{s}}\,ds
+\end{equation}
+shows that $\rho$ is increasing and concave. The formula follows from
+Gaussian convolution of the norm (equivalently from its Laplace integral);
+differentiation is justified by the integrable beta weight.
+In particular $\rho(0)=\sqrt\pi/2$, $\rho'(0)=\sqrt\pi/4$.
+Jensen also gives the exact necessary envelope
+\[
+ t\le\inf_{\lambda\ge0}
+       \{\rho(\lambda^2e)-\lambda pe\}.
+\]
+Unlike Gaussian domination, this compares with a \emph{constant-modulus}
+remote law and is a direct consequence of concavity.
+
+\subsubsection{A global rational tangent and explicit energy ceilings [P,C]}
+Set
+\[
+ A=\frac{886762780}{10^9},\qquad B=\frac{432306903}{10^9}.
+\]
+The portable rational checker proves
+\begin{equation}\label{eq:remote-rice-tangent}
+ \rho(u)\le A+Bu\qquad(u\ge0).
+\end{equation}
+Substituting $\lambda=p/(2B)$ into
+\eqref{eq:remote-feasibility-cut} gives the dimension-free bound
+\begin{equation}\label{eq:remote-energy-ceiling}
+ \boxed{\quad e\le4\varepsilon^2B(A-t).\quad}
+\end{equation}
+At $\varepsilon=1891/2500$, exact rational comparisons give
+\[
+\begin{array}{c|c}
+\text{condition}&\text{necessary remote energy ceiling}\\\hline
+t\ge0.840&e<0.046266\\
+t\ge0.845&e<0.041319\\
+t\ge0.851&e<0.035383
+\end{array}
+\]
+These restrictions hold with all simultaneous $A/B$, even and diagonal
+sectors. They concern $e=\|q\|^2$, not the full energy $\|F\|^2$.
+The separate elementary bound
+$\|F\|^2\le\varepsilon^2(1-t^2)$ remains valid; its maximum on the
+central interval is $0.168438298624$. \emph{Superseded as a domain cap} by the all-sector energy ellipsoid
+\eqref{eq:sector-ellipsoid} of \S\ref{sec:sector-rice-feasibility}, which gives
+$\|F\|^2<0.081884$ for $t\ge0.84$ and $\|F\|^2<0.071981$ for $t\ge0.8456$ (all sectors,
+every dimension); keep the ellipsoid itself where possible, since its sector weights are
+stronger than the total cap.
+
+\paragraph{Exact tangent certificate.}
+Let $R=\sqrt\pi/2$ and $u_0=1/10$. From
+\eqref{eq:unit-rice-derivative},
+\[
+ \frac{\rho'(u_0)}R
+ =\frac12\sum_{n\ge0}\frac{(-u_0)^n(1/2)_n}{n!(2)_n},
+ \qquad
+ \frac{\rho(u_0)}R
+ =1+\frac12\sum_{n\ge0}
+       \frac{(-1)^n u_0^{n+1}(1/2)_n}{(n+1)n!(2)_n}.
+\]
+The terms decrease in modulus, so consecutive truncations bracket both
+quantities. The checker uses 15 and 16 terms, bounds $R$ by rational
+squares, and bounds $\pi$ using alternating series in
+$\pi=16\arctan(1/5)-4\arctan(1/239)$.
+It verifies $B>\rho'(u_0)$ and
+$A>\rho(u_0)-u_0\rho'(u_0)$. Concavity then proves
+\eqref{eq:remote-rice-tangent} on the entire unbounded domain.
+There is no radial cutoff or numerical quadrature in this certificate.
+
+\paragraph{A polynomial moment version.}
+Since $\rho^{(4)}\le0$, its cubic Taylor polynomial at zero is a global
+majorant. Thus, with $M_j=\mathbb E|q|^j$,
+\begin{equation}\label{eq:remote-moment-feasibility}
+ t+\lambda pe\le\frac{\sqrt\pi}{2}
+ \left(1+\frac{\lambda^2e}{2}
+       -\frac{\lambda^4M_4}{16}
+       +\frac{\lambda^6M_6}{96}\right).
+\end{equation}
+This is another necessary condition, with no Taylor truncation error of
+unknown sign. The full Rice cut is preferable when the sixth moment makes
+this polynomial loose. In a law LP, an upper enclosure of the Rice
+function yields a safe necessary relaxation; a lower enclosure cannot
+be substituted on the right to exclude a candidate.
+
+\paragraph{A reusable exact kernel table.}
+The companion module constructs 227 rational tangent planes and takes
+their minimum, giving a global upper envelope of $\rho$ on $[0,\infty)$.
+On $[0,1]$ its error is below $9\cdot10^{-7}$. Indeed
+$|\rho''|\le\sqrt\pi/16$, the nodes there have spacing $1/128$, and
+the exact rounding and series error is added to the nearest-tangent
+error. Every plane is global, so the far tail needs no extrapolation
+assumption. For an LP in the normalized variable $u=|q|^2/e$, the
+correct coefficient is $\overline\rho(\lambda^2 e u)-\lambda peu$.
+
+\subsubsection{An excluded coupled--diffuse family, robust under dependent perturbations [P,C]}
+Let $X,Y,W_1,\ldots,W_N$ be independent standard proper Gaussians, remote
+from $Z$, and put
+\[
+ q_N=\frac7{100}X\bigl[(|X|^2-2)+i(|Y|^2-1)\bigr]
+       +\frac4{25\sqrt N}\sum_{j=1}^N H(W_j).
+\]
+For every integer $N\ge20$, every remote $\Delta\in H_{2,1}$ with
+$\|\Delta\|_2\le1/1000$, and every $t\ge1057/1250$, there are
+\emph{no} responses with
+\[
+ |f_\pm|\le1,\qquad Ph=tZ,\qquad
+ \mathbb E[\varepsilon Qk\mid X,Y,W_1,\ldots,W_N,\text{other remote coordinates}]
+       =q_N+\Delta.
+\]
+The perturbation may depend arbitrarily on the displayed remote
+variables and additional remote Gaussians. Every visible sector remains
+unrestricted. This is an exclusion from the original norm problem,
+not a claim that the corresponding raw-K payoff is negative.
+
+\begin{proof}
+Set $c=7/100$, $g=4/25$, $x=1/N$, and $e=3c^2+g^2=403/10000$.
+Exponential moments of the coupled core are $3c^2$, $210c^4$,
+$98166c^6$. Independence and circularity of the two summands give
+\begin{align*}
+ M_4(x)&=210c^4+(2+42x)g^4+12c^2g^2,\\
+ M_6(x)&=98166c^6+(6+378x+10968x^2)g^6\\
+ &\hspace{12mm}+27c^2(2+42x)g^4+1890g^2c^4.
+\end{align*}
+In particular $4<M_4/e^2<6$ throughout $0\le x\le1/20$.
+
+The cubic Hermite interpolant of $\rho$ with double nodes at $0$ and $4$
+is a global majorant: the remainder is
+$\rho^{(4)}(\xi)u^2(u-4)^2/4!\le0$.
+Outward rational coefficients give the simpler majorant
+\[
+ \rho(u)\le P_3(u):=
+ 0.886226925453(1+u/2)-0.046344069u^2+0.003327750036u^3
+ \qquad(u\ge0).
+\]
+All displayed decimals are exact rationals, certified by the same
+alternating series and rational square bounds as above.
+For $\lambda=3/2$, the checker verifies
+\[
+ \mathbb E P_3(\lambda^2|q_N|^2)
+   -\frac{1057}{1250}-\lambda pe<-\frac9{20000}.
+\]
+The left side's majorant is a convex quadratic in $x=1/N$; checking
+$x=0,1/20$ proves this for every $N\ge20$, including the diffuse limit.
+Apply the general remote-test inequality with $v=\lambda q_N$.
+Replacing $q_N$ by $q_N+\Delta$ on its left costs at most
+\[
+ \lambda p\sqrt e\,\|\Delta\|_2
+ <\frac32\frac{2500}{1891}\frac{201}{1000}\frac1{1000}
+ <\frac1{2500}.
+\]
+The support gap is still less than $-1/20000$, a contradiction.
+\end{proof}
+
+\subsubsection{Retaining the full first-chaos constraint in the response dual [P]}
+Put $B_0=\beta Z(|Z|^2-2)$, $L=\ell Z+B_0$, $m=tZ$.
+Let $R_t(F)$ be the supremum of the response-dependent terms after the
+row constant, retaining both $Ph=m$ and $Qk=pF$ and both negative
+squares. For $u,d\in\operatorname{ran}P$ and
+$v,C\in\operatorname{ran}Q$, completion of squares gives
+\begin{align}
+R_t(F)\le D_{t,F}(u,v,C,d):={}&
+\mathbb E|L+F-u-v-C-d|\nonumber\\
+&+\mathbb E|L-F+u+v-C-d|
+ +\|u\|^2+p\|C\|^2\nonumber\\
+&-2p\operatorname{Re}\langle C,B_0\rangle
+ +2p\operatorname{Re}\langle v,F\rangle
+ +2\operatorname{Re}\langle d,m\rangle-p\|F\|^2.
+\label{eq:fixed-first-response-dual}
+\end{align}
+No stationarity is used. The common first-chaos multiplier $d$ is free
+because $Ph=m$ is an equality constraint.
+
+\begin{proof}
+Use
+$-\|Pk\|^2\le\|u\|^2-2\operatorname{Re}\langle u,k\rangle$
+and
+\[
+-\varepsilon\|Qh+pB_0\|^2
+\le p\|C\|^2-2\operatorname{Re}\langle C,h\rangle
+                 -2p\operatorname{Re}\langle C,B_0\rangle.
+\]
+Add the two zero terms
+$2\operatorname{Re}\langle v,pF-Qk\rangle$ and
+$2\operatorname{Re}\langle d,m-Ph\rangle$.
+The coefficients of $f_+$ and $f_-$ are exactly the two expressions
+inside the norms in \eqref{eq:fixed-first-response-dual}.
+\end{proof}
+
+The multiplier $d=sZ$ alone is equivalent to choosing a different visible
+linear profile for this particular $F$; it is not a new price-free
+improvement to a profile already optimized for every $F$ separately.
+Its usefulness is the adaptive order: the trial can be chosen for the
+joint configuration \emph{before} taking a supremum over that configuration.
+Remote components of $d$ vanish in the pure odd baseline by parity, but
+can interact with simultaneous even sectors.
+
+\paragraph{Clipped Gram form.}
+Let $w_\pm=L\pm F$, $\rho_\pm=\max(|w_\pm|,\tau)$, and define
+$k_\tau=(w_+/\rho_+-w_-/\rho_-)/2$,
+$h_\tau=(w_+/\rho_++w_-/\rho_-)/2$.
+The four residual blocks are
+\[
+ r=(Pk_\tau,\ Qk_\tau-pF,\ Qh_\tau+pB_0,\ Ph_\tau-m).
+\]
+The quadratic form on the trial variables is
+\[
+ H(u,v,C,d)=\|u\|^2+p\|C\|^2+
+ \frac12\mathbb E\left[
+ \frac{|u+v+C+d|^2}{\rho_+}
+ +\frac{|u+v-C-d|^2}{\rho_-}\right].
+\]
+With the usual
+$B_\tau=\mathbb E[(\tau-|w_+|)_+^2+(\tau-|w_-|)_+^2]/(2\tau)$,
+\[
+ R_t(F)\le\Lambda(F)+B_\tau-r^*H^{-1}r
+\]
+on finite linearly independent trial spaces. Rational trials replace the
+inverse by $2\operatorname{Re}(x^*r)-x^*Hx$.
+
+Partition the matrix into the old three blocks and the new first-moment
+block: $H=\left(\begin{smallmatrix}H_0&E\\E^*&J\end{smallmatrix}\right)$,
+$r=(r_0,s)$. The additional optimized deduction is exactly
+\[
+ (s-E^*H_0^{-1}r_0)^*
+ (J-E^*H_0^{-1}E)^{-1}
+ (s-E^*H_0^{-1}r_0)\ge0.
+\]
+It is not the independently computed square of $Ph_\tau-m$; the
+cross block is necessary to avoid counting the same adjustment twice.
+
+\subsubsection{Implementation and remaining obligation}
+The new necessary cuts can shrink the law relaxation only in a row that
+retains the original response meanings of $t$ and $q$. A raw-K supremum
+has no such feasibility assumption. Inserting these cuts into it would
+be invalid. Equally, the $q$ in a priced auxiliary potential must first be
+identified with this remote orthogonal projection, with its correct scale.
+
+The accompanying diagnostic uses the full eighteen-dimensional complex
+$H_{2,1}$ core on $(Z,X_1,X_2)$ plus an independent grade-three Gaussian
+limit variable. It compares the three-block and four-block duals and
+integrates the Gaussian buffer analytically. This is a limit-model test,
+not an assertion that arbitrary finite cubics admit a buffer.
+All diagnostic values are floats [F]. No unresolved all-tensor cap or
+complete row cover is certified by them.
+
+The portable checker verifies the rational tangent, three energy ceilings,
+300 exact response square identities, 100 Schur identities, 324 Hermite
+covariance/pseudocovariance identities, and the endpoint budget arithmetic.
+The general proofs are the arguments above, not extrapolations from those
+finite tests.
+
+\subsection{Response-feasible remote laws: exact scalar reduction and a joint projection constraint}
+\paragraph{Provenance (IDE note, 20 October).} Lower-bound GPT feasible-laws package (\code{conjK-feasible-laws-and-projections-20261020.zip}, archived in
+\pathref{gpt-reviews/feasible-laws-20261020/}). IDE replay \code{python -I verify\_all.py} in an isolated venv with the pinned \code{python-flint 0.9.0}, from an unrelated
+directory: ALL CLAIMS PASS (fresh integrals and tails, 88\,s). IDE check \st{P} of \eqref{eq:flr-response-stability}: the support bound holds for any remote $v$, since
+$\langle v,k\rangle=\langle v,\bar k\rangle$; the Hessian is at most $2\rho'(0)=\sqrt\pi/2$ by concavity of $\rho$; then the square completion at $v=\lambda q$. In the
+two-response form the $u$-gradients of $\rho(|u\pm v|^2)$ cancel at $u=0$. The three remote caps concern the remote component only.
+
+\label{sec:response-feasible-law-reduction}
+\paragraph{Scope.}
+Analytic claims are labelled [P], directed computations [C], and exploratory
+values [F]. No new Grothendieck endpoint is claimed. Set
+\[
+ \varepsilon=1891/2500,\quad p=\varepsilon^{-1},\quad
+ L=Z(699/1250+(179/1250)|Z|^2),\quad
+ f(u)=2\mathbb E|L+\sqrt u|,\quad \rho(u)=\mathbb E|Z+\sqrt u|.
+\]
+Here $Z$ is a standard proper complex Gaussian, independent of the remote
+Gaussian vector $X$. For the actual bounded responses write
+$h=(f_++f_-)/2$, $k=(f_+-f_-)/2$, $Ph=tZ$,
+$F=\varepsilon Qk$, and $q=\mathbb E[F\mid X]$.
+The cut already proved in the preceding response-feasibility section is
+\begin{equation}\label{eq:flr-cut}
+ t+\lambda p e\le\mathbb E\rho(\lambda^2|q|^2),\qquad
+ e=\|q\|_2^2,\quad \lambda\ge0.
+\end{equation}
+All visible sectors of $F$ remain unrestricted. The bounds below on
+$\mathbb E f(|q|^2)-pe$ concern the remote contribution; they cannot
+replace a bound on the full $\Lambda(F)$.
+
+\subsubsection{The scalar law problem collapses to two points [P]}
+Let $m>1$, $M>m^2$. Put
+\[
+ A=\frac{M-m}{m-1},\quad B=\frac{M-m^2}{m-1},\quad
+ r_+=\frac{A+\sqrt{A^2-4B}}2,\quad r_-=B/r_+,
+ \quad w=\frac{1-r_-}{r_+-r_-}.
+\]
+Let $Y$ take values $r_-,r_+$ with probabilities $1-w,w$.
+It has moments $\mathbb EY=1$, $\mathbb EY^2=m$, $\mathbb EY^3=M$.
+For fixed $e>0$ consider laws $U\ge0$ satisfying
+\[
+ \mathbb EU=1,\quad\mathbb EU^2\ge m,\quad\mathbb EU^3\le M,
+ \qquad \mathbb E\rho(\lambda^2eU)-\lambda pe\ge t
+ \quad\hbox{for every }\lambda\ge0.
+\]
+Then this relaxed class is nonempty if and only if
+\begin{equation}\label{eq:flr-domain}
+ t\le T_{m,M}(e):=\inf_{\lambda\ge0}
+ \{(1-w)\rho(\lambda^2er_-)+w\rho(\lambda^2er_+)-\lambda pe\}.
+\end{equation}
+When nonempty, its exact remote-payoff supremum is
+\begin{equation}\label{eq:flr-value}
+ (1-w)f(er_-)+wf(er_+)-pe.
+\end{equation}
+This is an exact statement about the displayed \emph{relaxed law problem},
+not a cubic-realisation theorem. It includes no radial Stein constraints.
+
+\begin{proof}
+The functions $f$ and $\rho$ have derivative signs
+$f''\le0$, $f'''\ge0$, $f^{(4)}\le0$, and the corresponding signs
+for $\rho$. For $\rho$ this follows directly from
+\[
+ \rho'(u)=\frac1{2\sqrt\pi}\int_0^1e^{-us}
+             \sqrt{\frac{1-s}{s}}\,ds;
+\]
+for $f$ it is the established visibly averaged Bernstein property.
+For any function $\phi$ with these three signs, its cubic Hermite
+interpolant $H$ at the double nodes $r_-,r_+$ majorises $\phi$ on
+the whole half-line. Its cubic coefficient is nonnegative and its
+quadratic coefficient nonpositive. Indeed, in Newton form these are
+$\phi[r_-,r_-,r_+,r_+]\ge0$ and
+$\phi[r_-,r_-,r_+]-(2r_-+r_+)\phi[r_-,r_-,r_+,r_+]\le0$.
+Consequently $\mathbb E\phi(U)\le\mathbb E\phi(Y)$.
+Apply this simultaneously to $f(eu)$ and every
+$\rho(\lambda^2eu)$. If any law satisfies the cuts, $Y$ satisfies
+all of them. Conversely $Y$ itself is an admissible relaxed law if
+\eqref{eq:flr-domain} holds, and it attains \eqref{eq:flr-value}.
+\end{proof}
+
+Thus a new moment-only law LP is unnecessary. The cuts delete part of
+the $(e,m,M)$ domain; they do not change the extremiser at a surviving
+triple. Adding Stein or tensor constraints can change this conclusion.
+
+\subsubsection{Certified regional remote caps [P,C]}
+Assume the project's moment input
+\[
+ \mathbb E U^2=2+x^2,\qquad
+ \mathbb E U^3\le6+9x^2+\frac{4045313}{100000}x^3,
+ \qquad 0\le x\le31/4,
+ \quad U=|q|^2/e.
+\]
+Together with \eqref{eq:flr-cut}, it gives
+\[
+\begin{array}{c|c|c}
+ \text{condition}&\mathbb E f(|q|^2)-pe\text{ is less than}
+      &\text{improvement over }1.3739635\\\hline
+ t\ge0.847&1.3739601&0.0000034\\
+ t\ge0.849&1.3739481&0.0000154\\
+ t\ge0.851&1.3739276&0.0000359
+\end{array}
+\]
+All displayed decimals are exact rational numbers. These estimates allow
+all shared sectors in the original response, but estimate only its
+remote component. They require no independent Gaussian buffer.
+
+\paragraph{Certificate mechanism.}
+On a rational kurtosis band $[x_-,x_+]$, use
+$m=2+x_-^2$ and $M=6+9x_+^2+(4045313/100000)x_+^3$.
+Fix $\lambda=39/25$. The function
+\[
+ H(e)=(1-w)\rho(\lambda^2er_-)+w\rho(\lambda^2er_+)-\lambda pe
+\]
+is strictly decreasing for all $e\ge0$, because
+$H'(e)\le\lambda^2\sqrt\pi/4-\lambda p<0$.
+An enclosed value $H(e_*)<t$ therefore certifies $e<e_*$,
+with no unchecked energy tail. The remote objective in
+\eqref{eq:flr-value} is concave in $e$. A positive forward secant at
+$e_*$ proves that its maximum on $[0,e_*]$ is its endpoint value.
+Otherwise the existing four-point concavity enclosure bounds its
+maximum on the entire energy half-line.
+
+The fresh replay checks 43, 39 and 31 kurtosis bands respectively.
+It recomputes every radial integral using Arb balls, Jensen/chord
+bounds on each radial cell, and an explicit Gaussian tail.
+Stored evaluation values are not used for acceptance. Thus [C] here
+means directed interval computation, not floating optimisation or a
+finite radial cutoff. The inputs are the existing derivative-sign
+theorem and project moment bound, plus the proved response cut.
+
+\subsubsection{A certified limit on these scalar cuts [P,C]}
+For $m=2$, $M=6$ the extremal law has nodes $2\pm\sqrt2$ and
+upper probability $(2-\sqrt2)/4$. Since $E\sim\mathrm{Exp}(1)$
+has the same first three moments, the two-node theorem gives, for
+every $\lambda\ge0$,
+\[
+ \mathbb E\rho(\lambda^2eY)\ge
+ \mathbb E\rho(\lambda^2eE)
+ =\frac{\sqrt\pi}{2}\sqrt{1+\lambda^2e}.
+\]
+Consequently this law passes \emph{every} scalar Rice cut whenever
+\begin{equation}\label{eq:flr-survivor}
+ t^2+p^2e\le\pi/4.
+\end{equation}
+This follows either by minimising the last display minus $\lambda pe$,
+or by the Euclidean Cauchy--Schwarz inequality. At
+\[
+ t=1057/1250,\qquad e=161/4000,
+\]
+\eqref{eq:flr-survivor} is strict and the fresh directed computation gives
+\[
+ \mathbb E f(eY)-pe>1.37396307.
+\]
+It also certifies $S<1.37395354$ on the entire Gaussian-variance
+half-line. Hence this surviving abstract law has payoff
+$>S+9.53\cdot10^{-6}$. At $t=0.84$, choosing $e=651/16000$
+gives payoff $>1.37396328$ while still satisfying all cuts.
+The law also satisfies the existing radius bound:
+$(\mathbb E\sqrt Y)^2=(2+\sqrt2)/4<0.9718^2$.
+
+Therefore, relative to the old remote cap $1.3739635$, these moment
+constraints and \emph{all} scalar Rice cuts can improve the peak cap
+by less than $4.3\cdot10^{-7}$, and the left-end cap by less than
+$2.2\cdot10^{-7}$. This is not a counterexample to K and does not
+claim feasibility for Stein cuts or actual cubic responses. Strict
+positive excess kurtosis does not remove the obstruction: continuity
+allows sufficiently small $x>0$, because the support inequality above
+has a strict margin at the stated energy.
+
+\subsubsection{A joint response-projection constraint [P]}
+There is a stronger consequence of feasibility which keeps the tensor
+information discarded by a scalar law. Put $\bar k=\mathbb E[k\mid X]$
+and
+\[
+ r_\lambda(q)=2\lambda q\rho'(\lambda^2|q|^2),\qquad
+ D_\lambda=\mathbb E\rho(\lambda^2|q|^2)-t-\lambda pe.
+\]
+Then, for every $\lambda\ge0$,
+\begin{equation}\label{eq:flr-response-stability}
+ \boxed{\quad
+ \|\bar k-r_\lambda(q)\|_2^2\le\sqrt\pi\,D_\lambda.
+ \quad}
+\end{equation}
+No moment bound or independence among remote fields is needed.
+
+\begin{proof}
+Every remote $v\in L^2(X;\mathbb C)$ obeys
+\[
+ t+\operatorname{Re}\langle v,\bar k\rangle
+ \le\mathcal F(v):=\mathbb E\rho(|v|^2).
+\]
+This is the same two-response support argument, without requiring
+$v$ to belong to third chaos. Treat $L^2(X;\mathbb C)$ as a real
+Hilbert space. The gradient is
+$\nabla\mathcal F(v)=2v\rho'(|v|^2)$, and
+\[
+ D^2\mathcal F(v)[u,u]
+ =\mathbb E\{2\rho'(|v|^2)|u|^2
+       +4\rho''(|v|^2)(\operatorname{Re}\bar vu)^2\}
+ \le\frac{\sqrt\pi}{2}\|u\|_2^2.
+\]
+Convexity follows directly from the Gaussian average of the norm.
+The upper Hessian bound gives a global quadratic majorant, also for
+unbounded $L^2$ arguments by approximation. At $v=\lambda q$,
+compare that majorant at $v+u$ with the support lower bound there:
+\[
+ D_\lambda\ge
+ \operatorname{Re}\langle u,\bar k-r_\lambda(q)\rangle
+       -\frac{\sqrt\pi}{4}\|u\|_2^2.
+\]
+Choosing $u=2(\bar k-r_\lambda(q))/\sqrt\pi$ proves
+\eqref{eq:flr-response-stability}. The identity
+$\langle q,\bar k\rangle=pe$ is the only use of $F=\varepsilon Qk$
+in evaluating its support gap.
+\end{proof}
+
+\paragraph{Both conditional responses can be retained.}
+In fact, with $\bar h=\mathbb E[h\mid X]$, the stronger statement is
+\begin{equation}\label{eq:flr-both-responses}
+ \boxed{\quad\|\bar h\|_2^2+
+ \|\bar k-r_\lambda(q)\|_2^2\le\sqrt\pi D_\lambda.\quad}
+\end{equation}
+To see this, use the two-variable support functional
+\[
+ \mathcal F(u,v)=\tfrac12\mathbb E\{\rho(|u+v|^2)+\rho(|u-v|^2)\}
+ \ge t+\operatorname{Re}\langle u,\bar h\rangle
+          +\operatorname{Re}\langle v,\bar k\rangle.
+\]
+Its real Hessian on the product Hilbert space is again bounded by
+$\sqrt\pi/2$, by the parallelogram identity. Its gradient at
+$(0,\lambda q)$ is $(0,r_\lambda(q))$. The same square completion
+proves \eqref{eq:flr-both-responses}.
+
+Let $P_X,Q_X$ denote the remote first and $(2,1)$ chaos projections.
+Since $Q_X\bar k=pq$ and the two ranges are orthogonal,
+\begin{equation}\label{eq:flr-joint}
+ \boxed{\quad
+ \|pq-Q_Xr_\lambda(q)\|_2^2
+ +\|P_X\bar k-P_Xr_\lambda(q)\|_2^2
+ \le\sqrt\pi D_\lambda.\quad}
+\end{equation}
+The additional term $\|Q_X\bar h\|_2^2$ may be retained on its left.
+In particular $\|pq-Q_Xr_\lambda(q)\|_2^2>\sqrt\pi D_\lambda$
+is a certificate of infeasibility, even if every scalar cut passes.
+If
+\[
+ a=\|P_Xr_\lambda(q)\|_2,\qquad
+ b^2=\|pq-Q_Xr_\lambda(q)\|_2^2,\qquad
+ \tau=\sqrt\pi D_\lambda-b^2\ge0,
+\]
+the original row's retained negative square satisfies
+\begin{equation}\label{eq:flr-penalty}
+ -\|Pk\|_2^2\le-(a-\sqrt\tau)_+^2.
+\end{equation}
+This is a lower estimate of an existing penalty, not an additional
+penalty to subtract twice from an already optimised response dual.
+
+\paragraph{Finite implementation.}
+One may replace $P_X$ and $Q_X$ in \eqref{eq:flr-joint} by arbitrary
+finite orthonormal test subspaces of those respective chaoses.
+All coefficients are then finite integrals of the same explicit
+profile $r_\lambda(q)$. The resulting norm sums give a safe weaker
+test and penalty. In contrast to scalar moment cuts, these retain
+the cubic tensor through its nonlinear first- and third-chaos
+projections. Quantifying their gain in a full all-sector row remains
+open; this package does not claim that gain.
+
+\paragraph{Next necessary input.} Section~\ref{sec:coupled-projection-certificate} now carries out that test on a genuine nine-coordinate cubic with normalized
+fourth moment $593/100$. Every scalar Rice cut passes, but a noncollinear cubic support test excludes it. The same test gives a necessary bound on two projections of
+every remote cubic, leaving the orthogonal component unrestricted. A nearby two-coefficient region forces $\|Pk\|^2>10^{-5}$. The remaining task is to quantify these
+gains on the high-payoff tensors in a complete original-response row, not to apply the cuts to an auxiliary price-layer law.
+
+\subsection{A coupled cubic that passes every scalar support cut but fails response feasibility}
+\paragraph{Provenance (IDE note, 21 October).} Lower-bound GPT coupled-projection package (\code{conjK-coupled-projection-certificate-20261021.zip}, archived in
+\pathref{gpt-reviews/coupled-projection-20261021/}). IDE replays \code{python -I verify\_all.py} and \code{--fine} (pinned \code{python-flint 0.9.0}, unrelated directory):
+ALL CLAIMS PASS in 3.1\,s and 5.6\,s, with fresh directed integrals and tails. IDE check: $\E|J|^2=\frac14\E|X|^2\sum_j\E|Y_j|^2\E|W_j|^2=1$ and $H\perp J$ (since
+$\E[\bar Y_jW_j]=0$), so $\|H+3J\|^2=10$. This is a constraint on original responses, not a raw-K family; the conditional $\|Pk\|^2$ bound bounds an existing negative
+term and must not be subtracted twice.
+
+\label{sec:coupled-projection-certificate}
+\paragraph{Status.}
+The analytic statements below are proved [P]. The displayed rational
+margins are certified by fresh directed integration [C]. This is a
+theorem about original bounded responses, not a proof of raw K or a new
+Grothendieck endpoint. No new moment or chaos conjecture is assumed.
+
+\subsubsection{Setting and the finite-dimensional cubic}
+Let $Z$ be the visible proper complex Gaussian, independent of the
+remote standard proper Gaussians $X,Y_1,\ldots,Y_4,W_1,\ldots,W_4$.
+Write
+\[
+ H=\frac{X(|X|^2-2)}{\sqrt2},\qquad
+ V=\frac12\sum_{j=1}^4Y_j\overline W_j,\qquad J=XV.
+\]
+The remote cubics $H,J$ are orthonormal in $H_{2,1}$, and $X$ is
+orthogonal to both. Put
+\[
+ p=2500/1891,\qquad t_0=1057/1250,\qquad
+ q_e=\sqrt{e/10}\,(H+3J),\qquad \lambda_0=42/25.
+\]
+In particular $\|q_e\|_2^2=e$.
+If $T=|X|^2$ and $Y=\sum|Y_j|^2$, then $T\sim\mathrm{Exp}(1)$,
+$Y\sim\mathrm{Gamma}(4,1)$ independently, and conditionally on
+$X,Y_1,\ldots,Y_4$, the $dJ$ term is proper Gaussian of variance
+$d^2TY/4$. Therefore
+\[
+ \mathbb E|cH+dJ|^4=44c^4+16c^2d^2+5d^4,
+ \qquad \frac{\mathbb E|q_e|^4}{e^2}=\frac{593}{100}.
+\]
+This is a genuine finite cubic in nine coordinates, with a Wick
+self-interaction and a Gaussian-factor term sharing $X$. Its kurtosis
+lies inside the application's range $[2.06,6]$.
+
+Here $P=P_{1,0}$ and $Q=P_{2,1}$ denote the full orthogonal chaos
+projections, and $\varepsilon=1891/2500$. For the original responses let $|f_\pm|\le1$,
+$h=(f_++f_-)/2$, $k=(f_+-f_-)/2$, $Ph=tZ$, and
+$q=\mathbb E[\varepsilon Qk\mid\text{remote}]$.
+Every visible sector is unrestricted. Set
+\[
+ \rho(u)=\mathbb E|Z+\sqrt u|,\qquad R=\sqrt\pi/2,
+ \quad \mathcal F(v)=\mathbb E\rho(|v|^2),\quad
+ r(v)=2v\rho'(|v|^2).
+\]
+Every remote test $v\in H_{2,1}$ satisfies
+\begin{equation}\label{eq:jpc-support}
+ t+p\operatorname{Re}\langle v,q\rangle\le\mathcal F(v).
+\end{equation}
+Scalar Rice cuts restrict $v$ to $\lambda q$. The certificate below
+uses a test with a different ratio of the $H$ and $J$ coefficients.
+To see the support bound directly, for any remote $u\in L^2$ use
+\[
+ \operatorname{Re}(\overline Z h+\overline u k)
+ \le\tfrac12\{|Z+u|+|Z-u|\}.
+\]
+Its expectation is $t+\operatorname{Re}\langle u,\bar k\rangle$
+on the left and $\mathcal F(u)$ on the right, where
+$\bar k=\mathbb E[k\mid\text{remote}]$. Gaussian conditional expectation
+gives $Q_X\bar k=pq$. This proves \eqref{eq:jpc-support} without
+any restriction on the remaining projections of the responses.
+
+\subsubsection{Main certified conclusions [P,C]}
+Let $e_0=31/800$ and $c_0=\sqrt{31/8000}$.
+
+\paragraph{Every scalar cut passes at the excluded cubic.}
+At $q=q_{e_0}$ and $t=t_0$,
+\begin{equation}\label{eq:jpc-all-scalar}
+ \boxed{\quad \mathcal F(\lambda q)-t_0-\lambda pe_0
+     >\frac1{100000}\quad\hbox{for every }\lambda\ge0.\quad}
+\end{equation}
+This is a continuum statement, including both unbounded ends of the
+$\lambda$ domain. It is not inferred from a grid of multipliers.
+
+\paragraph{Nevertheless the response configuration is impossible.}
+Define the positive real algebraic coefficients
+\[
+ a_0=\lambda_0c_0+\frac7{1000},\qquad
+ b_0=3\lambda_0c_0-\frac{23}{10000},\qquad v_*=a_0H+b_0J.
+\]
+The replay proves
+\begin{equation}\label{eq:jpc-separated}
+ \mathcal F(v_*)-t_0-p\langle v_*,q_{e_0}\rangle
+ <-\frac1{100000},\qquad \|v_*\|_2<\frac13.
+\end{equation}
+Hence there are no original responses at $t\ge t_0$ with remote
+projection $q_{e_0}$, despite \eqref{eq:jpc-all-scalar}.
+
+\paragraph{A universal constraint on two cubic coefficients.}
+For \emph{any} actual remote cubic $q$, with arbitrary additional remote
+coordinates and dependencies, put $c=\langle H,q\rangle$ and
+$d=\langle J,q\rangle$ (the inner product is linear in its second slot).
+Then, at $t\ge t_0$,
+\begin{equation}\label{eq:jpc-universal-cut}
+ \boxed{\quad a_0|c|+b_0|d|
+ <(a_0+3b_0)c_0-\frac1{100000p}.\quad}
+\end{equation}
+There is \emph{no size restriction on the component of $q$ orthogonal
+to $H,J$}. In particular no original response can have coefficients
+satisfying
+\begin{equation}\label{eq:jpc-halfspace}
+ a_0|c|+b_0|d|\ge(a_0+3b_0)c_0.
+\end{equation}
+These statements hold for any nine orthonormal remote Gaussian directions
+used to form $H,J$, not only for fixed coordinates.
+There is also a direct row-parameter version. Define the fixed algebraic
+constant $C_*=t_0+p(a_0+3b_0)c_0-10^{-5}$. For any
+$\varepsilon'>0$, responses with $Ph=tZ$ and actual remote projection
+$q'=\mathbb E[\varepsilon'Qk\mid\text{remote}]$ satisfy
+\begin{equation}\label{eq:jpc-any-row}
+ t+\frac{a_0|\langle H,q'\rangle|+b_0|\langle J,q'\rangle|}
+              {\varepsilon'}<C_*.
+\end{equation}
+The same certified test therefore applies across row parameters. It does
+not involve the auxiliary visible profile $L$ at all.
+
+\begin{proof}
+Choose the phases of the coefficients of $v_*$ to align its pairing with
+$c,d$. Rotating $X$ and the common phase of the $Y_j$ variables permits
+the phases of $H,J$ to be set independently, so the distribution of the
+resulting test, and hence $\mathcal F(v_*)$, is unchanged. The support
+pairing is exactly $a_0|c|+b_0|d|$. Its pairing with every orthogonal
+component is zero. Apply \eqref{eq:jpc-support} and
+\eqref{eq:jpc-separated}. Gaussian unitary invariance allows arbitrary
+orthonormal remote directions.
+\end{proof}
+
+As a convenient neighbourhood consequence, if complex $c,d$ obey
+\eqref{eq:jpc-halfspace}, there are no original responses with
+\begin{equation}\label{eq:jpc-robust}
+ q=cH+dJ+q_\perp+\Delta,\qquad
+ q_\perp\perp H,J,\qquad \|\Delta\|_2\le1/50000.
+\end{equation}
+The cubic $q_\perp$ is unrestricted in size and dependence. The remaining
+support violation exceeds $10^{-6}$, since its decrease is at most
+$p\|v_*\|\|\Delta\|<p/150000$ and
+$1/100000-p/150000>1/1000000$.
+In particular this excludes every $sq_{e_0}+q_\perp+\Delta$, $s\ge1$,
+under these same conditions.
+
+\paragraph{A forced penalty at a nearby cubic.}
+Let $e_1=38739/10^6$. If an original response at $t\ge t_0$ has remote
+projection $q_{e_1}$, then
+\begin{equation}\label{eq:jpc-penalty-center}
+ \|Pk\|_2^2>1/75000.
+\end{equation}
+More robustly, if its remote projection is $q_{e_1}+\Delta$, where
+$\Delta$ is any remote cubic with $\|\Delta\|_2\le10^{-6}$, then
+\begin{equation}\label{eq:jpc-penalty-ball}
+ \boxed{\quad \|Pk\|_2^2>10^{-5}.\quad}
+\end{equation}
+The central cubic passes every scalar cut with gap $>2\cdot10^{-5}$.
+More generally, write $c=\langle H,q\rangle$,
+$d=\langle J,q\rangle$, and $c_1=\sqrt{e_1/10}$. The same bound
+\eqref{eq:jpc-penalty-ball} holds whenever
+\begin{equation}\label{eq:jpc-penalty-projections}
+ (|c|-c_1)^2+(|d|-3c_1)^2\le10^{-12},
+\end{equation}
+with \emph{every orthogonal remote cubic component unrestricted}.
+If $|c|=c_1$ and $|d|=3c_1$, the stronger bound $1/75000$ holds.
+Thus the result concerns a neighbourhood of two coefficient magnitudes,
+not a small ball around a whole high-dimensional tensor.
+
+These penalty assertions are conditional on a response existing;
+no such response is constructed here. The quantity $-\|Pk\|_2^2$
+is already in the exact row identity, and cannot be deducted twice.
+
+\subsubsection{Why the certification needs only two radial variables [P]}
+For $q=cH+dJ$, $c,d\ge0$, and any $\lambda\ge0$, put
+\[
+ A=Y/4,\quad Z_0(T)=T(T-2)^2/2,\quad
+ s=1+\lambda^2d^2TA,\quad u=\lambda^2c^2Z_0(T)/s,
+ \quad K_j(u)=e^{-u/2}I_j(u/2).
+\]
+The following expectations are over the independent $T,Y$ only:
+\begin{align}
+ \mathcal F(\lambda q)
+ &=R\mathbb E\big[\sqrt s\{(1+u)K_0(u)+uK_1(u)\}\big],\label{eq:jpc-A}\\
+ r_H:=\langle H,r(\lambda q)\rangle
+ &=\lambda cR\mathbb E\left[\frac{Z_0(T)}{\sqrt s}(K_0+K_1)\right],\label{eq:jpc-H}\\
+ r_J:=\langle J,r(\lambda q)\rangle
+ &=\lambda dR\mathbb E\left[\frac{TA}{\sqrt s}K_0\right],\label{eq:jpc-J}\\
+ r_X:=\langle X,r(\lambda q)\rangle
+ &=\lambda cR\mathbb E\left[\frac{T(T-2)}{\sqrt{2s}}(K_0+K_1)\right].\label{eq:jpc-X}
+\end{align}
+All these coefficients are real. The first formula averages the Gaussian
+$W_j$ coordinates together with the visible unit Gaussian in $\rho$.
+Differentiating it with respect to $c,d$ yields
+$\partial_c\mathcal F(\lambda q)=\lambda r_H$ and
+$\partial_d\mathcal F(\lambda q)=\lambda r_J$; here
+$\rho(u)-2u\rho'(u)=RK_0(u)$.
+Conditioning the phase response directly gives \eqref{eq:jpc-X}.
+In particular, if
+$D(\lambda)=\mathcal F(\lambda q)-t_0-\lambda pe$, then
+\begin{equation}\label{eq:jpc-derivative}
+ D'(\lambda)=cr_H+dr_J-pe.
+\end{equation}
+No angular quadrature, large-dimension truncation, or Gaussian-limit
+replacement is used.
+
+\subsubsection{A global test of all scalar multipliers [P]}
+The unit Gaussian norm has the Hessian bounds
+\begin{equation}\label{eq:jpc-hessians}
+ R e^{-|w|^2}I\ \preceq\ D^2_w\mathbb E|Z+w|\ \preceq\ RI.
+\end{equation}
+For example, use
+$|w|=\frac14\int_0^{2\pi}|\operatorname{Re}(e^{-i\theta}w)|\,d\theta$.
+The real Gaussian projection has density $e^{-x^2}/\sqrt\pi$, so its
+smoothed absolute value has second derivative $2e^{-x^2}/\sqrt\pi$.
+Integrating a directional square gives both inequalities in
+\eqref{eq:jpc-hessians}.
+
+If $M_4=\mathbb E|q|^4$ and $e=\|q\|_2^2>0$, Jensen under the
+$|q|^2$-size-biased law gives
+\[
+ D''(\lambda)\ge R\mathbb E[|q|^2e^{-\lambda^2|q|^2}]
+       \ge Re\,e^{-\lambda^2M_4/e}.
+\]
+For both certified cubics, the replay checks
+\[
+ Re\exp\{-9(593/100)e\}>1/250=:\kappa.
+\]
+Thus $D$ is $\kappa$-strongly convex on $[0,3]$.
+It also checks $D'(\lambda_0)+\kappa(3-\lambda_0)>0$;
+global convexity then makes $D$ increasing beyond $3$. Consequently
+\begin{equation}\label{eq:jpc-all-lambda-check}
+ \inf_{\lambda\ge0}D(\lambda)
+ \ge D(\lambda_0)-\frac{D'(\lambda_0)^2}{2\kappa}.
+\end{equation}
+Directed evaluation gives a lower bound greater than $1.1943\cdot10^{-5}$
+at $e_0$ and $2.4167\cdot10^{-5}$ at $e_1$.
+
+\subsubsection{The noncollinear test and the penalty [P,C]}
+From the upper Hessian bound in \eqref{eq:jpc-hessians}, for any remote
+$v,w\in L^2$,
+\[
+ \mathcal F(v+w)\le\mathcal F(v)
+       +\operatorname{Re}\langle w,r(v)\rangle+\frac R2\|w\|^2.
+\]
+At $v=\lambda_0q_{e_0}$ choose
+$w=(7/1000)H-(23/10000)J$. This proves
+\eqref{eq:jpc-separated} by a single directed comparison of
+\[
+ D(\lambda_0)+(r_H-pc_0)\frac7{1000}
+ -(r_J-3pc_0)\frac{23}{10000}
+ +\frac R2\left\{\left(\frac7{1000}\right)^2+
+                  \left(\frac{23}{10000}\right)^2\right\}
+ <-10^{-5}.
+\]
+
+For completeness, the response projection constraint used for the penalty
+also follows from this same upper Hessian bound. Put $\bar k=\mathbb E[k\mid X,Y,W]$.
+The support inequality for every remote $u\in L^2$ reads
+$t+\operatorname{Re}\langle u,\bar k\rangle\le\mathcal F(u)$.
+The quadratic majorant at a fixed $v$, optimised in its increment, gives
+\[
+ \|\bar k-r(v)\|^2\le2R\{\mathcal F(v)-t-
+                           \operatorname{Re}\langle v,\bar k\rangle\}.
+\]
+Take $v=\lambda_0q_{e_1}$ and let the actual remote projection be
+$q_{e_1}+\Delta$, $\|\Delta\|\le\delta$.
+In the orthonormal directions $H,J,X$, write
+\[
+ a=|r_X|,\qquad b=\sqrt{(pc-r_H)^2+(pd-r_J)^2},\qquad
+ D=\mathcal F(v)-t_0-\lambda_0pe_1.
+\]
+Bessel's inequality and the perturbation norm give
+\[
+ \|Pk\|^2\ge
+ \left(a-\sqrt{\left[\sqrt\pi\{D+p\|v\|\delta\}
+                    -(b-p\delta)_+^2\right]_+}\right)_+^2,
+\]
+whenever the response is feasible; a negative bracket already excludes it.
+The replay checks the strict lower bounds $1/75000$ at $\delta=0$
+and $1/100000$ at $\delta=10^{-6}$. Only the projections of
+$\Delta$ onto $H,J$ entered either the support pairing or Bessel's
+inequality. Thus one may replace $\|\Delta\|\le\delta$ by
+$|\langle H,\Delta\rangle|^2+|\langle J,\Delta\rangle|^2\le\delta^2$.
+Aligning coefficient phases as above proves
+\eqref{eq:jpc-penalty-projections}. Additional remote coordinates,
+unbounded orthogonal components, and arbitrary dependence do not affect
+the argument.
+
+\subsubsection{Directed integration and tails [C]}
+The replay integrates \eqref{eq:jpc-A}--\eqref{eq:jpc-X} on
+$0\le T\le36$, $0\le Y\le48$ against
+$e^{-T-Y}Y^3/6\,dT\,dY$.
+Arb's complex analytic integrator supplies directed enclosures, not
+estimated floating quadrature errors. On every complex argument ball
+used for an analytic bound, the implementation verifies $\operatorname{Re}s>0$.
+This fixes a holomorphic square-root branch and excludes poles.
+
+For wide complex balls it avoids the interval cancellation between
+$e^{-u/2}$ and $I_j(u/2)$ by using the positive Laplace representations
+\[
+ K_0(u)={}_1F_1(1/2;1;-u),\qquad
+ K_0(u)+K_1(u)={}_1F_1(1/2;2;-u).
+\]
+Both are transforms of probability measures on $[0,1]$. If
+$E_u=\exp(\max(0,-\operatorname{Re}u))$, their moduli are at most
+$E_u$, while
+$|\rho(u)/R|\le1+|u|E_u/2$.
+These bounds justify the complex range enclosures used by the integrator.
+At narrow balls the entire Bessel formulas are evaluated directly.
+
+On the omitted real tails, nonnegative polynomial majorants for the
+four integrands before multiplying by the probability density are
+\[
+\begin{array}{c|c}
+ \mathcal F&3+4T+T^2+Y/4\\
+ |r_X|&T^2+2T\\
+ r_H&T^3/2+2T^2+2T\\
+ r_J&TY/4.
+\end{array}
+\]
+They follow from $K_0,K_0+K_1\le1$, $s\ge1$, and the triangle
+inequality for the norm. For example, at the certified parameters
+$\lambda c<1$ and $\lambda dR<1$, so the support integrand is at most
+\[
+ R\sqrt s+\lambda c\sqrt{Z_0(T)}
+ \le 1+\tfrac12(T+Y/4)+\tfrac12(T^2+3T+2),
+\]
+which is smaller than its displayed majorant.
+Exact integer-shape incomplete gamma formulas
+bound the union of $T>36$ and $Y>48$. All four tail errors are below
+$10^{-10}$; the largest is below $6.541\cdot10^{-12}$.
+No stored function value or floating optimisation output is trusted.
+
+\paragraph{What this changes.}
+This is the first test in this continuation where a \emph{genuine}
+cubic in the needed kurtosis range passes all scalar Rice tests and
+is excluded by a tensor-dependent response test. The same test constrains
+two projections of every cubic, with the entire orthogonal component
+unrestricted. Nearby in these two coefficients it gives a conditional
+$10^{-5}$ deduction from an existing row penalty.
+It does not yet prove that high-payoff candidates across the complete
+row domain receive such a deduction. A full all-sector optimisation,
+then the profile envelope, is still necessary for a new endpoint.
+
+\subsection{All-sector response feasibility: an effective first moment and a joint profile constraint}
+\label{sec:sector-rice-feasibility}
+\paragraph{Provenance (IDE note, 21 October).} Lower-bound GPT sector-feasibility package (\code{conjK-all-sector-response-constraints-20261021.zip}, archived in
+\pathref{gpt-reviews/sector-feasibility-20261021/}). IDE replay \code{python3 -I verify\_all.py}: ALL CLAIMS PASS (exact rational algebra, 0.05\,s). IDE re-derivation \st{P}
+of \eqref{eq:sector-ellipsoid}: $|Z+U|+|Z-U|\le2|Z|+|U|^2/|Z|$; the weights $\E[w_k(T)/\sqrt T]/R$ are $2,\frac32,\frac34,1,1,\frac78$ (via $\Gamma(\frac12),\Gamma(\frac32),\Gamma(\frac52),
+\Gamma(\frac72)$); cross terms vanish by the visible phase, by remote orthogonality, or by $\E Y=0$; and optimising each test scale $\lambda_k=p/(c_kR)$ gives the
+coefficients $1/(2c_k)$.
+
+\paragraph{Status and scope.}
+The dimension-free statements below are analytic proofs [P]. Their few
+rational polynomial bounds have a standard-library exact replay [C].
+The candidate diagnostics are floating calculations [F]. No raw-K theorem
+or new Grothendieck endpoint is claimed.
+
+Let $P=P_{1,0}$, $Q=P_{2,1}$, $\varepsilon>0$, and $p=1/\varepsilon$.
+For bounded responses $|f_\pm|\le1$, put
+\[
+ h=(f_++f_-)/2,\qquad k=(f_+-f_-)/2,\qquad Ph=tZ,
+ \qquad F=\varepsilon Qk.
+\]
+The visible standard proper Gaussian $Z$ is independent of all remote
+coordinates $X$. Write the full cubic as
+\[
+ F=q+(|Z|^2-1)r_A+\frac{Z^2}{\sqrt2}r_B
+       +ZY+\overline ZW+\nu H(Z),\qquad
+ H(Z)=Z(|Z|^2-2)/\sqrt2.
+\]
+Here $q,r_A,r_B,Y,W$ are arbitrary jointly defined remote chaoses of
+bidegrees $(2,1),(1,0),(0,1),(1,1),(2,0)$, respectively.
+Their dependencies and phases are unrestricted. The scalar $\nu$ is
+arbitrary. Define
+\[
+ r_\parallel=\frac{\sqrt2r_A+\overline{r_B}}{\sqrt3},\qquad
+ r_\perp=\frac{r_A-\sqrt2\overline{r_B}}{\sqrt3},\qquad
+ E_{\rm ev}=\|Y\|_2^2+\|W\|_2^2+|\nu|^2.
+\]
+This is a real orthogonal change of variables: the sum of the two squared
+norms is $\|r_A\|^2+\|r_B\|^2$.
+
+Put $R=\sqrt\pi/2$, $\rho(u)=\mathbb E|Z+\sqrt u|$, and, for any
+\emph{remote} cubic test $v$, set
+\[
+ \mathcal D_t(v;q)=\mathbb E\rho(|v|^2)-t-p\operatorname{Re}\langle v,q\rangle.
+\]
+The support inequality makes this nonnegative for actual responses.
+
+\subsubsection{An exact energy ellipsoid halves the full cubic domain [P,C]}
+There is a particularly simple all-sector consequence of retaining the
+first-moment constraint:
+\begin{equation}\label{eq:sector-ellipsoid}
+ \boxed{\quad
+ \frac{\|q\|^2}{4}+\frac{\|r_A\|^2}{3}
+ +\frac{2\|r_B\|^2}{3}
+ +\frac{\|Y\|^2+\|W\|^2}{2}+\frac{4|\nu|^2}{7}
+ \le R\varepsilon^2(R-t).\quad}
+\end{equation}
+In particular $t\le R$ for any response. Together with the scalar
+Rice cut at zero's tangent, this gives the closed-form bound
+\begin{equation}\label{eq:sector-closed-total}
+ \boxed{\quad \|F\|^2\le\frac72 R\varepsilon^2(R-t).\quad}
+\end{equation}
+Using the slightly sharper rational Rice tangent below gives
+\begin{equation}\label{eq:sector-refined-total}
+ \|F\|^2\le\varepsilon^2
+   \{3R(R-t)+B_0(A_0-t)\}.
+\end{equation}
+For $\varepsilon=1891/2500$, the exact checker proves
+\[
+\begin{array}{c|c|c}
+ t\text{ lower bound}&\text{new strict cap on }\|F\|^2
+ &\text{old }\varepsilon^2(1-t^2)\text{ cap, approximately}\\\hline
+ 0.840&0.081884&0.168438299\\
+ 0.8456&0.071981&0.163037655\\
+ 0.851&0.062431&0.157795905
+\end{array}
+\]
+These are bounds on the \emph{whole} actual cubic, including every shared
+sector, not just on the remote component. They do not imply a payoff cap.
+
+\begin{proof}
+Take an arbitrary full cubic test $U$. The support inequality and the
+global norm majorant at $Z$ give
+\[
+ t+p\operatorname{Re}\langle U,F\rangle
+ \le\tfrac12\mathbb E(|Z+U|+|Z-U|)
+ \le R+\tfrac12\mathbb E\frac{|U|^2}{|Z|}.
+\]
+The weighted quadratic form is diagonal on the six cubic sectors.
+Angular orthogonality removes most cross terms. The only remaining
+potential cross terms are remote versus $A$, and $Y$ versus diagonal;
+they vanish because their remote coefficient fields lie in orthogonal
+chaoses (and $\mathbb EY=0$). Divided by $R$, its six coefficients are
+\[
+ 2,\quad 3/2,\quad3/4,\quad1,\quad1,\quad7/8.
+\]
+For example the $A$ coefficient is
+$\mathbb E[(T-1)^2/\sqrt T]/R=3/2$, and the diagonal coefficient is
+$\mathbb E[T(T-2)^2/(2\sqrt T)]/R=7/8$.
+Completing six independent squares proves
+\eqref{eq:sector-ellipsoid}. This argument requires no independence
+between the remote coefficient fields.
+
+Let $e=\|q\|^2$ and $C=R\varepsilon^2(R-t)$. Every visible coefficient
+in \eqref{eq:sector-ellipsoid} is at least $1/3$, hence
+$\|F\|^2\le3C+e/4$.
+The global tangent $\rho(u)\le R+(R/2)u$ gives $e\le2C$ by
+optimizing $\lambda$ in the scalar cut. This proves
+\eqref{eq:sector-closed-total}. The refined remote bound
+$e\le4\varepsilon^2B_0(A_0-t)$ proves
+\eqref{eq:sector-refined-total}.
+\end{proof}
+
+\subsubsection{Two universal inequalities [P]}
+For every such test $v$,
+\begin{equation}\label{eq:sector-effective-moment}
+ \boxed{\quad
+ \frac{3\|r_\perp\|^2+2E_{\rm ev}}{8\varepsilon^2}
+ \le\mathcal D_t(v;q).\quad}
+\end{equation}
+It holds with \emph{all sectors present simultaneously}, in every
+finite dimension, at every amplitude, without a fresh buffer and without
+stationarity. In particular it controls the interaction of even sectors
+with arbitrary shared $A/B$ fields, as a response-feasibility constraint.
+It is not a comparison of raw payoffs after adding those fields.
+
+There is a complementary inequality retaining the parallel content.
+Define the bounded positive kernel
+\[
+ G(u)=e^{-u/2}\{I_0(u/2)-I_1(u/2)\}
+ =\frac2\pi\int_0^1e^{-us}\sqrt{\frac{s}{1-s}}\,ds,
+ \qquad 0<G(u)\le1,
+\]
+and the remote first-chaos projection
+\[
+ a(v)=-\frac R2 P_X\{vG(|v|^2)\}.
+\]
+Then
+\begin{equation}\label{eq:sector-joint-profile}
+ \boxed{\quad
+ \left\|p r_\parallel-\sqrt{\frac32}\,a(v)\right\|^2
+       +p^2\|r_\perp\|^2+p^2E_{\rm ev}
+ \le4\mathcal D_t(v;q).\quad}
+\end{equation}
+The profile is averaged over the visible Gaussian exactly before any
+Cauchy--Schwarz bound. Since $P_Xv=0$, it may equivalently be evaluated as
+$a(v)=(R/2)P_X\{v(1-G(|v|^2))\}$, which removes the linear term.
+No estimate of a third or fifth derivative of the old $L$-profile occurs.
+
+The two inequalities are valid simultaneously. Their left sides must
+\emph{not} be added while retaining the same right side: they are two
+optimizations of a shared support budget. The same caution applies to
+combining them with a separate remote-projection certificate. Section~\ref{sec:joint-response-budget} proves which terms \emph{can} be combined, using uniformity of the
+transverse/even support charge over every remote shift; it also gives a separate optimized parallel-profile envelope.
+
+\subsubsection{Consequences for the existing remote cuts [P,C]}
+Define
+\[
+ t_{\rm eff}=t+\frac{3\|r_\perp\|^2+2E_{\rm ev}}{8\varepsilon^2}.
+\]
+Every remote support cut can be strengthened simply by replacing $t$ by
+$t_{\rm eff}$:
+\begin{equation}\label{eq:sector-all-tests}
+ t_{\rm eff}+p\operatorname{Re}\langle v,q\rangle
+       \le\mathbb E\rho(|v|^2).
+\end{equation}
+This includes noncollinear tensor tests. At $v=\lambda q$, it gives a
+linear constraint on the law of $|q|^2$ and the two sector energies:
+\[
+ \mathbb E[\rho(\lambda^2|q|^2)-\lambda p|q|^2]
+ \ge t_{\rm eff}\qquad(\lambda\ge0).
+\]
+This substitution is a necessary constraint, not an assertion that a new
+response with first projection $t_{\rm eff}Z$ has been constructed.
+
+The existing certified global tangent
+\[
+ \rho(u)\le A_0+B_0u,\qquad
+ A_0=886762780/10^9,\quad B_0=432306903/10^9
+\]
+therefore gives the global coupled energy bound
+\begin{equation}\label{eq:sector-energy-cut}
+ \boxed{\quad
+ \|q\|^2+\frac{3B_0}{2}\|r_\perp\|^2+B_0E_{\rm ev}
+ \le4\varepsilon^2B_0(A_0-t).\quad}
+\end{equation}
+The checker recomputes the tangent using rational alternating series.
+At $\varepsilon=1891/2500$, the right side is strictly below
+$0.046266$, $0.040726$, and $0.035383$ for
+$t\ge0.84$, $0.8456$, and $0.851$, respectively.
+For scale, $\|r_\perp\|=0.012$ consumes more than $94\cdot10^{-6}$
+of the first-moment support budget. This is \emph{not} a deduction of
+that size from the norm cap.
+
+The old rotation identity pays for $r_\parallel$ because
+$2\beta r_A+\sqrt2\beta\overline{r_B}=\sqrt6\beta r_\parallel$.
+Equation~\eqref{eq:sector-effective-moment} controls its orthogonal
+combination through feasibility, including even and diagonal interactions.
+Equation~\eqref{eq:sector-joint-profile} further ties the parallel field
+to one explicit remote profile. These are quantitative structural
+constraints; their combination with the full row objective is still an
+open optimization problem.
+
+\subsubsection{The visible Gaussian calculation [P]}
+For a fixed remote shift $w$, define
+\[
+ k_w(Z)=\tfrac12\{\operatorname{ph}(Z+w)-\operatorname{ph}(Z-w)\}.
+\]
+It is even under $Z\mapsto-Z$. Let
+$r(w)=\mathbb E_Z\operatorname{ph}(Z+w)=wf(|w|^2)$, with
+\[
+ f(u)=R e^{-u/2}\{I_0(u/2)+I_1(u/2)\}
+ =\frac{2R}{\pi}\int_0^1e^{-us}\sqrt{\frac{1-s}{s}}\,ds.
+\]
+Differentiating the Gaussian convolution (a bounded function convolved
+with a smooth Gaussian density) gives the score identities
+\begin{align*}
+ \mathbb E[(|Z|^2-1)k_w]&=w\kappa(|w|^2),\\
+ \mathbb E[\overline Z^{,2}k_w]/\sqrt2
+      &=\overline w\kappa(|w|^2)/\sqrt2,
+ \qquad \kappa(u)=2f'(u)+uf''(u)=-\frac R2G(u).
+\end{align*}
+These follow equally by applying $\partial_w\partial_{\bar w}$ and
+$\partial_w^2$ to $r(w)$, respectively. To check the last identity,
+write $b(s)=(2/\pi)\sqrt{(1-s)/s}$. Integration by parts gives
+\[
+ \int_0^1(us^2-2s)b(s)e^{-us}\,ds
+ =\int_0^1s^2b'(s)e^{-us}\,ds
+ =-\frac1\pi\int_0^1e^{-us}\sqrt{\frac{s}{1-s}}\,ds.
+\]
+The boundary term $s^2b(s)e^{-us}$ vanishes at both endpoints.
+Thus the visible $A/B$ projection of $k_v$ is exactly
+$(a(v),\overline{a(v)}/\sqrt2)$, while its $Y,W,\nu$ projections vanish.
+In particular its transverse component is zero, for \emph{every}
+remote $v$, with no hypothesis on its law.
+
+\subsubsection{Uniform inverse-distance bounds [P,C]}
+If a finite positive planar measure has mass $m$ and density at most
+$M/\pi$, then, at every centre $w$,
+\begin{equation}\label{eq:sector-density-bound}
+ \int\frac{d\mu(z)}{|z-w|}\le2\sqrt{mM}.
+\end{equation}
+Indeed the layer-cake integral is at most
+$\int_0^\infty\min(m,M/s^2)\,ds=2\sqrt{mM}$.
+
+First, the two orthonormal $A/B$ polynomials are
+$|Z|^2-1$ and $Z^2/\sqrt2$. Their squared Christoffel sum is
+$K_{AB}(s)=(s-1)^2+s^2/2$.
+The cubic exponential Taylor polynomial exceeds it, since
+\[
+ (1+s+s^2/2+s^3/6)-K_{AB}(s)
+       =s\{(s-3)^2+9\}/6\ge0.
+\]
+Hence $K_{AB}(s)e^{-s}\le1$. Every linear combination $P_{AB}$
+therefore has density $|P_{AB}(z)|^2e^{-|z|^2}/\pi$ bounded by
+$\|P_{AB}\|_2^2/\pi$, and
+\[
+ \mathbb E\frac{|P_{AB}(Z)|^2}{|Z+w|}\le2\|P_{AB}\|_2^2.
+\]
+
+The even-sector polynomials $Z,\overline Z,H(Z)$ are likewise
+orthonormal. Their squared sum is
+$K_{\rm ev}(s)=s^3/2-2s^2+4s$. Again
+$K_{\rm ev}(s)e^{-s}\le1$ for all $s\ge0$.
+For a short exact proof on $[0,2]$, multiply the difference between the
+fourth exponential Taylor polynomial and $K_{\rm ev}$ by $24$:
+\[
+ Q(s)=s^4-8s^3+60s^2-72s+24.
+\]
+Its degree-four Bernstein coefficients are positive on each of the eight
+intervals $[j/4,(j+1)/4]$, $0\le j<8$; their least coefficient is
+$39/128$. The standard-library replay computes these rational
+coefficients. For $s\ge2$, set $x=s-2\ge0$ and observe
+\[
+ -2(K_{\rm ev}'-K_{\rm ev})
+ =x^3-x^2+4=(x-2/3)^2(x+1/3)+104/27>0.
+\]
+Thus the density decreases there and is at most $4e^{-2}<1$.
+Equation~\eqref{eq:sector-density-bound} gives the same inverse-distance
+constant $2$ for every even-sector combination $P_{\rm ev}$.
+
+The transverse tests have a better constant. For a complex coefficient $a$,
+put
+\[
+ T(a)(Z)=\frac{(|Z|^2-1)a-Z^2\bar a}{\sqrt3}.
+\]
+This is a \emph{real}-linear isometry: $\|T(a)\|_2^2=|a|^2$.
+For $s\le1$, its density is at most $|a|^2/(3\pi)$; for $s\ge1$,
+it is at most $|a|^2(2s-1)^2e^{-s}/(3\pi)$.
+The latter radial expression is largest at $s=5/2$, and
+\[
+ \frac{16e^{-5/2}}3<\frac49,
+ \qquad e^{5/2}>\sum_{j=0}^{6}(5/2)^j/j!>12.
+\]
+Consequently
+\begin{equation}\label{eq:sector-transverse-cost}
+ \mathbb E\frac{|T(a)(Z)|^2}{|Z+w|}\le\frac43|a|^2
+ \qquad\hbox{uniformly in }w,a.
+\end{equation}
+All these inequalities can be conditioned on the full remote Gaussian
+space. The coefficients and the shift may depend on exactly the same
+remote variables.
+
+\subsubsection{Support completion proves the theorems [P]}
+For any full cubic test $v+U$, with remote $v$ and visible-sector $U$,
+original boundedness gives
+\[
+ t+p\operatorname{Re}\langle v+U,F\rangle
+ \le\tfrac12\mathbb E\{|Z+v+U|+|Z-v-U|\}.
+\]
+The global norm majorant
+\[
+ |z+u|\le|z|+\operatorname{Re}(\bar zu)/|z|+|u|^2/(2|z|)
+\]
+therefore bounds the right side by
+\[
+ \mathbb E\rho(|v|^2)+\operatorname{Re}\langle U,k_v\rangle
+ +\frac14\mathbb E\left[|U|^2
+       \left\{\frac1{|Z+v|}+\frac1{|Z-v|}\right\}\right].
+\]
+The singular points have Gaussian measure zero and the uniform estimates
+above prove integrability. There is no clipping parameter or missing
+small-ball error.
+
+Split $U$ into its $A/B$ part and its even-sector part. The former is
+even in $Z$, the latter odd, and the sum of the two denominators is even.
+The quadratic cross term thus cancels \emph{exactly}, conditional on
+all remote variables. The preceding bounds make the total quadratic
+term at most $\|U_{AB}\|^2+\|U_{\rm ev}\|^2$.
+Completing squares over all admissible remote coefficient fields gives
+\[
+ \|p r_A-a(v)\|^2+
+ \|p r_B-\overline{a(v)}/\sqrt2\|^2+p^2E_{\rm ev}
+ \le4\mathcal D_t(v;q).
+\]
+The real orthogonal coefficient rotation gives
+\eqref{eq:sector-joint-profile}.
+
+For the sharper content-free estimate, restrict $U_{AB}=T(a)$ with
+$a\in H_{1,0}(X)$. Its real pairing with $k_v$ vanishes by the two
+score identities, while its pairing with $F$ is
+$\operatorname{Re}\langle a,r_\perp\rangle$.
+The quadratic terms now cost at most
+$(2/3)\|a\|^2+\|U_{\rm ev}\|^2$. Completing the two squares gives
+\[
+ \mathcal D_t(v;q)\ge\frac38p^2\|r_\perp\|^2
+                      +\frac14p^2E_{\rm ev},
+\]
+which is \eqref{eq:sector-effective-moment}.
+The choice $v=\lambda q$ and the optimum tangent multiplier
+$\lambda=p/(2B_0)$ prove \eqref{eq:sector-energy-cut}.
+
+\subsubsection{Diagnostic and remaining obligation [F,?]}
+The accompanying diagnostic uses the twelve stored three-coordinate
+all-sector candidates from the response-dual experiment, with their fresh
+independent grade-three Gaussian buffer. It evaluates both new charges
+on two independent Sobol scramblings and averages the buffer analytically.
+This is a limit-model diagnostic, not a representation theorem for
+arbitrary finite cubics.
+
+At the stored row $t=0.845$, the near-Gaussian cases with raw payoffs about
+$1.373952$ incur only $10^{-9}$--$10^{-8}$ of new support charge. Cases
+with larger couplings incur charges up to about $1.5\cdot10^{-4}$, but
+those cases already have negative scalar support gap and lower raw payoff.
+Thus this sample does \emph{not} demonstrate a new endpoint gain or a
+newly excluded binding candidate. The charges must not be read as changes
+in the objective, and these floating values are not certificates.
+
+What is proved is a universal replacement for leaving every shared
+sector unrestricted after imposing a remote-law cut. A usable next
+optimization must retain the effective first-moment constraint, the
+joint parallel profile, and both existing negative squares, on the
+same original-response configuration. It must then bound all high-payoff
+tensors and provide a complete row cover. Those obligations remain open. \emph{Update:} the joint constraints and a compatible Ward penalty are now proved
+(\S\ref{sec:joint-response-budget}); the remaining task is a universal cover of the remaining response configurations and a complete same-$\varepsilon$ row envelope. A complete
+\emph{regional} row is now available (\S\ref{sec:canonical-response-cap}); a universal row is not.
+
+\subsection{A joint support budget for the original responses}
+\label{sec:joint-response-budget}
+\paragraph{Provenance (IDE note, 21 October).} Lower-bound GPT joint-response-budget package (\code{conjK-joint-response-budget-20261021.zip}, archived in
+\pathref{gpt-reviews/joint-response-budget-20261021/}). IDE replays \code{python -I verify\_all.py} and \code{--fine} (pinned \code{python-flint 0.9.0}, unrelated directory):
+ALL CLAIMS PASS (1.5\,s and 2.6\,s), including 72 exact Ward/support audits and 18 three-branch envelope audits. IDE check \st{P} of the combination step: the transverse
+test $T(a)$ is real-orthogonal to $\operatorname{ph}(Z+w)$ for every shift $w$ by the score identities, the even linear term cancels in the two-sign average by
+$Z\mapsto-Z$, the inverse-distance bounds $\frac43$ and $2$ are uniform in $w$, and optimising the two test amplitudes gives $p^2/(4\cdot\frac23)=\frac{3p^2}8$ and $\frac{p^2}4$.
+The uniformity in $w$ is what allows the support budgets to be added.
+\emph{Scope:} the Ward-combined formula (\S\ref{sec:joint-response-budget}, last theorem) holds only at unconstrained norm maximizers in a fixed finite dimension; no
+approximate-stationarity variant is claimed. The conditional $1/20000$ penalty is not a norm-cap drop and must not be added to the optimised four-block response dual.
+The new example constrains only the prescribed projections onto $H$ and $J$; its fourth moment $5.93$ is a property of $q_0$ itself.
+
+
+\paragraph{Scope and status.}
+The results below concern the original bounded responses, not arbitrary
+cubics in raw Conjecture K. They hold in every finite dimension, with
+arbitrary dependence among all remote fields and without a Gaussian buffer.
+[P] denotes an analytic proof and [C] a directed or exact calculation.
+The global cap and the row cover remain open; no new Grothendieck endpoint
+is claimed. The last theorem uses stationarity only at an unconstrained
+norm maximizer in a fixed finite dimension.
+
+Let $Z$ be the visible standard proper complex Gaussian, independent of
+the remote Gaussian vector $X$. Set
+\[
+ h=(f_++f_-)/2,\quad k=(f_+-f_-)/2,\quad |f_\pm|\le1,
+ \quad Ph=tZ,\quad F=\varepsilon Qk,\quad p=1/\varepsilon.
+\]
+Write
+\[
+ F=q+(|Z|^2-1)r_A+Z^2r_B/\sqrt2+ZY+\bar ZW+\nu H(Z),
+ \qquad H(Z)=Z(|Z|^2-2)/\sqrt2,
+\]
+with the usual remote bidegrees. Define
+\[
+ r_\perp=(r_A-\sqrt2\bar r_B)/\sqrt3,\quad
+ r_\parallel=(\sqrt2r_A+\bar r_B)/\sqrt3,\quad
+ E_{\rm ev}=\|Y\|^2+\|W\|^2+|\nu|^2.
+\]
+All inner products in optimizations are real parts of the complex
+$L^2$ inner product. Put $R=\sqrt\pi/2$, $\bar k=\mathbb E[k\mid X]$,
+$\bar h=\mathbb E[h\mid X]$, and
+\[
+ \rho(u)=\mathbb E|Z+\sqrt u|,\qquad
+ r(v)=2v\rho'(|v|^2),\qquad
+ D(v)=\mathbb E\rho(|v|^2)-t-p\operatorname{Re}\langle v,q\rangle
+ \quad(v\in H_{2,1}(X)).
+\]
+
+\subsubsection{The costs that really can be added [P]}
+For every remote cubic test $v$,
+\begin{equation}\label{eq:jrb-main}
+ \boxed{\quad
+ \frac{\|\bar k-r(v)\|^2}{\sqrt\pi}
+ +\frac{3p^2}{8}\|r_\perp\|^2+\frac{p^2}{4}E_{\rm ev}
+ \le D(v).\quad}
+\end{equation}
+There is also the complementary inequality
+\begin{equation}\label{eq:jrb-h}
+ \boxed{\quad
+ \frac{\|\bar h\|^2+\|\bar k-r(v)\|^2}{\sqrt\pi}
+ +\frac{3p^2}{8}\|r_\perp\|^2\le D(v).\quad}
+\end{equation}
+These strengthen the previously separate projection and sector constraints.
+They do not authorize adding an arbitrary parallel-profile penalty or
+adding the two displayed left sides against one copy of $D$.
+
+\paragraph{Why the addition is valid.}
+For a fixed remote shift $w$, let
+\[
+ k_w(Z)=\tfrac12\{\operatorname{ph}(Z+w)-\operatorname{ph}(Z-w)\},
+ \qquad T(a)=\{(|Z|^2-1)a-Z^2\bar a\}/\sqrt3.
+\]
+The Gaussian score identities give, with a real function $\kappa$,
+\[
+ \mathbb E[(|Z|^2-1)\operatorname{ph}(Z+w)]=w\kappa(|w|^2),\qquad
+ \mathbb E[\bar Z^2\operatorname{ph}(Z+w)]=\bar w\kappa(|w|^2).
+\]
+Consequently
+\begin{equation}\label{eq:jrb-annihilator}
+ \operatorname{Re}\mathbb E[\overline{T(a)}\operatorname{ph}(Z+w)]=0
+ \qquad\hbox{for every complex }a,w.
+\end{equation}
+This is a real orthogonality statement; the complex pairing need not vanish.
+The even-sector linear term against $k_w$ vanishes by $Z\mapsto-Z$.
+The already established, uniform inverse-distance bounds are
+\[
+ \mathbb E\frac{|T(a)|^2}{|Z+w|}\le\frac43|a|^2,\qquad
+ \mathbb E\frac{|E(Z)|^2}{|Z+w|}\le2\|E\|_{L^2(Z)}^2,
+ \quad E\in\operatorname{span}\{Z,\bar Z,H(Z)\}.
+\]
+Their density-polynomial certificates are replayed in this package.
+The norm majorant
+\[
+ |z+u|\le |z|+\operatorname{Re}(\bar zu)/|z|+|u|^2/(2|z|)
+\]
+and parity cancel the mixed transverse/even quadratic term in the
+two-sign average. Completing squares therefore gives, for \emph{every}
+remote $w\in L^2$, not just cubic $w$,
+\begin{equation}\label{eq:jrb-shift-stable}
+ t+C+\operatorname{Re}\langle w,\bar k\rangle
+ \le\mathcal F(w):=\mathbb E\rho(|w|^2),\qquad
+ C=\frac{3p^2}{8}\|r_\perp\|^2+\frac{p^2}{4}E_{\rm ev}.
+\end{equation}
+This uniformity in $w$ is the extra fact needed to combine the budgets.
+There need not be an actual response with first moment $(t+C)Z$.
+
+The real gradient of $\mathcal F$ is $r(w)$ and its Hessian is bounded
+above by $R I$: $2\rho'\le R$ and $\rho''\le0$. For $w=v+u$,
+\[
+ D(v)-C\ge \operatorname{Re}\langle u,\bar k-r(v)\rangle
+                      -\frac R2\|u\|^2.
+\]
+Optimizing over every remote $u$ proves \eqref{eq:jrb-main}.
+For \eqref{eq:jrb-h}, use
+\[
+ \tfrac12\mathbb E\{\rho(|u+w|^2)+\rho(|u-w|^2)\}
+ \ge t+\operatorname{Re}\langle u,\bar h\rangle
+       +\operatorname{Re}\langle w,\bar k\rangle
+       +3p^2\|r_\perp\|^2/8.
+\]
+Equation~\eqref{eq:jrb-annihilator} holds separately at the two shifts.
+The product-space Hessian is again at most $R I$ and its gradient at
+$(0,v)$ is $(0,r(v))$. The same completion proves the result. We do not
+include the even-sector charge in this argument: the common remote shift
+$u$ would destroy the parity used to eliminate its linear term.
+
+\subsubsection{Including the parallel profile [P]}
+One can also couple the nonconstant parallel profile to the projection
+defect. Put
+\[
+ G(u)=\frac2\pi\int_0^1e^{-us}\sqrt{\frac{s}{1-s}}\,ds,\qquad
+ a(v)=-\frac R2P_X\{vG(|v|^2)\},
+\]
+where $P_X$ is remote first-chaos projection. The map $a$ is globally
+$R/2$-Lipschitz on complex $L^2$, viewed as a real Hilbert space.
+Indeed $G$ is a probability mixture of $e^{-su}$, and the real derivative
+eigenvalues of $w\mapsto we^{-s|w|^2}$ are $e^{-x}$ and
+$(1-2x)e^{-x}$, both of absolute value at most one. Projection is a
+contraction. No high derivative of the nonlinear visible profile is used.
+
+Let
+\[
+ M=\|\bar k-r(v)\|,\quad
+ B=\|p r_\parallel-\sqrt{3/2}\,a(v)\|,\quad
+ L_0=R\sqrt{3/8},\quad K_0=R-L_0^2/2>0.
+\]
+Define the nondecreasing function of $M\ge0$
+\[
+ \Phi(M,B)=\sup_{s\ge0}
+ \left\{Ms-\frac R2s^2+\frac14(B-L_0s)_+^2\right\}.
+\]
+It has the explicit form
+\[
+ \Phi(M,B)=\begin{cases}
+ B^2/4,&M\le L_0B/2,\\
+ B^2/4+(M-L_0B/2)^2/(2K_0),&L_0B/2<M<RB/L_0,\\
+ M^2/(2R),&M\ge RB/L_0.
+ \end{cases}
+\]
+For $B=0$ use the last branch. Then
+\begin{equation}\label{eq:jrb-parallel}
+ \boxed{\quad
+ \Phi(M,B)+\frac{p^2}{4}(\|r_\perp\|^2+E_{\rm ev})\le D(v).
+ \quad}
+\end{equation}
+To prove this, apply the existing full profile constraint at $v+u$,
+the $R$-smooth majorant for $\mathcal F$, and
+$\|a(v+u)-a(v)\|\le R\|u\|/2$. Choose $u$ in the direction of
+$\bar k-r(v)$ and then optimize its length. The three branches follow
+by maximizing the two quadratic pieces. In particular any certified
+lower bound on $M$ can be substituted in $\Phi$. This substitution would
+not generally be valid for an arbitrary, nonoptimized trial expression.
+Equation~\eqref{eq:jrb-parallel} and \eqref{eq:jrb-main} are both necessary
+constraints; their left sides must not be added.
+
+\subsubsection{A joint lower bound for the two retained squares [P]}
+Choose any finite remote first-chaos real subspace $\mathcal A$ and
+remote cubic subspace $\mathcal B$. Set
+\[
+ a=\Pi_{\mathcal A}r(v),\quad
+ b^2=\|\Pi_{\mathcal B}(pq-r(v))\|^2,\quad
+ \tau=\sqrt\pi\{D(v)-C\}-b^2.
+\]
+Every feasible response has $\tau\ge0$ and
+\begin{equation}\label{eq:jrb-ball}
+ \|\Pi_{\mathcal A}Pk-a\|^2\le\tau,\qquad
+ \|Pk\|^2\ge(\|a\|-\sqrt\tau)_+^2.
+\end{equation}
+The subspaces are orthogonal, so this is Bessel's inequality applied to
+\eqref{eq:jrb-main}. It remains valid with uncontrolled components in
+every other remote or visible direction.
+
+At an unconstrained norm maximizer, the established visible--remote
+rotation identity says
+\[
+ d=-\varepsilon(t x+J^*y),\quad
+ x=\Pi_{\mathcal A}Pk,\quad y=Qh+B_{\rm vis}/\varepsilon,\quad
+ d=\Pi_{\mathcal A}(2\beta r_A+\sqrt2\beta\bar r_B),
+\]
+where $B_{\rm vis}=\beta Z(|Z|^2-2)$ and $J$ is the rotation derivative
+of $F$ on $\mathcal A$. Let $\Omega>0$ satisfy $\|J\|^2\le\Omega$;
+$\Omega=9\|F\|^2$ is always available when $F\ne0$. Then
+\begin{equation}
+ \boxed{\begin{aligned}\|Pk\|^2+\varepsilon\|y\|^2\ge{}&
+ \frac{\|d\|^2}{\varepsilon^2t^2+\varepsilon\Omega}\\
+ &+\left(1+\frac{\varepsilon t^2}{\Omega}\right)
+ \left(\left\|a+\frac{td}{\Omega+\varepsilon t^2}\right\|
+                    -\sqrt\tau\right)_+^2.
+ \end{aligned}}
+ \label{eq:jrb-ward}
+\end{equation}
+This is a compatible increment to the rotation bound, not a sum of two
+separately optimized penalty bounds. Indeed the left side is at least
+\[
+ \|x\|^2+\frac{\varepsilon}{\Omega}\|d/\varepsilon+tx\|^2
+ =\frac{\|d\|^2}{\varepsilon^2t^2+\varepsilon\Omega}
+ +\left(1+\frac{\varepsilon t^2}{\Omega}\right)
+       \left\|x+\frac{td}{\Omega+\varepsilon t^2}\right\|^2.
+\]
+Minimization over the ball \eqref{eq:jrb-ball} gives \eqref{eq:jrb-ward}.
+The result may be subtracted from the raw row payoff at norm maximizers.
+It is not an extra subtraction from a dual which already optimizes these
+same squares. A fixed-$t$ constrained row optimizer need not obey the
+rotation identity.
+
+\subsubsection{A fresh certified coupled example [P,C]}
+Take independent remote standard complex Gaussians $X,Y_j,W_j$, $1\le j\le4$,
+and put
+\[
+ H=X(|X|^2-2)/\sqrt2,\quad V=\tfrac12\sum_{j=1}^4Y_j\bar W_j,
+ \quad J=XV,\quad e=38739/10^6,\quad q_0=\sqrt{e/10}(H+3J).
+\]
+$H,J$ are orthonormal and $\mathbb E|q_0|^4/e^2=593/100$.
+Fix $t=1057/1250$, $\varepsilon=1891/2500$, $\lambda=42/25$,
+and $v=\lambda q_0$. Fresh directed integration of the same positive
+Gaussian kernels, including both infinite tails, proves
+\[
+ D(v)\simeq2.41869447\cdot10^{-5},\qquad
+ b^2=\|\Pi_{\operatorname{span}\{H,J\}}(pq_0-r(v))\|^2
+       \simeq4.00139386\cdot10^{-5},
+\]
+and, rigorously,
+\begin{equation}\label{eq:jrb-budget-number}
+ 0<D(v)-b^2/\sqrt\pi<1612/10^9.
+\end{equation}
+Every scalar support cut for $q_0$ passes with margin $>1/50000$.
+Nevertheless any original response whose remote coefficients along
+$H,J$ equal those of $q_0$ must obey
+\[
+ \frac{3p^2}{8}\|r_\perp\|^2+\frac{p^2}{4}E_{\rm ev}
+       <1612/10^9,
+ \qquad \|r_\perp\|<0.001569,\quad E_{\rm ev}<0.000003689.
+\]
+All orthogonal remote components are unrestricted in this assertion.
+In particular $\|r_\perp\|\ge1/500$ is impossible, with a support-budget
+violation exceeding $10^{-6}$. At $1/500$, the displayed projection test
+and displayed sector test each pass separately. This does not assert
+that the configuration passes every other previously available test.
+
+For the same prescribed two remote coefficients, if feasible,
+\[
+ \|r_\perp\|\ge1/1000\ \Longrightarrow\ \|Pk\|^2>1/60000,
+ \qquad
+ \|r_\perp\|\ge3/2000\ \Longrightarrow\ \|Pk\|^2>1/42000.
+\]
+The implication includes infeasibility when $\tau<0$; at the endpoints
+$\tau>0$ and the checker completes the squares directly.
+
+Finally take exactly $q=q_0$, $r_\parallel=-X/1000$,
+$r_\perp=X/1000$, and $Y=W=\nu=0$. Thus
+$r_A=(\sqrt2r_\parallel+r_\perp)/\sqrt3$ and
+$\bar r_B=(r_\parallel-\sqrt2r_\perp)/\sqrt3$.
+If this configuration occurs at an unconstrained norm maximizer, then
+\[
+ \boxed{\ \|Pk\|^2+\varepsilon\|Qh+B_{\rm vis}/\varepsilon\|^2
+            >1/20000.\ }
+\]
+The computed joint lower bound exceeds $0.00005121$;
+the standalone rotation bound with the same $\Omega=9(e+2\cdot10^{-6})$
+is below $0.0000002$. This is a conditional necessary penalty, not a
+construction of a maximizer, nor a norm-cap improvement of $1/20000$.
+
+\paragraph{Next numerical obligation.}
+Use \eqref{eq:jrb-main}, \eqref{eq:jrb-parallel}, and the full response
+dual as constraints on the same tensor. At a norm-maximizer relaxation,
+\eqref{eq:jrb-ward} is an alternative certified lower estimate of its
+existing squares. A universal cap still requires a dimension-free
+reduction or exhaustive cover of feasible high-payoff configurations,
+and a complete row cover at one common $\varepsilon$.
+
