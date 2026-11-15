@@ -119,7 +119,8 @@ theorem upper_bound_tight : Grothe.IsGrothendieckBound (tightValueQ : ℝ) := by
 /-- Some Grothendieck bound lies strictly below `1.404599412097`, without hypotheses. -/
 theorem upper_below_tight : UpperBelow (1404599412097 / 10 ^ 12) := by
   apply upperBelow_of_bound upper_bound_tight
-  convert tight_real_value_lt using 1 <;> norm_num
+  convert tight_real_value_lt using 1
+  norm_num
 
 /-- The improved unconditional upper bound for the complex Grothendieck constant. -/
 theorem constant_lt_tight_upper : complexGrothendieckConstant < 1404599412097 / 10 ^ 12 :=
