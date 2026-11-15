@@ -1,1097 +1,764 @@
-<!-- The text below the marker line "MONOGRAPH, VERBATIM" is an unedited copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/CONJECTURE_K_MONOGRAPH.md (file dated 2026-11-05). The section above the marker was added on 15 November 2026. -->
+# Conjecture K
 
-# Errata and updates (15 November 2026)
+*This book states the current best-known state of Conjecture K. The evidence for every statement (who proved it, who
+checked it, which files and checkers) is in the ledger [`STATUS.md`](STATUS.md), cited here by row number; the
+monograph of 5 and 6 November with its errata is
+[`sources/monograph-2026-11-05/MONOGRAPH_with_errata.md`](sources/monograph-2026-11-05/MONOGRAPH_with_errata.md).*
 
-The monograph below was written by claude-b9ee on 5 and 6 November 2026 and is reproduced unchanged. It was audited
-independently on 13 November (agent codex-a713; `sources/audit-2026-11-13/REPORT.md`), and further results arrived
-on 13, 14 and 15 November. **Read the body through this section.** Where the body and the audit disagree, the
-audit stands. The consolidated state of knowledge, with the scope of every statement, is in `STATUS.md`; this section
-only lists what changes in the monograph.
+**How to read the brackets.** After each statement a bracket gives its status, its author and checker, and its row in
+`STATUS.md`, for example [P + C · codex-a7c4, checked by claude-b9ee · 4.2]. The labels are those of the ledger:
+**P** a written proof re-derived by someone other than its author ("author only" when nobody else has), **C** an exact
+or interval certificate replayed by someone other than its author, **Lean** a theorem of this repository, **N**
+numerical only (a search gives lower bounds on a supremum, never upper bounds), **R** read from the record without
+independent verification, **open** no claim. A number in parentheses, such as (2.6), is a section of this book.
+"Peak" means the peak row of section 1.4. This book is edited in place: every change in the state of knowledge
+rewrites the passage concerned.
 
-Labels: **P** re-derived by the audit, **C** exact or interval checker replayed by the audit, **N** numerical only,
-**R** read from the record without full independent verification (definitions: `sources/audit-2026-11-13/REPORT.md`,
-top). The monograph's own labels [L], [P], [C], [F] are those of its author and are weaker: its sentence "everything
-here is verified by me unless marked [?]" does not make a statement P or C in the sense above.
+## 0. Summary
 
-## A. The twelve incorrect or stale statements of the audit (`REPORT.md` section 3)
+**The statement.** Let z₁ be a standard complex Gaussian, T = |z₁|² and L = z₁(a + bT). For G in the cubic Wick chaos
+H₂,₁ of finitely many complex Gaussian variables (z₁ and further, remote, coordinates) put
 
-Numbering as in `REPORT.md` section 3. "Where" is the monograph section the item concerns; three items are about the
-log (`sources/log/ASSESSMENT_2026-11-04.md`) and one is about the audit's own task statement, and for those the
-monograph passage that repeats or uses the statement is given.
+    Λ(G) = E|L + G| + E|L − G| − ‖G‖²/ε.
 
-| # | where | statement in the record | audit finding |
+Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaussian adversaries σW (W standard
+complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
+a = ℓ − 2β, b = β.
+
+**Why it matters.** The proved bounds are 1.401700037873 < K_G^ℂ < 1.404599398251 (Lean, `main_bounds`). The lower
+bound comes from the cubic witness T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
+Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
+η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
+1.4022; no certificate with this witness exceeds 1.4022581233.
+
+**Where things stand.** Conjecture K is open, and no violation is known. A proof splits into six layers (1.9).
+
+- **Proved** (at the peak row unless the whole box is named): the remote part, Λ(q) < S + 3.6·10⁻⁷ for every cubic q
+  independent of z₁ (2.1); the A-shell with independent drivers, on the whole box (2.2); explicit regions of the
+  shared-driver core (2.4); the content inequality for several structured families (2.5); the B-shell cost and the
+  alignment of B- and A-contents (2.7); the local joint A/B form (2.8); the odd sectors over the zero core (2.9); the
+  central part of the consumer, conditional on an all-sector bound (2.10).
+- **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
+  sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
+  Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
+  every dimension and at every amplitude, and the same with error below 9.8·10⁻⁵ on a profile rectangle around the
+  peak (2.6).
+- **Open:** the raw content inequality of L4 for general cubics; the finite-amplitude joint A/B bound, reduced to a
+  compact box; the B-content of general cubics; the odd sectors over a nonzero core; the remote part away from the
+  peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
+
+**How far.** Apart from L2 and the one-coordinate results, every finished piece holds at the peak row or near it, and
+a 1.402 proof needs an all-sector bound with error about 1.006·10⁻⁴ there, plus coverage of the other response
+regions. With the retained functional the A-shell uses 2·10⁻⁵ of that budget; the B-shell, the joint A/B interaction
+and the odd sectors are the missing sectors. With the raw functional of K the content inequality is also missing. The
+gain at stake is about 3·10⁻⁴ on the constant.
+
+## 1. Setting
+
+### 1.1 Gaussian chaos
+
+z = (z₁, …, z_n) are independent standard complex Gaussians (E|z_j|² = 1) and ⟨f, g⟩ = E[f̄g]. H_{p,q} is the Wick
+chaos of bidegree (p, q) and P_{p,q} the projection onto it; Π₁ is the projection onto the first chaos H₁,₀ of the
+remote coordinates. z₁ is the **visible** coordinate, T = |z₁|² is Exp(1), and z₂, …, z_n (written X, Y, w in
+examples) are the **remote** coordinates. W is a standard complex Gaussian independent of everything else, and
+ph(z) = z/|z|.
+
+### 1.2 The witness and the exact row
+
+The lower bound is K_G^ℂ ≥ 1/‖T_ε‖ with ‖T_ε‖ = sup{Re⟨f, T_εg⟩ : |f| = |g| = 1}. For unimodular f, g put
+h = (f + g)/2, k = (f − g)/2, rotate so that P₁,₀h = t·z₁ with 0 ≤ t ≤ √π/2, and put G = εP₂,₁k ∈ H₂,₁. Then for
+every real ℓ and β
+
+    Re⟨f, T_ε g⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G),
+    Λ(G) = E|L + G| + E|L − G| − ‖G‖²/ε,     L = z₁(ℓ + β(T − 2)) = z₁(a + bT).
+
+[P · audit of codex-a713 · 2.1] Three nonnegative terms are dropped: ‖P₁,₀k‖², ε‖P₂,₁h + B/ε‖² with B = βz₁(T − 2),
+and the pointwise phase slack. Everything below is about sup Λ.
+
+### 1.3 Conjecture K and its weak forms
+
+    K:   Λ(G) ≤ S(ε, ℓ, β) := sup_{σ≥0} {2E|L + σW| − σ²/ε}   for every n and every G ∈ H₂,₁(ℂⁿ).
+
+[open · 2.2] The comparison object σW is the limit in law of σN^{−1/2}Σ_{j≤N} H(w_j), H(w) = w(|w|² − 2)/√2, over
+fresh remote coordinates: a limit of cubics independent of z₁. If K holds, S is the supremum of Λ over all finite
+dimensions, approached along such sequences. No attainment in a fixed dimension is asserted: at the peak, n = 1 has
+supremum B₀ = 2E|L| < S (2.9), while at the corner (0.74, 0.90, 0.12), where σ* = 0, G = 0 attains S.
+
+- **K_η:** Λ ≤ S + η. At the peak row the budget for 1.402 is about 10⁻⁴ (1.5).
+- **K′:** keep the first-chaos penalty; its unconstrained form is the retained functional Λ̂ of 1.6. A bound on
+  sup Λ̂ is weaker than K and suffices.
+- **Response restrictions:** only G that come from actual responses matter, and they have bounded energies (2.10).
+  Such restrictions are valid for responses, not inside a supremum over all G.
+- **The box matters:** K for every profile is false (chapter 4, item 1).
+
+### 1.4 The rows and the peak constants
+
+The principal certificates use three rows; statements for the whole box say so.
+
+| row | ε | ℓ | β = b | a = ℓ − 2β | σ* (maximiser of Λ(σW)) |
+|---|---|---|---|---|---|
+| peak | 1891/2500 = 0.7564 | 1057/1250 = 0.8456 | 179/1250 = 0.1432 | 699/1250 = 0.5592 | 0.2009 |
+| flank | 149/200 = 0.745 | 4267/5000 = 0.8534 | 1467/10000 = 0.1467 | 14/25 = 0.56 | 0.1726 |
+| upper | 1891/2500 = 0.7564 | 0.877 | 19/125 = 0.152 | 573/1000 = 0.573 | 0.1617 |
+
+At the peak: p = 1/ε = 2500/1891;
+
+    B₀ = Λ(0) = 2E|L| = 387√π/500 ∈ (1.371879280600869, 1.371879280600870),
+    1.3739535256614 < S < 1.3739535256616,      S − B₀ > 0.002074245,
+
+with S attained near v₀ = σ*² = 403448/10⁷ [C · codex-a7c4, replayed by claude-b9ee · 3.14]. The profile constants
+used below are j₀ = ½E|L|⁻¹ ∈ [1.431973791291431, 1.431973791291432], g₀ ∈ [−0.835135932614130, −0.835135932614129]
+and k_A = p − E[(T − 1)²/(2|L|)] = 0.320054504 (1.8).
+
+The corner (ε, ℓ, β) = (0.74, 0.90, 0.12) of the box has σ* = 0; Theorem B (2.3) covers it, several other proofs do
+not, and it matters only if a row cover uses it [R · 2.5].
+
+### 1.5 What K would give
+
+- The proved lower bound is K_G^ℂ > 1.401700037873, with row cap 3567097/5000000 = 0.7134194 [Lean · 12.1].
+- 1.402 needs a row cap below 500/701 = 0.7132667617…; 1.4022 below 5000/7011 = 0.7131650263….
+- At the peak row an all-sector bound Λ ≤ S + η with η ≤ 10⁻⁴ covers the response interval t ∈ [0.84, 0.851] for
+  1.402, with the cap more than 6.12·10⁻⁷ below 500/701. The largest admissible allowance on that interval is
+  η_max = 166713115892493/1656988750000000000 = 0.0001006120988404375…, with no reserve left [P + C · codex-a7c4,
+  re-derived by claude-b9ee · 8.1].
+- Under exact K the cap would be about 0.713160 at ε = 0.7564, that is 1.40221 [R, floating point · 8.4].
+- No certificate with T_ε exceeds 1.4022581233, for any multiplier and dimension [R here · 12.2]; at ε = 149/200 the
+  witness cannot reach 1.402 at all [R · 8.3]. A witness with an identity tail, (1, −ε, ν, ν, …), has the model
+  ceiling 1.40248 at ε ≈ 0.768, ν ≈ 0.0235, untested at certificate level [N · STATUS §10]. The degree-5 analogue of K
+  fails numerically at its flank rows (chapter 4, item 12.3).
+
+### 1.6 The retained functional Λ̂
+
+    Λ̂(G) := min_{ξ ∈ H₁,₀} { ‖ξ‖² + E|L + G − ξ| + E|L − G + ξ| } − ‖G‖²/ε.
+
+[P · `ch20`; re-derived by claude-b9ee (REV) and in A15R · 2.10a] Λ̂ is the first-chaos dual of the October
+manuscript. It satisfies Λ′ ≤ Λ̂ ≤ Λ, where Λ′ is the constrained functional of K′ (2.10), and the row of 1.2 holds
+with Λ̂ in place of Λ. So a bound sup Λ̂ ≤ S + η serves the lower bound exactly as K_η would. The inner minimum has a
+unique minimiser, of norm at most √π/2, and a residual certificate for trial points [P · 2.13].
+
+On a remote q (independent of z₁) the two functionals differ by the first-chaos content of the phase: with
+μ = Π₁ E_{z₁}ph(L + q),
+
+    ‖μ‖²/(1 + j₀) ≤ Λ(q) − Λ̂(q) ≤ ‖μ‖²,      1/(1 + j₀) = 0.411188641… at the peak.
+
+[P + C · `ch20` and codex-a7c4, re-derived and replayed by claude-b9ee · 3.16] They agree exactly when μ = 0 (for
+instance q = cXY·conj(V) with three independent remote coordinates) and differ strictly on q = cX(|Y|² − 1) at every
+amplitude c > 0 and every profile. The pointwise difference does not separate the suprema. For independent blocks
+q = Σ_j c_jH(X_j),
+
+    0 ≤ Λ(q) − Λ̂(q) ≤ 192a⁻⁶(1 + 4b/a)·Σ_j |c_j|⁶,
+
+so along the diffuse sequence q_N = √(u/N)Σ_{j≤N}H(X_j) the gap is O(u³/N²) and Λ̂(q_N) → B(u) − pu [P + C ·
+codex-a7c4, re-derived and replayed by claude-b9ee · 2.14]. The benchmark S is therefore common to both functionals,
+and the raw remote cap of 2.1 serves both. One caution: Λ̂ does not scale like Λ. At the profile (λε₀, λa₀, λb₀) one
+has Λ̂(λG) = λΛ̂₀^{(λ)}(G), where the multiplier cost of Λ̂₀^{(λ)} carries the weight λ; the unweighted law fails
+strictly [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 3.17].
+
+**The tilt.** For every remote q ∈ L², every remote linear form r and every real s,
+
+    Λ̂(q + (T − 1)r) ≤ 2E|L + q + (T − 1 + s)r| − p‖q‖² − (p − s²)‖r‖².
+
+*Proof.* Take ξ = −s·r in the minimum. G − ξ = q + (T − 1 + s)r is even in z₁ and L is odd, so the two expectations
+are equal; ‖ξ‖² = s²‖r‖² and ‖G‖² = ‖q‖² + ‖r‖². ∎ [P · claude-b9ee, re-derived by codex-a7c4 · 11.12]
+
+The penalty retained on r is s² smaller, and the A-direction T − 1 becomes T − 1 + s. At G = 0 the local cost of the
+tilted direction is k(s) = k_A − 2g₀s − (1 + j₀)s² = 0.320 + 1.670s − 2.432s², largest (0.607) at s ≈ 0.3434 and
+equal to 0.4467 at s = 3/5; the first-order term in r becomes 2Re⟨r, c_s(q)⟩ with the **tilted content** c_s of 1.8
+[P + C · 11.13]. With the retained element optimised freely, the local A/B cost matrix at G = 0 is
+[[0.60684, 0.26291], [0.26291, 1.01344]] (smallest eigenvalue ≈ 0.4778), against [[0.32005, 0.11799], [0.11799,
+0.94020]] for Λ [P + C · 11.4, 7.3.1]; these are local values, not finite-amplitude costs (chapter 4, item 19).
+
+### 1.7 The sectors, their frequencies and parity
+
+Every G ∈ H₂,₁ decomposes by its dependence on z₁:
+
+    G = q + (T − 1)·r_A + z₁²·conj(r_B)/√2 + z₁·Q + z̄₁·P + d·z₁(T − 2),
+
+with q a remote cubic, r_A and r_B remote linear forms (the **A shell** and the **B shell**), Q ∈ H₁,₁ and P ∈ H₂,₀
+of the remote coordinates, and d ∈ ℂ. The **core** is q + (T − 1)r_A. The sectors z₁Q, z̄₁P and d·z₁(T − 2) are the
+**odd sectors** (odd under z₁ → −z₁); the October manuscript calls them "even sectors", after their even frequency.
+
+- **Frequency.** After factoring the phase of z₁, q and A carry frequency −1, B +1, z₁Q and d·z₁(T − 2) 0, z̄₁P −2;
+  E[|G|² | T] has no cross terms between different frequencies [P · 2.8].
+- **Parity.** For H even and O odd under z₁ → −z₁, Λ(H + O) = Λ(H − O). *Proof:* the substitution z₁ → −z₁ maps L to
+  −L and exchanges E|L + H + O| with E|L − H + O|, and ‖H ± O‖² = ‖H‖² + ‖O‖². ∎ So the odd sectors have no first
+  variation at an even base where Λ is differentiable, and no mixed Hessian entries with the even block; at a genuine
+  even cubic base the first derivative exists, but an even L² base can have a cusp (chapter 4, item 71) [P · 2.9].
+
+So the first-order interaction of a cubic with the sectors runs through A and B only: A has the frequency of q, and B
+has first-order content as well (2.7). The odd sectors are a pure-cost problem.
+
+### 1.8 Remote cubics: energy, kurtosis, deficit, contents
+
+For a remote cubic q put u = ‖q‖², δ = E|q|⁴ − 2u² and χ = δ/u². For every circular cubic of the third chaos
+E|q|⁴ ≤ 44u², so 0 ≤ χ ≤ 42, and E|q|⁶ ≤ 6u³ + 9uδ + (4045313/100000)δ^{3/2} [Lean · 3.4]. For every G put
+F(G) = E|L + G| + E|L − G|, so that Λ(G) = F(G) − ‖G‖²/ε; for G even in z₁, in particular for a remote q,
+F(G) = 2E|L + G|. With
+
+    B(u) = 2E|L + √u·W|,   D(q) = B(u) − F(q),   D₊ = max(D, 0),
+
+one has Λ(q) = F(q) − pu = B(u) − pu − D(q) and S = sup_u (B(u) − pu). D is the **deficit** of q against a Gaussian
+of the same energy. A remote cap Λ(q) ≤ S + η_R does not say D(q) ≥ −η_R; the Gaussian slack S − (B(u) − pu) stays.
+
+The profiles are E_{z₁}ph(L + y) = y·j(|y|²) and E_{z₁}[(T − 1)ph(L + y)] = y·g(|y|²), with j(0) = j₀ and g(0) = g₀;
+−g and the B-kernel −g_B are completely monotone [P · 2.7a]. The **A-content** of q is
+C(q) = ‖Π₁[q·g(|q|²)]‖: the first-order term of Λ(q + (T − 1)U) in a remote linear U is 2Re⟨U, Π₁[q·g(|q|²)]⟩. The
+**content inequality** is C(q)² ≤ κ·D(q). The **B-content** c_B is defined in the same way with g_B, and the
+**tilted content** is
+
+    c_s(q) = Π₁[q·h_s(|q|²)],   h_s = (g − g₀) − s(j₀ − j)
+
+(subtracting the constants changes nothing because Π₁q = 0).
+
+### 1.9 The six layers of a proof
+
+K_η must hold for every G, not only for the core. A proof has six layers:
+
+| layer | statement | status | here |
 |---|---|---|---|
-| 1 | §0 (last paragraph) | "§4 is the single statement still missing (the content lemma on a small rectangle of adversaries)" | Superseded by the monograph's own §4b: layers L5 (sector assembly) and L6 (row envelope and consumption) remain as well. The A-only content inequality is neither the sole missing lemma nor an established reduction of the full conjecture. |
-| 2 | §3.5 (third bullet) | "the worst case on the rectangle is the known template at the top energy" | Overstates a search (six restarts of 25 random steps in a twelve-shell subspace of ℂ⁴, no error bars) and conflicts with the certified saddle recorded later in §4: the monomial is not the maximiser. |
-| 3 | §4, "Why this is the right statement" | "the zero-tensor and non-normal examples have no content at all" | False for q₀ = X[−½(\|X\|²−2) + Σ_{j≤4}(\|Y_j\|²−1)]: exact moments give leading content E[X̄q₀\|q₀\|²] = 0 but E[X̄q₀\|q₀\|⁴] = −243, so the fifth-order content is nonzero. A vanishing leading term is not a vanishing nonlinear function. (`CERTIFICATE_AUDIT.md` §8.) |
-| 4 | §4, "Plan of proof of E′", step 4 (Endgame) | "Steps 1–3, once proved, give E′ (ratio ≤ 0.11 < 0.24 on R)" | The certified constants 0.22 to 0.239 do not give 0.11. Quantitative strengthening remains necessary even before sector assembly. |
-| 5 | log §31; used in §4b (table row L5 and the paragraph after the table) | "every non-A sector is pure cost" | False for small B amplitudes: the B sector has first-order content (the log's own correction is valid, and the L5 row of §4b carries it). A test at the fixed shell energy 0.0113 cannot detect every gain that is linear in the amplitude. |
-| 6 | log §33; used in §4b ("the vector comparison ‖c_B − 0.5053·c_A‖ ≤ 0.007√u") | projection norm "≤ E[\|q\|h(\|q\|²)]" | Not an L² contraction argument (orthogonal projection contracts L², not L¹). Repair: ‖Π(qh)‖₂ ≤ ‖qh‖₂ ≤ 0.007√u, valid once the global pointwise kernel bound \|g_B(v) − 0.5053 g(v)\| ≤ 0.007 is proved. That scalar bound was open in the 13 November audit (`record_audit.md` §1); it is now certified globally at the peak (part F below). |
-| 7 | log §§44–45; repeated in §4b, "State of layer L5", bullet "Joint A + B (UPDATE 6 Nov)" | "the robust path is to sharpen the A-content constants to ≤ 0.10–0.15 …, which closes the A+B core with the certified diagonal costs and no statement about the mixed term" | Not established. Separate cost bounds for Λ(q+A) and Λ(q+B) at a remote base say nothing sufficient about Λ(q+A+B); the B-cost theorem needs a base independent of z₁ and q+A is not. The "−0.0055 reserve" is the value at Δ = 0.07408, not a uniform margin; the corrected uniform bound is an excess of at most +7.181·10⁻⁵, and only under an additional joint hypothesis (adverse mixed coefficient at most 0.118) and the kernel comparison of item 6. See part C(ii). |
-| 8 | §5 (also §0, first paragraph, and §1) | "B ≤ 0.713267 ⇒ 1.402" | False at the printed precision: 1/0.713267 = 1.4019995317. The strict target is B < 500/701 = 0.7132667617689. A repairable rounding issue; the consumer must keep the exact threshold. For 1.4022 the threshold is B < 5000/7011 = 0.713165026…, and the 10⁻⁴ budget supports about 1.402, not 1.4022 (`record_audit.md` §6). |
-| 9 | not in the monograph (the task statement given to the auditor) | dimension n²(n+1)/2 − n for H₂,₁(ℂⁿ) | That is the count of homogeneous trace-free (harmonic) polynomials, not of the Gaussian Wick chaos; it would omit the Wick monomial. The correct complex dimension is n·C(n+1, 2) = n²(n+1)/2: 6, 18, 40, 75, 126 for n = 2…6. The audit's experiment and the scan of 13 November use the full space. |
-| 10 | §3.2 (last bullet) | "That term cannot occur in H₂,₁ (q cubic and r_A linear are uncorrelated)" | False for a conditional variance. The genuine cubic X[(T−1) + (\|Y\|²−1)] is conditionally Gaussian given (z₁, Y) with variance [(T−1) + (\|Y\|²−1)]², which contains the sign-indefinite cross term; only its unconditional expectation cancels. Theorem B is not refuted: its variance-profile hypothesis excludes this cubic, which is why that hypothesis matters. (`ADDITIONAL_ANALYTIC_AUDIT.md` §3.) |
-| 11 | §3.4 ("Buffered coverage" bullet), repeated in §4 ("Current open set") | "the near-Gaussian regime δ/u² ≤ 0.05 is covered instead by the manuscript's K_η proof (x ≤ 0.22)" | Not justified by the cited source. `ch7-conjectureK.tex` says "proved (up to the float constants and the majorant)": the majorant was sampled (16,430 random points) and the uniform treatment of the diagonal parameter was not done. Moreover 0.22² = 0.0484, not 0.05. The near-Gaussian region stays in the open domain. (`ADDITIONAL_ANALYTIC_AUDIT.md` §6.) |
-| 12 | §4b (table row L1), also §3.3 ("Certified in the project") and the table of §3.6 | remote K-a "certified in the project (Lean/native) … done" | The identified source (`ch24-remote-diagonal.tex`) restricts its Arb remote cap (Λ(q) < 2747927/2000000 = 1.3739635 < S + 10⁻⁵) to the peak profile. The Lean source does contain the sixth-moment tensor bridge (`Circular.tensorFacts`, `Circular.gaussian_sixth`, `gaussian_moments`); that is a moment input, not a kernel-checked theorem for the complete remote cap, and no such Lean theorem was found. Other rows are not covered by the located sources. (`ADDITIONAL_ANALYTIC_AUDIT.md` §5.) |
+| L1 | remote part: Λ(q) ≤ S + η for q independent of z₁ | peak row and a neighbourhood: proved; other rows open | 2.1 |
+| L2 | the core with drivers independent of q | proved on the whole box | 2.2 |
+| L3 | the core with shared drivers: explicit regions | proved regions at the peak; one region **R** | 2.4 |
+| L4 | the core on the residual region: cost plus content | K: families proved, general cubics open; Λ̂: closed at the peak | 2.5, 2.6 |
+| L5 | all sectors together | B cost and alignment proved; joint A/B and odd sectors open | 2.7–2.9 |
+| L6 | row envelope and consumption | central component proved; the rest open | 2.10 |
 
-## B. Further corrections from the audit's detailed reports
+## 2. What is proved
 
-These are in `ASSEMBLY_AUDIT.md`, `CERTIFICATE_AUDIT.md`, `ADDITIONAL_ANALYTIC_AUDIT.md` (main audit) and in
-`record_audit.md`, `diffuse_asymptotic.md` (supplements of the second audit that was run separately in the same
-folder), all under `sources/audit-2026-11-13/`. They are not in the list of twelve.
+### 2.1 The remote part (L1)
 
-1. **§3.1, "n = 1 is settled (sup Λ = 1.3649 < S = 1.3739535)".** Impossible at the peak row: G = 0 already gives
-   Λ(0) = √π(a + 3β/2) = 1.371879280600870 (`record_audit.md` §6.1). The October sources attach the figure to another
-   experiment: "n = 2 without W (six-dimensional H₂,₁(ℂ²)): sup Λ = 1.3649281 < S = 1.3669130"
-   (`sources/manuscript/legacy/ch7-conjectureK.tex`, table of the section "Attacks on K";
-   `sources/october-handoff/conjecture_K_handoff.md` §5; `sources/october-handoff/pipeline-gate/KSIDE.md`, which adds
-   Λ(0) = 1.3647895), a floating-point search whose log gives the row (ε, ℓ, β) = (0.7564, 0.84, 0.14), not the peak
-   row. For n = 1 the October notes record the exact statement sup Λ = 387√π/500 = 2E|L|, attained only at G = 0
-   (a package of 22 October, status **R**; see `STATUS.md`, entry 2.6).
-2. **§3.4, "Nonlinear content and deficit at every amplitude" and the row "arbitrary cubic, u ≤ 0.00038" of §3.6.**
-   The replayed checker (`chatgpt-fresh-verify_nonlinear_content.mjs`) certifies scalar constants only; the
-   derivation of the tensor identities it relies on was not found in the record. Status **R** as a theorem, not
-   [P, C] (`CERTIFICATE_AUDIT.md` §7). Its deficit coefficient 267/320 − (61875/128)u is negative at u = 0.0463, so
-   it gives no finite-amplitude lower bound on the deficit there (`diffuse_asymptotic.md` §4).
-3. **§4, plan step 3, "self-interaction in several drivers then follows the R26 pattern driver by driver (the
-   content along X_j only sees c_j and P_j after conditioning)".** No proof, and not a valid conditioning step in
-   general: the other drivers remain inside g(|q|²) (`record_audit.md` §4).
-4. **§4, "Every mechanism that spreads q over other coordinates … lowers the content faster than the deficit".** An
-   intuition supported for some families, not a proved monotonicity statement (`diffuse_asymptotic.md` §4).
-5. **§4b, "State of layer L5", "the B kernel is half the A kernel (g_B/g ∈ [0.505, 0.56], monotone)".** The ratio
-   interval has false endpoints at the flank and upper rows (log §45; J3 audit report §1). The common-centre bound
-   |g_B − 0.5053 g| ≤ 0.007 is a separate scalar target, left open in that audit (`record_audit.md` §6.3)
-   and now certified globally at the peak (part F).
-6. **§4b, table row L4, "self-interaction, Wick share < 1/16 (directional envelope): numerically feasible, tight
-   (0.2393); certificate pending".** Stale: §4 (b) of the same monograph records the eight-atom witness that forces
-   the cap of the directional envelope above 0.2405 (`record_audit.md` §6.4). That witness was reported from a
-   thread that crashed and no archive of it exists (log §29), so the obstruction itself is **R**.
-7. **§3.4, the cutoffs 0.01122, 0.011223 and 0.01125 for w.** Used interchangeably; a final exact cover of the
-   domain has to fix one (`record_audit.md` §2).
-8. **§3.6 and §7, "replayed green by the user".** A replay by the user is not a replay by the audit. Which
-   certificates the audit replayed itself (C), which it replayed only conditionally on stored scalar data, and which
-   it did not replay (R) is recorded entry by entry in `STATUS.md`, sections 3 to 7.
-9. **§1, the restricted form K′ and the region u ≤ 0.0463, ‖G‖² ≤ 0.072.** These bounds come from response
-   feasibility. A proof on that region serves the lower bound only if every omitted response region is covered, and
-   it does not prove raw K for all G (`ASSEMBLY_AUDIT.md` §4.4; the digest's scope rule,
-   `sources/manuscript/MANUSCRIPT_DIGEST_K.md` §1, last paragraph).
-10. **§5, "The realistic cap under K: 0.713160 at ε = 0.7564 (1.40221)".** A floating-point figure (**R**). If it
-    were usable, the room to 1.4022 would be about 5.03·10⁻⁶, not 10⁻⁴ (`record_audit.md` §6.5).
+Remote K reduces to a moment problem for U = |q|²/u: two-point extremal laws, cubic Hermite majorants of the profile,
+a secant envelope in the variance [P · audit · 3.1]. At the peak row:
 
-What the audit **confirmed** in §3 of the monograph (Theorems A and B, the disjoint-driver reduction, the one-driver
-and Gaussian-factor content theorems, the B-shell cost, the saddle) is listed with its exact scope in `STATUS.md`.
+    Λ(q) < 1.373953883 < S + 3.6·10⁻⁷     for every remote cubic q, in every finite dimension, at every variance.
 
-## C. Results after the monograph
+[P + C · October package; acceptance replayed with every profile integral recomputed by codex-a7c4 and again by
+claude-b9ee · 3.3] The certificate uses 68 profile caps, 45 Stein nodes, 154 outer boxes and the zero- and
+high-variance rays. Its inputs about cubic chaos (EU = 1, EU² = 2 + χ, the sixth moment, the Stein variables and the
+spectral cuts) are Lean theorems of this repository; the cuts it uses have knots that the Lean family does not have,
+which a dense-test extension covers on paper [Lean, P · 3.4, 3.12]. It is an external certificate, not a Lean
+theorem, and it does not give same-variance domination D(q) ≥ 0.
 
-(i) **Global search of the ratio C²/D, 13 November** (claude-b9ee; `sources/numerics-kscan-2026-11-13/README.md`,
-scripts and results in `code/kscan-2026-11-13/`). All of H₂,₁(ℂⁿ), n = 2…10, peak row, Monte Carlo with a
-re-evaluation of every end point. Best re-evaluated ratios at u = 0.0463: 0.0892 (n = 2), 0.0888 (n = 3), 0.0886
-(n = 4), 0.0885 (n = 5); a second pass with 2²² samples gives 0.0854–0.0879 (n = 6), 0.0850–0.0869 (n = 8) and
-0.0828, 0.0852 (n = 10). At u = 0.03 about 0.080 and at u = 0.02 about 0.070 (n ≤ 5). Errors ±0.0003 to ±0.0011;
-no growth with n is resolved; all maximisers are near the Wick monomial. **N.** Replaces the "0.0891 … attained by
-the single Wick monomial" of §3.5. Where the two overlap, the audit's more accurate numbers supersede these
-(`REPORT.md` section 5): Wick monomial 0.087565304234 at u = 0.0463; structured two-variable baseline 0.08760259435
-(feasible in every n ≥ 2); selected full-space candidates from 0.08749 (n = 6) to 0.08760 (n = 2); no evaluated end
-point above 0.10. The empirical margins are 1.142, 1.712 and 2.740 against the constants 0.10, 0.15 and 0.24: the "margin 2.7"
-of §3.5 and §4 is an A-only comparison.
+Around the peak:
 
-(ii) **The audit's central verdict, 13 November** (`REPORT.md`, one-page verdict and sections 2 and 4;
-`ASSEMBLY_AUDIT.md` §§1–2). A proof of the content bound with constant 0.10 would **not** close the A+B core with
-the separate A and B cost theorems. What is missing is a finite-amplitude joint A/B remainder bound: with
-h = (T−1)r_A + z₁²·conj(r_B)/√2, V = L + q, p = 1/ε and R(V, h) = 2(|V+h| − |V| − Re(h·conj(ph V))), for every
-dimension, every remote cubic q with 0.00551 ≤ ‖q‖² ≤ 0.0463 and arbitrary remote linear forms r_A, r_B with
-squared norms at most 0.0113 (peak row first),
+- **Tube.** With λ = ε/(1891/2500), Λ(q) < S + 8.1·10⁻⁵ for ε ∈ [0.74, 0.76] and
+  |a − λ·699/1250| + (3/2)|b − λ·179/1250| ≤ λ/50000 [P + C, author only · codex-a7c4 · 3.11].
+- **One-sided rectangle.** ε ∈ [0.74, 0.76], 0 ≤ a/λ − 0.5592 ≤ 1/2000 and 0 ≤ b/λ − 0.1432 ≤ 1/625 give
+  Λ(q) < S + 9.934·10⁻⁵ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 3.15].
+- **Convex cells.** Caps at the vertices of a convex cell of profiles transfer to the cell through a concave lower
+  bound of S, such as the supporting plane of the Gaussian benchmark [P · 3.13]. No cell is certified: remote caps
+  exist at the peak only.
 
-    E R(V, h) ≤ (p − 0.24)‖r_A‖² + (p − 0.26)‖r_B‖² + 0.236‖r_A‖‖r_B‖.
+The flank and upper rows are outside all of these.
 
-It is open and is not a consequence of its restrictions to either axis (an abstract quadratic countermodel
-satisfies both axis costs, the 0.10 content bound, exact content alignment and both amplitude caps and still
-exceeds the budget by 0.00033415; it refutes the implication, not K). Layer **L5 is open** (with real partial
-results) and **L6 is not built**. This replaces the bullet "Joint A + B (UPDATE 6 Nov, §44–§45)" of "State of layer
-L5" in §4b and the task S1 that rests on it. A reduction of this bound to a compact box, written by the auditor
-after the audit, is in `sources/audit-2026-11-13/improvement_joint_tail.md` (the box inequality itself is open).
+**Reformulations.** For one fixed profile, four statements are equivalent: the universal complex sharp radius bound,
+Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
+PVD, which implies complex PVD; no converse is known [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. The sharp
+radius bound E|q| ≤ (√π/2)‖q‖₂ on H₂,₁ is open; cases are proved for real BNC of order 2, one-variable H₃ at every
+scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| < 0.95133‖q‖₂ for every Wick cubic [R · 3.7]. In real second chaos,
+E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. Exact remote K is not needed for 1.402.
 
-(iii) **Identity-tail games, 14 November** (claude-b9ee; `sources/numerics-tailgames-2026-11-14/README.md`, scripts
-in `code/tailgames-2026-11-14/`). A witness with a constant tail, λ = (1, −ε, ν, ν, …), is exactly treatable
-because the identity part is pointwise: Re⟨f, g⟩ = 1 − 2‖k‖². For the cubic head the row keeps the cubic form with
-the pointwise potential |A| + |B| replaced by Ψ_ν(A, B) = max_{|u|=|v|=1}[Re(ūA) + Re(v̄B) + ν Re(u v̄)], which has
-an exact dual formula as a 3×3 semidefinite minimum. In the two-variable graded model the optimum is ε ≈ 0.7681,
-ν ≈ +0.0235 with model norm 0.713021, i.e. a ceiling 1.402483 instead of 1.402257. **N** (floating point, model
-only; untested at certificate level). This updates the sentence "what we do not expect from K: anything beyond
-1.40226" of §0: with a tail the model ceiling of a cubic-type certificate is about 1.40248. Using it needs the row
-pipeline rerun with Ψ_ν, new caps and a change of the Lean witness; none of this has been tried. The ideas refuted
-the same day are in section 5 of that README and in the "tried and failed" list of `STATUS.md`.
+**External claims.** A report claims a remote closure in another normalisation (E|q|² ≤ 1 ⟹ Φ(q) ≤ 2853/4000, and
+three related statements); its package is not in the record, so nothing is checked [R · 11.7–11.11].
 
-(iv) **External report "retaining the first-chaos penalty", received 15 November**
-(`sources/external-2026-11-15/projection-attack-report.md` and `projection-attack-package/`). It replaces Λ by
+### 2.2 Disjoint drivers (L2)
 
-    Λ̂(G) = min_{u ∈ H₁,₀} { ‖u‖² + E|L + G − u| + E|L − G + u| } − ‖G‖²/ε  ≤  Λ(G),
+For mutually independent z₁, q and U, with q ∈ L² and U a centred proper Gaussian linear form,
 
-for which the row bound stays valid (the term −‖P₁k‖² dropped in §1 is retained through its dual form). This
-belongs to the manuscript's Conjecture K′ (§1 below; `sources/manuscript/MANUSCRIPT_DIGEST_K.md` §2;
-`ch7-conjectureK.tex`, "Side experiments"): Λ̂ is the functional of K′ without the constraint εQk = G, and it is
-exactly the "first-chaos dual" Λ_P of the October manuscript (`sources/manuscript/legacy/ch20-pinned-gate.tex`,
-section "A valid first-chaos dual for K′", 15 October), where Λ′ ≤ Λ_P ≤ Λ and the remote bound below, with the
-multiplier ≈ 0.4112, are already stated. Results stated: a global bound Λ̂(q) ≤ Λ(q) − ‖P_rem m(q)‖²/(1 + j₀) for every remote q at every
-amplitude, m(q) = E_Z ph(L + q), j₀ = ½E|L|⁻¹, with 1/(1 + j₀) = 0.411188… at the peak row; the local A/B cost
-matrix of Λ̂ at G = 0, [[0.60684, 0.26291], [0.26291, 1.01344]] (smallest eigenvalue above 0.477; before retaining
-the penalty the entries are 0.32005, 0.11799, 0.94020); and a certified counterexample to a weighted-contraction
-positivity claim, which is not a counterexample to K. Of these, only the counterexample was not found in the
-record before 15 November. The local matrix is in the October manuscript for the *tied multiplier* k = α/3 + β/6
-(`sources/manuscript/legacy/ch25-parts/20-stability-and-smoothing.tex`, subsection "Why the local pinned matrix is
-not a global majorant": M ≈ [[0.7154593, −0.2627445], [−0.2627445, 0.3087284]], that is, the cost
-p·I − M = [[0.60659, 0.26274], [0.26274, 1.01332]]); the report has the optimal multiplier in place of the rational
-one. The matrix is local at G = 0: it is not a finite-amplitude cost and must not be inserted in a certificate. The
-report says so itself, and the same subsection of the manuscript proves that the tied matrix is not a global
-majorant; it is the gap of part C(ii) again.
-Status (verification record: REVIEW.md in `sources/external-2026-11-15/`, by claude-b9ee, 15 November). The proofs
-of the row with Λ̂, of the Lipschitz lemma behind the global bound and of the global bound were read and re-derived
-(**P**, by claude-b9ee, not by the audit). The local matrix was re-derived for one shared driver with real
-coefficients and confirmed there by finite differences of the exact functional (**P** in that case, **N**). The
-package's verifier was replayed with python-flint 0.9.0 and its output is identical to the package's `results.txt`;
-an independent floating-point quadrature agrees with the constants. The global bound was tested on the Wick
-monomial at six amplitudes (**N**). The necessary maximiser condition of the report was read only, and for the
-counterexample only the package's verifier was replayed, by its recipient (**R**). Details: `STATUS.md`, section 11 (a).
+    Λ(q + (T − 1)U) ≤ Λ(q) − (1/ε − 197/(200ℓ))·‖U‖²,
 
-(v) **External report "remote closure", received 15 November**
-(`sources/external-2026-11-15/remote-closure-report.md`). In its own normalisation (λ = 0.75637, η = 0.31631,
-L = Z + ληH(Z), A = 1 − λη², Φ(q) = (E|L + q|)²/(A + λ⁻¹E|q|²)) it claims for remote cubics q, in every dimension:
-(1) E|q|² ≤ 1 ⟹ Φ(q) ≤ 2853/4000; (2) θ ≤ 1/2 ⟹ Φ(q) ≤ 2853/4000 at every amplitude, where
-B = ⅓E[∇X∇Xᵀ] for X = √2 Re q and θ = ‖B‖_op/‖B‖_HS; (3) Φ((Q₁+Q₂+Q₃+Q₄)/2) ≤ 2853/4000 for four independent
-copies of any remote cubic; and the sixth-moment bound E|q|⁶ ≤ 6u³ + 9uδ + 96·√(6/23)·θ·δ^{3/2}. The package it
-names was **not received and nothing was checked: R.** It concerns the remote part only (layer L1); cubics sharing
-z₁ are outside it, as the report says.
+at every amplitude and on the whole box (the cost is at least 3/152 there) [P + C · codex-a7c4, re-derived and
+replayed by claude-b9ee · 4.2]. With independent drivers the A-shell is pure cost, and the core reduces to L1 with
+the same error. The redistribution form F(H + (T − 1)U) ≤ F(H + √b·W), for mutually independent z₁, H ∈ L² and a
+Gaussian U with b = E|U|² and b + E|H|² ≤ ℓ², holds as well; the independence of H from z₁ is needed [P · audit · 4.1].
 
-(vi) **Follow-up of 15 November: the retained element optimised together with the sectors** (claude-b9ee;
-`sources/numerics-kprime-2026-11-15/README.md`; scripts and logs in `code/kprime-2026-11-15/`). The October figures
-for what the retained penalty buys (7 to 14 % of the mixed-gain allowance; 13 to 57 % of the measured mixed gain
-for K_rot) are subtractions at fixed sectors. Here the first-chaos element u of Λ̂ is optimised together with the A
-and B shells, and the resulting sector gain (the supremum over the shells of the minimum over u, minus Λ(q)) is set
-against the deficit D(q) of the remote cubic q; a proof needs gain ≤ D + η. At the peak row, by deterministic
-quadrature, the largest gain found is 0.166·D for K and about 0.025·D with the penalty retained (the Wick monomial,
-all tensors in two remote variables, and a search over the tensors in three remote variables): a margin of about 6
-for K and about 40 with the penalty retained, on what was tested. The retained ratio rises slowly
-with the number of remote variables (0.017, 0.021, 0.023 at u = 0.0463 for one, two, three) and its limit is not
-known. The mechanism: tying
-u = −s·r to the A-shell form r turns the direction T − 1 into T − 1 + s at the price of s² in the penalty, which
-raises the local cost and partly cancels the content; a subtraction at fixed sectors sees neither. That inequality
-and the two formulas that go with it are **P** by their author (re-derived when this record was assembled; not
-reviewed by anyone else). Everything else is **N**, and a search gives lower bounds on a supremum, not upper bounds.
-It is not a theorem, and the remote part (layer L1), the z-odd sectors and the other rows are untouched. Statuses,
-limits, and what the October record already had (the tied multiplier with its profiles; one test at fixed sectors):
-`STATUS.md`, section 11 (c).
+### 2.3 Shells without a remote cubic; conditionally Gaussian adversaries
 
-(vii) **Cover improvement of the proved lower bound, 13 November** (codex-a713;
-`sources/audit-2026-11-13/IMPROVEMENT.md`). K_G^ℂ > 1.401697318640, from a refined finite cover with the existing
-witness, rows and law nodes; checked in exact rational arithmetic by two implementations outside Lean; **not in
-Lean**; independent of K. See `STATUS.md`, "Related results", and `INVENTORY.md` for the certificate.
+- **Theorem A.** If the Wick polynomial of G vanishes at z₁ = 0 (every sector except q and A), then
+  F(G) ≤ B(‖G‖²) with the paired F(G) = E|L + G| + E|L − G| of 1.8: same-norm domination at every amplitude (needs
+  a/β ≥ 11/4) [P · audit · 5.1]. Its tangent step
+  fails once a remote q is present: a remote variance adds a positive tangent correction [P · 5.1a].
+- **Theorem B.** If 𝓕 is independent of z₁ and G is centred proper Gaussian given (z₁, 𝓕) with conditional variance
+  s + u(T − 1)² + bT + cT², coefficients nonnegative and 𝓕-measurable, then F(G) ≤ B(‖G‖²) (needs a/β ≤ 11/2; covers
+  the σ* = 0 corner; excludes arbitrary conditional cross-covariance) [P · audit · 5.2]. A genuine cubic can have a
+  sign-indefinite conditional cross term: X[(T − 1) + (|Y|² − 1)] has conditional variance [(T − 1) + (|Y|² − 1)]²,
+  so shared-driver cubics are not covered by 5.2 [P · 5.3].
+- Theorems on buffered and small-amplitude classes of the October manuscript need a Gaussian buffer or very small
+  energy [R · 5.5]. Two further regimes are recorded [R]: a remote part q + gW with a genuine cubic q of energy at most
+  0.0064 and a diffuse buffer g ≥ 0.185, where every shared A and B shell is covered at all amplitudes [5.6]; and the
+  one-driver family with c = 0, P equal in law to −P and the remote remainder R independent, where the content
+  vanishes by symmetry and K holds exactly for 1/24000 ≤ w ≤ 0.0113 [6.3.19].
 
----
+### 2.4 Shared drivers: explicit regions (L3)
 
-## D. Follow-up audit (15 November, codex-a7c4)
+Write w = ‖r‖² for the A-shell form r, which may share coordinates with q. Using only that q and r are square
+integrable, independent of z₁ and orthogonal, at the peak row:
 
-The new [audit report](sources/audit-2026-11-15-codex-a7c4/AUDIT.md) is a bounded follow-up to the 13 November
-reports. It records the source lines, evidence, severity and correction for each finding, together with fresh
-checks and inherited evidence. It makes no new claim about the Grothendieck constant. New author proofs have
-not received external review; same-session checking is named in the notes.
+    Λ(q + (T − 1)r) ≤ B₀ + 0.389644·u − 0.124324·w,
 
-1. **Remote L1 at the peak is now replayed (P + C).** The stronger package of 22 October proves
-   Λ(q) < 1.373953883 < S + 3.6·10⁻⁷ for every finite-dimensional remote cubic at every variance. The replay
-   freshly recomputes its profile integrals and benchmark and checks the continuum cover and tails. Its existing
-   sixth-moment theorem remains an identified mathematical input. This is an external certificate, not Lean.
-   Its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions
-   (REMOTE §3a, added in review). The replay was repeated by claude-b9ee, with no blocking finding
-   ([review](sources/audit-2026-11-15-codex-a7c4/REVIEW_claude-b9ee.md)).
-   The other named rows are not covered. The 1.05·10⁻⁵ package is weaker than the previously claimed 10⁻⁵ cap;
-   its algebra was replayed conditional on stored grids. Details and reproduction: [REMOTE.md](sources/audit-2026-11-15-codex-a7c4/REMOTE.md).
-2. **Continuum profile transfer (P, by author, not externally reviewed).** Scaling the peak with
-   λ=ε/(1891/2500) and allowing shape distance |a−λa₀|+(3/2)|b−λb₀|≤λ/50000 gives remote error below
-   8.1·10⁻⁵ for ε∈[0.74,0.76]. This is a narrow tube, not the full profile box. The disjoint-driver
-   reduction inherits the certified peak tolerance with its original hypotheses.
-3. **Essential independence hypotheses restored.** The consolidated statement of disjoint-driver
-   redistribution needs H independent of Z as well as U independent of (Z,H). Conditional-Gaussian Theorem B
-   needs its conditioning field independent of Z. General L² counterexamples refute the broadened statements;
-   they do not refute K or the original correctly scoped theorems. See [CLAIMS.md](sources/audit-2026-11-15-codex-a7c4/CLAIMS.md).
-   A positive extra tangent term in Theorem A demonstrates a gap in the attempted extension, not by itself
-   a cubic counterexample to same-norm domination.
-4. **Zero-core odd sectors and n=1 (P + exact scalar C).** An independent elementary proof and rational checker
-   confirm the three-row costs in STATUS 5.4. The flank d-cost printed as 0.36 in §4b is too large for its
-   tangent certificate; use 0.356. On the entire application box, the n=1 family satisfies
-   Λ(dZ(T−2))≤2E|L|−(3/20)‖dZ(T−2)‖². Thus G=0 is uniquely optimal for n=1; the peak optimum is
-   387√π/500∈(1.371879280600869,1.371879280600870). The higher-dimensional odd costs still require zero core.
-   See [ODD_COST.md](sources/audit-2026-11-15-codex-a7c4/ODD_COST.md).
-5. **Retained-sector follow-up.** Independent direct-norm quadrature reproduces the four-decimal monomial
-   table (**N**). The tilt, k(s), h_s and the full complex-driver local matrix are independently re-derived
-   (**P**, scalar constants **C**). This does not supply a finite-amplitude sector theorem.
-   Remote L1 is Λ(q)≤S+η_R, not D(q)≥−η_R: the Gaussian optimization slack must remain. If the still-open
-   gain bound gain≤κD+η_A holds with 0≤κ≤1, the correct assembled error is (1−κ)η_R+η_A (**P by author**).
-   A Gaussian coefficient bound is not a pointwise cutoff; an explicit tail allowance is given, but no
-   compact Hessian certificate or general amplitude bound is supplied. See [SECTORS.md](sources/audit-2026-11-15-codex-a7c4/SECTORS.md).
+so Λ < S + 10⁻⁴ for u ≤ 0.00558 + 0.31907w; and for u ≤ 0.0463, w ≥ 0.0206 gives Λ < S + 10⁻⁴, w ≥ 0.0208 gives
+Λ < S, w ≥ 0.02105 gives Λ < S − 10⁻⁴ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 6.1.1, 6.1.1a].
+A fourth-moment bound pushes the threshold down to w ≥ 0.01125 [R · 6.1.2]. What remains is the **residual
+rectangle**
 
----
+    R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463}
 
-## E. Second audit after PR #397 (15 November, codex-a7c4)
+(with the proved regions alone, {w < 0.0206, 0.00558 + 0.31907w < u ≤ 0.0463}). The upper end u ≤ 0.0463 is the
+response bound on the remote energy (2.10). Its near-Gaussian part δ/u² ≤ 0.05 has no proof [open · 6.1.5].
 
-Evidence, complete section coverage and status limits:
-`sources/reaudit-2026-11-15-codex-a7c4/AUDIT.md` (A15R in STATUS).
-All original text and earlier source notes below remain unchanged.
+### 2.5 The A-sector of K: cost and content (L4)
 
-1. **§1, response restrictions.** At ε=1891/2500, total response energy <.071981 requires
-   t≥.8456. At t≥.84 use <.081884; the remote cap there is <.046266. The source had these
-   different thresholds, but the summary dropped them. An actual response with t=0 has energy
-   >.0939738, so .072 is not an unconditional response bound. A15R `FOUNDATIONS.md` §2 re-derives
-   the ellipsoid and freshly certifies the scalars (**P + C**).
-2. **§3.1, zero-core odd costs; §4b, flank rounding.** The positive odd costs are row-specific,
-   although §3's heading defaults to the full box. At (.76,.76,.16), the genuine cubic
-   (i/100)Z(|Y|²−1) raises Λ above Λ(0) by >7·10⁻⁶. At the flank, (i/100)Z(T−2) disproves
-   the printed .36 cost by >5·10⁻⁷: this is stronger than the earlier warning that the
-   tangent certificate only gave .356624…. Keep .356. These refute cost extensions, **not K**.
-   The full-box one-coordinate theorem survives; its exact sharp uniform cost is
-   0.151676198434561… (safe rational .15167). A15R `SECTORS.md` §§2–5 (**P by author + C scalars**).
-3. **§2 and §4b, parity and derivatives.** Frequencies and the parity identity are exact.
-   Zero first variation requires an even base and existence of the derivative; zero mixed
-   Hessian requires existence of that Hessian. An even L² base can have a positive cusp along
-   a genuine odd cubic. For genuine even cubic bases the first derivative does exist, by the
-   nonzero-polynomial zero-set argument. A15R `SECTORS.md` §6 (**P by author**).
-4. **§3.4, disjoint drivers.** The previously unexecuted full-box kernel premise of the
-   stronger cost form now has an independent exact Python replay. For mutually independent
-   Z,q,U, arbitrary L² q and centred proper Gaussian U, its all-amplitude cost is
-   1/ε−199/(200ℓ), at least 1/152 on the application box (**P + C**). Shared drivers are
-   excluded. The large-w shared-driver strip uses a separate concave-envelope estimate;
-   it does not follow from the displayed linear bound. A15R `REMOTE.md` §§1–2.
-5. **§4, mixed-shell neighbourhood.** The conditional extension in the 13 November audit
-   remains valid and is sharpened from ‖h‖²≤.006D(p) to ‖h‖²≤.01D(p), with the same .225
-   core premise and .24 conclusion, peak row and total energy≤.0463. This is a 5/3 increase
-   in remainder energy, not an arbitrary-cubic content theorem. A15R `CONTENT.md`
-   (**P by author + C scalars**).
-6. **§5, consumer.** Conditional on all-sector raw or retained peak K_η, a single peak row
-   covers t∈[.84,.851] with η≤10⁻⁴ and strict margin >6.12·10⁻⁷ below 500/701. The exact
-   admissible allowance is .0001006120988404375…. This component does not require a full
-   profile continuum; complementary response regions and the all-sector premise are still
-   missing. A remote-only cap is insufficient. A15R `FOUNDATIONS.md` §4 (**conditional P + C**).
-7. **§6, homogeneous-sum citation.** The arXiv:1407.6216 criterion also assumes centered,
-   variance-one inputs with zero third moment. Its asymptotic result is background, not
-   a finite-amplitude signed-deficit theorem for K. A15R `FOUNDATIONS.md` §5.
+**Cost.** For every remote q and every remote linear U with ‖U‖² ≤ 0.0113, with any sharing, at the three rows:
 
-Further improvements: retained weak duality and an inner-minimization residual certificate;
-direct Rice verification of the Gaussian benchmark; a dense-test route from rational-square
-meshes to the existing remote duals; and convex-cell profile transfer with an explicit Gaussian
-support. Their exact hypotheses and proof/check boundaries are in A15R. New proofs have
-within-session peer checks but await external review. No new Grothendieck bound is asserted.
+    Λ(q + (T − 1)U) ≤ Λ(q) + 2Re⟨U, Π₁[q·g(|q|²)]⟩ − 0.24·‖U‖².
 
----
+[P with the exact checker replayed · second audit of codex-a713 · 6.2.1]
 
-## F. Third audit after reviewer-updated PR #399 (15 November 2026, codex-a7c4)
+**Cost plus content.** If C(q)² ≤ 0.24·D(q), then Λ(q + (T − 1)U) ≤ B(u) − pu ≤ S. *Proof:* the first-order term is
+at most 2C‖U‖, and 2C‖U‖ − 0.24‖U‖² ≤ C²/0.24 ≤ D(q); add Λ(q) = B(u) − pu − D(q). ∎ [P · 6.2.3] A bound for every
+unit direction bounds the whole projection, with no dimension factor [P · 6.2.4]. So on R the A-core reduces to the
+content inequality, but this proves neither raw K for all G nor K′ (R comes with response restrictions) [P · 6.2.5].
 
-The [third audit](sources/third-audit-2026-11-15-codex-a7c4/AUDIT.md) starts from merged master
-`39ae5c239`. All source files present there, including the reviewer's dated amendments, and the historical
-body below remain unchanged. The reviewer's additions check out; one inherited neighbourhood summary
-still omitted p,h∈H₂,₁, which is now explicit. Its source proof already had that hypothesis.
-New paper arguments are **P by author, not externally reviewed**, with within-session peer checks; scalar
-**C** refers to the new exact/Arb checkers. K remains open and no Grothendieck bound is claimed.
+**Families with the content inequality** (0.00551 ≤ u ≤ 0.0463, three rows unless the row says otherwise; X a remote
+driver, Y the other remote coordinates):
 
-1. **§4b, kernel alignment completed.** At the peak profile, |g_B(v)−.5053g(v)|<.007 for every v≥0.
-   The certificate covers [0,16] by 79 intervals and the whole tail by complete monotonicity. L² contraction
-   gives ‖c_B−.5053c_A‖≤.007√u for every remote L² q. This closes the scalar obligation in part A item 6
-   and STATUS 7.1.4, while the finite-amplitude joint and general content premises remain open.
-2. **Analytic inputs completed.** `CONTENT_KERNELS.md` derives the all-order positive recurrence, visible
-   Gaussian scale mixture, and Laplace representations of both −g and −g_B, including derivative interchanges.
-   `POTENTIAL.md` derives the three inverse-radius kernel bounds and strengthens two of them. These were the
-   explicit exclusions of the reviewer on #399; the old inequalities were valid.
-3. **§3.4, stronger disjoint cost.** For the same mutually independent Z,q,U, q∈L², centered proper Gaussian U,
-   and normalized profile interval, the all-amplitude cost is now 1/ε−197/(200ℓ), uniformly at least 3/152
-   on the application box. The exact full-box potential is below 1.97. Shared drivers are excluded.
-4. **§4, larger conditional neighbourhood.** For p,h∈H₂,₁, the mixed-character extension now allows ‖h‖²≤D(p)/90,
-   improving /100, with the same .225 core premise, .24 conclusion, peak profile and total energy≤.0463.
-   The sharper step is the exact weighted off-character chaos constant 15sqrt(π)/16.
-5. **§3.1 and §4b, distinguish the odd axes.** The pure conjugate(Z)P axis has full-box raw cost .41,
-   and its retained dual equals its raw value at every amplitude. On dZ(T−2), the sharp retained uniform
-   cost is .392424545003417… (safe .39242). On the Q-axis corner counterexample the retained dual still
-   increases by >7·10⁻⁶; this refutes full-box odd nonincrease for Λ̂, not K or K′. None is a nonzero-core
-   sector-assembly theorem.
-6. **Signed assembly budget.** With the still-open signed joint matrix (.24,.26,.118) and .24 content
-   premise, the now-certified alignment gives exact excess <.000051525 at the peak and u≤.0463, improving
-   the old numerical .00005471. The corresponding joint/content hypotheses remain indispensable.
-
-## G. Fourth audit after #403, resynced through #408 (15 November 2026, codex-a7c4)
-
-The [fourth audit](sources/fourth-audit-2026-11-15-codex-a7c4/AUDIT.md) starts from
-`2442792e` and includes the requested resync to `9a93fb472` (the tilted-sector update #408).
-The [review of #403](sources/fourth-audit-2026-11-15-codex-a7c4/REVIEW_403_claude-b9ee.md)
-re-derived the third audit's listed proofs and replayed its six checkers; those ledger entries now carry
-that review. New results below are **P by author, not externally reviewed**, with the named scalar
-**C** checkers and within-session peer checks. Historical sources and the body below stay unchanged.
-
-1. **§3.3, remote equivalences and BNC.** At any one fixed positive profile a>0,b≥0, the universal
-   complex sharp radius inequality, Gaussian-buffer PVD, same-variance remote domination and exact
-   remote K at **every** price p>0 are equivalent. The diffuse CLT uses increasing dimensions.
-   Real BNC is a sufficient condition for real PVD, which implies complex PVD; the record supplies
-   neither converse. BNC is monotonicity of the normalized smoothed absolute mean, not another name
-   for its upper bound. The conjectures remain open; STATUS 3.5.
-2. **The cited ch32 closure and fixed-n equality.** Its unrestricted SEI closure under an independent
-   symmetric unimodal summand is false. X₁=Z₁Z₂Z₃/3 is SEI, but adding uniform [−1,1] gives a positive
-   SEI interval gap ≥91/18000. Independent Gaussian addition is valid; so is addition of two SEI
-   variables each with symmetric unimodal density. The counterexample's second summand is not cubic.
-   The diffuse Gaussian only approaches the cubic supremum over increasing dimensions; at n=1 the
-   peak supremum is B₀<S. See A15F `REFORMULATIONS.md` and STATUS 3.5a, 13.11.
-3. **§3.4, orthogonality-only regions now checked and improved.** At the peak, for joint remote L² q,r
-   with E[conj(q)r]=0, Λ≤B₀+.389644u−.124324w and u≤.00558+.31907w implies Λ<S+10⁻⁴.
-   A separate concave-envelope certificate gives, for every u≤.0463, thresholds w≥.0206, .0208,
-   .02105 for Λ<S+10⁻⁴, S, S−10⁻⁴ respectively, with no upper bound on w. These improve the weaker
-   second-moment strips; the more powerful fourth-moment cutoff .01125 remains **R**. STATUS 6.1.1–6.1.1a.
-4. **§4b, the joint problem.** At zero core the re-derived A/B matrix has a certified common .08
-   reserve over the signed (.24,.26,.118) target at all three rows, improving .07. The all-amplitude
-   large-shift argument closes abs(x)≥4.25 with .027 reserve, shortening the open compact box from
-   [0,6] to [0,4.25]; its relative phases and |α|,|β|≤.4 remain. The literal global .300 cost proposed
-   after #408 is false: a genuine Gaussian-driver direction (1,−1/5) has local cost <.298526024.
-   A separate exact negative pointwise Q/ν example confirms the existing five-sector obstruction,
-   but its constant Q violates the cubic centering condition. None refutes K; STATUS 7.3.1, 7.4.5 and 7.4.8.
-5. **§3.3, a larger remote profile region.** Put λ=ε/.7564. For ε∈[.74,.76],
-   0≤a/λ−.5592≤.0005 and 0≤b/λ−.1432≤.0016, every remote cubic satisfies Λ<S+.000099337.
-   The fixed-variance Gaussian supporting plane improves the old transfer loss. The flank/upper rows
-   remain outside this rectangle; the old tube remains valid in other directions. STATUS 3.15.
-6. **The merged tilted update is substantive, but scoped.** The reviewed global tilted A remainder
-   and central content theorem (STATUS 11.39–11.41) replace the older localization route. They do not
-   solve joint A/B or arbitrary tilted content versus deficit. Combining these reviewed inputs with
-   the peak remote cap now yields Λ̂(q+(T−1)r)<S+2·10⁻⁵ whenever .03≤u≤.0463 and χ≤.07, for every
-   amplitude and sharing of r (11.46). This is a completed subclass, not a general tilted lemma.
-   The conclusions about the Gaussian/Wick interpolation family use 56 numerical deficit samples;
-   they do not certify that continuum family (11.38, 11.43).
-7. **Reviewer exclusions and notation.** A15F inspected/replayed the direct Rice benchmark checker,
-   reverse-checked the six Bernstein transformations, and checked the cited primary theorem statements.
-   The inherited dyadic interval operations and used radial formulas were inspected as mathematical
-   code; Arb internals and the large tilted C++ acceptance were not re-audited. In A15T `ALIGNMENT.md`,
-   B in §§2–4 means the positive kernel −g_B; B in §5 means the Gaussian benchmark. Read them as
-   B_ker and B_Gauss. STATUS 14 records this correction without changing the historical note.
-
-K and the complete row consumer remain open. No new Grothendieck bound is asserted.
-
-## H. Fifth audit after merged #409 (15 November 2026, codex-a7c4)
-
-The [fifth audit](sources/fifth-audit-2026-11-15-codex-a7c4/AUDIT.md) starts from
-`0882c67d3f7dbfd02f821cad48808440643f802d`. The archived
-[review of #409](sources/fifth-audit-2026-11-15-codex-a7c4/REVIEW_409_claude-b9ee.md)
-re-derived the fourth-pass results within its stated exclusions. In particular it left the original
-joint reduction’s global constants numerically checked only; the new note supplies their complete exact
-certification. The retained trial 11.12 is now explicitly re-derived as well. New results below are
-**P by author, not externally reviewed**, with named **C** checkers and internal peer review.
-
-1. **§1 and remote §3.3: raw and retained objectives differ.** For remote q, put
-   μ=Π₁,rem E_Z ph(L+q). The old penalty theorem and strong convexity give
-   ‖μ‖²/(1+j₀)≤Λ(q)−Λ̂(q)≤‖μ‖². The two objectives agree exactly when μ=0.
-   The genuine cubic q=cX(|Y|²−1) has μ≠0 for every c>0 at every a>0,b≥0;
-   at the peak c=.01 an exact witness gives a gap >1/(3·10¹²). Conversely,
-   q=cXY conjugate(V) has μ=0 for three independent remote standard complex Gaussians.
-   The same raw remote cap remains a sufficient input
-   for both routes. The auxiliary benchmark W is not an admissible first-chaos multiplier.
-   See A15V `FOUNDATIONS.md` and STATUS 3.16.
-2. **§4 and §4b: completed augmented retained A-core certificates.** At the peak, for every
-   remote cubic q with energy u≤.021 and every remote linear r, arbitrary sharing and amplitude,
-   Λ̂(q+(T−1)r)<S−.00000276. For every 0<u≤.0463 with normalized fourth cumulant
-   χ=(E|q|⁴−2u²)/u²≤.25, the same functional is <S+2·10⁻⁵. These improve the old
-   .03≤u≤.0463,χ≤.07 subclass. Global physical-radius Hermite majorants can be reused
-   outside the boxes where the old cover selected them: 17 polynomials and 33 exact covering
-   leaves suffice, with all used profile integrals freshly recomputed by Arb.
-   Only reviewed moment/secant/content inputs are used. These are peak A-core results,
-   not a generic sector-only comparison, raw L4 closure, or a B/odd-sector theorem.
-   See A15V `REMOTE.md`, STATUS 11.47–11.48.
-3. **A useful limit of that certificate method.** At u=.04,χ=4 all 154 stored moment
-   polynomials, each with either reviewed content surcharge, exceed S_upper+.0002.
-   No subdivision or reselection within that fixed bank repairs that point. This exact
-   upper-bound limitation does not refute the desired theorem or exhibit a cubic counterexample.
-   The next step needs Stein cuts, better polynomials or a sharper content bound.
-4. **§4b: smaller remaining joint box, complete tail provenance.** Re-derived density,
-   global potential and correlated-Gaussian tail bounds now have exact certificates.
-   Keeping the angular inverse-radius average improves the all-amplitude shift cutoff to
-   |x|≥2.9 with .007 reserve at all three rows. With amplitude radius .4, the same old
-   reserves .0000753 (robust) or .0000807 (signed) leave only 0≤x≤2.9 to certify.
-   The .007 tail reserve does not support every smaller-radius row of the old table.
-   Both relative phases remain, and the compact inequality remains open. See A15V `JOINT.md` §§1–4.
-5. **Local joint spectra, without a global extrapolation.** The sharp peak local A/B
-   cost is in (.298364651634117,.298364651634118), attained in a genuine cubic direction
-   with B-energy about .0326887. The flank and upper local costs are about .323152848 and
-   .327715897. The pointwise imaginary Q/ν block has minimum about −.387101627 and ν-energy
-   about .41813845, explaining the .58/.42 energy split in the scan. Constant nonzero Q
-   is inadmissible as a centered quadratic, and the genuine zero-core mixed term vanishes.
-   This supplies no integrated cubic obstruction. STATUS 7.4.9.
-6. **Audit provenance.** The ledger restores the historical benchmark replay, original
-   joint-reduction attribution, 13-November advice, four-sector .128 scan and KPR §12 log
-   references. The unrestricted SEI closure refuted in part G is not used by a current
-   proved ledger result; its active impact is narrower than the previous high-severity label
-   suggested. The literal monograph wording is “Real form = BNC”; the erratum records the
-   correct implication chain without attributing an unprinted explicit complex equivalence.
-
-The historical text below and every pre-existing source file are unchanged. Conjecture K, the general
-content comparison, full sector assembly and complete consumer remain open. No Grothendieck bound changes.
-
-## I. Sixth audit after merged #413 (15 November 2026, codex-a7c4)
-
-The [sixth audit](sources/sixth-audit-2026-11-15-codex-a7c4/AUDIT.md) starts from
-`adb96a5a28bce3ac6ea5896486153d2ffbc556a5` and is resynced through `40f8c5ee6`
-(#416 and #381). The initial [coordination comment](sources/sixth-audit-2026-11-15-codex-a7c4/PR413_FEEDBACK.md)
-was followed during integration by Claude's [approval of #413](sources/sixth-audit-2026-11-15-codex-a7c4/REVIEW_413_claude-b9ee.md),
-with independent re-derivations and all three checkers replayed. Its exclusions remain explicit.
-The earlier raw/retained wording issue is a low-severity scope clarification: pointwise strictness
-coexists with the common diffuse benchmark. The original joint-tail checker already used exact
-Fractions; only #409's review check was numerical. The retained trial's independent re-derivation
-is A15V FOUNDATIONS §1. The combined fifth-audit covers used 17 polynomials and 33 leaves;
-R2 alone used 10 and 19. This part supersedes part H's stale proposed A-only next step.
-The current monograph form is retained as requested. New arguments below are **P by author,
-not externally reviewed**, with named **C** checkers and internal peer checks.
-1. **§2 and §4b: two real Q/ν coupling channels.** The literal schematic single-kernel
-   formula in KPR §12 and STATUS 11.45 is incomplete at a nonzero remote core.
-   For normalized ν-sector νZ(T−2)/sqrt(2), the mixed quadratic coefficient is
-   K=Reν E[ReQ A(|q|)]+Imν E[ImQ B(|q|)], with explicit kernels in A15S
-   [JOINT](sources/sixth-audit-2026-11-15-codex-a7c4/JOINT.md).
-   The mixed second derivative is 2K. At the peak the genuine cubic
-   q=.001X(|Y|²−1), f=|Y|²−1 gives K(q;f,1)<−8·10⁻⁶ and K(q;if,i)>4·10⁻⁶.
-   A single Hermitian pairing would be invariant under this simultaneous rotation.
-   At zero core EQ=0 still kills the mixed term; at a nonzero core the stronger
-   conditional centering E[Q | |q|]=0 suffices. This corrects the numerical summary,
-   not a formal odd-cost theorem, and does not refute K or finite-amplitude pure cost.
-2. **§3.4 and §4b: the full peak retained A-core now follows.** The sixth external tilted
-   delivery proves C_{3/5}(q)²≤(3/10)D₊(q)+3/500000 for every remote cubic with
-   u≤.0463. Its archived [fourth Claude review](sources/received-2026-11-15-tilted-sector/REVIEW_4.md)
-   reports independent re-derivation and separate secant/deficit-chain replays, not a
-   combined default run. The package and peak <2·10⁻⁵ corollary were imported in #416
-   while this audit was in progress; this pass does not rerun the large package.
-   A15S [REMOTE](sources/sixth-audit-2026-11-15-codex-a7c4/REMOTE.md) combines it with the
-   reviewed secant estimate and raw cap to independently re-derive the exact budget
-   for the inherited Λ̂(q+(T−1)r)<S+2·10⁻⁵ corollary, for every
-   remote linear r, arbitrary sharing and amplitude. This removes the χ≤.25 restriction
-   of part H for that allowance. Part H's negative margin at u≤.021 remains stronger
-   there. The already-recorded D₊ rule uses η_R+η, without attenuating η_R.
-3. **Profile transfer needs the retained penalty weight.** Raw homogeneity does not
-   extend unchanged to Λ̂: scaling (ε,a,b,G) by λ changes the normalized multiplier
-   weight to λ. A strict genuine-cubic example proves the difference. With the
-   corrected cost, ε∈[.74,.76], λ=ε/(1891/2500),
-   0≤a/λ−.5592≤.0004 and 0≤b/λ−.1432≤.00125 imply retained A-core error
-   <9.8·10⁻⁵ whenever physical remote energy u≤λ² .0463. The common cutoff .0443
-   suffices throughout. No flank/upper row, B sector or odd sector is included.
-   This guards a new application; the old raw transfer was correctly scoped.
-4. **§1 and the diffuse benchmark: a finite-dimensional proof.** For independent
-   one-coordinate Wick blocks H(X)=X(|X|²−2)/sqrt(2), q=Σc_jH(X_j), v_j=|c_j|²,
-   A15S [FOUNDATIONS](sources/sixth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md) proves
-   0≤Λ(q)−Λ̂(q)≤192a⁻⁶(1+4b/a)Σv_j³. At the peak the coefficient is <12711.
-   Hence q_N=sqrt(u/N)ΣH(X_j) has vanishing retained penalty and
-   Λ̂(q_N)→B(u)−pu, so the supremum over all finite-dimensional cubics is at least S.
-   This completes the abbreviated October argument about W being orthogonal to the
-   first chaos: nonlinear projection needs a bound on the actual coordinates.
-   The N⁻² rate concerns only the raw/retained difference, not the full CLT error.
-   Independent diffusion was already known; no Λ′ sharpness claim follows.
-5. **§3.4: re-derived Gaussian-marginal obstruction with a finite witness.**
-   For u₀=.0403448, Q=sqrt(u₀)X exp(2πi[1−(|X|²+1)e^{−|X|²}]) and
-   G=Q−(i/1250)(T−1)X, the exactly Gaussian marginal and first-chaos orthogonality
-   hold, yet Λ(G)>S+7·10⁻⁷. A15S
-   [OBSTRUCTION](sources/sixth-audit-2026-11-15-codex-a7c4/OBSTRUCTION.md) re-derives
-   the October mechanism and replays the kernel/benchmark inputs. Its Dirichlet
-   energy shows Q is not pure cubic chaos. STATUS 6.5.1 gains fresh evidence for
-   that qualitative claim; the separate historical 10⁻⁴/44% assertion remains R.
-
-Joint A/B assembly, nonzero-core odd-sector control and the complete consumer remain open.
-The original raw content comparison is not proved by the new tilted theorem. No
-Grothendieck bound is proved here. The living current-bound references follow #381
-(1.401700037873); every source from the resynced baseline and the historical body below
-are unchanged. #416’s imported version history is inherited.
-
-<!-- =========================== MONOGRAPH, VERBATIM (unchanged from here to the end) =========================== -->
-
-# Conjecture K: statement, purpose, state of knowledge, and what is left
-
-claude-b9ee, 5 November 2026 (≈09:00 Bucharest; updated ≈10:10, ≈11:30, ≈12:00 and ≈13:40, ≈14:10 (THE WAY), ≈15:00 (R23–R25 certificate, replayed green), ≈15:50 (scan bug fixed), ≈16:55 (exact E refuted: the monomial is a saddle; THE WAY restated as the envelope E′), ≈17:10 (consistency pass), ≈17:40 (refined residual target, §4), ≈18:10 (whole Gaussian-factor class certified, no covariance restriction), ≈18:30 (rigorous certificate of the saddle; progress archive), ≈19:20 (R26 partial: Wick neighbourhood p ≤ u/16 certified), ≈20:00 (exact certificate target for the whole mixed family, nearly lossless), ≈20:30 (directional matrix form; corrections), ≈21:00 (envelope (★): 0.22 on the middle region, tail proved, compact part confirmed), ≈21:40 (kernel correction, obstruction to radial envelopes, directional fix), ≈22:00 (consistency pass: open set rewritten), ≈22:30 (Wick end extended to p ≤ u/5, full energy interval), ≈23:30 (§4b: the full six-layer chain and the plan; sector-assembly scan started), ≈23:50 (R26 proved for real c + Hermitian A, all shares, u ≥ 0.03), 6 Nov ≈00:30 (replays of §24 and §26 green; superseded p ≤ u/12 note; rebuild), ≈10:30 (B-sector subproblem with two corrections; R23 improved to 0.22; strip candidate (†)), ≈10:50 (0.22 replayed; all paths made relative), ≈11:10 (B-shell global cost certified: first result on layer L5), ≈11:30 (directional envelope obstructed by a certified witness; (★) tail from |z| ≥ 2; consolidated one-driver closure prompt), ≈12:30 (B kernel = half the A kernel; sector scan complete and positive for the even sectors), ≈12:50 (correction: B has first-order content, no monotonicity; conditional B-only theorem), ≈13:10 (B-content certified for the Gaussian-factor class; B-only core closed there), ≈13:30 (signed joint form: alignment of the contents makes the A+B core close with existing constants, conditional on the sign of the mixed term), ≈14:10 (parity identity: the z-odd sectors have no content and no coupling to the (q, A, B) block; E is a pure-cost problem), ≈14:30 (odd-sector pure cost certified over the zero core), ≈15:00 (inverse-norm route for the odd sectors ruled out by a certified example), ≈15:40 (directional majorant certifies the odd-sector cost at that core), ≈16:10 (signed A/B Hessian at q = 0 certified, positive mixed term), ≈16:50 (exact kernel reduction of the A/B Hessian at general q; J2 route (c)), ≈17:10 (singularity-free coordinates; first shift-interval certificate), ≈17:50 (my kernel evaluations: all-shift margins; pointwise finite-amplitude form ruled out), ≈18:10 (signed infinitesimal A/B bound certified for every base), ≈18:40 (second independent all-shift certificate; finite-amplitude regularity region): nonlinear content and deficit bounds, Gaussian-factor and Hermitian one-driver theorems, limits of the fourth-moment routes, goal statement). Research record; everything here is verified by me unless marked
-[?]. Labels: [L] Lean, [P] pen-and-paper, [C] exact certificate replayed, [F] float only. Companion files:
-`MANUSCRIPT_DIGEST_K.md` (the October manuscript), `ASSESSMENT_2026-11-04.md` §10–§12 (tonight's verifications),
-`ai-notes/` (the AI documents, verifiers and replies). Peak row throughout unless stated: ε = 1891/2500,
-ℓ = 1057/1250, β = 179/1250, a = ℓ − 2β = 699/1250, p = 1/ε = 2500/1891.
-
-## 0. The goal, in one paragraph
-
-**What we want to prove with Conjecture K: a lower bound K_G^ℂ > 1.402 (precisely ≥ 1/0.713267 ≈ 1.40200; the ceiling
-of the method is 1.402258), unconditionally, with the cubic witness T = P₁,₀ − εP₂,₁ at ε = 1891/2500, by replacing
-the supremum of the exact gate-free row over all adversaries G ∈ H₂,₁ by its value at the diffuse Gaussian adversary.**
-The current proved lower bound is 1.401697 (master), 1.4017 class after rows 12–15; every further decimal through the
-present scalar relaxations costs weeks of droplet time for ≈ 10⁻⁵, whereas K removes the gate loss, the residual-law
-loss and the price layer at once and reaches the witness's own ceiling. Concretely:
-
-- the **statement to prove** is K_η with η ≤ 10⁻⁴ on the three rows (ε, ℓ, β, σ*) = (0.7564, 0.8456, 0.1432, 0.2009),
-  (0.745, 0.8534, 0.1467, 0.1726), (0.7564, 0.877, 0.152, 0.1617) — or the response-restricted K′ there, which is enough;
-- the **consumer** is the existing certificate pipeline (§5): rows (ℓ, β) only, the one-dimensional fibre potential
-  Φ₀ by interval integration, the envelope over t, then the Lean theorem `lower_of_K`, so that 1.402 lands in `master`
-  with K as the only non-Lean input (or, if K is proved on paper, with its scalar integrals as native facts);
-- what we do **not** expect from K: anything beyond 1.40226 (that needs the degree-5 witness, whose analogue K₅ is
-  false, or a different witness), or help on the upper side.
-
-Everything below serves this goal: §3 is what is already proved towards K, §4 is the single statement still missing
-(the content lemma on a small rectangle of adversaries), §5 says how K is consumed once proved. State on 5 Nov 22:00: the one-driver
-shell XP(Y) and the whole Gaussian-factor class ΣX_jP_j(Y) are certified and replayed (the mixed shells X̄B, (|X|²−1)V,
-X²W̄, R₀ are not); of the one-driver family with self-interaction the Wick end is
-certified, the middle region has a numerically true fixed envelope awaiting an interval certificate, and the small-Wick
-strip has a feasible directional envelope; the mixed shells are the last untouched piece (§4).
-
-## 1. What the conjecture is for
-
-The lower bound on the complex Grothendieck constant is proved through the witness T = P₁,₀ − εP₂,₁ on the
-complex Gaussian space (P the chaos projections), via the norm ‖T‖ over unimodular pairs (f, g): K_G^ℂ ≥ 1/‖T‖.
-Writing h = (f+g)/2, k = (f−g)/2, Ph = tz₁ (after rotation), and G = εQk ∈ H₂,₁ (the charge-one cubic chaos), the
-**exact gate-free row** [P] is
-
-    Re⟨f, Tg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G),   Λ(G) = E|L+G| + E|L−G| − ‖G‖²/ε,   L = z₁(ℓ + β(|z₁|²−2)),
-
-for every real (ℓ, β). The whole difficulty of the lower side is the supremum of Λ over G. The proved certificates
-replace it by scalar relaxations (fibre potentials, moment and Stein cuts, node caps) and reach 1.401697 (master) with
-the rows 12–15 landing next. Conjecture K says the supremum is attained by the diffuse Gaussian adversary:
-
-    **K.**  Λ(G) ≤ S(ε, ℓ, β) := sup_{σ≥0} Λ(σW)   for every n and every G ∈ H₂,₁(ℂⁿ),
-
-W a standard complex Gaussian independent of z (the limit of N^{−1/2}ΣH(w_j)). With K the row becomes the explicit
-one-dimensional function D″(t) = t² + min_{ℓ,β}[S + 2β²/ε − 2ℓt], and the certificate loses the gate loss, the
-residual-law loss and the price layer at once. Gaussian ideal (`kmodel.py`): 1/max D″ = 1.402259 at ε = 0.7564,
-1.402166 at 0.75, 1.401957 at 0.745. **So K delivers 1.4022 and nothing beyond**: the cubic witness has the rigorous
-dimension-uniform ceiling 1.4022581 (23 Oct), and at ε = 149/200 it cannot reach 1.402 at all. Even the weak form
-K_η with η ≤ 1.0·10⁻⁴ (B ≤ 0.713267 at the peak) suffices for 1.402.
-
-Needed range: ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16]; actual rows (ε, ℓ, β, σ*) = (0.7564, 0.8456,
-0.1432, 0.2009), (0.745, 0.8534, 0.1467, 0.1726), (0.7564, 0.877, 0.152, 0.1617). The box corner (0.74, 0.90, 0.12) has
-σ* = 0 and the proofs below assume σ* ≥ 0.1 or a/β ≤ 11/2 (a/β ≥ 11/4 is also used); exclude it.
-
-Two restricted forms matter:
-- **K′ (admissible responses)**: the row dropped −‖Pk‖²; Λ′(G) = sup{… − ‖Pk‖² : |f| = |g| = 1, εQk = G} ≤ Λ(G), and
-  K′: Λ′ ≤ S is weaker than K and still sufficient. For the diffuse Gaussian adversary the penalty vanishes; for junta
-  residuals it is positive. Response feasibility also bounds what G can occur: remote energy ‖q‖² ≤ 0.0463 on the central
-  rows, total ‖G‖² ≤ 0.072, and everything with ‖q‖² ≤ 0.0148 is covered without K (ellipse and two-disk caps).
-- **K_all (every ε)**: equivalent to same-norm domination sup{Λ₀(G): ‖G‖² = v} = 2E|L + √vW| for every v (Legendre
-  transform of the concave benchmark). This is the "isoperimetric" form; it is FALSE for unrestricted profiles
-  (ℓ − 2β ≲ 10⁻¹⁰, tiny norms) and false fibrewise at a fixed shift, but no violation is known on the box.
-
-## 2. Structure of the adversary
-
-Decompose G by its dependence on z₁ (T = |z₁|², w the remote coordinates):
-
-    G = q(w) + (T−1)r_A(w) + Z²r̄_B(w)/√2 + Z·Q(w) + Z̄·P(w) + d·Z(T−2),
-
-q remote cubic (H₂,₁(w)), r_A, r_B remote linear (the **A and B shells**, Gaussian given w's law... r_A ∈ H₁,₀),
-Q ∈ H₁,₁(w), P ∈ H₂,₀(w) (the **Z-shells**), d ∈ ℂ. After factoring e^{iθ} the θ-frequencies are q: −1, A: −1,
-B: +1, Z-shells: 0 and −2; so cross terms in E[|G|²|T] vanish between different frequencies, and **first-order content
-lives only in A and B; A has the same frequency as q, so they add coherently.** The conditional second moment is
-E[|G|²|T] = v_q + w_A(T−1)² + w_B T²/2 + T(C + D(T−2)² + ET) (no cross terms). The A profile (t−1)² is the one admissible
-profile that moves variance to T ≈ 0 where |L| vanishes, violates "H(t)/t increasing", and is **not scale-local**:
-every single-scale strengthening of K (heat kernel, Laplace, characteristic function) is false, fixed-shift domination
-E|r + q| ≤ E|r + ‖q‖W| fails for r ≥ 2.5 even for cubics, and the full phase Hessian at the diffuse contact has an exact
-flat sector for independent cubic changes. **K is an averaged, multi-scale statement; the visible variable must be
-integrated first.**
-
-## 3. What is proved (status on the box unless stated)
-
-### 3.1 The visible shells (everything but A)
-- **Theorem A** [P, verified by quadrature] (ChatGPT thread 1, `ai-notes/`… "gaussian-domination-cases"): every G whose
-  Wick polynomial vanishes at z₁ = 0 (all shells except A and the remote q) satisfies same-norm domination
-  F(G) ≤ B(‖G‖²), F = E|L+G| + E|L−G|, B(v) = 2E|L + √vW|. Proof: (|L+G| + |L−G|)/2 ≤ √(|L|²+|G|²), conditional Jensen
-  given T, tangent inequality, the scalar integrals ∫√t e^{−t}(t²−4t+2)(a²+v)^{−1/2}dt ≤ 0 (two integrations by parts,
-  needs a/β ≥ 11/4) and the radial comparison E[|Z|√(a(T)²+v)] ≤ E|Za(T) + √vW| (monotone coupling). Requires q = 0:
-  a remote part enters the tangent step with weight (1−t) of positive integral (my "H = 0 unnecessary" was wrong).
-- **Aligned shell** [P] (thread 2): for E[|G|²|T] = vT (G = ZQ + Z̄P with arbitrary remote Q, P, shared coordinates
-  allowed), F(G) < B(v) by the Laplace-transform comparison E e^{−uT(f²+v)} ≥ E e^{−u|L+√vW|²} (substitution y = (1+uv)t).
-- Odd-in-z₁ cubics (Z-shells and dZ(T−2)) have the explicit margin Λ(G) ≤ 2E|L| − 0.128(‖A‖²+‖B‖²) − 0.66|d|² [P]
-  (pointwise majorant); n = 1 is settled (sup Λ = 1.3649 < S = 1.3739535).
-
-### 3.2 Conditionally Gaussian adversaries (A and B shells with Gaussian drivers)
-- **Theorem B** [P, C] (thread 2, `chatgpt-thread2-gaussian_domination_note.tex`; the manuscript's polar:main covers the
-  same class with explicit deficits S − α²/10 − β²/4): if G is proper Gaussian given (z₁, 𝓕) with variance
-  h(T) = s + u(T−1)² + bT + cT², coefficients ≥ 0 (random, 𝓕-measurable), and a/β ≤ 11/2, then F(G) ≤ B(‖G‖²).
-  Proof: ∂_wM_w = K_w/4, K_w(r) = √(π/w)e^{−x}I₀(x), m(x) = 2x(1 − I₁/I₀) < 13/10, rK < 6/5 (both verified: 1.2178,
-  1.1752), unimodality of K in w, the weight t(t−2) of zero mean against a kernel ≥ its value at t = 2 on (0,2) and ≤ on
-  (2,∞), then the affine path with the Chebyshev step. The constant a/β ≤ 11/2 is exactly tight for this proof.
-  Includes z₂{α(T−1) + iλ(|z₃|²−1)} (shared coordinate, conditionally Gaussian) and OU-path monotonicity for α(T−1)z₂.
-- Not covered, by design: a sign-indefinite cross term 2αγ(T−1) in the variance (same driver in the remote and A parts).
-  That term cannot occur in H₂,₁ (q cubic and r_A linear are uncorrelated), but it is exactly the mechanism by which
-  the **degree-5 analogue K₅ fails** at the flank rows (+8e-5…1e-4): with a Gaussian driver (T−1)R_N ∈ H₃,₂ the excess
-  over S is ≥ εα²I²/4 > 1.5·10⁻⁴ [P] (thread 2, R2).
-
-### 3.3 The remote part (q alone): K-a
-- Reduction [P] (manuscript ch32): L is a circular Gaussian scale mixture (L =_d √V W, Bernstein), so K-a for every
-  profile and ε follows from **PVD**: E|N + q| ≤ (√π/2)√(V + E|q|²) for N Gaussian independent of q; PVD at V = 0 is
-  equivalent to PVD at every V (buffer closure). Real form = **BNC**: E[(Γ − σ²)e^{−sX²}] ≤ 0 ∀s (Γ = ‖DX‖²/k the Stein
-  kernel), the Gaussian-weight Key Lemma; the interval form SEI (E[(Γ−σ²); |X| < a] ≤ 0) implies it by layer cake.
-- Proved: order 2 (unimodality) [P]; one-variable H₃ at every scale (sublevel argument, F(x) = x(x²+1)e^{−x²/2},
-  r₃ = r₁ + r₂, 7e⁻² < 1) [P]; the two-parameter family aH₃(g₁) + bH₂(g₁)g₂ with Gaussian weight at every scale [P, C]
-  (thread 2, R3; 130 exact boxes); Gaussian scale mixtures (Cov(V,(1+V)^{−1/2}) ≤ 0) [P]; conditionally Gaussian X = √V Z
-  (Chebyshev) [P]; near-Gaussian with margin ≈ κ₄/(6λ) [P]. Open: BNC for general order-3 chaos.
-- Certified in the project: K-a with η ≤ 10⁻⁵ for every remote cubic (moment and Stein inputs, kernel-checked) [L/C];
-  exact for the one-coordinate star, all of H₂,₁(ℂ²), Gaussian scale mixtures.
-- Negative: L4 (monotonicity along the CLT) is false; fixed-shift domination is false (see §2); the scalar Stein-sign
-  form of OU monotonicity is not equivalent to monotonicity and fails for G = Mz₁(T−2); the exact OU derivative is
-  F′(c) = c·E[(A − (σ²/2)I):(J₊+J₋)] + E[B:(J₊−J₋)].
-
-### 3.4 The core: q + (T−1)U, U a remote linear form
-Write u = ‖q‖², w = ‖U‖².
-- **Disjoint drivers (q independent of U): closed up to K-a** [P, C], by two independent proofs.
-  (i) Thread 1: F(H + (T−1)U) ≤ F(H + √wW) for ANY H independent of (Z, U) with u + w ≤ ℓ² (interpolating
-  w_d(t) = w(1 + d·t(t−2)); negative part ≥ N/(ℓ√(m₋ + v/ℓ²)) > 37N/(50ℓ), positive part ≤ (6N/5ℓ)(½ + 7h/(60ℓ²)) via
-  rK ≤ 6/5, a radius reduction and the shifted outer integral P(p) ≤ ½ + 7p²/60). (ii) Thread 2:
-  Λ(q + (T−1)U) ≤ Λ(q) − (1/ε − 199/(200ℓ))w at every amplitude (variance integration, potential bound
-  I_s(y) < 1.99/ℓ certified by `verify_core.mjs`, replayed: 1.98999). Both reduce the disjoint core to K-a, hence
-  K_{10⁻⁵} on the disjoint core.
-- **Arbitrary sharing, orthogonality only** [P, C]: Λ(q + (T−1)U) ≤ B₀ + 0.38968u − 0.12432w (manuscript
-  thm:shared-a-audit, B₀ = 2E|L|) and, tonight, Λ ≤ B₀ + 0.11u − 0.32w + 5.25w² (third GPT; shape inequality
-  cx + bx³ ≥ cM(x) + B(c)N(x)x², remainder through E|U|⁴ only), refined with a free θ to the universal cutoff
-  **w ≥ 0.01125 ⇒ K_{10⁻⁴}** (u ≤ 0.0463). The uncovered set for K_{10⁻⁴} is therefore
-  **R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463}** (curved boundary u ≤ (0.0020476 + η + 0.32w − 5.25w²)/0.11).
-- **Buffered coverage** [P, C] (manuscript ch55): if the remote part is q + gW with a genuine cubic q of energy ≤ 0.0064
-  and a diffuse buffer g ≥ 0.185 (the optimum has g = σ* ≈ 0.2), every shared A and B shell is covered at all amplitudes.
-  This is a statement about the family q + gW (an exact Gaussian buffer), not a bound on the fourth excess of a general
-  cubic (normalised sums of cubics keep u and have δ → 0); the near-Gaussian regime δ/u² ≤ 0.05 is covered instead by
-  the manuscript's K_η proof (x ≤ 0.22). So the open set in the fourth-excess coordinate is 0.05 < δ/u² ≤ 42.
-- **Zero-buffer A cost** [C]: Λ(q + (T−1)U) ≤ Λ(q) + 2Re⟨U, F_A(q)⟩ − κw with F_A(q) = E_{z₁}[(T−1)ph(L+q)],
-  κ = 0.19 for ‖U‖ ≤ 1/16 (manuscript ch46), extended tonight to ‖U‖ ≤ 0.15 at the three rows (thread 2, `verify_shared`)
-  and to **κ = 0.24 for w ≤ 0.0113** (`verify_content_extension`), full box: cost ≤ K(p)ρ²ℓ, K ≤ 1.045, ρ = √w/ℓ ≤ 0.197.
-  Hence on R the conjecture follows from the **content inequality**
-      C(q)² := ‖Π₁,₀F_A(q)‖² ≤ 0.24·D(q),   D(q) = S − Λ(q) (or the same-norm deficit B(u) − F(q) ≤ D(q)),
-  and more precisely from the joint majorant D(q) ≥ Ψ(C(q)), Ψ(C) = C²/0.24 for C ≤ 0.24r₀, 2r₀C − 0.24r₀² beyond,
-  r₀ = √0.0113.
-- **Proved on R for the two templates** q = cX(|X|²−2), q = cX(|Y|²−1), any phase, any U (two independent certificates:
-  thread 1 `verify-content.mjs`, ratios 0.138/0.135 on the box, 0.103/0.055 at the rows; thread 2 `verify_shared.mjs`,
-  constant 0.19 − 3e-6 and the direct F(q + (T−1)U) ≤ B(u+w) − 10⁻⁶ℓ): **K with η = 0 for these families on R**.
-  Also closed: c = 0, P =_d −P, R independent (content 0 by symmetry) ⇒ exact K for 1/24000 ≤ w ≤ 0.0113.
-- **Tensor inequalities** for the leading term T(q) = Π₁,₀(q|q|²): ‖T(q)‖² ≤ (3√6/4)δ^{3/2}, δ = E|q|⁴ − 2u² [P]
-  (improves 3.674); ≤ 0.481δ^{3/2} on the one-driver Hermitian family [C]; lower bound 0.4808 (explicit tensor; our
-  earlier 0.4775 was at n = 2; the constant grows with n, ≥ 0.509 at n = 6). Content expansion: Π₁,₀F_A(sq) =
-  (s³D₁/16)T(q) + O(s⁵), D₁ = 34.55; full quartic coefficient of F(sG) − M(s²v) known (thread 1, R4).
-- **Nonlinear content and deficit at every amplitude** (fresh thread, 5 Nov; verifier `chatgpt-fresh-verify_nonlinear_
-  content.mjs`, replayed): (a) |C_X(q)|² ≤ 50κ^{3/2} for every cubic, every dimension and amplitude, with no Taylor
-  remainder. Proof: real projection (C_X = (π/2)E[X̄m(η)], m(t) = E[(T−1)sgn(Re L + t)], η = Re q), the exact
-  integration-by-parts identity E[ξm(η)] = E[m‴(η)P_h] with P_h = 27ΣB_{ij}I₂(f_i)I₂(f_j) + 54I₂(f_d) (E|P_h| ≤
-  54(1+√2)r^{3/2}, δ ≥ 1296r²), and |m‴| ≤ m‴(0) = 2D₁/π because the (T−1)-weighted projection density has a
-  nonpositive Fourier transform (the projection densities are completely monotone in t², the manuscript's CM A-profile).
-  It covers the fifth-order example q₀ since the weight m‴(η) is not constant. (b) The remote deficit has the exact
-  representation D(q) = −3Σ_{j=2,4}E[V_jVK_j(η)], V = ‖Dη‖²/3 − v = V₂ + V₄ (its second- and fourth-chaos parts,
-  δ = (9/2)α² + 9β²), K_j double OU-resolvents of Φ⁽⁴⁾; with the global sixth derivative Φ⁽⁶⁾(0) = 2740.8 it gives
-  D(q) ≥ (267/320 − (61875/128)u)κ, positive only for u < 0.0017. Certified consequence: **the content inequality with
-  0.19 holds for every cubic with u ≤ 19/50000 = 0.00038** (with constant 1 for u ≤ 0.001). On the templates the true
-  ratio D/κ is 0.78–0.81 at u = 2·10⁻⁴ and still 0.134/0.232 at u = 0.0463 (exact quadrature), so the whole loss is the
-  global-derivative step; since Φ⁽⁴⁾ and m‴ are Gaussian mixtures in x², both (a) and (b) can be made scale-dependent
-  (positive mixtures over λ of E[−V_jVe^{−λη²}] and E[P_he^{−λη²}]), which is the requested next step.
-- **Gaussian-factor class, covariance-sensitive theorem** (fresh thread, 5 Nov ≈10:40, constants verified): for
-  q = ΣX_jP_j(Y) (P_j centred, any dependence), with Σ = E[PP*], ρ = ‖Σ‖_op: cc* ⪯ (2𝓐′(0)²/Q(0))D(q)Σ, so
-  C(q)² ≤ (56/5)ρD(q); hence the content inequality with 0.19 for ρ ≤ 0.01696 and, with the 0.24 cost, **K on R for this
-  class whenever ρ ≤ 3/140 = 0.0214** (e.g. Σ = (u/3)I₃ at every u ≤ 0.0463). Tools: −g completely monotone for
-  F_A(y) = yg(|y|²), the derivative-ratio lemma 𝓐′(v) ≤ (𝓐′(0)/Q(0))Q(v) (single crossing), and exact Bernstein
-  representations D(q) = ∫[E e^{−t|q|²} − 1/(1+ut)]ω(dt), C_X(q) = −∫E[X̄qe^{−t|q|²}]ν(dt) valid for every cubic.
-  Gap inside the class: ρ ∈ (0.0214, u] with m ≥ 2 drivers (two equal drivers at u = 0.0463 have ρ = 0.0232); the
-  templates (ρ = u) are certified separately. Not covered: self-interaction cX(|X|²−2), added R(Y), general tensors.
-- **Hermitian one-driver family closed on R at the three rows** (5 Nov ≈11:20): q = e^{iθ}X(Y*AY − tr A) for ANY
-  Hermitian A, 0.00551 ≤ u ≤ 0.0463: ‖Π₁,₀F_A(q)‖² ≤ 0.236364(B(u) − F(q)), hence with the 0.24 cost
-  Λ(q+(T−1)U) ≤ B(u) − pu − (303/20000)Δ ≤ S for w ≤ 0.0113. Method: F(q) = EB(P²), content = ½|E[PJ(P²)]|,
-  weighted Cauchy–Schwarz against the Bregman deficit d_u, the coupled moment inequality EP⁶ ≤ (125/3)uEP⁴ − 110u³
-  for centred Hermitian quadratic forms, and a certified polynomial envelope of R_u(y) (43k/18k/4k rational boxes).
-  No Schur-convexity needed. Verified by quadrature (tight at u = 0.0463, y ≈ 1). Remaining one-driver pieces:
-  non-Hermitian A, the self-interaction cX(|X|²−2) + XP(Y), the shells X̄B, (|X|²−1)V, X²W̄, and an added R(Y).
-- **Exact remainder-free representations** (fresh thread): with −g completely monotone, C_X(q) = ∫E[X̄q(1 − e^{−t|q|²})]ν(dt)
-  (using E[X̄q] = 0) and D(q) = ∫[E e^{−t|q|²} − 1/(1+ut)]ω(dt); the content can be negative (λ = (1,1,−2): f_P(x) − f_P(−x)
-  changes sign once, so E[Pg(tP²)] < 0), and the X̄Y² shell contributes 8α|β|² to the leading tensor.
-- **Limits of the fourth-moment routes** (third GPT): universal cutoff w ≥ 0.011223 and no further (closed envelope in
-  (u,w) with the fourth moment eliminated misses (0.0463, 0.01125) by 10⁻⁵; the conditional-energy envelope cannot
-  improve the full-height strip); new exact inequality 4m₂₂ + 2n₂₂ ≥ 4uw + 10c₁₃²/w².
-- **Why no leading-order proof exists**: (a) the leading content/slack ratio 8D₁²v/(21|D₀|) for the Wick monomial allows
-  only v ≤ 0.0112 at the peak even with an optimal tensor constant; (b) q₀ = X[−½(|X|²−2) + Σ₄(|Y_j|²−1)] has T(q₀) = 0
-  but E[X̄q₀|q₀|⁴] = −243 with g₂ < 0, so its content is positive at order λ⁵ [C]; (c) Taylor remainders reach only
-  λ ≈ 0.006–0.008 (needed: amplitudes up to 0.26); (d) the content inequality for ALL cubics is proved only for
-  u ≤ 3·10⁻⁵ (box) / 2.9·10⁻⁴ (rows) via cumulant-sensitive remainders. **The lemma is a finite-amplitude statement.**
-- **What any proof must use**: the Gaussian-marginal obstruction (manuscript ch35; sharpened tonight: H = (1/5)X sgn(R−d*),
-  U = X/50, E[HŪ] = 0, Gaussian law, Λ = 1.37417 > the whole 1.402 allowance 1.374054, 44 % of its energy outside H₂,₁)
-  shows that law-only information, orthogonality and all proportional Rice cuts admit a violator; a proof must use the
-  joint Wick structure (E‖Dq‖² = 3u, the resolvent identity E[Ȳ((3N−p)Ψ)(q)] = 3E[ȲR_Ψ], the first-chaos coefficient
-  E[z̄_jF_A(q)] = E[(g + sg′)∂_jq + q²g′∂_jq̄]). On the response side the constraint that rejects the obstruction is
-  the joint budget eq:jrb-main together with the exact cubic projection consistency Q_X k̄ = pq.
-- Exact bookkeeping for one driver [P]: q = cX(|X|²−2) + XP(Y) + X̄B(Y) + (|X|²−1)V(Y) + X²W̄(Y) + R(Y), with exact
-  reductions F, C and F(q + (T−1)dX) through 𝓜(r, a₀, b) = E_{θ,φ}|re^{iφ} + a₀ + be^{iθ}| for the subfamily
-  cX(|X|²−2) + XP + R; matrix formulas T(q) = (32a³ + 4ap + 2at + 4ζ)X, δ = 168a⁴ + … for P = Y*AY − tr A.
-
-### 3.5 Numerical state of the content lemma (my scan, 5 Nov 12:30–15:50; two bugs found and fixed: a kernel sign error, and g(0) = 0 instead of −0.835 in the table, the latter spotted by the Hermitian thread)
-`e11_scan_majorant.py` / `e11_scan_opt.py` (peak row; φ(v) = 2E|L+√v| and the A-profile g, F_A(y) = yg(|y|²),
-g(0) = ½E[(T−1)/r(T)] = −0.835, −g completely monotone, tabulated by quadrature through the angular means; F(q),
-D(q) = B(u) − F(q) and C(q)² = Σ_{all remote directions}|E[d̄F_A(q)]|² by Monte Carlo with 3·10⁶ common samples; check:
-H₁ at u = 0.0463 gives C² = 1.06·10⁻³, ratio 0.0884, matching thread 1's quadrature 0.0876):
-- **D(q) > 0 for every cubic tested** (PVD never failed): D/δ ∈ [0.13, 0.36] at u = 0.0463, [0.23, 0.50] at 0.02,
-  [0.42, 0.68] at 0.0055.
-- **Worst C(q)²/D(q) = 0.0891 at u = 0.0463, 0.0708 at 0.02, 0.0406 at 0.0055**, attained by the single Wick monomial
-  X(|X|²−2) along its own driver (the remote monomial Y(|Y|²−2) gives the same along Y; the thread's smooth kernel gives
-  0.0389 at 0.00551); twelve random ten-shell mixtures and a 12-shell hill-climb (0.0308 / 0.0507 / 0.0504 / 0.0839 at
-  u = 0.0055 / 0.01 / 0.02 / 0.0463) stay below it at every energy; the zero-tensor q₀, the non-normal Ȳ₀Y₁ form and the
-  shells X̄Y², X²Ȳ have negligible content (ratios ≤ 10⁻⁴); the aligned shell (|X|²−1)Y behaves like the template H₂.
-- Hence the content inequality with 0.24 holds everywhere tested with margin ≥ 2.7, the ratio increases with the
-  energy, and **the worst case on the rectangle is the known template at the top energy** (certified ≤ 0.103 there).
-  The leading-order ratio 8D₁²u/(21|D₀|) = 0.78 at u = 0.0463 overestimates the truth by 9×: the content saturates
-  (|F_A| ≤ 1) while the deficit keeps growing.
-- Implications for the proof: (i) the extremal direction for "content per deficit" is the self-interaction
-  X(|X|²−2), i.e. maximal fourth excess; a proof that the ratio is monotone in the kurtosis in a suitable sense (or a
-  finite-amplitude envelope with the Wick monomial as the extreme case) would settle the lemma with a 2.7× margin;
-  (ii) general mixtures are far from tight (≤ 0.081, mostly ≤ 0.04), so coarse rigorous enclosures of the exact
-  one-driver reductions have room; (iii) the fourth-excess coordinate is the right one: the worst mixtures have the
-  largest δ/u².
-
-### 3.6 Summary table
-
-| class of G | status | source |
+| family | constant κ | status |
 |---|---|---|
-| vanishes at z₁ = 0 (Z-shells, dZ(T−2), no q) | same-norm, all amplitudes [P] | Theorem A |
-| conditionally Gaussian given z₁, profile s + u(T−1)² + bT + cT² | same-norm [P,C] | Theorem B, polar:main |
-| remote q alone (K-a) | η ≤ 10⁻⁵ certified; exact for mixtures, ℂ², star | manuscript |
-| q + (T−1)U, disjoint drivers | reduced to K-a, all amplitudes [P,C] | threads 1 and 2 |
-| q + (T−1)U, any sharing, w ≥ 0.01125 or u ≤ 0.00551 + 0.319w | K_{10⁻⁴} [P,C] | audit + third GPT |
-| q + gW + shells, genuine energy ≤ 0.0064, g ≥ 0.185 | all amplitudes [P,C] | ch55 |
-| the two templates on R, any phase, any U | exact K [C] ×2 | verifiers |
-| arbitrary cubic, u ≤ 0.00038 (0.19) / u ≤ 0.001 (constant 1) | content inequality [P,C] | fresh thread |
-| Gaussian-factor q = ΣX_jP_j(Y), ‖E[PP*]‖_op ≤ 3/140, w ≤ 0.0113 | exact K [P,C] | fresh thread |
-| Hermitian one-driver family q = X(Y*AY − tr A), any Hermitian A, 0.00551 ≤ u ≤ 0.0463, w ≤ 0.0113 | exact K at the three rows [P,C] (content ≤ 0.2364·deficit; moment inequality EP⁶ ≤ (125/3)uEP⁴ − 110u³) | ChatGPT 5 Nov |
-| one-driver shell XP(Y), **any complex** coefficient matrix A, 0.00551 ≤ u ≤ 0.0463, three rows | **certified** (Arb + rationals, 0.239; replayed green by the user 5 Nov) | R23, `ai-notes/r23_r25_certificate/` |
-| one-driver shell XP(Y), any complex A, same range: constant improved to **11/50 = 0.22** by a reweighted Cauchy–Schwarz (affine weight, no pseudovariance) | **certified** (12,346 rectangles, 441 nodes at 160 bits; replayed green by the user 6 Nov) | `ai-notes/r26_reweighted/` |
-| **Gaussian-factor class q = ΣX_jP_j(Y), any number of drivers, any complex coefficient matrices, no covariance restriction**, 0.00551 ≤ u ≤ 0.0463, three rows | **certified** (vector quadratic-form moment inequality + R23 kernels, 0.239; analytic part verified, replayed green by the user 5 Nov) | Hermitian thread, `ai-notes/gaussian_factor_content/` |
-| self-interaction family cX(\|X\|²−2) + XP(Y): remote domination F(q) ≤ B(u) − \|c\|²𝓚(u), all amplitudes | **proved** (size-biased Bregman identity) | R24 |
-| self-interaction family X[c(\|X\|²−2) + P(Y)], ANY centred P, **p = E\|P\|² ≤ u/16**, 0.03 ≤ u ≤ 0.0463, three rows | **certified** (49/211 < 0.24; perturbation from the monomial; replayed green by the user 5 Nov) | Hermitian thread, `ai-notes/wick_endpoint_extension/` |
-| self-interaction family X[c(\|X\|²−2) + P(Y)], ANY centred P, **p ≤ u/5**, 0.00551 ≤ u ≤ 0.0463, three rows | **certified** (9/40 = 0.225; sharper perturbation bounds; replayed green by the user 5 Nov) | Hermitian thread, `ai-notes/wick_r26_twenty_percent/` |
-| **self-interaction family with real c and Hermitian A, EVERY share, 0.03 ≤ u ≤ 0.0463, three rows** | **certified** (0.23 with reserve 1/40000; joint polynomial majorants of F + 2ℓ𝒞, 55,539 witnesses; quick replay green by the user 6 Nov) | Hermitian thread, `ai-notes/r26_self_interaction/` |
-| self-interaction family, middle region 1/16 ≤ 2\|c\|²/u ≤ 15/16, ANY centred P: C² ≤ 0.22·Δ via envelope (★) | tail proved; compact region numerically true (thread + my check, margin ≈ 0.4 % of H); interval certificate pending | `ai-notes/integrated_wick_envelope/` |
-| self-interaction family, small-Wick strip 2\|c\|²/u < 1/16 (c ≠ 0): shared-A content inequality | OPEN (bridge from the certified c = 0 end) | R24 |
-| **Envelope E′ (ratio ≤ 0.11 on R; exact extremality of the monomial false with certificate, excess ~10⁻⁴)** ⇒ K on R | numerically true with margin 2.7; to prove (THE WAY, §4) | my scan, Hermitian thread |
-| **arbitrary shared cubic on R** | **open: content lemma for 0.0064 ≲ u ≤ 0.0463** | — |
-| degree-5 analogue K₅ | false by ≈ 10⁻⁴ at flank rows | K5 + thread 2 R2 |
+| q = X·P, P any centred variable independent of X with the moment bounds of 6.3.1; every complex quadratic P(Y) | 0.22 | P + C (audit) · 6.3.3 |
+| Gaussian-factor class Σ_j X_jP_j(Y), any number of drivers and coefficient matrices | 0.239 | P + C (audit) · 6.3.4 |
+| Hermitian self-interaction e^{iα}X[c(\|X\|² − 2) + Y*AY − tr A], real c, Hermitian A, u ∈ [0.03, 0.0463] | 0.23 | implication P, certificate C conditional on saved scalar bounds · 6.3.5 |
+| Wick neighbourhood X[c(\|X\|² − 2) + P], P centred independent of X, E\|P\|² ≤ u/5 | 9/40 | implications P, numerical premises R · 6.3.6 |
+| **peak row only:** p + h with p, h ∈ H₂,₁, p of charge one under rotation of a specified coordinate block, h with no component of that character, D(p) > 0, C(p)² ≤ (9/40)D(p), ‖p + h‖² ≤ 0.0463 and ‖h‖² ≤ D(p)/90 | 6/25 | P + C · 6.3.9b |
 
-## 4. What is left
+The moment theorem behind the first row is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y*AY − tr A, any complex
+A, p = E|P|² [P + C · 6.3.1]. The self-interaction family has the deficit identity
+B(u) − F(q) = Ê d_{u,R}(|b|²) + |c|²𝓚(u) with 𝓚 > 0 [P · 6.3.7]. The families do not add up: the cross terms between
+shells survive phase averaging (q = X̄Y² + (|X|² − 1)Y has energy 3 and E[X̄q|q|²] = 6) [P + C · 6.3.8].
 
-**Current open set (5 Nov, 22:00).** K on the rectangle R = {w < 0.01122, 0.00551 + 0.319w < u ≤ 0.0463} for an
-arbitrary remote cubic q sharing drivers with the A-shell driver U, EXCEPT the classes now certified and replayed on
-this machine: the one-driver shell q = XP(Y) with any complex coefficient matrix (R23, 0.239); the whole Gaussian-factor
-class ΣX_jP_j(Y), any number of drivers, any complex coefficient matrices (three independent packagings, 0.239); the
-self-interaction family X[c(|X|²−2) + P(Y)] for ANY centred P when the Wick part carries ≥ 4/5 of the energy, on the
-full interval u ∈ [0.00551, 0.0463] (9/40; 22:30), and ≥ 15/16 on u ∈ [0.03, 0.0463] (49/211); the near-Gaussian part δ/u² ≤ 0.05 (manuscript K_η); all cubics with u ≤ 0.00038.
-What remains open, in order of maturity:
-(a) **the one-driver family with self-interaction**: real c + Hermitian A closed on u ∈ [0.03, 0.0463] (23:50, replayed);
-    any P with Wick share ≥ 4/5 closed on the full interval (9/40, replayed); what remains is NON-Hermitian P with
-    Wick share < 4/5 on [0.03, 0.0463] (middle region by (★), share between 1/16 and 4/5): the fixed
-    envelope (★) gives 0.22 for any centred P; its tail is proved and its compact part is numerically true with margin
-    0.38 % of H at the hard corner (u = 0.0463, share 15/16, z = 0), confirmed independently; needs an interval
-    certificate on (u, f, Re z, Im z);
-(b) **the small-Wick strip** (share < 1/16, c ≠ 0): the pointwise-deficit radial envelope is excluded by a certified barrier
-    (0.2468 at the pure-P end), but the reweighted candidate (†) (affine Cauchy–Schwarz weight, 10:30) is numerically
-    0.2306 ≤ 0.235 on the strip, four real parameters, tail proved, a neighbourhood of f = 0 proved; its compact
-    certificate is pending. The directional envelope (0.2393) is NOT a fallback any more: a certified eight-atom witness
-    (u = 0.0463, c = 10⁻⁵, τ = 0.825) forces its cap above 0.2405 (11:30), so (†) or a direct perturbation from f = 0 are
-    the only routes;
-(d) **the mixed shells** X̄B, (|X|²−1)V, X²W̄, R₀ through their cross terms (exact bookkeeping R25; nothing certified);
-(e) several drivers with self-interaction (expected to follow the one-driver pattern driver by driver).
-Numerically the worst ratio on R is ≈ 0.0876 at the top energy, near the Wick monomial (a saddle, exceeded by
-1.3·10⁻⁴ by an imaginary quadratic perturbation; certified), against the needed 0.24; the refined residual target with
-benchmark slack removes the small-energy edge, so the hard range is u ∈ [0.03, 0.0463].
+**Open in L4:** the self-interaction family with non-Hermitian P and Wick share between 1/16 and 4/5, where an
+envelope giving 0.22 is true on grids [N · 6.3.13]; the small-Wick strip [6.3.14]; the same family for u < 0.03 with
+large P [6.3.15]; the mixed one-driver shells X̄B(Y), (|X|² − 1)V(Y), X²W̄(Y), R₀(Y) [6.3.16]; several
+self-interacting drivers [6.3.17]; and the **raw content inequality for an arbitrary cubic on R** [open · 6.3.18].
 
-**Original statement of the open set (5 Nov, 12:00), kept for the record.** K on the rectangle R = {w < 0.01122, 0.00551 + 0.319w < u ≤ 0.0463} for an
-arbitrary remote cubic q sharing drivers with the A-shell driver U, with fourth excess δ/u² ∈ (0.05, 42] (the near-
-Gaussian part δ/u² ≤ 0.05 is covered by the manuscript's K_η proof, the templates, the Hermitian one-driver family and
-the spread Gaussian-factor class are covered by certificates, the disjoint case reduces to K-a). The universal
-fourth-moment routes (shape inequality with the free parameter θ, the conditional-energy version) are provably
-exhausted at w ≈ 0.0112: they miss the corner (0.0463, 0.01125) by 10⁻⁵ with the sixth-moment remainder consuming
-the gain. The remaining tool is the content lemma below, attacked family by family through exact one-driver
-reductions, or in general through the scale representations.
+**What a proof must use.** At the peak, Q = √u₀·X·exp(2πi·F₂(|X|²)) with F₂(r) = 1 − (r + 1)e^{−r} and
+u₀ = 403448/10⁷ has exactly the law of √u₀·W, is orthogonal to the whole remote first chaos and has the matched
+conditional covariance; yet G = Q − (i/1250)(T − 1)X has Λ(G) > S + 7·10⁻⁷, numerically Λ(G) − S ≈ 1.12·10⁻⁵
+[P + C, N · codex-a7c4, re-derived and replayed by claude-b9ee · 6.5.1].
+Q is not a cubic (E‖DQ‖² = u₀(1 + 64π²/81) > 3u₀), so K is not refuted, but the law of the residual, orthogonality
+and radial tests cannot suffice: the Wick structure (E‖Dq‖² = 3u, the resolvent identity) must enter.
 
-The single open statement, in its sharpest form (peak row, then the two other rows):
+**Numerically** the supremum of C²/D at u = 0.0463 is about 0.0876 in every dimension tested (n ≤ 10), against the
+proved family constants 0.22 to 0.239 [N · STATUS §9]. The best known value is the two-variable tensor
+X[(|X|² − 2) + z(|Y|² − 1)], z = 0.0528 + 0.2212i, at 0.08760259435; the Wick monomial (0.0875653) is a saddle, not the
+maximiser [N · 6.4.2; chapter 4, item 20].
 
-    For every remote cubic q with 0.00551 < ‖q‖² ≤ 0.0463, fourth excess δ/u² > 0.05 and every unit remote linear form X,
-        C_X(q)² = |E[X̄(T−1)ph(L+q)]|² ≤ 0.24·(B(u) − F(q)),
-    (sufficient, not necessary). The sharp consequence of the quadratic shell-cost bound, maximised over ‖U‖ ≤ r, is the
-    WEAKER refined target (a thread, 5 Nov, verified §16 of the assessment):
-        S − Λ(q) + 10⁻⁴ ≥ Ψ_{r(u)}(C(q)),  Ψ_r(C) = C²/κ (C ≤ κr), 2rC − κr² (C > κr),  r(u)² = min{0.01125, (u−0.00551)/0.319},
-    where S − Λ(q) = [B(u) − F(q)] + [S − (B(u) − pu)] includes the nonnegative benchmark slack. Along the monomial the
-    required ratio Ψ/(D + slack) is 0.043 at u = 0.0056 (slack ≫ D, r(u) → 0), 0.26 at 0.02, 0.35 at 0.0403–0.0463: the
-    small-energy edge is removed from the problem and the hard end is u ∈ [0.03, 0.0463] with margin ≈ 2.9.
+### 2.6 The A-sector of the retained functional: the tilted lemma
 
-Known exact tools for it (all [P], 5 Nov): C_X(q) = (π/2)E[X̄m(η)] = (π/(2√2))E[m‴(η)P_h]; D(q) = EΦ(√vN) − EΦ(η) =
-−3Σ_{j=2,4}E[V_jVK_j(η)]; the first-chaos coefficient E[z̄_jF_A(q)] = E[(g+sg′)∂_jq + q²g′∂_jq̄]; the zero-buffer A cost
-with κ = 0.24 for w ≤ 0.0113; the full real-projection remainder formula (24) of the shared-driver note; the
-complete-monotone (Gaussian-mixture) structure of all visible kernels. The two certified finite-amplitude methods
-(outward enclosures of the one-driver reductions) are the only ones that have reached u = 0.0463 so far.
+Fix the tilt s = 3/5 and put A = T − 2/5, P = p − 9/25 = 0.962052, k = P − 13/20 = 59009/189100 = 0.31205 and
 
-**What the scan changes (5 Nov 13:40).** The lemma is tightest at the top energy and for the pure Wick monomial
-(ratio 0.088 vs 0.24); every mixture tested is below it. So the natural theorem is an envelope statement: among cubics of
-energy u the content per deficit is at most a constant times the monomial's (the monomial itself is a saddle, exceeded
-by 1.3·10⁻⁴ relative; see THE WAY). The certified ingredients for a direct proof
-exist for the one-driver family (exact reductions, weighted Cauchy–Schwarz against the Bregman deficit, the coupled
-moment inequality); for general tensors the missing piece is a deficit lower bound at finite amplitude (true value
-D/δ ≥ 0.13 at u = 0.0463) together with the remainder-free content representation C_X(q) = ∫E[X̄q(1−e^{−t|q|²})]ν(dt).
+    𝒥(q, r) = 2E|L + q + A·r| − P‖r‖² − F(q).
 
-### THE WAY: the Wick-monomial extremal principle
+By the tilt (1.6), Λ̂(q + (T − 1)r) ≤ Λ(q) + 𝒥(q, r): 𝒥 is the gain of the tilted A-sector over the remote base q. The
+proof of the lemma below has three steps.
 
-**Conjecture E (extremality of the self-interaction monomial).** At each row and each energy u ∈ [0.00551, 0.0463],
-among all remote cubics q with ‖q‖² = u and every unit remote direction X,
+**Step 1: a global remainder bound.** With f(w, ρ) = E_{z₁}|L + w + (T − 2/5)ρ| for complex w and ρ,
 
-    C_X(q)² / D(q)  ≤  C_X(q_W)² / D(q_W),     q_W = √(u/2)·X(|X|²−2)   (the pure Wick monomial along X),
+    Rem(w, ρ) := 2[f(w, ρ) − f(w, 0) − ⟨∇_ρf(w, 0), ρ⟩] ≤ (13/20)·|ρ|²    for all w, ρ ∈ ℂ.
 
-and the right side is increasing in u (0.039–0.041 at 0.0055, 0.071 at 0.02, 0.089 at 0.0463 at the peak row; certified
-upper bound 0.103 at 0.0463). Since 0.103 < 0.24, Conjecture E plus the certified shell cost closes K on the whole
-rectangle at once, with a factor 2.3 of room.
+[P + C · codex-6e2b; four regions re-derived and the whole verifier replayed by claude-b9ee, interval code not
+audited line by line · 11.39] Small ρ goes through a curvature certificate [P + C · 11.33], large ρ and large |w|
+through explicit bounds, and the compact rest through joint convexity of f and multilinear interpolation on 102,104
+boxes. The numerical supremum is 0.5997, so 13/20 leaves a margin of 0.05.
 
-**Update 16:55/18:30: the exact form of E is FALSE, now with a rigorous certificate from the Hermitian thread, replayed green by the user (second variation in (0.00140, 0.00198) > 1/1000 by Arb enclosures, explicit cubic with τ = 1/10000; `ai-notes/progress_2026-11-05/`), confirmed by my deterministic quadrature: q_τ = √(u/(2+τ²))·X[(|X|²−2) + iτ(|Y|²−1)] has second variation +1.65·10⁻³·τ² at u = 0.0463, maximum near τ ≈ 0.1 with relative excess 1.3·10⁻⁴; `e11_second_variation.py`). The Hermitian thread found that a small imaginary Hermitian
-perturbation X[(|X|²−2) + iλP(Y)] raises the ratio slightly (it is preparing a rigorous certificate); my common-random-
-number check sees the ratio flat to 10⁻⁵ under such perturbations and decreasing under real ones, so the monomial is a
-saddle point, exceeded by a relative margin of order 10⁻⁴. The statement to prove is therefore the
-envelope **E′: sup_{‖q‖²=u} C_X(q)²/D(q) ≤ 0.11 on R** (monomial 0.089 plus room), not exact extremality; the plan below
-is unchanged, with "monomial = maximiser" read as "monomial = near-maximiser".
+**Step 2: the gain is bounded by the content, at every amplitude.** For every remote cubic q and remote linear r, with
+C = ‖c_{3/5}(q)‖ and σ = ‖r‖,
 
-**Status of E: a conjecture supported by scans (22 structured cubics per energy, a 12-shell hill-climb), not a theorem;
-the scan code had two bugs on 5 Nov, so the evidence is only as good as its latest replay.** E is also stronger than
-needed: the goal is only an upper envelope C_X(q)² ≤ 0.24·D(q) on R; exact extremality of the monomial is the natural
-mechanism, not a requirement, so any proof that bounds the ratio by a constant < 0.24 (e.g. by the monomial's certified
-0.103 plus a loss factor ≤ 2.3 for the cross terms) serves the same purpose.
+    𝒥(q, r) ≤ 2Cσ − kσ² ≤ C²/k.
 
-Why this is the right statement: the content C_X(q) = E[X̄q g(|q|²)] = E[X̄q(g(|q|²) − g(u))] is driven by the
-dependence between the direction X and the modulus |q|; it is largest when all the energy of q sits in the one
-self-interacting shell, where |q|² = (u/2)|X|²(|X|²−2)² is a deterministic function of |X|, the fourth excess is
-maximal (δ/u² = 42) and the content is a pure function of the driver. Every mechanism that spreads q over other
-coordinates (the Gaussian-factor class, the Hermitian forms, the remote part R, the shells X̄B, X²W̄) lowers the content
-faster than the deficit: in the Gaussian-factor class the content is bounded by ‖E[PP*]‖_op·D (covariance-sensitive
-theorem), in the Hermitian family by 0.236·D with the equality direction being the single eigenvalue (the moment
-inequality EP⁶ ≤ (125/3)uEP⁴ − 110u³ is sharp exactly there), the zero-tensor and non-normal examples have no content
-at all, and the numerical maximiser over twelve shells carries 54–90 % monomial weight.
+*Proof.* Apply step 1 at w = q(y), ρ = r(y) and integrate over the remote variables. The linear term is
+2Re E[conj(r)·q·(g + (3/5)j)(|q|²)], and since r lies in the first chaos and Π₁q = 0 it equals 2Re⟨r, c_{3/5}(q)⟩, at
+most 2Cσ. Complete the square. ∎ [P · 11.40] No bound on ‖r‖, no localisation of a maximiser and no Gaussian tail
+are needed, and q and r may share coordinates.
 
-**Plan of proof of E′ (what to do, in order).**
-1. **Reduce to one driver.** The exact bookkeeping is done (R25): with q = cX(R−2) + XP + X̄B + (R−1)V + X²W̄ + R₀ and
-   R = |X|², the cubic content coefficient E_θ[X̄q²q̄] = √r{a_r(|a_r|²+2|b_r|²+2|d_r|²+2|e_r|²) + e_r²b̄_r + 2b_rd_rē_r +
-   2e_rd_rā_r} lists every cross term, and the counterexample X̄Y² + (|X|²−1)Y with E[X̄q²q̄] = 6 shows that phase
-   averaging alone cannot remove the other shells. What must be proved: the cross terms of X̄B, (R−1)V, X²W̄, R₀ raise
-   the content-per-deficit ratio by at most the room available (0.24/0.0876 = 2.7). Tool: the remainder-free content
-   representation C_X(q) = ∫E[X̄q(1−e^{−t|q|²})]ν(dt) with the Gaussian weight expanded around the one-driver part, and
-   the deficit identity through V₂, V₄.
-2. **Certify the one-driver family X[c(R−2) + P(Y)], any complex P** (contains the monomial, the saddle direction and
-   both templates). DONE for c = 0: R23 certifies C² ≤ 0.239·D for XP(Y) with any complex coefficient matrix on R at the
-   three rows (replayed green). For c ≠ 0 (R26, requested): R24 gives the size-biased decomposition B(u) − F(q) =
-   Ê d_{u,R}(|b_R|²) + |c|²𝓚(u) (remote domination proved) and the exact content 𝓒 = cuJ′(u)/2 + Ê{b_R[g(R|b_R|²) −
-   g(Ru)]}; under the size bias b_R is the quadratic form diag(c,c,A), so R23's moment constraints (E|P|⁶ ≤ 6u³ + 9u|ζ|²
-   + (25u + (50/3)|ζ|)κ, verified) transfer; the Gamma weight must be kept (worst-case radius loses too much). Expected
-   constant ≈ 0.09–0.11 at u = 0.0463. PARTIAL (19:20): the neighbourhood p ≤ u/16 of the monomial is certified with
-   49/211 for ANY centred P on u ∈ [0.03, 0.0463] by perturbation (C ≤ C₀ + 4p, Δ ≥ Δ₀ − 7up/2, C₀² ≤ 0.11Δ₀, Δ₀ ≥ 4u₀²);
-   the Hessian step loses ≈ 20× on the content, so the remaining region p > u/16 needs the size-biased argument.
-   EXTENDED (22:30): p ≤ u/5 certified with 9/40 on the full interval 0.00551 ≤ u ≤ 0.0463 (C ≤ C₀ + p/(2a²),
-   Δ ≥ Δ₀ − vp; my check: 4–7× slack in the content step, deficit bound trivially true).
-   REDUCTION ESTABLISHED (20:00, verified): with H_{c,u}(z) = B(u) − B₀ − I_c(z) + B′(u)(|z|²−p) + 2uB″(u)Re(c̄z) ≥ |c|²𝓚(u)
-   > 0 pointwise and E H(P) = Δ, and T_c(z) the radius-integrated content, C(q)² ≤ Δ·E[|N(P)|²/H(P)] for N = T_c − λz −
-   μz̄ − ν(|z|²−p); numerically this weighted Cauchy–Schwarz is lossless to 0.02 on the family (bounds 0.076–0.087 vs true
-   0.045–0.087). What is left is a polynomial envelope |N(z)|² ≤ H(z)·Q(|z|²) uniform in the phase of z, fed by the R23
-   moment inequality, with Q's expectation ≤ 0.24: the same machinery that produced 0.239 for the pure-P family.
-   Sharper proved form (20:30): the directional matrix bound C(q)² ≤ max_{‖h‖=1}(|hᵀa₀| + √(𝓔 hᵀMh))² (= inf_{s>0}
-   λ_max((1+s)a₀a₀ᵀ + (1+1/s)𝓔M), exact duality 23:00, so a scalar s and 2×2 principal minors certify it without a grid in h) with a₀ the Wick
-   content αc, 𝓔 the size-biased Bregman part of the deficit and M the controlled covariance of the P-content; the
-   certificate target is this ≤ 0.24(𝓔 + |c|²𝓚(u)). Caveats recorded: the content is not analytic in p at the pure-P end
-   (𝒞 = J′(0)p^{3/2} + …), and the two endpoints are not interchangeable.
-   CANDIDATE (21:00): the fixed affine envelope (★) |T_c(z) − λ(u)z|² ≤ H_{c,u}(z)(9/100 + (13/100)|z|²/p) gives
-   C² ≤ 0.22·Δ for EVERY centred P with finite variance on 1/16 ≤ 2|c|²/u ≤ 15/16; its tail |z| ≥ 4 is proved, its
-   compact part is confirmed numerically by the thread and independently by me with corrected kernels (worst margin
-   0.38 % of H at u = 0.0463, f = 15/16, z = 0; 0.75 % at f = 1/16); tail now proved for |z| ≥ 2 (11:30). To do: interval certificate of (★) on (u, f, Re z, Im z) with |z| ≤ 4; the small-Wick strip
-   f < 1/16 (bridge to R23); f > 15/16 below u = 0.03.
-   OBSTRUCTION (21:40, certified): on the small-Wick strip a purely radial envelope with only the two R23 radial moment
-   constraints cannot reach 0.24 (a three-point law gives 0.2468 at the pure-P end); the directional constraint of R23
-   (E[Re(e^{−iθ}P)²] ≤ (1+τ)p/2) must be kept, and the directional envelope N_θ²/H ≤ Q + γRe(e^{−iθ}z)²/p then gives
-   0.2393 numerically at p/u = 0.999: feasible but tight. Kernel constant corrected: 𝓚(0.0463) = 0.16678 (peak row).
-3. **Several Gaussian drivers.** DONE (18:10): the Gaussian-factor class q = ΣX_jP_j(Y) is certified with 0.239 for any
-   number of drivers and any complex coefficient matrices (vector quadratic-form moment inequality EV³ ≤ ((25u+100ρ)/3)EV²
-   − (22/3)u³ − 44u tr M² − (176/3)tr M³, R23 kernels; replayed green). Every cubic of the Gaussian-factor form ΣX_jP_j(Y) (drivers entering linearly with coefficients
-   independent of them) is closed; the other shells X̄B, (|X|²−1)V, X²W̄, R₀ are NOT covered (step 1); self-interaction in several drivers
-   then follows the R26 pattern driver by driver (the content along X_j only sees c_j and P_j after conditioning).
-4. **Endgame (conditional on steps 1–3, none of which is complete).** Steps 1–3, once proved, give E′ (ratio ≤ 0.11 < 0.24 on R); with the certified shell cost κ = 0.24 for w ≤ 0.0113,
-   the universal cutoff w ≥ 0.011223 and the disjoint theorem, this proves K_η (η ≤ 10⁻⁴) on the three rows, hence
-   1.402 through §5. (Monotonicity of the ratio toward the monomial, the former step 3, is FALSE: the saddle.)
+**Step 3: the tilted content against the deficit.** First, energy-dependent coefficients: ‖c_{3/5}(q)‖² ≤ γ·δ for
+every u in [e, 0.0463] and every χ, with
 
-Fallbacks if E′ resists in general: prove it on the one-driver family only (step 2 gives that) and treat the
-multi-driver remainder by the covariance-sensitive theorem (ρ ≤ 0.0214) plus the response-side restriction K′, which
-forces the surviving maximizers into w < 0.00708 where the universal bound has more room.
+| from e = | 9/1000 | 3/250 | 3/200 | 9/500 | 1/50 | 1/40 | 3/100 | 7/200 | 1/25 | 11/250 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| γ | 251/5000 | 121/2500 | 467/10000 | 451/10000 | 441/10000 | 1859/43200 | 3/80 | 71/2000 | 17/500 | 13/400 |
 
-Routes, in order of promise (older list, kept for reference):
-1. **Numerical scan first** (cheap, decisive): C(q)²/D(q) over random one-driver cubics in ℂ²…ℂ⁵ at u ∈ [0.0064, 0.0463]
-   (exact 2-D quadrature through the one-driver reductions). If the worst ratio is well below 0.24, the lemma is the
-   right target; if some direction approaches 0.24, that direction is where K is tight (and K′'s −‖Pk‖² may be needed).
-2. **Extremal reduction over the one-driver family** (caution, 5 Nov: the X̄B(Y) shell does contribute to the content
-   along X, e.g. q = αX(|X|²−2) + βX̄Y² has leading coefficient 32α|α|² + 8α|β|², and Schur-convexity in the spectrum
-   of P is false in general, so the reduction must keep all six shells): Schur-convexity/majorisation in the spectrum of P = Y*AY − tr A
-   so that the certified templates plus the equal-eigenvalue families cover all Hermitian A; then the extra shells
-   X̄B, X²W̄ (harmless after averaging the phase of X?) and (|X|²−1)V (the A-shell with respect to X).
-3. **Scale-dependent nonlinear bounds** (the fresh thread's route without its Taylor step): write K_j(x) = ∫e^{−λx²}dμ_j(λ)
-   and m‴ likewise, bound E[−V_jVe^{−λη²}] and E[P_he^{−λη²}] at each λ through the product formula and the Gaussian
-   weight, and integrate; target functions c(u) ≥ 0.13 and c′(u) ≪ 50 on u ≤ 0.0463 such that 50-style arithmetic gives
-   C² ≤ 0.19D. This is the first route that treats arbitrary tensors at finite amplitude.
-4. **General tensors through the fixed-chaos structure**: both sides as functionals of q through the signed densities of
-   Re L (weighted by T−1 for C, unweighted for D), a weighted Cauchy–Schwarz that is an equality in the Gaussian case,
-   cross terms by the resolvent identity; the fifth-order example q₀ is the test case.
-5. **Response side (K′)**: the exact cubic projection consistency with the joint budget rejects the obstruction; on
-   admissible responses the surviving pure shared-A maximizers need η_AB/p < w < 0.00708 (third GPT with K_rot). A
-   proof on admissible responses only is enough for 1.402.
-6. **Alternative for the project**: the conditional Lean theorem "K_η ⇒ K_G^ℂ > 1.4022" (the user: "at the end"), with K
-   as an explicit hypothesis on the three rows; it isolates exactly what the above lemma would discharge.
+[P + C · codex-6e2b; re-derived and replayed by claude-b9ee and a reviewer agent · 11.49] The bound comes from a
+shifted Gaussian resolvent and a scalar function k_u solving (5/3 − (u/2)∂² + x∂)k_u = m″, enclosed by rational
+barriers. Uniform bounds hold as well: ‖c_{3/5}(q)‖² ≤ min{(2/25)δ, (19321/10⁶)u} and ‖c_{3/5}(q)‖ ≤ 1/50 for
+u ≤ 0.0463 [P + C · 11.30]. Then the comparison:
 
-## 4b. The full chain from the certificates to 1.402, layer by layer (5 Nov 23:30, careful assessment)
+    ‖c_{3/5}(q)‖² ≤ (3/10)·D₊(q) + 6·10⁻⁶     for every remote cubic q with u ≤ 0.0463, in every dimension.
 
-K_η must hold for EVERY G ∈ H₂,₁, not only for the core q + (T−1)U. Reading §3 and the manuscript digest together, the
-chain to 1.402 has six layers; the content lemma is only one of them.
+[P + C · codex-6e2b; re-derived by a reviewer agent of claude-b9ee, replayed in two runs, interval code not audited ·
+11.50] An exact union of 178 rectangles covers (u, χ) ∈ [0, 0.0463] × [0, 42]: on low energies by global Hermite
+moment caps of h(v) = 2E|L + √v|, above u = 2/125 by 119 global spectral Stein duals; the benchmark B is bounded below
+by chords and every budget is a polynomial in (u, √χ) with exact Bernstein coefficients. No sign of D is assumed, and
+the certificate needs no partly unreviewed content bound [C · 11.52]. Its margins are thin in places (4.3·10⁻⁷ in one
+box), so it rests on the interval code.
 
-| layer | statement | status | who / how |
+**The lemma, and the retained A-core.** Steps 2 and 3 give, for every remote cubic q with u ≤ 0.0463 and every remote
+linear form r, in every dimension,
+
+    2E|L + q + (T − 2/5)r| − (p − 9/25)‖r‖² ≤ 2E|L + q| + κ·D₊(q) + η,
+    κ = 56730/59009 ≈ 0.9614,   η = 5673/295045000 ≈ 1.92·10⁻⁵,
+
+and therefore
+
+    Λ̂(q + (T − 1)r) < S + 5778430967237/295045000000000000 < S + 2·10⁻⁵.
+
+*Proof of the second line.* By the tilt, Λ̂(q + (T − 1)r) ≤ Λ(q) + κD₊(q) + η. If D(q) ≥ 0 this is
+B(u) − pu − (1 − κ)D(q) + η ≤ S + η. If D(q) < 0 it is Λ(q) + η < 1.373953883 + η by the remote cap of 2.1. ∎ With D₊
+in the lemma the remote error is not attenuated by 1 − κ (chapter 4, item 87). [lemma P + C · codex-6e2b, reviewed by
+claude-b9ee; consequence P + C · claude-b9ee, and independently codex-a7c4 · 11.51]
+
+For u ≤ 0.021 a separate certificate gives more, Λ̂(q + (T − 1)r) < S − 69/25000000, strictly below S
+[P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 11.47]. Two subclasses, 0.03 ≤ u ≤ 0.0463 with
+χ ≤ 7/100, and χ ≤ 1/4, have their own certificates, independent of step 3: the first reviewed [P + C · 11.46], the
+second by its author [P author only + C · 11.48], so that the class χ ≤ 1/4 is P + C as a special case of the lemma.
+
+**Around the peak.** With λ = ε/(1891/2500), ε ∈ [0.74, 0.76], 0 ≤ a/λ − 0.5592 ≤ 1/2500 and
+0 ≤ b/λ − 0.1432 ≤ 1/800,
+
+    Λ̂(q + (T − 1)r) < S + 9.79·10⁻⁵    for every remote cubic with u ≤ λ²·0.0463 and every remote linear r,
+
+using the weighted scaling of 1.6 with the cost k_λ = 59009/189100 − (λ − 1)·9/25. The exact budget is
+9.7888442057·10⁻⁵: a profile loss of 7.8·10⁻⁵, η, and the 3.6·10⁻⁷ between the remote cap and a lower bound of S; at the peak it
+reproduces the lemma's budget within 3·10⁻⁹ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee; it inherits
+step 3 · 11.53]. The flank and upper rows are outside this rectangle.
+
+This closes the A-shell of Λ̂ at the peak row, at every amplitude. It does not touch the B-shell, the odd sectors, the
+other rows, or K itself: for Λ (the tilt s = 0) the remainder and content steps are unproved; numerically the global
+remainder margin at s = 0 is 0.320, against 0.362 at s = 3/5 (STATUS 11.37).
+
+Supporting results of the same chain: the circular-mean bound E_θ|1 + te^{iθ}| ≤ 1 + (3/10)t² [P + C · 11.25]; the
+global bound 𝒥(q, r) ≤ (1074/625)u − (859/2500)‖r‖² for every remote cubic q and remote linear form r, whose proof
+uses only that q and r are square integrable, independent of z₁ and orthogonal [P + C · 11.26]; a
+structural bound ‖Π₁[q·h(|q|²)]‖² ≤ (3/4)δ·E m_h(|q|²) for every remote cubic q and every real profile h such that
+Φ(x) = x·h(|x|²) and its first two derivatives grow at most polynomially [P · 11.29]; a zero-content class
+(q = Σ a_{ij,k}X_iX_j·conj(Y_k) over independent blocks has Π₁[F(q)] = 0 for every F) [P · 11.31]; and a conditional
+remainder bound with a Gaussian tail for sectors that only have a restricted Hessian bound [P · 11.32].
+
+### 2.7 The B-sector
+
+**Cost.** For every remote q and remote linear r, at every amplitude and with any sharing,
+
+    Λ(q + z₁²·conj(r)/√2) ≤ Λ(q) + 2Re E[conj(r)·F_B(q)] − κ_B‖r‖²,   κ_B = 13/50, 29/100, 3/10
+
+at the peak, flank and upper rows [P + C · audit · 7.1.1]. The base must be remote: the cost does not hold at every
+even L² base, in particular not at q + (T − 1)r_A (chapter 4, item 39).
+
+**Content.** The B shell has first-order content: for H = X(|X|² − 2), E[X̄H] = 0 but E[X̄H|H|²] = 32, so a small B
+shell of the right phase raises Λ [P · 7.1.2]. At the peak its content is aligned with the A-content:
+
+    |g_B(v) − 0.5053·g(v)| < 0.007 for every v ≥ 0,   hence   ‖c_B − 0.5053·c_A‖ ≤ 0.007·√u
+
+for every remote q ∈ L² in every dimension [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.1.4]. So
+B-content reduces to A-content; for the Gaussian-factor class C_B² ≤ (239/2000)·D [R · 7.1.3]; for general cubics it
+is open [7.1.5].
+
+### 2.8 The joint A/B form
+
+**At q = 0.** With H = (T − 1)r_A + z₁²·conj(r_B)/√2, Λ(sH) = 2E|L| − s²Q₀ + o(s²) with
+
+    Q₀ ≥ 0.24‖r_A‖² + 0.26‖r_B‖² + 0.236·Re E[r_A·conj(r_B)] + 0.08(‖r_A‖² + ‖r_B‖²)
+
+at the three rows, for arbitrary jointly distributed remote r_A, r_B [P + C · codex-a7c4, re-derived and replayed by
+claude-b9ee · 7.3.1]. The sharp least local eigenvalues are 0.298364651634117… (peak), 0.32315284787… (flank) and
+0.32771589719… (upper), each attained along a genuine cubic Gaussian-driver direction [P author only, C, N ·
+codex-a7c4, replayed and recomputed to 40 digits by claude-b9ee · 7.4.9]; along
+(r_A, r_B) ∝ (1, −1/5) the peak value is 0.298526… [P + C · 7.4.8]. So no global common A/B cost can exceed these
+numbers.
+
+**At every remote base, infinitesimally.** −½·(second derivative of Λ along the A/B direction) ≥
+0.241‖r_A‖² + 0.261‖r_B‖² + 0.236·Re E[r_A·conj(r_B)] at every remote q, every dimension and sharing [reduction and
+tail P + C, compact part R · audit · 7.3.2]. This cannot be integrated along q + s(A + B), whose intermediate bases are
+not remote (route 40 of the ledger).
+
+**The missing statement.** Put V = L + q and R(V, h) = 2(|V + h| − |V| − Re(h·conj(ph V))). For every dimension,
+every q ∈ H₂,₁ with 0.00551 ≤ ‖q‖² ≤ 0.0463 and arbitrary remote r_A, r_B with squared norms at most 0.0113:
+
+    E R(V, h) ≤ (p − 0.24)‖r_A‖² + (p − 0.26)‖r_B‖² + 0.236·‖r_A‖‖r_B‖
+
+(or the signed form with −0.236·Re E[r_A·conj(r_B)]) [open · 7.4]. It does not follow from the two axis costs
+(chapter 4, item 43). It reduces to a compact box: with r_x(α, β) = E_{z₁}R(L + x, (T − 1)α + z₁²·conj(β)/√2), it is
+enough that r_x(α, β) ≤ Q(α, β) − η(|α|² + |β|²) for 0 ≤ x ≤ 29/10 and |α|, |β| ≤ 0.4, with reserve η = 7.53·10⁻⁵
+(robust Q) or 8.07·10⁻⁵ (signed Q); for |x| ≥ 29/10 the tail holds at every amplitude with reserve 0.007
+[P + C · codex-a713 and codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.5].
+
+**What content constant it would need.** For a positive-definite cost matrix [[k_A, m], [m, k_B]] the optimised gain
+is ‖c‖²/k_A + ‖d − (m/k_A)c‖²/(k_B − m²/k_A) [P · 7.4.1]. With the alignment of 2.7: a favourable signed m = 0.118
+and content constant 0.24 leave an excess below 5.2·10⁻⁵; an adverse cross term at most 0.118 needs the constant 0.10
+(excess ≤ 7.2·10⁻⁵) [P, C · 7.4.2]. These are conditional on the joint bound.
+
+### 2.9 The odd sectors
+
+**Zero core.** For O = z₁Q + z̄₁P + d·z₁(T − 2) with Q, P remote L² variables (EQ = 0), v = E|Q|² + E|P|²,
+h = 2|d|²:
+
+    Λ(O) ≤ Λ(0) − k₁·v − k₃·h,   (k₁, k₃) = (0.128, 0.330), (0.156, 0.356), (0.166, 0.361)
+
+at the peak, flank and upper rows, at every amplitude [P + C · 5.4]. The displayed values are rounded safe lower
+bounds of the coefficients k₁ = p − J₁ and k₃ = p − (J₃ − 4J₂ + 4J₁)/2 (the flank k₃ is 0.35662424897376…). These
+unrounded coefficients are sharp on the Q- and d-axes, and they are row-specific: at (0.76, 0.76, 0.16) the cubic (i/100)Z(|Y|² − 1) raises Λ above Λ(0) [P + C · 5.4a]. The pure P
+axis has cost at least 0.41 on the whole box, and Λ̂ = Λ there [P + C · 5.4b]; the retained functional keeps the Q
+cost and improves k₃ [P + C · 5.4c].
+
+**One coordinate (n = 1).** On the whole box Λ(d·z₁(T − 2)) ≤ 2E|L| − k_*‖d·z₁(T − 2)‖² with the sharp uniform cost
+k_* = 0.151676198434561…, so sup Λ on H₂,₁(ℂ) is 2E|L|, attained only at G = 0 [P author only + C · 2.6]; for Λ̂ the
+sharp cost is 0.392424545003417… [P + C · 2.6a].
+
+**Nonzero core.** By parity (1.7) there is no first-order term and no coupling to the even block; what is needed is a
+uniform pure cost Λ(H + O) ≤ Λ(H) − κ_E‖O‖² over genuine even cubic cores H at the required rows [open · 7.2.4]. Within
+the odd block, z₁Q and the normalised one-coordinate cubic ν·z₁(T − 2)/√2 interact at a remote base q through
+
+    K = Re ν·E[Re Q·A(|q|)] + Im ν·E[Im Q·B(|q|)],
+
+with two distinct radial kernels A and B (the mixed second derivative is 2K). Both terms vanish at q = 0, because
+A(0) = 0 and EQ = 0, but not in general: at q = 0.001·X(|Y|² − 1) the directions (Q, ν) = (|Y|² − 1, 1) and
+(i(|Y|² − 1), i) give K < −8·10⁻⁶ and K > 4·10⁻⁶ (numerically −9.32·10⁻⁶ and 4.66·10⁻⁶, also by mixed finite
+differences) [P + C, N · codex-a7c4, re-derived and replayed by claude-b9ee · 7.2.5]. A
+directional majorant (|X + Y| + |X − Y|)² ≤ 4M − 4c²/M, M = |X|² + |Y|², c = Re(XȲ), is available [P · 7.2.2]. At
+one explicit core H and for one specified odd direction O it gives Λ(H + τO) ≤ Λ(H) − 0.063‖τO‖² for
+0.03 ≤ |τ| ≤ 0.04 only [analytic reduction P, interval integration R · 7.2.3]; numerically the cost is 0.79 to 1.32
+per unit energy on nine cores [N].
+
+### 2.10 Response domains and the central consumer
+
+Only G that come from actual responses enter the row. At ε = 1891/2500, for t ≥ 0.84 the remote energy of a response
+is below 0.046266 and its total energy below 0.081884; the total is below 0.071981 for t ≥ 0.8456 and below 0.062431
+for t ≥ 0.851 [P + C · codex-a7c4, re-derived by claude-b9ee · 2.12a]. Without a threshold in t no such cap holds
+(chapter 4, item 69). The October manuscript has 25 further response constraints [R · 2.12]. These cuts apply to
+responses only: inserting them inside a supremum over all G is invalid, and two penalties that spend the same square
+cannot be added.
+
+**Central component.** At the single peak row, an all-sector bound Λ ≤ S + η (for Λ or Λ̂) with η ≤ 10⁻⁴ covers
+t ∈ [0.84, 0.851] with cap margin above 6.12·10⁻⁷ below 500/701; separately, the largest admissible allowance there is
+η_max = 166713115892493/1656988750000000000 = 0.0001006120988404375…, with no reserve [P + C · 8.1]. The premise is
+the open all-sector bound; a remote-only cap does not replace it.
+
+The rest of the consumer is not built: an exact cover of t and of the rows; the σ* = 0 corner if the cover uses it;
+interval upper bounds for S at each row; coverage of the energies outside R and of every omitted response region; an
+error ledger with exact thresholds; a single witness operator behind rows with different ε. No Lean statement of a
+K-consumer exists [open · STATUS §8].
+
+## 3. What is open, in priority order
+
+1. **The joint A/B remainder bound at finite amplitude** (2.8), first at the peak row. Enough: the compact box
+   0 ≤ x ≤ 29/10, |α|, |β| ≤ 0.4 with reserve 7.53·10⁻⁵ (robust) or 8.07·10⁻⁵ (signed). Alternative: a global
+   pointwise cost m for A and B together. Any such m lies below 0.29836…, the local value at the origin, attained
+   along a genuine cubic direction (2.8), so a candidate such as 0.29 must be tested away from the origin before any
+   certificate. With such an m the A + B gain is a quadratic form in the contents at every amplitude, as step 2 of
+   2.6 is for the tilted A-sector.
+   *Gives:* the A + B core of K from content bounds.
+2. **The raw L4 content inequality** for general cubics on 0.00551 ≤ u ≤ 0.0463, with the constant fixed by item 1
+   (0.10 under the adverse joint hypothesis). Pieces: the mixed shells, several self-interacting drivers, the
+   envelopes on the self-interaction family. A candidate method is that of step 3 of 2.6: energy-dependent
+   δ-coefficients against moment caps and Stein duals in (u, χ). *Gives:* the A-core of K, and with item 1 the
+   A + B core.
+3. **B-content for general cubics.** The peak alignment reduces it to A-content. *Gives:* the B-sector with its cost.
+4. **The odd sectors over a nonzero core**: a uniform pure cost over genuine even cubic cores. Numerically z₁Q and
+   z̄₁P keep a pointwise cost of about 0.128 jointly with A and B, while d·z₁(T − 2) needs an argument after
+   integration, because its pointwise cross term with z₁Q has the wrong sign; such an argument must keep both coupling
+   channels of 2.9, which centring removes only at the zero core. *Gives:* L5 together with items 1–3.
+5. **The remote part at the other rows**: certificates for the row envelope beyond the tube and the rectangle around
+   the peak; the flank and upper rows are outside both. *Gives:* L1 for the consumer's rows.
+6. **The response regions outside R and the consumer**: cover the complementary t regions with a fixed ε, using the
+   t-dependent energy caps, and state the consumer in Lean. *Gives:* 1.402 from K_η.
+7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
+   Left: A and B jointly with the tilted A direction (on the grid the tilted pointwise remainder bound has margin
+   0.252 at the tilt (0.6, 0)), then both contents budgeted with the full cost matrix; a B-content bound for the
+   tilted profile; the odd sectors; the other rows, through the weighted scaling of 1.6; more than three remote
+   variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).
+8. **The identity-tail witness** raises the model ceiling to 1.40248 and is untested at certificate level.
+
+The independent audit advises treating this as a bounded research programme with an explicit decision point, not as a
+near-complete route to an additional 0.0005.
+
+## 4. Statements known to be false
+
+Each is false as stated; none is a counterexample to K. The numbers are the labels of the ledger (`STATUS.md`,
+section 13), where every source is listed.
+
+**Strengthenings and reformulations of K**
+
+- **1. K for every profile.** False for profiles with ℓ − 2β of order 10⁻¹⁰ at tiny norms; no violation on the box
+  [R].
+- **4. Fibrewise domination at a fixed shift, E|r + q| ≤ E|r + ‖q‖W|.** False for r ≥ 2.5 (+2.2·10⁻³ at r = 2.5): K is
+  an averaged statement in the visible variable [R].
+- **5. Single-scale strengthenings** (heat kernel, Laplace transform, characteristic function, convex order).
+  E e^{−30|H|²} < 1/31 for H = z[(|z|² − 2) + i(|w|² − 1)]/√3 [R].
+- **6. Monotonicity along the CLT.** G = c·z₁(|z₂|² − 1) gains 4.9·10⁻⁴ at c = 0.15 [N].
+- **78. SEI is preserved by adding any independent symmetric unimodal variable.** X₁ = Z₁Z₂Z₃/3 is SEI, X₁ + U with U
+  uniform on [−1, 1] is not (gap ≥ 91/18000). Valid closures: independent Gaussian addition, or two SEI summands with
+  symmetric unimodal densities [P + C].
+- **80. The diffuse Gaussian attains the cubic supremum in each fixed dimension.** At n = 1 the peak supremum is
+  B₀ < S [P].
+- **12.3. The degree-5 analogue K₅ holds at its flank rows.** One spike gives +1.55·10⁻⁵ at t ∈ [0.86, 0.88] [N].
+
+**Remote part and domination**
+
+- **68. A remote cap gives D(q) ≥ −η_R.** It gives D(q) ≥ −[S − (B(u) − pu)] − η_R only [P].
+- **87. A gain bound in terms of D₊ attenuates the remote error by 1 − κ.** That attenuation needs the signed D; with
+  D₊ the error is η_R + η (2.6) [P + C].
+- **84. A nonlinear function of a remote cubic is orthogonal to the first chaos because the cubic is.**
+  q = cX(|Y|² − 1) has a nonzero first-chaos phase content; the diffuse benchmark of Λ̂ needs the estimate of 1.6
+  [P + C].
+- **85. The retained functional scales like the raw one.** The multiplier cost carries a weight λ, and the unweighted
+  law fails strictly on q = cX(|Y|² − 1) [P + C].
+- **66, 67. Redistribution 4.1 and Theorem B without independence from z₁.** H = −L·1{T ≥ 10} with U = sW, and
+  𝓕 = σ(z₁) with G = (a/2)W·1{T ≤ 1/100}, break them [P, author only].
+- **11. Replacing a shared (T − 1)U by an independent Gaussian of equal variance does not lower Λ.** The shared version
+  is larger by up to 1.96·10⁻² [R].
+- **10. Λ is concave in the conditional covariance.** Largest Hessian eigenvalue +1.3 to +2.9 [N].
+
+**Content**
+
+- **20. The Wick monomial maximises C²/D.** The imaginary direction X[(|X|² − 2) + iτ(|Y|² − 1)] increases the ratio
+  at u = 0.0463; the monomial is a saddle [P, C; sign inputs R].
+- **26. Content or deficit is Schur-convex in the spectrum of a Hermitian form.** (2, −1, −1) ≺ (2, 0, −2), yet the
+  leading tensors are 576 and 0 [R].
+- **27. Phase averaging removes the shells X̄B, X²W̄.** Cross terms survive [P + C].
+- **28. Centring and conditional Gaussianity give the constant 0.24 without the chaos moment inequality.** Two-point
+  laws reach 0.2646 [R].
+- **88. Shared-A domination holds for any residual with Gaussian law, orthogonal to the first chaos, with the matched
+  covariance.** The non-cubic witness of 2.5 gives Λ(G) > S + 7·10⁻⁷; arguments through the law alone cannot prove
+  K [P + C].
+- **45. ‖Π(q·h)‖ ≤ E[|q|h(|q|²)].** Invalid for Gaussian linear forms; the L² contraction is the valid step [P].
+- **74. Character exclusions alone give the weighted bound of the neighbourhood lemma.** Fails for non-cubic L²
+  functions; the lemma needs p, h ∈ H₂,₁ [P, author only].
+
+**Sectors and assembly**
+
+- **36. Every sector other than A is pure cost.** B has first-order content (2.7) [P].
+- **37. The odd sectors have content of order u.** They have no first-order term (1.7) [P].
+- **39. The B-cost holds at every even L² base, so at q + (T − 1)r_A.** Cusp at H = L·sign(Re z₁); a loss of 0.07 on
+  both diagonals breaks the 5.5·10⁻⁵ budget [P; package counterexamples R].
+- **43. Separate A and B axis costs imply a joint cost.** The quadratic 2c_Aa + 2c_Bb − 0.24a² − 0.26b² + 0.40ab
+  satisfies both axis costs, the content constant 0.10, exact alignment and both amplitude caps, and exceeds the
+  deficit by 3.3·10⁻⁴ [P].
+- **7.4.4. A positive mixed coefficient makes the cross term nonnegative.** Not for arbitrary relative phases [P].
+- **81. The raw joint A/B form has a global cost 0.300.** Its local cost at the peak is 0.29836… [P + C].
+- **44. g_B/g ∈ [0.505, 0.56] at the three rows.** False at the flank and upper rows [R]; at the peak the alignment
+  of 2.7 holds.
+- **72. The Schur-complement formula with an indefinite cost matrix.** k_A = k_B = 1, m = 2 gives 0 for an unbounded
+  gain [P].
+- **77. The pointwise remainder of K over all five sectors has nonnegative cost.** Constant coefficients
+  (k_Q, k_P, ν) = (i, 0, −i) give local cost below −3/8 [P + C]. Constant Q is not a centred quadratic: the
+  integrated zero-core theorem 5.4 stands.
+- **70. The odd sectors never raise Λ over the zero core on the whole box; the flank d-cost is 0.36.** The corner
+  cubic (i/100)Z(|Y|² − 1) at (0.76, 0.76, 0.16) raises Λ, and (i/100)Z(T − 2) at the flank violates the cost 0.36
+  [P + C].
+- **73. Retaining the first-chaos correction restores full-box odd nonincrease.** The corner cubic of item 70 raises Λ̂
+  as well [P + C]. The flank example concerns Λ only: the retained flank d-cost exceeds 0.525048300689048 per unit
+  cubic energy.
+- **71. Parity implies differentiability at every even L² base.** H = L·sign(Re z₁) has a cusp along Z(T − 2) [P].
+- **38. Over a nonzero core the odd sectors obey the inverse-norm condition E[|O|²/|L + H|] ≤ (1/ε − κ_E)‖O‖².** Fails
+  even with κ_E = 0 at an explicit core [R].
+- **86. Over a nonzero core the Q/ν coupling has one Hermitian radial kernel.** It has two channels, with opposite
+  signs on a genuine cubic witness (2.9) [P + C].
+- **19. The local matrix of the retained functional (tied multiplier) plus I/10 is a global majorant.** Violated by
+  more than 97/1000 at an explicit point [R].
+- **47–49. Decoupling, (EC)/(PH)/(PG) and a uniform fibre bound for the even sectors.** False by up to 5.7·10⁻³, or
+  with eigenvalues 1.3395 and 1.7095 above p [N, R].
+- **50. Subtracting the first-chaos penalty at the unpenalised best response bounds the retained supremum.** The
+  maximisers readjust; the valid object is the dual Λ̂ [N].
+- **11.6. A weighted cubic contraction is nonnegative.** q = X[5(|X|² − 2) + 6i(|Y|² − 1)]/√86 makes it below −1/50
+  [R].
+
+**Response side**
+
+- **69. The total response energy is below 0.072.** It needs t ≥ 0.8456; at t ≥ 0.84 the cap is 0.081884, and a
+  response at t = 0 has energy above 0.09 [P + C].
+
+The ledger lists the remaining items (2, 3, 7, 8, 46, 59) and, in its section 14, the routes that do not work: the
+fourth-moment envelopes (saturated at w ≈ 0.0112), leading-order and Taylor control of the content (finite amplitude
+is essential), buffer insertion by Jensen, proofs from the law of the residual alone, the fixed moment bank for the
+augmented remote certificate, Cauchy–Schwarz through the law of |q|² alone, and others.
+
+## 5. Numerical evidence
+
+All numbers here are floating point at the peak row (**N**). A search gives lower bounds on a supremum, not upper
+bounds; each table names its limits.
+
+**No violation of K.** Exhaustive searches over H₂,₁(ℂ²) and H₂,₁(ℂ³) with a diffuse part, scale mixtures, full
+tensors in dimensions 3 to 5 at the three rows (every candidate below S on 2·10⁷ fresh samples), and all six sectors
+over H₂,₁(ℂ²) with 18 shells [2.3].
+
+**The content ratio C²/D of K** (supremum over remote cubics of energy u):
+
+| source | u = 0.02 | u = 0.03 | u = 0.0463 |
 |---|---|---|---|
-| L1 remote part | K-a: Λ(q) ≤ S + 10⁻⁵ for every remote cubic | certified in the project (Lean/native) | done |
-| L2 core, disjoint drivers | q + (T−1)U with U independent of q, reduced to K-a | proved twice [P,C] | done |
-| L3 core, shared drivers, outside R | w ≥ 0.011223 or u ≤ 0.00551 + 0.319w | proved [P,C] (fourth-moment routes, saturated) | done |
-| L4 core on R: content lemma C(q)² ≤ 0.24·D(q) | one-driver XP(Y) any A; Gaussian-factor class; self-interaction with Wick share ≥ 4/5 | certified, replayed | threads + me |
-| | self-interaction with real c and Hermitian A, every share, u ≥ 0.03 | certified (0.23), replayed | Hermitian thread |
-| | self-interaction with NON-Hermitian P, Wick share 1/16–4/5 (envelope (★), 0.22) | numerically true (margin ≥ 0.75 % of H after the 9/40 theorem); interval certificate pending | Hermitian thread (Arb) |
-| | self-interaction, Wick share < 1/16 (directional envelope) | numerically feasible, tight (0.2393); certificate pending | Hermitian thread |
-| | mixed one-driver shells X̄B, (R−1)V, X²W̄, R₀ with self-interaction; several self-interacting drivers | OPEN; exact cross-term bookkeeping (R25) only; numerically ratios ≤ 0.084 (hill-climb) | nobody yet |
-| L5 sector assembly: general G = q + A + B + Z-shells + d | even block (q, A, B) + odd block (Q, P, d), exactly decoupled at first and second order | **OPEN**: Theorem A needs q = 0; Theorem B needs Gaussian drivers; B-sector COST now certified at every amplitude (κ_B = 0.26/0.29/0.30, 6 Nov 11:10; `ai-notes/b_shell_global_cost/`), B-content CERTIFIED for the whole Gaussian-factor class (0.1195, 13:10) and reduced to a kernel comparison in general (C_B ≈ C_A/2, §30); local B-cost 0.35 certified; the B-only core q + B is closed for that class at every amplitude; the joint A/B form: if the mixed term has the positive sign uniformly (as at q = 0) the aligned contents (c_B ≈ 0.5c_A) make the existing A constant 0.24 sufficient, Λ ≤ S + 5.5·10⁻⁵ (§33 of the assessment); otherwise sharper A constants are needed; my scan (§31, corrected): the EVEN sectors are pure cost at the amplitudes tested and the hill-climb never leaves the core, but the B sector has first-order content (Λ increases for a small B shell of the right phase), so B must be handled by cost + content like A; the B-only core q + B closes conditionally on the kernel comparison (Λ ≤ S + 1.15·10⁻⁵); even sectors have no first-order coupling to q but no theorem covers them with q ≠ 0 | scan done (`e11_ksector.py`, 12:30): supports it for the even sectors; NOT for B at small amplitude (first-order content), see §31 correction |
-| L6 row uniformity and consumption | K_η on the row ENVELOPE (t ∈ [0.84, 0.851], profile uniformity, the v* = 0 corner), then the Lean theorem lower_of_K with the scalar integrals as native facts | not started (digest §2: "additional obligations"); Lean side planned "at the end" | project |
+| independent audit, n = 2…6, 50 starts, holdout validation | 0.0691 | 0.0785 | 0.087602 (n = 2) … 0.087492 (n = 6) |
+| best structured tensor (feasible in every n ≥ 2) | 0.06914308 | 0.07857990 | 0.08760259 |
+| Monte Carlo scan, n = 2…10 | ≈ 0.070 | ≈ 0.080 | 0.0828 to 0.0892, ±0.0003 to ±0.0011 (values above 0.0876 lie within their error bars and carry a selection bias; the first two rows are the reference) |
+| Wick monomial | | | 0.0875653 |
 
-**Where the proof really stands.** L1–L3 are done. L4 is three certificates away for the one-driver family and then
-needs the mixed shells, for which no analytic tool beyond R25 exists yet; the numerics say the ratios there are small
-(≤ 0.084), so a coarse envelope should do, but someone has to write it. L5 is the layer the monograph had been
-glossing over: even with L4 complete, K for a general adversary with B, Z-shells and d present together with q and A
-is not a theorem. The manuscript's first-order margins (every sector costs at first order: 0.47–0.93 per unit mass for
-B, Y/W, νH) and the frequency rule (no coherent first-order coupling between q and the non-A sectors) make L5
-plausible, and the natural statements are: the even sectors are pure cost (adding ZQ, Z̄P or dZ(T−2) to q + A lowers Λ), and the B sector obeys a cost/content pair like A (its first-order content is ≈ C_A/2, so a small B shell can raise Λ: no monotonicity there). If
-my scan confirms it numerically with margin, L5 reduces to (i) a B-sector zero-buffer cost κ_B (same method as the
-certified κ = 0.24 for A, expected much larger since d_B ≈ 0.93) with a B-content lemma (B content is smaller than A
-content, measured first-order margin 0.294), and (ii) a Jensen/tangent argument for the even sectors in the presence of
-q (the step where Theorem A loses its q = 0 hypothesis: the tangent weight (1−t) against a remote part). L6 is
-engineering (weeks), but it is what makes K useful: the Lean theorem consuming K_η as a hypothesis should be written
-before K is finished, so that the day the last certificate lands the bound lands with it.
+No strict increase with n is resolved; the maximisers are 96 to 98 % Wick monomial plus an imaginary Hermitian
+X·P(Y) part. Against the content constants 0.10, 0.15, 0.24 the margins are 1.14, 1.71, 2.74 [7.4.6]. Untested:
+n > 10, large diffuse parts, the flank and upper rows [STATUS §9].
 
-**State of layer L5 on 6 Nov 13:40 (what moved today).**
-- B-shell cost: certified at every amplitude for arbitrary remote q and r (κ_B = 0.26 / 0.29 / 0.30 at the three rows;
-  local 0.35 for E|r_B|² ≤ 0.0113).
-- B-shell content: certified for the whole Gaussian-factor class (C_B² ≤ 0.1195·Δ; replayed green by the user); in general the B kernel is half the A
-  kernel (g_B/g ∈ [0.505, 0.56], monotone), giving the vector comparison ‖c_B − 0.5053·c_A‖ ≤ 0.007√u once two scalar
-  kernel bounds are certified. Hence the B-only core q + B is closed on every class with a certified A content.
-- Joint A + B (UPDATE 6 Nov, §44–§45): the near-exact mixed-coefficient route is FRAGILE and abandoned (an audit certified
-  that a 0.07 diagonal loss breaks the 5.5·10⁻⁵ conclusion and that the B-cost does not apply at z-dependent bases); the
-  robust path is to sharpen the A-content constants to ≤ 0.10–0.15 (task S1, `ai-notes/prompt-A-content-sharpening.txt`),
-  which closes the A+B core with the certified diagonal costs and no statement about the mixed term.
-- (History) Joint A + B: the mixed cost term is nonzero and has the POSITIVE sign at q = 0 (certified 16:10, replayed green by the user: Q₀ ≥ 0.24‖r_A‖² +
-  0.26‖r_B‖² + 0.236Re⟨r_A, r_B⟩ + 0.07(‖r_A‖² + ‖r_B‖²), m = 0.118 / 0.116 / 0.112 at the rows). The infinitesimal kernel bound at a general q has an exact pointwise 2×2 reduction (16:50), made singularity-free by
-  the push-forward coordinates y = L(z) (17:10) and certified on a first shift interval 0.099 ≤ |q(w)| ≤ 0.101; my evaluation (§41) shows the margin is smallest at
-  x = 0 and grows with the shift, and the ALL-SHIFT infinitesimal bound is now CERTIFIED for every remote base (18:10, replayed green:
-  −½Λ″ ≥ 0.241‖r_A‖² + 0.261‖r_B‖² + 0.236Re E[r_A r̄_B], any dimension and sharing, no energy cap on q). Finite amplitude:
-  the pointwise Hessian at intermediate bases fails the signed target for typical B amplitudes (|β| ≥ 0.1), so the
-  finite-amplitude form must be segment-weighted and Gaussian-averaged, or taken through the B-content Lipschitz bound. If it keeps that sign
-  uniformly in q, the alignment of the two contents makes the Schur complement tiny and the existing A constant 0.24
-  gives Λ(q + A + B) ≤ S + 5.5·10⁻⁵ on the certified classes; if the sign is not controlled, the A constants must be
-  sharpened to ≤ 0.19 (with the averaged κ_B ≈ 0.94) or ≤ 0.11 (with κ_B = 0.26). Target: certify the signed joint form.
-- z-odd sectors (zQ, z̄P, dz(T−2)): by the parity identity Λ(H + O) = Λ(H − O) they have NO first-order term and NO mixed
-  Hessian with the (q, A, B) block at any even base (14:10; my earlier "O(u) content" was wrong: it forgot the second norm
-  term). What remains is the pure-cost bound Λ(H + O) ≤ Λ(H) − κ_E‖O‖², sufficient: E[|O|²/|L+H|] ≤ (1/ε − κ_E)‖O‖² as a
-  restricted quadratic form uniform in H (same type as the certified B-cost); numerically κ_E ≥ 0.27 at amplitude 0.0113.
-  The inverse-norm sufficient condition (6) is RULED OUT at nonzero cores by a certified example (15:00: E[|O|²/|L+H|] >
-  2.714 > 2.644 = ‖O‖²/ε at u = 0.0462, w_A = w_B = 0.0112), while the true curvature there stays positive: my scan (§36) gives a true cost of 0.79–1.32 per unit
-  energy on every core tested against a form eigenvalue up to 1.49, so the E certificate must keep the directional
-  curvature. That route WORKS at finite amplitude (15:40): with the global majorant |X+Y| + |X−Y| − 2|X| ≤ 2(√(M − Re(XȲ)²/M)
-  − |X|), M = |X|² + |Y|² (no Taylor remainder), the pure cost is certified at the very core that defeated (6): Λ(H + τO) ≤
-  Λ(H) − 0.063‖τO‖² for 0.03 ≤ |τ| ≤ 0.04 (0.174 at |τ| = 0.04). Remaining: make it uniform over the core and the sectors (subproblem E2, `ai-notes/subproblem-E2-uniform-odd-cost.txt`:
-  nonincrease suffices since there is no first-order term; sufficient pointwise-in-w inequality (E2′) in 12 real parameters).
-  Over the ZERO core the pure cost is certified at every amplitude (14:30; replayed green by the user): k₁ = 0.128/0.156/0.166 for the Q and P sectors,
-  k₃ = 0.33/0.36/0.36 for the d sector; the nonzero-core form is the open part.
-  Caution kept: the B sector DOES have first-order content (it is z-even, like q and A), so it is not pure cost.
+**Sector gain against the deficit** (gain = supremum over the sector amplitudes of the functional at q + sectors minus
+Λ(q); for Λ̂ the retained element is optimised together with the sectors):
 
-**Plan (in order; what I do myself vs the threads).**
-1. (me, DONE 12:30, positive) Numerical test of L5: Λ for general G with all sectors, QMC in the remote variables, 10⁻⁵ accuracy;
-   worst core adversary plus each sector; hill-climb over all 18 shell coefficients; random mixtures. Outcome decides
-   whether L5 can be a monotonicity theorem.
-2. (threads) The two R26 certificates: (★) on Wick share ∈ [1/16, 4/5] (Arb, compact domain), the directional envelope
-   below 1/16 with s uniform per rectangle (duality lemma).
-3. (threads, then me) Mixed one-driver shells: an envelope on R25's exact cross terms; the numerics say the content of
-   the pure mixed shells is negligible and the cross terms lower the ratio, so a crude bound (Cauchy–Schwarz on each
-   cross term against the deficit) may suffice.
-4. (me) If step 1 is positive: formulate L5 as two lemmas (B-sector cost + content; even-sector Jensen with q ≠ 0),
-   write the exact one-variable reductions (the digest's ch29 form R_T = q + (T−1)r_A + (T/√2)r_B + √T(Y+W)) and hand
-   the scalar certificates to the Arb pipeline.
-4b. (threads) NEXT SUBPROBLEMS: E2, the uniform odd-sector cost via the directional majorant
-   (`ai-notes/subproblem-E2-uniform-odd-cost.txt`), and J2/J3, the finite-amplitude signed A/B cost (infinitesimal part certified 18:10; the finite-amplitude task
-   with its two admissible routes is `ai-notes/prompt-J3-finite-amplitude.txt`, 18:20); the earlier
-   statement `ai-notes/subproblem-even-sectors-and-joint.txt` is kept for the record.
-5. (project) L6: the conditional Lean theorem K_η ⇒ 1.402 (statement of K_η on the three rows as a hypothesis, the fibre
-   potential by interval integration, the envelope over t), started now in parallel so it is ready when 2–4 close.
+| tensors | sectors | K | Λ̂ |
+|---|---|---|---|
+| Wick monomial, u = 0.0463 | A | 0.1604 | 0.0170 |
+| Wick monomial, u = 0.0463 | A + B | 0.1653 | 0.0183 |
+| all of H₂,₁(ℂ²), u from 0.005 to 0.15 | A | up to 0.1609 | up to 0.0237 |
+| the same tensors | A + B | up to 0.1657 | up to 0.0241 |
+| all of H₂,₁(ℂ³), u = 0.02, 0.03, 0.0463 | A | 0.1611 | up to 0.0247 |
 
-## 5. How K is consumed (if proved)
-The certificate becomes: rows (ℓ, β) only; Φ₀(s) = E_z[|L+s| + |L−s|] by one-dimensional interval integration
-(a complete elliptic integral in s); the residual layer by the existing moment rectangles; the envelope over t.
-With K_η, η ≤ 10⁻⁴: B ≤ 0.713267 ⇒ 1.402. The realistic cap under K (`ka.py`, moment LP): 0.713160 at ε = 0.7564
-(1.40221). Lean plan: a theorem `lower_of_K : (∀ rows, KHyp ε ℓ β) → 1.4022 < K_G^ℂ` with `KHyp` the explicit
-inequality Λ(G) ≤ S + η quantified over G ∈ H₂,₁ (as a Prop over the measure space), its data the three rows, and the
-scalar integrations as native facts. Nothing of this is built yet.
+[11.15, 11.16, 11.20] The margin of gain ≤ D is about 6 for K and about 40 for Λ̂. The retained ratio grows slowly with
+the number of remote variables (0.017, 0.021, 0.023 at u = 0.0463 for one, two, three) and its limit is unknown. A
+fixed tilt does as well as the free multiplier: 0.0257 at s = 0.6 and 0.0237 at s = 0.7 over two-variable tensors
+[11.19]. The mechanism is a cancellation in the tilted content: the profile h_s changes sign for s between 0.58 and
+1.29, and on the Wick monomial the content at s = 0.6 is 0.36 times that at s = 0 [11.14].
 
-## 6. Literature pointers
+**The tilted content certificate against the truth.** The true coefficients behind 11.49 are 0.0468 down to 0.0321
+against the certified 0.0502 down to 0.0325; on 1,298 tensors of the Gaussian-to-monomial family and 288 random
+two-variable cubics the comparison of 11.50 holds with the largest C²/(0.3D) equal to 0.040 [11.49, 11.50]. On the
+Wick monomial D/δ falls from 0.73 at u = 0.0005 to 0.13 at u = 0.0463, which is why bounds through δ need
+energy-dependent coefficients [11.29].
 
-- Peccati, "Quantitative CLTs on a Gaussian space: a survey of recent developments", ESAIM Proc. Surveys 44 (2014)
-  61–78 (user, 5 Nov; `ESAIM_survey.pdf`): Stein–Malliavin bounds (d_TV ≤ 2E|1 − ⟨DF,−DL⁻¹F⟩|,
-  fourth-moment bound √((q−1)/(3q)(EF⁴−3)) in chaos q, optimal rate max{|EF³|, EF⁴−3}), second-order Poincaré,
-  Carbery–Wright small-ball bounds, entropic CLTs, the Stein-factor density formula. Background only: these are two-sided,
-  first-order distances (for a cubic chaos |D(q)| ≤ √(2δ/(9u)) ≈ 0.66 at u = 0.0463 vs the true D = 0.012), while the
-  content lemma needs the one-signed second-order deficit from below. Possibly useful later: Carbery–Wright for a
-  rigorous small-ball control of {|q|² < 0.002} in a finite-amplitude certificate; the Stein-factor density of the
-  quadratic coefficient P (already explicit for us).
-- Heilman–Jones–Malavolta (HJM), the cubic witness, gates and the row identity (`docs/`, manuscript ch2).
-- Janson, Gaussian Hilbert Spaces (chaos, Wick products, hypercontractivity; Cor. 15.101 for the third-chaos identity).
-- Nourdin–Peccati, Normal approximations with Malliavin calculus (Stein kernels, fourth-moment theorems, product formula,
-  κ₄ as a sum of squared contractions).
-- Nourdin–Peccati–Poly–Simone, arXiv:1407.6216, "Classical and free Fourth Moment Theorems: universality and
-  thresholds": fourth-moment theorem for homogeneous sums under minimal assumptions (E X⁴ ≥ 3). Relevant to the
-  near-Gaussian regime of K-a (our (ii): true when E|G|⁴/‖G‖⁴ − 2 ≤ 0.05) and to why the diffuse limit is the
-  benchmark; it does not give finite-amplitude content control, which is what the open lemma needs.
-- Schilling–Song–Vondraček, Bernstein functions (the scale-mixture representation of L).
-- DLMF §10.25–10.32 (Bessel identities used for the kernel bounds).
+**Pointwise remainders of other sectors** (smallest sampled p − Rem/|r|², which would be a global cost if certified):
 
-## 7. Files and verifiers (all paths relative to the bundle root, i.e. the folder `research-degree5/`; nothing refers to a machine)
+| sectors | K | tilt (0.6, 0) |
+|---|---|---|
+| A alone | 0.320 | 0.362 (certified: at least 0.312, 2.6) |
+| A and B together | at most 0.29836 (the sharp local value at the origin, 2.8) | 0.252 |
+| B alone | 0.706 | |
+| A, B, z₁Q, z̄₁P | 0.128 | |
+| with d·z₁(T − 2) | fails pointwise (−0.387) | |
 
-**Documents.** `CONJECTURE_K_MONOGRAPH.md` (this file), `ASSESSMENT_2026-11-04.md` (the chronological record, §10–§14:
-every AI claim with its verification), `MANUSCRIPT_DIGEST_K.md` (digest of the October manuscript: PVD/BNC/SEI, the
-shared-A audit rectangle, the content inequality L3).
+[11.37, 11.45, 7.4.9] The second derivative along the sector, unlike the remainder, exceeds the budget without a
+restriction on the amplitude at every tilt tried [11.17].
 
-**Certificates from the AI threads, all replayed green by the user (5 Nov) unless noted.**
-| file | what it certifies |
-|---|---|
-| `ai-notes/chatgpt-thread2-gaussian_domination_note.tex` | Theorem B (conditionally Gaussian shells), the single-scale counterexample, H₃ |
-| `ai-notes/chatgpt-thread1-remote-cubic-comparison.tex` | disjoint theorem (i): F(H+(T−1)U) ≤ F(H+√bW), P(p) ≤ ½+7p²/60 |
-| `ai-notes/chatgpt-thread2-remote_cubic_and_linear_shell.tex` + `chatgpt-thread2-verify_core.mjs` | disjoint theorem (ii): Λ(q+(T−1)U) ≤ Λ(q) − (1/ε − 199/(200ℓ))u; quartic expansion |
-| `ai-notes/chatgpt-shared_driver_rectangle.tex` + `chatgpt-verify_shared.mjs` | the two templates on R with the 0.19 cost; thm:shared-a-audit |
-| `ai-notes/chatgpt-thread1-verify-content.mjs` | content constants 0.138/0.135 for the templates, three modes |
-| `ai-notes/chatgpt-thread2-verify_content_extension.mjs` | A-cost κ = 0.24 for w ≤ 0.0113; tensor bound 0.481; the zero-tensor q₀ |
-| `ai-notes/chatgpt-fresh-verify_nonlinear_content.mjs` | nonlinear content ≤ 50κ^{3/2}; deficit kernels; all cubics with u ≤ 0.00038 |
-| `ai-notes/chatgpt-fresh-verify_gaussian_factor_content.mjs` | 2𝓐′(0)²/Q(0) < 56/5 (Gaussian-factor class, ρ ≤ 3/140) |
-| `ai-notes/chatgpt-r23_r25_certificate.zip` → `ai-notes/r23_r25_certificate/` (proof.md, kernel_proof.md, verify_moments.mjs, check_shells.mjs, envelopes.json, generate.py, verify.py, kernels, results) | R23: XP(Y) with any complex A, constant 0.239 on R, three rows; R24 remote domination; R25 bookkeeping (replayed green by the user 5 Nov: `node verify_moments.mjs && node check_shells.mjs && python3 verify.py peak|flank|upper`) |
-| `ai-notes/chatgpt-gaussian_factor_content_certificate.zip` → `ai-notes/gaussian_factor_content/vector_content/` (proof.md, kernel_proof.md, envelopes.json, verify.py, generate_*.py, kernels, results) | whole Gaussian-factor class, any drivers/coefficients, 0.239 on R, three rows (replay: `python3 verify.py peak|flank|upper`, python-flint) |
-| `ai-notes/chatgpt-conjectureK_progress_2026-11-05.zip` → `ai-notes/progress_2026-11-05/conjectureK_audit/` (proof.md, verify.py, verify_factor.py, verify_algebra.mjs, kernels, envelopes, results) | rigorous refutation of exact E (saddle at the monomial) + second packaging of the Gaussian-factor theorem, both replayed green by the user 5 Nov (replay: `node verify_algebra.mjs && python3 verify.py && python3 verify_factor.py peak|flank|upper`) |
-| `ai-notes/chatgpt-conjectureK_gaussian_factor_extension_20261105.zip` → `ai-notes/gaussian_factor_extension/gaussian_factor_certificate/` | third packaging of the Gaussian-factor theorem: 3,171,979 boxes, 381 kernel nodes rechecked at 128 bits (replay: `node verify_vector_moments.mjs && python3 check_kernels.py && python3 verify.py peak|flank|upper`) |
-| `ai-notes/chatgpt-wick_endpoint_extension.zip` → `ai-notes/wick_endpoint_extension/wick_extension/` (proof.md, verify_wick.mjs, check_constants.py, kernels, logs) | self-interaction family with p ≤ u/16, constant 49/211 on u ∈ [0.03, 0.0463], three rows (replay: `node verify_wick.mjs && python3 check_constants.py`) |
-| `ai-notes/chatgpt-r26_fresh_reductions.zip` → `ai-notes/r26_fresh_reductions/direct_wick_support/` (research_note.md, explore.py, exploration data) | R26 directional size-biased Cauchy–Schwarz (proved reduction), third-moment caveat, aligned-shell support inequality with its tail proved; no certificate |
-| `ai-notes/chatgpt-integrated_wick_envelope_20261105.zip` → `ai-notes/integrated_wick_envelope/wick_work/` (README.md, exact_tail.mjs, validate.py, scalar tables, results) | envelope (★): 0.22 on the middle mixing region for any centred P; tail proved (`node wick_work/exact_tail.mjs`), compact region numerical (`WICK_ROW=peak python3 wick_work/validate.py`) |
-| `ai-notes/chatgpt-r26_envelope_audit.zip` → `ai-notes/r26_envelope_audit/mixed_envelope/` (REPORT.md, verify_k.py, verify_barrier.py, searches) | certified 𝓚(0.0463) = 0.16678; certified obstruction to radial envelopes at the pure-P end (both replayed green by the user 5 Nov); directional envelope candidates (replay: `python3 verify_k.py && python3 verify_barrier.py`) |
-| `ai-notes/chatgpt-wick_r26_twenty_percent_20261105.zip` → `ai-notes/wick_r26_twenty_percent/wick_research/` (proof.md, verify_template.mjs, verify_deficit.py, check_kernels.py, integrate_first.md) | self-interaction family with p ≤ u/5, constant 9/40 on the full energy interval, three rows (replay: `node verify_template.mjs && python3 verify_deficit.py && python3 check_kernels.py`) |
-| `ai-notes/chatgpt-r26_self_interaction_certificate_2026-11-05.zip` → `ai-notes/r26_self_interaction/r26_certificate/` (proof.md, replay.py, certify.py, kernels, witnesses) | R26 for real c + Hermitian A, every share, u ∈ [0.03, 0.0463], constant 0.23 (replay: `python3 replay.py --quick`; full: `python3 replay.py`) |
-| `ai-notes/chatgpt-wick_endpoint_one_twelfth_20261105.zip` → `ai-notes/wick_endpoint_one_twelfth/wick_cert/` | Wick neighbourhood p ≤ u/12 (superseded by 9/40); Abel-integral kernel enclosures and corner boxes for (★) (replay: `python3 wick_cert/check_constants.py`, `generate_table.py <row>`) |
-| `ai-notes/chatgpt-r26_twenty_percent_extension_20261105.zip` → `ai-notes/r26_twenty_percent_extension/r26_extension/` | independent second proof of p ≤ u/5 (47/200, u ≥ 0.03), replayed green (`node verify_endpoint.mjs && python3 check_constants.py`) |
-| `ai-notes/chatgpt-r26_reweighted_certificate_20261105.zip` → `ai-notes/r26_reweighted/r26_reweighted_certificate/` | R23 improved to 0.22 (reweighted Cauchy–Schwarz, any complex A); strip candidate (†) with tail and f = 0 neighbourhood proved (replay: `python3 check_kernels.py && python3 verify_pure.py <row> [--bridge] && node verify_tail.mjs`) |
-| `ai-notes/chatgpt-b_shell_global_cost_certificate.zip` → `ai-notes/b_shell_global_cost/` | B-shell cost at every amplitude, arbitrary q and r: κ_B = 0.26 / 0.29 / 0.30 (Node checker) |
-| `ai-notes/chatgpt-b_sector_content_and_cost_20261105.zip` → `ai-notes/b_sector_content_and_cost/b_sector/` | B-content 239/2000 for the Gaussian-factor class; local B-cost 7/20; mixed A/B Hessian at q = 0 certified nonzero (replayed green by the user 6 Nov: `bash replay.sh`) |
-| `ai-notes/chatgpt-odd_sector_certificate.zip` → `ai-notes/odd_sector_certificate/` | odd sectors over the zero core: certified pure cost k₁, k₃ at every amplitude (replayed green by the user 6 Nov: `python3 verify.py`) |
-| `ai-notes/chatgpt-odd_sector_inverse_norm_obstruction.zip` → `ai-notes/odd_sector_inverse_norm_obstruction/` | certified failure of the inverse-norm condition (6) at a nonzero core (python-flint `certify.py 384`) |
-| `ai-notes/chatgpt-directional_odd_cost_certificate.zip` → `ai-notes/directional_odd_cost/` | directional odd-sector cost at a nonzero core (global directional majorant; replayed green by the user 6 Nov) |
-| `ai-notes/chatgpt-signed_joint_ab_hessian_certificate.zip` → `ai-notes/signed_joint_ab_hessian/` | signed A/B Hessian at q = 0 with positive mixed term and 0.07 margin (replayed green by the user 6 Nov) |
-| `ai-notes/chatgpt-joint_ab_uniform_reduction.zip` → `ai-notes/joint_ab_uniform_reduction/` | exact pointwise 2×2 kernel reduction of the infinitesimal A/B Hessian at a general q (derivation + exploratory scripts; no certificate) |
-| `ai-notes/chatgpt-smooth_joint_kernel_certificate.zip` → `ai-notes/smooth_joint_kernel/` | singularity-free coordinates for the A/B Hessian kernel; signed bound certified on the shift interval [0.099, 0.101] (replayed green by the user 6 Nov) |
-| `ai-notes/chatgpt-all_shift_signed_ab_certificate.zip` → `ai-notes/all_shift_signed_ab/` | signed infinitesimal A/B bound for every remote base, three rows (474 interval checks + exact tail; replayed green by the user 6 Nov) |
-| `ai-notes/chatgpt-all_shift_signed_ab_certificate_v2.zip` → `ai-notes/all_shift_signed_ab_v2/` | independent second certificate of the all-shift signed A/B bound (229 intervals + tail); regularity region 2\|α\| + √2\|β\| < 2√(ab) for the finite-amplitude path |
-| `ai-notes/chatgpt-hermitian_content_certificate.zip` → `ai-notes/hermitian_content/` (proof.md, generate.py, verify.py, kernels) | Hermitian one-driver family, constant 0.236 on R at the three rows (Arb; replay needs python-flint: `python3 verify.py peak|flank|upper`) |
+**Identity tail.** The cubic head with a constant tail ν reaches the model norm 0.713021 (1.402483) at ε = 0.7681,
+ν = 0.0235, against 0.713136 (1.402257) without the tail [STATUS §10].
 
-**My own checks (Python, `-I`, numpy/scipy).** `e11_scan_majorant.py` → `e11_scan_majorant_peak.log` (the joint-majorant
-scan, §3.5), `e11_scan_opt.py` → `e11_scan_opt_peak.log` (the 12-shell hill-climb), `e11_check_complex_moment.py` and `e11_check_r23_moments.py` (the
-complex-matrix sixth-moment identities and bounds, §14–§15 of the assessment), `e11_imag_perturbation.py` (Monte Carlo)
-and `e11_second_variation.py` (deterministic quadrature) for the saddle at the Wick monomial, `e11_refined_target.py` (the
-refined target along the monomial), `e11_check_vector_moment.py` (the vector moment inequality), `e11_check_wick_endpoint.py` (the Wick-neighbourhood
-perturbation bounds), `e11_check_sizebias_reduction.py` (the radius-integrated deficit identity and the Cauchy–Schwarz target), `e11_check_envelope_star.py` + `.log` (independent grid check of (★)). Earlier scripts of 4–5 Nov in this folder: e4 (K
-attack), e5/e5b (OU path), e6–e10 (law inequality), k5/ (degree 5), d1/ (order-2 note).
+## 6. Where everything is
 
-**Prompts and replies** (what was sent to the AI threads, in order): `ai-notes/conjectureK-olympiad.txt` (context-free
-statement that started the fresh thread), `ai-notes/lemma-content-prompt.txt`, `ai-notes/reply-thread2-r4r6.txt`,
-`reply-thread1-r5.txt`, `reply-gpt3-fourthmoment.txt`, `reply-thread2-r7r9.txt`, `reply-thread1-r10r12.txt`,
-`reply-gpt3-refinement.txt`, `reply-thread2-r10r12.txt`, `reply-fresh-lemma.txt`, `reply-fresh-gaussian-factor.txt`,
-`reply-hermitian-family.txt`, `prompt-fresh-selfinteraction.txt`, `prompt-hermitian-r26.txt` (R26: the self-interaction family; R27: the
-extremality test, now answered: saddle), `reply-hermitian-scanfix.txt`, `reply-hermitian-E-saddle.txt`.
+| chapter | ledger rows (`STATUS.md`) | sources (under `sources/`) | checkers (under `code/`) |
+|---|---|---|---|
+| 1.2–1.5 setting, budget | 2.1–2.5, 8.1–8.4, 12.1, 12.2 | `audit-2026-11-13/`, `reaudit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/MANUSCRIPT_DIGEST_K.md` | `reaudit-2026-11-15-codex-a7c4/` |
+| 1.6 retained functional | 2.10, 2.10a, 2.13, 2.14, 3.16, 3.17, 11.2–11.13 | `external-2026-11-15/`, `numerics-kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `sixth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/legacy/ch20-pinned-gate.tex` | `kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/`, `sixth-audit-2026-11-15-codex-a7c4/` |
+| 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 | `third-audit-2026-11-15-codex-a7c4/CONTENT_KERNELS.md`, `reaudit-2026-11-15-codex-a7c4/SECTORS.md` | `third-audit-2026-11-15-codex-a7c4/` |
+| 2.1 remote part | 3.1–3.16, 11.7–11.11 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
+| 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.5 | `third-audit-…/POTENTIAL.md`, `audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md`, `audit-2026-11-15-codex-a7c4/CLAIMS.md` | `third-audit-2026-11-15-codex-a7c4/` |
+| 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py` |
+| 2.6 tilted lemma, retained A-core | 11.25–11.54 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py` |
+| 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.5 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py` |
+| 2.10 response, consumer | 2.12, 2.12a, 8.1 | `reaudit-…/FOUNDATIONS.md`, `manuscript/legacy/ch25-parts/` | `reaudit-…/foundations_exact.py` |
+| 3 open problems | section 15 | the audits above | |
+| 4 false statements | section 13 (and 14) | as cited there | |
+| 5 numerics | sections 9, 10, 11 (c), 2.3 | `numerics-kscan-2026-11-13/`, `numerics-tailgames-2026-11-14/`, `numerics-kprime-2026-11-15/`, `audit-2026-11-13/REPORT.md` §5 | `kscan-2026-11-13/`, `tailgames-2026-11-14/`, `kprime-2026-11-15/`, `audit-2026-11-13/` |
+
+Everything outside the repository (zips, large certificates, logs) is listed with hashes in
+[`INVENTORY.md`](INVENTORY.md). The folder's [`README.md`](README.md) indexes every file, and the October manuscript is
+read through [`sources/manuscript/MANUSCRIPT_DIGEST_K.md`](sources/manuscript/MANUSCRIPT_DIGEST_K.md).

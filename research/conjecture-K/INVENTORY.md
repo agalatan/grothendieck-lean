@@ -63,7 +63,7 @@ compares source hashes. It was run against commit `32cfb7d87`; one of the pinned
 (`Grothe/Research/LawNodeLower.lean`) has since been golfed without statement changes, and a rerun on the current
 `master` has not been tried.
 
-The report on the tilted sector of 15 November (`STATUS.md`, section 11 (e)) was rewritten in place by its author
+The report on the tilted sector of 15 November (`STATUS.md`, section 11 (b)) was rewritten in place by its author
 five times, so its copies cannot all be compared with the working files; the hashes say which versions the
 repository holds. For a `.md` file the hash is that of the file as it was copied, that is, of the copy without its
 first line.
@@ -185,8 +185,8 @@ listed by an earlier row. "SHA-256" is given for single files that a result or a
 
 | path | files | size | contents |
 |---|---:|---:|---|
-| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/conjectureK-monograph-bundle.zip` | 1 | 36.6 MB | Zip bundle of the working folder (the "bundle root" of monograph §7): the monograph with its companion files and `ai-notes/` with the extracted packages. SHA-256 `c7baf010f76ca642d8ee715c92cc0af5fb2368d97e09e52594cf41cfecc83e14` |
-| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/*.log` | 7 | 26.1 KB | Outputs of seven `e11_*` scripts (the scan of monograph §3.5, the hill-climb, the sector scan, the odd-form computation, the envelope check, the size-bias check, the finite A/B kernel grid). |
+| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/conjectureK-monograph-bundle.zip` | 1 | 36.6 MB | Zip bundle of the working folder (the "bundle root" of §7 of the monograph of 5 and 6 November): the monograph with its companion files and `ai-notes/` with the extracted packages. SHA-256 `c7baf010f76ca642d8ee715c92cc0af5fb2368d97e09e52594cf41cfecc83e14` |
+| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/*.log` | 7 | 26.1 KB | Outputs of seven `e11_*` scripts (the scan of §3.5 of the monograph of 5 and 6 November, the hill-climb, the sector scan, the odd-form computation, the envelope check, the size-bias check, the finite A/B kernel grid). |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/e4-logs/` | 13 | 15.4 KB | Outputs of the E1 and E4 runs of 4 November (first-moment maxima; full-tensor attack on K). |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/k5/logs/` | 53 | 124.6 KB | Logs of the K₅ experiment. |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/k5/results/` | 48 | 256.2 KB | Candidates of the K₅ experiment (24 `.json` with 24 `.npz`). |
@@ -375,12 +375,12 @@ New notes are under `sources/sixth-audit-2026-11-15-codex-a7c4/`; four Python ch
 outputs are under `code/sixth-audit-2026-11-15-codex-a7c4/`. Every source present at the resynced
 baseline and the historical monograph body are preserved. #416's version replacements and history
 are inherited unchanged. The #413 coordination comment and later mathematical approval are archived
-separately; AUDIT §4 dispositions the review with its exclusions. The requested monograph form is retained.
+separately; AUDIT §4 dispositions the review with its exclusions.
 
 The tilted report and REVIEW_4 were read before #416 landed. Their provisional duplicate snapshots
 were removed when the canonical copies arrived on master; the notes now cite those copies. This pass
 does not rerun the large tilted certificate. The named external review replayed its secant and deficit
-chains separately, not the combined default invocation (STATUS 11.50 and section14 item53).
+chains separately, not the combined default invocation (STATUS 11.50; section 14, item 53 of `sources/status-2026-11-15/STATUS_with_history.md`).
 The review's exclusions and exact replacement of the 12 partly reviewed third-order branches are retained.
 No new external file, package or dependency installation is left by this pass.
 

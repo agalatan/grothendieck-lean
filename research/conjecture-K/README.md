@@ -1,40 +1,29 @@
 # Conjecture K: start here
 
-Conjecture K is an open statement about Gaussian chaos. If it were proved (even up to an error of 10⁻⁴) the lower
-bound of this repository would rise from 1.401700037873 to about 1.402. This folder is the organised record of
-everything known about it on 15 November 2026: the statement, what is proved, what is only computed, what was refuted,
-and what was tried and failed. It is research material: nothing here is imported by Lean or checked by CI, and the
+Conjecture K is an open statement about Gaussian chaos. If it were proved, even up to an error of 10⁻⁴, the lower
+bound of this repository would rise from 1.401700037873 to about 1.402 (exact K: about 1.4022). This folder is the
+organised record of everything known about it: the statement, what is proved, what is only computed, what is false,
+and what does not work. It is research material: nothing here is imported by Lean or checked by CI, and the
 conjecture is **open**.
 
 | file | what it is |
 |---|---|
 | `README.md` | this file: statement, why it matters, the layers of a proof, reading order, index |
-| [Sixth audit](sources/sixth-audit-2026-11-15-codex-a7c4/AUDIT.md) | After merged #413 and resynced #416: two odd-coupling channels, retained A-core profile transfer, finite-dimensional diffusion and a finite Gaussian-marginal obstruction |
-| [Fifth audit](sources/fifth-audit-2026-11-15-codex-a7c4/AUDIT.md) | After merged #409: larger certified retained A-core regions, joint shift cutoff 2.9, complete tail-constant provenance, and strict raw/retained remote separation |
-| [Fourth audit](sources/fourth-audit-2026-11-15-codex-a7c4/AUDIT.md) | After merged #403 and resynced #408: corrected remote equivalences and SEI closure; larger remote-profile and shared-A regions; sharper local joint form and smaller open box; central tilted-A subclass |
-| [Third audit](sources/third-audit-2026-11-15-codex-a7c4/AUDIT.md) | After reviewer-updated #399: global peak .007 kernel comparison certified; complete kernel derivations, stronger disjoint cost and content neighbourhood, raw/retained axis results |
-| [Second audit](sources/reaudit-2026-11-15-codex-a7c4/AUDIT.md) | 15 November, codex-a7c4, after PR #397: response/parity scope corrections, explicit odd-sector counterexamples, disjoint-cost replay, larger content neighbourhood and conditional central consumer |
-| [Follow-up audit](sources/audit-2026-11-15-codex-a7c4/AUDIT.md) | 15 November, codex-a7c4: essential scope corrections, peak remote certificate replay, uniform one-coordinate result, independent retained-sector numerics |
-| [`STATUS.md`](STATUS.md) | the consolidated state of knowledge: every statement with its status (P / C / N / R / open / refuted), exact scope and source; the list "tried and failed" |
-| [`MONOGRAPH.md`](MONOGRAPH.md) | the monograph of 5 and 6 November, verbatim, preceded by "Errata and updates (15 November 2026)" |
-| [`INVENTORY.md`](INVENTORY.md) | what was deliberately left outside the repository (zips, large certificates, logs, binaries), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working documents (audit, log, digest, manuscript chapters, notes received, prompts, the reports of 15 November with their reviews, the numerical follow-up of that day) |
-| `code/` | the scripts behind the numerical results still relied on, and small result files (for the follow-up of 15 November also its small logs and search records; for the report of that day on the tilted sector its verifiers, their inputs, and the scripts and logs of its reviews) |
+| [`MONOGRAPH.md`](MONOGRAPH.md) | **the book**: the current best-known state as one text, from the setting to what is proved, what is open, what is false, the numerical evidence and where everything is |
+| [`STATUS.md`](STATUS.md) | **the ledger**: every statement in its current form, with its scope, its status (P / C / Lean / N / R / open), its author and checker and its source; the false statements; the routes that do not work; the open problems in order |
+| [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository (zips, large certificates, logs, binaries), with paths, sizes and SHA-256 |
+| `sources/` | verbatim copies of the working documents: the audits and their reviews, the log, the digest and chapters of the October manuscript, notes received, prompts, the reports with their reviews, the numerical write-ups; also the monograph of 5 and 6 November with its errata (`monograph-2026-11-05/`) and the ledger with its dated passages (`status-2026-11-15/`) |
+| `code/` | the scripts behind the results still relied on, their small result files and logs, the verifiers of the reports and the checkers of the audits |
 
-Status labels (defined in [`../README.md`](../README.md) and at the top of `sources/audit-2026-11-13/REPORT.md`):
-**P** re-derived independently, **C** exact or interval checker replayed independently, **N** numerical only,
-**R** read from the record without full independent verification.
+**Living documents.** `MONOGRAPH.md` is the living book and `STATUS.md` the living ledger: every PR that changes the
+state of knowledge edits them in place, with no errata sections and no dated update paragraphs. A ledger row keeps
+its ID, and a strengthened statement replaces the weaker text in its row. Copies under `sources/` stay verbatim
+([`../README.md`](../README.md)).
 
-The [review of #403](sources/fourth-audit-2026-11-15-codex-a7c4/REVIEW_403_claude-b9ee.md)
-records Claude’s independent re-derivation and replay of the third audit, with its exclusions. The fourth-audit
-arguments were subsequently re-derived and their five checkers replayed by Claude in the
-[review of #409](sources/fifth-audit-2026-11-15-codex-a7c4/REVIEW_409_claude-b9ee.md). Its exclusions and
-provenance corrections remain explicit. The [post-merge review of #413](sources/sixth-audit-2026-11-15-codex-a7c4/REVIEW_413_claude-b9ee.md)
-approves the fifth audit with re-derivations and all three checkers replayed; its exclusions and wording
-corrections are dispositioned in the sixth AUDIT. New sixth-audit arguments await external review.
-The completed tilted-sector theorem has its own [fourth Claude review](sources/received-2026-11-15-tilted-sector/REVIEW_4.md),
-which reports replays of the secant and deficit chains separately; the combined default invocation was not run.
-This pass uses that named evidence and does not rerun the large certificate imported in #416.
+**Status labels** ([`STATUS.md`](STATUS.md), section 0): **P** a proof re-derived by someone other than its author,
+**C** an exact or interval checker replayed by someone other than its author, **Lean** a theorem of this repository,
+**N** numerical only, **R** read from the record without independent verification, **open** no claim. The ledger
+names the author and the checker of every statement.
 
 ## (a) The statement
 
@@ -60,43 +49,31 @@ phase slack. The whole difficulty of the lower bound is the supremum of Λ over 
     Λ(G) ≤ S(ε, ℓ, β) := sup_{σ ≥ 0} Λ(σW) = sup_{σ ≥ 0} { 2E|L + σW| − σ²/ε }.
 
 The comparison object σW is the *diffuse Gaussian adversary*: the limit in law of N^{−1/2}Σ_{j≤N} H(w_j),
-H(w) = w(|w|² − 2)/√2, over fresh coordinates w_j. It is a limit of elements of H₂,₁, independent of z₁.
-If K holds, the supremum over **all finite dimensions** equals S and is approached by these diffuse sequences.
-This does not assert Gaussian attainment in a fixed H₂,₁(ℂⁿ); at n=1 the peak supremum is strictly smaller than S.
-The fourth audit also distinguishes the equivalent complex radius/buffer/remote assertions from the stronger
-sufficient real Stein-sign condition BNC, and refutes the unrestricted SEI closure under arbitrary symmetric
-unimodal addition ([REFORMULATIONS](sources/fourth-audit-2026-11-15-codex-a7c4/REFORMULATIONS.md)).
+H(w) = w(|w|² − 2)/√2, over fresh coordinates w_j, a limit of elements of H₂,₁ independent of z₁. If K holds, the
+supremum over **all finite dimensions** equals S and is approached by these diffuse sequences. This does not assert
+attainment in a fixed H₂,₁(ℂⁿ): at the peak, n = 1 has supremum 2E|L| < S; at the corner (0.74, 0.90, 0.12),
+σ* = 0 and G = 0 attains S.
 
 **Weaker forms that would suffice.**
-- **K_η:** Λ(G) ≤ S + η. For 1.402 the budget is η ≈ 1.0·10⁻⁴ at the peak row (precisely Λ ≤ 1.37405413… on
-  t ∈ [21/25, 851/1000]; digest §2).
-- **K′ (retained penalty):** keep −‖P₁,₀k‖² in the row. Λ′(G) ≤ Λ(G), the row holds with Λ′, and K′: Λ′ ≤ S is weaker
-  than K and still sufficient (digest §2; `ch7-conjectureK.tex`, "Side experiments"). Its unconstrained form is the
-  first-chaos dual Λ_P of `ch20-pinned-gate.tex` (15 October), called Λ̂ in the report of 15 November
-  (`sources/external-2026-11-15/`): Λ′ ≤ Λ̂ ≤ Λ, and a cap on Λ̂ would also suffice. Numerically (**N**,
-  15 November, peak row) the sector part of a proof has far more room for Λ̂ than for Λ. Write gain(q) for the most
-  that the A and B shells can add over a remote cubic q, and D(q) for the deficit of q (defined under "Vocabulary"
-  below); a proof needs gain(q) ≤ D(q) + η. The largest gain found is 0.166·D(q) for Λ and about 0.025·D(q) for Λ̂
-  with its first-chaos element optimised together with the shells: a margin of about 6 for K and about 40 with the
-  penalty retained, on what was tested (remote cubics in one, two and three variables). The ratio for Λ̂ rises
-  slowly with the number of remote variables (0.017, 0.021, 0.023 at ‖q‖² = 0.0463) and its limit is not known.
-  These numbers are not bounds. The same **raw remote cap is a sufficient input** for both functionals;
-  their remote values need not agree: q=cX(\|Y\|²−1) gives a strict retained improvement for every c>0 (3.16)
-  (`sources/numerics-kprime-2026-11-15/README.md`; `STATUS.md`, section 11 (c)). A proof of the shell inequality for
-  Λ̂ and the A shell was attempted the same day, at a fixed tilt, in a report that its author revised five times. Its
-  fifth version, reviewed, proves that the gain of the A shell is at most a constant times the squared tilted content,
-  at every amplitude and in every dimension, and leaves one inequality open: that content against the deficit. Its
-  sixth version, reviewed, proves that inequality too, so the A-shell lemma for Λ̂ holds at the peak row for every
-  remote cubic with ‖q‖² ≤ 0.0463 (**P + C**; `sources/received-2026-11-15-tilted-sector/`; `STATUS.md`, section 11
-  (e), 11.49 to 11.52). The B shell and the z-odd sectors of Λ̂ are not covered.
-- **Response-restricted forms:** only G that come from actual responses (f, g) matter. At ε=1891/2500, response feasibility gives
-  remote energy ‖q‖²<0.046266 and total ‖G‖²<0.081884 for t≥0.84. The stronger total cap 0.071981
-  needs t≥0.8456 (STATUS 2.12a, independently re-derived and exactly checked). Such regional cuts
-  must not be inserted into raw K; omitted response regions still need coverage.
+- **K_η:** Λ(G) ≤ S + η. For 1.402 at the peak row, η ≤ 10⁻⁴ suffices on t ∈ [0.84, 0.851], with the cap more than
+  6.12·10⁻⁷ below 500/701; the largest admissible allowance there is η_max = 0.0001006120988404375…, with no reserve
+  (`STATUS.md` 8.1).
+- **K′ and the retained functional Λ̂:** keep −‖P₁,₀k‖² in the row. Its unconstrained form is
+  Λ̂(G) = min_ξ {‖ξ‖² + E|L + G − ξ| + E|L − G + ξ|} − ‖G‖²/ε, ξ in the remote first chaos, with Λ′ ≤ Λ̂ ≤ Λ; the row
+  holds with Λ̂, and sup Λ̂ ≤ S + η suffices. The benchmark of Λ̂ is the same S (2.14), although Λ̂ < Λ pointwise on
+  some remote cubics (3.16). **For Λ̂ the A shell is closed at the peak row:** Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every
+  remote cubic q with ‖q‖² ≤ 0.0463 and every remote linear form r, in every dimension and at every amplitude (11.51,
+  **P + C**); 11.47 is sharper on ‖q‖² ≤ 0.021 (below S − 2.76·10⁻⁶), 11.48 is a special case, and 11.53 extends the
+  bound to a profile rectangle around the peak with error below 9.8·10⁻⁵.
+- **Response-restricted forms:** only G that come from actual responses (f, g) matter. At ε = 1891/2500, for t ≥ 0.84
+  the remote energy of a response is below 0.046266 and its total energy below 0.081884 (0.071981 for t ≥ 0.8456;
+  2.12a). Such cuts hold for responses only and must not be inserted into raw K; omitted response regions still need
+  coverage.
 
-**Where it is needed.** The box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16]. The corner
-(0.74, 0.90, 0.12) has σ* = 0 and needs separate treatment if used in the consumer. K for *every* profile is false (profiles with
-ℓ − 2β ≲ 10⁻¹⁰ at tiny norms; monograph §1), so the box matters. Several principal certificates use the following three rows; whole-box results state that scope explicitly:
+**Where it is needed.** The box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16]. The corner (0.74, 0.90, 0.12)
+has σ* = 0 and needs separate treatment if a row cover uses it. K for *every* profile is false (profiles with
+ℓ − 2β ≲ 10⁻¹⁰ at tiny norms; `STATUS.md`, section 13, item 1), so the box matters. The principal certificates use
+three rows; whole-box results say so:
 
 | row | ε | ℓ | β = b | a = ℓ − 2β | σ* (maximiser of Λ(σW)) |
 |---|---|---|---|---|---|
@@ -104,111 +81,105 @@ unimodal addition ([REFORMULATIONS](sources/fourth-audit-2026-11-15-codex-a7c4/R
 | flank | 149/200 = 0.745 | 4267/5000 = 0.8534 | 1467/10000 = 0.1467 | 14/25 = 0.56 | 0.1726 |
 | upper | 1891/2500 = 0.7564 | 0.877 | 19/125 = 0.152 | 573/1000 = 0.573 | 0.1617 |
 
-Peak-row constants: p = 1/ε = 2500/1891; S = 1.3739535 (floating point; S > 1.37395; the October package enclosure
-1.3739535256614 < S < 1.3739535256616 was independently replayed by codex-a7c4 (**C**)), attained at σ*² = v* ≈ 0.0403; B₀ = Λ(0) = 2E|L| = (387/500)√π = 1.3718793; S − B₀ > 0.002074245 (exact subtraction in the fourth audit).
+Peak-row constants: p = 1/ε = 2500/1891; 1.3739535256614 < S < 1.3739535256616 (**C**, 3.14), attained at
+σ*² = v* ≈ 0.0403; B₀ = Λ(0) = 2E|L| = (387/500)√π = 1.3718793; S − B₀ > 0.002074245.
 
-**Vocabulary used everywhere** (monograph §2). Decompose G by its dependence on z₁:
+**Vocabulary used everywhere.** Decompose G by its dependence on z₁:
 
     G = q + (T − 1)·r_A + z₁²·conj(r_B)/√2 + z₁·Q + z̄₁·P + d·z₁(T − 2),
 
 with q a remote cubic (in H₂,₁ of the remote coordinates), r_A and r_B remote linear forms (the **A shell** and the
-**B shell**), Q ∈ H₁,₁ and P ∈ H₂,₀ of the remote coordinates, d ∈ ℂ. u = ‖q‖², w = ‖r_A‖². The **core** is
-q + (T − 1)r_A. For a remote q: F(q) = 2E|L + q|, B(u) = 2E|L + √u·W| (Gaussian of the same energy),
+**B shell**), Q ∈ H₁,₁ and P ∈ H₂,₀ of the remote coordinates, d ∈ ℂ. u = ‖q‖², w = ‖r_A‖², δ = E|q|⁴ − 2u²,
+χ = δ/u² ∈ [0, 42]. The **core** is q + (T − 1)r_A. For every G, F(G) = E|L + G| + E|L − G|, so
+Λ(G) = F(G) − ‖G‖²/ε; for a remote q, F(q) = 2E|L + q|. B(u) = 2E|L + √u·W| (Gaussian of the same energy),
 D(q) = B(u) − F(q) (the **deficit**, also written Δ), F_A(y) = E_{z₁}[(T − 1)·ph(L + y)] = y·g(|y|²), and
-C(q) = ‖P₁,₀F_A(q)‖ (the **A-content**). The **content inequality** is C(q)² ≤ κ·D(q).
-Trap: the sectors z₁Q, z̄₁P, d·z₁(T − 2) are called "even sectors" in the manuscript and in parts of the monograph
-(even frequency after factoring the phase of z₁) and "z-odd sectors" elsewhere (odd under z₁ → −z₁). They are the
-same sectors. The A and B shells and q are the "odd-frequency" = "z-even" block.
+C(q) = ‖P₁,₀F_A(q)‖ (the **A-content**). The **content inequality** is C(q)² ≤ κ·D(q). The **tilted
+content** of Λ̂ is c_s(q) = Π₁[q·h_s(|q|²)] with h_s = (g − g₀) − s(j₀ − j), where E_{z₁}ph(L + y) = y·j(|y|²).
+Trap: the sectors z₁Q, z̄₁P, d·z₁(T − 2) are called "even sectors" in the October manuscript (even frequency after
+factoring the phase of z₁) and "z-odd sectors" elsewhere (odd under z₁ → −z₁). They are the same sectors. The A and B
+shells and q are the "odd-frequency" = "z-even" block.
 
 ## (b) Why it matters
 
 | quantity | value | status and source |
 |---|---|---|
-| proved lower bound (Lean, `master`) | K_G^ℂ > 1.401700037873 | `Grothe/Statement.lean`, `docs/overview.tex`, top-level `README.md`; merged #381 and #418 |
-| ceiling of the cubic witness family (no certificate with T_ε can exceed it) | below 1.4022581233, for every complex multiplier ε and every dimension; the model optimum is near ε = 0.7564 (model norm 0.713136). At ε = 0.75 the model gives 1.402166, at ε = 0.745 only 1.401957: the flank value ε = 149/200 cannot reach 1.402 | `docs/overview.tex`, "Limits of the witness method" ([P,C], part in Lean); monograph §1; `sources/october-handoff/pipeline-gate/KSIDE.md` |
-| row cap needed for 1.402 | below 500/701 = 0.7132667617… | exact threshold (audit; the printed "0.713267" of the monograph is not enough) |
-| row cap needed for 1.4022 | below 5000/7011 = 0.7131650263… | `record_audit.md` §6 |
-| what K_η with η ≤ 10⁻⁴ would give | about 1.402 | monograph §5 as corrected by the audit |
-| what exact K would give | about 1.4022 (cap 0.713160 at ε = 0.7564 from a moment LP) | **R**, floating point (monograph §5) |
-| ceiling with an identity tail (witness (1, −ε, ν, ν, …)) | 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 | **N**, model only (`sources/numerics-tailgames-2026-11-14/`) |
-| lower bound from the audit's refined cover, without K | K_G^ℂ > 1.401697318640 | exact rational check outside Lean; not in Lean (`STATUS.md`, related results) |
+| proved bounds (Lean, `main_bounds`) | 1.401700037873 < K_G^ℂ < 1.404599398251 | top-level `README.md`; `STATUS.md` 12.1 |
+| row cap of the proved lower bound | 3567097/5000000 = 0.7134194 | `STATUS.md` 12.1 |
+| row cap needed for 1.402 | below 500/701 = 0.7132667617… | `STATUS.md`, section 8 |
+| row cap needed for 1.4022 | below 5000/7011 = 0.7131650263… | `STATUS.md`, section 8 |
+| what K_η with η ≤ 10⁻⁴ would give | about 1.402 | `STATUS.md` 8.1 |
+| what exact K would give | about 1.4022 (cap 0.713160 at ε = 0.7564 from a moment LP) | **R**, floating point (`STATUS.md` 8.4) |
+| ceiling of the cubic witness family (no certificate with T_ε can exceed it) | below 1.4022581233, for every complex multiplier ε and every dimension; the model optimum is near ε = 0.7564 (model norm 0.713136). At ε = 0.75 the model gives 1.402166, at ε = 0.745 only 1.401957: the flank value ε = 149/200 cannot reach 1.402 | `docs/overview.tex`, "Limits of the witness method" ([P, C], part in Lean); `STATUS.md` 8.3, 12.2 |
+| ceiling with an identity tail (witness (1, −ε, ν, ν, …)) | 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 | **N**, model only (`STATUS.md`, section 10) |
 
 The proved certificates replace sup Λ by scalar relaxations (fibre potentials, moment and Stein cuts, node caps).
 Each further decimal that way costs weeks of computation for about 10⁻⁵. K would remove the gate loss, the
 residual-law loss and the price layer at once and reach the witness's own ceiling. K gives nothing beyond that
-ceiling and nothing on the upper side; the degree-5 analogue K₅ is false at its flank rows by about 10⁻⁴
-(numerical; `sources/k5-2026-11-04/RESULTS.md`).
+ceiling and nothing on the upper side; the degree-5 analogue K₅ fails numerically at its flank rows (`STATUS.md`
+12.3).
 
 ## (c) The layers of a proof, and where each stands
 
-K_η must hold for every G ∈ H₂,₁, not only for the core. The monograph (§4b) splits a proof into six layers.
-The statuses include the follow-up audit of 15 November; details and scopes are in `STATUS.md`.
+K_η must hold for every G ∈ H₂,₁, not only for the core. A proof has six layers; `MONOGRAPH.md` chapter 2 states
+each result, and `STATUS.md` gives its evidence.
 
-| layer | statement | status on 15 November 2026 |
+| layer | statement | status |
 |---|---|---|
-| **L1** remote part ("K-a") | Λ(q) ≤ S + η for every remote cubic q | **P + C at the peak profile**, η=3.6·10⁻⁷: the stronger October package replayed end to end by codex-a7c4 and again by claude-b9ee, with its existing sixth-moment input identified. External certificate, not Lean (its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions: A15 `REMOTE.md` §3a). The fourth audit adds a one-sided normalized rectangle with error <10⁻⁴: λ=ε/(1891/2500), ε∈[.74,.76], 0≤a/λ−.5592≤.0005 and 0≤b/λ−.1432≤.0016. The older symmetric tube remains valid; the flank/upper rows and full envelope remain open. Transfer **P + C**, re-derived/replayed by claude-b9ee on #409 (A15F `REMOTE.md`). Exact K-a (η=0) is open; the separate report of 15 November remains **R**. |
-| **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1, hence 3.6·10⁻⁷ at the peak; needs mutual independence of z₁,q,U and ‖q‖² + ‖U‖² ≤ ℓ²). The stronger all-amplitude cost form is now **P + C** on the entire application box, with cost at least 3/152 and no energy cutoff (STATUS 4.2, third audit; re-derived and replayed by claude-b9ee on #403). |
-| **L3** core with shared drivers, explicit sufficient regions | Peak shared-A only; q,r remote and orthogonal | **P + C**, re-derived/replayed by claude-b9ee on #409: the fourth audit certifies Λ≤B₀+.389644u−.124324w, so u≤.00558+.31907w gives Λ<S+10⁻⁴. Independently, for u≤.0463, w≥.0206 gives Λ<S+10⁻⁴; .0208 gives Λ<S; .02105 gives Λ<S−10⁻⁴. These second-moment results need only visible independence and E[q̄r]=0. The stronger fourth-moment cutoff w≥.01125 remains **R**, with its separate provenance and domain (STATUS 6.1.2). |
-| **L4** core on the inherited residual R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | The displayed residual uses the separately **R** fourth-moment reduction; the new second-moment strip alone leaves w<.0206. Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. The conditional mixed-character neighbourhood now permits remainder energy D(core)/90 (STATUS 6.3.9b). **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
-| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). The global peak alignment ‖c_B−.5053c_A‖≤.007√u is now **P + C**, re-derived and replayed by claude-b9ee (STATUS 7.1.4). **Missing:** a finite-amplitude joint A/B remainder bound (section 7.4), a general A-content theorem to use with that alignment, and uniform odd-sector control over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). For Λ̂ and the A shell at the tilt 3/5 (**P + C**, reviewed, 15 November): the remainder of the shell has a global quadratic bound, so its gain is at most ‖c‖²/0.312 at every amplitude, with no box and no localisation, where c is a tilted content; the comparison ‖c‖² ≤ (3/10)·D₊ + 3/500000 is now **P + C by the external fourth review of the sixth tilted delivery** (`STATUS.md`, 11.43). The fourth audit combines those reviewed inputs with the remote cap: if .03≤u≤.0463 and χ=(E\|q\|⁴−2u²)/u²≤.07, then Λ̂(q+(T−1)r)<S+2·10⁻⁵ for every remote linear r, with arbitrary sharing and no amplitude cap (**P + C**, re-derived/replayed on #409, including the retained trial inequality 11.12). It is peak-only and adds no B or odd sectors. The completed theorem and the peak <2·10⁻⁵ retained A-core corollary were imported in #416 (11.49–11.52). The sixth audit independently re-derives its exact peak error budget; a corrected weighted scaling argument gives <S+9.8·10⁻⁵ when ε∈[.74,.76], λ=ε/(1891/2500), 0≤a/λ−.5592≤.0004, 0≤b/λ−.1432≤.00125, and physical remote energy u≤λ² .0463 (uniformly u≤.0443 suffices). The new transfer and exact-budget re-derivation are **P by author, not externally reviewed + C exact arithmetic**, using the named external input, with no B or odd sectors. The fifth audit had enlarged the earlier retained result: every tensor at u≤.021 has Λ̂<S−.00000276, and every 0<u≤.0463 with χ≤.25 has Λ̂<S+2·10⁻⁵ (11.47–11.48). Those fifth-audit results have now been independently re-derived and their checkers replayed in the #413 review, with its stated exclusions. The joint audit retains the .08 local A/B reserve and now shrinks the remaining shift box to [0,2.9], with the old global/tail inputs freshly certified (7.4.5). The #413 reviewer re-derived those tail inputs and replayed the checker; the finite-amplitude joint problem stays open. The exact uniform raw joint margin .300 suggested after #408 is false already at zero base: the genuine cubic direction (r_A,r_B)=s(X,−X/5) has limiting normalized cost <.298526024. The sharp local peak eigenvalue is now certified in (.298364651634117,.298364651634118), with a genuine cubic minimizing direction (7.4.9). This does not refute K or the weaker joint target. The scan’s B-energy shares and pointwise five-sector obstruction are qualified in A15F `JOINT.md`. Historical scan provenance: the joint four-sector A/B/ZQ/conj(Z)P search reported margin .128 at zero base (**N**, 11.45); this is not a global four-sector certificate. The sixth audit corrects its schematic Q/ν interaction: at a nonzero remote core there are two real kernels; a genuine cubic witness requires both (7.2.5). Centering kills the zero-core mixed term only. |
-| **L6** row envelope and consumption | A fixed-ε row cover with exact thresholds, coverage of all response regions, then a Lean theorem consuming K_η | **Incomplete.** The single peak row now has an exact conditional central component: all-sector K_η with η≤10⁻⁴ covers t∈[.84,.851], leaving >6.12·10⁻⁷ margin (STATUS 8). Complementary regions and the all-sector premise remain; no `lower_of_K` or `KHyp` exists. A full profile box, including the σ*=0 corner, is needed only if the chosen cover uses it. |
+| **L1** remote part | Λ(q) ≤ S + η for every remote cubic q | **P + C at the peak**, η = 3.6·10⁻⁷ (3.3): an external certificate whose inputs about cubic chaos are Lean theorems (3.4). A tube and a one-sided rectangle of profiles around the peak (3.11, 3.15). The flank and upper rows and the full box are open; exact remote K is open and not needed (3.6) |
+| **L2** core with disjoint drivers | q + (T − 1)U with U independent of q | **P + C** on the whole box at every amplitude, cost at least 3/152 (4.2) |
+| **L3** core with shared drivers, explicit regions | q, r remote and orthogonal | **P + C** at the peak: Λ < S + 10⁻⁴ for u ≤ 0.00558 + 0.31907w and for w ≥ 0.0206 (6.1.1, 6.1.1a); the fourth-moment cutoff w ≥ 0.01125 is **R** (6.1.2) |
+| **L4** core on the residual R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost plus the content inequality | **K:** cost 0.24 **P** (6.2.1); content **P + C** for structured families (0.22 for X·P(Y), 0.239 for the Gaussian-factor class, 0.23 and 9/40 for self-interaction classes; 6.3); **open for a general cubic** (6.3.18; numerically sup C²/D ≈ 0.0876 at u = 0.0463). **Λ̂:** the A shell is **closed at the peak** at every amplitude (11.51) |
+| **L5** sector assembly | G = q + A + B + (z₁Q, z̄₁P, d·z₁(T − 2)) | **Open.** Proved: B-shell cost (7.1.1); peak alignment ‖c_B − 0.5053c_A‖ ≤ 0.007√u (7.1.4); zero-core odd costs (5.4); the local joint A/B form (7.3.1, 7.4.9). Missing: the finite-amplitude joint A/B bound (7.4), reduced to a compact box with shifts 0 ≤ x ≤ 2.9 (7.4.5); B-content for general cubics (7.1.5); a uniform odd-sector cost over a nonzero core (7.2.4), where the coupling with the one-coordinate cubic has two channels (7.2.5) |
+| **L6** row envelope and consumption | a fixed-ε row cover with exact thresholds, coverage of all response regions, a Lean theorem consuming K_η | **Open** apart from the central component at the peak row: an all-sector K_η with η ≤ 10⁻⁴ covers t ∈ [0.84, 0.851] (8.1); no `lower_of_K` or `KHyp` exists |
 
-**Advice of the 13 November audit (historical provenance).** Continue as a bounded research programme with
-an explicit decision point; it named the finite-amplitude joint A/B remainder as the next statement to attack.
-The later advice below uses the subsequent tilted-sector results.
-
-The completed tilted comparison, imported with its peak corollary in #416, closes the retained A-core at the peak up to remote energy .0463,
-and the sixth audit independently checks its exact budget and transfers it to the explicit nearby profile rectangle above. Joint A/B assembly,
-uniform nonzero-core odd-sector control, remaining response coverage and the complete consumer are still open.
-The original raw content theorem also remains open. The fifth audit's fixed moment-bank obstruction is still
-valid, but the newer Stein/moment certificate gets beyond that bank; it is no longer a reason to list the
-tilted comparison as unresolved.
-
-The sixth audit also proves the retained Gaussian benchmark is approached by actual finite-dimensional
-cubic sums: their raw-versus-retained difference is at most 12711 u³/N² at the peak. This justifies the
-historical diffuse limit without adding an auxiliary first-chaos coordinate or interchanging an infimum
-with weak convergence. A separate re-derivation gives an explicit Gaussian-marginal, noncubic example
-with raw value >S+7·10⁻⁷; it explains why marginal tests alone cannot prove the shared-driver theorem.
-Neither result proves the all-sector inequality. The historical monograph form is retained.
+**What remains.** For K: the raw content inequality of L4, the joint A/B bound, B-content, the odd sectors over a
+nonzero core, the remote part at the other rows, the response regions outside the central one and the consumer. For
+Λ̂ the A shell is done at the peak (11.51); 11.48 is a special case of it, 11.47 the only stronger statement, and
+item 83 of the ledger limits only the October moment bank, which 11.50 does not need. Still open for Λ̂: A and B
+jointly, B-content, the odd sectors, the other rows and the consumer. The order of attack is `STATUS.md`, section 15,
+and `MONOGRAPH.md`, chapter 3. The independent audit (REP) advises a bounded programme with an explicit decision
+point.
 
 ## (d) Reading order
 
-1. This file, parts (a) to (c), then the [sixth audit](sources/sixth-audit-2026-11-15-codex-a7c4/AUDIT.md) for the latest corrections and completed results.
-2. [`STATUS.md`](STATUS.md): what is known, with scope; then its list "tried and failed" before trying anything.
-3. `sources/audit-2026-11-13/REPORT.md`: the one-page verdict, section 3 (what was wrong in the record), section 4
-   (the statement that is actually missing), section 5 (the numerical experiment).
-4. [`MONOGRAPH.md`](MONOGRAPH.md): the errata first, then §1 and §2 (purpose, structure of the adversary), §3 (what
-   is proved, family by family), §4b (the six layers). Skip "THE WAY" in §4 except as history.
-5. `sources/manuscript/MANUSCRIPT_DIGEST_K.md`: the October manuscript in 460 lines (the response-side constraints,
+1. [`MONOGRAPH.md`](MONOGRAPH.md), chapters 0 to 3: the state of the problem.
+2. [`STATUS.md`](STATUS.md): the evidence for each statement; its sections 13 (false statements) and 14 (routes that
+   do not work) before trying anything.
+3. The audits: `sources/audit-2026-11-13/REPORT.md` (the one-page verdict, sections 2, 4 and 5), then the audits of
+   codex-a7c4 with the reviews by claude-b9ee archived in them: `sources/audit-2026-11-15-codex-a7c4/`,
+   `reaudit-2026-11-15-codex-a7c4/`, `third-audit-…`, `fourth-audit-…`, `fifth-audit-…`, `sixth-audit-…`.
+4. `sources/manuscript/MANUSCRIPT_DIGEST_K.md`: the October manuscript in 460 lines (the response-side constraints,
    the restricted forms K′ and K_rot, the negative results, everything known about the A shell).
-6. Then by need:
+5. Then by need:
    - a certificate or a family theorem: `sources/audit-2026-11-13/CERTIFICATE_AUDIT.md` and `record_audit.md`, then
      the proof in `sources/received-2026-11-05/<package>/`;
-   - the A+B assembly: `sources/audit-2026-11-13/ASSEMBLY_AUDIT.md` and `improvement_joint_tail.md`;
+   - the A+B assembly: `sources/audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md`, and the joint notes
+     of the fourth and fifth audits (`JOINT.md`);
    - the numerics: `sources/audit-2026-11-13/KERNEL_DERIVATION.md`, `RUNS.md`, `code/audit-2026-11-13/`,
      `sources/numerics-kscan-2026-11-13/README.md`;
-   - the remote part: `sources/manuscript/legacy/ch24-remote-diagonal.tex`, `ch32-stronger.tex`, `sources/d1/`,
+   - the remote part: `sources/audit-2026-11-15-codex-a7c4/REMOTE.md`, `remote_strong_PROOF.md`,
+     `sources/manuscript/legacy/ch24-remote-diagonal.tex`, `ch32-stronger.tex`, `sources/d1/`,
      `sources/external-2026-11-15/remote-closure-report.md`;
-   - the retained first-chaos penalty (K′, Λ̂ = Λ_P): `STATUS.md`, section 11; then
-     `sources/external-2026-11-15/REVIEW.md` (what the report of 15 November proves, and what the October manuscript
-     already had) and `sources/numerics-kprime-2026-11-15/README.md` (the retained element optimised together with
-     the sectors: margin about 6 for K and about 40 with the penalty retained, on one to three remote variables;
-     numerical). Then `STATUS.md`, section 11 (e), and `sources/received-2026-11-15-tilted-sector/`: `REVIEW_4.md`
-     first (the A shell of Λ̂ is proved; what was checked, and what is still open for K′), then `REPORT.md` (the
-     sixth version) with `deficit_dual_proof.md` and `deficit_moment_verify_proof.md`, and for the remainder step
-     `REVIEW_3.md` with `REPORT_secant_history.md` (the fifth version) and `secant_proof.md`; for the history
-     `REVIEW.md` with `first-version/REPORT.md`, and `REVIEW_2.md` with `REPORT_localization_history.md`. The
-     October side: `sources/manuscript/legacy/ch20-pinned-gate.tex`, `ch17-crossbound.tex`, `ch25-parts/` and
-     `sources/october-handoff/weak-k-2026-10-15/`;
+   - the retained functional (K′, Λ̂ = Λ_P): `STATUS.md`, section 11; `sources/external-2026-11-15/REVIEW.md` and
+     `sources/numerics-kprime-2026-11-15/README.md`; then `sources/received-2026-11-15-tilted-sector/`: `REVIEW_4.md`
+     (what is proved and checked), `REPORT.md` with `deficit_dual_proof.md` and `deficit_moment_verify_proof.md`,
+     and for the remainder step `REVIEW_3.md` with `REPORT_secant_history.md` and `secant_proof.md`; the earlier
+     versions of the report with their reviews: `REVIEW.md` with `first-version/REPORT.md`, `REVIEW_2.md` with
+     `REPORT_localization_history.md`. The October side: `sources/manuscript/legacy/ch20-pinned-gate.tex`,
+     `ch17-crossbound.tex`, `ch25-parts/` and `sources/october-handoff/weak-k-2026-10-15/`;
    - the response side: the digest §1, `sources/manuscript/legacy/ch25-parts/`;
-   - how a claim came about: `sources/log/ASSESSMENT_2026-11-04.md` (chronological, 4 to 7 November) and
-     `sources/prompts/`.
+   - how a claim came about: `sources/log/ASSESSMENT_2026-11-04.md` (chronological, 4 to 7 November),
+     `sources/prompts/`, the monograph of 5 and 6 November with its errata
+     (`sources/monograph-2026-11-05/MONOGRAPH_with_errata.md`) and the ledger with its dated passages
+     (`sources/status-2026-11-15/STATUS_with_history.md`).
 
-**Where the original paths now live.** The copied documents keep their original absolute links.
+**Where the original paths now live.** The copied documents keep their original absolute links. A copy that cites
+`MONOGRAPH.md` by section, or `STATUS.md` by its sections 13 to 15 or by a row that the current ledger does not
+have, means the versions kept in `sources/monograph-2026-11-05/` and `sources/status-2026-11-15/`.
 
 | original path (under `/Users/alingalatan/workspaces/grothe/handoff/`) | here |
 |---|---|
-| `research-degree5/CONJECTURE_K_MONOGRAPH.md` | `MONOGRAPH.md` (after the errata) |
+| `research-degree5/CONJECTURE_K_MONOGRAPH.md` | `sources/monograph-2026-11-05/MONOGRAPH_with_errata.md` (below its marker line) |
 | `research-degree5/ASSESSMENT_2026-11-04.md` | `sources/log/` |
 | `research-degree5/MANUSCRIPT_DIGEST_K.md` | `sources/manuscript/` |
 | `research-degree5/gpt-audit-2026-11-13/*.md` | `sources/audit-2026-11-13/` |
@@ -235,20 +206,32 @@ Neither result proves the all-sector inequality. The historical monograph form i
 Sizes are those of the files in this folder. Descriptions of the notes are taken from the documents themselves
 (title or opening words) unless a status is added; a status in this index is always the one in `STATUS.md`.
 
+### `sources/monograph-2026-11-05/`: the monograph of 5 and 6 November with its errata
+
+| file | size | contents |
+|---|---:|---|
+| `MONOGRAPH_with_errata.md` | 121 KB | `MONOGRAPH.md` at commit `854a512cd` (PR #419, 15 November 2026), with one provenance line added: the monograph of 5 and 6 November 2026 by claude-b9ee, verbatim below its marker line, under the errata sections A to I of 15 November. Its relative links are relative to `research/conjecture-K/`. Alias MON in `STATUS.md` (the text below the marker line). |
+
+### `sources/status-2026-11-15/`: the ledger with its dated passages
+
+| file | size | contents |
+|---|---:|---|
+| `STATUS_with_history.md` | 240 KB | `STATUS.md` at commit `854a512cd` (PR #419, 15 November 2026), with one provenance line added: the ledger with its dated passages, relabel notes, the version history of the tilted-sector report, the relation of each result to the October record, and section 14 (where the sources disagree, 59 items). Its relative links are relative to `research/conjecture-K/`. The current ledger keeps the IDs of its surviving rows. |
+
 ### `sources/sixth-audit-2026-11-15-codex-a7c4/`: sixth audit after merged #413
 
-New implications are author proofs pending external review. The completed tilted input and peak corollary
-are inherited from #416; four new scalar checkers were freshly replayed. No large tilted replay is claimed here.
+Its new proofs were re-derived, and its four checkers replayed, in the review of #419 by claude-b9ee (`STATUS.md`,
+section 0); the completed tilted input and the peak corollary are inherited from the received tilted-sector package.
 
 | file | size | contents |
 |---|---:|---|
 | `AUDIT.md` | 17,472 B | Findings, completed proofs, full-monograph coverage, review disposition, reproduction and bounded next work. |
-| `FOUNDATIONS.md` | 11,113 B | Finite-dimensional retained diffusion bound and Gaussian benchmark sharpness; no limit/infimum interchange. |
-| `JOINT.md` | 11,009 B | Both real Q/ν Hessian kernels, conditional-centering cancellation and a finite genuine-cubic witness. |
-| `OBSTRUCTION.md` | 6,432 B | Re-derived Gaussian-marginal obstruction and explicit noncubic excess >7·10⁻⁷. |
+| `FOUNDATIONS.md` | 11,113 B | Finite-dimensional retained diffusion bound and Gaussian benchmark sharpness; no limit/infimum interchange (`STATUS.md` 2.14). |
+| `JOINT.md` | 11,009 B | Both real Q/ν Hessian kernels, conditional-centering cancellation and a finite genuine-cubic witness (`STATUS.md` 7.2.5). |
+| `OBSTRUCTION.md` | 6,432 B | Re-derived Gaussian-marginal obstruction and explicit noncubic excess >7·10⁻⁷ (`STATUS.md` 6.5.1). |
 | `PR413_FEEDBACK.md` | 1,372 B | Initial coordination comment and format decision; the subsequent mathematical review is archived separately. |
 | `REVIEW_413_claude-b9ee.md` | 3,631 B | Verbatim post-merge Claude approval of #413, its re-derivations/replays, exclusions and corrections. |
-| `REMOTE.md` | 12,338 B | Full peak retained A-core corollary, strict failure of retained homogeneity and corrected profile transfer. |
+| `REMOTE.md` | 12,338 B | Full peak retained A-core corollary, strict failure of retained homogeneity and the profile transfer (`STATUS.md` 3.17, 11.51, 11.53). |
 
 ### `code/sixth-audit-2026-11-15-codex-a7c4/`: sixth audit after merged #413
 
@@ -494,7 +477,7 @@ Reference for every status in `STATUS.md`. Read `REPORT.md` first. The folder ho
 
 ### `sources/external-2026-11-15/`: two reports received on 15 November 2026, and their review
 
-The reports as received (transcripts), the package of the first one, and the review by claude-b9ee of the same day. Verification record: see REVIEW.md in this folder; its scripts and logs are in `review/`. The package of the second report was not received. Statuses: `STATUS.md`, section 11 (a) and (b).
+The reports as received (transcripts), the package of the first one, and the review by claude-b9ee of the same day. Verification record: see REVIEW.md in this folder; its scripts and logs are in `review/`. The package of the second report was not received. Statuses: `STATUS.md`, 2.10a, 3.16, 11.2 to 11.11.
 
 16 files, 53 KB.
 
@@ -529,7 +512,7 @@ The numerical follow-up of the review. The copy shows the write-up as it stood a
 
 ### `sources/received-2026-11-15-tilted-sector/`: the report on the tilted sector (codex-6e2b, 15 November 2026, six versions) and the reviews of its first, second, fifth and sixth versions
 
-The answer of an external assistant (agent ID codex-6e2b) to the request to prove the sector lemma behind `STATUS.md`, 11.12 to 11.20, at the tilt 3/5. The first five versions do not prove the lemma on the range that matters, and say so; the fifth reduces it to one inequality, and **the sixth proves that inequality and with it the lemma** (`STATUS.md` 11.49 to 11.52). Its author revised the report in place five times, and the working folder held one version at a time. The files at the top level are the sixth version (06:06), with the notes, probes and result files of the earlier versions that the folder still held; `REPORT_secant_history.md` is the fifth version (05:17), `REPORT_localization_history.md` the fourth (04:40), both kept by the author under those names, and `first-version/REPORT.md` the first (03:23). The second and third versions of the report were overwritten. `REVIEW.md`, `REVIEW_2.md`, `REVIEW_3.md` and `REVIEW_4.md` are the reviews by claude-b9ee of the first, the second, the fifth and the sixth version. The verifiers, their inputs, the probes and the scripts and logs of the reviews are in `code/tilted-sector-2026-11-15/` (the documents say "beside this file" or link to the same folder for them). Five JSON files above 300 KB stay in the working folder. The documents are Markdown with LaTeX formulas. The prompt that produced the report was not kept in a file. Hashes of the copies, and what the working folder held beyond them: `INVENTORY.md`. Statuses: `STATUS.md`, section 11 (e).
+The answer of an external assistant (agent ID codex-6e2b) to the request to prove the sector lemma behind `STATUS.md`, 11.12 to 11.20, at the tilt 3/5. The first five versions do not prove the lemma on the range that matters, and say so; the fifth reduces it to one inequality, and **the sixth proves that inequality and with it the lemma** (`STATUS.md` 11.49 to 11.52). Its author revised the report in place five times, and the working folder held one version at a time. The files at the top level are the sixth version (06:06), with the notes, probes and result files of the earlier versions that the folder still held; `REPORT_secant_history.md` is the fifth version (05:17), `REPORT_localization_history.md` the fourth (04:40), both kept by the author under those names, and `first-version/REPORT.md` the first (03:23). The second and third versions of the report were overwritten. `REVIEW.md`, `REVIEW_2.md`, `REVIEW_3.md` and `REVIEW_4.md` are the reviews by claude-b9ee of the first, the second, the fifth and the sixth version. The verifiers, their inputs, the probes and the scripts and logs of the reviews are in `code/tilted-sector-2026-11-15/` (the documents say "beside this file" or link to the same folder for them). Five JSON files above 300 KB stay in the working folder. The documents are Markdown with LaTeX formulas. The prompt that produced the report was not kept in a file. Hashes of the copies, and what the working folder held beyond them: `INVENTORY.md`. Statuses: `STATUS.md`, section 11 (b).
 
 106 files, 1.5 MB.
 
@@ -538,7 +521,7 @@ The answer of an external assistant (agent ID codex-6e2b) to the request to prov
 | `REPORT.md` | 13 KB | "Tilted sector lemma: complete range u ≤ 0.0463", **the sixth version** (06:06): the content-to-deficit inequality ‖c_{3/5}(q)‖² ≤ (3/10)·D₊(q) + 6·10⁻⁶ on the whole range and with it the lemma with κ = 56730/59009, η = 5673/295045000 (head); the inherited inputs (section 1); the ten energy-dependent content coefficients (2); the cover of 178 rectangles by moment caps and Stein duals, with the energy interpolation and the exempt boxes (3); the assembly (4); reproducibility and history (5). Labels P, C, N, O by its author. Reviewed in `REVIEW_4.md`. `STATUS.md` 11.49 to 11.52. |
 | `REPORT_localization_history.md` | 42 KB | "Tilted sector: proved partial results and exact remaining obligations", **the fourth version** (04:40), which its author kept under this name beside the fifth; byte-identical to the copy of `REPORT.md` taken at 04:40. Keeps the reviewed results (sections 2.2, 2.3, 3.1, 3.2, 3.3.1, 3.4, 4.1, 4.2) and adds: a sharpened global bound and the radius 0.371 (2.3, 2.4); the lemma for u ≤ 0.001123 and u ≤ 0.00173 (2.5, 2.6); the content bounds (2/25)·δ, (19321/10⁶)·u, 1/2500 and 3·δ^{3/2} (3.3); the curvature inequality (4.3); the localisation of every maximiser below 0.085 and the assembly with κ = 50/53 (5.1). Its sections 2.3 to 2.5, 3.3 (first two bounds) and 4.3 are what `REVIEW_2.md` covers; the rest of its new material is not reviewed. TILT-4 in `STATUS.md`. |
 | `REPORT_secant_history.md` | 11 KB | "Tilted sector: global secants and stronger structural content", **the fifth version** (05:17), which its author kept under this name beside the sixth; byte-identical to the copy of `REPORT.md` taken at 05:17: the global remainder bound Rem ≤ (13/20)·\|ρ\|² and with it 𝒥 ≤ C²/k (section 2); the content coefficient 1077659/27000000 on 0.03 ≤ u ≤ 0.0463 (3); the classes on which the lemma holds and the inequality (5) left open (4); evidence, replay and history (5). Reviewed in `REVIEW_3.md`. TILT-5 in `STATUS.md`. |
-| `REVIEW.md` | 6.7 KB | Review of the first version by claude-b9ee, 15 November 03:31, with an erratum added at 04:40: verdict; a table of what was re-derived, replayed or tested, item by item; what the report is worth, with a table of how far the structural bound is from sufficient on the Wick monomial and remarks on the three statements then open; what to ask for next. The erratum corrects the figures of that table; see also `STATUS.md`, section 14, items 41 and 42. |
+| `REVIEW.md` | 6.7 KB | Review of the first version by claude-b9ee, 15 November 03:31, with an erratum added at 04:40: verdict; a table of what was re-derived, replayed or tested, item by item; what the report is worth, with a table of how far the structural bound is from sufficient on the Wick monomial and remarks on the three statements then open; what to ask for next. The erratum corrects the figures of that table; see also `sources/status-2026-11-15/STATUS_with_history.md`, section 14, items 41 and 42. |
 | `REVIEW_2.md` | 11 KB | Review of the second version (state of 04:05) by claude-b9ee, 15 November 04:40, with an addendum of the same evening (section 7): what was replayed and re-derived, claim by claim; a correction to the first review; why the localisation of the maximiser cannot be reached from the reviewed inequalities and is not needed if the remainder has a global quadratic bound (numerically it has: 0.600 against the budget 0.962); the content against the deficit on a family of tensors (the certified chain closes with no margin); what to ask for next. The addendum: that remainder is the one of the note of 13 November (`STATUS.md` 7.4.5), its numerical bound for A and B together and with the odd sectors, and a cheaper way to sharpen the content bound. |
 | `REVIEW_3.md` | 6.9 KB | Review of the fifth version (state of about 05:10) by claude-b9ee, 15 November 05:29: verdict ("correct as far as I checked, and a real step"); what was re-derived, replayed or computed, claim by claim, and what was not read; the replay of the whole verifier (pass, the same counts as the run of its author); what is left, the inequality (5), and a route to it through an augmented remote certificate; then the B-sector and the odd sectors. |
 | `REVIEW_4.md` | 5.2 KB | Review of the sixth version (state of 06:07) by claude-b9ee with a reviewer agent of the same session, 15 November 06:38: verdict ("sound as far as checked; the claim stands as P + C"); the replay (the full verifier, and the deficit chain in a copy with the repository layout); what was re-derived; independent numerics on about 1,600 cubics; five findings, none blocking; what is still open for K′. Its scripts and two logs are in `code/tilted-sector-2026-11-15/review4/`. |
@@ -766,7 +749,7 @@ The top-level `.tex` and `.md` files are notes received directly; each subfolder
 
 ### `sources/october-handoff/`: the October 2026 material (handoff, report, plans, prompts, pipeline notes, five notes of the weak-K package)
 
-Dated documents. Their endpoints are stale (the repository then proved 1.40148809 and later 1.401674103); the statement of K and the negative results are still the ones in use. `weak-k-2026-10-15/` holds five notes of the weak-K package of 15 October. The manuscript chapter `ch25-weak-k.tex` reproduces parts of that package (the tied multiplier in `ch25-parts/20-stability-and-smoothing.tex`, the nine-point test in `ch25-parts/10-exact-duals-rotation-profiles.tex`); the notes say more about the tied profiles. They were added on 15 November because `STATUS.md`, section 11 (c), cites them for what the October record already had.
+Dated documents. Their endpoints are stale (the repository then proved 1.40148809 and later 1.401674103); the statement of K and the negative results are still the ones in use. `weak-k-2026-10-15/` holds five notes of the weak-K package of 15 October. The manuscript chapter `ch25-weak-k.tex` reproduces parts of that package (the tied multiplier in `ch25-parts/20-stability-and-smoothing.tex`, the nine-point test in `ch25-parts/10-exact-duals-rotation-profiles.tex`); the notes say more about the tied profiles. They were added on 15 November because `STATUS.md` (item 19) cites them, and `sources/status-2026-11-15/STATUS_with_history.md` (section 11 (c)) for what the October record already had.
 
 29 files, 384 KB.
 
@@ -1078,14 +1061,14 @@ Written by `kprime3.py`; a `.log` (one line per record) and a `.jsonl` (the same
 
 ### `code/tilted-sector-2026-11-15/`: the verifiers of the report on the tilted sector, their inputs, the probes, and the scripts and logs of its reviews
 
-The verifiers and probes are by codex-6e2b; `check_tilt_report*`, `secant_curvature.*`, `deficit_vs_bound.*`, `tilt_choice.*` and `replay_version5.log` are by claude-b9ee (NumPy, SciPy and mpmath), and their logs are kept because the reviews cite them as their record. `review4/` holds the scripts and two logs of the fourth review, written by a reviewer agent of claude-b9ee's session in a scratch folder: they are not working files of the delivery, each script has one header line saying so, and they read the author's witnesses from the working folder by absolute path; their numerical tables (`tables.npz`, `m2.npz`) and the output `family_rows.json` are not kept (`INVENTORY.md`). `verify.py` is the verifier of the sixth version and `verify_secant_history.py` that of the fifth: `python3 -I verify.py` runs the exact comparisons and then, compiled in a temporary subfolder, the C++ checkers and the Arb certificates; it needs `clang++` with directed rounding and an interpreter with python-flint (environment variable `TILTED_FLINT_PYTHON`); `--algebra-only` needs neither. The SHA-256 of their files are printed in `sources/received-2026-11-15-tilted-sector/results.txt` and `results_secant_history.txt` and are those of the copies here. `first-version/verify.py` is the verifier that the first review covers (standard library only, with the option `--numerical` for NumPy and SciPy); it was replayed again when this folder was first updated, without and with that option, with outputs identical to `preliminary_results.txt`. `second-version/verify.py` is the verifier that the second review replayed, and `fourth-version/verify.py` the verifier of the fourth version; the working files of all three were overwritten by their author. Statuses: `STATUS.md`, section 11 (e).
+The verifiers and probes are by codex-6e2b; `check_tilt_report*`, `secant_curvature.*`, `deficit_vs_bound.*`, `tilt_choice.*` and `replay_version5.log` are by claude-b9ee (NumPy, SciPy and mpmath), and their logs are kept because the reviews cite them as their record. `review4/` holds the scripts and two logs of the fourth review, written by a reviewer agent of claude-b9ee's session in a scratch folder: they are not working files of the delivery, each script has one header line saying so, and they read the author's witnesses from the working folder by absolute path; their numerical tables (`tables.npz`, `m2.npz`) and the output `family_rows.json` are not kept (`INVENTORY.md`). `verify.py` is the verifier of the sixth version and `verify_secant_history.py` that of the fifth: `python3 -I verify.py` runs the exact comparisons and then, compiled in a temporary subfolder, the C++ checkers and the Arb certificates; it needs `clang++` with directed rounding and an interpreter with python-flint (environment variable `TILTED_FLINT_PYTHON`); `--algebra-only` needs neither. The SHA-256 of their files are printed in `sources/received-2026-11-15-tilted-sector/results.txt` and `results_secant_history.txt` and are those of the copies here. `first-version/verify.py` is the verifier that the first review covers (standard library only, with the option `--numerical` for NumPy and SciPy); it was replayed again when this folder was first updated, without and with that option, with outputs identical to `preliminary_results.txt`. `second-version/verify.py` is the verifier that the second review replayed, and `fourth-version/verify.py` the verifier of the fourth version; the working files of all three were overwritten by their author. Statuses: `STATUS.md`, section 11 (b).
 
 90 files, 701 KB.
 
 | file | size | contents |
 |---|---:|---|
 | `audit_curvature.py` | 4.0 KB | Floating-point diagnostic of the curvature inequality (`STATUS.md`, 11.33), delivered with the second version and without output. One run made when this folder was updated (Python 3.12.3, NumPy 2.3.5, SciPy 1.17.1) printed "rho=.3, w=0.640204417: eigen=0.709425575423, relaxed=0.759693013642" and "rho=.3, w=0.683589101: eigen=0.703877110285, relaxed=0.763469870441": the largest eigenvalue of the Hessian, and the integral of the pointwise largest eigenvalue, which is above 3/4. |
-| `check_tilt_report.log` | 1.1 KB | Its output: the supremum 0.298834 of (C(t) − 1)/t², at t = 1.4525; the two constants of the global bound by quadrature; no violation of the global bound on the grid; and on the Wick monomial the content², δ and D at u = 0.0005, 0.005, 0.02, 0.0463. Its figures for sup m_h (244.39) and for the structural bound are an artefact of a spline (`STATUS.md`, section 14, item 42; corrected in `check_tilt_report_2_part2.log`). |
+| `check_tilt_report.log` | 1.1 KB | Its output: the supremum 0.298834 of (C(t) − 1)/t², at t = 1.4525; the two constants of the global bound by quadrature; no violation of the global bound on the grid; and on the Wick monomial the content², δ and D at u = 0.0005, 0.005, 0.02, 0.0463. Its figures for sup m_h (244.39) and for the structural bound are an artefact of a spline (`sources/status-2026-11-15/STATUS_with_history.md`, section 14, item 42; the values of `STATUS.md` 11.29 are in `check_tilt_report_2_part2.log`). |
 | `check_tilt_report.py` | 3.6 KB | The floating-point checks of the first review (claude-b9ee): the circular-mean inequality on t ∈ [0, 200]; the constants and the global bound on the Wick monomial; m_h and the structural bound against the true content and the deficit on the Wick monomial (see the remark on its log). |
 | `check_tilt_report_2.py` | 5.9 KB | The floating-point checks of the second review (claude-b9ee; mpmath and NumPy): the Hessian entries of the tilted profile by two routes, the suprema of N_Φ and of m_h, the range of h_{3/5}, and the two structural bounds on the Wick monomial. |
 | `check_tilt_report_2_part1.log` | 2.3 KB | Its output, first run: steps 1 and 2 (sup N_Φ = 0.295722 at R = 0.2320; sup m_h = 1.34998 at v = 0.0635); the run stops with an error in step 3. |
@@ -1133,7 +1116,7 @@ The verifiers and probes are by codex-6e2b; `check_tilt_report*`, `secant_curvat
 | `deficit_structure_refine_witness_020.json` | 26 KB | Input of the verifier: the rational barrier of the coefficient that starts at 1/50 (exact decimal strings). |
 | `deficit_structure_scan.py` | 5.0 KB | Script of the sixth version: a numerical primal Stein feasibility diagnostic (**N**). |
 | `deficit_vs_bound.log` | 4.3 KB | Its output: D, the bound B and B/D for u = 0.0005 to 0.0463 and eight members of the family at each energy; the largest B/D is 0.991. |
-| `deficit_vs_bound.py` | 2.8 KB | Second review: the certified content bounds over the numerical global cost, B(u, χ) = min{(2/25)χu², (19321/10⁶)u}/(P − Sec), against the deficit on the family from the Gaussian limit to the Wick monomial (`STATUS.md`, 11.38). |
+| `deficit_vs_bound.py` | 2.8 KB | Second review: the certified content bounds over the numerical global cost, B(u, χ) = min{(2/25)χu², (19321/10⁶)u}/(P − Sec), against the deficit on the family from the Gaussian limit to the Wick monomial (row 11.38 of `sources/status-2026-11-15/STATUS_with_history.md`). |
 | `first-version/verify.py` | 10.0 KB | **The verifier that the first review covers.** Exact rational interval arithmetic for C1 (Bernstein certificate of the circular-mean inequality), C2 (the integrals I₀, I₁, I₂, the constants j₀, g₀, J_s, the local cost k(3/5) and the two constants of the global bound), C3 (the corollaries), C4 (the constants of the conditional assembly and its tail bound) and C5 (the constant 848). SHA-256 `8d889c26e7e41d7da5ce12a1991799293d24b5c7f59b5d427ddc59c7e733620d`, the hash printed in `preliminary_results.txt` and quoted by the review. The working file was overwritten at 04:03. |
 | `fourth-version/verify.py` | 21 KB | The verifier of the fourth version (04:38): the exact rational checks C1 to C10 and the replays of the other certificates, the localisation among them. SHA-256 `c2109f2f5f4e03a145f526e8ace8f560469fa5207e3ea232dd8e586982ffa625`, as printed in `results_localization_history.txt`. Copied from the working folder before the fifth version replaced it. Not replayed for this record. |
 | `localization_alternative_majorant.py` | 2.8 KB | N only: floating-point search for the scalar majorant of `localization_alternative_proof.md` (third version); writes nothing. |
@@ -1301,7 +1284,7 @@ Run with a Python that has NumPy and SciPy (`python3 -I`); the certificate repla
 
 ### `code/experiments-2026-11-04/`: the exploratory scripts of 4 to 6 November (historical)
 
-Kept because the monograph and the log cite them by name. Several are superseded by the audit's experiment (see `STATUS.md`), and eleven `e11_*` scripts do not run as they stand: they `exec` helper files under older names (`scan_majorant.py`, `bcontent.py`, `betacheck.py`) and two data files are absent (`GB_table.npy`, `ksector_results.json`).
+Kept because the monograph of 5 and 6 November and the log cite them by name. Several are superseded by the audit's experiment (see `STATUS.md`), and eleven `e11_*` scripts do not run as they stand: they `exec` helper files under older names (`scan_majorant.py`, `bcontent.py`, `betacheck.py`) and two data files are absent (`GB_table.npy`, `ksector_results.json`).
 
 44 files, 124 KB.
 
@@ -1325,8 +1308,8 @@ Kept because the monograph and the log cite them by name. Several are superseded
 | `e11_ksector.py` | 5.5 KB | Peak row: Λ(G) − S for G in H₂,₁(ℂ²) with all six sectors (18 shells): core phases, added sectors, hill-climb, random mixtures (every value negative). The sector scan of the log, section 31. |
 | `e11_oddform.py` | 3.4 KB | Peak row: largest eigenvalue of the form E[\|O\|²/\|L+H\|] on three z-odd directions against 1/ε, and the true second-order cost along it. |
 | `e11_refined_target.py` | 879 B | Table over u for the Wick monomial: benchmark slack, D, C, r(u), Ψ_r(C) and the ratios of the refined target. |
-| `e11_scan_majorant.py` | 3.7 KB | The scan of monograph §3.5: tables φ, g and Monte Carlo of C²/D over ten one-driver shells and twelve random mixtures. Superseded by the audit's experiment. |
-| `e11_scan_opt.py` | 1.5 KB | The 12-shell hill-climb of monograph §3.5 (6 restarts × 25 steps). Not reproducible as written (it runs `scan_majorant.py`); superseded by the audit's experiment. |
+| `e11_scan_majorant.py` | 3.7 KB | The scan of §3.5 of the monograph of 5 and 6 November: tables φ, g and Monte Carlo of C²/D over ten one-driver shells and twelve random mixtures. Superseded by the audit's experiment. |
+| `e11_scan_opt.py` | 1.5 KB | The 12-shell hill-climb of §3.5 of the monograph of 5 and 6 November (6 restarts × 25 steps). Not reproducible as written (it runs `scan_majorant.py`); superseded by the audit's experiment. |
 | `e11_second_variation.py` | 953 B | Deterministic quadrature of C²/D for q_τ = √(u/(2+τ²))·X[(\|X\|²−2) + iτ(\|Y\|²−1)] at u = 0.0463: the saddle. |
 | `e1_maxfirstmoment.py` | 2.6 KB | E1: maximises E\|q\|/‖q‖₂ over the charge-one cubic chaos in d variables (best values 0.809 to 0.840 for d = 5, 6, 8; Gaussian 0.88623). |
 | `e2_quadratic.py` | 1.6 KB | E2: E\|X\|/‖X‖₂ for real Gaussian quadratic forms by the characteristic-function integral, against √(2/π). |
@@ -1348,7 +1331,7 @@ Kept because the monograph and the log cite them by name. Several are superseded
 | `k5/k5_quad3.py` | 6.7 KB | K₅: the same for d = 3; too coarse to be useful (RESULTS.md). |
 | `k5/k5_sigma.py` | 2.4 KB | K₅: σ-profile of the Gaussian ideal at a row, Monte Carlo against quadrature. |
 | `k5/k5_verify.py` | 2.3 KB | K₅: Monte Carlo evaluator at d = 1 against the quadrature of the Gaussian ideal. |
-| `k5/kmodel.py` | 3.5 KB | Quadrature model of the cubic row in the Gaussian ideal (the function D″(t) of the monograph); supplies the Gauss–Legendre rule to the others. |
+| `k5/kmodel.py` | 3.5 KB | Quadrature model of the cubic row in the Gaussian ideal (the function D″(t) of the monograph of 5 and 6 November); supplies the Gauss–Legendre rule to the others. |
 | `shell_content.py` | 2.8 KB | Monte Carlo: energy-normalised content of bounded functions of q in the diagonal-type shells (1,1), (2,2), (2,0), (3,1). |
 | `spike_content.py` | 1.7 KB | Monte Carlo: first-chaos content of phase(q) and of a clipped cubic of q for q = c·H₂,₁(X₁) + diffuse part. |
 
@@ -1369,7 +1352,7 @@ Node scripts (`node file.mjs`), exact rational or interval arithmetic, no data f
 
 ### `code/record-checks-2026-11-15/`: checks written when this folder was assembled and updated
 
-Not copies of working files. `tied_matrix_check.py` supports one identification made in `STATUS.md`, section 11 (a). The other two were written for the update of 15 November: `localisation_check.py` supports `STATUS.md`, 11.27 and section 14, item 41, and `tilted_content_check.py` the table "How far the content bounds are from 11.36" of 11 (e) and section 14, item 42.
+Not copies of working files. `tied_matrix_check.py` supports the tied matrix of `STATUS.md` 11.4. `localisation_check.py` supports `STATUS.md` 11.27, and `tilted_content_check.py` the Wick-monomial values of 11.29 and item 75; both also support passages of `sources/status-2026-11-15/STATUS_with_history.md` (the table "How far the content bounds are from 11.36" of its section 11 (e), and its section 14, items 41 and 42).
 
 3 files, 18 KB.
 
