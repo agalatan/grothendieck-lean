@@ -9977,6 +9977,7 @@ import Grothe.LowerAnalytic.GramSpectral
 import Grothe.LowerAnalytic.GramTensor
 import Grothe.LowerAnalytic.Influence
 import Grothe.LowerAnalytic.JointContractions
+import Grothe.LowerAnalytic.JointDefect
 import Grothe.LowerAnalytic.JointSixthCore
 import Grothe.LowerAnalytic.KSide
 import Grothe.LowerAnalytic.MixedChaos
@@ -9986,6 +9987,7 @@ import Grothe.LowerAnalytic.NodeCaps
 import Grothe.LowerAnalytic.Pieces
 import Grothe.LowerAnalytic.Potential
 import Grothe.LowerAnalytic.PotentialReg
+import Grothe.LowerAnalytic.QuarticNewton
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.RadialParts
 import Grothe.LowerAnalytic.Reduction
@@ -10004,6 +10006,8 @@ import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
 import Grothe.LowerTarget
 import Grothe.MainResult
+import Grothe.PolarizedGram
+import Grothe.QuadraticDual
 import Grothe.Research.LawNodeCheck
 import Grothe.Research.LawNodeData
 import Grothe.Research.LawNodeLower
@@ -10015,6 +10019,7 @@ import Grothe.Research.RefinedCoverData
 import Grothe.Research.RefinedCoverPartition
 import Grothe.Research.RefinedCoverParts
 import Grothe.Research.RefinedCoverResult
+import Grothe.ScalarOpt
 import Grothe.Statement
 import Grothe.StatementBridges
 import Grothe.Transfer
@@ -13998,3 +14003,4 @@ import Grothe.UpperQuad.TwistTail
 import Grothe.UpperQuad.TwistYEnvelope
 import Grothe.UpperQuad.WatsonSeed
 import Grothe.UpperTarget
+import Grothe.VectorOpt

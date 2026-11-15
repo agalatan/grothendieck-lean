@@ -77,6 +77,57 @@ The finite-dimensional reduction is explicit in
 preserving all norms and inner products in dimension at most its cardinality.
 Thus the formal inequality applies to unit vectors, and also vectors in the
 closed unit ball, in any complex inner product space; completeness is not needed.
+The one-sided response formulas in \texttt{Grothe/ScalarOpt.lean} and
+\texttt{Grothe/VectorOpt.lean} also prove attainment: the scalar optimum is the
+maximum of $\sum_i|\sum_j a_{ij}\delta_j|$ over unit phases, and the vector
+optimum is attained in $\mathbb C^{\min(m,n)}$ when $m,n>0$.
+Both optima vanish for empty matrices. The vector proof compresses one family's
+span after optimizing the other family, then uses compactness; it therefore
+requires less dimension than preserving the full joint Gram matrix.
+
+\paragraph{Reusable comparison inequalities.}
+\texttt{Grothe/QuadraticDual.lean} combines overlapping error budgets
+$\sum_i b_{ki}e_i^2\le B_k$ with the moment constraint
+$t^2+\sum_i(\ell_i-e_i)^2\le\mu$. For $\lambda>0$, $\nu_k,b_{ki}\ge0$,
+and $M_i=\sum_k\nu_k b_{ki}$, completing squares gives
+\[
+ \sum_i a_i e_i+a_t t\le
+ \lambda\Bigl(\mu-\sum_i\ell_i^2\Bigr)+\frac{a_t^2}{4\lambda}
+ +\sum_k\nu_k B_k+\sum_i\frac{(a_i+2\lambda\ell_i)^2}{4(\lambda+M_i)}.
+\]
+The normed-space adapter includes $e_i\le\ell_i$: without this condition,
+squaring a lower bound obtained by subtracting the error is unjustified.
+Prefix budgets are a specialization, and a concrete two-variable example
+improves the separate estimate $3/2$ to $41/30$.
+
+For nonnegative spectral weights, \texttt{Grothe/PolarizedGram.lean} retains
+the imaginary Gram correlation in the product estimate:
+\[
+ \Bigl(\sum_i w_i|\Re(r_i\overline{s_i})|\Bigr)^2
+ +\Bigl(\sum_i w_i\Im(r_i\overline{s_i})\Bigr)^2\le E_rE_s,
+ \qquad E_r=\sum_iw_i|r_i|^2.
+\]
+This holds for finite families and summable energies. If $w_i\ge L>0$, the
+unweighted absolute real tail is at most $\sqrt{E_rE_s-I^2}/L$, where $I$ is
+the displayed imaginary correlation. There is no polarization parameter or
+division by an input energy. A numerical gain still needs certified $I,E_r,E_s$.
+
+\texttt{LowerAnalytic/JointDefect.lean} gives a rational approximation to the
+two-disk support defect $\Delta=H-S$, where
+$S=|l+x+iy|+|l-x-iy|$,
+$H=C+x^2/C+y^2/\lambda$, and $C=\lambda+l^2/\lambda$.
+For every $\lambda>0$ and $l\ge0$, the correction
+\[
+ D_0=\frac{H^4-4H^2(l^2+x^2+y^2)+16l^2x^2}{2H^3}
+ \quad\text{satisfies}\quad \frac{81}{250}\Delta\le D_0\le\Delta.
+\]
+The fraction $81/250$ is sharp. The factored-quartic Newton theorem in
+\texttt{LowerAnalytic/QuarticNewton.lean} has the sharp contraction factor
+$3/4$, yielding increasing corrections with
+$0\le\Delta-D_n\le(169/250)(3/4)^n\Delta$.
+Their explicit recurrence uses only rational operations on the polynomial
+coefficients, including the degenerate case. These structural results neither
+assume numerical certificates nor change the certified endpoints.
 
 \paragraph{Why it matters.}
 \begin{itemize}

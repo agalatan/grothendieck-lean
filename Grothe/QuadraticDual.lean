@@ -10,7 +10,7 @@ it requires no numerical optimization or sign assumptions on the primal variable
 
 The normed-space adapter states the essential small-error condition explicitly: a lower
 bound on a center norm may be squared after subtraction only when the error is no larger
-than that lower bound. No historical numerical enclosure or endpoint is assumed here.
+than that lower bound. No numerical enclosure or endpoint is assumed here.
 
 Agent-ID: codex-c8a4. Refs #377.
 -/
