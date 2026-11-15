@@ -1,0 +1,21 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS conditional on stored kernel grids",
+  "scope": "Peak row; 1977/40 sixth-moment coefficient. Not a replay of the stronger 40.45313 theorem.",
+  "archive_sha256": "92c5178b0b07dcc63cf3705cf46462c32f9a76e96cf42b5dd5db50f29578afbb",
+  "checks": {
+    "verify_improved_moment.py": {
+      "status": "PASS",
+      "original_sha256": "97e6cf069b041bcaeabffb4c8b023c6cd96f7020976e9ce556301331087d166d"
+    },
+    "replay_certificate.py": {
+      "status": "PASS",
+      "original_sha256": "dcaa9e11a8d77c03f2f42842415ece85cd9090895529632914855f7384b1e586"
+    },
+    "verify_obstruction.py": {
+      "status": "PASS",
+      "original_sha256": "eea6b2090fea5dcc87f57009c5aee4b73ddc5fd1a878b4013c32914bd1ad4a18"
+    }
+  },
+  "elapsed_seconds": 19.377
+}

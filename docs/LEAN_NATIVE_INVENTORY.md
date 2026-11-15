@@ -6,18 +6,20 @@ is `data/axioms/native.txt` (cap ranges, Hardy facts and others). The default re
 `scratch/Axioms.lean`, with its required declarations in `data/axioms/required.txt`. Normal `ready/*` delivery CI builds and audits
 the combined tree before merging it.
 
-The lower chain uses the refined 10,909-box cover. Its finite checks comprise
-five row chunks, three mixed-batch chunks, one law-node fact and five refined-cover
-facts. The superseded four box chunks and partition fact are removed from both
-the library and allowlist. `certRefinedPartition` checks coverage with
-`treeCoverOK`; it does not assert disjointness. `treeCoverOK_sound` proves the
-coverage property needed by the lower-bound reduction. The retired partition
-checker's unused straddler scan is absent; no runtime improvement is claimed.
+The lower chain uses the 14,060-box finite-mixture cover. Its exact checks cover
+the unchanged rows and mixed batches, the original and additional law-node banks,
+the four sequential box chunks and the partition. The existing refined-box and
+partition native facts now check the stronger certificate in place; the extra
+law bank uses `LowerRefinementCheck.certRefinementBatches`.
+`certRefinedPartition` checks coverage with `treeCoverOK`; it does not assert
+disjointness. `treeCoverOK_sound` proves the coverage needed by the reduction.
 
-`lower_bound_of_capsRest` now reaches `1.401697117301` by the refined-cover theorem,
-with the same `CapsRest` and unchanged shared `NodeCaps` definition. All 60 range
-facts are retained. The generated localized-piece facts outside this supported
-target are a separate campaign, not additional allowlisted endpoint inputs.
+`MainResult.lower_target` reaches `1.401700037873` through
+`lower_bound_of_completed_refinement`, with the same Gaussian node caps.
+`lower_bound_of_capsRest` retains its older `1.401697117301` interface to
+preserve the heavy cap-cache source boundary; it follows from the same new cover.
+The original cap range computations are unchanged. Generated localized-piece
+facts outside this supported target are a separate campaign.
 
 The current inventory covers the active target and lower proof. Archived upper
 variants have separate preserved inventories under
@@ -147,9 +149,9 @@ and is not an isolated timing of the native computation.
 | `Grothe.UpperChaos.hardy_arc_part_3` | `Grothe/UpperChaos/HardyArcPart3.lean:9` | yes | Indirect via scratch/Axioms.lean hardy_of_real, hardy_region_and_mean | GitHub-hosted module build 1114 s alone, about 1700 s with the four parts in parallel (4 vCPUs) |
 | `Grothe.UpperChaos.hardy_region_check` | `Grothe/UpperChaos/HardyArcRegionCheck.lean:10` | yes | Indirect via scratch/Axioms.lean hardy_of_real, hardy_region_and_mean | GitHub-hosted module build 8.7 s |
 | `Grothe.Research.LawNodeCheck.certLawNodes` | `Grothe/Research/LawNodeCheck.lean:14` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.Research.LowerRefinementCheck.certRefinementBatches` | `Grothe/Research/LowerRefinementCheck.lean` | yes | Direct #print axioms in scratch/Axioms.lean and scratch/LowerRefinementAxioms.lean | Exact checkBatch replay of the additional law bank; the replacement cover is still pending |
-| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0` | `Grothe/Research/RefinedCoverBoxes0.lean:11` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes1` | `Grothe/Research/RefinedCoverBoxes1.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes2` | `Grothe/Research/RefinedCoverBoxes2.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes3` | `Grothe/Research/RefinedCoverBoxes3.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.Research.RefinedLowerCheck.certRefinedPartition` | `Grothe/Research/RefinedCoverPartition.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Coverage-only treeCoverOK; no new timing established here |
+| `Grothe.Research.LowerRefinementCheck.certRefinementBatches` | `Grothe/Research/LowerRefinementCheck.lean` | yes | Direct #print axioms in scratch/Axioms.lean and scratch/LowerRefinementAxioms.lean | Exact checkBatch replay of the additional law bank; local whole-module build 62 s |
+| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0` | `Grothe/Research/RefinedCoverBoxes0.lean:11` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 9.3 s; indexed decoding with proved equality to the original checker |
+| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes1` | `Grothe/Research/RefinedCoverBoxes1.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 10 s; indexed decoding with proved equality to the original checker |
+| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes2` | `Grothe/Research/RefinedCoverBoxes2.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 14 s; indexed decoding with proved equality to the original checker |
+| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes3` | `Grothe/Research/RefinedCoverBoxes3.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 12 s; indexed decoding with proved equality to the original checker |
+| `Grothe.Research.RefinedLowerCheck.certRefinedPartition` | `Grothe/Research/RefinedCoverPartition.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 3.1 s; indexed decoding with proved equality to the original checker |

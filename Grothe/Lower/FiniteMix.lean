@@ -1,5 +1,5 @@
 -- Grothe/Lower/FiniteMix.lean
-import Grothe.Lower.Boxes
+import Grothe.Lower.BoxLookup
 
 /-!
 # Finite mixtures of certified lower-bound components
@@ -60,11 +60,11 @@ def MixBox.dom (b : MixBox) : Dom := b.box.dom
 /-- Evaluate a finite-mixture box by the existing exact slab formula. -/
 def MixBox.bound (rows : List Row) (batches : List JBatch) (b : MixBox) : Option ℚ :=
   match b.tree with
-  | none => boxBound rows batches b.box
+  | none => indexedBoxBound rows batches b.box
   | some tree =>
     let r := b.box
     if ¬ (0 ≤ r.sl ∧ r.sl < r.su ∧ 0 ≤ r.xl) then none else
-    match tree.resolve (fun c => compRefData rows batches c r.sl r.su r.xu) with
+    match tree.resolve (fun c => indexedCompRefData rows batches c r.sl r.su r.xu) with
     | none => none
     | some (a, Lm, Lp) =>
       if gateOK a.N = true ∧ 0 ≤ Lm.a6 ∧ 0 ≤ Lp.a6 then
@@ -99,10 +99,12 @@ theorem MixBox.bound_sound (rows : List Row) (batches : List JBatch)
   | mk r tree =>
     cases tree with
     | none =>
-      exact box_sound rows batches hrows hbatches r val hb X1 X2 X3 τ hX hM hS
+      have hb' : boxBound rows batches r = some val := by
+        simpa only [MixBox.bound, indexedBoxBound_eq] using hb
+      exact box_sound rows batches hrows hbatches r val hb' X1 X2 X3 τ hX hM hS
         V t Qh v hv Ψ hΨ hscal ⟨htl, htu⟩ ⟨hτl, hτu⟩ ⟨hxl, hxu⟩
     | some tree =>
-      simp only [MixBox.bound] at hb
+      simp only [MixBox.bound, indexedCompRefData_eq] at hb
       split_ifs at hb with hvalid
       obtain ⟨hsl, hslsu, hxl0⟩ := hvalid
       cases hd : tree.resolve (fun c => compRefData rows batches c r.sl r.su r.xu) with

@@ -1,4 +1,4 @@
-# Exact lower-witness refinement — cover reflection pending
+# Exact lower-witness refinement
 
 This is the acceptance input for task #378. Its complete exact-arithmetic
 replay gives the scalar cap
@@ -6,16 +6,18 @@ replay gives the scalar cap
 \[
 B=\frac{3567097}{5000000}=0.7134194,
 \qquad
-K_G^{\mathbb C}\geq\frac{5000000}{3567097}>1.4017000378,
+K_G^{\mathbb C}\geq\frac{5000000}{3567097}>1.401700037873,
 \]
 
 using the repository's existing analytic reduction and Gaussian transfer.
-There is no Conjecture K premise. The law bank is reflected by
-`LowerRefinementCheck.certRefinementBatches`, and `Lower/FiniteMix.lean`
-proves soundness of arbitrary finite mixture expressions, their box bounds,
-and the corresponding cover checker. **The concrete 14,060-box cover still
-needs Lean reflection and endpoint assembly.** This input does not update
-`MainResult` or the repository's formal lower endpoint.
+There is no Conjecture K premise. `LowerRefinementCheck.certRefinementBatches`
+checks the additional law bank. `Lower/FiniteMix.lean` proves soundness of finite
+mixture expressions, their box bounds and the complete cover checker. The four
+`RefinedCoverBoxes` checks and `RefinedCoverPartition` certify all 14,060 leaves
+and coverage. `RefinedLowerCheck.lower_bound_of_completed_refinement` applies
+the existing analytic reduction and transfer. `MainResult.main_bounds` discharges
+the unchanged Gaussian node-cap hypothesis and displays the new strict endpoint.
+The increase over `1.401697117301` is `0.000002920572`.
 
 ## Replay
 
@@ -25,8 +27,12 @@ From the repository root:
 python3 -B -S tools/verify_lower_refinement.py
 python3 -B -S tools/check_lower_refinement_controls.py
 python3 -B -S tools/gen_lower_refinement_lean.py --check
-lake build Grothe.Lower.FiniteMix Grothe.Research.LowerRefinementCheck
-lake env lean scratch/LowerRefinementAxioms.lean
+python3 -B -S tools/gen_lower_refinement_cover.py --check
+lake build Grothe.Research.RefinedCoverResult Grothe.LowerTarget
+lake env lean scratch/LowerRefinementEndpointAxioms.lean > /tmp/lower-refinement-axioms.log
+python3 scripts/check_axioms.py --refined-cover < /tmp/lower-refinement-axioms.log
+lake env lean --run scratch/LowerRefinementPortCheck.lean > /tmp/lower-original-values.txt
+python3 -B -S tools/check_lower_refinement_port.py /tmp/lower-original-values.txt
 ```
 
 The Python commands use only the standard library and existing
@@ -46,8 +52,8 @@ stored bounds, convex weights, node indices, and restricted-node usage.
 
 - `sources.json` pins the 22 original Lean data files and the reused arithmetic
   checker by exact Git blob hash. A source change fails closed; investigate
-  and reverify it before updating a hash. The recorded successful Lean run
-  covers the inherited analytic proof, not this extension.
+  and reverify it before updating a hash. The historical run in the manifest
+  identifies the inherited sources; the current PR check covers this extension.
 - `nodes.json` is the ordered registry of the 21 files under `nodes/`. Original
   batch indices are 0 through 22; each new node contributes one singleton batch,
   starting at 23. Registry order is part of the certificate.
@@ -127,7 +133,7 @@ leaf bound, parent maximum, and unchanged original box is rechecked. No
 replacement may worsen its parent. The final maximum is compared with `B`
 and the reciprocal comparison is checked exactly.
 
-## Lean proofs and remaining integration
+## Lean proof and exact port comparison
 
 The existing `BoxKind` reflection handles at most two row components. The
 extension uses `MixTree CompRef` to represent arbitrary finite binary mixing
@@ -146,11 +152,37 @@ envelopes, budgets, majorants, radial tails, and joint-node ranges. Its native
 fact is recorded in the axiom inventory. The generic mixture proofs use no
 native computation.
 
-Before promoting the endpoint, the concrete replacement forest must be
-exported to `MixBox` expressions, the entire cover and partition checked in
-Lean, and the new checked cap connected to the scalar-witness transfer.
+`tools/gen_lower_refinement_cover.py` replays the complete rational certificate
+before exporting its 14,060 `MixBox` expressions and partition. Positive weights
+are normalized into binary mixtures; old boxes reuse the pinned original data.
+Lean independently checks the generated expressions, every range, all box caps
+and the entire partition. The four existing native box checks and existing
+partition check are replaced in place, rather than adding a second active cover.
 
-The numerical endpoint remains a computer-assisted Python extension of the
-existing analytic proof until those remaining Lean obligations are closed.
+The original cap data, Gaussian witness and source potentials are unchanged.
+`lower_bound_of_refined_cover_data` retains its older, weaker conclusion solely
+for the cached `CapNodes.lean` interface; the public target uses
+`lower_bound_of_completed_refinement`. Both follow from the new checked cover.
+No Python evaluation is a premise of the Lean theorem.
+
+The indexed decoder in `Lower/BoxLookup.lean` selects the requested cell or
+witness before parsing it. Its equality proofs preserve the original checker,
+including invalid inputs and node ranges. On the local pinned Lean build, the
+four complete box-check modules took 9.3, 10, 14 and 12 seconds; the partition
+module took 3.1 seconds. These are whole-module measurements, not isolated native
+evaluation timings. The law-bank module previously built in 62 seconds.
+
+The diagnostic port comparison exports the indexed evaluator on all 10,909 original boxes.
+`indexedBoxBound_eq` (in `Lower/BoxLookup.lean`) proves that its
+output is exactly `boxBound`. It then compares each rational result exactly with the Python evaluator. It adds no
+native fact or numerical premise. The principal implementation correspondence is:
+
+| Python (`lower_refinement.py`) | Lean |
+|---|---|
+| `value` | `Grothe.Lower.boxVal` |
+| `capvalue` | `Grothe.Lower.capVal` |
+| `price` | `Grothe.Lower.VRow.price` |
+| `component` | `Grothe.Lower.compRefData` |
+| `qmax` | `Grothe.Lower.quadMax` |
 
 Agent-ID: codex-df7b

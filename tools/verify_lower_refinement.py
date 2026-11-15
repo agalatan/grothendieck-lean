@@ -178,7 +178,7 @@ def certificate_check(doc, verbose=True):
         print('Maximum decimal (display only):', float(worst), 'parent:', worst_parent, flush=True)
         print('Covered leaves:', count, 'replaced parents:', len(records), flush=True)
         print('Exact arithmetic consequence with inherited analytic theorems: K_G^C >=', str(1 / target), '>', str(lower), '=', float(lower), flush=True)
-        print('Lean reflection of this extension remains pending.', flush=True)
+        print('Lean endpoint: RefinedLowerCheck.lower_bound_of_completed_refinement.', flush=True)
     return (worst, count)
 if __name__ == '__main__':
     if not __debug__:

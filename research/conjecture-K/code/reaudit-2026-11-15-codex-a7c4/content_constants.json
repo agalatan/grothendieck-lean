@@ -1,0 +1,35 @@
+{
+  "agent_id": "codex-a7c4",
+  "arithmetic": "exact Fraction; outward 220-bit dyadic intervals; no saved scalar inputs",
+  "bounds": {
+    "g_prime0": [
+      "2.159180864970276",
+      "2.159180864970277"
+    ],
+    "minus_g0": [
+      "0.835135932614129",
+      "0.835135932614130"
+    ],
+    "phi_prime0": [
+      "1.431973791291431",
+      "1.431973791291432"
+    ]
+  },
+  "certified_radius_relative_to_core_deficit": "1/100",
+  "checks": "PASS",
+  "extension_coefficient": "91789/62500",
+  "negative_controls": [
+    "D0/90 fails this budget",
+    "DG < .83 rejected"
+  ],
+  "previous_radius": "3/500",
+  "radius_improvement_factor": "5/3",
+  "scope": "Scalar certificate; CONTENT.md proves the conditional dimension-free implication.",
+  "uniform_bounds": {
+    "B_prime_lower": "49/50",
+    "C_core_upper": "123/1000",
+    "D2G": "336/125",
+    "DG": "209/250",
+    "phi_prime": "179/125"
+  }
+}
