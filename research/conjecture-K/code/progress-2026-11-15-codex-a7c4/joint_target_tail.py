@@ -31,14 +31,16 @@ for i in range(16):
  assert min(zz)>0,(lo,zz)
  mins.append(min(zz))
 tail=translated_scaled(P,Q(4),Q(1));assert min(tail)>0
-mass=W[0]+W[1]+2*W[2]
-U=Q(17,5) # strict > 2 sqrt(mass)
+# Use the actual directional density, not the mass of its radial dominator.
+# E|h|^2/S = 1+s^2|A+rho B|^2/S <= H2.
+mass=1+s*s*(1+rho*rho)
+U=Q(241,100) # strict > 2 sqrt(mass)
 assert U*U>4*mass
 assert k==Q(1,2)
 assert s*s+alpha>=orth
 m=p-c-(s*s+alpha)*(1+rho*rho)
 H2=1+s*s*(1+rho*rho)
-wcut,ampcut=Q(5,2),Q(33,20)
+wcut,ampcut=Q(101,50),Q(33,20)
 assert m>0
 assert m+k*wcut*wcut>U
 assert (m*ampcut+2*k*ampcut**3)**2>16*H2

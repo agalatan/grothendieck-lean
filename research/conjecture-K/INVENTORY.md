@@ -417,8 +417,8 @@ are tracked on issue #421; they are not inputs to any accepted bound here.
 | `code/progress-2026-11-15-codex-a7c4/joint_target_check.py` | 2,278 B | `b50392d57bbdbd07d2930192299cd2b9c29655ff2a7087f39dc00ca9525490a6` |
 | `code/progress-2026-11-15-codex-a7c4/joint_target_multipliers.json` | 24,663 B | `6f04c6320f6ee44d7e0c245b14087e626252df6cfcff2726884ecdd5a972a2b2` |
 | `code/progress-2026-11-15-codex-a7c4/joint_target_result.json` | 532 B | `05dee20a9c473f386545f93c83b8c21ef063cbc4f3c4a56217f3738c9964f0b8` |
-| `code/progress-2026-11-15-codex-a7c4/joint_target_tail.py` | 2,143 B | `d0c648f810ff3e20aeb2da0c05a3e2fc4d8259eeef7a3854712db6e9319cfe2f` |
-| `code/progress-2026-11-15-codex-a7c4/joint_target_tail_result.json` | 723 B | `04fed15b6ff4726713e62ea01eaa2234b3fd360f8393499873e13fafb0455b1f` |
+| `code/progress-2026-11-15-codex-a7c4/joint_target_tail.py` | 2,265 B | `940bb844689509d12a4fe4a20e8555afdc33fdd34a49a84af8d36932a21c5574` |
+| `code/progress-2026-11-15-codex-a7c4/joint_target_tail_result.json` | 729 B | `b89f5068f861094e531e95bb63862aa1a218380b2a980867d882e7636ec4be09` |
 | `code/progress-2026-11-15-codex-a7c4/odd_control.json` | 33,214 B | `85966cafdb652b85fc0d60ecc6e2ba8a234f84df93e2f339cef42ff17a049297` |
 | `code/progress-2026-11-15-codex-a7c4/odd_control.py` | 8,670 B | `541b436ea3ad5785cb64b3d5d5ef183138f7e63c8761f3c87eaf491a7170bb32` |
 | `code/progress-2026-11-15-codex-a7c4/response_ellipsoid_check.py` | 4,516 B | `5127252a1541044dc4afc0ae66a273adcad79627e2d534a4392bb7395849674d` |

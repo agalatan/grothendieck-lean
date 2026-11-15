@@ -18,12 +18,12 @@
     "-2316857/6250000",
     "93829/62500"
   ],
-  "mass": "7209372481/2500000000",
+  "mass": "3629795281/2500000000",
   "density_min_bernstein": "151966319/2500000000",
   "density_tail_min": "32041/12500000",
-  "uniform_remainder_ratio": "17/5",
+  "uniform_remainder_ratio": "241/100",
   "minimum_quadratic_ratio": "7344303698127/18910000000000",
-  "w_cutoff": "5/2",
+  "w_cutoff": "101/50",
   "amplitude_cutoff": "33/20",
   "interior_certified": false
 }
