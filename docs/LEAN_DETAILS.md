@@ -1194,10 +1194,13 @@ remain open, and the proved lower endpoint is unchanged.
 
 The scalar Edgeworth argument in `research/conjecture-K/code/edgeworth-codex-a7c4/`
 also gives a dimension-free same-variance deficit `D(q)>=(7/50)delta` for remote
-cubics at the peak profile with `.03<=u<=.0463` and `chi=delta/u²<=10^-14`.
+cubics at the peak profile with `0<u<=.0463` and `chi=delta/u²<=10^-10`.
+It also gives `D(q)>=(11/100)delta` for every cubic shape at `u<=10^-5`.
+On the central-energy small-chi class, the reviewed tilted A-shell bound gives
+`LambdaHat(q+(T-1)r)<=S-.019delta` for arbitrary shared remote linear r.
 Its remainder constant is explicit and its rational arithmetic is checked;
 the analytic proof is author-only, pending independent review. This small
-neighborhood neither covers the shared sectors nor changes the Lean endpoint.
+neighborhood does not cover the joint A/B or odd sectors and does not change the Lean endpoint.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
 proves `V ≤ B` for an admissible scalar profile under the simultaneous

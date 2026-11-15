@@ -634,13 +634,14 @@ The working proof is `handoff/codex-a7c4-central-aligned/PROOF.md` in the author
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `code/central-aligned-codex-a7c4/README.md` | 2,240 B | `fff2cb5f4ba1b56130f1d9f90214919764b698d8f8e5ad05b63be3053c2fb6a9` |
+| `code/central-aligned-codex-a7c4/README.md` | 3,163 B | `cfd6fccc5f38accdae216a8af10b56ed37034612ad3c3b56177c70d24395d0e2` |
+| `code/central-aligned-codex-a7c4/archive_receipts.py` | 4,773 B | `397486a3b549466d6aaa8ba31b2fd14da069dd355ce253af1164112e79e281ae` |
 | `code/central-aligned-codex-a7c4/base_curvature.cpp` | 3,595 B | `016088276b453263c6ca770bc5be3f9051db3d592f3a3b75151830c6285f2b34` |
 | `code/central-aligned-codex-a7c4/central_integral.cpp` | 5,556 B | `8e3b17bfe5669e0f9e32ed5330bf6a4aea80f7db5c09024ef15f6ed0186b6502` |
 | `code/central-aligned-codex-a7c4/jet_test.cpp` | 1,231 B | `e714e47516d3e50e9e9899a4bb218e2896535be4897aaa461f9af8d90e51b1b0` |
 | `code/central-aligned-codex-a7c4/mixed_jet.hpp` | 1,782 B | `8abc217c8fa877dd6a4f3fd9024d8047a070d0c6140bbff4d267a2d1162784c4` |
 | `code/central-aligned-codex-a7c4/phase_radius.py` | 3,613 B | `a821645392be8384e3c4635add45e64be667f65fe7811ce8871ec6f44596c9ee` |
-| `code/central-aligned-codex-a7c4/test_receipts.py` | 4,850 B | `c23149afbc6d58383c493fb35eb81131b4f9c29eba9c4492e93933693f292b7a` |
+| `code/central-aligned-codex-a7c4/test_receipts.py` | 5,756 B | `4cfe888f5360e9af87667c9914ffb126fb15b4ee80e59b850ca38ec98694959e` |
 | `code/central-aligned-codex-a7c4/verify.py` | 18,632 B | `630d497151674c21dfd0849f0eb384d923b9e5b8e3f584a62c134edf51ffc217` |
 | `sources/central-aligned-codex-a7c4/PROOF.md` | 14,466 B | `9d2218082e17bb6b125f12edb75d9e3d5d18457f58894037a374eee701ea17ad` |
 
@@ -654,7 +655,8 @@ the analytic argument and is not run by CI. The working proof is
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `code/edgeworth-codex-a7c4/README.md` | 1,217 B | `d2cb54ec7583f773f67c73436aa3f3a385e0538b8c6c8e266d1d4f770eaf528a` |
-| `code/edgeworth-codex-a7c4/result.json` | 396 B | `668575305f0fde2969e376c8b87afc7289c66429676490f3bfb0adc4eb4af19a` |
-| `code/edgeworth-codex-a7c4/verify.py` | 2,771 B | `2d725425e843080acc6d0ffb3cafd8ed4c65c83aa701e46157436db6dedca33d` |
-| `sources/edgeworth-codex-a7c4/PROOF.md` | 10,086 B | `e6a6905328913a50b09b89cfc53d9fd631943beb6d2d9f70655ea74a91d09087` |
+| `code/edgeworth-codex-a7c4/README.md` | 1,857 B | `ebb0f941ef1040a8457ae2b8a2990a1e6c14fef7f5c6bf7621634f9f4ffc622e` |
+| `code/edgeworth-codex-a7c4/identity_controls.py` | 3,772 B | `f05243381a5deb998c0f818df12739383f891c8a5709494dd66c3bb5a2811e5e` |
+| `code/edgeworth-codex-a7c4/result.json` | 573 B | `a8c8b65148cc6e289a2faf46dcc2e81342c4dc076658f1825b446949353e99dc` |
+| `code/edgeworth-codex-a7c4/verify.py` | 3,544 B | `173cedc30acc752b5e99aa12e5592235dabdaac7546ea141bb02fe9855509cba` |
+| `sources/edgeworth-codex-a7c4/PROOF.md` | 12,571 B | `21b3c39c8d3780250f87be4b279790716f86371b70eae2b9607c73f9f1710195` |

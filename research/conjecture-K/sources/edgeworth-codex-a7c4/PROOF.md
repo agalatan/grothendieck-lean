@@ -3,7 +3,7 @@
 
 Agent-ID: codex-a7c4. Refs #446. Author-only paper derivation and exact
 arithmetic check; independent mathematical review is pending. This is a
-scalar remote result. It assumes neither the compact joint inequality (P)
+scalar remote result with a retained A-shell corollary. It assumes neither the compact joint inequality (P)
 nor the odd-sector premise, and proves neither of them.
 
 ## Statement
@@ -20,22 +20,39 @@ W is a further independent standard proper complex Gaussian. For
 
     2E|L+q| = B(u)+(delta/4) B''(u)
                         +(kappa6c/36) B'''(u)+R,
-    |R| <= 1920000 delta^(3/2).                         (1)
+    |R| <= 160000 sqrt(u) delta^(3/2)
+         <= 40000 delta^(3/2).                         (1)
+
+For chi<=1 the coefficient 160000 improves to 83000, and the uniform
+coefficient 40000 improves to 20750.
 
 In particular, uniformly over dimension and all such cubics,
 
-    3/100<=u<=463/10000 and chi<=10^-14
+    0<u<=463/10000 and chi<=10^-10
         imply D(q)>=(7/50)delta.                       (2)
+
+At sufficiently small energy no additional shape restriction is needed:
+
+    0<=u<=10^-5 implies D(q)>=(11/100)delta.            (2a)
 
 The cutoff is intentionally very small. This supplies a dimension-free
 quantitative neighborhood of the Gaussian limit, not a useful global
 Grothendieck endpoint by itself. The reviewed content bound
-||c_(3/5)(q)||²<=(3/80)delta on this energy interval then implies
+||c_(3/5)(q)||²<=(3/80)delta on 3/100<=u<=463/10000 then implies
 
     ||c_(3/5)(q)||² <= (3/10)D(q)                      (3)
 
-on this neighborhood, without the additive 6*10^-6 in the global
-content-deficit estimate. All other chi remain outside this new claim.
+on that central-energy small-chi neighborhood, without the additive
+6*10^-6 in the global content-deficit estimate.
+
+The reviewed global tilted A-shell remainder then gives the exact retained
+bound, for every remote holomorphic linear r with arbitrary sharing and
+amplitude,
+
+    LambdaHat(q+(T-1)r) <= S-(19/1000)delta            (4a)
+
+when 3/100<=u<=463/10000 and chi<=10^-10. This corollary covers an A
+shell; it does not cover the B shell or the odd sectors.
 
 ## 1. Relation to the Edgeworth literature
 
@@ -132,28 +149,42 @@ through each inverse yields exactly
 
 All final resolvent parameters in (9) exceed -1. The derivatives reduce
 Hermite rank by two at each step, so no forbidden eigenfunction is
-inverted. Formula (9) can also be derived first for Hermite polynomials
-and then by smooth semigroup approximation with polynomial growth.
+inverted. To justify the intermediate inverses and limiting operations,
+first replace h by P_epsilon h. This keeps parity and linear growth,
+does not increase the seventh-derivative bound, and gives bounded
+derivatives of every higher order for epsilon>0. The centered Hermite
+remainders then have Mehler decay of orders six and four, respectively,
+with polynomial growth in x. Their resolvent integrals converge at the
+parameters above and permit (8) and differentiation under the integral.
+Finally let epsilon decrease to zero. The final centered Lipschitz
+resolvents have the uniform linear-growth bound (7), while F and all
+the chaos polynomials in (9) have every finite moment. Dominated
+convergence gives (9) and its bound for the original h. This passage
+uses no convergence of an infinite Hermite series evaluated at F.
 
-By (7), centering, E F²=1 and E|N|<1, the L² norm of the test factor in
-(9) is at most
+Write f_(k,l)=R_(2-l/3)R_(4-k/3)v. By (7) and centering,
 
-    2M/[(3-l/3)(5-k/3)].                              (10)
+    |f_(k,l)(x)|<=M(|x|+E|N|)/[(3-l/3)(5-k/3)].
 
-Hypercontractivity gives ||U||₄<=9 sigma and
-||W_(k,l)||₄<=3^(l/2)||W_(k,l)||₂. Therefore
+Hypercontractivity gives ||U||₄<=9 sigma. Hence, writing beta=||F||₄,
 
-    ||U W_(k,l)||₂<=9 sigma 3^(l/2)||W_(k,l)||₂,
-    ||U U_k||₂<=9 sigma 3^(k/2)||U_k||₂.
+    ||f_(k,l)(F)U||₂
+        <=M(9 beta+1)sigma/[(3-l/3)(5-k/3)].           (10)
 
-Use Cauchy-Schwarz first over l, exploiting the orthogonality of the
-W_(k,l), then over k, exploiting ||U₂||₂²+||U₄||₂²=sigma². Equations
-(6), (9) and (10) give the explicit smooth-test remainder bound
+Indeed ||FU||₂<=||F||₄||U||₄ and E|N|<1. Applying Cauchy-Schwarz
+against W_(k,l) in L² retains its orthogonality without a high-chaos
+L⁴ factor. First sum over l using
+sum_l ||W_(k,l)||₂²=||U U_k||₂², and then use
 
-    |remainder| <= 6 M sqrt(S_K S_L) sigma³,
+    ||U U_k||₂<=9 sigma 3^(k/2)||U_k||₂,
+    ||U₂||₂²+||U₄||₂²=sigma².
+
+Equations (6), (9) and (10) give the explicit smooth-test remainder bound
+
+    |remainder| <= ((9 beta+1)/3) M sqrt(S_K S_L) sigma³,
     S_K=sum_(k=2,4) 3^k/(5-k/3)²=133002/20449,
-    S_L=sum_(l=0,2,4,6,8) 3^l/(3-l/3)²=659393389/11025,
-    sqrt(S_K S_L)<625.                               (11)
+    S_L=sum_(l=0,2,4,6,8) 1/(3-l/3)²=117469/11025,
+    sqrt(S_K S_L)<25/3.                              (11)
 
 No density or nondegeneracy assumption on F was used.
 
@@ -168,6 +199,7 @@ The density of |L|² is
 At zero, inverse-series substitution gives
 
     tau(s)=s/a²-2b s²/a⁵+7b² s³/a⁸+O(s⁴),
+    E V^-2=-k'(0)=a^-4+4b a^-5<21,
     E V^-3=k''(0)=a^-6+12b a^-7+42b² a^-8<224.        (12)
 
 The passage from k''(s) to E V^-3 as s decreases to zero follows from
@@ -218,39 +250,65 @@ also be checked on the radial fourth and sixth moment tests: their
 Gaussian values are 2u² and 6u³, and the corrections give respectively
 delta and 9u delta+kappa6c.
 
-Combining (4), (11), (13) and (14), the remainder coefficient multiplying
-delta^(3/2) is at most
+Circularity gives E F⁴=3+3chi/2. The reviewed bound chi<=42 implies
+E F⁴<=66<3⁴, hence beta<3. Combining (4), (11), (13) and (14), the
+remainder coefficient multiplying delta^(3/2) is at most
 
-    6*625*(128/7)*224 * [3^(3/2)/2^(7/2)] * sqrt(u).
+    (28/3)*(25/3)*(128/7)*224
+                     *[3^(3/2)/2^(7/2)]*sqrt(u).
 
-Since u<=.0463<1/16 and 27/128<1/4, this is strictly below
+Since 27/128<1/4, this is less than 160000 sqrt(u). If chi<=1, then
+E F⁴<=9/2<(3/2)⁴, so beta<3/2. Replace 28/3 by 29/6 to obtain a
+coefficient less than 83000 sqrt(u). Finally u<=.0463<1/16 gives
 
-    6*625*(128/7)*224*(1/2)*(1/4)=1920000.             (15)
+    |R|<=40000 delta^(3/2) always,
+    |R|<=20750 delta^(3/2) when chi<=1.               (15)
 
-This proves (1), including its actual numerical constant.
+This proves (1) and its strengthened small-chi form, with actual constants.
 
 ## 5. Signed deficit and the explicit neighborhood
 
 The visible mixture also gives B(u)=sqrt(pi)E sqrt(V+u), with
-E V=a²+4ab+6b²=1181331/1562500. On the stated central energy interval,
+E V=a²+4ab+6b²=1181331/1562500. For every 0<=u<=463/10000,
 E V+u<81/100. Jensen's inequality, sqrt(pi)>7/4 and sqrt(pi)<9/5 give
 
     -B''(u)/4 > (7/4)/(16(9/10)³)>3/20,
-    0<B'''(u)=3sqrt(pi)/8 E(V+u)^(-5/2)<4400.
+    0<B'''(u)=3sqrt(pi)/8 E(V+u)^(-5/2)
+      <=3sqrt(pi)/8 sqrt(E V^-2 E V^-3)<47.
 
-The last estimate uses u>=3/100 and sqrt(3/100)>173/1000.
+The last estimate uses (12), sqrt(21*224)<69 and (27/40)*69<47;
+it does not need a positive lower bound on u.
 The reviewed cubic sixth-moment inequality gives
 kappa6c<=(4045313/100000)delta^(3/2), so the sixth correction is at most
-5000delta^(3/2). Its sign need not be assumed. Thus (1) implies
+53delta^(3/2). Its sign need not be assumed. Thus (1) implies
 
-    D(q)>=(3/20)delta-1925000delta^(3/2).             (16)
+    D(q)>=[3/20-(160000 sqrt(u)+53)u sqrt(chi)]delta.  (16)
 
-If chi<=10^-14, then sqrt(delta)=u sqrt(chi)<=463/(10000*10^7), and
+When chi<=1, replace 160000 by 83000; in particular
+D(q)>=(3/20)delta-20803delta^(3/2). If chi<=10^-10, then
+sqrt(delta)=u sqrt(chi)<=463/(10000*10^5), and
 
-    3/20-1925000*463/(10000*10^7)>7/50.
+    3/20-20803*463/(10000*10^5)>7/50.
 
-This proves (2). Finally 3/80 < (3/10)(7/50), proving (3) from the
-reviewed content estimate. The exact rational checks, inverse series and
+This proves (2). For (2a), the reviewed fourth-moment bound gives
+chi<=42<(13/2)². If u<=10^-5, then sqrt(u)<1/300, and the bracket
+in (16) is at least
+
+    3/20-(160000/300+53)(1/10^5)(13/2)>11/100.
+
+The case u=0 is equality. Finally 3/80 < (3/10)(7/50), proving (3)
+on the central-energy part of (2) from the reviewed content estimate.
+For (4a), the global tilted remainder (ledger 11.39--40) gives
+
+    LambdaHat(q+(T-1)r)<=B(u)-pu-D(q)+||c_(3/5)(q)||²/k,
+    k=59009/189100.
+
+Use B(u)-pu<=S, the bounds D(q)>=(7/50)delta and
+||c_(3/5)(q)||²<=(3/80)delta, and the exact comparison
+
+    7/50-(3/80)/k=117001/5900900>19/1000.
+
+The exact rational checks, inverse series and
 Hermite normalizations are replayed by `code/edgeworth-codex-a7c4/verify.py`.
 That script checks the arithmetic in this paper argument; it is not a
 Lean proof of the analytic argument and is not run by repository CI.

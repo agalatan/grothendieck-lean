@@ -99,7 +99,22 @@ def main():
             assert target-v.F(upper) < sum(v.errors(chart,cell,v.curvature_bounds(good['index'],good['curvature'])))
             data['points'][point_index][4] = upper.hex()
         reject(name,lambda:v.validate(data))
-    for script in ('verify.py','test_receipts.py','phase_radius.py'):
+    archive_spec = importlib.util.spec_from_file_location('archive',HERE/'archive_receipts.py')
+    archive = importlib.util.module_from_spec(archive_spec)
+    archive_spec.loader.exec_module(archive)
+    with tempfile.TemporaryDirectory(prefix='codex-a7c4-archive-tests-') as td:
+        out = Path(td)
+        raw = max(paths,key=lambda p:p.stat().st_size).read_bytes()
+        index = v.validate(json.loads(raw))
+        archive.pack_record(raw,out)
+        header = out/f'region-{index:02}-header.json'
+        assert archive.restore_record(header) == raw
+        assert all(p.stat().st_size <= archive.LIMIT for p in out.iterdir())
+        metadata = json.loads(header.read_text())
+        chunk = out/metadata['chunks']['points'][0]['file']
+        chunk.write_bytes(chunk.read_bytes()+b' ')
+        reject('changed receipt archive chunk',lambda:archive.restore_record(header))
+    for script in ('verify.py','test_receipts.py','phase_radius.py','archive_receipts.py'):
         for opt in ('-O','-OO'):
             result = subprocess.run([sys.executable,'-I',opt,str(HERE/script)],capture_output=True)
             assert result.returncode != 0 and b'Assertions must be enabled' in result.stderr

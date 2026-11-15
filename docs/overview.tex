@@ -777,10 +777,13 @@ These results were independently re-derived and replayed in review \#444 and are
 not premises of the Lean lower bound above.
 
 A separate scalar Edgeworth argument gives the same-variance remote deficit
-$D(q)\geq(7/50)\delta$ at the peak profile for $0.03\leq u\leq0.0463$
-and $\chi=\delta/u^2\leq10^{-14}$. Its explicit remainder and cutoff have
+$D(q)\geq(7/50)\delta$ at the peak profile for $0<u\leq0.0463$
+and $\chi=\delta/u^2\leq10^{-10}$, and $D(q)\geq(11/100)\delta$ for every
+cubic shape at $u\leq10^{-5}$. Its explicit remainder and cutoffs have
 exact arithmetic checks; the analytic proof is author-only, pending independent
-review. It is not a premise of the Lean endpoint and does not cover the shared sectors.
+review. On $0.03\leq u\leq0.0463$, $\chi\leq10^{-10}$ it also gives an exact
+retained A-core bound through the reviewed tilted remainder, with arbitrary
+sharing. It is not a premise of the Lean endpoint and does not cover the joint A/B or odd sectors.
 
 \section{What exactly the computer checks}\label{sec:trust}
 \begin{center}\small

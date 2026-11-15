@@ -16,7 +16,22 @@ A floating selector proposes subdivisions only; it cannot accept a box.
 python3 research/conjecture-K/code/central-aligned-codex-a7c4/verify.py --smoke
 python3 research/conjecture-K/code/central-aligned-codex-a7c4/verify.py --output handoff/central-receipts
 python3 research/conjecture-K/code/central-aligned-codex-a7c4/verify.py --combine handoff/central-receipts/region-*.json --output handoff/central-result.json
+python3 research/conjecture-K/code/central-aligned-codex-a7c4/test_receipts.py handoff/central-receipts
+python3 research/conjecture-K/code/central-aligned-codex-a7c4/phase_radius.py handoff/central-receipts --output handoff/central-phase-radius.json
 ```
+
+Large receipts are stored as small plain JSON row chunks, each at most 200 KB.
+The storage adapter preserves the exact original bytes, checks all chunk hashes,
+and then runs the mathematical auditor on the restored receipts. An empty
+destination is required:
+
+```sh
+python3 research/conjecture-K/code/central-aligned-codex-a7c4/archive_receipts.py pack handoff/central-receipts handoff/central-archive
+python3 research/conjecture-K/code/central-aligned-codex-a7c4/archive_receipts.py restore handoff/central-archive handoff/central-restored
+```
+
+These audits check receipt completeness and arithmetic. Only a fresh `verify.py`
+run recomputes the outward source integrals.
 
 Python standard library audits receipts; NumPy is used only for the floating
 selector during execution. clang++ compiles the strict interval sources.

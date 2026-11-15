@@ -259,16 +259,24 @@ The flank and upper rows are outside all of these.
 and 0<u≤0.0463,
 
     2E|L+q| = B(u)+(δ/4)B″(u)+(κ₆ᶜ/36)B‴(u)+R,
-    |R| ≤ 1920000 δ^(3/2).
+    |R| ≤ 160000 sqrt(u) δ^(3/2) ≤ 40000 δ^(3/2).
 
-In particular, 0.03≤u≤0.0463 and χ≤10⁻¹⁴ imply D(q)≥(7/50)δ, uniformly in
+For χ≤1, the respective coefficients improve to 83000 and 20750.
+
+In particular, 0<u≤0.0463 and χ≤10⁻¹⁰ imply D(q)≥(7/50)δ, uniformly in
 dimension [P, author only · codex-a7c4; exact arithmetic replayed · 3.18]. Two
 Gaussian integrations by parts, retaining the second and fourth chaos projections
 of the carré du champ, give an explicit remainder; the visible Gaussian scale
 mixture bounds the required seventh payoff derivative. The cutoff is conservative
-and very small. It does not establish D≥0 for general χ or handle shared shells.
-With the reviewed content coefficient 3/80, it removes the additive error in
-the tilted content bound on this neighborhood: ‖c₍₃/₅₎(q)‖²≤0.3D(q).
+and very small. Keeping the energy factor also proves D(q)≥(11/100)δ for every
+cubic shape at u≤10⁻⁵. General χ at larger energies and the joint A/B and odd
+sectors remain outside the result. With the reviewed content coefficient 3/80, it removes
+the additive error for 0.03≤u≤0.0463, χ≤10⁻¹⁰: ‖c₍₃/₅₎(q)‖²≤0.3D(q).
+In fact the global tilted A-shell remainder (2.6), with k=59009/189100, gives
+Λ̂(q+(T−1)r)≤S−(19/1000)δ for every remote linear r, at every amplitude
+and with arbitrary sharing on that same central-energy small-χ class:
+7/50−(3/80)/k=117001/5900900>19/1000. This is an exact retained A-core
+subclass, not the full retained conjecture.
 
 **Reformulations.** For one fixed profile, four statements are equivalent: the universal complex sharp radius bound,
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
