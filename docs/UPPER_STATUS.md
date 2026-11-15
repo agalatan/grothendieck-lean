@@ -16,8 +16,10 @@ band-error caps are not all proved. They are not hypotheses of `main_bounds`.
 
 The current proof uses six certified low-band and whole-source estimates,
 tighter arithmetic budgets, and the sharp Hardy bound with a linear-energy
-deduction. The older `upper_target` interface still proves its coarser
-`1.4046` threshold. Selected unused formulations are preserved in
+deduction. The older `upper_target` interface (threshold `1.4046`) and its
+relaxed three-band chain were removed on 15 November 2026 (#405): `main_bounds`
+uses `upper_below_tight`, and the energy-table accuracy `Final.hclose_final` is
+in [`UpperClose.lean`](../Grothe/UpperClose.lean). Selected unused formulations are preserved in
 [the committed archive](../miscellaneous/other-bounds/README.md); this does
 not mean that every weaker interface is excluded from the active build.
 Shared Gaussian phase identity and Laplace infrastructure remain in the proof.
@@ -108,8 +110,9 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 Both the current endpoint and the original sharper conditional route reserve
 linear energy from the proved `1737972/1000000` Hardy budget before
 Cauchy–Schwarz. The current endpoint uses `HeadHardy`; the conditional route
-uses its original head allowance and tail `303362486/10^16`. The older
-`upper_target` keeps the coarse budget `7/4` and tail `36748/10^12`.
+uses its original head allowance and tail `303362486/10^16`. The fixed-budget
+three-band endpoint (`ThreeBandUpper.lean`) keeps the coarse budget `7/4` and
+tail `36748/10^12`.
 `HardyKernel` supplies definitions; `HardyReal.hardy_GT_tight` and the arc
 checks supply the proved numerical Hardy input.
 
