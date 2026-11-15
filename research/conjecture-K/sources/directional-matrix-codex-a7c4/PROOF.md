@@ -219,12 +219,23 @@ S used in this note. The remote cubic may share its variables with r_A;
 no independence assumption is added. This corollary does not include odd
 sectors or arbitrary A/B driver pairs.
 
-For the central example kappa=-2, the existing uniform content norm bound
-gives a sharper allowance without using the content-deficit estimate.
+These estimates hold before taking the retained infimum: they bound the
+same explicit trial xi0=-(3/5)(r_A+rho r_B), with visible coefficient c=0.
+For G=q+A_shell+B_shell, define
+
+    T_xi0(G)=||xi0||²+E|L+G-xi0|+E|L-G+xi0|-p||G||².
+
+Visible parity makes the two norm terms equal, and the averaged joint
+identity used above directly bounds T_xi0(G)-Lambda(q). Thus no choice of
+an unknown minimizer is needed when composing with an odd-sector estimate.
+
+For the central example kappa=-2, xi0=(159/25000)r_A. The existing uniform
+content norm bound gives a sharper allowance without using the
+content-deficit estimate.
 Put x=||r_A||, delta=2rho-1, C=1/50 and E=7532/10^7; the reviewed
 centered-error bound gives ||e||<=E since E²>=(7/2000)² E0. Then
 V=5x², ||R||=delta x and ||U||=(2+rho)x. The reviewed averaged joint
-identity and u+V<=80051/10^6 bound the gain over Lambda(q) by
+identity and u+V<=80051/10^6 bound T_xi0(G)-Lambda(q) by
 
     2(C delta+2E)x-K x²,
     K=(31/100)delta²+(2/25)(2+rho)²
@@ -235,10 +246,37 @@ Completing the square gives gain <=(C delta+2E)²/K. The exact checker
 
     (C delta+2E)²/K+36/10^8 < 19/10^6.
 
-Thus Lambda_hat(q+A_shell+B_shell)<S_G+19/10^6 for r_B=-2r_A under
+Thus Lambda_hat(G)<=T_xi0(G)<S_G+19/10^6 for r_B=-2r_A under
 the same energy caps, in every remote dimension and with arbitrary sharing.
 This is an unconditional restricted-family estimate, not a bound for all
 adversaries or a new Grothendieck lower endpoint.
+
+The 19/10^6 calculation spends the full (2/25)||U||² penalty; it does not
+also reserve the usual (1/100)||U||² for odd sectors. To keep that reserve,
+replace K by
+
+    K_c=K-(1/100)(2+rho)²=1018817979/10^10>0.
+
+The same exact checker proves
+
+    T_xi0(G)-Lambda(q)+(1/100)||U||²
+       <=(C delta+2E)²/K_c=6151872/212253745625<29/10^6.
+
+Adding the remote gap gives T_xi0(G)+(1/100)||U||²<S_G+30/10^6.
+For the signed-D odd interface it is better to retain the remote base.
+Write D=B(u)-2E|L+q|, D_minus=max(-D,0), D_plus=max(D,0), and
+sigma=S_G-[B(u)-pu]. If the unchanged odd premise of ledger 7.5.3 holds,
+its allowed increment at this same remote trial is at most
+(1/100)||U||²+sigma-D_minus+50/10^6. The combined all-sector trial then
+has excess at most
+
+    (C delta+2E)²/K_c+50/10^6-D-D_minus
+      =(C delta+2E)²/K_c+50/10^6-D_plus<79/10^6.
+
+This last implication is conditional on the odd premise, only on the
+r_B=-2r_A family. No extra remote gap is charged after this cancellation.
+It does not establish the odd premise or change the agreed general-family
+cession or its 50/10^6 odd allowance.
 
 ## 5. Replay, coverage and limits
 

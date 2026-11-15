@@ -512,14 +512,14 @@ Full (P) and the global lower-bound improvement remain open.
 
 | repository file | size | SHA-256 |
 |---|---:|---|
-| `code/directional-matrix-codex-a7c4/README.md` | 3,572 B | `8330cd7a13eae24e31d39a27486564756c18cb124a29692eef61ef51c655c2ca` |
+| `code/directional-matrix-codex-a7c4/README.md` | 3,972 B | `4b605dce65dd3c815051054f28a890e72bc9a6adad391065f544b35e39f7e926` |
 | `code/directional-matrix-codex-a7c4/cone_integral.cpp` | 2,086 B | `df1d80a6d4fb3710907eb01e11cb305411d2c1b6db5bffa44b69b07a6bee5525` |
-| `code/directional-matrix-codex-a7c4/joint_family.py` | 1,131 B | `34c91c0c66381943fef2613b565cf2c067edcc90d2cd8edaec45100b3f8fa3a3` |
+| `code/directional-matrix-codex-a7c4/joint_family.py` | 1,954 B | `1e2518f21a8049025209e19b37099df4ed8ab407dbf21db9fa7a975db54c9e96` |
 | `code/directional-matrix-codex-a7c4/radial_matrix.cpp` | 4,298 B | `99e69ed0708ed51e2d9b30b22256c842e4f79f14dec64c302aef08fbc96a8663` |
 | `code/directional-matrix-codex-a7c4/result.json` | 199,961 B | `ac3a2d05dd5430d28d3a49409003c1ecceeb81833c89e89c11ea008eccc2b54f` |
 | `code/directional-matrix-codex-a7c4/test_receipts.py` | 3,649 B | `209f560139149c98666be65b41c7aebef54456953de15fe34cc529318269ae31` |
 | `code/directional-matrix-codex-a7c4/verify.py` | 9,245 B | `fee9f240f652e61966e2663507bc33899276fbd3fcfba0e98cc116e1ac55d576` |
-| `sources/directional-matrix-codex-a7c4/PROOF.md` | 12,422 B | `85d935d3f6a3ed9734aef0bccee108f8f6a2414fbf65f37b7e9bb829b1f4af82` |
+| `sources/directional-matrix-codex-a7c4/PROOF.md` | 14,000 B | `999cdca45faf9ae28c213e35cdb061f690353ede5564fe61f881549367923930` |
 
 ## Odd sectors over an A/B core, and the refutation of (O_U) (codex-91d4, task #430)
 

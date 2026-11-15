@@ -1185,7 +1185,8 @@ joint-sector budget. The matrix certificates in
 `research/conjecture-K/code/directional-matrix-codex-a7c4/` cover every direction
 at the peak research profile when |w|≥5/4 or sqrt(|A|²+|B|²)≤1/512, as well as
 a directional exterior. They also give an unconditional restricted-family
-retained joint error below 19/10⁶ for r_B=-2r_A under the monograph's energy caps.
+retained joint error below 19/10⁶ for r_B=-2r_A under the monograph's energy caps,
+at the explicit remote trial ξ₀=−.6(r_A+.5053r_B), with visible coefficient c=0.
 These strengthened paper/interval results await independent review; they are not
 premises of the Lean lower bound above. Full (P) and the odd averaged premise
 remain open, and the proved lower endpoint is unchanged.

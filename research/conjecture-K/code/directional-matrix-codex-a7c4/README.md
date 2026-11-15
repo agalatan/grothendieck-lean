@@ -34,7 +34,12 @@ unconditional on this family under its unchanged energy caps. For `kappa=-2`,
 the separate exact checker proves the sharper retained bound
 `Lambda_hat(q+A_shell+B_shell) < S_G + 19/10^6`, allowing arbitrary sharing
 between the genuine remote cubic q and the holomorphic driver. This does not
-include arbitrary A/B pairs or odd sectors.
+include arbitrary A/B pairs or odd sectors. The bound holds at the same explicit
+trial `xi0=-(3/5)(r_A+rho r_B)`, with visible coefficient `c=0`, before taking
+the retained infimum. Reserving `.01||U||²` instead gives a joint gain below
+`29/10^6` relative to `Lambda(q)` (below `30/10^6` above `S_G`). Combining that
+reserve with the unchanged signed-D odd premise would give `79/10^6` on this
+restricted family; the odd premise remains open.
 
 Run from the repository root (clang++, Python standard library):
 

@@ -572,8 +572,12 @@ matrices and 93 adaptive cone intervals pass, with exact coverage and positive-d
 Consequently, for proportional holomorphic drivers r_B=κr_A with |κ+4|≤3, the joint bridge (7.4.10) is
 unconditional under its unchanged caps u≤0.0463 and u+V≤0.080051, allowing arbitrary sharing with the genuine
 remote cubic q. For κ=−2, completing a scalar square gives the sharper retained estimate
-Λ̂(q+A_shell+B_shell)<S+19/10⁶ [P + C, author only · codex-a7c4 · 7.4.12]. This closes that mixed-driver family;
-it does not cover arbitrary A/B driver pairs or odd sectors.
+Λ̂(q+A_shell+B_shell)<S+19/10⁶ [P + C, author only · codex-a7c4 · 7.4.12]. The estimate holds at the explicit
+trial ξ₀=−(3/5)(r_A+ρr_B), with visible coefficient c=0, before taking the retained infimum. If 0.01‖U‖² is
+reserved for odd sectors, the trial's joint gain plus this reserve is below 29/10⁶ relative to Λ(q).
+Together with the unchanged signed-D odd premise of 2.9, that would give an all-sector allowance of 79/10⁶
+on this restricted family. The odd premise remains open; the unconditional result does not cover odd sectors
+or arbitrary A/B driver pairs.
 
 A normalized Bregman remainder certificate has source-quadrature error constants independent of amplitude.
 For D=(D_A,D_B), write S_D=|D_A|²+|D_B|² and ℛ(w,D,τ)=Rem(w,τD)/τ², using its continuous limit at τ=0.
