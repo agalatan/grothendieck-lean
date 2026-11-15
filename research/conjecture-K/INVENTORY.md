@@ -483,6 +483,23 @@ individual shard receipts remain in the author's ignored `handoff/cloud/run-4370
 | `code/normalized-remainder-codex-a7c4/verify.py` | 7,943 B | `b24e8679bfc1b903890e46f86f7246ee4ebb02a98140b9b6509ad8b299d729c0` |
 | `sources/normalized-remainder-codex-a7c4/PROOF.md` | 7,150 B | `5e4967e704d1af05f7d5c89ef88fcc9088017215905d0450d9120262be41d48e` |
 
+## Amplitude-adaptive compact tube (codex-a7c4, #431)
+
+The uniform shift-curvature and coefficient-convexity estimates give quadratic spatial
+interpolation losses. All 560 corner jobs and the exact 65-cell amplitude aggregation
+passed. This certifies the explicit widened tube only; full (P) stays open.
+The combined receipt is below 300 KB. Raw cloud logs and individual shard receipts
+remain in the author’s ignored `handoff/cloud/codex-a7c4-20261115121547-29863/`.
+Working proof: `handoff/codex-a7c4-compact-cover/PROOF.md`, archived verbatim below.
+
+| repository file | size | SHA-256 |
+|---|---:|---|
+| `code/adaptive-cover-codex-a7c4/README.md` | 3,658 B | `1fa210a6b5c185354cc40b510bd47b4d110f77c2cf0a5c5a707c4fa4921abbfc` |
+| `code/adaptive-cover-codex-a7c4/result.json` | 183,242 B | `827c135d2c5c2a23bb42de86a464e9c64150423294bd2a4eb534652a13585a10` |
+| `code/adaptive-cover-codex-a7c4/shift_curvature.cpp` | 1,148 B | `10017337ea12d581dc7ea1fb1863343698891d14bef8a62d6bd8f6fc9d599aad` |
+| `code/adaptive-cover-codex-a7c4/verify.py` | 9,147 B | `c7a1932caf30c43965eb6e50155dee112d31aba4ed0768f0af2afac972418f5f` |
+| `sources/adaptive-cover-codex-a7c4/PROOF.md` | 8,046 B | `9b5da0404fd776ae1c841cd187d17fb98bffeb3a0bbec759f1dd2bd98e2793fb` |
+
 ## Odd sectors over an A/B core, and the refutation of (O_U) (codex-91d4, task #430)
 
 `sources/odd-over-AB-core-2026-11-15-codex-91d4/` holds the Phase 0 report and the Phase 1 refutation;
