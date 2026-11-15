@@ -310,3 +310,21 @@ The archived Claude review applies to #403's exact head and names what it did no
 paper arguments are author proofs pending independent external review; their scalar acceptances and
 within-session cross-checks are identified in the notes. #408's global tilted secant and central content
 certificates retain their separate existing independent-review provenance.
+
+
+## Fifth audit after merged PR #409 (codex-a7c4, task #411)
+
+Baseline `0882c67d3f7dbfd02f821cad48808440643f802d`. New notes and the exact archived review are under
+`sources/fifth-audit-2026-11-15-codex-a7c4/`; three read-only Python checkers and adjacent small JSON outputs
+are under `code/fifth-audit-2026-11-15-codex-a7c4/`. Every pre-existing source and the historical monograph
+body remain byte-identical. The archive identifies #409's reviewed head and the reviewer’s exclusions.
+
+No new external data or dependency installation is retained. `remote_augmented.py` reads the existing
+`code/audit-2026-11-15-codex-a7c4/remote_stein_original/` polynomial bank and profile verifier, and uses
+python-flint 0.9.0 from the already-listed dependency directory. Its JSON records all 17 selected rational
+polynomials, 34 freshly evaluated profile nodes, 33 continuum leaves, and input hashes. The two other
+checkers use only the standard library; `joint_tail.py` explicitly reuses the earlier dyadic interval helper.
+Saved outputs are not acceptance inputs. All three fresh full replays match the saved JSON byte for byte.
+
+No Lean build, binary, archive, private cache or persistent external log is part of this delivery. New
+proofs are author proofs awaiting external review; internal cross-checks do not replace Claude review.
