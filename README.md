@@ -218,13 +218,11 @@ $\delta = 1.543712531375379213976\ldots \cdot 10^{-6}$
 | `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |
 | `Grothe/UpperTightBudget.lean`, `Grothe/UpperTightComparison.lean` | current exact budgets and the comparison with independent reference mass and error radii |
 | `Grothe/UpperTightSix.lean`, `Grothe/UpperTightPanelTotals.lean` | six Gaussian error estimates; kernel checks of tighter totals of the existing panel caps |
-| `Grothe/Transfer.lean`, `Grothe/TransferHilbert.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality of the upper bound; a Grothendieck bound also controls unit vectors of any complex inner-product space |
-| `Grothe/ScalarOpt.lean`, `Grothe/VectorOpt.lean` | both optima are attained; a Grothendieck bound need only be tested on unit vectors in dimension $\min(m,n)$ |
-| `Grothe/QuadraticDual.lean`, `Grothe/PolarizedGram.lean` | two general inequalities (joint quadratic error budgets; a Gram bound that keeps the imaginary correlation). Not used by the two proofs |
+| `Grothe/Transfer.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality of the upper bound |
 | `Grothe/Lower/` | the lower certificate: its checker in exact rational arithmetic with the soundness of rows, Stein cuts, node certificates and boxes; the generated row data; the transfer to finite matrices |
-| `Grothe/LowerAnalytic/` | Gaussian analysis of the lower bound: the witness, chaos projections, the law of cubic chaos (moments, spectral and Gram budgets, Wick expansions), the potentials $\Psi_r$ and the row reduction; the node caps (`Cap*.lean`, the generated rows `CapRowKK` and pieces `CapPieces/`); a rational approximation of a support defect (`JointDefect.lean`, `QuarticNewton.lean`), not used by the proof |
+| `Grothe/LowerAnalytic/` | Gaussian analysis of the lower bound: the witness, chaos projections, the law of cubic chaos (moments, spectral and Gram budgets, Wick expansions), the potentials $\Psi_r$ and the row reduction; the node caps (`Cap*.lean`, the generated rows `CapRowKK` and pieces `CapPieces/`) |
 | `Grothe/Research/` | the box cover of the lower certificate, further node certificates, and the resulting theorem `lower_bound_of_refined_cover_data` |
-| `Grothe/Haagerup/` | the phase $z/\lvert z \rvert$ of a complex Gaussian: Hermite coefficients, kernel, Laplace representation; Taylor bounds for the phase of a perturbed argument |
+| `Grothe/Haagerup/` | the phase $z/\lvert z \rvert$ of a complex Gaussian: Hermite coefficients, kernel, Laplace representation |
 | `Grothe/Upper/` | the upper bound apart from Gaussian analysis: two-coordinate kernels, disk-valued roundings, tensor realisation of the preprocessors, soundness of the head computation, residual and tail arithmetic, comparison budgets; `Data.lean` holds the rounding parameters, the preprocessors and the energy table |
 | `Grothe/UpperChaos/` | chaos calculus on $\mathbb{C}^2$ (Hermite basis, Mehler formula, charge, energies), the rounding, the phase cover, the Hardy tail, the comparison with $X$, the stored Hermite expansions, and generated certificate modules |
 | `Grothe/UpperQuad/` | the quadrature: soundness of its checkers, the energy, port and ellipse facts, the Gauss–Legendre remainder on Bernstein ellipses |

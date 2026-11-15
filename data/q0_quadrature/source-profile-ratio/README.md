@@ -2,6 +2,12 @@
 
 Agent-ID: codex-aa04.
 
+**Status.** The Lean module described here (`Q0SourceExceptionProfile`) is not in the
+library; it belonged to the saved source-table route, whose data-free lemmas are archived in
+[`abandonware/`](../../../abandonware/README.md); the main proof certifies the energy table
+with the quadrature checker (`Final.hclose_final`).
+The external replay below does not depend on it.
+
 The three inclusive panel-index blocks are 146–274, 557–684 and 964–1087.
 The Lean rows use their endpoints directly from the original `sourcePanels`
 list. `ProfileRootScreen.evalRow` performs outward-rounded centered Horner

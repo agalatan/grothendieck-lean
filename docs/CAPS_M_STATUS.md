@@ -140,7 +140,8 @@ entry), so a uniform scaling is a bad trade: the exact grid search (`tools/caps-
 `data/caps-m/pdH.log`) found for 14:150 piece 0 λ × 1.01 → Δcap 1e-8, × 1.05 → 1e-7, × 1 → no Δcap works.
 
 **Fix: re-optimise all multipliers of the piece jointly.** The multipliers enter the checked matrix linearly, so the
-best (λ, μ) is a small SDP. The speed worker (#42) built this on master: `Grothe/LowerAnalytic/CapExport.lean` exports
+best (λ, μ) is a small SDP. The speed worker (#42) built this: `CapExport.lean` (archived in
+`abandonware/Grothe/LowerAnalytic/`, not built) exports
 `N`, `A_c`, `B_c` with the checker's own functions (≈ 3.5 min per piece, once), `tools/caps_lmi.py solve` solves the
 SDP, refines to 60 digits and rounds to rationals with an exact LDL (seconds per piece); see `docs/SPEED_TOOLS.md`.
 Results for the 16 pieces that fail on their stored grid (`data/caps-m-lmi/sol_*.json` on master; overrides in

@@ -10,8 +10,8 @@ approximately `1.4045993982506409631014`. The endpoint is
 The byte-pinned data and generators retain historical intermediate endpoint
 metadata for reproducibility. The active numerical ledger is
 [`Grothe/UpperTightBudget.lean`](../../Grothe/UpperTightBudget.lean).
-The smaller endpoint `1.404598148840` in `Grothe/Upper/GroupedBridge.lean` remains
-conditional on stronger comparison inputs, as explained below. Previous endpoint documentation is preserved
+The smaller endpoint `1.404598148840` is conditional on stronger comparison inputs and
+archived, as explained below. Previous endpoint documentation is preserved
 in `miscellaneous/other-bounds/snapshot/data/upper-preprocess/README.md`.
 
 ## Mathematical assembly and trust boundary
@@ -59,16 +59,12 @@ axioms and the existing permitted `native_decide` facts, recorded in
 
 ### Conditional stronger route
 
-`Grothe/Upper/GroupedBridge.lean` proves the smaller rational bound
-`500000000000000000/355973699960428191 < 1.404598148840` under explicit
-comparison hypotheses. Its grouped comparison allowance is
-`groupedCompareQ = 851922301/10^15`; its tail is `303362486/10^16`.
-The wrapper `Grothe.UpperChaos.fresh_upper_rounder` takes `ComparisonInputs`
-and table accuracy for a charge-one L2 truncation `X`. Those comparison inputs
-require the finer component error bounds and supports; the current six-bound
-assembly does not discharge that stronger interface. Table accuracy for the
-production `X` is proved by `hclose_final`, and the Hardy bound is proved.
-See `../localized-comparison/PROOF.md` for the comparison interface.
+The route to the smaller rational bound
+`500000000000000000/355973699960428191 < 1.404598148840` (`fresh_upper_rounder`,
+with grouped comparison allowance `groupedCompareQ = 851922301/10^15` and tail
+`303362486/10^16`) is archived in [`abandonware/`](../../abandonware/README.md) and
+not built: its `ComparisonInputs` need the finer component error bounds, which are
+not proved. See `../localized-comparison/PROOF.md` for the comparison interface.
 
 ### Frozen contour replay metadata
 

@@ -6,10 +6,10 @@ regrouped comparison reuses the finite mass certificates documented here, with
 the proved six-error estimates and tighter budgets of `UpperTightSix` and
 `UpperTightBudget`.
 
-The eighteen-piece comparison below also supplies the conditional target
-`K_G^C < 1.404598148840`. Its fourteen original Gaussian finite-band estimates
-remain hypotheses; energy-table accuracy is proved by `Final.hclose_final`.
-The previous endpoint
+The conditional target `K_G^C < 1.404598148840` built on the eighteen-piece
+comparison below is archived in `abandonware/` and not built: its fourteen
+original Gaussian finite-band estimates are not proved (energy-table accuracy is
+proved by `Final.hclose_final`). The previous endpoint
 ledger is preserved in `miscellaneous/other-bounds/snapshot/data/localized-comparison/PROOF.md`.
 The pinned recipe and generator remain active because the comparisons use
 the same comparison bands and table radii. Their historical endpoint metadata
@@ -92,11 +92,10 @@ reproduction hashes are in `recipe.json`. The resulting allowance is
 
 `C = 106490963/125000000000000 = 0.000000851927704`.
 
-The conditional endpoint assembly uses the grouped comparison budget in
-`Grothe/Upper/GroupedBridge.lean` and the concrete specialization in
-`Grothe/UpperChaos/GroupedRounder.lean`. Historical raw-tail endpoint arithmetic
-is preserved in the archive; the shared comparison above remains active.
-The unconditional endpoint instead regroups the certified band-mass squares,
+The conditional endpoint assembly with the grouped comparison budget
+(`Upper/GroupedBridge`, `UpperChaos/GroupedRounder`) is archived in `abandonware/`
+and not built; the shared comparison above remains active.
+The unconditional endpoint regroups the certified band-mass squares,
 uses the six proved low-band/whole-source estimates, and deducts the forced
 linear energy from the Gaussian-amplitude Hardy budget `5/4`. Its comparison allowance is
 `tightThreeBandCompareQ`, approximately `1.4922273975573793e-6`, and its full
@@ -124,9 +123,8 @@ conservative. The rounding error is bounded by `10^-18`.
 The general theorem accepts `ComparisonInputs`: an exact error decomposition,
 component norm bounds, and spectral support. The concrete Taylor specialization
 proves the decomposition and support statements, and derives this interface from
-the fourteen original finite-band norm bounds. Those original bounds remain
-premises of the conditional route; the table-accuracy premise is discharged by
-`Final.hclose_final`. The production theorem uses the separately proved six-error
+the fourteen original finite-band norm bounds (`comparisonInputs_taylorCenters`).
+Those original bounds are not proved. The production theorem uses the separately proved six-error
 interface in `UpperTightSix` instead. Its analytic Schur/Hardy input is
 `HardyReal.hardy_GT_gaussian` (the Gaussian-amplitude estimate, budget `5/4`),
 with the forced linear energy deducted by `HeadHardy`.
@@ -148,11 +146,7 @@ the commands in `data/upper-preprocess/README.md`.
 
 Focused Lean targets are `Grothe.Upper.ComparisonMass`,
 `Grothe.Upper.PolynomialBridge`, and `Grothe.UpperChaos.PhiBound`.
-The focused axiom audit is:
-
-```sh
-lake env lean scratch/AxiomsUpperComparison.lean | python3 scripts/check_axioms.py --upper-comparison
-```
-
-The full build and axiom allowlist run in CI; the new native fact is explicitly
-registered in that allowlist. Heavy builds belong on the droplet or CI.
+The axiom audit is the default report (`scratch/Axioms.lean`, checked by
+`scripts/check_axioms.py`). The full build and axiom allowlist run in CI; the
+native band-mass fact `comparison_check` is registered in that allowlist. Heavy
+builds belong on the droplet or CI.

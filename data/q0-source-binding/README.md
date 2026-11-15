@@ -1,5 +1,12 @@
 # q0 source-binding generator input
 
+**Status.** The Lean modules of this binding (`Q0LiteralSourceData`, the `Q0Chunk…`
+chunks, `Q0SourceChunkAssembly` and `Q0BinaryLiteralAssemblyBridge`) are not in the
+library; they belonged to the saved source-table route, whose data-free lemmas are archived in
+[`abandonware/`](../../abandonware/README.md); the main proof certifies the energy table
+with the quadrature checker (`Final.hclose_final`).
+The `--check` commands below compare against those modules.
+
 `source-polynomial.json` stores the canonical `sourceCoefficients` and
 `sourceDen` inputs for the q0 Wick source-to-literal proof. Lean checks the
 source chunks, denominators and their recombination; Python input values do

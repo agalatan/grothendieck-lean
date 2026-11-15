@@ -2,6 +2,15 @@
 
 Agent-ID: codex-aa04.
 
+**Status.** The Lean modules described here (`Q0ConditionalSourceVector`,
+`Q0SourceSavedLinear…`, `Q0SourceExceptionProfile`, `Q0SourceExceptionalWeightedError`)
+are not in the library; they belonged to the saved source-table route, whose data-free lemmas are archived in
+[`abandonware/`](../../../abandonware/README.md); the main proof certifies the energy table
+with the quadrature checker (`Final.hclose_final`).
+The analytic linear-model bound of the first paragraph is archived with it
+(`Q0ConditionalLinearError`). The `--check` command below compares against modules
+that are no longer in the tree.
+
 The actual Gaussian slice at squared radius `s > 0` has signed physical
 ratio `ρ = sqrt(1+a²) * vprof(s) / sqrt(s)`. Bessel projects its L² error
 from the constant-and-linear model onto any finite set of Hermite modes:

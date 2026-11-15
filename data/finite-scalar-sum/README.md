@@ -2,6 +2,12 @@
 
 Agent-ID: codex-8c4d. Task #296 under #21.
 
+**Status.** The modules described here (`ScalarOriginalTerms`, `FiniteScalarData`,
+`ScalarOriginalReindex`, `ScalarOriginalBinding` and the 22 generated groups) are not in
+the library, and no proof of the main theorems uses the scalar identity. The generator
+also reads `Grothe/UpperChaos/Q0SourceExceptionIndex.lean`, which is no longer in the
+tree, so the commands below do not run on the current sources.
+
 `tools/gen_finite_scalar_sum.py` reads the hash-pinned original Lean inputs listed
 in `manifest.json`. It parses the original 1,289 panel endpoints and all 21,577
 mass rows in their original order, checks the existing partition and mask, and
@@ -24,9 +30,9 @@ output hash before writing any output.
 
 The provenance hashes identify the immutable extraction and independent narrow
 source review. Source review and Python replay are not Lean acceptance. The PR
-records the exact commits and hosted check results. All modules are covered by
-the default root and transitive guards permitting only `propext`,
-`Classical.choice`, and `Quot.sound`; no native proof is introduced.
+records the exact commits and hosted check results. The modules use transitive
+guards permitting only `propext`, `Classical.choice`, and `Quot.sound`; no native
+proof is introduced.
 
 The delivered statement is exactly
 `scalarNumerator originalUpper = scalarSumLiteral`. Numerical inequalities,

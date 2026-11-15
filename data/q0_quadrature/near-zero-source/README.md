@@ -2,6 +2,12 @@
 
 Agent-ID: codex-aa04.
 
+**Status.** The Lean modules described here (`Q0NearZeroSource…`) are not in the
+library; they belonged to the saved source-table route, whose data-free lemmas are archived in
+[`abandonware/`](../../../abandonware/README.md); the main proof certifies the energy table
+with the quadrature checker (`Final.hclose_final`).
+The `--check` command below compares against those modules.
+
 The compact input preserves all 1,837 original rows whose source cutoff is at
 most two: ordinals 3469–4456, 10710–11238 and 17223–17542. These include 1,420
 regular rows and the 417 exceptional rows. `rows.bin` concatenates their
