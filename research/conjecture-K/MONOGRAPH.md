@@ -187,6 +187,97 @@ Lean**; independent of K. See `STATUS.md`, "Related results", and `INVENTORY.md`
 
 ---
 
+## D. Follow-up audit (15 November, codex-a7c4)
+
+The new [audit report](sources/audit-2026-11-15-codex-a7c4/AUDIT.md) is a bounded follow-up to the 13 November
+reports. It records the source lines, evidence, severity and correction for each finding, together with fresh
+checks and inherited evidence. It makes no new claim about the Grothendieck constant. New author proofs have
+not received external review; same-session checking is named in the notes.
+
+1. **Remote L1 at the peak is now replayed (P + C).** The stronger package of 22 October proves
+   Λ(q) < 1.373953883 < S + 3.6·10⁻⁷ for every finite-dimensional remote cubic at every variance. The replay
+   freshly recomputes its profile integrals and benchmark and checks the continuum cover and tails. Its existing
+   sixth-moment theorem remains an identified mathematical input. This is an external certificate, not Lean.
+   Its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions
+   (REMOTE §3a, added in review). The replay was repeated by claude-b9ee, with no blocking finding
+   ([review](sources/audit-2026-11-15-codex-a7c4/REVIEW_claude-b9ee.md)).
+   The other named rows are not covered. The 1.05·10⁻⁵ package is weaker than the previously claimed 10⁻⁵ cap;
+   its algebra was replayed conditional on stored grids. Details and reproduction: [REMOTE.md](sources/audit-2026-11-15-codex-a7c4/REMOTE.md).
+2. **Continuum profile transfer (P, by author, not externally reviewed).** Scaling the peak with
+   λ=ε/(1891/2500) and allowing shape distance |a−λa₀|+(3/2)|b−λb₀|≤λ/50000 gives remote error below
+   8.1·10⁻⁵ for ε∈[0.74,0.76]. This is a narrow tube, not the full profile box. The disjoint-driver
+   reduction inherits the certified peak tolerance with its original hypotheses.
+3. **Essential independence hypotheses restored.** The consolidated statement of disjoint-driver
+   redistribution needs H independent of Z as well as U independent of (Z,H). Conditional-Gaussian Theorem B
+   needs its conditioning field independent of Z. General L² counterexamples refute the broadened statements;
+   they do not refute K or the original correctly scoped theorems. See [CLAIMS.md](sources/audit-2026-11-15-codex-a7c4/CLAIMS.md).
+   A positive extra tangent term in Theorem A demonstrates a gap in the attempted extension, not by itself
+   a cubic counterexample to same-norm domination.
+4. **Zero-core odd sectors and n=1 (P + exact scalar C).** An independent elementary proof and rational checker
+   confirm the three-row costs in STATUS 5.4. The flank d-cost printed as 0.36 in §4b is too large for its
+   tangent certificate; use 0.356. On the entire application box, the n=1 family satisfies
+   Λ(dZ(T−2))≤2E|L|−(3/20)‖dZ(T−2)‖². Thus G=0 is uniquely optimal for n=1; the peak optimum is
+   387√π/500∈(1.371879280600869,1.371879280600870). The higher-dimensional odd costs still require zero core.
+   See [ODD_COST.md](sources/audit-2026-11-15-codex-a7c4/ODD_COST.md).
+5. **Retained-sector follow-up.** Independent direct-norm quadrature reproduces the four-decimal monomial
+   table (**N**). The tilt, k(s), h_s and the full complex-driver local matrix are independently re-derived
+   (**P**, scalar constants **C**). This does not supply a finite-amplitude sector theorem.
+   Remote L1 is Λ(q)≤S+η_R, not D(q)≥−η_R: the Gaussian optimization slack must remain. If the still-open
+   gain bound gain≤κD+η_A holds with 0≤κ≤1, the correct assembled error is (1−κ)η_R+η_A (**P by author**).
+   A Gaussian coefficient bound is not a pointwise cutoff; an explicit tail allowance is given, but no
+   compact Hessian certificate or general amplitude bound is supplied. See [SECTORS.md](sources/audit-2026-11-15-codex-a7c4/SECTORS.md).
+
+---
+
+## E. Second audit after PR #397 (15 November, codex-a7c4)
+
+Evidence, complete section coverage and status limits:
+`sources/reaudit-2026-11-15-codex-a7c4/AUDIT.md` (A15R in STATUS).
+All original text and earlier source notes below remain unchanged.
+
+1. **§1, response restrictions.** At ε=1891/2500, total response energy <.071981 requires
+   t≥.8456. At t≥.84 use <.081884; the remote cap there is <.046266. The source had these
+   different thresholds, but the summary dropped them. An actual response with t=0 has energy
+   >.0939738, so .072 is not an unconditional response bound. A15R `FOUNDATIONS.md` §2 re-derives
+   the ellipsoid and freshly certifies the scalars (**P + C**).
+2. **§3.1, zero-core odd costs; §4b, flank rounding.** The positive odd costs are row-specific,
+   although §3's heading defaults to the full box. At (.76,.76,.16), the genuine cubic
+   (i/100)Z(|Y|²−1) raises Λ above Λ(0) by >7·10⁻⁶. At the flank, (i/100)Z(T−2) disproves
+   the printed .36 cost by >5·10⁻⁷: this is stronger than the earlier warning that the
+   tangent certificate only gave .356624…. Keep .356. These refute cost extensions, **not K**.
+   The full-box one-coordinate theorem survives; its exact sharp uniform cost is
+   0.151676198434561… (safe rational .15167). A15R `SECTORS.md` §§2–5 (**P by author + C scalars**).
+3. **§2 and §4b, parity and derivatives.** Frequencies and the parity identity are exact.
+   Zero first variation requires an even base and existence of the derivative; zero mixed
+   Hessian requires existence of that Hessian. An even L² base can have a positive cusp along
+   a genuine odd cubic. For genuine even cubic bases the first derivative does exist, by the
+   nonzero-polynomial zero-set argument. A15R `SECTORS.md` §6 (**P by author**).
+4. **§3.4, disjoint drivers.** The previously unexecuted full-box kernel premise of the
+   stronger cost form now has an independent exact Python replay. For mutually independent
+   Z,q,U, arbitrary L² q and centred proper Gaussian U, its all-amplitude cost is
+   1/ε−199/(200ℓ), at least 1/152 on the application box (**P + C**). Shared drivers are
+   excluded. The large-w shared-driver strip uses a separate concave-envelope estimate;
+   it does not follow from the displayed linear bound. A15R `REMOTE.md` §§1–2.
+5. **§4, mixed-shell neighbourhood.** The conditional extension in the 13 November audit
+   remains valid and is sharpened from ‖h‖²≤.006D(p) to ‖h‖²≤.01D(p), with the same .225
+   core premise and .24 conclusion, peak row and total energy≤.0463. This is a 5/3 increase
+   in remainder energy, not an arbitrary-cubic content theorem. A15R `CONTENT.md`
+   (**P by author + C scalars**).
+6. **§5, consumer.** Conditional on all-sector raw or retained peak K_η, a single peak row
+   covers t∈[.84,.851] with η≤10⁻⁴ and strict margin >6.12·10⁻⁷ below 500/701. The exact
+   admissible allowance is .0001006120988404375…. This component does not require a full
+   profile continuum; complementary response regions and the all-sector premise are still
+   missing. A remote-only cap is insufficient. A15R `FOUNDATIONS.md` §4 (**conditional P + C**).
+7. **§6, homogeneous-sum citation.** The arXiv:1407.6216 criterion also assumes centered,
+   variance-one inputs with zero third moment. Its asymptotic result is background, not
+   a finite-amplitude signed-deficit theorem for K. A15R `FOUNDATIONS.md` §5.
+
+Further improvements: retained weak duality and an inner-minimization residual certificate;
+direct Rice verification of the Gaussian benchmark; a dense-test route from rational-square
+meshes to the existing remote duals; and convex-cell profile transfer with an explicit Gaussian
+support. Their exact hypotheses and proof/check boundaries are in A15R. New proofs have
+within-session peer checks but await external review. No new Grothendieck bound is asserted.
+
 <!-- =========================== MONOGRAPH, VERBATIM (unchanged from here to the end) =========================== -->
 
 # Conjecture K: statement, purpose, state of knowledge, and what is left

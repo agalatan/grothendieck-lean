@@ -1,0 +1,15 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS",
+  "profile_range": [
+    "2/15",
+    "4/19"
+  ],
+  "gaussian_scale_range": "[0,infinity)",
+  "profile_intervals": 12,
+  "variance_intervals": 278,
+  "normalized_kernel_upper": "2188027284403/1099511627776",
+  "strict_target": "199/100",
+  "uniform_shell_cost_lower": "1/152",
+  "scope": "Numerical premise of STATUS 4.2; every shift, scale, application profile."
+}

@@ -1,0 +1,47 @@
+[C] Recomputed 68 profile Hermite caps and the infinite tangent cap: PASS
+[C] 45 Stein nodes: every finite interval, zero and the entire tail PASS
+[C] Variance interpolation allowance: 153/3200000000
+[C] Central rectangle upper: 519629358330379958834713591379/378200000000000000000000000000
+[C] Outer rectangles checked: 1
+[C] Outer rectangles checked: 26
+[C] Outer rectangles checked: 51
+[C] Outer rectangles checked: 76
+[C] Outer rectangles checked: 101
+[C] Outer rectangles checked: 126
+[C] Outer rectangles checked: 151
+[C] Exact cover: 154 outer rectangles plus the Stein rectangle: PASS
+[C] Outer-cover upper: 85135369756831882044807571219209/61964288000000000000000000000000
+[C] Zero variance and every variance >= 3/20: PASS
+[C] Recomputing the inherited Gaussian benchmark enclosure...
+fprime_left [1.8330885347806903e-6 +/- 5.86e-23]
+fprime_right [-2.6963270524528351e-6 +/- 3.69e-23]
+f_middle [1.37395352566148283362521 +/- 2.60e-24]
+fprime_middle [2.13139743028393e-8 +/- 2.07e-23]
+S lower [1.3739535256614828336252074030 +/- 4.17e-29]
+S upper [1.3739535256615254615738175015 +/- 1.11e-29]
+PASS: 1.3739535256614 < S < 1.3739535256616
+Msecond_at_one_twentieth [-2.1094877441307421 +/- 4.96e-17]
+PASS: Msecond(1/20) < -2
+[C] Exact comparison slack S_lower + 3.6e-7 - TARGET: 13307/5000000000000
+[P,C] Lambda(q) < 1.373953883 < S + 0.00000036
+ALL NEW CERTIFICATES PASSED; inherited inputs are identified in PROOF.md.
+Elapsed seconds: 138.94
+{
+  "agent_id": "codex-a7c4",
+  "part": "all",
+  "status": "PASS",
+  "python": "3.12.3",
+  "python_flint": "0.9.0",
+  "elapsed_seconds": 138.959,
+  "scope": "Peak row only; numerical acceptance conditional on mathematical inputs in REMOTE.md.",
+  "sha256": {
+    "benchmark.py": "ac31e0da43ffd4b532ca1192429a0fbc9be3d4bece1dcb8995aa521e773e6e83",
+    "check_stein.py": "669688428045a2564a44680a62bdfca9277494c96b98155acc772691a21b8328",
+    "exact.py": "8149a1b17c054c58461f36a8a2e030a2c324041c4b18d9e2e6eef72185e94145",
+    "moment-boxes.json": "cef37c2a66eacd66296add7ed2efc5a8d6afc336d2ed614102de08429d449695",
+    "profile-caps.json": "01c2e2a7b4af452ce8729ec47cb0cd2c3aa7e1368c6b58336270c2a19b349514",
+    "profile.py": "fb6a187270358a7b230a6824fa1cb9e85b8f155666d2b9cfb4df9071b9caaf0a",
+    "stein-nodes.json": "69c49c92dfe6aaf74267e944970cefea37555837d06c35521a048ac9553780b0",
+    "verify.py": "7a3eb7592ab569be08cb95a5e9c061b9339e6a054773d93d7abbe8493b5485c2"
+  }
+}

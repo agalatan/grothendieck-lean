@@ -2,12 +2,11 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The target interval is `1.401697117301 < K_G^ℂ < 1.4046` (`main_bounds`,
+The proved interval is `1.401697117301 < K_G^ℂ < 1.404599412097` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
-(`lower_target`), and so is the upper endpoint (`upper_target`, `Grothe/UpperFinal.lean`:
-a Grothendieck bound below `1.40459996`, threshold `1.4046`). The upper proof
-imports the shared Gaussian phase identity and Laplace modules under
-`Grothe/Haagerup/`.
+(`lower_target`), and so is the upper endpoint (`upper_below_tight`,
+`Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
+phase identity and Laplace modules under `Grothe/Haagerup/`.
 
 **Reading this inventory.** Most paragraphs describe one module or one result.
 Where a paragraph says that a result takes an estimate as a hypothesis, or that
@@ -19,15 +18,29 @@ input of the main theorems, which have no hypotheses. A module said to be
 nothing in `main_bounds` depends on it. The value `1.404598149141` is the target
 the rounding was designed for: Lean proves a bound below it only conditionally
 (`fresh_upper_concrete_taylor`, whose band-error hypotheses are not proved),
-and the theorem without hypotheses exhibits a bound below `1.40459996`.
+and the theorem without hypotheses exhibits a bound below `1.404599412097`.
 
-**Upper endpoint assembly.** `upper_target` applies
-`RelaxedTwist.upper_target_of_facts` to the port-fact bundles
+**Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
+in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
+shards supply their analytic interpretation. Adding the existing `10⁻¹⁵` tail/gap reserve
+and the exact dyadic table excursions gives the low-band radii; the already certified
+inner-product thresholds give smaller whole-source radii. The reference masses also
+retain the exact sums of the eighteen certified band-cap squares before taking
+rational square-root ceilings, improving the coarse high-band caps `0.0916` and `0.199`.
+`UpperTightComparison` specializes a comparison theorem with arbitrary reference-mass,
+piece-error and whole-source radii.
+`UpperHead` assembles the finite residual independently of the comparison budget,
+and `HeadHardy` deducts the linear coefficient's forced energy before bounding the tail.
+The unchanged sharp Hardy budget is `1737972/10⁶`. The resulting exact reciprocal
+`tightValueQ` is strictly below `1.404599412097`. No panel, energy table or numerical
+acceptance premise is replaced, and the tighter total checks introduce no native fact.
+
+**Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
 `PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
-`Final.twistRemainder1/2/3` and the energy-table accuracy `Final.hclose_final`.
+`TightTwist.remainder1/2/3` and the energy-table accuracy `Final.hclose_final`.
 Each twisted remainder comes from the 21 shard facts and the total fact of its
-power (`TwistEllCheck.remainder_of_prodShards`); the totals equal the relaxed
-panel radii `relaxedPanelRadiusQ`. `TwistEllipseMassSound` supplies the step
+power (`TwistEllCheck.remainder_of_prodShards`); the tighter total facts bound
+the actual sums by `tightPanelRadiusQ`. `TwistEllipseMassSound` supplies the step
 from acceptance to the actual vector: every accepted disk, in Y, K or automatic
 mode, bounds the squared norm of the actual descended vector on the whole disk
 by its upper endpoint (`norm_descendedVector_sq_le_diskM2`), so an accepted
@@ -204,9 +217,9 @@ final checks, range facts and phase-degree theorem into `j1FactsOf`,
 `j2FactsOf` and `j3FactsOf`. It uses the `FactsOf` interface from the
 twisted evaluator's soundness bridge; it introduces no additional finite
 computation or analytic hypothesis. All consumed fact modules are registered
-in the generated root and in `data/axioms/native.txt`. `upper_target` applies
-`RelaxedTwist.upper_target_of_facts` to these bundles, to the twisted
-remainders and to the energy-table accuracy `Final.hclose_final`.
+in the generated root and in `data/axioms/native.txt`. `upper_below_tight`
+uses these bundles through `TightTwist.six_of_facts`, together with the tighter
+twisted remainders and the energy-table accuracy `Final.hclose_final`.
 
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
@@ -940,9 +953,9 @@ tail's changed-head deduction. The resulting residual is
 bound strictly below `1.40459988` from exactly the three low-band bounds,
 three independent whole-error bounds and actual frozen-response table
 accuracy (task #295). The whole-error bounds and the table accuracy are proved.
-The three low-band bounds are proved only with the larger caps of the next
-paragraph, so this theorem (`ThreeBandUpper.lean`) stays conditional, and the
-final theorems do not import it. The standard
+This fixed-budget theorem (`ThreeBandUpper.lean`) retains its explicit low-band
+hypotheses. The final assembly uses the generic comparison with the tighter
+certified radii above; it does not import this endpoint module. The standard
 analytic cores and concrete adapters keep their explicit inherited trust
 allowances; no new native fact is introduced. The public `UpperTarget`
 threshold is `1.4046`.
@@ -1524,6 +1537,31 @@ saved-model tolerances. Its exact budget is `(84353029/84596280)*10⁻¹²`,
 and its interval is `200/89` times the original. This is a quadratic-plus-cubic
 bound, so it does not contradict optimality of the purely quadratic constant two.
 No Gaussian optimality or change to the production certificates or headline endpoint is claimed.
+`Haagerup/PhaseTaylorQuadratic` retains the actual quadratic Taylor term
+`Q₂(h) = -(Im h)²/2 - i Re(h) Im(h)`. The global remainder is at most
+`2‖h‖³`, including the zero perturbed point, and the constant two is optimal.
+`UpperChaos/PhaseQuadraticError` gives its exact four-mode Wick expansion,
+supported on `(0,0)`, `(1,1)`, `(2,0)` and `(0,2)`, with Gaussian norm `sqrt(7)/4`.
+For the existing linear centers the whole-slice error is at most
+`(sqrt(7)/4)*ρ² + 2*sqrt(6)*|ρ|³`; every coefficient error is at most
+`(3*sqrt(2)/8)*ρ² + 2*sqrt(6)*|ρ|³`. Outside those four modes only the cubic
+term remains. The same parameter and saved-model tolerances therefore give
+error below `10⁻¹²` for `|ρ| ≤ 1/1090000` in every mode, and for
+`|ρ| ≤ 1/22500` outside the quadratic support. These analytic improvements
+introduce no native facts; the tighter certified Grothendieck endpoint above
+comes from the separate budget and Hardy assembly.
+`Haagerup/PhaseTaylorThird` goes one order further: the cubic Taylor term
+`Q₃(h) = Re(h)*(Im h)² + i*((Re h)²*Im h - (Im h)³/2)` leaves a globally
+sharp remainder `2‖h‖⁴`. `UpperChaos/PhaseCubicError` gives its exact six-mode
+Wick expansion, with squared norm `27/32`, and Gaussian remainder `4*sqrt(6)*ρ⁴`.
+The quadratic and cubic supports are disjoint. For `|ρ| ≤ 1/2`, each coefficient
+of the existing linear-center error is therefore bounded by
+`(3*sqrt(2)/8)*ρ² + 4*sqrt(6)*ρ⁴`. The saved-center interval becomes
+`|ρ| ≤ 1/1086000` uniformly, or `1/12000` outside the quadratic support,
+with the same parameter and saved-model tolerances. At total Wick degree at
+least four, the error is purely quartic and the saved-center interval is
+`1/2120`; the parameter-error hypothesis is unnecessary because the linear
+center vanishes identically. These analytic results add no native facts.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
@@ -1664,7 +1702,7 @@ division, so evaluation needs neither complex norm nor square root. The
 zero-denominator case is included. These pointwise inequalities do not assume
 a numerical certificate or change a Grothendieck endpoint.
 
-**Upper bound.** The proved upper bound is `upper_target` ("Upper endpoint
+**Upper bound.** The proved upper bound is `upper_below_tight` ("Upper endpoint
 assembly" at the top of this file). The sharper value that the rounding was
 designed for is conditional: `Grothe.UpperChaos.fresh_upper_rounder`
 (`Grothe/UpperChaos/GroupedRounder.lean`) proves
@@ -1672,7 +1710,7 @@ designed for is conditional: `Grothe.UpperChaos.fresh_upper_rounder`
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
 `Grothe.upper_value_lt` (`Grothe/Upper/GroupedBridge.lean`) shows this is below 1.404598148840.
 The table accuracy is proved (`Final.hclose_final`); the component-error inputs
-with the original caps are not, and `upper_target` does not use this theorem.
+with the original caps are not, and `upper_below_tight` does not use this theorem.
 The supporting module
 `Grothe/UpperChaos/ProfileFirstGaussianCell.lean` (not imported by the final
 theorems) evaluates one finite cell: its
@@ -2257,18 +2295,19 @@ by the final theorems.
   head 3.09%, the Hardy tail 3.33%, and the table error about 0.0015%.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs are the hypotheses of this
-  theorem that are not proved. The residual of the proved bound `upper_target`
-  is `relaxedThreeBandResidualQ`, approximately 1.8274·10⁻⁶: the comparison
-  `relaxedThreeBandCompareQ` (96.4%), the Hardy tail `36748/10¹²` (2.0%), the
-  head `28153/10¹²` (1.5%) and the same table error.
+  theorem that are not proved. The residual of the proved bound `upper_below_tight`
+  is `tightResidualQ`, approximately 1.5507·10⁻⁶: the comparison
+  `tightThreeBandCompareQ` (96.2%), the Hardy tail `303362611/10¹⁶` (2.0%), the
+  head `28153/10¹²` (1.8%) and the same table error.
   Full scope, source bindings and reproduction commands are in
   `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
   the mathematical argument.
-* The same weighted head bound forces `h₀ ≥ slopeQ − headResidualQ`.
-  `hardy_budget_after_linear` deducts its weighted square from `1737972/1000000`;
-  exact kernel arithmetic proves tail `303362486/10¹⁶`. `upper_target` does not
-  use this deduction: its tail `36748/10¹²` comes from the budget `7/4`
-  (`HardyReal.hardy_GT`).
+* The certified weighted head bound forces `h₀ ≥ slopeQ − tightHeadResidualQ`.
+  `HeadHardy` uses `hardy_budget_after_linear` to deduct its weighted square
+  from `1737972/1000000`; exact kernel arithmetic proves tail `303362611/10¹⁶`.
+  This deduction is used by `upper_below_tight`. The conditional smaller head
+  still gives tail `303362486/10¹⁶`; the coarse `upper_target` API retains its
+  tail `36748/10¹²` from budget `7/4` (`HardyReal.hardy_GT`).
 * **Independent replay.** The source computations were replayed on a different machine: the
   nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
   contour tail, comparison and endpoint pass on the regenerated data (energy table reproduced

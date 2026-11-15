@@ -11,7 +11,10 @@ import Grothe.Haagerup.PhaseStability
 import Grothe.Haagerup.PhaseTaylorAlgebra
 import Grothe.Haagerup.PhaseTaylorCubic
 import Grothe.Haagerup.PhaseTaylorOptimal
+import Grothe.Haagerup.PhaseTaylorQuadratic
 import Grothe.Haagerup.PhaseTaylorSharp
+import Grothe.Haagerup.PhaseTaylorThird
+import Grothe.HeadHardy
 import Grothe.ListPoly
 import Grothe.Lower.Basic
 import Grothe.Lower.Boxes
@@ -10862,6 +10865,7 @@ import Grothe.UpperChaos.PackedDyadicStructural
 import Grothe.UpperChaos.PackedDyadicStructuralChecks
 import Grothe.UpperChaos.PairJetPolynomialOperations
 import Grothe.UpperChaos.PhaseAuxiliaryDecay
+import Grothe.UpperChaos.PhaseCubicError
 import Grothe.UpperChaos.PhaseMoment2
 import Grothe.UpperChaos.PhaseMoment4
 import Grothe.UpperChaos.PhaseMoment6
@@ -10872,6 +10876,7 @@ import Grothe.UpperChaos.PhaseMomentEval
 import Grothe.UpperChaos.PhaseMomentNorms
 import Grothe.UpperChaos.PhaseMoments
 import Grothe.UpperChaos.PhasePolynomialStability
+import Grothe.UpperChaos.PhaseQuadraticError
 import Grothe.UpperChaos.PhaseRadialTail
 import Grothe.UpperChaos.PhaseTailExponential
 import Grothe.UpperChaos.PhaseTermsDefs
@@ -13680,6 +13685,7 @@ import Grothe.UpperChaos.ZeroProfilePhaseSharp
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
 import Grothe.UpperFinal
+import Grothe.UpperHead
 import Grothe.UpperQuad.Bridge
 import Grothe.UpperQuad.CanonicalExplicit
 import Grothe.UpperQuad.CanonicalShellBound
@@ -14008,4 +14014,9 @@ import Grothe.UpperQuad.TwistTail
 import Grothe.UpperQuad.TwistYEnvelope
 import Grothe.UpperQuad.WatsonSeed
 import Grothe.UpperTarget
+import Grothe.UpperTightBudget
+import Grothe.UpperTightComparison
+import Grothe.UpperTightFinal
+import Grothe.UpperTightPanelTotals
+import Grothe.UpperTightSix
 import Grothe.VectorOpt
