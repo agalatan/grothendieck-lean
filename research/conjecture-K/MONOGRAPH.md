@@ -528,7 +528,8 @@ and the centered error of (2.7) then suffice: under u ≤ 0.0463 and u + V ≤ 0
 
 The implication and its 1,000-cell rational scalar certificate are re-derived and replayed by claude-b9ee
 [P + C · codex-a7c4 · 7.4.10]. The target uses the existing content coefficient 0.3. Its exterior is proved for |w| ≥ 19/10 or sqrt(|α|² + |β|²) ≥ 37/25 by a density bound,
-layer cake and exact polynomial positivity [P + C, author only · 7.4.10]. Only the compact interior remains for
+layer cake and exact polynomial positivity [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.10];
+the uniform remainder bound alone gives the larger exterior |w|²/2 + |α|² + |β|² ≥ 891/500. Only the compact interior remains for
 this target; odd sectors over the joint core are still a separate obligation.
 
 ### 2.9 The odd sectors
