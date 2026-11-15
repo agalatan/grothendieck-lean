@@ -1,0 +1,11 @@
+{
+  "directional-matrix-codex-a7c4/radial_matrix.cpp": "99e69ed0708ed51e2d9b30b22256c842e4f79f14dec64c302aef08fbc96a8663",
+  "compact-joint-2026-11-15/potential_integral.cpp": "f69971f16671639c9662dfe0615463205620220cf346040385a277fcf80c3d73",
+  "compact-joint-2026-11-15/hessian_integral.cpp": "8d4256c8c684d4abf43a9aeaeb4d006b2329f46e27435178d81c3e9daa42671d",
+  "tilted-sector-2026-11-15/secant_verify.cpp": "05587544ff9b3c96a863179185d42925d1c06b7e866b3b9a4bd1bc0911ce3f11",
+  "tilted-sector-2026-11-15/theta_verify.cpp": "c8ed8c2cf10a05f780f7e0495ba8c1b073fb4f3cb534adb99e781315a54590ef",
+  "tilted-sector-2026-11-15/localization_circle.hpp": "aa115bd4e4cc72ef6e19e0afd2fd28df08f065b38aa50bfb0eda5ddd60b67d99",
+  "adaptive-cover-codex-a7c4/shift_curvature.cpp": "10017337ea12d581dc7ea1fb1863343698891d14bef8a62d6bd8f6fc9d599aad",
+  "compact-joint-2026-11-15/strip_check.py": "6193d57181d37fff00e498afce17b118b5d7d51fd34e51ecb3b148c6b779fcd2",
+  "progress-2026-11-15-codex-a7c4/joint_target_tail.py": "481d53f24ffacc958e4ad4542ab0de20d95be410efaf60c0a5687aa8ab0021c3"
+}

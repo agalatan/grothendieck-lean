@@ -623,3 +623,49 @@ It checks the S_M enclosure and the conditional cover in about 84 s (replayed by
 | `handoff …/input_hashes.json` | 5,414 B | `96a2493604a055d5595a5a2c3f6ad4b94815ce177066d3a2e43dfe1d147f9cfa` |
 | `handoff …/ledger_result.json` | 2,280,980 B | `9e870208fb18436d79c0b0fc6eaf87c8efdb8c80255df23aab9bdebb37191416` |
 | `handoff …/clean_checkout_verification.log` | 15,128 B | `8a1a97dcba63bc8d951881a2c0e52550aeb49a70c47422ff516ce775bcac5d59` |
+
+## Odd sectors over a remote core: the 32/25 certificate (outside GPT, #436)
+
+`sources/odd-cubic-core-2026-11-15/` holds the proof and its README (STATUS 7.2.10). The certificate is in
+`code/odd-cubic-core-2026-11-15/`: run `python3 verify_results.py` there for the exact coverage check of the 320 recorded
+bounds, and `python3 run_certificate.py --workers 8` for the full recompute (a C++17 compiler; about 160 s on 8 cores).
+`review-claude-b9ee/recomputed_all_bounds_gcc13.txt` is claude-b9ee's recompute (GCC 13.3), equal to `results/all_bounds.txt`
+value for value. The working folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/odd-cubic-core-2026-11-15/` also keeps:
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `PROOF.md` (claude-b9ee's note on the first, uncertified version, p − 0.0655, and its review) | 5,300 B | `024ed9fa6d7c48bc22416dde36da7d678c0533f9b12c830e489c7ffc71d8bab4` |
+| `kern.py`, the author's first matrix script | 1,627 B | `c78799628252a2f09536ebf75c16dcfa8ace2ad0977bada2632bf3c9181c76d1` |
+| `kern2.py`, the author's script for the optimised compensation | 1,592 B | `2b03cc07026abfdbf07297ec4181e4c321eb969962d98ef6339fc1724a3c360e` |
+| `verify_independent_claude-b9ee.py`, image-plane quadrature reproducing p − 0.065540 at r = 0.475 | 2,634 B | `d21d14063720b8c2f4301f997a77793d6305b9c2ff3c6ca0951875e83b17f9c2` |
+
+## Partial results of codex-c7e2 (#436)
+
+`sources/partial-results-2026-11-15-codex-c7e2/` holds the package README and its notes; `code/partial-results-codex-c7e2/`
+holds every checker and small result file (`node replay.mjs` runs the four exact checks; `variational/inherited_odd_cost_check.py`
+is byte-identical to `code/audit-2026-11-15-codex-a7c4/odd_cost_check.py`). Only the anisotropic region (STATUS 7.5.1) was
+reviewed; 3.18, 12.7 and the strip of 7.4.11 are author only. The extracted package is in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-c7e2-partial-2026-11-15/`; its two search records stay there:
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `boundary/results.jsonl` (100 coarse optimisations in H₂,₁(ℂ²) with a buffer) | 50,793 B | `e838c16981ea7183955773debbc8dc6cf346719358e41220d297dfe2b16cde4c` |
+| `boundary/results_fine.jsonl` (the 100 refined optimisations) | 50,849 B | `487d23af8d2f62c516a9b2663e55b5600ab553a354fed81cf3fd1188b5ea1942` |
+
+## The centred joint form near u* (codex-91d4, #436)
+
+`sources/near-star-2026-11-15-codex-91d4/` holds the report and the proof notes (STATUS 7.5.6). The checkers stay in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-all-sector-peak-2026-11-15/near-star-continuation/`, because its `replay.py` checks a manifest that includes
+the documents; `python3 -I -B replay.py` there runs the exact checks and controls in about 0.4 s (replayed by claude-b9ee),
+and `--numerics` adds the probes. Its `replay_runs/` (520 KB of receipts and logs) is not copied.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `verify_exterior.py` | 6,858 B | `9211871f0ceb2857729f3988a6b1264642c891e4e113a6cea5462760f4384da8` |
+| `verify_assembly.py` | 2,521 B | `cf9def4dfba18d34b8ee976eb7a6a82d60905ad9829ce9422636005151f461fb` |
+| `replay.py` | 4,473 B | `11e6d4ccb8f990327874c3e6a31941fed97cf62871488fc269ff6b751cdf400e` |
+| `MANIFEST.json` | 3,369 B | `4cc3bc4ed6820dd6df066a53dea815e53585d893aad7449eccd7e96660423685` |
+| `inputs/coupled_budget_check.py` | 4,436 B | `f1855fd5aa8aea9e9e3b82ee6b63d8fed1e295fef012d641700b01592dcf0490` |
+| `inputs/coupled_budget_multipliers.json` | 108,971 B | `54715d0969614267b7c866fbf8d255c53edda4133fe8eca24f3a15ebffe0d4f8` |
+| `inputs/verify_region.py` | 5,260 B | `3a42db17629eec10d99a1197e26879f617238d94d34f00f7c5b62e540119712b` |
+| `inputs/verify_primitives.py` | 7,873 B | `9a0bee97cef9faf2ae508893584af7855893463be3e7739f7c6f5417ada837d8` |
