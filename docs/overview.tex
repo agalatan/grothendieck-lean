@@ -23,7 +23,7 @@
 \large New bounds, machine-checked in Lean}
 \author{Alin Galatan, with several AI research systems\\[2pt]
 \small\url{https://github.com/agalatan/grothendieck-lean}}
-\date{October 2026}
+\date{November 2026}
 
 \begin{document}
 \maketitle
@@ -39,18 +39,18 @@ Grothendieck bound below $1.40459996$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
-The source-node rounding ledger verifies its exact rational arithmetic and
-transfers a squared-mass cap to a norm cap. Its application to the actual
-Gaussian coefficient table still requires the input estimates and the
-operation-error model; it does not complete the upper endpoint.
+The source-node rounding ledger (\lean{Q0NodeMassLedgerSharp}) verifies its exact
+rational arithmetic and transfers a squared-mass cap to a norm cap. It is an
+arithmetic implication: the raw-error and smoothing estimates are its
+hypotheses. The accuracy of the energy table that the upper bound uses is
+proved separately (\lean{Final.hclose\_final}).
 
-The finite twisted-source bundle module packages the production table flags,
-range checks, final checks and phase-degree bound for powers $j=1,2,3$ into
-the soundness bridge's exact finite-fact interface. This source checkpoint
-retains the computational kernels and remains work in progress pending the
-remaining finite computations, a combined typecheck and its axiom audit.
-The analytic quadrature remainders, energy-table accuracy and endpoint
-assembly remain separate obligations.
+The finite twisted-source bundle module (\lean{UpperQuad.PortFacts.Bundles})
+packages the production table flags, range checks, final checks and
+phase-degree bound for powers $j=1,2,3$ into the soundness bridge's exact
+finite-fact interface. The upper bound \lean{upper\_target} combines these three
+bundles with the proved quadrature remainders
+(\lean{Final.twistRemainder1}--\lean{3}) and the proved energy-table accuracy.
 
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
@@ -145,14 +145,18 @@ assume numerical certificates nor change the certified endpoints.
 year & who & lower bound & upper bound\\\midrule
 1953 & Grothendieck & & $K<\infty$\\
 1984 & Davie & $1.33807$ & \\
+1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
-Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & archived\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404598149141}$\\\bottomrule
+Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.4046}$\\\bottomrule
 \end{tabular}
 \end{center}
+The upper bound is stated at the threshold $1.4046$; the Grothendieck bound that Lean exhibits is below $1.40459996$.
+The rounding was designed for a sharper value, below $1.404598149141$, which Lean has only conditionally
+(Section~\ref{sec:trust}).
 Haagerup's integral
 $1/\gamma^\dagger=1.404575934\ldots$, $\gamma^\dagger=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}dt$, has been proposed as the
-exact value. It lies inside our interval, $2.22\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
+exact value. It lies inside our interval, $2.4\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 
 \section{Two dual constructions}
@@ -171,23 +175,25 @@ each original Gauss order from $1$ to $64$.  Rational polynomial certificates,
 interpreted through LeanCert, prove orthogonality and the weight identity;
 these give exact integration for polynomials of degree below $2n$ at order $n$.
 The certificates use kernel reduction and are part of the main Lean build.
-The selected numerical nodes and the analytic remainder require separate
-proofs; this algebraic result alone does not finish the upper endpoint.
-For the energy table, \texttt{EllCheck.quadRemainderHyp} now proves the covered-set
+The selected numerical nodes are bound to these rules on every production
+panel (\lean{QuadRem.source\_rule\_exact}), and the analytic remainders have their
+own proofs, described in the rest of this paragraph.
+For the energy table, \texttt{EllCheck.quadRemainderHyp} proves the covered-set
 quadrature error bound $\|G^{\mathrm c}-G_{\mathrm{full}}\|_{\ell^2}\le1.5\cdot10^{-12}$.
 The proof combines an entire conditional-coefficient extension, a finite complex
 Mehler bound and a Banach-space Bernstein-ellipse remainder theorem. Sharded
 interval checks of the committed panel plans certify a canonical error sum below
 $1.04\cdot10^{-12}$; reflection gives the full bound. Its axiom report uses the
-standard axioms and registered native facts. The twisted-source estimates and
-the final upper-endpoint assembly remain separate obligations.
+standard axioms and registered native facts. With the tail bound, the omitted
+pairs and the native energy facts it gives the accuracy of the energy table
+(\lean{Final.hclose\_final}). The twisted-source estimates follow.
 For the twisted source, \texttt{TwistPanels.remainder\_of\_ellipses} reduces the
 covered-set remainder to complex extensions and boundary caps on every actual
 production panel. The Euclidean vector retains every mode
 $q<Q$, $c\le q+1$, $d\le q$; its panel errors are summed without a reflection
 factor. The theorem assumes differentiability through each closed ellipse,
 agreement on the positive real slice, and the numerical bound on the total
-Gauss remainder. These analytic and numerical inputs remain to be supplied.
+Gauss remainder. The following steps supply these inputs.
 The auxiliary canonical shell bound, with $\theta=|A|^2/\Re(A^2)$ and
 $\Re(A^2)>0$, is
 \[
@@ -211,7 +217,7 @@ for $\theta$ and the imaginary square, and a positive lower bound for
 $|A|^2$, give exactly the checker expression \texttt{coarseKSq}; multiplying
 by the primary radial envelope bounds the actual full descended vector.
 No column-energy premise remains in this adapter.
-The concrete descended twisted vector now supplies the analytic extension
+The concrete descended twisted vector supplies the analytic extension
 in this reduction, including at the origin wherever $v_C$ is nonzero.
 Its finite-Mehler estimate retains the full graded vector and combines
 directly with the coupled Gaussian-translation Y bound. The actual profile
@@ -219,9 +225,9 @@ sign is constant on each zero-free real panel and may be fixed at its left
 endpoint. Consequently,
 \lean{UpperQuad.TwistRadialExt.remainder\_of\_descended\_ellipses} requires only
 profile nonvanishing through each closed ellipse, boundary norm caps and
-their summed numerical remainder. These certificates and their total remain
-open inputs to the unconditional upper endpoint.
-The analytic Y adapter now bounds this actual vector from coordinate bounds
+their summed numerical remainder. The accepted panel certificates described
+below provide all three.
+The analytic Y adapter bounds this actual vector from coordinate bounds
 $r^2=s$, $S_{\rm lo}\le\Re s$, $(\Re r)^2\le X$, $(\Im r)^2\le Y$ and
 $(\Im A)^2\le B^2$, where $A$ is the signed production shift. For
 $0<t,\eta<1$, $|\sigma|=1$ and $D=D_{\rm out}$, its squared bound is
@@ -234,38 +240,43 @@ $0<t,\eta<1$, $|\sigma|=1$ and $D=D_{\rm out}$, its squared bound is
 \]
 This pointwise theorem also supplies a norm cap from a certified squared cap.
 It introduces no interval premise or new native fact; enclosure soundness and
-the complete panel sum are still needed.
+the complete panel sum are the next two steps.
 The finite assembly fixes one power and one certificate array across all
 accepted shards. Explicit coverage of every source index and the checked
 array length give every actual panel predicate; the checked rational total
 bounds the real sum of those same error caps. Overlapping shards do not
-duplicate a panel in this sum. The finite acceptance facts and their analytic
-interpretation remain required.
+duplicate a panel in this sum. The finite acceptance facts are native checks
+(\lean{TwistEllCheck.Facts}); their analytic interpretation is the mass bound
+below.
 Accepted disk-cover geometry and strict profile separation on every disk
 also give nonvanishing throughout the closed ellipse. The same separation
 identifies the checker's sign with the physical profile sign at every real
 panel point and hence with the continuation's fixed left-endpoint sign.
-Certificate acceptance itself now supplies this geometry and the exact
+Certificate acceptance itself supplies this geometry and the exact
 real Gauss error. Together with complete acceptance and the checked total,
-the actual remainder follows from the remaining interpretation of each
-certificate's squared mass cap on its ellipse boundary.
+the actual remainder follows from the interpretation of each
+certificate's squared mass cap on its ellipse boundary, given below.
 
 For the twisted sources, exact panel certificates for all three production powers
 are stored in \texttt{data/twist-ellipse/plans.json}. Registered native checks
 verify their disk-majorant caps and total error budgets, with a reserve of
 $10^{-15}$ below each relaxed radius. Arithmetic soundness and disk-geometry
-lemmas expose the checked expressions. Their identification with the actual
-twisted vector, the analytic remainder, and the final upper endpoint remain
-separate proof steps.
+lemmas expose the checked expressions. \lean{UpperQuad.TwistEllipseMassSound}
+identifies them with the actual twisted vector: an accepted certificate bounds
+the squared norm of the actual descended vector on its closed ellipse by its
+mass cap. \lean{TwistEllCheck.remainder\_of\_prodShards} then proves the
+covered-set remainders \lean{Final.twistRemainder1}--\lean{3} that
+\lean{upper\_target} uses.
 
 For an accepted Y-mode disk evaluation, the geometric and interval witnesses
-now bound the actual descended vector throughout the disk, uniformly for
+bound the actual descended vector throughout the disk, uniformly for
 every real sign of absolute value one. The proof covers the fallback that
 bounds the imaginary shift by its full norm when the angle check fails.
 The same profile separation excludes every profile zero in the disk.
 Accepted lower-norm and angle witnesses also transport to the signed shift
-for K consumers. Actual K and automatic-mode soundness and the final
-remainder assembly remain separate obligations.
+for K consumers. The K and automatic modes are covered in the same way:
+every accepted disk, in any mode, bounds the actual vector
+(\lean{norm\_descendedVector\_sq\_le\_diskM2}).
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[
@@ -279,13 +290,32 @@ $|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ (hence $|
 The phase certificate checks 119,077 leaves in 512 cubes through six native range facts, with an analytic far field.
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
-powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
-$\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
+powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, Lean proves that the residual is at most
+$\delta\approx1.8274\cdot10^{-6}$ (the exact rational \lean{relaxedThreeBandResidualQ}):
 \[
- \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973699960428191}<1.404598148840 .
+ \KG\le\frac1{c-\delta}=1.40459995\ldots<1.4046 .
 \]
+The rounding was designed for the smaller residual $455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$, which
+would give $\KG\le500000000000000000/355973699960428191<1.404598148840$. Lean has this sharper value only as a
+conditional theorem (\lean{fresh\_upper\_concrete\_taylor}), whose hypotheses are fourteen finite-band Gaussian error
+estimates and the accuracy of the energy table. The table accuracy is proved (\lean{Final.hclose\_final}). The
+unconditional theorem does not use the fourteen estimates: it uses six weaker ones, which are proved
+(Section~\ref{sec:trust}).
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
+
+\paragraph{Supporting results.}
+The paragraphs from here to the end of this subsection, and those after the
+references, record further Lean results about the same rounding: bindings of
+the stored source data, analytic lemmas, and ways of certifying its Gaussian
+inputs other than the quadrature described above.
+Many of them are conditional: they take numerical estimates as hypotheses, and
+the text says which. Those hypotheses are not open inputs of the main result.
+\lean{upper\_target} has no hypotheses: it obtains its six Gaussian estimates and
+the accuracy of the energy table from the quadrature above, and it uses a result
+of these paragraphs only where the hypotheses of that result are proved. Where
+the text says that modules are not imported by the final theorems, nothing in
+\lean{main\_bounds} depends on them.
 
 The conditional-node table has 21,577 rows of binary64 conditional Hermite
 approximations. Row $i$ uses the degree-531 canonical pairs $0\le c\le266$,
@@ -298,9 +328,14 @@ The 413 unresolved nodes occupy 381 panels; panel closure gives exactly the
 The rule and its exact inputs are committed in
 \path{data/q0_quadrature/conditional_source/exception-selection.json}.
 Lean checks scalar magnitude at most one, squared row norm at most $121/100$,
-and source ordinal coverage. The source-error assembly uses these rows through their
-source-address and cutoff binding; production basis/sign normalization and
-actual approximation estimates remain separate obligations.
+and source ordinal coverage (\lean{Q0SourceExceptionCentersAll}). The source-error
+assembly uses these rows through their source-address and cutoff binding; it
+does not provide the production basis/sign normalization or the actual
+approximation estimates. This table and the modules of the next nine paragraphs
+that work with it (\lean{Q0Source...}, \lean{Q0Conditional...},
+\lean{Q0NearZeroSource}, \lean{Q0RegularSourceRow}, \lean{ZeroProfile...},
+\lean{PhaseTaylor...}) are not imported by the final theorems: the energy table
+is certified by the quadrature checker instead.
 
 The exceptional source panels have Gauss orders one through four. Exact
 normalization of their selected roots removes the panel-weight-sum input,
@@ -308,9 +343,9 @@ using the same physical weights and one Gaussian density factor. The selected
 coefficient error is at most $2.53\cdot10^{-10}$ given a $10^{-12}$ enclosure
 for the actual regular-node coefficients. Exact reconstruction of the full
 conditional rectangle multiplies this allowance by $10/7$ and retains the
-production phase. Regular evaluator bounds, floating operations, contraction,
-omitted-domain estimates, tails and the final energy-table fit are still
-separate requirements for the upper endpoint.
+production phase. The estimate does not cover regular evaluator bounds,
+floating operations, contraction, omitted-domain estimates, tails or the
+energy-table fit.
 
 For selected regular nodes near a profile zero, the whole Gaussian slice
 remainder is projected by Bessel before aggregating coefficients. Its vector
@@ -318,8 +353,8 @@ radius remains $5\rho^2$, without a mode-count factor. The two-coordinate
 parameter error has radius at most $|\rho-r|$; a separate coupled saved-model
 radius $\varepsilon$ gives $5\rho^2+|\rho-r|+\varepsilon$. The hybrid source
 budget combines those selected nodes with explicit squared-error budgets on
-all other regular nodes, using the same physical Gaussian weights. Actual
-parameter and saved-vector certificates remain required.
+all other regular nodes, using the same physical Gaussian weights. The actual
+parameter and saved-vector bounds are hypotheses of this budget.
 
 The scalar saved-center interface has a sharper quadratic estimate in
 \texttt{ZeroProfilePhaseSharp}. The Wick vectors representing $1$ and
@@ -360,7 +395,7 @@ parameter is $x_{10}-x_{01}$, with squared residual
 $(1-x_{00})^2+(x_{10}+x_{01})^2/2+x_{02}^2+x_{11}^2$.
 Any other parameter $r$ adds $(r-(x_{10}-x_{01}))^2/2$.
 The decoded source ordinal, cutoff and rank lookup are retained. Physical
-Gaussian parameter enclosures remain required; only the stored approximation
+Gaussian parameter enclosures are a separate input; only the stored approximation
 and explicit model vanish outside the five-coordinate support. Separate
 kernel checks on the decoded rational rows give model residual norm below
 $10^{-31}$ and fitted-parameter magnitude below $10^{-15}$ at every exceptional
@@ -374,8 +409,8 @@ Gaussian weights then give exceptional squared error at most
 $(3\cdot10^{-15})^2\cdot2\cdot10^{-21}\le(2\cdot10^{-25})^2$,
 for every finite subset of the selected modes. The full-source adapter adds
 $(2\cdot10^{-25})^2$ to an explicit regular squared-error budget; continuous
-root-gap omission is separate. The regular nodes, quadrature and remaining
-upper-bound obligations are separate.
+root-gap omission, the regular nodes and their quadrature are not part of this
+estimate.
 
 For each nonnegative squared radial node, the finite auxiliary-integral
 response has the actual affine argument of the base $F_0$ phase. Its Hermite
@@ -385,14 +420,14 @@ The small-ball estimate on every fixed fibre and layer cake give softening
 $L^2$ error at most $(10/3)\eta$; truncation adds at most $e^{-\eta^2T}$.
 Bessel transfers this error to any finite coefficient vector without a
 mode-count loss. The fixed parameters give radius at most $5\cdot10^{-15}$.
-The regular source budget still requires a coupled finite-integral-to-saved
+The regular source budget takes as hypothesis a coupled finite-integral-to-saved
 error $\varepsilon_a$ at every address, weighted by the original Gaussian
 weights as $(5\cdot10^{-15}+\varepsilon_a)^2$. The exceptional squared term
 is added separately. A common coupled row radius $19/10^{11}$ suffices:
 the proved source mass is below $107/100$, so the existing regular and full
 source-error budgets follow by rational inequalities. No row certificate
-is inferred from this sufficient tolerance. Numerical certificates and full
-$\phi_T/P_3$ response binding remain open.
+is inferred from this sufficient tolerance; numerical row certificates and the
+full $\phi_T/P_3$ response binding are not part of these results.
 
 The concrete regular-row certificate \texttt{Q0RegularSourceRow} fixes original
 ordinal 3818, panel 135 and the third node of its order-six rule. Its three
@@ -412,9 +447,8 @@ scaled profile at most $10^{-10}$. The shared analytic argument yields
 actual-to-saved and finite-to-saved radii below $6\cdot10^{-11}$ over the
 entire selected coefficient vector, inside the existing row allowance.
 The source-error, exceptional-profile, finite-Laplace and concrete row modules
-passed focused Lean CI at commit \texttt{a00103c2}, run \texttt{41725462291}.
-Repository-wide gates and independent review are separate delivery checks.
-The remaining rows and final upper bound remain work in progress.
+are part of the \lean{Grothe} build and are checked with it. The rows outside
+these ranges are not certified in this way.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
@@ -422,16 +456,15 @@ grade's integer sum and divides by $2^{210}$, then identifies the rational
 targets. The authoritative witness consists of ordered scaled-integer grade
 arrays regenerated from the same pinned binary64 input, preserving every
 coefficient. Its public energy and source-size theorems add no native axiom.
-The actual endpoint receives a fresh transitive audit after this replacement;
-the finite energies do not establish its Gaussian error hypotheses.
+The exact center energies enter the whole-error estimates of the final theorem
+(\lean{WholeCenterEnergies}); by themselves they are not Gaussian error bounds.
 
-The endpoint proof is \emph{work in progress}. One completed supporting
-calculation, \texttt{ProfileFirstGaussianCell}, proves
+A supporting calculation, \texttt{ProfileFirstGaussianCell}, proves
 $\int_0^1(\tfrac12-s)^2e^{-s}\,ds=\tfrac54-\tfrac{13}4e^{-1}$
 and encloses it in $[0.054391816192,0.054391816194]$ using proved exponential
-bounds. The complete profile and response estimates remain to be proved.
+bounds. The module is not imported by the final theorems.
 
-The pinned LeanCert dependency supplies a further completed supporting
+The pinned LeanCert dependency supplies a further supporting
 calculation in \texttt{LeanCertPilot}:
 \[
   1\le\int_0^1\frac{2\exp(-u^2/(1+u^2))}{(1+u^2)^2}\,du\le\frac54.
@@ -439,8 +472,8 @@ calculation in \texttt{LeanCertPilot}:
 An explicit 16-cell dyadic certificate checks the enclosure and reciprocal
 domains with \texttt{decide +kernel}. A separate identity binds the integrand
 to the actual affine Gaussian phase integral for $u>0$. Both theorems are
-audited without new native facts; the production Gaussian error estimates
-for the target endpoint remain work in progress.
+audited without new native facts. This module, too, is not imported by the
+final theorems.
 
 
 The literal polynomial used in the q0 Wick calculation is linked to its
@@ -455,8 +488,9 @@ This identity holds for all real $s,b,v$, ordered as squared radius, inverse
 damping rate and shifted argument. The source partition, chunk denominators,
 literal tables and recombination are checked in Lean; no source-table equality
 is assumed. A strict transitive audit allows only the standard logical axioms.
-The inverse-rate factor already included in the literal is retained. Numerical
-cell certificates and the full upper-bound inputs remain separate obligations.
+The inverse-rate factor already included in the literal is retained. This is a
+source identity; it provides no numerical cell certificate, and the final
+theorems do not import it.
 
 For the retained head through degree $501$,
 \texttt{ProductionSmoothingApprox.production\_smoothing\_error} proves a
@@ -465,35 +499,38 @@ smoothing matrices. The exact action in grade $q$ is
 $S_{q+1}C_qS_q^{\mathsf T}$; orthogonality aggregates all $251$ grades
 without multiplying the error allowance by their number. The entry rounding
 uses an integer square-root floor and only the standard logical axioms.
-The actual retained Gaussian coefficient enclosures and their complete
-energy-table comparison remain work in progress.
+The final theorem uses this estimate: the retained Gaussian coefficient
+enclosures and the comparison with the energy table are supplied by the
+quadrature checker (\lean{UpperQuad.hclose\_of\_blocks}, \lean{Final.hclose\_final}).
 
 The actual-source consumer projects $F_0$ to total degree $501$, identifies
 the complete Gaussian coefficient-error norm, inserts the frozen correction
 once and applies the proved rational smoothing error. The degree projection,
 rather than the nonrectangular energy-head projection, commutes with smoothing.
-The seven-piece comparison charges the quadratic cost through four whole
+The seven-piece comparison (\lean{CompositeComparison}, \lean{CompositeEnergy})
+charges the quadratic cost through four whole
 residuals. It derives selected-energy error $3\cdot10^{-8}$ and the relaxed
 head budget from explicit raw-source error $9.5\cdot10^{-9}$, rational-output
 table fit $10^{-8}$, three low-band Gaussian estimates and three whole-source
-inner-product lower bounds. These numerical and Gaussian premises, together
-with the independent Hardy tail, remain open; no endpoint is completed here.
-An alternative retains the original fourteen Gaussian finite-band premises
+inner-product lower bounds. These numerical and Gaussian premises and the
+Hardy tail are hypotheses of that theorem; it yields no bound without them.
+An alternative (\lean{RelaxedComparison}, \lean{RelaxedEnergy}) retains the
+original fourteen Gaussian finite-band premises
 and all eighteen comparison pieces. Increasing only the response band-mass
 norm radii by $1/5000$ absorbs the same selected-energy discrepancy
 $3\cdot10^{-8}$, while preserving the Gaussian error radii and their grouped
 quadratic cost. Its comparison allowance is $9\cdot10^{-7}$.
 With a separate actual Hardy tail $3.6748\cdot10^{-8}$, the total residual
 is $994901/10^{12}$ and the conditional scalar transfer is below $1.4045984$.
-The actual Gaussian, source, same-output table and tail certificates and
-the full acceptance and trust checks are still required.
-A concrete degree-one table-fit slice is also being checked. It uses both
+The Gaussian, source and same-output table estimates are hypotheses of this
+theorem as well. Neither variant is imported by the final theorems.
+A concrete degree-one table-fit slice (\lean{ProductionDegreeOneTable}) uses both
 pinned binary64 source words, adds the frozen correction once, and applies
-the production rational smoothing matrix. The proposed bound compares the
+the production rational smoothing matrix. Its bound compares the
 two actual retained-output energies with the current parsed table to within
-$10^{-15}$; higher source grades remain arbitrary. Exact source parsing,
-matrix arithmetic and the consumer require Lean acceptance, while Gaussian
-accuracy of the source inputs remains a separate obligation.
+$10^{-15}$; higher source grades remain arbitrary. This module and its lookup
+table are excluded from the build (\path{data/root-imports-exclude.txt}): the
+kernel check of the lookup needs more memory than the runners have.
 
 The common-tolerance source consumer instead allows total canonical tensor
 norm error $9.7\cdot10^{-8}$, charges its dyadic completion defect separately,
@@ -502,8 +539,9 @@ $1.45\cdot10^{-7}$. Same-output table error $10^{-7}$ is included inside
 selected energy error $4\cdot10^{-7}$. Its companion captured-tail consumer
 recomputes all three unscaled tails after increasing each original finite
 Gaussian radius by $2\cdot10^{-8}$, before the Taylor factorial divisions.
-These are conditional consumers, not certificates for the numerical premises
-or a completed endpoint; the original contracts remain available.
+These are conditional consumers (\lean{CommonSourceTolerance},
+\lean{CommonGaussianTailTolerance}), not certificates for their numerical
+premises; the final theorems do not import them.
 
 \paragraph{Primary radial reconstruction.}
 The actual primary Hermite factor at a real radius is invariant under index
@@ -511,8 +549,8 @@ swap. Combining this with conditional reflection proves reflection of the
 full Gaussian tensor coefficients after radial contraction. The full source
 error is bounded by $10/7$ times its coupled canonical tensor error plus the
 separate discrepancy between mathematical square-root completion and the
-stored rational coefficients. Both quantities still need numerical bounds;
-the same-output table and Gaussian comparison premises remain explicit.
+stored rational coefficients. Both quantities are hypotheses of this bound,
+as are the same-output table and Gaussian comparison premises.
 The constructive rational reference uses integer square-root floors at
 denominator $2^{54}$ and exact rational products to complete the reflected
 coefficients. The partner map bounds its coupled completion error without
@@ -540,7 +578,9 @@ in the full Gaussian $L^2$ norm. Smoothing and every Hermite-band projection
 preserve this bound. The regular auxiliary interval is $[0,2^{53}]$, with
 $\eta^2T\ge40$. A LeanCert certificate proves $e^{-40}\le10^{-17}$ by
 kernel reduction. The finite Fubini identity binds the truncated response to
-the coefficient integrals; their numerical quadrature remains work in progress.
+the coefficient integrals. Their numerical quadrature is not part of this
+reduction: the final theorem evaluates the Taylor-source coefficients by the
+twisted quadrature described earlier.
 \texttt{ProductionCompactLaplace} also restricts the first squared Gaussian
 radius to $[0,80]$. Its radial error is at most $10^{-17}$, and the combined
 softening and both truncation errors still fit the same $5\cdot10^{-15}$ reserve.
@@ -552,14 +592,29 @@ cutoff costs $8.05\cdot10^{-18}$, $1.2\cdot10^{-19}$ and $1.8\cdot10^{-20}$.
 The reserve is charged once; original coefficients and factorial scaling are
 unchanged. The first two center adapters retain the registered native energy
 facts, and the source adapters retain the existing phase-cover facts.
-Lower bounds for the compact interior integrals and the three low-band error
-certificates remain work in progress.
+In the final theorem the lower bounds for the three inner products and the
+three low-band errors come from the port facts and the twisted quadrature
+remainders (\lean{re\_inner\_ge\_of\_facts}, \lean{band\_le\_of\_facts}).
+
+\begin{sloppypar}
+The modules of the following paragraphs, through the reality of the base
+coefficients, belong to a second way of certifying the band estimates: adaptive
+rectangle quadrature of a retained source (\lean{ProfileAdaptiveSource},
+\lean{ProfileInterval...}, \lean{ProductionRectangleAssembly},
+\lean{ProductionMeshEnclosure}, \lean{SmallProfile...}, \lean{AdaptiveRectangle...},
+\lean{AdaptiveRetainedCoefficient}, \lean{ProfilePiFactor}, \lean{Q0BasePair...},
+\lean{AnalyticEnvelope...}, \lean{Q0GaussianReality}). They are kernel-checked and
+part of the build, but the final theorems do not import them. Leaf certificates
+exist for the five roots named below and not for the others, so this route
+yields no band estimate.
+\end{sloppypar}
+
 \texttt{ProfileAdaptiveSource} permits the shorter regular auxiliary endpoint
 $100$ on any certified radial region with $s\ge1/16$ and
 $|\kappa(s)|\le1/100$. It retains $2^{53}$ elsewhere and proves that the
 combined source error for all selected regions still fits the original
 $5\cdot10^{-15}$ reserve, including after smoothing and band projection.
-The retained-cell certificates remain work in progress.
+Retained-cell certificates are inputs of this estimate.
 The finite-union Gaussian pairing is identified with its rectangle integrals
 in \texttt{ProfileIntervalQuadrature}. Charge-one Parseval in
 \texttt{ProfileIntervalBands} then transfers retained coefficient-energy
@@ -575,12 +630,12 @@ their boundaries back to the original coordinate.
 \texttt{ProductionMeshEnclosure} sums the certified regular and reciprocal
 cell radii, with the Gaussian normalization, into an enclosure of the actual
 retained coefficient. The common source reserve is applied afterward at
-the band level. The numerical cell and energy certificates remain open.
+the band level. The numerical cell and energy certificates are its inputs.
 The concrete partition in \texttt{SmallProfileMesh} uses seven radial strips.
 Kernel-reduced centered Horner checks establish the actual small-profile
 condition on three selected rational intervals. Thus its retained-source
 bound has no remaining profile-region premise; the numerical retained-energy
-certificates remain to be completed.
+certificates are separate inputs.
 Eight complementary centered-Horner rows in \texttt{SmallProfileSeparation}
 combine with the existing profile cover to give $|\kappa(s)|>1/1000$ on the
 four other strips. Hence $\alpha x^2+\kappa(s)^2>10^{-6}$ for $\alpha\ge0$,
@@ -591,8 +646,8 @@ positive-coordinate rectangle. Coordinate clamping gives a continuous
 extension with the same integral. The complete normalized retained
 coefficients are real. Rational coefficient centers and radii give a finite
 sum of squared residual radii, which bounds the retained band by Parseval.
-The original source reserve is added once after this sum. The actual
-numerical enclosures and the endpoint remain work in progress.
+The original source reserve is added once after this sum. The numerical
+enclosures are inputs of this transfer.
 
 The retained transfer is specialized to the fourteen actual captured bands.
 Their finite degree cutoffs and reserve inequalities are checked by kernel
@@ -604,8 +659,8 @@ Adaptive rectangular quadrature uses a binary tree of exact rational
 midpoint splits. Each leaf lies in the original closed rectangle, and the
 original iterated integral equals the sum of the ordered leaf integrals.
 The auxiliary coordinate remains outside the radial coordinate; continuity
-is required only on the closed root. Actual numerical certificates for
-the complete leaf lists still have to be supplied.
+is required only on the closed root. Numerical certificates for the complete
+leaf lists are inputs of this identity.
 
 Certified intervals for those leaves add to a root-integral interval by
 exact rational arithmetic. Pointwise analytic envelopes also give integral
@@ -618,12 +673,12 @@ continuity. Rational bounds for $\sqrt{\pi}$ enclose its reciprocal, so
 interval multiplication accounts for normalization. Complete leaf
 certificates and rational endpoint checks then imply the coefficient bounds
 consumed by the original bands. The numerical leaf and energy certificates
-remain work in progress.
+are inputs of this assembly.
 
 Separate rational intervals enclose $\pi$, $\sqrt{\pi}$ and
 $\sqrt{\sqrt{\pi}}$ with width at most $2^{-512}$ for profile normalization.
 The certificates use proved nested-square-root bounds for $\pi$ and exact
-rational inequalities. Complete transformed node-shift intervals remain open.
+rational inequalities. Transformed node-shift intervals are not included.
 
 Exact midpoint identities also combine already certified subtree intervals.
 The normalized coefficient can be assembled from the fourteen resulting
@@ -635,8 +690,7 @@ strip 5 have rational enclosures with no numerical premises. A checked
 profile Horner trace and a LeanCert dyadic exponential certificate give
 pointwise envelopes; exact cell area and kernel-checked rational comparisons
 place the integrals in their original intervals. The first lower endpoint
-remains zero. The remaining roots and band-energy certificates are still
-work in progress.
+remains zero. Four further roots are treated in the next paragraph.
 
 The analytic-envelope leaf family reuses shared profile and scalar
 exponential certificates. Each leaf yields both actual iterated integral
@@ -651,8 +705,8 @@ fifteen algebraic leaves, respectively, with the same exact midpoint assembly.
 The explicit integrands are identified with the two actual production
 kernels at Taylor index zero, including the reciprocal Jacobian. These
 identities transfer the five complete-root enclosures at the fixed damping
-without numerical hypotheses. The remaining leaves, other roots and final
-band energies remain separate obligations.
+without numerical hypotheses. The other roots and the band energies have no
+certificates.
 Conjugation invariance of the full Gaussian measure and actual base
 response also proves that both original Gaussian coefficients, including
 their rational frozen corrections, are real. Real interval errors thus
@@ -665,7 +719,8 @@ weighted sample sum. The doubled absolute-weight sum is below $630$, hence
 $|p'(r)|\le630M$ when all samples have absolute value at most $M\ge0$.
 \lean{UpperQuad.CentralDerivative} supplies this algebraic step with standard
 axiom guards. The actual phase polynomial, sample enclosures and physical
-panel integration remain separate inputs.
+panel integration are not part of it, and the final theorems do not import
+this module.
 
 The generic complex growth theorem
 \lean{UpperQuad.PolynomialGaussianGrowth.norm\_damped\_eval\_sq\_le} controls
@@ -696,8 +751,9 @@ Integration of finite Mehler also gives
  \qquad L\ge1,\quad (2L-1)\tau<1.
 \]
 \lean{UpperQuad.PolynomialDilationNorm} supplies this standard-axiom bound and
-its normalized Hermite-column specialization. Certified contour bounds and
-twisted quadrature remainders remain separate obligations.
+its normalized Hermite-column specialization. The certified contour bounds and
+twisted quadrature remainders built on these estimates are the ellipse
+certificates described at the start of this subsection.
 
 \lean{UpperQuad.PhasePolynomialParity} proves simultaneous phase parity and
 the degree sign of the formal Hermite factors. The full graded radial vector
@@ -706,7 +762,8 @@ injective into the product of two degree triangles of cutoff $2Q-1$.
 Its squared norm is bounded by the primary finite-Mehler factor, including
 $e^{-2\operatorname{Re}(r^2)}$, times the conditional coefficient energy,
 with no factor for the number of modes. These results use standard axioms;
-actual-source continuation and certified contour bounds are still required.
+the actual-source continuation is \lean{UpperQuad.TwistRadialVector}, and the
+certified contour bounds are the ellipse certificates.
 
 \lean{UpperQuad.EvenSquareDescent.analyticOnNhd\_descend} removes the origin
 square-root singularity for an even analytic complex Banach-valued function.
@@ -714,8 +771,10 @@ If $F$ is analytic on $|r|<R$, $R>0$, and $F(-r)=F(r)$ there, then
 $g(s)=F(\sqrt{s})$ is analytic on $|s|<R^2$, with $g(r^2)=F(r)$.
 The square map is locally invertible away from zero; continuity and the
 removable-singularity theorem handle zero. Uniform norm bounds transport
-unchanged, including on closed balls. The concrete twisted integrand's parity,
-analyticity and certified contour bounds remain separate inputs.
+unchanged, including on closed balls. The concrete twisted integrand's parity
+and analyticity are proved in \lean{UpperQuad.TwistRadialParity} and
+\lean{UpperQuad.TwistRadialAnalytic}; its contour bounds are the ellipse
+certificates.
 
 The twisted conditional coefficient also has a finite entire factorization.
 For $\lambda=1+j\varepsilon$, its matrix is the normalized Hermite expansion of
@@ -727,8 +786,8 @@ this continuation uniquely, identifying it with the shifted Gaussian
 coefficient. Each matrix column is an actual Hermite inner-product family;
 Bessel bounds its squared norm by the production phase envelope times the
 Hermite dilation bound, with no second Jacobian. These statements provide
-the analytic finite-factorization estimate, while certified contour suprema
-and twisted quadrature remainders remain separate obligations.
+the analytic finite-factorization estimate; the ellipse certificates turn it
+into certified contour suprema and twisted quadrature remainders.
 
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
@@ -737,21 +796,25 @@ their selected contraction indices and profile sign exponent $c+d$ are
 identified in Lean. Reflection is proved for the actual phase integrals and
 their normalized production coefficients, with the exact factor
 $\sqrt{(d+1)/c}$ for the lookup $(c,d)\mapsto(d+1,c-1)$ when $d+1<c$.
-This factor is at most one; numerical reconstruction errors remain to be checked.
+This factor is at most one; the identity does not bound numerical
+reconstruction errors.
 A shared quadrature theorem derives the original weight
 formula and exactness below twice the rule order from finite polynomial
 identities, using integrated root quotients, Lagrange interpolation and
-polynomial division. Instantiating those identities for the original rules,
-the numerical weight bindings and analytic remainder remain work in progress.
-The semantic bridge now uses LeanCert's exact polynomial operations.
+polynomial division. The identities are instantiated for the original rules
+of all $64$ orders (\lean{Q0GaussPolynomialCertificates.exactness}), and
+\lean{QuadRem.source\_rule\_exact} transports the result to every production
+panel; the analytic remainder is the Bernstein-ellipse theorem.
+The semantic bridge uses LeanCert's exact polynomial operations.
 Generated certificates for all $64$ orders include the recurrence,
 orthogonality, derivative and Bezout identities, squared norms, and leading
-coefficients. Their full Lean replay remains work in progress. The family
-and its strict axiom audit are included in the main root so that the
-combined delivery checks all these obligations before acceptance.
+coefficients. The kernel replays them in the main build
+(\lean{Q0GaussPolynomialOrder01}--\lean{64}), together with a strict axiom
+audit of the family.
 
-A second route uses a finite-head estimate for the actual kernel directly;
-its coefficient enclosures and numerical head estimate remain work in progress.
+A second route (\lean{DirectSample.upper\_of\_actual\_head}) uses a finite-head
+estimate for the actual kernel directly. That estimate is its hypothesis, and
+the final theorems do not import this route.
 
 \paragraph{Selected-spectrum comparison.}
 The finite head only sees $S=\{(n,m):n+3m\le501\}$. Write its approximation error as
@@ -766,13 +829,16 @@ Here $I_0$ contains the rounding remainder and $I_1,I_2,I_3$ are the three Taylo
 Their bands are disjoint within each group, so their errors combine in quadrature before the groups are added.
 All pieces may share coordinates. Lean proves each coefficient cost by outward interval polynomial arithmetic;
 native arithmetic checks eighteen weighted radii from the stored table and its error allowance.
-The Gaussian component-error enclosures and their identification with the pieces remain explicit inputs.
+In this theorem the Gaussian component-error bounds $e_r$ are hypotheses. The final theorem uses a regrouped form with
+seven linear pieces and four whole sources (\lean{ThreeBandRegrouping.localized\_comparison\_relaxed\_three\_band}),
+whose error bounds are the six proved estimates.
 
 \paragraph{Phase-source denominator.}
 The parsed production phase has common denominator
 $302002543697172916153771578242367488000$, proved by bounded source-chunk
-computations and their assembly in Lean. This is source arithmetic; the
-phase cover and upper-bound Gaussian estimates remain separate obligations.
+computations and their assembly in Lean (\lean{PhiSourceDenBinding}). This is
+source arithmetic, independent of the phase cover; the final theorems do not
+import it.
 
 The conditional coefficients of the actual phase are defined in
 \texttt{F0ConditionalNode} and satisfy a coupled Bessel bound.
@@ -783,8 +849,9 @@ distinct pairs from the larger $35{,}777$-pair storage.
 The actual Gaussian integral reflection, proved by finite Stein/Ward
 recurrences and absolute Fubini, yields the production multiplier
 $\sqrt{(d+1)/c}\le1$ when $d+1<c$. All these identities use only the
-standard logical axioms. Numerical node enclosures and floating arithmetic
-errors remain separate obligations.
+standard logical axioms. In the final theorem the node values are enclosed by
+the quadrature checker in dyadic interval arithmetic (\lean{UpperQuad.NodeSound},
+\lean{UpperQuad.PairsSound}), so no floating-point error model is needed.
 
 The actual shifted coefficients $C_{cd}(A)$ also satisfy the charge relation
 \[
@@ -833,9 +900,10 @@ enclosure and square-root-of-$\pi$ bounds to give
 \]
 where $\widehat S$ is the recorded exact dyadic center. No numerical-accuracy
 premise is used, and $m$ is not identified with the physical shift.
-Midpoint-to-physical-shift transport, certified normalized-triangle arithmetic,
-saved-row coefficient errors and final energy-table agreement remain separate
-obligations; these results do not establish the final upper endpoint.
+These results concern one source row. They do not include
+midpoint-to-physical-shift transport, normalized-triangle arithmetic or
+saved-row coefficient errors, and the row-227 modules are not imported by the
+final theorems.
 
 \texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
 at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.
@@ -843,8 +911,7 @@ Reflection therefore extends to all nonnegative radii. The exact completion
 of the selected $31{,}877$ mathematical modes has weighted error at most
 $10/7$ times the coupled canonical error at the same nodes and weights.
 This consumes explicit canonical error and nonnegative-weight premises;
-physical quadrature, primary contraction, floating operations and table
-agreement remain separate obligations.
+it does not cover physical quadrature, primary contraction or table agreement.
 
 \paragraph{Exact phase moments.}
 For $\varphi=D e^{-\varepsilon(U+V)}S(U,V,W)$, clear the rational coefficients
@@ -863,23 +930,27 @@ the Taylor polynomial through degree twelve at $5$ gives $e^5>148$, hence
 $e^{-155}<148^{-31}$. This certifies the radial tail of the production phase.
 Since $|\varphi|<1$, every positive Taylor source restricted to this event
 also has $L^2(\gamma_2)$ norm below $5\cdot10^{-15}$.
-Sharp comparison-band errors still need the captured Hermite energy and
-approximation bounds; the total moments alone do not change the upper bound.
+The total moments enter the whole-error estimates of the final theorem
+($\|h_j\|^2=\E\varphi^{2j}$); band errors need the captured Hermite energies and
+approximation bounds as well.
 The orthogonal tail interface subtracts the separate captured energies
 $\sum_i\max(0,\ell_i-e_i)^2$ from the total moment, retaining each band's
 error cap. An alternative interface uses one real inner product and the
-approximant norm to bound the whole approximation error. The remaining
-numerical coefficient and integral bounds are explicit hypotheses.
+approximant norm to bound the whole approximation error. The numerical
+coefficient and integral bounds are explicit hypotheses of both interfaces;
+the final theorem bounds its three whole errors in the second way
+(\lean{whole\_of\_inner}), with the inner products bounded from the port facts
+and the twisted quadrature remainders.
 Finite normalized Hermite expansions have exact rational squared norms.
 The preserved coefficient inputs supply a complete finite check for the third
 approximant: all 6,552 coefficients through degree 51, its total norm, and its
 four projected band norms. Injective graded indexing also proves that its
-higher-degree tail vanishes. Its Gaussian approximation error remains a
-separate obligation; the stored error arrays are not treated as proofs.
+higher-degree tail vanishes. Its Gaussian approximation error is a separate
+matter; the stored error arrays are not treated as proofs.
 A continuous finite-polynomial representative satisfies the charge-one
 function interface. The third-order tail cap follows from four explicit
 finite-band Gaussian error caps by subtracting captured energy from the exact
-sixth moment; the Gaussian caps themselves remain hypotheses.
+sixth moment; the Gaussian caps themselves are hypotheses of this derivation.
 The finite rounding difference $c_1+c_2/2+c_3/6-v$ has norm at most $10^{-18}$,
 proved by exact integer squares at a common dyadic denominator. The three
 other preserved center sources and retained sizes are checked separately from
@@ -888,12 +959,16 @@ scale $2^{206}$. Standard-axiom proofs establish all grade sizes and the complet
 production coefficient-square sums for grades 0 and 90; these component energies
 do not discharge the mixed Gaussian energy-table comparison.
 The first and second centers also have exact certificates for their six and
-four captured bands. The concrete conditional theorem fixes every center and
+four captured bands. The concrete conditional theorem
+(\lean{fresh\_upper\_concrete\_taylor}) fixes every center and
 its polynomial representative and derives the rounding and all three omitted
-tails internally. Its remaining inputs are fourteen explicit finite-band
+tails internally. Its inputs are fourteen explicit finite-band
 Gaussian error inequalities and the concrete energy-table accuracy. The
-slightly tighter finite error caps are generated from the original allowances;
-their Gaussian validity remains open.
+slightly tighter finite error caps are generated from the original allowances.
+The table accuracy is proved (\lean{Final.hclose\_final}); the fourteen
+inequalities are hypotheses that the final theorem does not use, and with them
+this theorem would give the sharper value below $1.404598149141$.
+
 The weighted Gaussian kernel has a common checked parameter predicate.
 It gives real covariance positivity, genuine integrability and the uninserted
 physical-pair mass $\nu^2/\delta$. A product-measure argument combines two
@@ -902,7 +977,10 @@ fourteen selected finite bands and four coordinate exclusions. These parameter
 checks do not assume the numerical tail bounds recorded in the input files.
 The actual Hermite coefficient identity and the weighted matrix-energy
 reduction are supplied by the coherent-transform and rectangle-operator
-constructions below. Numerical tail estimates remain separate obligations.
+constructions below. Numerical tail estimates are not part of these results.
+This Hilbert--Schmidt development (the modules \lean{OriginalHS...},
+\lean{Actual...}, \lean{IndependentSource...}, \lean{QuadraticPolynomial...},
+\lean{ScalarOriginal...}) is not imported by the final theorems.
 A Gaussian Laplace representation of complex phase is proved exactly,
 including the zero argument, integrability and a uniform absolute-integral
 bound. Absolute Fubini exchange applies this representation to the actual
@@ -954,7 +1032,8 @@ norm. Gate coordinates are $((y,u),(x,v))$ per physical coordinate; matrix
 indices $(m,n)$ therefore map to $((m_q,n_p),(m_p,n_q))$ explicitly.
 The actual normalized weighted Hermite matrix identity has complete source
 proofs in the gate-jet extension below. Exact binding to the
-historical Laguerre polynomial and numerical Hilbert--Schmidt caps remain open.
+historical Laguerre polynomial and numerical Hilbert--Schmidt caps are not
+part of this development.
 The finite coefficient construction evaluates finite physical
 Hermite generating blocks and recovers exactly their retained normalized
 matrix entries. Separately, each coefficient of the full scaled coherent
@@ -967,7 +1046,7 @@ Every actual physical matrix entry also has a finite damped Wick formula,
 with diagonal moment $p!/r^{p+1}$ and zero off the diagonal.
 The ground coefficient is identified with the actual ground matrix entry.
 The gate-jet extension below supplies complete source proofs of the weighted
-Hermite identity for all indices; numerical caps remain open.
+Hermite identity for all indices; it provides no numerical caps.
 Finite Gaussian
 source extraction equals a mixed derivative at zero. In the fixed gate
 order $((y,u),(x,v))$, the same finite derivatives are evaluated by the
@@ -982,8 +1061,8 @@ identities, together with finite physical polynomial integration, complete
 the source coefficient equality with the normalized weighted matrix entry.
 The full weighted energy is summable, and its full and finite sums are
 bounded by the Gaussian source integral of the squared norm of the actual
-scaled transform. Numerical bounds on that source integral, Hilbert--Schmidt caps,
-the historical Laguerre binding, and the final upper endpoint remain open.
+scaled transform. Numerical bounds on that source integral, Hilbert--Schmidt caps
+and the historical Laguerre binding are not part of this development.
 The radial normalization is identified directly with the production
 Hermite polynomial: for $s\ge0$,
 \[
@@ -995,8 +1074,8 @@ power of the radius includes zero radius and zero charge. The conditional
 block $d\le q<251$ is reindexed by $m=q-d$; its charge $k=d+1-c$ lies in
 $\{0,\ldots,251\}$ and its length is at most $251-(k-1)$, where subtraction
 is truncated at zero. Both charges zero and one have maximal length 251.
-These finite identities and index maps do not discharge a numerical radial
-Gram bound, quadrature error or the final endpoint.
+These finite identities and index maps give no numerical radial Gram bound
+or quadrature error.
 
 The finite scalar certificate binds the address-indexed numerator to its exact
 integer literal over all 21,577 original mass rows. It reindexes through the
@@ -1004,7 +1083,7 @@ actual physical projection and ordinal equivalence, then assembles all original
 named sublists. Each summand keeps the original exception mask, mass term and
 $\lceil 10^9\,\mathrm{panel.hi}\rceil^{251}$. The final equality has no assumed
 numerical equality premise. This finite identity does not supply a scalar
-inequality, geometry check, trace estimate or the final endpoint.
+inequality, geometry check or trace estimate.
 
 The Gram construction expands the actual source
 norm into finite Gram sums using the production polynomial's support and
@@ -1013,7 +1092,7 @@ by shifted Gaussian moments followed by a finite correlated polynomial moment;
 the original Schur conditions and both kernel masses remain explicit.
 Substitution of the actual gate parameters gives a finite scalar expression
 for the squared source norm, which bounds the full actual weighted matrix
-energy. Its numerical enclosure and the final endpoint remain open.
+energy. Its numerical enclosure is not part of this development.
 The rectangle-tail construction retains the exact coordinate cutoff factor
 $R^D T^{L+1}$ and covers the complement of the inclusive input rectangle
 $(500,500,251,250)$ by four coordinate exclusions. The existing comparison-band
@@ -1030,8 +1109,8 @@ multiplier defines a continuous operator on physical $L^2$. Its matrix is
 identified with the actual Gaussian entries, so completeness of the Hermite
 basis gives convergence of the finite rectangle-tail actions. Finite Bessel
 and output Parseval then extend the same four-source bound to every physical
-$L^2$ input and the full selected output band. Numerical source bounds and the final closed
-endpoint remain open.
+$L^2$ input and the full selected output band. Numerical source bounds are not part of this
+development.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
 $A>0$ and $AC-B^2>0$ give the positive coercive rate
@@ -1040,7 +1119,7 @@ integrability of every finite mixed polynomial. Fubini and the first-coordinate
 mean $-(B/A)w$ reduce its integral to a finite Wick sum at outer rate
 $(AC-B^2)/A$, with zeroth mass $1/(AC-B^2)$. Full bipartite polynomial
 insertion belongs to the source-space batch above; the historical operator
-identity and numerical tail estimates remain open.
+identity and numerical tail estimates are not part of it.
 For each finite center, fixing the first coordinate gives its exact polynomial
 slice in the second coordinate. The actual source $\overline c(i\varphi)^j$
 factors into this polynomial and Gaussian damping with conditional rate
@@ -1090,26 +1169,26 @@ $I_{0,d+1}(A)=-A r_d(A^2)I_{0,d}(A)/\sqrt{d+1}$, which is proved for the
 actual Gaussian coefficient and transferred to the signed production value.
 The canonical coefficient has norm at most one by Cauchy--Schwarz in Gaussian
 $L^2$. Its two-term raising sum has norm at most
-$\sqrt{c+1}+\sqrt{d+1}<35$ on the stored index rectangle. The parameter
-derivative identity and midpoint transfer still require proof.
+$\sqrt{c+1}+\sqrt{d+1}<35$ on the stored index rectangle. A parameter
+derivative identity and a midpoint transfer are not part of these results.
 Conjugation invariance of the Gaussian and rational Hermite coefficients prove
 reality of every canonical coefficient and the corresponding signed production
 coefficient. Their complex distance to a real stored center equals the absolute
 real-part error.
 The saved-center interface adds half the physical-parameter interval error and
 the explicit model-to-saved error to $5\rho^2$; the displayed rational budget
-fits below $10^{-12}$. Actual node and byte certificates are still required.
+fits below $10^{-12}$. Actual node and byte certificates are its inputs.
 The corresponding actual Gaussian approximation has $L^2$ and all-mode
 coefficient error at most $5\rho^2$, where
-$\rho=\sqrt{1+a^2}v(s)/\sqrt{s}$ for $s>0$. Saved-entry enclosures remain separate.
+$\rho=\sqrt{1+a^2}v(s)/\sqrt{s}$ for $s>0$. Saved-entry enclosures are separate inputs.
 The constant-plus-linear phase approximation has pointwise error at most
 $\frac52\|h\|^2/r^2$ at reference radius $r>0$, also when $r+h=0$.
-Its actual Gaussian coefficient and node-data instantiation remains separate.
+Its Gaussian coefficient and node-data instantiation is not included.
 The zero-safe inequality $\|\operatorname{phase}(r+h)-1\|\le2\|h\|/r$ for
 $r>0$ bounds the actual conditional phase and coefficient error by
 $2\sqrt{1+a^2}|v(s)|/\sqrt{s}$ in Gaussian $L^2$, including at profile zeros.
-Its use in a final node and energy ledger remains to be proved.
-Numerical node certificates and the complete upper bound remain open.
+These saved-center and phase-stability results (\lean{ZeroProfile...},
+\lean{PhaseStability}) are not imported by the final theorems.
 The cell enclosure is an explicit hypothesis;
 no numerical cell certificate or numerical improper-integral bound is claimed.
 The recurrence $M_{p+1,q}=\mu M_{p,q}+(q/\beta)M_{p,q-1}$ preserves the affine
@@ -1121,7 +1200,7 @@ where $\beta=\alpha+a^2t$. For $|z|\ge r_0>0$, its conditional-kernel norm
 has the profile-uniform majorant $2t^{-5/2}/(\alpha r_0^3)$ and an integrated
 tail above $T>0$ bounded by $4T^{-3/2}/(3\alpha r_0^3)$, including when $a=0$.
 The full polynomial-weighted source tails, the radial endpoint and numerical
-integration enclosures remain open.
+integration enclosures are not part of these results.
 
 \paragraph{Radial repair has a quantitative ceiling.}
 Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where
@@ -1152,7 +1231,7 @@ the projection onto linear functions minus a multiple of the projection onto the
 \end{itemize}
 A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401697117301$.
 The complete cover has 10,909 boxes. Two added pure-row law nodes and three mixed-source Young nodes use the original source caps and
-Stein cuts, so the Gaussian assumptions are unchanged. Their batches, every box and the full partition
+Stein cuts, so they need no Gaussian input beyond the node caps of the 19 potentials. Their batches, every box and the full partition
 are checked separately. Adaptive binary splits reprice the existing components while preserving
 their scale interpolation domains. All generation inputs are retained in \path{data/lower-unshifted/}.
 
@@ -1162,7 +1241,7 @@ The scalar cap is the hard part. Writing $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$,
 \]
 Only the last term is positive: we must show that a \emph{bounded} function cannot have too large a cubic part without
 paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ splits into pieces that involve $z_1$
-(\emph{visible} sectors) and a \emph{remote} residual $q\in H_{2,1}$ in the other coordinates. The proof then has three layers.
+(\emph{visible} sectors) and a \emph{remote} residual $q\in H_{2,1}$ in the other coordinates. The proof then has four layers.
 \begin{enumerate}
 \item \textbf{Row reduction.} For each of 19 profiles $r$, the contribution of the visible sectors is the supremum of an
  explicit finite-dimensional Gaussian integral, a convex one-variable \emph{potential} $\Psi_r$, evaluated at the scale of
@@ -1177,6 +1256,12 @@ paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ 
 \item \textbf{A finite certificate.} The parameters are covered by $10{,}909$ boxes in $(t,\tau,x)$; on each box a positive
  combination of rows and node certificates ($351$ existing mixed nodes, two added pure-row law nodes, three added mixed-source Young nodes and $9{,}237$ row nodes, each a polynomial majorant checked in
  exact rational arithmetic) bounds the scalar value by $B$.
+\item \textbf{The node caps.} The certificate uses each potential only through upper bounds at finitely many nodes,
+ $\Psi_r(s_i)-10^{-11}\le c_i$ (\lean{NodeCaps}). Lean proves them. By convexity it suffices to treat the vertex nodes.
+ At a vertex node a pointwise majorant with prices on a polar grid bounds the integral by a quadratic form in the twelve
+ real parameters; its coefficients are enclosed by verified interval tables, and an exact $LDL^{\mathsf T}$
+ factorisation certifies the cap for all parameters. Some nodes of rows 12--15 need a finer argument, a cover of the
+ parameter space by pieces cut out by linear constraints, up to two symmetries of the potential.
 \end{enumerate}
 
 \subsection{The primal/dual viewpoint}
@@ -1192,37 +1277,63 @@ and a lower bound from a game with a uniform scalar norm cap. Finite-pool dualit
 \section{What exactly the computer checks}\label{sec:trust}
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
-\textbf{Proved in Lean} & \textbf{Assumed (certified outside Lean)}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_refined\_cover\_data : NodeCaps → IsGrothendieckBound K → 1.401697117301 < K}}\\[2pt]
+\textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.401697117301$, without hypotheses. The intermediate theorem \lean{lower\_bound\_of\_refined\_cover\_data : NodeCaps → IsGrothendieckBound K → 1.401697117301 < K} keeps the node caps as a hypothesis, which \lean{capsRest}, \lean{vertexCaps\_of\_capsRest} and \lean{nodeCaps\_of\_vertexCaps} discharge.}\\[2pt]
 the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
 the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
 gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
-Wick identity; the finite certificate (five row, three original-batch, one added law-batch and five refined-cover native checks)
+Wick identity; the soundness of the certificate checker (rows, node certificates, boxes, cover);
+the node caps \lean{NodeCaps} (the 19 potentials $\Psi_r$, defined in Lean, lie below their stored rational caps at the
+tabulated nodes): convexity of the potentials, the anchored-pair majorant on a polar grid, verified interval tables, the
+exact $LDL^{\mathsf T}$ check, and for the localized nodes of rows 12--15 the coverage by constrained pieces;
+\lean{capsRest}: every row is certified and no row excludes a node
 &
-\lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
-\lean{lower\_bound\_of\_capsRest} proves the same endpoint from \lean{CapsRest}, and \lean{capsRest} proves \lean{CapsRest}: every row is certified in Lean and the certified rows exclude no nodes, so the lower bound \lean{lower\_target} is unconditional.
-Rows 12--14 have complete localized-piece and anchor assemblies for canonical CI verification (separate native facts for piece ranges, coverage slices and anchor ranges).
-The computation-only finite checks precede the full assembly and strict axiom audit.
-CI replays a matching verified cache or builds the changed caps on the runner. Row 15 retains external vertex caps; the Row14 assembly uses the independent localized proof at node $14\times150$, preserving its complete repair closure.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699960428191$.}\\[2pt]
+the rows, the node certificates (original batches and the added law nodes), every box of the cover and the cover itself;
+for the node caps: the chord nodes, the node ranges of every row (for rows 12--15 the anchor ranges), and for the localized
+nodes of rows 12--15 their piece ranges, coverage checks and repaired pieces.
+The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
+change, evaluates them on its own runner.\\\midrule
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{upper\_target}: some Grothendieck bound is below $1.4046$, without hypotheses; the bound exhibited is below $1.40459996$. The intermediate theorem \lean{Statement.upper\_target\_of\_relaxed\_inputs} keeps six Gaussian estimates and the table accuracy as hypotheses, which \lean{RelaxedTwist.six\_of\_facts} and \lean{Final.hclose\_final} discharge.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
-the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
-21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
+the transfer inequality (tensor powers); kernel composition and locality; the explicit decomposition of $G_T-X$
+(\lean{difference\_pieces}) and the weighted comparison; the Hardy tail (holomorphic continuation, Schur bound, circle
+Parseval, real identification); the reduction of the Hermite coefficients to radial integrals, Gauss exactness of the
+production rules, the analytic continuation of the integrands and the Bernstein-ellipse remainder; the soundness of
+every checker; the endpoint arithmetic
 &
-\lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps. The concrete Taylor specialization leaves fourteen finite Gaussian band-error estimates and the energy-table discrepancy as hypotheses.
-Lean derives the selected comparison $851922301/10^{15}$ ($93.57\%$ of the residual allowance).
-The decomposition itself is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
-18 band pieces of the smoothed Taylor errors and the rounding remainder, so only their 18 norm bounds remain external.
-Finite table accuracy $6847009/(5\cdot10^{17})$.
-The Hardy tail $303362486/10^{16}$ ($3.33\%$, weighted square sum $\le 1737972/1000000$ at radius $4149/4000$) is proved
-(\lean{HardyReal.hardy\_GT\_tight}).
-The native head is $28153/10^{12}$ ($3.09\%$).\\
+the head through degree 501 from the stored energies by a verified interval evaluator (\lean{head\_check}); the phase
+cover; the Hardy arcs and region; exact phase moments; exact energies of the stored
+expansions; band masses of the energy table, its blocks, even entries and omitted pairs; the port facts of the three
+Taylor powers; the ellipse checks of both quadratures.
+Residual $\delta\approx1.8274\cdot10^{-6}$: comparison $1.7625\ldots\cdot10^{-6}$ ($96.4\%$), Hardy tail $36748/10^{12}$
+($2.0\%$, weighted square sum $\le7/4$ at radius $4149/4000$, \lean{HardyReal.hardy\_GT}), head $28153/10^{12}$ ($1.5\%$),
+table accuracy $6847009/(5\cdot10^{17})$.\\
 \bottomrule
 \end{tabular}
 \end{center}
 
-An alternative conditional upper route (task \#295),
-\lean{ThreeBandEndpoint.upper\_of\_three\_low\_three\_whole}, retains only
+Everything in the right-hand column is a finite exact computation that Lean evaluates as compiled code and records as
+an axiom named after the fact; this trusts the Lean compiler and its runtime in addition to the kernel. The left-hand
+column uses only the axioms \lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}. No step of either bound rests
+on a certificate that is checked outside Lean.
+
+\lean{UpperChaos.fresh\_upper\_rounder} states the sharper value that the rounding was designed for, and it is
+conditional. For an $L^2$ charge-one truncation $X$ it proves
+\[
+ \KG\le\frac{500000000000000000}{355973699960428191}<1.404598148840
+\]
+from \lean{ComparisonInputs} (an exact error decomposition,
+spectral supports and Gaussian component norm caps) and the table accuracy; its concrete Taylor specialization
+\lean{fresh\_upper\_concrete\_taylor} needs fourteen finite Gaussian band-error estimates. Its residual
+$455212621809/(5\cdot10^{17})$ consists of the selected comparison $851922301/10^{15}$ ($93.57\%$), the Hardy tail
+$303362486/10^{16}$ ($3.33\%$; weighted square sum $\le 1737972/1000000$ at radius $4149/4000$,
+\lean{HardyReal.hardy\_GT\_tight}), the native head $28153/10^{12}$ ($3.09\%$) and the table accuracy
+$6847009/(5\cdot10^{17})$. The decomposition is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
+18 band pieces of the smoothed Taylor errors and the rounding remainder. The head, the Hardy tail and the table accuracy
+are proved; the fourteen band estimates are hypotheses, and \lean{upper\_target} does not use them.
+
+\lean{ThreeBandEndpoint.upper\_of\_three\_low\_three\_whole} (task \#295) is the
+first form of the three-band comparison, the route of the final theorem. It retains only
 the lowest bands $(0,51]$, $(0,51]$, $(0,11]$ and groups the remaining supports
 orthogonally. It assumes those three low-band estimates, three independent
 whole Taylor-error estimates with raw radii $R_1,2R_2,6R_3$, and the same
@@ -1230,22 +1341,26 @@ frozen-response table accuracy. The linear comparison charges low and high
 parts separately, while the quadratic term uses each whole error only once.
 Using the original head and the raw Hardy tail $36748/10^{12}$ gives residual
 $0.000001783148789608230974208508254864$ and a conditional Grothendieck bound
-strictly below $1.40459988<1.4046$. The whole-error and low-band certificates
-and table agreement remain unproved inputs. This route introduces no new
-native facts and does not change the public target $1.4046$.
+strictly below $1.40459988<1.4046$. Of its hypotheses, the three whole-error
+estimates and the table accuracy are proved (they are the same statements as
+in the final theorem). The three low-band estimates are proved only with the
+larger caps of the next paragraph, so this theorem itself stays conditional;
+the final theorems do not import it.
 
 The relaxed variant \lean{Statement.upper\_target\_of\_relaxed\_inputs}
 uses raw low-band caps $4001/10^{12}$, $14001/10^{12}$ and
 $70001/10^{12}$, with the second and third divided by $2!$ and $3!$
 in the comparison. The whole-error radii and all other budgets stay fixed.
 Its exact rational endpoint is approximately $1.4045999579847528<1.4046$.
-This permits proposed full quadrature errors $4\cdot10^{-9}$,
+This permits full quadrature errors $4\cdot10^{-9}$,
 $1.4\cdot10^{-8}$ and $7\cdot10^{-8}$, with a further $10^{-12}$
 allowance for each finite-table low-band excursion. The six Gaussian
-estimates and table accuracy remain explicit inputs; the rational budget
-alone does not prove them. This variant introduces no native facts.
+estimates and the table accuracy are its hypotheses, and they are proved:
+\lean{RelaxedTwist.six\_of\_facts} derives the six estimates from the port facts
+and the twisted quadrature remainders, and \lean{Final.hclose\_final} is the
+table accuracy. \lean{upper\_target} is this theorem applied to them.
 
-The complex Gaussian shift route now has a formal analytic estimate. For
+The complex Gaussian shift route has a formal analytic estimate. For
 $j>0$, $0<\tau<1$, and any finite family of conditional Hermite modes with
 total degree at most $D$, write $A=a+ib$ and $\varepsilon=21/20$. Then
 \[
@@ -1264,11 +1379,13 @@ real slice, $s\ge0$ and $v(s)\ne0$, the actual coefficient is
 $\sigma J_i(\sqrt{s},\sigma A_+(s))$, where
 $\sigma=\operatorname{sign}v(s)$ and
 $A_+(s)=\sqrt{s}/(\sqrt{1+a_Q^2}|v(s)|)$.
-Certified zero-free domains, contour bounds and quadrature-remainder
-assembly remain separate obligations. These estimates inherit the six
-existing phase-cover facts and introduce no new numerical axiom.
+The certified zero-free domains, the contour bounds and the assembly of the
+quadrature remainder are supplied by the accepted ellipse certificates
+(\lean{TwistEllCheck.remainder\_of\_prodShards}).
+These estimates inherit the existing phase-cover facts and introduce no new
+numerical axiom.
 
-The full twisted radial component is now identified with
+The full twisted radial component is identified with
 \[
  e^{-r^2}\,\sigma\,
  h_{q-d,q+1-c}(r,r)\,
@@ -1281,81 +1398,83 @@ phase and Hermite parity makes it globally even in $r$. Local square
 descent proves analyticity as a function of $s$ at every point with
 $v_C(s)\ne0$, for $j>0$, including the origin when its profile is nonzero.
 The result crosses the principal square-root cut; the real-slice equality
-retains the explicit fixed panel sign. Profile exclusion certificates,
-contour estimates and quadrature aggregation remain necessary.
+retains the explicit fixed panel sign. The profile exclusion, the contour
+estimates and the aggregation over panels are supplied by the same accepted
+ellipse certificates.
 
 The degree-531 canonical pair table indexes conditional Hermite node values
 by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
 $c\le d+1$ and $c+d\le531$, ordered by $(c+d,c)$. Lean verifies its
-finite rank, ordinal coverage and uniqueness certificate. No downstream Lean
-result yet consumes this certificate; the Gaussian node-value enclosures
-remain part of the upper-bound work in progress.
+finite rank, ordinal coverage and uniqueness certificate
+(\lean{Q0ConditionalPairRank...}). The final theorems do not import this
+certificate.
 
-The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments and the squared radial phase tail,
-cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-The native facts (cap-range checks, Hardy region and circle checks, and others) are listed in \path{data/axioms/native.txt}; the report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
-No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
-The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
-Its provenance hash covers 48 local computation
-modules and five directly hashed extras (53 files total); the extras' imports
-are not traversed. The numerical checker has its own precompiled library,
+The repository-wide audit covers the native facts listed in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check, for the upper bound, the head, selected-band masses, the phase cover, the second, fourth and sixth phase moments and the squared radial phase tail, the Hardy region and circle, the stored expansions, the energy-table blocks, the port facts and the ellipse certificates;
+for the lower bound, the row and batch certificates, the additional pure-row and mixed-source law nodes, the complete finite cover, the cap chords and the node caps (range, anchor and piece checks).
+The report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
+No \lean{sorry}. CI builds the single target \lean{Grothe}, node caps included, and checks its one axiom report on every pushed branch; a change reaches \texttt{master} through a pull request, after the same check has passed on its merge with the current \texttt{master}.
+The cap-range checks of the fifteen range-checked rows take about 21 CPU-hours cold, and the energy-table facts about ten hours each, so CI replays them from a verified build cache.
+A hash of their computation sources is recorded with the cache. The numerical cap checker has its own precompiled library,
 \lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
-The caps digest is part of the build-cache key: when no verified cache matches, CI runs the same check on
+The digest is part of the build-cache key: when no verified cache matches, CI runs the same check on
 the self-hosted runner, which builds, audits and marks \path{.lake/build/caps-closure.sha} before saving
-the cache. That persistent build supplies later CI replay; no separate manual droplet verification is needed.
-A digest alone is not verification. The localised-piece checkers
-likewise import only computable definitions and rational data; their campaign
-and final wiring remain separate. The generic response and
-quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
-the sharp upper bound retains external Gaussian component-error and table-accuracy inputs.
-The four existing arc checks each give at most $273/100$; the proved bound on $\pi$ turns their sum into the circle-mean budget $1737972/1000000$. Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from that budget. The abstract table interface uses this sharper Hardy input; the concrete rounding proves it without new Gaussian hypotheses.
+the cache. That persistent build supplies later CI replay; no separate manual verification is needed.
+A digest alone is not verification. The localised-piece checkers of rows 12--15
+likewise import only computable definitions and rational data, and their results are wired into the row assemblies
+(\path{Grothe/LowerAnalytic/CapRow12/Assembly.lean} to \path{CapRow15/Assembly.lean}).
+The four arc checks each give at most $273/100$; the proved bound on $\pi$ turns their sum into the circle-mean budget $1737972/1000000$ (\lean{HardyReal.hardy\_GT\_tight}). The conditional sharper theorem deducts the known linear coefficient's weighted square from that budget before the tail Cauchy--Schwarz step. The final theorem uses the coarser budget $7/4$ (\lean{HardyReal.hardy\_GT}) and no such deduction; neither needs a Gaussian hypothesis.
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
 (\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
-The decay region and the circle mean are checked in Lean by five interval facts. With them, \lean{hardy\_of\_real} reduces \lean{hardy}
+The decay region and the circle mean are checked in Lean by interval facts (the arc parts and the region check). With them, \lean{hardy\_of\_real} reduces \lean{hardy}
 to summability and the real Gaussian identification of the odd series, which \lean{HardyReal.hreal\_GT} proves for $G_T$:
 the smoothed Mehler pair has the law of $(U, RU+SW)$ (characteristic functions), whose density on $\mathbb R^8$ is the
 holomorphic kernel at the real cross covariance (Cholesky substitution). Hence \lean{hardy\_GT}: the Hardy input is proved.
-The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
-assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
-obligations remain separate; these facts change neither endpoint nor its hypotheses.
+Thirteen algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
+assembly, using only the three standard axioms, and the generic response and quintic-transfer lemmas, which add no
+native facts, were proved in Lean. Their modules are now archived in \path{miscellaneous/research/}: they are not built
+or checked by CI, and neither bound depends on them.
 
 \section{Discoveries along the way}\label{sec:discoveries}
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
 exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
+The Lean modules that serve neither bound have been moved to \path{miscellaneous/research/}. They were part of the
+build when these results were recorded; they are no longer built or checked by CI. Results whose Lean part lives there
+are marked \textbf{[Lean, archived]}.
 
 Other upper-bound variants and their verification records are preserved outside the active build
 in \path{miscellaneous/other-bounds/}. Shared Gaussian phase identities and Laplace
-representations remain part of the sharp target.
+representations are part of the active build.
 
 \subsection{Common responses, common tails, and an architecture separator}
-\textbf{[P; supporting algebra in Lean]} A symmetry-closed family of actual cubic responses has an exact
+\textbf{[P; supporting algebra in Lean, archived]} A symmetry-closed family of actual cubic responses has an exact
 five-mode first/cubic image and a fixed-size original-noise replica representation. It preserves the shared
 quadratic drivers: a scalar Gaussian used to describe a cubic's law must retain third-chaos noise correlation
 $\rho^3$, rather than acquire first-chaos correlation $\rho$.
 
-\textbf{[Lean]} All correlation samples of a response pair use the same signed Hermite coefficients. Prices
+\textbf{[Lean, archived]} All correlation samples of a response pair use the same signed Hermite coefficients. Prices
 $a_i$ with $|\sum_i a_i\rho_i^{2k+1}|\le1$ for all $k\ge2$ bound the complete omitted absolute tail. A finite
 front and one geometric remainder budget certify every index. The resulting separator is linear in response
 columns, so it bounds whole convex pools, with explicit integration-error costs. Numerical pool screens
 still require certified input integrals; a favorable relaxation value is not an achievable rounding score.
 
-\textbf{[Lean]} An exchange can retain the incumbent's signed coefficients with one error allowance.
+\textbf{[Lean, archived]} An exchange can retain the incumbent's signed coefficients with one error allowance.
 If $\sum_k|c_k-\widehat c_k|\le\xi$, then every admissible spectral price has error at most $\xi$,
 and the full reciprocal score satisfies $D(c)\ge D(\widehat c)-\xi$.
 The same coefficient error must not be charged independently at every sampled correlation.
 The current bounded phase-perturbation searches use this interface for discovery; their Gaussian
 integrals still require certification before they can improve either endpoint.
 
-\textbf{[P,C; polynomial certificate in Lean]} The entire Gaussian-phase cubic-preprocessor family
+\textbf{[P,C; polynomial certificate in Lean, archived]} The entire Gaussian-phase cubic-preprocessor family
 $H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
-has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119473997\ldots$.
+has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119464829\ldots$, the reciprocal of
+the proved bound (the sharper target $1.404598149141$ corresponds to $0.7119473997\ldots$).
 The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certificates handle all complex phases.
 Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
 responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction
-is a written application of the Gaussian phase identity; it is not yet connected end to end in Lean.
+is a written application of the Gaussian phase identity; it is not connected end to end in Lean.
 
-\paragraph{Phase errors and exact symmetries [Lean].}
+\paragraph{Phase errors and exact symmetries [Lean, archived].}
 Phase alignment has an exact modulus-weighted quadratic defect. An unweighted
 degree-moment budget is unavailable: the phase coefficients satisfy
 $r_k\ge1/(4k(k+1))$ for $k\ge1$, so $\sum_k(2k+1)c_k=\infty$.
@@ -1388,13 +1507,13 @@ error price through contractive smoothing and the bivariate kernel, and
 connects the entire score to the transfer theorem. The reference error is
 the inherited anchor error plus finite weighted retained-data errors,
 charged once. These forty-seven Lean results change neither endpoint.
-The compact Gaussian integrals still require certification.
+The compact Gaussian integrals are not certified.
 
 \subsection{Inequalities for cubic Gaussian chaos}
 Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,
 normalised by $\E|q|^2=1$, and $U=|q|^2$.
 \begin{itemize}
-\item \textbf{Sharp fourth moment [Lean].} Every real third-chaos variable satisfies $\E F^4\le93\,(\E F^2)^2$, with equality
+\item \textbf{Sharp fourth moment [Lean; the real case archived].} Every real third-chaos variable satisfies $\E F^4\le93\,(\E F^2)^2$, with equality
  for $x^3-3x$. For the cubic kernel, write $N=\sum f^2$, $s=\|f\star f\|^2$ and
  $h=\|\operatorname{Sym}(f\star f)\|^2$. The Wick identity
  $\E F^4-3(\E F^2)^2=1296(s+3h/2)$, together with $\E F^2=6N$ and
@@ -1402,8 +1521,9 @@ normalised by $\E|q|^2=1$, and $U=|q|^2$.
  on the Gaussian expectation. For a circular cubic, the complex contraction identities and Hilbert--Schmidt
  estimates instead give $\E U^2\le44$ at any dimension. Equality is attained by
  $Z(|Z|^2-2)/\sqrt2$ for a standard complex Gaussian $Z$; the equality calculation
- is analytic. The Lean theorem is \lean{Circular.fourth\_moment\_le\_variance}.
- It implies $x\le\sqrt{42}$, while the existing certificate still uses $x\le31/4$.
+ is analytic. The Lean theorem for the circular bound is \lean{Circular.fourth\_moment\_le\_variance}, in the build;
+ the real bound is \lean{Chaos3.fourth\_le} in the archived module \lean{FourthMoment}.
+ The circular bound implies $x\le\sqrt{42}$, while the certificate uses the larger range $x\le31/4$.
 \item \textbf{Sixth moment [Lean].} $\E U^3\le9m-12+C_6(m-2)^{3/2}$ with $m=\E U^2$ and $C_6=40.45313$. The Wick monomial mixed
  with Gaussian noise attains $40.295$, so the constant is sharp to $0.4\%$. The inequality is \emph{false} without circularity:
  two real cubics $He_3(x_0)/\sqrt{12}$, $He_3(x_1)/\sqrt{12}$ give $m=47$ and $\E U^3=13506>12622.55$.
@@ -1427,7 +1547,7 @@ The two joint sixth-moment bounds share one tensor and scalar argument in
 square, and Young's inequality. The production cuts and parameterized refinements
 specialize that argument through the same real-to-complex normalization identities.
 The sixth moment and the Stein fluctuations cannot be optimized independently:
-both depend on the same contraction invariants. We now formalize this connection
+both depend on the same contraction invariants. This connection is formalized
 in Lean, including the real/complex normalization and a finite checker that reserves
 part of the contraction budget before accepting a Stein cut. Signed reserve
 coefficients are retained. Ordinary and joint Gram budgets specialize one signed-reserve
@@ -1438,11 +1558,13 @@ to its proved kurtosis range; the full checker and analytic bridge are in Lean.
 Retaining the upper bound on the negative cumulant contraction yields a stronger
 parameterized moment family. An exact transport identity then upgrades a node's
 majorant when its budget permits a larger moment-cut weight, without a new
-half-line search. These two refinements are also formalized in Lean.
+half-line search. These two refinements were also formalized in Lean
+(archived modules \lean{JointSixth}, \lean{MomentLift}); the endpoint does not use them.
 The moment costs also admit a convex formulation with two $2\times2$ PSD blocks
 and linear constraints. An exact rational checker connects each accepted recipe
 to the actual cubic moment inequality, replacing the outer parameter grid.
-Its exact scalar boundary is also proved in Lean. For moment weight $w>0$ and
+The checker and its exact scalar boundary were proved in Lean (archived modules
+\lean{MomentCone}, \lean{MomentConeBoundary}). For moment weight $w>0$ and
 $s_0$ cost $A>0$, the minimum $h_0$ cost is
 \[
  B_{\min}(w,A)=
@@ -1452,8 +1574,8 @@ $s_0$ cost $A>0$, the minimum $h_0$ cost is
  \end{cases}
 \]
 Both branches have explicit feasible recipes. A three-rational checker for
-$(w,A,B)$ therefore replaces the auxiliary moment-cost variables, and Lean
-connects its acceptance to the actual cubic on the checked node range. The
+$(w,A,B)$ therefore replaces the auxiliary moment-cost variables, and the
+archived module connects its acceptance to the actual cubic on the checked node range. The
 contraction reserve and pointwise majorant still need their own exact checks.
 This is optimality within the certificate family; it does not identify all
 attainable response laws.
@@ -1513,9 +1635,9 @@ cubic part of the response and $\mathcal N$ for the value of the witness on it.
 
 \subsection{Limits of the witness method}
 \begin{itemize}
-\item \textbf{Ceilings [P,C] and [Lean].} Actual finite Gaussian responses give the scalar cubic family a
+\item \textbf{Ceilings [P,C] and [Lean, archived].} Actual finite Gaussian responses give the scalar cubic family a
  ratio ceiling $<1.4022581233$ when taking suprema over Gaussian dimensions, for every complex multiplier; its generic cancellation arithmetic
- is in Lean, its Gaussian construction and integral bounds are external. At $\epsilon=149/200$ a genuine response
+ is in Lean (archived module \lean{ScalarCubicFamilyCeiling}), its Gaussian construction and integral bounds are external. At $\epsilon=149/200$ a genuine response
  gives norm $>0.71329$, excluding $1.402$ for that witness. Explicit ``chirp'' responses prove that games of
  degree $\le5$ cannot exceed $1.4036705$, and of degree $\le7$ cannot exceed $1.4044895$ [P,C].
 \item \textbf{Extending the pattern fails [P,C].} The full alternating game $\sum_{k\ge0}(-1)^kP_{k+1,k}$ has
@@ -1525,11 +1647,12 @@ cubic part of the response and $\mathcal N$ for the value of the witness on it.
  global witness norm cap $v_D+\delta$ and a realizable mixture with omitted coefficient tail at most $\tau<v_D$
  give $1/(v_D+\delta)\le\KG\le1/(v_D-\tau)$ by the two one-sided transfers. The reciprocal interval has width $\delta+\tau$;
  both the uniform witness cap and the complete mixture tail must actually be certified.
-\item \textbf{A global spherical form, and why it does not certify cheaply [P] and [Lean].} Finite Gaussian Hermite games
+\item \textbf{A global spherical form, and why it does not certify cheaply [P] and [Lean, archived].} Finite Gaussian Hermite games
  transfer, in every Gaussian dimension, to compact operators on the sphere with the same bounded responses and the same
  shared drivers; the numerical bounds are unchanged. The dual operator can then be truncated with a rigorous error: the
  cubic multiplier tail and the signed cap assembly are proved in Lean (\lean{SphericalTransfer.cubic\_tail\_32\_12},
- \lean{global\_cap\_from\_truncation}); the analytic bridge is a written proof (\texttt{docs/SPHERICAL\_TRANSFER.md}). But
+ \lean{global\_cap\_from\_truncation}; archived module); the analytic bridge is a written proof
+ (\path{miscellaneous/research/docs/SPHERICAL_TRANSFER.md}). But
  the operator has no square-integrable kernel: its multiplicity-weighted squared coefficients grow like $r^7$. So no
  Hilbert--Schmidt-type certificate can control it, and direct coefficient optimisation is impractical (about
  $8\cdot10^{20}$ coefficients in the tested truncation). A useful norm cap must bound the signed action on bounded
@@ -1565,10 +1688,14 @@ independent, have identical marginals and covariances, but $\E[\bar r\,q|q|^2]$ 
 in the second.
 
 \section{Open problems}
-Planned work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound), \#17 (upper inputs),
-\#22 (better lower bound), \#29 (build infrastructure) and \#34 (research plans).
+Work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound: now \lean{lower\_target}),
+\#17 (inputs of the upper bound: now \lean{upper\_target} for the threshold $1.4046$; the sharper value is item~1 below),
+\#22 (a better lower bound), \#29 (build infrastructure, closed) and \#34 (research plans).
 \begin{enumerate}
-\item Discharge the sharp upper rounding's numerical comparison and energy-table error; its Hermite expansion, structural analytic bridge and Hardy tail bound are formalized.
+\item Prove the sharper upper bound that the rounding was designed for, below $1.404598149141$. What is missing are the
+ fourteen finite-band Gaussian error estimates with their original caps, the hypotheses of the conditional theorem of
+ Section~\ref{sec:trust}; the unconditional theorem uses weaker estimates and exhibits a bound below $1.40459996$.
+ The energy-table accuracy, the Hermite expansion, the structural analytic bridge and the Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
@@ -1579,8 +1706,8 @@ Planned work is tracked as GitHub issues of the repository: epics \#12 (uncondit
 
 \section*{How this was made}
 The constructions and certificates were found by several AI research systems working on a shared manuscript, cross-checking
-each other's packages by independent replay. The endpoint theorems have the explicit Lean hypothesis lists in
-Section~\ref{sec:trust}, and their axioms are audited in CI. The discoveries labelled [P] and [C] also include paper proofs
+each other's packages by independent replay. The endpoint theorems have no hypotheses; what their proofs rest on is
+listed in Section~\ref{sec:trust}, and their axioms are audited in CI. The discoveries labelled [P] and [C] also include paper proofs
 and external exact or interval certificates; they are not all formalized in Lean. Selected written proofs and reproducible certificate records accompany the repository; the larger working manuscript is maintained separately.
 
 \clearpage
@@ -1612,8 +1739,8 @@ legacy single-character splitting. Bounded character-list certificates
 assemble all 460 records of the last first-center source chunk and identify
 its public decoded result with exact integer witnesses. Source equality is
 tied to the original packed array, and the complete certificate is checked
-in the default root. Whole-array source identities, replacement of native
-band checks and Gaussian approximation estimates remain separate obligations.
+in the default root. It covers one chunk: whole-array source identities and a
+replacement of the native band checks are not included.
 % Exact phase-source identity; Agent-ID: codex-8c4d.
 \paragraph{Phase source identity.}
 The identity expressing the squared production phase in Gram coordinates is
@@ -1627,19 +1754,19 @@ bounds the phase globally. A shared Gram-coordinate identity supplies the
 domain constraint for both routes. On $[-1,1]$ the cubic phase factor is
 $5/2$-Lipschitz. For positive radial parameter, the rounding-slice error is
 bounded by the quadratic Gaussian-base remainder plus the phase approximation
-error. Its phase bound remains an explicit premise to preserve independence
-from the native cover. Numerical source comparisons and integral certificates
-still have to instantiate these analytic bounds.
+error. Its phase bound is kept as an explicit premise to preserve independence
+from the native cover. No numerical source comparison or integral certificate
+instantiates these analytic bounds.
 
 The conditional Gaussian $L^2$ triangle inequality on one unsmoothed radial
 slice charges the base remainder once, giving $5\rho^2$ plus $5/2$ times the
 phase-model error and the model-to-comparison error. The actual phase bound
-follows from the existing native cover; it remains a premise to keep these
-analytic theorems independent of that native computation. Choosing the actual
-phase as the bounded comparison phase makes its phase error zero. The remaining
+follows from the existing native cover; it is kept as a premise so that these
+analytic theorems are independent of that native computation. Choosing the actual
+phase as the bounded comparison phase makes its phase error zero. The
 Gaussian model-to-comparison integral and the comparison function's relation
-to stored coefficients still need certificates. Radial integration, smoothing
-and band projection are separate steps toward the endpoint.
+to stored coefficients are inputs of this estimate; radial integration, smoothing
+and band projection are not included.
 
 Keeping the actual phase inside the Gaussian model removes the phase-error
 term exactly. The remaining saved-model discrepancy is one normalized
@@ -1648,7 +1775,7 @@ term. Separate energy upper bounds $U,V$ and a real cross lower bound $L$
 give the squared-discrepancy budget $U+V-2L$. A complex cross enclosure
 with center $c$ and radius $r$ gives $U+V-2\operatorname{Re}(c)+2r$.
 These numerical receipts, the saved-source binding and outer radial weights
-remain separate obligations.
+are inputs of this budget.
 
 \paragraph{Rational source evaluation.}
 The literal rational source polynomial is identified with the actual polynomial
@@ -1661,8 +1788,8 @@ and the eight source coefficient factors combine into a full rational Gram
 sum, retaining conjugation, every cross term, and one kernel mass and Jacobian
 factor per physical pair. Complete source proofs identify the actual coherent
 norm with this value and bound the infinite weighted matrix energy by it.
-Numerical source bounds and the final
-endpoint remain open; no archived estimate is accepted as a proof.
+Numerical source bounds are not part of this development; no archived
+estimate is accepted as a proof.
 
 
 \paragraph{Finite charge decomposition.}
@@ -1683,7 +1810,7 @@ physical multiplier's charge component, $I_{r_g}$ the existing coherent
 insertion, and $B_g$ the existing rational tensor pair kernel with both source
 coefficient factors. No charge count or square formula is assumed here.
 Laguerre coefficient binding, block diagonalization into squares, and numerical
-source enclosures remain separate obligations.
+source enclosures are not part of this development.
 
 
 \paragraph{Zero and degree-one covariance contractions.}
@@ -1694,7 +1821,12 @@ are this mass times $\chi_+$ and $\chi_-$. The ground-versus-quadratic
 contraction is the mass times $\lambda$, retaining the intrinsic inserted
 constant $n$, the conditional variance $R+P$, and the Jacobian $1/(RQ)$.
 This is not an equality between opposite-charge Hermitian Gram entries.
-Higher-degree diagonalization, the complete 18-block/1140-square identity,
-numerical source and energy enclosures, and the final endpoint remain open.
+Higher-degree diagonalization, the complete 18-block/1140-square identity and
+numerical source and energy enclosures are not part of this development.
+
+Of the results in these paragraphs after the references, the final theorems
+use the phase source identity (\lean{PhiProductionIdentity}, in the proof of
+the phase bound) and the public dyadic parser; the other modules are not
+imported by them.
 
 \end{document}
