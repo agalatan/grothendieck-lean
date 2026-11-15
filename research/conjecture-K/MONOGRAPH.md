@@ -37,7 +37,8 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   independent of z₁ (2.1); the A-shell with independent drivers, on the whole box (2.2); explicit regions of the
   shared-driver core (2.4); the content inequality for several structured families (2.5); the B-shell cost and the
   alignment of B- and A-contents (2.7, with a sharper author-only bound); the local joint A/B form (2.8); the odd sectors over the zero core and over every remote core, with arbitrary sharing (2.9); the
-  central part of the consumer, conditional on an all-sector bound (2.10).
+  central part of the consumer, conditional on an all-sector bound, and at ε = 299/400 the whole consumer
+  outside the central interval (0.8165, 0.866) (2.10).
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
@@ -756,6 +757,17 @@ against 1.04·10⁻⁴ [STATUS 8.6]. One route is new component estimates at M (
 a sharper transfer or a direct all-sector estimate at M are others. For 1.402 at ε = 1891/2500, the reusable
 envelope of the old rows leaves four response intervals, among them [0.696, 0.84] [STATUS 8.7].
 
+**The exterior at ε = 299/400.** Moving the 19 Lean rows from ε₀ = 149/200 to e = 299/400 changes the payoff by
+δ(‖Qk‖² − ‖Qh‖²), δ = 1/400. The retained square absorbs −δ‖Qh‖², because
+2β²/ε₀ − ε₀‖x + (β/ε₀)v‖² − δ‖x‖² = 2β²/e − e‖x + (β/e)v‖² when ‖v‖² = 2, and ‖Qk‖ ≤ ρ or the response energies
+bound δ‖Qk‖². On 1,674 exact cells this proves V ≤ 713263/10⁶ < 500/701 for every response with t ≤ 0.8165 or
+t ≥ 0.866, with no K premise [P + C · codex-4d8a, re-derived, replayed and re-implemented by claude-b9ee ·
+STATUS 8.9]. Ten central rows cover the rest: if their retained all-sector inequalities
+Λ̂_i ≤ S_i^upper + 1/40000 hold, then K_G^ℂ ≥ 1000000/713263 > 1.402007 [benchmarks C, premises open · STATUS
+8.10]. The admissible allowances fall from 1.09·10⁻³ at t ≈ 0.82 to 3.0·10⁻⁵ at t ≈ 0.854. The binding core
+[0.8465, 0.8615] needs an all-sector error about a third of what the peak results give under (P) and (P_Ψ). At
+ε = 1891/2500, four certified shoulder benchmarks leave allowances of 1.5–3.4·10⁻⁴ [STATUS 8.11].
+
 ### 2.11 Charging response feasibility to the discarded squares
 
 [P + C · codex-9b17, re-derived and replayed by claude-b9ee in
@@ -792,6 +804,11 @@ remain unformalized. The current production cover has ε=149/200, tracks (t,τ,x
 and has already spent the first-chaos square; its caps cannot simply be reduced
 by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows yet.
 
+**Two further penalties** [P + C, author only · codex-4d8a · STATUS 2.12e, 2.12f]. Phase alignment gives
+Σ ≥ (2β²/e²)(Im ν)²/(t² + ‖G‖²/e), so Σ > (337/4000)(Im ν)² at the peak for t ≤ 0.863 and ‖G‖² ≤ 0.080051; it
+belongs to the raw row and must not be subtracted from Λ̂ again. Applying weighted Bessel to f and g separately
+keeps a cross term and improves J₁ by more than 3.9·10⁻⁴ on an explicit region.
+
 ## 3. What is open, in priority order
 
 1. **The joint A/B remainder bound at finite amplitude** (2.8), first at the peak row. Enough: the compact box
@@ -816,7 +833,8 @@ by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows 
    the peak; the flank and upper rows are outside both. *Gives:* L1 for the consumer's rows.
 6. **The response regions outside R and the consumer**: cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. A simple first step is one new row at ε = 149/200
-   with an all-sector bound there, which gives 1.40171 (2.10). *Gives:* 1.402 from K_η.
+   with an all-sector bound there, which gives 1.40171 (2.10). At ε = 299/400 only the central interval
+   (0.8165, 0.866) is left, as ten explicit all-sector inequalities (2.10). *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
    Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 11/8 and
    1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside its proved local pieces; its conditional assembly uses the existing tilted-content theorem.
@@ -1007,7 +1025,7 @@ restriction on the amplitude at every tilt tried [11.17].
 | 2.6 tilted lemma, retained A-core | 11.25–11.54 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py` |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
 | 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md`, `odd-gap-2026-11-15-codex-91d4/`, `joint-edgeworth-2026-11-15-codex-91d4/`, `odd-AB-small-shell-2026-11-15/PROOF.md`, `uniform-local-2026-11-15-codex-4d8a/`, `round3-2026-11-15-codex-c7e2/`, `partial-q-2026-11-15-codex-91d4/` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/`, `odd-AB-small-shell-2026-11-15/`, `uniform-local-codex-4d8a/`, `round3-codex-c7e2/` |
-| 2.10 response, consumer | 2.12, 2.12a, 8.1 | `reaudit-…/FOUNDATIONS.md`, `manuscript/legacy/ch25-parts/` | `reaudit-…/foundations_exact.py` |
+| 2.10 response, consumer | 2.12, 2.12a, 8.1, 8.9–8.11 | `reaudit-…/FOUNDATIONS.md`, `manuscript/legacy/ch25-parts/`, `exterior-2026-11-16-codex-4d8a/` | `reaudit-…/foundations_exact.py`, `code/exterior-codex-4d8a/` |
 | 3 open problems | section 15 | the audits above | |
 | 4 false statements | section 13 (and 14) | as cited there | |
 | 5 numerics | sections 9, 10, 11 (c), 2.3 | `numerics-kscan-2026-11-13/`, `numerics-tailgames-2026-11-14/`, `numerics-kprime-2026-11-15/`, `audit-2026-11-13/REPORT.md` §5 | `kscan-2026-11-13/`, `tailgames-2026-11-14/`, `kprime-2026-11-15/`, `audit-2026-11-13/` |

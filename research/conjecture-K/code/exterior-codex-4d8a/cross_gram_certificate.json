@@ -1,0 +1,33 @@
+{
+  "status": "PASS: exact rational scalar and matrix certificate",
+  "eta": "-1/35",
+  "epsilon": "1891/2500",
+  "beta": "179/1250",
+  "uniform_gain_fraction": "537363070714908327898093/1370804246385332741850000000",
+  "uniform_gain_gt": "39/100000",
+  "positive_J1_fraction": "784508743371/325405171000000",
+  "positive_J1_gt": "24/10000",
+  "gain_polynomial": {
+    "constant": "-1025312/1303902304775",
+    "t": "47595384/1303902304775",
+    "t_squared": "-1104698169/2607804609550",
+    "Re_z": "160384/16638835",
+    "t_Re_z": "564328/116471845",
+    "abs_z_squared": "-51200/43260971"
+  },
+  "energy_loss_coefficients": {
+    "u": "156250000/550360268829",
+    "A": "22500000000/37697262907171",
+    "B": "10000000000/8238583088211",
+    "Q": "625000000/769382980079",
+    "P": "625000000/769382980079",
+    "nu": "160000000000/154696084240451"
+  },
+  "source_html_sha256": "caf53f07b82934daa1b07c265419c6c7c772134f409889ae94c77605c52bc9a1",
+  "limitations": [
+    "Gaussian proof is author-derived, not Lean-checked.",
+    "This improves the raw Lambda response penalty; it does not certify the raw Lambda payoff.",
+    "Do not subtract full Sigma again from the retained LambdaHat bound.",
+    "Energy-profile feasibility is not a construction of realizable responses."
+  ]
+}
