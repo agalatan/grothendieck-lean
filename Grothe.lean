@@ -10046,7 +10046,6 @@ import Grothe.Upper.IntervalSound
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.RelaxedComparisonData
-import Grothe.Upper.RelaxedThreeBandBudget
 import Grothe.Upper.Residual
 import Grothe.Upper.ThreeBandBudget
 import Grothe.Upper.ThreeBandEndpointCore
@@ -13375,8 +13374,6 @@ import Grothe.UpperChaos.RectangleReciprocalCertificate
 import Grothe.UpperChaos.RelaxedComparison
 import Grothe.UpperChaos.RelaxedEnergy
 import Grothe.UpperChaos.RelaxedRationalReference
-import Grothe.UpperChaos.RelaxedThreeBandComparison
-import Grothe.UpperChaos.RelaxedThreeBandUpper
 import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
 import Grothe.UpperChaos.RetainedMeshReality
@@ -13675,7 +13672,7 @@ import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseSharp
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
-import Grothe.UpperFinal
+import Grothe.UpperClose
 import Grothe.UpperHead
 import Grothe.UpperQuad.Bridge
 import Grothe.UpperQuad.CanonicalExplicit
@@ -13875,8 +13872,6 @@ import Grothe.UpperQuad.QuadShiftGeom
 import Grothe.UpperQuad.QuadTaylorShift
 import Grothe.UpperQuad.QuadUpsilon
 import Grothe.UpperQuad.RatioSound
-import Grothe.UpperQuad.RelaxedTwistMargins
-import Grothe.UpperQuad.RelaxedTwistSix
 import Grothe.UpperQuad.RootIdent
 import Grothe.UpperQuad.RotateSound
 import Grothe.UpperQuad.SeedAnalytic
@@ -13916,7 +13911,6 @@ import Grothe.UpperQuad.TwistEllipseFacts.J1Range17
 import Grothe.UpperQuad.TwistEllipseFacts.J1Range18
 import Grothe.UpperQuad.TwistEllipseFacts.J1Range19
 import Grothe.UpperQuad.TwistEllipseFacts.J1Range20
-import Grothe.UpperQuad.TwistEllipseFacts.J1Total
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range00
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range01
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range02
@@ -13938,7 +13932,6 @@ import Grothe.UpperQuad.TwistEllipseFacts.J2Range17
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range18
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range19
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range20
-import Grothe.UpperQuad.TwistEllipseFacts.J2Total
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range00
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range01
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range02
@@ -13960,7 +13953,6 @@ import Grothe.UpperQuad.TwistEllipseFacts.J3Range17
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range18
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range19
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range20
-import Grothe.UpperQuad.TwistEllipseFacts.J3Total
 import Grothe.UpperQuad.TwistEllipseGeometry
 import Grothe.UpperQuad.TwistEllipseKSound
 import Grothe.UpperQuad.TwistEllipseMajorantSound

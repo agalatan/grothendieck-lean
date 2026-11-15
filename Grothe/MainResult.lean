@@ -1,5 +1,4 @@
 import Grothe.LowerTarget
-import Grothe.UpperTarget
 import Grothe.UpperTightFinal
 import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.CapExcluded

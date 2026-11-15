@@ -66,7 +66,7 @@ axiom report is clean proves exactly that claim.
 `main_bounds : 1.401697117301 < K_G^ℂ < 1.404599412097`, all in the namespace `Grothe.Statement` and without
 hypotheses ([`Grothe/MainResult.lean`](Grothe/MainResult.lean),
 [`Grothe/UpperTightFinal.lean`](Grothe/UpperTightFinal.lean)). The earlier `upper_target : UpperTarget`
-remains available in [`Grothe/UpperFinal.lean`](Grothe/UpperFinal.lean).
+was removed on 15 November 2026 (#405).
 
 ### The lower bound
 
@@ -141,7 +141,7 @@ $\delta = 1.550730352675379213976\ldots \cdot 10^{-6}$
    - $28153/10^{12}$: the head of the kernel of a stored table of energies (`head_check`);
    - $6847009/(5 \cdot 10^{17})$: the $\ell^1$ distance, over the index pairs with $n + 3m \le 501$, from the
      table to the energies of $X = S(F_0 + v)$, where a stored finite Hermite expansion $v$ stands for $T - F_0$
-     (`hclose_final`, `Grothe/UpperFinal.lean`);
+     (`hclose_final`, `Grothe/UpperClose.lean`);
    - $1.492227397557\ldots \cdot 10^{-6}$ (`tightThreeBandCompareQ`): the weighted distance, over the same
      index pairs, from the energies of $X$ to those of $G_T$. With $T - F_0 = h_1 + h_2/2 + h_3/6$,
      $h_j = (i\varphi)^j F_0$, it rests on six estimates: the $L^2$ distance from $h_j$ to a stored finite Hermite
@@ -205,7 +205,7 @@ $\delta = 1.550730352675379213976\ldots \cdot 10^{-6}$
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
 | `Grothe/MainResult.lean`, `Grothe/UpperTightFinal.lean` | `lower_target` and `main_bounds`; the current `upper_bound_tight`, `upper_below_tight` and `constant_lt_tight_upper` |
-| `Grothe/UpperFinal.lean` | certified energy-table accuracy `hclose_final` and the earlier compatibility theorem `upper_target : UpperTarget` |
+| `Grothe/UpperClose.lean` | certified energy-table accuracy `hclose_final` |
 | `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |
 | `Grothe/UpperTightBudget.lean`, `Grothe/UpperTightComparison.lean` | current exact budgets and the comparison with independent reference mass and error radii |
 | `Grothe/UpperTightSix.lean`, `Grothe/UpperTightPanelTotals.lean` | six Gaussian error estimates; kernel checks of tighter totals of the existing panel caps |
