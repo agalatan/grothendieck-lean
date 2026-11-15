@@ -34,20 +34,40 @@ theorem quadratic_threeBand_le_of_radii (hφ : PhiBound) (R : Fin 4 → ℝ)
     _ ≤ ‖productionG hφ - productionX hφ‖ ^ 2 := energy_sum_le_norm_sq _ _
     _ ≤ _ := pow_le_pow_left₀ (norm_nonneg _) hn 2
 
-/-- The actual comparison is independent of the chosen seven piece and four source radii. -/
-theorem localized_comparison_of_radii (hφ : PhiBound) (hf : OriginalFiniteChecks)
-    (e : Fin 7 → ℝ) (R : Fin 4 → ℝ) (he : ∀ j, 0 ≤ e j)
+/-- Any rational bounds on the grouped mass squares bound the corresponding actual masses. -/
+theorem actual_threeBand_mass_of_caps (hf : OriginalFiniteChecks) {EX : ℕ × ℕ → ℝ}
+    (hclose : ∑ p ∈ headIdx 501, |EX p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
+    (A : Fin 7 → ℚ)
+    (hA : ∀ j, (∑ k : Fin 18, if threeBandOldGroup k = j then
+      comparisonBands[k].norm ^ 2 else 0) ≤ A j ^ 2) (j : Fin 7) :
+    ∑ p ∈ bandIndices (threeBandBands j), comparisonWeight p ^ 2 * EX p ≤
+      (A j : ℝ) ^ 2 := by
+  classical
+  rw [threeBand_indices_union, sum_biUnion (old_group_indices_disjoint j)]
+  calc
+    _ ≤ ∑ k ∈ (univ : Finset (Fin 18)).filter (fun k ↦ threeBandOldGroup k = j),
+        ((comparisonBand k).norm : ℝ) ^ 2 :=
+      sum_le_sum fun k _ ↦ actual_band_mass_of_checks hf hclose (comparisonBand_mem k)
+    _ ≤ (A j : ℝ) ^ 2 := by
+      rw [sum_filter]
+      change (∑ k : Fin 18, if threeBandOldGroup k = j then
+        (comparisonBands[k].norm : ℝ) ^ 2 else 0) ≤ (A j : ℝ) ^ 2
+      have h := (Rat.cast_le (K := ℝ)).mpr (hA j)
+      simpa only [Rat.cast_sum, apply_ite (fun q : ℚ ↦ (q : ℝ)),
+        Rat.cast_zero, Rat.cast_pow] using h
+
+/-- Arbitrary mass and error bounds give the comparison with one unsplit quadratic charge. -/
+theorem localized_comparison_of_mass_radii (hφ : PhiBound)
+    (a e : Fin 7 → ℝ) (R : Fin 4 → ℝ) (ha : ∀ j, 0 ≤ a j) (he : ∀ j, 0 ≤ e j)
+    (hmass : ∀ j, ∑ p ∈ bandIndices (threeBandBands j),
+      comparisonWeight p ^ 2 * energy (productionX hφ) p ≤ a j ^ 2)
     (hpiece : ∀ j, ‖threePiece hφ j‖ ≤ e j)
-    (hsource : ∀ p, ‖source hφ p‖ ≤ R p)
-    (hclose : ∑ p ∈ headIdx 501,
-      |energy (productionX hφ) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
+    (hsource : ∀ p, ‖source hφ p‖ ≤ R p) :
     ∑ p ∈ headIdx 501, comparisonWeight p *
       |energy (productionG hφ) p - energy (productionX hφ) p| ≤
-      2 * ∑ j, ((threeBandBands j).norm : ℝ) * e j + (∑ p, R p) ^ 2 := by
+      2 * ∑ j, a j * e j + (∑ p, R p) ^ 2 := by
   classical
-  generalize hS : headIdx 501 = S at hclose ⊢
-  let a : Fin 7 → ℝ := fun j ↦ ((threeBandBands j).norm : ℝ)
-  have ha (j : Fin 7) : 0 ≤ a j := Rat.cast_nonneg.mpr (threeBand_nonneg j).1
+  generalize hS : headIdx 501 = S
   have hz (j : Fin 7) (p : ℕ × ℕ)
       (hp : (threeBandBands j).contains p.1 p.2 = false) :
       energyBlock (threePiece hφ j) p = 0 := by
@@ -66,17 +86,30 @@ theorem localized_comparison_of_radii (hφ : PhiBound) (hf : OriginalFiniteCheck
       exact hz j p hn)
     (fun j _ ↦ ha j) (fun j _ ↦ he j)
     (fun j _ ↦ by
-      have hm := actual_threeBand_mass hf (by simpa only [hS] using hclose) j
       have hi : S ∩ bandIndices (threeBandBands j) = bandIndices (threeBandBands j) := by
         rw [← hS]
         exact inter_eq_right.mpr (bandIndices_subset _)
-      simpa only [hi, mul_pow, norm_energyBlock_sq] using hm)
+      simpa only [hi, mul_pow, norm_energyBlock_sq] using hmass j)
     (fun j _ ↦ by
       simp_rw [norm_energyBlock_sq]
       exact (energy_sum_le_norm_sq _ _).trans
         (pow_le_pow_left₀ (norm_nonneg _) (hpiece j) 2))
     (by simpa only [hS] using quadratic_threeBand_le_of_radii hφ R hsource)
   simpa only [norm_energyBlock_sq] using hc
+
+/-- The actual comparison is independent of the chosen seven piece and four source radii. -/
+theorem localized_comparison_of_radii (hφ : PhiBound) (hf : OriginalFiniteChecks)
+    (e : Fin 7 → ℝ) (R : Fin 4 → ℝ) (he : ∀ j, 0 ≤ e j)
+    (hpiece : ∀ j, ‖threePiece hφ j‖ ≤ e j)
+    (hsource : ∀ p, ‖source hφ p‖ ≤ R p)
+    (hclose : ∑ p ∈ headIdx 501,
+      |energy (productionX hφ) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
+    ∑ p ∈ headIdx 501, comparisonWeight p *
+      |energy (productionG hφ) p - energy (productionX hφ) p| ≤
+      2 * ∑ j, ((threeBandBands j).norm : ℝ) * e j + (∑ p, R p) ^ 2 :=
+  localized_comparison_of_mass_radii hφ (fun j ↦ ((threeBandBands j).norm : ℝ)) e R
+    (fun j ↦ Rat.cast_nonneg.mpr (threeBand_nonneg j).1) he
+    (actual_threeBand_mass hf hclose) hpiece hsource
 
 section TightInputs
 
@@ -168,19 +201,21 @@ theorem norm_threePiece_tight_le (j : Fin 7) :
       norm_threePiece_tight_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 6
 
 include hfirst hsecond hthird in
-/-- The tighter radii specialize the generic comparison without changing its mass caps. -/
+/-- The tighter error and grouped mass radii specialize the same generic comparison. -/
 theorem localized_comparison_tight_three_band_of_checks
     (hclose : ∑ p ∈ headIdx 501,
       |energy (productionX hφ) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
     ∑ p ∈ headIdx 501, comparisonWeight p *
       |energy (productionG hφ) p - energy (productionX hφ) p| ≤
       (tightThreeBandCompareQ : ℝ) := by
-  have hc := localized_comparison_of_radii hφ hf
+  have hc := localized_comparison_of_mass_radii hφ (fun j ↦ (tightThreeBandMassQ j : ℝ))
     (fun j ↦ (tightThreeBandErrorQ j : ℝ)) (fun p ↦ (tightGroupRadiusQ p : ℝ))
+    (fun j ↦ Rat.cast_nonneg.mpr (tightThreeBandMassQ_nonneg j))
     (fun j ↦ Rat.cast_nonneg.mpr (tightThreeBandErrorQ_nonneg j))
+    (actual_threeBand_mass_of_caps hf hclose tightThreeBandMassQ tightThreeBand_mass_caps)
     (norm_threePiece_tight_le hφ hf hfirst hsecond hthird
       hwholeFirst hwholeSecond hwholeThird)
-    (norm_source_tight_le hφ hf hwholeFirst hwholeSecond hwholeThird) hclose
+    (norm_source_tight_le hφ hf hwholeFirst hwholeSecond hwholeThird)
   simpa only [tightThreeBandCompareQ, tightThreeBandQuadraticQ, Rat.cast_add,
     Rat.cast_mul, Rat.cast_sum, Rat.cast_pow, Rat.cast_ofNat] using hc
 

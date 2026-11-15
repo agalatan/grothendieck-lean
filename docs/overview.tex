@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697117301\;<\;\KG\;<\;1.404599414629$\\[6pt]
+\Large $1.401697117301\;<\;\KG\;<\;1.404599412097$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
 (\lean{main\_bounds}); the computer-assisted inputs are native finite checks listed in
 the axiom report (Section~\ref{sec:trust}).\\[4pt]
@@ -43,7 +43,9 @@ The tighter upper estimate reuses the accepted numerical certificates.
 Their actual panel-cap sums fit $8\cdot10^{-15}$, $16\cdot10^{-15}$ and
 $1131\cdot10^{-15}$, checked by kernel reduction. The existing tail and gap reserve,
 exact dyadic table excursions and certified inner-product thresholds give smaller
-low-band and whole-source errors. The finite head also forces a positive linear
+low-band and whole-source errors. Regrouping the existing band-mass squares
+before taking rational square-root ceilings further reduces the comparison cost.
+The finite head also forces a positive linear
 coefficient; its weighted square is deducted from the Hardy budget before bounding
 the infinite tail. The resulting comparison and transfer give the displayed bound
 without additional numerical or analytic hypotheses.
@@ -157,10 +159,10 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404599414629}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404599412097}$\\\bottomrule
 \end{tabular}
 \end{center}
-Lean exhibits an exact rational Grothendieck bound strictly below the displayed threshold $1.404599414629$.
+Lean exhibits an exact rational Grothendieck bound strictly below the displayed threshold $1.404599412097$.
 The rounding was designed for a sharper value, below $1.404598149141$, which Lean has only conditionally
 (Section~\ref{sec:trust}).
 Haagerup's integral
@@ -300,9 +302,9 @@ The phase certificate checks 119,077 leaves in 512 cubes through six native rang
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, Lean proves that the residual is at most
-$\delta\approx1.5520\cdot10^{-6}$ (the exact rational \lean{tightResidualQ}):
+$\delta\approx1.5507\cdot10^{-6}$ (the exact rational \lean{tightResidualQ}):
 \[
- \KG\le\frac1{c-\delta}=1.404599414628917\ldots<1.404599414629 .
+ \KG\le\frac1{c-\delta}=1.404599412096097\ldots<1.404599412097 .
 \]
 The rounding was designed for the smaller residual $455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$, which
 would give $\KG\le500000000000000000/355973699960428191<1.404598148840$. Lean has this sharper value only as a
@@ -407,6 +409,19 @@ for $|\rho|\le1/1090000$ in all modes, or $|\rho|\le1/22500$ off that support.
 These results are proved in \texttt{PhaseTaylorQuadratic} and
 \texttt{PhaseQuadraticError}, without new native facts. The improvement of
 the Grothendieck endpoint uses the separate certified-budget argument above.
+
+The cubic Taylor term
+$Q_3(h)=\Re(h)(\Im h)^2+i((\Re h)^2\Im h-(\Im h)^3/2)$ leaves a globally
+sharp remainder $2|h|^4$ (\texttt{PhaseTaylorThird}). Its six Wick modes have
+squared norm $27/32$, and the Gaussian remainder is at most $4\sqrt6\,\rho^4$.
+The quadratic and cubic supports are disjoint, giving the uniform coefficient
+bound $(3\sqrt2/8)\rho^2+4\sqrt6\,\rho^4$ when $|\rho|\le1/2$.
+Thus \texttt{PhaseCubicError} proves saved-center accuracy below $10^{-12}$
+for $|\rho|\le1/1086000$ uniformly, or $1/12000$ off the quadratic support,
+with the same reserves. In total Wick degree at least four, only the quartic
+remainder remains: $|\rho|\le1/2120$ suffices with the same saved-model tolerance,
+and no parameter-error hypothesis is needed since the linear center is zero.
+These are analytic improvements without new native facts or a claim of Gaussian optimality.
 
 For complex $z\ne 0$, rotation by $z/|z|$ transports the real-slice
 constant-plus-linear model to the physical phase $F_0(z,w)$. In the Gaussian
@@ -1317,7 +1332,7 @@ for the node caps: the chord nodes, the node ranges of every row (for rows 12--1
 nodes of rows 12--15 their piece ranges, coverage checks and repaired pieces.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
 change, evaluates them on its own runner.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599414629$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders; \lean{Final.hclose\_final} supplies table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599412097$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders; \lean{Final.hclose\_final} supplies table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the explicit decomposition of $G_T-X$
 (\lean{difference\_pieces}) and the weighted comparison; the Hardy tail (holomorphic continuation, Schur bound, circle
@@ -1713,12 +1728,12 @@ in the second.
 
 \section{Open problems}
 Work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound: now \lean{lower\_target}),
-\#17 (inputs of the upper bound: now \lean{upper\_below\_tight} for the threshold $1.404599414629$; the sharper value is item~1 below),
+\#17 (inputs of the upper bound: now \lean{upper\_below\_tight} for the threshold $1.404599412097$; the sharper value is item~1 below),
 \#22 (a better lower bound), \#29 (build infrastructure, closed) and \#34 (research plans).
 \begin{enumerate}
 \item Prove the sharper upper bound that the rounding was designed for, below $1.404598149141$. What is missing are the
  fourteen finite-band Gaussian error estimates with their original caps, the hypotheses of the conditional theorem of
- Section~\ref{sec:trust}; the unconditional theorem uses proved estimates and exhibits a bound below $1.404599414629$.
+ Section~\ref{sec:trust}; the unconditional theorem uses proved estimates and exhibits a bound below $1.404599412097$.
  The energy-table accuracy, the Hermite expansion, the structural analytic bridge and the Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.

@@ -5,7 +5,7 @@ import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.CapExcluded
 
 /-!
-# The main result: `1.401697117301 < K_G^ℂ < 1.404599414629`
+# The main result: `1.401697117301 < K_G^ℂ < 1.404599412097`
 
 The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of
 `Grothe/Statement.lean`.
@@ -15,8 +15,8 @@ The double inequality of the repository's goal, stated for the constant `K_G^ℂ
 * `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above
   `1.401697117301`.
 * `upper_below_tight` (`Grothe/UpperTightFinal.lean`): **the upper bound, unconditional**: some
-  Grothendieck bound is below `1.404599414629`.
-* `main_bounds`: **`1.401697117301 < K_G^ℂ < 1.404599414629`**, without hypotheses.
+  Grothendieck bound is below `1.404599412097`.
+* `main_bounds`: **`1.401697117301 < K_G^ℂ < 1.404599412097`**, without hypotheses.
 -/
 
 namespace Grothe.Statement
@@ -33,10 +33,10 @@ theorem capsRest : CapsRest := by
 theorem lower_target : LowerTarget :=
   lowerTarget_of_nodeCaps (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest capsRest))
 
-/-- **The main result** `1.401697117301 < K_G^ℂ < 1.404599414629`. -/
+/-- **The main result** `1.401697117301 < K_G^ℂ < 1.404599412097`. -/
 theorem main_bounds :
     (1401697117301 / 10 ^ 12 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant < 1404599414629 / 10 ^ 12 := by
+      complexGrothendieckConstant < 1404599412097 / 10 ^ 12 := by
   have hU := upper_below_tight
   have hne : ∃ K, IsBound K := hU.imp fun _ h ↦ h.1
   have hlo := lt_constant_of_lowerAbove hne lower_target

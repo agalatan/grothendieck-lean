@@ -62,6 +62,25 @@ def tightThreeBandErrorQ (j : Fin 7) : ℚ :=
   if j = 4 then tightScaledRQ 1 else
   if j = 5 then tightLowErrorQ 2 / 6 else tightScaledRQ 2
 
+/-- Tight square-root ceilings for the grouped reference masses, using the existing caps. -/
+def tightThreeBandMassQ (j : Fin 7) : ℚ :=
+  if j = 2 then 91516952888826 / 10 ^ 15 else
+  if j = 4 then 91516952739994 / 10 ^ 15 else
+  if j = 6 then 198924380740356 / 10 ^ 15 else (threeBandBands j).norm
+
+theorem tightThreeBandMassQ_nonneg (j : Fin 7) : 0 ≤ tightThreeBandMassQ j := by
+  have h : ∀ j : Fin 7, 0 ≤ tightThreeBandMassQ j := by decide +kernel
+  exact h j
+
+/-- Regroup the already certified eighteen mass squares without coarse decimal rounding. -/
+theorem tightThreeBand_mass_caps (j : Fin 7) :
+    (∑ k : Fin 18, if threeBandOldGroup k = j then comparisonBands[k].norm ^ 2 else 0) ≤
+      tightThreeBandMassQ j ^ 2 := by
+  have h : ∀ j : Fin 7,
+      (∑ k : Fin 18, if threeBandOldGroup k = j then comparisonBands[k].norm ^ 2 else 0) ≤
+        tightThreeBandMassQ j ^ 2 := by decide +kernel
+  exact h j
+
 theorem tightQuadRadiusQ_pos (g : Fin 3) : 0 < tightQuadRadiusQ g := by
   have h : ∀ g : Fin 3, 0 < tightQuadRadiusQ g := by decide +kernel
   exact h g
@@ -130,9 +149,9 @@ theorem tight_third_low_margin :
 /-- The quadratic error charge retains the four unsplit sources. -/
 def tightThreeBandQuadraticQ : ℚ := (∑ g : Fin 4, tightGroupRadiusQ g) ^ 2
 
-/-- Tight error radii with the unchanged certified seven mass caps. -/
+/-- Tight error radii and regrouped reference masses from the existing certificates. -/
 def tightThreeBandCompareQ : ℚ :=
-  2 * ∑ j : Fin 7, (threeBandBands j).norm * tightThreeBandErrorQ j +
+  2 * ∑ j : Fin 7, tightThreeBandMassQ j * tightThreeBandErrorQ j +
     tightThreeBandQuadraticQ
 
 /-- The finite head residual, including the existing table tolerance. -/
@@ -154,7 +173,7 @@ def tightValueQ : ℚ := 1 / (slopeQ - tightResidualQ)
 
 theorem tightHeadResidualQ_exact :
     tightHeadResidualQ =
-      24931170674894146039889727973800509 / 16384000000000000000000000000000000000000 := by
+      24910136796371013041787179493800509 / 16384000000000000000000000000000000000000 := by
   decide +kernel
 
 theorem tightLinearLowerQ_pos : 0 < tightLinearLowerQ := by decide +kernel
@@ -166,29 +185,29 @@ theorem tightTailQ_nonneg : 0 ≤ tightTailQ := by decide +kernel
 theorem tightResidualQ_lt_slopeQ : tightResidualQ < slopeQ := by decide +kernel
 
 /-- The exact new reciprocal lies strictly below this twelve-decimal threshold. -/
-theorem tightValueQ_lt : tightValueQ < 1404599414629 / 10 ^ 12 := by decide +kernel
+theorem tightValueQ_lt : tightValueQ < 1404599412097 / 10 ^ 12 := by decide +kernel
 
 theorem tight_real_reciprocal :
     1 / ((slopeQ : ℝ) - (tightResidualQ : ℝ)) = (tightValueQ : ℝ) := by
   norm_num only [tightValueQ, Rat.cast_div, Rat.cast_one, Rat.cast_sub]
 
-theorem tight_real_value_lt : (tightValueQ : ℝ) < (1.404599414629 : ℝ) := by
+theorem tight_real_value_lt : (tightValueQ : ℝ) < (1.404599412097 : ℝ) := by
   calc
-    (tightValueQ : ℝ) < (((1404599414629 : ℚ) / 10 ^ 12 : ℚ) : ℝ) := by
+    (tightValueQ : ℝ) < (((1404599412097 : ℚ) / 10 ^ 12 : ℚ) : ℝ) := by
       exact_mod_cast tightValueQ_lt
-    _ = (1.404599414629 : ℝ) := by norm_num
+    _ = (1.404599412097 : ℝ) := by norm_num
 
 /-- Kernel-checked integer arithmetic gives the tail comparison after the radial-index shift. -/
 theorem tight_hardy_numeric :
     (tightShiftedBudgetQ : ℝ) * (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1)) ≤
       (tightTailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
   have hN :
-      (5122344537270679968378851215491256842896502083698650049915083247804191981571479519190719 *
+      (5122344528823656479503303427411872446249193426871408702127005549160122066029320159190719 *
         4000 ^ 1002 : ℕ) ≤
       622670654888495904523111826975998607360000000000000000000000000000000000 *
         4149 ^ 1002 := by decide +kernel
   have hR :
-      (5122344537270679968378851215491256842896502083698650049915083247804191981571479519190719 *
+      (5122344528823656479503303427411872446249193426871408702127005549160122066029320159190719 *
         4000 ^ 1002 : ℝ) ≤
       622670654888495904523111826975998607360000000000000000000000000000000000 *
         4149 ^ 1002 := by exact_mod_cast hN

@@ -13,6 +13,7 @@ import Grothe.Haagerup.PhaseTaylorCubic
 import Grothe.Haagerup.PhaseTaylorOptimal
 import Grothe.Haagerup.PhaseTaylorQuadratic
 import Grothe.Haagerup.PhaseTaylorSharp
+import Grothe.Haagerup.PhaseTaylorThird
 import Grothe.HeadHardy
 import Grothe.ListPoly
 import Grothe.Lower.Basic
@@ -10859,6 +10860,7 @@ import Grothe.UpperChaos.PackedDyadicStructural
 import Grothe.UpperChaos.PackedDyadicStructuralChecks
 import Grothe.UpperChaos.PairJetPolynomialOperations
 import Grothe.UpperChaos.PhaseAuxiliaryDecay
+import Grothe.UpperChaos.PhaseCubicError
 import Grothe.UpperChaos.PhaseMoment2
 import Grothe.UpperChaos.PhaseMoment4
 import Grothe.UpperChaos.PhaseMoment6

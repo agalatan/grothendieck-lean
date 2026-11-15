@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401697117301 < K_G^ℂ < 1.404599414629` (`main_bounds`,
+The proved interval is `1.401697117301 < K_G^ℂ < 1.404599412097` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
 (`lower_target`), and so is the upper endpoint (`upper_below_tight`,
 `Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
@@ -18,18 +18,21 @@ input of the main theorems, which have no hypotheses. A module said to be
 nothing in `main_bounds` depends on it. The value `1.404598149141` is the target
 the rounding was designed for: Lean proves a bound below it only conditionally
 (`fresh_upper_concrete_taylor`, whose band-error hypotheses are not proved),
-and the theorem without hypotheses exhibits a bound below `1.404599414629`.
+and the theorem without hypotheses exhibits a bound below `1.404599412097`.
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
 shards supply their analytic interpretation. Adding the existing `10⁻¹⁵` tail/gap reserve
 and the exact dyadic table excursions gives the low-band radii; the already certified
-inner-product thresholds give smaller whole-source radii. `UpperTightComparison`
-specializes a comparison theorem with arbitrary piece and whole-source radii.
+inner-product thresholds give smaller whole-source radii. The reference masses also
+retain the exact sums of the eighteen certified band-cap squares before taking
+rational square-root ceilings, improving the coarse high-band caps `0.0916` and `0.199`.
+`UpperTightComparison` specializes a comparison theorem with arbitrary reference-mass,
+piece-error and whole-source radii.
 `UpperHead` assembles the finite residual independently of the comparison budget,
 and `HeadHardy` deducts the linear coefficient's forced energy before bounding the tail.
 The unchanged sharp Hardy budget is `1737972/10⁶`. The resulting exact reciprocal
-`tightValueQ` is strictly below `1.404599414629`. No panel, energy table or numerical
+`tightValueQ` is strictly below `1.404599412097`. No panel, energy table or numerical
 acceptance premise is replaced, and the tighter total checks introduce no native fact.
 
 **Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
@@ -1517,6 +1520,18 @@ error below `10⁻¹²` for `|ρ| ≤ 1/1090000` in every mode, and for
 `|ρ| ≤ 1/22500` outside the quadratic support. These analytic improvements
 introduce no native facts; the tighter certified Grothendieck endpoint above
 comes from the separate budget and Hardy assembly.
+`Haagerup/PhaseTaylorThird` goes one order further: the cubic Taylor term
+`Q₃(h) = Re(h)*(Im h)² + i*((Re h)²*Im h - (Im h)³/2)` leaves a globally
+sharp remainder `2‖h‖⁴`. `UpperChaos/PhaseCubicError` gives its exact six-mode
+Wick expansion, with squared norm `27/32`, and Gaussian remainder `4*sqrt(6)*ρ⁴`.
+The quadratic and cubic supports are disjoint. For `|ρ| ≤ 1/2`, each coefficient
+of the existing linear-center error is therefore bounded by
+`(3*sqrt(2)/8)*ρ² + 4*sqrt(6)*ρ⁴`. The saved-center interval becomes
+`|ρ| ≤ 1/1086000` uniformly, or `1/12000` outside the quadratic support,
+with the same parameter and saved-model tolerances. At total Wick degree at
+least four, the error is purely quartic and the saved-center interval is
+`1/2120`; the parameter-error hypothesis is unnecessary because the linear
+center vanishes identically. These analytic results add no native facts.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
@@ -2251,7 +2266,7 @@ by the final theorems.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs are the hypotheses of this
   theorem that are not proved. The residual of the proved bound `upper_below_tight`
-  is `tightResidualQ`, approximately 1.5520·10⁻⁶: the comparison
+  is `tightResidualQ`, approximately 1.5507·10⁻⁶: the comparison
   `tightThreeBandCompareQ` (96.2%), the Hardy tail `303362611/10¹⁶` (2.0%), the
   head `28153/10¹²` (1.8%) and the same table error.
   Full scope, source bindings and reproduction commands are in
