@@ -1187,9 +1187,17 @@ at the peak research profile when |w|≥5/4 or sqrt(|A|²+|B|²)≤1/512, as wel
 a directional exterior. They also give an unconditional restricted-family
 retained joint error below 19/10⁶ for r_B=-2r_A under the monograph's energy caps,
 at the explicit remote trial ξ₀=−.6(r_A+.5053r_B), with visible coefficient c=0.
-These strengthened paper/interval results await independent review; they are not
+These paper/interval results were independently re-derived and replayed in
+review #444; they are not
 premises of the Lean lower bound above. Full (P) and the odd averaged premise
 remain open, and the proved lower endpoint is unchanged.
+
+The scalar Edgeworth argument in `research/conjecture-K/code/edgeworth-codex-a7c4/`
+also gives a dimension-free same-variance deficit `D(q)>=(7/50)delta` for remote
+cubics at the peak profile with `.03<=u<=.0463` and `chi=delta/u²<=10^-14`.
+Its remainder constant is explicit and its rational arithmetic is checked;
+the analytic proof is author-only, pending independent review. This small
+neighborhood neither covers the shared sectors nor changes the Lean endpoint.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
 proves `V ≤ B` for an admissible scalar profile under the simultaneous

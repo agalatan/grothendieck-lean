@@ -254,6 +254,22 @@ Around the peak:
 
 The flank and upper rows are outside all of these.
 
+**An explicit near-Gaussian deficit.** At the peak profile, write
+κ₆ᶜ=E|q|⁶−6u³−9uδ. The scalar Edgeworth expansion gives, for every remote cubic
+and 0<u≤0.0463,
+
+    2E|L+q| = B(u)+(δ/4)B″(u)+(κ₆ᶜ/36)B‴(u)+R,
+    |R| ≤ 1920000 δ^(3/2).
+
+In particular, 0.03≤u≤0.0463 and χ≤10⁻¹⁴ imply D(q)≥(7/50)δ, uniformly in
+dimension [P, author only · codex-a7c4; exact arithmetic replayed · 3.18]. Two
+Gaussian integrations by parts, retaining the second and fourth chaos projections
+of the carré du champ, give an explicit remainder; the visible Gaussian scale
+mixture bounds the required seventh payoff derivative. The cutoff is conservative
+and very small. It does not establish D≥0 for general χ or handle shared shells.
+With the reviewed content coefficient 3/80, it removes the additive error in
+the tilted content bound on this neighborhood: ‖c₍₃/₅₎(q)‖²≤0.3D(q).
+
 **Reformulations.** For one fixed profile, four statements are equivalent: the universal complex sharp radius bound,
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
 PVD, which implies complex PVD; no converse is known [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. The sharp
@@ -567,12 +583,12 @@ shift interpolation prove (P) whenever |w| ≥ 5/4, at every amplitude and phase
 In particular sqrt(S_r) ≤ 1/512 suffices for every complex shift. A further sufficient condition, valid at every
 shift, is 16 S_r²+3S_r ≥ 6|2A+B|². It includes the amplitude-complete cone |2A+B|²≤S_r/2. All 438 endpoint
 matrices and 93 adaptive cone intervals pass, with exact coverage and positive-definiteness audits
-[P + C, author only · codex-a7c4 · 7.4.11–12].
+[P + C · codex-a7c4, re-derived and replayed by claude-b9ee in review #444 · 7.4.11–12].
 
 Consequently, for proportional holomorphic drivers r_B=κr_A with |κ+4|≤3, the joint bridge (7.4.10) is
 unconditional under its unchanged caps u≤0.0463 and u+V≤0.080051, allowing arbitrary sharing with the genuine
 remote cubic q. For κ=−2, completing a scalar square gives the sharper retained estimate
-Λ̂(q+A_shell+B_shell)<S+19/10⁶ [P + C, author only · codex-a7c4 · 7.4.12]. The estimate holds at the explicit
+Λ̂(q+A_shell+B_shell)<S+19/10⁶ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee in review #444 · 7.4.12]. The estimate holds at the explicit
 trial ξ₀=−(3/5)(r_A+ρr_B), with visible coefficient c=0, before taking the retained infimum. If 0.01‖U‖² is
 reserved for odd sectors, the trial's joint gain plus this reserve is below 29/10⁶ relative to Λ(q).
 Together with the unchanged signed-D odd premise of 2.9, that would give an all-sector allowance of 79/10⁶
@@ -770,8 +786,8 @@ by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows 
    t-dependent energy caps, and state the consumer in Lean. A simple first step is one new row at ε = 149/200
    with an all-sector bound there, which gives 1.40171 (2.10). *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
-   Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 11/8 and
-   1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside its proved local pieces; its conditional assembly uses the existing tilted-content theorem.
+   Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 5/4 and
+   1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the origin profile, directional exterior and proved local pieces; its conditional assembly uses the existing tilted-content theorem.
    The other obligations are the odd sectors through the averaged premise (P_Ψ) of 2.9, the other rows through the
    weighted scaling of 1.6,
    and more than three remote variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).

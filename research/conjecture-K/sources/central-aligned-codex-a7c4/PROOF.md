@@ -181,10 +181,21 @@ continuation adds
     Eamp=[(2(p-.0926)+wmax²)Smax+12hi² Smax²]
                                            *(hi-lo)²/(8lo²).          (6)
 
+For completeness, H(t)=t²J(w,D,t) satisfies
+
+    H''(t)>=-(2(p-.0926)+w²)S-12t²S²,
+
+because Rem(w,tD) is convex in t and Q0(D)<=(p-.0926)S. First
+interpolate in w and y at each amplitude endpoint. If both resulting
+endpoint bounds are J<=j<0, their H-chord is at most j times the chord
+of t², hence at most jt². The one-dimensional chord error for H, divided
+by t²>=lo², is exactly (6). This explains why the negative endpoint
+condition is needed and why a mere amplitude grid would not suffice.
+
 Consequently, if all eight corner upper bounds for J are at most jmax
-and jmax+Espace+Eamp<0, the whole box satisfies (P). Mixed derivative
-bounds are unnecessary: apply the one-dimensional chord inequalities
-successively. Every comparison in (5)-(6) is rational.
+and jmax+Espace+Eamp<0, then j=jmax+Espace<0 and the whole box
+satisfies (P). Mixed derivative bounds are unnecessary. Every comparison
+in (5)-(6) is rational.
 
 A box can instead be closed by a reviewed inherited region: the explicit
 origin profile, the amplitude exterior, or the directional condition
@@ -208,7 +219,41 @@ modes are rejected; algebraic jet controls and impossible-bound controls
 are replayed. Receipts identify exact sources and record executions;
 they do not replace a fresh replay or Lean verification.
 
-## 5. Consequences and limits
+## 5. Complex neighborhoods of the direct boxes
+
+A successful direct leaf gives a strict normalized margin mu>0. At fixed
+w,t, the function f(D)=R(w,D,t) is convex and satisfies
+0<=f(D)<=(217/100)||D||² by the reviewed global potential bound.
+For any x,y with delta=||y-x||>0 and r=||y||>0, put
+z=y+r(y-x)/delta. One-dimensional convexity and f(y)>=0 give
+
+    f(y)-f(x) <= (delta/r)[f(z)-f(y)]
+              <= (delta/r)(217/100)||z||²
+              <= 4(217/100)||y|| delta.
+
+The cases delta=0 or y=0 are immediate. No differentiability of f or
+bound on the perturbed inverse map is used.
+
+For a real direction x in our charts, ||x||²<=2. If y=x+i e with real e
+and ||e||<=delta<=1, then ||y||²<=3<4, and hence
+
+    R(w,x+i e,t)-R(w,x,t) <= 8(217/100)delta < 18delta.
+
+The imaginary increment adds Q0(i e)>=0 to the quadratic target; this
+positive-definiteness comparison is checked exactly. The shift and
+quartic target terms also increase because real and imaginary coordinates
+are orthogonal. Therefore every direct real leaf extends to imaginary
+direction norm delta whenever 18delta<mu.
+
+`phase_radius.py` first revalidates all twenty region receipts and
+computes each direct leaf's exact margin mu. Its individual radius is the
+largest number in {1,1/2,1/4,...} satisfying 18delta<mu. The result
+records counts at every radius and also the smallest radius, which is
+uniformly valid over all direct leaves. These neighborhoods apply only
+over the direct leaves. An inherited-region leaf keeps its own original
+complex condition; it is not automatically extended by this argument.
+
+## 6. Consequences and limits
 
 On successful complete replay, (P) holds whenever w,A,B lie on a common
 complex line through zero. A common phase rotation reduces to real
@@ -223,9 +268,44 @@ A genuine family that can use this pointwise result is
     q=Y[gamma(|Y|²-2)+sum_j delta_j(|Y_j|²-1)],
 
 with real alpha,beta,gamma,delta_j and independent standard complex
-Gaussian coordinates Y,Y_j. The cubic is genuine H_(2,1), and q,r_A,r_B
-lie on the same random complex line. Positive aligned driver ratios are
-allowed. Under the existing energy caps, the reviewed joint bridge then
-has its original unconditional restricted-family consequence. Odd-sector
-assembly still needs its own stated regional or global premise. Nothing
-here proves full complex (P), Conjecture K, or a new global lower bound.
+Gaussian coordinates Y,Y_j. Each displayed summand is a genuine
+H_(2,1) Wick polynomial; orthogonality gives
+
+    u=2gamma²+sum_j delta_j²,   V=alpha²+beta².
+
+The variables q,r_A,r_B lie on the same random complex line. Thus the
+pointwise inequality applies almost surely before remote integration.
+Positive aligned driver ratios are allowed. Under u<=.0463 and
+u+V<=.080051, the reviewed bridge 7.4.10 gives
+
+    T_(xi0,0)(q+A_shell+B_shell) < S_G+4936/10^8,
+    xi0=-(3/5)(r_A+rho r_B),
+    A_shell=(|Z|²-1)r_A, B_shell=Z² conjugate(r_B)/sqrt(2).
+
+Here the retained trial at visible coefficient zero is
+
+    T_(xi0,0)(G)=||xi0||²+E|L+G-xi0|+E|L-G+xi0|-p||G||².
+
+The correction xi0 is one remote holomorphic linear form. Taking the
+infimum gives the same upper bound for Lambda_hat. The reviewed 7.5.3
+cession of .01||r_B-rho r_A||² is also available on this family. It yields
+the existing 99/10^6 all-sector allowance only where the separate odd
+premise holds. The new odd-sector work keeps precisely this trial and
+cession interface; its unreviewed compact continuation is not an input
+here.
+
+For a concrete genuine example, take gamma=1/7, alpha=1/16, beta=1/32
+and no bath terms. Then u=2/49 and V=5/1024 satisfy both caps. At Y=2,
+
+    w=4/7, A=1/8, B=1/16, S_r=5/256.
+
+This lies outside the old origin profile, directional/amplitude/shift
+exteriors and the local boxes/tube: S_r>(1/64)², S_r<3/4,
+16S_r²+3S_r<6(2A+B)², and w<3/5-1/64. These inequalities are strict,
+so an open neighborhood of that Y also lies outside the old cover. The
+new result therefore applies to cap-feasible genuine cubics and central
+positive directions beyond the previously certified negative-driver
+cone; beta/alpha=1/2 is outside |kappa+4|<=3.
+
+Nothing here proves full complex (P), the unrestricted odd-sector
+premise, Conjecture K, or a new global lower bound.

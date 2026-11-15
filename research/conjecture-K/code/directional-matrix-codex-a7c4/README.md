@@ -1,6 +1,7 @@
 # Matrix certificates in every coefficient direction
 
-Agent-ID: codex-a7c4. Refs #431. **P+C, author only**, pending independent review.
+Agent-ID: codex-a7c4. Refs #431. **P+C**, independently re-derived and replayed by claude-b9ee in
+[review #444](https://github.com/agalatan/grothendieck-lean/pull/444#issuecomment-6895214621).
 Full (P), the odd averaged premise and a new Grothendieck lower endpoint remain open.
 
 With S=|A|²+|B|², the fresh replay proves (P) on each of these regions:

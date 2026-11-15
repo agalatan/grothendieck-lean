@@ -512,7 +512,7 @@ Full (P) and the global lower-bound improvement remain open.
 
 | repository file | size | SHA-256 |
 |---|---:|---|
-| `code/directional-matrix-codex-a7c4/README.md` | 3,972 B | `4b605dce65dd3c815051054f28a890e72bc9a6adad391065f544b35e39f7e926` |
+| `code/directional-matrix-codex-a7c4/README.md` | 4,082 B | `e84a04e5111083426452d4b3ca3956e6eb838684201b78b2f81b524ee717b180` |
 | `code/directional-matrix-codex-a7c4/cone_integral.cpp` | 2,086 B | `df1d80a6d4fb3710907eb01e11cb305411d2c1b6db5bffa44b69b07a6bee5525` |
 | `code/directional-matrix-codex-a7c4/joint_family.py` | 1,954 B | `1e2518f21a8049025209e19b37099df4ed8ab407dbf21db9fa7a975db54c9e96` |
 | `code/directional-matrix-codex-a7c4/radial_matrix.cpp` | 4,298 B | `99e69ed0708ed51e2d9b30b22256c842e4f79f14dec64c302aef08fbc96a8663` |
@@ -623,3 +623,38 @@ It checks the S_M enclosure and the conditional cover in about 84 s (replayed by
 | `handoff …/input_hashes.json` | 5,414 B | `96a2493604a055d5595a5a2c3f6ad4b94815ce177066d3a2e43dfe1d147f9cfa` |
 | `handoff …/ledger_result.json` | 2,280,980 B | `9e870208fb18436d79c0b0fc6eaf87c8efdb8c80255df23aab9bdebb37191416` |
 | `handoff …/clean_checkout_verification.log` | 15,128 B | `8a1a97dcba63bc8d951881a2c0e52550aeb49a70c47422ff516ce775bcac5d59` |
+
+## Central aligned directions (codex-a7c4, task #431)
+
+The source and proof target all real aligned directions of (P). The full two-shard replay
+[43743242420](https://github.com/agalatan/grothendieck-lean/actions/runs/43743242420)
+is pending; no complete-cover conclusion is asserted before all twenty region receipts pass.
+The numerical source is frozen at commit `889940752638cae36a56627152ddfed56c7609bd`.
+The working proof is `handoff/codex-a7c4-central-aligned/PROOF.md` in the author worktree.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `code/central-aligned-codex-a7c4/README.md` | 1,778 B | `156719fb3113013e4d048922ae01892e1d5dc1c16f445152ded43a8806961a4f` |
+| `code/central-aligned-codex-a7c4/base_curvature.cpp` | 3,585 B | `9904abf9042896e36e81532262f015f6990221a0504de1aaf52e814e7b0e52a7` |
+| `code/central-aligned-codex-a7c4/central_integral.cpp` | 5,479 B | `b8bed8beaeba5ebcf746580dd197f3490cb678fb7f6f18a09fcb36e741cdbfcb` |
+| `code/central-aligned-codex-a7c4/jet_test.cpp` | 991 B | `1fd066ff4f61b401d94b44e0576c825ea578e067406bced71367b89388efa02d` |
+| `code/central-aligned-codex-a7c4/mixed_jet.hpp` | 1,782 B | `8abc217c8fa877dd6a4f3fd9024d8047a070d0c6140bbff4d267a2d1162784c4` |
+| `code/central-aligned-codex-a7c4/phase_radius.py` | 3,613 B | `a821645392be8384e3c4635add45e64be667f65fe7811ce8871ec6f44596c9ee` |
+| `code/central-aligned-codex-a7c4/test_receipts.py` | 4,152 B | `dd16840aa9022656413bb0caa341b5486c0a83669b3022df2b12ea72b35174ba` |
+| `code/central-aligned-codex-a7c4/verify.py` | 16,406 B | `99eb3c06b7354a94471ea40355e4c2cb1e861486c99b5508aff2e43541039a24` |
+| `sources/central-aligned-codex-a7c4/PROOF.md` | 14,036 B | `a702fe0c17a83f783211c599df79a4a77ad71c638ed8ce048debe05598da4f6a` |
+
+## Explicit scalar Edgeworth deficit (codex-a7c4, task #446)
+
+The paper derivation and exact arithmetic checker of ledger 3.18 are author-only.
+The checker runs in under a second with the Python standard library; it does not verify
+the analytic argument and is not run by CI. The working proof is
+`handoff/codex-a7c4-edgeworth/PROOF.md` in
+`/Users/alingalatan/workspaces/grothe-codex-a7c4-conjecture-k-progress/`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `code/edgeworth-codex-a7c4/README.md` | 1,217 B | `d2cb54ec7583f773f67c73436aa3f3a385e0538b8c6c8e266d1d4f770eaf528a` |
+| `code/edgeworth-codex-a7c4/result.json` | 396 B | `668575305f0fde2969e376c8b87afc7289c66429676490f3bfb0adc4eb4af19a` |
+| `code/edgeworth-codex-a7c4/verify.py` | 2,771 B | `2d725425e843080acc6d0ffb3cafd8ed4c65c83aa701e46157436db6dedca33d` |
+| `sources/edgeworth-codex-a7c4/PROOF.md` | 10,086 B | `e6a6905328913a50b09b89cfc53d9fd631943beb6d2d9f70655ea74a91d09087` |

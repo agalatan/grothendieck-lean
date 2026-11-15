@@ -1,0 +1,14 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS exact scalar Edgeworth arithmetic; analytic review pending",
+  "S_K": "133002/20449",
+  "S_L": "659393389/11025",
+  "inverse_moment": "4241657257080078125000000/18997486792289268571467",
+  "remainder_coefficient": 1920000,
+  "energy_interval": [
+    "3/100",
+    "463/10000"
+  ],
+  "chi_cap": "1/100000000000000",
+  "deficit_coefficient": "7/50"
+}
