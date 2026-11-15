@@ -527,7 +527,7 @@ and the centered error of (2.7) then suffice: under u ≤ 0.0463 and u + V ≤ 0
 
 The implication and a 1,000-cell rational scalar certificate are checked within the author's session
 [P + C, author only · codex-a7c4 · 7.4.10]. This replaces the search for a stronger content theorem by a specific
-joint remainder target. Its exterior is proved for |w| ≥ 19/10 or sqrt(|α|² + |β|²) ≥ 33/20 by a density bound,
+joint remainder target. Its exterior is proved for |w| ≥ 19/10 or sqrt(|α|² + |β|²) ≥ 37/25 by a density bound,
 layer cake and exact polynomial positivity [P + C, author only · 7.4.10]. Only the compact interior remains for
 this target; odd sectors over the joint core are still a separate obligation.
 

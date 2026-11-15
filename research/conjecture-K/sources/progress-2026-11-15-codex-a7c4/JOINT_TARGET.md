@@ -268,7 +268,7 @@ within-session peer checking, not external review.
 ## 6. The exterior is proved: only a compact domain remains
 
 The pointwise premise (P) holds whenever `|w|≥19/10` or
-`sqrt(S)≥33/20`. Its remaining compact interior is open. The following
+`sqrt(S)≥37/25`. Its remaining compact interior is open. The following
 argument and exact polynomial checks are **P+C, author only**, pending
 external review. This is an additional exterior certificate, distinct
 from the scalar assembly checker in section 5.
@@ -303,9 +303,33 @@ Layer cake, using the area of each disk, now gives for every w
       ≤integral_0^infinity min(H²,81/(100t²)) dt
       =(9/5)H<217/100.
 
-Consequently `Rem≤(217/100)S` at every shift and amplitude. Independently,
-the triangle inequality gives `Rem≤4E|h|≤4H sqrt(S)`, where
-`H²=1+s²(1+rho²)` by Gaussian orthogonality.
+Consequently `Rem≤(217/100)S` at every shift and amplitude.
+
+A sharper large-amplitude bound keeps the actual first variation. For w>0
+real, let `a_w(T)=E_theta ph(w+sqrt(T)(a+bT)e^{i theta})`.
+It is real and belongs to [0,1]: it is the derivative of an even convex
+1-Lipschitz circular mean. Therefore
+
+    w k_A(w²)=−E[(T−1)a_w(T)]≤integral_0^1 (1−t)e^{−t}dt=1/e.
+
+Here `k_A=−g≥0`. The inherited reviewed kernel comparison gives
+`0≤w k_B(w²)≤w k_A(w²)/sqrt(2)`. Also `0≤w j(w²)≤1`.
+Thus the absolute tilted A coefficient `w(g+s j)` is at most s:
+its range lies in `[−1/e,s]` and `1/e<s`. The tilted B coefficient
+`w(g_B+s rho j)` similarly has absolute value at most `s rho`, since
+`1/(e sqrt(2))<s rho`. At w=0 both coefficients vanish; phase rotation
+handles complex w. These bounds use the reviewed positivity and kernel
+comparison, not an unproved joint cost.
+
+It follows that the absolute first variation is at most
+`s(|A|+rho|B|)≤s sqrt(1+rho²)sqrt(S)`. The triangle inequality for
+the remaining norm difference gives, for S>0,
+
+    Rem≤2E|h|+2s sqrt(1+rho²)sqrt(S)<(94/25)sqrt(S).
+
+The checker bounds `H<241/200`, `s sqrt(1+rho²)<673/1000`, and
+`2(241/200+673/1000)<94/25` by exact arithmetic. The auxiliary
+comparisons use `e>5/2` (four positive series terms) and `sqrt(2)>7/5`.
 
 Because `|R|²+|U|²=(1+rho²)S` and `.67≥.08`, the right side of (P)
 is at least
@@ -316,9 +340,9 @@ is at least
 Exact rational comparisons show
 
     m+(1/2)(19/10)²>217/100,
-    [m(33/20)+(33/20)³]²>16H².
+    m(37/25)+(37/25)³>94/25.
 
-The latter expression before squaring is positive and increasing with
+The latter expression is positive and increasing with
 its positive amplitude argument. The two global remainder bounds prove
 (P) on the stated exterior. `S=0` is equality. The singular point
 `L+w=0` has Gaussian measure zero; layer cake provides the needed

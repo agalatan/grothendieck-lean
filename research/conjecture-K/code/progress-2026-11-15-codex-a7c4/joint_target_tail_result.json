@@ -23,8 +23,9 @@
   "density_min_bernstein": "686323/500000000",
   "density_tail_min": "2595321/1250000000",
   "uniform_remainder_ratio": "217/100",
+  "large_amplitude_coefficient": "94/25",
   "minimum_quadratic_ratio": "7344303698127/18910000000000",
   "w_cutoff": "19/10",
-  "amplitude_cutoff": "33/20",
+  "amplitude_cutoff": "37/25",
   "interior_certified": false
 }

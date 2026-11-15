@@ -41,12 +41,20 @@ assert k==Q(1,2)
 assert s*s+alpha>=orth
 m=p-c-(s*s+alpha)*(1+rho*rho)
 H2=1+s*s*(1+rho*rho)
-wcut,ampcut=Q(19,10),Q(33,20)
+wcut,ampcut=Q(19,10),Q(37,25)
 assert m>0
 assert m+k*wcut*wcut>U
-assert (m*ampcut+2*k*ampcut**3)**2>16*H2
+# e > 5/2 from its positive Taylor series; sqrt(2)>7/5.
+assert sum(Q(1,factorial(j)) for j in range(4)) > Q(5,2)
+assert Q(7,5)**2 < 2
+assert Q(2,5)<s and Q(2,7)<s*rho
+H_upper,tilt_upper=Q(241,200),Q(673,1000)
+assert H_upper**2>H2 and tilt_upper**2>s*s*(1+rho*rho)
+large_amp=Q(94,25)
+assert 2*(H_upper+tilt_upper)<large_amp
+assert m*ampcut+2*k*ampcut**3>large_amp
 report=dict(agent_id='codex-a7c4',status='P+C author only; exterior proved, compact interior open',
  parameters={key:str(v) for key,v in dict(a=a,b=b,rho=rho,s=s,c=c,alpha=alpha,orth=orth,E0=E0,p=p,k=k).items()},
  W=list(map(str,W)),mass_upper=str(mass),density_cap=str(density_cap),density_min_bernstein=str(min(mins)),density_tail_min=str(min(tail)),
- uniform_remainder_ratio=str(U),minimum_quadratic_ratio=str(m),w_cutoff=str(wcut),amplitude_cutoff=str(ampcut),interior_certified=False)
+ uniform_remainder_ratio=str(U),large_amplitude_coefficient=str(large_amp),minimum_quadratic_ratio=str(m),w_cutoff=str(wcut),amplitude_cutoff=str(ampcut),interior_certified=False)
 print(json.dumps(report,indent=2))
