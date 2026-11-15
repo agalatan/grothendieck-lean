@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401700037873 < K_G^ℂ < 1.404599398052` (`main_bounds`,
+The proved interval is `1.401700037873 < K_G^ℂ < 1.404599395362` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
 (`lower_target`), and so is the upper endpoint (`upper_below_tight`,
 `Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
@@ -20,7 +20,7 @@ target the rounding was designed for. The conditional theorem towards it,
 `fresh_upper_rounder` (K_G^ℂ ≤ 500000000000000000/355973699960428191 <
 1.404598148840, from fourteen finite-band Gaussian estimates that are not
 proved), is archived; the theorem without hypotheses exhibits a bound below
-`1.404599398052`.
+`1.404599395362`.
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
@@ -56,13 +56,15 @@ left in the `L*L` argument. For `A=(I-R²)⁻¹`, `B=A-jI`, `C=RA`,
 `|H|² ≤ [16 j² |det(I-R²)|² det Z det(T+jI) det(T+2E+jI)]⁻¹`
 under the existing positive-definiteness gates. `SchurMainGaussian` proves
 this for measurable disk-valued responses. `HardyGaussianCheck` bounds it
-by `5/4` over all four closed halves of the two circle charts, with outward
-128-bit interval arithmetic and a depth-bounded covering proof. The native
+by `(513 + 297cos²θ − 204cos⁴θ)/500` over all four closed halves of
+the two circle charts, with outward 128-bit interval arithmetic and a
+depth-bounded covering proof. Its exact angular average is `117/100`, using
+the circle means `1/2` and `3/8` of `cos²θ` and `cos⁴θ`. The native
 acceptance is applied in `HardyGaussian`, using the interval soundness proved by
 `HardyGaussianSound`; holomorphy and Parseval then yield
 `HardyReal.hardy_GT_gaussian` for the actual rounding.
 `UpperTightFinal` uses this budget and deducts the forced linear energy,
-certifying tail `233184398/10¹⁶` and the new `main_bounds` endpoint.
+certifying tail `219549168/10¹⁶` and the new `main_bounds` endpoint.
 
 **Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
 `PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
@@ -70,9 +72,9 @@ certifying tail `233184398/10¹⁶` and the new `main_bounds` endpoint.
 accuracy `Final.hclose_final`. Both the mass comparison and finite-head transfer
 use the existing `energyErrQ` allowance. `UpperHead` accepts the certified
 coefficient-cost family. `HeadHardy` deducts the linear coefficient's forced weighted
-energy from the Gaussian-amplitude Hardy budget `5/4` at radius `4149/4000`, giving
-the infinite tail `233184398/10¹⁶`. The exact reciprocal `tightValueQ` is
-`1.40459939805130087245… < 1.404599398052`.
+energy from the Gaussian-amplitude Hardy budget `117/100` at radius `4149/4000`, giving
+the infinite tail `219549168/10¹⁶`. The exact reciprocal `tightValueQ` is
+`1.40459939536120707492… < 1.404599395362`.
 
 Each twisted remainder comes from the 21 shard facts and the total fact of its
 power (`TwistEllCheck.remainder_of_prodShards`); the tighter total facts bound
@@ -566,7 +568,7 @@ passes the result to `TightEndpoint.endpoint_of_comparison` (`UpperTightFinal`),
 which adds the head, the table error (`Final.hclose_final`,
 `Grothe/UpperClose.lean`) and the Hardy tail. The public `UpperTarget`
 threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the
-stricter threshold `1.404599398052`.
+stricter threshold `1.404599395362`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -1113,14 +1115,14 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹) is a hypothesis of the general
   interface; for the actual truncation it is **proved** (`Final.hclose_final`).
   The Hardy input (the
-  weighted square-sum bound 5/4 at radius 4149/4000 for the kernel of G_T) is
+  weighted square-sum bound 117/100 at radius 4149/4000 for the kernel of G_T) is
   **proved**: `HardyReal.hardy_GT_gaussian`. Validity, summability, parity, and the phase cover
   for the actual rounding are derived. `HardyHolo.lean` proves
   `hardy_of_pair_inputs_budget` from positive kernel decay on a disc of radius greater
   than 4149/4000, identification of the real odd series with the continued
   kernel, and a bound on its circle mean. Holomorphy, continuation,
   Parseval, the decay region and the circle mean (`HardyGaussian.hmean`) are proved, and
-  `HardyGaussian.hardy_of_real` derives the `hardy` statement with budget 5/4 for every
+  `HardyGaussian.hardy_of_real` derives the `hardy` statement with budget 117/100 for every
   measurable disk-valued pair from summable real odd coefficients and their
   Gaussian-law identification. `HardyReal.hreal_GT` supplies that
   identification for G_T: unfolding the smoothing (`mehler_smoothed`), the
@@ -1132,10 +1134,10 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   `I − R²`, the substitution `y = Rx + Sw`, and Fubini); `I − R² ≻ 0` since
   `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_kdet_pos`).
 * **Residual ledger.** The residual of the proved bound `upper_below_tight` is
-  `tightResidualQ = 1.54361149222272379448078027965090997314453125·10⁻⁶`: the
+  `tightResidualQ = 1.54224796922272379448078027965090997314453125·10⁻⁶`: the
   longer-prefix comparison `tightThreeBandCompareQ`
-  (`1.49212635840472379448078027965090997314453125·10⁻⁶`, 96.66%), the head
-  `28153/10¹²` (1.82%), the Hardy tail `233184398/10¹⁶` (1.51%) and the table error
+  (`1.49212635840472379448078027965090997314453125·10⁻⁶`, 96.75%), the head
+  `28153/10¹²` (1.83%), the Hardy tail `219549168/10¹⁶` (1.42%) and the table error
   `6847009/(5·10¹⁷)` (about 0.00089%).
   These percentages describe allowances, not fractions of the proof left
   unformalized. Full scope, source bindings and reproduction commands are in
@@ -1143,8 +1145,8 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   the mathematical argument.
 * The certified weighted head bound forces `h₀ ≥ slopeQ − tightHeadResidualQ`.
   `HeadHardy` uses `hardy_budget_after_linear` to deduct its weighted square
-  from the Gaussian-amplitude budget `5/4`; exact kernel arithmetic proves
-  tail `233184398/10¹⁶`.
+  from the Gaussian-amplitude budget `117/100`; exact kernel arithmetic proves
+  tail `219549168/10¹⁶`.
   This deduction is used by `upper_below_tight`.
 * **Independent replay.** The source computations were replayed on a different machine: the
   nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
@@ -1530,10 +1532,10 @@ evaluator `GrotheKernel.HardyArc` (interval soundness `HardyArcSound`, circle
 charts `HardyArcCircle`, data `HardyArcData`): `hardy_region_check` proves
 `KerPos` on the disc of radius `51863/50000` (`HardyArcRegion`), and
 `HardyGaussianCheck.charts_checked` bounds the Gaussian-amplitude expression by
-`5/4` on all four closed halves of the two charts of the circle
+`(513 + 297cos²θ − 204cos⁴θ)/500` on all four closed halves of the two charts of the circle
 `|t| = 4149/4000` (soundness `HardyGaussianSound`). `HardyGaussian.hmean`
 integrates the squared correlation `HardyArcCover.gF` over both charts, and
-`HardyGaussian.hardy_of_real` (budget `5/4`) retains coefficient summability
+`HardyGaussian.hardy_of_real` (budget `117/100`) retains coefficient summability
 (`hs`) and the real identification (`hreal`) as explicit inputs;
 `HardyReal.lean` supplies both for G_T, giving `HardyReal.hardy_GT_gaussian`.
 
