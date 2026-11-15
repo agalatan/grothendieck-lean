@@ -146,7 +146,7 @@ All directions are handled simultaneously by (3); there is no mesh in E.
 Each endpoint certificate bounds a whole amplitude band, so no further
 amplitude interpolation is needed here.
 
-The origin profile to be certified is:
+The certified origin profile is:
 
 | real shift w | amplitude cap s=sqrt(S) |
 |---|---|
@@ -161,7 +161,7 @@ For w in [5/4,11/8], the amplitude endpoints are
 0, 1/8, 5/32, 6/32, ..., 16/32, 5/8, 3/4, 7/8. This is a
 contiguous chain of sixteen bands. The existing S>=3/4 exterior covers
 s>=7/8, and the existing |w|>=11/8 exterior covers larger shifts.
-Consequently successful complete replay implies
+Consequently the complete replay proves
 
     (P) for every complex shift and direction if sqrt(S)<=1/512;
     (P) for every amplitude and direction if |w|>=5/4;
@@ -199,6 +199,47 @@ In particular the cone |2A+B|²<=S/2 is amplitude-complete. The source
 cover runs over [0,11/8], and the reviewed shift exterior handles every
 larger complex shift. Common phase rotation preserves g and S.
 
+A concrete mixed-driver consequence is available without global (P).
+If r_B=kappa r_A pointwise and |kappa+4|<=3, then
+
+    |2r_A+r_B|²-(|r_A|²+|r_B|²)/2
+       = |r_A|² (|kappa+4|²-9)/2 <= 0.
+
+Thus (P) holds for every remote shift q on this entire proportional
+holomorphic-driver family. Define A_shell=(T-1)r_A and
+B_shell=Z² conjugate(r_B)/sqrt(2), with u=||q||² and
+V=||r_A||²+||r_B||². Under the unchanged energy caps u<=0.0463 and
+u+V<=0.080051, the already reviewed conditional joint bridge (ledger 7.4.10)
+therefore gives the unconditional restricted-family estimate
+
+    Lambda_hat(q+A_shell+B_shell) < S_G + 4936/10^8.
+
+Here S_G denotes the Gaussian benchmark, not the physical amplitude energy
+S used in this note. The remote cubic may share its variables with r_A;
+no independence assumption is added. This corollary does not include odd
+sectors or arbitrary A/B driver pairs.
+
+For the central example kappa=-2, the existing uniform content norm bound
+gives a sharper allowance without using the content-deficit estimate.
+Put x=||r_A||, delta=2rho-1, C=1/50 and E=7532/10^7; the reviewed
+centered-error bound gives ||e||<=E since E²>=(7/2000)² E0. Then
+V=5x², ||R||=delta x and ||U||=(2+rho)x. The reviewed averaged joint
+identity and u+V<=80051/10^6 bound the gain over Lambda(q) by
+
+    2(C delta+2E)x-K x²,
+    K=(31/100)delta²+(2/25)(2+rho)²
+                         -10(80051/10^6-E0)>0.
+
+Completing the square gives gain <=(C delta+2E)²/K. The exact checker
+`joint_family.py` verifies, after adding the reviewed remote gap 36/10^8,
+
+    (C delta+2E)²/K+36/10^8 < 19/10^6.
+
+Thus Lambda_hat(q+A_shell+B_shell)<S_G+19/10^6 for r_B=-2r_A under
+the same energy caps, in every remote dimension and with arbitrary sharing.
+This is an unconditional restricted-family estimate, not a bound for all
+adversaries or a new Grothendieck lower endpoint.
+
 ## 5. Replay, coverage and limits
 
 The runner compiles strict outward arithmetic with assertions retained,
@@ -221,3 +262,18 @@ A receipt records a run and does not replace fresh execution or Lean checking.
 These regions leave the central finite-amplitude, positively aligned
 coefficient directions unresolved. They do not prove full (P), the odd
 averaged premise, Conjecture K, or a new Grothendieck lower endpoint.
+
+## 6. Completed verification
+
+Cloud run 43718049407 passed both shards (129 s and 123 s). Exact aggregation
+accepts all 446 jobs: 438 endpoint matrices and 93 adaptive cone intervals,
+531 matrix enclosures in total. The maximum source-cell count was 36,000,
+below the 120,000 matrix cap and 40,000 cone cap. The combined receipt is
+199,961 bytes and is committed as `code/directional-matrix-codex-a7c4/result.json`.
+The separate exact `joint_family.py` check and its assertion-disable rejection
+controls pass. The strengthened results remain P+C, author only, pending
+independent derivation and replay.
+
+The receipt-corruption checks reject partial coverage, duplicate/missing jobs,
+stale hashes, negative indices, failed PSD comparisons, changed reserves or
+shift coordinates, out-of-range cone multipliers and missing cone intervals.

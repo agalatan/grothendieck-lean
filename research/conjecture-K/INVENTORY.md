@@ -494,11 +494,32 @@ Working proof: `handoff/codex-a7c4-compact-cover/PROOF.md`, archived verbatim be
 
 | repository file | size | SHA-256 |
 |---|---:|---|
-| `code/adaptive-cover-codex-a7c4/README.md` | 3,658 B | `1fa210a6b5c185354cc40b510bd47b4d110f77c2cf0a5c5a707c4fa4921abbfc` |
+| `code/adaptive-cover-codex-a7c4/README.md` | 3,813 B | `cb9aebdfecd7a8d5477b7794d8fff8bd3e2306e1785315124102e5614a4053aa` |
 | `code/adaptive-cover-codex-a7c4/result.json` | 183,242 B | `827c135d2c5c2a23bb42de86a464e9c64150423294bd2a4eb534652a13585a10` |
 | `code/adaptive-cover-codex-a7c4/shift_curvature.cpp` | 1,148 B | `10017337ea12d581dc7ea1fb1863343698891d14bef8a62d6bd8f6fc9d599aad` |
 | `code/adaptive-cover-codex-a7c4/verify.py` | 9,147 B | `c7a1932caf30c43965eb6e50155dee112d31aba4ed0768f0af2afac972418f5f` |
 | `sources/adaptive-cover-codex-a7c4/PROOF.md` | 8,046 B | `9b5da0404fd776ae1c841cd187d17fb98bffeb3a0bbec759f1dd2bd98e2793fb` |
+
+## All-direction matrix regions (codex-a7c4, #431)
+
+The amplitude-capped PSD matrix majorant, the directional potential criterion
+and the restricted mixed-driver corollaries are recorded here. The complete
+446-job replay passes, with 438 endpoint matrices and 93 adaptive cone intervals.
+The combined receipt is below 200 KB. Raw shard receipts and logs remain in
+`handoff/cloud/codex-a7c4-20261115131529-6066/` in the author's owned worktree.
+The source proof is a verbatim archive of `handoff/codex-a7c4-direction-cover/PROOF.md`.
+Full (P) and the global lower-bound improvement remain open.
+
+| repository file | size | SHA-256 |
+|---|---:|---|
+| `code/directional-matrix-codex-a7c4/README.md` | 3,572 B | `8330cd7a13eae24e31d39a27486564756c18cb124a29692eef61ef51c655c2ca` |
+| `code/directional-matrix-codex-a7c4/cone_integral.cpp` | 2,086 B | `df1d80a6d4fb3710907eb01e11cb305411d2c1b6db5bffa44b69b07a6bee5525` |
+| `code/directional-matrix-codex-a7c4/joint_family.py` | 1,131 B | `34c91c0c66381943fef2613b565cf2c067edcc90d2cd8edaec45100b3f8fa3a3` |
+| `code/directional-matrix-codex-a7c4/radial_matrix.cpp` | 4,298 B | `99e69ed0708ed51e2d9b30b22256c842e4f79f14dec64c302aef08fbc96a8663` |
+| `code/directional-matrix-codex-a7c4/result.json` | 199,961 B | `ac3a2d05dd5430d28d3a49409003c1ecceeb81833c89e89c11ea008eccc2b54f` |
+| `code/directional-matrix-codex-a7c4/test_receipts.py` | 3,649 B | `209f560139149c98666be65b41c7aebef54456953de15fe34cc529318269ae31` |
+| `code/directional-matrix-codex-a7c4/verify.py` | 9,245 B | `fee9f240f652e61966e2663507bc33899276fbd3fcfba0e98cc116e1ac55d576` |
+| `sources/directional-matrix-codex-a7c4/PROOF.md` | 12,422 B | `85d935d3f6a3ed9734aef0bccee108f8f6a2414fbf65f37b7e9bb829b1f4af82` |
 
 ## Odd sectors over an A/B core, and the refutation of (O_U) (codex-91d4, task #430)
 

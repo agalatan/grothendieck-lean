@@ -539,13 +539,42 @@ The implication and its 1,000-cell rational scalar certificate are re-derived an
 positivity [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.10].
 
 The infinitesimal inequality has a uniform reserve 0.01 S_r for 0 ≤ |w| ≤ 2, certified over 61 shift intervals
-by removing the inverse-norm singularity in polar coordinates centered at L + w. An exact continuity bound proves
-the nonlinear premise (P) whenever sqrt(S_r) ≤ 1/50000, for every complex shift and phase. Two further pieces are
-proved: |w|, sqrt(S_r) ≤ 1/10000, and a five-dimensional box around the finite-amplitude local minimum
-w ≈ 0.6004, α ≈ 0.3496, β ≈ 0.2023, with absolute defect at most −0.0013909
-[P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.11]. Full inverse-distance potential matrices give stronger nonlinear exteriors: (P) holds if |w| ≥ 11/8 or
-S_r ≥ 3/4, with continuum covers of 11 and 178 shift intervals respectively [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.12].
-Both thresholds are near the limit of the potential bound: it no longer gives (P) at |w| = 1.35, nor for all S_r ≥ 0.7 [N · 7.4.12].
+by removing the inverse-norm singularity in polar coordinates centered at L + w. A five-dimensional box around
+the finite-amplitude local minimum w ≈ 0.6004, α ≈ 0.3496, β ≈ 0.2023 has absolute defect at most −0.0013909
+[P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.11]. Full inverse-distance potential matrices
+prove (P) at every shift when S_r ≥ 3/4 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.12].
+
+An amplitude-capped matrix majorant handles all coefficient directions simultaneously. For a unit direction E,
+write k=h_E exp(−iθ) and r=|L+w|. With η=min(1,s_max M(T)/r), where
+M(T)=sqrt((T−.4)²+(.30318+T/sqrt(2))²), the normalized scalar remainder satisfies
+
+    G_s ≤ [α(η)|k|²+β(η)(Im k)²]/(2r),  0≤s≤s_max,
+    α(η)=9η/(2+η)²,  β(η)=4(1−η)/(2+η)².
+
+The endpoint η=0 is the normalized Hessian limit; η=1 uses the unconditional potential bound. Both coefficients
+multiply positive semidefinite matrices. Interval source quadrature, exact rational matrix comparisons and
+shift interpolation prove (P) whenever |w| ≥ 5/4, at every amplitude and phase, and on this origin profile:
+
+| shift modulus | upper bound for sqrt(S_r) |
+|---|---|
+| [0,1/8] | 1/512 |
+| [1/8,1/4] | 1/256 |
+| [1/4,1] | 1/64 |
+| [1,9/8] | 1/32 |
+| [9/8,19/16] | 1/16 |
+| [19/16,5/4] | 3/32 |
+
+In particular sqrt(S_r) ≤ 1/512 suffices for every complex shift. A further sufficient condition, valid at every
+shift, is 16 S_r²+3S_r ≥ 6|2A+B|². It includes the amplitude-complete cone |2A+B|²≤S_r/2. All 438 endpoint
+matrices and 93 adaptive cone intervals pass, with exact coverage and positive-definiteness audits
+[P + C, author only · codex-a7c4 · 7.4.11–12].
+
+Consequently, for proportional holomorphic drivers r_B=κr_A with |κ+4|≤3, the joint bridge (7.4.10) is
+unconditional under its unchanged caps u≤0.0463 and u+V≤0.080051, allowing arbitrary sharing with the genuine
+remote cubic q. For κ=−2, completing a scalar square gives the sharper retained estimate
+Λ̂(q+A_shell+B_shell)<S+19/10⁶ [P + C, author only · codex-a7c4 · 7.4.12]. This closes that mixed-driver family;
+it does not cover arbitrary A/B driver pairs or odd sectors.
+
 A normalized Bregman remainder certificate has source-quadrature error constants independent of amplitude.
 For D=(D_A,D_B), write S_D=|D_A|²+|D_B|² and ℛ(w,D,τ)=Rem(w,τD)/τ², using its continuous limit at τ=0.
 The uniform shift-curvature estimate ℛ_ww ≥ −480 S_D combines with convexity in the coefficient coordinates
@@ -562,9 +591,10 @@ cover has A = τ(1 + ix), B = τ(y + iz), |x|, |z|, |y − 37/64| ≤ r and |w �
 
 The smallest box, r = 1/32 and δ = 1/128, is valid for every amplitude after adjoining the exterior τ ≥ 7/8.
 The full replay requires 560 corner jobs covering 65 amplitude cells, with exact coverage aggregation
-[P + C, author only · codex-a7c4 · 7.4.13]. The curvature argument uses a uniform density/mass potential
+[P + C · codex-a7c4, re-derived and replayed by claude-b9ee, reviews #441 and #443 · 7.4.13]. The curvature argument uses a uniform density/mass potential
 estimate and retains the nonnegative singular Hessian of the norm; it requires no lower bound on the perturbed norm.
-The remaining compact region has |w| ≤ 11/8 and 1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, apart from these proved regions.
+The remaining compact region has |w| ≤ 5/4 and 1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the origin profile,
+the directional exterior 16 S_r²+3S_r ≥ 6|2A+B|², and the proved local boxes and tube.
 Its finite-amplitude cover remains **open**. Odd sectors over the joint core are a separate obligation; these
 partial interior results do not yield a new Grothendieck lower bound.
 
