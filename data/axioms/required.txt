@@ -9926,15 +9926,18 @@ Grothe.Research.LawNodeLower.strict_lower_bound_of_law_nodes
 Grothe.Research.LawNodeLower.transferInputs_of_law_nodes
 Grothe.Research.LawNodeLower.witnessCap_of_law_nodes
 Grothe.Research.LawNodeLower.witnessCap_of_law_nodes_reduction
+Grothe.Research.LowerRefinementCheck.certRefinementBatches
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes0
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes2
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes3
 Grothe.Research.RefinedLowerCheck.certRefinedPartition
+Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement
 Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data
 Grothe.Research.RefinedLowerCheck.refined_cover_checked
 Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal
 Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound
+Grothe.Research.RefinedLowerCheck.refinement_endpoint_lt_reciprocal
 Grothe.Statement.constant_lt_tight_upper
 Grothe.Statement.lowerTarget_of_nodeCaps
 Grothe.Statement.lower_target
@@ -9965,6 +9968,7 @@ Grothe.Upper.RelaxedComparisonData.upper_lt_decimal
 Grothe.Upper.ThreeBandDirectInputs
 Grothe.Upper.actual_band_mass
 Grothe.Upper.actual_band_mass_of_energy_error
+Grothe.Upper.actual_improved_threeBand_mass
 Grothe.Upper.comparisonOverlap_separate
 Grothe.Upper.comparisonWeight_sound
 Grothe.Upper.comparison_check
@@ -9974,6 +9978,8 @@ Grothe.Upper.comparison_grouped_budget
 Grothe.Upper.comparison_overlap_budget
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
+Grothe.Upper.improvedWeight_sound
+Grothe.Upper.improved_high_mass_native
 Grothe.Upper.threeBandBands
 Grothe.Upper.threeBandCompareQ
 Grothe.Upper.threeBandCompareQ_exact
@@ -10757,6 +10763,8 @@ Grothe.UpperChaos.GateFockCoefficients.monomial8_gate_eq_coherent
 Grothe.UpperChaos.GateFockCoefficients.summable_scaledTransform_coefficients
 Grothe.UpperChaos.GateFockCoefficients.tsum_gate_coefficient_sq_eq
 Grothe.UpperChaos.GateFockCoefficients.tsum_scaledTransform_coefficients_le
+Grothe.UpperChaos.GaussianAmplitude.integral_P1_gaussian
+Grothe.UpperChaos.GaussianAmplitude.lintegral_P4_phih
 Grothe.UpperChaos.GaussianDenominatorEnvelope.companion_inverse_sq
 Grothe.UpperChaos.GaussianDenominatorEnvelope.companion_inverse_sq_box
 Grothe.UpperChaos.GaussianDenominatorEnvelope.direct_companion
@@ -10773,7 +10781,9 @@ Grothe.UpperChaos.GaussianFockBessel.tsum_coefficient8_sq_le
 Grothe.UpperChaos.GaussianFockBessel.tsum_matrix_coefficient_sq_le
 Grothe.UpperChaos.GaussianNormalizationInterval.normalization_mem
 Grothe.UpperChaos.GaussianNormalizationInterval.normalized_mem
+Grothe.UpperChaos.HardyGaussian.hmean
 Grothe.UpperChaos.HardyReal.hardy_GT
+Grothe.UpperChaos.HardyReal.hardy_GT_gaussian
 Grothe.UpperChaos.HardyReal.hardy_GT_tight
 Grothe.UpperChaos.HardyReal.hreal_GT
 Grothe.UpperChaos.HermiteFallingFactorial.H_eq_fallingFactorial
@@ -12177,6 +12187,7 @@ Grothe.UpperChaos.ScaledActualCoherentL2.scaledTransform_eq
 Grothe.UpperChaos.ScaledActualCoherentL2.scaled_pair_coupling
 Grothe.UpperChaos.SchurMain.norm_HholPair_le
 Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+Grothe.UpperChaos.SchurMainGaussian.norm_HholPair_sq_le
 Grothe.UpperChaos.SharedMomentTable.eq_momentRec_of_bounded_equations
 Grothe.UpperChaos.SharedMomentTable.eq_of_bounded_equations
 Grothe.UpperChaos.SharedMomentTable.eq_recTable_of_bounded_equations

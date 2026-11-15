@@ -15,6 +15,7 @@ import Grothe.Haagerup.PhaseTaylorSharp
 import Grothe.HeadHardy
 import Grothe.ListPoly
 import Grothe.Lower.Basic
+import Grothe.Lower.BoxLookup
 import Grothe.Lower.Boxes
 import Grothe.Lower.Cert.Batches0
 import Grothe.Lower.Cert.Batches1
@@ -26,6 +27,7 @@ import Grothe.Lower.Cert.Rows2
 import Grothe.Lower.Cert.Rows3
 import Grothe.Lower.Cert.Rows4
 import Grothe.Lower.Cuts
+import Grothe.Lower.FiniteMix
 import Grothe.Lower.Gate
 import Grothe.Lower.Gram
 import Grothe.Lower.Law
@@ -10012,10 +10014,14 @@ import Grothe.QuadraticDual
 import Grothe.Research.LawNodeCheck
 import Grothe.Research.LawNodeData
 import Grothe.Research.LawNodeLower
+import Grothe.Research.LowerRefinementCheck
+import Grothe.Research.LowerRefinementCoverData
+import Grothe.Research.LowerRefinementData
 import Grothe.Research.RefinedCoverBoxes0
 import Grothe.Research.RefinedCoverBoxes1
 import Grothe.Research.RefinedCoverBoxes2
 import Grothe.Research.RefinedCoverBoxes3
+import Grothe.Research.RefinedCoverCheck
 import Grothe.Research.RefinedCoverData
 import Grothe.Research.RefinedCoverPartition
 import Grothe.Research.RefinedCoverParts
@@ -10741,10 +10747,12 @@ import Grothe.UpperChaos.FrozenSourceBinding
 import Grothe.UpperChaos.GateFockCoefficients
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
+import Grothe.UpperChaos.GaussianAmplitude
 import Grothe.UpperChaos.GaussianDenominatorEnvelope
 import Grothe.UpperChaos.GaussianDensityBounds
 import Grothe.UpperChaos.GaussianFockBessel
 import Grothe.UpperChaos.GaussianNormalizationInterval
+import Grothe.UpperChaos.GaussianPair
 import Grothe.UpperChaos.GaussianSmallBall
 import Grothe.UpperChaos.GenericRationalGradeAggregation
 import Grothe.UpperChaos.GeometricInverse
@@ -10771,6 +10779,10 @@ import Grothe.UpperChaos.HardyArcPart3
 import Grothe.UpperChaos.HardyArcRegion
 import Grothe.UpperChaos.HardyArcRegionCheck
 import Grothe.UpperChaos.HardyArcSound
+import Grothe.UpperChaos.HardyGaussian
+import Grothe.UpperChaos.HardyGaussianCheck
+import Grothe.UpperChaos.HardyGaussianFacts
+import Grothe.UpperChaos.HardyGaussianSound
 import Grothe.UpperChaos.HardyHolo
 import Grothe.UpperChaos.HardyKernel
 import Grothe.UpperChaos.HardyReal
@@ -13414,6 +13426,7 @@ import Grothe.UpperChaos.SchurBound
 import Grothe.UpperChaos.SchurIntegrability
 import Grothe.UpperChaos.SchurKernel
 import Grothe.UpperChaos.SchurMain
+import Grothe.UpperChaos.SchurMainGaussian
 import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.SeedPiNormalization
 import Grothe.UpperChaos.SelectedEnergyApprox
@@ -13678,8 +13691,6 @@ import Grothe.UpperChaos.ZeroProfilePhaseSharp
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
 import Grothe.UpperClose
-import Grothe.UpperEnergyBudget
-import Grothe.UpperEnergyFinal
 import Grothe.UpperHead
 import Grothe.UpperQuad.Bridge
 import Grothe.UpperQuad.CanonicalExplicit
@@ -13695,7 +13706,6 @@ import Grothe.UpperQuad.Data.Cutoffs4
 import Grothe.UpperQuad.Data.Cutoffs5
 import Grothe.UpperQuad.Data.Cutoffs6
 import Grothe.UpperQuad.Data.Cutoffs7
-import Grothe.UpperQuad.EnergyAccuracy
 import Grothe.UpperQuad.EnergySound
 import Grothe.UpperQuad.EvenSquareDescent
 import Grothe.UpperQuad.EvenSquareDescentLocal

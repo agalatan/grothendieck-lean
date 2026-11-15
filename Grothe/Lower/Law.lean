@@ -1,4 +1,7 @@
+-- Grothe/Lower/Law.lean
 import Grothe.Lower.Gram
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
 # The law of the normalized residual: moments, Stein cuts, integration

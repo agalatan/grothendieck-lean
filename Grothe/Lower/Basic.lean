@@ -1,4 +1,16 @@
-import Mathlib
+-- Grothe/Lower/Basic.lean
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Rat.Cast.Lemmas
+import Mathlib.Data.Nat.Choose.Sum
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.GCongr
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Push
+import Mathlib.Tactic.Ring
 
 /-!
 # List polynomials and two extremal lemmas

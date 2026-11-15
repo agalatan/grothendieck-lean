@@ -1,0 +1,30 @@
+{
+  "claim": "moment-only separate-envelope relaxation violates proposed B budget",
+  "scope": "abstract radial law plus surrogate content upper bound; not a tensor",
+  "u": "1/25",
+  "atoms": [
+    "11/12",
+    "25"
+  ],
+  "probabilities": [
+    "288/289",
+    "1/289"
+  ],
+  "moments": [
+    "1",
+    "1",
+    "3",
+    "329/6"
+  ],
+  "delta": "1/625",
+  "surrogate_content_squared": "1077659/16875000000",
+  "payoff_lower": "6425289714934329/4503599627370496",
+  "payoff_upper": "12549568468715/8796093022208",
+  "inherited_S_upper": "1717441907077/1250000000000",
+  "deficit_upper": "1400141954362380619833753/10395882440622080000000000000",
+  "budget_upper": "4824178809524466659501259/103958824406220800000000000000",
+  "strict_violation_margin": "48998632544093001964986007/2806888258967961600000000000000",
+  "approximate_deficit_upper": 0.00013468235740058998,
+  "approximate_violation_margin": 1.745656685389708e-05,
+  "passed": true
+}

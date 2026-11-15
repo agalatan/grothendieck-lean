@@ -1,0 +1,31 @@
+{
+  "audited_commit": "dc830be0519622646c02ff7e7309798d98fec1d0",
+  "audited_run": "https://github.com/agalatan/grothendieck-lean/actions/runs/43636104015",
+  "git_blob_sha": {
+    "Grothe/Lower/MixedData.lean": "94de0a467300e7013ba63afbe6ec70c796240f6b",
+    "Grothe/Lower/RowData01.lean": "418341066c176a23ab9a4eaf509d4850fa7574b1",
+    "Grothe/Lower/RowData02.lean": "4133b6ef5bd93e1ee8cfc289354c54dd9c7ffa16",
+    "Grothe/Lower/RowData03.lean": "fa1813b32375008910a52f1c0a58174c088d1fcc",
+    "Grothe/Lower/RowData04.lean": "a3d73e40082e62a52a71bf28f8aacc47ccde7b7c",
+    "Grothe/Lower/RowData05.lean": "0e8b2a3bc1beb62ffef1e295b149abeff3463956",
+    "Grothe/Lower/RowData06.lean": "07ebad7248efd801b95920598cc18af37fe20755",
+    "Grothe/Lower/RowData07.lean": "71c898120269cd2a7aa8db1942f61374f0c31394",
+    "Grothe/Lower/RowData08.lean": "9b97e72b71fbe3da4323e0e16a7b048cf372f9df",
+    "Grothe/Lower/RowData09.lean": "2a1dc37adf809d1eae4eba05159b3e9eeaaca71d",
+    "Grothe/Lower/RowData10.lean": "b658032a2e6363be36b716e954207c3d358e3ce7",
+    "Grothe/Lower/RowData11.lean": "642cc04e0f64c83549a2e5d8ce5d8ca5427dfad7",
+    "Grothe/Lower/RowData12.lean": "6fa6eeca2fb3840e6d114a0e190fef338ac131d5",
+    "Grothe/Lower/RowData13.lean": "30eaad0a4fc362540a091d36195d496234a923ae",
+    "Grothe/Lower/RowData14.lean": "b047ee0573088578b773e2594974981fa13d4289",
+    "Grothe/Lower/RowData15.lean": "61f7020bf81a26e5afe67f84c7c2846f99b48dc4",
+    "Grothe/Lower/RowData16.lean": "6e26bbc585c09b4c45d8ff200dd0b09a6c906ba7",
+    "Grothe/Lower/RowData17.lean": "e3358e44febf752ae7fbd892f0b6210471c1e6a2",
+    "Grothe/Lower/RowData18.lean": "8344a86817f2aaf39df3bfb85cd5c30d5522029e",
+    "Grothe/Lower/RowData19.lean": "488822b49fc85c2c47f4097b9f8e470b7d9ad126",
+    "Grothe/Research/LawNodeData.lean": "bdb07250cf4139affeae1e2f69a8b9e884e52a44",
+    "Grothe/Research/RefinedCoverData.lean": "200cecf11818b1d856869965cbedfc0748d07c63",
+    "tools/rankone_law.py": "2bf5f508157cce02facdfeae8513510a37682dca"
+  },
+  "baseline_commit": "d8041b3894815662821a4abeaa080be7dc79f163",
+  "compatible_commit": "8d530d46fb9edfb779d7f39ccbf2b4766a58a91a"
+}

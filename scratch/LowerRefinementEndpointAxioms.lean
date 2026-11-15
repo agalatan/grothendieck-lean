@@ -1,0 +1,16 @@
+-- scratch/LowerRefinementEndpointAxioms.lean
+import Grothe.Research.RefinedCoverResult
+
+#print axioms Grothe.Research.LawNodeCheck.certLawNodes
+#print axioms Grothe.Research.LowerRefinementCheck.certRefinementBatches
+#print axioms Grothe.Research.RefinedLowerCheck.certRefinedBoxes0
+#print axioms Grothe.Research.RefinedLowerCheck.certRefinedBoxes1
+#print axioms Grothe.Research.RefinedLowerCheck.certRefinedBoxes2
+#print axioms Grothe.Research.RefinedLowerCheck.certRefinedBoxes3
+#print axioms Grothe.Research.RefinedLowerCheck.certRefinedPartition
+#print axioms Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement
+#print axioms Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data
+#print axioms Grothe.Research.RefinedLowerCheck.refined_cover_checked
+#print axioms Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal
+#print axioms Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound
+#print axioms Grothe.Research.RefinedLowerCheck.refinement_endpoint_lt_reciprocal

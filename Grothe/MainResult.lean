@@ -5,7 +5,7 @@ import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.CapExcluded
 
 /-!
-# The main result: `1.401697117301 < K_G^ℂ < 1.404599411887`
+# The main result: `1.401700037873 < K_G^ℂ < 1.404599398052`
 
 The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of
 `Grothe/Statement.lean`.
@@ -13,10 +13,10 @@ The double inequality of the repository's goal, stated for the constant `K_G^ℂ
 * `capsRest`: the remaining node-cap hypothesis holds. Every row is certified in Lean
   (`capRowsDone` lists all 19 rows), and the certified rows exclude no nodes (`capExcl_eq_nil`).
 * `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above
-  `1.401697117301`.
+  `1.401700037873`.
 * `upper_below_tight` (`Grothe/UpperTightFinal.lean`): **the upper bound, unconditional**: some
-  Grothendieck bound is below `1.404599411887`.
-* `main_bounds`: **`1.401697117301 < K_G^ℂ < 1.404599411887`**, without hypotheses.
+  Grothendieck bound is below `1.404599398052`.
+* `main_bounds`: **`1.401700037873 < K_G^ℂ < 1.404599398052`**, without hypotheses.
 -/
 
 namespace Grothe.Statement
@@ -29,14 +29,14 @@ theorem capsRest : CapsRest := by
   have h19 : Grothe.Lower.rowData.length = 19 := rfl
   exact absurd (by simp only [capRowsDone, List.mem_cons, List.not_mem_nil, or_false]; omega) hd
 
-/-- **The lower bound**: every Grothendieck bound is above `1.401697117301`. -/
+/-- **The lower bound**: every Grothendieck bound is above `1.401700037873`. -/
 theorem lower_target : LowerTarget :=
   lowerTarget_of_nodeCaps (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest capsRest))
 
-/-- **The main result** `1.401697117301 < K_G^ℂ < 1.404599411887`. -/
+/-- **The main result** `1.401700037873 < K_G^ℂ < 1.404599398052`. -/
 theorem main_bounds :
-    (1401697117301 / 10 ^ 12 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant < 1404599411887 / 10 ^ 12 := by
+    (1401700037873 / 10 ^ 12 : ℝ) < complexGrothendieckConstant ∧
+      complexGrothendieckConstant < 1404599398052 / 10 ^ 12 := by
   have hU := upper_below_tight
   have hne : ∃ K, IsBound K := hU.imp fun _ h ↦ h.1
   have hlo := lt_constant_of_lowerAbove hne lower_target

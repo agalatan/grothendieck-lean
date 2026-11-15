@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401697117301 < K_G^ℂ < 1.404599411887` (`main_bounds`,
+The proved interval is `1.401700037873 < K_G^ℂ < 1.404599398052` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
 (`lower_target`), and so is the upper endpoint (`upper_below_tight`,
 `Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
@@ -18,7 +18,7 @@ input of the main theorems, which have no hypotheses. A module said to be
 nothing in `main_bounds` depends on it. The value `1.404598149141` is the target
 the rounding was designed for: Lean proves a bound below it only conditionally
 (`fresh_upper_concrete_taylor`, whose band-error hypotheses are not proved),
-and the theorem without hypotheses exhibits a bound below `1.404599411887`.
+and the theorem without hypotheses exhibits a bound below `1.404599398052`.
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
@@ -46,25 +46,31 @@ The four low-band caps follow from the pointwise decrease in cost.
 recomputes the interval costs and weighted masses from the stored polynomials and energies.
 `UpperTightComparison` uses these actual masses and the tighter source radii.
 
-**Quantitative energy-table accuracy.** `UpperQuad/EnergyAccuracy` combines
-quadrature error and interval-width error with the weighted square inequality
-`(x+y)² ≤ (1+10⁻¹⁰)x² + (1+10¹⁰)y²`. This gives raw radius
-`15500000001/10²²` and smoothed radius `155400800011/10²³`.
-`UpperEnergyBudget` keeps the exact block allowance `12·(5·10⁶⁴)/2²⁵⁶`;
-`UpperEnergyFinal` proves selected energy discrepancy at most `8296/10¹⁵`
-(`Final.hclose_certified`) from the existing energy and quadrature facts.
-No energy table, block check, panel certificate or precompiled checker is changed.
+**Gaussian-amplitude Hardy bound.** `GaussianPair` evaluates a positive Gaussian
+pair integral, and `GaussianAmplitude` applies it to the explicit amplitude
+left in the `L*L` argument. For `A=(I-R²)⁻¹`, `B=A-jI`, `C=RA`,
+`Z=Re B`, `T=Z-Re(C) Z⁻¹ Re(C)` and
+`E=(Re(C) Z⁻¹ Re(C)+Im(C) Z⁻¹ Im(C))/2`, the pair correlation satisfies
+`|H|² ≤ [16 j² |det(I-R²)|² det Z det(T+jI) det(T+2E+jI)]⁻¹`
+under the existing positive-definiteness gates. `SchurMainGaussian` proves
+this for measurable disk-valued responses. `HardyGaussianCheck` bounds it
+by `5/4` over all four closed halves of the two circle charts, with outward
+128-bit interval arithmetic and a depth-bounded covering proof. The native
+acceptance is applied in `HardyGaussian`, using the interval soundness proved by
+`HardyGaussianSound`; holomorphy and Parseval then yield
+`HardyReal.hardy_GT_gaussian` for the actual rounding.
+`UpperTightFinal` uses this budget and deducts the forced linear energy,
+certifying tail `233184398/10¹⁶` and the new `main_bounds` endpoint.
 
 **Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
 `PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
 `TightTwist.remainder1/2/3`, the longer-prefix weighted comparison, and the table
-accuracy `Final.hclose_certified`. The mass comparison still uses the inherited
-`Final.hclose_final` allowance, while the finite-head transfer uses the sharper
-`8296/10¹⁵` allowance. `UpperHead` accepts both a coefficient-cost family and a
-table tolerance. `HeadHardy` deducts the linear coefficient's forced weighted
-energy from the sharp Hardy budget `1737972/10⁶` at radius `4149/4000`, giving
-the infinite tail `303362611/10¹⁶`. The exact reciprocal `tightValueQ` is
-`1.40459941188610717822… < 1.404599411887`.
+accuracy `Final.hclose_final`. Both the mass comparison and finite-head transfer
+use the existing `energyErrQ` allowance. `UpperHead` accepts the certified
+coefficient-cost family. `HeadHardy` deducts the linear coefficient's forced weighted
+energy from the Gaussian-amplitude Hardy budget `5/4` at radius `4149/4000`, giving
+the infinite tail `233184398/10¹⁶`. The exact reciprocal `tightValueQ` is
+`1.40459939805130087245… < 1.404599398052`.
 
 Each twisted remainder comes from the 21 shard facts and the total fact of its
 power (`TwistEllCheck.remainder_of_prodShards`); the tighter total facts bound
@@ -73,10 +79,10 @@ from acceptance to the actual vector: every accepted disk, in Y, K or automatic
 mode, bounds the squared norm of the actual descended vector on the whole disk
 by its upper endpoint (`norm_descendedVector_sq_le_diskM2`), so an accepted
 certificate bounds it on its closed Bernstein ellipse by its mass cap
-(`norm_descendedVector_sq_le_massCap`). Both table-accuracy theorems use the
-same thirteen energy facts and `quadHyp_of_parts`: the tail, the omitted-pair
-fact and `EllCheck.quadRemainderHyp`. The new high-mass check is the only
-additional native acceptance fact in the prefix and energy refinement.
+(`norm_descendedVector_sq_le_massCap`). `hclose_final` combines the thirteen
+energy facts (`Facts.hclose_of_facts_quad`) with `quadHyp_of_parts`: the tail,
+the omitted-pair fact and `EllCheck.quadRemainderHyp`. The new high-mass check
+is the only additional native acceptance fact in the coefficient-prefix refinement.
 
 **Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
 `EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
@@ -221,7 +227,7 @@ computation or analytic hypothesis. All consumed fact modules are registered
 in the generated root and in `data/axioms/native.txt`. `upper_below_tight`
 uses these bundles through `TightTwist.six_of_facts`, together with the tighter
 twisted remainders, the longer-prefix comparison and the energy-table accuracy
-`Final.hclose_certified` (with `Final.hclose_final` retained in the mass transfer).
+`Final.hclose_final`.
 
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
@@ -290,11 +296,9 @@ the primary block/family norm caps `18`, `197`, the reflection factor `10/7`,
 and the separately allocated integration, omission and smoothing tolerances.
 Their source-model and analytic justification must be supplied by the consumers;
 these comments do not turn the historical numerical computation into a Lean input.
-The energy-table accuracy of the final theorem (`Final.hclose_certified`) does not
-go through this ledger: `UpperQuad/EnergyAccuracy.lean` uses
-`selected_energy_close_of_raw_error` with a weighted-square combination of the
-existing quadrature and interval-width bounds. The inherited `Final.hclose_final`
-allowance is still used in the comparison-mass transfer.
+The energy-table accuracy of the final theorem (`Final.hclose_final`) does not
+go through this ledger: it uses `selected_energy_close_of_raw_error` with the
+error radius certified by the quadrature checker (`UpperQuad/Bridge.lean`).
 
 **Phase-source denominator.** `PhiSourceDenBinding.source_common_den` proves
 by bounded source-chunk computation that the parsed production phase has
@@ -966,7 +970,7 @@ certified radii above; it does not import this endpoint module. The standard
 analytic cores and concrete adapters keep their explicit inherited trust
 allowances; no new native fact is introduced. The older public `UpperTarget`
 threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the stricter
-threshold `1.404599411887`.
+threshold `1.404599398052`.
 
 The relaxed three-band chain for the `1.4046` threshold (`RelaxedThreeBandBudget`,
 `RelaxedThreeBandComparison`, `RelaxedThreeBandUpper`, `RelaxedTwistMargins`,
@@ -974,9 +978,8 @@ The relaxed three-band chain for the `1.4046` threshold (`RelaxedThreeBandBudget
 the remainders `Final.twistRemainder1/2/3` and their native total checks
 `TwistEllCheck.Facts.j1Total/j2Total/j3Total` were removed on 15 November 2026
 (#405); `main_bounds` used none of them. The current upper bound is
-`upper_below_tight`. The inherited energy-table accuracy `Final.hclose_final` is in
-`Grothe/UpperClose.lean`; the stronger finite-head allowance `Final.hclose_certified`
-is supplied by `Grothe/UpperEnergyFinal.lean`.
+`upper_below_tight`, and the energy-table accuracy `Final.hclose_final` is in
+`Grothe/UpperClose.lean`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -2238,8 +2241,6 @@ by the final theorems.
 * The table accuracy `energy_close` (the stored energies are within
   6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹) is a hypothesis of the general
   interface; for the actual truncation it is **proved** (`Final.hclose_final`).
-  The production head uses the stronger `Final.hclose_certified` allowance
-  `8296/10¹⁵`; the mass caps retain the original allowance.
   The Hardy input (the
   weighted square-sum bound 1737972/1000000 at radius 4149/4000 for the kernel of G_T) is
   **proved**: `HardyReal.hardy_GT_tight`. The concrete theorem also takes X ∈ L² and
@@ -2267,17 +2268,18 @@ by the final theorems.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs are the hypotheses of this
   theorem that are not proved. The residual of the proved bound `upper_below_tight`
-  is `tightResidualQ = 1.55062391550472379448078027965090997314453125·10⁻⁶`:
+  is `tightResidualQ = 1.54361149222272379448078027965090997314453125·10⁻⁶`:
   the longer-prefix comparison `tightThreeBandCompareQ` contributes
-  `1.49212635840472379448078027965090997314453125·10⁻⁶` (96.23%), the Hardy
-  tail `303362611/10¹⁶` contributes 1.96%, the head `28153/10¹²` contributes
-  1.82%, and the sharper table error `8296/10¹⁵` contributes about 0.00054%.
+  `1.49212635840472379448078027965090997314453125·10⁻⁶` (96.66%), the Hardy
+  tail `233184398/10¹⁶` contributes 1.51%, the head `28153/10¹²` contributes
+  1.82%, and the table error `6847009/(5·10¹⁷)` contributes about 0.00089%.
   Full scope, source bindings and reproduction commands are in
   `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
   the mathematical argument.
 * The certified weighted head bound forces `h₀ ≥ slopeQ − tightHeadResidualQ`.
   `HeadHardy` uses `hardy_budget_after_linear` to deduct its weighted square
-  from `1737972/1000000`; exact kernel arithmetic proves tail `303362611/10¹⁶`.
+  from the Gaussian-amplitude budget `5/4`; exact kernel arithmetic proves
+  tail `233184398/10¹⁶`.
   This deduction is used by `upper_below_tight`. The conditional smaller head
   still gives tail `303362486/10¹⁶`; the fixed-budget three-band endpoint
   (`ThreeBandUpper.lean`) retains the tail `36748/10¹²` from budget `7/4`
@@ -2288,13 +2290,36 @@ by the final theorems.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
+**Finite-mixture certificate extension (PR #381).**
+`Lower/BoxLookup.lean` decodes a selected cell or batch witness after indexing,
+instead of parsing every unselected entry. `indexedBoxBound_eq` and
+`indexedCompRefData_eq` prove exact equality with the original computations,
+including malformed-input behavior and all source and range checks. This
+optimization introduces no native fact or new mathematical assumption.
+`Lower/FiniteMix.lean` defines finite binary expressions of certified components.
+`MixTree.resolve_sound` preserves the common law and retained square;
+`MixBox.bound_sound` applies the existing slab bound after mixing;
+`mixCover_sound` reuses the existing complete partition checker; and
+`mixCover_bound` yields the scalar bound from an accepted complete cover. The law bank
+under `data/lower-refinement/` is exported by `gen_lower_refinement_lean.py` and
+checked by `LowerRefinementCheck.certRefinementBatches` through the existing
+`checkBatch` soundness theorem. That finite computation is registered in the
+native axiom inventory. The complete 14,060-box replacement cover is exported by
+`gen_lower_refinement_cover.py`. The four `certRefinedBoxes` facts and
+`certRefinedPartition` now check this stronger cover in place of the old one.
+`lower_bound_of_completed_refinement` connects its cap `0.7134194` to the
+witness transfer; `lower_target` and `main_bounds` discharge the same node caps.
+The new strict endpoint `1.401700037873` improves the preceding endpoint by
+`0.000002920572`. All original source tables remain pinned and unchanged.
+Targeted reproduction commands are in `data/lower-refinement/README.md`.
+
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
 proves `V ≤ B` for an admissible scalar profile under the simultaneous
 Gaussian reduction `SharedReduction`, from checked rows, mixed batches,
 additional law nodes and a complete finite cover. The active certificate in
-`RefinedCoverResult.lean` uses `refinedB = 0.713420886479` and the strict
-endpoint `refinedL = 1.401697117301`. `Grothe.Lower.transfer_lower` gives
-`1/B ≤ K` from `TransferInputsL2 B`; `refined_endpoint_lt_reciprocal` supplies
+`RefinedCoverResult.lean` uses `LowerRefinementCoverData.bound = 0.7134194` and
+the strict `endpoint = 1.401700037873`. `Grothe.Lower.transfer_lower` gives
+`1/B ≤ K` from `TransferInputsL2 B`; `refinement_endpoint_lt_reciprocal` supplies
 the exact strict comparison. `TransferInputsL2 B` asks, for every δ > 0,
 for a finite measure space with an operator T on L², a scalar cap
 ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with
@@ -2340,15 +2365,16 @@ and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(�
 `rowGates_ok`) give the k-side inequality (`kside`); the integrated fibre bound and the k-side
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
 variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
-`Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
-NodeCaps → IsGrothendieckBound K → 1.401697117301 < K` composes everything
+`Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement :
+NodeCaps → IsGrothendieckBound K → 1.401700037873 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:
 **the only hypothesis of this intermediate theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials. Lean proves `NodeCaps`
 (the following paragraphs), so the headline theorem `lower_target`
 (`Grothe/MainResult.lean`) has no hypothesis.
 
-The same single target `Grothe` proves `lower_bound_of_capsRest :
+For compatibility with the cached cap assembly, the same target `Grothe` retains the
+weaker theorem `lower_bound_of_capsRest :
 CapsRest → IsGrothendieckBound K → 1.401697117301 < K` (`CapNodes.lean`) and
 `capsRest : CapsRest` (`Grothe/MainResult.lean`). The fifteen
 `CapRowKK` modules of rows 0–11 and 16–18 hold the single-threaded native range
@@ -2359,8 +2385,10 @@ row-assembly proofs of those fifteen rows, imports the assemblies of rows 12–1
 (`CapRow12/Assembly.lean` to `CapRow15/Assembly.lean`) and proves
 `lower_bound_of_capsRest`, which
 composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
-`lower_bound_of_refined_cover_data`; `lower_target` applies the same three
-steps to `capsRest` (through `lowerTarget_of_nodeCaps`). The common
+`lower_bound_of_refined_cover_data`. The latter is now a weaker consequence of
+the new cover. `lower_target` uses the same node-cap assembly with
+`lower_bound_of_completed_refinement` (through `lowerTarget_of_nodeCaps`).
+This preserves the heavy cap-cache source boundary while promoting the stronger endpoint. The common
 `NodeCaps` definition lives in `NodeCaps.lean`, independently of
 `Reduction.lean`. There is one build target and one axiom report: the heavy
 rows and `CapNodes` are part of `Grothe`.
@@ -2457,29 +2485,26 @@ strict audit. Source reproduction is not a native verification receipt.
   budget. The finite checker verifies each signed reserve and both positive semidefinite
   2×2 matrices; the analytic bridge derives that same budget for the actual cubic.
   Joint nodes are restricted to their checked kurtosis range throughout the cover.
-  The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 10,909 closed boxes.
-  It retains the existing certified node potentials and their valid ranges, and adds two
-  pure-row law-scale nodes for row 14 using the original unshifted source table and Stein cuts.
-  Their one appended batch passes `LawNodeCheck.certLawNodes`. The recursive
-  coverage-only checker `treeCoverOK`, with proof `treeCoverOK_sound`, checks
-  the full tree partition. Adaptive binary
-  subdivisions and reoptimized row mixtures use the same certified bank. Seventy
-  additional reference labels expose existing source-table nodes, without adding
-  a law certificate or a source cap. Inherited components retain their original
-  scale interpolation domains when restricted to smaller boxes.
+  The current partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 14,060 closed boxes.
+  It retains the preceding pure-row and mixed-source law nodes checked by
+  `LawNodeCheck.certLawNodes` and adds 21 majorants checked by
+  `LowerRefinementCheck.certRefinementBatches`. Finite convex mixtures retain the
+  common gate square before repricing. The recursive coverage checker `treeCoverOK`,
+  with proof `treeCoverOK_sound`, checks the full tree partition. Inherited components
+  retain their original scale interpolation domains when restricted to smaller boxes.
   Lean also checks the endpoint and proves the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
   chaos ranges, the polarisation identity of the scalar pairing, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1
   (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2)) and the transfer inputs from the
   scalar caps. The cover certificate uses five row checks and three mixed-batch checks from
   `Grothe/Lower/Cert/`, plus four refined-box chunks and a refined-partition
-  check from `Grothe/Research/`, and the additional law-batch check. The four box
-  chunks use size 2,728; the kernel verifies that they cover the actual list.
+  check from `Grothe/Research/`, and the two additional law-bank checks. The four box
+  chunks use size 3,515; the kernel verifies that they cover the actual list.
   These are single-threaded `native_decide` facts; the node caps add their own
   chord, range, anchor and piece checks (`data/axioms/native.txt` is the
   complete list). `LawNodeLower.lean` proves nine interfaces
   connecting checked extra batches and a complete cover to the same Gaussian reduction
   and transfer; `RefinedCoverResult.lean` supplies the current complete certificate.
-* Inputs of the intermediate theorem `LawNodeLower.profile_bound_of_law_nodes` (all of them are derived in Lean: the node caps `NodeCaps` by `CapNodes.lean` and `capsRest`, the others by the chain ending in `lower_bound_of_refined_cover_data`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
+* Inputs of the intermediate theorem `LawNodeLower.profile_bound_of_law_nodes` (all of them are derived in Lean: the node caps `NodeCaps` by `CapNodes.lean` and `capsRest`, the others by the chain ending in `lower_bound_of_completed_refinement`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
   U = |p|²/τ² satisfying the moment bounds and the Stein inputs, one gate variable
@@ -2489,7 +2514,7 @@ strict audit. Source reproduction is not a native verification receipt.
   cap; at a vertex node the anchored-pair majorant on a polar grid, verified interval tables and an exact LDLᵀ
   check bound the potential, and the localised nodes of rows 0.84–0.855 use a cover by constrained pieces
   (regions in the odd fibre directions, one S-lemma quadratic each); slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the analytic
-  inputs of the Stein cuts for that law. In the intermediate theorem `lower_bound_of_refined_cover_data` all of these
+  inputs of the Stein cuts for that law. In the intermediate theorem `lower_bound_of_completed_refinement` all of these
   except the node caps (`NodeCaps`) are proved for the witness T = P₁,₀ − εP₂,₁ (see above); the headline theorem `lower_target` adds the proof of the node caps. The transfer itself (finite partitions,
   phase choices on cells, L² approximation by ball-valued simple functions, passage to the limit), the
   witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖, the polarisation identity, the bound
@@ -2645,7 +2670,9 @@ circle `|t| = 4149/4000` with mean at most `1737972/1000000`, and `hardy_region_
 proves `KerPos` on the disc of radius `51863/50000`. `hardy_region_and_mean`
 assembles both, and `hardy_of_real` retains coefficient summability (`hs`)
 and the real identification (`hreal`) as explicit inputs; `HardyReal.lean`
-supplies both for G_T (`hardy_GT`, `hardy_GT_tight`).
+supplies both for G_T (`hardy_GT`, `hardy_GT_tight`). The production proof uses
+the stronger fixed-amplitude circle certificate `HardyGaussianCheck.charts_checked`
+and budget `5/4` (`HardyReal.hardy_GT_gaussian`), retaining the same decay region.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
@@ -2666,8 +2693,9 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The cover certificate of the lower bound uses these facts,
 the additional law-node fact and the refined-cover facts; the node caps add
 their chord, range, anchor and piece facts.
-The complete registry of native facts is `data/axioms/native.txt` (cap ranges, Hardy facts — four arc parts and
-the region — and others); the default report is `scratch/Axioms.lean`, with its required declarations in
+The complete registry of native facts is `data/axioms/native.txt` (cap ranges, the production Gaussian
+circle check, the inherited Schur arc checks and shared decay region, and others); the default report
+is `scratch/Axioms.lean`, with its required declarations in
 `data/axioms/required.txt`. CI checks the report on every pushed branch, and on
 the merged tree before a pull request lands.
 
@@ -2681,7 +2709,9 @@ for the 51-coefficient costs, including the inherited table-error allowance),
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.phase_cutoff_factor_check` (the exact factor for its squared radial tail),
-`Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
+`Grothe.UpperChaos.HardyGaussianCheck.charts_checked` (the production Gaussian circle cap),
+`Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check`
+(the inherited Schur circle mean and shared decay region),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the eight chunks `Grothe.Lower.certRows0`–`4` and
@@ -2711,11 +2741,11 @@ no warnings.
 The bank's 41 original joint-moment nodes are verified through the integrated
 `JointData`/`jointCert` checker and `Circular.joint_sixth` analytic bridge in
 `JointContractions.lean`. The 306 original spectral witnesses, 45 inherited Stein witnesses,
-two new pure-row Stein witnesses and three new mixed-source Young witnesses
-are combined in a 10,909-box cover. The cover needs no hypothesis beyond
+the two pure-row Stein witnesses, three mixed-source Young witnesses and 21
+additional law majorants are combined in the 14,060-box finite-mixture cover. The cover needs no hypothesis beyond
 `NodeCaps`, which is proved (`capsRest`).
 
-**Reproducible law-scale extension.** `data/lower-unshifted/` contains the original
+**Preceding reproducible law-scale extension.** `data/lower-unshifted/` preserves the original
 source snapshots, two pure-row and three mixed-source law certificates, and the complete
 10,909-box cover. `tools/needle_fused_global.py --verify` replays its 388 binary
 splits and 1,072 same-domain repricings from the immutable 10,521-box baseline.

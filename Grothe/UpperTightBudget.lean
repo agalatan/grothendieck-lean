@@ -1,5 +1,4 @@
 -- Grothe/UpperTightBudget.lean
-import Grothe.UpperEnergyBudget
 import Grothe.Upper.ImprovedHeadWeightData
 import Grothe.Upper.ThreeBandBudget
 import Grothe.UpperChaos.PhaseMomentData
@@ -13,14 +12,15 @@ import Grothe.UpperQuad.PortFacts.Thresholds
 The production panel certificates have much smaller total caps than their original allowances.
 These radii retain the existing tail and root-gap reserve, use the exact dyadic table excursions,
 and recompute whole-source error radii from the already certified inner-product thresholds.
-The comparison also uses longer certified coefficient prefixes and a sharper table-accuracy
-allowance, then deducts the forced linear energy from the sharp Hardy budget.
+The comparison uses longer certified coefficient prefixes and the existing table-accuracy
+allowance, then deducts the forced linear energy from the Gaussian-amplitude Hardy budget
+`5/4`, retaining the accepted quadrature and comparison certificates.
 
 This module proves only exact arithmetic. The panel acceptance facts and their analytic
 interpretation are supplied separately; no new finite numerical assumption is introduced here.
 
 Agent-ID: codex-c8a4. Refs #389.
-Coefficient and energy refinement: Agent-ID: codex-9b17. Refs #379.
+Coefficient and Gaussian-amplitude refinements: Agent-ID: codex-9b17. Refs #379, #380.
 -/
 
 namespace Grothe.Upper
@@ -146,18 +146,18 @@ def tightThreeBandCompareQ : ℚ :=
   2 * ∑ j : Fin 7, tightThreeBandMassQ j * tightThreeBandErrorQ j +
     tightThreeBandQuadraticQ
 
-/-- The finite head residual, including the sharpened quantitative table tolerance. -/
-def tightHeadResidualQ : ℚ := headCapQ + Grothe.UpperQuad.EnergyBudget.errorQ + tightThreeBandCompareQ
+/-- The finite head residual, including the existing quantitative table tolerance. -/
+def tightHeadResidualQ : ℚ := headCapQ + energyErrQ + tightThreeBandCompareQ
 
 /-- The linear coefficient forced by the finite head residual. -/
 def tightLinearLowerQ : ℚ := slopeQ - tightHeadResidualQ
 
 /-- The sharp Hardy budget after deducting linear energy and shifting the radial index. -/
 def tightShiftedBudgetQ : ℚ :=
-  (1737972 / 1000000 - tightLinearLowerQ ^ 2 * (4149 / 4000) ^ 2) / (4149 / 4000) ^ 4
+  (5 / 4 - tightLinearLowerQ ^ 2 * (4149 / 4000) ^ 2) / (4149 / 4000) ^ 4
 
 /-- The tail cap beyond degree `501`, using the deducted Hardy budget. -/
-def tightTailQ : ℚ := 303362611 / 10 ^ 16
+def tightTailQ : ℚ := 233184398 / 10 ^ 16
 
 def tightResidualQ : ℚ := tightHeadResidualQ + tightTailQ
 
@@ -165,7 +165,7 @@ def tightValueQ : ℚ := 1 / (slopeQ - tightResidualQ)
 
 theorem tightHeadResidualQ_exact :
     tightHeadResidualQ =
-      24908392929766994648773104101800509 / 16384000000000000000000000000000000000000 := by
+      24908481370893906648773104101800509 / 16384000000000000000000000000000000000000 := by
   decide +kernel
 
 theorem tightLinearLowerQ_pos : 0 < tightLinearLowerQ := by decide +kernel
@@ -177,31 +177,31 @@ theorem tightTailQ_nonneg : 0 ≤ tightTailQ := by decide +kernel
 theorem tightResidualQ_lt_slopeQ : tightResidualQ < slopeQ := by decide +kernel
 
 /-- The exact new reciprocal lies strictly below this twelve-decimal threshold. -/
-theorem tightValueQ_lt : tightValueQ < 1404599411887 / 10 ^ 12 := by decide +kernel
+theorem tightValueQ_lt : tightValueQ < 1404599398052 / 10 ^ 12 := by decide +kernel
 
 theorem tight_real_reciprocal :
     1 / ((slopeQ : ℝ) - (tightResidualQ : ℝ)) = (tightValueQ : ℝ) := by
   norm_num only [tightValueQ, Rat.cast_div, Rat.cast_one, Rat.cast_sub]
 
-theorem tight_real_value_lt : (tightValueQ : ℝ) < (1.404599411887 : ℝ) := by
+theorem tight_real_value_lt : (tightValueQ : ℝ) < (1.404599398052 : ℝ) := by
   calc
-    (tightValueQ : ℝ) < (((1404599411887 : ℚ) / 10 ^ 12 : ℚ) : ℝ) := by
+    (tightValueQ : ℝ) < (((1404599398052 : ℚ) / 10 ^ 12 : ℚ) : ℝ) := by
       exact_mod_cast tightValueQ_lt
-    _ = (1.404599411887 : ℝ) := by norm_num
+    _ = (1.404599398052 : ℝ) := by norm_num
 
 /-- Kernel-checked integer arithmetic gives the tail comparison after the radial-index shift. -/
 theorem tight_hardy_numeric :
     (tightShiftedBudgetQ : ℝ) * (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1)) ≤
       (tightTailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
   have hN :
-      (5122344528123334750261080198642785806393728872284897760299501335090368133673064415190719 *
+      (3026520746795139941081075137961314000594689672517858790628939000386752133673064415190719 *
         4000 ^ 1002 : ℕ) ≤
-      622670654888495904523111826975998607360000000000000000000000000000000000 *
+      367902949728138186280056000569032048640000000000000000000000000000000000 *
         4149 ^ 1002 := by decide +kernel
   have hR :
-      (5122344528123334750261080198642785806393728872284897760299501335090368133673064415190719 *
+      (3026520746795139941081075137961314000594689672517858790628939000386752133673064415190719 *
         4000 ^ 1002 : ℝ) ≤
-      622670654888495904523111826975998607360000000000000000000000000000000000 *
+      367902949728138186280056000569032048640000000000000000000000000000000000 *
         4149 ^ 1002 := by exact_mod_cast hN
   have ha : (0 : ℝ) ≤ 4000 ^ 1002 := by positivity
   have hb : (0 : ℝ) < 4149 ^ 1002 := by positivity

@@ -1,4 +1,3 @@
--- Grothe/UpperClose.lean
 import Grothe.UpperQuad.Facts.Final
 import Grothe.UpperQuad.Facts.Omitted
 import Grothe.UpperQuad.QuadDecomp
@@ -10,8 +9,8 @@ import Grothe.UpperQuad.QuadEllipseFacts.All
 The accuracy of the energy table of the upper bound, proved from the native certificate facts: the
 13 energy facts with the quadrature hypothesis `QuadHyp`, assembled from the tail, the omitted
 pairs (`Facts.omittedCheck`) and the covered-set remainder (`EllCheck.quadRemainderHyp`). The upper
-bound `upper_below_tight` (`Grothe/UpperTightFinal.lean`) uses it for the mass comparison.
-Its endpoint transfer uses the sharper `hclose_certified` from `Grothe/UpperEnergyFinal.lean`.
+bound `upper_below_tight` (`Grothe/UpperTightFinal.lean`) uses it as the table accuracy of both
+the comparison and the endpoint transfer.
 
 Agent-ID: claude-b9ee. Refs #334, #405.
 -/

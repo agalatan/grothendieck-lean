@@ -1,0 +1,184 @@
+{
+  "Gaussian_weighted_tail_reserves": [
+    {
+      "radius": "3/10",
+      "robust_reserve": "11/500",
+      "signed_reserve": "59/2500",
+      "weighted_tail_fraction_upper": [
+        "0.006231296238781",
+        "0.006231296238782"
+      ]
+    },
+    {
+      "radius": "13/40",
+      "robust_reserve": "4/625",
+      "signed_reserve": "17/2500",
+      "weighted_tail_fraction_upper": [
+        "0.001804506784195",
+        "0.001804506784196"
+      ]
+    },
+    {
+      "radius": "7/20",
+      "robust_reserve": "163/100000",
+      "signed_reserve": "7/4000",
+      "weighted_tail_fraction_upper": [
+        "0.000463818446192",
+        "0.000463818446193"
+      ]
+    },
+    {
+      "radius": "3/8",
+      "robust_reserve": "371/1000000",
+      "signed_reserve": "199/500000",
+      "weighted_tail_fraction_upper": [
+        "0.000105905980631",
+        "0.000105905980632"
+      ]
+    },
+    {
+      "radius": "2/5",
+      "robust_reserve": "753/10000000",
+      "signed_reserve": "807/10000000",
+      "weighted_tail_fraction_upper": [
+        "0.000021498418681",
+        "0.000021498418682"
+      ]
+    },
+    {
+      "radius": "9/20",
+      "robust_reserve": "219/100000000",
+      "signed_reserve": "47/20000000",
+      "weighted_tail_fraction_upper": [
+        "0.000000624091697",
+        "0.000000624091698"
+      ]
+    }
+  ],
+  "agent_id": "codex-a7c4",
+  "angular_terms": 24,
+  "interval_library_sha256": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+  "pointwise_imaginary_Q_nu": {
+    "least_eigenvalue": [
+      "-0.387101627337727",
+      "-0.387101627337726"
+    ],
+    "scope": "Imaginary pointwise (Q,nu) block; constant Q is not a centered remote Wick quadratic.",
+    "second_coordinate_energy_share": [
+      "0.418138450101614",
+      "0.418138450101615"
+    ]
+  },
+  "radial_cells": 200,
+  "radial_split": "97/20",
+  "rows": {
+    "flank": {
+      "B_density_Bernstein_minima": [
+        "215546688063367974539/3804143616000000000000",
+        "465709696075450694089/36377123328000000000000"
+      ],
+      "B_density_cap": "11/40",
+      "a": "14/25",
+      "b": "1467/10000",
+      "epsilon": "149/200",
+      "inner_potential_upper_expression": [
+        "0.645451170470494",
+        "0.645451170470495"
+      ],
+      "local_AB": {
+        "least_eigenvalue": [
+          "0.323152847874178",
+          "0.323152847874179"
+        ],
+        "second_coordinate_energy_share": [
+          "0.031700119898599",
+          "0.031700119898600"
+        ]
+      },
+      "max_inner_squared_radius_ratio": "6272794195897/6728000000000",
+      "outer_potential_upper_expression": [
+        "0.283093386712697",
+        "0.283093386712698"
+      ],
+      "potential_upper_expression": [
+        "0.928544557183192",
+        "0.928544557183193"
+      ]
+    },
+    "peak": {
+      "B_density_Bernstein_minima": [
+        "139243446477813089/2432430000000000000",
+        "2490234766050694331/248107860000000000000"
+      ],
+      "B_density_cap": "7/25",
+      "a": "699/1250",
+      "b": "179/1250",
+      "epsilon": "1891/2500",
+      "inner_potential_upper_expression": [
+        "0.641905753809343",
+        "0.641905753809344"
+      ],
+      "local_AB": {
+        "least_eigenvalue": [
+          "0.298364651634117",
+          "0.298364651634118"
+        ],
+        "second_coordinate_energy_share": [
+          "0.032688705743602",
+          "0.032688705743603"
+        ]
+      },
+      "max_inner_squared_radius_ratio": "95291213953/105125000000",
+      "outer_potential_upper_expression": [
+        "0.287869595846022",
+        "0.287869595846023"
+      ],
+      "potential_upper_expression": [
+        "0.929775349655366",
+        "0.929775349655367"
+      ]
+    },
+    "upper": {
+      "B_density_Bernstein_minima": [
+        "596822029303051/10948608000000000",
+        "8748259754250259/760015872000000000"
+      ],
+      "B_density_cap": "13/50",
+      "a": "573/1000",
+      "b": "19/125",
+      "epsilon": "1891/2500",
+      "inner_potential_upper_expression": [
+        "0.658338253519263",
+        "0.658338253519264"
+      ],
+      "local_AB": {
+        "least_eigenvalue": [
+          "0.327715897185325",
+          "0.327715897185326"
+        ],
+        "second_coordinate_energy_share": [
+          "0.031159045278746",
+          "0.031159045278747"
+        ]
+      },
+      "max_inner_squared_radius_ratio": "4162813297/4205000000",
+      "outer_potential_upper_expression": [
+        "0.274330901426985",
+        "0.274330901426986"
+      ],
+      "potential_upper_expression": [
+        "0.932669154946248",
+        "0.932669154946249"
+      ]
+    }
+  },
+  "scope": "Exact scalar inputs to the re-derived box reduction; all-amplitude shift tail. Compact joint inequality remains open.",
+  "shift_cutoff": "29/10",
+  "signed_and_robust_shift_reserve": "7/1000",
+  "status": "PASS",
+  "task": 411,
+  "uniform_A_potential_cap": "179/50",
+  "uniform_B_potential_cap": "53/50",
+  "uniform_mixed_potential_cap": "39/20",
+  "uniform_potential_upper": "187/200"
+}

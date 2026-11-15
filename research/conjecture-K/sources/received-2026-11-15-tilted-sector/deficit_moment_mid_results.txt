@@ -1,0 +1,751 @@
+CAP 1 ['420007/50000000', '586671971/500000000']
+CAP 2 ['2019123/250000000', '1814954957/1000000000']
+CAP 3 ['8610389/1000000000', '496266553/1000000000']
+SLAB 1 / 42 accepted 2 uncovered 0 caps 3 seconds 3.2155797481536865
+CAP 4 ['4427101/500000000', '1236767939/1000000000']
+SLAB 2 / 42 accepted 4 uncovered 0 caps 4 seconds 4.5802319049835205
+CAP 5 ['1163533/125000000', '20315499/15625000']
+SLAB 3 / 42 accepted 6 uncovered 0 caps 5 seconds 5.633374929428101
+CAP 6 ['390493/40000000', '1363615933/1000000000']
+CAP 7 ['4693097/500000000', '2109271977/1000000000']
+CAP 8 ['10006669/1000000000', '576742211/1000000000']
+SLAB 4 / 42 accepted 8 uncovered 0 caps 8 seconds 8.382638692855835
+CAP 9 ['10216387/1000000000', '142703993/100000000']
+CAP 10 ['9822761/1000000000', '44147553/20000000']
+CAP 11 ['2094419/200000000', '60356743/100000000']
+SLAB 5 / 42 accepted 10 uncovered 0 caps 11 seconds 11.261664628982544
+CAP 12 ['10670449/1000000000', '1490463927/1000000000']
+CAP 13 ['80151/7812500', '2305483323/1000000000']
+CAP 14 ['5468761/500000000', '630392649/1000000000']
+SLAB 6 / 42 accepted 14 uncovered 0 caps 14 seconds 15.1228506565094
+CAP 15 ['1112451/100000000', '1553887923/1000000000']
+CAP 16 ['2139179/200000000', '2403588997/1000000000']
+CAP 17 ['2850737/250000000', '164304467/250000000']
+SLAB 7 / 42 accepted 18 uncovered 0 caps 17 seconds 18.030404806137085
+CAP 18 ['2894643/250000000', '20216399/12500000']
+CAP 19 ['5566231/500000000', '250169467/100000000']
+CAP 20 ['94947/8000000', '684043087/1000000000']
+SLAB 8 / 42 accepted 22 uncovered 0 caps 20 seconds 20.9872407913208
+CAP 21 ['6016317/500000000', '1680735917/1000000000']
+CAP 22 ['11569029/1000000000', '2599800343/1000000000']
+CAP 23 ['12333801/1000000000', '355434153/500000000']
+CAP 24 ['2984373/250000000', '235314379/1000000000']
+SLAB 9 / 42 accepted 26 uncovered 0 caps 24 seconds 24.787267684936523
+CAP 25 ['2497339/200000000', '872079957/500000000']
+CAP 26 ['12005597/1000000000', '2697906017/1000000000']
+CAP 27 ['12799227/1000000000', '29507741/40000000']
+SLAB 10 / 42 accepted 30 uncovered 0 caps 27 seconds 28.168308973312378
+CAP 28 ['12940757/1000000000', '1807583911/1000000000']
+CAP 29 ['3110541/250000000', '279601169/100000000']
+CAP 30 ['6632327/500000000', '95564843/125000000']
+CAP 31 ['2567687/200000000', '50614791/200000000']
+SLAB 11 / 42 accepted 34 uncovered 0 caps 31 seconds 32.07990288734436
+CAP 32 ['6697409/500000000', '467751977/250000000']
+CAP 33 ['12878731/1000000000', '2894117363/1000000000']
+CAP 34 ['85813/6250000', '791343963/1000000000']
+CAP 35 ['13288907/1000000000', '261953743/1000000000']
+SLAB 12 / 42 accepted 38 uncovered 0 caps 35 seconds 36.683438777923584
+CAP 36 ['173111/12500000', '386886381/200000000']
+CAP 37 ['6657649/500000000', '2992223037/1000000000']
+CAP 38 ['14195507/1000000000', '818169183/1000000000']
+CAP 39 ['6869689/500000000', '270833531/1000000000']
+SLAB 13 / 42 accepted 43 uncovered 0 caps 39 seconds 40.98572373390198
+CAP 40 ['7151471/500000000', '998927951/500000000']
+CAP 41 ['2750373/200000000', '309032871/100000000']
+CAP 42 ['3508969/250000000', '1274429709/500000000']
+CAP 43 ['6947689/500000000', '1410264213/500000000']
+CAP 44 ['13823947/1000000000', '2955636991/1000000000']
+CAP 45 ['14660933/1000000000', '422497201/500000000']
+CAP 46 ['14189849/1000000000', '279713319/1000000000']
+SLAB 14 / 42 accepted 51 uncovered 0 caps 46 seconds 48.522220611572266
+CAP 47 ['14757003/1000000000', '1030639949/500000000']
+CAP 48 ['886777/62500000', '3188434383/1000000000']
+CAP 49 ['724073/50000000', '262977559/100000000']
+CAP 50 ['14336501/1000000000', '2910069011/1000000000']
+CAP 51 ['14262803/1000000000', '3049466737/1000000000']
+CAP 52 ['7149871/500000000', '297982461/100000000']
+CAP 53 ['2863629/200000000', '736240347/250000000']
+CAP 54 ['3607071/250000000', '1483807469/500000000']
+CAP 55 ['7209509/500000000', '2985184259/1000000000']
+CAP 56 ['14437539/1000000000', '2950038271/1000000000']
+CAP 57 ['378159/25000000', '871819621/1000000000']
+CAP 58 ['14640321/1000000000', '288593107/1000000000']
+SLAB 15 / 42 accepted 60 uncovered 2 caps 58 seconds 62.219637632369995
+CAP 59 ['3042213/200000000', '424940779/200000000']
+CAP 60 ['14624999/1000000000', '410817507/125000000']
+CAP 61 ['14927043/1000000000', '1355345881/500000000']
+CAP 62 ['118221/8000000', '749902399/250000000']
+CAP 63 ['7795893/500000000', '22466121/25000000']
+CAP 64 ['1886349/125000000', '59494579/200000000']
+SLAB 16 / 42 accepted 65 uncovered 3 caps 64 seconds 69.35858988761902
+CAP 65 ['15665127/1000000000', '547031973/250000000']
+CAP 66 ['15061567/1000000000', '338464573/100000000']
+CAP 67 ['7686313/500000000', '1395803967/500000000']
+CAP 68 ['3804687/250000000', '3089150181/1000000000']
+CAP 69 ['16057213/1000000000', '925470059/1000000000']
+CAP 70 ['971329/62500000', '153176341/500000000']
+SLAB 17 / 42 accepted 70 uncovered 4 caps 70 seconds 75.01411890983582
+CAP 71 ['4029797/250000000', '2251551889/1000000000']
+CAP 72 ['7749067/500000000', '3482751403/1000000000']
+CAP 73 ['1581821/100000000', '1436262053/500000000']
+CAP 74 ['15659871/1000000000', '1589345383/500000000']
+CAP 75 ['15971941/1000000000', '1281855963/500000000']
+CAP 76 ['15895749/1000000000', '543697673/200000000']
+CAP 77 ['7928567/500000000', '698898363/250000000']
+CAP 78 ['15837709/1000000000', '56681599/20000000']
+CAP 79 ['7974621/500000000', '2854038259/1000000000']
+CAP 80 ['491443/31250000', '70353041/25000000']
+CAP 81 ['1964563/125000000', '2833213531/1000000000']
+CAP 82 ['15876481/1000000000', '2757063357/1000000000']
+CAP 83 ['249817/15625000', '43382489/15625000']
+CAP 84 ['3994639/250000000', '1397942791/500000000']
+CAP 85 ['16522639/1000000000', '476147639/500000000']
+CAP 86 ['3198347/200000000', '31523247/100000000']
+SLAB 18 / 42 accepted 79 uncovered 8 caps 86 seconds 90.39334392547607
+CAP 87 ['66293/4000000', '1157487943/500000000']
+CAP 88 ['15934701/1000000000', '895214269/250000000']
+CAP 89 ['16263793/1000000000', '1476720139/500000000']
+CAP 90 ['8050497/500000000', '3268231351/1000000000']
+CAP 91 ['3284371/200000000', '2635929163/1000000000']
+CAP 92 ['4085879/250000000', '1397532751/500000000']
+CAP 93 ['3397613/200000000', '979120497/1000000000']
+CAP 94 ['16442207/1000000000', '162056129/500000000']
+SLAB 19 / 42 accepted 84 uncovered 10 caps 94 seconds 100.87894177436829
+CAP 95 ['1064207/62500000', '2378399883/1000000000']
+CAP 96 ['4092817/250000000', '14715851/4000000']
+CAP 97 ['16709377/1000000000', '60687129/20000000']
+CAP 98 ['16542117/1000000000', '104930373/31250000']
+CAP 99 ['16626263/1000000000', '1598187159/500000000']
+CAP 100 ['16871769/1000000000', '3385183/1250000']
+CAP 101 ['4197821/250000000', '2871642639/1000000000']
+CAP 102 ['16950561/1000000000', '1271884631/500000000']
+CAP 103 ['4227849/250000000', '1313037297/500000000']
+CAP 104 ['8445819/500000000', '106685553/40000000']
+CAP 105 ['16881717/1000000000', '2687649589/1000000000']
+CAP 106 ['8497131/500000000', '2705567253/1000000000']
+CAP 107 ['16901531/1000000000', '2646613897/1000000000']
+CAP 108 ['265847/15625000', '266425799/100000000']
+CAP 109 ['4363373/250000000', '251486429/250000000']
+CAP 110 ['8446339/500000000', '166496023/500000000']
+SLAB 20 / 42 accepted 93 uncovered 14 caps 110 seconds 120.81171202659607
+CAP 111 ['17481373/1000000000', '61045597/25000000']
+CAP 112 ['3361567/200000000', '3777068423/1000000000']
+CAP 113 ['214437/12500000', '1557636311/500000000']
+CAP 114 ['424581/25000000', '3447312521/1000000000']
+CAP 115 ['1706963/100000000', '1640805483/500000000']
+CAP 116 ['17321683/1000000000', '1390181819/500000000']
+CAP 117 ['8959459/500000000', '206554187/200000000']
+CAP 118 ['17343149/1000000000', '170935917/500000000']
+SLAB 21 / 42 accepted 98 uncovered 16 caps 118 seconds 132.47044467926025
+CAP 119 ['3587087/200000000', '2505247877/1000000000']
+CAP 120 ['8622201/500000000', '242198381/62500000']
+CAP 121 ['17600543/1000000000', '1598094397/500000000']
+CAP 122 ['17424363/1000000000', '1768426553/500000000']
+CAP 123 ['17512997/1000000000', '673369523/200000000']
+CAP 124 ['17771597/1000000000', '22820647/8000000']
+CAP 125 ['3676869/200000000', '529798077/500000000']
+CAP 126 ['569533/31250000', '1795278973/1000000000']
+CAP 127 ['17793621/1000000000', '175375811/500000000']
+SLAB 22 / 42 accepted 104 uncovered 18 caps 127 seconds 144.83784174919128
+CAP 128 ['18389497/1000000000', '1284335937/500000000']
+CAP 129 ['17680969/1000000000', '397327977/100000000']
+CAP 130 ['18046127/1000000000', '1638552483/500000000']
+CAP 131 ['8932743/500000000', '3626393691/1000000000']
+CAP 132 ['4489091/250000000', '3452084263/1000000000']
+CAP 133 ['18849771/1000000000', '543210687/500000000']
+CAP 134 ['4561023/250000000', '35963141/100000000']
+SLAB 23 / 42 accepted 110 uncovered 19 caps 134 seconds 154.0522119998932
+CAP 135 ['9421779/500000000', '263209587/100000000']
+CAP 136 ['18117537/1000000000', '4071385443/1000000000']
+CAP 137 ['1849171/100000000', '1679010569/500000000']
+CAP 138 ['1830661/100000000', '148637371/40000000']
+CAP 139 ['18399731/1000000000', '221082557/62500000']
+CAP 140 ['291741/15625000', '59940307/20000000']
+CAP 141 ['9291177/500000000', '3177951187/1000000000']
+CAP 142 ['18537213/1000000000', '81702203/25000000']
+CAP 143 ['3702901/200000000', '1656539689/500000000']
+CAP 144 ['9251559/500000000', '667111271/200000000']
+CAP 145 ['18614583/1000000000', '838912517/250000000']
+CAP 146 ['1852587/100000000', '3290590027/1000000000']
+CAP 147 ['18637471/1000000000', '1655206429/500000000']
+CAP 148 ['9657599/500000000', '1113246593/1000000000']
+CAP 149 ['4673641/250000000', '184255599/500000000']
+SLAB 24 / 42 accepted 120 uncovered 22 caps 149 seconds 173.9887707233429
+CAP 150 ['964881/50000000', '2695519867/1000000000']
+CAP 151 ['2319263/125000000', '1042372779/250000000']
+CAP 152 ['18937293/1000000000', '343893731/100000000']
+CAP 153 ['18747733/1000000000', '190273743/50000000']
+CAP 154 ['9421549/500000000', '90563939/25000000']
+CAP 155 ['9560669/500000000', '3069232587/1000000000']
+CAP 156 ['9515061/500000000', '813632081/250000000']
+CAP 157 ['4745973/250000000', '3346837231/1000000000']
+CAP 158 ['19075949/1000000000', '1580998971/500000000']
+CAP 159 ['595409/31250000', '80207291/25000000']
+CAP 160 ['19041617/1000000000', '807854251/250000000']
+CAP 161 ['19153627/1000000000', '3250425339/1000000000']
+CAP 162 ['1236289/62500000', '285017953/250000000']
+CAP 163 ['3829007/200000000', '188695493/500000000']
+SLAB 25 / 42 accepted 129 uncovered 25 caps 163 seconds 193.23588299751282
+CAP 164 ['19751681/1000000000', '344867983/125000000']
+CAP 165 ['18990671/1000000000', '426759679/100000000']
+CAP 166 ['19382877/1000000000', '1759926741/500000000']
+CAP 167 ['2398607/125000000', '779003089/200000000']
+CAP 168 ['3857293/200000000', '3707794209/1000000000']
+CAP 169 ['19237799/1000000000', '950372431/250000000']
+CAP 170 ['2407771/125000000', '1877331897/500000000']
+CAP 171 ['9637163/500000000', '466404317/125000000']
+CAP 172 ['9581777/500000000', '185489533/50000000']
+CAP 173 ['1208427/62500000', '3613918993/1000000000']
+CAP 174 ['4892813/250000000', '98170307/31250000']
+CAP 175 ['19477889/1000000000', '3331105461/1000000000']
+CAP 176 ['20246051/1000000000', '1166897031/1000000000']
+CAP 177 ['9797753/500000000', '193135387/500000000']
+SLAB 26 / 42 accepted 138 uncovered 28 caps 177 seconds 212.30362486839294
+CAP 178 ['20205743/1000000000', '2822367861/1000000000']
+CAP 179 ['9713619/500000000', '4365702463/1000000000']
+CAP 180 ['991423/50000000', '1800384827/500000000']
+CAP 181 ['19629979/1000000000', '398455603/100000000']
+CAP 182 ['2466229/125000000', '3793030857/1000000000']
+CAP 183 ['19779311/1000000000', '3696997591/1000000000']
+CAP 184 ['10010583/500000000', '1606833531/500000000']
+CAP 185 ['20711477/1000000000', '4774889/4000000']
+CAP 186 ['10022989/500000000', '395150561/1000000000']
+SLAB 27 / 42 accepted 144 uncovered 30 caps 186 seconds 228.78381085395813
+CAP 187 ['4131961/200000000', '1442895929/500000000']
+CAP 188 ['3972761/200000000', '557976017/125000000']
+CAP 189 ['5068511/250000000', '1840842913/500000000']
+CAP 190 ['10035551/500000000', '814819323/200000000']
+CAP 191 ['20173199/1000000000', '1939133753/500000000']
+CAP 192 ['2022379/100000000', '945019047/250000000']
+CAP 193 ['20248961/1000000000', '373090661/100000000']
+CAP 194 ['10118193/500000000', '938874427/250000000']
+CAP 195 ['20125197/1000000000', '746972621/200000000']
+CAP 196 ['20261513/1000000000', '3706302711/1000000000']
+CAP 197 ['511777/25000000', '3285884299/1000000000']
+CAP 198 ['2647113/125000000', '1220547469/1000000000']
+CAP 199 ['20993419/1000000000', '2067979577/1000000000']
+CAP 200 ['20496449/1000000000', '404030349/1000000000']
+SLAB 28 / 42 accepted 153 uncovered 33 caps 200 seconds 254.52069187164307
+CAP 201 ['10556933/500000000', '589843171/200000000']
+CAP 202 ['5075093/250000000', '456191381/100000000']
+CAP 203 ['20719627/1000000000', '1881300999/500000000']
+CAP 204 ['820489/40000000', '10409093/2500000']
+CAP 205 ['10308283/500000000', '1981752077/500000000']
+CAP 206 ['20668269/1000000000', '1931577393/500000000']
+CAP 207 ['20693993/1000000000', '3812904557/1000000000']
+CAP 208 ['20706821/1000000000', '1893879957/500000000']
+CAP 209 ['10297747/500000000', '3767395613/1000000000']
+CAP 210 ['10460497/500000000', '104940673/31250000']
+CAP 211 ['2164233/100000000', '77960793/62500000']
+CAP 212 ['21454813/1000000000', '1056714839/500000000']
+CAP 213 ['21294201/1000000000', '316847243/125000000']
+CAP 214 ['5301487/250000000', '1371386649/500000000']
+CAP 215 ['4232067/200000000', '2846177873/1000000000']
+CAP 216 ['10568601/500000000', '1448870687/500000000']
+CAP 217 ['21125559/1000000000', '2923489581/1000000000']
+CAP 218 ['21239137/1000000000', '2939207267/1000000000']
+CAP 219 ['20946921/1000000000', '412910137/1000000000']
+SLAB 29 / 42 accepted 167 uncovered 36 caps 219 seconds 291.77624678611755
+CAP 220 ['2695991/125000000', '753159963/250000000']
+CAP 221 ['1036847/50000000', '4660019483/1000000000']
+CAP 222 ['2116521/100000000', '384351817/100000000']
+CAP 223 ['21370907/1000000000', '1715159387/500000000']
+CAP 224 ['5526939/250000000', '1274197907/1000000000']
+CAP 225 ['21916207/1000000000', '1079439889/500000000']
+CAP 226 ['1087607/50000000', '1294644649/500000000']
+CAP 227 ['2166199/100000000', '280175767/100000000']
+CAP 228 ['5403849/250000000', '2907385999/1000000000']
+CAP 229 ['4318353/200000000', '2960058393/1000000000']
+CAP 230 ['2704851/125000000', '1427309999/500000000']
+CAP 231 ['2162713/100000000', '720253717/250000000']
+CAP 232 ['21740957/1000000000', '362022263/125000000']
+CAP 233 ['21650429/1000000000', '2828201047/1000000000']
+CAP 234 ['10882189/500000000', '710771579/250000000']
+CAP 235 ['1337337/62500000', '16871597/40000000']
+SLAB 30 / 42 accepted 176 uncovered 40 caps 235 seconds 319.0412938594818
+CAP 236 ['2202199/100000000', '3076063849/1000000000']
+CAP 237 ['21173507/1000000000', '1189531289/250000000']
+CAP 238 ['10805397/500000000', '1962217171/500000000']
+CAP 239 ['21820821/1000000000', '3502536011/1000000000']
+CAP 240 ['22573183/1000000000', '650511563/500000000']
+CAP 241 ['6993/312500', '2204329879/1000000000']
+CAP 242 ['138813/6250000', '660950163/250000000']
+CAP 243 ['1382377/62500000', '1430371021/500000000']
+CAP 244 ['21847863/1000000000', '430669713/1000000000']
+SLAB 31 / 42 accepted 182 uncovered 42 caps 244 seconds 331.80177879333496
+CAP 245 ['22476051/1000000000', '627897569/200000000']
+CAP 246 ['10805037/500000000', '485623083/100000000']
+CAP 247 ['22056377/1000000000', '2002675257/500000000']
+CAP 248 ['4454147/200000000', '111711039/31250000']
+CAP 249 ['23038609/1000000000', '265569669/200000000']
+CAP 250 ['11419497/500000000', '2249779979/1000000000']
+CAP 251 ['1133401/50000000', '539662401/200000000']
+CAP 252 ['11287037/500000000', '1459863207/500000000']
+CAP 253 ['22756821/1000000000', '154691059/62500000']
+CAP 254 ['4542629/200000000', '517385259/200000000']
+CAP 255 ['354543/15625000', '660669539/250000000']
+CAP 256 ['22679427/1000000000', '166906853/62500000']
+CAP 257 ['2279397/100000000', '2683997071/1000000000']
+CAP 258 ['4459667/200000000', '439549501/1000000000']
+CAP 259 ['22937021/1000000000', '864491253/1000000000']
+SLAB 32 / 42 accepted 191 uncovered 45 caps 259 seconds 355.9317247867584
+CAP 260 ['22930113/1000000000', '1601455921/500000000']
+CAP 261 ['22046641/1000000000', '4954336503/1000000000']
+CAP 262 ['22501961/1000000000', '2043133343/500000000']
+CAP 263 ['22720649/1000000000', '1823485243/500000000']
+CAP 264 ['11306131/500000000', '193357271/50000000']
+CAP 265 ['5666679/250000000', '1878598777/500000000']
+CAP 266 ['22639551/1000000000', '3812205361/1000000000']
+CAP 267 ['11312961/500000000', '1919841867/500000000']
+CAP 268 ['5876009/250000000', '338668391/250000000']
+CAP 269 ['11374403/500000000', '448429289/1000000000']
+SLAB 33 / 42 accepted 202 uncovered 45 caps 269 seconds 371.41354870796204
+CAP 270 ['935367/40000000', '3266335839/1000000000']
+CAP 271 ['2810401/125000000', '78944409/15625000']
+CAP 272 ['2868443/125000000', '2083591429/500000000']
+CAP 273 ['23170563/1000000000', '3719187723/1000000000']
+CAP 274 ['2306003/100000000', '3943722557/1000000000']
+CAP 275 ['11557781/500000000', '1915798753/500000000']
+CAP 276 ['23087859/1000000000', '242980911/62500000']
+CAP 277 ['23101727/1000000000', '771930961/200000000']
+CAP 278 ['11494791/500000000', '3840918617/1000000000']
+CAP 279 ['23143131/1000000000', '377542927/100000000']
+CAP 280 ['23129363/1000000000', '237720151/62500000']
+CAP 281 ['11620821/500000000', '3821986117/1000000000']
+CAP 282 ['4603417/200000000', '757011743/200000000']
+CAP 283 ['4631373/200000000', '3747317797/1000000000']
+CAP 284 ['23269277/1000000000', '188275433/50000000']
+CAP 285 ['11984731/500000000', '43171837/31250000']
+CAP 286 ['11599639/500000000', '457309077/1000000000']
+SLAB 34 / 42 accepted 212 uncovered 49 caps 286 seconds 398.0448167324066
+CAP 287 ['5959559/250000000', '832439959/250000000']
+CAP 288 ['916791/40000000', '103010957/20000000']
+CAP 289 ['23393127/1000000000', '424809903/100000000']
+CAP 290 ['23620477/1000000000', '23696281/6250000']
+CAP 291 ['24434889/1000000000', '1408324003/1000000000']
+CAP 292 ['3027897/125000000', '2386130281/1000000000']
+CAP 293 ['23649749/1000000000', '93237773/200000000']
+SLAB 35 / 42 accepted 218 uncovered 50 caps 293 seconds 409.04315066337585
+CAP 294 ['12146149/500000000', '3393183833/1000000000']
+CAP 295 ['11678171/500000000', '5248653523/1000000000']
+CAP 296 ['23838711/1000000000', '2164507601/500000000']
+CAP 297 ['2407039/100000000', '1931811099/500000000']
+CAP 298 ['4791113/200000000', '4096876831/1000000000']
+CAP 299 ['24013253/1000000000', '3980397409/1000000000']
+CAP 300 ['12020947/500000000', '1961023941/500000000']
+CAP 301 ['24056161/1000000000', '3892844701/1000000000']
+CAP 302 ['23943749/1000000000', '1937326919/500000000']
+CAP 303 ['60457/2500000', '1814555407/500000000']
+CAP 304 ['4980063/200000000', '717574611/500000000']
+CAP 305 ['2468457/100000000', '1215790191/500000000']
+CAP 306 ['24100221/1000000000', '475068653/1000000000']
+CAP 307 ['12395259/500000000', '233587283/250000000']
+CAP 308 ['10332833/500000000', '8188359/50000000']
+SLAB 36 / 42 accepted 229 uncovered 52 caps 308 seconds 433.9509246349335
+CAP 309 ['618659/25000000', '345660783/100000000']
+CAP 310 ['2379291/100000000', '1336689799/250000000']
+CAP 311 ['12142147/500000000', '2204965687/500000000']
+CAP 312 ['1532519/62500000', '787167887/200000000']
+CAP 313 ['4926963/200000000', '3696944661/1000000000']
+CAP 314 ['12682871/500000000', '1461974441/1000000000']
+CAP 315 ['25145963/1000000000', '1238515241/500000000']
+CAP 316 ['24957719/1000000000', '2970868773/1000000000']
+CAP 317 ['6213571/250000000', '1607324137/500000000']
+CAP 318 ['24800823/1000000000', '3335842883/1000000000']
+CAP 319 ['2477371/100000000', '135851101/40000000']
+CAP 320 ['96719/3906250', '342645553/100000000']
+CAP 321 ['12436821/500000000', '107567913/31250000']
+CAP 322 ['6137673/250000000', '12098711/25000000']
+CAP 323 ['1052597/50000000', '166828249/1000000000']
+SLAB 37 / 42 accepted 241 uncovered 54 caps 323 seconds 470.7626566886902
+CAP 324 ['25200421/1000000000', '3520031827/1000000000']
+CAP 325 ['24229477/1000000000', '544486487/100000000']
+CAP 326 ['24729877/1000000000', '2245423773/500000000']
+CAP 327 ['12485109/500000000', '125251771/31250000']
+CAP 328 ['2508683/100000000', '941194627/250000000']
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 35, in fun
+    A=y.hypgeom_2f1(-arb(1)/2,-arb(1)/2,1)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "flint/types/acb.pyx", line 113, in flint.types.acb.acb_calc_func_callback
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in <lambda>
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+                                 ^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 19, in fun
+    R=t.sqrt(analytic=analytic)*(a+b*t)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.sqrt at 0x102c6a090> returned a result with an exception set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_mid.py", line 101, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_mid.py", line 70, in main
+    cap=base.fresh_cap(*nodes);caps.append(cap);capnodes.append(nodes)
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_verify.py", line 40, in fresh_cap
+    f1,d1=profile(ar(s1));f2,d2=profile(ar(s2))
+          ^^^^^^^^^^^^^^^
+  File "/Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py", line 49, in evaluate
+    val+=acb.integral(lambda t,z:fun(t,z,d),ll,rr,rel_tol=arb('1e-17'),abs_tol=arb('1e-17'),eval_limit=100000)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <cyfunction acb.integral at 0x102c6eda0> returned a result with an exception set

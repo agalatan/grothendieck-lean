@@ -1,0 +1,5 @@
+{"N_only": true, "u_min": 0.009, "optimized_cap": 0.701526012436799, "fitted_cap": 0.7018, "certification_cap": "0.701801", "content_coefficient": 0.05016454703343518, "minimum_margin": -1.765920742968774e-12}
+{"N_only": true, "u_min": 0.012, "optimized_cap": 0.6888652116710956, "fitted_cap": 0.6891, "certification_cap": "0.689101", "content_coefficient": 0.048365389538990736, "minimum_margin": -3.4352520827951594e-12}
+{"N_only": true, "u_min": 0.015, "optimized_cap": 0.6767612264146435, "fitted_cap": 0.677, "certification_cap": "0.677001", "content_coefficient": 0.04668179531491666, "minimum_margin": -2.2177815139912127e-12}
+{"N_only": true, "u_min": 0.018, "optimized_cap": 0.6651703525686594, "fitted_cap": 0.6654, "certification_cap": "0.665401", "content_coefficient": 0.04509577221121296, "minimum_margin": -3.570810314101891e-12}
+{"N_only": true, "u_min": 0.02, "optimized_cap": 0.6577100261672917, "fitted_cap": 0.658, "certification_cap": "0.658001", "content_coefficient": 0.044098319222324066, "minimum_margin": -2.7523539003482256e-12}

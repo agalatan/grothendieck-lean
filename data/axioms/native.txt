@@ -9095,6 +9095,7 @@ Grothe.LowerAnalytic.row15AnchorRange22._native.native_decide.ax_1_1
 Grothe.LowerAnalytic.row15AnchorRange23._native.native_decide.ax_1_1
 Grothe.LowerAnalytic.row15AnchorRange24._native.native_decide.ax_1_1
 Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1
+Grothe.Research.LowerRefinementCheck.certRefinementBatches._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1
@@ -9102,6 +9103,7 @@ Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1
 Grothe.Upper.comparison_check._native.native_decide.ax_1_1
 Grothe.Upper.improved_high_mass_native._native.native_decide.ax_1_1
+Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1
 Grothe.UpperChaos.firstCenter_band_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1
 Grothe.UpperChaos.hardy_arc_part_1._native.native_decide.ax_1_1
