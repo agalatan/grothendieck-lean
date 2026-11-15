@@ -116,7 +116,8 @@ which S-lemma multipliers:
 
 1. `gen-select PIECES.json GRID OUTDIR BATCH centre|all` (optional env `CAPS_NODES="k:i ..."`, `CAPS_TAG`) writes
    throwaway modules `Grothe/LowerAnalytic/CapPlanRuns/Run_*.lean` (never committed) that export the piece matrices
-   on grid `GRID` with the checker's own functions (`exportPiecesOn`, `CapExport.lean`). Build them with
+   on grid `GRID` with the checker's own functions (`exportPiecesOn`, `CapExport.lean`; that module is archived
+   in `abandonware/Grothe/LowerAnalytic/`, so a run first restores it under `Grothe/LowerAnalytic/`). Build them with
    `lake build <module>`: the `#eval` runs at build time with the precompiled kernel.
 2. `solve EXPORT.jsonl OUT.json`: per piece `pass` (stored multipliers), `fixed` (new exact multipliers from
    `tools/caps_lmi.py`), or `cap_up` (smallest exact cap increase).

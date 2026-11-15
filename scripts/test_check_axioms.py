@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("upper-comparison", "hardy-budget", "refined-cover", "law-nodes")
+MODES = ("refined-cover", "law-nodes")
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -40,25 +40,18 @@ class CheckAxiomsTests(unittest.TestCase):
                        for name in sorted(required))
 
     def test_existing_policy_headlines_and_native_restrictions(self):
-        headlines = {
-            "default": {"Grothe.fresh_upper", "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data"},
-            "upper-comparison": {"Grothe.fresh_upper"},
-        }
-        for mode, expected in headlines.items():
-            with self.subTest(mode=mode):
-                self.assertTrue(expected <= CHECKER.audit_policy(mode)[0])
-        self.assertIn("Grothe.LowerAnalytic.lower_bound_of_capsRest", CHECKER.audit_policy("default")[0])
+        headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
+                     "Grothe.Statement.lower_target",
+                     "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data",
+                     "Grothe.LowerAnalytic.lower_bound_of_capsRest"}
+        self.assertTrue(headlines <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
-        self.assertEqual(CHECKER.audit_policy("upper-comparison")[1],
-                         {"Grothe.head_check._native.native_decide.ax_1_1",
-                          "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
-                          *(f"Grothe.UpperChaos.phi_cover_check_{j}._native.native_decide.ax_1_1" for j in range(6)),
-                          *(f"Grothe.UpperChaos.hardy_arc_part_{j}._native.native_decide.ax_1_1" for j in range(4)),
-                          "Grothe.UpperChaos.hardy_region_check._native.native_decide.ax_1_1"})
+        self.assertNotIn("Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1", CHECKER.NATIVE)
+        self.assertIn("Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1",
+                      CHECKER.NATIVE)
 
     def test_topic_policies_preserve_required_families(self):
-        for mode, expected in (("hardy-budget", CHECKER.HARDY_BUDGET),
-                               ("refined-cover", CHECKER.REFINED_LOWER),
+        for mode, expected in (("refined-cover", CHECKER.REFINED_LOWER),
                                ("law-nodes", CHECKER.LAW_NODES)):
             with self.subTest(mode=mode):
                 required,native=CHECKER.audit_policy(mode)
@@ -140,14 +133,6 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(code, 1)
                 self.assertIn("DISALLOWED AXIOM", stdout)
 
-    def test_focused_modes_reject_native_axioms_from_other_routes(self):
-        head = "Grothe.head_check._native.native_decide.ax_1_1"
-        power = "Grothe.HaagerupPower.check._native.native_decide.ax_1_1"
-        for mode, foreign in [("upper-comparison", power)]:
-            with self.subTest(mode=mode):
-                extra = f"'Test.foreignRoute' depends on axioms: [{foreign}]\n"
-                self.assertEqual(self.run_main([f"--{mode}"], self.report(mode) + extra)[0], 1)
-
     def test_all_distinct_mode_pairs_are_rejected_in_both_orders(self):
         for first, second in itertools.permutations(MODES, 2):
             with self.subTest(first=first, second=second):
@@ -165,7 +150,9 @@ class CheckAxiomsTests(unittest.TestCase):
         self.assertEqual(self.run_main(["--law-nodes"], text)[0], 0)
 
     def test_archived_mode_is_not_an_active_policy(self):
-        self.assertEqual(self.run_main(["--haagerup-power"], self.report())[0], 2)
+        for arg in ("--haagerup-power", "--upper-comparison", "--hardy-budget"):
+            with self.subTest(arg=arg):
+                self.assertEqual(self.run_main([arg], self.report())[0], 2)
 
     def test_duplicates_apostrophes_quoted_names_and_empty_axioms_pass(self):
         extra = ("'Grothe.foo'' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
@@ -233,7 +220,7 @@ class CheckAxiomsTests(unittest.TestCase):
                     self.assertEqual(self.run_main([], text)[0], 1)
 
     def test_each_topic_mode_keeps_strict_report_consumption(self):
-        for mode in ("hardy-budget", "refined-cover", "law-nodes"):
+        for mode in ("refined-cover", "law-nodes"):
             for extra in ("error: failed to load module\n",
                           "'Extra.unchecked' depends on axioms: [sorryAx\n",
                           "'Extra.unchecked' depends on axioms: []junk\n"):

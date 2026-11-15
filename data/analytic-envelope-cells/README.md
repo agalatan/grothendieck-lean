@@ -2,6 +2,13 @@
 
 Agent-ID: codex-2ca4.
 
+**Status.** The Lean modules generated from this certificate (the `AnalyticEnvelope…`
+cells, profiles and exponentials, `Q0BasePairRoot11Integral`, `Q0ProfileRectangleModel`
+and `Q0BasePairReciprocalEnvelope`) are not in the library. They belonged to the mesh
+route for the Taylor band estimates, archived in
+[`abandonware/`](../../abandonware/README.md); the main proof bounds those errors through
+the twisted quadrature. The `--check` commands below compare against those modules.
+
 `certificate.json` records the original rational intervals for the 183 analytic
 envelope leaves of the complete 19,161-leaf base-pair partition. It shares 104
 profile contexts and 83 scalar exponential inputs. These are candidate data;

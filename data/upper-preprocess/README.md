@@ -2,16 +2,16 @@
 
 This directory retains the shared rounding source, preprocessors, energy table,
 finite-head and Hardy inputs used by the unconditional theorem
-**K_G^C < 1.404599398251**. Its exact rational Grothendieck bound is `tightValueQ`,
-approximately `1.4045993982506409631014`. The endpoint is
+**K_G^C < 1.404599398052**. Its exact rational Grothendieck bound is `tightValueQ`,
+approximately `1.4045993980513008724503`. The endpoint is
 `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean).
 
 The byte-pinned data and generators retain historical intermediate endpoint
 metadata for reproducibility. The active numerical ledger is
 [`Grothe/UpperTightBudget.lean`](../../Grothe/UpperTightBudget.lean).
-The smaller endpoint `1.404598148840` in `Grothe/Upper/GroupedBridge.lean` remains
-conditional on stronger comparison inputs, as explained below. Previous endpoint documentation is preserved
+The smaller endpoint `1.404598148840` is conditional on stronger comparison inputs and
+archived, as explained below. Previous endpoint documentation is preserved
 in `miscellaneous/other-bounds/snapshot/data/upper-preprocess/README.md`.
 
 ## Mathematical assembly and trust boundary
@@ -29,12 +29,12 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 
 | contribution | current allowance | proof |
 |---|---:|---|
-| weighted selected-block energy comparison | `tightThreeBandCompareQ ≈ 1.49222739755738e-6` | six proved Gaussian error bounds and regrouped certified reference masses (`UpperTightSix`, `UpperTightComparison`) |
+| weighted selected-block energy comparison | `tightThreeBandCompareQ ≈ 1.49212635840472e-6` | six proved Gaussian error bounds and regrouped certified reference masses (`UpperTightSix`, `UpperTightComparison`) |
 | finite head through degree 501 | `28153/1000000000000` | the exact finite certificate `Grothe.head_check` |
 | stored energy-table accuracy | `6847009/500000000000000000` | `Grothe.UpperQuad.Final.hclose_final`, from the accepted energy, omitted-pair and quadrature facts |
 | infinite tail after degree 501 | `233184398/10000000000000000` | the proved Gaussian-amplitude Hardy budget `5/4` with its forced linear energy deducted (`HeadHardy`, `UpperTightBudget`) |
 
-These give `tightResidualQ ≈ 1.5437125313753792e-6` and the rational bound
+These give `tightResidualQ ≈ 1.5436114922227238e-6` and the rational bound
 `1 / (slopeQ - tightResidualQ)`. The native finite-head checker uses exact dyadic
 energy data and rational polynomial coefficients. Lean proves the polynomial
 l1 constraints, locality, Gaussian comparison, table accuracy, transfer and
@@ -59,16 +59,12 @@ axioms and the existing permitted `native_decide` facts, recorded in
 
 ### Conditional stronger route
 
-`Grothe/Upper/GroupedBridge.lean` proves the smaller rational bound
-`500000000000000000/355973699960428191 < 1.404598148840` under explicit
-comparison hypotheses. Its grouped comparison allowance is
-`groupedCompareQ = 851922301/10^15`; its tail is `303362486/10^16`.
-The wrapper `Grothe.UpperChaos.fresh_upper_rounder` takes `ComparisonInputs`
-and table accuracy for a charge-one L2 truncation `X`. Those comparison inputs
-require the finer component error bounds and supports; the current six-bound
-assembly does not discharge that stronger interface. Table accuracy for the
-production `X` is proved by `hclose_final`, and the Hardy bound is proved.
-See `../localized-comparison/PROOF.md` for the comparison interface.
+The route to the smaller rational bound
+`500000000000000000/355973699960428191 < 1.404598148840` (`fresh_upper_rounder`,
+with grouped comparison allowance `groupedCompareQ = 851922301/10^15` and tail
+`303362486/10^16`) is archived in [`abandonware/`](../../abandonware/README.md) and
+not built: its `ComparisonInputs` need the finer component error bounds, which are
+not proved. See `../localized-comparison/PROOF.md` for the comparison interface.
 
 ### Frozen contour replay metadata
 

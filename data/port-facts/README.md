@@ -7,7 +7,9 @@ enclosures of partial Gauss sums over the node ranges in `ranges.json`.
 Each header specifies the range and two radii; the following line stores the
 low-band midpoints. All values use the dyadic scale `2^-64`.
 
-Run the inexpensive acceptance preflight before scheduling range computations:
+Run the inexpensive acceptance preflight before scheduling range computations
+(it reads the grouped-radius margins of `Grothe/UpperQuad/PortFacts/Margins.lean`, which
+is no longer in the tree; the main proof uses `UpperQuad.TwistMargins`):
 
 ```sh
 python3 tools/audit_port_tables.py --json
@@ -26,7 +28,7 @@ The generated scratch Lean file checks the actual `finalFact` predicates with
 inline copies of these tables, without importing any expensive range theorem:
 
 ```sh
-lake build Grothe.UpperQuad.PortFacts.Common Grothe.UpperQuad.PortFacts.Margins
+lake build Grothe.UpperQuad.PortFacts.Common
 lake env lean handoff/port-audit/TableArithmetic.lean
 ```
 

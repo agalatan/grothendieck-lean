@@ -11,14 +11,16 @@ phase identity and Laplace modules under `Grothe/Haagerup/`.
 **Reading this inventory.** Most paragraphs describe one module or one result.
 Where a paragraph says that a result takes an estimate as a hypothesis, or that
 it gives no numerical bound, this describes that result; it is not an open
-input of the main theorems, which have no hypotheses. A module said to be
-*not imported by the final theorems* lies outside the import closure of
-`Grothe/MainResult.lean`: it is built and checked with the `Grothe` target
-(unless the text says that it is excluded from the build), and
-nothing in `main_bounds` depends on it. The value `1.404598149141` is the target
-the rounding was designed for: Lean proves a bound below it only conditionally
-(`fresh_upper_concrete_taylor`, whose band-error hypotheses are not proved),
-and the theorem without hypotheses exhibits a bound below `1.404599398052`.
+input of the main theorems, which have no hypotheses. Every module under
+`Grothe/` is in the import closure of `Grothe/MainResult.lean`. A module called
+*archived* below is kept outside the libraries, in `abandonware/`
+(`abandonware/README.md`) unless the text names `miscellaneous/`; it is not
+built or checked. The value `1.404598149141` is the
+target the rounding was designed for. The conditional theorem towards it,
+`fresh_upper_rounder` (K_G^ℂ ≤ 500000000000000000/355973699960428191 <
+1.404598148840, from fourteen finite-band Gaussian estimates that are not
+proved), is archived; the theorem without hypotheses exhibits a bound below
+`1.404599398052`.
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
@@ -242,8 +244,7 @@ of Legendre roots. `QuadRem.source_rule_exact`
 production panel, and the analytic integration remainder is
 `gauss_remainder_ellipse`. The reproducible witnesses and generator are in
 `data/gauss-polynomial-certificates/` and `tools/gen_gauss_polynomial_certificates.py`.
-The entire family and its strict standard-three axiom audit are in the main root
-and are checked with the `Grothe` build.
+The entire family is in the main root and is checked with the `Grothe` build.
 
 **Shared proof foundations.** `LowerAnalytic/ComplexGaussianCore.lean` contains
 `gaussC`, its planar presentation, rotation invariance and radial-moment reduction.
@@ -289,7 +290,6 @@ given the raw-error estimate, smoothing estimate and smoothing-vector norm.
 The separate `sqrt_mass_lt_norm` lemma converts squared mass below `107/100`
 to norm below `26/25`. These are arithmetic implications; they do not supply
 the actual Gaussian input estimates or a floating-point operation model.
-`Q0NodeMassLedgerSharpAudit` rejects dependencies beyond Lean's standard axioms.
 The definitions document the operation-path budget `749 = 2*32+10+675`,
 the node/pair/raw-coordinate square-root allowances `147`, `179`, `2310`,
 the primary block/family norm caps `18`, `197`, the reflection factor `10/7`,
@@ -300,301 +300,12 @@ The energy-table accuracy of the final theorem (`Final.hclose_final`) does not
 go through this ledger: it uses `selected_energy_close_of_raw_error` with the
 error radius certified by the quadrature checker (`UpperQuad/Bridge.lean`).
 
-**Phase-source denominator.** `PhiSourceDenBinding.source_common_den` proves
-by bounded source-chunk computation that the parsed production phase has
-common denominator `302002543697172916153771578242367488000`.
-`tools/gen_phi_source_den_chunks.py --check` reproduces the chunk modules
-from `Upper/Data.lean`; the generated candidates are linked to the actual
-source by Lean proofs. The result is independent of the phase-cover numerical
-leaves. The module is not imported by the final theorems.
-
-**The conditional-source table (not imported by the final theorems).** The
-modules named `Q0Source…`, `Q0Conditional…`, `Q0NearZeroSource…` and
-`Q0RegularSourceRow…`, described in the paragraphs from here to
-"q0 source-to-literal identity", certify parts of one route to the energy
-table: a saved table of binary64 conditional Hermite values. They are
-kernel-checked and built with `Grothe`, but none of them is imported by the
-final theorems: `Final.hclose_final` certifies the energy table with the
-quadrature checker (`UpperQuad/`) instead. Where these paragraphs say that an
-input is separate, explicit or supplied by the caller, they describe the
-interface of that result.
-
-**Conditional-pair ranks.** `Q0ConditionalPairRankAll` proves finite rank,
-ordinal coverage and uniqueness for the degree-531 canonical pair table. Its
-pairs `(c,d)` satisfy `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
-`c+d ≤ 531`, ordered by `(c+d,c)`; they index conditional Hermite node values.
-It does not decode the full node-value payload or establish Gaussian
-coefficient enclosures.
-
-The input `data/q0_quadrature/conditional_source/conditional_canonical_pairs.npy`
-was produced by `build_conditional_nodes.py` in the common-head conditional-node
-pipeline. Its SHA-256 is
-`075eb8fe8a52766742c7ca82097171f8dfce173ac8dc9ed80193fc7821ee1ead`.
-`tools/q0_quadrature/gen_conditional_pair_ranks.py --check` verifies that hash,
-the `(35777,2)` shape and little-endian signed 16-bit representation, and exact
-equality with the closed-form enumeration above before reproducing the Lean
-files. This input hash records provenance; Lean checks the emitted literals
-and finite properties, not the NPY parser.
-
-**Exceptional conditional rows.** The source table has 21,577 rows of
-binary64 conditional Hermite approximations, ordered by the degree-531 canonical
-pairs `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order and restricted
-to `c+d ≤ cutoff_i` in row i. A full row has 35,777 entries; cutoffs 1 and 2
-retain three and five. This certificate selects all nodes in each panel hit by
-a zero-containing result of the outward 128-bit profile interval Horner screen.
-The 413 unresolved nodes occupy 381 panels, whose complete rule nodes are the
-417 ordinals 3872–4036, 10910–11037 and 17321–17444. This panel selection is
-independent of cutoff; 1,837 source rows have cutoff at most two.
-`exception-selection.json` commits the rule and exact screen, panel and root
-inputs. `Q0SourceExceptionCentersAll` combines exact binary64 decoding checks:
-each scalar has magnitude at most one, and each complete row has squared norm
-at most 121/100. The source ordinal ranges, cutoff counts and byte spans are
-explicit. `python3 tools/q0_quadrature/gen_source_exception_centers.py --check`
-replays the selection and reproduces exactly 16 chunks and their aggregate from
-pinned slice, offset and per-row ledger files. The strict audit adds no native
-facts. The source-error assembly consumes these decoded rows through their
-source-address and cutoff binding. It does not provide production basis
-normalization or enclosures of actual Gaussian coefficients. Source metadata alignment has
-its own generator, `gen_source_exception_metadata.py --check`, which shares the
-validated row reader. Producer provenance and the checked ledger fields are documented
-in [`conditional_source/README.md`](../data/q0_quadrature/conditional_source/README.md).
-
-
-
-**Actual source-error assembly.** `Q0SourceExceptionMassClosure` uses the
-finite exceptional-panel order scan and `Q0GaussSourcePanelMass` to prove
-normalization for the actual selected root and physical weight family; `hpanel`
-is no longer an input to its public error theorems. Exceptional discrete mass
-is at most `2e-21`, and the true selected coefficient vector differs from the
-saved exceptional vector by at most `1.575e-10`. The regular and exceptional
-squared errors add. `actual_source_error_sharp` gives `2.53e-10` given only the
-stated regular-node `1e-12` coefficient enclosure. The complete physical
-Gaussian weight is `sourceWeight a * exp(-sourceNode a)`, exactly once.
-
-`Q0ConditionalSourceReconstruction.reflected_error_le` passes that bound to
-`ConditionalReconstruction.weighted_top_norm_le_of_canonical_error`, using
-exactly `ConditionalNodeIndices.modes` and the actual production coefficient
-of the phase slice at `sqrt(s)`. It gives `(10/7) * 2.53e-10` on the full
-rectangle. The `3.6e-10` compatibility lemma concerns the earlier canonical
-source-vector stage, not the post-reconstruction error. No storage-prefix,
-zero-true-tail or implicit sign-normalization assumption is made.
-The actual regular evaluator, production center/basis binding, floating-point
-operations, continuous quadrature error, omitted regions, infinite tails and
-energy-table fit are not covered by these results. Their consumers have
-transitive strict axiom audits. Pinned inputs and all reproduction commands are listed in
-[`source-error/README.md`](../data/q0_quadrature/source-error/README.md).
-
-**Coupled regular-vector error.** `Q0ConditionalLinearError` applies the existing
-finite Bessel theorem to the actual Gaussian slice minus its constant-and-linear
-model. For every finite mode set and positive source radius, the squared
-coefficient error is at most `(5ρ²)²`, including when the signed physical
-profile ratio `ρ` is zero. Changing the model parameter to `r` has vector
-radius at most `|ρ-r|`, because only two linear coordinates change. A supplied
-saved-model vector error `ε` then gives radius `5ρ² + |ρ-r| + ε`.
-A per-coordinate tolerance cannot be substituted for this coupled `ε` premise.
-
-`Q0ConditionalSourceVector.LinearRowBounds` states the actual parameter and
-saved-vector certificates at an existing selected source node. Its hybrid
-budget uses the linear model on a chosen subset of regular nodes and explicit
-squared-error budgets on every other regular node. The source weights remain
-`sourceWeight * exp(-sourceNode)`, once; exceptional addresses are excluded
-from that regular sum and use the separate exceptional assembly. A checked
-hybrid budget at most `(1969/10^13)²` feeds the selected source-error bound
-`253/10^12`. No global near-zero assumption, production-table identification,
-or infinite-tail estimate is asserted. The finite physical-parameter and
-saved-vector certificates are hypotheses of this budget. Source dependencies and
-certificate semantics are in
-[`source-vector/README.md`](../data/q0_quadrature/source-vector/README.md).
-
-**Decoded exceptional-row model.** `Q0SourceSavedLinearModel.source_model_error_eq`
-identifies the coupled error over all selected modes with `modelErrorSq`, an exact
-rational sum over the five established low modes. The proof uses the same decoded
-row, source ordinal, cutoff and canonical rank lookup. Only the stored approximation
-and explicit model are zero outside this support; no true Gaussian coefficient is
-set to zero. The fitted parameter is `x10 - x01`. Its residual is exactly
-`(1-x00)^2 + (x10+x01)^2/2 + x02^2 + x11^2`, and using another parameter `r`
-adds exactly `(r-fitParameter)^2/2`.
-
-`source_linearRowBounds` binds this rational calculation to the existing row
-interface; `source_actual_error_sq_le` then bounds the actual Gaussian vector.
-Both apply to exceptional source addresses, retaining explicit physical-ratio and
-parameter-enclosure inputs. They do not instantiate the regular-node hybrid
-budget. `Q0SourceSavedLinearChecks` checks the decoded rational data with
-`decide +kernel` in separate chunk modules. The aggregate supplies the model
-error below `(1/10^31)^2` and fitted-parameter magnitude below `1/10^15` for
-the actual `rowAt`. Its `source_actual_error_sq_le` discharges the saved-model
-premise and leaves only the two actual physical parameter enclosures. The
-strict audits permit only the standard logical axioms. The generator reuses
-the same validated input reader and reproduces its outputs byte for byte.
-
-**Actual exceptional-node profile.** `Q0SourceProfileRatio` interprets the
-centered interval check through the already proved `ProfileRootScreen.row_horner_mem`
-and `centered_horner_profile` identities. `Q0SourceExceptionProfile` checks
-three entire source panel blocks, using endpoints directly from `sourcePanels`
-at indices 146–274, 557–684 and 964–1087. Their common scaled-profile cap is
-`1/(2*10^14)`. Panel ordering proves coverage of each exceptional source node;
-its squared radius is at least 13, so its square-root denominator is at least 3.
-The actual signed ratio is therefore at most `B/3` in magnitude, and its
-error from the checked saved fit is at most `B/3 + 1/10^15`. Combining these
-with the decoded model error gives radius
-`5*(B/3)^2 + B/3 + 1/10^15 + 1/10^31 < 3/10^15`.
-The final `source_actual_error_sq_lt` statement has only the source address
-and exceptional-panel membership as inputs; both physical estimates and the
-saved-data estimate are discharged. The three finite checks use kernel
-reduction and strict standard-axiom guards. Their exact external replay is reproducible with
-`tools/q0_quadrature/gen_source_profile_ratio.py --check`; the JSON records
-provenance and does not replace Lean's checks. This result concerns the
-exceptional nodes only: it gives no regular-node, quadrature,
-primary-contraction or energy-table statement.
-
-**Actual weighted exceptional error.** `Q0SourceExceptionalWeightedError`
-restricts the actual selected-vector estimate to every finite `S ⊆ modes` and
-sums it using the original `sourceWeight * exp(-sourceNode)` exactly once.
-The same-root panel normalization bounds the discrete exceptional mass by
-`2/10^21`, yielding squared error at most `(2/10^25)^2` and radius at most
-`2/10^25`. Continuous root-gap omission is a separate error term.
-`actual_source_error_sq_le` combines this with any explicit regular squared
-budget `R^2`, giving `R^2 + (2/10^25)^2`; the square-root and additive-radius
-forms retain that same regular premise. No regular evaluator or ledger
-allowance is inferred from this result.
-
-**Fixed-node finite auxiliary integral.** `Q0ConditionalFiniteLaplace` defines
-one disk-valued Gaussian response at each nonnegative squared radial node,
-using the actual affine argument of `F0ConditionalNode`. Its Hermite
-coefficient is identified both with the Gaussian integral and, by absolute
-Fubini, with the finite auxiliary integral of the Gaussian kernel. The
-softened and truncated responses remain in the unit disk.
-
-`Q0ConditionalSoftening` uses the existing small-ball bound for every fixed
-Gaussian fibre and layer cake to prove softening L² error at most `(10/3)η`.
-The auxiliary tail contributes at most `exp(-η²T)`. Bessel charges their sum
-once over any finite Hermite family. With the existing `finiteLaplaceEta` and
-`finiteLaplaceCutoff`, the resulting vector radius is at most `5/10^15`.
-The argument includes profile zeros; it does not specialize an almost-everywhere
-product-measure statement to an isolated quadrature node.
-
-`Q0ConditionalFiniteLaplaceSource` applies this to the original `sourceNode`
-and keeps a coupled finite-integral-to-completed-center squared error `ε_a²`
-as an explicit numerical premise. Its regular budget is the sum of
-`sourceWeight * exp(-sourceNode) * (5/10^15 + ε_a)^2` over regular addresses.
-The source adapter adds the separately established exceptional squared term
-`(2/10^25)^2`. The full `phiT/P3` response binding, finite-integral certificates,
-continuous quadrature, contraction and energy-table accuracy are not part of
-this development.
-The concrete uniform consumer needs only coupled finite-integral-to-saved
-radius `19/10^11` at every regular row. The existing actual mass bound
-`sourceMass < 107/100` proves the regular budget is at most `(1969/10^13)^2`;
-adding the exceptional term stays within the existing `253/10^12` source
-radius. This replaces a separate weighted-budget premise, without certifying
-any row or changing the ledger. It is not a per-coordinate tolerance.
-All new headlines have strict standard-axiom guards and audit registration.
-
-
-**One actual regular source row.** `Q0RegularSourceRow` fixes the original
-address `(panel=135, rule=2)` and proves its ordinal is 3818. The 24-byte
-binary64 slice and its matching ledger record live in
-`data/q0_quadrature/regular-source-row/`; the generator checks the pinned
-original offsets, cutoff, panel schedule and row hash. The historical ledger's
-numerical claims and full-table hash are not proof premises.
-The source metadata is identified with the unique metadata at this address,
-and the saved lookup is proved unchanged by the original cutoff completion.
-Exact kernel checks give zero fitted-model residual and scaled physical-profile
-magnitude at most `1e-15` throughout panel 135. The existing analytic model
-bounds all selected actual Gaussian coefficients against these centers by
-radius strictly below `2e-15`. The coupled triangle inequality adds the fixed
-`5e-15` finite-Laplace approximation cost, giving radius below `7e-15` and an
-explicit instance of the regular-source `19/10^11` premise. True omitted
-coefficients remain in the error sum. This concrete proof certifies only this
-address; it supplies no all-row or final-bound claim.
-
-**Actual source rows near profile zeros.** `Q0NearZeroSource` selects exactly
-ordinals 3469–4456, 10710–11238 and 17223–17542. The compact input in
-`data/q0_quadrature/near-zero-source/` contains 65,032 original payload bytes
-and their verbatim ledger lines; regeneration reads only these bytes and the
-already pinned source offsets, cutoffs and panel schedule. Historical ledger
-error estimates are not proof premises. The selection contains 1,837 rows,
-including 1,420 regular rows, and matches every original cutoff at most two
-in the external replay.
-
-Each generated chunk checks exact rational decoding, original metadata
-alignment, `|fitParameter| ≤ 2/10^11` and squared model residual at most
-`(2/10^22)^2`. `Q0NearZeroSourceProfile` checks the entire actual panel blocks
-102–318, 521–720 and 933–1118 at scaled-profile cap `1/10^10`. The shared
-analytic row theorem bounds every selected Gaussian coefficient, including
-true coefficients outside the saved cutoff. Its actual radius is at most
-`2400000000259/45000000000000000000000`; adding `5/10^15` bounds the finite
-radius strictly below `6/10^11`, hence below the existing `19/10^11` allowance.
-The actual-address consumer has no numerical premises beyond membership in
-the certified ordinal ranges. Other rows are not certified in this way;
-production response binding, quadrature and table accuracy are not part of
-this development.
-
-The source-error, exceptional-profile, finite-Laplace, regular-row and near-zero
-modules above are imported by the generated root `Grothe.lean`, so every proof
-check of the `Grothe` target checks them. The final theorems do not import them.
-
-**q0 source-to-literal identity.**
-`Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
-`s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals
-`he3 sourceCoefficients s b v / sourceDen`. Its source-table equality is a
-proved conclusion, rather than a hypothesis. Here `sourceDen` is exactly
-`604005087394345832307543156484734976000`, distinct from the phase denominator
-above. The coordinates are squared radius, inverse damping rate, and shifted
-argument, in that order. The inverse-rate factor already present in the
-literal is preserved.
-
-`Q0SourceChunkAssembly` combines the actual source partition, chunk tables and
-denominators; `Q0BinaryLiteralAssemblyBridge.combined_literals_eq` has the kernel fold the chunk
-tables into the literal source coefficients directly.
-These concrete facts and the final identity are in the default axiom report
-(`scratch/Axioms.lean`, `data/axioms/required.txt`), and `Q0SourceBindingAxiomAudit`
-rejects any transitive axiom outside `propext`, `Classical.choice`, and `Quot.sound`
-for them at compile time. The `gen_q0_literal_data.py`, `gen_q0_source_chunks.py` and
-`gen_q0_chunk_assembly.py --module-name Q0SourceChunkAssembly` tools reproduce
-the candidate files with `--check`; their Python calculations do not replace
-Lean's proof checks. The binding
-generators use `data/q0-source-binding/source-polynomial.json`;
-the production rectangle generators retain their profile-enriched input under
-`data/q0_quadrature/`. The shared source fields agree in both inputs.
-This identity supplies a source binding for numerical models; it does not
-certify cells, Taylor-band errors or the frozen-response energy discrepancy,
-and the final theorems do not import it.
-
-**Weighted Gaussian kernel mass.**
-A single checked predicate, `OriginalHSParameterGates.gateOK`, supplies
-positivity of the real covariance forms for any parameter record.
-`OriginalHSGaussianMass.integrable_gateWeight` and `integral_gateWeight`
-prove convergence and the physical-pair mass `ν²/δ` under that predicate.
-`OriginalHSGaussianTensor.integrable_tensorWeight` and `integral_tensorWeight`
-combine the independent pairs and give mass `ν⁴/(δ₀δ₁)`.
-The proofs establish integrability before applying Fubini. The determinant
-power is minus one for each pair of complex coordinates; no square-root or
-pi normalization is omitted.
-
-`OriginalHSParameterGates.parameters_checked` checks one parameter table
-for the fourteen selected output degrees and four coordinate exclusions.
-The manifest in `data/original-hs-parameters` records each selected source:
-first-power degrees 51 and 101 use the rectangular input, later first-power
-degrees use the power-one input, and powers two and three use their selected
-finite-band degrees. All input files remain hash-pinned and byte-identical.
-Run `python3 tools/gen_original_hs_parameters.py --check` to reproduce the
-Lean table. Exact Python replays are diagnostics stored in ignored `handoff/`;
-Lean's kernel checks the parameter facts independently.
-
-The manifest identifies the numerical producer programs and explains the
-recorded Arb `bound` and its rational upper endpoint `upper_rational`.
-Neither is used as an assumed Hilbert--Schmidt bound. The decomposition
-hashes refer to uncommitted historical decomposition files and do not prove
-an operator identity. The absolute path in the immutable rectangular input
-is historical metadata, never a generator dependency.
-
-`OriginalHSGaussianAudit` enforces standard-three-only transitive dependencies
-for the aggregate parameter certificate and the generic pair/tensor
-integrability and mass theorems. This is stricter than the repository-wide
-native allowlist. The defined Gaussian matrix and kernel are not identified
-with `HS_{j,I}` in `UPPER_STATUS.md`. Polynomial insertion, a Fock coefficient
-identity, that operator binding and numerical tail bounds are not part of this
-development; the `OriginalHS…` modules are not imported by the final theorems.
+**Archived source-table route.** The data-free error lemmas of a second route to
+the energy table, through a saved table of binary64 conditional Hermite values
+(`Q0ConditionalFiniteLaplace`, `Q0ConditionalSoftening`,
+`Q0ConditionalLinearError`, `Q0ConditionalRetainedError`, `Q0FiniteVectorError`,
+`Q0GaussSourcePanelMass`), are archived; the final theorem certifies the table
+with the quadrature checker (`Final.hclose_final`).
 
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
@@ -689,108 +400,11 @@ to a stored primary matrix. The final theorem starts from the unreduced
 identity `norm_productionF0Head_sub_sq` (`UpperQuad/Bridge.lean`); its
 quadrature error is the hypothesis `hQuad`, which `quadHyp_of_parts` proves.
 
-`CompositeComparison.Inputs` retains six actual Gaussian premises: three
-low-band residual norms and three real inner-product lower bounds for the
-whole Taylor residuals with factorial scaling explicit. The seven band pieces
-sum to the actual response difference; their quadratic cost is bounded using
-the four whole residuals. `CompositeComparison.energy_close_of_raw_source` in
-`CompositeEnergy` consumes
-an actual projected F₀ approximation with error at most `9.5·10⁻⁹` and table fit
-of its actual rational smoothed output at most `10⁻⁸`, deriving selected-energy
-error at most `3·10⁻⁸`. `head_residual_of_raw_source` then uses the six Gaussian
-premises to obtain the head budget. The scalar ledger gives comparison error
-at most `1.72·10⁻⁶`; the raw-source and table certificates, the Gaussian
-premises and the Hardy tail are hypotheses of these results. No
-historical Hilbert–Schmidt receipt transfer is assumed. `CompositeComparison`
-and `CompositeEnergy` are not imported by the final theorems, which use the
-three-band regrouping (`ThreeBandRegrouping`, below) with the tight radii of
-`UpperTightComparison`.
-
-`RelaxedComparison` provides an alternative using the original fourteen
-unscaled Gaussian finite-band premises. The eighteen piece-error radii and
-four grouped quadratic radii are unchanged. Only each weighted response
-band-mass norm radius increases by `1/5000`; its square `4·10⁻⁸` covers the
-selected l1 energy discrepancy `3·10⁻⁸`. An energy discrepancy is not used as
-an L2 source allowance. The rational comparison sum is below `9·10⁻⁷`.
-`RelaxedEnergy.residual_of_raw_source` includes the actual source/correction/
-smoothing/table chain and adds the separate actual-kernel tail `3.6748·10⁻⁸`
-once, obtaining total residual `994901/10¹²`. The resulting conditional
-transfer is below `1.4045984`. All fourteen Gaussian estimates, the actual
-raw source error, the same-output table fit and the tail are hypotheses.
-`RelaxedComparison` and `RelaxedEnergy` are not imported by the final theorems.
-
-`CommonSourceTolerance` instantiates the variable source-to-energy interface
-with total canonical tensor error `9.7·10⁻⁸`, raw error `1.4·10⁻⁷`, projected
-error `1.45·10⁻⁷`, same-output table error `10⁻⁷` and selected energy error
-`4·10⁻⁷`. It charges reflection once, keeps the `2⁻⁵⁴` rational completion
-defect separate, derives the finite smoothing-input norm and includes the
-table allowance inside the energy budget. The canonical/source and table
-certificates are explicit premises for the same exact rational family.
-`CommonGaussianTailTolerance` enlarges each original unscaled finite Gaussian
-radius by `2·10⁻⁸` and recomputes all three captured-energy budgets. The new
-unscaled tail norms are `2764127/250000000000`, `318927/125000000000` and
-`548393/250000000000`. It consumes fourteen actual Gaussian premises and the
-stored centers' norm/support identities. Comparison still divides the second
-and third tails by two and six; the old grouped quadratic radii cannot be
-reused for the enlarged errors. These two modules prove none of their numerical
-premises, and the final theorems do not import them.
-
-`localized_comparison_with_errors` keeps those same eighteen supports but
-accepts an arbitrary actual piece-norm error family and selected energy
-tolerance. Its conservative quadratic term is the square of the sum of the
-supplied errors, so it does not reuse old group radii after enlarging Gaussian
-caps. `selected_energy_close_of_raw_error` separately propagates arbitrary
-raw, projected and same-output table allowances. These interfaces preserve
-the original concrete contracts; changing a ledger requires every
-new captured-tail and scalar arithmetic certificate. The final theorem uses
-`selected_energy_close_of_raw_error`; `localized_comparison_with_errors`
-(`ComparisonTolerance`) is not imported by it.
-
-`ProductionF0RationalCompletion` constructs the reflected half from the
-canonical rational centers using the existing `RationalSqrtFloor` at
-denominator `2⁵⁴` and exact rational multiplication. Injectivity of the partner
-map bounds the coupled completion defect by `2⁻⁵⁴` times the canonical center
-norm, without an entry-count factor. That center norm is at most one plus the
-actual canonical tensor error, by the F₀ norm and the triangle inequality.
-An actual canonical tensor error `6.6·10⁻⁹` therefore fits the raw `9.5·10⁻⁹`
-contract. `RelaxedRationalReference` uses the resulting same-reference table
-premise and fourteen Gaussian estimates. The archived floating family is
-separate; its table certificate is not transferred to this new reference.
-Neither module is imported by the final theorems.
-
-`ProductionDegreeOneMatrix` and `ProductionDegreeOneTable` are a concrete
-table-fit slice for degree one. `ProductionDegreeOneTable` and
-`EnergyDegreeOneLookup` are excluded from the build
-(`data/root-imports-exclude.txt`): the kernel check of the lookup needs about
-28 GB of memory (#271). No other module imports them.
-The generator validates the pinned full raw archive
-`5992d33a…`, reads both grade-zero words at offsets indexed by `251²` and `0`,
-and inserts the actual frozen correction once before production rational
-smoothing. Natural square-root inequalities certify the matrix
-entries. The actual `retainedSmoothed` energy identities use arbitrary higher
-grades, and the dyadic reference leaves both canonical grade-zero coordinates
-unchanged. The two-energy table residual is `≤ 10⁻¹⁵`.
-`EnergyDegreeOneLookup` proves against the current `parseRow`, `parseEntry` and
-`tabVal`; one-sided character certificates can succeed only when their result
-is the value of those unchanged definitions. Every row and duplicate matching
-entry contributes. The pure delimiter helper is reused byte-identically from
-8c4d commit `34c12029…`; no retired prefix or source-lookup axiom is imported.
-This arithmetic certificate does not establish accuracy of the Gaussian F₀ input.
-
-`ProductionF0Omission` partitions the actual phase by one measurable union of
-three explicit root-gap sets and `s > 100`. The continuous Gaussian tail mass
-is exactly `exp(-100)`. Gaps beyond `s = 13` with total width at most `8·10⁻¹⁶`
-have mass at most `2·10⁻²¹`; `continuous_mass_budget` proves
-`2·10⁻²¹ + exp(-100) ≤ (45·10⁻¹²)²` in Lean. The bound `‖F₀‖ ≤ 1` applies
-before projection and before coefficientwise estimates, so the union incurs
-one L² cost. `completeRegularHead` is the actual degree projection of the
-source on the entire complement. `energy_close_of_regular_source` and
-`head_residual_of_regular_source` propagate an approximation of that source
-through the same correction, smoothing and table consumer. Actual gap geometry,
-whole-complement approximation, source/FP bindings, table fit and Gaussian
-premises are explicit hypotheses. Discrete exceptional-node error is a separate cost;
-no Taylor or Hardy tail conclusion follows from the F₀ unit bound. The module
-is not imported by the final theorems.
+`selected_energy_close_of_raw_error` (`ProductionRetainedEnergy`) propagates
+arbitrary raw, projected and same-output table allowances to the selected
+energy error; the final theorem uses it. The comparison for an arbitrary
+piece-error family, `localized_comparison_with_errors` (`ComparisonTolerance`),
+is archived.
 
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
@@ -860,7 +474,7 @@ loses too much precision in this subtraction. The original error allowances
 are recorded in `data/localized-comparison/inputs/taylor_comparison_result.json`;
 their Gaussian validity is not proved in Lean. This theorem removes a separate tail
 hypothesis once these four finite-band error hypotheses are supplied; they are
-among the hypotheses of the conditional theorem `fresh_upper_concrete_taylor`.
+among the fourteen hypotheses of `ConcreteTaylorUpper` (below).
 
 **Exact Taylor rounding.** `TaylorFirstData`, `TaylorSecondData` and
 `TaylorFrozenData` preserve the first center through degree 181, the second
@@ -874,11 +488,6 @@ proved integer fold. The frozen witness uses named typed integer grades at scale
 defines the production lookups independently of Gaussian and Hermite proofs.
 `FrozenSource.Sizes` proves the complete 259,532-entry size from all 91 grades;
 `FrozenSourceBinding` proves the two actual degree-one coefficient values.
-`FrozenSource.Grade000Production.coefficient_energy` and its grade-90 counterpart
-identify the complete rectangular sums of production coefficient squares with
-exact rationals, using only standard axioms. These are frozen component energies,
-not the mixed Gaussian energy-table comparison (which is `Final.hclose_final`);
-the final theorems do not import these two grade modules.
 `GradedHermiteLinear` proves coefficient linearity and zero
 extension between graded supports. `TaylorCenters` defines the actual centers
 and their rounding difference. At common scale 2^206, the numerator is
@@ -903,9 +512,7 @@ theorem `thirdCenter_source_check` replaces the unused old text-decoding
 statement. No equality with the old monolithic parser is assumed. Exact array
 binding and all bounded part/grade sums are checked in Lean. Strict transitive
 audits permit only `propext`, `Classical.choice`, and `Quot.sound` for these
-results. `ThirdCenterEndpointAxiomAudit` audits `fresh_upper_concrete_taylor` to
-verify that the retired third-center native facts do not occur among its
-dependencies. This finite
+results. This finite
 energy identity does not establish a Gaussian comparison-band error or the
 frozen-response table discrepancy.
 
@@ -932,15 +539,14 @@ and identifies each Taylor comparison source with the corresponding scaled
 `Lp` residual. It proves comparison piece zero's rounding cap.
 `FirstSecondCapturedTail` derives pieces seven and twelve from their finite
 Gaussian error families; `ThirdCapturedTail` supplies piece seventeen.
-`Grothe.UpperChaos.fresh_upper_concrete_taylor` in `GroupedRounder.lean` assembles all eighteen pieces
-and concludes the target upper-bound implication from only `hfirst` (six
-finite errors), `hsecond` (four), `hthird` (four), and `hclose` for the energies
-of the actual `Xfun frozenCorrectionFn`. It has no separate rounding, tail,
-representative or charge-one premise. The energy-table accuracy `hclose` is
-proved (`Final.hclose_final`). The fourteen Gaussian inequalities are not
-proved with these caps, so this theorem and its bound below `1.404598149141`
-stay conditional; `upper_below_tight` does not use it. Its only consumer is the
-conditional `Statement.upper_target_of_inputs` (`Grothe/UpperTarget.lean`).
+`comparisonInputs_taylorCenters` (`ConcreteTaylorUpper`) assembles all eighteen
+pieces into `ComparisonInputs` for the actual rounding and
+`Xfun frozenCorrectionFn` from only `hfirst` (six finite errors), `hsecond`
+(four) and `hthird` (four), with no separate rounding, tail, representative or
+charge-one premise. These fourteen Gaussian inequalities are not proved with
+these caps. The conditional theorem built on them, `fresh_upper_concrete_taylor`
+(a bound below `1.404598149141`), is archived (`GroupedRounder`);
+`upper_below_tight` uses the three-band regrouping below instead.
 
 `ThreeBandRegrouping` gives the regrouping that the final theorem uses: retain the lowest
 bands `(0,51]`, `(0,51]`, `(0,11]`, and group each remaining spectral support
@@ -953,33 +559,14 @@ with the smaller radii `tightScaledRQ` from the port facts and the twisted
 quadrature remainders (`TightTwist.hwholeFirst_of_facts`,
 `hwholeSecond_of_facts`, `hwholeThird_of_facts`).
 `ThreeBandComparison` binds the regrouping to the actual frozen source and
-the current energy table. `ThreeBandBudget`, `ThreeBandEndpointCore` and
-`ThreeBandEndpointAdapter` combine the exact comparison budget
-`0.000001718234095590230974208508254864` with the original head, current
-table error and raw Hardy tail `36748 / 10^12`; they do not reuse the sharper
-tail's changed-head deduction. The resulting residual is
-`0.000001783148789608230974208508254864`.
-`ThreeBandEndpoint.upper_of_three_low_three_whole` concludes a Grothendieck
-bound strictly below `1.40459988` from exactly the three low-band bounds,
-three independent whole-error bounds and actual frozen-response table
-accuracy (task #295). The table accuracy is proved, and the whole-error bounds
-are proved with smaller radii (`UpperTightSix`).
-This fixed-budget theorem (`ThreeBandUpper.lean`) retains its explicit low-band
-hypotheses. The final assembly uses the generic comparison with the tighter
-certified radii above; it does not import this endpoint module. The standard
-analytic cores and concrete adapters keep their explicit inherited trust
-allowances; no new native fact is introduced. The older public `UpperTarget`
-threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the stricter
-threshold `1.404599398052`.
-
-The relaxed three-band chain for the `1.4046` threshold (`RelaxedThreeBandBudget`,
-`RelaxedThreeBandComparison`, `RelaxedThreeBandUpper`, `RelaxedTwistMargins`,
-`RelaxedTwistSix`), its theorem `upper_target : UpperTarget` (`Grothe/UpperFinal.lean`),
-the remainders `Final.twistRemainder1/2/3` and their native total checks
-`TwistEllCheck.Facts.j1Total/j2Total/j3Total` were removed on 15 November 2026
-(#405); `main_bounds` used none of them. The current upper bound is
-`upper_below_tight`, and the energy-table accuracy `Final.hclose_final` is in
-`Grothe/UpperClose.lean`.
+the current energy table; `ThreeBandBudget` (`Grothe/Upper/`) holds its seven
+bands. `upper_bound_tight` applies the regrouping with the tighter certified
+radii (`localized_comparison_tight_three_band`, `UpperTightComparison`) and
+passes the result to `TightEndpoint.endpoint_of_comparison` (`UpperTightFinal`),
+which adds the head, the table error (`Final.hclose_final`,
+`Grothe/UpperClose.lean`) and the Hardy tail. The public `UpperTarget`
+threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the
+stricter threshold `1.404599398052`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -1076,124 +663,19 @@ mixed monomials and finite polynomials through `shiftedDampedMoment`; in
 particular the zeroth moment is `exp(normSq a/rate)/rate`.
 `integrable_mixed_moment` and `integrable_finite_mixed_polynomial` establish
 integrability for every positive rate and fixed complex source using a
-half-rate exponential majorant. `LinearTiltedMomentsAudit` rejects transitive
-axioms outside `propext`, `Classical.choice`, and `Quot.sound`.
-`IndependentSourceMoments` allows `a,b` to be independent complex numbers in
-`exp(-(rate-1)*normSq z+a*z+b*conj z)`. A half-rate Gaussian envelope is
-uniform whenever `norm a + norm b <= M`, including on full complex source
-neighborhoods. It proves absolute integrability before differentiating under
-the integral: differentiation in `a` inserts `z`, and differentiation in
-`b` inserts `conj z`. `IndependentSourcePolynomial` first evaluates pure
-conjugate insertions by differentiation in `b`, then uses
-`P(0,q) = C(rate^-1)^q * X^q` and
-`P(p+1,q) = derivative(P(p,q)) + C(b/rate) * P(p,q)`.
-The exact mixed moment is `exp(a*b/rate)/rate * P(p,q).eval a`; finite
-linearity extends it to arbitrary finite complex polynomial insertions.
-`IndependentSourcePolynomialAudit` enforces the standard-three trust
-boundary for the majorant, integrability, both derivative identities,
-normalization, and finite evaluator.
+half-rate exponential majorant.
 
-**The Hilbert–Schmidt development (not imported by the final theorems).**
-The modules `IndependentSource…` above and `Actual…`, `Bipartite…`,
-`QuadraticPolynomial…`, `GaussianFockBessel`, `ScaledActualCoherentL2`,
-`GateFockCoefficients`, the coefficient-jet modules (`…Jets`,
-`PairJetPolynomialOperations`) and `ScalarOriginal…` below prove exact Gaussian
-identities and source-norm bounds for the Taylor multiplier operators. The
-final theorems do not import them: `upper_below_tight` bounds the Taylor errors
-through the twisted quadrature (`UpperQuad/`). Numerical Hilbert–Schmidt caps
-and the binding to the historical Laguerre producer are not part of this
-development.
-
-`ActualTaylorCoherent.taylorPhasePower_eq_polynomial` identifies the production
-multiplier `taylorPhasePower j`, excluding `F0`, with its rational polynomial
-and exact Gaussian damping. The polynomial is the complex coefficient map of
-`(imaginaryFactorQ * phaseInvariantQ phaseTerms)^j` in physical order
-`(z, conj z, w, conj w)`; `imaginaryFactorQ` already includes the factor `I`.
-For each physical coordinate the coherent factor is
-`exp(x*conj z+y*z-x*y) * exp(u*z+v*conj z-u*v)`.
-The independent-source evaluator receives `(y+u, x+v)` and has total radial
-rate `r = 1 + j*phaseEpsQ`.
-`integrable_coherentIntegrand` proves absolute integrability for all eight
-complex sources. `integral_coherentIntegrand_eq_moments` evaluates the actual
-transform by a finite support sum of products of `momentValue`.
-`integral_coherentIntegrand` factors this sum into the finite transformed
-polynomial and one Gaussian factor per coordinate:
-`r^-1 * exp(-(1-r^-1)*(x*y+u*v) + r^-1*(x*u+y*v))`.
-Thus normalized `mu2` retains total mass factor `r^-2`, with no extra factor of
-pi. `ActualTaylorCoherentAudit` enforces the same standard-three boundary for
-the production identification, integrability and both integral formulas.
-`GaussianFockBessel` constructs the
-eight-coordinate normalized holomorphic monomials from Hermite orthogonality.
-Their coefficient energies are summable and satisfy Bessel's inequality for
-any Gaussian L² function; completeness of the holomorphic subspace is not
-assumed.
-
-`BipartitePolynomialL2` handles a real coupling matrix `M` under the existing
-positive-definiteness gate for `I - MᵀM`. Completion of squares and the
-positive rate `epsilon = min(1/2, coerciveRate/3)` dominate every finite
-polynomial times the kernel by an integrable Gaussian. Tensoring both physical
-coordinates gives source-space L² for any finite polynomial in eight variables.
-`ScaledActualCoherentL2` lifts the independent-source moment recurrence to
-polynomial coefficients, constructs the production multiplier's transformed
-polynomial, and proves its evaluation and exact source scaling. Its
-`memLp_scaledTransform` requires only `gateOK g = true`.
-
-`GateFockCoefficients` keeps source order `((y,u),(x,v))` explicit. For each
-physical coordinate, outgoing/incoming Hermite indices `(m,n)` map to
-`((m.q,n.p),(m.p,n.q))`. This is a proved equivalence, with a pointwise
-normalized-monomial transport theorem. Applying Bessel to the actual scaled
-transform gives coefficient summability and a norm upper bound in that order.
-`ActualCoherentBesselAudit` registers transitive standard-three checks for
-these interfaces.
-The normalized weighted Hermite matrix identification is supplied by the
-gate-jet extension below. Exact equality with the historical
-producer's Laguerre polynomial and numerical Hilbert--Schmidt caps are not
-part of this development.
-
-`ActualTaylorFiniteCoefficients` defines actual normalized Hermite matrix
-entries of `taylorPhasePower j` and proves absolute integrability through
-polynomial growth and nonnegative damping. Taylor power zero yields the
-identity matrix, fixing normalization. A finite physical Hermite generating
-block integrates to a finite source polynomial whose Gaussian coefficients
-are exactly the retained matrix entries, and zero outside that block.
-This finite block is not assumed equal to the full exponential transform.
-
-`ActualSourceCoefficientExtraction` evaluates that full transform's
-coefficients directly. The unit-rate, zero-second-source moment recurrence
-is ordinary differentiation, giving
-`momentValue 1 a 0 p q = q.descFactorial p * a^(q-p)`.
-After integrating the `(y,u)` source pair, a finite polynomial remains in
-`(x,v)` and their conjugates; ordinary Gaussian moments evaluate it.
-The preceding L² theorem justifies source-space Fubini. Tensoring the two
-physical pairs and finite linearity gives `coefficient8_scaledTransform`
-for every source index under the sole gate hypothesis.
-
-`ActualMatrixFiniteComparison.matrixEntry_eq_finite_moments` separately
-evaluates every physical matrix entry using the exact damped moment
-`if p = q then p! / rate^(p+1) else 0`, retaining both Hermite normalization
-factors and both Gaussian masses. At ground index, source extraction reduces
-to evaluation at zero, and
-`coefficient8_scaledTransform_ground_matrixEntry` identifies the full
-transform coefficient with the actual ground matrix entry.
-`ActualCoherentCoefficientAudit` adds standard-three transitive guards for
-these interfaces. The gate-jet extension
-below provides complete source proofs of the comparison for all weighted
-Hermite indices. Numerical Hilbert--Schmidt caps and the historical Laguerre
-binding are not part of this development. No physical/source Fubini or unproved
-coefficient identity is assumed in this batch.
-
-`ScalarOriginalBinding.scalar_original_binding`, in namespace
-`Grothe.UpperChaos.ScalarOriginalBindingDraft`, states the complete finite
-identity `scalarNumerator originalUpper = scalarSumLiteral`.
-`ScalarOriginalReindex` identifies the address-indexed sum with the original
-21,577-row mass ledger using its physical projection and ordinal equivalence.
-`ScalarOriginalGroup000` through `ScalarOriginalGroup021` compute all original
-named row sublists with the original exception mask and the power 251 of
-`ceil(panel.hi * 10^9)`. The final assembly retains every original row and has
-no numerical equality premise. `tools/gen_finite_scalar_sum.py` reproduces the
-source from pinned original inputs and the finite templates in
-`data/finite-scalar-sum/`. This identity alone supplies neither a scalar
-inequality, geometry check, trace estimate nor a kernel bound.
+**Archived Hilbert–Schmidt route.** Exact Gaussian identities and source-norm
+bounds for the Taylor multiplier operators are archived: independent-source
+moments (`IndependentSource…`), coherent transforms and Fock coefficients
+(`ActualTaylorCoherent`, `GaussianFockBessel`, `ScaledActualCoherentL2`,
+`GateFockCoefficients`), coefficient jets (`…Jets`,
+`PairJetPolynomialOperations`), bipartite kernels and their Gram evaluation
+(`Bipartite…`, `QuadraticPolynomial…`), matrix tails and rectangle operators
+(`Actual…`), the rational source-norm evaluator (`ActualSource…`,
+`RationalChargeOrthogonality`, `RationalCovariance…`) and the Gaussian
+parameter gates and masses (`OriginalHS…`). `upper_below_tight` bounds the
+Taylor errors through the twisted quadrature (`UpperQuad/`).
 
 `RadialLaguerre` identifies the actual production polynomial
 `ev (r : ℂ) (H (m+k) m)` with
@@ -1201,128 +683,10 @@ inequality, geometry check, trace estimate nor a kernel bound.
 coefficient formula. For `s ≥ 0`, the normalized `hfun (m+k,m) (√s)` is
 `(-1)^m * (√s)^k * √(m!/(m+k)!) * L_m^k(s)`; conjugation leaves this real
 radial value unchanged. Natural powers retain the zero-radius and zero-charge
-cases. `RadialLaguerreBlockReindex` identifies the actual conditional block
-`d ≤ q < 251` with `Fin (251-d)`. Its charge is `k=d+1-c ≤ 251`, and each
-block is a prefix of length at most `251-(k-1)`, with both `k=0` and `k=1`
-having maximal length 251. These identities supply the normalization and
-indexing for the radial sampled operator. They give no numerical
-Gram bound or continuous quadrature error.
+cases.
 
 `HermiteFallingFactorial` derives the finite production Hermite
-expansion from commuting creation operators. `HolomorphicCoefficientJets`
-identifies finite Gaussian extraction with derivatives at zero, and
-`BipartiteCoefficientJets` applies it in the gate source order
-`((y,u),(x,v))`. Derivatives are taken in the fixed order `u,y,v,x` from
-innermost to outermost; no commutation of mixed derivatives is assumed.
-`IndependentMomentJets` derives every required moment derivative and its
-smoothness from the existing dominated independent-source integral theorem.
-`PhysicalGateJets` then proves that each full finite jet equals the actual
-outgoing/incoming physical Hermite moment, including both negative coherent
-normalization terms.
-
-`PairJetPolynomialOperations` proves finite-sum linearity and independent
-source scaling. `ActualPairMomentCoefficients` specializes the finite
-polynomial and positive Gaussian gate to the actual pair scales, retaining
-mass `1/rate`. `ActualTensorMomentCoefficients` gives the explicit bijective
-index permutation, tensors the independent physical coordinates, and proves
-the source coefficient equals its physical moment with exact common
-normalization and scale factors. Finally,
-`ActualProductionMomentCoefficients.coefficient8_scaledTransform_eq_physical`
-uses exactly the support and coefficients of `multiplierPolynomial g.power`
-to identify every actual transform coefficient with a finite sum of physical
-Hermite moments. These steps use only source-space Gaussian integration and
-finite algebra; they do not exchange source and physical integration.
-
-`ActualCoherentHermiteJets` separately proves the finite generating identity
-for the physical coherent pair and the equality of its Gaussian and Hermite
-normalizations. `ActualGateMatrixWeights` proves that squaring the source
-scale gives the original real energy weight. `ActualGateCoefficientWeights`
-identifies `tensorNormalization` with the two physical `nrm2` factors and
-`tensorSourceWeight` with the exact gate source weight. These are unconditional
-algebraic identities, preserving the incoming axis order.
-
-`ActualGateMatrixCoefficients` proves absolute integrability of each physical
-monomial with its outgoing/incoming Hermite factors and integrates the exact
-finite multiplier polynomial. Its
-`coefficient8_scaledTransform_eq_weightedMatrixEntry` then identifies every
-actual transform coefficient with the normalized weighted actual matrix entry
-under the sole premise `gateOK g = true`. `summable_weightedMatrixEntry_sq`
-proves summability of the complete weighted energy. The full and finite
-energy inequalities bound the original real `energyWeight` times matrix-entry
-norm squares by `∫ Z, ‖scaledTransform g Z‖² ∂sourceMeasure8`.
-`ActualGateMomentJetsAudit` enforces strict standard-three guards. Numerical bounds for
-the actual source integral, Hilbert--Schmidt caps and the historical Laguerre
-binding are not part of this development.
-
-`ActualSourceNormGram` expands the squared norm of `actualSourcePolynomial`
-into its finite support quadratic form, preserving every off-diagonal term.
-Source-space L² justifies termwise integration; independence factors each
-Gram entry over the two physical pairs. `BipartiteKernelGramMoments` integrates
-the first source pair with conjugate shifted means. Its residual density is
-exactly the correlated form `I - Bᵀ B`, with the original Schur hypotheses and
-the scalar kernel mass retained.
-
-`BipartiteKernelGramEvaluation` represents the remaining conditional moments
-as finite `P4` polynomials and applies `QuadraticPolynomialMoments` to their
-actual support and coefficients. `ActualSourceNormEvaluation` substitutes the
-original gate parameters and the actual production polynomial, proving
-`integral_scaledTransform_sq_eq_value` and
-`tsum_actual_matrix_energy_le_value` under `gateOK g = true`.
-The value is real and nonnegative. `ActualSourceNormAudit` guards the complete
-transitive dependencies with the standard three axioms. A
-numerical enclosure of `sourceNormValue` and the numerical caps are not part
-of this development; this finite evaluator is not a numerical
-certificate or a substituted source-norm assumption.
-
-`ActualMatrixCutoffTail` proves the lower weight `R^D*T^(L+1)` for actual
-outgoing degree at most `D` and one incoming coordinate strictly above `L`.
-`ActualMatrixBandTail` uses the existing `bandModes` and excludes `hi = 0`,
-which denotes an unbounded band. `ActualMatrixRectangleTail` covers the
-complement of the inclusive input rectangle `(500, 500, 251, 250)` by four
-coordinate exclusions and preserves their exact matrix entries and source
-norms in the union bound.
-
-`ActualSelectedBandTails` selects exactly comparison indices 1–6, 8–11 and
-13–16. Kernel-reduction metadata proofs bind these fourteen finite,
-nonzero-power bands to consecutive quartets of the original 56-gate table;
-`parameters_checked` supplies the existing covariance conditions.
-`selectedBand_rectangleEnergy_le` gives each actual summable rectangle-tail
-energy at most the sum of its four finite source-norm expressions divided by
-their cutoff weights. `ActualMatrixTailAudit` guards all public theorems
-transitively with the standard three axioms.
-
-`ActualFiniteRectangleOperator` uses finite complex Cauchy--Schwarz to bound
-every selected-band matrix action by the same four source norms times the
-input coefficient energy. Its filters enforce the comparison band and the
-true rectangle complement, retaining every boundary index. No mode count is charged.
-`ActualRectangleCoefficientAction` constructs the finite normalized Hermite
-input, proves integrability of each output coefficient, and identifies its
-actual Gaussian integral with that matrix action by finite integral exchange.
-`ActualTaylorMultiplierOperator` uses the explicit `PhiBound` to place the
-actual multiplier in L-infinity and applies `ContinuousLinearMap.holderL` to
-construct multiplication on physical L². Its matrix entries are identified
-with the actual Gaussian integrals, and the complete Hermite basis gives
-convergence of the filtered finite actions to the multiplier of `rectangleTail`.
-`ActualInfiniteRectangleOperator` combines this convergence with finite Bessel,
-then applies output Parseval. For every physical L² input, the squared norm of
-its selected-band rectangle-tail output is bounded by `sourceBound` times the
-squared input norm. `sourceBound` is exactly the original four source-norm
-expressions divided by their cutoff weights; no extra tolerance is added.
-Numerical source-norm enclosures are not part of this development.
-
-`QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
-`Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
-`A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity
-whose remainder is the sum of two squared norms. Thus finite mixed
-polynomials are genuinely integrable before applying product Fubini.
-`QuadraticPolynomialMoments.integral_mixed_monomial` and
-`integral_finite_mixed_polynomial` evaluate them by the explicit finite
-`momentValue`. The first-coordinate mean is `-(B/A)*w`, the outer rate is
-`(A*C-B²)/A`, and `momentValue_zero` retains mass `1/(A*C-B²)`.
-`QuadraticPolynomialMomentsAudit` enforces the same standard-three trust
-boundary. Polynomial insertion into the full bipartite kernel is supplied
-by the source-space batch above; the historical Fock/operator identity
-and numerical Hilbert--Schmidt caps are not part of this development.
+expansion from commuting creation operators.
 
 `AffineGaussianSquare` centers the
 conditional density without dividing by the radial profile. For arbitrary
@@ -1363,26 +727,10 @@ representative and the absolute Laplace identity: the production inner product
 is the iterated auxiliary and first-coordinate Gaussian integral of
 `taylorConditionalWick`. No conditional-integration accuracy premise is used.
 
-`RationalUnitWickProduction` and `RationalUnitQuadrature` compile the actual
-unit-mode source and its Gaussian Wick evaluation into rational polynomials.
-`UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared` removes the
-radius square root from that polynomial form. For nonnegative cells,
-`RationalUnitProductionCell.unit_production_cell_mem_of_model` transfers a
-pointwise normalized-square polynomial enclosure to the production cell
-integral, proving its imaginary part zero. The model enclosure is an explicit
-hypothesis and the cell integral excludes the outer `1 / sqrt(pi)` factor;
-no numerical cell certificate or improper-integral bound is claimed.
-
-`SharedWickMomentRecurrence` identifies the compiler's moments with a real
-recurrence when inverse rate is positive. `SharedMomentTable` permits a finite
-supplied table to stand for that recurrence after its base and successor
-equations have been proved over the required rectangle; no table is assumed
-correct. `ShiftedMomentFactor` extracts one inverse rate from each real moment
-and two from the completed-square affine combination. For positive `alpha` and
-reciprocal coordinate `x`, `ReciprocalRate` uses
-`D = alpha*x^2 + kappa^2` to express the inverse Gaussian rate, shifted center
-factor and Jacobian-weighted squared inverse rate; `kappa` may be zero. These
-are exact identities, not numerical cell or source-error certificates.
+The unit-mode rational Wick compiler and its moment tables (`RationalUnit…`,
+`RationalWick…`, `UnitSquared…`, `SharedWickMomentRecurrence`,
+`SharedMomentTable`, `ShiftedMomentFactor`, `ReciprocalRate`) are archived with
+the mesh route below.
 
 `PositiveMomentTheta` defines the smooth angular moments
 `M_h(x) = ∫₀^(π/2) sin(θ)^(2h) cos(θ)^2 exp(-x sin(θ)^2) dθ`, proves
@@ -1406,13 +754,6 @@ almost-everywhere equality and proves `J_h(x) = (4/π) * M_h(x)` for every
 order and real parameter. `OriginalMomentRatios` transfers positivity and the
 three-term recurrence to `J_h`; for `x ≥ 0`, its ratio satisfies the exact
 continued-fraction update and finite backward enclosure from terminal `[0,1]`.
-`OriginalMomentRatioCertificates` checks finite rational lower and upper
-checkpoints over a nonnegative parameter interval. Its multiplication guards
-enclose each actual `J_(h+1)/J_h` backward step, using the proved unit interval
-at any finite terminal depth. Denominators are positive internally; neither a
-terminal approximation nor convergence of an infinite continued fraction is
-assumed. The checker has no native facts. It is not instantiated with concrete
-ratio checkpoint data, and no other module imports it.
 
 `OriginalMomentTaylorSeed` derives the actual integral estimate
 `|J_0(x) - Σ_(n≤N) (-x)^n J_n(0)/n!| ≤ x^(N+1) J_(N+1)(0)/(N+1)!`
@@ -1420,40 +761,12 @@ for every `x ≥ 0`. LeanCert's exponential Taylor remainder on `[-x,0]`
 uses derivative bound one; integrating the pointwise remainder gives the next
 original moment. The zero-parameter normalization and recurrence determine
 each retained coefficient.
-`OriginalMomentSeedCheckpoints` propagates rational term enclosures, reversing
-endpoints under the negative multiplier, and includes the terminal remainder.
-`OriginalMomentSeedInteger` proves that multiplication-only integer guards at
-a positive common scale imply these bounds on the actual integral.
-`OriginalMomentSeedData`, `OriginalMomentSeedCheck`, and
-`OriginalMomentSeedEnclosure` instantiate the proof at the pinned row-227
-rational midpoint squared. The certificate covers all 514 checkpoints and
-513 updates, retains terms 0 through 512, and bounds term 513. Arithmetic
-groups contain at most 32 transitions and use `decide +kernel`.
-`moment_midpoint_mem` has no numerical accuracy premise; its full interval
-width is exactly `73351 / 2^1024`, including rounding and integrated remainder.
-The three hash-pinned inputs under `data/original-moment-seed/` reproduce both
-generated Lean modules through `tools/gen_original_moment_seed.py`.
 
-**Common scalar and row-227 source binding.** `ConditionalSeedNormalization`
+**Common scalar.** `ConditionalSeedNormalization`
 defines the positive actual seed `S(A) = (sqrt(π)/2) * A * J_0(A²)` for `A > 0`
 and the common normalization `U_i(A) = C_i(A) / S(A)`. It gives exact
 reconstruction `C_i = S * U_i`, `U_(0,0) = 1`, the normalized zero-row and charge
 recurrences, and the finite Bessel budget `Σ_i ‖U_i(A)‖² ≤ 1 / S(A)²`.
-`ConditionalShiftEnclosure` converts absolute profile bounds and squared
-endpoint comparisons into a shift interval. `ConditionalSourceRow227Shift`
-binds the original zero-based panel 4 / rule 31 address to source ordinal 227,
-proves that its physical profile is positive and its phase sign is one, and
-identifies every actual source coefficient with the canonical coefficient at
-the actual shift `A_227`. For the pinned rational midpoint `m`, it gives
-`|A_227 - m| ≤ 2 / 10^18`; it does not identify the midpoint with the physical
-shift. `ConditionalSourceRow227Scalar` combines the actual midpoint moment
-enclosure with the square-root-of-π bounds to obtain `S(m) > 49/50` and
-`|S(m) - ŝ| ≤ 784 / 10^24`, where `ŝ` is the recorded exact dyadic scalar
-center. These bounds have no numerical-accuracy premise. Transport from the
-midpoint to the physical shift, normalized-triangle arithmetic, saved-row
-coefficient errors and energy agreement are not part of these results. The
-row-227 modules (`ConditionalShiftEnclosure`, `ConditionalSourceRow227…`, and
-the `OriginalMomentSeed…` modules above) are not imported by the final theorems.
 
 `MobiusGeometry`, `MobiusPowerAlgebra`, and `MobiusSeedPullback` establish
 the substitution `v = t/(1+t)` and its pointwise integrand identity.
@@ -1470,8 +783,7 @@ premise and supplies the normalized Gaussian coefficient
 `F0ConditionalSeed` identifies it with the actual canonical evaluator and
 uses `F0ConditionalEvaluator.coefficient_eq_signed` for the production
 coefficient at `s ≥ 0` with `vprof(s) ≠ 0`. The sign exponent is `d` and
-vanishes at `d=0`; there is no second Hermite normalization. A transitive
-guard rejects dependencies beyond the standard three Lean axioms.
+vanishes at `d=0`; there is no second Hermite normalization.
 `F0ConditionalSeedRecurrence` derives
 `I_(0,d+1)(A) = (-A) * ratio d (A²) / sqrt(d+1) * I_(0,d)(A)`
 for the actual canonical Gaussian integral, with positivity of `J_d`
@@ -1491,89 +803,19 @@ proves reality of its coefficient for every real source parameter, including
 profile zeros. The complex distance to any real
 stored center is exactly the absolute real-part error; no numerical enclosure
 is assumed in these identities.
-`ZeroProfileSavedCenter.actual_saved_error_lt` consumes only a physical signed
-profile-ratio bound, its distance to a chosen model parameter, and the distance
-from that explicit model to the saved scalar. It does not assume the unknown
-true coefficient error. The three costs are `5ρ²`, half the parameter error,
-and the saved-model error; exact rational arithmetic leaves strict slack below
-`10⁻¹²` for the displayed input tolerances. Actual source and byte bindings are
-not part of this result. The same theorem applies to a zero-completed coordinate with saved zero.
-`ZeroProfilePhaseLinearization` transfers the quadratic pointwise remainder
-to the actual Gaussian phase slice. The majorant uses `h₀₀+h₁₁=|w|²` and its
-L² norm at most two. Every true coefficient is within `5ρ²` of the centers
-`1,ρ/2,-ρ/2` at modes `(0,0),(1,0),(0,1)` and zero centers elsewhere. This does
-not set the other true coefficients to zero and does not certify saved bytes.
-`ZeroProfilePhaseSharp` uses the orthogonality of `h₀₀` and `h₁₁` to prove that
-this majorant has norm exactly `sqrt(2)`. `Haagerup/PhaseTaylorSharp` improves
-the global pointwise Taylor coefficient from `5/2` to `2`, including the zero
-perturbed point. `Haagerup/PhaseTaylorOptimal` proves
-`Grothe.Haag.phase_taylor_bound_at_radius_iff`: at each fixed positive radius,
-the bound holds for all perturbations exactly when its coefficient is at least `2`.
-The global `phase_taylor_bound_iff` follows. The obstruction comes from
-approaching zero along the negative real axis.
-Together these give whole-Gaussian and conditional-coefficient errors at most
-`2*sqrt(2)*ρ²`; this Gaussian constant is not claimed optimal.
-The rational relaxation `(17/6)ρ²` proves strict `10⁻¹²`
-saved-center accuracy for `|ρ| ≤ 1/2510000`, parameter error at most `10⁻¹³`,
-and saved-model error at most `1/(2*10¹²)`. The exact budget is
-`(3779033/3780060)*10⁻¹²`. This enlarges the original profile interval by
-`400/251`; it does not change the production certificates or the headline
-endpoint. The earlier `5*sqrt(2)/2` and `15/4` interfaces remain available.
-These theorems use only the standard axioms.
-`Haagerup/PhaseTaylorCubic` improves the small-perturbation estimate: with
-`q = ‖h‖/r`, the global phase remainder is at most `q² + 2q³`. The quadratic
-coefficient one holds when the perturbed point has norm at least `r/2`;
-the cubic term covers the remaining region using the optimal global coefficient two.
-`ZeroProfilePhaseCubic` combines this with the orthogonal cubic Wick majorant
-`sqrt(2)*h₂₁ + 2*h₁₀ = |w|²w`, whose Gaussian L² norm is `sqrt(6)`.
-Taking pointwise norms in L² and using the triangle inequality gives whole-slice
-and conditional-coefficient errors at most `sqrt(2)*ρ² + 2*sqrt(6)*|ρ|³`.
-The rational relaxation `(17/12)*ρ² + 5*|ρ|³` gives saved-center accuracy
-strictly below `10⁻¹²` for `|ρ| ≤ 1/1780000`, with the same parameter and
-saved-model tolerances. Its exact budget is `(84353029/84596280)*10⁻¹²`,
-and its interval is `200/89` times the original. This is a quadratic-plus-cubic
-bound, so it does not contradict optimality of the purely quadratic constant two.
-No Gaussian optimality or change to the production certificates or headline endpoint is claimed.
-The first-order phase approximation has pointwise remainder at most
-`(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
-`‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
-This elementary estimate does not assume a derivative identity or exclude a
-zero perturbed point. A Gaussian coefficient and saved-node instantiation is
-not included.
-`Haagerup/PhaseStability` derives the zero-safe perturbation inequality from
-`phase(z)*‖z‖=z`, the triangle inequality and `‖phase(z)‖≤1`, with only a positive
-real reference radius. `ZeroProfilePhaseStability` specializes it to the actual
-production phase at `s>0`. Its distance in Gaussian L² from the constant phase,
-and every coefficient error relative to that phase, are at most
-`2*sqrt(1+aQ²)*|vprof s|/sqrt s`. This does not assume a nonzero profile or
-evaluate an inverse shift. Actual node intervals, stored-center errors and a
-propagated budget are not part of these results. The saved-center, phase-Taylor
-and phase-stability modules (`ZeroProfile…`, `Haagerup/PhaseTaylor…`,
-`Haagerup/PhaseStability`) are not imported by the final theorems.
+
+The zero-profile saved-center bounds, the phase Taylor bounds (among them the
+optimal global coefficient `2`, `phase_taylor_bound_iff`, and the cubic
+refinement `q² + 2q³`) and the phase-stability estimate (`ZeroProfile…`,
+`Haagerup/PhaseTaylor…`, `Haagerup/PhaseStability`) are archived.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
 `q=0` and zero mean. Before norms are taken, the affine bracket becomes
 `(alpha*z/beta)*M(p,q)+(a*q/beta)*M(p,q-1)`.
-The base-moment cancellation below is a specialization of this recurrence.
-`RadialDampedMoments` proves the Gamma formula and integrability for
-`norm(z)^q * exp(-(rate-1)*normSq(z))` whenever `q>-2` and `rate>0`.
-This includes negative radial exponents without imposing a positive radial
-cutoff. Full-source tail constants, a radial reduction and quadrature budgets
-are not part of these results; `RadialDampedMoments` is not imported by the
-final theorems.
-
-`ConditionalGaussianBase` identifies the first shifted moments and combines
-the zeroth-moment bracket before estimating it: it is exactly
-`alpha*z/beta^2`. For `‖z‖ ≥ r₀ > 0`, `ConditionalGaussianTail` bounds the norm
-of the conditional Gaussian expectation by
-`2/(alpha*r₀^3) * t^(-5/2)`. Its integral above any `T>0` is at most
-`4/(3*alpha*r₀^3) * T^(-3/2)`. The scalar majorant in
-`RealGaussianKernelTail` follows from `y^2*exp(-y) ≤ 2` and works for every
-positive `beta`, so no lower bound on the radial profile is needed. These
-results concern the base moment away from the radial origin; they give no
-bound for the full polynomial-weighted Taylor sources, and the final theorems
-do not import these three modules.
+The radial Gamma moments (`RadialDampedMoments`) and the base-moment tail bounds
+built on this recurrence (`ConditionalGaussianBase`, `ConditionalGaussianTail`,
+`RealGaussianKernelTail`) are archived.
 
 `F0ConditionalNode.coefficient_eq_integral` and its Bessel bound refer to the
 actual conditional phase. `F0ConditionalEvaluator.coefficient_eq_signed`
@@ -1617,94 +859,23 @@ floating reconstruction and table agreement are not part of this module.
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
-`Grothe/TransferHilbert.lean` proves that a finite family in any complex inner
-product space admits Euclidean coordinates preserving every norm and Gram
-entry, in dimension at most the family cardinality. Applying this to the
-combined row and column families formally extends `vectorOpt` and every
-`IsGrothendieckBound` inequality to unit vectors and closed-unit-ball vectors
-in arbitrary complex inner product spaces. Neither completeness nor finite
-dimension of the original space is assumed. The proof uses only the standard
-axioms and leaves the definitions of both optima unchanged.
 
-`Grothe/ScalarOpt.lean` identifies `scalarOpt A` with an attained maximum of
-`∑ i, ‖∑ j, A i j * δ j‖` over unit phases `δ`. `Grothe/VectorOpt.lean`
-eliminates one vector family in the same way, using the column responses
-`∑ i, conj (A i j) • x i`. Compressing only the remaining family's span
-gives an attained maximum in `ℂ^m`; conjugate transposition then gives
-dimension `min m n` when both matrix dimensions are positive. Empty matrices
-have both optima zero. `isGrothendieckBound_iff_fixed_dim` makes this a
-canonical equivalent test for a Grothendieck bound, without an unbounded
-ambient-dimension quantifier. These are existential best responses; no claim
-is made that every optimizer is a normalized response at its zeroes.
-
-`Grothe/QuadraticDual.lean` prices overlapping quadratic error constraints
-together with a common moment budget. If `∑ i, b k i * e i² ≤ B k` and
-`t² + ∑ i, (ell i - e i)² ≤ μ`, then for `lam > 0`, `ν k ≥ 0`, and
-`b k i ≥ 0`, writing `M i = ∑ k, ν k * b k i`, the linear objective is at most
-`lam*(μ - ∑ i, ell i²) + aTail²/(4*lam) + ∑ k, ν k*B k +
-∑ i, (a i + 2*lam*ell i)²/(4*(lam + M i))`.
-The proof completes squares and includes prefix constraints as a specialization.
-The normed adapter derives the moment premise from center lower bounds,
-distance error bounds, and total energy, with the essential condition
-`e i ≤ ell i` stated explicitly. A two-variable instance certifies `41/30`
-instead of the separate estimate `3/2`; this is an algebraic example, not a
-replacement for the project's numerical certificate inputs.
-
-`Grothe/PolarizedGram.lean` proves, for nonnegative weights and summable energies,
-`(∑ w*|Re(r*conj s)|)² + (∑ w*Im(r*conj s))² ≤ E_r*E_s`, where
-`E_r = ∑ w*‖r‖²` and similarly for `E_s`. If `w ≥ L > 0`, the unweighted
-absolute real tail is at most `sqrt(E_r*E_s - I²)/L`, with
-`I = ∑ w*Im(r*conj s)`. Rectifying the real parts before the triangle inequality
-retains the imaginary correlation and removes the polarization tuning parameter.
-Both finite and summable families are covered, including zero energies. Using
-the improvement numerically still requires certified energies and correlation.
-
-`LowerAnalytic/JointDefect.lean` treats the exact two-disk support
-`S = |l+x+iy| + |l-x-iy|` and the majorant
-`H = C + x²/C + y²/lam`, `C = lam + l²/lam`, for every `lam > 0` and `l ≥ 0`.
-The rational correction
-`D₀ = (H⁴ - 4*H²*(l²+x²+y²) + 16*l²*x²)/(2*H³)` satisfies
-`(81/250)*(H-S) ≤ D₀ ≤ H-S`; the lower fraction is optimal.
-`LowerAnalytic/QuarticNewton.lean` proves the sharp error contraction `3/4`
-for Newton's method on `(z²-S²)*(z²-b²)`, where
-`b = abs (|l+x+iy| - |l-x-iy|)`. Starting at `H-D₀` gives monotone corrections
-`Dₙ` with `0 ≤ (H-S)-Dₙ ≤ (169/250)*(3/4)^n*(H-S)`.
-The explicit `correction_succ` formula uses only polynomial coefficients and
-division, so evaluation needs neither complex norm nor square root. The
-zero-denominator case is included. These pointwise inequalities do not assume
-a numerical certificate or change a Grothendieck endpoint.
+Archived: the extension of every `IsGrothendieckBound` inequality to unit
+vectors of any complex inner-product space (`TransferHilbert`); the attained
+optima and the fixed-dimension test `isGrothendieckBound_iff_fixed_dim`
+(`ScalarOpt`, `VectorOpt`); a quadratic dual with overlapping error budgets
+(`QuadraticDual`); a Gram bound that keeps the imaginary correlation
+(`PolarizedGram`); and a rational support-defect correction with its quartic
+Newton contraction (`LowerAnalytic/JointDefect`, `LowerAnalytic/QuarticNewton`).
 
 **Upper bound.** The proved upper bound is `upper_below_tight` ("Upper endpoint
 assembly" at the top of this file). The sharper value that the rounding was
-designed for is conditional: `Grothe.UpperChaos.fresh_upper_rounder`
-(`Grothe/UpperChaos/GroupedRounder.lean`) proves
-`IsGrothendieckBound (500000000000000000/355973699960428191)` for the concrete rounding,
-given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
-`Grothe.upper_value_lt` (`Grothe/Upper/GroupedBridge.lean`) shows this is below 1.404598148840.
-The table accuracy is proved (`Final.hclose_final`); the component-error inputs
-with the original caps are not, and `upper_below_tight` does not use this theorem.
-The supporting module
-`Grothe/UpperChaos/ProfileFirstGaussianCell.lean` (not imported by the final
-theorems) evaluates one finite cell: its
-`profile_first_gaussian_cell_exact` identifies the actual squared `lagHalf 1`
-integral on `[0,1]` with `5/4 - (13/4) * exp(-1)`, and
-`profile_first_gaussian_cell_enclosure` places it between
-`54391816192/10^12` and `54391816194/10^12`. The proof uses an explicit
-antiderivative and `Real.exp_one_near_20`, with no native checker.
-Both theorems are included in the axiom report.
-
-`Grothe/UpperChaos/LeanCertPilot.lean` uses LeanCert pinned at
-`7f91b6eb3567437f6cfac03ed279706603ee22f4`, with the existing Lean/Mathlib versions.
-Its `unitBaseSlice_integral_enclosure` proves
-`1 ≤ ∫ u in 0..1, 2*exp(-u²/(1+u²))/(1+u²)² ≤ 5/4`.
-The proof applies `integral_bounds_of_check_dyadic` to an explicit 16-cell
-`checkIntegralBoundsDyadicFull` certificate, checked by `decide +kernel`.
-This checks reciprocal domains as well as interval bounds; continuity proves
-integrability separately. `unitBaseSlice_eq_conditional_base` identifies the
-integrand, for `u > 0`, with `2*u` times the norm of the actual affine Gaussian
-phase-Laplace integral. Both theorems are in the axiom report and introduce
-no native facts. The module imports only `LeanCert.Validity.IntegrationDyadic`
-from LeanCert. The final theorems do not import this module.
+designed for is conditional and archived: `fresh_upper_rounder`
+(`UpperChaos/GroupedRounder`, with `UpperChaos/GroupedComparison` and
+`Upper/GroupedBridge`) proves
+`IsGrothendieckBound (500000000000000000/355973699960428191)`, which is below
+`1.404598148840`, from fourteen finite-band Gaussian error estimates that are
+not proved and the table accuracy.
 
 `ProductionFiniteLaplace` defines `finiteLaplacePhase η T z` by integrating the
 actual softened phase kernel over `[0,T]`, including the `1/sqrt π` factor.
@@ -1735,84 +906,15 @@ and auxiliary truncation together cost less than `5·10⁻¹⁵` for every Taylo
 order, with no new numerical premise. Its smoothed band-projection corollary
 retains the original Gaussian measure and all omitted modes.
 
-**The retained-source mesh route (not imported by the final theorems).**
-The modules described from here to `Q0GaussianReality` (`ProfileAdaptiveSource`,
+**Archived mesh route.** A second, incomplete way of certifying the band
+estimates of the Taylor sources, by adaptive rectangle quadrature of a retained
+source, is archived: the retained source and its mesh (`ProfileAdaptiveSource`,
 `ProfileInterval…`, `ProductionRectangleAssembly`, `Reciprocal…`,
-`ProductionMeshEnclosure`, `SmallProfile…`, `ProfilePiFactor…`,
-`ProductionPhase…`, `Adaptive…`, `Q0BasePair…`, `AnalyticEnvelope…` and their
-helpers), except `PhiProductionIdentity` and `PhiProductionDefs`, belong to a
-second way of certifying the band estimates of the Taylor sources: adaptive
-rectangle quadrature of a retained source. They are
-kernel-checked and built with `Grothe`, but the final theorems do not import
-them: `upper_below_tight` bounds the Taylor errors through the twisted quadrature.
-The mesh has fourteen roots; leaf certificates exist for five of them
-(2, 6, 7, 10 and 11), and the band energies have no certificates, so this
-route yields no band estimate. Where these paragraphs name certificates or
-estimates that a result needs, those are its hypotheses.
-
-`ProfileAdaptiveSource.norm_profileRetainedError_lt` permits an auxiliary
-endpoint of `100` on any measurable subset of the small-profile region,
-while retaining `2⁵³` elsewhere. The extra removed source has L² norm at
-most `3·10⁻¹⁷`; softening, radial truncation and both auxiliary omissions
-jointly remain below `5·10⁻¹⁵`. `profileRadialRegion_subset_smallProfile`
-accepts squared-radius certificates `s ≥ 1/16` and `|κ(s)| ≤ 1/100`, so a
-finite union of certified rational intervals needs no exact root locations.
-The same reserve controls all pairings and smoothed band projections. These
-results introduce no native facts and inherit the existing phase-cover leaves.
-`ProfileIntervalQuadrature.inner_profileRetained_eq_intervalQuadrature`
-binds a finite disjoint union of half-open radial intervals to the actual
-Gaussian pairing, by subtracting their compact-source corrections.
-`ProfileIntervalBands` proves charge one for this source and identifies its
-finite coefficient residual with the exact band energy. Its final transfer
-adds the source reserve once per band, using the common
-`norm_projOn_chargeOne_sub_graded_sq` identity also used by the full compact
-rectangle. The numerical retained-energy certificates are hypotheses of this transfer.
-`ProductionRectangleAssembly.inner_profileRetained_eq_mesh` combines these
-identities with the checked continuous unit-mode evaluator: the coefficient
-is a sum of retained radial-strip rectangles, with endpoint `100` on selected
-strips and `2⁵³` elsewhere. `inner_profileRetained_eq_reciprocalMesh` splits
-each auxiliary interval at one and rewrites its tail with `x=1/u` and Jacobian
-`x⁻²`. `ReciprocalQuadrature` proves the substitution for arbitrary complex
-integrands on positive finite intervals. The reciprocal endpoints are
-`1/100` and `2⁻⁵³`, so no value or regularity assertion at zero is needed.
-The actual production kernel is identified with the continuous evaluator on
-rectangle interiors; the auxiliary-zero boundary contributes no extra term.
-`ReciprocalQuadraturePartition.rectangleIntegral_reciprocal_eq_sum` proves
-complete finite cell coverage at positive reciprocal boundaries by applying
-the original-kernel partition to their inverses. It requires no extension
-of the reciprocal kernel through zero. Its norm theorem sums certified
-cell radii over the entire rectangle.
-`ProductionMeshEnclosure.norm_inner_profileRetained_sub_meshCenters_le`
-then combines regular and reciprocal strip enclosures with the Gaussian
-normalization to bound the actual retained pairing. The source approximation
-reserve is applied only at the band-transfer stage. Numerical cell
-and band-energy estimates are inputs of this bound.
-`SmallProfileMesh` fixes seven radial strips, with the short auxiliary
-endpoint on strips 1, 3, and 5. `selected_rows_checked` uses `decide +kernel`
-on the existing centered Horner evaluator; `profile_on_selected` transports
-the checks to the actual normalized profile. The resulting fixed source
-satisfies the original `5e-15` reserve without an assumed profile estimate.
-Its exact pairing is the full reciprocal mesh, and `norm_band_error_le`
-leaves only the finite retained-energy certificate and degree conditions.
-The rational cuts are generated by `tools/gen_small_profile_mesh.py` from
-`data/small-profile-mesh/certificate.json`; `--check` verifies the generated
-Lean data without evaluating any analytic claim.
-`SmallProfileSeparation` checks eight additional centered-Horner rows and
-their complete coverage of the gaps between the original profile neighborhoods
-and the selected tubes. Combining these checks with the existing outer-profile
-theorem gives `|κ(s)| > 1/1000` on every closed nonselected strip. Consequently
-`α x² + κ(s)² > 10⁻⁶` for `α ≥ 0`, uniformly in the reciprocal coordinate.
-
-`ProfilePiFactorLower` and `ProfilePiFactorUpper` certify rational bounds for π
-from 272 nested-square-root steps, using Mathlib's proved `pi_lower_bound` and
-`pi_upper_bound` tactics. The recipe uses a 1152-bit witness grid and 512-bit
-output endpoints. `ProfilePiFactor` derives bounds for `sqrt(π)` and
-`sqrt(sqrt(π))` by exact rational square and fourth-power checks. Each interval
-has width at most `2⁻⁵¹²`; the transitive guard permits only the standard three
-Lean axioms. These are actual normalization constants, with no numerical bound
-assumed. Actual-node profile and shifted-parameter intervals are not included.
-The gap data share the same tracked input and generator as the radial cuts;
-the checker uses kernel reduction and introduces no native facts.
+`ProductionMeshEnclosure`, `SmallProfile…`), the phase models
+(`ProductionPhase…`, `PhasePolynomialStability`, `FixedZPhaseRemainder`), the
+band transfers (`ChargeBandEnclosure`, `ConcreteRetainedBands`), the adaptive
+rectangles (`Adaptive…`, `Rectangle…`) and the base-pair kernels
+(`Q0BasePair…`, `Q0GaussianReality`).
 
 `PhiProductionIdentity` contains the existing `phaseEps_eq` and `phiT_sq`
 identities with their public names and statements unchanged. `PhiProductionDefs`
@@ -1827,217 +929,11 @@ substitution in `phiT_sq` and the derived `phase_gram_re_sq_le` constraint.
 The latter is used by `PhiBound` and local leaf soundness, so the Gram
 calculation is no longer repeated in those consumers.
 
-`ProductionPhaseLeaf` instantiates generic leaf soundness on the actual
-`phaseTerms` and the Gram coordinates of the actual complex input. Its inputs
-are the finite `termsOK` and `leafOK` checks and physical box membership; it
-does not call the global numerical cover theorem. It derives only the local
-squared phase cap. No concrete `leafOK` fact is proved here, and a single box
-does not give whole-slice coverage. The existing native cover already supplies
-the global `phi_abs_lt_one` and disk-valuedness through `norm_Tround_le`.
-
-`PhasePolynomialStability` proves the cubic factor is `5/2`-Lipschitz on
-`[-1,1]`. Its product estimate needs only the actual base to have norm at most
-one; the Gaussian linear base model need not be disk-valued.
-`ProductionPhaseModel.norm_roundingSlice_sub_model` bounds the actual
-rounding-slice discrepancy by the proved quadratic base remainder and `5/2`
-times the phase error, for positive radial parameter. Its actual phase bound
-can be supplied by `phi_abs_lt_one`; keeping that premise explicit preserves
-the analytic estimate's standard transitive axiom set. The comparison phase
-must also lie in `[-1,1]`. All retained lemmas have strict transitive guards
-and scratch axiom reports. Concrete leaf checks, numerical source comparisons
-and integral bounds are not included.
-
-For a fixed complex coordinate `z ≠ 0`, `FixedZPhaseRemainder.norm_actual_residual`
-bounds the Gaussian L² error between the physical phase `F0 (z,w)` and its
-rotated constant-plus-linear model by `5 t²`, where
-`t = √(1 + aQ²) vprof(‖z‖²) / ‖z‖`. The inverse unit rotation preserves the
-Gaussian law of `w`. This gives the same bound for either sign of the
-profile, including zero. Integration over the first coordinate is a separate step.
-
-`ProductionPhaseL2Error` constructs L² representatives of the unsmoothed
-rounding on a fixed radial slice, its linear-base/cubic-phase model, and the
-phase-model difference. For positive radial parameter and a measurable
-comparison phase bounded by one, its error against an arbitrary `saved : Lp ℂ 2 gaussC`
-is at most `5ρ² + (5/2) ‖phaseDifferenceLp‖ + ‖modelSliceLp - saved‖`.
-The actual phase premise is supplied by `phi_abs_lt_one`, a consequence of the
-native cover's `phiT_sq_le`. It stays explicit to keep the theorem's own
-transitive axiom set standard. A single `leafOK` certificate does not give
-this whole-slice premise.
-
-The intended bounded comparison phase can be `p = slicePhase s` itself;
-then the phase difference vanishes. This leaves the Gaussian integral of
-`‖linearSlice s w * P3 (slicePhase s w) - saved w‖²` to certify, with one
-normalized `gaussC` measure. No nonconstant polynomial bounded by one on the
-entire plane is assumed. The proof uses scalar norm representatives and the
-L² triangle inequality, charging the base remainder once; `linearSliceLp_coe`
-identifies the base representative. It imports the cubic stability estimate
-directly, without the unused pointwise `ProductionPhaseModel` interface.
-
-The argument `saved` is not identified with stored coefficient bytes here.
-The theorem does not give the smoothed band errors consumed by
-`fresh_upper_concrete_taylor`: radial integration, smoothing, band projection,
-numerical integral certificates and the stored-source binding are not
-included. No discrete coefficient count or omitted-domain estimate is added.
-
-`ProductionPhaseModelIntegral` selects the actual slice phase as the phase model,
-so its phase-difference L² element is exactly zero. The remaining model energy is
-`(1+ρ² Im(w)²) (1-φ⁴(3-φ²)/36)`. The saved-model squared discrepancy is one
-integral against `gaussC` of this expression plus the saved energy minus twice
-the real model/saved cross term. No extra Gaussian or radial density is inserted.
-An eventual bound of this integral by a nonnegative `epsilon²` implies actual
-source error at most `5ρ²+epsilon`. The whole-slice phase premise can be supplied by the existing native cover;
-it remains explicit to preserve the analytic theorem's standard axiom set.
-Positive radial parameter, comparison-function binding and numerical integral
-certificates remain explicit; a selected leaf does not provide whole-slice coverage.
-The model and model/saved cross integrands are integrable by their actual L²
-representatives. Separate receipts `modelEnergy ≤ U`, `savedEnergy ≤ V` and
-`Re(modelSavedCross) ≥ L` give the squared discrepancy bound `U+V-2L`. A complex
-cross enclosure `‖modelSavedCross-c‖ ≤ r` instead gives `U+V-2 Re(c)+2r`.
-Either budget bounded by `epsilon²`, with `epsilon ≥ 0`, implies the same
-actual source estimate. This consumer does not manufacture any of the numerical
-receipts or bind an arbitrary saved function to the stored center data.
-
-`LocalAffineSquareIntegralBounds` supplies both affine integration orders with
-`ContinuousOn` restricted to the actual closed cell. Coordinate clamping
-extends the integrand continuously without changing any cell integral.
-`RetainedMeshReality` proves the imaginary parts of the complete normalized
-mesh coefficients vanish, so real enclosures control their complex norm.
-`ChargeBandEnclosure` subtracts the stored Hermite center, forms the rational
-residual radius `|center-target|+radius`, and bounds the selected Parseval sum.
-`SmallProfileBandEnclosure.norm_band_error_le_real_enclosure` applies this
-finite rational energy to the concrete source, adding `5e-15` once per band.
-`norm_band_error_le_cap` reserves this amount before squaring, preserving
-the original rational cap. The actual coefficient enclosures and the numerical
-energy inequality are hypotheses of this transfer, one set for each of the
-fourteen original band tolerances.
-
-`ConcreteRetainedBands` fixes the actual first-, second-, and third-order
-sources and their stored center lengths 91, 46, and 26. The finite coefficient
-cutoff for each band is `(bandHi+1)/2`; kernel reduction checks its degree
-coverage and that the original cap exceeds the shared reserve. The three
-error-family transfers need only complete retained coefficient enclosures
-and their rational energy checks. They leave factorial scaling to the
-existing comparison decomposition.
-
-`AdaptiveRectanglePartition.Rect` stores rational radial and auxiliary
-endpoints. `SplitTree` has `leaf`, `splitS`, and `splitAux` constructors;
-each split derives its children by exact rational midpoint. Its ordered
-`leaves` list preserves multiplicities. `leaf_valid_and_subset` proves every
-leaf is valid and contained in the root. `integral_eq_sum` identifies the
-outer-auxiliary, inner-radial integral with the sum of all leaf integrals
-under `ContinuousOn` on the closed root. The proof extends the integrand
-once by coordinate clamping and uses adjacent-interval additivity at every
-split. Numerical enclosures for the actual leaves are separate inputs.
-
-`AdaptiveRectangleEnclosure` folds the complete ordered leaf list with
-exact rational interval addition. Its `integral_mem_enclosureSum` and
-`abs_integral_sub_center_le` connect certified leaf integrals to the root
-integral and a rational center/radius pair. `Rect.abs_integral_le_area_mul`
-turns a pointwise analytic envelope into a finite-area integral bound,
-including degenerate cells. It applies only to the finite rectangle being
-integrated and introduces no extra source approximation allowance.
-
-`GaussianNormalizationInterval` encloses the reciprocal square root of pi
-by reversing and inverting the existing certified endpoints.
-`AdaptiveRetainedCoefficient` fixes all fourteen roots of the actual
-seven-strip mesh. It proves regular and reciprocal continuity on each closed
-root, includes the reciprocal Jacobian, and identifies their normalized
-real integral sum with `retainedReciprocalMeshValue`. Its `coefficient_mem`
-and `coefficient_abs_sub_le` consume the complete leaf certificates and
-rational endpoint checks. Gaussian normalization is included by interval
-multiplication; the separate source reserve is charged only by the
-band transfer. The leaf certificates and energy checks are its inputs.
-`AdaptiveRectangleComposition` combines certified child intervals under
-local parent continuity using the exact midpoint integral identity. The
-`coefficient_mem_of_roots` consumer accepts the resulting fourteen root
-intervals, allowing separately checked subtrees and reuse without a
-monolithic leaf-membership proof.
-
-`AdaptiveRectangleEnvelope` preserves one-sided nonnegative envelopes and
-signed absolute envelopes under integration over the exact rational cell
-area. `Q0BasePairRoot11Integral.integrals_mem` applies these theorems to both
-explicit base-pair kernels on the entire reciprocal root of strip 5, for
-every damping parameter. It has no numerical premises: the actual profile
-is enclosed by a checked Horner trace, the scalar exponential by LeanCert's
-dyadic checker, and the area-weighted comparisons by kernel reduction.
-The original stored intervals are preserved, with zero as the first lower
-endpoint. No source reserve or normalization allowance is added here.
-The generator and its pinned certificate are in
-`tools/gen_analytic_envelope_root11.py` and `data/analytic-envelope-cells/`.
-Roots 2, 6, 7 and 10 are treated in the next paragraphs.
-
-The generated algebraic base-pair families for roots2,6 and10 separate shared
-literal data, serial arithmetic check modules, and the original public integral
-facades. Each check module evaluates at most four substantive closed operations.
-`RectangleHornerTrace.Trace.check_cons` composes already proved local checks;
-the final pair and common certificates reuse proof constants. Data imports the
-previous finished leaf, preserving serialization within each root. Shared
-profile checks retain the actual coefficient interval models. No rectangle,
-model, budget, public integral conclusion or trust mechanism changes.
-`tools/q0_quadrature/check_base_pair_preservation.py` compares all generated
-families with an immutable baseline and records source/input hashes.
-The operation count does not establish a memory bound. On a complete build,
-`check_base_pair_memory.py` rechecks representative data, every
-checker in the three reported large leaves and shared profiles, their facades,
-and the complete root audits in separate Linux processes. It requires the
-exact verified branch build, records import/compiled-artifact overhead and
-rejects peak process RSS at or above2,000,000,000 bytes. Resource acceptance is
-separate from source preservation and theorem checking.
-
-
-`tools/gen_analytic_envelope_cells.py` renders every analytic-envelope leaf
-of the fixed base-pair mesh from the pinned certificate. Shared
-`AnalyticEnvelopeProfiles` theorems check the actual profile through rounded
-Horner traces. Shared `AnalyticEnvelopeExponentials` theorems use LeanCert's
-dyadic checker with kernel reduction. Each `AnalyticEnvelopeCell` theorem
-then proves both actual iterated integral memberships, for arbitrary damping,
-by exact finite-area bounds. It retains the original first lower endpoint
-and signed companion interval; it spends no extra source reserve.
-Four dependency lanes bound parallel certificate evaluation. The numerical
-witnesses and the exact exponential algorithm are also replayed by the
-generator, but only the Lean theorems establish their mathematical validity.
-`Q0BasePairRoot7Integral.fixed_root_integrals_mem` combines the three
-analytic-envelope leaves and the algebraic leaf on the complete reciprocal
-root of strip 3. `Q0BasePairRoot10Integral.fixed_root_integrals_mem` combines
-the twelve algebraic leaves on the direct root of strip 5. Each theorem
-checks the exact midpoint geometry and discharges every leaf membership at
-the fixed damping `1/10^15`. Continuity justifies the exact adjacent-integral
-identities. The result intervals are the ordered sums of the proved leaf
-intervals, without another source reserve. Root 10 is generated from its
-committed recipe by `tools/gen_base_pair_root10_integral.py --check`.
-That entrypoint delegates to `tools/gen_base_pair_root_integral.py`, whose
-fixed-root specifications validate the complete midpoint tree and canonical
-radial endpoints before rendering the integral assembly.
-The same generator with `--root 2` or `--root 6` renders the complete
-direct roots of strips 1 and 3. Their twenty-four and fifteen algebraic
-leaf certificates, respectively, retain the original physical rectangles
-and model-integral intervals. Each complete-root theorem and its production
-kernel consumer has no leaf-enclosure or numerical premise.
-`BasePairIntegralAudit` checks the transitive dependencies of every analytic
-cell integral and all complete-root results against the standard Lean axioms;
-it rejects missing theorems and any additional axiom dependency.
-`Q0BasePairProductionBridge` identifies the explicit first and companion
-integrands with `regularKernel` and `reciprocalRealKernel` at Taylor index
-zero, including the reciprocal Jacobian. Its integral identities require
-only the rectangle geometry. `Q0BasePairProductionRoots` combines them with
-the complete root results for reciprocal strips 3 and 5 and direct strips 1, 3 and 5
-at `finiteLaplaceEta`, without source identities or numerical hypotheses.
-The strict integral audit includes these production-root consumers.
-`Q0GaussianReality` separately proves reality of the full original first
-and second Gaussian coefficients by simultaneous conjugation of both
-inputs. Its Gaussian measure and phase identities use the actual `mu2`
-and `F0`. It transfers real interval errors to complex norm errors and
-also proves reality of `productionLinearFirst` and `productionLinearSecond`,
-including the rational frozen corrections. Its transitive audit permits
-only the standard Lean axioms; no numerical or truncation premise is used.
-The nine other roots and the band energy checks have no certificates.
-
 `Q0LegendreInteger` evaluates the standard Legendre recurrence by scaled
 integer arithmetic. The `Q0LegendreRule01` through `Q0LegendreRule64`
 modules check the original rational brackets, endpoint signs and ordering;
 the intermediate value theorem and degree exhaustion prove one unique root
-in each bracket. `Q0LegendreRulesAudit` restricts their transitive dependencies
-to the standard Lean axioms. The committed original rule data and
+in each bracket. The committed original rule data and
 `tools/q0_quadrature/gen_legendre_rules.py --check` reproduce these sources.
 This proves the roots; the weights and the exactness of the complete rules are
 the Gauss certificates of the next paragraphs
@@ -2055,33 +951,24 @@ order modules below, the selected roots and the affine transport to the
 production panels by `QuadRem.source_rule_exact`
 (`UpperQuad/QuadRemainderRule.lean`), and the analytic remainder by the
 Bernstein-ellipse theorem; Python witnesses do
-not discharge these inputs. `Q0GaussExactnessAudit` permits only the standard
-Lean axioms in the shared algebra proof.
+not discharge these inputs.
 
 `Q0GaussQPoly` interprets LeanCert's executable `QPoly` operations in the
 real polynomial argument. It proves soundness of the finite identity
 checks, transports the coefficient recurrence to the actual `polyPair`
-source, and closes the order-one pilot. `Q0GaussQPolyAudit` checks the
-transitive dependencies against the standard Lean axioms.
+source, and closes the order-one pilot.
 The exact input in `data/gauss-polynomial-certificates/certificate.json`
 and `tools/gen_gauss_polynomial_certificates.py` reproduce the 64 order
 modules and their aggregate consumer. Every finite arithmetic obligation
-uses `decide +kernel`; the generated audit also covers the squared norms
-and exact leading coefficients. This complete finite family is imported by
+uses `decide +kernel`, including the squared norms and exact leading
+coefficients. This complete finite family is imported by
 the generated root `Grothe.lean` and checked with the `Grothe` build. The
 selected node/weight bindings and the interval transport are
 `QuadRem.source_rule_exact`; the analytic remainder is a separate theorem.
 
-`Grothe.UpperQuad.CentralDerivative` supplies the finite interpolation step
-for the root-window derivative estimate. For every real polynomial of degree
-at most 35, its derivative is an exact weighted sum of the eighteen sample
-pairs at offsets `i/180`, for `i = 1, ..., 18`. Exact rational moment identities
-and a doubled absolute-weight sum below 630 give `abs_derivative_le`: if all
-sample values have absolute value at most `M >= 0`, the derivative has absolute
-value at most `630 * M`. The module has strict standard-axiom guards. Identifying
-the actual phase polynomial, enclosing its samples, and transporting this bound
-to the physical quadrature panels are not included, and the final theorems do
-not import this module.
+`UpperQuad.CentralDerivative`, an exact derivative stencil for real polynomials
+of degree at most 35 from eighteen sample pairs (`abs_derivative_le`), is
+archived.
 
 `UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le` gives a generic
 complex growth bound for a polynomial times a Gaussian. If `P` has total degree
@@ -2165,18 +1052,11 @@ coefficient at `(d+1,c-1)` times `sqrt((d+1)/c)`. The latter theorem assumes
 permit only the standard Lean axioms. These identities contain no estimate of
 a numerical reflection error, of the quadrature mass or of a remainder.
 
-The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
-the same rational bound from an explicit finite-head estimate of the actual
-kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex
-coefficient enclosures and a numerical head check. Those enclosures and the
-head check are its hypotheses; the final theorems do not import this route
-(`DirectSampleUpper`).
-The table interface `Grothe.fresh_upper` is in `Grothe/Upper/GroupedBridge.lean`;
-it takes `DirectHyps E EX` and the sharper grouped comparison bound.
-Its Hardy field uses the `1737972/1000000` budget, proved for the concrete
-rounding by the existing arc certificates and `Real.pi_gt_d20`; the
-Gaussian comparison and the table accuracy are fields of `DirectHyps`, that
-is, hypotheses of this interface.
+The sample-ledger alternatives (`DirectSampleUpper`, `JointSampleLedger`: the
+same conditional rational bound from a finite-head estimate of the actual
+kernel) and the table interface `Grothe.fresh_upper` (`Upper/GroupedBridge`)
+are archived with the conditional route.
+
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
 It is defined in `Grothe/UpperChaos/Rounder.lean`. Lean proves |φ| < 1 (`phi_abs_lt_one`, from
 `phiT_sq_le : φ² ≤ 99/100`; checker `GrotheKernel/PhiCheck.lean`, soundness `Grothe/UpperChaos/PhiCover.lean`, 512 cubes and
@@ -2188,24 +1068,12 @@ p(t) = t·P(t²) (`pList`, degree 41) and −τ(t) = t·Q(t²) (`qList`, degree 
 that both are realised by tensor powers (`Grothe/Upper/Realise.lean`); they do not enter the
 energies, and are chosen to make the kernel nearly linear. The slope is c = 7119483103461/10¹³.
 
-The separate `RadialRepair.lean` proves the exact complement identity
-`(1−q) S₆(q)² = 1−C₆(q)`, with C₆(q) = q⁷ times a polynomial with seven
-positive coefficients. It certifies the polynomial disk map
-`z ↦ z S₆(1−normSq z)` and its degree-39 phase specialization; no new
-`native_decide` fact is used. `radial_gap_sq_le` proves
-`(1−‖P₃(x)‖)² ≤ x⁶/1225` for x² ≤ 1. `KernelStability.lean` proves
-`Σ |E_H−E_G| ≤ (‖H‖₂+‖G‖₂)‖H−G‖₂` and transports this through any
-same feasible P,Q to all physical coefficients of charge-one responses. `RadialCeiling.lean`
-integrates the pointwise gap and proves `radial_kernel_ceiling`, with explicit
-phase-domain, radial-gap, integrability and sixth-moment premises. This theorem
-applies to diagonal response kernels. `HardyHolo` supplies holomorphy and Hardy
-assembly for separate responses along the fixed covariance path `Rt`.
-Applying the energy-coefficient realization to a response pair still needs
-signed cross moments rather than a nonnegative energy table. Retuned
-preprocessors need matching covariance and contour inputs. The concrete
-Gaussian moment and a score for the new rounder are not proved, and the
-endpoints are unchanged. `RadialRepair` and `RadialCeiling` are not imported
-by the final theorems.
+`KernelStability.lean` proves `Σ |E_H−E_G| ≤ (‖H‖₂+‖G‖₂)‖H−G‖₂` and transports
+this through any same feasible P,Q to all physical coefficients of charge-one
+responses. `HardyHolo` supplies holomorphy and Hardy assembly for separate
+responses along the fixed covariance path `Rt`. A polynomial radial repair of
+the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
+`RadialCeiling`) is archived.
 
 * Proved from scratch: the complex Gaussian Hermite basis on ℂ², completeness, Parseval,
   the L² Mehler formula, charge selection, energy summability and the energies-to-kernel
@@ -2218,18 +1086,21 @@ by the final theorems.
   precompiled library `GrotheCapsKernel/`; soundness in
   `Grothe/Upper/IntervalSound.lean`); the tail bound by Cauchy–Schwarz from a weighted
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
-* The selected comparison is proved in `Grothe/UpperChaos/GroupedComparison.lean`.
-  `ComparisonInputs` records an exact shared-coordinate error decomposition,
-  total-chaos supports and component L² norm bounds. From the inherited Gaussian
-  enclosures at cutoffs 181, 91, 51, these are the smoothed mixed-Taylor errors
-  and frozen-vector rounding error. The general interface leaves these inputs
-  abstract; `fresh_upper_concrete_taylor` uses the fixed Taylor centers
-  and assumes their fourteen finite-band Gaussian error bounds. Lean proves
-  `Σ_(p in headIdx 501) w(p) |E(p)-EX(p)| ≤ 851922301/10¹⁵` from them, using
+* `ComparisonInputs` (`LocalizedComparison.lean`) records an exact
+  shared-coordinate error decomposition, total-chaos supports and component L²
+  norm bounds. From the inherited Gaussian enclosures at cutoffs 181, 91, 51,
+  these are the smoothed mixed-Taylor errors and frozen-vector rounding error;
+  `comparisonInputs_taylorCenters` (`ConcreteTaylorUpper`) supplies them from
+  the fixed Taylor centers and their fourteen finite-band Gaussian error bounds,
+  which are not proved. The grouped comparison
+  `Σ_(p in headIdx 501) w(p) |E(p)-EX(p)| ≤ 851922301/10¹⁵` that follows from
+  them (`localized_comparison_grouped`) is archived. It uses
   `2 Σ A_r e_r + (Σ_g √(Σ_{r∈I_g} e_r²))²`, with `A_r²` enclosing
   `Σ w(p)² EX(p)` on its band. The four groups consist of the rounding remainder
   and the three Taylor orders; bands within each group are disjoint.
-  The generic grouping inequality and its rational budget are kernel checked.
+  The generic grouping inequality (`quadratic_sum_le_grouped`,
+  `Grothe/Upper/GroupedComparison.lean`) and its rational budget
+  (`groupedCompareQ`, `Grothe/Upper/ComparisonGroups.lean`) are kernel checked.
   `HeadWeight.lean` proves `w(p)` bounds the retained coefficient mass of each
   preprocessed block; all costs lie in `[0,1]`. Its interval extraction reuses
   the existing sound power and convolution routines. No Gaussian input is added.
@@ -2242,15 +1113,14 @@ by the final theorems.
   6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹) is a hypothesis of the general
   interface; for the actual truncation it is **proved** (`Final.hclose_final`).
   The Hardy input (the
-  weighted square-sum bound 1737972/1000000 at radius 4149/4000 for the kernel of G_T) is
-  **proved**: `HardyReal.hardy_GT_tight`. The concrete theorem also takes X ∈ L² and
-  charge-one equivariance. Validity, summability, parity, and the phase cover
+  weighted square-sum bound 5/4 at radius 4149/4000 for the kernel of G_T) is
+  **proved**: `HardyReal.hardy_GT_gaussian`. Validity, summability, parity, and the phase cover
   for the actual rounding are derived. `HardyHolo.lean` proves
-  `hardy_of_inputs` from positive kernel decay on a disc of radius greater
+  `hardy_of_pair_inputs_budget` from positive kernel decay on a disc of radius greater
   than 4149/4000, identification of the real odd series with the continued
-  kernel, and its circle mean bound ≤ 7/4. Holomorphy, continuation,
-  Parseval, the decay region and the circle mean are proved, and
-  `hardy_of_real` (`HardyStep4.lean`) derives the `hardy` statement for every
+  kernel, and a bound on its circle mean. Holomorphy, continuation,
+  Parseval, the decay region and the circle mean (`HardyGaussian.hmean`) are proved, and
+  `HardyGaussian.hardy_of_real` derives the `hardy` statement with budget 5/4 for every
   measurable disk-valued pair from summable real odd coefficients and their
   Gaussian-law identification. `HardyReal.hreal_GT` supplies that
   identification for G_T: unfolding the smoothing (`mehler_smoothed`), the
@@ -2261,29 +1131,21 @@ by the final theorems.
   (`HardyRealDensity.integral_pair_eq_kHol`: the explicit Cholesky factor of
   `I − R²`, the substitution `y = Rx + Sw`, and Fubini); `I − R² ≻ 0` since
   `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_kdet_pos`).
-* **Residual ledger of the conditional theorem.** The total is
-  455212621809/(5·10¹⁷), approximately
-  9.10425·10⁻⁷. The selected comparison contributes 93.57%, the native finite
-  head 3.09%, the Hardy tail 3.33%, and the table error about 0.0015%.
+* **Residual ledger.** The residual of the proved bound `upper_below_tight` is
+  `tightResidualQ = 1.54361149222272379448078027965090997314453125·10⁻⁶`: the
+  longer-prefix comparison `tightThreeBandCompareQ`
+  (`1.49212635840472379448078027965090997314453125·10⁻⁶`, 96.66%), the head
+  `28153/10¹²` (1.82%), the Hardy tail `233184398/10¹⁶` (1.51%) and the table error
+  `6847009/(5·10¹⁷)` (about 0.00089%).
   These percentages describe allowances, not fractions of the proof left
-  unformalized. The Gaussian component-error inputs are the hypotheses of this
-  theorem that are not proved. The residual of the proved bound `upper_below_tight`
-  is `tightResidualQ = 1.54361149222272379448078027965090997314453125·10⁻⁶`:
-  the longer-prefix comparison `tightThreeBandCompareQ` contributes
-  `1.49212635840472379448078027965090997314453125·10⁻⁶` (96.66%), the Hardy
-  tail `233184398/10¹⁶` contributes 1.51%, the head `28153/10¹²` contributes
-  1.82%, and the table error `6847009/(5·10¹⁷)` contributes about 0.00089%.
-  Full scope, source bindings and reproduction commands are in
+  unformalized. Full scope, source bindings and reproduction commands are in
   `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
   the mathematical argument.
 * The certified weighted head bound forces `h₀ ≥ slopeQ − tightHeadResidualQ`.
   `HeadHardy` uses `hardy_budget_after_linear` to deduct its weighted square
   from the Gaussian-amplitude budget `5/4`; exact kernel arithmetic proves
   tail `233184398/10¹⁶`.
-  This deduction is used by `upper_below_tight`. The conditional smaller head
-  still gives tail `303362486/10¹⁶`; the fixed-budget three-band endpoint
-  (`ThreeBandUpper.lean`) retains the tail `36748/10¹²` from budget `7/4`
-  (`HardyReal.hardy_GT`).
+  This deduction is used by `upper_below_tight`.
 * **Independent replay.** The source computations were replayed on a different machine: the
   nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
   contour tail, comparison and endpoint pass on the regenerated data (energy table reproduced
@@ -2644,7 +1506,7 @@ strict audit. Source reproduction is not a native verification receipt.
 | `ProductComplete`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: tensor completeness from one-coordinate completeness by Fubini, Gaussian mixing law by characteristic functions, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
 | `Realise2`, `Structural` | two-channel rounding with tensor-realised preprocessors (`rounding_diskKernel`); the structural fields (validity, summability, parity) as theorems |
 | `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
-| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `upper_below_tight` and by the conditional `fresh_upper_rounder` |
+| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `upper_below_tight` |
 | `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
 | `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
 | `Gauss2`, `Sym2R`, `SchurTest`, `LstarL`, `SchurKernel`, `SchurBound`, `SchurIntegrability`, `SchurMain` | Gaussian integrals, weighted Schur test and kernel factorization; the Gaussian Schur bound for every measurable disk-valued response pair under its positive-definiteness gates (`norm_HholPair_sq_le`) |
@@ -2659,20 +1521,21 @@ inequality with budget `7/4`. These proofs introduce no numerical axioms.
 The incumbent `differentiableOn_Hhol_Rt` and `hardy_of_inputs` retain their
 statements and specialize the pair results. The Gaussian density/covariance
 identification and the contour inputs are hypotheses of the pair interface;
-for the incumbent rounding they are proved (`HardyReal.hreal_GT`, `HardyArc*`).
+for the incumbent rounding they are proved (`HardyReal.hreal_GT` and the checks below).
 `SchurMain.norm_HholPair_sq_le` proves the Gaussian Schur bound for the same
 response pairs under `j > 0`, `Z ≻ 0` and `T ≻ 0`. These structural theorems
 alone do not discharge `hardy` for a changed rounding or improve an endpoint.
-`HardyArc*` checks the region and circle inputs in Lean: the precompiled
-interval evaluator `GrotheKernel.HardyArc` bounds the Schur value on
-rational boxes, four `native_decide` facts (`hardy_arc_part_0..3`) cover the
-circle `|t| = 4149/4000` with mean at most `1737972/1000000`, and `hardy_region_check`
-proves `KerPos` on the disc of radius `51863/50000`. `hardy_region_and_mean`
-assembles both, and `hardy_of_real` retains coefficient summability (`hs`)
-and the real identification (`hreal`) as explicit inputs; `HardyReal.lean`
-supplies both for G_T (`hardy_GT`, `hardy_GT_tight`). The production proof uses
-the stronger fixed-amplitude circle certificate `HardyGaussianCheck.charts_checked`
-and budget `5/4` (`HardyReal.hardy_GT_gaussian`), retaining the same decay region.
+The region and circle inputs are checked in Lean with the precompiled interval
+evaluator `GrotheKernel.HardyArc` (interval soundness `HardyArcSound`, circle
+charts `HardyArcCircle`, data `HardyArcData`): `hardy_region_check` proves
+`KerPos` on the disc of radius `51863/50000` (`HardyArcRegion`), and
+`HardyGaussianCheck.charts_checked` bounds the Gaussian-amplitude expression by
+`5/4` on all four closed halves of the two charts of the circle
+`|t| = 4149/4000` (soundness `HardyGaussianSound`). `HardyGaussian.hmean`
+integrates the squared correlation `HardyArcCover.gF` over both charts, and
+`HardyGaussian.hardy_of_real` (budget `5/4`) retains coefficient summability
+(`hs`) and the real identification (`hreal`) as explicit inputs;
+`HardyReal.lean` supplies both for G_T, giving `HardyReal.hardy_GT_gaussian`.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
@@ -2693,8 +1556,8 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The cover certificate of the lower bound uses these facts,
 the additional law-node fact and the refined-cover facts; the node caps add
 their chord, range, anchor and piece facts.
-The complete registry of native facts is `data/axioms/native.txt` (cap ranges, the production Gaussian
-circle check, the inherited Schur arc checks and shared decay region, and others); the default report
+The complete registry of native facts is `data/axioms/native.txt` (cap ranges, the Gaussian circle check
+and the decay region of the Hardy tail, and others); the default report
 is `scratch/Axioms.lean`, with its required declarations in
 `data/axioms/required.txt`. CI checks the report on every pushed branch, and on
 the merged tree before a pull request lands.
@@ -2709,9 +1572,8 @@ for the 51-coefficient costs, including the inherited table-error allowance),
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.phase_cutoff_factor_check` (the exact factor for its squared radial tail),
-`Grothe.UpperChaos.HardyGaussianCheck.charts_checked` (the production Gaussian circle cap),
-`Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check`
-(the inherited Schur circle mean and shared decay region),
+`Grothe.UpperChaos.HardyGaussianCheck.charts_checked` (the Gaussian circle cap of the Hardy tail),
+`Grothe.UpperChaos.hardy_region_check` (its decay region),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the eight chunks `Grothe.Lower.certRows0`–`4` and
@@ -2768,100 +1630,17 @@ error by `10/7 * canonicalTensorErrorNorm a0 + tensorCompletionDefectNorm a0`.
 The second term measures the actual rational output against exact mathematical
 completion; its bound must certify floating operations. Neither a rational
 coefficient family nor archived floating logs are required to satisfy an exact
-irrational reflection identity. The canonical tensor error, completion defect,
-same-output table fit and Gaussian comparison premises are explicit hypotheses of
-`energy_close_of_canonical_tensor` and `head_residual_of_canonical_tensor`.
-Only modules outside the import closure of the final theorems use these
-canonical-tensor results (`ProductionF0RationalCompletion`, `CompositeEnergy`,
-`CommonSourceTolerance`); the module itself is imported by
-`UpperQuad/QuadRadial.lean`.
+irrational reflection identity. The module is imported by
+`UpperQuad/QuadRemainderRadial.lean`.
 
 `tensorCompletionDefectNorm_sq` reduces that actual rational-output defect
 exactly to the sum of squared real reflection errors over the reflected halves
 of all 251 grades. The canonical half contributes zero. A numerical producer
 must bound this coupled sum for the same coefficient family; no exact floating
 reflection or per-entry radius is inferred.
-`PackedDyadicStructural` supplies a strict character-list reader equal to
-`String.toNat?` and `String.toInt?` on all inputs, including interior
-underscores and negative zero. The record transfer preserves the exponent
-and mantissa checks. `PackedDyadic.Structural.legacy_split_tokens`
-identifies the legacy single-character scanner with list splitting, including
-empty and malformed fields. `PackedDyadic.Structural.parse_eq_row_unconditional`
-therefore transfers the unchanged public parser without delimiter hypotheses.
-`PackedDyadicSourceAssembly` composes successful parses of source chunks.
 
-`TaylorFirstPackedChunk253Pilot.legacy_decoded` identifies the unchanged
-public parser's result on the complete last first-center chunk: 460 records
-from `firstCenterPackedChunks[253]?.getD ""`. Its source equality refers to
-that original array. Fifteen bounded character-list certificates assemble the
-integer values. Each bounded leaf certifies its literal string encoding;
-`String.toList_append` composes these into the complete original source,
-without encoding one monolithic character list. Transitive guards allow only
-the standard three axioms.
-`tools/gen_first_second_packed_pilot.py` reproduces the certificate from the
-pinned source-file and chunk bytes; `tools/check_packed_source_chunk.sh` checks
-the retained parser regressions, chunk composition and actual source theorem
-with warnings treated as errors. Every retained module is in the default root.
-
-This single-chunk identity does not identify the complete center arrays or
-replace their existing native band checks. Full-array source identities and
-band-energy consumers are not included. The original packed arrays, lookup definitions,
-NPZ inputs and native band checks are unchanged. The structural-parser modules
-of this and the preceding paragraph (`PackedDyadicStructural`,
-`PackedDyadicSourceAssembly`, `TaylorFirstPacked…`) are not imported by the
-final theorems, which use the public `PackedDyadic` parser.
-
-The rational source continuation constructs the literal multiplier polynomial
-before diagonal gate scaling, proves its exact coefficients and support after
-scaling, and reifies the finite correlated-moment evaluator over rationals.
-The finite moment-scaling identity retains both complex Gaussian Jacobian
-factors. Actual conditional-polynomial scaling and both pair evaluations
-combine with all eight source coefficient factors in
-`ActualSourceNormEvaluation.rationalSourceNormValue`. The sum retains the full
-rational support, conjugation and every cross term; each pair includes exactly
-`nu^2/(R*Q)`. Complete source proofs identify the actual coherent norm with this
-rational value and bound the full infinite weighted matrix energy by it under
-`gateOK g = true`. Numerical source
-bounds are not part of this development; historical estimates are not proof
-inputs.
-
-
-`RationalChargeOrthogonality` proves that the rational moment evaluator
-annihilates unequal total holomorphic and antiholomorphic degrees. Weighted
-homogeneity of the actual conditional Wick polynomial then makes pair Gram
-entries vanish between different signed charges, without a positivity premise.
-The full actual rational source norm is consequently equal to its sum with
-cross-charge entries removed. The existing pair mass and Jacobian are retained.
-`ActualSourceInsertionLinear` makes the actual polynomial insertion a rational
-linear map and decomposes its input into the original multiplier's finite
-charge components before eight-variable expansion.
-`ActualSourceInsertionCharge` proves that this same insertion reverses each
-physical charge, with no positivity or nonzero premise on its rational rate.
-`ActualSourceChargeGram` packages the existing tensor pair evaluator as a
-rational bilinear form, proves orthogonality of the inserted physical blocks,
-and identifies `rationalSourceNormValue g` with the diagonal sum indexed by
-`chargeSet (multiplierQ g.power)`. This regrouping retains all terms inside
-each charge block and avoids enumerating expanded source supports. It does
-not identify the historical Laguerre coefficients or diagonalize each
-block into squares, and numerical source bounds are not part of this development.
-
-
-`RationalCovarianceAlgebra` evaluates the zero and quadratic rational moments
-with their Gaussian mass and gives the exact Schur covariance scalars.
-`RationalCovariancePolynomial` extends these identities to a constant plus a
-product of two linear forms. `RationalCovarianceConditional` identifies the
-actual degree-one conditional Wick polynomials in source order `((y,u),(x,v))`.
-`RationalCovarianceGateComposition` derives every denominator condition from
-the existing `gateOK g = true` premise and composes the actual pair evaluator
-with those identities. For `n = nuQ g.power` and `a = dampingQ g.power`, the
-zero contraction is `mass = n^2/delta`; the outer and inner degree-one squared
-contractions are `mass*chiPlus` and `mass*chiMinus`. The ground-versus-quadratic
-contraction is `mass*lambda`, including the intrinsic inserted constant `n`.
-It is not an opposite-charge Hermitian cross-Gram identity. The conditional
-variance `R+P`, the pair Jacobian `1/(R*Q)`, and one Gaussian mass are retained.
-No source or energy cap is added. The higher-degree covariance diagonalization,
-the full 18-block/1140-square compressor equality and numerical enclosures
-are not part of this development. The rational-source modules of the last
-three paragraphs (`RationalChargeOrthogonality`, `ActualSource…`,
-`RationalCovariance…`) belong to the Hilbert–Schmidt development and are not
-imported by the final theorems.
+The structural packed-dyadic parser proofs (`PackedDyadicStructural`,
+`PackedDyadicLegacyDelimiter`, `LegacySingleCharacterSplit`,
+`PackedDyadicSourceAssembly`: a strict character-list reader equal to
+`String.toNat?` and `String.toInt?`, and the composition of chunk parses) are
+archived; the final theorems use the public `PackedDyadic` parser.

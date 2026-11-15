@@ -10,9 +10,12 @@ J_0(x)=\frac{4}{\pi}\int_0^{\pi/2}
 \]
 
 at the exact rational midpoint squared recorded in the recovered row-227
-replay. This fixed-node certificate supports the experimental row-227 scalar
-calculation; it is not used by `Grothe.Statement.main_bounds`.
-The current unconditional upper endpoint is `1.404599398251`, proved in
+replay. It is not used by `Grothe.Statement.main_bounds`, and its Lean modules
+(the generated `OriginalMomentSeedData` and `OriginalMomentSeedCheck`, and
+`OriginalMomentSeedCheckpoints`, `OriginalMomentSeedInteger` and
+`OriginalMomentSeedEnclosure`) are not in the library; the generator below
+rewrites the two generated ones.
+The current unconditional upper endpoint is `1.404599398052`, proved in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean). That proof uses
 the generic production seed enclosures in `UpperQuad/SeedAnalytic.lean` and
 `UpperQuad/WatsonSeed.lean`, rather than this fixed-midpoint packet.
@@ -36,7 +39,7 @@ Taylor terms. The concrete arithmetic uses groups of at most 32 transitions
 and retained terms, checked by `decide +kernel`. Separate checks cover all
 stored lookups and the retained integer sums.
 
-`OriginalMomentSeedEnclosure.moment_midpoint_mem` is the concrete result: an
+`OriginalMomentSeedEnclosure.moment_midpoint_mem` (not in the library) is the concrete result: an
 enclosure of actual `J₀` at the rational midpoint squared, with no numerical
 accuracy hypothesis. Its interval width is `73351 / scale`; the common scale
 is `2^1024`. The data and certificate introduce no native facts or resource

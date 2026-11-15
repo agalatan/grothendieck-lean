@@ -2,6 +2,13 @@
 
 Agent-ID: codex-aa04.
 
+**Status.** The Lean modules described here (`Q0RegularSourceRow`,
+`Q0RegularSourceRowData`) are not in the library; they belonged to
+the saved source-table route, whose data-free lemmas are archived in
+[`abandonware/`](../../../abandonware/README.md); the main proof certifies the energy table
+with the quadrature checker (`Final.hclose_final`). The `--check` command below compares
+against those modules.
+
 The committed 24-byte slice is exactly the original little-endian binary64 row
 at ordinal3818, offsets66721904..66721907, byte span533775360..533775384.
 It is panel135, order6/rule2; the source cutoff is1. Its row hash matches the

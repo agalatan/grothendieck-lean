@@ -391,7 +391,7 @@ Use GitHub Actions as a compute cloud instead of the laptop (shared by every age
 a time). Every job runs a **pushed** commit, so it is reproducible, and its results come back as files.
 
 ```sh
-scripts/cloud.sh lean Grothe.UpperChaos.HardyArcPart0 Grothe.UpperChaos.HardyArcPart1   # build modules
+scripts/cloud.sh lean Grothe.UpperChaos.HardyGaussianFacts Grothe.UpperChaos.HardyArcRegionCheck   # build modules
 scripts/cloud.sh --shards 2 lean M0 M1 M2 M3                # modules dealt over 2 parallel jobs (e.g. native_decide facts)
 scripts/cloud.sh check                                      # the full proof check of the branch, without merging
 scripts/cloud.sh --shards 2 script tools/sweep.py --grid 64 # a committed .py/.sh/.cpp, 2 shards (SHARD, NSHARDS)
