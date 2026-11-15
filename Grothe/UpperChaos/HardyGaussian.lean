@@ -42,7 +42,7 @@ theorem chart_parameter_bound (neg : Bool) {τ : ℝ} (hτ : -1 ≤ τ ∧ τ �
 
 /-- The complete half-circle for either sign, including both endpoints. -/
 theorem chart_bound (neg : Bool) {θ : ℝ} (hlo : -Real.pi / 2 ≤ θ) (hhi : θ ≤ Real.pi / 2) :
-    Bound (sig neg * ((rhoQ : ℝ) : ℂ) * Complex.exp (θ * Complex.I)) := by
+    Bound (HardyArcSound.sig neg * ((rhoQ : ℝ) : ℂ) * Complex.exp (θ * Complex.I)) := by
   have h1 : 2 * Real.arctan (-1) ≤ θ := by rw [Real.arctan_neg, Real.arctan_one]; linarith
   have h2 : θ ≤ 2 * Real.arctan 1 := by rw [Real.arctan_one]; linarith
   have hτ := tan_half_mem h1 h2
