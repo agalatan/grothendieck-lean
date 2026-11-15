@@ -1,0 +1,10 @@
+{
+  "repository": "agalatan/grothendieck-lean",
+  "commit": "e9b0a458d06e67e9a1eee1168e98f34ef577b3a0",
+  "files": {
+    "research/conjecture-K/code/audit-2026-11-15-codex-a7c4/odd_cost_check.py": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+    "research/conjecture-K/code/odd-cubic-core-2026-11-15/results/all_bounds.txt": "5da551ca363e7e22b7a2b9718badeb6912294c374ddc3b0ca4516f8a75bfb309",
+    "research/conjecture-K/code/odd-cubic-core-2026-11-15/review-claude-b9ee/recomputed_all_bounds_gcc13.txt": "c55d761a859ac9942f6848729b80e8161f9a1835bbe403a314d4253489946f34",
+    "research/conjecture-K/sources/odd-cubic-core-2026-11-15/PROOF.md": "94c01d774ff4b33d315b5d77dcaf27de3b55a3e9f8548d41973c6e9212b17c11"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "agent_id": "codex-c7e2",
+  "status": "PASS",
+  "baseline": "e9b0a458d06e67e9a1eee1168e98f34ef577b3a0",
+  "full_cover_recomputed": true,
+  "node": "v24.22.1",
+  "seconds": 99.402,
+  "records": [
+    {
+      "name": "odd_region",
+      "status": "PASS",
+      "exit": 0,
+      "seconds": 0.329
+    },
+    {
+      "name": "weighted_polynomial",
+      "status": "PASS",
+      "exit": 0,
+      "seconds": 0.062
+    },
+    {
+      "name": "genuine_core",
+      "status": "PASS",
+      "exit": 0,
+      "seconds": 0.063
+    },
+    {
+      "name": "rice_envelope",
+      "status": "PASS",
+      "exit": 0,
+      "seconds": 0.187
+    },
+    {
+      "name": "potential_tail",
+      "status": "PASS",
+      "exit": 0,
+      "seconds": 0.18
+    },
+    {
+      "name": "positive_part",
+      "status": "PASS",
+      "exit": 0,
+      "seconds": 0.435
+    },
+    {
+      "name": "reject_optimized_assertions",
+      "status": "REJECTED_AS_REQUIRED",
+      "exit": 1,
+      "seconds": 0.105
+    },
+    {
+      "name": "reject_missing_matrix_cell",
+      "status": "REJECTED_AS_REQUIRED",
+      "exit": 1,
+      "seconds": 0.058
+    },
+    {
+      "name": "reject_excessive_matrix_bound",
+      "status": "REJECTED_AS_REQUIRED",
+      "exit": 1,
+      "seconds": 0.159
+    },
+    {
+      "name": "fresh_potential_cover",
+      "status": "PASS",
+      "exit": 0,
+      "seconds": 97.817
+    }
+  ],
+  "upstream": {
+    "research/conjecture-K/code/audit-2026-11-15-codex-a7c4/odd_cost_check.py": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+    "research/conjecture-K/code/odd-cubic-core-2026-11-15/results/all_bounds.txt": "5da551ca363e7e22b7a2b9718badeb6912294c374ddc3b0ca4516f8a75bfb309",
+    "research/conjecture-K/code/odd-cubic-core-2026-11-15/review-claude-b9ee/recomputed_all_bounds_gcc13.txt": "c55d761a859ac9942f6848729b80e8161f9a1835bbe403a314d4253489946f34",
+    "research/conjecture-K/sources/odd-cubic-core-2026-11-15/PROOF.md": "94c01d774ff4b33d315b5d77dcaf27de3b55a3e9f8548d41973c6e9212b17c11"
+  },
+  "inputs": {
+    "replay.mjs": "f7874d9bc03af6f56ccaba59bb9e95eff889bf98b513d0f80ce5cd1671b39179"
+  },
+  "post_replay_refinement": {
+    "checker": "gaussian-core/check_genuine_core.mjs",
+    "status": "PASS",
+    "log": "replay-results/genuine_core_refinement.log",
+    "independent_review": "review/GENUINE_CORE_REVIEW.md",
+    "description": "Joint-degree bound and V<=1/105000 added after the full runner started; exact checker rerun separately."
+  }
+}

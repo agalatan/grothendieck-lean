@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "exact_complex_Lagrange_identity": true,
+  "u_min": "1/25",
+  "rows": [
+    {
+      "m": 4,
+      "core_complex_coordinates": 15,
+      "C_pi_coefficient": "1/1",
+      "C_upper": "22/7",
+      "lambda_upper": "37/20",
+      "shared_V_cap": "1/540000",
+      "independent_V_cap": "1/160000",
+      "normalized_fourth_excess": "9/8"
+    },
+    {
+      "m": 8,
+      "core_complex_coordinates": 45,
+      "C_pi_coefficient": "1089/2048",
+      "C_upper": "42/25",
+      "lambda_upper": "79/50",
+      "shared_V_cap": "1/210000",
+      "independent_V_cap": "1/84000",
+      "normalized_fourth_excess": "17/32"
+    },
+    {
+      "m": 16,
+      "core_complex_coordinates": 153,
+      "C_pi_coefficient": "111759833025/274877906944",
+      "C_upper": "32/25",
+      "lambda_upper": "7/5",
+      "shared_V_cap": "1/126000",
+      "independent_V_cap": "1/64000",
+      "normalized_fourth_excess": "33/128"
+    }
+  ]
+}

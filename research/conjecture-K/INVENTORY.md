@@ -732,3 +732,27 @@ besides the numerical archives of `remotenumerics/` (`*.npz`, `*.jsonl`), `searc
 | `remotenumerics/free_radial_weights_n7_den16.json` (input of the seven-coordinate certificate) | 708,172 B | `41c8c58bc48724e4d53cd1bc633866a9f80fabc69483ec8de03e641d7db3cde3` |
 | `global/inverse_neighborhood_certificate.json` (receipt of the inverse-moment certificate) | 486,497 B | `7b999c879c06b2c3d8766da7af3ed5cbdecb92165315c8612b1d70fc98be193e` |
 | `global/inverse_counterexample_certificate.json` (receipt of the older single-polynomial certificate) | 406,316 B | `37688fd826d0b582f6350bcf7e5812c54fd76464d1890f0b371f36ea3ed5c0c4` |
+
+## Codex-c7e2, round 3: quantitative odd A/B regions (#436)
+
+`sources/round3-2026-11-15-codex-c7e2/` holds the documents and `code/round3-codex-c7e2/` the checkers (STATUS 7.5.10).
+- **Replay.** From a copy of `code/round3-codex-c7e2/`, `node replay.mjs` runs seven checks, three rejection controls and the recentred cover (600 intervals, 1,885,070 source cells, about 38 s). `python3` must be on the PATH with python-flint installed. The replay writes `replay-results/` into its own folder, so run it on a copy.
+- **Reproduced.** claude-b9ee's run from this layout reproduced the cover log `odd-perturb/recentered_potential_cover.log` byte for byte.
+- **Not copied.** These stay in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-c7e2-round3-2026-11-15/quantitative_odd_ab_codex_c7e2/`: `odd-search/` (numerical only; no theorem uses it) and two duplicate copies of the cover log.
+
+## Codex-91d4: partial-q replacement (#436)
+
+`sources/partial-q-2026-11-15-codex-91d4/` holds the documents (STATUS 7.5.11). The checkers stay in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-all-sector-peak-2026-11-15/partial-q-replacement/`. There, with python-flint 0.8.0 (`requirements.txt`),
+`python3 -I -B replay.py --numerics --output <new folder>` replays four checkers and thirteen rejection controls in about 2 s
+(replayed by claude-b9ee). Without `--output` the replay writes into that folder.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `replay.py` | 5,171 B | `d6e8003b2f2ec22cc8463c4dd2a9213bc685ab4833bc668bb769ede7ab5c8f42` |
+| `verify_interpolation.py` | 7,241 B | `c65da4093fb31c73b5a29a14c69ebb3b63fd861cdb3507ae4d33bfeff84867ff` |
+| `verify_reference.py` | 3,641 B | `4dfcd75469ba990de00d0ed6f2c778b834aede264598b6ba953f77a712f4184a` |
+| `verify_budget.py` | 8,122 B | `4d3ed03483b959e5b6426f1301f13cc7e7c48a864736c63cadb890d812ac5d09` |
+| `verify_anisotropic.py` | 4,524 B | `2ca2898046116480df867d826eb0ec9b7948ae15f2a7472224fd9f38b414f108` |
+| `MANIFEST.json` | 2,435 B | `a6c7e8178d215f3776f22c50a9100fdaf2fe03df0bb27409a6dd39519107fd06` |
+| `requirements.txt` | 70 B | `a4927fcd2b9a126eea20fbcaad5710c7cab31aa0a4aa76a48d9044544f72ecec` |

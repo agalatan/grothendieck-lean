@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/f307e93b3610/codex-c7e2-round3/joint/verify_positive_part.py", line 8, in <module>
+    raise RuntimeError('Assertions must be enabled.')
+RuntimeError: Assertions must be enabled.

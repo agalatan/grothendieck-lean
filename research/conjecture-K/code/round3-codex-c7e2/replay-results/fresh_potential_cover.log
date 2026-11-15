@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "theorem_constant": "11/10",
+  "recenter_A": "27/50",
+  "recenter_B": 0,
+  "compact_cover": [
+    0,
+    6
+  ],
+  "interval_count": 600,
+  "total_source_cells": 1885070,
+  "negative_controls": [
+    "NDEBUG rejected",
+    "fast-math rejected"
+  ],
+  "scalar_checker_under_python_O": "PASS",
+  "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+  "seconds": 97.76343178749084,
+  "sha256": {
+    "recenter_potential.cpp": "1d993b1769097130ec069eb1d75c86bab3c81c747f9184fed81018756befd089",
+    "interval_engine.hpp": "bbc4db795a877ae4e8606f647ad711ebd1f3cdc8e4f513fe89d7947ce8ea1a02",
+    "verify_recenter_constants.py": "97f2c82576ff538261acbde0776d105964237e453676717b79d2c803b3f63aee",
+    "RECENTERED_EVEN_POTENTIAL.md": "8f72db7c749e3e211b76ed3a9ed3ebbd0030ab3e7d55afb71a494268edf958c8"
+  }
+}
