@@ -8,8 +8,10 @@ b = 179/1250, D(T) = (a+bT)(a+3bT).  For real w put
     beta(w) = E[(T-2/5) Re ph(L+w)]      (the tilted A first variation).
 
 The box bound G <= max corner + sum_i M_i width_i^2/8 needs upper bounds for F0'' and |beta''| on
-75/128 <= w <= 79/128.  KINT cites F0'' <= 179/125 and |beta''| <= 1 as inherited; this file proves
-weaker bounds that suffice.
+75/128 <= w <= 79/128.  KINT uses F0'' <= I0/2 < 179/125 and |beta''| <= 1, proved in
+sources/received-2026-11-15-tilted-sector/secant_proof.md section 5 (12) and certified by
+code/tilted-sector-2026-11-15/verify.py (secant_scalars) and content_profile.certify_global.
+This file is an independent alternative: weaker, self-contained bounds that still suffice.
 
 (i)  F0''(w) = E[(Im ph(L+w))^2/|L+w|] <= sup_c E[1/|L-c|] <= 2/a.
      The density of L is e^{-T}/(pi D(T)) (Jacobian of Z -> Z(a+bT) is D), radially decreasing with
@@ -114,9 +116,9 @@ def main():
     bound = arb(max_corner) + arb(interp) + dM/8192
     print(f'box: max corner {max_corner:.10f} + interpolation {interp:.10f} + dM/8192 '
           f'({float((dM/8192).upper()):.7f}) <= {float(bound.upper()):.7f}')
-    assert bound.upper() < 0
-    print('PASS curvature inputs: F0\'\' <= 2/a < 3.5766 and |beta\'\'| <= 5.0044 on every w; '
-          'the critical box of 7.4.11 holds with defect < -0.0004')
+    assert (bound - arb(-1)/2500).upper() < 0      # the printed claim: defect < -1/2500
+    print('PASS alternative curvature inputs: F0\'\' <= 2/a < 3.5766 and |beta\'\'| <= 5.0044 on every w; '
+          'with them the critical box of 7.4.11 holds with defect < -1/2500')
 
 
 if __name__ == '__main__':

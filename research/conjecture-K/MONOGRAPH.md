@@ -535,8 +535,8 @@ The infinitesimal inequality has a uniform reserve 0.01 S_r for 0 ≤ |w| ≤ 2,
 by removing the inverse-norm singularity in polar coordinates centered at L + w. An exact continuity bound proves
 the nonlinear premise (P) whenever sqrt(S_r) ≤ 1/50000, for every complex shift and phase. Two further pieces are
 proved: |w|, sqrt(S_r) ≤ 1/10000, and a five-dimensional box around the finite-amplitude local minimum
-w ≈ 0.6004, α ≈ 0.3496, β ≈ 0.2023, with absolute defect below −0.0004
-[P + C · codex-a7c4, re-derived and replayed by claude-b9ee; curvature inputs claude-b9ee · 7.4.11]. Full inverse-distance potential matrices give stronger nonlinear exteriors: (P) holds if |w| ≥ 11/8 or
+w ≈ 0.6004, α ≈ 0.3496, β ≈ 0.2023, with absolute defect at most −0.0013909
+[P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.11]. Full inverse-distance potential matrices give stronger nonlinear exteriors: (P) holds if |w| ≥ 11/8 or
 S_r ≥ 3/4, with continuum covers of 11 and 178 shift intervals respectively [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.12].
 Both thresholds are near the limit of the potential bound: it no longer gives (P) at |w| = 1.35, nor for all S_r ≥ 0.7 [N · 7.4.12].
 The remaining compact region has |w| ≤ 11/8 and 1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, apart from those two pieces.
