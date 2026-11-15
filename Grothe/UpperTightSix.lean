@@ -63,7 +63,11 @@ theorem hwholeFirst_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (fun q c d _ _ _ ↦ firstCenter_coeff q c d)
     norm_hpow_one_sq norm_firstCenter_sq_exact norm_firstCenter_le
     (ρI := (161 / 100000) * (tightQuadRadiusQ 0 : ℝ)) le_rfl
-    (by norm_num [tightScaledRQ]) (by exact_mod_cast tight_first_whole_margin)
+    (by norm_num [tightScaledRQ]) (by
+      have hm := (Rat.cast_le (K := ℝ)).mpr tight_first_whole_margin
+      push_cast at hm
+      norm_num only [Nat.cast_pow, Nat.cast_ofNat] at hm ⊢
+      simpa only [firstEnergyQ, Rat.cast_sum] using hm)
 
 /-- The second whole-source error, before division by its Taylor factorial. -/
 theorem hwholeSecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
@@ -74,7 +78,11 @@ theorem hwholeSecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (fun q c d _ _ _ ↦ secondCenter_coeff q c d)
     norm_hpow_two_sq norm_secondCenter_sq_exact norm_secondCenter_le
     (ρI := (3 / 125000) * (tightQuadRadiusQ 1 : ℝ)) le_rfl
-    (by norm_num [tightScaledRQ]) (by exact_mod_cast tight_second_whole_margin)
+    (by norm_num [tightScaledRQ]) (by
+      have hm := (Rat.cast_le (K := ℝ)).mpr tight_second_whole_margin
+      push_cast at hm
+      norm_num only [Nat.cast_pow, Nat.cast_ofNat] at hm ⊢
+      simpa only [secondEnergyQ, Rat.cast_sum] using hm)
 
 /-- The third whole-source error, before division by its Taylor factorial. -/
 theorem hwholeThird_of_facts {bounds : List ℕ} {ts : List PartialTable}
@@ -85,7 +93,11 @@ theorem hwholeThird_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (fun q c d _ _ _ ↦ thirdCenter_coeff q c d)
     norm_hpow_three_sq norm_thirdCenter_sq_exact norm_thirdCenter_le
     (ρI := (9 / 2500000) * (tightQuadRadiusQ 2 : ℝ)) le_rfl
-    (by norm_num [tightScaledRQ]) (by exact_mod_cast tight_third_whole_margin)
+    (by norm_num [tightScaledRQ]) (by
+      have hm := (Rat.cast_le (K := ℝ)).mpr tight_third_whole_margin
+      push_cast at hm
+      norm_num only [Nat.cast_pow, Nat.cast_ofNat] at hm ⊢
+      simpa only [thirdEnergyQ] using hm)
 
 set_option exponentiation.threshold 1100 in
 /-- The first low-band error uses the tight radius and its exact dyadic table reserve. -/
