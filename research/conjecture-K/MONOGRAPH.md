@@ -81,10 +81,10 @@ and the pointwise phase slack. Everything below is about sup Λ.
 
 [open · 2.2] The comparison object σW is the limit in law of σN^{−1/2}Σ_{j≤N} H(w_j), H(w) = w(|w|² − 2)/√2, over
 fresh remote coordinates: a limit of cubics independent of z₁. If K holds, S is the supremum of Λ over all finite
-dimensions, approached along such sequences and not attained in a fixed dimension: for n = 1 the peak supremum is
-2E|L| < S (2.9).
+dimensions, approached along such sequences. No attainment in a fixed dimension is asserted: at the peak, n = 1 has
+supremum B₀ = 2E|L| < S (2.9), while at the corner (0.74, 0.90, 0.12), where σ* = 0, G = 0 attains S.
 
-- **K_η:** Λ ≤ S + η. At the peak row η ≈ 1.006·10⁻⁴ is the budget for 1.402 (1.5).
+- **K_η:** Λ ≤ S + η. At the peak row the budget for 1.402 is about 10⁻⁴ (1.5).
 - **K′:** keep the first-chaos penalty; its unconstrained form is the retained functional Λ̂ of 1.6. A bound on
   sup Λ̂ is weaker than K and suffices.
 - **Response restrictions:** only G that come from actual responses matter, and they have bounded energies (2.10).
@@ -117,8 +117,10 @@ not, and it matters only if a row cover uses it [R · 2.5].
 
 - The proved lower bound is K_G^ℂ > 1.401700037873, with row cap 3567097/5000000 = 0.7134194 [Lean · 12.1].
 - 1.402 needs a row cap below 500/701 = 0.7132667617…; 1.4022 below 5000/7011 = 0.7131650263….
-- At the peak row an all-sector bound Λ ≤ S + η covers the response interval t ∈ [0.84, 0.851] for 1.402 when
-  η ≤ 166713115892493/1656988750000000000 ≈ 1.006121·10⁻⁴ [P + C · codex-a7c4, re-derived by claude-b9ee · 8.1].
+- At the peak row an all-sector bound Λ ≤ S + η with η ≤ 10⁻⁴ covers the response interval t ∈ [0.84, 0.851] for
+  1.402, with the cap more than 6.12·10⁻⁷ below 500/701. The largest admissible allowance on that interval is
+  η_max = 166713115892493/1656988750000000000 = 0.0001006120988404375…, with no reserve left [P + C · codex-a7c4,
+  re-derived by claude-b9ee · 8.1].
 - Under exact K the cap would be about 0.713160 at ε = 0.7564, that is 1.40221 [R, floating point · 8.4].
 - No certificate with T_ε exceeds 1.4022581233, for any multiplier and dimension [R here · 12.2]; at ε = 149/200 the
   witness cannot reach 1.402 at all [R · 8.3]. A witness with an identity tail, (1, −ε, ν, ν, …), has the model
@@ -189,9 +191,11 @@ has first-order content as well (2.7). The odd sectors are a pure-cost problem.
 ### 1.8 Remote cubics: energy, kurtosis, deficit, contents
 
 For a remote cubic q put u = ‖q‖², δ = E|q|⁴ − 2u² and χ = δ/u². For every circular cubic of the third chaos
-E|q|⁴ ≤ 44u², so 0 ≤ χ ≤ 42, and E|q|⁶ ≤ 6u³ + 9uδ + (4045313/100000)δ^{3/2} [Lean · 3.4]. With
+E|q|⁴ ≤ 44u², so 0 ≤ χ ≤ 42, and E|q|⁶ ≤ 6u³ + 9uδ + (4045313/100000)δ^{3/2} [Lean · 3.4]. For every G put
+F(G) = E|L + G| + E|L − G|, so that Λ(G) = F(G) − ‖G‖²/ε; for G even in z₁, in particular for a remote q,
+F(G) = 2E|L + G|. With
 
-    F(q) = 2E|L + q|,   B(u) = 2E|L + √u·W|,   D(q) = B(u) − F(q),   D₊ = max(D, 0),
+    B(u) = 2E|L + √u·W|,   D(q) = B(u) − F(q),   D₊ = max(D, 0),
 
 one has Λ(q) = F(q) − pu = B(u) − pu − D(q) and S = sup_u (B(u) − pu). D is the **deficit** of q against a Gaussian
 of the same energy. A remote cap Λ(q) ≤ S + η_R does not say D(q) ≥ −η_R; the Gaussian slack S − (B(u) − pu) stays.
@@ -250,8 +254,8 @@ The flank and upper rows are outside all of these.
 **Reformulations.** For one fixed profile, four statements are equivalent: the universal complex sharp radius bound,
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
 PVD, which implies complex PVD; no converse is known [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. The sharp
-radius bound E|q| ≤ (√π/2)‖q‖₂ on H₂,₁ is open; it is proved for real second chaos, one-variable H₃ and Gaussian
-scale mixtures [R · 3.6]. Weaker radii: E|q| < 0.95133‖q‖₂ for every Wick cubic [R · 3.7]. In real second chaos,
+radius bound E|q| ≤ (√π/2)‖q‖₂ on H₂,₁ is open; cases are proved for real BNC of order 2, one-variable H₃ at every
+scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| < 0.95133‖q‖₂ for every Wick cubic [R · 3.7]. In real second chaos,
 E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. Exact remote K is not needed for 1.402.
 
 **External claims.** A report claims a remote closure in another normalisation (E|q|² ≤ 1 ⟹ Φ(q) ≤ 2853/4000, and
@@ -271,14 +275,19 @@ Gaussian U with b = E|U|² and b + E|H|² ≤ ℓ², holds as well; the independ
 ### 2.3 Shells without a remote cubic; conditionally Gaussian adversaries
 
 - **Theorem A.** If the Wick polynomial of G vanishes at z₁ = 0 (every sector except q and A), then
-  F(G) ≤ B(‖G‖²), same-norm domination at every amplitude (needs a/β ≥ 11/4) [P · audit · 5.1]. Its tangent step
+  F(G) ≤ B(‖G‖²) with the paired F(G) = E|L + G| + E|L − G| of 1.8: same-norm domination at every amplitude (needs
+  a/β ≥ 11/4) [P · audit · 5.1]. Its tangent step
   fails once a remote q is present: a remote variance adds a positive tangent correction [P · 5.1a].
 - **Theorem B.** If 𝓕 is independent of z₁ and G is centred proper Gaussian given (z₁, 𝓕) with conditional variance
   s + u(T − 1)² + bT + cT², coefficients nonnegative and 𝓕-measurable, then F(G) ≤ B(‖G‖²) (needs a/β ≤ 11/2; covers
-  the σ* = 0 corner) [P · audit · 5.2]. Genuine shared-driver cubics are outside it: X[(T − 1) + (|Y|² − 1)] has the
-  sign-indefinite conditional variance [(T − 1) + (|Y|² − 1)]² [P · 5.3].
+  the σ* = 0 corner; excludes arbitrary conditional cross-covariance) [P · audit · 5.2]. A genuine cubic can have a
+  sign-indefinite conditional cross term: X[(T − 1) + (|Y|² − 1)] has conditional variance [(T − 1) + (|Y|² − 1)]²,
+  so shared-driver cubics are not covered by 5.2 [P · 5.3].
 - Theorems on buffered and small-amplitude classes of the October manuscript need a Gaussian buffer or very small
-  energy [R · 5.5].
+  energy [R · 5.5]. Two further regimes are recorded [R]: a remote part q + gW with a genuine cubic q of energy at most
+  0.0064 and a diffuse buffer g ≥ 0.185, where every shared A and B shell is covered at all amplitudes [5.6]; and the
+  one-driver family with c = 0, P equal in law to −P and the remote remainder R independent, where the content
+  vanishes by symmetry and K holds exactly for 1/24000 ≤ w ≤ 0.0113 [6.3.19].
 
 ### 2.4 Shared drivers: explicit regions (L3)
 
@@ -310,8 +319,8 @@ at most 2C‖U‖, and 2C‖U‖ − 0.24‖U‖² ≤ C²/0.24 ≤ D(q); add Λ
 unit direction bounds the whole projection, with no dimension factor [P · 6.2.4]. So on R the A-core reduces to the
 content inequality, but this proves neither raw K for all G nor K′ (R comes with response restrictions) [P · 6.2.5].
 
-**Families with the content inequality** (0.00551 ≤ u ≤ 0.0463, three rows; X a remote driver, Y the other remote
-coordinates):
+**Families with the content inequality** (0.00551 ≤ u ≤ 0.0463, three rows unless the row says otherwise; X a remote
+driver, Y the other remote coordinates):
 
 | family | constant κ | status |
 |---|---|---|
@@ -319,7 +328,7 @@ coordinates):
 | Gaussian-factor class Σ_j X_jP_j(Y), any number of drivers and coefficient matrices | 0.239 | P + C (audit) · 6.3.4 |
 | Hermitian self-interaction e^{iα}X[c(\|X\|² − 2) + Y*AY − tr A], real c, Hermitian A, u ∈ [0.03, 0.0463] | 0.23 | implication P, certificate C conditional on saved scalar bounds · 6.3.5 |
 | Wick neighbourhood X[c(\|X\|² − 2) + P], P centred independent of X, E\|P\|² ≤ u/5 | 9/40 | implications P, numerical premises R · 6.3.6 |
-| a neighbourhood p + h of a core p with the inequality at 9/40, h of other characters, ‖h‖² ≤ D(p)/90 | 6/25 | P + C · 6.3.9b |
+| **peak row only:** p + h with p, h ∈ H₂,₁, p of charge one under rotation of a specified coordinate block, h with no component of that character, D(p) > 0, C(p)² ≤ (9/40)D(p), ‖p + h‖² ≤ 0.0463 and ‖h‖² ≤ D(p)/90 | 6/25 | P + C · 6.3.9b |
 
 The moment theorem behind the first row is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y*AY − tr A, any complex
 A, p = E|P|² [P + C · 6.3.1]. The self-interaction family has the deficit identity
@@ -427,8 +436,10 @@ other rows, or K itself: for Λ (the tilt s = 0) the remainder and content steps
 remainder margin at s = 0 is 0.320, against 0.362 at s = 3/5 (STATUS 11.37).
 
 Supporting results of the same chain: the circular-mean bound E_θ|1 + te^{iθ}| ≤ 1 + (3/10)t² [P + C · 11.25]; the
-orthogonality-only bound 𝒥(q, r) ≤ (1074/625)u − (859/2500)‖r‖² for any orthogonal q, r ∈ L² [P + C · 11.26]; a
-structural bound ‖Π₁[q·h(|q|²)]‖² ≤ (3/4)δ·E m_h(|q|²) for every smooth profile h [P · 11.29]; a zero-content class
+global bound 𝒥(q, r) ≤ (1074/625)u − (859/2500)‖r‖² for every remote cubic q and remote linear form r, whose proof
+uses only that q and r are square integrable, independent of z₁ and orthogonal [P + C · 11.26]; a
+structural bound ‖Π₁[q·h(|q|²)]‖² ≤ (3/4)δ·E m_h(|q|²) for every remote cubic q and every real profile h such that
+Φ(x) = x·h(|x|²) and its first two derivatives grow at most polynomially [P · 11.29]; a zero-content class
 (q = Σ a_{ij,k}X_iX_j·conj(Y_k) over independent blocks has Π₁[F(q)] = 0 for every F) [P · 11.31]; and a conditional
 remainder bound with a Gaussian tail for sectors that only have a restricted Hessian bound [P · 11.32].
 
@@ -491,8 +502,9 @@ h = 2|d|²:
 
     Λ(O) ≤ Λ(0) − k₁·v − k₃·h,   (k₁, k₃) = (0.128, 0.330), (0.156, 0.356), (0.166, 0.361)
 
-at the peak, flank and upper rows, at every amplitude [P + C · 5.4]. The coefficients are sharp on the Q- and d-axes
-and row-specific: at (0.76, 0.76, 0.16) the cubic (i/100)Z(|Y|² − 1) raises Λ above Λ(0) [P + C · 5.4a]. The pure P
+at the peak, flank and upper rows, at every amplitude [P + C · 5.4]. The displayed values are rounded safe lower
+bounds of the coefficients k₁ = p − J₁ and k₃ = p − (J₃ − 4J₂ + 4J₁)/2 (the flank k₃ is 0.35662424897376…). These
+unrounded coefficients are sharp on the Q- and d-axes, and they are row-specific: at (0.76, 0.76, 0.16) the cubic (i/100)Z(|Y|² − 1) raises Λ above Λ(0) [P + C · 5.4a]. The pure P
 axis has cost at least 0.41 on the whole box, and Λ̂ = Λ there [P + C · 5.4b]; the retained functional keeps the Q
 cost and improves k₃ [P + C · 5.4c].
 
@@ -510,9 +522,10 @@ with two distinct radial kernels A and B (the mixed second derivative is 2K). Bo
 A(0) = 0 and EQ = 0, but not in general: at q = 0.001·X(|Y|² − 1) the directions (Q, ν) = (|Y|² − 1, 1) and
 (i(|Y|² − 1), i) give K < −8·10⁻⁶ and K > 4·10⁻⁶ (numerically −9.32·10⁻⁶ and 4.66·10⁻⁶, also by mixed finite
 differences) [P + C, N · codex-a7c4, re-derived and replayed by claude-b9ee · 7.2.5]. A
-directional majorant (|X + Y| + |X − Y|)² ≤ 4M − 4c²/M, M = |X|² + |Y|², c = Re(XȲ), is available [P · 7.2.2], and
-certifies the cost 0.063 at one explicit core [P, interval part R · 7.2.3]; numerically the cost is 0.79 to 1.32 per
-unit energy on nine cores [N].
+directional majorant (|X + Y| + |X − Y|)² ≤ 4M − 4c²/M, M = |X|² + |Y|², c = Re(XȲ), is available [P · 7.2.2]. At
+one explicit core H and for one specified odd direction O it gives Λ(H + τO) ≤ Λ(H) − 0.063‖τO‖² for
+0.03 ≤ |τ| ≤ 0.04 only [analytic reduction P, interval integration R · 7.2.3]; numerically the cost is 0.79 to 1.32
+per unit energy on nine cores [N].
 
 ### 2.10 Response domains and the central consumer
 
@@ -523,8 +536,9 @@ for t ≥ 0.851 [P + C · codex-a7c4, re-derived by claude-b9ee · 2.12a]. Witho
 responses only: inserting them inside a supremum over all G is invalid, and two penalties that spend the same square
 cannot be added.
 
-**Central component.** At the single peak row, an all-sector bound Λ ≤ S + η (for Λ or Λ̂) with
-η ≤ 1.006121·10⁻⁴ covers t ∈ [0.84, 0.851] with cap margin above 6.12·10⁻⁷ below 500/701 [P + C · 8.1]. The premise is
+**Central component.** At the single peak row, an all-sector bound Λ ≤ S + η (for Λ or Λ̂) with η ≤ 10⁻⁴ covers
+t ∈ [0.84, 0.851] with cap margin above 6.12·10⁻⁷ below 500/701; separately, the largest admissible allowance there is
+η_max = 166713115892493/1656988750000000000 = 0.0001006120988404375…, with no reserve [P + C · 8.1]. The premise is
 the open all-sector bound; a remote-only cap does not replace it.
 
 The rest of the consumer is not built: an exact cover of t and of the rows; the σ* = 0 corner if the cover uses it;
@@ -582,8 +596,8 @@ section 13), where every source is listed.
 - **78. SEI is preserved by adding any independent symmetric unimodal variable.** X₁ = Z₁Z₂Z₃/3 is SEI, X₁ + U with U
   uniform on [−1, 1] is not (gap ≥ 91/18000). Valid closures: independent Gaussian addition, or two SEI summands with
   symmetric unimodal densities [P + C].
-- **80. The diffuse Gaussian attains the cubic supremum in a fixed dimension.** At n = 1 the peak supremum is B₀ < S
-  [P].
+- **80. The diffuse Gaussian attains the cubic supremum in each fixed dimension.** At n = 1 the peak supremum is
+  B₀ < S [P].
 - **12.3. The degree-5 analogue K₅ holds at its flank rows.** One spike gives +1.55·10⁻⁵ at t ∈ [0.86, 0.88] [N].
 
 **Remote part and domination**
@@ -636,8 +650,12 @@ section 13), where every source is listed.
 - **77. The pointwise remainder of K over all five sectors has nonnegative cost.** Constant coefficients
   (k_Q, k_P, ν) = (i, 0, −i) give local cost below −3/8 [P + C]. Constant Q is not a centred quadratic: the
   integrated zero-core theorem 5.4 stands.
-- **70, 73. The odd sectors never raise Λ over the zero core on the whole box; the flank d-cost is 0.36.** The corner
-  cubic (i/100)Z(|Y|² − 1) at (0.76, 0.76, 0.16) and (i/100)Z(T − 2) at the flank break them, also for Λ̂ [P + C].
+- **70. The odd sectors never raise Λ over the zero core on the whole box; the flank d-cost is 0.36.** The corner
+  cubic (i/100)Z(|Y|² − 1) at (0.76, 0.76, 0.16) raises Λ, and (i/100)Z(T − 2) at the flank violates the cost 0.36
+  [P + C].
+- **73. Retaining the first-chaos correction restores full-box odd nonincrease.** The corner cubic of item 70 raises Λ̂
+  as well [P + C]. The flank example concerns Λ only: the retained flank d-cost exceeds 0.525048300689048 per unit
+  cubic energy.
 - **71. Parity implies differentiability at every even L² base.** H = L·sign(Re z₁) has a cusp along Z(T − 2) [P].
 - **38. Over a nonzero core the odd sectors obey the inverse-norm condition E[|O|²/|L + H|] ≤ (1/ε − κ_E)‖O‖².** Fails
   even with κ_E = 0 at an explicit core [R].

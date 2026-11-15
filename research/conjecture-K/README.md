@@ -50,11 +50,13 @@ phase slack. The whole difficulty of the lower bound is the supremum of Λ over 
 
 The comparison object σW is the *diffuse Gaussian adversary*: the limit in law of N^{−1/2}Σ_{j≤N} H(w_j),
 H(w) = w(|w|² − 2)/√2, over fresh coordinates w_j, a limit of elements of H₂,₁ independent of z₁. If K holds, the
-supremum over **all finite dimensions** equals S and is approached by these diffuse sequences; it is not attained in
-a fixed dimension (at n = 1 the peak supremum is 2E|L| < S).
+supremum over **all finite dimensions** equals S and is approached by these diffuse sequences. This does not assert
+attainment in a fixed H₂,₁(ℂⁿ): at the peak, n = 1 has supremum 2E|L| < S; at the corner (0.74, 0.90, 0.12),
+σ* = 0 and G = 0 attains S.
 
 **Weaker forms that would suffice.**
-- **K_η:** Λ(G) ≤ S + η. For 1.402 the budget at the peak row is η ≈ 1.006·10⁻⁴ on t ∈ [0.84, 0.851]
+- **K_η:** Λ(G) ≤ S + η. For 1.402 at the peak row, η ≤ 10⁻⁴ suffices on t ∈ [0.84, 0.851], with the cap more than
+  6.12·10⁻⁷ below 500/701; the largest admissible allowance there is η_max = 0.0001006120988404375…, with no reserve
   (`STATUS.md` 8.1).
 - **K′ and the retained functional Λ̂:** keep −‖P₁,₀k‖² in the row. Its unconstrained form is
   Λ̂(G) = min_ξ {‖ξ‖² + E|L + G − ξ| + E|L − G + ξ|} − ‖G‖²/ε, ξ in the remote first chaos, with Λ′ ≤ Λ̂ ≤ Λ; the row
@@ -88,9 +90,10 @@ Peak-row constants: p = 1/ε = 2500/1891; 1.3739535256614 < S < 1.3739535256616 
 
 with q a remote cubic (in H₂,₁ of the remote coordinates), r_A and r_B remote linear forms (the **A shell** and the
 **B shell**), Q ∈ H₁,₁ and P ∈ H₂,₀ of the remote coordinates, d ∈ ℂ. u = ‖q‖², w = ‖r_A‖², δ = E|q|⁴ − 2u²,
-χ = δ/u² ∈ [0, 42]. The **core** is q + (T − 1)r_A. For a remote q: F(q) = 2E|L + q|, B(u) = 2E|L + √u·W| (Gaussian
-of the same energy), D(q) = B(u) − F(q) (the **deficit**, also written Δ), F_A(y) = E_{z₁}[(T − 1)·ph(L + y)] =
-y·g(|y|²), and C(q) = ‖P₁,₀F_A(q)‖ (the **A-content**). The **content inequality** is C(q)² ≤ κ·D(q). The **tilted
+χ = δ/u² ∈ [0, 42]. The **core** is q + (T − 1)r_A. For every G, F(G) = E|L + G| + E|L − G|, so
+Λ(G) = F(G) − ‖G‖²/ε; for a remote q, F(q) = 2E|L + q|. B(u) = 2E|L + √u·W| (Gaussian of the same energy),
+D(q) = B(u) − F(q) (the **deficit**, also written Δ), F_A(y) = E_{z₁}[(T − 1)·ph(L + y)] = y·g(|y|²), and
+C(q) = ‖P₁,₀F_A(q)‖ (the **A-content**). The **content inequality** is C(q)² ≤ κ·D(q). The **tilted
 content** of Λ̂ is c_s(q) = Π₁[q·h_s(|q|²)] with h_s = (g − g₀) − s(j₀ − j), where E_{z₁}ph(L + y) = y·j(|y|²).
 Trap: the sectors z₁Q, z̄₁P, d·z₁(T − 2) are called "even sectors" in the October manuscript (even frequency after
 factoring the phase of z₁) and "z-odd sectors" elsewhere (odd under z₁ → −z₁). They are the same sectors. The A and B
