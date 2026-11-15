@@ -36,16 +36,16 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
 - **Proved** (at the peak row unless the whole box is named): the remote part, Λ(q) < S + 3.6·10⁻⁷ for every cubic q
   independent of z₁ (2.1); the A-shell with independent drivers, on the whole box (2.2); explicit regions of the
   shared-driver core (2.4); the content inequality for several structured families (2.5); the B-shell cost and the
-  alignment of B- and A-contents (2.7, with a sharper author-only bound); the local joint A/B form (2.8); the odd sectors over the zero core and, separately, each pure odd sector over every remote core (2.9, latter author only); the
+  alignment of B- and A-contents (2.7, with a sharper author-only bound); the local joint A/B form (2.8); the odd sectors over the zero core and over every remote core, with arbitrary sharing (2.9); the
   central part of the consumer, conditional on an all-sector bound (2.10).
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
   every dimension and at every amplitude, and the same with error below 9.8·10⁻⁵ on a profile rectangle around the
-  peak (2.6); all six sectors together below S + 10⁻⁴ on an energy region around the zero core, with no premise
-  (2.9).
+  peak (2.6); all six sectors together below S + 10⁻⁴ on an energy region around the zero core, and below
+  2E|L| < S for every G without a remote cubic, with no premise (2.9).
 - **Open:** the raw content inequality of L4 for general cubics; the finite-amplitude joint A/B bound, reduced to a
-  compact box; the B-content of general cubics; shared odd sectors over a core containing A/B; the remote part away from the
+  compact box; the B-content of general cubics; odd sectors over a core containing A/B shells; the remote part away from the
   peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
 
 **How far.** Apart from L2 and the one-coordinate results, every finished piece holds at the peak row or near it, and
@@ -223,7 +223,7 @@ K_η must hold for every G, not only for the core. A proof has six layers:
 | L2 | the core with drivers independent of q | proved on the whole box | 2.2 |
 | L3 | the core with shared drivers: explicit regions | proved regions at the peak; one region **R** | 2.4 |
 | L4 | the core on the residual region: cost plus content | K: families proved, general cubics open; Λ̂: closed at the peak | 2.5, 2.6 |
-| L5 | all sectors together | B cost and alignment proved; joint A/B and odd sectors open | 2.7–2.9 |
+| L5 | all sectors together | B cost and alignment proved; odd sectors over remote cores proved (peak); joint A/B and odd sectors over A/B cores open | 2.7–2.9 |
 | L6 | row envelope and consumption | central component proved; the rest open | 2.10 |
 
 ## 2. What is proved
@@ -254,6 +254,14 @@ Around the peak:
 
 The flank and upper rows are outside all of these.
 
+**A qualitative near-Gaussian cone.** A dimension-independent χ₀>0 gives
+E|q|≤(√π/2)√u(1−χ/32) and D(q)≥−B″(u)δ/8 for 0<χ≤χ₀, at every energy
+and every positive profile a>0, b≥0 [P, author only · codex-c7e2 · 3.18].
+This uses the total-variation Edgeworth theorem on clipped absolute values,
+then a Gaussian-buffer limit. Its universal cutoff has no evaluated numerical
+value. The following explicit result instead uses the smoothing of the peak
+visible profile and does not assert an explicit unbuffered radius cutoff.
+
 **An explicit near-Gaussian deficit.** At the peak profile, write
 κ₆ᶜ=E|q|⁶−6u³−9uδ. The scalar Edgeworth expansion gives, for every remote cubic
 and 0<u≤0.0463,
@@ -264,19 +272,26 @@ and 0<u≤0.0463,
 For χ≤1, the respective coefficients improve to 83000 and 20750.
 
 In particular, 0<u≤0.0463 and χ≤10⁻¹⁰ imply D(q)≥(7/50)δ, uniformly in
-dimension [P, author only · codex-a7c4; exact arithmetic replayed · 3.18]. Two
+dimension [P, author only · codex-a7c4; exact arithmetic replayed · 3.19]. Two
 Gaussian integrations by parts, retaining the second and fourth chaos projections
 of the carré du champ, give an explicit remainder; the visible Gaussian scale
 mixture bounds the required seventh payoff derivative. The cutoff is conservative
 and very small. Keeping the energy factor also proves D(q)≥(11/100)δ for every
-cubic shape at u≤10⁻⁵. General χ at larger energies and the joint A/B and odd
-sectors remain outside the result. With the reviewed content coefficient 3/80, it removes
+cubic shape at u≤10⁻⁵. General χ at larger energies remains outside the result.
+With the reviewed content coefficient 3/80, it removes
 the additive error for 0.03≤u≤0.0463, χ≤10⁻¹⁰: ‖c₍₃/₅₎(q)‖²≤0.3D(q).
 In fact the global tilted A-shell remainder (2.6), with k=59009/189100, gives
 Λ̂(q+(T−1)r)≤S−(19/1000)δ for every remote linear r, at every amplitude
 and with arbitrary sharing on that same central-energy small-χ class:
 7/50−(3/80)/k=117001/5900900>19/1000. This is an exact retained A-core
 subclass, not the full retained conjecture.
+
+Separately, the reviewed remote-core odd cost of 2.9 gives
+Λ(q+O)≤S−(7/50)δ−(1988/47275)‖O‖² on 0<u≤0.0463, χ≤10⁻¹⁰, for
+all genuine odd sectors O with arbitrary sharing and amplitude, provided no
+A/B shell is present. Replace 7/50 by 11/100 for every cubic shape at u≤10⁻⁵.
+This does not combine the A-shell and odd-sector corollaries into a theorem
+over a core containing both.
 
 **Reformulations.** For one fixed profile, four statements are equivalent: the universal complex sharp radius bound,
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
@@ -650,8 +665,21 @@ costs when E[Q | q] = E[P | q] = E[Q·conj(P) | q] = 0; the retained simultaneou
 (Q, P) use disjoint Gaussian blocks and Q, P have their genuine chaos degrees [P + C · codex-a7c4, re-derived and replayed by claude-b9ee ·
 7.2.6, 7.2.7]. No A or B shell is present in that base.
 
+**Remote core, all three sectors with arbitrary sharing.** At the peak the centring conditions are not needed. For
+remote q, Q, P with E Q = 0 and arbitrary mutual dependence, and constant ν,
+
+    E[|L + q + O| + |L + q − O| − 2|L + q|] ≤ (32/25)‖O‖²,   so   Λ(q + O) ≤ Λ(q) − (1988/47275)‖O‖²,
+
+and the same for Λ̂ [P + C · outside GPT, re-derived and recomputed by claude-b9ee · 7.2.10]. Three ingredients make
+it work. The pointwise majorant |x + y| + |x − y| − 2|x| ≤ |y|²/|x| − (Re x̄y)²/(2|x|³) holds at every amplitude.
+A compensating term −(3/5)Re Q·Re ν − (6/5)Im Q·Im ν is kept in the conditional inequality and removed after
+averaging by E Q = 0; without it the imaginary Q/ν block at q = 0 exceeds p by 0.387 per unit energy. Rotation and
+reflection in z₁ leave two 3×3 matrix families in the single parameter r = |q|, certified below 32/25 by interval
+arithmetic on [0, 8] and analytically beyond.
+
 **General nonzero core.** By parity (1.7) there is no first-order term and no coupling to the even block; what is needed is a
-uniform pure cost Λ(H + O) ≤ Λ(H) − κ_E‖O‖² over genuine even cubic cores H at the required rows [open · 7.2.4]. Within
+uniform pure cost Λ(H + O) ≤ Λ(H) − κ_E‖O‖² over genuine even cubic cores H at the required rows; for remote cores this is the theorem above, so what remains
+are cores with A/B shells, whose base can vanish quadratically at fixed remote values [open · 7.2.4]. Within
 the odd block, z₁Q and the normalised one-coordinate cubic ν·z₁(T − 2)/√2 interact at a remote base q through
 
     K = Re ν·E[Re Q·A(|q|)] + Im ν·E[Im Q·B(|q|)],
@@ -673,27 +701,32 @@ slack σ(u) = S − (B(u) − pu) of the core. The joint bridge of 2.8 gives Λ�
 right comparison is Δ − σ(u) + D₋ ≤ 5·10⁻⁵, which gives Λ̂(E + O) < S + 99·10⁻⁶ [P · 7.2.8]. No tested
 configuration violates Δ ≤ σ(u) + 5·10⁻⁵, including cores at the energy where σ vanishes [N · 7.2.9].
 
-**All sectors at the peak (retained functional).** Take the remote trial ξ₀ = −(3/5)(r_A + 0.5053r_B) of 2.8 and no
-visible coefficient. The bound |l + h| + |l − h| ≤ 2|l| + |h|²/|l| at L, and the orthogonality of the visible harmonics
+**All sectors at the peak (retained functional).** Take the trial ξ = −(2/5)r_A − (7/100)r_B − (2/7)ν·z₁. The
+two-sign inequality |1 + z| + |1 − z| ≤ 2 + ½(Re z)² + (Im z)² at L, and the orthogonality of the visible harmonics
 under the radial weight 1/|L|, give for every G in the six sectors, with arbitrary sharing,
 
-    Λ̂(G) ≤ 2E|L| + (771/500)u + (43/250)V − (16/125)(W_Q + W_P) − (33/100)W_ν,
+    Λ̂(G) ≤ 2E|L| + (413/500)u − (11/40)V − (16/125)W_Q − (213/500)W_P − (249/500)W_ν,
 
-so Λ̂(G) < S + 10⁻⁴ when the energy part is at most 1087/500000 [P + C · codex-91d4, re-derived and replayed by
-claude-b9ee · 7.5.1]. This region is a neighbourhood of the zero core (on the axes u ≤ 0.00140 or V ≤ 0.0126); the energy
-u* ≈ 0.0403 where σ vanishes lies far outside it. Elsewhere the central secant is bounded by
+so Λ̂(G) < S + 10⁻⁴ when the energy part is at most 1087/500000, and Λ̂(G) < S when it is at most 1037/500000. With
+q = 0 every coefficient is negative: Λ̂(G) ≤ 2E|L| < S for every G without a remote cubic, at every amplitude. The
+raw analogue, with no trial, has +37/200 on V and −33/100 on W_ν and gives exact K on its region [P + C · codex-c7e2,
+from the inequality of the October manuscript, re-derived and replayed by claude-b9ee · 7.5.1]. On the remote axis the
+region reaches only u ≤ 0.00263; the energy u* ≈ 0.0403 where σ vanishes lies far outside it. Elsewhere the central secant is bounded by
 Ψ(X, H) = 2(√(|X|² + |H|²) − |X|) − (Re X·conj H)²/(|X|² + |H|²)^(3/2) [P · 7.5.2], and (P) of 2.8 together with
 the averaged premise
 
     (P_Ψ)   |c|² + E Ψ(X, O − cz₁) − p‖O‖² ≤ 0.01‖U‖² + σ(u) − D₋(q) + 5·10⁻⁵   for one global complex c,
 
-with X = L + E + (3/5)R, would give Λ̂(G) < S + 99·10⁻⁶ for every G at the peak [P + C · 7.5.3]. (P_Ψ) is open. It
-holds for odd energy below 6.16·10⁻¹⁰ [P author only · 7.5.4], every numerical test supports it, and the particular
+with X = L + E + (3/5)R, would give Λ̂(G) < S + 99·10⁻⁶ for every G at the peak [P + C · 7.5.3]. In its secant form (P_Ψ) holds for every core without A/B shells (7.2.10); with A/B shells it is
+open. It holds for odd energy below 6.16·10⁻¹⁰ [P author only · 7.5.4], every numerical test supports it, and the particular
 cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of about six near
 u* [7.5.5]. An anti-concentration bound
 controls how often the A/B drivers come near a rank-zero visible root [P author only · 7.5.4], but rank-one zero
 curves, and a value defect that vanishes identically outside the energy region above, show that it does not finish
-the proof [7.5.5].
+the proof [7.5.5]. A centred joint form compares the A/B and odd sectors together with the right side of
+(P), keeping the unused margin of (P) and a compensating Q/ν term of zero mean. Under the caps u ≤ 0.0463 and u + V ≤ 0.080051 it reduces the target to one compact averaged bound.
+Its defect F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds when W < 1/50), also when S_r ≥ 11/5
+or ω ≥ 4 [P + C · codex-91d4, re-derived and replayed by claude-b9ee · 7.5.6].
 
 ### 2.10 Response domains and the central consumer
 
@@ -783,11 +816,11 @@ by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows 
    δ-coefficients against moment caps and Stein duals in (u, χ). *Gives:* the A-core of K, and with item 1 the
    A + B core.
 3. **B-content for general cubics.** The peak alignment reduces it to A-content. *Gives:* the B-sector with its cost.
-4. **The odd sectors over a nonzero core**: a uniform pure cost over genuine even cubic cores. Numerically z₁Q and
-   z̄₁P keep a pointwise cost of about 0.128 jointly with A and B, while d·z₁(T − 2) needs an argument after
-   integration, because its pointwise cross term with z₁Q has the wrong sign; such an argument must keep both coupling
-   channels of 2.9, which centring removes only at the zero core. For Λ̂ at the peak the target is the averaged premise
-   (P_Ψ) of 2.9, outside its energy region around the zero core. *Gives:* L5 together with items 1–3.
+4. **The odd sectors over a core with A/B shells**: remote cores are done at the peak (2.9). With A/B shells the
+   base can vanish quadratically at fixed remote values, so an argument must average over the Gaussian drivers; the
+   compensation of 2.9, which keeps both Q/ν channels in the conditional inequality and removes them by E Q = 0, is
+   the model. For Λ̂ at the peak the target is the averaged premise (P_Ψ) of 2.9, or the compact averaged bound of its
+   centred joint form, outside the energy region around the zero core. *Gives:* L5 together with items 1–3.
 5. **The remote part at the other rows**: certificates for the row envelope beyond the tube and the rectangle around
    the peak; the flank and upper rows are outside both. *Gives:* L1 for the consumer's rows.
 6. **The response regions outside R and the consumer**: cover the complementary t regions with a fixed ε, using the
@@ -796,7 +829,7 @@ by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows 
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
    Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 5/4 and
    1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the origin profile, directional exterior and proved local pieces; its conditional assembly uses the existing tilted-content theorem.
-   The other obligations are the odd sectors through the averaged premise (P_Ψ) of 2.9, the other rows through the
+   The other obligations are the odd sectors over A/B cores through the averaged premise (P_Ψ) of 2.9, the other rows through the
    weighted scaling of 1.6,
    and more than three remote variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).
 8. **The identity-tail witness** raises the model ceiling to 1.40248 and is untested at certificate level.
@@ -977,12 +1010,12 @@ restriction on the amplitude at every tilt tried [11.17].
 | 1.2–1.5 setting, budget | 2.1–2.5, 8.1–8.4, 12.1, 12.2 | `audit-2026-11-13/`, `reaudit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/MANUSCRIPT_DIGEST_K.md` | `reaudit-2026-11-15-codex-a7c4/` |
 | 1.6 retained functional | 2.10, 2.10a, 2.13, 2.14, 3.16, 3.17, 11.2–11.13 | `external-2026-11-15/`, `numerics-kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `sixth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/legacy/ch20-pinned-gate.tex` | `kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/`, `sixth-audit-2026-11-15-codex-a7c4/` |
 | 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 | `third-audit-2026-11-15-codex-a7c4/CONTENT_KERNELS.md`, `reaudit-2026-11-15-codex-a7c4/SECTORS.md` | `third-audit-2026-11-15-codex-a7c4/` |
-| 2.1 remote part | 3.1–3.16, 11.7–11.11 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
+| 2.1 remote part | 3.1–3.19, 11.7–11.11 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.5 | `third-audit-…/POTENTIAL.md`, `audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md`, `audit-2026-11-15-codex-a7c4/CLAIMS.md` | `third-audit-2026-11-15-codex-a7c4/` |
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py` |
 | 2.6 tilted lemma, retained A-core | 11.25–11.54 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py` |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.5 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py` |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.10, 7.5.1–7.5.6 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/` |
 | 2.10 response, consumer | 2.12, 2.12a, 8.1 | `reaudit-…/FOUNDATIONS.md`, `manuscript/legacy/ch25-parts/` | `reaudit-…/foundations_exact.py` |
 | 3 open problems | section 15 | the audits above | |
 | 4 false statements | section 13 (and 14) | as cited there | |

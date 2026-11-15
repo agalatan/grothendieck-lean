@@ -3,8 +3,9 @@
 
 Agent-ID: codex-a7c4. Refs #446. Author-only paper derivation and exact
 arithmetic check; independent mathematical review is pending. This is a
-scalar remote result with a retained A-shell corollary. It assumes neither the compact joint inequality (P)
-nor the odd-sector premise, and proves neither of them.
+scalar remote result with retained A-shell and remote-plus-odd corollaries.
+It assumes neither the compact joint inequality (P) nor the odd-over-A/B
+premise, and proves neither of them.
 
 ## Statement
 
@@ -52,7 +53,19 @@ amplitude,
     LambdaHat(q+(T-1)r) <= S-(19/1000)delta            (4a)
 
 when 3/100<=u<=463/10000 and chi<=10^-10. This corollary covers an A
-shell; it does not cover the B shell or the odd sectors.
+shell. Separately, for genuine odd sectors
+
+    O=ZQ+conjugate(Z)P+nu Z(T-2)/sqrt(2),
+
+with remote Q in H_(1,1), P in H_(2,0) and complex constant nu, the
+reviewed remote-core odd cost (ledger 7.2.10) gives the raw bound
+
+    Lambda(q+O)<=S-(7/50)delta-(1988/47275)||O||²       (4b)
+
+on the full energy range of (2), with arbitrary sharing between q,Q,P
+and arbitrary odd amplitude. On the all-shape range (2a), replace 7/50
+by 11/100. Neither corollary covers a B shell or odd sectors over an
+A/B core; they are separate subclasses.
 
 ## 1. Relation to the Edgeworth literature
 
@@ -307,6 +320,12 @@ Use B(u)-pu<=S, the bounds D(q)>=(7/50)delta and
 ||c_(3/5)(q)||²<=(3/80)delta, and the exact comparison
 
     7/50-(3/80)/k=117001/5900900>19/1000.
+
+Finally the independently reviewed remote-core odd theorem, ledger
+7.2.10, states Lambda(q+O)<=Lambda(q)-(1988/47275)||O||², with no A
+or B shell. Substituting Lambda(q)=B(u)-pu-D(q)<=S-D(q) and (2) or
+(2a) proves (4b). In particular no content estimate or small odd-energy
+assumption enters this corollary.
 
 The exact rational checks, inverse series and
 Hermite normalizations are replayed by `code/edgeworth-codex-a7c4/verify.py`.

@@ -13,8 +13,12 @@ has no additive error. Keeping the remainder's `sqrt(u)` factor also proves
 `D(q)>=(11/100)delta` for every cubic shape at `u<=10^-5`. The conservative cutoffs do
 not improve the global lower endpoint. On the central-energy small-chi class,
 the global tilted A-shell bound gives `LambdaHat(q+(T-1)r)<=S-.019delta` for
-every remote linear r, at every amplitude and with arbitrary sharing. The joint
-A/B and odd sectors remain outside this corollary.
+every remote linear r, at every amplitude and with arbitrary sharing.
+Separately, the reviewed odd-sector cost over a remote core gives
+`Lambda(q+O)<=S-.14delta-(1988/47275)||O||^2` on the small-chi class,
+and the corresponding `.11delta` bound at `u<=10^-5`, with arbitrary
+sharing and odd amplitude. This last corollary has no A/B shells.
+Odd sectors over an A/B core remain outside both results.
 
 ```sh
 python3 research/conjecture-K/code/edgeworth-codex-a7c4/verify.py

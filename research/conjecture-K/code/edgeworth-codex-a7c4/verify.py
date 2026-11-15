@@ -59,6 +59,8 @@ def main():
     assert F(3, 80) < F(3, 10)*F(7, 50)
     retained_reserve = F(7, 50)-F(3, 80)/F(59009, 189100)
     assert retained_reserve == F(117001, 5900900) > F(19, 1000)
+    odd_cost = F(2500, 1891)-F(32, 25)
+    assert odd_cost == F(1988, 47275) > 0
 
     # Circular projection: normalized moments are 3+3chi/2 and
     # 15+45chi/2+5kappa6c/(2u^3). H6 subtracts 15 H4's raw moment.
@@ -80,7 +82,8 @@ def main():
                       'deficit_coefficient': '7/50',
                       'all_shapes_energy_cap': '1/100000',
                       'all_shapes_deficit_coefficient': '11/100',
-                      'retained_A_central_energy_reserve': '19/1000'}, indent=2))
+                      'retained_A_central_energy_reserve': '19/1000',
+                      'remote_core_odd_cost': str(odd_cost)}, indent=2))
 
 
 if __name__ == '__main__':

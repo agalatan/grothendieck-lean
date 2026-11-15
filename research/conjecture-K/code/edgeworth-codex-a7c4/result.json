@@ -14,5 +14,6 @@
   "deficit_coefficient": "7/50",
   "all_shapes_energy_cap": "1/100000",
   "all_shapes_deficit_coefficient": "11/100",
-  "retained_A_central_energy_reserve": "19/1000"
+  "retained_A_central_energy_reserve": "19/1000",
+  "remote_core_odd_cost": "1988/47275"
 }
