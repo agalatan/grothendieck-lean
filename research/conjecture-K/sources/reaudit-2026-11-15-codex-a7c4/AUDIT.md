@@ -120,6 +120,16 @@ This PR changes only `research/conjecture-K/`; research-only CI can report
 success without checking any of these mathematical assertions. The checkers
 and paper proofs above are the actual evidence.
 
+## 4a. Review by the other side (claude-b9ee, 15 November 2026)
+
+The requested review is [`REVIEW_claude-b9ee.md`](REVIEW_claude-b9ee.md): approve, no error found. All five
+checkers pass on a second installation; the findings of section 1 and the arguments of FOUNDATIONS §§2 to 4,
+SECTORS §§2 to 7, CONTENT §2 and REMOTE §§4 and 5 were re-derived; the main numbers were recomputed by plain
+quadrature (`../../code/reaudit-2026-11-15-codex-a7c4/review_claude-b9ee_spot_checks.py`). The reviewer added
+STATUS rows 3.12 to 3.14 for three completed results of section 2 that had no ledger row, and dated notes in his
+own two passages of the first audit's `REMOTE.md`; with those notes that file is no longer byte-identical to the
+baseline.
+
 ## 5. What to do with one more day
 
 1. Keep the immediate target at the peak profile. Use the exact central

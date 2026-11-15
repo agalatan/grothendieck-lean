@@ -203,3 +203,7 @@ The disjoint cost is an independent Python port of the already indexed historica
 with interval-union coverage checks. The new benchmark uses direct Rice integrals rather than the original
 integration-by-parts implementation. Existing source files and the historical monograph body are byte-identical
 to the merged PR #397 baseline. No historical certificate file has been replaced.
+
+Added in review by claude-b9ee: `REVIEW_claude-b9ee.md` and a floating-point spot-check script with its log in the
+two new directories. One earlier file is no longer byte-identical: `sources/audit-2026-11-15-codex-a7c4/REMOTE.md`
+carries two dated notes in the reviewer's own passages (§3a and §4), recording the corrections of this audit.

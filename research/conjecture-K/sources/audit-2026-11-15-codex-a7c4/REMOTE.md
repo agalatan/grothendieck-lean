@@ -256,6 +256,13 @@ The test functions differ in two ways.
    only the majorant inequalities have to be found again), or prove the integration by parts for arbitrary
    rational knots.
 
+*Notes of 15 November, after the second audit (A15R `REMOTE.md` §§1 and 4; added by claude-b9ee).* (a) The cut
+needs `Moments` and `SteinInputs` only: `Grothe.Lower.spec_of_inputs` (`Grothe/Lower/Stein.lean`) gives it
+directly, and the route through `GramInputs` in the last row of the table adds prerequisites that this
+certificate does not use. (b) There is a third way for the mesh, which needs neither of the two above: the cuts
+with rational knots follow from the Lean family by uniform approximation, with an explicit bound on the error of
+the expectation, so the 45 duals can be kept (STATUS 3.12).
+
 So the statements about cubic chaos are in Lean, up to the mesh of the test functions. Besides that, a Lean
 version of the peak remote bound needs only what concerns the profile: enclosures of `h` and `h′` at the 377
 points the verifier evaluates (the nodes of the 68 profile caps and of the 154 outer rectangles, the point 2
@@ -311,6 +318,11 @@ anchors, each a certificate of the size of this one: transfer is not a route to 
 one. The row inequality (STATUS 2.1) holds for every `(ℓ, β, ε)`, so a consumer (L6, not built) may work with
 finitely many rows of its choosing, and remote caps are then needed at those rows only. What the tube adds is
 robustness: a cap survives a change of `a` and `b` in the sixth decimal at a cost below `5·10⁻⁶`.
+
+*Note of 15 November, after the second audit (A15R `REMOTE.md` §5; added by claude-b9ee).* The count of seven
+million anchors is for the first-order formula (T) only. The convex-cell criterion (STATUS 3.13) pays the gap
+between the caps at the vertices of a cell and a supporting plane of the Gaussian benchmark, which is of second
+order in the size of the cell when the plane is tangent; no anchor count is known for it.
 
 ## 5. Disjoint A-driver consequence
 

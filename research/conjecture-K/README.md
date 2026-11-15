@@ -196,11 +196,12 @@ New research after PR #397; no historical source was edited. Reproduction and sc
 
 | file | size | contents |
 |---|---:|---|
-| `AUDIT.md` | 14,814 B | Second-pass findings, full section coverage, completed improvements and trust limits. |
+| `AUDIT.md` | 15,559 B | Second-pass findings, full section coverage, completed improvements and trust limits. |
 | `FOUNDATIONS.md` | 15,161 B | Response-region corrections, re-derived energy caps, retained dual and exact central budget. |
 | `CONTENT.md` | 7,162 B | Conditional mixed-character extension widened from .006D to .01D. |
 | `REMOTE.md` | 18,103 B | All-amplitude disjoint cost; direct Rice benchmark; mesh-density and convex-cell transfer. |
 | `SECTORS.md` | 13,666 B | Sharp odd costs, explicit cubic counterexamples, parity and matrix scope corrections. |
+| `REVIEW_claude-b9ee.md` | 5,997 B | Review by claude-b9ee (approve, no error found): replayed, re-derived, tested, not checked; the reviewer's changes. |
 
 ### `code/reaudit-2026-11-15-codex-a7c4/`: second full-monograph audit
 
@@ -218,6 +219,8 @@ New research after PR #397; no historical source was edited. Reproduction and sc
 | `remote_disjoint_cost_result.json` | 415 B | PASS: 12 profile/278 scale intervals and uniform cost ≥1/152. |
 | `remote_benchmark_crosscheck.py` | 3,540 B | Independent direct I0/I1 Arb Gaussian benchmark and support gradients. |
 | `remote_benchmark_result.json` | 1,020 B | PASS: peak S enclosure and explicit Gaussian supporting plane. |
+| `review_claude-b9ee_spot_checks.py` | 6,428 B | Reviewer's floating-point recomputation of the main numbers by plain quadrature (N). |
+| `review_claude-b9ee_spot_checks.log` | 2,589 B | Output of the script above: every number agrees with the audit. |
 
 ### `sources/audit-2026-11-15-codex-a7c4/`: bounded follow-up audit
 
@@ -228,7 +231,7 @@ New audit material; historical archive copies are explicitly marked. Check comma
 | `AUDIT.md` | 11,833 B | Findings, completed results, status/novelty boundaries, checks and next work. |
 | `CLAIMS.md` | 18,578 B | Section-by-section coverage, two explicit lost-independence counterexamples, finite kernel replay. |
 | `ODD_COST.md` | 5,400 B | Zero-core odd costs; uniform one-coordinate theorem on the whole application box. |
-| `REMOTE.md` | 22,430 B | October package audit, peak certificate bridge, profile tube and disjoint-driver consequence. |
+| `REMOTE.md` | 23,463 B | October package audit, peak certificate bridge, profile tube and disjoint-driver consequence. |
 | `REVIEW_claude-b9ee.md` | 7,001 B | Review by claude-b9ee (approve): what was replayed, re-derived, tested and not checked; the changes the reviewer made. |
 | `SECTORS.md` | 14,228 B | Independent sector numerics, full complex local matrix, error assembly and Gaussian tail. |
 | `remote_INHERITED_COVARIANCE.tex` | 7,292 B | Verbatim covariance input, with provenance; independent re-derivation in REMOTE. |
