@@ -1,0 +1,15 @@
+CONDITIONAL RETEST: using just-accepted global rational duals and fresh Gaussian integrals from prior full run.
+{"energy_slab": ["2/125", "9/500"], "accepted_boxes": 5, "uncovered_boxes": 0}
+{"energy_slab": ["9/500", "1/50"], "accepted_boxes": 6, "uncovered_boxes": 0}
+{"energy_slab": ["1/50", "9/400"], "accepted_boxes": 6, "uncovered_boxes": 0}
+{"energy_slab": ["9/400", "1/40"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["1/40", "11/400"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["11/400", "3/100"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"energy_slab": ["3/100", "13/400"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["13/400", "7/200"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["7/200", "3/80"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["3/80", "1/25"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["1/25", "21/500"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["21/500", "11/250"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"energy_slab": ["11/250", "463/10000"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"accepted": 106, "uncovered": 0, "passed": true, "seconds": 0.3315999507904053}

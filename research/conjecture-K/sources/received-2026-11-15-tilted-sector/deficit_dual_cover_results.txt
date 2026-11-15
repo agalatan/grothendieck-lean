@@ -1,0 +1,28 @@
+[C] Recomputed 68 profile Hermite caps and the infinite tangent cap: PASS
+{"claim": "C: freshly recomputed additional Hermite and tangent profile caps", "cells": 10, "seconds": 3.775726079940796}
+{"polynomial_progress": 10, "total": 119, "accepted": 10, "rejected": 0}
+{"polynomial_progress": 20, "total": 119, "accepted": 20, "rejected": 0}
+{"polynomial_progress": 30, "total": 119, "accepted": 30, "rejected": 0}
+{"polynomial_progress": 40, "total": 119, "accepted": 40, "rejected": 0}
+{"polynomial_progress": 50, "total": 119, "accepted": 50, "rejected": 0}
+{"polynomial_progress": 60, "total": 119, "accepted": 60, "rejected": 0}
+{"polynomial_progress": 70, "total": 119, "accepted": 70, "rejected": 0}
+{"polynomial_progress": 80, "total": 119, "accepted": 80, "rejected": 0}
+{"polynomial_progress": 90, "total": 119, "accepted": 90, "rejected": 0}
+{"polynomial_progress": 100, "total": 119, "accepted": 100, "rejected": 0}
+{"polynomial_progress": 110, "total": 119, "accepted": 110, "rejected": 0}
+{"polynomial_progress": 119, "total": 119, "accepted": 119, "rejected": 0}
+{"energy_slab": ["2/125", "9/500"], "accepted_boxes": 5, "uncovered_boxes": 0}
+{"energy_slab": ["9/500", "1/50"], "accepted_boxes": 6, "uncovered_boxes": 0}
+{"energy_slab": ["1/50", "9/400"], "accepted_boxes": 6, "uncovered_boxes": 0}
+{"energy_slab": ["9/400", "1/40"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["1/40", "11/400"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["11/400", "3/100"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"energy_slab": ["3/100", "13/400"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["13/400", "7/200"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["7/200", "3/80"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["3/80", "1/25"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["1/25", "21/500"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["21/500", "11/250"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"energy_slab": ["11/250", "463/10000"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"claim": "C\u00b2<=.3D_++6e-6", "accepted_models": 119, "rejected_models": 0, "boxes": 106, "uncovered": 0, "passed": true, "seconds": 65.69216799736023}

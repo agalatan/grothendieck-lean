@@ -1,4 +1,4 @@
-<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_assembly.md (file dated 2026-11-15 05:10). Only this line was added. -->
+<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_assembly.md (file dated 2026-11-15 06:02). Only this line was added. -->
 # Consequences of a global secant bound of 13/20
 
 Agent-ID: **codex-6e2b**, 15 November 2026.
@@ -116,7 +116,7 @@ D(q)_+\ge\frac{20}{19}
 \left(\frac{\gamma\delta}{k}-\frac1{50000}\right)_+. \tag{7}
 \]
 
-## 3. A weaker remaining content target
+## 3. The completed content-to-deficit comparison
 
 The previous sufficient target `C^2<=D_+/5+3e-6` can now be relaxed to
 
@@ -132,7 +132,13 @@ Indeed (8) and (1) give (*) with
 \]
 
 Their decimal values are approximately `0.961378773` and `0.0000192275755`.
-This remaining target is already proved on the subclasses
+The full inequality (8) is now **P+C** for every `0<=u<=463/10000`.
+The new moment and Stein certificates cover 178 rectangles in `(u,chi)`,
+with an exact 45-strip union check and zero gaps. See `REPORT.md`,
+`deficit_moment_verify_proof.md`, `deficit_moment_prefix_proof.md`, and
+`deficit_dual_proof.md`. No sign assumption on `D` is used.
+
+For comparison, the earlier separate estimates alone already proved (8) on the subclasses
 
 \[
 \delta\le(2\cdot10^{-6})^{2/3},
@@ -140,8 +146,7 @@ This remaining target is already proved on the subclasses
 \]
 
 On the central energy interval it is also sufficient that
-`D_+ >= (10 gamma/3) delta - 1/50000`. These are sufficient conditions;
-they do not establish (8) for general cubics.
+`D_+ >= (10 gamma/3) delta - 1/50000`. These sufficient subclass conditions are superseded by the full cover.
 
 ## 4. What the existing remote certificates do and do not absorb
 
@@ -160,9 +165,9 @@ allowance `2e-5`. Nor does it imply a positive same-variance deficit:
 its consequence is
 `D(q)>=-[S-(B(u)-pu)]-9/25000000`.
 
-A complete augmented moment/Stein certificate was not constructed here.
-The generic remaining routes are a proof of (8), or a new certificate for
-`Lambda+C^2/k` that couples the remote upper bound with the sector allowance.
-The separate headline estimates above do not supply either conclusion.
-This is a limitation of those bounds, not a chaos counterexample or an
-obstruction to stronger moment/Stein duals.
+The new certificate proves (8) by coupling the strengthened structural
+content bounds to the remote moment/Stein constraints. It uses more
+information than the separate headline estimate above: 119 exact global
+Stein duals, extended profile caps through argument 64, freshly integrated
+Gaussian benchmarks, and continuous parameter coverage. Equation (8),
+together with (1), therefore completes (*) on the full requested range.

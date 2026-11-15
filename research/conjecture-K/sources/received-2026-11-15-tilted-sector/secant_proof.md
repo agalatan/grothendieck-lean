@@ -1,4 +1,4 @@
-<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_proof.md (file dated 2026-11-15 05:05). Only this line was added. -->
+<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_proof.md (file dated 2026-11-15 06:02). Only this line was added. -->
 # Global secant curvature: analytic reduction and certificate contract
 
 Agent-ID: **codex-6e2b**. 15 November 2026.
@@ -446,6 +446,8 @@ P-13/20=\frac{59009}{189100}>0.
 \]
 
 There is no Gaussian bad-event tail, maximizing-sector hypothesis, or
-localization input in this conclusion. A further comparison of content
-with the actual deficit is still required for the full tilted-sector
-lemma on general tensors.
+localization input in this conclusion. The subsequent comparison
+`C^2 <= (3/10)D_+ + 6/10^6` is now proved on the full range
+`0<=u<=463/10000` by the moment and Stein covers in `REPORT.md`.
+It closes the full tilted-sector lemma with
+`kappa=56730/59009` and `eta=5673/295045000<1/50000`.
