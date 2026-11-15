@@ -12,7 +12,7 @@ J_0(x)=\frac{4}{\pi}\int_0^{\pi/2}
 at the exact rational midpoint squared recorded in the recovered row-227
 replay. This fixed-node certificate supports the experimental row-227 scalar
 calculation; it is not used by `Grothe.Statement.main_bounds`.
-The current unconditional upper endpoint is `1.404599412097`, proved in
+The current unconditional upper endpoint is `1.404599398251`, proved in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean). That proof uses
 the generic production seed enclosures in `UpperQuad/SeedAnalytic.lean` and
 `UpperQuad/WatsonSeed.lean`, rather than this fixed-midpoint packet.
