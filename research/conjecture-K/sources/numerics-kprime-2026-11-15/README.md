@@ -1,4 +1,4 @@
-<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/README.md (file dated 2026-11-15 02:49). Only this line was added. -->
+<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/README.md (file dated 2026-11-15 02:57). Only this line was added. -->
 # The retained first-chaos penalty, optimised together with the sectors
 
 claude-b9ee, 15 November 2026. Numerical work at the peak row, prompted by the external note reviewed in
@@ -19,7 +19,7 @@ together with the A- and B-sectors. Result, by exact quadrature at the peak row:
 | Wick monomial, u = 0.0463, A+B | 0.165 | 0.018 |
 | largest value found over all tensors in two remote variables, u between 0.005 and 0.15, A-sector | 0.161 | 0.024 |
 | the same tensors with the B-sector added | 0.166 | 0.024 |
-| largest value found in three remote variables, u = 0.02 and 0.0463, A-sector | 0.161 | 0.024 |
+| largest value found in three remote variables, u = 0.02 and 0.0463, A-sector | 0.161 | 0.025 |
 
 The inequality the sectors must satisfy is gain ≤ D + η. Its margin is about 6 for K and about 40 with the penalty
 retained, on everything tested (one to three remote variables). The reason is a cancellation in the first-order
@@ -95,7 +95,8 @@ With u free (not tied to r) the second-order saddle value is
 
 **The cancellation (N).** g − g₀ ≥ 0 and j₀ − j ≥ 0, and their ratio (g(v) − g₀)/(j₀ − j(v)) decreases from 1.291 (v
 → 0) to −g₀/j₀ = 0.583 (v → ∞) (`tilt_profiles.log`; its first entry, 1.271 at v = 10⁻⁴, is a quadrature error of
-the fixed grid: adaptive quadrature gives 1.2908 there and a monotone ratio, `ratio_small_v.log`). So for s between
+the fixed grid: adaptive quadrature gives 1.2908 there, and to four decimals a ratio that never increases,
+`ratio_small_v.log`). So for s between
 0.58 and 1.29 the profile h_s changes sign, positive for small |q| and negative for large |q|, and its projection on
 the first chaos is small. On the Wick monomial at u = 0.0463, c = 0.03250 and μ = −0.03467: the content c + sμ is
 0.63·c at s = 0.343, 0.36·c at s = 0.6, and vanishes near s = 0.94. The cost-optimal tilt (0.34) and the content-
@@ -203,13 +204,15 @@ reproduces the monomial ratios 0.1604 and 0.0170 as 0.1601–0.1606 and 0.0170�
 ratio is reliable and the fourth is not). Two structured tensors at u = 0.0463: X[(|X|²−2) + 1.2(|Y|²−1)] gives
 K 0.1443, retained 0.0185; with a second bath variable of the same weight, K 0.1296, retained 0.0178.
 
-Search over all tensors (`search3/`; two restarts per run; when this was written four runs of the retained search
-at u = 0.0463 and one at u = 0.02 had finished, and one restart of the K search):
+Search over all tensors (`search3/`; two restarts per run, at most 60 L-BFGS iterations each). When this was
+written the following had finished: at u = 0.0463 four restarts from three random seeds, at u = 0.02 both restarts
+of one seed, and one restart of the K search (started near a structured tensor). The runs whose first restart
+starts near a structured tensor, among them the only run at u = 0.03, had not.
 
 | u | retained: largest gain/D found, three variables | two variables (section 5) | one variable |
 |---|---|---|---|
-| 0.0200 | 0.0241 | 0.0237 | 0.0225 |
-| 0.0463 | 0.0230 (four runs from random starts agree) | 0.0208 | 0.0170 |
+| 0.0200 | 0.0245 (the two restarts give 0.0241 and 0.0245) | 0.0237 | 0.0225 |
+| 0.0463 | 0.0230 (all four restarts) | 0.0208 | 0.0170 |
 
 For K at u = 0.0463 the largest ratio found in three variables is 0.1611 (two variables: 0.1609; monomial: 0.1604).
 

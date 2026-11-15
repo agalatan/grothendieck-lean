@@ -167,7 +167,7 @@ for what the retained penalty buys (7 to 14 % of the mixed-gain allowance; 13 to
 for K_rot) are subtractions at fixed sectors. Here the first-chaos element u of Λ̂ is optimised together with the A
 and B shells, and the resulting sector gain (the supremum over the shells of the minimum over u, minus Λ(q)) is set
 against the deficit D(q) of the remote cubic q; a proof needs gain ≤ D + η. At the peak row, by deterministic
-quadrature, the largest gain found is 0.166·D for K and about 0.024·D with the penalty retained (the Wick monomial,
+quadrature, the largest gain found is 0.166·D for K and about 0.025·D with the penalty retained (the Wick monomial,
 all tensors in two remote variables, and a search over the tensors in three remote variables): a margin of about 6
 for K and about 40 with the penalty retained, on what was tested. The retained ratio rises slowly
 with the number of remote variables (0.017, 0.021, 0.023 at u = 0.0463 for one, two, three) and its limit is not

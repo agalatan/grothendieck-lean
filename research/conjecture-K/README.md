@@ -55,7 +55,7 @@ In words: the supremum of Λ over the cubic chaos is attained by a Gaussian adve
   (`sources/external-2026-11-15/`): Λ′ ≤ Λ̂ ≤ Λ, and a cap on Λ̂ would also suffice. Numerically (**N**,
   15 November, peak row) the sector part of a proof has far more room for Λ̂ than for Λ. Write gain(q) for the most
   that the A and B shells can add over a remote cubic q, and D(q) for the deficit of q (defined under "Vocabulary"
-  below); a proof needs gain(q) ≤ D(q) + η. The largest gain found is 0.166·D(q) for Λ and about 0.024·D(q) for Λ̂
+  below); a proof needs gain(q) ≤ D(q) + η. The largest gain found is 0.166·D(q) for Λ and about 0.025·D(q) for Λ̂
   with its first-chaos element optimised together with the shells: a margin of about 6 for K and about 40 with the
   penalty retained, on what was tested (remote cubics in one, two and three variables). The ratio for Λ̂ rises
   slowly with the number of remote variables (0.017, 0.021, 0.023 at ‖q‖² = 0.0463) and its limit is not known.
