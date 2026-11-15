@@ -2,7 +2,7 @@
 
 A Lean 4 + Mathlib proof of these bounds on the complex Grothendieck constant:
 
-$$1.401697117301 < K_G^{\mathbb{C}} < 1.404599412097$$
+$$1.401700037873 < K_G^{\mathbb{C}} < 1.404599412097$$
 
 Both inequalities are one theorem without hypotheses, `Grothe.Statement.main_bounds`
 ([`Grothe/MainResult.lean`](Grothe/MainResult.lean)). Its proof uses the three standard axioms of Lean and
@@ -16,7 +16,7 @@ finite exact computations evaluated by compiled code (`native_decide`); see
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.404599412097}$ |
+| Oct–Nov 2026 | **this repository** | $\mathbf{1.401700037873 < K}$ | $\mathbf{K < 1.404599412097}$ |
 
 Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
 $\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
@@ -53,7 +53,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 **The statement** is [`Grothe/Statement.lean`](Grothe/Statement.lean). It imports only Mathlib and holds only
 definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as their infimum, `UpperBelow c`
 (some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the two targets
-`UpperTarget = UpperBelow 1.4046` and `LowerTarget = LowerAbove 1.401697117301`. `UpperTarget` retains the
+`UpperTarget = UpperBelow 1.4046` and `LowerTarget = LowerAbove 1.401700037873`. `UpperTarget` retains the
 earlier threshold for compatibility; the current upper theorem has the stronger type
 `UpperBelow (1404599412097 / 10^12)`. A compiled theorem whose type is one of these statements and whose
 axiom report is clean proves exactly that claim.
@@ -63,7 +63,7 @@ axiom report is clean proves exactly that claim.
 
 **The current theorems** are `lower_target : LowerTarget`,
 `upper_below_tight : UpperBelow (1404599412097 / 10^12)` and
-`main_bounds : 1.401697117301 < K_G^ℂ < 1.404599412097`, all in the namespace `Grothe.Statement` and without
+`main_bounds : 1.401700037873 < K_G^ℂ < 1.404599412097`, all in the namespace `Grothe.Statement` and without
 hypotheses ([`Grothe/MainResult.lean`](Grothe/MainResult.lean),
 [`Grothe/UpperTightFinal.lean`](Grothe/UpperTightFinal.lean)). The earlier `upper_target : UpperTarget`
 was removed on 15 November 2026 (#405).
@@ -74,11 +74,11 @@ The witness is the operator $T = P_{1,0} - \tfrac{149}{200} P_{2,1}$ on $L^2$ of
 $\mathbb{C}^n$, where $P_{1,0}$ and $P_{2,1}$ are the orthogonal projections onto the linear functions of $z$ and
 onto the cubic Wick chaos of bidegree $(2,1)$ (`witness`,
 [`Grothe/LowerAnalytic/Witness.lean`](Grothe/LowerAnalytic/Witness.lean)). The proof shows that
-$\lvert \langle f, Tg \rangle \rvert \le B = 0.713420886479$ for all unimodular $f$, $g$ and all $n \ge 2$.
+$\lvert \langle f, Tg \rangle \rvert \le B = 3567097/5000000 = 0.7134194$ for all unimodular $f$, $g$ and all $n \ge 2$.
 
 1. **Transfer.** For $u_\ell = z_\ell / \lVert z \rVert$ the sum $\sum_\ell \langle u_\ell, T u_\ell \rangle$ has
    modulus at least $1 - \tfrac{349}{200}/(n+1)$ (`norm_pairVal_witness`), so every Grothendieck bound is at least
-   $1/B > 1.401697117301$ (`transfer_lower`, `Grothe/Lower/Transfer.lean`, which passes to finite matrices).
+   $1/B > 1.401700037873$ (`transfer_lower`, `Grothe/Lower/Transfer.lean`, which passes to finite matrices).
 2. **Reduction.** It suffices to bound $\mathrm{Re} \langle f, Tg \rangle$ (multiply $g$ by a phase). Let
    $h = (f+g)/2$ and $k = (f-g)/2$, in coordinates where $P_{1,0} h$ lies on one coordinate. From the hypothesis
    `NodeCaps` of step 4, `reductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 19 inequalities
@@ -96,7 +96,10 @@ $\lvert \langle f, Tg \rangle \rvert \le B = 0.713420886479$ for all unimodular 
    certified bounds on $\mathbb{E}\,\Psi_r$ gives $\mathrm{Re} \langle f, Tg \rangle \le B$ (`cover_sound`,
    `box_sound`, `Grothe/Lower/Boxes.lean`). `native_decide` facts check the rows, the node certificates, every
    box and the cover. The result, in `Grothe/Research/RefinedCoverResult.lean`, is
-   `lower_bound_of_refined_cover_data : NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`.
+   `lower_bound_of_completed_refinement : NodeCaps → IsGrothendieckBound K → 1.401700037873 < K`. Its cover
+   has 14,060 boxes; on some of them a finite convex mixture of rows replaces a single row
+   (`mixCover_bound`, `Grothe/Lower/FiniteMix.lean`), and 21 additional law witnesses are checked by one native fact
+   (`certRefinementBatches`, `Grothe/Research/LowerRefinementCheck.lean`).
 4. **The node caps.** `NodeCaps` says that each $\Psi_r$, less $10^{-11}$, lies below a stored rational at each
    stored node. By convexity the vertex nodes suffice (`nodeCaps_of_vertexCaps`). At a vertex node, a pointwise
    majorant with prices on a polar grid bounds the integral by a quadratic form in the parameters, whose

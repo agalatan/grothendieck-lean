@@ -4,7 +4,7 @@ The current proved upper bound is **K_G^ℂ < 1.404599412097**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
 [`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
 proved lower bound, `main_bounds` states
-**1.401697117301 < K_G^ℂ < 1.404599412097** in
+**1.401700037873 < K_G^ℂ < 1.404599412097** in
 [`MainResult.lean`](../Grothe/MainResult.lean).
 
 The sharper target **K_G^ℂ < 1.404598149141** remains a separate conditional
