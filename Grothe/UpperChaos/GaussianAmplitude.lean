@@ -82,10 +82,17 @@ lemma lintegral_weightedP1 (B C : Sym2C) {j : ℝ} (hj : 0 < j)
   have hm := (measurable_weightedP1 B C j).ennreal_ofReal
   have hi := integrable_weightedP1 B C hj hZ hT
   rw [Measure.volume_eq_prod] at hi
-  rw [← lintegral_prod _ hm.aemeasurable,
-    ← ofReal_integral_eq_lintegral_ofReal hi
-      (Filter.Eventually.of_forall fun p => weightedP1_nonneg B C j p.1 p.2),
-    integral_prod _ hi, integral_P1_gaussian B C hj hZ hT]
+  change Measurable (fun p : (ℝ × ℝ) × (ℝ × ℝ) ↦
+    ENNReal.ofReal (weightedP1 B C j p.1 p.2)) at hm
+  calc
+    (∫⁻ y, ∫⁻ y', ENNReal.ofReal (weightedP1 B C j y y')) =
+        ∫⁻ p : (ℝ × ℝ) × (ℝ × ℝ), ENNReal.ofReal (weightedP1 B C j p.1 p.2)
+          ∂(volume.prod volume) := (lintegral_prod _ hm.aemeasurable).symm
+    _ = ENNReal.ofReal (∫ p : (ℝ × ℝ) × (ℝ × ℝ), weightedP1 B C j p.1 p.2
+          ∂(volume.prod volume)) :=
+      (ofReal_integral_eq_lintegral_ofReal hi
+        (Filter.Eventually.of_forall fun p ↦ weightedP1_nonneg B C j p.1 p.2)).symm
+    _ = _ := by rw [integral_prod _ hi, integral_P1_gaussian B C hj hZ hT]
 
 /-- The exact four-dimensional Gaussian-amplitude mass in the `L*L` estimate. -/
 def mass (B C : Sym2C) (j : ℝ) : ℝ :=
@@ -112,22 +119,22 @@ lemma phih_factor (j : ℝ) (Y : V) :
 theorem lintegral_P4_phih (B C : Sym2C) {j : ℝ} (hj : 0 < j)
     (hZ : (Z B).PD) (hT : (T B C).PD) :
     ∫⁻ Y : V, ∫⁻ Y' : V,
-      ENNReal.ofReal (phih j Y) * ENNReal.ofReal (phih j Y') * P4 B C Y Y' =
+      ENNReal.ofReal (phih j Y) * ENNReal.ofReal (phih j Y') * SchurBound.P4 B C Y Y' =
         ENNReal.ofReal (mass B C j) := by
   let k : (ℝ × ℝ) → (ℝ × ℝ) → ℝ≥0∞ :=
     fun y y' => ENNReal.ofReal (weightedP1 B C j y y')
   have hkm : Measurable (Function.uncurry k) :=
     (measurable_weightedP1 B C j).ennreal_ofReal
   have hp (Y Y' : V) :
-      ENNReal.ofReal (phih j Y) * ENNReal.ofReal (phih j Y') * P4 B C Y Y' =
+      ENNReal.ofReal (phih j Y) * ENNReal.ofReal (phih j Y') * SchurBound.P4 B C Y Y' =
         ENNReal.ofReal ((j / Real.pi) ^ 2) * (k Y.1 Y'.1 * k Y.2 Y'.2) := by
     have hw : ∀ y, 0 ≤ weight j y := fun y => (Real.exp_pos _).le
     have hf : ∀ Y, 0 ≤ phih j Y := by
       intro Y
       rw [phih_factor]
-      positivity
+      exact mul_nonneg (mul_nonneg (div_pos hj Real.pi_pos).le (hw Y.1)) (hw Y.2)
     have hp : ∀ y y', 0 ≤ P1 B C y y' := P1_nonneg B C
-    dsimp [k, P4]
+    dsimp [k, SchurBound.P4]
     rw [← ENNReal.ofReal_mul (hf Y),
       ← ENNReal.ofReal_mul (mul_nonneg (hf Y) (hf Y')),
       ← ENNReal.ofReal_mul (weightedP1_nonneg B C j Y.1 Y'.1),
@@ -137,7 +144,6 @@ theorem lintegral_P4_phih (B C : Sym2C) {j : ℝ} (hj : 0 < j)
     unfold weightedP1
     ring
   simp_rw [hp]
-  rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
   simp_rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
   rw [lintegral_product_kernel k hkm]
   have hk := lintegral_weightedP1 B C hj hZ hT

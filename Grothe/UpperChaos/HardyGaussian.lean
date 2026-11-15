@@ -1,5 +1,6 @@
 -- Grothe/UpperChaos/HardyGaussian.lean
 import Grothe.UpperChaos.HardyGaussianSound
+import Grothe.UpperChaos.HardyGaussianFacts
 import Grothe.UpperChaos.HardyReal
 import Grothe.UpperChaos.SchurMainGaussian
 
@@ -14,6 +15,48 @@ Agent-ID: codex-9b17. Refs #380.
 -/
 
 open MeasureTheory Real
+
+-- Keep the concrete acceptance fact outside the pure interval soundness module.
+-- Agent-ID: codex-c8a4. Refs #380.
+namespace Grothe.UpperChaos.HardyGaussianSound
+
+open GrotheKernel GrotheKernel.HardyArc Grothe.Upper
+open HardyArcSound HardyArcCover HardyArcCircle SchurMain SchurKernel Sym2R
+
+noncomputable section
+
+theorem chart_parameter_bound (neg : Bool) {τ : ℝ} (hτ : -1 ≤ τ ∧ τ ≤ 1) :
+    Bound (chartPt (rhoQ : ℝ) neg τ) := by
+  have hD := D_pos
+  by_cases hzero : τ ≤ 0
+  · apply cover_sound neg 24 (-D) 0
+    · constructor <;> simp only [Int.cast_neg, Int.cast_zero]
+      · simpa using mul_le_mul_of_nonneg_right hτ.1 hD.le
+      · exact mul_nonpos_of_nonpos_of_nonneg hzero hD.le
+    · exact HardyGaussianCheck.charts_checked neg false
+  · apply cover_sound neg 24 0 D
+    · constructor <;> simp only [Int.cast_zero]
+      · exact mul_nonneg (le_of_not_ge hzero) hD.le
+      · simpa using mul_le_mul_of_nonneg_right hτ.2 hD.le
+    · exact HardyGaussianCheck.charts_checked neg true
+
+/-- The complete half-circle for either sign, including both endpoints. -/
+theorem chart_bound (neg : Bool) {θ : ℝ} (hlo : -Real.pi / 2 ≤ θ) (hhi : θ ≤ Real.pi / 2) :
+    Bound (sig neg * ((rhoQ : ℝ) : ℂ) * Complex.exp (θ * Complex.I)) := by
+  have h1 : 2 * Real.arctan (-1) ≤ θ := by rw [Real.arctan_neg, Real.arctan_one]; linarith
+  have h2 : θ ≤ 2 * Real.arctan 1 := by rw [Real.arctan_one]; linarith
+  have hτ := tan_half_mem h1 h2
+  have he := exp_eq_chart (by linarith [Real.pi_pos] : -Real.pi < θ)
+    (by linarith [Real.pi_pos] : θ < Real.pi)
+  have hb := chart_parameter_bound neg hτ
+  convert hb using 1
+  rw [he, chartPt]
+  push_cast
+  ring
+
+end
+
+end Grothe.UpperChaos.HardyGaussianSound
 
 namespace Grothe.UpperChaos.HardyGaussian
 

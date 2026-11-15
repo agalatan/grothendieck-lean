@@ -1,7 +1,7 @@
 -- Grothe/UpperChaos/HardyGaussianSound.lean
 import Grothe.UpperChaos.HardyArcSound
 import Grothe.UpperChaos.HardyArcCircle
-import Grothe.UpperChaos.HardyGaussianFacts
+import Grothe.UpperChaos.HardyGaussianCheck
 import Grothe.UpperChaos.GaussianPair
 
 /-!
@@ -102,13 +102,14 @@ theorem box_sound {R : Sym2C} {RI : SC} {j : ℝ} {jI : Ival}
       (mem_mul (mem_mul (mem_mul (mem_intI 16) (mem_mul hj hj))
         (mem_mul (mem_normSq hdp) (mem_normSq hdm))) (mem_det hZ))
       (mem_mul (mem_det hTJ) (mem_det hTEJ))
-    simpa only [HardyGaussianCheck.denOf, denominator, shifted_eq_add, hTeq, hEeq,
-      Z_Bj_eq hdp0 hdm0, normSq_detIm, sq, mul_assoc] using hm
+    rw [denominator, normSq_detIm]
+    simpa only [HardyGaussianCheck.denOf, ndOf, shifted_eq_add, hTeq, hEeq,
+      Z_Bj_eq hdp0 hdm0, sq, Int.cast_ofNat, mul_assoc] using hm
   have hcapR : (4 : ℝ) * D ≤ 5 * (HardyGaussianCheck.denOf jI RI).lo := by
     exact_mod_cast hcap
   have hD := D_pos
   have hdenLower : (4 / 5 : ℝ) ≤ denominator R j := by
-    apply (mul_le_mul_right hD).mp
+    apply (mul_le_mul_iff_left₀ hD).mp
     nlinarith [hden.1]
   refine ⟨?_, ?_, ?_⟩
   · rw [Z_Bj_eq hdp0 hdm0]; exact hZPD
@@ -135,35 +136,6 @@ theorem cover_sound (neg : Bool) (depth : ℕ) (lo hi : ℤ) {τ : ℝ}
     · by_cases hm : τ * D ≤ (((lo + hi) / 2 : ℤ) : ℝ)
       · exact ih lo ((lo + hi) / 2) ⟨hτ.1, hm⟩ hl
       · exact ih ((lo + hi) / 2) hi ⟨(le_of_not_ge hm), hτ.2⟩ hr
-
-theorem chart_parameter_bound (neg : Bool) {τ : ℝ} (hτ : -1 ≤ τ ∧ τ ≤ 1) :
-    Bound (chartPt (rhoQ : ℝ) neg τ) := by
-  have hD := D_pos
-  by_cases hzero : τ ≤ 0
-  · apply cover_sound neg 24 (-D) 0
-    · constructor <;> simp only [Int.cast_neg, Int.cast_zero]
-      · simpa using mul_le_mul_of_nonneg_right hτ.1 hD.le
-      · exact mul_nonpos_of_nonpos_of_nonneg hzero hD.le
-    · exact HardyGaussianCheck.charts_checked neg false
-  · apply cover_sound neg 24 0 D
-    · constructor <;> simp only [Int.cast_zero]
-      · exact mul_nonneg (le_of_not_ge hzero) hD.le
-      · simpa using mul_le_mul_of_nonneg_right hτ.2 hD.le
-    · exact HardyGaussianCheck.charts_checked neg true
-
-/-- The complete half-circle for either sign, including both endpoints. -/
-theorem chart_bound (neg : Bool) {θ : ℝ} (hlo : -Real.pi / 2 ≤ θ) (hhi : θ ≤ Real.pi / 2) :
-    Bound (sig neg * ((rhoQ : ℝ) : ℂ) * Complex.exp (θ * Complex.I)) := by
-  have h1 : 2 * Real.arctan (-1) ≤ θ := by rw [Real.arctan_neg, Real.arctan_one]; linarith
-  have h2 : θ ≤ 2 * Real.arctan 1 := by rw [Real.arctan_one]; linarith
-  have hτ := tan_half_mem h1 h2
-  have he := exp_eq_chart (by linarith [Real.pi_pos] : -Real.pi < θ)
-    (by linarith [Real.pi_pos] : θ < Real.pi)
-  have hb := chart_parameter_bound neg hτ
-  convert hb using 1
-  rw [he, chartPt]
-  push_cast
-  ring
 
 end
 

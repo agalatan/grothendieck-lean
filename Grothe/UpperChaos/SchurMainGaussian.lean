@@ -2,6 +2,8 @@
 import Grothe.UpperChaos.GaussianAmplitude
 import Grothe.UpperChaos.SchurMain
 
+-- API repair: Agent-ID: codex-c8a4. Refs #380.
+
 /-!
 # The Schur bound with the prescribed Gaussian amplitude
 
@@ -80,13 +82,13 @@ lemma integral_norm_Lg_sq_le :
       ENNReal.ofReal (mass B C j) := by
     rw [← lintegral_P4_phih B C hj hZ hT]
     refine lintegral_mono fun Y => lintegral_mono fun Y' => ?_
-    exact mul_le_mul_right' (mul_le_mul' (ENNReal.ofReal_le_ofReal (norm_gw_le j hG hj Y))
-      (ENNReal.ofReal_le_ofReal (norm_gw_le j hG hj Y'))) _
+    exact mul_le_mul' (mul_le_mul' (ENNReal.ofReal_le_ofReal (norm_gw_le j hG hj Y))
+      (ENNReal.ofReal_le_ofReal (norm_gw_le j hG hj Y'))) le_rfl
   have hfin : ENNReal.ofReal (‖c‖ ^ 2) *
       ∫⁻ Y : V, ∫⁻ Y' : V, a Y * a Y' * SchurBound.P4 B C Y Y' ≤
       ENNReal.ofReal (‖c‖ ^ 2 * mass B C j) := by
     rw [ENNReal.ofReal_mul (sq_nonneg _)]
-    exact mul_le_mul_left' hmass _
+    exact mul_le_mul' le_rfl hmass
   exact ENNReal.toReal_le_of_le_ofReal
     (mul_nonneg (sq_nonneg _) (mass_nonneg B C hj hZ hT)) hfin
 
@@ -99,7 +101,7 @@ theorem norm_HholPair_le :
   set c := cst R j
   have hK : 0 ≤ ‖c‖ ^ 2 * mass B C j :=
     mul_nonneg (sq_nonneg _) (mass_nonneg B C hj hZ hT)
-  rw [HholPair_eq R j hj]
+  rw [SchurMain.HholPair_eq R j hj F G]
   set f := gw j F
   set g := gw j G
   by_cases hint : Integrable
