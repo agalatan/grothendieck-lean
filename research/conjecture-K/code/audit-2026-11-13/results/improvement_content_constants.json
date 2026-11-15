@@ -1,0 +1,20 @@
+{
+  "agent": "codex-a713",
+  "exact_rational_bounds": {
+    "L_upper": "196744885/202389392",
+    "M1_upper": "35471158203125/6180478707537",
+    "phi_prime_upper": "2955/1864",
+    "EL2": "1181331/1562500",
+    "C0_squared_upper": "4167/250000",
+    "extension_coefficient": "617/250"
+  },
+  "decimal_bounds": {
+    "L_upper": 0.9721106578550323,
+    "M1_upper": 5.739225047384835,
+    "phi_prime_upper": 1.5853004291845494,
+    "extension_coefficient": 2.468
+  },
+  "m1_independent_quad": 2.159180864970275,
+  "quad_error_estimate": 8.40337115913234e-13,
+  "status": "Rational inequalities exact; displayed integral floating only"
+}

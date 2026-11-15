@@ -1,0 +1,149 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch22-residual-cubics.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 22). Owner: lower-bound/07-remote-spectral.tex
+\section{$K_\eta$ for all remote cubics and the diagonal at the peak profile (upper-side GPT, 15 October 20:01)}\label{ch:rescub}
+\chapsummary{The original all-remote-cubic theorem at the peak, with its inherited moment constant and diagonal estimate. Sharper constants appear in \autoref{ch:remote-cubic-refinement} and \autoref{ch:shared-sector-refinements}; preserve the remote-baseline restriction.}
+
+\paragraph{Provenance and status (IDE note, 15 October, evening).} Source: the note \code{grothendieck-residual-cubics-proof.md} and package \code{grothendieck-residual-cubics-proof.zip}
+(\pathref{\~{}/Downloads/}, mtime 20:01) from the upper-side GPT system; archived with the certificates and scripts in \pathref{handoff/research-third-decimal/gpt-reviews/residual-cubics-20261015/}.
+This chapter is written by us from \code{PROOF.md} with the complete proofs. \emph{Statements}: \st{P} (GPT) with the numerical parts \st{C} by outward-rounded Arb (python-flint) certificates,
+\emph{replayed here}: \code{SHA256SUMS.json} 12/12; \code{certify\_diagonal.py} PASS (potential bound $[1.31072839989\pm4.8\cdot10^{-26}]<1311/1000$, 0.1\,s); \code{certify\_residual.py --replay}
+PASS (162 kurtosis bands, every accepted upper endpoint $<54959/40000$, benchmark $S>1.373953525$); log \pathref{kattack-2026-10-15/gpt\_residualcubics\_replay.log}, our own checks
+\code{residual\_cubics\_check.py}. \textbf{Scope}: the exact peak profile only ($\varepsilon=1891/2500$, $\ell=1057/1250$, $\beta=179/1250$); \emph{the row box and the envelope are not covered}, and no
+Grothendieck endpoint changes (the repository bound comes from the separate certificate ladder; current Lean bound $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}).
+At 20:01 this was the strongest result on Conjecture~K: K-a with slack $2.2\cdot10^{-5}$ for \emph{every} remote cubic, and the removal of the diagonal sector on every remote law. \emph{Refined in \autoref{ch:remote-cubic-refinement} (20:37): slack $<10^{-5}$ with the project $C_6$ ($1.7\cdot10^{-5}$ with $C_6=50$), diagonal deficit $0.264|\nu|^2$ on every remote law, exact central-row room $9.064\cdot10^{-5}$.}
+
+\subsection{Statement}
+Let $(Z,W)$ and the coordinates of $X\in\C^n$ be independent standard proper complex Gaussians, $L=Z(\ell+\beta(|Z|^2-2))=Z(a+b|Z|^2)$ with $a=699/1250$, $b=179/1250$, $H(Z)=Z(|Z|^2-2)/\sqrt2$,
+$S=\sup_{v\ge0}\{2\E|L+\sqrt vW|-v/\varepsilon\}$.
+\begin{theorem}[all remote cubics, \st{P} GPT + \st{C}]\label{thm:rescub}
+For every $n\ge1$, $q\in\Hc21(\C^n)$ and $g\ge0$, with $Q=q(X)+gW$,
+\[
+2\E|L+Q|-\frac{\E|Q|^2}\varepsilon<\frac{54959}{40000}=1.373975,\qquad\text{hence}\qquad\Lambda(Q)<S+\frac{11}{500000}=S+2.2\cdot10^{-5},
+\]
+since the certificate also proves $S>1.373953525$. No kurtosis, amplitude or dimension restriction; $\E|L-Q|=\E|L+Q|$ by circularity and independence.
+\end{theorem}
+\begin{theorem}[global diagonal removal, \st{P} GPT + \st{C}]\label{thm:rescub-diag}
+For every complex random variable $Q$ independent of $Z$ with finite second moment and every $\nu\in\C$,
+\[
+\Lambda(Q+\nu H)\le\Lambda(Q)-\frac{20899}{1891000}|\nu|^2 .
+\]
+In particular Theorem~\ref{thm:rescub} holds for $q(X)+gW+\nu H(Z)$ with this strict deficit.
+\end{theorem}
+
+\subsection{Moment input: the published constant $50$ suffices}
+For $v=\E|Q|^2>0$ put $U=|Q|^2/v$, $x^2=\E U^2-2$. Only
+\begin{equation}\label{eq:rescub3}
+\E U=1,\qquad\E U^2=2+x^2,\qquad\E U^3\le6+9x^2+50x^3,\qquad0\le x\le\tfrac{31}4
+\end{equation}
+is used (HJM, eq.~(7.3) and \S8.3; their $\E U^2\le62$ even gives $x\le\sqrt{60}$). The project's sharper $C_6=40.45313$ (a scalar consequence formalized under a cumulant tensor hypothesis), the bound on $\E\sqrt U$ and all Stein cuts are \emph{not} needed.
+The buffer preserves \eqref{eq:rescub3}: with $u=\E|q|^2$ the circular cumulants $\kappa_4(q)=\E|q|^4-2u^2$ and $\kappa_6(q)=\E|q|^6-9u\E|q|^4+12u^3$ are unchanged by adding $gW$, so
+$\kappa_6(Q)\le50\kappa_4(Q)^{3/2}$ and $\kappa_4(Q)\le60u^2\le60v^2$; expanding gives \eqref{eq:rescub3} for $Q$. The case $v=0$ follows by continuity.
+
+\subsection{Derivative signs of the radial potential}
+Let $f(u)=2\E|L+\sqrt u|$. Needed: $f'\ge0$, $f''\le0$, $f'''\ge0$, $f^{(4)}\le0$. With $H(r)=r(a+br)^2$, $h=H^{-1}$ and $T=|Z|^2\sim{\rm Exp}(1)$, $\mathbb P(|L|^2>u)=e^{-h(u)}$ and $h'(u)=R(h(u))$,
+$R(r)=1/[(a+br)(a+3br)]$, which is completely monotone; with $R_j=(-1)^jR^{(j)}\ge0$ and $D_uR_j(h)=-R_0(h)R_{j+1}(h)$, induction gives $(-1)^{k-1}h^{(k)}\ge0$ and then $e^{-h}$ completely monotone,
+so $L\overset d=\sqrt R\,G$ for a positive mixing variable $R$ (the mixture theorem of \S\ref{sec:kfull-global}). Then
+\begin{equation}\label{eq:rescub4}
+f(u)=\frac1{\sqrt\pi}\int_0^\infty\Bigl[1-\E\frac{e^{-su/(1+sR)}}{1+sR}\Bigr]s^{-3/2}\,ds.
+\end{equation}
+For every integer $k\ge1$, differentiation gives
+\[
+(-1)^{k-1}f^{(k)}(u)=\frac1{\sqrt\pi}\int_0^\infty
+\E\left[\frac{s^k e^{-su/(1+sR)}}{(1+sR)^{k+1}}\right]s^{-3/2}\,ds\ge0.
+\]
+The integrands are nonnegative, so Tonelli applies. At $u=0$ their integral equals
+$\Gamma(k-\tfrac12)\E R^{1/2-k}/(2k!)$, which is finite: the exponential-mixture rate $R^{-1}$ has all integer moments, since the survival function $e^{-h}$ is analytic at zero; the fractional moments follow by domination by $1+R^{-k}$. This also supplies an integrable dominating function for every $u\ge0$ and justifies differentiation up to the endpoint.
+\paragraph{Correction (15 October, 21:45; GPT's \code{weak-k} package, patch applied and verified by us, \autoref{ch:weakk}).} An earlier version appended the equality $f(u)=\sqrt\pi\,\E\sqrt{R+u}$ to \eqref{eq:rescub4}. That equality is false for a fixed shift $\sqrt u$: it describes adding an independent proper Gaussian of variance $u$. The correct Laplace formula above still proves all derivative signs, so the two-node theorem and certificates are unchanged. For example, when $R=r$ is deterministic, the fixed-shift function has $f''(0)=-\sqrt\pi/(8r^{3/2})$, whereas the Gaussian-variance formula has second derivative $-\sqrt\pi/(4r^{3/2})$.
+
+\subsection{The two-node moment theorem}
+\begin{lemma}[\st{P}]\label{lem:twonode}
+Let $m>1$, $M>m^2$, and let $U\ge0$ satisfy $\E U=1$, $\E U^2\ge m$, $\E U^3\le M$. Put $A=\frac{M-m}{m-1}$, $B=\frac{M-m^2}{m-1}$, $r_+=\frac{A+\sqrt{A^2-4B}}2$, $r_-=B/r_+$, $p=\frac{1-r_-}{r_+-r_-}$.
+Then $0<r_-<1<r_+$, $0<p<1$, and for every $v\ge0$
+\begin{equation}\label{eq:rescub6}
+\E f(vU)\le(1-p)f(vr_-)+pf(vr_+).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $Y\in\{r_-,r_+\}$ with $\mathbb P(Y=r_+)=p$; the root equation gives $\E Y=1$, $\E Y^2=m$, $\E Y^3=M$. Let $P(t)=c_0+c_1t+c_2t^2+c_3t^3$ be the cubic Hermite interpolant of $f_v(t)=f(vt)$ at the two
+nodes (values and first derivatives). The interpolation remainder is $f_v^{(4)}(\xi)(t-r_-)^2(t-r_+)^2/4!\le0$, so $P\ge f_v$ on all of $t\ge0$, outside the node interval included. The divided
+difference $c_3=f_v[r_-,r_-,r_+,r_+]\ge0$ ($f'''\ge0$), and $c_2=f_v[r_-,r_-,r_+]-(2r_-+r_+)c_3\le0$ because $f_v$ is concave. Hence
+$\E f_v(U)\le\E P(U)=c_0+c_1\E U+c_2\E U^2+c_3\E U^3\le c_0+c_1+c_2m+c_3M=\E P(Y)=\E f_v(Y)$. For exact second moment $m$ and third-moment bound $M$ the bound is attained by $Y$: it is the exact
+value of the relaxed moment problem.
+\end{proof}
+At $x=0$ ($m=2$, $M=6$) the nodes are $2\pm\sqrt2$ with upper probability $(2-\sqrt2)/4$.
+
+\subsection{Certifying every kurtosis and every variance}
+Partition $0\le x\le31/4$ into 162 rational intervals $[x_-,x_+]$ (\code{residual\_certificate.json}); on each use $m=2+x_-^2$, $M=6+9x_+^2+50x_+^3$ ($M>m^2$ since $2+5x^2+x^3(50-x)>0$). The lemma
+bounds the residual objective by $B_{m,M}(v)=(1-p)f(vr_-)+pf(vr_+)-v/\varepsilon$, concave on $v\ge0$. For $v_0>2d>0$ let $B_0,\ldots,B_3$ be its values at $v_0-2d,v_0-d,v_0+d,v_0+2d$; if $B_1>B_0$
+and $B_3<B_2$, then
+\begin{equation}\label{eq:rescub8}
+\sup_{v\ge0}B_{m,M}(v)\le\max\{4B_1-3B_0,\ 4B_2-3B_3\}
+\end{equation}
+(the two outer secant lines of a concave function bound it on the two unbounded sides and, crossing, on the middle). Both slope signs and both bounds are checked in Arb on every band: all
+accepted upper endpoints are $<54959/40000$ (largest $\approx1.373974765716$). The floating optimiser only proposes the partition and the four test points.
+
+\subsection{Rigorous radial integration}
+With $r=|Z|$, $X(r)=r(a+br^2)$, $s=\sqrt u$, the angular mean is $g_s(x)=2\E_\theta|xe^{i\theta}+s|=\frac4\pi(x+s)E\bigl(\frac{4xs}{(x+s)^2}\bigr)$, convex in $x\ge0$. On a radial cell $[l,h]$ with exact
+Gaussian mass $p_c$ and first $X$-moment $m_c$, Jensen gives the lower bound $p_cg_s(m_c/p_c)$ and the chord between $X(l)$, $X(h)$ the upper bound; the moment uses
+$\int_r^\infty2t^2(a+bt^2)e^{-t^2}dt=e^{-r^2}[ar+b(r^3+3r/2)]+\sqrt\pi(a/2+3b/4)\operatorname{erfc}(r)$. Adaptive subdivision until upper minus lower $<10^{-8}$ (7,522,878 cells in all); tail $r\ge6$ by
+$g_s(X(r))\le2(X(r)+s)$; near the elliptic endpoint $1\le E(m)\le1+\sqrt{1-m}$. The benchmark uses the exact Rice mean at $\sigma=10043/50000$ with tolerance $10^{-9}$: $S>1.373953525$.
+
+\subsection{What this corrects, and the remaining budget}\label{sec:rescub-budget}
+The exact two-node optimum at $x=0$ is $S+9.77\cdot10^{-6}$ (floating), not the $6.3\cdot10^{-5}$ of \autoref{ch:certs}: a feasible dual gives an upper bound, not the size of the loss
+(see the reading note). With $C_6=50$ a second maximum appears near $x=0.775$, $v=0.0444$, at $\approx1.37396805$; the certificate bounds both by $1.373975$.
+\emph{Remaining obligation.} With $G=q(X)+(|Z|^2-1)A(X)+\frac{Z^2}{\sqrt2}B(X)+ZY(X)+\bar ZW(X)+\nu H(Z)$, the theorem allows arbitrary dependence inside $q$ and removes $\nu$ over a remote
+baseline; the even-sector theorem of \S\ref{sec:profileslack} covers $q+ZY+\bar ZW$ on its box; open: the dependence with $A,B$ (and $Y,W$ on top of $A,B$, and $\nu$ on top of $A,B$). \emph{Later:} \autoref{ch:shared-sector-refinements} removes $A$ under the symmetry
+$(Q,A)\overset d=(Q,iA)$ and $B$ under $\E[B\mid Q]=0$ at every amplitude; the coherent one-driver case is subsequently closed in \autoref{ch:complete-coherent-driver}. General coupled cubics remain outside these family theorems. With
+$C=54959/40000$ and $\mathcal Q(v,x)$ the two-node bound at exact moments $m=2+x^2$, $M=6+9x^2+50x^3$, a sufficient coupled estimate is
+\begin{equation}\label{eq:rescub9}
+\Lambda_P(q+H)-\Lambda(q)\le C-\mathcal Q(v,x)+78\cdot10^{-6},
+\end{equation}
+$H$ the visible sectors and $\Lambda_P$ the first-chaos dual of \S\ref{sec:pinned-kprime}. Then $V\le(t-\ell)^2+(C-\ell^2+2\beta^2/\varepsilon)+78\cdot10^{-6}$, with
+$C-\ell^2+2\beta^2/\varepsilon=33714462381/47275000000=0.7131580$, which is $\le0.713265624009<500/701$ for every $t\in[0.84,0.851]$ (exact arithmetic): the \emph{central-row budget} for $1.402$,
+conditional on \eqref{eq:rescub9}; the other rows at $\varepsilon=0.7564$ and the envelope remain necessary (the $0.745$ rows cannot be substituted).
+
+\subsection{The global diagonal theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:rescub-diag}]
+$Z\mapsto-Z$ in the second sign gives $\E[|L+Q+\nu H|+|L-Q-\nu H|]=\E[|L+Q+\nu H|+|L+Q-\nu H|]$, and $|w+y|+|w-y|\le2\sqrt{|w|^2+|y|^2}\le2|w|+|y|^2/|w|$ reduces the claim to
+\begin{equation}\label{eq:rescub10}
+\sup_{s\in\C}\E_Z\frac{|H(Z)|^2}{|L(Z)+s|}<\frac{1311}{1000}.
+\end{equation}
+The push-forward of $|H|^2d\gamma$ under $Z\mapsto L$ has radial density $\rho(X(t))=t(t-2)^2e^{-t}/[2\pi(a+bt)(a+3bt)]$, $X(t)=\sqrt t(a+bt)$. Majorise $\rho$ by a radial nonincreasing
+$\tilde\rho$: the convolution of two radial nonincreasing functions is maximal at the origin (write both as superpositions of centred disc indicators; the intersection area of two discs is
+largest at zero displacement; truncate the locally integrable kernel $1/|z|$), so $\sup_s\int\rho(|z|)/|z+s|\,d^2z\le2\pi\int_0^\infty\tilde\rho(r)\,dr$. The certificate builds $\tilde\rho$ from
+32,000 Arb upper bounds of $\pi\rho$ on $t\in[0,16]$ (step $1/2000$), each replaced by the maximum over all later intervals (a nonincreasing step function since $X$ is increasing); for $t\ge16$
+the density itself is decreasing (its logarithmic derivative $1/t+2/(t-2)-1-b/(a+bt)-3b/(a+3bt)<0$ for $t\ge6$) with tail $\le e^{-16}(16^2+2\cdot16+2)/(8b)$. The outward-rounded sum is
+$[1.31072839989\pm4.8\cdot10^{-26}]<1.311<1/\varepsilon$. Finally $\E|Q+\nu H|^2=\E|Q|^2+|\nu|^2$, and $1/\varepsilon-1311/1000=20899/1891000>0.011$.
+\end{proof}
+
+\subsection{IDE reading note}\label{sec:rescub-reading}
+\paragraph{(a) The derivative signs.} Proved, not merely checked: by the Gaussian-mixture theorem for $L$ (GPT, \S\ref{sec:kfull-global}, complete monotonicity of $e^{-h}$; the same
+induction as for the positive-Laplace profiles of \S\ref{sec:kweighted}) the nonnegative Laplace derivative formula in \eqref{eq:rescub4} proves that $f$ is a Bernstein function of $u$, so \emph{all} derivatives alternate; the Hermite
+argument needs only $f''\le0$, $f'''\ge0$, $f^{(4)}\le0$. Our finite differences confirm $f'\ge0$, $f''\le0$ (the third and fourth differences of quadrature data are noise-dominated and
+inconclusive, which is why the proof must be analytic). \textbf{(b) The two-node lemma} is correct: the cubic Hermite interpolant majorises $f_v$ globally because the remainder carries the sign of
+$f^{(4)}\le0$; with $c_3\ge0$ and $c_2\le0$ the moment inequalities go the right way, and the two-point law $Y$ attains the bound, so the relaxed moment problem (first moment, second moment,
+third-moment upper bound) is solved \emph{exactly} in closed form. \emph{Reconciliation with \autoref{ch:certs}, Task~B}: our dual LP there reported $\Lambda_q\le S+6.3\cdot10^{-5}$ at
+$\sigma=0.2$, $x\to0$ (``$d<0$''). We re-checked: the Hermite cubic at the nodes $2\pm\sqrt2$ is dual-feasible for our $\Phi_0$ (minimum gap $-9\cdot10^{-9}$, finite-difference noise) with value
+$S+9.2\cdot10^{-6}$ at $v=0.04$, and the exact two-node optimum over $v$ is $S+9.768\cdot10^{-6}$ at $x=0$ (GPT: $9.77\cdot10^{-6}$); so \textbf{the HiGHS solution of our LP was suboptimal by
+$5.4\cdot10^{-5}$} (ill-scaled $v^6$ column), the $6.3\cdot10^{-5}$ was an artefact, and \autoref{ch:certs} is corrected accordingly. What survives of Task~B: the moment relaxation alone does
+exceed $S$ near $\sigma^*$ (by $9.8\cdot10^{-6}$, the ``genuine loss $\approx10^{-5}$'' of the K report), so exact K-a is not provable from radial moments (\autoref{ch:spectral-review}), but
+$K_\eta$ with $\eta\approx10^{-5}$ is, and this theorem certifies $\eta=2.2\cdot10^{-5}$ uniformly. Consistent with \autoref{ch:spectral-review}: the artificial laws exceed $S$ by
+$<4.65\cdot10^{-6}\le2.2\cdot10^{-5}$. \emph{Our constant}: with the mathematically proved $C_6=40.45313$ (Theorem~\ref{thm:sixth-tensor-bridge-audit}) in place of $50$ the second maximum near $x=0.775$ disappears and the two-node supremum over all
+$(x,v)$ is attained at $x=0$: $S+9.77\cdot10^{-6}$ (our evaluation, \st{F}); a Lean port with our constant could therefore certify $\eta\approx1.0\cdot10^{-5}$ instead of $2.2\cdot10^{-5}$,
+freeing $1.2\cdot10^{-5}$ of the budget. Theorem~\ref{thm:rescub} also subsumes, for the pure residual at the peak, the one-coordinate results of \autoref{ch:kjoint}
+(Theorem~\ref{thm:kfull}, the star and the budget condition) at the price of the slack. \textbf{(c) Diagonal}: this is the general-law version of \S\ref{sec:knext-diag} (which needed a
+conditionally Gaussian baseline and gave deficit $0.292|\nu|^2$); here any remote law, deficit $0.011|\nu|^2$. The constant $1.311$ is a valid but loose majorant: our quadrature gives
+$\sup_s\E|H|^2/|L+s|\approx1.0907$ (at $s\approx0.30$; $0.9918$ at $s=0$, the $C_\nu$ of \S\ref{sec:knext-diag}), so the deficit available through this isotropic majorant is $\approx0.23|\nu|^2$ \st{F} (the sharper directional majorant of \autoref{ch:remote-cubic-refinement} gives true deficits
+$\approx0.607(\Re\nu)^2+0.330(\Im\nu)^2$ \st{F}, certified $0.571/0.265$ in \autoref{ch:shared-sector-refinements}). It settles
+\autoref{ch:K}'s ``$\nu$ must be a base-profile parameter'' for \emph{remote} residuals at the peak: $\nu$ can be removed outright there; on top of visible $A/B$ sectors the denominator
+changes and the question stays open (the $(z,H)$-plane constant $1.71$ of \autoref{ch:K} concerns that mixed case). \textbf{(d) The remaining inequality} \eqref{eq:rescub9} is a deficit-retention
+form of (T$_0$) (\autoref{ch:weighted}) with the \emph{certified} moment deficit $C-\mathcal Q(v,x)\ge0$ in place of the true $d_q$ and the first-chaos dual $\Lambda_P$ in place of $\Lambda$:
+mixed gain $\le$ certified residual deficit $+7.8\cdot10^{-5}$. Budget: $C-S=2.2\cdot10^{-5}$ used, $7.8\cdot10^{-5}$ left, total $10^{-4}$, which matches the $\eta\le1.0\cdot10^{-4}$ of
+\autoref{ch:K} ($0.713158+10^{-4}+(t-\ell)^2\le0.713267=500/701$ on $t\in[0.84,0.851]$; we recomputed $C-\ell^2+2\beta^2/\varepsilon=0.7131580$). Everything measured in \autoref{ch:attemptK} and
+\autoref{ch:weighted} (mixed gain $\le0.17\,d_q$) is far inside this budget on the tested families; the proof is the open problem. \emph{Later:} room $9.064\cdot10^{-5}$ with the project $C_6$
+(\autoref{ch:remote-cubic-refinement}), the rigorous-deficit form \eqref{eq:T0rig} (\autoref{ch:abattack}) and the weaker target K$_{\rm rot}$ (\autoref{ch:weakk}).
+\paragraph{Lean relevance.} The theorem is at the peak profile only; nothing in the certificate ladder changes. A Lean port of Theorem~\ref{thm:rescub} would need: (i) the mixture
+representation $L\overset d=\sqrt R\,G$ together with the correct fixed-shift Laplace formula \eqref{eq:rescub4}, or directly the four derivative signs of $\Phi_0(\sqrt u)$ (analytic; the complete-monotonicity induction is elementary); (ii) the two-node lemma
+(finite algebra plus the Hermite remainder); (iii) our \code{Moments} \st{L} supply exactly the inputs \eqref{eq:rescub3} with the sharper $C_6=40.45313$, so the Lean side can certify
+$\eta\approx10^{-5}$; (iv) the Arb quadrature replaced by our Bernstein/interval machinery for $\Phi_0$ at the $2\times162$ nodes and the four-point concavity test (a few hundred evaluations of
+$\Phi_0$ with enclosures, far cheaper than the present node certificates). None of this touches the lower certificate's hypotheses.

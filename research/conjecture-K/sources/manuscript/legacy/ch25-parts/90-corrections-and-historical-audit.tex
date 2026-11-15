@@ -1,0 +1,71 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/90-corrections-and-historical-audit.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Correction to the fixed-shift identity in \autoref{ch:rescub}}
+If $L$ has the law of $\sqrt R\,G$ with $G$ standard proper complex Gaussian,
+the potential for a deterministic shift is
+\[
+ f(u)=2\mathbb E|L+\sqrt u|
+ =\frac1{\sqrt\pi}\int_0^\infty
+ \left[1-\mathbb E\frac{e^{-su/(1+sR)}}{1+sR}\right]s^{-3/2}\,ds.
+\]
+It is not $\sqrt\pi\mathbb E\sqrt{R+u}$; that expression adds independent
+Gaussian variance. The correct formula still proves
+\[
+ (-1)^{k-1}f^{(k)}(u)
+ =\frac1{\sqrt\pi}\int_0^\infty
+ \mathbb E\frac{s^k e^{-su/(1+sR)}}{(1+sR)^{k+1}}s^{-3/2}\,ds\ge0
+ \quad(k\ge1).
+\]
+Whenever the inverse moment is finite, its value at zero is
+$\Gamma(k-1/2)\mathbb E R^{1/2-k}/(2k!)$.
+Thus the alternating derivative signs and the two-node majorant survive.
+The supplied patch corrects only the erroneous formula and its derivative
+explanation. It is a proposed patch, not an edit to the live manuscript.
+(IDE: applied to \autoref{ch:rescub} with a dated marker; see \S\ref{sec:weakk-reading}.)
+
+\subsection{Remaining certificate obligation}\label{sec:weakk-remaining}
+The stationarity-augmented response dual must still be bounded globally over
+all shared sectors and compatible row parameters. The fixed-profile oracle
+removes one approximation issue; it does not supply a rational coupled dual,
+a global parameter cover, or an $\epsilon=0.7564$ flank envelope. The exact
+checkers audit the algebraic instances and the stated integral bounds; the
+dimension-free algebraic results are proved in the text, not established by
+finite examples alone. None of this material is a new Lean theorem.
+
+\subsection{IDE reading note}\label{sec:weakk-reading}
+\paragraph{(a) ``Global norm maximiser''.} The maximiser is of $\Re\langle f,Tg\rangle$, $T=P_{1,0}-\varepsilon P_{2,1}$, over disc-valued $f,g$ on a \emph{fixed finite-dimensional} Gaussian space.
+Existence is sound and needs no purification theorem: the $L^\infty$ unit ball is weak-* compact, the objective depends on $f,g$ only through their finite-rank projections $(Pf,Qf,Pg,Qg)$,
+which are weak-* continuous, so a maximum exists; replacing $f$ by $\ph(Tg)$ and then $g$ by $\ph(Tf)$ does not decrease the objective and yields a unimodular maximising pair. The operator norm
+$\sup_n\|T_n\|$ is the supremum over $n$ of these finite-dimensional maxima, so bounding the penalised row at every finite-dimensional maximiser and taking the supremum over $n$ bounds the norm;
+no infinite-dimensional attainment is used, and a $\delta$-near-maximiser version with explicit defect $\varepsilon\sqrt{M\delta/2}$, $M=\max\{1,9\varepsilon\}$, is also supplied. The one place to
+watch is that stationarity is for the \emph{unconstrained} norm problem (rotating $g$ alone changes $t=\|Ph\|$), not for a fixed-$t$ row maximiser; GPT states this correctly and the row identity is
+an identity for every pair, so the penalised bound holds at the norm maximiser with whatever $t$ it has, and a cap over all $(t,G)$ of the penalised row is sufficient. We find no leak.
+\paragraph{(b) The first-order condition, re-derived.} For a remote first-chaos direction $p$, the unitary rotation of the plane $(Z,p)$ has generator
+$D_p=p\partial_Z+\bar p\partial_{\bar Z}-Z\sum\bar p_j\partial_{X_j}-\bar Z\sum p_j\partial_{\bar X_j}$, skew-adjoint, commuting with $P,Q$. On $B=\beta Z(|Z|^2-2)$: $p\partial_ZB=\beta p(2|Z|^2-2)$ and
+$\bar p\partial_{\bar Z}B=\beta Z^2\bar p$, so $D_pB=2\beta(|Z|^2-1)p+\beta Z^2\bar p$ and $(D_pB,G)_{\R}=2\beta\Re\langle p,r_A\rangle\,\E(|Z|^2-1)^2+\beta\Re\langle\bar p,r_B\rangle\,\E|Z|^4/\sqrt2
+=\Re\langle p,2\beta r_A+\sqrt2\beta\bar r_B\rangle=\Re\langle p,d\rangle$ (with $\E(|Z|^2-1)^2=1$, $\E|Z|^4=2$): the displayed $d$ is right. Vanishing of $\frac d{d\theta}\Re\langle f,Te^{\theta D_p}g\rangle$ at
+$\theta=0$, with $f=h+k$, $g=h-k$ and skew-adjointness, gives $t\Re\langle p,Pk\rangle+\Re\langle Qh,D_pG\rangle=0$, and substituting $Qh=H_{\rm res}-B/\varepsilon$ gives
+$\Re\langle p,d\rangle=-\varepsilon t\Re\langle p,Pk\rangle-\varepsilon\Re\langle H_{\rm res},J_Gp\rangle$, i.e.\ $d=-\varepsilon(tP_{\rm rem}Pk+J_G^*H_{\rm res})$. Minimising $\|x\|^2+\varepsilon\|y\|^2$ subject to
+$\varepsilon tx+\varepsilon J_G^*y=-d$ gives exactly $d^{\mathsf T}(\varepsilon^2t^2I+\varepsilon J_G^*J_G)^{-1}d$, and $\|D_pG\|\le3\|p\|\|G\|$ (three one-particle slot rotations of norm $\|p\|$) gives
+$J_G^*J_G\preceq9\|G\|^2$: the denominator $\varepsilon^2t^2+9\varepsilon\|G\|^2$ is confirmed. At the peak with $t\approx0.846$, $\|G\|^2\approx0.04$ it equals $0.409+0.272=0.68$.
+\paragraph{(c) Relation to K$'$ and to (T$_0$).} \autoref{ch:K}'s K$'$ retained one dropped square, $\|Pk\|^2$ (the first-chaos content of $k$), and \autoref{ch:crossbound},
+\autoref{ch:pinned} gave valid duals for it ($\Lambda'\le\mathcal D_G(v)$, $\Lambda_P$); the present reduction keeps \emph{both} squares, $\mathcal F=\|Pk\|^2+\varepsilon\|Qh+B/\varepsilon\|^2$, and, crucially,
+converts them through stationarity into a bound in terms of the \emph{sector amplitudes} rather than the response: the penalised combination $d=2\beta r_A+\sqrt2\beta\bar r_B$ is the direction
+in which the visible profile $B$ moves under a visible--remote rotation, i.e.\ the ``parallel'' $A/B$ combination $r_\parallel=(2r_A+\sqrt2\bar r_B)/\sqrt6$; the transverse combination
+$(F_A-\sqrt2F_B)/\sqrt3$ is not penalised, and the exact identity $\ell c_0+2\beta c_A+\sqrt2\beta c_B=T_q^*h_{\rm even}$ ties the same combination of the \emph{profile contents} to the retained
+$Qh$ square and to the influence of $q$ ($\|T_qp\|^2=a_p+b_p$). For (T$_0$) this means: the odd-sector gain no longer has to be paid entirely by the deficit $d_q+\eta$; the parallel part of the gain
+is paid by $\|d\|^2/(\varepsilon^2t^2+9\varepsilon\|G\|^2)$ as well. \emph{Size on our data} \st{F} (\code{j1scan\_droplet\_fine.log}, junta $q=cH(X)+sW$, $r_A=\alpha^*X$, $r_B=\beta^*\bar X$, $t=0.8456$):
+penalty$/$(measured mixed gain) ranges from $0.57$ near the Gaussian point ($c=0.03$) through $0.44$--$0.32$ at $c=0.1$--$0.15$ to $0.13$ at $c=0.3$ (median $0.29$ over the 30 points); the
+influence-sharpened $\omega=\min\{9v,3\sqrt{3\kappa_G/2}\}$ changes nothing here because the junta variances are tiny ($9v$ is already the smaller bound). Against the \emph{certified} bound on the
+gain (the weighted chain, $0.39\,d_q$, \autoref{ch:weighted}) the penalty is at most $12\%$ ($c=0.15$, $s=0$). In absolute terms the penalty at $(c,s)=(0.2,0)$ is $3.9\cdot10^{-4}$, four times the
+$9.06\cdot10^{-5}$ room of \autoref{ch:remote-cubic-refinement} and \autoref{ch:abattack}, but the comparison that matters is penalty versus gain: it pays a quarter to a half of the measured
+gain, never all of it, so K$_{\rm rot}$ is genuinely weaker than K and genuinely insufficient on its own; the transverse $A/B$ direction remains the open obligation.
+\paragraph{Correction to \autoref{ch:rescub}.} GPT is right: our \eqref{eq:rescub4} appended $f(u)=\sqrt\pi\E\sqrt{R+u}$, which is the formula for \emph{adding Gaussian variance} $u$ (the
+benchmark $f(v)$ of \S\ref{sec:kfull-global}), not for the fixed shift $\sqrt u$ (a Rice mean: for deterministic $R=r$, $f''(0)=-\sqrt\pi/(8r^{3/2})$ versus $-\sqrt\pi/(4r^{3/2})$). The Laplace integral in
+\eqref{eq:rescub4} is correct and its $k$-th derivative is $(-1)^{k-1}\pi^{-1/2}\int\E[s^ke^{-su/(1+sR)}/(1+sR)^{k+1}]s^{-3/2}ds\ge0$ (we re-derived it), so all alternating signs hold, the two-node
+theorem needs only the signs, and the Arb certificates integrate $f$ numerically (rigorous radial quadrature) and never used the false identity: the remote-cubic results of \autoref{ch:rescub}
+and \autoref{ch:remote-cubic-refinement} are unaffected. The patch was applied to \autoref{ch:rescub} with a dated marker.
+\paragraph{Lean relevance.} The certified bound does not move. If the weaker target were ever certified, the Lean row inequality would have to \emph{retain} the two squares (currently discarded
+in \code{RowReduction}) and carry the stationarity identity as a hypothesis on the maximising pair, i.e.\ the lower theorem would be stated for norm maximisers in fixed dimension with a penalty term
+inside the row inequality; this is a structural change to H1, not a new cap. Nothing to port now. \emph{Later (as of \code{20eb917}):} the one-square version was used in the rotation-gate
+certificate $1.401621059539$ of \autoref{ch:rotation-gate-refinement}, ported on \code{work/lower-rotation} with exactly such an extra maximiser hypothesis (\code{RotShared}); it is not merged,
+and it lies below the current bound $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$ (\S\ref{sec:certcombinede}).

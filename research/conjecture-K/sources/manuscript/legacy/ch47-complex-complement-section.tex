@@ -1,0 +1,144 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch47-complex-complement-section.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Lifting the new complex-anchor cover to arbitrary dimension}
+\label{sec:complex-anchor-complement}
+
+\paragraph{Status and inputs.} \textbf{[P,C]} The following finite matrix
+check is independent of the core cover's numerical result. It says that
+any valid core cover using the eight anchors
+\[
+ c_0=6/25,\qquad
+ \alpha_0\in\{0,3/50,9/50,-9/50,9i/50,17/50,-17/50,17i/50\},
+ \qquad\beta_0=0
+\]
+automatically admits the complement estimate below. Its numerical input
+is the successful replay of \texttt{check\_complex\_complement.py}.
+The core bound $B$ must itself be certified; a floating estimate cannot
+be substituted for it.
+
+Let $J\in\mathcal H_{2,1}$ satisfy $\mathbb E[J\mid Z,X]=0$, on
+arbitrarily many additional Gaussian coordinates. The fresh buffer $U$
+is independent of all those coordinates. Let $J_{rs}$ denote the
+orthogonal component with remote Hermite degree $(r,s)$. Then every
+core bound $\Lambda(Q+gU)\le B$ obtained from the displayed anchors,
+their conjugates, square completion and parameter interpolation lifts to
+\[
+\begin{split}
+ \Lambda(Q+J+gU)\le B
+ &+\frac{19}{25}\|J_{10}\|_2^2
+ +\frac{81}{100}\|J_{01}\|_2^2\\
+ &+\frac{27}{25}(\|J_{20}\|_2^2+\|J_{11}\|_2^2)
+ +\frac{32}{25}\|J_{21}\|_2^2.
+\end{split}
+\]
+The simpler additional cost $(32/25)\|J\|_2^2$ is therefore valid.
+No independence of $J$ and $(Z,X)$ is required.
+
+\paragraph{Why complex anchors still reduce to small blocks.}
+The cell tangent argument and remote Hermite expansion from
+Section~\ref{sec:uniform-complement} are unchanged. A complex anchor
+only removes the separate $x$ and $y$ reflection symmetries. The paired
+weight still satisfies $W_0(r,-x,-y)=W_0(r,x,y)$, which separates the
+even and odd polynomial blocks in $X$. The off-diagonal moment becomes
+\[
+ \Gamma=\mathbb E[W_0s\overline X^2]
+ =\mathbb E[W_0s(x^2-y^2)]-2i\mathbb E[W_0sxy].
+\]
+The Hermite blocks have off-diagonal entries $\Gamma$ or its conjugate,
+and $\Gamma/2$ or its conjugate. The directed comparison with $\lambda I$
+checks the two positive diagonal gaps and
+\[
+ (\lambda-a)(\lambda-d)-(\Re\Gamma)^2-(\Im\Gamma)^2>0.
+\]
+Both signs of $y$ are integrated; the imaginary moment is retained.
+No phase is discarded.
+
+\paragraph{Numerical constants.}
+At all eight anchors, the script certifies excesses over $p=2500/1891$
+of $19/25$, $81/100$, $27/25$, $27/25$, $32/25$ on the cylinder spaces
+$\mathcal H_{1,1}$, $\mathcal H_{2,0}$, $\mathcal H_{0,1}$,
+$\mathcal H_{1,0}$, $\mathcal H_{0,0}$, respectively. It rebuilds the
+exact Gaussian moments on the original 64-bin grid and verifies the
+scalar and two-by-two Hermitian inequalities using outward arithmetic.
+The check is at zero buffer; $K_g(u)\le K_0(u)$ handles the remaining
+buffers wherever the core cover applies.
+
+\paragraph{Scope.}
+This gives an arbitrary-dimensional neighborhood of a certified
+self-interacting core, including zero buffer. Analytic extensions of the
+core theorem beyond its finite cover require their own complement
+argument. It does not by itself remove the complement variance cost,
+prove full K, or produce a new Grothendieck endpoint.
+
+\paragraph{Consequences of the retained compact deficit.}
+The new compact cover has $B\le S-3/5000$ for
+$19/100\le c\le34/125$, $0\le g\le41/250$,
+$|\alpha|\le2/5$, with every complex $\beta$. Thus
+\[
+ \|J\|_2\le\frac1{50}
+ \quad\Longrightarrow\quad
+ \Lambda(Q+J+gU)\le S-\frac{11}{125000},
+\]
+and
+\[
+ \|J\|_2\le\frac1{44}
+ \quad\Longrightarrow\quad
+ \Lambda(Q+J+gU)\le S+\frac{37}{605000}<S+\eta_{AB}.
+\]
+The rational inequalities are checked by
+\texttt{check\_deductions.py}.
+
+\autoref{ch:buffer-bootstrap}'s accepted complement theorem supplies, for $g\ge41/250$,
+\[
+ \Lambda(Q+J+gU)\le S-\frac{\min(c^4,c^2)}{32}
+ -\frac{|\alpha|^2+|\beta|^2}{2000}
+ +\frac{41}{10}\|J\|_2^2.
+\]
+Combining the two buffer intervals, a sufficient condition for exact K
+throughout $19/100\le c\le34/125$ is
+\[
+ \boxed{\|J\|_2^2\le
+ \min\left\{\frac3{6400},\frac{5c^4}{656}
+                      +\frac{|\alpha|^2+|\beta|^2}{8200}\right\}.}
+\]
+The compact argument imposes $|\alpha|\le2/5$. If the separate universal
+all-sector cutoff at $\|r_A\|_2\ge2/5$ is included, it removes this
+restriction: conditional centering implies that the added A projection
+is orthogonal to the core $\alpha X$, so the total A norm is at least
+$|\alpha|$.
+
+In particular, the simpler condition $\|J\|_2^2\le5c^4/656$ works for
+every buffer. Indeed
+\[
+ \frac{32}{25}\frac5{656}\left(\frac{34}{125}\right)^4
+ =\frac{2672672}{50048828125}
+ <\frac3{5000}-\frac1{2000}.
+\]
+This also retains a deficit greater than $1/2000$ in the small-buffer
+interval. None of these statements removes the need for a general
+reduction to a core with a sufficiently small complement.
+
+\paragraph{Removing the minimum by the universal profile plane.}
+The new universal profile plane treats total A/B sector variance at least
+$4/25$, even for arbitrary-dimensional coupled cubics. Conditional
+centering makes the added A/B projection orthogonal to the core
+projection, so its total squared norm is at least
+$r^2=|\alpha|^2+|\beta|^2$.
+For $r^2\ge4/25$ that theorem applies directly. For $r^2<4/25$ the
+compact cover applies, and the exact checker verifies
+\[
+ \frac{32}{25}\left[
+ \frac5{656}\left(\frac{34}{125}\right)^4+
+ \frac{4/25}{8200}\right]
+ <\frac3{5000}-\frac1{2000}.
+\]
+Thus, using that universal plane as an explicit additional input, the
+all-buffer condition improves to
+\[
+ \boxed{19/100\le c\le34/125,\qquad
+ \|J\|_2^2\le\frac{5c^4}{656}
+             +\frac{|\alpha|^2+|\beta|^2}{8200}
+ \quad\Longrightarrow\quad\Lambda(Q+J+gU)\le S.}
+\]
+This allows every complex $\alpha,\beta$ and every $g\ge0$. It retains
+more than $1/2000$ in the small-buffer part with $r^2<4/25$; \autoref{ch:buffer-bootstrap}
+supplies the large-buffer part.

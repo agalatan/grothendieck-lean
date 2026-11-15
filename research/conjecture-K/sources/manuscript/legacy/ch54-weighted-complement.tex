@@ -1,0 +1,505 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch54-weighted-complement.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 54). Owner: lower-bound/10-coupled-complements.tex
+\section{A weighted certificate for cubic terms mixing the core and its complement}
+\label{ch:weighted-complement}
+\chapsummary{Finite weighted-Gram control of a genuinely coupled complement. Conditional centering removes the cross terms; it does not make the complement variance small.}
+
+\paragraph{Provenance and status (IDE note).} Received from the full-context GPT on 20 October as \code{grothendieck-weighted-complement-20261020.zip}
+(source file named \code{ch53-weighted-complement.tex}; ported as \autoref{ch:weighted-complement} because \code{ch53} holds \autoref{ch:two-driver-cold}). IDE replay
+\code{python3 -I verify\_all.py --full-fresh} from an unrelated directory: all six malformed-input rejections, the fresh 1248 Gram vertices (2677\,s), $S>27479/20000$,
+the trace-profile and affine-trace checks and all continuum comparisons PASS; \code{ALL WEIGHTED-COMPLEMENT CHECKS PASS}, 66\,min. Archived with the log in
+\pathref{gpt-reviews/weighted-complement-20261020/}. The affine slope is the exact chord $1355/961$, as the consolidation package recommended.
+
+\paragraph{Status and existing inputs.}
+\textbf{[P]} denotes proof, \textbf{[C]} directed integration with an
+exact rational cover, and \textbf{[?]} an open obligation.
+The new computation integrates eight moments at each of the \(1248\)
+vertices of the existing \(766\)-box cover. The \(410\) profile
+exclusions are rechecked with the enlarged residual budget.
+The old core, B, and even-sector endpoints are explicit existing
+inputs from the freshly replayed \autoref{ch:two-coordinate-slab-gluing} certificate.
+Their original source files and hashes are included.
+The new quick cover check does not itself recompute the old endpoints.
+
+\subsection{Setting and the target}
+Use the peak parameters
+\[
+ p=\frac{2500}{1891},\quad
+ a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+ L=Z(a+b|Z|^2),
+\]
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2,\qquad
+ S=\sup_{v\ge0}\{2\E|L+\sqrt vU|-pv\}.
+\]
+Let \(Z,X,V_1,\ldots,V_m,U\) be independent proper standard complex
+Gaussians. For an arbitrary
+\(F\in H_{2,1}(Z,X,V_1,\ldots,V_m)\), put
+\[
+ Q=\E[F\mid Z,X],\qquad J=F-Q.
+\]
+The conditional projection preserves bidegree:
+\(Q\in H_{2,1}(\C^2)\) and \(\E[J\mid Z,X]=0\).
+Write
+\[
+ Q=cH(X)+A(T-1)X+\frac{BZ^2\bar X}{\sqrt2}
+       +Zy(t-1)+\bar ZwX^2+\nu H(Z),
+\]
+where \(T=|Z|^2,\ t=|X|^2\) and
+\(H(x)=x(|x|^2-2)/\sqrt2\).
+Rotation of \(X\) makes \(c\ge0\), and conjugation permits
+\(\Im A\ge0\). All other coefficients are unrestricted complex numbers.
+The quantity controlled by the new certificate is
+\[
+ R^2=\|J\|_2^2+g^2,\qquad g\ge0,
+\]
+for the Gaussian-buffer extension \(F+gU\).
+The fresh \(U\) is independent of the original coordinates.
+The case \(g=0\) is included.
+
+In an adapted coordinate system \(z_1=Z,z_2=X\), write
+\[
+ F=\sum_{i,j,k}\tau_{ij,k}:z_i z_j\bar z_k:,\qquad
+ \tau_{ij,k}=\tau_{ji,k}.
+\]
+The Wick isometry gives the directly computable criterion
+\[
+ \|J\|_2^2=2\sum_{(i,j,k)\notin\{1,2\}^3}|\tau_{ij,k}|^2.
+\]
+The two holomorphic indices are both summed as ordered indices.
+
+% The exact numerical conclusion is inserted after the completed replay.
+\subsection{Certified neighborhood and deficit [P,C]}
+Put \(r=\|J\|_2^2+g^2\). The completed certificate proves
+\[
+\boxed{\sqrt r\le\frac{31}{1000}
+\quad\Longrightarrow\quad
+\Lambda(F+gU)<S-\frac1{50000}.}
+\tag{54.0}
+\]
+This raises the general conditional-complement radius from
+\(7/2000=0.0035\) to \(0.031\): a factor \(62/7\) in norm and
+\(3844/49>78\) in allowed variance.
+No independence of \(J\) from the retained coordinates is assumed.
+The six coefficients of the core are unrestricted.
+
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+Radius \(\sqrt r\) & Certified upper bound\\
+\midrule
+\(0\) & \(S-11/8000\)\\
+\(3/100\) & \(S-1/10000\)\\
+\(31/1000\) & \(S-1/50000\)\\
+\(4/125\) & \(S+1/15000\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular \(1/15000<\eta_{AB}\).
+This controls the stated neighborhood, not all of \(K_{\eta_{AB}}\).
+
+A useful quantitative consequence is
+\[
+\boxed{\Lambda(F+gU)<
+S-\frac{11}{8000}+\frac{1355}{961}r
+\quad\left(0\le r\le\frac{961}{1000000}\right).}
+\tag{54.0a}
+\]
+Indeed the certificate upper function is convex in \(r\):
+each box/vertex bound is affine plus a nonnegative multiple of
+\(\max(0,b_0+14r/5)\), and the outside-profile bound is constant.
+All exclusions remain valid below the largest checked radius.
+The chord of the two certified endpoint bounds has slope
+\[
+\frac{11/8000-1/50000}{961/1000000}
+=\frac{1355}{961},
+\]
+so the boxed affine bound gives exactly the deficit $1/50000$ at $r=961/10^6$. (The package text rounded the
+slope up to $141/100$, which alone gives only $1999/10^8$ there; the endpoint certificate (54.0) is unaffected.)
+This is a statement about the explicit certificate function.
+Convexity of the actual variance-constrained optimum is not assumed.
+
+\paragraph{A genuinely mixed zero-buffer example.}
+For any \(Q\in H_{2,1}(Z,X)\), take
+\[
+F=Q+\frac{X^2\bar V}{40\sqrt2}
+       +\frac{(|Z|^2-1)V}{100}
+       +\frac{Z^2\bar V}{100\sqrt2}.
+\]
+The three added terms are orthogonal, have total variance
+\(33/40000\), and have conditional mean zero given \(Z,X\).
+Consequently
+\[
+\Lambda(F)<S-\frac{11}{40000}.
+\]
+Here the purely mixed estimate below is used.
+All three coefficient phases may vary arbitrarily.
+The term \(X^2\bar V\) couples a retained driver to an external one.
+
+\paragraph{Purely mixed improvement.}
+If also \(\E[J\mid V_1,\ldots,V_m]=0\), and \(g=0\), then
+\[
+\begin{aligned}
+\|J\|_2\le 4/125&\quad\Longrightarrow\quad
+\Lambda(F)<S-1/100000,\\
+\|J\|_2\le 33/1000&\quad\Longrightarrow\quad
+\Lambda(F)<S+1/12500.
+\end{aligned}
+\]
+Here \(1/12500<\eta_{AB}\). Both conditional-centering conditions
+are needed; a purely external cubic or fresh buffer is not included
+in this improved branch.
+The quantitative version, for \(\|J\|_2\le4/125\), is
+\[
+\Lambda(F)<S-\frac{11}{8000}+\frac43\|J\|_2^2.
+\]
+Indeed the endpoint chord slope is \(1365/1024<4/3\).
+The displayed mixed example has \(\E[J\mid V]=0\), so this
+gives its stated deficit.
+
+\paragraph{Replay and binding data.}
+All \(1248\) new moment records were recomputed in \(2757.7\) seconds
+on two numerical workers. The exact cover checks \(766\) boxes
+and \(410\) exclusions. The benchmark and both analytic profile
+inputs were replayed too. The existing core/B/even integral
+endpoints are the explicitly retained \autoref{ch:two-coordinate-slab-gluing} inputs; they
+were not freshly recomputed again this round.
+
+The worst box is
+\([1/16,3/32]\times[-1/16,-1/32]\times[0,1/32]\).
+At its binding vertex \((1/16,-1/32,0)\), the operator upper bounds
+are \(2.72817838\) for the full complement and \(2.65633003\)
+for the purely mixed complement. The same vertex has
+\(M_{00}>2.71086009\).
+The exact cap margins over \(S_{\rm lo}=27479/20000\),
+displayed approximately, are
+\[
+\begin{array}{c|rrr}
+\text{full radius}&0&0.030&0.031\\ \hline
+S_{\rm lo}-\text{cap}&
+0.001376833677&0.000111319777&0.000025546057
+\end{array}
+\]
+The exact rational values are stored in \texttt{RESULTS.json}.
+The theorem is confined to the peak profile; no new Grothendieck
+endpoint is asserted.
+
+
+\subsection{The tangent is taken at the A-exact core [P]}
+Put
+\[
+ Q_A=cH(X)+A(T-1)X,\qquad D=Q-Q_A,
+\]
+and choose the exact binary rational used by the existing integrator:
+\[
+ k=\frac{7378697629483821}{18446744073709551616}
+       \ge\frac1{2500}.
+\]
+Define
+\[
+ \omega=\frac12\left(
+ \frac1{\sqrt{|L+Q_A|^2+k}}+
+ \frac1{\sqrt{|L-Q_A|^2+k}}\right).
+\]
+It is invariant under simultaneous phase rotation of \(Z,X\)
+and is even under \(X\mapsto-X\).
+The elementary tangent inequality
+\[
+ |f+h|\le\sqrt{|f|^2+k}
+ +\frac{2\Re(\bar f h)+|h|^2-k}{2\sqrt{|f|^2+k}}
+\]
+applied to both norm signs shows that the actual-law upper bound is
+the existing regularized core tangent plus
+\[
+ \E[\omega|J|^2]-p\|J\|_2^2
+       +g^2(\E\omega-p)-k\E\omega.
+ \tag{54.1}
+\]
+There are no cross terms between \(J\) and \(D,L,Q_A\):
+the coefficients are measurable in \(Z,X\) and
+\(\E[J\mid Z,X]=0\).
+Cross terms involving \(U\) vanish by its independence and centering.
+The subtraction \(-k\E\omega\) is essential.
+It is absent when one bounds a regularized target; here the target is
+the original unregularized norm.
+
+For the two core norm signs, the B--even quadratic terms and
+the even-sector linear terms cancel by \(X\mapsto-X\).
+This is exactly the parity calculation used by the old slab certificate.
+It remains valid in the presence of \(J\), because its additional
+terms have already been removed by conditional expectation.
+
+\subsection{The five finite Gram blocks [P]}
+Expand \(J\) in the normalized complex Hermite basis of the external
+coordinates:
+\[
+ J=\sum_{\mu,\nu:\,|\mu|+|\nu|>0}
+       f_{\mu,\nu}(Z,X)e_{\mu,\nu}(V).
+\]
+If \(|\mu|=r,\ |\nu|=s\), then
+\(f_{\mu,\nu}\in H_{2-r,1-s}(\C^2)\).
+The possible local spaces are precisely
+\[
+ H_{1,1},\quad H_{2,0},\quad H_{1,0},\quad
+ H_{0,1},\quad H_{0,0}.
+ \tag{54.2}
+\]
+Orthogonality over \(V\), at each fixed \((Z,X)\), proves
+\[
+ \E[\omega|J|^2]
+ =\sum_{\mu,\nu}\E[\omega|f_{\mu,\nu}|^2].
+ \tag{54.3}
+\]
+This step is exact in every finite external dimension.
+It does not assert that \(J\) is independent of \(Z\) or \(X\).
+
+\paragraph{Any finite core [P].}
+For a retained Gaussian subspace of complex dimension \(d\), the same
+identity holds with local spaces
+\(H_{1,1}(\C^d),H_{2,0}(\C^d),H_{1,0}(\C^d),H_{0,1}(\C^d),H_{0,0}\).
+Their dimensions are \(d^2,d(d+1)/2,d,d,1\).
+For any bounded nonnegative core-measurable weight, its largest
+Gram eigenvalue over these five spaces bounds
+\(\E[\omega|F-\E(F\mid\mathrm{core})|^2]\) divided by the
+conditional-complement variance. No symmetry of the weight is needed.
+Thus a visible coordinate and two remote drivers require matrices
+of sizes \(9,6,3,3,1\), regardless of the external dimension.
+This is a proved extension mechanism; no numerical certificate
+for that larger core is asserted here.
+
+\paragraph{Sharpness of this reduction [P].}
+The maximum Gram eigenvalue is the exact optimal constant for
+the weighted second-moment inequality, already with one external
+coordinate \(V\). Multiply an eigenvector in a maximizing local space
+by the corresponding normalized external polynomial
+\[
+ V,\quad\bar V,\quad |V|^2-1,\quad V^2/\sqrt2,\quad H(V).
+\]
+The complementary bidegrees make each product a cubic of bidegree
+\((2,1)\), its conditional expectation on the core is zero, and
+its weighted Rayleigh quotient is exactly the local eigenvalue.
+This is sharpness of the weighted norm step, not an assertion
+that these products maximize the original nonlinear payoff.
+
+\paragraph{Other pure bidegrees [P].}
+For \(F\in H_{p,q}\), \(p+q>0\), the identical proof takes the
+maximum over
+\[
+ H_{i,j}(\C^d),\quad
+ 0\le i\le p,\quad 0\le j\le q,\quad (i,j)\ne(p,q).
+\]
+The dimensions are
+\(\binom{d+i-1}{i}\binom{d+j-1}{j}\).
+A single external Hermite polynomial of complementary bidegree
+proves sharpness. In particular, pure \(H_{3,2}\) with a
+two-coordinate core gives eleven blocks, of maximum size nine.
+This algebraic extension is not a numerical certificate for
+a higher-degree witness.
+
+Set
+\[
+ M_{ij}=\E[\omega T^it^j]\quad(i+j\le2),\qquad
+ \zeta=\E[\omega\bar Z^2X^2].
+ \tag{54.4}
+\]
+There are six real radial moments and one complex harmonic.
+In the normalized \(H_{1,1}\) basis
+\((T-1,t-1,Z\bar X,\bar ZX)\), its Gram matrix splits as
+\[
+ \begin{pmatrix}
+ M_{20}-2M_{10}+M_{00}&M_{11}-M_{10}-M_{01}+M_{00}\\
+ M_{11}-M_{10}-M_{01}+M_{00}&M_{02}-2M_{01}+M_{00}
+ \end{pmatrix}
+ \ \oplus\
+ \begin{pmatrix}M_{11}&\zeta\\\bar\zeta&M_{11}\end{pmatrix}.
+ \tag{54.5}
+\]
+In \(H_{2,0}\), the even basis \(Z^2/\sqrt2,X^2/\sqrt2\)
+has matrix
+\[
+ \frac12\begin{pmatrix}M_{20}&\zeta\\\bar\zeta&M_{02}\end{pmatrix},
+ \tag{54.6}
+\]
+and the odd basis vector \(ZX\) contributes \(M_{11}\).
+Both linear spaces have matrix \(\operatorname{diag}(M_{10},M_{01})\);
+the constant space contributes \(M_{00}\).
+The exact symbolic checker verifies all \(34\) entries and their
+unweighted Gaussian normalization.
+
+Let \(K\) bound all these largest eigenvalues.
+Then (54.3) gives
+\[
+ \E[\omega|J|^2]\le K\|J\|_2^2,\qquad M_{00}\le K.
+ \tag{54.7}
+\]
+Thus (54.1), uniformly for \(\|J\|_2^2+g^2\le R^2\), is at most
+\[
+ (K-p)_+R^2-kM_{00}.
+ \tag{54.8}
+\]
+The positive part is required: the constraint is a ball,
+not a fixed variance sphere.
+The universal bound \(K\le50\) is still valid, but the new
+directed integrals give much smaller bounds near the binding cells.
+
+\paragraph{Purely mixed remainders [P].}
+If also \(\E[J\mid V_1,\ldots,V_m]=0\), then the constant local
+block is absent. The largest eigenvalue of the other four blocks
+suffices. This restricted version permits no fresh buffer \(gU\).
+It excludes both core-only and purely external terms, while allowing
+arbitrary cubic terms mixing the two sets of coordinates.
+The separate \texttt{mixed} check uses precisely this smaller operator.
+
+\subsection{How the eight moments are integrated [P,C]}
+After removing the visible phase, let \(Z=\sqrt T\),
+\(X=\sqrt t\,e^{i\psi}\), and put
+\[
+ \ell=\sqrt T(a+bT),\qquad
+ m=c(t-2)/\sqrt2+(T-1)A.
+\]
+The one-sign denominator is
+\[
+ \sqrt{|\ell+\sqrt t\,m e^{i\psi}|^2+k}.
+\]
+For even angular test functions, averaging this denominator gives
+the same expectation as the paired weight \(\omega\).
+The previously audited arithmetic--geometric mean formula provides
+\[
+ J_0=\E_\psi\frac1{\sqrt{|\ell+\sqrt t\,m e^{i\psi}|^2+k}},
+\]
+and the second Fourier coefficient is
+\[
+ \E_\psi\frac{e^{2i\psi}}
+ {\sqrt{|\ell+\sqrt t\,m e^{i\psi}|^2+k}}
+ =\left(\frac{\bar m}{|m|}\right)^2 J_2.
+ \tag{54.9}
+\]
+At \(m=0\) the coefficient is zero.
+The six \(M_{ij}\) integrate \(T^it^jJ_0\);
+\(\zeta\) integrates \(Tt\) times (54.9).
+
+The scalar second harmonic can be checked without an additional
+special-function identity. For \(G^2=p_0+q_0\cos\theta\),
+put \(j_1=\E[\cos\theta/G]/q_0\) and
+\(J_2=\E[\cos(2\theta)/G]\).
+Integrating \((\sin\theta\,G)'\) gives
+\[
+0=p_0q_0j_1+\frac{q_0}{4}J_0+\frac{3q_0}{4}J_2,
+\qquad J_2=-\frac{J_0+4p_0j_1}{3}.
+\]
+At \(q_0=0\), use the continuous limit.
+Similarly \(\E[(\sin\theta\,G^{-3})']=0\) gives
+\[
+\E G^{-5}=\frac{4p_0\E G^{-3}-\E G^{-1}}
+ {3(p_0^2-q_0^2)}.
+\]
+The code uses \(p_0=d+q_0\), so the denominator is \(3d(d+2q_0)\).
+
+Use radial variables \(u=\sqrt T,\ v=\sqrt t\), with density
+\(4uv e^{-u^2-v^2}\), on \([0,6]^2\).
+Each cell uses the smaller of a full interval enclosure and a midpoint
+rule with an explicit second-derivative remainder.
+The derivatives are bounded directly in the angular representation;
+the angular numerator has modulus at most one.
+Consequently derivatives of a chosen phase branch are never estimated
+separately near \(m=0\).
+The same audited geometry and inverse-denominator estimates are reused
+from the old sector integrator.
+
+All new polynomial factors are dominated by the old tail majorant
+\[
+ \frac4{\sqrt k}(1+u)^6(1+v)^4
+       (2ue^{-u^2})(2ve^{-v^2}).
+\]
+Its explicit integrable tail bound covers the complement of
+\([0,6]^2\). There is no omitted Gaussian tail.
+All final moment endpoints are widened outward.
+The adaptive choices use floating scores only to choose a partition;
+the final interval sums and error enclosures are the proof data.
+
+The proposed numerical \(K\) is rounded up to a rational grid
+of spacing \(10^{-8}\). The independent Python checker then
+verifies its validity using only rational diagonal and determinant
+inequalities for the \(2\times2\) matrices.
+It does not trust a floating eigenvalue calculation.
+Every record is bound to the source hashes of the integrator.
+
+\subsection{The enlarged profile budget and the continuum cover [P,C]}
+Let \(r=\|J\|_2^2+g^2\le R^2\).
+The exact radial variance profile is the same five-profile expression
+as in the existing full-cubic bound. The remote constant-profile
+energy is at most \(c^2+R^2\); all other new profile energies
+are nonnegative.
+This remains true for the independent buffer, whose variance simply
+adds to the constant profile.
+
+If total variance is at least \(13/20\), the existing profile cutoff
+already supplies a stronger bound.
+The affine exclusion also applies when
+\[
+ |A|^2\ge\frac1{12}+\frac{14}{5}(c^2+R^2).
+ \tag{54.10}
+\]
+In the remaining domain,
+\[
+ |B|^2+|y|^2+2|w|^2+|\nu|^2
+ \le\frac1{12}+\frac{14}{5}(c^2+R^2)-|A|^2.
+ \tag{54.11}
+\]
+Indeed the full affine threshold is
+\(V<1/12+(19/5)u\).
+Subtract the core \(c^2+|A|^2\), and use the fact that the
+remote part of \(J\) has variance at most its total variance \(r\).
+This yields the coefficient \(19/5-1=14/5\).
+
+For a parameter box \(\mathcal B\) in
+\((c,\Re A,\Im A)\), fix
+\[
+ B_{\mathcal B}(R^2)=
+ \max\left\{0,\frac1{12}+\frac{14}{5}
+          (c_{\max}^2+R^2)-\min_{\mathcal B}|A|^2\right\}.
+\]
+At each vertex \(v\), let \(C_v,G_v,\lambda_v\) be the existing
+upper bounds for the regularized core, completed B square, and
+nonnegative even-sector cost. Let \(K_v\) and \(m_v\) be the new
+operator upper bound and \(M_{00}\) lower bound.
+The lifted vertex upper bound is
+\[
+ C_v+G_v+\lambda_v B_{\mathcal B}(R^2)
+              +(K_v-p)_+R^2-km_v.
+ \tag{54.12}
+\]
+The feasible sets for the even coefficients and for \(J,g\) are
+fixed throughout the box.
+For each fixed choice, adding \(p(c^2+|A|^2)\) to the actual
+payoff makes it convex in these three real parameters.
+Taking the supremum preserves convexity.
+If \(\rho_{\mathcal B}\) is the box circumradius, the continuum bound is
+\[
+ \max_{v\text{ a vertex of }\mathcal B}\!
+ \left(C_v+G_v+\lambda_v B_{\mathcal B}(R^2)
+              +(K_v-p)_+R^2-km_v\right)+p\rho_{\mathcal B}^2.
+ \tag{54.13}
+\]
+The radius budget is therefore checked in the full continuum cover,
+not merely at individual anchors.
+
+The exact checker validates the root grid, every subdivision,
+all profile exclusions with \(R^2\), all vertex references, and
+each rational comparison against \(S>27479/20000\).
+It rejects missing, duplicate, nonfinite, or source-stale moment data.
+
+\subsection{Scope and next obstruction}
+The result allows, for example, terms proportional to
+\(X^2\bar V\), \(ZX\bar V\), \(V(|X|^2-1)\), and
+\(\bar ZXV\), as long as the combined conditional-complement norm
+satisfies the certified bound.
+These terms are not independent blocks relative to the core.
+All six core sectors remain unrestricted.
+
+The norm condition is absolute and must not be reported as a
+fraction of total variance.
+The theorem does not control a second influential block of comparable
+size to the first, nor establish the full K or a new endpoint.
+Its contribution is to complete the eight-moment computation left open
+in \autoref{ch:two-coordinate-slab-gluing} and enlarge the rigorously controlled coupled neighborhood.

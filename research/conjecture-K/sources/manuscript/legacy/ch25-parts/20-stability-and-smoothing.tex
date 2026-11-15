@@ -1,0 +1,543 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/20-stability-and-smoothing.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Gaussian localization for a weakened pinned conjecture}
+Write the odd sectors as $(T-1)\alpha+Z^2\overline\beta/\sqrt2$, with
+$A=(\alpha,\beta)$ a centered jointly proper complex Gaussian vector in the
+remote variables. In the convention where the B coefficient itself is
+antiholomorphic, $A=(r_A,\overline{r_B})$, not $(r_A,r_B)$.
+No independence between $A$ and the remote cubic $q$ is assumed.
+Put $U=\|A\|^2$ and $w=\mathbb EU$.
+
+\paragraph{Gaussian event-cost lemma (proved).}
+For every event $B$ of probability $p$,
+\[
+ \mathbb E[U\mathbf1_B]\le wp(1-\log p),
+ \qquad \mathbb E(U-d)_+\le we^{-d/w}\quad(d\ge0).
+\]
+The endpoint values are interpreted continuously, and $w=0$ is trivial.
+Indeed $U$ has the law $\sum_j\lambda_jE_j$, with independent unit
+exponentials $E_j$ and $\sum_j\lambda_j=w$. Jensen's inequality gives
+$U\le_{\rm cx}wE_1$. Therefore
+$\mathbb E[U\mathbf1_B]\le dp+we^{-d/w}$; take $d=-w\log p$.
+For $w\le w_0\le R^2$, Markov's inequality applied to $(U-d)_+$ at
+$d=R^2-w$ also gives
+\[
+ \mathbb P(\|A\|>R)\le e^{1-R^2/w_0},\qquad
+ \mathbb E[U\mathbf1_{\{\|A\|>R\}}]
+ \le w\frac{R^2}{w_0}e^{1-R^2/w_0}.
+\]
+
+\paragraph{Matrix localization implication (proved).}
+Suppose a fibre expression has a global quadratic cost
+$\gamma\|A\|^2$ and a sharper cost $A^*CA$ on
+$\{|q|\le s_0,\ \|A\|\le R\}$, with the same baseline and linear
+profile term. These majorants are hypotheses of the implication.
+Let $D_+=(\gamma I-C)_+$, assume
+$\mathbb P(|q|>s_0)\le p_q$ and $w\le w_0\le R^2$, and put
+\[
+ p_* =\min\{1,p_q+e^{1-R^2/w_0}\},\qquad
+ \theta_*=p_*(1-\log p_*).
+\]
+Then its expected quadratic cost is at most
+\[
+ \mathbb E\bigl[A^*(C+\theta_*D_+)A\bigr].
+\]
+To prove this, the extra cost on the bad event is bounded by
+$A^*D_+A$. This is another nonnegative Gaussian quadratic form, so the
+event-cost lemma applies with mean $\mathbb E[A^*D_+A]$. A union bound
+controls the probability of the bad event. This preserves the anisotropy
+of $C$ and is valid for arbitrary dependence between $q$ and $A$.
+
+A near-maximizer supplies an amplitude cutoff as follows. If a valid
+global fibre majorant has coercivity $\delta>0$, its first-chaos content
+norm is at most $c$, and the remote-only objective is at most $S+\eta_0$,
+then a candidate with full objective at least $S-r$ satisfies
+\[
+ \sqrt w\le\frac{c+\sqrt{c^2+\delta(\eta_0+r)}}{\delta}.
+\]
+This follows from $\delta w-2c\sqrt w\le\eta_0+r$. The bounds $c$ and
+$\delta$ must be proved uniformly in the relevant parameter cell.
+
+\subsection{Why the local pinned matrix is not a global majorant}
+At the peak profile $a=699/1250$, $b=179/1250$, write
+$L=Z(a+bT)$, and define
+\[
+ J(q;k,\alpha,\beta)=2\mathbb E_Z
+ |L+q+k+(T-1)\alpha+Z^2\overline\beta/\sqrt2|.
+\]
+At $q=0$, its quadratic term is exactly
+\[
+ \mathbb E\frac{|k+(T-1)\alpha-T\beta/\sqrt2|^2}{2|L|}.
+\]
+This follows by expanding the norm to second order and averaging the
+visible angle. The scalar Young remainder is dominated by a multiple
+of $|L|^{-1}$ times a polynomial, which is integrable, and justifies the
+expansion under the integral.
+
+For the tied multiplier $k=\alpha/3+\beta/6$, including its cost $|k|^2$,
+the local matrix is
+\[
+ M=\mathbb E\frac{v(T)v(T)^*}{2|L|}+dd^*,\qquad
+ v(T)=\binom{T-2/3}{1/6-T/\sqrt2},\quad
+ d=\binom{1/3}{1/6}.
+\]
+Outward-rounded evaluation of its closed forms gives
+\[
+ M\approx\begin{pmatrix}
+ .7154593425565982&-.2627445185308260\\
+ -.2627445185308260&.3087284185988625
+ \end{pmatrix}.
+\]
+The normalized curvature in direction $(2,-1)$ exceeds $.843$, so even
+an infinitesimal isotropic cost $.8I$ is impossible.
+
+More decisively, $M+I/10$ is not a global majorant. With
+$q=3/4$, $\alpha=7/20$, $\beta=1/2$, and $k=1/5$, the quantity
+\[
+ \begin{split}
+ &J(q;k,\alpha,\beta)-J(q;0,0,0)
+ -2\Re\{\overline{F_0(q)}k+
+          \overline{F_A(q)}\alpha+\overline{F_B(q)}\beta\}\\
+ &\hspace{20mm}+|k|^2-(\alpha,\beta)^*(M+I/10)(\alpha,\beta)
+ \end{split}
+\]
+is greater than $97/1000$. Here $F_0(q)=\mathbb E\operatorname{phase}(L+q)$
+and $F_A,F_B$ are the established sector profiles. The standalone
+checker \texttt{check\_false\_matrix\_majorant.py} proves this on
+$256\times512$ polar cells by interval bounds. The omitted unbounded
+tail is nonnegative by convexity of the norm. This refutes the proposed
+majorant, not Conjecture K.
+
+\paragraph{An unproved replacement target.}
+Numerical searches support, but do not prove, a matrix remainder of the
+form
+\[
+ J-J_0-\text{linear term}+|k|^2
+ \le A^*MA+C_q|q|^2\|A\|^2+C_r\|A\|^4
+\]
+with $C_q=C_r=2$ for the tied multiplier. For an actual cubic, the exact
+creation-annihilation identity and the existing influence bound imply
+\[
+ \mathbb E[|q|^2\|A\|^2]
+ \le\left(v+\frac{\sqrt{3\kappa}}2\right)w,
+ \qquad \mathbb E\|A\|^4\le2w^2.
+\]
+Thus a proof of this finite-dimensional majorant, combined with a
+proved near-maximizer cutoff on $w$, would yield a useful matrix
+coercivity. The majorant remains a conjectural target; neither the
+searches nor the local Hessian calculation certify it.
+
+
+% Self-contained section fragment. No project files are modified.
+\subsection{A supremum dual from independent graded-noise stability}
+\label{sec:noise-stable-weak-K}
+
+This is a weaker certificate target, not a proof of Conjecture K or a new
+numerical endpoint. Fix the visible polynomial $L$, write
+\[
+ \Lambda(G)=\mathbb E(|L+G|+|L-G|)-\mathbb E|G|^2/\varepsilon,
+ \qquad M=\sup_{n,G\in\mathcal H_{2,1}(\mathbb C^n)}\Lambda(G).
+\]
+The supremum is finite by Cauchy--Schwarz and the negative quadratic price.
+Let $r$ belong to one of
+$\mathcal H_{1,1},\mathcal H_{2,0},\mathcal H_{1,0},\mathcal H_{0,1}$,
+or the constants. An independent proper Gaussian $W$ can be assigned the
+complementary grade $(1,0),(0,1),(1,1),(2,0)$, or $(2,1)$, respectively.
+In the first two cases this is a genuine new Gaussian coordinate. In the
+others use independent normalized sums of $X_j\overline{Y_j}$, $X_jY_j$,
+or Wick cubics. These are exactly of the required grade, converge to $W$,
+and have uniformly bounded second moments. Independence and uniform
+integrability of the linear-growth payoff therefore prove
+\[
+ \Lambda(G+\sqrt{s}\,rW)\le M\qquad(s\ge0).
+\]
+No finite-dimensional polynomial representation of a higher-grade
+Gaussian is asserted.
+
+Put $R(a,t)=\mathbb E|a+\sqrt tW|$ and $w_\pm=L\pm G$. Define
+\[
+ H_{r,s}(G)=\mathbb E\sum_{\pm}
+ [R(|w_\pm|,s|r|^2)-|w_\pm|]
+ -\frac{s\mathbb E|r|^2}{\varepsilon}.
+\]
+Then exactly
+\begin{equation}\label{eq:noise-near-max}
+ H_{r,s}(G)\le M-\Lambda(G).
+\end{equation}
+Thus these are necessary cuts on near-maximizers, not universal
+inequalities $H_{r,s}\le0$ for every cubic.
+
+The heat equation with the convention $\mathbb E|W|^2=1$ gives
+\[
+ \partial_tR(a,t)=\tfrac14\mathbb E|a+\sqrt tW|^{-1}
+ \ge\frac1{4\sqrt{a^2+t}},
+\]
+where Jensen is applied to $x\mapsto x^{-1/2}$. Integration proves
+\[
+ R(a,t)-a\ge\tfrac12(\sqrt{a^2+t}-a)
+ =\frac{t}{2(\sqrt{a^2+t}+a)}.
+\]
+Consequently the nonsingular algebraic gain
+\[
+ B_{r,s}(G)=\frac12\mathbb E\sum_{\pm}
+ [\sqrt{|w_\pm|^2+s|r|^2}-|w_\pm|]
+ -\frac{s\mathbb E|r|^2}{\varepsilon}
+\]
+satisfies $B_{r,s}\le H_{r,s}\le M-\Lambda(G)$. At a
+$\delta$-near-maximizer, this also yields
+\[
+ \mathbb E\sum_{\pm}
+ \frac{|r|^2}{\sqrt{|w_\pm|^2+s|r|^2}}
+ \le\frac{4\mathbb E|r|^2}{\varepsilon}+\frac{4\delta}{s}.
+\]
+The convention is $0/0=0$; the quotients are bounded by
+$|r|/\sqrt s$, so are integrable.
+
+\paragraph{Supremum-dual theorem.}
+Choose finitely many gains $C_j$, each an established lower bound on an
+admissible $H_{r_j,s_j}$. Let $\lambda_j(G)\ge0$ and suppose
+$\sum_j\lambda_j(G)\le A<\infty$ uniformly. Then
+\begin{equation}\label{eq:noise-sup-dual}
+ M\le\sup_G\left\{\Lambda(G)-\sum_j\lambda_j(G)C_j(G)\right\}.
+\end{equation}
+Indeed, take $\Lambda(G_n)\to M$ and set
+$\delta_n=M-\Lambda(G_n)$. Equation~\eqref{eq:noise-near-max}
+gives $C_j(G_n)\le\delta_n$, so the expression inside the supremum is
+at least $\Lambda(G_n)-A\delta_n\to M$. This needs neither attainment
+nor differentiation under an expectation. A finite boxwise choice of
+bounded nonnegative multipliers is allowed. The positive noise price
+$\lambda_j s_j\mathbb E|r_j|^2/\varepsilon$ in the dual must be retained.
+
+At an attained global maximizer in the stable closure, Fatou as $s\downarrow0$
+additionally gives
+\[
+ \mathbb E\left[|r|^2
+ (|L+G|^{-1}+|L-G|^{-1})\right]
+ \le4\mathbb E|r|^2/\varepsilon.
+\]
+For an orthonormal finite family in any one admissible grade this is a
+matrix inequality with right side $(4/\varepsilon)I$. Constant and
+remote directions independent of the diffuse benchmark buffer saturate
+the infinitesimal constraint at the Gaussian optimum. Visible quadratic
+directions generally do not. Finite-step cuts, rather than an unproved
+existence of a maximizer, are the rigorous certificate interface.
+
+\paragraph{Parity obstruction for a different dual.}
+The exact constraint $Ph=tZ$ permits free multipliers in the remote first
+chaos, but these do not correct the pure shared $A/B$ baseline.
+There $G(-Z,X)=G(Z,X)$ and $L(-Z)=-L(Z)$, so
+\[
+ h_0=\tfrac12\{\operatorname{phase}(L+G)+
+                   \operatorname{phase}(L-G)\}
+\]
+is odd in $Z$. Hence $\mathbb E_Zh_0=0$ and all remote first-chaos
+coefficients already vanish. Such multipliers may still help even-sector
+interactions. Neither this observation nor the noise-dual theorem above
+supplies the remaining all-$G$ majorant or a compatible flank cover.
+
+
+
+\subsection{A fixed smoothing target and the full fresh-coordinate response operator}
+\label{sec:k-fixed-smoothing-response}
+
+\paragraph{Provenance (IDE note, 20 October).} Lower-bound GPT stability-geometry package (\code{conjK-stability-geometry-20261020.zip}, archived in
+\pathref{gpt-reviews/stability-geometry-20261020/}), ported with three typographical fixes. IDE replay \code{python3 -I verify\_all.py}: all algebra audits PASS
+(25+25 fresh-coordinate moments, 128 Hermite lowering identities, ascent completion, fourth-order optimisation, budget fraction, 12 hashes). IDE checks \st{P}: the
+Jensen smoothing step, $pg_0^2=625/7745536$, $a_g\le\sqrt\pi/(2g)$, and the fourth-order constant $2\cdot\frac1{24}\cdot\frac{3\sqrt\pi}{4g^3}\cdot23<\frac{23}{9g^3}$.
+The 23 is a fourth-moment constant for the probes $VA+\bar VB$ only, not for all $\Hc21$ cubics (the Wick cubic has $44$). The matrix
+$\bigl(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\bigr)$ is only a linear-algebra obstruction, not a cubic example.
+
+\paragraph{Status and scope.}
+The statements below are analytic proofs [P]. The accompanying standard-library
+checker audits their finite Gaussian algebra and rational constants [C]; it is
+not a numerical certificate for Conjecture K. No endpoint changes. The visible
+polynomial is fixed, $L=Z(a+b|Z|^2)$, and $p=1/\varepsilon>0$.
+The original coordinates are $(Z,X_1,\ldots,X_n)$, independent proper standard
+complex Gaussians. An arbitrary $F\in\mathcal H_{2,1}$ may involve all these
+coordinates and every visible sector. $U$ and $V$ below are fresh, mutually
+independent proper Gaussians, independent of the original coordinates.
+
+For a fixed $g>0$ define
+\[
+ J_g(F)=\mathbb E|L+F+gU|+\mathbb E|L-F+gU|
+          -p(\|F\|_2^2+g^2),\qquad
+ M_g=\sup_{n,F\in\mathcal H_{2,1}}J_g(F).
+\]
+The same $U$ may be used in these two expectations: its symmetry shows that
+$J_g(F)=\Lambda(F+gU)$. This is a definition in the Gaussian-buffer extension;
+$gU$ is not asserted to be a finite-dimensional third-chaos polynomial.
+$M_g$ is finite by the triangle inequality and the negative quadratic price.
+
+\subsubsection{The zero-buffer target can be replaced by one positive buffer [P]}
+Conditional Jensen gives, for every square-integrable $F$ independent of $U$,
+\begin{equation}\label{eq:sg-smoothing}
+ \Lambda(F)\le J_g(F)+pg^2.
+\end{equation}
+Consequently $M_0\le M_g+pg^2$. Conversely $M_g\le M_0$ when $M_0$
+is the supremum over all finite pure cubics: replace $U$ by normalized sums
+of independent remote Wick cubics. The central limit theorem, independence,
+and uniform integrability of the linear-growth payoff justify the limit;
+the variance price is unchanged.
+
+At the peak $p=2500/1891$, take $g_0=1/128$. Then
+\[
+ pg_0^2=\frac{625}{7745536}=0.000080691639674775\ldots,
+\]
+\[
+ \eta_{AB}-pg_0^2
+ =\frac{843807243}{84837824000000}
+ =0.000009946120765662\ldots.
+\]
+Thus the following single, smooth, dimension-free statement is sufficient
+for the stipulated peak budget:
+\begin{equation}\label{eq:sg-new-target}
+ \boxed{M_{1/128}\le S+\frac{99}{10^7}.}
+\end{equation}
+\emph{IDE correction (20 October).} $\eta_{AB}$ is the room above the certified remote cap $C'=2747927/2000000\approx S+9.97\cdot10^{-6}$, not above $S$
+(\autoref{ch:remote-cubic-refinement}, budget paragraph). The sufficient target is therefore the weaker
+$M_{1/128}\le C'+\eta_{AB}-625/7745536\approx S+1.992\cdot10^{-5}$, about twice the allowance in \eqref{eq:sg-new-target}. The statement below remains correct as a sufficient
+condition.
+
+It would imply $M_0<S+\eta_{AB}$. Equation~\eqref{eq:sg-new-target} is
+\textbf{open}. This arithmetic does not pay separately for a remote error:
+the $99/10^7$ allowance is for the \emph{entire} smoothed objective.
+Profile uniformity and the complete row cover remain necessary for an endpoint.
+The Jensen observation is elementary; the contribution here is its explicit
+budget and its use with the nonsingular operator below.
+
+\subsubsection{Exact ascent and a dimension-free stationarity error [P]}
+Write $Q$ for the orthogonal projection onto the full original
+$\mathcal H_{2,1}$ and set
+\[
+ k_g(F)=\tfrac12\mathbb E_U\{\operatorname{phase}(L+F+gU)
+                         -\operatorname{phase}(L-F+gU)\},
+ \qquad r_g=Qk_g(F)-pF.
+\]
+All scalar products are conjugate-linear in the first argument. The unpriced
+part of $J_g$ is a convex differentiable function of $F$, with real derivative
+$2\operatorname{Re}\langle k_g(F),H\rangle$. Its supporting hyperplane gives
+\[
+ J_g(F+H)-J_g(F)\ge
+       2\operatorname{Re}\langle r_g,H\rangle-p\|H\|_2^2
+       \quad(H\in\mathcal H_{2,1}).
+\]
+Taking $H=r_g/p$ proves the global ascent bound
+\begin{equation}\label{eq:sg-ascent}
+ \boxed{J_g(Qk_g(F)/p)-J_g(F)\ge\|r_g\|_2^2/p.}
+\end{equation}
+In particular, a $\delta$-near-maximizer of $M_g$ satisfies
+$\|r_g\|_2^2\le p\delta$. No attainment, small-amplitude assumption,
+large buffer, or independence between the sectors is used.
+
+\subsubsection{The missing off-diagonal noise block [P]}
+Put $w_\pm=L\pm F+gU$ and, taking only the $U$ expectation, define
+\[
+ a_g=\tfrac14\mathbb E_U(|w_+|^{-1}+|w_-|^{-1}),\qquad
+ b_g=\tfrac14\mathbb E_U
+       (\overline{w_+}^{\,2}|w_+|^{-3}
+        +\overline{w_-}^{\,2}|w_-|^{-3}).
+\]
+These are functions of the original coordinates. Gaussian convolution gives
+$|b_g|\le a_g\le\sqrt\pi/(2g)$: the inverse-distance potential of a
+proper Gaussian is radial decreasing and its value at zero is $\sqrt\pi/g$.
+This also follows by writing both radial kernels as positive superpositions
+of disks. Thus all following compressed operators are bounded.
+
+On $\mathcal V=\mathcal H_{1,1}\oplus\mathcal H_{0,2}$ let
+\begin{equation}\label{eq:sg-operator}
+ \mathcal T_{F,g}=
+ \begin{pmatrix}\Pi_{1,1}&0\\0&\Pi_{0,2}\end{pmatrix}
+ \begin{pmatrix}a_g&-\overline{b_g}\\-b_g&a_g\end{pmatrix}
+ \bigg|_{\mathcal V}.
+\end{equation}
+It is complex-linear, self-adjoint, positive semidefinite, and has norm
+at most $\sqrt\pi/g$.
+For $A\in\mathcal H_{1,1}$, $B\in\mathcal H_{2,0}$, the admissible cubic
+$H=VA+\bar V B$ has, conditionally on the old coordinates,
+\[
+ \mathbb E_V|H|^2=|A|^2+|B|^2,
+ \qquad \mathbb E_VH^2=2AB.
+\]
+Taylor expansion at zero therefore gives
+\begin{equation}\label{eq:sg-joint-second}
+ J_g(F+tH)-J_g(F)
+ =t^2\langle(A,\bar B),(\mathcal T_{F,g}-pI)(A,\bar B)\rangle+O(t^4).
+\end{equation}
+Odd terms vanish under $V\mapsto-V$. The mixed term is
+$-2\operatorname{Re}\mathbb E[b_gAB]$. Separate proper-noise tests on
+$A$ and $B$ see only the diagonal blocks, so do not establish
+$\mathcal T_{F,g}\preceq pI$.
+
+For orientation, the constant Hermitian matrix
+$\left(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\right)$ has each
+diagonal smaller than the peak $p$ but largest eigenvalue $2>p$.
+This is only an exact \emph{linear-algebra} obstruction to a diagonal-only
+inference, not a realizable cubic example or a counterexample to K.
+
+\paragraph{Completeness for one fresh coordinate.}
+Every cubic increment orthogonal to the old-coordinate sigma-field has
+the unique form
+\[
+ H=VA+\bar V B+(|V|^2-1)C+V^2D/\sqrt2+H(V)E,
+\]
+with old grades $(1,1),(2,0),(1,0),(0,1),(0,0)$, respectively, and
+$H(V)=V(|V|^2-2)/\sqrt2$. Orthogonality gives conditional variance
+$|A|^2+|B|^2+|C|^2+|D|^2+|E|^2$ and conditional pseudovariance
+$2AB+C^2$. Hence the entire quadratic coefficient is
+\[
+ \mathbb E[(a_g-p)(|A|^2+|B|^2+|C|^2+|D|^2+|E|^2)
+               -\operatorname{Re}\{b_g(2AB+C^2)\}].
+\]
+Besides the joint block~\eqref{eq:sg-operator}, there is a real-linear
+$C$ block and proper scalar $D,E$ blocks. This statement completes the
+fresh-coordinate quadratic test, not the classification of stable cubics.
+
+\subsubsection{Quantitative spectral pinning of the remote derivatives [P]}
+For each remote coordinate $X_j$ put
+\[
+ d_j=\partial_{X_j}F\in\mathcal H_{1,1},\quad
+ f_j=\partial_{\bar X_j}F\in\mathcal H_{2,0},\quad
+ v_j=(d_j,\overline{f_j})\in\mathcal V.
+\]
+Then the following is an \emph{identity for every} $F$:
+\begin{equation}\label{eq:sg-pinning}
+ \boxed{(\mathcal T_{F,g}-pI)v_j
+       =(\partial_{X_j}r_g,\overline{\partial_{\bar X_j}r_g}).}
+\end{equation}
+Indeed differentiation of the smoothed phase gives
+\[
+ \partial_{X_j}k_g=a_gd_j-\overline{b_g}\,\overline{f_j},\qquad
+ \overline{\partial_{\bar X_j}k_g}
+       =a_g\overline{f_j}-b_gd_j.
+\]
+There are no derivatives of $L$ in these equations because $X_j$ is remote.
+Hermite lowering gives
+$\partial_X Q=\Pi_{1,1}\partial_X$ and
+$\partial_{\bar X}Q=\Pi_{2,0}\partial_{\bar X}$.
+The functions are in Gaussian Sobolev space: smoothing bounds the phase
+derivative by a constant times $1/g$, while derivatives of $F,L$ are
+polynomials. Hermite lowering may therefore be justified first on polynomial
+approximations and then in Sobolev norm. These observations prove the identity.
+
+The cubic derivative isometry gives
+\[
+ \sum_{j\ \text{remote}}\bigl(\|\partial_{X_j}r_g\|_2^2+
+                   \|\partial_{\bar X_j}r_g\|_2^2\bigr)
+ \le3\|r_g\|_2^2.
+\]
+Together with~\eqref{eq:sg-ascent}, it follows that every
+$\delta$-near-maximizer of $M_g$ satisfies
+\begin{equation}\label{eq:sg-quantitative-pinning}
+ \boxed{\sum_j\|(\mathcal T_{F,g}-pI)v_j\|_2^2\le3p\delta.}
+\end{equation}
+At an exact stationary point all nonzero remote derivative vectors are
+eigenvectors with eigenvalue exactly $p$. This is the infinitesimal form
+of the symmetry rotating an old remote coordinate into a fresh coordinate.
+It is not an independent hypothesis added to stationarity. Its value is that
+it expresses that condition in the same operator as the noise-stability test.
+Unlike a bound through fifth derivatives of a radial profile, the error
+constant $3p$ has no inverse powers of $g$.
+
+\paragraph{A useful exclusion consequence.}
+If $\mathcal T_{F,g}\preceq(p-d)I$ for some $d>0$, then
+\[
+ \|F-\mathbb E[F\mid Z]\|_2^2\le 3p\delta/d^2.
+\]
+Each Hermite monomial involving a remote variable contributes at least
+its variance to the sum of remote derivative energies, which proves the
+claim from~\eqref{eq:sg-quantitative-pinning}. This conditional implication
+does not claim that such a gap holds uniformly; at the diffuse benchmark
+the relevant spectrum reaches $p$.
+
+\subsubsection{Quantitative stability and a zero-buffer finite-step substitute [P]}
+For a unit vector $(A,\bar B)\in\mathcal V$ set
+$\lambda=\langle(A,\bar B),(\mathcal T_{F,g}-pI)(A,\bar B)\rangle$.
+For these probes one can improve the generic cubic fourth-moment constant
+from $44$ to $23$. Put $u=\|A\|_2^2$, $v=\|B\|_2^2$. The complex
+quadratic Gaussian moment formulas give
+$\mathbb E|A|^4\le9u^2$ and $\mathbb E|B|^4\le6v^2$.
+Indeed, writing $A=X^*MX-\operatorname{tr}M$ gives $u=\operatorname{tr}(MM^*)$
+and
+\[
+ \mathbb E|A|^4=2u^2+|\operatorname{tr}M^2|^2+
+ 4\|M^2\|_{\rm HS}^2+2\operatorname{tr}((MM^*)^2)\le9u^2.
+\]
+For $B=X^{\mathsf T}NX$ with $N=N^{\mathsf T}$,
+$v=2\operatorname{tr}(NN^*)$ and
+$\mathbb E|B|^4=2v^2+16\operatorname{tr}((NN^*)^2)\le6v^2$.
+These are Wick pairings: for the first formula the pairings contribute
+$2u^2+|\operatorname{tr}M^2|^2$, and the six cyclic fourth cumulants
+contribute the last two terms. Conditional Gaussian integration now gives
+\[
+ \mathbb E|VA+\bar VB|^4
+ =2\mathbb E|A|^4+8\mathbb E|AB|^2+2\mathbb E|B|^4
+ \le18u^2+60uv+12v^2\le23(u+v)^2.
+\]
+The first inequality uses $24\sqrt6<60$. For the second, the difference is
+$5u^2-14uv+11v^2=((5u-7v)^2+6v^2)/5$.
+Thus no generic cubic fourth-moment input is needed for this bound.
+For $\Phi_g(w)=2\mathbb E|w+gU|$, averaging one-dimensional absolute values
+over planar directions yields
+\[
+ |D_e^4\Phi_g(w)|\le\frac{3\sqrt\pi}{2g^3}\quad(|e|=1).
+\]
+For completeness, the one-dimensional smoothed absolute value has fourth
+derivative $4(2x^2/g^2-1)e^{-x^2/g^2}/(g^3\sqrt\pi)$ in absolute value
+at most $4/(g^3\sqrt\pi)$. The angular fourth moment is $3/8$ and
+$2|w|=\pi\mathbb E_\theta|\operatorname{Re}(e^{-i\theta}w)|$.
+Taylor's theorem, symmetrization and $\sqrt\pi<16/9$ give
+\[
+ J_g(F+tH)-J_g(F)\ge\lambda t^2-\frac{23}{9g^3}t^4.
+\]
+Thus
+\begin{equation}\label{eq:sg-spectral-stability}
+ \boxed{M_g-J_g(F)\ge\frac{9g^3}{92}
+           (\lambda_{\max}(\mathcal T_{F,g})-p)_+^2.}
+\end{equation}
+This is valid over the entire finite quadratic feature space, in every
+dimension. Its constant becomes small as $g\downarrow0$: it must not be
+advertised as a uniform zero-buffer stability estimate.
+
+There is also a nonsingular finite-step lower gain without smoothing.
+For $w\in\mathbb C$, $H\in\mathbb C$, and $t>0$,
+\[
+ \frac{|w+tH|+|w-tH|}{2}-|w|
+ \ge\frac{t^2(\operatorname{Im}(\bar wH))^2}
+             {2(|w|+t|H|)^3},
+\]
+with value zero on the right at $(w,H)=(0,0)$. Integrate the second
+derivative along the line segment; away from its possible zero it is
+$(\operatorname{Im}(\bar wH))^2/|w+sH|^3$. The collinear case has
+zero right side and follows by convexity.
+Applying this to $w=L\pm F$ and subtracting $pt^2\|H\|^2$ supplies
+a lower bound for the symmetrized actual improvement. It is integrable
+because its positive integrand is bounded by a constant times $t|H|$.
+This retains phase information and avoids inverse moments, but it is
+not a proved positive gain for the open class.
+
+\subsubsection{What this changes, and what it does not}
+The scalar graded-noise cuts in \autoref{ch:weakk} already gave diagonal
+compressions; \autoref{ch:response-stability} gave response-pair stability, and \autoref{ch:nearmax}
+found its simplest tested form inactive in the old certificate.
+The additions here are the complete one-fresh-coordinate quadratic block,
+its off-diagonal phase information, and the quantitative identity tying
+its price-level eigenspace to the actual remote cubic derivatives.
+The last identity is a repackaging of stationarity and symmetry, not a
+new restriction independent of both.
+
+The proposed rigidity target is now precise: rule out an objective above
+$S+99/10^7$ at $g=1/128$ for a sequence with both small response defect
+and no profitable fresh-coordinate direction. There is currently no proof
+of this rigidity assertion, no positive numerical measurement of the new
+block on the unresolved configurations, and no improved endpoint.
+Finite-dimensional nonexistence of bad stationary points would not by
+itself control an increasing-dimensional sequence; the displayed error
+bounds are included to make that obligation explicit.
+
+An analogous strategy has succeeded for Gaussian noise stability of sets:
+Heilman, \emph{A Variational Proof of Robust Gaussian Noise Stability},
+\texttt{arXiv:2108.04950}, classifies second-variation-stable sets as
+half spaces. That theorem does not apply to this complex, sign-indefinite
+chaos problem. Herry--Malicet--Poly, \texttt{arXiv:2412.06749}, describes
+limits of bounded-degree polynomials, but supplies neither this rigidity
+theorem nor the small numerical error required here.
+

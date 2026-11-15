@@ -1,0 +1,217 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch7-conjectureK.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 7). Owner: lower-bound/05-targets-register.tex
+\section{Conjecture K: a sufficient Gaussian comparison for the cubic witness}\label{ch:K}
+\chapsummary{Status: the original statement (12 October), still the reference definition (Conjecture~\ref{conj:K}, gate-free row
+Proposition~\ref{prop:row}); the progress sections are partly superseded. K is proved on many classes since (\autoref{ch:structure},
+\autoref{ch:kjoint}, \autoref{ch:rescub}, \autoref{ch:remote-cubic-refinement}, \autoref{ch:shared-sector-refinements}); the weaker sufficient target
+K$_{\rm rot}$ and the newer original-response route are in \autoref{ch:weakk}; raw K is sufficient, not necessary; L4 is false, (T) is false (\S\ref{sec:wct-false}). The reading guide in the front matter says where
+the open crux is stated in its latest form.}
+
+Sources: \pathref{conjecture\_K\_handoff.md} (\S1--12), \pathref{pipeline/gate/KSIDE.md} (Worker G1), \pathref{pipeline/kconj/RESULTS.md} (K1),
+\pathref{pipeline/kproof/PROOF\_NOTES.md} (K2), \pathref{pipeline/kclt/RESULTS.md} (K3). Peak row throughout: $\varepsilon=0.7564$,
+$(\ell,\beta)=(0.8456,0.1432)$, $1/\varepsilon=1.3221$, $S=1.3739535$, $\sigma^*=0.2009$.
+
+\subsection{The exact gate-free row}\label{sec:exactrow}
+\begin{proposition}[\st{P}, three lines]\label{prop:row}
+Let $f,g$ be unimodular, $h=(f+g)/2$, $k=(f-g)/2$, $Ph=tz_1$, $B=\beta z_1(|z_1|^2-2)$, $L:=\ell z_1+B=z_1(\ell+\beta(|z_1|^2-2))$, and
+$G:=\varepsilon Qk\in\Hc21(\C^n)$. Then, for all real $\ell,\beta$,
+\[
+\Re\langle f,Tg\rangle\ \le\ t^2-2\ell t+\frac{2\beta^2}\varepsilon+\Lambda(G),\qquad
+\Lambda(G):=\E|L+G|+\E|L-G|-\frac{\|G\|_2^2}\varepsilon .
+\]
+\end{proposition}
+\begin{proof}
+From \eqref{eq:identity}: $\varepsilon\|Qk\|^2=2\Re\langle G,k\rangle-\|G\|^2/\varepsilon$ (identity); drop $-\|Pk\|^2\le0$; $h$-side by HJM (8.5) and
+$-2\ell t+2\ell\Re\E[\bar z_1h]=0$. Then $\Re\langle f,Tg\rangle\le t^2-2\ell t+\|B\|^2/\varepsilon+\Re\E[\overline{(L+G)}f+\overline{(L-G)}g]-\|G\|^2/\varepsilon$ and
+$|f|=|g|=1$.
+\end{proof}
+No gate, no matrix, no $\delta$ (in HJM's language: $\delta=\varepsilon$ with the residual being the whole of $\varepsilon Qk$). Critical points are
+self-consistent: $\nabla\Lambda=0\iff G=\varepsilon Q[(\ph(L+G)-\ph(L-G))/2]$. Decompose $G$ by its dependence on $z_1$:
+\[
+G=q(w)+r_A(w)A(z_1)+r_B(w)B(z_1)+r_z(w)z_1+\nu H(z_1)+r_{\bar z}(w)\bar z_1,
+\]
+$q\in\Hc21(w)$ (the cubic residual), $r_A\in\Hc10(w)$, $r_B\in\Hc01(w)$ (Gaussian), $r_z\in\Hc11(w)$, $r_{\bar z}\in\Hc20(w)$ (second chaos), $\nu\in\C$.
+For fixed $w$, $G(\cdot,w)$ lies in a 6-dimensional space of functions of $z_1$, so $\Lambda(G)=\E_w\Phi(c(w))-\E|c|^2/\varepsilon$ with the convex even
+\emph{fibre potential} $\Phi(c)=\E_{z_1}|L+c\cdot e|+\E_{z_1}|L-c\cdot e|$ on $\C^6$. If only $q$ is present,
+\[\begin{gathered}
+\Lambda=\E_w\Phi_0(|q|)-\sigma^2/\varepsilon,\qquad \Phi_0(s)=\E_z[|L+s|+|L-s|]=2\E_U\bigl[m(\sqrt U\,a(U),s)\bigr],\\
+m(x,s)=\tfrac2\pi(x+s)E_{\rm ell}\Bigl(\tfrac{4xs}{(x+s)^2}\Bigr),\ U\sim\mathrm{Exp}(1),
+\end{gathered}\]
+a one-dimensional integral of a complete elliptic integral: \emph{no supremum over multipliers, hence no price layer}.
+
+\subsection{The conjecture}
+\begin{conjecture}[K, Gaussian domination]\label{conj:K}
+Let $a(u)=\ell+\beta(u-2)$ with $\ell>2\beta>0$, $L(z)=z_1a(|z_1|^2)$, $\varepsilon>0$. For every $n$ and every $G\in\Hc21(\C^n)$,
+\[
+\Lambda(G)\ \le\ S(\ell,\beta):=\sup_{\sigma\ge0}\bigl\{\E|L+\sigma W|+\E|L-\sigma W|-\sigma^2/\varepsilon\bigr\},
+\]
+$W$ a standard complex Gaussian independent of $z_1$ (the diffuse limit of $\sigma N^{-1/2}\sum_jH(w_j)$, so $S$ is attained as $n\to\infty$).
+Needed range: $\varepsilon\in[0.74,0.76]$, $\ell\in[0.76,0.90]$, $\beta\in[0.12,0.16]$. Weak form $K_\eta$: $\Lambda\le S+\eta$.
+\end{conjecture}
+Conjecture K would imply that $\sup_n\|T_n\|$ equals the norm of the three-coordinate Gaussian model of \autoref{ch:ceilings}, after the row optimisation. The converse is not asserted: the gate-free row has discarded negative terms. The retained-penalty dual in Section~\ref{sec:Kprime-dual} bounds the weaker constrained problem directly. The certified cap confirms this
+to $1.7\cdot10^{-4}$ at $\varepsilon=0.745$ ($0.713288\le\|T\|\le0.71346730$, cert-0745b; with the current $B=0.7134326$ to $1.45\cdot10^{-4}$). Gaussian ideal of the gate-free row, $D''(t)=t^2+\min_{\ell,\beta}[S+2\beta^2/\varepsilon-2\ell t]$
+(\code{kmodel.py}, exact to $10^{-14}$ at $s=0$):
+\begin{center}
+\begin{tabular}{lcccc}\toprule
+$\varepsilon$ & $\max_tD''$ & at $t$ & $(\ell,\beta,\sigma^*)$ & $1/\max$\\\midrule
+0.7564 & 0.713135 & 0.845 & (0.8456, 0.1432, 0.201) & 1.402259\\
+0.75 & 0.713183 & 0.850 & (0.8488, 0.1448, 0.20) & 1.402166\\
+0.745 & 0.713288 & 0.855 & (0.8534, 0.1467, 0.20) & 1.401957\\\bottomrule
+\end{tabular}
+\end{center}
+Realistic cap under K (independent implementation \code{ka.py}: explicit $\Phi_0$, moment LP by HiGHS, rows every $0.005$, tangent envelope, no pair
+mixtures): $0.713160$ at $0.7564$ ($K=1.40221$), $0.713201$ at $0.75$, $0.713310$ at $0.745$. At the peak rows the moment LP alone is within $10^{-5}$ of the
+Gaussian ideal (maximiser $x=0$); at flank rows ($t=0.80$: $0.712262$ vs $0.711274$) it is not lossless but those rows stay below the peak. \textbf{Target
+for $1.402$: $B\le0.713267$, so $K_\eta$ with $\eta\le1.0\cdot10^{-4}$ suffices.} The adversary's $\nu$ and an optional multiplier $\lambda$ for $-|\langle k,z\rangle|^2$
+are both optimal at $0$ ($\nu=0.05\to-2.9\cdot10^{-3}$; $\nu=0.05i\to-1.1\cdot10^{-3}$; $\lambda=\pm0.02\to+4.5\cdot10^{-4}$), so the two-parameter row attains the norm.
+With K the certificate becomes: rows $(\ell,\beta)$ only; $\Phi_0$ by one-dimensional interval integration; residual layer by the existing moment
+rectangles; envelope over $t$. It removes the gate loss, the residual-law loss and the price layer together; $1.4023$ is then the hard ceiling of the cubic
+witness.
+
+\subsection{(K-a): the $q$-only part is certificate-ready}\label{sec:Ka}
+\emph{Update 15 Oct, 20:01 (\autoref{ch:rescub}):} K-a is now \emph{proved} at the peak profile with slack $2.2\cdot10^{-5}$ (refined at 20:37 to $<10^{-5}$ with the project's $C_6$, \autoref{ch:remote-cubic-refinement}) for every remote cubic of any dimension and amplitude (two-node moment theorem, Arb certificate replayed), and the diagonal $\nu$ is removed on every remote law; the float table below is superseded there.
+For $q\in\Hc21(w)$ of any law: $\E\Phi_0(|q|)-\sigma^2/\varepsilon\le S-c_1(x)$, $x^2=\E|q|^4/\sigma^4-2$, with slack (\code{xscan.py}, peak row; moment LP alone,
+cuts not needed) \st{F}:
+\begin{center}\small
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lcccccccccccccc}\toprule
+$x$ & .05 & .1 & .2 & .3 & .45 & .6 & .8 & 1 & 1.3 & 1.6 & 2 & 3 & 5 & 7.75\\\midrule
+$c_1(x)$ & 0 & $-2$e$-6$ & 1.2e-5 & 2.5e-5 & 3.9e-5 & 4.8e-5 & 7.2e-5 & 1.2e-4 & 2.3e-4 & 3.9e-4 & 6.4e-4 & 1.3e-3 & 1.8e-3 & 2.0e-3\\\bottomrule
+\end{tabular}\end{adjustbox}
+\end{center}
+Reason: $\Phi_0$ is majorised by a polynomial in $s^2$ with negative $s^4$ coefficient touching at the Gaussian law, and the Gaussian has the smallest
+fourth moment ($\E|q|^4\ge2\sigma^4$). It follows from $\E U=1$, $\E U^2=2+x^2$ and $C_6$, so it is provable with tools in hand. For Gaussian scale mixtures it
+holds by Jensen, since $h(v)=\E\Phi_0(\sqrt v|W|)$ is concave on $[0,2]$ ($h''$ from $-3.3$ to $-0.11$; $h'(\sigma^{*2})=1/\varepsilon$). The $q$-only row value over all
+$(\sigma,x)$ is $0.713115$, $0.713133$, $0.713096$ at $t=0.84,0.845,0.85$ (Gaussian ideals $0.713115$, $0.713135$, $0.713103$): the residual-law layer is lossless for
+the exact potential.
+
+\emph{Qualified (15 Oct, evening; \autoref{ch:certs}, \S\ref{sec:certs-Ka}).} The claim ``follows from $\E U=1$, $\E U^2=2+x^2$ and $C_6$'' is too strong as a certificate statement: the dual LP with exactly the
+moment constraints (formalized conditionally in Lean; $\E U=1$, $\E U^2=2+x^2$, $\E U^3\le6+9x^2+C_6x^3$, $\E\sqrt U\le\rho$) gives a \emph{negative} certified deficit near $\sigma^*$ ($d(\sigma^*,0)=-6.3\cdot10^{-5}$, $d<0$ for $\sigma\in\{0.20,0.22\}$ and small $x$), because
+those constraints admit non-exponential laws at $x=0$; this is the same effect as the $-2\cdot10^{-6}$ at $x=0.1$ in the table above, measured on the row functional, and the $9.6\cdot10^{-6}$ two-point
+example of \S\ref{sec:kcontent}. K-a as a certificate therefore needs the Stein cuts (both inputs \st{L}), exactly as the present lower certificate does. On the positive side, exact K-a is now
+\emph{proved} \st{P} for the complete one-coordinate cubic star and for all of $\Hc21(\C^2)$ (\S\ref{sec:knext-star}), and with an explicit deficit for all nonzero-frequency sectors of one coordinate
+(Theorem~\ref{thm:kfull}); the general $n\ge3$ residual remains the moment/Stein route.
+
+\subsection{(K-b): the mixed components}\label{sec:Kb}
+\paragraph{Profiles.} $F_A(u):=\E_z[A(z)\ph(L(z)+u)]$, $F_B(u):=\E_z[B(z)\overline{\ph(L(z)+u)}]$; $c_A(q)=F_A(q)$, $c_B(q)=\overline{F_B(q)}$ are the gradients of the
+fibre potential in the directions $A,B$ at the $q$-only point; $c_z=c_H=c_{\bar z}\equiv0$ there (parity). \textbf{Lemma 1 \st{P}}: $F_A,F_B$ are $C^\infty$, charge one
+($F(u)=uP(|u|^2)$), all derivatives bounded ($\zeta=L(z)$ is a diffeomorphism of $\C$, so $F=\omega*\ph$ with a Schwartz density). Hence
+$\Delta_A(s):=c_A(s)-\gamma_As=2.15s^3+\ldots$, $\Delta_B=1.03s^3+\ldots$ (the earlier claim ``$\Delta\sim s|s|$'' in KSIDE is wrong). Constants
+(\code{prof.py}, \code{derivs.py}) \st{CA}: $\gamma_A=-0.835136$, $\gamma_B=-0.422028$; $\sup|F_{A,u\bar u}|=0.6941$, $\sup|F_{A,\bar u\bar u}|=0.3312$,
+$\sup|F_{A,uu\bar u}|=4.30$; $\sup|F_{B,u\bar u}|=0.3395$, $\sup|F_{B,\bar u\bar u}|=0.1616$, $\sup|F_{B,uu\bar u}|=2.06$. $|c_A|$ peaks at $0.2534$ near $s=0.5$ and decays like $1/s$.
+\paragraph{Majorant and reduction.} $M(h_X,h_Y)$: for all $s\in\C$, $m\in\C^4$,
+$\Phi(s;m)\le\Phi_0(|s|)+2\Re(\overline{c_A(s)}m_A+\overline{c_B(s)}m_B)+h_X(|m_A|^2+|m_B|^2)+h_Y(|m_z|^2+|m_{\bar z}|^2)$.
+\begin{proposition}[\st{P} given the majorant]\label{prop:R}
+If $M(h_X,h_Y)$ holds with $h_X,h_Y<1/\varepsilon$ then for every $G$ with $\nu=0$
+\[
+\Lambda(G)\le\Lambda_q+\frac{\|\Pi_{1,0}F_A(q)\|^2+\|\Pi_{1,0}F_B(q)\|^2}{1/\varepsilon-h_X},\qquad\Lambda_q:=\E\Phi_0(|q|)-\sigma^2/\varepsilon.\tag{R}
+\]
+\end{proposition}
+(Integrate $M$ over $w$; $\E[\overline{c_A(q)}r_A]=\langle r_A,\Pi_{1,0}c_A(q)\rangle$ since $r_A\in\Hc10$; the linear parts $\gamma_Aq$ never enter since
+$\Pi_{1,0}q=0$; maximise $2\rho\kappa-(1/\varepsilon-h_X)\rho^2$.) Numerics for the majorant at the peak row \st{F}: the $(A,B)$ and $(z,\bar z)$ blocks decouple for every $s$
+(parity); local Hessian of the $(A,B)$ block $1.0237$ at $s=0$, decreasing in $s$; global secant quotient on the $(A,B)$ plane $1.013$; block form $M(1.03,1.20)$
+with no violation on 16,430 random points. So the denominator is $1/\varepsilon-h_X=0.292$ (K1's $0.122$ was noise). The constant $\nu$ cannot be put in $m$: the
+$(z,H)$ plane has secant constant $1.71>1/\varepsilon$ (it re-tunes $\ell,\beta$); $\nu$ must be a parameter of the base profile, $L\pm(s+\nu H)=za_\pm(U)\pm s$,
+$a_\pm=\ell+(\beta\pm\nu/\sqrt2)(U-2)$, and everything must be redone uniformly in small $\nu$ (not done; $|\nu|=0.05$ already costs $10^{-3}$, so only $|\nu|\lesssim0.02$ is delicate).
+\paragraph{Content inequality} (what $K_\eta$ then needs): $\|\Pi_{1,0}F_A(q)\|^2+\|\Pi_{1,0}F_B(q)\|^2\le0.292\,(c_1(q)+\eta)$, $c_1(q)=S-\Lambda_q$ the true $q$-only slack. On
+the junta family $q=\sigma(aH(z_2)+\sqrt{1-a^2}W)$ and the skew family $q=\sigma(az_2(|z_3|^2-1)+\sqrt{1-a^2}W)$ the content ratio $\theta=$content$/\|\Delta\|$ never
+exceeds $0.20$; the content is third order (content$^2\sim x^{2.7}$; by charge counting the first non-vanishing term of $\E[\bar z_2F(\sigma_WW+aH)]$ is
+$a^3\E[\bar z_2H^2\bar H]\E[F_{uu\bar u}]$) while the slack is second order ($\sim x^2$); at fixed $\sigma$ the ratio (content$^2/0.292$)/slack reaches $0.385$
+(Wick monomial, $\sigma=0.25$). A crude Cauchy--Schwarz with the full norm $\E|\Delta_A(q)|^2$ costs $7\cdot10^{-4}$ at $\sigma=0.2$: \emph{that is the gate loss again}.
+HJM's gates are the best pointwise (fibrewise-quadratic) relaxation found; any improvement must use the chaos constraint on $r_A,r_B$.
+
+\subsection{What is proved towards K}\label{sec:Kproved}
+Notation: $D_j=\partial_jq\in\Hc11$, $\bar D_j=\bar\partial_jq\in\Hc20$; $\Gamma_{jk}=\E[D_j\bar D_k]$ (trace $2\sigma^2$), $\Gamma'_{jk}=\E[\bar D_j\overline{\bar D_k}]$ (trace $\sigma^2$);
+$3W=\sum|D_j|^2+|\bar D_j|^2$, $\tfrac32C=\sum D_j\bar D_j$; $N$ the number operator; $N_u^\sigma$ its one-variable version with reference law $CN(0,\sigma^2)$ and
+semigroup $P_s$. \textbf{H1} (Lean): $\Var(W)+\tfrac12\E|C|^2\le\sigma^4x^2/3$.
+\begin{theorem}[resolvent identity, \st{P}]\label{thm:resolvent}
+For $q\in\Hc21(\C^n)$, $\Psi\in C^2(\C)$ of polynomial growth, $Y$ in the $p$-th chaos of $w$:
+$\E[\bar Y((3N_u^\sigma-p)\Psi)(q)]=3\E[\bar YR_\Psi]$, $R_\Psi=2(W-\sigma^2)\Psi_{u\bar u}(q)+C\Psi_{uu}(q)+\bar C\Psi_{\bar u\bar u}(q)$.
+\end{theorem}
+(Chain rule for $N(\Psi(q))$ with $Nq=3q$; checked exactly on 40 random kernels to $2\cdot10^{-15}$.) Resolvents: $(3N_u-1)^{-1}F=\int_0^\infty e^tP_{3t}F\,dt$ on charge one,
+$(3N_u-2)^{-1}$ on charge 0 (orthogonal to constants) and charge 2; second derivatives of resolvents are bounded by $1/5$, resp.\ $1/4$, of those of the input.
+\begin{theorem}[second-order content, \st{P}]
+$F\in C^2$ of charge one with bounded second derivatives: $\|\Pi_{1,0}F(q)\|^2\le\tfrac3{25}(4A_1^2+2B_1^2)\sigma^4(m-2)$, $A_1=\sup|F_{u\bar u}|$, $B_1=\sup|F_{uu}|+\sup|F_{\bar u\bar u}|$.
+\end{theorem}
+\begin{theorem}[influences, \st{P}]
+$\lambda_{\max}(\Gamma)^2+\lambda_{\max}(\Gamma')^2\le\|\Pi_{1,1}|q|^2\|^2\le\tfrac34\sigma^4(m-2)$; also $4\|\Pi_{1,1}|q|^2\|^2+2\|\Pi_{2,0}q^2\|^2\le3\sigma^4(m-2)$.
+\end{theorem}
+\begin{theorem}[third-order content, \st{P}]
+$F\in C^3$ of charge one with bounded second and third derivatives: $\|\Pi_{1,0}F(q)\|^2\le\tfrac{3\sqrt6}2(M_1+M_2)\sigma^6(m-2)^{3/2}$, with
+$M_1=(4\sup|F_{uu\bar u}|^2+2(\sup|F_{uuu}|+\sup|F_{u\bar u\bar u}|)^2)/16$, $M_2$ symmetric.
+\end{theorem}
+\begin{corollary}[cubic tensor inequality, \st{P}]
+$\sum_j|\E[\bar w_jq^2\bar q]|^2\le\tfrac{3\sqrt6}2\sigma^6(m-2)^{3/2}=3.674\sigma^6x^3$; numerically the sharp constant is $0.4775$ ($n=2$ plus diffuse; Wick monomial alone $0.4703$).
+\end{corollary}
+For the actual profiles: $K_2=0.60$ (second order), $K_3=41.2$ (third order) \st{CA}. \textbf{Does the chain close?} No. Requirement: content$^2\le0.292(S-\Lambda_q+\eta)$
+with $\Lambda_q\le J(\sigma,x)$ (moment LP). $\eta$ needed when restricted to $x\le$: $0.10$: $1.1\cdot10^{-5}$; $0.15$: $2.6\cdot10^{-5}$; $0.20$: $7.0\cdot10^{-5}$; $0.25$:
+$1.6\cdot10^{-4}$; $0.30$: $3.3\cdot10^{-4}$; $0.40$: $7.8\cdot10^{-4}$; $0.50$: $2.3\cdot10^{-2}$; $1.0$: $0.49$. So $K_\eta$ with $\eta=10^{-4}$ is proved (up to the float constants and
+the majorant) for $x\le0.22$. A cubic bound alone would need constant $\le1.9$ to close $x\le0.5$ and $\le0.22$ for $x\le1$ (proved $41.2$; truth on the junta family
+$0.85$ at $x\to0$, $0.29$ at $x=1$, and the content saturates since the profiles are bounded). With the moment-LP slack the inequality is nearly tight at large
+$x$ (Wick monomial, $\sigma=0.25$--$0.30$: ratio $0.9$--$0.95$); with the true slack of the same $q$ the ratio is $\le0.385$. \emph{Conclusion: the proof cannot be
+split into ``content $\le f(x)$'' and ``slack $\ge g(x)$'' through the fourth moment alone.}
+
+\subsection{Attacks on K: no violation}\label{sec:Kattack}
+\begin{center}\small
+\begin{tabular}{p{7.4cm}p{2.1cm}p{4.9cm}}\toprule
+family & parameters & max excess $\sup\Lambda-S$\\\midrule
+$z_1$ + one ordinary coordinate + diffuse $W$ (all of $\Hc21(\C^2)$) & 13 real & $+1.4\cdot10^{-12}$ (11 starts)\\
+$z_1$ + two ordinary coordinates + diffuse $W$ (all 18 components of $\Hc21(\C^3)$ incl.\ $z_2(|z_3|^2-1)$, $z_2^2\bar z_3$, $z_2z_3\bar z_1$, all mixed) & 37 real & $+4$--$5\cdot10^{-9}$ at three rows (coarse-grid artefact, every start returns to the Gaussian point)\\
+scale mixtures with Gaussian multipliers + junta + $W$ & 23 real & $\le0$; the purely multiplicative point is a local max $5.7\cdot10^{-4}$ below $S$\\
+full 10-parameter $S$-limit family (jointly Gaussian limit with the two surviving cross moments $\kappa=\E[r_Ar_B]$, $p=\E[r_z^2]$, non-circular $r_z$, mean from $\nu$) & 10 real & $0$ to $2\cdot10^{-16}$ at three rows; every start converges to the pure point or stays at the saddle $G=0$ ($\Lambda(0)=S-2.07\cdot10^{-3}$)\\
+$n=2$ without $W$ (six-dimensional $\Hc21(\C^2)$) & & $\sup\Lambda=1.3649281<S=1.3669130$\\\bottomrule
+\end{tabular}
+\end{center}
+Effective second-order constants at the Gaussian point (must be $<1/\varepsilon=1.322$): $r_A$ circular $0.857$; $r_B$ $0.389$; $r_z$ circular $0.622$, real multiplier
+$0.118$, imaginary multiplier $1.126$ (worst); $\nu$ real $0.153$, imaginary $0.897$. Untested: four or more coordinates of comparable influence; mixed components
+spread over several remote coordinates; tiger-like non-polynomial $G$ (restricted by $G\in\Hc21$). Quadrature caution: Gauss--Laguerre in $|z|^2$ overestimates
+phase-like payoffs by $10^{-3}$ at 24 nodes; use Gauss--Legendre in the radius or exact formulas.
+
+\subsection{Lemmas: false, surviving, open}\label{sec:lemmas}
+\paragraph{L4 (monotonicity along the CLT) is FALSE.} Statement: $\Lambda(G)\le\Lambda((G(z,w)+G(z,w'))/\sqrt2)$, $w'$ an independent copy. Exact counterexample
+$G=cz_1(|z_2|^2-1)$ ($r_z$ real): $|L+G|+|L-G|=2|z_1|\max(a(u),|m|)$, flat near $m=0$, so heavier tails raise its mean: $\Lambda(G)-\Lambda(SG)=+4.9\cdot10^{-4}$ at $c=0.15$,
+$+7.8\cdot10^{-3}$ at $c=0.40$ (and $\Lambda$ decreases monotonically along $S$). Similar violations with $r_A=0.4$ ($+3.3\cdot10^{-3}$), $r_B$, $r_{\bar z}$. None is near the
+maximiser ($\le S-2.9\cdot10^{-2}$), so K is not contradicted. Reason: only the $q$-direction has a negative quartic coefficient ($\Phi_0$ strictly concave in $v=s^2$);
+in the mixed directions the fibre potential is flat-then-linear, so fourth cumulants help the adversary.
+\paragraph{Surviving (float).} (a) $q$-only monotonicity $J(q):=\Lambda_q(Sq)-\Lambda_q(q)>0$ at all 24 points of the junta family. (b) \textbf{Sup-monotonicity L4*}:
+$\sup_{\rm mixed}\Lambda(q+\text{mixed})\le\sup_{\rm mixed}\Lambda(Sq+\text{mixed}')$, holds at all 7 points tested, margins $3.8\cdot10^{-4}$ to $8.5\cdot10^{-3}$. Together with the
+proved $x\le0.22$ case it would give $K_\eta$: $S$ halves $x^2=m-2$, so eight steps take the Wick monomial from $x^2=42$ to $0.16$. Proving L4* needs ``mixed gain $\le$
+CLT jump of the $q$-only functional + mixed gain one level up''. (c) Content against true slack (L3): rigorous $R\le0.383T$, actual gain $M_0\le0.18T$; the single-step
+$R\le J$ is false for the Wick monomial (ratio up to $1.95$) but $M_0\le J$ holds (ratio $0.35$--$0.70$). (d) The joint functional is not concave in the covariance
+parameters (largest Hessian eigenvalue $+1.3$ to $+2.9$), and conditionally Gaussian $G$ with conditional cross-covariance (e.g.\ $q=z_2X$, $r_A=z_2$) leave the
+$S$-limit family with a first-order effect $2\gamma_Aa\sigma$ that cancels only on average: no Jensen argument proves K on conditionally Gaussian $G$.
+\paragraph{Open lemmas, in order of promise.} \textbf{L4*} (above). \textbf{L3}: content $\le(1/\varepsilon-h_X)(S-\E\Phi_0(|q|)+\sigma^2/\varepsilon+\eta)$ directly, e.g.\ both sides
+through the influence profile $(\Gamma,\Gamma')$ and $U_2,U_4,V_2,V_4$, or perturbative for $x\le x_0$ with the sharp cubic constant plus a saturation argument beyond.
+\textbf{L1} (fibre majorant, finite-dimensional): $M(h_X,h_Y)$ with $h_X\le1.05$, $h_Y\le1.25$ uniformly on the range and in small $\nu$; certifiable by interval
+arithmetic (2-D integrals on a compact box; $\Phi$ is 2-Lipschitz in $m$ so $|m|\ge4/h$ is trivial; large $|s|$ by $1/|L+s|\le C/s$); same kind as the anchored
+caps. \emph{Measured 15 Oct (\autoref{ch:certs}):} sharp constants $1.0237$, $1.1937$ at the peak, but \emph{not uniform on the row box} ($h_Y^*>1/\varepsilon$ for $\ell\le0.78$); a brute-force
+interval certificate at the targets is infeasible and the small-$m$ regime needs a Hessian-continuity lemma. \textbf{L2}: sharp cubic contraction constant (proved $3.674$, numerically $0.4775$); sharp $c$ in $\lambda_{\max}(\Gamma)\le c\sigma^2\sqrt{m-2}$ (proved $0.866$, Wick $0.31$).
+\emph{Later:} proved $2.2029$ uniformly and a kurtosis-dependent bound (\autoref{ch:L2}); the numerical constant grows with the dimension ($0.4775\to0.54$); the \emph{weighted} form has the
+dimension-free constant $3$ with sharp value in $[2.777,3]$ (\autoref{ch:weighted}). \textbf{L3}: its Cauchy--Schwarz weakening (T) is false (\S\ref{sec:wct-false}); the live form is (T$_0$).
+\textbf{L5}: the $q$-only bound with $\nu$ as a certificate.
+
+\subsection{Degree 5: $K_5$}
+For $T=P-\varepsilon_1Q+\eta R$ the same three lines give
+\[
+V\le t^2-2\ell t+\frac{\|B_3\|^2}{\varepsilon_1}+\frac{\|C\|^2}\eta+\sup_{G_3\in\Hc21,\,G_5\in\Hc32}\Bigl\{\E|L+G_5+G_3-C|+\E|L+G_5-G_3+C|-\frac{\|G_3\|^2}{\varepsilon_1}-\frac{\|G_5\|^2}\eta\Bigr\},
+\]
+$C\in\Hc32$ ours, possibly coupled to the residual ($C=q\,b_AA(z_1)+\bar q\,b_BB(z_1)$). The gate-free row at $(\varepsilon_1,\eta)=(0.848926,0.281576)$ reproduces the model norm:
+row maximum $0.71243$--$0.71245$ over $t\in[0.82,0.88]$ (finer grid at $0.84$: $0.712432$; model $0.712433$), i.e.\ $K\approx1.4036$ \st{F}. The coupling is essential
+(without it $0.743$--$0.753$); optimal $(b_A,b_B)\approx(-0.16,-0.10)$; the adversary keeps a local quintic component $\nu_5\approx0.03$--$0.05$; the diffuse $W_5$ direction
+is untested. Theorems~\ref{thm:resolvent} ff.\ use only that $q$ is an eigenfunction of $N$ and H1, so they generalise with $3\to p$ and a matrix H1 for the pair
+$(G_3,G_5)$; the margin to the $1.402$ cap is $8.2\cdot10^{-4}$ instead of $1.3\cdot10^{-4}$.
+
+\subsection{Side experiments of 15 October}
+\paragraph{Witness term $-\rho\Re\langle f,g\rangle$ (lowgate) \st{F}.} Gated CP rows at $\varepsilon=0.756$ for $P-\varepsilon Q-\rho I$, normalised by $1/(1-\rho)$:
+$t=0.83$: $0.713316$ ($\rho=0$), $0.713080$ ($\rho=-0.0025$); $0.84$: $0.713340$, $0.713260$; $0.85$: $0.713245$, $0.713291$; $0.86$: $0.712956$, $0.713148$; against the
+then certified $B=0.713467$ (now $0.7134326$) and the $1.402$ target $0.713267$. Mixed sign of the effect across $t$; needs the full row sweep and certification before it means anything.
+\paragraph{Conjecture K$'$ (untested idea at the time of writing, measured the same evening, \S\ref{sec:kprime-result}; see \autoref{ch:crossbound}, \autoref{ch:pinned} for valid duals and \autoref{ch:weakk} for the weaker target K$_{\rm rot}$ that retains both dropped squares through rotation stationarity).} The exact row drops $-\|Pk\|^2$. Define
+$\Lambda'(G):=\sup\{\Re\E[\overline{(L+G)}f+\overline{(L-G)}g]-\|G\|^2/\varepsilon-\|Pk\|^2:\ |f|=|g|=1,\ \varepsilon Qk=G\}\le\Lambda(G)$. Then
+Proposition~\ref{prop:row} holds with $\Lambda'$, and \textbf{K$'$}: $\Lambda'(G)\le S$ is weaker than K and still sufficient for the certificate. The penalty
+$\|Pk\|^2$ is the first-chaos content of $k=(f-g)/2$ (in $z_1$ and in $w$). For the diffuse Gaussian adversary it vanishes in the limit ($k^*$ is odd in $W$, and $W$
+is orthogonal to the first chaos of $w$), so $S$ is unchanged; for junta-type adversaries ($q=H(z_2)$) the remote first-chaos content of $k$ is strictly positive, and
+these are exactly the adversaries whose mixed-component content $\Pi_{1,0}\Delta_A(q)$ is the unproven part of (K-b). The agent that was to measure the penalty against
+the mixed gain on the handoff's adversarial families (junta+diffuse, skew multiplicative, $\Hc21(\C^3)$) did not run. \emph{Test to run}: for each adversary $G$ of
+\S\ref{sec:Kattack}, compute $\|Pk_G\|^2$ at the best response $k_G=(\ph(L+G)-\ph(L-G))/2$ and compare with $\Lambda(G)-\Lambda_q$; if the penalty dominates the mixed gain
+uniformly, K$'$ reduces to (K-a) plus an inequality between two first-chaos contents of nonlinear functions of the same cubic chaos, which Theorem~\ref{thm:resolvent}
+addresses. Caveat: the penalty concerns the $z_1$-constant coefficient $c_1$ of $k$, while the mixed gain concerns the $A$- and $B$-coefficients; they are different
+functions of $q$, so the comparison is not automatic.

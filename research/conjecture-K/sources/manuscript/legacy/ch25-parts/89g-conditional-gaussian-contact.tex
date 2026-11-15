@@ -1,0 +1,250 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/89g-conditional-gaussian-contact.tex (file dated 2026-10-25). Only this line was added.
+% Rank-free original-response certificate, 22 October 2026.
+\subsection{Radial unimodality and a rank-free response certificate}
+\label{sec:conditional-response-contact-20261022}
+
+\paragraph{Scope and status.}
+The result below is \st{P,C}, not a new global endpoint.
+It replaces the rank cutoff in one family of support tests by a
+dimension-free projection criterion, and covers the full visible
+first-chaos range. Its analytic input is radial unimodality of the
+visible density, rather than a Gaussian scale-mixture representation.
+All remainders may share coordinates with the selected test.
+
+\begin{lemma}[\st{P}: visibly averaged concavity]
+\label{lem:radial-visible-concavity}
+Let $L\in\mathbb R^2$ have a bounded radial nonincreasing probability
+density and finite first moment. Then
+$\psi(u)=\E|L+\sqrt u|$ is increasing and concave on $[0,\infty)$.
+In particular this holds for
+$L=Z(a+b|Z|^2)$, with $a>0$, $b\ge0$ and $Z$ standard proper Gaussian.
+\end{lemma}
+\begin{proof}
+Put $f(r)=\E|L+r|$ and $W(r)=\E|L+r|^{-1}$.
+The convolution of two nonnegative radial decreasing functions is
+radial decreasing: by layer cake it suffices that the intersection
+area of two disks decreases with the distance between their centers.
+Truncation applies this fact to $1/|x|$, so $W$ decreases.
+The density bound makes its local singularity integrable.
+In two real dimensions $\Delta|x|=1/|x|$ distributionally, with no
+point mass at zero. The radial equation and $rf'(r)\to0$ at zero give
+\[
+ rf'(r)=\int_0^r sW(s)\,ds,\qquad
+ \psi'(u)=\frac1{4u}\int_0^u W(\sqrt s)\,ds.
+\]
+The last expression is positive and decreasing. Gaussian smoothing
+and passage to the limit prove the same statement for nonsmooth
+densities. For the specified $L$, set $P(t)=t(a+bt)^2$. Its planar
+density at radius $\sqrt{P(t)}$ is
+\[
+ \frac{e^{-t}}{\pi(a+bt)(a+3bt)},
+\]
+which is bounded and decreasing.
+\end{proof}
+This is a visible-averaged comparison. It does not assert the false
+Gaussian domination at a fixed visible shift. The radial convolution
+fact is standard; a short layer-cake proof is available at
+\url{https://canizo.org/convolution/}.
+
+\begin{lemma}[\st{P}: conditional covariance comparison]
+\label{lem:conditional-covariance-contact}
+Suppose $(J,\mathcal G)$ is independent of $L$ from
+Lemma~\ref{lem:radial-visible-concavity}. Conditionally on
+$\mathcal G$, let $J$ be a centered real two-dimensional Gaussian
+with arbitrary covariance $\Sigma$. Singular and improper complex
+Gaussians are allowed. If $J\in L^2$, then, for $d\ge0$,
+\[
+ \E|L+dJ|\le\E|L+d\norm J_2G|,
+\]
+where $G$ is independent standard proper Gaussian. The expectations
+with $+J$ and $-J$ are equal.
+\end{lemma}
+\begin{proof}
+Diagonalize $\Sigma$. For a standard real two-dimensional Gaussian,
+its radius and direction are independent. Given the radius $R$, the
+angular average of the squared output radius is
+$R^2\operatorname{tr}\Sigma/2$. Concavity of $\psi$ gives
+\[
+ \E[|L+dJ|\mid\mathcal G]
+ \le K(d^2\operatorname{tr}\Sigma),\qquad
+ K(v)=\E|L+\sqrt vG|=\E_{E\sim\mathrm{Exp}(1)}\psi(vE).
+\]
+The function $K$ is concave. Jensen over $\mathcal G$ finishes the
+proof since $\E\operatorname{tr}\Sigma=\norm J_2^2$.
+Conditional centering and Gaussian symmetry give the sign equality.
+\end{proof}
+
+\begin{lemma}[\st{P}: exact projection-price transfer]
+\label{lem:projection-price-dilution}
+Use the actual responses $h,k$, $Ph=tZ$, $F=\epsilon Qk$ and
+$V=\norm F_2^2$. Write $p=1/\epsilon$. Let $J$ be a unit remote
+cubic satisfying Lemma~\ref{lem:conditional-covariance-contact}, and
+suppose $|\langle J,F\rangle|^2\ge\eta V$, $0<\eta\le1$.
+For every $\ell>2b\ge0$, put
+\[
+ L=Z\{\ell+b(|Z|^2-2)\},\qquad
+ h_{\ell,b}(v)=2\E|L+\sqrt vG|.
+\]
+Then the actual response objective satisfies
+\begin{equation}\label{eq:price-dilution-contact}
+ \boxed{\mathcal N\le t^2-2\ell t+2pb^2+
+   \sup_{v\ge0}\{h_{\ell,b}(v)-p\eta v\}.}
+\end{equation}
+For $V=0$ the same bound holds without choosing $J$.
+\end{lemma}
+\begin{proof}
+Rotate $J$ so $r=\Re\langle J,F\rangle\ge0$ and put
+$m=\Re\langle Z(|Z|^2-2),h\rangle$. The two disks $|h\pm k|\le1$
+give the paired support inequality
+\[
+ \ell t+bm+pdr\le\tfrac12\E(|L+dJ|+|L-dJ|).
+\]
+Since $\norm{Qh}^2\ge m^2/2$, completing the square in $m$ and
+dropping only $-\norm{Pk}^2$ gives
+\[
+ \mathcal N\le t^2-2\ell t+2pb^2+pV-2pdr+
+          \E(|L+dJ|+|L-dJ|).
+\]
+Choose $d=r/\eta$, so $pV-2pdr\le-p\eta d^2$, and use the
+conditional covariance comparison. If $V=0$, use $d=0$ directly.
+\end{proof}
+The factor $\eta$ is exact for proportional scale completion:
+$(2\lambda-1/\eta)/\lambda^2\le\eta$, with equality at
+$\lambda=1/\eta$. Thus the unknown remainder costs its energy,
+not an $O(\sqrt{1-\eta})$ norm error. This spends the $Qh$ square
+once; it must not be added to another bound that has already used it.
+
+\begin{theorem}[\st{P,C}: rank-free, all-row response region]
+\label{thm:conditional-response-contact}
+Let $\epsilon=1891/2500$. For any remote first-chaos subspace
+$\mathcal A\subset Z^\perp$, let $\mathcal B$ be its remote
+orthogonal complement and set
+\[
+ \mathcal M(\mathcal A)=
+ \mathcal H_{1,0}(\mathcal A)\mathcal H_{1,1}(\mathcal B)
+ \oplus\mathcal H_{0,1}(\mathcal A)\mathcal H_{2,0}(\mathcal B).
+\]
+If
+\begin{equation}\label{eq:one-leg-contact-share}
+ \norm{\Pi_{\mathcal M(\mathcal A)}F}_2^2
+          \ge\frac{499}{500}\norm F_2^2,
+\end{equation}
+then, for every $0\le t\le\sqrt\pi/2$,
+\[
+ \boxed{\mathcal N<\frac{2853}{4000}=0.71325<\frac{500}{701}.}
+\]
+Both dimensions, all quadratic ranks, all phases and amplitudes are
+arbitrary. The orthogonal remainder may contain every visible sector
+and depend on every test coordinate. More generally it is enough to
+have any unit remote conditionally centered Gaussian cubic $J$ with
+$|\langle J,F\rangle|^2\ge499V/500$.
+\end{theorem}
+\begin{proof}
+Every element of $\mathcal M(\mathcal A)$ is
+$\sum_iX_iY_i(\mathcal B)+\bar X_iW_i(\mathcal B)$, hence is
+conditionally centered Gaussian given $\mathcal B$, independently of
+the visible $Z$. Choose $J$ along the indicated orthogonal projection
+and apply Lemma~\ref{lem:projection-price-dilution} with $\eta=499/500$.
+The following six rational profiles cover the middle interval:
+\[
+\begin{array}{c|c|c|c}
+ t\text{ interval}&\ell&b&S_{\ell,b}\text{ upper ceiling}\\\hline
+ {[.697,.810406]}&.743838&.114290&1.2272692769557\\
+ {[.810406,.835533]}&.816962&.134894&1.3322141699368\\
+ {[.835533,.842503]}&.838731&.140930&1.3641895048025\\
+ {[.842503,.847010]}&.844808&.142605&1.3731735402269\\
+ {[.847010,.852507]}&.857148&.145993&1.3914924321810\\
+ {[.852507,.880000]}&.867631&.148855&1.4071348626997
+\end{array}
+\]
+Here $S_{\ell,b}=\sup_{v\ge0}(h_{\ell,b}(v)-p\eta v)$;
+every terminating decimal is exact. The row cap in
+\eqref{eq:price-dilution-contact} is convex in $t$. Exact comparisons
+of its twelve endpoints give a maximum below $0.713249286$.
+
+For $0\le t\le.697$, the $b=0$ support family gives
+$t^2+p^2r^2\le\pi/4$. Therefore
+\[
+ \mathcal N\le\frac{\pi}{4p\eta}
+       +\left(1-\frac1{p\eta}\right)t^2<0.712873.
+\]
+For $.88\le t\le\sqrt\pi/2$, take $\ell=1,b=1/6$.
+Then $h'(0)=(3\pi/2)e^4\operatorname{erfc}(2)<p\eta$,
+so concavity puts the scalar maximum at zero, with
+$S_{1,1/6}=h(0)=11\sqrt\pi/12$.
+The row quadratic decreases on this interval and is below $0.712597$.
+\end{proof}
+
+\paragraph{Directed scalar replay \st{C}.}
+With $a=\ell-2b$ and $P(t)=t(a+bt)^2$, the two integrals are
+\[
+\begin{split}
+ h(v)&=\sqrt{\pi v}\int_0^\infty e^{-t}
+       {}_1F_1(-1/2;1;-P(t)/v)\,dt,\\
+ h'(v)&=\frac{\sqrt\pi}{2\sqrt v}\int_0^\infty e^{-t}
+       {}_1F_1(1/2;1;-P(t)/v)\,dt.
+\end{split}
+\]
+For each row the fresh replay encloses $h(v_l),h'(v_l),h'(v_r)$
+and verifies $h'(v_l)>p\eta>h'(v_r)$. The tangent at $v_l$ then
+bounds the supremum by
+\[
+ h(v_l)-p\eta v_l+(h'(v_l)-p\eta)(v_r-v_l).
+\]
+Complex ball integration on $[0,40]$ has an entire integrand.
+The two respective positive tail bounds are
+\[
+ e^{-40}\{2(41a+1682b)+\sqrt{\pi v}\},\qquad
+ e^{-40}\frac{\sqrt\pi}{2\sqrt v}.
+\]
+The first uses the triangle inequality and $\sqrt t\le t$ for
+$t\ge40$; the second uses the beta integral to bound
+${}_1F_1(1/2;1;-x)\le1$. Two isolated-directory replays at 110 and
+160 bits pass. The separate standard-library audit checks the two
+outer intervals, all rational endpoints, and the elementary algebra.
+It assumes the six integral ceilings unless the full replay is used.
+The package is
+\pathref{handoff/research-third-decimal/conditional-response-contact-20261022/};
+\code{verify\_all.py} requires \code{python-flint==0.9.0}.
+No numerical assertion here is a floating-point acceptance test.
+
+\paragraph{An exact invariant entrance condition \st{P,C}.}
+Let $q=\E[F\mid Z^\perp]$ be the remote cubic. Let $N_{\mathcal A}$
+count both holomorphic and antiholomorphic $\mathcal A$ legs, and set
+$I_j=\langle q,(N_{\mathcal A})_{\underline j}q\rangle$, $j=1,2,3$.
+These are the ordered $j$-fold derivative-energy sums, including both
+Wirtinger derivative types and repeated coordinate indices. Since
+$N_{\mathcal A}$ has spectrum $0,1,2,3$ on cubics,
+\begin{equation}\label{eq:one-leg-projection}
+ \boxed{\norm{\Pi_{\mathcal M(\mathcal A)}q}^2=I_1-I_2+I_3/2.}
+\end{equation}
+Indeed $n-n(n-1)+n(n-1)(n-2)/2$ equals $1_{n=1}$ on these four
+integers. Thus $I_1-I_2\ge499V/500$ is a simpler sufficient test.
+The condition uses the remote projection, not a visible-dependent
+test disguised as remote.
+
+For the coordinate-core obstruction in
+Theorem~\ref{thm:joint-radial-core},
+\[
+ Q_N=\frac{X_1(\sum_{j=1}^N|X_j|^2-N-1)}{\sqrt{N+1}},
+\]
+take $\mathcal A=\operatorname{span}(X_1)$. The one-leg share is
+$(N-1)/(N+1)$, and the self-interacting cubic remainder has share
+$2/(N+1)$. Consequently every actual response with $F=cQ_N$ is
+covered for $N\ge999$. Its arbitrary coupled neighbourhood given by
+\eqref{eq:one-leg-contact-share} is covered too. The fixed-core
+approximation obstruction remains true, but no longer obstructs this
+response branch.
+
+\paragraph{The precise remaining gap.}
+The new region is not exhaustive. A unit diagonal Wick cube has largest
+one-leg share $4/9$: for $r=\norm{\Pi_{\mathcal A}X}^2$ its share is
+$3r(1-r)^2$, and
+$4/9-3r(1-r)^2=(r-1/3)^2(4-3r)$. Such cubes use the older Wick
+contact cone. No theorem forces a general surviving cubic into the
+union of those cones and \eqref{eq:one-leg-contact-share}.
+In particular, failure of the latter does not imply small influence,
+independent blocks, or a small coordinate core. The new branch has a
+complete all-row cover at the target witness; its coupled complement
+still needs one. The analytic proof and ball enclosures are not yet
+Lean theorems.

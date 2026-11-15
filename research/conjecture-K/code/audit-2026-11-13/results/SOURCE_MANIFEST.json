@@ -1,0 +1,321 @@
+{
+  "agent": "codex-a713",
+  "snapshot_utc": "2026-11-13T04:39:01.140674+00:00",
+  "status": "Post-hoc snapshot; hashes establish neither authorship nor which historical version ran. Unrequested files may have appeared from another chat in this shared directory.",
+  "python_executable": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+  "python_version": "3.12.3 (v3.12.3:f6650f9ad7, Apr  9 2024, 08:18:47) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "platform": "macOS-26.3.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "packages": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.1",
+    "threadpoolctl": "3.6.0"
+  },
+  "thread_environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1"
+  },
+  "sources": [
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/ASSESSMENT_2026-11-04.md",
+      "bytes": 158305,
+      "sha256": "bede117e964bb5951eb7022c36073b59722a12e182c1f5b3711dd1babc427be3",
+      "role": "supplied_record"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/CONJECTURE_K_MONOGRAPH.md",
+      "bytes": 72755,
+      "sha256": "5be1452f179f9000150bec076748b48df07492663f94daabaf911d0ef5835deb",
+      "role": "supplied_record"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/MANUSCRIPT_DIGEST_K.md",
+      "bytes": 47839,
+      "sha256": "7f0a9ef25be06ac58bef7cfb8228acbb001e777c24292f2d75ab5dd8262a633d",
+      "role": "supplied_record"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/e11_scan_majorant.py",
+      "bytes": 3741,
+      "sha256": "b7a8f50fa959b380b0b847b158bba0ed32de8aecf00a367fd1b5d781bd5759ca",
+      "role": "supplied_record"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/e11_scan_opt.py",
+      "bytes": 1550,
+      "sha256": "9bc42cc0eb5ec5c954f7ef160b444f565d99d0525b9c29562e9118eb345a8264",
+      "role": "supplied_record"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/e11_scan_opt_peak.log",
+      "bytes": 672,
+      "sha256": "56976c262e05c1cc600548268d493e3ce06da92c9e7bab798113bc7d0c7942f9",
+      "role": "supplied_record"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md",
+      "bytes": 19911,
+      "sha256": "3d62253f96bcd52acd803bcc69869bb6ac8429126548a87342ec63c28f544aab",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/ASSEMBLY_AUDIT.md",
+      "bytes": 20459,
+      "sha256": "649952eb0896f1edc8b30f77a356c24a79f1fd06c53ebf2fbae0bc6b736d76c8",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/CERTIFICATE_AUDIT.md",
+      "bytes": 25010,
+      "sha256": "8407f317fc308fbf52fe2c54f05f17875d410bdf29360d721d56ae30ccd82b14",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/KERNEL_DERIVATION.md",
+      "bytes": 10440,
+      "sha256": "bc9c2240bf373d7835b0a859f78b553062df8b208792e124461d9b7d48f5b09e",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/NUMERICAL_N2_N4.md",
+      "bytes": 7571,
+      "sha256": "b77274f8e94580423e6f64e099d4a3442ab6529a7308cb20509491f03e116196",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/NUMERICAL_REVIEW.md",
+      "bytes": 9073,
+      "sha256": "9e8fe73d2c3b78b1aa556d545bcb7ae9bc0999d8e9eece92e20de8fa8b2e1509",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/REPORT.md",
+      "bytes": 34454,
+      "sha256": "57fba5ebe289f7cbda42f89d6931ac21cb94927511d04fd6ec3721d93ee9b043",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/RESULTS.md",
+      "bytes": 2245,
+      "sha256": "6686eec86750b376f51d4e5df1c03b8ff87b73a6e3eee8cf7acdf398994ec3ee",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/RUNS.md",
+      "bytes": 7777,
+      "sha256": "66a2504492844cf8426d04e83e2d2bc200de146ac7d33d31e3b7047640d8b003",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/audit_snapshot.py",
+      "bytes": 5611,
+      "sha256": "4e562de288c44157c13b1513f575069452649e5f255807932d51d3f2026bf858",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/batch_optimise.py",
+      "bytes": 7637,
+      "sha256": "b9d7b19852efdeaf2e37deafc528b5eb1a66d104f279236b1d17965485d1c72b",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/budget_audit.py",
+      "bytes": 1694,
+      "sha256": "b2abe9222bed6e41122af4f95ed3be3e0b86b9040be83947c5c86c7d04960b43",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/calibrate_kernels.py",
+      "bytes": 1770,
+      "sha256": "943f479f10f2de8f3de0ab3ad60103b0e997ffd693b41aa486d36da22ef089bc",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/check_benchmark.py",
+      "bytes": 950,
+      "sha256": "5a143e405c6b7455e383703bbfd3486899504b079c2d56d91bb26e92ddf43f93",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/diffuse_asymptotic.md",
+      "bytes": 13470,
+      "sha256": "79732d1d302013cd637556a21248ba1f2aef5b6e609fc2c8d88524c959f69b17",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/diffuse_buffer_scan.py",
+      "bytes": 2158,
+      "sha256": "e75f204b9216bfa8575d447e81b8d8d61769f81fa34e4b14b4ef675bfc9f70b2",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/diffuse_constants.py",
+      "bytes": 1126,
+      "sha256": "38617407423fd3affc63da2802582d921c8be40cf38ff687d9c21d46156b964c",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/fast_eval.cpp",
+      "bytes": 1593,
+      "sha256": "2912e22892951ead2bac15cff778f995d020951edeb9d51f6ce96941bcdf85d6",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/gaussian_factor_replay/verify.py",
+      "bytes": 5062,
+      "sha256": "dd5cdca490220cfba7667bdb54090b4d982c1523500ff1487ea1859c744c6b97",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/holdout.py",
+      "bytes": 7114,
+      "sha256": "aa108919ba8361f5b2eab56a224a1d6814efe3173c21842f721965af7c61d5ec",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/independent-pushforward-audit/REPORT.md",
+      "bytes": 33940,
+      "sha256": "ffa5f79a57baa63a38453afaa1ce60d4aa66d099eaab5b6e0000a81cf5431dda",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/independent_quadrature.py",
+      "bytes": 5519,
+      "sha256": "cb3c8a75178c1ced126a16d14aa72219239549c5bd59b8889b58bbdb8b5424f3",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/kernels.py",
+      "bytes": 7349,
+      "sha256": "5b18d6412ac84f029ed154a0b3ad685ccd4d78f7786f53b968c5838c531d2380",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/moments.py",
+      "bytes": 5160,
+      "sha256": "9c533c5fe08777f1464a1f99820918ad64349cc5f9ce3bec9b804dae0bc2a0de",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/opt_check_source.py",
+      "bytes": 2390,
+      "sha256": "5c10ec0a21702c5c54ea2f7980f00ea435daf90b561c4480022b85b50d1f35b6",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/opt_deterministic.py",
+      "bytes": 5003,
+      "sha256": "5cf1b232bf1f3b7c927a8f30658bbd82d26a8dbc885b3a7db52d0ab90d3a60fd",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/opt_family_summary.py",
+      "bytes": 2924,
+      "sha256": "a3889e744bc78d5d01c23e8f372ac9291ed2c5940a5fdc620004f1769349b579",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/opt_refine.py",
+      "bytes": 1730,
+      "sha256": "fc97e2711be584f966ccb874d6345a8c1338859f6c9279b60816cbd500226caf",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optimise.py",
+      "bytes": 8719,
+      "sha256": "b79e6adee2321cc025a2c7f607743d535397f4ca6024e960f7545c2a4b21da89",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/optimizer_audit.md",
+      "bytes": 15192,
+      "sha256": "5b7336fc62bad0bbf121ec639ff9b30115cd28aba0147557469cbbbeb2f1a8c0",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/r23_replay/verify.py",
+      "bytes": 5194,
+      "sha256": "f92c1071607ffe0077283caa987e4cbb2fc5fd2784c24c772a271f8a199ac426",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/r26_kernel_recheck/check_kernels.py",
+      "bytes": 2744,
+      "sha256": "ada46bd56b3b1878a299b7cb8e106943b1ba48eab789241612d29d986db00777",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/r26_kernel_recheck/kernel_enclosures.py",
+      "bytes": 2612,
+      "sha256": "b683db899f0b67637f3e1ec415b66886cf99f5d5f0293b847e1aabab29c58079",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/r26_kernel_recheck/run_original_verifier.py",
+      "bytes": 1229,
+      "sha256": "899329b70ca8befafdd49cd02b5ba1c34a0313c055ee1ff11157f950d7df9b7a",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/r26_kernel_recheck/run_serial.py",
+      "bytes": 3107,
+      "sha256": "fce12c825d210e0a8e993859984cc180790261bca1c74e5992b129678f6eb325",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/r26_kernel_recheck/verify_pure.py",
+      "bytes": 2377,
+      "sha256": "bb10ca9784d1ee92016fdcf9e31d660e6ba03975725a53d317cda1784edc27e1",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/record_audit.md",
+      "bytes": 24137,
+      "sha256": "fd5680b77870c061854658341e58db0cdf55f15ea7cace7b2b15f15adaab3e3d",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/refine.py",
+      "bytes": 12625,
+      "sha256": "c4f333a87b019b91d47c2e5e5f6edd5228bc3fc979832ea6b9c139544f44bbb9",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/replay_family_certificates.py",
+      "bytes": 1190,
+      "sha256": "af97b197cba7306904a3e5ef8be792a8d9e8747c96fdaa08da15eb5d7bc784d0",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/replay_r26_fraction.py",
+      "bytes": 4846,
+      "sha256": "57c906ed90877a32b21a2836fbc52e7182cc67f634696658ac947b0eb142ed40",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/statistical_diagnostics.py",
+      "bytes": 5540,
+      "sha256": "d40e61999c55b4ee5dc1645e4839d364ad66044b1817b5f70f353285e71d782f",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/structured_baseline.py",
+      "bytes": 3203,
+      "sha256": "622e16584065d7ca00212f3fc521b68232f667faad362f0aafe3169f36e750e6",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/summarize_results.py",
+      "bytes": 3382,
+      "sha256": "2ebb8bf9297b570cc8f43230afa06d3ae8d062c13ca45d49ab141a4d3ec6dea0",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    },
+    {
+      "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/validate.py",
+      "bytes": 9666,
+      "sha256": "12f10127ad29e9ddda05e1bfd9e7ea30350f7f0ab9a53121318671a7de2409b7",
+      "role": "audit_directory_snapshot_ownership_not_inferred"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+NEXT SUBPROBLEMS (6 Nov 13:20): the even sectors, and the joint A/B cost. Both are needed for layer L5 (sector assembly).
+
+Setting (peak row; flank and upper rows analogous). z standard complex Gaussian, T = |z|^2, L = z(l + b(T-2)), l = 1057/1250,
+b = 179/1250, eps = 1891/2500, S = 1.3739535. w in C^n standard complex Gaussian independent of z. Lambda(G) = E|L+G| + E|L-G|
+- E|G|^2/eps. Sectors of an adversary G in the charge-(2,1) chaos of (z, w), by Z-frequency:
+   frequency 0: q(w) in H_{2,1}(w) (remote cubic) and (T-1) r_A(w), r_A in H_{1,0}(w)        [the "core"]
+   frequency 2: z^2 conj(r_B(w))/sqrt 2, r_B in H_{1,0}(w)                                    [B-shell]
+   frequency 1: z Q(w), Q in H_{1,1}(w), and d z (T-2), d in C                                [Y and nuH sectors]
+   frequency -1: conj(z) P(w), P in H_{2,0}(w)                                                [W sector]
+Energies: E|zQ|^2 = E|Q|^2, E|conj(z)P|^2 = E|P|^2, E|d z(T-2)|^2 = 2|d|^2; no cross terms between sectors.
+Known: the core is reduced to the content lemma (certified on large classes); the B-shell has a certified global cost
+kappa_B = 0.26 (local 0.35 for E|r_B|^2 <= 0.0113) and a certified content bound C_B^2 <= 0.1195 Delta on the Gaussian-factor
+class, Delta = B(u) - F(q), u = E|q|^2; numerically C_B = 0.50 C_A for every cubic (kernel ratio 0.505-0.56).
+Theorem A (certified): if q = 0 and r_A = 0, every adversary built from the other sectors satisfies F(G) <= B(E|G|^2),
+hence Lambda(G) <= S. Its proof (tangent step with the weight (1-t)) breaks when q != 0.
+
+SUBPROBLEM E (the z-odd sectors zQ, conj(z)P, d z(T-2) in the presence of the core) -- CORRECTED 14:10.
+Parity: H = q + (T-1) r_A + z^2 conj(r_B)/sqrt 2 is EVEN in z; L and O = zQ + conj(z)P + d z(T-2) are ODD in z. Hence the exact
+identity Lambda(H + O) = Lambda(H - O) (substitute z -> -z and swap the two norm terms; E[H conj(O)] = 0), so the first
+variation of Lambda in O vanishes identically for every remote cubic, every sharing and every A/B amplitude: THERE IS NO
+E-CONTENT. (Check: Lambda(d z(T-2)) = Lambda(0) - 2d^2/eps exactly for |d| < min(b, a/2).) Moreover, for any z-even K,
+Lambda(H + sK + tO) = Lambda(H + sK - tO), so the mixed Hessian D^2 Lambda(H)[K, O] = 0 at every even base: the (q, A, B)
+block and the (Q, P, d) block separate exactly. What we want is the PURE-COST statement
+   (3)   Lambda(H + O) <= Lambda(H) - kappa_E E|O|^2     (or at least Lambda(H + O) <= Lambda(H))
+for all H in the core with E|H|^2 <= 0.072 and all O in the three sectors (sharing allowed), on the required energy range.
+RULED OUT (15:00, certified): the pointwise majorant |X+h| <= |X| + Re[h conj ph(X)] + |h|^2/(2|X|) gives the sufficient condition
+   (6)   E[ |O|^2 / |L + H| ] <= (1/eps - kappa_E) E|O|^2   uniformly in H, for O restricted to the chaos sectors,
+but (6) FAILS at the core H = (19/125)w(R-2) + (53/500)(T-1)w + (53/(500 sqrt2)) z^2 conj(w) with O = z(R-1) + conj(z) w^2/sqrt2:
+E[|O|^2/|L+H|] > 2.714 > 2.644 = |O|^2/eps (Arb certificate), while the true curvature of Lambda there is still a positive cost.
+So the certificate for (3) must keep the directional curvature: the second-order term of E_theta|L+H+tO| is
+(|O|^2 - Re(O conj ph(L+H))^2)/|L+H| (phase-averaged), and the subtractive part cannot be dropped. Target: a uniform bound
+for the phase-averaged Hessian form plus an explicit third-order remainder in t (finite amplitude up to |O|^2 <= 0.072 - |H|^2). Note |O|^2 = T|Q + d(T-2)|^2 + T|P|^2 + 2 Re(conj(z)^2 P conj(Q + d(T-2))): the last cross term has z-frequency
+-2 and survives against the Fourier modes of 1/|L+H|, so (6) must be handled as a form, not sector by sector. Sizes at H = 0
+(peak): E[sqrt T / l(T)] ~ 1.26 for the Q and P weights, E[sqrt T (T-2)^2 / l(T)]/2 ~ 1.05 for d, against 1/eps = 1.322, so the
+pointwise route should give a small positive kappa_E; the phase-averaged curvatures (~0.70 for Q/P, ~0.40 for d) are the room
+available to a sharper method. Numerically (my scan at amplitude 0.0113 on the worst core point) every such addition lowers
+Lambda by 0.003-0.013, i.e. kappa_E >= 0.27 there.
+
+SUBPROBLEM J (joint A/B cost at finite amplitude) -- UPDATED 13:30: certify the SIGNED joint form
+   Q(r_A, r_B) >= k_A |r_A|^2 + k_B |r_B|^2 + 2 m Re<r_A, r_B>,   m > 0 uniformly in q (the exact mixed Hessian at q = 0 has this
+sign, value ~0.118 at the peak; verify the sign against the conjugation conventions and for q != 0), together with the VECTOR
+kernel comparison ||c_B - rho c_A|| <= e (rho = 0.5053, e = 0.007 sqrt u; it follows from the scalar bounds of §30 since
+c_B - rho c_A = Pi_{1,0}[q g (rho(|q|^2) - rho)]). Then the optimised gain is ||c_A||^2/k_A + ||c_B - (m/k_A) c_A||^2/(k_B - m^2/k_A),
+and because the contents are ALIGNED (rho = 0.5053 vs m/k_A = 0.4917) the second term is tiny: with the existing A constant
+0.24, Lambda(q + A + B) <= S + 5.5e-5 on u <= 0.0463 (checked). No sharper A constants are needed in that case. The
+worst-case (norm) matrix below is what one gets if the sign of m is not controlled; it needs sharper A constants.
+Original formulation (norm form): We want certified constants with
+   Lambda(q + (T-1) r_A + z^2 conj(r_B)/sqrt 2) <= Lambda(q) + 2 Re E[conj(r_A) F_A(q)] + 2 Re E[conj(r_B) F_B(q)]
+                                                     - kappa_A |r_A|^2 - kappa_B |r_B|^2 + 2 kappa_AB |r_A| |r_B|
+for E|r_A|^2, E|r_B|^2 <= 0.0113, arbitrary remote q, arbitrary sharing, with [[kappa_A, -kappa_AB], [-kappa_AB, kappa_B]]
+positive definite (kappa_A = 0.24 and kappa_B = 0.35 are certified separately; the mixed Hessian at q = 0 is certified
+nonzero, ~0.118 at the peak). Then K on the A+B core follows from the dual condition
+   C_A^2 kappa_B + C_B^2 kappa_A + 2 kappa_AB C_A C_B <= (kappa_A kappa_B - kappa_AB^2)(S - Lambda(q) + eta).
+Numbers (peak, true contents): with kappa_B = 0.26, kappa_AB = 0.118 the condition holds with worst ratio 0.80 (Wick
+monomial, u = 0.0463); with the CERTIFIED A constants (0.22-0.235, truth 0.088) it fails by 2x. So J needs, besides
+kappa_AB: either the phase-averaged kappa_B (~0.94) or A-content certificates sharpened to C_A^2 <= 0.19 Delta (with
+kappa_B = 0.94) / <= 0.11 Delta (with kappa_B = 0.26). The A envelopes were aimed at 0.24 and never minimised; the true
+ratio is 0.088, so this is a certification task, not a new idea.

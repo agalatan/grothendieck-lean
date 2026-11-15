@@ -1,0 +1,444 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch56-coupled-tensor.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 56). Owner: lower-bound/10-coupled-complements.tex
+\section{Arbitrary coupled cubic tensors with unrestricted shared $A/B$}\label{ch:coupled-tensor}
+\chapsummary{Arbitrary coupled remote tensors with unrestricted A/B under buffered variance/influence conditions. Actual nonlinear content is retained; small influence and fresh buffer are part of the theorem.}
+
+\paragraph{Provenance and status (IDE note).} Full-context GPT, 20 October (\code{conjK-coupled-tensor-milestone-20261020.zip}, archived in
+\pathref{gpt-reviews/coupled-tensor-20261020/}). IDE replay \code{python3 -I verify\_all.py} from an unrelated directory, regenerating the Gauss rule and the visible
+Hankel table: all 12 continuum claims and both block corollaries PASS (150\,s; exact-branch margin $2.92\cdot10^{-5}$, weak-branch excess $8.33\cdot10^{-5}$).
+IDE checks \st{P}: both branches of the content lemma (Cauchy--Schwarz with $\E|\ell|^2|q|^2\le e+h$; the exact integration by parts, $F_1'=t(tu-2)e^{-tu}$,
+$\operatorname{Var}V=e^2+\kappa$, $\E V^2=2e^2+\kappa$), and the scalar step $\Lambda(q+\sqrt vU)\le F(v)+F'(v)e$ by concavity of $u\mapsto2\E|L+\sqrt vU+\sqrt u|$.
+A byproduct worth recording: for $g\ge\sqrt{v_*}$ every remote cubic satisfies exact K, since $F'(g^2)\le0$.
+
+\subsection{From independent drivers to arbitrary coupled cubic tensors}
+\label{sec:coupled-tensor-milestone}
+
+\paragraph{Status and scope.}
+The analytic statements are \textbf{[P]}; the displayed numerical regions
+are \textbf{[C]}, with a directed visible-table replay followed by exact
+rational comparisons. Throughout,
+\[
+ a=699/1250,\quad b=179/1250,\quad p=2500/1891,\quad
+ L=Z(a+b|Z|^2),
+\]
+\[
+ \Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|-p\mathbb E|G|^2,\qquad
+ S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt v\,U|-pv\}.
+\]
+Let \(Z,U,X_1,\ldots,X_n\) be independent standard proper complex
+Gaussians. The remote cubic \(q\in H_{2,1}(X_1,\ldots,X_n)\) is
+arbitrary: it need not be a sum of independent Wick monomials, a
+Gaussian factor, or independent of its shared linear drivers. Put
+\[
+ G=q+gU+(|Z|^2-1)\sum_j\alpha_jX_j+
+                 \frac{Z^2}{\sqrt2}\sum_j\beta_j\bar X_j.
+ \tag{CT.1}
+\]
+All \(\alpha_j,\beta_j\) are unrestricted complex numbers. The fresh
+buffer \(U\) is independent of every original coordinate. Define
+\[
+ e=\mathbb E|q|^2,\quad
+ \kappa=\mathbb E|q|^4-2e^2,\quad E_{AB}=\|\alpha\|^2+\|\beta\|^2,
+\]
+\[
+ h=\sup_{\|\ell\|_2=1}
+ \bigl(\|D_\ell q\|_2^2+\|\bar D_\ell q\|_2^2\bigr).
+ \tag{CT.2}
+\]
+The supremum is over proper Gaussian holomorphic linear forms on the
+remote space. Wirtinger derivatives are normalized by
+\(\partial_{X_j}X_j=1\). Thus \(h\) is the largest eigenvalue of a
+finite derivative Gram matrix, with the conjugations dictated by
+\(D_\ell=\sum\bar u_j\partial_{X_j}\) and
+\(\bar D_\ell=\sum u_j\partial_{\bar X_j}\) when
+\(\ell=\sum u_jX_j\). In particular
+\(D_\ell\bar q=\overline{\bar D_\ell q}\).
+Always \(0\le h\le3e\) and \(0\le\kappa\le42e^2\).
+
+\begin{theorem}[A finite-amplitude coupled-tensor region, \textbf{[P,C]}]
+\label{thm:ct-influence}
+For the full family (CT.1), in every finite dimension,
+\[
+ \boxed{
+ g\ge\frac9{40},\quad e\le\frac1{25},\quad
+ h\le\frac e{10}
+ \quad\Longrightarrow\quad
+ \Lambda(G)<S-\frac1{40000}-\frac{E_{AB}}{2000}.}
+ \tag{CT.3}
+\]
+There is also a weak region nearer the optimal Gaussian buffer:
+\[
+ \boxed{
+ g\ge\frac15,\quad e\le\frac1{25},\quad
+ h\le\frac e{150}
+ \quad\Longrightarrow\quad
+ \Lambda(G)<S+\frac{89}{10^6}-\frac{E_{AB}}{2000}.}
+ \tag{CT.4}
+\]
+The kurtosis restrictions in the original certificate are redundant:
+Theorem~\ref{thm:sharp-influence-audit} gives $\kappa\le14eh$,
+hence $\kappa\le7e^2/5$ in (CT.3) and $\kappa\le7e^2/75<e^2/10$
+in (CT.4). The numerical proof below still checks the original
+larger domain with $h$ and $\kappa$ separate; no recomputation is needed.
+
+No amplitude or phase restriction on either shared sector is imposed.
+The second statement uses the accepted remote \(10^{-5}\) theorem.
+The first does not use that theorem, a sixth-moment bound, or any
+unproved Gaussian-domination statement.
+\end{theorem}
+
+\begin{corollary}[Unequal arbitrary cubic blocks]
+\label{cor:ct-blocks}
+Suppose \(q=\sum_jq_j\), where the \(q_j\) are pure \(H_{2,1}\)
+cubics on mutually independent remote Gaussian blocks. Each block
+may contain an arbitrary internally coupled tensor. Write
+\(e_j=\mathbb E|q_j|^2\), \(e=\sum e_j\le1/25\).
+If \(\max e_j\le e/30\) and \(g\ge9/40\), then (CT.3) holds.
+If \(\max e_j\le e/450\) and \(g\ge1/5\), then (CT.4) holds.
+The A/B forms may use every coordinate of every block.
+\end{corollary}
+\begin{proof}
+Circularity and independence give
+\(\kappa=\sum_j\kappa_j\le42\sum_j e_j^2\le42e\max e_j\).
+The derivative Gram matrix is block diagonal: derivatives from
+distinct blocks are orthogonal, since each is a centered second-chaos
+polynomial. Consequently \(h\le3\max e_j\).
+For a block share \(1/30\), these are \(h\le e/10\) and
+\(\kappa\le7e^2/5\). For \(1/450\), they imply
+\(h\le e/150\), \(\kappa\le(7/75)e^2<e^2/10\).
+\end{proof}
+
+\paragraph{Influence-only form (reconciled).} The sharp bound
+$\kappa\le14eh$ (Theorem~\ref{thm:sharp-influence-audit}) makes the
+kurtosis condition in (CT.3) automatic under its original $h\le e/10$,
+and the condition in (CT.4) automatic under $h\le e/150$.
+Thus the exact branch allows $h\le e/10$, with its deficit $1/40000$.
+The earlier $h\le9e/100$ certificate still retains the stronger deficit
+$1/12500$. The displayed theorem now omits those redundant kurtosis assumptions; its underlying numerical certificate is unchanged. See
+Corollary~\ref{cor:sharp-influence-region}.
+
+\paragraph{An explicit mixed example with nonzero projected content.}
+For sixty independent remote coordinates, put
+\[
+ B_j=\frac{H(X_j)+X_j^2\bar Y_j/\sqrt2}{\sqrt2},\qquad
+ H(X)=X(|X|^2-2)/\sqrt2,\qquad
+ q=\frac1{\sqrt{750}}\sum_{j=1}^{30}B_j .
+\]
+Each block has variance one and fourth moment \(26\).
+Consequently \(e=1/25\), \(h\le e/10\), and \(\kappa=4e^2/5\).
+Thus (CT.3) holds with \(g=9/40\) and arbitrary A/B forms on
+\emph{all sixty coordinates}, including both \(X_j\) and \(Y_j\).
+This example does not remove the nonlinear content by symmetry:
+\[
+ P_{1,0}(B_j|B_j|^2)=7X_j+Y_j .
+\]
+The moment and projection coefficients follow by conditioning on \(X_j\)
+and using \(\mathbb E|X|^{2m}=m!\); the exact checker verifies the
+finite arithmetic. Independence between the nonlinear coefficients
+and all shared drivers is not available or assumed.
+
+\subsubsection{Unconditional small-variance regions}
+Without imposing any additional influence or kurtosis restriction,
+the following peak-profile regions hold for every remote cubic \(q\)
+and all complex A/B coefficients:
+\[
+\begin{array}{c|c|c}
+ g\text{ at least}&e\text{ at most}&\text{conclusion}\\ \hline
+ 9/50&1/500&\Lambda<S+89/10^6-E_{AB}/2000\\
+ 37/200&9/4000&\Lambda<S+89/10^6-E_{AB}/2000\\
+ 1/5&7/2500&\Lambda<S+89/10^6-E_{AB}/2000\\ \hline
+ 9/40&49/10000&\Lambda<S-1/200000-E_{AB}/2000\\
+ 1/4&9/1000&\Lambda<S-1/200000-E_{AB}/2000\\
+ 11/40&7/500&\Lambda<S-1/200000-E_{AB}/2000\\
+ 3/10&19/1000&\Lambda<S-1/200000-E_{AB}/2000\\
+ 7/20&33/1000&\Lambda<S-1/200000-E_{AB}/2000\\
+ 2/5&49/1000&\Lambda<S-1/200000-E_{AB}/2000\\
+ 9/20&7/100&\Lambda<S-1/200000-E_{AB}/2000
+\end{array}
+\tag{CT.5}
+\]
+These are variance conditions on the actual remote cubic, not on its
+Gaussian buffer or on the total A/B energy. All buffer intervals are
+unbounded half-lines.
+
+\subsubsection{A joint influence estimate, rather than a coordinate cover}
+For \(k\ge0\), set
+\[
+ D(k)=\mathbb E[XX^*\cos(k\Re q)],\qquad
+ C(k)=\mathbb E[XX^\top\cos(k\Re q)].
+\]
+For any unit Gaussian linear form \(\ell\), the finite Hermite
+creation/annihilation identity is
+\[
+ \mathbb E|\ell|^2|q|^2
+ =e+\|D_\ell q\|_2^2+\|\bar D_\ell q\|_2^2\le e+h.
+ \tag{CT.6}
+\]
+For example, rotate \(\ell\) to \(X_1\), expand \(q\) in orthogonal
+\(H_{\mu,\nu}\), and multiply by \(X_1\). The two orthogonal output
+grades have squared norms with factors \(\mu_1+1\) and \(\nu_1\).
+Their sum gives (CT.6), and \(\mu_1+\nu_1\le3\) gives \(h\le3e\).
+
+The common phase rotation of \(X\) makes the \(q^2,\bar q^2\) terms
+vanish in \(\mathbb E|\ell|^2(\Re q)^2\). Thus
+\[
+ \boxed{0\preceq I-D(k)\preceq k^2sI,\qquad
+        \|C(k)\|_{\rm op}\le k^2s,\quad s=(e+h)/4.}
+ \tag{CT.7}
+\]
+The first assertion uses \(1-\cos t\le t^2/2\).
+For the second, write \(C=-\mathbb E[XX^\top w]\) with
+\(w=1-\cos(k\Re q)\ge0\), and apply weighted Cauchy--Schwarz.
+There is no entrywise summation and no dimension factor.
+
+\subsubsection{Paying the actual nonlinear contents}
+\label{sec:ct-content}
+The accepted positive-kernel identities after visible averaging are
+\[
+ \mathbb E_Z[(|Z|^2-1)\overline{L+w}/|L+w|]
+       =-\bar w k_A(|w|^2),\qquad
+ \mathbb E_Z[Z^2\overline{L+w}/(\sqrt2|L+w|)]
+       =-w k_B(|w|^2).
+\]
+Here \(k_A,k_B\) are positive completely monotone functions.
+Gaussian buffering replaces each spectral atom by
+\[
+ \mathbb E[(w+gU)e^{-t|w+gU|^2}]
+   =\frac{w}{(1+g^2t)^2}
+           e^{-t|w|^2/(1+g^2t)}.
+\]
+The buffered kernels \(k_{j,g}\) are therefore completely monotone.
+Write \(m_{j,1}=-k'_{j,g}(0)\).
+Up to conjugation and sign, the content vectors are
+\(P_{1,0}[qk_{j,g}(|q|^2)]\).
+
+\begin{lemma}[Two bounds on the same projected content, \textbf{[P]}]
+For a positive completely monotone \(k\), with \(m_1=-k'(0)<\infty\),
+\[
+ \boxed{\|P_{1,0}[qk(|q|^2)]\|_2^2\le m_1^2\,\Xi,\qquad
+ \Xi=\min\{(e+h)(e^2+\kappa),\ h(6e^2+5\kappa)\}.}
+ \tag{CT.8}
+\]
+\end{lemma}
+\begin{proof}
+Put \(V=|q|^2\), so \(\operatorname{Var}V=e^2+\kappa\).
+First-chaos orthogonality permits subtracting \(k(e)q\).
+For a unit \(\ell\), Cauchy--Schwarz and (CT.6) give
+\[
+ |\mathbb E[\bar\ell q(k(V)-k(e))]|^2
+ \le (e+h)m_1^2\mathbb E(V-e)^2.
+\]
+This proves the first bound.
+
+For the second use Gaussian integration by parts exactly:
+\[
+ \mathbb E[\bar\ell qk(V)]
+ =\mathbb E[D_\ell q\{k(V)+Vk'(V)\}
+              +q^2k'(V)D_\ell\bar q].
+ \tag{CT.9}
+\]
+Both derivatives of \(q\) are centered second-chaos polynomials.
+Set \(F_1(u)=k(u)+uk'(u)\).
+For a spectral atom \(e^{-tu}\),
+\[
+ F_1'(u)=t(tu-2)e^{-tu},\qquad
+ |(x-2)e^{-x}|\le2\quad(x\ge0).
+\]
+Consequently \(F_1\) is \(2m_1\)-Lipschitz and
+\(\operatorname{Var}F_1(V)\le4m_1^2\operatorname{Var}V\);
+the latter follows by taking an independent copy of \(V\).
+Also \(\mathbb E|q^2k'(V)|^2\le m_1^2\mathbb E V^2\).
+Subtract \(\mathbb EF_1(V)\) in (CT.9) and apply Cauchy--Schwarz
+to the two-component pair. The result is
+\[
+ |\mathbb E[\bar\ell qk(V)]|^2
+ \le h m_1^2\{4\operatorname{Var}V+\mathbb EV^2\}
+ =h m_1^2(6e^2+5\kappa).
+\]
+Taking the supremum over unit \(\ell\) proves (CT.8).
+All integrations by parts follow first for bounded spectral
+truncations, then by dominated convergence. The required functions
+and derivatives have polynomial growth and \(q\) is a Gaussian
+polynomial.
+\end{proof}
+
+This estimate uses the actual shared drivers. In particular, its
+second branch tends to zero with their largest directional influence.
+It is not a bound obtained by substituting a cubic moment constraint
+into each visible conditional slice.
+
+\subsubsection{The global tangent and a two-by-two certificate}
+Put \(T=|Z|^2\), \(\ell(T)=\sqrt T(a+bT)\), and define
+\[
+ R_{AA}=\mathbb E[(T-1)^2J_0(k\ell(T))],\quad
+ R_{BB}=\mathbb E[T^2J_0(k\ell(T))/2],\quad
+ R_{AB}=\mathbb E[T(T-1)J_2(k\ell(T))/\sqrt2].
+\]
+Let
+\[
+ W_g(k)=e^{-g^2k^2/4}-\sqrt\pi\,\frac{gk}{2}
+                          \operatorname{erfc}(gk/2).
+\]
+At a fixed lower buffer \(g_0\), define the positive costs
+\[
+ A_0=p-\int_0^\infty W_{g_0}R_{AA}\,dk,\quad
+ B_0=p-\int_0^\infty W_{g_0}R_{BB}\,dk,
+\]
+\[
+ N_A=\int k^2W_{g_0}(R_{AA})_-\,dk,\quad
+ N_B=\int k^2W_{g_0}(R_{BB})_-\,dk,\quad
+ N_X=\int k^2W_{g_0}|R_{AB}|\,dk.
+\]
+The two kernel moments have the exact representations
+\[
+ m_{A,1}=\frac1{16}\int k^2e^{-g_0^2k^2/4}(-R_A(k))\,dk,\quad
+ m_{B,1}=\frac1{16}\int k^2e^{-g_0^2k^2/4}R_B(k)\,dk,
+ \tag{CT.10}
+\]
+where \(R_A=\mathbb E[(T-1)J_0(k\ell(T))]\le0\) and
+\(R_B=\mathbb E[TJ_2(k\ell(T))/\sqrt2]\ge0\).
+These formulas also fix the normalization of the contents:
+the expansion \(J_1(x)/x=1/2-x^2/16+O(x^4)\) supplies the factor
+\(1/16\).
+
+The concavity of \(u\mapsto\mathbb E|\sqrt u+gU|\) gives a
+global tangent at \(L+q\), with no size restriction on the A/B
+perturbation. Remote parity \(X\mapsto-X\), with \(Z\) fixed,
+identifies the two signs in the payoff. Combining its Fourier
+representation with (CT.7) and (CT.8) gives, for
+\(A=\|\alpha\|\), \(B=\|\beta\|\),
+\[
+ \Lambda(G)\le\Lambda(q+gU)
+ +2\sqrt\Xi(m_{A,1}A+m_{B,1}B)
+ -A_0A^2-B_0B^2+s(N_AA^2+2N_XAB+N_BB^2).
+ \tag{CT.11}
+\]
+All bounds computed at \(g_0\) remain valid for \(g\ge g_0\).
+Indeed \(W_g\) and the positive kernel moments decrease with \(g\).
+The diagonal base integrals decrease by the physical-space identity
+\[
+ K_g(u)=\frac1{\sqrt\pi}\int_0^{1/g^2}
+           t^{-1/2}\sqrt{1-g^2t}\,e^{-tu}\,dt,
+\]
+not by an unjustified sign assumption on their Hankel integrands.
+
+Suppose now \(e\le E\), \(h\le re\), \(\kappa\le de^2\).
+Set \(s_0=(1+r)E/4\), \(\tau=1/2000\), and use directed upper
+or lower constants as appropriate in
+\[
+ P=\begin{pmatrix}A_0&0\\0&B_0\end{pmatrix}
+ -s_0\begin{pmatrix}N_A&N_X\\N_X&N_B\end{pmatrix}-\tau I.
+ \tag{CT.12}
+\]
+The replacement \(s\le s_0\) is made on the nonnegative norm pair
+\((A,B)\); no Loewner monotonicity of the matrix of \(N\)'s is
+asserted. If \(P\) is positive definite, completing the square yields
+\[
+ \Lambda(G)\le\Lambda(q+gU)+K_*e^3-\tau E_{AB},
+\]
+\[
+ K_*=
+ \frac{\min\{(1+r)(1+d),\,r(6+5d)\}}{176}
+ u^\top P^{-1}u,\qquad
+ u=\sqrt{176}(m_{A,1},m_{B,1})^\top.
+ \tag{CT.13}
+\]
+The numerical output stores upper bounds for the two entries of \(u\).
+The inverse of \(P\) has nonnegative entries, so these substitutions
+are valid. Exact fractions check its principal minors.
+
+\subsubsection{Closing the scalar baseline}
+\paragraph{Exact branch: no remote comparison hypothesis.}
+The visible Gaussian scale mixture \(L\overset d=\sqrt V\,W\)
+implies that
+\[
+ f_v(u)=2\mathbb E|L+\sqrt v\,U+\sqrt u|
+\]
+is concave in \(u\). Write \(F(v)=f_v(0)-pv\).
+Its derivative satisfies \(f_v'(0)=F'(v)+p\).
+The tangent at zero therefore proves for every remote law of variance \(e\)
+\[
+ \Lambda(q+\sqrt v\,U)\le F(v)+F'(v)e.
+ \tag{CT.14}
+\]
+Moreover \(F\) is concave in \(v\). If the directed computation gives
+\(F'(g_0^2)<0\), then for every \(g\ge g_0\) the right side of
+(CT.14) is at most \(F(g_0^2)+F'(g_0^2)e\).
+Since \(e^3\le E^2e\), it is enough to check the two endpoints
+\[
+ \max\{F(g_0^2),\,
+ F(g_0^2)+F'(g_0^2)E+K_*E^3\}<S_{\rm lo}-\delta.
+ \tag{CT.15}
+\]
+This is an exact comparison of rational interval endpoints.
+The benchmark lower bound is computed within this package:
+\[
+ S_{\rm lo}=F(1/25)_{\rm lower}>1.3739533908.
+ \tag{CT.16}
+\]
+
+\paragraph{Weak branch.}
+The accepted remote-cubic theorem gives
+\(\Lambda(q+gU)<S+10^{-5}\), in every dimension and for every
+fresh buffer. Therefore it suffices to check
+\[
+ 10^{-5}+K_*E^3<89/10^6.
+ \tag{CT.17}
+\]
+This use of the remote theorem is restricted to the genuinely
+remote baseline, before either visible shared sector is inserted.
+
+\paragraph{Numerical proof and continuum coverage.}
+The checker verifies (CT.12), (CT.15), or (CT.17) for all twelve
+displayed claims. For (CT.3) the exact interval comparison leaves
+a margin greater than \(2.9237\cdot10^{-5}\), sufficient for
+\(1/40000\). For (CT.4) the certified excess is less than
+\(8.3302\cdot10^{-5}\), sufficient for \(89/10^6\).
+Decimals here are reports, not proof inputs. The monotonicity and
+affine endpoint arguments above cover every intermediate variance
+and the entire buffer half-line.
+
+The universal bounds used in (CT.5) are \(r=3,d=42\).
+The fourth-moment estimate \(\mathbb E|q|^4\le44e^2\) follows,
+for \(q=I_{2,1}(f)\), by expanding \(q^2\) into grades
+\((4,2),(3,1),(2,0)\) with coefficient bounds \(1,4,4\).
+Their squared isometry factors sum to \(48+96+32=176\), while
+\(e=2\|f\|^2\). This is the established finite product calculation;
+no dimension-dependent hypercontractivity constant is introduced.
+
+\subsubsection{Numerical method, dependencies, and limitations}
+The inherited audited generator supplies outward enclosures of the
+nine visible Hankel functions at 8,400 Gauss nodes, with analytic
+quadrature and visible tails. No remote-driver interpolation or
+parameter-box cover is used in this package.
+For the nonsmooth negative parts and absolute value defining the
+three \(N\)'s, the calculation integrates the analytic functions
+\(R\) and \(R^2\) and applies Cauchy--Schwarz with
+\(d\mu=k^2W_g\,dk\), \(\mu(\mathbb R_+)=\sqrt\pi/(2g^3)\).
+It does not apply an analytic Gauss remainder to \(R_-\).
+
+The extra baseline integrals use
+\[
+ \frac{F(v)+pv}{2}
+ =\int_0^\infty\frac{1-e^{-vk^2/4}R_0(k)}{k^2}\,dk,\qquad
+ F'(v)+p=\frac12\int_0^\infty e^{-vk^2/4}R_0(k)\,dk.
+\]
+The integrand at zero is evaluated through its removable-singularity
+formula. At \(k=70\), the first tail is \(1/70\) plus an enclosed
+Gaussian remainder; the second has a Gaussian tail bound.
+Every final comparison uses exact fractions of binary64 interval
+endpoints. The code disables fast math and fused contraction.
+
+Inputs are the visible Gaussian-mixture and positive-kernel
+identities, elementary Gaussian integration by parts and Hermite
+orthogonality, and the established fourth-moment inequality.
+Only the weak claims additionally use the accepted remote
+\(10^{-5}\) theorem and its moment inputs.
+
+These theorems cover genuinely coupled tensors, but require a fresh
+buffer and either small remote variance or explicit influence and
+fourth-moment conditions. They do not cover arbitrary even or
+diagonal additions after A/B. (\emph{Later:} \autoref{ch:all-sector-audit-extension} removes the even/diagonal gap in six buffered coupled-cubic regions, not at zero buffer.) The earlier full-sector local theorem
+is therefore not superseded. Profile uniformity, a complete row
+cover, and the remaining general-tensor regions are open. No new
+Grothendieck endpoint is claimed.

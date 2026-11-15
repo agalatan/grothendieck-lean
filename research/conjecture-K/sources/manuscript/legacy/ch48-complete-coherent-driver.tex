@@ -1,0 +1,286 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch48-complete-coherent-driver.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 48). Owner: lower-bound/09-one-driver.tex
+% Ready-to-port chapter. Fresh integrations and exact cover passed.
+\section{The complete coherent one-driver A/B comparison}
+\label{ch:complete-coherent-driver}
+\chapsummary{Complete coherent one-driver A/B comparison, with retained deficits and profile transport. Independent mixtures are allowed as stated; arbitrary extra sectors require the separate all-sector theorems and their exceptions.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch48-complete-coherent-driver.tex}, with \code{closure-consequences.tex} and the auxiliary
+\code{strip-bootstrap-section.tex} appended, from \pathref{gpt-reviews/complete-coherent-driver-20261020/}. Ported verbatim apart from this summary and paragraph. \emph{Our replay} \st{C}: the full
+\code{python3 -I verify\_all.py} from an unrelated directory reports \textbf{ALL NEW PRIMARY REPLAYS PASS} in 754\,s, with the 208 matrices integrated fresh and the exact continuum cover passing. The two
+$S$ comparators were run separately: Python, 1024 cells, $S>6187723757039445/2^{52}>1.37395$; Node, absolute benchmark $>1.37395$. The IDE also ran an independent float scan of the
+formerly open core (\pathref{forest-2026-10-20/core\_scan.py}: 240 points, $c\in\{0,\dots,0.15\}$, $g\in\{0,0.08,0.14,0.164\}$, twelve complex $\alpha$ up to $|\alpha|=0.35$, $\beta$ optimised over $\C$). The smallest margin is $S-\sup_\beta\Lambda=5.55\cdot10^{-4}$ at $(c,g,\alpha)=(0.03,0.164,0.03)$, consistent with the certified $3\cdot10^{-5}$.
+
+
+\paragraph{Status.}
+All new comparison theorems in this chapter are \textbf{[P,C]}:
+an analytic proof together with fresh directed integrations and an exact
+continuum cover. All $208$ new matrix records passed; the final cover
+accepted $806$ boxes and discarded six boxes outside the A disk.
+Labels \textbf{[F]} and \textbf{[?]} denote floating evidence and an
+open obligation. Floating anchor design is not a proof input.
+
+\subsection{The target and retained deficit}
+Put
+\[
+ \epsilon=\frac{1891}{2500},\qquad p=\frac{2500}{1891},\qquad
+ a=\frac{699}{1250},\qquad b=\frac{179}{1250},
+\]
+\[
+ L=Z(a+b|Z|^2),\qquad H(X)=\frac{X(|X|^2-2)}{\sqrt2}.
+\]
+All named standard complex Gaussians are proper and have second moment
+one. For independent $Z,X,U$, define
+\[
+ Q_0=cH(X)+\alpha(|Z|^2-1)X+
+                         \beta Z^2\overline X/\sqrt2,
+\]
+\[
+ \Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|-p\mathbb E|G|^2,
+ \qquad
+ S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt vU|-pv\}.
+\]
+The complete comparison is
+\[
+ \boxed{\Lambda(Q_0+gU)\le S-\Delta(c,\alpha,\beta)
+       \quad(c,g\ge0,\ \alpha,\beta\in\mathbb C),}
+ \tag{OD}
+\]
+where
+\[
+ \boxed{\Delta(c,\alpha,\beta)=
+ \min\left\{\frac3{100000},
+ \frac{\min(c^4,c^2)}{32}
+       +\frac{|\alpha|^2+|\beta|^2}{2000}\right\}.}
+\]
+Thus every nonzero coherent Wick or A/B coefficient has a retained
+deficit. The Gaussian-only family is intentionally permitted to attain
+the benchmark. On the entire small-buffer half-line the
+stronger conclusion is
+\[
+ 0\le g\le\frac16
+ \quad\Longrightarrow\quad
+ \Lambda(Q_0+gU)<S-\frac3{100000}.
+ \tag{SB}
+\]
+This model excludes additional even or diagonal terms and arbitrary
+coupled cubic coefficient fields. A proper independent Gaussian buffer
+is a distributional comparison variable; it need not itself lie in the
+third chaos of the original Gaussian space.
+
+\subsection{The remaining compact certificate}
+The new computation proves
+\[
+ \boxed{0\le c\le\frac{19}{100},\quad
+ 0\le g\le\frac{41}{250},\quad |\alpha|\le\frac25,\quad
+ \beta\in\mathbb C
+ \quad\Longrightarrow\quad
+ \Lambda(Q_0+gU)\le\frac{8587}{6250}=1.37392.}
+ \tag{CC}
+\]
+The buffer includes zero; neither coupling is restricted to a real
+phase. The B coefficient is eliminated over the entire complex plane,
+not covered by a bounded sampling grid.
+The actual exact cap produced by the cover is
+\[
+ \frac{1758617511707067091}{1280000000000000000}
+ =1.373919931021146\ldots < \frac{8587}{6250}.
+\]
+
+Two independent fresh comparators prove
+\[
+ \boxed{S>\frac{27479}{20000}=1.37395.}
+ \tag{B}
+\]
+The standard-library Python comparator uses $g=1/5$ and $1024$
+radial cells. The map $x\mapsto\mathbb E|x+gU|$ is convex, so
+replacing $\ell(r)$ on each cell by its conditional mean gives a
+lower bound. Dropping the nonnegative norm integral on the spatial
+tail and subtracting the full price $pg^2$ preserves that lower bound.
+Fresh moment and Rice enclosures give the exact lower endpoint
+\[
+ \frac{6187723757039445}{4503599627370496}
+ =1.373950677017054\ldots >1.37395.
+\]
+The Python replay takes about $66$ seconds and needs no Node.js.
+
+A second, faster BigInt checker uses
+$F(0)=(387/500)\sqrt\pi$, and a positive quadrature calculation
+lower-bounds $F(1/25)-F(0)$ by more than $0.00207081307009966$.
+The resulting lower-comparator expression lies in
+$[1.373950093670969,1.3739500936722047]$. This interval encloses
+that comparator, not $S$. The verifier uses outward BigInt arithmetic
+and a rational enclosure of $\pi$ from Machin's formula.
+
+\paragraph{Global combination [P].}
+The accepted buffered theorem of \autoref{ch:buffer-bootstrap} gives
+\[
+ g\ge41/250\quad\Longrightarrow\quad
+ \Lambda(Q_0+gU)\le S-\frac{\min(c^4,c^2)}{32}
+                   -\frac{|\alpha|^2+|\beta|^2}{2000}.
+ \tag{B44}
+\]
+\autoref{ch:uniform-shared-bootstrap} gives, for every buffer and every complex coupling,
+\[
+ c\ge19/100\quad\Longrightarrow\quad
+ \Lambda(Q_0+gU)<S-\frac1{25000}.
+ \tag{C47}
+\]
+Its full-cubic supporting-plane theorem also gives
+\[
+ |\alpha|^2+|\beta|^2\ge4/25
+ \quad\Longrightarrow\quad
+ \Lambda(Q_0+gU)<S-\frac1{5000}.
+ \tag{A47}
+\]
+For $g\le41/250$, first use (C47) if $c\ge19/100$,
+then (A47) if $|\alpha|\ge2/5$. Every remaining point lies in
+(CC). Comparison with (B) proves the stated $3/100000$ deficit
+up to $g=41/250$. On $41/250\le g\le1/6$, \autoref{ch:buffer-bootstrap} supplies
+an additional deficit $1/20000$ on top of (B44), so (SB) holds
+on its full stated interval.
+Combining (SB) with (B44) proves (OD).
+There is no unproved amplitude tail in this combination.
+
+\subsection{A global quadratic on every integration cell [P]}
+Rotate out the phase of $Z$. Write $r=|Z|$, $X=x+iy$, and
+\[
+ \ell=ar+br^3,\qquad
+ H=(x+iy)(x^2+y^2-2)/\sqrt2,\qquad
+ A=(r^2-1)(x+iy),\qquad B=r^2(x-iy)/\sqrt2.
+\]
+The density is $2r e^{-r^2-x^2-y^2}/\pi$.
+The simultaneous sign change $(X,U)\mapsto(-X,-U)$ gives
+\[
+ \Lambda(Q_0+gU)
+ =2\mathbb E\rho_g(|\ell+cH+\alpha A+\beta B|^2)
+       -p(c^2+g^2+|\alpha|^2+|\beta|^2),
+\]
+where $\rho_g(u)=\mathbb E|\sqrt u+gU|$.
+For $g>0$,
+\[
+ K_g(u)=2\rho_g'(u)
+ =\frac1{g\sqrt\pi}\int_0^1 e^{-ut/g^2}
+                         \sqrt{\frac{1-t}{t}}\,dt .
+\]
+Thus $\rho_g$ is concave. At $g=0$ this is square-root concavity.
+
+On a cell $D_j$, let $\mathbb E_j$ denote its normalized Gaussian
+expectation. Choose an anchor $(c_0,\alpha_0,0)$ and set
+$q_j=\mathbb E_j|\ell+c_0H+\alpha_0A|^2>0$.
+Jensen's inequality and the supporting line at $q_j$ imply
+\[
+ 2\mathbb E_j\rho_g(|\ell+cH+\alpha A+\beta B|^2)
+ \le2\rho_g(q_j)+K_g(q_j)
+ \bigl(\mathbb E_j|\ell+cH+\alpha A+\beta B|^2-q_j\bigr).
+ \tag{T}
+\]
+This is global in the target coefficients. It is not a local
+Taylor approximation. All polynomial moments have degree at most six.
+
+The bounded domain uses $256$ positive radial cells and $32$ cells
+in each Cartesian coordinate, with all four sign choices:
+$4\cdot256\cdot32^2=1,048,576$ cells on $[0,6]^3$.
+The unequal resolutions reduce the visible-variable Jensen error
+without increasing the cell count of the previous $64^3$ construction.
+
+Let $D$ be the bounded domain, $P=\mathbb P(D^c)$,
+$L_T=\mathbb E[\ell^2 1_{D^c}]$, and
+$T_D=\mathbb E[(|H|^2+|A|^2+|B|^2)1_{D^c}]$.
+Symmetry, Cauchy--Schwarz, and $2|w|\le1+|w|^2$ give
+\[
+ 2\mathbb E[|\ell+cH+\alpha A+\beta B+gU|1_{D^c}]
+ \le P+L_T+g^2P+(c^2+|\alpha|^2+|\beta|^2)T_D.
+\]
+The full trace used here is exactly three. In particular no
+unbounded-amplitude tail is discarded.
+
+\subsection{Preserving phases and covering the continuum [P,C]}
+Summing (T), its tail, and the exact price gives a Hermitian majorant
+\[
+ C+2\Re(b_Hc+b_A\alpha+b_B\beta)
+ +(c,\alpha,\beta)^*M(c,\alpha,\beta).
+\]
+The code encloses complex off-diagonal entries. When
+$k=-M_{BB}>0$, the complete B contribution is bounded by
+\[
+ \frac{|b_B+cM_{HB}+\overline\alpha M_{AB}|^2}{k}.
+ \tag{Schur}
+\]
+This leaves a real quadratic in $c,\Re\alpha,\Im\alpha$.
+Conjugation symmetry supplies reflected anchors and restricts the
+cover to $\Im\alpha\ge0$ without removing any relative phase.
+
+The direct buffer nodes are
+\[
+ 0,\quad \frac1{25},\quad\frac2{25},\quad\frac3{25},
+ \quad\frac{71}{500},\quad\frac{41}{250}.
+\]
+Thirty-one primary anchors and three supplemental anchors each
+supply six matrices. Four additional matrices are computed directly
+at $g=153/1000$, for a total of $208$ fresh matrix enclosures.
+Every paired anchor at $g=.142,.164$ also gives a valid midpoint
+quadratic by averaging and adding $p(.011)^2$ to its constant.
+
+For fixed target coefficients, $\Lambda(Q_0+gU)+pg^2$ is convex in
+$g$. Hence for $g=(1-u)g_0+ug_1$,
+\[
+ \Lambda(g)\le(1-u)\Lambda(g_0)+u\Lambda(g_1)
+                    +pu(1-u)(g_1-g_0)^2.
+ \tag{I}
+\]
+The checker maximizes this scalar quadratic exactly on $0\le u\le1$.
+Different valid anchors may be used at the two endpoints.
+
+The exact spatial cover recursively bisects
+$[0,.19]\times[-.4,.4]\times[0,.4]$.
+A box is discarded only when it does not intersect the A disk.
+At each buffer node its cap is the minimum of valid quadratic
+upper bounds. Multilinear interpolation is exact for cross terms;
+negative pure quadratic curvatures cost at most
+\[
+ \frac14\left[
+ \max(0,-q_{cc,\mathrm{low}})(\Delta c)^2+
+ \max(0,-q_{AA,\mathrm{low}})
+    ((\Delta\Re\alpha)^2+(\Delta\Im\alpha)^2)\right].
+\]
+The coefficient units are $10^{-12}$ and spatial subdivision units
+are $1/16000$. These are exact outward rational operations.
+A failed box is subdivided; exhaustion of the subdivision resolution
+without proof raises an error. A successful finite partition proves
+the continuum assertion, not a sampled version.
+
+\subsection{Replay and scope}
+The primary portable implementation uses standard-library Python and
+C++17 without fast-math or contraction. Node.js 20+ is optional for
+the faster benchmark and the auxiliary strip calculations.
+Gaussian moments are regenerated from finite rational sums
+with integrated remainder bounds. Rice-function enclosures have
+analytic interpolation and unbounded-argument bounds. C++ elementary
+operations are widened with \texttt{nextafter}; square roots are
+bracketed by exact integer comparisons.
+
+The replay ledger records the matrix counts, accepted boxes,
+upper bound, and timings. All $208$ matrix enclosures were freshly
+recomputed in three constituent runs ($186$, $18$, and $4$ records).
+The exact cover was additionally replayed from an unrelated directory.
+An algebra-only replay of stored interval
+matrices is explicitly distinguished from regenerating those matrices.
+Snapshots of \autoref{ch:buffer-bootstrap} and \autoref{ch:uniform-shared-bootstrap} document the inherited unbounded
+extensions; those accepted theorems remain stated inputs. The IDE's
+independent full \autoref{ch:uniform-shared-bootstrap} replay reports $734$ seconds. This round
+does not claim to have repeated every inherited analytic certificate.
+
+The complete coherent A/B case does not allow its Wick coefficient
+to depend on the shared driver. It does not include a second
+self-interacting shared coordinate or simultaneous unrestricted
+even and diagonal sectors. Those are separate joint comparisons.
+The global project interval remains
+\[
+ 1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\mathbb C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}.
+\]
+A complete row envelope for all admissible cubic residuals is still
+required before claiming a larger Grothendieck endpoint.
+
+\input{ch48-closure-consequences}
+\input{ch48-strip-bootstrap-section}

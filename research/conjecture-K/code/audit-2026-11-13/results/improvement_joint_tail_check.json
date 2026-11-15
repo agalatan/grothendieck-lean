@@ -1,0 +1,100 @@
+{
+  "status": "passed_exact_scalar_checks",
+  "scope": "Gaussian-tail reduction only; compact finite-remainder premise remains unproved",
+  "source_sha256": "27dfb7e6f20d4db0e405251804c3f6ebe08b74b3bbfb08588b4a55d2e9d5fff7",
+  "w": "113/10000",
+  "robust_tail_constant": "7/2",
+  "signed_tail_constant": "15/4",
+  "row_checks": {
+    "peak": {
+      "B_density_cells": 2000,
+      "B_density_cap": "7/25",
+      "maximum_exact_cell_bound_over_cap_decimal": 0.9885383209144902,
+      "uniform_A_potential_cap": "179/50",
+      "uniform_B_potential_cap": "53/50",
+      "uniform_cross_potential_cap": "39/20",
+      "large_shift_finite_remainder_cap_decimal": 0.8935016316957242,
+      "certified_large_shift_common_cap": "91/100",
+      "large_shift_signed_diagonal_reserve": "3/100"
+    },
+    "flank": {
+      "B_density_cells": 2000,
+      "B_density_cap": "11/40",
+      "maximum_exact_cell_bound_over_cap_decimal": 0.9869032086908829,
+      "uniform_A_potential_cap": "179/50",
+      "uniform_B_potential_cap": "53/50",
+      "uniform_cross_potential_cap": "39/20",
+      "large_shift_finite_remainder_cap_decimal": 0.8975442307785658,
+      "certified_large_shift_common_cap": "91/100",
+      "large_shift_signed_diagonal_reserve": "3/100"
+    },
+    "upper": {
+      "B_density_cells": 2000,
+      "B_density_cap": "13/50",
+      "maximum_exact_cell_bound_over_cap_decimal": 0.987729712787745,
+      "uniform_A_potential_cap": "179/50",
+      "uniform_B_potential_cap": "53/50",
+      "uniform_cross_potential_cap": "39/20",
+      "large_shift_finite_remainder_cap_decimal": 0.9084905558861938,
+      "certified_large_shift_common_cap": "91/100",
+      "large_shift_signed_diagonal_reserve": "3/100"
+    }
+  },
+  "reserves": [
+    {
+      "R": "3/10",
+      "R_decimal": 0.3,
+      "s": "900/113",
+      "delta_upper_decimal": 0.00623129623878151,
+      "robust_diagonal_reserve": "11/500",
+      "signed_diagonal_reserve": "59/2500",
+      "robust_unabsorbed_tail_allowance_at_both_energy_caps_decimal": 0.0004928955324876174
+    },
+    {
+      "R": "13/40",
+      "R_decimal": 0.325,
+      "s": "4225/452",
+      "delta_upper_decimal": 0.0018045067841959185,
+      "robust_diagonal_reserve": "4/625",
+      "signed_diagonal_reserve": "17/2500",
+      "robust_unabsorbed_tail_allowance_at_both_energy_caps_decimal": 0.00014273648662989716
+    },
+    {
+      "R": "7/20",
+      "R_decimal": 0.35,
+      "s": "1225/113",
+      "delta_upper_decimal": 0.00046381844619225373,
+      "robust_diagonal_reserve": "163/100000",
+      "signed_diagonal_reserve": "7/4000",
+      "robust_unabsorbed_tail_allowance_at_both_energy_caps_decimal": 3.668803909380727e-05
+    },
+    {
+      "R": "3/8",
+      "R_decimal": 0.375,
+      "s": "5625/452",
+      "delta_upper_decimal": 0.00010590598063132163,
+      "robust_diagonal_reserve": "371/1000000",
+      "signed_diagonal_reserve": "199/500000",
+      "robust_unabsorbed_tail_allowance_at_both_energy_caps_decimal": 8.37716306793754e-06
+    },
+    {
+      "R": "2/5",
+      "R_decimal": 0.4,
+      "s": "1600/113",
+      "delta_upper_decimal": 2.1498418681644848e-05,
+      "robust_diagonal_reserve": "753/10000000",
+      "signed_diagonal_reserve": "807/10000000",
+      "robust_unabsorbed_tail_allowance_at_both_energy_caps_decimal": 1.7005249177181075e-06
+    },
+    {
+      "R": "9/20",
+      "R_decimal": 0.45,
+      "s": "2025/113",
+      "delta_upper_decimal": 6.240916971150337e-07,
+      "robust_diagonal_reserve": "219/100000000",
+      "signed_diagonal_reserve": "47/20000000",
+      "robust_unabsorbed_tail_allowance_at_both_energy_caps_decimal": 4.936565324179916e-08
+    }
+  ],
+  "seconds": 0.2930949159999727
+}

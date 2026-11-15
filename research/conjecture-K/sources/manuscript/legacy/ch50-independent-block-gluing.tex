@@ -1,0 +1,316 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch50-independent-block-gluing.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 50). Owner: lower-bound/10-coupled-complements.tex
+% Ready-to-port chapter fragment. No IDE-owned source is modified.
+% Required packages: amsmath, amssymb, booktabs, array.
+\section{Conjecture K: a coherent core with an internally coupled external block}
+\label{ch:block-gluing-20261020}
+\chapsummary{Signed costs for independent internally coupled blocks. Independence from the retained core is essential; conditionally centered complements use a different theorem.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch50-independent-block-gluing.tex} from \pathref{gpt-reviews/independent-block-gluing-20261020/}, ported verbatim
+apart from this paragraph. \emph{Our replay} \st{C}: the full \code{python3 -I verify\_all.py}, run from an unrelated directory, \textbf{ALL NEW REPLAYS PASS in 162\,s}. It covers the 184 fresh
+weights, the five new core matrices, the fresh benchmark, the planes and the analytic tail, with the 248 inherited core matrices' exact covers replayed. IDE check of the mechanism: $J$ is centred given
+$(Z,X)$ and independent of $(Z,X,U)$, so in the cell-tangent bound it enters only through $\E[|J|^2\mid Z,X]=x+y(T-1)^2+zT^2/2+eT$. The signed coefficients are the anchor-weight averages of these
+four profiles minus $1/\varepsilon$.
+
+
+\paragraph{Status.}
+Labels \textbf{[P]}, \textbf{[C]}, \textbf{[F]}, and \textbf{[?]} denote an
+analytic proof, exact or directed computation, floating evidence, and an open
+obligation. The project endpoint remains
+\[
+1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\mathbb C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}.
+\]
+The new result concerns the specified peak profile.
+
+\subsection{The block-addition theorem [P,C]}
+Let \(Z,X,U\) be independent proper standard complex Gaussians and put
+\[
+T=|Z|^2,\quad a=\frac{699}{1250},\quad b=\frac{179}{1250},
+\quad p=\frac{2500}{1891},\quad L=Z(a+bT),
+\]
+\[
+H(X)=\frac{X(|X|^2-2)}{\sqrt2},\qquad
+\Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|-p\mathbb E|G|^2,
+\]
+\[
+S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt vU|-pv\},\qquad
+Q_0=cH(X)+\alpha(T-1)X+\frac{\beta Z^2\bar X}{\sqrt2}.
+\]
+Let \(q,A,B,Y,W\) be square-integrable, centered, pairwise
+Hermitian-orthogonal random variables, jointly independent of \((Z,X,U)\).
+There is no assumption of independence or properness within this five-tuple.
+Define
+\[
+J=q+(T-1)A+\frac{Z^2B}{\sqrt2}+ZY+\bar ZW,
+\]
+\[
+x=\mathbb E|q|^2,\quad y=\mathbb E|A|^2,\quad
+z=\mathbb E|B|^2,\quad e=\mathbb E|Y|^2+\mathbb E|W|^2.
+\]
+Then, for
+\[
+c\ge0,\qquad 0\le g\le\frac{41}{250},
+\qquad \alpha,\beta\in\mathbb C,
+\]
+we have
+\[
+\boxed{\Lambda(Q_0+J+gU)
+<S-\frac3{100000}
++\frac{38}{25}x+\frac{33}{50}y-\frac{13}{25}z-\frac9{100}e.}
+\tag{B}
+\]
+In fact the absolute constant \(8587/6250=1.37392\) can replace
+\(S-3/100000\).
+
+For the Gaussian-chaos application the external fields may all be functions
+of the same independent Gaussian block \(V\), with respective bidegrees
+\[
+(2,1),\quad(1,0),\quad(0,1),\quad(1,1),\quad(2,0).
+\]
+Distinct bidegrees ensure precisely the orthogonality assumed above.
+The dimension of \(V\) and the dependence within its fields are unrestricted.
+
+\subsection{A certified region and a comparable two-Wick example}
+The homogeneous energy condition
+\[
+\boxed{152x+66y\le52z+9e}
+\tag{C}
+\]
+implies exact K with the retained deficit \(3/100000\).
+Writing \(E_{\rm cost}=1.52x+.66y-.52z-.09e\), one also has
+\[
+E_{\rm cost}\le\frac3{100000}\ \Longrightarrow\ \Lambda<S.
+\]
+Allowing \(E_{\rm cost}\le3/100000+\eta_{AB}\), with
+\(\eta_{AB}=240297199/2651182000000\), gives the specified
+peak-profile slack. A complete row envelope is still required for an endpoint.
+
+Let \(X_2\) be a fresh proper Gaussian and choose
+\[
+q=\frac1{10}H(X_2),\qquad
+A=\frac{e^{i\theta_A}}{20}X_2,\qquad
+B=\frac{e^{i\theta_B}}5\bar X_2,\qquad Y=W=0.
+\]
+All phases are allowed. The external cost is exactly
+\[
+\frac{38}{25\cdot100}+\frac{33}{50\cdot400}
+-\frac{13}{25\cdot25}=-\frac{79}{20000}.
+\]
+Consequently
+\[
+\Lambda(Q_0+J+gU)<S-\frac{199}{50000}=S-0.00398.
+\]
+At \(c=1/10\) the two Wick coefficients are equal. The external cubic and
+both external linear drivers share \(X_2\), while the core coefficients
+\(\alpha,\beta\) remain arbitrary.
+The negative B coefficient belongs to a joint upper majorant; it does not
+claim that adding B always lowers the actual payoff at a fixed cubic.
+
+\subsection{Conditional variance is enough for the lifting [P]}
+Conditioning on \((Z,X)\), centering and Hermitian orthogonality give
+\[
+\mathbb E[J\mid Z,X]=0,\qquad
+\mathbb E[|J|^2\mid Z,X]
+=x+y(T-1)^2+zT^2/2+eT.
+\tag{V}
+\]
+No assumption is made on \(\mathbb E[J^2\mid Z,X]\). In particular the
+conditional law can be improper.
+
+Let \(\rho_g(u)=\mathbb E|\sqrt u+gU|\) and \(K_g=2\rho_g'\).
+The function \(\rho_g\) is concave. At \(g=0\), it is \(\sqrt u\).
+For \(g>0\),
+\[
+K_g(u)=\frac1{g\sqrt\pi}\int_0^1
+e^{-ut/g^2}\sqrt{\frac{1-t}{t}}\,dt.
+\]
+Fix a bounded core cell \(D\) and its positive anchor mean \(q_D\).
+The tangent used by the coherent-core certificate gives
+\[
+\begin{split}
+2\mathbb E_D\rho_g(|F+J|^2)
+\le{}&2\rho_g(q_D)
++K_g(q_D)(\mathbb E_D|F|^2-q_D)\\
+&+K_g(q_D)\mathbb E_D\mathbb E[|J|^2\mid Z,X].
+\end{split}
+\tag{T}
+\]
+This is global in the target amplitudes, with no Taylor remainder.
+The cross term with \(J\) vanishes by conditional centering.
+
+On the spatial tail use the same global inequality as in the original
+cell certificate, \(2|w|\le1+|w|^2\). The added tail cost is exactly
+\[
+x\mathbb P(D^c)+y\mathbb E[(T-1)^2 1_{D^c}]
++z\mathbb E[T^2 1_{D^c}/2]+e\mathbb E[T1_{D^c}].
+\]
+The original core tail bound is left intact. Finally the price subtracts
+\(p(x+y+z+e)\), since the core and added block are orthogonal.
+
+Thus, with the piecewise weight
+\[
+w=K_g(q_D)\text{ on each bounded cell},\qquad w=1\text{ on the tail},
+\]
+the additional costs are
+\[
+W_0=\mathbb Ew-p,\quad W_A=\mathbb E[w(T-1)^2]-p,\quad
+W_B=\mathbb E[wT^2/2]-p,\quad W_E=\mathbb E[wT]-p.
+\tag{W}
+\]
+
+\paragraph{Both norm signs and all phases.}
+The even fields do not change sign upon negating their underlying Gaussian
+coordinates. Accordingly, apply (T) separately to the two norms and reflect
+only the coherent core variable \(X\) for the second norm.
+The reflected core cell means agree, and (V) is unchanged. Each one-norm
+tangent contributes half of (W), giving exactly the asserted total.
+No sign symmetry of the external joint law is needed.
+
+If \(Z=\sqrt T e^{i\theta}\), rotate \(X\) to \(e^{-i\theta}X\) and the norm
+argument by \(e^{-i\theta}\). The five external coefficients become
+\[
+e^{-i\theta}q,\quad e^{-i\theta}A,\quad e^{i\theta}B,\quad
+Y,\quad e^{-2i\theta}W.
+\]
+Conditionally on \(\theta\), their means and Hermitian orthogonality persist,
+and their variances do not change. The rotated \(X\) is still independent of
+that conditional external law. This justifies using the core engine without
+assuming phase invariance of arbitrary external fields.
+
+\subsection{Four weights, checked at zero buffer [P,C]}
+For \(u>0\),
+\[
+K_g(u)\le\frac1{g\sqrt\pi}\int_0^\infty
+e^{-ut/g^2}t^{-1/2}\,dt=u^{-1/2}=K_0(u).
+\]
+All four profiles \(1,(T-1)^2,T^2/2,T\) are nonnegative and have expectation
+one. The zero-buffer costs therefore dominate the costs at every buffer,
+with the same tail weight one.
+
+There are \(37\) distinct anchors in the first coherent-core cover,
+\(8\) in the preceding compact cover, and one fresh outer anchor
+\((c_0,\alpha_0)=(3/5,0)\). The first uses \(256\) positive
+radial bins and \(32\) bins per Cartesian coordinate; the second uses
+\(64\) bins in each; the outer anchor uses this latter partition.
+Both partitions include all four Cartesian signs and have
+\(1{,}048{,}576\) bounded cells per anchor.
+The fresh computation gives \(184\) directed integral enclosures:
+\[
+\begin{array}{c|r|c}
+\text{cost}&\text{largest upper endpoint (display)}&\text{adopted bound}\\\hline
+W_0&1.511665123519&38/25\\
+W_A&0.651313318493&33/50\\
+W_B&-0.528153476466&-13/25\\
+W_E&-0.092392340000&-9/100
+\end{array}
+\]
+The displayed decimals are not used in comparisons.
+The checker parses the hexadecimal interval endpoints as exact fractions.
+
+If \(r_k=\mathbb E_D r^k\) and \(T=r^2\), the four appended cell fields are
+\[
+1,\quad r_4-2r_2+1,\quad r_4/2,\quad r_2.
+\]
+In particular the A entry is the conditional mean of \((T-1)^2\), not
+\((\mathbb E_DT-1)^2\). The missing mass of each profile is added outward,
+using its full integral one. The square-root operation is bracketed by exact
+integer comparisons; elementary arithmetic is widened with
+\texttt{nextafter}, without fast-math or floating-point contraction.
+
+The common additive costs survive minima over anchors, conjugate anchors,
+completion of the core B square, and the exact spatial cover.
+For buffer interpolation,
+\(\Lambda(Q_0+J+gU)+pg^2\) is convex in \(g\), so the inherited error
+\(p\,u(1-u)(g_1-g_0)^2\) remains valid. This also validates the synthetic
+midpoint majorants.
+
+\subsection{Completing the stated parameter cover [P,C]}
+For \(c\le19/100\) and \(|\alpha|\le2/5\), the accepted \(208\)-matrix
+cover gives
+\[
+\Lambda(Q_0+gU)
+\le\frac{1758617511707067091}{1280000000000000000}<1.37392.
+\]
+For \(19/100\le c\le34/125\), the preceding \(40\)-matrix cover gives a
+cap below \(1.373119\). Both have \(g\le41/250\), and both eliminate every
+complex \(\beta\). Apply the lifted cell majorants before their minimization
+and exact continuum cover; this adds the common cost in (B).
+
+The same eight anchors give a new exact cover of \(34/125\le c\le17/20\).
+Its \(31{,}080\) accepted boxes have cap
+\[
+\frac{6838969192482459}{5000000000000000}<1.367794.
+\]
+Five freshly integrated buffer-node matrices at the anchor
+\((c_0,\alpha_0)=(3/5,0)\) cover \(17/20\le c\le24/25\).
+The \(2{,}590\) accepted boxes have cap
+\[
+\frac{5372034194450423}{5000000000000000}<1.074407.
+\]
+Both covers include \(0\le g\le41/250\), \(|\alpha|\le2/5\), and every
+complex \(\beta\). Their new four-cost checks use the same adopted bounds.
+
+For \(|\alpha|\ge2/5\), the already certified profile plane gives
+\[
+\begin{split}
+\Lambda\le{}&1.459443-.000406(c^2+g^2+x)
+-.536914(|\alpha|^2+y)\\
+&-.663652(|\beta|^2+z)-.395398e.
+\end{split}
+\]
+Every decimal is an exact rational. Its proof uses only the exact conditional
+variance profile, so it applies also to the external orthogonal laws here.
+After discarding negative core terms its intercept is at most
+\[
+1.459443-.536914(2/5)^2=1.37353676<1.37392.
+\]
+Its four external slopes are coordinatewise no larger than the adopted
+costs. Thus the full signed-cost bound extends to arbitrary \(\alpha\).
+
+For the unbounded core tail use the two-sign Young bound, valid for every \(G\),
+\[
+\Lambda(G)\le\frac54+\frac45\mathbb E|L|^2+
+\left(\frac45-p\right)\mathbb E|G|^2.
+\]
+Here
+\[
+\mathbb E|L|^2=\frac{1181331}{1562500},\qquad
+\frac45-p=-\frac{4936}{9455}<-\frac{13}{25}.
+\]
+If \(c^2+g^2\ge(24/25)^2\), after discarding the negative core coupling
+terms the intercept is at most
+\[
+\frac{20294544559}{14773437500}<1.37392.
+\]
+The common slope is no larger than each of the four adopted external costs.
+This proves the entire signed bound in this tail at every buffer, and closes
+all \(c\ge24/25\). Combined with the compact covers it proves (B) for every
+\(c\ge0\).
+
+The independent \(1024\)-cell benchmark gives
+\[
+S>\frac{6187723757039445}{4503599627370496}>1.37395.
+\]
+Subtracting \(1.37392\) proves the retained deficit in (B).
+
+\subsection{Remaining obstruction and replay}
+The result proves K for an internally coupled external block when its
+variance costs are paid by the core deficit and the negative B/even terms.
+It includes non-Gaussian self-interaction on a second coordinate and all
+relative phases.
+
+General two-driver K remains \textbf{[?]}. A second cubic with insufficient
+B/even energy has a positive cost in this argument. Cubic monomials mixing
+the coherent coordinate \(X\) and external coordinates are excluded by the
+independence hypothesis. A diagonal term \(\nu H(Z)\) is not appended.
+The new bound holds for all \(c\) at \(g\le41/250\), and additionally for
+\(c^2+g^2\ge(24/25)^2\) at every buffer. The separate all-buffer coherent-core
+theorem does not, by itself, transfer these signed costs through the remaining
+buffer region.
+
+The portable package contains standard-library Python and C++17 sources,
+the directed outputs and replay logs, a SHA256 manifest, this chapter, and a
+Markdown twin. Its default replay regenerates the new costs and rechecks the
+stored core covers; \texttt{--full-dependencies} additionally regenerates the
+inherited core matrices. The distinction is explicit in the logs.
+No full general-K comparison or new row envelope is claimed.

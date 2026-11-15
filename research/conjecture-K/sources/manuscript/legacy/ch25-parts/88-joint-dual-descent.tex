@@ -1,0 +1,226 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/88-joint-dual-descent.tex (file dated 2026-10-25). Only this line was added.
+% Joint-dual continuation after the IDE audit, 22 October 2026.
+\subsection{Recovering the full joint defect and descending the exact dual}
+\label{sec:joint-dual-descent}
+\paragraph{Scope.}
+The finite phase-cut obstruction in
+\S\ref{sec:phase-lift-screening-20261022} concerns its specified tests;
+it does not obstruct the pointwise original-response dual.
+The following two analytic improvements are \st{P}, with exact
+polynomial checks \st{C}. They remove the fixed loss in approximating
+the joint defect and give an explicit descent step for that dual.
+They use no new moment bound, tensor independence, or fresh buffer.
+There is no new complete row cover or endpoint.
+
+\subsubsection{A rational hierarchy with an explicit relative error}
+Use $H,B_0,P_0,R_{\rm joint},\Delta$ from
+\S\ref{sec:joint-response-defect}, and put
+\[
+ A=|L+D|+|L-D|,\qquad
+ b_0=\bigl||L+D|-|L-D|\bigr|,\qquad
+ f(z)=z^4-4B_0z^2+16l^2x^2.
+\]
+Thus $f(z)=(z^2-A^2)(z^2-b_0^2)$ and $A\ge b_0\ge0$.
+Start at $z_0=H-R_{\rm joint}\ge A$ and define
+\[
+ z_{j+1}=z_j-\frac{f(z_j)}{4z_j(z_j^2-2B_0)},\qquad
+ D_j=H-z_j.
+\]
+If the denominator vanishes, then $z_j=A=b_0$ already; keep that
+value fixed. Every iterate is rational in the original data once the
+initial regularized weight is fixed. No evaluation of either norm is
+needed in this recurrence.
+\begin{theorem}[\st{P,C}: relative-error joint-defect hierarchy]
+\label{thm:joint-defect-hierarchy}
+The iterates satisfy
+\[
+ 0\le R_{\rm joint}=D_0\le D_j\le D_{j+1}\le\Delta,
+ \qquad
+ \Delta-D_j\le\frac{169}{250}\left(\frac34\right)^j\Delta.
+\]
+In particular,
+\[
+ \boxed{\quad \frac{9999}{10000}\Delta\le D_{32}\le\Delta.\quad}
+\]
+Also $D_{40}\ge(1-10^{-5})\Delta$ and
+$D_{48}\ge(1-10^{-6})\Delta$. If $\E H<\infty$, the same estimates
+hold after expectation, and $\E D_j\uparrow\E\Delta$.
+\end{theorem}
+\begin{proof}
+For $z\ge A\ge b_0\ge0$ with positive denominator, write
+$d_f=2z(2z^2-A^2-b_0^2)=f'(z)$. The two identities
+\begin{align*}
+ d_f(z-A)-f(z)
+   &=(z-A)^2(3z^2+2Az-b_0^2),\\
+ 4f(z)-d_f(z-A)
+   &=2(z-A)\bigl((z+2A)(A^2-b_0^2)+2A(z^2-A^2)\bigr)
+\end{align*}
+give $0\le z-f(z)/d_f-A\le(3/4)(z-A)$.
+Both right-hand sides are nonnegative on the stated domain.
+If $d_f=0$, $z\ge A\ge b_0$ forces $z=A=b_0$, including zero.
+Initially $z_0-A=\Delta-R_{\rm joint}\le(169/250)\Delta$;
+induction proves the result. The numerical fractions follow from exact
+integer comparisons. Domination by $H$ justifies expectation and the
+limit. The $3/4$ one-step factor is sharp for this Newton map at
+$A=b_0=0$; no optimality is claimed for the combined prefactor $169/250$.
+\end{proof}
+This improves the approximation of the existing defect, not the size of
+the defect itself. Expanded rational degrees grow with the iteration;
+evaluation should retain the recurrence rather than expand its final
+numerator. Each $D_j$ replaces, rather than adds to, the earlier clipping
+or $h$-phase corrections.
+
+\paragraph{An absolute error budget for the fixed certified weight.}
+For an actual response, weighted Bessel and $|h|^2+|k|^2\le1$ give
+\[
+ \E\Delta\le\E H
+ \le\E C+y^T\mathsf G^{-1}y
+ \le2\E C+1-t^2.
+\]
+Indeed $D=Mk_0$, so $\E D^TM^{-1}D\le y^T\mathsf G^{-1}y$;
+and $y^T\mathsf G^{-1}y\le\|k\|_{M+P}^2\le\E C+1-t^2$.
+For the fixed weight of \S\ref{sec:projected-remote-price}, the
+already certified constant gives
+\[
+ \E C\le\frac{4253566841}{10^{10}}-2p(2787/20000)^2<\frac38.
+\]
+The omitted projected-price charge is nonnegative. Consequently
+\[
+ \boxed{\quad
+ 0\le\E\Delta-\E D_{48}
+ \le\frac74\frac{169}{250}\left(\frac34\right)^{48}
+ <1.2\cdot10^{-6}.
+ \quad}
+\]
+This absolute approximation budget is uniform in dimension and in all
+shared sectors. It is conditional only on the preceding fixed-weight
+integral certificate, not on a new cubic moment hypothesis.
+
+\subsubsection{An exact averaged quadratic update for the joint dual}
+The actual-response dual is minimized over its trial parameters.
+For any finite real parameter vector $x$, write a chosen family as
+\[
+ \mathcal B(x)=c+x^TRx-2m^Tx
+       +\E\bigl(|V_+(x)|+|V_-(x)|\bigr),\qquad R\succeq0,
+\]
+where $V_\pm(x)$ are affine complex random functions and their
+coefficient functions belong to $L^2$.
+For example, with $L=\ell Z+B$, $B\in\operatorname{ran}Q$,
+$D=U\xi-a_0$, $a_0\in\operatorname{ran}P$, take
+\[
+ \begin{split}
+ \mathcal B={}&t^2+pV-2\ell t+p\|B\|^2+\|a_0\|^2
+                  -2\xi^Ty+\E(|L+D|+|L-D|),\\
+ &V_+=L+D,\qquad V_-=L-D.
+ \end{split}
+\]
+Complex coordinates are written as real pairs. This is an upper bound
+for $\mathcal N$ for every trial point; no stationarity is assumed.
+
+For a chosen $\delta>0$, replace each norm by
+$\sqrt{|V_\pm|^2+\delta^2}$, obtaining $\mathcal B_\delta$.
+Then, uniformly in the law and the parameters,
+\[
+ \mathcal B\le\mathcal B_\delta\le\mathcal B+2\delta.
+\]
+This is deterministic regularization of the objective, not the addition
+of random noise or an independent Gaussian component.
+At a trial $x$, let
+\[
+ w_\pm=\sqrt{|V_\pm(x)|^2+\delta^2},\qquad
+ A_{\pm i}=\partial_{x_i}V_\pm,
+\]
+and define the real vector and matrix
+\begin{align*}
+ r_i&=m_i-(Rx)_i-	frac12\Re\E\left[
+       \frac{\overline{V_+}A_{+i}}{w_+}
+       +\frac{\overline{V_-}A_{-i}}{w_-}\right],\\
+ K_{ij}&=R_{ij}+\tfrac12\Re\E\left[
+       \frac{\overline{A_{+i}}A_{+j}}{w_+}
+       +\frac{\overline{A_{-i}}A_{-j}}{w_-}\right].
+\end{align*}
+All entries are finite since $w_\pm\ge\delta$.
+The visible and remote averages are taken \emph{before} forming the
+inverse matrix. Shared drivers and phases are retained.
+\begin{theorem}[\st{P}: certified joint-dual descent]
+\label{thm:joint-dual-descent}
+For every real step $d$,
+\[
+ \mathcal B_\delta(x+d)\le
+ \mathcal B_\delta(x)-2r^Td+d^TKd.
+\]
+For any $\tau>0$, choose $d=(K+\tau I)^{-1}r$. Then
+\[
+ \boxed{\quad
+ \mathcal B_\delta(x+d)\le\mathcal B_\delta(x)
+                   -r^T(K+\tau I)^{-1}r.
+ \quad}
+\]
+After $N$ such steps, every actual response with the fixed target
+moments satisfies
+\[
+ \mathcal N\le\mathcal B_\delta(x_0)
+       -\sum_{j<N}r_j^T(K_j+\tau_j I)^{-1}r_j.
+\]
+The same assertions hold at $\delta=0$ if the displayed inverse-weight
+integrals exist and the zero-set conventions are justified.
+\end{theorem}
+\begin{proof}
+Concavity of the scalar square root gives the global tangent inequality
+\[
+ \sqrt{|v+a|^2+\delta^2}
+ \le\sqrt{|v|^2+\delta^2}
+ +\frac{\Re(\bar va)}{\sqrt{|v|^2+\delta^2}}
+ +\frac{|a|^2}{2\sqrt{|v|^2+\delta^2}}.
+\]
+It follows also by squaring: with $w^2=|v|^2+\delta^2$,
+the squared upper side minus the radicand is
+$(2\Re\bar va+|a|^2)^2/(4w^2)$, and the upper side is nonnegative.
+Apply it to both affine functions, integrate, and expand $x^TRx$.
+This gives the first inequality. Replacing $K$ by $K+\tau I$ preserves
+the majorant; complete the finite quadratic and telescope.
+\end{proof}
+There is no asserted uniform convergence rate for this optimization.
+For a fixed target tensor and affine trial family, $\mathcal B_\delta$
+is convex; $r=0$ therefore certifies a global minimum within that family.
+This does not optimize over the target tensor. The unresolved universal
+quantifier lies in the coupled cubic, not in local minima of this dual.
+For rational step verification no inverse need be trusted: enclose $r$
+and $K$ and prove $2r^Td-d^TKd>0$ for a chosen rational $d$.
+Only finite integral enclosures and rational arithmetic are then used in
+the decision. For $\delta=10^{-8}$ the total regularization cost is at
+most $2\cdot10^{-8}$, paid once, not once per iteration.
+
+\paragraph{How the two improvements combine.}
+Starting at the old Gram trial point gives
+$\mathcal B(x_0)=B_{\rm quad}-\E\Delta$ after dropping the separate
+completion errors. Hence a valid combined bound is
+\[
+ \boxed{\quad
+ \mathcal N\le B_{\rm quad}-\E D_{48}+2\delta
+       -\sum_{j<N}r_j^T(K_j+\tau_jI)^{-1}r_j.
+ \quad}
+\]
+If the $Qh$ trial $B$ changes, its old completion square must not be
+retained independently. The formula above drops it and therefore has
+no such double counting. The remaining obligation is to certify these
+joint-law expectations or successful trial families uniformly on the
+surviving response set; the algebra does not provide that cover.
+
+\paragraph{Diagnostic only \st{F}.}
+In the independent Gaussian-grade test at $t=0.8456$, $e=0.04$, the
+explicit update with unregularized finite integrals lowers the same
+joint-dual trial from approximately $0.7157025135$ to $0.7131752277$
+after 1000 steps, below the design cap. All tested steps satisfy the
+predicted decrease numerically. This uses one-dimensional Rice integrals
+in ordinary floating point, not interval arithmetic. The Gaussian-grade
+family was already covered by other arguments; this is a check of the
+update mechanism, not a new theorem about general coupled cubics or a
+new endpoint.
+
+\paragraph{Replay.}
+The package \code{grothendieck-joint-contact-20261022.zip} contains a
+standard-library isolated-mode checker for the two Newton identities,
+the relative-error fractions, the norm-tangent identity and exact
+descent arithmetic. These finite checks accompany the analytic proof;
+they do not certify the floating diagnostic or the missing row cover.

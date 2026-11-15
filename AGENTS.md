@@ -205,9 +205,10 @@ without a PR (`RFC`/`WIP` labels for early feedback).
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
 4. **Documentation:** **do not write in `README.md` for now** (user, 3 November 2026): every concurrent PR used to
    add its paragraph there and they conflicted on every merge. The PR description and its comments carry the
-   context of a change; `README.md` is revised in one pass later. Never write counts of the axiom report or of
-   native facts into documents (they conflict with every concurrent PR; the lists in `data/axioms/` and
-   `scratch/Axioms.lean` are the record). If a bound, a hypothesis or the axiom report changed, update
+   context of a change. `README.md` was revised in one pass on 15 November 2026 (#374); the freeze still holds for
+   every other PR. Never write counts of the axiom report or of native facts into documents (they conflict with
+   every concurrent PR; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a bound, a
+   hypothesis or the axiom report changed, update
    `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same PR. **Never build or commit `OVERVIEW.pdf`:**
    CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
    (`merge=ours` in `.gitattributes`).
@@ -474,7 +475,10 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - Every `native_decide` fact is listed in `data/axioms/native.txt` (read by `scripts/check_axioms.py`) and covered by
   `scratch/Axioms.lean`.
 - The repository proves only the current best bounds, written as if designed from the start: no history, no
-  superseded certificates, no "v2" naming. Research material goes in `handoff/` (git-ignored).
+  superseded certificates, no "v2" naming. Research material goes in `handoff/` (git-ignored). The one exception is
+  `research/`: organised records of open problems that the user asked to keep in the repository (#375). It holds
+  text, scripts and small result files only, nothing in it is imported, built or checked, and
+  `research/README.md` gives its rules.
 - Bounds and hypotheses are stated in `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
   `docs/LEAN_DETAILS.md` (§7, step 4).
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker

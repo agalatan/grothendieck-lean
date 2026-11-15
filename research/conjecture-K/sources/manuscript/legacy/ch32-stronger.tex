@@ -1,0 +1,133 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch32-stronger.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 32). Owner: lower-bound/07-remote-spectral.tex
+\section{Stronger versions of K: what survives, what fails, and a visible-free reduction of the remote part (IDE, 20 October)}\label{ch:stronger}
+\chapsummary{\textbf{Superseded as a summary by \autoref{ch:K-state}; kept for the proofs and data.} Status: Current (IDE; one short proof \st{P}, numerics \st{F}; no endpoint). (1) K for \emph{every} $\varepsilon$ is equivalent to Gaussian domination on every variance
+sphere (rigorous, since $g$ is concave by the lemma); it holds numerically on the coherent family at all levels. (2) Lemma: $L=Z(a+b|Z|^2)$ with $a,b\ge0$ is a circular Gaussian scale mixture \st{P}. Hence the remote part of K, for
+every profile and every $\varepsilon$, follows from a \emph{visible-free} inequality (PVD) about cubic chaos alone, which reduces further to a real third-chaos inequality; both hold in every test.
+(3) Every \emph{single-scale} strengthening is false: heat-kernel, Laplace and characteristic-function domination each have a counterexample. Any proof of K must couple scales, and the $A$
+sector is the one admissible profile that fails scale by scale. Scripts: \pathref{forest-2026-10-20/} (\code{freq2.py}, \code{kvar.py}, \code{ld.py}, \code{ld2.py}, \code{kvar\_q.py},
+\code{pvd.py}).}
+
+\subsection{K for every $\varepsilon$ is Gaussian domination on spheres}
+Put $\Lambda_0(G)=\E|L+G|+\E|L-G|$ and $g(v)=2\E|L+\sqrt vW|$. By Lemma~\ref{lem:gsm}, $g(v)=\sqrt\pi\,\E\sqrt{V+v}$, which is concave \st{P}; numerically also on $[0.001,3]$. Since $S(\varepsilon)=\sup_v\{g(v)-v/\varepsilon\}$ is the Legendre
+transform of $g$, K for every $\varepsilon>0$ is equivalent to
+\[
+\textbf{(K$_{\rm all}$)}\qquad \sup\{\Lambda_0(G):\ G\in\Hc21(\C^n),\ \|G\|^2=v\}=g(v)\quad\text{for every }v\ge0,
+\]
+i.e.\ \emph{on every sphere of the cubic chaos the diffuse Gaussian maximises the two-sided distance}. This is the natural general form: it involves no price and no $\varepsilon$, and it is an
+isoperimetric-type statement. Test \st{F} (\code{kvar.py}): the coherent family $cH(X)+\alpha(T-1)X+gG$ with $c^2+|\alpha|^2+g^2=v$, on a grid of shares and phases at
+$v\in\{0.002,\dots,1.5\}$ (nine levels), has its maximum at $c=\alpha=0$ to $7\cdot10^{-16}$ at \emph{every} level.
+
+\subsection{The visible variable is a Gaussian scale mixture, so the remote part of K becomes visible-free}
+\begin{lemma}[\st{P}]\label{lem:gsm}
+Let $a,b\ge0$, $a+b>0$, and $L=Z(a+b|Z|^2)$. Then $|L|^2$ has a completely monotone density, so $L\overset d=\sqrt V\,W$ with $V\ge0$ independent of a standard complex Gaussian $W$.
+\end{lemma}
+\begin{proof}
+$Y=|L|^2=y(T)$ with $y(T)=T(a+bT)^2$ increasing, $T\sim\mathrm{Exp}(1)$. Its inverse $\tau$ satisfies $\tau'=G\circ\tau$ with $G=1/y'=1/((a+bT)(a+3bT))$, which is completely monotone (CM)
+as a product of CM functions. By induction with Faà di Bruno's formula, if $G$ is CM and $\tau'=G\circ\tau$, then $\tau'$ is CM: each term of $\frac{d^k}{dy^k}G(\tau)$ has sign
+$(-1)^j\prod_B(-1)^{|B|-1}=(-1)^k$. So $\tau$ is a Bernstein function. The density $p(y)=F(\tau(y))$ with $F=e^{-T}/y'(T)$ CM is then CM, being a CM function composed with a Bernstein
+function. Bernstein's theorem makes $p$ a mixture of exponentials, which is the stated mixture for the circular $L$. Since $\int p=1$, the mixing law of $V$ is a probability on $(0,\infty)$,
+with no atom at $0$ and no mass at $\infty$; so $V>0$ almost surely.
+\end{proof}
+\emph{Remark (referee, 20 Oct).} This is GPT's mixture representation of the visible law (\autoref{ch:rescub}, the Bernstein/Laplace form of $f(u)=\sqrt\pi\,\E\sqrt{R+u}$; also cited in
+\autoref{ch:gpt-averaged}). The proof above is a self-contained derivation, not a new result.
+\textbf{Consequences.} (i) $\phi_L(\zeta)=\E e^{i\Re(\bar\zeta L)}=\E e^{-V|\zeta|^2/4}>0$ (numerically $\min\phi_L=6\cdot10^{-7}$ at $r=36$). (ii) For every remote residual $q$ independent
+of $Z$ (the K-a setting), $\Lambda_0(q)=\E_V\,2\E|\sqrt VW+q|$. (The Rice mean $u\mapsto\E|\sqrt VW+c|$, $|c|^2=u$, is moreover a Bernstein function of $u$: its derivative is $\frac{\sqrt\pi}{4\sqrt V}{}_1F_1(\tfrac12;2;-u/V)$, a Laplace transform.)
+Mixing over $V$, the remote part of K, \emph{for every profile $a,b\ge0$ and every $\varepsilon$}, follows from the inequality below. The Bernstein property is not needed for this
+step (corrected wording, referee 20 Oct).
+\[
+\textbf{(PVD)}\qquad \E|N+q|\ \le\ \tfrac{\sqrt\pi}2\sqrt{V+\E|q|^2}\qquad\text{for every }V\ge0,\ q\in\Hc21,\ N\sim CN(0,V)\text{ independent},
+\]
+a statement about cubic chaos alone. By circular averaging, $\E|N+q|=\tfrac\pi2\E|\Re(N+q)|$, so PVD follows from its real form: for $X$ in the real third Wiener chaos and an independent
+real Gaussian $N$, $\E|N+X|\le\E|N+X_G|$, with $X_G$ Gaussian of the same variance. At $V=0$ this says that the Gaussian maximises $\E|X|/\|X\|_2$ in the third chaos; we found no
+reference for this.
+\textbf{Tests \st{F}} (\code{pvd.py}, $5\cdot10^5$--$10^6$ samples, exact Rice mean in $N$): at $V\in\{0,10^{-3},\dots,100\}$ every family satisfies PVD. That covers $H(X)$ (worst relative
+gap $-2\cdot10^{-4}$), 40 random coupled tensors with $n=2$--$6$ (worst $-2.3\cdot10^{-5}$, at $V=100$ where the gap is $O(\kappa/V^2)$), sums of $2,8,32$ Wick cubics, and the
+Laplace-violating tensor below ($-1.3\cdot10^{-4}$). The real form holds for $H_3$, $g_1g_2g_3$, $g_1H_2(g_2)$ and mixtures, with gaps $-0.29$ to $-0.013$. For the Laplace-violating
+tensor, K$_{\rm all}$ itself holds with margins $3\cdot10^{-4}$ ($v=0.005$) to $0.23$ ($v=1$) (\code{kvar\_q.py}). If PVD is proved, exact K-a holds for all profiles and all $\varepsilon$,
+which removes the $\approx10^{-5}$ remote slack. The remote part also needs no moment or Stein inputs\stale{22 Oct}{proved in Lean for the Gaussian law: \code{gaussian\_steinInputs}} at all.
+
+\subsection{Single-scale strengthenings are false}
+Write $|y|=\frac1{2\sqrt\pi}\int_0^\infty(1-e^{-t|y|^2})t^{-3/2}dt$ and $e^{-t|y|^2}=\E_\xi e^{2i\sqrt t\Re(\bar\xi y)}$. Any inequality that holds for each $t$ (heat-kernel domination),
+or for each frequency $\zeta$ (characteristic-function domination), or for each $\lambda$ (Laplace domination $\E e^{-\lambda|q|^2}\ge1/(1+\lambda\E|q|^2)$), would imply K with a
+one-scale proof. All three fail \st{F}:
+\begin{itemize}
+\item \emph{Heat kernel, $A$ sector}: for the conditionally Gaussian $A$-profile $V(T)=v^*[(1-f)+f(T-1)^2]$, $\min_t[\text{HKD gap}]=-3.9\cdot10^{-4}$, $-2.2\cdot10^{-3}$, $-4.9\cdot10^{-3}$ at
+$f=0.1,0.5,1$ (\code{freq2.py}). The $Y/W$, $B$ and $\nu(w)H$ profiles pass HKD at every $t$ tested, and the bad profile fails. \textbf{$A$ is the only admissible sector that is not
+scale-local}: it wins at some scales and loses at others, and only the $t^{-3/2}$-weighted total is negative.
+\item \emph{Characteristic function}: $\phi_{H(X)}$ takes the value $-0.127$ for some $|\zeta|\le40$, while Laplace domination for $H$ holds (minimum gap $1.9\cdot10^{-5}$).
+\item \emph{Laplace}: the random coupled cubic
+$q=(1.926-1.394i){:}X_1^2\bar X_1{:}+(-0.674+0.602i)X_1^2\bar X_2+(0.224+0.462i){:}X_1X_2\bar X_1{:}+(0.615+1.594i){:}X_1X_2\bar X_2{:}$ (excess kurtosis $24$) violates it for
+$\lambda\gtrsim100$ by $7$--$15$ standard errors ($6\cdot10^7$ samples, \code{ld2.py}). Its density at $0$ is about $3\%$ below the Gaussian's. Yet K$_{\rm all}$ and PVD hold for it with
+wide margins. A simpler, \emph{rigorously certified} counterexample was found independently (\autoref{ch:K-state}, cold-start note): $H=z[(|z|^2-2)+i(|w|^2-1)]/\sqrt3\in\Hc21(\C^2)$
+has $\E e^{-30|H|^2}\in[0.0305945,0.0306148]<1/31$, by an exact adaptive rectangle bound with 22{,}184 cells.
+\end{itemize}
+\textbf{Moral.} A proof of K must couple scales: semigroup or heat-flow comparisons at a fixed time, and Fourier or Laplace positivity, cannot work as stated. The remote part can still be
+reduced to PVD. Exactly (referee, verified to $10^{-13}$), $\tfrac{\sqrt\pi}2\sqrt{V+v}-\E|N+q|=\frac1{2\sqrt\pi}\int_0^{1/V}\lambda^{-3/2}(1-\lambda V)^{1/2}\bigl[\E e^{-\lambda|q|^2}-\tfrac1{1+\lambda v}\bigr]d\lambda$,
+so PVD at level $V$ follows from Laplace domination on $\lambda<1/V$ alone, the window where it holds. (Corrected 20 Oct; an earlier version gave a wrong weight.) The coupled part has one non-scale-local
+sector, $A$, which is exactly where every special-case proof needed its own machinery (\autoref{ch:coherent-wick-a}, \autoref{ch:forest}).
+
+\subsection{PVD reduces to a one-parameter Stein-kernel inequality (BNC)}\label{sec:bnc}
+\begin{proposition}[\st{P}]\label{prop:bnc}
+Let $X$ lie in the real Wiener chaos of order $k\ge1$, $\sigma^2=\E X^2$, $\Gamma=\|DX\|^2/k$ (so $\E\Gamma=\sigma^2$), and let $\tau(x)=\E[\Gamma\mid X=x]$ be its Stein kernel. Suppose
+\[
+\textbf{(BNC)}\qquad \E\bigl[(\Gamma-\sigma^2)\,e^{-sX^2}\bigr]\le0\quad\text{for every }s\ge0,
+\qquad\text{equivalently}\quad \E[X\Phi_s(X)]\le\sigma^2\,\E[e^{-sX^2}],\ \ \Phi_s(x)=\int_0^xe^{-sy^2}dy .
+\]
+Then $\E|N+X|\le\E|N+X_G|$ for every centred Gaussian $N$ independent of $X$, where $X_G$ is a centred Gaussian with variance $\sigma^2$. In particular real PVD holds, and with it PVD.
+\end{proposition}
+\begin{proof}
+Put $Y_\theta=N+\cos\theta\,X+\sin\theta\,N'$, with $N'\sim N(0,\sigma^2)$ independent, and $\varphi(\theta)=\E|Y_\theta|$. Gaussian integration by parts in $N'$, and Malliavin integration
+by parts $\E[Xf(Y)]=\cos\theta\,\E[f'(Y)\Gamma]$ in the chaos variables, give $\varphi'(\theta)=\sin2\theta\,\E[\delta_0(Y_\theta)(\sigma^2-\Gamma)]$. Integrating out the Gaussian
+part $N+\sin\theta N'$, of variance $V+\sin^2\theta\,\sigma^2$, turns $\delta_0(Y_\theta)$ into a positive multiple of $e^{-sX^2}$ with $s=\cos^2\theta/(2(V+\sin^2\theta\sigma^2))$. So BNC
+gives $\varphi'\ge0$ and $\varphi(0)\le\varphi(\pi/2)$. The equivalent form follows from $\E[X\Phi_s(X)]=\E[\tau\,e^{-sX^2}]$ (Stein's identity).
+\end{proof}
+In Laplace form: with $m(t)=\E e^{-tX^2}$ and the ratio $R(t)=m(t)\sqrt{1+2\sigma^2t}$ to the Gaussian, BNC reads $w(s)(R(s)-1)+\int_0^s|w'|(R-1)\ge0$, $w(t)=\sqrt{(1+2\sigma^2t)/t}$. It is a
+\emph{weighted} Laplace-ratio inequality, so it survives the large-$\lambda$ failures of plain Laplace domination. \textbf{Tests \st{F}} (\code{bnc.py}): an adversarial Nelder--Mead maximisation
+of the \emph{bump-normalised} gap $S_s/\E e^{-sX^2}$ over real third-chaos tensors with $n\le4$ coordinates stays negative, by at least $0.014\sigma^2$ on the tested
+$s$-grid. (The unnormalised $\sup_sS_s$ is $0$ for every $X$, since $S_0=0$; corrected 20 Oct.) The referee's independent search found the worst bump-normalised gap to be $-0.036$, over 150
+random tensors per $n=2$--$5$ and $s\le3000$. The normalised value $\E[\tau-\sigma^2\mid\text{bump}]$ at
+$s\to\infty$, which is $\tau(0)-\sigma^2$, is $-0.22\sigma^2$ for $H_3$ (exactly $\tau(0)=0.774$) and $-0.32\sigma^2$ for the real part of the Laplace-violating cubic. The adversarial maxima
+of $\E|X|/\|X\|_2$ (\code{pvd\_opt.py}) are $0.69$ (real, $n=5$) and $0.80$ (complex, $n=4$), against $0.798$ and $0.886$, increasing with $n$ toward the diffuse limit. \textbf{BNC is the
+single lemma behind the remote part of K}: with Lemma~\ref{lem:gsm} it gives exact K-a for every profile $a,b\ge0$ and every $\varepsilon$. A natural attack uses
+$\Gamma-\sigma^2=\frac1{2k}(2k+L)(X^2-\sigma^2)$: BNC then compares $2k\,|\mathrm{Cov}(X^2,e^{-sX^2})|$ with $\E[(-X\partial_x e^{-sX^2})\|DX\|^2]$.
+
+\subsection{BNC: exact reformulations, partial results, and why it is a spread (not moment) statement}\label{sec:bnc-forms}
+All statements in this section are \st{P} unless marked; $X$ is in the real chaos of order $k$ (odd, so $X\overset d=-X$ and $\kappa_3=0$), $\tau$ is its Stein kernel and $\sigma^2=\E X^2=\E\tau(X)$.
+\begin{enumerate}
+\item \emph{Smoothing form.} Write out the Gaussian-weighted integral in closed form. BNC holds iff, for every $r>0$,
+$\E|X+\sqrt rZ|\le\sqrt{2/\pi}\,\frac{\sigma^2+r}{\sqrt r}\,\E e^{-X^2/(2r)}$, i.e.\ iff $\E|Y|\le2\Var(Y)\,p_Y(0)$, i.e.\ iff $\tau_Y(0)\le\Var(Y)$ for every Gaussian smoothing
+$Y=X+\sqrt rZ$. The binding case is $r\to0$: $\tau_X(0)\le\sigma^2$, the Stein kernel at the origin is at most its mean. All adversarial maxima sit at the largest $s$, i.e.\ at this case.
+\item \emph{Nodal form} (coarea and the divergence identity $\int_{\{X=0\}}\gamma|\nabla X|=\tfrac k2\E|X|$). $\tau_X(0)\le\sigma^2$ iff $\E\bigl[|\nabla X|^2\bigm|X=0\bigr]\le\E|\nabla X|^2$: on
+the nodal set the energy is at most its mean. By Cauchy--Schwarz on the nodal set, it suffices that the Gaussian nodal perimeter satisfies $\int_{\{X=0\}}\gamma\ge\frac{\sqrt k}2\,\E|X|/\sigma$.
+This is asymptotically tight near the Gaussian, where $|\nabla X|$ concentrates. Gaussian isoperimetry, which gives only the hyperplane value $\varphi(0)$, is too weak by a factor of $\sqrt k$.
+\item \emph{Rotation-process form} (ZCV). Put $F(\theta)=X(x\cos\theta+y\sin\theta)$, a stationary random trigonometric polynomial with frequencies $k,k-2,\dots,1$; for $k=3$,
+$F=2\Re(e^{3i\theta}Q_0+e^{i\theta}Q_1)$ with $\E|Q_0|^2=\sigma^2/8$ and $\E|Q_1|^2=3\sigma^2/8$. Then $\tau_X(0)\le\sigma^2$ iff $\E[F'(0)^2\mid F(0)=0]\le\E F'(0)^2$: \emph{at its zeros the
+process is no faster than on average}. Kac--Rice gives $\E\#\{\text{zeros on }[0,2\pi)\}=\sqrt{8\pi}\int_{\{X=0\}}\gamma$. For one frequency with amplitude $A$, ZCV is exactly
+$\E[A^2]\,\E[1/A]\ge2\,\E A$. Rayleigh amplitudes (the Gaussian case) give equality, while a fixed amplitude violates it by a factor $2$. So BNC says that the frequency amplitudes of a chaos
+variable are \emph{at least as spread as Rayleigh}. This is a small-ball and spread property, not a moment property: a symmetric two-ring law with kurtosis $>3$ violates BNC.
+\item \emph{Cases proved.}
+\begin{itemize}
+\item Conditionally Gaussian $X=\sqrt VZ$, for example any chaos linear in some Gaussian block. By monotone likelihood ratio, $\tau(x)=\E[V\mid X=x]$ is nondecreasing in $|x|$, and
+Chebyshev's association inequality then gives even the interval form SEI below.
+\item Near the Gaussian: by symmetry the gap is $\approx\kappa_4/(6\lambda)>0$ in the $\tau$ form, and $\approx\sqrt{2/(\pi\lambda)}\,\kappa_4/(6\lambda)$ in the $\E|Y|$ form. The referee checked
+this on $H_3$, with ratios $0.983$, $0.998$, $0.9998$ at $\lambda=3\cdot10^4,10^5,10^6$; a first version had the factor $\sqrt{\pi/(2\lambda)}$. This comes from the Edgeworth form $\tau(x)-\sigma^2\approx\frac{\kappa_4}6(x^2-1)$ with $\sigma=1$.
+\end{itemize}
+\item \emph{Interval form (SEI) and sums.} Define SEI by $\E[(\tau-\sigma^2)\,1\{|X|<a\}]\le0$ for all $a$; it implies BNC by the layer-cake formula. Numerically \st{F}, $\E[\Gamma\mid|X|<a]/\sigma^2$
+stays in $0.07$--$0.80$ for every width tested, for $H_3$, $H_3(g_1)+H_3(g_2)$, $H_3(g_1)+3g_1H_2(g_2)$ and $g_1g_2g_3$. The single Wick cubic is the tightest at $\approx0.77$, and the
+ratio is \emph{not} monotone in $a$ (it dips near the critical values). Closure: if $X_1$ satisfies SEI and $X_2$ is independent with a symmetric unimodal density, then $X_1+X_2$ satisfies
+SEI. The reason is that $h*p_{X_2}$ is symmetric unimodal for every symmetric unimodal $h$ (Wintner). Wick cubics do not have unimodal densities: $H_3$ has singular peaks at $\pm0.816$.
+\end{enumerate}
+\textbf{Status.} BNC is open in general. The missing ingredient is a quantitative spread lemma for the frequency amplitudes, or equivalently for the energy on the nodal set, of a polynomial
+chaos.
+
+\subsection{What we propose to prove, in order}
+\begin{enumerate}
+\item \textbf{BNC on the real third chaos} (Proposition~\ref{prop:bnc}); it implies real PVD at every $V$. By \autoref{ch:shared-nongaussian-new} (subsection ``Gaussian-buffer closure does not add a separate conjecture'': $q+\sqrt vG_N$ with
+$G_N=N^{-1/2}\sum H(X_j)$ is again in $\Hc21$ and tends in law to $q+\sqrt vG$), \textbf{PVD at $V=0$} is \emph{equivalent} to PVD at every $V$, not weaker (corrected 20 Oct). So the
+whole remote part of K reduces to the sharp dimension-free inequality $\E|q|\le\frac{\sqrt\pi}2\|q\|_2$ on $\Hc21$ (dually, $\|P_{2,1}\|_{L^\infty\to L^2}=\sqrt\pi/2$, the value of
+$P_{1,0}$), and similarly on the real third chaos: $\E|X|\le\sqrt{2/\pi}\|X\|_2$ on the real third chaos. Possible routes: the Malliavin formula $\E|X|=\tfrac23\E[\|DX\|^2\delta_0(X)]$, which needs the
+$\|DX\|^2$-weighted density at $0$ to be at most the Gaussian one; or a convex-order argument along the Ornstein--Uhlenbeck interpolation. Then PVD for all $V$.
+\item \textbf{K$_{\rm all}$ for the coherent $A$+$B$ junta} at every variance level, extending \autoref{ch:coherent-wick-a}'s one-level theorem. Lemma~\ref{lem:gsm} lets the visible
+variable be written as $\sqrt VW$, but the sector weights $T-1$ and $T$ then depend on $V|W|^2$, so the coupling remains. It is the only genuinely two-scale part.
+\end{enumerate}
