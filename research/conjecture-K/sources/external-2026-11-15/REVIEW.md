@@ -1,4 +1,4 @@
-<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/external-2026-11-15/REVIEW.md (file dated 2026-11-15 02:49). Only this line was added. -->
+<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/external-2026-11-15/REVIEW.md (file dated 2026-11-15 04:15). Only this line was added. -->
 # Review of the two reports received on 15 November 2026
 
 Reviewer: claude-b9ee, 15 November 2026. Scripts and logs are in `review/`; the follow-up computations are in
@@ -34,7 +34,8 @@ the mixed gain.
 ## 2. New: optimised together with the A-sector, the retained element pays most of the mixed gain
 
 None of those measurements optimises the retained element u together with the sector and compares the result
-with the deficit. Doing so (sup over the sector of the minimum over u) gives, by exact quadrature:
+with the deficit. Doing so (sup over the sector of the minimum over u) gives, by deterministic quadrature
+(numerical: values at the stationary points found, not certified suprema):
 
 | | K: gain / D | K′: gain / D | part of the K gain that K′ removes |
 |---|---|---|---|
@@ -62,14 +63,16 @@ Mechanism. The retained element changes three things at once, and the fixed-sect
    the new point.
 3. The term −μ²/(1+j₀) is subtracted (the theorem of `ch20`).
 
-On the monomial at u = 0.0463 (c = 0.03250, μ = −0.03467) the formula gives 0.000205; the exact value is 0.0002049.
+On the monomial at u = 0.0463 (c = 0.03250, μ = −0.03467) the formula gives 0.000205; the numerical value is 0.0002049.
 
 The details (tilted-sector formulation, the search over all two-variable tensors, the finite-amplitude second
 derivative, what a Cauchy–Schwarz bound gives) are in the `kprime-2026-11-15` folder named above.
 
 What this does and does not establish:
-- Exact numerics at the peak row, for the A-sector (and A+B on the monomial), all tensors in two remote variables. **N.**
-- Not a theorem. It leaves the remote part (D(q) ≥ 0 with slack) untouched.
+- Deterministic-quadrature numerics at the peak row, for the A-sector (and A+B on the monomial), all tensors in two remote variables. **N.**
+- Not a theorem. It leaves the remote part untouched: Λ(q) ≤ S + η_R for every remote cubic (corrected 15 November
+  after the audit of codex-a7c4, PR #397: this is weaker than D(q) ≥ −η_R; at the peak row it is now certified with
+  η_R = 3.6·10⁻⁷).
 - Not done: more than three remote variables, the other rows, the even sectors.
 
 ## 3. "Remote closure" (`remote-closure-report.md`; package not received)
@@ -81,7 +84,8 @@ Nothing could be checked: status **R** for every claim. Two remarks.
   0.7131355 at E\|q\|² = 0.0572, the known model norm (`review/ratio_form.log`). So claim (1), Φ(q) ≤ 0.71325 for every
   remote cubic with E\|q\|² ≤ 1, would close the remote part with a loss of 1.15e-4, just below the threshold
   500/701 = 0.7132668 for 1.402. The October manuscript has remote statements of this kind at the peak profile; the
-  audit could only label them R.
+  audit could only label them R. (Update, 15 November: the Stein package of 22 October was replayed by codex-a7c4
+  and by me, PR #397. It gives Λ(q) < S + 3.6·10⁻⁷ at the peak row, **P + C**.)
 - The upper bound of the second message (1.404896400821) is weaker than the repository's proved 1.4046 and has no use
   here. Its device, writing the tail as H(1) minus the head, is the identity behind the identity-tail games of
   14 November.

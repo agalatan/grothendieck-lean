@@ -1,0 +1,14 @@
+{"dependency": {"claim": "C GLOBAL PROFILE RANGE", "statement": "-1/40 < h_(3/5)(v) < 253/1000 for all v>=0", "compact_boxes": 158, "content_squared_u<=.0463": "[0.00089456230000000000000000000000000000000000000000 +/- 7.64e-51]", "content_norm_bound": "3/100", "seconds": 165.65294408798218}}
+{"progress": 25, "total": 300, "seconds": 52.48249912261963}
+{"progress": 50, "total": 300, "seconds": 83.03976488113403}
+{"progress": 75, "total": 300, "seconds": 101.40044593811035}
+{"progress": 100, "total": 300, "seconds": 120.20590400695801}
+{"progress": 125, "total": 300, "seconds": 136.59105396270752}
+{"progress": 150, "total": 300, "seconds": 151.74049401283264}
+{"progress": 175, "total": 300, "seconds": 164.7275938987732}
+{"progress": 200, "total": 300, "seconds": 182.38194513320923}
+{"progress": 225, "total": 300, "seconds": 198.17536520957947}
+{"progress": 250, "total": 300, "seconds": 209.7815010547638}
+{"progress": 275, "total": 300, "seconds": 221.2081961631775}
+{"progress": 300, "total": 300, "seconds": 233.75291109085083}
+{"claim": "Gaussian-probe dual certificate", "result": {"lambda": "[0.26000000000000000000000000000000000000000000000 +/- 5.21e-49]", "k": "[0.098000000000000000000000000000000000000000000000 +/- 1.02e-49]", "u_max": "[0.046300000000000000000000000000000000000000000000 +/- 6.94e-50]", "compact_expectation": "[0.0077656199906940009590550889768775984104372740 +/- 3.62e-47]", "tail": "[4.4194402629532119082008295680415815619928818758e-8 +/- 5.05e-55]", "content_norm_upper": "[0.0198036641850966304911741709851732788262528939 +/- 6.50e-47]", "passes_1_over_50": true, "seconds": 402.3387849330902, "dependency_replayed_here": true}}

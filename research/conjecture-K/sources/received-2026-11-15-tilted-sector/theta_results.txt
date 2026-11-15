@@ -1,0 +1,12 @@
+C: angular candidate inclusions and both matrix inequalities passed.
+left matrix: [0.74365962957451959,0.74365962957538468] [0.60722634698712453,0.60722634698797107] [0.015255833373980854,0.015255833374020433] 
+right matrix: [0.74532224849003393,0.74532224849092355] [0.63173384525908439,0.63173384525995769] [-0.001410996357076238,-0.0014109963570756289] 
+C: exterior |w|>=23/4 and all y>=5 tails passed.
+progress visited=3000 accepted=1494 pending=13 sec=3.3
+progress visited=7000 accepted=3496 pending=9 sec=7.9
+progress visited=8000 accepted=3996 pending=9 sec=9.1
+progress visited=10000 accepted=4995 pending=11 sec=11.1
+progress visited=11000 accepted=5496 pending=9 sec=12.2
+progress visited=12000 accepted=5996 pending=9 sec=13.3
+PASS C: all 256 scalar envelope triples certified; accepted=6168 visited=12335 maxdepth=24 time=13.59 sec
+P+C conclusion with the accompanying projection/envelope proof: Theta(3/10) <= 3/4 at s=3/5.

@@ -1,0 +1,77 @@
+Agent-ID: codex-6e2b
+Date: 15 November 2026
+verify.py SHA256: 8d889c26e7e41d7da5ce12a1991799293d24b5c7f59b5d427ddc59c7e733620d
+
+COMMAND: python3 -I verify.py
+EXIT: 0
+Agent-ID: codex-6e2b
+C checks: exact rational arithmetic; no sampled inequalities.
+pi [3.141592653589793, 3.141592653589794]
+C1 circular majorant: 32 closed intervals cover [0,1]; all Bernstein coefficients positive.
+C1 minimum Bernstein coefficient [0.001366753487070, 0.001366753487071]
+C2 I0 [2.863947582582862, 2.863947582582863]
+C2 I1 [1.193675717354603, 1.193675717354604]
+C2 I2 [1.527398493771395, 1.527398493771396]
+C2 j0 [1.431973791291431, 1.431973791291432]
+C2 g0 [-0.835135932614130, -0.835135932614129]
+C2 J_s [1.030689533100970, 1.030689533100971]
+C2 local cost k(3/5) [0.446707057881032, 0.446707057881033]
+C2 global u coefficient (3/5)I0 [1.718368549549717, 1.718368549549718]
+C2 global coercivity P-(3/5)J_s [0.343638104570935, 0.343638104570936]
+C3 certified constants for REPORT section 2 proof: gain <= (1074/625)u - (859/2500)||r||^2.
+C3 rational corollary of that proof: u<=1/85920 gives s=3/5, kappa=0, eta=1/50000.
+C3 elementary maximizing-radius bound at u=0.0463 [0.481200477850537, 0.481200477850538]
+C4 M=E|T-2/5| [0.740640092071278, 0.740640092071279]
+C4 P-3/4 [0.212051824431517, 0.212051824431518]
+C4 tail(R=.3, sigma=.085) [0.000003597353671, 0.000003597353672]
+C4 simplified certified tail [0.000003642815562, 0.000003642815563]
+C4 ONLY IF O-A1/O-A2/O-B hold: kappa=1/2, eta=19/10^6.
+C4 tail sensitivity (analytic upper bounds, not actual errors):
+  sigma=17/200 [0.000003597353671, 0.000003597353672]
+  sigma=9/100 [0.000013880672593, 0.000013880672594]
+  sigma=1/10 [0.000115776181637, 0.000115776181638]
+C5 structural coefficient upper bound [847.854315911052997, 847.854315911052998]
+C5 certified coefficient 848 for REPORT section 3 analytic proof; this script alone does not check that proof.
+C5 delta<=3/848000000 implies content^2<=3/10^6.
+PASS: every C assertion in this script. No full tilted-sector proof claimed.
+
+COMMAND: /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I verify.py --numerical
+EXIT: 0
+Agent-ID: codex-6e2b
+C checks: exact rational arithmetic; no sampled inequalities.
+pi [3.141592653589793, 3.141592653589794]
+C1 circular majorant: 32 closed intervals cover [0,1]; all Bernstein coefficients positive.
+C1 minimum Bernstein coefficient [0.001366753487070, 0.001366753487071]
+C2 I0 [2.863947582582862, 2.863947582582863]
+C2 I1 [1.193675717354603, 1.193675717354604]
+C2 I2 [1.527398493771395, 1.527398493771396]
+C2 j0 [1.431973791291431, 1.431973791291432]
+C2 g0 [-0.835135932614130, -0.835135932614129]
+C2 J_s [1.030689533100970, 1.030689533100971]
+C2 local cost k(3/5) [0.446707057881032, 0.446707057881033]
+C2 global u coefficient (3/5)I0 [1.718368549549717, 1.718368549549718]
+C2 global coercivity P-(3/5)J_s [0.343638104570935, 0.343638104570936]
+C3 certified constants for REPORT section 2 proof: gain <= (1074/625)u - (859/2500)||r||^2.
+C3 rational corollary of that proof: u<=1/85920 gives s=3/5, kappa=0, eta=1/50000.
+C3 elementary maximizing-radius bound at u=0.0463 [0.481200477850537, 0.481200477850538]
+C4 M=E|T-2/5| [0.740640092071278, 0.740640092071279]
+C4 P-3/4 [0.212051824431517, 0.212051824431518]
+C4 tail(R=.3, sigma=.085) [0.000003597353671, 0.000003597353672]
+C4 simplified certified tail [0.000003642815562, 0.000003642815563]
+C4 ONLY IF O-A1/O-A2/O-B hold: kappa=1/2, eta=19/10^6.
+C4 tail sensitivity (analytic upper bounds, not actual errors):
+  sigma=17/200 [0.000003597353671, 0.000003597353672]
+  sigma=9/100 [0.000013880672593, 0.000013880672594]
+  sigma=1/10 [0.000115776181637, 0.000115776181638]
+C5 structural coefficient upper bound [847.854315911052997, 847.854315911052998]
+C5 certified coefficient 848 for REPORT section 3 analytic proof; this script alone does not check that proof.
+C5 delta<=3/848000000 implies content^2<=3/10^6.
+PASS: every C assertion in this script. No full tilted-sector proof claimed.
+
+N: independent monomial diagnostic, no interval error bounds.
+  order=12, panels=22, radial_nodes=264
+  u=0.0200 D=0.00384984756076 r=0.0145017839691 gain=9.73307832473e-05 gain/D=0.0252817239 content^2/D=0.0117103292
+  u=0.0463 D=0.0120634130517 r=0.0247919591328 gain=0.000290155455423 gain/D=0.0240525177 content^2/D=0.0113582815
+  order=20, panels=30, radial_nodes=600
+  u=0.0200 D=0.00384984782315 r=0.0145012044817 gain=9.73295833222e-05 gain/D=0.0252814105 content^2/D=0.0117074626
+  u=0.0463 D=0.0120634221797 r=0.0247959313675 gain=0.000290165924704 gain/D=0.0240533673 content^2/D=0.011357608

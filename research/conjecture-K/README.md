@@ -14,8 +14,8 @@ conjecture is **open**.
 | [`STATUS.md`](STATUS.md) | the consolidated state of knowledge: every statement with its status (P / C / N / R / open / refuted), exact scope and source; the list "tried and failed" |
 | [`MONOGRAPH.md`](MONOGRAPH.md) | the monograph of 5 and 6 November, verbatim, preceded by "Errata and updates (15 November 2026)" |
 | [`INVENTORY.md`](INVENTORY.md) | what was deliberately left outside the repository (zips, large certificates, logs, binaries), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working documents (audit, log, digest, manuscript chapters, notes received, prompts, the reports of 15 November with their review, the numerical follow-up of that day) |
-| `code/` | the scripts behind the numerical results still relied on, and small result files (for the follow-up of 15 November also its small logs and search records) |
+| `sources/` | verbatim copies of the working documents (audit, log, digest, manuscript chapters, notes received, prompts, the reports of 15 November with their reviews, the numerical follow-up of that day) |
+| `code/` | the scripts behind the numerical results still relied on, and small result files (for the follow-up of 15 November also its small logs and search records; for the report of that day on the tilted sector its verifiers, their inputs, and the scripts and logs of its reviews) |
 
 Status labels (defined in [`../README.md`](../README.md) and at the top of `sources/audit-2026-11-13/REPORT.md`):
 **P** re-derived independently, **C** exact or interval checker replayed independently, **N** numerical only,
@@ -61,8 +61,12 @@ In words: the supremum of Λ over the cubic chaos is attained by a Gaussian adve
   with its first-chaos element optimised together with the shells: a margin of about 6 for K and about 40 with the
   penalty retained, on what was tested (remote cubics in one, two and three variables). The ratio for Λ̂ rises
   slowly with the number of remote variables (0.017, 0.021, 0.023 at ‖q‖² = 0.0463) and its limit is not known.
-  Nothing of this is proved, and the remote part is the same statement for both
-  (`sources/numerics-kprime-2026-11-15/README.md`; `STATUS.md`, section 11 (c)).
+  These numbers are not bounds, and the remote part is the same statement for both
+  (`sources/numerics-kprime-2026-11-15/README.md`; `STATUS.md`, section 11 (c)). A proof of the shell inequality for
+  Λ̂ and the A shell was attempted the same day, at a fixed tilt, in a report that its author revised four times. Its
+  fifth version, reviewed, proves that the gain of the A shell is at most a constant times the squared tilted content,
+  at every amplitude and in every dimension, and leaves one inequality open: that content against the deficit
+  (`sources/received-2026-11-15-tilted-sector/`; `STATUS.md`, section 11 (e)).
 - **Response-restricted forms:** only G that come from actual responses (f, g) matter. At ε=1891/2500, response feasibility gives
   remote energy ‖q‖²<0.046266 and total ‖G‖²<0.081884 for t≥0.84. The stronger total cap 0.071981
   needs t≥0.8456 (STATUS 2.12a, independently re-derived and exactly checked). Such regional cuts
@@ -124,7 +128,7 @@ The statuses include the follow-up audit of 15 November; details and scopes are 
 | **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1, hence 3.6·10⁻⁷ at the peak; needs mutual independence of z₁,q,U and ‖q‖² + ‖U‖² ≤ ℓ²). The stronger all-amplitude cost form is now **P + C** on the entire application box, with cost at least 1/152 and no energy cutoff (STATUS 4.2). |
 | **L3** core with shared drivers, outside the rectangle R | w ≥ 0.01125 or u ≤ 0.00551 + 0.319w ⇒ K_η, η = 10⁻⁴ | **R** (proved and certified according to the manuscript and the monograph; not re-audited; three slightly different cutoffs for w are in use). The fourth-moment method is saturated there. |
 | **L4** core on R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
-| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). |
+| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.025·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). For Λ̂ and the A shell at the tilt 3/5 (**P + C**, reviewed, 15 November): the remainder of the shell has a global quadratic bound, so its gain is at most ‖c‖²/0.312 at every amplitude, with no box and no localisation, where c is a tilted content; open is the comparison ‖c‖² ≤ (3/10)·D₊ + 3/500000 (`STATUS.md`, 11.39 to 11.44). Numerically (**N**) the same kind of global bound holds for K jointly in A and B, and with z₁Q and z̄₁P added (11.45). |
 | **L6** row envelope and consumption | A fixed-ε row cover with exact thresholds, coverage of all response regions, then a Lean theorem consuming K_η | **Incomplete.** The single peak row now has an exact conditional central component: all-sector K_η with η≤10⁻⁴ covers t∈[.84,.851], leaving >6.12·10⁻⁷ margin (STATUS 8). Complementary regions and the all-sector premise remain; no `lower_of_K` or `KHyp` exists. A full profile box, including the σ*=0 corner, is needed only if the chosen cover uses it. |
 
 The audit's one-line summary: the record contains substantial valid mathematics, but the remaining distance is a
@@ -155,7 +159,10 @@ next statement to attack.
      `sources/external-2026-11-15/REVIEW.md` (what the report of 15 November proves, and what the October manuscript
      already had) and `sources/numerics-kprime-2026-11-15/README.md` (the retained element optimised together with
      the sectors: margin about 6 for K and about 40 with the penalty retained, on one to three remote variables;
-     numerical). The
+     numerical). Then `STATUS.md`, section 11 (e), and `sources/received-2026-11-15-tilted-sector/`: `REVIEW_3.md`
+     first (where the proof attempt for the A shell of Λ̂ stands, and what is left), then `REPORT.md` (the fifth
+     version) with `secant_proof.md`, `secant_content_proof.md` and `secant_assembly.md`; for the history
+     `REVIEW.md` with `first-version/REPORT.md`, and `REVIEW_2.md` with `REPORT_localization_history.md`. The
      October side: `sources/manuscript/legacy/ch20-pinned-gate.tex`, `ch17-crossbound.tex`, `ch25-parts/` and
      `sources/october-handoff/weak-k-2026-10-15/`;
    - the response side: the digest §1, `sources/manuscript/legacy/ch25-parts/`;
@@ -174,7 +181,10 @@ next statement to attack.
 | `research-degree5/kscan-2026-11-13/` | `sources/numerics-kscan-2026-11-13/` (README), `code/kscan-2026-11-13/` |
 | `research-degree5/tailgames-2026-11-14/` | `sources/numerics-tailgames-2026-11-14/` (README), `code/tailgames-2026-11-14/` |
 | `research-degree5/external-2026-11-15/` (reports, package, `REVIEW.md`, `review/`) | `sources/external-2026-11-15/` |
-| `research-degree5/kprime-2026-11-15/` | `sources/numerics-kprime-2026-11-15/` (README), `code/kprime-2026-11-15/` (scripts, logs, `search/`) |
+| `research-degree5/kprime-2026-11-15/` | `sources/numerics-kprime-2026-11-15/` (README), `code/kprime-2026-11-15/` (scripts, logs, `search/`, `search3/`) |
+| `research-degree5/gpt-tilted-sector-2026-11-15/` | `sources/received-2026-11-15-tilted-sector/` (reports, notes, result files), `code/tilted-sector-2026-11-15/` (verifiers, their inputs, probes). The folder held one version at a time: the copies are of the fifth version (05:17), with the fourth under the name `REPORT_localization_history.md` and the first under `first-version/`; the verifiers of the first, second and fourth versions are in subfolders of `code/tilted-sector-2026-11-15/`. What else the folder held: `INVENTORY.md`, section 4 |
+| `research-degree5/gpt-tilted-sector-2026-11-15-review/` | `sources/received-2026-11-15-tilted-sector/` (`REVIEW.md`, `REVIEW_2.md`, `REVIEW_3.md`), `code/tilted-sector-2026-11-15/` (scripts and logs) |
+| `research-degree5/prompts-2026-11-15/` | `sources/prompts/` |
 | `research-degree5/d1/` | `sources/d1/` (notes), `code/d1/` (scripts) |
 | `research-degree5/k5/` | `sources/k5-2026-11-04/` (RESULTS.md), `code/experiments-2026-11-04/k5/` |
 | `research-degree5/e*.py`, `shell_content.py`, `spike_content.py` | `code/experiments-2026-11-04/` |
@@ -329,11 +339,11 @@ Reference for every status in `STATUS.md`. Read `REPORT.md` first. The folder ho
 
 The reports as received (transcripts), the package of the first one, and the review by claude-b9ee of the same day. Verification record: see REVIEW.md in this folder; its scripts and logs are in `review/`. The package of the second report was not received. Statuses: `STATUS.md`, section 11 (a) and (b).
 
-16 files, 52 KB.
+16 files, 53 KB.
 
 | file | size | contents |
 |---|---:|---|
-| `REVIEW.md` | 7.8 KB | Verification record of the two reports (claude-b9ee, 15 November): what was re-derived, replayed and tested for each item, what the October manuscript already had, the first numbers with the retained element optimised together with the A-sector (N), remarks on the remote-closure report, next steps. |
+| `REVIEW.md` | 8.3 KB | Verification record of the two reports (claude-b9ee, 15 November): what was re-derived, replayed and tested for each item, what the October manuscript already had, the first numbers with the retained element optimised together with the A-sector (N), remarks on the remote-closure report, next steps. The copy is of 04:15: its author corrected the wording after the audit of codex-a7c4 ("numerical" for "exact", the remote part as Λ(q) ≤ S + η_R) and added that the remote cap is now certified at the peak row. |
 | `projection-attack-package/README.txt` | 1014 B | The package's own summary and scope ("rigorous partial progress; no improved numerical Grothendieck bound"). |
 | `projection-attack-package/proofs.tex` | 14 KB | The written proofs: penalised support duality and the row with Λ̂ (Theorem 1), Lipschitz lemma, global retained-projection bound (Theorem 3), local Schur-complement matrix (Theorem 4), a necessary maximiser condition, the counterexample (Proposition 5). |
 | `projection-attack-package/results.txt` | 1.4 KB | Output of the package's verifier as received (Arb enclosures of j₀, g₀, d₀, the matrix entries, the counterexample integral). |
@@ -352,13 +362,58 @@ The reports as received (transcripts), the package of the first one, and the rev
 
 ### `sources/numerics-kprime-2026-11-15/`: the retained first-chaos penalty optimised together with the sectors (claude-b9ee, 15 November 2026)
 
-The numerical follow-up of the review. The copy shows the write-up as it stood at the time given in its provenance line, which its author calls final. Some restarts of the three-variable search (its section 8) were still running then; if they change a number, its author edits that number. Statuses: `STATUS.md`, section 11 (c).
+The numerical follow-up of the review. The copy shows the write-up as it stood at the time given in its provenance line (15 November, 05:01): its author corrected the wording after the audit of codex-a7c4, put the final state of the three-variable search into section 8 and added section 12. Statuses: `STATUS.md`, section 11 (c), and 11.45.
 
-1 files, 17 KB.
+1 files, 23 KB.
 
 | file | size | contents |
 |---|---:|---|
-| `README.md` | 17 KB | Write-up of the follow-up: setting, what the record has, the tilted sector (statement with proof, local cost, content profile), exact values on the Wick monomial, the searches over all tensors in two and in three remote variables, a fixed tilt, the structured family with a bath, the second derivative at restricted amplitude, Cauchy–Schwarz. Statuses: `STATUS.md`, section 11 (c). |
+| `README.md` | 23 KB | Write-up of the follow-up: setting, what the record has, the tilted sector (statement with proof, local cost, content profile), numerically optimised values on the Wick monomial, the searches over all tensors in two and in three remote variables, a fixed tilt, the structured family with a bath, the second derivative at restricted amplitude, Cauchy–Schwarz, and (section 12) the global quadratic bound of the remainder at a remote base, for one sector, for A and B together and for all sectors. The summary table of its section 0 names the energies 0.02 and 0.0463 for three variables, while section 8 has 0.03 as well, where the largest ratio was found. Statuses: `STATUS.md`, section 11 (c) and 11.37, 11.45. |
+
+### `sources/received-2026-11-15-tilted-sector/`: the report on the tilted sector (codex-6e2b, 15 November 2026, five versions) and the reviews of its first, second and fifth versions
+
+The answer of an external assistant (agent ID codex-6e2b) to the request to prove the sector lemma behind `STATUS.md`, 11.12 to 11.20, at the tilt 3/5. **No version proves the lemma for general tensors on the range that matters**, and each says so; the fifth reduces it to one inequality. Its author revised the report in place four times, and the working folder held one version at a time. The files at the top level are the fifth version (05:17), with the notes, probes and result files of the earlier versions that the folder still held; `REPORT_localization_history.md` is the fourth version (04:40), which its author kept under that name, and `first-version/REPORT.md` the first (03:23). The second and third versions of the report were overwritten. `REVIEW.md`, `REVIEW_2.md` and `REVIEW_3.md` are the reviews by claude-b9ee of the first, the second and the fifth version. The verifiers, their inputs, the probes and the scripts and logs of the reviews are in `code/tilted-sector-2026-11-15/` (the documents say "beside this file" or link to the same folder for them). The documents are Markdown with LaTeX formulas. The prompt that produced the report was not kept in a file. Hashes of the copies, and what the working folder held beyond them: `INVENTORY.md`. Statuses: `STATUS.md`, section 11 (e).
+
+36 files, 554 KB.
+
+| file | size | contents |
+|---|---:|---|
+| `REPORT.md` | 11 KB | "Tilted sector: global secants and stronger structural content", **the fifth version** (05:17): the global remainder bound Rem ≤ (13/20)·\|ρ\|² for all complex w and ρ, and with it 𝒥 ≤ C²/k for every linear form (section 2); the content coefficient 1077659/27000000 on 0.03 ≤ u ≤ 0.0463 (3); the classes on which the lemma holds and the single remaining sufficient inequality (5) (4); evidence, replay and history (5). Labels P, C, N, O by its author. Reviewed in `REVIEW_3.md`. `STATUS.md` 11.39 to 11.44. |
+| `REPORT_localization_history.md` | 42 KB | "Tilted sector: proved partial results and exact remaining obligations", **the fourth version** (04:40), which its author kept under this name beside the fifth; byte-identical to the copy of `REPORT.md` taken at 04:40. Keeps the reviewed results (sections 2.2, 2.3, 3.1, 3.2, 3.3.1, 3.4, 4.1, 4.2) and adds: a sharpened global bound and the radius 0.371 (2.3, 2.4); the lemma for u ≤ 0.001123 and u ≤ 0.00173 (2.5, 2.6); the content bounds (2/25)·δ, (19321/10⁶)·u, 1/2500 and 3·δ^{3/2} (3.3); the curvature inequality (4.3); the localisation of every maximiser below 0.085 and the assembly with κ = 50/53 (5.1). Its sections 2.3 to 2.5, 3.3 (first two bounds) and 4.3 are what `REVIEW_2.md` covers; the rest of its new material is not reviewed. TILT-4 in `STATUS.md`. |
+| `REVIEW.md` | 6.7 KB | Review of the first version by claude-b9ee, 15 November 03:31, with an erratum added at 04:40: verdict; a table of what was re-derived, replayed or tested, item by item; what the report is worth, with a table of how far the structural bound is from sufficient on the Wick monomial and remarks on the three statements then open; what to ask for next. The erratum corrects the figures of that table; see also `STATUS.md`, section 14, items 38 and 39. |
+| `REVIEW_2.md` | 11 KB | Review of the second version (state of 04:05) by claude-b9ee, 15 November 04:40, with an addendum of the same evening (section 7): what was replayed and re-derived, claim by claim; a correction to the first review; why the localisation of the maximiser cannot be reached from the reviewed inequalities and is not needed if the remainder has a global quadratic bound (numerically it has: 0.600 against the budget 0.962); the content against the deficit on a family of tensors (the certified chain closes with no margin); what to ask for next. The addendum: that remainder is the one of the note of 13 November (`STATUS.md` 7.4.5), its numerical bound for A and B together and with the odd sectors, and a cheaper way to sharpen the content bound. |
+| `REVIEW_3.md` | 6.9 KB | Review of the fifth version (state of about 05:10) by claude-b9ee, 15 November 05:29: verdict ("correct as far as I checked, and a real step"); what was re-derived, replayed or computed, claim by claim, and what was not read; the replay of the whole verifier (pass, the same counts as the run of its author); what is left, the inequality (5), and a route to it through an augmented remote certificate; then the B-sector and the odd sectors. |
+| `content_next_m3_proof.md` | 5.7 KB | Note of the fourth version: "Scalar third-derivative certificate", the Arb certificate of sup \|m‴\| < 13 for m(x) = E[(T − 2/5)·sign(Re L + x)], the scalar input of the bound 3·δ^{3/2} of `content_tensor_next.md`. Not reviewed. |
+| `content_next_m3_results.txt` | 39 KB | Output of `content_next_m3.py` (JSON lines): the enclosures behind sup \|m‴\| < 13. |
+| `content_next_profile_table.json` | 67 KB | The profile table written by `content_next_bound.py` (third version): 300 cells of the tilted profile. The fifth version no longer reads it: its replay recomputes the profile from the regenerated radial table (`secant_profile_dual.py`). |
+| `content_next_proof.md` | 6.4 KB | Note of the third version: "A Gaussian-probe bound on tilted content", ‖Π₁[q·h_{3/5}(\|q\|²)]‖ ≤ 1/50 for remote cubics of energy at most 0.0463, with its Arb certificate. Not reviewed (`REVIEW_3.md`: not read). |
+| `content_next_results.txt` | 1.6 KB | Output of `content_next_bound.py` (JSON lines): the dual certificate with its upper bound 0.0198. |
+| `content_profile_proof.md` | 17 KB | Note of the second version: "A certified structural bound for the tilted content", ‖c_{3/5}(q)‖² ≤ (2/25)·δ through a sharper Stein budget, a Gaussian resolvent with shift 1/3 and the certified bound sup N_Φ < 1/3; a uniform bound on the content. Reviewed in `REVIEW_2.md`. |
+| `content_profile_results.txt` | 46 KB | Output of `content_profile.py` (JSON lines): 111 interval boxes for the Hessian norm of the tilted profile and the tail bounds. |
+| `content_tensor_next.md` | 11 KB | Note of the fourth version: "A third-order tensor bound for the nonlinear tilted content", ‖c_{3/5}(q)‖² ≤ 3·δ^{3/2}, from a theorem for the real third chaos and the certified bound sup \|m‴\| < 13. It says that it also proves the leading tensor bound of `STATUS.md` 6.3.12. Its sections 1 and 2 were re-derived in `REVIEW_3.md`; the rest is not reviewed. The copy is of 05:11 (one reference renamed for the fifth version). |
+| `first-version/REPORT.md` | 24 KB | **The first version** (03:23), the one that `REVIEW.md` covers: the global bound at the tilt 3/5 with its circular-mean lemma and the sector lemma for u ≤ 1/85920 (section 2); the structural bound on the content with the explicit constant 848, and a class with zero content (3); the conditional remainder theorem with a Gaussian tail, existence of maximisers (4); the three open statements O-A1, O-A2, O-B and the conditional assembly (5); numerical evidence on the Wick monomial (6); qualifications (7). The working file was overwritten at 04:04; this copy has the SHA-256 recorded from it before that (`INVENTORY.md`). |
+| `localization_alternative_proof.md` | 11 KB | Note of the third version: "Global localization from a scalar derivative majorant", every maximiser has norm below 0.085, from the inequality β(w, ρ) ≤ (4/5)ρ + (63/400)·Re w + \|w\|²/(40ρ) and a certificate in directed interval arithmetic. Not reviewed; not used by the fifth version. |
+| `localization_majorant_results.txt` | 5.5 KB | Output of the checker `localization_majorant.cpp`: 70,373 accepted boxes, largest accepted value 0.7999968 against 4/5. |
+| `localization_notes.md` | 3.3 KB | Note of the second version: "Improved elementary localization", 𝒥 ≤ (1273/1250)·u − (859/2500)·‖r‖² for u ≤ 0.0463 and the radius 371/1000, from the fourth-moment cap. Reviewed in `REVIEW_2.md`. |
+| `localization_radial_probe_results.txt` | 5.0 KB | Output of `localization_radial_probe.py`: floating-point values of a radial-derivative bound and of the resulting margins (N, "no interval certificate"). |
+| `localization_radial_proof.md` | 8.9 KB | "Radial-gradient reduction for global sector localization": a probe of codex-6e2b towards the localisation, from a scalar majorant with other constants than the third version's; its premise is open in the note itself. Named by no version of the report. Not reviewed. |
+| `preliminary_results.txt` | 4.5 KB | Output of the verifier of the first version, both runs (exact rational arithmetic; `--numerical` on the Wick monomial), kept by the author under this name. Its third line is the SHA-256 of that verifier, which is `code/tilted-sector-2026-11-15/first-version/verify.py`. It was `results.txt` when the first version was reviewed. |
+| `profile_range_results.txt` | 54 KB | Output of `profile_range.py` (JSON lines): 158 interval boxes for −1/40 < h_{3/5} < 253/1000. |
+| `results.txt` | 25 KB | Output of the verifier of the fifth version (05:17): the exact comparisons, the SHA-256 of the 14 files of the verifier (those of the copies in `code/tilted-sector-2026-11-15/`), the Θ certificate, the profile certificates, the 602-value radial table, the compact secant cover (102,104 boxes) and the content certificates; it ends with "PASS FULL SECANT REPLAY" and the SHA-256 of the report and of its notes, which are those of the copies here. |
+| `results_localization_history.txt` | 16 KB | Output of the verifier of the fourth version (04:38): the exact rational checks C1 to C10, the replays of the other certificates, and the SHA-256 of the files of that verifier (it is `code/tilted-sector-2026-11-15/fourth-version/verify.py`). Ends with "PASS FINAL CERTIFICATE SET". Kept by the author under this name. |
+| `secant_assembly.md` | 4.8 KB | Note of the fifth version: "Consequences of a global secant bound of 13/20": the general condition H(u, δ)/k ≤ κ·D₊ + η, the three explicit classes, the weaker remaining target (5), and why the remote certificates do not absorb the sector by themselves. Reviewed in `REVIEW_3.md` (arithmetic). |
+| `secant_audit_math.md` | 8.4 KB | Note of the fifth version: "Independent secant-certificate reductions", the convex interpolation formula, a nonnegative ring decomposition, a root-based alternative and the exterior bounds, with an audit of the point quadrature. By the author's side, not independent of the report. |
+| `secant_audit_results.md` | 8.4 KB | Note of the fifth version: "Independent audit of the active secant route", by a sub-agent of codex-6e2b: what was checked in the proofs and in the code, and the replays. Its last line still says that the end-to-end replay was in progress, which its first paragraph and `results.txt` supersede. Not independent of the report. |
+| `secant_content_candidate.json` | 20 KB | Output of `secant_content_probe.py`: a floating-point candidate for the barrier ("N_only"); not an input of the certificate. |
+| `secant_content_proof.md` | 9.6 KB | Note of the fifth version: "A factor-two content improvement on the central energy interval", ‖c_{3/5}(q)‖² ≤ (1077659/27000000)·δ for 0.03 ≤ u ≤ 0.0463, through the shifted resolvent, a sharp angular bound and a rational supersolution. Reviewed in `REVIEW_3.md`. |
+| `secant_content_results.txt` | 720 B | Output of `secant_content_verify.py` (JSON lines): the bound 92.11 on m⁗, the outer source bounds, and the barrier accepted on 500 cells with the smallest residual margin 1.937·10⁻⁵. |
+| `secant_core_results.txt` | 12 KB | The log of the first complete run of the compact secant cover (153.7 s): progress lines and "PASS GLOBAL SECANT CORE: accepted=102104 visited=204207 pruned=7788". |
+| `secant_profile_dual_results.txt` | 849 B | Output of `secant_profile_dual.py`: the Gaussian-probe dual from the regenerated radial table, content norm below 0.0198306 < 1/50. |
+| `secant_profile_table.txt` | 19 KB | The radial table of β₀ written by `secant_profile_table.py`: 602 nodes on [0, 6] with outward integer endpoints (scale 10⁸). The verifier regenerates it at each replay; its SHA-256 is printed at the end of `results.txt`. |
+| `secant_profile_table_results.txt` | 3.4 KB | Output of `secant_profile_table.py` (JSON lines): progress of the 602 Arb values and the final record (610.6 s). |
+| `secant_proof.md` | 15 KB | Note of the fifth version: "Global secant curvature: analytic reduction and certificate contract", the four regions of the global remainder bound (small amplitudes from the Θ certificate, large amplitudes, the exterior \|w\| ≥ 6, the compact cover with convex interpolation) and its consequence for every sector. Reviewed in `REVIEW_3.md`. |
+| `theta_proof.md` | 22 KB | Note of the second version: "Uniform tilted-sector curvature: analytic reduction and certificate contract", the second derivative along the sector is at most 3/4 for sector values up to 3/10, with a certificate in directed interval arithmetic. Reviewed in `REVIEW_2.md` (the interval code replayed, not audited line by line). One of its scalar targets is used by `secant_proof.md`. |
+| `theta_results.txt` | 937 B | Output of the checker `theta_verify.cpp`: 6,168 accepted rectangles and the two final matrix enclosures. |
 
 ### `sources/d1/`: the degree-2 case of the L¹/L² inequality (4 and 5 November 2026)
 
@@ -377,14 +432,15 @@ The numerical follow-up of the review. The copy shows the write-up as it stood a
 |---|---:|---|
 | `RESULTS.md` | 24 KB | Numerical test of the degree-5 analogue K₅ with full tensors: holds at the peak row in every family tested, fails at the flank rows t ∈ [0.86, 0.88] by about 8·10⁻⁵. Floating point and Monte Carlo; nothing certified. |
 
-### `sources/prompts/`: prompts and replies sent to the external assistants (5 and 6 November 2026)
+### `sources/prompts/`: prompts and replies sent to the external assistants (5 and 6 November 2026, and one prompt of 15 November)
 
-Text files, copied byte for byte (no line added). `prompt-*`, `lemma-content-prompt` and `conjectureK-olympiad` are statements sent to an assistant; `subproblem-*` are self-contained subproblem statements; `reply-*` are the replies of claude-b9ee to an assistant's result (what was verified, corrected or refuted).
+The `.txt` files are copied byte for byte (no line added). `prompt-*`, `lemma-content-prompt` and `conjectureK-olympiad` are statements sent to an assistant; `subproblem-*` are self-contained subproblem statements; `reply-*` are the replies of claude-b9ee to an assistant's result (what was verified, corrected or refuted). `PROMPT_GPT_AUDIT_MONOGRAPH.md` is of 15 November; as a `.md` file it carries the provenance line of every copied `.md`. The prompt of the same day that produced the report on the tilted sector (`sources/received-2026-11-15-tilted-sector/`) was not kept in a file.
 
-42 files, 104 KB.
+43 files, 111 KB.
 
 | file | size | contents |
 |---|---:|---|
+| `PROMPT_GPT_AUDIT_MONOGRAPH.md` | 7.3 KB | Prompt given to an external assistant on 15 November 2026: audit `MONOGRAPH.md` and the claims of `STATUS.md` that carry P or C, propose improvements, finish one or two open items (candidates: the joint A/B remainder bound, a content theorem, the kernel comparison, the remote part with the packages of 22 October), and deliver one pull request under `research/conjecture-K/`. It says that another assistant was asked to prove the tilted-sector lemma. The audit of codex-a7c4 (`sources/audit-2026-11-15-codex-a7c4/`) is the answer to it. |
 | `conjectureK-olympiad.txt` | 1.5 KB | Statement sent. For eps=1891/2500, l=1057/1250, b=179/1250, L=z_1(l+b(T−2)): prove Lambda(G) <= sup_sigma Lambda(sigma W) for every G in H; sigma* in (0.19,0.21); variants with 1e-4 error or the box. |
 | `lemma-content-prompt.txt` | 3.1 KB | Prompt sent. Asks to prove the lemma C_X(q)^2 <= (19/100) D(q) for remote cubics with u <= 0.0463 at the peak row; lists known facts (0.138, D_1=34.55, 3·sqrt6/4, −D_0 >= 25.04). |
 | `prompt-A-content-sharpening.txt` | 1.9 KB | Prompt sent. "NEXT TASK (S1): sharpen the A-content certificates" from 11/50, 0.239, 23/100, 9/40 to <= 0.10 (0.15 useful) on u in [0.03,0.0463]; plus kernel bound with 0.5053 and 0.007. |
@@ -673,9 +729,9 @@ Dated documents. Their endpoints are stale (the repository then proved 1.4014880
 
 ### `code/kprime-2026-11-15/`: scripts and logs of the follow-up of 15 November
 
-Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are small and are kept because the write-up (`sources/numerics-kprime-2026-11-15/README.md`) cites them as its record. The records of the searches are in `search/` (two remote variables) and `search3/` (three).
+Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are small and are kept because the write-up (`sources/numerics-kprime-2026-11-15/README.md`) cites them as its record; `tilt_restricted_67.log` is cited by the first review of the report on the tilted sector and by `STATUS.md`, 11.17. The records of the searches are in `search/` (two remote variables) and `search3/` (three). The one-sector script of the global remainder bound, `secant_curvature.py`, is in `code/tilted-sector-2026-11-15/`.
 
-20 files, 54 KB.
+27 files, 71 KB.
 
 | file | size | contents |
 |---|---:|---|
@@ -695,10 +751,17 @@ Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are s
 | `retained_content.py` | 2.1 KB | The Wick monomial with the A-sector: exact K gain and retained gain (the minimum over the retained element inside the supremum over the sector), by quadrature. |
 | `retained_joint.log` | 756 B | Its output for u = 0.01 to 0.0463: the table of section 4 of the write-up. |
 | `retained_joint.py` | 2.5 KB | The Wick monomial with the A- and B-sectors jointly, with and without the retained element (real amplitudes). |
+| `secant_all_sectors.py` | 5.6 KB | All five visible sectors of K at a remote base (A, B, z₁Q, z̄₁P and the one-coordinate cubic ν·z₁(T − 2)/√2): each sector alone on a grid, then all together by multistart local minimisation of p − Rem/\|r\|², each minimum rechecked on a finer quadrature; the option `--no-nu` leaves out the one-coordinate cubic (`STATUS.md`, 11.45). |
+| `secant_all_sectors_no_nu.log` | 1.7 KB | Its output with `--no-nu`: one sector at a time (A 0.3206, B 0.7052, z₁Q 0.1286, z̄₁P 0.6229, ν 0.3305), then 400 starts: smallest margin 0.1284, in the pure z₁Q direction at the origin. |
+| `secant_all_sectors_with_nu.log` | 1.7 KB | Its output with the one-coordinate cubic: the same single-sector values, then 60 starts: smallest margin −0.3871, in the direction 0.58·z₁Q + 0.42·ν at the origin, and the note on the cross term −0.608. |
+| `secant_joint.log` | 1.4 KB | Its output at the tilts (0, 0), (0.6, 0), (0.5, 0), (0.3434, 0): the margin by share of B and the smallest margin with its place (0.2996 for K, 0.2524 at (0.6, 0), 0.3649 at (0.5, 0), 0.4672 at (0.3434, 0)). |
+| `secant_joint.py` | 4.3 KB | The remainder of the A and B shells together at a remote base, for K and at the tilts (s_A, s_B): the smallest margin p − Rem/\|r\|² over directions (share of B), amplitudes, phases and base values, by grids (`STATUS.md`, 11.45; section 12 of the write-up). |
 | `tilt_profiles.log` | 1.6 KB | Its output: j₀, g₀, k_A; (g − g₀)/(j₀ − j) for v from 10⁻⁴ to 10⁴ and its limit 0.58321; unrestricted second-derivative suprema for seven tilts, with the resulting global costs (all negative). Its ratio at v = 10⁻⁴ is a quadrature error of the fixed grid (see `ratio_small_v.log`). |
 | `tilt_profiles.py` | 3.4 KB | The profiles j and g and their ratio, the local cost k(s), and a global bound on the second derivative along the tilted direction. |
 | `tilt_restricted.log` | 579 B | Its output: Θ(R) for R = 0 to 0.5 at the tilts s = 0, 0.2, 0.3434, 0.5, with the budget p − s². |
 | `tilt_restricted.py` | 2.3 KB | The second-derivative bound along the tilted direction restricted to base points with \|ρ\| ≤ R (grid search). |
+| `tilt_restricted_67.log` | 351 B | Its output: Θ(R) for R = 0 to 0.5 at the tilts s = 0.6 and 0.7, with the budget p − s². The value 0.7086 at s = 0.6, R = 0.3 is the numerical counterpart of the curvature inequality of `STATUS.md`, 11.33. |
+| `tilt_restricted_67.py` | 2.3 KB | `tilt_restricted.py` with the tilts s = 0.6 and 0.7 (the two scripts differ in one line). It was put in the archive after the first version of the report on the tilted sector had noted that no script there produced these values. Its file is dated after its log (03:31 against 03:07 on 15 November); a run made when this folder was updated reproduced the log exactly. |
 
 ### `code/kprime-2026-11-15/search/`: records of the searches over two-variable tensors
 
@@ -761,27 +824,78 @@ Each run has a `.log` (one line per record) and a `.jsonl` (the same records wit
 
 ### `code/kprime-2026-11-15/search3/`: records of the search over three-variable tensors
 
-Written by `kprime3.py`; a `.log` (one line per record) and a `.jsonl` (the same records with the 18 tensor coefficients `c_re`, `c_im`) per run. Fields: `D`, `gK`, `gP`, `RK`, `RP`, `d4`, `res` as in `search/`, `grid` the grid parameters, and for the searches `opt`, `iters`, `secs`. Three logs are empty: their runs had written nothing when the folder was copied, and some restarts of the other runs were still going.
+Written by `kprime3.py`; a `.log` (one line per record) and a `.jsonl` (the same records with the 18 tensor coefficients `c_re`, `c_im`) per run. Fields: `D`, `gK`, `gP`, `RK`, `RP`, `d4`, `res` as in `search/`, `grid` the grid parameters, and for the searches `opt`, `iters`, `secs`. Final state: every run has both restarts (files dated 15 November 04:14). The launcher of the runs and its empty log are not copied (`INVENTORY.md`, section 4).
 
-15 files, 12 KB.
+18 files, 23 KB.
 
 | file | size | contents |
 |---|---:|---|
 | `eval3.jsonl` | 2.5 KB | `kprime3.py`, mode `eval`, u = 0.0463: the monomial, the monomial in rotated coordinates and two structured tensors on the three-variable grid (JSON lines, one record per line with the tensor coefficients). |
 | `eval3.log` | 731 B | `kprime3.py`, mode `eval`, u = 0.0463: the monomial, the monomial in rotated coordinates and two structured tensors on the three-variable grid (log, one line per record). |
-| `k3_0463_s0.jsonl` | 1.1 KB | `kprime3.py`, mode `k`: search maximising the K ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (JSON lines, one record per line with the tensor coefficients). |
-| `k3_0463_s0.log` | 154 B | `kprime3.py`, mode `k`: search maximising the K ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (log, one line per record). |
-| `kp3_0200_s0.log` | 0 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.02, seed 0 (log, one line per record). Empty: the run had written nothing when the folder was copied. |
+| `k3_0463_s0.jsonl` | 2.2 KB | `kprime3.py`, mode `k`: search maximising the K ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `k3_0463_s0.log` | 308 B | `kprime3.py`, mode `k`: search maximising the K ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (log, one line per record). |
+| `kp3_0200_s0.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.02, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0200_s0.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.02, seed 0 (log, one line per record). |
 | `kp3_0200_s1.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.02, seed 1 (JSON lines, one record per line with the tensor coefficients). |
 | `kp3_0200_s1.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.02, seed 1 (log, one line per record). |
-| `kp3_0300_s0.log` | 0 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.03, seed 0 (log, one line per record). Empty: the run had written nothing when the folder was copied. |
-| `kp3_0463_s0.log` | 0 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (log, one line per record). Empty: the run had written nothing when the folder was copied. |
-| `kp3_0463_s1.jsonl` | 1.1 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 1 (JSON lines, one record per line with the tensor coefficients). |
-| `kp3_0463_s1.log` | 154 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 1 (log, one line per record). |
-| `kp3_0463_s2.jsonl` | 1.1 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 2 (JSON lines, one record per line with the tensor coefficients). |
-| `kp3_0463_s2.log` | 154 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 2 (log, one line per record). |
+| `kp3_0300_s0.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.03, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0300_s0.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.03, seed 0 (log, one line per record). |
+| `kp3_0463_s0.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0463_s0.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (log, one line per record). |
+| `kp3_0463_s1.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 1 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0463_s1.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 1 (log, one line per record). |
+| `kp3_0463_s2.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 2 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0463_s2.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 2 (log, one line per record). |
 | `kp3_0463_s3.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 3 (JSON lines, one record per line with the tensor coefficients). |
 | `kp3_0463_s3.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 3 (log, one line per record). |
+
+### `code/tilted-sector-2026-11-15/`: the verifiers of the report on the tilted sector, their inputs, the probes, and the scripts and logs of its reviews
+
+The verifiers and probes are by codex-6e2b; `check_tilt_report*`, `secant_curvature.*`, `deficit_vs_bound.*`, `tilt_choice.*` and `replay_version5.log` are by claude-b9ee (NumPy, SciPy and mpmath), and their logs are kept because the reviews cite them as their record. `verify.py` is the verifier of the fifth version: `python3 -I verify.py` runs the exact comparisons and then, compiled in a temporary subfolder, the C++ checkers and the Arb certificates; it needs `clang++` with directed rounding and an interpreter with python-flint (environment variable `TILTED_FLINT_PYTHON`); `--algebra-only` needs neither. The SHA-256 of its 14 files are printed at the head of `sources/received-2026-11-15-tilted-sector/results.txt` and are those of the copies here. `first-version/verify.py` is the verifier that the first review covers (standard library only, with the option `--numerical` for NumPy and SciPy); it was replayed again when this folder was first updated, without and with that option, with outputs identical to `preliminary_results.txt`. `second-version/verify.py` is the verifier that the second review replayed, and `fourth-version/verify.py` the verifier of the fourth version; the working files of all three were overwritten by their author. Statuses: `STATUS.md`, section 11 (e).
+
+39 files, 267 KB.
+
+| file | size | contents |
+|---|---:|---|
+| `audit_curvature.py` | 4.0 KB | Floating-point diagnostic of the curvature inequality (`STATUS.md`, 11.33), delivered with the second version and without output. One run made when this folder was updated (Python 3.12.3, NumPy 2.3.5, SciPy 1.17.1) printed "rho=.3, w=0.640204417: eigen=0.709425575423, relaxed=0.759693013642" and "rho=.3, w=0.683589101: eigen=0.703877110285, relaxed=0.763469870441": the largest eigenvalue of the Hessian, and the integral of the pointwise largest eigenvalue, which is above 3/4. |
+| `check_tilt_report.log` | 1.1 KB | Its output: the supremum 0.298834 of (C(t) − 1)/t², at t = 1.4525; the two constants of the global bound by quadrature; no violation of the global bound on the grid; and on the Wick monomial the content², δ and D at u = 0.0005, 0.005, 0.02, 0.0463. Its figures for sup m_h (244.39) and for the structural bound are an artefact of a spline (`STATUS.md`, section 14, item 39; corrected in `check_tilt_report_2_part2.log`). |
+| `check_tilt_report.py` | 3.6 KB | The floating-point checks of the first review (claude-b9ee): the circular-mean inequality on t ∈ [0, 200]; the constants and the global bound on the Wick monomial; m_h and the structural bound against the true content and the deficit on the Wick monomial (see the remark on its log). |
+| `check_tilt_report_2.py` | 5.9 KB | The floating-point checks of the second review (claude-b9ee; mpmath and NumPy): the Hessian entries of the tilted profile by two routes, the suprema of N_Φ and of m_h, the range of h_{3/5}, and the two structural bounds on the Wick monomial. |
+| `check_tilt_report_2_part1.log` | 2.3 KB | Its output, first run: steps 1 and 2 (sup N_Φ = 0.295722 at R = 0.2320; sup m_h = 1.34998 at v = 0.0635); the run stops with an error in step 3. |
+| `check_tilt_report_2_part2.log` | 1.3 KB | Its output, second run: sup N_Φ and sup m_h again, the range of h_{3/5} (maximum 0.251875 at v = 1.3456), and the corrected structural bound on the Wick monomial beside (2/25)·δ at six energies. |
+| `check_tilt_report_3.log` | 1.8 KB | Its output: formula (8) agrees with the differences; on [0, 8] sup \|m″\| = 1.443, min m″ = −0.465 and max m″ ≈ 0 on [1, 8]; sup \|k_u\| = 0.6229, 0.5915, 0.5749 at u = 0.03, 0.0403, 0.0463 (claim ≤ 0.626); the content coefficient (2/3)·sup N_Ψ = 0.0369, 0.0333, 0.0314 (certified 0.0399); the angular identity holds. |
+| `check_tilt_report_3.py` | 4.8 KB | The floating-point checks of the third review (claude-b9ee; NumPy): m′ and m″ by the density formula (8) of `secant_content_proof.md` against differences of m; sup \|k_u\| and sup N_Ψ at u = 0.03, 0.0403, 0.0463; the angular identity and the quartic of the angular bound; γ and k. |
+| `check_tilt_report_3_rationals.log` | 1.5 KB | Exact recomputations of the third review: the exterior constant 3603551/5604000 < 13/20 with its pieces, the small-amplitude constants (γ > 49/100, the bound 0.268 < 0.27, row 161 of the candidates), M < 3/4, k = 59009/189100, the endpoints of the assembly table and κ, η of (5). The commands that wrote it are not in a script of this folder. |
+| `content_next_bound.py` | 5.8 KB | Arb certificate of the uniform bound ‖c_{3/5}(q)‖ ≤ 1/50 (third version): profile table and dual envelope; needs python-flint and the two scripts below. |
+| `content_next_m3.py` | 5.8 KB | Arb certificate of sup \|m‴\| < 13 for m(x) = E[(T − 2/5)·sign(Re L + x)] (fourth version), behind the bound 3·δ^{3/2}; the fifth version also imports its moment formulas. |
+| `content_profile.py` | 9.6 KB | Arb certificate of sup N_Φ < 1/3 for the Hessian norm of the tilted profile (second version), behind the bound (2/25)·δ; the fifth version imports its interval helpers. |
+| `deficit_vs_bound.log` | 4.3 KB | Its output: D, the bound B and B/D for u = 0.0005 to 0.0463 and eight members of the family at each energy; the largest B/D is 0.991. |
+| `deficit_vs_bound.py` | 2.8 KB | Second review: the certified content bounds over the numerical global cost, B(u, χ) = min{(2/25)χu², (19321/10⁶)u}/(P − Sec), against the deficit on the family from the Gaussian limit to the Wick monomial (`STATUS.md`, 11.38). |
+| `first-version/verify.py` | 10.0 KB | **The verifier that the first review covers.** Exact rational interval arithmetic for C1 (Bernstein certificate of the circular-mean inequality), C2 (the integrals I₀, I₁, I₂, the constants j₀, g₀, J_s, the local cost k(3/5) and the two constants of the global bound), C3 (the corollaries), C4 (the constants of the conditional assembly and its tail bound) and C5 (the constant 848). SHA-256 `8d889c26e7e41d7da5ce12a1991799293d24b5c7f59b5d427ddc59c7e733620d`, the hash printed in `preliminary_results.txt` and quoted by the review. The working file was overwritten at 04:03. |
+| `fourth-version/verify.py` | 21 KB | The verifier of the fourth version (04:38): the exact rational checks C1 to C10 and the replays of the other certificates, the localisation among them. SHA-256 `c2109f2f5f4e03a145f526e8ace8f560469fa5207e3ea232dd8e586982ffa625`, as printed in `results_localization_history.txt`. Copied from the working folder before the fifth version replaced it. Not replayed for this record. |
+| `localization_alternative_majorant.py` | 2.8 KB | N only: floating-point search for the scalar majorant of `localization_alternative_proof.md` (third version); writes nothing. |
+| `localization_circle.hpp` | 7.0 KB | Rigorous ranges for j(ν) = C′(ν)/ν, C the circular mean, by its series (directed rounding); a header of `localization_majorant.cpp` and, as a circle-series utility only, of `secant_verify.cpp`. |
+| `localization_dual.py` | 3.4 KB | N only: a moment-dual diagnostic for the radial localisation (a finite-grid relaxation of the law of q); named by no version of the report; writes nothing. |
+| `localization_majorant.cpp` | 4.8 KB | Checker in C++ with directed interval arithmetic for the scalar inequality behind the localisation (third version); it includes `theta_verify.cpp` for the interval primitives. Not part of the fifth version's replay. |
+| `localization_radial_probe.py` | 3.3 KB | N only: tests the radial-derivative localisation of `localization_radial_proof.md` with the uniform curvature; its output is `localization_radial_probe_results.txt`. |
+| `localization_verify.py` | 3.0 KB | Exact integer checker of c(463/10000) > 7/10 and of the radius 371/1000 (second version); standard library only. |
+| `profile_range.py` | 6.4 KB | Arb certificate of −1/40 < h_{3/5}(v) < 253/1000 for all v ≥ 0, which also replays sup N_Φ < 1/3 (second version). |
+| `replay_version5.log` | 25 KB | The replay of the verifier of the fifth version by the third review (claude-b9ee, started at 05:17 after the replay of its author had ended), in an isolated copy with the reviewer's python-flint 0.9.0 and compilation: the 14 source hashes, every certificate, "PASS FULL SECANT REPLAY", exit 0. |
+| `secant_content_probe.py` | 2.7 KB | Floating-point search (linear programming) for the barrier of the central content bound; writes `secant_content_candidate.json`. Not part of the certificate. |
+| `secant_content_verify.py` | 6.6 KB | Arb checker of the central content bound (`STATUS.md`, 11.41): the source bounds on m″ and m⁗, the rational Hermite barrier of `secant_content_witness.json` on 500 cells and its Bernstein residuals at both ends of the energy interval; imports helpers of `content_profile.py` and `content_next_m3.py`. |
+| `secant_content_witness.json` | 26 KB | Input of `secant_content_verify.py`: the node values and derivatives of the barrier (501 nodes on [0, 1]) as exact decimal strings. |
+| `secant_curvature.log` | 1.8 KB | Its output for the tilts 0.6, 0.5, 0.7, 0.3434 and 0: the supremum of Rem/ρ² (0.5997 at s = 0.6) with its place, and the supremum over w as a function of ρ. |
+| `secant_curvature.py` | 4.1 KB | Second review: grid search of the supremum over w and ρ of the remainder Rem(w, ρ)/ρ² of the tilted sector at five tilts (`STATUS.md`, 11.37), the proposal that the fifth version proves at 13/20. |
+| `secant_exact.py` | 2.4 KB | Exact rational comparisons of the secant route: the large-amplitude and exterior constants, the small-amplitude target and tails, the central content coefficient and the endpoints of the assembly. Standard library. |
+| `secant_profile_dual.py` | 3.4 KB | The Gaussian-probe dual of `content_next_bound.py` (‖c_{3/5}‖ ≤ 1/50) recomputed from profile values reconstructed from the regenerated radial table. |
+| `secant_profile_table.py` | 4.0 KB | Regenerates with Arb the 602 radial values of β₀ on [0, 6] (outward integer endpoints, scale 10⁸) that `secant_verify.cpp` interpolates; writes `secant_profile_table.txt` beside itself. |
+| `secant_verify.cpp` | 8.5 KB | Checker in C++ with directed rounding for the compact part of the global remainder bound (`STATUS.md`, 11.39): boxes of 33/200 ≤ ρ ≤ 5, \|Re w\| ≤ 6, 0 ≤ Im w ≤ 6 accepted by corner values and the interpolation error, or by the exterior bounds; function values by Jensen and chord quadrature of the circular mean. It includes `theta_verify.cpp` and `localization_circle.hpp` and reads the radial table. |
+| `second-version/verify.py` | 16 KB | The verifier of the second version (04:03), which the second review replayed whole. SHA-256 `8ce971c12983f6b27776a16aed66547bc6e9ee723bbef9a7ee3e6063d57e5175`; the copy comes from the reviewer's replay copy, with the hash recorded from the working file while the second version was there. |
+| `theta_candidates.txt` | 12 KB | Input of `theta_verify.cpp`: 256 triples of candidate bounds, generated in floating point; the checker has to accept each of them. Row 161 is the target that the fifth version uses for small amplitudes. |
+| `theta_verify.cpp` | 11 KB | Checker in C++ with directed interval arithmetic for the curvature inequality (second version): scalar envelopes on a covering by rectangles, then two matrix inequalities. |
+| `tilt_choice.log` | 1015 B | Its output for s = 0.40 to 0.70: the range of h_s, sup N, the secant supremum, P − Sec and the two coefficients of the chain; s = 0.55 has the smallest. |
+| `tilt_choice.py` | 1.9 KB | Second review: the constants of the chain "content bound over global cost" as a function of the tilt. |
+| `verify.py` | 25 KB | The verifier of the fifth version. SHA-256 `7572574a7357e3dc4772b438fcc7a6b924f24244826e24ea281f6267e9285caf`, as printed in its `results.txt`. Its default replay uses neither the localisation nor its checker; `--tensor-only` replays the third-order content certificate. Its fallback interpreter is a path on the author's machine. |
 
 ### `code/audit-2026-11-13/`: the audit's scripts and small result files
 
@@ -975,12 +1089,14 @@ Node scripts (`node file.mjs`), exact rational or interval arithmetic, no data f
 | `chatgpt-thread2-verify_core.mjs` | 10 KB | Verifier received. "All bounds and acceptance decisions use integer arithmetic": potential envelope, "Quartic signs certified" on profile intervals beta/a in [2/11,4/11], "Full-box potential" for the disjoint comparison. |
 | `chatgpt-verify_shared.mjs` | 14 KB | Verifier received. "Exact enclosures for the two content inequalities and the A cost": two content bounds, two matched-variance bounds, projected envelope, "Gaussian-tail and 0.19 row-cost constants verified". |
 
-### `code/record-checks-2026-11-15/`: a check written when this folder was assembled
+### `code/record-checks-2026-11-15/`: checks written when this folder was assembled and updated
 
-Not a copy of a working file. It supports one identification made in `STATUS.md`, section 11 (a).
+Not copies of working files. `tied_matrix_check.py` supports one identification made in `STATUS.md`, section 11 (a). The other two were written for the update of 15 November: `localisation_check.py` supports `STATUS.md`, 11.27 and section 14, item 38, and `tilted_content_check.py` the table "How far the content bounds are from 11.36" of 11 (e) and section 14, item 39.
 
-1 files, 4.0 KB.
+3 files, 18 KB.
 
 | file | size | contents |
 |---|---:|---|
+| `localisation_check.py` | 5.1 KB | The lower bound F(q) − F(0) ≥ u·c(u) that follows from the fourth-moment cap E\|q\|⁴ ≤ 44u²: the constant c(0.0463) = 0.7036, the resulting radius 0.370 of a maximiser of the tilted sector gain (against 0.4812 without it), and the true value 0.0512 of the term on the Wick monomial. Standard library, floating point; its output is in its docstring. |
 | `tied_matrix_check.py` | 4.0 KB | The local A/B matrix for the tied multiplier of October, for the optimal multiplier of the report of 15 November and without a multiplier, from the closed-form integrals of the peak row; the local cost k(s). Floating point; its output is in its docstring. |
+| `tilted_content_check.py` | 9.4 KB | The Hessian norm m_h of the tilted profile without a spline (sup m_h = 1.35, not 244), and on the Wick monomial the content bounds of the report against the deficit: the structural bound of the first version and the four bounds of the later versions. NumPy and SciPy, floating point; its output is in its docstring. |
