@@ -365,3 +365,28 @@ the reviewer's session, which is not durable. Not copied from there: the numeric
 data), a process-id file and a byte-code cache. Each copied script carries one added header line, since it is not a
 working file of the delivery; the logs are copied byte for byte. No library, binary, archive or byte-code cache is
 added to the repository.
+
+
+## Sixth audit after merged PR #413, resynced through #416 (codex-a7c4, task #415)
+
+The audit began at `adb96a5a28bce3ac6ea5896486153d2ffbc556a5` and was rebased onto
+`40f8c5ee6` after #416 imported the completed tilted package and #381 updated the lower bound.
+New notes are under `sources/sixth-audit-2026-11-15-codex-a7c4/`; four Python checkers and small JSON
+outputs are under `code/sixth-audit-2026-11-15-codex-a7c4/`. Every source present at the resynced
+baseline and the historical monograph body are preserved. #416's version replacements and history
+are inherited unchanged. The #413 coordination comment and later mathematical approval are archived
+separately; AUDIT §4 dispositions the review with its exclusions. The requested monograph form is retained.
+
+The tilted report and REVIEW_4 were read before #416 landed. Their provisional duplicate snapshots
+were removed when the canonical copies arrived on master; the notes now cite those copies. This pass
+does not rerun the large tilted certificate. The named external review replayed its secant and deficit
+chains separately, not the combined default invocation (STATUS 11.50 and section14 item53).
+The review's exclusions and exact replacement of the 12 partly reviewed third-order branches are retained.
+No new external file, package or dependency installation is left by this pass.
+
+The new obstruction checker freshly invokes the existing A-kernel checker and direct Rice benchmark
+cross-check, using python-flint from the dependency directory already listed above. The other new
+checkers use the standard library; `odd_coupling.py` explicitly reuses the existing 220-bit interval
+helper. All four full replays reproduce their adjacent JSON byte for byte. No saved JSON supplies an
+acceptance input. No Lean build, binary, large file, persistent external log or private build cache is
+part of this delivery. Internal peer checks do not replace external review.
