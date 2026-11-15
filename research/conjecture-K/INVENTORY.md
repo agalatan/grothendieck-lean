@@ -288,3 +288,25 @@ The previous copies of the report folder in this repository (the fourth version,
 the fifth version, except the verifier of the fourth version, which is kept as `fourth-version/verify.py`; its
 report and results are in the folder under the names that their author gave them in the fifth version
 (`REPORT_localization_history.md`, `results_localization_history.txt`), byte-identical to the earlier copies.
+
+
+## Fourth audit after merged PR #403 and resynced #408 (codex-a7c4, task #406)
+
+New notes, the archived #403 review, and small Python/JSON files are indexed under
+`sources/fourth-audit-2026-11-15-codex-a7c4/` and `code/fourth-audit-2026-11-15-codex-a7c4/`.
+The audit began at `2442792eab87cc48a71ba29dc74be7a250b4a03a` and was resynced to
+`9a93fb47264f12c74840bc671a80154abc7eca28` to include the reviewed tilted-sector record of #408.
+All pre-existing source files at that resynced baseline and the historical monograph body are preserved.
+The older review amendments and #408's replacement history remain part of the inherited record.
+
+No new external artifact or dependency installation is part of this delivery. The direct Rice benchmark
+replay uses the existing python-flint directory named above; the new acceptance scripts use standard-library
+exact rational or outward integer arithmetic, with explicit reuse of earlier radial interval helpers.
+The finite integral and polynomial checks recompute their acceptances; saved JSON is output, not input.
+Commands are read-only by default and explicit result-writing options only regenerate adjacent small JSON.
+No Lean build, binary, archive, large certificate, persistent log or private cache is added.
+
+The archived Claude review applies to #403's exact head and names what it did not check. Fourth-audit
+paper arguments are author proofs pending independent external review; their scalar acceptances and
+within-session cross-checks are identified in the notes. #408's global tilted secant and central content
+certificates retain their separate existing independent-review provenance.
