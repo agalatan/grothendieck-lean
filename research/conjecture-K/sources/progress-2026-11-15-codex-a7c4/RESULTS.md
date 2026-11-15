@@ -59,7 +59,7 @@ the exact kernel checker recomputes endpoint comparisons and conditional budgets
 The response-ellipsoid checker derives the sector weights and encloses π by
 exact rational series; it replays all new numerical caps, conditional on the
 inherited reviewed Rice tangent. The joint-target checker accepts all 1,000 cells
-and is independently re-derived within this session. All four reject optimized
+and is independently re-derived within this session. All acceptance scripts reject optimized
 Python (`-O`). The complete production cover passes the
 standard-library rational verifier and all eight negative controls. Its Lean
 export passes the exact complete-partition replay.

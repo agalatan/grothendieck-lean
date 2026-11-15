@@ -292,6 +292,17 @@ The checker proves `(81/100)D(T) sum_{j=0}^4 T^j/j!−W(T)>0` on the whole
 nonnegative half-line: all degree-six Bernstein coefficients are positive
 on each of the 64 consecutive intervals `[j/16,(j+1)/16]`, and all
 coefficients after translation `T=4+v` are positive for `v≥0`.
+There is also an independent global algebraic proof of this positivity.
+Write the polynomial as `P(T)=P(0)+T q(T)`. Its constant is
+`P(0)=686323/500000000>0`, and all coefficients of q of degree at
+least two are nonnegative, so q is convex for T≥0. At r=5/4 its
+supporting line is
+
+    q(r)+q'(r)(T−r)
+      =4102880111/64000000000+(2094736121/64000000000)T>0.
+
+Thus P(T)>0 for every T≥0. The checker verifies these rational
+coefficients as well as the independent Bernstein cover.
 Since `exp(T)` exceeds its Taylor polynomial, `f≤81/(100 pi)`.
 Its mass is at most `H²=1+s²(1+rho²)`, since Gaussian orthogonality gives
 `E|h|²=S+s²|R|²`. This retains the mass of the actual direction, even

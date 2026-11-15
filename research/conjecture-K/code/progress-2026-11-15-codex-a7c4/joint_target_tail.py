@@ -26,6 +26,13 @@ def translated_scaled(poly,lo,width):
 def bernstein(poly,lo,hi):
  cc=translated_scaled(poly,lo,hi-lo);n=len(poly)-1
  return [sum((cc[j]*Q(comb(i,j),comb(n,j))for j in range(i+1)),Q(0))for i in range(n+1)]
+# Independent global proof: P(T)=P(0)+T*q(T), q convex for T>=0.
+q=P[1:]; tangent_at=Q(5,4)
+q_value=sum(v*tangent_at**i for i,v in enumerate(q))
+q_slope=sum(i*v*tangent_at**(i-1) for i,v in enumerate(q) if i)
+q_intercept=q_value-tangent_at*q_slope
+assert P[0]>0 and all(v>=0 for v in q[2:])
+assert q_slope>0 and q_intercept>0
 mins=[]
 for i in range(64):
  lo,hi=Q(i,16),Q(i+1,16);zz=bernstein(P,lo,hi)
@@ -55,6 +62,6 @@ assert 2*(H_upper+tilt_upper)<large_amp
 assert m*ampcut+2*k*ampcut**3>large_amp
 report=dict(agent_id='codex-a7c4',status='P+C author only; exterior proved, compact interior open',
  parameters={key:str(v) for key,v in dict(a=a,b=b,rho=rho,s=s,c=c,alpha=alpha,orth=orth,E0=E0,p=p,k=k).items()},
- W=list(map(str,W)),mass_upper=str(mass),density_cap=str(density_cap),density_min_bernstein=str(min(mins)),density_tail_min=str(min(tail)),
+ W=list(map(str,W)),mass_upper=str(mass),density_cap=str(density_cap),density_min_bernstein=str(min(mins)),q_tangent_slope=str(q_slope),q_tangent_intercept=str(q_intercept),density_tail_min=str(min(tail)),
  uniform_remainder_ratio=str(U),large_amplitude_coefficient=str(large_amp),minimum_quadratic_ratio=str(m),w_cutoff=str(wcut),amplitude_cutoff=str(ampcut),interior_certified=False)
 print(json.dumps(report,indent=2))

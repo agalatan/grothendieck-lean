@@ -21,6 +21,8 @@
   "mass_upper": "3629795281/2500000000",
   "density_cap": "81/100",
   "density_min_bernstein": "686323/500000000",
+  "q_tangent_slope": "2094736121/64000000000",
+  "q_tangent_intercept": "4102880111/64000000000",
   "density_tail_min": "2595321/1250000000",
   "uniform_remainder_ratio": "217/100",
   "large_amplitude_coefficient": "94/25",
