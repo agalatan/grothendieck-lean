@@ -4,7 +4,7 @@ This is the single entry point for anyone (Codex or Claude) continuing the node 
 
 ## Goal
 
-The node caps (`NodeCaps`) feed the lower bound `lower_bound_of_completed_refinement : NodeCaps → IsGrothendieckBound K → 1.401700037873 < K` (`Grothe/Research/RefinedCoverResult.lean`), in the active `Grothe` build; the older `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K` (`CapNodes.lean`) is kept with its weaker conclusion because `CapNodes.lean` is pinned in the node-cap closure. `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
+The node caps (`NodeCaps`) feed the lower bound `lower_bound_of_completed_refinement : NodeCaps → IsGrothendieckBound K → 1.401700322371 < K` (`Grothe/Research/RefinedCoverResult.lean`), in the active `Grothe` build; the older `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K` (`CapNodes.lean`) is kept with its weaker conclusion because `CapNodes.lean` is pinned in the node-cap closure. `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
 0.85, 0.855), plus any excluded-node caps of the other rows; the exclusion
 lists are empty. Rows 0–11 and 16–18 have 60 existing native range facts.
 Track A isolates their computation from the analytic proof layer. CI replays

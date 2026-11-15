@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401700037873 < K_G^ℂ < 1.404599395362` (`main_bounds`,
+The proved interval is `1.401700322371 < K_G^ℂ < 1.404599395362` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
 (`lower_target`), and so is the upper endpoint (`upper_below_tight`,
 `Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
@@ -1154,7 +1154,7 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Finite-mixture certificate extension (PR #381).**
+**Finite-mixture certificate and refined cover (tasks #378 and #421).**
 `Lower/BoxLookup.lean` decodes a selected cell or batch witness after indexing,
 instead of parsing every unselected entry. `indexedBoxBound_eq` and
 `indexedCompRefData_eq` prove exact equality with the original computations,
@@ -1168,21 +1168,28 @@ optimization introduces no native fact or new mathematical assumption.
 under `data/lower-refinement/` is exported by `gen_lower_refinement_lean.py` and
 checked by `LowerRefinementCheck.certRefinementBatches` through the existing
 `checkBatch` soundness theorem. That finite computation is registered in the
-native axiom inventory. The complete 14,060-box replacement cover is exported by
+native axiom inventory. The complete 15,096-box replacement cover is exported by
 `gen_lower_refinement_cover.py`. The four `certRefinedBoxes` facts and
 `certRefinedPartition` now check this stronger cover in place of the old one.
-`lower_bound_of_completed_refinement` connects its cap `0.7134194` to the
+`lower_bound_of_completed_refinement` connects its cap `0.7134192552` to the
 witness transfer; `lower_target` and `main_bounds` discharge the same node caps.
-The new strict endpoint `1.401700037873` improves the preceding endpoint by
-`0.000002920572`. All original source tables remain pinned and unchanged.
+The strict endpoint is `1.401700322371`. The refinement recomputes convex-hull chords and mixture weights
+from the same certified node bank, with exact acceptance and complete binary
+subdivision. All original source tables and law-node witnesses remain unchanged.
 Targeted reproduction commands are in `data/lower-refinement/README.md`.
+
+Separate Conjecture K research in
+`research/conjecture-K/sources/progress-2026-11-15-codex-a7c4/` strengthens
+common-response energy constraints and gives an exactly checked conditional
+joint-sector budget. These paper results are not premises of the Lean lower
+bound above. The pointwise joint remainder inequality is still open.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
 proves `V ≤ B` for an admissible scalar profile under the simultaneous
 Gaussian reduction `SharedReduction`, from checked rows, mixed batches,
 additional law nodes and a complete finite cover. The active certificate in
-`RefinedCoverResult.lean` uses `LowerRefinementCoverData.bound = 0.7134194` and
-the strict `endpoint = 1.401700037873`. `Grothe.Lower.transfer_lower` gives
+`RefinedCoverResult.lean` uses `LowerRefinementCoverData.bound = 0.7134192552` and
+the strict `endpoint = 1.401700322371`. `Grothe.Lower.transfer_lower` gives
 `1/B ≤ K` from `TransferInputsL2 B`; `refinement_endpoint_lt_reciprocal` supplies
 the exact strict comparison. `TransferInputsL2 B` asks, for every δ > 0,
 for a finite measure space with an operator T on L², a scalar cap
@@ -1230,7 +1237,7 @@ and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(�
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
 variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement :
-NodeCaps → IsGrothendieckBound K → 1.401700037873 < K` composes everything
+NodeCaps → IsGrothendieckBound K → 1.401700322371 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:
 **the only hypothesis of this intermediate theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials. Lean proves `NodeCaps`
@@ -1349,7 +1356,7 @@ strict audit. Source reproduction is not a native verification receipt.
   budget. The finite checker verifies each signed reserve and both positive semidefinite
   2×2 matrices; the analytic bridge derives that same budget for the actual cubic.
   Joint nodes are restricted to their checked kurtosis range throughout the cover.
-  The current partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 14,060 closed boxes.
+  The current partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 15,096 closed boxes.
   It retains the preceding pure-row and mixed-source law nodes checked by
   `LawNodeCheck.certLawNodes` and adds 21 majorants checked by
   `LowerRefinementCheck.certRefinementBatches`. Finite convex mixtures retain the
@@ -1606,7 +1613,7 @@ The bank's 41 original joint-moment nodes are verified through the integrated
 `JointData`/`jointCert` checker and `Circular.joint_sixth` analytic bridge in
 `JointContractions.lean`. The 306 original spectral witnesses, 45 inherited Stein witnesses,
 the two pure-row Stein witnesses, three mixed-source Young witnesses and 21
-additional law majorants are combined in the 14,060-box finite-mixture cover. The cover needs no hypothesis beyond
+additional law majorants are combined in the 15,096-box finite-mixture cover. The cover needs no hypothesis beyond
 `NodeCaps`, which is proved (`capsRest`).
 
 **Preceding reproducible law-scale extension.** `data/lower-unshifted/` preserves the original

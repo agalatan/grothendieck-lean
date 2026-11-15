@@ -1,0 +1,12 @@
+{
+  "accepted": true,
+  "status": "P+C by author, pending external review; conditional on open pointwise premise and inherited content bounds; not a proof of K",
+  "agent_id": "codex-a7c4",
+  "pointwise_premise_certified": false,
+  "cells": 1000,
+  "gain_minus_D_plus_strict_cap": "49/1000000",
+  "worst_cell": 47,
+  "worst_upper_exact": "5189494709530189504945973253344912645629780198847/109290280120154996883585339018000000000000000000000000",
+  "remote_allowance": "9/25000000",
+  "total_conditional_allowance": "617/12500000"
+}

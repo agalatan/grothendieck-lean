@@ -1,0 +1,56 @@
+{
+  "agent_id": "codex-a7c4",
+  "conditional_other_joint_budgets": {
+    "adverse": {
+      "content_gamma": "1/10",
+      "excess_bound": "158809/8846091680",
+      "mixed_cost_entry": "-59/500",
+      "simple_upper": "17953/1000000000"
+    },
+    "diagonal": {
+      "content_gamma": "3/20",
+      "excess_bound": "22687/6314750560",
+      "mixed_cost_entry": "0",
+      "simple_upper": "3593/1000000000"
+    }
+  },
+  "conditional_signed_joint_budget": {
+    "content_gamma": "6/25",
+    "excess_bound": "117382830462248349/6059500000000000000000",
+    "residual_kernel_width": "9192871/500000000",
+    "schur_complement": "12119/60000",
+    "simple_upper": "4843/250000000"
+  },
+  "energy_cap": "463/10000",
+  "inherited_inputs_not_replayed_by_this_script": [
+    "global peak kernel difference <.007 (third-audit kernel_alignment.py)",
+    "tilted-A content <=.3 D_plus+6e-6 (sixth tilted-sector delivery)"
+  ],
+  "new_centered_alignment_constant": "7/2000",
+  "open_inputs_for_joint_gain": [
+    "the corresponding finite-amplitude joint cost matrix",
+    "raw A-content premise in each conditional raw joint budget",
+    "odd sectors over a nonzero even core"
+  ],
+  "peak_kernel_endpoint_A": [
+    "0.835135932614129662",
+    "0.835135932614129663"
+  ],
+  "peak_kernel_endpoint_B": [
+    "0.422028097139578340",
+    "0.422028097139578341"
+  ],
+  "rho": "5053/10000",
+  "sharp_global_ratio_lower": [
+    "0.505340604634927485",
+    "0.505340604634927486"
+  ],
+  "status": "PASS; exact Fraction arithmetic and outward 220-bit intervals",
+  "tilted_B_content": {
+    "deficit": "D_plus; every finite-dimensional cubic at the peak",
+    "eta_bound": "51760323/11700786500000",
+    "gamma": "1/10",
+    "simple_eta_upper": "443/100000000",
+    "tilt": "15159/50000"
+  }
+}

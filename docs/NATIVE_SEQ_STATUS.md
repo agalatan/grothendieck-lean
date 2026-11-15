@@ -17,10 +17,10 @@ use only standard axioms.
 
 The current lower theorem is
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement`, with
-endpoint `1.401700037873`. `MainResult.lower_target` discharges its unchanged
+endpoint `1.401700322371`. `MainResult.lower_target` discharges its unchanged
 Gaussian `NodeCaps` premise. The finite checks cover the original rows and
 mixed batches, both law-node banks, four refined-box chunks and the full
-coverage tree. The box and partition facts check the stronger 14,060-box
+coverage tree. The box and partition facts check the stronger 15,096-box
 cover in place of the previous cover. `lower_bound_of_capsRest` retains the
 weaker endpoint `1.401697117301` for the cached cap-assembly interface.
 

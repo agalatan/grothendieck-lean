@@ -82,9 +82,10 @@ def render():
         original(right)
 
     original((Q(0), Q(9, 10), Q(0), RHO, Q(0), Q(31, 4)))
-    assert position == len(tokens) and len(boxes) == expected_count == 14060
+    assert position == len(tokens) and len(boxes) == expected_count and expected_count > 0
     bound = Q(doc['target'])
-    endpoint = Q((1 / bound).numerator * 10**12 // (1 / bound).denominator, 10**12)
+    reciprocal = 1 / bound
+    endpoint = Q((reciprocal.numerator * 10**12 - 1) // reciprocal.denominator, 10**12)
     assert endpoint * bound < 1
     out = [
         '-- Grothe/Research/LowerRefinementCoverData.lean\n'
@@ -96,7 +97,7 @@ def render():
         'open Grothe.Lower\n\n'
         f'def bound : ℚ := {qterm(bound)}\n'
         f'def endpoint : ℚ := {qterm(endpoint)}\n'
-        'def chunkSize : ℕ := 3515\n\n'
+        f'def chunkSize : ℕ := {(expected_count + 3) // 4}\n\n'
         'def originalStrings : Array String := RefinedCoverData.refinedBoxes.toArray\n\n'
         '/-- Unchanged boxes reuse the pinned original certificate strings. -/\n'
         'def originalBox (i : ℕ) : MixBox :=\n'
@@ -129,7 +130,7 @@ def main():
             raise ValueError('Generated lower-refinement cover differs')
     else:
         output.write_text(result)
-    print('PASS exact Lean cover export: 14060 boxes, complete partition')
+    print('PASS exact Lean cover export: complete partition')
 
 
 if __name__ == '__main__':

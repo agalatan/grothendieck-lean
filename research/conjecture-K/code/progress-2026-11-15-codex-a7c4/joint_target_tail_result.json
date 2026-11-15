@@ -1,0 +1,33 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "P+C author only; exterior proved, compact interior open",
+  "parameters": {
+    "a": "699/1250",
+    "b": "179/1250",
+    "rho": "5053/10000",
+    "s": "3/5",
+    "c": "463/5000",
+    "alpha": "31/100",
+    "orth": "2/25",
+    "E0": "463/10000",
+    "p": "2500/1891",
+    "k": "1/2"
+  },
+  "W": [
+    "629795281/2500000000",
+    "-2316857/6250000",
+    "93829/62500"
+  ],
+  "mass_upper": "3629795281/2500000000",
+  "density_cap": "81/100",
+  "density_min_bernstein": "686323/500000000",
+  "q_tangent_slope": "2094736121/64000000000",
+  "q_tangent_intercept": "4102880111/64000000000",
+  "density_tail_min": "2595321/1250000000",
+  "uniform_remainder_ratio": "217/100",
+  "large_amplitude_coefficient": "94/25",
+  "minimum_quadratic_ratio": "7344303698127/18910000000000",
+  "w_cutoff": "19/10",
+  "amplitude_cutoff": "37/25",
+  "interior_certified": false
+}
