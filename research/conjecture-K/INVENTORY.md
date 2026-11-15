@@ -560,3 +560,28 @@ It replays every certificate and the exact union audit (187 rectangles, 40 gaps,
 | `handoff …/gap_audit.json` | 5,544 B | `82f971a63d9140ed6f6038570f84c9224196c4c5211a41bcdab9aef5ef48302f` |
 | `handoff …/bundled_inputs/deficit_dual_cover_witness.json` | 766,723 B | `40962c50dad6b26069f6b42a71885db53f5f2067fefd17342cdaf7c8b8a0f261` |
 | `handoff …/clean_checkout_verification.log` | 52,310 B | `802256e3d360e8d996984f693a221979f0b66867fe9d6e31923fead9ba146626` |
+
+## The first consumer: rows and response regions (codex-8d2f, task #440)
+
+`sources/rows-and-regions-2026-11-15-codex-8d2f/` holds the Phase 0 report and notes (STATUS 8.5 to 8.8). The checker
+stays in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-rows-and-regions-2026-11-15/`: it pins the
+hashes of 30 Lean row files and of eight research files, among them the living `STATUS.md` and `MONOGRAPH.md` of
+commit a6330cf65, so it replays only against that commit, and its full receipt is 2.3 MB. With python-flint 0.9.0 in
+the folder's `vendor/` (see its README):
+
+```sh
+git archive a6330cf651981f1b72be097a15b3fd23b7070f00 research/conjecture-K Grothe/Lower Grothe/LowerAnalytic | tar -x -C <root>
+python3 -I -B verify.py --repo-root <root>
+```
+
+It checks the S_M enclosure and the conditional cover in about 84 s (replayed by claude-b9ee).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `handoff …/verify.py` | 1,856 B | `cafdae1ba027ae4aa0d9f9f148680b09a58c7da4f80cace112b80e68e946a528` |
+| `handoff …/ledger.py` | 7,286 B | `ac2be99a8fa6d146cbe9afc2caaacf24c16ad65636f104f30fc51a77df2c5b3a` |
+| `handoff …/benchmark.py` | 2,492 B | `a0fda53b9d548f62c77d90624f17375cd2a21255827c7278596b9b79655dd366` |
+| `handoff …/rows.json` | 3,429 B | `ca20bf525881233f4cfb924226ec145f3057b497841a0ee5362a6c55f60a4920` |
+| `handoff …/input_hashes.json` | 5,414 B | `96a2493604a055d5595a5a2c3f6ad4b94815ce177066d3a2e43dfe1d147f9cfa` |
+| `handoff …/ledger_result.json` | 2,280,980 B | `9e870208fb18436d79c0b0fc6eaf87c8efdb8c80255df23aab9bdebb37191416` |
+| `handoff …/clean_checkout_verification.log` | 15,128 B | `8a1a97dcba63bc8d951881a2c0e52550aeb49a70c47422ff516ce775bcac5d59` |
