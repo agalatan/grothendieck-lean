@@ -1,0 +1,333 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/92-joint-sixth-formal.tex (file dated 2026-10-25). Only this line was added.
+\section{A common contraction budget for the sixth moment and Stein cuts}
+\label{sec:joint-sixth-formal-20261022}
+\paragraph{Scope.}
+The following dimension-independent inequalities are now proved in Lean for genuine
+complex $(2,1)$ Wick cubics. They are additional constraints on the \emph{same}
+tensor used by the Stein cut. They do not assume conditional Gaussianity,
+independent factors, or a bounded coordinate core. The finite-node port checks every majorant and every use of its kurtosis
+range. The complete native Lean replay of the lifted cover passes, with
+$B=0.7134218$ and $K_G^{\mathbb C}>1.401695322458$ under the existing
+node-cap hypothesis.
+
+Normalize $\E|q|^2=1$, put $\chi=\E|q|^4-2$ and $x=\sqrt\chi$, and use the
+five contraction invariants $(n,h,b,y,z)$ of the contraction-Gram proof. Set
+\[
+ s_0=8n+2h+8b+8z,\qquad
+ h_0=\frac{s_0+24(3y-z)}3.
+\]
+Both are nonnegative, despite the negative $z$ coefficient when $h_0$ is
+expanded, and
+\[
+ \chi=\frac83s_0+4h_0.
+\]
+For every $\alpha>0$, the two proved bounds are
+\begin{align}
+ \E|q|^6&\le6+9\chi+x\{150\alpha s_0+(198+150/\alpha)h_0\},
+ \label{eq:joint-sixth-formal-triangle}\\
+ \E|q|^6&\le6+9\chi+x\{(135\alpha/2)s_0+
+ (11781/32+135/(2\alpha))h_0\}.
+ \label{eq:joint-sixth-formal-young}
+\end{align}
+The normalization bridge is explicit: if $a=\Re q$ and $f$ is its real
+symmetric cubic kernel, then $\E a^2=1/2$ and
+$s_0=1296\,\operatorname{tenS}(f)$,
+$h_0=1296\,\operatorname{tenH}(f)$.
+Using the variance-one real kernel $\sqrt2 f$ instead changes the factor to
+$324$. Mixing these two conventions would invalidate the numerical cut.
+
+\paragraph{Why these are joint constraints.}
+Let $P,Q,V,C$ denote the four linear contraction expressions
+\[
+\begin{split}
+ P&=16n+4h+16b/3+32y,\quad Q=64b/3+32y,\\
+ V&=(80n+20h+16b+96y+32z)/9,\quad C=(128b+96y)/9.
+\end{split}
+\]
+Here $V$ is the Stein variance and $C$ the squared complex fluctuation norm.
+A numerical node previously certified $\lambda V+\mu C\le AP+BQ$ by two
+positive semidefinite Gram multipliers and five nonnegative coefficient
+remainders. For either positive bracket $J=A_\alpha s_0+B_\alpha h_0$ above,
+reserve $\zeta x_*J$ in that \emph{same} coefficient identity:
+\[
+ \lambda V+\mu C+\zeta x_*J\le AP+BQ,\qquad \zeta\ge0.
+\]
+In coordinates $(n,h,b,y,z)$ the reserved vector is
+\[
+ \zeta x_*\bigl(8A_\alpha+8B_\alpha/3,
+ 2A_\alpha+2B_\alpha/3,
+ 8A_\alpha+8B_\alpha/3,
+ 24B_\alpha,
+ 8A_\alpha-16B_\alpha/3\bigr).
+\]
+Each remainder is checked \emph{after} subtracting this vector. Its last
+entry may be negative; a componentwise nonnegative replacement would lose
+valid information.
+
+On a checked range $0\le x\le x_*$, the moment inequality gives
+$\E|q|^6\le6+9\chi+x_*J$. Therefore the old radial cut $G(u)$ can be
+replaced by
+\[
+ G(u)+\zeta(-u^3+9u^2-12).
+\]
+Indeed, its expectation is the old completion squares plus the two
+nonnegative slacks
+\[
+ AP+BQ-\lambda V-\mu C-\zeta x_*J,
+ \qquad
+ \zeta(x_*J+6+9\chi-\E|q|^6).
+\]
+This is a reusable certificate interface: one tensor budget pays for
+both terms before any scalar law relaxation. Adding two separately
+optimized numerical savings would not establish this identity.
+
+\paragraph{Formal proof locations and remaining computation.}
+The Lean modules are \code{Grothe/LowerAnalytic/JointSixth.lean}
+(\code{gram\_j1}, \code{gram\_j2}, \code{gram\_j3}, and the two normalization
+bridges) and \code{Grothe/Lower/Reserve.lean}
+(\code{reserved\_gram\_budget}, \code{joint\_reserve\_value},
+\code{joint\_moment\_range}, \code{reserved\_moment\_cut}). The third module \code{Grothe/LowerAnalytic/JointBudget.lean}
+(\code{joint\_sixth\_budget}) connects this finite acceptance to the actual four
+spectral expressions of a circular cubic on the checked range. Their axiom
+checks use only \code{propext}, \code{Classical.choice}, and \code{Quot.sound}.
+The real tensor proof retains the negative cubic-trace term and uses
+\[
+ -20v+\frac{165}2\sqrt{vw}\le\frac{5445}{64}w
+\]
+by completing the square. Positivity of the symmetrized contraction
+operator is not assumed.
+
+The full node/range/cover integration is in the lower checker, with
+\code{Grothe/LowerAnalytic/JointContractions.lean} supplying the direct
+normalization and \code{Circular.joint\_sixth} API of the actual Gaussian
+budget proof. The current cover has $8{,}756$ boxes, with $306$ spectral
+and $45$ retained Stein nodes, including $41$ joint-moment nodes. Its
+complete native Lean check passes at $B=0.7134218$, with strict endpoint
+$K_G^{\mathbb C}>1.401695322458$. The downstream lower theorem retains
+only \code{NodeCaps}, the previously documented Gaussian potential-node
+bounds. Neither moment inequality alone proves the unrestricted
+actual-response conjecture.
+
+\subsection{Retaining the upper contraction bound and transporting a certificate}
+\label{sec:joint-sixth-transport}
+There is a further improvement to the two quoted moment bounds. Write
+$s=\operatorname{tenS}(f)$, $h=\operatorname{tenH}(f)$,
+$V=\operatorname{tenV}(f)$, $W=\operatorname{tenU2}(f)$ and
+$D=\operatorname{tenDU}(f)$. Besides $D\le\sqrt{VW}$, one has
+$0\le V\le s\sqrt s$ and $0\le W\le h\sqrt s$.
+For every $\eta\ge0$, completion of the square with coefficient $20+\eta$
+therefore gives
+\[
+ -20V+\frac{165}2D
+ \le\eta V+\frac{27225}{16(20+\eta)}W
+ \le\eta s\sqrt s+\frac{27225}{16(20+\eta)}h\sqrt s.
+\]
+The first inequality is precisely the nonnegativity of
+\[
+ (20+\eta)\left(\sqrt V-
+ \frac{165}{4(20+\eta)}\sqrt W\right)^2
+ +\frac{165}2(\sqrt{VW}-D).
+\]
+The same normalization, square-root bounds and Young inequality as above give,
+for all $\eta\ge0$ and $\beta>0$,
+\begin{equation}\label{eq:joint-sixth-eta}
+ \E|q|^6\le6+9\chi+x\left\{
+ \left(\frac{135\beta}2+2\eta\right)s_0+
+ \left(198+\frac{27225}{8(20+\eta)}+
+       \frac{135}{2\beta}\right)h_0\right\}.
+\end{equation}
+At $\eta=0$ this is \eqref{eq:joint-sixth-formal-young}.
+Setting $\beta=\alpha+4/15$ and $\eta=165\alpha/4-9$ yields
+\begin{equation}\label{eq:joint-sixth-shifted}
+ \boxed{\quad
+ \E|q|^6\le6+9\chi+x\left\{
+ 150\alpha s_0+\left(198+\frac{150}{\alpha+4/15}\right)h_0
+ \right\},\qquad\alpha\ge\frac{12}{55}.
+ \quad}
+\end{equation}
+It has the same $s_0$ coefficient as
+\eqref{eq:joint-sixth-formal-triangle} and a strictly smaller $h_0$
+coefficient. No concentration or coordinate-independence restriction is added.
+
+\paragraph{An exact transport rule.}
+Suppose the stronger tensor budget permits increasing the moment-cut weight
+from $\zeta$ to $\zeta+d$, with $d\ge0$. If the old majorant has coefficients
+$(a_0,a_1,a_2,a_4,a_6)$, replace them by
+\[
+ (a_0-12d,\ a_1,\ a_2,\ a_4+9d,\ a_6-d).
+\]
+The pointwise change in the majorant equals the pointwise change in the cut,
+so the old whole-half-line majorant proof transports exactly. Provided
+$d\le a_6$, the new sixth coefficient is still admissible. At normalized
+scale its scalar moment price improves by exactly
+\[
+ J_{\rm new}(x)=J_{\rm old}(x)-dC_6x^3.
+\]
+This identity and the pointwise transport are proved in
+\code{Grothe/Lower/MomentLift.lean}. The stronger budget must still be
+accepted; the transport rule does not license an arbitrary increase of $d$.
+
+For example, the two existing triangle nodes with $\alpha=1/10$ can use
+\eqref{eq:joint-sixth-formal-young} at $\beta=1/8$ and increase their weight
+by a factor $16/9$. The old bracket is $15s_0+1698h_0$, while the new
+weighted bracket is $15s_0+(3229/2)h_0$. The freed coefficient is
+$(167/2)h_0$, whose Gram representation is
+\[
+ h_0=\operatorname{tr}\!\left[
+ \begin{pmatrix}2/3&8/3\\8/3&32/3\end{pmatrix}G_1\right]+8y.
+\]
+The displayed matrix is positive semidefinite of rank one. Adding its
+nonnegative multiple to the old budget certificate proves acceptance of
+the strengthened weight. Fresh exact replays of both transported nodes
+and the complete $8{,}679$-box partition passed. Seventeen boxes improve,
+by at most $4.091\cdot10^{-7}$ in this replay; other boxes remain binding,
+so the displayed global lower endpoint of that package is unchanged.
+A subsequent exact reselection and subdivision produces $8{,}756$ boxes with
+$B=0.7134218$ and the strict external endpoint
+$K_G^{\mathbb C}>1.401695322458$, under the original joint-moment package's
+source inputs. Both modified nodes and the complete new cover pass the unchanged
+exact checkers. The full joint-node, range and cover port now also passes
+the native Lean check at this endpoint. The Gaussian potential-node bounds
+remain the sole documented analytic input to the lower theorem.
+
+The global strengthening \eqref{eq:joint-sixth-eta} and its shifted corollary
+are formal theorems \code{JointSixth.gram\_j\_eta} and
+\code{JointSixth.gram\_j2\_shifted}; \code{joint\_eta\_budget} connects the
+former to the actual spectral budget. These introduce no additional Gaussian or
+tensor assumptions. The lifted numerical package above uses the earlier Young
+family; its new endpoint does not rely on the further eta strengthening.
+
+\subsection{A homogeneous conic certificate for the moment cost}
+\label{sec:moment-cost-cone}
+The two parameters in \eqref{eq:joint-sixth-eta} need not be searched on an
+outer grid. Let $\omega,u,v>0$ and choose real $a_s,a_h,r_0,r_1$ satisfying
+\[
+ \begin{pmatrix}u&135\omega/2\\135\omega/2&r_0\end{pmatrix}\succeq0,
+ \qquad
+ \begin{pmatrix}v&165\omega/2\\165\omega/2&r_1\end{pmatrix}\succeq0,
+\]
+\[
+ v\ge40\omega,\qquad
+ u+v\le a_s+40\omega,\qquad
+ r_0+r_1\le a_h-198\omega.
+\]
+Then every normalized genuine circular cubic satisfies
+\[
+ \omega(\E|q|^6-6-9\chi)
+ \le x(a_s s_0+a_h h_0).
+\]
+Indeed, take $\beta=2u/(135\omega)$ and
+$\eta=v/(2\omega)-20$. The determinant tests give
+\[
+ \omega A_{\eta,\beta}=u+v-40\omega\le a_s,
+ \qquad
+ \omega B_{\eta,\beta}
+ =198\omega+\frac{18225\omega^2}{4u}
+                +\frac{27225\omega^2}{4v}
+ \le198\omega+r_0+r_1\le a_h.
+\]
+For a node with $\omega=\zeta x_*$ and $x\le x_*$, this yields
+\[
+ \zeta(\E|q|^6-6-9\chi)\le a_s s_0+a_h h_0.
+\]
+Positivity of the multipliers and diagonal entries, and the range $x\le x_*$,
+are explicit conditions; no division by a possibly zero quantity is used.
+Nodes without a moment correction retain the separate zero-weight case.
+
+This is a convex conic formulation of the moment-budget proposal: two
+$2\times2$ PSD blocks and linear inequalities replace the outer
+$(\eta,\beta)$ search. The reserved vector is linear in $(a_s,a_h)$, so it
+can be optimized jointly with the contraction-Gram multipliers. It remains a
+sufficient certificate family, not a characterization of attainable response laws.
+
+\code{Grothe/LowerAnalytic/MomentCone.lean} proves the real cone theorem,
+the node-range theorem, and soundness of an exact rational Boolean checker
+(\code{check\_sound}, \code{gram\_node\_of\_check}). Two explicit rational
+cone points, including the lifted nodes' $\beta=1/8$ point and the shifted
+$\alpha=1/2$ point, are checked by kernel arithmetic. The latter has
+$s_0$ coefficient $75$ and $h_0$ coefficient $9054/23$, compared with $498$
+in the old triangle bound at the same $s_0$ coefficient. This coefficient
+improvement alone is not an endpoint improvement.
+
+
+\subsection{Exact optimization inside the moment-cost cone}
+\label{sec:moment-cost-boundary}
+The conic formulation itself has an exact two-branch scalar boundary. For a
+fixed positive weight $w$ and positive $s_0$ cost $A$, the least admissible
+$h_0$ cost is
+\begin{equation}\label{eq:moment-cost-boundary}
+ B_{\min}(w,A)=
+ \begin{cases}
+ \displaystyle\frac{11781}{32}w+\frac{18225w^2}{4A},&11A\le360w,\\[5pt]
+ \displaystyle198w+\frac{22500w^2}{A+40w},&11A\ge360w.
+ \end{cases}
+\end{equation}
+The formulas agree at $11A=360w$. This optimizes the sufficient certificate
+cone, not the space of actual bounded-response laws.
+
+Here is a direct proof retaining every constraint. Write the two positive
+first diagonals as $u,v$, and the remaining diagonals as $r_0,r_1$.
+Pairing the first PSD matrix against the second with its off-diagonal
+negated gives
+\[
+ ur_1+vr_0\ge2(135w/2)(165w/2).
+\]
+Adding the two determinant bounds yields
+\[
+ (u+v)(r_0+r_1)\ge(150w)^2.
+\]
+Since $u+v\le A+40w$ and $r_0+r_1\le B-198w$, this proves the second
+expression in \eqref{eq:moment-cost-boundary} as a universal lower bound.
+It is attained when $11A\ge360w$ by
+\[
+ (u,v)=\frac{A+40w}{20}(9,11),\qquad
+ (r_0,r_1)=\frac{w^2}{A+40w}(10125,12375).
+\]
+The threshold is precisely the condition $v\ge40w$ for this point.
+
+For $11A\le360w$, put $\gamma=135w/(2A)\ge33/16$.
+Testing the first PSD matrix on $(-\gamma,1)$ and the second on
+$(-33/16,1)$, and using
+\[
+ (A-u)\gamma^2-(v-40w)(33/16)^2
+ =\gamma^2(A+40w-u-v)
+ +(\gamma^2-(33/16)^2)(v-40w)\ge0,
+\]
+gives
+\[
+ r_0+r_1\ge\frac{18225w^2}{4A}+\frac{5445}{32}w.
+\]
+After adding $198w$ this is the first branch. It is attained by
+\[
+ (u,v)=(A,40w),\qquad
+ (r_0,r_1)=\left(\frac{18225w^2}{4A},\frac{5445w}{32}\right).
+\]
+The first branch is the original Young family; the second is the shifted
+family, and both have rational attaining recipes for rational $w,A$.
+Thus the strengthened two-parameter family has been completely optimized
+inside this scalar cone. An outer parameter grid cannot produce a better
+cost than \eqref{eq:moment-cost-boundary}.
+
+The Lean proofs appear in
+\code{Grothe/LowerAnalytic/MomentConeBoundary.lean}.
+They establish necessity via \code{Feasible.boundary\_lower} and attainment
+via \code{boundary\_attained}, together with the Schur and constrained-branch
+inequalities. The proofs introduce no analytic hypotheses or native axioms.
+
+The same module also proves \code{boundary\_moment} and \code{boundary\_node}: the optimal cost is applied directly to every actual normalized circular cubic, and to its moment correction whenever the checked kurtosis range holds.
+
+
+In fact the auxiliary PSD variables can be eliminated completely.
+\code{exists\_feasible\_iff} proves that, for $w,A>0$, existence of positive
+$u,v$ and any $r_0,r_1$ satisfying the conic tests is equivalent to
+$B\ge B_{\min}(w,A)$. The exact rational checker
+\code{boundaryCheck} therefore needs only the three numbers $(w,A,B)$.
+\code{boundaryChecked\_node} proves that its acceptance, together with
+$w=\zeta x_*$, $\zeta,x_*>0$ and $x\le x_*$, implies
+\[
+ \zeta(\E|q|^6-6-9\chi)\le A s_0+B h_0
+\]
+for the actual circular cubic. Thus neither an outer parameter grid nor
+stored auxiliary conic variables are needed for this moment-cost interface.
+The remaining contraction reserve and pointwise node majorant still require
+their own exact acceptance.

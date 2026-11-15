@@ -1,0 +1,1354 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch53-two-driver-cold.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 53). Owner: lower-bound/10-coupled-complements.tex
+\section{Independent self-interacting drivers: current regions and a common envelope}
+\label{ch:two-driver-cold}
+\chapsummary{Independent Wick-driver envelopes, B-only closure and coupled-B cumulant regions. The largest current regions are registered in \autoref{ch:K-state}; earlier covers remain dependencies.}
+
+\subsection{Family and current incomparable regions}
+Let $Z,X_1,X_2,U$ be independent proper standard complex Gaussians and
+\[
+ G=\sum_{j=1}^2\left[c_jH(X_j)+\alpha_j(|Z|^2-1)X_j+
+            \frac{\beta_jZ^2\bar X_j}{\sqrt2}\right]+gU,
+ \quad A^2=\sum_j|\alpha_j|^2,\quad k_4=\sum_jc_j^4.
+\]
+Here $c_j,g\ge0$, $\alpha_j,\beta_j\in\C$, and
+$H(x)=x(|x|^2-2)/\sqrt2$. Every row allows every complex $\beta_j$
+and every A phase.
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Cubic range & A restriction & Buffer & Conclusion\\
+\midrule
+all $c_1,c_2$ & $A\le\sqrt{k_4}/20$ & all $g$ & $\Lambda\le S$\\
+$c_j\le141/1000$ & $A\le\sqrt{k_4}/8$ & all $g$ & $\Lambda\le S$\\
+$c_j\le31/200$ & $A\le\sqrt{k_4}/20$ & all $g$ & $\Lambda\le S$\\
+all $c_1,c_2$ & $A\le1/750$ & all $g$ & $\Lambda<S+89\cdot10^{-6}$\\
+$c_j\le1/10$ & $A\le3/500$ & all $g$ & $\Lambda<S+89\cdot10^{-6}$\\
+$c_j\le3/20$ & $A\le1/1000$ & $g\le1/6$ & $\Lambda<S-10^{-6}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Provenance of the rows: the global $\sqrt{k_4}/20$ taper is from dimension-free transport (\S\ref{sec:k-ab-transport-regions}), improving the $\sqrt{k_4}/25$ taper and the global $1/750$ disk are the joint-dual refinement (\S\ref{sec:k-joint-dual-refinement}),
+built on the context-free joint dual (\S\ref{sec:k-joint-dual}, which proved $\sqrt{k_4}/50$ and $9/20000$); the $1/8$ and $1/20$ squares come from the consolidation
+covers (\S\ref{sec:kcompact-regions}); the fixed disk $3/500$ and the strict low-buffer row are inherited from the Hermite package. The global $/25$ row supersedes
+the bounded $\sqrt{k_4}/200$ square up to $0.18$ and the incoming $/50$ theorem; it does not supersede the larger allowances on bounded squares or the strict deficit.
+For any finite number of independent drivers see Theorem~\ref{thm:k-joint-dual-many} (unnormalised floor $k_4\ge9/10000$).
+No extra even/diagonal sector is silently included.
+
+\paragraph{Provenance and status (IDE note).} The first two packages (averaged, \code{node verify.mjs} ALL CLAIMS PASS, 35\,s; Hermite, five covers plus the previous
+certificate, 83\,s) came from the context-free GPT and are archived in \pathref{gpt-reviews/cold-start-20261020/}. The enlarged tapered squares and the sharper radial
+derivative come from the full-context GPT's consolidation package \pathref{gpt-reviews/k-consolidation-20261020/}; IDE replay \code{python3 -I verify\_all.py} from an
+unrelated directory: incoming Hermite certificate, strong, wide and taper covers all PASS (132\,s). The chapter was compacted on 20 October: the two chronological region
+lists were replaced by the table above, whose rows contain every earlier region.
+
+\subsection{One envelope for independent Wick drivers, with a sharper content bound}
+\label{sec:kcompact-master}
+
+\paragraph{Status and inputs.}
+The derivative refinement below is \textbf{[P]}, with elementary identities
+checked in exact arithmetic. The numerical regions are \textbf{[P,C]}.
+The accepted analytic inputs are the visible Gaussian-mixture representation,
+the positive A/B gradient kernels, the all-shift potential bounds
+$C_A<207/100$, $C_{AB}<19/25$, $C_B<953/1000$, and the large-buffer
+continuation at $g\ge477/1000$. The incoming two-driver certificate is
+replayed, including the small-square theorem used for continuation.
+No general Conjecture K or new Grothendieck endpoint is asserted.
+
+\subsubsection{A strictly stronger radial derivative estimate}
+Let
+\[
+ k(u)=\int_{[0,\infty)}e^{-tu}\,\nu(dt),\qquad
+ m_0=\int\nu(dt),\quad m_1=\int t\,\nu(dt)<\infty,
+\]
+where $\nu$ is positive and finite. Let $Y$ be an integrable circular
+complex random variable. Define the real radial coefficient by
+\[
+ \mathbb E[(w+Y)k(|w+Y|^2)]=w\widetilde k(|w|^2).
+\]
+The variable $Y$ is independent of the fixed argument and of any driver
+to which this convolution will subsequently be applied. No positivity or
+complete monotonicity of $\widetilde k$ is assumed.
+
+\begin{theorem}[Averaging the two Bessel bounds before taking moments, \textbf{[P]}]
+\label{thm:kcompact-radial}
+If $m_0m_1>0$ and $u>0$, then
+\[
+ \boxed{
+ |\widetilde k'(u)|
+ \le m_1\Theta\!\left(\frac{um_1}{m_0}\right),\qquad
+ \Theta(x)=1-\left(1+\frac1{2x}\right)e^{-1/x}.}
+\]
+The value at $u=0$ is bounded by $m_1$. If $m_1=0$, the derivative
+vanishes. For $x>0$,
+\[
+ 0<\Theta(x)<\min\{1,(2x)^{-1}\}.
+\]
+Thus the new bound strictly improves
+$\min\{m_1,m_0/(2u)\}$ whenever $u,m_0,m_1>0$.
+\end{theorem}
+
+\begin{proof}
+For a single spectral atom $k(u)=e^{-tu}$, $t>0$, the Fourier calculation
+in the incoming proof gives
+\[
+ \widetilde k'(u)
+ =-\frac1{4t}\mathbb E\!\left[
+ R^4\frac{J_2(R\sqrt u)}{R^2u}\chi_Y(R)\right],
+ \qquad \frac{R^2}{4t}\sim\operatorname{Exp}(1),\quad |\chi_Y|\le1.
+\]
+The two global bounds $|J_2(x)|\le x^2/8$ and $|J_2(x)|\le1/2$
+may be imposed inside the \emph{same} expectation. Writing $V\sim
+\operatorname{Exp}(1)$ and $a=1/(tu)$ gives
+\[
+ |\widetilde k'(u)|
+ \le \frac t2\mathbb E\min\{V^2,aV\}
+ =t\left[1-\left(1+\frac a2\right)e^{-a}\right]=:B_u(t).
+\]
+Indeed,
+\[
+ \int_0^a v^2e^{-v}\,dv+a\int_a^\infty ve^{-v}\,dv
+ =2-(a+2)e^{-a}.
+\]
+This expectation is strictly smaller than either untruncated moment,
+which proves the strict comparison for a single atom.
+For fixed $u>0$, extend $B_u$ continuously by $B_u(0)=0$. Direct
+differentiation gives
+\[
+ B_u'(t)=1-e^{-a}(1+a+a^2/2)\ge0,\qquad
+ B_u''(t)=-\frac{a^3e^{-a}}{2t}\le0.
+\]
+The triangle inequality followed by Jensen for the positive measure
+$\nu/m_0$ now yields
+\[
+ |\widetilde k'(u)|\le\int B_u(t)\,\nu(dt)
+ \le m_0B_u(m_1/m_0)=m_1\Theta(um_1/m_0).
+\]
+The bound $B_u(t)\le t$ justifies differentiation and integration
+by domination. A spectral atom at zero contributes a constant vector
+coefficient and no derivative, since $\mathbb E Y=0$.
+\end{proof}
+
+For example, at $um_1/m_0=1/2$ the old bound is $m_1$, whereas the
+new bound is $(1-2e^{-2})m_1<0.73m_1$. This is an improvement to an
+intermediate estimate, not a percentage improvement to $K_G^{\mathbb C}$.
+
+\paragraph{Rational facets used by the verifier.}
+For any $a>0$, concavity of $B_u(t)$ gives the tangent inequality
+\[
+ \Theta(x)\le A_a+\frac{B_a}{2x},\qquad
+ A_a=1-(1+a+a^2/2)e^{-a},\quad B_a=(1+a)e^{-a}.
+\]
+We use $a\in\{1/4,1/2,1,2,4,8\}$, rounding both $A_a$ and $B_a$
+\emph{upward}. Taking a minimum with $1$ and $(2x)^{-1}$ is valid.
+No discretization of an unknown spectral measure is involved.
+
+\subsubsection{The content formula for any finite number of drivers}
+Let $Z,X_1,\ldots,X_N,U$ be independent proper standard complex
+Gaussians, let $c_j,g\ge0$, and let $\alpha_j,\beta_j\in\mathbb C$.
+Put
+\[
+ H(X)=X(|X|^2-2)/\sqrt2,\quad T=|Z|^2,\quad
+ q_0=\sum_{j=1}^N c_jH(X_j),\quad v=g^2,
+\]
+\[
+ G=q_0+\sqrt vU+(T-1)\sum_j\alpha_jX_j+
+       \frac{Z^2}{\sqrt2}\sum_j\beta_j\overline X_j,\qquad
+ A=\left(\sum_j|\alpha_j|^2\right)^{1/2}.
+\]
+These are independent remote driver blocks with shared A/B inside each
+block. A general tensor containing $X_iX_j\overline X_k$ is not assumed
+to admit this diagonal form.
+
+For the positive buffered kernels $k_{j,v}$, $j=A,B$, write
+$m_{j,0}=k_{j,v}(0)$ and $m_{j,1}=-k_{j,v}'(0)$. Set
+\[
+ Z_3(t)=t(t-2)^2/2,\qquad
+ H_*(s)=\int_{\{Z_3(t)>s\}}t(t-2)e^{-t}\,dt.
+\]
+The signed-tail lemma gives $H_*\ge0$ and $\int H_*=16$.
+Define
+\[
+ d_j^\sharp(c,v)=\frac{c^3m_{j,1}}{\sqrt2}
+       \int_0^\infty H_*(s)
+       \Theta\!\left(\frac{c^2s m_{j,1}}{m_{j,0}}\right)\,ds,
+ \qquad D_j^\sharp=\left(\sum_kd_j^\sharp(c_k,v)^2\right)^{1/2}.
+\]
+At $c=0$ define $d_j^\sharp=0$.
+Then the actual contents obey $|d_{j,k}|\le d_j^\sharp(c_k,v)$.
+To prove this, integrate out the buffer and all other independent
+circular driver terms, use the signed-tail identity, and apply
+Theorem~\ref{thm:kcompact-radial}. The same argument proves the
+older cubic and saturated bounds by replacing $\Theta$ by $1$ or
+$\min\{1,(2x)^{-1}\}$, respectively.
+
+The bound increases in each of $c,m_{j,0},m_{j,1}$ separately.
+For $m_0,m_1$ this follows from the positive, concave perspective
+$m_0B_u(m_1/m_0)$. For $c$ write its integrand, apart from a positive
+constant, as
+\[
+ c^3\Theta(Kc^2)
+ =\frac12\mathbb E\min\{c^3V^2,cV/K\},
+ \qquad K>0.
+\]
+Thus upper moment bounds and upper amplitude endpoints may be inserted
+before interval integration.
+
+\subsubsection{The common remote moment bound and simultaneous insertion}
+Write
+\[
+ e_0=\sum_jc_j^2,\quad k_4=\sum_jc_j^4,\quad k_6=\sum_jc_j^6.
+\]
+The exact moments, for every finite $N$, are
+\[
+ M_{4,0}=2e_0^2+42k_4,\qquad
+ M_{6,0}=6e_0^3+378e_0k_4+10968k_6.
+\]
+For $q=q_0+\sqrt vU$, replace $e_0$ by $e=e_0+v$ in these two
+polynomials, leaving $k_4,k_6$ unchanged. These identities follow
+by independence, circularity, and the single-driver moments
+$1,44,11352$. They do not need a separate two-driver proof.
+
+Let $h(v)=2\mathbb E|L+\sqrt vU|$, $F(v)=h(v)-pv$,
+$C(v)=-h''(v)$ and $B(v)=h'''(v)/(3C(v))$. Three valid upper bounds
+on $\Lambda(q)-S$ are:
+\[
+ R_1=F(v)-S+(h'(v)-p)e_0-\mathcal L,\quad
+ R_2=F(v+e_0)-S+C(v)e_0^2/2-\mathcal L,
+\]
+\[
+ \mathcal L=\frac{C(v)}2
+       \frac{M_{4,0}^2}{2M_{4,0}+B(v)M_{6,0}},
+\]
+with $\mathcal L=0$ at $e_0=0$, and the anchored Hermite bound
+\[
+ R_H=p_0+(p_1-p)e+p_2(2e^2+42k_4)
+       +p_3(6e^3+378ek_4+10968k_6)-\Delta_0.
+\]
+Here $P_{x,y}(u)=p_0+p_1u+p_2u^2+p_3u^3$ is any certified
+global cubic majorant for
+$2\mathbb E|L+\sqrt u|-h(0)$, and $\Delta_0\le S-h(0)$.
+The spectral Radau plus cubic Hermite construction in the incoming
+note supplies such majorants. It bounds a fixed shift; it must not
+be replaced by the different function $h(u)$ for added Gaussian variance.
+
+\begin{theorem}[Master independent-driver envelope, \textbf{[P]}]
+\label{thm:kcompact-envelope}
+With $R=\min\{R_1,R_2,R_H\}$, omitting any unavailable candidate,
+\[
+ \boxed{\Lambda(G)-S\le
+ R+2D_A^\sharp A+
+ \left(\frac{207}{100}-p\right)A^2+
+ \frac{\left(D_B^\sharp+\frac{19}{25}A\right)^2}{369/1000}.}
+\]
+\end{theorem}
+\begin{proof}
+Insert both sectors simultaneously at the $Z$-independent baseline
+$q$. The accepted potentials and the exact orthogonal variance price give,
+with $D=\|\beta\|_2$,
+\[
+ \Lambda(G)-\Lambda(q)
+ \le 2D_A^\sharp A+2D_B^\sharp D+
+ (207/100-p)A^2+2(19/25)AD-(369/1000)D^2.
+\]
+Complete the last square over $D\ge0$. No independence between a
+driver's cubic and its A/B terms has been introduced.
+\end{proof}
+
+\paragraph{How to use the formula.}
+The theorem is an analytic envelope in every finite dimension; it
+does not say that its right side is nonpositive everywhere. The
+certificates below concern $N=2$. They do not cover extra Y/W/diagonal
+terms or general mixed cubic monomials. Those have separate certificates.
+
+\subsubsection{New certified regions and the replay contract}
+\label{sec:kcompact-regions}
+At the peak parameters $a=699/1250$, $b=179/1250$, $p=2500/1891$,
+the refined interval cover gives exact K for arbitrary complex
+$\beta_1,\beta_2$ and all A phases in each of
+\[
+\begin{array}{c|c|c}
+ c_1,c_2\le & A\le & g\\ \hline
+ 141/1000 & \sqrt{k_4}/8 & [0,\infty)\\
+ 31/200 & \sqrt{k_4}/20 & [0,\infty)\\
+ 9/50 & \sqrt{k_4}/200 & [0,\infty).
+\end{array}
+\]
+On the newly covered portion $\max(c_1,c_2)\ge1/10$,
+$g\le477/1000$, the cover retains deficit $10^{-6}$.
+The square $c_1,c_2\le1/10$ is supplied by the freshly replayed
+incoming tapered theorem; its taper $1/8$ contains all three tapers.
+The accepted all-cubic large-buffer theorem finishes $g\ge477/1000$.
+The inherited fixed-disk statements, $A\le3/500$ with error
+$89\cdot10^{-6}$ on $c_j\le1/10$, and $A\le1/1000$ with deficit
+$10^{-6}$ on $c_j\le3/20,\ g\le1/6$, remain separate useful rows.
+
+The refinement changes only the content attenuation and the three
+root rectangles in the incoming cover. At rational $a$ use upward
+enclosures of $A_a,B_a$. With $r=2c^2m_1/m_0$, each facet provides
+the lower correction
+\[
+ 16(1-\mathcal T_{\rm new}(r))
+ \ge\int_3^{32}t^2Z_3'(t)e^{-t}
+       \left(1-A_a-\frac{B_a}{rZ_3(t)}\right)_+dt.
+\]
+The omitted portions are nonnegative. Lower rectangles of width
+$1/512$ and suffix sums of $w_i$ and $w_i/Z_3(t_i)$ enclose this
+integral; the second sum is rounded upward because it is subtracted.
+The largest lower correction among the six facets and the old
+$(1-1/(rZ_3(t)))_+$ correction is used. Thus the implemented bound
+is never weaker than the received one. The optional fine replay
+uses width $1/1024$ and finer scalar quadrature.
+
+The package contains the proof, a standard-library Python launcher,
+the dependency-free Node verifier, fresh logs, source hashes, and
+the unmodified incoming proofs. The unsuccessful larger experiments
+$(0.15,1/8)$, $(0.17,1/20)$, $(0.20,1/200)$ are not claimed regions:
+their enclosures exhausted the depth limit near the chosen
+$-10^{-6}$ acceptance threshold. The intermediate attempts
+$(0.144,1/8)$, $(0.16,1/20)$ and $(0.19,1/200)$ also failed that
+cover, and are not claimed. This is not a counterexample to K
+and is not an extremal boundary of the method.
+
+\subsection{The joint scalar dual: the B-only two-driver family closed}\label{sec:k-joint-dual}
+\paragraph{Provenance and status (IDE note).} From the context-free GPT, 20 October (\code{conjK-two-driver-dual-20261020.zip}, SHA-256
+\code{f7ff9342\ldots5a09}), ported verbatim below with sectioning and labels adapted. It closes the \emph{entire} two-driver family with $\alpha=0$, at every cubic amplitude,
+buffer and complex $B$, and gives exact K for $A\le\sqrt{k_4}/50$. ``State Lemma/Theorem $n$'' refers to \code{conjK\_state.pdf} in
+\pathref{bundles/conjK-state-20261020.zip}: Lemma~3 is the visible Gaussian mixture, Lemma~12 the all-shift potentials, Lemma~14 the positive content kernels, Theorem~18 the
+large-buffer theorem $g\ge0.477$. The IDE replayed it inside the refinement package below (\code{incoming}: ALL CLAIMS PASS, 87 global scalar certificates with tails).
+IDE check of the key step \st{P}: $d=\lambda_1v+P_{\mathcal D}[q\,r(|q|^2)]$ because $P_{\mathcal D}q=0$, Bessel gives $\|P_{\mathcal D}[qr]\|^2\le\E[|q|^2r^2]$, and
+the $A=0$ bound then depends on the law of $q$ only through $\E|q|^2,\E|q|^4,\E|q|^6$ and $\|P_{\mathcal D}(q|q|^2)\|^2=128k_6$.
+
+\subsubsection{Statement and dependencies}
+Use the main parameters $p=2500/1891$, $a=699/1250$, $b=179/1250$.
+For independent standard complex Gaussians $Z,X_1,X_2,U$, set
+\[
+L=Z(a+b|Z|^2),\qquad H(X)=X(|X|^2-2)/\sqrt2,
+\]
+\[
+G=\sum_{j=1}^2\left[c_jH(X_j)+\alpha_j(|Z|^2-1)X_j+
+\beta_jZ^2\bar X_j/\sqrt2\right]+gU.
+\]
+Here $c_j,g\ge0$ and $\alpha_j,\beta_j\in\mathbb C$. As usual,
+\[
+\Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2,\quad
+S=\sup_{v\ge0}\{2\E|L+\sqrt vU|-pv\}.
+\]
+Put $A=\norm{\alpha}_2$, $B=\norm{\beta}_2$ and $k_r=\sum_jc_j^r$.
+
+\begin{theorem}[Global tapered two-driver theorem, {\normalfont\textbf{[P,C]}}]
+For all the parameters above,
+\[
+\boxed{\quad A\le\frac{\sqrt{k_4}}{50}
+\quad\Longrightarrow\quad \Lambda(G)\le S.\quad}
+\]
+There is no upper restriction on $c_1,c_2,g,B$, and all complex
+coefficient phases are allowed. In particular, $\alpha_1=\alpha_2=0$
+is solved exactly at every amplitude.
+\end{theorem}
+
+\begin{theorem}[A uniform A disk, {\normalfont\textbf{[P,C]}}]
+At every $c_1,c_2,g\ge0$ and every complex $\beta_1,\beta_2$,
+\[
+A\le9/20000\quad\Longrightarrow\quad\Lambda(G)<S+89\cdot10^{-6}.
+\]
+\end{theorem}
+\begin{proof}
+If $\max c_j\le1/10$, use the preceding Hermite note's weak theorem
+for $A\le3/500$. If $1/10\le\max c_j\le3/20$, its exact theorem
+with denominator $20$ permits $A\le1/2000$, which contains this disk.
+If $\max c_j\ge3/20$, the new theorem permits
+$A\le(3/20)^2/50=9/20000$. All buffers and phases are allowed.
+The requisite weak small-square certificate is also replayed.
+\end{proof}
+
+The state-document inputs are Lemma 3 (visible Gaussian mixture), the
+positive gradient kernels underlying Lemma 14, Lemma 12's all-shift
+potentials, and Theorem 18 (the buffer half-line $g\ge477/1000$).
+We also use its certified $S>1.37395$ for an elementary large-variance
+exclusion. State Theorems 19--21 are not needed for the new theorem.
+
+The preceding two-driver Hermite note supplies its small-cubic theorem,
+the saturated A-content estimate, and the integral identities for the
+scalar moments. That note and its earlier note are included under
+\texttt{previous/}. The top-level verifier recomputes the required
+small-cubic covers; it does not trust an old replay log.
+
+\subsubsection{A joint projection estimate}
+Let $q$ be independent of $Z$ and square-integrable, with enough moments
+for the expressions below. Let $\mathcal D$ be the span of the
+orthonormal variables $X_1,\ldots,X_N$ in ordinary complex $L^2$.
+Suppose $P_{\mathcal D}q=0$. Define
+\[
+u=|q|^2,\quad k=k_B,\quad
+d=P_{\mathcal D}[qk(u)],\quad v=P_{\mathcal D}[qu].
+\]
+The visible kernel identity is
+\[
+\E_Z\frac{Z^2}{\sqrt2}\frac{\overline{L+w}}{|L+w|}
+=-wk_B(|w|^2),\qquad k_B(u)=\int_0^\infty e^{-tu}\nu_B(\,d t),\quad\nu_B\ge0.
+\]
+Thus $\norm d$ is precisely the norm of the B-content coefficient
+vector, up to an irrelevant sign.
+
+\begin{lemma}[Affine projection subtraction, {\normalfont\textbf{[P]}}]
+For any real $\lambda_0,\lambda_1$, set
+$r(u)=k(u)-\lambda_0-\lambda_1u$. Then
+\[
+d=\lambda_1v+P_{\mathcal D}[qr(u)],\qquad
+\norm{P_{\mathcal D}[qr(u)]}_2^2\le\E[u r(u)^2].
+\]
+\end{lemma}
+\begin{proof}
+The first equality uses $P_{\mathcal D}q=0$. The inequality is Bessel's
+inequality in unweighted $L^2$.
+\end{proof}
+This does not replace shared drivers by independent copies. It uses no
+weighted conditional projection inequality.
+
+Write
+\[
+\mathfrak b=369/1000,\qquad \chi=19/25,\qquad
+\mathfrak a=207/100-p.
+\]
+The simultaneous all-shift potential estimate, with a baseline
+independent of $Z$, gives
+\begin{equation}\label{kdual-potential}
+\Lambda(G)-S\le\Lambda(q)-S+2D_AA+\mathfrak a A^2
++2B\norm d+2\chi AB-\mathfrak b B^2,
+\end{equation}
+where $D_A$ is any upper bound for the norm of the A-content vector.
+To see the constants, insert both sectors together in
+\[
+2|F+J|\le2|F|+2\operatorname{Re}(\bar FJ)/|F|+|J|^2/|F|,
+\]
+condition on the remote variables, and then apply the potentials in
+$Z$. They give $C_A<207/100$, $C_{AB}<19/25$ and $C_B<953/1000$;
+$p-C_B>369/1000$. Cauchy--Schwarz bounds the cross term by $2\chi AB$.
+The transformation $Z\mapsto-Z$ changes $L$ to $-L$ and leaves $G$
+unchanged, so the two absolute-value expectations are equal.
+Orthogonality gives the variance price exactly.
+
+\begin{proposition}[Joint scalar dual, {\normalfont\textbf{[P]}}]\label{kdual-dual}
+Let $b_1,b_2>0$ with $b_1+b_2=\mathfrak b$, and let a cubic polynomial
+$P(u)=\sum_{j=0}^3p_ju^j$ satisfy, for every $u\ge0$,
+\begin{equation}\label{kdual-scalar}
+f(u)-h(0)+\frac{u}{b_2}(k_B(u)-\lambda_0-\lambda_1u)^2\le P(u),
+\end{equation}
+where $f(u)=2\E|L+\sqrt u|$ and $h(v)=2\E|L+\sqrt vU|$.
+If $q$ is circular and $\Delta\le S-h(0)$, then
+\begin{equation}\label{kdual-dualbound}
+\Lambda(G)-S\le\E P(|q|^2)-p\E|q|^2-\Delta
++2D_AA+\mathfrak a A^2+
+\frac{(|\lambda_1|\norm v+\chi A)^2}{b_1}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The lemma and Young's inequality give
+\[
+2B\norm d\le2B|\lambda_1|\norm v+b_2B^2+\E[u r(u)^2]/b_2.
+\]
+Apply this in \eqref{kdual-potential} and maximize the remaining quadratic
+$-b_1B^2+2B(|\lambda_1|\norm v+\chi A)$ over $B\ge0$.
+Circularity and independence give $\Lambda(q)=\E f(|q|^2)-p\E|q|^2$.
+Finally use \eqref{kdual-scalar} and $S-h(0)\ge\Delta$.
+\end{proof}
+
+\subsubsection{Self-driver moments and the A estimate}
+For $q=\sum_jc_jH(X_j)+gU$, let $e=k_2+g^2$. Independence,
+circularity and the exponential moments of $t=|X|^2$ give
+\begin{align}
+\E|q|^4&=2e^2+42k_4=:M_4,\label{kdual-M4}\\
+\E|q|^6&=6e^3+378ek_4+10968k_6=:M_6,\label{kdual-M6}\\
+\E[\bar X_jq|q|^2]&=8\sqrt2c_j^3,\qquad
+\norm v^2=128k_6.\label{kdual-projection}
+\end{align}
+For completeness,
+\[
+\E[t(t-2)]=0,\quad \E[t(t-2)^2]=2,\quad
+\E[t^2(t-2)^4]=176,\quad \E[t^3(t-2)^6]=90816,
+\]
+and $\E[t^2(t-2)^3]=32$. Dividing by the powers of $\sqrt2$
+gives $\E|H|^2=1$, $\E|H|^4=44$, $\E|H|^6=11352$ and
+$\E[\bar XH|H|^2]=8\sqrt2$. All mixed contributions to
+\eqref{kdual-projection} vanish by circularity or $\E[\bar XH]=0$.
+Expanding moments of independent circular sums proves \eqref{kdual-M4}--\eqref{kdual-M6}.
+The file \texttt{algebra.mjs} checks the finite factorial arithmetic.
+
+The preceding note proves, uniformly under the other independent
+circular driver and the buffer,
+\[
+D_A\le\left(\sum_j d_A^+(c_j,g^2)^2\right)^{1/2},\quad
+d_A^+(c,v)=8\sqrt2m_{A,1}(v)c^3
+\mathcal T\!\left(\frac{2c^2m_{A,1}(v)}{m_{A,0}(v)}\right).
+\]
+Here $m_{A,0},m_{A,1}$ are positive buffer kernel moments and
+\[
+\mathcal T(r)=\frac1{16}\int_0^\infty H_*(x)\min(1,(rx)^{-1})\,d x,
+\quad H_*(x)=\int_{t(t-2)^2/2>x}t(t-2)e^{-t}\,d t\ge0.
+\]
+The proof uses $|\widetilde k_A'(u)|\le\min(m_{A,1},m_{A,0}/(2u))$,
+not independence of the content and its driver.
+The included \texttt{saturation.mjs} recomputes its certified upper
+bound: it subtracts a lower rectangle sum on $t\in[3,32]$ with mesh
+$1/512$ from $1$. The omitted correction is nonnegative.
+The buffer moment bounds are positive Radau quadratures and decrease
+in $v$, so a parameter box uses its lower buffer endpoint.
+
+With \eqref{kdual-M4}--\eqref{kdual-projection}, the right side of \eqref{kdual-dualbound}
+is explicit. Separate its polynomial part
+\begin{equation}\label{kdual-Bpoly}
+\mathcal B=p_0+(p_1-p)e+p_2M_4+p_3M_6+
+\frac{128\lambda_1^2}{b_1}k_6-\Delta.
+\end{equation}
+The remaining nonnegative cost is
+\begin{equation}\label{kdual-Acost}
+2D_AA+\mathfrak a A^2+
+\frac{2|\lambda_1|\sqrt{128k_6}\,\chi A+\chi^2A^2}{b_1}.
+\end{equation}
+It increases in $A$, allowing substitution of the maximal permitted A.
+
+\subsubsection{Global scalar certificates}
+The positive visible mixture yields
+\[
+f(u)-h(0)=\int(1-e^{-tu})\mu(\,d t),\qquad
+\int t^r(t\mu)(\,d t)=H_{r+1}/(r+1)!,
+\]
+where $H_j=(-1)^{j-1}h^{(j)}(0)$. A positive Radau rule at zero with
+two other nodes for these five moments gives
+\[
+f(u)-h(0)\le F_+(u)=a_0u+\sum_{i=1}^2a_i(1-e^{-x_i u})/x_i.
+\]
+Likewise Gaussian--2 and Radau--3 for the first five moments of $\nu_B$
+give, for all $u\ge0$,
+\[
+K_-(u)\le k_B(u)\le K_+(u).
+\]
+These signs follow from the Hermite interpolation remainders: the
+fourth derivative of $e^{-tu}$ in $t$ is nonnegative, and the fifth is
+nonpositive. The Radau remainder has nonnegative factor
+$t(t-x_1)^2(t-x_2)^2$. For $F_+$ apply the same fact to
+$(1-e^{-tu})/t=\int_0^u e^{-ts}\,d s$.
+All comparisons hold over the full spectral half-line.
+
+The rational data in \texttt{certified-candidates.json} specify
+$(\lambda_0,\lambda_1,b_2,p_0,p_1,p_2,p_3)$. They are proposals,
+not trusted numerical answers. The scalar verifier proves for both
+$K=K_-,K_+$ that
+\begin{equation}\label{kdual-gap}
+P(u)-F_+(u)-u(K(u)-\lambda_0-\lambda_1u)^2/b_2\ge0.
+\end{equation}
+Convexity of the square then proves \eqref{kdual-scalar} for the true kernel.
+
+On a finite interval the verifier bisects dyadically. For each box it
+uses either direct interval evaluation or the mean-value enclosure
+at its center. If $R=K-\lambda_0-\lambda_1u$, the derivative of its
+subtracted term is $(R^2+2uR(K'-\lambda_1))/b_2$.
+Only a nonnegative outward lower endpoint accepts a leaf.
+
+For the infinite tail, let $C=\sum_{i=1}^2a_i/x_i$ and
+$m_0=\nu_B([0,\infty))$. We have $F_+(u)\le a_0u+C$ and
+$0\le k_B(u)\le m_0$. For each endpoint $k=0,\overline m_0$,
+the verifier considers the cubic with coefficients
+\[
+t_0=p_0-C,\quad t_1=p_1-a_0-(k-\lambda_0)^2/b_2,\quad
+t_2=p_2+2(k-\lambda_0)\lambda_1/b_2,\quad
+t_3=p_3-\lambda_1^2/b_2.
+\]
+At a dyadic $R\ge128$ it verifies
+\[
+t_3\ge0,\quad t_2+3Rt_3\ge0,\quad T'(R)\ge0,\quad T(R)\ge0.
+\]
+These are the four coefficients of $T(R+x)$ for $x\ge0$, with
+positive derivative factors removed. They prove the entire tail.
+Convexity in $k$ proves the estimate for the actual kernel as well.
+There is no sampled or unestimated infinite tail.
+
+\paragraph{Moment integrals and errors.}
+The integral formulas and their original derivations are in the included
+preceding notes. The additional moment needed here is
+\[
+m_{B,4}=\frac{63}{512\sqrt2}M_3^{3,1}.
+\]
+More generally, $m_{B,n}=\Gamma(n+3/2)M_{n-1}^{3,1}/
+(2\sqrt{2\pi}\,\Gamma(n+2))$ for $n\ge1$.
+It follows by the same positive-density differentiation identity.
+The integrals $M_j^{P,Q}$ are computed from
+\[
+M_j^{P,Q}=2\int_0^\infty
+\frac{e^{-r^2}P_j(b/m,3b/n)}{m^{P+j}n^{Q+j-1}}\,d r,
+\quad m=a+br^2,\ n=a+3br^2,
+\]
+where $P_0=1$ and
+\[
+P_{j+1}=[1+(P+j)x+(Q+j)y]P_j+x^2\partial_xP_j+y^2\partial_yP_j.
+\]
+The same code computes the extra moment with its remainder, rather than
+extrapolating a decimal value. On complex circles of radius $1/4$,
+$|m|>11/20$, $|n|>53/100$, and $|e^{-r^2}|\le16/15$.
+The positive coefficients of $P_j$ give an explicit modulus cap $M$.
+The exceptional $n/m^2$ is bounded as $3/m-2a/m^2$.
+Composite eight-node Gauss integration on $[0,8]$, mesh $1/N$, has
+the Cauchy remainder
+\[
+8M\frac{(8!)^4}{17(16!)^2}(4/N)^{16},\qquad N=8
+\quad(N=16\text{ in the fine replay}).
+\]
+The tail is at most $Me^{-64}/16$. All errors are added outward.
+Gauss nodes and weights are enclosed by exact polynomial root isolation.
+Integrating a lower positive quadrature for $h'$ to $v=1/25$ certifies
+$\Delta\le S-h(0)$ with $\Delta>0.0020708$.
+
+\subsubsection{Parameter cover and gluing}
+Set $(u_1,u_2,v)=(c_1^2,c_2^2,g^2)$. For every parameter box, evaluate
+\eqref{kdual-Bpoly} and \eqref{kdual-Acost} with
+$A=\sqrt{u_1^2+u_2^2}/50$.
+The polynomial is evaluated both directly and by the mean-value theorem.
+Writing $j=128\lambda_1^2/b_1$, its derivatives are
+\[
+\partial_v\mathcal B=(p_1-p)+4p_2e+p_3(18e^2+378k_4),
+\]
+\[
+\partial_{u_i}\mathcal B=\partial_v\mathcal B+84p_2u_i+
+p_3(756eu_i+32904u_i^2)+3ju_i^2.
+\]
+Each derivative is enclosed on the whole box. The program chooses four
+candidate polynomials at the midpoint and checks their full-box bounds.
+Candidate selection cannot accept a box; only a valid outward upper
+endpoint below $-10^{-6}$ can do so. Every unresolved box is bisected
+into closed children. A depth cap fails instead of accepting.
+
+If the scalar-dual candidates have not yet accepted a box and both
+$u_j\le1/25$, the verifier also evaluates the preceding Hermite note's
+proved envelope at the same A restriction. It takes the smaller valid
+upper bound. This fallback is essential in the transition region;
+the result is not claimed from the new scalar polynomials alone.
+All its formulas, moment remainders and source code are included.
+
+The new root is
+\[
+u_1\in[9/400,1],\qquad u_2\in[0,1],\qquad
+v\in[0,227529/10^6].
+\]
+For $c_1,c_2\le3/20$, the preceding note's exact theorem with
+$A\le\sqrt{k_4}/20$ contains the present restriction. Its proof uses
+the still earlier $c_j\le1/10$ theorem with denominator $8$;
+both required certificates are replayed by \texttt{verify.mjs}.
+
+The exact root and replay counts are recorded in
+\texttt{cover-summary.tex}. Swap symmetry covers either ordering of the
+drivers. The previous small-cubic certificate covers the omitted square.
+State Theorem 18 handles $g\ge477/1000$.
+
+There is also an elementary variance exclusion. If $V=\E|G|^2\ge1$,
+orthogonality to $L$ and Jensen give
+\[
+\Lambda(G)\le2\sqrt{M+V}-pV,\qquad
+M=\E|L|^2=a^2+4ab+6b^2=1181331/1562500.
+\]
+The right side decreases for $V\ge1$ and is less than $4/3<S$ there.
+The verifier checks this by squaring positive rational quantities.
+Thus $e\ge1$ is excluded, and all remaining cubic squares lie in
+$[0,1]^2$. No restriction on B was imposed while completing its square.
+
+\subsubsection{Replay and precise limitation}
+Run \texttt{node verify.mjs} in this folder, or give its absolute path.
+Only Node's built-in modules are required. Optional \texttt{--fine}
+halves the radial quadrature and content-correction meshes. All proof
+decisions use integers or outward BigInt intervals at scale $2^{256}$;
+floating values are used only for display and elapsed time. The candidate
+integers are exactly representable and are validated on loading.
+The original numerical search is not part of the proof or replay.
+
+The default replay verifies 87 rational scalar proposals using 7,796
+accepted scalar intervals. Every infinite tail is proved analytically;
+the finite cutoffs are 128 or 256.
+The new parameter cover visits 8,935 boxes, accepts 4,466 leaves,
+and excludes two leaves by $e\ge1$. Of the accepted leaves,
+1,714 use the preceding Hermite envelope and 2,752 use the new dual.
+Its maximum depth is 33. The worst accepted upper endpoint is
+approximately $-1.0409746893542\cdot10^{-6}$, strictly below the
+rational threshold $-10^{-6}$.
+
+The binding leaf, in squared coordinates, is
+\[
+\begin{split}
+u_1&\in[0.0225,\;0.026318359375],\\
+u_2&\in[0.01171875,\;0.013671875],\\
+v&\in[0.0337738359375,\;0.034218228515625].
+\end{split}
+\]
+These are decimal displays of the dyadic endpoints; the exact values
+appear in \texttt{verification.txt}. Polynomial 78 (zero-based numbering)
+is used on this leaf. The scalar node enclosures, the positive-quadrature
+benchmark gap, the earlier small-cubic covers, and their own binding
+boxes are also recorded in that log.
+
+The binding box is the accepted leaf whose certified upper endpoint is
+closest to the acceptance threshold. It need not contain a maximizer
+of the actual functional. Exact dyadic endpoints are in the replay log.
+
+The new theorem should be united with the existing energy, buffer,
+one-driver, gluing-cone and earlier larger-A small-square results.
+It does not close unrestricted two-driver A coupling. In particular,
+when the cubic energy tends to zero its A allowance tends to zero,
+although the Gaussian layer itself is already known by state Theorem 17.
+The remaining loss is chiefly the positive coefficient
+$207/100-p$ and the cross-potential term in \eqref{kdual-Acost}.
+The projection lemma and scalar dual extend to any finite number of
+drivers and to general remote $q$ orthogonal to the linear driver space,
+but the numerical parameter cover here is only for two self-drivers.
+No general shared-cubic theorem or counterexample is asserted.
+
+\subsection{Joint dual refinement and an arbitrary-number driver region}
+\label{sec:k-joint-dual-refinement}
+
+\paragraph{Provenance and status (IDE note).} From the full-context GPT (\pathref{gpt-reviews/k-dual-review-20261020/}), which first replayed the
+incoming dual package. IDE replay \code{python3 -I verify\_all.py} from an unrelated directory: manifest, finite algebra (all 87 nonnegative compression coefficients), the incoming dual, the $/25$ taper, the $1/750$ disk and the arbitrary-number cone all PASS (138.5\,s). The moment-compression step was checked by hand: $k_6\le
+\max_jc_j^2\,k_4\le x^3$, $e\ge k_2\ge\sqrt{k_4}$, and the verifier asserts $P_3\ge0$, $b_1>0$, so every $k_6$ coefficient is nonnegative.
+
+\paragraph{Status and scope.}
+Analytic arguments below are \textbf{[P]}; finite directed computations
+are \textbf{[C]}. All comparisons are at the peak
+\[
+ a=699/1250,\qquad b=179/1250,\qquad p=2500/1891,\qquad
+ L=Z(a+b|Z|^2).
+\]
+Let $Z,X_1,\ldots,X_N,U$ be independent proper standard complex
+Gaussians and put
+\[
+ H(X)=X(|X|^2-2)/\sqrt2,\qquad
+ G=\sum_{j=1}^N\left[c_jH(X_j)+\alpha_j(|Z|^2-1)X_j+
+             \beta_jZ^2\overline X_j/\sqrt2\right]+gU,
+\]
+where $c_j,g\ge0$ and $\alpha_j,\beta_j$ are arbitrary complex numbers.
+Write $A=\|\alpha\|_2$, $k_r=\sum_jc_j^r$, $e=k_2+g^2$,
+\[
+ \Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|-p\mathbb E|G|^2,\qquad
+ S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt vU|-pv\}.
+\]
+The dependence between each cubic and its A/B drivers is retained.
+Different driver coordinates remain independent. There are no
+additional unrestricted even or diagonal sectors in this statement.
+
+\begin{theorem}[Larger global two-driver regions, \textbf{[P,C]}]
+\label{thm:k-joint-dual-two}
+For $N=2$, every $c_1,c_2,g\ge0$ and every complex $\beta_1,\beta_2$,
+\[
+ \boxed{A\le\sqrt{k_4}/25\quad\Longrightarrow\quad\Lambda(G)\le S.}
+\]
+Also, uniformly over these parameters and all coefficient phases,
+\[
+ \boxed{A\le1/750\quad\Longrightarrow\quad
+                    \Lambda(G)<S+89\cdot10^{-6}.}
+\]
+The first assertion doubles the incoming global A allowance $1/50$.
+The second enlarges its fixed disk $9/20000$ by the factor $80/27$.
+Neither assertion is a new Grothendieck endpoint.
+\end{theorem}
+
+\begin{theorem}[Any finite number of independent Wick drivers, \textbf{[P,C]}]
+\label{thm:k-joint-dual-many}
+For every finite $N$, every buffer, every complex B coefficient, and
+every A phase,
+\[
+ \boxed{k_4\ge9/10000,\quad A\le\sqrt{k_4}/500
+             \quad\Longrightarrow\quad\Lambda(G)<S-10^{-6}.}
+\]
+In particular, this includes B-only sums with arbitrarily many drivers.
+The lower restriction on $k_4$ is on the unnormalized fourth-power
+sum, not on the normalized kurtosis. It does not cover the entire
+diffuse regime or general mixed cubic tensors.
+\end{theorem}
+
+\subsubsection{The joint dual and its accepted inputs}
+The incoming dual package proves a global scalar inequality for each
+of 87 rational rows. We use those same rows, with no change to their
+coefficients or to their scalar verification. Here is their interface.
+
+Let $q=\sum_jc_jH(X_j)+gU$, $\mathcal D=\operatorname{span}(X_j)$,
+$f(u)=2\mathbb E|L+\sqrt u|$, $h(v)=2\mathbb E|L+\sqrt vU|$,
+and let $k_B$ be the positive B kernel. Since $P_{\mathcal D}q=0$,
+\[
+ P_{\mathcal D}[qk_B(|q|^2)]
+   =\lambda_1P_{\mathcal D}[q|q|^2]
+      +P_{\mathcal D}[q(k_B(|q|^2)-\lambda_0-\lambda_1|q|^2)].
+\]
+Bessel's inequality bounds the square of the last norm by the
+corresponding scalar expectation. Each row consists of
+$\lambda_0,\lambda_1,b_1,b_2,P_0,\ldots,P_3$, where
+$b_1,b_2>0$, $b_1+b_2=369/1000$, and $P_3\ge0$, satisfying
+\[
+ f(u)-h(0)+\frac{u}{b_2}(k_B(u)-\lambda_0-\lambda_1u)^2
+       \le \sum_{r=0}^3P_ru^r\qquad(u\ge0).
+\]
+The scalar verifier proves this on the entire half-line. Its compact
+cells and analytic polynomial tails are replayed, rather than sampled.
+
+Put $\chi=19/25$, $\mathfrak a=207/100-p$ and
+$\Delta\le S-h(0)$. Simultaneous A/B insertion and square completion give
+\begin{align}
+ \Lambda(G)-S\le{}&
+ P_0+(P_1-p)e+P_2M_4+P_3M_6-\Delta
+       +2D_AA+\mathfrak a A^2 \notag\\
+ &+\frac{(|\lambda_1|\sqrt{128k_6}+\chi A)^2}{b_1},
+ \label{eq:k-joint-master}
+\end{align}
+where $D_A$ bounds the A-content norm. The exact identities are
+\[
+ M_4=2e^2+42k_4,\qquad
+ M_6=6e^3+378ek_4+10968k_6,\qquad
+ \|P_{\mathcal D}(q|q|^2)\|_2^2=128k_6.
+\]
+They hold for every finite $N$, including the independent Gaussian
+buffer. The single-driver projection is
+$\mathbb E[\overline XH(X)|H(X)|^2]=8\sqrt2$; all mixed contributions
+vanish by circularity and $\mathbb E[\overline XH(X)]=0$.
+
+The accepted external inputs are unchanged: the visible Gaussian
+mixture, positive content kernels, all-shift potential bounds
+$C_A<207/100$, $C_{AB}<19/25$, $C_B<953/1000$, large-buffer continuation
+at $g\ge477/1000$, and $S>1.37395$. The launcher replays the incoming
+dual and its required small-square dependencies. It does not claim to
+regenerate all external state-document certificates.
+
+\subsubsection{Sharper A contents in the two-driver cover}
+For a positive kernel $k(u)=\int e^{-tu}\nu(dt)$, write
+$m_0=\int\nu$, $m_1=\int t\nu$. Under independent circular convolution,
+\[
+ \mathbb E[(w+Y)k(|w+Y|^2)]=w\widetilde k(|w|^2),\qquad
+ |\widetilde k'(u)|\le
+ m_1\Theta(um_1/m_0),
+\]
+\[
+ \Theta(x)=1-\left(1+\frac1{2x}\right)e^{-1/x}
+             <\min\{1,(2x)^{-1}\}.
+ \tag{R}
+\]
+No positivity of the convolved kernel is assumed.
+For completeness, the Fourier formula for one atom, together with
+$|J_2(z)|\le\min(z^2/8,1/2)$, bounds its derivative by
+\[
+ B_u(t)=\frac t2\mathbb E\min\{V^2,V/(tu)\}
+       =t\left[1-\left(1+\frac1{2tu}\right)e^{-1/(tu)}\right],
+ \quad V\sim\operatorname{Exp}(1).
+\]
+For $a=1/(tu)$,
+\[
+ B_u''(t)=-a^3e^{-a}/(2t)\le0.
+\]
+Integration over $\nu$ and Jensen give (R). The full derivation,
+including the global Bessel estimate, is retained with the preceding
+radial-refinement proof and the incoming Hermite proof.
+
+The implementation uses upward enclosures of the tangent facets
+\[
+ \Theta(x)\le
+ 1-(1+a+a^2/2)e^{-a}+\frac{(1+a)e^{-a}}{2x},
+ \quad a\in\{1/4,1/2,1,2,4,8\}.
+\]
+It retains the previous facets as well, so it never weakens the old
+bound. The positive Wick-tail formula converts these into finite
+content bounds. This refinement is used both in the joint dual's
+A content and in its previous-Hermite fallback.
+
+Candidate selection is also changed: it ranks rows by the entire
+midpoint bound, including the row-dependent A cost, rather than only
+the remote polynomial. Selection never certifies a box. Acceptance
+still requires a valid outward upper bound for a selected row on the
+whole box.
+
+\paragraph{Two-driver covers and continuation.}
+In squared variables $(u_1,u_2,v)=(c_1^2,c_2^2,g^2)$ the new exact
+cover starts at $u_1=9/400$, uses $A=\sqrt{u_1^2+u_2^2}/25$, and
+accepts 20,041 boxes, each below $-10^{-6}$.
+Swap symmetry covers either ordering. For both $c_j\le3/20$, the
+incoming denominator-20 theorem contains this denominator-25 region.
+
+The fixed-disk cover starts at $u_1=1/100$, uses $A=1/750$, and
+accepts 12,486 boxes below $89\cdot10^{-6}$. The incoming small-square
+weak theorem permits $A\le3/500$, so it covers the omitted square.
+Both covers use $0\le v\le227529/10^6$; the accepted large-buffer
+theorem completes the half-line.
+
+Finally, $e\ge1$ is excluded by the same rational Jensen check as in
+the incoming package:
+\[
+ \Lambda(G)\le2\sqrt{M+V}-pV<4/3<S,\qquad
+ M=1181331/1562500,\quad V=\mathbb E|G|^2\ge1.
+\]
+The right side decreases for $V\ge1$. There is no B restriction hidden
+in this continuation.
+
+\subsubsection{Moment compression for arbitrarily many drivers}
+Set
+\[
+ x=\sqrt{k_4},\qquad w=e-x.
+\]
+Then $w\ge0$ and
+\[
+ k_6=\sum_j(c_j^2)^3
+       \le\max_jc_j^2\sum_jc_j^4\le x^3.
+ \tag{M}
+\]
+The coefficient of $k_6$ in the polynomial part of
+\eqref{eq:k-joint-master} is
+$10968P_3+128\lambda_1^2/b_1\ge0$.
+The remaining occurrences of $\sqrt{k_6}$ also have nonnegative
+coefficients. Therefore replacing $k_6$ by $x^3$ is an upper bound.
+The bare, noise-stable cubic-content estimate gives
+\[
+ D_A\le8\sqrt2\,m_{A,1}(g^2)\sqrt{k_6}
+        \le8\sqrt2\,m_{A,1}(0)x^{3/2}.
+ \tag{A}
+\]
+The moment integrator encloses $m_{A,1}(0)$ outward; its upper endpoint
+is less than $2.159181$. The verifier uses the interval, not this
+display decimal.
+
+Consequently the same scalar rows give an upper bound depending only
+on $(x,w)$, after substituting
+\[
+ e=x+w,\quad k_4=x^2,\quad k_6=x^3,\quad A=x/500,
+ \quad D_A=8\sqrt2\,\overline m_{A,1}(0)x^{3/2}.
+\]
+These are \emph{moment parameters}. In particular, $w$ is not asserted
+to be an independent Gaussian variance in the original law. Neither
+equal-variance peeling nor a Gaussian replacement is used.
+
+The directed cover of
+\[
+ x\in[3/100,1],\qquad w\in[0,1],\qquad x+w<1
+\]
+accepts 82 boxes, with largest outward upper bound approximately
+$-5.37694558\cdot10^{-6}<-10^{-6}$. It has no inherited
+small-square or actual-buffer fallback. The Jensen variance exclusion
+handles $e\ge1$ and hence also $x\ge1$.
+This proves Theorem~\ref{thm:k-joint-dual-many}.
+It demonstrates that the joint scalar dual has genuinely
+dimension-independent uses, while leaving the small-$k_4$ region open.
+
+\paragraph{Replay, limitations and manuscript integration.}
+Run \texttt{python3 -I verify\_all.py} in the delivered package.
+The launcher checks finite algebra, replays the incoming scalar and
+continuation certificates, and recomputes all three new covers.
+Every acceptance decision uses outward BigInt intervals.
+Failed larger trials are method diagnostics, not counterexamples.
+Keep this section beside the existing joint-dual proof; it requires no
+new chapter number. The global tapered row supersedes smaller tapers
+on bounded squares, but not the stronger $1/8$ and $1/20$ allowances
+there. Fixed-disk regions and stronger low-buffer deficits also remain
+distinct. Full K, unrestricted A coupling, general mixed cubic tensors,
+profile uniformity and the endpoint row cover remain unproved here.
+
+\subsection{The diffuse $B$-only regime for any number of drivers}\label{sec:bonly-diffuse}
+\paragraph{Provenance and status (IDE note).} From an AI given only the isolated task ``prove $\Lambda\le S+9\cdot10^{-5}$ for $B$-only independent Wick drivers, any
+$N$'' (prompt and package in \pathref{gpt-reviews/cold-start-20261020/bonly-diffuse/}). It proved a partial result. IDE replay \code{node verify.mjs} from an unrelated
+directory: all checks pass, integer arithmetic only, 0.3\,s, output identical to the shipped log. \st{P}+\st{C}.
+
+\begin{theorem}[Diffuse $B$-only drivers, any $N$]\label{thm:bonly-diffuse}
+For every $N$, $c_j,g\ge0$ and $\beta_j\in\C$, with $G=\sum_j[c_jH(X_j)+\beta_jZ^2\bar X_j/\sqrt2]+gU$,
+\[
+\Lambda(G)\le S+10^{-5}+\tfrac{117}5\sum_jc_j^3|\beta_j|-\tfrac{37}{100}\sum_j|\beta_j|^2\le S+10^{-5}+\tfrac{13689}{37}\,k_6 .
+\]
+Hence $\Lambda<S+9\cdot10^{-5}$ whenever $k_6\le37/171112500$, in particular whenever $k_4\le1/28000$.
+\end{theorem}
+\emph{Proof.} The tangent insertion of $Z^2R/\sqrt2$, $R=\sum_j\beta_j\bar X_j$, at the $Z$-independent baseline $Q=\sum_jc_jH(X_j)+gU$ gives
+$\Lambda(G)\le\Lambda(Q)+2\Re\E[RT_B(Q)]-(p-C_B)\E|R|^2$ with $C_B<119/125$. The content of driver $j$ is bounded uniformly in the shift
+$Q-c_jH(X_j)$: $|\E[\bar X_jT_B(Q)]|\le\frac32I_3c_j^3$, $I_3=\int_0^\infty e^{-s}s^{-1/2}(a+bs)^{-3}ds<39/5$ (signed Wick-tail identity with total mass $16$ and
+a Bessel derivative bound). The remote bound $\Lambda(Q)<S+10^{-5}$ (\autoref{ch:rescub}, \autoref{ch:remote-cubic-refinement}) and completing the square finish.
+\emph{IDE remark.} Since $m_{B,1}=3I_3/(16\sqrt2)$, the content bound is exactly the saturating bound $8\sqrt2\,m_{B,1}c^3$ already used in this chapter, and the theorem
+is the $A=0$ case of the master envelope (Theorem~\ref{thm:kcompact-envelope}) with $R=10^{-5}$. Its value is the explicit certified region at the diffuse end.
+
+\paragraph{Combined state for $B$-only drivers, any $N$.} $k_4\ge9/10000$: $\Lambda<S-10^{-6}$ (Theorem~\ref{thm:k-joint-dual-many}); $k_4\le1/28000$:
+$\Lambda<S+9\cdot10^{-5}$ (Theorem~\ref{thm:bonly-diffuse}); $N=2$: exact K everywhere. \textbf{Gap} (now closed at $S+75\cdot10^{-6}$ by \S\ref{sec:k-bonly-all}): $1/28000<k_4<9/10000$ for $N\ge3$. The weak moment cone
+already fails at $\sqrt{k_4}=1/100$ (bound $8.90008\cdot10^{-5}$ against $8.9\cdot10^{-5}$), and Theorem~\ref{thm:bonly-diffuse} discards the deficit of the
+uncoupled baseline, so closing the gap needs a retained remote deficit or a joint treatment.
+
+\paragraph{Independent cross-check by an elementary route (isolated AI, 20 October).} Without the joint dual: $\Phi(t)=\E|L+\sqrt t|$ has $\Phi^{(3)}\ge0$,
+$\Phi^{(4)}\le0$ (positive Gaussian mixture), so the cubic Hermite interpolant at $t=0.045,1.35$ is a \emph{global} majorant; with certified value and one-sided-difference
+derivative enclosures it gives $\Phi(t)\le(686213+702984t-241686t^2+57971t^3)/10^6$ on $[0,\infty)$. With the exact moments $\E|Q|^4,\E|Q|^6$ and the
+baseline-preserving insertion $\Lambda(G)\le\Lambda(Q)+\frac{13689}{37}k_6$ this proves $\Lambda<S+87\cdot10^{-6}$ for $1/28000\le k_4\le1/12000$, and
+$\Lambda<S+70\cdot10^{-6}$ for $1/12000\le k_4\le9/10000$ when $k_6\le\frac9{1000}k_4$ (e.g.\ all $c_j^2\le9/1000$), any $N$. IDE replay \code{node verify-band.mjs}: all
+PASS, 4.3\,s (\pathref{gpt-reviews/cold-start-20261020/bonly-band-hermite-majorant/}). Superseded by the next section, but independent of its 127 certified rows.
+
+\subsection{All independent Wick drivers with unrestricted B coupling}
+\label{sec:k-bonly-all}
+\paragraph{Provenance and status (IDE note).} From the full-context GPT, 20 October (\code{conjK-universal-B-and-coupled-refinement-20261020.zip}, archived in
+\pathref{gpt-reviews/universal-B-20261020/}). IDE replay \code{python3 -I verify\_all.py} from an unrelated directory: manifest, 127 scalar rows (87 old, 40 new with their tails), the universal $B$-only glue (348-box cone, upper $7.496\cdot10^{-5}$), the transport and $A/B$ covers with their small-square dependencies, and both general coupled-$B$ covers all PASS (225\,s). IDE checks \st{P}: the three-region glue
+($10^{-5}+13689/(37\cdot180^3)<7.35\cdot10^{-5}$ for $\sqrt{k_4}\le1/180$; the 348-box cover on $[1/180,3/100]$; Theorem~\ref{thm:k-joint-dual-many} above), the relaxation
+of \autoref{ch:L2}'s kurtosis-dependent contraction bound used in \S\ref{sec:general-coupled-B-cumulant}, and the superlevel area $\pi/(2t^2)$ behind the transport constant.
+
+\paragraph{Status and scope.}
+The higher-quadrature scalar certificate closes the remaining arbitrary-number
+B-only gap. It uses the same joint projection interface as
+\S\ref{sec:k-joint-dual-refinement}, and strengthens only its scalar spectral
+bounds. It does not change the Grothendieck endpoint.
+
+\begin{theorem}[All independent Wick B-only sums, \textbf{[P,C]}]
+\label{thm:k-bonly-all}
+At $a=699/1250$, $b=179/1250$, $p=2500/1891$, let
+$Z,X_1,\ldots,X_N,U$ be independent proper standard complex Gaussians,
+$H(X)=X(|X|^2-2)/\sqrt2$, and
+\[
+ G=\sum_{j=1}^N\left[c_jH(X_j)+\beta_jZ^2\overline X_j/\sqrt2\right]+gU.
+\]
+For every finite $N$, every $c_j,g\ge0$, and every complex $\beta_j$,
+\[
+ \boxed{\Lambda(G)<S+\frac{75}{10^6}.}
+\]
+\end{theorem}
+
+\begin{proof}
+Write $q=\sum_jc_jH(X_j)+gU$, $e=\sum_jc_j^2+g^2$,
+$k_r=\sum_jc_j^r$, and $\mathfrak b=369/1000$.
+The exact independent-driver identities are
+\[
+ M_4=\E|q|^4=2e^2+42k_4,\qquad
+ M_6=\E|q|^6=6e^3+378ek_4+10968k_6,
+\]
+\[
+ P_{\mathcal D}q=0,\qquad
+ \|P_{\mathcal D}(q|q|^2)\|_2^2=128k_6,
+ \quad\mathcal D=\operatorname{span}(X_1,\ldots,X_N).
+\]
+The joint scalar-dual interface therefore gives, for every certified row,
+\begin{equation}\label{eq:k-bonly-all-row}
+ \Lambda(G)-S\le
+ P_0+(P_1-p)e+P_2M_4+P_3M_6
+ +\frac{128\lambda_1^2}{b_1}k_6-\Delta,
+\end{equation}
+where $b_1+b_2=\mathfrak b$, $b_1,b_2>0$, $P_3\ge0$,
+$\Delta\le S-h(0)$, and the required scalar inequality is
+\[
+ f(u)-h(0)+\frac{u}{b_2}\bigl(k_B(u)-\lambda_0-\lambda_1u\bigr)^2
+ \le\sum_{r=0}^3P_ru^r\qquad(u\ge0).
+\]
+Here $f(u)=2\E|L+\sqrt u|$ is the fixed-shift function.
+The inherited directed benchmark gives $\Delta>0.0020708$.
+
+To certify new rows, extend the same positive-measure moment integrator to
+nine spectral slope moments and nine B-kernel moments.
+For $H_j=(-1)^jh^{(j+1)}(0)$ the slope moments are $H_j/(j+1)!$.
+The higher B coefficients continue the inherited formula
+\[
+ m_{B,j}=\frac{1}{2\sqrt2}
+ \frac{\binom{2j+2}{j+1}}{4^{j+1}}R_{j-1}^{3,1}
+ \quad(1\le j\le8),
+\]
+where $R_{j-1}^{3,1}$ is the raw integral of the preceding moment
+recurrence; $m_{B,0}$ keeps its separate integral.
+Composite Gauss--8 on $[0,8]$, mesh $1/32$, uses the same Cauchy
+remainder and Gaussian tail estimates, added outward.
+
+Use zero-Radau--5 for the slope measure and Gauss--4/zero-Radau--5
+for the B measure. They give $f(u)-h(0)\le F_+(u)$ and
+$K_-(u)\le k_B(u)\le K_+(u)$ on the whole half-line.
+Indeed, the eighth derivative of $e^{-tu}$ in $t$ is nonnegative,
+while its ninth derivative is nonpositive and the Radau remainder
+factor is $t\prod_{i=1}^4(t-x_i)^2\ge0$.
+For the slope rule apply this also to
+$(1-e^{-tu})/t=\int_0^u e^{-ts}\,ds$.
+The exact verifier solves the Hankel systems with outward intervals,
+isolates all positive nodes by disjoint exact sign brackets, and
+bounds positive weights through the Lagrange formulas.
+Floating root guesses cannot accept a bracket.
+
+Forty rational rows are verified against both $K_-$ and $K_+$.
+Convexity of the squared residual gives the true-kernel inequality.
+Directed compact cells and analytic cubic tails from $u=128$ prove
+all forty rows globally, in $8\,659$ accepted cells.
+
+Set $x=\sqrt{k_4}$ and $w=e-x\ge0$. Since $k_6\le x^3$ and
+$10968P_3+128\lambda_1^2/b_1\ge0$, substituting $k_6=x^3$ in
+\eqref{eq:k-bonly-all-row} gives an upper bound. The new directed cover of
+\[
+ x\in[1/180,3/100],\qquad w\in[0,1],\qquad x+w<1
+\]
+accepts $348$ closed boxes, with largest outward upper bound
+approximately $0.00007496081508558772<75/10^6$.
+Here $w$ is only a moment parameter; it is not a Gaussian variance
+substituted into the original law.
+
+For $x\le1/180$, Theorem~\ref{thm:bonly-diffuse} gives
+\[
+ \Lambda(G)-S<\frac1{100000}+\frac{13689}{37\cdot180^3}
+ =\frac{4891}{66600000}<\frac{75}{10^6}.
+\]
+For $x\ge3/100$, Theorem~\ref{thm:k-joint-dual-many} applies with
+$A=0$. Its 87 scalar rows and arbitrary-number cover are included
+in the replay. All joining endpoints are included.
+Finally, if $e\ge1$, then $V=\E|G|^2\ge1$ and orthogonality plus
+Jensen give
+\[
+ \Lambda(G)\le2\sqrt{1181331/1562500+V}-pV<4/3<S.
+\]
+The function decreases for $V\ge1$; rational squaring checks its
+value at $1$. This completes every variance and buffer.
+\end{proof}
+
+\begin{corollary}[A small global A strip, \textbf{[P,C]}]
+With the same independent drivers, let
+$G_A=G+(|Z|^2-1)r_A$, where $r_A=\sum_j\alpha_jX_j$ and
+$A=(\sum_j|\alpha_j|^2)^{1/2}$. Then
+\[
+ \Lambda(G_A)<S+\frac{75}{10^6}+\frac43 A-pA^2.
+\]
+In particular, $A\le1/100000$ implies $\Lambda(G_A)<S+89/10^6$,
+with no restriction on $N,c_j,g$, or the complex B coefficients.
+\end{corollary}
+\begin{proof}
+The added sector is orthogonal to $G$ by $\E(|Z|^2-1)=0$ and
+visible-phase cancellation. The triangle inequality therefore gives
+\[
+ \Lambda(G_A)-\Lambda(G)
+ \le2\E\bigl|(|Z|^2-1)r_A\bigr|-pA^2
+ =\frac{2\sqrt\pi}{\mathrm e}A-pA^2\le\frac43A-pA^2.
+\]
+Here $r_A$ is proper Gaussian with second moment $A^2$ and independent
+of $Z$. Use $\E||Z|^2-1|=2/\mathrm e$,
+$\sqrt\pi<16/9$ and $\mathrm e>8/3$. Finally
+$75/10^6+4/(3\cdot100000)<89/10^6$.
+For $A=0$, strictness comes from the preceding theorem.
+\end{proof}
+
+\paragraph{Replay and dependencies.}
+Run \texttt{node verify-all.mjs} in the delivered B-gap package,
+or invoke it by absolute path from any directory. Only Node built-ins
+are required. The launcher replays the inherited high-$k_4$ rows and
+cover, the new scalar rows and gap cover, and exact diffuse/variance
+gluing. Decisions use rational arithmetic or outward BigInt intervals
+at scale $2^{256}$. The accepted analytic inputs remain the visible
+positive mixture, the all-shift B potential, the remote
+$S+10^{-5}$ bound and its diffuse B consequence, and $S>1.37395$.
+No unrestricted A sector, general mixed cubic tensor, profile
+uniformity, or endpoint row cover is claimed.
+
+\paragraph{Why sharper quadrature was necessary.}
+An exact four-atom moment witness at $x=3/250$, $e=11/200$ proves
+that every cubic row certified through the old Gauss--2/Radau--3
+interface has reported compressed bound $>0.00028$.
+Thus adding more rows to that interface alone cannot reach
+$9\cdot10^{-5}$. The witness and exact verifier are included as a
+method diagnostic; its artificial law is not a counterexample to K.
+
+\subsection{A shared \(B\) theorem for arbitrary coupled remote cubics}
+\label{sec:general-coupled-B-cumulant}
+
+\paragraph{Status and scope [P,C].}
+Keep the peak parameters \(p=2500/1891\) and
+\(L=Z(699/1250+(179/1250)|Z|^2)\).
+Let \(q\) be an arbitrary finite-dimensional remote \(H_{2,1}\) cubic,
+let \(U\) be a fresh independent proper Gaussian, and let \(R\) be an
+antiholomorphic Gaussian linear form in the original remote coordinates.
+The cubic and \(R\) may share every driver. They are independent of
+the visible \(Z\), and \(R\) does not use the fresh \(U\).
+Put
+\[
+ Q=q+gU,\quad g\ge0,\qquad e=\mathbb E|Q|^2,\quad
+ \kappa=\mathbb E|q|^4-2(\mathbb E|q|^2)^2,\quad B=\|R\|_2.
+\]
+Under the accepted sixth-moment and contraction inputs, the new bounds are
+\begin{align}
+ \kappa\ge\frac1{100}
+ &\ \Longrightarrow\
+ \Lambda(Q+Z^2R/\sqrt2)
+ <S-\frac1{50000}-\frac{B^2}{2000},                 \label{eq:general-B-strict}\\
+ \kappa\ge\frac9{2500}
+ &\ \Longrightarrow\
+ \Lambda(Q+Z^2R/\sqrt2)
+ <S+\frac{89}{10^6}-\frac{B^2}{2000}.               \label{eq:general-B-weak}
+\end{align}
+These conditions concern the \emph{unnormalized} cumulant.
+There is no independent-Wick assumption on \(q\), and no amplitude
+restriction on \(R\) or \(g\). No additional visible sector is included.
+
+\paragraph{Inputs retained explicitly.}
+Write \(x=\sqrt\kappa\). The existing moment input is
+\[
+ M_4=2e^2+x^2,\qquad
+ M_6\le6e^3+9ex^2+\frac{4045313}{100000}x^3,
+ \qquad x\le\frac{31}{4}e.
+\]
+The coefficient \(4045313/100000\) remains an analytic input, not a
+consequence of the numerical replay here.
+Let \(\mathcal D\) be the holomorphic first-chaos space of the original
+remote coordinates, excluding \(U\), and put
+\(V=\|P_{\mathcal D}(Q|Q|^2)\|_2^2\).
+Then \(P_{\mathcal D}Q=0\), and the accepted contraction bound gives
+\[
+ V\le\frac{2203}{1000}x^3.
+\]
+Indeed the sharper accepted constant is
+\(\sqrt{142688/29403}<2203/1000\).
+Adding the fresh buffer changes neither \(\kappa\) nor this projection:
+\(\mathbb E_U[Q|Q|^2]=q|q|^2+2g^2q\).
+
+\paragraph{A smooth relaxed contraction bound [P].}
+The homogeneous directional contraction estimate has the form
+\[
+ V\le(e_0+d+f)(\kappa-2d^2-2f^2),\qquad
+ e_0=\mathbb E|q|^2,\quad d,f\ge0.
+\]
+The nonnegative budget and \(2d^2+2f^2\ge(d+f)^2\) imply
+\[
+ V\le\max_{0\le s\le\sqrt\kappa}(e_0+s)(\kappa-s^2)
+ \le H(e,\kappa),
+ \qquad
+ H(e,\kappa)=(e+s)(\kappa-s^2),\quad
+ s=\frac{\sqrt{e^2+3\kappa}-e}{3}.
+\]
+The last substitution uses \(e\ge e_0\) and monotonicity in \(e\).
+The envelope derivatives are particularly simple:
+\[
+ \partial_eH=\kappa-s^2,\qquad
+ \partial_xH(e,x^2)=2x(e+s).
+\]
+They allow a directed cover without division by \(e\) or a split at a
+normalized-kurtosis threshold.
+
+\paragraph{The scalar dual [P].}
+For any of the certified rows
+\((\lambda_0,\lambda_1,b_2,P)\), write
+\[
+ f(u)-f(0)+\frac{u}{b_2}
+       (k_B(u)-\lambda_0-\lambda_1u)^2\le P(u),
+ \quad u\ge0,\qquad
+ b_1=\frac{737}{2000}-b_2>0.
+\]
+Reserve \(B^2/2000\) from the accepted \(B\)-cost \(369/1000\).
+First-chaos orthogonality, Bessel's inequality, and Young's inequality
+give
+\begin{align*}
+ \Lambda(Q+Z^2R/\sqrt2)+\frac{B^2}{2000}-S
+ \le{}&P_0+(P_1-p)e+P_2(2e^2+x^2)\\
+ &+P_3\left(6e^3+9ex^2+\frac{4045313}{100000}x^3\right)\\
+ &+\frac{\lambda_1^2}{b_1}
+       \min\left\{\frac{2203}{1000}x^3,H(e,x^2)\right\}
+       -\Delta .
+\end{align*}
+Here \(\Delta\) is the existing certified lower bound for \(S-f(0)\);
+the replay proves \(\Delta>20708/10^7\).
+Every \(P_3\) is nonnegative, justifying the sixth-moment substitution.
+This argument requires only independence from \(Z\), not independence
+between \(q\) and the shared linear driver.
+
+\paragraph{The full cover [C].}
+All 127 scalar polynomials (87 old and 40 new) are replayed on the whole
+half-line, including their tails, against their respective valid quadrature
+enclosures. They certify the same actual-function inequality and can
+therefore be pooled in a single parameter cover. For \(e<13/20\), the strict calculation covers
+\[
+ (x,e)\in[1/10,403/80]\times[0,13/20],
+ \qquad x\le31e/4.
+\]
+It accepts 135 cells; its largest upper enclosure is
+\(-0.00002382970513665732<-1/50000\).
+Starting instead at \(x=3/50\), 275 cells prove the weak bound; the largest
+upper enclosure is \(0.0000889876793670176<89/10^6\).
+Every decision uses outward-rounded integer intervals.
+The printed decimals are reports, not premises.
+
+For the unbounded continuation let \(V_{\rm tot}=e+B^2\).
+The accepted trace inequality gives, when \(V_{\rm tot}\ge13/20\),
+\[
+ \Lambda+\frac{B^2}{2000}
+ \le J(V_{\rm tot})+\frac{V_{\rm tot}}{2000}
+ <S-\frac7{40000}.
+\]
+This follows from \(J(13/20)<S-1/2000\) and
+\((p-1/2000)^2(13/20)>1\), which makes the right side decreasing.
+This closes the large-buffer and large-\(B\) tails simultaneously.
+
+\paragraph{Limitations.}
+The small and intermediate absolute-cumulant cases are not settled by
+these two implications. Unrestricted simultaneous \(A/B\), the remaining
+visible interactions, and a full row cover are still required for the
+proposed endpoint. This result alone does not change the certified
+Grothendieck interval.
+
+\subsection{A/B regions from dimension-free directional transport}\label{sec:k-ab-transport-regions}
+The transport and shifted-$B$ cost table are in \autoref{ch:radial-directional-bootstrap}, \S\ref{sec:directional-transport-dimfree}.
+
+\paragraph{A diffuse A/B region for any number of independent Wick drivers.}
+For $q=\sum_jc_jH(X_j)+gU$, with independent coordinates and arbitrary
+complex A/B coefficients, put $k_r=\sum_jc_j^r$. Then
+\[
+ \boxed{k_4\le1/40000,\qquad A\le1/1000
+ \quad\Longrightarrow\quad \Lambda(G)<S+872/10^7.}
+\]
+There is no restriction on the number of drivers, buffer, B norm or
+coefficient phases. Indeed, the accepted remote bound gives excess
+$10^{-5}$, and the noise-stable content bounds give
+$D_A\le25\sqrt{k_6}$ and $D_B\le(117/10)\sqrt{k_6}$.
+Sequential insertion with the radius $1/1000$ row, replacing its
+transport coefficient by $27/50$, gives
+\[
+ \Lambda(G)-S<10^{-5}+50sA-\frac{19}{100}A^2
+ +\frac{((117/10)s+(27/50)A)^2}{367/1000}+10^{-11}+10^{-19},
+ \qquad s=\sqrt{k_6}.
+\]
+After collecting terms this increases in $s,A\ge0$.
+Use $k_6\le k_4^{3/2}$ and the corner $k_4=1/40000$, $A=1/1000$;
+the exact checker returns an upper bound below $872/10^7<9\cdot10^{-5}$.
+These results do not cover arbitrary mixed cubic tensors, unrestricted
+A coupling, profile variation or an endpoint row envelope.
+
+\paragraph{Global two-driver taper, and a larger arbitrary-number allowance.}
+For two independent Wick drivers and every complex B vector,
+\[
+ \boxed{A\le\sqrt{k_4}/20\quad\Longrightarrow\quad\Lambda(G)\le S}
+\]
+at every cubic amplitude and buffer. This supersedes the global
+$\sqrt{k_4}/25$ taper. The sequential A/B inequality is blended with
+the previous simultaneous inequality before applying each unchanged
+scalar dual row. Its cost coefficients are
+\[
+ a_\theta=(1-\theta)(207/100-p)-\theta(19/100),\quad
+ \chi_\theta=(1-\theta)(19/25)+\theta\chi_{r_0},\quad
+ b_\theta=(1-\theta)(369/1000)+\theta b_{r_0}.
+\]
+For an old scalar row with remainder budget $b_2$, use
+$b_1=b_\theta-b_2>0$ and add error
+$\theta(10^{-11}+10^{-19})$. The joint bound is
+\[
+ \mathbb E P(|q|^2)-p\mathbb E|q|^2-\Delta
+ +2D_AA+a_\theta A^2
+ +\frac{(|\lambda_1|\|P_{\mathcal D}(q|q|^2)\|+\chi_\theta A)^2}{b_1}
+ +\theta(10^{-11}+10^{-19}).
+\]
+The checker groups $a_\theta+\chi_\theta^2/b_1>0$ before inserting an
+upper A amplitude. It accepts 37,598 boxes with upper bound below
+$-1.000236874\cdot10^{-6}$, uses the accepted $3/20$ small square,
+and the accepted large-buffer continuation. Boxes with remote-plus-buffer
+variance $e\ge13/20$ are paid by the pure-chaos trace theorem, since
+$V=e+A^2+B^2\ge e$.
+
+For any finite number of independent Wick drivers the same trace
+continuation, even with the unchanged older scalar cost, gives
+\[
+ \boxed{k_4\ge9/10000,\quad A\le\sqrt{k_4}/175
+ \quad\Longrightarrow\quad\Lambda(G)<S-10^{-6}.}
+\]
+The moment-cone cover accepts 118 boxes and prunes 10 by the variance
+exclusion, with upper bound below $-1.76283249\cdot10^{-6}$.
+The moment parameter $w=e-\sqrt{k_4}$ is not interpreted as Gaussian
+noise. No two-driver fallback is used in this arbitrary-number claim.
+
+\subsection{Dependencies, replay and limits}
+Inputs are the visible mixture, positive content kernels, all-shift
+potential constants and the all-cubic large-buffer theorem. The earlier
+averaged small-square result is still a proof dependency, although
+its three displayed regions are superseded.
+The new covers accept $19\,163$, $5\,478$ and $6\,244$ boxes,
+respectively, with outward BigInt arithmetic; author and IDE replays both pass.
+
+The earlier envelope failure at $c_1=c_2=.11$, $g=A=0$ belongs to the
+method history: that point is now covered. The true margins are large: an IDE float quadrature of the pure two-Wick sum gives $S-\Lambda=3.5\cdot10^{-3}$,
+$4.3\cdot10^{-3}$, $1.0\cdot10^{-2}$, $2.3\cdot10^{-2}$ at $c_1=c_2=0.1,0.11,0.15,0.2$ \st{F}, so sharper envelopes should extend the regions; the natural complement is
+a joint two-driver cell-tangent certificate in the style of \autoref{ch:complete-coherent-driver}. Larger failed cover attempts
+are not counterexamples. The unrestricted family remains open,
+especially large A coupled to several sizable cubics.
+General mixed cubic tensors and simultaneous additional visible sectors
+require their own comparisons; see \autoref{ch:K-state}. The family is also covered outside these regions by the independent-block cone (\autoref{ch:block-gluing-20261020}), the small blocks (\autoref{ch:signed-fourth-order-gluing}), the energy exclusion $\sum_k(|\alpha_k|^2+|\beta_k|^2)\ge4/25$ (\autoref{ch:uniform-shared-bootstrap}) and the large buffer $g\ge0.477$.
+
+\input{lower-bound/averaged-curvature-transfer.tex}

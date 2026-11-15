@@ -1,0 +1,168 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch48-closure-consequences.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Consequences of the complete one-driver comparison}
+\label{sec:milestone-closures}
+
+The assertions in this section are \textbf{[P]}. Their comparison input
+is the complete one-driver theorem with retained deficit, denoted (OD):
+\[
+ \Lambda\!\left(cH(X)+\alpha(T-1)X+
+       \beta Z^2\overline X/\sqrt2+gU\right)\le S-\Delta(c,\alpha,\beta)
+ \quad(c,g\ge0,\ \alpha,\beta\in\mathbb C).
+\]
+Here
+\[
+\Delta(c,\alpha,\beta)=\min\left\{\frac3{100000},
+\frac{\min(c^4,c^2)}{32}+\frac{|\alpha|^2+|\beta|^2}{2000}\right\}.
+\]
+All named standard complex Gaussians are proper and independent.
+These consequences concern this class and its specified mixtures, not
+an arbitrary cubic coupled to its visible coordinate.
+
+\subsubsection{Independent latent coefficients and improper Gaussian buffers}
+Let $\mathcal F$ be independent of $(Z,X)$. Suppose $C,A,B$ and a
+positive semidefinite real $2$-by-$2$ matrix $\Sigma$ are
+$\mathcal F$-measurable. Conditionally on $\mathcal F$, let $N$ be a
+centered complex Gaussian with real covariance $\Sigma$, independent
+of $(Z,X)$. Assume
+\[
+ \mathbb E\bigl(|C|^2+|A|^2+|B|^2+\operatorname{tr}\Sigma\bigr)<\infty.
+\]
+Then (OD) implies
+\[
+ \boxed{\Lambda\!\left(CH(X)+A(T-1)X+
+                  BZ^2\overline X/\sqrt2+N\right)\le S-\mathbb E\Delta(|C|,A,B).}
+\]
+Neither the covariance nor the three coefficients need be mutually
+independent. They must be independent of the visible and coherent
+drivers in the stated conditional sense.
+
+To prove the claim, condition on $\mathcal F$. A rotation of $X$
+makes the Wick coefficient nonnegative; it changes only the unrestricted
+phases of the other two coefficients. Each of
+\[
+ L\pm\left(CH(X)+A(T-1)X+BZ^2\overline X/\sqrt2\right)
+\]
+has a circular distribution, because a simultaneous rotation of $Z,X$
+multiplies every displayed term by the same phase. Thus applying an
+independent uniform phase to $N$ leaves both norm expectations
+unchanged. If $\lambda_1,\lambda_2$ are the eigenvalues of $\Sigma$,
+the characteristic function of this phase-randomized Gaussian equals
+that of $\sqrt VU$, where
+\[
+ V=2(\lambda_1\cos^2\Theta+\lambda_2\sin^2\Theta),\qquad
+ \Theta\ \hbox{uniform on }[0,2\pi].
+\]
+The mixing variable is independent of the core, and
+$\mathbb E[V\mid\mathcal F]=\operatorname{tr}\Sigma$.
+Conditioning on $V$ invokes (OD) and preserves the quadratic price
+exactly. The deficit is independent of $V$, and making $C$
+nonnegative preserves $|A|$ and $|B|$. It therefore survives as
+$\mathbb E\Delta(|C|,A,B)$ after integrating over $\mathcal F$.
+The deficit is bounded and measurable, so no further moment
+hypothesis is required.
+
+In particular, an arbitrary independent proper Gaussian variance mixture
+is permitted as buffer. An actual cubic example is
+\[
+ cH(X)+\sum_j\bigl(C_j(V_0)W_j+D_j(V_0)\overline W_j\bigr)
+       +\alpha(T-1)X+\beta Z^2\overline X/\sqrt2,
+\]
+where $V_0,W,Z,X$ are mutually independent Gaussian blocks,
+$C_j\in H_{1,1}(V_0)$ and $D_j\in H_{2,0}(V_0)$.
+Conditionally on $V_0$, the sum is a centered, possibly improper
+Gaussian buffer. This does not allow the coefficient field to depend
+on $X$, nor does it permit additional A/B terms on the buffer drivers.
+The all-amplitude one-driver theorem supplies no such independence
+replacement.
+
+\subsubsection{Equality rigidity inside the conditional-mixture class}
+Let $v_*$ be the unique maximizing Gaussian variance. The visible
+Gaussian-mixture representation gives
+\[
+F(v)=2\mathbb E|L+\sqrt vU|-pv
+=\sqrt\pi\,\mathbb E\sqrt{V_{\rm vis}+v}-pv.
+\]
+This is strictly concave and continuous on $[0,\infty)$ and tends
+to minus infinity as $v\to\infty$, so its maximum is unique.
+If equality holds in the conditional-mixture comparison with $S$,
+then $\mathbb E\Delta(|C|,A,B)=0$. Thus $C=A=B=0$ almost surely.
+After phase randomization the remaining comparison is
+$\Lambda=\mathbb EF(V)\le S$, so uniqueness forces $V=v_*$
+almost surely. In terms of the conditional covariance eigenvalues,
+\[
+V=\operatorname{tr}\Sigma+(\lambda_1-\lambda_2)\cos2\Theta,
+\qquad
+\operatorname{Var}(V\mid\mathcal F)
+=\frac12(\lambda_1-\lambda_2)^2.
+\]
+Consequently $\Sigma=(v_*/2)I_2$ almost surely. Conversely these
+conditions produce the Gaussian optimizer and equality. This is an
+equality characterization inside the stated conditional-mixture class;
+it asserts no rigidity theorem for arbitrary cubic kernels.
+
+\subsubsection{Profile transport}
+Write $(a_0,b_0,\epsilon_0)=(699/1250,179/1250,1891/2500)$.
+For a profile $L_{a,b}=Z(a+b|Z|^2)$ and any square-integrable $G$,
+the reverse triangle inequality gives
+\[
+ |\Lambda_{L,\epsilon}(G)-\Lambda_{L_0,\epsilon}(G)|
+ \le2\mathbb E|L-L_0|.
+\]
+The Gaussian benchmarks obey the same inequality, by taking the
+supremum over Gaussian variances. The retained version is
+\[
+ \Lambda_{a,b,\epsilon_0}(G)\le S(a,b,\epsilon_0)
+ -\mathcal D(G)+2\sqrt\pi\,|a-a_0|+3\sqrt\pi\,|b-b_0|,
+\]
+where $\mathcal D(G)=\Delta(c,\alpha,\beta)$ for a deterministic
+one-driver model and $\mathbb E\Delta(|C|,A,B)$ for its stated
+conditional-mixture extension. In particular, dropping this
+nonnegative deficit gives
+\[
+ \Lambda_{a,b,\epsilon_0}(G)\le S(a,b,\epsilon_0)
+        +2\sqrt\pi\,|a-a_0|+3\sqrt\pi\,|b-b_0|
+\]
+for every member of the one-driver class, and for the independent
+conditional mixtures just described.
+
+On the supplied profile rectangle
+\[
+ |a-a_0|\le10^{-5},\qquad |b-b_0|\le10^{-5},
+\]
+the comparison has error strictly below
+\[
+ \boxed{\frac{1773}{20000000}=0.00008865
+ <\eta_{AB}=\frac{240297199}{2651182000000}.}
+\]
+This uses $\sqrt\pi<1773/1000$; all subsequent comparisons are rational.
+It is profile uniformity for this restricted residual class.
+It is not the full central-row envelope for arbitrary cubic residuals.
+
+The uniform small-buffer deficit gives a larger profile square without
+another numerical calculation. For the one-driver model with
+$g\le1/6$, replacing $\mathcal D(G)$ above by $3/100000$ and taking
+\[
+ |a-a_0|,\ |b-b_0|\le1/75000
+\]
+gives a comparison error strictly below
+\[
+ \frac{5(1773/1000)}{75000}-\frac3{100000}
+ =\frac{441}{5000000}=0.0000882<\eta_{AB}.
+\]
+This larger square retains the stated small-buffer restriction.
+
+There is also an exact scaling identity. For $\lambda>0$ put
+$\epsilon=\lambda\epsilon_0$. Since the class is closed under division
+by $\lambda$,
+\[
+ \Lambda_{\lambda L_0,\lambda\epsilon_0}(G)
+ =\lambda\Lambda_{L_0,\epsilon_0}(G/\lambda),\qquad
+ S(\lambda a_0,\lambda b_0,\lambda\epsilon_0)=\lambda S_0 .
+\]
+Consequently, retaining the deficit also under scaling,
+\[
+ \boxed{\Lambda_{a,b,\epsilon}(G)\le S(a,b,\epsilon)
+   -\lambda\mathcal D(G/\lambda)+2\sqrt\pi\,|a-\lambda a_0|
+   +3\sqrt\pi\,|b-\lambda b_0|.}
+\]
+This is not a fixed-variance or fibrewise Gaussian domination assertion.

@@ -1,0 +1,69 @@
+SUBPROBLEM J2 (6 Nov 16:40): the finite-amplitude signed A/B cost, reduced to a Lipschitz bound on the B content along the A direction.
+
+Setting (peak row; flank and upper analogous). z standard complex Gaussian, T = |z|^2, L = z(l + b(T-2)), l = 1057/1250, b = 179/1250,
+eps = 1891/2500, S = 1.3739535. w in C^n standard complex Gaussian independent of z. Lambda(G) = E|L+G| + E|L-G| - E|G|^2/eps.
+q: remote cubic, u = E|q|^2 <= 0.0463. A-shell (T-1) r_A, B-shell z^2 conj(r_B)/sqrt 2, r_A, r_B holomorphic linear with
+E|r_A|^2, E|r_B|^2 <= 0.0113, sharing coordinates with q and with each other arbitrarily. Contents:
+   F_A(q) = E_z[(T-1) ph(L+q)],  c_A(q) = Pi_{1,0} F_A(q);   F_B(q) = E_z[(z^2/sqrt2) conj ph(L+q)],  c_B(q) = Pi_{1,0} F_B(q);
+first variations 2 Re<r_A, c_A(q)> and 2 Re<r_B, c_B(q)> (pairings with conj(r)).
+
+Certified so far. (1) A-cost: Lambda(q + A) <= Lambda(q) + 2 Re<r_A, c_A(q)> - 0.24 |r_A|^2 for |r_A|^2 <= 0.0113, every remote q.
+(2) B-cost: Lambda(q' + B) <= Lambda(q') + 2 Re<r_B, c_B(q')> - kappa_B |r_B|^2 for every remote q' that is a function of w alone
+    (NOT yet for z-dependent even bases such as q + (T-1) r_A: that extension is needed for the reduction below),
+    kappa_B = 0.26 globally (0.35 for |r_B|^2 <= 0.0113). (3) At q = 0 the exact joint Hessian is
+    Q_0 >= 0.24|r_A|^2 + 0.26|r_B|^2 + 0.236 Re<r_A, r_B> + 0.07(|r_A|^2 + |r_B|^2), i.e. kA = 0.320, kB = 0.940, signed mixed
+    m = +0.118 (peak; 0.116, 0.112 at the other rows), replayed. (4) The contents are aligned: ||c_B(q) - rho_0 c_A(q)|| <= 0.007 sqrt u, rho_0 = 0.5053 / 0.5026 / 0.5011 per row
+    (numerically; the two scalar kernel bounds behind it are a pending certificate). (5) With (3)-(4) and the existing A-content
+    constant 0.24, the completed square gives Lambda(q + A + B) <= S + 5.5e-5 PROVIDED the signed form holds at finite amplitude.
+
+THE REDUCTION. Apply (2) with the even base q' = q + (T-1) r_A, then (1):
+   Lambda(q + A + B) <= Lambda(q) + 2 Re<r_A, c_A(q)> + 2 Re<r_B, c_B(q)> - 0.24|r_A|^2 - kappa_B|r_B|^2
+                        + 2 Re< r_B, c_B(q + (T-1) r_A) - c_B(q) >.
+So the entire finite-amplitude joint question is the LAST term: the change of the B content when the A-shell is added.
+At q = 0 and to first order in r_A it equals -2m Re<r_A, r_B> with m = +0.118 (this is where the positive sign comes from).
+
+WHAT WE WANT. Uniformly over remote cubics q with u <= 0.0463 (at least on the certified classes: XP(Y), the Gaussian-factor
+class, the self-interaction family) and |r_A|^2 <= 0.0113:
+   (J2)   Re< r_B, c_B(q + (T-1) r_A) - c_B(q) >  <=  - (m - delta) Re<r_A, r_B> + delta |r_A| |r_B|     for all r_B,
+with delta <= 0.07 (the certified margin at q = 0), or in operator form ||D_A c_B(q)[r_A] + m r_A|| <= delta |r_A| plus a
+second-order remainder in |r_A|^2. Equivalently: the derivative of the B content along the A direction is, up to delta, minus
+m times the identity, uniformly in q. Then the signed joint cost holds at finite amplitude with (kA, kB, m) replaced by
+(0.24, kappa_B, m - delta), and by (5) the A+B core closes with Lambda(q + A + B) <= S + O(1e-5) on the certified classes.
+
+How to attack. c_B(q + (T-1) r_A) is explicit: for each w, E_z[(z^2/sqrt2) conj ph(L + q(w) + (T-1) r_A(w))], a two-dimensional
+integral in z depending on the two complex numbers x = q(w), alpha = r_A(w); its projection on the holomorphic first chaos pairs
+with r_B. The derivative in alpha at alpha = 0 is the kernel K(x) = E_z[(z^2/sqrt2) (T-1) D conj ph(L + x)] (a 2x2 real matrix
+acting on alpha, after rotation a function of |x| and the relative phase), and (J2) at first order says Pi_{1,0}[K(q) r_A] is
+within delta of -m r_A: a kernel bound on K(x) + m I uniform in x (the q = 0 value is K(0) = -m I exactly), the same type of
+one-variable certificate as the A/B kernels, followed by a second-order remainder in alpha (the pointwise majorant of the
+B-cost note handles |alpha| <= sqrt(0.0113)). If K(x) + mI is NOT small uniformly in x (it may grow for |x| near the zero
+set of L + x), use the structure: Pi_{1,0}[K(q) r_A] is a first-chaos projection of a product, so Cauchy-Schwarz against the
+deficit (as for the contents) may replace the uniform bound by one that is small on average in q.
+
+Deliverable: a certificate of (J2) (or of the kernel bound ||K(x) + m I|| <= delta with the remainder) at the three rows, with
+the exact delta, and a statement of the classes of q covered. Numerically useful: the value of
+Re<r_B, c_B(q + (T-1) r_A) - c_B(q)> / (-Re<r_A, r_B>) for q = the Wick monomial at u = 0.0463 and r_A = r_B along its driver.
+
+ROUTE (c), added 16:50 after the thread's exact kernel reduction. For fixed w rotate q(w) to x >= 0; with R = sqrt t (a+bt), A = t-1,
+D = t/sqrt2, V = R e^{i theta} + x, the infinitesimal A/B Hessian at base q is the pointwise form with the two real 2x2 kernels
+   K_re(x) = E[v v^T / |V|^3], v = (-A R sin theta, D(R sin theta + x sin 2theta)),
+   K_im(x) = E[w w^T / |V|^3], w = (A(R cos theta + x), -D(R cos theta + x cos 2theta)),   E over e^{-t} dt dtheta/(2 pi),
+and K_re(x), K_im(x) <= eps^{-1} I - [[0.24, 0.118],[0.118, 0.26]] for all x >= 0 gives the signed infinitesimal inequality for every q and
+every sharing (no energy cap on q). For FINITE amplitude, use the same reduction along the segment q + sY, Y = (T-1) r_A + z^2 conj(r_B)/sqrt2:
+at base q + sY the pointwise shift is x + (t-1) s alpha + z^2 s conj(beta)/sqrt2 with alpha = r_A(w), beta = r_B(w), so D^2 Lambda(q+sY)[Y,Y]
+= E_w[ Y(w)^T Kcal(x, s alpha, s beta) Y(w) ] with an explicit kernel matrix in (|x|, s|alpha|, s|beta|, two relative phases), and
+   Lambda(q + Y) = Lambda(q) + 2 Re<r_A, c_A(q)> + 2 Re<r_B, c_B(q)> - int_0^1 (1-s) E_w[ Y^T Kcal(x, s alpha, s beta) Y ] ds.
+Hence a uniform kernel bound Kcal(x, alpha, beta) <= eps^{-1} I - M_0 (M_0 the target signed matrix) over x >= 0 and all pointwise
+amplitudes (alpha, beta) in C^2 gives the finite-amplitude signed cost outright. Since pointwise amplitudes are not bounded by the
+energies, either certify the bound for all (alpha, beta) (the crude pointwise costs kappa_A = 0.24, kappa_B = 0.26 already hold at
+every pointwise amplitude with the mixed term dropped), or certify the signed bound on a bounded box and pay the mixed term outside
+it from the 0.07 margin, using Markov on E|alpha|^2 = |r_A|^2 to bound the mass outside the box. The singularity V = 0 is integrable
+(v and w vanish there).
+
+CAVEAT on route (c), 6 Nov 17:50 (my numerics): the POINTWISE signed bound at intermediate bases FAILS for pointwise B amplitudes
+|beta| >= 0.1 (min eigenvalue -0.03 at |beta| = 0.1, -0.20 at 0.2, -0.84 at 0.3, worst at x = 0.4, |alpha| = 0.3), while it holds
+with margin >= 0.022 for |beta| <= 0.05 and >= 0.056 for beta = 0. Since |beta| ~ 0.106 is typical, route (c) must be taken in its
+segment-weighted, Gaussian-averaged form: int_0^1 2(1-s) E_w[ Y^T Kcal(x, s alpha, s beta) Y ] ds with (alpha, beta) = (r_A(w), r_B(w))
+jointly Gaussian with the law dictated by the sharing, OR replaced by the Lipschitz route (main statement), where the B-cost's
+validity for every even base does the averaging. The infinitesimal all-shift bound (x >= 0) is numerically solid: margin
++0.080 at x = 0 growing to +0.7 at x = 3.

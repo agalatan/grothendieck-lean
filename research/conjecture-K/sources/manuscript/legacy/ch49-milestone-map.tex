@@ -1,0 +1,97 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch49-milestone-map.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 49). Owner: lower-bound/05-targets-register.tex
+\section{Finite shared spans and weighted complements}
+\label{ch:milestone-map-20261020}
+\chapsummary{Three structural facts are retained here: the exact finite
+weighted-Gram reduction, the two-dimensional span of shared linear drivers,
+and the obstruction to a universal dominant-coordinate reduction.
+The current region table belongs only to \autoref{ch:K-state}.}
+
+\paragraph{Provenance (IDE note).} Compacted on 20 October following the full-context GPT's consolidation plan (\pathref{gpt-reviews/k-consolidation-20261020/}).
+The earlier version of this chapter also repeated the one-driver region table, the completed-cover statistics and a ``what remains'' list; those now live only in
+\autoref{ch:K-state} and~\autoref{ch:complete-coherent-driver}. The conditional Gaussian-mixture extension is stated in \autoref{ch:complete-coherent-driver}.
+
+\subsection{The exact weighted-complement constant \st{P}}
+Let $X\in\C^d$ and $V$ be independent standard proper Gaussian vectors,
+with at least one coordinate in $V$. Let $w(X)\ge0$ have finite weighted
+Gram entries in the spaces below. The smallest constant $C_w$ satisfying
+\[
+ \E[w(X)|J(X,V)|^2]\le C_w\|J\|_2^2
+ \quad\bigl(J\in H_{2,1}(X,V),\ \E[J\mid X]=0\bigr)
+\]
+is exactly the largest eigenvalue among the five weighted Gram matrices on
+\[
+ H_{1,1}(X),\quad H_{2,0}(X),\quad H_{0,1}(X),\quad
+ H_{1,0}(X),\quad H_{0,0}(X).
+\]
+Their sizes are $d^2,d(d+1)/2,d,d,1$. In particular, visible $Z$ plus
+two shared coordinates gives sizes $9,6,3,3,1$.
+
+\begin{proof}
+In an orthonormal complex Hermite basis of the external block write
+\[
+ J=\sum_{(\mu,\nu)\ne(0,0)}
+ f_{\mu,\nu}(X)H_{\mu,\nu}(V),\qquad
+ f_{\mu,\nu}\in H_{2-|\mu|,\,1-|\nu|}(X).
+\]
+The possible external bidegrees are $(1,0),(0,1),(2,0),(1,1),(2,1)$.
+External orthogonality holds for both the weighted and the unweighted
+norm because the weight is core-measurable. The quotient is therefore
+bounded by the maximum of the five Rayleigh quotients. Conversely,
+multiply an eigenvector of a maximizing block by one normalized
+one-coordinate external Hermite polynomial of the complementary
+bidegree. This attains the constant.
+\end{proof}
+
+For a conditionally centered complement and a fresh independent proper
+Gaussian buffer, the two-sign Rice tangent gives
+\[
+ \Lambda(Q+gU)\le B
+ \ \Longrightarrow\
+ \Lambda(Q+J+gU)\le B+(C_w-p)\|J\|_2^2,
+\]
+with
+\[
+ w=\tfrac12\{K_g(|L+Q|^2)+K_g(|L-Q|^2)\}.
+\]
+Both linear terms vanish by conditional centering. At $g=0$, the
+singular Gram entries require proof of integrability. A regularized
+tangent avoids this problem and must retain its regularization credit.
+The numerical realization is in the all-sector core and
+weighted-complement packages, not in this abstract lemma.
+
+\subsection{Two shared directions do not mean two-coordinate cubics \st{P}}
+The span of the A driver and the conjugate of the B driver has complex
+dimension at most two. Choose coordinates $X$ on this span and an
+independent Gaussian vector $V$ on its orthogonal complement. A remote
+cubic has the unique orthogonal expansion
+\[
+ q=\sum_{\substack{|\mu|\le2\\|\nu|\le1}}
+ H_{\mu,\nu}(X)q_{\mu,\nu}(V),\qquad
+ q_{\mu,\nu}\in H_{2-|\mu|,\,1-|\nu|}(V).
+\]
+Only its deterministic shared cubic survives conditioning on $X$.
+Other terms include a shared linear factor times a remote quadratic
+and a shared quadratic times a remote linear factor. These coefficient
+fields can carry arbitrarily much variance. Thus the span reduction
+neither makes the remainder independent nor bounds its variance.
+The Gaussian-factor theorem applies only when its own coefficient/driver
+independence assumptions hold.
+
+\subsection{A dominant-coordinate reduction cannot be universal \st{P}}
+For $q_N=N^{-1/2}\sum_{j=1}^N H(X_j)$, $\|q_N\|_2=1$. If
+$\ell=\sum_jv_jX_j$ and $\sum_j|v_j|^2=1$, Hermite covariance gives
+\[
+ |\langle q_N,H(\ell)\rangle|
+ =N^{-1/2}\left|\sum_j v_j|v_j|^2\right|
+ \le N^{-1/2}\sum_j|v_j|^3\le N^{-1/2},
+\]
+up to conjugation of the whole sum, which does not change the modulus.
+A coordinate vector attains equality. Every one-driver projection
+therefore leaves at least $1-1/N$ of the variance. A global proof needs
+a diffuse comparison as well as a finite influential core.
+
+These statements are reductions and obstructions, not a proof of K.
+The independent-Wick envelope, independent-block replacement, and
+conditionally centered-complement lifting have different hypotheses;
+none can be substituted for another without checking them.

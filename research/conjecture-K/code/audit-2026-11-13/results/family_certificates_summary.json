@@ -1,0 +1,48 @@
+{
+  "gaussian_factor_replay": {
+    "peak": {
+      "status": "PASS",
+      "rectangles": 1600321,
+      "positive_polynomial_boxes": 509,
+      "max_cap": 0.23808509215146,
+      "seconds": 94.58900094032288
+    },
+    "flank": {
+      "status": "PASS",
+      "rectangles": 448143,
+      "positive_polynomial_boxes": 509,
+      "max_cap": 0.23808509215146,
+      "seconds": 19.986154794692993
+    },
+    "upper": {
+      "status": "PASS",
+      "rectangles": 94933,
+      "positive_polynomial_boxes": 509,
+      "max_cap": 0.23808509215146,
+      "seconds": 4.14317512512207
+    }
+  },
+  "r23_replay": {
+    "peak": {
+      "status": "PASS",
+      "rectangles": 983671,
+      "positive_polynomial_boxes": 77,
+      "max_cap": 0.23877486553244986,
+      "seconds": 46.742932081222534
+    },
+    "flank": {
+      "status": "PASS",
+      "rectangles": 157507,
+      "positive_polynomial_boxes": 77,
+      "max_cap": 0.23877486553244986,
+      "seconds": 7.885272741317749
+    },
+    "upper": {
+      "status": "PASS",
+      "rectangles": 27601,
+      "positive_polynomial_boxes": 77,
+      "max_cap": 0.23877486553244986,
+      "seconds": 1.2130279541015625
+    }
+  }
+}

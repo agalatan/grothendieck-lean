@@ -1,0 +1,362 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch41-gpt-all-A-matrix.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 41). Owner: lower-bound/09-one-driver.tex
+\section{All-amplitude A on the shared Wick box, and a smaller matrix problem}
+\label{ch:all-a-matrix}
+\chapsummary{All-amplitude couplings on the application Wick box, matrix reductions and a sharper smoothed Hessian bound. The later one-driver closure is separate; the general matrix problem retains its stated unresolved region.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch41-all-A-and-matrix-reduction.tex} and \code{ch41-all-a-proof.tex} from
+\pathref{gpt-reviews/k-next-targets-20261020/}, ported verbatim apart from this paragraph. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py} from an unrelated directory:
+\textbf{PASS full replay in 962\,s}. This covers the SHA256 manifest (98 files), the all-amplitude $A$ cover, the hybrid exclusions, the trace profile and tangent, the Gram basis, the
+Gaussian posterior, the uniform Gram tails, the uniform Hessian ($1.24$) and the quadratic projection. \emph{Independent float check} (\pathref{forest-2026-10-20/allA\_check.py}): over the box with
+$|\alpha|\le2$ and $|\beta|\le1.5$, the minimum of $S-\Lambda-(|\alpha|^2+|\beta|^2)/200$ is $9.2\cdot10^{-4}$, against the certified $1/4000$.
+
+\paragraph{A second, independent proof (context-free GPT, 20 October).} A separate GPT instance was given only the bare problem and the small-$\alpha$ theorem of
+\autoref{ch:self-interacting-ab}. It extended that theorem to every complex $\alpha,\beta$ on the same box, with $\Lambda\le S-1/8000$, by a much shorter argument.
+\begin{itemize}
+\item \emph{Global quadratic majorant.} $\rho_g(u)=\E_Y|\sqrt u+gY|$ is concave, since $2\rho_g'(u)=\frac1{g\sqrt\pi}\int_0^1e^{-ut/g^2}\sqrt{(1-t)/t}\,dt$. Hence
+$2\rho_g(|F+D|^2)\le2\rho_g(|F|^2)+2K_g\Re(\bar FD)+K_g|D|^2$ for \emph{every} $D$.
+\item Expand around the single anchor $c_0=3/32$, $\alpha_0=1/128$, $\beta_0=0$. Averaging the visible variable first, $\Lambda(G)\le\Lambda(G_0)+2\Re(d\cdot\delta)+\delta^*M\delta$.
+\item Certified bounds on $M$ and $d$, uniformly in $g$: $M_{AA}\le-0.10$, $M_{BB}\le-0.56$.
+\item Maximise over all complex $\delta$ (one dimension in $c$).
+\end{itemize}
+This is the visible-average-first principle again, and the only input is one anchor point. Its Node verifier was replayed by the IDE: PASS. Package in \pathref{gpt-reviews/cold-start-20261020/shared-driver-extension.zip}.
+The quadratic-majorant mechanism looks reusable: any certified anchor plus certified bounds on $M$ and $d$ propagate K to all amplitudes of the sectors with $M\prec0$.
+
+\paragraph{Extension to the buffer half-line (context-free GPT, 20 October).} The same instance then propagated the majorant from 22 anchors, with analytic tails, using as its only
+input the exact theorem $\Lambda(cH(X)+gY)\le S$ for all $c,g\ge0$ (\autoref{ch:coherent-wick-a} with $\alpha=0$). For the one-driver model
+$cH(X)+\alpha(T-1)X+\beta T\bar X/\sqrt2+gY$ it proves \st{P}+\st{C}:
+\[
+\Lambda\le S+9\cdot10^{-5}\quad(c\ge0,\ g\ge3/16,\ \alpha,\beta\in\C),\qquad \Lambda\le S-10^{-4}\quad(c\ge1/10,\ g\ge3/16),\qquad \Lambda\le S\quad(g\ge1/2).
+\]
+The first bound fits $\eta_{AB}=9.06\cdot10^{-5}$. Verifier (\code{node verify.mjs}, BigInt interval covering) replayed by the IDE: GLOBAL PASS and STRICT PASS in 149\,s. IDE float spot-check
+(\pathref{forest-2026-10-20/halfline\_check.py}): $\min(S-\Lambda)=3.1\cdot10^{-5}$ over $c\in\{0,\dots,0.8\}$, $g\in\{3/16,0.25,0.5\}$, $|\alpha|\le1.5$, $|\beta|\le1.2$. Package:
+\pathref{gpt-reviews/cold-start-20261020/shared-driver-halfline.zip}. \textbf{Remaining for one driver: $0\le g<3/16$.}
+
+
+\paragraph{Conventions and status.}
+Throughout,
+\[
+ a=699/1250,\qquad b=179/1250,\qquad
+ \varepsilon=1891/2500,\qquad p=1/\varepsilon,
+ \qquad \ell(t)=\sqrt t(a+bt).
+\]
+The visible variable $T$ has the exponential distribution of mean one.
+All standard complex Gaussians are proper and have variance one. The benchmark is
+\[
+ S=\sup_{v\ge0}\{2\E|\ell(T)+\sqrt v U|-pv\},
+\]
+where $U$ is independent of $T$. Labels \st{P}, \st{C}, \st{F}, and \st{?}
+mean proof, directed/exact computation, floating experiment, and unresolved,
+respectively. The numerical proof package includes the analytic arguments as
+well as the arithmetic replay; the replay alone is not a formal proof of the
+analytic arguments.
+
+\input{ch41-all-a-proof.tex}
+
+\subsection{A smaller sufficient matrix problem}
+\label{sec:hybrid-matrix}
+Here the remote cubic projection is zero. The centered A and B sectors are
+linear in the remote Gaussian drivers; the even sectors and the diagonal
+are arbitrary admissible quadratic sectors and may share all those drivers.
+Let $d=\|A\|_2^2$, $j=\|B\|_2^2$, and let $e^2$ be the combined variance of
+the even and diagonal sectors. Put $\Lambda_0=2\E|L|$ and
+$\Delta=S-\Lambda_0$. The existing benchmark, independently replayed in
+this package, gives $\Delta>2074/10^6$.
+
+\begin{proposition}[Global exclusions, \st{P,C}]
+For all amplitudes, phases, and dimensions in this no-remote class,
+\begin{align}
+ d\le1/100&\quad\Longrightarrow\quad
+       \Lambda<S-1/5000,\label{eq:small-a}\relax\\
+ j\ge2d/7&\quad\Longrightarrow\quad
+       \Lambda<S-1/12500.\label{eq:cone}
+\end{align}
+\end{proposition}
+\begin{proof}
+The previously proved global anisotropic bound, with its exact constants
+recomputed here, implies
+\[
+ \Lambda\le\Lambda_0+.181d-.749j+.119\sqrt{dj}-.128e^2.
+ \tag{H1}
+\]
+Completing the A/B square bounds the excess by $.186d$, proving
+\eqref{eq:small-a} without a restriction on any other amplitude.
+For \eqref{eq:cone}, total variance at least $1/12$ is covered by the
+existing affine trace bound $\Lambda<\Lambda_0-1/2000$.
+Below that variance, use
+\[
+ \sqrt{dj}\le(hd+j/h)/2,\qquad h=107/200.
+\]
+Writing $a'=.181+.119h/2$ and $b'=.749-.119/(2h)>0$, the maximum
+of $a'd-b'j$ under $j\ge2d/7$ and $d+j\le1/12$ equals
+\[
+ \frac{a'-2b'/7}{12(1+2/7)}
+ =\frac{1018913}{513600000}<\Delta-\frac1{12500}.
+\]
+All the displayed decimals are exact terminating rationals.
+\end{proof}
+
+Consequently the finite Gram calculation is only needed on
+\[
+ \boxed{d>1/100,\qquad 0\le j<2d/7,\qquad d+j<1/12.}\tag{H2}
+\]
+In particular, the nearly equal-A/B configurations producing the largest
+earlier floating matrix ratios are already settled by a different proof.
+This does not claim that the original matrix criterion has been checked
+there.
+
+Let $\lambda_*$ be the exact inverse-radius Gram operator norm from
+\autoref{ch:global-local-coupled-K}, and write
+$b(d,j)=.181d-.749j+.119\sqrt{dj}$. The global bound and the certified
+Gaussian odd-baseline comparison give the simultaneous inequalities
+\[
+ \Lambda-S\le\min\{b(d,j)-\Delta-.128e^2,
+               -.1d-.25j+(\lambda_*-p)e^2\}.\tag{H3}
+\]
+Thus points with $b(d,j)\le\Delta$ need no Gram calculation. At the other
+points it suffices to check
+\[
+ (\lambda_*-p)_+\min\left\{\frac1{12}-d-j,
+             \frac{b(d,j)-\Delta}{.128}\right\}\le .1d+.25j.\tag{H4}
+\]
+A certified lower bound for $\Delta$ can replace $\Delta$ here. This
+uses the first member of (H3) above its zero and the second below it;
+it does not assume convexity of $\lambda_*$.
+
+\subsection{Uniform tails for the Gram integrals}
+\label{sec:uniform-gram-tail}
+The four real parameters can be written
+\[
+ A\ge0,\quad b_2\ge0,\quad b_1\in\mathbb C,
+ \qquad O_t=(t-1)A x_1+(t/\sqrt2)(b_1\bar x_1+b_2\bar x_2),
+\]
+with $B^2=|b_1|^2+b_2^2$. No alignment or phase restriction is imposed.
+Let $M_0,M_1,M_2$ be the internal-quadratic/diagonal, mixed-linear, and
+external-scalar Gram blocks. Their entries are defined by the joint
+$(t,s)$ Laplace--Gaussian integral of \autoref{ch:global-local-coupled-K}.
+
+\begin{theorem}[All-parameter tail bound, \st{P,C}]
+If $1/100\le A^2+B^2\le1/12$, restrict those positive matrix integrals to
+$0\le t\le64$ and $0\le s\le2^{72}$, obtaining $M_r^{\rm box}$. Then
+\[
+ \operatorname{tr}(M_0-M_0^{\rm box})+
+ \operatorname{tr}(M_1-M_1^{\rm box})+(M_2-M_2^{\rm box})<10^{-5}.
+\]
+Each omitted matrix is positive semidefinite and is bounded by $10^{-5}I$.
+In particular, all joint Gram entries are finite, including at parameters
+with rank-one conditional Gaussian fibres.
+\end{theorem}
+\begin{proof}
+Write $x_j=(R_{2j-1}+iR_{2j})/\sqrt2$, where $R$ is standard real
+Gaussian of dimension at most four, and $z=|R|^2$. Summing the numerator
+traces of all three blocks gives
+\[
+ t\left(\tfrac38z^2+k+1+\tfrac12(t-2)^2\right),\qquad k\le2.
+\]
+The density ratio to a real Gaussian of covariance $2I$ is
+$2^k e^{-z/4}$. Since $24/e^2+3<7$, the combined integrand is bounded by
+$tP(t)Z_2(s,t)$, where $P(t)=28+2(t-2)^2$ and $Z_2$ is the Gaussian
+Laplace factor with that enlarged covariance.
+
+Put $X=A|t-1|$, $Y=Bt/\sqrt2$, $D=X-Y$, and $r=X^2+Y^2$.
+For the real covariance $\Sigma_t$ of $O_t$,
+\[
+ \det(I+4s\Sigma_t)\ge
+ (1+2s(X+Y)^2)(1+2sD^2).
+\]
+The shift exponential is at most
+$e^{-s\ell(t)^2/2}+e^{-\ell(t)^2/(8r)}$.
+Maximizing $u^{-1}e^{-\ell^2/(8u^2)}$ proves
+\[
+ \frac{e^{-\ell^2/(8r)}}{\sqrt{1+2s(X+Y)^2}}
+ \le\frac1{\sqrt s\,\ell(t)}.
+\]
+Moreover $t/\ell(t)<2$. Hence the second term contributes at most
+$2J_s/\sqrt s$ after integration in $t$, where
+\[
+ J_s=\int_0^\infty
+       \frac{e^{-t}P(t)}{\sqrt{1+2sD(t)^2}}\,dt.
+\]
+Writing $C=B/\sqrt2$ and $k_0=A+C$, one has
+$\sqrt2k_0\ge1/10$ and $k_0\le1/(2\sqrt2)$.
+On $[0,1]$, $D=A-k_0t$; direct integration bounds this contribution by
+$72\log(1+\sqrt s)/(\sqrt{2s}k_0)$.
+On $[1,\infty)$, $D=(A-C)t-A$. If $A\le C$, its absolute value is at
+least $k_0/2$. Otherwise put $t_0=A/(A-C)$ and split at
+$[t_0/2,3t_0/2]$. Outside this interval $|D|\ge k_0/4$.
+Inside it use $P(t)e^{-t/2}\le41$ and $t_0e^{-t_0/4}<3/2$,
+and integrate the inverse square root exactly. Together these give
+\[
+ J_s\le\frac{10}{\sqrt s}
+        \{318\log(1+\sqrt s)+128\}.
+\]
+This bound is uniform even when the second root escapes to infinity.
+
+For $S_0=2^{2m}$, the combined trace tail with $s>S_0$ is at most
+\[
+ 8100\,2^{-3m}
+ +2^{-m}\{12720[\tfrac7{10}(m+1)+1]+5120\}.\tag{H5}
+\]
+Here the first shift term uses $\ell(t)^2\ge a^2t$, and the second
+uses the preceding bound and $\log2<7/10$.
+For the remaining $t>T_0$, $s\le S_0$ tail, discard the original
+Laplace exponential before enlarging the Gaussian. Its unweighted
+expected trace numerator is at most $t^3/2+14t$. The resulting bound is
+\[
+ 2^{m+1}(3/8)^{T_0}
+       (T_0^3/2+3T_0^2/2+17T_0+17).\tag{H6}
+\]
+At $m=36,T_0=64$, the exact sum of (H5)--(H6) is less than
+$5.054\cdot10^{-6}$, and hence less than $10^{-5}$.
+\end{proof}
+
+\paragraph{What this does not certify.}
+The finite rectangle and the remaining parameter domain (H2\stale{23 Oct}{now the hypothesis \code{NodeCaps}; rows 0--11, 16--18 proved in target \code{GrotheCaps} (\code{lower\_bound\_of\_capsRest}); only rows 12--15 (\code{CapsRest}) remain}) still need
+a directed matrix cover. The proof deliberately integrates the singular
+fibres jointly; a pointwise-in-$t$ inverse-radius bound would be false.
+The uniform tails also imply continuity of the Gram matrices on the
+compact parameter domain: truncated integrals are continuous, and their
+tails converge uniformly. Neither continuity nor the floating scans
+proves (H4).
+
+\subsection{A positive five-integral envelope}
+\st{P} There is a sufficient scalar envelope that avoids cancellation
+between matrix orientations at different integration points. Under the
+Gaussian posterior $N(m_s,C_s)$ of \autoref{ch:global-local-coupled-K}, let $Q$ be the orthonormal
+internal basis of $H_{1,1}\oplus H_{2,0}$, and put
+\[
+ B_s=\E_{m_s,C_s}[\overline Q Q^\top],\quad
+ b_s=\E_{m_s,C_s}Q,\quad c(t)=(t-2)/\sqrt2,
+ \quad d\mu=\pi^{-1/2}te^{-t}s^{-1/2}Z_s\,dt\,ds.
+\]
+Define five nonnegative integrals
+\[
+ n_0=\int\lambda_{\max}(B_s)d\mu,\quad
+ n_1=\int|c(t)|\|b_s\|d\mu,\quad n_2=\int c(t)^2d\mu,
+\]
+\[
+ n_m=\int\lambda_{\max}(C_s+m_sm_s^\top)d\mu,\qquad
+ n_e=\int d\mu.
+\]
+Then
+\[
+ \lambda_*\le\max\left\{
+ \lambda_{\max}\begin{pmatrix}n_0&n_1\\n_1&n_2\end{pmatrix},
+ n_m,n_e\right\}.\tag{H7}
+\]
+Indeed, test the internal quadratic block against a coefficient vector
+of norm $u$ and the diagonal against a scalar of modulus $z$. Its
+posterior form is bounded by
+$\lambda_{\max}(B_s)u^2+2|c|\|b_s\|uz+c^2z^2$.
+The mixed block follows because $(x,\bar x)$ is a unitary transform of
+the normalized real Gaussian vector; the external block is scalar.
+Tonelli justifies these positive integrals before finiteness is known.
+For any omitted integration region,
+$\|b_s\|^2\le\lambda_{\max}(B_s)$ implies
+$n_1^2\le n_0n_2$ on that region. The omitted $2\times2$ matrix is
+therefore positive semidefinite, with norm at most $n_0+n_2$, itself
+at most the omitted trace of $M_0$. The other omitted terms are bounded
+by the omitted trace of $M_1$ and by the omitted $M_2$, respectively.
+Thus the preceding trace-tail certificate also bounds the error of
+(H7) by $10^{-5}$.
+
+The complex quadratic subspace should be retained. If $J$ is the real
+complex structure and $Q_D(R)=R^\top D R-\operatorname{tr}D$ for real
+symmetric $D$, then
+\[
+ \|\Pi_{H_{1,1}\oplus H_{2,0}}Q_D\|_2^2
+ =\tfrac32\operatorname{tr}(D^2)-\tfrac12\operatorname{tr}(DJDJ).
+\]
+For $D=vv^\top$, this is exactly $3/4$ of $\|Q_D\|_2^2$, since
+$v^\top Jv=0$. The identity follows by the orthogonal decomposition
+$D_+=(D-JDJ)/2$, $D_-=(D+JDJ)/2$: the latter splits equally between
+the conjugate holomorphic and antiholomorphic spaces. An exact checker
+audits 994 rational instances; the decomposition proves all dimensions.
+Replacing the allowed complex subspace by every real quadratic is a
+strict relaxation, and numerical probes show it can lose too much.
+
+\paragraph{Numerical scope, \st{F}.}
+A 640-point general-phase/two-driver scan supports the original Gram
+criterion. Refining the aligned face raises the earlier sampled ratio
+$0.903$ to approximately $0.90649144$. In a 576-point scan of the larger
+remaining region $B^2\le A^2/3$, the sampled complex ratio is at most
+approximately $0.52808$. Neither scan is a cover. In particular, no
+extremality theorem reducing general phases to aligned endpoints is
+asserted, and the five integrals in (H7) have not been globally certified.
+
+\subsection{A sharper uniform Gaussian-smoothed Hessian}
+\label{sec:all-v-hessian}
+Let $H\in H_{2,1}(\mathbb C^n)$ in any finite dimension and let $A_0$ be its conditional expectation
+onto all remote coordinates. Let $Q_v$ denote the quadratic coefficient
+in $\E[U_v(L+tH)+U_v(L-tH)]$, where
+$U_v(z)=\E|z+\sqrt v U|$ and $U$ is independent of every original
+coordinate. The external directional-stability proof and its exact
+checkers were audited and replayed.
+
+\begin{theorem}[Uniform refinement, \st{P,C}]
+For every $v>0$, every finite dimension, and every such cubic,
+\[
+ \boxed{Q_v(H)\le h'(v)\|A_0\|_2^2+\frac{31}{25}\|H-A_0\|_2^2,}
+ \qquad h(v)=2\E|L+\sqrt v U|.
+\]
+At the Gaussian optimizer, the negative quadratic coefficient in the
+variance-preserving expansion is therefore at least
+\[
+ p-31/25=3879/47275>0.082.
+\]
+\end{theorem}
+\begin{proof}[Proof of the improvement]
+Retain the cancellation in the mixed visible block. Define
+\[
+ J_- =\int_0^1\frac{\sqrt t(1-t)e^{-t}}{a+bt}\,dt,
+ \qquad J_+ =\int_1^\infty\frac{\sqrt t(t-1)e^{-t}}{a+bt}\,dt.
+\]
+If $I_k=\int_0^\infty t^{k-1/2}e^{-t}/(a+bt)\,dt$, then
+$J_+-J_-=I_2-I_1$. On $[0,1]$, the even degree-eight Taylor polynomial
+of $e^{-t}$ and the even degree-eight geometric polynomial of
+$(a+bt)^{-1}$ are positive upper bounds. Their product integrates exactly
+against $\sqrt t(1-t)$, proving
+\[
+ J_-<.291809683301,\qquad\max(J_-,J_+)<.625532459808.
+\]
+The mixed block off-diagonal has absolute value at most
+$\max(J_-,J_+)/(2\sqrt2)$.
+
+The Bessel identity for the averaged radial Hessian gives
+\[
+ 2rq_v(r)=\sqrt{2\pi x}e^{-x}I_0(x),\qquad x=r^2/(2v).
+\]
+On $0\le x\le1$, 4096 rational cells, an even degree-twelve exponential
+Taylor bound, and a degree-ten $I_0$ series with its geometric remainder
+prove this is at most $2351/2000$. On $x\ge1$, the standard Bessel
+ratio differential equation and its one-sided contact argument prove
+the expression decreases. Thus the bound covers every $r,v$.
+The mixed diagonal entries are bounded by
+\[
+ \frac{2351}{2000}\frac{I_2-2I_1+I_0}{2},\qquad
+ \frac{2351}{2000}\frac{I_2}{4}.
+\]
+Fresh rational Stieltjes majorants and minorants prove that subtracting
+this mixed block from $(31/25)I$ leaves positive diagonal entries and
+determinant greater than $.000259431061$. The other visible blocks
+are below $31/25$ using the same intervals. The remote block remains
+exactly $h'(v)$.
+\end{proof}
+
+This is a uniform second-variation coefficient. It does not furnish a
+finite-amplitude neighborhood independent of the cubic direction, nor
+does it replace the shared-driver comparison needed by full K.
+
+\subsection{Replay and remaining scope}
+The package-level \code{verify\_all.py} uses standard-library Python and
+C++17 with 128-bit integers. It regenerates the mathematical tables,
+rebuilds the A-cover, recomputes the analytic exclusion constants, and
+checks the Hessian and joint-tail bounds. Floating matrix scans are
+separate exploratory files and are not used for acceptance. The
+SHA256 manifest and replay receipts identify the delivered sources.
+
+The all-A theorem has a fixed nonzero Wick coefficient and Gaussian
+buffer box; it is not a reduction of every cubic to that box. The
+general-phase/two-driver finite matrix cover, nonlinear remote cores
+with several influential drivers, and the complete row envelope remain
+open. The established Grothendieck bounds therefore remain unchanged.

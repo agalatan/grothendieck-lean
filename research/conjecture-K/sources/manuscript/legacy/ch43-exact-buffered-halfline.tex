@@ -1,0 +1,427 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch43-exact-buffered-halfline.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 43). Owner: lower-bound/09-one-driver.tex
+\section{Exact K on a buffered Wick half-line and a radial contraction for every cubic}
+\label{ch:exact-buffered-halfline}
+\chapsummary{Buffered one-driver half-line and radial contraction tools. One-driver membership is superseded by \autoref{ch:complete-coherent-driver}, but the retained deficits and general-chaos contraction remain dependencies.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch43-exact-buffered-halfline.tex} from
+\pathref{gpt-reviews/exact-buffered-halfline-20261020/}, ported verbatim apart from this paragraph. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py} (Python standard library and
+Node.js) from an unrelated directory: \textbf{PASS cold full replay in 254\,s}. This covers the 22 + 24 + 6 anchors, the exact half-line cover (40{,}000 cells), the full local analytic dependencies,
+the radial contraction, the buffer deficit and the scalar buffer certificates. The IDE float spot-check of the half-line (\pathref{forest-2026-10-20/halfline\_check.py}) gave
+$\min(S-\Lambda)=3.1\cdot10^{-5}\ge0$, consistent with exact K.
+
+
+\subsection{Statements and independence}
+Throughout,
+\[
+ a=\frac{699}{1250},\qquad b=\frac{179}{1250},\qquad
+ p=\varepsilon^{-1}=\frac{2500}{1891},\qquad
+ L=Z(a+b|Z|^2),
+\]
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2,\qquad
+ S=\sup_{v\ge0}\{2\E|L+\sqrt vU|-pv\}.
+\]
+All base Gaussian coordinates are standard proper complex Gaussians.
+A \emph{fresh buffer} $U$ is independent of $Z$ and of every coordinate
+used by the cubic. This independence is required in every buffered
+statement below.
+
+\begin{theorem}[The exact one-driver half-line, \st{P,C}]
+\label{thm:exact-wick-halfline}
+Let $X,Z,U$ be mutually independent, and put
+\[
+ G=c\frac{X(|X|^2-2)}{\sqrt2}+gU
+      +\alpha(|Z|^2-1)X+\beta\frac{Z^2\overline X}{\sqrt2}.
+\]
+For every $c\ge0$, $g\ge3/16$, and $\alpha,\beta\in\C$,
+\[
+ \boxed{\Lambda(G)\le S.}
+\]
+The independently supplied strict estimate
+$\Lambda(G)\le S-1/10000$ when $c\ge1/10$ also replays successfully.
+An arbitrary phase of the Wick coefficient can be absorbed into $X$.
+\end{theorem}
+
+This removes the slack on the supplied half-line, but not its buffer
+restriction. The proof does not assume global K or use an unproved
+comparison for an arbitrary shared cubic.
+
+\begin{theorem}[All coupled cubics with a fresh buffer, \st{P,C}]
+\label{thm:all-cubic-buffer}
+For every finite-dimensional $Q\in H_{2,1}$, with arbitrary dependence
+on the visible coordinate and arbitrary shared drivers,
+\[
+ \Lambda(Q+gU)\le S-\delta\|Q\|_2^2
+\]
+for each of the following pairs:
+\[
+\begin{array}{c|c}
+g\ge & \delta\\ \hline
+477/1000&1/2000\\
+12/25&1/200\\
+1/2&3/80
+\end{array}
+\]
+There are no amplitude, kurtosis, or dimension restrictions on $Q$.
+\end{theorem}
+
+\begin{theorem}[Sector information, \st{P,C}]
+\label{thm:sector-buffer}
+Let $q$ be the remote projection of $Q$, and put $Q_{\rm vis}=Q-q$.
+Thus $q$ is the conditional expectation given all coordinates except $Z$.
+If $q=0$, then
+\[
+ \begin{split}
+ g\ge1/6&\ \Longrightarrow\
+       \Lambda(Q+gU)\le S-\|Q\|_2^2/200,\\
+ g\ge3/16&\ \Longrightarrow\
+       \Lambda(Q+gU)\le S-\|Q\|_2^2/16.
+ \end{split}
+\]
+If instead $\|q\|_2^2\le1/15$ and $g\ge2/5$, then
+\[
+ \Lambda(Q+gU)<S-\frac1{1000}-\frac3{10}\|Q_{\rm vis}\|_2^2.
+\]
+All visible $A,B,Y,W,\nu$ sectors and their interactions are allowed.
+\end{theorem}
+
+\subsection{A sharp radial Hermite contraction}
+\begin{lemma}[Radial contraction, \st{P}]
+\label{lem:radial-h21-contraction}
+Let $T=|Z|^2$ and let $k:[0,\infty)\to[0,\infty)$ be decreasing and
+measurable. For every $Q\in H_{2,1}$,
+\[
+ \boxed{\E[k(T)|Q|^2]\le \E k(T)\,\|Q\|_2^2.}
+\]
+The coefficient is sharp when a nonzero remote cubic is available.
+\end{lemma}
+\begin{proof}
+The coordinate expansion is
+\[
+ Q=q+ZY+\overline ZW+(T-1)A+\frac{Z^2}{\sqrt2}B
+                    +\nu\frac{Z(T-2)}{\sqrt2},
+\]
+where the remote bidegrees of $q,Y,W,A,B$ are respectively
+$(2,1),(1,1),(2,0),(1,0),(0,1)$. Remote Hermite orthogonality,
+together with the phase average of $Z$, removes every weighted cross
+term. The six squared norms are consequently weighted by
+\[
+ 1,\quad T,\quad T,\quad (T-1)^2,\quad T^2/2,\quad T(T-2)^2/2.
+ \tag{43.1}
+\]
+Each of these polynomials $P$ has exponential mean one. Direct
+integration gives
+\[
+ \int_x^\infty P(t)e^{-t}\,dt=e^{-x}(1+R_P(x)),
+\]
+where
+\[
+\begin{array}{c|c}
+P(t)&R_P(x)\\ \hline
+1&0\\
+t&x\\
+(t-1)^2&x^2\\
+t^2/2&x+x^2/2\\
+t(t-2)^2/2&x(x^2-x+2)/2 .
+\end{array}
+\]
+All remainders are nonnegative; in the last row,
+$x^2-x+2=(x-1/2)^2+7/4$. Thus each weighted probability law
+stochastically dominates the exponential law. A decreasing $k$ has a
+smaller expectation under each weighted law. Sum the resulting six
+inequalities. Layer cake proves the assertion also for general
+nonnegative decreasing measurable $k$.
+\end{proof}
+
+The bidegree constraint enters precisely here. The inadmissible
+replacement $(T-2)^2/2$ instead has remainder $x(x-2)/2$, which is
+negative on $(0,2)$. The contraction does not extend to that profile.
+
+\subsection{The two-sign tangent and the scalar certificates}
+Define
+\[
+ \rho_g(u)=\E|\sqrt u+gU|,\qquad
+ K_g(u)=2\rho'_g(u)
+ =\frac1{g\sqrt\pi}\int_0^1e^{-ut/g^2}
+                    \sqrt{\frac{1-t}{t}}\,dt.
+\]
+The positive integral shows that $\rho_g$ is concave in $u$.
+For arbitrary complex $F,D$, apply its tangent separately to
+$|F+D|^2$ and $|F-D|^2$:
+\[
+ \rho_g(|F+D|^2)+\rho_g(|F-D|^2)
+ \le2\rho_g(|F|^2)+K_g(|F|^2)|D|^2.
+ \tag{43.2}
+\]
+Both signs must be retained: a single-sign substitution would leave a
+nonzero diagonal gradient. In (43.2) every linear term cancels.
+
+Put
+\[
+ F(g)=\Lambda(gU),\qquad
+ \kappa_0(g)=\E_T K_g(T(a+bT)^2).
+\]
+Since $T\mapsto K_g(T(a+bT)^2)$ is decreasing,
+Lemma~\ref{lem:radial-h21-contraction} gives
+\[
+ \boxed{\Lambda(Q+gU)\le
+        F(g)+(\kappa_0(g)-p)\|Q\|_2^2.}                \tag{43.3}
+\]
+Moreover
+\[
+ K_g(u)=\frac2{\sqrt\pi}
+       \int_0^{1/g}e^{-ux^2}\sqrt{1-g^2x^2}\,dx
+\]
+is decreasing in $g$. The scalar certificates
+$\kappa_0(477/1000)<p-1/2000$,
+$\kappa_0(12/25)<p-1/200$, and
+$\kappa_0(1/2)<p-3/80$ therefore prove
+Theorem~\ref{thm:all-cubic-buffer}.
+
+For Theorem~\ref{thm:sector-buffer}, retain the five individual
+coefficients $\kappa_P(g)=\E[P(T)K_g(T(a+bT)^2)]$ in (43.1).
+The directed computation proves:
+\begin{itemize}
+\item at $g=1/6$, every visible coefficient is less than $p-1/200$;
+\item at $g=3/16$, every visible coefficient is less than $p-1/16$;
+\item at $g=2/5$, $\kappa_0<1463/1000$, every visible coefficient
+is less than $p-3/10$, and $F(2/5)<13613/10000$.
+\end{itemize}
+The baseline $F$ is decreasing for $g\ge2/5$. For example, Gaussian
+heat differentiation and the decreasing inverse-Rice mean imply
+\[
+ \frac{d}{dv}F(\sqrt v)
+ \le \frac{\sqrt\pi}{2\sqrt{a^2+v}}-p<0
+       \quad(v\ge4/25).
+\]
+Finally $S\ge2\E|L|=\sqrt\pi(a+3b/2)$; the rational lower
+bound $\sqrt\pi>177245/100000$ already suffices to check
+\[
+ \sqrt\pi(a+3b/2)
+ -\frac{13613}{10000}
+ -\left(\frac{1463}{1000}-p\right)\frac1{15}>\frac1{1000}.
+\]
+This proves the claimed remote-variance window without a stored decimal
+benchmark.
+
+\paragraph{Scalar replay.}
+The standard-library generator encloses $\pi$, square roots, and angles
+exactly. A positive Fourier trapezoid bounds the Rice derivative from
+above: the Fourier coefficients of
+$e^{-x\sin^2\theta}\cos^2\theta$ are nonnegative.
+Convex interpolation bounds its table between nodes, and positive
+radial cells cover the visible exponential integral. The infinite tail
+is bounded separately. All acceptance comparisons use fixed-point
+integers with outward rounding; floating square-root seeds are corrected
+by integer comparisons. The accompanying numerical proof gives the
+same details for the inverse-Rice derivative and the baseline.
+
+\subsection{Why the half-line slack can be removed}
+The remainder of the proof concerns the one-driver model in
+Theorem~\ref{thm:exact-wick-halfline}.
+At an anchor with Wick amplitude $c_i$ and zero couplings, put
+\[
+ H_c=X(|X|^2-2)/\sqrt2,\quad H_A=(|Z|^2-1)X,\quad
+ H_B=Z^2\overline X/\sqrt2,\quad F_i=L+c_iH_c.
+\]
+The inherited Rice tangent gives, for $h=c-c_i$ and
+$\delta=(h,\alpha,\beta)$,
+\[
+ \Lambda(c,\alpha,\beta,g)\le
+ \Lambda(c_i,0,0,g)+2\Re(d_i\cdot\delta)+\delta^*M_i\delta,
+ \tag{43.4}
+\]
+\[
+ (M_i)_{jk}=\E[K_g(|F_i|^2)\overline H_jH_k]-p\,1_{j=k},
+ \quad
+ (d_i)_j=\E[K_g(|F_i|^2)\overline F_iH_j]-p(c_i,0,0)_j.
+\]
+These coefficients are real at the real anchor. They include the visible
+average before completing squares. Formula (43.4) holds at every
+complex coupling amplitude.
+
+\subsubsection{Three analytic inputs, with their exact scopes}
+The already proved local coherent $A/B$ theorem supplies
+\[
+ \Lambda\le S-9c^4-\frac{|\alpha|^2+|\beta|^2}{200}
+ \quad
+ \left(c\le\frac1{40},\
+ |\alpha|^2+|\beta|^2\le\frac1{10000},\
+ \frac7{200}\le g^2\le\frac9{200}\right).
+ \tag{43.5}
+\]
+The stronger local constant $12$ is unnecessary here. Its pure-Wick
+Taylor input, valid at every $c\ge0$ on the same variance interval, is
+\[
+ \Lambda(c,0,0,g)\le S-21c^4+\frac{20812}{3}c^6.       \tag{43.6}
+\]
+The complete minimal inherited analytic replay, including the
+Gaussian diagonal and cross coefficients, inverse moments, tails,
+content bounds, and exact square completion, is bundled.
+
+The visible Gaussian scale-mixture representation gives
+$L\overset d=\sqrt VZ_0$, with $\E V=D=a^2+4ab+6b^2$.
+For any unit remote square-integrable $H$,
+\[
+ Q_g(r):=\Lambda(\sqrt rH+gU)
+ =2\E\rho_{\sqrt{V+g^2}}(r|H|^2)-p(r+g^2)
+\]
+is concave in $r$. Consequently,
+\[
+ Q_g(c_j^2)\le Q_g(c_i^2)
+        +\frac{(d_i)_c}{c_i}(c_j^2-c_i^2)
+          \quad(c_i>0).                              \tag{43.7}
+\]
+The derivative enclosure is used with the sign of the displayed
+difference. This is a global supporting tangent, not an approximation.
+
+For the final input, write
+$h(v)=\sqrt\pi\,\E\sqrt{V+v}$ and let $v_*$ maximize $h(v)-pv$.
+A new portable scalar certificate proves
+\[
+ h'(40401/10^6)<p,\qquad v_*<40401/10^6.
+ \tag{43.8}
+\]
+Jensen's inequality gives
+\[
+ -h''(v)\ge\frac{\sqrt\pi}{4(D+v)^{3/2}}.
+\]
+This exceeds $3/5$ for $v\le9/200$ and $29/50$ for $v\le1/16$.
+Integrating from the maximizer and checking rational inequalities yields
+\[
+ \begin{array}{ll}
+ F(g)<S-1/250000,&g\ge21/100,\\
+ F(g)<S-1/10000,&g\ge1/4 .
+ \end{array}                                         \tag{43.9}
+\]
+These same deficits apply to every remote square-integrable $q$ at
+every amplitude: the zero tangent of $Q_g$ is
+$Q_g'(0)=h'(g^2)-p\le0$ above the optimizer. This
+justifies initializing \emph{every} remote anchor by (43.9), not only
+the zero anchor.
+
+\subsubsection{A finite, exact cover}
+The original engine certifies 22 nonnegative amplitude anchors across
+the three buffer bands $[3/16,1/4]$, $[1/4,3/8]$, $[3/8,1/2]$.
+We add 24 anchors and then six more in the first band, for 52 in total.
+Every coefficient is recomputed with the original directed kernel,
+analytic quadrature remainders, radial tails, and uniform buffer
+interpolation. The first-band coefficients are valid on both
+$[3/16,21/100]$ and $[21/100,1/4]$.
+
+Baseline bounds propagate by both (43.4) with zero couplings and the
+stronger radial tangent (43.7). Initially, the low band uses (43.6)
+when $c_i\le1/25$, and otherwise the zero-anchor bound
+$S+\overline M_{cc}(0)c_i^2$. Thus the old global single-driver
+q-alone theorem is not needed as an additional input.
+The higher bands use (43.9).
+
+For a retained penalty $\gamma\ge0$, absorb the off-diagonal
+$A/B$ entry by
+$2|M_{AB}||\alpha||\beta|
+\le |M_{AB}|(|\alpha|^2+|\beta|^2)$.
+The certified positive denominators are
+\[
+ D_A=-\overline M_{AA}-|M_{AB}|-\gamma,\qquad
+ D_B=-\overline M_{BB}-|M_{AB}|-\gamma .
+ \]
+Complete squares using the signed affine enclosures of
+$d_A+M_{cA}h$ and $d_B+M_{cB}h$.
+This gives a scalar majorant $P_{i,\gamma}(c)$ for
+$\Lambda-S+\gamma(|\alpha|^2+|\beta|^2)$.
+All phases are covered by this Hermitian-form argument.
+
+The function $P_{i,\gamma}(c)-\overline M_{cc}c^2$ is convex:
+the remaining terms are maxima of affine functions and squares of
+affine functions with positive denominators. Thus on a cell of
+length $\Delta$, a valid upper bound is
+\[
+ \max\{P_{i,\gamma}(c_{\rm left}),
+       P_{i,\gamma}(c_{\rm right})\}
+ +\max(0,-\overline M_{cc})\Delta^2/4.                \tag{43.10}
+\]
+This includes cells crossing an anchor or a sign change.
+
+The exact checker covers $0\le c\le1$ with 10,000 rational cells in
+each of four cases:
+\[
+\begin{array}{c|l|c}
+g\text{ range}&\text{quantity checked}&
+\text{conservative upper bound}\\ \hline
+{[3/16,21/100]}&
+ \begin{array}{l}
+ P_{i,3/100}-3/10^6,\quad c\le1/40\\
+ P_{i,0},\quad c\ge1/40
+ \end{array}&-1.2380\cdot10^{-6}\\
+{[21/100,1/4]}&P_{i,0}&-1.7471\cdot10^{-6}\\
+{[1/4,3/8]}&P_{i,0}&-9.4915\cdot10^{-5}\\
+{[3/8,1/2]}&P_{i,0}&-9.6917\cdot10^{-5}
+\end{array}
+\]
+The decimals summarize exact dyadic upper endpoints; acceptance uses
+only their integer signs. In the first line the retained penalty
+excludes every coupling norm at least $1/100$. The complementary
+small-coupling region is covered by (43.5), including the equality
+case at the Gaussian optimizer.
+
+For $c\ge1$, orthogonality and Cauchy--Schwarz give
+\[
+ \Lambda\le2\sqrt{D+\|G\|^2}-p\|G\|^2
+ <\frac{41}{30}<2\E|L|-\frac1{10000}\le S-\frac1{10000}.
+\]
+For $g\ge1/2$, Theorem~\ref{thm:all-cubic-buffer} applies to the whole
+polynomial part. These two tails finish
+Theorem~\ref{thm:exact-wick-halfline}.
+
+\subsection{Replay and remaining obligations}
+\texttt{verify\_all.py} runs from an unrelated directory with standard
+Python, Node.js 20 or later, and a C++17 compiler supporting
+\texttt{\_\_int128}. It regenerates all 52 coefficient anchors and the
+40,000-cell cover, replays the inherited local analytic inputs, and
+recomputes the scalar buffer and optimizer certificates. No third-party
+Python package or saved numerical coefficient is required by the
+default replay. The explicit coefficient-skip option is only a
+postcheck of archived coefficient intervals and is labelled accordingly.
+The package includes source hashes and replay logs.
+
+\paragraph{A further exact identity, \st{P}.}
+The radial argument also has an all-degree balanced analogue. For the
+standard Laguerre polynomials,
+\[
+ \int_x^\infty e^{-t}L_n(t)^2\,dt
+ =e^{-x}\left(1+x^2\sum_{j=0}^{n-1}
+                  \frac{L_j^{(1)}(x)^2}{(j+1)^2}\right).
+\]
+To prove it, set $A=L_{n-1}^{(1)}$ and use the coefficient identities
+$nL_{n-1}=A+xA'$ and $nL_n=(1-x)A+xA'$. They give
+\[
+ e^{-x}(L_n^2-L_{n-1}^2)
+ =-\frac{d}{dx}\left(e^{-x}\frac{x^2A^2}{n^2}\right).
+\]
+Integrate and telescope. Thus every normalized balanced one-coordinate
+Hermite squared-modulus profile stochastically dominates the exponential
+law. The proof holds for all degrees; the bundled degree-30 exact
+polynomial check is a transcription audit, not an induction substitute.
+No assertion about all nonzero angular frequencies is inferred from it.
+
+The half-line theorem leaves $0\le g<3/16$ open in the general
+one-driver $A/B$ family. The arbitrary-cubic theorem still requires a
+large fresh buffer, or the stated restriction on the remote part.
+Neither supplies the needed unrestricted shared-cubic comparison on
+every central row. The certified interval therefore remains the
+reported $1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$.
+
+
+\subsection{IDE note: extension to $g\ge1/6$ (context-free GPT, 20 October)}\label{sec:halfline-sixth}
+A separate GPT instance, given only the bare one-shared-coordinate problem and \emph{none} of our theorems, proved the following self-contained results \st{P}+\st{C}. It assumed neither a
+q-alone theorem nor a numerical value of $S$. Its Node verifier was replayed by the IDE: all four PASS lines, 1148\,s. Package: \pathref{gpt-reviews/cold-start-20261020/shared-driver-certified.zip}.
+For $G=cH(X)+gY+\alpha(s-1)X+\beta z_1^2\bar X/\sqrt2$ and every complex $\alpha,\beta$:
+\[
+\Lambda\le S+10^{-5}\ (c\ge0,\ g\ge\tfrac16),\qquad \Lambda\le S-\tfrac1{200000}\ (\tfrac16\le g\le\tfrac3{16}),\qquad \Lambda\le S-10^{-4}\ (c\ge\tfrac18,\ g\ge\tfrac16),\qquad \Lambda\le S-\tfrac{c^2}{100}\ (g\ge\tfrac12).
+\]
+Together with this chapter (exact K for $g\ge3/16$), the one-driver model now has \textbf{exact K for every $c\ge0$ and every $g\ge1/6$}.
+
+The new tool: for the uncoupled baseline $\Phi_g(v)=\Lambda(\sqrt vH(X)+gY)$, the Gaussian-scale-mixture representation of $L$ gives $\Phi_g''\le0$ and $\Phi_g'''\ge0$, by a Stieltjes argument
+on the inverse of $t\mapsto t(a+bt)^2$. So $\Phi_g'$ is convex and
+$\Phi_g(v_1)\le\Phi_g(v_0)+\tfrac{v_1-v_0}2(\Phi_g'(v_0)+\Phi_g'(v_1))$. This trapezoid majorant propagates certified deficits outward from the Gaussian baseline.

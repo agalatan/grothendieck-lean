@@ -1,0 +1,27 @@
+Let n be a positive integer and let z_1, ..., z_n be independent standard complex Gaussian random variables, normalised so that E|z_j|^2 = 1 (that is, Re z_j and Im z_j are independent real Gaussians of variance 1/2). Let W be a further standard complex Gaussian random variable of the same kind, independent of (z_1, ..., z_n).
+
+Let H be the closure in L^2 of the complex linear span of the random variables
+
+    z_i z_j conj(z_k) - delta_{jk} z_i - delta_{ik} z_j,      1 <= i, j, k <= n,
+
+where delta is the Kronecker symbol and conj denotes complex conjugation. (Equivalently, H is the space of cubic polynomials in z_1, ..., z_n, conj(z_1), ..., conj(z_n) that are homogeneous of degree 2 in the z's and of degree 1 in the conjugates, orthogonal in L^2 to all polynomials of lower degree.)
+
+Fix the three numbers
+
+    epsilon = 1891/2500,    l = 1057/1250,    b = 179/1250,
+
+and define the random variable
+
+    L = z_1 ( l + b (|z_1|^2 - 2) ).
+
+For a random variable G in H put
+
+    Lambda(G) = E|L + G| + E|L - G| - (1/epsilon) E|G|^2.
+
+Prove that for every n and every G in H,
+
+    Lambda(G) <= sup_{sigma >= 0} Lambda(sigma W),
+
+where sigma W is regarded as an element of H in the limit sense: the right-hand side equals sup_{sigma >= 0} ( E|L + sigma W| + E|L - sigma W| - sigma^2/epsilon ), and the supremum is attained at some sigma* in (0.19, 0.21).
+
+(It is also of interest to prove the inequality with an additive error of 10^{-4} on the right-hand side, or with the three numbers replaced by any epsilon in [0.74, 0.76], l in [0.76, 0.90], b in [0.12, 0.16].)

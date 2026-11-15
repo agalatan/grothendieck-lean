@@ -1,0 +1,127 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch47-profile-planes-section.tex (file dated 2026-10-25). Only this line was added.
+\subsection{A dimension-free exclusion for large shared-sector energy}
+\label{sec:full-cubic-profile-exclusion}
+\paragraph{Status and scope.} The reduction is \textbf{[P]}; the two
+supporting planes are \textbf{[C]} with a fresh integer-interval replay.
+All parameters are at the peak profile. No new endpoint is asserted.
+
+Put $a=699/1250$, $b=179/1250$, $p=2500/1891$ and
+$L=Z(a+b|Z|^2)$. Every $Q\in\mathcal H_{2,1}$ has the orthogonal
+visible-coordinate expansion
+\[
+ Q=q+(T-1)r_A+\frac{Z^2}{\sqrt2}r_B+ZY+\bar ZW
+       +\nu\frac{Z(T-2)}{\sqrt2},\qquad T=|Z|^2.
+\]
+The remote bidegrees are respectively $(2,1),(1,0),(0,1),(1,1),(2,0)$.
+These fields may share every remote coordinate; no mutual independence
+is assumed. The visible coordinate is independent of the remote space.
+Let $U$ be fresh proper complex Gaussian and set $G=Q+gU$, $g\ge0$.
+Write
+\[
+ x=\|q\|_2^2+g^2,\quad y=\|r_A\|_2^2,\quad z=\|r_B\|_2^2,
+ \quad e=\|Y\|_2^2+\|W\|_2^2,\quad d=|\nu|^2.
+\]
+Every decimal below denotes an exact rational number. The new global
+bounds are
+\begin{align*}
+ \Lambda(G)&\le1.459443-.000406x-.536914y-.663652z
+                         -.395398e-.642857d,\\
+ \Lambda(G)&\le1.457931-.000297x-.502241y-.684174z
+                         -.433200e-.648280d.
+\end{align*}
+Using the independently certified comparator $S>1.37375$, they imply
+\[
+ \boxed{y+z\ge\frac4{25}\ \Longrightarrow\
+              \Lambda(G)<S-\frac1{5000}},\qquad
+ \boxed{\sqrt z\ge\frac{351}{1000}\ \Longrightarrow\
+              \Lambda(G)<S-\frac1{10000}}.
+\]
+Both conclusions allow every simultaneous even and diagonal sector.
+A third consequence excludes large total visible-dependent energy:
+\[
+ \boxed{y+z+e+d\ge217/1000\ \Longrightarrow\
+            \Lambda(G)<S-1/10000}.
+\]
+Indeed the smallest visible penalty in the first plane is $.395398$,
+and $1.459443-.395398\,(217/1000)=1.373641634<1.37365$.
+More generally, exact K holds if either of the following energy
+inequalities holds:
+\begin{align*}
+ .000406x+.536914y+.663652z+.395398e+.642857d&\ge.085693,\\
+ .000297x+.502241y+.684174z+.433200e+.648280d&\ge.084181.
+\end{align*}
+Thus the remaining one-driver region satisfies
+$|\alpha|^2+|\beta|^2<.16$ and $|\beta|<.351$.
+
+\paragraph{Analytic proof.}
+The inequality $|l+w|+|l-w|\le2\sqrt{|l|^2+|w|^2}$ and conditional
+Jensen apply without any phase assumption. Remote Hermite orthogonality
+makes every cross term vanish in the conditional squared norm. Therefore
+\[
+ \Lambda(G)\le J(x,y,z,e,d)
+ :=2\int_0^\infty e^{-t}\sqrt{P(t)+x+yA(t)+zB(t)+eE(t)+dD(t)}\,dt
+       -p(x+y+z+e+d),
+\]
+where
+\[
+ P(t)=t(a+bt)^2,\quad A(t)=(t-1)^2,\quad B(t)=t^2/2,
+ \quad E(t)=t,\quad D(t)=t(t-2)^2/2.
+\]
+In particular, the common drivers in $r_A,r_B$ do not cause a cross
+term: they belong to distinct remote bidegrees. The deterministic
+visible diagonal is orthogonal to the centered remote fields.
+
+The function $J$ is jointly concave. For
+$R(t)=P(t)+x_0+y_0A(t)+z_0B(t)>0$, its global tangent is
+\[
+ J(x,y,z,e,d)\le C+\delta_xx+\delta_yy+\delta_zz+\delta_ee+\delta_dd,
+\]
+with
+\[
+ C=\int_0^\infty e^{-t}
+ \frac{2P(t)+x_0+y_0A(t)+z_0B(t)}{\sqrt{R(t)}}\,dt,
+ \qquad
+ \delta_j=\int_0^\infty e^{-t}\frac{P_j(t)}{\sqrt{R(t)}}\,dt-p,
+\]
+where $(P_x,P_y,P_z,P_e,P_d)=(1,A,B,E,D)$.
+The two rational anchors are
+\[
+ (x_0,y_0,z_0)=(161/1000,4/25,0),\qquad
+ (x_0,y_0,z_0)=(28/125,0,123201/10^6).
+\]
+Directed integration bounds all six coefficients above by the rational
+coefficients displayed in the two planes. Every slope is negative.
+Hence, when $y+z\ge4/25$,
+\[
+ \Lambda(G)\le1.459443-.536914\,(4/25)
+ =1.37353676<1.37375-1/5000.
+\]
+Likewise, for $z\ge(351/1000)^2$,
+\[
+ \Lambda(G)\le1.457931-.684174\,(351/1000)^2
+ =1.373640079026<1.37375-1/10000.
+\]
+Pure-chaos $L^2$ approximation extends the result to infinitely many
+remote coordinates.
+
+\paragraph{Directed replay.}
+The standalone standard-library Python script
+\texttt{analytic/check\_profile\_plane.py} recomputes both planes. It
+uses only integers, exact fractions and integer square roots at fixed
+binary scale $2^{140}$; conversion to floating point is display-only.
+On $[0,40]$ it uses composite Simpson integration with a rigorous fourth
+derivative enclosure on each cell. Derivatives are obtained by
+Taylor-jet arithmetic and the identity $R(R^{-1/2})^2=1$.
+The fourth jet coefficient is the fourth derivative divided by $24$;
+the cell error is therefore at most $h^5\sup|\mathrm{jet}_4|/120$.
+Exponential values are enclosed by a 64-term alternating series at
+$t/128\le5/16$, with the omitted term retained, followed by seven
+outward squarings. On $t\ge40$, $R(t)\ge b^2t^3\ge b^2t^2$ reduces
+the full tail to exact integer-gamma integrals. Both 512-cell and
+1,024-cell replays pass. Stored coefficient tables are not trusted.
+
+The two planes have no imported numerical input. Their comparison with
+$S$ uses the incoming certified lower comparator $S>1.37375$.
+The argument closes a substantial all-sector region but remains too
+coarse near the Gaussian optimizer: small shared energy and the complete
+row cover are still open.

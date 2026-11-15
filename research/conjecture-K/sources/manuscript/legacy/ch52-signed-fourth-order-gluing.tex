@@ -1,0 +1,490 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch52-signed-fourth-order-gluing.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 52). Owner: lower-bound/10-coupled-complements.tex
+% Ready-to-port chapter; the live IDE manuscript is not modified.
+\section{Signed fourth-order gluing and internally coupled cubic blocks}
+\label{ch:signed-fourth-order-gluing}
+\chapsummary{Signed fourth-order replacement and iteration for independent blocks, with a separate regularized-core application. These costs do not give a universal large coupled-remainder theorem.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch52-signed-fourth-order-gluing.tex} from \pathref{gpt-reviews/signed-fourth-order-20261020/}, ported verbatim
+apart from this paragraph. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py} from an unrelated directory, with SHA256 manifest PASS (31 files). It reports \textbf{ALL NEW EXACT CHECKS PASS}:
+the incoming two-driver fourth-order verifier, the signed constant $2e^{-3/2}<25/56$, the general-block moment identities (256 Wick product identities, sharp constant $44$), the region frontiers with rejected
+successors, and the zero-buffer hybrid. These checks are exact arithmetic only. The analytic steps (Lindeberg-type replacement of the block by Gaussian variance, the fourth-moment envelope
+$\E|J|^4\le\E|q|^4+24c^2r^2+\frac{25}2cr^3+22r^4$, iteration over blocks) are \st{P} by GPT, and the IDE has checked their structure. \emph{Scope:} perturbative in the added block. The
+added cubic norm is at most about $0.019$, so the balanced case with several sizable interacting cubics and little buffer remains open.
+
+
+\paragraph{Status and dependencies.}
+\textbf{[P]} means an analytic proof and \textbf{[C]} an exact arithmetic
+verification. The new relative inequalities are independent of numerical
+certificates. Comparisons with \(S\) additionally use the accepted
+one-driver theorem (\autoref{ch:complete-coherent-driver}), or the regularized full-core theorem
+and profile cutoff (\autoref{ch:two-coordinate-slab-gluing} and \autoref{ch:global-local-coupled-K}). Their source snapshots and
+hashes are supplied; their earlier numerical integrations are not rerun
+by the new quick verifier.
+The incoming verifier and every new rational checker pass.
+The project endpoint remains
+\[
+ 1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\mathbb C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}.
+\]
+All results below concern the fixed peak profile, not a complete row cover.
+
+\subsection{Setting and the stronger relative bound}
+Put
+\[
+ p=\frac{2500}{1891},\quad a=\frac{699}{1250},\quad
+ b=\frac{179}{1250},\quad L=Z(a+b|Z|^2),\quad T=|Z|^2,
+\]
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2,\qquad
+ S=\sup_{v\ge0}\{2\E|L+\sqrt vU|-pv\}.
+\]
+Every standard complex Gaussian is proper with second moment one.
+Let \(V\) be a finite vector of such Gaussians, independent of the
+visible variable and of all variables defining a square-integrable
+core \(Q\). The core may depend on \(Z\).
+Take
+\[
+ q\in H_{2,1}(V),\qquad A\in H_{1,0}(V),\qquad
+ B\in H_{0,1}(V),\qquad
+ J=q+(T-1)A+\frac{Z^2B}{\sqrt2}.
+\]
+The three fields may use exactly the same coordinates of \(V\);
+no independence within this triple is assumed. Write
+\[
+ c^2=\E|q|^2,\quad u^2=\E|A|^2,\quad v^2=\E|B|^2,\quad
+ r^2=u^2+v^2.
+\]
+The fresh buffer \(U\) is independent of all these variables.
+For \(g>0\), define
+\[
+ \boxed{
+ E_g^+(c,r)=\left(\frac8{9g}-p\right)r^2+
+ \frac{\frac{303}{14}c^4+\frac{75}{7}c^2r^2+
+              \frac{625}{112}cr^3+\frac{275}{28}r^4}{9g^3}.}
+ \tag{52.1}
+\]
+Then the dimension-free relative theorem is
+\[
+ \boxed{\Lambda(Q+J+gU)
+ \le\Lambda\!\left(Q+\sqrt{g^2+c^2}\,U\right)+E_g^+(c,r).}
+ \tag{52.2}
+\]
+In particular, the added cubic need not be a diagonal Wick monomial.
+Independence between the added Gaussian block and the core is essential
+to the stated proof.
+
+\subsection{The sign of the fourth derivative [P]}
+For \(\Phi_g(w)=2\E|w+gU|\), angular averaging of one-dimensional
+absolute values gives, for every real unit direction \(e\),
+\[
+ 0\le D_e^2\Phi_g(w)\le\frac{\sqrt\pi}{g},\qquad
+ -\frac{3\sqrt\pi}{2g^3}\le D_e^4\Phi_g(w)
+ \le\vartheta\,\frac{3\sqrt\pi}{2g^3},
+ \quad \vartheta=2e^{-3/2}<\frac{25}{56}.
+ \tag{52.3}
+\]
+Indeed, if \(N\) has density \(e^{-x^2/g^2}/(g\sqrt\pi)\), then
+\[
+ \psi_g(x)=\E|x+N|,\quad
+ \psi_g''(x)=\frac{2e^{-x^2/g^2}}{g\sqrt\pi},\quad
+ \psi_g''''(x)=
+ \frac{4(2x^2/g^2-1)e^{-x^2/g^2}}{g^3\sqrt\pi}.
+\]
+Use
+\[
+ |w|=\frac14\int_0^{2\pi}|\Re(e^{-i\theta}w)|\,d\theta,
+ \qquad
+ \int_0^{2\pi}\cos^2\theta\,d\theta=\pi,\quad
+ \int_0^{2\pi}\cos^4\theta\,d\theta=\frac{3\pi}{4}.
+\]
+The scalar function \((2t-1)e^{-t}\) lies between \(-1\) and
+\(2e^{-3/2}\).
+The rational comparison follows from
+\[
+ \sum_{k=0}^{11}\frac{3^k}{k!}>\left(\frac{112}{25}\right)^2.
+\]
+Thus the upper Taylor remainder through degree three is at most
+\(\vartheta\sqrt\pi|h|^4/(16g^3)\), whereas the lower remainder is at
+least \(-\sqrt\pi|h|^4/(16g^3)\).
+
+Condition on the core and \(Z\). Simultaneous negation of the remote
+coordinates negates \(J\), so its first and third Taylor terms vanish.
+The cubic \(q\) is proper, has variance \(c^2\), and is orthogonal
+in real covariance to both \(A\) and \(B\). Its quadratic Taylor term
+therefore agrees with that of a fresh \(cW\).
+The remaining quadratic term is at most
+\(\sqrt\pi r^2/(2g)\) after all variables are averaged.
+Subtracting the Gaussian Taylor expansion uses its \emph{lower}
+remainder, not its upper one. Consequently,
+\[
+ \Lambda(Q+J+gU)\le
+ \Lambda(Q+\sqrt{g^2+c^2}U)
+ +\left(\frac{\sqrt\pi}{2g}-p\right)r^2+
+ \frac{\sqrt\pi}{16g^3}
+       \left(\vartheta\,\E|J|^4+2c^4\right).
+ \tag{52.4}
+\]
+Apply this to \(L+Q\) and \(L-Q\) and take the half-sum, since
+\(\Phi_g\) already contains the factor two.
+Conditional centering makes the extra quadratic price exactly \(pr^2\).
+This argument handles improper conditional laws of the A/B sum;
+it never drops their pseudocovariance.
+
+The incoming bound charged \(\E|J|^4+2c^4\) instead.
+Its leading rational numerator \(46c^4\) is replaced by
+\((303/14)c^4\). This is a \(52.95\%\) reduction of that coefficient,
+not a corresponding improvement of the Grothendieck constant.
+
+\paragraph{An optional further improvement [P].}
+The Gaussian comparator may be integrated in its variance rather than
+estimated at the initial buffer. Since
+\(\partial_v\Phi_{\sqrt v}=\Delta\Phi_{\sqrt v}/4\) and
+\(\Delta^2\Phi_h\ge-4\sqrt\pi/h^3\), its contribution
+\(\sqrt\pi c^4/(8g^3)\) in (52.4) can be replaced by
+\[
+ \frac{\sqrt\pi}{2g}
+       \left(\sqrt{g^2+c^2}-g\right)^2.
+ \tag{52.5}
+\]
+Twice integrating
+\(\partial_v^2\Phi_{\sqrt v}\ge-\sqrt\pi/(4v^{3/2})\)
+proves the assertion. The rational regions below use (52.1) only.
+
+\subsection{Why the same constants hold for every cubic tensor [P]}
+Averaging the visible phase and \(T\) first gives the exact identity
+\begin{align*}
+\E|J|^4={}&\E|q|^4+
+4\E\bigl[|q|^2(|A|^2+|B|^2)\bigr]
++2\Re\E[q^2\bar A^2]\\
+&+8\Re\E[q\bar A(|A|^2+2|B|^2)]\\
+&+9\E|A|^4+28\E[|A|^2|B|^2]+6\E|B|^4.
+\end{align*}
+No factorization between \(q,A,B\) occurs here.
+The following estimates are dimension-free:
+\[
+ \E|q|^4\le44c^4,\qquad
+ \E|q|^2|\ell|^2\le4c^2\E|\ell|^2
+ \quad(\ell\text{ a proper or conjugate linear form}).
+ \tag{52.6}
+\]
+For the second estimate, rotate a unit linear form to the first
+coordinate. Multiplication by that coordinate splits into its
+creation and annihilation parts in distinct bidegrees.
+Its squared norm is
+\[
+ c^2+\|D_1q\|_2^2+\|\bar D_1q\|_2^2\le(1+2+1)c^2.
+\]
+
+Here is an explicit tensor proof of the first estimate. Write
+\(q=I_{2,1}(f)\), with \(\E|q|^2=2\|f\|^2\).
+In the product \(q\bar q\), the contraction coefficients are
+\[
+ r!s!\binom2r^2\binom1s^2,\quad
+ 0\le r\le2,\quad0\le s\le1.
+\]
+Grouping by \(k=r+s\) gives coefficient sums \(1,5,6,2\).
+Each symmetrized contraction has norm at most \(\|f\|^2\).
+The output bidegree is \((3-k,3-k)\), so orthogonality yields
+\[
+ \E|q|^4\le
+ \bigl(36\cdot1^2+4\cdot5^2+1\cdot6^2+1\cdot2^2\bigr)\|f\|^4
+ =176\|f\|^4=44c^4.
+\]
+The product coefficients follow by multiplying the elementary Wick
+generating functions
+\[
+ e^{\langle z,\xi\rangle+\langle\bar z,\eta\rangle-\langle\xi,\eta\rangle}.
+\]
+Cross-contractions pair a holomorphic slot of one factor with an
+antiholomorphic slot of the other. Choosing and matching the \(r\)
+and \(s\) slots gives exactly the displayed coefficient.
+Thus this calculation applies to every finite index set; the exact
+checker verifies the small coefficient table, while the generating
+identity and contraction Cauchy--Schwarz provide the dimension argument.
+
+Put \(\rho=\E[AB]\), so \(|\rho|\le uv\).
+The projection norms needed for the cubic cross term are
+\[
+ \|\Pi_{2,1}(A|A|^2)\|_2=\sqrt2\,u^3,\qquad
+ \|\Pi_{2,1}(A|B|^2)\|_2^2=u^2v^4+|\rho|^2v^2
+ \le2u^2v^4.
+ \tag{52.7}
+\]
+These follow by symmetrizing the two holomorphic slots; the removed
+lower-chaos components are orthogonal to \(q\).
+Cauchy--Schwarz therefore bounds the cubic cross term by
+\[
+ 8\sqrt2\,cu(u^2+2v^2)\le\frac{25}{2}cr^3.
+\]
+The \(q^2\bar A^2\) term is bounded by
+\(\E|q|^2|A|^2\), giving \(24c^2r^2\) for the quadratic terms.
+Finally,
+\[
+ \E|A|^4=2u^4,\quad \E|B|^4=2v^4,\quad
+ \E|A|^2|B|^2=u^2v^2+|\rho|^2,
+\]
+so the remaining terms are at most
+\[
+ 18u^4+56u^2v^2+12v^4
+ \le\frac{284}{13}r^4<22r^4.
+\]
+We obtain, for the entire internally coupled block,
+\[
+ \boxed{\E|J|^4\le44c^4+24c^2r^2+\frac{25}{2}cr^3+22r^4.}
+ \tag{52.8}
+\]
+Together with \(\sqrt\pi<16/9\), (52.4) proves (52.1)--(52.2).
+One may retain the actual \(\E|q|^4\) in place of \(44c^4\)
+throughout (52.8).
+
+\subsection{New finite-buffer regions [P,C]}
+For a retained coherent one-driver core, the accepted deficit is
+\[
+ D_0=\min\left\{\frac3{100000},
+ \frac{\min(c_0^4,c_0^2)}{32}+\frac{r_0^2}{2000}\right\}.
+\]
+It follows that \(\Lambda\le S-D_0+E_g^+(c,r)\).
+If \(g^2+c^2\le1/36\), one instead has the strict deficit \(3/100000\)
+before adding \(E_g^+\), regardless of the retained coefficients.
+Exact rational corner checks prove
+\[
+ \boxed{\frac18\le g\le\frac{41}{250},\quad
+ c\le\frac1{100},\quad r\le\frac1{600}
+ \quad\Longrightarrow\quad \Lambda<S-10^{-6}.}
+ \tag{52.9}
+\]
+This holds for arbitrary internally coupled remote \(q,A,B\)
+with the displayed norms. The incoming threshold was \(g\ge3/20\).
+The same conclusion holds for every \(g\ge1/8\) when
+\(D_0=3/100000\), for example when \(c_0\ge9/50\).
+
+For arbitrary retained coherent coefficients and \(r\le1/500\),
+the following half-lines satisfy \(\Lambda<S+9\cdot10^{-5}\):
+\[
+\begin{array}{c|c}
+ \text{buffer}&\text{added cubic norm}\\ \hline
+ g\ge1/10&c\le1/80\\
+ g\ge1/8&c\le3/200\\
+ g\ge41/250&c\le19/1000.
+\end{array}
+\tag{52.10}
+\]
+The costs decrease in \(g\); at each listed lower endpoint they
+increase in \(c,r\). The checker also verifies exact frontiers and
+rejects the immediately succeeding grid point, with grid spacing
+\(10^{-6}\).
+
+\paragraph{A non-diagonal example.}
+For independent remote \(X,Y\), set
+\[
+ q=\frac{cX^2\bar Y}{\sqrt2},\qquad A=\alpha X,\qquad B=\beta\bar Y.
+\]
+Then \(\E|q|^4=12c^4\), from \(4!\,2!/(2!)^2=12\).
+Retaining this moment in (52.8) proves
+\[
+ \frac18\le g\le\frac{41}{250},\quad
+ c\le\frac1{80},\quad
+ |\alpha|^2+|\beta|^2\le\frac1{600^2}
+ \quad\Longrightarrow\quad\Lambda<S-3\cdot10^{-6}.
+ \tag{52.11}
+\]
+The cubic and its two linear drivers genuinely share the remote
+coordinates; the cubic is not a sum of independent Wick monomials.
+
+\subsection{Many blocks and a diffuse criterion [P,C]}
+Keep one coherent block \(J_0\), and let the other \(J_i\) be internally
+coupled cubic/A/B blocks on mutually independent Gaussian coordinate
+sets, also independent of the core and visible coordinate.
+Choose any order \(i_1,\ldots,i_N\), and put
+\[
+ g_j^2=g^2+\sum_{k<j}c_{i_k}^2,\qquad
+ h^2=g^2+\sum_{i=1}^N c_i^2.
+\]
+Repeated application of (52.2) gives
+\[
+ \boxed{\Lambda\left(J_0+\sum_{i=1}^NJ_i+gU\right)
+ \le\Lambda(J_0+hU)+\sum_{j=1}^NE^+_{g_j}(c_{i_j},r_{i_j}).}
+ \tag{52.12}
+\]
+At each step all surviving blocks form part of the core. They remain
+independent of the block being removed. No artificial independence
+is imposed within a block.
+For the final baseline one can use the maximum of the valid deficits
+\[
+ \min(3/100000,d_0),\qquad
+ 3/100000\quad(h\le1/6),\qquad
+ d_0\quad(h\ge41/250),
+\]
+where \(d_0=\min(c_0^4,c_0^2)/32+r_0^2/2000\).
+The last, uncapped branch is already available in \autoref{ch:complete-coherent-driver}.
+
+If \(c_i^2\le\delta\), \(R^2=\sum_{i\ge1}r_i^2\), then
+\[
+ \sum_j\frac{c_{i_j}^4}{g_j^3}\le\frac{2\delta}{g}+
+                                             \frac{\delta^2}{g^3}.
+ \tag{52.13}
+\]
+To prove it, let \(a_j=c_{i_j}^2\), \(s_j=g_j^2\) and
+\(f(s)=s^{-3/2}\). The left-endpoint quadrature error is at most
+\[
+ \sum_j a_j(f(s_j)-f(s_j+a_j))
+ \le\delta(f(g^2)-f(h^2)).
+\]
+Use \(a_j^2\le\delta a_j\) and
+\(\int_{g^2}^{h^2}s^{-3/2}\,ds=2/g-2/h\).
+Also
+\[
+ \sum c_i^2r_i^2\le\delta R^2,\quad
+ \sum c_ir_i^3\le\sqrt\delta R^3,\quad
+ \sum r_i^4\le R^4.
+\]
+Thus the total cost in (52.12) is at most
+\[
+ \left(\frac8{9g}-p\right)R^2+
+ \frac{101}{42}\left(\frac{2\delta}{g}+\frac{\delta^2}{g^3}\right)
+ +\frac{\frac{75}{7}\delta R^2+
+        \frac{625}{112}\sqrt\delta R^3+\frac{275}{28}R^4}{9g^3}.
+ \tag{52.14}
+\]
+In particular, for any finite number and dimension of internally
+coupled blocks,
+\[
+ \boxed{c_0\ge\frac9{50},\quad g\ge\frac15,\quad
+ c_i\le\frac1{1000},\quad\sum_{i\ge1}r_i^2\le10^{-6}
+ \ \Longrightarrow\ \Lambda<S-\frac1{400000}.}
+ \tag{52.15}
+\]
+The exact retained margin exceeds \(2.8293\cdot10^{-6}\).
+There is no restriction on the total removed cubic variance.
+
+For pure removed cubics (\(r_i=0\)), the rational cost is minimized,
+for a fixed retained block, by processing increasing \(c_i\).
+For adjacent squared amplitudes \(a\ge b\), the excess over the
+reversed order is
+\[
+ a^2[f(s)-f(s+b)]-b^2[f(s)-f(s+a)]\ge0.
+\]
+This follows because \(-f'\) is positive and decreasing. Later
+cumulative buffers agree, so adjacent swaps prove the claim.
+No optimal-order assertion is made for blocks with couplings.
+
+\subsection{A separate zero-buffer improvement using the slab [P,C]}
+This result uses the already certified
+\[
+ M_\kappa(Q)<S-\frac1{3500}\quad
+ (Q\in H_{2,1}(\C^2)),\qquad\kappa=\frac1{2500},
+\]
+where
+\[
+ M_\kappa(Q)=\E\sqrt{|L+Q|^2+\kappa}
+            +\E\sqrt{|L-Q|^2+\kappa}-p\E|Q|^2.
+\]
+Here \(Q\) may contain all six sectors on \((Z,X)\), with unrestricted
+complex coefficients.
+Let \(q,A,B,Y,W\) be centered, pairwise Hermitian-orthogonal fields,
+jointly independent of \((Z,X,U)\); their joint internal law is arbitrary.
+Put
+\[
+ J=q+(T-1)A+Z^2B/\sqrt2+ZY+\bar ZW+gU,\quad
+ v_0=\E|q|^2+g^2,\quad
+ R^2=\E(|A|^2+|B|^2+|Y|^2+|W|^2).
+\]
+Define the two deficits
+\begin{align*}
+ d_{\rm low}&=\frac{13}{21000}+(p-5/6)v_0-(50-p)R^2,\\
+ d_{\rm high}&=\frac1{3500}+\frac1{50}-(50-p)(v_0+R^2).
+\end{align*}
+For \(v_0\le\kappa\) one has
+\[
+ \Lambda(Q+J)<S-\min\{d_{\rm low},1/2000\};
+ \tag{52.16}
+\]
+for \(v_0\ge\kappa\), without a variance restriction,
+\[
+ \Lambda(Q+J)<S-d_{\rm high}.
+ \tag{52.17}
+\]
+The formulas agree at \(v_0=\kappa\).
+
+For clarity, set
+\[
+ w_\kappa=\frac12\left((|L+Q|^2+\kappa)^{-1/2}
+                      +(|L-Q|^2+\kappa)^{-1/2}\right)\le50.
+\]
+Conditional centering and the square-root tangent give
+\[
+ \Lambda(Q+J)\le M_\kappa(Q)+
+    \E[(w_\kappa-p)\E(|J|^2\mid Z,X)]-\kappa\E w_\kappa.
+\]
+The conditional variance equals
+\[
+ v_0+\E|A|^2(T-1)^2+\E|B|^2T^2/2+
+                \E(|Y|^2+|W|^2)T.
+\]
+The nonconstant profiles are nonnegative and each has mean one.
+Consequently
+\[
+ \Lambda(Q+J)<S-\frac1{3500}-pv_0+
+                  (v_0-\kappa)\E w_\kappa+(50-p)R^2.
+ \tag{52.18}
+\]
+For \(v_0\ge\kappa\), use \(\E w_\kappa\le50\).
+For \(v_0\le\kappa\), if the total variance is at least \(13/20\),
+the existing five-profile cutoff gives deficit \(1/2000\).
+It applies here because its proof uses only that conditional radial
+second-moment profile and the two-sign Jensen bound, not a
+pure-chaos assertion about the buffer or the external fields.
+Otherwise \(\E|Q|^2<13/20\), and
+\[
+ \E w_\kappa\ge
+ \left(\E|L|^2+\E|Q|^2+\kappa\right)^{-1/2}>\frac56,
+\]
+since \(\E|L|^2=1181331/1562500\).
+This proves (52.16)--(52.17).
+
+Exact rational consequences include
+\[
+ \boxed{v_0\le\frac1{2475},\quad R\le\frac7{2000}
+ \quad\Longrightarrow\quad\Lambda(Q+J)<S-\frac1{50000}.}
+ \tag{52.19}
+\]
+Also \(7/20000\le v_0\le1/2500,\ R\le1/250\) gives deficit
+\(1/100000\), and \(v_0\le1/2500,\ R\le19/5000\) gives
+the application slack \(\eta_{AB}=240297199/2651182000000\).
+The added cubic alone can therefore have norm \(1/50\), separately
+from its small shared sectors; the older arbitrary-remainder ball
+limited the norm of their sum to \(0.0035\).
+
+For example, for a fresh standard \(V\), every full core \(Q\) satisfies
+\[
+ \boxed{\Lambda\left(Q+\frac{H(V)}{50}
+    +\frac{(T-1)V}{400}+\frac{Z^2\bar V}{400\sqrt2}\right)
+       <S-\frac1{5000}.}
+ \tag{52.20}
+\]
+The low-variance retained deficit is exactly
+\(21821/105896000>1/5000\).
+All three added coefficients may have arbitrary phases.
+This is a new zero-buffer comparison with a shared nonlinear driver,
+simultaneous A/B, and unrestricted even and diagonal sectors in the core.
+
+\subsection{What the audit establishes, and what remains}
+The incoming fourth-order proof and its exact verifier pass.
+Its two-angle correction is correct: after normalizing the visible
+phase, two independent driver angles remain. A common driver angle
+cannot simply be fixed while retaining a nonzero real visible shift.
+
+The new algebraic computations are portable standard-library Python,
+with the incoming dependency-free Node verifier included.
+The archive has a \texttt{verify\_all.py}, replay logs, SHA256 hashes,
+this ready-to-port chapter, and Markdown proofs.
+Finite arithmetic checks support the analytic proof; they are not
+presented as enumerations proving an arbitrary-dimensional identity.
+
+The large unresolved region still has two or more sizable
+self-interacting cubic blocks and little fresh Gaussian buffer.
+Theorems (52.2) and (52.12) require independence between the core and
+added coordinate sets; they do not cover cubic monomials mixing those
+sets. The zero-buffer theorem allows arbitrary dependence within the
+external block, but its variance region is small.
+No counterexample to K and no improved global endpoint is claimed.

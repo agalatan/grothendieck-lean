@@ -1,0 +1,99 @@
+{
+  "row": "flank",
+  "status": "PASS",
+  "constant": "239/1000",
+  "regions": [
+    {
+      "region": 0,
+      "tau": [
+        "0",
+        "7/10"
+      ],
+      "boxes": 1671,
+      "positive_polynomial_boxes": 7,
+      "leaves": 836,
+      "maximum_depth": 22,
+      "cap": "1185223417/5000000000",
+      "seconds": 0.0728909969329834
+    },
+    {
+      "region": 1,
+      "tau": [
+        "7/10",
+        "3/4"
+      ],
+      "boxes": 26453,
+      "positive_polynomial_boxes": 15,
+      "leaves": 13227,
+      "maximum_depth": 22,
+      "cap": "594061125788789/2500000000000000",
+      "seconds": 1.1693611145019531
+    },
+    {
+      "region": 2,
+      "tau": [
+        "3/4",
+        "4/5"
+      ],
+      "boxes": 26251,
+      "positive_polynomial_boxes": 11,
+      "leaves": 13126,
+      "maximum_depth": 22,
+      "cap": "38087069210553/160000000000000",
+      "seconds": 1.4034490585327148
+    },
+    {
+      "region": 3,
+      "tau": [
+        "4/5",
+        "17/20"
+      ],
+      "boxes": 26061,
+      "positive_polynomial_boxes": 13,
+      "leaves": 13031,
+      "maximum_depth": 22,
+      "cap": "37244418296931/156250000000000",
+      "seconds": 1.1621599197387695
+    },
+    {
+      "region": 4,
+      "tau": [
+        "17/20",
+        "9/10"
+      ],
+      "boxes": 25861,
+      "positive_polynomial_boxes": 13,
+      "leaves": 12931,
+      "maximum_depth": 22,
+      "cap": "19087194046327323/80000000000000000",
+      "seconds": 1.7243483066558838
+    },
+    {
+      "region": 5,
+      "tau": [
+        "9/10",
+        "19/20"
+      ],
+      "boxes": 25681,
+      "positive_polynomial_boxes": 13,
+      "leaves": 12841,
+      "maximum_depth": 22,
+      "cap": "95490112954177/400000000000000",
+      "seconds": 1.196988821029663
+    },
+    {
+      "region": 6,
+      "tau": [
+        "19/20",
+        "1"
+      ],
+      "boxes": 25529,
+      "positive_polynomial_boxes": 5,
+      "leaves": 12765,
+      "maximum_depth": 22,
+      "cap": "1910198924259599/8000000000000000",
+      "seconds": 1.153153896331787
+    }
+  ],
+  "seconds": 7.885272741317749
+}

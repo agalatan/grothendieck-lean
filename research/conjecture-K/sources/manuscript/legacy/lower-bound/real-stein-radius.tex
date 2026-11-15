@@ -1,0 +1,139 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/lower-bound/real-stein-radius.tex (file dated 2026-10-25). Only this line was added.
+\subsection{A uniform scalar--Stein radius improvement (21 October)}
+\label{sec:real-stein-radius-20261021}
+
+\begin{theorem}[\st{P,C}: genuine complex Wick cubics]
+\label{thm:real-stein-radius-20261021}
+For every $q\in\mathcal H_{2,1}(\C^n)$,
+\[
+ \boxed{\E|q|\le\frac{95133}{100000}\|q\|_2.}
+\]
+This uses the genuine-cubic sixth-moment constant $4045313/100000$.
+With the weaker input $C_6=50$, the same certificate instead proves
+$\E|q|\le(48009/50000)\|q\|_2=0.96018\|q\|_2$.
+Both statements are external mathematical certificates, not new Lean proofs.
+\end{theorem}
+\begin{proof}
+Normalize $\E|q|^2=1$ and put $s=\E|q|^4-2\in[0,42]$.
+For $X=\Re q$, circular symmetry gives $\E X^2=1/2$ and
+$\kappa_4(X)=3s/8$. In standard real Gaussian coordinates set
+$\Gamma=\|\nabla X\|^2/3$. The following elementary spectral proof fixes
+all constants. Write $X^2=v+J_2+J_4+J_6$, where the $J_k$ are its
+orthogonal real Hermite projections, and put $A=\|J_2\|_2^2$,
+$B=\|J_4\|_2^2$. The Ornstein--Uhlenbeck product rule gives
+$\Gamma=v+(2/3)J_2+(1/3)J_4$; integration by parts against $X^3$
+gives $\E X^4=3\E X^2\Gamma$. Thus
+\[
+ \kappa_4(X)=2A+B,\qquad
+ \Var\Gamma=\frac{4A+B}{9}\le\frac29\kappa_4(X)=\frac{s}{12}.
+\]
+Let $w$ be even, continuous and piecewise linear, constant beyond its
+last knot, let $\mu>0$, and define
+\[
+ V_w(x)=\int_0^x w(y)\,dy,\qquad
+ h_w(x)=xV_w(x)-\frac{w(x)}2-\frac{w(x)^2}{2\mu}.
+\]
+Here $V_w$ is $C^1$ with bounded derivative, so Gaussian integration
+by parts and polynomial integrability apply. Completing the square yields
+\begin{equation}\label{eq:real-stein-square-20261021}
+ \E h_w(X)=\E\left[(\Gamma-1/2)w(X)-\frac{w(X)^2}{2\mu}\right]
+ \le\frac{\mu}{2}\Var\Gamma\le\frac{\mu s}{24}.
+\end{equation}
+Set $\Psi_w(r)=\E_\theta h_w(r\cos\theta)$ for uniform circle angle.
+If $\lambda_3\ge0$ and
+\begin{equation}\label{eq:real-stein-majorant-20261021}
+ Q(r):=\lambda_0+\lambda_1r^2+\lambda_2r^4+\lambda_3r^6
+       +\Psi_w(r)-r\ge0\quad(r\ge0),
+\end{equation}
+then circular symmetry, \eqref{eq:real-stein-square-20261021}, and the
+sixth-moment input imply
+\[
+ \E|q|\le B(s):=\lambda_0+\lambda_1+\lambda_2(2+s)
+ +\lambda_3(6+9s+C_6s^{3/2})+\frac{\mu s}{24}.
+\]
+This function is convex in $s$, so its maximum on an interval occurs
+at an endpoint.
+
+Thirteen exact rational rows cover
+\[
+ [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],
+ [8,10],[10,12],[12,15],[15,20],[20,42].
+\]
+They are the first thirteen numerical proposals in the supplied
+\code{chaos\_L1L2\_certificates.zip}, with the exact increment $1/1000$
+in $\lambda_0$. The last row is valid on $[20,42]$, closing the
+proposal's missing interval $[26,33]$. The data are converted to exact
+rational numbers; solver status and sampled nonnegativity are not inputs.
+The formerly used $C_6=40.45$ is replaced by $40.45313$.
+
+Each entire-half-line majorant is independently verified with Arb.
+On each test piece, $h_w$ is cubic. Its angular integrals use the
+primitives of $z^m/\sqrt{1-z^2}$ for $m=0,1,2,3$; all four are
+nondecreasing, so exact endpoint enclosures also handle $z=0,1$.
+The checker encloses $Q'$ on each radial cell and proves
+$Q(\mathrm{midpoint})-(\mathrm{width}/2)\sup|Q'|>0$ on $[0,60]$,
+checking zero separately. Beyond the last knot, the angular contribution
+is a quadratic polynomial plus a compact discrepancy bounded by
+$D/\sqrt{r^2-\xi^2}$. Positivity of the resulting lower bound and its
+derivative on $[60,\infty)$ reduces to explicit polynomial comparisons.
+All thirteen tails and finite covers pass.
+
+The largest endpoint objective is less than
+$0.951329341394950$ for $C_6=40.45313$, and less than
+$0.960178963564394$ for $C_6=50$. These are strictly below the stated
+rational bounds. The portable data and fresh checker are in
+\code{grothendieck-real-stein-radius-20261021/radius\_certificates.json}
+and \code{verify\_all.py}; the accompanying \code{PROOF.md} gives the
+primitive and tail formulas.
+\end{proof}
+
+\begin{corollary}[\st{P,C}: all-sector original-response rows]
+\label{cor:real-stein-small-t-20261021}
+At $\epsilon=1891/2500$, every actual bounded-response row with
+$0\le t\le847/5000=0.1694$ lies strictly below $500/701$.
+\end{corollary}
+\begin{proof}
+The argument of Corollary~\ref{cor:sk-row}, now using
+$\rho=95133/100000$, bounds the row by $t^2+\epsilon\rho^2$.
+At $t=847/5000$, its gap to $500/701$ is exactly
+\[
+ \frac{116383050801}{17525000000000000}>0.
+\]
+No sector or independence restriction is imposed on the responses.
+\end{proof}
+
+\paragraph{The existing H1/H2 inputs already imply these cuts.}\stale{23 Oct}{now the hypothesis \code{NodeCaps}; rows 0--11, 16--18 proved in target \code{GrotheCaps} (\code{lower\_bound\_of\_capsRest}); only rows 12--15 (\code{CapsRest}) remain}
+This is an alternative to the real-chaos derivation above, with no
+stronger fluctuation assumption. Set
+$a(u)=\E_\theta\sin^2\theta\,w(\sqrt u\cos\theta)$ and
+$b(u)=\E_\theta w(\sqrt u\cos\theta)$. Angular integration by parts
+shows $2a+2ua'=b$ and
+$\E\cos(2\theta)w=b-2a=2ua'$. Orthogonal projection onto
+$\operatorname{span}\{1,\cos(2\theta)\}$ gives
+\[
+ \E_\theta w^2\ge b^2+2(b-2a)^2
+ =4(a+ua')^2+8u^2(a')^2.
+\]
+Therefore $\Psi_w(\sqrt u)$ is bounded above by the old radial cut
+\[
+ (u-1)a-ua'-\frac{(a+ua')^2+2u^2(a')^2}{2\gamma},
+ \qquad \gamma=\mu/4.
+\]
+H1/H2 bound its expectation by $\gamma s/6=\mu s/24$.
+At zero, a piecewise-linear even $w$ can produce a square-root cusp
+in $a$; one must not assert $a\in C^1$ there without justification.
+Smooth even approximations of $w$, or admissible approximations of
+$\phi=b/2$ with $a=u^{-1}\int_0^u\phi$, resolve this. The quantities
+$a$ and $ua'$ are uniformly bounded and converge pointwise; the cuts
+are dominated by a constant times $1+U$. Dominated convergence proves
+the stated extension. A finite set of old tests alone does not imply
+all the new tests. The required approximation lemma and numerical
+majorants remain explicit Lean obligations.
+
+\paragraph{What changes and what does not.}
+The radius and the simple low-$t$ coverage supersede $0.969508314$
+and $t\le0.047867$. They do not close the peak region near $t=0.846$.
+The binding node of the previously replayed $\epsilon=0.745$ certificate
+has zero radius multiplier, so changing this scalar radius alone does
+not improve that endpoint. A complete same-witness row cover and the
+existing analytic/Lean bridge obligations remain necessary.

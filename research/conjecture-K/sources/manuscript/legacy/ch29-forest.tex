@@ -1,0 +1,82 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch29-forest.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 29). Owner: lower-bound/08-shared-structure.tex
+\section{Stepping back: a structural reassessment of Conjecture K (IDE, 20 October)}\label{ch:forest}
+\chapsummary{Structural reassessment and fixed-shift counterexamples. The visible variable must be averaged before the successful comparison; the dated proposed next steps are not a current work plan.}
+
+\subsection{Where K sits}
+By the duality of \autoref{ch:problem}, $1/\KG=\min_q\|P_{1,0}+\sum_kq_kP_{k+1,k}\|_{\infty\to1}$. For a game $T$ let $\mathrm{Mod}(T)\le\|T\|$ be the value of the \emph{model}: one visible
+coordinate with a radial profile plus a diffuse Gaussian, the class of $\ph(Zp(|Z|^2)+\nu W)$. Conjecture~K is the statement $\mathrm{Mod}=\|\cdot\|$ for the degree-3 game at the row
+level. Its universal version, $\mathrm{Mod}(T)=\|T\|$ for every game, gives by minimax $1/\KG=\min_T\mathrm{Mod}(T)=\max$ over mixtures of model roundings. Every model-type family we
+computed has ceiling $\le\gd$ (\autoref{ch:upper}, diagonal class \st{F}), so the universal version would give $\KG=1/\gd=1.4045759$, i.e.\ Haagerup's conjecture \st{?}. The degree
+ceilings $1.402258$ (degree 3), $1.403648$ (5) and $1.40411$ (7) increase toward that value, consistent with this.
+\textbf{Consequence.} A short universal argument for K (Lieb-type rotation, a Borell/Ehrhard semigroup, a CLT monotonicity) would settle a 40-year-old problem; it should not be expected.
+What 1.402 needs is much less: K$_\eta$ with $\eta\approx9\cdot10^{-5}$ on the peak box of the degree-3 game, so degree-3 specifics and finite certificates are the right tools. (The
+radial-affine roundings of \S\ref{sec:radialaffine} show that ceilings of general roundings exceed $\gd$. Against our degree-3 witness, however, they reach only $0.712354$, below the
+model value $0.713288$ at $\varepsilon=0.745$, so they do not threaten K.)
+
+\subsection{The exact one-variable form}\label{sec:forest-T}
+Write $Z=\sqrt T e^{i\theta}$ and rotate the remote space by the same phase. The remote charges are $q:+1$, $r_A:+1$, $r_B:-1$, $Y:0$, $W:+2$, and every sector's $\theta$ dependence
+cancels. Hence, exactly \st{P},
+\[
+\Lambda(G)=\E_T\Bigl[\E_w\bigl(|\ell(T)+R_T|+|\ell(T)-R_T|\bigr)-\tfrac1\varepsilon\E_w|R_T|^2\Bigr],\qquad
+R_T=q+(T-1)r_A+\tfrac T{\sqrt2}r_B+\sqrt T\,(Y+W),
+\]
+with $T\sim\mathrm{Exp}(1)$ independent of $w$ and the \emph{real} shift $\ell(T)=\sqrt T(a+bT)$ (not to be confused with the row parameter $\ell$; here $a=\ell-2\beta$, $b=\beta$). The diagonal adds the deterministic \emph{complex}
+term $\nu\sqrt T(T-2)/\sqrt2$ to $R_T$, entering as $\ell\pm(R_T+\nu\sqrt T(T-2)/\sqrt2)$; its sign flips between the two terms. The price is exact
+because every visible weight has mean square one: $\E T=\E(T-1)^2=\E T^2/2=1$. The benchmark is $S=\sup_v\E_T[2h(v,\ell(T))]-v/\varepsilon$, with Rice mean
+$h(v,u)=\E|u+\sqrt vG|=\sqrt v\tfrac{\sqrt\pi}2{}_1F_1(-\tfrac12;1;-u^2/v)$. So K says that no $T$-indexed family of remote laws of the admissible form $R_T$ beats a constant proper
+Gaussian.
+
+\subsection{Three structural facts}
+\paragraph{(a) No fibrewise domination.} $v\mapsto h(v,u)$ is concave only for $u\lesssim\sqrt v$; beyond that it is \emph{convex} \st{C} (mpmath: $\partial_v^2h>0$ at $u=2,3$ for every
+$v\in[0.25,2]$). Fibrewise, at a fixed shift, Gaussian mixtures therefore beat the Gaussian. Exactly, $\E_{T'}h(T',u)-h(1,u)=+4.05\cdot10^{-3}$ at $u=2$, i.e.\ $R=XY$ against $G$. Among
+mixed-chaos laws (cubic plus first chaos), $cH(X)+bX$ beats the Gaussian by up to $8\cdot10^{-3}\sigma$ at $|s|=3\sigma$ \st{F} (\code{fgd.py}). At $v^*=0.0403$ only $20\%$ of the visible law lies in the concave
+region (\code{margins.py}). GPT independently gave the large-shift asymptotics, a first difference of $(\E|R|^4-2\sigma^4)/(64s^3)>0$ for $R=X^2\bar Y/\sqrt2$, which is
+the same convexity. K is therefore \emph{intrinsically averaged}: the small-$|L|$ region must pay for convex gains at large $|L|$. This is why every pointwise-in-$T$ device failed
+(fibre majorant constant $h_X$, peeling, the idealised $B$ bound) and why GPT's coherent-$A$ proof closed only after ``averaging the visible coordinate before estimating derivatives''
+(\autoref{ch:coherent-wick-a}).
+
+\paragraph{(b) First-order profile margins.} Let $w(T)=\partial_v[2h](v^*,\ell(T))$ be the marginal value of conditional variance at the optimum. It falls monotonically in $T$
+($4.25,\ 3.06,\ 1.73,\ 0.73,\ 0.42,\ 0.22,\ 0.10$ at $T=0.01,\,0.1,\,0.3,\,1,\,2,\,4,\,8$; $\E w=1/\varepsilon$ to $2\cdot10^{-8}$). A sector with visible weight profile $p(T)$, $\E p=1$, earns
+$\E[wp]/\E w$ of its price at first order \st{F}:
+\begin{center}\small
+\begin{tabular}{lccccc}\toprule
+profile & $(T-1)^2$ ($A$) & $T$ ($Y,W$) & $T^2/2$ ($B$) & $T(T-2)^2/2$ ($\nu(w)H$) & $(T-2)^2/2$ (\emph{inadmissible})\\\midrule
+$\E[wp]/\E w$ & $0.648$ & $0.470$ & $0.294$ & $0.397$ & $1.354$\\\bottomrule
+\end{tabular}
+\end{center}
+At first order, a proper Gaussian sector of mass $m$ therefore costs $(1-\E[wp]/\E w)m/\varepsilon$: $0.466m$ for $A$, $0.70m$ for $Y/W$, $0.93m$ for $B$. $A$ is the hardest sector
+because $(T-1)^2$ is the admissible profile that best targets small $T$; the law-averaged curvature $0.466$ is the ``$d=1/\varepsilon-h_{\rm eff}$'' of the quadratic model (\autoref{ch:weighted},
+measured $0.42$--$0.62$). The rigorous (R) uses the pointwise $0.292$; with $0.466$, the tightest tested (T$_0$) ratio would drop from $0.91$ to about $0.57$. \emph{Proved since} (GPT, \autoref{ch:gpt-averaged}, \S\ref{avg:firstorder}) \st{P}: $w_v'<0$ and $\E[w_v(p-1)]=\E[w_v'A_p]$ with $A_p=e^T\int_T^\infty(p-1)e^{-u}du$, equal to
+$T^2$, $T$ and $T^2/2+T$ for $A$, $Y/W$ and $B$. All three first variations are therefore strictly negative for \emph{every} constant variance $v>0$, and exactly $d_B=d_{Y/W}+\tfrac12d_A$
+(our numbers: $0.706=0.530+0.176$); the numerical constants above remain \st{F}. The inadmissible profile $(T-2)^2/2$ would beat the Gaussian by $2.2\cdot10^{-2}$ (\code{profile.py}). It
+is realised by $(T-2)X/\sqrt2=(T-1)X/\sqrt2-X/\sqrt2$, which contains the pure first-chaos term $-X/\sqrt2\notin\Hc21$. \emph{Corrected (GPT):} a first version of this paragraph
+attributed it to a random coefficient of $H(Z)$, whose profile is in fact $T(T-2)^2/2$, which is stable ($0.397$). \textbf{K's truth rests on the bidegree constraint}: a remote first-chaos
+factor must carry a visible weight orthogonal to constants, $(T-1)$ and not $(T-2)$.
+
+\paragraph{(c) The Gaussian-profile layer is closed (numerics here; proved since, \autoref{ch:polarized-profile-certificate}).} Take a conditionally Gaussian $R_T$ with every admissible profile, \emph{including} improper (polarized) combinations through a shared
+driver: $R_T=\sqrt sG+\alpha(T-1)X+\kappa e^{i\phi}\tfrac T{\sqrt2}\bar X$, the case that could exploit the doubled perpendicular gain $\E(\Im R)^2/\ell$. Its maximum is attained at
+$\alpha=\kappa=0$ (30 Nelder--Mead starts, $\max P-S=4\cdot10^{-16}$; \code{polar.py}) \st{F}. This is numerical support, not an all-amplitude proof. The local polarized form is exact
+(\autoref{ch:gpt-averaged}), and the first-order signs are proved. \textbf{If the polarized Gaussian family is closed at every amplitude, a violation of K must be non-Gaussian}: it must come from the joint third- and fourth-order cumulants of $q$ with the drivers of $r_A,r_B$ (the content), or from $q$'s own law,
+which is the K-a deficit.
+
+\subsection{Proposed architecture: a profile expansion that averages the visible variable first}
+\begin{enumerate}
+\item \emph{Profile term.} $\E_T2h(V(T),\ell(T))-\E V/\varepsilon\le S-\sum_{\rm sectors}d_{\rm sec}m_{\rm sec}$, with $V(T)=\E_w|R_T|^2$ and averaged constants
+$d_A\approx0.466$, $d_{Y,W}\approx0.70$, $d_B\approx0.93$ near $v^*$ (polarized versions lower). This is to be certified uniformly near $v^*$ by one-dimensional interval integration
+in $T$.
+\item \emph{Cumulant term.} Bound $\E_T[\Phi_{\ell(T)}(\mathrm{law}\,R_T)-2h(V(T),\ell(T))]$ by joint cumulants of $(q,r_A,r_B,Y,W)$, with every $T$-weight integrated \emph{before}
+taking suprema. The third-order joint cumulants are linear in $\alpha$: this is the content, whose averaged constant is $76c^3$ instead of the pointwise $600c^3$. The fourth-order cumulant of
+$q$ is the deficit. The near-Gaussian regime then needs $\text{content}^2\le4d_A\,d_q$, which has about twice the room of the pointwise (T$_0$).
+\item \emph{Far-from-Gaussian regime} (finite cumulants: few influential coordinates). Only two remote directions carry $A/B$ ($r_A$ and $\bar r_B$), so after a remote rotation the problem
+is: visible $T$, two drivers $X_1,X_2$, and a buffer $w_\perp$ that enters only through $q,Y,W$. This is the finite-driver regime of GPT's box machinery; \autoref{ch:coherent-wick-a}
+closes one driver, $A$ only, with $\eta=0$. Next steps there: $B$, then two drivers, then a non-Gaussian buffer.
+\item \emph{Glue (open; corrected by GPT, \autoref{ch:gpt-averaged}, \S\ref{avg:glue}).} An influence threshold may separate coherent directions from a regular remainder, but the
+replacement must preserve the joint law of the retained drivers and the remainder's conditional covariance. Substituting an averaged Gaussian coordinate is a law-preserving isometry and gives
+nothing. Averaging independent polynomial copies contracts polynomial cumulants, but no monotonicity of the payoff is known. With shared drivers, conditional averaging converges to a Gaussian
+\emph{mixture with random covariance}: for $q_N=XN^{-1/2}\sum_j(|Y_j|^2-1)$ one has exactly $\kappa=4+12/N$ and $\|\Pi_{1,0}(q|q|^2)\|^2=16/N$, with limit $XG_{\R}$. A first version of
+this item claimed content$^2$ scales by $1/4$ and the deficit by $1/2$ per doubling; that is false. A valid gluing lemma needs an explicit replacement error paid by the available deficit.
+\end{enumerate}
+\textbf{Bottom line.} Do not look for a pointwise or universal principle; there is none (facts (a) and \S1). The structure that makes K true is the bidegree constraint together with the
+averaging over $T$ (fact (b)). The open part is, on the numerical evidence of fact (c), non-Gaussian joint-cumulant content together with a gluing lemma, and the constants that matter must be computed with the visible variable integrated
+first.

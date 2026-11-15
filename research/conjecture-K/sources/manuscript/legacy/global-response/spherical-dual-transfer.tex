@@ -1,0 +1,228 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/global-response/spherical-dual-transfer.tex (file dated 2026-10-25). Only this line was added.
+\subsection{An exact spherical dual with a uniformly priced operator tail}
+\label{sec:spherical-dual-transfer-20261022}
+
+\paragraph{Scope and status (22 October).}
+This is a global analytic reduction \st{P}, with exact supporting checks
+\st{C} and scalar tail/cap assembly \st{L}. It preserves the same bounded
+responses in every Gaussian dimension. It is not a new numerical endpoint
+or a claim of literature novelty. A useful global spherical norm cap
+remains to be proved; the small truncation allowance below is not the
+error of the entire spherical relaxation.
+
+Write $P_k=P_{k+1,k}$ and
+$N_G(\lambda)=\sup_n\sup_{|f|,|g|\le1}
+\sum_k\lambda_k\Re\langle P_kf,P_kg\rangle$ on charge-one responses.
+On the probability sphere $S^{2m-1}\subset\mathbb C^m$, let $\Pi_r$
+project onto the spherical harmonics of bidegree $(r+1,r)$, and let
+$N_{S,m}(a)$ be the analogous norm of $\sum_r a_r\Pi_r$.
+
+\begin{theorem}[\st{P}: global response-level spherical transfer]
+\label{thm:spherical-dual-transfer}
+Suppose $\lambda_k=0$ for $k>D$ and $m\ge2D+3$. Define
+\[
+ C_{m,r}=\binom{m+r-2}{r},\qquad
+ q_{m,r}(s)=\frac{P_r^{(m-2,1)}(2s-1)}{C_{m,r}},\qquad
+ a_{m,r}=\sum_{j=0}^D\lambda_j[s^j]q_{m,r}(s).
+\]
+Then $a$ is bounded and
+\begin{equation}\label{eq:spherical-dual-global}
+ \boxed{N_G(\lambda)\le N_{S,m}(a).}
+\end{equation}
+If $m>2D+3$, the spherical operator is compact and its norm is attained.
+Explicitly,
+\begin{equation}\label{eq:spherical-dual-inverse}
+ a_{m,r}=\frac1{C_{m,r}}\sum_{j=0}^{\min(D,r)}
+ \lambda_j(-1)^{r-j}\frac{(r+m)_j}{j!}\binom{r+1}{j+1}
+ =O(r^{2D+3-m}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The normalized zonal harmonics are $\Phi_{m,r}(z)=zq_{m,r}(|z|^2)$.
+Their dimensions are
+\[
+ d_{m,r}=\binom{m+r}{r+1}\binom{m+r-1}{r}
+          -\binom{m+r-1}{r}\binom{m+r-2}{r-1},
+\]
+where the second term is zero for $r=0$. Orthogonality gives
+\begin{equation}\label{eq:spherical-dual-b}
+ z|z|^{2k}=\sum_{r=0}^k b_{m;k,r}\Phi_{m,r}(z),\qquad
+ b_{m;k,r}=\frac{d_{m,r}(m-1)!k!(k+1)!}{(k-r)!(m+k+r)!}.
+\end{equation}
+Indeed the coefficient is $d_{m,r}(m-1)$ times the integral of
+$s^{k+1}(1-s)^{m-2}q_{m,r}(s)$ on $[0,1]$; shifted Jacobi Rodrigues
+and $r$ integrations by parts evaluate that integral as
+$\binom{k}{r}B(k+2,m+r-1)/C_{m,r}$. Thus $b\ge0$ and
+$\sum_r b_{m;k,r}=1$.
+
+For independent Gaussian vectors $X_1,\ldots,X_m\in\mathbb C^n$, set
+\[
+ F_X(u)=f\Bigl(\sum_j u_jX_j\Bigr),\qquad
+ G_X(u)=g\Bigl(\sum_j u_jX_j\Bigr).
+\]
+They remain disk-valued and charge one, and use the \emph{same} matrix
+$X$. Mehler and the trace on the spherical harmonic space yield
+\[
+ \E_X\Re\langle\Pi_rF_X,\Pi_rG_X\rangle
+ =\sum_{k\ge r}b_{m;k,r}c_k,\qquad
+ c_k=\Re\langle P_kf,P_kg\rangle.
+\]
+Apply $\ell(p)=\sum_{j=0}^D\lambda_j[s^j]p$ to
+\eqref{eq:spherical-dual-b}: for \emph{every} $k$,
+$\sum_{r\le k}b_{m;k,r}a_{m,r}=\lambda_k$.
+The endpoint Jacobi derivative formula gives
+\eqref{eq:spherical-dual-inverse}. Boundedness of $a$, stochastic
+row sums and $\sum_k|c_k|\le1$ justify rearrangement, proving
+\eqref{eq:spherical-dual-global}. When $a_r\to0$, finite-rank
+truncations converge in $L^2$ operator norm. Weak-star compactness of
+the charge-one unit disk and compactness of the operator give attainment.
+This makes no coordinate-core or independent-driver assertion.
+\end{proof}
+
+\begin{corollary}[\st{P,C}; scalar truncation logic \st{L}]
+\label{cor:spherical-dual-cubic-tail}
+For $\lambda=(1,-\epsilon,0,\ldots)$, $m\ge6$, $0\le\epsilon\le1$, put
+\[
+ a_{m,r}=(-1)^ru_{m,r},\qquad
+ u_{m,r}=\frac{r+1}{\binom{m+r-2}{r}}
+       \left(1+\frac{\epsilon r(r+m)}2\right).
+\]
+Let $a^{[L]}$ be $a$ through index $L$ and zero afterward. Then
+\begin{equation}\label{eq:spherical-dual-cubic-cap}
+ \boxed{N_G(1,-\epsilon)\le N_{S,m}(a^{[L]})+u_{m,L+1}.}
+\end{equation}
+No omitted response-energy-tail hypothesis is required.
+\end{corollary}
+\begin{proof}
+For $r\ge1$ the ratio is
+\[
+ \frac{u_{m,r+1}}{u_{m,r}}=
+ \frac{r+2}{m+r-1}
+ \frac{2+\epsilon(r+1)(r+m+1)}{2+\epsilon r(r+m)}\le1.
+\]
+The cross-multiplied difference factors as
+\[
+ 2(m-6)+6(1-\epsilon)+
+ \epsilon\{(m-5)(r-1)(r+m+2)+(m-6)(m+1)\}\ge0.
+\]
+Bessel gives $\sum_r|\langle\Pi_rF,\Pi_rG\rangle|\le1$;
+hence the truncation error is at most $u_{m,L+1}$ uniformly.
+The truncation concerns the \emph{dual operator}, so the slow-phase-tail
+obstruction in Corollary~\ref{cor:joint-cubic-tail-obstruction} still holds.
+\end{proof}
+
+\paragraph{The outer relaxation has a separate, explicit error.}
+For sphere responses $F,G$, their actual Gaussian radial lifts
+$f(Z)=F(Z/\norm Z)$, $g(Z)=G(Z/\norm Z)$ have coefficients
+\[
+ c_k=\sum_{r\le k}v_{m;k,r}d_r,\quad
+ d_r=\Re\langle\Pi_rF,\Pi_rG\rangle,\quad
+ v_{m;r+j,r}=\gamma_{m,r}
+ \frac{(r+1/2)_j^2}{j!(m+2r+1)_j},
+\]
+\[
+ \gamma_{m,r}=\frac{\Gamma(m+r+1/2)^2}
+ {\Gamma(m)\Gamma(m+2r+1)}.
+\]
+Expand in the radial Laguerre basis
+$R^{2r+1}L_j^{(m+2r)}(R^2)$ to prove this formula; Gauss's
+hypergeometric identity gives column sums one. It preserves mixed
+signed coefficients. For the cubic game the lifted multipliers are
+$\mu_0=\gamma_{m,0}[1-\epsilon/(4(m+1))]$,
+$\mu_1=-\epsilon\gamma_{m,1}$ and $\mu_r=0$ for $r\ge2$.
+Comparison with $a$ gives
+\begin{equation}\label{eq:spherical-dual-outer-error}
+ 0\le N_{S,m}(a)-N_G(1,-\epsilon)\le
+ \max\left\{\frac{1+\epsilon}{4m},\,
+ \frac{2(1+\epsilon)}{m-1}+\frac{9\epsilon}{4m},\,
+ \frac{6[1+\epsilon(m+2)]}{m(m-1)}\right\}.
+\end{equation}
+Here $1-\gamma_{m,r}\le(2r+1)^2/(4m)$: Wallis and
+$\gamma_{m+1,0}/\gamma_{m,0}=1+1/[4m(m+1)]$ give the initial
+deficit $1/(4m)$; the ratio
+$(m+r+1/2)^2/[(m+2r+1)(m+2r+2)]$ has deficit at most
+$2(r+1)/m$. Sum the deficits. Full Laguerre calculations and the
+comparison proof are in the accompanying proof file.
+
+\paragraph{Calibration and computational obstruction.}
+For $F=G=\ph(u_1)$ the exact rational spherical energies are
+\[
+ e_r=d_{m,r}I_r^2,\quad
+ I_0=\frac{2^{2m-1}m!(m-1)!}{(2m)!},\quad
+ I_{r+1}=-I_r\frac{2r+1}{2m+2r+1}.
+\]
+They satisfy $\sum_ra_{m,r}e_r=\pi/4-\epsilon\pi/32$,
+since every nonzero restriction of the Gaussian phase is a unitary
+rotation of $\ph(u_1)$. This is a normalization test, not optimality.
+
+At $\epsilon=149/200$, $m=32,L=12$ the truncation allowance is
+$17513/209010560960<8.38\cdot10^{-8}$. However, the complex rank is
+\[
+ R_{m,L}=\binom{m+L}{L+1}\binom{m+L-1}{L},\qquad
+ R_{32,12}=796315556846635874048.
+\]
+The truncated norm has a maximizing pair of phases of polynomials in
+this finite range, but direct coefficient enumeration is not credible.
+Furthermore, \eqref{eq:spherical-dual-outer-error}, not this tiny tail,
+prices the finite-$m$ outer relaxation. A useful continuation must
+exploit unitary symmetry or a positive operator certificate. No such
+norm certificate, improved endpoint or exhaustive response
+classification is asserted here.
+
+There is also an intrinsic dimension floor. If $a_0=1$, then
+\[
+ N_{S,m}(a)\ge\frac1{K_G^{\mathbb C}(m)}.
+\]
+The vector response $u\mapsto u$ has unit norm and exact payoff one,
+since each coordinate is a first spherical harmonic. Approximate it
+by unit-valued step functions on small sphere cells and apply the
+finite-dimensional Grothendieck inequality to the resulting matrix.
+Its scalar optimum is at most $N_{S,m}(a)$; circle averaging deals
+with non-equivariant step phases. Hence a target below this floor is
+impossible for that $m$, however accurately the operator tail is
+computed. This explains why a small-$m$ tail example alone supplies
+no route to the current endpoint.
+
+\paragraph{An exact obstruction to a squared-kernel certificate.}
+There is a stronger warning than the finite coefficient count. The
+dimension formula and the inverse multipliers give the exact identity
+\[
+ \boxed{d_{m,r}|a_{m,r}|^2=
+ \frac{(m+2r)(m+r-1)(r+1)}{m-1}
+ \left(1+\frac{\epsilon r(r+m)}2\right)^2.}
+\]
+Indeed $d_{m,r}/C_{m,r}^2=(m+2r)(m+r-1)/[(m-1)(r+1)]$.
+For $\epsilon>0$ the right side grows as
+$\epsilon^2r^7/[2(m-1)]$, and for $\epsilon=0$ it grows cubically.
+Thus the compact operator is not Hilbert--Schmidt in any of these
+dimensions and has no square-integrable product-sphere kernel.
+Its truncated squared Hilbert--Schmidt norm grows as
+$\epsilon^2L^8/[16(m-1)]$, even while its omitted operator norm
+decays as $O(L^{5-m})$. A squared-kernel estimate therefore cannot
+supply the required signed norm certificate for this operator.
+This does not invalidate Hilbert--Schmidt estimates for different
+comparison operators elsewhere in the manuscript.
+More generally, if $\lambda_D\ne0$ is the highest coefficient,
+\[
+ d_{m,r}|a_{m,r}|^2\sim
+ \frac{2\lambda_D^2}{(m-1)(D!)^2((D+1)!)^2}\,r^{4D+3}.
+\]
+Increasing dimension improves the individual multiplier decay, but
+does not cure this multiplicity obstruction. Increasing witness degree
+makes the divergent exponent larger.
+
+\paragraph{Sources, replay and formalization.}
+The harmonic input is classical; see
+\href{https://arxiv.org/abs/2411.12579}{Defant et al.},
+\href{https://dlmf.nist.gov/18.37}{DLMF 18.37} and
+\href{https://arxiv.org/abs/1903.07697}{Peterson--Sengupta}.
+The objective and completeness motivation are those of
+\cite{HJMreal26,NR14}. The project-specific inverse and error ledger
+are derived above. Full proofs, exact verifier, droplet log and the
+source map of all 125 current manuscript TeX files are in
+\pathref{/Users/alingalatan/workspaces/grothe/outputs/spherical-dual-transfer-20261022/}.
+The module
+\pathref{/Users/alingalatan/workspaces/grothe/Grothe/LowerAnalytic/SphericalTransfer.lean}
+proves the all-index scalar tail and signed cap-assembly logic.
+The analytic bridge and a spherical norm cap remain outside that
+formalization; none is added to the master endpoint's hypotheses.

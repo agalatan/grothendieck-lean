@@ -1,0 +1,253 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/85-weighted-full-energy.tex (file dated 2026-10-25). Only this line was added.
+\subsection{Visible support and a weighted full-energy response region}
+\label{sec:weighted-full-energy-response}
+\paragraph{Status and scope (22 October).}
+The inequalities below are \st{P,C}: analytic proofs with fresh exact
+integer-interval replays of eight scalar integrals, including their infinite
+tails. They concern actual bounded responses in every finite dimension,
+with all sectors, arbitrary dependence and phases. No cubic moment bound,
+raw K, buffer, or tensor-orientation hypothesis is used. This is an
+additional region for the fixed witness $\epsilon=1891/2500$, not a
+complete row cover or a new global endpoint. The prior endpoint integration
+is a separate task.
+
+Use the notation of \S\ref{sec:anisotropic-response-cap}: $Ph=tZ$,
+$F=\epsilon Qk$, $p=1/\epsilon$, $T=|Z|^2$, and
+\[
+ F=q+(T-1)r_A+Z^2r_B/\sqrt2+ZY+\bar ZW+\nu H(Z).
+\]
+In particular $e=\|q\|^2$ is remote energy, whereas $\|F\|^2$ includes
+every sector. The objective is
+$\mathcal N=t^2+p\|F\|^2-\|Pk\|^2-\epsilon\|Qh\|^2$.
+
+\subsubsection{A closed-form visible support constraint [P,C]}
+For $r\ge0$ define
+\[
+ I(r)=\E\sqrt T\,|T-r|
+ =(3/2-r)\frac{\sqrt\pi}{2}
+       +2\int_0^r\sqrt s(r-s)e^{-s}\,ds.
+\]
+Since $|h|\le1$ and $\E[\bar Zh]=t$,
+\[
+ m:=\Re\E[\bar Z(T-2)h]
+ \le I(r)+(r-2)t.
+\]
+The visible cubic $H(Z)=Z(T-2)/\sqrt2$ has unit norm. Thus
+\begin{equation}\label{eq:visible-support-penalty}
+ \boxed{\quad
+ \|Pk\|^2+\epsilon\|Qh\|^2
+ \ge\frac\epsilon2\bigl((2-r)t-I(r)\bigr)_+^2.
+ \quad}
+\end{equation}
+This uses the visible average before squaring. It is a necessary condition
+on actual responses, with no restriction on $F$.
+
+For $r=1/10$ an alternating series gives
+\[
+ I(r)=(3/2-r)\frac{\sqrt\pi}{2}
+ +2r^{5/2}\sum_{n\ge0}
+ \frac{(-r)^n}{n!(n+3/2)(n+5/2)}
+ <\frac{124233393}{10^8}.
+\]
+Machin's formula for $\pi$, integer square roots and forty alternating
+terms certify this upper bound. At $t=1057/1250$,
+\eqref{eq:visible-support-penalty} forces a penalty greater than
+$0.05019429$. Consequently $\|F\|^2\le0.03662$ already implies
+$\mathcal N<0.713260$. The theorem below improves this cutoff and
+retains the sector weights.
+
+This constraint is not redundant with the degree-two multiplication
+matrices in \S\ref{sec:response-moment-compressions}. For example take
+formal moments on two coordinates
+\[
+ p^\pm=(t,0),\qquad m^\pm_{00;0}=-5/16,\qquad
+ m^\pm_{11;1}=\pm1/3,
+\]
+and set other cubic moments to zero. Both displayed multiplication
+contractions and truncated Parseval pass: their squared Gram diagonals are
+\[
+ \bigl(t^2+(t-5/16)^2,\ t^2+1/9\bigr),\qquad
+ \bigl((2t-5/16)^2/2,\ t^2+1/18\bigr),
+\]
+all below $1$ at $t=1057/1250$. Their formal objective is
+$t^2+\epsilon/18-25\epsilon/512>500/701$.
+But their visible moment $-5/16$ violates the support bound above.
+These are fake moment data, not actual responses or a counterexample to K.
+The exact checker regenerates both matrices and verifies these comparisons.
+
+\subsubsection{The weighted full-energy theorem [P,C]}
+Define
+\begin{equation}\label{eq:weighted-full-energy-definition}
+\begin{aligned}
+ \mathcal V_*={}&e+\frac7{10}(\|r_A\|^2+\|r_B\|^2)
+  +\frac34\|Y_R\|^2+\frac9{10}\|Y_I\|^2+\frac56\|W\|^2\\
+ &+\frac7{20}(\Re\nu)^2+\frac{61}{100}(\Im\nu)^2.
+\end{aligned}
+\end{equation}
+Every weight lies in $[0,1]$, so $\mathcal V_*\le\|F\|^2$.
+It is neither the remote variance $e$ nor the earlier adjusted energy
+$\mathcal E_{\rm adj}$.
+
+\begin{theorem}[\st{P,C}: full-energy response cap]
+\label{thm:weighted-full-energy-response}
+Every actual response at $\epsilon=1891/2500$ satisfies
+\begin{equation}\label{eq:weighted-full-energy-cap}
+ \boxed{\quad
+ \mathcal N\le t^2-\frac{1401}{2500}t
+              +\frac{1701143}{4000000}+\frac54\mathcal V_*.
+ \quad}
+\end{equation}
+Consequently:
+\begin{align}
+ 0\le t\le851/1000,\quad\mathcal V_*\le13/400
+ &\Longrightarrow\quad\mathcal N\le0.71321135,
+ \label{eq:weighted-full-energy-strip}\\
+ t=1057/1250,\quad\mathcal V_*\le234/6250
+ &\Longrightarrow\quad\mathcal N\le0.71325087.
+ \label{eq:weighted-full-energy-peak}
+\end{align}
+Both caps are strictly below $B_*=35663/50000<500/701$.
+On $0.84\le t\le0.851$, the tapered condition
+\begin{equation}\label{eq:weighted-full-energy-taper}
+ \mathcal V_*\le\frac{3253}{100000}
+                +\frac{113}{125}\left(\frac{851}{1000}-t\right)
+\end{equation}
+gives $\mathcal N\le0.71324885<B_*$.
+\end{theorem}
+
+\begin{proof}
+Use the general weighted two-disk bound \eqref{eq:aniso-general}, with
+\[
+ a=\frac3{2000},\quad b=\frac{2787}{20000},\quad
+ s_0=\frac{47}{500000},\quad d=0,\qquad
+ \lambda(T)=\sqrt{T(a+bT)^2+s_0}.
+\]
+These are free dual parameters, not a change to the witness or the
+Conjecture-K profile. Here $2(a+2b)=1401/2500$.
+The same eight integrals $J_j,V_j$ and real Gram matrix $K$ as in
+\eqref{eq:aniso-gram} give the following directed bounds:
+\[
+\begin{array}{c|c}
+ \text{coefficient of the sector energy in the upper bound}
+      &\text{certified upper bound}\\\hline
+ p-p^2/C_0&5/4\\
+ pI-p^2K^{-1}&(7/8)I\\
+ p-p^2/V_1&15/16\\
+ p-p^2/J_1&9/8\\
+ p-p^2/C_1&25/24\\
+ p-p^2/K_H(V)&7/16\\
+ p-p^2/K_H(J)&61/80
+\end{array}
+\qquad
+ C_\lambda<\frac{1701143}{4000000}.
+\]
+All inverse quantities are certified positive. For the A/B comparison,
+the difference of the two real $2\times2$ matrices has positive diagonal
+and determinant; no phase is suppressed. Multiplying the weights in
+\eqref{eq:weighted-full-energy-definition} by $5/4$ gives precisely
+the seven rational bounds. Substitution proves
+\eqref{eq:weighted-full-energy-cap}.
+
+Unlike the earlier certificate, the sector coefficients here need not be
+negative. Their joint weighted energy is retained instead of bounding
+each sector independently without an energy budget. The $\|Pk\|^2$
+penalty is already used by the Gram correction and cannot be used again.
+The compatible square
+$\epsilon\|Qh+pbZ(T-2)\|^2$ may still be subtracted from the displayed
+upper bound. No such square is needed for the numerical consequences.
+
+The integration proof is the exact one in
+\S\ref{sec:anisotropic-response-cap}, with these new parameters:
+integer intervals at scale $10^{40}$, fourth-derivative Simpson bounds
+on $[0,40]$, and explicit exponential tails. No stored integral or
+floating-point decision enters the replay. The default replay uses
+2,723 panels; the finer replay uses 7,770 panels and a hundredfold smaller
+error target. The finer replay is not a separate analytic assumption.
+Finally the right side is a convex quadratic in $t$, even after inserting
+the linear taper. Evaluation at the interval endpoints gives the stated
+caps by exact rational arithmetic.
+\end{proof}
+
+\paragraph{The new necessary condition on a survivor.}
+For the design cap $B_*$, an actual response with $\mathcal N>B_*$ must
+satisfy
+\begin{equation}\label{eq:weighted-full-energy-survivor}
+ \boxed{\quad
+ \mathcal V_*>\frac45\left\{B_*-t^2+\frac{1401}{2500}t
+                          -\frac{1701143}{4000000}\right\}.
+ \quad}
+\end{equation}
+At the peak this threshold is exactly $0.037447304$, and at $t=0.851$
+it is $0.03253892$. These conditions must be intersected with the earlier
+remote-energy, adjusted-energy, support and polynomial-moment constraints.
+They have not been proved jointly inconsistent. In particular the full
+energy permitted by the older feasibility bounds is larger than this
+new cutoff. A response below one of these caps is covered; a response
+above the energy cutoff is not thereby feasible or a violation.
+
+\paragraph{Replay and porting.}
+The self-contained proof and standard-library Python checkers are in
+\pathref{/Users/alingalatan/Documents/Codex/2026-10-10/plea/outputs/response-attack-20261022/}.
+Run \code{python3 -I verify\_all.py}, optionally with \code{--fine}, from
+any working directory. The numerical theorem is ready to port using the
+existing two-disk and weighted-Gram lemmas; it has not been formalised
+in Lean in this round. Float optimisation files in that directory are
+diagnostics only and are not inputs to the checker.
+
+\subsubsection{An exact limit of the proportional-support ansatz [P,C]}
+\label{sec:proportional-support-obstruction-20261022}
+The full joint-support inequality can be optimised analytically in its
+scalar multiplier. Put $R=\sqrt\pi/2$,
+$\theta=(2R+(3\pi/32)(\eta^{-1}-1))^{-1}$ and $b_0=(1-\eta)/4$.
+With $x=P_Xk$, $y=pr_\parallel$, its constraint is
+\[
+ \theta\|x-a_1\|^2+b_0\|y-a_2\|^2
+ \le d:=D-\theta m^2-p^2E_0/4.
+\]
+For $\mu>1/(b_0p)$, simultaneous square completion bounds the remaining
+cost $-\|x\|^2+\|y\|^2/p+pE_0$ by
+\[
+ \mathcal F(\mu)=\mu d-\frac{\mu\theta\|a_1\|^2}{1+\mu\theta}
+ +\frac{\mu b_0\|a_2\|^2}{\mu b_0p-1}+pE_0.
+\]
+Its second derivative is nonnegative, so this scalar optimisation needs
+only a root or boundary comparison, not a nonconvex search.
+
+In the diffuse Gaussian-grade model $q=\sqrt e\,W$, assign $W$ grade
+three, independently of the first-grade variables. For proportional
+tests $v=\lambda q$, all complex $\lambda$ are allowed and the
+first-grade centres vanish. Writing $z=\sqrt e\lambda$ gives
+\[
+ D(z)=R\sqrt{1+|z|^2}-p\sqrt e\Re z-t,\qquad
+ m(z)^2=|\nabla D(z)|^2.
+\]
+The Hessian of $D$ is bounded above by $RI$. Therefore
+$D-D_{\min}\ge m^2/(2R)$, where
+$D_{\min}=\sqrt{R^2-p^2e}-t$. When $D_{\min}\ge0$ and $E_0=0$,
+\[
+ \inf_{\lambda,\eta,\mu}\mathcal F(\mu)=4\epsilon D_{\min}.
+\]
+The same relaxed vector $x=0$, $\|y\|^2=4D_{\min}$ satisfies
+\emph{every} proportional-test cut simultaneously. Thus combinations
+of those cuts do not repair this relaxation either.
+At $t=1057/1250$, $e=1/25$, the cost is strictly between
+$0.0007977136526283$ and $0.0007977136526285$, whereas
+$B_*-B_0(t)=10895563/94550000000<0.000115236$.
+This is a limitation of the proportional-test relaxation, not an actual
+bounded response, a finite-dimensional cubic counterexample, or a failure
+of K. The Gaussian-grade family itself is already covered by other
+theorems. The full proof and exact replay, including the scalar
+square-completion identities, are in the package's \code{support/}
+directory. Nonproportional tests and simultaneous response constraints
+remain available.
+
+\paragraph{IDE replay and review (22 October).} \code{verify\_all.py --fine} PASSES from an unrelated directory under \code{python3 -I} in 34\,s (7\,770 accepted panels;
+package and log in \pathref{gpt-reviews/weighted-energy-20261022/}). The IDE re-derived by hand: the two-disk identity (the gap is $(c_0-xa_0)^2+x^2c_0^2(1-a_0^2)$),
+its extension to disks by convexity, the split $L_0=\ell_0Z+B$ with $\ell_0=a+2b$ and $2pb^2=p\|B\|^2$, and the Gram entries of every sector under $M^{-1}u=c\,u+d\,e^{2i\arg Z}\bar u$:
+$C_0$ for the remote cubic (no first-chaos correction, since $PM^{-1}q=0$), the $2\times2$ block with partner $Z^2\bar X/\sqrt2$ and the $1/(1+C_0)$ correction,
+$V_1$/$J_1$ for $\Re Y$/$\Im Y$, $C_1$ for $W$, and $K_H$ with its $1/(1+V_1)$ visible correction. The sector weights are the certified coefficients divided by $5/4$.
+The visible support lemma was checked numerically ($I(1/10)=1.24234$, $m\le-0.3643$, $J>0.0502$). Not checked line by line: the finite-rank inverse formula for $M+P$ across all sectors simultaneously
+(each sector was checked separately; the sectors are mutually orthogonal under $M^{-1}$ by charge and remote-degree counting).
+\emph{Orientation from the IDE's asymptotic W-model map (attack step 1, \pathref{attack-20261022/})}: at $t=0.8456$ the largest payoff of actual responses $\ph(Za(T)\pm W)$
+with remote variance $e\le0.035$ is $0.7091$, and with $e=0.041$ at $t=0.844$ it is $0.71314$. So, in that model, the intermediate-variance band is at least $4\cdot10^{-3}$ below $500/701$; the
+loss is in the certificates, not in the responses.

@@ -1,0 +1,254 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/87-joint-response-defect.tex (file dated 2026-10-25). Only this line was added.
+% Joint response defect and projected-price refinement, 22 October 2026.
+% No new chapter number; no new endpoint or Lean claim.
+\subsection{The exact joint-response defect}
+\label{sec:joint-response-defect}
+\paragraph{Scope and purpose.}
+The next step after the disk-distance correction is to retain
+$|h\pm k|\le1$ together. The following identity is \st{P}; its
+polynomial formulas have standalone exact coefficient checks \st{C}.
+It concerns actual responses, all dimensions and all shared sectors.
+It neither assumes nor proves raw K. The new defect \emph{replaces}
+the earlier clipping and $h$-phase estimates; these must not be added
+to it a second time.
+
+Use the real Hilbert inner product, $Ph=tZ$, $F=\epsilon Qk$,
+$p=1/\epsilon$, and $V=\|F\|^2$. Choose
+\[
+ L=Z(a+bT),\quad \ell=a+2b,\quad B=bZ(T-2),\quad T=|Z|^2,
+\]
+with real $a,b$, and a regularized radial weight $\lambda\ge |L|$
+bounded below by a positive constant. Write $l=|L|$ and let $M$ have
+pointwise eigenvalues $C=\lambda+l^2/\lambda$ parallel to $L$, and
+$\lambda$ perpendicular to $L$. Let $U$ embed a finite real orthonormal
+set of cubic moments (all cubic moments in finite Gaussian dimension),
+and put
+\[
+ y=U^*k,\quad \mathsf G=U^*(M+P)^{-1}U,\quad
+ k_0=(M+P)^{-1}U\mathsf G^{-1}y,
+ \quad D=U\mathsf G^{-1}y-Pk_0=Mk_0.
+\]
+Assume the finite weighted integrals and positive Gram, as in the
+preceding regularized certificates. Define
+\[
+ H=C+D^TM^{-1}D,\qquad
+ \mathcal S(L,D)=|L+D|+|L-D|,\qquad
+ \Delta(L,D)=H-\mathcal S(L,D),
+\]
+and the old quadratic upper value
+\[
+ B_{\rm quad}=t^2-2\ell t+2pb^2+pV+\E C-y^T\mathsf G^{-1}y.
+\]
+\begin{theorem}[\st{P}: exact joint defect]
+\label{thm:exact-joint-response-defect}
+Every actual response satisfies the identity
+\begin{align}
+ \mathcal N={}&B_{\rm quad}-\E\Delta(L,D)
+ -\|Pk-Pk_0\|^2-\epsilon\|Qh+pB\|^2\nonumber\\
+ &-\E\bigl[\mathcal S(L,D)-2\Re(\bar Lh+\bar Dk)\bigr].
+ \label{eq:exact-joint-response-defect}
+\end{align}
+Every subtracted quantity is nonnegative. Moreover,
+\[
+ \Delta(L,D)\ge
+ \operatorname{dist}_M(M^{-1}D,\{u:|u|\le1\})^2.
+\]
+\end{theorem}
+\begin{proof}
+Complete the $Qh$ square using $\|B\|^2=2b^2$, and the $Pk$
+square around $a_0=Pk_0$. For $\xi=\mathsf G^{-1}y$,
+$D=U\xi-a_0$ and $U^*k=y$, while
+\[
+ \|a_0\|^2+\E D^TM^{-1}D
+ =\|k_0\|_{M+P}^2=y^T\mathsf G^{-1}y.
+\]
+Substituting gives the identity. The exact support of the two disks is
+$\mathcal S$, so its displayed support gap is nonnegative.
+The old quadratic inequality is
+$2\Re(\bar Lh)\le C-k^TMk$.
+Taking the joint support gives
+\[
+ \mathcal S(L,D)\le C+
+ \sup_{|u|\le1}(2D\cdot u-u^TMu)
+ \le C+D^TM^{-1}D.
+\]
+Completing this last quadratic also proves the disk-distance comparison.
+\end{proof}
+The matching error $\|Pk-Pk_0\|^2$ is a remainder of the same
+completion, not a second use of $\|Pk\|^2$. The $Qh$ completion is
+compatible. For arbitrary $\xi$ and $a_0\in\operatorname{ran}P$, the
+same proof gives the exact-support dual
+\[
+ \mathcal N\le t^2-2\ell t+2pb^2+pV-2\xi^Ty+\|a_0\|^2
+ +\E\mathcal S(L,U\xi-a_0)-\epsilon\|Qh+pB\|^2.
+\]
+Thus the old Gram trial point need not be optimal in this stronger dual.
+
+\subsubsection{A rational formula retaining a sharp fraction of the defect}
+Rotate $L$ to $l\ge0$ and write $D=x+iy$. Set
+\[
+ u=\frac{x^2}{C},\quad w=\frac{y^2}{\lambda},\quad s=u+w,
+ \quad d=\lambda-\frac{l^2}{\lambda},\quad H=C+s,
+ \quad B_0=l^2+x^2+y^2.
+\]
+The numerator
+\[
+ P_0=H^4-4H^2B_0+16l^2x^2
+\]
+has the exact nonnegative decomposition, for $s>0$,
+\begin{equation}\label{eq:joint-defect-polynomial}
+ P_0=\frac{u}{s}(s-C)^2\bigl((s+C)^2-4l^2\bigr)
+       +\frac{w}{s}(s-d)^2(s+C)^2.
+\end{equation}
+At $s=0$, $P_0=C^2d^2$; the remaining factor in the first summand is
+$s^2+2Cs+d^2\ge0$.
+This also proves $H\ge\mathcal S$ directly: the identity
+\[
+ H^2-2B_0=\lambda^2+(l^2/\lambda)^2+s^2+2(l^2/\lambda)w\ge0
+\]
+selects the upper square-root branch in
+$\mathcal S^2=2B_0+2\sqrt{B_0^2-4l^2x^2}$.
+\begin{theorem}[\st{P,C}: rational joint correction]
+\label{thm:rational-joint-correction}
+For $R_{\rm joint}=P_0/(2H^3)$,
+\[
+ \boxed{\qquad
+ \frac{81}{250}\Delta(L,D)\le R_{\rm joint}\le\Delta(L,D).
+ \qquad}
+\]
+The lower factor is sharp, attained at $\lambda=l>0$, $D=L$.
+\end{theorem}
+\begin{proof}
+Put $A_0=|L+D|+|L-D|$ and $b_0=\bigl||L+D|-|L-D|\bigr|$.
+Twice rationalizing gives
+\[
+ P_0=(H-A_0)(H+A_0)(H^2-b_0^2),\qquad
+ \frac{R_{\rm joint}}\Delta
+ =\frac{(1+A_0/H)(1-b_0^2/H^2)}2
+\]
+when $\Delta>0$. The upper bound follows from $H\ge A_0$.
+For $l>0$ use $b_0\le2\min(l,|D|)$ and
+$H\ge C+|D|^2/C$, $C\ge2l$. Minimizing the latter expression over
+$C\ge2l$ and splitting $|D|/l$ into $[0,1]$, $[1,2]$, and
+$[2,\infty)$ proves $v=b_0/H\le4/5$.
+Since $A_0/H\ge v$,
+\[
+ \frac{R_{\rm joint}}\Delta\ge\frac{(1-v)(1+v)^2}{2}
+ \ge\frac{81}{250},\qquad
+ (1-v)(1+v)^2-\frac{81}{125}
+ =\left(\frac45-v\right)
+ \left(v^2+\frac95v+\frac{11}{25}\right).
+\]
+If $l=0$, $v=0$ directly; zero gaps follow by continuity.
+At $\lambda=l$, $D=L$, the gap is $l/2$ and the rational correction
+is $81l/500$. Expanding finite polynomials checks
+\eqref{eq:joint-defect-polynomial} and the displayed factorizations
+in exact rational arithmetic, without a symbolic-algebra dependency.
+\end{proof}
+For $l>0$ the exact zero set of $\Delta$ consists of
+$D=\pm C$ in the parallel direction and
+$D=\pm i\sqrt{\lambda^2-l^2}$ in the perpendicular direction.
+Thus even interpolants inside the unit disk can incur a positive joint
+defect. A small average requires specific visibly varying directions and
+amplitudes, not merely small modulus. The maximum of $R_{\rm joint}$
+and the earlier harmonic disk-distance lower bound is valid; their sum
+is not justified.
+
+\subsubsection{A modest certified enlargement from a projected price}
+\label{sec:projected-remote-price}
+Let $q$ be the remote part of $F$, $e=\|q\|^2>0$, and
+$\widehat q=q/\sqrt e$. Its bidegree makes it circular. Put
+$\rho_q=\E|\widehat q|\le1$ and
+$S_q=\operatorname{span}_{\mathbb C}(\widehat q,\overline{\widehat q})$;
+the two spanning functions are orthonormal. For each fixed $Z$,
+\[
+ \|\Pi_{S_q}k(Z,\cdot)\|^2\le\rho_q^2.
+\]
+Indeed, by circularity and angular Cauchy--Schwarz,
+\[
+ \E|a\widehat q+b\overline{\widehat q}|
+ \le\rho_q\sqrt{|a|^2+|b|^2};
+\]
+duality and $|k|\le1$ prove the claim.
+Adding a nonnegative radial multiplier $r(T)$ on this subspace changes
+only the remote Gram in the direction $q$:
+\[
+ C_r=\frac12\E\left[
+ \frac1{\lambda+r}+\frac1{\lambda+l^2/\lambda+r}\right].
+\]
+The subspace is conjugation-invariant, so it commutes with the
+real-linear radial weight. It is orthogonal to $P$ and to the remote
+linear, quadratic and constant groups; dependence among their underlying
+drivers does not change this chaos orthogonality. Weighted Bessel gives
+\[
+ \mathfrak m(k)+\|Pk\|^2\ge
+ \frac{p^2e}{C_r}+\text{the old nonremote costs}-\rho_q^2\E r.
+\]
+For $e=0$ omit this subspace; retaining the nonnegative charge in the
+resulting upper bound is still valid.
+
+\begin{theorem}[\st{P,C}: projected-price response region]
+At $\epsilon=1891/2500$, every actual response satisfies
+\begin{equation}\label{eq:projected-price-cap}
+ \mathcal N\le t^2-\frac{1401}{2500}t
+ +\frac{4253566841}{10^{10}}
+ +\frac{1558765869}{1250000000}\mathcal V_*.
+\end{equation}
+Here $\mathcal V_*$ is exactly \eqref{eq:weighted-full-energy-definition}.
+Consequently the following all-sector regions have cap below $0.713260$:
+\[
+ \begin{array}{c|c}
+ 0\le t\le0.8456,\quad\mathcal V_*\le0.03748
+     &\mathcal N\le0.713259839916096\\
+ 0\le t\le0.851,\quad\mathcal V_*\le0.03255
+     &\mathcal N\le0.713247547328760.
+ \end{array}
+\]
+\end{theorem}
+\begin{proof}
+Use the preceding eight-integral weight with
+$a=3/2000$, $b=2787/20000$,
+$\lambda^2=T(a+bT)^2+47/500000$, and take
+$r=11/10000$ on $[0,1/15]$, zero elsewhere. Use only $\rho_q\le1$.
+The exact checker freshly recomputes all eight integrals and infinite
+tails, then subtracts from the remote Gram the integral
+\[
+ \int_0^{1/15}\frac{r e^{-T}}2
+ \left[\frac1{\lambda(\lambda+r)}+
+ \frac1{C(C+r)}\right]dT.
+\]
+Its integrand decreases: both $\lambda$ and
+$C=2\lambda-(47/500000)/\lambda$ increase.
+Left and right rectangular sums give directed enclosures with no
+derivative estimate. The charge is $r(1-e^{-1/15})$.
+The checker verifies every scalar nonremote cost and the full A/B matrix
+against the same weighted-energy coefficient, rounding the two displayed
+constants upward. Positivity of that coefficient and convexity in $t$
+reduce each rectangle to its two $t$ endpoints.
+The default replay uses 8192 extra cells and the finer replay uses 32768.
+At remote energy $e=0.03748$, the projected multiplier improves the
+unrounded old weight by more than $0.0000056098$ in the cap.
+\end{proof}
+This slightly increases the sufficient peak energy cutoff from $0.03744$
+to $0.03748$. It is not a complete cover. The previous weighted bound
+is still useful at lower energies; take the minimum of the two bounds.
+
+\paragraph{The remaining mathematical obligation.}
+A lower bound for $\E R_{\rm joint}$ on the still-surviving response
+set, or a uniformly stronger optimized exact-support dual, remains open.
+The formula retains the full joint law, but no universal rate sufficient
+on that complement has been proved. A scalar multiplier on all of
+$|k|^2$ alone cannot supply new geometry: its coefficients
+$A=\lambda+r$, $B=\lambda+l^2/\lambda+r$ are dominated by the
+existing quadratic envelope with perpendicular coefficient
+$(B+\sqrt{B^2-4l^2})/2\ge A$ and the same constant $B$.
+The projected price above and the joint defect avoid that particular
+redundancy. Neither result establishes a new Grothendieck endpoint.
+
+\paragraph{IDE replay and review (22 October).} \code{verify\_all.py --fine} PASSES from an unrelated directory under \code{python3 -I} (28\,s; package and log in
+\pathref{gpt-reviews/joint-gap-20261022/}): \eqref{eq:joint-defect-polynomial}, the factorization behind $81/250$ and its sharpness example, the eight recomputed integrals with tails,
+the projected-price decrement by monotone rectangle sums, and the two regional caps. The IDE re-derived \eqref{eq:exact-joint-response-defect} by hand: complete the $Qh$ square,
+expand $\|Pk\|^2$ around $a_0=Pk_0$, use $U^*k=y$ to write the linear form as $2\Re\langle L,h\rangle+2\Re\langle D,k\rangle$ with $D=U\xi-a_0$, and
+$\|a_0\|^2+\E D^TM^{-1}D=\|k_0\|^2_{M+P}=y^TG^{-1}y$; every subtracted term is nonnegative. The IDE's own decomposition on asymptotic W-model responses
+(\pathref{attack-20261022/NOTES.md}) shows the old clipping correction $\E d_M(k_0)$ is only 12--27\,\% of the Gram slack in those tested responses, consistent with the package's diagnostic
+($0.00015$ clipping versus $0.00071$ joint defect at $e=0.04$); the exact joint defect is the quantity to lower-bound.

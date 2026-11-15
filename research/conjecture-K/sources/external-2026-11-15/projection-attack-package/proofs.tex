@@ -1,0 +1,368 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/external-2026-11-15/projection-attack-package/proofs.tex (file dated 2026-11-15). Only this line was added.
+% Intended filepath: grothendieck_projection_attack/proofs.tex
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ph}{\operatorname{ph}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\HH}{\mathcal H}
+\title{Retaining the first-chaos penalty\\\large Rigorous partial progress toward a lower bound above 1.402}
+\author{Research calculations}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This note does not establish a new numerical bound for the complex
+Grothendieck constant. It proves an exact support-function reduction that
+retains the first-chaos penalty, a global improvement of the remote row,
+and the resulting local two-sector cost matrix. It also supplies a certified
+counterexample to an auxiliary weighted-contraction positivity claim.
+The missing step is uniform finite-amplitude control at general remote bases.
+\end{abstract}
+
+\section{Normalization and the retained penalty}
+All Gaussian coordinates are standard complex Gaussians, so
+$\E|Z|^2=1$. Inner products are $\langle f,g\rangle=\E\bar f g$.
+Let $P$ and $Q$ be orthogonal projections onto $\HH_{1,0}$ and
+$\HH_{2,1}$, respectively. Put
+\[
+ \epsilon=\frac{1891}{2500},\quad p=\epsilon^{-1},\quad
+ \ell=\frac{1057}{1250},\quad b=\frac{179}{1250},\quad
+ a=\ell-2b=\frac{699}{1250},\quad L=Z(a+b|Z|^2).
+\]
+The analytic statements involving $L$ below also hold for any $a,b>0$.
+Define
+\[
+ \mathcal F_L(W)=\E(|L+W|+|L-W|),\qquad
+ \Lambda(G)=\mathcal F_L(G)-p\|G\|_2^2,
+\]
+and the smaller functional
+\begin{equation}\label{eq:retained}
+ \widehat\Lambda(G)=
+ \min_{u\in\HH_{1,0}}
+ \{\|u\|_2^2+\mathcal F_L(G-u)\}-p\|G\|_2^2.
+\end{equation}
+The penalty is on the original cubic $G$, not on $G-u$.
+In a finite Gaussian dimension the minimum exists and is unique: its objective
+is continuous, coercive, and strongly convex in the finite-dimensional variable $u$.
+In particular $\widehat\Lambda(G)\le\Lambda(G)$.
+
+\begin{theorem}[Exact penalized support duality]\label{thm:duality}
+For fixed $L,G\in L^2$,
+\begin{align*}
+ &\sup_{|f|,|g|\le1}\left\{
+ \Rea\E[\bar f(L+G)+\bar g(L-G)]
+ -\left\|P\frac{f-g}{2}\right\|_2^2\right\}\\
+ &\hspace{25mm}=\min_{u\in\HH_{1,0}}
+ \{\|u\|_2^2+\mathcal F_L(G-u)\}.
+\end{align*}
+Consequently, for unimodular responses $f,g$, put $h=(f+g)/2$,
+$k=(f-g)/2$. Rotate coordinates so $Ph=tZ$, $t\ge0$, and put
+$G=\epsilon Qk$. Then
+\begin{equation}\label{eq:row}
+ \Rea\langle f,(P-\epsilon Q)g\rangle
+ \le t^2-2\ell t+\frac{2b^2}{\epsilon}+\widehat\Lambda(G).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use the identity
+\[
+ -\|Pk\|_2^2
+ =\min_{u\in\HH_{1,0}}\{\|u\|_2^2-2\Rea\langle u,k\rangle\}.
+\]
+The sets of disk-valued responses are weakly compact convex subsets of $L^2$.
+The displayed expression is affine and weakly continuous in $(f,g)$ for fixed
+$u$, and convex continuous in $u$. Convex minimax therefore exchanges the
+supremum and infimum. The pointwise support of the unit disk is the modulus,
+which gives the claimed formula. For the upper-bound direction alone, no
+minimax theorem is needed: complete the square and take the support bound
+for each fixed $u$, then infimize.
+
+For the row inequality, orthogonality gives
+\[
+ \Rea\langle f,(P-\epsilon Q)g\rangle
+ =t^2-\|Pk\|_2^2-\epsilon\|Qh\|_2^2+\epsilon\|Qk\|_2^2.
+\]
+The Wick polynomial $Z(|Z|^2-2)$ has squared norm $2$. Completing the
+$Qh$ square and using $G=\epsilon Qk$ bounds the right side by
+\[
+ t^2-2\ell t+2b^2/\epsilon
+ +2\Rea\langle L,h\rangle+2\Rea\langle G,k\rangle
+ -\|Pk\|_2^2-p\|G\|_2^2.
+\]
+Apply the penalized support formula.
+\end{proof}
+
+This is a relaxation of the actual-response problem: the support supremum
+does not retain $G=\epsilon Qk$ or $Ph=tZ$ as constraints. It nevertheless
+retains more information than the original $\Lambda$ row. A uniform cap on
+$\widehat\Lambda$ would suffice in the same row envelope. Nothing here supplies
+that cap.
+
+\section{A global finite-amplitude improvement for remote cubics}
+Let $q$ depend only on Gaussian coordinates independent of $Z$. Set
+\[
+ M(w)=\E_Z|L+w|,\qquad m(w)=\E_Z\ph(L+w),\qquad
+ j_0=\frac12\E\frac1{|L|}.
+\]
+Here $\ph(0)$ may be set to zero; the exceptional sets do not affect the integrals.
+Let $P_{\rm rem}$ denote the projection onto remote complex linear functions.
+
+\begin{lemma}[Gaussian-mixture representation and smoothness]\label{lem:smooth}
+The law of $L$ is a mixture of centered proper complex Gaussian laws.
+The gradient $m=\nabla M$, interpreted on $\R^2$, is globally $j_0$-Lipschitz.
+\end{lemma}
+\begin{proof}
+Write $s=|L|^2=t(a+bt)^2$ and let $t=t(s)$ be the increasing inverse.
+The planar density at squared radius $s$ is
+\[
+ \rho(s)=\frac{e^{-t(s)}}{\pi(a+bt(s))(a+3bt(s))}.
+\]
+Put $v(t)=((a+bt)(a+3bt))^{-1}$, so $t'(s)=v(t(s))$.
+Both $v$ and $H(t)=e^{-t}v(t)/\pi$ are completely monotone.
+If $H$ is completely monotone, so is $-vH'$, by closure under products.
+Iteration of this observation shows
+\[
+ (-1)^n\rho^{(n)}(s)=(-v\partial_t)^nH(t(s))\ge0.
+\]
+The Laplace representation of a completely monotone function gives
+$\rho(s)=\int e^{-\tau s}\nu(d\tau)$ with $\nu\ge0$.
+Normalization gives $\int(\pi/\tau)\nu(d\tau)=1$ and no atom at $\tau=0$.
+Thus this is a mixture of the planar densities
+$(\tau/\pi)e^{-\tau|w|^2}$.
+
+For a proper Gaussian $N$ of variance $v$, write
+$\E\ph(N+w)=w j_v(|w|^2)$. The Laplace formula for the square root yields
+\[
+ j_v(s)=\frac1{\sqrt\pi}\int_0^\infty
+ \frac{t^{-1/2}}{(1+vt)^2}
+ \exp\left(-\frac{st}{1+vt}\right)dt,
+ \qquad j_v(0)=\frac{\sqrt\pi}{2\sqrt v}.
+\]
+The two real Jacobian eigenvalues are $j_v(s)$ and
+$j_v(s)+2s j_v'(s)$. Both have absolute value at most $j_v(0)$, since
+$e^{-x}\le1$ and $|(1-2x)e^{-x}|\le1$ for $x\ge0$.
+Integrating over the Gaussian mixture gives the claimed Lipschitz constant
+$\E[\sqrt\pi/(2\sqrt v)]=\frac12\E|L|^{-1}=j_0$.
+\end{proof}
+
+\begin{theorem}[Global retained-projection improvement]\label{thm:remote}
+For every remote $q\in L^2$,
+\begin{equation}\label{eq:globalgain}
+ \boxed{\quad
+ \widehat\Lambda(q)\le\Lambda(q)
+ -\frac{\|P_{\rm rem}m(q)\|_2^2}{1+j_0}.
+ \quad}
+\end{equation}
+In particular the inequality holds at every amplitude for every remote cubic,
+in every finite Gaussian dimension.
+\end{theorem}
+\begin{proof}
+Circular symmetry gives $\mathcal F_L(q)=2\E M(q)$.
+Lemma~\ref{lem:smooth} gives, for every remote linear $u$,
+\[
+ \mathcal F_L(q-u)\le\mathcal F_L(q)
+ -2\Rea\langle u,m(q)\rangle+j_0\|u\|_2^2.
+\]
+Use this in \eqref{eq:retained} and choose
+$u=P_{\rm rem}m(q)/(1+j_0)$. No cubic moment estimate or independence between
+$q$ and the remote linear functions is used.
+\end{proof}
+
+The correction is nonlinear in $q$. It does not vanish merely because the
+leading contraction $P_{\rm rem}(q|q|^2)$ vanishes. Conversely, this theorem
+alone does not handle the coupled $A$ and $B$ sectors.
+
+\section{The exact corrected local A/B cost matrix}
+Let $r_A,r_B$ be remote complex linear functions, with arbitrary mutual
+covariance, and write $T=|Z|^2$ and
+\[
+ H=(T-1)r_A+\frac{Z^2\overline{r_B}}{\sqrt2}.
+\]
+Define three scalar integrals
+\[
+ I_k=\int_0^\infty\frac{t^{k-1/2}e^{-t}}{a+bt}\,dt,
+ \qquad k=0,1,2,
+\]
+and
+\begin{align*}
+ j_0&=I_0/2,&g_0&=(I_1-I_0)/2,&d_0&=-I_1/(2\sqrt2),\\
+ k_A&=p-(I_2-2I_1+I_0)/2,&
+ k_B&=p-I_2/4,&m_0&=(I_2-I_1)/(2\sqrt2).
+\end{align*}
+
+\begin{theorem}[Local Schur-complement gain]\label{thm:matrix}
+As the real number $s\to0$,
+\[
+ \widehat\Lambda(sH)=2\E|L|-s^2\mathcal Q(r_A,r_B)+o(s^2),
+\]
+where
+\begin{align*}
+ \mathcal Q(r_A,r_B)
+ &=k_A\|r_A\|_2^2+k_B\|r_B\|_2^2
+   +2m_0\Rea\langle r_A,r_B\rangle\\
+ &\quad+\frac{\|g_0r_A+d_0r_B\|_2^2}{1+j_0}.
+\end{align*}
+At the peak row, its coefficient matrix is enclosed by the independently
+computed Arb values
+\[
+ \begin{pmatrix}
+ 0.60683885483874355964\ldots&0.26291259657063581075\ldots\\
+ 0.26291259657063581075\ldots&1.01343807031137005476\ldots
+ \end{pmatrix},
+\]
+and has smallest eigenvalue greater than $0.477$.
+\end{theorem}
+\begin{proof}
+For $x\ne0$, the quadratic term of $|x+y|$ is
+\[
+ \frac1{2|x|}\left(|y|^2-
+       \frac{\Rea(\bar x y)^2}{|x|^2}\right).
+\]
+Apply this to $L\pm sH$ and average over the phase of $Z$ and the proper
+Gaussian remote linear forms. The coefficient in $\Lambda(sH)$ is
+\[
+ -k_A\|r_A\|_2^2-k_B\|r_B\|_2^2
+ -2m_0\Rea\langle r_A,r_B\rangle.
+\]
+For completeness, the coefficient in $\mathcal F_L(sH-su)$, where $u$ is
+remote linear, is
+\begin{align*}
+ &\frac{I_2-2I_1+I_0}{2}\|r_A\|_2^2
+ +\frac{I_2}{4}\|r_B\|_2^2
+ -\frac{I_2-I_1}{\sqrt2}\Rea\langle r_A,r_B\rangle\\
+ &\quad+j_0\|u\|_2^2
+ -2\Rea\langle g_0r_A+d_0r_B,u\rangle.
+\end{align*}
+Adding $\|su\|_2^2$ and minimizing gives
+$u=(g_0r_A+d_0r_B)/(1+j_0)$ and subtracts the squared-norm term in the theorem.
+The visible linear direction is uncoupled at this order, and its minimizing
+coefficient is zero.
+
+These Taylor expansions are legitimate despite $L(0)=0$: their remainders
+are dominated by a constant times the squared perturbation divided by $|L|$.
+This is integrable for the finitely many linear and cubic directions involved,
+because $a>0$ and the radial singularity is only $t^{-1/2}$.
+Strong convexity of the correction-variable objective implies that its
+minimizer is $O(s)$, so its minimized quadratic expansion is the Schur complement.
+
+Finally,
+\[
+ I_0=\frac{\pi}{\sqrt{ab}}e^{a/b}\operatorname{erfc}\sqrt{a/b},\quad
+ I_1=\frac{\sqrt\pi-aI_0}{b},\quad
+ I_2=\frac{\sqrt\pi/2-aI_1}{b}.
+\]
+The script evaluates these expressions using exact rational inputs and
+160-bit Arb ball arithmetic and checks the stated rational inequalities.
+\end{proof}
+
+\textbf{Scope.} This is a local expansion at $G=0$. It is not a finite-amplitude
+bound and is not a Hessian bound at an arbitrary remote cubic $q$.
+Before eliminating the projection variable the local A coefficient is
+$0.320054503608992\ldots$; afterward it is $0.606838854838743\ldots$.
+The latter must not be inserted as a global cost constant in a lower-bound certificate.
+
+\section{A necessary maximizer condition and a failed positivity route}
+There is a useful constraint on a maximizer that is stable under adding
+fresh Gaussian coordinates. If $Y$ is a fresh standard complex Gaussian and
+$P_2\in\HH_{1,1}$ uses only the old coordinates, then $YP_2\in\HH_{2,1}$.
+At a local maximum $G$, assuming the indicated second derivative is integrable,
+\begin{equation}\label{eq:stability}
+ \E\left[\frac{|P_2|^2}{4}
+ \left(\frac1{|L+G|}+\frac1{|L-G|}\right)\right]
+ \le p\E|P_2|^2.
+\end{equation}
+Indeed, conditionally on the old coordinates $YP_2$ is proper Gaussian, so
+the second derivative of $\Lambda(G+sYP_2)$ is twice the left side minus
+$2p\E|P_2|^2$. The same argument applies to $\bar YP_2$ with
+$P_2\in\HH_{2,0}$. This does not assert that a maximizer exists in the
+dimension-uniform problem, nor that these necessary conditions suffice.
+
+One tempting way to use such stability conditions is to assert positivity
+of weighted cubic contractions. The following explicit example rules out
+one such assertion.
+
+\begin{proposition}[A weighted contraction can be negative]\label{prop:counter}
+Let $X,Y$ be independent standard complex Gaussians and
+\[
+ q=\frac{X\,[5(|X|^2-2)+6i(|Y|^2-1)]}{\sqrt{86}}.
+\]
+Then $q\in\HH_{2,1}$, $\E|q|^2=1$, and, with Wirtinger derivatives,
+\[
+ \boxed{\quad
+ \Rea\E\left[e^{-|q|^2}\bar q^{\,2}
+ \sum_{j=X,Y}(\partial_jq)(\partial_{\bar j}q)\right]<-\frac1{50}.
+ \quad}
+\]
+\end{proposition}
+\begin{proof}
+Put $R=|X|^2$, $S=|Y|^2$, $V=S-1$, $c=25/86$, $d=36/86$.
+The variance is $2c+d=1$. Direct differentiation gives
+$|q|^2=R[c(R-2)^2+dV^2]$ and
+\begin{align*}
+ \Rea\left[\bar q^2\sum_jq_jq_{\bar j}\right]
+ =R^2\{&c(R-2)^2[c(2R-2)-d]-cd(R-2)^2V\\
+       &+(d^2-2cd)V^2+d^2V^3\}.
+\end{align*}
+For $v>0$ define $M_k(v)=\int_0^\infty(s-1)^k e^{-s-v(s-1)^2}\,ds$.
+Completing a square and then integrating by parts gives
+\begin{align*}
+ M_0(v)&=\frac{\sqrt\pi}{2\sqrt v}
+ e^{-1+1/(4v)}\operatorname{erfc}\frac{1-2v}{2\sqrt v},\\
+ M_1&=\frac{e^{-v}-M_0}{2v},\quad
+ M_2=\frac{M_0-M_1-e^{-v}}{2v},\quad
+ M_3=\frac{2M_1-M_2+e^{-v}}{2v}.
+\end{align*}
+Thus the claimed expectation is the integral on $r\ge0$ of
+\begin{align*}
+ f(r)=r^2e^{-r-cr(r-2)^2}\{&c(r-2)^2[c(2r-2)-d]M_0(dr)\\
+ &-cd(r-2)^2M_1(dr)+(d^2-2cd)M_2(dr)+d^2M_3(dr)\}.
+\end{align*}
+The certificate uses three intervals. On $[0,1/8]$,
+$|M_k|\le\E(S+1)^k$ gives the bounds $1,2,5,16$ for $k=0,1,2,3$.
+Consequently $|f(r)|\le6r^2$: the rational coefficient bound checked by the
+script is
+\[
+ 4c(2c+d)+8cd+5|d^2-2cd|+16d^2<6.
+\]
+This interval contributes at most $1/256$.
+For $r\ge8$, the same moment bounds give
+$|f(r)|\le10r^5e^{-r-288c}$, whose integral is
+\[
+ 10e^{-288c-8}\,120\sum_{j=0}^5\frac{8^j}{j!}<10^{-30}.
+\]
+On $[1/8,8]$, the script sums interval enclosures of the whole integrand
+over dyadic cells of width $2^{-12}$. It adds both preceding upper bounds
+and verifies that the resulting upper endpoint is below $-1/50$.
+All inputs and cell endpoints are exact rationals. This is an inclusion
+calculation, not a floating-point quadrature error estimate.
+\end{proof}
+
+This proposition is \emph{not} a counterexample to Conjecture K. It prevents
+using a pointwise-in-scale positivity assertion for this contraction in a proof.
+
+\section{What remains before a new endpoint}
+To prove $K_G^{\C}>1.402$ using this approach, the completed row envelope must
+have a certified cap below
+\[
+ \frac{500}{701}=0.71326676176890156918\ldots.
+\]
+The analogous threshold for $1.4022$ is $5000/7011$.
+The retained-penalty duality is exact; the remote improvement is global;
+the two-sector matrix is only local. A proof still needs a uniform estimate
+for \eqref{eq:retained} with general coupled remote and visible sectors, and
+then the row-uniform numerical certificate. The remote result and local
+matrix do not supply those missing estimates. No new upper bound is claimed.
+
+\paragraph{Verification record.}
+Run \texttt{python verify.py} with \texttt{python-flint} installed.
+The included \texttt{results.txt} is the output of the executed verifier.
+The analytic arguments in this note are written proofs; they have not been
+formalized in Lean. No changes were made to the remote repository.
+\end{document}

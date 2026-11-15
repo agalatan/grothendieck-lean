@@ -1,0 +1,112 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-weak-k.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 25). Owner: lower-bound/06-original-responses.tex
+\section{Original-response geometry and weaker sufficient targets for the lower bound}\label{ch:weakk}
+\chapsummary{Status: Current (22 October; \st{P,C}; no new endpoint).
+The exact target is the norm objective on the projections of bounded responses,
+not Gaussian domination of every abstract cubic. This chapter keeps the two
+negative projection squares, derives joint feasibility constraints, and proves
+dimension-free regional caps with all visible sectors and phases. The scalar
+moment-free region is $e+(191/500)t^2\le9/40$; together with the anisotropic
+certificate it covers $0\le t\le0.851$, $e\le0.0148$. A further moment-compression cell, \autoref{thm:response-moment-slab},
+certifies a cap below $0.7124$ on a shared-projection box across $0.84\le t\le0.851$;
+its energy budget is for the full $F$. The weighted full-energy theorem,
+\autoref{thm:weighted-full-energy-response}, additionally gives cap
+$0.71321135$ for $0\le t\le0.851$, $\mathcal V_*\le0.0325$, and
+cap $0.71325087$ at the peak when $\mathcal V_*\le0.03744$, without
+any projection-box restriction. A projected-price refinement extends the
+cutoffs to $0.03255$ and $0.03748$, respectively, below $0.713260$.
+The exact joint-response defect has a rational lower formula retaining
+at least the sharp fraction $81/250$ of its full value; the hierarchy
+in \S\ref{sec:joint-dual-descent} improves this to more than $99.99\%$
+after 32 rational steps and gives an explicit descent for the joint dual.
+Whole tensor-subspace concentration is now covered as well:
+\autoref{thm:whole-slice-contact} handles $90\%$ of the full cubic energy
+in one holomorphic slice, or $98.5\%$ in an arbitrary-rank quadratic
+block with one orthogonal antiholomorphic factor, throughout the central
+interval. The remainder may be fully coupled.
+\autoref{thm:two-slice-contact} extends this to $97.5\%$ of the full
+energy in the sum of two orthogonal holomorphic slices, with cap
+$0.7132$. A common three-profile reduction covers any number of such
+slices analytically, while explaining its loss of phase information
+in the diffuse limit. The sharp phase-preserving comparison in
+\autoref{thm:sharp-decoupled-support} repairs that loss for orthogonal
+holomorphic/antiholomorphic input blocks. Its response certificates
+cover up to 24 holomorphic inputs, with arbitrary antiholomorphic rank
+and a coupled remainder, below $0.71325$.
+The spherical reduction in \autoref{thm:spherical-core-contact}
+now covers concentration in the entire cubic space on two, three,
+four, six or eight remote coordinates, allowing arbitrary input overlap.
+It closes the previously uncovered three-cycle core and has an invariant
+entrance condition using the tail of the combined influence spectrum.
+The rank-free theorem \autoref{thm:conditional-response-contact}
+now covers $99.8\%$ of the full energy in a remote exactly-one-leg
+linear--quadratic module, with arbitrary ranks, both Gaussian covariance
+channels, and a fully dependent remainder. Six scalar profiles and two
+analytic outer intervals give cap $0.71325$ over the entire $t$ range.
+Radial unimodality and an exact projection-price transfer supply its
+short analytic proof. The remaining complement and its full
+same-$\varepsilon$ cover are open. The earlier rotation
+and smoothing arguments remain proof tools with their own hypotheses.}
+
+\paragraph{Read in logical order.}
+For the shortest current argument start with the one-function certificate
+in \S\ref{sec:one-erfc-response}, then the exact missing feasibility cost
+in \S\ref{sec:joint-response-defect};
+for its rational refinement and the next optimization step use
+\S\ref{sec:joint-dual-descent}.
+\S\ref{sec:clipped-response-feasibility} gives its disk-only predecessor.
+The numerical weighted
+certificate remains stronger on its stated region. For the underlying
+convex response body and the three-stage certificate see
+\S\ref{sec:canonical-response-ellipse}. For the exact row dual use
+\S\ref{sec:weakk-rowtarget}; for joint feasibility use
+\S\ref{sec:joint-response-budget}; for the covered central regions use
+\S\ref{sec:cumulant-response-cap}, \S\ref{sec:anisotropic-response-cap},
+\S\ref{sec:weighted-full-energy-response}, and \eqref{eq:cre-union}.
+Read rotation and smoothing only when their
+extra assumptions are needed. \autoref{ch:K-state} records which
+regions are currently available and what their union still misses.
+
+\paragraph{Scope and accounting.}
+Here $F=\varepsilon Qk$ is an actual projection, and its remote variance
+$e=\|\E[F\mid X]\|^2$ is unnormalised. Raw-K theorems for arbitrary cubics
+are separate sufficient inputs. A projection square used inside a weighted
+Gram bound cannot also be subtracted as an independent penalty; separate
+valid upper bounds may always be combined by taking their minimum.
+No claim here changes the certified endpoint in \autoref{ch:certified}.
+
+% The old proof body is split verbatim; labels and section order are preserved.
+\input{ch25-parts/00-origin-and-notation.tex}
+\input{ch25-parts/10-exact-duals-rotation-profiles.tex}
+\input{ch25-parts/20-stability-and-smoothing.tex}
+\input{ch25-parts/30-response-feasibility.tex}
+\input{ch25-parts/40-regional-and-cumulant-caps.tex}
+\input{ch25-parts/50-weighted-complement.tex}
+\input{ch25-parts/60-anisotropic-cap.tex}
+\input{ch25-parts/70-canonical-ellipse.tex}
+\input{ch25-parts/80-response-moment-compressions.tex}
+\input{ch25-parts/85-weighted-full-energy.tex}
+\input{ch25-parts/86-canonical-feasibility.tex}
+\input{ch25-parts/87-phase-lift-screening.tex}
+\input{ch25-parts/87-joint-response-defect.tex}
+\input{ch25-parts/88-joint-dual-descent.tex}
+\input{ch25-parts/89-contact-concentration.tex}
+\input{ch25-parts/89b-mixed-contact.tex}
+\input{ch25-parts/89c-slice-contact.tex}
+\input{ch25-parts/89d-two-slice-contact.tex}
+\input{ch25-parts/89e-phase-preserving-contact.tex}
+\input{ch25-parts/89f-spherical-core-contact.tex}
+\input{ch25-parts/89g-conditional-gaussian-contact.tex}
+\input{ch25-parts/91-gaussian-point-and-cone-reach.tex}
+\input{ch25-parts/91b-independent-stein.tex}
+\input{ch25-parts/91c-joint-structure.tex}
+\input{ch25-parts/92-joint-sixth-formal.tex}
+\input{lower-bound/obstruction-1402.tex}
+
+\paragraph{Scope of the closing historical audit.}
+The next sections preserve the original correction and the 15 October
+rotation audit. Their remaining-obligation and Lean-port comments refer to
+that contribution. The later regional theorems above do not require rotation
+stationarity. The current remaining task is to cover the complement of all
+valid response regions at one fixed witness parameter.
+\input{ch25-parts/90-corrections-and-historical-audit.tex}

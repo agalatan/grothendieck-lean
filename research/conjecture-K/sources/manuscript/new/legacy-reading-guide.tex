@@ -1,0 +1,81 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/new/legacy-reading-guide.tex (file dated 2026-10-25). Only this line was added.
+\chapter*{How to read this document}
+\addcontentsline{toc}{chapter}{How to read this document}
+
+\paragraph{Status labels.} Every claim carries one of the following labels, which must be preserved when the claim is
+quoted elsewhere.
+\begin{description}[style=nextline]
+\item[\st{L}] proved in Lean 4 with Mathlib in the repository \pathref{\~{}/workspaces/grothe} (GitHub \code{agalatan/grothendieck-lean}, private), with the axioms listed in \pathref{scratch/Axioms.lean}.
+\item[\st{P}] pen-and-paper proof exists (in our notes, in the source archives, or in the literature), not formalized.
+\item[\st{C}] computer-assisted external certificate (Arb ball arithmetic or exact rational arithmetic), not replayed in Lean.
+\item[\st{C$_{\rm float}$}] reported padded floating-point validation; this is distinct from an outward-rounded certificate and requires its own roundoff justification.
+\item[\st{F}] float numerics only (grids and solvers stated where known). Never a bound.
+\item[\st{?}] claimed somewhere in our files or by a collaborator, not verified by anyone here.
+\end{description}
+
+\paragraph{Where things are.} Paths are relative to the repository root \pathref{/Users/alingalatan/workspaces/grothe}
+unless absolute. The research record lives in the git-ignored folder \pathref{handoff/research-third-decimal/}
+(\code{NOTE.md} is the chronological log; \code{breakthrough/} holds the 15 October literature and state reports;
+\code{pipeline/} holds the float prototypes and their \code{RESULTS.md} files). Float campaigns of 15 October live in
+\pathref{/private/tmp/claude-501/} and are listed in Appendix~\ref{app:files}; they are not backed up.
+
+\paragraph{Shortest current lower-bound route.}
+Read \autoref{ch:certified} for the endpoint and its hypotheses,
+\autoref{ch:K-state} for the sole current register, and
+\S\ref{sec:one-erfc-response} for the simplest substantial regional cap.
+Then read \S\ref{sec:clipped-response-feasibility} for the exact
+feasibility cost discarded by the quadratic relaxation, and
+\S\ref{sec:canonical-response-ellipse} for the full response body. Then follow only the
+proof dependencies cited there. For the stronger raw-K route use
+\autoref{ch:K} for the definition and the family register in
+\autoref{ch:K-state}. Historical failures and smaller regions remain
+available for provenance and for later certificates that depend on them.
+
+\paragraph{Other routes and proof dependencies.}
+\autoref{ch:problem} fixes the formulations and transfer; the upper side
+is in \autoref{ch:upper} and \autoref{ch:ceilings}. For a raw-K family,
+follow its entry in \autoref{ch:K-state} to the cited proof. The complete
+coherent one-driver result is \autoref{ch:complete-coherent-driver};
+two-driver and coupled-complement regions have their exact scope in the
+same register. Solving those families does not by itself give a full row
+cover. The original-response proof sources are grouped under
+\pathref{ch25-parts/}; their existing labels and proof bodies are preserved.
+
+\paragraph{Historical (dated records; read for provenance and to avoid repeating work).} \autoref{ch:stein} (method still in use, numbers of
+cert-0745b); \autoref{ch:open} (synthesis of 15 October, partly superseded by this guide); \autoref{ch:evening}, \autoref{ch:attemptK}, \autoref{ch:kjoint}
+(15 October); \autoref{ch:L2} (numerical record of the cubic contraction constant); \autoref{ch:weighted} ((T) false, (T$_0$) live);
+\autoref{ch:certs}, \autoref{ch:crossbound}, \autoref{ch:spectral-review} (certificate formats, duals, obstructions; still valid); \autoref{ch:shared-residual-review},
+\autoref{ch:pinned}, \autoref{ch:common-law-refinement} (lower ladder $1.401615098\to1.401619290904$, all superseded by \autoref{ch:certified});
+\autoref{ch:rotation-gate-refinement} (rotation-gate certificate $1.401621059539$, \st{C}, not merged because it needs \code{RotShared}).
+
+\paragraph{Status ledger (historical baseline, with dated updates below).}
+The title and \autoref{ch:certified} give the current endpoints;
+the 20 October baseline below is retained for the dependency history.
+\begin{itemize}
+\item \textbf{Certified} \st{L}: $1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<\KG<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$, \code{master} \code{20eb917}, CI green, 71 theorems in the axiom report (standard
+axioms plus \code{native\_decide} facts). The README of the repository is authoritative for what Lean proves.
+\item \textbf{Lower bound}: the common-law cover cert-combined-e on the per-row data cert-0745e, $B=7134326/10^7$, $\varepsilon=149/200$
+(\S\ref{sec:certcombinede}). Hypotheses: the simultaneous Gaussian reduction \code{SharedReduction}\stale{22 Oct}{proved in Lean: \code{sharedReduction\_frame}, \code{reductionHyp\_of\_nodeCaps}; only \code{NodeCaps} remains}; the cap tables H2\stale{23 Oct}{now the hypothesis \code{NodeCaps}; rows 0--11, 16--18 proved in target \code{GrotheCaps} (\code{lower\_bound\_of\_capsRest}); only rows 12--15 (\code{CapsRest}) remain} (exact-arithmetic
+certificates outside Lean); the moment bounds for the law of $U$ (the fourth-moment cap $\E U^2\le62$ is now proved in Lean; the sixth-moment bound is derived, for circular residuals, from thirteen named tensor facts \code{TensorFacts}\stale{22 Oct}{proved in Lean for circular pairs: \code{Circular.tensorFacts}; moments \code{gaussian\_moments}} that remain assumed); the two Stein inputs\stale{22 Oct}{proved in Lean for the Gaussian law: \code{gaussian\_steinInputs}} (proved in Lean for the Gaussian law); and \code{TransferInputsL2}\stale{22 Oct}{proved in Lean: \code{transferInputs\_of\_witnessCap}, \code{witnessCap\_of\_reduction}, \code{lower\_bound\_of\_reduction}}, the two Gaussian inputs of the transfer, which is itself proved in Lean. See the source-level audit in \S\ref{sec:lean-source-audit}.
+\item \textbf{External lower certificates (22 October)} \st{P,C}: $\KG>1.401684875510$ with covariance-ordered spectral cuts (\S\ref{sec:covariance-envelope-20261022}), integrated in Lean on local master on 22 October (all new Stein inputs\stale{22 Oct}{proved in Lean for the Gaussian law: \code{gaussian\_steinInputs}} proved for the Gaussian law; CI pending push); and $\KG>1.401687463503$ from the covariance order on refined test and scale meshes (\S\ref{sec:joint-fine-covariance-20261022}, via the $\nu=0$ step \S\ref{sec:finer-spectral-certificate}; in Lean, commit 1ee2a50); $\KG>1.401689235711$ from the 241-knot fine mesh (\S\ref{sec:finemesh-envelope-20261022}; Lean master 8483cb6, CI green); and $\KG>1.401691989174\stale{23 Oct}{now $\KG>1.401695322458$}$ from the contraction-Gram budget (\S\ref{sec:contraction-gram-20261022}; exact replay PASS; Lean master since 5e785f5; the budget's tensor identities proved in commit 0603aaa).
+\item \textbf{Upper bound (22 October update)}: $\KG<1.404598989011\stale{23 Oct}{now $\KG<1.404598161566$}$ from the polynomial bridge, now in Lean; \S\ref{sec:upper-cert} records the remaining analytic inputs. This supersedes the preceding $1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$ endpoint.
+\item \textbf{Not merged}: the rotation-gate certificate $1.401621059539$ (\code{work/lower-rotation}; needs the extra hypothesis
+\code{RotShared}; built on the old rows and below the current bound); \code{work/upper-stable} ($1.404596071666$) and \code{work/upper-nested}
+($1.404598428856$), which replace Lean's head computation by a \code{head\_close} hypothesis.
+\item \textbf{Ceilings}: the degree-3 witness cannot certify more than $1.402258$ \st{F}; the frozen-table relaxation of \autoref{ch:common-law-refinement}
+gave cap $\ge0.7134074$ (endpoint $\le1.4017236$) for the old cert-0745b tables only; it was not recomputed for the cert-0745c/d/e tables
+or with rotation gates. On the cap side what is left is $s\in[0.4,0.525)$, worth $\approx5\cdot10^{-6}$ per row in $B$ (\S\ref{sec:certcombinede}).
+\end{itemize}
+
+\paragraph{Provenance and navigation.}
+The endpoint ladder and assumptions are recorded once in
+\autoref{ch:certified}. Source names retain their legacy numbers for
+external file pointers, but the manuscript now groups those sources into
+eight thematic lower-bound chapters. Cross-references use stable labels,
+not the former chapter numbers. The complete before-edit sources and
+the old-to-new map accompany the 21 October audit.
+
+\paragraph{One warning.} Several numbers in this document are float values from live sessions; they are labelled \st{F}
+and the grid is stated where known. In the real-constant literature a record value was once withdrawn because an
+``exploration-only'' caveat was lost in a compressed project state (arXiv:2608.11195). Keep the labels.
+

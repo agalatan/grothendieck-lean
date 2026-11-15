@@ -1,0 +1,489 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch44-buffer-bootstrap.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 44). Owner: lower-bound/09-one-driver.tex
+\section{A retained deficit down to buffer \(0.164\), and contraction in every chaos degree}
+\label{ch:buffer-bootstrap}
+\chapsummary{Buffered deficit propagation, conditional-centering costs and fixed-chaos radial contraction. The complete one-driver cover is now available; the general coupled-cubic problem remains separate.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch44-buffer-bootstrap.tex} from \pathref{gpt-reviews/buffer-bootstrap-20261020/}, ported verbatim
+apart from this paragraph. \emph{Our replay} \st{C}: \code{python3 -I verify\_all.py --full-dependencies} from an unrelated directory: \textbf{PASS complete requested replay in
+1489\,s}. This covers the inherited $[1/6,3/16]$ band recomputed in full, the new band computed cold, the retained upper (40{,}000 cells) and lower (27{,}000 cells) covers, geometric
+propagation, radial contraction in every pure degree, the trace profile and retained tail, the radial scope and the gluing check.
+
+
+\subsection{Setting and main statements}
+Throughout this chapter,
+\[
+ a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+ p=\frac{2500}{1891},\quad L=Z(a+b|Z|^2),\quad
+ H(X)=\frac{X(|X|^2-2)}{\sqrt2},
+\]
+\[
+ \Lambda(G)=\E|L+G|+\E|L-G|-p\E|G|^2,\qquad
+ S=\sup_{v\ge0}\{2\E|L+\sqrt vU|-pv\}.
+\]
+All named standard complex Gaussians are proper. A fresh buffer \(U\)
+is independent of \emph{every} original coordinate, including any
+coordinates used by a complement below. Write
+\[
+ Q_0=cH(X)+\alpha(|Z|^2-1)X+
+                  \beta Z^2\overline X/\sqrt2,\qquad
+ r^2=|\alpha|^2+|\beta|^2,\qquad m(c)=\min\{c^4,c^2\}.
+\]
+Here \(Z,X,U\) are independent, \(c\ge0\), and \(\alpha,\beta\in\C\)
+have unrestricted phases and magnitudes.
+
+\begin{theorem}[A uniform retained deficit, \st{P,C}]
+\label{thm:retained-buffer-bootstrap}
+For every \(g\ge41/250\),
+\[
+ \boxed{\Lambda(Q_0+gU)\le
+ S-\frac{m(c)}{32}-\frac{r^2}{2000}.}
+\]
+On the new interval \(41/250\le g\le1/6\), the stronger estimate is
+\[
+ \boxed{\Lambda(Q_0+gU)\le
+ S-\frac1{20000}-\frac{m(c)}{32}-\frac{r^2}{2000}.}
+\]
+\end{theorem}
+
+The first assertion contains exact K for this family. Its zero-deficit
+case permits the Gaussian optimizer; a uniform strict deficit over
+the entire half-line would be false. Neither assertion represents an
+arbitrary cubic as an independent Gaussian plus a single Wick term.
+
+\begin{corollary}[A coupled complement paid by the deficit, \st{P}]
+\label{cor:bootstrap-complement}
+Let \(J\) be any square-integrable complex random variable on the
+original Gaussian space such that
+\(\E[J\mid Z,X]=0\). It may depend on \(Z,X\) and arbitrarily many
+additional coordinates. The buffer is independent of \(J\). Then,
+for \(g\ge41/250\),
+\[
+ \boxed{\Lambda(Q_0+J+gU)\le
+ S-\frac{m(c)}{32}-\frac{r^2}{2000}
+                         +\frac{41}{10}\|J\|_2^2.}
+\]
+In particular exact K follows whenever
+\[
+ \|J\|_2^2\le \frac5{656}m(c)+\frac{r^2}{8200}.
+\]
+On \(41/250\le g\le1/6\), the right side of the first bound has
+the additional term \(-1/20000\).
+\end{corollary}
+\begin{proof}
+Set \(\rho_g(u)=\E|\sqrt u+gU|\) and
+\[
+ K_g(u)=2\rho_g'(u)
+ =\frac1{g\sqrt\pi}\int_0^1e^{-ut/g^2}
+                       \sqrt{\frac{1-t}{t}}\,dt .
+\]
+Concavity of \(\rho_g\) gives its global quadratic tangent at each
+of \(L+Q_0\) and \(L-Q_0\). The linear terms in \(J\) vanish by
+conditional centering. The variance cross term vanishes for the
+same reason. The remaining cost is at most
+\[
+ \left(\frac{\sqrt\pi}{2g}-p\right)\|J\|_2^2
+ <\frac{41}{10}\|J\|_2^2 .
+\]
+The last comparison follows at \(g=41/250\) by squaring positive
+rational bounds and using \(\pi<22/7\); it persists at larger \(g\).
+Apply Theorem~\ref{thm:retained-buffer-bootstrap}.
+This argument uses a proved deficit and does not discard its cost
+when conditioning.
+\end{proof}
+
+\subsection{How the interval and retained penalties are certified}
+The certificate uses three existing or new ranges, followed by
+analytic tails.
+\begin{enumerate}
+\item On \(41/250\le g\le1/6\), thirteen newly recomputed anchors
+give a directed cover of \(10{,}000\) rational cells in \(c\in[0,1]\).
+After adding \(c^4/32+r^2/2000\), its largest upper bound for
+\(\Lambda-S\) is less than \(-0.0000679207<-1/20000\).
+Every coupling magnitude and phase is maximized analytically.
+\item On \(1/6\le g\le3/16\), the independently supplied
+\texttt{shared-driver-certified} coefficient enclosures are
+postprocessed with the retained penalties. All \(27{,}000\) cells
+covering \(0\le c\le9/10\) in its three bands pass. The scalar trace
+tail below covers \(c\ge9/10\).
+\item On \(3/16\le g\le1/2\), the preceding chapter's \(52\) anchor
+enclosures are postprocessed over \(40{,}000\) cells. They actually
+retain \(m(c)/32+r^2/400\), which is stronger than required here.
+The local theorem near the Gaussian optimizer supplies
+\(9c^4+r^2/200\). Outside its small-coupling region the global
+quadratic majorant retains \(3r^2/100\), paying for the target
+penalty and the boundary \(r\ge1/100\).
+\item For \(g\ge1/2\), the preceding full-cubic theorem gives the
+penalty \(3(c^2+r^2)/80\), which dominates both target terms.
+\end{enumerate}
+
+The middle two steps are exact postprocessing of specified inherited
+enclosures, not claims that their defining integrals were recomputed
+again in this continuation. The supplied replay can regenerate these
+dependencies separately. The new interval is recomputed from its
+defining integrals.
+
+\subsubsection{The new parameter ellipse and signed completion}
+The new buffer interval has centre \(62/375\) and half-width \(1/750\).
+The engine uses eight first-kind Chebyshev nodes and the ellipse of
+radius \(16\). On it,
+\[
+ \Re g\ge\frac{62}{375}-\frac{257}{32\cdot750},\qquad
+ |\Im g|\le\frac{255}{32\cdot750}.
+\]
+The exact checks give \(\Re(1/g^2)>0\) and
+\(\sqrt\pi/(2\Re g)<6\). The coefficient modulus is below \(8\);
+the interpolation error is therefore bounded by
+\(32/(15\cdot16^7)\). The cubature error amplification is bounded
+by \(\sqrt{15}\). All original real buffer floors, including
+the Gaussian derivative calculation, are replaced by \(41/250\).
+
+At a real Wick anchor \(c_i\), the global tangent has real matrix
+and gradient coefficients. Put \(h=c-c_i\). To retain
+\(\delta(|\alpha|^2+|\beta|^2)\), set
+\[
+ A=-M_{AA}-\delta,\quad C=-M_{BB}-\delta,\quad B=M_{AB},
+ \quad \Delta=AC-B^2,\quad
+ v_A=d_A+hM_{cA},\quad v_B=d_B+hM_{cB}.
+\]
+When \(A,C,\Delta>0\), the exact complex maximization is
+\[
+ \sup_{\alpha,\beta\in\C}
+ \{2\Re(v_A\alpha+v_B\beta)-A|\alpha|^2-C|\beta|^2+
+                       2B\Re(\overline\alpha\beta)\}
+ =\frac{Cv_A^2+2Bv_Av_B+Av_B^2}{\Delta}.
+\]
+The imaginary parts have no linear term and a negative definite
+quadratic. The checker encloses this expression on the whole
+\(h\)-interval of each cell. Keeping the sign of \(Bv_Av_B\)
+is necessary: replacing the cross terms by absolute values fails
+the new cover near \(c=0.0611\). That failed preliminary bound is
+not used as a theorem.
+
+\subsubsection{A trace tail with the retained penalties}
+Put \(D=\E|L|^2=1181331/1562500\) and
+\[
+ \mathcal J(V)=2\E_T\sqrt{T(a+bT)^2+V}-pV.
+\]
+The radial contraction proved below, or its earlier cubic case,
+gives \(\Lambda(Q_0+gU)\le\mathcal J(V)\) with
+\(V=c^2+r^2+g^2\).
+The scalar certificate, recomputed in this package, gives
+\[
+ \mathcal J(13/20)<2\E|L|-1/2000\le S-1/2000.
+\]
+Since \(\mathcal J'(V)\le V^{-1/2}-p\), for \(V\ge13/20\),
+\[
+ \Lambda-S\le-\frac1{2000}
+       +2\bigl(\sqrt V-\sqrt{13/20}\bigr)-p(V-13/20).
+ \tag{44.1}
+\]
+If \(c\ge9/10\), the target retained cost is at most
+\(\min(V^2,V)/32\). On \(81/100\le V\le1\), the derivative of
+(44.1) plus this cost is at most \(10/9-p+1/16<0\).
+For \(V\ge1\) it is at most \(1-p+1/32<0\).
+At \(V=81/100\), use \(\sqrt{13/20}>4031/5000\); the resulting
+upper bound is exactly
+\[
+ -\frac{2375197}{605120000}<-\frac{39}{10000}.
+\]
+This proves the tail with ample retained margin, for every buffer.
+
+
+\subsection{Geometric propagation of the remote baseline}
+\paragraph{Status [P]; finite arithmetic audit [C].}
+Use the established marginal Gaussian scale mixture
+$L\overset d=\sqrt VZ_0$. Let $J$ be any remote square-integrable random
+variable, independent of the visible variable, with $\mathbb E|J|^2=1$.
+Let $U$ be a fresh proper complex Gaussian and fix $g>0$.
+For $\Phi_g(r)=\Lambda(\sqrt rJ+gU)$, the positive Rice integral gives
+\[
+ k_g(r):=\Phi_g'(r)+p
+ =\mathbb E_{V,R}\frac{R}{\sqrt{\pi(V+g^2)}}
+  \int_0^1 e^{-rRt/(V+g^2)}t^{-1/2}(1-t)^{1/2}\,dt,\qquad R=|J|^2.
+\]
+This is a positive Laplace transform of a finite measure. Its total
+mass is at most $\sqrt\pi/(2g)$, so only square integrability of $J$
+is needed. H\"older's inequality proves log-convexity:
+\[
+ k_g((1-t)r_0+tr_1)\le k_g(r_0)^{1-t}k_g(r_1)^t.
+\]
+If $A,B>0$ certify the two endpoint upper bounds and
+$\Delta=r_1-r_0>0$, integration yields
+\[
+ \Phi_g(r_1)\le\Phi_g(r_0)+
+ \Delta\left(\int_0^1A^{1-t}B^t\,dt-p\right).
+\]
+The logarithmic mean in this expression satisfies
+\[
+ \int_0^1A^{1-t}B^t\,dt
+ \le\frac{A+4\sqrt{AB}+B}{6}.
+\]
+Indeed, writing $A=me^x$, $B=me^{-x}$ reduces the inequality to
+$\sinh(x)/x\le(\cosh(x)+2)/3$. For every $n\ge1$, comparison of the
+$x^{2n}$ coefficients is exactly $2n+1\ge3$.
+Thus the directly implementable improvement is
+\begin{equation}
+ \boxed{\Phi_g(r_1)\le\Phi_g(r_0)+
+ \Delta\left(\frac{A+4\sqrt{AB}+B}{6}-p\right).}
+ \label{eq:geometric-baseline-propagation}
+\end{equation}
+It improves the arithmetic-trapezoid increment by precisely
+$\Delta(\sqrt A-\sqrt B)^2/3$.
+At $r_i=c_i^2>0$, the existing anchor convention gives
+$A=p+\overline d_c(c_i)/c_i$; the price must be added before
+taking geometric means. Uniform endpoint bounds over a buffer interval
+remain valid. Since $k_g$ decreases, one may replace $B$ by $\min(A,B)$.
+
+For any dyadic $N$, generate $K_j=A^{1-j/N}B^{j/N}$ by repeated
+outward square roots. A sharper upper mean is
+\[
+ \frac1{6N}\sum_{j=0}^{N-1}
+   (K_j+4\sqrt{K_jK_{j+1}}+K_{j+1}).
+\]
+These finite expressions converge to the logarithmic mean. For compatible
+exact endpoints $A\ge B$, the latter is optimal among positive Laplace
+transforms with those endpoints, since a single exponential attains it.
+This optimality concerns abstract endpoint information only.
+
+If $\mathbb E|J|^2=m\ne1$, replace the price in the derivative and
+propagation formulas by $pm$. The buffer price remains $pg^2$.
+The remote-independence and fresh-buffer hypotheses remain essential;
+this argument is not a reversed heat comparison.
+
+\subsection{Radial contraction in every pure chaos order}
+\paragraph{Status [P]; finite polynomial audit [C].}
+The preceding cubic contraction is a special case of the following
+all-degree statement. For any complex-valued element $Q$ of one fixed
+real Gaussian chaos order, any standard complex Gaussian coordinate $Z$,
+and every nonnegative decreasing measurable $k$,
+\begin{equation}
+ \boxed{\mathbb E[k(|Z|^2)|Q|^2]\le
+ \mathbb E k(|Z|^2)\,\|Q\|_2^2.}
+ \label{eq:all-degrees-radial}
+\end{equation}
+In particular this holds on every fixed $\mathcal H_{p,q}$.
+It does not assert the same for sums of distinct chaos orders.
+
+Write $H_{mn}$ for the complex Hermite polynomial of squared norm $m!n!$,
+and $P_{mn}(t)=|H_{mn}(z,\bar z)|^2/(m!n!)$, $t=|z|^2$.
+For $m\ge n$,
+\[
+ P_{mn}(t)=\frac{n!}{m!}t^{m-n}(L_n^{m-n}(t))^2.
+\]
+Put $M=m+n$ and
+\[
+ a_k=[x^k](1+x)^m(1-x)^n,\qquad
+ w_{mn,k}=\frac{k!(M-k)!a_k^2}{2^Mm!n!}.
+\]
+There is an exact nonnegative-mixture identity
+\begin{equation}
+ P_{mn}(t)=\sum_{k=0}^M w_{mn,k}(-1)^kL_k(2t),\qquad
+ w_{mn,k}\ge0,\quad\sum_k w_{mn,k}=1.
+ \label{eq:positive-hermite-laguerre-mixture}
+\end{equation}
+Here is a proof that covers arbitrary indices. If $\zeta,\eta$ are
+independent standard complex Gaussians, expansion of
+$(\sqrt s\,\zeta+\eta)^m(\sqrt s\,\zeta-\eta)^n$ and holomorphic
+orthogonality give
+\[
+ \sum_k w_{mn,k}s^k
+ =\frac1{m!n!}\mathbb E
+ \left|\frac{\sqrt s\,\zeta+\eta}{\sqrt2}\right|^{2m}
+ \left|\frac{\sqrt s\,\zeta-\eta}{\sqrt2}\right|^{2n}.
+\]
+The Gaussian quadratic integral therefore yields
+\[
+ \sum_{m,n,k}w_{mn,k}u^mv^ns^k
+ =\frac1{1-(u+v)(1+s)/2+uvs}.
+\]
+Set $s=1$ for normalization. Extract the coefficient in $s$, then use
+the Laguerre generating function: the right side of
+\eqref{eq:positive-hermite-laguerre-mixture}, summed against $u^mv^n$,
+equals
+\[
+ \frac1{1-uv}\exp\left(\frac{u+v-2uv}{1-uv}\,t\right).
+\]
+This also generates $P_{mn}$. Indeed,
+$H_{mn}(z,\bar z)=\mathbb E(z+iB)^m(\bar z+i\bar B)^n$.
+Use two independent copies and sum the exponential series. The resulting
+complex Gaussian integral has matrix
+$\left(\begin{smallmatrix}1&v\\u&1\end{smallmatrix}\right)$
+and linear terms $i\bar z(u,v)$, $iz(v,u)^{\mathsf T}$; its determinant
+and completing-square exponent give exactly the displayed function.
+All manipulations are justified near zero and then by coefficient
+extraction.
+
+Define $T_k$ by
+\[
+ \int_x^\infty e^{-t}(-1)^kL_k(2t)\,dt=e^{-x}T_k(x).
+\]
+Its generating function is
+$(1-s)^{-1}\exp(2xs/(1+s))$, so $T_k(0)=1$ and
+$T_k'(x)=2\sum_{\ell<k}(-1)^\ell L_\ell(2x)$.
+The required positivity is the following explicit Hermite-square identity:
+\[
+ \sum_{\ell=0}^n(-1)^\ell L_\ell(2x)
+ =\sum_{j=0}^{\lfloor n/2\rfloor}
+ \frac{\binom{2j}{j}}{4^j}
+ \frac{(H^{\rm phys}_{n-2j}(\sqrt x))^2}
+      {2^{n-2j}(n-2j)!}\ge0\quad(x\ge0).
+\]
+To verify it in every degree, multiply the real Mehler generating
+function by $(1-s^2)^{-1/2}$; both sides generate
+$(1-s^2)^{-1}\exp(2xs/(1+s))$.
+Thus $T_k(x)\ge1$. Equation
+\eqref{eq:positive-hermite-laguerre-mixture} now proves
+\[
+ \int_x^\infty e^{-t}P_{mn}(t)\,dt\ge e^{-x}.
+\]
+Each normalized radial profile therefore stochastically dominates the
+exponential law, giving the required inequality for decreasing $k$.
+
+For fixed total chaos order $N$, expand $Q$ in
+$H_{ij}(Z,\bar Z)/\sqrt{i!j!}$ with remote coefficient of order $N-i-j$.
+Different $i+j$ are orthogonal remotely. With equal $i+j$, unequal
+$(i,j)$ have unequal angular frequencies $i-j$, so their cross terms
+vanish after visible phase integration. Apply the one-coordinate
+inequality to each squared term to obtain \eqref{eq:all-degrees-radial}.
+Finite-coordinate approximation and monotone truncation give the
+corresponding infinite-dimensional statement.
+The fixed-order hypothesis is essential: $Q=2-|Z|^2$ and $k(t)=e^{-t}$
+satisfy $\|Q\|_2^2=2$, $\mathbb Ek=1/2$, but
+$\mathbb E[k|Q|^2]=5/4>1$.
+
+\paragraph{Buffered consequence.}
+The two-sign Rice tangent now proves for every fixed pure chaos order
+\[
+ \Lambda(Q+gU)\le F(g^2)+(\kappa_0(g)-p)\|Q\|_2^2,
+\]
+where $U$ is fresh and independent, and the visible profile and $\kappa_0$
+are unchanged; here $F(v)=2\mathbb E|L+\sqrt vU|-pv\le S$.
+Hence the already certified scalar thresholds
+$g\ge477/1000$, $g\ge12/25$, and $g\ge1/2$ give penalties
+$1/2000$, $1/200$, and $3/80$, respectively, in every pure order.
+This is an analytic extension requiring no new scalar integration.
+It does not remove the buffer or prove an endpoint.
+
+\paragraph{Unsmoothed variance exclusion.}
+For $V=\|Q\|_2^2+g^2$ and
+$J(V)=2\mathbb E\sqrt{T(a+bT)^2+V}-pV$, one also has
+\begin{equation}
+ \Lambda(Q+gU)\le J(V).
+ \label{eq:pure-order-trace}
+\end{equation}
+Indeed,
+$|l+x|+|l-x|\le2\sqrt{|l|^2+|x|^2}$.
+The square-root tangent at $T(a+bT)^2+V$ gives an error
+\[
+ \mathbb E
+ \frac{|Q+gU|^2-V}{\sqrt{T(a+bT)^2+V}},
+\]
+which is nonpositive by \eqref{eq:all-degrees-radial} after integrating
+the fresh Gaussian. The weight is decreasing in $T$.
+At $V=0$ the conclusion is direct.
+The existing exact scalar certificate
+$J(13/20)<\Lambda(0)-1/2000$ and $J'<0$ for $V\ge13/20$
+therefore yields
+\[
+ \boxed{V\ge13/20\ \Longrightarrow\
+ \Lambda(Q+gU)<S-1/2000}
+\]
+for every fixed pure order and every $g\ge0$.
+This extends a variance exclusion, not the unresolved low-variance case.
+
+\subsection{Scope, replay and the remaining endpoint obligation}
+The new interval is a cold directed computation, not a floating scan.
+Its final replay recomputes 66 Gaussian derivative points, 13 anchors
+at eight buffer interpolation nodes, and 10,000 amplitude cells,
+including the analytic tails. It passed in 252.51 seconds on this run.
+The inherited middle and upper bands are exact postprocessing of
+specified coefficient archives. Their original full replays remain
+separate dependencies; the new package supplies optional commands
+that regenerate them.
+
+The all-degree result is an analytic theorem: its generating-function
+identities prove arbitrary degree. The exact checks on 289 profiles
+and 33 sum-of-squares identities audit transcription, and are not
+substitutes for that argument.
+
+Mixing chaos degrees is essential to the scope. For example,
+$Q=2-|Z|^2$ and $k(t)=e^{-t}$ give exactly
+$\E[k(T)|Q|^2]=5/4>\E k(T)\,\E|Q|^2=1$.
+Even mixing two odd grades can fail: with
+$Q=Z(4-T)$ and $k=\mathbf1_{[0,5/2]}$ the excess is
+$(5/8)e^{-5/2}>0$. Thus the contraction cannot be applied
+indiscriminately to a tapered sum of different chaos grades.
+
+No result here supplies a fresh buffer to a general cubic, closes
+$0\le g<41/250$, or provides a central-row envelope. The reported
+certified Grothendieck interval therefore remains
+$1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\mathbb C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$.
+
+
+\subsection{IDE note: zero-buffer region, positive content kernels and a dimension-free $B$ cost (context-free GPT, 20 October)}\label{sec:zero-buffer-cold}
+A separate GPT instance (bare problem only) proved the following \st{P}+\st{C}, with no q-alone input and no numerical value of $S$. All four of its Node verifiers were replayed by the IDE:
+CONTENT, SMALL-BUFFER, DENSITY / B-SECTOR and FULL REPLAY PASS. The density bound was also recomputed independently (max $f_B=0.2766$). Package:
+\pathref{gpt-reviews/cold-start-20261020/shared-driver-zero-buffer.zip}.
+\begin{itemize}
+\item \emph{Positive content structure.} The first-variation coefficients $d_A,d_B$ of the one-driver model satisfy: $x\mapsto d_j(\sqrt x,g)/x^{3/2}$ is nonnegative and completely
+monotone. Hence $0\le d_A\le25c^3$ and $0\le d_B\le\tfrac{117}{10}c^3$ globally; compare $76$ and $38$ earlier. The source is the complete monotonicity of $h_A(u)=\frac{\psi(u)}ue^{-\psi(u)}$ and
+$h_B(u)=\frac{e^{-\psi}\psi'}{(a+b\psi)^2}$, with $\psi$ the inverse of $t(a+bt)^2$, together with an exact stochastic-order identity for the Wick driver: $H\ge0$, $\int H=16$.
+\item \emph{Dimension-free $B$ cost.} For any jointly distributed square-integrable $U,R$ \emph{independent of $z$},
+$\Lambda(U+z^2R/\sqrt2)\le\Lambda(U)+2\Re\E[R\,T_B(U)]-\tfrac{21}{80}\E|R|^2$; the cost is $\ge1/8$ on the whole parameter box. The proof uses the weighted visible density
+$f_B\le7/25$ and the planar inverse-distance potential bound $2\sqrt M$. \textbf{Caveat:} $U$ must be independent of $z$, so it does not directly apply on top of an $A$-coupled baseline; the
+extension to the radially shifted visible law is in progress.
+\item \emph{Regions.} $\Lambda\le S-1/6000$ on $c\le3/32$, $g\le1/32$, $|\alpha|\le1/8192$, every $\beta$ (this includes $g=0$). $\Lambda\le S-1/2000$ for $c\ge3/10$, every $g\ge0$, every
+$\alpha,\beta$.
+\end{itemize}
+
+\paragraph{Follow-up: the $B$ cost on an $A$-coupled baseline (context-free GPT, 20 October).} The independence caveat above is now resolved for small $A$. All claims were
+replayed by the IDE (\code{node verify.mjs}: ALL CLAIMS PASS, outward-rounded integer arithmetic); package \pathref{gpt-reviews/cold-start-20261020/shared-driver-radial-shift.zip}.
+\begin{itemize}
+\item \emph{Radial-shift $B$ cost.} For $U_\alpha=cH(X)+\alpha(s-1)X+gY$ and every $c,g\ge0$, $\beta\in\C$, $|\alpha|\le1/16$:
+$\Lambda(U_\alpha+\beta z^2\bar X/\sqrt2)\le\Lambda(U_\alpha)+2\Re(\beta d^A_B)-\tfrac{21}{80}|\beta|^2+10^{-10}$. The remainder is $0$ for $g\ge1/2048$, and the same holds in any dimension with
+arbitrary dependence among $q,r_A,r_B$. Further bounds: cost $19/100$ for $\|r_A\|\le1/10$, $1/8$ for $\|r_A\|\le1/8$ (error $10^{-8}$), and $1/25$ for $\|r_A\|\le3/20$ (error $10^{-5}$).
+The method uses $\det DF_h=(a+bs)(a+3bs+2\Re(\bar hz))$ for $F_h=L+h(s-1)$, which is a global change of variables for $|h|<\sqrt{3ab}$, after truncating $|X|^2$; it works at $g=0$.
+\item \emph{Independent-baseline $B$ cost} improved to $369/1000$ with no remainder, via level sets of the density ($C_B<0.953$).
+\item \emph{Dimension-free local $A$ cost.} For $q$ independent of $z$ and $\|r_A\|\le1/16$, with arbitrary dependence:
+$\Lambda(q+(s-1)r_A)\le\Lambda(q)+2\Re\E[(s-1)r_A\,\overline{(L+q)}/|L+q|]-\tfrac1{100}\|r_A\|^2+10^{-9}$.
+\item \emph{Enlarged zero-buffer box.} $\Lambda\le S-10^{-4}$ on $c\le3/32$, $g\le1/32$, $|\alpha|\le1/256$, every $\beta$; deficit $1/6000$ for $|\alpha|\le1/320$.
+\end{itemize}
+The reduction $\sup_\beta\Lambda(G)\le\Lambda(U_\alpha)+\frac{80}{21}|d^A_B|^2+10^{-10}$ is now rigorous for $|\alpha|\le1/16$. The open step is the comparison
+$S-\Lambda(U_\alpha)\ge\frac{80}{21}|d^A_B|^2$ on the remaining region.
+
+\paragraph{Follow-up: a partial patch beyond $|\alpha|=1/16$ (context-free GPT, 20 October).} \st{P}+\st{C}, IDE replay \code{python3 -I verify\_patch.py}: PASS (100\,s). Package
+\pathref{gpt-reviews/cold-start-20261020/one-driver-partial-certificate.zip}. For $c\ge1/4$, $0\le g\le1/50$, $|\alpha+1/16|\le1/500$ and every $\beta$, $\Lambda(G)\le S$. At the anchor
+$(c,g,\alpha)=(1/4,0,-1/16)$: $\Lambda(U_\alpha)<1.34990$ and $0<d_B<11/200$, so $\sup_\beta\Lambda<1.3614<2\E|L|=\frac{387}{500}\sqrt\pi\le S$. The patch is small. The useful device is to
+enclose $d_B$ by convex finite differences of norm expectations, which avoids integrating the quotient near the zeros of $L+U$.
+
+\paragraph{Follow-up: eight uniform regions (context-free GPT, 20 October).} \st{P}+\st{C}. IDE replay of \code{verify\_regions.py} (48\,min, 6 workers): PASS, and the regenerated
+certificate JSON is byte-identical to the supplied one. Package \pathref{gpt-reviews/cold-start-20261020/one-driver-uniform-certificate.zip}. On each cell a tangent of $\rho_g$ at the conditional
+mean of the anchor's squared modulus gives a global Hermitian quadratic majorant, with a $2|w|\le1+|w|^2$ tail valid at every amplitude; completing the complex $\beta$ square
+needs $M_{BB}<0$, which is certified. The conclusion is $\Lambda\le S$ for every $g\ge0$ and $\beta\in\C$ in each region ($c\ge4/25$, $|\alpha|\le1/16$), ($7/40$, $1/10$), ($37/200$, $1/8$),
+($39/200$, $3/20$), ($1/5$, $31/200$), ($21/100$, $1/6$), ($11/50$, $9/50$), ($6/25$, $1/5$). The largest certified upper bound is $1.3737395<5495/4000<S$. Triangle-inequality tails:
+exact K whenever $|\beta|\ge19/20$ or $|\alpha|\ge6/5$, and for $c\ge4/25$ with $|\alpha|\ge1$.
+
+\paragraph{Follow-up: the $\alpha=0$ one-driver family is closed, and a uniform $\alpha$-disk (context-free GPT, 20 October).} \st{P}+\st{C}. IDE replay: \code{node verify.mjs}
+PASS on 153{,}600 rectangles (28\,s); \code{node verify.mjs --fine} PASS on 614{,}400 rectangles (79\,s). Package \pathref{gpt-reviews/cold-start-20261020/one-driver-global-strips.zip}.
+On $0\le c\le3/10$, $0\le g\le1/6$, for every $\beta\in\C$: $\Lambda\le S-1/6000$ at $\alpha=0$; $\Lambda\le S-10^{-5}$ for $|\alpha|\le1/128$; $\Lambda\le S+9\cdot10^{-5}$ for
+$|\alpha|\le1/100$. Combined with $c\ge3/10$ and $g\ge1/6$, \textbf{exact K holds in the one-driver model for every $c,g\ge0$, $\beta\in\C$ and $|\alpha|\le1/128$}, and K$_{9\cdot10^{-5}}$
+(inside $\eta_{AB}$) for $|\alpha|\le1/100$. The binding cells sit at the buffer edge $g\approx1/6$. The three ingredients, each checked by the IDE:
+\begin{itemize}
+\item \emph{Saturating content bound.} $0\le d_j(c,\sqrt v)\le\frac{c\,m_{j,0}}{\sqrt2}\Psi(\frac{m_{j,1}}{m_{j,0}}c^2)$ with $\Psi(x)=\int_2^\infty t(t-2)e^{-t}(1-e^{-xZ(t)})dt$ and
+$Z=t(t-2)^2/2$. This is Jensen for positive Laplace kernels, $k(0)-k(u)\le m_0(1-e^{-m_1u/m_0})$, and is monotone in each moment by the perspective.
+\item \emph{Nonperturbative deficit.} The shift function $f_v(u)=2\E|L+\sqrt vY+\sqrt u|$ is Bernstein. Jensen for the convex $r(x)=\int_0^1(1-u)e^{-xu}du$ under the normalised
+$t^2\mu_v(dt)$ gives $\Lambda(cH+\sqrt vY)\le F(v)+F'(v)c^2-\frac{C}{2B^2}\mathcal E(Bc^2)$ with $C=-h''$, $B=h'''/(3C)$, $\mathcal E(x)=\E[xZ-1+e^{-xZ}]$.
+\item \emph{A and B together at the $z$-independent baseline $q=cH+gY$.} From $2|F+D|\le2|F|+2\Re(\bar FD)/|F|+|D|^2/|F|$, conditioning on $(X,Y)$ and using the radial potentials
+$C_A<2.07$, $C_{AB}<0.76$, $C_B<0.953$: $\Lambda(G)-S\le\Lambda(q)-S+2d_A|\alpha|+(2.07-1/\varepsilon)|\alpha|^2+(d_B+0.76|\alpha|)^2/0.369$. This removes the dependence issue, because
+no cost is applied on top of an $A$-coupled baseline.
+\end{itemize}
+
+\paragraph{Follow-up: directional transport (context-free GPT, 20 October).} \st{P}+\st{C}. IDE replay: \code{node verify.mjs} PASS (157{,}050 rectangles), \code{--fine} PASS (623{,}568).
+Package \pathref{gpt-reviews/cold-start-20261020/one-driver-directional-transport.zip}. On $|\alpha|\le1/16$: $|d_B^A-d_B^0|\le\frac{563}{1000}|\alpha|$, with no remainder and including $g=0$.
+The proof uses $|D_e(\bar w/|w|)|=|\sin\angle(w,e)|/|w|$, whose superlevel sets have area $\pi/(2t^2)$. The $B$ cost on the $A$-coupled baseline is $27/100$, up to $10^{-19}$. With the
+dimension-free $A$ cost $19/100$, this gives exact K at every $c,g$ and $\beta$ for $|\alpha|\le0.0144226$, and K$_{10^{-4}}$ for $|\alpha|\le0.0179044$ (note $10^{-4}>\eta_{AB}$). The binding cells
+sit at $c\approx0.047$, $g^2\to1/36$. GPT also showed that the comparison $S-\Lambda(U_\alpha)\ge(d_B^0+\frac45|\alpha|)^2/\frac{21}{80}$ \emph{fails} at $(c,g,\alpha)=(1/40,1/128,1/16)$, by
+conditional Jensen; the IDE confirms the arithmetic ($0.05^2/0.2625=1/105$). So the $4/5$ transport constant cannot close that disk.
+
+\paragraph{Two-driver follow-ups.} The context-free GPT's two-driver certificates (20 October) are in \autoref{ch:two-driver-cold}.
