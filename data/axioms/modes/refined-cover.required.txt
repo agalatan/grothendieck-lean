@@ -1,11 +1,14 @@
 # --refined-cover: required theorems (sorted; union-merged).
 Grothe.Research.LawNodeCheck.certLawNodes
+Grothe.Research.LowerRefinementCheck.certRefinementBatches
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes0
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes2
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes3
 Grothe.Research.RefinedLowerCheck.certRefinedPartition
+Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement
 Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data
 Grothe.Research.RefinedLowerCheck.refined_cover_checked
 Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal
 Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound
+Grothe.Research.RefinedLowerCheck.refinement_endpoint_lt_reciprocal

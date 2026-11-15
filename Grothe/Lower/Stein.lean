@@ -1,4 +1,8 @@
+-- Grothe/Lower/Stein.lean
 import Grothe.Lower.Law
+import Mathlib.Data.List.GetD
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.Tactic.FunProp
 
 /-!
 # The Stein cuts from the spectral budgets and the radial integration by parts

@@ -1,14 +1,15 @@
+-- Grothe/Research/RefinedCoverPartition.lean
 import Grothe.Research.RefinedCoverParts
 
 /-! The refined boxes cover the full original parameter domain. -/
 
-open Grothe.Lower Grothe.Research.RefinedCoverData
+open Grothe.Lower Grothe.Research.LowerRefinementCoverData
 
 namespace Grothe.Research.RefinedLowerCheck
 
 theorem certRefinedPartition :
-    treeCoverOK (treeOf refinedCuts) (0, 9 / 10, 0, ρ, 0, xMax)
-      (refinedBoxList.map Box.dom) = true := by
+    treeCoverOK (treeOf cuts) (0, 9 / 10, 0, ρ, 0, xMax)
+      (refinedBoxList.map MixBox.dom) = true := by
   native_decide
 
 end Grothe.Research.RefinedLowerCheck

@@ -1,3 +1,5 @@
+-- Grothe/Research/LawNodeLower.lean
+import Grothe.Lower.FiniteMix
 import Grothe.LowerAnalytic.Reduction
 import Grothe.Lower.Cert.Rows0
 import Grothe.Lower.Cert.Rows1
@@ -44,9 +46,9 @@ theorem extended_batches_checked (extraBatches : List JBatch)
   simp only [List.all_append, certified_mixed_batches, hextra, Bool.and_self]
 
 /-- A checked extended law-node list and complete cover bound the original profile. -/
-theorem profile_bound_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts boxes : List String)
+theorem profile_bound_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
-    (hcover : checkCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
+    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
     (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
     (hcrude : RowOf crudeRow V t Qh v) (hred : SharedReduction rowData V t Qh v) :
     V ≤ (B : ℝ) := by
@@ -65,22 +67,13 @@ theorem profile_bound_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts 
       exact rowOf_of_shared r (hrows r hm) hM hS hτ0 hτ1 hX (hshared r hm)
   simp only [RowShared] at hshared
   choose! Ψ hΨ using hshared
-  obtain ⟨b, hb, h1, h2, h3, h4, h5, h6⟩ :=
-    cover_sound rowData (mixedBatches ++ extraBatches) B cuts boxes hcover t τ x
-      ht0 ht1 hτ0 hτ1 hM.x0 hM.x1
-  unfold boxOK at hb
-  cases hbb : boxBound rowData (mixedBatches ++ extraBatches) b with
-  | none => simp [hbb] at hb
-  | some val =>
-    simp only [hbb, decide_eq_true_eq] at hb
-    exact (box_sound rowData (mixedBatches ++ extraBatches) hrows hbatches b val hbb
-      X1 X2 X3 τ hX hM hS V t Qh v hv Ψ hΨ hscal
-      ⟨h1, h2⟩ ⟨h3, h4⟩ ⟨h5, h6⟩).trans (by exact_mod_cast hb)
+  exact mixCover_bound rowData (mixedBatches ++ extraBatches) hrows hbatches B cuts boxes hcover
+    X1 X2 X3 τ hX hM hS V t Qh v hv Ψ hΨ hscal ht0 ht1 hτ0 hτ1 hM.x0 hM.x1
 
 /-- The existing phase reduction converts the extended-cover cap into a scalar witness cap. -/
-theorem witnessCap_of_law_nodes_reduction (extraBatches : List JBatch) (B : ℚ) (cuts boxes : List String)
+theorem witnessCap_of_law_nodes_reduction (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
-    (hcover : checkCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (n : ℕ)
+    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (n : ℕ)
     (hred : ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) →
       g ∈ Unimod (stdGaussian (n + n)) → 0 ≤ VOf n f g → ReductionHyp n f g) :
     WitnessCap n (B : ℝ) := by
@@ -97,9 +90,9 @@ theorem witnessCap_of_law_nodes_reduction (extraBatches : List JBatch) (B : ℚ)
     (rowOf_crude n f (θ • g) (normQk_le_rho n hf hg') v) hshared
 
 /-- The scalar cap retains exactly the existing Gaussian `NodeCaps` assumption. -/
-theorem witnessCap_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts boxes : List String)
+theorem witnessCap_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
-    (hcover : checkCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
+    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
     (hcaps : NodeCaps) (n : ℕ) (hn : 2 ≤ n) : WitnessCap n (B : ℝ) := by
   refine witnessCap_of_law_nodes_reduction extraBatches B cuts boxes hextra hcover n
     fun f g hf hg _ => ?_
@@ -107,24 +100,24 @@ theorem witnessCap_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts box
   exact reductionHyp_of_nodeCaps hcaps (by omega) f g hf hg
 
 /-- A complete cover using extra checked nodes supplies the same transfer inputs. -/
-theorem transferInputs_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts boxes : List String)
+theorem transferInputs_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
-    (hcover : checkCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps) :
+    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps) :
     TransferInputsL2 (B : ℝ) :=
   transferInputs_of_witnessCap 2 (fun n hn =>
     witnessCap_of_law_nodes extraBatches B cuts boxes hextra hcover hcaps n hn)
 
 /-- Any newly checked cover gives its reciprocal lower bound under the same `NodeCaps`. -/
-theorem lower_bound_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts boxes : List String)
+theorem lower_bound_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
-    (hcover : checkCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps)
+    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps)
     {K : ℝ} (hK : IsGrothendieckBound K) : 1 / (B : ℝ) ≤ K :=
   transfer_lower (transferInputs_of_law_nodes extraBatches B cuts boxes hextra hcover hcaps) hK
 
 /-- A strict displayed endpoint follows by a separate rational comparison with `1 / B`. -/
-theorem strict_lower_bound_of_law_nodes (extraBatches : List JBatch) (L B : ℚ) (cuts boxes : List String)
+theorem strict_lower_bound_of_law_nodes (extraBatches : List JBatch) (L B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
-    (hcover : checkCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps)
+    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps)
     (hL : (L : ℝ) < 1 / (B : ℝ)) {K : ℝ} (hK : IsGrothendieckBound K) : (L : ℝ) < K :=
   hL.trans_le (lower_bound_of_law_nodes extraBatches B cuts boxes hextra hcover hcaps hK)
 

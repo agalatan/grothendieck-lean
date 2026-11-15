@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697117301\;<\;\KG\;<\;1.404599412097$\\[6pt]
+\Large $1.401700037873\;<\;\KG\;<\;1.404599412097$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
 (\lean{main\_bounds}); the computer-assisted inputs are native finite checks listed in
 the axiom report (Section~\ref{sec:trust}).\\[4pt]
@@ -159,7 +159,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404599412097}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401700037873}$ & $\mathbf{1.404599412097}$\\\bottomrule
 \end{tabular}
 \end{center}
 Lean exhibits an exact rational Grothendieck bound strictly below the displayed threshold $1.404599412097$.
@@ -1238,13 +1238,14 @@ A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ wh
 the projection onto linear functions minus a multiple of the projection onto the cubic chaos.
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+\epsilon)/(n+1)\to1$.
-\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.713420886479$.
+\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.7134194$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401697117301$.
-The complete cover has 10,909 boxes. Two added pure-row law nodes and three mixed-source Young nodes use the original source caps and
-Stein cuts, so they need no Gaussian input beyond the node caps of the 19 potentials. Their batches, every box and the full partition
-are checked separately. Adaptive binary splits reprice the existing components while preserving
-their scale interpolation domains. All generation inputs are retained in \path{data/lower-unshifted/}.
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401700037873$.
+The complete cover has 14,060 boxes. It refines the preceding 10,909-box cover with 21 additional law majorants and
+finite convex mixtures, all using the original source caps and Stein inequalities. Their batches, every box and the full partition
+are checked separately. The common gate matrix is mixed before completing the square, preserving information across components.
+Adaptive binary splits retain every scale interpolation domain. The acceptance data and deterministic exporters are retained in
+\path{data/lower-refinement/}; the original source data stay unchanged.
 
 The scalar cap is the hard part. Writing $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$,
 \[
@@ -1264,8 +1265,8 @@ paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ 
  expansion of the sixth cumulant; a first-moment bound; and families of \emph{Stein cuts}
  $\E\,G(U)\ge0$, obtained by Gaussian integration by parts and completing squares against spectral budgets, a covariance
  order and \emph{contraction-Gram budgets} (positive semidefinite Gram matrices of the coefficient tensor).
-\item \textbf{A finite certificate.} The parameters are covered by $10{,}909$ boxes in $(t,\tau,x)$; on each box a positive
- combination of rows and node certificates ($351$ existing mixed nodes, two added pure-row law nodes, three added mixed-source Young nodes and $9{,}237$ row nodes, each a polynomial majorant checked in
+\item \textbf{A finite certificate.} The parameters are covered by $14{,}060$ boxes in $(t,\tau,x)$; on each box a positive
+ combination of rows and node certificates ($351$ existing mixed nodes, two added pure-row law nodes, three added mixed-source Young nodes, 21 further law majorants and $9{,}237$ row nodes, each a polynomial majorant checked in
  exact rational arithmetic) bounds the scalar value by $B$.
 \item \textbf{The node caps.} The certificate uses each potential only through upper bounds at finitely many nodes,
  $\Psi_r(s_i)-10^{-11}\le c_i$ (\lean{NodeCaps}). Lean proves them. By convexity it suffices to treat the vertex nodes.
@@ -1285,11 +1286,19 @@ The complex programme uses charge-one bidegrees. A global complex minimax identi
 the two endpoint proofs use separate one-sided transfer theorems. An upper bound comes from a realizable kernel,
 and a lower bound from a game with a uniform scalar norm cap. Finite-pool duality alone does not certify either global claim.
 
+\paragraph{Finite-mixture refinement.}
+\lean{Lower/FiniteMix.lean} proves soundness for arbitrary finite component expressions,
+their box bounds and the complete cover checker. The new law bank and replacement forest
+are exported reproducibly and checked in Lean. The resulting cap is $3567097/5000000$;
+its reciprocal is strictly greater than $1.401700037873$, improving the previous endpoint
+by $0.000002920572$. The original Gaussian node-cap hypotheses are discharged by the same
+existing cap proofs. No form of Conjecture K is assumed.
+
 \section{What exactly the computer checks}\label{sec:trust}
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.401697117301$, without hypotheses. The intermediate theorem \lean{lower\_bound\_of\_refined\_cover\_data : NodeCaps → IsGrothendieckBound K → 1.401697117301 < K} keeps the node caps as a hypothesis, which \lean{capsRest}, \lean{vertexCaps\_of\_capsRest} and \lean{nodeCaps\_of\_vertexCaps} discharge.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.401700037873$, without hypotheses. The intermediate theorem \lean{lower\_bound\_of\_completed\_refinement : NodeCaps → IsGrothendieckBound K → 1.401700037873 < K} keeps the node caps as a hypothesis, which \lean{capsRest}, \lean{vertexCaps\_of\_capsRest} and \lean{nodeCaps\_of\_vertexCaps} discharge.}\\[2pt]
 the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
 the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
 gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
