@@ -1,0 +1,22 @@
+{
+  "adverse_gamma_threshold": "4889900/47482107",
+  "agent_id": "codex-a7c4",
+  "axis_countermodel_excess": "53464061/160000000000",
+  "conditional_joint_excess_caps": {
+    "adverse": "158809/2211522920",
+    "diagonal": "22687/1578687640"
+  },
+  "conditional_sigma_field_scope_witness": {
+    "difference_lower_without_event_probability": "2162/78125",
+    "gaussian_amplitude": "699/2500"
+  },
+  "redistribution_scope_witness": {
+    "H_energy_exp10_coefficient": "79672141/1562500",
+    "H_energy_upper": "121082584356854569622062302757894170621/52304618520157699277597174212351001562500",
+    "difference_lower_without_amplitude_sqrt_pi": "91013/1222970400",
+    "required_upper": "1117249/3125000",
+    "shell_amplitude": "1/1000000"
+  },
+  "status": "PASS",
+  "trust": "exact finite scalar algebra; analytic implications in CLAIMS.md"
+}

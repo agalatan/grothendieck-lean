@@ -187,6 +187,48 @@ Lean**; independent of K. See `STATUS.md`, "Related results", and `INVENTORY.md`
 
 ---
 
+## D. Follow-up audit (15 November, codex-a7c4)
+
+The new [audit report](sources/audit-2026-11-15-codex-a7c4/AUDIT.md) is a bounded follow-up to the 13 November
+reports. It records the source lines, evidence, severity and correction for each finding, together with fresh
+checks and inherited evidence. It makes no new claim about the Grothendieck constant. New author proofs have
+not received external review; same-session checking is named in the notes.
+
+1. **Remote L1 at the peak is now replayed (P + C).** The stronger package of 22 October proves
+   Λ(q) < 1.373953883 < S + 3.6·10⁻⁷ for every finite-dimensional remote cubic at every variance. The replay
+   freshly recomputes its profile integrals and benchmark and checks the continuum cover and tails. Its existing
+   sixth-moment theorem remains an identified mathematical input. This is an external certificate, not Lean.
+   Its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions
+   (REMOTE §3a, added in review). The replay was repeated by claude-b9ee, with no blocking finding
+   ([review](sources/audit-2026-11-15-codex-a7c4/REVIEW_claude-b9ee.md)).
+   The other named rows are not covered. The 1.05·10⁻⁵ package is weaker than the previously claimed 10⁻⁵ cap;
+   its algebra was replayed conditional on stored grids. Details and reproduction: [REMOTE.md](sources/audit-2026-11-15-codex-a7c4/REMOTE.md).
+2. **Continuum profile transfer (P, by author, not externally reviewed).** Scaling the peak with
+   λ=ε/(1891/2500) and allowing shape distance |a−λa₀|+(3/2)|b−λb₀|≤λ/50000 gives remote error below
+   8.1·10⁻⁵ for ε∈[0.74,0.76]. This is a narrow tube, not the full profile box. The disjoint-driver
+   reduction inherits the certified peak tolerance with its original hypotheses.
+3. **Essential independence hypotheses restored.** The consolidated statement of disjoint-driver
+   redistribution needs H independent of Z as well as U independent of (Z,H). Conditional-Gaussian Theorem B
+   needs its conditioning field independent of Z. General L² counterexamples refute the broadened statements;
+   they do not refute K or the original correctly scoped theorems. See [CLAIMS.md](sources/audit-2026-11-15-codex-a7c4/CLAIMS.md).
+   A positive extra tangent term in Theorem A demonstrates a gap in the attempted extension, not by itself
+   a cubic counterexample to same-norm domination.
+4. **Zero-core odd sectors and n=1 (P + exact scalar C).** An independent elementary proof and rational checker
+   confirm the three-row costs in STATUS 5.4. The flank d-cost printed as 0.36 in §4b is too large for its
+   tangent certificate; use 0.356. On the entire application box, the n=1 family satisfies
+   Λ(dZ(T−2))≤2E|L|−(3/20)‖dZ(T−2)‖². Thus G=0 is uniquely optimal for n=1; the peak optimum is
+   387√π/500∈(1.371879280600869,1.371879280600870). The higher-dimensional odd costs still require zero core.
+   See [ODD_COST.md](sources/audit-2026-11-15-codex-a7c4/ODD_COST.md).
+5. **Retained-sector follow-up.** Independent direct-norm quadrature reproduces the four-decimal monomial
+   table (**N**). The tilt, k(s), h_s and the full complex-driver local matrix are independently re-derived
+   (**P**, scalar constants **C**). This does not supply a finite-amplitude sector theorem.
+   Remote L1 is Λ(q)≤S+η_R, not D(q)≥−η_R: the Gaussian optimization slack must remain. If the still-open
+   gain bound gain≤κD+η_A holds with 0≤κ≤1, the correct assembled error is (1−κ)η_R+η_A (**P by author**).
+   A Gaussian coefficient bound is not a pointwise cutoff; an explicit tail allowance is given, but no
+   compact Hessian certificate or general amplitude bound is supplied. See [SECTORS.md](sources/audit-2026-11-15-codex-a7c4/SECTORS.md).
+
+---
+
 <!-- =========================== MONOGRAPH, VERBATIM (unchanged from here to the end) =========================== -->
 
 # Conjecture K: statement, purpose, state of knowledge, and what is left

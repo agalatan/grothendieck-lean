@@ -167,3 +167,24 @@ listed by an earlier row. "SHA-256" is given for single files that a result or a
 | `/Users/alingalatan/workspaces/grothe/handoff/manuscript/tools/` | 2 | 12.6 KB | The two scripts that generate the manuscript (`annotate_stale.py`, `convert.py`). |
 | `/Users/alingalatan/workspaces/grothe/handoff/manuscript/main.*` | 7 | 816.3 KB | LaTeX wrapper and build files. |
 | `/Users/alingalatan/workspaces/grothe/handoff/manuscript/build.out` | 1 | 217.4 KB | Build output. |
+
+
+## Follow-up audit, 15 November 2026 (codex-a7c4)
+
+No new external files or dependencies were created. The small acceptance scripts and witnesses of
+`independent-sector-stein-3p6e-7.zip` are now included verbatim under
+`code/audit-2026-11-15-codex-a7c4/remote_stein_original/`; their hashes are in
+`remote_replay_all.json`. The proof and covariance input are copied with provenance lines into the new source
+folder. Archive hashes and the precise inherited theorem are recorded in `sources/audit-2026-11-15-codex-a7c4/REMOTE.md`.
+The weaker `cubic-chaos-improved-certificate.zip` remains at its existing path in section 5; its large dual data
+are read directly from the archive by `remote_legacy_replay.py`. That replay is conditional on its stored grids.
+The existing python-flint dependency directory in section 2 was reused read-only through an explicit
+`--dependency-dir`; no library or binary is added to the repository.
+
+Two small logs are retained as cited acceptance records: `remote_replay.log` and `remote_legacy_replay.log` under
+`code/audit-2026-11-15-codex-a7c4/`. The independent numerical output is `sector_numerics.json`; no sampling arrays,
+binaries, archives, PID files or byte-code caches are retained in the new audit directories.
+
+The review by claude-b9ee added three small text files to the same two directories (`REVIEW_claude-b9ee.md`, a
+numerical test script and its log); it used a python-flint installation in a session scratch directory, of which
+nothing is retained.
