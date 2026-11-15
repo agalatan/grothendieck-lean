@@ -1,0 +1,19 @@
+{
+  "agent_id": "codex-a7c4",
+  "part": "all",
+  "status": "PASS",
+  "python": "3.12.3",
+  "python_flint": "0.9.0",
+  "elapsed_seconds": 138.959,
+  "scope": "Peak row only; numerical acceptance conditional on mathematical inputs in REMOTE.md.",
+  "sha256": {
+    "benchmark.py": "ac31e0da43ffd4b532ca1192429a0fbc9be3d4bece1dcb8995aa521e773e6e83",
+    "check_stein.py": "669688428045a2564a44680a62bdfca9277494c96b98155acc772691a21b8328",
+    "exact.py": "8149a1b17c054c58461f36a8a2e030a2c324041c4b18d9e2e6eef72185e94145",
+    "moment-boxes.json": "cef37c2a66eacd66296add7ed2efc5a8d6afc336d2ed614102de08429d449695",
+    "profile-caps.json": "01c2e2a7b4af452ce8729ec47cb0cd2c3aa7e1368c6b58336270c2a19b349514",
+    "profile.py": "fb6a187270358a7b230a6824fa1cb9e85b8f155666d2b9cfb4df9071b9caaf0a",
+    "stein-nodes.json": "69c49c92dfe6aaf74267e944970cefea37555837d06c35521a048ac9553780b0",
+    "verify.py": "7a3eb7592ab569be08cb95a5e9c061b9339e6a054773d93d7abbe8493b5485c2"
+  }
+}

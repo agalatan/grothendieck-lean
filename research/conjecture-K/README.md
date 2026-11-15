@@ -9,6 +9,7 @@ conjecture is **open**.
 | file | what it is |
 |---|---|
 | `README.md` | this file: statement, why it matters, the layers of a proof, reading order, index |
+| [Follow-up audit](sources/audit-2026-11-15-codex-a7c4/AUDIT.md) | 15 November, codex-a7c4: essential scope corrections, peak remote certificate replay, uniform one-coordinate result, independent retained-sector numerics |
 | [`STATUS.md`](STATUS.md) | the consolidated state of knowledge: every statement with its status (P / C / N / R / open / refuted), exact scope and source; the list "tried and failed" |
 | [`MONOGRAPH.md`](MONOGRAPH.md) | the monograph of 5 and 6 November, verbatim, preceded by "Errata and updates (15 November 2026)" |
 | [`INVENTORY.md`](INVENTORY.md) | what was deliberately left outside the repository (zips, large certificates, logs, binaries), with paths, sizes and SHA-256 |
@@ -75,8 +76,8 @@ In words: the supremum of Λ over the cubic chaos is attained by a Gaussian adve
 | flank | 149/200 = 0.745 | 4267/5000 = 0.8534 | 1467/10000 = 0.1467 | 14/25 = 0.56 | 0.1726 |
 | upper | 1891/2500 = 0.7564 | 0.877 | 19/125 = 0.152 | 573/1000 = 0.573 | 0.1617 |
 
-Peak-row constants: p = 1/ε = 2500/1891; S = 1.3739535 (floating point; S > 1.37395; a package of 22 October
-claims the enclosure 1.3739535256614 < S < 1.3739535256616), attained at σ*² = v* ≈ 0.0403; B₀ = Λ(0) = 2E|L| = (387/500)√π = 1.3718793; S − B₀ > 0.0020476.
+Peak-row constants: p = 1/ε = 2500/1891; S = 1.3739535 (floating point; S > 1.37395; the October package enclosure
+1.3739535256614 < S < 1.3739535256616 was independently replayed by codex-a7c4 (**C**)), attained at σ*² = v* ≈ 0.0403; B₀ = Λ(0) = 2E|L| = (387/500)√π = 1.3718793; S − B₀ > 0.0020476.
 
 **Vocabulary used everywhere** (monograph §2). Decompose G by its dependence on z₁:
 
@@ -113,12 +114,12 @@ ceiling and nothing on the upper side; the degree-5 analogue K₅ is false at it
 ## (c) The layers of a proof, and where each stands
 
 K_η must hold for every G ∈ H₂,₁, not only for the core. The monograph (§4b) splits a proof into six layers.
-The statuses below are those of the audit of 13 November; details and scopes are in `STATUS.md`.
+The statuses include the follow-up audit of 15 November; details and scopes are in `STATUS.md`.
 
 | layer | statement | status on 15 November 2026 |
 |---|---|---|
-| **L1** remote part ("K-a") | Λ(q) ≤ S + η for every remote cubic q | **R** for η < 10⁻⁵ and **at the peak profile only** (an Arb computation of October, not replayed by the audit; no Lean theorem for the cap was found). The reduction to moments is **P**. Exact K-a (η = 0) for every profile is equivalent to E\|q\| ≤ (√π/2)‖q‖₂ on H₂,₁, which is open. Other rows: not established. Sharper remote bounds are claimed in packages of 22 October and in a report of 15 November (**R**, unchecked). |
-| **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1; needs ‖q‖² + ‖U‖² ≤ ℓ²). The stronger cost form is **P** up to a numerical kernel inequality that is **R**. |
+| **L1** remote part ("K-a") | Λ(q) ≤ S + η for every remote cubic q | **P + C at the peak profile**, η=3.6·10⁻⁷: the stronger October package replayed end to end by codex-a7c4, with its existing sixth-moment input identified. External certificate, not Lean. A narrow scaled-profile tube has error <8.1·10⁻⁵ (STATUS 3.11); the other named rows and full envelope remain open. Exact K-a (η=0) is open; the separate report of 15 November remains **R**. |
+| **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1, hence 3.6·10⁻⁷ at the peak; needs mutual independence of z₁,q,U and ‖q‖² + ‖U‖² ≤ ℓ²). The stronger cost form is **P** up to a numerical kernel inequality that is **R**. |
 | **L3** core with shared drivers, outside the rectangle R | w ≥ 0.01125 or u ≤ 0.00551 + 0.319w ⇒ K_η, η = 10⁻⁴ | **R** (proved and certified according to the manuscript and the monograph; not re-audited; three slightly different cutoffs for w are in use). The fourth-moment method is saturated there. |
 | **L4** core on R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
 | **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). |
@@ -186,6 +187,55 @@ next statement to attack.
 
 Sizes are those of the files in this folder. Descriptions of the notes are taken from the documents themselves
 (title or opening words) unless a status is added; a status in this index is always the one in `STATUS.md`.
+
+### `sources/audit-2026-11-15-codex-a7c4/`: bounded follow-up audit
+
+New audit material; historical archive copies are explicitly marked. Check commands and trust limits are in the new `AUDIT.md`.
+
+| file | size | contents |
+|---|---:|---|
+| `AUDIT.md` | 10,898 B | Findings, completed results, status/novelty boundaries, checks and next work. |
+| `CLAIMS.md` | 18,578 B | Section-by-section coverage, two explicit lost-independence counterexamples, finite kernel replay. |
+| `ODD_COST.md` | 5,400 B | Zero-core odd costs; uniform one-coordinate theorem on the whole application box. |
+| `REMOTE.md` | 17,709 B | October package audit, peak certificate bridge, profile tube and disjoint-driver consequence. |
+| `SECTORS.md` | 14,228 B | Independent sector numerics, full complex local matrix, error assembly and Gaussian tail. |
+| `remote_INHERITED_COVARIANCE.tex` | 7,292 B | Verbatim covariance input, with provenance; independent re-derivation in REMOTE. |
+| `remote_strong_PROOF.md` | 17,938 B | Verbatim October proof of the peak remote 3.6e-7 certificate, with provenance line. |
+
+
+### `code/audit-2026-11-15-codex-a7c4/`: bounded follow-up audit
+
+New audit material; historical archive copies are explicitly marked. Check commands and trust limits are in the new `AUDIT.md`.
+
+| file | size | contents |
+|---|---:|---|
+| `claims_exact.py` | 3,479 B | Standard-library exact scope-witness, budget and countermodel checks. |
+| `claims_exact_result.json` | 845 B | PASS: finite rational support for CLAIMS. |
+| `claims_kernels.py` | 4,083 B | Standalone Arb enclosures at specified kernel points; no continuum claim. |
+| `claims_kernels_result.json` | 2,211 B | PASS: endpoints and selected shifts, with balls and precision. |
+| `odd_cost_check.py` | 4,753 B | Standard-library rational interval certificate for three-row odd costs and full-box n=1. |
+| `odd_cost_result.json` | 1,437 B | PASS: cost and optimum enclosures; uniform n=1 cost 3/20. |
+| `remote_legacy_replay.log` | 2,664 B | Small cited record of weaker-package algebra replay. |
+| `remote_legacy_replay.py` | 3,123 B | Read-only ZIP adapter for weaker October acceptance; conditional on stored grids. |
+| `remote_legacy_result.json` | 792 B | PASS conditional on stored grids; archive and script hashes. |
+| `remote_rational_audit.py` | 4,881 B | Independent Stein cut identities, cover slicing, five rejection controls and tube budget. |
+| `remote_rational_result.json` | 562 B | PASS: exact identities, cover, controls and profile-transfer allowance. |
+| `remote_replay.log` | 2,425 B | Small cited record of full fresh-integral acceptance and benchmark. |
+| `remote_replay.py` | 2,268 B | Isolated-mode wrapper for unchanged stronger acceptance scripts; optional explicit flint path. |
+| `remote_replay_all.json` | 975 B | Full PASS metadata, dependency version and eight original input hashes. |
+| `remote_stein_original/benchmark.py` | 2,592 B | Verbatim original Arb Gaussian benchmark enclosure. |
+| `remote_stein_original/check_stein.py` | 2,783 B | Verbatim original exact half-line Stein acceptance. |
+| `remote_stein_original/exact.py` | 1,641 B | Verbatim original exact polynomial and Bernstein utilities. |
+| `remote_stein_original/moment-boxes.json` | 55,551 B | Verbatim 154 outer moment rectangles and witnesses. |
+| `remote_stein_original/profile-caps.json` | 22,383 B | Verbatim 68 profile-majorant witnesses and tail. |
+| `remote_stein_original/profile.py` | 2,100 B | Verbatim original Arb profile integrator; fresh acceptance input computation. |
+| `remote_stein_original/stein-nodes.json` | 240,483 B | Verbatim 45 central Stein-node witnesses. |
+| `remote_stein_original/verify.py` | 3,671 B | Verbatim original full fresh-integral/cover/benchmark verifier. |
+| `sector_constants.json` | 1,481 B | PASS: exact scalar bounds, including eigenvalue >0.477. |
+| `sector_constants.py` | 4,299 B | Standard-library rational intervals for local retained matrix, tilt roots and tail. |
+| `sector_numerics.json` | 16,670 B | N: four energies, three quadrature orders, gradients and gains. |
+| `sector_numerics.py` | 4,970 B | Independent direct-norm quadrature and stationary saddle solve; N only. |
+
 
 ### `sources/audit-2026-11-13/`: the independent audit (codex-a713, 13 November 2026)
 

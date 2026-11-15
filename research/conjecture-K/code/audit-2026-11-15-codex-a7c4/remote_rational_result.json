@@ -1,0 +1,18 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS",
+  "independent_vertical_slice_cover": 155,
+  "stein_nodes": 45,
+  "cut_piece_identities": 3825,
+  "rejection_controls": [
+    "cover hole",
+    "cover overlap",
+    "negative constant",
+    "negative interior with positive endpoints",
+    "negative leading tail"
+  ],
+  "interpolation_allowance": "153/3200000000",
+  "cap_minus_certified_S_lower": "1786693/5000000000000",
+  "profile_tube_uniform_error": "38171/472750000",
+  "scope": "Exact algebra/coverage only; profile enclosures are separately replayed."
+}
