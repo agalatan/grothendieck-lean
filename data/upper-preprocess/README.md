@@ -2,8 +2,8 @@
 
 This directory retains the shared rounding source, preprocessors, energy table,
 finite-head and Hardy inputs used by the unconditional theorem
-**K_G^C < 1.404599412097**. Its exact rational Grothendieck bound is `tightValueQ`,
-approximately `1.4045994120960970198586`. The endpoint is
+**K_G^C < 1.404599398251**. Its exact rational Grothendieck bound is `tightValueQ`,
+approximately `1.4045993982506409631014`. The endpoint is
 `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean).
 
@@ -32,9 +32,9 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 | weighted selected-block energy comparison | `tightThreeBandCompareQ ≈ 1.49222739755738e-6` | six proved Gaussian error bounds and regrouped certified reference masses (`UpperTightSix`, `UpperTightComparison`) |
 | finite head through degree 501 | `28153/1000000000000` | the exact finite certificate `Grothe.head_check` |
 | stored energy-table accuracy | `6847009/500000000000000000` | `Grothe.UpperQuad.Final.hclose_final`, from the accepted energy, omitted-pair and quadrature facts |
-| infinite tail after degree 501 | `303362611/10000000000000000` | the proved Hardy budget with its forced linear energy deducted (`HeadHardy`, `UpperTightBudget`) |
+| infinite tail after degree 501 | `233184398/10000000000000000` | the proved Gaussian-amplitude Hardy budget `5/4` with its forced linear energy deducted (`HeadHardy`, `UpperTightBudget`) |
 
-These give `tightResidualQ ≈ 1.5507303526753792e-6` and the rational bound
+These give `tightResidualQ ≈ 1.5437125313753792e-6` and the rational bound
 `1 / (slopeQ - tightResidualQ)`. The native finite-head checker uses exact dyadic
 energy data and rational polynomial coefficients. Lean proves the polynomial
 l1 constraints, locality, Gaussian comparison, table accuracy, transfer and
@@ -44,10 +44,11 @@ The resulting full quadrature radii are `(9,17,1132)/10^15`, including the
 existing `10^-15` tail/gap reserve. The six Gaussian bounds combine these with
 the certified inner products and exact low-band reserves `2^-41, 2^-42, 2^-45`.
 
-The analytic Hardy argument is also formalized: the Gaussian Schur bound is in
-`Grothe/UpperChaos/SchurMain.lean`, holomorphic continuation in `HardyHolo.lean`,
-and the production coefficient estimate is `HardyReal.hardy_GT_tight`.
-It gives the budget `B = 1737972/1000000` at radius `r = 4149/4000`. The head
+The analytic Hardy argument is also formalized: the Schur bound that retains the
+prescribed Gaussian amplitude is in `Grothe/UpperChaos/SchurMainGaussian.lean`,
+holomorphic continuation in `HardyHolo.lean`, and the production coefficient
+estimate is `HardyReal.hardy_GT_gaussian` (`Grothe/UpperChaos/HardyGaussian.lean`).
+It gives the budget `B = 5/4` at radius `r = 4149/4000`. The head
 allowance `H0 = tightHeadResidualQ` forces the linear coefficient to be at least
 `c-H0`. `Grothe/HeadHardy.lean` removes `(c-H0)^2*r^2` from `B` and shifts the
 coefficient sequence, leaving budget `(B-(c-H0)^2*r^2)/r^4` before applying
