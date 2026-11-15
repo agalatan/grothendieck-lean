@@ -1532,6 +1532,54 @@ in arbitrary complex inner product spaces. Neither completeness nor finite
 dimension of the original space is assumed. The proof uses only the standard
 axioms and leaves the definitions of both optima unchanged.
 
+`Grothe/ScalarOpt.lean` identifies `scalarOpt A` with an attained maximum of
+`∑ i, ‖∑ j, A i j * δ j‖` over unit phases `δ`. `Grothe/VectorOpt.lean`
+eliminates one vector family in the same way, using the column responses
+`∑ i, conj (A i j) • x i`. Compressing only the remaining family's span
+gives an attained maximum in `ℂ^m`; conjugate transposition then gives
+dimension `min m n` when both matrix dimensions are positive. Empty matrices
+have both optima zero. `isGrothendieckBound_iff_fixed_dim` makes this a
+canonical equivalent test for a Grothendieck bound, without an unbounded
+ambient-dimension quantifier. These are existential best responses; no claim
+is made that every optimizer is a normalized response at its zeroes.
+
+`Grothe/QuadraticDual.lean` prices overlapping quadratic error constraints
+together with a common moment budget. If `∑ i, b k i * e i² ≤ B k` and
+`t² + ∑ i, (ell i - e i)² ≤ μ`, then for `lam > 0`, `ν k ≥ 0`, and
+`b k i ≥ 0`, writing `M i = ∑ k, ν k * b k i`, the linear objective is at most
+`lam*(μ - ∑ i, ell i²) + aTail²/(4*lam) + ∑ k, ν k*B k +
+∑ i, (a i + 2*lam*ell i)²/(4*(lam + M i))`.
+The proof completes squares and includes prefix constraints as a specialization.
+The normed adapter derives the moment premise from center lower bounds,
+distance error bounds, and total energy, with the essential condition
+`e i ≤ ell i` stated explicitly. A two-variable instance certifies `41/30`
+instead of the separate estimate `3/2`; this is an algebraic example, not a
+replacement for the project's numerical certificate inputs.
+
+`Grothe/PolarizedGram.lean` proves, for nonnegative weights and summable energies,
+`(∑ w*|Re(r*conj s)|)² + (∑ w*Im(r*conj s))² ≤ E_r*E_s`, where
+`E_r = ∑ w*‖r‖²` and similarly for `E_s`. If `w ≥ L > 0`, the unweighted
+absolute real tail is at most `sqrt(E_r*E_s - I²)/L`, with
+`I = ∑ w*Im(r*conj s)`. Rectifying the real parts before the triangle inequality
+retains the imaginary correlation and removes the polarization tuning parameter.
+Both finite and summable families are covered, including zero energies. Using
+the improvement numerically still requires certified energies and correlation.
+
+`LowerAnalytic/JointDefect.lean` treats the exact two-disk support
+`S = |l+x+iy| + |l-x-iy|` and the majorant
+`H = C + x²/C + y²/lam`, `C = lam + l²/lam`, for every `lam > 0` and `l ≥ 0`.
+The rational correction
+`D₀ = (H⁴ - 4*H²*(l²+x²+y²) + 16*l²*x²)/(2*H³)` satisfies
+`(81/250)*(H-S) ≤ D₀ ≤ H-S`; the lower fraction is optimal.
+`LowerAnalytic/QuarticNewton.lean` proves the sharp error contraction `3/4`
+for Newton's method on `(z²-S²)*(z²-b²)`, where
+`b = abs (|l+x+iy| - |l-x-iy|)`. Starting at `H-D₀` gives monotone corrections
+`Dₙ` with `0 ≤ (H-S)-Dₙ ≤ (169/250)*(3/4)^n*(H-S)`.
+The explicit `correction_succ` formula uses only polynomial coefficients and
+division, so evaluation needs neither complex norm nor square root. The
+zero-denominator case is included. These pointwise inequalities do not assume
+a numerical certificate or change a Grothendieck endpoint.
+
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
 `IsGrothendieckBound (500000000000000000/355973699960428191)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
