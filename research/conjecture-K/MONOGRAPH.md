@@ -25,7 +25,7 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.401700037873 < K_G^ℂ < 1.404599398251 (Lean, `main_bounds`). The lower
+**Why it matters.** The proved bounds are 1.401700322371 < K_G^ℂ < 1.404599398251 (Lean, `main_bounds`). The lower
 bound comes from the cubic witness T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
@@ -36,7 +36,7 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
 - **Proved** (at the peak row unless the whole box is named): the remote part, Λ(q) < S + 3.6·10⁻⁷ for every cubic q
   independent of z₁ (2.1); the A-shell with independent drivers, on the whole box (2.2); explicit regions of the
   shared-driver core (2.4); the content inequality for several structured families (2.5); the B-shell cost and the
-  alignment of B- and A-contents (2.7); the local joint A/B form (2.8); the odd sectors over the zero core (2.9); the
+  alignment of B- and A-contents (2.7, with a sharper author-only bound); the local joint A/B form (2.8); the odd sectors over the zero core and, separately, each pure odd sector over every remote core (2.9, latter author only); the
   central part of the consumer, conditional on an all-sector bound (2.10).
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
@@ -44,13 +44,13 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   every dimension and at every amplitude, and the same with error below 9.8·10⁻⁵ on a profile rectangle around the
   peak (2.6).
 - **Open:** the raw content inequality of L4 for general cubics; the finite-amplitude joint A/B bound, reduced to a
-  compact box; the B-content of general cubics; the odd sectors over a nonzero core; the remote part away from the
+  compact box; the B-content of general cubics; shared odd sectors over a core containing A/B; the remote part away from the
   peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
 
 **How far.** Apart from L2 and the one-coordinate results, every finished piece holds at the peak row or near it, and
 a 1.402 proof needs an all-sector bound with error about 1.006·10⁻⁴ there, plus coverage of the other response
 regions. With the retained functional the A-shell uses 2·10⁻⁵ of that budget; the B-shell, the joint A/B interaction
-and the odd sectors are the missing sectors. With the raw functional of K the content inequality is also missing. The
+and the shared odd-sector interactions remain missing. With the raw functional of K the content inequality is also missing. The
 gain at stake is about 3·10⁻⁴ on the constant.
 
 ## 1. Setting
@@ -115,7 +115,9 @@ not, and it matters only if a row cover uses it [R · 2.5].
 
 ### 1.5 What K would give
 
-- The proved lower bound is K_G^ℂ > 1.401700037873, with row cap 3567097/5000000 = 0.7134194 [Lean · 12.1].
+- The complete lower cover gives K_G^ℂ ≥ 1250000000/891774069 > 1.401700322371, with row cap
+  891774069/1250000000 = 0.7134192552 [Lean · 12.1].
+- 1.4018 needs a row cap below 5000/7009 = 0.7133685261…; the present cover does not reach it.
 - 1.402 needs a row cap below 500/701 = 0.7132667617…; 1.4022 below 5000/7011 = 0.7131650263….
 - At the peak row an all-sector bound Λ ≤ S + η with η ≤ 10⁻⁴ covers the response interval t ∈ [0.84, 0.851] for
   1.402, with the cap more than 6.12·10⁻⁷ below 500/701. The largest admissible allowance on that interval is
@@ -455,11 +457,26 @@ even L² base, in particular not at q + (T − 1)r_A (chapter 4, item 39).
 **Content.** The B shell has first-order content: for H = X(|X|² − 2), E[X̄H] = 0 but E[X̄H|H|²] = 32, so a small B
 shell of the right phase raises Λ [P · 7.1.2]. At the peak its content is aligned with the A-content:
 
-    |g_B(v) − 0.5053·g(v)| < 0.007 for every v ≥ 0,   hence   ‖c_B − 0.5053·c_A‖ ≤ 0.007·√u
+    |g_B(v) − 0.5053·g(v)| < 0.007 for every v ≥ 0
 
-for every remote q ∈ L² in every dimension [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.1.4]. So
-B-content reduces to A-content; for the Gaussian-factor class C_B² ≤ (239/2000)·D [R · 7.1.3]; for general cubics it
-is open [7.1.5].
+[P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.1.4]. Writing k_A = −g and k_B = −g_B, the sharper
+global comparison is
+
+    [k_B(0)/k_A(0)] k_A(v) ≤ k_B(v) ≤ k_A(v)/√2     (a > 0, b ≥ 0, v ≥ 0).
+
+The lower coefficient is sharp and exceeds 0.5053 at the peak. Centering the one-sided difference before projection
+therefore gives ‖c_B − 0.5053c_A‖ ≤ 0.0035√u for every remote L² q with Π₁q = 0, in every dimension and at every
+energy [P + C, author only · codex-a7c4 · 7.1.6]. Without orthogonality, the reviewed 0.007√u bound still applies.
+Raw B-content thus reduces to raw A-content; for the Gaussian-factor class C_B² ≤ (239/2000)·D [R · 7.1.3]; for
+general cubics the raw content-to-deficit inequality is open [7.1.5].
+
+**Retained B-content.** At the matched tilt s_B = 0.5053·(3/5) = 15159/50000, the centered comparison and the
+completed tilted-A content theorem give
+
+    ‖c_{B,s_B}(q)‖² ≤ (1/10)D₊(q) + 443/10⁸     for every remote cubic q with u ≤ 0.0463.
+
+[P + C, author only · codex-a7c4 · 7.1.7] This controls the first-order term. The finite-amplitude cost for this
+tilt, and the joint A/B cost, remain open.
 
 ### 2.8 The joint A/B form
 
@@ -512,7 +529,14 @@ cost and improves k₃ [P + C · 5.4c].
 k_* = 0.151676198434561…, so sup Λ on H₂,₁(ℂ) is 2E|L|, attained only at G = 0 [P author only + C · 2.6]; for Λ̂ the
 sharp cost is 0.392424545003417… [P + C · 2.6a].
 
-**Nonzero core.** By parity (1.7) there is no first-order term and no coupling to the even block; what is needed is a
+**Remote core.** Over every remote q, each of z₁Q and z̄₁P separately has uniform cost 0.01, 0.03, 0.04 at the peak,
+flank and upper rows; the normalised visible cubic ν·z₁(T − 2)/√2 has costs 0.22, 0.24, 0.25. These bounds hold at
+every amplitude with arbitrary sharing, for both Λ and Λ̂. Simultaneous raw odd sectors satisfy the sum of these
+costs when E[Q | q] = E[P | q] = E[Q·conj(P) | q] = 0; the retained simultaneous conclusion is proved when q and
+(Q, P) use disjoint Gaussian blocks and Q, P have their genuine chaos degrees [P + C, author only · codex-a7c4 ·
+7.2.6, 7.2.7]. No A or B shell is present in that base.
+
+**General nonzero core.** By parity (1.7) there is no first-order term and no coupling to the even block; what is needed is a
 uniform pure cost Λ(H + O) ≤ Λ(H) − κ_E‖O‖² over genuine even cubic cores H at the required rows [open · 7.2.4]. Within
 the odd block, z₁Q and the normalised one-coordinate cubic ν·z₁(T − 2)/√2 interact at a remote base q through
 
@@ -529,9 +553,19 @@ per unit energy on nine cores [N].
 
 ### 2.10 Response domains and the central consumer
 
-Only G that come from actual responses enter the row. At ε = 1891/2500, for t ≥ 0.84 the remote energy of a response
-is below 0.046266 and its total energy below 0.081884; the total is below 0.071981 for t ≥ 0.8456 and below 0.062431
-for t ≥ 0.851 [P + C · codex-a7c4, re-derived by claude-b9ee · 2.12a]. Without a threshold in t no such cap holds
+Only G that come from actual responses enter the row. Put R = √π/2 and let E_q, E_A, E_B, E_Q, E_P, E_ν be the
+six sector energies in (1.7), with E_ν = 2|d|². Every actual response, with all sharing allowed, satisfies
+
+    E_q/2 + 2E_A/3 + 4E_B/3 + E_Q + E_P + 8E_ν/7 ≤ ε²(R² − t²).
+
+The proof combines the common-response support inequality with weighted Cauchy–Schwarz; equivalently it is a
+weighted Bessel bound with h and k in separate slots. It improves the previously used ellipsoid by
+ε²(R − t)²/2 in that ellipsoid's normalization [P, author only · codex-a7c4 · 2.12b]. It is a feasibility bound,
+not a claim of odd-sector monotonicity.
+
+At ε = 1891/2500, for t ≥ 0.84 the reviewed remote cap remains 0.046266 [P + C · codex-a7c4, re-derived by
+claude-b9ee · 2.12a]. Combining it with the stronger ellipsoid gives total energy below 0.080051; the total is
+below 0.070564 for t ≥ 0.8456 and below 0.061366 for t ≥ 0.851 [P + C, author only · 2.12b]. Without a threshold in t no such cap holds
 (chapter 4, item 69). The October manuscript has 25 further response constraints [R · 2.12]. These cuts apply to
 responses only: inserting them inside a supremum over all G is invalid, and two penalties that spend the same square
 cannot be added.
@@ -571,8 +605,8 @@ K-consumer exists [open · STATUS §8].
    t-dependent energy caps, and state the consumer in Lean. *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
    Left: A and B jointly with the tilted A direction (on the grid the tilted pointwise remainder bound has margin
-   0.252 at the tilt (0.6, 0)), then both contents budgeted with the full cost matrix; a B-content bound for the
-   tilted profile; the odd sectors; the other rows, through the weighted scaling of 1.6; more than three remote
+   0.252 at the tilt (0.6, 0)), then both contents budgeted with the full cost matrix; the finite-amplitude cost for
+   the matched B tilt (its content is bounded in 2.7, author only); the odd sectors; the other rows, through the weighted scaling of 1.6; more than three remote
    variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).
 8. **The identity-tail witness** raises the model ceiling to 1.40248 and is untested at certificate level.
 

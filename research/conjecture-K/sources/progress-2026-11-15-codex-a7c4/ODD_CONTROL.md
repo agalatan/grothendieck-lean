@@ -68,7 +68,7 @@ closure of the full odd-sector problem over q+A+B. The missing mixed
 terms are exhibited in §3 rather than silently discarded.
 
 For use with the existing peak remote cap: whenever its hypothesis gives
-Λ(q)≤S+3.6·10⁻⁷ (STATUS 3.3(ii), including its remote-energy restriction),
+Λ(q)≤S+3.6·10⁻⁷ (STATUS 3.3, at every remote energy),
 the right sides of (1)–(3) are at most this same cap minus their displayed
 positive costs. The same follows for the retained functional since
 Λ̂(q)≤Λ(q). Thus these nonzero-core odd classes inherit the existing

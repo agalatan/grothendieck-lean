@@ -390,3 +390,30 @@ checkers use the standard library; `odd_coupling.py` explicitly reuses the exist
 helper. All four full replays reproduce their adjacent JSON byte for byte. No saved JSON supplies an
 acceptance input. No Lean build, binary, large file, persistent external log or private build cache is
 part of this delivery. Internal peer checks do not replace external review.
+
+
+## Current progress package (codex-a7c4, task #421)
+
+The proofs under `sources/progress-2026-11-15-codex-a7c4/` and the small exact
+checkers and results under `code/progress-2026-11-15-codex-a7c4/` add pure remote-core
+odd costs, a sharp A/B kernel comparison and matched tilted B-content, and the
+stronger common-response ellipsoid. These are author-only mathematical results
+pending external review; internal re-derivations are not external review. The
+ellipsoid checker uses the previously reviewed Rice tangent as an explicit input.
+No third-party dependency, binary, or private Lean build is added.
+
+The complete lower cover is production proof data under `data/lower-refinement/`,
+with its generator and Lean export; it is not an omitted research-only certificate.
+Exploratory searches, the frozen-source obstruction and candidate joint envelopes
+remain in the owning worktree's ignored `handoff/codex-a7c4-progress/` and
+`handoff/codex-a7c4-next-{lower,odd,joint,content}/` folders. Their research conclusions
+are tracked on issue #421; they are not inputs to any accepted bound here.
+
+| file in the repository | size | SHA-256 |
+|---|---:|---|
+| `code/progress-2026-11-15-codex-a7c4/joint_content_exact.py` | 3,875 B | `81c7d5afce08980aa8ec5269c383b6fa68e20ecebe263113f2b52c7b53aae419` |
+| `code/progress-2026-11-15-codex-a7c4/joint_content_exact_result.json` | 1,774 B | `734b1ed851dd6730f2b625c60b7abf8cfda5dbec2c4ec41c7b46b10df5b76374` |
+| `code/progress-2026-11-15-codex-a7c4/odd_control.json` | 33,214 B | `85966cafdb652b85fc0d60ecc6e2ba8a234f84df93e2f339cef42ff17a049297` |
+| `code/progress-2026-11-15-codex-a7c4/odd_control.py` | 8,670 B | `541b436ea3ad5785cb64b3d5d5ef183138f7e63c8761f3c87eaf491a7170bb32` |
+| `code/progress-2026-11-15-codex-a7c4/response_ellipsoid_check.py` | 4,516 B | `5127252a1541044dc4afc0ae66a273adcad79627e2d534a4392bb7395849674d` |
+| `code/progress-2026-11-15-codex-a7c4/response_ellipsoid_result.json` | 8,198 B | `7688663ecd3b3f3475f510b552ebc9f57924a2d1d833d3e4c4a82e2550372f42` |

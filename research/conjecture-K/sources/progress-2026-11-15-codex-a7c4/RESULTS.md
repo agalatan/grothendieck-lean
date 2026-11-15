@@ -15,7 +15,7 @@ source tables and analytic hypotheses. It does not assume Conjecture K.
 and remaining numerical bottlenecks. The production data and replay instructions
 are in `data/lower-refinement/`.
 
-Two new analytic results address Conjecture K:
+Two analytic results address sectors of Conjecture K, and a third tightens the response domain used by a lower-bound consumer:
 
 - [ODD_CONTROL.md](ODD_CONTROL.md) proves uniform costs for each pure odd sector
   over every remote core, at every amplitude and with arbitrary sharing. The
@@ -30,6 +30,12 @@ Two new analytic results address Conjecture K:
   `||c_B,.30318||² ≤ .1 D_+ + 4.43·10⁻⁶` for every finite-dimensional cubic
   with `u≤.0463`. The corresponding finite-amplitude B and joint costs remain
   separate obligations. The note also records improved conditional joint budgets.
+- [RESPONSE_ELLIPSOID.md](RESPONSE_ELLIPSOID.md) strengthens the simultaneous
+  six-sector constraint on actual responses, by a weighted Cauchy–Schwarz or
+  Bessel argument. The resulting total-energy caps are `.080051`, `.070564`,
+  `.061366` at the existing thresholds `t≥.84`, `.8456`, `.851`. All sectors
+  may share coordinates. This is a feasible-domain improvement, not a payoff
+  bound or a theorem about every cubic in the raw K supremum.
 
 The new analytic arguments are author proofs with independent review within this
 session. Their scalar premises were recomputed with exact rational or outward
@@ -40,16 +46,19 @@ a core containing A/B remain open.
 
 ## Verification
 
-Both new research checkers were replayed independently and reproduced their
+The odd-cost and content checkers were replayed independently within this session and reproduced their
 saved JSON byte for byte. The six odd-potential bounds include all radial tails;
 the exact kernel checker recomputes endpoint comparisons and conditional budgets.
-Both reject optimized Python (`-O`). The complete production cover passes the
+The response-ellipsoid checker derives the sector weights and encloses π by
+exact rational series; it replays all new numerical caps, conditional on the
+inherited reviewed Rice tangent. All three reject optimized Python (`-O`). The complete production cover passes the
 standard-library rational verifier and all eight negative controls. Its Lean
 export passes the exact complete-partition replay.
 
-Targeted Lean compilation and the resulting axiom report are recorded in the PR
-after integration. The heavy Gaussian cap computations are unchanged; full
-assembly is checked in CI.
+The changed Lean modules built in the targeted check. The [full proof check](https://github.com/agalatan/grothendieck-lean/actions/runs/43690956235)
+at commit `5446f03d780fbb10e53be00e0e40516738366fd2` passed, including `main_bounds`
+and the axiom report. The heavy Gaussian cap computations are unchanged and
+were replayed from the verified CI cache.
 
 ## Review feedback from merged PR #419
 
@@ -62,8 +71,7 @@ Low–Medium severity. The local eigenvalue argument retains author-proof status
 with replayed computation and a numerical cross-check; a special case is not an
 independent stronger theorem.
 
-The current-state rewrite under #414 owns the book, ledger and inventory changes,
-including the status-label qualifications and duplicate presentation identified
-by that review. This work supplies separate current theorem statements and proof
-material for that rewrite. The minor `STATUS 7.4.5` reference in the preceding
-audit note is corrected here. No existing source package is replaced.
+The current-state rewrite landed in #423. This branch updates its book and ledger
+in place with these results and their review status. The minor `STATUS 7.4.5`
+reference in the preceding audit note is corrected here. No existing source
+package is replaced.
