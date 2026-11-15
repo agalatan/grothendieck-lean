@@ -1,4 +1,5 @@
 -- Grothe/UpperTightBudget.lean
+import Grothe.Upper.ImprovedHeadWeightData
 import Grothe.Upper.ThreeBandBudget
 import Grothe.UpperChaos.PhaseMomentData
 import Grothe.UpperChaos.TaylorCenterBandData
@@ -11,14 +12,15 @@ import Grothe.UpperQuad.PortFacts.Thresholds
 The production panel certificates have much smaller total caps than their original allowances.
 These radii retain the existing tail and root-gap reserve, use the exact dyadic table excursions,
 and recompute whole-source error radii from the already certified inner-product thresholds.
-The comparison then deducts the forced linear energy from the Gaussian-amplitude Hardy budget
+The comparison uses longer certified coefficient prefixes and the existing table-accuracy
+allowance, then deducts the forced linear energy from the Gaussian-amplitude Hardy budget
 `5/4`, retaining the accepted quadrature and comparison certificates.
 
 This module proves only exact arithmetic. The panel acceptance facts and their analytic
 interpretation are supplied separately; no new finite numerical assumption is introduced here.
 
 Agent-ID: codex-c8a4. Refs #389.
-Gaussian-amplitude refinement: Agent-ID: codex-9b17. Refs #380.
+Coefficient and Gaussian-amplitude refinements: Agent-ID: codex-9b17. Refs #379, #380.
 -/
 
 namespace Grothe.Upper
@@ -65,24 +67,11 @@ def tightThreeBandErrorQ (j : Fin 7) : ℚ :=
   if j = 4 then tightScaledRQ 1 else
   if j = 5 then tightLowErrorQ 2 / 6 else tightScaledRQ 2
 
-/-- Tight square-root ceilings for the grouped reference masses, using the existing caps. -/
-def tightThreeBandMassQ (j : Fin 7) : ℚ :=
-  if j = 2 then 91516952888826 / 10 ^ 15 else
-  if j = 4 then 91516952739994 / 10 ^ 15 else
-  if j = 6 then 198924380740356 / 10 ^ 15 else (threeBandBands j).norm
+/-- Mass ceilings for the longer certified polynomial head costs. -/
+def tightThreeBandMassQ (j : Fin 7) : ℚ := improvedThreeBandMassQ j
 
-theorem tightThreeBandMassQ_nonneg (j : Fin 7) : 0 ≤ tightThreeBandMassQ j := by
-  have h : ∀ j : Fin 7, 0 ≤ tightThreeBandMassQ j := by decide +kernel
-  exact h j
-
-/-- Regroup the already certified eighteen mass squares without coarse decimal rounding. -/
-theorem tightThreeBand_mass_caps (j : Fin 7) :
-    (∑ k : Fin 18, if threeBandOldGroup k = j then comparisonBands[k].norm ^ 2 else 0) ≤
-      tightThreeBandMassQ j ^ 2 := by
-  have h : ∀ j : Fin 7,
-      (∑ k : Fin 18, if threeBandOldGroup k = j then comparisonBands[k].norm ^ 2 else 0) ≤
-        tightThreeBandMassQ j ^ 2 := by decide +kernel
-  exact h j
+theorem tightThreeBandMassQ_nonneg (j : Fin 7) : 0 ≤ tightThreeBandMassQ j :=
+  improvedThreeBandMassQ_nonneg j
 
 theorem tightQuadRadiusQ_pos (g : Fin 3) : 0 < tightQuadRadiusQ g := by
   have h : ∀ g : Fin 3, 0 < tightQuadRadiusQ g := by decide +kernel
@@ -157,7 +146,7 @@ def tightThreeBandCompareQ : ℚ :=
   2 * ∑ j : Fin 7, tightThreeBandMassQ j * tightThreeBandErrorQ j +
     tightThreeBandQuadraticQ
 
-/-- The finite head residual, including the existing table tolerance. -/
+/-- The finite head residual, including the existing quantitative table tolerance. -/
 def tightHeadResidualQ : ℚ := headCapQ + energyErrQ + tightThreeBandCompareQ
 
 /-- The linear coefficient forced by the finite head residual. -/
@@ -176,7 +165,7 @@ def tightValueQ : ℚ := 1 / (slopeQ - tightResidualQ)
 
 theorem tightHeadResidualQ_exact :
     tightHeadResidualQ =
-      24910136796371013041787179493800509 / 16384000000000000000000000000000000000000 := by
+      24908481370893906648773104101800509 / 16384000000000000000000000000000000000000 := by
   decide +kernel
 
 theorem tightLinearLowerQ_pos : 0 < tightLinearLowerQ := by decide +kernel
@@ -188,29 +177,29 @@ theorem tightTailQ_nonneg : 0 ≤ tightTailQ := by decide +kernel
 theorem tightResidualQ_lt_slopeQ : tightResidualQ < slopeQ := by decide +kernel
 
 /-- The exact new reciprocal lies strictly below this twelve-decimal threshold. -/
-theorem tightValueQ_lt : tightValueQ < 1404599398251 / 10 ^ 12 := by decide +kernel
+theorem tightValueQ_lt : tightValueQ < 1404599398052 / 10 ^ 12 := by decide +kernel
 
 theorem tight_real_reciprocal :
     1 / ((slopeQ : ℝ) - (tightResidualQ : ℝ)) = (tightValueQ : ℝ) := by
   norm_num only [tightValueQ, Rat.cast_div, Rat.cast_one, Rat.cast_sub]
 
-theorem tight_real_value_lt : (tightValueQ : ℝ) < (1.404599398251 : ℝ) := by
+theorem tight_real_value_lt : (tightValueQ : ℝ) < (1.404599398052 : ℝ) := by
   calc
-    (tightValueQ : ℝ) < (((1404599398251 : ℚ) / 10 ^ 12 : ℚ) : ℝ) := by
+    (tightValueQ : ℝ) < (((1404599398052 : ℚ) / 10 ^ 12 : ℚ) : ℝ) := by
       exact_mod_cast tightValueQ_lt
-    _ = (1.404599398251 : ℝ) := by norm_num
+    _ = (1.404599398052 : ℝ) := by norm_num
 
 /-- Kernel-checked integer arithmetic gives the tail comparison after the radial-index shift. -/
 theorem tight_hardy_numeric :
     (tightShiftedBudgetQ : ℝ) * (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1)) ≤
       (tightTailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
   have hN :
-      (3026520747459944479503303427411872446249193426871408702127005549160122066029320159190719 *
+      (3026520746795139941081075137961314000594689672517858790628939000386752133673064415190719 *
         4000 ^ 1002 : ℕ) ≤
       367902949728138186280056000569032048640000000000000000000000000000000000 *
         4149 ^ 1002 := by decide +kernel
   have hR :
-      (3026520747459944479503303427411872446249193426871408702127005549160122066029320159190719 *
+      (3026520746795139941081075137961314000594689672517858790628939000386752133673064415190719 *
         4000 ^ 1002 : ℝ) ≤
       367902949728138186280056000569032048640000000000000000000000000000000000 *
         4149 ^ 1002 := by exact_mod_cast hN

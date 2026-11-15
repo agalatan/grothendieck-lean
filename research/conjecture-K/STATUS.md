@@ -445,7 +445,7 @@ Rem(w, ρ) = 2[f(w, ρ) − f(w, 0) − ⟨∇_ρf(w, 0), ρ⟩].
 |---|---|---|---|
 | 12.1 | The proved lower bound, independent of K: K_G^ℂ ≥ 1250000000/891774069 > 1.401700322371, from the same cubic witness and source/law bank with 15,096 leaves, cap B = 891774069/1250000000 = 0.7134192552. It does not reach 1.4018, whose cap threshold is 5000/7009 | **Lean**: `lower_bound_of_completed_refinement`, `lower_target`, `main_bounds`; targeted builds and full CI run 43690956235 at 5446f03d780fbb10e53be00e0e40516738366fd2 pass, including the axiom report. Exact complete-partition replay and eight rejection controls pass | KPROG `LOWER_ROUTE.md`; `data/lower-refinement/`; `docs/LEAN_DETAILS.md` |
 | 12.2 | Ceiling of the cubic witness family: below 1.4022581233 for every complex multiplier and every dimension | **R** here (`docs/overview.tex` prints [P, C], with the generic arithmetic in Lean) | `docs/overview.tex` ("Limits of the witness method") |
-| 12.5 | An upper bound K_G^ℂ < 1.404896400821 claimed in EXT-R | **R**; weaker than the proved 1.404599398251 (`main_bounds`) and unrelated to K | EXT-R |
+| 12.5 | An upper bound K_G^ℂ < 1.404896400821 claimed in EXT-R | **R**; weaker than the proved 1.404599398052 (`main_bounds`) and unrelated to K | EXT-R |
 | 12.6 | The fourth-moment theorem for homogeneous sums (arXiv:1407.6216) assumes centred, variance-one inputs with EX³ = 0 and is asymptotic: it gives no finite-amplitude content or deficit bound | **R** (codex-a7c4, A15R `FOUNDATIONS.md` §5, compared with the primary statement in A15F) | A15R `FOUNDATIONS.md` §5 |
 
 ## 13. False statements

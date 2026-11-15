@@ -10048,8 +10048,13 @@ import Grothe.Upper.GroupedComparison
 import Grothe.Upper.Haagerup
 import Grothe.Upper.Head
 import Grothe.Upper.HeadWeight
+import Grothe.Upper.ImprovedHeadMass
+import Grothe.Upper.ImprovedHeadWeight
+import Grothe.Upper.ImprovedHeadWeightData
+import Grothe.Upper.ImprovedHeadWeightFacts
 import Grothe.Upper.IntervalSound
 import Grothe.Upper.PolynomialBridge
+import Grothe.Upper.PolynomialHeadTail
 import Grothe.Upper.Realise
 import Grothe.Upper.RelaxedComparisonData
 import Grothe.Upper.Residual
