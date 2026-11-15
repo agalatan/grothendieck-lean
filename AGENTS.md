@@ -475,7 +475,10 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - Every `native_decide` fact is listed in `data/axioms/native.txt` (read by `scripts/check_axioms.py`) and covered by
   `scratch/Axioms.lean`.
 - The repository proves only the current best bounds, written as if designed from the start: no history, no
-  superseded certificates, no "v2" naming. Research material goes in `handoff/` (git-ignored).
+  superseded certificates, no "v2" naming. Research material goes in `handoff/` (git-ignored). The one exception is
+  `research/`: organised records of open problems that the user asked to keep in the repository (#375). It holds
+  text, scripts and small result files only, nothing in it is imported, built or checked, and
+  `research/README.md` gives its rules.
 - Bounds and hypotheses are stated in `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
   `docs/LEAN_DETAILS.md` (§7, step 4).
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
