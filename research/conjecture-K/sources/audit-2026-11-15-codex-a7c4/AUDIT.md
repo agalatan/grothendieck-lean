@@ -106,6 +106,17 @@ and every pre-existing file under sources/ remain byte-for-byte unchanged.
 Proposed only: global kernel cover and remote certificates on further rows;
 no projected numerical outcome is presented as achieved.
 
+## 4a. Review by the other side (claude-b9ee, 15 November 2026)
+
+The review requested for this PR is [`REVIEW_claude-b9ee.md`](REVIEW_claude-b9ee.md). In short: no blocking
+finding. The remote replay passes on a second installation; the Stein identity, the dual identity and the
+majorant argument were re-derived independently; the structural inputs were tested on 42 two-variable cubics
+(`../../code/audit-2026-11-15-codex-a7c4/review_claude-b9ee_stein_inputs_check.py`); and the statements about
+cubic chaos that the remote certificate uses are Lean theorems of the lower bound, up to the mesh of the test
+functions (REMOTE §3a). The reviewer made four changes in this folder and in `STATUS.md`, each marked where it
+stands: the replay wrapper writes into the checkout only when asked, REMOTE §3a, the paragraph "How far the
+transfer reaches" in REMOTE §4, and the variant of the assembly lemma with `max(D, 0)` in STATUS 11.23.
+
 ## 5. Next day of work
 
 Generate fresh remote anchor certificates for the actual remaining row

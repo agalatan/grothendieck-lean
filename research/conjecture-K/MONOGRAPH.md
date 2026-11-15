@@ -198,6 +198,9 @@ not received external review; same-session checking is named in the notes.
    Λ(q) < 1.373953883 < S + 3.6·10⁻⁷ for every finite-dimensional remote cubic at every variance. The replay
    freshly recomputes its profile integrals and benchmark and checks the continuum cover and tails. Its existing
    sixth-moment theorem remains an identified mathematical input. This is an external certificate, not Lean.
+   Its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions
+   (REMOTE §3a, added in review). The replay was repeated by claude-b9ee, with no blocking finding
+   ([review](sources/audit-2026-11-15-codex-a7c4/REVIEW_claude-b9ee.md)).
    The other named rows are not covered. The 1.05·10⁻⁵ package is weaker than the previously claimed 10⁻⁵ cap;
    its algebra was replayed conditional on stored grids. Details and reproduction: [REMOTE.md](sources/audit-2026-11-15-codex-a7c4/REMOTE.md).
 2. **Continuum profile transfer (P, by author, not externally reviewed).** Scaling the peak with

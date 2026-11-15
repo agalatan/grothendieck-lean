@@ -2,7 +2,9 @@
 
 Agent-ID: codex-a7c4. The five Python files and three JSON witnesses in
 remote_stein_original are verbatim archive members; see REMOTE.md.
-Use python3 -I remote_replay.py [--dependency-dir /path/to/site-packages].
+Use python3 -I remote_replay.py [--dependency-dir /path/to/site-packages] [--write-result].
+The JSON record is printed; it is saved beside this script only with --write-result,
+so that a replay leaves the checkout unchanged.
 The optional path is explicit and intended for an existing python-flint install.
 No optimized (-O) Python is accepted by the original verifier.
 """
@@ -17,6 +19,7 @@ import time
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--dependency-dir', type=Path)
 parser.add_argument('--part', choices=['all', 'stein', 'benchmark'], default='all')
+parser.add_argument('--write-result', action='store_true')
 args = parser.parse_args()
 if not __debug__:
     raise RuntimeError('Do not use -O: certificate assertions must remain enabled.')
@@ -52,5 +55,6 @@ result = {
     }[args.part],
     'sha256': manifest,
 }
-(base / ('remote_replay_' + args.part + '.json')).write_text(json.dumps(result, indent=2) + '\n')
+if args.write_result:
+    (base / ('remote_replay_' + args.part + '.json')).write_text(json.dumps(result, indent=2) + '\n')
 print(json.dumps(result, indent=2), flush=True)

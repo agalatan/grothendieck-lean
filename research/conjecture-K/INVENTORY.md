@@ -184,3 +184,7 @@ The existing python-flint dependency directory in section 2 was reused read-only
 Two small logs are retained as cited acceptance records: `remote_replay.log` and `remote_legacy_replay.log` under
 `code/audit-2026-11-15-codex-a7c4/`. The independent numerical output is `sector_numerics.json`; no sampling arrays,
 binaries, archives, PID files or byte-code caches are retained in the new audit directories.
+
+The review by claude-b9ee added three small text files to the same two directories (`REVIEW_claude-b9ee.md`, a
+numerical test script and its log); it used a python-flint installation in a session scratch directory, of which
+nothing is retained.

@@ -230,6 +230,40 @@ dropped. The code's complex analytic bounds, real fallback bounds, Hermite
 coefficient rounding, polynomial tail and benchmark concavity argument were
 inspected. No floating-point objective or optimizer is accepted as a bound.
 
+### 3a. Where these inputs stand in Lean
+
+Added by claude-b9ee on 15 November 2026, after reading the Lean sources at `93098815d`.
+The certificate has two kinds of input: statements about every complex cubic chaos, and enclosures of the
+profile `h`. The lower bound of this repository controls the law of `U` by the same method, so the statements
+of the first kind are Lean theorems there:
+
+| input used above | Lean statement | proved for a circular cubic of the third chaos by |
+|---|---|---|
+| `EU³ ≤ 6 + 9χ + (4045313/100000)χ^(3/2)` and `sqrt(χ) ≤ 31/4` | fields `m3` and `x1` of `Grothe.Lower.Moments` (`Grothe/Lower/Law.lean`); `C6` and `xMax` in `Grothe/Lower/Moment.lean` | `gaussian_moments` (`Grothe/LowerAnalytic/Bridge.lean`), through `sixth_moment_complex` (`Grothe/LowerAnalytic/SixthMoment.lean`) |
+| `X`, `r` with `EX = 0`, `EX² ≤ 2P/3`, `Er² ≤ 2R/3`, `2P + R = χ`, `R ≤ χ/3` | the structure `Grothe.Lower.SteinInputs` (`Grothe/Lower/Stein.lean`), with `v = X` | `gaussian_steinInputs` (`Grothe/LowerAnalytic/RadialCut.lean`) |
+| `E[Φ(U) − φ(U)] = E[Xφ(U) + r d(U)]` | the last clause of `SteinInputs` (`cutGap`, `cutPhi`, `cutY`) | the same theorem, for the test functions described below |
+| `E G(U) ≥ 0` | field `spec` of `Grothe.Lower.SteinCut` (`Grothe/Lower/Law.lean`): the same `f₀`, `g₀` and `G` | `steinCut_of_inputs` (`Grothe/Lower/Stein.lean`), from `Moments` and `GramInputs` (`gaussian_gramInputs`, `Grothe/LowerAnalytic/GramBudget.lean`) |
+
+The test functions differ in two ways.
+
+1. Lean's `φ` vanishes beyond its last knot; the package's is constant there. This is harmless: a constant
+   `c` added to `φ` leaves `d = φ − Φ/u` unchanged, replaces `β` by `β + c` in `f₀`, and adds `c(u − 1)` to
+   `Φ − φ`, which has mean zero because `EU = 1`.
+2. Lean's knots are squares of rationals (its mesh is rational in `sqrt(u)`). The package uses one mesh for all
+   45 nodes: 85 knots from 0 to 40, in steps of `1/8` at first and of 2, 4 and 8 at the end. Most of them are
+   not squares of rationals, so the 45 duals are not instances of the Lean family as they stand. A port would
+   choose the duals again on a mesh of rational squares (every admissible test function gives a valid cut, so
+   only the majorant inequalities have to be found again), or prove the integration by parts for arbitrary
+   rational knots.
+
+So the statements about cubic chaos are in Lean, up to the mesh of the test functions. Besides that, a Lean
+version of the peak remote bound needs only what concerns the profile: enclosures of `h` and `h′` at the 377
+points the verifier evaluates (the nodes of the 68 profile caps and of the 154 outer rectangles, the point 2
+of the tangent ray and the endpoint `3/20`), the signs `h″ ≤ 0` and `h⁽⁴⁾ ≤ 0`, the bound `−h″ < 3`, and a
+checker of the kind the lower bound already has (`checkBatch` in `Grothe/Lower/Mixed.lean`, which accepts
+majorants `a₀ + a₁s + a₂s² + a₄s⁴ + a₆s⁶` in `s = sqrt(u)` on the whole half-line). This is a remark on
+feasibility, not a port: nothing in this folder is checked by Lean.
+
 ## 4. New quantitative profile transfer
 
 **P, by its author; checked by the separate sector-audit worker within this
@@ -268,6 +302,16 @@ once those anchors have valid independent certificates. We found no such
 quantitative tube in STATUS or its cited failure list; no priority claim is
 made for the elementary continuity argument itself.
 
+**How far the transfer reaches** (added by claude-b9ee, 15 November 2026). Scaling by `λ` is exact, so what
+has to be covered is the set of shapes `(a/λ, b/λ)`. For the application box (ε in [0.74, 0.76], ℓ in
+[0.76, 0.90], b in [0.12, 0.16], a = ℓ − 2b) this set has area about `0.0072`. With a total allowance of
+`10⁻⁴`, formula (T) lets an anchor with `η₀ = 3.6·10⁻⁷` reach `d ≤ (10⁻⁴ − λη₀)/(2 sqrt(π)) ≈ 2.81·10⁻⁵`, a
+diamond of area `(4/3)d² ≈ 1.05·10⁻⁹`. Covering the box by transfer alone would need about seven million
+anchors, each a certificate of the size of this one: transfer is not a route to the whole box. It need not be
+one. The row inequality (STATUS 2.1) holds for every `(ℓ, β, ε)`, so a consumer (L6, not built) may work with
+finitely many rows of its choosing, and remote caps are then needed at those rows only. What the tube adds is
+robustness: a cap survives a change of `a` and `b` in the sixth decimal at a cost below `5·10⁻⁶`.
+
 ## 5. Disjoint A-driver consequence
 
 **P, by its author; checked by the separate sector-audit worker within this
@@ -292,6 +336,14 @@ This activates an existing reduction with a newly replayed input. It says
 nothing about shared q/U drivers, the B shell or the z-odd sectors.
 
 ## 6. Reproduction
+
+Both commands print their record. `remote_replay.py` saves it beside the script only with `--write-result`,
+so that a replay leaves the checkout unchanged (changed by claude-b9ee, 15 November 2026).
+
+**Second replay.** claude-b9ee ran `remote_replay.py` on 15 November 2026 at `f48b5ede0` (Python 3.12,
+python-flint 0.9.0, a separate installation): PASS in 128.5 seconds, with the same enclosure of `S` and the
+same two exact bounds. `remote_rational_audit.py` reproduced its saved result byte for byte. The review is
+[`REVIEW_claude-b9ee.md`](REVIEW_claude-b9ee.md).
 
 With python-flint installed in the interpreter's ordinary environment:
 
