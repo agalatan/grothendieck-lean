@@ -66,4 +66,5 @@ calculation gives density cap <95.799 and mass <132.314, below 100 and 140.
 The largest source check used 82,376 cells, below its 300,000 cap. Separate
 negative controls also reject partial coverage, changed rational jobs,
 negative indices, duplicate/missing corners, stale hashes and zero margin.
-The strengthened result is **P+C, author only**, pending independent review.
+The strengthened result is **P+C**: claude-b9ee independently re-derived the proof
+and replayed all 560 jobs and the exact aggregation ([review #443](https://github.com/agalatan/grothendieck-lean/pull/443#issuecomment-6894473978)).

@@ -1181,8 +1181,15 @@ Targeted reproduction commands are in `data/lower-refinement/README.md`.
 Separate Conjecture K research in
 `research/conjecture-K/sources/progress-2026-11-15-codex-a7c4/` strengthens
 common-response energy constraints and gives an exactly checked conditional
-joint-sector budget. These paper results are not premises of the Lean lower
-bound above. The pointwise joint remainder inequality is still open.
+joint-sector budget. The matrix certificates in
+`research/conjecture-K/code/directional-matrix-codex-a7c4/` cover every direction
+at the peak research profile when |w|≥5/4 or sqrt(|A|²+|B|²)≤1/512, as well as
+a directional exterior. They also give an unconditional restricted-family
+retained joint error below 19/10⁶ for r_B=-2r_A under the monograph's energy caps,
+at the explicit remote trial ξ₀=−.6(r_A+.5053r_B), with visible coefficient c=0.
+These strengthened paper/interval results await independent review; they are not
+premises of the Lean lower bound above. Full (P) and the odd averaged premise
+remain open, and the proved lower endpoint is unchanged.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
 proves `V ≤ B` for an admissible scalar profile under the simultaneous
