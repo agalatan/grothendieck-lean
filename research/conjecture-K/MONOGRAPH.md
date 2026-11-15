@@ -647,6 +647,14 @@ interval upper bounds for S at each row; coverage of the energies outside R and 
 error ledger with exact thresholds; a single witness operator behind rows with different ε. No Lean statement of a
 K-consumer exists [open · STATUS §8].
 
+**A first consumer.** The cheapest consumer keeps the present witness ε = 149/200 and its 19 Lean rows. These rows
+and the crude row already cover every response t except [0.84, 0.8555]. One new row M = (149/200, 0.84775, 0.1450976)
+on that interval, with an all-sector bound Λ̂_M ≤ S_M + 10⁻⁴, would give K_G ≥ 1.40171 [C, P author only · codex-8d2f,
+replayed by claude-b9ee · STATUS 8.5]. The responses there fit the peak energy box after the weighted scaling, but the
+peak results themselves do not transfer: the profile change alone costs 7·10⁻⁴ against an allowance of 1.04·10⁻⁴
+[STATUS 8.6]. So M needs its own remote cap, joint premise and odd premise. For 1.402 at ε = 1891/2500, the reusable
+envelope of the old rows leaves four response intervals, among them [0.696, 0.84] [STATUS 8.7].
+
 ### 2.11 Charging response feasibility to the discarded squares
 
 [P + C · codex-9b17, re-derived and replayed by claude-b9ee in
@@ -706,7 +714,8 @@ by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows 
 5. **The remote part at the other rows**: certificates for the row envelope beyond the tube and the rectangle around
    the peak; the flank and upper rows are outside both. *Gives:* L1 for the consumer's rows.
 6. **The response regions outside R and the consumer**: cover the complementary t regions with a fixed ε, using the
-   t-dependent energy caps, and state the consumer in Lean. *Gives:* 1.402 from K_η.
+   t-dependent energy caps, and state the consumer in Lean. The cheapest first step is one new row at ε = 149/200,
+   which needs its own all-sector theorem and gives 1.40171 (2.10). *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
    Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 11/8 and
    1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside its proved local pieces; its conditional assembly uses the existing tilted-content theorem.
