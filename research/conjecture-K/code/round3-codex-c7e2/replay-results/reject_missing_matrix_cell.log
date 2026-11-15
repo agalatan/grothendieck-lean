@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/f307e93b3610/codex-c7e2-round3/joint/verify_positive_part.py", line 98, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/scratch/f307e93b3610/codex-c7e2-round3/joint/verify_positive_part.py", line 49, in main
+    assert [i for i,bound in rows]==list(range(320))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
