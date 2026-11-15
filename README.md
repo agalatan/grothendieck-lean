@@ -79,7 +79,8 @@ $\lvert \langle f, Tg \rangle \rvert \le B = 0.713420886479$ for all unimodular 
    variable, the supremum over twelve real parameters of an explicit integral against one complex Gaussian
    variable minus a quadratic form (`rowPot`, `Grothe/LowerAnalytic/FibreSup.lean`). It is evaluated at a multiple
    of $\lvert p \rvert$, where $p$ is the cubic chaos part, in the other coordinates, of the average of $k$ over
-   that coordinate. For the law of $U = \lvert p \rvert^2 / \lVert p \rVert^2$ Lean proves what holds for every
+   that coordinate. For the law of $U = \lvert p \rvert^2 / \lVert p \rVert^2$ (when $p = 0$, for example for
+   $f = g$, a fixed normalised cubic chaos takes its place: `poly_rep_H21`) Lean proves what holds for every
    cubic chaos of bidegree $(2,1)$ in any number of variables: $\mathbb{E}\,U^2 \le 44$, a bound on
    $\mathbb{E}\,U^3$ from the Wick expansion of the sixth cumulant, and the Stein cuts, families of inequalities
    $\mathbb{E}\,G(U) \ge 0$ from Gaussian integration by parts (`gaussian_moments`, `steinCut_of_inputs`).
@@ -115,21 +116,29 @@ $= 1/(c - \delta) = 1.40459995\ldots$ with $c = 0.7119483103461$ (`Grothe/Upper/
    polynomial in $z$, $w$ and their conjugates times $e^{-\frac{21}{20}(\lvert z \rvert^2 + \lvert w \rvert^2)}$,
    and $P_3(x) = 1 + ix - x^2/2 - ix^3/6$. $G_T$ has charge one, and its values lie in the unit disk because
    $\lvert P_3(x) \rvert^2 = 1 - x^4 (3 - x^2)/36$ and $\varphi^2 \le 99/100$ everywhere (`phiT_sq_le`: checked
-   bisection trees on a box, an analytic bound outside it). Applied to two Gaussian coordinates with correlations
-   $p$ and $-\tau$, odd polynomials of the inner product of coefficient norm at most 1, it has the kernel
-   $H(t) = \sum_{n,m} E[n,m] \, p(t)^n (-\tau(t))^m$, where $E[n,m]$ is the energy of $G_T$ in Hermite degree $n$
-   of the first coordinate and $m$ of the second (`rounding_diskKernel`).
+   bisection trees on a box, an analytic bound outside it). It is applied to two Gaussian coordinates whose
+   correlations are $z\,P(\lvert z \rvert^2)$ and $z\,Q(\lvert z \rvert^2)$ in $z = \langle x_i, y_j \rangle$,
+   with real polynomials $P$, $Q$ of coefficient norm at most 1. For real $t$ these are odd polynomials
+   $p(t) = t\,P(t^2)$ and $-\tau(t) = t\,Q(t^2)$, and the kernel is
+   $H(t) = \sum_{n,m} E[n,m] \, p(t)^n (-\tau(t))^m = \sum_j \kappa_j \, t^{2j+1}$, where $E[n,m]$ is the energy of
+   $G_T$ in Hermite degree $n$ of the first coordinate and $m$ of the second (`hasSum_kernel_real`). For complex
+   $z$ the rounding realises the kernel $\sum_j \kappa_j \, z \lvert z \rvert^{2j}$ of step 1 with the same
+   coefficients (`rounding_diskKernel`).
 3. **The residual** $\delta$ of $H$ against $c\,t$ is a sum of four bounds (`endpoint_of_comparison`,
-   `Grothe/UpperChaos/RelaxedThreeBandUpper.lean`):
-   - $28153/10^{12}$: the head, degrees up to 501, of the kernel of a stored table of energies (`head_check`);
-   - $6847009/(5 \cdot 10^{17})$: the $\ell^1$ distance from the table to the energies of $X = S(F_0 + v)$, where
-     a stored finite Hermite expansion $v$ stands for $T - F_0$ (`hclose_final`, `Grothe/UpperFinal.lean`);
-   - $1.7625\ldots \cdot 10^{-6}$ (`relaxedThreeBandCompareQ`): the weighted distance from the energies of $X$ to
-     those of $G_T$. With $T - F_0 = h_1 + h_2/2 + h_3/6$, $h_j = (i\varphi)^j F_0$, it rests on six estimates:
-     the $L^2$ distance from $h_j$ to a stored finite Hermite expansion $c_j$, as a whole and on the band of
-     lowest degrees (`six_of_facts`, `Grothe/UpperQuad/RelaxedTwistSix.lean`);
-   - $36748/10^{12}$: the tail beyond degree 501. The series continues holomorphically past the circle of radius
-     $4149/4000$, and an interval cover of that circle bounds its mean square by $7/4$ (`HardyReal.hardy_GT`).
+   `Grothe/UpperChaos/RelaxedThreeBandUpper.lean`). The first three concern the head: the degrees up to 501, to
+   which only the index pairs with $n + 3m \le 501$ contribute (`headIdx 501`).
+   - $28153/10^{12}$: the head of the kernel of a stored table of energies (`head_check`);
+   - $6847009/(5 \cdot 10^{17})$: the $\ell^1$ distance, over the index pairs with $n + 3m \le 501$, from the
+     table to the energies of $X = S(F_0 + v)$, where a stored finite Hermite expansion $v$ stands for $T - F_0$
+     (`hclose_final`, `Grothe/UpperFinal.lean`);
+   - $1.7625\ldots \cdot 10^{-6}$ (`relaxedThreeBandCompareQ`): the weighted distance, over the same index pairs,
+     from the energies of $X$ to those of $G_T$. With $T - F_0 = h_1 + h_2/2 + h_3/6$,
+     $h_j = (i\varphi)^j F_0$, it rests on six estimates: the $L^2$ distance from $h_j$ to a stored finite Hermite
+     expansion $c_j$, as a whole and on the band of lowest degrees (`six_of_facts`,
+     `Grothe/UpperQuad/RelaxedTwistSix.lean`);
+   - $36748/10^{12}$: the tail of the kernel of $G_T$ itself beyond degree 501. The series continues
+     holomorphically past the circle of radius $4149/4000$, and an interval cover of that circle bounds its mean
+     square by $7/4$ (`HardyReal.hardy_GT`).
 4. **Quadrature.** The Hermite coefficients of $F_0$ and of the $h_j$ are integrals over $s = \lvert z \rvert^2$.
    Checkers in interval arithmetic evaluate their Gauss–Legendre sums on one committed set of panels in
    $[0, 100]$ and compare them with the table (the energy facts `gradeBlockNN`) and with the $c_j$ (the port
@@ -220,8 +229,10 @@ other facts besides. The dependencies, Mathlib and LeanCert, are pinned in the s
 CI ([`.github/workflows/lean.yml`](.github/workflows/lean.yml)) checks pushed branches: it builds `Grothe`,
 checks that the root import files are the generated ones, rejects the constructs listed
 [above](#what-the-computer-checks-and-what-is-trusted) and checks the axiom report. A change that touches nothing
-Lean builds or checks skips the build. Runs start from the build cache described above; when the sources of the
-heaviest facts change, a self-hosted machine evaluates them again. Changes reach `master` through pull requests:
+Lean builds or checks skips the build. Runs start from the build cache described above. When the sources of the
+heaviest facts change, no cache fits them: the check of an ordinary pushed branch then fails at once and says so,
+and the facts are evaluated again on a self-hosted machine by the landing check of the pull request, by the check
+of `master`, or by a run dispatched for that purpose (`-f mode=caps`). Changes reach `master` through pull requests:
 after review the author comments `/land <agent-id>`, and CI checks the branch merged into the current `master` and
 moves `master` to that merge only if the check is green (`AGENTS.md` §7). Every update of `master` gets its own
 check.
