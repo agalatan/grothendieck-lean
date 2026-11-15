@@ -41,8 +41,8 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
-  every dimension and at every amplitude, and the same with error below 9.8·10⁻⁵ on a profile rectangle around the
-  peak (2.6).
+  every dimension and at every amplitude; and, by its author so far, the same with error below 9.8·10⁻⁵ on a profile
+  rectangle around the peak (2.6).
 - **Open:** the raw content inequality of L4 for general cubics; the finite-amplitude joint A/B bound, reduced to a
   compact box; the B-content of general cubics; the odd sectors over a nonzero core; the remote part away from the
   peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
@@ -530,9 +530,10 @@ K-consumer exists [open · STATUS §8].
 
 1. **The joint A/B remainder bound at finite amplitude** (2.8), first at the peak row. Enough: the compact box
    0 ≤ x ≤ 29/10, |α|, |β| ≤ 0.4 with reserve 7.53·10⁻⁵ (robust) or 8.07·10⁻⁵ (signed). Alternative: a global
-   pointwise cost m for A and B together, which must lie below the local value 0.29836…; on the grid the cost is about
-   0.30 at the origin, so a candidate such as 0.29 has to be tested before any certificate. With such an m the A + B
-   gain is a quadratic form in the contents at every amplitude, as step 2 of 2.6 is for the tilted A-sector.
+   pointwise cost m for A and B together. Any such m lies below 0.29836…, the local value at the origin, attained
+   along a genuine cubic direction (2.8), so a candidate such as 0.29 must be tested away from the origin before any
+   certificate. With such an m the A + B gain is a quadratic form in the contents at every amplitude, as step 2 of
+   2.6 is for the tilted A-sector.
    *Gives:* the A + B core of K from content bounds.
 2. **The raw L4 content inequality** for general cubics on 0.00551 ≤ u ≤ 0.0463, with the constant fixed by item 1
    (0.10 under the adverse joint hypothesis). Pieces: the mixed shells, several self-interacting drivers, the
@@ -670,7 +671,7 @@ over H₂,₁(ℂ²) with 18 shells [2.3].
 |---|---|---|---|
 | independent audit, n = 2…6, 50 starts, holdout validation | 0.0691 | 0.0785 | 0.087602 (n = 2) … 0.087492 (n = 6) |
 | best structured tensor (feasible in every n ≥ 2) | 0.06914308 | 0.07857990 | 0.08760259 |
-| Monte Carlo scan, n = 2…10 | ≈ 0.070 | ≈ 0.080 | 0.0828 to 0.0892, ±0.0003 to ±0.0011 |
+| Monte Carlo scan, n = 2…10 | ≈ 0.070 | ≈ 0.080 | 0.0828 to 0.0892, ±0.0003 to ±0.0011 (values above 0.0876 lie within their error bars and carry a selection bias; the first two rows are the reference) |
 | Wick monomial | | | 0.0875653 |
 
 No strict increase with n is resolved; the maximisers are 96 to 98 % Wick monomial plus an imaginary Hermitian
@@ -705,7 +706,7 @@ energy-dependent coefficients [11.29].
 | sectors | K | tilt (0.6, 0) |
 |---|---|---|
 | A alone | 0.320 | 0.362 (certified: at least 0.312, 2.6) |
-| A and B together | ≈ 0.300 on the grid; sharp local 0.29836 | 0.252 |
+| A and B together | at most 0.29836 (the sharp local value at the origin, 2.8) | 0.252 |
 | B alone | 0.706 | |
 | A, B, z₁Q, z̄₁P | 0.128 | |
 | with d·z₁(T − 2) | fails pointwise (−0.387) | |
