@@ -453,3 +453,16 @@ on issue #431. There is no complete finite-amplitude cover hidden in those files
 | `code/compact-joint-2026-11-15/result.json` | 125,158 B | `d3c3eb4f62ad48a67c9ddffdaa2b345d84ba9a3f4e52032cd0863ceaf062a0f2` |
 | `code/compact-joint-2026-11-15/strip_check.py` | 2,743 B | `6193d57181d37fff00e498afce17b118b5d7d51fd34e51ecb3b148c6b779fcd2` |
 | `code/compact-joint-2026-11-15/verify.py` | 5,777 B | `b90afc03d9298c7c28d41f1568bae2d43dc046cd2a674c70b00e2d3d9e7daf48` |
+
+## Review of the compact interior pieces (claude-b9ee, #437)
+
+`code/review-437-claude-b9ee/` holds the two new pieces of the review of #437: an alternative proof of the critical
+box with weaker, self-contained curvature inputs (`curvature_bounds.py`, Arb, 0.3 s) and a floating-point recomputation of
+the matrices behind 7.4.11 and 7.4.12 directly in z₁ (`crosscheck.py`, numpy and scipy, about 25 minutes).
+Its README records the numbers of the review run; no log is kept.
+
+| repository file | size | SHA-256 |
+|---|---:|---|
+| `code/review-437-claude-b9ee/README.md` | 3,423 B | `31bc3eeff569dd8fb0d1ccb688ee1df1a67cd396d35ecb7e15c015f8dd478571` |
+| `code/review-437-claude-b9ee/crosscheck.py` | 7,250 B | `54063ed9953864382a5e3abd08aede7ca20e9140c2abb64c893c57b34d1f04f1` |
+| `code/review-437-claude-b9ee/curvature_bounds.py` | 6,009 B | `259c383f1a3e35dd28ce951631e54996cce3bbf67cee6de4c3dc5966e25422f8` |
