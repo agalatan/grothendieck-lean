@@ -1,0 +1,7 @@
+{
+  "status": "PASS exact endpoint PSD and step-1/128 cover audit",
+  "points": 17,
+  "region": "0<=|w|<=1/8; sqrt(S)<=1/256; all complex directions",
+  "min_diagonal": "38880326140694621524037/5197941220311040000000000",
+  "min_determinant": "141663280740022630513368372550821108895403725551/110668156640496122569663880731033600000000000000000000"
+}

@@ -1,0 +1,115 @@
+{
+  "agent_id": "codex-c7e2",
+  "baseline": "6bb44599190397f806d2db89b25df4e6785b758e",
+  "claim": "Rigorous partial results; full Conjecture K remains unproved",
+  "files": {
+    "README.md": {
+      "sha256": "8eeb7d1fa34ebdf623ce4cf255515655d630ad1c992d172f173e2ce379c7e8d9",
+      "bytes": 8625
+    },
+    "replay.mjs": {
+      "sha256": "9098971264cffe11d1d7148c3f93ab76c9a47ca05c802b0a1b291fd1029e247a",
+      "bytes": 1480
+    },
+    "remote/NEAR_GAUSSIAN_REMOTE.md": {
+      "sha256": "807403a7e86d726bd1e239e692a9d2ed15b6a2e677f89c14fe44bd1ebe4c5b14",
+      "bytes": 6777
+    },
+    "remote/check_constants.py": {
+      "sha256": "7b62b5c2874e9f31537900c91469a4a1b849c4dd07001e2eccfa92b5f256691f",
+      "bytes": 762
+    },
+    "all-sector/GAUSSIAN_LOCAL_STABILITY.md": {
+      "sha256": "46046f042d27b4ab552cdd6dbf88bf2d7deef018ddd3d0cbec9b2364f8e44ed7",
+      "bytes": 11995
+    },
+    "all-sector/check_local_stability.py": {
+      "sha256": "9788a766c963f35a9df2bc038fd6f426c05f06100fae292d8a2d3d6b5d3a9ad3",
+      "bytes": 2819
+    },
+    "all-sector/local_stability_checks.json": {
+      "sha256": "c8a08835bbbed2bc23ad09cfd5b6ec3bbeda4524304b07fb08df9d1e70edf3e5",
+      "bytes": 9147
+    },
+    "boundary/ANISOTROPIC_REGION.md": {
+      "sha256": "1c962e704911e9fc2b226d0894ac95aad5c54c09a3eed13f738505515203116d",
+      "bytes": 10614
+    },
+    "boundary/verify_anisotropic.py": {
+      "sha256": "b103f9d65d7b148ee0c504314d8a56e4e1f729b3705df900d5d79a84353200e8",
+      "bytes": 5892
+    },
+    "boundary/anisotropic_certificate.json": {
+      "sha256": "a7749947c20e9d00110c67dd8284f11ae58c959c9d347bf3bfc9e3f336c1fd90",
+      "bytes": 8666
+    },
+    "boundary/search.py": {
+      "sha256": "f1557049a16768c3e724e37e0797949482345e4c7b99f3bba9ce98b1c3043802",
+      "bytes": 3493
+    },
+    "boundary/results.jsonl": {
+      "sha256": "e838c16981ea7183955773debbc8dc6cf346719358e41220d297dfe2b16cde4c",
+      "bytes": 50793
+    },
+    "boundary/results_fine.jsonl": {
+      "sha256": "487d23af8d2f62c516a9b2663e55b5600ab553a354fed81cf3fd1188b5ea1942",
+      "bytes": 50849
+    },
+    "variational/JOINT_ODD.md": {
+      "sha256": "1b48b7eb78664617aa569904030493ac0d71003d4ad261a07bf950962d55a4e9",
+      "bytes": 5941
+    },
+    "variational/joint_odd_cost_check.py": {
+      "sha256": "c1ae5e0734d44dd3cb05dae20ab9b7b03e74e152616287c2b587a57254cd2d68",
+      "bytes": 2088
+    },
+    "variational/inherited_odd_cost_check.py": {
+      "sha256": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+      "bytes": 4753
+    },
+    "variational/joint_odd_cost_result.json": {
+      "sha256": "8bbd5b0b5b629912abc9c5077e9ebec59c636ba1d35379724d6ed30b2adb43bc",
+      "bytes": 2578
+    },
+    "joint/SHARP_PAIRED_NORM.md": {
+      "sha256": "46b4827d8721fe28508e6f62733212bbf8183eeccbd49d504e44ca32bc8d95fc",
+      "bytes": 7580
+    },
+    "joint/verify_paired_norm.mjs": {
+      "sha256": "3893791ba1f6873b619cbc2b641f4267237fea5af5cbc2a7a210794d5df26157",
+      "bytes": 1335
+    },
+    "joint/probe.py": {
+      "sha256": "fbd8a18c32acbf73c77a2b98f907e1aa12a735844fa82363b1ef1874410948a6",
+      "bytes": 1615
+    },
+    "joint/probe.json": {
+      "sha256": "ab0ef3386de0a166f0b4af93f03aeda7fed942ce03ea1c3d48b39e76e7daf43e",
+      "bytes": 6870
+    },
+    "review/INDEPENDENT_REVIEW.md": {
+      "sha256": "5ec4cee9eeac35fa5764ece70fe17274c31841d1bb6374694bf425743a557aef",
+      "bytes": 10144
+    },
+    "joint/origin-strip/verify_origin.py": {
+      "sha256": "34e6cbf2894997e61f2a65042a2e77167d15fef6dbd4581242a546e4819c368a",
+      "bytes": 5171
+    },
+    "joint/origin-strip/radial_new.cpp": {
+      "sha256": "ddf96e6e85b73e071ce8becca2d95172bf2e21790bdb8c05536987ccc324ea75",
+      "bytes": 4637
+    },
+    "joint/origin-strip/source_hashes.json": {
+      "sha256": "b7902099c74367f2773eb55101c719a87c57298c9d64bf3313d0b79999a905c5",
+      "bytes": 1073
+    },
+    "joint/origin-strip/origin_replay.json": {
+      "sha256": "b2b94daae8f5e76ad39b2685033d544c9572fc0d1ea9c9bcb7575cb55a06f086",
+      "bytes": 7277
+    },
+    "joint/origin-strip/origin_audit.json": {
+      "sha256": "1cd0367aa0dff60753e1e04cffc433c71c5e33b55e00d35b7b1b08fe5960a17e",
+      "bytes": 350
+    }
+  }
+}

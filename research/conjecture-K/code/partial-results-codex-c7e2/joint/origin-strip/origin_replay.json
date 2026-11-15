@@ -1,0 +1,104 @@
+[
+  {
+    "i": 0,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x0p+0,0x0p+0] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=34800 [0x1.0c16ed3d71937p-1,0x1.0e379c101e1bp-1] [-0x1.7b69b73f25413p-2,-0x1.761ba7474ed45p-2] [0x1.0c0b90dba2361p-2,0x1.13d7c38ad4757p-2] [0x1.0c1d378ac8286p-1,0x1.0e459db232a2p-1] [-0x1.7b9eaf622e33cp-2,-0x1.760d5cc3cc18bp-2] [0x1.0beb3a1eb9f7cp-2,0x1.140488d76114bp-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 1,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1p-7,0x1p-7] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=34200 [0x1.0c03b2bcc3c6cp-1,0x1.0e302bb308c79p-1] [-0x1.7b6d136f80f19p-2,-0x1.75fbb637b49d6p-2] [0x1.0bf741a6adc9p-2,0x1.13fd76544ac5fp-2] [0x1.0c1474b93d08p-1,0x1.0e476b73c7851p-1] [-0x1.7babc4a182e5ep-2,-0x1.75f880c79ae5cp-2] [0x1.0bea1fa1dd80fp-2,0x1.143fa2c8dc1cep-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 2,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1p-6,0x1p-6] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=32600 [0x1.0bc710d64568ep-1,0x1.0e1f065a8eb7cp-1] [-0x1.7b8219dde6b19p-2,-0x1.75961aec5fd13p-2] [0x1.0badf38d58366p-2,0x1.147b91184ef9ap-2] [0x1.0bf3e8c9eba2bp-1,0x1.0e4f05d9d05fp-1] [-0x1.7bd94f1cafb35p-2,-0x1.75ad2f212ce79p-2] [0x1.0bd8f9a6619dap-2,0x1.14fa52c2d9417p-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 3,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.8p-6,0x1.8p-6] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=30500 [0x1.0b6608434d7ecp-1,0x1.0e00e375ab3dp-1] [-0x1.7ba0b4ebcde41p-2,-0x1.74f4ee1804327p-2] [0x1.0b3f6ece8cf12p-2,0x1.1542819a76fcp-2] [0x1.0bbbd3c606f27p-1,0x1.0e58b44aed284p-1] [-0x1.7c1f71c68cfbcp-2,-0x1.752e76ad3a2bfp-2] [0x1.0bbe88e263e4bp-2,0x1.1628feab97b41p-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 4,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1p-5,0x1p-5] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=28100 [0x1.0adf55377ffafp-1,0x1.0dd6424775082p-1] [-0x1.7bcd2cfadf37p-2,-0x1.741041cd6c2d3p-2] [0x1.0a9898433a64bp-2,0x1.16638ac5260bbp-2] [0x1.0b6d74d060f49p-1,0x1.0e673d41a0492p-1] [-0x1.7c871a78330bcp-2,-0x1.7479026d9d4dp-2] [0x1.0b8c7093c8f43p-2,0x1.17dbed1ed23ep-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 5,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.4p-5,0x1.4p-5] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=25700 [0x1.0a349fa57b48fp-1,0x1.0d9f9b6650b1ap-1] [-0x1.7c0a7929f537cp-2,-0x1.72e57366d65d6p-2] [0x1.09b17c810a84bp-2,0x1.17e77f4b15422p-2] [0x1.0b0a377926b7ep-1,0x1.0e78986770322p-1] [-0x1.7d0da41541a09p-2,-0x1.738e8e9c5c279p-2] [0x1.0b40aa129fab9p-2,0x1.1a13ab9d215a2p-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 6,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.8p-5,0x1.8p-5] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=23400 [0x1.0963f4a03fe7cp-1,0x1.0d5fa1a7e5978p-1] [-0x1.7c5a58df5f545p-2,-0x1.7171ab554ab5cp-2] [0x1.0889ecd4c9d1bp-2,0x1.19cddb7467345p-2] [0x1.0a8be3afdef6cp-1,0x1.0e9164412316fp-1] [-0x1.7dbf03d169dc4p-2,-0x1.72608acffac78p-2] [0x1.0ac9b21ee5382p-2,0x1.1cdedf2f8188ep-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 7,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.cp-5,0x1.cp-5] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=21600 [0x1.0874aed5873adp-1,0x1.0d0c73d9cc196p-1] [-0x1.7ca2d51463a5dp-2,-0x1.6fcd75ac80a19p-2] [0x1.074a792ecf457p-2,0x1.1be55c76ac241p-2] [0x1.09fee1151cb7p-1,0x1.0ea7158c35bep-1] [-0x1.7e7986cd9764fp-2,-0x1.711590b21bc4bp-2] [0x1.0a63664816214p-2,0x1.200051063c412p-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 8,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1p-4,0x1p-4] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=20100 [0x1.075a3452ac4dbp-1,0x1.0cb62c095d148p-1] [-0x1.7d1a69cf04214p-2,-0x1.6dc43de512457p-2] [0x1.0586655316327p-2,0x1.1e9c9a8a33412p-2] [0x1.095dc66ab3a3p-1,0x1.0ec1c8fb38b2dp-1] [-0x1.7f69ff3d479a1p-2,-0x1.6f83940136a81p-2] [0x1.09a2b6de53a0cp-2,0x1.23e2efc7d96bbp-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 9,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.2p-4,0x1.2p-4] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=18700 [0x1.061f19c96fe32p-1,0x1.0c5bac1b0a26cp-1] [-0x1.7dac70ea908ecp-2,-0x1.6b6e1f329b16dp-2] [0x1.037734a68b9e2p-2,0x1.21c4ba281b03bp-2] [0x1.08a052f1e6e7ep-1,0x1.0ee3a681c885bp-1] [-0x1.808dc5b1315e9p-2,-0x1.6da231f1c8e81p-2] [0x1.089c835216a57p-2,0x1.286a0c7e6f577p-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 10,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.4p-4,0x1.4p-4] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=17500 [0x1.04c7f7707a023p-1,0x1.0bf5c7124852fp-1] [-0x1.7e3c474cd5caap-2,-0x1.68e406f22153fp-2] [0x1.01503ca5e3643p-2,0x1.252288fc9dfc1p-2] [0x1.07daec18ba73p-1,0x1.0eff272c40ff5p-1] [-0x1.81ae6ee0ee7b1p-2,-0x1.6bb08d4afcc0dp-2] [0x1.07a9d0b08faap-2,0x1.2d3db5699a7f3p-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 11,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.6p-4,0x1.6p-4] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=16400 [0x1.0351205250cffp-1,0x1.0b8da087a3097p-1] [-0x1.7ed9329051679p-2,-0x1.66164ebcf75e4p-2] [0x1.fe09438153d5p-3,0x1.28c6da755d6b7p-2] [0x1.06fe8c42b63e4p-1,0x1.0f222272f112dp-1] [-0x1.82ee5fd6447a4p-2,-0x1.6989941792742p-2] [0x1.06a70d54b4ef8p-2,0x1.327fa92a65281p-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 12,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.8p-4,0x1.8p-4] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=15400 [0x1.01b55139645b2p-1,0x1.0b2a9e6929a8bp-1] [-0x1.7f9ec91262b3bp-2,-0x1.62e50714f8aefp-2] [0x1.f86486778115ep-3,0x1.2d111afcddadep-2] [0x1.06093a46c2d0ap-1,0x1.0f4ea355b33d8p-1] [-0x1.846c6a46f5f46p-2,-0x1.670d1ddae840ep-2] [0x1.052509e9e67bdp-2,0x1.389a814dcb14dp-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 13,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.ap-4,0x1.ap-4] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=14600 [0x1.0017c7b1647ffp-1,0x1.0aa85edd6e31cp-1] [-0x1.80276d1da06efp-2,-0x1.5fb0cb1670781p-2] [0x1.f2ff1e472bddap-3,0x1.31576aef6aa2bp-2] [0x1.05097e5455f6fp-1,0x1.0f761e1b7f7f8p-1] [-0x1.85ea0ccb06bacp-2,-0x1.647cbd4ffcf46p-2] [0x1.03b884e8d71aep-2,0x1.3ef3b22c631fap-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 14,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.cp-4,0x1.cp-4] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=13900 [0x1.fceca0315e70ep-2,0x1.0a108fbcfbb67p-1] [-0x1.807f11c160abbp-2,-0x1.5c721f7835003p-2] [0x1.edc8281167e26p-3,0x1.35a15358d071cp-2] [0x1.03fe887cafadcp-1,0x1.0f9bcf725c7c5p-1] [-0x1.8779b47fc87bdp-2,-0x1.61c7e80ffc509p-2] [0x1.023e1e7a196e5p-2,0x1.45b0fbb7f4cccp-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 15,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1.ep-4,0x1.ep-4] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=13200 [0x1.f958d2efa1f66p-2,0x1.09874781c6fcbp-1] [-0x1.810243fa39889p-2,-0x1.58c4a52206122p-2] [0x1.e7acd82e7b35dp-3,0x1.3a79d9fefdbfp-2] [0x1.02d47d7ce64efp-1,0x1.0fcf82e9fd654p-1] [-0x1.8946ec99f97d2p-2,-0x1.5ebd24fb91265p-2] [0x1.006b14d8aef27p-2,0x1.4d1713c8b37ebp-2]\n",
+    "stderr": ""
+  },
+  {
+    "i": 16,
+    "returncode": 0,
+    "stdout": "PASS MATRIX w=[0x1p-3,0x1p-3] s=[0x0p+0,0x1p-8] reserve=0x1.e122p-9 cells=12600 [0x1.f5d112222f7bp-2,0x1.08e28a38b96b1p-1] [-0x1.8146215109d6dp-2,-0x1.5514ed02ea8e9p-2] [0x1.e1b56246ee198p-3,0x1.3f5d41ee5c78fp-2] [0x1.01a6a78de4499p-1,0x1.0ffe3bea331c4p-1] [-0x1.8b1f5f21ee76ap-2,-0x1.5b918fb29c2cfp-2] [0x1.fce5d96eb6808p-3,0x1.54ede4e47b1e7p-2]\n",
+    "stderr": ""
+  }
+]
