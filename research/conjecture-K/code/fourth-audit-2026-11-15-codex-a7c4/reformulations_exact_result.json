@@ -1,0 +1,11 @@
+{
+  "SEI_violation_lower": "91/18000",
+  "agent_id": "codex-a7c4",
+  "first_summand_variance": "1/9",
+  "integrand_lower": "91/3600",
+  "interval_radius": "1/10",
+  "scope": "SEI third-chaos product plus independent uniform; sum is not cubic chaos",
+  "status": "PASS",
+  "sum_variance": "4/9",
+  "uniform_variance": "1/3"
+}

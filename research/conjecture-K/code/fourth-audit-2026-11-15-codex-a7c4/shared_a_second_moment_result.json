@@ -1,0 +1,98 @@
+{
+  "J": [
+    "2.003994641645051",
+    "2.003994641645052"
+  ],
+  "K": [
+    "2.863947582582862",
+    "2.863947582582863"
+  ],
+  "agent_id": "codex-a7c4",
+  "angular": {
+    "affine_slope": "59767/200000",
+    "compact_cells": [
+      [
+        "1",
+        "5/4"
+      ],
+      [
+        "5/4",
+        "11/8"
+      ],
+      [
+        "11/8",
+        "23/16"
+      ],
+      [
+        "23/16",
+        "93/64"
+      ],
+      [
+        "93/64",
+        "47/32"
+      ],
+      [
+        "47/32",
+        "3/2"
+      ],
+      [
+        "3/2",
+        "2"
+      ],
+      [
+        "2",
+        "3"
+      ]
+    ],
+    "compact_smallest_bernstein": "309503434826578260536789834295464260889726302185433237/25649353735157346214474668814170766994961616129228800000",
+    "infinite_ray_smallest_coefficient": "59767/200000",
+    "infinite_ray_start": "3",
+    "slope_strict_lower": "149417/500000"
+  },
+  "benchmark_gap_strict_lower": "414849/200000000",
+  "inherited_benchmark_S_strict_lower": "6869767628307/5000000000000",
+  "radial_library_sha256": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+  "scope": "Peak; arbitrary orthogonal remote L2 q,r; all w above each boundary; u<=.0463.",
+  "status": "PASS; exact rational and outward integer arithmetic",
+  "strips": [
+    {
+      "W_minus_B0_upper": "1071533/500000000",
+      "cells": 16384,
+      "conclusion_relative_to_S": "1/10000",
+      "cutoff_radius": "47/200",
+      "positive_u_derivative_lower": "7436929147067603/576460752303423488",
+      "u_max": "463/10000",
+      "w": "103/5000"
+    },
+    {
+      "W_minus_B0_upper": "128839/62500000",
+      "cells": 16384,
+      "conclusion_relative_to_S": "0",
+      "cutoff_radius": "47/200",
+      "positive_u_derivative_lower": "3725984153123123/288230376151711744",
+      "u_max": "463/10000",
+      "w": "13/625"
+    },
+    {
+      "W_minus_B0_upper": "1959303/1000000000",
+      "cells": 16384,
+      "conclusion_relative_to_S": "-1/10000",
+      "cutoff_radius": "47/200",
+      "positive_u_derivative_lower": "14936768383021193/1152921504606846976",
+      "u_max": "463/10000",
+      "w": "421/20000"
+    }
+  ],
+  "u_coefficient": [
+    "0.389643727250781",
+    "0.389643727250782"
+  ],
+  "w_coefficient": [
+    "-0.124324346959520",
+    "-0.124324346959519"
+  ],
+  "weak_affine_cone": {
+    "intercept": "279/50000",
+    "slope": "31907/100000"
+  }
+}

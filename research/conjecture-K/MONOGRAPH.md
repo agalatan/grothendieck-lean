@@ -313,6 +313,59 @@ New paper arguments are **P by author, not externally reviewed**, with within-se
    premise, the now-certified alignment gives exact excess <.000051525 at the peak and u≤.0463, improving
    the old numerical .00005471. The corresponding joint/content hypotheses remain indispensable.
 
+## G. Fourth audit after #403, resynced through #408 (15 November 2026, codex-a7c4)
+
+The [fourth audit](sources/fourth-audit-2026-11-15-codex-a7c4/AUDIT.md) starts from
+`2442792e` and includes the requested resync to `9a93fb472` (the tilted-sector update #408).
+The [review of #403](sources/fourth-audit-2026-11-15-codex-a7c4/REVIEW_403_claude-b9ee.md)
+re-derived the third audit's listed proofs and replayed its six checkers; those ledger entries now carry
+that review. New results below are **P by author, not externally reviewed**, with the named scalar
+**C** checkers and within-session peer checks. Historical sources and the body below stay unchanged.
+
+1. **§3.3, remote equivalences and BNC.** At any one fixed positive profile a>0,b≥0, the universal
+   complex sharp radius inequality, Gaussian-buffer PVD, same-variance remote domination and exact
+   remote K at **every** price p>0 are equivalent. The diffuse CLT uses increasing dimensions.
+   Real BNC is a sufficient condition for real PVD, which implies complex PVD; the record supplies
+   neither converse. BNC is monotonicity of the normalized smoothed absolute mean, not another name
+   for its upper bound. The conjectures remain open; STATUS 3.5.
+2. **The cited ch32 closure and fixed-n equality.** Its unrestricted SEI closure under an independent
+   symmetric unimodal summand is false. X₁=Z₁Z₂Z₃/3 is SEI, but adding uniform [−1,1] gives a positive
+   SEI interval gap ≥91/18000. Independent Gaussian addition is valid; so is addition of two SEI
+   variables each with symmetric unimodal density. The counterexample's second summand is not cubic.
+   The diffuse Gaussian only approaches the cubic supremum over increasing dimensions; at n=1 the
+   peak supremum is B₀<S. See A15F `REFORMULATIONS.md` and STATUS 3.5a, 13.11.
+3. **§3.4, orthogonality-only regions now checked and improved.** At the peak, for joint remote L² q,r
+   with E[conj(q)r]=0, Λ≤B₀+.389644u−.124324w and u≤.00558+.31907w implies Λ<S+10⁻⁴.
+   A separate concave-envelope certificate gives, for every u≤.0463, thresholds w≥.0206, .0208,
+   .02105 for Λ<S+10⁻⁴, S, S−10⁻⁴ respectively, with no upper bound on w. These improve the weaker
+   second-moment strips; the more powerful fourth-moment cutoff .01125 remains **R**. STATUS 6.1.1–6.1.1a.
+4. **§4b, the joint problem.** At zero core the re-derived A/B matrix has a certified common .08
+   reserve over the signed (.24,.26,.118) target at all three rows, improving .07. The all-amplitude
+   large-shift argument closes abs(x)≥4.25 with .027 reserve, shortening the open compact box from
+   [0,6] to [0,4.25]; its relative phases and |α|,|β|≤.4 remain. The literal global .300 cost proposed
+   after #408 is false: a genuine Gaussian-driver direction (1,−1/5) has local cost <.298526024.
+   A separate exact negative pointwise Q/ν example confirms the existing five-sector obstruction,
+   but its constant Q violates the cubic centering condition. None refutes K; STATUS 7.3.1, 7.4.5 and 7.4.8.
+5. **§3.3, a larger remote profile region.** Put λ=ε/.7564. For ε∈[.74,.76],
+   0≤a/λ−.5592≤.0005 and 0≤b/λ−.1432≤.0016, every remote cubic satisfies Λ<S+.000099337.
+   The fixed-variance Gaussian supporting plane improves the old transfer loss. The flank/upper rows
+   remain outside this rectangle; the old tube remains valid in other directions. STATUS 3.15.
+6. **The merged tilted update is substantive, but scoped.** The reviewed global tilted A remainder
+   and central content theorem (STATUS 11.39–11.41) replace the older localization route. They do not
+   solve joint A/B or arbitrary tilted content versus deficit. Combining these reviewed inputs with
+   the peak remote cap now yields Λ̂(q+(T−1)r)<S+2·10⁻⁵ whenever .03≤u≤.0463 and χ≤.07, for every
+   amplitude and sharing of r (11.46). This is a completed subclass, not a general tilted lemma.
+   The conclusions about the Gaussian/Wick interpolation family use 56 numerical deficit samples;
+   they do not certify that continuum family (11.38, 11.43).
+7. **Reviewer exclusions and notation.** A15F inspected/replayed the direct Rice benchmark checker,
+   reverse-checked the six Bernstein transformations, and checked the cited primary theorem statements.
+   The inherited dyadic interval operations and used radial formulas were inspected as mathematical
+   code; Arb internals and the large tilted C++ acceptance were not re-audited. In A15T `ALIGNMENT.md`,
+   B in §§2–4 means the positive kernel −g_B; B in §5 means the Gaussian benchmark. Read them as
+   B_ker and B_Gauss. STATUS 14 records this correction without changing the historical note.
+
+K and the complete row consumer remain open. No new Grothendieck bound is asserted.
+
 <!-- =========================== MONOGRAPH, VERBATIM (unchanged from here to the end) =========================== -->
 
 # Conjecture K: statement, purpose, state of knowledge, and what is left
