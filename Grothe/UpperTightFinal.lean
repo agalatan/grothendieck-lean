@@ -7,7 +7,8 @@ import Grothe.UpperTightSix
 import Grothe.UpperTightPanelTotals
 import Grothe.UpperClose
 import Grothe.UpperTarget
-import Grothe.UpperChaos.ThreeBandEndpointAdapter
+import Grothe.UpperChaos.Structural
+import Grothe.UpperChaos.ConcreteTaylorUpper
 import Grothe.UpperQuad.PortFacts.Bundles
 import Grothe.UpperQuad.TwistEllipseFacts.Checks
 import Grothe.UpperQuad.TwistEllipseMassSound
@@ -65,9 +66,20 @@ end Grothe.UpperQuad.TightTwist
 
 namespace Grothe.UpperChaos.TightEndpoint
 
-open Finset Grothe.Upper GrotheKernel ThreeBandEndpoint
+open Finset Grothe.Upper GrotheKernel
 
 noncomputable section
+
+/-- The energies of the production rounding `G_T`. -/
+def actualE : ℕ × ℕ → ℝ := energy ((memLp_GT phiBound).toLp GT)
+
+/-- The energies of the stored finite Hermite expansion `X`. -/
+def actualEX : ℕ × ℕ → ℝ :=
+  energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp (Xfun frozenCorrectionFn))
+
+/-- The accuracy of the stored energy table on the head (`Final.hclose_final`). -/
+def TableAccuracy : Prop :=
+  ∑ p ∈ headIdx 501, |actualEX p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)
 
 /-- The production comparison feeds a shared finite-head/Hardy transfer theorem. -/
 theorem endpoint_of_comparison

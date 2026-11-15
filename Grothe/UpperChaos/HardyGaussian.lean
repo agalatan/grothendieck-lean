@@ -2,6 +2,9 @@
 import Grothe.UpperChaos.HardyGaussianSound
 import Grothe.UpperChaos.HardyGaussianFacts
 import Grothe.UpperChaos.HardyReal
+import Grothe.UpperChaos.HardyArcCover
+import Grothe.UpperChaos.HardyArcRegion
+import Grothe.UpperChaos.HardyArcRegionCheck
 import Grothe.UpperChaos.SchurMainGaussian
 
 /-!
@@ -61,7 +64,7 @@ end Grothe.UpperChaos.HardyGaussianSound
 namespace Grothe.UpperChaos.HardyGaussian
 
 open GrotheKernel GrotheKernel.HardyArc Grothe.Upper
-open HardyArcSound HardyArcCover HardyArcMean HardyArcRegion
+open HardyArcSound HardyArcCover HardyArcRegion
 
 variable {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Measurable G)
   (hF : ∀ u, ‖F u‖ ≤ 1) (hG : ∀ u, ‖G u‖ ≤ 1)

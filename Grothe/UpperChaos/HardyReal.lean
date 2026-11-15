@@ -1,10 +1,9 @@
 import Grothe.UpperChaos.HardyRealLaw
-import Grothe.UpperChaos.HardyStep4
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.Kernel2
 
 /-!
-# Hardy step 1(b): the real identification, and the `hardy` input of the sharp upper bound
+# Hardy step 1(b): the real identification
 
 For real `0 < t < 1` let `p = t P(t²)`, `q = t Q(t²)` (the preprocessors of the certificate), `R = Rt t`. Then
 
@@ -15,8 +14,8 @@ smoothing `G_T(x) = E_Z T(Mx + NZ)` (Fubini, `mehler_smoothed`) gives `E[conj T(
 Mehler pair, whose law is that of `(u, Ru + Sw)` (`law_swap`), whose density is `kHol R` (`integral_pair_eq_kHol`).
 `I − R² ≻ 0` because `R = M diag(p, q) M` with `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_pos`, `kdet_pos`).
 
-With the region and circle mean of step 4 (`hardy_of_real`) this proves the `hardy` input for the actual rounding
-(`hardy_GT`).
+With the region check and the Gaussian-amplitude circle mean (`HardyGaussian.lean`) this gives the `hardy` input
+of the upper bound for the actual rounding (`hardy_GT_gaussian`).
 -/
 
 open MeasureTheory Complex
@@ -202,20 +201,6 @@ theorem hreal_GT (hφ : PhiBound) (t : ℝ) (ht0 : 0 < t) (ht1 : t < 1) :
   rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, norm_pow, Complex.norm_real,
     Real.norm_of_nonneg ht0.le]
   exact mul_le_of_le_one_right (abs_nonneg _) (pow_le_one₀ ht0.le ht1.le)
-
-/-- **The `hardy` input of the sharp upper bound, proved** for the rounding of the certificate. -/
-theorem hardy_GT (hφ : PhiBound) (J : ℕ) :
-    ∑ n ∈ Finset.range J, Grothe.Upper.kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
-      * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 :=
-  hardy_of_real measurable_Tround measurable_Tround (norm_Tround_le hφ) (norm_Tround_le hφ)
-    (summable_hGT hφ) (hreal_GT hφ) J
-
-/-- The same verified arc cover gives a stronger budget for the production rounding. -/
-theorem hardy_GT_tight (hφ : PhiBound) (J : ℕ) :
-    ∑ n ∈ Finset.range J, Grothe.Upper.kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
-      * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 1737972 / 1000000 :=
-  hardy_of_real_sharp measurable_Tround measurable_Tround (norm_Tround_le hφ) (norm_Tround_le hφ)
-    (summable_hGT hφ) (hreal_GT hφ) J
 
 end
 
