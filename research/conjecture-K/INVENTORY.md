@@ -423,3 +423,33 @@ are tracked on issue #421; they are not inputs to any accepted bound here.
 | `code/progress-2026-11-15-codex-a7c4/odd_control.py` | 8,670 B | `541b436ea3ad5785cb64b3d5d5ef183138f7e63c8761f3c87eaf491a7170bb32` |
 | `code/progress-2026-11-15-codex-a7c4/response_ellipsoid_check.py` | 4,516 B | `5127252a1541044dc4afc0ae66a273adcad79627e2d534a4392bb7395849674d` |
 | `code/progress-2026-11-15-codex-a7c4/response_ellipsoid_result.json` | 8,198 B | `7688663ecd3b3f3475f510b552ebc9f57924a2d1d833d3e4c4a82e2550372f42` |
+
+
+## Compact interior pieces (codex-a7c4, task #431)
+
+`sources/compact-joint-2026-11-15-codex-a7c4/PROOF.md` records author-only proofs
+of a uniform infinitesimal reserve, its nonlinear small-amplitude strip, an origin
+neighborhood, a five-parameter critical box, and stronger finite-amplitude exteriors
+from full directional potential matrices. The complete (P) interior remains open.
+`code/compact-joint-2026-11-15/verify.py` regenerates the two Arb profile values,
+compiles three interval verifiers from source, replays the inherited density cap
+and exact constants, and checks all accepted regions. `result.json` is a small
+receipt with source hashes; it is never read by acceptance. No production bound,
+Lean source, binary, external certificate or third-party dependency is added.
+
+Unfinished annulus covers and numerical probes remain in
+`/Users/alingalatan/workspaces/grothe-codex-a7c4-conjecture-k-progress/handoff/codex-a7c4-compact/`.
+They are not accepted inputs. The proof programme and its remaining gap are tracked
+on issue #431. There is no complete finite-amplitude cover hidden in those files.
+
+| repository file | size | SHA-256 |
+|---|---:|---|
+| `code/compact-joint-2026-11-15/README.md` | 1,810 B | `043ee0ebbce6e73d2bdd6739ab89954df793f0273042dd3a0e1f44801b51ea0e` |
+| `code/compact-joint-2026-11-15/hessian_integral.cpp` | 4,941 B | `8d4256c8c684d4abf43a9aeaeb4d006b2329f46e27435178d81c3e9daa42671d` |
+| `code/compact-joint-2026-11-15/joint_integral.cpp` | 5,956 B | `85644f7f59c5ec80752733ee3311c1511fbf2a8932da83cdfaf1072d769148ae` |
+| `code/compact-joint-2026-11-15/origin_check.py` | 2,529 B | `1e975c216a27d43e0966548db27e2293dde44108479885a0b49f91d2a975bbbf` |
+| `code/compact-joint-2026-11-15/potential_integral.cpp` | 5,128 B | `f69971f16671639c9662dfe0615463205620220cf346040385a277fcf80c3d73` |
+| `code/compact-joint-2026-11-15/profile_points.py` | 1,348 B | `2b2e522e587522b2c184712eb91687d64e5401b76dc5ac01d7dadb93ae72c8c7` |
+| `code/compact-joint-2026-11-15/result.json` | 125,158 B | `d3c3eb4f62ad48a67c9ddffdaa2b345d84ba9a3f4e52032cd0863ceaf062a0f2` |
+| `code/compact-joint-2026-11-15/strip_check.py` | 2,743 B | `6193d57181d37fff00e498afce17b118b5d7d51fd34e51ecb3b148c6b779fcd2` |
+| `code/compact-joint-2026-11-15/verify.py` | 5,777 B | `b90afc03d9298c7c28d41f1568bae2d43dc046cd2a674c70b00e2d3d9e7daf48` |

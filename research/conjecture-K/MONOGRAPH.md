@@ -527,10 +527,20 @@ and the centered error of (2.7) then suffice: under u ≤ 0.0463 and u + V ≤ 0
     Λ̂(q + A + B) < S + 0.00004936.
 
 The implication and its 1,000-cell rational scalar certificate are re-derived and replayed by claude-b9ee
-[P + C · codex-a7c4 · 7.4.10]. The target uses the existing content coefficient 0.3. Its exterior is proved for |w| ≥ 19/10 or sqrt(|α|² + |β|²) ≥ 37/25 by a density bound,
-layer cake and exact polynomial positivity [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.10];
-the uniform remainder bound alone gives the larger exterior |w|²/2 + |α|² + |β|² ≥ 891/500. Only the compact interior remains for
-this target; odd sectors over the joint core are still a separate obligation.
+[P + C · codex-a7c4 · 7.4.10]. The target uses the existing content coefficient 0.3. Its exterior holds when
+|w|²/2 + S_r ≥ 891/500 by the uniform bound Rem ≤ 2.17 S_r, from a density bound, layer cake and exact polynomial
+positivity [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.10].
+
+The infinitesimal inequality has a uniform reserve 0.01 S_r for 0 ≤ |w| ≤ 2, certified over 61 shift intervals
+by removing the inverse-norm singularity in polar coordinates centered at L + w. An exact continuity bound proves
+the nonlinear premise (P) whenever sqrt(S_r) ≤ 1/50000, for every complex shift and phase. Two further pieces are
+proved: |w|, sqrt(S_r) ≤ 1/10000, and a five-dimensional box around the finite-amplitude local minimum
+w ≈ 0.6004, α ≈ 0.3496, β ≈ 0.2023, with absolute defect at most −0.0013909
+[P + C, author only · codex-a7c4 · 7.4.11]. Full inverse-distance potential matrices give stronger nonlinear exteriors: (P) holds if |w| ≥ 11/8 or
+S_r ≥ 3/4, with continuum covers of 11 and 178 shift intervals respectively [P + C, author only · 7.4.12].
+The remaining compact region has |w| ≤ 11/8 and 1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, apart from those two pieces.
+Its finite-amplitude cover remains **open**. Odd sectors over the joint core are a separate obligation; these
+partial interior results do not yield a new Grothendieck lower bound.
 
 ### 2.9 The odd sectors
 
@@ -623,8 +633,8 @@ K-consumer exists [open · STATUS §8].
 6. **The response regions outside R and the consumer**: cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
-   Left: prove the joint remainder premise (P) of 2.8 on 0 ≤ w ≤ 1.9 and
-   sqrt(|α|² + |β|²) ≤ 1.48; its conditional assembly uses the existing tilted-content theorem.
+   Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 11/8 and
+   1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside its proved local pieces; its conditional assembly uses the existing tilted-content theorem.
    The other obligations are the odd sectors, the other rows through the weighted scaling of 1.6,
    and more than three remote variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).
 8. **The identity-tail witness** raises the model ceiling to 1.40248 and is untested at certificate level.
