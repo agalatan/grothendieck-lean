@@ -2,11 +2,23 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The target interval is `1.401697117301 < K_G^ℂ < 1.4046` (`main_bounds`,
+The proved interval is `1.401697117301 < K_G^ℂ < 1.404599414629` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
-(`lower_target`), and so is the upper endpoint (`upper_target`, `Grothe/UpperFinal.lean`:
-a Grothendieck bound below `1.40459996`, threshold `1.4046`). Shared Gaussian
+(`lower_target`), and so is the upper endpoint (`upper_below_tight`,
+`Grothe/UpperTightFinal.lean`). Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
+
+**Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
+in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
+shards supply their analytic interpretation. Adding the existing `10⁻¹⁵` tail/gap reserve
+and the exact dyadic table excursions gives the low-band radii; the already certified
+inner-product thresholds give smaller whole-source radii. `UpperTightComparison`
+specializes a comparison theorem with arbitrary piece and whole-source radii.
+`UpperHead` assembles the finite residual independently of the comparison budget,
+and `HeadHardy` deducts the linear coefficient's forced energy before bounding the tail.
+The unchanged sharp Hardy budget is `1737972/10⁶`. The resulting exact reciprocal
+`tightValueQ` is strictly below `1.404599414629`. No panel, energy table or numerical
+acceptance premise is replaced, and the tighter total checks introduce no native fact.
 
 **Upper endpoint assembly.** `upper_target` applies
 `RelaxedTwist.upper_target_of_facts` to the port-fact bundles
@@ -1443,6 +1455,19 @@ saved-model tolerances. Its exact budget is `(84353029/84596280)*10⁻¹²`,
 and its interval is `200/89` times the original. This is a quadratic-plus-cubic
 bound, so it does not contradict optimality of the purely quadratic constant two.
 No Gaussian optimality or change to the production certificates or headline endpoint is claimed.
+`Haagerup/PhaseTaylorQuadratic` retains the actual quadratic Taylor term
+`Q₂(h) = -(Im h)²/2 - i Re(h) Im(h)`. The global remainder is at most
+`2‖h‖³`, including the zero perturbed point, and the constant two is optimal.
+`UpperChaos/PhaseQuadraticError` gives its exact four-mode Wick expansion,
+supported on `(0,0)`, `(1,1)`, `(2,0)` and `(0,2)`, with Gaussian norm `sqrt(7)/4`.
+For the existing linear centers the whole-slice error is at most
+`(sqrt(7)/4)*ρ² + 2*sqrt(6)*|ρ|³`; every coefficient error is at most
+`(3*sqrt(2)/8)*ρ² + 2*sqrt(6)*|ρ|³`. Outside those four modes only the cubic
+term remains. The same parameter and saved-model tolerances therefore give
+error below `10⁻¹²` for `|ρ| ≤ 1/1090000` in every mode, and for
+`|ρ| ≤ 1/22500` outside the quadratic support. These analytic improvements
+introduce no native facts; the tighter certified Grothendieck endpoint above
+comes from the separate budget and Hardy assembly.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
