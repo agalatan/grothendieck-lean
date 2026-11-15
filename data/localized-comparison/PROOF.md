@@ -1,10 +1,17 @@
 # Weighted selected-spectrum comparison
 
-This shared comparison inequality is used by the active conditional target
-`K_G^C < 1.404598148840`. The fourteen actual Gaussian finite-band estimates
-and energy-table discrepancy remain unproved inputs. The previous endpoint
+The current unconditional upper bound is `K_G^C < 1.404599412097`
+(`Grothe.Statement.upper_below_tight`, `Grothe/UpperTightFinal.lean`). Its
+regrouped comparison reuses the finite mass certificates documented here, with
+the proved six-error estimates and tighter budgets of `UpperTightSix` and
+`UpperTightBudget`.
+
+The eighteen-piece comparison below also supplies the conditional target
+`K_G^C < 1.404598148840`. Its fourteen original Gaussian finite-band estimates
+remain hypotheses; energy-table accuracy is proved by `Final.hclose_final`.
+The previous endpoint
 ledger is preserved in `miscellaneous/other-bounds/snapshot/data/localized-comparison/PROOF.md`.
-The pinned recipe and generator remain active because the sharp proof uses
+The pinned recipe and generator remain active because the comparisons use
 the same comparison bands and table radii. Their historical endpoint metadata
 is not the current grouped endpoint ledger.
 
@@ -67,7 +74,8 @@ unchanged.
 
 ## Finite radii and exact assembly
 
-The existing table accuracy input is
+The table accuracy input, proved for the production approximation by
+`Final.hclose_final`, is
 `sum_(p in S) |energy(X,p)-Ehat(p)| <= eta`, with
 `eta = 6847009/500000000000000000`.
 For each band choose an outward rational radius satisfying
@@ -84,10 +92,15 @@ reproduction hashes are in `recipe.json`. The resulting allowance is
 
 `C = 106490963/125000000000000 = 0.000000851927704`.
 
-The current endpoint assembly uses the grouped comparison budget in
+The conditional endpoint assembly uses the grouped comparison budget in
 `Grothe/Upper/GroupedBridge.lean` and the concrete specialization in
 `Grothe/UpperChaos/GroupedRounder.lean`. Historical raw-tail endpoint arithmetic
 is preserved in the archive; the shared comparison above remains active.
+The unconditional endpoint instead regroups the certified band-mass squares,
+uses the six proved low-band/whole-source estimates, and deducts the forced
+linear energy from the sharp Hardy budget. Its comparison allowance is
+`tightThreeBandCompareQ`, approximately `1.4922273975573793e-6`, and its full
+residual is `tightResidualQ`, approximately `1.5507303526753792e-6`.
 
 ## Inherited Gaussian inputs: what remains external
 
@@ -108,14 +121,14 @@ degree, so all source norm and support bounds remain valid. Low-band errors
 are bounded by the source's corresponding prefix bounds; their reuse is
 conservative. The rounding error is bounded by `10^-18`.
 
-The Lean concrete theorem accepts these facts as `ComparisonInputs`: an exact
-error decomposition, the component norm bounds, and spectral support. It then
-proves the energy comparison. The raw Gaussian integrations, source tail
-enclosures, the identification of the supplied approximation with that
-decomposition, and table accuracy are still external. For the concrete rounding,
-the analytic Schur/Hardy input is proved by `HardyReal.hardy_GT`.
-This comparison does not discharge the actual Gaussian or table-accuracy inputs. It uses more of the structure already
-recorded in the inherited component certificate.
+The general theorem accepts `ComparisonInputs`: an exact error decomposition,
+component norm bounds, and spectral support. The concrete Taylor specialization
+proves the decomposition and support statements, and derives this interface from
+the fourteen original finite-band norm bounds. Those original bounds remain
+premises of the conditional route; the table-accuracy premise is discharged by
+`Final.hclose_final`. The production theorem uses the separately proved six-error
+interface in `UpperTightSix` instead. Its analytic Schur/Hardy input is
+`HardyReal.hardy_GT_tight`, with the forced linear energy deducted by `HeadHardy`.
 
 No `head_close` hypothesis replaces the native finite-head computation.
 
@@ -129,7 +142,7 @@ python3 -I tools/gen_localized_comparison.py --check
 
 This checks the pinned source, rational outward rounding, all selected masses,
 the 18-piece budget, endpoint arithmetic and byte-for-byte generated Lean data.
-With `python-flint`, the current full preprocessing ledger is also checked by
+With `python-flint`, the frozen preprocessing certificate is also checked by
 the commands in `data/upper-preprocess/README.md`.
 
 Focused Lean targets are `Grothe.Upper.ComparisonMass`,
