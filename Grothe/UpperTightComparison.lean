@@ -130,9 +130,9 @@ include hf hwholeFirst hwholeSecond hwholeThird
 theorem norm_rawSource_tight_le (p : Fin 4) :
     ‖rawSource hφ p‖ ≤ (tightGroupRadiusQ p : ℝ) := by
   fin_cases p
-  · rw [rawSource_zero]
-    simpa only [tightGroupRadiusQ, ↓reduceIte] using
-      norm_roundingDifference_le_of_checks hf
+  · change ‖rawSource hφ 0‖ ≤ (comparisonGroupRadiusQ 0 : ℝ)
+    rw [rawSource_zero]
+    exact norm_roundingDifference_le_of_checks hf
   · change ‖rawSource hφ 1‖ ≤ (tightScaledRQ 0 : ℝ)
     rw [rawSource_one]
     exact hwholeFirst
@@ -163,8 +163,8 @@ include hfirst hsecond hthird in
 theorem norm_threePiece_tight_le (j : Fin 7) :
     ‖threePiece hφ j‖ ≤ (tightThreeBandErrorQ j : ℝ) := by
   fin_cases j
-  · simpa only [tightThreeBandErrorQ, threeBandPower, ↓reduceIte] using
-      norm_threePiece_tight_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 0
+  · change ‖threePiece hφ 0‖ ≤ (tightGroupRadiusQ 0 : ℝ)
+    exact norm_threePiece_tight_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 0
   · change ‖bandProj (comparisonBand (firstCapturedIndex 0))
         (smoothOp (rawSource hφ 1))‖ ≤ (tightLowErrorQ 0 : ℝ)
     refine (norm_bandProj_smoothOp_le _ _).trans ?_
