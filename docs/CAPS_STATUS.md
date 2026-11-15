@@ -1,8 +1,8 @@
 # Lower endpoint and unchanged Gaussian cap assembly
 
 `lower_bound_of_completed_refinement` proves
-`NodeCaps → IsGrothendieckBound K → 1.401700037873 < K` from the complete
-14,060-box finite-mixture cover. `MainResult.lower_target` discharges
+`NodeCaps → IsGrothendieckBound K → 1.401700322371 < K` from the complete
+15,096-box finite-mixture cover. `MainResult.lower_target` discharges
 `NodeCaps`, and `main_bounds` uses this stronger endpoint without hypotheses.
 The original `lower_bound_of_refined_cover_data` and `lower_bound_of_capsRest`
 retain their weaker `1.401697117301` conclusions for compatibility with the
