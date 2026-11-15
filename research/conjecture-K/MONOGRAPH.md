@@ -546,7 +546,12 @@ w ≈ 0.6004, α ≈ 0.3496, β ≈ 0.2023, with absolute defect at most −0.00
 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.11]. Full inverse-distance potential matrices give stronger nonlinear exteriors: (P) holds if |w| ≥ 11/8 or
 S_r ≥ 3/4, with continuum covers of 11 and 178 shift intervals respectively [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.12].
 Both thresholds are near the limit of the potential bound: it no longer gives (P) at |w| = 1.35, nor for all S_r ≥ 0.7 [N · 7.4.12].
-The remaining compact region has |w| ≤ 11/8 and 1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, apart from those two pieces.
+A normalized Bregman remainder certificate also proves (P) for every amplitude τ ≥ 0 on the tube
+2457/4096 ≤ w ≤ 2459/4096, A = τ(1 + ix), B = τ(y + iz), |x|, |z| ≤ 1/4096,
+2367/4096 ≤ y ≤ 2369/4096 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.13].
+Its source quadrature has error constants independent of τ; exact amplitude interpolation covers 92 intervals
+between 1/64 and 7/8, a direct interval check includes zero, and the existing exterior handles larger amplitudes.
+The remaining compact region has |w| ≤ 11/8 and 1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, apart from these proved regions.
 Its finite-amplitude cover remains **open**. Odd sectors over the joint core are a separate obligation; these
 partial interior results do not yield a new Grothendieck lower bound.
 
