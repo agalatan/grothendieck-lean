@@ -55,10 +55,10 @@ In words: the supremum of Λ over the cubic chaos is attained by a Gaussian adve
   (`sources/external-2026-11-15/`): Λ′ ≤ Λ̂ ≤ Λ, and a cap on Λ̂ would also suffice. Numerically (**N**,
   15 November, peak row) the sector part of a proof has far more room for Λ̂ than for Λ. Write gain(q) for the most
   that the A and B shells can add over a remote cubic q, and D(q) for the deficit of q (defined under "Vocabulary"
-  below); a proof needs gain(q) ≤ D(q) + η. The largest gain found is 0.166·D(q) for Λ and 0.024·D(q) for Λ̂ with
-  its first-chaos element optimised together with the shells: a margin of about 6 for K and about 40 with the
-  penalty retained, on what was tested (remote cubics in one and two variables; in three variables a search was
-  still running). The ratio for Λ̂ rises slowly with the number of remote variables and its limit is not known.
+  below); a proof needs gain(q) ≤ D(q) + η. The largest gain found is 0.166·D(q) for Λ and about 0.024·D(q) for Λ̂
+  with its first-chaos element optimised together with the shells: a margin of about 6 for K and about 40 with the
+  penalty retained, on what was tested (remote cubics in one, two and three variables). The ratio for Λ̂ rises
+  slowly with the number of remote variables (0.017, 0.021, 0.023 at ‖q‖² = 0.0463) and its limit is not known.
   Nothing of this is proved, and the remote part is the same statement for both
   (`sources/numerics-kprime-2026-11-15/README.md`; `STATUS.md`, section 11 (c)).
 - **Response-restricted forms:** only G that come from actual responses (f, g) matter. Response feasibility gives
@@ -121,7 +121,7 @@ The statuses below are those of the audit of 13 November; details and scopes are
 | **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1; needs ‖q‖² + ‖U‖² ≤ ℓ²). The stronger cost form is **P** up to a numerical kernel inequality that is **R**. |
 | **L3** core with shared drivers, outside the rectangle R | w ≥ 0.01125 or u ≤ 0.00551 + 0.319w ⇒ K_η, η = 10⁻⁴ | **R** (proved and certified according to the manuscript and the monograph; not re-audited; three slightly different cutoffs for w are in use). The fourth-moment method is saturated there. |
 | **L4** core on R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
-| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one and two remote variables, three in progress): the joint A+B gain over a remote cubic is at most 0.166·D(q) on what was tested, and at most 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables (`STATUS.md`, section 11 (c)). |
+| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). |
 | **L6** row envelope and consumption | K_η on the envelope over t ∈ [0.84, 0.851] with exact thresholds, the σ* = 0 corner, coverage of the response regions outside R, then a Lean theorem consuming K_η | **Not built.** No `lower_of_K` or `KHyp` exists in the Lean sources. |
 
 The audit's one-line summary: the record contains substantial valid mathematics, but the remaining distance is a
@@ -246,7 +246,7 @@ The reports as received (transcripts), the package of the first one, and the rev
 
 | file | size | contents |
 |---|---:|---|
-| `REVIEW.md` | 7.3 KB | Verification record of the two reports (claude-b9ee, 15 November): what was re-derived, replayed and tested for each item, what the October manuscript already had, the first numbers with the retained element optimised together with the A-sector (N), remarks on the remote-closure report, next steps. |
+| `REVIEW.md` | 7.8 KB | Verification record of the two reports (claude-b9ee, 15 November): what was re-derived, replayed and tested for each item, what the October manuscript already had, the first numbers with the retained element optimised together with the A-sector (N), remarks on the remote-closure report, next steps. |
 | `projection-attack-package/README.txt` | 1014 B | The package's own summary and scope ("rigorous partial progress; no improved numerical Grothendieck bound"). |
 | `projection-attack-package/proofs.tex` | 14 KB | The written proofs: penalised support duality and the row with Λ̂ (Theorem 1), Lipschitz lemma, global retained-projection bound (Theorem 3), local Schur-complement matrix (Theorem 4), a necessary maximiser condition, the counterexample (Proposition 5). |
 | `projection-attack-package/results.txt` | 1.4 KB | Output of the package's verifier as received (Arb enclosures of j₀, g₀, d₀, the matrix entries, the counterexample integral). |
@@ -265,13 +265,13 @@ The reports as received (transcripts), the package of the first one, and the rev
 
 ### `sources/numerics-kprime-2026-11-15/`: the retained first-chaos penalty optimised together with the sectors (claude-b9ee, 15 November 2026)
 
-The numerical follow-up of the review. The copy shows the write-up as it stood at the time given in its provenance line. Its sections 6 and 7 (a fixed tilt, the structured family) were filled in while this folder was being assembled, and section 8 (three remote variables) has the first results of a run that was still going; their author completes the write-up later. Statuses: `STATUS.md`, section 11 (c).
+The numerical follow-up of the review. The copy shows the write-up as it stood at the time given in its provenance line, which its author calls final. Some restarts of the three-variable search (its section 8) were still running then; if they change a number, its author edits that number. Statuses: `STATUS.md`, section 11 (c).
 
-1 files, 16 KB.
+1 files, 17 KB.
 
 | file | size | contents |
 |---|---:|---|
-| `README.md` | 16 KB | Write-up of the follow-up: setting, what the record has, the tilted sector (statement with proof, local cost, content profile), exact values on the Wick monomial, the search over all two-variable tensors, fixed tilt, second derivative at restricted amplitude, Cauchy–Schwarz, the structured family. Section 8 (three remote variables) has first results of a run in progress. Statuses: `STATUS.md`, section 11 (c). |
+| `README.md` | 17 KB | Write-up of the follow-up: setting, what the record has, the tilted sector (statement with proof, local cost, content profile), exact values on the Wick monomial, the searches over all tensors in two and in three remote variables, a fixed tilt, the structured family with a bath, the second derivative at restricted amplitude, Cauchy–Schwarz. Statuses: `STATUS.md`, section 11 (c). |
 
 ### `sources/d1/`: the degree-2 case of the L¹/L² inequality (4 and 5 November 2026)
 
@@ -586,9 +586,9 @@ Dated documents. Their endpoints are stale (the repository then proved 1.4014880
 
 ### `code/kprime-2026-11-15/`: scripts and logs of the follow-up of 15 November
 
-Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are small and are kept because the write-up (`sources/numerics-kprime-2026-11-15/README.md`) cites them as its record. The three-variable search (`kprime3.py`) had left no log in the folder when it was copied; the write-up names a folder `search3/` for its records.
+Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are small and are kept because the write-up (`sources/numerics-kprime-2026-11-15/README.md`) cites them as its record. The records of the searches are in `search/` (two remote variables) and `search3/` (three).
 
-18 files, 52 KB.
+20 files, 54 KB.
 
 | file | size | contents |
 |---|---:|---|
@@ -601,12 +601,14 @@ Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are s
 | `kprime2.py` | 8.6 KB | Sector gain with and without the retained element for all tensors of H₂,₁(ℂ²) of fixed energy: deterministic quadrature, exact gradients, L-BFGS over the tensor with the saddle in (α, γ) solved inside. Modes `k`, `kp`, `eval`, `recheck`. |
 | `kprime2b.py` | 4.7 KB | The same functional with the B-sector added, evaluated at given tensors only (the visible phase is integrated numerically; the tensor is not re-optimised). |
 | `kprime2s.py` | 5.7 KB | As `kprime2.py` with the retained element tied to the sector, u = −s·r, at a fixed tilt s. |
-| `kprime3.py` | 5.9 KB | As `kprime2.py` for three remote variables (18 complex coefficients), on a coarser grid. No log of it in the folder when it was copied (the search was running). |
+| `kprime3.py` | 5.9 KB | As `kprime2.py` for three remote variables (18 complex coefficients), on a coarser grid. Its records are in `search3/`. |
+| `ratio_small_v.log` | 661 B | Its output for v = 10⁻⁶ to 3·10⁻²: j₀ − j, g − g₀ and their ratio (1.2909 at v = 10⁻⁶, 1.2908 at 10⁻⁴, 1.2902 at 10⁻³, 1.2837 at 10⁻², 1.2700 at 3·10⁻²). |
+| `ratio_small_v.py` | 1.3 KB | The profile ratio (g(v) − g₀)/(j₀ − j(v)) at small v by adaptive quadrature, written to see whether the non-monotone first entry of `tilt_profiles.log` is real. |
 | `retained_content.log` | 872 B | Its output for u = 0.00551 to 0.07: D, both gains with the optimal amplitudes, both ratios to D. |
 | `retained_content.py` | 2.1 KB | The Wick monomial with the A-sector: exact K gain and retained gain (the minimum over the retained element inside the supremum over the sector), by quadrature. |
 | `retained_joint.log` | 756 B | Its output for u = 0.01 to 0.0463: the table of section 4 of the write-up. |
 | `retained_joint.py` | 2.5 KB | The Wick monomial with the A- and B-sectors jointly, with and without the retained element (real amplitudes). |
-| `tilt_profiles.log` | 1.6 KB | Its output: j₀, g₀, k_A; (g − g₀)/(j₀ − j) for v from 10⁻⁴ to 10⁴ and its limit 0.58321; unrestricted second-derivative suprema for seven tilts, with the resulting global costs (all negative). |
+| `tilt_profiles.log` | 1.6 KB | Its output: j₀, g₀, k_A; (g − g₀)/(j₀ − j) for v from 10⁻⁴ to 10⁴ and its limit 0.58321; unrestricted second-derivative suprema for seven tilts, with the resulting global costs (all negative). Its ratio at v = 10⁻⁴ is a quadrature error of the fixed grid (see `ratio_small_v.log`). |
 | `tilt_profiles.py` | 3.4 KB | The profiles j and g and their ratio, the local cost k(s), and a global bound on the second derivative along the tilted direction. |
 | `tilt_restricted.log` | 579 B | Its output: Θ(R) for R = 0 to 0.5 at the tilts s = 0, 0.2, 0.3434, 0.5, with the budget p − s². |
 | `tilt_restricted.py` | 2.3 KB | The second-derivative bound along the tilted direction restricted to base points with \|ρ\| ≤ R (grid search). |
@@ -669,6 +671,30 @@ Each run has a `.log` (one line per record) and a `.jsonl` (the same records wit
 | `tilt_0.7_0200.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.7, u = 0.02 (log, one line per record). |
 | `tilt_0.7_0463.jsonl` | 1.9 KB | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.7, u = 0.0463 (JSON lines, one record per line with the tensor coefficients). |
 | `tilt_0.7_0463.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.7, u = 0.0463 (log, one line per record). |
+
+### `code/kprime-2026-11-15/search3/`: records of the search over three-variable tensors
+
+Written by `kprime3.py`; a `.log` (one line per record) and a `.jsonl` (the same records with the 18 tensor coefficients `c_re`, `c_im`) per run. Fields: `D`, `gK`, `gP`, `RK`, `RP`, `d4`, `res` as in `search/`, `grid` the grid parameters, and for the searches `opt`, `iters`, `secs`. Three logs are empty: their runs had written nothing when the folder was copied, and some restarts of the other runs were still going.
+
+15 files, 12 KB.
+
+| file | size | contents |
+|---|---:|---|
+| `eval3.jsonl` | 2.5 KB | `kprime3.py`, mode `eval`, u = 0.0463: the monomial, the monomial in rotated coordinates and two structured tensors on the three-variable grid (JSON lines, one record per line with the tensor coefficients). |
+| `eval3.log` | 731 B | `kprime3.py`, mode `eval`, u = 0.0463: the monomial, the monomial in rotated coordinates and two structured tensors on the three-variable grid (log, one line per record). |
+| `k3_0463_s0.jsonl` | 1.1 KB | `kprime3.py`, mode `k`: search maximising the K ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `k3_0463_s0.log` | 154 B | `kprime3.py`, mode `k`: search maximising the K ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (log, one line per record). |
+| `kp3_0200_s0.log` | 0 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.02, seed 0 (log, one line per record). Empty: the run had written nothing when the folder was copied. |
+| `kp3_0200_s1.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.02, seed 1 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0200_s1.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.02, seed 1 (log, one line per record). |
+| `kp3_0300_s0.log` | 0 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.03, seed 0 (log, one line per record). Empty: the run had written nothing when the folder was copied. |
+| `kp3_0463_s0.log` | 0 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 0 (log, one line per record). Empty: the run had written nothing when the folder was copied. |
+| `kp3_0463_s1.jsonl` | 1.1 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 1 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0463_s1.log` | 154 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 1 (log, one line per record). |
+| `kp3_0463_s2.jsonl` | 1.1 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 2 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0463_s2.log` | 154 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 2 (log, one line per record). |
+| `kp3_0463_s3.jsonl` | 2.2 KB | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 3 (JSON lines, one record per line with the tensor coefficients). |
+| `kp3_0463_s3.log` | 308 B | `kprime3.py`, mode `kp`: search maximising the retained ratio gain/D over the three-variable tensors of energy u = 0.0463, seed 3 (log, one line per record). |
 
 ### `code/audit-2026-11-13/`: the audit's scripts and small result files
 

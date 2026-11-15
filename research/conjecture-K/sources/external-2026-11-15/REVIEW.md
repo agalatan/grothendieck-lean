@@ -1,4 +1,4 @@
-<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/external-2026-11-15/REVIEW.md (file dated 2026-11-15 02:38). Only this line was added. -->
+<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/external-2026-11-15/REVIEW.md (file dated 2026-11-15 02:49). Only this line was added. -->
 # Review of the two reports received on 15 November 2026
 
 Reviewer: claude-b9ee, 15 November 2026. Scripts and logs are in `review/`; the follow-up computations are in
@@ -24,13 +24,17 @@ manuscript (chapters 20 and 25), found again with the exact multiplier.
 subtraction at fixed sectors: the raw penalty is 16–31 % of the mixed-gain allowance on the junta family
 (`kprime.py`), the part guaranteed by the theorem of `ch20` is 7–14 %, and the stationarity version K_rot pays
 13–57 % of the measured mixed gain. `ch20` adds that the q-only penalty "does not transfer unchanged to coupled
-A/B". `ch25` used the tied multiplier for the cost matrix only (coercivity 0.607 instead of 0.320) and showed that
-the local matrix is not a global majorant.
+A/B". `ch25` has the tied multiplier k = α/3 + β/6 with its cost matrix (coercivity 0.607 instead of 0.320) and
+shows that the local matrix is not a global majorant. The weak-K package of 15 October behind that chapter also
+has the tied content profiles F_A + F₀/3 and F_B + F₀/6, tries to bound the tied content for all q through the
+law of |q|² and reports that this is not enough; and one test (`RETAINED_H_SQUARE.md` §5) in which, at the
+K-optimal sectors of nine examples, a dual trial with both retained squares reduced the functional by more than
+the mixed gain.
 
 ## 2. New: optimised together with the A-sector, the retained element pays most of the mixed gain
 
-None of those measurements optimises the retained element u together with the sector. Doing so
-(sup over the sector of the minimum over u) gives, by exact quadrature:
+None of those measurements optimises the retained element u together with the sector and compares the result
+with the deficit. Doing so (sup over the sector of the minimum over u) gives, by exact quadrature:
 
 | | K: gain / D | K′: gain / D | part of the K gain that K′ removes |
 |---|---|---|---|
@@ -52,8 +56,10 @@ Mechanism. The retained element changes three things at once, and the fixed-sect
       = (c − g₀μ/(1+j₀))² / (k_A + g₀²/(1+j₀)) − μ²/(1+j₀),      c = Π₁[q g(|q|²)],  μ = Π₁[q j(|q|²)].
 
 1. The cost k_A = 0.320 becomes 0.607 (known since `ch25`).
-2. The content c becomes c − g₀μ/(1+j₀). c and μ have opposite signs, because the profiles g − g₀ and j − j₀ do,
-   and g₀ < 0: on the monomial the content is multiplied by 0.63. This is the new point.
+2. The content c becomes c − g₀μ/(1+j₀) (the tied profile of the weak-K package, with the optimal multiplier).
+   c and μ have opposite signs, because the profiles g − g₀ and j − j₀ do, and g₀ < 0: on the monomial the
+   content is multiplied by 0.63, and by less for a larger tilt. This cancellation, and its size on tensors, is
+   the new point.
 3. The term −μ²/(1+j₀) is subtracted (the theorem of `ch20`).
 
 On the monomial at u = 0.0463 (c = 0.03250, μ = −0.03467) the formula gives 0.000205; the exact value is 0.0002049.

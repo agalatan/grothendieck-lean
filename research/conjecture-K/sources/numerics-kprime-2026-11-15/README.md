@@ -1,4 +1,4 @@
-<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/README.md (file dated 2026-11-15 02:38). Only this line was added. -->
+<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/README.md (file dated 2026-11-15 02:49). Only this line was added. -->
 # The retained first-chaos penalty, optimised together with the sectors
 
 claude-b9ee, 15 November 2026. Numerical work at the peak row, prompted by the external note reviewed in
@@ -19,7 +19,7 @@ together with the A- and B-sectors. Result, by exact quadrature at the peak row:
 | Wick monomial, u = 0.0463, A+B | 0.165 | 0.018 |
 | largest value found over all tensors in two remote variables, u between 0.005 and 0.15, A-sector | 0.161 | 0.024 |
 | the same tensors with the B-sector added | 0.166 | 0.024 |
-| largest value found in three remote variables, u = 0.02 and 0.0463, A-sector | (run not finished) | 0.024 |
+| largest value found in three remote variables, u = 0.02 and 0.0463, A-sector | 0.161 | 0.024 |
 
 The inequality the sectors must satisfy is gain ≤ D + η. Its margin is about 6 for K and about 40 with the penalty
 retained, on everything tested (one to three remote variables). The reason is a cancellation in the first-order
@@ -55,11 +55,23 @@ j(0) = j₀ = 1.431973791, g(0) = g₀ = −0.835135933, k_A = p − E[(T−1)²
   matrix (A-entry 0.71546, so the local A-cost is p − 0.71546 = 0.60659 instead of 0.320), proves by an interval
   check that this matrix is not a global majorant, and leaves a remainder inequality as an unproved target. It
   uses the multiplier for the cost only.
+- The weak-K package of 15 October (`LOCAL_CHANNELS.md` §4, `GAUSSIAN_LOCALIZATION.md` §4, `TIED_GRAM_AUDIT.md`)
+  has the *tied profiles* F_A + F₀/3 and F_B + F₀/6. The first is q·(g + j/3), the content profile h_s of
+  section 3 at s = 1/3 up to a multiple of q. Those notes state a bound conditional on a global cost matrix and
+  try to bound the tied content for all q through the law of |q|²; they report that this is not enough (errors
+  around 10⁻³), in agreement with section 10. They evaluate nothing on tensors and use no other tilt.
+- `RETAINED_H_SQUARE.md` §5 of the same package has one sequential test: for nine junta-plus-Gaussian residuals
+  the A/B amplitudes were first optimised for the K gain, then one dual trial with both retained squares was
+  evaluated at those fixed amplitudes, and its reduction exceeded the gain at all nine points (example: gain
+  0.0016455, reduction 0.0029193). It is a value at fixed sectors, includes the second square, and is compared
+  with the mixed gain, not with D.
 - The external note of 15 November re-derives the first two items and gives the local matrix for the optimal
   multiplier (A-cost 0.60684).
 
-Not in the record, as far as the folder of 15 November shows: the effect of the retained element on the
-first-order term (the content), and any value of the sector gain with the retained element optimised.
+Not found in the record (the search of 15 November covered the manuscript chapters, the weak-K package and the
+folder of the tests of 15 October; the other October review folders by keyword only): an evaluation of the tied
+or tilted content on tensors, the cancellation of section 3, a tilt other than 1/3, and the value of the sector
+gain with the retained element optimised together with the sector, compared with the deficit.
 
 ## 3. The tilted sector
 
@@ -81,12 +93,13 @@ With u free (not tied to r) the second-order saddle value is
 
     ‖c − g₀μ/(1+j₀)‖²/(k_A + g₀²/(1+j₀)) − ‖μ‖²/(1+j₀),      c = Π₁[q g(|q|²)],  μ = Π₁[q j(|q|²)].
 
-**The cancellation (N).** g − g₀ ≥ 0 and j₀ − j ≥ 0, and their ratio (g(v) − g₀)/(j₀ − j(v)) decreases from 1.29
-(v → 0) to −g₀/j₀ = 0.583 (v → ∞) (`tilt_profiles.log`). So for s between 0.58 and 1.29 the profile h_s changes
-sign, positive for small |q| and negative for large |q|, and its projection on the first chaos is small. On the
-Wick monomial at u = 0.0463, c = 0.03250 and μ = −0.03467: the content c + sμ is 0.63·c at s = 0.343, 0.36·c at
-s = 0.6, and vanishes near s = 0.94. The cost-optimal tilt (0.34) and the content-optimal tilt (0.94) differ; the
-best compromise on the monomial is s ≈ 0.75.
+**The cancellation (N).** g − g₀ ≥ 0 and j₀ − j ≥ 0, and their ratio (g(v) − g₀)/(j₀ − j(v)) decreases from 1.291 (v
+→ 0) to −g₀/j₀ = 0.583 (v → ∞) (`tilt_profiles.log`; its first entry, 1.271 at v = 10⁻⁴, is a quadrature error of
+the fixed grid: adaptive quadrature gives 1.2908 there and a monotone ratio, `ratio_small_v.log`). So for s between
+0.58 and 1.29 the profile h_s changes sign, positive for small |q| and negative for large |q|, and its projection on
+the first chaos is small. On the Wick monomial at u = 0.0463, c = 0.03250 and μ = −0.03467: the content c + sμ is
+0.63·c at s = 0.343, 0.36·c at s = 0.6, and vanishes near s = 0.94. The cost-optimal tilt (0.34) and the content-
+optimal tilt (0.94) differ; the best compromise on the monomial is s ≈ 0.75.
 
 ## 4. Exact values on the Wick monomial (N)
 
@@ -108,7 +121,8 @@ Second-order formula of section 3 at u = 0.0463: 0.000205; exact: 0.0002049.
 Deterministic quadrature (51 200 remote nodes × 48 visible nodes), exact gradients, L-BFGS over the tensor with the
 saddle in (α, γ) solved inside, three restarts per run (near the monomial, near the family below, random).
 Checks: the monomial in rotated coordinates reproduces the one-variable numbers to 3·10⁻⁷ in D; a finer grid
-(196 608 × 72 nodes) changes no ratio in the fourth decimal (`search/fine_*.log`). Logs and maximisers in `search/`.
+(196 608 × 72 nodes) moves the ratios by at most one unit in the fourth decimal (0.0237 becomes 0.0236, 0.1609
+becomes 0.1608; `search/fine_*.log`). Logs and maximisers in `search/`.
 
 | u | K: largest gain/D found | retained: largest gain/D found | retained, at the K maximiser |
 |---|---|---|---|
@@ -189,16 +203,20 @@ reproduces the monomial ratios 0.1604 and 0.0170 as 0.1601–0.1606 and 0.0170�
 ratio is reliable and the fourth is not). Two structured tensors at u = 0.0463: X[(|X|²−2) + 1.2(|Y|²−1)] gives
 K 0.1443, retained 0.0185; with a second bath variable of the same weight, K 0.1296, retained 0.0178.
 
-Search over all tensors, random starts (`search3/`; first restarts, the run was still going when this was written):
+Search over all tensors (`search3/`; two restarts per run; when this was written four runs of the retained search
+at u = 0.0463 and one at u = 0.02 had finished, and one restart of the K search):
 
 | u | retained: largest gain/D found, three variables | two variables (section 5) | one variable |
 |---|---|---|---|
 | 0.0200 | 0.0241 | 0.0237 | 0.0225 |
-| 0.0463 | 0.0230 (three starts agree) | 0.0208 | 0.0170 |
+| 0.0463 | 0.0230 (four runs from random starts agree) | 0.0208 | 0.0170 |
 
-The ratio rises slowly with the number of remote variables (at u = 0.0463: 0.017, 0.021, 0.023), and the maximisers
-become less far from Gaussian (E|q|⁴/u² − 2 = 42, 19, 13). Nothing is known beyond three variables: the limit of
-this sequence is open, and with it the size of the margin in general.
+For K at u = 0.0463 the largest ratio found in three variables is 0.1611 (two variables: 0.1609; monomial: 0.1604).
+
+The retained ratio rises slowly with the number of remote variables (at u = 0.0463: 0.017, 0.021, 0.023), and the
+maximisers become less far from Gaussian (E|q|⁴/u² − 2 = 42, 19, 13). Nothing is known beyond three variables: the
+limit of this sequence is open, and with it the size of the margin in general. A deterministic grid is too large
+for four variables; a sampling method with variance reduction is needed.
 
 ## 9. Finite amplitude: second derivative along the sector (N)
 
@@ -243,8 +261,8 @@ Since Π₁q = 0, ‖Π₁[q h_s(|q|²)]‖² ≤ min over κ of E[|q|²(h_s(|q|
   13 November found its proof missing (content bound with margin 1.14, joint remainder bound not proved). With the
   penalty retained the margin is about 40 on everything tested (one to three remote variables).
 - It does not change the remote part: D(q) ≥ 0 with slack, for every remote cubic, is the same statement as before.
-- Open: more than three remote variables, where the ratio may still rise (section 8); the other rows of the cover; the even sectors
-  (Y, W, ν), where the retained element can have a component along Z; a proof of any of it.
+- Open: more than three remote variables, where the ratio may still rise (section 8); the other rows of the cover;
+  the even sectors (Y, W, ν), where the retained element can have a component along Z; a proof of any of it.
 
 ## Files
 
@@ -252,4 +270,5 @@ Since Π₁q = 0, ‖Π₁[q h_s(|q|²)]‖² ≤ min over κ of E[|q|²(h_s(|q|
 - `kprime2.py` (search, two variables), `kprime2b.py` (B-sector at given tensors), `kprime2s.py` (fixed tilt),
   `kprime3.py` (three variables), `family.py` (structured family with m bath variables), `search/` (logs and
   maximisers as JSON lines).
-- `tilt_profiles.py`, `tilt_restricted.py`, `cs_check.py`, `cs_gauss.py` with their logs.
+- `tilt_profiles.py`, `ratio_small_v.py`, `tilt_restricted.py`, `cs_check.py`, `cs_gauss.py` with their logs.
+- `search3/`: logs and maximisers of the three-variable runs.
