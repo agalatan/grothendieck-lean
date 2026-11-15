@@ -1,5 +1,5 @@
 -- Grothe/UpperTightBudget.lean
-import Grothe.Upper.RelaxedThreeBandBudget
+import Grothe.Upper.ThreeBandBudget
 import Grothe.UpperChaos.PhaseMomentData
 import Grothe.UpperChaos.TaylorCenterBandData
 import Grothe.UpperChaos.TaylorBandData

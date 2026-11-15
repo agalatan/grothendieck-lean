@@ -32,8 +32,8 @@ piece-error and whole-source radii.
 `UpperHead` assembles the finite residual independently of the comparison budget,
 and `HeadHardy` deducts the linear coefficient's forced energy before bounding the tail.
 The production Hardy budget is `5/4`, supplied by the Gaussian-amplitude estimate. The resulting exact reciprocal
-`tightValueQ` is strictly below `1.404599398251`. No panel, energy table or numerical
-acceptance premise is replaced. The Gaussian circle cap is independently checked by
+`tightValueQ` is strictly below `1.404599398251`. The panel and energy-table inputs
+are unchanged. The Gaussian circle cap is independently checked by
 `HardyGaussianCheck.charts_checked`; the tighter panel-total checks use kernel reduction.
 
 **Gaussian-amplitude Hardy bound.** `GaussianPair` evaluates a positive Gaussian
@@ -46,8 +46,9 @@ under the existing positive-definiteness gates. `SchurMainGaussian` proves
 this for measurable disk-valued responses. `HardyGaussianCheck` bounds it
 by `5/4` over all four closed halves of the two circle charts, with outward
 128-bit interval arithmetic and a depth-bounded covering proof. The native
-acceptance is interpreted by `HardyGaussianSound`; holomorphy and Parseval
-then yield `HardyReal.hardy_GT_gaussian` for the actual rounding.
+acceptance is applied in `HardyGaussian`, using the interval soundness proved by
+`HardyGaussianSound`; holomorphy and Parseval then yield
+`HardyReal.hardy_GT_gaussian` for the actual rounding.
 `UpperTightFinal` uses this budget and deducts the forced linear energy,
 certifying tail `233184398/10¹⁶` and the new `main_bounds` endpoint.
 
@@ -188,14 +189,16 @@ Gauss exactness and summation are supplied internally.
 the source-indexed interval checks for all three production powers. Their exact
 plans and caps are in `data/twist-ellipse/plans.json`; the generators
 `gen_twist_ellipse_plans.py` and `gen_twist_ellipse_facts.py` reproduce the arrays,
-range checks, total checks, and native-fact registration manifest. The complete
-cap totals are below the respective relaxed radii minus the reserved `10⁻¹⁵`.
+range checks and native-fact registration manifest. The cap totals are checked
+by kernel evaluation against the tight panel radii (`UpperTightPanelTotals`); the
+native total checks against the earlier relaxed radii were removed on 15 November
+2026 (#405).
 The arithmetic soundness modules prove the phase, translation, column, K, primary
 Mehler, disk-geometry, selection, maximum, and capped-error interfaces. The finite
 checks use registered native facts. `TwistEllipseMassSound` connects these
 expressions to the actual twisted vector, and
 `TwistEllCheck.remainder_of_prodShards` assembles the analytic remainders
-`Final.twistRemainder1/2/3`.
+`TightTwist.remainder1/2/3`.
 
 **Finite twisted-source bundles.**
 `UpperQuad/PortFacts/Bundles.lean` packages the production table flags,
@@ -681,7 +684,8 @@ at most `1.72·10⁻⁶`; the raw-source and table certificates, the Gaussian
 premises and the Hardy tail are hypotheses of these results. No
 historical Hilbert–Schmidt receipt transfer is assumed. `CompositeComparison`
 and `CompositeEnergy` are not imported by the final theorems, which use the
-three-band regrouping (`RelaxedThreeBandComparison`, below).
+three-band regrouping (`ThreeBandRegrouping`, below) with the tight radii of
+`UpperTightComparison`.
 
 `RelaxedComparison` provides an alternative using the original fourteen
 unscaled Gaussian finite-band premises. The eighteen piece-error radii and
@@ -925,9 +929,10 @@ orthogonally. Its linear comparison uses rounding, three low-band errors and
 three high-band errors; its quadratic term uses the rounding error and the
 three whole Taylor errors, without adding the low errors again. The whole
 raw-error hypotheses have radii `R₁`, `2 R₂`, `6 R₃`, where `R` is the existing
-`comparisonGroupRadiusQ`. `RelaxedTwistSix` proves these three whole-error bounds
-from the port facts and the twisted quadrature remainders
-(`hwholeFirst_of_facts`, `hwholeSecond_of_facts`, `hwholeThird_of_facts`).
+`comparisonGroupRadiusQ`. `UpperTightSix` proves the three whole-error bounds
+with the smaller radii `tightScaledRQ` from the port facts and the twisted
+quadrature remainders (`TightTwist.hwholeFirst_of_facts`,
+`hwholeSecond_of_facts`, `hwholeThird_of_facts`).
 `ThreeBandComparison` binds the regrouping to the actual frozen source and
 the current energy table. `ThreeBandBudget`, `ThreeBandEndpointCore` and
 `ThreeBandEndpointAdapter` combine the exact comparison budget
@@ -938,7 +943,8 @@ tail's changed-head deduction. The resulting residual is
 `ThreeBandEndpoint.upper_of_three_low_three_whole` concludes a Grothendieck
 bound strictly below `1.40459988` from exactly the three low-band bounds,
 three independent whole-error bounds and actual frozen-response table
-accuracy (task #295). The whole-error bounds and the table accuracy are proved.
+accuracy (task #295). The table accuracy is proved, and the whole-error bounds
+are proved with smaller radii (`UpperTightSix`).
 This fixed-budget theorem (`ThreeBandUpper.lean`) retains its explicit low-band
 hypotheses. The final assembly uses the generic comparison with the tighter
 certified radii above; it does not import this endpoint module. The standard
@@ -947,29 +953,14 @@ allowances; no new native fact is introduced. The older public `UpperTarget`
 threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the stricter
 threshold `1.404599398251`.
 
-`RelaxedThreeBandBudget`, `RelaxedThreeBandComparison` and
-`RelaxedThreeBandUpper` use the older `1.4046` threshold's remaining room. The three raw
-low-band allowances are `4001/10^12`, `14001/10^12` and `70001/10^12`;
-the second and third enter the comparison divided by `2!` and `3!`.
-The whole-error radii, mass caps, energy tolerance and Hardy tail stay fixed.
-`Statement.upper_target_of_relaxed_inputs` derives the same strict public
-target from these three low-band bounds, the three original whole-error
-bounds and table accuracy. Its exact rational endpoint is approximately
-`1.4045999579847528`. The full quadrature tolerances are
-`4e-9`, `1.4e-8`, `7e-8`, leaving `1e-12` per low band for finite-table
-excursions and reserving `1e-15` of each quadrature tolerance for tails and
-root gaps. These budget modules do not themselves establish the quadrature
-estimates or the whole-error bounds (tasks #333–#335); the next paragraph and
-the twisted remainders `Final.twistRemainder1/2/3` do.
-The budget modules introduce no new native fact.
-
-`RelaxedTwistMargins` and `RelaxedTwistSix` connect those radii to the actual
-port soundness chain. The whole-source charge uses the exact product of the
-center-norm bound and quadrature radius. `RelaxedTwist.six_of_facts` derives
-the six estimates, and `RelaxedTwist.upper_target_of_facts` takes the three
-port-fact witnesses, the three analytic panel-remainder estimates and the
-energy-table closeness as hypotheses. `upper_target` (`Grothe/UpperFinal.lean`)
-supplies all of them.
+The relaxed three-band chain for the `1.4046` threshold (`RelaxedThreeBandBudget`,
+`RelaxedThreeBandComparison`, `RelaxedThreeBandUpper`, `RelaxedTwistMargins`,
+`RelaxedTwistSix`), its theorem `upper_target : UpperTarget` (`Grothe/UpperFinal.lean`),
+the remainders `Final.twistRemainder1/2/3` and their native total checks
+`TwistEllCheck.Facts.j1Total/j2Total/j3Total` were removed on 15 November 2026
+(#405); `main_bounds` used none of them. The current upper bound is
+`upper_below_tight`, and the energy-table accuracy `Final.hclose_final` is in
+`Grothe/UpperClose.lean`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -2269,8 +2260,9 @@ by the final theorems.
   from the Gaussian-amplitude budget `5/4`; exact kernel arithmetic proves
   tail `233184398/10¹⁶`.
   This deduction is used by `upper_below_tight`. The conditional smaller head
-  still gives tail `303362486/10¹⁶`; the coarse `upper_target` API retains its
-  tail `36748/10¹²` from budget `7/4` (`HardyReal.hardy_GT`).
+  still gives tail `303362486/10¹⁶`; the fixed-budget three-band endpoint
+  (`ThreeBandUpper.lean`) retains the tail `36748/10¹²` from budget `7/4`
+  (`HardyReal.hardy_GT`).
 * **Independent replay.** The source computations were replayed on a different machine: the
   nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
   contour tail, comparison and endpoint pass on the regenerated data (energy table reproduced

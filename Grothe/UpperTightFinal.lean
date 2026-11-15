@@ -5,7 +5,12 @@ import Grothe.UpperHead
 import Grothe.UpperTightComparison
 import Grothe.UpperTightSix
 import Grothe.UpperTightPanelTotals
-import Grothe.UpperFinal
+import Grothe.UpperClose
+import Grothe.UpperTarget
+import Grothe.UpperChaos.ThreeBandEndpointAdapter
+import Grothe.UpperQuad.PortFacts.Bundles
+import Grothe.UpperQuad.TwistEllipseFacts.Checks
+import Grothe.UpperQuad.TwistEllipseMassSound
 
 /-!
 # The tighter unconditional upper bound from the existing certificates

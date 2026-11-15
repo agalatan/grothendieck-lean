@@ -19,7 +19,6 @@ import Grothe.UpperQuad.TwistEllipseFacts.J1Range17
 import Grothe.UpperQuad.TwistEllipseFacts.J1Range18
 import Grothe.UpperQuad.TwistEllipseFacts.J1Range19
 import Grothe.UpperQuad.TwistEllipseFacts.J1Range20
-import Grothe.UpperQuad.TwistEllipseFacts.J1Total
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range00
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range01
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range02
@@ -41,7 +40,6 @@ import Grothe.UpperQuad.TwistEllipseFacts.J2Range17
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range18
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range19
 import Grothe.UpperQuad.TwistEllipseFacts.J2Range20
-import Grothe.UpperQuad.TwistEllipseFacts.J2Total
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range00
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range01
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range02
@@ -63,7 +61,6 @@ import Grothe.UpperQuad.TwistEllipseFacts.J3Range17
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range18
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range19
 import Grothe.UpperQuad.TwistEllipseFacts.J3Range20
-import Grothe.UpperQuad.TwistEllipseFacts.J3Total
 
 /-! Imports all generated twisted-ellipse finite checks. No aggregate or analytic theorem.
 Input plans SHA256: 46d0722752e7755ec9a7ffec21d8c68f9db372c6716edd5d1f3eb228bc62c24d

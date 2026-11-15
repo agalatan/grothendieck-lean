@@ -83,9 +83,11 @@ class FactTests(unittest.TestCase):
                        for i in range(e["first"], e["stop"])]
             self.assertEqual(covered, list(range(len(panels))))
             self.assertIn(f"shardOK ({j-1} : Power) 128 129 j{j}Certificates", files[f"J{j}Range02.lean"])
-            self.assertIn(f"totalOK j{j}Certificates {plans.lean_q(budgets[j-1])}", files[f"J{j}Total.lean"])
-        self.assertEqual(len(entries), 12)
-        self.assertEqual(sum(text.count("native_decide") for text in files.values()), 12)
+            self.assertNotIn(f"J{j}Total.lean", files)
+        self.assertEqual(len(entries), 9)
+        self.assertEqual({e["kind"] for e in entries}, {"range"})
+        self.assertEqual(sum(text.count("native_decide") for text in files.values()), 9)
+        self.assertNotIn("totalOK", "".join(files.values()))
         self.assertNotIn("All.lean", files)
         self.assertNotIn("theorem", files["Checks.lean"].split("/-!")[0])
         again = facts.render(list(reversed(rows)), len(panels), budgets, "a" * 64)
@@ -113,18 +115,22 @@ class FactTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Fraction"):
             facts.render(rows, len(panels), [float(budget)]*3, "c" * 64)
 
-    def test_registration_includes_ranges_and_totals(self):
+    def test_registration_includes_ranges_only(self):
         panels, data = fixture()
         rows = plans.validate_plans(data, panels)
         radii, reserve, budgets = facts.budgets_from_data(data)
         files, entries, totals = facts.render(rows, len(panels), budgets, "d"*64)
         manifest = facts.registration(files, entries, len(panels), radii, reserve, budgets, totals, "d"*64, {})
-        self.assertEqual(len(manifest["native_txt_additions"]), 6)
-        self.assertEqual(len(manifest["axioms_lean_additions"]), 6)
+        self.assertEqual(len(manifest["native_txt_additions"]), 3)
+        self.assertEqual(len(manifest["axioms_lean_additions"]), 3)
         for j in (1, 2, 3):
-            fact = f"{facts.NAMESPACE}.j{j}Total"
+            fact = f"{facts.NAMESPACE}.j{j}Range00"
             self.assertIn(fact + facts.NATIVE_SUFFIX, manifest["native_txt_additions"])
             self.assertIn("#print axioms " + fact, manifest["axioms_lean_additions"])
+            total = f"{facts.NAMESPACE}.j{j}Total"
+            self.assertNotIn(total + facts.NATIVE_SUFFIX, manifest["native_txt_additions"])
+            self.assertNotIn("#print axioms " + total, manifest["axioms_lean_additions"])
+        self.assertEqual(manifest["errorCap_sums"], [str(q) for q in totals])
         self.assertEqual(set(manifest["generated_sha256"]), set(files))
 
     def test_cli_roundtrip_and_protected_registries(self):
@@ -143,7 +149,7 @@ class FactTests(unittest.TestCase):
                 self.assertFalse(output.exists())
                 self.assertEqual(facts.main(args), 0)
                 self.assertEqual(facts.main(args + ["--check"]), 0)
-                self.assertEqual(len(plans.read_json(reg)["facts"]), 9)
+                self.assertEqual(len(plans.read_json(reg)["facts"]), 6)
                 original = (output / "J1Range01.lean").read_text()
                 self.assertIn("64 65", original)
                 for path in (native, axioms, source, plan_file, output / "Checks.lean"):
@@ -157,6 +163,10 @@ class FactTests(unittest.TestCase):
                 (output / "J1Range99.lean").write_text("stale extra")
                 self.assertEqual(facts.main(args), 1)
                 self.assertEqual((output / "J1Range99.lean").read_text(), "stale extra")
+                (output / "J1Range99.lean").unlink()
+                (output / "J1Total.lean").write_text("stale total")
+                self.assertEqual(facts.main(args), 1)
+                self.assertEqual((output / "J1Total.lean").read_text(), "stale total")
 
     def test_missing_or_stale_inputs_write_nothing(self):
         with tempfile.TemporaryDirectory() as tmp:

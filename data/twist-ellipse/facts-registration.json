@@ -22,7 +22,6 @@
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j1Range18",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j1Range19",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j1Range20",
-    "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j1Total",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j2Range00",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j2Range01",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j2Range02",
@@ -44,7 +43,6 @@
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j2Range18",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j2Range19",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j2Range20",
-    "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j2Total",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Range00",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Range01",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Range02",
@@ -65,8 +63,7 @@
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Range17",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Range18",
     "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Range19",
-    "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Range20",
-    "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Total"
+    "#print axioms Grothe.UpperQuad.TwistEllCheck.Facts.j3Range20"
   ],
   "axioms_lean_import": "import Grothe.UpperQuad.TwistEllipseFacts.Checks",
   "budget_source": "input relaxed_radii[j-1] - input tail_gap_reserve",
@@ -266,14 +263,6 @@
       "theorem": "Grothe.UpperQuad.TwistEllCheck.Facts.j1Range20"
     },
     {
-      "budget": "3999999/1000000000000000",
-      "j": 1,
-      "kind": "total",
-      "module": "Grothe.UpperQuad.TwistEllipseFacts.J1Total",
-      "native_axiom": "Grothe.UpperQuad.TwistEllCheck.Facts.j1Total._native.native_decide.ax_1_1",
-      "theorem": "Grothe.UpperQuad.TwistEllCheck.Facts.j1Total"
-    },
-    {
       "first": 0,
       "j": 2,
       "kind": "range",
@@ -463,14 +452,6 @@
       "theorem": "Grothe.UpperQuad.TwistEllCheck.Facts.j2Range20"
     },
     {
-      "budget": "13999999/1000000000000000",
-      "j": 2,
-      "kind": "total",
-      "module": "Grothe.UpperQuad.TwistEllipseFacts.J2Total",
-      "native_axiom": "Grothe.UpperQuad.TwistEllCheck.Facts.j2Total._native.native_decide.ax_1_1",
-      "theorem": "Grothe.UpperQuad.TwistEllCheck.Facts.j2Total"
-    },
-    {
       "first": 0,
       "j": 3,
       "kind": "range",
@@ -658,18 +639,10 @@
       "native_axiom": "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range20._native.native_decide.ax_1_1",
       "stop": 1289,
       "theorem": "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range20"
-    },
-    {
-      "budget": "69999999/1000000000000000",
-      "j": 3,
-      "kind": "total",
-      "module": "Grothe.UpperQuad.TwistEllipseFacts.J3Total",
-      "native_axiom": "Grothe.UpperQuad.TwistEllCheck.Facts.j3Total._native.native_decide.ax_1_1",
-      "theorem": "Grothe.UpperQuad.TwistEllCheck.Facts.j3Total"
     }
   ],
   "generated_sha256": {
-    "Checks.lean": "a95fad704fa408cba515d1ecf34558e57283597b4083088777d22af1014d5752",
+    "Checks.lean": "7df0db9e57b2a4dacd01525b2dbc14005a8780f9ba41e128ae809e66e5fea210",
     "J1Range00.lean": "68a50f5f32dd30a821014a29208624dcc47b083ea5add510d7534867205d721d",
     "J1Range01.lean": "da3e3b1819f51780d6c2fdb0a23951febfd56b9e4eff956146469285f08e58c7",
     "J1Range02.lean": "adaced6f9d2cb3fdc78f9169ccea6c6ec3ce2f32a7018f623bfddcee405e7f14",
@@ -691,7 +664,6 @@
     "J1Range18.lean": "955febcb2b9cdab76b20c7c9a5da3f2a58b9b840bc01995931181f7fc2a1c147",
     "J1Range19.lean": "a02e15edac66c8b4be020d0aa0a063f87fd2542a4592bd30c2405e4e6864e489",
     "J1Range20.lean": "d159674ea17d99c91e4046e8590b50e1ddf7eea51bda4b1efb6340dc0eb5ccd9",
-    "J1Total.lean": "501918d0f317a1fcc4835f2c4018e710a3e7567a3a93034c8f29cffdd492ec2f",
     "J2Range00.lean": "f4f06b8bb65ff193e66cb1191e76df3ce9d1a628c4b3ecedc8f0acb2ab675926",
     "J2Range01.lean": "f809c56e80ea161a10ca60e825fef738938e57f911f49e512bd52b936f1dea94",
     "J2Range02.lean": "439724ba5883015d14b77c0606cad4bafbd8b38ab43d3f5203cf33b429794d3d",
@@ -713,7 +685,6 @@
     "J2Range18.lean": "51e6446cda7690a7bc7c9700925578da2ac0c18316adae8d59daeec257ab96d0",
     "J2Range19.lean": "87c8e8f39d0dbed1a1ee099ebd571dc63074a82771245ecaae1bc7b00912087a",
     "J2Range20.lean": "d40b9f261d82b22b242d8686a4240abd576481a0d325ea01089043fc1e9c59ae",
-    "J2Total.lean": "4a001a7c0691d4b27d35aa9802f58129afb56e65fccc556907f9b8f8100dfcd5",
     "J3Range00.lean": "e36dac8918080c67e8dd3f793caaa21798f799be144bca4e91b4bafba9c61114",
     "J3Range01.lean": "8008730eb54ee10c5fe36e803423ea4e86a8d6d65a5266f2d66c7ff54e152c09",
     "J3Range02.lean": "c40fc85a0cafc7058c63a0315851650171b2179d19e7ba0ec772afc85fdc6e2b",
@@ -734,11 +705,10 @@
     "J3Range17.lean": "c40a4ec0fe5583cbd8b4d42ad0c7f8d96fb832e72ca4a1c057ce83e704104655",
     "J3Range18.lean": "e726335713f38c8107d33538c78755f7d4f7cfdb0825990a8c35ca980523e3d1",
     "J3Range19.lean": "b8718c936fb62aeaf331034ca34863407c13b559a2bd3820d650f645d1af9a4a",
-    "J3Range20.lean": "aa9ce8cdd1885a3bd7ce7a3a57ba791bc7c5d689e490866a803b2b702eff98a5",
-    "J3Total.lean": "53ad6584c8c645fc4cb5c227fb6cca010c46920527bde8299a845852e13ecf7e"
+    "J3Range20.lean": "aa9ce8cdd1885a3bd7ce7a3a57ba791bc7c5d689e490866a803b2b702eff98a5"
   },
   "generator_source_sha256": {
-    "tools/gen_twist_ellipse_facts.py": "2427a23d3997e3eaffd92bfd1eb1d4d41be4430d253c91eaa040b59c22003f29",
+    "tools/gen_twist_ellipse_facts.py": "3702ae85d93dbf7ce772058b0ce62127213c59caa4f2291d7cb7f47dc20c51a7",
     "tools/gen_twist_ellipse_plans.py": "b8ef819d2fc50e51e8e9beb11954e3f0c67262fa0b090be5825463a7ac110201"
   },
   "input_sha256": "46d0722752e7755ec9a7ffec21d8c68f9db372c6716edd5d1f3eb228bc62c24d",
@@ -764,7 +734,6 @@
     "Grothe.UpperQuad.TwistEllCheck.Facts.j1Range18._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j1Range19._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j1Range20._native.native_decide.ax_1_1",
-    "Grothe.UpperQuad.TwistEllCheck.Facts.j1Total._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j2Range00._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j2Range01._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j2Range02._native.native_decide.ax_1_1",
@@ -786,7 +755,6 @@
     "Grothe.UpperQuad.TwistEllCheck.Facts.j2Range18._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j2Range19._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j2Range20._native.native_decide.ax_1_1",
-    "Grothe.UpperQuad.TwistEllCheck.Facts.j2Total._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range00._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range01._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range02._native.native_decide.ax_1_1",
@@ -807,8 +775,7 @@
     "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range17._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range18._native.native_decide.ax_1_1",
     "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range19._native.native_decide.ax_1_1",
-    "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range20._native.native_decide.ax_1_1",
-    "Grothe.UpperQuad.TwistEllCheck.Facts.j3Total._native.native_decide.ax_1_1"
+    "Grothe.UpperQuad.TwistEllCheck.Facts.j3Range20._native.native_decide.ax_1_1"
   ],
   "panel_budgets": [
     "3999999/1000000000000000",
