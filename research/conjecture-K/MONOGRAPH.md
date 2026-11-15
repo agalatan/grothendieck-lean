@@ -41,8 +41,8 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
-  every dimension and at every amplitude; and, by its author so far, the same with error below 9.8·10⁻⁵ on a profile
-  rectangle around the peak (2.6).
+  every dimension and at every amplitude, and the same with error below 9.8·10⁻⁵ on a profile rectangle around the
+  peak (2.6).
 - **Open:** the raw content inequality of L4 for general cubics; the finite-amplitude joint A/B bound, reduced to a
   compact box; the B-content of general cubics; the odd sectors over a nonzero core; the remote part away from the
   peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
@@ -146,10 +146,11 @@ q = Σ_j c_jH(X_j),
 
     0 ≤ Λ(q) − Λ̂(q) ≤ 192a⁻⁶(1 + 4b/a)·Σ_j |c_j|⁶,
 
-so along the diffuse sequence q_N = √(u/N)Σ_{j≤N}H(X_j) the gap is O(u³/N²) and Λ̂(q_N) → B(u) − pu [P author only + C
-· codex-a7c4 · 2.14]. The benchmark S is therefore common to both functionals, and the raw remote cap of 2.1 serves
-both. One caution: Λ̂ does not scale like Λ. At the profile (λε₀, λa₀, λb₀) one has Λ̂(λG) = λΛ̂₀^{(λ)}(G), where the
-multiplier cost of Λ̂₀^{(λ)} carries the weight λ; the unweighted law fails strictly [P author only + C · 3.17].
+so along the diffuse sequence q_N = √(u/N)Σ_{j≤N}H(X_j) the gap is O(u³/N²) and Λ̂(q_N) → B(u) − pu [P + C ·
+codex-a7c4, re-derived and replayed by claude-b9ee · 2.14]. The benchmark S is therefore common to both functionals,
+and the raw remote cap of 2.1 serves both. One caution: Λ̂ does not scale like Λ. At the profile (λε₀, λa₀, λb₀) one
+has Λ̂(λG) = λΛ̂₀^{(λ)}(G), where the multiplier cost of Λ̂₀^{(λ)} carries the weight λ; the unweighted law fails
+strictly [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 3.17].
 
 **The tilt.** For every remote q ∈ L², every remote linear form r and every real s,
 
@@ -332,7 +333,8 @@ self-interacting drivers [6.3.17]; and the **raw content inequality for an arbit
 
 **What a proof must use.** At the peak, Q = √u₀·X·exp(2πi·F₂(|X|²)) with F₂(r) = 1 − (r + 1)e^{−r} and
 u₀ = 403448/10⁷ has exactly the law of √u₀·W, is orthogonal to the whole remote first chaos and has the matched
-conditional covariance; yet G = Q − (i/1250)(T − 1)X has Λ(G) > S + 7·10⁻⁷ [P author only + C · codex-a7c4 · 6.5.1].
+conditional covariance; yet G = Q − (i/1250)(T − 1)X has Λ(G) > S + 7·10⁻⁷, numerically Λ(G) − S ≈ 1.12·10⁻⁵
+[P + C, N · codex-a7c4, re-derived and replayed by claude-b9ee · 6.5.1].
 Q is not a cubic (E‖DQ‖² = u₀(1 + 64π²/81) > 3u₀), so K is not refuted, but the law of the residual, orthogonality
 and radial tests cannot suffice: the Wick structure (E‖Dq‖² = 3u, the resolvent identity) must enter.
 
@@ -407,15 +409,18 @@ claude-b9ee; consequence P + C · claude-b9ee, and independently codex-a7c4 · 1
 
 For u ≤ 0.021 a separate certificate gives more, Λ̂(q + (T − 1)r) < S − 69/25000000, strictly below S
 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 11.47]. Two subclasses, 0.03 ≤ u ≤ 0.0463 with
-χ ≤ 7/100, and χ ≤ 1/4, have their own certificates, independent of step 3 [P + C · 11.46, 11.48].
+χ ≤ 7/100, and χ ≤ 1/4, have their own certificates, independent of step 3: the first reviewed [P + C · 11.46], the
+second by its author [P author only + C · 11.48], so that the class χ ≤ 1/4 is P + C as a special case of the lemma.
 
 **Around the peak.** With λ = ε/(1891/2500), ε ∈ [0.74, 0.76], 0 ≤ a/λ − 0.5592 ≤ 1/2500 and
 0 ≤ b/λ − 0.1432 ≤ 1/800,
 
     Λ̂(q + (T − 1)r) < S + 9.79·10⁻⁵    for every remote cubic with u ≤ λ²·0.0463 and every remote linear r,
 
-using the weighted scaling of 1.6 with the cost k_λ = 59009/189100 − (λ − 1)·9/25 [P author only + C · codex-a7c4 ·
-11.53]. The flank and upper rows are outside this rectangle.
+using the weighted scaling of 1.6 with the cost k_λ = 59009/189100 − (λ − 1)·9/25. The exact budget is
+9.7888442057·10⁻⁵: a profile loss of 7.8·10⁻⁵, η, and the 3.6·10⁻⁷ between the remote cap and a lower bound of S; at the peak it
+reproduces the lemma's budget within 3·10⁻⁹ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee; it inherits
+step 3 · 11.53]. The flank and upper rows are outside this rectangle.
 
 This closes the A-shell of Λ̂ at the peak row, at every amplitude. It does not touch the B-shell, the odd sectors, the
 other rows, or K itself: for Λ (the tilt s = 0) the remainder and content steps are unproved; numerically the global
@@ -453,8 +458,8 @@ is open [7.1.5].
 
 at the three rows, for arbitrary jointly distributed remote r_A, r_B [P + C · codex-a7c4, re-derived and replayed by
 claude-b9ee · 7.3.1]. The sharp least local eigenvalues are 0.298364651634117… (peak), 0.32315284787… (flank) and
-0.32771589719… (upper), each attained along a genuine cubic Gaussian-driver direction [P author only, C · codex-a7c4,
-replayed by claude-b9ee · 7.4.9]; along
+0.32771589719… (upper), each attained along a genuine cubic Gaussian-driver direction [P author only, C, N ·
+codex-a7c4, replayed and recomputed to 40 digits by claude-b9ee · 7.4.9]; along
 (r_A, r_B) ∝ (1, −1/5) the peak value is 0.298526… [P + C · 7.4.8]. So no global common A/B cost can exceed these
 numbers.
 
@@ -503,7 +508,8 @@ the odd block, z₁Q and the normalised one-coordinate cubic ν·z₁(T − 2)/�
 
 with two distinct radial kernels A and B (the mixed second derivative is 2K). Both terms vanish at q = 0, because
 A(0) = 0 and EQ = 0, but not in general: at q = 0.001·X(|Y|² − 1) the directions (Q, ν) = (|Y|² − 1, 1) and
-(i(|Y|² − 1), i) give K < −8·10⁻⁶ and K > 4·10⁻⁶ [P author only + C · codex-a7c4 · 7.2.5]. A
+(i(|Y|² − 1), i) give K < −8·10⁻⁶ and K > 4·10⁻⁶ (numerically −9.32·10⁻⁶ and 4.66·10⁻⁶, also by mixed finite
+differences) [P + C, N · codex-a7c4, re-derived and replayed by claude-b9ee · 7.2.5]. A
 directional majorant (|X + Y| + |X − Y|)² ≤ 4M − 4c²/M, M = |X|² + |Y|², c = Re(XȲ), is available [P · 7.2.2], and
 certifies the cost 0.063 at one explicit core [P, interval part R · 7.2.3]; numerically the cost is 0.79 to 1.32 per
 unit energy on nine cores [N].
@@ -584,12 +590,12 @@ section 13), where every source is listed.
 
 - **68. A remote cap gives D(q) ≥ −η_R.** It gives D(q) ≥ −[S − (B(u) − pu)] − η_R only [P].
 - **87. A gain bound in terms of D₊ attenuates the remote error by 1 − κ.** That attenuation needs the signed D; with
-  D₊ the error is η_R + η (2.6) [P author only + C].
+  D₊ the error is η_R + η (2.6) [P + C].
 - **84. A nonlinear function of a remote cubic is orthogonal to the first chaos because the cubic is.**
   q = cX(|Y|² − 1) has a nonzero first-chaos phase content; the diffuse benchmark of Λ̂ needs the estimate of 1.6
   [P + C].
 - **85. The retained functional scales like the raw one.** The multiplier cost carries a weight λ, and the unweighted
-  law fails strictly on q = cX(|Y|² − 1) [P author only + C].
+  law fails strictly on q = cX(|Y|² − 1) [P + C].
 - **66, 67. Redistribution 4.1 and Theorem B without independence from z₁.** H = −L·1{T ≥ 10} with U = sW, and
   𝓕 = σ(z₁) with G = (a/2)W·1{T ≤ 1/100}, break them [P, author only].
 - **11. Replacing a shared (T − 1)U by an independent Gaussian of equal variance does not lower Λ.** The shared version
@@ -607,7 +613,7 @@ section 13), where every source is listed.
   laws reach 0.2646 [R].
 - **88. Shared-A domination holds for any residual with Gaussian law, orthogonal to the first chaos, with the matched
   covariance.** The non-cubic witness of 2.5 gives Λ(G) > S + 7·10⁻⁷; arguments through the law alone cannot prove
-  K [P author only + C].
+  K [P + C].
 - **45. ‖Π(q·h)‖ ≤ E[|q|h(|q|²)].** Invalid for Gaussian linear forms; the L² contraction is the valid step [P].
 - **74. Character exclusions alone give the weighted bound of the neighbourhood lemma.** Fails for non-cubic L²
   functions; the lemma needs p, h ∈ H₂,₁ [P, author only].
@@ -636,7 +642,7 @@ section 13), where every source is listed.
 - **38. Over a nonzero core the odd sectors obey the inverse-norm condition E[|O|²/|L + H|] ≤ (1/ε − κ_E)‖O‖².** Fails
   even with κ_E = 0 at an explicit core [R].
 - **86. Over a nonzero core the Q/ν coupling has one Hermitian radial kernel.** It has two channels, with opposite
-  signs on a genuine cubic witness (2.9) [P author only + C].
+  signs on a genuine cubic witness (2.9) [P + C].
 - **19. The local matrix of the retained functional (tied multiplier) plus I/10 is a global majorant.** Violated by
   more than 97/1000 at an explicit point [R].
 - **47–49. Decoupling, (EC)/(PH)/(PG) and a uniform fibre bound for the even sectors.** False by up to 5.7·10⁻³, or
