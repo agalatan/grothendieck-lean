@@ -11,9 +11,7 @@ import Grothe.Haagerup.PhaseStability
 import Grothe.Haagerup.PhaseTaylorAlgebra
 import Grothe.Haagerup.PhaseTaylorCubic
 import Grothe.Haagerup.PhaseTaylorOptimal
-import Grothe.Haagerup.PhaseTaylorQuadratic
 import Grothe.Haagerup.PhaseTaylorSharp
-import Grothe.Haagerup.PhaseTaylorThird
 import Grothe.HeadHardy
 import Grothe.ListPoly
 import Grothe.Lower.Basic
@@ -10044,17 +10042,17 @@ import Grothe.Upper.GroupedComparison
 import Grothe.Upper.Haagerup
 import Grothe.Upper.Head
 import Grothe.Upper.HeadWeight
+import Grothe.Upper.ImprovedHeadMass
+import Grothe.Upper.ImprovedHeadWeight
+import Grothe.Upper.ImprovedHeadWeightData
+import Grothe.Upper.ImprovedHeadWeightFacts
 import Grothe.Upper.IntervalSound
 import Grothe.Upper.PolynomialBridge
+import Grothe.Upper.PolynomialHeadTail
 import Grothe.Upper.Realise
 import Grothe.Upper.RelaxedComparisonData
 import Grothe.Upper.RelaxedThreeBandBudget
 import Grothe.Upper.Residual
-import Grothe.Upper.SignedTail
-import Grothe.Upper.SignedTailMass
-import Grothe.Upper.SignedTailMassCertificate
-import Grothe.Upper.SignedTailMassSharp
-import Grothe.Upper.SignedTailTransfer
 import Grothe.Upper.ThreeBandBudget
 import Grothe.Upper.ThreeBandEndpointCore
 import Grothe.UpperChaos.ActualCoherentBesselAudit
@@ -10865,7 +10863,6 @@ import Grothe.UpperChaos.PackedDyadicStructural
 import Grothe.UpperChaos.PackedDyadicStructuralChecks
 import Grothe.UpperChaos.PairJetPolynomialOperations
 import Grothe.UpperChaos.PhaseAuxiliaryDecay
-import Grothe.UpperChaos.PhaseCubicError
 import Grothe.UpperChaos.PhaseMoment2
 import Grothe.UpperChaos.PhaseMoment4
 import Grothe.UpperChaos.PhaseMoment6
@@ -10876,7 +10873,6 @@ import Grothe.UpperChaos.PhaseMomentEval
 import Grothe.UpperChaos.PhaseMomentNorms
 import Grothe.UpperChaos.PhaseMoments
 import Grothe.UpperChaos.PhasePolynomialStability
-import Grothe.UpperChaos.PhaseQuadraticError
 import Grothe.UpperChaos.PhaseRadialTail
 import Grothe.UpperChaos.PhaseTailExponential
 import Grothe.UpperChaos.PhaseTermsDefs
@@ -13684,6 +13680,8 @@ import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseSharp
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
+import Grothe.UpperEnergyBudget
+import Grothe.UpperEnergyFinal
 import Grothe.UpperFinal
 import Grothe.UpperHead
 import Grothe.UpperQuad.Bridge
@@ -13700,6 +13698,7 @@ import Grothe.UpperQuad.Data.Cutoffs4
 import Grothe.UpperQuad.Data.Cutoffs5
 import Grothe.UpperQuad.Data.Cutoffs6
 import Grothe.UpperQuad.Data.Cutoffs7
+import Grothe.UpperQuad.EnergyAccuracy
 import Grothe.UpperQuad.EnergySound
 import Grothe.UpperQuad.EvenSquareDescent
 import Grothe.UpperQuad.EvenSquareDescentLocal

@@ -1,0 +1,13 @@
+tilt (sA, sB) = (0.0000, 0.00):  margin m by direction (share of B from 0 = pure A to 1 = pure B):
+    0.000:+0.321  0.125:+0.300  0.250:+0.328  0.375:+0.403  0.500:+0.512  0.625:+0.579  0.750:+0.644  0.875:+0.703  1.000:+0.706
+    smallest margin +0.2996 at share 0.125, amplitude 0.03, phase 3.14, w = 0.00+0.00i  (Rem/|r|^2 = 1.0224, cost/|r|^2 = 1.3221)   [208 s]
+tilt (sA, sB) = (0.6000, 0.00):  margin m by direction (share of B from 0 = pure A to 1 = pure B):
+    0.000:+0.367  0.125:+0.324  0.250:+0.257  0.375:+0.252  0.500:+0.300  0.625:+0.386  0.750:+0.512  0.875:+0.658  1.000:+0.706
+    smallest margin +0.2524 at share 0.375, amplitude 0.03, phase 3.14, w = 0.00+0.25i  (Rem/|r|^2 = 0.8208, cost/|r|^2 = 1.0732)   [158 s]
+tilt (sA, sB) = (0.5000, 0.00):  margin m by direction (share of B from 0 = pure A to 1 = pure B):
+    0.000:+0.494  0.125:+0.436  0.250:+0.372  0.375:+0.365  0.500:+0.393  0.625:+0.451  0.750:+0.550  0.875:+0.673  1.000:+0.706
+    smallest margin +0.3649 at share 0.375, amplitude 0.03, phase 3.14, w = 0.00+0.00i  (Rem/|r|^2 = 0.7843, cost/|r|^2 = 1.1492)   [152 s]
+tilt (sA, sB) = (0.3434, 0.00):  margin m by direction (share of B from 0 = pure A to 1 = pure B):
+    0.000:+0.602  0.125:+0.519  0.250:+0.470  0.375:+0.467  0.500:+0.495  0.625:+0.527  0.750:+0.596  0.875:+0.692  1.000:+0.706
+    smallest margin +0.4672 at share 0.375, amplitude 0.03, phase 3.14, w = 0.00+0.00i  (Rem/|r|^2 = 0.7734, cost/|r|^2 = 1.2405)   [151 s]
+exit 0

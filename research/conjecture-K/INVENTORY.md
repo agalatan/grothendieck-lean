@@ -5,18 +5,32 @@ working folders on the laptop, under `/Users/alingalatan/workspaces/grothe/hando
 there on 15 November 2026, with absolute paths, sizes and one line each, and the SHA-256 of the files a result
 depends on.
 
-**Rules applied.** Copied: `.md`, `.tex`, `.txt` documents; `.py`, `.mjs`, `.cpp` scripts; JSON result files of at
-most 300 KB. Left out: zips, certificates and data above 300 KB, logs, binaries, PDFs, byte-code caches, third-party
-libraries, shell scripts, and documents that are not about Conjecture K. One exception to "no logs": the logs and
-JSON-lines records of the review and of the numerical follow-up of 15 November (each at most a few KB) are in the
-repository, under `sources/external-2026-11-15/review/` and `code/kprime-2026-11-15/`, because `REVIEW.md` and the
-write-up of the follow-up cite them as their record.
+**Rules applied.** Copied: `.md`, `.tex`, `.txt` documents; `.py`, `.mjs`, `.cpp` scripts (a `.cpp` with its header
+`.hpp`); JSON result files of at most 300 KB. Left out: zips, certificates and data above 300 KB, logs, binaries,
+PDFs, byte-code caches, third-party libraries, shell scripts, and documents that are not about Conjecture K. One
+exception to "no logs": the logs and JSON-lines records of the review and of the numerical follow-up of 15 November
+(each at most a few KB) are in the repository, under `sources/external-2026-11-15/review/` and
+`code/kprime-2026-11-15/`, because `REVIEW.md` and the write-up of the follow-up cite them as their record. The same
+holds for the logs of the three reviews of the report on the tilted sector, under `code/tilted-sector-2026-11-15/`
+(the largest is the 25 KB log of the replay of its fifth version, `replay_version5.log`), and for
+`code/kprime-2026-11-15/tilt_restricted_67.log`, which the first of them cites. The result files of the verifiers of
+that report are `.txt` documents and are under `sources/received-2026-11-15-tilted-sector/`.
 
 **Completeness.** Every file under `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/` is either in
 this repository folder or covered by a row of sections 1 to 4 below (checked by script when this file was generated:
 no file unaccounted for). One working folder, `kprime-2026-11-15/`, was still being written at that time; section 4
 has a row for whatever appeared there after its copy was taken, and no such row if nothing did. Sections 5 and 6
 cover the K-related parts of two larger folders, which also hold material on other subjects that is not listed.
+
+**Update of 15 November** (the report on the tilted sector in its fifth version with the reviews of its first,
+second and fifth versions, the prompt of that day, the final state of `kprime-2026-11-15/`, the corrected
+`external-2026-11-15/REVIEW.md`). The check was run again when they were added: every file under `research-degree5/`
+is in the repository or covered by a row. Section 4 has rows for what the three working folders of that day hold
+beyond the copies. The folder of the report, `gpt-tilted-sector-2026-11-15/`, held one version at a time: its author
+revised the report, its verifier and its results in place four times and went on adding files after the fifth
+version. The repository has the first version, the fourth and the fifth; their hashes are below. The folder of the
+reviews, `gpt-tilted-sector-2026-11-15-review/`, is in the repository whole, except byte-code caches. No copied file
+is larger than 300 KB; the files that the author of the report added after its fifth version are not copied (section 4).
 
 **Not copied although they are text:** seven byte-identical copies of `sources/received-2026-11-05/hermitian_content/proof.md`
 that later packages ship as `kernel_proof.md` or `benchmark_kernel_proof.md`, and the `upstream/` copies inside
@@ -44,6 +58,40 @@ The checker reads the Lean row and batch data under the hard-coded root `/Users/
 compares source hashes. It was run against commit `32cfb7d87`; one of the pinned Lean files
 (`Grothe/Research/LawNodeLower.lean`) has since been golfed without statement changes, and a rerun on the current
 `master` has not been tried.
+
+The report on the tilted sector of 15 November (`STATUS.md`, section 11 (e)) was rewritten in place by its author
+four times, so its copies cannot all be compared with the working files; the hashes say which versions the
+repository holds. For a `.md` file the hash is that of the file as it was copied, that is, of the copy without its
+first line.
+
+| file in the repository | size | SHA-256 | what it is |
+|---|---:|---|---|
+| `sources/received-2026-11-15-tilted-sector/first-version/REPORT.md` | 24,880 B without its first line | `67ac4eee114db52588a84b02e7e90883044d7c3530d3aa5d87fafcc3f4b3dceb` | the report, **first version**, as reviewed in `REVIEW.md` (file dated 03:23) |
+| `code/tilted-sector-2026-11-15/first-version/verify.py` | 10,226 B | `8d889c26e7e41d7da5ce12a1991799293d24b5c7f59b5d427ddc59c7e733620d` | the exact verifier of the first version, as reviewed and replayed; the review quotes this hash |
+| `sources/received-2026-11-15-tilted-sector/preliminary_results.txt` | 4,592 B | `34d2f40d5c84d3220bc76f21810b051febbe4b11501cbe3ef739ba8e19995010` | the output of that verifier (`results.txt` at the time of the first review); its third line prints the hash of the verifier |
+| `code/tilted-sector-2026-11-15/second-version/verify.py` | 16,471 B | `8ce971c12983f6b27776a16aed66547bc6e9ee723bbef9a7ee3e6063d57e5175` | the verifier of the second version, as replayed for `REVIEW_2.md` |
+| `sources/received-2026-11-15-tilted-sector/REPORT_localization_history.md` | 42,400 B without its first line | `26e6cdcefebdc82979eb37e48205327c2f1bb8e0efac86ebd88ea3c498f747dd` | the report, **fourth version** (04:40); identical to the copy of `REPORT.md` taken at 04:40 |
+| `code/tilted-sector-2026-11-15/fourth-version/verify.py` | 21,125 B | `c2109f2f5f4e03a145f526e8ace8f560469fa5207e3ea232dd8e586982ffa625` | the verifier of the fourth version (04:38); `results_localization_history.txt` prints this hash |
+| `sources/received-2026-11-15-tilted-sector/results_localization_history.txt` | 16,360 B | `d43da0a8a5ecc69431a2aa6dad40625d25fc4fd941b4f4c3927292f218699a61` | the output of that verifier (04:38) |
+| `sources/received-2026-11-15-tilted-sector/REPORT.md` | 11,205 B without its first line | `94a46ca8b87092365993485844a8c2d7c4c9b685c72c6b93a1cd42a0be6a8213` | the report, **fifth version** (05:17), as reviewed in `REVIEW_3.md`; the last lines of `results.txt` print this hash |
+| `code/tilted-sector-2026-11-15/verify.py` | 25,464 B | `7572574a7357e3dc4772b438fcc7a6b924f24244826e24ea281f6267e9285caf` | the verifier of the fifth version; `results.txt` and `replay_version5.log` print this hash |
+| `code/tilted-sector-2026-11-15/secant_verify.cpp` | 8,661 B | `05587544ff9b3c96a863179185d42925d1c06b7e866b3b9a4bd1bc0911ce3f11` | the checker of the compact cover of the global remainder bound; printed likewise |
+| `code/tilted-sector-2026-11-15/secant_content_witness.json` | 26,568 B | `ddb1e7214b8348e2975db9c85050e571938a371c099dacf0300aeed01d8ebf20` | the rational barrier of the central content bound; printed likewise |
+| `sources/received-2026-11-15-tilted-sector/results.txt` | 25,901 B | `39e37a1d4e713f6377ef02afb52f67f53e56dfd6d1c6b138a188122d2f63f43a` | the output of the verifier of the fifth version (05:17) |
+
+The copy of the first version of `REPORT.md` was restored after the working file had been overwritten, from the
+reading of the working file that was made when the update began; it has the SHA-256 recorded from the working file
+then (at 03:34 and again at 03:59). The second and third versions of the report are not in the repository. For the
+record, the hashes of the working files when they were seen by the worker who first updated this folder: second
+version (04:03 to 04:05) `REPORT.md` `d7213b2819f2f1c2e841572f351a4bea22c2c881b0ee435bf7b67938456653f0`, `verify.py`
+`8ce971c12983f6b27776a16aed66547bc6e9ee723bbef9a7ee3e6063d57e5175` (the copy in `second-version/`), `results.txt`
+`4a519277a195f6267b1e185f8fd764d33b0b56a813d16041eac1791ecc917f84`; third version (04:27 to 04:31) `REPORT.md`
+`3b5c58b87f8179ef82e50b8eaa2b906f709d49e0ad9e5466fe4fccd5ffe35362`, `verify.py`
+`985a885b7fe954822c921092eddbf8ed7d4ff50c9425c8d1377e6ed03350b61d` (also printed at the head of
+`results_localization_history.txt`, for a run before the final one). The checkers that `REVIEW_2.md` replayed with
+the second version (`localization_verify.py`, `theta_verify.cpp` with `theta_candidates.txt`, `content_profile.py`,
+`profile_range.py`) are in the repository with unchanged hashes, and the verifier of the fifth version still uses
+all of them except `localization_verify.py`.
 
 ## Files left outside
 
@@ -134,6 +182,10 @@ listed by an earlier row. "SHA-256" is given for single files that a result or a
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/kscan-2026-11-13/out1/` | 180 | 3.5 MB | Pass 1 of the global search: 180 files, 840 runs with their coefficient vectors (summary: `code/kscan-2026-11-13/out1-summary.json`). |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/kscan-2026-11-13/tables-peak.npz` | 1 | 21.6 KB | Kernel table of the global search; regenerate with `tables.py`. |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/tailgames-2026-11-14/*.log` | 11 | 29.3 KB | Logs of the identity-tail exploration (the sources of the numbers in its README: `sanity.log`, `cp_*.log`, `two.log`, `scan2.log`, `scan3.log`, `htriv.log`, `m3_*.log`). |
+| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/search3/run_mega.sh` | 1 | 598 B | Launch script of the three-variable search of `STATUS.md` 11.20 (eight single-threaded processes; a shell script that names a droplet folder). |
+| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/search3/driver.log` | 1 | 0 B | The log of that launcher (empty). |
+| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_*` | 100 | 4.0 MB | Files that codex-6e2b added to the folder of the report after the fifth version, dated 05:22 to 05:50 on 15 November, as found at 05:50 (1 without extension, 1 `.cpp`, 36 `.json`, 1 `.jsonl`, 8 `.md`, 1 `.pid`, 21 `.py`, 31 `.txt`; among them 5 above 300 KB, 1 compiled binary, 1 process-id files of jobs that were running): by their names, scripts, searches and certificates towards the comparison of the tilted content with the deficit (`STATUS.md`, 11.43). They belong to no delivered version and were not read for this record; their author was still adding to them. |
+| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15-review/__pycache__/` | 2 | 18.3 KB | Python byte-code caches of the scripts of the second review. |
 
 ### 5. October material that was not copied (`handoff/research-third-decimal/`)
 
@@ -207,3 +259,32 @@ to the merged PR #397 baseline. No historical certificate file has been replaced
 Added in review by claude-b9ee: `REVIEW_claude-b9ee.md` and a floating-point spot-check script with its log in the
 two new directories. One earlier file is no longer byte-identical: `sources/audit-2026-11-15-codex-a7c4/REMOTE.md`
 carries two dated notes in the reviewer's own passages (§3a and §4), recording the corrections of this audit.
+
+
+## Third audit after reviewer-updated PR #399 (codex-a7c4, task #400)
+
+New notes and six checkers with small JSON outputs are indexed under
+`sources/third-audit-2026-11-15-codex-a7c4/` and `code/third-audit-2026-11-15-codex-a7c4/`.
+The global alignment check uses the existing python-flint directory named above, read-only; no package was
+installed. The remaining scripts use the standard library, with explicit reuse of earlier exact interval
+and disk-cover helpers. All checkers are read-only by default. Saved outputs are not inputs.
+
+No new external data, binary, archive, build directory, or persistent log is retained. Temporary acceptance
+log/PID files were removed after completion. Every source present at baseline `39ae5c239` and the historical
+monograph body are byte-identical; the reviewer's amendments from #399 are part of that baseline.
+
+## Update of 15 November (issue #396): the report on the tilted sector and its reviews
+
+Of the report folder, everything up to the end of the fifth version is in the repository; what its author added
+later is the row `deficit_*` of section 4. The verifier of the fifth version compiles its two C++ checkers in a
+temporary subfolder that it removes on exit. Its `results.txt` names a python-flint installation on its author's side
+(a virtual environment under `/Users/alingalatan/workspaces/grothe-coordination/`), which is not part of this
+record. The replays of the reviews ran in copies in a temporary scratch folder of the reviewer's session, with a
+python-flint 0.9.0 installed there; that place is not durable, and what the replays printed is in the logs under
+`code/tilted-sector-2026-11-15/` (`replay_version5.log` shows its paths). No library, binary,
+archive or byte-code cache is added to the repository.
+
+The previous copies of the report folder in this repository (the fourth version, taken at 04:40) were replaced by
+the fifth version, except the verifier of the fourth version, which is kept as `fourth-version/verify.py`; its
+report and results are in the folder under the names that their author gave them in the fifth version
+(`REPORT_localization_history.md`, `results_localization_history.txt`), byte-identical to the earlier copies.

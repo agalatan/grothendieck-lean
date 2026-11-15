@@ -1,3 +1,5 @@
+-- Grothe/UpperTightComparison.lean
+import Grothe.Upper.ImprovedHeadMass
 import Grothe.UpperChaos.ThreeBandComparison
 import Grothe.UpperTightBudget
 
@@ -57,13 +59,14 @@ theorem actual_threeBand_mass_of_caps (hf : OriginalFiniteChecks) {EX : ℕ × �
         Rat.cast_zero, Rat.cast_pow] using h
 
 /-- Arbitrary mass and error bounds give the comparison with one unsplit quadratic charge. -/
-theorem localized_comparison_of_mass_radii (hφ : PhiBound)
+theorem localized_comparison_of_weight_mass_radii (hφ : PhiBound)
+    (w : ℕ × ℕ → ℝ) (hw : ∀ p, 0 ≤ w p ∧ w p ≤ 1)
     (a e : Fin 7 → ℝ) (R : Fin 4 → ℝ) (ha : ∀ j, 0 ≤ a j) (he : ∀ j, 0 ≤ e j)
     (hmass : ∀ j, ∑ p ∈ bandIndices (threeBandBands j),
-      comparisonWeight p ^ 2 * energy (productionX hφ) p ≤ a j ^ 2)
+      w p ^ 2 * energy (productionX hφ) p ≤ a j ^ 2)
     (hpiece : ∀ j, ‖threePiece hφ j‖ ≤ e j)
     (hsource : ∀ p, ‖source hφ p‖ ≤ R p) :
-    ∑ p ∈ headIdx 501, comparisonWeight p *
+    ∑ p ∈ headIdx 501, w p *
       |energy (productionG hφ) p - energy (productionX hφ) p| ≤
       2 * ∑ j, a j * e j + (∑ p, R p) ^ 2 := by
   classical
@@ -75,10 +78,10 @@ theorem localized_comparison_of_mass_radii (hφ : PhiBound)
       (norm_energyBlock_sq _ _).trans (threePiece_support hφ j p hp)
     exact norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp hh)
   have hc := BandComparison.weighted_compare S (univ : Finset (Fin 7))
-    comparisonWeight (energyBlock (productionX hφ)) (energyBlock (productionG hφ))
+    w (energyBlock (productionX hφ)) (energyBlock (productionG hφ))
     (fun j ↦ energyBlock (threePiece hφ j)) (fun j ↦ bandIndices (threeBandBands j))
     a e ((∑ p, R p) ^ 2)
-    (fun p _ ↦ comparisonWeight_bounds p)
+    (fun p _ ↦ hw p)
     (fun p _ ↦ by rw [← energyBlock_sub, difference_threePieces, energyBlock_sum])
     (fun j _ p hp hpb ↦ by
       have hn : (threeBandBands j).contains p.1 p.2 = false := by
@@ -96,6 +99,19 @@ theorem localized_comparison_of_mass_radii (hφ : PhiBound)
         (pow_le_pow_left₀ (norm_nonneg _) (hpiece j) 2))
     (by simpa only [hS] using quadratic_threeBand_le_of_radii hφ R hsource)
   simpa only [norm_energyBlock_sq] using hc
+
+/-- The original coefficient costs specialize the arbitrary-weight comparison. -/
+theorem localized_comparison_of_mass_radii (hφ : PhiBound)
+    (a e : Fin 7 → ℝ) (R : Fin 4 → ℝ) (ha : ∀ j, 0 ≤ a j) (he : ∀ j, 0 ≤ e j)
+    (hmass : ∀ j, ∑ p ∈ bandIndices (threeBandBands j),
+      comparisonWeight p ^ 2 * energy (productionX hφ) p ≤ a j ^ 2)
+    (hpiece : ∀ j, ‖threePiece hφ j‖ ≤ e j)
+    (hsource : ∀ p, ‖source hφ p‖ ≤ R p) :
+    ∑ p ∈ headIdx 501, comparisonWeight p *
+      |energy (productionG hφ) p - energy (productionX hφ) p| ≤
+      2 * ∑ j, a j * e j + (∑ p, R p) ^ 2 :=
+  localized_comparison_of_weight_mass_radii hφ comparisonWeight comparisonWeight_bounds
+    a e R ha he hmass hpiece hsource
 
 /-- The actual comparison is independent of the chosen seven piece and four source radii. -/
 theorem localized_comparison_of_radii (hφ : PhiBound) (hf : OriginalFiniteChecks)
@@ -205,14 +221,14 @@ include hfirst hsecond hthird in
 theorem localized_comparison_tight_three_band_of_checks
     (hclose : ∑ p ∈ headIdx 501,
       |energy (productionX hφ) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
-    ∑ p ∈ headIdx 501, comparisonWeight p *
+    ∑ p ∈ headIdx 501, improvedWeight p *
       |energy (productionG hφ) p - energy (productionX hφ) p| ≤
       (tightThreeBandCompareQ : ℝ) := by
-  have hc := localized_comparison_of_mass_radii hφ (fun j ↦ (tightThreeBandMassQ j : ℝ))
+  have hc := localized_comparison_of_weight_mass_radii hφ improvedWeight improvedWeight_bounds (fun j ↦ (tightThreeBandMassQ j : ℝ))
     (fun j ↦ (tightThreeBandErrorQ j : ℝ)) (fun p ↦ (tightGroupRadiusQ p : ℝ))
     (fun j ↦ Rat.cast_nonneg.mpr (tightThreeBandMassQ_nonneg j))
     (fun j ↦ Rat.cast_nonneg.mpr (tightThreeBandErrorQ_nonneg j))
-    (actual_threeBand_mass_of_caps hf hclose tightThreeBandMassQ tightThreeBand_mass_caps)
+    (actual_improved_threeBand_mass hf (fun p ↦ energy_nonneg (productionX hφ) p) hclose)
     (norm_threePiece_tight_le hφ hf hfirst hsecond hthird
       hwholeFirst hwholeSecond hwholeThird)
     (norm_source_tight_le hφ hf hwholeFirst hwholeSecond hwholeThird)
@@ -235,7 +251,7 @@ theorem localized_comparison_tight_three_band
     (hclose : ∑ p ∈ headIdx 501,
       |energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
         (Xfun frozenCorrectionFn)) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
-    ∑ p ∈ headIdx 501, comparisonWeight p *
+    ∑ p ∈ headIdx 501, improvedWeight p *
       |energy ((memLp_GT phiBound).toLp GT) p -
         energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
           (Xfun frozenCorrectionFn)) p| ≤ (tightThreeBandCompareQ : ℝ) :=

@@ -1,3 +1,5 @@
+-- Grothe/UpperTightFinal.lean
+import Grothe.UpperEnergyFinal
 import Grothe.HeadHardy
 import Grothe.UpperHead
 import Grothe.UpperTightComparison
@@ -9,10 +11,12 @@ import Grothe.UpperFinal
 # The tighter unconditional upper bound from the existing certificates
 
 The same accepted panels and port tables give smaller quadrature and whole-source error radii.
-The comparison retains those radii, and the final transfer deducts the forced linear energy
-from the sharp Hardy budget. No new numerical acceptance fact is assumed.
+The comparison combines those radii with longer coefficient prefixes and their exact mass
+certificate. A weighted Young inequality sharpens the existing energy-table accuracy estimate.
+The final transfer deducts the forced linear energy from the sharp Hardy budget.
 
 Agent-ID: codex-c8a4. Refs #389.
+Coefficient and energy refinement: Agent-ID: codex-9b17. Refs #379.
 -/
 
 namespace Grothe.UpperQuad.TightTwist
@@ -62,8 +66,10 @@ noncomputable section
 
 /-- The production comparison feeds a shared finite-head/Hardy transfer theorem. -/
 theorem endpoint_of_comparison
-    (hcompare : ∑ p ∈ headIdx 501, comparisonWeight p * |actualE p - actualEX p| ≤
-      (tightThreeBandCompareQ : ℝ)) (hclose : TableAccuracy) :
+    (hcompare : ∑ p ∈ headIdx 501, improvedWeight p * |actualE p - actualEX p| ≤
+      (tightThreeBandCompareQ : ℝ))
+    (hclose : ∑ p ∈ headIdx 501, |actualEX p - (energyTable p : ℝ)| ≤
+      (Grothe.UpperQuad.EnergyBudget.errorQ : ℝ)) :
     Grothe.IsGrothendieckBound (tightValueQ : ℝ) := by
   obtain ⟨hv, hs, hpX⟩ := structural_fields measurable_GT (norm_GT_le phiBound)
     (fun _ u hc ↦ GT_rot2 hc u) (memLp_GT phiBound)
@@ -75,7 +81,7 @@ theorem endpoint_of_comparison
       (tightHeadResidualQ : ℝ) := by
     simpa only [tightHeadResidualQ, Rat.cast_add] using
       kernel_head_residual_le_of_comparison actualE actualEX hp hpX Grothe.head_check
-        hclose hcompare
+        improvedWeight_sound hclose hcompare
   have hL : 0 ≤ (slopeQ : ℝ) - (tightHeadResidualQ : ℝ) := by
     simpa only [tightLinearLowerQ, Rat.cast_sub] using
       (show 0 ≤ (tightLinearLowerQ : ℝ) from by exact_mod_cast tightLinearLowerQ_pos.le)
@@ -114,16 +120,16 @@ theorem upper_bound_tight : Grothe.IsGrothendieckBound (tightValueQ : ℝ) := by
   exact TightEndpoint.endpoint_of_comparison
     (ThreeBandRegrouping.localized_comparison_tight_three_band
       hfirst hsecond hthird hwholeFirst hwholeSecond hwholeThird Final.hclose_final)
-    Final.hclose_final
+    Final.hclose_certified
 
-/-- Some Grothendieck bound lies strictly below `1.404599412097`, without hypotheses. -/
-theorem upper_below_tight : UpperBelow (1404599412097 / 10 ^ 12) := by
+/-- Some Grothendieck bound lies strictly below `1.404599411887`, without hypotheses. -/
+theorem upper_below_tight : UpperBelow (1404599411887 / 10 ^ 12) := by
   apply upperBelow_of_bound upper_bound_tight
   convert tight_real_value_lt using 1
   norm_num
 
 /-- The improved unconditional upper bound for the complex Grothendieck constant. -/
-theorem constant_lt_tight_upper : complexGrothendieckConstant < 1404599412097 / 10 ^ 12 :=
+theorem constant_lt_tight_upper : complexGrothendieckConstant < 1404599411887 / 10 ^ 12 :=
   constant_lt_of_upperBelow upper_below_tight
 
 end Grothe.Statement

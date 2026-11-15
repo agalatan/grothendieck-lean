@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401697117301 < K_G^ℂ < 1.404599412097` (`main_bounds`,
+The proved interval is `1.401697117301 < K_G^ℂ < 1.404599411887` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
 (`lower_target`), and so is the upper endpoint (`upper_below_tight`,
 `Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
@@ -18,26 +18,54 @@ input of the main theorems, which have no hypotheses. A module said to be
 nothing in `main_bounds` depends on it. The value `1.404598149141` is the target
 the rounding was designed for: Lean proves a bound below it only conditionally
 (`fresh_upper_concrete_taylor`, whose band-error hypotheses are not proved),
-and the theorem without hypotheses exhibits a bound below `1.404599412097`.
+and the theorem without hypotheses exhibits a bound below `1.404599411887`.
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
 shards supply their analytic interpretation. Adding the existing `10⁻¹⁵` tail/gap reserve
 and the exact dyadic table excursions gives the low-band radii; the already certified
-inner-product thresholds give smaller whole-source radii. The reference masses also
-retain the exact sums of the eighteen certified band-cap squares before taking
-rational square-root ceilings, improving the coarse high-band caps `0.0916` and `0.199`.
-`UpperTightComparison` specializes a comparison theorem with arbitrary reference-mass,
-piece-error and whole-source radii.
-`UpperHead` assembles the finite residual independently of the comparison budget,
-and `HeadHardy` deducts the linear coefficient's forced energy before bounding the tail.
-The unchanged sharp Hardy budget is `1737972/10⁶`. The resulting exact reciprocal
-`tightValueQ` is strictly below `1.404599412097`. No panel, energy table or numerical
-acceptance premise is replaced, and the tighter total checks introduce no native fact.
+inner-product thresholds give the whole-source radii. The comparison uses the seven
+linear-piece radii and charges the four unsplit sources once in its quadratic term.
+
+**Longer polynomial prefixes in the actual comparison.** `Upper/PolynomialHeadTail`
+proves that dilating a polynomial by `r ≥ 1` bounds its coefficient tail after index
+`L` by `r⁻ᴸ` times the dilated Wiener norm. `ImprovedHeadWeight` applies this to
+`Pⁿ (Q/X)ᵐ`: the unchanged interval operations enclose the first 51 unshifted
+coefficients, and the remaining coefficients have the uniform bound
+`(10049/10000)^501 · (10023/10000)^167 / (3/2)^51 ≤ 2·10⁻⁸`.
+The resulting `improvedWeight` is capped by both one and the previous
+21-coefficient cost. The bound concerns each polynomial's retained coefficient
+cost; it is separate from the infinite Hardy tail of the rounding kernel.
+The new finite fact `Grothe.Upper.improved_high_mass_native` recomputes the
+weighted table masses and checks square-root ceilings `0.091510352921874` for
+both high bands above 51 and `0.198919845892412` for the high band above 11,
+all within `headIdx 501`.
+Each checked mass retains the original table-error allowance `energyErrQ`.
+The four low-band caps follow from the pointwise decrease in cost.
+`tools/gen_improved_head_weight.py` reproduces the mass ceilings; Lean independently
+recomputes the interval costs and weighted masses from the stored polynomials and energies.
+`UpperTightComparison` uses these actual masses and the tighter source radii.
+
+**Quantitative energy-table accuracy.** `UpperQuad/EnergyAccuracy` combines
+quadrature error and interval-width error with the weighted square inequality
+`(x+y)² ≤ (1+10⁻¹⁰)x² + (1+10¹⁰)y²`. This gives raw radius
+`15500000001/10²²` and smoothed radius `155400800011/10²³`.
+`UpperEnergyBudget` keeps the exact block allowance `12·(5·10⁶⁴)/2²⁵⁶`;
+`UpperEnergyFinal` proves selected energy discrepancy at most `8296/10¹⁵`
+(`Final.hclose_certified`) from the existing energy and quadrature facts.
+No energy table, block check, panel certificate or precompiled checker is changed.
 
 **Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
 `PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
-`TightTwist.remainder1/2/3` and the energy-table accuracy `Final.hclose_final`.
+`TightTwist.remainder1/2/3`, the longer-prefix weighted comparison, and the table
+accuracy `Final.hclose_certified`. The mass comparison still uses the inherited
+`Final.hclose_final` allowance, while the finite-head transfer uses the sharper
+`8296/10¹⁵` allowance. `UpperHead` accepts both a coefficient-cost family and a
+table tolerance. `HeadHardy` deducts the linear coefficient's forced weighted
+energy from the sharp Hardy budget `1737972/10⁶` at radius `4149/4000`, giving
+the infinite tail `303362611/10¹⁶`. The exact reciprocal `tightValueQ` is
+`1.40459941188610717822… < 1.404599411887`.
+
 Each twisted remainder comes from the 21 shard facts and the total fact of its
 power (`TwistEllCheck.remainder_of_prodShards`); the tighter total facts bound
 the actual sums by `tightPanelRadiusQ`. `TwistEllipseMassSound` supplies the step
@@ -45,39 +73,10 @@ from acceptance to the actual vector: every accepted disk, in Y, K or automatic
 mode, bounds the squared norm of the actual descended vector on the whole disk
 by its upper endpoint (`norm_descendedVector_sq_le_diskM2`), so an accepted
 certificate bounds it on its closed Bernstein ellipse by its mass cap
-(`norm_descendedVector_sq_le_massCap`). `hclose_final` combines the thirteen
-energy facts (`Facts.hclose_of_facts_quad`) with `quadHyp_of_parts`: the tail,
-the omitted-pair fact and `EllCheck.quadRemainderHyp`.
-
-**Signed coefficient tails.** `Upper/SignedTail` proves
-`|k| ≤ k + (k-a)²/(2a)` for a positive reference `a`, then lifts it to
-infinite coefficient tails. A summable positive reference and uniformly bounded
-partial quadratic-error sums imply absolute summability of the actual
-coefficients; their positivity is not assumed. The tail bound retains the
-total signed sum minus the finite signed head. Its three-component form accepts
-separate quadratic budgets and positive Young parameters, allowing exact
-rational choices without square roots.
-
-`Upper/SignedTailMass` retains the total reference mass `A` and improves the
-absolute-mass bound to `L² ≤ A*(2*S-A+E)`, with signed mass `S` and quadratic
-error budget `E`. Its proof is weighted Cauchy--Schwarz, with summability derived
-from the same budgets. The difference from the old squared allowance is exactly
-`(S-A+E/2)²`. `SignedTailMassSharp.moment_bound_attained` constructs positive
-two-point references and coefficients realizing every triple with `A>0` and
-`S² ≤ A*(2*S-A+E)`, attaining the bound. Thus these three moments alone cannot
-give a smaller universal allowance. The example `a=(1,1)`, `k=(2,-2)` improves
-the old allowance `5` to the exact `4`; no Gaussian realizability is asserted.
-
-`SignedTailMassCertificate` permits an interval `[lo,hi]` for `A`. With
-`C=S+E/2` and `d=max(0,lo-C,C-hi)`, the exact concave envelope is `C²-d²`.
-This avoids an invalid monotone substitution of an upper bound for `A`.
-The certificate checks `C²-d² ≤ T²` and `T ≥ 0`, with no square-root evaluation.
-`SignedTailTransfer` combines these inputs with a finite-head residual cap `H`
-and a dominated radial kernel to prove `IsGrothendieckBound (1/(c-(H+T)))`
-when `H+T<c`. The total-mass variant obtains a signed-tail bound from an upper
-bound on the total signed mass and a lower bound on its finite head.
-These theorems use standard axioms only; a new numerical endpoint would still
-require certified kernel inputs. They do not alter `upper_target` or its data.
+(`norm_descendedVector_sq_le_massCap`). Both table-accuracy theorems use the
+same thirteen energy facts and `quadHyp_of_parts`: the tail, the omitted-pair
+fact and `EllCheck.quadRemainderHyp`. The new high-mass check is the only
+additional native acceptance fact in the prefix and energy refinement.
 
 **Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
 `EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
@@ -219,7 +218,8 @@ twisted evaluator's soundness bridge; it introduces no additional finite
 computation or analytic hypothesis. All consumed fact modules are registered
 in the generated root and in `data/axioms/native.txt`. `upper_below_tight`
 uses these bundles through `TightTwist.six_of_facts`, together with the tighter
-twisted remainders and the energy-table accuracy `Final.hclose_final`.
+twisted remainders, the longer-prefix comparison and the energy-table accuracy
+`Final.hclose_certified` (with `Final.hclose_final` retained in the mass transfer).
 
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
@@ -288,9 +288,11 @@ the primary block/family norm caps `18`, `197`, the reflection factor `10/7`,
 and the separately allocated integration, omission and smoothing tolerances.
 Their source-model and analytic justification must be supplied by the consumers;
 these comments do not turn the historical numerical computation into a Lean input.
-The energy-table accuracy of the final theorem (`Final.hclose_final`) does not
-go through this ledger: it uses `selected_energy_close_of_raw_error` with the
-error radius certified by the quadrature checker (`UpperQuad/Bridge.lean`).
+The energy-table accuracy of the final theorem (`Final.hclose_certified`) does not
+go through this ledger: `UpperQuad/EnergyAccuracy.lean` uses
+`selected_energy_close_of_raw_error` with a weighted-square combination of the
+existing quadrature and interval-width bounds. The inherited `Final.hclose_final`
+allowance is still used in the comparison-mass transfer.
 
 **Phase-source denominator.** `PhiSourceDenBinding.source_common_den` proves
 by bounded source-chunk computation that the parsed production phase has
@@ -613,7 +615,7 @@ are `2.56852947444587e-6`, `5.71439509703932e-10`, and `1.68238736430120e-11`.
 identity to give `norm_hpow_one_sq`, `norm_hpow_two_sq`, and
 `norm_hpow_three_sq`. These are total energies; band-tail estimates also
 need captured Hermite energy and approximation errors. The three whole-error
-estimates of the final theorem use these norms (`RelaxedTwistSix.lean`).
+estimates of `upper_below_tight` use these norms (`UpperTightSix.lean`).
 The targets in `data/phase-moments/targets.json` are expected exact values,
 not integral assumptions: each numerical leaf computes from the production
 phase. `python3 tools/gen_phase_moment_data.py --check` verifies source binding
@@ -930,7 +932,7 @@ of the actual `Xfun frozenCorrectionFn`. It has no separate rounding, tail,
 representative or charge-one premise. The energy-table accuracy `hclose` is
 proved (`Final.hclose_final`). The fourteen Gaussian inequalities are not
 proved with these caps, so this theorem and its bound below `1.404598149141`
-stay conditional; `upper_target` does not use it. Its only consumer is the
+stay conditional; `upper_below_tight` does not use it. Its only consumer is the
 conditional `Statement.upper_target_of_inputs` (`Grothe/UpperTarget.lean`).
 
 `ThreeBandRegrouping` gives the regrouping that the final theorem uses: retain the lowest
@@ -957,11 +959,12 @@ This fixed-budget theorem (`ThreeBandUpper.lean`) retains its explicit low-band
 hypotheses. The final assembly uses the generic comparison with the tighter
 certified radii above; it does not import this endpoint module. The standard
 analytic cores and concrete adapters keep their explicit inherited trust
-allowances; no new native fact is introduced. The public `UpperTarget`
-threshold is `1.4046`.
+allowances; no new native fact is introduced. The older public `UpperTarget`
+threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the stricter
+threshold `1.404599411887`.
 
 `RelaxedThreeBandBudget`, `RelaxedThreeBandComparison` and
-`RelaxedThreeBandUpper` use that threshold's remaining room. The three raw
+`RelaxedThreeBandUpper` use the older `1.4046` threshold's remaining room. The three raw
 low-band allowances are `4001/10^12`, `14001/10^12` and `70001/10^12`;
 the second and third enter the comparison divided by `2!` and `3!`.
 The whole-error radii, mass caps, energy tolerance and Hardy tail stay fixed.
@@ -1102,7 +1105,7 @@ The modules `IndependentSource…` above and `Actual…`, `Bipartite…`,
 `GateFockCoefficients`, the coefficient-jet modules (`…Jets`,
 `PairJetPolynomialOperations`) and `ScalarOriginal…` below prove exact Gaussian
 identities and source-norm bounds for the Taylor multiplier operators. The
-final theorems do not import them: `upper_target` bounds the Taylor errors
+final theorems do not import them: `upper_below_tight` bounds the Taylor errors
 through the twisted quadrature (`UpperQuad/`). Numerical Hilbert–Schmidt caps
 and the binding to the historical Laguerre producer are not part of this
 development.
@@ -1537,31 +1540,6 @@ saved-model tolerances. Its exact budget is `(84353029/84596280)*10⁻¹²`,
 and its interval is `200/89` times the original. This is a quadratic-plus-cubic
 bound, so it does not contradict optimality of the purely quadratic constant two.
 No Gaussian optimality or change to the production certificates or headline endpoint is claimed.
-`Haagerup/PhaseTaylorQuadratic` retains the actual quadratic Taylor term
-`Q₂(h) = -(Im h)²/2 - i Re(h) Im(h)`. The global remainder is at most
-`2‖h‖³`, including the zero perturbed point, and the constant two is optimal.
-`UpperChaos/PhaseQuadraticError` gives its exact four-mode Wick expansion,
-supported on `(0,0)`, `(1,1)`, `(2,0)` and `(0,2)`, with Gaussian norm `sqrt(7)/4`.
-For the existing linear centers the whole-slice error is at most
-`(sqrt(7)/4)*ρ² + 2*sqrt(6)*|ρ|³`; every coefficient error is at most
-`(3*sqrt(2)/8)*ρ² + 2*sqrt(6)*|ρ|³`. Outside those four modes only the cubic
-term remains. The same parameter and saved-model tolerances therefore give
-error below `10⁻¹²` for `|ρ| ≤ 1/1090000` in every mode, and for
-`|ρ| ≤ 1/22500` outside the quadratic support. These analytic improvements
-introduce no native facts; the tighter certified Grothendieck endpoint above
-comes from the separate budget and Hardy assembly.
-`Haagerup/PhaseTaylorThird` goes one order further: the cubic Taylor term
-`Q₃(h) = Re(h)*(Im h)² + i*((Re h)²*Im h - (Im h)³/2)` leaves a globally
-sharp remainder `2‖h‖⁴`. `UpperChaos/PhaseCubicError` gives its exact six-mode
-Wick expansion, with squared norm `27/32`, and Gaussian remainder `4*sqrt(6)*ρ⁴`.
-The quadratic and cubic supports are disjoint. For `|ρ| ≤ 1/2`, each coefficient
-of the existing linear-center error is therefore bounded by
-`(3*sqrt(2)/8)*ρ² + 4*sqrt(6)*ρ⁴`. The saved-center interval becomes
-`|ρ| ≤ 1/1086000` uniformly, or `1/12000` outside the quadratic support,
-with the same parameter and saved-model tolerances. At total Wick degree at
-least four, the error is purely quartic and the saved-center interval is
-`1/2120`; the parameter-error hypothesis is unnecessary because the linear
-center vanishes identically. These analytic results add no native facts.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
@@ -1772,7 +1750,7 @@ helpers), except `PhiProductionIdentity` and `PhiProductionDefs`, belong to a
 second way of certifying the band estimates of the Taylor sources: adaptive
 rectangle quadrature of a retained source. They are
 kernel-checked and built with `Grothe`, but the final theorems do not import
-them: `upper_target` bounds the Taylor errors through the twisted quadrature.
+them: `upper_below_tight` bounds the Taylor errors through the twisted quadrature.
 The mesh has fourteen roots; leaf certificates exist for five of them
 (2, 6, 7, 10 and 11), and the band energies have no certificates, so this
 route yields no band estimate. Where these paragraphs name certificates or
@@ -2269,6 +2247,8 @@ by the final theorems.
 * The table accuracy `energy_close` (the stored energies are within
   6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹) is a hypothesis of the general
   interface; for the actual truncation it is **proved** (`Final.hclose_final`).
+  The production head uses the stronger `Final.hclose_certified` allowance
+  `8296/10¹⁵`; the mass caps retain the original allowance.
   The Hardy input (the
   weighted square-sum bound 1737972/1000000 at radius 4149/4000 for the kernel of G_T) is
   **proved**: `HardyReal.hardy_GT_tight`. The concrete theorem also takes X ∈ L² and
@@ -2296,9 +2276,11 @@ by the final theorems.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs are the hypotheses of this
   theorem that are not proved. The residual of the proved bound `upper_below_tight`
-  is `tightResidualQ`, approximately 1.5507·10⁻⁶: the comparison
-  `tightThreeBandCompareQ` (96.2%), the Hardy tail `303362611/10¹⁶` (2.0%), the
-  head `28153/10¹²` (1.8%) and the same table error.
+  is `tightResidualQ = 1.55062391550472379448078027965090997314453125·10⁻⁶`:
+  the longer-prefix comparison `tightThreeBandCompareQ` contributes
+  `1.49212635840472379448078027965090997314453125·10⁻⁶` (96.23%), the Hardy
+  tail `303362611/10¹⁶` contributes 1.96%, the head `28153/10¹²` contributes
+  1.82%, and the sharper table error `8296/10¹⁵` contributes about 0.00054%.
   Full scope, source bindings and reproduction commands are in
   `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
   the mathematical argument.
@@ -2645,7 +2627,7 @@ strict audit. Source reproduction is not a native verification receipt.
 | `ProductComplete`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: tensor completeness from one-coordinate completeness by Fubini, Gaussian mixing law by characteristic functions, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
 | `Realise2`, `Structural` | two-channel rounding with tensor-realised preprocessors (`rounding_diskKernel`); the structural fields (validity, summability, parity) as theorems |
 | `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
-| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `upper_target` and by the conditional `fresh_upper_rounder` |
+| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `upper_below_tight` and by the conditional `fresh_upper_rounder` |
 | `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
 | `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
 | `Gauss2`, `Sym2R`, `SchurTest`, `LstarL`, `SchurKernel`, `SchurBound`, `SchurIntegrability`, `SchurMain` | Gaussian integrals, weighted Schur test and kernel factorization; the Gaussian Schur bound for every measurable disk-valued response pair under its positive-definiteness gates (`norm_HholPair_sq_le`) |
@@ -2702,6 +2684,8 @@ and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
 complete list; the facts fall into the following groups. `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
+`Grothe.Upper.improved_high_mass_native` (the two complete high-band masses
+for the 51-coefficient costs, including the inherited table-error allowance),
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.phase_cutoff_factor_check` (the exact factor for its squared radial tail),

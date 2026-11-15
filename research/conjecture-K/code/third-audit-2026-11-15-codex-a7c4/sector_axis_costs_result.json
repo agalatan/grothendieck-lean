@@ -1,0 +1,100 @@
+{
+  "agent_id": "codex-a7c4",
+  "corner_retained_Q_gain_strict_lower": "83397221223/11337990400000000",
+  "corner_retained_multiplier_loss_upper": "9/29025255424",
+  "interval_library_sha256": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+  "rows": {
+    "box_endpoint_b_3_25": {
+      "P_axis_certified_cost": [
+        "0.462672994431484",
+        "0.462672994431485"
+      ],
+      "beta": "3/25",
+      "ell": "19/25",
+      "epsilon": "19/25",
+      "optimal_linear_majorant_tilt": [
+        "-0.400950423592221",
+        "-0.400950423592220"
+      ],
+      "retained_d_axis_sharp_cost": [
+        "0.411864805505782",
+        "0.411864805505783"
+      ]
+    },
+    "box_endpoint_b_4_25": {
+      "P_axis_certified_cost": [
+        "0.410973699623417",
+        "0.410973699623418"
+      ],
+      "beta": "4/25",
+      "ell": "19/25",
+      "epsilon": "19/25",
+      "optimal_linear_majorant_tilt": [
+        "-0.448656396323430",
+        "-0.448656396323429"
+      ],
+      "retained_d_axis_sharp_cost": [
+        "0.392424545003417",
+        "0.392424545003418"
+      ]
+    },
+    "flank": {
+      "P_axis_certified_cost": [
+        "0.571398415537423",
+        "0.571398415537424"
+      ],
+      "beta": "1467/10000",
+      "ell": "4267/5000",
+      "epsilon": "149/200",
+      "optimal_linear_majorant_tilt": [
+        "-0.392549566041114",
+        "-0.392549566041113"
+      ],
+      "retained_d_axis_sharp_cost": [
+        "0.525048300689048",
+        "0.525048300689049"
+      ]
+    },
+    "peak": {
+      "P_axis_certified_cost": [
+        "0.546162608151025",
+        "0.546162608151026"
+      ],
+      "beta": "179/1250",
+      "ell": "1057/1250",
+      "epsilon": "1891/2500",
+      "optimal_linear_majorant_tilt": [
+        "-0.392014614618995",
+        "-0.392014614618994"
+      ],
+      "retained_d_axis_sharp_cost": [
+        "0.498769694397361",
+        "0.498769694397362"
+      ]
+    },
+    "upper": {
+      "P_axis_certified_cost": [
+        "0.570775311995076",
+        "0.570775311995077"
+      ],
+      "beta": "19/125",
+      "ell": "877/1000",
+      "epsilon": "1891/2500",
+      "optimal_linear_majorant_tilt": [
+        "-0.388846578963306",
+        "-0.388846578963305"
+      ],
+      "retained_d_axis_sharp_cost": [
+        "0.524317300839698",
+        "0.524317300839699"
+      ]
+    }
+  },
+  "scope": "Zero-core P-axis and retained odd-sector bounds; no nonzero-even-core assembly.",
+  "status": "PASS; exact rational arithmetic",
+  "uniform_P_axis_safe_cost": "41/100",
+  "uniform_retained_d_axis_sharp_cost": [
+    "0.392424545003417",
+    "0.392424545003418"
+  ]
+}

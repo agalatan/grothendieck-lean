@@ -1,12 +1,17 @@
 # Current polynomial preprocessing certificate
 
 This directory retains the shared rounding source, preprocessors, energy table,
-finite-head and Hardy certificates used by the conditional target
-**K_G^C < 1.404598148840**. The numerical Gaussian inputs remain unproved.
+finite-head and Hardy inputs used by the unconditional theorem
+**K_G^C < 1.404599412097**. Its exact rational Grothendieck bound is `tightValueQ`,
+approximately `1.4045994120960970198586`. The endpoint is
+`Grothe.Statement.upper_below_tight` in
+[`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean).
 
 The byte-pinned data and generators retain historical intermediate endpoint
-metadata for reproducibility. It is not the active endpoint ledger, which is
-`Grothe/Upper/GroupedBridge.lean`. Previous endpoint documentation is preserved
+metadata for reproducibility. The active numerical ledger is
+[`Grothe/UpperTightBudget.lean`](../../Grothe/UpperTightBudget.lean).
+The smaller endpoint `1.404598148840` in `Grothe/Upper/GroupedBridge.lean` remains
+conditional on stronger comparison inputs, as explained below. Previous endpoint documentation is preserved
 in `miscellaneous/other-bounds/snapshot/data/upper-preprocess/README.md`.
 
 ## Mathematical assembly and trust boundary
@@ -22,34 +27,58 @@ Neither the raw rounding nor any of the 21,168 stored energy entries changes.
 For `H(t) = sum E[n,m] p(t)^n q(t)^m`, the certificate gives a coefficient-l1
 residual about `c t`, with `c = 7119483103461/10000000000000`:
 
-| contribution | exact allowance | status |
+| contribution | current allowance | proof |
 |---|---:|---|
-| weighted selected-block energy comparison | `106490963/125000000000000` | proved from the same component norms/supports, native finite masses, and a kernel-checked overlap ledger |
-| finite head through degree 501 | `28153/1000000000000` | freshly checked in Arb and Lean |
-| stored energy-table accuracy | `6847009/500000000000000000` | inherited external Gaussian input |
-| infinite tail after degree 501 | `36748/1000000000000` | fresh contour arithmetic, same analytic Schur input |
+| weighted selected-block energy comparison | `tightThreeBandCompareQ ≈ 1.49222739755738e-6` | six proved Gaussian error bounds and regrouped certified reference masses (`UpperTightSix`, `UpperTightComparison`) |
+| finite head through degree 501 | `28153/1000000000000` | the exact finite certificate `Grothe.head_check` |
+| stored energy-table accuracy | `6847009/500000000000000000` | `Grothe.UpperQuad.Final.hclose_final`, from the accepted energy, omitted-pair and quadrature facts |
+| infinite tail after degree 501 | `303362611/10000000000000000` | the proved Hardy budget with its forced linear energy deducted (`HeadHardy`, `UpperTightBudget`) |
 
-The current grouped comparison and Hardy deduction are assembled in
-`Grothe/Upper/GroupedBridge.lean`; the strict decimal comparison there is
-`1.404598148840`. All actual Gaussian and energy-table hypotheses remain explicit.
+These give `tightResidualQ ≈ 1.5507303526753792e-6` and the rational bound
+`1 / (slopeQ - tightResidualQ)`. The native finite-head checker uses exact dyadic
+energy data and rational polynomial coefficients. Lean proves the polynomial
+l1 constraints, locality, Gaussian comparison, table accuracy, transfer and
+endpoint assembly. `UpperTightPanelTotals` checks tighter sums of the existing
+accepted panel caps directly in the kernel; no new quadrature data is needed.
+The resulting full quadrature radii are `(9,17,1132)/10^15`, including the
+existing `10^-15` tail/gap reserve. The six Gaussian bounds combine these with
+the certified inner products and exact low-band reserves `2^-41, 2^-42, 2^-45`.
 
-The native Lean checker proves the complete finite-head statement over exact
-dyadic energy data and rational polynomial coefficients. The Lean development separately proves the
-polynomial l1 constraints, locality, transfer and rational endpoint assembly.
-The concrete theorem `Grothe.UpperChaos.fresh_upper_rounder` still explicitly
-takes `ComparisonInputs` and `energy_close` for a charge-one L2 truncation `X`; the Hardy bound is proved.
-The first records an exact Gaussian error decomposition, spectral supports and
-component norm bounds. Their source enclosures and identification remain external;
-Lean derives the selected comparison. See `../localized-comparison/PROOF.md`.
-The other endpoint variants are preserved in `miscellaneous/other-bounds/`.
+The analytic Hardy argument is also formalized: the Gaussian Schur bound is in
+`Grothe/UpperChaos/SchurMain.lean`, holomorphic continuation in `HardyHolo.lean`,
+and the production coefficient estimate is `HardyReal.hardy_GT_tight`.
+It gives the budget `B = 1737972/1000000` at radius `r = 4149/4000`. The head
+allowance `H0 = tightHeadResidualQ` forces the linear coefficient to be at least
+`c-H0`. `Grothe/HeadHardy.lean` removes `(c-H0)^2*r^2` from `B` and shifts the
+coefficient sequence, leaving budget `(B-(c-H0)^2*r^2)/r^4` before applying
+Cauchy–Schwarz to the tail. The unconditional endpoint has no remaining
+Gaussian or energy-table hypothesis. Its trust boundary is the standard Lean
+axioms and the existing permitted `native_decide` facts, recorded in
+`data/axioms/native.txt` and checked by the axiom audit.
 
-For `hardy`, the enclosed Gaussian Schur lemma bounds the holomorphic kernel on
-the circle of radius `4149/4000`. The directed verifier checks its positive
-definiteness gates and determinant bound on **65,594 arcs**, with exact interval
-coverage. The mean-square upper bound is below `1.70148 < 7/4`. The exact
-Cauchy–Schwarz calculation then gives the stated tail allowance. The Schur
-lemma and holomorphic continuation remain paper analysis; only the numerical
-gates, contour partition and tail arithmetic are recomputed by the verifier.
+### Conditional stronger route
+
+`Grothe/Upper/GroupedBridge.lean` proves the smaller rational bound
+`500000000000000000/355973699960428191 < 1.404598148840` under explicit
+comparison hypotheses. Its grouped comparison allowance is
+`groupedCompareQ = 851922301/10^15`; its tail is `303362486/10^16`.
+The wrapper `Grothe.UpperChaos.fresh_upper_rounder` takes `ComparisonInputs`
+and table accuracy for a charge-one L2 truncation `X`. Those comparison inputs
+require the finer component error bounds and supports; the current six-bound
+assembly does not discharge that stronger interface. Table accuracy for the
+production `X` is proved by `hclose_final`, and the Hardy bound is proved.
+See `../localized-comparison/PROOF.md` for the comparison interface.
+
+### Frozen contour replay metadata
+
+`hardy_result.json` records the earlier directed verifier's **65,594 arcs**,
+positive-definiteness gates, determinant bounds and exact interval coverage.
+Its recorded mean-square upper bound is
+`957843690104135/562949953421312 < 1.70148 < 7/4`; its raw tail cap is
+`36748/10^12`. These historical replay values are not the active Lean budget
+or its deducted tail above. The pinned paper proof and its original status
+text in `inputs/GAUSSIAN_SCHUR_TAIL_PROOF.md` are retained unchanged for hash
+reproducibility; the analytic ingredients now have the Lean proofs cited above.
 
 ## Reproduction
 
@@ -82,16 +111,17 @@ exact bound, source hash and verifier hash. The `inputs/` directory pins the
 Schur proof and smoothing parameters. A sequential LP produced the proposal;
 neither LP optimality nor floating point output is a certificate premise.
 
-The dominant remaining allowance is the selected comparison (92.92% of the
-residual), derived from the inherited Gaussian component-error enclosures. Further gains from a new response must account for its full signed
+The dominant current allowance is the selected comparison (about 96.23% of the
+residual), derived from the proved Gaussian error bounds. Further gains from a new response must account for its full signed
 kernel and shared tail; a better slope or a truncated mixture score alone
 does not establish an endpoint.
 
 ## Validation scope
 
-The current lower data pass exact whole-cover replay and byte-for-byte export.
-Temporary targeted Lean receipts from 23 October were cleared before collection;
-they are not claimed as current validation. The final merged branch is checked
-by full GitHub Lean CI, including the actual axiom report and unchanged heavy
-cap stamp. Historical verification receipts are preserved under
+The commands above reproduce the frozen preprocessing and contour checks and
+build selected supporting modules; they do not by themselves build the current
+unconditional endpoint. Full GitHub Lean CI checks `Grothe`, including
+`UpperTightFinal`, `MainResult`, the axiom report and the heavy cap stamp.
+Temporary targeted Lean receipts from 23 October were cleared before collection
+and are not claimed as current validation. Historical verification receipts are preserved under
 `miscellaneous/other-bounds/tree/data/upper-preprocess/verification/`; their original scope is unchanged.

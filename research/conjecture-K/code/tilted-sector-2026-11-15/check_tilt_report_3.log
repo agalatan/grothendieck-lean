@@ -1,0 +1,14 @@
+1. m' from the density against central differences of m (closed angular probability, h = 0.01); m'' by formula (8)
+   against central differences of that m' (h = 0.001).  (Second differences of m itself are useless here: the
+   fixed-node quadrature of m has kinks at l(T) = |x| whose error is amplified by 1/h^2.)
+   x = 0.10:  m' density 0.085887  difference of m 0.084923   |   m'' formula (8) 1.037129  difference of m' 1.037118
+   x = 0.30:  m' density 0.352882  difference of m 0.352905   |   m'' formula (8) 1.217623  difference of m' 1.217619
+   x = 0.60:  m' density 0.505666  difference of m 0.505469   |   m'' formula (8) -0.095490  difference of m' -0.095488
+   x = 1.00:  m' density 0.356091  difference of m 0.356413   |   m'' formula (8) -0.459820  difference of m' -0.459819
+   x = 2.00:  m' density 0.076898  difference of m 0.077079   |   m'' formula (8) -0.123127  difference of m' -0.123127
+   sup |m''| on [0, 8] = 1.44295;  min on [0, 8] = -0.46515 (claim >= -25/24 = -1.0417);  max on [1, 8] = -0.00002 (claim <= 25/24)
+2. u = 0.0300: sup |k_u| = 0.62288 at x = 0.305 (claim <= 313/500 = 0.626);  sup N_Psi = 0.05536 (bound (11/72) sup|k|^2 = 0.05927);  content coefficient (2/3) sup N_Psi = 0.03690 (certified 0.0399)
+2. u = 0.0403: sup |k_u| = 0.59153 at x = 0.305 (claim <= 313/500 = 0.626);  sup N_Psi = 0.04991 (bound (11/72) sup|k|^2 = 0.05346);  content coefficient (2/3) sup N_Psi = 0.03327 (certified 0.0399)
+2. u = 0.0463: sup |k_u| = 0.57486 at x = 0.305 (claim <= 313/500 = 0.626);  sup N_Psi = 0.04712 (bound (11/72) sup|k|^2 = 0.05049);  content coefficient (2/3) sup N_Psi = 0.03142 (certified 0.0399)
+3. angular identity holds: True ;  min of the quartic on [0,1]: 2.298618078515405
+   gamma = (11/108)(313/500)^2 = 1077659/27000000 = 0.039913296296296294 ;  k = P - 13/20 = 59009/189100
