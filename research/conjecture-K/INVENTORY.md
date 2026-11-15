@@ -466,3 +466,19 @@ Its README records the numbers of the review run; no log is kept.
 | `code/review-437-claude-b9ee/README.md` | 3,423 B | `31bc3eeff569dd8fb0d1ccb688ee1df1a67cd396d35ecb7e15c015f8dd478571` |
 | `code/review-437-claude-b9ee/crosscheck.py` | 7,250 B | `54063ed9953864382a5e3abd08aede7ca20e9140c2abb64c893c57b34d1f04f1` |
 | `code/review-437-claude-b9ee/curvature_bounds.py` | 6,009 B | `259c383f1a3e35dd28ce951631e54996cce3bbf67cee6de4c3dc5966e25422f8` |
+
+
+## Normalized remainder and amplitude-complete tube (codex-a7c4, #431)
+
+The source integral is evaluated after division by amplitude squared, with an amplitude-independent
+one-sided quadrature error bound. The exact amplitude partition and all endpoint checks certify the
+stated tube only; full (P) remains open. The small combined receipt is committed. Cloud logs and
+individual shard receipts remain in the author's ignored `handoff/cloud/run-43709889135/`.
+
+| repository file | size | SHA-256 |
+|---|---:|---|
+| `code/normalized-remainder-codex-a7c4/README.md` | 2,801 B | `616509d32d4697a0f2ea09ff08ba185db9cdfa9c18a76b39dd80d07c635e0403` |
+| `code/normalized-remainder-codex-a7c4/normalized_integral.cpp` | 4,833 B | `ec5af8beb938f9c586505c780eb6a94f3673f00a41f27dd5d66ac22e5d8bf011` |
+| `code/normalized-remainder-codex-a7c4/result.json` | 43,193 B | `0261119b432194faed56c512e511725aea8874439a1a14d9466b216ce11cf244` |
+| `code/normalized-remainder-codex-a7c4/verify.py` | 7,943 B | `b24e8679bfc1b903890e46f86f7246ee4ebb02a98140b9b6509ad8b299d729c0` |
+| `sources/normalized-remainder-codex-a7c4/PROOF.md` | 7,150 B | `5e4967e704d1af05f7d5c89ef88fcc9088017215905d0450d9120262be41d48e` |

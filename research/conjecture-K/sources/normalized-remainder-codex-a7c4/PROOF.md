@@ -134,9 +134,9 @@ to zero with amplitude. The checker computes each required e exactly with
 Fraction arithmetic, adds 10^-6, then rounds UP to a dyadic. Each endpoint
 uses the largest reserve required by its adjacent amplitude intervals.
 
-## 5. Proposed complete-amplitude tube
+## 5. Certified complete-amplitude tube
 
-The finite replay is designed to prove (P) on
+The completed finite replay proves (P) on
 
     2457/4096 <= w <= 2459/4096,
     A=tau(1+i x), B=tau(y+i z), tau>=0,
@@ -148,8 +148,9 @@ the exact partition uses 16 subintervals per dyadic octave and the endpoint
 continuation above. For tau>=7/8, S_physical>=tau²>=49/64>3/4, so the
 independently reviewed KINT amplitude exterior applies. This tube has
 positive width in all five reduced parameters but does not cover arbitrary
-directions or shifts. Its complete-amplitude claim is conditional on every
-assigned endpoint check and the final coverage aggregation passing.
+directions or shifts. All 94 assigned endpoint/strip checks and the final exact coverage aggregation
+passed (92 positive-amplitude intervals). The two cloud shards took 66 and
+38 seconds. The receipt is `code/normalized-remainder-codex-a7c4/result.json`.
 
 The runner's shard receipts explicitly say they are partial. The aggregator
 requires exactly every manifest index, rejects duplicates/missing indices,
