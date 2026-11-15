@@ -1,0 +1,19 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS",
+  "profile_range": [
+    "2/15",
+    "4/19"
+  ],
+  "scale_range": "[0,infinity)",
+  "profile_intervals": 15,
+  "scale_intervals": 575,
+  "normalized_kernel_upper": "2166037643147/1099511627776",
+  "strict_target": "197/100",
+  "uniform_shell_cost_lower": "3/152",
+  "kernel_constant": "147/125",
+  "kernel_far_w_over_r2_coefficient": "2/5",
+  "disk_far_factor": "38/25",
+  "reused_tail_upper": "1/5000",
+  "scope": "All shifts, scales and application profiles; reuses audited disk-height and fixed-point helpers."
+}

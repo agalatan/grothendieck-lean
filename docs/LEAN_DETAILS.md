@@ -583,7 +583,7 @@ are `2.56852947444587e-6`, `5.71439509703932e-10`, and `1.68238736430120e-11`.
 identity to give `norm_hpow_one_sq`, `norm_hpow_two_sq`, and
 `norm_hpow_three_sq`. These are total energies; band-tail estimates also
 need captured Hermite energy and approximation errors. The three whole-error
-estimates of the final theorem use these norms (`RelaxedTwistSix.lean`).
+estimates of `upper_below_tight` use these norms (`UpperTightSix.lean`).
 The targets in `data/phase-moments/targets.json` are expected exact values,
 not integral assumptions: each numerical leaf computes from the production
 phase. `python3 tools/gen_phase_moment_data.py --check` verifies source binding
@@ -900,7 +900,7 @@ of the actual `Xfun frozenCorrectionFn`. It has no separate rounding, tail,
 representative or charge-one premise. The energy-table accuracy `hclose` is
 proved (`Final.hclose_final`). The fourteen Gaussian inequalities are not
 proved with these caps, so this theorem and its bound below `1.404598149141`
-stay conditional; `upper_target` does not use it. Its only consumer is the
+stay conditional; `upper_below_tight` does not use it. Its only consumer is the
 conditional `Statement.upper_target_of_inputs` (`Grothe/UpperTarget.lean`).
 
 `ThreeBandRegrouping` gives the regrouping that the final theorem uses: retain the lowest
@@ -927,11 +927,12 @@ This fixed-budget theorem (`ThreeBandUpper.lean`) retains its explicit low-band
 hypotheses. The final assembly uses the generic comparison with the tighter
 certified radii above; it does not import this endpoint module. The standard
 analytic cores and concrete adapters keep their explicit inherited trust
-allowances; no new native fact is introduced. The public `UpperTarget`
-threshold is `1.4046`.
+allowances; no new native fact is introduced. The older public `UpperTarget`
+threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the stricter
+threshold `1.404599412097`.
 
 `RelaxedThreeBandBudget`, `RelaxedThreeBandComparison` and
-`RelaxedThreeBandUpper` use that threshold's remaining room. The three raw
+`RelaxedThreeBandUpper` use the older `1.4046` threshold's remaining room. The three raw
 low-band allowances are `4001/10^12`, `14001/10^12` and `70001/10^12`;
 the second and third enter the comparison divided by `2!` and `3!`.
 The whole-error radii, mass caps, energy tolerance and Hardy tail stay fixed.
@@ -1072,7 +1073,7 @@ The modules `IndependentSource…` above and `Actual…`, `Bipartite…`,
 `GateFockCoefficients`, the coefficient-jet modules (`…Jets`,
 `PairJetPolynomialOperations`) and `ScalarOriginal…` below prove exact Gaussian
 identities and source-norm bounds for the Taylor multiplier operators. The
-final theorems do not import them: `upper_target` bounds the Taylor errors
+final theorems do not import them: `upper_below_tight` bounds the Taylor errors
 through the twisted quadrature (`UpperQuad/`). Numerical Hilbert–Schmidt caps
 and the binding to the historical Laguerre producer are not part of this
 development.
@@ -1507,31 +1508,6 @@ saved-model tolerances. Its exact budget is `(84353029/84596280)*10⁻¹²`,
 and its interval is `200/89` times the original. This is a quadratic-plus-cubic
 bound, so it does not contradict optimality of the purely quadratic constant two.
 No Gaussian optimality or change to the production certificates or headline endpoint is claimed.
-`Haagerup/PhaseTaylorQuadratic` retains the actual quadratic Taylor term
-`Q₂(h) = -(Im h)²/2 - i Re(h) Im(h)`. The global remainder is at most
-`2‖h‖³`, including the zero perturbed point, and the constant two is optimal.
-`UpperChaos/PhaseQuadraticError` gives its exact four-mode Wick expansion,
-supported on `(0,0)`, `(1,1)`, `(2,0)` and `(0,2)`, with Gaussian norm `sqrt(7)/4`.
-For the existing linear centers the whole-slice error is at most
-`(sqrt(7)/4)*ρ² + 2*sqrt(6)*|ρ|³`; every coefficient error is at most
-`(3*sqrt(2)/8)*ρ² + 2*sqrt(6)*|ρ|³`. Outside those four modes only the cubic
-term remains. The same parameter and saved-model tolerances therefore give
-error below `10⁻¹²` for `|ρ| ≤ 1/1090000` in every mode, and for
-`|ρ| ≤ 1/22500` outside the quadratic support. These analytic improvements
-introduce no native facts; the tighter certified Grothendieck endpoint above
-comes from the separate budget and Hardy assembly.
-`Haagerup/PhaseTaylorThird` goes one order further: the cubic Taylor term
-`Q₃(h) = Re(h)*(Im h)² + i*((Re h)²*Im h - (Im h)³/2)` leaves a globally
-sharp remainder `2‖h‖⁴`. `UpperChaos/PhaseCubicError` gives its exact six-mode
-Wick expansion, with squared norm `27/32`, and Gaussian remainder `4*sqrt(6)*ρ⁴`.
-The quadratic and cubic supports are disjoint. For `|ρ| ≤ 1/2`, each coefficient
-of the existing linear-center error is therefore bounded by
-`(3*sqrt(2)/8)*ρ² + 4*sqrt(6)*ρ⁴`. The saved-center interval becomes
-`|ρ| ≤ 1/1086000` uniformly, or `1/12000` outside the quadratic support,
-with the same parameter and saved-model tolerances. At total Wick degree at
-least four, the error is purely quartic and the saved-center interval is
-`1/2120`; the parameter-error hypothesis is unnecessary because the linear
-center vanishes identically. These analytic results add no native facts.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
@@ -1742,7 +1718,7 @@ helpers), except `PhiProductionIdentity` and `PhiProductionDefs`, belong to a
 second way of certifying the band estimates of the Taylor sources: adaptive
 rectangle quadrature of a retained source. They are
 kernel-checked and built with `Grothe`, but the final theorems do not import
-them: `upper_target` bounds the Taylor errors through the twisted quadrature.
+them: `upper_below_tight` bounds the Taylor errors through the twisted quadrature.
 The mesh has fourteen roots; leaf certificates exist for five of them
 (2, 6, 7, 10 and 11), and the band energies have no certificates, so this
 route yields no band estimate. Where these paragraphs name certificates or
@@ -2638,7 +2614,7 @@ strict audit. Source reproduction is not a native verification receipt.
 | `ProductComplete`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: tensor completeness from one-coordinate completeness by Fubini, Gaussian mixing law by characteristic functions, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
 | `Realise2`, `Structural` | two-channel rounding with tensor-realised preprocessors (`rounding_diskKernel`); the structural fields (validity, summability, parity) as theorems |
 | `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
-| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `upper_target` and by the conditional `fresh_upper_rounder` |
+| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `upper_below_tight` and by the conditional `fresh_upper_rounder` |
 | `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
 | `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
 | `Gauss2`, `Sym2R`, `SchurTest`, `LstarL`, `SchurKernel`, `SchurBound`, `SchurIntegrability`, `SchurMain` | Gaussian integrals, weighted Schur test and kernel factorization; the Gaussian Schur bound for every measurable disk-valued response pair under its positive-definiteness gates (`norm_HholPair_sq_le`) |
