@@ -1,7 +1,7 @@
-# Closing the upper half: the six Gaussian hypotheses of `upper_of_three_low_three_whole`
+# Closing the upper half: the six Gaussian hypotheses of the three-band comparison
 
 **Current status (15 November 2026).** The unconditional upper bound is now
-`K_G^ℂ < 1.404599398251`, proved by `Grothe.Statement.upper_below_tight` in
+`K_G^ℂ < 1.404599398052`, proved by `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The accepted port facts,
 tighter panel totals and table reserves supply the six estimates through
 `TightTwist.six_of_facts`; regrouped reference masses and the finite-head deduction
@@ -17,18 +17,12 @@ quoted from committed data or from the inherited certificate and says where it c
 
 ## 0. The hypotheses at the start of the design
 
-`Grothe.UpperChaos.ThreeBandEndpoint.upper_of_three_low_three_whole`
-(`Grothe/UpperChaos/ThreeBandUpper.lean`) proves
-
-```
-IsGrothendieckBound threeBandValueQ ∧ threeBandValueQ < 1.40459988,
-threeBandValueQ = 62500000000000000000000000000000000/44496657949831899485564111968234071
-                = 1.40459987063446669…
-```
-
-from seven hypotheses. `hclose` (the energy table) is the quadrature checker's job
+The comparison of the three-band regrouping (`ThreeBandRegrouping`; in the current proof
+`localized_comparison_tight_three_band`, `Grothe/UpperTightComparison.lean`) takes seven
+hypotheses. `hclose` (the energy table) is the quadrature checker's job
 (`docs/QUAD_CHECKER.md`, PR #304). The other six are three *low-band* and three *whole-error*
-statements about the Taylor sources `hpow j = (iφ)^j F₀` and the committed centers `c_j`:
+statements about the Taylor sources `hpow j = (iφ)^j F₀` and the committed centers `c_j`. At the
+start of the design they had these radii:
 
 ```lean
 hfirst  : ‖projOn (firstCenterBandModes 0)  (firstTaylorL2  - firstCenter)‖  ≤ firstCapturedErrorQ 0
@@ -38,6 +32,16 @@ hwholeFirst  : ‖firstTaylorL2  - firstCenter‖  ≤     comparisonGroupRadius
 hwholeSecond : ‖secondTaylorL2 - secondCenter‖ ≤ 2 * comparisonGroupRadiusQ 2
 hwholeThird  : ‖thirdTaylorL2  - thirdCenter‖  ≤ 6 * comparisonGroupRadiusQ 3
 ```
+
+With these radii the budget of `ThreeBandBudget.lean` gives
+
+```
+threeBandValueQ = 62500000000000000000000000000000000/44496657949831899485564111968234071
+                = 1.40459987063446669… < 1.40459988.
+```
+
+The current proof states the six with the smaller radii `tightLowErrorQ` and `tightScaledRQ` and
+proves them (`TightTwist.six_of_facts`).
 
 ## 1. The objects (Lean name ↔ formula)
 
@@ -154,7 +158,8 @@ These need **per-coefficient enclosures** of `a_j(i)` of width ≈ `1e-13` (j = 
 need the archived centers to be that close to the true coefficients: the inherited pipeline claims
 far better (§3), but this is the fact the prototype must establish or refute.
 
-Lean already turns per-coefficient enclosures into the band statement: `norm_band_error_le_cap`
+The archived mesh route (`abandonware/`, not built) turns per-coefficient enclosures into the band
+statement: `norm_band_error_le_cap`
 (`SmallProfileBandEnclosure.lean`; stated for codex's mesh representation of the coefficient) and
 `ConcreteRetainedBands.first_error/second_error/third_error`, with the rational energy check
 `bandEnclosureEnergyQ ≤ (cap − 5·10⁻¹⁵)²` (the `5·10⁻¹⁵` is the compact-Laplace cutoff reserve of
@@ -461,7 +466,8 @@ a_j(i) = Σ_{deg i' ≤ 501} M_j(i, i') f(i')  +  ⟨hvec2 i, (iφ)^j P_{>501} F
   equivalent change of variables `integral_comp_smul` for `gaussC`); (iii) the band statement from
   the per-coefficient enclosures (`norm_band_error_le_real_enclosure` restated for `⟨hvec2 i, hpow j⟩`)
   and the whole-error statement from `I_j ≥ I_j^min` (`norm_hpow_sub_sq`, `norm_hpow_one/two/three_sq`,
-  `norm_firstCenter_sq_exact` etc.) — these consumers exist on master.
+  `norm_firstCenter_sq_exact` etc.) — the whole-error consumers are in the library; the band lemma
+  is archived with `SmallProfileBandEnclosure`.
 * **Native facts and sharding.** One native fact per (power, charge block) is natural: the
   operator preserves nothing but can be organised so that the output charge `k_out` of `z` receives
   from input charges `k_out ± k`, `k ≤ 18`; shard by output charge (≈ 250 blocks of unequal size,
@@ -503,7 +509,7 @@ reuse the checker's exact conditional machinery.
 | `f(i')` and `ρ` | the checker's facts (milestones 2, 4 of #303) | shared with `hclose` |
 | `a_j(i)` for `deg i ≤ 181` (low bands and `I_j`) | native facts of `GrotheQuadKernel` (Route E operator application), sharded by output charge | new |
 | soundness of the operator application | theorems (Hermite calculus, dilation identity, truncation bound) | new, `Grothe/UpperQuad/` |
-| band lemma on `⟨hvec2 i, hpow j⟩`, whole-error assembly | theorems | small adaptations of `SmallProfileBandEnclosure`, `TaylorErrorEnergy` |
+| band lemma on `⟨hvec2 i, hpow j⟩`, whole-error assembly | theorems | small adaptations of `TaylorErrorEnergy` and of the archived `SmallProfileBandEnclosure` |
 
 Do not start the port before milestone 4 of #304 lands (the kernel's interval layer and the raw
 vector's soundness are its prerequisites); the prototype's `a_j(i)` (coefficient files under

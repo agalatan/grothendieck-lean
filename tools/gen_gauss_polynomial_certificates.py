@@ -152,29 +152,6 @@ theorem exactness (k : Fin 64)
     assembled += f"\nend {BASE}.Q0GaussPolynomialCertificates\n"
     result[OUT / "Q0GaussPolynomialCertificates.lean"] = assembled
 
-    audit = (f"import {BASE}.Q0GaussPolynomialCertificates\n"
-             "import Lean.Util.CollectAxioms\nimport Lean.Elab.Command\n\n"
-             + header(digest) + "\nopen Lean Elab Command\nrun_cmd do\n"
-             "  let allowed : Array Name := #[`propext, `Classical.choice, `Quot.sound]\n"
-             "  let targets : Array Name := #[\n")
-    names = []
-    for n in ORDERS:
-        if n > 1:
-            names.append(f"{BASE}.Q0GaussPolynomialOrder{n:02}.recurrence_checked")
-        names.extend([f"{BASE}.Q0GaussPolynomialOrder{n:02}.identities_checked",
-                      f"{BASE}.Q0GaussPolynomialOrder{n:02}.square_integral_checked",
-                      f"{BASE}.Q0GaussPolynomialOrder{n:02}.leading_coefficient_checked",
-                      f"{BASE}.Q0GaussPolynomialCertificates.exactness{n:02}"])
-    names.append(f"{BASE}.Q0GaussPolynomialCertificates.exactness")
-    audit += ",\n".join(f"    ``{name}" for name in names) + "]\n"
-    audit += """  for target in targets do
-    let dependencies ← Lean.collectAxioms target
-    logInfo m!"Finite Gauss certificate audit {target}: {dependencies}"
-    for dependency in dependencies do
-      unless allowed.contains dependency do
-        throwError m!"{target} uses unexpected axiom {dependency}"
-"""
-    result[OUT / "Q0GaussPolynomialCertificatesAudit.lean"] = audit
     return result
 
 

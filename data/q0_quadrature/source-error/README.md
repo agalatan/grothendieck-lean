@@ -2,6 +2,15 @@
 
 Agent-ID: codex-aa04.
 
+**Status.** The source-error assembly described here (`Q0SourceExceptionMassClosure`,
+`Q0ConditionalSourceReconstruction` and the generated exceptional-row, metadata,
+width, panel-order and pair-rank modules) is not in the library; it belonged to
+the saved source-table route, whose data-free lemmas are archived in
+[`abandonware/`](../../../abandonware/README.md); the main proof certifies the energy table
+with the quadrature checker (`Final.hclose_final`). Of the checks below, the
+selected-rule, node-mass and Gauss-certificate generators reproduce modules of the
+main proof; the others compare against modules that are no longer in the tree.
+
 The source-error assembly uses the selected recurrence roots, affine physical
 weights and source-address indexing of the committed quadrature tables. Its
 Gaussian node weight is `sourceWeight a * exp(-sourceNode a)`, once.

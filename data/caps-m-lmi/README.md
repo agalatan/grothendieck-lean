@@ -2,7 +2,8 @@
 
 Search data, not certificates: every fix must pass the Lean checker (`pieceOKc`, the native range facts).
 
-**Exports** (`exportPieces`, `Grothe/LowerAnalytic/CapExport.lean`, droplet, 26 Oct 2026), one JSON line per piece,
+**Exports** (`exportPieces` of `CapExport.lean`, archived in `abandonware/Grothe/LowerAnalytic/`; droplet,
+26 Oct 2026), one JSON line per piece,
 on the piece's stored grid:
 
 - `exp_14x150.jsonl`: piece 0.

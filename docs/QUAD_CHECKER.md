@@ -2,11 +2,11 @@
 
 **Current status (15 November 2026).** `Grothe.UpperQuad.Final.hclose_final` proves
 the energy-table accuracy used by the unconditional theorem
-`Grothe.Statement.upper_below_tight`, giving `K_G^ℂ < 1.404599398251`
+`Grothe.Statement.upper_below_tight`, giving `K_G^ℂ < 1.404599398052`
 ([`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean)). The twisted-source
 estimates are supplied separately by `TightTwist.six_of_facts`. The design record
 below retains its dated intermediate targets; see [LEAN_DETAILS.md](LEAN_DETAILS.md)
-for the current endpoint assembly and remaining conditional alternatives.
+for the current endpoint assembly.
 
 *Issue #303 (task of #21 under the relaxed goal K < 1.4046). Agent-ID: claude-b9ee. Written at
 master `b886bb57`, 4 November 2026. This document is the design record: the soundness
@@ -15,7 +15,8 @@ repository; nothing below is proved unless it names a theorem on master.*
 
 ## 1. What is being discharged
 
-`fresh_upper_concrete_taylor` (`Grothe/UpperTarget.lean`) assumes
+The upper endpoint (`TightEndpoint.endpoint_of_comparison`, `Grothe/UpperTightFinal.lean`) takes the
+table accuracy
 
 ```
 hclose : ∑ p ∈ headIdx 501, |energy X p − energyTable p| ≤ energyErrQ
@@ -82,16 +83,13 @@ default target): `rules` (checks the 64 bracket rules), `node <ordinal>`, `shard
 `merge <n> <dir>`. Inputs (`tools/quad_gen_partition.py`): `data/quad-checker/panels.txt` (the
 1,289 panels of `sourcePanels`), `cutoffs.txt` (`conditional_cutoffs.npy`), `profile.txt`
 (`profileQ`, `aQ`); the 2,080 brackets are regenerated from the Lean sources into
-`handoff/quad-checker/rules.txt`. Validation module: `Grothe/UpperQuad/Row227Check.lean` (`#eval`
-only; excluded from the `Grothe` root through `data/root-imports-exclude.txt`). Comparison:
-`tools/quad_compare_raw.py`.
+`handoff/quad-checker/rules.txt`. Comparison: `tools/quad_compare_raw.py`.
 
 ## 4. Validation at the row-227 node (measured, 4 November 2026)
 
 Node: ordinal 227 = panel 4 = [1, 2], order 62, rule 31; pinned midpoint shift
-`A0 = midpoint/2¹⁰²⁴ = 4.14544319832035469501…` (`OriginalMomentSeedData`), within `2·10⁻¹⁸` of
-the actual `profileShift` (`ConditionalSourceRow227Shift.actual_shift_midpoint_error`); the
-profile is positive there (`profile_pos`). Reference: the saved binary64 row of the original Arb
+`A0 = midpoint/2¹⁰²⁴ = 4.14544319832035469501…` (`data/original-moment-seed/`), within `2·10⁻¹⁸`
+of the actual `profileShift`; the profile is positive there. Reference: the saved binary64 row of the original Arb
 pipeline (PR #298, `row227.bin`, SHA `85f6792a…`, 35,777 words).
 
 | quantity | value |
@@ -173,7 +171,7 @@ Notation: `x ∈ a` means `a.lo ≤ x · 2^K ≤ a.hi` for an `Ival a` at precis
   `ξ ∈ [r−ε, r+ε]` certified (`ProfileRootScreen`/`ProfileRootSound`), `|vprof′| ≤ D` on `W`,
   `κ = √(1+a²)`, `a = r − w`: the signed linear model `1 + (t/2)(w − w̄)`, `t = κ v(s)/√s`,
   has squared L² residual ≤ `(25 κ⁴ D⁴ e^{−a}/a²)(2w⁵/5 + 4w³ε² + 2wε⁴)` over the window
-  (`ZeroProfilePhaseLinearization.norm_phaseSliceLp_sub_linear`,
+  (archived in `abandonware/`: `ZeroProfilePhaseLinearization.norm_phaseSliceLp_sub_linear`,
   `Q0ConditionalLinearError.coefficient_linear_error_sq_le`); the retained modes integrate in
   closed form against the radial basis; the replacement theorem connects the window model to
   the saved table.
@@ -545,7 +543,7 @@ budget inequalities (`2ρ² + 2·bound/2²⁵⁶ ≤ δ²`, master's `hsmoothing
 `hQuad : Σ_{q,c,d} ‖baseGradedCoefficient q c d − gaussCoeff specs x q c d‖² ≤ ρ²` (the exact
 Gauss–Legendre sums of the nodes approximate the F0 coefficients in ℓ²: S6b, S6c and the omitted
 pairs of the cutoffs; `gaussCoeff` is reflected for `c > d + 1`, consistent with master's
-`radialBaseCoefficient_reflection`). Conclusion: `hclose` of `fresh_upper_concrete_taylor`
+`radialBaseCoefficient_reflection`). Conclusion: the table accuracy `hclose`
 (`Σ_{headIdx 501} |energy X p − energyTable p| ≤ energyErrQ`). Proof: master's
 `selected_energy_close_of_raw_error` with `a0 := b0 − frozenQ`, `b0` the lower ends of the grade
 matrices (`retainedProductionCoeff a0 = b0`), `htable` from `energyOK_sound`, `hraw` from
@@ -771,7 +769,8 @@ Branch `claude-b9ee/quad-checker-analytic` (stacked on `claude-b9ee/quad-checker
 Root identification, numeric instantiation and S2 are proved. The energy quadrature decomposition
 now also has its analytic remainder theorem, `EllCheck.quadRemainderHyp` (§12.4).
 `Grothe/UpperQuad/Facts/Final.lean : hclose_of_facts_quad (hQuad : QuadHyp) : hclose` supplies the
-energy-table hypothesis of `upper_of_three_low_three_whole`; `quadHyp_of_parts` combines the
+energy-table hypothesis of the upper endpoint (`TightEndpoint.endpoint_of_comparison`);
+`quadHyp_of_parts` combines the
 proved remainder with the tail bound and the registered omitted-pair check.
 
 ### 12.1 Root identification (proved: `Grothe/UpperQuad/RootIdent.lean`, `QuadDecomp.lean`)
@@ -799,7 +798,7 @@ p).order` is `Q0GaussProductionMass.sourceNode a = panelNode p.lo p.hi (sourceRo
   `gaussCoeff_eq_gradeValue`. So the Gauss sums of the bridge are sums over master's production nodes
   and weights, with the committed cutoffs `addressCutoff a = min (cutoffs[offset + a.2]) 531`; `hQuad`
   is a statement about master's `sourceNode`/`sourceWeight` (and `source_node_mem_panel`,
-  `source_weighted_energy_lt`, `mass_lt` apply).
+  `mass_lt` apply).
 
 ### 12.2 Numeric instantiation (proved: `Grothe/UpperQuad/Facts/Budget.lean`, `Final.lean`)
 

@@ -2,6 +2,13 @@
 
 Agent-ID: codex-aa04.
 
+**Status.** The Lean modules generated from this certificate (the exceptional center
+chunks `Q0SourceExceptionCenters…`, the metadata and pair-rank modules) are not in the
+library; they belonged to the saved source-table route, whose data-free lemmas are archived in
+[`abandonware/`](../../../abandonware/README.md); the main proof certifies the energy table
+with the quadrature checker (`Final.hclose_final`).
+The `--check` commands below compare against those modules.
+
 The conditional-node table contains 21,577 node rows. Row i holds binary64
 approximations of conditional Hermite coefficients for the degree-531 canonical
 pairs `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, `c+d ≤ 531`, in `(c+d,c)`

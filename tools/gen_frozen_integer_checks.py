@@ -29,7 +29,9 @@ def header(imports, ns):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--grades', default='0,90')
+    # The per-grade energy checks (Grade<q>Check, Grade<q>Production) are not used by the main proof and were
+    # removed from the library (#422); `--grades 0,90` regenerates the former ones on demand.
+    parser.add_argument('--grades', default='')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
     def write(path, text):
@@ -38,7 +40,8 @@ def main():
                 raise SystemExit(f'Stale actual frozen certificate: {path}')
         else:
             path.write_text(text)
-    selected = list(range(GRADES)) if args.grades == 'all' else [int(x) for x in args.grades.split(',')]
+    selected = (list(range(GRADES)) if args.grades == 'all'
+                else [int(x) for x in args.grades.split(',') if x.strip()])
     if any(not 0 <= q < GRADES for q in selected):
         parser.error('grade outside actual support')
     _, _, grades = generate()

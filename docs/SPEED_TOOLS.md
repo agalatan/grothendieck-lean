@@ -30,7 +30,10 @@ Consequences:
 
 ## Tools
 
-### 1. `Grothe/LowerAnalytic/CapExport.lean` (Lean, built by CI, no `#eval`, not part of any certificate)
+### 1. `CapExport.lean` (Lean, no `#eval`, not part of any certificate)
+
+Archived in `abandonware/Grothe/LowerAnalytic/CapExport.lean` and not built: restore it to
+`Grothe/LowerAnalytic/CapExport.lean` in a throwaway worktree before using it.
 
 `exportPieces path node js` writes one JSON line per piece `j ∈ js` of a piece node `(k, i, dirs, pieces)`, computed
 with the checker's own functions (`mkGrid`, `matI`, `loQ`, `hiQ`, `loewnerUp`, `pieceN`, `Cons.sMat`, `pieceOKc`):
