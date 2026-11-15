@@ -1,0 +1,34 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS",
+  "constant_cap": "147/125",
+  "far_field_x_coefficient": "1/5",
+  "far_field_w_over_r2_coefficient": "2/5",
+  "constant_cells": [
+    [
+      "0",
+      "1/2"
+    ],
+    [
+      "1/2",
+      "3/4"
+    ],
+    [
+      "3/4",
+      "1"
+    ]
+  ],
+  "constant_bernstein_minima": [
+    "2467045863934346792954543/12048657564303360000000000",
+    "1595772925092631621407671637099/151436203601312331333632000000000",
+    "5773076952753895478261549414131/993800086133612174376960000000000"
+  ],
+  "far_field_compact_interval": [
+    "1",
+    "3"
+  ],
+  "far_field_bernstein_minimum": "208401427730290586584194838024505017705097655107030608391895757733/461505730646476654933610227038784874862925951406891335680000000000",
+  "far_field_infinite_ray_start": "3",
+  "new_disk_far_factor": "38/25",
+  "scope": "Exact polynomial premises only; analytic kernel and infinite-ray proofs are in POTENTIAL.md."
+}

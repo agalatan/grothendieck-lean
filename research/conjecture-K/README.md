@@ -9,6 +9,7 @@ conjecture is **open**.
 | file | what it is |
 |---|---|
 | `README.md` | this file: statement, why it matters, the layers of a proof, reading order, index |
+| [Third audit](sources/third-audit-2026-11-15-codex-a7c4/AUDIT.md) | After reviewer-updated #399: global peak .007 kernel comparison certified; complete kernel derivations, stronger disjoint cost and content neighbourhood, raw/retained axis results |
 | [Second audit](sources/reaudit-2026-11-15-codex-a7c4/AUDIT.md) | 15 November, codex-a7c4, after PR #397: response/parity scope corrections, explicit odd-sector counterexamples, disjoint-cost replay, larger content neighbourhood and conditional central consumer |
 | [Follow-up audit](sources/audit-2026-11-15-codex-a7c4/AUDIT.md) | 15 November, codex-a7c4: essential scope corrections, peak remote certificate replay, uniform one-coordinate result, independent retained-sector numerics |
 | [`STATUS.md`](STATUS.md) | the consolidated state of knowledge: every statement with its status (P / C / N / R / open / refuted), exact scope and source; the list "tried and failed" |
@@ -121,10 +122,10 @@ The statuses include the follow-up audit of 15 November; details and scopes are 
 | layer | statement | status on 15 November 2026 |
 |---|---|---|
 | **L1** remote part ("K-a") | Λ(q) ≤ S + η for every remote cubic q | **P + C at the peak profile**, η=3.6·10⁻⁷: the stronger October package replayed end to end by codex-a7c4 and again by claude-b9ee, with its existing sixth-moment input identified. External certificate, not Lean (its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions: A15 `REMOTE.md` §3a). A narrow scaled-profile tube has error <8.1·10⁻⁵ (STATUS 3.11); the other named rows and full envelope remain open. Exact K-a (η=0) is open; the separate report of 15 November remains **R**. |
-| **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1, hence 3.6·10⁻⁷ at the peak; needs mutual independence of z₁,q,U and ‖q‖² + ‖U‖² ≤ ℓ²). The stronger all-amplitude cost form is now **P + C** on the entire application box, with cost at least 1/152 and no energy cutoff (STATUS 4.2). |
+| **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1, hence 3.6·10⁻⁷ at the peak; needs mutual independence of z₁,q,U and ‖q‖² + ‖U‖² ≤ ℓ²). The stronger all-amplitude cost form is now **P + C** on the entire application box, with cost at least 3/152 and no energy cutoff (STATUS 4.2, third audit). |
 | **L3** core with shared drivers, outside the rectangle R | w ≥ 0.01125 or u ≤ 0.00551 + 0.319w ⇒ K_η, η = 10⁻⁴ | **R** (proved and certified according to the manuscript and the monograph; not re-audited; three slightly different cutoffs for w are in use). The fourth-moment method is saturated there. |
-| **L4** core on R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
-| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). |
+| **L4** core on R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. The conditional mixed-character neighbourhood now permits remainder energy D(core)/90 (STATUS 6.3.9b). **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
+| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). The global peak alignment ‖c_B−.5053c_A‖≤.007√u is now **P + C** (STATUS 7.1.4). **Missing:** a finite-amplitude joint A/B remainder bound (section 7.4), a general A-content theorem to use with that alignment, and uniform odd-sector control over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). |
 | **L6** row envelope and consumption | A fixed-ε row cover with exact thresholds, coverage of all response regions, then a Lean theorem consuming K_η | **Incomplete.** The single peak row now has an exact conditional central component: all-sector K_η with η≤10⁻⁴ covers t∈[.84,.851], leaving >6.12·10⁻⁷ margin (STATUS 8). Complementary regions and the all-sector premise remain; no `lower_of_K` or `KHyp` exists. A full profile box, including the σ*=0 corner, is needed only if the chosen cover uses it. |
 
 The audit's one-line summary: the record contains substantial valid mathematics, but the remaining distance is a
@@ -189,6 +190,39 @@ next statement to attack.
 
 Sizes are those of the files in this folder. Descriptions of the notes are taken from the documents themselves
 (title or opening words) unless a status is added; a status in this index is always the one in `STATUS.md`.
+
+### `sources/third-audit-2026-11-15-codex-a7c4/`: third audit after reviewed PR #399
+
+New research only; all earlier sources remain unchanged. See AUDIT for proof and replay boundaries.
+
+| file | size | contents |
+|---|---:|---|
+| `AUDIT.md` | 12,621 B | Third-pass findings, completed targets, full-monograph sweep and trust boundaries. |
+| `ALIGNMENT.md` | 9,913 B | Global peak .007 kernel certificate and exact conditional signed budget. |
+| `CONTENT_KERNELS.md` | 21,739 B | Complete monotonicity of both kernels; derivative envelopes; D/90 neighbourhood. |
+| `POTENTIAL.md` | 11,541 B | Elementary Gaussian/Bessel derivations and stronger full-box disjoint cost. |
+| `SECTORS.md` | 14,244 B | Raw P-axis cost, exact retained equality, sharp retained d-axis and Q counterexample. |
+
+
+### `code/third-audit-2026-11-15-codex-a7c4/`: third audit after reviewed PR #399
+
+New research only; all earlier sources remain unchanged. See AUDIT for proof and replay boundaries.
+
+| file | size | contents |
+|---|---:|---|
+| `kernel_alignment.py` | 5,853 B | Arb endpoints and derivative moments; exact continuum cover and infinite tail. |
+| `kernel_alignment_result.json` | 19,742 B | PASS: 79 cells, 80 nodes, whole peak v≥0 comparison below .007. |
+| `alignment_budget.py` | 1,749 B | Exact conditional signed A/B excess below .000051525. |
+| `alignment_budget_result.json` | 601 B | PASS: rational Schur complement, norms and excess budget. |
+| `content_kernels_exact.py` | 6,362 B | Positive derivative formulas, exact moments through order four and D/90 budget. |
+| `content_kernels_exact_result.json` | 3,306 B | PASS: three-row moments, off-character weight and conditional extension. |
+| `potential_bounds.py` | 3,974 B | Exact polynomial premises for sharper inverse-radius kernel estimates. |
+| `potential_bounds_result.json` | 945 B | PASS: 147/125 global bound and 2/5 far-field coefficient. |
+| `potential_full_box.py` | 4,157 B | Updated exact full-box disk cover using existing audited interval helpers. |
+| `potential_full_box_result.json` | 566 B | PASS: potential below1.97, uniform disjoint cost≥3/152. |
+| `sector_axis_costs.py` | 3,707 B | Exact P-axis and retained odd-block/n=1 scalar bounds and retained Q witness. |
+| `sector_axis_costs_result.json` | 2,625 B | PASS: .41 P cost, .39242 retained d cost and retained Q gain>7e−6. |
+
 
 ### `sources/reaudit-2026-11-15-codex-a7c4/`: second full-monograph audit
 
