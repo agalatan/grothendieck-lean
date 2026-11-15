@@ -30,6 +30,7 @@ import Grothe.Lower.Mixed
 import Grothe.Lower.MixedData
 import Grothe.Lower.Moment
 import Grothe.Lower.Poly
+import Grothe.Lower.ResponsePenalty
 import Grothe.Lower.RowData
 import Grothe.Lower.RowData01
 import Grothe.Lower.RowData02

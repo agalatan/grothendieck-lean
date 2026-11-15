@@ -601,113 +601,39 @@ K-consumer exists [open · STATUS §8].
 
 ### 2.11 Charging response feasibility to the discarded squares
 
-[P, author only · codex-9b17 · task #432 · ledger 2.12c]. This is an unconditional
-inequality for actual responses, not a proof of K or a new numerical endpoint.
-It uses the same weighted-Hilbert-space method as 2.10, retaining additional
-features. No priority over the manuscript's general weighted-Gram machinery is
-asserted. Independent review and a Lean consumer remain pending.
+[P + C · codex-9b17, re-derived and replayed by claude-b9ee in
+[review of #433](https://github.com/agalatan/grothendieck-lean/pull/433#issuecomment-6892542529) · 2.12c].
+Let H=Z(T−2)/√2 and Σ=‖P₁,₀k‖²+ε‖P₂,₁h+(√2β/ε)H‖².
+For every actual bounded response, in every finite dimension and with arbitrary
+remote sharing, Σ≥max(0,sup_{λ≥0}J_λ), where
 
-Write H = Z(T−2)/√2, R² = π/4, G = εP₂,₁k, and use the six energies of 2.10.
-Let the two discarded squares be
+    a(λ)=2(λ+2)/(3λ+4),       n(λ)=8(λ+1)/(7λ+6),
+    J_λ=(λ/ε²)[E_q/2+a(λ)E_A+4E_B/3+E_Q+E_P+n(λ)E_ν]
+         −λ(π/4−t²)+[ελ/(2(3ε+4λ))](t−4β/ε)².
 
-    Σ = ‖P₁,₀k‖² + ε‖P₂,₁h + (√2β/ε)H‖².
+The exact raw row subtracts this penalty from its Λ expression. At the peak,
+t=.8456, E_q=.04, E_A=.03 and all other energies zero pass the existing energy
+cuts but force Σ>.009. This compares relaxations, not realizability or a global
+endpoint improvement. The weighted Gram proof, square completions and exact row
+identity are in [the source proof](sources/response-penalty-2026-11-15-codex-9b17/PROOF.md).
 
-For every λ ≥ 0 define
+**Retained-compatible extension.** Allocate fractions s,k of the first-chaos
+and visible-cubic squares to the new penalty and only the complementary fractions
+to another dual. The exact coefficients and proof are in
+[the allocation note](sources/response-penalty-2026-11-15-codex-9b17/ALLOCATION.md).
+For s=0,k=1, the first-chaos square stays entirely with Λ̂. Writing D for the
+weighted energy in 2.10, the remaining h-square is at least
 
-    a(λ) = 2(λ+2)/(3λ+4),      n(λ) = 8(λ+1)/(7λ+6),
-    J_λ = (λ/ε²)[E_q/2 + a(λ)E_A + 4E_B/3 + E_Q + E_P + n(λ)E_ν]
-          − λ(π/4−t²)
-          + [ελ/(2(3ε+4λ))](t−4β/ε)².
+    λ[D/ε²−(π/4−t²)]+[ελ/(2(3ε+4λ))](t−4β/ε)².
 
-Then **Σ ≥ J_λ**, simultaneously for all λ. Hence Σ ≥ max(0, sup_{λ≥0} J_λ).
-The assertion holds in every finite dimension, for arbitrary sharing of the
-remote coordinates, all ε > 0, real β, and bounded responses |f|, |g| ≤ 1 with
-P₁,₀h = tZ, t ≥ 0. There is no small-energy or Gaussian-domination premise.
-
-**Weighted Gram proof.** Put dμ = |Z|dγ/R. The pair (h,k) has squared norm at
-most one in L²(μ)⊕L²(μ), since |h|²+|k|² ≤ 1. All features below are divided
-by |Z|; their weighted inner products are computed by
-E_μ[conj(U/|Z|) V/|Z|] = E[conj(U)V/|Z|]/R.
-They are square integrable: the only negative visible half-moment is E T^(−1/2).
-
-In the h slot retain Z and H. Their feature Gram matrix is
-
-    [[1, −1/(2√2)], [−1/(2√2), 7/8]].
-
-In the k slot retain Z, H, all remote first-chaos basis vectors W_i, the
-corresponding A features (T−1)W_i, and orthonormal bases for the other four
-cubic sectors. Each (W_i,(T−1)W_i) feature pair has Gram
-
-    [[2, −1], [−1, 3/2]].
-
-The remaining sector Gram factors are 2, 3/4, 1, 1 for q, B, Q, P.
-Cross-block inner products vanish by visible angular frequency, remote
-chaos orthogonality, and EQ=0. These facts do not require independent
-remote coefficient fields. For example, E[(T−1)/√T]/R = −1 and
-E[√T(T−2)]/(√2 R) = −1/(2√2). Both 2×2 matrices are positive definite,
-with determinants 3/4 and 2 respectively.
-
-Put c = ⟨H,h⟩, α = ⟨Z,k⟩, let p be the vector of remote linear
-coefficients of k, let a = r_A/ε, and let v = ν/ε be the visible cubic
-coefficient of k (G has visible part νH). Inverting the two Gram blocks
-and applying Bessel gives
-
-    t² + (4/3)|c+t/(2√2)|²
-      + ‖p‖²/2 + ‖a+p/2‖²
-      + |α|² + (4/3)|v+α/(2√2)|²
-      + (E_q/2 + 4E_B/3 + E_Q + E_P)/ε² ≤ R².             (G)
-
-The factors R disappear after multiplying Bessel's inequality by R²:
-the Gaussian coefficients of every feature pair with (h,k) are divided by R.
-Also orthogonality in the original Gaussian L² space gives
-
-    Σ ≥ ‖p‖² + |α|² + ε|c+√2β/ε|².                     (S)
-
-Multiply the left side of (G) minus R² by λ and add it to the right
-side of (S). This is still a lower bound for Σ. Minimize independently
-in p, α, c. The three completed-square minima are
-
-    inf_p {‖p‖² + λ(‖p‖²/2 + ‖a+p/2‖²)}
-        = λ a(λ) ‖a‖²,
-    inf_α {|α|² + λ(|α|² + (4/3)|v+α/(2√2)|²)}
-        = λ n(λ) |v|²,
-    inf_c {ε|c+√2β/ε|² + (4λ/3)|c+t/(2√2)|²}
-        = [ελ/(2(3ε+4λ))](t−4β/ε)².
-
-All denominators are positive. Substitution proves Σ ≥ J_λ, including λ=0.
-This is a lower bound obtained by minimizing unconstrained auxiliary
-coefficients, so no existence or attainability assumption is needed.
-
-**Connection to the row.** Let V = Re⟨f,T_εg⟩ and let Φ be the nonnegative
-pointwise support slack integrated over the Gaussian space. The exact identity is
-
-    V = t²−2ℓt+2β²/ε + Λ(G) − Σ − Φ.
-
-It follows, without K, that every actual response satisfies
-
-    V ≤ t²−2ℓt+2β²/ε + Λ(G) − max(0, sup_{λ≥0} J_λ).     (R)
-
-A finite set of nonnegative rational λ already gives a valid consumer cut.
-This replaces dropping Σ by an explicit penalty depending only on t and the
-six sector energies. **Do not subtract this full penalty from Λ̂**: its
-first-chaos square has already been spent. Combine it with the raw Λ row,
-or split the available squares explicitly before using another retained dual.
-The support slack Φ has not been spent here.
-
-**Strict gain over the displayed energy constraints.** At the peak profile,
-set t=1057/1250, E_q=1/25, E_A=3/100, and all other energies to zero.
-This tuple satisfies the six-sector ellipsoid strictly, the remote cap
-0.046266 and the total cap 0.070564. Nevertheless, J_1 > 9/1000.
-Thus any actual response with those energies must pay more than 0.009
-in the discarded squares. This is a comparison of relaxations, not an
-assertion that the tuple is realizable or that the global endpoint gains 0.009.
-
-The standard-library replay
-`python3 -I research/conjecture-K/code/response-penalty-codex-9b17/check.py`
-checks these strict comparisons using exact fractions and outward Machin
-bounds for π. It checks only the scalar consequences; the Gaussian proof
-above is author-only, not Lean-checked. A certified full-domain payoff
-consumer is still required to improve the current lower endpoint.
+At the peak, λ=1/4 makes this exceed 10⁻⁴ on the whole region t≥.8456, D≥.04.
+The square-completion algebra, split-budget composition, actual witness-frame
+interface and scalar regional inequality are **Lean** (`Lower/ResponsePenalty.lean`,
+`LowerAnalytic.VOf_frame_with_penalty`; 2.12d). The new extension awaits independent
+review. The Gaussian Gram instantiation and compatible support/cover certificates
+remain unformalized. The current production cover has ε=149/200, tracks (t,τ,x)
+and has already spent the first-chaos square; its caps cannot simply be reduced
+by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows yet.
 
 ## 3. What is open, in priority order
 

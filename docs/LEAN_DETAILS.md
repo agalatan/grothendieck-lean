@@ -1503,6 +1503,17 @@ strict audit. Source reproduction is not a native verification receipt.
   4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
   along any direction by the influence of that direction.
 
+**Response penalties (task #432).** `Lower/ResponsePenalty.lean` proves the
+Hilbert-space square completions, the penalty under an explicit weighted Gram
+budget, and its composition with a row using complementary square allocations.
+`LowerAnalytic.VOf_frame_with_penalty` connects that composition to the actual
+witness-frame identity. The h-only allocation leaves the first-chaos square to
+the retained dual; `peak_h_only_region` checks its scalar cost above `10⁻⁴` for
+`t ≥ 0.8456` and weighted sector energy `D ≥ 0.04` at the research peak profile.
+The Gaussian weighted Gram instantiation and a compatible finite support cover
+remain unformalized; these lemmas do not strengthen `main_bounds`. The existing
+production cover tracks `(t, τ, x)`, not `D`, and uses `ε = 149/200`.
+
 ## Module map (selected groups)
 
 **`Grothe/UpperChaos/`: the upper bound for the concrete rounding**

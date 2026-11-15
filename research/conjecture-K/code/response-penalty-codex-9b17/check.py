@@ -24,13 +24,16 @@ cn=8*(lam+1)/(7*lam+6)
 assert ca == F(6,7) and cn == F(16,13)
 j=lam*((eq/2+ca*ea)/e**2-(phi/4-t*t)) + e*lam/(2*(3*e+4*lam))*(t-4*beta/e)**2
 assert j > F(9,1000)
-# Complete-square coefficients, using independent exact probes for algebra transcription.
-for lam in (F(0),F(1,10),F(1),F(7),F(100)):
-    ca=2*(lam+2)/(3*lam+4)
-    cn=8*(lam+1)/(7*lam+6)
-    assert lam-lam**2/(4*(1+3*lam/4)) == lam*ca
-    assert 4*lam/3-(2*lam/3)**2/(2*(1+7*lam/6)) == lam*cn
-    assert e*(4*lam/3)/(e+4*lam/3)/8 == e*lam/(2*(3*e+4*lam))
+# The retained-compatible choice spends no first-chaos square.
+lam=F(1,4)
+jh=lam*((eq/2+F(2,3)*ea)/e**2-(phi/4-t*t)) + e*lam/(2*(3*e+4*lam))*(t-4*beta/e)**2
+assert jh > F(1,10000)
+# Double spending would be false even at the scalar interface.
+# raw=1, pk=1, qh=0, V=dual=0: the retained dual already pays pk.
+raw,pk,qh,V,dual=map(F,[1,1,0,0,0])
+assert V <= raw-pk-qh and raw-pk <= dual
+assert not V <= dual-pk
 print('PASS: old feasible energy tuple; new discarded-square penalty > 9/1000')
-print('PASS: exact scalar square-completion coefficients and outward pi enclosure')
-print('Gaussian Gram proof is in MONOGRAPH.md; no endpoint or Lean check is claimed.')
+print('PASS: exact scalar feasibility comparisons and outward pi enclosure')
+print('Gaussian Gram proof is in the cited source note; scalar/interface Lean proofs are separate. No endpoint change.')
+print('PASS: h-only penalty > 1/10000; scalar double-spending counterexample rejected')
