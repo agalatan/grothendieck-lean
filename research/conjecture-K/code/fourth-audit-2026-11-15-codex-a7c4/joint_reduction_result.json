@@ -1,0 +1,149 @@
+{
+  "agent_id": "codex-a7c4",
+  "compact_region_still_open": "0 <= x <= 17/4, |alpha|,|beta| <= 2/5",
+  "interval_library_sha256": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+  "large_shift_cutoff": "17/4",
+  "large_shift_potential_upper": "183/200",
+  "large_shift_signed_and_robust_reserve": "27/1000",
+  "local_common_extra_diagonal_reserve": "2/25",
+  "obstructions_and_grid_interpretation": {
+    "AB_cubic_scope": "q=0, r_A=sX, r_B=-sX/5; X remote standard complex Gaussian",
+    "AB_direction": "(1,-1/5)",
+    "AB_exact_margin_refuted": "3/10",
+    "AB_normalized_local_cost": [
+      "0.298526023077303",
+      "0.298526023077304"
+    ],
+    "joint_grid_angle_0.125_B_energy_share": [
+      "0.038060233744356",
+      "0.038060233744357"
+    ],
+    "joint_grid_angle_0.375_B_energy_share": [
+      "0.308658283817455",
+      "0.308658283817456"
+    ],
+    "pointwise_Q_cost": [
+      "0.128376107076914",
+      "0.128376107076915"
+    ],
+    "pointwise_Q_nu_matrix_entry": [
+      "0.608078556038441",
+      "0.608078556038442"
+    ],
+    "pointwise_nu_cost": [
+      "0.330212634031258",
+      "0.330212634031259"
+    ],
+    "pointwise_odd_direction": "(kQ,kP,nu)=(i,0,-i)",
+    "pointwise_odd_normalized_local_cost": [
+      "-0.378784185484355",
+      "-0.378784185484354"
+    ],
+    "pointwise_odd_scope": "Constant Q violates the genuine cubic condition E Q=0; no counterexample to K."
+  },
+  "radial_cells": 200,
+  "radial_split": "21/4",
+  "rows": {
+    "flank": {
+      "beta": "1467/10000",
+      "ell": "4267/5000",
+      "epsilon": "149/200",
+      "large_shift_inner_upper_interval": [
+        "0.689439158227546",
+        "0.689439158227547"
+      ],
+      "large_shift_outer_upper_interval": [
+        "0.211276512107206",
+        "0.211276512107207"
+      ],
+      "large_shift_upper_interval": [
+        "0.900715670334752",
+        "0.900715670334753"
+      ],
+      "local_A_cost": [
+        "0.344126969551718",
+        "0.344126969551719"
+      ],
+      "local_B_cost": [
+        "0.963820440632791",
+        "0.963820440632792"
+      ],
+      "local_mixed_matrix_entry": [
+        "0.115919972590474",
+        "0.115919972590475"
+      ],
+      "local_residual_determinant_after_0.08": [
+        "0.015046570262862",
+        "0.015046570262863"
+      ]
+    },
+    "peak": {
+      "beta": "179/1250",
+      "ell": "1057/1250",
+      "epsilon": "1891/2500",
+      "large_shift_inner_upper_interval": [
+        "0.682132195379809",
+        "0.682132195379810"
+      ],
+      "large_shift_outer_upper_interval": [
+        "0.214919879562910",
+        "0.214919879562911"
+      ],
+      "large_shift_upper_interval": [
+        "0.897052074942719",
+        "0.897052074942720"
+      ],
+      "local_A_cost": [
+        "0.320054503608992",
+        "0.320054503608993"
+      ],
+      "local_B_cost": [
+        "0.940202200988668",
+        "0.940202200988669"
+      ],
+      "local_mixed_matrix_entry": [
+        "0.117988819120357",
+        "0.117988819120358"
+      ],
+      "local_residual_determinant_after_0.08": [
+        "0.000032713061066",
+        "0.000032713061067"
+      ]
+    },
+    "upper": {
+      "beta": "19/125",
+      "ell": "877/1000",
+      "epsilon": "1891/2500",
+      "large_shift_inner_upper_interval": [
+        "0.707796723356535",
+        "0.707796723356536"
+      ],
+      "large_shift_outer_upper_interval": [
+        "0.204695726327983",
+        "0.204695726327984"
+      ],
+      "large_shift_upper_interval": [
+        "0.912492449684519",
+        "0.912492449684520"
+      ],
+      "local_A_cost": [
+        "0.347848805261334",
+        "0.347848805261335"
+      ],
+      "local_B_cost": [
+        "0.953716652573694",
+        "0.953716652573695"
+      ],
+      "local_mixed_matrix_entry": [
+        "0.112264044394214",
+        "0.112264044394215"
+      ],
+      "local_residual_determinant_after_0.08": [
+        "0.017058374356451",
+        "0.017058374356452"
+      ]
+    }
+  },
+  "scope": "Local at zero base; exact .300-margin and pointwise-five-sector obstructions; all-amplitude large-shift tail. The compact joint bound remains open.",
+  "status": "PASS; exact rational arithmetic"
+}
