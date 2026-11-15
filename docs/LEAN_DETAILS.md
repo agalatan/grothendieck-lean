@@ -2309,8 +2309,7 @@ native axiom inventory. The complete 15,096-box replacement cover is exported by
 `certRefinedPartition` now check this stronger cover in place of the old one.
 `lower_bound_of_completed_refinement` connects its cap `0.7134192552` to the
 witness transfer; `lower_target` and `main_bounds` discharge the same node caps.
-The strict endpoint `1.401700322371` improves `1.401700037873` by
-`0.000000284498`. The refinement recomputes convex-hull chords and mixture weights
+The strict endpoint is `1.401700322371`. The refinement recomputes convex-hull chords and mixture weights
 from the same certified node bank, with exact acceptance and complete binary
 subdivision. All original source tables and law-node witnesses remain unchanged.
 Targeted reproduction commands are in `data/lower-refinement/README.md`.

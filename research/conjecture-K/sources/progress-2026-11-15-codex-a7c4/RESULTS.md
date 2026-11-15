@@ -41,7 +41,8 @@ The research results provide sector control, a smaller response domain, and a pr
   domain. Conditional on its explicitly stated, still open pointwise
   remainder inequality, it proves joint A/B error below `.00004936`.
   A 1,000-cell exact rational certificate checks the scalar assembly.
-  This is a conditional result; the pointwise premise is not an acceptance input.
+  The exterior of that premise is proved by an exact density certificate; only
+  `|w|≤2.5`, `sqrt(S)≤1.65` remains. The joint conclusion is still conditional.
 
 The new analytic arguments are author proofs with independent review within this
 session. Their scalar premises were recomputed with exact rational or outward

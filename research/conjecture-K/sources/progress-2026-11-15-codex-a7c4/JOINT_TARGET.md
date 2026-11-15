@@ -263,3 +263,71 @@ premise or replay the inherited content and remote certificates.
 The retained-trial reduction and all 1000 scalar cells were independently
 re-derived or checked by other workers within this session. That is
 within-session peer checking, not external review.
+
+
+## 6. The exterior is proved: only a compact domain remains
+
+The pointwise premise (P) holds whenever `|w|≥5/2` or
+`sqrt(S)≥33/20`. Its remaining compact interior is open. The following
+argument and exact polynomial checks are **P+C, author only**, pending
+external review. This is an additional exterior certificate, distinct
+from the scalar assembly checker in section 5.
+
+For nonzero x, concavity of the square root gives
+
+    2(|x+h|−|x|−Re(h conj(ph x)))≤|h|²/|x|.
+
+Cauchy–Schwarz, and `1/sqrt(2)<177/250`, give
+
+    |h|²≤S W(T),
+    W(T)=(T−2/5)²+(s rho+(177/250)T)².
+
+Under the radial map `y=L`, the measure `W(T)dγ(Z)` has density
+
+    f(y)=exp(−T)W(T)/(pi D(T)),
+    D(T)=(a+bT)(a+3bT).
+
+The checker proves `D(T) sum_{j=0}^4 T^j/j!−W(T)>0` on the whole
+nonnegative half-line: all degree-six Bernstein coefficients are positive
+on each of the 16 consecutive intervals `[j/4,(j+1)/4]`, and all
+coefficients after translation `T=4+v` are positive for `v≥0`.
+Since `exp(T)` exceeds its Taylor polynomial, `f≤1/pi`.
+Its mass is `M=E W(T)=7209372481/2500000000`.
+
+Layer cake, using the area of each disk, now gives for every w
+
+    integral f(y)/|y+w| dy
+      ≤integral_0^infinity min(M,1/t²) dt
+      =2sqrt(M)<17/5.
+
+Consequently `Rem≤(17/5)S` at every shift and amplitude. Independently,
+the triangle inequality gives `Rem≤4E|h|≤4H sqrt(S)`, where
+`H²=1+s²(1+rho²)` by Gaussian orthogonality.
+
+Because `|R|²+|U|²=(1+rho²)S` and `.67≥.08`, the right side of (P)
+is at least
+
+    m S+(1/2)|w|²S+S²,
+    m=p−463/5000−(67/100)(1+rho²)>0.
+
+Exact rational comparisons show
+
+    m+(1/2)(5/2)²>17/5,
+    [m(33/20)+(33/20)³]²>16H².
+
+The latter expression before squaring is positive and increasing with
+its positive amplitude argument. The two global remainder bounds prove
+(P) on the stated exterior. `S=0` is equality. The singular point
+`L+w=0` has Gaussian measure zero; layer cake provides the needed
+integrability, so no singular neighborhood is omitted.
+
+Replay the exterior certificate from the repository root:
+
+```sh
+python3 -I research/conjecture-K/code/progress-2026-11-15-codex-a7c4/joint_target_tail.py
+```
+
+This leaves only `|w|≤2.5`, `sqrt(|A|²+|B|²)≤1.65` to certify.
+Simultaneous phase rotation permits w real and nonnegative, but A and B
+remain complex: the compact problem still has five real parameters.
+No numerical scan of this domain is a proof of (P).
