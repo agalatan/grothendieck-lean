@@ -366,6 +366,64 @@ that review. New results below are **P by author, not externally reviewed**, wit
 
 K and the complete row consumer remain open. No new Grothendieck bound is asserted.
 
+## H. Fifth audit after merged #409 (15 November 2026, codex-a7c4)
+
+The [fifth audit](sources/fifth-audit-2026-11-15-codex-a7c4/AUDIT.md) starts from
+`0882c67d3f7dbfd02f821cad48808440643f802d`. The archived
+[review of #409](sources/fifth-audit-2026-11-15-codex-a7c4/REVIEW_409_claude-b9ee.md)
+re-derived the fourth-pass results within its stated exclusions. In particular it left the original
+joint reduction’s global constants numerically checked only; the new note supplies their complete exact
+certification. The retained trial 11.12 is now explicitly re-derived as well. New results below are
+**P by author, not externally reviewed**, with named **C** checkers and internal peer review.
+
+1. **§1 and remote §3.3: raw and retained objectives differ.** For remote q, put
+   μ=Π₁,rem E_Z ph(L+q). The old penalty theorem and strong convexity give
+   ‖μ‖²/(1+j₀)≤Λ(q)−Λ̂(q)≤‖μ‖². The two objectives agree exactly when μ=0.
+   The genuine cubic q=cX(|Y|²−1) has μ≠0 for every c>0 at every a>0,b≥0;
+   at the peak c=.01 an exact witness gives a gap >1/(3·10¹²). Conversely,
+   q=cXY conjugate(V) has μ=0 for three independent remote standard complex Gaussians.
+   The same raw remote cap remains a sufficient input
+   for both routes. The auxiliary benchmark W is not an admissible first-chaos multiplier.
+   See A15V `FOUNDATIONS.md` and STATUS 3.16.
+2. **§4 and §4b: completed augmented retained A-core certificates.** At the peak, for every
+   remote cubic q with energy u≤.021 and every remote linear r, arbitrary sharing and amplitude,
+   Λ̂(q+(T−1)r)<S−.00000276. For every 0<u≤.0463 with normalized fourth cumulant
+   χ=(E|q|⁴−2u²)/u²≤.25, the same functional is <S+2·10⁻⁵. These improve the old
+   .03≤u≤.0463,χ≤.07 subclass. Global physical-radius Hermite majorants can be reused
+   outside the boxes where the old cover selected them: 17 polynomials and 33 exact covering
+   leaves suffice, with all used profile integrals freshly recomputed by Arb.
+   Only reviewed moment/secant/content inputs are used. These are peak A-core results,
+   not a generic sector-only comparison, raw L4 closure, or a B/odd-sector theorem.
+   See A15V `REMOTE.md`, STATUS 11.47–11.48.
+3. **A useful limit of that certificate method.** At u=.04,χ=4 all 154 stored moment
+   polynomials, each with either reviewed content surcharge, exceed S_upper+.0002.
+   No subdivision or reselection within that fixed bank repairs that point. This exact
+   upper-bound limitation does not refute the desired theorem or exhibit a cubic counterexample.
+   The next step needs Stein cuts, better polynomials or a sharper content bound.
+4. **§4b: smaller remaining joint box, complete tail provenance.** Re-derived density,
+   global potential and correlated-Gaussian tail bounds now have exact certificates.
+   Keeping the angular inverse-radius average improves the all-amplitude shift cutoff to
+   |x|≥2.9 with .007 reserve at all three rows. With amplitude radius .4, the same old
+   reserves .0000753 (robust) or .0000807 (signed) leave only 0≤x≤2.9 to certify.
+   The .007 tail reserve does not support every smaller-radius row of the old table.
+   Both relative phases remain, and the compact inequality remains open. See A15V `JOINT.md` §§1–4.
+5. **Local joint spectra, without a global extrapolation.** The sharp peak local A/B
+   cost is in (.298364651634117,.298364651634118), attained in a genuine cubic direction
+   with B-energy about .0326887. The flank and upper local costs are about .323152848 and
+   .327715897. The pointwise imaginary Q/ν block has minimum about −.387101627 and ν-energy
+   about .41813845, explaining the .58/.42 energy split in the scan. Constant nonzero Q
+   is inadmissible as a centered quadratic, and the genuine zero-core mixed term vanishes.
+   This supplies no integrated cubic obstruction. STATUS 7.4.9.
+6. **Audit provenance.** The ledger restores the historical benchmark replay, original
+   joint-reduction attribution, 13-November advice, four-sector .128 scan and KPR §12 log
+   references. The unrestricted SEI closure refuted in part G is not used by a current
+   proved ledger result; its active impact is narrower than the previous high-severity label
+   suggested. The literal monograph wording is “Real form = BNC”; the erratum records the
+   correct implication chain without attributing an unprinted explicit complex equivalence.
+
+The historical text below and every pre-existing source file are unchanged. Conjecture K, the general
+content comparison, full sector assembly and complete consumer remain open. No Grothendieck bound changes.
+
 <!-- =========================== MONOGRAPH, VERBATIM (unchanged from here to the end) =========================== -->
 
 # Conjecture K: statement, purpose, state of knowledge, and what is left

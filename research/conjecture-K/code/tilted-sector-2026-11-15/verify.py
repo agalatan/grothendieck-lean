@@ -11,8 +11,12 @@ Optional independent floating-point monomial diagnostic:
     python3 -I verify.py --algebra-only --numerical  # needs numpy and scipy
 Replay only the additive third-order tensor certificate and exact algebra:
     python3 -I verify.py --tensor-only
-The default replay uses the global function-value secant route, without
-localization. The general content/deficit hypothesis remains open.
+The default replay verifies the global function-value secant route and the
+full content/deficit cover through u=0.0463, without localization.
+    python3 -I verify.py --deficit-only
+replays the additive content/deficit chain, with the earlier secant/content
+certificates as explicit prerequisites. It checks their recorded source
+hashes but does not numerically replay those prerequisites.
 """
 import sys
 sys.dont_write_bytecode = True
@@ -500,8 +504,95 @@ def replay():
         run([flint_python, '-I', '-B', folder/'secant_content_verify.py'])
     print('PASS FULL SECANT REPLAY: global Rem<=13 rho^2/20; '
           'global structural, uniform, and third-order content bounds; '
-          'central-energy content coefficient 1077659/27000000. '
-          'General content/deficit comparison remains OPEN.', flush=True)
+          'central-energy content coefficient 1077659/27000000.', flush=True)
+
+
+def deficit_replay(*, earlier_replayed=False):
+    """Fresh acceptance of all new inputs, then exact full-domain coverage."""
+    folder = Path(__file__).resolve().parent
+    archive = folder.parents[2]/'research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original'
+    if not earlier_replayed:
+        # Bind the previous completed replay to its unchanged numerical code.
+        # This is provenance checking, not a replacement for that computation.
+        count = 0
+        for line in (folder/'results_secant_history.txt').read_text().splitlines():
+            if line.startswith('SHA256 '):
+                _, name, expected = line.split()
+                current = folder/('verify_secant_history.py' if name == 'verify.py' else name)
+                assert hashlib.sha256(current.read_bytes()).hexdigest() == expected, name
+                count += 1
+        assert count == 14
+        print('PREREQUISITES: previous complete secant/content replay; all 14 source hashes match. '
+              'Those earlier numerical checks are NOT rerun by --deficit-only.', flush=True)
+
+    names = ['verify.py', 'deficit_exact.py', 'deficit_barriers_replay.py',
+             'deficit_structure_content_verify.py', 'deficit_structure_refine_verify.py',
+             'deficit_structure_medium25_verify.py', 'deficit_structure_absolute_low_verify.py',
+             'deficit_angular_prepare.py', 'deficit_angular_verify.cpp', 'theta_verify.cpp',
+             'localization_circle.hpp', 'secant_content_verify.py', 'content_profile.py',
+             'content_next_bound.py', 'content_next_m3.py', 'deficit_gaussian.py',
+             'deficit_moment_verify.py', 'deficit_moment_prefix.py',
+             'deficit_dual_cover_verify.py', 'deficit_dual_exact.py',
+             'deficit_dual_profile_caps.py', 'deficit_dual_cover_candidates.json',
+             'deficit_cover_union.py']
+    names += ['deficit_structure_refine_witness_'+tag+'.json'
+              for tag in ('009','012','015','018','020')]
+    names += ['deficit_structure_content_witness_'+tag+'.json'
+              for tag in ('medium25','absolute','absolute44','absolute30','absolute35')]
+    paths = [folder/name for name in names]
+    paths += [archive/name for name in ('profile.py','verify.py','exact.py',
+                                       'check_stein.py','profile-caps.json')]
+    before = {path:hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
+    for path, digest in before.items():
+        print('DEFICIT INPUT SHA256', path, digest, flush=True)
+
+    def run(args, *, env=None):
+        print('RUN', ' '.join(map(str,args)), flush=True)
+        with subprocess.Popen(list(map(str,args)), cwd=folder, env=env,
+                              text=True, stdout=subprocess.PIPE,
+                              stderr=subprocess.STDOUT, bufsize=1) as process:
+            for line in process.stdout:
+                print(line, end='', flush=True)
+            code = process.wait()
+        if code:
+            raise subprocess.CalledProcessError(code, args)
+
+    flint_python = flint_interpreter()
+    run([sys.executable, '-I', '-B', folder/'deficit_exact.py'])
+    run([flint_python, '-I', '-B', folder/'deficit_barriers_replay.py'])
+    angular = [('absolute30',3,80), ('absolute35',71,2000),
+               ('absolute',17,500), ('absolute44',13,400)]
+    run([sys.executable, '-I', '-B', folder/'deficit_angular_prepare.py']+
+        [folder/('deficit_structure_content_witness_'+tag+'.json') for tag,_,_ in angular])
+    compiler = shutil.which('clang++')
+    if not compiler:
+        raise RuntimeError('clang++ with directed-rounding support is required')
+    with tempfile.TemporaryDirectory(prefix='codex-6e2b-deficit-', dir=folder) as tmp:
+        exe = Path(tmp)/'angular_verify'
+        run([compiler, '-O2', '-std=c++17', '-frounding-math', '-ffp-contract=off',
+             '-fno-fast-math', folder/'deficit_angular_verify.cpp', '-o', exe],
+            env=dict(os.environ, TMPDIR=tmp))
+        for tag,num,den in angular:
+            run([exe, folder/('deficit_structure_content_witness_'+tag+'.txt'),
+                 num, den, 4096])
+    run([flint_python, '-I', '-B', folder/'deficit_moment_verify.py', '--certify'])
+    run([flint_python, '-I', '-B', folder/'deficit_moment_prefix.py', '--certify'])
+    # Default Stein execution recomputes original and extended profile caps.
+    run([flint_python, '-I', '-B', folder/'deficit_dual_cover_verify.py'])
+    run([sys.executable, '-I', '-B', folder/'deficit_cover_union.py',
+         '--moment', 'deficit_moment_verify_witness.json', 'deficit_moment_prefix_witness.json',
+         '--stein', 'deficit_dual_cover_witness.json'])
+    for path, digest in before.items():
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest, ('input changed during replay',path)
+    for name in ('deficit_moment_verify_witness.json', 'deficit_moment_prefix_witness.json',
+                 'deficit_dual_cover_witness.json', 'deficit_cover_union_results.json'):
+        print('DEFICIT OUTPUT SHA256', name,
+              hashlib.sha256((folder/name).read_bytes()).hexdigest(), flush=True)
+    print('PASS FULL CONTENT/DEFICIT COVER: C^2 <= (3/10)D_+ + 6/10^6 '
+          'for every genuine complex (2,1) cubic, 0<=u<=463/10000. '
+          '178 certified rectangles; no localization or deficit-sign premise. '
+          'With the global secant certificate: s=3/5, kappa=56730/59009, '
+          'eta=5673/295045000 < 1/50000. Research P+C, not a Lean theorem.', flush=True)
 
 
 def numerical():
@@ -548,14 +639,18 @@ def numerical():
 
 
 if __name__ == '__main__':
-    assert set(sys.argv[1:]).issubset({'--numerical', '--algebra-only', '--tensor-only'}), 'unknown argument'
-    assert not ('--algebra-only' in sys.argv and '--tensor-only' in sys.argv), 'choose one partial replay'
+    assert set(sys.argv[1:]).issubset({'--numerical', '--algebra-only', '--tensor-only', '--deficit-only'}), 'unknown argument'
+    assert sum(flag in sys.argv for flag in ('--algebra-only','--tensor-only','--deficit-only')) <= 1, 'choose one partial replay'
     secant_scalars()
     if '--tensor-only' in sys.argv[1:]:
         tensor_replay()
+    elif '--deficit-only' in sys.argv[1:]:
+        deficit_replay()
     elif '--algebra-only' not in sys.argv[1:]:
         replay()
+        deficit_replay(earlier_replayed=True)
     else:
         subprocess.run([sys.executable,'-I','-B',str(Path(__file__).resolve().parent/'secant_exact.py')],check=True)
+        subprocess.run([sys.executable,'-I','-B',str(Path(__file__).resolve().parent/'deficit_exact.py')],check=True)
     if '--numerical' in sys.argv[1:]:
         numerical()

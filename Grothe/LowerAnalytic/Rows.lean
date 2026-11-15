@@ -1,4 +1,9 @@
-import Mathlib
+-- Grothe/LowerAnalytic/Rows.lean
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Module
+import Mathlib.Tactic.Ring
 
 /-!
 # Rows: the retained-square inequality and two-row mixing

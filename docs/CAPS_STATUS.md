@@ -1,16 +1,18 @@
-# Lower endpoint: work in progress
+# Lower endpoint and unchanged Gaussian cap assembly
 
-`lower_bound_of_refined_cover_data` proves
-`lower_bound_of_refined_cover_data : NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`.
-The active `Grothe` build contains the same endpoint reduction with fewer cap inputs:
-`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`.
-Both theorems use `RefinedCoverData.refinedL` and the same checked finite cover.
+`lower_bound_of_completed_refinement` proves
+`NodeCaps → IsGrothendieckBound K → 1.401700037873 < K` from the complete
+14,060-box finite-mixture cover. `MainResult.lower_target` discharges
+`NodeCaps`, and `main_bounds` uses this stronger endpoint without hypotheses.
+The original `lower_bound_of_refined_cover_data` and `lower_bound_of_capsRest`
+retain their weaker `1.401697117301` conclusions for compatibility with the
+cached cap assembly. Both now follow from the stronger cover.
+
 `capRowsDone` covers every row index. `CapsRest` retains the excluded-node
-caps of rows 0–11 and 16–18. Rows 12–15 have complete
-localized-piece and anchor assemblies whose finite checks run in canonical CI. All
-exclusion lists are currently empty. The generated finite checks still require canonical Lean verification;
-external calculations do not complete this endpoint.
-See [LEAN_DETAILS.md](LEAN_DETAILS.md) for the completion rule.
+caps of rows 0–11 and 16–18; their exclusion lists are empty, and `capsRest`
+proves this proposition. Rows 12–15 have complete localized-piece and anchor
+assemblies. The finite-mixture improvement changes none of these cap inputs
+or heavy computations. See [LEAN_DETAILS.md](LEAN_DETAILS.md) for the proof chain.
 
 ## Computation and proof layers
 

@@ -1,0 +1,22 @@
+{
+  "Agent-ID": "codex-6e2b",
+  "domain_u": [
+    "0",
+    "463/10000"
+  ],
+  "domain_chi": [
+    "0",
+    "42"
+  ],
+  "rectangles": 178,
+  "energy_strips": 45,
+  "uncovered": [],
+  "moment_inputs": [
+    "deficit_moment_verify_witness.json",
+    "deficit_moment_prefix_witness.json"
+  ],
+  "stein_inputs": [
+    "deficit_dual_cover_witness.json"
+  ],
+  "complete": true
+}

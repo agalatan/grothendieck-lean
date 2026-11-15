@@ -9,20 +9,20 @@ check: the native runtime and compiler are part of the trust boundary, so a run
 that happens not to crash cannot establish that shared-state evaluation is sound.
 CI screens all three project source trees for forbidden escapes and task spawning.
 
-The current allowlist contains **88 named facts: 23 ordinary facts, five Hardy
-facts and 60 cap ranges**. The default report has **615 entries**, of which
-**386 declarations** are required. [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md) lists the facts
-and distinguishes earlier module timings from current verification.
-The scalar sixteenth-power check uses `decide +kernel`, so all sixteen
-scalar-tail reports use only standard axioms.
+The canonical allowlist and report are `data/axioms/native.txt` and
+`scratch/Axioms.lean`; [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md)
+records the native computations and their timing evidence. The scalar
+sixteenth-power check uses `decide +kernel`, so its scalar-tail consequences
+use only standard axioms.
 
-The default lower theorem is
-`Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`, and the
-separate `lower_bound_of_capsRest` theorem now uses the same refined endpoint
-`1.401697117301`. Both use the unchanged Gaussian `NodeCaps` proposition, defined
-in `LowerAnalytic/NodeCaps.lean`. The finite lower certificate has 14 sequential
-native facts: five row chunks, three mixed-batch chunks, one extra law-node check,
-four refined-box chunks and one refined coverage-tree check.
+The current lower theorem is
+`Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement`, with
+endpoint `1.401700037873`. `MainResult.lower_target` discharges its unchanged
+Gaussian `NodeCaps` premise. The finite checks cover the original rows and
+mixed batches, both law-node banks, four refined-box chunks and the full
+coverage tree. The box and partition facts check the stronger 14,060-box
+cover in place of the previous cover. `lower_bound_of_capsRest` retains the
+weaker endpoint `1.401697117301` for the cached cap-assembly interface.
 
 The old `Lower/Cert/Boxes0–3`, `Lower/Cert/Partition`, `RowCheck` and old-constant
 corollaries are retired. The generic `treeCoverOK`/`treeCoverOK_sound` pair proves

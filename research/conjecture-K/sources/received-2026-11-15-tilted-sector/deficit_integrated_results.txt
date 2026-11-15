@@ -1,0 +1,206 @@
+Agent-ID: codex-6e2b
+C exact pi [3.141592653589793, 3.141592653589794]
+C exact I0 [2.863947582582862, 2.863947582582863]
+C exact I1 [1.193675717354603, 1.193675717354604]
+C exact I2 [1.527398493771395, 1.527398493771396]
+C exact j0<179/125; content coefficients 2/25, 3, 19321/10^6.
+PREREQUISITES: previous complete secant/content replay; all 14 source hashes match. Those earlier numerical checks are NOT rerun by --deficit-only.
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/verify.py 7931e47c76703dc182409e90e710e1cebc116035718f9aa6530347ecce950b55
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_exact.py 01b7da17d71381d8ff2ccf9d570b09715114e93edf4f69a19d23093a35e0300e
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_barriers_replay.py 1c4783425dd8765eb59d48690338fa98a35f3519b3b5d06ee7f0eddcb0485be7
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_verify.py a92c48cfb6e3d38348ec12fa6b523bfca144ef19b8a5da5c3e51a964786fc785
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_verify.py 34e2ad1f5b8c3f0a8de262ee15b167e9189b3113a7aa03498bfef7c0b52b26f5
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_medium25_verify.py 9bc1ea006a5913774bf211a2d02769c6ea052eb0ce132b7cc5e5c844b620ba7a
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_absolute_low_verify.py ba4e679d6a68b7184447ccbbeb2b23a9bb15e9be5d315ad32f9824c6f4f5f39c
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_angular_prepare.py 3cd1c0a3df3e1d9cb6d6721445202c3a681154a53897524f45c2a38bf3e49cff
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_angular_verify.cpp 56a26961f5bf2929d768dffef8772a4f914d630e28378e95ac592db00aa2cdf9
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/theta_verify.cpp c8ed8c2cf10a05f780f7e0495ba8c1b073fb4f3cb534adb99e781315a54590ef
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/localization_circle.hpp aa115bd4e4cc72ef6e19e0afd2fd28df08f065b38aa50bfb0eda5ddd60b67d99
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_content_verify.py 68025db61f15c4a92cf0853ece74cb5abf3dac30ef0c9cfa9c8f845e3c7e7198
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_profile.py be624d3fa785bd9ab46b1d89a17a1ae23456a9fe1e10834f36b405cc1cc376c5
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_next_bound.py f1cde71ce142cc579a49c67af28dce684fde4ea92089ef88f4e5f8fc30872c3b
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_next_m3.py 20e4b9aa6c67050844b7ceac56b90fd37e765b3aecd2360a8d6c791b599ea683
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_gaussian.py 26d1852347aca16f6321bc61cfb887a3bb9a3d6113c64912d7b960ae36747593
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_verify.py eedf6a442fe4b836e3ff2ba494b9176324f63b6adb368b36bc6d670e192dde90
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_prefix.py b206963e3583c6d4f307b9e60b30fa2e22b5ab83c045722097761c0bc6bdbaa9
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_cover_verify.py c91bc0f4d94ad9764cf93d8b711be480b2336ea48fb49213b77b9830895902f4
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_exact.py 8887b4316c5259c89ec04425825555551ca955b786ba166c749952889016a7ce
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_profile_caps.py ed7638af9f05d05b5c31071f247f87faf8eab0834908440e516a274384ec4826
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_cover_candidates.json 6441733fd5824feb974740ddd6ad27aff46049238d1a57a18236e2a82ea0933b
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_cover_union.py 629e947a3474246e4bf48bbe6d180767244391401058784ee02e7e645ba0b217
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_009.json 94844165a99c14988b160a8b9afd026c18d31e27399f5a7b09972ade88fe969c
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_012.json 37ce6a4c7fe1e1d9dd7130c4b21de555eaf84aab5c9c4b5cb9c74f2029dfb381
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_015.json 4c2cd0e21df5eee6efd9682ca91ac302685a1cff674216ed0f5dae97838022ae
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_018.json 1a0b0f418a3251b85acd89bf0685bd19424c29c3466149b9b7bc1c5a76fae582
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_020.json b6c651ae1b2ae9028a306e4fcfac7f8af6f7ca3d6bb2868d5fa6ca5ccd6e5982
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_medium25.json d49e72a04a42917eb2d8774c15db193cb9220fbd34d7c541cc959e827044ca75
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute.json 2db0596069ea33bf8cb1a3ac7db07b53c55f4d161f4d7f8498beeb5390125196
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute44.json 581f7e90ec6fe1a52e42271d43b5e337319a93fdcd37b2b934b87a7ce53b21c6
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute30.json f393ddc6b8f88039bcba2f4d351d0c4315fd7866cd9b37bd61546a258dfee50e
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute35.json 5b8080128ad1791fd57a491abbf814c996806fe32cd8213f16171580514a92e4
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py fb6a187270358a7b230a6824fa1cb9e85b8f155666d2b9cfb4df9071b9caaf0a
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/verify.py 7a3eb7592ab569be08cb95a5e9c061b9339e6a054773d93d7abbe8493b5485c2
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/exact.py 8149a1b17c054c58461f36a8a2e030a2c324041c4b18d9e2e6eef72185e94145
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/check_stein.py 669688428045a2564a44680a62bdfca9277494c96b98155acc772691a21b8328
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile-caps.json 01c2e2a7b4af452ce8729ec47cb0cd2c3aa7e1368c6b58336270c2a19b349514
+python-flint 0.9.0 via /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python
+RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_exact.py
+PASS FULL ASSEMBLY CONSTANTS: |h second derivative|<3; k=59009/189100; kappa=56730/59009; eta=5673/295045000 < 1/50000.
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_barriers_replay.py
+{"fresh_common_M4": "[92.107230121880278360257285016816663608512522049 +/- 3.22e-46]", "fresh_common_outer": {"global_positive_halfline_lower": "[-0.97251866568520297605944254089290601562321508301 +/- 2.24e-48]", "absolute_bound_x_ge_1": "[0.59793451254955352453747898015852697430925894065 +/- 4.91e-48]", "far_bound": "[0.36386387268362453489718457908438084339681626059 +/- 7.31e-48]"}}
+{"tag": "009", "u": ["9/1000", "463/10000"], "absolute_envelope": false, "tail_value": "3509/5000", "cap": "701801/1000000", "actual_bernstein_cap": "3509/5000", "content_coefficient": "5417771079611/108000000000000", "rounded_content_coefficient": "251/5000", "residual_margin": "[1.9361182236554011387910991385036910802718139279e-5 +/- 2.65e-52]", "passed": true, "used_content_coefficient": "251/5000"}
+{"tag": "012", "u": ["3/250", "463/10000"], "absolute_envelope": false, "tail_value": "6891/10000", "cap": "689101/1000000", "actual_bernstein_cap": "6891/10000", "content_coefficient": "5223462070211/108000000000000", "rounded_content_coefficient": "121/2500", "residual_margin": "[1.9371195380486295060680361834795468757411347127e-5 +/- 4.53e-52]", "passed": true, "used_content_coefficient": "121/2500"}
+{"tag": "015", "u": ["3/200", "463/10000"], "absolute_envelope": false, "tail_value": "677/1000", "cap": "677001/1000000", "actual_bernstein_cap": "677/1000", "content_coefficient": "560181543779/12000000000000", "rounded_content_coefficient": "467/10000", "residual_margin": "[1.9362501754375269708123692764403610493787046852e-5 +/- 2.52e-52]", "passed": true, "used_content_coefficient": "467/10000"}
+{"tag": "018", "u": ["9/500", "463/10000"], "absolute_envelope": false, "tail_value": "3327/5000", "cap": "665401/1000000", "actual_bernstein_cap": "3327/5000", "content_coefficient": "4870343398811/108000000000000", "rounded_content_coefficient": "451/10000", "residual_margin": "[1.9371704804249541188673173174401061110375385884e-5 +/- 1.35e-52]", "passed": true, "used_content_coefficient": "451/10000"}
+{"tag": "020", "u": ["1/50", "463/10000"], "absolute_envelope": false, "tail_value": "329/500", "cap": "658001/1000000", "actual_bernstein_cap": "329/500", "content_coefficient": "4762618476011/108000000000000", "rounded_content_coefficient": "441/10000", "residual_margin": "[1.9371707406580207855339839841067727777042052850e-5 +/- 4.62e-52]", "passed": true, "used_content_coefficient": "441/10000"}
+{"tag": "medium25", "u": ["1/40", "463/10000"], "absolute_envelope": false, "tail_value": "13/20", "cap": "13/20", "actual_bernstein_cap": "13/20", "content_coefficient": "1859/43200", "residual_margin": "[1.9371701606461541188673173174401061110375385895e-5 +/- 3.37e-52]", "passed": true, "used_content_coefficient": "1859/43200"}
+{"tag": "absolute", "u": ["1/25", "463/10000"], "absolute_envelope": true, "tail_value": "9/25", "cap": "3/5", "actual_bernstein_cap": "444539354032244297081/750000000000000000000", "content_coefficient": "11/300", "residual_margin": "[1.9356491411448300684746274653197519505045560704e-5 +/- 4.10e-52]", "passed": true}
+{"tag": "absolute44", "u": ["11/250", "463/10000"], "absolute_envelope": true, "tail_value": "9/25", "cap": "3/5", "actual_bernstein_cap": "581459270201158818127/1000000000000000000000", "content_coefficient": "11/300", "residual_margin": "[1.9343870140294296470308313706840179381148081198e-5 +/- 2.19e-52]", "passed": true}
+{"tag": "absolute30", "u": ["3/100", "463/10000"], "absolute_envelope": true, "tail_value": "9/25", "cap": "13/20", "actual_bernstein_cap": "31161135218163994083/50000000000000000000", "content_coefficient": "1859/43200", "residual_margin": "[1.9360543293086009808701706568547081241766727819e-5 +/- 1.81e-52]", "passed": true}
+{"tag": "absolute35", "u": ["7/200", "463/10000"], "absolute_envelope": true, "tail_value": "9/25", "cap": "13/20", "actual_bernstein_cap": "227821505605837429867/375000000000000000000", "content_coefficient": "1859/43200", "residual_margin": "[1.9358439699515535635446343594487543631768028221e-5 +/- 7.03e-53]", "passed": true}
+PASS ALL USED CONTENT BARRIERS: 10 witnesses; source, derivative, compact, and infinite-tail checks; seconds=15.965287923812866
+RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_angular_prepare.py /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute30.json /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute35.json /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute.json /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute44.json
+Exact angular-barrier table: /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute30.txt
+Exact angular-barrier table: /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute35.txt
+Exact angular-barrier table: /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute.txt
+Exact angular-barrier table: /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute44.txt
+RUN /usr/bin/clang++ -O2 -std=c++17 -frounding-math -ffp-contract=off -fno-fast-math /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_angular_verify.cpp -o /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute30.txt 3 80 4096
+C angular tail R>=2: coefficient upper 0.027205398093321332
+PASS ANGULAR METRIC: coefficient<=0.037500000000000006 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.037211599348840524 seconds=0.17
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute35.txt 71 2000 4096
+C angular tail R>=2: coefficient upper 0.027205398093321332
+PASS ANGULAR METRIC: coefficient<=0.035500000000000004 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.035357020074093415 seconds=0.16
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute.txt 17 500 4096
+C angular tail R>=2: coefficient upper 0.026400012336542573
+PASS ANGULAR METRIC: coefficient<=0.034000000000000003 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.033650744348115381 seconds=0.16
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute44.txt 13 400 4096
+C angular tail R>=2: coefficient upper 0.026400012336542573
+PASS ANGULAR METRIC: coefficient<=0.032500000000000002 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.032383689050493492 seconds=0.16
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_verify.py --certify
+SLAB 1 / 18 accepted 1 caps 0 seconds 2.3126602172851562e-05
+SLAB 2 / 18 accepted 2 caps 0 seconds 5.4836273193359375e-05
+SLAB 3 / 18 accepted 3 caps 0 seconds 7.295608520507812e-05
+CAP 1 ['49663/31250000', '221983989/1000000000']
+SLAB 4 / 18 accepted 4 caps 1 seconds 1.0353870391845703
+SLAB 5 / 18 accepted 5 caps 1 seconds 1.1396539211273193
+SLAB 6 / 18 accepted 6 caps 1 seconds 1.2966768741607666
+SLAB 7 / 18 accepted 7 caps 1 seconds 1.433791160583496
+CAP 2 ['1702731/500000000', '475679977/1000000000']
+SLAB 8 / 18 accepted 8 caps 2 seconds 2.670654058456421
+SLAB 9 / 18 accepted 9 caps 2 seconds 2.7737390995025635
+CAP 3 ['2156793/500000000', '60252797/100000000']
+SLAB 10 / 18 accepted 10 caps 3 seconds 3.719604015350342
+CAP 4 ['4767647/1000000000', '665951967/1000000000']
+CAP 5 ['916791/200000000', '103010957/100000000']
+SLAB 11 / 18 accepted 12 caps 5 seconds 5.435844898223877
+SLAB 12 / 18 accepted 13 caps 5 seconds 5.538143157958984
+SLAB 13 / 18 accepted 14 caps 5 seconds 5.623639822006226
+CAP 6 ['766229/125000000', '428111979/500000000']
+CAP 7 ['736707/125000000', '132442659/100000000']
+SLAB 14 / 18 accepted 16 caps 7 seconds 7.487227916717529
+CAP 8 ['3291947/500000000', '183929591/200000000']
+CAP 9 ['395639/62500000', '1422532263/1000000000']
+CAP 10 ['619517/100000000', '1668974443/1000000000']
+SLAB 15 / 18 accepted 19 caps 10 seconds 11.11125111579895
+CAP 11 ['1407591/200000000', '61441997/62500000']
+CAP 12 ['6766791/1000000000', '1520637937/1000000000']
+CAP 13 ['6622423/1000000000', '55752379/31250000']
+SLAB 16 / 18 accepted 23 caps 13 seconds 14.786315202713013
+CAP 14 ['7492017/1000000000', '261623987/250000000']
+CAP 15 ['3601679/500000000', '161874361/100000000']
+CAP 16 ['7049677/1000000000', '949588907/500000000']
+SLAB 17 / 18 accepted 27 caps 16 seconds 17.80536985397339
+CAP 17 ['7946079/1000000000', '221983989/200000000']
+CAP 18 ['305597/40000000', '1716849283/1000000000']
+CAP 19 ['747693/100000000', '4028559/2000000']
+CAP 20 ['7558923/1000000000', '58309487/31250000']
+SLAB 18 / 18 accepted 32 caps 20 seconds 22.106559991836548
+EXACT PARTITION CHECK PASS 18 energy strips
+PASS FULL LOW-ENERGY MOMENT COVER {'umax': '9/1000', 'visited': 46, 'exempts': 3, 'maxdepth': 4, 'seconds': 22.36810803413391} accepted 32 caps 20
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_prefix.py --certify
+CAP 1 ['420007/50000000', '586671971/500000000']
+CAP 2 ['2019123/250000000', '1814954957/1000000000']
+CAP 3 ['8610389/1000000000', '496266553/1000000000']
+SLAB 1 / 14 accepted 2 uncovered 0 caps 3 seconds 3.419311761856079
+CAP 4 ['4427101/500000000', '1236767939/1000000000']
+SLAB 2 / 14 accepted 4 uncovered 0 caps 4 seconds 4.713966131210327
+CAP 5 ['1163533/125000000', '20315499/15625000']
+SLAB 3 / 14 accepted 6 uncovered 0 caps 5 seconds 6.028599977493286
+CAP 6 ['390493/40000000', '1363615933/1000000000']
+SLAB 4 / 14 accepted 8 uncovered 0 caps 6 seconds 7.081518888473511
+CAP 7 ['10216387/1000000000', '142703993/100000000']
+CAP 8 ['2094419/200000000', '60356743/100000000']
+SLAB 5 / 14 accepted 10 uncovered 0 caps 8 seconds 9.284327030181885
+CAP 9 ['10670449/1000000000', '1490463927/1000000000']
+CAP 10 ['80151/7812500', '2305483323/1000000000']
+SLAB 6 / 14 accepted 12 uncovered 0 caps 10 seconds 11.800029039382935
+CAP 11 ['1112451/100000000', '1553887923/1000000000']
+CAP 12 ['2850737/250000000', '164304467/250000000']
+SLAB 7 / 14 accepted 15 uncovered 0 caps 12 seconds 13.757752180099487
+CAP 13 ['2894643/250000000', '20216399/12500000']
+CAP 14 ['94947/8000000', '684043087/1000000000']
+SLAB 8 / 14 accepted 18 uncovered 0 caps 14 seconds 15.850347995758057
+CAP 15 ['6016317/500000000', '1680735917/1000000000']
+CAP 16 ['11569029/1000000000', '2599800343/1000000000']
+CAP 17 ['12333801/1000000000', '355434153/500000000']
+CAP 18 ['2984373/250000000', '235314379/1000000000']
+SLAB 9 / 14 accepted 21 uncovered 0 caps 18 seconds 20.501892805099487
+CAP 19 ['2497339/200000000', '872079957/500000000']
+CAP 20 ['12799227/1000000000', '29507741/40000000']
+SLAB 10 / 14 accepted 24 uncovered 0 caps 20 seconds 22.908238887786865
+CAP 21 ['12940757/1000000000', '1807583911/1000000000']
+CAP 22 ['3110541/250000000', '279601169/100000000']
+CAP 23 ['6632327/500000000', '95564843/125000000']
+SLAB 11 / 14 accepted 28 uncovered 0 caps 23 seconds 26.15576696395874
+CAP 24 ['6697409/500000000', '467751977/250000000']
+CAP 25 ['12878731/1000000000', '2894117363/1000000000']
+CAP 26 ['85813/6250000', '791343963/1000000000']
+SLAB 12 / 14 accepted 32 uncovered 0 caps 26 seconds 28.737210988998413
+CAP 27 ['173111/12500000', '386886381/200000000']
+CAP 28 ['6657649/500000000', '2992223037/1000000000']
+CAP 29 ['14195507/1000000000', '818169183/1000000000']
+CAP 30 ['6869689/500000000', '270833531/1000000000']
+SLAB 13 / 14 accepted 36 uncovered 0 caps 30 seconds 33.1278121471405
+CAP 31 ['7151471/500000000', '998927951/500000000']
+CAP 32 ['2750373/200000000', '309032871/100000000']
+CAP 33 ['14660933/1000000000', '422497201/500000000']
+SLAB 14 / 14 accepted 40 uncovered 0 caps 33 seconds 36.149548053741455
+PASS COMPLETE PREFIX CERTIFICATE AND EXACT PARTITION 14 strips {"umin": "9/1000", "umax": "2/125", "full_prefix_end": "2/125", "visited": 66, "exempts": 0, "maxdepth": 2, "seconds": 36.154881954193115} accepted 40 uncovered 0 caps 33
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_cover_verify.py
+[C] Recomputed 68 profile Hermite caps and the infinite tangent cap: PASS
+{"claim": "C: freshly recomputed additional Hermite and tangent profile caps", "cells": 10, "seconds": 3.0422611236572266}
+{"polynomial_progress": 10, "total": 119, "accepted": 10, "rejected": 0}
+{"polynomial_progress": 20, "total": 119, "accepted": 20, "rejected": 0}
+{"polynomial_progress": 30, "total": 119, "accepted": 30, "rejected": 0}
+{"polynomial_progress": 40, "total": 119, "accepted": 40, "rejected": 0}
+{"polynomial_progress": 50, "total": 119, "accepted": 50, "rejected": 0}
+{"polynomial_progress": 60, "total": 119, "accepted": 60, "rejected": 0}
+{"polynomial_progress": 70, "total": 119, "accepted": 70, "rejected": 0}
+{"polynomial_progress": 80, "total": 119, "accepted": 80, "rejected": 0}
+{"polynomial_progress": 90, "total": 119, "accepted": 90, "rejected": 0}
+{"polynomial_progress": 100, "total": 119, "accepted": 100, "rejected": 0}
+{"polynomial_progress": 110, "total": 119, "accepted": 110, "rejected": 0}
+{"polynomial_progress": 119, "total": 119, "accepted": 119, "rejected": 0}
+{"energy_slab": ["2/125", "9/500"], "accepted_boxes": 5, "uncovered_boxes": 0}
+{"energy_slab": ["9/500", "1/50"], "accepted_boxes": 6, "uncovered_boxes": 0}
+{"energy_slab": ["1/50", "9/400"], "accepted_boxes": 6, "uncovered_boxes": 0}
+{"energy_slab": ["9/400", "1/40"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["1/40", "11/400"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["11/400", "3/100"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"energy_slab": ["3/100", "13/400"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["13/400", "7/200"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["7/200", "3/80"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["3/80", "1/25"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["1/25", "21/500"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["21/500", "11/250"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"energy_slab": ["11/250", "463/10000"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"claim": "C\u00b2<=.3D_++6e-6", "accepted_models": 119, "rejected_models": 0, "boxes": 106, "uncovered": 0, "passed": true, "seconds": 55.33634686470032}
+RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_cover_union.py --moment deficit_moment_verify_witness.json deficit_moment_prefix_witness.json --stein deficit_dual_cover_witness.json
+{"Agent-ID": "codex-6e2b", "domain_u": ["0", "463/10000"], "domain_chi": ["0", "42"], "rectangles": 178, "energy_strips": 45, "moment_inputs": ["deficit_moment_verify_witness.json", "deficit_moment_prefix_witness.json"], "stein_inputs": ["deficit_dual_cover_witness.json"], "complete": true}
+PASS EXACT UNION: every 0<=u<=.0463 and 0<=chi<=42 is covered.
+DEFICIT OUTPUT SHA256 deficit_moment_verify_witness.json ac6921cac8a2f3ca4cd67ab3d0cdce72c66e7e1e7d5375226117709b973f9780
+DEFICIT OUTPUT SHA256 deficit_moment_prefix_witness.json a1eb21d0f9d30453aa9128969cd2c067f18a2c62396a34e95abc3a5560b67a0f
+DEFICIT OUTPUT SHA256 deficit_dual_cover_witness.json 40962c50dad6b26069f6b42a71885db53f5f2067fefd17342cdaf7c8b8a0f261
+DEFICIT OUTPUT SHA256 deficit_cover_union_results.json 4f7f03aac1a7177995a949d5e308e55fa85bd855b7f1335ad44c0868ae1582f4
+PASS FULL CONTENT/DEFICIT COVER: C^2 <= (3/10)D_+ + 6/10^6 for every genuine complex (2,1) cubic, 0<=u<=463/10000. 178 certified rectangles; no localization or deficit-sign premise. With the global secant certificate: s=3/5, kappa=56730/59009, eta=5673/295045000 < 1/50000. Research P+C, not a Lean theorem.

@@ -1,0 +1,27 @@
+{
+  "absolute_projection_coefficient_lower": "5819/5000000000",
+  "agent_id": "codex-a7c4",
+  "amplitude": "1/100",
+  "density_moment_bounds": {
+    "m1_upper": "48",
+    "m2_upper": "1120"
+  },
+  "derivative_bounds": {
+    "j0_upper": "2",
+    "jsecond_global_upper": "29",
+    "minus_jprime0_lower": "1"
+  },
+  "exp_absolute_fifth_moment_upper": "326",
+  "exp_centered_third_moment": "2",
+  "profile": {
+    "a": "699/1250",
+    "b": "179/1250"
+  },
+  "projection_remainder_coefficient": "28362",
+  "raw_minus_retained_gap_lower": "33860761/75000000000000000000",
+  "scope": "q=c X(|Y|^2-1), c=1/100, peak profile; genuine remote cubic. No new global cap.",
+  "simple_gap_lower": "1/3000000000000",
+  "status": "PASS",
+  "task": 411,
+  "trust": "Exact rational arithmetic; analytic identities and classical 3<pi<4 supplied by paper proof."
+}

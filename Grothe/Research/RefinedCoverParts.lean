@@ -1,13 +1,14 @@
-import Grothe.Research.RefinedCoverData
+-- Grothe/Research/RefinedCoverParts.lean
+import Grothe.Research.LowerRefinementCoverData
 import Grothe.Lower.Cert.Parts
 
-/-! Shared parsed boxes for the refined cover's sequential native checks. -/
+/-! The complete finite-mixture cover shared by its native check chunks. -/
 
-open Grothe.Lower Grothe.Research.RefinedCoverData
+open Grothe.Lower
 
 namespace Grothe.Research.RefinedLowerCheck
 
-/-- The refined finite cover, parsed with the existing certificate parser. -/
-def refinedBoxList : List Box := refinedBoxes.map parseBox
+/-- All 14,060 leaves, including the unchanged original boxes. -/
+def refinedBoxList : List MixBox := LowerRefinementCoverData.boxes
 
 end Grothe.Research.RefinedLowerCheck

@@ -1,0 +1,10 @@
+family evaluations 1298 seconds 528.2018508911133
+1. min over family of [6+9chi+C chi^1.5 - EU^3] = 0.0017655137921384068
+2. Stein duals: checks 2618  min slack F_P - F_actual = (np.float64(3.4308847527420028e-06), 7, 0.018, np.float64(0.05))  #negative 0
+3. moment caps: checks 68794  min slack = (np.float64(7.084421183023437e-08), 0, 0.001, np.float64(0.05))  #negative 0
+4. B(mine) - B(author, Stein mid) range -8.881784197001252e-16 0.0 ;  B(mine) - B_lower(moment) min (-1.1102230246251565e-15, '7/500')
+5. Stein boxes: family points 936  min(actual budget - certified margin) = (np.float64(4.879485551096478e-06), np.float64(8.19504967392549e-06), 3.315564122829012e-06) (['9/500', '1/50'], ['0', '21/16'], 0.018, np.float64(0.05))  #violations 0
+6. moment boxes: family points 1012  min certified poly value 6.382661480966133e-07  min(act-poly) 3.482469392856979e-08  #poly<0 0
+7. claim (1): min margin (np.float64(6.003096023552898e-06), 0.0005, np.float64(0.05), np.float64(8.460745083309984e-13), np.float64(1.0322898758019505e-08))  #violations 0
+   largest C^2/delta on the family [(np.float64(0.0035666857409411474), 0.006500000000000001, np.float64(42.0)), (np.float64(0.0035711144244724435), 0.0055, np.float64(42.0)), (np.float64(0.0035732932897787335), 0.006, np.float64(42.0))]  (gamma >= 0.0325)
+   rows with D<0: 0

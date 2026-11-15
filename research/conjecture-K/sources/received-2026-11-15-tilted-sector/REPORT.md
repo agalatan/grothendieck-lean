@@ -1,275 +1,216 @@
-<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/REPORT.md (file dated 2026-11-15 05:17). Only this line was added. -->
-# Tilted sector: global secants and stronger structural content
+<!-- Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/REPORT.md (file dated 2026-11-15 06:06). Only this line was added. -->
+# Tilted sector lemma: complete range u ≤ 0.0463
 
 Agent-ID: **codex-6e2b**. 15 November 2026.
 
-**P+C: the global function-value remainder bound is proved for all complex
-parameters, with no localization hypothesis or Gaussian bad-event tail.**
-The complete compact cover passed with 102,104 accepted boxes. The content
-improvement is also **P+C**:
+**P+C: the content-to-deficit inequality is proved in every finite dimension on the full requested energy range:**
 
 \[
-\boxed{\|c_{3/5}(q)\|^2\le
-\frac{1077659}{27000000}\delta\le0.04\delta
-\quad(0.03\le u\le0.0463).}
+\boxed{\|c_{3/5}(q)\|^2\le\frac3{10}D(q)_++\frac6{10^6}
+\qquad(0\le\|q\|^2\le463/10000).}                 \tag{1}
 \]
 
-This holds in every finite dimension and for every normalized cumulant
-\(\chi=\delta/u^2\), including the requested interval \([2,10]\).
-The full tilted-sector inequality for general tensors remains **O**: the
-comparison with the actual same-variance deficit is not yet proved.
-No new Grothendieck constant bound or Lean theorem is claimed.
+Together with the previously certified global function-value remainder bound `Sec ≤ 13/20`, this proves the tilted-sector lemma (*) with
 
-Labels: **P** = supplied mathematical proof; **C** = exact or outward
-interval computation; **N** = floating point only; **O** = open. A proof
-using certified numerical constants is **P+C**.
+\[
+\boxed{s=\frac35,\qquad\kappa=\frac{56730}{59009}<1,
+\qquad\eta=\frac{5673}{295045000}<\frac1{50000}.}   \tag{2}
+\]
+
+No positivity assumption on the same-variance deficit is used. The proof holds for every remote linear form, with no restriction on its norm. This is a mathematical proof with exact and interval certificates, **not a new Lean theorem or a new bound on the Grothendieck constant**.
+
+Labels: **P** = mathematical proof; **C** = exact or outward interval computation; **N** = floating-point exploration only; **O** = open. The requested inequality is now **P+C**, not O.
 
 ## What a reviewer should check first
 
-1. The global remainder reduction and compact-box interpolation in
-   [secant_proof.md](secant_proof.md), especially the factors of two and the
-   use of convexity through folds. No pointwise ring Hessian bound is used.
-2. The structural content identity, angular constant, and half-line
-   differential supersolution in
-   [secant_content_proof.md](secant_content_proof.md). Its energy interval
-   is continuous; checking its two endpoints suffices because the
-   differential residual is affine in the energy.
-3. The exact remaining comparison in section 4 below. The strengthened
-   content estimate does not, by itself, imply that comparison.
-4. Run `python3 -I verify.py`. The active replay regenerates the scalar
-   data, checks every compact box, and verifies the content barrier.
-   [results.txt](results.txt) records the run and source hashes.
+1. The genuine complex `(2,1)` moment and Stein inputs in [deficit_dual_proof.md](deficit_dual_proof.md), especially the spectral square identity and the direction of the energy interpolation allowance. The same dual covers both kurtosis endpoints.
+2. The half-line scalar comparison and the one-switch angular reduction in [deficit_structure_refine_proof.md](deficit_structure_refine_proof.md) and [deficit_angular_proof.md](deficit_angular_proof.md).
+3. The global Hermite caps and concavity-based Gaussian lower chords in [deficit_moment_verify_proof.md](deficit_moment_verify_proof.md) and its [prefix extension](deficit_moment_prefix_proof.md).
+4. The exact union and the treatment of `D<0`: exempt boxes prove `C²≤6e−6`; all others prove the stronger `C²≤.3D+6e−6`.
+5. Run `python3 -I verify.py`. [results.txt](results.txt) distinguishes the earlier complete secant replay from the new integrated additive replay. The independent mathematical and source audit is [deficit_audit_results.md](deficit_audit_results.md).
 
-## 1. Setting and provenance
+## 1. Setting and inherited inputs — P
 
-Set
+Let `Z,y₁,…,yₙ` be independent standard complex Gaussians. Set
 
 \[
-a=699/1250,\quad b=179/1250,\quad p=2500/1891,\quad s=3/5,
-\quad A=T-2/5,\quad L=Z(a+bT),\quad P=p-s^2.
+a=699/1250,\quad b=179/1250,\quad p=2500/1891,\quad
+T=|Z|^2,\quad L=Z(a+bT),\quad A=T-2/5,\quad P=p-9/25.
 \]
 
-Here \(Z\) is standard complex Gaussian, \(T=|Z|^2\), and the remote
-Gaussian variables are independent of \(Z\). For a remote cubic
-\(q\in H_{2,1}\), put
+For a remote Wick cubic `q∈H_(2,1)`, write
 
 \[
-u=\mathbb E|q|^2,\qquad
-\delta=\mathbb E|q|^4-2u^2\in[0,42u^2],\qquad
-C=\|c_{3/5}(q)\|.
+u=E|q|^2,\quad F(q)=2E|L+q|,\quad B(u)=2E|L+\sqrt uW|,
+\quad D=B-F,\quad D_+=\max(D,0),
 \]
 
-Write \(F(q)=2\mathbb E|L+q|\),
-\(B(u)=2\mathbb E|L+\sqrt uW|\), \(D=B(u)-F(q)\), and
-\(D_+=\max(D,0)\). No sign assumption on \(D\) is made. The sector gain at
-any particular remote linear form is
+where `W` is an independent standard complex Gaussian. Set `C=||c_(3/5)(q)||`, with the task's profiles
 
 \[
-J(q,r)=2\mathbb E|L+q+Ar|-P\|r\|^2-F(q).
+c_s(q)=\Pi_1[q h_s(|q|^2)],\qquad
+h_s(v)=g(v)-g(0)+s(j(v)-j(0)).
 \]
 
-The local record and GitHub repository were read at
-[`d0bd91a1b2eeabaa0cdbb22fcf8907c5414f1a75`](https://github.com/agalatan/grothendieck-lean/commit/d0bd91a1b2eeabaa0cdbb22fcf8907c5414f1a75).
-The principal record is
-[STATUS.md](https://github.com/agalatan/grothendieck-lean/blob/d0bd91a1b2eeabaa0cdbb22fcf8907c5414f1a75/research/conjecture-K/STATUS.md),
-especially sections 3.3, 6.3, 11(c), and the failure catalogue in section 13.
-The Stein tensor budget and Gaussian calculus are existing inputs, not
-claimed as new. The present contributions are their tilted scalar
-certificates and the explicit consequences stated here.
-
-The user-supplied review in the sibling `gpt-tilted-sector-2026-11-15-review`
-folder supplied the secant proposal and numerical comparisons. That folder
-was read only. All writes remain in this authorized output folder; there
-were no Git mutations, external comments, or Lean builds.
-
-## 2. Global function-value secant bound
-
-Define
+Subtracting the constant linear profile is valid because `Π₁q=0`. For `u>0`, put `U=|q|²/u`, `δ=E|q|⁴−2u²`, `χ=δ/u²`. The existing complex-chaos theorems give
 
 \[
-f(w,\rho)=\mathbb E_Z|L+w+A\rho|,
-\qquad
-\operatorname{Rem}(w,\rho)=
-2[f(w,\rho)-f(w,0)-\langle\nabla_\rho f(w,0),\rho\rangle].
+EU=1,\quad EU^2=2+\chi,\quad0\le\chi\le42,\qquad
+EU^3\le6+9\chi+\frac{4045313}{100000}\chi^{3/2}.     \tag{3}
 \]
 
-**Theorem (P+C).**
+The Stein variables satisfy `EX=0`, `2P₁+R₁=χ`, `EX²≤2P₁/3`, `Er₁²≤2R₁/3`, and `R₁≤χ/3`, where `P₁=E UX`, `R₁=E Ur₁`. The test-function identity and these constraints are the inherited inputs identified and re-derived in the repository's `research/conjecture-K/sources/audit-2026-11-15-codex-a7c4/remote_strong_PROOF.md` and `REMOTE.md`. No statement for arbitrary pairs of real cubic chaoses is substituted for the intended complex bidegree theorem.
+
+Set `h(v)=2E_Z|L+√v|`. Circular symmetry gives `F(q)=Eh(uU)`. The inherited Bernstein-profile theorem gives `h''''≤0`, `h'''≥0`, and concavity. Its derivative estimate and the exact comparison in [deficit_exact.py](deficit_exact.py) give
 
 \[
-\boxed{\operatorname{Rem}(w,\rho)\le\frac{13}{20}|\rho|^2
-\quad\text{for every }w,\rho\in\mathbb C.}                 \tag{1}
+-3<h''(v)\le0\qquad(v\ge0).                         \tag{4}
 \]
 
-Rotation and conjugation reduce to real \(\rho\ge0\), \(\Im w\ge0\).
-The proof in [secant_proof.md](secant_proof.md) covers the entire domain:
+At `u=0`, `q=0` almost surely and `C=0`; no normalized law is needed. All conclusions concern arbitrary finite dimension.
 
-- **P+C, small amplitudes:** \(\rho\le33/200\). A previously certified
-  scalar projection envelope, extended analytically to its exterior,
-  gives \(\Theta(33/200)\le0.649660<0.65\). Integrating along the segment
-  proves (1) there. The complete old curvature certificate is replayed;
-  it also retains \(\Theta(0.3)\le0.75\).
-- **P, large amplitudes:** \(\rho\ge60/13\). The elementary norm
-  remainder bound gives \(\operatorname{Rem}\le4\mathbb E|A|\rho<3\rho\).
-- **P, spatial exterior:** \(|w|\ge6\), at every amplitude. An untilted
-  density estimate gives
-  \(\mathbb E[A^2/|L+w|]<3603551/5604000<0.65\).
-- **C, compact cover:** the remaining domain lies in
-  \([33/200,5]\times[-6,6]\times[0,6]\). The checker
-  [secant_verify.cpp](secant_verify.cpp) bounds function values with
-  weighted Jensen/chord quadrature of the circular mean. Its positive
-  series tail, source origin interval, and infinite tail are enclosed.
-  The quadratic remainder bound is imposed only after averaging over
-  the source variable; no uniform per-ring quadratic bound is assumed.
+## 2. Strengthened structural content bounds — P+C
 
-For a box of widths \(\Delta\rho,\Delta x,\Delta y\), let
-\(G=\operatorname{Rem}-(13/20)\rho^2\). Joint convexity of \(f\) and
-bounds on the untilted base terms give
+The previously certified global bounds are
 
 \[
-G\le\max_{\rm corners}G+
-\frac{179/125+\rho_{hi}}4(\Delta x^2+\Delta y^2)
-+\frac{13}{80}\Delta\rho^2.                            \tag{2}
+C^2\le\min\left\{\frac2{25}\delta,
+3\delta^{3/2},\frac1{2500},\frac{19321}{10^6}u\right\}. \tag{5}
 \]
 
-The completed cover accepted 102,104 boxes after 204,207 visits, with
-154,239 distinct corner values and maximum subdivision depth 27. Every
-non-pruned accepted compact box has a nonpositive certified right side.
-Thus folds of the shifted map do not require a bounded shifted Hessian.
-The linear term uses 602 freshly integrated radial values with outward
-rational endpoints; its interpolation error is also included.
+The new energy-dependent bounds `C²≤γδ` are:
 
-**P+C, consequence of (1).** Orthogonality of the first and third chaoses
-identifies the linear term as \(2\Re\langle c,r\rangle\). Integrating (1)
-over the remote variables and completing the square gives, for every
-linear \(r\),
+| Lower energy endpoint | Exact coefficient γ |
+|---|---:|
+| `9/1000` | `251/5000` |
+| `3/250` | `121/2500` |
+| `3/200` | `467/10000` |
+| `9/500` | `451/10000` |
+| `1/50` | `441/10000` |
+| `1/40` | `1859/43200` |
+| `3/100` | `3/80` |
+| `7/200` | `71/2000` |
+| `1/25` | `17/500` |
+| `11/250` | `13/400` |
+
+Every row holds from its listed endpoint through `463/10000`, including both boundaries, for all `χ`. Thus the central coefficients improve to `.0375`, `.0355`, `.034`, and `.0325` as the energy increases.
+
+The structural identity is `C²≤(2/3)δ sup_R N_(Ψ_u)(R)`. Its scalar shifted-OU resolvent is
 
 \[
-\boxed{J(q,r)\le2C\|r\|-k\|r\|^2\le C^2/k,
-\qquad k=P-13/20=59009/189100.}                        \tag{3}
+k_u(x)=\int_0^1z^{2/3}E\,m''\!\left(zx+
+\sqrt{\frac u2(1-z^2)}G\right)dz,\qquad
+m(x)=E[(T-2/5)\operatorname{sign}(\Re L+x)].
 \]
 
-This conclusion has no restriction on \(\|r\|\), no maximizer assumption,
-and no omitted Gaussian tail.
+It solves `(5/3−(u/2)∂²+x∂)k_u=m''`. Rational cubic supersolutions on 500 intervals, extended constantly, are checked by exact Bernstein coefficients. Arb freshly encloses the 501 source values, the fourth derivative, and the infinite tails. The residual is affine in energy, so its two endpoints suffice. The half-line comparison includes the favorable downward derivative jump at one.
 
-## 3. Stronger content estimate — P+C
-
-The new central-energy coefficient is
+For the first six rows, `C²≤(11/108)||k_u||∞²δ` gives the constants; see the [refined low-energy proof](deficit_structure_refine_proof.md) and [medium-energy proof](deficit_structure_medium25_proof.md). For the last four, retain the shape of `|k_u(x)|≤W(|x|)`. Define
 
 \[
-\gamma=\frac{1077659}{27000000}\approx0.0399132963.
+A_R=\int_0^{\pi/2}\cos^3\theta\,k_u(R\cos\theta)d\theta,\qquad
+B_R=\int_0^{\pi/2}\cos\theta\sin^2\theta\,k_u(R\cos\theta)d\theta.
 \]
 
-The shifted Gaussian resolvent \(\Psi_u\) and the existing trace-sensitive
-Stein budget give
+The content coefficient is bounded by the supremum of `max{(3A_R²−2A_RB_R+3B_R²)/12,(2/3)B_R²}`. A supporting functional has sign `sign(αcos²θ+βsin²θ)`, hence at most one switch. An interval check encloses every switch on 400 closed radial intervals in `[0,2]`, each with 4096 angular cells; an analytic estimate covers the infinite ray. The four largest compact upper enclosures are below `.037211600`, `.035357021`, `.033650745`, and `.032383690`. See [deficit_angular_proof.md](deficit_angular_proof.md).
+
+## 3. Content versus the actual deficit — P+C
+
+The complete cover has three components:
+
+| Energy interval | Method | Accepted boxes |
+|---|---|---:|
+| `[0,9/1000]` | Global Hermite moment caps | 32 |
+| `[9/1000,2/125]` | Moment caps with stronger content | 40 |
+| `[2/125,463/10000]` | Global spectral Stein duals | 106 |
+
+**Moment covers.** For two positive nodes, the cubic Hermite interpolant of `h,h'` is a global upper cap on the entire positive half-line, because its fourth-derivative remainder is nonpositive. Rounding each coefficient upward preserves the cap. Its positive cubic coefficient lets (3) bound its expectation. The two components freshly certify 20 and 33 global caps.
+
+The Gaussian benchmark `B` is freshly integrated with a Rice/Bessel formula and a proved tail enclosure. Concavity makes the chord of lower endpoint enclosures a lower bound on each energy slab. In `(u,x)`, `x=√χ`, the budget
 
 \[
-C^2\le\frac23\delta\sup_R N_{\Psi_u}(R).
+\frac3{10}(B_{\rm lower}(u)-F_{\rm cubic\ upper}(u,x))
++6\cdot10^{-6}-H(u,x)                               \tag{6}
 \]
 
-The angular representation bounds this tensor metric by
-\((11/72)\|k_u\|_\infty^2\), where
+is polynomial for a selected valid content branch `H`. Nonnegative exact bivariate Bernstein coefficients prove (6) throughout every nonexempt accepted box. The moment covers include `0≤x≤13/2`, hence all `χ≤42`.
+
+**Stein cover.** For a piecewise-affine `φ`, constant in its tail, let `Φ(x)=∫₀ˣφ` and `d(x)=φ(x)−Φ(x)/x`. For `λ,μ>0`, `ν≥0`, and real `t,β`, set
 
 \[
-k_u(x)=\int_0^1z^{2/3}\mathbb E\,m''\left(zx+
-\sqrt{\frac u2(1-z^2)}G\right)\,dz,
-\quad
-m(x)=\mathbb E[(T-2/5)\operatorname{sign}(\Re L+x)].
+f_0=-(\phi+\beta)/2+(2t+\lambda/3)x,\qquad
+g_0=-d/2+(t+\mu/3-\nu/2)x,
+\]
+\[
+G=f_0^2/\lambda+g_0^2/\mu+\Phi-\phi
++(\nu/3-2t)(x^2-2).
 \]
 
-A rational piecewise cubic barrier, checked on 500 intervals, proves
-\(\|k_u\|_\infty\le313/500\) simultaneously for
-\(u\in[3/100,463/10000]\). Its differential residual is positive on
-both energy endpoints, hence throughout the interval. The proof includes
-both unbounded spatial tails and the barrier's derivative jump. Therefore
+The Stein identity expands `EG(U)` into squares and nonnegative moment-budget remainders, proving `EG(U)≥0`. An exactly checked cubic `Q≥h(ux)+G(x)` on **all** `x≥0`, with `Q₃≥0`, yields
 
 \[
-C^2\le\frac{11}{108}(313/500)^2\delta=\gamma\delta\le\delta/25.
+F(q)\le Q_0+Q_1+(2+\chi)Q_2+
+(6+9\chi+(4045313/100000)\chi^{3/2})Q_3.             \tag{7}
 \]
 
-The full proof and checker are
-[secant_content_proof.md](secant_content_proof.md) and
-[secant_content_verify.py](secant_content_verify.py). The witness contains
-exact rational decimal strings; all source integrals are recomputed with
-Arb. The numerical optimizer is not part of acceptance. Independent audit
-and independent replay passed.
+All 119 proposed duals pass whole-half-line rational polynomial checks. The default verifier freshly checks the original 68 profile caps, adds ten Hermite caps on `[2,64]`, and uses a tangent on the remaining ray. These extended caps avoid the loss from the old tangent starting at two. All Gaussian benchmarks at the 14 energy nodes are freshly integrated.
 
-Throughout \(0\le u\le0.0463\), the earlier certified estimates also give
+At each energy endpoint, **one dual and one content branch** cover both kurtosis endpoints. Equation (7) plus `H/(3/10)` is convex in `χ`, so its maximum is at an endpoint. For a fixed actual normalized law `U`, put
 
 \[
-C^2\le H(u,\delta):=\min\left\{
-\frac2{25}\delta,\ 3\delta^{3/2},\ \frac1{2500},\
-\frac{19321}{10^6}u\right\}.                         \tag{4}
+Q_{\rm budget}(u)=\frac3{10}[B(u)-Eh(uU)]+6\cdot10^{-6}-H(u,\chi).
 \]
 
-On the central interval add \(\gamma\delta\) to this minimum.
-Their proofs are [content_profile_proof.md](content_profile_proof.md),
-[content_tensor_next.md](content_tensor_next.md), and
-[content_next_proof.md](content_next_proof.md). The active replay reuses
-its regenerated radial table for the Gaussian-probe dual bound
-\(C\le1/50\); it does not trust the old saved profile table.
-
-## 4. Assembly and the exact remaining gap
-
-**P+C.** Equations
-(3)–(4) imply (*) with the following explicit dimension-free subclasses:
-
-| Class | Range | \(\kappa\) | \(\eta\) |
-|---|---|---:|---:|
-| Every cubic | \(u\le196979/10^8=0.00196979\) | 0 | \(2\cdot10^{-5}\) |
-| Small fourth cumulant | \(u\le0.0463,\ \delta\le2037/12500000=0.00016296\) | 0 | \(2\cdot10^{-5}\) |
-| Positive deficit | \(u\le0.0463,\ D\ge0.00133\) | \(19/20\) | \(2\cdot10^{-5}\) |
-
-For example, \(\delta\le42u^2\) and the third-order content estimate give
-\(J\le126\sqrt{42}\,u^3/k\), proving the first row. All displayed
-rational endpoints are checked in [secant_exact.py](secant_exact.py).
-More generally, (*) is proved whenever
-\(H(u,\delta)/k\le\kappa D_++\eta\), using the stronger central minimum
-where applicable. See [secant_assembly.md](secant_assembly.md).
-
-**O — a single remaining sufficient inequality:**
+Since `B''≤0`, `H''≥0`, and (4) holds, `Q_budget''≤(9/10)(2+χ)`. An energy cell of width `Δu` therefore costs at most
 
 \[
-\boxed{\|c_{3/5}(q)\|^2\le\frac3{10}D(q)_+
-+\frac3{500000}
-\quad\text{for every cubic with }u\le0.0463.}         \tag{5}
+\frac{9(2+\chi_{hi})}{80}(\Delta u)^2               \tag{8}
 \]
 
-If (5) holds, (3) proves the requested full-range lemma with
+below its endpoint chord. All nonexempt corner budgets exceed this exact allowance. The direction matters: an **upper** second-derivative bound gives this **lower** chord estimate. See [deficit_dual_proof.md](deficit_dual_proof.md).
+
+**Positive part and exact union.** Exempt boxes prove `C²≤H≤6e−6`. Every other box proves `C²≤.3D+6e−6`, which implies (1) because `D≤D₊`. Neither case assumes `D≥0`.
+
+The [exact union checker](deficit_cover_union.py) squares moment `x` endpoints exactly and clips to `χ≤42`. Its **178 rectangles and 45 energy strips** cover `[0,463/10000]×[0,42]`, with zero gaps. Closed boxes include all boundaries. The union runs after all three component certificates, so it combines freshly checked inequalities, not merely stored geometry. This proves (1).
+
+## 4. Full tilted-sector assembly — P+C
+
+The previous [global secant proof](secant_proof.md) establishes
 
 \[
-\kappa=\frac{56730}{59009}<1,\qquad
-\eta=\frac{5673}{295045000}<2\cdot10^{-5}.
+2[f(w,\rho)-f(w,0)-\langle\nabla_\rho f(w,0),\rho\rangle]
+\le\frac{13}{20}|\rho|^2,\qquad
+f(w,\rho)=E_Z|L+w+A\rho|,                           \tag{9}
 \]
 
-The certified factor-two improvement is a bound in terms of \(\delta\).
-A general lower comparison between the actual deficit and this content
-allowance is still missing. The remote theorem's headline upper bound on
-\(\Lambda(q)\) alone does not supply it. A direct augmented moment/Stein
-certificate for \(\Lambda(q)+C^2/k\) is another possible route; it has not
-been certified here. No numerical family test is promoted to an
-all-dimensional comparison.
+for all complex `w,ρ`. Its compact cover accepts 102,104 boxes; small amplitudes and both spatial and amplitude exteriors have proved bounds. It averages over the source before imposing the quadratic estimate, without a uniform per-ring Hessian bound.
 
-## 5. Evidence, replay, and retained history
+Integrating (9), identifying its linear term with the first-chaos content, and completing the square gives, for every linear `r`,
 
-**N only:** independent source quadrature agrees with the review's large
-margin: an optimized secant quotient is approximately \(0.599694963\)
-near \(\rho=0.571923,\ w=0.631848\) real. These values are checks on the
-implementation and candidates for the supremum; they are not its proof.
+\[
+J(q,r):=2E|L+q+Ar|-P\|r\|^2-F(q)
+\le2C\|r\|-k\|r\|^2\le C^2/k,
+\qquad k=P-13/20=59009/189100.                       \tag{10}
+\]
 
-Run `python3 -I verify.py` from this folder. It needs a C++17 compiler with
-strict directed-rounding support and python-flint. The script locates the
-available interpreter, or honors `TILTED_FLINT_PYTHON`. It compiles only
-small certificate executables in a temporary subdirectory of this folder,
-removes them on exit, and records source hashes. The entire 602-node table
-is regenerated. The complete default replay passed, reproducing the same
-102,104-box cover and all content certificates. The independent audit is
-recorded in [secant_audit_results.md](secant_audit_results.md). `--algebra-only` verifies just the exact scalar comparisons
-and explicitly does not certify the compact cover or content integrals.
+Insert (1) into (10):
 
-Localization O-A2 is removed from the active proof and default replay.
-The earlier report and run are retained as
-[REPORT_localization_history.md](REPORT_localization_history.md) and
-[results_localization_history.txt](results_localization_history.txt).
-The filename `localization_circle.hpp` denotes a reused circle-series
-utility; it introduces no localization premise. Earlier auxiliary files
-are historical unless listed as dependencies of the active replay.
+\[
+\boxed{2E|L+q+(T-1+s)r|-(p-s^2)\|r\|^2
+\le2E|L+q|+\frac{56730}{59009}D(q)_+
++\frac{5673}{295045000}.}                           \tag{11}
+\]
+
+[deficit_exact.py](deficit_exact.py) checks `κ<1` and `η<2e−5` exactly. Numerically, `κ≈.961378773` and `η≈.0000192275755`. Localization O-A2 is absent. There is no Gaussian bad-event allowance or maximizer-existence premise.
+
+## 5. Reproducibility, trust, and retained history
+
+From this directory, `python3 -I verify.py` replays the full active chain: exact constants, curvature input, global secant cover, old global content bounds, all ten used new barriers, four angular certificates, three content/deficit covers, and their union. It needs python-flint/Arb and `clang++` with strict directed-rounding support. `TILTED_FLINT_PYTHON` selects an interpreter if needed. Compilation uses temporary subdirectories of this folder.
+
+The earlier complete secant replay is preserved byte-for-byte in [results_secant_history.txt](results_secant_history.txt), with its [original wrapper](verify_secant_history.py). The new additive command is `python3 -I verify.py --deficit-only`, recorded in [deficit_integrated_results.txt](deficit_integrated_results.txt). The integrated additive run passed with zero uncovered boxes. It freshly recomputes all new inputs and checks the 14 unchanged source hashes of its earlier prerequisites; it does not numerically rerun those prerequisites. [results.txt](results.txt) indexes both runs and final proof hashes. `--algebra-only` checks scalar comparisons only, not the whole certificate.
+
+Floating-point searches merely propose rational witnesses; no solver objective or sampled inequality is accepted as a proof. The numerical trust chain is Python exact rationals, python-flint/Arb, the audited integration and polynomial routines, and strict IEEE directed arithmetic in the C++ checks. Analytic reductions and inherited complex-chaos theorems remain explicit mathematical inputs. This is **P+C**, not Lean kernel verification.
+
+The earlier reports remain in [REPORT_secant_history.md](REPORT_secant_history.md) and [REPORT_localization_history.md](REPORT_localization_history.md). Exploratory `deficit_moment_mid*`, optimizer files, and partial alternative searches are not active proof inputs. No claim is made beyond `u=463/10000`.
+
+The repository and GitHub record were read at [`d0bd91a1b2eeabaa0cdbb22fcf8907c5414f1a75`](https://github.com/agalatan/grothendieck-lean/commit/d0bd91a1b2eeabaa0cdbb22fcf8907c5414f1a75). The user review folder and repository sources were read only. All new files and edits are confined to this authorized handoff folder; there were no Git mutations, external comments, or Lean builds.
