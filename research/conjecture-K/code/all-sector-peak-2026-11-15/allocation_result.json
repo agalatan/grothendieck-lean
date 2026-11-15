@@ -1,0 +1,20 @@
+{
+  "Agent-ID": "codex-91d4",
+  "issue": 436,
+  "status": "PASS EXACT CONDITIONAL ALLOCATION SCALAR IMPLICATION",
+  "AB_pointwise_premise_proved": false,
+  "averaged_odd_premise_proved": false,
+  "new_content_theorem_proved": false,
+  "main_ceded_U_squared": "1/100",
+  "odd_eta": "1/20000",
+  "scalar_strict_cap": "49/1000000",
+  "scalar_worst_upper_exact": "2055504878705025627356378523052166030057640171794010267151/42480609585018530442136028771190338400000000000000000000000000",
+  "new_total_strict_cap": "99/1000000",
+  "reserve_below_1e_4": "1/1000000",
+  "remote_error_surcharge": "0",
+  "reason": "New odd premise includes sigma-D_minus; -D-D_minus=-D_plus.",
+  "source_sha256": {
+    "inputs/coupled_budget_check.py": "f1855fd5aa8aea9e9e3b82ee6b63d8fed1e295fef012d641700b01592dcf0490",
+    "inputs/coupled_budget_multipliers.json": "54715d0969614267b7c866fbf8d255c53edda4133fe8eca24f3a15ebffe0d4f8"
+  }
+}

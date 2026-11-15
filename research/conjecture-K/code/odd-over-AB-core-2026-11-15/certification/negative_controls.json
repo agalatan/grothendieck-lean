@@ -1,0 +1,67 @@
+{
+  "Agent-ID": "codex-91d4",
+  "issue": 430,
+  "status": "PASS ALL NEGATIVE CONTROLS",
+  "count": 8,
+  "coarse_moments_generated_fresh": true,
+  "coarse_generation_receipt": {
+    "Agent-ID": "codex-91d4",
+    "issue": 430,
+    "status": "PASS FRESH ARB MOMENTS",
+    "python_version": "3.12.3 (v3.12.3:f6650f9ad7, Apr  9 2024, 08:18:47) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "python_flint_version": "0.9.0",
+    "arb_precision_bits": 160,
+    "grid": [
+      80,
+      40,
+      40
+    ],
+    "cells": 128000,
+    "tail_baseline_norm_upper": "[1.3675172761394328600840253267071543794509058097e-10 +/- 5.89e-57]",
+    "moment_file": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-odd-over-AB-core-2026-11-15/phase1/certification/negative-azb8y1lz/moments_80.txt",
+    "sha256": "5c26673372e6c21a72255c9479b72b729720193812b68d7d68b537fd3f03f615",
+    "seconds": 0.022049708000849932
+  },
+  "controls": [
+    {
+      "test": "make_moments.py-O",
+      "returncode": 1,
+      "diagnostic": "Assertions required; no -O/-OO\n"
+    },
+    {
+      "test": "make_moments.py-OO",
+      "returncode": 1,
+      "diagnostic": "Assertions required; no -O/-OO\n"
+    },
+    {
+      "test": "verify.py-O",
+      "returncode": 1,
+      "diagnostic": "Assertions required; no -O/-OO\n"
+    },
+    {
+      "test": "verify.py-OO",
+      "returncode": 1,
+      "diagnostic": "Assertions required; no -O/-OO\n"
+    },
+    {
+      "test": "NDEBUG compile",
+      "returncode": 1,
+      "diagnostic": "dual_verify.cpp:4:2: error: \"Assertions are required\"\n    4 | #error \"Assertions are required\"\n      |  ^\n1 error generated.\n"
+    },
+    {
+      "test": "fast-math compile",
+      "returncode": 1,
+      "diagnostic": "dual_verify.cpp:7:2: error: \"Fast math invalidates outward arithmetic\"\n    7 | #error \"Fast math invalidates outward arithmetic\"\n      |  ^\ndual_verify.cpp:22:14: error: '#pragma STDC FENV_ACCESS ON' is illegal when precise is disabled\n   22 | #pragma STDC FENV_ACCESS ON\n      |              ^\ndual_verify.cpp:35:81: warning: use of infinity via a macro is undefined behavior due to the currently enabled floating-point options [-Wnan-infinity-disabled]\n   35 | I sqrtI(I a){assert(a.l>=0);return {std::max(0.0,std::nextafter(std::sqrt(a.l),-INFINITY)),std::sqrt(a.h)};}\n      |                                                                                 ^\ndual_verify.cpp:50:47: warning: use of infinity via a macro is undefined behavior due to the currently enabled floating-point options [-Wnan-infinity-disabled]\n   50 |   double scale=std::nextafter(std::sqrt(nn.h),INFINITY);r/=scale;i/=scale;\n      |                                               ^\n2 warnings and 2 errors generated.\n"
+    },
+    {
+      "test": "truncated moment coverage",
+      "returncode": -6,
+      "diagnostic": "Assertion failed: (f), function readI, file dual_verify.cpp, line 55.\n"
+    },
+    {
+      "test": "coarse cover inconclusive",
+      "returncode": 2,
+      "diagnostic": "grid 80 40 40 cells 128000 terms 28 seconds 0.039\nA_lower 1.3772265710059695 K_imag [-0.002704802157097454,-0.0027048021570329227] baseline_upper 0.68761451935439988 tail_upper 1.3675172761394329e-10\nodd_gain_lower -0.0033309759708283941 allowance_upper 0.00011607661566045215 residual_lower -0.0034470525864888465\nINCONCLUSIVE: this support discretization does not prove residual > 1/10000\n"
+    }
+  ]
+}

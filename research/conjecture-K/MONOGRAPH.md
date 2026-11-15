@@ -42,7 +42,8 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
   every dimension and at every amplitude, and the same with error below 9.8·10⁻⁵ on a profile rectangle around the
-  peak (2.6).
+  peak (2.6); all six sectors together below S + 10⁻⁴ on an energy region around the zero core, with no premise
+  (2.9).
 - **Open:** the raw content inequality of L4 for general cubics; the finite-amplitude joint A/B bound, reduced to a
   compact box; the B-content of general cubics; shared odd sectors over a core containing A/B; the remote part away from the
   peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
@@ -445,6 +446,12 @@ structural bound ‖Π₁[q·h(|q|²)]‖² ≤ (3/4)δ·E m_h(|q|²) for every 
 (q = Σ a_{ij,k}X_iX_j·conj(Y_k) over independent blocks has Π₁[F(q)] = 0 for every F) [P · 11.31]; and a conditional
 remainder bound with a Gaussian tail for sectors that only have a restricted Hessian bound [P · 11.32].
 
+**A sharper content coefficient.** The comparison of step 3 also holds with 1/5 in place of 3/10, with η = 6·10⁻⁶
+(with the signed deficit on its coupled and slab rectangles), on part of its domain: every χ for u ≤ 1/80, and further rectangles, 68.9% of the (u, χ)
+area with 40 gap rectangles left. Above u = 1/100 it uses one content envelope per energy slab and interpolates the
+deficit term, whose second derivative is at least −(3/5)(2 + χ) [C author only, interpolation P · codex-8d2f, replayed
+by claude-b9ee · 11.55]. The lemma above does not need it, and neither does the joint bridge of 2.8.
+
 ### 2.7 The B-sector
 
 **Cost.** For every remote q and remote linear r, at every amplitude and with any sharing,
@@ -582,6 +589,36 @@ one explicit core H and for one specified odd direction O it gives Λ(H + τO) �
 0.03 ≤ |τ| ≤ 0.04 only [analytic reduction P, interval integration R · 7.2.3]; numerically the cost is 0.79 to 1.32
 per unit energy on nine cores [N].
 
+**Cores with A and B (retained functional, peak row).** Over a core E = q + A + B the odd increment
+Δ = Λ̂(E + O) − Λ̂(E) need not be small: a genuine shared example inside the energy and response caps has
+Δ = +1.24·10⁻⁴, although its core lies 0.04 below S [N · 7.2.9]. At the common remote trial of 2.8 the increment is
+not even paid by the allowance 0.01‖r_B − 0.5053r_A‖² + 5·10⁻⁵ [P + C · item 89]. What pays for it is the energy
+slack σ(u) = S − (B(u) − pu) of the core. The joint bridge of 2.8 gives Λ̂(E) < B(u) − pu + D₋ + 49·10⁻⁶, so the
+right comparison is Δ − σ(u) + D₋ ≤ 5·10⁻⁵, which gives Λ̂(E + O) < S + 99·10⁻⁶ [P · 7.2.8]. No tested
+configuration violates Δ ≤ σ(u) + 5·10⁻⁵, including cores at the energy where σ vanishes [N · 7.2.9].
+
+**All sectors at the peak (retained functional).** Take the remote trial ξ₀ = −(3/5)(r_A + 0.5053r_B) of 2.8 and no
+visible coefficient. The bound |l + h| + |l − h| ≤ 2|l| + |h|²/|l| at L, and the orthogonality of the visible harmonics
+under the radial weight 1/|L|, give for every G in the six sectors, with arbitrary sharing,
+
+    Λ̂(G) ≤ 2E|L| + (771/500)u + (43/250)V − (16/125)(W_Q + W_P) − (33/100)W_ν,
+
+so Λ̂(G) < S + 10⁻⁴ when the energy part is at most 1087/500000 [P + C · codex-91d4, re-derived and replayed by
+claude-b9ee · 7.5.1]. This region is a neighbourhood of the zero core (on the axes u ≤ 0.00140 or V ≤ 0.0126); the energy
+u* ≈ 0.0403 where σ vanishes lies far outside it. Elsewhere the central secant is bounded by
+Ψ(X, H) = 2(√(|X|² + |H|²) − |X|) − (Re X·conj H)²/(|X|² + |H|²)^(3/2) [P · 7.5.2], and (P) of 2.8 together with
+the averaged premise
+
+    (P_Ψ)   |c|² + E Ψ(X, O − cz₁) − p‖O‖² ≤ 0.01‖U‖² + σ(u) − D₋(q) + 5·10⁻⁵   for one global complex c,
+
+with X = L + E + (3/5)R, would give Λ̂(G) < S + 99·10⁻⁶ for every G at the peak [P + C · 7.5.3]. (P_Ψ) is open. It
+holds for odd energy below 6.16·10⁻¹⁰ [P author only · 7.5.4], every numerical test supports it, and the particular
+cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of about six near
+u* [7.5.5]. An anti-concentration bound
+controls how often the A/B drivers come near a rank-zero visible root [P author only · 7.5.4], but rank-one zero
+curves, and a value defect that vanishes identically outside the energy region above, show that it does not finish
+the proof [7.5.5].
+
 ### 2.10 Response domains and the central consumer
 
 Only G that come from actual responses enter the row. Put R = √π/2 and let E_q, E_A, E_B, E_Q, E_P, E_ν be the
@@ -664,7 +701,8 @@ by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows 
 4. **The odd sectors over a nonzero core**: a uniform pure cost over genuine even cubic cores. Numerically z₁Q and
    z̄₁P keep a pointwise cost of about 0.128 jointly with A and B, while d·z₁(T − 2) needs an argument after
    integration, because its pointwise cross term with z₁Q has the wrong sign; such an argument must keep both coupling
-   channels of 2.9, which centring removes only at the zero core. *Gives:* L5 together with items 1–3.
+   channels of 2.9, which centring removes only at the zero core. For Λ̂ at the peak the target is the averaged premise
+   (P_Ψ) of 2.9, outside its energy region around the zero core. *Gives:* L5 together with items 1–3.
 5. **The remote part at the other rows**: certificates for the row envelope beyond the tube and the rectangle around
    the peak; the flank and upper rows are outside both. *Gives:* L1 for the consumer's rows.
 6. **The response regions outside R and the consumer**: cover the complementary t regions with a fixed ε, using the
@@ -672,7 +710,8 @@ by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows 
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
    Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 11/8 and
    1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside its proved local pieces; its conditional assembly uses the existing tilted-content theorem.
-   The other obligations are the odd sectors, the other rows through the weighted scaling of 1.6,
+   The other obligations are the odd sectors through the averaged premise (P_Ψ) of 2.9, the other rows through the
+   weighted scaling of 1.6,
    and more than three remote variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).
 8. **The identity-tail witness** raises the model ceiling to 1.40248 and is untested at certificate level.
 
@@ -761,6 +800,10 @@ section 13), where every source is listed.
   even with κ_E = 0 at an explicit core [R].
 - **86. Over a nonzero core the Q/ν coupling has one Hermitian radial kernel.** It has two channels, with opposite
   signs on a genuine cubic witness (2.9) [P + C].
+- **89. At the common remote trial, the odd increment over an A/B core is paid by 0.01‖r_B − 0.5053r_A‖² + 5·10⁻⁵.**
+  A shared witness on one remote coordinate, inside the energy and response caps, exceeds that allowance by more
+  than 10⁻⁴; its fixed-trial retained value is about 0.038 below S (numerical), so it does not threaten the all-sector
+  target (2.9) [P + C].
 - **19. The local matrix of the retained functional (tied multiplier) plus I/10 is a global majorant.** Violated by
   more than 97/1000 at an explicit point [R].
 - **47–49. Decoupling, (EC)/(PH)/(PG) and a uniform fibre bound for the even sectors.** False by up to 5.7·10⁻³, or

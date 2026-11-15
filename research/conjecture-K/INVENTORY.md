@@ -466,3 +466,81 @@ Its README records the numbers of the review run; no log is kept.
 | `code/review-437-claude-b9ee/README.md` | 3,423 B | `31bc3eeff569dd8fb0d1ccb688ee1df1a67cd396d35ecb7e15c015f8dd478571` |
 | `code/review-437-claude-b9ee/crosscheck.py` | 7,250 B | `54063ed9953864382a5e3abd08aede7ca20e9140c2abb64c893c57b34d1f04f1` |
 | `code/review-437-claude-b9ee/curvature_bounds.py` | 6,009 B | `259c383f1a3e35dd28ce951631e54996cce3bbf67cee6de4c3dc5966e25422f8` |
+
+## Odd sectors over an A/B core, and the refutation of (O_U) (codex-91d4, task #430)
+
+`sources/odd-over-AB-core-2026-11-15-codex-91d4/` holds the Phase 0 report and the Phase 1 refutation;
+`code/odd-over-AB-core-2026-11-15/` holds the countercertificate (item 89), replayed by claude-b9ee in about 3 s.
+The numerical lanes, replay receipts and within-session reviews stay in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-odd-over-AB-core-2026-11-15/` (8.6 MB).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `code/odd-over-AB-core-2026-11-15/README.md` | 1,186 B | `9a03a778d1a593657d13c39ea8e5143fe41d89f1c9b545380aeeb162105ea8e5` |
+| `code/odd-over-AB-core-2026-11-15/certification/certificate_result.json` | 2,598 B | `a741783830af5705a2862adb848d116eae06005692218bfea727d7da084de7c5` |
+| `code/odd-over-AB-core-2026-11-15/certification/dual_verify.cpp` | 6,452 B | `840ebd3a9c381ad72794fb4a11437e0dfdd3ef2ae5113d907b8e216c480c8f04` |
+| `code/odd-over-AB-core-2026-11-15/certification/make_moments.py` | 3,500 B | `171c55139c1304a3d7788543b194eb9d3cbec50a0ab717a5345ab64e0f078c2f` |
+| `code/odd-over-AB-core-2026-11-15/certification/negative_controls.json` | 3,429 B | `be38c260e70985e8f1a69e129e07fa0eaa701bf4d178d0d1127ef6d62f433b9e` |
+| `code/odd-over-AB-core-2026-11-15/certification/negative_controls.py` | 2,456 B | `1ad60da835bf08a99f78ba7bfed921a8ebf2962ae464a077ded38fa5bce39ac3` |
+| `code/odd-over-AB-core-2026-11-15/certification/verify.py` | 2,855 B | `5730358ec6f2bd43be21d4f301d1ab4a143b22bd319d93664babbd301e222f51` |
+| `code/odd-over-AB-core-2026-11-15/verify_candidate_inputs.py` | 1,858 B | `d13da31a7f079ee7d0028dcde6f8d5a540f875dcffd2f57cfccf928616886a49` |
+| `handoff …/phase1/MANIFEST.json` | 8,905 B | `7368fc41b508cbaa40275558365f54dde119eb5083e2ed7574a5dee2b51d39b5` |
+| `handoff …/MANIFEST.json (Phase 0)` | 9,548 B | `a0742dd3a5ff0662399c1f23636c61b6711f4f068b1f54cfd99273b8368c0f95` |
+
+## Odd sectors against the energy slack (codex-91d4, task #436)
+
+`sources/odd-energy-slack-2026-11-15-codex-91d4/` holds the report, the proof notes, the accounting (7.2.8) and the
+multivariate summary. The numerical lanes (about 29 MB) and the replay entry point stay in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-odd-energy-slack-2026-11-15/`; `python3 -I replay.py`
+there regenerates every Phase 0 lane in about 80 s (replayed by claude-b9ee).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `handoff …/MANIFEST.json` | 8,407 B | `f993d2959f19d5dd09a80a86df3ae14d7211ec1787f3ce0fdee1c49fa92182ac` |
+| `handoff …/replay.py` | 5,021 B | `a5a56d16056bf3d3f455ab8be82f61918dd29d893c2b885de2e80adaad3679c3` |
+
+## The direct all-sector trial at the peak (codex-91d4, task #436)
+
+`sources/all-sector-peak-2026-11-15-codex-91d4/` holds the report and the analytic notes; `code/all-sector-peak-2026-11-15/`
+holds the exact checkers of 7.5.1, 7.5.3, 7.5.4 and 7.5.5 with their receipts (standard-library Python, under a second
+each). The numerical lanes, the frozen inputs, the review records and the replay entry point stay in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-all-sector-peak-2026-11-15/`; `python3 -I replay.py`
+there regenerates everything in about 65 s (replayed by claude-b9ee).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `code/all-sector-peak-2026-11-15/README.md` | 1,413 B | `2cbe839ea15ad7ccae2e5e1c38fa67740423ad538d397194823ad08b8ed026d9` |
+| `code/all-sector-peak-2026-11-15/allocation_result.json` | 915 B | `66bebadf18e7d9ab7009d943c4d18e212b3af5a00f867ad3c6898fbd24bc86e0` |
+| `code/all-sector-peak-2026-11-15/closure_budget_sizes.json` | 972 B | `533ff52fbb7c389edf849a39da88d309b6f79707ffa569b1032eaac376ac44d8` |
+| `code/all-sector-peak-2026-11-15/closure_budget_sizes.py` | 2,754 B | `11f3b00bad32432bf6e7a926a42c975f93c92a8297623d8af5a277870994d37c` |
+| `code/all-sector-peak-2026-11-15/discriminant_result.json` | 2,544 B | `5ef191d90a98a2595aa07eac25054e1aa7edf65b17c882c690c62577c1a3e076` |
+| `code/all-sector-peak-2026-11-15/inputs/coupled_budget_check.py` | 4,436 B | `f1855fd5aa8aea9e9e3b82ee6b63d8fed1e295fef012d641700b01592dcf0490` |
+| `code/all-sector-peak-2026-11-15/inputs/coupled_budget_multipliers.json` | 108,971 B | `54715d0969614267b7c866fbf8d255c53edda4133fe8eca24f3a15ebffe0d4f8` |
+| `code/all-sector-peak-2026-11-15/primitives_result.json` | 1,573 B | `b1ca45a3b2603e61212037b02e22622a3e8689b36b836467eb0950873e86d137` |
+| `code/all-sector-peak-2026-11-15/region_result.json` | 3,347 B | `4a63bedc9a7074b89c4ad6479fc66cc002973d9cc314b04084f3d6c4a698917c` |
+| `code/all-sector-peak-2026-11-15/verify_allocation.py` | 2,825 B | `d531aed95e8af4e79cca2d102b07c6e9f5f82836d6bfe8642b1686c59700fff6` |
+| `code/all-sector-peak-2026-11-15/verify_discriminant.py` | 5,854 B | `bf65e43ab5ed5a606b7183632811c3828c3324423f278c2a48a8544ac733db9f` |
+| `code/all-sector-peak-2026-11-15/verify_primitives.py` | 7,873 B | `9a0bee97cef9faf2ae508893584af7855893463be3e7739f7c6f5417ada837d8` |
+| `code/all-sector-peak-2026-11-15/verify_region.py` | 5,260 B | `3a42db17629eec10d99a1197e26879f617238d94d34f00f7c5b62e540119712b` |
+| `handoff …/MANIFEST.json` | 10,617 B | `b4a9b1dcce15a13a893072519ec964649ba13dbe45f430733f06e588ed65f3a3` |
+
+## Tilted A content with coefficient 1/5 (codex-8d2f)
+
+`sources/A-content-2026-11-15-codex-8d2f/` holds the five proof notes of 11.55. The verifier stays in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-A-content-tightening-2026-11-15/` (about 3 MB of
+scripts, witnesses and a bundled input of 752 KB, plus a vendored python-flint of 21 MB). From a clean checkout with
+that folder placed at its handoff path:
+
+```sh
+python3 -I -B verify_continuation.py --repo-root <repository root>
+```
+
+It replays every certificate and the exact union audit (187 rectangles, 40 gaps, every χ for u ≤ 1/80) in about
+3.5 minutes.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `handoff …/verify_continuation.py` | 3,315 B | `00b9c384f3f7fbbc1b7186780221e7f4f850da4787123cbb8a4aa223f04a96f3` |
+| `handoff …/gap_audit.json` | 5,544 B | `82f971a63d9140ed6f6038570f84c9224196c4c5211a41bcdab9aef5ef48302f` |
+| `handoff …/bundled_inputs/deficit_dual_cover_witness.json` | 766,723 B | `40962c50dad6b26069f6b42a71885db53f5f2067fefd17342cdaf7c8b8a0f261` |
+| `handoff …/clean_checkout_verification.log` | 52,310 B | `802256e3d360e8d996984f693a221979f0b66867fe9d6e31923fead9ba146626` |
