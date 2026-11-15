@@ -365,7 +365,22 @@ Replay the exterior certificate from the repository root:
 python3 -I research/conjecture-K/code/progress-2026-11-15-codex-a7c4/joint_target_tail.py
 ```
 
-This leaves only `|w|≤1.9`, `sqrt(|A|²+|B|²)≤1.65` to certify.
+This leaves only `|w|≤1.9`, `sqrt(|A|²+|B|²)≤1.48` to certify.
 Simultaneous phase rotation permits w real and nonnegative, but A and B
 remain complex: the compact problem still has five real parameters.
 No numerical scan of this domain is a proof of (P).
+
+## 7. Numerical reconnaissance (N; not a certificate)
+
+The [independent review of PR #428](https://github.com/agalatan/grothendieck-lean/pull/428#issuecomment-6891799101)
+reports about 44,000 sampled points plus Nelder–Mead searches, with no
+violation of (P). Its reported smallest normalized slack (right side minus
+Rem, divided by S) is approximately `.0175` in the zero-core local limit
+(local eigenvalues `.01753` and `.72696`). A second local minimum is about
+`.0213` at real `w=.6004`, `A=.3496`, `B=.2023`, `S=.1634`; the reviewer
+reports agreement to `1e-7` across three quadrature grids.
+
+These are reviewer-reported floating-point diagnostics, not independently
+replayed here or rigorous lower bounds for the slack. The search code and
+quadrature error enclosures are not part of this certificate. They guide
+a possible five-real-parameter interior cover; they do not close it.

@@ -81,6 +81,5 @@ with replayed computation and a numerical cross-check; a special case is not an
 independent stronger theorem.
 
 The current-state rewrite landed in #423. This branch updates its book and ledger
-in place with these results and their review status. The minor `STATUS 7.4.5`
-reference in the preceding audit note is corrected here. No existing source
-package is replaced.
+in place with these results and their review status. Existing source packages
+remain verbatim.

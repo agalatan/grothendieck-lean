@@ -466,7 +466,7 @@ global comparison is
 
 The lower coefficient is sharp and exceeds 0.5053 at the peak. Centering the one-sided difference before projection
 therefore gives ‖c_B − 0.5053c_A‖ ≤ 0.0035√u for every remote L² q with Π₁q = 0, in every dimension and at every
-energy [P + C, author only · codex-a7c4 · 7.1.6]. Without orthogonality, the reviewed 0.007√u bound still applies.
+energy [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.1.6]. Without orthogonality, the bound is 0.007√u.
 Raw B-content thus reduces to raw A-content; for the Gaussian-factor class C_B² ≤ (239/2000)·D [R · 7.1.3]; for
 general cubics the raw content-to-deficit inequality is open [7.1.5].
 
@@ -475,7 +475,7 @@ completed tilted-A content theorem give
 
     ‖c_{B,s_B}(q)‖² ≤ (1/10)D₊(q) + 443/10⁸     for every remote cubic q with u ≤ 0.0463.
 
-[P + C, author only · codex-a7c4 · 7.1.7] This controls the first-order term. The finite-amplitude cost for this
+[P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.1.7] This controls the first-order term. The finite-amplitude cost for this
 tilt, and the joint A/B cost, remain open.
 
 ### 2.8 The joint A/B form
@@ -508,9 +508,10 @@ enough that r_x(α, β) ≤ Q(α, β) − η(|α|² + |β|²) for 0 ≤ x ≤ 29
 [P + C · codex-a713 and codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.5].
 
 **What content constant it would need.** For a positive-definite cost matrix [[k_A, m], [m, k_B]] the optimised gain
-is ‖c‖²/k_A + ‖d − (m/k_A)c‖²/(k_B − m²/k_A) [P · 7.4.1]. With the alignment of 2.7: a favourable signed m = 0.118
-and content constant 0.24 leave an excess below 5.2·10⁻⁵; an adverse cross term at most 0.118 needs the constant 0.10
-(excess ≤ 7.2·10⁻⁵) [P, C · 7.4.2]. These are conditional on the joint bound.
+is ‖c‖²/k_A + ‖d − (m/k_A)c‖²/(k_B − m²/k_A) [P · 7.4.1]. With the centered alignment of 2.7: a favourable signed m = 0.118
+and content constant 0.24 leave an excess below 0.000019372; a diagonal cost with content constant 0.15
+gives at most 0.000003593; an adverse cross term at most 0.118 with constant 0.10 gives at most
+0.000017953 [P, C · 7.4.2]. These are conditional on the joint bound.
 
 **A retained joint target using the existing content theorem.** Set ρ = 0.5053, s = 3/5,
 r_+ = α + ρβ, r_− = β − ρα, S_r = |α|² + |β|² and
@@ -525,9 +526,8 @@ and the centered error of (2.7) then suffice: under u ≤ 0.0463 and u + V ≤ 0
 
     Λ̂(q + A + B) < S + 0.00004936.
 
-The implication and a 1,000-cell rational scalar certificate are checked within the author's session
-[P + C, author only · codex-a7c4 · 7.4.10]. This replaces the search for a stronger content theorem by a specific
-joint remainder target. Its exterior is proved for |w| ≥ 19/10 or sqrt(|α|² + |β|²) ≥ 37/25 by a density bound,
+The implication and its 1,000-cell rational scalar certificate are re-derived and replayed by claude-b9ee
+[P + C · codex-a7c4 · 7.4.10]. The target uses the existing content coefficient 0.3. Its exterior is proved for |w| ≥ 19/10 or sqrt(|α|² + |β|²) ≥ 37/25 by a density bound,
 layer cake and exact polynomial positivity [P + C, author only · 7.4.10]. Only the compact interior remains for
 this target; odd sectors over the joint core are still a separate obligation.
 
@@ -552,7 +552,7 @@ sharp cost is 0.392424545003417… [P + C · 2.6a].
 flank and upper rows; the normalised visible cubic ν·z₁(T − 2)/√2 has costs 0.22, 0.24, 0.25. These bounds hold at
 every amplitude with arbitrary sharing, for both Λ and Λ̂. Simultaneous raw odd sectors satisfy the sum of these
 costs when E[Q | q] = E[P | q] = E[Q·conj(P) | q] = 0; the retained simultaneous conclusion is proved when q and
-(Q, P) use disjoint Gaussian blocks and Q, P have their genuine chaos degrees [P + C, author only · codex-a7c4 ·
+(Q, P) use disjoint Gaussian blocks and Q, P have their genuine chaos degrees [P + C · codex-a7c4, re-derived and replayed by claude-b9ee ·
 7.2.6, 7.2.7]. No A or B shell is present in that base.
 
 **General nonzero core.** By parity (1.7) there is no first-order term and no coupling to the even block; what is needed is a
@@ -578,13 +578,12 @@ six sector energies in (1.7), with E_ν = 2|d|². Every actual response, with al
     E_q/2 + 2E_A/3 + 4E_B/3 + E_Q + E_P + 8E_ν/7 ≤ ε²(R² − t²).
 
 The proof combines the common-response support inequality with weighted Cauchy–Schwarz; equivalently it is a
-weighted Bessel bound with h and k in separate slots. It improves the previously used ellipsoid by
-ε²(R − t)²/2 in that ellipsoid's normalization [P, author only · codex-a7c4 · 2.12b]. It is a feasibility bound,
+weighted Bessel bound with h and k in separate slots [P · codex-a7c4, re-derived by claude-b9ee · 2.12b]. It is a feasibility bound,
 not a claim of odd-sector monotonicity.
 
-At ε = 1891/2500, for t ≥ 0.84 the reviewed remote cap remains 0.046266 [P + C · codex-a7c4, re-derived by
+At ε = 1891/2500, for t ≥ 0.84 the remote cap is 0.046266 [P + C · codex-a7c4, re-derived by
 claude-b9ee · 2.12a]. Combining it with the stronger ellipsoid gives total energy below 0.080051; the total is
-below 0.070564 for t ≥ 0.8456 and below 0.061366 for t ≥ 0.851 [P + C, author only · 2.12b]. Without a threshold in t no such cap holds
+below 0.070564 for t ≥ 0.8456 and below 0.061366 for t ≥ 0.851 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 2.12b]. Without a threshold in t no such cap holds
 (chapter 4, item 69). The October manuscript has 25 further response constraints [R · 2.12]. These cuts apply to
 responses only: inserting them inside a supremum over all G is invalid, and two penalties that spend the same square
 cannot be added.
@@ -623,10 +622,10 @@ K-consumer exists [open · STATUS §8].
 6. **The response regions outside R and the consumer**: cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
-   Left: A and B jointly with the tilted A direction (on the grid the tilted pointwise remainder bound has margin
-   0.252 at the tilt (0.6, 0)), then both contents budgeted with the full cost matrix; the finite-amplitude cost for
-   the matched B tilt (its content is bounded in 2.7, author only); the odd sectors; the other rows, through the weighted scaling of 1.6; more than three remote
-   variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).
+   Left: prove the joint remainder premise (P) of 2.8 on 0 ≤ w ≤ 1.9 and
+   sqrt(|α|² + |β|²) ≤ 1.48; its conditional assembly uses the existing tilted-content theorem.
+   The other obligations are the odd sectors, the other rows through the weighted scaling of 1.6,
+   and more than three remote variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).
 8. **The identity-tail witness** raises the model ceiling to 1.40248 and is untested at certificate level.
 
 The independent audit advises treating this as a bounded research programme with an explicit decision point, not as a
