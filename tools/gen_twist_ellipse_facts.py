@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate native twisted-ellipse shard/total statements and registration manifest.
+"""Generate native twisted-ellipse shard statements and registration manifest.
 
 Agent-ID: codex-40e8. Refs #343.
 Requires complete validated plans and their current generated Lean arrays. Budgets
@@ -8,6 +8,11 @@ this script. --budgets optionally checks that those recorded inputs equal the
 caller's expected budgets. Generated native_decide statements still need Lean to
 execute them; no analytic remainder theorem is generated. Shared axiom registries
 are never edited. Root registers the reproducible facts-registration.json entries.
+
+The budgets only validate the plans here (the exact errorCap sum of each power).
+No total fact is generated: the upper bound checks the totals in Lean, by kernel
+evaluation, against its tight panel radii (`j1TightTotal`, `j2TightTotal`,
+`j3TightTotal` in Grothe/UpperTightPanelTotals.lean). Agent-ID: claude-b9ee. Refs #405.
 """
 from __future__ import annotations
 
@@ -83,15 +88,6 @@ def render(rows, count, budgets, input_sha256):
             files[stem + ".lean"] = "\n".join(lines)
             entries.append({"kind": "range", "j": j, "first": first, "stop": stop,
                             "module": MODULE + "." + stem, "theorem": NAMESPACE + "." + fact})
-        stem, fact = f"J{j}Total", f"j{j}Total"
-        lines = header(input_sha256) + [
-            "/-- Exact cap total against the recorded relaxed radius minus tail/gap reserve. -/",
-            f"theorem {fact} :",
-            f"    totalOK j{j}Certificates {plans.lean_q(budgets[j-1])} = true := by",
-            "  native_decide", "", f"end {NAMESPACE}", ""]
-        files[stem + ".lean"] = "\n".join(lines)
-        entries.append({"kind": "total", "j": j, "budget": str(budgets[j-1]),
-                        "module": MODULE + "." + stem, "theorem": NAMESPACE + "." + fact})
     files["Checks.lean"] = "\n".join(
         ["import " + entry["module"] for entry in entries] + ["",
          "/-! Imports all generated twisted-ellipse finite checks. No aggregate or analytic theorem.",
@@ -183,7 +179,7 @@ def main(argv=None):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(text)
         print(json.dumps({"status": "checked" if args.check else "generated", "panels": len(panels),
-                          "range_facts": len(entries)-3, "total_facts": 3,
+                          "range_facts": len(entries),
                           "panel_budgets": [str(q) for q in budgets],
                           "errorCap_sums": [str(q) for q in totals], "registration": str(reg)}))
         return 0

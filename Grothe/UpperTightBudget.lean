@@ -1,7 +1,7 @@
 -- Grothe/UpperTightBudget.lean
 import Grothe.UpperEnergyBudget
 import Grothe.Upper.ImprovedHeadWeightData
-import Grothe.Upper.RelaxedThreeBandBudget
+import Grothe.Upper.ThreeBandBudget
 import Grothe.UpperChaos.PhaseMomentData
 import Grothe.UpperChaos.TaylorCenterBandData
 import Grothe.UpperChaos.TaylorBandData

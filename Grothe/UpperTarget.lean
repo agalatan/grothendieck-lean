@@ -7,14 +7,12 @@ import Grothe.UpperChaos.GroupedRounder
 This module connects the proof to the statement `Grothe.Statement.UpperTarget`
 (`some Grothendieck bound is below 1.4046`, `Grothe/Statement.lean`).
 
-* `upperBelow_of_bound`: a Grothendieck bound below `c` proves `UpperBelow c`.
-* `upper_target_of_inputs`: **the current state of the upper bound.** The target follows from the
-  concrete rounding of `fresh_upper_concrete_taylor`; its hypotheses are exactly what is not yet proved
-  in Lean (the finite-band Gaussian error estimates of the three Taylor centers and the energy-table
-  accuracy). When they are proved, an unconditional `theorem upper_target : UpperTarget` replaces it.
-  Whether its proof then rests on standard axioms and the listed native facts only is what the axiom
-  report (`scratch/Axioms.lean`, `scripts/check_axioms.py`) will show; this theorem's own report says
-  nothing about the inputs.
+* `upperBelow_of_bound`: a Grothendieck bound below `c` proves `UpperBelow c`. The upper bound
+  `upper_below_tight` (`Grothe/UpperTightFinal.lean`) uses it.
+* `upper_target_of_inputs`: the conditional sharper route. The target follows from the concrete
+  rounding of `fresh_upper_concrete_taylor`; its hypotheses are the finite-band Gaussian error
+  estimates of the three Taylor centers, which are not proved in Lean, and the energy-table accuracy
+  (proved: `Final.hclose_final`). `main_bounds` does not use it.
 
 What `UpperTarget` says about the constant (`K_G^ℂ < 1.4046`) is `constant_lt_of_upperBelow`
 in `Grothe/StatementBridges.lean`.
