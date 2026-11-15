@@ -1,0 +1,54 @@
+{
+  "Agent-ID": "codex-91d4",
+  "issue": 436,
+  "status": "PASS EXACT ARITHMETIC ONLY; analytic strip proof is separate",
+  "global_averaged_Psi_proved": false,
+  "full_cap_discriminant_Holder_charge_proved": false,
+  "D0_example": {
+    "e_EA": "1/2000",
+    "beta": "3729782500/485709519",
+    "q": "-A(|A|^2-2e)/(2b^2)",
+    "D0_cubic_coefficient": "0",
+    "D0_linear_coefficient": "0",
+    "u": "78125/525632348672",
+    "EA": "1/2000",
+    "EB": "6955638748653125/235913736847211361",
+    "W_Q": "1/1000",
+    "total_energy": "467810842745673306281/15098479158221527104000",
+    "weighted_energy": "3682081604859795263707/90590874949329162624000",
+    "ellipsoid_cap_lower": "92188367294087971460561797238664817070013001489572415200455706300328152074989142820715158623056082247117793949376173375645604699693774998597624955586449125210083389412378404984082979335158870719254611481125242662770228941379467729120017540585667612147193633881958215870626103778097653239329286356172575770978610877632228761340774056133/2019203950236150534257203724840600127776834109269112050533933009268764866604659607865283050695893535597423017726350214785582538357033973987697939849993746927622714664380363399443725138105497412849385671268053223154462624596803232553234435062434740565811011265679266032590103363311133252753457349368271245282357995165511965751647949218750",
+    "regional_lhs": "37968497807155270977691/7549239579110763552000000",
+    "regional_limit": "1087/500000"
+  },
+  "strip": {
+    "delta": "3/5000000",
+    "euler_lower": "27/10",
+    "probability_upper": "100/18017289",
+    "M4_reference": "43/20000",
+    "reference_energies": {
+      "W_Q": "1/200",
+      "W_P": "1/200",
+      "W_nu": "0"
+    },
+    "Holder_eta": "1/20000",
+    "critical_probability_cube": "1/5504000000000000",
+    "scope": "50-micro Holder charge only when E|O|^4 <=43/20000; not a whole-cap moment bound"
+  },
+  "near_gradient": {
+    "compact_K": "891/500",
+    "gradient_coefficient": "2826082/145625",
+    "gradient_coefficient_square": "6389739471349/16965312500",
+    "g": "3/100000000",
+    "20g": "3/5000000",
+    "scope": "Given analytic inclusion |D1|<=20sqrt(Gamma) on compact core and sqrt(Gamma)<=a/2"
+  },
+  "rejection_controls": [
+    "replace beta by beta+1",
+    "replace factor20 by19",
+    "replace delta6e-7 by1e-6"
+  ],
+  "source_sha256": {
+    "verify_discriminant.py": "bf65e43ab5ed5a606b7183632811c3828c3324423f278c2a48a8544ac733db9f",
+    "verify_primitives.py": "9a0bee97cef9faf2ae508893584af7855893463be3e7739f7c6f5417ada837d8"
+  }
+}

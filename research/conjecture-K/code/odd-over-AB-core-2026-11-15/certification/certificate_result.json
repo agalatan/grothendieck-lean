@@ -1,0 +1,63 @@
+{
+  "Agent-ID": "codex-91d4",
+  "issue": 430,
+  "status": "PASS FRESH RIGOROUS COMMON-TRIAL COUNTEREXAMPLE",
+  "claim": "J_odd - (1/100)||U||^2 - 1/20000 > 1/10000",
+  "scope": "Fixed exact one-Y genuine polynomial candidate; common remote trial xi=-3R/5; full complex visible infimum",
+  "asserted_actual_bounded_common_response": false,
+  "asserted_absolute_K_violation": false,
+  "cells": 8192000,
+  "compiler": "Apple clang version 17.0.0 (clang-1700.6.4.2)\nTarget: arm64-apple-darwin25.3.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "compiler_flags": [
+    "-O2",
+    "-std=c++17",
+    "-frounding-math",
+    "-ffp-contract=off",
+    "-fno-fast-math"
+  ],
+  "commands": [
+    [
+      "clang++",
+      "-O2",
+      "-std=c++17",
+      "-frounding-math",
+      "-ffp-contract=off",
+      "-fno-fast-math",
+      "dual_verify.cpp",
+      "-o",
+      "dual_verify"
+    ],
+    [
+      "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+      "-I",
+      "make_moments.py",
+      "--nx",
+      "320",
+      "--ny",
+      "160",
+      "--nr",
+      "160",
+      "--dependency-dir",
+      "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/dependencies",
+      "--output",
+      "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-odd-over-AB-core-2026-11-15/phase1/certification/moments_certified.txt"
+    ],
+    [
+      "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-odd-over-AB-core-2026-11-15/phase1/certification/dual_verify",
+      "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-odd-over-AB-core-2026-11-15/phase1/certification/moments_certified.txt"
+    ]
+  ],
+  "python_version": "3.12.3 (v3.12.3:f6650f9ad7, Apr  9 2024, 08:18:47) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "python_flint_version": "0.9.0",
+  "arb_precision_bits": 160,
+  "source_and_output_sha256": {
+    "make_moments.py": "171c55139c1304a3d7788543b194eb9d3cbec50a0ab717a5345ab64e0f078c2f",
+    "dual_verify.cpp": "840ebd3a9c381ad72794fb4a11437e0dfdd3ef2ae5113d907b8e216c480c8f04",
+    "dual_verify": "bc019f9dd290e6753fdea23eb26345b1674175efef57362641cc93d0d8142fcb",
+    "verify.py": "5730358ec6f2bd43be21d4f301d1ab4a143b22bd319d93664babbd301e222f51",
+    "moments_certified.txt": "feba182c3bba89a61cfb3ce122266efc4b4c80e2ca253c7f4b1f965795c4b3f6",
+    "moments_certified.log": "897d2b0ab3ae1ea7f4c06f3e2972239841d7da93e6d151863320b5db2db6ce06",
+    "dual_certified.log": "cc1c7d96430c3cf978e6b01f781aace70a097e5eea24c6933fd866fb7708f840"
+  },
+  "seconds": 2.4835285419831052
+}

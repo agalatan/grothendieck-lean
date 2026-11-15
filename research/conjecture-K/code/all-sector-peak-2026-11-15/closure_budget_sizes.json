@@ -1,0 +1,20 @@
+{
+  "Agent-ID": "codex-91d4",
+  "issue": 436,
+  "status": "PASS RATIONAL SIZE COMPARISONS ONLY",
+  "averaged_Psi_premise_proved": false,
+  "counterexample_to_Psi_premise": false,
+  "uniform_small_W_strip_exact": "1540081/2500000000000000",
+  "u": "50431/1250000",
+  "W": "1/100",
+  "M4": "43/20000",
+  "optimized_floor_upper_estimate_fourth_power": "400/13192227",
+  "optimized_floor_upper_estimate_decimal": "0.0742053929011817061621521516852909506994860941",
+  "coarse_rigorous_target_budget_upper": "2670411/37820000",
+  "coarse_budget_decimal": "0.0706084346906398730830248545742993125330512956",
+  "exterior_mass_upper_exact": "2543285761/451068750000",
+  "exterior_odd_energy_upper_exact": "1462499/891000000",
+  "exterior_mixed_tail_upper_decimal": "0.00608436335952220734268548251809983655357876382",
+  "exterior_fourth_moment_tail_upper_decimal": "0.00886143232886107887244523082229978284638083588",
+  "critical_smallball_mass_cube_exact": "1/5504000000000000"
+}

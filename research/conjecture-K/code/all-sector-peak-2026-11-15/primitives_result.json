@@ -1,0 +1,69 @@
+{
+  "Agent-ID": "codex-91d4",
+  "issue": 436,
+  "status": "C for arithmetic ingredients only; P_Psi and global all-sector cap remain OPEN",
+  "product_bounds": {
+    "qQ": "17",
+    "qP": "12",
+    "rQ": "3",
+    "rP": "3",
+    "QP": "7",
+    "Q2": "9",
+    "P2": "6",
+    "q2": "44"
+  },
+  "odd_fourth_coefficients_Qsqrt2": {
+    "(4, 0, 0)": [
+      "18",
+      "0"
+    ],
+    "(3, 0, 1)": [
+      "0",
+      "8"
+    ],
+    "(2, 0, 2)": [
+      "24",
+      "0"
+    ],
+    "(0, 0, 4)": [
+      "44",
+      "0"
+    ],
+    "(0, 4, 0)": [
+      "12",
+      "0"
+    ],
+    "(2, 2, 0)": [
+      "56",
+      "0"
+    ],
+    "(1, 2, 1)": [
+      "0",
+      "16"
+    ],
+    "(0, 2, 2)": [
+      "16",
+      "0"
+    ]
+  },
+  "quadrature": {
+    "radial": "27257385485796527441291077/100000000000000000000000000000000",
+    "angular": "17245252394619191017185919/100000000000000000000000000000000",
+    "tail": "3939115384361991347/100000000000000000000000000000000",
+    "total": "44502641819531102820468343/100000000000000000000000000000000",
+    "radial_intervals": "8192",
+    "radial_endpoint_nodes": "8193",
+    "angular_nodes": "8192"
+  },
+  "quadrature_ceiling": "7/15625000",
+  "rejection_controls": [
+    "qQ=16",
+    "qP=11",
+    "QP coefficient=55",
+    "delete cubic Q/nu term",
+    "halve both grid sizes",
+    "error allowance=4e-7"
+  ],
+  "scope": "Uniform quadrature error for c=0 positive two-norm trial, NOT its grid expectation; no lower baseline or Psi integral certified",
+  "source_sha256": "9a0bee97cef9faf2ae508893584af7855893463be3e7739f7c6f5417ada837d8"
+}
