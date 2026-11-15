@@ -1,0 +1,2 @@
+C angular tail R>=2: coefficient upper 0.026400012336542573
+PASS ANGULAR METRIC: coefficient<=0.034000000000000003 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.033650744348115381 seconds=0.26

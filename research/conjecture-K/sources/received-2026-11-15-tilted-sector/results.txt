@@ -1,190 +1,264 @@
 Agent-ID: codex-6e2b
+FINAL STATUS: P+C; full tilted-sector lemma for 0<=u<=463/10000.
+
+C^2 <= (3/10)D_+ + 6/10^6, every finite-dimensional genuine complex (2,1) Wick cubic.
+Global secant remainder <= (13/20)|rho|^2, all complex w,rho.
+Therefore every remote linear r obeys the task inequality with
+s=3/5, kappa=56730/59009<1, eta=5673/295045000<1/50000.
+No localization, deficit-positivity, or maximizer hypothesis.
+This is a mathematical proof plus exact/interval certificates, not a Lean theorem.
+No new Grothendieck constant bound is claimed.
+
+COMPLETED RUNS AND PROVENANCE
+1. Earlier complete global secant/content replay: results_secant_history.txt.
+   Its numerical source files and original wrapper are unchanged; all 14 recorded
+   source hashes are checked against current files by the additive replay.
+   The archived log's final OPEN statement describes the state before this extension.
+2. Fresh integrated additive replay: python3 -I -B verify.py --deficit-only.
+   Process exit code 0. Full transcript follows below, including all new input/output hashes.
+   It regenerated all 10 used barriers, all four angular tables/checks, the two
+   moment covers, the default Stein cover with freshly integrated profile caps,
+   and the exact union. Static inputs were checked unchanged after execution.
+3. A single invocation of the new combined default command was NOT rerun.
+   python3 -I verify.py executes the old full chain then the new additive chain.
+   The completed evidence comprises run 1 plus run 2; hashes bind their dependencies.
+4. Independent mathematical, source, and wrapper audit: deficit_audit_results.md, PASS.
+   Additional independent replay passed all 10 common-source barriers and low moments.
+
+COVER SUMMARY
+[0,.009]: 32 boxes, 20 fresh global Hermite caps.
+[.009,.016]: 40 boxes, 33 fresh global Hermite caps.
+[.016,.0463]: 106 boxes, 119 global Stein duals, zero rejected models.
+Union: 178 rectangles, 45 exact energy strips, zero uncovered regions,
+       full [0,463/10000] x [0,42] in (u,chi), boundaries included.
+
+FINAL PROOF / EVIDENCE HASHES
+FINAL SHA256 REPORT.md d697d3682a5e5a36fc8ad391e19183f91da5f11bb82337548443b10413b4202f
+FINAL SHA256 verify.py 7931e47c76703dc182409e90e710e1cebc116035718f9aa6530347ecce950b55
+FINAL SHA256 deficit_audit_results.md 5083a06babf063c6fa561dffceb4a319a767a22d2d5dda371ae06705d0fc8996
+FINAL SHA256 secant_proof.md 6aaff2395fca95da706299b14e0a5bea3497d1281b559550bec45d5dd5fccd40
+FINAL SHA256 secant_content_proof.md c379a83ddcdd7b1913127be83713973d4f91fd243e6768497c4e1aac8e310b4d
+FINAL SHA256 secant_assembly.md 0d3848dc1147dfffa70b5ce1e1c5f39cdfadaa649afafd64427feb43e900f76c
+FINAL SHA256 deficit_dual_proof.md b79cb8cb0193c5a80963229a3c001c14035e344f5178a00a268662e823a694ba
+FINAL SHA256 deficit_moment_verify_proof.md 26f31cb1e6102a90616da3b9ee778f55794a44cd8c6409e5347e2dea519f7125
+FINAL SHA256 deficit_moment_prefix_proof.md b8baffcee2912b2bdc0a0fb8cdcc6586fea48ec26ab7cfcc4c8dc1e30d8c419e
+FINAL SHA256 deficit_structure_content_proof.md 77f7c8d3a6fe4c6e7ce72660002ba4285948e2db42674141eef3e107f247c5b8
+FINAL SHA256 deficit_structure_refine_proof.md b2632c6b515bdd656c3022f2de964309c04cf7da5cf08659df2fbd75ced1406b
+FINAL SHA256 deficit_structure_medium25_proof.md 8a3ed2efba3794fe22de8759627cd17f3787c78fe924f8ff14ac85efc8ff43f2
+FINAL SHA256 deficit_structure_absolute_low_proof.md 93b82b5acbfd3411360bffbf1da31979abff14c87cad2f5f53811b9034483876
+FINAL SHA256 deficit_angular_proof.md 315d9109ea0ea0fd6f083ee78220b4dad6de18735d361d4eaf108b6c0f49fecd
+FINAL SHA256 deficit_integrated_results.txt 6f802691de7ef2a6f9242d44173d4b4847f12a6779c105f03029bea21221e2fe
+FINAL SHA256 results_secant_history.txt 39e37a1d4e713f6377ef02afb52f67f53e56dfd6d1c6b138a188122d2f63f43a
+FINAL SHA256 verify_secant_history.py 7572574a7357e3dc4772b438fcc7a6b924f24244826e24ea281f6267e9285caf
+FINAL SHA256 REPORT_secant_history.md 94a46ca8b87092365993485844a8c2d7c4c9b685c72c6b93a1cd42a0be6a8213
+INHERITED PROOF SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/sources/audit-2026-11-15-codex-a7c4/remote_strong_PROOF.md 69e3fcc3c549f36e6c0a13d1bf921940fa1fbcccf3d5c019e6cfb648fbabda85
+INHERITED PROOF SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/sources/audit-2026-11-15-codex-a7c4/REMOTE.md e27ae866d67b94c092be75f7d864eb03d4b317d3d7338fb8dcd5ccc8adf3a6ad
+
+FRESH ADDITIVE REPLAY TRANSCRIPT
+
+Agent-ID: codex-6e2b
 C exact pi [3.141592653589793, 3.141592653589794]
 C exact I0 [2.863947582582862, 2.863947582582863]
 C exact I1 [1.193675717354603, 1.193675717354604]
 C exact I2 [1.527398493771395, 1.527398493771396]
 C exact j0<179/125; content coefficients 2/25, 3, 19321/10^6.
-SHA256 verify.py 7572574a7357e3dc4772b438fcc7a6b924f24244826e24ea281f6267e9285caf
-SHA256 secant_exact.py 602d6f3255c900b7a652b0ccf7fa2edb201eb0b3d49daa0776941d38cd4efcad
-SHA256 theta_verify.cpp c8ed8c2cf10a05f780f7e0495ba8c1b073fb4f3cb534adb99e781315a54590ef
-SHA256 theta_candidates.txt c2ddf49d99b1a8a3e51a422740ad61ebd5b51bba3bede469c8cc97d730f48a26
-SHA256 localization_circle.hpp aa115bd4e4cc72ef6e19e0afd2fd28df08f065b38aa50bfb0eda5ddd60b67d99
-SHA256 content_profile.py be624d3fa785bd9ab46b1d89a17a1ae23456a9fe1e10834f36b405cc1cc376c5
-SHA256 profile_range.py 155a019564cdf1e873b0464798ea62c8193da2d5fb65042f87f0de96e03ed597
-SHA256 content_next_bound.py f1cde71ce142cc579a49c67af28dce684fde4ea92089ef88f4e5f8fc30872c3b
-SHA256 content_next_m3.py 20e4b9aa6c67050844b7ceac56b90fd37e765b3aecd2360a8d6c791b599ea683
-SHA256 secant_profile_table.py f218f439445163c0b664bae57aa864d998d89155a9118b8581c5fdbaa2c8b7ec
-SHA256 secant_profile_dual.py 7c076bf0a8afd8afa9cd52b89bd715ea96096a3e9584ea09ba65ba9d2a49ae9d
-SHA256 secant_verify.cpp 05587544ff9b3c96a863179185d42925d1c06b7e866b3b9a4bd1bc0911ce3f11
-SHA256 secant_content_verify.py 68025db61f15c4a92cf0853ece74cb5abf3dac30ef0c9cfa9c8f845e3c7e7198
-SHA256 secant_content_witness.json ddb1e7214b8348e2975db9c85050e571938a371c099dacf0300aeed01d8ebf20
-RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_exact.py
-PASS SECANT EXACT: large-amplitude and exterior constants; small-amplitude target and tails; central-content coefficient.
-P-Sec = 59009/189100 ; exterior cap = 3603551/5604000 ; content coefficient = 1077659/27000000
-Conditional assembly: all-tensor u<=196979/10^8; full-energy delta<=2037/12500000; D>=133/10^5.
+PREREQUISITES: previous complete secant/content replay; all 14 source hashes match. Those earlier numerical checks are NOT rerun by --deficit-only.
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/verify.py 7931e47c76703dc182409e90e710e1cebc116035718f9aa6530347ecce950b55
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_exact.py 01b7da17d71381d8ff2ccf9d570b09715114e93edf4f69a19d23093a35e0300e
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_barriers_replay.py 1c4783425dd8765eb59d48690338fa98a35f3519b3b5d06ee7f0eddcb0485be7
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_verify.py a92c48cfb6e3d38348ec12fa6b523bfca144ef19b8a5da5c3e51a964786fc785
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_verify.py 34e2ad1f5b8c3f0a8de262ee15b167e9189b3113a7aa03498bfef7c0b52b26f5
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_medium25_verify.py 9bc1ea006a5913774bf211a2d02769c6ea052eb0ce132b7cc5e5c844b620ba7a
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_absolute_low_verify.py ba4e679d6a68b7184447ccbbeb2b23a9bb15e9be5d315ad32f9824c6f4f5f39c
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_angular_prepare.py 3cd1c0a3df3e1d9cb6d6721445202c3a681154a53897524f45c2a38bf3e49cff
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_angular_verify.cpp 56a26961f5bf2929d768dffef8772a4f914d630e28378e95ac592db00aa2cdf9
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/theta_verify.cpp c8ed8c2cf10a05f780f7e0495ba8c1b073fb4f3cb534adb99e781315a54590ef
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/localization_circle.hpp aa115bd4e4cc72ef6e19e0afd2fd28df08f065b38aa50bfb0eda5ddd60b67d99
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_content_verify.py 68025db61f15c4a92cf0853ece74cb5abf3dac30ef0c9cfa9c8f845e3c7e7198
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_profile.py be624d3fa785bd9ab46b1d89a17a1ae23456a9fe1e10834f36b405cc1cc376c5
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_next_bound.py f1cde71ce142cc579a49c67af28dce684fde4ea92089ef88f4e5f8fc30872c3b
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_next_m3.py 20e4b9aa6c67050844b7ceac56b90fd37e765b3aecd2360a8d6c791b599ea683
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_gaussian.py 26d1852347aca16f6321bc61cfb887a3bb9a3d6113c64912d7b960ae36747593
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_verify.py eedf6a442fe4b836e3ff2ba494b9176324f63b6adb368b36bc6d670e192dde90
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_prefix.py b206963e3583c6d4f307b9e60b30fa2e22b5ab83c045722097761c0bc6bdbaa9
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_cover_verify.py c91bc0f4d94ad9764cf93d8b711be480b2336ea48fb49213b77b9830895902f4
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_exact.py 8887b4316c5259c89ec04425825555551ca955b786ba166c749952889016a7ce
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_profile_caps.py ed7638af9f05d05b5c31071f247f87faf8eab0834908440e516a274384ec4826
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_cover_candidates.json 6441733fd5824feb974740ddd6ad27aff46049238d1a57a18236e2a82ea0933b
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_cover_union.py 629e947a3474246e4bf48bbe6d180767244391401058784ee02e7e645ba0b217
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_009.json 94844165a99c14988b160a8b9afd026c18d31e27399f5a7b09972ade88fe969c
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_012.json 37ce6a4c7fe1e1d9dd7130c4b21de555eaf84aab5c9c4b5cb9c74f2029dfb381
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_015.json 4c2cd0e21df5eee6efd9682ca91ac302685a1cff674216ed0f5dae97838022ae
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_018.json 1a0b0f418a3251b85acd89bf0685bd19424c29c3466149b9b7bc1c5a76fae582
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_refine_witness_020.json b6c651ae1b2ae9028a306e4fcfac7f8af6f7ca3d6bb2868d5fa6ca5ccd6e5982
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_medium25.json d49e72a04a42917eb2d8774c15db193cb9220fbd34d7c541cc959e827044ca75
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute.json 2db0596069ea33bf8cb1a3ac7db07b53c55f4d161f4d7f8498beeb5390125196
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute44.json 581f7e90ec6fe1a52e42271d43b5e337319a93fdcd37b2b934b87a7ce53b21c6
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute30.json f393ddc6b8f88039bcba2f4d351d0c4315fd7866cd9b37bd61546a258dfee50e
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute35.json 5b8080128ad1791fd57a491abbf814c996806fe32cd8213f16171580514a92e4
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile.py fb6a187270358a7b230a6824fa1cb9e85b8f155666d2b9cfb4df9071b9caaf0a
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/verify.py 7a3eb7592ab569be08cb95a5e9c061b9339e6a054773d93d7abbe8493b5485c2
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/exact.py 8149a1b17c054c58461f36a8a2e030a2c324041c4b18d9e2e6eef72185e94145
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/check_stein.py 669688428045a2564a44680a62bdfca9277494c96b98155acc772691a21b8328
+DEFICIT INPUT SHA256 /Users/alingalatan/workspaces/grothe/research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original/profile-caps.json 01c2e2a7b4af452ce8729ec47cb0cd2c3aa7e1368c6b58336270c2a19b349514
 python-flint 0.9.0 via /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python
-RUN /usr/bin/clang++ -O2 -std=c++17 -frounding-math -ffp-contract=off -fno-fast-math /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/theta_verify.cpp -o /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-secants-_2ymuplt/theta_verify
-RUN /usr/bin/clang++ -O2 -std=c++17 -frounding-math -ffp-contract=off -fno-fast-math /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_verify.cpp -o /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-secants-_2ymuplt/secant_verify
-RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-secants-_2ymuplt/theta_verify --certify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/theta_candidates.txt
-C: angular candidate inclusions and both matrix inequalities passed.
-left matrix: [0.74365962957451959,0.74365962957538468] [0.60722634698712453,0.60722634698797107] [0.015255833373980854,0.015255833374020433] 
-right matrix: [0.74532224849003393,0.74532224849092355] [0.63173384525908439,0.63173384525995769] [-0.001410996357076238,-0.0014109963570756289] 
-C: exterior |w|>=23/4 and all y>=5 tails passed.
-progress visited=3000 accepted=1494 pending=13 sec=4.4
-progress visited=7000 accepted=3496 pending=9 sec=11.6
-progress visited=8000 accepted=3996 pending=9 sec=13.0
-progress visited=10000 accepted=4995 pending=11 sec=16.6
-progress visited=11000 accepted=5496 pending=9 sec=18.5
-progress visited=12000 accepted=5996 pending=9 sec=20.4
-PASS C: all 256 scalar envelope triples certified; accepted=6168 visited=12335 maxdepth=24 time=21.49 sec
-P+C conclusion with the accompanying projection/envelope proof: Theta(3/10) <= 3/4 at s=3/5.
-RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/profile_range.py --certify
-{"dependency": {"claim": "C GLOBAL PROFILE CERTIFICATE", "statement": "sup_R>=0 N_Phi(R) < 1/3", "compact_boxes": 111, "largest_compact_upper": "[0.33332331047418093685746922472253686604131253518 +/- 9.31e-49]", "seconds": 58.86899423599243}}
-{"claim": "C endpoint ranges", "result": {"c0": "[0.024048342160729148377022632064871827420344349 +/- 3.19e-46]", "moment_upper": "[2.3809090560000000000000000000000000000000000000 +/- 2.63e-47]", "Fraw_lower_R>=3": "[0.07090909866666666666666666666666666666666666667 +/- 6.72e-48]", "h_upper_R>=3": "[0.222831688529697052119265984700345553870976268 +/- 5.13e-46]", "small_radius_abs_bound": "[0.023094010767585030580365951220078298225904070051 +/- 2.58e-49]"}}
-{"claim": "C GLOBAL PROFILE RANGE", "statement": "-1/40 < h_(3/5)(v) < 253/1000 for all v>=0", "compact_boxes": 158, "content_squared_u<=.0463": "[0.00089456230000000000000000000000000000000000000000 +/- 7.64e-51]", "content_norm_bound": "3/100", "seconds": 207.21486115455627}
-RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_profile_table.py --skip-dependency-replay
-CONDITIONAL RUN: N_Phi<1/3 must already be certified by the calling chain.
-{"progress": 25, "total": 602, "R": "47/200", "raw": "[0.0184 +/- 5.82e-5]", "cells": 1315, "seconds": 17.017112970352173}
-{"progress": 50, "total": 602, "R": "97/200", "raw": "[0.0863 +/- 8.89e-5]", "cells": 1348, "seconds": 33.60126090049744}
-{"progress": 75, "total": 602, "R": "147/200", "raw": "[0.1792 +/- 8.01e-5]", "cells": 1392, "seconds": 55.38442611694336}
-{"progress": 100, "total": 602, "R": "197/200", "raw": "[0.2674 +/- 7.60e-5]", "cells": 1394, "seconds": 79.9440369606018}
-{"progress": 125, "total": 602, "R": "247/200", "raw": "[0.3401 +/- 8.87e-5]", "cells": 1391, "seconds": 101.17964506149292}
-{"progress": 150, "total": 602, "R": "297/200", "raw": "[0.3968 +/- 7.44e-5]", "cells": 1409, "seconds": 119.49242806434631}
-{"progress": 175, "total": 602, "R": "347/200", "raw": "[0.4400 +/- 5.63e-5]", "cells": 1417, "seconds": 141.23842215538025}
-{"progress": 200, "total": 602, "R": "397/200", "raw": "[0.4727 +/- 5.23e-5]", "cells": 1403, "seconds": 162.79658889770508}
-{"progress": 225, "total": 602, "R": "447/200", "raw": "[0.4975 +/- 6.33e-5]", "cells": 1385, "seconds": 183.04758095741272}
-{"progress": 250, "total": 602, "R": "497/200", "raw": "[0.5165 +/- 8.49e-5]", "cells": 1375, "seconds": 203.82499599456787}
-{"progress": 275, "total": 602, "R": "547/200", "raw": "[0.5311 +/- 7.84e-5]", "cells": 1374, "seconds": 223.88628888130188}
-{"progress": 300, "total": 602, "R": "597/200", "raw": "[0.5424 +/- 9.44e-5]", "cells": 1377, "seconds": 247.03216791152954}
-{"progress": 325, "total": 602, "R": "647/200", "raw": "[0.5514 +/- 5.47e-5]", "cells": 1380, "seconds": 269.0486888885498}
-{"progress": 350, "total": 602, "R": "697/200", "raw": "[0.5585 +/- 6.75e-5]", "cells": 1370, "seconds": 287.71387910842896}
-{"progress": 375, "total": 602, "R": "747/200", "raw": "[0.5642 +/- 9.63e-5]", "cells": 1355, "seconds": 306.1144320964813}
-{"progress": 400, "total": 602, "R": "797/200", "raw": "[0.5689 +/- 5.34e-5]", "cells": 1342, "seconds": 326.00547313690186}
-{"progress": 425, "total": 602, "R": "847/200", "raw": "[0.5727 +/- 7.78e-5]", "cells": 1331, "seconds": 344.6279208660126}
-{"progress": 450, "total": 602, "R": "897/200", "raw": "[0.5759 +/- 5.07e-5]", "cells": 1321, "seconds": 362.45144605636597}
-{"progress": 475, "total": 602, "R": "947/200", "raw": "[0.5786 +/- 9.64e-5]", "cells": 1316, "seconds": 381.7017910480499}
-{"progress": 500, "total": 602, "R": "997/200", "raw": "[0.5808 +/- 5.58e-5]", "cells": 1311, "seconds": 404.9694700241089}
-{"progress": 525, "total": 602, "R": "1047/200", "raw": "[0.5827 +/- 5.12e-5]", "cells": 1303, "seconds": 423.5352289676666}
-{"progress": 550, "total": 602, "R": "1097/200", "raw": "[0.5843 +/- 8.68e-5]", "cells": 1297, "seconds": 451.15956592559814}
-{"progress": 575, "total": 602, "R": "1147/200", "raw": "[0.5857 +/- 9.93e-5]", "cells": 1292, "seconds": 472.9303481578827}
-{"progress": 600, "total": 602, "R": "1197/200", "raw": "[0.5870 +/- 7.25e-5]", "cells": 1290, "seconds": 494.64337277412415}
-{"progress": 602, "total": 602, "R": "6", "raw": "[0.5870 +/- 9.61e-5]", "cells": 1291, "seconds": 496.10886883735657}
-{"claim": "certified secant beta0 radial table", "nodes": 602, "scale": 100000000, "raw_radius_tolerance": "1/20000", "dependency_replayed_here": false, "path": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_profile_table.txt", "seconds": 496.11190009117126, "passed": true}
-RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-secants-_2ymuplt/secant_verify --certify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_profile_table.txt
-progress visited=1000 accepted=492 pruned=0 pending=17 depth=27 points=985 f_calls=668 source_cells=71868 sec=0.6
-progress visited=2000 accepted=991 pruned=42 pending=19 depth=27 points=1901 f_calls=1258 source_cells=116566 sec=1.2
-progress visited=8000 accepted=3995 pruned=360 pending=11 depth=27 points=6859 f_calls=4715 source_cells=405111 sec=3.7
-progress visited=11000 accepted=5494 pruned=482 pending=13 depth=27 points=9174 f_calls=6462 source_cells=546240 sec=4.6
-progress visited=15000 accepted=7494 pruned=811 pending=13 depth=27 points=12643 f_calls=8476 source_cells=737268 sec=6.5
-progress visited=16000 accepted=7993 pruned=928 pending=15 depth=27 points=13530 f_calls=8923 source_cells=776431 sec=6.9
-progress visited=17000 accepted=8494 pruned=1032 pending=13 depth=27 points=14372 f_calls=9341 source_cells=811929 sec=7.2
-progress visited=21000 accepted=10495 pruned=1054 pending=11 depth=27 points=17073 f_calls=12092 source_cells=1021178 sec=9.4
-progress visited=22000 accepted=10994 pruned=1054 pending=13 depth=27 points=17738 f_calls=12830 source_cells=1082202 sec=9.9
-progress visited=26000 accepted=12994 pruned=1054 pending=13 depth=27 points=20223 f_calls=15578 source_cells=1302316 sec=12.1
-progress visited=28000 accepted=13992 pruned=1109 pending=17 depth=27 points=21637 f_calls=16820 source_cells=1411264 sec=13.0
-progress visited=29000 accepted=14493 pruned=1208 pending=15 depth=27 points=22530 f_calls=17284 source_cells=1460128 sec=13.4
-progress visited=33000 accepted=16494 pruned=1503 pending=13 depth=27 points=25930 f_calls=19309 source_cells=1640167 sec=14.8
-progress visited=34000 accepted=16996 pruned=1617 pending=9 depth=27 points=26815 f_calls=19710 source_cells=1677358 sec=15.0
-progress visited=37000 accepted=18493 pruned=1749 pending=15 depth=27 points=29162 f_calls=21456 source_cells=1833616 sec=16.1
-progress visited=40000 accepted=19995 pruned=1935 pending=11 depth=27 points=31575 f_calls=23059 source_cells=1974633 sec=17.1
-progress visited=41000 accepted=20495 pruned=1935 pending=11 depth=27 points=32192 f_calls=23743 source_cells=2027071 sec=17.4
-progress visited=45000 accepted=22496 pruned=2237 pending=9 depth=27 points=35487 f_calls=25767 source_cells=2209825 sec=18.7
-progress visited=46000 accepted=22997 pruned=2337 pending=7 depth=27 points=36309 f_calls=26216 source_cells=2252284 sec=18.9
-progress visited=48000 accepted=23994 pruned=2519 pending=13 depth=27 points=38075 f_calls=27214 source_cells=2356538 sec=19.7
-progress visited=50000 accepted=24996 pruned=2565 pending=9 depth=27 points=39494 f_calls=28560 source_cells=2479650 sec=20.6
-progress visited=51000 accepted=25493 pruned=2565 pending=15 depth=27 points=40216 f_calls=29416 source_cells=2588466 sec=21.6
-progress visited=52000 accepted=25993 pruned=2565 pending=15 depth=27 points=40984 f_calls=30363 source_cells=2736467 sec=22.9
-progress visited=54000 accepted=26996 pruned=2565 pending=9 depth=27 points=42330 f_calls=31964 source_cells=2939852 sec=24.5
-progress visited=56000 accepted=27996 pruned=2565 pending=9 depth=27 points=43646 f_calls=33508 source_cells=3114420 sec=25.8
-progress visited=58000 accepted=28995 pruned=2565 pending=11 depth=27 points=45031 f_calls=35153 source_cells=3329097 sec=27.7
-progress visited=59000 accepted=29496 pruned=2565 pending=9 depth=27 points=45765 f_calls=36023 source_cells=3475915 sec=29.1
-progress visited=62000 accepted=30994 pruned=2565 pending=13 depth=27 points=47854 f_calls=38561 source_cells=3925805 sec=33.7
-progress visited=63000 accepted=31494 pruned=2565 pending=13 depth=27 points=48579 f_calls=39424 source_cells=4069246 sec=34.7
-progress visited=64000 accepted=31994 pruned=2565 pending=13 depth=27 points=49239 f_calls=40213 source_cells=4202361 sec=35.6
-progress visited=65000 accepted=32495 pruned=2565 pending=11 depth=27 points=49892 f_calls=40988 source_cells=4328538 sec=36.8
-progress visited=70000 accepted=34995 pruned=2565 pending=11 depth=27 points=53370 f_calls=45268 source_cells=4963850 sec=41.7
-progress visited=71000 accepted=35495 pruned=2565 pending=11 depth=27 points=54086 f_calls=46162 source_cells=5086572 sec=42.5
-progress visited=74000 accepted=36994 pruned=2565 pending=13 depth=27 points=56007 f_calls=48372 source_cells=5295390 sec=44.6
-progress visited=75000 accepted=37495 pruned=2565 pending=11 depth=27 points=56650 f_calls=49112 source_cells=5362364 sec=45.1
-progress visited=76000 accepted=37992 pruned=2579 pending=17 depth=27 points=57356 f_calls=49837 source_cells=5432541 sec=45.6
-progress visited=79000 accepted=39493 pruned=2807 pending=15 depth=27 points=59787 f_calls=51377 source_cells=5569699 sec=46.6
-progress visited=80000 accepted=39993 pruned=2911 pending=15 depth=27 points=60671 f_calls=51839 source_cells=5617567 sec=46.9
-progress visited=82000 accepted=40998 pruned=3013 pending=5 depth=27 points=62131 f_calls=52985 source_cells=5709791 sec=47.6
-progress visited=83000 accepted=41496 pruned=3066 pending=9 depth=27 points=62950 f_calls=53562 source_cells=5762906 sec=48.1
-progress visited=85000 accepted=42493 pruned=3265 pending=15 depth=27 points=64618 f_calls=54493 source_cells=5849715 sec=48.9
-progress visited=89000 accepted=44495 pruned=3383 pending=11 depth=27 points=67577 f_calls=57257 source_cells=6141937 sec=51.8
-progress visited=91000 accepted=45495 pruned=3383 pending=11 depth=27 points=68947 f_calls=58908 source_cells=6320872 sec=53.2
-progress visited=93000 accepted=46493 pruned=3424 pending=15 depth=27 points=70349 f_calls=60319 source_cells=6447331 sec=54.7
-progress visited=95000 accepted=47493 pruned=3586 pending=15 depth=27 points=71991 f_calls=61348 source_cells=6542164 sec=55.5
-progress visited=97000 accepted=48496 pruned=3756 pending=9 depth=27 points=73629 f_calls=62329 source_cells=6631487 sec=56.2
-progress visited=98000 accepted=48997 pruned=3756 pending=7 depth=27 points=74291 f_calls=63111 source_cells=6702623 sec=56.9
-progress visited=101000 accepted=50496 pruned=3894 pending=9 depth=27 points=76746 f_calls=64801 source_cells=6855345 sec=58.4
-progress visited=103000 accepted=51494 pruned=3894 pending=13 depth=27 points=78284 f_calls=66231 source_cells=7039393 sec=59.7
-progress visited=104000 accepted=51994 pruned=3894 pending=13 depth=27 points=79023 f_calls=67064 source_cells=7137308 sec=60.5
-progress visited=105000 accepted=52495 pruned=3894 pending=11 depth=27 points=79678 f_calls=67831 source_cells=7253745 sec=61.6
-progress visited=106000 accepted=52994 pruned=3894 pending=13 depth=27 points=80330 f_calls=68601 source_cells=7369761 sec=62.5
-progress visited=108000 accepted=53996 pruned=3894 pending=9 depth=27 points=81710 f_calls=70243 source_cells=7605949 sec=65.2
-progress visited=109000 accepted=54492 pruned=3894 pending=17 depth=27 points=82439 f_calls=71128 source_cells=7731828 sec=66.6
-progress visited=110000 accepted=54993 pruned=3894 pending=15 depth=27 points=83106 f_calls=71938 source_cells=7853138 sec=67.7
-progress visited=114000 accepted=56993 pruned=3894 pending=15 depth=27 points=85876 f_calls=75359 source_cells=8340403 sec=72.2
-progress visited=116000 accepted=57994 pruned=3894 pending=13 depth=27 points=87313 f_calls=77160 source_cells=8574160 sec=73.9
-progress visited=118000 accepted=58996 pruned=3894 pending=9 depth=27 points=88782 f_calls=78942 source_cells=8777850 sec=75.5
-progress visited=124000 accepted=61996 pruned=3894 pending=9 depth=27 points=92696 f_calls=83427 source_cells=9152801 sec=78.5
-progress visited=127000 accepted=63496 pruned=3894 pending=9 depth=27 points=94677 f_calls=85761 source_cells=9376681 sec=80.2
-progress visited=128000 accepted=63994 pruned=3894 pending=13 depth=27 points=95348 f_calls=86563 source_cells=9458103 sec=80.8
-progress visited=129000 accepted=64496 pruned=3894 pending=9 depth=27 points=95999 f_calls=87319 source_cells=9525343 sec=81.3
-progress visited=130000 accepted=64996 pruned=3894 pending=9 depth=27 points=96664 f_calls=88112 source_cells=9600418 sec=81.9
-progress visited=135000 accepted=67496 pruned=4032 pending=9 depth=27 points=100591 f_calls=91164 source_cells=9868004 sec=83.9
-progress visited=136000 accepted=67995 pruned=4032 pending=11 depth=27 points=101253 f_calls=91899 source_cells=9928731 sec=84.4
-progress visited=140000 accepted=69994 pruned=4313 pending=13 depth=27 points=104572 f_calls=94066 source_cells=10118188 sec=85.8
-progress visited=141000 accepted=70495 pruned=4405 pending=11 depth=27 points=105252 f_calls=94525 source_cells=10154273 sec=86.0
-progress visited=142000 accepted=70996 pruned=4405 pending=9 depth=27 points=105903 f_calls=95282 source_cells=10218590 sec=86.4
-progress visited=144000 accepted=71997 pruned=4405 pending=7 depth=27 points=107148 f_calls=96678 source_cells=10315976 sec=87.1
-progress visited=146000 accepted=72997 pruned=4405 pending=7 depth=27 points=108380 f_calls=98046 source_cells=10404818 sec=87.8
-progress visited=147000 accepted=73493 pruned=4474 pending=15 depth=27 points=109259 f_calls=98568 source_cells=10454670 sec=88.1
-progress visited=149000 accepted=74497 pruned=4615 pending=7 depth=27 points=110964 f_calls=99607 source_cells=10535231 sec=88.6
-progress visited=150000 accepted=74994 pruned=4724 pending=13 depth=27 points=111806 f_calls=100004 source_cells=10573122 sec=88.9
-progress visited=155000 accepted=77495 pruned=5136 pending=11 depth=27 points=115884 f_calls=102531 source_cells=10771793 sec=90.3
-progress visited=157000 accepted=78494 pruned=5223 pending=13 depth=27 points=117273 f_calls=103712 source_cells=10849614 sec=90.9
-progress visited=160000 accepted=79995 pruned=5223 pending=11 depth=27 points=119193 f_calls=105836 source_cells=10973052 sec=91.9
-progress visited=163000 accepted=81498 pruned=5223 pending=5 depth=27 points=121030 f_calls=107865 source_cells=11091165 sec=92.9
-progress visited=165000 accepted=82496 pruned=5223 pending=9 depth=27 points=122335 f_calls=109306 source_cells=11168570 sec=93.5
-progress visited=166000 accepted=82996 pruned=5223 pending=9 depth=27 points=122987 f_calls=110026 source_cells=11205750 sec=93.8
-progress visited=167000 accepted=83494 pruned=5223 pending=13 depth=27 points=123927 f_calls=110706 source_cells=11258092 sec=94.3
-progress visited=173000 accepted=86495 pruned=5583 pending=11 depth=27 points=128960 f_calls=113746 source_cells=11450936 sec=96.0
-progress visited=174000 accepted=86994 pruned=5583 pending=13 depth=27 points=129577 f_calls=114430 source_cells=11488002 sec=96.3
-progress visited=177000 accepted=88494 pruned=5664 pending=13 depth=27 points=131987 f_calls=116349 source_cells=11609553 sec=97.3
-progress visited=180000 accepted=89995 pruned=5926 pending=11 depth=27 points=134609 f_calls=117737 source_cells=11711717 sec=98.2
-progress visited=183000 accepted=91496 pruned=6263 pending=9 depth=27 points=137075 f_calls=118871 source_cells=11793119 sec=98.8
-progress visited=184000 accepted=91996 pruned=6277 pending=9 depth=27 points=137694 f_calls=119503 source_cells=11832635 sec=99.1
-progress visited=190000 accepted=94993 pruned=6488 pending=15 depth=27 points=142426 f_calls=123161 source_cells=12083429 sec=101.8
-progress visited=193000 accepted=96494 pruned=6773 pending=13 depth=27 points=144863 f_calls=124468 source_cells=12193968 sec=102.4
-progress visited=194000 accepted=96993 pruned=6829 pending=15 depth=27 points=145800 f_calls=125123 source_cells=12242787 sec=102.8
-progress visited=197000 accepted=98493 pruned=7130 pending=15 depth=27 points=148258 f_calls=126314 source_cells=12341402 sec=103.4
-progress visited=198000 accepted=98995 pruned=7215 pending=11 depth=27 points=148999 f_calls=126803 source_cells=12371707 sec=103.5
-progress visited=200000 accepted=99994 pruned=7329 pending=13 depth=27 points=150818 f_calls=127921 source_cells=12458007 sec=104.1
-progress visited=201000 accepted=100494 pruned=7421 pending=13 depth=27 points=151734 f_calls=128419 source_cells=12498943 sec=104.4
-progress visited=202000 accepted=100993 pruned=7533 pending=15 depth=27 points=152471 f_calls=128708 source_cells=12511806 sec=104.4
-progress visited=203000 accepted=101492 pruned=7635 pending=17 depth=27 points=153316 f_calls=129131 source_cells=12551595 sec=104.7
-progress visited=204000 accepted=101994 pruned=7756 pending=13 depth=27 points=154105 f_calls=129454 source_cells=12575716 sec=104.8
-PASS GLOBAL SECANT CORE: accepted=102104 visited=204207 pruned=7788 depth=27 points=154239 f_calls=129496 seconds=104.80
-RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_profile_dual.py --skip-dependency-replay
-CONDITIONAL RUN: requires profile range/Hessian replay and fresh secant table regeneration in this verification chain.
-{"claim": "Gaussian-probe dual certificate from regenerated secant radial table", "result": {"lambda": "[0.26000000000000000000000000000000000000000000000 +/- 5.21e-49]", "k": "[0.098000000000000000000000000000000000000000000000 +/- 1.02e-49]", "u_max": "[0.046300000000000000000000000000000000000000000000 +/- 6.94e-50]", "compact_expectation": "[0.0077925089873300246388744736245991370232771749 +/- 3.97e-47]", "tail": "[4.4194402629532119082008295680415815619928818758e-8 +/- 5.05e-55]", "content_norm_upper": "[0.0198305531817326541709935556328948174390927948 +/- 6.86e-47]", "passes_1_over_50": true, "table_nodes": 602, "reconstructed_profile_cells": 300, "dependencies_replayed_here": false, "seconds": 2.1915030479431152}}
-RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/content_next_m3.py
-{"analytic_tail": {"domain": "[ell(4),infinity)", "ell4": "[2.2640000000000000000000000000000000000000000000 +/- 3.88e-48]", "bound": "[2.5184155479955999647608359028071613377992984329 +/- 8.27e-47]", "passed": true}}
-{"claim": "global |m_s'''| < 13", "compact_coverage": "[0,3]", "evenness": true, "boxes": 120, "compact_max": "[12.945400040541551073402590961732596562257572357 +/- 1.87e-46]", "content_coefficient_upper": "[2.9924257412398975714034508835293321950949864807 +/- 4.75e-47]", "conclusion": "C(q)^2 <= 3 delta^(3/2)", "passed": true, "seconds": 0.1420438289642334}
-RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/secant_content_verify.py
-{"M4_upper": "[92.107230121880278360257285016816663608512522049 +/- 3.22e-46]", "M4_certified": 1000}
-{"source_outer": {"far": "[0.36386387268362453489718457908438084339681626059 +/- 7.31e-48]", "compact_lower": "[-1.0348925135464004498460460310286356284444096486 +/- 4.19e-47]", "outer_upper": "[0.83338920293445072355483287522136437155559035136 +/- 1.16e-48]"}}
-{"claim": "central-energy content squared <= delta/25", "u": ["3/100", "463/10000"], "cells": 500, "cap": "313/500", "barrier_max": "0.62500000000000000000000000000000000000000000000", "residual_margin": "[1.9371707021929719608373298406739966444848042697e-5 +/- 2.68e-52]", "coefficient": "1077659/27000000", "passed": true, "seconds": 10.36154294013977}
-PASS FULL SECANT REPLAY: global Rem<=13 rho^2/20; global structural, uniform, and third-order content bounds; central-energy content coefficient 1077659/27000000. General content/deficit comparison remains OPEN.
-
-POST-REPLAY: all 14 certificate-source hashes match; regenerated radial table matches the first certified table.
-FINAL SHA256 REPORT.md 94a46ca8b87092365993485844a8c2d7c4c9b685c72c6b93a1cd42a0be6a8213
-FINAL SHA256 secant_proof.md 325c097bd78bd3ef6e59576f31f73ddb6cc342d3b372e6256e3b2efc83a8ee1e
-FINAL SHA256 secant_content_proof.md c379a83ddcdd7b1913127be83713973d4f91fd243e6768497c4e1aac8e310b4d
-FINAL SHA256 secant_assembly.md dcfff6ebaf5e8f0b9f5698513020fa3c23e9455b566bae872c5d787ee6803f4d
-FINAL SHA256 secant_audit_results.md 4113da796bbf623f586360052e3f4b395fa6fb14af0ef57ee7eb8a36832d9157
-FINAL SHA256 secant_profile_table.txt 9a0e3cc961035ca223b0cb81d7c8aa914b5dd938ae1dad268e06afeec2bd3f32
-FINAL SHA256 secant_audit_math.md 97e4313a737a79d7f719dcfebe0aaaec199c80c18c74db981c2079c7c930e1ab
+RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_exact.py
+PASS FULL ASSEMBLY CONSTANTS: |h second derivative|<3; k=59009/189100; kappa=56730/59009; eta=5673/295045000 < 1/50000.
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_barriers_replay.py
+{"fresh_common_M4": "[92.107230121880278360257285016816663608512522049 +/- 3.22e-46]", "fresh_common_outer": {"global_positive_halfline_lower": "[-0.97251866568520297605944254089290601562321508301 +/- 2.24e-48]", "absolute_bound_x_ge_1": "[0.59793451254955352453747898015852697430925894065 +/- 4.91e-48]", "far_bound": "[0.36386387268362453489718457908438084339681626059 +/- 7.31e-48]"}}
+{"tag": "009", "u": ["9/1000", "463/10000"], "absolute_envelope": false, "tail_value": "3509/5000", "cap": "701801/1000000", "actual_bernstein_cap": "3509/5000", "content_coefficient": "5417771079611/108000000000000", "rounded_content_coefficient": "251/5000", "residual_margin": "[1.9361182236554011387910991385036910802718139279e-5 +/- 2.65e-52]", "passed": true, "used_content_coefficient": "251/5000"}
+{"tag": "012", "u": ["3/250", "463/10000"], "absolute_envelope": false, "tail_value": "6891/10000", "cap": "689101/1000000", "actual_bernstein_cap": "6891/10000", "content_coefficient": "5223462070211/108000000000000", "rounded_content_coefficient": "121/2500", "residual_margin": "[1.9371195380486295060680361834795468757411347127e-5 +/- 4.53e-52]", "passed": true, "used_content_coefficient": "121/2500"}
+{"tag": "015", "u": ["3/200", "463/10000"], "absolute_envelope": false, "tail_value": "677/1000", "cap": "677001/1000000", "actual_bernstein_cap": "677/1000", "content_coefficient": "560181543779/12000000000000", "rounded_content_coefficient": "467/10000", "residual_margin": "[1.9362501754375269708123692764403610493787046852e-5 +/- 2.52e-52]", "passed": true, "used_content_coefficient": "467/10000"}
+{"tag": "018", "u": ["9/500", "463/10000"], "absolute_envelope": false, "tail_value": "3327/5000", "cap": "665401/1000000", "actual_bernstein_cap": "3327/5000", "content_coefficient": "4870343398811/108000000000000", "rounded_content_coefficient": "451/10000", "residual_margin": "[1.9371704804249541188673173174401061110375385884e-5 +/- 1.35e-52]", "passed": true, "used_content_coefficient": "451/10000"}
+{"tag": "020", "u": ["1/50", "463/10000"], "absolute_envelope": false, "tail_value": "329/500", "cap": "658001/1000000", "actual_bernstein_cap": "329/500", "content_coefficient": "4762618476011/108000000000000", "rounded_content_coefficient": "441/10000", "residual_margin": "[1.9371707406580207855339839841067727777042052850e-5 +/- 4.62e-52]", "passed": true, "used_content_coefficient": "441/10000"}
+{"tag": "medium25", "u": ["1/40", "463/10000"], "absolute_envelope": false, "tail_value": "13/20", "cap": "13/20", "actual_bernstein_cap": "13/20", "content_coefficient": "1859/43200", "residual_margin": "[1.9371701606461541188673173174401061110375385895e-5 +/- 3.37e-52]", "passed": true, "used_content_coefficient": "1859/43200"}
+{"tag": "absolute", "u": ["1/25", "463/10000"], "absolute_envelope": true, "tail_value": "9/25", "cap": "3/5", "actual_bernstein_cap": "444539354032244297081/750000000000000000000", "content_coefficient": "11/300", "residual_margin": "[1.9356491411448300684746274653197519505045560704e-5 +/- 4.10e-52]", "passed": true}
+{"tag": "absolute44", "u": ["11/250", "463/10000"], "absolute_envelope": true, "tail_value": "9/25", "cap": "3/5", "actual_bernstein_cap": "581459270201158818127/1000000000000000000000", "content_coefficient": "11/300", "residual_margin": "[1.9343870140294296470308313706840179381148081198e-5 +/- 2.19e-52]", "passed": true}
+{"tag": "absolute30", "u": ["3/100", "463/10000"], "absolute_envelope": true, "tail_value": "9/25", "cap": "13/20", "actual_bernstein_cap": "31161135218163994083/50000000000000000000", "content_coefficient": "1859/43200", "residual_margin": "[1.9360543293086009808701706568547081241766727819e-5 +/- 1.81e-52]", "passed": true}
+{"tag": "absolute35", "u": ["7/200", "463/10000"], "absolute_envelope": true, "tail_value": "9/25", "cap": "13/20", "actual_bernstein_cap": "227821505605837429867/375000000000000000000", "content_coefficient": "1859/43200", "residual_margin": "[1.9358439699515535635446343594487543631768028221e-5 +/- 7.03e-53]", "passed": true}
+PASS ALL USED CONTENT BARRIERS: 10 witnesses; source, derivative, compact, and infinite-tail checks; seconds=15.965287923812866
+RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_angular_prepare.py /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute30.json /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute35.json /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute.json /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute44.json
+Exact angular-barrier table: /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute30.txt
+Exact angular-barrier table: /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute35.txt
+Exact angular-barrier table: /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute.txt
+Exact angular-barrier table: /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute44.txt
+RUN /usr/bin/clang++ -O2 -std=c++17 -frounding-math -ffp-contract=off -fno-fast-math /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_angular_verify.cpp -o /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute30.txt 3 80 4096
+C angular tail R>=2: coefficient upper 0.027205398093321332
+PASS ANGULAR METRIC: coefficient<=0.037500000000000006 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.037211599348840524 seconds=0.17
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute35.txt 71 2000 4096
+C angular tail R>=2: coefficient upper 0.027205398093321332
+PASS ANGULAR METRIC: coefficient<=0.035500000000000004 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.035357020074093415 seconds=0.16
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute.txt 17 500 4096
+C angular tail R>=2: coefficient upper 0.026400012336542573
+PASS ANGULAR METRIC: coefficient<=0.034000000000000003 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.033650744348115381 seconds=0.16
+RUN /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/codex-6e2b-deficit-c_p26lym/angular_verify /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_structure_content_witness_absolute44.txt 13 400 4096
+C angular tail R>=2: coefficient upper 0.026400012336542573
+PASS ANGULAR METRIC: coefficient<=0.032500000000000002 accepted=400 visited=400 angular_cells=4096 maxdepth=0 largest_accepted=0.032383689050493492 seconds=0.16
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_verify.py --certify
+SLAB 1 / 18 accepted 1 caps 0 seconds 2.3126602172851562e-05
+SLAB 2 / 18 accepted 2 caps 0 seconds 5.4836273193359375e-05
+SLAB 3 / 18 accepted 3 caps 0 seconds 7.295608520507812e-05
+CAP 1 ['49663/31250000', '221983989/1000000000']
+SLAB 4 / 18 accepted 4 caps 1 seconds 1.0353870391845703
+SLAB 5 / 18 accepted 5 caps 1 seconds 1.1396539211273193
+SLAB 6 / 18 accepted 6 caps 1 seconds 1.2966768741607666
+SLAB 7 / 18 accepted 7 caps 1 seconds 1.433791160583496
+CAP 2 ['1702731/500000000', '475679977/1000000000']
+SLAB 8 / 18 accepted 8 caps 2 seconds 2.670654058456421
+SLAB 9 / 18 accepted 9 caps 2 seconds 2.7737390995025635
+CAP 3 ['2156793/500000000', '60252797/100000000']
+SLAB 10 / 18 accepted 10 caps 3 seconds 3.719604015350342
+CAP 4 ['4767647/1000000000', '665951967/1000000000']
+CAP 5 ['916791/200000000', '103010957/100000000']
+SLAB 11 / 18 accepted 12 caps 5 seconds 5.435844898223877
+SLAB 12 / 18 accepted 13 caps 5 seconds 5.538143157958984
+SLAB 13 / 18 accepted 14 caps 5 seconds 5.623639822006226
+CAP 6 ['766229/125000000', '428111979/500000000']
+CAP 7 ['736707/125000000', '132442659/100000000']
+SLAB 14 / 18 accepted 16 caps 7 seconds 7.487227916717529
+CAP 8 ['3291947/500000000', '183929591/200000000']
+CAP 9 ['395639/62500000', '1422532263/1000000000']
+CAP 10 ['619517/100000000', '1668974443/1000000000']
+SLAB 15 / 18 accepted 19 caps 10 seconds 11.11125111579895
+CAP 11 ['1407591/200000000', '61441997/62500000']
+CAP 12 ['6766791/1000000000', '1520637937/1000000000']
+CAP 13 ['6622423/1000000000', '55752379/31250000']
+SLAB 16 / 18 accepted 23 caps 13 seconds 14.786315202713013
+CAP 14 ['7492017/1000000000', '261623987/250000000']
+CAP 15 ['3601679/500000000', '161874361/100000000']
+CAP 16 ['7049677/1000000000', '949588907/500000000']
+SLAB 17 / 18 accepted 27 caps 16 seconds 17.80536985397339
+CAP 17 ['7946079/1000000000', '221983989/200000000']
+CAP 18 ['305597/40000000', '1716849283/1000000000']
+CAP 19 ['747693/100000000', '4028559/2000000']
+CAP 20 ['7558923/1000000000', '58309487/31250000']
+SLAB 18 / 18 accepted 32 caps 20 seconds 22.106559991836548
+EXACT PARTITION CHECK PASS 18 energy strips
+PASS FULL LOW-ENERGY MOMENT COVER {'umax': '9/1000', 'visited': 46, 'exempts': 3, 'maxdepth': 4, 'seconds': 22.36810803413391} accepted 32 caps 20
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_moment_prefix.py --certify
+CAP 1 ['420007/50000000', '586671971/500000000']
+CAP 2 ['2019123/250000000', '1814954957/1000000000']
+CAP 3 ['8610389/1000000000', '496266553/1000000000']
+SLAB 1 / 14 accepted 2 uncovered 0 caps 3 seconds 3.419311761856079
+CAP 4 ['4427101/500000000', '1236767939/1000000000']
+SLAB 2 / 14 accepted 4 uncovered 0 caps 4 seconds 4.713966131210327
+CAP 5 ['1163533/125000000', '20315499/15625000']
+SLAB 3 / 14 accepted 6 uncovered 0 caps 5 seconds 6.028599977493286
+CAP 6 ['390493/40000000', '1363615933/1000000000']
+SLAB 4 / 14 accepted 8 uncovered 0 caps 6 seconds 7.081518888473511
+CAP 7 ['10216387/1000000000', '142703993/100000000']
+CAP 8 ['2094419/200000000', '60356743/100000000']
+SLAB 5 / 14 accepted 10 uncovered 0 caps 8 seconds 9.284327030181885
+CAP 9 ['10670449/1000000000', '1490463927/1000000000']
+CAP 10 ['80151/7812500', '2305483323/1000000000']
+SLAB 6 / 14 accepted 12 uncovered 0 caps 10 seconds 11.800029039382935
+CAP 11 ['1112451/100000000', '1553887923/1000000000']
+CAP 12 ['2850737/250000000', '164304467/250000000']
+SLAB 7 / 14 accepted 15 uncovered 0 caps 12 seconds 13.757752180099487
+CAP 13 ['2894643/250000000', '20216399/12500000']
+CAP 14 ['94947/8000000', '684043087/1000000000']
+SLAB 8 / 14 accepted 18 uncovered 0 caps 14 seconds 15.850347995758057
+CAP 15 ['6016317/500000000', '1680735917/1000000000']
+CAP 16 ['11569029/1000000000', '2599800343/1000000000']
+CAP 17 ['12333801/1000000000', '355434153/500000000']
+CAP 18 ['2984373/250000000', '235314379/1000000000']
+SLAB 9 / 14 accepted 21 uncovered 0 caps 18 seconds 20.501892805099487
+CAP 19 ['2497339/200000000', '872079957/500000000']
+CAP 20 ['12799227/1000000000', '29507741/40000000']
+SLAB 10 / 14 accepted 24 uncovered 0 caps 20 seconds 22.908238887786865
+CAP 21 ['12940757/1000000000', '1807583911/1000000000']
+CAP 22 ['3110541/250000000', '279601169/100000000']
+CAP 23 ['6632327/500000000', '95564843/125000000']
+SLAB 11 / 14 accepted 28 uncovered 0 caps 23 seconds 26.15576696395874
+CAP 24 ['6697409/500000000', '467751977/250000000']
+CAP 25 ['12878731/1000000000', '2894117363/1000000000']
+CAP 26 ['85813/6250000', '791343963/1000000000']
+SLAB 12 / 14 accepted 32 uncovered 0 caps 26 seconds 28.737210988998413
+CAP 27 ['173111/12500000', '386886381/200000000']
+CAP 28 ['6657649/500000000', '2992223037/1000000000']
+CAP 29 ['14195507/1000000000', '818169183/1000000000']
+CAP 30 ['6869689/500000000', '270833531/1000000000']
+SLAB 13 / 14 accepted 36 uncovered 0 caps 30 seconds 33.1278121471405
+CAP 31 ['7151471/500000000', '998927951/500000000']
+CAP 32 ['2750373/200000000', '309032871/100000000']
+CAP 33 ['14660933/1000000000', '422497201/500000000']
+SLAB 14 / 14 accepted 40 uncovered 0 caps 33 seconds 36.149548053741455
+PASS COMPLETE PREFIX CERTIFICATE AND EXACT PARTITION 14 strips {"umin": "9/1000", "umax": "2/125", "full_prefix_end": "2/125", "visited": 66, "exempts": 0, "maxdepth": 2, "seconds": 36.154881954193115} accepted 40 uncovered 0 caps 33
+RUN /Users/alingalatan/workspaces/grothe-coordination/evidence/codex-2ca4/retired-worktrees/grothe-codex-canonical-proof-2ca4/handoff/codex-2ca4/replay-venv/bin/python -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_dual_cover_verify.py
+[C] Recomputed 68 profile Hermite caps and the infinite tangent cap: PASS
+{"claim": "C: freshly recomputed additional Hermite and tangent profile caps", "cells": 10, "seconds": 3.0422611236572266}
+{"polynomial_progress": 10, "total": 119, "accepted": 10, "rejected": 0}
+{"polynomial_progress": 20, "total": 119, "accepted": 20, "rejected": 0}
+{"polynomial_progress": 30, "total": 119, "accepted": 30, "rejected": 0}
+{"polynomial_progress": 40, "total": 119, "accepted": 40, "rejected": 0}
+{"polynomial_progress": 50, "total": 119, "accepted": 50, "rejected": 0}
+{"polynomial_progress": 60, "total": 119, "accepted": 60, "rejected": 0}
+{"polynomial_progress": 70, "total": 119, "accepted": 70, "rejected": 0}
+{"polynomial_progress": 80, "total": 119, "accepted": 80, "rejected": 0}
+{"polynomial_progress": 90, "total": 119, "accepted": 90, "rejected": 0}
+{"polynomial_progress": 100, "total": 119, "accepted": 100, "rejected": 0}
+{"polynomial_progress": 110, "total": 119, "accepted": 110, "rejected": 0}
+{"polynomial_progress": 119, "total": 119, "accepted": 119, "rejected": 0}
+{"energy_slab": ["2/125", "9/500"], "accepted_boxes": 5, "uncovered_boxes": 0}
+{"energy_slab": ["9/500", "1/50"], "accepted_boxes": 6, "uncovered_boxes": 0}
+{"energy_slab": ["1/50", "9/400"], "accepted_boxes": 6, "uncovered_boxes": 0}
+{"energy_slab": ["9/400", "1/40"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["1/40", "11/400"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["11/400", "3/100"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"energy_slab": ["3/100", "13/400"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["13/400", "7/200"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["7/200", "3/80"], "accepted_boxes": 8, "uncovered_boxes": 0}
+{"energy_slab": ["3/80", "1/25"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["1/25", "21/500"], "accepted_boxes": 9, "uncovered_boxes": 0}
+{"energy_slab": ["21/500", "11/250"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"energy_slab": ["11/250", "463/10000"], "accepted_boxes": 10, "uncovered_boxes": 0}
+{"claim": "C\u00b2<=.3D_++6e-6", "accepted_models": 119, "rejected_models": 0, "boxes": 106, "uncovered": 0, "passed": true, "seconds": 55.33634686470032}
+RUN /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -I -B /Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-tilted-sector-2026-11-15/deficit_cover_union.py --moment deficit_moment_verify_witness.json deficit_moment_prefix_witness.json --stein deficit_dual_cover_witness.json
+{"Agent-ID": "codex-6e2b", "domain_u": ["0", "463/10000"], "domain_chi": ["0", "42"], "rectangles": 178, "energy_strips": 45, "moment_inputs": ["deficit_moment_verify_witness.json", "deficit_moment_prefix_witness.json"], "stein_inputs": ["deficit_dual_cover_witness.json"], "complete": true}
+PASS EXACT UNION: every 0<=u<=.0463 and 0<=chi<=42 is covered.
+DEFICIT OUTPUT SHA256 deficit_moment_verify_witness.json ac6921cac8a2f3ca4cd67ab3d0cdce72c66e7e1e7d5375226117709b973f9780
+DEFICIT OUTPUT SHA256 deficit_moment_prefix_witness.json a1eb21d0f9d30453aa9128969cd2c067f18a2c62396a34e95abc3a5560b67a0f
+DEFICIT OUTPUT SHA256 deficit_dual_cover_witness.json 40962c50dad6b26069f6b42a71885db53f5f2067fefd17342cdaf7c8b8a0f261
+DEFICIT OUTPUT SHA256 deficit_cover_union_results.json 4f7f03aac1a7177995a949d5e308e55fa85bd855b7f1335ad44c0868ae1582f4
+PASS FULL CONTENT/DEFICIT COVER: C^2 <= (3/10)D_+ + 6/10^6 for every genuine complex (2,1) cubic, 0<=u<=463/10000. 178 certified rectangles; no localization or deficit-sign premise. With the global secant certificate: s=3/5, kappa=56730/59009, eta=5673/295045000 < 1/50000. Research P+C, not a Lean theorem.
