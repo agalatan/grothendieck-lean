@@ -1,0 +1,22 @@
+{
+  "Gaussian_third_derivative_squared_coefficient": 48,
+  "Hermite_score_second_moment": 6,
+  "Wick_moments_2_4_6": [
+    "1",
+    "44",
+    "11352"
+  ],
+  "agent_id": "codex-a7c4",
+  "exp2_Taylor_lower": "331/45",
+  "general_block_coefficient_over_m0m1": "15200",
+  "one_coordinate_Wick_coefficient_over_m0m1": "192",
+  "peak_one_coordinate_coefficient": "345458984375000000000000/27178092692831571633",
+  "peak_one_coordinate_coefficient_strict_upper": "12711",
+  "scope": "Scalar budgets for the finite-dimensional independent-block retained penalty; no K upper bound or CLT payoff rate.",
+  "status": "PASS",
+  "task": 415,
+  "trust": "Exact rational arithmetic; inherited positive visible-density mixture and cubic moment theorem; new paper derivative/projection argument.",
+  "universal_sixth_moment_upper": "569771144613/50000000",
+  "weighted_absolute_moment_formula": "E |X| |H(X)|^3 = (-16 + 240 exp(-2))/sqrt(2)",
+  "weighted_absolute_moment_strict_upper": "12"
+}
