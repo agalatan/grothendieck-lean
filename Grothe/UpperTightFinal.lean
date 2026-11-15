@@ -19,7 +19,7 @@ import Grothe.UpperQuad.TwistEllipseMassSound
 The same accepted panels and port tables give smaller quadrature and whole-source error radii.
 The comparison combines those radii with longer coefficient prefixes and their exact mass
 certificate, using the existing energy-table accuracy estimate.
-The Gaussian-amplitude integral supplies the Hardy budget `5/4`; the final transfer
+The Gaussian-amplitude integral supplies the Hardy budget `117/100`; the final transfer
 deducts the forced linear energy before applying its tail estimate.
 
 Agent-ID: codex-c8a4. Refs #389.
@@ -104,7 +104,7 @@ theorem endpoint_of_comparison
     simpa only [tightLinearLowerQ, Rat.cast_sub] using
       (show 0 ≤ (tightLinearLowerQ : ℝ) from by exact_mod_cast tightLinearLowerQ_pos.le)
   have hnum :
-      ((5 / 4 - ((slopeQ : ℝ) - (tightHeadResidualQ : ℝ)) ^ 2 *
+      ((117 / 100 - ((slopeQ : ℝ) - (tightHeadResidualQ : ℝ)) ^ 2 *
         (4149 / 4000 : ℝ) ^ 2) / (4149 / 4000 : ℝ) ^ 4) *
           (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1)) ≤
         (tightTailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
@@ -140,14 +140,14 @@ theorem upper_bound_tight : Grothe.IsGrothendieckBound (tightValueQ : ℝ) := by
       hfirst hsecond hthird hwholeFirst hwholeSecond hwholeThird Final.hclose_final)
     Final.hclose_final
 
-/-- Some Grothendieck bound lies strictly below `1.404599398052`, without hypotheses. -/
-theorem upper_below_tight : UpperBelow (1404599398052 / 10 ^ 12) := by
+/-- Some Grothendieck bound lies strictly below `1.404599395362`, without hypotheses. -/
+theorem upper_below_tight : UpperBelow (1404599395362 / 10 ^ 12) := by
   apply upperBelow_of_bound upper_bound_tight
   convert tight_real_value_lt using 1
   norm_num
 
 /-- The improved unconditional upper bound for the complex Grothendieck constant. -/
-theorem constant_lt_tight_upper : complexGrothendieckConstant < 1404599398052 / 10 ^ 12 :=
+theorem constant_lt_tight_upper : complexGrothendieckConstant < 1404599395362 / 10 ^ 12 :=
   constant_lt_of_upperBelow upper_below_tight
 
 end Grothe.Statement

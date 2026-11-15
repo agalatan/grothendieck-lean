@@ -23,8 +23,15 @@ def denOf (j : Ival) (R : SC) : Ival :=
   mulI (mulI (mulI (mulI (intI 16) (mulI j j)) (ndOf R)) (zOf j R).det)
     (mulI (SR.add t ji).det (SR.add (SR.add t (SR.smul (intI 2) e)) ji).det)
 
-/-- Gates and the exact comparison `denominator ≥ 4/5`. -/
-def boxOK (j : Ival) (R : SC) : Bool :=
+/-- Quartic angular majorant; its circle average is `117/100`. -/
+def capOf (t : CI) : Ival :=
+  let x := mulI t.re (ofRatI (1 / rhoQ))
+  let x2 := mulI x x
+  subI (addI (ofRatI (513 / 500)) (mulI (ofRatI (297 / 500)) x2))
+    (mulI (ofRatI (51 / 125)) (mulI x2 x2))
+
+/-- Positivity gates and the exact comparison `1 ≤ cap * denominator`. -/
+def boxOK (j : Ival) (R : SC) (cap : Ival) : Bool :=
   let ip := invIm R false
   let im := invIm R true
   let np := CI.normSq ip.2
@@ -41,17 +48,19 @@ def boxOK (j : Ival) (R : SC) : Bool :=
   let ji : SR := ⟨j, zeroI, j⟩
   let den := mulI (mulI (mulI (mulI (intI 16) (mulI j j)) (mulI np nm)) z.det)
     (mulI (SR.add t ji).det (SR.add (SR.add t (SR.smul (intI 2) e)) ji).det)
-  posI np && posI nm && z.PD && t.PD && decide (4 * D ≤ 5 * den.lo)
+  posI np && posI nm && z.PD && t.PD && posI den && decide (D ≤ (mulI cap den).lo)
 
-theorem boxOK_eq_spec (j : Ival) (R : SC) :
-    boxOK j R =
+theorem boxOK_eq_spec (j : Ival) (R : SC) (cap : Ival) :
+    boxOK j R cap =
       (posI (CI.normSq (invIm R false).2) && posI (CI.normSq (invIm R true).2) &&
-        (zOf j R).PD && (tOf j R).PD && decide (4 * D ≤ 5 * (denOf j R).lo)) := rfl
+        (zOf j R).PD && (tOf j R).PD && posI (denOf j R) &&
+        decide (D ≤ (mulI cap (denOf j R)).lo)) := rfl
 
 /-- One interval of either rational circle chart. -/
 def leafOK (neg : Bool) (lo hi : Int) : Bool :=
   posI (addI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩)) &&
     boxOK (ofRatI jQ) (Rbox hardyData (circleBox (ofRatI rhoQ) neg ⟨lo, hi⟩))
+      (capOf (circleBox (ofRatI rhoQ) neg ⟨lo, hi⟩))
 
 /-- Bisect only when the current interval does not certify the bound. -/
 def coverOK (neg : Bool) : Nat → Int → Int → Bool

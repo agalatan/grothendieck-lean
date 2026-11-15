@@ -10,7 +10,7 @@ import Grothe.UpperChaos.GaussianPair
 The new finite check retains the same covariance, radius and Gaussian reference
 measure. Its denominator is the exact Gaussian-amplitude integral.
 
-Agent-ID: codex-9b17. Refs #380.
+Agent-ID: codex-9b17. Refs #380, #427.
 -/
 
 namespace Grothe.UpperChaos.HardyGaussianSound
@@ -31,19 +31,37 @@ private lemma shifted_eq_add (A : Sym2R) (j : ℝ) :
     GaussianAmplitude.shifted A j = add A ⟨j, 0, j⟩ := by
   simp [GaussianAmplitude.shifted, add]
 
+/-- A quartic angular majorant on the circle, in its real-coordinate form. -/
+def angularCap (t : ℂ) : ℝ :=
+  513 / 500 + 297 / 500 * (t.re / (rhoQ : ℝ)) ^ 2 -
+    51 / 125 * (t.re / (rhoQ : ℝ)) ^ 4
+
+lemma mem_capOf {t : ℂ} {ti : CI} (ht : memC t ti) :
+    mem (angularCap t) (HardyGaussianCheck.capOf ti) := by
+  have hx : mem (t.re / (rhoQ : ℝ)) (mulI ti.re (ofRatI (1 / rhoQ))) := by
+    simpa only [Rat.cast_div, Rat.cast_inv, Rat.cast_one, div_eq_mul_inv, one_mul] using
+      mem_mul ht.1 (mem_ofRatI (1 / rhoQ))
+  have hx2 := mem_mul hx hx
+  have h := mem_sub
+    (mem_add (mem_ofRatI (513 / 500)) (mem_mul (mem_ofRatI (297 / 500)) hx2))
+    (mem_mul (mem_ofRatI (51 / 125)) (mem_mul hx2 hx2))
+  norm_num only [Rat.cast_div, Rat.cast_ofNat] at h
+  convert h using 1 <;> simp only [angularCap, HardyGaussianCheck.capOf, pow_succ, pow_zero]
+  ring
+
 /-- The pointwise matrix gates and numerical bound needed by the analytic estimate. -/
 def Bound (t : ℂ) : Prop :=
   (Z (Bj (Rt t) (jQ : ℝ))).PD ∧
     (T (Bj (Rt t) (jQ : ℝ)) (Rt t).Cmat).PD ∧
-      1 / denominator (Rt t) (jQ : ℝ) ≤ 5 / 4
+      1 / denominator (Rt t) (jQ : ℝ) ≤ angularCap t
 
-theorem box_sound {R : Sym2C} {RI : SC} {j : ℝ} {jI : Ival}
-    (hR : memSC R RI) (hj : mem j jI)
-    (hc : HardyGaussianCheck.boxOK jI RI = true) :
-    (Z (Bj R j)).PD ∧ (T (Bj R j) R.Cmat).PD ∧ 1 / denominator R j ≤ 5 / 4 := by
+theorem box_sound {R : Sym2C} {RI : SC} {j cap : ℝ} {jI capI : Ival}
+    (hR : memSC R RI) (hj : mem j jI) (hv : mem cap capI)
+    (hc : HardyGaussianCheck.boxOK jI RI capI = true) :
+    (Z (Bj R j)).PD ∧ (T (Bj R j) R.Cmat).PD ∧ 1 / denominator R j ≤ cap := by
   rw [HardyGaussianCheck.boxOK_eq_spec] at hc
   simp only [Bool.and_eq_true, decide_eq_true_eq] at hc
-  obtain ⟨⟨⟨⟨hp1, hp2⟩, hZg⟩, hTg⟩, hcap⟩ := hc
+  obtain ⟨⟨⟨⟨⟨hp1, hp2⟩, hZg⟩, hTg⟩, hdenpos⟩, hcap⟩ := hc
   have hdp := memC_dpm hR false
   have hdm := memC_dpm hR true
   rw [sig_false] at hdp
@@ -105,24 +123,24 @@ theorem box_sound {R : Sym2C} {RI : SC} {j : ℝ} {jI : Ival}
     rw [denominator, normSq_detIm]
     simpa only [HardyGaussianCheck.denOf, ndOf, shifted_eq_add, hTeq, hEeq,
       Z_Bj_eq hdp0 hdm0, sq, Int.cast_ofNat, mul_assoc] using hm
-  have hcapR : (4 : ℝ) * D ≤ 5 * (HardyGaussianCheck.denOf jI RI).lo := by
+  have hdenPositive : 0 < denominator R j := pos_of_posI hden hdenpos
+  have hcapR : D ≤ ((mulI capI (HardyGaussianCheck.denOf jI RI)).lo : ℝ) := by
     exact_mod_cast hcap
-  have hD := D_pos
-  have hdenLower : (4 / 5 : ℝ) ≤ denominator R j := by
-    apply (mul_le_mul_iff_left₀ hD).mp
-    nlinarith [hden.1]
+  have hmul := (mem_mul hv hden).1
+  have hone : 1 ≤ cap * denominator R j := by
+    have hD := D_pos
+    nlinarith
   refine ⟨?_, ?_, ?_⟩
   · rw [Z_Bj_eq hdp0 hdm0]; exact hZPD
   · rw [hTeq]; exact PD_of_gate hT hTg
-  · apply (div_le_iff₀ (by linarith : 0 < denominator R j)).2
-    linarith
+  · exact (div_le_iff₀ hdenPositive).2 hone
 
 theorem leaf_sound {neg : Bool} {lo hi : ℤ} {τ : ℝ}
     (hτ : mem τ ⟨lo, hi⟩) (hc : HardyGaussianCheck.leafOK neg lo hi = true) :
     Bound (chartPt (rhoQ : ℝ) neg τ) := by
   simp only [HardyGaussianCheck.leafOK, Bool.and_eq_true] at hc
   exact box_sound (memSC_Rbox (memC_circleBox (mem_ofRatI rhoQ) hτ hc.1 neg))
-    (mem_ofRatI jQ) hc.2
+    (mem_ofRatI jQ) (mem_capOf (memC_circleBox (mem_ofRatI rhoQ) hτ hc.1 neg)) hc.2
 
 theorem cover_sound (neg : Bool) (depth : ℕ) (lo hi : ℤ) {τ : ℝ}
     (hτ : mem τ ⟨lo, hi⟩) (hc : HardyGaussianCheck.coverOK neg depth lo hi = true) :

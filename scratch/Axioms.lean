@@ -10306,6 +10306,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.GaussianAmplitude.integral_pairGaussian
 #print axioms Grothe.UpperChaos.GaussianAmplitude.lintegral_P4_phih
 #print axioms Grothe.UpperChaos.GaussianAmplitude.lintegral_product_kernel
+#print axioms Grothe.UpperChaos.HardyGaussian.angularCap_eq
+#print axioms Grothe.UpperChaos.HardyGaussian.angularMajorant_integral
 #print axioms Grothe.UpperChaos.HardyGaussian.chart_bound
 #print axioms Grothe.UpperChaos.HardyGaussian.chart_integral_le
 #print axioms Grothe.UpperChaos.HardyGaussian.hardy_of_real
@@ -10314,6 +10316,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.HardyGaussianSound.box_sound
 #print axioms Grothe.UpperChaos.HardyGaussianSound.chart_bound
 #print axioms Grothe.UpperChaos.HardyGaussianSound.cover_sound
+#print axioms Grothe.UpperChaos.HardyGaussianSound.mem_capOf
 #print axioms Grothe.UpperChaos.HardyReal.hardy_GT_gaussian
 #print axioms Grothe.UpperChaos.HardyReal.hreal_GT
 #print axioms Grothe.UpperChaos.HardyReal.integral_pair_eq_kHol

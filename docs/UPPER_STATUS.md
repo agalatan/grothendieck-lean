@@ -1,10 +1,10 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The current proved upper bound is **K_G^ℂ < 1.404599398052**, without
+The current proved upper bound is **K_G^ℂ < 1.404599395362**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
 [`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
 proved lower bound, `main_bounds` states
-**1.401700322371 < K_G^ℂ < 1.404599398052** in
+**1.401700322371 < K_G^ℂ < 1.404599395362** in
 [`MainResult.lean`](../Grothe/MainResult.lean).
 
 The sharper target **K_G^ℂ < 1.404598149141** has only a conditional route,
@@ -15,7 +15,7 @@ all proved, and the energy-table discrepancy bound `6847009/(5·10^17)`, which
 `Final.hclose_final` proves for the actual frozen response.
 
 The current proof uses six certified low-band and whole-source estimates,
-tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `5/4`) with a linear-energy
+tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `117/100`) with a linear-energy
 deduction. `main_bounds` uses `upper_below_tight`, and the energy-table accuracy
 `Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). Every module
 under `Grothe/` is in the import closure of `MainResult.lean`; unused formulations are
@@ -57,12 +57,13 @@ production certificates through this chain:
    `Final.hclose_final` supplies the actual energy-table accuracy.
 4. `UpperHead` gives the finite kernel residual. `HeadHardy` deducts the
    forced linear coefficient's weighted square from the proved Hardy
-   budget `5/4` at radius `4149/4000` (`HardyReal.hardy_GT_gaussian`,
+   budget `117/100` at radius `4149/4000` (`HardyReal.hardy_GT_gaussian`,
    `UpperChaos/HardyGaussian.lean`: the Schur estimate that retains the
-   Gaussian amplitude, with its exact circle check), giving tail `233184398/10^16`.
+   Gaussian amplitude, with a certified quartic angular majorant and its exact
+   circle average), giving tail `219549168/10^16`.
 5. `UpperTightFinal` applies the transfer theorem with
-   `tightResidualQ ≈ 1.5436114922227238e-6`. Its exact reciprocal `tightValueQ`
-   is approximately `1.404599398051301`, strictly below `1.404599398052`.
+   `tightResidualQ ≈ 1.5422479692227238e-6`. Its exact reciprocal `tightValueQ`
+   is approximately `1.404599395361207`, strictly below `1.404599395362`.
 
 The comparison allowance is approximately `1.4921263584047238e-6`; the
 stored-table head allowance is `28153/10^12`, and the table allowance remains
@@ -90,10 +91,10 @@ The structural fields of `DirectHyps` (`valid`, `summable`, `parityX`) and
 | PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck0–5, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 99/100`, `|φ| < 1` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_abs_cover.py`, data `data/phi-abs-cover/trees.json`) |
 | HardyKernel, HardyReal | holomorphic Gaussian kernel and certificate covariance definitions; `HardyReal.hreal_GT`, the real identification of the kernel of `GT` |
 | HardyArcSound, HardyArcCircle, HardyArcData, HardyArcRegion, HardyArcRegionCheck, HardyArcCover | interval soundness of the precompiled checker `GrotheKernel/HardyArc.lean`, the circle charts, the checker data, the region of holomorphy (`hardy_region_check`), and the squared correlation `gF` on the circle |
-| GaussianAmplitude, GaussianPair, SchurMainGaussian, HardyGaussianCheck, HardyGaussianFacts, HardyGaussianSound, HardyGaussian | the Schur estimate that retains the Gaussian amplitude, its exact check on the four closed halves of the two circle charts, and `HardyReal.hardy_GT_gaussian` (budget `5/4`), the Hardy input of `upper_below_tight` |
+| GaussianAmplitude, GaussianPair, SchurMainGaussian, HardyGaussianCheck, HardyGaussianFacts, HardyGaussianSound, HardyGaussian | the Schur estimate that retains the Gaussian amplitude, its exact check on the four closed halves of the two circle charts, and `HardyReal.hardy_GT_gaussian` (budget `117/100`), the Hardy input of `upper_below_tight` |
 
 The endpoint reserves linear energy from the proved Hardy budget before
-Cauchy–Schwarz: `HeadHardy` deducts it from the Gaussian-amplitude budget `5/4`
+Cauchy–Schwarz: `HeadHardy` deducts it from the Gaussian-amplitude budget `117/100`
 (`HardyReal.hardy_GT_gaussian`).
 `HardyKernel` supplies definitions; the Gaussian-amplitude circle check and the
 region check supply the proved numerical Hardy inputs.
@@ -197,13 +198,13 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   GitHub-hosted runner) proves positive kernel decay (`KerPos`) on the disc of radius
   `51863/50000 > 4149/4000` by a quadtree of complex boxes. The circle mean is bounded with the Gaussian
   amplitude retained (`SchurMainGaussian`): `HardyGaussianCheck.charts_checked` (one `native_decide`) bounds the
-  resulting determinant expression by `5/4` on all four closed halves of the two charts, and
-  `HardyGaussian.hmean` integrates it over the circle. The soundness proofs are in `HardyArcSound`,
+  resulting determinant expression by `(513 + 297cos²θ − 204cos⁴θ)/500` on all four closed halves
+  of the two charts. `HardyGaussian.hmean` integrates it exactly to the circle mean `117/100`. The soundness proofs are in `HardyArcSound`,
   `HardyArcCircle`, `HardyArcCover`, `HardyArcRegion` and `HardyGaussianSound`; **`HardyGaussian.hardy_of_real`**
-  gives the `hardy` statement with budget `5/4` for every measurable disk-valued pair from the real
+  gives the `hardy` statement with budget `117/100` for every measurable disk-valued pair from the real
   identification (step 1(b)) for summable coefficients.
 - **1(b) real identification — proved** (`claude/hardy-real`). `HardyReal.hreal_GT`, hence
-  `HardyReal.hardy_GT_gaussian`: the `hardy` statement with budget `5/4` for the rounding,
+  `HardyReal.hardy_GT_gaussian`: the `hardy` statement with budget `117/100` for the rounding,
   with no hypothesis beyond the proved `PhiBound`; `upper_below_tight` uses it.
   Modules: `HardyRealAlg` (exponent identity), `HardyRealKernel`,
   `HardyRealGauss` (`mu2` in the coordinates of `HholPair`), `HardyRealSubst`, `HardyRealDensity` (density of

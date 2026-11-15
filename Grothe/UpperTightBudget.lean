@@ -14,7 +14,7 @@ These radii retain the existing tail and root-gap reserve, use the exact dyadic 
 and recompute whole-source error radii from the already certified inner-product thresholds.
 The comparison uses longer certified coefficient prefixes and the existing table-accuracy
 allowance, then deducts the forced linear energy from the Gaussian-amplitude Hardy budget
-`5/4`, retaining the accepted quadrature and comparison certificates.
+`117/100`, retaining the accepted quadrature and comparison certificates.
 
 This module proves only exact arithmetic. The panel acceptance facts and their analytic
 interpretation are supplied separately; no new finite numerical assumption is introduced here.
@@ -154,10 +154,10 @@ def tightLinearLowerQ : ℚ := slopeQ - tightHeadResidualQ
 
 /-- The sharp Hardy budget after deducting linear energy and shifting the radial index. -/
 def tightShiftedBudgetQ : ℚ :=
-  (5 / 4 - tightLinearLowerQ ^ 2 * (4149 / 4000) ^ 2) / (4149 / 4000) ^ 4
+  (117 / 100 - tightLinearLowerQ ^ 2 * (4149 / 4000) ^ 2) / (4149 / 4000) ^ 4
 
 /-- The tail cap beyond degree `501`, using the deducted Hardy budget. -/
-def tightTailQ : ℚ := 233184398 / 10 ^ 16
+def tightTailQ : ℚ := 219549168 / 10 ^ 16
 
 def tightResidualQ : ℚ := tightHeadResidualQ + tightTailQ
 
@@ -177,31 +177,31 @@ theorem tightTailQ_nonneg : 0 ≤ tightTailQ := by decide +kernel
 theorem tightResidualQ_lt_slopeQ : tightResidualQ < slopeQ := by decide +kernel
 
 /-- The exact new reciprocal lies strictly below this twelve-decimal threshold. -/
-theorem tightValueQ_lt : tightValueQ < 1404599398052 / 10 ^ 12 := by decide +kernel
+theorem tightValueQ_lt : tightValueQ < 1404599395362 / 10 ^ 12 := by decide +kernel
 
 theorem tight_real_reciprocal :
     1 / ((slopeQ : ℝ) - (tightResidualQ : ℝ)) = (tightValueQ : ℝ) := by
   norm_num only [tightValueQ, Rat.cast_div, Rat.cast_one, Rat.cast_sub]
 
-theorem tight_real_value_lt : (tightValueQ : ℝ) < (1.404599398052 : ℝ) := by
+theorem tight_real_value_lt : (tightValueQ : ℝ) < (1.404599395362 : ℝ) := by
   calc
-    (tightValueQ : ℝ) < (((1404599398052 : ℚ) / 10 ^ 12 : ℚ) : ℝ) := by
+    (tightValueQ : ℝ) < (((1404599395362 : ℚ) / 10 ^ 12 : ℚ) : ℝ) := by
       exact_mod_cast tightValueQ_lt
-    _ = (1.404599398052 : ℝ) := by norm_num
+    _ = (1.404599395362 : ℝ) := by norm_num
 
 /-- Kernel-checked integer arithmetic gives the tail comparison after the radial-index shift. -/
 theorem tight_hardy_numeric :
     (tightShiftedBudgetQ : ℝ) * (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1)) ≤
       (tightTailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
   have hN :
-      (3026520746795139941081075137961314000594689672517858790628939000386752133673064415190719 *
+      (298102595901682215675675015329034888954965519168650976736548777820750237074784935021191 *
         4000 ^ 1002 : ℕ) ≤
-      367902949728138186280056000569032048640000000000000000000000000000000000 *
+      36237261794111208038546679262882037760000000000000000000000000000000000 *
         4149 ^ 1002 := by decide +kernel
   have hR :
-      (3026520746795139941081075137961314000594689672517858790628939000386752133673064415190719 *
+      (298102595901682215675675015329034888954965519168650976736548777820750237074784935021191 *
         4000 ^ 1002 : ℝ) ≤
-      367902949728138186280056000569032048640000000000000000000000000000000000 *
+      36237261794111208038546679262882037760000000000000000000000000000000000 *
         4149 ^ 1002 := by exact_mod_cast hN
   have ha : (0 : ℝ) ≤ 4000 ^ 1002 := by positivity
   have hb : (0 : ℝ) < 4149 ^ 1002 := by positivity
