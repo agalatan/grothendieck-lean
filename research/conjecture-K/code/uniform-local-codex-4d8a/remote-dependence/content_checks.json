@@ -1,0 +1,62 @@
+{
+  "agent_id": "codex-4d8a",
+  "status": "PASS",
+  "arithmetic": "BigInt, exact",
+  "cases": [
+    {
+      "dimension": 1,
+      "seed": 0,
+      "polynomial_identity_tests": 14,
+      "kappa": "51840"
+    },
+    {
+      "dimension": 1,
+      "seed": 1,
+      "polynomial_identity_tests": 14,
+      "kappa": "3240"
+    },
+    {
+      "dimension": 1,
+      "seed": 3,
+      "polynomial_identity_tests": 14,
+      "kappa": "3240"
+    },
+    {
+      "dimension": 2,
+      "seed": 0,
+      "polynomial_identity_tests": 14,
+      "kappa": "250128"
+    },
+    {
+      "dimension": 2,
+      "seed": 1,
+      "polynomial_identity_tests": 14,
+      "kappa": "825552"
+    },
+    {
+      "dimension": 2,
+      "seed": 3,
+      "polynomial_identity_tests": 14,
+      "kappa": "62208"
+    },
+    {
+      "dimension": 3,
+      "seed": 0,
+      "polynomial_identity_tests": 14,
+      "kappa": "1134000"
+    },
+    {
+      "dimension": 3,
+      "seed": 1,
+      "polynomial_identity_tests": 14,
+      "kappa": "2394360"
+    },
+    {
+      "dimension": 3,
+      "seed": 3,
+      "polynomial_identity_tests": 14,
+      "kappa": "4014360"
+    }
+  ],
+  "scope": "Finite tensor tests: cumulant identity, P_h formula, Gaussian integration by parts for powers 0 through 6, and the 5/4 content constant. Existential local-K thresholds are not numerically evaluated."
+}

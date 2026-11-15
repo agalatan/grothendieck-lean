@@ -1,0 +1,178 @@
+{
+  "agent": "codex-4d8a",
+  "scope": "In-session verified analytic tradeoff and matrix cone; no external review or Lean formalization; numerical probes separately labelled",
+  "review": {
+    "analytic": "Independently rederived by odd-proof review agent within this session",
+    "numeric": "Full320-cell outward interval run completed by certificate agent in210.85s; independent analytic reader did not rerun numerical computation"
+  },
+  "source_provenance": {
+    "original_odd_certificate": {
+      "repository": "agalatan/grothendieck-lean",
+      "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+      "path": "research/conjecture-K/code/odd-cubic-core-2026-11-15/certify.cpp",
+      "sha256": "e6005b8b7cd6e53d9b4b2a6a35048fd061ce6a283f6c4687b816c1ea57a98837",
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/e6ebb9db478350fb5be73c6d9e4548df158f192e/research/conjecture-K/code/odd-cubic-core-2026-11-15/certify.cpp",
+      "adaptation": "Exactly four changed lines: filepath/agent header; radial coefficient 1/2 to exact9/20; compensation comment; proxy off-diagonal constants3/10,3/5 to3345/10000,6081/10000. No other source change."
+    },
+    "original_odd_proof": {
+      "repository": "agalatan/grothendieck-lean",
+      "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+      "path": "research/conjecture-K/sources/odd-cubic-core-2026-11-15/PROOF.md",
+      "sha256": "94c01d774ff4b33d315b5d77dcaf27de3b55a3e9f8548d41973c6e9212b17c11",
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/e6ebb9db478350fb5be73c6d9e4548df158f192e/research/conjecture-K/sources/odd-cubic-core-2026-11-15/PROOF.md"
+    },
+    "original_trig_table": {
+      "repository": "agalatan/grothendieck-lean",
+      "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+      "path": "research/conjecture-K/code/odd-cubic-core-2026-11-15/trig128.txt",
+      "sha256": "1d7c1a40d3872c6405bedbf8f7e3bc4cd1513ba978fbe9f6dcbfb60b07273e0a",
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/e6ebb9db478350fb5be73c6d9e4548df158f192e/research/conjecture-K/code/odd-cubic-core-2026-11-15/trig128.txt",
+      "adaptation": "Byte-identical copy."
+    },
+    "original_trig_verifier": {
+      "repository": "agalatan/grothendieck-lean",
+      "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+      "path": "research/conjecture-K/code/odd-cubic-core-2026-11-15/trig_intervals.py",
+      "sha256": "e3f6781a89a92ef00452c4838a111ad72b103261bee3aba3ccc0501a59a767f2",
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/e6ebb9db478350fb5be73c6d9e4548df158f192e/research/conjecture-K/code/odd-cubic-core-2026-11-15/trig_intervals.py",
+      "adaptation": "Verbatim source after one added filepath/agent provenance comment."
+    },
+    "exact_radial_helpers_source": {
+      "repository": "agalatan/grothendieck-lean",
+      "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+      "path": "research/conjecture-K/code/partial-results-codex-c7e2/boundary/verify_anisotropic.py",
+      "sha256": "b103f9d65d7b148ee0c504314d8a56e4e1f729b3705df900d5d79a84353200e8",
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/e6ebb9db478350fb5be73c6d9e4548df158f192e/research/conjecture-K/code/partial-results-codex-c7e2/boundary/verify_anisotropic.py",
+      "adaptation": "Pure helper definitions before matrix_check plus atan_inv and sqrt_interval before main, preserving exact polynomial, Stieltjes and interval arithmetic; packet main omitted, first comment changed."
+    },
+    "near_star_definition_and_even_potential": {
+      "repository": "agalatan/grothendieck-lean",
+      "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+      "path": "research/conjecture-K/sources/near-star-2026-11-15-codex-91d4/PROOF_NOTES.md",
+      "sha256": "94e095e3d2ad782305c04115f747414d4f070ce1f61b55aa94d68b5891728ed3",
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/e6ebb9db478350fb5be73c6d9e4548df158f192e/research/conjecture-K/sources/near-star-2026-11-15-codex-91d4/PROOF_NOTES.md"
+    }
+  },
+  "files": {
+    "CERTIFIED_CONE.md": {
+      "sha256": "05d1bcd0ce4e872b8a2afe36d2b3b5c5ba47b5d794c0faeb564cca64b960ea2e",
+      "bytes": 7724
+    },
+    "SHARP_TRADEOFF.md": {
+      "sha256": "6742768be0dc1f1a2ff26496817e13c4bae4cbceea5e8719dc79cd0d8279c690",
+      "bytes": 5951
+    },
+    "certificate_summary.json": {
+      "sha256": "b337ee768dc7d073188210e36bae6f0521185d6ed3da7c5f80b1619ac0e31eda",
+      "bytes": 1066
+    },
+    "certify_tradeoff.cpp": {
+      "sha256": "e392ded995950862f162512693cb39009b23242f67326a6380de63dada901bf7",
+      "bytes": 8679
+    },
+    "exact_helpers.py": {
+      "sha256": "6e1a8618dc3ed1e55409a3e262b4b00defd3c781deabc1fdb896e3ff58215f91",
+      "bytes": 3943
+    },
+    "results/all_bounds.txt": {
+      "sha256": "1723be297a0dca8799c97f2172d5dd691ad260937aab37a0df6a8f2272837c8a",
+      "bytes": 26378
+    },
+    "results/part_0.log": {
+      "sha256": "4265422b857a1824f98df57c65afff37b9ecfb6dd2649d640bdb63add7064dc3",
+      "bytes": 5458
+    },
+    "results/part_0.txt": {
+      "sha256": "74fbb84865e0ea2dfccc74da52b50372880e408c466ed25c39b009ff2b44de18",
+      "bytes": 3308
+    },
+    "results/part_1.log": {
+      "sha256": "615e335767fbe07e63af08e29be2fac2349c4c907c72329f729d6bd46ef1c155",
+      "bytes": 5498
+    },
+    "results/part_1.txt": {
+      "sha256": "0c138f150d2293c17653f4b1f681ff72d25c4818c67db5bf4c2a97826c422110",
+      "bytes": 3246
+    },
+    "results/part_2.log": {
+      "sha256": "3f93d93ad7b3944dbd0839efbdb5d7222d8fad781c1bc7e62beceb286da02669",
+      "bytes": 5543
+    },
+    "results/part_2.txt": {
+      "sha256": "b600ad69b6f11f30a53d80887899bff9ddb9a4779317a97bc45b91aea602f969",
+      "bytes": 3307
+    },
+    "results/part_3.log": {
+      "sha256": "2deec120ed7cb8a1cfc7f739072aa4fa834d9925231e5197cfc53413bdcfb114",
+      "bytes": 5593
+    },
+    "results/part_3.txt": {
+      "sha256": "a90ec68b7fb727996d0951e057e6be03ad520db6fc06e16dfa8dfd639dd201b8",
+      "bytes": 3312
+    },
+    "results/part_4.log": {
+      "sha256": "22238de6e4193a13ce355062b2840cf6178e2b08dad3828814e8987bbbb3a665",
+      "bytes": 5548
+    },
+    "results/part_4.txt": {
+      "sha256": "cf3f2b6a15bcf79590a0c89030f9835fcd111a50c78e7b254ab2079ce935b7a7",
+      "bytes": 3304
+    },
+    "results/part_5.log": {
+      "sha256": "f157152b4ff6e83477477cf90a17f27549dd5dc953b4f89634b5db923dd9b9a3",
+      "bytes": 5548
+    },
+    "results/part_5.txt": {
+      "sha256": "a9f0620d51da2897f488b7ca8ae1fc144eb8fc4c95de5de0feb6f714906cc913",
+      "bytes": 3300
+    },
+    "results/part_6.log": {
+      "sha256": "cc5f138b0e01f3f8d4c9143e98ef57abdc849e27b5e59e2cec1503cad361a45b",
+      "bytes": 5540
+    },
+    "results/part_6.txt": {
+      "sha256": "20abcb77f7ce09fa620878d941e5361fbd03025426538d5e70686fe02b0b686d",
+      "bytes": 3301
+    },
+    "results/part_7.log": {
+      "sha256": "36073e1e2c805c207bb94c0c1b7105a00b9a83b30d558616dd323eb900155c3f",
+      "bytes": 5538
+    },
+    "results/part_7.txt": {
+      "sha256": "9686ed05e218447b1bd47150731de352638f6f0202b270a191640c3c836cc48e",
+      "bytes": 3300
+    },
+    "run_certificate.py": {
+      "sha256": "30929ec41005d0839bba4f5df21e6fb50d07fa063ebbd7499201d643743bf6f9",
+      "bytes": 1449
+    },
+    "tradeoff_probe.json": {
+      "sha256": "3836dbd058f27ee68567c132f814a2b14c5edbb607390f4463f49c963d52453b",
+      "bytes": 20585
+    },
+    "tradeoff_probe.log": {
+      "sha256": "af9db7d583a2010c423dcf32f6a3aea47c2476e33b8989688837a019842eb275",
+      "bytes": 14726
+    },
+    "tradeoff_probe.py": {
+      "sha256": "3cb96094b7bac8d9a79462edfe90e2876fe98dfb073991a84f33615ca5bbc57b",
+      "bytes": 2470
+    },
+    "trig128.txt": {
+      "sha256": "1d7c1a40d3872c6405bedbf8f7e3bc4cd1513ba978fbe9f6dcbfb60b07273e0a",
+      "bytes": 20727
+    },
+    "trig_intervals.py": {
+      "sha256": "f1ddd0f29718f24b2e4325c9a848c213f8fe6df4e9cc316dedd1001d16b407bf",
+      "bytes": 3200
+    },
+    "verify_certificate.py": {
+      "sha256": "9f55505acc7293a5e8b50c05ef794bb412cd3d83ad2620543e3183f7368047e2",
+      "bytes": 3007
+    },
+    "verify_tradeoff.mjs": {
+      "sha256": "380d3cd6bee789bab9146608513a104c2ae89931626248eee0a24751ed57240b",
+      "bytes": 1687
+    }
+  }
+}

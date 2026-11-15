@@ -669,3 +669,66 @@ and `--numerics` adds the probes. Its `replay_runs/` (520 KB of receipts and log
 | `inputs/coupled_budget_multipliers.json` | 108,971 B | `54715d0969614267b7c866fbf8d255c53edda4133fe8eca24f3a15ebffe0d4f8` |
 | `inputs/verify_region.py` | 5,260 B | `3a42db17629eec10d99a1197e26879f617238d94d34f00f7c5b62e540119712b` |
 | `inputs/verify_primitives.py` | 7,873 B | `9a0bee97cef9faf2ae508893584af7855893463be3e7739f7c6f5417ada837d8` |
+
+## The odd-gap continuation (codex-91d4, #436)
+
+`sources/odd-gap-2026-11-15-codex-91d4/` holds the reviewed documents (STATUS 7.2.11, 7.5.7). The package, 11 MB, stays
+in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-all-sector-peak-2026-11-15/odd-gap-continuation/`, with `singular-continuation/` beside it; `python3 -I replay.py`
+there replays its exact checks in under a second (replayed by claude-b9ee). Its folders `analytic-geometry/`, `numerics/`,
+`spectral-interpolation/` and `spectral-pilot/`, and the other notes of `singular-continuation/`, were not reviewed and are
+not copied.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `odd-gap-continuation/replay.py` | 21,782 B | `584b87410483c1ea9e8e9c3a7372f4b130e15cdf6832bfce0da17f4194e011b8` |
+| `odd-gap-continuation/budget/verify_energy_slack.py` | 12,319 B | `4787093aa2003e2f679b7b08747807717dce9bfe983080945ee4e4b1648b7569` |
+| `odd-gap-continuation/budget/energy_slack_result.json` | 22,802 B | `1f0816a77e8e83353efb9217b6a4a4c303735c93b3d65fef2c96e22428373a3d` |
+| `odd-gap-continuation/verify_sector_cones.py` | 3,420 B | `021c2c145e0c95a35a554d0ee8457f298354bb21eaad6464c391a73a722e68d4` |
+| `odd-gap-continuation/restricted-driver-assembly/verify.py` | 9,122 B | `7a63161d388e6b9e2f4c1366fbd3a30b92332efe678c94041af556def71f70ce` |
+| `singular-continuation/verify_small_driver_strip.py` | 5,645 B | `edab01becf3ee1a2c6543a999b47200bb0999e49659de86ed4d091d8db5205b5` |
+
+## The joint Edgeworth continuation (codex-91d4, #436)
+
+`sources/joint-edgeworth-2026-11-15-codex-91d4/` holds the report and proof notes (STATUS 7.5.9). The checkers stay in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-all-sector-peak-2026-11-15/joint-edgeworth-continuation/`, because `replay.py` checks a manifest that includes the
+documents; with python-flint 0.8.0 (`requirements.txt`), `python3 -I -B replay.py --output <new folder>` replays three checks and
+eight rejection controls (replayed by claude-b9ee).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `replay.py` | 4,844 B | `32e99ce538c02d75432b25f5f7ae442a890f134c19ab7cc394ab574317ef8d52` |
+| `verify_cumulants.py` | 7,727 B | `90150c5a08d842b5b85379d45a68a9b39d5fd94ba8d19028b01df78384d813e7` |
+| `verify_gaussian_reference.py` | 3,643 B | `ea926a431256c64f62286cf10a088f7ea117ff9a8dfda954cbd3677ed40856bc` |
+| `verify_budget.py` | 5,644 B | `ffcf94a6b3c371e55b33748bb1499f34cf8d5684214764070e7847064937991c` |
+| `MANIFEST.json` | 1,684 B | `3724c1dc51aecb35d99228d4036e234e8c3a1ed663b3e5d9976f31cc3eb546bd` |
+
+## Small-shell regions of the odd premise (outside GPT, #436)
+
+`sources/odd-AB-small-shell-2026-11-15/` and `code/odd-AB-small-shell-2026-11-15/` hold the whole package (STATUS 7.5.8):
+three C++ checkers, their 982 recorded bounds and logs. `python3 verify_results.py` there checks coverage and every constant;
+`python3 run_certificate.py --workers 8` recomputes the three certificates (about 460 s on 8 cores; claude-b9ee's recompute
+matched every bound and error term). Its base checker equals `code/odd-cubic-core-2026-11-15/certify.cpp` except for the
+first-line path comment. The
+working copy is `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/odd-cubic-core-2026-11-15/small-shell-AB/`.
+
+## Codex-4d8a: driver tails, joint cone and uniform local K (#436)
+
+`sources/uniform-local-2026-11-15-codex-4d8a/` and `code/uniform-local-codex-4d8a/` hold the documents, the checkers and the
+320 recorded cone bounds (STATUS 6.3.11, 7.5.6, 7.5.8, 12.8). `node run_checks.mjs` runs the quick exact checks;
+`python3 matrix/run_certificate.py --workers 8` recomputes the cone certificate (about 150 s on 8 cores; matched by
+claude-b9ee). Not copied, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-4d8a-uniform-local-2026-11-15/`: `inputs/` (verbatim copies of repository
+documents), and the exploratory searches `root/`, `nearstar-numerics/` and `matrix/tradeoff_probe.*`.
+
+## Codex-c7e2, round 2: near-Gaussian K and radius bounds (#436)
+
+`sources/round2-2026-11-15-codex-c7e2/` holds the documents and `code/round2-codex-c7e2/` the exact scripts and the two
+interval certifiers (STATUS 3.6, 6.3.11, 12.8). `node replay.mjs` runs the exact checks. To replay the interval certificates,
+copy the weight file below into `code/round2-codex-c7e2/remotenumerics/` and run `node replay.mjs --interval` with
+python-flint installed (about 20 s; replayed by claude-b9ee). Left in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-c7e2-round2-2026-11-15/codex-c7e2-round2/`,
+besides the numerical archives of `remotenumerics/` (`*.npz`, `*.jsonl`), `search/` and the joint obstruction runners:
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `remotenumerics/free_radial_weights_n7_den16.json` (input of the seven-coordinate certificate) | 708,172 B | `41c8c58bc48724e4d53cd1bc633866a9f80fabc69483ec8de03e641d7db3cde3` |
+| `global/inverse_neighborhood_certificate.json` (receipt of the inverse-moment certificate) | 486,497 B | `7b999c879c06b2c3d8766da7af3ed5cbdecb92165315c8612b1d70fc98be193e` |
+| `global/inverse_counterexample_certificate.json` (receipt of the older single-polynomial certificate) | 406,316 B | `37688fd826d0b582f6350bcf7e5812c54fd76464d1890f0b371f36ea3ed5c0c4` |
