@@ -53,7 +53,8 @@ NC cell(const NP&p,double rl,double rh,double ul,double uh){
  I cr=curvature(p,r,u,1),cu=curvature(p,r,u,2);
  I er=I(std::max(0.0,-cr.l))*sq(dr)/12,eu=I(std::max(0.0,-cu.l))*sq(du)/12;
  I v=(avg+er+eu)*dr*du;
- I mid=value(p,I((rl+rh)/2),I((ul+uh)/2))*dr*du;
+ // Enclose the exact midpoint, including non-dyadic source endpoints.
+ I mid=value(p,(I(rl)+I(rh))/2,(I(ul)+I(uh))/2)*dr*du;
  double rs=(er*dr*du).h,us=(eu*dr*du).h;
  if(std::isfinite(cr.h)&&std::isfinite(cu.h)){
   I mr=I(cr.h)*sq(dr)/24,mu=I(cu.h)*sq(du)/24;

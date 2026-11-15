@@ -22,7 +22,7 @@ std::array<MJ,3> base_mixed(I shift,I rr,I uu,int mode){
 struct Cell{double rl,rh,ul,uh,err,rs,us;std::array<I,3> val;};
 struct Worse{bool operator()(const Cell&a,const Cell&b)const{return a.err<b.err;}};
 Cell cell(I w,double rl,double rh,double ul,double uh){
- I dr=I(rh)-I(rl),du=I(uh)-I(ul),r(rl,rh),u(ul,uh),rm((rl+rh)/2),um((ul+uh)/2);
+ I dr=I(rh)-I(rl),du=I(uh)-I(ul),r(rl,rh),u(ul,uh),rm=(I(rl)+I(rh))/2,um=(I(ul)+I(uh))/2;
  auto center=base_kernel(w,rm,um);
  auto rad=base_mixed(w,r,u,1),ang=base_mixed(w,r,u,2);
  Cell c{rl,rh,ul,uh,0,0,0,{}};

@@ -627,22 +627,22 @@ It checks the S_M enclosure and the conditional cover in about 84 s (replayed by
 ## Central aligned directions (codex-a7c4, task #431)
 
 The source and proof target all real aligned directions of (P). The full two-shard replay
-[43743242420](https://github.com/agalatan/grothendieck-lean/actions/runs/43743242420)
-is pending; no complete-cover conclusion is asserted before all twenty region receipts pass.
-The numerical source is frozen at commit `889940752638cae36a56627152ddfed56c7609bd`.
+of the enclosed-midpoint source is pending; no complete-cover conclusion is asserted
+before all twenty region receipts pass. The superseded run 43743242420 was cancelled
+by its author after finding the midpoint-enclosure gap; its outputs are not certificates.
 The working proof is `handoff/codex-a7c4-central-aligned/PROOF.md` in the author worktree.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `code/central-aligned-codex-a7c4/README.md` | 1,778 B | `156719fb3113013e4d048922ae01892e1d5dc1c16f445152ded43a8806961a4f` |
-| `code/central-aligned-codex-a7c4/base_curvature.cpp` | 3,585 B | `9904abf9042896e36e81532262f015f6990221a0504de1aaf52e814e7b0e52a7` |
-| `code/central-aligned-codex-a7c4/central_integral.cpp` | 5,479 B | `b8bed8beaeba5ebcf746580dd197f3490cb678fb7f6f18a09fcb36e741cdbfcb` |
-| `code/central-aligned-codex-a7c4/jet_test.cpp` | 991 B | `1fd066ff4f61b401d94b44e0576c825ea578e067406bced71367b89388efa02d` |
+| `code/central-aligned-codex-a7c4/README.md` | 2,240 B | `fff2cb5f4ba1b56130f1d9f90214919764b698d8f8e5ad05b63be3053c2fb6a9` |
+| `code/central-aligned-codex-a7c4/base_curvature.cpp` | 3,595 B | `016088276b453263c6ca770bc5be3f9051db3d592f3a3b75151830c6285f2b34` |
+| `code/central-aligned-codex-a7c4/central_integral.cpp` | 5,556 B | `8e3b17bfe5669e0f9e32ed5330bf6a4aea80f7db5c09024ef15f6ed0186b6502` |
+| `code/central-aligned-codex-a7c4/jet_test.cpp` | 1,231 B | `e714e47516d3e50e9e9899a4bb218e2896535be4897aaa461f9af8d90e51b1b0` |
 | `code/central-aligned-codex-a7c4/mixed_jet.hpp` | 1,782 B | `8abc217c8fa877dd6a4f3fd9024d8047a070d0c6140bbff4d267a2d1162784c4` |
 | `code/central-aligned-codex-a7c4/phase_radius.py` | 3,613 B | `a821645392be8384e3c4635add45e64be667f65fe7811ce8871ec6f44596c9ee` |
-| `code/central-aligned-codex-a7c4/test_receipts.py` | 4,152 B | `dd16840aa9022656413bb0caa341b5486c0a83669b3022df2b12ea72b35174ba` |
-| `code/central-aligned-codex-a7c4/verify.py` | 16,406 B | `99eb3c06b7354a94471ea40355e4c2cb1e861486c99b5508aff2e43541039a24` |
-| `sources/central-aligned-codex-a7c4/PROOF.md` | 14,036 B | `a702fe0c17a83f783211c599df79a4a77ad71c638ed8ce048debe05598da4f6a` |
+| `code/central-aligned-codex-a7c4/test_receipts.py` | 4,850 B | `c23149afbc6d58383c493fb35eb81131b4f9c29eba9c4492e93933693f292b7a` |
+| `code/central-aligned-codex-a7c4/verify.py` | 18,632 B | `630d497151674c21dfd0849f0eb384d923b9e5b8e3f584a62c134edf51ffc217` |
+| `sources/central-aligned-codex-a7c4/PROOF.md` | 14,466 B | `9d2218082e17bb6b125f12edb75d9e3d5d18457f58894037a374eee701ea17ad` |
 
 ## Explicit scalar Edgeworth deficit (codex-a7c4, task #446)
 

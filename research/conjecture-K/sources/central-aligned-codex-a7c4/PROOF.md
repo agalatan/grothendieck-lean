@@ -87,7 +87,9 @@ Every source rectangle uses midpoint quadrature with error
 For N'', the second source derivative is twice the relevant Taylor
 coefficient. For C_i'', the mixed w²/source² derivative is four times
 the coefficient, since 2!2!=4. The center value is separately evaluated
-with the reviewed second-order jet arithmetic. The interval shift w is
+with the reviewed second-order jet arithmetic. Both midpoint coordinates
+are outward interval sums divided by two, enclosing the exact midpoint
+even when it is not representable as a binary floating-point number. The interval shift w is
 retained in all operations. Repeated subdivision and outward summation
 produce enclosures; a wide enclosure is never interpreted as a small
 curvature constant. The verifier uses the actual reported endpoints.
@@ -208,7 +210,10 @@ The receipt records the path of every terminal box. The auditor rebuilds
 the tree and requires precisely both children of the same split axis at
 every nonterminal node, with no overlap, missing root or missing child.
 Every terminal box must pass its inherited-region test or all eight
-corner/interpolation tests. Twenty distinct region receipts are required
+corner/interpolation tests. Parallel chart jobs carry a separate partial
+status. A full region requires all four signed charts, checked individually
+and then together; duplicate shared corners use the smaller of the two
+valid bounds. The complete auditor rejects a partial chart as a region. Twenty distinct region receipts are required
 for a complete real-plane assertion.
 
 Floating Gaussian quadrature chooses reserves and subdivisions only.

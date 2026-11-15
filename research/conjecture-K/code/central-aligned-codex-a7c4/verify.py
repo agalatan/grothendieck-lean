@@ -33,6 +33,7 @@ spec.loader.exec_module(ADAPT)
 PC, QA, QB = ADAPT.PC, ADAPT.QA, ADAPT.QB
 QC = -F(59, 100)*ADAPT.RHO
 PARTIAL = 'PASS assigned aligned regions; full complex (P) remains open'
+CHART = 'PASS one signed chart only; no full shift-region claim'
 COMPLETE = 'PASS real aligned plane; full complex (P) remains open'
 PROFILE = [(F(0),F(1,8),F(1,512)),(F(1,8),F(1,4),F(1,256)),
            (F(1,4),F(1),F(1,64)),(F(1),F(9,8),F(1,32)),
@@ -149,8 +150,10 @@ def curvature_bounds(index, rows):
             *(max(max(abs(row[j][0]),abs(row[j][1])) for row in entries) for j in (1,2)))
 
 
-def validate(data):
-    assert data['status'] == PARTIAL and data['sha256'] == hashes(), 'stale or incomplete receipt'
+def validate(data, chart=None):
+    if chart is not None:
+        assert type(chart) is int and 0 <= chart < 4 and data['chart'] == chart
+    assert data['status'] == (PARTIAL if chart is None else CHART) and data['sha256'] == hashes(), 'stale or incomplete receipt'
     index = data['index']
     assert type(index) is int and 0 <= index < 20
     curvature = curvature_bounds(index,data['curvature'])
@@ -167,18 +170,20 @@ def validate(data):
         assert key not in points, 'duplicate point'
         points[key] = upper-target(*key)
     trees = {}
-    for chart,root,path,kind in data['leaves']:
-        assert type(chart) is int and 0 <= chart < 4
+    for leaf_chart,root,path,kind in data['leaves']:
+        assert type(leaf_chart) is int and 0 <= leaf_chart < 4
+        assert chart is None or leaf_chart == chart
         assert type(root) is int and 0 <= root < len(amplitude_roots())
         assert isinstance(path,str) and len(path) <= 100 and all(c in '012345' for c in path)
         assert kind in ('c','o','a','d')
-        tree = trees.setdefault((chart,root),{})
+        tree = trees.setdefault((leaf_chart,root),{})
         for digit in path:
             assert 'leaf' not in tree, 'overlapping leaves'
             tree = tree.setdefault(digit,{})
         assert not tree, 'duplicate or overlapping leaf'
         tree['leaf'] = kind
-    assert set(trees) == set(itertools.product(range(4),range(len(amplitude_roots())))), 'missing root'
+    charts = range(4) if chart is None else (chart,)
+    assert set(trees) == set(itertools.product(charts,range(len(amplitude_roots())))), 'missing root'
 
     def walk(chart,cell,tree):
         if 'leaf' in tree:
@@ -264,15 +269,22 @@ class Selector:
         return ans
 
 
-def run_region(arguments):
-    index,temp,output = arguments
-    temp,output = Path(temp),Path(output)
+def run_curvature(arguments):
+    index,temp = arguments
+    temp = Path(temp)
     curvature_rows = []
     for j in range(8):
         lo,hi = F(8*index+j,128),F(8*index+j+1,128)
         result = subprocess.run([str(temp/'base_curvature'),float(lo).hex(),float(hi).hex(),'.5','24000'],
                                 capture_output=True,text=True,check=True)
         curvature_rows.append(result.stdout)
+    curvature_bounds(index,curvature_rows)
+    return index,curvature_rows
+
+
+def run_chart(arguments):
+    index,chart,temp,output,curvature_rows = arguments
+    temp,output = Path(temp),Path(output)
     curvature = curvature_bounds(index,curvature_rows)
     selector = Selector()
     cache,point_rows,leaves = {},[],[]
@@ -295,38 +307,59 @@ def run_region(arguments):
                 cache[key] = upper-target(*key)
                 point_rows.append([*map(str,key),m[1],int(m[3])])
                 if len(cache)%100 == 0:
-                    print('region',index,'points',len(cache),'leaves',len(leaves),flush=True)
+                    print('region',index,'chart',chart,'points',len(cache),'leaves',len(leaves),flush=True)
                 return cache[key]
             assert result.returncode == 1 and result.stdout.startswith('UNRESOLVED'), result.stdout+result.stderr
             reserve /= 2
         raise RuntimeError(f'UNRESOLVED point {key}')
 
-    for chart in range(4):
-        for root,(lo,hi) in enumerate(amplitude_roots()):
-            todo = [((F(index,16),F(index+1,16),F(-1),F(1),lo,hi),'')]
-            while todo:
-                cell,path = todo.pop()
-                kind = known(chart,cell)
-                if kind:
-                    leaves.append([chart,root,path,kind])
+    for root,(lo,hi) in enumerate(amplitude_roots()):
+        todo = [((F(index,16),F(index+1,16),F(-1),F(1),lo,hi),'')]
+        while todo:
+            cell,path = todo.pop()
+            kind = known(chart,cell)
+            if kind:
+                leaves.append([chart,root,path,kind])
+                continue
+            err = errors(chart,cell,curvature)
+            keys = corners(chart,cell)
+            margin = max(1/64,-max(selector.value(*k) for k in keys))
+            if float(sum(err)) < margin*.4:
+                if max(point(k) for k in keys)+sum(err) < 0:
+                    leaves.append([chart,root,path,'c'])
                     continue
-                err = errors(chart,cell,curvature)
-                keys = corners(chart,cell)
-                margin = max(1/64,-max(selector.value(*k) for k in keys))
-                if float(sum(err)) < margin*.4:
-                    if max(point(k) for k in keys)+sum(err) < 0:
-                        leaves.append([chart,root,path,'c'])
-                        continue
-                axis = max(range(3),key=lambda a:err[a])
-                assert cell[2*axis+1]-cell[2*axis] > F(1,2**20), 'unresolved parameter box'
-                lower,upper = split(cell,axis)
-                todo.extend([(upper,path+str(2*axis+1)),(lower,path+str(2*axis))])
-    data = {'agent_id':'codex-a7c4','status':PARTIAL,'index':index,'curvature':curvature_rows,
+            axis = max(range(3),key=lambda a:err[a])
+            assert cell[2*axis+1]-cell[2*axis] > F(1,2**20), 'unresolved parameter box'
+            lower,upper = split(cell,axis)
+            todo.extend([(upper,path+str(2*axis+1)),(lower,path+str(2*axis))])
+    data = {'agent_id':'codex-a7c4','status':CHART,'index':index,'chart':chart,'curvature':curvature_rows,
             'points':point_rows,'leaves':leaves,'sha256':hashes()}
-    validate(data)
+    validate(data,chart)
     output.write_text(json.dumps(data,separators=(',',':'))+'\n')
-    print('PASS region',index,'points',len(point_rows),'leaves',len(leaves),flush=True)
-    return index,len(point_rows),len(leaves)
+    print('PASS region',index,'chart',chart,'points',len(point_rows),'leaves',len(leaves),flush=True)
+    return index,chart
+
+
+def assemble_region(index,output):
+    """Four complete, separately scoped charts become one audited region."""
+    parts = [json.loads((output/f'chart-{index:02}-{c}.json').read_text()) for c in range(4)]
+    points,leaves = {},[]
+    for c,part in enumerate(parts):
+        assert validate(part,c) == index
+        assert part['curvature'] == parts[0]['curvature']
+        leaves.extend(part['leaves'])
+        for row in part['points']:
+            key = tuple(row[:4])
+            if key not in points or hex_fraction(row[4]) < hex_fraction(points[key][4]):
+                points[key] = row
+    data = {'agent_id':'codex-a7c4','status':PARTIAL,'index':index,
+            'curvature':parts[0]['curvature'],'points':list(points.values()),
+            'leaves':leaves,'sha256':hashes()}
+    validate(data)
+    (output/f'region-{index:02}.json').write_text(json.dumps(data,separators=(',',':'))+'\n')
+    for c in range(4):
+        (output/f'chart-{index:02}-{c}.json').unlink()
+    print('PASS region',index,'points',len(points),'leaves',len(leaves),flush=True)
 
 
 def combine(paths,output):
@@ -376,15 +409,29 @@ def main():
             assert m and hex_fraction(m[1]) < target(F(3,5),F(7,20),F(1),F(37,64))-F(1,50)
             print('PASS smoke; no parameter cover claimed',flush=True)
             return
-        jobs = [(i,str(temp),str(output/f'region-{i:02}.json')) for i in range(shard,20,nshards)]
+        indices = list(range(shard,20,nshards))
+        counts = {i:0 for i in indices}
+        def accept(result):
+            index,_ = result
+            counts[index] += 1
+            if counts[index] == 4:
+                assemble_region(index,output)
+        def chart_jobs(curvatures):
+            return [(i,c,str(temp),str(output/f'chart-{i:02}-{c}.json'),curvatures[i])
+                    for i in indices for c in range(4)]
         if args.workers == 1:
-            for job in jobs:
-                run_region(job)
+            curvatures = dict(run_curvature((i,str(temp))) for i in indices)
+            for job in chart_jobs(curvatures):
+                accept(run_chart(job))
         else:
             with concurrent.futures.ProcessPoolExecutor(max_workers=args.workers,
                     mp_context=multiprocessing.get_context('spawn')) as pool:
-                list(pool.map(run_region,jobs))
-        print(PARTIAL,'regions',[i for i,_,_ in jobs],flush=True)
+                curvatures = dict(pool.map(run_curvature,[(i,str(temp)) for i in indices]))
+                futures = [pool.submit(run_chart,job) for job in chart_jobs(curvatures)]
+                for future in concurrent.futures.as_completed(futures):
+                    accept(future.result())
+        assert all(n == 4 for n in counts.values())
+        print(PARTIAL,'regions',indices,flush=True)
 
 
 if __name__ == '__main__':

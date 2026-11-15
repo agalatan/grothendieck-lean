@@ -43,6 +43,18 @@ def main():
         reject('duplicate shift region',lambda:v.combine(paths+[paths[0]],out))
     good = json.loads(paths[9].read_text())
     v.validate(good)
+    with tempfile.TemporaryDirectory(prefix='codex-a7c4-chart-tests-') as td:
+        out = Path(td)
+        for c in range(4):
+            part = copy.deepcopy(good)
+            part.update(status=v.CHART,chart=c)
+            part['leaves'] = [r for r in part['leaves'] if r[0] == c]
+            v.validate(part,c)
+            reject('single chart as full region',lambda:v.validate(part))
+            (out/f"chart-{good['index']:02}-{c}.json").write_text(json.dumps(part))
+        v.assemble_region(good['index'],out)
+        assembled = json.loads((out/f"region-{good['index']:02}.json").read_text())
+        assert assembled['points'] == good['points'] and assembled['leaves'] == good['leaves']
     leaf = next(r for r in good['leaves'] if r[3] == 'c')
     chart,root,path,_ = leaf
     lo,hi = v.amplitude_roots()[root]

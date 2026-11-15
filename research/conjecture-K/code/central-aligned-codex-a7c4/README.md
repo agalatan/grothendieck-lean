@@ -8,6 +8,8 @@ The proof is in `../../sources/central-aligned-codex-a7c4/PROOF.md`.
 It derives a shift-curvature estimate from convexity of the perturbed norm
 and certified base/content derivatives. Four signed coefficient charts,
 source interval quadrature and exact tensor interpolation cover the roots.
+Midpoint quadrature encloses the exact source midpoint; the adjacent-float
+control checks the case where that midpoint is not representable.
 A floating selector proposes subdivisions only; it cannot accept a box.
 
 ```sh
@@ -20,8 +22,12 @@ Python standard library audits receipts; NumPy is used only for the floating
 selector during execution. clang++ compiles the strict interval sources.
 SHARD/NSHARDS partition the twenty width-1/16 shift regions. Each covers all
 four signed charts and the exact amplitude chain. The cloud default uses
-four worker processes; local runs default to one. Each worker emits its
-receipt only after exact validation. All twenty distinct receipts are
+four worker processes; local runs default to one. Curvature is computed
+once per shift region; chart jobs then share this immutable input, so the
+two difficult low-shift regions can use all four workers. Each worker emits
+a chart receipt only after exact validation. The assembly requires all four
+distinct charts and deduplicates their common corners by taking a valid
+minimum. Chart receipts cannot be accepted as full regions. All twenty distinct receipts are
 required for the full aligned-plane conclusion. Root trees reject missing
 children, overlaps and missing corners. An unresolved point or box fails.
 
