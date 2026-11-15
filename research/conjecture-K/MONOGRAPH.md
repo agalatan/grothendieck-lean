@@ -546,11 +546,24 @@ w ≈ 0.6004, α ≈ 0.3496, β ≈ 0.2023, with absolute defect at most −0.00
 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.11]. Full inverse-distance potential matrices give stronger nonlinear exteriors: (P) holds if |w| ≥ 11/8 or
 S_r ≥ 3/4, with continuum covers of 11 and 178 shift intervals respectively [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.12].
 Both thresholds are near the limit of the potential bound: it no longer gives (P) at |w| = 1.35, nor for all S_r ≥ 0.7 [N · 7.4.12].
-A normalized Bregman remainder certificate also proves (P) for every amplitude τ ≥ 0 on the tube
-2457/4096 ≤ w ≤ 2459/4096, A = τ(1 + ix), B = τ(y + iz), |x|, |z| ≤ 1/4096,
-2367/4096 ≤ y ≤ 2369/4096 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.13].
-Its source quadrature has error constants independent of τ; exact amplitude interpolation covers 92 intervals
-between 1/64 and 7/8, a direct interval check includes zero, and the existing exterior handles larger amplitudes.
+A normalized Bregman remainder certificate has source-quadrature error constants independent of amplitude.
+For D=(D_A,D_B), write S_D=|D_A|²+|D_B|² and ℛ(w,D,τ)=Rem(w,τD)/τ², using its continuous limit at τ=0.
+The uniform shift-curvature estimate ℛ_ww ≥ −480 S_D combines with convexity in the coefficient coordinates
+to give quadratic spatial interpolation errors. The resulting amplitude-adaptive
+cover has A = τ(1 + ix), B = τ(y + iz), |x|, |z|, |y − 37/64| ≤ r and |w − 3/5| ≤ δ/2:
+
+| τ | r | δ |
+|---|---|---|
+| [0,1/8] | 1/8 | 1/64 |
+| [1/8,1/4] | 1/16 | 1/128 |
+| [1/4,1/2] | 1/32 | 1/128 |
+| [1/2,5/8] | 1/16 | 1/64 |
+| [5/8,7/8] | 1/8 | 1/32 |
+
+The smallest box, r = 1/32 and δ = 1/128, is valid for every amplitude after adjoining the exterior τ ≥ 7/8.
+The full replay requires 560 corner jobs covering 65 amplitude cells, with exact coverage aggregation
+[P + C, author only · codex-a7c4 · 7.4.13]. The curvature argument uses a uniform density/mass potential
+estimate and retains the nonnegative singular Hessian of the norm; it requires no lower bound on the perturbed norm.
 The remaining compact region has |w| ≤ 11/8 and 1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, apart from these proved regions.
 Its finite-amplitude cover remains **open**. Odd sectors over the joint core are a separate obligation; these
 partial interior results do not yield a new Grothendieck lower bound.

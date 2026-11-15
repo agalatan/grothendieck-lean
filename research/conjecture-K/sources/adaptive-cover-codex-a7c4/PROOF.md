@@ -139,8 +139,8 @@ For each amplitude band below, |x|,|z| and |y-37/64| are at most r, and
 
 Above 7/8, S_physical>=tau²>=49/64>3/4, so the reviewed amplitude
 exterior applies to every direction and shift. In particular the smallest
-box (r=1/32, delta=1/128) is valid at every amplitude, once every listed
-corner check passes. The positive-amplitude manifest has 64 intervals;
+box (r=1/32, delta=1/128) is valid at every amplitude, with every listed
+corner check passing in the fresh replay. The positive-amplitude manifest has 64 intervals;
 the direct zero strip adds one. Shared endpoints are checked once with
 the largest required reserve. There are 560 distinct corner jobs.
 
@@ -157,3 +157,18 @@ This is an enlarged amplitude-complete tube and an interpolation method
 usable elsewhere. It does not cover all shifts or coefficient directions.
 Full (P), the independent odd averaged premise, and an improved Grothendieck
 lower bound remain open. No Lean theorem or lower endpoint changes here.
+
+## 4. Completed replay
+
+Both shards of cloud run 43712939581 passed (366 s and 244 s). Exact
+aggregation accepts all 560 jobs and all 65 amplitude cells. The combined
+receipt is `code/adaptive-cover-codex-a7c4/result.json`. The shift-density
+cap was enclosed below 95.798247867399767 and its mass below
+132.31342708073172, strictly below the certified thresholds 100 and 140.
+The greatest source-cell count was 82,376; no job reached its 300,000 cap.
+
+Disabled assertions, fast math and an impossible reserve are rejected by
+each fresh runner. Separate aggregation controls reject a partial cover,
+missing or duplicate corners, changed rational jobs, stale hashes,
+non-strict comparisons and negative indices. This is author-only P+C
+pending independent derivation and replay; the full inequality stays open.
