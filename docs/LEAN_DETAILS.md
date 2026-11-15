@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401700037873 < K_G^ℂ < 1.404599412097` (`main_bounds`,
+The proved interval is `1.401700037873 < K_G^ℂ < 1.404599398251` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
 (`lower_target`), and so is the upper endpoint (`upper_below_tight`,
 `Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
@@ -18,7 +18,7 @@ input of the main theorems, which have no hypotheses. A module said to be
 nothing in `main_bounds` depends on it. The value `1.404598149141` is the target
 the rounding was designed for: Lean proves a bound below it only conditionally
 (`fresh_upper_concrete_taylor`, whose band-error hypotheses are not proved),
-and the theorem without hypotheses exhibits a bound below `1.404599412097`.
+and the theorem without hypotheses exhibits a bound below `1.404599398251`.
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
@@ -31,9 +31,26 @@ rational square-root ceilings, improving the coarse high-band caps `0.0916` and 
 piece-error and whole-source radii.
 `UpperHead` assembles the finite residual independently of the comparison budget,
 and `HeadHardy` deducts the linear coefficient's forced energy before bounding the tail.
-The unchanged sharp Hardy budget is `1737972/10⁶`. The resulting exact reciprocal
-`tightValueQ` is strictly below `1.404599412097`. No panel, energy table or numerical
-acceptance premise is replaced, and the tighter total checks introduce no native fact.
+The production Hardy budget is `5/4`, supplied by the Gaussian-amplitude estimate. The resulting exact reciprocal
+`tightValueQ` is strictly below `1.404599398251`. The panel and energy-table inputs
+are unchanged. The Gaussian circle cap is independently checked by
+`HardyGaussianCheck.charts_checked`; the tighter panel-total checks use kernel reduction.
+
+**Gaussian-amplitude Hardy bound.** `GaussianPair` evaluates a positive Gaussian
+pair integral, and `GaussianAmplitude` applies it to the explicit amplitude
+left in the `L*L` argument. For `A=(I-R²)⁻¹`, `B=A-jI`, `C=RA`,
+`Z=Re B`, `T=Z-Re(C) Z⁻¹ Re(C)` and
+`E=(Re(C) Z⁻¹ Re(C)+Im(C) Z⁻¹ Im(C))/2`, the pair correlation satisfies
+`|H|² ≤ [16 j² |det(I-R²)|² det Z det(T+jI) det(T+2E+jI)]⁻¹`
+under the existing positive-definiteness gates. `SchurMainGaussian` proves
+this for measurable disk-valued responses. `HardyGaussianCheck` bounds it
+by `5/4` over all four closed halves of the two circle charts, with outward
+128-bit interval arithmetic and a depth-bounded covering proof. The native
+acceptance is applied in `HardyGaussian`, using the interval soundness proved by
+`HardyGaussianSound`; holomorphy and Parseval then yield
+`HardyReal.hardy_GT_gaussian` for the actual rounding.
+`UpperTightFinal` uses this budget and deducts the forced linear energy,
+certifying tail `233184398/10¹⁶` and the new `main_bounds` endpoint.
 
 **Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
 `PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
@@ -934,7 +951,7 @@ certified radii above; it does not import this endpoint module. The standard
 analytic cores and concrete adapters keep their explicit inherited trust
 allowances; no new native fact is introduced. The older public `UpperTarget`
 threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the stricter
-threshold `1.404599412097`.
+threshold `1.404599398251`.
 
 The relaxed three-band chain for the `1.4046` threshold (`RelaxedThreeBandBudget`,
 `RelaxedThreeBandComparison`, `RelaxedThreeBandUpper`, `RelaxedTwistMargins`,
@@ -2232,15 +2249,16 @@ by the final theorems.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs are the hypotheses of this
   theorem that are not proved. The residual of the proved bound `upper_below_tight`
-  is `tightResidualQ`, approximately 1.5507·10⁻⁶: the comparison
-  `tightThreeBandCompareQ` (96.2%), the Hardy tail `303362611/10¹⁶` (2.0%), the
+  is `tightResidualQ`, approximately 1.5437·10⁻⁶: the comparison
+  `tightThreeBandCompareQ` (96.7%), the Hardy tail `233184398/10¹⁶` (1.5%), the
   head `28153/10¹²` (1.8%) and the same table error.
   Full scope, source bindings and reproduction commands are in
   `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
   the mathematical argument.
 * The certified weighted head bound forces `h₀ ≥ slopeQ − tightHeadResidualQ`.
   `HeadHardy` uses `hardy_budget_after_linear` to deduct its weighted square
-  from `1737972/1000000`; exact kernel arithmetic proves tail `303362611/10¹⁶`.
+  from the Gaussian-amplitude budget `5/4`; exact kernel arithmetic proves
+  tail `233184398/10¹⁶`.
   This deduction is used by `upper_below_tight`. The conditional smaller head
   still gives tail `303362486/10¹⁶`; the fixed-budget three-band endpoint
   (`ThreeBandUpper.lean`) retains the tail `36748/10¹²` from budget `7/4`
@@ -2631,7 +2649,9 @@ circle `|t| = 4149/4000` with mean at most `1737972/1000000`, and `hardy_region_
 proves `KerPos` on the disc of radius `51863/50000`. `hardy_region_and_mean`
 assembles both, and `hardy_of_real` retains coefficient summability (`hs`)
 and the real identification (`hreal`) as explicit inputs; `HardyReal.lean`
-supplies both for G_T (`hardy_GT`, `hardy_GT_tight`).
+supplies both for G_T (`hardy_GT`, `hardy_GT_tight`). The production proof uses
+the stronger fixed-amplitude circle certificate `HardyGaussianCheck.charts_checked`
+and budget `5/4` (`HardyReal.hardy_GT_gaussian`), retaining the same decay region.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
@@ -2652,8 +2672,9 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The cover certificate of the lower bound uses these facts,
 the additional law-node fact and the refined-cover facts; the node caps add
 their chord, range, anchor and piece facts.
-The complete registry of native facts is `data/axioms/native.txt` (cap ranges, Hardy facts — four arc parts and
-the region — and others); the default report is `scratch/Axioms.lean`, with its required declarations in
+The complete registry of native facts is `data/axioms/native.txt` (cap ranges, the production Gaussian
+circle check, the inherited Schur arc checks and shared decay region, and others); the default report
+is `scratch/Axioms.lean`, with its required declarations in
 `data/axioms/required.txt`. CI checks the report on every pushed branch, and on
 the merged tree before a pull request lands.
 
@@ -2665,7 +2686,9 @@ complete list; the facts fall into the following groups. `Grothe.head_check` (th
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.phase_cutoff_factor_check` (the exact factor for its squared radial tail),
-`Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
+`Grothe.UpperChaos.HardyGaussianCheck.charts_checked` (the production Gaussian circle cap),
+`Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check`
+(the inherited Schur circle mean and shared decay region),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the eight chunks `Grothe.Lower.certRows0`–`4` and

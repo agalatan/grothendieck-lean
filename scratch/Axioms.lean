@@ -11059,6 +11059,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.GateFockCoefficients.summable_scaledTransform_coefficients
 #print axioms Grothe.UpperChaos.GateFockCoefficients.tsum_gate_coefficient_sq_eq
 #print axioms Grothe.UpperChaos.GateFockCoefficients.tsum_scaledTransform_coefficients_le
+#print axioms Grothe.UpperChaos.GaussianAmplitude.integrable_weightedP1
+#print axioms Grothe.UpperChaos.GaussianAmplitude.integral_P1_gaussian
+#print axioms Grothe.UpperChaos.GaussianAmplitude.integral_pairGaussian
+#print axioms Grothe.UpperChaos.GaussianAmplitude.lintegral_P4_phih
+#print axioms Grothe.UpperChaos.GaussianAmplitude.lintegral_product_kernel
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.companion_inverse_sq
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.companion_inverse_sq_box
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.direct_companion
@@ -11075,7 +11080,16 @@ import Grothe
 #print axioms Grothe.UpperChaos.GaussianFockBessel.tsum_matrix_coefficient_sq_le
 #print axioms Grothe.UpperChaos.GaussianNormalizationInterval.normalization_mem
 #print axioms Grothe.UpperChaos.GaussianNormalizationInterval.normalized_mem
+#print axioms Grothe.UpperChaos.HardyGaussian.chart_bound
+#print axioms Grothe.UpperChaos.HardyGaussian.chart_integral_le
+#print axioms Grothe.UpperChaos.HardyGaussian.hardy_of_real
+#print axioms Grothe.UpperChaos.HardyGaussian.hmean
+#print axioms Grothe.UpperChaos.HardyGaussianCheck.charts_checked
+#print axioms Grothe.UpperChaos.HardyGaussianSound.box_sound
+#print axioms Grothe.UpperChaos.HardyGaussianSound.chart_bound
+#print axioms Grothe.UpperChaos.HardyGaussianSound.cover_sound
 #print axioms Grothe.UpperChaos.HardyReal.hardy_GT
+#print axioms Grothe.UpperChaos.HardyReal.hardy_GT_gaussian
 #print axioms Grothe.UpperChaos.HardyReal.hardy_GT_tight
 #print axioms Grothe.UpperChaos.HardyReal.hreal_GT
 #print axioms Grothe.UpperChaos.HardyReal.integral_pair_eq_kHol
@@ -12614,6 +12628,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ScaledActualCoherentL2.scaled_pair_coupling
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+#print axioms Grothe.UpperChaos.SchurMainGaussian.norm_HholPair_sq_le
 #print axioms Grothe.UpperChaos.SharedMomentTable.eq_momentRec_of_bounded_equations
 #print axioms Grothe.UpperChaos.SharedMomentTable.eq_of_bounded_equations
 #print axioms Grothe.UpperChaos.SharedMomentTable.eq_recTable_of_bounded_equations
