@@ -756,3 +756,23 @@ besides the numerical archives of `remotenumerics/` (`*.npz`, `*.jsonl`), `searc
 | `verify_anisotropic.py` | 4,524 B | `2ca2898046116480df867d826eb0ec9b7948ae15f2a7472224fd9f38b414f108` |
 | `MANIFEST.json` | 2,435 B | `a6c7e8178d215f3776f22c50a9100fdaf2fe03df0bb27409a6dd39519107fd06` |
 | `requirements.txt` | 70 B | `a4927fcd2b9a126eea20fbcaad5710c7cab31aa0a4aa76a48d9044544f72ecec` |
+
+## Codex-4d8a: exterior consumer at ε = 299/400 (#440)
+
+`sources/exterior-2026-11-16-codex-4d8a/` holds the documents and `code/exterior-codex-4d8a/` the checkers (STATUS 8.9–8.11,
+2.12e and 2.12f).
+- **Replay.** In a copy of `code/exterior-codex-4d8a/`:
+  - `python3 certify_exterior_7475.py --repo <checkout>` uses the standard library only and takes about 2 s. It checks the
+    row hashes, pinned at commit e9b0a45 and unchanged on master 1fdb667, and writes `exterior_7475_certificate.json`.
+  - `python3 central_7475.py --verify` and `python3 certify_shoulders.py` need python-flint; 0.8.0 and 0.9.0 both pass.
+  - `python3 -I my_exterior_check.py <checkout>` is claude-b9ee's independent re-implementation of 8.9; it reads the 19
+    rows from the Lean files. `python3 -I my_benchmark_check.py` (numpy, scipy) recomputes the ten central benchmarks.
+  - `node verify_response_constants.mjs` and `python3 -I certify_cross_gram.py` check 2.12e and 2.12f.
+- **Not copied.** These stay in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/audit-4d8a/`:
+  the delivery zip, with the literature batches (reading ledgers, counterexample reviews, the Guo–Fang–Lu replay), the logs
+  and the numerical shoulder search output; and the exterior certificate, which the replay regenerates.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `grothendieck_1402_audit_codex_4d8a.zip` | 249,975 B | `319d5b660f5f5fb7837bc2a318282d7cd99a85ac35d1032c81426bb226a4e657` |
+| `existing-program/exterior_7475_certificate.json` (in the zip) | 387,195 B | `84c01aa39e7c7d621f37a5452ef0b6d23fa0b87d95f741d74a213112bbbb023a` |
