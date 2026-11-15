@@ -1,0 +1,23 @@
+1. Odd costs (SECTORS 2-4)
+   corner (.76,.76,.16): k1 = p - J1 = -0.076234794102   (audit: -0.0762347941016)
+   Lambda((i/100) Z (|Y|^2 - 1)) - Lambda(0) = 7.534149e-06   (audit: > 7e-6; lower bound used 7.356e-6)
+   flank: k3 = 0.356624248974 (audit: 0.356624248974);  Lambda((i/100) Z (T-2)) - Lambda(0) + 0.36*2e-4 = 6.4492e-07   (audit: > 5e-7)
+   sharp one-coordinate cost at the corner: k3 = 0.151676198435   (audit: 0.151676198435)
+2. Response energies (FOUNDATIONS 2), eps = 1891/2500
+   tangent of rho at u = 1/10: A = 0.886762779  B = 0.432306902 (audit: 0.886762780, 0.432306903);  rho(0.1) by quadrature 0.929993469 vs Bessel formula 0.929993469
+   t >= 0.8400: remote cap 4 eps^2 B (A - t) = 0.046265;  total cap eps^2 [3R(R - t) + B(A - t)] = 0.081884
+   t >= 0.8456: remote cap 4 eps^2 B (A - t) = 0.040725;  total cap eps^2 [3R(R - t) + B(A - t)] = 0.071980
+   t >= 0.8510: remote cap 4 eps^2 B (A - t) = 0.035382;  total cap eps^2 [3R(R - t) + B(A - t)] = 0.062431
+   response at t = 0: I = E[sqrt(T)|T - 2|] = 0.976963, energy eps^2 I^2/2 = 0.273042   (audit: > 0.0939738)
+   central consumer: cap 500/701 minus row value at t = 0.84: 0.0001006120988 (audit eta_max = 0.0001006120988);  at t = 0.851: 0.0001028121;  5000/7011 - row(0.84) = -1.123e-06 (negative: 1.4022 not reached by this row)
+3. Content constants (CONTENT 3), peak row
+   M0 = -g(0) = 0.835135933 (audit 0.835135933);  M1 = g'(0) = 2.1602 (audit 2.159181; finite differences, about 3 digits);  phi'(0) = E|L|^-1 / 2 = 1.431973791 (audit 1.431973791)
+   B'(v) lower bound sqrt(pi)/(2 sqrt(E|L|^2 + 0.0463)) = 0.989379 (needs > 49/50)
+   budget: (209/250)^2 + 2 (336/125)(123/1000) + (6/25)(113/250) = 1.468624 (= 91789/62500 = 1.468624 < 3/2)
+4. Disjoint-driver cost (REMOTE 2) at the peak row, q = 0 and two shifted bases; U Gaussian of variance w
+   base y = 0.0: [2E|L+y+(T-1)U| - 2E|L+y|]/w   w=0.01: 0.9751 <= 1.1767;  w=0.1: 0.8500 <= 1.1767;  w=1: 0.6027 <= 1.1767;  w=10: 0.3082 <= 1.1767
+   base y = 0.4: [2E|L+y+(T-1)U| - 2E|L+y|]/w   w=0.01: 0.5836 <= 1.1767;  w=0.1: 0.5919 <= 1.1767;  w=1: 0.5251 <= 1.1767;  w=10: 0.2947 <= 1.1767
+   base y = 1.0: [2E|L+y+(T-1)U| - 2E|L+y|]/w   w=0.01: 0.3562 <= 1.1767;  w=0.1: 0.3637 <= 1.1767;  w=1: 0.3657 <= 1.1767;  w=10: 0.2519 <= 1.1767
+   (the theorem says the bracket is at most 199/(200 ell) = 1.1767 for every base and every w; cost 0.1454)
+5. Gaussian benchmark and its gradient (REMOTE 3), v0 = 0.0403448
+   B(v0) - v0/eps = 1.3739535257 (audit 1.37395352566148);  dB/da = 1.689944 (audit 1.689944147);  dB/db = 2.622897 (audit 2.622896929)

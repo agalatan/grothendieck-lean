@@ -1,0 +1,61 @@
+REPLAY verify_improved_moment.py
+FOURTH_CUMULANT_IDENTITY=PASS labelled_graphs=7 graph_classes=2
+COMPLEX_FOURTH_MOMENT_UPPER_62=PASS
+SIXTH_CUMULANT_IDENTITY=PASS labelled_graphs=640 graph_classes=6
+CUMULANT_RATIO_LT_68=PASS bernstein_intervals=2 minimum_coefficient=12979/64
+COMPLEX_SIXTH_MOMENT_COEFFICIENT_LT_50=PASS
+FIRST_ABSOLUTE_MOMENT_SUM_OF_SQUARES=PASS
+ALL_CUBIC_ALGEBRA_CHECKS=PASS
+PASS: complex sixth-moment coefficient < 1977/40 = 49.425.
+Positive Bernstein intervals: 6
+Smallest positive Bernstein coefficient: 4040811/13107200
+REPLAY replay_certificate.py
+PASS: exact coverage of [0.022,0.135] x [2,62].
+PASS: Jensen excludes both exterior variance ranges.
+PASS: 100 / 1808 duals and boxes; 1 seconds
+PASS: 200 / 1808 duals and boxes; 3 seconds
+PASS: 300 / 1808 duals and boxes; 4 seconds
+PASS: 400 / 1808 duals and boxes; 5 seconds
+PASS: 500 / 1808 duals and boxes; 6 seconds
+PASS: 600 / 1808 duals and boxes; 7 seconds
+PASS: 700 / 1808 duals and boxes; 8 seconds
+PASS: 800 / 1808 duals and boxes; 9 seconds
+PASS: 900 / 1808 duals and boxes; 10 seconds
+PASS: 1000 / 1808 duals and boxes; 11 seconds
+PASS: 1100 / 1808 duals and boxes; 12 seconds
+PASS: 1200 / 1808 duals and boxes; 14 seconds
+PASS: 1300 / 1808 duals and boxes; 14 seconds
+PASS: 1400 / 1808 duals and boxes; 16 seconds
+PASS: 1500 / 1808 duals and boxes; 17 seconds
+PASS: 1600 / 1808 duals and boxes; 17 seconds
+PASS: 1700 / 1808 duals and boxes; 18 seconds
+PASS: 1800 / 1808 duals and boxes; 19 seconds
+PASS: 1808 / 1808 duals and boxes; 19 seconds
+PASS: Lambda(q) <= 1.3739535256613 + 0.0000105 < S + 0.0000105.
+INPUT MODE: REGENERATED GRID
+REPLAY verify_obstruction.py
+PASS: improved moment constraints, with coefficient 1977/40.
+P(X=2007/50000)=497389/500000; P(X=81/100)=2611/500000.
+PASS: E h(X)-p E X > S+0.000010.
+PASS: the earlier witness is excluded by the improved moment constraint.
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS conditional on stored kernel grids",
+  "scope": "Peak row; 1977/40 sixth-moment coefficient. Not a replay of the stronger 40.45313 theorem.",
+  "archive_sha256": "92c5178b0b07dcc63cf3705cf46462c32f9a76e96cf42b5dd5db50f29578afbb",
+  "checks": {
+    "verify_improved_moment.py": {
+      "status": "PASS",
+      "original_sha256": "97e6cf069b041bcaeabffb4c8b023c6cd96f7020976e9ce556301331087d166d"
+    },
+    "replay_certificate.py": {
+      "status": "PASS",
+      "original_sha256": "dcaa9e11a8d77c03f2f42842415ece85cd9090895529632914855f7384b1e586"
+    },
+    "verify_obstruction.py": {
+      "status": "PASS",
+      "original_sha256": "eea6b2090fea5dcc87f57009c5aee4b73ddc5fd1a878b4013c32914bd1ad4a18"
+    }
+  },
+  "elapsed_seconds": 19.377
+}
