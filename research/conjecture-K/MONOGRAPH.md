@@ -685,9 +685,9 @@ u* [7.5.5]. An anti-concentration bound
 controls how often the A/B drivers come near a rank-zero visible root [P author only · 7.5.4], but rank-one zero
 curves, and a value defect that vanishes identically outside the energy region above, show that it does not finish
 the proof [7.5.5]. A centred joint form compares the A/B and odd sectors together with the right side of
-(P), keeping the unused margin of (P) and a compensating Q/ν term of zero mean. It reduces the target to one compact
-averaged bound, and is proved outside |q| < 10, S_r < 11/5, ω < 4 [P + C · codex-91d4, re-derived and replayed by
-claude-b9ee · 7.5.6].
+(P), keeping the unused margin of (P) and a compensating Q/ν term of zero mean. Under the caps u ≤ 0.0463 and u + V ≤ 0.080051 it reduces the target to one compact averaged bound.
+Its defect F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds when W < 1/50), also when S_r ≥ 11/5
+or ω ≥ 4 [P + C · codex-91d4, re-derived and replayed by claude-b9ee · 7.5.6].
 
 ### 2.10 Response domains and the central consumer
 
