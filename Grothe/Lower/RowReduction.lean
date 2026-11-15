@@ -1,5 +1,7 @@
+-- Grothe/Lower/RowReduction.lean
 import Grothe.LowerAnalytic.WitnessCap
 import Grothe.Lower.RowDataTypes
+import Grothe.Lower.ResponsePenalty
 import Grothe.LowerAnalytic.WickCubic
 
 /-!
@@ -291,6 +293,37 @@ theorem VOf_frame (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n) (hζ : ζ ∈ H10 
   rw [VOf_eq]
   unfold QhOf
   linarith
+
+/-- Apply a response penalty to the actual Gaussian witness row. The support bound
+pays only the complementary fractions of the two squares: `s = 0, k = 1` is
+compatible with a support bound already spending the entire first-chaos square.
+The weighted Gram instantiation and a numerical support cover must be supplied;
+this interface does not add them as hypotheses of the main theorem.
+Agent-ID: codex-9b17. Refs #432. -/
+theorem VOf_frame_with_penalty (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n)
+    (hζ : ζ ∈ H10 n) (hζ1 : ‖ζ‖ = 1)
+    (hP : (H10 n).starProjection (hOf n f g) = ((tOf n f g : ℝ) : ℂ) • ζ)
+    (hv : v ∈ H21 n) (hv2 : ‖v‖ ^ 2 = 2)
+    (s k J C : ℝ) (hs : 0 ≤ s) (hk : 0 ≤ k)
+    (hC : 2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re
+      + ε * ‖QkOf n f g‖ ^ 2 - (1 - s) * ‖PkOf n f g‖ ^ 2
+      - (1 - k) * (ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2) ≤ C)
+    (hJ : J ≤ s * ‖PkOf n f g‖ ^ 2 +
+      k * (ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2)) :
+    VOf n f g ≤ tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε +
+      C - max 0 J := by
+  have hε : (0 : ℝ) ≤ ε := by norm_num [ε]
+  have hrow := VOf_frame n f g ℓ β ζ v hζ hζ1 hP hv hv2
+  apply ResponsePenalty.row_bound_of_split (VOf n f g)
+    (tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε +
+      2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re +
+      ε * ‖QkOf n f g‖ ^ 2)
+    (tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε + C)
+    (‖PkOf n f g‖ ^ 2) (ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2) s k J
+    (sq_nonneg _) (mul_nonneg hε (sq_nonneg _)) hs hk
+  · linarith
+  · linarith
+  · exact hJ
 
 /-! ### The coupling vector `v = ζ(|ζ|² − 2)` -/
 

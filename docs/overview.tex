@@ -1102,6 +1102,18 @@ cubic part of the response and $\mathcal N$ for the value of the witness on it.
  This evidence does not classify all near-maximizers.
 \end{itemize}
 
+\paragraph{Response-penalty interface.}
+The weighted response Gram argument gives a price for the squares discarded by
+the raw lower row. Its Hilbert-space square completions and a consumer that
+allocates each square exactly once are formalized in
+\texttt{Lower/ResponsePenalty.lean};
+\texttt{VOf\_frame\_with\_penalty} connects the consumer to the witness identity.
+At the research peak profile the scalar h-only cut is greater than $10^{-4}$
+throughout $t\geq0.8456$, $D\geq0.04$, where $D$ is the weighted six-sector energy.
+The Gaussian Gram instantiation and a compatible support cover are still
+required. The production $(t,\tau,x)$ cover does not track $D$, and the proved
+numerical lower endpoint is unchanged.
+
 \subsection{Limits of the witness method}
 \begin{itemize}
 \item \textbf{Ceilings [P,C] and [Lean, archived].} Actual finite Gaussian responses give the scalar cubic family a

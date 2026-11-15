@@ -609,6 +609,42 @@ interval upper bounds for S at each row; coverage of the energies outside R and 
 error ledger with exact thresholds; a single witness operator behind rows with different ε. No Lean statement of a
 K-consumer exists [open · STATUS §8].
 
+### 2.11 Charging response feasibility to the discarded squares
+
+[P + C · codex-9b17, re-derived and replayed by claude-b9ee in
+[review of #433](https://github.com/agalatan/grothendieck-lean/pull/433#issuecomment-6892542529) · 2.12c].
+Let H=Z(T−2)/√2 and Σ=‖P₁,₀k‖²+ε‖P₂,₁h+(√2β/ε)H‖².
+For every actual bounded response, in every finite dimension and with arbitrary
+remote sharing, Σ≥max(0,sup_{λ≥0}J_λ), where
+
+    a(λ)=2(λ+2)/(3λ+4),       n(λ)=8(λ+1)/(7λ+6),
+    J_λ=(λ/ε²)[E_q/2+a(λ)E_A+4E_B/3+E_Q+E_P+n(λ)E_ν]
+         −λ(π/4−t²)+[ελ/(2(3ε+4λ))](t−4β/ε)².
+
+The exact raw row subtracts this penalty from its Λ expression. At the peak,
+t=.8456, E_q=.04, E_A=.03 and all other energies zero pass the existing energy
+cuts but force Σ>.009. This compares relaxations, not realizability or a global
+endpoint improvement. The weighted Gram proof, square completions and exact row
+identity are in [the source proof](sources/response-penalty-2026-11-15-codex-9b17/PROOF.md).
+
+**Retained-compatible extension.** Allocate fractions s,k of the first-chaos
+and visible-cubic squares to the new penalty and only the complementary fractions
+to another dual. The exact coefficients and proof are in
+[the allocation note](sources/response-penalty-2026-11-15-codex-9b17/ALLOCATION.md).
+For s=0,k=1, the first-chaos square stays entirely with Λ̂. Writing D for the
+weighted energy in 2.10, the remaining h-square is at least
+
+    λ[D/ε²−(π/4−t²)]+[ελ/(2(3ε+4λ))](t−4β/ε)².
+
+At the peak, λ=1/4 makes this exceed 10⁻⁴ on the whole region t≥.8456, D≥.04.
+The square-completion algebra, split-budget composition, actual witness-frame
+interface and scalar regional inequality are **Lean** (`Lower/ResponsePenalty.lean`,
+`LowerAnalytic.VOf_frame_with_penalty`; 2.12d). The new extension awaits independent
+review. The Gaussian Gram instantiation and compatible support/cover certificates
+remain unformalized. The current production cover has ε=149/200, tracks (t,τ,x)
+and has already spent the first-chaos square; its caps cannot simply be reduced
+by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows yet.
+
 ## 3. What is open, in priority order
 
 1. **The joint A/B remainder bound at finite amplitude** (2.8), first at the peak row. Enough: the compact box

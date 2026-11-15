@@ -15,6 +15,15 @@ import Grothe
 #print axioms Grothe.Haag.phaseMoment_weighted
 #print axioms Grothe.Lower.MixBox.bound_sound
 #print axioms Grothe.Lower.MixTree.resolve_sound
+#print axioms Grothe.Lower.ResponsePenalty.a_block
+#print axioms Grothe.Lower.ResponsePenalty.complete_square
+#print axioms Grothe.Lower.ResponsePenalty.h_block
+#print axioms Grothe.Lower.ResponsePenalty.peak_h_only_region
+#print axioms Grothe.Lower.ResponsePenalty.penalty_h_only
+#print axioms Grothe.Lower.ResponsePenalty.penalty_le
+#print axioms Grothe.Lower.ResponsePenalty.row_bound
+#print axioms Grothe.Lower.ResponsePenalty.row_bound_of_split
+#print axioms Grothe.Lower.ResponsePenalty.v_block
 #print axioms Grothe.Lower.VHolds.mix
 #print axioms Grothe.Lower.batch_sound
 #print axioms Grothe.Lower.box_sound
@@ -81,6 +90,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
 #print axioms Grothe.LowerAnalytic.Tint_grid
 #print axioms Grothe.LowerAnalytic.VOf_eq
+#print axioms Grothe.LowerAnalytic.VOf_frame_with_penalty
 #print axioms Grothe.LowerAnalytic.anchored_pair_poly
 #print axioms Grothe.LowerAnalytic.budget_c
 #print axioms Grothe.LowerAnalytic.budget_w
