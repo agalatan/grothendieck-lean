@@ -207,17 +207,49 @@ Sizes are those of the files in this folder. Descriptions of the notes are taken
 
 | file | size | contents |
 |---|---:|---|
-| `MONOGRAPH_with_errata.md` | 115 KB | `MONOGRAPH.md` at commit `f2bd2ffcc` (15 November 2026), with one provenance line added: the monograph of 5 and 6 November 2026 by claude-b9ee, verbatim below its marker line, under the errata sections A to H of 15 November. Its relative links are relative to `research/conjecture-K/`. Alias MON in `STATUS.md` (the text below the marker line). |
+| `MONOGRAPH_with_errata.md` | 121 KB | `MONOGRAPH.md` at commit `854a512cd` (PR #419, 15 November 2026), with one provenance line added: the monograph of 5 and 6 November 2026 by claude-b9ee, verbatim below its marker line, under the errata sections A to I of 15 November. Its relative links are relative to `research/conjecture-K/`. Alias MON in `STATUS.md` (the text below the marker line). |
 
 ### `sources/status-2026-11-15/`: the ledger with its dated passages
 
 | file | size | contents |
 |---|---:|---|
-| `STATUS_with_history.md` | 223 KB | `STATUS.md` at commit `f2bd2ffcc` (15 November 2026), with one provenance line added: the ledger with its dated passages, relabel notes, the version history of the tilted-sector report, the relation of each result to the October record, and section 14 (where the sources disagree, 53 items). Its relative links are relative to `research/conjecture-K/`. The current ledger keeps the IDs of its surviving rows. |
+| `STATUS_with_history.md` | 240 KB | `STATUS.md` at commit `854a512cd` (PR #419, 15 November 2026), with one provenance line added: the ledger with its dated passages, relabel notes, the version history of the tilted-sector report, the relation of each result to the October record, and section 14 (where the sources disagree, 59 items). Its relative links are relative to `research/conjecture-K/`. The current ledger keeps the IDs of its surviving rows. |
+
+### `sources/sixth-audit-2026-11-15-codex-a7c4/`: sixth audit after merged #413
+
+Its new proofs were re-derived, and its four checkers replayed, in the review of #419 by claude-b9ee (`STATUS.md`,
+section 0); the completed tilted input and the peak corollary are inherited from the received tilted-sector package.
+
+| file | size | contents |
+|---|---:|---|
+| `AUDIT.md` | 17,472 B | Findings, completed proofs, full-monograph coverage, review disposition, reproduction and bounded next work. |
+| `FOUNDATIONS.md` | 11,113 B | Finite-dimensional retained diffusion bound and Gaussian benchmark sharpness; no limit/infimum interchange (`STATUS.md` 2.14). |
+| `JOINT.md` | 11,009 B | Both real Q/ν Hessian kernels, conditional-centering cancellation and a finite genuine-cubic witness (`STATUS.md` 7.2.5). |
+| `OBSTRUCTION.md` | 6,432 B | Re-derived Gaussian-marginal obstruction and explicit noncubic excess >7·10⁻⁷ (`STATUS.md` 6.5.1). |
+| `PR413_FEEDBACK.md` | 1,372 B | Initial coordination comment and format decision; the subsequent mathematical review is archived separately. |
+| `REVIEW_413_claude-b9ee.md` | 3,631 B | Verbatim post-merge Claude approval of #413, its re-derivations/replays, exclusions and corrections. |
+| `REMOTE.md` | 12,338 B | Full peak retained A-core corollary, strict failure of retained homogeneity and the profile transfer (`STATUS.md` 3.17, 11.51, 11.53). |
+
+### `code/sixth-audit-2026-11-15-codex-a7c4/`: sixth audit after merged #413
+
+Read-only by default; use `python3 -I`. Saved JSON is output, not acceptance input. Only the obstruction
+checker needs python-flint; its documented option points to the existing dependency installation.
+
+| file | size | contents |
+|---|---:|---|
+| `diffuse_retained_exact.py` | 3,605 B | Exact block moments, Gaussian score moment and explicit diffusion constants; standard library. |
+| `diffuse_retained_exact_result.json` | 976 B | PASS output of the finite-dimensional diffusion arithmetic. |
+| `gaussian_obstruction.py` | 3,802 B | Fresh A-kernel derivatives and direct Rice benchmark replay; finite obstruction acceptance. |
+| `gaussian_obstruction_result.json` | 1,302 B | PASS output: explicit positive excess and hashes of reused code. |
+| `odd_coupling.py` | 3,627 B | Exact radial recurrences and analytic remainder acceptance for both Q/ν channels. |
+| `odd_coupling_result.json` | 1,582 B | PASS output: opposite signs at the genuine cubic of energy 10⁻⁶. |
+| `retained_profile_transfer.py` | 4,959 B | Exact peak/profile error budgets, scaled energy cutoff and changed multiplier cost. |
+| `retained_profile_transfer_result.json` | 1,586 B | PASS output of the full peak and continuum-profile corollaries. |
 
 ### `sources/fifth-audit-2026-11-15-codex-a7c4/`: fifth audit after merged #409
 
-New author proofs await external review; internal peer checks and inherited inputs are named in the notes.
+The #413 review re-derived the fifth-pass arguments and replayed its three checkers, within the exclusions
+archived in the sixth-audit review. The original notes keep their historical author labels.
 
 | file | size | contents |
 |---|---:|---|

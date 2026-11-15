@@ -1,0 +1,55 @@
+{
+  "agent_id": "codex-a7c4",
+  "common_energy_endpoint": "633847/14303524",
+  "energy_condition": "u <= lambda^2 * 463/10000",
+  "epsilon_range": [
+    "37/50",
+    "19/25"
+  ],
+  "excluded_named_profiles": {
+    "flank": [
+      "349/37250",
+      "106997/18625000"
+    ],
+    "upper": [
+      "69/5000",
+      "11/1250"
+    ]
+  },
+  "inherited_content_deficit_error": "3/500000",
+  "inherited_content_deficit_slope": "3/10",
+  "inherited_remote_upper": "1373953883/1000000000",
+  "maximum_eta": "5673/293425000",
+  "maximum_kappa": "11346/11737",
+  "normalized_a_increment": [
+    "0",
+    "1/2500"
+  ],
+  "normalized_b_increment": [
+    "0",
+    "1/800"
+  ],
+  "one_sided_a_loss_coefficient": "5156856465917/62500000000000",
+  "one_sided_b_loss_coefficient": "71567694604409/2000000000000000",
+  "peak_cost": "59009/189100",
+  "peak_eta": "5673/295045000",
+  "peak_excess_upper": "5778430967237/295045000000000000",
+  "peak_kappa": "56730/59009",
+  "peak_simple_tolerance": "1/50000",
+  "positive_part_countermodel": {
+    "D": "-9/25000000",
+    "gain": "5673/295045000",
+    "scope": "Scalar nonimplication only; not a realizable-cubic counterexample."
+  },
+  "profile_excess_upper": "869040549842757089931/8877866800000000000000000",
+  "profile_simple_tolerance": "49/500000",
+  "recosted_minimum": "11737/37820",
+  "safe_common_energy_endpoint": "443/10000",
+  "scale_range": [
+    "1850/1891",
+    "1900/1891"
+  ],
+  "scope": "Exact scalar acceptance conditional on named reviewed theorem inputs; peak/scaled-profile retained A-core only.",
+  "status": "PASS",
+  "task": 415
+}

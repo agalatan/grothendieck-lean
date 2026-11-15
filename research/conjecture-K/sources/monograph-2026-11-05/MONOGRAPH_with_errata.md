@@ -1,4 +1,4 @@
-<!-- Verbatim copy of research/conjecture-K/MONOGRAPH.md at commit f2bd2ffcc5d4bd86c243cfc815eafd9c63aa59b2 (15 November 2026): the monograph of 5 and 6 November 2026 with the errata sections A to H written on 15 November. Its relative links are relative to research/conjecture-K/. Only this line was added. -->
+<!-- Verbatim copy of research/conjecture-K/MONOGRAPH.md at commit 854a512cd571105cf629c881e1ede03687db55f6 (PR #419, 15 November 2026): the monograph of 5 and 6 November 2026 with the errata sections A to I written on 15 November. Its relative links are relative to research/conjecture-K/. Only this line was added. -->
 <!-- The text below the marker line "MONOGRAPH, VERBATIM" is an unedited copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/CONJECTURE_K_MONOGRAPH.md (file dated 2026-11-05). The section above the marker was added on 15 November 2026. -->
 
 # Errata and updates (15 November 2026)
@@ -424,6 +424,76 @@ certification. The retained trial 11.12 is now explicitly re-derived as well. Ne
 
 The historical text below and every pre-existing source file are unchanged. Conjecture K, the general
 content comparison, full sector assembly and complete consumer remain open. No Grothendieck bound changes.
+
+## I. Sixth audit after merged #413 (15 November 2026, codex-a7c4)
+
+The [sixth audit](sources/sixth-audit-2026-11-15-codex-a7c4/AUDIT.md) starts from
+`adb96a5a28bce3ac6ea5896486153d2ffbc556a5` and is resynced through `40f8c5ee6`
+(#416 and #381). The initial [coordination comment](sources/sixth-audit-2026-11-15-codex-a7c4/PR413_FEEDBACK.md)
+was followed during integration by Claude's [approval of #413](sources/sixth-audit-2026-11-15-codex-a7c4/REVIEW_413_claude-b9ee.md),
+with independent re-derivations and all three checkers replayed. Its exclusions remain explicit.
+The earlier raw/retained wording issue is a low-severity scope clarification: pointwise strictness
+coexists with the common diffuse benchmark. The original joint-tail checker already used exact
+Fractions; only #409's review check was numerical. The retained trial's independent re-derivation
+is A15V FOUNDATIONS §1. The combined fifth-audit covers used 17 polynomials and 33 leaves;
+R2 alone used 10 and 19. This part supersedes part H's stale proposed A-only next step.
+The current monograph form is retained as requested. New arguments below are **P by author,
+not externally reviewed**, with named **C** checkers and internal peer checks.
+1. **§2 and §4b: two real Q/ν coupling channels.** The literal schematic single-kernel
+   formula in KPR §12 and STATUS 11.45 is incomplete at a nonzero remote core.
+   For normalized ν-sector νZ(T−2)/sqrt(2), the mixed quadratic coefficient is
+   K=Reν E[ReQ A(|q|)]+Imν E[ImQ B(|q|)], with explicit kernels in A15S
+   [JOINT](sources/sixth-audit-2026-11-15-codex-a7c4/JOINT.md).
+   The mixed second derivative is 2K. At the peak the genuine cubic
+   q=.001X(|Y|²−1), f=|Y|²−1 gives K(q;f,1)<−8·10⁻⁶ and K(q;if,i)>4·10⁻⁶.
+   A single Hermitian pairing would be invariant under this simultaneous rotation.
+   At zero core EQ=0 still kills the mixed term; at a nonzero core the stronger
+   conditional centering E[Q | |q|]=0 suffices. This corrects the numerical summary,
+   not a formal odd-cost theorem, and does not refute K or finite-amplitude pure cost.
+2. **§3.4 and §4b: the full peak retained A-core now follows.** The sixth external tilted
+   delivery proves C_{3/5}(q)²≤(3/10)D₊(q)+3/500000 for every remote cubic with
+   u≤.0463. Its archived [fourth Claude review](sources/received-2026-11-15-tilted-sector/REVIEW_4.md)
+   reports independent re-derivation and separate secant/deficit-chain replays, not a
+   combined default run. The package and peak <2·10⁻⁵ corollary were imported in #416
+   while this audit was in progress; this pass does not rerun the large package.
+   A15S [REMOTE](sources/sixth-audit-2026-11-15-codex-a7c4/REMOTE.md) combines it with the
+   reviewed secant estimate and raw cap to independently re-derive the exact budget
+   for the inherited Λ̂(q+(T−1)r)<S+2·10⁻⁵ corollary, for every
+   remote linear r, arbitrary sharing and amplitude. This removes the χ≤.25 restriction
+   of part H for that allowance. Part H's negative margin at u≤.021 remains stronger
+   there. The already-recorded D₊ rule uses η_R+η, without attenuating η_R.
+3. **Profile transfer needs the retained penalty weight.** Raw homogeneity does not
+   extend unchanged to Λ̂: scaling (ε,a,b,G) by λ changes the normalized multiplier
+   weight to λ. A strict genuine-cubic example proves the difference. With the
+   corrected cost, ε∈[.74,.76], λ=ε/(1891/2500),
+   0≤a/λ−.5592≤.0004 and 0≤b/λ−.1432≤.00125 imply retained A-core error
+   <9.8·10⁻⁵ whenever physical remote energy u≤λ² .0463. The common cutoff .0443
+   suffices throughout. No flank/upper row, B sector or odd sector is included.
+   This guards a new application; the old raw transfer was correctly scoped.
+4. **§1 and the diffuse benchmark: a finite-dimensional proof.** For independent
+   one-coordinate Wick blocks H(X)=X(|X|²−2)/sqrt(2), q=Σc_jH(X_j), v_j=|c_j|²,
+   A15S [FOUNDATIONS](sources/sixth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md) proves
+   0≤Λ(q)−Λ̂(q)≤192a⁻⁶(1+4b/a)Σv_j³. At the peak the coefficient is <12711.
+   Hence q_N=sqrt(u/N)ΣH(X_j) has vanishing retained penalty and
+   Λ̂(q_N)→B(u)−pu, so the supremum over all finite-dimensional cubics is at least S.
+   This completes the abbreviated October argument about W being orthogonal to the
+   first chaos: nonlinear projection needs a bound on the actual coordinates.
+   The N⁻² rate concerns only the raw/retained difference, not the full CLT error.
+   Independent diffusion was already known; no Λ′ sharpness claim follows.
+5. **§3.4: re-derived Gaussian-marginal obstruction with a finite witness.**
+   For u₀=.0403448, Q=sqrt(u₀)X exp(2πi[1−(|X|²+1)e^{−|X|²}]) and
+   G=Q−(i/1250)(T−1)X, the exactly Gaussian marginal and first-chaos orthogonality
+   hold, yet Λ(G)>S+7·10⁻⁷. A15S
+   [OBSTRUCTION](sources/sixth-audit-2026-11-15-codex-a7c4/OBSTRUCTION.md) re-derives
+   the October mechanism and replays the kernel/benchmark inputs. Its Dirichlet
+   energy shows Q is not pure cubic chaos. STATUS 6.5.1 gains fresh evidence for
+   that qualitative claim; the separate historical 10⁻⁴/44% assertion remains R.
+
+Joint A/B assembly, nonzero-core odd-sector control and the complete consumer remain open.
+The original raw content comparison is not proved by the new tilted theorem. No
+Grothendieck bound is proved here. The living current-bound references follow #381
+(1.401700037873); every source from the resynced baseline and the historical body below
+are unchanged. #416’s imported version history is inherited.
 
 <!-- =========================== MONOGRAPH, VERBATIM (unchanged from here to the end) =========================== -->
 

@@ -1,0 +1,35 @@
+{
+  "A_amplitude": "1/1250",
+  "Gaussian_benchmark_gap_upper": "293/2500000000000000",
+  "M1_A_lower": "43/20",
+  "M2_A_upper": "117/10",
+  "agent_id": "codex-a7c4",
+  "imaginary_J_lower": "5135945135223/2000000000000000",
+  "kernel_derivatives": [
+    [
+      "0.835135932614129",
+      "0.835135932614130"
+    ],
+    [
+      "2.159180864970276",
+      "2.159180864970277"
+    ],
+    [
+      "11.692061679509533",
+      "11.692061679509534"
+    ]
+  ],
+  "norm_gain_lower": "891/1181875000",
+  "raw_excess_over_S_lower": "3563999445937/4727500000000000000",
+  "scope": "Exactly Gaussian remote marginal, first-chaos orthogonal, but not a Wick cubic. Refutes law-only exact shared-A domination; does not refute K or the 1e-4 allowance.",
+  "simple_excess_lower": "7/10000000",
+  "source_sha256": {
+    "content_kernels_exact.py": "5dfb0dc074142cf74207eb713a9b1dd07a8a403811b321d44c270333ea6533ef",
+    "odd_cost_check.py": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+    "remote_benchmark_crosscheck.py": "320dd438b75bab94dbf3eac381c40454a9f1ca6997fe634140671d31d7dd847a"
+  },
+  "status": "PASS",
+  "task": 415,
+  "trust": "Paper supplies smooth phase transport and supporting-plane inequality; derivative and benchmark inputs freshly replayed.",
+  "variance": "50431/1250000"
+}
