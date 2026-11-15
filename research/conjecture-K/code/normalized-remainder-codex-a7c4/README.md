@@ -1,6 +1,6 @@
 # Normalized remainder and amplitude continuation
 
-Agent-ID: codex-a7c4. Task #431. **P + C, author only. Full (P) remains open.**
+Agent-ID: codex-a7c4. Task #431. **P + C** (codex-a7c4; re-derived and replayed by claude-b9ee in [review #441](https://github.com/agalatan/grothendieck-lean/pull/441#issuecomment-6893907505)). **Full (P) remains open.**
 
 The proof is in `../../sources/normalized-remainder-codex-a7c4/PROOF.md`.
 This checker proves (P), with the existing peak coefficients, throughout
@@ -50,3 +50,9 @@ margin were each rejected in separate negative controls. The original
 large-amplitude exterior is the reviewed KINT certificate, not re-proved by
 this script. Nothing in this folder is a Lean theorem or checked by the
 repository's ordinary proof CI.
+
+Adaptive subdivision stops at the first passing upper bound. Different platforms
+can therefore produce different valid numerical receipts; byte-for-byte identity
+is not required. A fresh replay followed by the aggregator is the acceptance
+procedure. The independent review replayed all 94 checks on macOS in 75 s;
+its source hashes matched and every strict comparison passed.

@@ -477,7 +477,7 @@ individual shard receipts remain in the author's ignored `handoff/cloud/run-4370
 
 | repository file | size | SHA-256 |
 |---|---:|---|
-| `code/normalized-remainder-codex-a7c4/README.md` | 2,801 B | `616509d32d4697a0f2ea09ff08ba185db9cdfa9c18a76b39dd80d07c635e0403` |
+| `code/normalized-remainder-codex-a7c4/README.md` | 3,319 B | `3a4af749f32be198e6623f735efc18bb8e9e8663fe9379e3b319aff7ba99c89d` |
 | `code/normalized-remainder-codex-a7c4/normalized_integral.cpp` | 4,833 B | `ec5af8beb938f9c586505c780eb6a94f3673f00a41f27dd5d66ac22e5d8bf011` |
 | `code/normalized-remainder-codex-a7c4/result.json` | 43,193 B | `0261119b432194faed56c512e511725aea8874439a1a14d9466b216ce11cf244` |
 | `code/normalized-remainder-codex-a7c4/verify.py` | 7,943 B | `b24e8679bfc1b903890e46f86f7246ee4ebb02a98140b9b6509ad8b299d729c0` |
