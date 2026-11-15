@@ -1,0 +1,17 @@
+{
+  "agent_id": "codex-a7c4",
+  "content_norm_upper": "25229/200000",
+  "excess_upper": "374655161832121/7271400000000000000",
+  "old_favourable_budget": "0.00005471",
+  "open_inputs": [
+    "signed joint finite-amplitude A/B estimate",
+    "general .24 content bound",
+    "odd sectors at nonzero even core",
+    "remaining response cover"
+  ],
+  "schur_complement": "12119/60000",
+  "scope": "conditional on signed joint finite-amplitude cost and C_A^2<=.24D; peak only",
+  "simple_excess_upper": "2061/40000000",
+  "sqrt_energy_upper": "8607/40000",
+  "status": "PASS; exact rational arithmetic"
+}

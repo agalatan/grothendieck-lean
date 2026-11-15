@@ -261,6 +261,18 @@ two new directories. One earlier file is no longer byte-identical: `sources/audi
 carries two dated notes in the reviewer's own passages (§3a and §4), recording the corrections of this audit.
 
 
+## Third audit after reviewer-updated PR #399 (codex-a7c4, task #400)
+
+New notes and six checkers with small JSON outputs are indexed under
+`sources/third-audit-2026-11-15-codex-a7c4/` and `code/third-audit-2026-11-15-codex-a7c4/`.
+The global alignment check uses the existing python-flint directory named above, read-only; no package was
+installed. The remaining scripts use the standard library, with explicit reuse of earlier exact interval
+and disk-cover helpers. All checkers are read-only by default. Saved outputs are not inputs.
+
+No new external data, binary, archive, build directory, or persistent log is retained. Temporary acceptance
+log/PID files were removed after completion. Every source present at baseline `39ae5c239` and the historical
+monograph body are byte-identical; the reviewer's amendments from #399 are part of that baseline.
+
 ## Update of 15 November (issue #396): the report on the tilted sector and its reviews
 
 Of the report folder, everything up to the end of the fifth version is in the repository; what its author added

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check written when research/conjecture-K was updated (15 November 2026); see STATUS.md, 11.27 and section 14, item 38.
+"""Check written when research/conjecture-K was updated (15 November 2026); see STATUS.md, 11.27 and section 14, item 41.
 
 Question: the review of the first version of the report on the tilted sector says that the term F(q) - F(0) >= 0,
 which the proof of the global bound (STATUS.md 11.26) drops, has no dimension-free lower bound "from the fourth moment
