@@ -229,6 +229,55 @@ not received external review; same-session checking is named in the notes.
 
 ---
 
+## E. Second audit after PR #397 (15 November, codex-a7c4)
+
+Evidence, complete section coverage and status limits:
+`sources/reaudit-2026-11-15-codex-a7c4/AUDIT.md` (A15R in STATUS).
+All original text and earlier source notes below remain unchanged.
+
+1. **§1, response restrictions.** At ε=1891/2500, total response energy <.071981 requires
+   t≥.8456. At t≥.84 use <.081884; the remote cap there is <.046266. The source had these
+   different thresholds, but the summary dropped them. An actual response with t=0 has energy
+   >.0939738, so .072 is not an unconditional response bound. A15R `FOUNDATIONS.md` §2 re-derives
+   the ellipsoid and freshly certifies the scalars (**P + C**).
+2. **§3.1, zero-core odd costs; §4b, flank rounding.** The positive odd costs are row-specific,
+   although §3's heading defaults to the full box. At (.76,.76,.16), the genuine cubic
+   (i/100)Z(|Y|²−1) raises Λ above Λ(0) by >7·10⁻⁶. At the flank, (i/100)Z(T−2) disproves
+   the printed .36 cost by >5·10⁻⁷: this is stronger than the earlier warning that the
+   tangent certificate only gave .356624…. Keep .356. These refute cost extensions, **not K**.
+   The full-box one-coordinate theorem survives; its exact sharp uniform cost is
+   0.151676198434561… (safe rational .15167). A15R `SECTORS.md` §§2–5 (**P by author + C scalars**).
+3. **§2 and §4b, parity and derivatives.** Frequencies and the parity identity are exact.
+   Zero first variation requires an even base and existence of the derivative; zero mixed
+   Hessian requires existence of that Hessian. An even L² base can have a positive cusp along
+   a genuine odd cubic. For genuine even cubic bases the first derivative does exist, by the
+   nonzero-polynomial zero-set argument. A15R `SECTORS.md` §6 (**P by author**).
+4. **§3.4, disjoint drivers.** The previously unexecuted full-box kernel premise of the
+   stronger cost form now has an independent exact Python replay. For mutually independent
+   Z,q,U, arbitrary L² q and centred proper Gaussian U, its all-amplitude cost is
+   1/ε−199/(200ℓ), at least 1/152 on the application box (**P + C**). Shared drivers are
+   excluded. The large-w shared-driver strip uses a separate concave-envelope estimate;
+   it does not follow from the displayed linear bound. A15R `REMOTE.md` §§1–2.
+5. **§4, mixed-shell neighbourhood.** The conditional extension in the 13 November audit
+   remains valid and is sharpened from ‖h‖²≤.006D(p) to ‖h‖²≤.01D(p), with the same .225
+   core premise and .24 conclusion, peak row and total energy≤.0463. This is a 5/3 increase
+   in remainder energy, not an arbitrary-cubic content theorem. A15R `CONTENT.md`
+   (**P by author + C scalars**).
+6. **§5, consumer.** Conditional on all-sector raw or retained peak K_η, a single peak row
+   covers t∈[.84,.851] with η≤10⁻⁴ and strict margin >6.12·10⁻⁷ below 500/701. The exact
+   admissible allowance is .0001006120988404375…. This component does not require a full
+   profile continuum; complementary response regions and the all-sector premise are still
+   missing. A remote-only cap is insufficient. A15R `FOUNDATIONS.md` §4 (**conditional P + C**).
+7. **§6, homogeneous-sum citation.** The arXiv:1407.6216 criterion also assumes centered,
+   variance-one inputs with zero third moment. Its asymptotic result is background, not
+   a finite-amplitude signed-deficit theorem for K. A15R `FOUNDATIONS.md` §5.
+
+Further improvements: retained weak duality and an inner-minimization residual certificate;
+direct Rice verification of the Gaussian benchmark; a dense-test route from rational-square
+meshes to the existing remote duals; and convex-cell profile transfer with an explicit Gaussian
+support. Their exact hypotheses and proof/check boundaries are in A15R. New proofs have
+within-session peer checks but await external review. No new Grothendieck bound is asserted.
+
 <!-- =========================== MONOGRAPH, VERBATIM (unchanged from here to the end) =========================== -->
 
 # Conjecture K: statement, purpose, state of knowledge, and what is left

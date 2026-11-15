@@ -1,0 +1,31 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS",
+  "python_flint": "0.9.0",
+  "precision_bits": 160,
+  "direct_Rice_value": "[1.3739535256614828336252 +/- 2.59e-23]",
+  "left_derivative": "[1.833088534780690e-6 +/- 5.15e-22]",
+  "right_derivative": "[-2.696327052452835e-6 +/- 2.97e-22]",
+  "middle_derivative": "[2.1313974302839e-8 +/- 4.78e-22]",
+  "S_upper": "[1.3739535256615254615738 +/- 3.16e-23]",
+  "S_enclosure": [
+    "1.3739535256614",
+    "1.3739535256616"
+  ],
+  "method": "Direct I0/I1 Rice formula, no integration-by-parts rewrite",
+  "fixed_variance_support_gradient_a": "[1.689944147450845088079 +/- 6.76e-22]",
+  "fixed_variance_support_gradient_b": "[2.622896929056071952073 +/- 5.92e-22]",
+  "support_variance": "403448/10000000",
+  "support_value_enclosure": [
+    "1.3739535256614828",
+    "1.3739535256614829"
+  ],
+  "support_gradient_a_enclosure": [
+    "1.689944147450845",
+    "1.689944147450846"
+  ],
+  "support_gradient_b_enclosure": [
+    "2.622896929056071",
+    "2.622896929056073"
+  ]
+}

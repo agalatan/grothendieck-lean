@@ -1,0 +1,33 @@
+{
+  "agent_id": "codex-a7c4",
+  "centred_exp_fourth_moment": 9,
+  "corner_gain_strict_lower_bound": "3916263/532400000000",
+  "corner_k1_enclosure": [
+    "-0.076234794101626",
+    "-0.076234794101625"
+  ],
+  "corner_polynomial": "(i/100) Z (|Y|^2-1)",
+  "corner_profile": {
+    "beta": "4/25",
+    "ell": "19/25",
+    "epsilon": "19/25"
+  },
+  "flank_k3_enclosure": [
+    "0.356624248973760",
+    "0.356624248973761"
+  ],
+  "flank_point36_cost_violation_strict_lower_bound": "1767691/3512320000000",
+  "flank_polynomial": "(i/100) Z (|Z|^2-2)",
+  "inherited_checker_sha256": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+  "other_profile_endpoint_cost_enclosure": [
+    "0.225985672933425",
+    "0.225985672933426"
+  ],
+  "scope": "Counterexamples to stated odd pure-cost extensions/rounded constant only; not Conjecture K.",
+  "sharp_uniform_n1_cost_enclosure": [
+    "0.151676198434561",
+    "0.151676198434562"
+  ],
+  "status": "PASS; exact arithmetic",
+  "weighted_fourth_moment_over_sqrt_pi": "193/32"
+}
