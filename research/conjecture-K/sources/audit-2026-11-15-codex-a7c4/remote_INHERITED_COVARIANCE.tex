@@ -1,0 +1,139 @@
+% Source: /Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/conjecture-K-report/gpt-packages/independent-sector-stein-3p6e-7.zip!/independent-stein-new/INHERITED-COVARIANCE.tex; dated 22 October 2026; copied verbatim 15 November 2026 by codex-a7c4.
+\subsection{A complete covariance-ordered spectral envelope (22 October)}
+\label{sec:covariance-envelope-20261022}
+
+\paragraph{Complete endpoint, pending Lean integration \st{P,C}.}
+At the unchanged witness parameter $\varepsilon=149/200$, the new exact
+cover gives
+\[
+ B=\frac{71342711723}{10^{11}}=0.713427117230,\qquad
+ \boxed{\KG>\frac{140168487551}{10^{11}}=1.401684875510.}
+\]
+This is under the inherited Gaussian reduction, source-cap, moment and
+finite-matrix transfer inputs. It improves master by $1077251/10^{11}$
+and supersedes the pending endpoint of
+\S\ref{sec:spectral-envelope-20261022} by $4873467/10^{12}$.
+Neither raw K nor a restricted-family-to-global extension is assumed.
+The new endpoint is not yet integrated into the main Lean checker.
+
+\paragraph{The extra universal input \st{P}.}
+Use $U,X,r,P,Q,\chi$ from the separate-budget proof, so
+$P=\E[XU]$, $Q=\E[rU]$ and $2P+Q=\chi$.
+For a proper unit complex third-chaos polynomial $q=I_3(f)+iI_3(g)$,
+where real symmetric cubic tensors satisfy
+$\|f\|^2=\|g\|^2=1/12$ and $\langle f,g\rangle=0$, put
+\[
+ K_{ij;kl}=\sum_a f_{ija}g_{kla},\qquad K^{\mathsf T}_{ij;kl}=K_{kl;ij}.
+\]
+Then
+\begin{equation}\label{eq:covariance-order-20261022}
+ P-Q=648\|K-K^{\mathsf T}\|^2,\qquad
+ \frac\chi3-Q=432\|K-K^{\mathsf T}\|^2\ge0.
+\end{equation}
+Here is a finite-sum derivation. Write $A=\|f\otimes_1g\|^2$,
+$B_2=\|f\otimes_2g\|^2$ and $D=\langle K,K^{\mathsf T}\rangle$.
+The twenty placements of the first cubic tensor among six slots have
+intersection multiplicities $1,9,9,1$. Hence
+\[
+ 6!\|\operatorname{Sym}(f\otimes g)\|^2
+ =36(\|f\|^2\|g\|^2+9A+9B_2+\langle f,g\rangle^2),
+ \qquad \|\operatorname{Sym}(f\otimes_2g)\|^2=(B_2+D)/2.
+\]
+The degree-two Wick-product coefficient is
+$\binom32^2 2!=18$. If $F=I_3(f)$ and $H=I_3(g)$, the OU product rule
+on $FH$ therefore gives
+\[
+ \E F^2H^2-\E[FH\Gamma(F,H)]
+ =36\|f\|^2\|g\|^2-36\langle f,g\rangle^2+324(A-D).
+\]
+Polynomial Gaussian integration by parts and the definitions give
+$P-Q=4\{\E F^2H^2-\E[FH\Gamma(F,H)]\}-(\E F^2+\E H^2)^2$.
+The scalar terms cancel by proper normalization; since
+$\|K-K^{\mathsf T}\|^2=2(A-D)$, this proves
+\eqref{eq:covariance-order-20261022} in arbitrary finite dimension.
+
+\paragraph{A shorter proof for the intended bidegree \st{P}.}
+Use $N,P_t,B_t,X_t$ for the four contractions called $N,P,B,X$ in
+\S\ref{sec:sharp-influence-audit}, avoiding collision with the scalar
+covariances. The degree-two and degree-four components of $q^2$ are
+$4I_{2,0}(B_t)$ and $4I_{3,1}(X_t)$. Thus
+\[
+ Q=\frac{64}{3}\|B_t\|^2+32\|X_t\|^2.
+\]
+Subtracting this from (SI.1) yields
+\begin{equation}\label{eq:bigraded-covariance-20261022}
+ \boxed{P-Q=16(\|N\|^2-\|B_t\|^2)+4\|P_t\|^2.}
+\end{equation}
+The existing Schatten--H\"older argument gives $\|B_t\|\le\|N\|$.
+For an unnormalized cubic of variance $e$ in $n$ complex coordinates,
+$\operatorname{tr}P_t=e/2$, so the same homogeneous calculation gives
+\[
+ P-Q\ge4\|P_t\|^2\ge e^2/n,
+ \qquad Q\le\chi/3-2e^2/(3n).
+\]
+This finite-dimensional correction is not used in the universal envelope.
+It cannot be applied with a fixed $n$ to arbitrary residuals.
+
+\paragraph{The stronger cut \st{P}.}
+For $\lambda,\mu>0$, $\nu\ge0$, and the previous test quantities
+$\phi,\Phi,d,A=\Phi-\phi$, define
+\[
+ f(u)=-\tfrac12(\phi(u)+\beta)+(2t+\lambda/3)u,\qquad
+ g(u)=-\tfrac12d(u)+(t+\mu/3-\nu/2)u,
+\]
+\[
+ G(u)=f(u)^2/\lambda+g(u)^2/\mu+A(u)+(\nu/3-2t)(u^2-2).
+\]
+Its expectation is exactly the preceding two squares and two spectral
+slacks, plus $\nu(\chi/3-Q)$. Hence $\E G(U)\ge0$.
+The zero value acquires $-2\nu/3$; the cell numerator remains quartic.
+Every tail and integrability argument of the preceding proof survives.
+
+\paragraph{Why the coefficient cannot simply be improved \st{P}.}
+For independent standard complex Gaussians set
+\[
+ q_N=Z_0 N^{-1/2}\sum_{j=1}^N(|Z_j|^2-1).
+\]
+These are genuine unit $H_{2,1}$ cubics, and exact gamma moments give
+\[
+ \chi=4+12/N,\qquad Q=4/3+8/(3N),\qquad P-Q=2/N.
+\]
+Thus $Q/\chi\to1/3$ at a nonzero limiting cumulant. Mixing this block
+with an independent normalized equal-Wick sum, both within third chaos,
+places the same limiting obstruction at every $\chi\in(0,4)$.
+It rules out a universal decrease of the scalar coefficient even on
+relevant bounded-kurtosis ranges; it does not refute K.
+
+\paragraph{Exact cover and port boundary \st{C}.}
+The final cover retains 25 batches and 236 nodes: 53 old Stein,
+76 separate-budget, and 107 covariance-ordered nodes. Each majorant is
+checked on every finite cell, at zero and on the entire unbounded ray.
+The unchanged $C_6=40.45313$ and $\rho=0.973612157$ suffice.
+There are 3,734 central boxes on $[0.846,0.8545]$ and 1,783 unchanged
+outer cells. The central maximum is below $0.713427117230$ and the
+outer maximum below $0.713427111724$. Finally
+\[
+ 1-\frac{140168487551}{10^{11}}B=\frac{92739627}{10^{22}}>0.
+\]
+The scalar Lean identities compile with standard axioms only; the
+Gaussian covariance bridge and integrated node/cover proof remain to be
+ported. Full proof, portable rational checker, fresh replay records and
+Lean instructions are in
+\pathref{/Users/alingalatan/Documents/Codex/2026-10-10/plea/outputs/spectral-covariance-envelope-20261022/}.
+The remaining cap gap to $500/701$ is
+$11240917823/(701\cdot10^{11})\approx1.60355\cdot10^{-4}$.
+The shared-response obstruction in \S\ref{sec:obstruction-1402-audit}
+is still open.
+
+\paragraph{IDE replay and review (22 October).} The full exact replay \code{verify\_all.py --jobs 8} PASSES from an unrelated directory under \code{python3 -I}
+in 331\,s. It covers the cut algebra, the covariance identity and its bigraded form, all nineteen source rows, 25 batches (236 referenced nodes) and 3\,734 central boxes
+with the outer cells. The strict slack is $92739627/10^{22}$; package and log are in \pathref{gpt-reviews/covariance-envelope-20261022/}. The IDE re-derived by hand that the
+$\nu$-extended completed-square identity yields the constant $(\nu/3-2t)\chi$. It also checked the sharpness family ($2P+Q=4+12/N=\chi$, $P-Q=2/N$). It noted that
+(C1) needs only properness, which matches the Lean \code{Chaos3} pair hypotheses. Lean integration, including the Gaussian proof of $Q\le\chi/3$, is in progress on branch
+\code{work/lower-spectral}.
+
+\paragraph{An independent sum-of-squares proof (another GPT instance, 22 October).} Working without this package, another instance proved the same
+inequality $Q\le\chi/3$ for genuine $(2,1)$ cubics through the explicit identity
+$\chi/3-Q=\frac{16}3\|K-S\bar KS^*\|_F^2+\frac83\|N\|_F^2$. Here $K=A^*A$, $A_{i,(a,b)}=a_{ia,b}$, $S$ is the swap, and $N_{ij}=\sum a_{ab,i}\overline{a_{ab,j}}$.
+The identity gives the finite-rank refinement $Q\le\chi/3-2/(3\operatorname{rank}N)$, consistent with (C5) above. Its complete certificate gives only $\KG>1.401681569345$,
+below the present endpoint, so it is not used. The report is in \pathref{gpt-reviews/bidegree-20261022/}; its zip was not delivered. The identity is a possible alternative route for the Lean proof.
