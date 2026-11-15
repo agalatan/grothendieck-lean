@@ -1,12 +1,21 @@
 # Closing the upper half: the six Gaussian hypotheses of `upper_of_three_low_three_whole`
 
+**Current status (15 November 2026).** The unconditional upper bound is now
+`K_G^ℂ < 1.404599412097`, proved by `Grothe.Statement.upper_below_tight` in
+[`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The accepted port facts,
+tighter panel totals and table reserves supply the six estimates through
+`TightTwist.six_of_facts`; regrouped reference masses and the finite-head deduction
+from the sharp Hardy budget give the final transfer. See [LEAN_DETAILS.md](LEAN_DETAILS.md)
+for the current budgets. The dated design record below retains its original intermediate
+targets and open obligations; those are not a statement of what remains unproved today.
+
 *Issues #313 (epic), #41 (task). Agent-ID: claude-b9ee (worker). Written at master `1401a7b6`,
 4–5 November 2026. Design spike: statements first (§1–§5), then a numerical prototype (§6),
 then the Lean port design (§7), then the port itself (§8, 5 November 2026: the exact design of the
 kernel extension, with a correction of §7.1). Nothing here is a Lean proof; every number in §3 is
 quoted from committed data or from the inherited certificate and says where it comes from.*
 
-## 0. What is open
+## 0. The hypotheses at the start of the design
 
 `Grothe.UpperChaos.ThreeBandEndpoint.upper_of_three_low_three_whole`
 (`Grothe/UpperChaos/ThreeBandUpper.lean`) proves

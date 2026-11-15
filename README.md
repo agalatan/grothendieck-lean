@@ -2,7 +2,7 @@
 
 A Lean 4 + Mathlib proof of these bounds on the complex Grothendieck constant:
 
-$$1.401697117301 < K_G^{\mathbb{C}} < 1.4046$$
+$$1.401697117301 < K_G^{\mathbb{C}} < 1.404599412097$$
 
 Both inequalities are one theorem without hypotheses, `Grothe.Statement.main_bounds`
 ([`Grothe/MainResult.lean`](Grothe/MainResult.lean)). Its proof uses the three standard axioms of Lean and
@@ -16,14 +16,16 @@ finite exact computations evaluated by compiled code (`native_decide`); see
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.4046}$ |
+| Oct–Nov 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.404599412097}$ |
 
 Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
 $\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
-it lies inside the interval, $2.4 \cdot 10^{-5}$ below our upper bound.
+it lies inside the interval, about $2.35 \cdot 10^{-5}$ below our upper bound.
 
-The lower endpoint is `Grothe.Statement.lower_target`. The upper endpoint is `Grothe.Statement.upper_target`
-([`Grothe/UpperFinal.lean`](Grothe/UpperFinal.lean)); the Grothendieck bound it exhibits is below `1.40459996`.
+The lower endpoint is `Grothe.Statement.lower_target`. The upper endpoint is
+`Grothe.Statement.upper_below_tight`
+([`Grothe/UpperTightFinal.lean`](Grothe/UpperTightFinal.lean)); it follows from the exact rational bound
+`tightValueQ`, approximately `1.4045994120960970198586`.
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -51,15 +53,20 @@ classical and quantum correlations in two-party Bell experiments (real case).
 **The statement** is [`Grothe/Statement.lean`](Grothe/Statement.lean). It imports only Mathlib and holds only
 definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as their infimum, `UpperBelow c`
 (some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the two targets
-`UpperTarget = UpperBelow 1.4046` and `LowerTarget = LowerAbove 1.401697117301`. A compiled theorem whose
-type is one of these targets and whose axiom report is clean proves exactly that claim.
+`UpperTarget = UpperBelow 1.4046` and `LowerTarget = LowerAbove 1.401697117301`. `UpperTarget` retains the
+earlier threshold for compatibility; the current upper theorem has the stronger type
+`UpperBelow (1404599412097 / 10^12)`. A compiled theorem whose type is one of these statements and whose
+axiom report is clean proves exactly that claim.
 [`Grothe/StatementBridges.lean`](Grothe/StatementBridges.lean) proves what the targets say about the constant:
 `UpperBelow c` gives $K_G^{\mathbb C} < c$, and `LowerAbove c` gives $c < K_G^{\mathbb C}$ once some bound exists
 (the set of bounds is closed).
 
-**The theorems** are `lower_target : LowerTarget`, `upper_target : UpperTarget` and
-`main_bounds : 1.401697117301 < K_G^ℂ < 1.4046`, all in the namespace `Grothe.Statement` and without hypotheses
-([`Grothe/MainResult.lean`](Grothe/MainResult.lean), [`Grothe/UpperFinal.lean`](Grothe/UpperFinal.lean)).
+**The current theorems** are `lower_target : LowerTarget`,
+`upper_below_tight : UpperBelow (1404599412097 / 10^12)` and
+`main_bounds : 1.401697117301 < K_G^ℂ < 1.404599412097`, all in the namespace `Grothe.Statement` and without
+hypotheses ([`Grothe/MainResult.lean`](Grothe/MainResult.lean),
+[`Grothe/UpperTightFinal.lean`](Grothe/UpperTightFinal.lean)). The earlier `upper_target : UpperTarget`
+remains available in [`Grothe/UpperFinal.lean`](Grothe/UpperFinal.lean).
 
 ### The lower bound
 
@@ -102,8 +109,11 @@ $\lvert \langle f, Tg \rangle \rvert \le B = 0.713420886479$ for all unimodular 
 
 ### The upper bound
 
-`upper_target` exhibits one Grothendieck bound, the rational `relaxedThreeBandValueQ`
-$= 1/(c - \delta) = 1.40459995\ldots$ with $c = 0.7119483103461$ (`Grothe/Upper/RelaxedThreeBandBudget.lean`).
+`upper_bound_tight` exhibits the exact rational Grothendieck bound `tightValueQ`
+$= 1/(c - \delta)$, with $c = 0.7119483103461$ and
+$\delta = 1.550730352675379213976\ldots \cdot 10^{-6}$
+([`Grothe/UpperTightBudget.lean`](Grothe/UpperTightBudget.lean)). This gives the strict upper endpoint
+`upper_below_tight` above.
 
 1. **Transfer.** If the correlation $\mathbb{E}[\overline{\varepsilon_i} \, \delta_j]$ of a rounding of unit
    vectors to the unit disk is $\sum_n h_n \, z \lvert z \rvert^{2n}$ in $z = \langle x_i, y_j \rangle$, and
@@ -124,21 +134,27 @@ $= 1/(c - \delta) = 1.40459995\ldots$ with $c = 0.7119483103461$ (`Grothe/Upper/
    $G_T$ in Hermite degree $n$ of the first coordinate and $m$ of the second (`hasSum_kernel_real`). For complex
    $z$ the rounding realises the kernel $\sum_j \kappa_j \, z \lvert z \rvert^{2j}$ of step 1 with the same
    coefficients (`rounding_diskKernel`).
-3. **The residual** $\delta$ of $H$ against $c\,t$ is a sum of four bounds (`endpoint_of_comparison`,
-   `Grothe/UpperChaos/RelaxedThreeBandUpper.lean`). The first three concern the head: the degrees up to 501, to
-   which only the index pairs with $n + 3m \le 501$ contribute (`headIdx 501`).
+3. **The residual** $\delta$ of $H$ against $c\,t$ is a sum of four bounds (`TightEndpoint.endpoint_of_comparison`,
+   [`Grothe/UpperTightFinal.lean`](Grothe/UpperTightFinal.lean)). The first three concern the head: the degrees
+   up to 501, to which only the index pairs with $n + 3m \le 501$ contribute (`headIdx 501`).
+
    - $28153/10^{12}$: the head of the kernel of a stored table of energies (`head_check`);
    - $6847009/(5 \cdot 10^{17})$: the $\ell^1$ distance, over the index pairs with $n + 3m \le 501$, from the
      table to the energies of $X = S(F_0 + v)$, where a stored finite Hermite expansion $v$ stands for $T - F_0$
      (`hclose_final`, `Grothe/UpperFinal.lean`);
-   - $1.7625\ldots \cdot 10^{-6}$ (`relaxedThreeBandCompareQ`): the weighted distance, over the same index pairs,
-     from the energies of $X$ to those of $G_T$. With $T - F_0 = h_1 + h_2/2 + h_3/6$,
+   - $1.492227397557\ldots \cdot 10^{-6}$ (`tightThreeBandCompareQ`): the weighted distance, over the same
+     index pairs, from the energies of $X$ to those of $G_T$. With $T - F_0 = h_1 + h_2/2 + h_3/6$,
      $h_j = (i\varphi)^j F_0$, it rests on six estimates: the $L^2$ distance from $h_j$ to a stored finite Hermite
-     expansion $c_j$, as a whole and on the band of lowest degrees (`six_of_facts`,
-     `Grothe/UpperQuad/RelaxedTwistSix.lean`);
-   - $36748/10^{12}$: the tail of the kernel of $G_T$ itself beyond degree 501. The series continues
-     holomorphically past the circle of radius $4149/4000$, and an interval cover of that circle bounds its mean
-     square by $7/4$ (`HardyReal.hardy_GT`).
+     expansion $c_j$, as a whole and on the band of lowest degrees (`TightTwist.six_of_facts`,
+     [`Grothe/UpperTightSix.lean`](Grothe/UpperTightSix.lean)). The comparison regroups the existing certified
+     mass squares with sharper rational ceilings and charges the quadratic error once for the four unsplit
+     sources ([`Grothe/UpperTightComparison.lean`](Grothe/UpperTightComparison.lean));
+   - $303362611/10^{16}$ (`tightTailQ`): the tail of the kernel of $G_T$ itself beyond degree 501. The series
+     continues holomorphically past the circle of radius $4149/4000$, and an interval cover bounds its mean
+     square by $B = 1737972/10^6$ (`HardyReal.hardy_GT_tight`). If $H_0$ is the sum of the three head allowances,
+     then $\kappa_0 \ge c-H_0$. Before bounding the tail by Cauchy–Schwarz, the proof deducts
+     $(c-H_0)^2 r^2$ from $B$, where $r=4149/4000$. After shifting to $\kappa_{n+1}$, the remaining budget is
+     $(B-(c-H_0)^2 r^2)/r^4$ (`transfer_of_head_hardy`, [`Grothe/HeadHardy.lean`](Grothe/HeadHardy.lean)).
 4. **Quadrature.** The Hermite coefficients of $F_0$ and of the $h_j$ are integrals over $s = \lvert z \rvert^2$.
    Checkers in interval arithmetic evaluate their Gauss–Legendre sums on one committed set of panels in
    $[0, 100]$ and compare them with the table (the energy facts `gradeBlockNN`) and with the $c_j$ (the port
@@ -146,7 +162,14 @@ $= 1/(c - \delta) = 1.40459995\ldots$ with $c = 0.7119483103461$ (`Grothe/Upper/
    holomorphically to a Bernstein ellipse, the checker bounds it there, and `gauss_remainder_ellipse`
    (`Grothe/UpperQuad/GaussRemainderEllipse.lean`) turns the bound into the remainder of the rule
    (`EllCheck.quadRemainderHyp`, `TwistEllCheck.remainder_of_prodShards`). Bessel's inequality bounds the part
-   outside the panels (`Tail.norm_tail_sq_le`). `RelaxedTwist.upper_target_of_facts` assembles these facts.
+   outside the panels (`Tail.norm_tail_sq_le`). The current proof reuses the accepted panel certificates and
+   checks their tighter total caps directly in the Lean kernel
+   ([`Grothe/UpperTightPanelTotals.lean`](Grothe/UpperTightPanelTotals.lean)). Including the existing
+   $10^{-15}$ tail/gap reserve, the full radii are $(9,17,1132)\cdot10^{-15}$; the low-band estimates add the
+   exact table reserves $(2^{-41},2^{-42},2^{-45})$. The certified inner products give whole-source error radii
+   $(6338057765,1086368451,334910976)/10^{15}$ after division by $j!$. These are the six Gaussian estimates in
+   `UpperTightSix`. `upper_bound_tight` combines them with the comparison,
+   the energy-table accuracy `hclose_final`, and the head/Hardy transfer.
 
 ### What the computer checks and what is trusted
 
@@ -164,7 +187,7 @@ $= 1/(c - \delta) = 1.40459995\ldots$ with $c = 0.7119483103461$ (`Grothe/Upper/
   entries and omitted pairs, the port facts, and the ellipse bounds of both quadratures.
 - **The axiom report** is produced and checked by
   `lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py`. The check fails if a theorem of
-  `data/axioms/required.txt` (the three theorems of this section among them) is missing from the report, or if
+  `data/axioms/required.txt` (including the current endpoint theorems) is missing from the report, or if
   any reported theorem uses an axiom other than the three standard ones and the allowed facts. CI also rejects
   `sorry`, `axiom`, `implemented_by`, `extern`, `unsafe`, `debug.skipKernelTC` and `Task.spawn` in the sources, so
   nothing is unproved or exempt from the kernel, no code runs in place of a definition, and no checker uses
@@ -181,7 +204,11 @@ $= 1/(c - \delta) = 1.40459995\ldots$ with $c = 0.7119483103461$ (`Grothe/Upper/
 | path | content |
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
-| `Grothe/MainResult.lean`, `Grothe/UpperFinal.lean` | `lower_target` and `main_bounds`; `upper_target` |
+| `Grothe/MainResult.lean`, `Grothe/UpperTightFinal.lean` | `lower_target` and `main_bounds`; the current `upper_bound_tight`, `upper_below_tight` and `constant_lt_tight_upper` |
+| `Grothe/UpperFinal.lean` | certified energy-table accuracy `hclose_final` and the earlier compatibility theorem `upper_target : UpperTarget` |
+| `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |
+| `Grothe/UpperTightBudget.lean`, `Grothe/UpperTightComparison.lean` | current exact budgets and the comparison with independent reference mass and error radii |
+| `Grothe/UpperTightSix.lean`, `Grothe/UpperTightPanelTotals.lean` | six Gaussian error estimates; kernel checks of tighter totals of the existing panel caps |
 | `Grothe/Transfer.lean`, `Grothe/TransferHilbert.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality of the upper bound; a Grothendieck bound also controls unit vectors of any complex inner-product space |
 | `Grothe/ScalarOpt.lean`, `Grothe/VectorOpt.lean` | both optima are attained; a Grothendieck bound need only be tested on unit vectors in dimension $\min(m,n)$ |
 | `Grothe/QuadraticDual.lean`, `Grothe/PolarizedGram.lean` | two general inequalities (joint quadratic error budgets; a Gram bound that keeps the imaginary correlation). Not used by the two proofs |

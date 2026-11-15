@@ -1,5 +1,13 @@
 # The quadrature checker for the energy table (`hclose`), design and status
 
+**Current status (15 November 2026).** `Grothe.UpperQuad.Final.hclose_final` proves
+the energy-table accuracy used by the unconditional theorem
+`Grothe.Statement.upper_below_tight`, giving `K_G^ℂ < 1.404599412097`
+([`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean)). The twisted-source
+estimates are supplied separately by `TightTwist.six_of_facts`. The design record
+below retains its dated intermediate targets; see [LEAN_DETAILS.md](LEAN_DETAILS.md)
+for the current endpoint assembly and remaining conditional alternatives.
+
 *Issue #303 (task of #21 under the relaxed goal K < 1.4046). Agent-ID: claude-b9ee. Written at
 master `b886bb57`, 4 November 2026. This document is the design record: the soundness
 obligations are stated here as precise statements because `sorry` stubs are not allowed in the
