@@ -3,7 +3,7 @@
 
 Agent-ID: codex-a7c4. Baseline `ff3f6203c`. Task #421.
 The new analytic arguments are **P by author, not externally reviewed**.
-The six uniform scalar bounds are **C**, from fresh Arb interval arithmetic
+The six uniform scalar bounds are **C, author only**, from fresh Arb interval arithmetic
 in `code/progress-2026-11-15-codex-a7c4/odd_control.py`.
 Neither the analytic reduction nor its numerical premises are Lean theorems.
 

@@ -1,11 +1,16 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The current proved upper bound is **K_G^ℂ < 1.404599398251**, without
+The current proved upper bound is **K_G^ℂ < 1.404599398052**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
 [`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
 proved lower bound, `main_bounds` states
-**1.401700322371 < K_G^ℂ < 1.404599398251** in
+**1.401700322371 < K_G^ℂ < 1.404599398052** in
 [`MainResult.lean`](../Grothe/MainResult.lean).
+
+The coefficient-cost refinement in #382 supplies the current upper endpoint;
+see `docs/LEAN_DETAILS.md` and `UpperTightFinal.lean` for its exact budget.
+The detailed budget below records the preceding, still valid endpoint
+`1.404599398251`.
 
 The sharper target **K_G^ℂ < 1.404598149141** remains a separate conditional
 route. `fresh_upper_concrete_taylor` takes fourteen original Gaussian
@@ -40,10 +45,10 @@ cache matches the node-cap sources.
 
 ## 1. What is proved
 
-### Current unconditional assembly
+### Preceding unconditional assembly
 
-`upper_below_tight` uses the same concrete rounding `GT` and accepted
-production certificates through this chain:
+Before the coefficient-cost refinement, `upper_below_tight` used the same
+concrete rounding `GT` and accepted production certificates through this chain:
 
 1. `UpperTightPanelTotals` checks the actual panel-cap sums in Lean's kernel:
    `8·10^-15`, `16·10^-15`, and `1131·10^-15`. The accepted production shards

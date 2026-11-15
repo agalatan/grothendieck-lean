@@ -512,6 +512,23 @@ is ‖c‖²/k_A + ‖d − (m/k_A)c‖²/(k_B − m²/k_A) [P · 7.4.1]. With t
 and content constant 0.24 leave an excess below 5.2·10⁻⁵; an adverse cross term at most 0.118 needs the constant 0.10
 (excess ≤ 7.2·10⁻⁵) [P, C · 7.4.2]. These are conditional on the joint bound.
 
+**A retained joint target using the existing content theorem.** Set ρ = 0.5053, s = 3/5,
+r_+ = α + ρβ, r_− = β − ρα, S_r = |α|² + |β|² and
+h = (T − 1 + s)α + sρβ + z₁²·conj(β)/√2. A sufficient pointwise premise is
+
+    E_{z₁} R(L + w, h) ≤ (p − 0.0926)S_r − 0.67|r_+|² − 0.08|r_−|² + (|w|²/2 + S_r)S_r
+
+for all complex w, α, β, using the remainder function R(V, h) defined above. This premise is **open**. For genuine
+cubics, the shared-driver estimates E[|q|²S_r] ≤ 4uV and E[S_r²] ≤ 2V², V = E S_r, carry its quartic correction
+into the response domain. The existing tilted-A content theorem with coefficient 0.3, its uniform norm cap 0.02
+and the centered error of (2.7) then suffice: under u ≤ 0.0463 and u + V ≤ 0.080051, the premise implies
+
+    Λ̂(q + A + B) < S + 0.00004936.
+
+The implication and a 1,000-cell rational scalar certificate are checked within the author's session
+[P + C, author only · codex-a7c4 · 7.4.10]. This replaces the search for a stronger content theorem by a specific
+joint remainder target. It does not prove that target or handle odd sectors over the joint core.
+
 ### 2.9 The odd sectors
 
 **Zero core.** For O = z₁Q + z̄₁P + d·z₁(T − 2) with Q, P remote L² variables (EQ = 0), v = E|Q|² + E|P|²,

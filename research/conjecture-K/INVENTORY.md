@@ -397,7 +397,8 @@ part of this delivery. Internal peer checks do not replace external review.
 The proofs under `sources/progress-2026-11-15-codex-a7c4/` and the small exact
 checkers and results under `code/progress-2026-11-15-codex-a7c4/` add pure remote-core
 odd costs, a sharp A/B kernel comparison and matched tilted B-content, and the
-stronger common-response ellipsoid. These are author-only mathematical results
+stronger common-response ellipsoid. `JOINT_TARGET.md` and its scalar checker
+add a conditional joint-sector bridge; its global pointwise premise remains open. These are author-only mathematical results
 pending external review; internal re-derivations are not external review. The
 ellipsoid checker uses the previously reviewed Rice tangent as an explicit input.
 No third-party dependency, binary, or private Lean build is added.
@@ -413,6 +414,9 @@ are tracked on issue #421; they are not inputs to any accepted bound here.
 |---|---:|---|
 | `code/progress-2026-11-15-codex-a7c4/joint_content_exact.py` | 3,875 B | `81c7d5afce08980aa8ec5269c383b6fa68e20ecebe263113f2b52c7b53aae419` |
 | `code/progress-2026-11-15-codex-a7c4/joint_content_exact_result.json` | 1,774 B | `734b1ed851dd6730f2b625c60b7abf8cfda5dbec2c4ec41c7b46b10df5b76374` |
+| `code/progress-2026-11-15-codex-a7c4/joint_target_check.py` | 2,278 B | `b50392d57bbdbd07d2930192299cd2b9c29655ff2a7087f39dc00ca9525490a6` |
+| `code/progress-2026-11-15-codex-a7c4/joint_target_multipliers.json` | 24,663 B | `6f04c6320f6ee44d7e0c245b14087e626252df6cfcff2726884ecdd5a972a2b2` |
+| `code/progress-2026-11-15-codex-a7c4/joint_target_result.json` | 532 B | `05dee20a9c473f386545f93c83b8c21ef063cbc4f3c4a56217f3738c9964f0b8` |
 | `code/progress-2026-11-15-codex-a7c4/odd_control.json` | 33,214 B | `85966cafdb652b85fc0d60ecc6e2ba8a234f84df93e2f339cef42ff17a049297` |
 | `code/progress-2026-11-15-codex-a7c4/odd_control.py` | 8,670 B | `541b436ea3ad5785cb64b3d5d5ef183138f7e63c8761f3c87eaf491a7170bb32` |
 | `code/progress-2026-11-15-codex-a7c4/response_ellipsoid_check.py` | 4,516 B | `5127252a1541044dc4afc0ae66a273adcad79627e2d534a4392bb7395849674d` |

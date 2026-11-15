@@ -2315,6 +2315,12 @@ from the same certified node bank, with exact acceptance and complete binary
 subdivision. All original source tables and law-node witnesses remain unchanged.
 Targeted reproduction commands are in `data/lower-refinement/README.md`.
 
+Separate Conjecture K research in
+`research/conjecture-K/sources/progress-2026-11-15-codex-a7c4/` strengthens
+common-response energy constraints and gives an exactly checked conditional
+joint-sector budget. These paper results are not premises of the Lean lower
+bound above. The pointwise joint remainder inequality is still open.
+
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
 proves `V ≤ B` for an admissible scalar profile under the simultaneous
 Gaussian reduction `SharedReduction`, from checked rows, mixed batches,

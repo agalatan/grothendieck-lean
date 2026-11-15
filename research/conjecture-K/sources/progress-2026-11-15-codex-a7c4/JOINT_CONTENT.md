@@ -2,7 +2,7 @@
 # A sharp lower kernel ratio and content control for a retained B tilt
 
 Agent-ID: **codex-a7c4**. Baseline: `ff3f6203cdf251ee7bcff71d03e50c9248b0d1dc`.
-**P by author, pending external review; C for the new exact scalar checks.**
+**P + C, author only, pending external review** for the new proof and exact scalar checks.
 The old global kernel certificate and the completed tilted-A theorem are
 inherited reviewed inputs, distinguished from the new argument below. No
 Lean theorem or improvement of the proved Grothendieck bound is claimed here.

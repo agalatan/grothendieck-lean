@@ -15,7 +15,7 @@ source tables and analytic hypotheses. It does not assume Conjecture K.
 and remaining numerical bottlenecks. The production data and replay instructions
 are in `data/lower-refinement/`.
 
-Two analytic results address sectors of Conjecture K, and a third tightens the response domain used by a lower-bound consumer:
+The research results provide sector control, a smaller response domain, and a precise next joint-sector target:
 
 - [ODD_CONTROL.md](ODD_CONTROL.md) proves uniform costs for each pure odd sector
   over every remote core, at every amplitude and with arbitrary sharing. The
@@ -36,12 +36,18 @@ Two analytic results address sectors of Conjecture K, and a third tightens the r
   `.061366` at the existing thresholds `t≥.84`, `.8456`, `.851`. All sectors
   may share coordinates. This is a feasible-domain improvement, not a payoff
   bound or a theorem about every cubic in the raw K supremum.
+- [JOINT_TARGET.md](JOINT_TARGET.md) uses the existing tilted-content theorem
+  with coefficient `.3`, the centered A/B error and the stronger response
+  domain. Conditional on its explicitly stated, still open pointwise
+  remainder inequality, it proves joint A/B error below `.00004936`.
+  A 1,000-cell exact rational certificate checks the scalar assembly.
+  This is a conditional result; the pointwise premise is not an acceptance input.
 
 The new analytic arguments are author proofs with independent review within this
 session. Their scalar premises were recomputed with exact rational or outward
 Arb arithmetic, including entire half-line covers and analytic tails. They are
-not new Lean theorems and still require external mathematical review. Neither
-result establishes full Conjecture K: joint A/B cost and shared odd sectors over
+not new Lean theorems and still require external mathematical review. None
+establishes full Conjecture K: joint A/B cost and shared odd sectors over
 a core containing A/B remain open.
 
 ## Verification
@@ -51,7 +57,9 @@ saved JSON byte for byte. The six odd-potential bounds include all radial tails;
 the exact kernel checker recomputes endpoint comparisons and conditional budgets.
 The response-ellipsoid checker derives the sector weights and encloses π by
 exact rational series; it replays all new numerical caps, conditional on the
-inherited reviewed Rice tangent. All three reject optimized Python (`-O`). The complete production cover passes the
+inherited reviewed Rice tangent. The joint-target checker accepts all 1,000 cells
+and is independently re-derived within this session. All four reject optimized
+Python (`-O`). The complete production cover passes the
 standard-library rational verifier and all eight negative controls. Its Lean
 export passes the exact complete-partition replay.
 
