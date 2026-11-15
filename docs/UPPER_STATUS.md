@@ -1,17 +1,34 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The only active upper target is **K_G^ℂ < 1.404598149141**.
-`fresh_upper_concrete_taylor` remains conditional on fourteen actual Gaussian
-finite-band error inequalities and energy-table discrepancy at most
-`6847009/(5·10^17) = 1.3694018e-11`. Neither family is discharged.
+The current proved upper bound is **K_G^ℂ < 1.404599412097**, without
+hypotheses: `Grothe.Statement.upper_below_tight` in
+[`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
+proved lower bound, `main_bounds` states
+**1.401697117301 < K_G^ℂ < 1.404599412097** in
+[`MainResult.lean`](../Grothe/MainResult.lean).
 
-Weaker variants are preserved, with their original proof status and inputs, in
-[the committed archive](../miscellaneous/other-bounds/README.md). They are excluded
-from the active build. Shared Gaussian phase identity and Laplace infrastructure
-remain available to the target proof.
+The sharper target **K_G^ℂ < 1.404598149141** remains a separate conditional
+route. `fresh_upper_concrete_taylor` takes fourteen original Gaussian
+finite-band error inequalities and an energy-table discrepancy bound
+`6847009/(5·10^17) = 1.3694018e-11`. The table discrepancy is now proved for
+the actual frozen response by `Final.hclose_final`; the fourteen original
+band-error caps are not all proved. They are not hypotheses of `main_bounds`.
+
+The current proof uses six certified low-band and whole-source estimates,
+tighter arithmetic budgets, and the sharp Hardy bound with a linear-energy
+deduction. The older `upper_target` interface still proves its coarser
+`1.4046` threshold. Selected unused formulations are preserved in
+[the committed archive](../miscellaneous/other-bounds/README.md); this does
+not mean that every weaker interface is excluded from the active build.
+Shared Gaussian phase identity and Laplace infrastructure remain in the proof.
+
+Sections 1 and 4 describe the current status. Sections 2, 3 and 5 retain
+construction history and the original sharper-target plan, with completed
+steps identified. Their old costs, residual shares and proposed tolerances
+are not the current theorem's budget or a schedule of remaining work.
 
 Build only changed modules locally. Full builds, including all node caps, run
-through the single delivery CI job; see `AGENTS.md` for worktree and delivery rules.
+through the repository proof-check workflow; see `AGENTS.md` for worktree and delivery rules.
 
 The combined tree includes the concrete rounder, the phase cover, the refined
 Hardy tail and the holomorphic-kernel definitions. Use an owned worktree and
@@ -21,7 +38,41 @@ cache matches the node-cap sources.
 
 ## 1. What is proved
 
-Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/GroupedRounder.lean`):
+### Current unconditional assembly
+
+`upper_below_tight` uses the same concrete rounding `GT` and accepted
+production certificates through this chain:
+
+1. `UpperTightPanelTotals` checks the actual panel-cap sums in Lean's kernel:
+   `8·10^-15`, `16·10^-15`, and `1131·10^-15`. The accepted production shards
+   give `TightTwist.remainder1/2/3`; each full quadrature allowance retains
+   the existing `10^-15` tail and gap reserve.
+2. `TightTwist.six_of_facts` in `UpperTightSix.lean` (namespace
+   `Grothe.UpperQuad.TightTwist`) uses the original port-fact bundles,
+   exact center energies, phase moments and dyadic table excursions to
+   derive the three low-band and three whole-source error bounds.
+3. `UpperTightComparison` combines those radii with tighter square-root
+   ceilings for the same certified reference-band masses.
+   `Final.hclose_final` supplies the actual energy-table accuracy.
+4. `UpperHead` gives the finite kernel residual. `HeadHardy` deducts the
+   forced linear coefficient's weighted square from the proved Hardy
+   budget `1737972/1000000` at radius `4149/4000`
+   (`HardyReal.hardy_GT_tight`), giving tail `303362611/10^16`.
+5. `UpperTightFinal` applies the transfer theorem with
+   `tightResidualQ ≈ 1.5507303526753792e-6`. Its exact reciprocal `tightValueQ`
+   is approximately `1.404599412096097`, strictly below `1.404599412097`.
+
+The comparison allowance is approximately `1.4922273975573793e-6`; the
+stored-table head allowance is `28153/10^12`, and the table allowance remains
+`6847009/(5·10^17)`. No Gaussian or table-accuracy premise is left open in
+this assembly. The tighter totals and budget arithmetic use kernel
+reduction; the inherited native acceptance facts remain recorded in
+[`data/axioms/native.txt`](../data/axioms/native.txt) and the theorem audit in
+[`scratch/Axioms.lean`](../scratch/Axioms.lean).
+
+### Original sharper conditional route
+
+`Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/GroupedRounder.lean`):
 
     K_G^ℂ ≤ 500000000000000000/355973699960428191  (< 1.404598148840)
 
@@ -32,7 +83,9 @@ for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upp
 
 for some charge-one `X ∈ L²(gaussC ⊗ gaussC)`. The concrete Taylor version
 `fresh_upper_concrete_taylor` fixes `X` and takes fourteen finite-band Gaussian
-error inequalities and the table-accuracy assumption.
+error inequalities and the table-accuracy assumption. The latter is discharged
+for this concrete `X` by `Final.hclose_final`; the original band caps remain
+the unresolved inputs of this sharper route.
 Axioms: the standard axioms and the existing native head, comparison, Hardy-region,
 Hardy-arc and phase-cover checks. The concrete Taylor specialization also uses
 the existing native phase-moment and center-energy checks. Grouping introduces
@@ -52,23 +105,28 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 | PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck0–5, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 99/100`, `|φ| < 1` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_abs_cover.py`, data `data/phi-abs-cover/trees.json`) |
 | HardyKernel, HardyReal | holomorphic Gaussian kernel and certificate covariance definitions; `HardyReal.hardy_GT_tight` proves the concrete Hardy input |
 
-The sharper tail reserves the linear coefficient's weighted square from the
-proved `1737972/1000000` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,
-`linear_lower`, `tail_le`). It changes no numerical premise. The complete
-endpoint for the preceding preprocessors passed the full build and axiom audit in
-[run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873);
-the current degree-41/15 preprocessors come from `data/upper-preprocess/`.
-The current exact arithmetic and generated data replay pass. Full merged-tree
-Lean validation is delegated to branch CI. Earlier targeted receipts were cleared
-before collection and are not current build evidence. The explicit gap and source
-guards are in `miscellaneous/other-bounds/tree/data/upper-preprocess/verification/`. `HardyKernel` does not
-discharge the numerical Hardy premise.
+Both the current endpoint and the original sharper conditional route reserve
+linear energy from the proved `1737972/1000000` Hardy budget before
+Cauchy–Schwarz. The current endpoint uses `HeadHardy`; the conditional route
+uses its original head allowance and tail `303362486/10^16`. The older
+`upper_target` keeps the coarse budget `7/4` and tail `36748/10^12`.
+`HardyKernel` supplies definitions; `HardyReal.hardy_GT_tight` and the arc
+checks supply the proved numerical Hardy input.
 
-## 2. `|φ| < 1` (input of the inherited coefficient-error argument)
+For historical provenance, the endpoint with preceding preprocessors passed
+[run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873).
+That receipt is not evidence for the current source tree. The current degree-41/15
+preprocessors come from `data/upper-preprocess/`; current build evidence is the
+proof check of the exact branch or merged commit. Older gap and source guards
+are retained in `miscellaneous/other-bounds/tree/data/upper-preprocess/verification/`.
 
-The Gaussian component-error enclosures are external; their source proof uses `|φ| < 1` (operator norm of
-multiplication by iφ). sup|φ| ≈ 0.96725 (float search), so the margin is ~3%.  Rigorous external
-certificate: `handoff/upper-residual/phi-cover/phi_cover_exact.py` (python-flint, exact integer Taylor
+## 2. `|φ| < 1`: proved input and construction history
+
+The original sharper-target component-error argument uses `|φ| < 1` (operator norm of
+multiplication by iφ). The following external experiments and October receipts
+record how the phase cover was developed; the production Lean proof is §2b.
+The float search gave sup|φ| ≈ 0.96725, a margin of about 3%. The external
+certificate was: `handoff/upper-residual/phi-cover/phi_cover_exact.py` (python-flint, exact integer Taylor
 shifts + arb; run on the droplet `~/grothe-cx/venv/bin/python phi_cover_exact.py phase.json 98/100 8`),
 log `phi_cover_exact.log` in the same folder.  Model per box: exact Taylor shift of S, first-order
 model of the exponential (`P1 = S(1 − ε(hU+hV))` exact, remainder `(ε rs)²/2 e^{ε rs}`), quadratic bound for
@@ -76,8 +134,10 @@ UV − W², arb for exp.
 
 **§2a Result (2026-10-23): |φ| < 0.98995 everywhere.** U+V < 60: φ² < 0.98 on all 149,433 leaves
 (296,888 evaluated boxes, max leaf bound 0.979999754, 3115 s on 8 processes); U+V ≥ 60: |φ| ≤ 0.0559.
-The script, log and README are in `handoff/upper-residual/phi-cover/` (git-ignored; the main checkout of
-the user's laptop) — the script is reproduced verbatim in `tools/phi_cover_exact.py` on this branch.
+The original handoff stored the script, log and README in the git-ignored
+`handoff/upper-residual/phi-cover/` directory. The preserved script is
+`tools/phi_cover_exact.py`; these external receipts are construction history,
+not substitutes for the production Lean checks below.
 
 **§2b In Lean (2026-10-26): `phi_abs_lt_one : ∀ u, |phiT u| < 1`** from `phiT_sq_le : φ² ≤ 99/100`.
 Leaf test (`GrotheKernel.leafOK`): either the exponential at the lower corner with `|S| ≤ |B|_r`, or the
@@ -88,13 +148,14 @@ leaves; six single-threaded native facts `phi_cover_check_0`–`5` (the cube con
 leaves, ≈ 12 min; the others ≤ 3 min). Far field `U + V ≥ 60`: `|φ| ≤ 1/10` (`far_sound`). This replaces the
 earlier `φ² ≤ 3` cover.
 
-## 3. `hardy` (N4) — plan and progress
+## 3. `hardy` (N4): completed construction and historical plan
 
 Source certificate: `tools/verify_upper_hardy.py`, with the full current preprocessing,
 contour data and analytic input in `data/upper-preprocess/` (see its README). Kernel `H(t) = Σ_j h_j t^{2j+1}`, `h = kernelCoeff(energy GT)`.
-Lean route (detailed in PLAN_UPPER.md §6f):
+The incumbent Hardy input is proved. The original route (detailed in
+`PLAN_UPPER.md` §6f) was:
 
-1. **Holomorphic continuation (next).** For complex symmetric 2×2 `R` with `I ± Re R ≻ 0` define
+1. **Holomorphic continuation.** For complex symmetric 2×2 `R` with `I ± Re R ≻ 0` define
    `H(R) = ∫∫ T(x + iξ) conj T(y + iη) k_R(x,y) k_R(ξ,η)` (real 2-vectors), with the holomorphic Gaussian
    density `k_R(x,y) = (2π)^{-2} det(I−R²)^{-1/2} exp(−xᵀAx/2 − yᵀAy/2 + xᵀCy)`, `A = (I−R²)^{-1}`, `C = RA`;
    the product of the two copies carries `det(I−R²)^{-1}`, so no square-root branch is needed. Steps:
@@ -106,7 +167,8 @@ Lean route (detailed in PLAN_UPPER.md §6f):
 2. Parseval on the circle: `Σ |h_j|² r^{2(2j+1)} = (1/2π)∫|H(re^{iθ})|² dθ`.
 3. Gaussian Schur lemma `|H(R)|² ≤ 1/[64 j⁴ |det(I−R²)|² det Z det W]` (operator norm of the kernel on L²).
 4. Precompiled checker over the arcs (rational enclosures of cos/sin, 2×2 matrix arithmetic).
-Progress (claude/hardy, 26 Oct):
+Construction record (begun by claude/hardy on 26 October, with subsequent completions):
+
 - Definitions: `Grothe/UpperChaos/HardyKernel.lean` (`Sym2C`, `detIm`, `Amat`, `Cmat`, `kExp`, `kHol`, `Hhol`, `Rt`).
 - **1(a) holomorphy — proved.** `HolIntegral.lean`: `differentiableOn_integral_exp` (a parametric integral
   `∫ c(q) g(t) exp(∑ₖ αₖ(t) mₖ(q))` with holomorphic `g, αₖ`, `‖c‖ ≤ 1`, `|mₖ| ≤ N` and pointwise decay
@@ -133,8 +195,9 @@ Progress (claude/hardy, 26 Oct):
   their statements. The written Schur inequality in
   `data/upper-preprocess/inputs/GAUSSIAN_SCHUR_TAIL_PROOF.md` has universal
   disk-valued pair scope, now formalized by the Schur bound below. The
-  Gaussian identification remains open. Reusing a numerical contour cover also
-  requires matching its actual smoothing and preprocessing data.
+  real odd-series identification and numerical contour inputs must match any
+  new response pair's smoothing and preprocessing data. For the incumbent `GT`,
+  the identification is proved in step 1(b) below.
 - **3 Gaussian Schur bound — proved** (`claude/hardy-2`). `SchurMain.norm_HholPair_sq_le`: for `B = A − jI`
   (`j > 0`), `Z = Re B`, `T = Z − Cr Z⁻¹ Cr`, `E = (Cr Z⁻¹ Cr + Ci Z⁻¹ Ci)/2`, `W = 2T + E`, under the gates
   `Z ≻ 0`, `T ≻ 0`: `‖HholPair F G R‖² ≤ 1/(64 j⁴ |det(I − R²)|² det Z det W)` for all measurable `‖F‖, ‖G‖ ≤ 1`
@@ -154,57 +217,66 @@ Progress (claude/hardy, 26 Oct):
   identification (step 1(b)) for summable coefficients. Measured on GitHub-hosted runners: 700–1140 s per part alone (about
   1700 s with all four in parallel on 4 vCPUs) and 9 s for the region.
 - **1(b) real identification — proved** (`claude/hardy-real`). `HardyReal.hreal_GT`, hence
-  `HardyReal.hardy_GT`: the `hardy` statement for the rounding, with no hypothesis beyond `PhiBound`.
-  `fresh_upper_rounder` no longer assumes it. Modules: `HardyRealAlg` (exponent identity), `HardyRealKernel`,
+  `HardyReal.hardy_GT_tight`: the sharper `hardy` statement for the rounding,
+  with no hypothesis beyond the proved `PhiBound`. The coarse `hardy_GT` is
+  also available. Neither `upper_below_tight` nor `fresh_upper_rounder` assumes it.
+  Modules: `HardyRealAlg` (exponent identity), `HardyRealKernel`,
   `HardyRealGauss` (`mu2` in the coordinates of `HholPair`), `HardyRealSubst`, `HardyRealDensity` (density of
   `(U, RU + SW)` is `kHol R`), `HardyRealCov`, `HardyRealLaw` (law swap), `HardyReal` (assembly).
 - **Former plan of 1(b), for reference:**
   1(b) the real identification: for real `R`, `kHol R` is the density of the Gaussian pair with cross covariance
   `R` (two real copies), and smoothing by `M`, `N` turns `E[conj GT(X) GT(Y)]` (diagonal correlations
   `p(t), −τ(t)`) into `Hhol (Rt t)`; then `Bm_polyKernel` gives the series with `h = kernelCoeff (energy GT)`.
-  This needs Gaussian-law identification on `ℝ⁸` (density ↔ covariance, pushforward by linear maps) — the largest
-  remaining analytic identification: `hardy_of_real` takes it as `hreal`, with coefficient summability `hs` explicit.
+  This required Gaussian-law identification on `ℝ⁸` (density ↔ covariance,
+  pushforward by linear maps), subsequently completed by the modules above.
+  The generic `hardy_of_real` still exposes `hreal` and coefficient summability
+  `hs` as inputs; the incumbent specialization supplies both.
 
-## 4. Other open items
+## 4. Remaining work toward the original sharper target
 
-* The Gaussian identification and norm bounds in `ComparisonInputs`, and
-  `energy_close`, stay external (verified-quadrature projects). Lean derives
-  the selected energy comparison from those inputs.
-  Every even phase moment is identified with a finite rational calculation on
-  the production phase (`Grothe.UpperChaos.integral_phiT_pow_even` in
-  `ConcretePhaseMoments.lean`). Separate `PhaseMoment2`, `PhaseMoment4`, and
-  `PhaseMoment6` checks compute the three needed moments; `PhaseMomentNorms`
-  identifies them with the Taylor-source total energies. Sharp band estimates
-  still need captured Hermite energy and approximation errors. Exact targets, the integration
-  formula and reproduction instructions are in
-  [data/phase-moments](../data/phase-moments/README.md).
-  The original approximant inputs and frozen correction have been recovered
-  with matching hashes in `data/taylor-approximants/inputs/`. `TaylorBandCheck`
-  supplies the full third-center certificate through degree 51, including all
-  four finite bands and exact vanishing on the tail. `TaylorRounding` also
-  certifies the 10^-18 norm cap for the exact rounding difference. The first
-  and second centers' six and four band norms are certified by their respective
-  `Taylor*BandNorms` modules. All three tail caps follow from the explicit
-  slightly tighter finite-band Gaussian errors in `TaylorTailData`.
-  `fresh_upper_concrete_taylor` fixes every center and pointwise representative:
-  only fourteen finite Gaussian error inequalities and the actual energy-table
-  accuracy remain inputs to the conditional endpoint. The omitted-input
-  Hilbert–Schmidt estimates are still a separate analytic ingredient.
-* The refined lower endpoint is `1.401697117301`, conditional on the same
-  `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
-  The single `Grothe` target includes the 60 range facts and their final assembly;
-  CI verifies them or replays a matching verified cache. The four remaining rows
-  still require `CapsRest`.
+* The fourteen original finite-band Gaussian caps remain explicit hypotheses
+  of `fresh_upper_concrete_taylor`; their complete family is not proved.
+  The error decomposition, supports and actual centers are formalized.
+  `ComparisonInputs` is still a conditional interface for arbitrary `G, X`;
+  the current unconditional theorem uses a different seven-piece comparison
+  with proved low-band and whole-source radii.
+* The actual table accuracy is **proved**, not an open quadrature project:
+  `Final.hclose_final` combines the accepted energy facts with the full
+  quadrature remainder, tail and omitted-pair bounds. It supplies the table
+  input to the current endpoint and is available to the sharper conditional
+  endpoint.
+* Every even phase moment is identified with a finite rational calculation on
+  the production phase (`integral_phiT_pow_even` in `ConcretePhaseMoments`).
+  `PhaseMoment2`, `PhaseMoment4`, `PhaseMoment6` and `PhaseMomentNorms` provide
+  the three Taylor-source total energies. Exact targets and reproduction
+  instructions are in [data/phase-moments](../data/phase-moments/README.md).
+  Total energies alone do not prove the original band-error caps.
+* The recovered approximants and frozen correction have matching hashes in
+  `data/taylor-approximants/inputs/`. Their exact center norms and bands,
+  the complete third-center support through degree 51, and the `10^-18`
+  rounding norm cap are certified. `TaylorTailData` states the original
+  finite-band errors from which the sharper tails would follow; those
+  error targets must not be confused with established numerical enclosures.
+  The omitted-input Hilbert–Schmidt route remains a separate way to seek
+  those bounds, not an assumption of `main_bounds`.
+* The lower endpoint is also closed: `lower_target` and `capsRest` in
+  `MainResult.lean` give `1.401697117301 < K_G^ℂ` after all node-cap rows are
+  certified and the exclusion list is empty. The intermediate
+  `lower_bound_of_refined_cover_data` still exposes `NodeCaps`, but the
+  main theorem has no remaining `CapsRest` assumption.
 
-## 5. `ComparisonInputs`: formalisation plan
+## 5. Historical `ComparisonInputs` plan for the original sharper caps
 
 *Issue #20. Written from the master sources (`Grothe/UpperChaos/LocalizedComparison.lean`,
 `Grothe/Upper/ComparisonData.lean`, `data/localized-comparison/{recipe.json,PROOF.md}`,
 `miscellaneous/other-bounds/tree/docs/localized-comparison.tex`) and the inherited certificate (laptop archive
 `handoff/upper-residual/global_norm/`: `MIXED_TAYLOR_CUTOFF_LEMMA.md`, `GAUSSIAN_POLYNOMIAL_NORM.md`,
 `certify_taylor_comparison.py`, `taylor_comparison_result.json`). The error decomposition,
-spectral support and symbolic phase-moment route are implemented; the plan below
-also describes numerical enclosures that remain open.*
+spectral support, concrete center data and phase moments are now implemented.
+The plan below records the original eighteen-piece route and its old cost
+estimates. The current unconditional proof instead uses the six certified
+inputs and grouped comparison in §1; the original finer Gaussian caps remain
+separate targets.*
 
 ### 5.1 What the hypothesis says
 
@@ -217,6 +289,7 @@ structure ComparisonInputs (G X : Lp ℂ 2 mu2) where
 ```
 
 Lean already proves everything downstream of it:
+
 - `localized_comparison` (the band inequality, Cauchy–Schwarz per band, quadratic error paid once);
 - the radii `A_r` from the stored table with `energy_close`;
 - the cost weights;
@@ -242,6 +315,7 @@ Write `B = ·iφ` and `T = F₀ + BF₀ + B²F₀/2 + B³F₀/6`, `X_raw = F₀ 
 - **Smoothing:** the pieces are smoothed like G_T and X. Smoothing contracts L² and preserves total degree.
 
 The norm bounds:
+
 - **Finite bands:** `ε_{j,I} = 1/(25·10⁹) + (11/500)·HS_{j,I} + 10⁻¹⁸`.
   - `1/(25·10⁹)` is the arb quadrature error of the coefficients of `B^jF₀`.
   - `HS` is a rectangular weighted-Bargmann Hilbert–Schmidt bound for the omitted inputs.
@@ -255,10 +329,14 @@ The norm bounds:
 orthogonal Bessel and the separate reverse-triangle estimate for each band.
 `TaylorErrorEnergy.lean` formalizes the whole-error identity and the alternative
 one-inner-product band bound in §5.5. These are structural interfaces; the
-concrete approximant norms and integral enclosures remain obligations.
+concrete approximant norms are now certified. The original finer band-error
+enclosures remain obligations of this sharper route; the current proof's
+whole-source and low-band enclosures are already supplied by `UpperTightSix`.
 
-### 5.3 Who carries the residual
+### 5.3 Historical residual ledger of the original target
 
+These are the original conditional target's allowances, not the current
+`tightResidualQ` and not percentages of the proof left unfinished.
 The decomposition shares below use the raw weighted-comparison residual
 458421199009/(5·10¹⁷), before the forced linear-coefficient Hardy deduction.
 The grouped refined residual is 455212621809/(5·10¹⁷); its linear comparison pieces are
@@ -278,9 +356,14 @@ the grouped quadratic term is about 0.009%.
 **86% of the residual is the three high tails.** The low bands are tiny, but only because their coefficients are
 known to about 10⁻¹¹: their `A_r ≈ 1` makes any looser bound expensive.
 
-### 5.4 Each field: classification and how to prove it
+### 5.4 Original work estimates and proof routes
 
-| field / item | kind | Lean route | cost |
+The table preserves the initial plan's estimates. The decomposition, supports,
+rounding check, moments and center norms are now implemented. Production
+verified integration also exists; the still-unresolved question here is whether
+the original finer band caps can be certified.
+
+| field / item | kind | original Lean route | original cost estimate |
 |---|---|---|---|
 | `difference` | exact algebra, once the objects exist | define `c_j`, `v`, the 18 pieces and a concrete X = smoothing(F₀ + v) in Lean (`c_j` and `v` as generated data: about 260k + 35k + 6.6k + 354k dyadic coefficients); Taylor identity `F₀·P₃(φ) = T`; linearity of the smoothing | 2–4 w (data plumbing; overlaps #21, concrete X) |
 | `support` | structural | `P_I`/`P_{>D}` are degree projections (Hermite basis `Grothe/UpperChaos/HermiteC2Basis.lean`); smoothing preserves total degree (Mehler, `mehler_L2`) | 1 w |
@@ -288,12 +371,17 @@ known to about 10⁻¹¹: their `A_r ≈ 1` makes any looser bound expensive.
 | `E φ^{2j}` (in the tails) | finite exact | the Laguerre-dilation formula (GAUSSIAN_POLYNOMIAL_NORM.md, eq. (4)): finite rational sums, exactly as `arb_norm.c` does | 1–2 w |
 | `‖P_I c_j‖` (in the tails) | finite exact | sums of squares of the data | days |
 | `HS_{j,I}` (omitted inputs) | finite exact | rectangular Hilbert–Schmidt bound in Laguerre form (finite Wick identity); exact rational check | 2 w |
-| `1/(25·10⁹)`: coefficient enclosures of `B^jF₀ = iʲφʲF₀` | **analytic: verified integration** | rigorous Gaussian integrals of a phase function times polynomials. No Lean infrastructure exists for this; it needs interval Taylor-model integration | months |
+| `1/(25·10⁹)`: coefficient enclosures of `B^jF₀ = iʲφʲF₀` | **analytic: verified integration** | rigorous Gaussian integrals of a phase function times polynomials. The plan predated the now-proved twisted quadrature; it proposed interval Taylor-model integration | months |
 | propagation through `B^j` | analytic, small | `|φ| < 1` (#19) ⇒ `‖B^j‖ ≤ 1` | with #19 |
 
 Everything except the coefficient enclosures is a finite exact computation, or structural.
 
-### 5.5 A cheaper route for the tails (86% of the residual)
+### 5.5 Historical one-inner-product proposal for the tails
+
+This section's numerical tradeoffs concern the original eighteen-band budget.
+The current seven-piece comparison uses whole-source errors on grouped high
+supports and separate low-band estimates, rather than charging each original
+band the whole error.
 
 Since `c_j` is supported in degree ≤ D_j, `P_{>D_j}(B^jF₀) = P_{>D_j}(B^jF₀ − c_j)`, hence
 
@@ -315,18 +403,20 @@ its own error raises 2·A_I·e_I to about 1.3·10⁻⁶ in total for power 1. Th
 the global bound, so the bands still need per-coefficient enclosures. They need only about 10⁻¹¹ (power 1, degrees
 101–181) to 10⁻⁹ precision, on about 150k coefficients.
 
-### 5.5b Step 1 done (`claude/comparison-pieces`)
+### 5.5b Decomposition implementation record (`claude/comparison-pieces`)
 
 `Smoothing.lean` (S as an `L²` contraction: `map_smooth`, `norm_smoothOp_le`, `smoothOp_toLp'`, mean preserved),
 `BandProj.lean` (projections onto Hermite modes: coefficients, support, partition sums) and
 `ComparisonPieces.lean` (Taylor split `Tround_eq`, the four sources, the 18 pieces, `difference_pieces`,
 `comparisonInputs_of_norms`, `fresh_upper_pieces`). The pieces are `P_I(S src)` (projection after smoothing), so
 their supports hold by construction. The data `c_j`, `v` enter as charge-one parameters; plugging in the
-certificate's data is the remaining part. `SmoothComm.lean` proves that S preserves the total degree (it commutes
+certificate's data was the remaining part of that stage. The concrete frozen-source
+instantiation is now implemented in `fresh_upper_concrete_taylor` and
+`ThreeBandRegrouping`. `SmoothComm.lean` proves that S preserves the total degree (it commutes
 with the Ornstein–Uhlenbeck smoothing T_ρ, `law_comm`; T_ρ is diagonal with eigenvalue ρ^{|i|}, `OUOp.lean`), so
 `P_I S = S P_I` and the norm hypotheses of `fresh_upper_pieces` are on the unsmoothed sources.
 
-### 5.6 Ranked plan
+### 5.6 Original ranked plan and estimates (historical)
 
 | step | content | turns into Lean | residual made formal |
 |---|---|---|---|
@@ -335,14 +425,16 @@ with the Ornstein–Uhlenbeck smoothing T_ρ, `law_comm`; T_ρ is diagonal with 
 | 3 | design spike, then verified 2-D integration of `I_j` (tail route §5.5) | t₁, t₂, t₃ | **≈ 86%** (with about +1.3% looser residual) |
 | 4 | per-coefficient enclosures for the bands (`φʲF₀` against Hermite functions, degrees ≤ 181/91/51) | ε_{j,I} | the remaining ≈ 7% |
 
-**Timeline:**
+**Original timeline estimate (not a current schedule):**
 - Steps 1–2: about 4–6 weeks of Lean, plus native checks of a few CPU-hours.
 - Step 3: a 1–2 week spike to choose the integration method (interval Taylor models over the reduced 2-D domain,
   in `GrotheKernel`, single-threaded modules), then about 6–10 weeks.
 - Step 4: months, and possibly not worth it. The bands carry 7%, and an alternative is to keep them as an isolated,
   replayed external certificate.
 
-Until step 3 lands, the share of the residual that is proved does not move. Steps 1–2 make the statement explicit and
-checkable, which is still worth doing first: they are cheap, and steps 3–4 build on them.
+This schedule and its residual-share model are historical. They do not describe
+remaining work for `main_bounds`, whose inputs are closed. The original finer
+band caps remain the separate conditional target described in §4.
 
-Follow-up tasks (sub-issues of epic #17): step 1 → #39, step 2 → #40, step 3 → #41.
+Historical task mapping (sub-issues of epic #17): step 1 → #39, step 2 → #40,
+step 3 → #41. Consult the live issues for their current status.

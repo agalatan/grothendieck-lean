@@ -10,8 +10,12 @@ J_0(x)=\frac{4}{\pi}\int_0^{\pi/2}
 \]
 
 at the exact rational midpoint squared recorded in the recovered row-227
-replay. It supports the coefficient recurrence used in the proof of the upper
-endpoint `1.404598149141`. The complete endpoint remains work in progress.
+replay. This fixed-node certificate supports the experimental row-227 scalar
+calculation; it is not used by `Grothe.Statement.main_bounds`.
+The current unconditional upper endpoint is `1.404599412097`, proved in
+[`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean). That proof uses
+the generic production seed enclosures in `UpperQuad/SeedAnalytic.lean` and
+`UpperQuad/WatsonSeed.lean`, rather than this fixed-midpoint packet.
 
 The three preserved inputs are `row227-charge-replay.json`,
 `row227-seed-checkpoints.json`, and `row227-seed-checkpoints.jsonl.gz`. The
@@ -50,8 +54,9 @@ integer arithmetic and is deterministic. Lean compilation, strict axiom
 guards and the repository proof gates establish acceptance. Python replay
 and source review provide separate evidence.
 
-The physical row parameter, transport from it to this rational midpoint,
-the `sqrt(π)/2 · A` prefactor, the coefficient table and final energy estimates
-remain separate obligations. The existing `F0ConditionalSeed` identities
-provide the analytic connection between original moments and Gaussian
-coefficients.
+This packet alone does not establish the physical row parameter, transport to
+this rational midpoint, the `sqrt(π)/2 · A` prefactor, or coefficient-table and
+energy estimates. The existing `F0ConditionalSeed` identities provide the
+analytic connection between original moments and Gaussian coefficients.
+The production proof discharges its corresponding obligations through the
+generic quadrature chain described in [LEAN_DETAILS.md](../../docs/LEAN_DETAILS.md).

@@ -11,9 +11,7 @@ import Grothe.Haagerup.PhaseStability
 import Grothe.Haagerup.PhaseTaylorAlgebra
 import Grothe.Haagerup.PhaseTaylorCubic
 import Grothe.Haagerup.PhaseTaylorOptimal
-import Grothe.Haagerup.PhaseTaylorQuadratic
 import Grothe.Haagerup.PhaseTaylorSharp
-import Grothe.Haagerup.PhaseTaylorThird
 import Grothe.HeadHardy
 import Grothe.ListPoly
 import Grothe.Lower.Basic
@@ -10479,7 +10477,6 @@ import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ChargeBandApproximation
 import Grothe.UpperChaos.ChargeBandEnclosure
 import Grothe.UpperChaos.ChargeBandParseval
-import Grothe.UpperChaos.CollectiveTail
 import Grothe.UpperChaos.CommonDenAppend
 import Grothe.UpperChaos.CommonGaussianTailTolerance
 import Grothe.UpperChaos.CommonSourceTolerance
@@ -10740,10 +10737,12 @@ import Grothe.UpperChaos.FrozenSourceBinding
 import Grothe.UpperChaos.GateFockCoefficients
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
+import Grothe.UpperChaos.GaussianAmplitude
 import Grothe.UpperChaos.GaussianDenominatorEnvelope
 import Grothe.UpperChaos.GaussianDensityBounds
 import Grothe.UpperChaos.GaussianFockBessel
 import Grothe.UpperChaos.GaussianNormalizationInterval
+import Grothe.UpperChaos.GaussianPair
 import Grothe.UpperChaos.GaussianSmallBall
 import Grothe.UpperChaos.GenericRationalGradeAggregation
 import Grothe.UpperChaos.GeometricInverse
@@ -10770,6 +10769,10 @@ import Grothe.UpperChaos.HardyArcPart3
 import Grothe.UpperChaos.HardyArcRegion
 import Grothe.UpperChaos.HardyArcRegionCheck
 import Grothe.UpperChaos.HardyArcSound
+import Grothe.UpperChaos.HardyGaussian
+import Grothe.UpperChaos.HardyGaussianCheck
+import Grothe.UpperChaos.HardyGaussianFacts
+import Grothe.UpperChaos.HardyGaussianSound
 import Grothe.UpperChaos.HardyHolo
 import Grothe.UpperChaos.HardyKernel
 import Grothe.UpperChaos.HardyReal
@@ -10861,7 +10864,6 @@ import Grothe.UpperChaos.PackedDyadicStructural
 import Grothe.UpperChaos.PackedDyadicStructuralChecks
 import Grothe.UpperChaos.PairJetPolynomialOperations
 import Grothe.UpperChaos.PhaseAuxiliaryDecay
-import Grothe.UpperChaos.PhaseCubicError
 import Grothe.UpperChaos.PhaseMoment2
 import Grothe.UpperChaos.PhaseMoment4
 import Grothe.UpperChaos.PhaseMoment6
@@ -10872,7 +10874,6 @@ import Grothe.UpperChaos.PhaseMomentEval
 import Grothe.UpperChaos.PhaseMomentNorms
 import Grothe.UpperChaos.PhaseMoments
 import Grothe.UpperChaos.PhasePolynomialStability
-import Grothe.UpperChaos.PhaseQuadraticError
 import Grothe.UpperChaos.PhaseRadialTail
 import Grothe.UpperChaos.PhaseTailExponential
 import Grothe.UpperChaos.PhaseTermsDefs
@@ -13417,6 +13418,7 @@ import Grothe.UpperChaos.SchurBound
 import Grothe.UpperChaos.SchurIntegrability
 import Grothe.UpperChaos.SchurKernel
 import Grothe.UpperChaos.SchurMain
+import Grothe.UpperChaos.SchurMainGaussian
 import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.SeedPiNormalization
 import Grothe.UpperChaos.SelectedEnergyApprox

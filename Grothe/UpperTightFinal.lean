@@ -1,3 +1,5 @@
+-- Grothe/UpperTightFinal.lean
+import Grothe.UpperChaos.HardyGaussian
 import Grothe.HeadHardy
 import Grothe.UpperHead
 import Grothe.UpperTightComparison
@@ -9,10 +11,12 @@ import Grothe.UpperFinal
 # The tighter unconditional upper bound from the existing certificates
 
 The same accepted panels and port tables give smaller quadrature and whole-source error radii.
-The comparison retains those radii, and the final transfer deducts the forced linear energy
-from the sharp Hardy budget. No new numerical acceptance fact is assumed.
+The comparison retains those radii. The Gaussian-amplitude integral improves the Hardy budget
+to `5/4`, certified on the existing circle by a new exact interval check. The final transfer
+deducts the forced linear energy before applying the tail estimate.
 
 Agent-ID: codex-c8a4. Refs #389.
+Gaussian-amplitude refinement: Agent-ID: codex-9b17. Refs #380.
 -/
 
 namespace Grothe.UpperQuad.TightTwist
@@ -80,7 +84,7 @@ theorem endpoint_of_comparison
     simpa only [tightLinearLowerQ, Rat.cast_sub] using
       (show 0 ≤ (tightLinearLowerQ : ℝ) from by exact_mod_cast tightLinearLowerQ_pos.le)
   have hnum :
-      ((1737972 / 1000000 - ((slopeQ : ℝ) - (tightHeadResidualQ : ℝ)) ^ 2 *
+      ((5 / 4 - ((slopeQ : ℝ) - (tightHeadResidualQ : ℝ)) ^ 2 *
         (4149 / 4000 : ℝ) ^ 2) / (4149 / 4000 : ℝ) ^ 4) *
           (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1)) ≤
         (tightTailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
@@ -92,7 +96,7 @@ theorem endpoint_of_comparison
         exact_mod_cast tightResidualQ_lt_slopeQ)
   have hu := Grothe.transfer_of_head_hardy (Grothe.summable_kernelCoeff hs) hv
     (K := 250) (by norm_num : (1 : ℝ) < 4149 / 4000) hL hhead
-    (HardyReal.hardy_GT_tight phiBound)
+    (HardyReal.hardy_GT_gaussian phiBound)
     (by exact_mod_cast tightTailQ_nonneg) hnum hdelta
   have heq : (tightHeadResidualQ : ℝ) + (tightTailQ : ℝ) = (tightResidualQ : ℝ) := by
     simp only [tightResidualQ, Rat.cast_add]
@@ -116,14 +120,14 @@ theorem upper_bound_tight : Grothe.IsGrothendieckBound (tightValueQ : ℝ) := by
       hfirst hsecond hthird hwholeFirst hwholeSecond hwholeThird Final.hclose_final)
     Final.hclose_final
 
-/-- Some Grothendieck bound lies strictly below `1.404599412097`, without hypotheses. -/
-theorem upper_below_tight : UpperBelow (1404599412097 / 10 ^ 12) := by
+/-- Some Grothendieck bound lies strictly below `1.404599398251`, without hypotheses. -/
+theorem upper_below_tight : UpperBelow (1404599398251 / 10 ^ 12) := by
   apply upperBelow_of_bound upper_bound_tight
   convert tight_real_value_lt using 1
   norm_num
 
 /-- The improved unconditional upper bound for the complex Grothendieck constant. -/
-theorem constant_lt_tight_upper : complexGrothendieckConstant < 1404599412097 / 10 ^ 12 :=
+theorem constant_lt_tight_upper : complexGrothendieckConstant < 1404599398251 / 10 ^ 12 :=
   constant_lt_of_upperBelow upper_below_tight
 
 end Grothe.Statement

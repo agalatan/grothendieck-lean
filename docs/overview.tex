@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697117301\;<\;\KG\;<\;1.404599412097$\\[6pt]
+\Large $1.401697117301\;<\;\KG\;<\;1.404599398251$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
 (\lean{main\_bounds}); the computer-assisted inputs are native finite checks listed in
 the axiom report (Section~\ref{sec:trust}).\\[4pt]
@@ -159,10 +159,10 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404599412097}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404599398251}$\\\bottomrule
 \end{tabular}
 \end{center}
-Lean exhibits an exact rational Grothendieck bound strictly below the displayed threshold $1.404599412097$.
+Lean exhibits an exact rational Grothendieck bound strictly below the displayed threshold $1.404599398251$.
 The rounding was designed for a sharper value, below $1.404598149141$, which Lean has only conditionally
 (Section~\ref{sec:trust}).
 Haagerup's integral
@@ -302,10 +302,32 @@ The phase certificate checks 119,077 leaves in 512 cubes through six native rang
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, Lean proves that the residual is at most
-$\delta\approx1.5507\cdot10^{-6}$ (the exact rational \lean{tightResidualQ}):
+$\delta\approx1.5437\cdot10^{-6}$ (the exact rational \lean{tightResidualQ}):
 \[
- \KG\le\frac1{c-\delta}=1.404599412096097\ldots<1.404599412097 .
+ \KG\le\frac1{c-\delta}=1.404599398250640\ldots<1.404599398251 .
 \]
+\paragraph{Gaussian amplitudes in the Hardy estimate.}
+The proof retains the known Gaussian amplitude after the $L^*L$ step.
+Write $A=(I-R^2)^{-1}$, $B=A-jI$, $C=RA$, $Z=\Re B$,
+$T=Z-(\Re C)Z^{-1}(\Re C)$ and
+$E=((\Re C)Z^{-1}(\Re C)+(\Im C)Z^{-1}(\Im C))/2$.
+Exact Gaussian integration, under $j>0$, $Z\succ0$ and $T\succ0$, gives
+\[
+ |H(R)|^2\le
+ \frac{1}{16j^2|\det(I-R^2)|^2\det Z\,\det(T+jI)\,\det(T+2E+jI)}.
+\]
+The two determinants come from the sum and difference coordinates in the
+positive Gaussian pair integral. The interval certificate bounds this
+expression by $5/4$ on the whole Hardy circle, with $j=9/20$.
+Consequently the actual kernel satisfies
+$\sum_{n<J}c_n^2(4149/4000)^{4n+2}\le5/4$ for every $J$.
+The finite head then supplies the linear-energy deduction used by
+\lean{main\_bounds}. The modules \path{GaussianPair},
+\path{GaussianAmplitude}, \path{SchurMainGaussian} and
+\path{HardyGaussian} under \path{Grothe/UpperChaos/} prove this chain;
+\path{HardyGaussianCheck}, \path{HardyGaussianFacts} and
+\path{HardyGaussianSound} certify the entire circle.
+
 The rounding was designed for the smaller residual $455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$, which
 would give $\KG\le500000000000000000/355973699960428191<1.404598148840$. Lean has this sharper value only as a
 conditional theorem (\lean{fresh\_upper\_concrete\_taylor}), whose hypotheses are fourteen finite-band Gaussian error
@@ -322,7 +344,7 @@ the stored source data, analytic lemmas, and ways of certifying its Gaussian
 inputs other than the quadrature described above.
 Many of them are conditional: they take numerical estimates as hypotheses, and
 the text says which. Those hypotheses are not open inputs of the main result.
-\lean{upper\_target} has no hypotheses: it obtains its six Gaussian estimates and
+\lean{upper\_below\_tight} has no hypotheses: it obtains its six Gaussian estimates and
 the accuracy of the energy table from the quadrature above, and it uses a result
 of these paragraphs only where the hypotheses of that result are proved. Where
 the text says that modules are not imported by the final theorems, nothing in
@@ -342,7 +364,7 @@ Lean checks scalar magnitude at most one, squared row norm at most $121/100$,
 and source ordinal coverage (\lean{Q0SourceExceptionCentersAll}). The source-error
 assembly uses these rows through their source-address and cutoff binding; it
 does not provide the production basis/sign normalization or the actual
-approximation estimates. This table and the modules of the next nine paragraphs
+approximation estimates. This table and the modules of the following paragraphs
 that work with it (\lean{Q0Source...}, \lean{Q0Conditional...},
 \lean{Q0NearZeroSource}, \lean{Q0RegularSourceRow}, \lean{ZeroProfile...},
 \lean{PhaseTaylor...}) are not imported by the final theorems: the energy table
@@ -357,22 +379,6 @@ conditional rectangle multiplies this allowance by $10/7$ and retains the
 production phase. The estimate does not cover regular evaluator bounds,
 floating operations, contraction, omitted-domain estimates, tails or the
 energy-table fit.
-
-\paragraph{Collective coefficient tails.}
-For a finite family of absolutely summable real sequences $a_{i,n}$,
-\path{UpperChaos/CollectiveTail} retains cancellation in any finite window:
-\[
- \sum_{n\ge N}\left|\sum_i a_{i,n}\right|
- \le \sum_{N\le n<N+K}\left|\sum_i a_{i,n}\right|
-    +\sum_i\sum_{n\ge N+K}|a_{i,n}|.
-\]
-The difference between the original separate-tail budget and this budget is
-exactly the nonnegative finite refund
-$\sum_{N\le n<N+K}(\sum_i|a_{i,n}|-|\sum_i a_{i,n}|)$.
-Consequently the exact budget decreases as $K$ increases, and existing
-individual tail caps can be reused with this refund subtracted. Real weights
-are absorbed into the coefficients; the weighted-cap theorem charges their
-absolute values. This reusable estimate does not change the current endpoint.
 
 For selected regular nodes near a profile zero, the whole Gaussian slice
 remainder is projected by Bessel before aggregating coefficients. Its vector
@@ -410,34 +416,6 @@ tolerance for $|\rho|\le1/1780000$, with exact budget
 $(84353029/84596280)\,10^{-12}$. This interval is $200/89$ times the original.
 The purely quadratic constant two remains optimal; no optimality is claimed
 for the Gaussian estimate, and the stored certificates and headline endpoint are unchanged.
-
-Retaining the actual quadratic term
-$Q_2(h)=-(\Im h)^2/2-i\Re(h)\Im(h)$ gives the global bound
-$|\operatorname{ph}(1+h)-1-i\Im(h)-Q_2(h)|\le2|h|^3$,
-with optimal constant two even when the perturbed argument can vanish.
-The exact Wick expansion of $Q_2$ has support $(0,0),(1,1),(2,0),(0,2)$
-and Gaussian norm $\sqrt7/4$. Thus the whole-slice error for the existing
-linear centers is at most $(\sqrt7/4)\rho^2+2\sqrt6|\rho|^3$;
-each coefficient error is at most $(3\sqrt2/8)\rho^2+2\sqrt6|\rho|^3$,
-and outside those four modes the quadratic term vanishes.
-The unchanged parameter and saved-model reserves give error below $10^{-12}$
-for $|\rho|\le1/1090000$ in all modes, or $|\rho|\le1/22500$ off that support.
-These results are proved in \texttt{PhaseTaylorQuadratic} and
-\texttt{PhaseQuadraticError}, without new native facts. The improvement of
-the Grothendieck endpoint uses the separate certified-budget argument above.
-
-The cubic Taylor term
-$Q_3(h)=\Re(h)(\Im h)^2+i((\Re h)^2\Im h-(\Im h)^3/2)$ leaves a globally
-sharp remainder $2|h|^4$ (\texttt{PhaseTaylorThird}). Its six Wick modes have
-squared norm $27/32$, and the Gaussian remainder is at most $4\sqrt6\,\rho^4$.
-The quadratic and cubic supports are disjoint, giving the uniform coefficient
-bound $(3\sqrt2/8)\rho^2+4\sqrt6\,\rho^4$ when $|\rho|\le1/2$.
-Thus \texttt{PhaseCubicError} proves saved-center accuracy below $10^{-12}$
-for $|\rho|\le1/1086000$ uniformly, or $1/12000$ off the quadratic support,
-with the same reserves. In total Wick degree at least four, only the quartic
-remainder remains: $|\rho|\le1/2120$ suffices with the same saved-model tolerance,
-and no parameter-error hypothesis is needed since the linear center is zero.
-These are analytic improvements without new native facts or a claim of Gaussian optimality.
 
 For complex $z\ne 0$, rotation by $z/|z|$ transports the real-slice
 constant-plus-linear model to the physical phase $F_0(z,w)$. In the Gaussian
@@ -1348,7 +1326,7 @@ for the node caps: the chord nodes, the node ranges of every row (for rows 12--1
 nodes of rows 12--15 their piece ranges, coverage checks and repaired pieces.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
 change, evaluates them on its own runner.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599412097$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders; \lean{Final.hclose\_final} supplies table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599398251$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders; \lean{Final.hclose\_final} supplies table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the explicit decomposition of $G_T-X$
 (\lean{difference\_pieces}) and the weighted comparison; the Hardy tail (holomorphic continuation, Schur bound, circle
@@ -1357,20 +1335,22 @@ production rules, the analytic continuation of the integrands and the Bernstein-
 every checker; the endpoint arithmetic
 &
 the head through degree 501 from the stored energies by a verified interval evaluator (\lean{head\_check}); the phase
-cover; the Hardy arcs and region; exact phase moments; exact energies of the stored
+cover; the production Gaussian circle check (\lean{HardyGaussianCheck.charts\_checked}) and shared decay region, with the legacy Schur arc checks retained for the conditional route; exact phase moments; exact energies of the stored
 expansions; band masses of the energy table, its blocks, even entries and omitted pairs; the port facts of the three
 Taylor powers; the ellipse checks of both quadratures.
-Residual $\delta\approx1.8274\cdot10^{-6}$: comparison $1.7625\ldots\cdot10^{-6}$ ($96.4\%$), Hardy tail $36748/10^{12}$
-($2.0\%$, weighted square sum $\le7/4$ at radius $4149/4000$, \lean{HardyReal.hardy\_GT}), head $28153/10^{12}$ ($1.5\%$),
-table accuracy $6847009/(5\cdot10^{17})$.\\
+Residual $\delta\approx1.5437\cdot10^{-6}$: comparison $1.4922\ldots\cdot10^{-6}$ ($96.7\%$), Hardy tail $233184398/10^{16}$
+($1.5\%$, weighted square sum $\le5/4$ at radius $4149/4000$, with the forced linear energy deducted),
+head $28153/10^{12}$ ($1.8\%$), table accuracy $6847009/(5\cdot10^{17})$.\\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Everything in the right-hand column is a finite exact computation that Lean evaluates as compiled code and records as
-an axiom named after the fact; this trusts the Lean compiler and its runtime in addition to the kernel. The left-hand
-column uses only the axioms \lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}. No step of either bound rests
-on a certificate that is checked outside Lean.
+The right-hand column lists finite computational inputs. Checks performed with \lean{native\_decide}
+run as compiled code and register an axiom named after the fact; these trust the Lean compiler and its runtime
+in addition to the kernel. Other finite calculations, including the tighter panel-total checks and budget
+arithmetic, reduce in Lean's kernel and add no axiom. The analytic deductions use the standard axioms
+\lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}, together with the stated finite inputs.
+No step of either bound rests on a certificate that is checked outside Lean.
 
 \lean{UpperChaos.fresh\_upper\_rounder} states the sharper value that the rounding was designed for, and it is
 conditional. For an $L^2$ charge-one truncation $X$ it proves
@@ -1385,10 +1365,11 @@ $303362486/10^{16}$ ($3.33\%$; weighted square sum $\le 1737972/1000000$ at radi
 \lean{HardyReal.hardy\_GT\_tight}), the native head $28153/10^{12}$ ($3.09\%$) and the table accuracy
 $6847009/(5\cdot10^{17})$. The decomposition is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
 18 band pieces of the smoothed Taylor errors and the rounding remainder. The head, the Hardy tail and the table accuracy
-are proved; the fourteen band estimates are hypotheses, and \lean{upper\_target} does not use them.
+are proved; the fourteen band estimates are hypotheses, and \lean{upper\_below\_tight} does not use them.
 
 \lean{ThreeBandEndpoint.upper\_of\_three\_low\_three\_whole} (task \#295) is the
-first form of the three-band comparison, the route of the final theorem. It retains only
+original fixed-budget three-band implication. The current upper theorem reuses its
+regrouping with tighter certified radii. It retains only
 the lowest bands $(0,51]$, $(0,51]$, $(0,11]$ and groups the remaining supports
 orthogonally. It assumes those three low-band estimates, three independent
 whole Taylor-error estimates with raw radii $R_1,2R_2,6R_3$, and the same
@@ -1396,11 +1377,10 @@ frozen-response table accuracy. The linear comparison charges low and high
 parts separately, while the quadratic term uses each whole error only once.
 Using the original head and the raw Hardy tail $36748/10^{12}$ gives residual
 $0.000001783148789608230974208508254864$ and a conditional Grothendieck bound
-strictly below $1.40459988<1.4046$. Of its hypotheses, the three whole-error
-estimates and the table accuracy are proved (they are the same statements as
-in the final theorem). The three low-band estimates are proved only with the
-larger caps of the next paragraph, so this theorem itself stays conditional;
-the final theorems do not import it.
+strictly below $1.40459988<1.4046$. The three original whole-error estimates
+and the table accuracy are proved. This fixed-budget theorem retains its explicit
+low-band hypotheses; the current final assembly uses the generic comparison with
+the tighter certified radii above, and does not import this endpoint module.
 
 The relaxed variant \lean{Statement.upper\_target\_of\_relaxed\_inputs}
 uses raw low-band caps $4001/10^{12}$, $14001/10^{12}$ and
@@ -1477,14 +1457,17 @@ the cache. That persistent build supplies later CI replay; no separate manual ve
 A digest alone is not verification. The localised-piece checkers of rows 12--15
 likewise import only computable definitions and rational data, and their results are wired into the row assemblies
 (\path{Grothe/LowerAnalytic/CapRow12/Assembly.lean} to \path{CapRow15/Assembly.lean}).
-The four arc checks each give at most $273/100$; the proved bound on $\pi$ turns their sum into the circle-mean budget $1737972/1000000$ (\lean{HardyReal.hardy\_GT\_tight}). The conditional sharper theorem deducts the known linear coefficient's weighted square from that budget before the tail Cauchy--Schwarz step. The final theorem uses the coarser budget $7/4$ (\lean{HardyReal.hardy\_GT}) and no such deduction; neither needs a Gaussian hypothesis.
+The production circle certificate \lean{HardyGaussianCheck.charts\_checked} verifies the fixed-amplitude Gaussian bound $5/4$ on all four closed chart halves at radius $4149/4000$. Its soundness proof supplies the positive-definiteness gates and the pointwise bound; integration and Parseval give \lean{HardyReal.hardy\_GT\_gaussian}. The final theorem deducts the linear coefficient's forced weighted square before applying the tail Cauchy--Schwarz estimate, giving tail $233184398/10^{16}$. The existing four Schur arc checks and their budget $1737972/1000000$ remain available for the conditional comparison route.
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
 (\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
-The decay region and the circle mean are checked in Lean by interval facts (the arc parts and the region check). With them, \lean{hardy\_of\_real} reduces \lean{hardy}
-to summability and the real Gaussian identification of the odd series, which \lean{HardyReal.hreal\_GT} proves for $G_T$:
+The shared decay region is certified by \lean{hardy\_region\_check}. The production circle mean uses
+\lean{HardyGaussianCheck.charts\_checked}; the legacy arc parts supply the older Schur mean bound.
+The common holomorphy and Parseval transfer reduces these Hardy estimates to summability and the real
+Gaussian identification of the odd series, which \lean{HardyReal.hreal\_GT} proves for $G_T$:
 the smoothed Mehler pair has the law of $(U, RU+SW)$ (characteristic functions), whose density on $\mathbb R^8$ is the
-holomorphic kernel at the real cross covariance (Cholesky substitution). Hence \lean{hardy\_GT}: the Hardy input is proved.
+holomorphic kernel at the real cross covariance (Cholesky substitution). Together with the Gaussian-amplitude
+circle check, this proves \lean{hardy\_GT\_gaussian}, the Hardy input used by the current upper bound.
 Thirteen algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms, and the generic response and quintic-transfer lemmas, which add no
 native facts, were proved in Lean. Their modules are now archived in \path{miscellaneous/research/}: they are not built
@@ -1744,12 +1727,12 @@ in the second.
 
 \section{Open problems}
 Work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound: now \lean{lower\_target}),
-\#17 (inputs of the upper bound: now \lean{upper\_below\_tight} for the threshold $1.404599412097$; the sharper value is item~1 below),
+\#17 (inputs of the upper bound: now \lean{upper\_below\_tight} for the threshold $1.404599398251$; the sharper value is item~1 below),
 \#22 (a better lower bound), \#29 (build infrastructure, closed) and \#34 (research plans).
 \begin{enumerate}
 \item Prove the sharper upper bound that the rounding was designed for, below $1.404598149141$. What is missing are the
  fourteen finite-band Gaussian error estimates with their original caps, the hypotheses of the conditional theorem of
- Section~\ref{sec:trust}; the unconditional theorem uses proved estimates and exhibits a bound below $1.404599412097$.
+ Section~\ref{sec:trust}; the unconditional theorem uses proved estimates and exhibits a bound below $1.404599398251$.
  The energy-table accuracy, the Hermite expansion, the structural analytic bridge and the Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.

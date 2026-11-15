@@ -26,7 +26,7 @@ monograph passage that repeats or uses the statement is given.
 | 3 | §4, "Why this is the right statement" | "the zero-tensor and non-normal examples have no content at all" | False for q₀ = X[−½(\|X\|²−2) + Σ_{j≤4}(\|Y_j\|²−1)]: exact moments give leading content E[X̄q₀\|q₀\|²] = 0 but E[X̄q₀\|q₀\|⁴] = −243, so the fifth-order content is nonzero. A vanishing leading term is not a vanishing nonlinear function. (`CERTIFICATE_AUDIT.md` §8.) |
 | 4 | §4, "Plan of proof of E′", step 4 (Endgame) | "Steps 1–3, once proved, give E′ (ratio ≤ 0.11 < 0.24 on R)" | The certified constants 0.22 to 0.239 do not give 0.11. Quantitative strengthening remains necessary even before sector assembly. |
 | 5 | log §31; used in §4b (table row L5 and the paragraph after the table) | "every non-A sector is pure cost" | False for small B amplitudes: the B sector has first-order content (the log's own correction is valid, and the L5 row of §4b carries it). A test at the fixed shell energy 0.0113 cannot detect every gain that is linear in the amplitude. |
-| 6 | log §33; used in §4b ("the vector comparison ‖c_B − 0.5053·c_A‖ ≤ 0.007√u") | projection norm "≤ E[\|q\|h(\|q\|²)]" | Not an L² contraction argument (orthogonal projection contracts L², not L¹). Repair: ‖Π(qh)‖₂ ≤ ‖qh‖₂ ≤ 0.007√u, valid once the global pointwise kernel bound \|g_B(v) − 0.5053 g(v)\| ≤ 0.007 is proved. That scalar bound is itself open (`record_audit.md` §1). |
+| 6 | log §33; used in §4b ("the vector comparison ‖c_B − 0.5053·c_A‖ ≤ 0.007√u") | projection norm "≤ E[\|q\|h(\|q\|²)]" | Not an L² contraction argument (orthogonal projection contracts L², not L¹). Repair: ‖Π(qh)‖₂ ≤ ‖qh‖₂ ≤ 0.007√u, valid once the global pointwise kernel bound \|g_B(v) − 0.5053 g(v)\| ≤ 0.007 is proved. That scalar bound was open in the 13 November audit (`record_audit.md` §1); it is now certified globally at the peak (part F below). |
 | 7 | log §§44–45; repeated in §4b, "State of layer L5", bullet "Joint A + B (UPDATE 6 Nov)" | "the robust path is to sharpen the A-content constants to ≤ 0.10–0.15 …, which closes the A+B core with the certified diagonal costs and no statement about the mixed term" | Not established. Separate cost bounds for Λ(q+A) and Λ(q+B) at a remote base say nothing sufficient about Λ(q+A+B); the B-cost theorem needs a base independent of z₁ and q+A is not. The "−0.0055 reserve" is the value at Δ = 0.07408, not a uniform margin; the corrected uniform bound is an excess of at most +7.181·10⁻⁵, and only under an additional joint hypothesis (adverse mixed coefficient at most 0.118) and the kernel comparison of item 6. See part C(ii). |
 | 8 | §5 (also §0, first paragraph, and §1) | "B ≤ 0.713267 ⇒ 1.402" | False at the printed precision: 1/0.713267 = 1.4019995317. The strict target is B < 500/701 = 0.7132667617689. A repairable rounding issue; the consumer must keep the exact threshold. For 1.4022 the threshold is B < 5000/7011 = 0.713165026…, and the 10⁻⁴ budget supports about 1.402, not 1.4022 (`record_audit.md` §6). |
 | 9 | not in the monograph (the task statement given to the auditor) | dimension n²(n+1)/2 − n for H₂,₁(ℂⁿ) | That is the count of homogeneous trace-free (harmonic) polynomials, not of the Gaussian Wick chaos; it would omit the Wick monomial. The correct complex dimension is n·C(n+1, 2) = n²(n+1)/2: 6, 18, 40, 75, 126 for n = 2…6. The audit's experiment and the scan of 13 November use the full space. |
@@ -60,7 +60,8 @@ folder), all under `sources/audit-2026-11-13/`. They are not in the list of twel
    intuition supported for some families, not a proved monotonicity statement (`diffuse_asymptotic.md` §4).
 5. **§4b, "State of layer L5", "the B kernel is half the A kernel (g_B/g ∈ [0.505, 0.56], monotone)".** The ratio
    interval has false endpoints at the flank and upper rows (log §45; J3 audit report §1). The common-centre bound
-   |g_B − 0.5053 g| ≤ 0.007 is a separate scalar target and is unproved (`record_audit.md` §6.3).
+   |g_B − 0.5053 g| ≤ 0.007 is a separate scalar target, left open in that audit (`record_audit.md` §6.3)
+   and now certified globally at the peak (part F).
 6. **§4b, table row L4, "self-interaction, Wick share < 1/16 (directional envelope): numerically feasible, tight
    (0.2393); certificate pending".** Stale: §4 (b) of the same monograph records the eight-atom witness that forces
    the cap of the directional envelope above 0.2405 (`record_audit.md` §6.4). That witness was reported from a
@@ -277,6 +278,40 @@ direct Rice verification of the Gaussian benchmark; a dense-test route from rati
 meshes to the existing remote duals; and convex-cell profile transfer with an explicit Gaussian
 support. Their exact hypotheses and proof/check boundaries are in A15R. New proofs have
 within-session peer checks but await external review. No new Grothendieck bound is asserted.
+
+---
+
+## F. Third audit after reviewer-updated PR #399 (15 November 2026, codex-a7c4)
+
+The [third audit](sources/third-audit-2026-11-15-codex-a7c4/AUDIT.md) starts from merged master
+`39ae5c239`. All source files present there, including the reviewer's dated amendments, and the historical
+body below remain unchanged. The reviewer's additions check out; one inherited neighbourhood summary
+still omitted p,h∈H₂,₁, which is now explicit. Its source proof already had that hypothesis.
+New paper arguments are **P by author, not externally reviewed**, with within-session peer checks; scalar
+**C** refers to the new exact/Arb checkers. K remains open and no Grothendieck bound is claimed.
+
+1. **§4b, kernel alignment completed.** At the peak profile, |g_B(v)−.5053g(v)|<.007 for every v≥0.
+   The certificate covers [0,16] by 79 intervals and the whole tail by complete monotonicity. L² contraction
+   gives ‖c_B−.5053c_A‖≤.007√u for every remote L² q. This closes the scalar obligation in part A item 6
+   and STATUS 7.1.4, while the finite-amplitude joint and general content premises remain open.
+2. **Analytic inputs completed.** `CONTENT_KERNELS.md` derives the all-order positive recurrence, visible
+   Gaussian scale mixture, and Laplace representations of both −g and −g_B, including derivative interchanges.
+   `POTENTIAL.md` derives the three inverse-radius kernel bounds and strengthens two of them. These were the
+   explicit exclusions of the reviewer on #399; the old inequalities were valid.
+3. **§3.4, stronger disjoint cost.** For the same mutually independent Z,q,U, q∈L², centered proper Gaussian U,
+   and normalized profile interval, the all-amplitude cost is now 1/ε−197/(200ℓ), uniformly at least 3/152
+   on the application box. The exact full-box potential is below 1.97. Shared drivers are excluded.
+4. **§4, larger conditional neighbourhood.** For p,h∈H₂,₁, the mixed-character extension now allows ‖h‖²≤D(p)/90,
+   improving /100, with the same .225 core premise, .24 conclusion, peak profile and total energy≤.0463.
+   The sharper step is the exact weighted off-character chaos constant 15sqrt(π)/16.
+5. **§3.1 and §4b, distinguish the odd axes.** The pure conjugate(Z)P axis has full-box raw cost .41,
+   and its retained dual equals its raw value at every amplitude. On dZ(T−2), the sharp retained uniform
+   cost is .392424545003417… (safe .39242). On the Q-axis corner counterexample the retained dual still
+   increases by >7·10⁻⁶; this refutes full-box odd nonincrease for Λ̂, not K or K′. None is a nonzero-core
+   sector-assembly theorem.
+6. **Signed assembly budget.** With the still-open signed joint matrix (.24,.26,.118) and .24 content
+   premise, the now-certified alignment gives exact excess <.000051525 at the peak and u≤.0463, improving
+   the old numerical .00005471. The corresponding joint/content hypotheses remain indispensable.
 
 <!-- =========================== MONOGRAPH, VERBATIM (unchanged from here to the end) =========================== -->
 
