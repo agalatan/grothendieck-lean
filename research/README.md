@@ -10,7 +10,8 @@ still open, so that a worker (human or AI) can start from an organised record in
   "Lean proof check (no proof change)".
 - **Text only.** Markdown, LaTeX and plain-text notes, scripts (`.py`, `.mjs`, `.cpp`) and small JSON result files.
   Zips, certificates above 300 KB, logs, binaries and PDFs stay outside the repository; each subfolder has an
-  `INVENTORY.md` that says where they are, with sizes and SHA-256 hashes of the important ones.
+  `INVENTORY.md` that says where they are, with sizes and SHA-256 hashes of the important ones. A log is kept only
+  where it is small and a note cites it as its record (each `INVENTORY.md` names such exceptions).
 - **Copies are verbatim.** Files under a `sources/` folder are unedited copies of the working files. The only change
   is one comment line at the top of each `.md` and `.tex` file giving the original path and file date. Their internal
   links still point to the original (git-ignored) `handoff/` paths; each subfolder's `README.md` says where those

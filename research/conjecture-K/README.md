@@ -12,8 +12,8 @@ conjecture is **open**.
 | [`STATUS.md`](STATUS.md) | the consolidated state of knowledge: every statement with its status (P / C / N / R / open / refuted), exact scope and source; the list "tried and failed" |
 | [`MONOGRAPH.md`](MONOGRAPH.md) | the monograph of 5 and 6 November, verbatim, preceded by "Errata and updates (15 November 2026)" |
 | [`INVENTORY.md`](INVENTORY.md) | what was deliberately left outside the repository (zips, large certificates, logs, binaries), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working documents (audit, log, digest, manuscript chapters, notes received, prompts) |
-| `code/` | the scripts behind the numerical results still relied on, and small result files |
+| `sources/` | verbatim copies of the working documents (audit, log, digest, manuscript chapters, notes received, prompts, the reports of 15 November with their review, the numerical follow-up of that day) |
+| `code/` | the scripts behind the numerical results still relied on, and small result files (for the follow-up of 15 November also its small logs and search records) |
 
 Status labels (defined in [`../README.md`](../README.md) and at the top of `sources/audit-2026-11-13/REPORT.md`):
 **P** re-derived independently, **C** exact or interval checker replayed independently, **N** numerical only,
@@ -52,7 +52,15 @@ In words: the supremum of Λ over the cubic chaos is attained by a Gaussian adve
 - **K′ (retained penalty):** keep −‖P₁,₀k‖² in the row. Λ′(G) ≤ Λ(G), the row holds with Λ′, and K′: Λ′ ≤ S is weaker
   than K and still sufficient (digest §2; `ch7-conjectureK.tex`, "Side experiments"). Its unconstrained form is the
   first-chaos dual Λ_P of `ch20-pinned-gate.tex` (15 October), called Λ̂ in the report of 15 November
-  (`sources/external-2026-11-15/`): Λ′ ≤ Λ̂ ≤ Λ, and a cap on Λ̂ would also suffice.
+  (`sources/external-2026-11-15/`): Λ′ ≤ Λ̂ ≤ Λ, and a cap on Λ̂ would also suffice. Numerically (**N**,
+  15 November, peak row) the sector part of a proof has far more room for Λ̂ than for Λ. Write gain(q) for the most
+  that the A and B shells can add over a remote cubic q, and D(q) for the deficit of q (defined under "Vocabulary"
+  below); a proof needs gain(q) ≤ D(q) + η. The largest gain found is 0.166·D(q) for Λ and 0.024·D(q) for Λ̂ with
+  its first-chaos element optimised together with the shells: a margin of about 6 for K and about 40 with the
+  penalty retained, on what was tested (remote cubics in one and two variables; in three variables a search was
+  still running). The ratio for Λ̂ rises slowly with the number of remote variables and its limit is not known.
+  Nothing of this is proved, and the remote part is the same statement for both
+  (`sources/numerics-kprime-2026-11-15/README.md`; `STATUS.md`, section 11 (c)).
 - **Response-restricted forms:** only G that come from actual responses (f, g) matter. Response feasibility gives
   remote energy ‖q‖² ≤ 0.0463 on the central rows and total ‖G‖² ≤ 0.072 (monograph §1; digest §1). Such cuts are
   valid for the lower bound but must not be inserted into raw K.
@@ -113,7 +121,7 @@ The statuses below are those of the audit of 13 November; details and scopes are
 | **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1; needs ‖q‖² + ‖U‖² ≤ ℓ²). The stronger cost form is **P** up to a numerical kernel inequality that is **R**. |
 | **L3** core with shared drivers, outside the rectangle R | w ≥ 0.01125 or u ≤ 0.00551 + 0.319w ⇒ K_η, η = 10⁻⁴ | **R** (proved and certified according to the manuscript and the monograph; not re-audited; three slightly different cutoffs for w are in use). The fourth-moment method is saturated there. |
 | **L4** core on R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
-| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. |
+| **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one and two remote variables, three in progress): the joint A+B gain over a remote cubic is at most 0.166·D(q) on what was tested, and at most 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables (`STATUS.md`, section 11 (c)). |
 | **L6** row envelope and consumption | K_η on the envelope over t ∈ [0.84, 0.851] with exact thresholds, the σ* = 0 corner, coverage of the response regions outside R, then a Lean theorem consuming K_η | **Not built.** No `lower_of_K` or `KHyp` exists in the Lean sources. |
 
 The audit's one-line summary: the record contains substantial valid mathematics, but the remaining distance is a
@@ -140,8 +148,14 @@ next statement to attack.
      `sources/numerics-kscan-2026-11-13/README.md`;
    - the remote part: `sources/manuscript/legacy/ch24-remote-diagonal.tex`, `ch32-stronger.tex`, `sources/d1/`,
      `sources/external-2026-11-15/remote-closure-report.md`;
-   - the response side (K′): the digest §1, `sources/manuscript/legacy/ch25-parts/`,
-     `sources/external-2026-11-15/projection-attack-report.md`;
+   - the retained first-chaos penalty (K′, Λ̂ = Λ_P): `STATUS.md`, section 11; then
+     `sources/external-2026-11-15/REVIEW.md` (what the report of 15 November proves, and what the October manuscript
+     already had) and `sources/numerics-kprime-2026-11-15/README.md` (the retained element optimised together with
+     the sectors: margin about 6 for K and about 40 with the penalty retained, on one to three remote variables;
+     numerical). The
+     October side: `sources/manuscript/legacy/ch20-pinned-gate.tex`, `ch17-crossbound.tex`, `ch25-parts/` and
+     `sources/october-handoff/weak-k-2026-10-15/`;
+   - the response side: the digest §1, `sources/manuscript/legacy/ch25-parts/`;
    - how a claim came about: `sources/log/ASSESSMENT_2026-11-04.md` (chronological, 4 to 7 November) and
      `sources/prompts/`.
 
@@ -156,7 +170,8 @@ next statement to attack.
 | `research-degree5/gpt-audit-2026-11-13/*.py`, `*.cpp`, small `*.json` | `code/audit-2026-11-13/` (JSON under `results/`) |
 | `research-degree5/kscan-2026-11-13/` | `sources/numerics-kscan-2026-11-13/` (README), `code/kscan-2026-11-13/` |
 | `research-degree5/tailgames-2026-11-14/` | `sources/numerics-tailgames-2026-11-14/` (README), `code/tailgames-2026-11-14/` |
-| `research-degree5/external-2026-11-15/` | `sources/external-2026-11-15/` |
+| `research-degree5/external-2026-11-15/` (reports, package, `REVIEW.md`, `review/`) | `sources/external-2026-11-15/` |
+| `research-degree5/kprime-2026-11-15/` | `sources/numerics-kprime-2026-11-15/` (README), `code/kprime-2026-11-15/` (scripts, logs, `search/`) |
 | `research-degree5/d1/` | `sources/d1/` (notes), `code/d1/` (scripts) |
 | `research-degree5/k5/` | `sources/k5-2026-11-04/` (RESULTS.md), `code/experiments-2026-11-04/k5/` |
 | `research-degree5/e*.py`, `shell_content.py`, `spike_content.py` | `code/experiments-2026-11-04/` |
@@ -164,6 +179,7 @@ next statement to attack.
 | `research-degree5/ai-notes/*.tex`, `*.md`, `<package>/**/*.md` | `sources/received-2026-11-05/` |
 | `research-degree5/ai-notes/*.mjs` | `code/ai-thread-verifiers-2026-11-05/` |
 | `research-third-decimal/…` | `sources/october-handoff/` |
+| `research-third-decimal/gpt-reviews/weak-k-20261015/package/` (five notes) | `sources/october-handoff/weak-k-2026-10-15/` |
 | `manuscript/README.md`, `stale-annotations.md`, `legacy/…`, three files of `new/` | `sources/manuscript/` |
 
 ## (e) Index: one line per file
@@ -179,24 +195,24 @@ Reference for every status in `STATUS.md`. Read `REPORT.md` first. The folder ho
 
 | file | size | contents |
 |---|---:|---|
-| `ADDITIONAL_ANALYTIC_AUDIT.md` | 20 KB | Main audit. Gate-free row re-derived; Theorem A reconstructed; Theorem B checked; the two disjoint-driver arguments; remote K-a (reduction, numerical scope, Lean provenance); near-Gaussian… |
-| `ASSEMBLY_AUDIT.md` | 20 KB | Main audit. Sector assembly. Which A-content constants suffice under which joint hypothesis; exact countermodel to the inference from separate costs; B-cost, parity, all-shift infinitesimal… |
-| `CERTIFICATE_AUDIT.md` | 25 KB | Main audit. Certificate-to-theorem audit of the family content theorems: quadratic moment theorem, Gaussian-factor 0.239, reweighted 0.22 (end-to-end replay), Hermitian self-interaction 0.2… |
-| `IMPROVEMENT.md` | 9.5 KB | After the audit, by the same agent: the cover improvement K_G^ℂ > 1.401697318640 (exact rational arithmetic outside Lean; independent of K) and two partial results toward K (joint-tail redu… |
-| `KERNEL_DERIVATION.md` | 10 KB | Main audit. The full Wick basis of H₂,₁(ℂⁿ) (correcting the dimension given in the task statement), the kernels φ and g with stable derivatives, the gradients, deterministic calibrations (W… |
-| `NUMERICAL_N2_N4.md` | 7.6 KB | Experiment of the main audit: report of the worker that ran dimensions 2 and 4 of the full-tensor experiment, with the structure of the selected tensors. Computations, not bounds on the sup… |
+| `ADDITIONAL_ANALYTIC_AUDIT.md` | 20 KB | Main audit. Gate-free row re-derived; Theorem A reconstructed; Theorem B checked; the two disjoint-driver arguments; remote K-a (reduction, numerical scope, Lean provenance); near-Gaussian coverage overstated; status ledger. |
+| `ASSEMBLY_AUDIT.md` | 20 KB | Main audit. Sector assembly. Which A-content constants suffice under which joint hypothesis; exact countermodel to the inference from separate costs; B-cost, parity, all-shift infinitesimal theorem and J3 audit checked; further errors; the recommended next target. |
+| `CERTIFICATE_AUDIT.md` | 25 KB | Main audit. Certificate-to-theorem audit of the family content theorems: quadratic moment theorem, Gaussian-factor 0.239, reweighted 0.22 (end-to-end replay), Hermitian self-interaction 0.23 (conditional), Wick endpoint p ≤ u/5, the saddle, the u ≤ 0.00038 claim, shell bookkeeping. |
+| `IMPROVEMENT.md` | 9.5 KB | After the audit, by the same agent: the cover improvement K_G^ℂ > 1.401697318640 (exact rational arithmetic outside Lean; independent of K) and two partial results toward K (joint-tail reduction, content extension). |
+| `KERNEL_DERIVATION.md` | 10 KB | Main audit. The full Wick basis of H₂,₁(ℂⁿ) (correcting the dimension given in the task statement), the kernels φ and g with stable derivatives, the gradients, deterministic calibrations (Wick monomial 0.087565304234 at u = 0.0463). |
+| `NUMERICAL_N2_N4.md` | 7.6 KB | Experiment of the main audit: report of the worker that ran dimensions 2 and 4 of the full-tensor experiment, with the structure of the selected tensors. Computations, not bounds on the supremum. |
 | `NUMERICAL_REVIEW.md` | 9.0 KB | Experiment of the main audit, source review: the stopping defect of the first optimiser and its repair, what the error bars mean, the wording the report must use. |
-| `REPORT.md` | 34 KB | Main audit, main report. One-page verdict; ledger with the status of each claim (section 1); verdicts on four concerns (2); twelve incorrect or stale statements (3); the constants that woul… |
+| `REPORT.md` | 34 KB | Main audit, main report. One-page verdict; ledger with the status of each claim (section 1); verdicts on four concerns (2); twelve incorrect or stale statements (3); the constants that would suffice for A+B and the missing joint remainder bound (4); full-tensor experiment, n = 2…6 (5); reproducibility (6). |
 | `RESULTS.md` | 2.4 KB | Experiment of the main audit: table of the 15 selected candidates with their integration errors and the run counts (written by `summarize_results.py`). |
 | `RUNS.md` | 7.8 KB | Main audit, reproduction record: environment, seeds, the command of each stage of the experiment and of the certificate replays. |
-| `diffuse_asymptotic.md` | 13 KB | Second audit, supplement on large dimension and the diffuse boundary: with an independent Gaussian buffer C²/D tends to 0 linearly in the structured share (P), constants at the peak row (N)… |
+| `diffuse_asymptotic.md` | 13 KB | Second audit, supplement on large dimension and the diffuse boundary: with an independent Gaussian buffer C²/D tends to 0 linearly in the structured share (P), constants at the peak row (N), genuine diffuse cubics; what this does not prove. |
 | `improvement_bound_review.md` | 9.9 KB | Review of the cover improvement: what was checked and in which arithmetic, replay table of the versions v1, v3, v5 and v6, caveats. |
-| `improvement_content_extension.md` | 10 KB | After the audit: lemma (P), peak row, every dimension: a core p with C(p)² ≤ (9/40)D(p), plus any remainder h of the other circle characters with ‖h‖² ≤ (3/500)D(p), satisfies C(p+h)² ≤ (6/… |
+| `improvement_content_extension.md` | 10 KB | After the audit: lemma (P), peak row, every dimension: a core p with C(p)² ≤ (9/40)D(p), plus any remainder h of the other circle characters with ‖h‖² ≤ (3/500)D(p), satisfies C(p+h)² ≤ (6/25)D(p+h). The core inequality is an input. |
 | `improvement_cover_method.md` | 13 KB | Method and generation commands of the cover improvement, stage by stage (v1 to v6), against commit 32cfb7d87. |
-| `improvement_joint_tail.md` | 11 KB | After the audit: reduction (P) of the finite-amplitude joint A/B remainder bound to the compact box 0 ≤ x ≤ 6, \|α\|, \|β\| ≤ 0.4 with reserve 7.53·10⁻⁵ (signed form 8.07·10⁻⁵); the box ine… |
-| `independent-pushforward-audit/REPORT.md` | 33 KB | The second audit, run separately in the same folder (labels P / N / R): logic of "content plus cost", certificate implications, the A+B budget, the kscan optimiser, deterministic values on… |
-| `optimizer_audit.md` | 15 KB | Second audit, by its optimiser sub-agent: formula and code audit of `kscan.py` and `tables.py` (formulas correct, seven implementation limitations), an independent deterministic search over… |
-| `record_audit.md` | 24 KB | Second audit, supplement on the record. Corrected budget arithmetic (exact threshold κ ≤ 4889900/47482107 under the adverse joint hypothesis); quantifiers of "content plus cost"; certificat… |
+| `improvement_joint_tail.md` | 11 KB | After the audit: reduction (P) of the finite-amplitude joint A/B remainder bound to the compact box 0 ≤ x ≤ 6, \|α\|, \|β\| ≤ 0.4 with reserve 7.53·10⁻⁵ (signed form 8.07·10⁻⁵); the box inequality itself is open. |
+| `independent-pushforward-audit/REPORT.md` | 33 KB | The second audit, run separately in the same folder (labels P / N / R): logic of "content plus cost", certificate implications, the A+B budget, the kscan optimiser, deterministic values on ℂ² (0.0876025944), large-dimension asymptotics, stale statements. Its supplements are `record_audit.md`, `diffuse_asymptotic.md` and `optimizer_audit.md`. |
+| `optimizer_audit.md` | 15 KB | Second audit, by its optimiser sub-agent: formula and code audit of `kscan.py` and `tables.py` (formulas correct, seven implementation limitations), an independent deterministic search over all of H₂,₁(ℂ²), and why the scan's 0.0892 is not supported. The main report adopts from it only the candidate polynomial. |
+| `record_audit.md` | 24 KB | Second audit, supplement on the record. Corrected budget arithmetic (exact threshold κ ≤ 4889900/47482107 under the adverse joint hypothesis); quantifiers of "content plus cost"; certificate checks (A-cost, B-cost, XP, Gaussian-factor, Hermitian); why the families do not assemble; obligations of L5 and L6; six stale statements. |
 
 ### `sources/log/`: the running log (claude-b9ee, 4 to 7 November 2026)
 
@@ -204,7 +220,7 @@ Reference for every status in `STATUS.md`. Read `REPORT.md` first. The folder ho
 
 | file | size | contents |
 |---|---:|---|
-| `ASSESSMENT_2026-11-04.md` | 155 KB | The chronological log, 45 sections, 4 to 7 November 2026: where a better bound can come from, the degree-5 route, then every claim on K with its verification. Dated; superseded by `STATUS.m… |
+| `ASSESSMENT_2026-11-04.md` | 155 KB | The chronological log, 45 sections, 4 to 7 November 2026: where a better bound can come from, the degree-5 route, then every claim on K with its verification. Dated; superseded by `STATUS.md` where the audit disagrees (sections 31, 33, 44, 45). |
 
 ### `sources/numerics-kscan-2026-11-13/`: global search of the ratio C²/D (claude-b9ee, 13 November 2026)
 
@@ -220,22 +236,42 @@ Reference for every status in `STATUS.md`. Read `REPORT.md` first. The folder ho
 
 | file | size | contents |
 |---|---:|---|
-| `README.md` | 7.4 KB | The identity-tail device (witness (1, −ε, ν, ν, …)), the potential Ψ_ν and its dual formula, model norms (cubic head with tail: 0.713021, ceiling 1.402483), second variations, and five idea… |
+| `README.md` | 7.4 KB | The identity-tail device (witness (1, −ε, ν, ν, …)), the potential Ψ_ν and its dual formula, model norms (cubic head with tail: 0.713021, ceiling 1.402483), second variations, and five ideas tested and refuted the same day. Floating point (N). |
 
-### `sources/external-2026-11-15/`: two reports received on 15 November 2026
+### `sources/external-2026-11-15/`: two reports received on 15 November 2026, and their review
 
-Verification record: see REVIEW.md in this folder.
+The reports as received (transcripts), the package of the first one, and the review by claude-b9ee of the same day. Verification record: see REVIEW.md in this folder; its scripts and logs are in `review/`. The package of the second report was not received. Statuses: `STATUS.md`, section 11 (a) and (b).
 
-6 files, 28 KB.
+16 files, 52 KB.
 
 | file | size | contents |
 |---|---:|---|
+| `REVIEW.md` | 7.3 KB | Verification record of the two reports (claude-b9ee, 15 November): what was re-derived, replayed and tested for each item, what the October manuscript already had, the first numbers with the retained element optimised together with the A-sector (N), remarks on the remote-closure report, next steps. |
 | `projection-attack-package/README.txt` | 1014 B | The package's own summary and scope ("rigorous partial progress; no improved numerical Grothendieck bound"). |
-| `projection-attack-package/proofs.tex` | 14 KB | The written proofs: penalised support duality and the row with Λ̂ (Theorem 1), Lipschitz lemma, global retained-projection bound (Theorem 3), local Schur-complement matrix (Theorem 4), a ne… |
+| `projection-attack-package/proofs.tex` | 14 KB | The written proofs: penalised support duality and the row with Λ̂ (Theorem 1), Lipschitz lemma, global retained-projection bound (Theorem 3), local Schur-complement matrix (Theorem 4), a necessary maximiser condition, the counterexample (Proposition 5). |
 | `projection-attack-package/results.txt` | 1.4 KB | Output of the package's verifier as received (Arb enclosures of j₀, g₀, d₀, the matrix entries, the counterexample integral). |
 | `projection-attack-package/verify.py` | 4.0 KB | The package's verifier (python-flint, rational arithmetic and Arb balls). |
 | `projection-attack-report.md` | 2.5 KB | Transcript of the report "retaining the first-chaos penalty": the functional Λ̂, the global bound for remote q, the local A/B cost matrix at G = 0, a counterexample to a positivity shortcut. |
-| `remote-closure-report.md` | 5.3 KB | Transcript of the report "remote closure": claims (1) to (3) for remote cubics and a sixth-moment bound with the factor θ; a second message on the upper bound. Package not received; nothing… |
+| `remote-closure-report.md` | 5.3 KB | Transcript of the report "remote closure": claims (1) to (3) for remote cubics and a sixth-moment bound with the factor θ; a second message on the upper bound. Package not received; nothing checked (R). |
+| `review/ratio_form.log` | 458 B | Its output: visible profile ratio 0.25568 (peak row 0.25608), supremum over Gaussian q 0.7131355 at E\|q\|² = 0.05723, values at larger energies. |
+| `review/ratio_form.py` | 1.6 KB | Check of the normalisation of the remote-closure report: Φ at Gaussian remote q and its supremum. |
+| `review/retained_content.log` | 872 B | Its output. Byte-identical to `code/kprime-2026-11-15/retained_content.log`. |
+| `review/retained_content.py` | 2.1 KB | The Wick monomial with the A-sector, with and without the retained element. Byte-identical to `code/kprime-2026-11-15/retained_content.py`. |
+| `review/retained_joint.log` | 756 B | Its output. Byte-identical to `code/kprime-2026-11-15/retained_joint.log`. |
+| `review/retained_joint.py` | 2.5 KB | The Wick monomial with the A- and B-sectors jointly. Byte-identical to `code/kprime-2026-11-15/retained_joint.py`. |
+| `review/review_check.log` | 1.9 KB | Its output: the integrals by quadrature and in closed form, both matrices, finite differences at s = 0.02, 0.01, 0.005 in four directions, the global inequality at six amplitudes (margins 1.5·10⁻⁸ to 2.7·10⁻²). |
+| `review/review_check.py` | 4.3 KB | Independent floating-point check of the first report: the scalar integrals and the local A/B matrices, the local expansion by finite differences of the exact functional (one driver, real coefficients), the global inequality on Wick monomials. |
+| `review/verify_replay.log` | 1.6 KB | The package's `verify.py` replayed by the recipient with python-flint 0.9.0. Its 21 result lines are identical to `projection-attack-package/results.txt` (compared again when this folder was assembled). |
+
+### `sources/numerics-kprime-2026-11-15/`: the retained first-chaos penalty optimised together with the sectors (claude-b9ee, 15 November 2026)
+
+The numerical follow-up of the review. The copy shows the write-up as it stood at the time given in its provenance line. Its sections 6 and 7 (a fixed tilt, the structured family) were filled in while this folder was being assembled, and section 8 (three remote variables) has the first results of a run that was still going; their author completes the write-up later. Statuses: `STATUS.md`, section 11 (c).
+
+1 files, 16 KB.
+
+| file | size | contents |
+|---|---:|---|
+| `README.md` | 16 KB | Write-up of the follow-up: setting, what the record has, the tilted sector (statement with proof, local cost, content profile), exact values on the Wick monomial, the search over all two-variable tensors, fixed tilt, second derivative at restricted amplitude, Cauchy–Schwarz, the structured family. Section 8 (three remote variables) has first results of a run in progress. Statuses: `STATUS.md`, section 11 (c). |
 
 ### `sources/d1/`: the degree-2 case of the L¹/L² inequality (4 and 5 November 2026)
 
@@ -252,7 +288,7 @@ Verification record: see REVIEW.md in this folder.
 
 | file | size | contents |
 |---|---:|---|
-| `RESULTS.md` | 24 KB | Numerical test of the degree-5 analogue K₅ with full tensors: holds at the peak row in every family tested, fails at the flank rows t ∈ [0.86, 0.88] by about 8·10⁻⁵. Floating point and Mont… |
+| `RESULTS.md` | 24 KB | Numerical test of the degree-5 analogue K₅ with full tensors: holds at the peak row in every family tested, fails at the flank rows t ∈ [0.86, 0.88] by about 8·10⁻⁵. Floating point and Monte Carlo; nothing certified. |
 
 ### `sources/prompts/`: prompts and replies sent to the external assistants (5 and 6 November 2026)
 
@@ -262,31 +298,31 @@ Text files, copied byte for byte (no line added). `prompt-*`, `lemma-content-pro
 
 | file | size | contents |
 |---|---:|---|
-| `conjectureK-olympiad.txt` | 1.5 KB | Statement sent. For eps=1891/2500, l=1057/1250, b=179/1250, L=z_1(l+b(T−2)): prove Lambda(G) <= sup_sigma Lambda(sigma W) for every G in H; sigma* in (0.19,0.21); variants with 1e-4 error o… |
+| `conjectureK-olympiad.txt` | 1.5 KB | Statement sent. For eps=1891/2500, l=1057/1250, b=179/1250, L=z_1(l+b(T−2)): prove Lambda(G) <= sup_sigma Lambda(sigma W) for every G in H; sigma* in (0.19,0.21); variants with 1e-4 error or the box. |
 | `lemma-content-prompt.txt` | 3.1 KB | Prompt sent. Asks to prove the lemma C_X(q)^2 <= (19/100) D(q) for remote cubics with u <= 0.0463 at the peak row; lists known facts (0.138, D_1=34.55, 3·sqrt6/4, −D_0 >= 25.04). |
 | `prompt-A-content-sharpening.txt` | 1.9 KB | Prompt sent. "NEXT TASK (S1): sharpen the A-content certificates" from 11/50, 0.239, 23/100, 9/40 to <= 0.10 (0.15 useful) on u in [0.03,0.0463]; plus kernel bound with 0.5053 and 0.007. |
-| `prompt-J3-finite-amplitude.txt` | 4.8 KB | Prompt sent. "NEXT TASK (J3)": finite-amplitude signed A/B cost, (kA,kB,m)=(0.24,0.26,0.118) minus delta <= 0.07, routes (a)/(b); rho_0 = 0.5053/0.502632/0.501130, h <= 0.007; budget note (… |
-| `prompt-fresh-selfinteraction.txt` | 3.2 KB | Prompt sent. Gives a numerical map of C^2/D (worst 0.0884 at u=0.0463, Wick monomial); requests R26 (self-interaction family X[c(R−2)+Y*AY−tr A]) and R27 (extremality); appended x^2-weight… |
+| `prompt-J3-finite-amplitude.txt` | 4.8 KB | Prompt sent. "NEXT TASK (J3)": finite-amplitude signed A/B cost, (kA,kB,m)=(0.24,0.26,0.118) minus delta <= 0.07, routes (a)/(b); rho_0 = 0.5053/0.502632/0.501130, h <= 0.007; budget note (5.5e-5). |
+| `prompt-fresh-selfinteraction.txt` | 3.2 KB | Prompt sent. Gives a numerical map of C^2/D (worst 0.0884 at u=0.0463, Wick monomial); requests R26 (self-interaction family X[c(R−2)+Y*AY−tr A]) and R27 (extremality); appended x^2-weight correction. |
 | `prompt-hermitian-r26.txt` | 2.4 KB | Prompt sent. Reports R23 replayed green (983,671/157,507/27,601 boxes); requests R26 for q=X[c(R−2)+P], 0.00551 <= u <= 0.0463, constant 0.24, and R27, the extremality conjecture E. |
-| `prompt-one-driver-closure.txt` | 4.3 KB | Prompt sent. "TASK: close the content inequality for the one-driver self-interaction family" by two interval certificates: (*) giving 0.22 on 1/16 <= f <= 4/5, (dagger) giving 0.235 on f <=… |
+| `prompt-one-driver-closure.txt` | 4.3 KB | Prompt sent. "TASK: close the content inequality for the one-driver self-interaction family" by two interval certificates: (*) giving 0.22 on 1/16 <= f <= 4/5, (dagger) giving 0.235 on f <= 1/16. |
 | `reply-b-content-kernel.txt` | 1.9 KB | Reply sent. Reports own numerics (g_B(0)=−0.42203, ratio 0.5053–0.5586, C_B <= 0.5053 C_A + 0.007 sqrt u); asks to certify these kernel bounds, kappa_AB, and smaller A-content constants. |
 | `reply-b-cost.txt` | 1.8 KB | Reply sent. Records the B-cost kappa_B = 0.26/0.29/0.30 as received (replay running); proposes three routes for the B-content against B(u)−F(q), including a joint 2x2 cost matrix. |
-| `reply-envelope-audit.txt` | 1.9 KB | Reply sent. Accepts all three audit points (K(0.0463)=0.16669, not 0.1913; the obstruction; directional envelope 0.2393); re-checked (*) margins 0.00747 and 0.00378; lists certificate work… |
-| `reply-envelope-star.txt` | 2.1 KB | Reply sent. Confirms envelope (*) numerically with own kernels (worst margin 0.00355 at u=0.0463, f=1/16); asks for a rigorous interval certificate on modulus(z) <= 4; suggestions for f < 1… |
+| `reply-envelope-audit.txt` | 1.9 KB | Reply sent. Accepts all three audit points (K(0.0463)=0.16669, not 0.1913; the obstruction; directional envelope 0.2393); re-checked (*) margins 0.00747 and 0.00378; lists certificate work (a)–(c). |
+| `reply-envelope-star.txt` | 2.1 KB | Reply sent. Confirms envelope (*) numerically with own kernels (worst margin 0.00355 at u=0.0463, f=1/16); asks for a rigorous interval certificate on modulus(z) <= 4; suggestions for f < 1/16. |
 | `reply-fresh-gaussian-factor.txt` | 2.5 KB | Reply sent. Verifies Q(0)=3.3452 > 167/50, A'(0)=4.3184 < 108/25, 11.15 < 56/5; calls it "a genuine new theorem"; requests R20 (covariance gap), R21 (self-interaction), R22 (general cubics). |
 | `reply-fresh-lemma.txt` | 2.4 KB | Reply sent. Verifies −D_0=26.762, D_1=34.547, Phi^(6)(0)=2740.8 and bound (1); says the Taylor step collapses beyond u=0.0017; requests R19: Gaussian-mixture bounds c(u), c'(u). |
-| `reply-gaussian-factor-full.txt` | 1.2 KB | Reply sent. Confirms the Gaussian-factor certificate (vector inequality by Monte Carlo, ratios 0.57–0.80); records the class closed; asks for R26 on u in [0.03,0.0463], any constant below 0… |
+| `reply-gaussian-factor-full.txt` | 1.2 KB | Reply sent. Confirms the Gaussian-factor certificate (vector inequality by Monte Carlo, ratios 0.57–0.80); records the class closed; asks for R26 on u in [0.03,0.0463], any constant below 0.24. |
 | `reply-gpt3-fourthmoment.txt` | 2.7 KB | Reply sent. Verifies Lambda(H+(T−1)U) <= B_0+(11/100)u−(8/25)w+(21/4)w^2 (C_4=5.2444) and the obstruction (1.374167); asks for refinements reaching u <= 0.0463 for w < 0.0113. |
-| `reply-gpt3-refinement.txt` | 2.4 KB | Reply sent. Verifies the refined bound at five table points (cutoff 0.01125); asks (A) a closed universal bound in (u,w,m40) using constant 3·sqrt6/4, (B) optimisation over four coefficient… |
+| `reply-gpt3-refinement.txt` | 2.4 KB | Reply sent. Verifies the refined bound at five table points (cutoff 0.01125); asks (A) a closed universal bound in (u,w,m40) using constant 3·sqrt6/4, (B) optimisation over four coefficients. |
 | `reply-hermitian-E-saddle.txt` | 1.0 KB | Reply sent. Confirms by quadrature that "exact E is false: the monomial is a saddle" (0.0876133 at tau=0, excess 1.3e-4); asks for R26 and the vector moment inequality. |
-| `reply-hermitian-family.txt` | 2.4 KB | Reply sent. Verifies the coupled moment inequality and envelope (constant 0.236) closing the Hermitian one-driver family; asks R23 (non-Hermitian A), R24 (self-interaction), R25 (remaining… |
+| `reply-hermitian-family.txt` | 2.4 KB | Reply sent. Verifies the coupled moment inequality and envelope (constant 0.236) closing the Hermitian one-driver family; asks R23 (non-Hermitian A), R24 (self-interaction), R25 (remaining shells). |
 | `reply-hermitian-scanfix.txt` | 622 B | Reply sent. Confirms a fix of its own scan (g(0) = −0.835136); rerun monomial ratios 0.0406/0.0708/0.0891; "conclusions unchanged"; asks to proceed with R26 and R27. |
-| `reply-j2-kernels.txt` | 1.5 KB | Reply sent. Reports the infinitesimal bound holds at every shift (min eigenvalue +0.080 at x=0) and the pointwise finite-amplitude Hessian fails for beta >= 0.1; asks to extend to all x >=… |
+| `reply-j2-kernels.txt` | 1.5 KB | Reply sent. Reports the infinitesimal bound holds at every shift (min eigenvalue +0.080 at x=0) and the pointwise finite-amplitude Hessian fails for beta >= 0.1; asks to extend to all x >= 0. |
 | `reply-j3-budget.txt` | 1.5 KB | Reply sent. Says both corrections are in the task (B-cost scope; rho_0 per row); gives the budget sensitivity (5.5e-5 at m=0.118); asks for the smallest A-content constants on [0.03,0.0463]. |
 | `reply-joint-signed.txt` | 1.3 KB | Reply sent. Agrees on the signed joint form as the A+B target (5.5e-5 checked); asks to certify the mixed term's sign and size for q != 0 and the bounds [0.505,0.56], 0.007. |
 | `reply-odd-form.txt` | 1.2 KB | Reply sent. Says the (6)-obstruction matches its own computation (top eigenvalue 1.195 at H=0, 1.494 at the core); sets the target: phase-averaged Hessian form with a third-order remainder. |
 | `reply-progress-archive.txt` | 899 B | Reply sent. Records the progress archive (second variation in (0.00140,0.00198), "exact E is closed as false"); accepts two corrections; R26 on [0.03,0.0463] remains the request. |
-| `reply-r26-directional.txt` | 1.2 KB | Reply sent. Accepts both corrections (content not analytic in p at the pure-P end); records the directional matrix bound as certificate target; offers to replay envelopes on 0.03 <= u <= 0.… |
+| `reply-r26-directional.txt` | 1.2 KB | Reply sent. Accepts both corrections (content not analytic in p at the pure-P end); records the directional matrix bound as certificate target; offers to replay envelopes on 0.03 <= u <= 0.0463. |
 | `reply-r26-hermitian-proved.txt` | 1.5 KB | Reply sent. Records R26 for real c and Hermitian A (0.23, reserve 1/40000, u in [0.03,0.0463]); asks whether the method takes complex P and energies down to 0.00551. |
 | `reply-r26-reweighted.txt` | 1.4 KB | Reply sent. Records the reweighted certificate C(XP)^2 <= 0.22 Delta for every complex quadratic P (0.2468 barrier bypassed); suggests organising (dagger) on f <= 1/16; asks about u < 0.03. |
 | `reply-r26-sync.txt` | 825 B | Reply sent. Accepts both corrections "made in the monograph"; updates status: p <= u/5 certified with 9/40, (*) pending on [u/5,15u/16], directional envelope 0.2393; duality recorded. |
@@ -300,9 +336,9 @@ Text files, copied byte for byte (no line added). `prompt-*`, `lemma-content-pro
 | `reply-wick-endpoint.txt` | 1.5 KB | Reply sent. Confirms the Wick-endpoint extension arithmetic (49/211) "with a 20x slack"; suggests the exact size-biased identity for the remaining region p > u/16. |
 | `reply-wick-one-twelfth.txt` | 1.2 KB | Reply sent. Records the result and says the state moved past it (p <= u/5 with 9/40; R26 Hermitian at 0.23); asks to aim boxes at (*) for f in [1/16,4/5]. |
 | `reply-wick-twenty-percent.txt` | 1.3 KB | Reply sent. Says the p <= u/5 extension checks out numerically (worst ratio 0.0864); asks for the interval certificate of (*) on [1/16,4/5] and the directional envelope for f < 1/16. |
-| `subproblem-B-sector.txt` | 7.2 KB | Subproblem statement. "The B-shell cost and content lemma": wants (B-cost), (B-content), (joint) for z^2 conj(r_B)/sqrt 2; status kappa_B = 0.26/0.29/0.30 certified; S = 1.3739535; twin eve… |
-| `subproblem-E2-uniform-odd-cost.txt` | 4.1 KB | Subproblem statement. "SUBPROBLEM E2": Lambda(H+O) <= Lambda(H) for core energy <= 0.072 minus odd energy, via directional majorant (D) and pointwise (E2'); known k_1 = 0.128/0.156/0.166, k… |
-| `subproblem-J2-finite-amplitude-joint.txt` | 7.1 KB | Subproblem statement. "SUBPROBLEM J2": finite-amplitude signed A/B cost reduced to a Lipschitz bound on the B content along the A direction, delta <= 0.07, m = +0.118; route (c) and its cav… |
+| `subproblem-B-sector.txt` | 7.2 KB | Subproblem statement. "The B-shell cost and content lemma": wants (B-cost), (B-content), (joint) for z^2 conj(r_B)/sqrt 2; status kappa_B = 0.26/0.29/0.30 certified; S = 1.3739535; twin even-sector statement. |
+| `subproblem-E2-uniform-odd-cost.txt` | 4.1 KB | Subproblem statement. "SUBPROBLEM E2": Lambda(H+O) <= Lambda(H) for core energy <= 0.072 minus odd energy, via directional majorant (D) and pointwise (E2'); known k_1 = 0.128/0.156/0.166, k_3 = 0.33/0.36/0.36. |
+| `subproblem-J2-finite-amplitude-joint.txt` | 7.1 KB | Subproblem statement. "SUBPROBLEM J2": finite-amplitude signed A/B cost reduced to a Lipschitz bound on the B content along the A direction, delta <= 0.07, m = +0.118; route (c) and its caveat. |
 | `subproblem-even-sectors-and-joint.txt` | 6.2 KB | Subproblem statement. "NEXT SUBPROBLEMS": E (z-odd sectors: pure cost, "THERE IS NO E-CONTENT", condition (6) ruled out) and J (signed joint A/B cost, m about 0.118, S + 5.5e-5). |
 
 ### `sources/received-2026-11-05/`: notes and proofs received from the external assistants (5 and 6 November 2026)
@@ -319,11 +355,11 @@ The top-level `.tex` and `.md` files are notes received directly; each subfolder
 | `b_sector_content_and_cost/b_sector/PROOF.md` | 16 KB | B-shell content for Gaussian-factor cubics, and a stronger local cost |
 | `b_sector_content_and_cost/b_sector/README.md` | 1.6 KB | B-sector progress certificate |
 | `b_shell_global_cost/b_shell_result/PROOF.md` | 8.8 KB | B-shell: a certified global cost bound and a correction to the content pairing |
-| `chatgpt-r26_sync_and_exact_matrix_duality.md` | 6.4 KB | Note received. "Does not prove R26 or Conjecture K": status of q=X[c(R−2)+P] (0.239, 49/211, 0.22; K(0.0463) in (0.166781,0.166783)) and proved duality L(A,D)=inf_s lambda_max((1+s)A+(1+1/s… |
-| `chatgpt-shared_driver_rectangle.tex` | 23 KB | Note received. "Two shared-driver cubics on the remaining rectangle": for Q1=X(R−2)/sqrt2, Q2=X(R_Y−1), .00551<=u<=.0463, w<=.0223: F(q+(T−1)U) <= B(u+w) − 1e-6·l; content <= (19/100)(B(u)−… |
-| `chatgpt-thread1-remote-cubic-comparison.tex` | 23 KB | Note received. "Remote cubics and a visible-dependent Gaussian term": (19/11)h <= D/10+E/2 implies F(H+G0) <= M(v); theorem F(H+(T−1)U) <= F(H+sqrt(b)W) for independent H, b+h <= l^2; small… |
-| `chatgpt-thread2-gaussian_domination_note.tex` | 15 KB | Note received. "Gaussian domination in the charge-one cubic chaos": counterexample Lambda(G) > S outside the box (l−2beta = 1e-30); same-norm theorem for conditionally Gaussian G, a/beta <=… |
-| `chatgpt-thread2-remote_cubic_and_linear_shell.tex` | 23 KB | Note received. "Remote cubics and a linear shell in Gaussian domination": for independent q and U on the box, Lambda(q+(T−1)U) <= Lambda(q) − (1/eps − 199/(200 l))u at every amplitude; item… |
+| `chatgpt-r26_sync_and_exact_matrix_duality.md` | 6.4 KB | Note received. "Does not prove R26 or Conjecture K": status of q=X[c(R−2)+P] (0.239, 49/211, 0.22; K(0.0463) in (0.166781,0.166783)) and proved duality L(A,D)=inf_s lambda_max((1+s)A+(1+1/s)D). |
+| `chatgpt-shared_driver_rectangle.tex` | 23 KB | Note received. "Two shared-driver cubics on the remaining rectangle": for Q1=X(R−2)/sqrt2, Q2=X(R_Y−1), .00551<=u<=.0463, w<=.0223: F(q+(T−1)U) <= B(u+w) − 1e-6·l; content <= (19/100)(B(u)−F(q)) − 3e-6. |
+| `chatgpt-thread1-remote-cubic-comparison.tex` | 23 KB | Note received. "Remote cubics and a visible-dependent Gaussian term": (19/11)h <= D/10+E/2 implies F(H+G0) <= M(v); theorem F(H+(T−1)U) <= F(H+sqrt(b)W) for independent H, b+h <= l^2; small-amplitude and sharing regions. |
+| `chatgpt-thread2-gaussian_domination_note.tex` | 15 KB | Note received. "Gaussian domination in the charge-one cubic chaos": counterexample Lambda(G) > S outside the box (l−2beta = 1e-30); same-norm theorem for conditionally Gaussian G, a/beta <= 11/2; Stein-sign inequality for H_3(X). |
+| `chatgpt-thread2-remote_cubic_and_linear_shell.tex` | 23 KB | Note received. "Remote cubics and a linear shell in Gaussian domination": for independent q and U on the box, Lambda(q+(T−1)U) <= Lambda(q) − (1/eps − 199/(200 l))u at every amplitude; items R4–R6. |
 | `directional_odd_cost/directional_cost/PROOF.md` | 4.0 KB | Finite-amplitude directional cost at the inverse-norm obstruction |
 | `gaussian_factor_content/vector_content/proof.md` | 6.9 KB | Shared-A content for arbitrary Gaussian-factor cubics |
 | `gaussian_factor_extension/gaussian_factor_certificate/README.md` | 3.0 KB | Full Gaussian-factor content certificate |
@@ -358,11 +394,11 @@ The top-level `.tex` and `.md` files are notes received directly; each subfolder
 | `wick_r26_twenty_percent/wick_research/kernel_proof.md` | 6.0 KB | Scalar kernel background inherited from R23 |
 | `wick_r26_twenty_percent/wick_research/proof.md` | 10 KB | Wick self-interaction: a certified 20% coefficient neighborhood |
 
-### `sources/october-handoff/`: the October 2026 material (handoff, report, plans, prompts, pipeline notes)
+### `sources/october-handoff/`: the October 2026 material (handoff, report, plans, prompts, pipeline notes, five notes of the weak-K package)
 
-Dated documents. Their endpoints are stale (the repository then proved 1.40148809 and later 1.401674103); the statement of K and the negative results are still the ones in use.
+Dated documents. Their endpoints are stale (the repository then proved 1.40148809 and later 1.401674103); the statement of K and the negative results are still the ones in use. `weak-k-2026-10-15/` holds five notes of the weak-K package of 15 October. The manuscript chapter `ch25-weak-k.tex` reproduces parts of that package (the tied multiplier in `ch25-parts/20-stability-and-smoothing.tex`, the nine-point test in `ch25-parts/10-exact-duals-rotation-profiles.tex`); the notes say more about the tied profiles. They were added on 15 November because `STATUS.md`, section 11 (c), cites them for what the October record already had.
 
-24 files, 348 KB.
+29 files, 384 KB.
 
 | file | size | contents |
 |---|---:|---|
@@ -390,6 +426,11 @@ Dated documents. Their endpoints are stale (the repository then proved 1.4014880
 | `prompts/PROMPT_GPT_PVD.md` | 4.9 KB | 21 October: the L¹/L² problem on H₂,₁ (prove ρ* ≤ 0.9711, ideally √π/2) and the routes that fail. |
 | `prompts/PROMPT_GPT_SHARED_A.md` | 5.0 KB | 21 October: restricted K for a cubic q coupled to a linear form r through (T−1)r; target Λ ≤ S + 10⁻⁴. |
 | `prompts/PROMPT_REPLY_K_REFORMULATION.md` | 5.7 KB | 22 October: reply to an assistant's real-part reformulation of K, with the correction that the convex-order domination is false. |
+| `weak-k-2026-10-15/GAUSSIAN_LOCALIZATION.md` | 5.1 KB | Gaussian event-cost lemma and a conditional localization theorem for a fibre majorant; states that for the tied multiplier the actual profiles are F_A + F₀/3 and F_B + F₀/6 and that Bessel alone was numerically insufficient. |
+| `weak-k-2026-10-15/HANDOFF.md` | 9.7 KB | Handoff of the weak-K package of 15 October ("no new numerical lower bound is claimed"): rotation stationarity, the dual retaining both discarded squares, uniform certificates of the actual profiles, two refuted majorants, what remains. |
+| `weak-k-2026-10-15/LOCAL_CHANNELS.md` | 6.1 KB | Pinned first-chaos channels: the exact local three-channel matrix, the tied multiplier k = α/3 + β/6 with its matrix M_AB, searches for global cost matrices, the conditional bound with the tied profiles F_A + F₀/3 and F_B + F₀/6, the certified counterexample to M_AB + I/10. |
+| `weak-k-2026-10-15/RETAINED_H_SQUARE.md` | 8.5 KB | The weaker target retaining both discarded squares: row identity, full dual, clipped Gram certificate, the sufficient comparison (6), and the diagnostic on nine junta points (a joint dual trial at sectors optimised for the unpenalised functional, against the A/B gain). |
+| `weak-k-2026-10-15/TIED_GRAM_AUDIT.md` | 6.6 KB | Audit of an exploratory Gram programme for the tied profiles T_A = F_A + F₀/3, T_B = F_B + F₀/6: normalisations, a corrected tail coefficient, the uniform bounds \|T_A\| < 347/500 and \|T_B\| < 377/500, a tail-certificate format. Its solver figures are "not a bound". |
 
 ### `sources/manuscript/`: the October manuscript (digest, map, and the chapters on K)
 
@@ -399,7 +440,7 @@ Dated documents. Their endpoints are stale (the repository then proved 1.4014880
 
 | file | size | contents |
 |---|---:|---|
-| `MANUSCRIPT_DIGEST_K.md` | 47 KB | Digest of the October manuscript (5 November): the response class and 25 proved constraints on it, the restricted forms of K (K_η, K′, K_rot, response-body target), negative results, everyt… |
+| `MANUSCRIPT_DIGEST_K.md` | 47 KB | Digest of the October manuscript (5 November): the response class and 25 proved constraints on it, the restricted forms of K (K_η, K′, K_rot, response-body target), negative results, everything known about the A shell, statements that could close the core. |
 | `README.md` | 11 KB | The manuscript's own map (25 October): which source file is in which part, what is superseded, how the stale markers were generated. |
 | `legacy/appD-K-register-archive.tex` | 10 KB | Archived K register (20 October, before consolidation) |
 | `legacy/ch11-structure.tex` | 19 KB | The structure behind Conjecture K: visible sectors, the theorem of 15 October, and what remains |
@@ -515,8 +556,8 @@ Dated documents. Their endpoints are stale (the repository then proved 1.4014880
 |---|---:|---|
 | `kscan.py` | 4.4 KB | Pass 1: full Wick basis of H₂,₁(ℂⁿ), L-BFGS with analytic gradient on a Monte Carlo sample, every end point re-evaluated on 8 × 2²⁰ fresh samples with a jackknife error. |
 | `kscan2.py` | 4.5 KB | Pass 2: the same with restart 0 of every seed started next to the Wick monomial. |
-| `out1-summary.json` | 15 KB | Summary of pass 1 generated on 15 November from the 180 output files (840 runs): per (n, u) the number of runs, best re-evaluated ratio with its error and fourth excess; all runs of pass 2… |
-| `out1_summary.py` | 3.1 KB | Generator of `out1-summary.json` (written on 15 November): reads the pass-1 and pass-2 output folders and drops the coefficient vectors. Usage: `python3 out1_summary.py OUT1_DIR OUT2_DIR OU… |
+| `out1-summary.json` | 15 KB | Summary of pass 1 generated on 15 November from the 180 output files (840 runs): per (n, u) the number of runs, best re-evaluated ratio with its error and fourth excess; all runs of pass 2 without their coefficient vectors. Reproduces the README tables. Generated by `out1_summary.py`. |
+| `out1_summary.py` | 3.1 KB | Generator of `out1-summary.json` (written on 15 November): reads the pass-1 and pass-2 output folders and drops the coefficient vectors. Usage: `python3 out1_summary.py OUT1_DIR OUT2_DIR OUTPUT.json`. |
 | `out2/n10-u0.0463-s0.jsonl` | 50 KB | Pass 2, n = 10, seed 0 (two runs; the second n = 10 process did not report). |
 | `out2/n6-u0.0463-s0.jsonl` | 18 KB | Pass 2, n = 6, seed 0: one JSON line per run (re-evaluated ratio R, its error, deficit, fourth excess, coefficients). |
 | `out2/n6-u0.0463-s1.jsonl` | 18 KB | Pass 2, n = 6, seed 1. |
@@ -542,6 +583,92 @@ Dated documents. Their endpoints are stale (the repository then proved 1.4014880
 | `scan2.py` | 1.2 KB | map N(eps, mu) for the game (1, -eps, mu, mu, ...): driver (Krivine) branch vs visible branch, and the flip amplitude |
 | `scan3.py` | 1.2 KB | map N(eps, mu) for the game (1, -eps, mu, mu, ...): driver (Krivine) branch vs visible branch, and the flip amplitude |
 | `tailmodel.py` | 6.5 KB | claude-b9ee, 14 Nov 2026. Model norms of games lambda = (1, l1, ..., lD, nu, nu, ...) (finite head + identity tail) |
+
+### `code/kprime-2026-11-15/`: scripts and logs of the follow-up of 15 November
+
+Peak row; NumPy and SciPy; deterministic quadrature, no sampling. The logs are small and are kept because the write-up (`sources/numerics-kprime-2026-11-15/README.md`) cites them as its record. The three-variable search (`kprime3.py`) had left no log in the folder when it was copied; the write-up names a folder `search3/` for its records.
+
+18 files, 52 KB.
+
+| file | size | contents |
+|---|---:|---|
+| `cs_check.log` | 1.4 KB | Its output for u = 0.01, 0.0463, 0.09 and s = 0, 0.3434, 0.6, 0.75. |
+| `cs_check.py` | 2.0 KB | The Cauchy–Schwarz bound on the tilted content of the Wick monomial against the true content. |
+| `cs_gauss.log` | 701 B | Its output: the loss for u = 0.02 to 0.08 at six tilts and at the best tilt, against the slack 1.31·10⁻⁴ of the target 1.402. |
+| `cs_gauss.py` | 2.1 KB | The Cauchy–Schwarz bound as a functional of the law of \|q\|², evaluated for the exponential law (Gaussian q, where the true content is 0 and the bound is pure loss). |
+| `family.log` | 3.0 KB | Its output for m = 1, 2, 3, 5, 10, 30, 100 bath variables and the Gaussian limit at u = 0.02, 0.0463, 0.09: the largest K ratio and the largest retained ratio over the mixing angle, and the retained ratio at the K maximiser. |
+| `family.py` | 3.7 KB | The family q = X[c₁(\|X\|²−2)/√2 + c₂S_m/√m] with m bath variables and its Gaussian limit: K and retained ratios maximised over the mixing angle. |
+| `kprime2.py` | 8.6 KB | Sector gain with and without the retained element for all tensors of H₂,₁(ℂ²) of fixed energy: deterministic quadrature, exact gradients, L-BFGS over the tensor with the saddle in (α, γ) solved inside. Modes `k`, `kp`, `eval`, `recheck`. |
+| `kprime2b.py` | 4.7 KB | The same functional with the B-sector added, evaluated at given tensors only (the visible phase is integrated numerically; the tensor is not re-optimised). |
+| `kprime2s.py` | 5.7 KB | As `kprime2.py` with the retained element tied to the sector, u = −s·r, at a fixed tilt s. |
+| `kprime3.py` | 5.9 KB | As `kprime2.py` for three remote variables (18 complex coefficients), on a coarser grid. No log of it in the folder when it was copied (the search was running). |
+| `retained_content.log` | 872 B | Its output for u = 0.00551 to 0.07: D, both gains with the optimal amplitudes, both ratios to D. |
+| `retained_content.py` | 2.1 KB | The Wick monomial with the A-sector: exact K gain and retained gain (the minimum over the retained element inside the supremum over the sector), by quadrature. |
+| `retained_joint.log` | 756 B | Its output for u = 0.01 to 0.0463: the table of section 4 of the write-up. |
+| `retained_joint.py` | 2.5 KB | The Wick monomial with the A- and B-sectors jointly, with and without the retained element (real amplitudes). |
+| `tilt_profiles.log` | 1.6 KB | Its output: j₀, g₀, k_A; (g − g₀)/(j₀ − j) for v from 10⁻⁴ to 10⁴ and its limit 0.58321; unrestricted second-derivative suprema for seven tilts, with the resulting global costs (all negative). |
+| `tilt_profiles.py` | 3.4 KB | The profiles j and g and their ratio, the local cost k(s), and a global bound on the second derivative along the tilted direction. |
+| `tilt_restricted.log` | 579 B | Its output: Θ(R) for R = 0 to 0.5 at the tilts s = 0, 0.2, 0.3434, 0.5, with the budget p − s². |
+| `tilt_restricted.py` | 2.3 KB | The second-derivative bound along the tilted direction restricted to base points with \|ρ\| ≤ R (grid search). |
+
+### `code/kprime-2026-11-15/search/`: records of the searches over two-variable tensors
+
+Each run has a `.log` (one line per record) and a `.jsonl` (the same records with the tensor: `c_re`, `c_im` are the six coefficients in the basis of `kprime2.py`). Fields of `k_*`, `kp_*` and `fine_*`: `D` the deficit, `gK`, `gP` the K gain and the retained gain, `RK`, `RP` their ratios to D, `C2D` the content ratio C²/D on the same grid, `mu2` = ‖μ‖², `d4` = E\|q\|⁴/u² − 2, `alk`, `alp`, `gap` the optimal amplitudes, `res` the residual of the inner saddle. In a file name the energy is written as a decimal or as four digits (`0463` = 0.0463); `s<n>` is the seed. The working folder was still being written when it was copied.
+
+50 files, 65 KB.
+
+| file | size | contents |
+|---|---:|---|
+| `b_0200.jsonl` | 1.1 KB | `kprime2b.py`: the B-sector added at the monomial and at the best tensors of the searches, u = 0.02 (JSON lines, one record per line with the tensor coefficients). |
+| `b_0200.log` | 324 B | `kprime2b.py`: the B-sector added at the monomial and at the best tensors of the searches, u = 0.02 (log, one line per record). |
+| `b_0463.jsonl` | 1.8 KB | `kprime2b.py`: the B-sector added at the monomial and at the best tensors of the searches, u = 0.0463 (JSON lines, one record per line with the tensor coefficients). |
+| `b_0463.log` | 486 B | `kprime2b.py`: the B-sector added at the monomial and at the best tensors of the searches, u = 0.0463 (log, one line per record). |
+| `b_0900.jsonl` | 1.1 KB | `kprime2b.py`: the B-sector added at the monomial and at the best tensors of the searches, u = 0.09 (JSON lines, one record per line with the tensor coefficients). |
+| `b_0900.log` | 324 B | `kprime2b.py`: the B-sector added at the monomial and at the best tensors of the searches, u = 0.09 (log, one line per record). |
+| `fine_0200.jsonl` | 1.4 KB | `kprime2.py`, mode `recheck` on the finer grid: the best records of the searches and the monomial re-evaluated, u = 0.02 (JSON lines, one record per line with the tensor coefficients). |
+| `fine_0200.log` | 324 B | `kprime2.py`, mode `recheck` on the finer grid: the best records of the searches and the monomial re-evaluated, u = 0.02 (log, one line per record). |
+| `fine_0463.jsonl` | 3.9 KB | `kprime2.py`, mode `recheck` on the finer grid: the best records of the searches and the monomial re-evaluated, u = 0.0463 (JSON lines, one record per line with the tensor coefficients). |
+| `fine_0463.log` | 815 B | `kprime2.py`, mode `recheck` on the finer grid: the best records of the searches and the monomial re-evaluated, u = 0.0463 (log, one line per record). |
+| `k_0.02_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `k`: search maximising the K ratio gain/D over the two-variable tensors of energy u = 0.02, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `k_0.02_s0.log` | 480 B | `kprime2.py`, mode `k`: search maximising the K ratio gain/D over the two-variable tensors of energy u = 0.02, seed 0 (log, one line per record). |
+| `k_0.09_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `k`: search maximising the K ratio gain/D over the two-variable tensors of energy u = 0.09, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `k_0.09_s0.log` | 480 B | `kprime2.py`, mode `k`: search maximising the K ratio gain/D over the two-variable tensors of energy u = 0.09, seed 0 (log, one line per record). |
+| `k_0463_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `k`: search maximising the K ratio gain/D over the two-variable tensors of energy u = 0.0463, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `k_0463_s0.log` | 480 B | `kprime2.py`, mode `k`: search maximising the K ratio gain/D over the two-variable tensors of energy u = 0.0463, seed 0 (log, one line per record). |
+| `kp_0.005_s0.jsonl` | 2.5 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.005, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0.005_s0.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.005, seed 0 (log, one line per record). |
+| `kp_0.01_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.01, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0.01_s0.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.01, seed 0 (log, one line per record). |
+| `kp_0.03_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.03, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0.03_s0.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.03, seed 0 (log, one line per record). |
+| `kp_0.065_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.065, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0.065_s0.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.065, seed 0 (log, one line per record). |
+| `kp_0.15_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.15, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0.15_s0.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.15, seed 0 (log, one line per record). |
+| `kp_0200_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.02, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0200_s0.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.02, seed 0 (log, one line per record). |
+| `kp_0463_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.0463, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0463_s0.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.0463, seed 0 (log, one line per record). |
+| `kp_0463_s1.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.0463, seed 1 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0463_s1.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.0463, seed 1 (log, one line per record). |
+| `kp_0463_s2.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.0463, seed 2 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0463_s2.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.0463, seed 2 (log, one line per record). |
+| `kp_0900_s0.jsonl` | 2.4 KB | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.09, seed 0 (JSON lines, one record per line with the tensor coefficients). |
+| `kp_0900_s0.log` | 480 B | `kprime2.py`, mode `kp`: search maximising the retained ratio gain/D over the two-variable tensors of energy u = 0.09, seed 0 (log, one line per record). |
+| `tilt_0.3434_0463.jsonl` | 1.9 KB | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.3434, u = 0.0463 (JSON lines, one record per line with the tensor coefficients). |
+| `tilt_0.3434_0463.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.3434, u = 0.0463 (log, one line per record). |
+| `tilt_0.5_0200.jsonl` | 1.9 KB | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.5, u = 0.02 (JSON lines, one record per line with the tensor coefficients). |
+| `tilt_0.5_0200.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.5, u = 0.02 (log, one line per record). |
+| `tilt_0.5_0463.jsonl` | 1.9 KB | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.5, u = 0.0463 (JSON lines, one record per line with the tensor coefficients). |
+| `tilt_0.5_0463.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.5, u = 0.0463 (log, one line per record). |
+| `tilt_0.6_0200.jsonl` | 1.9 KB | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.6, u = 0.02 (JSON lines, one record per line with the tensor coefficients). |
+| `tilt_0.6_0200.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.6, u = 0.02 (log, one line per record). |
+| `tilt_0.6_0463.jsonl` | 1.9 KB | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.6, u = 0.0463 (JSON lines, one record per line with the tensor coefficients). |
+| `tilt_0.6_0463.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.6, u = 0.0463 (log, one line per record). |
+| `tilt_0.7_0200.jsonl` | 1.9 KB | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.7, u = 0.02 (JSON lines, one record per line with the tensor coefficients). |
+| `tilt_0.7_0200.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.7, u = 0.02 (log, one line per record). |
+| `tilt_0.7_0463.jsonl` | 1.9 KB | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.7, u = 0.0463 (JSON lines, one record per line with the tensor coefficients). |
+| `tilt_0.7_0463.log` | 468 B | `kprime2s.py`: search with the retained element tied to the sector at the fixed tilt s = 0.7, u = 0.0463 (log, one line per record). |
 
 ### `code/audit-2026-11-13/`: the audit's scripts and small result files
 
@@ -604,7 +731,7 @@ Run with a Python that has NumPy and SciPy (`python3 -I`); the certificate repla
 | `results/FINAL_CHECKS.json` | 355 B | Consistency checks of the main report (completed cells, counts, script syntax). Not a numerical or theorem check. |
 | `results/IMPROVEMENT_FINAL_CHECKS.json` | 7.2 KB | Cover improvement: final consistency checks. |
 | `results/RUN_INTEGRITY_SNAPSHOT.json` | 32 KB | Post-hoc snapshot of run completeness and integrity. |
-| `results/SELECTED_TENSORS.json` | 139 KB | The 15 selected full-space candidates (n = 2…6, u = 0.02, 0.03, 0.0463): coefficients with basis indices, content vectors, direction shares, fourth excess, hashes. Source of the table in RE… |
+| `results/SELECTED_TENSORS.json` | 139 KB | The 15 selected full-space candidates (n = 2…6, u = 0.02, 0.03, 0.0463): coefficients with basis indices, content vectors, direction shares, fourth excess, hashes. Source of the table in REPORT section 5. |
 | `results/SOURCE_MANIFEST.json` | 15 KB | Post-hoc snapshot of the source and output files of the audit with SHA-256 (not a run-start attestation). |
 | `results/STRUCTURED_BASELINE.json` | 4.8 KB | The two-variable baseline X[(\|X\|²−2) + z(\|Y\|²−1)]: optimum z = 0.05283531218 + 0.22122669064i, ratio 0.08760259435 at u = 0.0463, convergence data. |
 | `results/benchmark_independent.json` | 739 B | Independent Rice/erfc benchmark of g(0), φ′(0) and B(u) against the table (agreement below 6·10⁻¹⁵). |
@@ -729,8 +856,18 @@ Node scripts (`node file.mjs`), exact rational or interval arithmetic, no data f
 | file | size | contents |
 |---|---:|---|
 | `chatgpt-fresh-verify_gaussian_factor_content.mjs` | 2.1 KB | Verifier received. "As posted by the fresh ChatGPT thread": BigInt interval check, peak row (a=699/1250, b=179/1250), that Q(0) > 167/50 and A'(0) < 108/25, so 2A'(0)^2/Q(0) < 56/5. |
-| `chatgpt-fresh-verify_nonlinear_content.mjs` | 7.0 KB | Verifier received. Outward-rounded BigInt checks −D0 > 267/10, D1 < 691/20, Phi^(6)(0) < 2750, K < 50; "CERTIFIED SCALARS": C_X(q)^2 <= .19 D(q) for u <= 19/50000; says it does not certify… |
-| `chatgpt-thread1-verify-content.mjs` | 26 KB | Verifier received. "Exact dyadic enclosures… Default: application rows and quartics. --box: uniform content; --box-direct: uniform matched-variance comparison"; limits 138/135, 551/100000 <… |
-| `chatgpt-thread2-verify_content_extension.mjs` | 8.3 KB | Verifier received. BigInt checks printing "PASS: shell penalty 0.24" (w <= .0113, 2500/1891), "PASS: tensor constant .481", "tensor ratio > .4808 > .4775", "cubic tensor zero; fifth tensor… |
-| `chatgpt-thread2-verify_core.mjs` | 10 KB | Verifier received. "All bounds and acceptance decisions use integer arithmetic": potential envelope, "Quartic signs certified" on profile intervals beta/a in [2/11,4/11], "Full-box potentia… |
-| `chatgpt-verify_shared.mjs` | 14 KB | Verifier received. "Exact enclosures for the two content inequalities and the A cost": two content bounds, two matched-variance bounds, projected envelope, "Gaussian-tail and 0.19 row-cost… |
+| `chatgpt-fresh-verify_nonlinear_content.mjs` | 7.0 KB | Verifier received. Outward-rounded BigInt checks −D0 > 267/10, D1 < 691/20, Phi^(6)(0) < 2750, K < 50; "CERTIFIED SCALARS": C_X(q)^2 <= .19 D(q) for u <= 19/50000; says it does not certify u <= 0.0463. |
+| `chatgpt-thread1-verify-content.mjs` | 26 KB | Verifier received. "Exact dyadic enclosures… Default: application rows and quartics. --box: uniform content; --box-direct: uniform matched-variance comparison"; limits 138/135, 551/100000 <= u <= 463/10000, w <= 0.0223. |
+| `chatgpt-thread2-verify_content_extension.mjs` | 8.3 KB | Verifier received. BigInt checks printing "PASS: shell penalty 0.24" (w <= .0113, 2500/1891), "PASS: tensor constant .481", "tensor ratio > .4808 > .4775", "cubic tensor zero; fifth tensor -243". |
+| `chatgpt-thread2-verify_core.mjs` | 10 KB | Verifier received. "All bounds and acceptance decisions use integer arithmetic": potential envelope, "Quartic signs certified" on profile intervals beta/a in [2/11,4/11], "Full-box potential" for the disjoint comparison. |
+| `chatgpt-verify_shared.mjs` | 14 KB | Verifier received. "Exact enclosures for the two content inequalities and the A cost": two content bounds, two matched-variance bounds, projected envelope, "Gaussian-tail and 0.19 row-cost constants verified". |
+
+### `code/record-checks-2026-11-15/`: a check written when this folder was assembled
+
+Not a copy of a working file. It supports one identification made in `STATUS.md`, section 11 (a).
+
+1 files, 4.0 KB.
+
+| file | size | contents |
+|---|---:|---|
+| `tied_matrix_check.py` | 4.0 KB | The local A/B matrix for the tied multiplier of October, for the optimal multiplier of the report of 15 November and without a multiplier, from the closed-form integrals of the peak row; the local cost k(s). Floating point; its output is in its docstring. |

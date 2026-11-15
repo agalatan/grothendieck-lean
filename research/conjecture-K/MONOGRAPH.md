@@ -135,12 +135,22 @@ multiplier ≈ 0.4112, are already stated. Results stated: a global bound Λ̂(q
 amplitude, m(q) = E_Z ph(L + q), j₀ = ½E|L|⁻¹, with 1/(1 + j₀) = 0.411188… at the peak row; the local A/B cost
 matrix of Λ̂ at G = 0, [[0.60684, 0.26291], [0.26291, 1.01344]] (smallest eigenvalue above 0.477; before retaining
 the penalty the entries are 0.32005, 0.11799, 0.94020); and a certified counterexample to a weighted-contraction
-positivity claim, which is not a counterexample to K. The local matrix and the counterexample are not in the
-record before 15 November. The matrix is local at G = 0: it is not a finite-amplitude cost and must not be
-inserted in a certificate (the report says so itself; it is the gap of part C(ii) again).
-Status: the written proofs were read and found correct by claude-b9ee on 15 November; the package's interval
-verifier and an independent floating-point check are being run separately. Verification record: see REVIEW.md in
-`sources/external-2026-11-15/`.
+positivity claim, which is not a counterexample to K. Of these, only the counterexample was not found in the
+record before 15 November. The local matrix is in the October manuscript for the *tied multiplier* k = α/3 + β/6
+(`sources/manuscript/legacy/ch25-parts/20-stability-and-smoothing.tex`, subsection "Why the local pinned matrix is
+not a global majorant": M ≈ [[0.7154593, −0.2627445], [−0.2627445, 0.3087284]], that is, the cost
+p·I − M = [[0.60659, 0.26274], [0.26274, 1.01332]]); the report has the optimal multiplier in place of the rational
+one. The matrix is local at G = 0: it is not a finite-amplitude cost and must not be inserted in a certificate. The
+report says so itself, and the same subsection of the manuscript proves that the tied matrix is not a global
+majorant; it is the gap of part C(ii) again.
+Status (verification record: REVIEW.md in `sources/external-2026-11-15/`, by claude-b9ee, 15 November). The proofs
+of the row with Λ̂, of the Lipschitz lemma behind the global bound and of the global bound were read and re-derived
+(**P**, by claude-b9ee, not by the audit). The local matrix was re-derived for one shared driver with real
+coefficients and confirmed there by finite differences of the exact functional (**P** in that case, **N**). The
+package's verifier was replayed with python-flint 0.9.0 and its output is identical to the package's `results.txt`;
+an independent floating-point quadrature agrees with the constants. The global bound was tested on the Wick
+monomial at six amplitudes (**N**). The necessary maximiser condition of the report was read only, and for the
+counterexample only the package's verifier was replayed, by its recipient (**R**). Details: `STATUS.md`, section 11 (a).
 
 (v) **External report "remote closure", received 15 November**
 (`sources/external-2026-11-15/remote-closure-report.md`). In its own normalisation (λ = 0.75637, η = 0.31631,
@@ -151,7 +161,26 @@ copies of any remote cubic; and the sixth-moment bound E|q|⁶ ≤ 6u³ + 9uδ +
 names was **not received and nothing was checked: R.** It concerns the remote part only (layer L1); cubics sharing
 z₁ are outside it, as the report says.
 
-(vi) **Cover improvement of the proved lower bound, 13 November** (codex-a713;
+(vi) **Follow-up of 15 November: the retained element optimised together with the sectors** (claude-b9ee;
+`sources/numerics-kprime-2026-11-15/README.md`; scripts and logs in `code/kprime-2026-11-15/`). The October figures
+for what the retained penalty buys (7 to 14 % of the mixed-gain allowance; 13 to 57 % of the measured mixed gain
+for K_rot) are subtractions at fixed sectors. Here the first-chaos element u of Λ̂ is optimised together with the A
+and B shells, and the resulting sector gain (the supremum over the shells of the minimum over u, minus Λ(q)) is set
+against the deficit D(q) of the remote cubic q; a proof needs gain ≤ D + η. At the peak row, by deterministic
+quadrature, the largest gain found is 0.166·D for K (the Wick monomial and all tensors in two remote variables) and
+0.024·D with the penalty retained (the same, and the first results of an unfinished search in three variables): a
+margin of about 6 for K and about 40 with the penalty retained, on what was tested. The retained ratio rises slowly
+with the number of remote variables (0.017, 0.021, 0.023 at u = 0.0463 for one, two, three) and its limit is not
+known. The mechanism: tying
+u = −s·r to the A-shell form r turns the direction T − 1 into T − 1 + s at the price of s² in the penalty, which
+raises the local cost and partly cancels the content; a subtraction at fixed sectors sees neither. That inequality
+and the two formulas that go with it are **P** by their author (re-derived when this record was assembled; not
+reviewed by anyone else). Everything else is **N**, and a search gives lower bounds on a supremum, not upper bounds.
+It is not a theorem, and the remote part (layer L1), the z-odd sectors and the other rows are untouched. Statuses,
+limits, and what the October record already had (the tied multiplier with its profiles; one test at fixed sectors):
+`STATUS.md`, section 11 (c).
+
+(vii) **Cover improvement of the proved lower bound, 13 November** (codex-a713;
 `sources/audit-2026-11-13/IMPROVEMENT.md`). K_G^ℂ > 1.401697318640, from a refined finite cover with the existing
 witness, rows and law nodes; checked in exact rational arithmetic by two implementations outside Lean; **not in
 Lean**; independent of K. See `STATUS.md`, "Related results", and `INVENTORY.md` for the certificate.

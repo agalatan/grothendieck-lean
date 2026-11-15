@@ -1,0 +1,4 @@
+monomial               tilt 0.5000  u 0.0200  D=0.0038481  gain 0.0001193  ratio 0.0310  |alpha| 0.0143  res 1.3e-16
+tilt search rs 0       tilt 0.5000  u 0.0200  D=0.0037618  gain 0.0001173  ratio 0.0312  |alpha| 0.0142  res 7.3e-17
+tilt search rs 1       tilt 0.5000  u 0.0200  D=0.0037715  gain 0.0001175  ratio 0.0312  |alpha| 0.0142  res 1.7e-17
+tilt search rs 2       tilt 0.5000  u 0.0200  D=0.0037665  gain 0.0001173  ratio 0.0311  |alpha| 0.0142  res 1.4e-16

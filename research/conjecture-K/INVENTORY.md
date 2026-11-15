@@ -1,22 +1,26 @@
 # Inventory: what was left outside the repository
 
-This folder holds text, scripts and small JSON only. Everything else stays in the git-ignored working folders on the
-laptop, under `/Users/alingalatan/workspaces/grothe/handoff/`. This file lists what was left there on 15 November
-2026, with absolute paths, sizes and one line each, and the SHA-256 of the files a result depends on.
+This folder holds text, scripts, small JSON and a few small logs only. Everything else stays in the git-ignored
+working folders on the laptop, under `/Users/alingalatan/workspaces/grothe/handoff/`. This file lists what was left
+there on 15 November 2026, with absolute paths, sizes and one line each, and the SHA-256 of the files a result
+depends on.
 
 **Rules applied.** Copied: `.md`, `.tex`, `.txt` documents; `.py`, `.mjs`, `.cpp` scripts; JSON result files of at
 most 300 KB. Left out: zips, certificates and data above 300 KB, logs, binaries, PDFs, byte-code caches, third-party
-libraries, shell scripts, and documents that are not about Conjecture K.
+libraries, shell scripts, and documents that are not about Conjecture K. One exception to "no logs": the logs and
+JSON-lines records of the review and of the numerical follow-up of 15 November (each at most a few KB) are in the
+repository, under `sources/external-2026-11-15/review/` and `code/kprime-2026-11-15/`, because `REVIEW.md` and the
+write-up of the follow-up cite them as their record.
 
 **Completeness.** Every file under `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/` is either in
 this repository folder or covered by a row of sections 1 to 4 below (checked by script when this file was generated:
-no file unaccounted for). Sections 5 and 6 cover the K-related parts of two larger folders, which also hold material
-on other subjects that is not listed.
+no file unaccounted for). One working folder, `kprime-2026-11-15/`, was still being written at that time; section 4
+has a row for whatever appeared there after its copy was taken, and no such row if nothing did. Sections 5 and 6
+cover the K-related parts of two larger folders, which also hold material on other subjects that is not listed.
 
 **Not copied although they are text:** seven byte-identical copies of `sources/received-2026-11-05/hermitian_content/proof.md`
-that later packages ship as `kernel_proof.md` or `benchmark_kernel_proof.md`; the `upstream/` copies inside packages;
-and the review of 15 November (`external-2026-11-15/REVIEW.md` with its `review/` folder), which its author adds
-separately.
+that later packages ship as `kernel_proof.md` or `benchmark_kernel_proof.md`, and the `upstream/` copies inside
+packages.
 
 ## Files in the repository whose hashes matter
 
@@ -130,9 +134,6 @@ listed by an earlier row. "SHA-256" is given for single files that a result or a
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/kscan-2026-11-13/out1/` | 180 | 3.5 MB | Pass 1 of the global search: 180 files, 840 runs with their coefficient vectors (summary: `code/kscan-2026-11-13/out1-summary.json`). |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/kscan-2026-11-13/tables-peak.npz` | 1 | 21.6 KB | Kernel table of the global search; regenerate with `tables.py`. |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/tailgames-2026-11-14/*.log` | 11 | 29.3 KB | Logs of the identity-tail exploration (the sources of the numbers in its README: `sanity.log`, `cp_*.log`, `two.log`, `scan2.log`, `scan3.log`, `htriv.log`, `m3_*.log`). |
-| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/external-2026-11-15/REVIEW.md` | 1 | 6.7 KB | The review of the two reports of 15 November by claude-b9ee. It appeared while this folder was being assembled and was left for its author to add (`sources/external-2026-11-15/REVIEW.md`). |
-| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/external-2026-11-15/review/` | 9 | 16.1 KB | Scripts and logs of that review (replay of the package's verifier, independent checks). |
-| `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/kprime-2026-11-15/` | 31 | 74.4 KB | Outputs of a search that was started on 15 November at 01:42, while this folder was being assembled (files `k_*` and `kp_*`). In progress; not read; not part of this record. |
 
 ### 5. October material that was not copied (`handoff/research-third-decimal/`)
 
@@ -153,7 +154,7 @@ listed by an earlier row. "SHA-256" is given for single files that a result or a
 | `/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/pipeline/kproof/` | 17 | 9.6 MB | Scripts and data of worker K2 (the notes are in the repository). |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/pipeline/kclt/` | 17 | 158.8 KB | Scripts and logs of worker K3 (the notes are in the repository). |
 | `/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/PROMPT_GPT_*.md` | 6 | 25.4 KB | Prompts of 21 and 22 October that are not about K (response covers, slice and multislice bands, Gram and fine-mesh certificates, improving the lower bound without K). |
-| `/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/gpt-reviews/` | 535 | 75.0 MB | The 71 review folders of the packages of 15 to 22 October behind the manuscript chapters. `remote-diagonal-20261015/` is the source of the remote cap of `STATUS.md` 3.2 (not replayed by the audit). |
+| `/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/gpt-reviews/` | 530 | 75.0 MB | The 71 review folders of the packages of 15 to 22 October behind the manuscript chapters. `remote-diagonal-20261015/` is the source of the remote cap of `STATUS.md` 3.2 (not replayed by the audit). Five notes of `weak-k-20261015/package/` are in the repository (`sources/october-handoff/weak-k-2026-10-15/`). |
 
 ### 6. The October manuscript (`handoff/manuscript/`)
 
