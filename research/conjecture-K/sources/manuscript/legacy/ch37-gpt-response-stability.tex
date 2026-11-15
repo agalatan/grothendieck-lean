@@ -1,0 +1,799 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch37-gpt-response-stability.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 37). Owner: lower-bound/06-original-responses.tex
+\section{Lower-bound GPT: response stability of near-maximizers, exact K for one-coordinate remote cubics, and complex orbit constraints (20 October)}\label{ch:response-stability}
+\chapsummary{Near-maximizer constraints, remote-cubic special cases and complex orbit tools. Stationarity belongs to the original unconstrained norm problem in fixed dimension, not to every fixed-row response.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's three fragments \code{chapter\_fresh\_second\_chaos.tex}, \code{core\_fibre\_theorem.tex} and
+\code{chapter\_complex\_orbits.tex} from \pathref{gpt-reviews/k-forest-20261020/}, ported verbatim apart from this header and the demotion of the orbit chapter to a section.
+\emph{Our replay} \st{C}: \code{verify\_all.py} under \code{python -I} in an isolated venv with the pinned \code{python-flint 0.9.0} and \code{sympy 1.14.0}, from an unrelated directory:
+\textbf{ALL SIX REPLAYS PASS in 6.8\,s}. These are exact identity and certificate checks (Arb profile $L^1$, peak anchor, core-fibre cone, fresh second-chaos coefficients and saddle,
+2{,}929 Beta/Hermite cases and 8{,}379 singular-value duals, the weighted Bessel Schur identities), not a large cover. Log \pathref{gpt-reviews/k-forest-20261020/replay\_ide.log}.
+The strategy notes (INTEGRATION.md) are in the package.
+\providecommand{\eps}{\varepsilon}\providecommand{\ph}{\operatorname{phase}}
+
+% Self-contained section fragment; requires amsmath and amssymb.
+\subsection{A fresh second-chaos stability cut on actual response pairs}
+\label{sec:fresh-second-chaos-stability}
+
+This section proves a necessary condition on near-maximizers of the
+original cubic witness. It does not prove Conjecture K or a numerical
+Grothendieck endpoint. Put $T=P-\varepsilon Q$, with
+$P=P_{1,0}$, $Q=P_{2,1}$ and $0<\varepsilon\le1$, and let
+\[
+ M=\sup_{n,\ |f|,|g|\le1}\operatorname{Re}\langle f,Tg\rangle.
+\]
+Scalar products are conjugate-linear in their first argument. The
+supremum is over all finite-dimensional proper complex Gaussian spaces.
+
+\paragraph{Exact finite-amplitude theorem.}
+Adjoin an independent standard proper complex Gaussian $U$ and put
+$Y=|U|^2-1$. For arbitrary real measurable multipliers $A,B$ on the
+original coordinates, set
+\[
+ f_t=f e^{itAY},\qquad g_t=g e^{itBY},\qquad
+ m_0(x)=\frac{e^{-ix}}{1-ix},\qquad
+ m_1(x)=\frac{ix e^{-ix}}{(1-ix)^2}.
+\]
+Then, exactly,
+\begin{align*}
+ Pf_t&=P(fm_0(tA)),\\
+ Qf_t&=Q(fm_0(tA))+Y P(fm_1(tA)).
+\end{align*}
+The projections on the right act in the original coordinates. Hence
+\begin{equation}\label{eq:fresh-exact-value}
+ J_t:=\operatorname{Re}\langle f_t,Tg_t\rangle
+ =\operatorname{Re}\langle fm_0(tA),T(gm_0(tB))\rangle
+ -\varepsilon\operatorname{Re}\langle P(fm_1(tA)),P(gm_1(tB))\rangle.
+\end{equation}
+In particular, $J_t\le M$. If $J_0\ge M-\delta$, this gives the finite cut
+\begin{equation}\label{eq:fresh-finite-cut}
+ \frac{J_t+J_{-t}}2-J_0\le\delta.
+\end{equation}
+There is no attainment assumption, limiting Gaussian replacement or
+tail truncation in these statements.
+
+For the proof, all Hermite modes of a radial function of $U$ have
+bidegree $(j,j)$. Only $j=0,1$ can contribute to $P$ or $Q$;
+their normalized modes are $1$ and $Y$. Direct integration gives
+$\mathbb E e^{ixY}=m_0(x)$ and
+$\mathbb E[Y e^{ixY}]=m_1(x)$. Product Hermite orthogonality proves the
+two projection identities, and the two terms of $Qf_t$ are orthogonal.
+Also $|m_0|\le1$ and $|m_1|\le1/2$, so the formula remains integrable
+for unbounded measurable multipliers. No charge-homogeneity assumption
+on $A,B,f,g$ is needed.
+
+These cuts give a direct upper-bound dual on the original norm.
+Let $C_j=(J_{t_j}+J_{-t_j})/2-J_0$ be finitely many such gains and
+let $\lambda_j\ge0$ have a uniformly bounded sum. The tests and prices
+may depend on the response pair. Then
+\[
+ M\le\sup_{f,g,n}\left\{J_0-\sum_j\lambda_j C_j\right\}.
+\]
+Indeed, along any sequence $J_0\to M$, each $C_j\le M-J_0$,
+so the expression in braces has lower limit at least $M$.
+Thus a global certificate for this bracket would bound the norm
+directly, without requiring Conjecture K for every arbitrary residual.
+Keeping only positive gains sharpens this to the exact identity
+\[
+ \boxed{M=\sup_{f,g,n}\left\{J_0-
+                     \sum_j\lambda_j(C_j)_+\right\}.}
+\]
+The right side is at most $M$ by nonnegativity of the penalty, while
+the preceding near-maximizer argument proves the reverse inequality.
+Pair-dependent prices require a uniformly bounded total. A maximum
+of finitely many positive gains may be used instead of their sum.
+
+\paragraph{Quantitative Hessian theorem.}
+Suppose $|A|,|B|\le K$, and define the real weights and quadratic form
+\[
+ a=\operatorname{Re}(\overline f\,Tg),\quad
+ b=\operatorname{Re}(\overline g\,Tf),\qquad
+ H(A,B)=\mathbb E(aA^2+bB^2)
+       +2\varepsilon\operatorname{Re}\langle P(fA),P(gB)\rangle.
+\]
+The weights need not be nonnegative. For every real $t$,
+\begin{equation}\label{eq:fresh-fourth-remainder}
+ \left|\frac{J_t+J_{-t}}2-J_0+\frac{t^2}2H(A,B)\right|
+ \le\left(\frac{13}4+3\varepsilon\right)K^4t^4.
+\end{equation}
+Consequently every $\delta$-near-maximizer satisfies
+\begin{equation}\label{eq:fresh-near-max-hessian}
+ \boxed{H(A,B)\ge-4\sqrt{(13/4+3\varepsilon)\delta}\,K^2
+                    \ge-10K^2\sqrt\delta.}
+\end{equation}
+
+Here is a global remainder proof using only
+$\mathbb EY=0$, $\mathbb EY^2=1$ and $\mathbb EY^4=9$.
+The symmetrized payoff is the sum of the cosine-pair and sine-pair
+payoffs. In the cosine pair, the two single increments have total
+fourth-order remainder at most $3K^4t^4/4$, because
+$|\cos x-1+x^2/2|\le x^4/24$ and
+$\|Tf\|_1,\|Tg\|_1\le1$. The product of the two cosine increments
+has absolute value at most $9K^4t^4/4$, using
+$|\cos x-1|\le x^2/2$ and $\|T\|_{2\to2}\le1$.
+
+For the sine pair write
+$s_0(A)=\mathbb E_Y\sin(tAY)$ and
+$s_1(A)=\mathbb E_Y[Y\sin(tAY)]$. The elementary bounds are
+\[
+ |s_0(A)|\le t^2K^2/2,\qquad |s_1(A)|\le |t|K,
+ \qquad |s_1(A)-tA|\le3|t|^3K^3/2.
+\]
+The old-coordinate sine contribution is therefore at most
+$K^4t^4/4$ in absolute value. By the same projection decomposition as
+above, the new-coordinate contribution is
+$-\varepsilon\operatorname{Re}\langle P(fs_1(A)),P(gs_1(B))\rangle$;
+its error from the quadratic term is at most
+$3\varepsilon K^4t^4$. The four remainder constants sum to
+$13/4+3\varepsilon$, proving \eqref{eq:fresh-fourth-remainder}.
+If $H=-h<0$, maximize $ht^2/2-CK^4t^4$ in $t^2$. Its maximum is
+$h^2/(16CK^4)$ and cannot exceed $\delta$ by
+\eqref{eq:fresh-finite-cut}; this proves
+\eqref{eq:fresh-near-max-hessian}.
+
+The necessary inequality remains valid if its weights $a,b$ are
+replaced by $|Tg|,|Tf|$, since this only enlarges $H$. Thus the
+positive-weight form applies to every near-maximizer, even without
+exact best-response identities. For real multipliers in $L^8$ the same
+argument replaces $(13/4+3\varepsilon)K^4$ by
+\begin{align*}
+ C(A,B)={}&\frac38\{\mathbb E(|Tg|A^4)+\mathbb E(|Tf|B^4)\}
+       +\frac52\|A\|_4^2\|B\|_4^2\\
+ &+\frac{3\varepsilon}2
+       (\|A\|_6^3\|B\|_2+\|A\|_2\|B\|_6^3).
+\end{align*}
+The two weighted expectations are at most $\|A\|_8^4$ and
+$\|B\|_8^4$. This gives an explicit Gaussian-moment version for
+polynomial multipliers, with $H\ge-4\sqrt{C(A,B)\delta}$.
+Equivalently the explicit penalty
+\[
+ D(A,B)=\frac{H(A,B)_-^2}{16C(A,B)}\le M-J_0
+\]
+gives, for every fixed finite $\lambda\ge0$,
+\[
+ \boxed{M=\sup_{f,g,n}\{J_0-\lambda D(A,B)\}.}
+\]
+Set $D=0$ when $C=0$; then the relevant multiplier norms and $H$
+vanish. Finite sums with nonnegative bounded-total prices and the
+absolute-weight version of $H$ are permitted. This is an exact
+reformulation of the original norm, not an added hypothesis about
+arbitrary cubic perturbations.
+
+For finite bounded real features $A_i,B_j$, set
+\[
+ D_f[i,j]=\mathbb E(|Tg|A_iA_j),\quad
+ D_g[i,j]=\mathbb E(|Tf|B_iB_j),\quad
+ C[i,j]=\operatorname{Re}\langle P(fA_i),P(gB_j)\rangle.
+\]
+If $\sum_iA_i^2\le K^2$ and $\sum_jB_j^2\le K^2$ pointwise, then
+every $\delta$-near-maximizer satisfies the finite Gram constraint
+\[
+ \begin{pmatrix}D_f&\varepsilon C\\
+                 \varepsilon C^{\mathsf T}&D_g\end{pmatrix}
+ \succeq-10K^2\sqrt\delta\,I.
+\]
+One implementable family is the clipped weighted scores
+$\operatorname{clip}(\operatorname{Re}(\overline f\ell_i)/
+(|Tg|+\tau),-K_i,K_i)$, with $\tau>0$, and their $g$ analogues.
+
+\paragraph{Weighted first-chaos matrix.}
+At an attained dimension-free maximum, replace the responses by phase
+best responses, so $f=\operatorname{phase}(Tg)$,
+$g=\operatorname{phase}(Tf)$, $a=|Tg|$, $b=|Tf|$.
+On the realification of the first-chaos space, define
+\[
+ M_f(u,v)=\mathbb E\frac{
+ \operatorname{Re}(\overline f\,\ell_u)
+ \operatorname{Re}(\overline f\,\ell_v)}{a},
+ \qquad
+ M_g(u,v)=\mathbb E\frac{
+ \operatorname{Re}(\overline g\,\ell_u)
+ \operatorname{Re}(\overline g\,\ell_v)}{b}.
+\]
+When the matrices are finite, a necessary condition is
+\begin{equation}\label{eq:fresh-matrix}
+ \boxed{\varepsilon^2\lambda_{\max}
+       (M_f^{1/2}M_gM_f^{1/2})\le1.}
+\end{equation}
+Indeed the zero-error Hessian inequality, with scaling and a sign change
+of $B$, gives
+\[
+ \varepsilon|\operatorname{Re}\langle P(fA),P(gB)\rangle|
+ \le\sqrt{\mathbb EaA^2\,\mathbb EbB^2}.
+\]
+The adjoint of $A\mapsto P(fA)$ in real $L^2(a\,d\gamma)$ is
+$u\mapsto\operatorname{Re}(\overline f\ell_u)/a$, whose covariance
+matrix is $M_f$. Truncation of multipliers proves the assertion for
+the weighted spaces. This operator formulation handles singular
+matrices without writing inverses. For near-maximizers one must use
+bounded multipliers and the error in
+\eqref{eq:fresh-near-max-hessian}, rather than silently imposing
+\eqref{eq:fresh-matrix}. A fixed-dimensional maximizer alone need not
+satisfy \eqref{eq:fresh-matrix}, since adjoining $U$ may improve its value.
+
+At the diffuse Gaussian critical response, a first-chaos direction
+independent of the response has
+$M_f=M_g=\varepsilon^{-1}I$, by the scalar buffer stationarity equation
+$\mathbb E|L+\sqrt vW|^{-1}=2/\varepsilon$. Thus the new matrix constraint
+is exactly active in unused remote directions. This contrasts with the
+strict slack of radial weighted-Bessel and global orbit constraints.
+It does not show that every shared non-Gaussian core violates the cut.
+
+\paragraph{An exact exclusion test.}
+Take $\varepsilon=1$ and $f=g=\operatorname{phase}(Z)$. Then
+\[
+ Pf=\frac{\sqrt\pi}2 Z,\qquad
+ Qf=-\frac{\sqrt\pi}{4\sqrt2}H(Z),\qquad
+ Tf=\frac{\sqrt\pi}2 Z\left(\frac12+\frac{|Z|^2}4\right).
+\]
+This pair is a mutual phase best response with value $7\pi/32$.
+For the bounded multipliers $A=1$, $B=-1$, however,
+$H(A,B)=-\pi/16<0$. More concretely, $t=1/8$ in
+\eqref{eq:fresh-exact-value} gives $J_t-J_0>27/32000$.
+The standalone checker verifies this by rational alternating-series
+enclosures for $\cos(1/4)$ and $\sin(1/4)$ and the inequality $\pi>3$.
+This proves that the cut supplies information beyond phase
+best-response and first-order stationarity.
+
+There is also an exact bounded exclusion at the actual peak price
+$\varepsilon=1891/2500$. Add an unused remote first-chaos Gaussian $X$
+and put
+\[
+ u(T)=\min(T^{-1/2},100),\qquad
+ A=\operatorname{Re}(X\overline{\operatorname{phase}(Z)})
+       u(|Z|^2)\,\mathbf1_{\{|X|\le4\}},\qquad B=-A.
+\]
+Here $|A|\le400$. With $j=1-17e^{-16}$ and $I=\mathbb Eu(T)$,
+direct angular integration gives
+\[
+ H(A,-A)=j\mathbb E[|T\operatorname{phase}(Z)|u(T)^2]
+                 -\frac\varepsilon2j^2I^2.
+\]
+The elementary estimates
+$j\ge1-17/65536$, $I\ge\sqrt\pi-1/50>7/4$, and
+\[
+ \mathbb E[|T\operatorname{phase}(Z)|u(T)^2]
+ \le\frac\pi2\left(1-\frac{3\varepsilon}8\right)
+\]
+together with $\pi<22/7$ give $H(A,-A)<-1/32$ by rational
+arithmetic. The checker verifies the last comparison and the
+needed rational bounds on $\pi$. The large clipping bound makes
+this an exact separation example, not evidence that the coarse
+near-maximizer error constant is efficient in a numerical certificate.
+
+\paragraph{Scope.}
+General nonlinear measure-preserving first variations offer no free
+shortcut: wherever $Tg\ne0$, differentiation of
+$f=\operatorname{phase}(Tg)$ gives
+$\operatorname{Re}(\overline{Tg}\,Df)=0$ pointwise. Linear unitary
+rotations are useful because they commute with $P,Q$ and rewrite this
+identity in the penalized coefficients. Nonlinear transports introduce
+unpriced higher-chaos commutators. The present theorem instead uses
+simultaneous response perturbations and an exact new $(1,1)$ mode.
+
+To obtain a numerical endpoint one still has to select bounded
+multipliers detecting the dangerous shared-sector region, combine the
+cut with the response-consistency dual, and certify a complete row
+cover. No such global optimization is claimed here.
+
+% Proposed manuscript insertion; this is an input fragment, not a replacement main file.
+% Requires amsmath, amssymb. No project-specific macros are used.
+\subsection{An exact remote comparison joining a coherent core and latent factors}
+\label{sec:remote-core-factor-cone}
+
+This result concerns a residual independent of the visible coordinate. It does
+not settle the shared-visible $A/B$ obligation, and changes no global endpoint.
+It does combine a coherent cubic core with arbitrary latent Gaussian factors
+without a central-limit error.
+
+Suppose $L\overset d=\sqrt V Z$, where $Z$ is a standard proper complex Gaussian,
+$V\ge0$, and $\mathbb E\sqrt V<\infty$. Let $X,G$ be standard proper complex
+Gaussians. Assume that $X$, $G$, $L$, and the jointly square-integrable
+coefficient vector $(c,C,D,U,A,Q_0)$ are mutually independent random objects. Put
+\[
+ H(X)=\frac{X(|X|^2-2)}{\sqrt2},\qquad
+ Q=cH(X)+CX+D\overline X+\frac{UX^2}{\sqrt2}
+          +A(|X|^2-1)+Q_0.
+\]
+The coefficients may be arbitrarily dependent on each other. Orthogonality in
+$X$ gives
+\[
+ v:=\mathbb E|Q|^2
+ =\mathbb E\bigl(|c|^2+|C|^2+|D|^2+|U|^2+|A|^2+|Q_0|^2\bigr).
+\]
+For $g\ge0$ define
+\[
+ f(v)=\sqrt\pi\,\mathbb E\sqrt{V+g^2+v},\qquad
+ d=-\frac v2f''(v),\quad
+ d_3=-vf''(v)-\frac{v^2}2f'''(v),\quad
+ d_0=\frac{f(v)-f(0)}v-f'(v).
+\]
+For $v>0$, the following exact upper bound holds:
+\begin{equation}\label{eq:remote-core-factor-exact}
+\begin{split}
+ \mathbb E|L+Q+gG|+\mathbb E|L-Q-gG|
+ \le{}& f(v)-d_3\mathbb E|c|^2-d\mathbb E|U|^2
+           -2\sqrt2\,d\,\Re\mathbb E[c\overline C]\\
+      &+d_0\mathbb E|Q_0-A|^2-2d\mathbb E|A|^2.
+\end{split}
+\end{equation}
+The coefficients satisfy
+\begin{equation}\label{eq:remote-core-factor-ranges}
+ \frac d2\le d_3\le2d,\qquad d\le d_0\le4d.
+\end{equation}
+
+For an actual $(2,1)$-chaos expansion along $X$, $c$ is constant, the remote
+bidegrees of $(C,D,U,A,Q_0)$ are respectively
+$(1,1),(2,0),(0,1),(1,0),(2,1)$, and hence
+$\mathbb EC=0$ and $\mathbb E[Q_0\overline A]=0$.
+In particular, the sufficient condition
+\begin{equation}\label{eq:remote-core-factor-cone}
+ |c|^2+2\mathbb E|U|^2\ge4\mathbb E|A|^2+8\mathbb E|Q_0|^2
+\end{equation}
+gives exact domination by the variance-matched independent Gaussian. The
+retained deficit is at least
+\[
+ d\left(\frac{|c|^2}2+\mathbb E|U|^2
+       -2\mathbb E|A|^2-4\mathbb E|Q_0|^2\right).
+\]
+Thus when $A=Q_0=0$, a coherent Wick core may coexist with arbitrary latent
+factors $CX+D\overline X+UX^2/\sqrt2$ at every amplitude. Subtracting
+$(v+g^2)/\varepsilon$ gives the corresponding exact comparison with the
+Gaussian benchmark for every positive price $\varepsilon$.
+
+\paragraph{Proof.}
+Write $B=V+g^2$ and $F(u)=2\mathbb E|\sqrt BZ+\sqrt u|$.
+The square-root Laplace formula and a Gaussian integral give, for fixed $B=b$,
+\begin{equation}\label{eq:remote-core-factor-bernstein}
+ F_b(u)=\sqrt{\pi b}+\frac1{\sqrt\pi}
+ \int_0^{1/b}(1-e^{-tu})\frac{\sqrt{1-bt}}{t^{3/2}}\,dt.
+\end{equation}
+At $b=0$ the upper endpoint is infinity. Thus $F$ is increasing and concave,
+and $F'(u)\le u^{-1/2}$ for $u>0$. Set $R=|X|^2$, which is exponential with
+mean one. Circularity gives the left side of
+\eqref{eq:remote-core-factor-exact} as $\mathbb EF(|Q|^2)$, whereas
+$\mathbb EF(vR)=f(v)$. The concave tangent at $vR$ therefore gives
+\[
+ \mathbb EF(|Q|^2)\le f(v)+\mathbb E[F'(vR)|Q|^2]-vf'(v).
+\]
+The weighted term is integrable by $F'(vR)\le(vR)^{-1/2}$ and the finite
+exponential moments of $R$.
+
+Averaging the phase of $X$ leaves only two cross terms, $cH$ with $CX$, and
+$Q_0$ with $A(R-1)$. The five diagonal radial weights are
+\[
+\begin{array}{c|c}
+1 &(f(v)-f(0))/v\\
+X,\overline X &f'(v)\\
+X^2/\sqrt2 &f'(v)+vf''(v)/2\\
+R-1 &(f(v)-f(0))/v+vf''(v)\\
+H(X) &f'(v)+vf''(v)+v^2f'''(v)/2.
+\end{array}
+\]
+The two off-diagonal weights are $vf''(v)/\sqrt2=-\sqrt2d$ and
+$f'(v)-(f(v)-f(0))/v=-d_0$. These identities follow directly from
+$\mathbb E[R^j t e^{-tvR}]=j!t/(1+tv)^{j+1}$ applied to the Bernstein
+representation \eqref{eq:remote-core-factor-bernstein}. Substitution proves
+\eqref{eq:remote-core-factor-exact}.
+
+To prove \eqref{eq:remote-core-factor-ranges}, put
+\[
+ r=\sqrt{\frac B{B+v}},\qquad
+ h=\frac{\sqrt\pi v}{8(B+v)^{3/2}}.
+\]
+Direct differentiation gives
+\[
+ d=\mathbb Eh,\qquad
+ d_3=\mathbb E\!\left[h\left(\frac12+\frac32r^2\right)\right],\qquad
+ d_0=\mathbb E\!\left[\frac{4h}{(1+r)^2}\right].
+\]
+Since $0\le r<1$, the claimed ranges follow. Under cubic orthogonality, the
+exact deficit decomposes as
+\begin{align*}
+ &d_3|c|^2+d\mathbb E|U|^2-(d_0-2d)\mathbb E|A|^2-d_0\mathbb E|Q_0|^2\\
+ &\quad=d\left(\frac{|c|^2}2+\mathbb E|U|^2
+                   -2\mathbb E|A|^2-4\mathbb E|Q_0|^2\right)
+       +(d_3-d/2)|c|^2+(4d-d_0)(\mathbb E|A|^2+\mathbb E|Q_0|^2),
+\end{align*}
+whose last two terms are nonnegative. The case $v=0$ is immediate.
+\hfill$\square$
+
+The accompanying self-contained script \texttt{check\_core\_fibre.py} checks
+51 finite identities in exact arithmetic. The arbitrary-dimensional result
+follows from the proof above, not from a pattern enumeration. The shared
+visible $A/B$ coefficients cannot be substituted for the latent coefficients:
+they depend on the visible variable and invalidate the first averaging step.
+
+\subsubsection{An optimized tangent proves exact K for every remote star kernel}
+
+At the exact peak profile $a=699/1250$, $b=179/1250$ and
+$\varepsilon=1891/2500$, let $w_*$ maximize
+$\varphi(w)-w/\varepsilon$, where
+$\varphi(w)=\sqrt\pi\,\mathbb E\sqrt{V+w}$.
+A scalar interval certificate proves
+\[
+ 0.0403448<w_*<0.0403449,
+\]
+and, at $g=0$, $v=w_*$,
+\[
+ d>\frac{45}{1000},\quad d_3>\frac{77}{1000},\quad
+ 2d-d_0>\frac{39}{1000},\quad d_0<\frac{52}{1000}.
+\]
+For every remote cubic in the expansion above and every independent Gaussian
+buffer, put $\theta_g=(1-g^2/w_*)_+$. Then
+\begin{equation}\label{eq:remote-star-optimized}
+ \boxed{\Lambda(Q+gG)\le S-\frac{\theta_g}{1000}
+  \left(77|c|^2+45\mathbb E|U|^2+39\mathbb E|A|^2
+                            -52\mathbb E|Q_0|^2\right).}
+\end{equation}
+In particular, $Q_0=0$ gives exact K for every remote cubic whose Hermite
+monomials all involve one chosen remote coordinate, in arbitrary dimension
+and at every amplitude. The arbitrary latent coefficients may be dependent.
+The centered quadratic fibre $A(|X|^2-1)$ here is remote; it is not the open
+visible shared-$A$ sector. More generally,
+$77|c|^2+45\mathbb E|U|^2+39\mathbb E|A|^2\ge52\mathbb E|Q_0|^2$
+suffices. The factor $\theta_g$ must not be omitted.
+
+For the proof, if $g^2<w_*$ anchor the concave tangent at
+$(w_*-g^2)|X|^2$, regardless of the actual variance of $Q$.
+Its first-chaos weight is exactly $\varphi'(w_*)=1/\varepsilon$, so the
+variance price cancels at every amplitude. In the component formulas above,
+$r_g=\sqrt{(V+g^2)/(V+w_*)}$ increases with $g^2$, and the common factor is
+$\theta_g$ times its value at $g=0$. Therefore
+\[
+ d_g=\theta_gd_*,\quad (d_3)_g\ge\theta_g(d_3)_*,\quad
+ (d_0)_g\le\theta_g(d_0)_*,\quad
+ 2d_g-(d_0)_g\ge\theta_g(2d_*-(d_0)_*).
+\]
+These inequalities prove \eqref{eq:remote-star-optimized}. If $g^2\ge w_*$,
+the tangent at zero instead gives, for every square-integrable remote $Q$,
+\[
+ \Lambda(Q+gG)\le\varphi(g^2)-g^2/\varepsilon
+ +(\varphi'(g^2)-1/\varepsilon)\mathbb E|Q|^2\le S.
+\]
+
+\paragraph{Scalar certificate.}
+The included finite Gaussian-mixture density witness has radial $L^1$ error
+at most $e=10^{-11}$ and doubled radius-weighted $L^1$ error at most $e$.
+Its finite-cell and infinite-tail replay is included. For the Gaussian-smoothed
+twice-norm, the first three derivative kernels have supremum at most
+\[
+ \frac{\sqrt\pi}{2\sqrt w},\qquad
+ \frac{\sqrt{2\pi}}{w^{3/2}},\qquad
+ \frac{8\sqrt{2\pi}}{w^{5/2}},
+\]
+respectively. Indeed the first kernel is the convolution of $1/(2|z|)$ with
+the variance-$w$ Gaussian. For $p_w(z)=e^{-|z|^2/w}/(\pi w)$, direct
+calculation yields $|\partial_wp_w|\le4p_{2w}/w$ and
+$|\partial_w^2p_w|\le32p_{2w}/w^2$, by the elementary bounds
+$x+1\le2e^{x/2}$ and $x^2+4x+2\le16e^{x/2}$ for $x\ge0$.
+Convolution gives the stated derivative bounds. Multiplication by $e$
+therefore bounds every derivative error used by the certificate.
+
+The script \texttt{check\_peak\_anchor.py} encloses the derivative signs at
+both rational endpoints of the displayed interval, then certifies all four
+rational coefficient bounds throughout that interval. The optimizer is
+implicit but rigorously enclosed; the conclusion is exact K, not a slack
+version. This result enlarges a remote class and does not prove K for shared
+visible $A/B$ couplings or change a numerical Grothendieck endpoint.
+
+\paragraph{Two-coordinate corollary.}
+Every remote $q\in H_{2,1}(\mathbb C^2)$ satisfies
+\[
+ \boxed{\Lambda(q+gG)\le S-\frac{\theta_g}{80}\mathbb E|q|^2.}
+\]
+To see this, write the six orthonormal coefficients as $c_1,c_2$ for the
+diagonal Wick terms, $u_1,u_2$ for
+$X^2\overline Y/\sqrt2,Y^2\overline X/\sqrt2$, and $a_1,a_2$ for
+$Y(|X|^2-1),X(|Y|^2-1)$. Average \eqref{eq:remote-star-optimized} with $X$
+as the chosen coordinate and with $Y$ as the chosen coordinate. The result is
+\[
+ \Lambda(q+gG)\le S-\frac{\theta_g}{2000}
+ \left[25(|c_1|^2+|c_2|^2)+45(|u_1|^2+|u_2|^2)
+                         +39(|a_1|^2+|a_2|^2)\right].
+\]
+The smallest coefficient is $1/80$. Thus this entire class has a global
+quantitative proof based on four scalar bounds, rather than a cover of the
+cubic coefficient space.
+
+\subsection{Exact complex orbit
+constraints}\label{exact-complex-orbit-constraints}
+
+All sphere measures below are normalized. A standard proper complex
+Gaussian has density \texttt{exp(-\textbar{}z\textbar{}\textsuperscript{2})/\ensuremath{\pi}}. Gaussian
+Hermite projections are denoted by \texttt{P\_\{p,q\}}. The ambient
+Gaussian dimension is arbitrary and finite; every inequality extends by
+the usual finite-dimensional conditional-expectation approximation.
+
+\subsubsection{1. A six-point complex orbit is
+nonvacuous}\label{a-six-point-complex-orbit-is-nonvacuous}
+
+Take the six unit vectors in C\textsuperscript{2} that are eigenvectors of the three Pauli
+matrices, two eigenvectors for each matrix. Let \texttt{G} be their Gram
+matrix. Then the complex phase optimum of the positive-semidefinite
+matrix G is
+
+\[
+ \max_{|z_i|=1}z^*Gz=9+3\sqrt6,
+\]
+
+whereas its vector SDP optimum is exactly 18. Thus the ratio is
+\texttt{2(3-sqrt(6))\ \textgreater{}\ 1}.
+
+\textbf{Proof.} The six vectors form a tight frame with frame operator
+\texttt{3I\textsubscript{2}}, so G has eigenvalues 3,3,0,0,0,0. The SDP dual
+\texttt{3I\textsubscript{6}-G\ \textgreater{}=\ 0} gives 18; choosing the six original
+vectors as the vector assignment gives \texttt{tr(G\textsuperscript{2})=18}.
+
+The scalar optimum is \[
+ \left(\max_{\|u\|=1}\sum_i|\langle u,v_i\rangle|\right)^2.
+\] For a unit vector u with Bloch vector \texttt{(n\textsubscript{1},n\textsubscript{2},n\textsubscript{3})},
+\texttt{sum\ n\_j\textsuperscript{2}=1}, the sum is \[
+ \sum_{j=1}^3\sqrt{1+\sqrt{1-n_j^2}}.
+\] The function \texttt{x\ -\textgreater{}\ sqrt(1+sqrt(1-x))} is
+concave on \texttt{{[}0,1{]}}. Jensen gives at most
+\texttt{3\ sqrt(1+sqrt(2/3))}; equality occurs at \texttt{n\_j\textsuperscript{2}=1/3}.
+Squaring proves the claim.
+
+This disproves the possibility that all small complex orbit constraints
+are vacuous. It is not itself competitive with the existing Grothendieck
+lower bound.
+
+\subsubsection{2. The sharp unanchored sphere
+hierarchy}\label{the-sharp-unanchored-sphere-hierarchy}
+
+For every disk-valued Gaussian function f and integer
+\texttt{m\ \textgreater{}=\ 2}, \[
+ \sum_{k\ge0} w_k^{(m)}\|P_{k+1,k}f\|_2^2\le b_m,
+ \qquad
+ w_k^{(m)}=\frac{m!(k+1)!}{(m+k)!},
+\] \[
+ b_m=\frac{m\pi}{4}
+       \left(\frac{\Gamma(m)}{\Gamma(m+1/2)}\right)^2.
+\tag{2.1}
+\] Other charge sectors of f are permitted: they simply do not
+contribute on the left. In particular, \[
+ \sum_{k\ge0}\frac{2}{k+2}\|P_{k+1,k}f\|_2^2\le\frac89.
+\tag{2.2}
+\] The phase of one Gaussian coordinate gives equality in every member
+of (2.1).
+
+\textbf{Proof.} Let \texttt{Z\textsubscript{1},...,Z\_m} be independent copies of the
+ambient Gaussian vector. For each realization define
+\texttt{F(u)=f(sum\_j\ u\_j\ Z\_j)} on the unit sphere in C\^{}m and \[
+ B_j=\int\overline{u_j}F(u)\,du.
+\] By duality and rotational invariance, \[
+ \|B\|\le\int|u_1|\,du
+ =\frac{\Gamma(m)\Gamma(3/2)}{\Gamma(m+1/2)}.
+\tag{2.3}
+\] For two independent sphere points u,v, put
+\texttt{rho=sum\ u\_j\ bar(v\_j)}. Gaussian Hermite orthogonality gives
+\[
+ \mathbb E\bigl[f(\textstyle\sum u_jZ_j)
+       \overline{f(\sum v_jZ_j)}\bigr]
+ =\sum_{p,q}\rho^p\bar\rho^q\|P_{p,q}f\|_2^2.
+\] Multiplication by \texttt{bar(rho)} and sphere averaging kills all
+terms except \texttt{p=q+1}. Since \texttt{\textbar{}rho\textbar{}\textsuperscript{2}} has
+Beta(1,m-1) law, \[
+ \mathbb E\|B\|^2
+ =\sum_{k\ge0}\frac{(k+1)!(m-1)!}{(m+k)!}
+                   \|P_{k+1,k}f\|_2^2.
+\tag{2.4}
+\] Combine (2.3)-(2.4) and multiply by m.
+
+For \texttt{f(z)=phase(z\textsubscript{1})}, almost every orbit is
+\texttt{F(u)=phase(sum\ u\_j\ z\_j)}, which attains equality in (2.3);
+hence equality also holds after averaging. Equivalently its Hermite
+energies are \[
+ e_k=\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!},
+\] and Gauss summation gives \texttt{sum\ w\_k\^{}(m)e\_k=b\_m}.
+
+\subsubsection{3. A sharp anchored disk
+inequality}\label{a-sharp-anchored-disk-inequality}
+
+Let U be uniform on the complex unit disk. For all complex a,b, \[
+ \mathbb E|a+bU|\le\sqrt{|a|^2+\frac49|b|^2}.
+\tag{3.1}
+\] The coefficient \texttt{4/9} is sharp, by taking a=0.
+
+\textbf{Proof.} By scaling and rotation put
+\texttt{M(a)=E\textbar{}a+U\textbar{}}, \texttt{a\textgreater{}=0},
+\texttt{b=1}. First, \texttt{M(0)=2/3},
+\texttt{M\textquotesingle{}(0)=0}, and \[
+ M''(a)=\frac1\pi\int_{x^2+y^2\le1}
+       \frac{y^2}{((x+a)^2+y^2)^{3/2}}\,dx\,dy\le M''(0)=1.
+\] For each fixed y, the integrand as a function of x+a is even and
+nonincreasing in absolute value, and its interval of integration is
+centered at zero before shifting; this proves the inequality. The
+formula can also be justified by first replacing the norm by
+\texttt{sqrt(\textbar{}z\textbar{}\textsuperscript{2}+epsilon\textsuperscript{2})} and then taking epsilon
+down to zero. Consequently \texttt{M(a)\textless{}=2/3+a\textsuperscript{2}/2}. For
+\texttt{0\textless{}=a\textless{}=1}, \[
+ a^2+\frac49-\left(\frac23+\frac{a^2}2\right)^2
+ =\frac{a^2}3-\frac{a^4}4\ge0.
+\]
+
+For \texttt{a\textgreater{}=1}, angular binomial expansion followed by
+radial integration gives the absolutely convergent positive-coefficient
+series \[
+ M(a)=a\sum_{n\ge0}
+ \frac{\binom{1/2}{n}^2}{n+1}a^{-2n}.
+\] Writing \texttt{d=M(1)-1\textgreater{}=0} gives
+\texttt{M(a)\textless{}=a+d/a}. Direct polar integration over the disk
+centered at 1 gives \texttt{M(1)=32/(9\ensuremath{\pi})}. Thus \[
+ M(a)^2-a^2\le2d+d^2=M(1)^2-1
+ <(32/27)^2-1=295/729<4/9,
+\] where only \texttt{\ensuremath{\pi}\textgreater{}3} was used. This covers all a.
+
+\subsubsection{4. A conditional constraint retaining the
+mean}\label{a-conditional-constraint-retaining-the-mean}
+
+For any measurable \texttt{F:S\textsuperscript{3}\ -\textgreater{}\ C} with
+\texttt{\textbar{}F\textbar{}\textless{}=1}, write \[
+ m_F=\int F(u)\,du,\qquad B_F=\int\bar u F(u)\,du.
+\] Then \[
+ |m_F|^2+\frac94\|B_F\|^2\le1.
+\tag{4.1}
+\]
+
+Indeed the first coordinate of a uniform point on S\textsuperscript{3} is uniform on the
+unit disk. The support function of the set of \texttt{(m\_F,B\_F)} is
+exactly \texttt{E\textbar{}a+bU\textbar{}}; (3.1) and ellipsoid duality
+give (4.1).
+
+For a Gaussian disk-valued function f, apply (4.1) to the orbit from
+Section 2 with m=2 and average. The mean term selects charge zero; the B
+term selects charge one. This gives \[
+ \boxed{\quad
+ \sum_{k\ge0}\frac{\|P_{k,k}f\|_2^2}{k+1}
+ +\frac94\sum_{k\ge0}\frac{\|P_{k+1,k}f\|_2^2}{k+2}
+ \le1.\quad}
+\tag{4.2}
+\] The first coefficient follows from
+\texttt{E\textbar{}rho\textbar{}\^{}(2k)=1/(k+1)}; the second follows
+from \texttt{E\textbar{}rho\textbar{}\^{}(2k+2)=1/(k+2)}.
+
+Most importantly, (4.2) can be applied \textbf{conditionally on the
+visible coordinate}. The projections then act only in the remote
+Gaussian variables. It therefore couples the actual fibre mean to remote
+Hermite energies instead of treating their separate bounds as
+independently attainable. More generally any independent external
+parameter may be held fixed, and any nonnegative measurable weight of
+that parameter may be integrated afterwards.
+
+\subsubsection{5. The affine Gaussian moment body, including both
+polarizations}\label{the-affine-gaussian-moment-body-including-both-polarizations}
+
+If X is a standard proper Gaussian vector and
+\texttt{\textbar{}f(X)\textbar{}\textless{}=1}, let \[
+ m=\mathbb Ef,\qquad B=\mathbb E[\bar Xf],\qquad
+ D=\mathbb E[Xf].
+\] For every affine test \texttt{(a,b,c)}, the exact support function of
+the attainable moment set is \[
+ \sup_{|f|\le1}\Re\mathbb E[\overline{a+b^TX+c^T\bar X}\,f]
+ =\mathbb E|a+b^TX+c^T\bar X|.
+\tag{5.1}
+\] Thus an exact finite-dimensional convex moment constraint is
+available without a price relaxation. Its dependence is only on the mean
+a, variance
+\texttt{v=\textbar{}\textbar{}b\textbar{}\textbar{}\textsuperscript{2}+\textbar{}\textbar{}c\textbar{}\textbar{}\textsuperscript{2}},
+and pseudocovariance \texttt{p=2b\^{}Tc} (including the relative phase
+of a\textsuperscript{2} and p).
+
+For one polarization there is the simpler sharp bound \[
+ \mathbb E|a+b^TX|\le\sqrt{|a|^2+\frac\pi4\|b\|^2},
+ \qquad |m|^2+\frac4\pi\|B\|^2\le1.
+\tag{5.2}
+\]
+
+\textbf{Proof of the support bound.} For standard G put
+\texttt{M(a)=E\textbar{}a+G\textbar{}}, with a real and nonnegative. In
+polar coordinates about the shifted origin, conditionally on radius R=r
+the angle has density proportional to \texttt{exp(2ar\ cos(theta))}. Its
+conditional mean cosine is nondecreasing in r because its derivative is
+\texttt{2a\ Var(cos(theta)\textbar{}R=r)\textgreater{}=0}. Hence \[
+ a=\mathbb E[R\cos\theta]\ge
+        \mathbb ER\,\mathbb E\cos\theta=M(a)M'(a).
+\] Integration from zero gives
+\texttt{M(a)\textsuperscript{2}\textless{}=a\textsuperscript{2}+M(0)\textsuperscript{2}=a\textsuperscript{2}+\ensuremath{\pi}/4}. Scaling proves (5.2);
+ellipsoid duality proves the moment statement.
+
+For both polarizations a valid explicit bound retaining pseudocovariance
+is \[
+ \boxed{\quad
+ \bigl(\mathbb E|a+b^TX+c^T\bar X|\bigr)^2
+ \le |a|^2+\frac\pi4v+\left(1-\frac\pi4\right)|p|.
+ \quad}
+\tag{5.3}
+\] To prove this, decompose the centered scalar Gaussian as the sum of
+an independent proper Gaussian of variance
+\texttt{v-\textbar{}p\textbar{}} and a rank-one real Gaussian of
+variance \texttt{\textbar{}p\textbar{}}. Apply (5.2) conditionally on
+the real Gaussian and then apply Jensen to the square root. This gives
+precisely (5.3). The exact support (5.1) can be used instead when the
+extra loss is material.
+
+There is no valid uniform extension assigning the improved coefficient
+to both B and D separately. On S\textsuperscript{3} take
+\texttt{F\_delta(u)=phase(1+i\ delta\ Re(u\textsubscript{1}))}. As delta tends to zero,
+\[
+ |\mathbb EF_\delta|^2=1-\delta^2/4+O(\delta^4),
+ \quad \|B\|^2+\|D\|^2=\delta^2/8+O(\delta^4).
+\] Thus
+\texttt{\textbar{}m\textbar{}\textsuperscript{2}+c(\textbar{}\textbar{}B\textbar{}\textbar{}\textsuperscript{2}+\textbar{}\textbar{}D\textbar{}\textbar{}\textsuperscript{2})\textless{}=1}
+requires \texttt{c\textless{}=2}, exactly the ordinary Bessel
+coefficient. For a proper Gaussian the analogous calculation requires
+\texttt{c\textless{}=1}. This is why the pseudocovariance in (5.1) or
+(5.3) cannot be dropped.
+
+\paragraph{An explicit inequality on both first-chaos moment
+vectors}\label{an-explicit-inequality-on-both-first-chaos-moment-vectors}
+
+The support bound (5.3) has a useful explicit dual. Put \[
+ V=\|B\|^2+\|D\|^2,\qquad P=2|B^TD|,
+ \quad s_1^2=(V+P)/2,\quad s_2^2=(V-P)/2,
+ \quad \beta=\pi/2-1.
+\] Then \[
+ \boxed{\quad |m|^2+\Phi(s_1,s_2)\le1,\qquad
+ \Phi(s_1,s_2)=
+ \begin{cases}
+  s_1^2+s_2^2/\beta,&s_2\le\beta s_1,\\
+  (s_1+s_2)^2/(1+\beta),&s_2\ge\beta s_1.
+ \end{cases}\quad}
+\tag{5.4}
+\] Both formulas agree at the boundary. In particular, when
+\texttt{B\^{}TD=0} this gives \[
+ |m|^2+\frac4\pi(\|B\|^2+\|D\|^2)\le1.
+\tag{5.5}
+\] At the opposite, rank-one extreme \texttt{P=V}, it gives ordinary
+Bessel. The coefficient \texttt{Phi/V} lies between 1 and \texttt{4/\ensuremath{\pi}}
+and depends on the actual output polarization rather than being assigned
+separately to the two charges.
+
+\textbf{Proof.} Write the complex Gaussian vector as
+\texttt{(N\textsubscript{1}+iN\textsubscript{2})/sqrt(2)}, with standard real Gaussian coordinates N,
+and let \[
+ T=\mathbb E[(\Re f,\Im f)^TN^T].
+\] Its singular values are precisely \texttt{s\textsubscript{1},s\textsubscript{2}}, since
+\texttt{\textbar{}\textbar{}T\textbar{}\textbar{}\_F\textsuperscript{2}=V} and the
+difference of the eigenvalues of \texttt{TT\^{}T} is P. For an arbitrary
+real \texttt{2\ by\ 2n} matrix A, the centered complex Gaussian
+represented by AN has covariance eigenvalues
+\texttt{sigma\textsubscript{1}(A)\textsuperscript{2},sigma\textsubscript{2}(A)\textsuperscript{2}}. Thus (5.3) reads \[
+ \mathbb E|a+AN|\le
+ \sqrt{|a|^2+g(A)^2},\qquad
+ g(A)^2=\sigma_1(A)^2+\beta\sigma_2(A)^2.
+\] Here g is a norm: its square is
+\texttt{beta\ \textbar{}\textbar{}A\textbar{}\textbar{}\_F\textsuperscript{2}+(1-beta)\textbar{}\textbar{}A\textbar{}\textbar{}\_op\textsuperscript{2}}.
+Ellipsoid duality in the mean coordinate, followed by norm duality in A,
+gives \texttt{\textbar{}m\textbar{}\textsuperscript{2}+g\_*(T)\textsuperscript{2}\textless{}=1}.
+Singular-value alignment reduces the dual norm calculation to \[
+ g_*(T)=\max\{s_1x+s_2y:x\ge y\ge0,\ x^2+\beta y^2\le1\}.
+\] When \texttt{s\textsubscript{2}\textless{}=beta\ s\textsubscript{1}}, the unconstrained ellipsoid
+maximizer satisfies \texttt{y\textless{}=x} and gives the first branch
+of (5.4). Otherwise the maximum lies on \texttt{x=y}, giving the second
+branch. This proves the formula.
+
+All of (5.1)-(5.5) hold pointwise after conditioning on an independent
+visible variable. They can therefore be imposed on its actual
+conditional mean and conditional first-chaos coefficient vectors, and
+subsequently integrated with any nonnegative weight. They do not assert
+anything about arbitrary cubics or their laws.
+
+\subsubsection{6. Use and limitation}\label{use-and-limitation}
+
+The new inequalities constrain bounded maximizing responses directly,
+before a free cubic variable is introduced. They are therefore
+legitimate possible replacements for some of the stronger assertions in
+K. For \texttt{h=(f+g)/2}, \texttt{k=(f-g)/2}, apply an energy
+inequality to both f and g and average; the parallelogram identity
+converts it to the sum of the h and k energies.
+
+A global positive Hermite multiplier from (2.1) alone is not enough: the
+current diffuse response has slack in the corresponding constraints, and
+the parent task's probe found the resulting simple shifts worsen the row
+objective. The promising interface is (4.2) conditionally on the visible
+coordinate, or (5.1) with the visible fibre mean retained. Turning
+either into a smaller certified row cap still requires an optimization
+and a complete envelope. No numerical endpoint follows from this note
+alone.

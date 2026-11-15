@@ -1,0 +1,35 @@
+[
+  {
+    "epsabs_epsrel": 1e-09,
+    "B_second": -2.166224491752926,
+    "B_second_quad_error": 1.6385998417515713e-10,
+    "A_prime": 2.4878048179417958,
+    "A_prime_quad_error": 1.9394344819322475e-09,
+    "wick_ratio_slope_per_structured_energy": 8.707426687861519,
+    "wick_ratio_slope_per_structured_fraction": 0.40315385564798834,
+    "wick_D_per_energy_squared": 22.745357163405725,
+    "wick_C_squared_per_energy_cubed": 198.05352998958116
+  },
+  {
+    "epsabs_epsrel": 1e-11,
+    "B_second": -2.1662244917528657,
+    "B_second_quad_error": 1.6397792428930818e-11,
+    "A_prime": 2.487804817941794,
+    "A_prime_quad_error": 2.0580487219394586e-13,
+    "wick_ratio_slope_per_structured_energy": 8.70742668786175,
+    "wick_ratio_slope_per_structured_fraction": 0.40315385564799905,
+    "wick_D_per_energy_squared": 22.74535716340509,
+    "wick_C_squared_per_energy_cubed": 198.05352998958088
+  },
+  {
+    "epsabs_epsrel": 2e-13,
+    "B_second": -2.1662244917528644,
+    "B_second_quad_error": 4.512118119242551e-14,
+    "A_prime": 2.487804817941794,
+    "A_prime_quad_error": 2.0580487219394586e-13,
+    "wick_ratio_slope_per_structured_energy": 8.707426687861755,
+    "wick_ratio_slope_per_structured_fraction": 0.40315385564799927,
+    "wick_D_per_energy_squared": 22.745357163405075,
+    "wick_C_squared_per_energy_cubed": 198.05352998958088
+  }
+]

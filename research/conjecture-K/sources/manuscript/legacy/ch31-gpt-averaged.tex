@@ -1,0 +1,414 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch31-gpt-averaged.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 31). Owner: lower-bound/11-history-literature.tex
+\section{Lower-bound GPT: averaged profile comparison, the corrected gluing step, and a visible-averaged Laplace window (20 October)}\label{ch:gpt-averaged}
+\chapsummary{Visibly averaged comparisons and the corrected gluing step. Failed pointwise or single-scale comparisons remain negative results, not inputs to later proofs.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{proof/averaged-comparison.tex} from \pathref{gpt-reviews/fibre-domination-20261020/}, ported verbatim apart
+from this header and the local macros. \emph{Our replay} \st{C}: all six checkers PASS under \code{python3 -I}: \code{check\_profiles}, \code{check\_profile\_tail\_polynomials},
+\code{check\_ch29\_gluing}, \code{check\_fibre\_counterexample}, \code{check\_visible\_laplace\_tail} and \code{check\_adaptive\_constants}. The corrections are applied in
+\autoref{ch:forest}.
+\providecommand{\EE}{\mathbb E}\providecommand{\CC}{\mathbb C}\providecommand{\eps}{\varepsilon}\providecommand{\HH}{\mathcal H}\providecommand{\Var}{\operatorname{Var}}
+
+\subsection{Scope}
+The proposed deterministic-fibre comparison is false. The relevant
+comparison averages the actual visible variable, retaining its
+correlation with the A/B profiles. The results below give an exact
+first-order profile theorem and a finite-window formulation for remote
+residuals. They do not prove the global polarized profile assertion or
+the finite-amplitude shared A/B comparison. The manuscript's numerical
+Grothendieck endpoints are unchanged.
+
+\subsection{First-order ordering of proper Gaussian profiles}
+\label{avg:firstorder}
+
+Let \(T\) be exponential of mean one, \(G\) a standard proper complex
+Gaussian, \(a,b>0\), and
+\[
+\ell(t)=\sqrt t(a+bt),\quad
+h(v,s)=\EE|s+\sqrt vG|,\quad
+w_v(t)=\partial_v[2h(v,\ell(t))]\qquad(v>0).
+\]
+For a nonnegative polynomial \(p\) with \(\EE p(T)=1\), define
+\[
+A_p(t)=e^t\int_t^\infty(p(u)-1)e^{-u}\,du.
+\]
+
+\begin{theorem}[Exact averaged first variation]
+\label{avg:profile}
+The function \(w_v\) is strictly decreasing on \([0,\infty)\), and
+\[
+\left.\frac{d}{ds}\EE\bigl[2h(v+s(p(T)-1),\ell(T))\bigr]
+\right|_{s=0+}
+=\EE[w_v'(T)A_p(T)].
+\]
+In particular, if \(A_p\ge0\) and it is not identically zero, this
+derivative is strictly negative. For the admissible proper profiles,
+\[
+\begin{array}{c|c}
+p(t)&A_p(t)\\ \hline
+(t-1)^2&t^2\\
+t&t\\
+t^2/2&t^2/2+t
+\end{array}
+\]
+so every nontrivial nonnegative mixture of these profiles has strictly
+negative first variation away from the constant profile at fixed
+total variance.
+\end{theorem}
+\begin{proof}
+Gaussian heat differentiation and the Laplace formula for inverse
+distance give
+\[
+w_v(t)=\frac12\EE|\ell(t)+\sqrt vG|^{-1}
+=\frac1{2\sqrt\pi}\int_0^\infty
+\frac{r^{-1/2}}{1+vr}
+\exp\left(-\frac{r\ell(t)^2}{1+vr}\right)\,dr.
+\]
+The derivative of \(\ell(t)^2=t(a+bt)^2\) is strictly positive, so
+differentiating this positive integral proves \(w_v'(t)<0\).
+For \(v>0\) the differentiated integral is finite even at \(t=0\).
+
+The variation of the variance profile is \(p-1\). For \(0\le s<v\)
+its variance is at least \(v-s>0\), justifying differentiation.
+Write \(B(t)=\int_t^\infty(p(u)-1)e^{-u}\,du\); then
+\(B(0)=0\), \(B'(t)=-(p(t)-1)e^{-t}\), and integration by parts gives
+\[
+\int_0^\infty w_v(t)(p(t)-1)e^{-t}\,dt
+=\int_0^\infty w_v'(t)B(t)\,dt.
+\]
+Polynomial growth and exponential decay eliminate the boundary terms.
+The table follows by direct integration, or the polynomial equation
+\(A_p-A_p'=p-1\), with \(A_p(0)=0\).
+\end{proof}
+
+At an interior maximizer \(v_*\) of
+\(2\EE h(v,\ell(T))-v/\eps\), one has \(\EE w_{v_*}=1/\eps\).
+Thus adding the corresponding proper Gaussian sector has exact
+first-order penalties
+\[
+d_A=\EE[-T^2w_{v_*}'(T)],\qquad
+d_{Y,W}=\EE[-Tw_{v_*}'(T)],\qquad
+d_B=\EE[-(T^2/2+T)w_{v_*}'(T)].
+\]
+These are analytic identities and strict signs, not new interval
+enclosures of \autoref{ch:forest}'s numerical constants \(0.466,0.70,0.93\).
+They control a first variation at a constant proper Gaussian
+baseline. They do not by themselves prove a finite-amplitude
+comparison or control the pseudocovariance of polarized shared
+drivers.
+
+\subsubsection{The exact polarized local form}
+
+For the shared-driver perturbation
+\[
+Q_s=\sqrt vG+\sqrt s\left(\alpha(T-1)X+
+                     \beta T\bar X/\sqrt2\right),
+\]
+where \(G,X\) are independent proper Gaussians, let
+\[
+k_v(T)=-\frac{\sqrt\pi}{2\sqrt v}e^{-x}I_1(x),
+\qquad x=\ell(T)^2/(2v).
+\]
+Here \(I_1\) is the modified Bessel function. At a Gaussian-optimal
+\(v=v_*\), the exact variation of the penalized objective is
+\[
+\left.\frac{d}{ds}\Lambda(Q_s)\right|_{s=0+}
+=-d_A|\alpha|^2-d_B|\beta|^2
+ +2\operatorname{Re}(\alpha\beta)K,\qquad
+K=\EE[T(T-1)k_v(T)/\sqrt2].
+\]
+To verify the formula, the perturbation's variance is
+\(s(|\alpha|^2(T-1)^2+|\beta|^2T^2/2)\), while its pseudovariance is
+\(2s\alpha\beta T(T-1)/\sqrt2\). The trace part of the Gaussian
+covariance derivative is \(w_v\); its anisotropic part is
+\((F''(\ell)-F'(\ell)/\ell)/4=k_v(T)\), where
+\(F(\ell)=2h(v,\ell)\). This gives the displayed expression.
+
+The necessary and sufficient local quadratic condition is
+\(d_A\ge0,d_B\ge0,K^2\le d_Ad_B\).
+Floating quadrature near the peak gives \(K\approx-0.154995\)
+and smallest penalty eigenvalue approximately \(0.418936\).
+These two decimals are exploratory, not interval certificates.
+The scalar profile theorem does not by itself establish the
+determinant condition, or a global finite-amplitude inequality.
+
+\subsubsection{The forbidden profile and its correct interpretation}
+
+For \(p_{\rm bad}(t)=(t-2)^2/2\), the tail polynomial is
+\[
+A_{p_{\rm bad}}(t)=t^2/2-t,
+\]
+which changes sign. Hence the theorem does not assert domination
+for the profile reported to violate the Gaussian comparison.
+This is exactly the needed bidegree-sensitive sanity check.
+
+There is a labeling distinction in \autoref{ch:forest}. The residual
+\((T-2)X/\sqrt2\) has this bad profile, but
+\[
+\frac{(T-2)X}{\sqrt2}
+=\frac{(T-1)X}{\sqrt2}-\frac X{\sqrt2}.
+\]
+It contains a nonzero first-chaos component; it is not a pure
+\((2,1)\) cubic. Its first and third-chaos variances are both \(1/2\).
+This directly explains the incorrect centering.
+
+A random Gaussian coefficient multiplying
+\(H(Z)=Z(T-2)/\sqrt2\) has a different normalized variance profile,
+\[
+p_D(t)=t(t-2)^2/2,\qquad
+A_{p_D}(t)=t^3/2-t^2/2+t
+ =t\left((t-\tfrac12)^2/2+\tfrac78\right)>0\quad(t>0).
+\]
+That random-coefficient construction is also inadmissible in pure
+\(H_{2,1}\), but it is \emph{stable} at first order by the theorem.
+It must not be identified with the bad profile without the factor \(t\).
+
+\subsection{An exact finite-window comparison after the visible average}
+\label{avg:laplace}
+
+Let \(L=Z(a+b|Z|^2)\), and put \(f(u)=2\EE|L+\sqrt u|\).
+\autoref{ch:rescub} proves the marginal Gaussian-mixture representation
+\(L\stackrel d=\sqrt R G\), with \(R>0\) independent of \(G\).
+Equivalently, if \(H(t)=t(a+bt)^2\) and \(h=H^{-1}\), then
+\[
+e^{-h(u)}=\EE e^{-\lambda u},\qquad R=1/\lambda.
+\]
+
+\begin{theorem}[Positive kernel with explicit exponential tail]
+Define
+\[
+\omega(t)=\EE\sqrt{(1-tR)_+},\qquad
+d=\frac{4a^3}{27b},\qquad C=\exp(a/(3b)).
+\]
+Then
+\[
+f(u)=f(0)+\frac1{\sqrt\pi}\int_0^\infty
+ (1-e^{-tu})t^{-3/2}\omega(t)\,dt,\qquad
+0\le\omega(t)\le\min(1,Ce^{-dt}).
+\]
+For every \(Q\) independent of \(Z\), with \(v=\EE|Q|^2<\infty\),
+\[
+\Lambda(Q)-\Lambda(\sqrt vG_0)
+=-\frac1{\sqrt\pi}\int_0^\infty
+\left(\EE e^{-t|Q|^2}-\frac1{1+vt}\right)
+t^{-3/2}\omega(t)\,dt .
+\]
+Here \(G_0\) is independent of \(Z\).
+\end{theorem}
+\begin{proof}
+Subtract the \(u=0\) value from the correct fixed-shift Rice formula
+\[
+f(u)=\frac1{\sqrt\pi}\int_0^\infty
+\left[1-\EE\frac{e^{-su/(1+sR)}}{1+sR}\right]s^{-3/2}\,ds.
+\]
+For each \(R\), set \(t=s/(1+sR)\). The transformed density is
+\[
+\frac{s^{-3/2}}{1+sR}\,ds
+=t^{-3/2}\sqrt{1-tR}\,dt,\qquad 0<t<1/R.
+\]
+Tonelli applies to the nonnegative increments, proving the kernel.
+
+We establish the critical exponential moment
+\(\EE e^{d\lambda}=C\) by nonnegative power series, rather than
+assuming analytic continuation of a moment-generating function.
+Analyticity of \(h\) at zero and monotone convergence in its Laplace
+transform give
+\(\EE\lambda^n=(-1)^n(e^{-h})^{(n)}(0)<\infty\).
+The formal series \(y(t)=-h(-t)\) solves
+\[
+y=\frac{t}{(a-by)^2}.
+\]
+Starting \(y_0=0\), iterate
+\(y_{k+1}=t/(a-by_k)^2\). All coefficients are nonnegative;
+each fixed coefficient stabilizes at that of the unique formal
+solution. For \(0\le t\le d\), the real iterates increase and are
+bounded by \(a/(3b)\). Nonnegative-series composition identifies
+their real values with their series, and monotone convergence
+identifies the limit with the formal solution's sum. At \(t=d\)
+the limit solves \(d=y(a-by)^2\) in \([0,a/(3b)]\), hence equals
+\(a/(3b)\). The coefficients of \(e^{y(t)}\) are
+\(\EE\lambda^n/n!\), so Tonelli gives
+\(\EE e^{d\lambda}=\exp(y(d))=C\).
+Consequently
+\[
+\omega(t)\le\mathbb P(\lambda>t)\le Ce^{-dt}.
+\]
+
+For independent \(Q\), circularity of \(L\) implies
+\(\Lambda(Q)=\EE f(|Q|^2)-v/\eps\), regardless of whether \(Q\)
+itself is circular. Subtracting the variance-matched Gaussian
+formula proves the last identity. The two increment integrals are
+finite: near zero use \(1-e^{-tu}\le tu\), and at infinity use the
+exponential kernel bound.
+\end{proof}
+
+Define the normalized truncated comparison
+\[
+\mathcal J_\tau(Q)=\frac1{\sqrt\pi}\int_0^\tau
+\left(\EE e^{-t|Q|^2}-\frac1{1+vt}\right)
+t^{-3/2}\omega(t)\,dt.
+\]
+If \(\mathcal J_\tau(Q)\ge-\eta_0\), then
+\[
+\Lambda(Q)\le S+\eta_0+
+\frac{Ce^{-d\tau}}{d\sqrt\pi\,\tau^{3/2}}.
+\]
+The last term can be divided by \(1+v\tau\) for the one-sided
+upper bound, because the negative part of the Laplace difference
+is at most \(1/(1+vt)\).
+At \(a=699/1250,b=179/1250\), exact rational checks prove tail
+bounds \(3.83\cdot10^{-6}\) for \(\tau=50\),
+\(4.77\cdot10^{-7}\) for \(\tau=60\), and
+\(1.60\cdot10^{-10}\) for \(\tau=100\).
+
+This is an alternative interface for the already controlled remote
+problem, not a new cap. It does not treat shared A/B by replacing
+the visible marginal with independent mixture variables. The joint
+law must satisfy \(|Z|^2=h(|L|^2)\), so the shared visible profiles
+remain coupled to the mixture realization.
+
+\subsection{The proposed gluing step does not regularize the law}
+\label{avg:glue}
+
+Let \(V\) be all retained drivers and \(W,W'\) independent Gaussian
+buffers, independent of \(V\). For every measurable vector-valued \(F\),
+\[
+\left(V,F\left(V,\frac{W+W'}{\sqrt2}\right)\right)
+\stackrel d=(V,F(V,W)).
+\]
+Thus substituting an averaged Gaussian coordinate into the entire
+polynomial preserves the full joint law, not just its variance.
+It does not shrink the content, cumulants or payoff deficit.
+This corrects the operation written in \autoref{ch:forest}'s Glue bullet.
+
+Averaging independent \emph{polynomial values} is different. For
+independent pure circular cubics \(q_j\) in disjoint blocks,
+\[
+\kappa\left(N^{-1/2}\sum q_j\right)=\kappa(q_1)/N,\qquad
+\left\|\Pi_{1,0}\left(q_N|q_N|^2\right)\right\|^2
+=\|\Pi_{1,0}(q_1|q_1|^2)\|^2/N^2.
+\]
+The projection formula follows by expanding \(q_N^2\bar q_N\);
+cross-block terms either have zero mean in another block or remain
+third chaos. These formulas concern excess kurtosis and polynomial
+content, not exact payoff deficit or nonlinear profile content.
+They supply no monotonicity of \(\Lambda\).
+
+With shared drivers, even these decay rates can fail. Let
+\[
+q_N=X A_N,\qquad
+A_N=N^{-1/2}\sum_{j=1}^N(|Y_j|^2-1),
+\]
+where all complex Gaussians are independent. This is pure \(H_{2,1}\).
+Centered exponential moments and block independence give
+\[
+\EE A_N^2=1,\quad \EE A_N^3=2/\sqrt N,\quad
+\EE A_N^4=3+6/N.
+\]
+Hence exactly
+\[
+\EE|q_N|^2=1,\qquad \kappa(q_N)=4+12/N,\qquad
+\Pi_{1,0}(q_N|q_N|^2)=4X/\sqrt N.
+\]
+The squared content is \(16/N\), and excess kurtosis tends to four.
+The limit is \(XG_{\mathbb R}\), a Gaussian of random rank-one
+conditional covariance given \(X\). A valid gluing argument must
+retain this covariance and pay a quantitative replacement error.
+
+\subsection{Finite exact counterexamples to fibrewise domination}
+
+For \(A(t)=\EE_\theta|1+te^{i\theta}|\) and
+\(P(t)=1+t^2/4+t^4/64\), one has for all \(t\ge0\)
+\[
+P(t)-17t^6/64\le A(t)\le P(t)+t^6.
+\]
+On \(0\le t\le1\), use the nonnegative series
+\(A(t)=\sum_{k\ge0}\binom{1/2}{k}^2t^{2k}\).
+The tail coefficient sum is at most \(2-81/64<1\).
+For \(t\ge1\), use \(1\le A(t)\le1+t\) and
+\(16t^2+t^4\le17t^6\).
+Thus for a circular unit-variance \(R\),
+\[
+\EE|s+R|-\EE|s+G|
+\ge\frac{(\EE|R|^4-2)s^2-17\EE|R|^6-384}{64s^5}.
+\]
+The moment triples \((m_2,m_4,m_6)\) are
+\((1,44,11352)\) for \(H(X)\), and \((1,12,540)\) for
+\(X^2\bar Y/\sqrt2\).
+The proposed two-sign inequality is therefore reversed by at least
+\[
+\frac{28329}{40000000000}\quad(s=100,\ R=H(X)),\qquad
+\frac{169}{268435456}\quad(s=32,\ R=X^2\bar Y/\sqrt2).
+\]
+These are rational certificates; the smaller-shift numerical
+violations in \autoref{ch:forest} remain useful but are not needed here.
+
+\subsection{A finite adaptive-response alternative}
+
+The preceding reassessment proved the exact saddle
+\(N_n(\eps)=\max_{U,V}\min_{x,y}\Xi(U,V;x,y)\), where
+\[
+\Xi=\EE(|U+V-x-y|+|U-V+x-y|)
+-\|U\|^2-\|V\|^2/\eps+\|x\|^2+\|y\|^2/\eps.
+\]
+Here \(U,x\in H_{1,0}\), \(V,y\in H_{2,1}\).
+There is a dimension-independent finite algorithm for the inner
+minimum. This is a separate route, requiring no Gaussian domination.
+
+In the price norm \(\|(x,y)\|_\eps^2=\|x\|^2+\|y\|^2/\eps\),
+replace each modulus by \(\sqrt{|w|^2+\delta^2}\).
+Let \(f_\delta,g_\delta\) be the resulting bounded phases,
+\(h_\delta=(f_\delta+g_\delta)/2\),
+\(k_\delta=(f_\delta-g_\delta)/2\), and
+\[
+p_\delta(x,y)=(P_{1,0}k_\delta,\eps P_{2,1}h_\delta).
+\]
+For \(0<\eps\le1\), \(\|p_\delta\|_\eps\le1\),
+\(\nabla\Xi_\delta(z)=2(z-p_\delta(z))\);
+the function is 2-strongly convex and \(2+2/\delta\)-smooth.
+
+Take \(\delta=1/40000\), \(a_0=b_0=0\), and iterate
+\[
+c_k=\frac{201a_k+b_k}{202},\quad p_k=p_\delta(c_k),\qquad
+a_{k+1}=\frac{40000c_k+p_k}{40001},\quad
+b_{k+1}=\frac{200b_k+p_k}{201}.
+\]
+The self-contained accelerated Lyapunov proof in
+\texttt{adaptive-note.md} gives, for every outer \(U,V\),
+\[
+0\le\Xi(a_{2200})-\min_z\Xi(z)
+\le\frac1{20000}+2(200/201)^{2200}<8.434\cdot10^{-5}.
+\]
+For completeness, its Lyapunov energy is
+\(\Xi_\delta(a_k)-\min\Xi_\delta+\|b_k-z_*\|_\eps^2\).
+It starts at most two and contracts by \(200/201\): the standard
+smooth-descent and strong-convexity inequalities yield this directly
+since \(1/201\le1/\sqrt{40001}\).
+The extra \(1/20000\) is the uniform smoothing error \(2\delta\).
+The companion note supplies the full square expansion.
+
+This counts exact Gaussian projection-oracle calls. Approximate
+numerical projections need their own error accounting or a certified
+final residual bracket. The outer tensor supremum remains open;
+the displayed tolerance is in original-norm units and is not
+automatically the same as a row's K allowance.
+
+\subsection{Source integration and status}
+
+The first-order profile theorem can be inserted beside \autoref{ch:forest}'s
+numerical table. Replace the Glue scaling claim by the exact
+Gaussian-isometry statement and an open quantitative joint
+replacement obligation. Correct the bad-profile label by retaining
+the factor \(T\) for a random diagonal coefficient.
+
+The finite-amplitude polarized statement in \autoref{ch:forest} is supported
+there by 30 floating-point starts. It should remain labeled numerical
+evidence unless a separate all-parameter proof or certificate is
+provided. The present first-order theorem does not promote that
+statement to a theorem.
+
+All supporting exact scripts pass in isolated Python. They check
+finite algebra, moment identities and rational constants; the
+analytic proofs above carry the general statements. None is a
+complete certificate for \(K_G^{\CC}>1.402\), and no live manuscript
+or earlier acceptance data were changed.

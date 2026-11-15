@@ -1,0 +1,120 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch23-ab-attack.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 23). Owner: lower-bound/11-history-literature.tex
+\section{The remaining $A/B$ inequality after the residual-cubics theorem: budget, deficit, and what is left (15 October, night)}\label{ch:abattack}
+\chapsummary{Historical measurements of the shared-content route. The coherent one-driver family is now closed; general coupled cubics and the response-cover complement remain open in \autoref{ch:K-state}.}
+
+Code and logs: \pathref{handoff/research-third-decimal/kattack-2026-10-15/abattack/} (\code{dstar.py}, \code{dstar.json}, \code{laplace\_content.py}, \code{room.py}, logs).
+Peak row throughout ($\varepsilon=0.7564$, $L=Z(0.5592+0.1432|Z|^2)$, $S=1.373953527$). All numbers \st{F} unless stated. This chapter takes \autoref{ch:rescub}
+(GPT's theorem $\Lambda(q+gW+\nu H)\le S+\eta_0$ for every remote cubic $q$, with $\eta_0\approx10^{-5}$ when our $C_6=40.45313$ is used) as given and asks how far the
+remaining obligation, the shared $A/B$ sectors, is from a proof.
+
+\subsection{The budget}\label{sec:ab-budget}
+\emph{Pointer (21:45):} \autoref{ch:weakk} weakens the target: at a norm maximiser the row carries the extra penalty $-\|2\beta r_A+\sqrt2\beta\bar r_B\|^2/(\varepsilon^2t^2+9\varepsilon\|G\|^2)$, which on the junta data of this chapter pays $13$--$57\%$ of the measured $A/B$ gain (median $29\%$); the budget below is otherwise unchanged.
+$K_\eta$ with $\eta\le10^{-4}$ gives $B\le0.713267$, i.e.\ $\KG>1.402$ (\S\ref{sec:exactrow}); the central-row check of \autoref{ch:rescub} confirms the row value
+$\le0.713265624<500/701$ conditional on the $A/B$ inequality. The remote part now costs $\eta_0\approx1.0\cdot10^{-5}$ (two-node majorant with $C_6=40.45313$; $2.2\cdot10^{-5}$ with
+the published $50$), so the odd sectors $A,B$, their interaction with the even sectors $Y,W$ (handled around a $q$-only baseline by \S\ref{sec:profileslack}) and with the
+diagonal (removed for every remote residual law by Theorem~\ref{thm:rescub-diag}) must fit into
+\[\begin{gathered}
+\eta_{AB}\ \approx\ 9.0\cdot10^{-5}\qquad\text{at the peak profile}\\
+(\text{exactly }240297199/2651182000000=9.063776\cdot10^{-5}\text{ with the project }C_6,\ \text{\autoref{ch:remote-cubic-refinement}}).
+\end{gathered}\]
+Through Proposition~\ref{prop:R} (fibre majorant L1, $h_X=1.03$, numerically sharp $1.0237$ at the peak, \autoref{ch:certs}) the obligation is (T$_0$) of
+\S\ref{sec:wct-false} with the \emph{rigorous} deficit in place of $d_q$:
+\begin{equation}\label{eq:T0rig}
+\norm{\Pi_{1,0}F_A(q)}^2+\norm{\Pi_{1,0}F_B(q)}^2\ \le\ 0.292\,\bigl(d^*(\sigma,x)+\eta_{AB}\bigr)\qquad\forall q\in\Hc21,\ \sigma^2=\E|q|^2,\ x^2=\E|q|^4/\sigma^4-2,
+\end{equation}
+where $d^*(\sigma,x)$ is the largest deficit that the certificate's inputs on the law of $U=|q|^2/\sigma^2$ can certify. GPT's theorem supplies a \emph{slack} ($\Lambda_q\le S+\eta_0$),
+not a deficit; the deficit must come from the moment bounds and the Stein cuts, as in the lower certificate.
+
+\subsection{The rigorous deficit $d^*(\sigma,x)$ with all Stein cuts}\label{sec:ab-dstar}
+$d^*(\sigma,x):=S-\sup\{\E\Phi_0(\sigma\sqrt U)-\sigma^2/\varepsilon\}$ over laws of $U\ge0$ with $\E U=1$, $\E U^2=2+x^2$, $\E U^3\le6+9x^2+C_6x^3$ ($C_6=40.45313$ \st{P,C}; its scalar consequence is \st{L} under tensor hypotheses),
+$\E\sqrt U\le\rho=0.973612157$ \st{L}, and \emph{every} Stein cut
+$\E[(\varphi+\beta')^2+2(\varphi-\Phi/U)^2+2\alpha(\Phi-\varphi)+\tfrac{\alpha^2}3(U^2-2)]\ge0$ (\code{Grothe/Lower/Law.lean}, \code{SteinCut}; $\varphi$ piecewise linear in $u$,
+$\Phi'=\varphi$). Computed by a primal LP on $1011$ atoms in $v=\sqrt u\in[0,40]$ (HiGHS), with the cuts added as cutting planes: for the current law the most violated test is
+$c^*=Q_1^{-1}\ell$ in a basis of $30$ hat functions on the knots $v_k=0.1k$, where $Q_1(c)=\Var\varphi+2\E(\varphi-\Phi/U)^2$ and $\ell(c)=\E[\Phi-\varphi]$ (the cut family is
+equivalent to $\ell(c)^2\le\tfrac{x^2}3Q_1(c)$ for all $c$), linearised at $\beta'=-\E\varphi$, $\alpha=-3\ell/x^2$ (clipped to $|\alpha|\le40$, still a valid cut), scaled, and
+iterated to convergence ($\le40$ rounds). Every LP value is an upper bound on the true supremum over grid laws with these constraints; the moment-only values agree with GPT's
+two-node bound (\autoref{ch:rescub}) and show that the $-6.3\cdot10^{-5}$ of \autoref{ch:certs}, Task~B, was a solver artefact: at $\sigma=0.20$, $x=0.05$ the excess is
+$7.3\cdot10^{-6}$ with moments only and $3.2\cdot10^{-6}$ with all cuts.
+\begin{center}\scriptsize
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{l|rrrrrrrrrrrr}\toprule
+$\sigma\backslash x$ & 0.05 & 0.10 & 0.20 & 0.30 & 0.50 & 0.70 & 1.00 & 1.50 & 2.00 & 3.00 & 5.00 & 7.75\\\midrule
+0.14 & 5.16e-4 & 5.17e-4 & 5.23e-4 & 5.31e-4 & 5.52e-4 & 5.76e-4 & 6.21e-4 & 7.26e-4 & 8.62e-4 & 1.20e-3 & 2.00e-3 & 3.27e-3\\
+0.18 & 7.19e-5 & 7.58e-5 & 8.74e-5 & 1.01e-4 & 1.28e-4 & 1.57e-4 & 2.12e-4 & 3.87e-4 & 6.30e-4 & 1.23e-3 & 2.68e-3 & 4.92e-3\\
+0.20 & $-3.2$e-6 & 2.5e-6 & 1.67e-5 & 3.26e-5 & 5.08e-5 & 7.59e-5 & 1.26e-4 & 3.34e-4 & 6.38e-4 & 1.40e-3 & 3.23e-3 & 6.05e-3\\
+\quad(moments) & $-7.3$e-6 & $-2.3$e-6 & 1.19e-5 & 2.56e-5 & 4.19e-5 & 5.81e-5 & 1.19e-4 & 3.31e-4 & 6.37e-4 & 1.40e-3 & 3.23e-3 & 6.05e-3\\
+0.22 & 6.57e-5 & 7.25e-5 & 8.80e-5 & 1.04e-4 & 1.16e-4 & 1.21e-4 & 1.50e-4 & 3.89e-4 & 7.59e-4 & 1.70e-3 & 3.95e-3 & 7.42e-3\\
+0.25 & 5.11e-4 & 5.22e-4 & 5.41e-4 & 5.42e-4 & 5.10e-4 & 4.74e-4 & 4.52e-4 & 7.28e-4 & 1.20e-3 & 2.43e-3 & 5.39e-3 & 9.92e-3\\
+0.30 & 2.45e-3 & 2.46e-3 & 2.47e-3 & 2.41e-3 & 2.21e-3 & 2.08e-3 & 1.89e-3 & 2.18e-3 & 2.84e-3 & 4.62e-3 & 8.93e-3 & 1.55e-2\\
+0.40 & 1.26e-2 & 1.25e-2 & 1.25e-2 & 1.22e-2 & 1.11e-2 & 1.05e-2 & 9.59e-3 & 9.84e-3 & 1.09e-2 & 1.40e-2 & 2.15e-2 & 3.30e-2\\\bottomrule
+\end{tabular}\end{adjustbox}
+\end{center}
+(moments-only rows for the other $\sigma$ are within $1$--$30\%$ below; full table in \code{dstar.json}.) Two facts matter. The cuts add only $15$--$40\%$ to the moment deficit near
+$\sigma^*$. And \textbf{the relaxed deficit is $2$--$3$ times smaller than the true deficit}: on the junta $q=\sigma(aH+\sqrt{1-a^2}W)$, $d^*/d_q=0.35,\,0.30,\,0.43,\,0.48,\,0.48$ at
+$\sigma=0.2$, $a=0.3,\dots,1$; on the L2 maximisers $0.36$--$0.63$ (table below).
+
+\subsection{The exact-profile route: the Laplace decomposition is lossless}\label{sec:ab-laplace}
+GPT's representation $F_D(u)=-u\int_0^\infty e^{-s|u|^2}\mu_D(ds)$ (\S\ref{sec:wct-false}) was realised numerically: a nonnegative measure on $460$ points $s\in[0.02,200]$ fitted by
+NNLS to $-P_D(\rho)=-c_D(\sqrt\rho)/\sqrt\rho$ from \code{prof.profiles} reproduces it to $1.8\cdot10^{-5}$ ($A$) and $1.0\cdot10^{-5}$ ($B$), total masses $0.8351=|\gamma_A|$,
+$0.4220=|\gamma_B|$, $20$ support points each, dominant $s\in[1,7]$, mass $0.0022$ above $s=20$. Writing $e_s(u)=ue^{-s|u|^2}$, the second-order content of Theorem~\ref{thm:R},
+$\mathcal C_F=\norm{\Pi_{1,1}F_u(q)}^2+\norm{\Pi_{2,0}F_{\bar u}(q)}^2$, satisfies by Minkowski $\sqrt{\mathcal C_{F_A}}\le\int\sqrt{\mathcal C_{e_s}}\,\mu_A(ds)$, and the loss is negligible:
+on the junta ($a=0.3,0.6,1$, $\sigma=0.2$), the L2 maximiser $n=2$, $cX^2\bar Y$ and the skew residual the Minkowski bound exceeds $\mathcal C_{F_A}$ by $0$--$2\%$, and the actual
+contents recombine exactly ($\sum_k|\E\bar w_kF_A(q)|^2=|\int\E\bar w_ke_s(q)\,d\mu|^2$ to all digits). So a uniform bound $\mathcal C_{e_s}(q)\le g(s)\kappa$ for the exponential
+profiles would give $\mathcal C_{F_A}\le(\int\sqrt{g}\,d\mu_A)^2\kappa$ with no further loss. Measured $\mathcal C_{e_s}/\kappa$ at $\sigma=0.2$: $0.13$--$0.84$ for $s\in\{1.1,2.1\}$,
+$0.26$--$1.4$ for $s\approx3.8$, $0.29$--$2.0$ for $s=7$ (largest on the skew residual), i.e.\ $g(s)\approx0.1s^2$ on these tensors.
+
+\emph{Why this does not yet give a proof.} The sup-norm Stein bound for $e_s$ gives $g(s)\approx c\,s^2$ with $c$ of order $5$, fifty times the measured values: the factor-$100$
+loss of \S\ref{sec:wct-remains} is simply redistributed over $s$. The natural exact tool, Gaussian linearisation $e^{-s|q|^2}=\E_\xi e^{2i\sqrt s\Re(\bar\xi q)}$, expresses
+$\Pi_{1,1}$ of the exponential profile through $\E[e^{i\Re(\bar\zeta q)}D_kq\,\overline{D_lq}]$; splitting $e^{i\Re(\bar\zeta q)}$ into its mean $\phi_q(\zeta)$ (which multiplies the
+influence matrix, $\kappa$-controlled) and its fluctuation leaves a covariance with the Gram fluctuation $D_kq\overline{D_lq}-\Gamma_{kl}$ whose Hilbert--Schmidt size is of order
+$\sigma^4$, not $\kappa$: the same obstruction as for every second-order route (\S\ref{sec:wct-remains}). The lossless decomposition is therefore a correct \emph{format} for a
+certificate (it keeps the actual tensor contraction and matches GPT's crossbound Gram problems, \autoref{ch:crossbound}), not a proof.
+
+\subsection{(T$_0$) against the rigorous deficit}\label{sec:ab-room}
+Using the exact $(R)$ content (the ``(R) exact'' columns of \S\ref{sec:wct-numerics}, i.e.\ the measured $\sum_D\norm{\Pi_{1,0}F_D(q)}^2/0.292$) against $d^*(\sigma,x)+\eta_{AB}$,
+$\eta_{AB}=9\cdot10^{-5}$ (\code{room.py}):
+\begin{center}\small
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lc|ccc|cc|c}\toprule
+residual & $x$ & $d_q$ (true) & $d^*$ (cuts) & $d^*/d_q$ & content$^2/0.292$ & ratio to $d^*+\eta_{AB}$ & ratio to $d_q$\\\midrule
+junta $a=0.3$, $\sigma=0.2$ & 0.58 & 1.78e-4 & 6.24e-5 & 0.35 & 1.61e-5 & 0.105 & 0.090\\
+junta $a=0.45$, $\sigma=0.2$ & 1.31 & 7.93e-4 & 2.41e-4 & 0.30 & 1.16e-4 & 0.350 & 0.146\\
+junta $a=0.6$, $\sigma=0.2$ & 2.33 & 2.05e-3 & 8.74e-4 & 0.43 & 4.19e-4 & 0.434 & 0.204\\
+junta $a=0.8$, $\sigma=0.2$ & 4.15 & 5.05e-3 & 2.42e-3 & 0.48 & 1.43e-3 & 0.568 & 0.282\\
+junta $a=1$, $\sigma=0.2$ & 6.48 & 9.87e-3 & 4.72e-3 & 0.48 & 3.63e-3 & 0.754 & 0.368\\
+junta $a=0.6$, $\sigma=0.14$ & 2.33 & 1.23e-3 & 9.66e-4 & 0.79 & 1.14e-4 & 0.108 & 0.093\\
+junta $a=1$, $\sigma=0.14$ & 6.48 & 4.20e-3 & 2.67e-3 & 0.64 & 1.10e-3 & 0.399 & 0.262\\
+junta $a=0.6$, $\sigma=0.25$ & 2.33 & 4.30e-3 & 1.58e-3 & 0.37 & 8.18e-4 & 0.490 & 0.190\\
+junta $a=1$, $\sigma=0.25$ & 6.48 & 1.80e-2 & 7.79e-3 & 0.43 & 7.00e-3 & \textbf{0.889} & 0.389\\
+junta $a=1$, $\sigma=0.3$ & 6.48 & 2.96e-2 & 1.24e-2 & 0.42 & 1.14e-2 & \textbf{0.913} & 0.385\\
+L2 max.\ $n=2$, $\sigma=0.2$ & 5.48 & 8.18e-3 & 3.71e-3 & 0.45 & 2.90e-3 & 0.765 & 0.355\\
+L2 max.\ $n=5$, $\sigma=0.2$ & 3.59 & 4.71e-3 & 1.91e-3 & 0.41 & 1.57e-3 & 0.784 & 0.333\\
+L2 max.\ $n=2$, $\sigma=0.14$ & 5.48 & 3.50e-3 & 2.21e-3 & 0.63 & 8.51e-4 & 0.370 & 0.243\\
+L2 max.\ $n=5$, $\sigma=0.3$ & 3.59 & 1.62e-2 & 5.82e-3 & 0.36 & 5.38e-3 & \textbf{0.910} & 0.332\\\bottomrule
+\end{tabular}\end{adjustbox}
+\end{center}
+($d^*$ after $25$ cutting-plane rounds, conservative; $x=\sqrt{42}\,a^2$ for the junta.) \textbf{Finding:} \eqref{eq:T0rig} holds on every residual class we own, but with as little as
+$9\%$ of room at full amplitude ($a=1$, $\sigma\ge0.25$; the L2 maximiser at $\sigma=0.3$), against $\ge60\%$ of room when the true deficit is used. The $\eta_{AB}$ budget covers the
+small-amplitude regime comfortably (ratio $0.1$ at $a=0.3$). The loss is entirely in the relaxation of the deficit: the Stein-cut family certifies only $35$--$50\%$ of the true deficit
+of a junta near $\sigma^*$.
+
+\subsection{What is left, precisely}\label{sec:ab-left}
+\begin{enumerate}
+\item \textbf{The inequality to prove or certify} is \eqref{eq:T0rig}: for every $q\in\Hc21(\C^n)$, every $n$, the actual odd-sector contents against the \emph{relaxed} deficit. It is
+true with margin $\ge9\%$ on all tested classes \st{F}; its left side is a third-order quantity with the tensor orientation kept (Theorem~\ref{thm:R}, the Laplace decomposition
+of \S\ref{sec:ab-laplace}, GPT's zero-projection Gram format of \autoref{ch:crossbound}); its right side is now computable (\S\ref{sec:ab-dstar}).
+\item \textbf{The deficit side must be sharpened} or the margin is too thin to survive any rigorous content bound: $d^*/d_q\approx0.3$--$0.5$ near $\sigma^*$. Candidates: the spectral
+(AMMP) inequalities of \autoref{ch:spectral-review} as additional linear cuts (they exclude exactly the laws that make $d^*$ small), or the two-node structure with the sign information
+of $\Phi_0$'s derivatives (\autoref{ch:rescub}) applied with the cuts as extra constraints (the extremal law then has at most one more atom per active cut).
+\item \textbf{No uniform content bound with usable constants exists yet.} Every derivative-based route is $50$--$100\times$ too weak at the relevant amplitude
+(\S\ref{sec:wct-remains}, \S\ref{sec:ab-laplace}); the exact-conditioning route (GPT's box covers) handles conditionally Gaussian residuals and one-coordinate stars but not a
+general cubic with several influential coordinates. The reverse influence inequality (\S\ref{sec:wct-external}: $\kappa\le\frac{14}3\norm M^2_{HS}$) shows that a counterexample
+in the variance window must have an influential coordinate, so a dichotomy ``few influential coordinates (finite machinery) / diffuse remainder (second order)'' is the natural
+architecture, with the mixed terms along the influential coordinates as the open piece.
+\end{enumerate}
+
+\paragraph{Verdict.} Not proved. With GPT's residual-cubics theorem the odd sectors have a budget of $\approx9\cdot10^{-5}$ at the peak; the rigorous deficit available to pay their
+content is now tabulated; (T$_0$) against that deficit holds on all our residual classes but with a margin as low as $9\%$; the exact-profile (Laplace) decomposition is lossless
+and is the right certificate format; the missing step is a uniform bound on the actual $A/B$ content of an arbitrary cubic, for which no derivative-based method can work and
+which therefore requires either the exact-conditioning machinery extended to several influential coordinates or a genuinely new idea. Certified bound unchanged by this chapter
+(the current Lean bound $1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}, came from better cap tables, not from K). \emph{Later:} \autoref{ch:shared-sector-refinements}
+proves the $A$- and $B$-sectors under phase symmetry / conditional centring. The later coherent one-driver theorem (\autoref{ch:complete-coherent-driver}) includes the junta in this table. The outstanding task is general coupled cubics, or the weaker original-response cover; the list above records the earlier research programme, not a necessity theorem for either route.

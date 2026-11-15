@@ -1,0 +1,167 @@
+[
+  {
+    "n": 2,
+    "u": 0.02,
+    "complex_dimension": 6,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.06939698615085717,
+    "best_refined_training": 0.06939698615085717
+  },
+  {
+    "n": 2,
+    "u": 0.03,
+    "complex_dimension": 6,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.07881698159555534,
+    "best_refined_training": 0.07881698159555538
+  },
+  {
+    "n": 2,
+    "u": 0.0463,
+    "complex_dimension": 6,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.08782974857340592,
+    "best_refined_training": 0.08782974857340593
+  },
+  {
+    "n": 3,
+    "u": 0.02,
+    "complex_dimension": 18,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.06977183481399084,
+    "best_refined_training": 0.06977183481399077
+  },
+  {
+    "n": 3,
+    "u": 0.03,
+    "complex_dimension": 18,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.07920163966528429,
+    "best_refined_training": 0.07920163966528433
+  },
+  {
+    "n": 3,
+    "u": 0.0463,
+    "complex_dimension": 18,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.08819228227477928,
+    "best_refined_training": 0.08819228227477934
+  },
+  {
+    "n": 4,
+    "u": 0.02,
+    "complex_dimension": 40,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.07114498573372648,
+    "best_refined_training": 0.07114498850659383
+  },
+  {
+    "n": 4,
+    "u": 0.03,
+    "complex_dimension": 40,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.08056927248836622,
+    "best_refined_training": 0.0805692767767272
+  },
+  {
+    "n": 4,
+    "u": 0.0463,
+    "complex_dimension": 40,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.08956455818191936,
+    "best_refined_training": 0.08956456831247525
+  },
+  {
+    "n": 5,
+    "u": 0.02,
+    "complex_dimension": 75,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.07154115882783901,
+    "best_refined_training": 0.07154129368990982
+  },
+  {
+    "n": 5,
+    "u": 0.03,
+    "complex_dimension": 75,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.08103333310517909,
+    "best_refined_training": 0.08103336326013107
+  },
+  {
+    "n": 5,
+    "u": 0.0463,
+    "complex_dimension": 75,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.09019218114042617,
+    "best_refined_training": 0.09019220686203765
+  },
+  {
+    "n": 6,
+    "u": 0.02,
+    "complex_dimension": 126,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.07348335103913879,
+    "best_refined_training": 0.07348393622193272
+  },
+  {
+    "n": 6,
+    "u": 0.03,
+    "complex_dimension": 126,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.08344761034332884,
+    "best_refined_training": 0.08344771741883203
+  },
+  {
+    "n": 6,
+    "u": 0.0463,
+    "complex_dimension": 126,
+    "initial_starts": 50,
+    "refined_starts": 50,
+    "refined_converged": 50,
+    "independent_validations": 100,
+    "best_initial_training": 0.09299575954758217,
+    "best_refined_training": 0.09300671291697006
+  }
+]

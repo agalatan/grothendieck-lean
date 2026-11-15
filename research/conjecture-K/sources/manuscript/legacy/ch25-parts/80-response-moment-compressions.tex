@@ -1,0 +1,173 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/80-response-moment-compressions.tex (file dated 2026-10-25). Only this line was added.
+% Ready-to-port module; no new chapter number is allocated.
+\subsection{Polynomial multiplication compressions: direct response certificates}
+\label{sec:response-moment-compressions}
+\paragraph{Status and provenance.}
+The analytic compression argument is \st{P}; the finite coefficient identities,
+rational duals, and parameter boxes are \st{C}. The package is
+\pathref{/Users/alingalatan/Documents/Codex/2026-10-10/plea/outputs/finite-witness-shared-response-20261021/}.
+Its \code{verify\_all.py} requires only the Python standard library.
+This is an original-response result, not raw Conjecture~K and not a new endpoint.
+
+\subsubsection{Two explicit first/cubic matrix inequalities}
+For a bounded response $f$, $|f|\le1$, on standard complex Gaussian space,
+write the unnormalised Wick moments
+\[
+ p_i=\E[\bar Z_i f],\qquad
+ m_{ij;k}=\E[\overline{Z_iZ_j\bar Z_k-\delta_{ik}Z_j-\delta_{jk}Z_i}\,f].
+\]
+Thus $m_{ij;k}=m_{ji;k}$ and
+$\|Qf\|^2=\sum_{i\le j,k}|m_{ij;k}|^2/(1+\delta_{ij})$.
+Define
+\[
+ A_{(ij),k}=m_{ij;k}+\delta_{ik}p_j+\delta_{jk}p_i\quad(i\le j),
+ \qquad B_{i,0}=p_i,\quad B_{i,(j,k)}=m_{ik;j}+\delta_{ij}p_k.
+\]
+With $D=\operatorname{diag}(1+\delta_{ij})$, every such response satisfies
+\begin{equation}\label{eq:response-compression-lmis}
+ \boxed{\quad
+ \begin{pmatrix}D&A\\A^*&I\end{pmatrix}\succeq0,
+ \qquad
+ \begin{pmatrix}I&B\\B^*&I\end{pmatrix}\succeq0.
+ \quad}
+\end{equation}
+\begin{proof}
+Multiplication by $f$ is a contraction on Gaussian $L^2$.
+Compress it from $\operatorname{span}\{Z_k\}$ to
+$\operatorname{span}\{Z_iZ_j:i\le j\}$; their Gram matrices are $I,D$,
+and Wick expansion gives the matrix $A$.
+Compress from $\operatorname{span}\{1,Z_j\bar Z_k-\delta_{jk}\}$ to
+$\operatorname{span}\{Z_i\}$; both bases are orthonormal, and expansion
+gives $B$. The Schur forms of these contraction inequalities are
+\eqref{eq:response-compression-lmis}.
+The argument is dimension-free. No residual independence or moment bound
+beyond Gaussian polynomial integrability is used.
+\end{proof}
+For charge-one $f$, the other nonzero blocks on quadratic test polynomials
+are transposes of these blocks after permutations. Charge averaging is
+contractive and preserves $p,m$, so no charge assumption on $f$ is needed.
+The checker separately audits 2,140 exact polynomial and Gram identities
+in dimensions one through five; the preceding argument supplies the
+arbitrary-dimension proof.
+
+Apply both inequalities separately to $f_+$ and $f_-$, substituting
+\[
+ p^\pm=te_0\pm Pk,\qquad m^\pm=m(Qh)\pm m(F)/\varepsilon,
+ \quad h=(f_++f_-)/2,\ k=(f_+-f_-)/2,\ F=\varepsilon Qk.
+\]
+Together with Parseval, this is a finite convex relaxation for the minimum
+of the existing retained penalty
+$J=\|Pk\|^2+\varepsilon\|Qh\|^2$ at a prescribed $t,F$.
+Its lower bound on $J$ replaces another bound for these same squares;
+it must not be added to one.
+
+\paragraph{An integral-free exclusion.}
+In two coordinates prescribe $Ph=(1057/1250)Z_0$, $Pk=0$,
+$m(Qh)_{00;0}=-3/8$, $m(Qk)_{01;0}=1/8$, and $m(Qk)_{00;1}=1/4$.
+A row of $B$ has squared norm at least
+\[
+ (1057/1250)^2+(1057/1250-3/8)^2+(1/8)^2+(1/4)^2
+ =12682859/12500000>1.
+\]
+No bounded response pair can have these moments, whatever its unspecified
+coefficients or additional coordinates. Setting unspecified first/cubic
+moments to zero nevertheless passes their separate truncated Parseval
+tests, with value $41611343/50000000<0.84$. This does not claim passage
+of every previous nonlinear support test.
+
+\subsubsection{A certified central slab with arbitrary additional coordinates}
+Use all Wick polynomials of degree at most three as multiplication tests.
+Their charge-one blocks involve first, third, and fifth response moments.
+Keep the fifth moments as free variables, with their Parseval inequality.
+All entries in the unnormalised basis are integers and the Gram matrices
+are diagonal factorials. Rational positive semidefinite dual multipliers
+and positive Parseval multipliers give a quadratic Lagrangian; exact
+completion of squares supplies a certified lower bound on $J$.
+
+\begin{theorem}[\st{P,C}: a response slab below the $1.402$ cap]
+\label{thm:response-moment-slab}
+Let $\varepsilon=1891/2500$, $Z,X$ be any two orthonormal complex Gaussian
+coordinates, $|f_\pm|\le1$, and
+\[
+ Ph=tZ,\qquad F=\varepsilon Qk,\qquad
+ 21/25\le t\le851/1000,\qquad \|F\|^2\le1/20.
+\]
+For the six two-coordinate cubic moments put
+\[
+ u_{ab;cd}=\E[\overline{H_{a,c}(Z)H_{b,d}(X)}\,Qk],
+ \quad a+b=c+d+1,\quad a+b+c+d=3,
+\]
+where $H$ denotes the unnormalised complex Wick polynomial.
+Suppose their real parts lie within $1/200$ of the center
+\[
+ u^0_{02;01}=1/8,\qquad u^0_{11;10}=1/8,\qquad
+ u^0_{20;01}=1/4,
+\]
+with the other three centers zero. Their imaginary parts and every
+coefficient involving further coordinates are unrestricted, subject to
+the displayed total energy bound. Then
+\[
+ \boxed{\quad
+ \operatorname{Re}\langle f_-,(P-\varepsilon Q)f_+\rangle
+ <1781/2500=0.7124<500/701.
+ \quad}
+\]
+\end{theorem}
+\begin{proof}[Certificate and dimension-free extension]
+For every feasible response, with $M_{s,b}$ its multiplication blocks
+and $P_s$ its retained Parseval sum, the dual Lagrangian satisfies
+\[
+ \mathcal L=J-\sum_{s,b}\operatorname{tr}(Y_{s,b}M_{s,b})
+              +\sum_s\lambda_s(P_s-1)\le J.
+\]
+The exact dual has twelve rational positive semidefinite matrices and
+two positive Parseval multipliers. Rational LDL verifies every matrix.
+The degree-three multiplication tables are regenerated by exact Wick
+expansion; the fifth moments are not set to zero. Completing all 32
+real unknown coefficient squares, with outward rational evaluation on
+the displayed box, gives
+\[
+ J>0.0779336632133.
+\]
+The exact original-response identity is
+\[
+ \operatorname{Re}\langle f_-,(P-\varepsilon Q)f_+\rangle
+ =t^2+\|F\|^2/\varepsilon-J.
+\]
+The rational checker bounds its right side by
+$0.7123699280082\ldots<0.7124$; the decimal is explanatory, not proof
+arithmetic. Real dual multipliers use only real parts of the prescribed
+moments. Discarded imaginary contributions are nonnegative squares.
+Conditioning on $(Z,X)$ preserves boundedness and these moments; the
+full penalty dominates the penalty on that two-coordinate projection.
+Thus arbitrary additional coordinates and dependent sectors are allowed.
+\end{proof}
+
+At the center the indicated projection of $F$ is
+\[
+ F_0=\frac\varepsilon{16}X(|X|^2-2)
+ +\frac\varepsilon8(|Z|^2-1)X+\frac\varepsilon8Z^2\bar X,
+ \qquad \|F_0\|^2=0.03128895875.
+\]
+This leaves about $0.01871$ for additional energy. It does not assert
+that this exact projection is attained by a bounded response pair.
+Three narrower boxes in the package permit total energies
+$0.067676$, $0.069794$, and $0.070125$, with caps below $0.7132$.
+A separate exact dual excludes the center with $u^0_{02;01}=3/8$
+at $t=1057/1250$: its feasibility Lagrangian is greater than $0.0171431513$.
+
+\paragraph{The remaining cover problem.}
+The variance bound above concerns the full $F$, not the remote variance
+$e$. These are genuine dimension-free response cells, without a fresh
+buffer, conditional Gaussianity, or stationarity assumption. An arbitrary
+high-payoff tensor need not admit a remote direction with its projected
+moments in these cells. Covering those other projections, especially
+diffuse tensors, and assembling all rows at one common $\varepsilon$
+remain necessary before claiming a new endpoint.
+
+\paragraph{IDE replay (21 October, late).} \code{verify\_all.py} from the archived package
+(\pathref{gpt-reviews/finite-witness-shared-response-20261021/}) PASSES from an unrelated directory under \code{python3 -I}:
+2\,140 compression identities, 1\,628 table identities, 24 rational LDL checks, the excluded cylinder, the three narrow boxes and the wide slab
+(upper value $0.71236993<0.7124$). The IDE checked by hand the Wick expansions behind $A$ and $B$, the Gram matrices
+$\operatorname{diag}(1+\delta_{ij})$ and $I$, the Schur form of the contraction bound, and the sign convention of the Lagrangian in
+\code{verify\_response\_dual.py}. Scope: these are regional cells, not a cover.

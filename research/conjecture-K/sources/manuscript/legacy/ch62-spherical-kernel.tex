@@ -1,0 +1,273 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch62-spherical-kernel.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 62). Owner: lower-bound/07-remote-spectral.tex
+\section[Cubic spherical kernels]{Cubic spherical kernels: a stronger small-ball cut and two exact obstructions}
+\label{ch:spherical-kernel-cut}
+\chapsummary{Zero-conditioned spherical kernels and the scalar--Stein radius $0.95133$ for genuine Wick cubics, covering $0\le t\le0.1694$. Exact obstructions refute stronger quadratic routes and the proposed $S^5$ lemma; the full row cover remains open.}
+
+\paragraph{Provenance and status (IDE note, 21 October).} Lower-bound GPT spherical-kernel package (\code{conjK-spherical-kernel-20261021.zip}, archived in
+\pathref{gpt-reviews/spherical-kernel-20261021/}). IDE replays \code{python -I verify\_all.py} and \code{--mesh 262144} (unrelated directory): ALL CHECKS PASS
+(167 exact assertions). IDE checks \st{P}: the zero-conditioned kernel bound, a Cauchy--Schwarz inequality in the codimension-one subspace orthogonal to
+the evaluation kernel at the forced zero, with $\E N_w=\frac23+\frac w3$. Independently: the $S^5$ counterexample has equal energies ($20|1+c/2|^2=|c|^2=2.27556$)
+and $L^1/L^2=0.973068>0.971$; the small-$t$ row value $t^2+\varepsilon\rho^2=0.7132627478<500/701$ at $t=239/5000$. The radius bound inherits the sixth-moment
+bound $C_6=4045313/100000$, now justified mathematically by Theorem~\ref{thm:sixth-tensor-bridge-audit}; it is not formalised in Lean.
+
+\subsection{Scope and inputs}
+All sphere measures are probability measures, and every standard proper complex Gaussian has second moment one. Write $\mathcal W_{2,1}$ for Gaussian Wick chaos, and $\mathcal H_{2,1}^{\rm sph}$ for harmonic bihomogeneous cubics. They are different spaces.
+
+The small-ball theorem below is unconditional for $q\in\mathcal W_{2,1}$ in every finite dimension. The numerical $L^1/L^2$ consequence uses the moment bounds proved in Theorems~\ref{thm:sharp-influence-audit} and \ref{thm:sixth-tensor-bridge-audit}
+\begin{equation}\label{eq:sk-moments}
+ \E R^2=1,\quad \E R^4=2+x^2,\quad 0\le x\le\sqrt{42},\qquad
+ \E R^6\le6+9x^2+\frac{4045313}{100000}x^3,
+ \qquad R=|q|/\|q\|_2.
+\end{equation}
+These inputs are theorems for the stated Wick class; their scalar Lean consequences still require the bidegree bridge. No Conjecture K, independence of shared sectors, fresh buffer, or stationarity hypothesis is used. The checker verifies finite arithmetic and integral bounds; it does not machine-check the analytic proof.
+
+The literature supplies the orthogonal spherical decomposition and kernels: Menegatto--de Oliveira, equation (1.8) and Theorem 2.10; De Bie--Sommen--Wutzig, Lemma 3 and Theorem 4; Defant--Galicer--Mansilla--Masty\l o--Muro, Theorem 2.3 and Theorem 5.2. The arguments below specialize those identities and use a zero-conditioned kernel rather than a uniform derivative bound.
+
+\subsection{The cubic random restriction}
+Normalize $\|q\|_2=1$. For independent standard Gaussian vectors $X,Y$, put
+\[
+ f(u)=q(u_1X+u_2Y),\qquad u\in S^3\subset\mathbb C^2.
+\]
+For each fixed $u$, $f(u)$ has the law of $q$. Wick pairing gives, with $z=\langle u,v\rangle$,
+\[
+ \E f(u)\overline{f(v)}=z^2\bar z.
+\]
+Each realization belongs to $V_1\oplus V_3$, where $V_1=\mathcal H_{1,0}^{\rm sph}$ and $V_3=\mathcal H_{2,1}^{\rm sph}$. Indeed the linear part of the Wick polynomial can be homogenized by $|u|^2$. For a homogeneous cubic $P$, $P-|u|^2\Delta_{\mathbb C}P/3$ is harmonic.
+
+The kernels are
+\[
+ K_1(u,v)=2z,\qquad K_3(u,v)=12z|z|^2-8z.
+\]
+An orthonormal basis of $V_3$ is
+\[
+ \sqrt{12}u_1^2\bar u_2,\quad \sqrt{12}u_2^2\bar u_1,\quad
+ 2u_1(|u_1|^2-2|u_2|^2),\quad 2u_2(|u_2|^2-2|u_1|^2).
+\]
+Since $z|z|^2=K_1/3+K_3/12$, taking traces yields
+\begin{equation}\label{eq:sk-energy}
+ \E\|f_1\|_2^2=\frac23,\qquad \E\|f_3\|_2^2=\frac13.
+\end{equation}
+Every realization has a zero. Otherwise $f/|f|:S^3\to S^1$, together with $f(e^{i\theta}u)=e^{i\theta}f(u)$, would send a contractible Hopf circle to a loop of winding number one.
+
+\subsection{A general unequal-bidegree small-ball theorem}
+\begin{theorem}[\st{P}: all unequal bidegrees]\label{thm:sk-all-degrees}
+Let $q$ be a unit element of complex Gaussian Wick chaos $\mathcal W_{p,q_0}$, where $p\ne q_0$, and put $d=p+q_0$ and $D_0=(p+1)(q_0+1)$. Then, in every dimension and for $0\le r\le1$,
+\[
+ \boxed{\Pr(|q|\le r)\ge1-\left(1-\frac{r^2}{D_0}\right)^{1/d}
+ \ge\frac{r^2}{dD_0}.}
+\]
+In particular the last denominator is $18$ for $(2,1)$, $60$ for $(3,2)$, and $140$ for $(4,3)$. The cubic theorem below improves the first of these constants.
+\end{theorem}
+\begin{proof}
+Use the same two-copy restriction. Its covariance is $K(u,v)=\langle u,v\rangle^p\overline{\langle u,v\rangle}^{q_0}$. This is a positive kernel of rank $D_0$: the binomial expansion gives a feature basis consisting of the $(p+1)(q_0+1)$ bihomogeneous monomials in two complex variables. They remain linearly independent on the sphere, by real homogeneity. Homogenizing the lower Wick terms shows that every restriction belongs to this kernel's space. The covariance identity implies $\E\|f\|_K^2=D_0$ by taking a trace in an orthonormal kernel basis.
+
+The nonzero phase charge $p-q_0$ forces a zero by the winding argument. Conditioning the kernel at this zero gives
+\[
+ |f(u)|^2\le N\bigl(1-t^d\bigr),\quad N=\|f\|_K^2,
+ \quad t=|\langle u,u_0\rangle|^2.
+\]
+Since $t$ is uniform on $[0,1]$, the conditional sublevel mass is at least $1-(1-r^2/N)^{1/d}$ for $N>r^2$, and one otherwise. This function is convex on its nonconstant branch. Its tangent at $N=D_0$ has intercept at most one exactly when $r^2/D_0\le d/(d+1)$, which holds because $r\le1$, $D_0\ge2$, and $d\ge1$. The tangent is therefore a global minorant, so averaging proves the first bound. The second follows from concavity of $x\mapsto x^{1/d}$.
+\end{proof}
+
+\subsection{A zero-conditioned reproducing kernel}
+\begin{theorem}[\st{P}: inverse-kernel small-ball family]\label{thm:sk-inverse}
+For $5\le w\le6$, set
+\[
+ M_w=\frac{2+w}{3},\qquad d_w=2+\frac4w,\qquad b_w=\frac{12}{w},
+\]
+\[
+ k_w(s)=(d_w+2b_w)s-
+ \left(2b_w+\frac{b_w^2}{d_w}\right)s^2+
+ \frac{b_w^2}{d_w}s^3.
+\]
+For every unit Gaussian Wick cubic and $0\le r\le1$,
+\begin{equation}\label{eq:sk-inverse}
+ \Pr(|q|\le r)\ge k_w^{-1}(r^2/M_w),
+\end{equation}
+where the inverse is taken on $[0,1]$. In particular, for $w=2\sqrt7$ and $r>0$,
+\[
+ \Pr(|q|\le r)>\frac{r^2}{D},\qquad D=\frac{32+8\sqrt7}{3}.
+\]
+\end{theorem}
+\begin{proof}
+Equip $V_1\oplus V_3$ with squared norm $N_w(f)=\|f_1\|_2^2+w\|f_3\|_2^2$. Its kernel is
+\[
+ K_w=K_1+K_3/w=z\left(2-\frac8w+\frac{12}{w}|z|^2\right),\qquad K_w(u,u)=d_w.
+\]
+If $f(u_0)=0$, the Cauchy--Schwarz inequality in the codimension-one subspace orthogonal to evaluation at $u_0$ gives
+\[
+ |f(u)|^2\le N_w(f)\left(d_w-\frac{|K_w(u,u_0)|^2}{d_w}\right)
+ =N_w(f)k_w(s),\qquad s=1-|\langle u,u_0\rangle|^2.
+\]
+For uniform $u\in S^3$, $s$ is uniform on $[0,1]$. Thus, for $r>0$, the sublevel mass is at least $G_r(N_w(f))$, where
+\[
+ G_r(N)=\begin{cases}
+ 1,&0\le N\le r^2/d_w,\\
+ k_w^{-1}(r^2/N),&N>r^2/d_w.
+ \end{cases}
+\]
+No measurable choice of $u_0$ is needed: this deterministic inequality holds whenever a zero exists.
+
+The function $k_w$ is increasing and strictly concave. In fact $b_w<d_w$, so $k_w''(1)=4b_w(b_w/d_w-1)<0$; its second derivative increases, and $k_w'(1)=(d_w-b_w)^2/d_w>0$. On the nonconstant branch, $G_r$ is convex, since implicit differentiation gives the sign of its second derivative as the sign of $2(k_w')^2-k_w k_w''>0$.
+
+Put $s_0=k_w^{-1}(r^2/M_w)$. For $5\le w\le6$,
+\[
+ d_w+2b_w\ge\frac{20}{3},\qquad
+ 2b_w+b_w^2/d_w\le\frac{174}{25},\qquad M_w\ge\frac73.
+\]
+Consequently $k_w(1/10)>3/7\ge r^2/M_w$, and $k_w'(1/10)>5$. Thus $s_0<1/10$, and the intercept of the tangent to $G_r$ at $M_w$ is
+\[
+ s_0+\frac{k_w(s_0)}{k_w'(s_0)}<\frac1{10}+\frac15<1.
+\]
+The tangent therefore lies below the constant branch as well as below the convex branch. Since \eqref{eq:sk-energy} gives $\E N_w(f)=M_w$, taking expectations proves \eqref{eq:sk-inverse}. The case $r=0$ is trivial.
+
+Finally, $k_w(s)<(d_w+2b_w)s$ for $s>0$. The product
+\[
+ M_w(d_w+2b_w)=\frac{2w+32+56/w}{3}
+\]
+is minimized at $w=2\sqrt7$, where it equals $D$. This proves the last assertion.
+\end{proof}
+
+\begin{corollary}[\st{P}+\st{C}: rational law cut]\label{cor:sk-cut}
+In every dimension, for every unit $q\in\mathcal W_{2,1}$ and $0\le r\le1$,
+\begin{equation}\label{eq:sk-cut}
+ \boxed{\Pr(|q|\le r)\ge\frac{18}{319}r^2+\frac7{2500}r^4.}
+\end{equation}
+Equivalently, for $U=|q|^2$ and $0\le u\le1$,
+$\Pr(U\le u)\ge18u/319+7u^2/2500$. These are linear constraints on the law of $U$.
+\end{corollary}
+\begin{proof}
+Take $w=21/4$. Then $M_w=29/12$ and
+\[
+ k_w(s)=\frac{22}{3}s-\frac{1312}{203}s^2+\frac{384}{203}s^3.
+\]
+Let $x(u)=18u/319+7u^2/2500$. The checker proves that every degree-six Bernstein coefficient of $u-(29/12)k_w(x(u))$ on $[0,1]$ is nonnegative. It also checks $x(1)<1/10$. Monotonicity of $k_w$ and Theorem~\ref{thm:sk-inverse} finish the proof.
+\end{proof}
+The rational cut is strictly stronger than the $r^2/19$ cut used in \autoref{ch:l1l2-chaos21}. The irrational choice $w=2\sqrt7$ also improves that chapter's sharper $r^2/(D+r^2)$ estimate throughout $0<r\le1$.
+
+\subsection{A sharper $L^1/L^2$ constant}
+\begin{theorem}[\st{P}+\st{C}: genuine Wick cubics]\label{thm:sk-rho}
+For every dimension and every Gaussian Wick cubic,
+\[
+ \boxed{\E|q|<\frac{484754157}{500000000}\|q\|_2\quad(q\ne0).}
+\]
+\end{theorem}
+\begin{proof}
+For $0<a\le1<b$ (the certificate in fact only needs $b>a$), define
+\[
+ h_{a,b}(r)=\frac{(r-a)^2(r-b)^2((r+a+b)^2+ab)}{2ab(a+b)^3}
+ =c_0-r+c_2r^2+c_4r^4+c_6r^6.
+\]
+This is nonnegative on $[0,\infty)$, has double zeros at $a,b$, and decreases on $[0,a]$. Indeed its logarithmic derivative there is
+\[
+ -\frac2{a-r}-\frac2{b-r}
+ +\frac{2(r+a+b)}{(r+a+b)^2+ab}<0.
+\]
+All selected rows have $c_4<0<c_6$. By Tonelli and \eqref{eq:sk-cut},
+\[
+ \E h_{a,b}(R)\ge J_{a,b}:=
+ \frac{36}{319}\int_0^a r h_{a,b}(r)\,dr
+ +\frac{28}{2500}\int_0^a r^3 h_{a,b}(r)\,dr.
+\]
+Thus the inherited moments give
+\[
+ \E R\le c_0+c_2+c_4(2+x^2)
+ +c_6\left(6+9x^2+\frac{4045313}{100000}x^3\right)-J_{a,b}.
+\]
+For a fixed row this is $A+Bx^2+Cx^3$ with $C>0$, so its maximum on any nonnegative interval is attained at an endpoint. All integrals above are polynomial integrals with rational endpoints. The following eleven rows cover $[0,13/2]\supset[0,\sqrt{42}]$:
+\[
+\begin{array}{c|c|c}
+ x\text{ interval}&a&b\\\hline
+ {}[0,13/16]&963/1000&423/100\\
+ {}[13/16,39/32]&977/1000&283/50\\
+ {}[39/32,169/128]&489/500&25/4\\
+ {}[169/128,689/512]&489/500&639/100\\
+ {}[689/512,351/256]&489/500&129/20\\
+ {}[351/256,91/64]&489/500&327/50\\
+ {}[91/64,195/128]&979/1000&671/100\\
+ {}[195/128,13/8]&979/1000&701/100\\
+ {}[13/8,39/16]&49/50&197/25\\
+ {}[39/16,13/4]&487/500&477/50\\
+ {}[13/4,13/2]&121/125&1229/100
+\end{array}
+\]
+The largest exact endpoint bound is enclosed in
+$[0.969508313355,0.969508313356]$, strictly below $0.969508314<0.96951$. The rational data and independent recomputation are in \texttt{moment\_cover.json} and \texttt{verify\_all.py}; the 21 October audit also independently replays the eleven printed rows in \texttt{verify\_radius\_rows.py}. No numerical optimization is trusted by the verifier.
+\end{proof}
+
+\subsection{An actual original-response row consequence}
+\begin{corollary}[\st{P}+\st{C}]\label{cor:sk-row}
+Let $P,Q$ be the Gaussian projections onto bidegrees $(1,0)$ and $(2,1)$. For $|f_+|,|f_-|\le1$, set $h=(f_++f_-)/2$, $k=(f_+-f_-)/2$, and $t=\|Ph\|_2$. At $\epsilon=1891/2500$, every response with $0\le t\le47867/10^6$ satisfies
+\[
+ \operatorname{Re}\langle f_+,(P-\epsilon Q)f_-\rangle
+ \le\frac{445791677905749207259}{625000000000000000000}<\frac{500}{701}.
+\]
+\end{corollary}
+\begin{proof}
+The exact objective is $t^2-\|Pk\|_2^2-\epsilon\|Qh\|_2^2+\epsilon\|Qk\|_2^2$. If $Qk\ne0$, apply Theorem~\ref{thm:sk-rho} to $q=Qk/\|Qk\|_2$ and use $|k|\le1$ to get $\|Qk\|_2\le\E|q|\le\rho$. Thus the objective is at most $t^2+\epsilon\rho^2$. Exact arithmetic gives the stated endpoint and margin
+\[
+ \frac{500}{701}-\frac{445791677905749207259}{625000000000000000000}
+ =\frac{33788069805711441}{438125000000000000000000}>0.
+\]
+This covers all dimensions and all sector interactions in this $t$ interval. It is not a full row envelope or a new bound on $K_G^{\mathbb C}$.
+\end{proof}
+
+\paragraph{Dependency update, 21 October.}
+The eleven-row replay and the tensor bridge in
+\S\ref{sec:sixth-tensor-bridge-audit} justify the sharper radius
+mathematically, without an extra tensor hypothesis for genuine Wick
+cubics. The supplied Lean snapshot still needs that bridge to be
+formalised. The fallback in Theorem~\ref{thm:radius50-audit} is an
+alternative chain using the published constant $50$.
+
+\input{lower-bound/real-stein-radius.tex}
+
+\subsection{Two obstructions to using only harmonic energies}
+For the unit sphere in $\mathbb C^m$, put
+\[
+ P_\beta(u)=u_1\bigl(|u|^2+\beta|u_1|^2\bigr),\quad \beta\in\mathbb C.
+\]
+On the sphere this is $u_1(1+\beta s)$ with $s=|u_1|^2$, whose density is $(m-1)(1-s)^{m-2}$. Its component norms are
+\[
+ N=\|P_\beta\|_2^2=\frac1m+\frac{4\operatorname{Re}\beta}{m(m+1)}
+ +\frac{6|\beta|^2}{m(m+1)(m+2)},\qquad
+ N_1=\frac1m\left|1+\frac{2\beta}{m+1}\right|^2.
+\]
+The balanced condition $N_1/N=2/(m+1)$ is equivalent to
+\[
+ \left|\beta+\frac{m+2}{2}\right|^2=\frac{m+2}{4}.
+\]
+\begin{proposition}[\st{P}+\st{C}: exact balanced witnesses]\label{prop:sk-obstruction}
+For $m=2$, take $\beta=(-14+5i)/13$. Then $N=17/156$, $N_1=17/234$, and
+\[
+ 0.986315752114<\|P_\beta\|_1/\|P_\beta\|_2<0.986316457422.
+\]
+For $m=3$, take $\beta=(-1167+319i)/802$. Then $N=365/4812$, $N_1=N/2$, and
+\[
+ 0.973067219771<\|P_\beta\|_1/\|P_\beta\|_2<0.973067783364.
+\]
+Consequently, if $a,b>0$ and $\|P\|_1^2\le a\|P_1\|_2^2+b\|P_3\|_2^2$ for every spherical $(2,1)$ polynomial, then
+\[
+ \frac{2a+(m-1)b}{m+1}>
+ \begin{cases}(9863/10000)^2,&m=2,\\(973/1000)^2,&m=3.\end{cases}
+\]
+In particular, the proposed $S^5$ sufficient lemma with coefficient $942841/1050000$ and relative linear weight $11/10$ is false.
+\end{proposition}
+\begin{proof}
+The component norms and balance conditions are rational identities. The only integral is
+\[
+ \|P_\beta\|_1=\int_0^1(m-1)(1-s)^{m-2}\sqrt{s}\sqrt{1+2\operatorname{Re}(\beta)s+|\beta|^2s^2}\,ds.
+\]
+Set $s=t^2$. For both witnesses the quadratic $Q(s)$ under the square root satisfies $1/16<Q(s)\le1$, and its two nonconstant coefficients have modulus below $3$. Thus $|(Q(t^2))'|\le18$, $|(Q(t^2))''|\le42$, and the first two derivatives of $\sqrt{Q(t^2)}$ have modulus at most $36$ and $5268$. The complete integrands have second derivatives bounded by $12000$ for $m=2$ and $8000$ for $m=3$. The midpoint rule with $65536$ intervals, integer square-root enclosures at scale $10^{24}$, and error bound $\|f''\|_\infty/(24N^2)$ proves the displayed intervals. All comparisons use integers or fractions.
+
+In the $S^5$ proposal, equal component energies make its right-hand side $0.971^2\|P_\beta\|_2^2$, strictly smaller than this witness's squared $L^1$ norm.
+\end{proof}
+These are spherical counterexamples, not counterexamples to a Gaussian cubic norm inequality. Their normalized fourth moments are, respectively, in $[1.072466633712,1.072466633713]$ and $[1.197144036672,1.197144036673]$, below the Gaussian-chaos lower bound $2$.
+
+There is a sharper interpretation. Randomly rotate either normalized witness by Haar $U(m)$. Irreducibility and its balanced component energies give the same covariance $\langle u,v\rangle|\langle u,v\rangle|^2$ as the Gaussian cubic restriction. Thus that covariance alone does not imply the desired first-moment bound. The fourth- and sixth-moment information used above supplies genuine additional structure.
+
+\subsection{What this changes}
+The universal small-ball cut is stronger, the inherited $L^1/L^2$ constant improves from $0.9707215186\ldots$ to $0.96951$, and a full original-response interval $0\le t\le0.0478$ is certified below the $1.402$ target cap. The two- and three-copy quadratic-energy route cannot deliver the hoped-for improvement: it requires more information than those two energies, or more copies. The shared-driver peak comparison, remaining row envelope, Gaussian reduction and finite-matrix transfer are not completed here.
+
+\input{lower-bound/radius50.tex}

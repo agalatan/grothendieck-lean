@@ -1,0 +1,273 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/lower-bound/sixth-moment-bridge.tex (file dated 2026-10-25). Only this line was added.
+\section{The sixth-moment tensor bridge and the Gaussian vector witness}
+\label{sec:sixth-tensor-bridge-audit}
+\chapsummary{The tensor premises of the scalar constant $C_6=40.45313$
+are proved for genuine complex Wick cubics. This is \st{P,C}, not a new
+Lean theorem. The resulting radius is $0.969508314$. An exact vector
+witness supplies the other, vector-valued transfer input on paper;
+the dimension-free scalar cap remains the numerical obstruction.}
+
+\paragraph{Provenance and formalization boundary.}
+The 21 October note \emph{Audit and proofs for complex Wick cubics}
+independently derives the identities below. The same mathematical chain
+is archived in \pathref{handoff/lower-v4/proofs/} and
+\pathref{handoff/lower-v5/local/}, especially
+\code{MIXED\_CONTRACTION\_CAUCHY.md},
+\code{CHARGE\_SPLIT\_SQUARE\_IMPROVEMENT.md}, and
+\code{CHARGE\_SPLIT\_SCALAR\_CERTIFICATE.md}.
+The audit replay checks the contraction identities, both sums of squares,
+and the archived rational scalar certificate. No tensor premise remains
+an unproved mathematical assumption for the class specified here.
+Its construction and connection to \code{SixthMoment.cumulant\_bound}
+are still absent from the supplied Lean interface.
+
+\subsection{A scale-invariant moment theorem}
+\begin{theorem}[\st{P,C}: genuine bidegree $(2,1)$]
+\label{thm:sixth-tensor-bridge-audit}
+For every finite-dimensional $q\in\mathcal W_{2,1}$, let
+$e=\E|q|^2$ and $\kappa=\E|q|^4-2e^2$. Then
+\[
+ 0\le\kappa\le42e^2,\qquad
+ \E|q|^6\le9e\E|q|^4-12e^3+
+             \frac{4045313}{100000}\kappa^{3/2}.
+\]
+The first assertion follows from Theorem~\ref{thm:sharp-influence-audit}.
+The second does not hold for a general isotropic pair of real cubic
+chaoses without the bidegree restriction.
+\end{theorem}
+
+\subsection{The two finite-sum identities}
+Let $f$ be the real symmetric kernel of $\sqrt2\Re q=I_3(f)$,
+$F_{ab,c}=f_{abc}$, $G=F^*F$, $C=FF^*$ and $S=\operatorname{Sym}_4 C$.
+Use full ordered-index Hilbert tensor norms. Put
+\[
+ s=\|G\|^2,\quad h=\|S\|^2,\quad
+ \eta=\|G_{\rm anti}\|^2,\quad \tau=\|S_{+2,+2}\|^2.
+\]
+Here $h$ is a tensor norm, not the directional influence.
+In an orthonormal isotropic basis write $A_{ij,k}$ for the $(+,+,-)$
+entries of $f$. They are symmetric in $i,j$; the opposite-charge
+entries are their conjugates. Define
+\[
+\begin{aligned}
+ P_{ij}&=\sum_{ab}A_{ia,b}\overline{A_{ja,b}},&
+ Q_{ij}&=\sum_{ab}A_{ab,i}\overline{A_{ab,j}},&
+ R_{ij}&=\sum_{ab}A_{ia,b}A_{jb,a},\\
+ X_{ij;kl}&=\sum_a A_{ia,k}\overline{A_{la,j}},&
+ Y_{ij;kl}&=\sum_a A_{ij,a}\overline{A_{kl,a}},&
+ K_{ijk;l}&=\sum_a A_{ij,a}A_{ak,l}.
+\end{aligned}
+\]
+Put $p_0=\|P\|^2$, $q_0=\|Q\|^2$, $v_0=\|R\|^2$,
+$r_0=\langle P,\overline Q\rangle=\|K\|^2$ and
+$T_0=\langle X,HX\rangle$, where $H$ swaps the first two indices of
+$X$. Let $V$ swap its last two indices, $X_{\pm\pm}=(I\pm H)(I\pm V)X/4$,
+and let $\pi$ cyclically permute the first three indices of $K$.
+Relabeling finite sums gives
+\[
+\begin{gathered}
+ \|X\|^2=p_0,\quad\|Y\|^2=q_0,\quad
+ \langle X,VX\rangle=\langle X,Y\rangle
+ =\langle K,\pi K\rangle=T_0,\quad
+ \langle X,HVX\rangle=v_0,\\
+ s=8p_0+2q_0+8r_0+8v_0,\qquad
+ h=(s+48T_0)/3,\qquad \eta=8v_0,\\
+ \tau=(4p_0+q_0+4v_0+16T_0)/9.
+\end{gathered}
+\]
+Consequently the following are exact polynomial identities:
+\begin{align}
+37s-39h
+ &=720\|X_{--}\|^2+48\|Y-X_{++}\|^2
+                       +96\|K-\pi K\|^2,\label{eq:c6-sos-one}\\
+216\tau-27h+5s-8\eta
+ &=24\|X-HX\|^2+16\|P-\overline Q\|^2.
+ \label{eq:c6-sos-two}
+\end{align}
+They prove $h\le37s/39$ and $27h-5s+8\eta\le216\tau$.
+The oriented contraction-graph checker verifies the finite-sum
+identities under dummy-index relabeling, in arbitrary dimension.
+These formulas use actual entries of $f$; if one uses the coefficients
+of $q$ instead, their common scale must be included before computing
+$s,h,\eta,\tau$.
+
+\subsection{The remaining block estimates}
+The charges $+2,0,-2$ give the self-adjoint block pattern
+\[
+ S=\begin{pmatrix}D_+&L&0\\L^*&D_0&M\\0&M^*&D_-\end{pmatrix},\qquad
+ \|D_+\|^2=\|D_-\|^2=\tau,\quad\|D_0\|^2=4\tau,
+ \quad\|L\|^2=\|M\|^2=r=(h-6\tau)/4.
+\]
+The factor four follows by using the normalized symmetric mixed basis
+$(e_i\otimes\bar e_j+\bar e_j\otimes e_i)/\sqrt2$.
+Bounding each closed block walk by the product of its Hilbert--Schmidt
+norms gives, with $T_j=\operatorname{tr}S^j$,
+\[
+\begin{split}
+ T_3&\le10\tau^{3/2}+18r\sqrt\tau
+          =\sqrt\tau(9h/2-17\tau),\\
+ T_4&\le18\tau^2+56\tau r+8r^2
+          =h^2/2+8h\tau-48\tau^2,\\
+ \|\Pi_0(S^2)\|^2&\le18\tau^2+20\tau r+6r^2
+          =3h^2/8+h\tau/2+3\tau^2/2,\\
+ \|\Pi_{\pm2}(S^2)\|^2&\le36\tau r=9h\tau-54\tau^2.
+\end{split}
+\]
+No positivity of $S$ is assumed. The low-range scalar argument also
+uses $\|S\|_{\rm op}\le\sqrt{10/11}\|S\|$.
+A short proof is to project $\operatorname{Sym}_4(B\otimes B)$, for
+a unit real symmetric matrix $B$, onto charges $0,\pm2$. If $u$ is
+the squared norm of its anti-commuting part, expansion of the three
+pairings gives squared norm at most
+$2/3+4u/3-11u^2/6\le10/11$.
+Pairing with $S$ and taking the Rayleigh supremum proves the claim;
+the detailed charge projection is in
+\code{charge\_four\_operator\_bound.md}.
+
+Write $G=G_0+G_2$, commuting and anti-commuting with the complex
+structure $J$. Both $G$ and $J^*GJ=G_0-G_2$ are positive semidefinite.
+Thus the particularly simple identity
+\[
+ 0\le\operatorname{tr}(GJ^*GJ)=\|G_0\|^2-\|G_2\|^2=s-2\eta
+\]
+proves $\eta\le s/2$. Eigenvalues of $G_0$ have even real
+multiplicity. It follows, for $V_3=\operatorname{tr}G^3$, that
+\[
+ 0\le V_3\le(s+2\eta)\sqrt{(s-\eta)/2}.
+\]
+The components of $\operatorname{vec}G$ have norms squared
+$\eta/2,s-\eta,\eta/2$. Hence
+\[
+ Q_G:=\langle\operatorname{vec}G,S\operatorname{vec}G\rangle
+ \le(2s-\eta)\sqrt\tau+
+           \sqrt{2\eta(s-\eta)(h-6\tau)}.
+\]
+
+Finally put $U=SF$, $D=FG$, and $k_\theta=\theta^2-2\theta$.
+Orthogonal symmetrization preserves charge, so
+$\langle C_j,S_j\rangle=\|S_j\|^2$ in each of the two sectors.
+Direct substitution gives the exact nonnegative norms
+\[
+\begin{split}
+ A_0&:=\|C_0-\theta S_0\|^2
+      =2s/3-2h+(18+6k_\theta)\tau,\\
+ A_2&:=\|C_2-\theta S_2\|^2
+      =s/3+(2+k_\theta)h-(18+6k_\theta)\tau.
+\end{split}
+\]
+Here the subscript $2$ includes both signs. Since $C-\theta S$ has
+no charge-four component, Cauchy--Schwarz in these two sectors gives
+\[
+ \|U\|^2\le\theta T_3+
+ \sqrt{A_0(3h^2/8+h\tau/2+3\tau^2/2)}+
+ \sqrt{A_2(9h\tau-54\tau^2)}.
+\]
+This is valid for every real $\theta$, including $-54/125$.
+Also $\|U\|^2\le\sqrt{sT_4}$ and
+$\langle D,U\rangle\le\sqrt{V_3\|U\|^2}$.
+These are all the tensor inequalities consumed by the scalar certificate.
+
+\subsection{Cumulants, rational replay, and conversion}
+Connected Wick contraction gives
+\[
+ \kappa_4(I_3(f))=1296(s+3h/2),
+\]
+\[
+ \frac{\kappa_6(I_3(f))}{46656}
+ =\frac{135}{2}T_3-20V_3+\frac{135}{2}Q_G
+       +\frac{165}{2}\langle D,U\rangle+45\|U\|^2.
+\]
+The exact checker covers all 640 connected labelled cubic multigraphs
+on six vertices, representing $11{,}314{,}080$ Wick pairings. The
+negative $-20V_3$ is retained. For $s,h>0$ normalize by
+\[
+ y=\sqrt{h/s},\quad w=\eta/s,\quad
+ u=\sqrt{V_3/s^{3/2}},\quad z=T_3/h^{3/2},\quad
+ v=\|U\|^2/(h\sqrt s),\quad c=Q_G/(s\sqrt h).
+\]
+The real cumulant ratio is bounded by
+\[
+ \frac{(135/2)zy^3+45vy^2+(135/2)cy-20u^2
+                 +(165/2)uy\sqrt v}{(1+3y^2/2)^{3/2}}.
+\]
+The archived checker with rational parameters
+\code{split-moment-parameters.json} proves that this is at most
+$(4045313/100000)10/(3\sqrt6)$, under the just-proved constraints.
+It handles $y\le39/50$ algebraically and checks 100 affine-majorant
+leaves, one derivative rectangle, and 17 high-range Bernstein leaves.
+This is a fresh replay of that 118-leaf certificate; the supplied PDF
+reports a different 59-leaf replay of the Lean polynomial data.
+The zero cases follow directly from $F=0$ or $T_4=\|U\|^2=0$.
+
+For $e=1$, circularity yields
+\[
+ \kappa_4(\sqrt2\Re q)=\tfrac32(m-2),\qquad
+ \kappa_6(\sqrt2\Re q)=\tfrac52(\E|q|^6-9m+12).
+\]
+Substitution proves Theorem~\ref{thm:sixth-tensor-bridge-audit}; scaling
+handles every $e$. Therefore the eleven-row radius theorem below is
+unconditional within $\mathcal W_{2,1}$ as a mathematical \st{P,C}
+result, while still requiring a Lean port.
+
+\paragraph{Why the current broader Lean hypothesis cannot be erased.}
+For independent real normalized Hermite cubics $A,B$, the variable
+$q=(A+iB)/\sqrt2$ has moments $1,47,13506$ at orders $2,4,6$.
+Its normalized sixth excess is
+\[
+ \frac{13506-9\cdot47+12}{(47-2)^{3/2}}
+       =\frac{97}{\sqrt5}>40.45313.
+\]
+It is not in $\mathcal W_{2,1}$. The desired port strengthens the
+premises to the correct bidegree, constructs the tensors, and then
+applies the existing scalar theorem; it does not delete \code{h6}
+from a theorem about arbitrary real third-chaos pairs.
+
+\subsection{An exact vector witness and an improved elementary rate}
+\begin{proposition}[\st{P}: vector transfer input]
+\label{prop:exact-vector-transfer-audit}
+Let $Z\in\mathbb C^n$ be standard proper Gaussian, $R=\|Z\|$,
+$u_j=Z_j/R$ and $T_n=P_{1,0}-\epsilon P_{2,1}$, $0\le\epsilon\le1$.
+Writing $\mu_n=\E R$, one has
+\[
+ \sum_j\langle u_j,T_nu_j\rangle
+  =\frac{\mu_n^2}{n}\left(1-\frac{\epsilon}{4(n+1)}\right)
+  >1-\frac{1+\epsilon}{4n}.
+\]
+Thus $n\ge(1+\epsilon)/(4\delta)$ suffices for vector value above
+$1-\delta$. This proves the vector input on paper; it gives no scalar
+operator-norm cap.
+\end{proposition}
+\begin{proof}
+Phase integration and the second and fourth moments of the uniform
+complex sphere give
+\[
+ P_{1,0}u_j=(\mu_n/n)Z_j,\qquad
+ P_{2,1}u_j=-\frac{\mu_n}{2n(n+1)}Z_j(R^2-n-1).
+\]
+For the latter identity, pairing with each Wick basis monomial gives
+$-\mu_n(\delta_{ja}\delta_{bc}+\delta_{jb}\delta_{ac})/(2n(n+1))$;
+pairing $Z_j(R^2-n-1)$ gives the delta sum. Since
+$\sum_j\E|Z_j(R^2-n-1)|^2=n(n+1)$, orthogonality proves the equality.
+
+For a sharper elementary rate than the direct Cauchy--Schwarz bound,
+use $\mu_{n+1}=(n+1/2)\mu_n/n$ and
+$n^2/(n+1/2)\le\mu_n^2\le n$. The lower bound is Cauchy--Schwarz
+applied to $\E R^2$ and $\E R\,\E R^3$.
+Then $b_n=\mu_n^2/(n-1/4)$ tends to one and is strictly decreasing,
+because
+\[
+ \frac{b_{n+1}}{b_n}
+ =\frac{(n+1/2)^2(n-1/4)}{n^2(n+3/4)}
+ =1-\frac1{16n^2(n+3/4)}<1.
+\]
+Hence $\mu_n^2>n-1/4$. Insert this in the exact payoff, and use
+$\epsilon/(4(n+1))\le\epsilon/(4n)$ to obtain the stated rate.
+\end{proof}
+
+\paragraph{Git provenance.}
+Commit \code{d0869cf} introduced $40.45313$ together with explicit
+tensor assumptions. Commit \code{0969346} removed only the redundant
+\code{sixth\_moment\_le\_nX} conversion wrapper, whose statement
+already assumed the real cumulant bound. No removed unconditional
+tensor proof was found. The distinction is external mathematics versus
+the still-unconstructed bidegree bridge in Lean.

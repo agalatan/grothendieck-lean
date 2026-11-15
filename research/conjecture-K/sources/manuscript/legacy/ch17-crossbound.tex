@@ -1,0 +1,806 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch17-crossbound.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 17). Owner: lower-bound/06-original-responses.tex
+\section{Sharper variational certificates and exact-profile constraints (GPT package \code{crossbound-progress}, 15 October 17:22)}
+\label{ch:crossbound}
+\chapsummary{Variational duals, exact-profile annihilators and coherent tail bounds. Their analytic interfaces remain useful; historical numerical endpoints are not current bounds.}
+
+\paragraph{Provenance (IDE note, 15 October, evening).} This chapter is lower-bound GPT's \code{tex/proposed/ch17-crossbound.tex} from
+\pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/crossbound-progress-20261015/} (108 files, \code{.zip} twin), ported verbatim except for this header and the closing reading note;
+the proofs are GPT's and were read, not re-derived line by line, except where the reading note says so. Our replay: \code{MANIFEST.sha256} 108/108; the five proposed edits to
+ch1, ch3, ch7, ch15 and \code{main.tex} carried source hashes that matched our files exactly, so they were applied as proposed; \code{verify\_all.py} under \code{python3 -I} from an
+isolated directory: all four exact audit suites PASS (1,600 gap/complementarity audits, 2,000 projection-gap identities and 3,000 scalar majorants, the polynomial and exponential
+annihilator identities, 102 rational block-PSD certificates); log \pathref{kattack-2026-10-15/gpt\_crossbound\_replay.log}. Status labels are GPT's (\st{P} analytic, \st{C} exact finite
+audits, \st{F} quadrature/QMC); the certified bound is unchanged.
+
+\paragraph{Status and purpose.}
+The certified master interval reported on 15 October 2026 remains
+$1.40160592<\KG<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$. The newer unmerged upper branch is reported
+at $1.404596071666$ under its analytic hypotheses. [IDE note, 20 Oct: dated; the current Lean interval is $1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<\KG<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$ (\S\ref{sec:certcombinede}); the upper branch \code{work/upper-stable} is not merged as of \code{20eb917}, since it replaces the Lean head computation by a \code{head\_close} hypothesis.] No endpoint is improved
+in this chapter. The analytic statements below are \st{P}; the exact finite
+audits are supporting \st{C} checks, and all quadrature experiments are
+\st{F}. The three additions are a dual for the weaker retained-penalty
+problem, zero-projection tests for the actual profiles, and coherent tail
+certificates for rounding mixtures.
+
+For the peak cubic row,
+$\varepsilon=0.7564$, $L=z(0.8456+0.1432(|z|^2-2))$, and
+$S\approx1.37395353$. For a general cubic residual $q$ independent of the
+visible $z$, let
+$\Lambda_q=\E\Phi_0(|q|)-\E|q|^2/\varepsilon$ and $d_q=S-\Lambda_q$.
+The profiles $F_A,F_B$ are the exact charge-one gradients obtained by
+averaging the visible coordinate. The target labelled (T$_0$) is
+$\norm{\Pc10F_A(q)}^2+\norm{\Pc10F_B(q)}^2
+\le0.292(d_q+\eta)$, subject to the stated fibre-majorant scope.
+
+\subsection{Complex primal--dual equality and the exact gap}
+\label{sec:complex-duality-proof}
+The complex argument was already written out in the 11 October note
+\texttt{complex\_duality\_lemma.md}; its audit removes the former
+``unwritten'' qualification from the mathematical claim. This is not
+a Lean formalization. The standard Gaussian-to-finite-matrix transfer
+is proved analytically in the argument below rather than asserted as
+a formalized project input. [IDE note: since 15 Oct 17:35 the transfer itself is proved in Lean, \code{lower\_bound\_of\_transferL2}, leaving only the two Gaussian inputs \code{TransferInputsL2}\stale{22 Oct}{proved in Lean: \code{transferInputs\_of\_witnessCap}, \code{witnessCap\_of\_reduction}, \code{lower\_bound\_of\_reduction}}; \autoref{ch:certified}.]
+
+Let $P_k=P_{k+1,k}$ on charge-one complex Gaussian functions and let
+\[
+N(\lambda)=\sup_n\left\|\sum_{k\ge0}\lambda_kP_k\right\|_{\infty\to1},
+\qquad\mathcal Q=\{\lambda:\lambda_0=1,\ |\lambda_k|\le1,
+\ \lambda_k\in\R\}.
+\]
+Let $\mathcal C\subset\ell^1(\R)$ be the convex set of finite mixtures
+of coefficient sequences $c_k=\Re\langle P_kf,P_kg\rangle$ for
+charge-one disk-valued functions in arbitrary finite dimensions.
+Then $\sum_k|c_k|\le1$. Conjugate reflection
+$f^\#(z)=\overline{f(\bar z)}$ preserves each charge-one chaos and
+conjugates its pairings; averaging a pair with its reflection realizes
+the real coefficients as an actual kernel. Disk-valued maps are valid
+roundings, or can be decomposed measurably into phase maps.
+Circle averaging projects the scalar norm's disk-valued test functions
+onto charge one without changing the pairing with $T_\lambda$; hence
+$N(\lambda)=\sup_{c\in\mathcal C}\sum_k\lambda_kc_k$.
+
+\begin{theorem}[Complex Gaussian duality, \st{P}]
+\label{thm:complex-duality}
+\[
+\frac1{\KG}=\sup_{c\in\mathcal C}
+\left(c_0-\sum_{k\ge1}|c_k|\right)
+=\min_{\lambda\in\mathcal Q}N(\lambda).
+\]
+Finite bounded real Hermite multipliers approximate this minimum.
+\end{theorem}
+\begin{proof}
+The residual rounding transfer gives
+$\sup_{c\in\mathcal C}(c_0-\sum_{k\ge1}|c_k|)\le1/\KG$.
+Conversely, put $F_n(z)=z/\norm z$ and
+$a_n=(\E\norm Z)^2/n\to1$. Its first-chaos vector energy is $a_n$,
+and its total vector energy is one. Thus every $\lambda\in\mathcal Q$
+has vector payoff at least $2a_n-1$. Approximate $F_n$ by conditional
+expectations on finite measurable partitions. The matrix entries are
+$\langle1_E,T_\lambda1_F\rangle$, its scalar phase optimum is at most
+$N(\lambda)$, and the finite complex Grothendieck inequality gives
+$2a_n-1\le\KG N(\lambda)$ on passage to the limit. Only the bounded
+$L^2$ operator is required; no pointwise integral kernel is used.
+Hence $N(\lambda)\ge1/\KG$.
+
+The real multiplier cube $\mathcal Q$ is compact in the weak-star topology
+of $\ell^\infty=(\ell^1)^*$. The pairing with $\mathcal C$, carrying its
+$\ell^1$ norm topology, is separately continuous and affine.
+Sion's minimax theorem therefore gives
+\[
+\inf_{\lambda\in\mathcal Q}\sup_{c\in\mathcal C}\sum_k\lambda_kc_k
+=\sup_{c\in\mathcal C}\inf_{\lambda\in\mathcal Q}\sum_k\lambda_kc_k
+=\sup_{c\in\mathcal C}\left(c_0-\sum_{k\ge1}|c_k|\right).
+\]
+The preceding two inequalities prove equality. Weak-star lower
+semicontinuity gives attainment of the multiplier minimum. There is no
+compactness assumption on $\mathcal C$. If $B_d$ restricts the multiplier
+to $k\le d$, Ornstein--Uhlenbeck damping and the omitted $L^2$ multiplier
+norm give, for $0<r<1$,
+\[
+\frac1{\KG}\le B_d\le\frac{1}{\KG\sqrt r}+r^{d+1}.
+\]
+Indeed the damped coefficients are $\lambda_kr^k$, obtained by composing
+with the noise operator of parameter $\sqrt r$ and dividing by $\sqrt r$.
+Letting $r\uparrow1$ sufficiently slowly as $d\to\infty$ proves convergence.
+\end{proof}
+
+For an actual real coefficient mixture define
+$D(c)=c_0-\sum_{k\ge1}|c_k|$ and
+$W_\lambda(c)=c_0+\sum_{k\ge1}\lambda_kc_k$. The exact identity
+\begin{equation}\label{eq:crossbound-gap}
+N(\lambda)-D(c)
+=[N(\lambda)-W_\lambda(c)]
++\sum_{k\ge1}(|c_k|+\lambda_kc_k)
+\end{equation}
+splits the gap into nonnegative response and coefficient losses.
+Each summand is at least $(1-|\lambda_k|)|c_k|$. Exact complementarity
+therefore forces $c_k=0$ at every interior multiplier. In a finite
+response-pool LP this statement is exact for the retained head; a valid
+upper bound still requires the entire omitted tail. A small pool value
+also supplies no global upper bound on the witness norm until all
+admissible responses are controlled.
+
+\subsection{Correction: an endpoint Fourier value is not preprocessing-monotone}
+\label{sec:damping-correction}
+(Same correction as \autoref{ch:problem}, Proposition~\ref{prop:falseceiling}: the diagonal ceiling $1.4045917$ is not a barrier for matrix-covariance preprocessing.)
+The inequality $D(c)\le|\sum_k(-1)^kc_k|$ is correct. The additional
+claim that preprocessing cannot raise the fixed endpoint value is false.
+For a scalar real odd preprocessor, $\rho(i)=ir$ with $|r|\le1$, which
+requires the ceiling
+\[
+C_*:=\sup_{0\le r\le1}\left|\sum_k(-1)^kc_kr^{2k+1}\right|,
+\]
+rather than its value at $r=1$. For multiple raw coordinates or matrix
+preprocessing the supremum must use the corresponding admissible
+covariance domain. An endpoint ceiling applies only after proving that
+this supremum is attained there.
+
+An exact example is $f(z)=2\sqrt e\,z e^{-2|z|^2}$, with $|f|\le1$.
+Its same-map energies are $c_k=4e(k+1)4^k/3^{2k+4}$, whence
+\[
+C(r)=\frac{4e}{81}\frac{r}{(1+4r^2/9)^2},\qquad
+C(1)=\frac{4e}{169}<\frac{e\sqrt3}{72}=C(\sqrt3/2).
+\]
+The inequality reduces to $3\cdot169^2>288^2$. The example also has a
+unimodular-pair realization: write $f=\ph(z)A(|z|)$ and replace $A$ on
+the left and right by $A+i\sqrt{1-A^2}S_j$, using separate independent
+centered radial signs $S_j$. Their auxiliary chaos terms have zero
+cross pairings. Thus the correction is not an artefact of allowing
+disk-valued functions. It does not refute the numerical frozen-family
+ceiling that explicitly maximizes its diagonal damping variables.
+
+\subsection{A convex dual retaining the first-chaos penalty and cubic consistency}
+\label{sec:Kprime-dual}
+
+The diagnostic of subtracting $\norm{Pk_G}^2$ from $\Lambda(G)$ at the
+unpenalised phase response is not an upper bound: the response may change
+to reduce its penalty. The following dual accounts for this change exactly.
+Let $P=P_{1,0}$, $Q=P_{2,1}$, and use
+$\langle a,b\rangle=\E[\bar a b]$. For $G\in\operatorname{ran}Q$ and
+$v\in\operatorname{ran}P\oplus\operatorname{ran}Q$, set
+\[
+\mathcal D_G(v):=\E|L+G-v|+\E|L-G+v|+\norm{Pv}^2
++\frac{2\Re\langle Qv,G\rangle-\norm G^2}{\varepsilon}.
+\]
+Here $\Lambda'(G)$ is the supremum, over unimodular $f,g$ with
+$k=(f-g)/2$ and $\varepsilon Qk=G$, of
+\[
+\Re\E[\overline{L+G}f+\overline{L-G}g]
+-\norm G^2/\varepsilon-\norm{Pk}^2.
+\]
+\begin{proposition}[Retained-penalty dual]
+\label{prop:retained-dual}
+For every $G$, $\Lambda'(G)\le\inf_v\mathcal D_G(v)\le\Lambda(G)$.
+Every individual trial $v$ therefore gives an upper bound, including when
+the trials are restricted to a chosen low-dimensional subspace.
+\end{proposition}
+\begin{proof}
+For a feasible pair $f,g$, put $k=(f-g)/2$, so $Qk=G/\varepsilon$.
+Subtract its penalised objective from $\mathcal D_G(v)$. The difference is
+\[
+\begin{split}
+&\E\bigl[|L+G-v|-\Re(\overline{L+G-v}f)\bigr]\\
+&\quad+\E\bigl[|L-G+v|-\Re(\overline{L-G+v}g)\bigr]
++\norm{Pv-Pk}^2\ge0.
+\end{split}
+\]
+The second inequality follows by taking $v=0$.
+\end{proof}
+
+There is also an explicit positive correction. Put
+$u_\pm=L\pm G$, $k_0=(\ph(u_+)-\ph(u_-))/2$, and
+$r=Pk_0+Qk_0-G/\varepsilon$. On any finite subspace $E$ where the
+following integrals are finite, define the quadratic form
+\[
+\mathcal H_G(v,v)=\norm{Pv}^2+
+\frac12\E\left[|v|^2\left(\frac1{|u_+|}+\frac1{|u_-|}\right)\right].
+\]
+The elementary global inequality
+$|u-v|\le |u|-\Re(\overline{\ph(u)}v)+|v|^2/(2|u|)$ gives
+\[
+\Lambda'(G)\le\Lambda(G)-2\Re\langle v,r\rangle+\mathcal H_G(v,v).
+\]
+If $H$ is the positive definite Gram matrix of $\mathcal H_G$ in an
+orthonormal basis $e_1,\ldots,e_d$ of $E$, and $b_j=\langle e_j,r\rangle$,
+then
+\[
+\boxed{\Lambda'(G)\le\Lambda(G)-b^*H^{-1}b.}
+\]
+For $E=\operatorname{ran}P$ this becomes
+$\Lambda'\le\Lambda-\langle Pk_0,(I+K_{PP})^{-1}Pk_0\rangle$, where
+$K$ is the reciprocal-modulus part of $\mathcal H_G$. This first-chaos-only
+version does not require cubic consistency; the additional $Q$ directions
+do. At a stationary point of $\Lambda$, $Qk_0=G/\varepsilon$, and the
+joint correction uses the Schur complement
+$I+K_{PP}-K_{PQ}K_{QQ}^{-1}K_{QP}$. It lies between the first-chaos-only
+correction and $\norm{Pk_0}^2$.
+
+The exact dual remains valid when reciprocal-modulus integrals diverge;
+one must then use $\mathcal D_G$ directly rather than truncate those
+integrals without compensation. A rigorous upper matrix enclosure of $H$
+gives a conservative correction by inverse order.
+If a differentiable minimiser $v$ of $\mathcal D_G$ exists, its phase
+response $k_v$ satisfies $Pv=Pk_v$ and $Qk_v=G/\varepsilon$, and the
+gap identity above gives equality. Thus the dual is also an exact
+constrained response oracle under these stated attainment conditions.
+
+\paragraph{Status.}
+This is a dimension-independent analytic reduction, not a proof of the
+uniform conjecture $K'$. A global bound for
+$\sup_G\inf_v\mathcal D_G(v)$ is still required. The accompanying
+composite-radial quadrature probes only the pure junta and are float
+diagnostics, not interval certificates or an improved Grothendieck bound.
+At a differentiable global maximiser of $\Lambda$, cubic consistency
+already holds. Large consistency corrections at a fixed nonstationary
+junta therefore do not imply a comparable improvement of the universal
+cap; the genuine global improvement here comes from the retained
+first-chaos penalty.
+
+\subsection{Exact-profile bounds from functions with zero first-chaos projection}
+\label{sec:exact-profile-annihilators}
+Let $N$ be the positive Gaussian number operator, with
+$Nq=dq$ for a charge-one pure-chaos polynomial of total degree $d\ge3$.
+Use the bilinear convention
+$\Gamma(f,g)=\sum_j(\partial_j f\,\bar\partial_jg+
+\bar\partial_j f\,\partial_jg)$, so
+$N(fg)=fNg+gNf-2\Gamma(f,g)$. Put
+$U=|q|^2$, $w=\Gamma(q,\bar q)$, $c=\Gamma(q,q)$.
+\begin{proposition}[Zero-projection identity, \st{P}]
+For a $C^2$ real function $h$ whose composition and derivatives have
+polynomial growth, define
+\[
+\begin{split}
+A_h={}&(d-1)qh(U)+2d qUh'(U)\\
+&-(\bar q c+2qw)(2h'(U)+Uh''(U))-q^3\bar c h''(U).
+\end{split}
+\]
+Then $A_h=(N-1)[qh(U)]$ and $\Pc10 A_h=0$.
+For $d=3$ and $h(U)=e^{-sU}$,
+\[
+A_s=e^{-sU}\bigl[2q-6s qU+(2s-s^2U)(\bar q c+2qw)
+-s^2q^3\bar c\bigr].
+\]
+\end{proposition}
+\begin{proof}
+Apply the number-operator chain rule to $F(u)=uh(|u|^2)$:
+\[
+NF(q)=dqF_u+d\bar qF_{\bar u}-cF_{uu}
+-2wF_{u\bar u}-\bar cF_{\bar u\bar u}.
+\]
+Its derivatives give the displayed expression. Gaussian integration by
+parts yields $\E[\bar z_jNf]=\E[\bar z_jf]$ for every coordinate, hence
+$\E[\bar z_jA_h]=0$. For the exponential tests all derivatives have
+polynomial growth, so Gaussian integrability justifies these operations.
+\end{proof}
+
+Choose finitely many rates $s_j>0$ and let $a_0=q$, $a_j=A_{s_j}$.
+For arbitrary trial coefficients $\lambda_{Dj}$, projection contraction gives
+\begin{equation}\label{eq:annihilator-content}
+\sum_{D=A,B}\norm{\Pc10F_D(q)}_2^2
+\le\sum_{D=A,B}\E\left|F_D(q)-\sum_j\lambda_{Dj}a_j\right|^2.
+\end{equation}
+The optimal fixed-input bound is a Schur complement of the finite joint
+Gram matrix. Rational trial coefficients give a certificate without solving
+the minimisation exactly. The profiles themselves are never differentiated.
+This retains the joint law of $(U,w,c)$ and the exact tensor orientation
+that the scalar condition (T) discards.
+
+Given the fibre majorant, with $\delta=1/\varepsilon-h_X>0$, a sufficient
+condition for the odd-sector target is
+\[
+\E\left[\Phi_0(|q|)+\frac1\delta\sum_{D=A,B}
+\left|F_D(q)-\sum_j\lambda_{Dj}a_j\right|^2\right]
+-\frac{\E|q|^2}{\varepsilon}\le S+\eta.
+\]
+This is a new certificate format, not a universal proof of the condition.
+Bounds for the joint weighted integrals, the fibre majorant's scope,
+interaction and diagonal uniformity remain obligations.
+
+\paragraph{Diagnostics, \st{F}.}
+For rates $1/2,1,2,4,8,16,32,64$, the fitted bound in
+\eqref{eq:annihilator-content} is below $0.723$ times
+$0.292(d_q+10^{-4})$ at all 27 tested buffered-junta points.
+At $\sigma=0.2$, amplitudes $0.3$ and $0.5555$ (normalised fourth moments
+$2.3402$ and $5.9993$), the ratios are approximately $0.475$ and $0.722$;
+the corresponding optimised scalar-law/cubic-content Gram bounds have
+ratios $2.23$ and $1.92$. Higher quadrature confirms these two values,
+but the profile interpolation and integral errors are not enclosed.
+These measurements therefore prove no new case or endpoint.
+The general identities above are analytic; the self-contained exact checker
+audits six polynomial cases and the formal exponential chain rule.
+On a genuinely coupled two-coordinate cubic, independent grade-three
+Gaussian buffering gives normalised fourth moments approximately
+$2.2434$, $3.8778$, and $5.8938$. Two independently scrambled QMC probes
+give corresponding ratios approximately $0.408$, $0.680$, and $0.708$.
+These additional tests also remain \st{F}; sampling and profile errors
+are not rigorous enclosures.
+
+\subsection{A coherent tail certificate for response mixtures}
+\label{sec:coherent-pool-tail}
+The usual tail budget for a mixture sums the separate branch budgets.
+It can be sharpened when the omitted tails have certified cross-Gram
+matrices. This is an application of the standard trace-norm variational
+formula, not a new Grothendieck bound.
+
+Let $P_k$ be orthogonal grade projections, let $(f_i,g_i)$ be a finite
+family in a common graded Hilbert space, and let $w_i\geq0$ with
+$\sum_iw_i=1$. After retaining grades $k\leq D$, set
+\[
+ a_i=\sum_{k>D}P_kf_i,\qquad b_i=\sum_{k>D}P_kg_i,
+ \quad A_{ij}=\langle a_i,a_j\rangle,\quad
+ B_{ij}=\langle b_i,b_j\rangle,\quad W=\operatorname{diag}(w_i).
+\]
+Then
+\begin{equation}\label{eq:coherent-pool-tail}
+ \sum_{k>D}\left|\sum_iw_i\langle P_kf_i,P_kg_i\rangle\right|
+ \leq\left\|A^{1/2}WB^{1/2}\right\|_*.
+\end{equation}
+In particular, any Hermitian matrices $X,Y$ satisfying
+\[
+ \begin{pmatrix}X&W\\W&Y\end{pmatrix}\succeq0
+\]
+give the square-root-free certificate
+\begin{equation}\label{eq:coherent-pool-rational}
+ \delta_{\rm tail}\leq\tfrac12\operatorname{tr}(AX+BY).
+\end{equation}
+Certified Loewner upper bounds for $A,B$ may replace the exact matrices.
+
+For the proof, choose one unit-modulus scalar on each omitted grade to
+align its mixed correlation. The resulting grade-diagonal unitary does
+not change $A$. Apply the block-positive quadratic form to the transformed
+left tail vectors and the right tail vectors. This bounds the sum over
+any finite set of grades by the right side of
+\eqref{eq:coherent-pool-rational}; monotone passage to all grades and the
+trace-norm variational formula give \eqref{eq:coherent-pool-tail}.
+
+The improvement can be strict even for nonsingular Gram matrices. For
+two equally weighted branches take
+\[
+ A=\begin{pmatrix}1&99/101\\99/101&1\end{pmatrix},\quad
+ B=\begin{pmatrix}1&-99/101\\-99/101&1\end{pmatrix},\quad W=I/2.
+\]
+The separate Cauchy--Schwarz budget is $1$. The rational matrices
+\[
+ X=\frac1{40}\begin{pmatrix}101&-99\\-99&101\end{pmatrix},\qquad
+ Y=\frac1{40}\begin{pmatrix}101&99\\99&101\end{pmatrix}
+\]
+have a positive semidefinite block matrix and certify the sharp budget
+$20/101$. All these claims check by exact rational arithmetic.
+
+Optimizing the mixture weights, absolute-value epigraphs for the retained
+coefficients, and $X,Y$ is a semidefinite program. Rationalizing its output
+leaves a finite PSD certificate and a scalar budget. The additional
+analytic inputs are the \emph{joint} tail Gram matrices: storing only the
+diagonal energies or separate branch kernels is insufficient. For the
+existing scalar preprocessing pool they can be obtained from pairwise
+raw-shape correlations in a common graded Gaussian realization, followed
+by subtraction of the retained cross-grade Gram matrices.
+
+No improvement of the currently certified constant is asserted here.
+The same device may be used for a coherent Taylor or comparison remainder
+when its joint Gram data can be enclosed; it cannot recover correlations
+already lost in an earlier triangle inequality.
+
+\subsection{What would constitute an improved bound}
+The retained-penalty dual is valid for every coupling and diagonal
+component, but its supremum over all cubic $G$ has not been bounded by
+$S+\eta$. Cubic consistency alone cannot lower a differentiable global
+maximum of the unpenalised $\Lambda$, since it already holds at such a
+maximum. Large corrections at nonstationary test inputs must therefore
+not be advertised as a comparable global gain.
+
+For a buffered Wick input with $\sigma=0.20086016$ and core amplitude
+$0.3$, the float raw value is $1.373742781762$, the first-penalty dual
+gives $1.373741155969$, and the joint dual gives $1.373705954322$.
+Two composite quadratures differ by less than $2\cdot10^{-10}$.
+This input was already below $S$, so these numbers certify no new endpoint.
+
+The exact-profile Gram method restores Gaussian constraints absent from
+the scalar-law relaxation. Its promising fixed-input fits still require
+uniform bounds for weighted $(|q|^2,\Gamma(q,\bar q),\Gamma(q,q))$
+integrals over arbitrary cubic tensors. The coherent tail bound requires
+joint cross-Gram enclosures for the chosen rounding branches; historical
+head tables alone do not contain these data.
+
+The exact supporting suites check 1,600 coefficient-gap identities,
+5,000 finite variational/majorant identities, the polynomial and
+exponential annihilator formulas, and 102 rational tail certificates.
+These checks support the analytic arguments; they do not replace their
+arbitrary-dimensional proofs. None changes the formal hypothesis list
+of the current certified theorems.
+
+\subsection{IDE reading note}\label{sec:crossbound-reading}
+(i) \emph{Zero-projection functions.} That $\Pc10(N-1)F=0$ is immediate ($N$ is multiplication by the chaos degree, so $(N-1)$ kills $\Hc10$); the content of
+\S\ref{sec:exact-profile-annihilators} is the explicit closed form of $(N-1)[q\,h(|q|^2)]$ in terms of $(q,w,c)=(q,\Gamma(q,\bar q),\Gamma(q,q))$ of the \emph{same} tensor, which turns
+``best approximation of $F_D(q)$ in the orthogonal complement of $\Hc10$'' into a finite Gram problem over explicit functions, without differentiating the profiles. It is an
+upper bound on the \emph{actual} content with the tensor orientation kept, i.e.\ a certificate format for (T$_0$) (\autoref{ch:weighted}), and the natural rates $s_j$ are those of the
+positive-Laplace representation $F_D(u)=-u\int e^{-s|u|^2}\mu_D(ds)$ of \S\ref{sec:kweighted}. Its reported ratios ($0.47$--$0.72$ of the budget $0.292(d_q+10^{-4})$ on buffered juntas and
+a buffered coupled $n=2$ kernel in the kurtosis window, \st{F}) sit where they should: above the exact content (the weighted chain of Theorem~\ref{thm:R} gives $\le0.39\,d_q$ on the
+junta and L2 families, \autoref{ch:weighted}) and far below the failing scalar-law chains ($1.9$--$2.2$). What is missing is uniform control of the joint weighted integrals of
+$(|q|^2,w,c)$ over all cubic tensors, which is the same obstacle as before in a sharper form.
+(ii) \emph{Retained-penalty dual.} We checked the gap identity of Proposition~\ref{prop:retained-dual}: with $v\in\operatorname{ran}P\oplus\operatorname{ran}Q$ and $\varepsilon Qk=G$,
+$2\Re\langle v,k\rangle=2\Re\langle Pv,Pk\rangle+2\Re\langle Qv,G\rangle/\varepsilon$, so $\mathcal D_G(v)-J_G(f,g)$ is the two phase gaps plus $\|Pv-Pk\|^2$. Our K$'$ text (\autoref{ch:K} and
+\S\ref{sec:kprime-result}) measured $\|Pk_G\|^2$ at the unpenalised best response as a \emph{diagnostic} (16--31\% of the mixed-gain bound; the provably usable part is about $0.41$ of that, \autoref{ch:pinned}, Theorem~\ref{thm:qpenalty}) and already noted that the adversary can
+move $f,g$ off the phases; it never used $\Lambda-\|Pk_0\|^2$ as an upper bound, and \S\ref{sec:Kprime-dual} now supplies the rigorous object. The float improvement quoted there
+($3.7\cdot10^{-5}$ on a buffered junta already below $S$) is not an envelope gain.
+(iii) \emph{Coherent tail certificate.} Standard trace-norm duality, correct. It does not touch the present upper certificate's hypotheses (\autoref{ch:upper}): the Taylor
+remainder and the Hardy tail are single-branch items. The place where it could matter is the Cauchy--Schwarz cross term of the comparison step, which is $80\%$ of the certification
+allowance $2.73\cdot10^{-6}$ (\autoref{ch:upper}, improvement table); replacing it by signed band contributions is exactly \eqref{eq:coherent-pool-rational}, but that requires certified
+\emph{joint} cross-Gram matrices of the omitted tails of the branches, new analytic inputs that the stored head pool does not contain. Lean-relevant only in that sense: a future
+component, not a sharpening of an existing \code{KernelHyps}\stale{22 Oct}{\code{KernelHyps} is deleted; the upper bound is \code{fresh\_upper\_rounder} with inputs \code{ComparisonInputs}, \code{energy\_close}, \code{hardy}} field. No numerical gain was measured by GPT or by us.
+
+\section{Why both endpoints stall: a common certificate interface}
+\label{sec:forest-reassessment-20261022}
+\paragraph{Scope and current numbers (22 October).}
+This is a structural reassessment, not a new endpoint. Repository
+\code{README.md} at \code{e8d67b5} reports
+$1.401691989174\stale{23 Oct}{now $\KG>1.401695322458$}<\KG<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$, with the external analytic inputs
+documented there. The interval has width $0.002907434826$, about
+$0.207\%$ of its upper endpoint. Against the numerical cubic-witness
+ceiling $1.402258$ \st{F}, only $19.47\%$ of that width is below the
+ceiling; $80.53\%$ is above it. These percentages are diagnostic arithmetic
+using a numerical ceiling, not a new rigorous impossibility theorem.
+Moving the upper endpoint down to Haagerup's conjectured
+$1.404575934663742\ldots$ would remove only $0.81\%$ of this interval.
+Thus even completing both present construction-specific targets would
+leave a substantial gap. The proved degree-five and degree-seven
+obstructions in \autoref{ch:ceilings} supply independent evidence that
+the witness degree is a real limitation.
+
+\paragraph{The common object is the attainable response set.}
+The exact duality in \S\ref{sec:complex-duality-proof} has no intrinsic
+duality gap. Lower-bound relaxations replace the true response set
+$\mathcal C$ by an outer approximation; upper constructions provide
+an inner collection of actual response pairs. Separate radial laws,
+projection energies and mixed contents need not be jointly realizable
+by one bounded response. Conversely, a realizable pair with a large
+witness payoff need not have a useful rounding residual: its nonlinear
+coefficients must cancel in a realizable mixture, including the tail.
+This is the precise sense in which a lower-side adversary can help the
+upper side. An artificial law passing scalar cuts supplies no such pair.
+
+\paragraph{An exact example of the missing joint information \st{P}.}
+Let $X,Y$ be independent standard proper complex Gaussians and
+$H(X)=X(|X|^2-2)/\sqrt2$. The pairs $(q,r)=(H(X),X)$ and
+$(q,r)=(H(Y),X)$ have identical marginals, unit variances, and the
+same zero covariance and pseudocovariance. Nevertheless
+\[
+ \E[\bar r q|q|^2]=8\sqrt2\quad\hbox{in the first case},
+ \qquad \E[\bar r q|q|^2]=0\quad\hbox{in the second}.
+\]
+Indeed, with $T=|X|^2\sim\operatorname{Exp}(1)$, the first expectation
+is $\E[T^2(T-2)^3]/(2\sqrt2)=32/(2\sqrt2)$; the second vanishes
+by independence and $\E X=0$. Orthogonality follows from
+$\E[T(T-2)]=0$, and pseudocovariance from circular symmetry.
+Thus even the complete marginal laws together with their covariance
+matrix do not determine the content. This is not a counterexample
+to K; it explains why a marginal-law proof needs an additional joint
+inequality or a worst-case argument using cubic realizability.
+
+\begin{proposition}[\st{P}: one response pool, two explicit errors]
+\label{prop:pool-two-errors-20261022}
+Let $c^{(1)},\ldots,c^{(M)}\in\mathcal C$ be actual real coefficient
+sequences, and fix a retained level $D$. Write $c(w)=\sum_iw_ic^{(i)}$.
+The finite linear-programming value is
+\[
+ v_D=\min_{\lambda\in[-1,1]^D}\max_i
+       \left(c^{(i)}_0+\sum_{k=1}^D\lambda_k c^{(i)}_k\right)
+     =\max_{w\in\Delta_M}
+       \left(c_0(w)-\sum_{k=1}^D|c_k(w)|\right).
+\]
+Choose optimizers $\widehat\lambda,w_*$, extend
+$\widehat\lambda_0=1$ and $\widehat\lambda_k=0$ for $k>D$.
+Suppose the two additional certificates are
+\[
+ N(\widehat\lambda)\le v_D+\delta,\qquad
+ \sum_{k>D}|c_k(w_*)|\le\tau,
+ \quad \delta,\tau\ge0,\quad v_D>\tau.
+\]
+Then
+\begin{equation}\label{eq:pool-two-errors-20261022}
+ \boxed{\quad \frac1{v_D+\delta}\le\KG\le\frac1{v_D-\tau}.\quad}
+\end{equation}
+The certified interval for $1/\KG$ has width $\delta+\tau$;
+the interval for $\KG$ has width
+$(\delta+\tau)/[(v_D-\tau)(v_D+\delta)]$.
+\end{proposition}
+\begin{proof}
+Finite minimax applies to the coefficient cube and the simplex.
+Minimizing each $\lambda_k$ gives $-|c_k(w)|$, proving the LP identity.
+The actual rounding mixture has full residual at least $v_D-\tau$,
+so the rounding transfer gives the upper bound. The globally certified
+scalar norm gives the lower bound by the witness transfer. Subtracting
+the two reciprocals gives the displayed width. No claim that a
+numerically found response maximizes the norm is used.
+\end{proof}
+
+\paragraph{Interpretation and a stopping rule.}
+The quantity $\delta$ is the certified error of the response maximization
+over \emph{all} dimensions and all bounded responses. The quantity
+$\tau$ is the tail of the \emph{mixture}, not the sum of unsigned
+branch tails unless that is the chosen upper estimate. Solving the
+pool LP exactly supplies neither certificate. Without them, $v_D$
+has no automatic one-sided relation to $1/\KG$; two opposing
+restrictions have been made. Coefficient enclosure and LP rounding
+errors must be added explicitly in an implementation.
+The natural stopping criterion is a target for $\delta+\tau$, rather
+than agreement between two optimizations inside the same pool.
+
+For implementation, exact LP optimality is unnecessary. A feasible
+rational mixture with certified head score at least $L$, mixture tail
+at most $\tau<L$, and a feasible witness with global norm cap $B$
+already gives $1/B\le\KG\le1/(L-\tau)$. This stores checkable
+feasible objects rather than trusting an optimizer's termination status.
+
+\paragraph{What complementary slackness actually asks for.}
+For $\Delta=N(\lambda)-D(c)$, the earlier gap identity implies
+\[
+ \sum_{k\ge1}(1-|\lambda_k|)|c_k|\le\Delta.
+\]
+For a degree-three witness $\lambda_1=-\epsilon$ and
+$\lambda_k=0$ for $k\ge2$, this becomes
+\[
+ (1-\epsilon)|c_1|+\sum_{k\ge2}|c_k|\le\Delta.
+\]
+Hence a genuinely matching upper mixture must cancel the cubic
+coefficient and essentially all higher coefficients. It is the
+mixture coefficients that must cancel, not those of every response.
+The phase of a linear-plus-cubic polynomial has infinitely many chaos
+levels; limiting the witness degree does not remove this upper-side
+obligation. This explains why a very good cubic adversary can remain
+a poor rounding branch until it is balanced with other responses.
+
+\paragraph{Why complex phases change the real-case proof.}
+For real sign responses, $h=(f+g)/2$, $k=(f-g)/2$ satisfy
+$h^2+k^2=1$ and $hk=0$. For complex unimodular responses the exact
+relations are instead
+\[
+ |h|^2+|k|^2=1,\qquad \Re(h\bar k)=0.
+\]
+Both can be nonzero. For disk-valued responses their exact joint
+constraint is $|h|^2+|k|^2+2|\Re(h\bar k)|\le1$.
+Thus binary exclusion constraints cannot simply be carried over.
+For example the CHSH matrix
+$M=\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}\right)$
+has real scalar norm $2$ and vector norm $2\sqrt2$, but its complex
+scalar norm is already $2\sqrt2$: choose the right phases $(1,i)$
+and align the left phases with $(1+i,1-i)$. The upper estimate is
+$|u+v|+|u-v|\le2\sqrt2$ for unit vectors, by Cauchy--Schwarz and
+the parallelogram identity. This Bell witness gives ratio one for
+the complex problem. Useful complex orbit constraints must exhibit
+a genuine phase-versus-vector gap, which the naive circle cycles lack.
+
+\paragraph{Why neither complex analysis nor a longer alternating pattern is automatic.}
+The physical Gaussian kernel is $\sum c_k z|z|^{2k}$, not a holomorphic
+function of $z$. Its value at physical correlation $i$ differs from
+the analytic continuation $i\sum(-1)^kc_k$ of the real odd series.
+A maximum-modulus argument for that continuation does not bound the
+rounding objective $c_0-\sum|c_k|$. Moreover,
+Corollary~\ref{cor:taper-limit-obstruction} rules out bounded witnesses
+converging coefficientwise to the full alternating multiplier: their
+norms approach at least one. This does not refute Haagerup's proposed
+constant; it refutes that particular route to it. A useful higher-degree
+witness must be reoptimized against high-dimensional responses, rather
+than obtained by extending a fixed alternating pattern.
+
+\paragraph{Cubics and loss of compactness.}
+Charge one permits degrees $1,3,5,\ldots$; the cubic is the first
+nonlinear correction and the first mixed three-index tensor. Unlike
+one quadratic form, a general cubic cannot be reduced by a unitary
+change of basis to independent scalar Wick terms. A shared Gaussian
+driver can carry a diffuse quadratic partner. The example
+$Q_N=X_1(\sum_{j=1}^N|X_j|^2-N-1)/\sqrt{N+1}$ in the original-response
+obstruction ledger retains order-one directional influence while every
+fixed-dimensional full cubic projection has vanishing energy.
+The limit-law theory of Herry--Malicet--Poly \cite{HMP24} supplies
+a structural language for such limits, but not the required quantitative
+joint-response comparison at error $10^{-4}$. Marginal convergence of
+the cubic alone does not retain its coupling to the same response.
+
+\paragraph{Literature and the practical change of direction.}
+HJM's real primal/dual method \cite{HJMreal26} uses actual responses
+both to improve the witness and to build its rounding mixture. Its
+rigorous certificate uses simpler objects than its numerical search,
+so it too separates discovery from a global norm proof. Naor--Regev
+\cite{NR14} prove completeness of general real Krivine schemes;
+this is not optimality of the original one-dimensional scheme.
+The counterexample of BMMN \cite{BMMN13} is a reason to keep
+Haagerup's proposed value as a conjecture rather than an optimization
+constraint.
+
+The directly useful Bell analogy is membership versus separation:
+\href{https://arxiv.org/html/2302.04721v3}{Designolle et al.}
+construct local models and separating Bell inequalities with the same
+Frank--Wolfe framework. Finding actual response columns is enough to
+build a feasible mixture, whereas certifying separation needs the
+global scalar optimum. The follow-up \cite{DVP24} makes that
+certification bottleneck explicit and notes that its code can treat
+the complex problem, though its reported constants concern real-matrix
+rank comparisons. Ordinary binary-output XOR games concern the real
+Grothendieck constant; their numerical constants cannot be imported here.
+Joint moment hierarchies suggest retaining products of the same
+response. For our commuting complex variables,
+\href{https://arxiv.org/abs/1508.02068}{complex moment/SOS methods}
+are a closer finite-dimensional analogue than a noncommutative quantum
+hierarchy. Neither automatically supplies an arbitrary-dimensional
+Gaussian certificate.
+
+The resulting research priority is to maintain one pool of actual
+responses, signed coefficient enclosures and coherent tail Gram data;
+reoptimize the witness and rounding mixture against that same pool;
+then identify whether $\delta$ or $\tau$ dominates. For the near-term
+$1.402$ target, keep the original-response feasibility inequality
+\eqref{eq:obstruction-exact-response}. For a substantial closure of
+the entire interval, permit higher-degree witnesses and new response
+geometry. This is a proposal \st{?}, not a proved rate or endpoint.
+
+\subsection{Implementing the common pool: signed analytic tails and a calibration audit}
+\label{sec:shared-pool-implementation-20261022}
+\paragraph{Scope (22 October 2026).}
+This implements the preceding proposal without claiming a new endpoint.
+The repository headline at \code{e8d67b5} is
+$1.401691989174\stale{23 Oct}{now $\KG>1.401695322458$}<\KG<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}$.
+The proof, exact replay scripts, actual response parameters and numerical
+logs are in
+\pathref{handoff/research-third-decimal/shared-response-pool-20261022/},
+with companion folders \code{analytic-tail-experiment-20261022},
+\code{chirp-tail-experiment-20261022} and
+\code{response-pool-audit-20261022}.
+The following analytic certificate applies to its stated response family;
+it does not settle arbitrary shared cubic responses.
+
+\paragraph{A closed kernel for actual adversaries \st{P}.}
+Let $X_j$ be independent proper complex Gaussians assigned odd grades
+$w_j$, let $u,v$ be real orthonormal vectors, and define
+\[
+ F(X)=\operatorname{phase}(u^TX)
+       e^{id\Im(\overline{u^TX}\,v^TX)},\qquad
+ G(X)=F(s_1X_1,\ldots,s_mX_m),\quad s_j\in\{-1,1\}.
+\]
+These are bounded charge-one responses in the graded Gaussian model.
+Tensor preprocessing realizes their rounding kernels; the corresponding
+coefficient sequences also lie in the closure of finite-dimensional
+Gaussian response sequences. Thus their coefficients retain joint
+realizability rather than merely satisfying moment inequalities.
+
+Put $R(t)=\operatorname{diag}(s_jt^{w_j})$,
+$a=u^TRu$, $b=u^TRv$, $k=v^TRv$, and
+\begin{align*}
+ A&=1+\frac{d^2}{4}(1-a^2-b^2),\\
+ B_\pm&=a+\frac{d^2}{4}\{ab^2+k(1-a^2)\}\pm db,\\
+ \Delta&=1+\frac{d^2}{2}(1-ak+b^2)
+ +\frac{d^4}{16}\{(1-a^2)(1-k^2)-2akb^2+b^4-2b^2\}.
+\end{align*}
+The full signed correlation series is
+\begin{equation}\label{eq:closed-chirp-kernel-20261022}
+ K(t)=\frac{\pi B_+}{4\Delta A}
+ {}_2F_1\!\left(\frac12,\frac12;2;\frac{B_+B_-}{A^2}\right).
+\end{equation}
+For a proof, order $(U,U',V,V')$ and tilt its Gaussian covariance
+\[
+ \Sigma=\begin{pmatrix}1&a&0&b\\a&1&b&0\\0&b&1&k\\b&0&k&1\end{pmatrix}
+\]
+by the matrix $J$ with entries
+$J_{13}=-J_{31}=d/2$ and $J_{24}=-J_{42}=-d/2$.
+Then $\det(I-\Sigma J)=\Delta$, and the upper-left block of
+$(I-\Sigma J)^{-1}\Sigma$ is
+$\Delta^{-1}\left(\begin{smallmatrix}A&B_+\\B_-&A\end{smallmatrix}\right)$.
+The two-variable phase integral gives
+\eqref{eq:closed-chirp-kernel-20261022}; initially this is an identity
+near zero and then an analytic continuation. The determinant and all
+four numerators are independently replayed as polynomial identities
+over $\mathbb Q[a,b,k,d]$ \st{C}. An independent Wick expansion checks
+the first coefficients, including rotations of the full orthogonal
+plane of $v$. At $d=0$ the formula reduces to $h(a(t))$.
+
+\begin{proposition}[\st{P}: a signed contour tail]
+Suppose $r>1$, $A,\Delta$ have no zeros on $|t|\le r$, and
+\[
+ \Re\frac{B_+(t)B_-(t)}{A(t)^2}\le1-\delta
+ \quad (|t|=r),\qquad 0<\delta\le1.
+\]
+If the boundary bounds are $|B_+|\le b_{\max}$,
+$|A|\ge a_{\min}$ and $|\Delta|\ge\Delta_{\min}$, then
+\[
+ \sum_{j>N}|[t^{2j+1}]K|
+ \le\frac{\pi b_{\max}}{4a_{\min}\Delta_{\min}\sqrt\delta}
+       \frac{r^{-2N-3}}{1-r^{-2}}.
+\]
+\end{proposition}
+\begin{proof}
+The real-part maximum principle extends the argument bound to the
+disk. Euler's integral for ${}_2F_1(1/2,1/2;2;z)$ has modulus at most
+$\delta^{-1/2}$ there. Apply Cauchy's estimate and sum only odd degrees.
+For rational parameters the contour condition is equivalent to a
+rational polynomial inequality in $\cos2\theta$; Bernstein subdivision
+certifies the entire circle. Zero-freeness is a separate condition,
+proved in the displayed certificates by constant-term domination.
+\end{proof}
+
+\paragraph{What cancellation saves \st{P,C}.}
+For the actual phase-preprocessor kernel
+\[
+ P(t)=\frac{1133}{1250}t-\frac{117}{1250}t^3,
+ \qquad K(t)=h(P(t)),
+\]
+the contour certificate at $r=13/10$ gives
+$\sum_{j>64}|[t^{2j+1}]K|<1.855\cdot10^{-14}$.
+Its unsigned graded energy tail is nevertheless greater than
+$0.003838$. Indeed, ordinary total degree is invariant under unitary
+rotation, and the weighted degree is at least the ordinary degree.
+The unsigned tail therefore dominates
+\[
+ 1-\frac\pi4\sum_{j=0}^{64}a_j>0.003838,
+ \qquad a_0=1,\quad
+ \frac{a_j}{a_{j-1}}=\frac{(2j-1)^2}{4j(j+1)}.
+\]
+Both comparisons are exact rational checks using a Machin enclosure
+of $\pi$. The factor exceeds $2\cdot10^{11}$. More generally,
+conditioning a chirp on $U$ leaves
+$\operatorname{phase}(U)e^{-d^2|U|^2/4}$; its normalized Laguerre
+coefficients have magnitude asymptotic to $1/(2n)$, so its unsigned
+graded energy tail is at least $(1+o(1))/(4N)$.
+This explains a specific loss caused by taking absolute values before
+combining reflected coefficients. It does not assert that every
+response family admits an exponential signed tail. It uses the
+holomorphic continuation of the real generating series, not a
+holomorphic interpretation of the physical charge-one correlation.
+
+\paragraph{Audit of the numerical pool.}
+An active inherited pure-cubic-phase column in the historical
+degree-nine search had entries
+$-0.7882612315869$ and $-0.0996477635340$, rather than
+$-\pi/4$ and $-\pi/32$. The erroneous entries are reproduced by
+16-node Gauss--Laguerre quadrature. Polynomial Gram checks do not
+detect this phase-response integration error. Repairing recognizable
+columns and removing unknown inherited heads changes the floating
+restricted LP from $0.712049972007$ to $0.712046050657$ \st{F};
+discarding all inherited heads gives the same repaired value.
+No certified repository bound used this exploratory pool.
+
+A fresh exchange saves both defining response polynomials, uses the
+correct multiplier cube $[-1,1]$, and uses radial Legendre panels.
+Its exact-phase calibration errors are below $1.2\cdot10^{-11}$,
+but these are not error bounds for arbitrary phase functions.
+On refined active contacts, individual coefficients change by up to
+$1.65\cdot10^{-4}$ while fixed-witness payoffs change by only a few
+$10^{-6}$ \st{F}. Stable payoff is therefore insufficient evidence
+for coefficient cancellation. For one saved degree-nine mixture,
+the finer index-32 head score is approximately $0.709962$, and the
+coherent tail-Gram estimate is approximately $0.009036$, essentially
+equal to the triangle estimate. These are numerical diagnostics,
+not directed enclosures or a theorem excluding other mixtures.
+
+The analytic chirp pool, enlarged by full orthogonal-plane rotations
+and several grades and signs, reaches a floating index-128 head score
+$0.7118917430313$. Paying known pure-phase tails gives
+$0.7118917280421$, before remaining chirp-tail charges. Its reciprocal
+is already about $1.40470799$, weaker than the current upper bound.
+This is not a certified ceiling for the continuous response family.
+The exact tail replays apply only to their named parameter vectors.
+A further floating search with general Hermitian quadratic phase
+modulation, five exchange rounds and 594 retained columns reaches
+$0.7118923203268$ after known pure-phase tail charges, before the
+remaining tails. This also fails to improve the current upper bound;
+it does not exclude asymmetric response pairs or a better search.
+
+\paragraph{The resulting certificate discipline.}
+For a nominal mixture head $\widehat c$, certified head error
+$\epsilon$ in $\ell^1$, and complete tail $\tau$, the upper denominator
+is
+\[
+ \widehat c_0-\sum_{j=1}^N|\widehat c_j|-\epsilon-\tau.
+\]
+The lower endpoint still needs a separate global estimate
+$N(\lambda)\le B$. Realizability, coefficient accuracy, complete tails
+and the global response oracle are different obligations.
+The present implementation supplies a closed analytic route through
+the first three for a restricted family. It neither proves
+Conjecture K nor supplies the missing global norm cap. The next
+search must optimize the complete signed coefficient objective,
+rather than select responses solely for their low-degree payoff.
+
+\input{global-response/spherical-dual-transfer.tex}
+\input{global-response/binding-audit-20261023.tex}
+\input{global-response/joint-response-lift-20261023.tex}
+\input{global-response/common-stein-kernel-20261023.tex}

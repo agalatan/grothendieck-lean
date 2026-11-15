@@ -1,0 +1,230 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/89b-mixed-contact.tex (file dated 2026-10-25). Only this line was added.
+% New dimension-free original-response branch, 22 October 2026.
+\subsection{Mixed cubic concentration: two integrals and four endpoints}
+\label{sec:mixed-contact-concentration}
+
+\paragraph{What changes.}
+The preceding diagonal-Wick cone misses even a pure mixed monomial.
+The following \st{P,C} theorem controls that direction with an arbitrary
+coupled remainder. It concerns actual bounded responses, not raw K.
+It assumes neither a fresh buffer nor a moment inequality, and does not
+change the complete Grothendieck endpoint.
+
+Keep $\epsilon=1891/2500$, $p=2500/1891$, $Ph=tZ$, $F=\epsilon Qk$,
+$V=\|F\|^2$, and $\mathcal N$ from
+\S\ref{sec:contact-concentration-cone}. For standard complex Gaussian
+linear forms $X,Y$ orthogonal to each other and to $Z$, define
+\[
+ J_{X,Y}=\frac{X^2\bar Y}{\sqrt2},\qquad
+ c_{X,Y}=|\langle J_{X,Y},F\rangle|.
+\]
+The three test coordinates are independent. The remainder of $F$ is
+\emph{not} assumed independent of any of them.
+
+\begin{theorem}[\st{P,C}: mixed concentration alternative]
+\label{thm:mixed-contact-concentration}
+In every finite dimension, throughout $21/25\le t\le851/1000$,
+\[
+ \boxed{\begin{aligned}
+ c_{X,Y}^2\ge\frac9{10}V
+   &\quad\Longrightarrow\quad \mathcal N<\frac{14259}{20000}=0.71295,\\
+ c_{X,Y}^2\ge\frac{179}{200}V
+   &\quad\Longrightarrow\quad \mathcal N<\frac{28529}{40000}=0.713225.
+ \end{aligned}}
+\]
+Both conclusions are below the design cap $35663/50000<500/701$.
+The second hypothesis is equivalently
+$F=\zeta J_{X,Y}+R$, $R\perp J_{X,Y}$, and
+$\|R\|^2\le(21/179)|\zeta|^2$.
+There is no amplitude restriction on $\zeta$; $R$ may use $X,Y,Z$ and
+arbitrarily many other coordinates, with all visible sectors and phases.
+\end{theorem}
+
+\subsubsection{The same support lemma, with a mixed test}
+Multiply $J_{X,Y}$ by a unit phase so that
+$u=\langle X^2\bar Y,F\rangle=\sqrt2c_{X,Y}\ge0$.
+Such a phase change preserves the test law. For
+\[
+ L=Z\{\ell+b(|Z|^2-2)\},\quad D=dX^2\bar Y,\quad
+ I(\ell,b,d)=\E|L+D|,
+\]
+the two signs have equal expectation by $Y\mapsto-Y$.
+The pointwise two-disk support inequality and $D\in\operatorname{ran}Q$
+give, with $m=\Re\langle Z(|Z|^2-2),h\rangle$,
+\[
+ \ell t+bm+pdu\le I(\ell,b,d).
+\]
+Consequently, if $I\le H$ and $b>0$,
+\begin{equation}\label{eq:mixed-contact-penalty}
+ \mathcal J:=\|Pk\|^2+\epsilon\|Qh\|^2
+ \ge\frac{[\ell t+pdu-H]_+^2}{2pb^2}.
+\end{equation}
+Indeed $\|Z(|Z|^2-2)\|^2=2$, so
+$\epsilon\|Qh\|^2\ge m^2/(2p)$.
+For $b=0$ the support inequality is a feasibility cut.
+The unknown remainder never enters these pairings.
+As before, this is one lower bound for the existing retained penalty;
+it must not be added to another bound spending the same square.
+
+Only two support integrals are needed:
+\[
+\begin{array}{c|c|c|c}
+ \ell&b&d&I(\ell,b,d)<H\\\hline
+ 1&0&1/4&467607/500000\\
+ 1&37/200&87/500&33463/40000
+\end{array}
+\]
+Fresh directed upper values on the default mesh are below
+$0.935213488681$ and $0.836574516962$, respectively.
+The rational bounds, not these rounded explanatory decimals, are used.
+
+\subsubsection{A closed formula for the concentration-dependent cap}
+Put
+\[
+ t_-=21/25,\quad t_+=851/1000,\quad u_0=47/200,\quad
+ H_0=467607/500000,\quad d_0=1/4,
+\]
+and let $(b,d,H)=(37/200,87/500,33463/40000)$. Define
+\[
+ U(t)=\frac{H_0-t}{pd_0},\qquad
+ A(t,u)=t+pdu-H,
+\]
+\[
+ C_\eta(t,u)=t^2+\frac{pu^2}{2\eta}
+                   -\frac{A(t,u)^2}{2pb^2},\qquad
+ L_\eta(t)=t^2+\frac{pu_0^2}{2\eta}
+                   -\frac{((19/10)t-I_0)^2}{2p},
+ \quad I_0=124233393/10^8.
+\]
+For every $0<\eta\le1$, the same proof supplies the canonical envelope
+\begin{equation}\label{eq:mixed-contact-canonical-cap}
+ \boxed{\quad c_{X,Y}^2\ge\eta V\quad\Longrightarrow\quad
+ \mathcal N\le\max\{L_\eta(t_+),C_\eta(t_+,u_0),
+                  C_\eta(t_-,U(t_-)),C_\eta(t_+,U(t_+))\}.\quad}
+\end{equation}
+Each entry is an explicit rational affine function of $1/\eta$.
+Thus the concentration threshold need not be found by another
+parameter-grid computation.
+
+Here is the complete reduction. Concentration and the first support cut
+give $V\le u^2/(2\eta)$ and $u\le U(t)$.
+For $u\le u_0$, use the visible support test
+$Z(|Z|^2-1/10)$, whose expectation is less than $I_0$.
+This bounds $\mathcal N$ by $L_\eta(t)$, increasing on the central interval.
+Its integral is recomputed, rather than imported, from
+\[
+ \E\sqrt T\,|T-1/10|
+ =\frac75\frac{\sqrt\pi}{2}
+   +2(1/10)^{5/2}\sum_{n\ge0}
+       \frac{(-1/10)^n}{n!(n+3/2)(n+5/2)}<I_0.
+\]
+For $u\ge u_0$, $A(t,u)>0$ and the second trial gives
+$\mathcal N\le C_\eta(t,u)$.
+Its coefficient of $u^2$ is
+$p/(2\eta)-pd^2/(2b^2)>0$, so the endpoints $u_0,U(t)$ suffice.
+The first endpoint increases in $t$ on the interval. The second is
+convex in $t$, with quadratic coefficient
+\[
+ 1+\frac1{2\eta p d_0^2}
+     -\frac{(1-d/d_0)^2}{2pb^2}>0.
+\]
+All these signs hold for $0<\eta\le1$; the two involving $1/\eta$
+are weakest at $\eta=1$ and are checked there with fractions.
+The remaining signs are independent of $\eta$.
+This proves \eqref{eq:mixed-contact-canonical-cap}.
+
+The four endpoints, in the displayed order, are below
+\[
+\begin{array}{c|rrrr}
+ \eta=9/10&.711700923&.712935712&.712879259&.712935618\\
+ \eta=179/200&.711927522&.713162312&.713219783&.713202005
+\end{array}
+\]
+and prove Theorem~\ref{thm:mixed-contact-concentration} by exact rational
+comparison. The checker also checks the strict comparisons with $500/701$.
+
+\subsubsection{Product compression: a derivative-free integral certificate}
+Let $M(a,r)=\E_\theta|a+re^{i\theta}|$.
+In the three independent Rayleigh radii $x=|Z|$, $y=|X|$, $z=|Y|$,
+\[
+ I(\ell,b,d)=\E M(A(x),d y^2z),\qquad
+ A(x)=(\ell-2b)x+bx^3.
+\]
+Here $\ell\ge2b$ for both trials. The integrand is convex separately
+in $A$, $y^2$ and $z$. On each radial cell in $[0,6]$, replace each
+amplitude distribution by its two endpoint atoms of the same mass and
+first moment. This is convex domination, so it requires no derivative
+bound near zeros of the norm.
+
+The visible and radius moments use the directed primitives from the
+previous subsection. The square-amplitude moment is especially simple:
+\[
+ \int_x^y2r^3e^{-r^2}\,dr
+       =(x^2+1)e^{-x^2}-(y^2+1)e^{-y^2}.
+\]
+The resulting discrete product amplitudes are compressed a second time:
+replace every $r=y^2z$ by its exact barycentric mixture between adjacent
+nodes on a rational amplitude grid. Convexity of $M(A,dr)$ makes this
+another upper bound, preserving mass and first moment. Compression
+reduces the three-dimensional tensor sum to a two-dimensional sum.
+It does not approximate the unknown remainder's distribution.
+
+For the angular integral use the positive series
+\[
+ M(a,r)=m\sum_{n\ge0}a_n w^n,\quad
+ m=\max(a,r),\quad w=(\min(a,r)/m)^2,
+\]
+\[
+ a_0=1,\quad a_n=a_{n-1}\frac{(2n-3)^2}{4n^2},\quad
+ \sum a_n=4/\pi.
+\]
+Replace the tail after index $N$ by
+$(4/\pi-\sum_{n=0}^Na_n)w^{N+1}$; this is an upper enclosure.
+Set the value at $a=r=0$ to zero.
+All primitives, Machin's formula for $\pi$, roots and sums are enclosed
+with integer fixed-point intervals of scale $10^{40}$.
+
+For completeness, with $a=\ell-2b$, $E=e^{-36}$,
+$J_2=(73/12)E$, $J_4=(1801/8)E$, the full discarded tail is at most
+\[
+ aJ_2+bJ_4+E\{38d+2(a+3b/2)\}+dJ_2.
+\]
+This follows by summing the three radial-tail events and using
+$M(A,d y^2z)\le A+d y^2z$,
+$\E A\le a+3b/2$, $\E y^2=1$, $\E z\le1$,
+and $\E[y^2\mathbf1_{y>6}]=37e^{-36}$.
+The tails in the two trials are below $1.3\cdot10^{-14}$.
+
+\paragraph{Survivors and the remaining obstruction.}
+Together with the previous Wick cone, any central response exceeding
+the design cap must satisfy both
+\[
+ \sup_{X\perp Z}|\langle H_X,F\rangle|^2<\frac45V,
+ \qquad
+ \sup_{X,Y\perp Z,\,X\perp Y}|\langle J_{X,Y},F\rangle|^2
+                  <\frac{179}{200}V.
+\]
+The new branch is not contained in the diagonal-Wick branch:
+for the unit tensor $J_{X,Y}$ the largest diagonal-Wick share is only
+$4/27$. Neither condition implies small influence. For example the
+unit tensor $X_1X_2\bar X_3$ has maximal diagonal-Wick share $2/27$
+and maximal mixed-square share $1/2$.
+Indeed for $X=\sum a_jX_j$, $Y=\sum b_jX_j$ the latter pairing has
+squared modulus $2|a_1a_2\bar b_3|^2\le1/2$; equality uses
+$X=(X_1+X_2)/\sqrt2$, $Y=X_3$.
+The diagonal pairing has squared modulus
+$2|a_1a_2a_3|^2\le2/27$, also attainable.
+Thus there is still no exhaustive concentration/diffusion alternative,
+and the flank rows at the same $\epsilon$ still need coverage.
+
+\paragraph{Replay and formalization.}
+The package \code{grothendieck-mixed-contact-20261022.zip} contains a
+standard-library \code{verify\_all.py}, the proof and Markdown handoff,
+fresh default/fine logs, exact endpoint values and a SHA256 manifest.
+Default: radial mesh $1/64$, 32 angular terms; fine: mesh $1/128$,
+48 terms, and twice the product-grid resolution.
+The Lean port requires the support lemma, the normalized mixed cubic
+projection, convex endpoint-atom domination, the two integral bounds,
+and four rational endpoint comparisons. It requires no new hypothesis
+on the actual cubic's law. This region must be combined by taking the
+minimum of valid caps, not by adding retained-penalty savings.

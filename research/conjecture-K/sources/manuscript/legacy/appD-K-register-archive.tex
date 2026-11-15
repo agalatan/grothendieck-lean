@@ -1,0 +1,80 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/appD-K-register-archive.tex (file dated 2026-10-25). Only this line was added.
+\chapter{Archived K register (20 October, before consolidation)}\label{app:K-register-archive}
+\chapsummary{Status: Historical. The full table of proved classes and the cold-start reports that \autoref{ch:K-state} carried until the consolidation of 20 October,
+kept verbatim for provenance. Several rows are superseded for membership in K by the complete one-driver theorem (\autoref{ch:complete-coherent-driver}); some keep stronger
+deficits or a different scope. The current register is \autoref{ch:K-state}.}
+
+\section{The proved-classes table as of 20 October}
+All results are at the peak profile unless stated, are \st{P} with exact replays \st{C} by the IDE, and are not in Lean.
+\begin{center}\small
+\begin{tabular}{p{6.2cm}p{4.6cm}p{2.6cm}}\toprule
+class & result & where\\\midrule
+remote cubic $q$ (any law, any dimension), with buffer and diagonal & $\Lambda<S+10^{-5}$ (with $C_6=40.45313$) & \autoref{ch:rescub}, \autoref{ch:remote-cubic-refinement}\\
+diagonal $\nu H(Z)$, every remote law & penalty $0.571(\Re\nu)^2+0.265(\Im\nu)^2$ & \autoref{ch:shared-sector-refinements}\\
+even sectors $Y,W$ on a $q$-only baseline, any dependence & penalty $\ge1/\varepsilon-32/25$ per unit & \autoref{ch:weighted}, \autoref{ch:remote-cubic-refinement}\\
+$A$ under fourfold symmetry; $B$ under $\E[B\mid Q]=0$ & every amplitude & \autoref{ch:shared-sector-refinements}\\
+\textbf{coherent one-driver Wick $A$}: $cH(X)+\alpha(T-1)X+gG$ & \textbf{exact K} ($\eta=0$), every amplitude & \autoref{ch:coherent-wick-a}\\
+\textbf{Gaussian covariance class}, all sectors, any orientation & \textbf{exact K}, penalties $\tfrac{\alpha^2}{10},\tfrac{\beta^2}4,\tfrac{\gamma^2}{25}$ & \autoref{ch:polarized-profile-certificate}\\
+unequal Wick sums with shared $A/B$ (small coefficients, buffer) & $\Lambda\le S-\tfrac34B_4-r^2/200$ & \autoref{ch:shared-nongaussian-new}\\
+$B$ only, normalised fourth moment up to $3.757$ & retained deficits & \autoref{ch:shared-nongaussian-new}\\
+independent blocks, arbitrary internal coupling & weak K, error $O(1/N)$ & \autoref{ch:shared-nongaussian-new}\\
+\textbf{Gaussian-factor $C^{\!\top}\!X+gU$ with shared $A/B$} on any number of drivers ($C$ centred, independent of $X$) & $\Lambda\le S+5\cdot10^{-5}-\tfrac{\|\alpha\|^2+\|\beta\|^2}{200}$; exact once $\|\alpha\|^2+\|\beta\|^2\ge0.01$ & \autoref{ch:gaussian-remainder}\\
+remote cubics whose Hermite monomials all involve one chosen coordinate (any dimension, buffer) & \textbf{exact K}, every amplitude & \autoref{ch:response-stability}\\
+remote cubics on $\C^2$ with buffer $gG$ & $\Lambda\le S-\tfrac{(1-g^2/w_*)_+}{80}\|q\|^2$ & \autoref{ch:response-stability}\\
+\textbf{self-interacting one-driver $A$+$B$}: $cH(X)+\alpha(T-1)X+\beta T\bar X/\sqrt2+gG$, application box $c\in[\frac3{32},\frac7{64}]$, $g\in[\frac3{16},\frac7{32}]$, $|\Re\alpha|,|\Im\alpha|\le\frac1{128}$, \emph{every} $\beta$ (fourth moment $3.01$--$4.71$) & $\Lambda\le S-\tfrac1{6000}-\tfrac{|\alpha|^2+|\beta|^2}{200}$; a second phase-complete box with deficit $10^{-3}$ & \autoref{ch:self-interacting-ab}\\
+\textbf{any coupled cubic, all sectors interacting}, large variance & K whenever $V\ge\tfrac{13}{20}$ or $V\ge\tfrac1{12}+\tfrac{19}5u$ ($V=\|G\|^2$, $u=\|\E[G\mid\text{remote}]\|^2$); with no remote cubic also $V\le\tfrac1{100}$ & \autoref{ch:global-local-coupled-K}\\
+any coupled cubic near the optimal buffer & uniform local K, radius $1/20000$ (too small for the application) & \autoref{ch:global-local-coupled-K}\\
+\textbf{self-interacting one-driver $A$+$B$, every complex $\alpha,\beta$} on the same box & $\Lambda\le S-\tfrac1{4000}-\tfrac{|\alpha|^2+|\beta|^2}{200}$; independently $\Lambda\le S-\tfrac1{8000}$ by a global quadratic majorant & \autoref{ch:all-a-matrix}\\
+\textbf{buffered Wick core, all internal interactions}, $c\in[3/32,5/32]$, $g\in[3/16,7/32]$: every complex $A,B,Y,W,\nu$; any $J\in\Hc21$ with $\E[J\mid Z,X]=0$ (buffer independent of $J$) & $\Lambda<S-\tfrac1{5000}-\tfrac{A_2}{200}-\tfrac{28753}{189100}E_2+\tfrac{258291}{378200}\|J\|^2$; $\|J\|\le\tfrac1{50}$ fits $\eta_{AB}$, $\|J\|\le\tfrac1{60}$ gives exact K & \autoref{ch:buffered-cubic-complement}\\
+\textbf{one-driver Wick + buffer, every $c\ge0$, $g\ge41/250$} (retained deficit $\frac{\min(c^4,c^2)}{32}+\frac{|\alpha|^2+|\beta|^2}{2000}$, \autoref{ch:buffer-bootstrap}; earlier $g\ge1/6$) ($g\ge3/16$ in \autoref{ch:exact-buffered-halfline}; $[1/6,3/16]$ in \S\ref{sec:halfline-sixth}), every complex $A,B$ & \textbf{exact K} (first $S+9\cdot10^{-5}$, \autoref{ch:all-a-matrix}; slack removed) & \autoref{ch:exact-buffered-halfline}\\
+\textbf{arbitrary coupled $Q$ in any one pure Gaussian chaos order} (cubic first; every order since \autoref{ch:buffer-bootstrap}; mixed orders have counterexamples), with a fresh independent Gaussian buffer $gU$, $g\ge0.477$ & $\Lambda(Q+gU)\le S-\|Q\|^2/2000$ & \autoref{ch:exact-buffered-halfline}\\
+no remote cubic, all visible sectors and amplitudes, buffer $g\ge1/6$ (a different scope from the unbuffered no-$B$ face) & deficit $\|Q\|^2/200$ & \autoref{ch:exact-buffered-halfline}\\
+no remote cubic, no $B$ sector: arbitrary $A$/even/diagonal, all amplitudes and dimensions, no buffer & $\Lambda<S-\tfrac1{250000}$ & \autoref{ch:buffered-cubic-complement}\\
+\textbf{$A$ and $B$ near $g=0$}: $c\le\tfrac1{20}$, $g\le\tfrac1{32}$, $|\alpha|\le\tfrac1{48}$, every $\beta$; all-buffer corridors $c\le\tfrac1{16}$, $|\alpha|\le\tfrac1{300}$ & $\Lambda\le S-\tfrac1{4000}$; excess $<8.72\cdot10^{-5}<\eta_{AB}$ & \autoref{ch:radial-directional-bootstrap}\\
+dimension-free $A$ cost ($\|r_A\|\le\tfrac1{16}$, any dependence, zero buffer) and $B$ transport $|\mathcal B_A-\mathcal B_0|\le\tfrac45\|r_A\|\|R\|$ & cost $19/100$ & \autoref{ch:radial-directional-bootstrap}\\
+rotation stationarity (weaker target K$_{\rm rot}$) & pays $13$--$57\%$ of the measured junta gain & \autoref{ch:weakk}\\
+near-maximizer response stability (fresh second-chaos phase lift) & exact reformulation of $\|T\|$; stability matrix saturated in unused remote directions & \autoref{ch:response-stability}\\\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Independent cold-start check (20 Oct).} We gave a second GPT instance only the bare statement of K, with none of this context. It independently re-derived the
+sector decomposition, the Gaussian-scale-mixture form of $L$, and these results (Node exact-rational certificate, replayed by the IDE: PASS; archived in
+\pathref{gpt-reviews/cold-start-20261020/}):
+\begin{itemize}
+\item K with margin, $\Lambda\le2\E|L|-0.128\E|G|^2$, for every $G$ vanishing on $\{z_1=0\}$, i.e.\ with no remote cubic and no $A$ sector;
+\item the case $n=1$ on the whole box;
+\item a dimension-free \emph{local} theorem: at the origin, independence maximises the second variation, $Q(G)\le\frac{I_0}2\|G\|^2$, for every $a>0$, $b\ge0$, including the coupled
+$A/B$ block, via the $2\times2$ determinant $x(1-\tfrac78x)\ge0$. This is the $v\to0$ companion of the profile signs of \autoref{ch:gpt-averaged}.
+\end{itemize}
+It named as the gap exactly our crux: coupled components on top of a nonzero independent cubic. A second cold-start round (\code{conjecture-k-progress.zip}, both Node
+verifiers replayed: PASS) proved:
+\begin{itemize}
+\item \emph{directional stability at the Gaussian optimum} for every $H\in\Hc21$, including $z_1$-dependent ones. With $A=\E[H\mid z_2,\dots]$ and $R=H-A$:
+$\Lambda(X_t)-S\le-0.011t^2\|R\|^2+O_H(t^4)$ if $R\ne0$, and $=\frac{h''(v_*)}4(\E|H|^4-2\sigma^4)t^4<0$ if $R=0$. It uses a bound uniform over every smoothing variance,
+$Q_v(H)\le h'(v)\|A\|^2+1.311\|R\|^2$. The neighbourhood depends on $H$;
+\item \emph{A finite variance-preserving comparison for remote directions}:
+for a unit circular remote $H$, independent of the visible variable and of
+the Gaussian buffer, put $\kappa=\E|H|^4-2>0$ and $m_6=\E|H|^6$.
+The comparison holds when the cubic variance fraction is at most
+$6\kappa/(m_6+6\kappa)$. The particular number $576/16937$ applies to
+$H=z[(|z|^2-2)+i(|w|^2-1)]/\sqrt3$ on remote coordinates, for which
+$\kappa=64/3$ and $m_6=32722/9$; it is not a uniform fraction for all cubic
+directions and does not cover shared visible drivers. (scope corrected by GPT, \autoref{ch:global-local-coupled-K});
+\item an explicit, rigorously certified counterexample to Laplace domination: $H=z[(|z|^2-2)+i(|w|^2-1)]/\sqrt3$ has $\E e^{-30|H|^2}<1/31$. This is the same no-go as
+\autoref{ch:stronger}, now with an exact certificate.
+\end{itemize}
+
+\paragraph{Independent cold-start check by a third model (Opus in a browser, bare statement only; bundle archived in \pathref{gpt-reviews/cold-start-20261020/opus-browser/}).}
+It reproduced the sector reduction and the local block structure (worst block $-0.19$) with an Arb certificate, and reached the same no-go facts (covariance-only bounds stop at
+$\eta\approx1.9\cdot10^{-3}$, via ring-phase laws; no pointwise-in-$r$ domination). Three items are new to us:
+\begin{itemize}
+\item \emph{Gaussianisation is not monotone, by a lot.} For $q=-c{:}z_2^2\bar z_2{:}$ with the self-interacting $A$ coefficient $r_A=c(2-\kappa')z_2$ plus Gaussian bulk, $\Lambda(G)-\Lambda(\hat G)$
+reaches $+1.2\cdot10^{-2}$ (at $c=0.2$, $\kappa'=4.9$), with $\hat G$ the matched conditional Gaussian. That is the gap $D$ of \autoref{ch:polarized-profile-certificate}, while $\Lambda(G)\le S-7.5\cdot10^{-4}$
+still holds. \textbf{This does not falsify the target} $D\le\alpha^2/10+\dots$. We checked the logged family: the worst ratio $D/(\alpha^2/10)$ is $0.29$ (at $c=0.2$, $\kappa'=4.9$,
+$v=v^*$), so the certified $A$ penalty absorbs it with room. It does show that $D$ is not small, so any proof must use the $A$ cost.
+\item \emph{A proposed route that is false.} It suggested the convex order $|A|^2\ge_{\rm cx}\|A\|^2\mathrm{Exp}(1)$ on pure $\Hc21$. The certified Laplace counterexample above ($\E e^{-30|H|^2}<1/31$) refutes it,
+since convex order implies Laplace domination.
+\item \emph{The benchmark degenerates in a corner of the row box.} Where $\E[1/(2|L|)]\le1/\varepsilon$, the optimal variance is $v^*=0$ and $S=2\E|L|$. This happens around
+$\varepsilon\approx0.74$--$0.75$, $\ell\gtrsim0.85$, $\beta\approx0.12$--$0.13$; for example $(0.74,0.90,0.12)$ gives $1.244<1.351$. We checked it independently; at
+$(0.74,0.86,0.13)$, $v^*$ is $3\cdot10^{-4}$. Arguments that assume $v^*>0$ must treat this corner separately.
+\end{itemize}

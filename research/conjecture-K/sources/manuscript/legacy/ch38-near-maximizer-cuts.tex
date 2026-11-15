@@ -1,0 +1,179 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch38-near-maximizer-cuts.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 38). Owner: lower-bound/06-original-responses.tex
+\section{Near-maximizer cuts in the shared-reduction certificate: rotation stationarity and the fresh second-chaos lift (IDE, 20 October)}\label{ch:nearmax}
+\chapsummary{Analysis and float measurements of near-maximizer cuts. No new certificate was built from these measurements; the exact scope and tested inactive constraints are retained.}
+
+\paragraph{Provenance.} IDE session of 20 October (worker task ``near-maximizer cuts''). Inputs: \autoref{ch:pinned}, \autoref{ch:shared-residual-review}, \autoref{ch:weakk},
+\autoref{ch:rotation-gate-refinement}, \S\ref{sec:remote-sensitive-rotation} and \autoref{ch:response-stability}; the certificate \pathref{handoff/lower-stein/cert-combined-e/}
+(\code{combined.py}, box formula with the pinned gate price) and the rows of \pathref{handoff/lower-stein/cert-0745e/}; the Lean branch \code{work/lower-rotation} (\code{b78baab},
+hypothesis \code{RotShared}). Scripts (float, scipy/cvxpy; not certificate code): session scratch scripts \code{lp.py}, \code{rot.py}, \code{measure.py}, \code{variants2.py}, \code{stab.py}, \code{rebase.py}, \code{exact\_rebase\_test.py} (copied to \pathref{handoff/research-third-decimal/nearmax-20261020/}),
+summarised in \S\ref{sec:nearmax-measure}. No GPT code was run.
+
+\subsection{The row inequality of the current certificate}\label{sec:nearmax-row}
+Notation of \autoref{ch:certified} and \autoref{ch:pinned}: $h=(f+g)/2$, $k=(f-g)/2$, $Ph=tZ$, $c_1,c_A,c_B$ the coefficients of $k$ against $1,|Z|^2-1,Z^2/\sqrt2$,
+$\xi=(c_1,c_A,\overline{c_B})$, $p=Q_wc_1$, $\tau=\norm p_2$, $U=|p|^2/\tau^2$, $x^2=\E U^2-2$, $X=Q_w\xi$ with $X_1=p$, $H_\beta=Qh+\beta v/\varepsilon$ with
+$v=Z(|Z|^2-2)$, $D_1=\operatorname{diag}(-1,\varepsilon,\varepsilon)$. A row (or a combined profile, \S\ref{sec:nearmax-mix}) has a gate matrix $E$ (real symmetric $3\times3$), an $R$
+block, $\ell,\beta$, and the coupling $A=\delta(e_1+b)$. The $k$-side gate inequality splits $\E_w[\xi^*E\xi]$ by remote chaos level. On the remote first chaos, with
+$x_\bullet=\Pi^{\rm rem}_{1,0}\xi=(x_0,x_A,x_B)$ ($x_0=P_{\rm rem}Pk$, and $r_A=\varepsilon x_A$, $\overline{r_B}=\varepsilon x_B$ in the notation of \autoref{ch:weakk}),
+\begin{equation}\label{eq:nm-level1}
+-\norm{x_0}^2+\varepsilon\norm{x_A}^2+\varepsilon\norm{x_B}^2=\langle x_\bullet,D_1x_\bullet\rangle\le\langle x_\bullet,Ex_\bullet\rangle\qquad(E\succeq D_1);
+\end{equation}
+on the levels $0$ and $\ge2$ other than the cubic one it needs $E\succeq0$, and on the cubic level the pinned completion uses $X_1=p$ exactly. Taking the fibre supremum yields
+the shared row (Lean \code{RowShared}, \pathref{Grothe/Lower/Boxes.lean})
+\begin{equation}\label{eq:nm-row}
+V\le t^2-2\ell t+\frac{2\beta^2}\varepsilon+\E\Psi_E(\delta\tau\sqrt U)-\delta\tau^2-\E[X^*NX+2\Re(\bar p\,g\cdot X)]-\varepsilon\norm{H_\beta}^2 ,
+\end{equation}
+and the box value $\max_t(t^2-2\ell t)+2\beta^2/\varepsilon+\max_x\max_\tau(L(\tau,x)-D_{\rm pin}\tau^2)+10^{-11}$ of \code{combined.py} drops the retained square ($-\varepsilon\norm{H}^2\le0$)
+after it has served the mixing identity. The gate matrix enters twice: in the potential $\Psi_E(s)=\sup_m\int(|L+B\cdot(m+sa)|+|L-B\cdot(m+sa)|)\,d\gamma-m^{\mathsf T}M^{-1}m$ with
+$M=E\oplus E\oplus R\oplus R\oplus\varepsilon I_2$, which \emph{decreases} when $E$ decreases, and in the pinned price $D_{\rm pin}=e-\varepsilon+2A_0-(n+A_R)^{\mathsf T}C^{-1}(n+A_R)$
+\eqref{eq:pinned4}, which never increases when $E$ decreases.
+
+\subsection{Cut (a): rotation stationarity}\label{sec:nearmax-rot}
+\paragraph{Hypothesis.} \textbf{(H$_{\rm rot}$)} $(f,g)$ is a global maximiser of $\Re\langle f,Tg\rangle$ over disc-valued pairs on $\C^n$ for a fixed $n$, made unimodular by phase
+replacements, with $Z$ chosen after them. Such a pair exists in every dimension (\autoref{ch:weakk}, \S\ref{sec:rotgate-reading}), and $\sup_n$ of these maxima is the norm,
+so a cap valid at every finite-dimensional maximiser bounds the scalar cap of \code{TransferInputsL2}\stale{22 Oct}{proved in Lean: \code{transferInputs\_of\_witnessCap}, \code{witnessCap\_of\_reduction}, \code{lower\_bound\_of\_reduction}}. No $\delta$-near version is needed. (b) below needs a different hypothesis.
+
+\paragraph{The constraint.} Under (H$_{\rm rot}$), Ward's identity $d+\varepsilon t x_0+\varepsilon J_G^*H_\beta=0$ holds for \emph{every} $\beta$: the $\beta$-terms cancel because
+$J_G^*B=-d$. With the remote-sensitive tensor bound \eqref{eq:remote-rotation-omega} and the bounded-response budget \eqref{eq:rotgate-clipping} at $\lambda=3/2$,
+\begin{equation}\label{eq:nm-ward}
+\varepsilon\norm{H_\beta}^2\ \ge\ \frac{\norm{v_\beta(t)\cdot x_\bullet}^2}{\varepsilon F(t,\tau,x)},\qquad v_\beta(t)=(t,2\beta,\sqrt2\beta),\quad
+F=9\gamma(t)-\bigl(9-3\min\{3,\tfrac{\sqrt3}2x\}\bigr)\tau^2,\quad\gamma(t)=1+K_+-3t .
+\end{equation}
+Here $\tau$ and $x$ are \emph{exactly} the certificate's: the remote cubic of $G=\varepsilon Qk$ is $\varepsilon p$ with $p=P^{\rm rem}_{2,1}k=Q_wc_1$, so $v_0=\varepsilon^2\tau^2$ and
+$\kappa_q=\varepsilon^4\tau^4x^2$. The bound is decreasing in $\tau$ and increasing in $x$, so on a box it holds with $(\tau_-,x_+)$, and $7/8>\sqrt3/2$ gives a rational version
+(\S\ref{sec:remote-sensitive-rotation}). Inputs: Ward identity and $\norm{D_pG}^2\le\Omega$ \st{P} (finite audits \st{C}); influence bound $I_p(q)\le\min\{3v_0,\sqrt{3\kappa_q}/2\}$
+\st{P} (its ingredient $4\norm{\Pi_{1,1}|q|^2}^2\le3\kappa$ is \st{L}, \code{Influence.lean}; $\operatorname{Tr}M_q^2=\norm{\Pi_{1,1}|q|^2}^2$ is \st{P}); $K(3/2)<K_+$ \st{C}.
+
+\paragraph{How it enters the row: not as a box term.} The right side of \eqref{eq:nm-ward} depends on $x_\bullet$, the remote first-chaos part of $\xi$. In \eqref{eq:nm-row} this
+vector no longer appears: it was absorbed by the level-one inequality \eqref{eq:nm-level1} (whose slack $\langle x_\bullet,(E-D_1)x_\bullet\rangle\ge0$ is discarded) and by the fibre
+supremum. Adding \eqref{eq:nm-ward} to \eqref{eq:nm-row} therefore gives $V\le(\ref{eq:nm-row})-\norm{v\cdot x_\bullet}^2/(\varepsilon F)$ with $x_\bullet$ free, whose supremum over
+$x_\bullet$ is the old bound. \textbf{With the potential tables fixed, the cut is worth exactly zero} \st{P}. It pays only through the gate: spend a fraction $\mu\in[0,1]$ of the retained
+square on level one,
+\[
+-\norm{x_0}^2+\varepsilon\norm{x_A}^2+\varepsilon\norm{x_B}^2-\mu\varepsilon\norm{H_\beta}^2\le\Bigl\langle x_\bullet,\Bigl(D_1-\frac{\mu}{\varepsilon F}v_\beta v_\beta^{\mathsf T}\Bigr)x_\bullet\Bigr\rangle ,
+\]
+so the gate may be lowered to any $E'$ with
+\begin{equation}\label{eq:nm-gate}
+E'\succeq D_1-\frac{\mu}{\varepsilon F(t,\tau,x)}v_\beta(t)v_\beta(t)^{\mathsf T},\qquad E'\succ0,\qquad C'=E'_{RR}\succ0 ,
+\end{equation}
+($E'\succeq0$ on the other levels; $E'\succ0$ and $C'\succ0$ for the inverse forms of the potential and of the pinned price). The \emph{rotation row} is then
+\begin{equation}\label{eq:nm-rotrow}
+V\le t^2-2\ell t+\frac{2\beta^2}\varepsilon+\E\Psi_{E'}(\delta\tau\sqrt U)-D_{\rm pin}(E')\tau^2-\E\norm{Y+C'^{-1}(n'+A_R)p}^2_{C'}-(1-\mu)\varepsilon\norm{H_\beta}^2 .
+\end{equation}
+So the ``extra term'' is a change of the gate matrix with multiplier $\mu$ (in practice $\mu=1$; then nothing is left for the $\beta$-variance mixing identity), and the gain is
+$\E[\Psi_E-\Psi_{E'}](\delta\tau\sqrt U)$ under the worst law, minus any loss of price, $(D_{\rm pin}(E)-D_{\rm pin}(E'))\tau^2\ge0$. The loss is zero for $E'=E-\Delta$ with
+$\Delta\succeq0$ and $\Delta w=0$, $w=(1,-C^{-1}(n+A_R))$ (\autoref{ch:rotation-gate-refinement}, \S6). Since $\Psi_{E'}\le\Psi_E$, old caps stay valid fallbacks; new caps need
+recertification (anchor rebasing, re-run of the localised S-lemma pieces, \S\ref{sec:nearmax-build}).
+
+\paragraph{Compatibility with the shared residual.}\label{sec:nearmax-mix} (i) One law: \eqref{eq:nm-ward} is a statement about the same pair as the reduction, so the same
+$(\Omega,\mu,U,\tau,X)$ serve all rows and all rotation profiles; nothing about the residual law is assumed beyond $\tau,x$, which are already certificate variables. (ii) Mixtures:
+freeze the mixture, then spend the square once. For a profile with components $(r,w_r)$ and a common $\Delta$, the combined gate is $\bar E-\Delta=\sum w_r(E_r-\Delta)$ with
+$\bar\beta=\sum w_r\beta_r$ and the convexity bound $\Psi_{\bar E-\Delta}^{\rm comb}(s)\le\sum_rw_r\Psi_{E_r-\Delta}(\delta_rs)$ \eqref{eq:rotgate-potential-mixture}; only the
+\emph{combined} gate \eqref{eq:nm-gate} with $\bar\beta$ is required, the components need not satisfy any gate. (iii) Joint mixtures of two rotation batches are one flattened
+profile (components with their own $\Delta_k$; $\sum_k\lambda_k\sum_rw_{kr}(E_r-\Delta_k)$) whose gate must be re-checked: \eqref{eq:nm-gate} is not convex in $\beta$ because of
+$v_\beta v_\beta^{\mathsf T}$. (iv) A rotation profile with $\mu=1$ cannot be mixed with an ordinary row by the square identity; doing so loses
+$\theta(1-\theta)\,2(\beta_1-\beta_2)^2/\varepsilon$. (v) Domain: \eqref{eq:nm-gate} holds only at the actual $(t,\tau,x)$, so a rotation profile may be used only in boxes inside
+$t\in[t_-,t_+]$, $\tau\ge\tau_-$, $x\le x_+$. Its node certificates and chord segments need \emph{not} lie in that domain: they bound $\E\Psi_{E'}(\tau_j\sqrt U)$ for a fixed function
+$\Psi_{E'}$, and the gate is used only in \eqref{eq:nm-rotrow} at the true point. This is weaker than the ``every interpolation segment inside the box'' obligation of
+\S\ref{sec:remote-sensitive-rotation}.
+
+\paragraph{Lean form.} Modelled on \code{RotShared} (\code{b78baab}, \pathref{Grothe/Lower/Boxes.lean}): for each rotation profile $p$ (components, rebased component tables,
+$\Delta$, gate domain), \code{SharedReduction} gains
+$\forall p\in\text{profiles},\ p.t_-\le t\le p.t_+\to p.\tau_-\le\tau\to x\le p.x_+\to\code{RotShared}\,p\ldots$, where \code{RotShared} is \eqref{eq:nm-rotrow} with $\mu=1$ (no retained
+square), the component potentials with \code{CapsHold} for the rebased tables, and the pinned gate term of $E'$. The gate check \eqref{eq:nm-gate} is part of the paper
+justification of the hypothesis (exact checker in Python, seven principal minors over $\mathbb Q(\sqrt2)$), as on \code{b78baab}. The $\tau,x$ conditions are the only additions to
+\code{RotShared}; with $\tau_-=0$, $x_+=31/4$ they disappear and the $\gamma$-only gate of \autoref{ch:rotation-gate-refinement} is recovered.
+
+\subsection{Cut (b): the fresh second-chaos phase lift}\label{sec:nearmax-lift}
+\paragraph{Hypothesis.} \textbf{(H$_\delta$)} $J_0=\Re\langle f,Tg\rangle\ge M-\delta$ with $M=\sup_n\norm{T_n}$ (all dimensions). A fixed-dimensional maximiser need not satisfy the
+cut (adjoining the fresh mode may raise its value); the $n$-dimensional maximiser satisfies (H$_\delta$) with $\delta_n=M-M_n\to0$, so (a) and (b) can be combined along that
+sequence, the bound becoming $V\le B+O(\sqrt{\delta_n})\to B$.
+
+\paragraph{The scalar instance in unused directions.} Take an independent remote first-chaos Gaussian $X$, $A=\Re(\bar X\psi)$, $B=-A$, $\psi$ a function of the old coordinates.
+Then $P(fA)=\tfrac X2\E[f\bar\psi]$ and, with $a=\Re(\bar fTg)$, $b=\Re(\bar gTf)$,
+\[
+H(A,-A)=\tfrac12\E[(a+b)|\psi|^2]-\tfrac\varepsilon2\bigl(|\E h\bar\psi|^2-|\E k\bar\psi|^2\bigr).
+\]
+With separate scalings of $\psi_A,\psi_B$ and Cauchy--Schwarz, at an attained (dimension-free) maximiser with phase best responses ($a=|Tg|$, $b=|Tf|$) the cut
+$H\ge0$ for all such multipliers is equivalent to
+\begin{equation}\label{eq:nm-scalar}
+\varepsilon^2\,\E\frac1{|Tg|}\,\E\frac1{|Tf|}\le4 ,
+\end{equation}
+which is \eqref{eq:fresh-matrix} in one unused direction ($M_f=\tfrac12\E|Tg|^{-1}$); at the diffuse Gaussian critical response $\E|Tg|^{-1}=2/\varepsilon$ and it is an equality
+\st{P}. For near-maximizers one must clip ($|A|\le K$) and use the error $10K^2\sqrt\delta$.
+
+\paragraph{It is not expressible in $(t,\tau,x,X)$.} The cut involves the pointwise weights $|Tf|,|Tg|$ with $Tg=tZ-Pk-\varepsilon Qh+G$ and first-chaos projections of $fA$. In the
+reduction, $Qh$ survives only through the retained square (it was eliminated by Young's inequality), the visible response only inside the fibre supremum $\Psi$, and $\psi$ would have
+to be a function of both. A Lagrangian $J_0+\lambda(H+e)$ would need (i) a new fibre potential with $\psi$ and the weights built in (new Gaussian integrations), (ii) a gate for the convex
+term $+\tfrac{\varepsilon\lambda}2|\E k\bar\psi|^2$, and (iii) a pointwise treatment of $\Re(\bar h\,Qh)|\psi|^2$. None of these is a term in $(t,\tau,x,X)$; the box formula cannot carry
+the cut \st{P}.
+
+\paragraph{It is inactive at the binding configuration \st{F}.} At the relaxation's fibre maximiser (where $Tf,Tg$ are replaced by $L\pm B\cdot(m^*+sa)$) for row $0.85$, under the
+worst law of batch \code{d2\_a112\_x72} at $(\tau,x)=(0.245,0.70)$ (LP support of 12 atoms, value reproducing the exact witness to $3\cdot10^{-7}$):
+$\E|L-p|^{-1}=\E|L+p|^{-1}=2.6494$ and $\varepsilon^2\cdot2.6494^2=3.896<4$. Without residual ($s=0$) the profile violates \eqref{eq:nm-scalar} ($4.512$); the residual acts as the buffer.
+With the residual entering as a pure shift $\varepsilon\tau\sqrt U$ instead, $3.932<4$. So even an implemented version of the unused-direction cut would not cut the binding
+configuration; other multipliers ($\psi$ correlated with the response) are untested. \textbf{Float gain of (b): $0$.}
+
+\subsection{Float measurements}\label{sec:nearmax-measure}
+\paragraph{Method \st{F}.} For a joint batch (rows, weights) of cert-combined-e at a binding $(\tau,x)$: the moment/Stein LP of \code{gen\_nodes.py} in float (dual form, the batch's own cut
+banks near $\tau$), which reproduces the stored exact witness values to $3\cdot10^{-7}$; its primal worst law; the true potentials $\Psi_{E_r}$ and $\Psi_{E_r-\Delta}$ by a float fibre
+optimiser (polar Gauss--Legendre $500\times160$, L-BFGS, warm starts; the copy of \code{psi\_float.py} with $E$ as argument) on a $z$-grid, interpolated, subtracted from the exact mixed
+table; the LP re-solved; the price recomputed. $\Delta$ is chosen by a $3\times3$ SDP maximising the first-order gain $\operatorname{tr}(W\Delta)$, $W=\sum$ (law weight)
+$E^{-1}m^*m^{*\mathsf T}E^{-1}$ over the support, subject to $\Delta\succeq0$, $\Delta w=0$, the gate \eqref{eq:nm-gate} at both ends of the $t$-interval with the box's $(\tau_-,x_+)$,
+and $E_r-\Delta\succeq0.02I$. Four variants: per-row gates without rotation ($E_r-\Delta\succeq D_1$ for each row), mixed gate without rotation ($\bar E-\Delta\succeq D_1$), rotation
+with $F=9\gamma$, rotation with the law-sensitive $F$.
+
+\paragraph{Results (exact box gain in $V$, units $10^{-6}$).}
+\begin{center}\small
+\begin{tabular}{lcccccc}
+\toprule
+batch (rows, weight) & $(t,\tau,x)$ & per-row & mixed gate & rot.\ $9\gamma$ & rot.\ law & rot.\ increment\\\midrule
+\code{d3\_a112\_x68} ($0.85/0.855$, $0.112$) & $(0.851,0.242,0.70)$ & $0$ & $4.36$ & $5.19$ & $5.39$ & $1.03$\\
+\code{d1\_a20\_x72} ($0.85/0.855$, $0.2$) & $(0.851,0.242,0.70)$ & $0$ & $3.88$ & $4.75$ & $4.95$ & $1.07$\\
+\code{d3\_m168\_x68} ($0.85/0.86$, $0.017$) & $(0.8495,0.244,0.65)$ & $0$ & $4.82$ & $5.74$ & $5.93$ & $1.11$\\
+\code{d2\_b06\_x71} ($0.84/0.85$, $0.94$) & $(0.8475,0.251,0.71)$ & $4.57$ & $4.75$ & $5.99$ & $6.27$ & $1.52$\\\bottomrule
+\end{tabular}
+\end{center}
+Also with the law-sensitive $F$ only: \code{d2\_a112\_x72} $5.26$, \code{d3\_a025\_x69} $5.82$, \code{d2\_a025\_x72} $5.70$. ``Rot.\ increment'' is law-sensitive rotation minus mixed gate;
+the law-sensitive refinement alone is worth $0.19$--$0.28$. The optimal $\Delta$ has eigenvalues $\approx(0,\,0.008,\,0.059)$, the price change is below $10^{-12}$, and the mixed gate
+has slack because the near-null vectors of $E_r-D_1$ differ between rows. In the $9\gamma$ case scaling the room by $0,0.25,0.5,1,2,10$ gives first-order gains $5.6,6.2,6.7,7.5,8.6,11.2$:
+the rotation room is not the bottleneck.
+
+\paragraph{Where the gain sits.} About $60\%$ of every figure comes from row nodes $s=\delta z\ge0.42$, where the fibre maximiser has jumped to its second branch and
+$\Psi_E-\Psi_{E-\Delta}$ reaches $2\cdot10^{-3}$ (e.g.\ row $0.85$: $4.6\cdot10^{-4}$ at $s=0.45$, $2.2\cdot10^{-3}$ at $s=0.53$; worst-law mass there $\approx0.2\%$). Restricting the
+table change to $s\le0.21$ leaves $0.73$--$1.2$ of the $5$--$6$. \emph{Exact check} \st{C}: rebasing the 149 cached anchors of cert-0745e row $0.85$ (bundles \code{newA}, \code{newB}) with
+$E'=E-\Delta$ by the formula of \autoref{ch:rotation-gate-refinement}, \S7 reproduces the stored global quadratics exactly for $\Delta=0$, and lowers the anchor caps by
+$0.43,1.44,1.72\cdot10^{-6}$ at $s=0.025,0.05,0.075$ (float $\Psi$ drop $0.48,1.50,2.22\cdot10^{-6}$). From $s=0.1$ on, the rebased anchors stay above the stored caps (which come from
+localised caps); there the gain needs re-run S-lemma pieces or new price-layer caps.
+
+\paragraph{Predicted gain in $B$ and $K$.} The outer envelope of cert-0745e has maximum $0.7134295956$ (cell $[0.8465,0.847]$, rows $0.84/0.845$ at $\theta=19/20$, separate laws),
+$3.0\cdot10^{-6}$ below $B=0.7134326$. On the present slab every measured binding batch improves by more than that already with the mixed gate and no new hypothesis, so:
+\begin{itemize}
+\item mixed gate only (no near-maximizer hypothesis): $\Delta B\approx3.0\cdot10^{-6}$ (envelope-limited), $K:1.401674103\to\approx1.4016800$;
+\item (a) alone or (a)+(b): the same; the part due to (H$_{\rm rot}$) is $0$ on the present slab. With the slab extended below $t=0.847$ (common-law profiles of rows $0.84/0.845$) it
+would be about $1\cdot10^{-6}$ in $B$ ($\approx2\cdot10^{-6}$ in $K$), and the law-sensitive part about $2\cdot10^{-7}$ in $B$;
+\item (b) alone: $0$.
+\end{itemize}
+These are float predictions with the true potential; certified caps capture less unless the large-$s$ caps are regenerated for $E-\Delta$.
+
+\subsection{Status and build order}\label{sec:nearmax-build}
+\paragraph{Not built.} The threshold ($2\cdot10^{-7}$ in $B$) is passed by the hypothesis-free mixed-gate decrease, not by the near-maximizer constraint: on the present slab the latter
+gains nothing in $B$, and its law-sensitive refinement is worth $\le2.8\cdot10^{-7}$ in $V$ before the envelope cap. A certificate built now around (H$_{\rm rot}$) would attribute to
+a new hypothesis a gain that needs none. Recommended order:
+\begin{enumerate}
+\item \emph{Profile gates without rotation.} Combined profiles $(\{(r,w_r)\},\Delta)$ with $\bar E-\Delta\succeq D_1$, $\Delta w=0$ (or an exact price recomputation). Hypothesis: the
+Gaussian reduction for a combined profile (same paper argument as \code{SharedReduction}\stale{22 Oct}{proved in Lean: \code{sharedReduction\_frame}, \code{reductionHyp\_of\_nodeCaps}; only \code{NodeCaps} remains}; no maximiser). Caps for $E_r-\Delta$ of rows $0.84$--$0.86$: exact anchor rebasing (cheap, done
+above for one row), re-run of the localised S-lemma pieces of \pathref{cert-0745d/midcaps} and \pathref{cert-0745e/midcaps} with $Q'=M'^{-1}$ (the integrals do not depend on $E$;
+$K'=Q'-H^*+\sum\lambda vv^{\mathsf T}\succeq K\succ0$ automatically; about $2\cdot10^4$ pieces, roughly an hour on 6 cores), and the price layer beyond $s=0.42$. A common $\Delta$ for all
+profiles makes this a one-off per row. Then regenerate the joint batches on the new mixed tables, rebuild the cover, and extend the slab below $0.847$.
+\item \emph{Rotation increment.} Same tables with a larger $\Delta$ allowed by \eqref{eq:nm-gate} with $9\gamma$; hypothesis \code{RotShared} with $t$-domain. Worth $\approx1\cdot10^{-6}$ in
+$B$ once the envelope no longer binds.
+\item \emph{Law-sensitive denominator.} Adds the $(\tau_-,x_+)$ domain to each rotation profile and to the cover checker; $\approx2\cdot10^{-7}$.
+\end{enumerate}
+\paragraph{Side observation.} The ``per-row'' column is not always zero: for rows $0.84/0.85$ a price-neutral decrease satisfying both rows' own gates exists ($4.57\cdot10^{-6}$). The
+rows were optimised for the old price $\kappa$, not for $D_{\rm pin}$; re-optimising single rows in the $\delta$-free pinned parameterisation of \S\ref{sec:pinned-delta} is therefore
+also open \st{F}.
+
+\paragraph{Open issues.} (1) The measurements use float potentials and the existing cut banks; the certified gain depends on recertifying caps at $s\in[0.1,0.9]$ for $E-\Delta$.
+(2) The binding set after the improvement is unknown; four batches were measured, the envelope bound is exact. (3) (b) was tested only in unused directions and only at the
+relaxation's fibre maximiser, which is not a response pair of the original problem. (4) $\operatorname{Tr}M_q^2=\norm{\Pi_{1,1}|q|^2}^2$ and the Ward identity are paper proofs.

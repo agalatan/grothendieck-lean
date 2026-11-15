@@ -1,0 +1,498 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/10-exact-duals-rotation-profiles.tex (file dated 2026-10-25). Only this line was added.
+\subsection{A weaker row target retaining both squares}\label{sec:weakk-rowtarget}
+The following identity retains an additional loss in the gate-free reduction.
+Put $h=(f+g)/2$, $k=(f-g)/2$, $Ph=tZ$, $B\in\operatorname{ran}Q$,
+$L=\ell Z+B$, and $G=\epsilon Qk$. Then
+\begin{align*}
+\operatorname{Re}\langle f,(P-\epsilon Q)g\rangle
+={}&t^2-2\ell t+\frac{\|B\|_2^2}{\epsilon}
+ +\operatorname{Re}\mathbb E[\overline{L+G}f+\overline{L-G}g]
+ -\frac{\|G\|_2^2}{\epsilon}\\
+&-\|Pk\|_2^2-\epsilon\|Qh+B/\epsilon\|_2^2.
+\end{align*}
+This is an equality. Let $R(G)$ be the supremum of the terms after the row
+constant, over unimodular $f,g$ satisfying $Qk=G/\epsilon$, with the constraint
+$Ph=tZ$ removed. A bound on $\sup_G R(G)$ is sufficient and weaker than the
+previous $K'$ target, which discarded the last square.
+
+For $a\in\operatorname{ran}P$ and $b,C\in\operatorname{ran}Q$, every trial gives
+\begin{align*}
+R(G)\le D_G(a,b,C):={}&\mathbb E|L+G-a-b-C|+
+\mathbb E|L-G+a+b-C|+\|a\|_2^2+\frac{\|C\|_2^2}{\epsilon}\\
+&-\frac{2\operatorname{Re}\langle C,B\rangle}{\epsilon}
++\frac{2\operatorname{Re}\langle b,G\rangle}{\epsilon}
+-\frac{\|G\|_2^2}{\epsilon}.
+\end{align*}
+The infimum is equal to $R(G)$ in fixed finite Gaussian dimension, by finite
+moment purification and convex duality. The upper-bound direction is simply
+completion of squares, with no existence or regularity assumptions. The
+common shift $C$ is essential: at a differentiable minimizing response it
+satisfies $C=\epsilon Qh+B$.
+
+Here is an explicit finite certificate allowing the responses to readjust.
+Set $w_\pm=L\pm G$, $\rho_\pm=\max(|w_\pm|,\tau)$, for $\tau>0$, and
+\[
+ k_\tau=\tfrac12(w_+/\rho_+-w_-/\rho_-),\qquad
+ h_\tau=\tfrac12(w_+/\rho_++w_-/\rho_-),\qquad
+ B_\tau=\frac{\mathbb E[(\tau-|w_+|)_+^2+(\tau-|w_-|)_+^2]}{2\tau}.
+\]
+On arbitrary finite trial subspaces for $(a,b,C)$, define
+\[
+ H(a,b,C)=\|a\|_2^2+\|C\|_2^2/\epsilon+
+ \tfrac12\mathbb E\left[
+ \frac{|a+b+C|^2}{\rho_+}+\frac{|a+b-C|^2}{\rho_-}\right].
+\]
+Let $r$ be the coordinate vector of the pairings with
+$Pk_\tau$, $Qk_\tau-G/\epsilon$, and $Qh_\tau+B/\epsilon$.
+The positive definite Gram matrix $H$ gives
+\[
+ \boxed{R(G)\le\Lambda(G)+B_\tau-r^*H^{-1}r.}
+\]
+Indeed $|z-v|\le(\rho^2+|z-v|^2)/(2\rho)$, applied to the two moduli,
+reduces the dual to $\Lambda(G)+B_\tau-2\operatorname{Re}(v^*r)+v^*Hv$.
+A rational trial $v$ certifies the lower bound
+$r^*H^{-1}r\ge2\operatorname{Re}(v^*r)-v^*Hv$, so the checker need not
+invert a matrix. All entries are finite since $\rho_\pm\ge\tau$.
+
+If $Q_0$ denotes the visible-independent part of $G$, the sufficient weaker
+comparison is now
+\[
+ \Lambda(G)+B_\tau-r^*H^{-1}r\le\Lambda(Q_0)+\eta_{AB}.
+\]
+This comparison is \emph{open}. Nine sampled junta-plus-buffer tests with
+optimized shared $A/B$ terms support it: the joint $h/Pk$ trial reduction
+exceeds the mixed gain at all nine points. Including the cubic consistency
+multiplier improves each tested trial further. These are numerical diagnostics,
+not interval certificates. The exact finite-sum audit verifies 256 row
+identities, 6,912 dual trials, 256 Gram bounds, and 1,875 complex Young
+identities. No Grothendieck endpoint is improved by this note alone.
+
+
+\subsection{Rotation stationarity pays for the main $A/B$ amplitude}\label{sec:weakk-rotation}
+The following inequality applies at a global norm maximizer and retains every
+simultaneous visible-sector interaction. It does not assert stationarity for a
+fixed-$t$ constrained row maximizer.
+
+Let $T=P-\epsilon Q$, $h=(f+g)/2$, $k=(f-g)/2$, $Ph=tZ$,
+$G=\epsilon Qk$, $B=\beta Z(|Z|^2-2)$, and
+\[
+ H_{\mathrm{res}}=Qh+B/\epsilon,\qquad
+ \mathcal F=\|Pk\|_2^2+\epsilon\|H_{\mathrm{res}}\|_2^2.
+\]
+Write $E_{\rm rem}$ for the inclusion of the remote first chaos in $P$,
+and $P_{\rm rem}=E_{\rm rem}^*$ for its orthogonal projection. The dual
+variable $a$ and $Pk$ may lie in the full first chaos.
+For each remote first-chaos direction $p=\sum p_jX_j$, put
+\[
+ D_p=p\partial_Z+\bar p\partial_{\bar Z}
+   -Z\sum_j\bar p_j\partial_{X_j}
+   -\bar Z\sum_jp_j\partial_{\bar X_j}.
+\]
+This is the skew-adjoint generator of a unitary coordinate rotation. Rotating
+$g$ alone at a global maximizing pair and expanding the derivative gives
+\[
+ t\operatorname{Re}\langle p,Pk\rangle+
+ \operatorname{Re}\langle Qh,D_pG\rangle=0.
+\]
+A maximizer exists in fixed dimension: the weak-* compact unit disks have
+compact images under the finite-rank map $(P,Q)$, the objective is continuous
+on these images, and successive replacement by $f=\operatorname{phase}(Tg)$
+and $g=\operatorname{phase}(Tf)$ gives a unimodular maximizing pair. The
+rotation derivative only differentiates finite-degree projections, so no
+regularity of $f,g$ is required.
+
+Write the usual coordinate decomposition
+\[
+ G=q+r_A(|Z|^2-1)+r_BZ^2/\sqrt2+YZ+W\bar Z+\nu H(Z),
+ \qquad d=2\beta r_A+\sqrt2\beta\overline{r_B}.
+\]
+Since $D_pB=2\beta(|Z|^2-1)p+\beta Z^2\bar p$, stationarity is exactly
+\[
+ \operatorname{Re}\langle p,d\rangle
+ =-\epsilon t\operatorname{Re}\langle p,Pk\rangle
+  -\epsilon\operatorname{Re}\langle H_{\mathrm{res}},D_pG\rangle.
+\]
+The map $J_G:p\mapsto D_pG$ is \emph{real linear}, generally not complex
+linear. On the realification of the remote first chaos, least squares gives
+\[
+ \mathcal F\ge
+ d^{\mathsf T}(\epsilon^2t^2I+\epsilon J_G^*J_G)^{-1}d.
+\]
+A Moore--Penrose inverse on the range handles $t=0$. In particular, if
+$J_G^*J_G\preceq\omega I$, then
+\[
+ \mathcal F\ge\frac{\|d\|_2^2}{\epsilon^2t^2+\epsilon\omega}.
+\]
+The quotient is defined as zero when $t=\|G\|=0$, in which case $d=0$.
+On a cubic Wick tensor, the rotation generator is the sum of three
+one-particle generators, each of norm $\|p\|_2$. Thus
+$\omega=9\|G\|_2^2$ is always valid. The exact gate-free row consequently gives
+\[
+\boxed{\begin{aligned}
+ \operatorname{Re}\langle f,Tg\rangle\le{}&
+ t^2-2\ell t+2\beta^2/\epsilon+\Lambda(G)\\[-2pt]
+ &-\frac{\|2\beta r_A+\sqrt2\beta\overline{r_B}\|_2^2}
+ {\epsilon^2t^2+9\epsilon\|G\|_2^2}.
+\end{aligned}}
+\]
+This holds at a norm maximizer with all sectors present. Therefore a uniform
+cap on its right side bounds the norm. It is a strictly weaker target than
+bounding $\Lambda(G)$ alone.
+The sufficient supremum may impose $0\le t\le1$ and
+$\|G\|_2^2\le\epsilon^2(1-t^2)$: unimodularity gives
+$\|h\|_2^2+\|k\|_2^2=1$, and projection decreases the two norms.
+This does not imply any smaller variance window used in the examples below.
+
+\paragraph{Sharper denominator from the influence matrix.}
+Let $v=\|G\|_2^2$, $\kappa_G=\mathbb E|G|^4-2v^2$, and let $M_G\succeq0$
+be the influence matrix, so
+\[
+ I_p=\Big\|\sum_j\bar p_j\partial_jG\Big\|_2^2+
+       \Big\|\sum_jp_j\bar\partial_jG\Big\|_2^2=p^*M_Gp.
+\]
+The existing contraction identity says
+$\operatorname{Tr}M_G=3v$ and
+$\operatorname{Tr}M_G^2=\|\Pi_{1,1}|G|^2\|_2^2=:A_G\le3\kappa_G/4$.
+For a unit $p\perp Z$, one-particle tensor Cauchy--Schwarz gives
+\[
+ \|D_pG\|_2^2\le3(I_Z+I_p)
+ \le3\min\{3v,\sqrt{2A_G}\}.
+\]
+Hence one can replace $9v$ by
+\[
+ \boxed{\omega=\min\{9v,\,3\sqrt{3\kappa_G/2}\}.}
+\]
+The cumulant here is that of the full cubic $G$, not a conditional slice.
+When sector variances are known,
+$I_Z=2(\|r_A\|^2+\|r_B\|^2)+\|Y\|^2+\|W\|^2+3|\nu|^2$ and
+$I_p\le\min\{3v-I_Z,\sqrt{A_G-I_Z^2}\}$ give a further improvement.
+For remote $q$, the exact identity
+$\|D_pq\|^2=a_p+b_p$ instead gives, with $j=\|G-q\|^2$,
+\[
+ \omega\le\min\left\{9(v_q+j),
+ \left(\sqrt{\min\{3v_q,\sqrt{3\kappa_q}/2\}}+3\sqrt j\right)^2\right\}.
+\]
+At the peak parameters and $t\le0.851$, put
+$r_{\parallel}=(2r_A+\sqrt2\overline{r_B})/\sqrt6$.
+The unconditional denominator yields penalties at least
+$\|r_{\parallel}\|^2/7$ for $v\le1/16$ and
+$\|r_{\parallel}\|^2/6$ for $v\le1/25$.
+The remote version gives $6\|r_{\parallel}\|^2/25$ if
+$v_q\le1/25$, $\kappa_q\le v_q^2$, and $j\le1/400$.
+These rational comparisons pass exact arithmetic checks.
+
+\paragraph{Combining with response adjustment without double counting.}
+Write $\Theta_G$ for any certified lower bound on $\mathcal F$ above. Allocate
+$\mu\mathcal F$ to the response dual and $(1-\mu)\mathcal F$ to rotation, for
+$0<\mu\le1$. The common-shift dual changes its prices to
+$\|a\|^2/\mu+\|C\|^2/(\mu\epsilon)$, keeping the linear terms
+$-2\operatorname{Re}\langle C,B\rangle/\epsilon$
+and $2\operatorname{Re}\langle b,G\rangle/\epsilon$ unchanged.
+The clipped Gram matrix $H_\mu$ therefore has these two modified diagonal
+prices and the same residual vector $r$. At the norm maximizer,
+\[
+ \text{row}\le\text{constant}+\Lambda(G)+B_\tau
+      -r^*H_\mu^{-1}r-(1-\mu)\Theta_G.
+\]
+At $\mu=0$, use $\Lambda(G)-\Theta_G$. Finite minima over certified choices
+are allowed. Subtracting both full corrections would spend the same squares
+twice and is invalid.
+
+\subsection{An exact profile identity linking $A/B$ content to the common response}
+For the remote-only baseline, define
+\[
+ F_0(u)=\mathbb E_Z\operatorname{phase}(L+u),\quad
+ F_A(u)=\mathbb E_Z(|Z|^2-1)\operatorname{phase}(L+u),\quad
+ F_B(u)=\mathbb E_Z\frac{Z^2}{\sqrt2}
+                         \overline{\operatorname{phase}(L+u)}.
+\]
+Let $h_u=(\operatorname{phase}(L+u)+\operatorname{phase}(L-u))/2$,
+$H_1(u)=\mathbb E\bar Zh_u$, and $H_2(u)=\mathbb E Zh_u$.
+The first is real radial; the second has phase charge two. Visible Gaussian
+integration by parts gives
+\[
+ F_*(u):=\ell F_0(u)+2\beta F_A(u)+\sqrt2\beta F_B(u)
+       =2\mathbb E_Z[Z|L+u|],\qquad
+ (F_*)_u=H_1,\quad(F_*)_{\bar u}=H_2.
+\]
+For $a=\ell-2\beta>0$, regularize the norm and use its smooth radial
+pushforward density to justify the identity and the locally integrable first
+phase derivatives. No derivative supremum occurs.
+
+For remote $q$, put $c_D=\Pi_{1,0}F_D(q)$, including $c_0$.
+Let $h_{\mathrm{even}}$ project $h_q$ onto
+$Z\mathcal H_{1,1}(X)\oplus\bar Z\mathcal H_{2,0}(X)$, and define the
+\emph{complex-linear} map
+\[
+ T_qp=\sum_jp_j\bigl[Z\overline{\partial_jq}
+                         +\bar Z\bar\partial_jq\bigr].
+\]
+Remote Gaussian integration by parts proves
+\[
+ \boxed{\ell c_0+2\beta c_A+\sqrt2\beta c_B=T_q^*h_{\mathrm{even}}.}
+\]
+For $I_q=T_q^*T_q$ and $r=\ell c_0+2\beta c_A+\sqrt2\beta c_B$, this yields
+$r\in\operatorname{ran}I_q$ and
+$r^*I_q^+r\le\|h_{\mathrm{even}}\|^2$.
+Moreover $\|T_qp\|^2=a_p+b_p$, the directional influence. This is a matrix
+constraint coupling the content, $Pk$, and the retained $Qh$ square.
+It controls one combination; the transverse profile
+$(F_A-\sqrt2F_B)/\sqrt3$ remains.
+
+For a real polynomial $p$ and $M_p(u)=2\mathbb E[Zp(|Z|^2)|L+u|]$, the weighted
+hierarchy is
+\[
+ M_{p-p'}(u)=\mathbb E\left[p(T)\{(a+2\beta T)\operatorname{phase}(L+u)
+                  +\beta Z^2\overline{\operatorname{phase}(L+u)}\}\right].
+\]
+Its derivatives are the correspondingly weighted $H_1,H_2$ profiles.
+Choosing $p=T-2$ introduces visible degree three; paired with remote
+second-chaos derivatives of $q$, this requires degree-five projections of
+$h$. They cannot be charged to the available cubic penalty. Thus this
+hierarchy does not provide a second free cubic identity.
+
+The self-contained rational Gaussian-moment checker verifies the complex
+conjugations, rotation signs, influence-matrix identities and stated rational
+constants. The general proofs are the identities above. A global cap for the
+new penalized target is still needed before any numerical endpoint changes.
+
+\subsection{Stationarity inside the response dual, with no allocation loss}
+The previous allocation rule is valid but can be strengthened. Put
+$A=\epsilon^2t^2I+\epsilon J_G^*J_G$ on the realified remote space.
+For every dual trial $(a,b,C)$ and every real vector $u$, stationarity gives
+\[
+ \text{row}\le\text{constant}+D_G(a,b,C)+u^{\mathsf T}Au
+       -2\operatorname{Re}\langle u,d+\epsilon t P_{\rm rem}a+J_G^*C\rangle.
+\]
+Indeed, for $x=Pk$, $y=H_{\mathrm{res}}$, the difference in the square
+completion is exactly
+\[
+ \|x-a+\epsilon t E_{\rm rem}u\|^2+
+ \epsilon\|y-C/\epsilon+J_Gu\|^2\ge0.
+\]
+Thus minimizing over $u$ yields the stronger bound
+\[
+ \boxed{D_G(a,b,C)
+ -(d+\epsilon t P_{\rm rem}a+J_G^*C)^{\mathsf T}A^{-1}
+                  (d+\epsilon t P_{\rm rem}a+J_G^*C).}
+\]
+The same two squares are used only once. Setting $u=0$ recovers the ordinary
+dual; setting $a=b=C=0$ recovers $\Lambda(G)-\Theta_G$.
+The displayed inverse is ordinary for $t>0$. At $t=0$, use the
+Moore--Penrose inverse on the range, or the preceding trial-$u$ bound:
+$d+J_G^*C$ belongs to $\operatorname{ran}J_G^*$ by stationarity.
+Skew-adjointness also gives the sign check $J_G^*B=-d$.
+A certified bound $A\preceq\overline A I$ permits subtraction of
+$\|d+\epsilon t P_{\rm rem}a+J_G^*C\|^2/\overline A$ instead; any explicit rational
+$u$ also gives a verifiable trial without matrix inversion.
+
+In the clipped implementation, let $H$ and $r$ be the preceding response
+Gram matrix and residual vector, and set $K(a,b,C)=\epsilon t P_{\rm rem}a+J_G^*C$.
+The single augmented real matrix and residual are
+\[
+ H_{\mathrm{aug}}=\begin{pmatrix}H&-K^*\\-K&A\end{pmatrix},
+ \qquad r_{\mathrm{aug}}=(r,d).
+\]
+For $t>0$ the matrix is positive definite: its price part is
+$\|a-\epsilon t E_{\rm rem}u\|^2+\|C-\epsilon J_Gu\|^2/\epsilon$, while the
+reciprocal-modulus part controls $a+b$ and $C$; simultaneous vanishing,
+using $P\perp Q$, forces $u=0$. Therefore
+\[
+ \text{row}\le\text{constant}+\Lambda(G)+B_\tau
+       -r_{\mathrm{aug}}^{\mathsf T}H_{\mathrm{aug}}^{-1}r_{\mathrm{aug}}.
+\]
+This retains response readjustment, cubic consistency, and stationarity in
+one finite certificate. Twenty-five exact rational square completions audit
+the new formula.
+
+For completeness, if a pair is within $\delta$ of the global norm, then a
+unit-direction rotation has $|J''(\theta)|\le M=\max\{1,9\epsilon\}$ and
+$|J'(0)|\le\sqrt{2M\delta}$. Hence its stationarity defect has norm at most
+$\epsilon\sqrt{M\delta/2}$, and the valid approximate version is
+\[
+ \mathcal F\ge
+ \frac{(\|d\|-\epsilon\sqrt{M\delta/2})_+^2}
+ {\epsilon^2t^2+\epsilon\omega}.
+\]
+The exact zero-defect formulas above are used at actual norm maximizers.
+
+
+\paragraph{Arbitrary finite families of unitary coordinate generators.}
+Let $D_1,\dots,D_m$ be skew-adjoint generators induced by skew-Hermitian
+coordinate transformations, and put $D_u=\sum_j u_jD_j$ for $u\in\mathbb R^m$.
+Define $Su=D_u(Ph)$, $Ju=D_uG$, and $d_j=\operatorname{Re}\langle D_jB,G\rangle$.
+Rotation stationarity gives
+\[
+ d+\epsilon S^*Pk+\epsilon J^*H_{\rm res}=0,
+ \qquad
+ \mathcal F\ge d^{\mathsf T}
+       (\epsilon^2S^*S+\epsilon J^*J)^+d.
+\]
+The stationarity identity puts $d$ in the matrix range, so the
+Moore--Penrose formula is valid. The joint response dual above also
+extends with $\epsilon tP_{\rm rem}a$ replaced by $\epsilon S^*a$.
+Appending generators cannot weaken the correction: it enlarges the set of
+trial multipliers $u$. Remote-remote rotations have $d_j=0$ but can improve
+the Schur complement. The visible phase rotation satisfies
+\[
+ D_\phi=iZ\partial_Z-i\bar Z\partial_{\bar Z},\quad
+ D_\phi B=iB,\quad
+ d_\phi=\sqrt2\beta\operatorname{Im}\nu,\quad S_\phi=itZ.
+\]
+Thus the full rotation family also constrains the imaginary diagonal
+amplitude. No elimination of the remaining amplitude or numerical global
+cap is claimed.
+
+
+\subsection{Uniform certification of the actual peak-row profiles}
+
+
+
+This note supplies a proved analytic ingredient, not a new numerical
+Grothendieck endpoint. All constants refer to the single peak profile
+$a=699/1250$, $b=179/1250$; no uniform row box is asserted.
+
+\begin{theorem}
+Let $Z$ be standard proper complex Gaussian and $L=Z(a+b|Z|^2)$. Put
+\begin{align*}
+ F_0(q)&=\E\ph(L+q),&
+ F_A(q)&=\E[(|Z|^2-1)\ph(L+q)],\\
+ F_B(q)&=\E\left[\frac{Z^2}{\sqrt2}\overline{\ph(L+q)}\right],&
+ \Phi_0(|q|)&=\E[|L+q|+|L-q|].
+\end{align*}
+The frozen sixty-rate Gaussian formulas below approximate each of these
+four functions with absolute error less than $10^{-11}$, simultaneously
+for every $q\in\mathbb C$. Every unbounded tail is included.
+\end{theorem}
+
+\subsubsection{The density certificate}
+Write $p(t)=a+bt$, $D(t)=a+3bt$, and $U(t)=tp(t)^2$.
+The radial diffeomorphism $z\mapsto w=L(z)$ has $U'=pD$ and density
+$e^{-t}/(\pi pD)$, where $|w|^2=U(t)$. The weighted density for $F_A$
+is $(t-1)e^{-t}/(\pi pD)$. Before complex conjugation, the density
+for the $B$ convolution is
+$\bar w^2e^{-t}/(\pi\sqrt2p^3D)$.
+
+The JSON witness gives positive rational rates $\lambda_j$ and rational
+coefficients $c_{0j},c_{Aj},c_{Bj}$. Its indicated anchor coefficient is
+defined algebraically so that
+\[
+ \sum_jc_{0j}/\lambda_j=1,\qquad
+ \sum_jc_{Aj}/\lambda_j=0
+\]
+hold exactly. The normalized $c_{0j}$ are nonnegative. The three density
+approximants are
+\[
+ \frac1\pi\sum_jc_{0j}e^{-\lambda_j|w|^2},\quad
+ \frac1\pi\sum_jc_{Aj}e^{-\lambda_j|w|^2},\quad
+ \frac{\bar w^2}\pi\sum_jc_{Bj}e^{-\lambda_j|w|^2}.
+\]
+Their $L^1$ errors equal $\int_0^\infty|e_D(t)|\,dt$, where
+\begin{align*}
+ e_0(t)&=e^{-t}-pD\sum_jc_{0j}e^{-\lambda_jU(t)},\\
+ e_A(t)&=(t-1)e^{-t}-pD\sum_jc_{Aj}e^{-\lambda_jU(t)},\\
+ e_B(t)&=te^{-t}/\sqrt2-UpD\sum_jc_{Bj}e^{-\lambda_jU(t)}.
+\end{align*}
+The successful outward-Arb replay encloses these errors below
+$5.39\cdot10^{-13}$, $2.57\cdot10^{-12}$, and
+$6.87\cdot10^{-13}$, respectively. It also encloses
+\[
+ 2\int_0^\infty\sqrt{U(t)}\,|e_0(t)|\,dt
+ <3.24\cdot10^{-13}.
+\]
+The machine acceptance threshold is the simpler rational $10^{-11}$
+for each of these four quantities.
+
+Since $|\ph|\le1$, the three $L^1$ errors bound the errors in the
+phase convolutions uniformly over all shifts. For the norm convolution,
+the exact mass identity permits subtraction of the constant $|q|$:
+\[
+ \Phi_0(|q|)-\widetilde\Phi_0(|q|)
+ =2\int(\rho_0-\widetilde\rho_0)(w)
+                 (|w+q|-|q|)\,dA(w).
+\]
+The reverse triangle inequality bounds this by the radius-weighted
+$L^1$ error. Thus the norm approximation is uniform even as
+$|q|\to\infty$; no error growing with $|q|$ is discarded.
+
+\subsubsection{Closed formulas and the conjugation in the B profile}
+For $s\ge0$, set $x_j=\lambda_js^2/2$. With modified Bessel functions
+$I_0,I_1$, the formulas are
+\begin{align*}
+ \widetilde F_D(s)&=\sum_j\frac{c_{Dj}\sqrt\pi s}{2\sqrt{\lambda_j}}
+       e^{-x_j}[I_0(x_j)+I_1(x_j)]\quad(D=0,A),\\
+ \widetilde F_B(s)&=\sum_j\frac{c_{Bj}\sqrt\pi s}{4\lambda_j^{3/2}}
+       e^{-x_j}[I_1(x_j)-I_0(x_j)],\\
+ \widetilde\Phi_0(s)&=\sum_j\frac{c_{0j}\sqrt\pi}{\lambda_j^{3/2}}
+       e^{-x_j}[(1+2x_j)I_0(x_j)+2x_jI_1(x_j)].
+\end{align*}
+Each profile at $q\ne0$ is $(q/|q|)\widetilde F_D(|q|)$; set it to
+zero at $q=0$. The potential is radial.
+
+For completeness, a proper Gaussian $W$ of variance $\gamma$ satisfies
+\[
+ \E\ph(q+W)=qh_\gamma(|q|^2),\quad
+ h_\gamma(u)=\frac{\sqrt\pi}{2\sqrt\gamma}
+ e^{-x}[I_0(x)+I_1(x)],\quad x=\frac{u}{2\gamma}.
+\]
+Gaussian integration by parts gives
+$\E[\bar W^2\ph(q+W)]=\gamma^2\partial_q^2(qh_\gamma)$.
+Now
+\[
+ \partial_q^2(qh(u))=\bar q(2h'(u)+uh''(u)),\quad
+ 2h_\gamma'(u)+uh_\gamma''(u)
+ =\frac{\sqrt\pi}{4\gamma^{3/2}}e^{-x}[I_1(x)-I_0(x)].
+\]
+Conjugating this expression yields the charge-$+1$ $F_B$ above.
+The conjugation is essential, although invisible for real positive $q$.
+
+Both $e^{-x}(I_0+I_1)$ and $e^{-x}(I_0-I_1)$ are completely monotone:
+\[
+ e^{-x}[I_0(x)\pm I_1(x)]
+ =\frac1\pi\int_0^\pi e^{-x(1-\cos\theta)}
+                         (1\pm\cos\theta)\,d\theta.
+\]
+Thus the first Gaussian kernel is positive and the $B$ kernel is
+negative. A signed $A$ mixture does not automatically inherit a
+derivative sign; none is required in the proof.
+
+\subsubsection{Replay, finite cells, and both tails}
+The standalone checker uses python-flint at 160 bits. It subdivides
+$[0,40]$ into 2000 cells. For a midpoint $m$ and half-width $h$,
+Taylor's theorem gives
+\[
+ \int_{m-h}^{m+h}|e(t)|\,dt\le
+ 2h\sum_{k=0}^5\left|\frac{e^{(k)}(m)}{k!}\right|
+                  \frac{h^k}{k+1}
+ +\frac{2h^7}7\sup_{[m-h,m+h]}
+                         \left|\frac{e^{(6)}}{6!}\right|.
+\]
+All coefficients come from interval exponential-series recurrence for
+the cubic $U(t)$, without numerical differentiation. The radius-weighted
+cell error uses the largest $\sqrt U$ on the cell.
+
+Beyond $T=40$, the target tails are $e^{-T}$, $Te^{-T}$,
+and $(T+1)e^{-T}/\sqrt2$. The Gaussian tails are exact multiples of
+\[
+ \int_{U_0}^\infty e^{-\lambda u}\,du
+  =e^{-\lambda U_0}/\lambda,\quad
+ \int_{U_0}^\infty ue^{-\lambda u}\,du
+  =e^{-\lambda U_0}(U_0/\lambda+1/\lambda^2).
+\]
+Absolute coefficients are used, including the signed $A$ coefficients.
+For weighted tails use $\sqrt t\le t/\sqrt T$ and
+$\sqrt u\le u/\sqrt{U_0}$. These formulae cover the complete half-line.
+
+\paragraph{Files.}
+The witness is \texttt{profile\_gaussian\_proposal.json}; the standalone
+replay is \texttt{check\_profile\_gaussian\_L1.py}; the resulting
+Arb oracle is \texttt{gaussian\_profile\_oracle.py}. Both Python scripts
+run under isolated mode and need no NumPy or SciPy. Their directory is
+\begin{quote}\small\path{/Users/alingalatan/Documents/Codex/2026-10-10/plea/outputs/weak-k-20261015/strategy/}\end{quote}
+The replay checks the frozen coefficients, not the optimization that
+proposed them. A complete lower-bound certificate still needs a valid
+global secant inequality, a rational coupled dual, a parameter cover,
+simultaneous-sector control, and a compatible flank envelope.
+
+
+% Proposed report fragment. This file does not assert a new numerical endpoint.

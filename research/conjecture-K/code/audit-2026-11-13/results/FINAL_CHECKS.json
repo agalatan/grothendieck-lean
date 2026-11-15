@@ -1,0 +1,11 @@
+{
+  "report_placeholders": false,
+  "report_local_links_exist": true,
+  "critical_script_syntax": "PASS",
+  "completed_cells": 15,
+  "initial_starts": 750,
+  "converged_refinements": 750,
+  "independent_endpoint_evaluations": 1500,
+  "fresh_holdout_cells": 15,
+  "status": "Consistency checks only; numerical and theorem trust limits are in REPORT.md."
+}

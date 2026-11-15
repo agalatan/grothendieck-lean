@@ -1,0 +1,498 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch30-gpt-forest.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 30). Owner: lower-bound/06-original-responses.tex
+\section{Lower-bound GPT's reassessment: a diffuse theorem, the conditioning budget, and an adaptive-response saddle (20 October)}\label{ch:gpt-forest}
+\chapsummary{Diffuse comparison, conditioning-budget obstructions and adaptive-response duals. Preserve the distinction between an arbitrary cubic law and a realizable original response.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{proof/forest-addendum.tex}, ported verbatim apart from this header, local macros and the bibliography
+entries, which were moved to the common bibliography. Package \pathref{gpt-reviews/forest-reassessment-20261020/}. \emph{Our replay} \st{C}: \code{verify\_diffuse\_constants.py} PASS
+(exact Fraction arithmetic, 15 rational tensor cases) and \code{check\_inner\_bracket.py} PASS (256 residual identities, 512 minorant completions, 725 disk choices), both under
+\code{python3 -I}. We re-read the proof of the diffuse theorem: Poincaré in the visible coordinates gives $r\le2I$, the payoff is $2$-Lipschitz, and the real two-dimensional
+Malliavin--Stein bound with $\mathbb E\|\tau-C\|_{HS}^2\le\kappa/3$ and $\kappa\le40vI$ gives $d_W\le\sqrt{80I/3}$. The steps are sound \st{P}.
+\providecommand{\EE}{\mathbb E}\providecommand{\CC}{\mathbb C}\providecommand{\RR}{\mathbb R}\providecommand{\HH}{\mathcal H}
+\providecommand{\Rea}{\operatorname{Re}}\providecommand{\Ima}{\operatorname{Im}}\providecommand{\Var}{\operatorname{Var}}
+\providecommand{\tr}{\operatorname{tr}}\providecommand{\phase}{\operatorname{phase}}\providecommand{\eps}{\varepsilon}
+
+\subsection{What the remaining problem is}
+
+The current manuscript records the certified interval
+\[
+1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\CC}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}
+\]
+on master commit \texttt{20eb917}. Nothing in this addendum changes it.
+The global coherent Wick A theorem settles a genuine shared-driver family,
+but no theorem identifies this family with the maximizers among general
+cubic tensors. The missing step is a joint comparison or localization
+theorem, not simply more accuracy on the already controlled family.
+
+Two distinctions matter. First, a small coordinate coefficient in a
+chosen basis is not the same as small influence in every direction.
+Second, Conjecture K bounds every cubic in a relaxation, whereas the
+original norm permits additional response fields to readjust to that
+cubic. The latter distinction was already recognized by the retained
+projection squares in manuscript \autoref{ch:weakk}. Section~\ref{forest:saddle}
+gives a simpler exact organization of those squares.
+
+\subsection{An explicit diffuse theorem}
+\label{forest:diffuse}
+
+Let \(x_1,\ldots,x_{2n}\) be independent standard real Gaussians, with
+\(Z_j=(x_{2j-1}+ix_{2j})/\sqrt2\). For
+\(Q\in\HH_{2,1}(\CC^n)\), define the real positive semidefinite matrix
+\[
+M_Q(i,j)=\EE\Rea\big[(\partial_iQ)\overline{\partial_jQ}\big],
+\qquad
+I(Q)=\lambda_{\max}(M_Q)
+ =\sup_{\|h\|_{\RR^{2n}}=1}\EE|D_hQ|^2.
+\]
+All derivatives and eigenvalues in this definition use real coordinates.
+In particular \(\tr M_Q=3\EE|Q|^2\).
+
+For any integrable complex \(L=L(Z_1)\) and \(\eps>0\), set
+\[
+\Lambda(Q)=\EE(|L+Q|+|L-Q|)-\frac{\EE|Q|^2}{\eps},
+\qquad
+S=\sup_{v\ge0}\left(2\EE|L+\sqrt vG|-\frac v\eps\right),
+\]
+where \(G\) is an independent standard proper complex Gaussian.
+The quantity \(S\) is finite, since its objective is at most
+\(2\EE|L|+2\sqrt v-v/\eps\).
+
+\begin{theorem}[Explicit approximate K in the diffuse regime]
+\label{forest:thm-diffuse}
+In every finite dimension, for every \(Q\in\HH_{2,1}\),
+\[
+\Lambda(Q)\le S+
+\left(2\sqrt2+2\sqrt{\frac{80}{3}}\right)\sqrt{I(Q)}
+\le S+14\sqrt{I(Q)}.
+\]
+No independence between \(Q\) and the visible \(Z_1\) is assumed.
+\end{theorem}
+
+\begin{lemma}[Real cubic estimates]
+\label{forest:realcubic}
+If \(F=I_3(f)\) is a real cubic chaos of variance \(v_F\), then
+\[
+\kappa_4(F)\le30v_F I(F),\qquad
+\Var\|DF\|^2\le2\kappa_4(F).
+\]
+Here \(I(F)=\lambda_{\max}(\EE[DF(DF)^T])\).
+\end{lemma}
+\begin{proof}
+Use the multiple-integral normalization \(v_F=6\|f\|^2\), and put
+\[
+A=\|f\otimes_2 f\|^2=\|f\otimes_1 f\|^2,\qquad
+B=\|f\widetilde\otimes_1 f\|^2\le A.
+\]
+The equality of the two unsymmetrized contraction norms follows by
+reordering their four tensor sums. The cubic product formula gives
+the squared norms of the chaos \(0,2,4,6\) parts of \(F^2\) as
+\[
+36\|f\|^4,\quad 648A,\quad1944B,\quad
+72\|f\|^4+648A.
+\]
+For the last expression one may use explicitly
+\[
+\|\operatorname{sym}(f\otimes f)\|^2
+ =\binom63^{-1}\sum_{r=0}^3\binom3r^2
+       \|f\otimes_r f\|^2
+ =\frac{2\|f\|^4+18A}{20}.
+\]
+Thus
+\[
+\kappa_4(F)=1296A+1944B.
+\]
+The identity \(\|DF\|^2=(\mathcal L+6)F^2/2\), where
+\(\mathcal L\) has eigenvalue \(-k\) on chaos \(k\), also gives
+\[
+\Var\|DF\|^2=2592A+1944B\le2\kappa_4(F).
+\]
+Finally \(\EE[DF(DF)^T]=18(f\otimes_2 f)\). The latter contraction
+is positive semidefinite with trace \(\|f\|^2\), so
+\[
+A\le \frac{I(F)}{18}\frac{v_F}{6}.
+\]
+Since \(1296+1944=3240\), the first claim follows. Its constant is
+sharp for \(F=\sqrt{v_F}H_3(x)/\sqrt6\).
+\end{proof}
+
+\begin{lemma}[Circular cubic Gaussian approximation]
+\label{forest:clt}
+Let \(q\in\HH_{2,1}\), \(v=\EE|q|^2>0\), and
+\(\kappa=\EE|q|^4-2v^2\). In the Euclidean Wasserstein distance on
+\(\CC=\RR^2\),
+\[
+\kappa\le40v I(q),\qquad
+d_W(q,\sqrt vG)\le\sqrt{\frac{2\kappa}{3v}}
+                 \le\sqrt{\frac{80}{3}I(q)}.
+\]
+\end{lemma}
+\begin{proof}
+The global phase action implies circularity of \(q\). Hence
+\[
+\Var(\Rea q)=v/2,\qquad
+\kappa_4(\Rea q)=3\kappa/8.
+\]
+Lemma~\ref{forest:realcubic}, and \(I(\Rea q)\le I(q)\), prove the
+first bound.
+
+Write \(F=(u,w)=(\Rea q,\Ima q)\), \(C=(v/2)I_2\), and
+\(\tau_{ij}=\langle DF_i,DF_j\rangle/3\). Define
+\[
+A_0=\|Du\|^2,\quad B_0=\|Dw\|^2,\quad C_0=\langle Du,Dw\rangle,
+\quad
+T_0=\Var A_0+\Var B_0+2\Var C_0.
+\]
+For \(F_\theta=u\cos\theta+w\sin\theta\), circularity and
+Lemma~\ref{forest:realcubic} give
+\(\Var\|DF_\theta\|^2\le3\kappa/4\). Direct angular integration yields
+\[
+\EE_\theta\Var\|DF_\theta\|^2
+ =T_0/4+\Var(A_0+B_0)/8\ge T_0/4.
+\]
+Consequently \(\EE\|\tau-C\|_{\rm HS}^2=T_0/9\le\kappa/3\).
+The multivariate Malliavin--Stein inequality of
+Nourdin--Peccati--R\'eveillac, Theorem 3.5 and Lemma 3.3, states
+\[
+d_W(F,N(0,C))
+\le \|C^{-1}\|_{\rm op}\|C\|_{\rm op}^{1/2}
+       \big(\EE\|\tau-C\|_{\rm HS}^2\big)^{1/2}.
+\]
+Its matrix factor here is \(\sqrt{2/v}\), giving the result.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{forest:thm-diffuse}]
+Let \(\mathcal W=\sigma(Z_2,\ldots,Z_n)\),
+\(q=\EE[Q\mid\mathcal W]\), \(R=Q-q\), and \(r=\EE|R|^2\).
+The polynomial \(q\) remains in \(\HH_{2,1}\) and is independent of
+\(Z_1\). Conditional Gaussian Poincar\'e gives
+\[
+r\le\EE(|\partial_1Q|^2+|\partial_2Q|^2)\le2I(Q).
+\]
+For every remote direction \(h\),
+\(D_hq=\EE[D_hQ\mid\mathcal W]\). Conditional Jensen, together with
+the vanishing visible derivatives of \(q\), gives \(I(q)\le I(Q)\).
+By orthogonality and the 2-Lipschitz property of the norm sum,
+\[
+\Lambda(Q)\le\Lambda(q)+2\sqrt r-r/\eps
+             \le\Lambda(q)+2\sqrt{2I(Q)}.
+\]
+The function
+\(u\mapsto\EE_{Z_1}(|L+u|+|L-u|)\) is 2-Lipschitz.
+Lemma~\ref{forest:clt} therefore gives
+\(\Lambda(q)\le S+2\sqrt{80I(q)/3}\).
+If \(\EE|q|^2=0\), the same conclusion holds directly. Combining
+these bounds proves the theorem.
+\end{proof}
+
+\begin{corollary}[Explicit localization of a positive violation]
+If \(\Lambda(Q)>S+\eta\), then \(I(Q)>(\eta/14)^2\).
+At \(\eta=10^{-4}\), the cutoff is
+\[
+\frac{1}{19\,600\,000\,000}.
+\]
+\end{corollary}
+
+This cutoff is structurally useful but computationally far too small.
+Since \(\tr M_Q=3v\), the number of eigenvalues above a cutoff
+\(\delta\) is at most \(3v/\delta\). Even at \(v<1\), the displayed
+cutoff allows almost \(5.88\cdot10^{10}\) real heavy directions.
+It does not produce a feasible finite cover.
+
+For calibration, if
+\[
+Q_N=\sqrt{\frac vN}\sum_{j=1}^N H(X_j),\qquad
+H(X)=\frac{X(|X|^2-2)}{\sqrt2},
+\]
+then \(I(Q_N)=3v/(2N)\) and
+\(\EE|Q_N|^4-2v^2=42v^2/N\).
+In contrast \(H(N^{-1/2}\sum_jX_j)\) has coordinate influences
+of size \(3/(2N)\) but maximal directional influence \(3/2\).
+Diffuseness must be measured invariantly, not in one chosen basis.
+
+\subsection{Conditioning: the missing budget, exactly}
+\label{forest:conditioning}
+
+Fix the peak profile
+\[
+\eps=\frac{1891}{2500},\quad
+L=Z(a+b|Z|^2),\quad a=\frac{699}{1250},\quad b=\frac{179}{1250}.
+\]
+Let \(q\) be a remote cubic and rotate an A-sector driver into one
+coordinate \(X\):
+\[
+Q=q(w)+\alpha(|Z|^2-1)X+gG.
+\]
+Condition on \(Z,X,G\). The Wick expansion gives
+\[
+Q_P=\EE[Q\mid Z,X,G]
+   =cH(X)+\alpha(|Z|^2-1)X+gG.
+\]
+This is the previously certified coherent family (a rotation of \(X\)
+absorbs the phase of \(c\)). With \(R=Q-Q_P\) and
+\(\Psi_L(u)=|L+u|+|L-u|\), define
+\[
+J_P(Q)=\EE\Psi_L(Q)-\EE\Psi_L(Q_P)\ge0.
+\]
+Conditional Jensen and orthogonality give the exact identity
+\[
+\Lambda(Q)=\Lambda(Q_P)+J_P(Q)-\|R\|_2^2/\eps.
+\]
+Thus the missing lifting estimate is precisely
+\begin{equation}\label{forest:lift}
+J_P(Q)\le\|R\|_2^2/\eps+[S-\Lambda(Q_P)]+\eta.
+\end{equation}
+For this reduction, \eqref{forest:lift} is equivalent to A-only
+\(K_\eta\). It is not a proved estimate for arbitrary \(q\).
+
+\begin{proposition}[The retained deficit cannot simply be removed]
+The universal inequality \(J_P(Q)\le\|R\|_2^2/\eps\) is false,
+even when \(Q\) is a genuine remote cubic.
+\end{proposition}
+\begin{proof}
+For \(f(v)=\Lambda(\sqrt vG)\), Gaussian heat differentiation gives
+\[
+f'(0+)=\tfrac12\EE|L|^{-1}-1/\eps.
+\]
+The inverse moment is finite, and gamma-distribution Jensen yields
+\[
+\EE|L|^{-1}
+=\int_0^\infty\frac{t^{-1/2}e^{-t}}{a+bt}\,dt
+\ge\frac{\sqrt\pi}{a+b/2}.
+\]
+Therefore \(f'(0+)\ge\sqrt\pi/(2a+b)-1/\eps>0\).
+The strict sign follows already from \(\pi>3\), since
+\(3\cdot1891^2-3154^2=779927>0\).
+Choose sufficiently small \(v>0\), and independent remote
+\(Y_j\) unrelated to \(X\). Then
+\[
+q_m=\sqrt{v/m}\sum_{j=1}^mH(Y_j)
+ \ \Longrightarrow\ \sqrt vG .
+\]
+Bounded second moments give uniform integrability of the norm
+payoff; hence \(\Lambda(q_m)\to f(v)>f(0)\).
+But \(\EE[q_m\mid Z,X]=0\).
+The claimed stronger inequality would imply
+\(\Lambda(q_m)\le\Lambda(0)=f(0)\), a contradiction for large finite \(m\).
+\end{proof}
+
+The same CLT argument shows
+\(\sup_{n,q\in\HH_{2,1}(\CC^n)}\Lambda(q)\ge S\):
+the benchmark is a diffuse boundary law. No monotonicity in \(m\)
+is claimed. A finite-rank extremizer classification alone could miss
+this boundary.
+
+The book's tensor representation also rules out a tempting shortcut.
+The cubic \(X^2\bar Y/\sqrt2\) has variance one, fourth cumulant 10,
+and complex total-influence eigenvalues \(2,1\).
+An independent Wick sum \(\sum c_jH(X_j)\) has corresponding
+eigenvalues \(3|c_j|^2\) and cumulant \(42\sum|c_j|^4\).
+Matching the eigenvalues would force cumulant \(70/3\), not 10.
+Thus unitary rotation does not reduce general cubics to independent
+Wick drivers. Here complex total influence uses
+\(\EE|\partial_hq|^2+\EE|\bar\partial_hq|^2\);
+it is a different normalization from the real matrix in
+Section~\ref{forest:diffuse}.
+
+One exact interpolation retains the missing joint information.
+Let \(Q_t\) be conditional OU smoothing in the discarded coordinates
+only, and let \(C_t=\sum_{j\perp}D_jQ_t(D_jQ_t)^T\), interpreting
+complex values as real two-vectors. Then
+\[
+\Lambda(Q)-\Lambda(Q_P)
+=\int_0^\infty\EE\tr\left[
+\left(D_u^2\Psi_L(Q_t)-\frac2\eps I_2\right)C_t\right]dt.
+\]
+For a literal nonsingular formulation, replace each norm by
+\(\sqrt{|\,\cdot\,|^2+\delta^2}\), prove the identity, and interpret
+the displayed integral as the limit as \(\delta\downarrow0\).
+Its value must be paid by the retained deficit in
+\eqref{forest:lift}; its integrand is not universally nonpositive.
+
+\subsection{An exact adaptive-response saddle}
+\label{forest:saddle}
+
+In fixed finite Gaussian dimension, let \(P=P_{1,0}\), \(Q=P_{2,1}\),
+\(T=P-\eps Q\), and
+\[
+N_n(\eps)=\sup_{|f|,|g|\le1}\Rea\langle f,Tg\rangle.
+\]
+For \(U,x\in\operatorname{ran}P\), \(V,y\in\operatorname{ran}Q\), put
+\begin{align*}
+\Xi(U,V;x,y)
+={}&\EE\bigl(|U+V-x-y|+|U-V+x-y|\bigr)\\
+ &-\|U\|_2^2-\|V\|_2^2/\eps
+   +\|x\|_2^2+\|y\|_2^2/\eps .
+\end{align*}
+
+\begin{theorem}[Two-field saddle]
+\label{forest:thm-saddle}
+For each fixed finite dimension,
+\[
+N_n(\eps)=\max_{U,V}\min_{x,y}\Xi(U,V;x,y).
+\]
+The inner minimizer exists and is unique. One can restrict the outer
+maximum, after simultaneous unitary rotation, to \(U=tZ\) with
+\[
+0\le t\le\sqrt\pi/2,\qquad
+\|V\|_2^2\le\eps^2(1-t^2).
+\]
+\end{theorem}
+\begin{proof}
+Put \(h=(f+g)/2\), \(k=(f-g)/2\). Exactly,
+\[
+\Rea\langle f,Tg\rangle
+=\|Ph\|_2^2+\eps\|Qk\|_2^2-\|Pk\|_2^2-\eps\|Qh\|_2^2.
+\]
+The admissible \((h,k)\) satisfy \(|h+k|\le1\) and \(|h-k|\le1\).
+Linearize the positive squares by maximizing
+\[
+2\Rea\langle U,h\rangle+2\Rea\langle V,k\rangle
+-\|U\|^2-\|V\|^2/\eps.
+\]
+Dualize the negative squares by minimizing
+\[
+\|x\|^2+\|y\|^2/\eps
+-2\Rea\langle x,k\rangle-2\Rea\langle y,h\rangle.
+\]
+For fixed \(U,V\), the response moment body is compact and convex,
+and the latter variables enter continuously and convexly. The
+finite-dimensional convex minimax theorem swaps this inner
+minimization with the response maximization. There is no swap of
+the outer maximization and the inner minimization. Pointwise response
+maximization gives the two norms in \(\Xi\).
+
+The inner objective is coercive and strictly convex. Its value
+is at most \(2\|U\|+2\|V\|-\|U\|^2-\|V\|^2/\eps\), which tends
+to \(-\infty\) as the outer norm tends to infinity. Continuity,
+equivalently the compact response-moment representation, gives an
+outer maximum. A maximizing original response pair supplies
+\(U=Ph,V=\eps Qk\).
+Now \(|h|\le1\) gives \(\|Ph\|\le\EE|Z|=\sqrt\pi/2\);
+\(|h|^2+|k|^2\le1\) gives the variance budget.
+A unitary rotation puts \(U\) in the displayed form.
+\end{proof}
+
+The supremum over \(n\) is still required for the full problem.
+The theorem does not assert attainment in arbitrary dimension or
+a bound on the number of influential coordinates.
+
+\begin{proposition}[A posteriori bracket without singular derivatives]
+\label{forest:bracket}
+At any trial \(U,V,x,y\), choose
+\[
+f=\phase(U+V-x-y),\quad
+g=\phase(U-V+x-y),\quad h=(f+g)/2,\quad k=(f-g)/2.
+\]
+At a zero argument choose any disk-valued support maximizer. Define
+\[
+R_{\rm in}=\|x-Pk\|^2+\|y-\eps Qh\|^2/\eps,\qquad
+R_{\rm out}=\|U-Ph\|^2+\|V-\eps Qk\|^2/\eps.
+\]
+Then, with \(U,V\) fixed,
+\[
+\Xi-R_{\rm in}\le\min_{x',y'}\Xi(U,V;x',y')\le\Xi,
+\]
+and exactly
+\[
+\Xi=\Rea\langle f,Tg\rangle+R_{\rm in}-R_{\rm out}.
+\]
+\end{proposition}
+\begin{proof}
+For the chosen support responses,
+the two norm terms equal
+\(2\Rea\langle U-y,h\rangle+2\Rea\langle V-x,k\rangle\).
+Completing the inner squares subtracts exactly \(R_{\rm in}\)
+and leaves the concave response functional at this \(h,k\).
+Its maximum is the inner minimum from the preceding proof,
+so it is a lower bound for that minimum. Completing the remaining
+outer squares gives the second identity.
+\end{proof}
+
+This bracket certifies accuracy of a numerical inner optimization
+without a reciprocal-modulus Hessian. It does not certify a global
+outer maximum. A sufficient uniform norm certificate would choose
+explicit fields \(x(U,V),y(U,V)\) and prove
+\(\Xi(U,V;x(U,V),y(U,V))\le B\) throughout the outer domain.
+The fields may adapt to the complete tensor; general K is not
+required for such a certificate.
+
+At a smooth maximizing saddle the equations are
+\[
+U=Ph,\quad V=\eps Qk,\quad x=Pk,\quad y=\eps Qh.
+\]
+Thus \(f=\phase(Tg)\) and \(g=\phase(Tf)\).
+With \(u=(U,V)\), \(v=(x,y)\), the necessary outer stability condition is
+\[
+H_{uu}-H_{uv}H_{vv}^{-1}H_{vu}\preceq0.
+\]
+The Hessian of \(\Xi\), when the integrals exist, is
+\[
+\EE\sum_{\pm}\frac{\Ima(\overline{w_\pm}d_\pm)^2}{|w_\pm|^3}
+-2\|\delta U\|^2-2\|\delta V\|^2/\eps
++2\|\delta x\|^2+2\|\delta y\|^2/\eps,
+\]
+where \(w_\pm=U\pm V\mp x-y\) and
+\(d_\pm=\delta U\pm\delta V\mp\delta x-\delta y\).
+One must not use this formula at singularities without justification.
+An alternative, valid for bounded real phase variations
+\(\theta,\phi\) at a unimodular original maximizer, is
+\[
+\EE(|Tg|\theta^2+|Tf|\phi^2)
+-2\Rea\langle i\theta f,T(i\phi g)\rangle\ge0.
+\]
+Neither stability condition presently implies the needed structural
+classification.
+
+\subsection{What one side can teach the other}
+
+For an actual real response coefficient mixture \(c=(c_0,c_1,\ldots)\),
+write \(D(c)=c_0-\sum_{k\ge1}|c_k|\). Manuscript \autoref{ch:crossbound}'s gap
+identity for the cubic game is
+\[
+N_\eps-D(c)
+=\bigl[N_\eps-(c_0-\eps c_1)\bigr]
+ +(|c_1|-\eps c_1)+\sum_{k\ge2}|c_k|.
+\]
+Each term is nonnegative. For \(0<\eps<1\), a gap at most \(\delta\)
+therefore forces
+\[
+|c_1|\le\frac{\delta}{1-\eps},\quad
+\sum_{k\ge2}|c_k|\le\delta,\quad
+N_\eps-(c_0-\eps c_1)\le\delta.
+\]
+The lower norm proof, cubic cancellation, and full higher-chaos tail
+are distinct obligations. A common response pool can diagnose them
+together; it cannot discard the tail or infer its sign.
+The manuscript's approximately \(1.40226\) cubic ceiling is a
+floating-point model value, not a certified endpoint. Proving K
+would be valuable, but would not by itself reach the Haagerup value.
+
+\subsection{Recommended change of target and verification status}
+
+The priority is the original norm with adaptive response fields,
+and the integrated lifting budget \eqref{forest:lift} when a coherent
+core is retained. The genuinely diffuse part is now controlled by an
+explicit theorem, but the generic constants are unusable at the
+desired precision. Marginal Gaussian convergence cannot replace the
+joint tensor comparison with the retained coordinates.
+
+The proposed first experiment is to optimize the inner fields in
+Theorem~\ref{forest:thm-saddle}, using Proposition~\ref{forest:bracket}
+to distinguish solver error from a real obstruction, and inspect the
+response-adjusted stability matrix on coupled tensors. A positive
+outer direction rules out a proposed local maximizer; a nonpositive
+finite matrix is only evidence and does not certify all directions.
+This is a more targeted test than another cover of raw \(\Lambda\).
+
+The accompanying exact-arithmetic script audits the tensor constants,
+the circular Wick example, angular factors and cutoffs. These are
+supporting checks, not formal proofs of the cited probability
+theorems or of the infinite-dimensional optimization.
+The live manuscript and prior certificate inputs are unchanged.
+
+\subsection{IDE reading note}\label{sec:gpt-forest-reading}
+Points of agreement with \autoref{ch:forest}, reached independently: no universal or pointwise principle is available; sector-by-sector or independent peeling fails; what is open is a
+\emph{joint} statement about the coherent core and its remainder, with the deficit of the core retained. The two chapters complement each other. GPT's diffuse theorem makes the
+\emph{near-Gaussian} regime rigorous for all sectors at once, but with a constant ($14\sqrt I$) far too weak for a certificate. Our \autoref{ch:forest} identifies which constants
+should replace pointwise ones in that regime: averaged profile curvatures, $d_A\approx0.466$ against $0.292$. It also shows that the Gaussian-profile layer is closed, so a sharper diffuse
+theorem has to target the third- and fourth-order joint cumulants, consistent with the $O(\kappa)$ rate of Chen--Chen--Liu~\cite{ccl}.

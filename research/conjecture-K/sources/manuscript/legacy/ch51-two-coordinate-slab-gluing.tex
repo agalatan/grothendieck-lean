@@ -1,0 +1,420 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch51-two-coordinate-slab-gluing.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 51). Owner: lower-bound/10-coupled-complements.tex
+% Ready-to-port chapter. Live manuscript not modified.
+% Requires amsmath, amssymb; chapsummary is defined by the parent manuscript.
+\section{The all-sector two-coordinate slab and a coupled remainder}
+\label{ch:two-coordinate-slab-gluing}
+\chapsummary{All-sector two-coordinate core and conditionally centered cubic remainder. The regularization credit is retained; the core-plus-complement statement is a neighborhood theorem.}
+
+\paragraph{Provenance and status (IDE note, 20 October).} Lower-bound GPT's \code{latex/ch51-two-coordinate-slab-gluing.tex} from \pathref{gpt-reviews/two-coordinate-slab-20261020/}, ported verbatim
+apart from this paragraph. \emph{Our replay} \st{C}: SHA256 manifest PASS (48 files), then the full fresh \code{python3 -I verify\_all.py --jobs 6}, run from an unrelated directory: \textbf{PASS in 605\,s}.
+All 1{,}248 vertex integrals were recomputed. The exact cover passes with 766 boxes and 410 profile exclusions; the worst box cap is $1.37365751<27479/20000<S$. The benchmark, both inherited profile
+certificates, the 34 symbolic eight-moment Gram entries and the four corrupted-input rejections also pass. \emph{Scope, IDE reading:}
+\begin{itemize}
+\item every $Q\in H_{2,1}(\C^2)$ is covered: all six coefficients (Wick cubic, $A$, $B$, both even sectors, the visible diagonal $\nu H(Z)$), simultaneously and unrestricted;
+\item the bound holds for the regularised payoff with $\kappa=1/2500$, hence for a fresh buffer $g\le1/50$ (extended to $g\le1/49$), with deficit $1/3500$;
+\item a coupled remainder of norm $\le0.0035$, in any dimension and without independence, keeps a deficit $2\cdot10^{-5}$.
+\end{itemize}
+The \emph{simultaneous even/diagonal} interaction is therefore settled near zero buffer, but not yet at larger buffers.
+
+
+\paragraph{Status.}
+\textbf{[P]} denotes an analytic proof, \textbf{[C]} a directed
+computation with an exact rational cover, \textbf{[F]} floating evidence,
+and \textbf{[?]} an open obligation.
+The full fresh replay passes: all $1{,}248$ vertices were recomputed in
+$1{,}246.2$ seconds on two workers. The exact cover, the independent
+benchmark, both profile inputs, and the Gram and rejection checks pass.
+The project interval remains
+\[
+1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}<K_G^{\mathbb C}<1.404599424\stale{22 Oct}{now $\KG<1.404598161566$}.
+\]
+No row envelope is constructed here.
+
+\subsection{A regularized statement of the slab certificate}
+Let \(Z,X\) be independent proper standard complex Gaussians and put
+\[
+a=\frac{699}{1250},\quad b=\frac{179}{1250},\quad
+p=\frac{2500}{1891},\quad L=Z(a+b|Z|^2),\quad
+\kappa=\frac1{2500}.
+\]
+As before,
+\[
+\Lambda(G)=\mathbb E|L+G|+\mathbb E|L-G|-p\mathbb E|G|^2,
+\qquad
+S=\sup_{v\ge0}\{2\mathbb E|L+\sqrt v U|-pv\},
+\]
+where \(U\) is an independent proper standard Gaussian.
+Define
+\[
+M_\kappa(Q)=
+\mathbb E\sqrt{|L+Q|^2+\kappa}
++\mathbb E\sqrt{|L-Q|^2+\kappa}
+-p\mathbb E|Q|^2.
+\]
+The numerical statement used in this chapter is
+\begin{equation}
+\boxed{M_\kappa(Q)<S-\frac1{3500}
+\quad\text{for every }Q\in H_{2,1}(\mathbb C^2).}
+\label{eq:slab-regularized}
+\end{equation}
+
+\paragraph{The full basis [P].}
+With \(T=|Z|^2,\ t=|X|^2\), every such \(Q\) has the form
+\begin{align*}
+Q={}&cH(X)+(T-1)AX+\frac{Z^2}{\sqrt2}B\bar X\\
+&+Zy(t-1)+\bar Z wX^2+\nu H(Z),
+\qquad H(x)=\frac{x(|x|^2-2)}{\sqrt2}.
+\end{align*}
+All six coefficients may be complex. Rotation of \(X\) makes \(c\ge0\);
+conjugation permits \(\operatorname{Im}A\ge0\).
+The displayed basis is Hermitian-orthogonal and
+\[
+\|Q\|_2^2=|c|^2+|A|^2+|B|^2+|y|^2+2|w|^2+|\nu|^2.
+\]
+Thus the result includes all simultaneous even and diagonal
+interactions on this one remote driver. It is stronger in this respect
+than the coherent A/B-only family.
+
+\subsection{Repair of the profile exclusion [P]}
+The incoming report invokes the pure-cubic variance cutoff on an
+arbitrary conditional noise variable. Instead, apply the profile
+majorant to the regularized core itself.
+
+Write \(\Phi(u,d,e,j,n)\) for the \autoref{ch:global-local-coupled-K} bound associated with the
+profiles
+\[
+1,\quad (T-1)^2,\quad T,\quad T^2/2,\quad T(T-2)^2/2.
+\]
+The two-sign square-root inequality and conditional Jensen give
+\begin{equation}
+M_\kappa(Q)\le
+\Phi(|c|^2+\kappa,|A|^2,|y|^2+2|w|^2,|B|^2,|\nu|^2)
++p\kappa.
+\label{eq:slab-profile-repair}
+\end{equation}
+This is an algebraic profile bound; it makes no assertion that the
+added constant profile is a particular cubic law.
+
+Let \(\widetilde V=\|Q\|_2^2+\kappa\) and
+\(\Lambda_0=\sqrt\pi\,387/500\).
+The existing profile certificates imply that the right side of
+\eqref{eq:slab-profile-repair} is bounded above by
+\[
+\Lambda_0-\frac1{2000}+p\kappa
+\quad\text{if }\widetilde V\ge\frac{13}{20},
+\]
+and by
+\[
+\frac{2057}{1500}+p\kappa
+\quad\text{if }\widetilde V\ge
+\frac1{12}+\frac{19}{5}(|c|^2+\kappa).
+\]
+Using \(\pi<22/7\) gives \(\Lambda_0<1373/1000\).
+Both displayed bounds are smaller than
+\[
+\frac{27479}{20000}-\frac1{3500}.
+\]
+An independent Gaussian benchmark certificate proves
+\(S>27479/20000\).
+
+On the remaining domain,
+\begin{equation}
+|B|^2+|y|^2+2|w|^2+|\nu|^2
+<\frac1{12}+\frac{14}{5}(|c|^2+\kappa)-|A|^2.
+\label{eq:slab-even-budget}
+\end{equation}
+This proves the needed budget for the core without applying a
+pure-chaos theorem to a non-chaos remainder.
+
+\subsection{What the finite certificate proves [P,C]}
+The visible and driver radii are integrated after taking the exact
+angular mean of
+\[
+\sqrt{|\ell+Xm|^2+\kappa},\qquad
+\ell=\sqrt T(a+bT),\quad
+m=c(t-2)/\sqrt2+(T-1)A.
+\]
+The angular mean is evaluated through the arithmetic--geometric mean.
+The A sector remains inside this exact core.
+The tangent majorant handles B and the even/diagonal sectors.
+The substitution \(X\mapsto-X\) cancels the even linear terms and the
+B--even quadratic cross terms. Completing the B square and bounding a
+three-dimensional Hermitian Gram matrix gives a vertex upper bound
+\[
+\mathrm{Core}+\mathrm{Gain}_B+\lambda_- B_0.
+\]
+Here \(B_0\) is a fixed upper bound for
+\eqref{eq:slab-even-budget} throughout the box.
+
+This fixed choice is important. The supremum over the remaining
+coefficients has a common feasible set. After adding
+\(p(c^2+|A|^2)\), the regularized payoff is convex in
+\((c,\operatorname{Re}A,\operatorname{Im}A)\).
+Consequently a box of circumradius \(R\) has upper bound
+\[
+\max_{\text{vertices}}
+\{\mathrm{Core}+\mathrm{Gain}_B+\lambda_- B_0\}+pR^2.
+\]
+
+The cover has \(766\) accepted boxes, \(410\) profile exclusions,
+and \(1{,}248\) distinct vertices. The exact rational checker verifies
+the root grid, all child partitions, each exclusion, each vertex
+reference, and the stronger \(1/3500\) margin.
+The implemented binary value \(0.0004\) is slightly above \(1/2500\);
+this is checked exactly and is conservative for both the regularized
+norm and the box budget.
+The fresh endpoints give the worst accepted-box cap
+\[
+\frac{47917010646334762087167}{34882793043384762105856}
+=1.3736575103587307\ldots.
+\]
+Every core and B-gain value matches the old cache, but the supplied
+current eigenvalue code improves the even-sector bound at $304$ vertices.
+The old cached cap was $1.373801357897022\ldots$; fresh replay therefore
+supports twice the initially adopted clean deficit.
+The checked source copy makes the AGM tail arithmetic explicitly
+directed, uses rationally verified fixed dyadic Taylor remainders,
+binds the output to the source hashes, and fails on missing or
+nonfinite data.
+These changes do not alter the analytic integrands or the cover.
+
+\subsection{A weighted conditional gluing lemma [P]}
+Let \(\mathcal F\) determine \(L,Q\), and suppose
+\(\mathbb E[J\mid\mathcal F]=0\). Set
+\[
+v=\mathbb E[|J|^2\mid\mathcal F],\qquad
+w_\kappa=\frac12\left(
+\frac1{\sqrt{|L+Q|^2+\kappa}}+
+\frac1{\sqrt{|L-Q|^2+\kappa}}\right).
+\]
+Then
+\begin{equation}
+\boxed{\Lambda(Q+J)\le M_\kappa(Q)
++\mathbb E[(w_\kappa-p)v]-\kappa\mathbb Ew_\kappa.}
+\label{eq:slab-weighted-gluing}
+\end{equation}
+Indeed, conditional Cauchy--Schwarz gives
+\[
+\mathbb E[|L\pm Q\pm J|\mid\mathcal F]
+\le\sqrt{|L\pm Q|^2+v}.
+\]
+Use the tangent inequality for the square root at
+\(|L\pm Q|^2+\kappa\), add the signs, and use
+\(\|Q+J\|_2^2=\|Q\|_2^2+\|J\|_2^2\).
+This proof requires neither independence nor Gaussianity of \(J\).
+In particular, it is a finite-amplitude comparison rather than a
+directional Taylor expansion.
+
+\subsection{An arbitrary-dimensional coupled neighborhood [P,C]}
+Let \(G\in H_{2,1}(\mathbb C^n)\), choose a remote Gaussian unit
+direction \(X\) orthogonal to \(Z\), and define
+\[
+Q=\mathbb E[G\mid Z,X],\qquad J=G-Q,\qquad r=\|J\|_2^2.
+\]
+Conditional projection preserves the bidegree, so
+\(Q\in H_{2,1}(\mathbb C^2)\).
+If \(\|G\|_2^2\ge13/20\), the global variance cutoff already gives
+\(\Lambda(G)<S-1/2000\).
+In the complementary case \(\|Q\|_2^2<13/20\).
+Convexity of \(x\mapsto x^{-1/2}\), averaged jointly over the sample
+and the two norm signs, gives
+\[
+\mathbb Ew_\kappa
+\ge\big(\mathbb E|L|^2+\|Q\|_2^2+\kappa\big)^{-1/2}
+>\frac56.
+\]
+The constants follow from
+\[
+\mathbb E|L|^2=\frac{1181331}{1562500},
+\qquad
+\frac{1181331}{1562500}+\frac{13}{20}+\frac1{2500}
+<\frac{36}{25}.
+\]
+Since \(w_\kappa\le50\), equations
+\eqref{eq:slab-regularized} and \eqref{eq:slab-weighted-gluing} imply
+\begin{equation}
+\Lambda(G)<S-\frac{13}{21000}
++\left(50-\frac{2500}{1891}\right)r
+\qquad(\|G\|_2^2<13/20).
+\label{eq:slab-neighborhood-cost}
+\end{equation}
+Thus, without any independence assumption on the remainder,
+\begin{equation}
+\boxed{\|G-\mathbb E[G\mid Z,X]\|_2\le\frac7{2000}
+\quad\Longrightarrow\quad
+\Lambda(G)<S-\frac1{50000}.}
+\label{eq:slab-coupled-neighborhood}
+\end{equation}
+The exact low-variance deficit is
+\[
+\frac{13}{21000}
+-\left(50-\frac{2500}{1891}\right)\frac{49}{4\cdot10^6}
+=\frac{72251}{3176880000}>\frac1{50000}.
+\]
+The larger radius \(19/5000\) gives the peak-profile slack
+\[
+\Lambda(G)<S+\frac{240297199}{2651182000000}.
+\]
+These are absolute norm neighborhoods, not relative variance shares.
+Some \autoref{ch:uniform-shared-bootstrap} neighborhoods have larger radii for restricted coherent
+A/B cores. The present scope is the full six-coefficient core, including
+the even and diagonal terms simultaneously.
+
+For example, with a third independent Gaussian coordinate \(V\),
+\[
+J=\frac{7}{2000\sqrt2}X^2\bar V
+\]
+has conditional mean zero and norm \(7/2000\), but unbounded
+conditional variance \(49|X|^4/(8\cdot10^6)\).
+It genuinely shares the core driver. All six coefficients of \(Q\)
+remain unrestricted in \eqref{eq:slab-coupled-neighborhood}.
+
+\subsection{Conditional noise and a rigidity limitation [P,C]}
+Equation \eqref{eq:slab-weighted-gluing} also slightly enlarges the
+incoming noise slab. If
+\[
+\mathbb E[J\mid Z,X]=0,\qquad
+\mathbb E[|J|^2\mid Z,X]\le(1/49)^2,
+\]
+then \(\Lambda(Q+J)<S-1/100000\) for every two-coordinate cubic \(Q\).
+Indeed the supremum of \((w-p)v-\kappa w\) on
+\(0\le w\le50,\ 0\le v\le(1/49)^2\) is
+\[
+\max\{0,(50-p)(1/49)^2-50\kappa\}<1/3500-1/100000.
+\]
+Here \(J\) can be non-Gaussian and non-polynomial.
+
+For pure cubic polynomials, however, a uniform conditional-variance
+bound has a restrictive consequence. Expand a conditionally centered
+remainder in an orthonormal remote Hermite basis:
+\[
+J(Z,X,V)=\sum_{(\mu,\nu)\ne(0,0)}
+f_{\mu,\nu}(Z,X)H_{\mu,\nu}(V).
+\]
+Conditional orthogonality gives
+\(\mathbb E[|J|^2\mid Z,X]=\sum|f_{\mu,\nu}(Z,X)|^2\).
+A uniform bound makes each polynomial coefficient bounded almost
+everywhere. Continuity and full Gaussian support make it bounded
+everywhere, hence constant. Bidegree then forces \(J\) to be a
+remote \(H_{2,1}(V)\) polynomial, independent of \((Z,X)\).
+Thus the original uniform conditional-variance condition by itself
+does not cover genuinely mixed cubic monomials.
+The norm neighborhood above avoids that limitation.
+
+\subsection{An eight-moment lift of the vertex calculation [P]}
+This specializes the five-block and parity reductions already present
+in \autoref{ch:uniform-shared-bootstrap} and \autoref{ch:milestone-map-20261020}. The additional point here is their explicit
+connection to the slab's AGM integrals and regularization credit.
+It is unnecessary to integrate the weight at a full six-coefficient
+core in order to retain cubic remainders. At the A-core used by the
+incoming certificate, put
+\[
+Q_A=cH(X)+A(T-1)X,\qquad
+\omega=\frac12\sum_\pm(|L\pm Q_A|^2+\kappa)^{-1/2}.
+\]
+This weight is invariant under simultaneous rotation of \(Z,X\) and
+under \(X\mapsto-X\). Define six real and one complex moments by
+\[
+M_{ij}=\mathbb E[\omega T^it^j]\quad(i+j\le2),
+\qquad \zeta=\mathbb E[\omega\bar Z^2X^2].
+\]
+
+Expand a conditionally centered cubic \(J\) in an orthonormal remote
+Hermite basis. The five possible local coefficient spaces are
+\[
+H_{1,1},\quad H_{2,0},\quad H_{1,0},\quad H_{0,1},\quad H_{0,0}.
+\]
+In the basis \(T-1,t-1,Z\bar X,\bar ZX\), the first weighted Gram
+matrix splits as
+\[
+\begin{pmatrix}A_0&C_0\\C_0&B_0\end{pmatrix}
+\ \oplus\
+\begin{pmatrix}M_{11}&\zeta\\\bar\zeta&M_{11}\end{pmatrix},
+\]
+where
+\[
+A_0=M_{20}-2M_{10}+M_{00},\qquad
+B_0=M_{02}-2M_{01}+M_{00},
+\]
+\[
+C_0=M_{11}-M_{10}-M_{01}+M_{00}.
+\]
+For \(H_{2,0}\), the even block on \(Z^2/\sqrt2,X^2/\sqrt2\)
+and the odd block on \(ZX\) are, respectively,
+\[
+\frac12\begin{pmatrix}M_{20}&\zeta\\\bar\zeta&M_{02}\end{pmatrix},
+\qquad M_{11}.
+\]
+Both first-chaos spaces have diagonal matrix
+\(\operatorname{diag}(M_{10},M_{01})\); the constant space has
+entry \(M_{00}\). The vanished entries are consequences of parity,
+not assumptions about the coefficients of \(J\).
+
+Consequently the exact common operator bound is
+\begin{align*}
+\mathcal K=\max\bigg\{&
+M_{00},M_{10},M_{01},M_{11}+|\zeta|,\\
+&\lambda_{\max}
+\begin{pmatrix}A_0&C_0\\C_0&B_0\end{pmatrix},
+\ \frac12\lambda_{\max}
+\begin{pmatrix}M_{20}&\zeta\\\bar\zeta&M_{02}\end{pmatrix}
+\bigg\}.
+\end{align*}
+Remote Hermite orthogonality then gives, in arbitrary dimension,
+\[
+\mathbb E[\omega |J|^2]\le\mathcal K\|J\|_2^2.
+\]
+The exact polynomial checker verifies all \(34\) entries of the five
+Gram matrices and their unweighted Gaussian normalizations.
+
+With \(m=c(t-2)/\sqrt2+(T-1)A\), the incoming angular primitives give
+\[
+M_{ij}=\mathbb E_{T,t}[T^it^jJ_0],\qquad
+\zeta=\mathbb E_{T,t}\left[
+Tt\left(\frac{\bar m}{|m|}\right)^2J_2\right].
+\]
+The second integrand is zero at \(m=0\).
+Thus eight real radial integrals suffice, and no new angular
+functions are needed.
+
+At every vertex with \(p-M_{BB}>0\), the same tangent and parity
+calculation now yields the lifted inequality
+\begin{align}
+\boxed{\begin{aligned}
+\Lambda(Q+J)\le{}&
+\mathrm{Core}+\mathrm{Gain}_B+\lambda_-E_{\rm even}\\
+&+(\mathcal K-p)\|J\|_2^2-\kappa M_{00},
+\end{aligned}}
+\label{eq:slab-eight-moment-lift}
+\end{align}
+where \(Q\) is the full two-coordinate cubic and
+\(E_{\rm even}=|y|^2+2|w|^2+|\nu|^2\).
+Conditional centering cancels every cross term involving \(J\).
+One obtains the negative credit directly by taking the tangent at
+\(|L\pm Q_A|^2+\kappa\), before inserting the other sectors.
+
+This is an analytic reduction, not a numerical bound for
+\(\mathcal K\). To extend the finite cover one must certify the
+eight additional integrals and retain a valid sector budget.
+If \(\|J\|_2^2\le\kappa\), the incoming budget already overestimates
+the remainder's possible remote variance; beyond that range the
+budget must be enlarged explicitly.
+
+\subsection{Replay and the next obligation}
+The review package contains an unmodified incoming directory, a
+separate checked implementation, the exact cover checker, the
+independent benchmark and \autoref{ch:global-local-coupled-K} profile checkers, and replay logs.
+Run \texttt{python3 -I verify\_all.py --jobs 2} for a fresh replay.
+The \texttt{--quick} mode checks stored endpoints and their source
+binding but does not recompute their integrals.
+The manifest is checked by \texttt{--check-manifest}.
+
+\paragraph{Remaining target [?].}
+The immediate computation is the eight-moment lift
+\eqref{eq:slab-eight-moment-lift}, retaining the regularization credit.
+It uses only the existing angular functions and matrices of size at
+most two, in place of the crude factor \(50\).
+Its numerical coefficients are not certified here. General diffuse
+coupled cubics, larger buffers in the full all-sector family, and
+uniformity over the complete row envelope remain open.

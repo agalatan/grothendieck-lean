@@ -1,0 +1,111 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch4-ceilings.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 4). Owner: lower-bound/04-witness-certificates.tex
+\section{Witness ceilings: numerical and proved}\label{ch:ceilings}
+\chapsummary{Restricted-adversary calculations give numerical ceilings \st{F}; the closed-form and chirp paragraphs below give separate proved obstructions \st{P,C}. None determines the unrestricted operator norm. Keep the degree, witness parameter, adversary class and proof status attached to each number.}
+
+A certificate for a game $Q$ can never beat the true norm $N=\sup_n\|Q\|_{\infty\to1}$. We compute $N$ in a model that is attained in the
+limit, so the model value is a \emph{lower} bound for $N$ and therefore a genuine upper limit on what any certificate with that witness can
+reach. The numerical tables and stability searches below are \st{F} with accuracy $10^{-8}$ to $10^{-6}$ (grids stated); the analytic obstructions are labeled separately. Files: \pathref{truenorm/} (\code{results.txt},
+\code{results5.txt}, \code{lib5x.py}, \code{lib7.py}, \code{epstable.log}), \pathref{pipeline/deg9/RESULTS.md} (\code{eng9.py}),
+\pathref{/private/tmp/claude-501/\{wval,wtrue\}/}.
+
+\subsection{The asymptotic model}
+For $f=F(z_1,W)$ with $W=n^{-1/2}\sum_{j\ge2}H(z_j)$ the limit pairing of $T=\Pc10-\varepsilon\Pc21$ is given by the rank-3 operator
+$T=P_{z_1}-\varepsilon(P_{e_2}+P_W)$ on $L^2(\C^2)$, $e_2=H(z_1)$ (cross terms vanish like $O(1/n)$; the sign flip $W\to-W$ between $f$ and $g$ is the
+best response). Since $T$ has finite rank, every extremiser is $\ph(h)$ with $h$ in the range, so $N$ is a three-parameter radial quadrature; the
+$W$-integrals have closed forms ($\E_w\ph(k+\gamma w)=\ph(k)A(|k|/|\gamma|)$, $A(\kappa)=\frac{\sqrt\pi}2\kappa e^{-\kappa^2/2}[I_0+I_1](\kappa^2/2)$).
+Validation: plain phase gives $\pi/4-\varepsilon\pi/32$ exactly; $n=1$ alone has the plain phase as global extremiser; a second linear coordinate
+or the $(1,1)$ Gaussian coordinate adds nothing beyond the $W$ model.
+\begin{center}
+\begin{tabular}{lccc}\toprule
+$\varepsilon$ & plain phase & $N(\varepsilon)$ & $1/N$\\\midrule
+0.70 & 0.7166758 & 0.7166758 & 1.395331\\
+0.72 & 0.7147123 & 0.7147336 & 1.399123\\
+0.74 & 0.7127488 & 0.7134585 & 1.401623\\
+0.745 & & 0.713288 & 1.401958\\
+0.75 & 0.7117671 & 0.7131843 & 1.402162\\
+0.7564 & 0.7111289 & \textbf{0.7131355} & \textbf{1.402258}\\
+0.76 & 0.7107853 & 0.7131513 & 1.402227\\
+0.77 & 0.7098036 & 0.7133580 & 1.401821\\
+0.80 & 0.7068583 & 0.7154004 & 1.397819\\\bottomrule
+\end{tabular}
+\end{center}
+Extremiser at $0.7565$: $\ph(z_1(2.760+0.706|z_1|^2)\pm W)$; at $0.74$: $\ph(z_1(3.7064+0.9844|z_1|^2)\pm W)$, which reproduces the ``phase
+obstruction'' $0.713457$ proved rigorously in a received archive. \textbf{The degree-3 witness can never certify more than $1.402258$}; $1.402$
+needs $\varepsilon\approx0.756$ and a certificate within $1.3\cdot10^{-4}$ of the true norm. The earlier ``family ceilings'' $1.40309$ (degree 3 at
+$\varepsilon=0.7627$), $1.40411$, $1.40469$ (NOTE \S4) were artefacts of fixed shapes and are superseded.
+
+\subsection{Higher degrees}
+For $T=\Pc10-\varepsilon_1\Pc21-\varepsilon_2\Pc32$ the $(3,2)$ directions in the limit are $e_3(z_1)$, $(|z_1|^2-1)W_3$, $z_1^2\bar W_3/\sqrt2$ and $W_5$
+(rank-7 operator); $N$ is convex in $(\varepsilon_1,\varepsilon_2)$ and was minimised by a cutting-plane LP. Independent re-optimisation with the
+engine \code{eng9.py} (alternating maximisation $c\to\lambda\cdot\mathrm{proj}(\ph(h_c))$ on the finite range restricted to a coordinate model,
+deterministic Gauss--Legendre panels on $[0,6.5]$, grids $64^2\times48$ to $96^2\times64$, Gram error $\le5\cdot10^{-8}$) over the adversary classes
+P (plain phase, exact), $G_d$ (pure diffuse grade $d$, exact), W3 (ordinary $z$ + diffuse cubic Gaussian with all modes), W5, and Z2 (two
+ordinary coordinates, the true $n=2$ operator):
+\begin{center}\scriptsize\setlength\tabcolsep{3pt}
+\begin{tabular}{lllll}\toprule
+witness & optimal coefficients & $N$ & $1/N$ & active oracle\\\midrule
+degree 3 & $\varepsilon=0.7564$ & 0.7131355 & \textbf{1.402258} & W3\\
+degree 5 & $(1,-0.848926,+0.281576)$ & 0.7124328 & \textbf{1.403641} & W3; Z2 cut active, worth $7\cdot10^{-6}$\\
+degree 7 & $(1,-0.906596,+0.541570,-0.242531)$ & 0.7121946 & \textbf{1.404111} & W3 only; Z2 slack $4\cdot10^{-4}$\\
+degree 9 & not converged (19 rounds) & 0.71204--0.71205 & $\approx1.40441$--$1.40444$ & LP lower bound 0.712038\\\bottomrule
+\end{tabular}
+\end{center}
+Calibration: degree-3 W3 at $0.7564$ gives $0.7131365$ (grid 64) vs the exact model $0.7131355$; degree-5 Z2 at $0.745$: $0.712303$, below the certified
+cap, as required. Degree-5 extremiser: $f=\ph(z_1p(|z_1|^2)+W_3(\alpha+\beta|z_1|^2)+\gamma z_1^2\bar W_3)$, $p(x)=0.6377+0.1333x+0.0139x^2$,
+$g=f|_{W_3\to-W_3}$; $W_5,W_7$ are never used. Plain phase coefficients $|\langle\ph,e_3\rangle|^2=9\pi/768$, $25\pi/4096$ at degree 7 confirm Janson's
+calculus. GPT's first degree-9 candidate $(1,-.96727,.88593,-.88428,.50600)$ lost $6.5\cdot10^{-4}$ to the Z2 adversary ($0.7126878$ against his plain-phase
+value $0.7120397$); his retuned $(1,-.9570388,.8543036,-.8619060,.4248863)$ gives Z2 $0.7120332$, W3 $0.7120549$ (agreement with him to $5\cdot10^{-7}$).
+As the coefficients approach $\pm1$ the dimension-dependent coupled adversaries (Z2, quadratic phases) become active. Consistency: all values are
+$\ge0.711948$ (best rounding) and $\ge J=0.711959$.
+
+\paragraph{A closed-form ceiling for degrees $\le5$ \st{P} (GPT, 22 October; IDE-checked).}
+The phase kernel is $h(t)=\frac\pi4\bigl(t+\frac{t^3}8+\frac{3t^5}{64}+\frac{25t^7}{1024}+\cdots\bigr)$. Put $\rho(t)=at-\frac{a^3}8t^3$ with
+$a+\frac{a^3}8=1$, so $a=0.906795303\ldots$. Then $h(\rho(t))=\frac{\pi a}4t+\frac{\pi a^7}{4096}t^7+O(t^9)$: the cubic \emph{and} the quintic terms vanish. The quintic
+cancellation is the identity $\frac3{64}=3(\frac18)^2$. The pair $F_N=\ph(\sqrt a\,Z_0+\sqrt{a^3/8}\,W_N)$, $G_N=\ph(\sqrt a\,Z_0-\sqrt{a^3/8}\,W_N)$, with
+$W_N$ the normalized diffuse cubic, realizes the inner correlation $\rho(t)$ in the limit $N\to\infty$, because $W_N$ correlates as $t^3$ under the OU flow.
+Hence every game $\sum_{k\le2}\lambda_kP_{k+1,k}$ with $\lambda_0=1$ has norm at least $\pi a/4=0.7121953656$, whatever $\lambda_1,\lambda_2$ are. Every degree-$\le5$
+witness is therefore capped at $4/(\pi a)=1.4041091087$. This is weaker than the numerical degree-5 ceiling $1.403641$ above, but it is analytic.
+Cancelling $t^7$ as well, with budget $a+\frac{a^3}8+\frac{a^7}{1024}=1$, gives only $1.4046904015$ for degree $\le7$. That is weaker than the numerical $1.404111$, so it is
+\emph{not} evidence that degree~7 has that much room. The IDE checked the series and both ceilings numerically. The degree-7 game of the table scores only $0.7121016$ against this
+adversary. Its numerical norm $0.7121946$ nevertheless lies within $8\cdot10^{-7}$ of the degree-$\le5$ barrier $\pi a/4$.
+
+\paragraph{Stronger proved ceilings: chirp functions \st{P,C} (GPT, 22 October; IDE-checked independently).}
+Let $U=u\cdot X$, $V=v\cdot X$ with $u,v$ orthonormal, and take $F=\ph(U)\exp(id\,\Im(\bar UV))$ with the quadratic phase factor. Integrating out $V$ gives the generating function
+\[
+\E\bigl[F e^{\xi\cdot\bar X+\eta\cdot X-\xi\cdot\eta}\bigr]=\frac{\sqrt\pi}{2S^{3/2}}e^{-\alpha\beta}\sum_k\frac{(3/2)_k}{k!(k+1)!S^k}(\alpha+d\gamma/2)^{k+1}(\beta-d\delta/2)^k,
+\qquad S=1+d^2/4,
+\]
+where $\alpha,\beta,\gamma,\delta$ are $u\cdot\xi$, $u\cdot\eta$, $v\cdot\xi$, $v\cdot\eta$. The coordinates $(Z,W,R)$ have weights $(1,3,7)$ and are realized by diffuse Wick sums. Take rational rotations
+$u=(sA,sB,C)$, $v=(B,-A,0)$ and $G=F(Z,-W,-R)$. Mix with the ordinary phase, then cancel the remaining low coefficients with the signed pure-degree kernels $\pm h(t^{2k+1})$. The resulting kernel has
+coefficients $(B_5,0,0,M_7)$, respectively $(B_7,0,0,0)$, through degree seven. Hence, for every choice of the other coefficients,
+\[
+N(P_{1,0}+\alpha P_{2,1}+\beta P_{3,2})>0.7124179279,\qquad N(\cdots+\gamma P_{4,3})>0.7120024685,\qquad N\ge B_5+M_7\gamma,
+\]
+with $M_7=0.00158877311$. Consequences: degree-$\le5$ witnesses are capped at $1.4036705<1.404$, and degree-$\le7$ witnesses at $1.4044895$, which is below Haagerup's
+conjectured $1.40457593$. A degree-7 witness certifying $1.404$ needs $\gamma<-0.10524$; the table's degree-7 game has $\gamma=-0.2425$. Coefficients larger than one
+do not help, since $N\ge\frac\pi4|q_j|$. \emph{IDE check:} the IDE re-derived the generating function by hand ($\E_Ve^{pV+q\bar V}=e^{pq}$ and the radial moment $\Gamma(k+\frac32)/S^{k+3/2}$).
+It then computed every kernel coefficient from it independently, by exact sympy expansion of the Wick generating function rather than through the paper's finite formula. It reproduced the $d=0$ composition formula exactly
+and all certificate values ($\theta=0.1451901496$, $m_1=0$, $|m_2|<10^{-14}$, $B_5$, $B_7$, $M_7$, the $\gamma$ bound). Paper and checker are in
+\pathref{gpt-reviews/chirp-obstructions-20261022/}. These are rigorous limits of the witness method. They agree with, and are weaker than, the numerical $1.403641$ and $1.404111$ above.
+
+\subsection{Are the high-degree ceilings local maxima in richer classes?}\label{sec:wval}
+\paragraph{Second variation (\code{wval}, 15 Oct 06:30) \st{F}.} For the extremal pair of each game, the Hessian of the pairing in the directions
+of a ``shift'' $(a,b)$ (adding a coordinate of bidegree shifted by $(a,b)$) was computed; $\tau$ is the largest Rayleigh quotient relative to the
+norm penalty, so $\tau>1$ means the pair is not a local maximum in that enlarged class. Degree 5 (W3 model): $\tau\le1$ on all shifts (max
+$0.9886$ on $(0,1)/(1,0)$). Degree 7 (W3): $\tau\le0.9917$; degree 7 (Z2): $\tau=1.0009$ on shift $(1,2)$. Degree 9 (Z2): $\tau=1.028$ on shifts
+$(0,1)/(1,0)$ and $1.002$ on $(1,2)/(2,1)$. So the degree-7 and degree-9 Z2 pairs are \emph{not} local maxima of the norm once a third ordinary
+coordinate is allowed: the ceilings $1.4041$/$1.4044$ are optimistic.
+\paragraph{Direct values in richer classes (\code{wtrue}, 15 Oct 07:04, run cut by the session) \st{F}.} Grid $48\times48\times32$: degree 9 Z2
+$0.712060$ (best of 5 starts; the plain phase start stays at $0.711356$), W3 $0.712061$; degree 7 Z2 $0.711800$, W3 $0.712201$. Three ordinary
+coordinates (Z3) and Z2+W3 at the coarse grid $32\times32\times24$ (546 and 147 basis functions, $N=1.9\cdot10^7$ nodes): the Z2 optimum on that grid
+($0.712180$) embedded in the 3-variable engine is reproduced to $1.3\cdot10^{-10}$ and two starts from it return with excess $+1.3\cdot10^{-10}$ and
+zero weight on the new variable. So on a coarse grid no gain from a third coordinate was found, while the second-variation test says a gain exists
+at second order. The two are not inconsistent (the coarse grid has $4.5\cdot10^{-4}$ artefacts, and the alternating iteration can stall at the
+embedded point); \textbf{the question is open}. A finer Z3 run or a direct line search along the $\tau>1$ eigenvector decides it.
+
+\subsection{What this means for the third decimal}
+The upper bound is already below $1.405$, so the third decimal is $4$ exactly when $\KG\ge1.404$. The upper side can change the answer only if
+$K<1.404$, and the ceilings make a lower certificate the decisive object: a degree-7 game certified to within $5.7\cdot10^{-5}$ in norm (ceiling
+$0.712194$ against $1/1.404=0.712251$), or a degree-9 game to within $\approx2\cdot10^{-4}$. The certificate loss at degree 3 was
+$1.6$--$1.8\cdot10^{-4}$ in norm on 15 October (cert-0745b) and is $1.45\cdot10^{-4}$ for the current $B=0.7134326$ against $N(0.745)=0.713288$, and the present method fails at degree 5 (\autoref{ch:negatives}). The dated survey recorded here supplied no certificate for these complex Hermite games at this precision beyond degree 3; this is not an impossibility result for other techniques. The cited real degree-21 certificate had a gap of about $0.3\%$ to its heuristic value.

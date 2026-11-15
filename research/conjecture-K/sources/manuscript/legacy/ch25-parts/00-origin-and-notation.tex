@@ -1,0 +1,40 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch25-parts/00-origin-and-notation.tex (file dated 2026-10-25). Only this line was added.
+\subsubsection*{Origin and notation: the 15 October introduction}
+\noindent\emph{Historical scope.} The provenance and status statements in this
+introduction describe the original rotation contribution. The current chapter
+also contains later response-feasibility theorems that require no stationarity.
+The current summary is above; the sole project register is
+\autoref{ch:K-state}.
+
+\paragraph{Provenance and status (IDE note, 15 October, night).} This chapter is lower-bound GPT's \code{tex/ch24-weaker-k.tex} (their numbering; \autoref{ch:weakk} here) from
+\pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/weak-k-20261015/} (zip \code{grothendieck-weaker-k-rotation-20261015.zip}, mtime 21:45), ported verbatim except for this header and the closing
+reading note; notes, proofs, scripts and the standalone \code{research\_update.tex} are archived in \pathref{handoff/research-third-decimal/gpt-reviews/weak-k-20261015/}. Statements \st{P} (GPT);
+\emph{our replay} \st{C}: \code{SHA256SUMS.json} 35/35; \code{verify\_all.py} under \code{python -I} (python-flint 0.9.0) from an isolated directory: all seven exact checks PASS in 7\,s
+(retained $h$-square identities, rotation Ward identity with 25 exact square completions, the local $A/B$ obstruction, the false-matrix-majorant counterexample, heat-cut algebra, tied-profile
+constants, and the $L^1$ Gaussian-profile certificate with 2,000 Taylor cells and analytic tails); log \pathref{kattack-2026-10-15/gpt\_weakk\_replay.log}. The package also corrects a false
+equality in our \autoref{ch:rescub} (applied there with a dated marker; the derivative-sign argument and the remote-cubic certificates survive, see the reading note). \textbf{No endpoint
+changes}; the repository bound is that of \autoref{ch:certified} (now $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}). What is new is a \emph{weaker sufficient target} than K: at a global norm maximiser the two squares discarded by the
+gate-free row are bounded below by an explicit quadratic in the $A/B$ amplitudes, so one only needs $\Lambda(G)-\|2\beta r_A+\sqrt2\beta\bar r_B\|^2/(\varepsilon^2t^2+9\varepsilon\|G\|^2)\le S+\eta$.
+
+
+\noindent\textbf{Status.} This chapter proves a weaker sufficient target for the
+lower-bound problem, and supplies uniformly certified evaluation of its exact
+peak-row profiles. It does not prove a numerical cap for that target, Conjecture
+K, or a new Grothendieck endpoint. The existing Gaussian-to-matrix transfer and
+other analytic inputs of the project remain necessary.
+
+Throughout, $P=P_{1,0}$ and $Q=P_{2,1}$ are orthogonal projections under a
+finite-dimensional standard proper complex Gaussian measure, with
+$\mathbb E|Z|^2=1$. Scalar products are conjugate-linear in the first argument;
+all real matrix formulas use their real part. The visible coordinate is $Z$,
+and the remote Gaussian coordinates are independent of $Z$.
+We use $H(Z)=Z(|Z|^2-2)/\sqrt2$ and
+$\Lambda(G)=\mathbb E(|L+G|+|L-G|)-\|G\|_2^2/\epsilon$.
+At the peak, $\epsilon=1891/2500$, $\ell=1057/1250$, and
+$\beta=179/1250$, so $L=Z(699/1250+(179/1250)|Z|^2)$.
+
+The central result uses stationarity of the original norm problem. It does not
+assume that arbitrary cubic perturbations are stationary, and it does not
+transfer raw-$\Lambda$ noise constraints to a different optimization problem.
+
+

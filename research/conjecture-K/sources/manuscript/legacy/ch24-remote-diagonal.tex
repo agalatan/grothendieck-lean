@@ -1,0 +1,724 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/manuscript/legacy/ch24-remote-diagonal.tex (file dated 2026-10-25). Only this line was added.
+% Consolidated source module (formerly Chapter 24). Owner: lower-bound/07-remote-spectral.tex
+\section{Remote cubics with sharper slack and a stronger diagonal theorem (lower-bound GPT, 15 October 20:37)}
+\label{ch:remote-cubic-refinement}
+\chapsummary{Remote-cubic slack, profile-uniform diagonal estimates and shared-content tools. Keep the baseline/conditional-mean assumptions when using simultaneous additions; later constants do not remove those assumptions.}
+
+\paragraph{Provenance and status (IDE note, 15 October, evening).} This chapter is lower-bound GPT's refinement of \autoref{ch:rescub} (their file was numbered ``\autoref{ch:rescub}''; it is
+\autoref{ch:remote-cubic-refinement} here), from \pathref{\~{}/Documents/Codex/2026-10-10/plea/outputs/residual-cubics-continuation-20261015/release/} (zip \code{grothendieck-remote-diagonal-refinement-20261015.zip},
+mtime 20:37), ported verbatim except for this header and the closing reading note; notes, proofs, certificates and scripts are archived in
+\pathref{handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/}. Statements \st{P} (GPT) with Arb certificates \st{C}; \emph{our replay}: \code{SHA256SUMS.json} 59/59;
+\code{verify\_all.py} under \code{python -I} (python-flint 0.9.0) from an isolated directory, full mode (9\,min): all checks PASS (51 project-constant bands, 289 published-constant bands, the
+64,000-cell diagonal envelope at the peak and over the profile box, the one-channel Gaussian identity and the exact algebra); log \pathref{kattack-2026-10-15/gpt\_remotediag\_replay.log}; own checks
+\code{remote\_diagonal\_check.py}. \textbf{Scope}: the peak profile only (the diagonal theorem also on $a\in[0.55919,0.55921]$, $b\in[0.14319,0.14321]$); the row box and the envelope are not
+covered; the repository bound is the Lean-certified value of \autoref{ch:certified} (now $1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}) and is not changed here. Relative to \autoref{ch:rescub}: remote slack $2.2\cdot10^{-5}\to1.7\cdot10^{-5}$
+with the published $C_6=50$ and $<10^{-5}$ with the project's $C_6=40.45313$ \st{P,C}; its scalar consequence is \st{L} under tensor hypotheses (as our own evaluation there predicted, $S+9.77\cdot10^{-6}$); diagonal penalty $0.011|\nu|^2\to0.264|\nu|^2$
+(anisotropic $0.322(\Re\nu)^2+0.264(\Im\nu)^2$) on every square-integrable remote law; a simultaneous $Y/W+\nu$ statement under a conditional-mean hypothesis; central-row room
+$9.063776044\cdot10^{-5}$ (exact), the number used as $\approx9.0\cdot10^{-5}$ in \autoref{ch:abattack}. \emph{Sharpened at 22:28} (\S\ref{sec:gaussian-sharpening}): diagonal penalties $0.462(\Re\nu)^2+0.265(\Im\nu)^2$ on the profile box, by a nearly optimal Gaussian one-channel factor $407/500$.
+\paragraph{Status, 15 October 2026.}
+These results improve the remote-cubic handoff and give a new simultaneous
+comparison under a conditional-prediction hypothesis. They do not prove
+Conjecture K or improve the global Grothendieck endpoint. The last complete
+external certificate in this thread remains $K_G^{\mathbb C}>1.401619290904$
+under its inherited analytic inputs; it is not a new Lean theorem.
+The manuscript's Lean master number must be kept separate.
+\emph{(IDE, dated: that certificate was merged in Lean at 22:4x, \code{b623a59}; the current Lean bound is $\KG>1.401674103\stale{22 Oct}{now $\KG>1.401695322458$}$, \S\ref{sec:certcombinede}.)}
+The analytic reductions below are proofs; their finite continuum bounds
+are certified using Arb, not assumed from floating optimization.
+
+% Proposed insert; standalone mathematical fragment for the project report.
+\subsection{A sharper remote-residual certificate}
+Let $\epsilon=1891/2500$, $a=699/1250$, $b=179/1250$, and
+$L=Z(a+b|Z|^2)$ for a standard proper complex Gaussian $Z$.
+Write $f(u)=2\mathbb E|L+\sqrt u|$ and let $S$ be the diffuse
+Gaussian benchmark at this profile.
+
+\paragraph{Conditional moment theorem.}
+Let $Q$ be any complex random variable independent of $Z$, with variance $v>0$.
+Suppose $U=|Q|^2/v$ satisfies
+\[
+ \mathbb EU=1,\qquad \mathbb EU^2=2+x^2,\qquad
+ \mathbb EU^3\le 6+9x^2+\frac{4045313}{100000}x^3,
+ \qquad 0\le x\le\frac{31}{4}.
+\]
+Then the 51-band interval certificate proves
+\[
+ \mathbb E f(|Q|^2)-\frac v\epsilon
+ <\frac{2747927}{2000000}=1.3739635<S+10^{-5}.
+\]
+This uses the sixth-moment input of the existing project certificate.
+It applies in particular to every remote cubic plus an independent proper
+Gaussian buffer under that input. It asserts no comparison for a visible
+shared $A/B$ coupling.
+
+With only the published constant $50$ in place of $4045313/100000$,
+a separate 289-band certificate gives the weaker but independently useful
+\[
+ \mathbb E f(|Q|^2)-\frac v\epsilon
+ <\frac{137397}{100000}=1.373970<S+17\cdot10^{-6}.
+\]
+Thus the incoming slack $22\cdot10^{-6}$ is reduced without adding a new
+moment assumption.
+
+\paragraph{Sharper concavity enclosure.}
+For a concave $F$ sampled at $c-2d,c-d,c+d,c+2d$, with values
+$f_0,f_1,f_2,f_3$ and $c>2d>0$, assume $f_1>f_0$ and $f_2>f_3$.
+Set
+\[
+ p=\frac{f_1-f_0}{d},\quad q=\frac{f_3-f_2}{d},\quad
+ I=f_1+p\frac{f_2-f_1-2dq}{p-q}.
+\]
+Then
+\[
+ \sup_{v\ge0}F(v)\le
+ \max\left\{\frac{3f_1-f_2}{2},
+             \frac{3f_2-f_1}{2},I\right\}.
+\]
+Indeed, the outer secants bound $F$ on the middle gap, the middle secant
+bounds the two adjacent gaps after extrapolation, and the signs of the
+outer slopes bound both unbounded tails. The middle-gap upper envelope is
+the minimum of one increasing and one decreasing affine function; its
+maximum is their intersection $I$. Using directed interval endpoints in
+these affine bounds gives the verifier's outward enclosure.
+
+\paragraph{Remaining central-row budget.}
+For $t\in[21/25,851/1000]$, the resulting remote-only row cap is at most
+\[
+ \frac{2697232101}{3782000000}=0.7131761240084611\ldots.
+\]
+Its distance below $500/701$ is exactly
+\[
+ \frac{240297199}{2651182000000}
+   =9.063776044043751\cdot10^{-5}.
+\]
+A comparison controlling all additional visible shared-sector gain by
+$9\cdot10^{-5}$ would therefore suffice on this central interval.
+Such a comparison and the remaining row envelope are not proved by this
+certificate.
+% Proposed insert, independent of any changes to the current handoff.
+\subsection{A stronger uniform diagonal bound and simultaneous near-orthogonal channels}
+\label{sec:diagonal-gaussian-envelope}
+Set $a=699/1250$, $b=179/1250$, $\varepsilon=1891/2500$,
+$L=Z(a+b|Z|^2)$ and $H=Z(|Z|^2-2)/\sqrt2$, where $Z$ is a standard proper complex Gaussian. Write
+\[
+ \Lambda(G)=\mathbb E(|L+G|+|L-G|)-\varepsilon^{-1}\mathbb E|G|^2.
+\]
+For every square-integrable complex random variable $Q$ independent of $Z$ and every $\nu\in\mathbb C$,
+\begin{equation}\label{eq:new-diagonal-removal}
+ \boxed{\Lambda(Q+\nu H)\le\Lambda(Q)-\frac{249661}{945500}|\nu|^2.}
+\end{equation}
+The same certificate proves the stronger anisotropic version
+\[
+ \Lambda(Q+\nu H)\le\Lambda(Q)-\frac{609}{1891}(\operatorname{Re}\nu)^2
+ -\frac{249661}{945500}(\operatorname{Im}\nu)^2.
+\]
+This improves the earlier diagonal penalty $20899/1891000$ to approximately $0.2640518244$. No Gaussianity, circularity, chaos, amplitude, or kurtosis assumption on $Q$ is needed. This is a stronger ingredient, not a new global Grothendieck endpoint.
+
+\paragraph{The norm majorant.}
+For $x\ne0$ define the positive real quadratic form
+\[
+ \mathcal Q_x(y)=\frac{3|y|^2}{4|x|}-\frac{\operatorname{Re}(y^2\bar x^2)}{4|x|^3}.
+\]
+The global inequality $|x+y|+|x-y|\le2|x|+\mathcal Q_x(y)$ follows by duality: after $x=1$, writing $h=(\alpha+\beta)/2$, $k=(\alpha-\beta)/2$ for unit complex $\alpha,\beta$, the excess after optimizing over $y$ is $-(r-c)^2-r^2(1-c^2)\le0$, where $r=|h|$ and $c=\operatorname{Re}h/r$; $r=0$ is immediate. The form satisfies $0\le\mathcal Q_x(y)\le |y|^2/|x|$.
+
+\paragraph{An analytic all-shift Gaussian bound.}
+For standard proper complex Gaussian $G$,
+\begin{equation}\label{eq:onechannel-gaussian}
+ \mathbb E\mathcal Q_{G+s}(uG)\le\frac{\sqrt\pi}{2}|u|^2
+ \qquad(s,u\in\mathbb C).
+\end{equation}
+To prove this, rotate $s$ to be real nonnegative, put $z=s^2$, and define
+\[
+ J_n(z)=\frac1{\sqrt\pi}\int_0^1 t^{n-1/2}(1-t)^{-1/2}e^{-zt}\,dt.
+\]
+Gaussian square completion gives
+\[
+ K=J_0-J_1+zJ_2,\qquad
+ A=4(J_1-J_2)-8z(J_2-J_3)+2z^2(J_3-J_4).
+\]
+The real and imaginary coefficients of the quadratic form are $(3K-A)/4$ and $(3K+A)/4$. Integration by parts gives
+\[
+ z(J_{n+1}-J_{n+2})=(n+\tfrac12)J_n-(n+1)J_{n+1}.
+\]
+The first three recurrences reduce the coefficients to
+\[
+ H_{\rm re}=\frac{J_0+4zJ_1}{4},\qquad H_{\rm im}=\frac{J_0+zJ_1}{2}.
+\]
+Now $(1+x)e^{-x}\le1$ and $(1+4x)e^{-x}\le2$ for $x\ge0$; the latter follows from $2e^x\ge2+2x+x^2\ge1+4x$. Both coefficients are at most $\sqrt\pi/2$, proving \eqref{eq:onechannel-gaussian}. For the real coefficient, $\sup_{x\ge0}(1+4x)e^{-x}=4e^{-3/4}<189/100$, since the degree-six Taylor sum for $e^{3/4}$ is $693689/327680>400/189$. Hence $H_{\rm re}\le189\sqrt\pi/400$. The real-direction Gaussian contribution is multiplied by $189/200$; with the same tail its certified bound is $0.999270971138827<1$. Rotating the remote shift leaves the coefficient $\nu$ unchanged, so this proves the anisotropic version. Scaling yields
+\[
+ \frac1\pi\int_{\mathbb C}e^{-\lambda|w|^2}\mathcal Q_{w+s}(uw)\,dA(w)
+ \le\frac{\sqrt\pi}{2}\lambda^{-3/2}|u|^2.
+\]
+
+\paragraph{Positive density envelope.}
+Put $t=|Z|^2$, $X=a+bt$, $D=a+3bt$, and $w=L(Z)$. The Jacobian is $XD$, and $H=w(t-2)/(\sqrt2X)$. Therefore
+\[
+ \mathbb E\mathcal Q_{L+s}(\nu H)
+ =\frac1\pi\int_{\mathbb C} h_H(|w|^2)\mathcal Q_{w+s}(\nu w)\,dA(w),
+ \qquad h_H(tX^2)=\frac{e^{-t}(t-2)^2}{2X^3D}.
+\]
+Ten positive rational coefficients $c_j$ and rational rates $r_j^2$ in the accompanying witness satisfy
+\[
+ h_H(tX^2)\le\sum_j c_j e^{-r_j^2tX^2}\qquad(0\le t\le16).
+\]
+The checker covers all $64{,}000$ cells of width $1/4000$. On $[l,h]$ it bounds the left side above by
+\[
+ \frac{e^{-l}\max\{(l-2)^2,(h-2)^2\}}{2(a+bl)^3(a+3bl)}
+\]
+and the right side below by its value at $h$. The minimum certified ratio exceeds $1.00298046$. The Gaussian contribution is at most
+\[
+ \frac{\sqrt\pi}{2}\sum_j c_jr_j^{-3}<1.057339422212274.
+\]
+For the remaining region $t\ge R=16$, the pushed-forward measure $|H|^2d\gamma$ has decreasing density
+\[
+ \rho_H(t)=\frac{t(t-2)^2e^{-t}}{2(a+bt)(a+3bt)}
+\]
+relative to $dA/\pi$, and mass $m_R=e^{-R}(R^3-R^2+2R+2)/2$. Disk rearrangement bounds its inverse-distance potential uniformly in the translate by $2\sqrt{m_R\rho_H(R)}<0.000085217148227221$. Since $\mathcal Q_x(y)\le|y|^2/|x|$, the same controls the omitted quadratic form. Thus, at every complex $s$,
+\[
+ \mathbb E\mathcal Q_{L+s}(\nu H)
+ <1.057424639360502|\nu|^2<\frac{529}{500}|\nu|^2.
+\]
+Arb arithmetic at 100-bit precision proves the displayed enclosures. All radial and shift tails are covered. The visible half-turn and $\mathbb EH=0$, $\mathbb E|H|^2=1$ now prove \eqref{eq:new-diagonal-removal}.
+
+
+\paragraph{A certified profile neighbourhood.}
+The same ten-term envelope and both directional cost bounds hold throughout
+\[
+ a\in[55919/100000,55921/100000],\qquad
+ b\in[14319/100000,14321/100000].
+\]
+The additional checker retains both parameters as Arb intervals on all
+$64{,}000$ radial cells and in the tail. Its least density-envelope ratio
+exceeds $1.00246$. This is uniformity of the diagonal theorem only;
+the remote constants and central-row budget above remain certified at
+the specified peak profile.
+
+\paragraph{Simultaneous even channels.}
+Let $(Q,Y,W)$ be jointly distributed and square-integrable, independent of $Z$. Define
+\[
+ J=\mathbb E|Y|^2+\mathbb E|W|^2,\qquad
+ J_{\rm pred}=\mathbb E|\mathbb E[Y\mid Q]|^2+
+ \mathbb E|\mathbb E[W\mid Q]|^2.
+\]
+Using the previous joint even-channel bound $\mathbb E\mathcal Q_{L+s}(uZ+v\bar Z)\le(13/10)(|u|^2+|v|^2)$ (sharpened to $32/25$ in \autoref{ch:shared-sector-refinements}), the new diagonal estimate implies
+\begin{equation}\label{eq:nearorthogonal-even}
+ \boxed{\sup_{\nu\in\mathbb C}\Lambda(Q+ZY+\bar ZW+\nu H)
+ \le\Lambda(Q)-\frac{417}{18910}J+\frac{13004407}{2496610}J_{\rm pred}.}
+\end{equation}
+Indeed, apply a single quadratic majorant to the entire even perturbation about $L+Q$. The cross term is $2\operatorname{Re}(\bar\nu\gamma)$, where, with $E=ZY+\bar ZW$ and $x=L+Q$,
+\[
+ \gamma=\mathbb E\left[\frac{3\bar H E}{4|x|}
+ -\frac{\bar H\bar E x^2}{4|x|^3}\right].
+\]
+Only the conditional means of $Y,W$ contribute. Cauchy--Schwarz for the positive quadratic form gives $|\gamma|^2\le (529/500)(13/10)J_{\rm pred}$. Optimizing the resulting quadratic in $\nu$ proves \eqref{eq:nearorthogonal-even}. Variances add exactly because $H,Z,\bar Z$ are mutually orthogonal.
+
+In particular, if $J_{\rm pred}\le J/240$, then
+\[
+ \sup_\nu\Lambda(Q+ZY+\bar ZW+\nu H)\le\Lambda(Q)-J/3000.
+\]
+If $J_{\rm pred}=0$, one retains the separate penalties $417J/18910$ and $249661|\nu|^2/945500$. These are sufficient conditions, not assertions about every shared-driver cubic. The shared $A/B$ problem remains open.
+
+\paragraph{General radial-channel matrix certificate.}
+The same argument applies to $L=Zp(T)$ with $p>0$, $D=p+2tp'>0$ and $\sqrt t p(t)\to\infty$. Let $r(t)\in\mathbb R^d$ be real radial profiles, $P_\nu=Z\sum_j\nu_jr_j(T)$, and
+\[
+ M=\int_0^\infty te^{-t}r(t)r(t)^T\,dt.
+\]
+Suppose, on $0\le t\le R$, real positive semidefinite matrices $C_j$ satisfy
+\[
+ \frac{e^{-t}r(t)r(t)^T}{p(t)^3D(t)}
+ \preceq\sum_j C_j e^{-\lambda_jtp(t)^2},\qquad\lambda_j>0.
+\]
+Suppose also that the tail density $te^{-t}r(t)r(t)^T/[p(t)D(t)]$ is bounded by $M_0\succeq0$, and its mass is bounded by $M_1\succeq0$. For any $\alpha>0$, set
+\[
+ K=\frac{\sqrt\pi}{2}\sum_j\lambda_j^{-3/2}C_j+
+ \alpha M_0+\alpha^{-1}M_1.
+\]
+Then $\mathbb E\mathcal Q_{L+s}(P_\nu)\le\nu^*K\nu$ uniformly over $s\in\mathbb C$. Indeed, positivity of the real quadratic kernel preserves the Loewner envelope; factor the $C_j$ into real rank-one terms and apply the scalar Gaussian estimate. For each fixed $\nu$, disk rearrangement bounds the tail by $2\sqrt{(\nu^*M_0\nu)(\nu^*M_1\nu)}\le\nu^*(\alpha M_0+\alpha^{-1}M_1)\nu$.
+
+Consequently, for an arbitrary jointly distributed remote pair $(Q,\nu)$ independent of $Z$,
+\[
+ \boxed{\Lambda(Q+P_\nu)\le\Lambda(Q)-
+ \mathbb E[\nu^*(M/\varepsilon-K)\nu].}
+\]
+This gives a joint matrix certificate for any finite set of real radial visible profiles, including higher radial grades. It removes them simultaneously only when $M/\varepsilon-K\succeq0$; that positivity is an additional numerical or analytic obligation, not a consequence of separate diagonal bounds.
+
+\subsection{The Hermite deficit and exact-profile content}
+Let $m>1$, $M>m^2$, and let $Y$ be the two-node law with moments
+$\mathbb EY=1$, $\mathbb EY^2=m$, $\mathbb EY^3=M$. For the radial
+Bernstein potential $F$ let $P=c_0+c_1u+c_2u^2+c_3u^3$ be the cubic
+Hermite interpolant at its two nodes. Then $P\ge F$, $c_2\le0$, $c_3\ge0$,
+and every law with $\mathbb EU=1$, $\mathbb EU^2\ge m$, $\mathbb EU^3\le M$
+satisfies the exact identity
+\[
+ \mathbb EF(Y)-\mathbb EF(U)=\mathbb E(P-F)(U)
+ +(-c_2)(\mathbb EU^2-m)+c_3(M-\mathbb EU^3).
+\]
+This is a usable law-dependent deficit, rather than just its worst-case
+scalar upper bound. The two-node optimizer does not imply that a cubic
+Gaussian polynomial can realize this law.
+
+\paragraph{A failed simplification and its precise obstruction.}
+For $F_D(q)=q h_D(U)$, interpolate $h_D$ by $a_D+b_DU$ at the same two
+nodes. If $\Pi q=0$, then
+$\Pi F_D=b_Dc+\Pi[q(h_D-a_D-b_DU)]$, where $c=\Pi(qU)$.
+A bound $U\sum_D|h_D-a_D-b_DU|^2\le C(P-F)(U)$ would give
+$\|\Pi F\|\le\|b\|\|c\|+\sqrt{C\mathbb E(P-F)}$.
+To absorb this remainder in a mixed-gain denominator $\delta$ requires
+$C<\delta$. Necessarily $C\ge\|b\|^2/c_3$ by letting $U\to\infty$.
+At the peak $v=0.04,x=0$, floating diagnostics give this tail ratio about
+$4.03$, versus the proposed denominator $0.292$. No certificate was sought
+for a condition that fails this diagnostic. The triangle inequality loses
+the cancellation between the cubic polynomial and the profile remainder.
+
+\paragraph{A cancellation-preserving projection inequality.}
+Let $\Pi$ be an orthogonal projection with $\Pi q=0$, $v=\mathbb E|q|^2>0$,
+$U=|q|^2$, $m_4=\mathbb EU^2$, $m_6=\mathbb EU^3$, and
+\[
+ V=q(U-m_4/v),\qquad c=\Pi V.
+\]
+Center each exact profile $q h_D(U)$ against $q$ without changing its
+projection. Write the resulting Gram matrix as
+\[
+ G=\begin{pmatrix}A&b\\b^*&d\end{pmatrix},\qquad d=m_6-m_4^2/v.
+\]
+If $\|c\|^2\le C^2$, then
+\[
+ \sum_D\|\Pi F_D\|^2\le
+ \max\{\operatorname{tr}X_{FF}:0\preceq X\preceq G,\ X_{VV}\le C^2\}.
+\]
+This follows because $G-X$ is the Gram matrix of the complementary
+projections. It is sharp for the abstract projection problem, not asserted
+to be sharp for cubic first-chaos projections.
+For $d>0$, set $a=b/\sqrt d$, $S_0=A-aa^*$ and
+$\rho=\min(C^2/d,1)$. The displayed maximum is exactly
+\[
+ \operatorname{tr}A-\min_{\substack{z\in\operatorname{ran}S_0\\
+ z^*S_0^+z\le\rho}}\|\sqrt{1-\rho}\,a+z\|^2.
+\]
+To prove this, put $e=V/\sqrt d$ and use the complementary positive
+contraction $Q$. Its $e$-entry can be fixed to $1-\rho$. Replacing $Q$ by
+$(Qe)(Qe)^*/(1-\rho)$ preserves that entry and reduces its cost.
+The resulting vector is $\sqrt{1-\rho}\,e+w$ with $w\perp e$,
+$\|w\|^2\le\rho$, giving the stated ellipsoid. The case $\rho=1$ is
+immediate; when $d=0$, $b=0$ and the bound is $\operatorname{tr}A$.
+In particular, $C=0$ gives exactly $\operatorname{tr}(A-bb^*/d)$.
+
+\paragraph{A linear-in-law dual retaining Stein energy.}
+Use the four features
+$\phi(u)=\sqrt u(h_A(u),h_B(u),u,1)^T$ and $G=\mathbb E\phi(U)\phi(U)^*$.
+Then $0\preceq X\preceq G$, $X_{44}=0$, and $X_{33}=\|c\|^2$.
+Let $W\succeq0$ weight the two profile contents and put
+$M=\operatorname{diag}(W,0,0)$. If the coupled input is
+$\mathcal E+\gamma X_{33}\le\kappa/3$, every rational certificate
+\[
+ Z\succeq0,\quad Z-M+\lambda\gamma E_{33}+\eta E_{44}\succeq0,
+ \qquad\lambda\ge0,\quad\eta\in\mathbb R,
+\]
+proves
+\[
+ \operatorname{tr}(WX_{FF})\le
+ \mathbb E[\phi(U)^*Z\phi(U)]+\lambda\kappa/3-\lambda\mathcal E.
+\]
+This preserves the covariance and its sign instead of separately bounding
+the polynomial and remainder. Boundedness
+$|F_A|\le2/e$, $|F_B|\le1/\sqrt2$ gives a polynomial tail enclosure of
+degree six in $\sqrt U$ for every fixed dual matrix. Such a tail enclosure
+must actually pass; a truncated SDP is not a certificate.
+For a buffer $q(X)+gW$, the projection here must exclude the independent
+Gaussian buffer coordinate: project onto the coupling drivers in $X$.
+Then $\Pi(q+gW)=0$ and $\Pi((q+gW)|q+gW|^2)=\Pi(q|q|^2)$.
+
+\paragraph{Numerical status of this route.}
+The finite matrix lemma is proved, but the exploratory law optimization
+does not close the shared-sector budget. A basic moment relaxation gives
+large excesses; adding nine bounded Stein tests improves the Gaussian end
+but still leaves estimates above the target at positive kurtosis.
+These calculations have solver residuals and a finite radial cutoff and
+are recorded only as diagnostics. No numerical claim about actual cubic
+extremizers follows. The stronger spectral constraints of the independent
+coupled-Stein handoff remain relevant.
+
+\subsection{What remains for $1.402$}
+The remote residual and the diagonal on a remote baseline now have uniform
+certificates. Shared $A/B$ at finite amplitude, their simultaneous
+interactions with the other sectors, and a compatible full row cover remain.
+On the central interval $[0.84,0.851]$, the stronger project moment input
+leaves $9.063776044\cdot10^{-5}$ for all extra shared-sector gain. A proof
+using at most $9\cdot10^{-5}$ there would cross the target on that interval
+only. This chapter does not grant that proof or extrapolate the single
+peak profile to an envelope.
+\emph{(IDE, later:} the weaker target K$_{\rm rot}$ of \autoref{ch:weakk} and the symmetric $A/B$ classes of
+\autoref{ch:shared-sector-refinements} are intermediate results. The coherent one-driver $A/B$ case is closed in \autoref{ch:complete-coherent-driver}; consult \autoref{ch:K-state} for the remaining general scope.\emph{)}
+
+\subsection{IDE reading note}\label{sec:remotediag-reading}
+\paragraph{Remote slack.} The gain over \autoref{ch:rescub} is purely in the concavity enclosure (the secant intersection $I$ added to the two extrapolations) and in using the project's
+$C_6$: with $C_6=40.45313$ the two-node supremum sits at $x=0$ ($S+9.77\cdot10^{-6}$, our evaluation in \S\ref{sec:rescub-reading}), so the certified $<10^{-5}$ is essentially sharp for this
+relaxation; the moment theorem indeed needs no circularity of $Q$ (only $|Q|$ enters, by rotational symmetry of $L$). The $6.3\cdot10^{-5}$ of \autoref{ch:certs} is confirmed as a solver
+artefact (already corrected there).
+\paragraph{Diagonal: isotropic versus directional, reconciled.} The two-sign majorant used in \autoref{ch:rescub} is $|x+y|+|x-y|\le2|x|+|y|^2/|x|$; the sharp one here keeps the direction:
+$\mathcal Q_x(y)=|x|^{-1}(y_\parallel^2/2+y_\perp^2)\le|y|^2/|x|$ (components of $y$ parallel/perpendicular to $x$). Our quadrature (\code{remote\_diagonal\_check.py}, polar grid centred at
+the singular point, $s$ real by rotation): $\sup_s\E|H|^2/|L+s|\approx1.0907$ (isotropic, at $s\approx0.30$), while $\sup_s\E\mathcal Q_{L+s}(H)\approx0.715$ for real $\nu$ (at $s\approx0.38$) and
+$\sup_s\E\mathcal Q_{L+s}(iH)\approx0.992$ for imaginary $\nu$ (at $s=0$), both \st{F}; the cross term vanishes by the $z\mapsto\bar z$ symmetry, so the cost of a general $\nu$ is
+$\cos^2\!\theta\,c_{\Re}+\sin^2\!\theta\,c_{\Im}$ (checked at $\theta=\pi/4$). GPT's certified envelopes $0.99927$ (real) and $1.05742$ (imaginary) are valid upper bounds of these costs: the
+directional deficits $0.322$ and $0.264$ exceed the isotropic estimate $1/\varepsilon-1.0907=0.231$ \emph{because the form is sharper, not because the isotropic supremum was wrong}; the true
+directional deficits are even larger ($\approx0.607$ and $0.330$ \st{F}), and real $\nu$ is cheap because at $s=0$ the diagonal $H=Z(T-2)/\sqrt2$ is parallel to $L=Za(T)$. Scope as before:
+remote baselines only; on top of visible $A/B$ the denominator changes (\autoref{ch:K}'s $(z,H)$-plane constant $1.71$ concerns that case).
+\paragraph{Simultaneous even channels: the hypothesis, precisely.} For $(Q,Y,W)$ jointly distributed and independent of $Z$, \eqref{eq:nearorthogonal-even} bounds the joint cost of
+$ZY+\bar ZW+\nu H$ by the certified even-sector constant $13/10$ (\S\ref{sec:profileslack}) plus a cross term controlled by $J_{\rm pred}=\E|\E[Y\mid Q]|^2+\E|\E[W\mid Q]|^2$ (only the conditional
+means of $Y,W$ given the baseline couple to $\nu$). The sufficient condition for a net deficit is $J_{\rm pred}\le J/240$, i.e.\ the even-sector coefficients must be nearly conditionally centred
+given $Q$; for a general cubic kernel $Y\in\Hc11(X)$, $W\in\Hc20(X)$ are \emph{not} conditionally centred given $q(X)$ (they share drivers), so this is a hypothesis to verify family by family,
+not a theorem for all cubics; $J_{\rm pred}=0$ recovers the separate penalties. The general radial-channel matrix certificate ($M/\varepsilon-K\succeq0$) is the right template for any finite set of
+real radial visible profiles, including higher grades.
+\paragraph{Budget.} We recomputed exactly: remote-only row cap $(t-\ell)^2+C'-\ell^2+2\beta^2/\varepsilon\le2697232101/3782000000=0.7131761240$ on $t\in[0.84,0.851]$ with $C'=2747927/2000000$, hence room
+$240297199/2651182000000=9.063776044\cdot10^{-5}$ below $500/701$ for all shared-sector gain (published constant: $8.41\cdot10^{-5}$); \autoref{ch:abattack} uses $\approx9.0\cdot10^{-5}$. The
+cancellation-preserving projection Gram lemma and the Stein-retaining dual are proved tools; their numerical programmes do not close the $A/B$ budget (tail ratio $4.03$ vs $0.292$ for the
+scalar interpolation shortcut, excesses at positive kurtosis for the Gram relaxation), consistent with \autoref{ch:weighted} and \autoref{ch:abattack}. \emph{Lean relevance}: none beyond
+\autoref{ch:rescub}'s list; the project constant $C_6=40.45313$ (\st{P,C} for Wick cubics, \st{L} as a scalar consequence under tensor hypotheses) is exactly what the $<10^{-5}$ version consumes.
+
+\subsection{Sharper constants: a nearly optimal one-channel Gaussian factor (lower-bound GPT, 15 October 22:28)}\label{sec:gaussian-sharpening}
+\paragraph{Provenance and status (IDE note, 15 October, night).} The text of this section is lower-bound GPT's proposed ``\autoref{ch:weakk}'' (\code{grothendieck-diagonal-improvement.zip}, mtime 22:28,
+written from a slightly stale copy of our sources; ported here as a section of the same chapter, headings demoted, cross-references adapted; archived with its certificates in
+\pathref{handoff/research-third-decimal/gpt-reviews/diagonal-improvement-20261015/}). Statements \st{P} (GPT); \emph{our replay} \st{C}: \code{SHA256SUMS.json} 38/38; \code{node
+verify-gaussian-real.mjs} (BigInt only: 10,001 exact grid comparisons of the degree-81 alternating Taylor polynomial, Lipschitz allowance $3/4000$, tail $z\ge10$) PASS in $0.15$\,s;
+\code{python3 -I verify-density-envelope.py} (60-digit outward Decimal: 64,000 radial cells over the profile box, Machin enclosure of $\pi$, radial tail) PASS in $19$\,s, printing the
+certified outward bounds real cost $\le0.8597211$, imaginary cost $\le1.0561489$, envelope ratio $\ge1.0016925$; log \pathref{kattack-2026-10-15/gpt\_diagimprove\_replay.log}. Result: on the
+profile box the diagonal penalties become $43687/94550=0.4621$ (real) and $501213/1891000=0.2651$ (imaginary), from $0.3221$ and $0.2641$ above. Their package also re-applies the fixed-shift
+correction to \autoref{ch:rescub}; it is the same correction we applied from \autoref{ch:weakk} (identical Laplace derivative formula, different wording) and was not applied twice. Their
+note's phrase ``Haagerup's proposed lower bound $1.4045759\ldots$'' is a slip: that number is the upper-side conjectured value $1/\gamma^\dagger$ (\autoref{ch:upper}), not a lower-bound target. No
+endpoint changes.
+
+
+\paragraph{Status and scope (15 October 2026).}
+This section strengthens a quantitative ingredient of \S\ref{sec:diagonal-gaussian-envelope}.
+It does not improve the global Grothendieck endpoint, prove Conjecture K, or establish
+$K_G^{\mathbb C}\ge\gamma_\dagger^{-1}$.
+The new Gaussian constant is certified by exact integer arithmetic.
+A fresh rational density envelope is checked by outward-rounded decimal intervals,
+including all shifts and the radial tail. No missing certificate from the source archive
+is needed for the diagonal theorem itself.
+The simultaneous-sector corollary additionally uses the existing $13/10$ even-channel
+estimate from \autoref{ch:structure}; that inherited certificate is not shipped
+in the source archive and was not replayed here.
+No new statement is formalized in Lean, and no literature priority claim is made.
+
+\subsubsection{The improved theorem}
+Let $Z$ be standard proper complex Gaussian, put
+\[
+ L=Z(a+b|Z|^2),\qquad H=\frac{Z(|Z|^2-2)}{\sqrt2},
+ \qquad
+ \Lambda(G)=\mathbb E(|L+G|+|L-G|)
+       -\varepsilon^{-1}\mathbb E|G|^2.
+ \tag{D1}
+\]
+The profile range is
+\[
+ a\in[55919/100000,55921/100000],\qquad
+ b\in[14319/100000,14321/100000].
+ \tag{D2}
+\]
+For every jointly distributed square-integrable pair $(Q,\nu)$ independent of $Z$,
+\[
+\boxed{\quad
+ \Lambda(Q+\nu H)\le\Lambda(Q)
+ -(\varepsilon^{-1}-43/50)\mathbb E(\Re\nu)^2
+ -(\varepsilon^{-1}-1057/1000)\mathbb E(\Im\nu)^2.
+ \quad}
+ \tag{D3}
+\]
+Thus at $\varepsilon=1891/2500$ the two penalties are
+\[
+ d_{\rm re}=\frac{43687}{94550}=0.4620518244\ldots,\qquad
+ d_{\rm im}=\frac{501213}{1891000}=0.2650518244\ldots.
+ \tag{D4}
+\]
+\S\ref{sec:diagonal-gaussian-envelope} gives $609/1891=0.3220518244\ldots$
+and $249661/945500=0.2640518244\ldots$, respectively.
+The real penalty increases by exactly $7/50$, or approximately $43.47\%$.
+The imaginary penalty increases by exactly $1/1000$.
+The extension to random $\nu$ in (D3) follows by conditioning, not by an
+independence assumption between $Q$ and $\nu$.
+
+\subsubsection{A nearly sharp one-channel Gaussian constant}
+For $x\ne0$ use the positive real quadratic form
+\[
+ \mathcal Q_x(y)=\frac{3|y|^2}{4|x|}
+       -\frac{\Re(y^2\bar x^2)}{4|x|^3}.
+ \tag{D5}
+\]
+The global norm inequality is
+\[
+ |x+y|+|x-y|\le2|x|+\mathcal Q_x(y).
+ \tag{D6}
+\]
+For completeness, scale and rotate to $x=1$. In the dual representation of
+the two norms put $h=(\alpha+\beta)/2$, $k=(\alpha-\beta)/2$ for unit
+complex numbers $\alpha,\beta$. Then $|h|^2+|k|^2=1$ and $\Re(h\bar k)=0$.
+Writing $r=|h|$, $c=\Re h/r$, maximization over $y$ of the dual expression
+minus $2+\frac12(\Re y)^2+(\Im y)^2$ gives
+$-(r-c)^2-r^2(1-c^2)\le0$. If $r=0$ the inequality is immediate.
+
+\paragraph{Gaussian lemma.}
+For standard proper complex Gaussian $G$ and all $s,u\in\mathbb C$,
+\[
+\boxed{\quad
+ \mathbb E\mathcal Q_{G+s}(uG)
+ \le\frac{\sqrt\pi}{2}
+       \left[\frac{407}{500}(\Re u)^2+(\Im u)^2\right].
+ \quad}
+ \tag{D7}
+\]
+The earlier factor for the real part was $189/200$.
+
+Rotate $s$ to be real and nonnegative. This leaves the coefficient $u$
+unchanged. Write $z=|s|^2$ and
+\[
+ J_n(z)=\frac1{\sqrt\pi}\int_0^1
+       t^{n-1/2}(1-t)^{-1/2}e^{-zt}\,dt.
+\]
+Gaussian square completion gives, as in \S\ref{sec:diagonal-gaussian-envelope},
+\[
+ K=J_0-J_1+zJ_2,\quad
+ A=4(J_1-J_2)-8z(J_2-J_3)+2z^2(J_3-J_4).
+\]
+The real and imaginary coefficients are $(3K-A)/4$ and $(3K+A)/4$.
+The identity
+\[
+ z(J_{n+1}-J_{n+2})=(n+\tfrac12)J_n-(n+1)J_{n+1}
+\]
+reduces them to
+\[
+ H_{\rm re}(z)=\frac{J_0+4zJ_1}{4},\qquad
+ H_{\rm im}(z)=\frac{J_0+zJ_1}{2}.
+ \tag{D8}
+\]
+The mixed term vanishes by conjugation symmetry. Since
+$(1+x)e^{-x}\le1$, $H_{\rm im}\le\sqrt\pi/2$.
+
+Here is a fully finite proof of the real bound. If $T$ has the beta
+$(1/2,1/2)$ distribution, put
+\[
+ B(z)=\mathbb E[(1+4zT)e^{-zT}],\qquad
+ H_{\rm re}(z)=\frac{\sqrt\pi}{4}B(z).
+\]
+We certify $B(z)\le407/250$ for every $z\ge0$.
+First, $|(3-4x)e^{-x}|\le3$ for $x\ge0$, so $|B'(z)|\le3/2$.
+Also
+\[
+ B(z)=\sum_{n=0}^{\infty}
+   (-1)^n(1-4n)\frac{\binom{2n}{n}}{4^n n!}\,z^n.
+ \tag{D9}
+\]
+For $0\le z\le10$ and $n\ge81$, the ratio of successive absolute
+terms is at most $(327/323)(10/82)<1/8$.
+Consequently the degree-81 partial sum is an upper bound.
+The verifier evaluates this polynomial at all $z=j/1000$,
+$0\le j\le10000$, using the common denominator $4000^{81}81!$,
+and checks it is at most $6509/4000$.
+Every point of $[0,10]$ lies within $1/2000$ of a grid point; hence
+\[
+ B(z)\le\frac{6509}{4000}+\frac3{4000}=\frac{407}{250}.
+\]
+For $z\ge10$, split the beta integral at $1/2$. This gives
+\[
+ B(z)\le3\sqrt{\frac2{\pi z}}+\frac{1+4z}{2}e^{-z/2}
+ \le\frac45+\frac{41}{200}=\frac{201}{200}<\frac{407}{250}.
+\]
+Both terms decrease on this range; $\pi>3$ and $e^5>100$ suffice
+for the second inequality. The latter follows from the degree-six
+Taylor polynomial of $e^5$.
+This proves (D7). Floating optimization, not used for acceptance,
+places the optimal real factor near $0.813096083$.
+
+\subsubsection{A fresh density envelope and all-shift certificate}
+Put $t=|Z|^2$, $X=a+bt$, $D=a+3bt$, and $w=L(Z)$.
+The Jacobian is $XD$ and $H=w(t-2)/(\sqrt2 X)$, so
+\[
+ \mathbb E\mathcal Q_{L+s}(\nu H)
+ =\frac1\pi\int_{\mathbb C}h_H(|w|^2)
+      \mathcal Q_{w+s}(\nu w)\,dA(w),\qquad
+ h_H(tX^2)=\frac{e^{-t}(t-2)^2}{2X^3D}.
+ \tag{D10}
+\]
+The file \texttt{certificate/diagonal-envelope.json} supplies eleven
+positive rational pairs $(c_j,\lambda_j)$.
+The new verifier proves, simultaneously throughout (D2),
+\[
+ h_H(tX^2)\le\sum_{j=1}^{11}c_j e^{-\lambda_j tX^2}
+       \quad(0\le t\le16).
+ \tag{D11}
+\]
+It checks all $64000$ cells $[l,h]$ of width $1/4000$.
+On each cell it bounds the left side above by
+\[
+ \frac{e^{-l}\max\{(l-2)^2,(h-2)^2\}}
+      {2(a_{\min}+b_{\min}l)^3(a_{\min}+3b_{\min}l)}
+\]
+and the right side below by
+$\sum_j c_j e^{-\lambda_j h(a_{\max}+b_{\max}h)^2}$.
+The smallest certified lower-to-upper ratio exceeds $1.0016925$.
+The direction of both parameter bounds is essential.
+
+Scaling (D7) and applying the positive envelope yields Gaussian cost
+\[
+ B_{\rm env}=\frac{\sqrt\pi}{2}
+       \sum_j c_j\lambda_j^{-3/2}<1.056064.
+ \tag{D12}
+\]
+For $t\ge R=16$, the push-forward density of $|H|^2d\gamma$,
+relative to $dA/\pi$, is
+\[
+ \rho_H(t)=\frac{t(t-2)^2e^{-t}}{2(a+bt)(a+3bt)}.
+\]
+It is decreasing: its logarithmic derivative is at most
+$1/t+2/(t-2)-1<0$. Its mass is
+$m_R=e^{-R}(R^3-R^2+2R+2)/2$.
+Since $\mathcal Q_x(y)\le|y|^2/|x|$, disk rearrangement gives the
+uniform tail bound $2\sqrt{m_R\rho_H(R)}<0.000085223$,
+using the lower profile corner in $\rho_H(R)$.
+Thus the real and imaginary costs are respectively bounded by
+\[
+ \frac{407}{500}B_{\rm env}+0.000085223<0.860,\qquad
+ B_{\rm env}+0.000085223<1.057.
+ \tag{D13}
+\]
+Conjugation symmetry after rotating $s$ makes the cross term zero.
+In particular,
+\[
+ \mathbb E\mathcal Q_{L+s}(\nu H)
+ \le\frac{43}{50}(\Re\nu)^2+\frac{1057}{1000}(\Im\nu)^2
+ \quad(s,\nu\in\mathbb C).
+\]
+Condition on $(Q,\nu)$ and apply the visible half-turn to the second
+sign in (D1), then (D6). Finally
+$\mathbb E|Q+\nu H|^2=\mathbb E|Q|^2+\mathbb E|\nu|^2$,
+because $\mathbb EH=0$ and $\mathbb E|H|^2=1$.
+This proves (D3).
+
+\paragraph{Arithmetic and replay.}
+\texttt{verify-gaussian-real.mjs} uses only BigInt integer comparisons.
+The Python verifier uses standard-library \texttt{decimal} at 60 digits,
+downward/upward arithmetic and adjacent
+representable bounds around its correctly rounded exponentials and
+square roots. Machin's identity supplies a rational upper bound for $\pi$.
+The density and tail acceptance is independent of the floating LP that
+proposed the envelope. The saved JSON logs report the accepted bounds.
+
+\subsubsection{A stronger simultaneous-sector consequence}
+Retain the established even-channel input from \autoref{ch:structure},
+\[
+ \mathbb E_Z\mathcal Q_{L+s}(uZ+v\bar Z)
+      \le\frac{13}{10}(|u|^2+|v|^2).
+ \tag{D14}
+\]
+Let $(Q,Y,W)$ be square-integrable and independent of $Z$, and put
+\[
+ J=\mathbb E|Y|^2+\mathbb E|W|^2,\qquad
+ J_{\rm pred}=\mathbb E|\mathbb E[Y\mid Q]|^2+
+             \mathbb E|\mathbb E[W\mid Q]|^2.
+\]
+At the peak value of $\varepsilon$, (D3) and (D14) imply
+\[
+\boxed{\quad
+ \sup_{\nu:\,\mathbb C\to\mathbb R}
+ \Lambda(Q+ZY+\bar ZW+\nu(Q)H)
+ \le\Lambda(Q)-\frac{417}{18910}J
+       +\frac{1057069}{436870}J_{\rm pred}.
+ \quad}
+ \tag{D15}
+\]
+The supremum is over measurable functions with finite second moment.
+For complex-valued $\nu(Q)$, a valid corresponding price is
+$25984231/5012130$ instead of $1057069/436870$.
+Thus the diagonal coefficient may be adapted to the baseline $Q$,
+not just constant.
+
+To prove (D15), condition on $Q=s$ and use the real bilinear form
+associated to $\mathbb E_Z\mathcal Q_{L+s}$.
+The cross term with $H$ depends only on
+$\mathbb E[Y\mid Q]$ and $\mathbb E[W\mid Q]$.
+Cauchy--Schwarz for this positive form and (D13)--(D14) bound the
+square of its real coefficient by
+$(43/50)(13/10)(|\mathbb E[Y\mid Q]|^2+
+|\mathbb E[W\mid Q]|^2)$.
+Optimizing the quadratic in the real coefficient $\nu(Q)$ divides this
+quantity by $d_{\rm re}$, giving the displayed rational price.
+For complex $\nu$, the Gram matrix on $\{H,iH\}$ is bounded by
+$\operatorname{diag}(43/50,1057/1000)$; using its largest entry
+and the smaller penalty $d_{\rm im}$ gives the stated complex price.
+Variance costs add because $Z,\bar Z,H$ are pairwise orthogonal.
+
+In particular, the exact rational comparison
+\[
+ \frac{417}{18910}-\frac1{112}\frac{1057069}{436870}>\frac1{2500}
+\]
+proves
+\[
+ J_{\rm pred}\le J/112
+ \quad\Longrightarrow\quad
+ \sup_{\nu:\mathbb C\to\mathbb R}
+ \Lambda(Q+ZY+\bar ZW+\nu(Q)H)\le\Lambda(Q)-J/2500.
+ \tag{D16}
+\]
+For the complex case, $J_{\rm pred}\le J/240$ still yields $-J/3000$.
+These are sufficient conditions, not claims that all cubic shared-driver
+coefficients satisfy them. The $A/B$ sectors remain outside the theorem.
+
+\subsubsection{Repair of the fixed-shift formula in \autoref{ch:rescub}}
+If $L\mid R\sim\sqrt R\,G$, then
+\[
+ f(u)=2\mathbb E|L+\sqrt u|
+ =\frac1{\sqrt\pi}\int_0^\infty
+ \left[1-\mathbb E\frac{e^{-su/(1+sR)}}{1+sR}\right]s^{-3/2}\,ds.
+ \tag{D17}
+\]
+This is generally not $\sqrt\pi\,\mathbb E\sqrt{R+u}$.
+The latter is the different function $2\mathbb E|L+\sqrt uW|$,
+where $W$ is independent Gaussian.
+For example, take $R=1$. The fixed-shift function has
+$f''(0)=-\sqrt\pi/8$; the Gaussian-noise function has
+second derivative $-\sqrt\pi/4$.
+
+The required Bernstein property follows directly from (D17).
+With $\alpha=s/(1+sR)$, its exact representation is
+\[
+ f(u)-f(0)=\frac1{\sqrt\pi}\int_0^\infty
+ (1-e^{-\alpha u})\alpha^{-3/2}
+       \mathbb E(1-\alpha R)_+^{1/2}\,d\alpha.
+ \tag{D18}
+\]
+Thus $(-1)^{k-1}f^{(k)}(u)\ge0$ for $k\ge1,u>0$.
+When the inverse moment is finite,
+\[
+ (-1)^{k-1}f^{(k)}(0)
+ =\frac{\Gamma(k-\tfrac12)}{2k!}\mathbb E R^{1/2-k}.
+ \tag{D19}
+\]
+The erroneous square-root formula would give a value $k!$ times as
+large. \autoref{ch:rescub}'s Hermite-majorant proof uses the signs, which survive
+this repair. Its finite quadrature certificates were not included in the
+source archive, so no assertion that those programs have been independently
+audited follows from this correction. \emph{(IDE: those certificates are in the
+upper-side package and were replayed here, PASS; see the header of \autoref{ch:rescub}.)}
+
+\paragraph{Remaining global task.}
+The improvement is a stronger all-law diagonal estimate and, conditional on
+(D14), a stronger simultaneous even-sector comparison. It does not pay the
+shared $A/B$ content in \autoref{ch:abattack}, handle those sectors
+together with the diagonal, or supply the full row envelope.
+Consequently neither $1.402$ nor the proposed Haagerup lower bound is
+established by this chapter.
+
+
+\paragraph{IDE reading note on this section.} \emph{Where the gain comes from.} Entirely from the Gaussian one-channel lemma: the real coefficient is $H_{\rm re}(z)=\frac{\sqrt\pi}4\E[(1+4zT)e^{-zT}]$,
+$T\sim{\rm Beta}(\frac12,\frac12)$; the earlier text bounded it by $\frac{\sqrt\pi}4\sup_x(1+4x)e^{-x}=\frac{\sqrt\pi}4\cdot4e^{-3/4}$ (factor $0.945$), while averaging over $T$ before taking the supremum in
+$z$ gives $\sup_zB(z)=1.6262$ at $z=1.118$, i.e.\ the factor $0.8131$ (certified $0.814$, essentially optimal for this lemma). It has nothing to do with the $H\parallel L$ alignment at $s=0$ noted in
+\S\ref{sec:remotediag-reading}: the envelope method never sees a common shift. \emph{Reconciliation with the true costs.} Our quadrature (\S\ref{sec:remotediag-reading}) gives
+$\sup_s\E\mathcal Q_{L+s}(H)\approx0.715$ (real, at $s\approx0.38$) and $\approx0.992$ (imaginary, at $s=0$), so the certified $0.860$/$1.057$ still leave $0.145$/$0.065$ of cost, i.e.\ true deficits
+$\approx0.607$/$0.330$ against the certified $0.462$/$0.265$ \st{F}. The method's chain is cost $\le$ (Gaussian factor)$\times B_{\rm env}+$tail with $B_{\rm env}=\frac{\sqrt\pi}2\sum_jc_j\lambda_j^{-3/2}=1.0561$;
+its two losses are (i) the density majorant, already tight (ratio $\ge1.00169$, so finer cells can gain at most $0.17\%$ of the cost), and (ii) the per-component worst shift: each Gaussian term of the
+envelope is charged its own supremum over $s$ with the shift-independent factor, whereas the true cost takes one common $s$. \emph{Improvement attempt.} Refining the resolution is pointless by (i);
+the printed outward bounds already certify the slightly sharper rational caps $0.8598$ and $1.0562$ (penalties $0.4623$ and $0.2659$) without any rerun, which is all this method can give. Reaching the
+true $0.72$/$0.99$ needs a common-shift certificate (a shift grid with a Lipschitz bound in $s$ for the full envelope sum, or a direct rigorous quadrature of $\E\mathcal Q_{L+s}(\nu H)$ as in
+\autoref{ch:rescub}); achievable penalties $\approx0.60$/$0.33$ \st{F}, not attempted here. \emph{Scope} unchanged: remote baselines (any law), profile box, peak $\varepsilon$; nothing on top of
+visible $A/B$. The simultaneous $Y/W+\nu$ corollary with $\nu$ depending on $Q$ now needs $J_{\rm pred}\le J/112$ (real $\nu$) for a net deficit $J/2500$, still a conditional-mean hypothesis that
+general shared-driver cubics need not satisfy. Lean relevance: none.

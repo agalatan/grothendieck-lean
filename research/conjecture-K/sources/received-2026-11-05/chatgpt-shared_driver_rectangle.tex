@@ -1,0 +1,515 @@
+% Verbatim copy of /Users/alingalatan/workspaces/grothe/handoff/research-degree5/ai-notes/chatgpt-shared_driver_rectangle.tex (file dated 2026-11-05). Only this line was added.
+% output/r789/shared_driver_rectangle.tex
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,mathtools,booktabs}
+\usepackage[a4paper,top=23mm,bottom=23mm,left=25mm,right=25mm,headheight=14pt]{geometry}
+\usepackage{xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=ink,urlcolor=ink]{hyperref}
+\definecolor{ink}{HTML}{233B53}\definecolor{muted}{HTML}{505C65}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{muted} Two shared-driver cubics on the remaining rectangle}
+\fancyhead[R]{\small\color{muted} 5 November 2026}
+\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+\setlength{\abovedisplayskip}{5pt plus 2pt minus 1pt}
+\setlength{\belowdisplayskip}{5pt plus 2pt minus 1pt}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\ind}{\mathbf1}
+\newcommand{\head}[1]{\par\smallskip{\large\bfseries\color{ink}#1}\par\smallskip}
+\newcommand{\subhead}[1]{\par\smallskip{\bfseries\color{ink}#1}\enspace}
+\newcommand{\qed}{\hfill\(\square\)}
+\hypersetup{pdftitle={Two shared-driver cubics on the remaining rectangle}}
+\begin{document}
+\thispagestyle{plain}
+{\LARGE\bfseries\color{ink} Two shared-driver cubics\\[2pt] on the remaining rectangle\par}
+\medskip
+Put \(T=|Z|^2\), \(a=\ell-2\beta\), \(L=Z(a+\beta T)\), and
+\[
+ F(G)=\E|L+G|+\E|L-G|,\quad B(v)=2\E|L+\sqrt vW|,\quad
+ \Lambda(G)=F(G)-\|G\|_2^2/\varepsilon.
+\]
+All complex standard Gaussians have \(\E|Z|^2=1\). The profile box is
+\(.76\le\ell\le.90,\ .12\le\beta\le.16\), and \(.74\le\varepsilon\le.76\).
+Let \(X,Y\) be independent remote complex Gaussians and define the unit-variance cubics
+\[
+ Q_1=X(|X|^2-2)/\sqrt2,\qquad Q_2=X(|Y|^2-1).
+\]
+For \(i=1,2\), let \(q=\sqrt u\,e^{i\phi}Q_i\). The remote linear form \(U\) may
+use any remote coordinates, with any coefficients, and \(w=\E|U|^2\).
+
+\head{Results}
+On the entire rectangular range
+\[
+ \boxed{\qquad .00551\le u\le.0463,\qquad 0\le w\le.0223,\qquad}
+\]
+including every relative phase, we prove the stronger same-variance statement
+\[
+ \boxed{\quad F(q+(T-1)U)\le B(u+w)-10^{-6}\ell.\quad} \tag{1}
+\]
+Thus these two shared-driver families satisfy exact K on the remaining rectangle.
+The proof includes exact integer enclosures, replayed by the accompanying
+\texttt{verify\_shared.mjs}. It is independent of the remote-only \(10^{-5}\) input.
+
+The corresponding content inequality also holds uniformly on the profile box:
+\[
+ \boxed{\quad
+ \|\Pi_{1,0}F_A(q)\|_2^2
+ \le \frac{19}{100}\bigl(B(u)-F(q)\bigr)-3\cdot10^{-6},
+ \qquad F_A(q)=\E_Z[(T-1)\operatorname{ph}(L+q)] .
+ \quad} \tag{2}
+\]
+The right side uses the same-variance remote deficit. Since
+\(B(u)-F(q)\le S-\Lambda(q)\), (2) implies the requested content inequality.
+
+At the three application rows we additionally extend the zero-buffer A cost to
+\(\|U\|_2\le.15\), for \emph{any} remote \(q\) and any dependence with \(U\):
+\[
+ \Lambda(q+(T-1)U)\le\Lambda(q)+2\Re\langle U,F_A(q)\rangle-\tfrac{19}{100}w.
+ \tag{3}
+\]
+Completing the square with (2) yields \(\Lambda(q+(T-1)U)\le S-3/190000\) at those rows.
+
+For R7 we give an explicit sixth-order error and its radius on pages 2--3.
+For R8, page 4 identifies the extra term in the shared variance derivative and gives
+a direct conditional-complement estimate. Arbitrary shared cubic tensors beyond
+the stated families remain open in the target rectangle.
+
+\newpage
+\head{R7. A uniform sixth-order remainder}
+This estimate needs only finite sixth moments of the remote pair. Write
+\(u=\E|q|^2,\ w=\E|U|^2,\ v=u+w\), and suppose \(\E[\bar q U]=0\).
+Let \(C_2,C_4\) be the matched coefficients from the preceding note, so
+\[
+ C_2=\frac w2\int_0^\infty\frac{t(t-2)e^{-t}}{\sqrt t(a+\beta t)}\,dt,\qquad
+ C_4=\frac1{32}\mathcal J[\E|q+(t-1)U|^4-2v^2].
+\]
+Here \(\mathcal J[P]=\int_0^\infty[e^{-t}P(t)/(a+\beta t)^3-P(0)/a^3]t^{-3/2}\,dt\).
+Define
+\[
+ R=\frac{|q|}{.44}+\frac{|U|}{.12},\qquad
+ D_6=7\E R^6+\frac{42v^3}{.44^6}.
+\]
+Then, uniformly on the box and for every real \(\lambda\),
+\[
+ \boxed{\quad
+ \left|F(\lambda[q+(T-1)U])-B(\lambda^2v)
+       -C_2\lambda^2-C_4\lambda^4\right|
+ \le D_6|\lambda|^6 .\quad} \tag{4}
+\]
+Using Minkowski, the computable upper bound
+\[
+ D_6\le
+ 7\left[
+ \left(\frac{(\E|q|^6)^{1/6}}{.44}
+        +\frac{6^{1/6}\sqrt w}{.12}\right)^6
+ +\frac{6v^3}{.44^6}\right] \tag{5}
+\]
+uses only individual sixth moments. Fixed-chaos hypercontractivity gives
+\((\E|q|^6)^{1/6}\le5^{3/2}\sqrt u\) for a cubic; sharper available moments can replace it.
+
+\subhead{Proof.}
+Average real projections using \(|z|=(\pi/2)\E_\theta|\Re(e^{-i\theta}z)|\).
+Write \(Z=x+iy\), where \(x,y\) have density \(e^{-x^2}/\sqrt\pi\), and put
+\(b=\Re(e^{-i\theta}q), d=\Re(e^{-i\theta}U)\),
+\[
+ A=a+\beta y^2,\quad \eta=\lambda[b+d(y^2-1)],\quad k=\lambda d,\quad
+ x_0=|\eta|/A,\quad z=|\lambda|R.
+\]
+The gain in \(F\) equals \(2\sqrt\pi\) times the expectation in \(y,\theta,\) and
+the remote variables of
+\(\int_0^\infty e^{-x^2}(|\eta+kx^2|-Ax-\beta x^3)_+\,dx\).
+We have \(x_0\le z,\ |k|\le .12z\).
+
+If \(k^2\le A\beta\), only the branch with the sign of \(\eta\) can contribute,
+and its support is contained in \([0,4x_0/3]\). Put
+\(\widetilde k=k\,\operatorname{sgn}\eta\).
+Linearizing the positive part about \((|\eta|-Ax)_+\), then replacing
+\(e^{-x^2}\) by \(1-x^2\) in the base term and by 1 in the correction, gives
+\[
+ P=\frac{Ax_0^2}{2}+\frac{\widetilde kx_0^3}{3}
+                  -\frac{\beta x_0^4}{4}-\frac{Ax_0^4}{12}.
+\]
+For \(M=(16/9)|k|x_0^2+(64/27)\beta x_0^3\le(16/27)z^3\), the error is at most
+\[
+ 2M^2/A+Ax_0^6/60+|k|x_0^5/5+\beta x_0^6/6
+ <(5/3+A/60)z^6.
+\]
+The positive-part error is supported on an interval of length at most \(2M/A\)
+and bounded by \(M\). The other terms use \(0\le e^{-t}-1+t\le t^2/2\).
+
+\newpage
+\head{R7. Radius and what it covers}
+If \(k^2>A\beta\), then \(z>\sqrt{.44/.12}>1.9\). Bound the actual positive-part
+integral by \((\sqrt\pi/2)(Az+|k|/2)\) and bound the four terms of \(P\) separately.
+After division by \(z^6\), this gives an error below \(1/30+A/10\).
+Combining the two cases, averaging
+\(\E_y A=a+\beta/2\le.74\), and using \(\sqrt\pi<1.8\), bounds the error in
+\(F\) by \(7\E R^6|\lambda|^6\). The polynomial contains only degrees two and four;
+uniqueness of the established expansion identifies its coefficients.
+Applying the same estimate to the independent Gaussian comparator, whose sixth
+moment is \(6v^3\), proves (4).\qed
+
+For \(w>0\), \(C_2<0\). The explicit sufficient radius from (4) is
+\[
+ 0<|\lambda|<\lambda_{\rm cert},\qquad
+ \lambda_{\rm cert}^2=
+ \frac{-C_4+\sqrt{C_4^2-4D_6C_2}}{2D_6}. \tag{6}
+\]
+When \(w=0,\ C_4<0\), use \(\lambda_{\rm cert}^2=-C_4/D_6\).
+The bound \(D_6\) from (5) may be substituted in (6).
+
+The radius does not reach the target rectangle for either named example.
+Here is an analytic check, without relying on a numerical scan. Put
+\(z_6=(\E R^6)^{1/6}\). On the box
+\[
+ |C_2|<.03z_6^2,\qquad |C_4|<z_6^4 .
+ \tag{7}
+\]
+For the first estimate, use \(|C_2|\le w\sqrt\pi/(2\cdot.44)\) and
+\(w\le.12^2z_6^2\). For the second, the formula for \(\mathcal J[(t-1)^j]\)
+in the preceding note gives its absolute value below 275 for \(0\le j\le4\).
+Indeed its normalized polynomial is bounded by 9, and
+\(\E\sqrt{1+(\beta/a)Y}<1.45\) for \(Y\sim\Gamma(3,1)\).
+The sum of absolute fourth-moment coefficients is at most
+\(\E(|q|+|U|)^4\), and \(v^2\le.44^4 z_6^4\). Thus the quartic bound is at most
+\((825/32).44^4z_6^4<z_6^4\).
+
+The normalized sixth moments of \(Q_1,Q_2\) are respectively \(11352,1590\),
+by exponential moments. Since \(u\ge.00551\), either family has \(z_6>1/2\).
+Therefore \(D_6\ge7z_6^6>|C_2|+|C_4|\) at every point of the rectangle.
+The sufficient inequality from (4) fails at \(\lambda=1\).
+
+As a scale illustration, take a normalized direction \(u=.8,w=.2\) at the peak
+row, with aligned positive coefficients. Ordinary evaluation of the formulas gives
+\(\lambda_{\rm cert}\simeq .00594\) for \(Q_1\) and \(.00805\) for \(Q_2\), using (5).
+The point \(u_q=.02,w=.005\) in the requested rectangle has common amplitude
+\(\sqrt{.025}\simeq.1581\). The proof of (1) below avoids this Taylor loss.
+
+\newpage
+\head{R8. Shared differentiation and conditional complements}
+Take \(U=\sqrt w X\) after a unitary change of remote coordinates. A conditional
+mean-zero complement \(J=q-\E[q\mid X]\) can depend on \(X\).
+Even if \(J\) is independent of \(X\), the component \(q_0(X)=\E[q\mid X]\)
+still contributes to variance differentiation.
+
+For a smooth function \(\Phi:\R^2\to\R\), write \(h=T-1\) and
+\(Y_v=L+q(X,\text{other coordinates})+\sqrt v\,hX\), identifying complex numbers
+with real two-vectors.
+\href{https://arxiv.org/abs/0712.2940}{Gaussian integration by parts} with
+\({\rm Cov}(X)=I/2\) gives the exact formula
+\[
+ \frac d{dv}\E\Phi(Y_v)
+ =\frac14\E[h^2\Delta\Phi(Y_v)]
+ +\frac1{4\sqrt v}\E\!\left[h
+       \sum_{i,j}(\partial_jq_i)(\partial_{ij}\Phi)(Y_v)\right]. \tag{8}
+\]
+A fresh Gaussian smoothing of the norm makes this identity directly applicable.
+The last term vanishes for the disjoint variable in the prior proof. It remains
+for \(q_0(X)\), and a conditional mean-zero \(J\) need not cancel its own
+derivatives against the Hessian depending on \(J\).
+
+There is a cubic obstruction even with \(J=0\). For \(q=cX(|X|^2-2)\) and small
+real \(c>0\), the expansion of the signed visible potential gives
+\[
+ \E[\bar X F_A(q)]
+ =2\mathcal J[t-1]c^3+O(c^5)>0 .
+\]
+Here \(\E[\bar X H|H|^2]=32\) for \(H=X(|X|^2-2)\), and
+\(\mathcal J[t-1]>0\). Thus adding a sufficiently small positive
+\((T-1)\alpha X\) increases \(\Lambda\) to first order in \(\alpha\).
+This prevents the independent-shell decrease from carrying over through the
+proposed split alone.
+
+\subhead{A direct zero-buffer transfer.}
+There is nevertheless a quantitative estimate for the complement. Let
+\(q_0,U\) be measurable with respect to the conditioning data,
+\(\E[J\mid\text{data}]=0\), \(\delta=\E|J|^2\), and \(w=\E|U|^2\).
+For any \(0<k_0<\sqrt{3a\beta}\), put \(d_0=a-k_0^2/(3\beta)\). Then
+\[
+ \begin{aligned}
+ \Lambda(q_0+J+(T-1)U)
+ \le{}&\Lambda(q_0+(T-1)U)
+       +\left(\frac{\sqrt\pi}{2d_0}-\frac1\varepsilon\right)\delta\\
+ &+\sqrt2\,\pi\sqrt\delta\,
+       \sqrt{\operatorname{erfc}(k_0/\sqrt w)} .
+ \end{aligned} \tag{9}
+\]
+At \(w=0\) interpret the tail as zero. To prove it, use the real projection in
+the next section. When \(|\Re U|\le k_0\), the visible cubic in \(x\) has derivative
+at least \(d_0+\beta y^2\), so its density is bounded by
+\(1/(\sqrt\pi d_0)\). Taylor in the constant shift \(\Re J\) then bounds the
+remainder by this density bound times \((\Re J)^2\). On the exceptional event
+use \(2|\Re J|\). Average projections and apply Cauchy--Schwarz; the Gaussian
+tail probability is \(\operatorname{erfc}(k_0/\sqrt w)\).
+The linear term cancels by the conditional mean-zero hypothesis.
+Estimate (9) gives a zero-buffer alternative, while a general large complement
+still needs additional structure.
+
+\newpage
+\head{A projected quadratic cost for the entire target amplitude range}
+For \(q\) arbitrary remote and a linear Gaussian \(U\), use real projections again.
+Put \(\eta=\Re q,\ k=\Re U\), after the projection rotation, and
+\[
+ D=x(a+\beta(x^2+y^2)),\qquad
+ P_{a,\beta}(z)=\int_0^\infty
+   \sup_{x\ge0}\frac{(x^2+y^2-1)^2e^{-x^2-y^2}}
+                     {a+\beta y^2+3\beta x^2-2zx}\,dy .
+\]
+The denominator is positive for \(z<\sqrt{3a\beta}\).
+For \(|k|\le k_0\), differentiation of the real absolute value gives
+\[
+ \begin{aligned}
+ &F(q+(T-1)U)-F(q)-2\Re\langle U,F_A(q)\rangle\\
+ &\quad\le 4\E\left[k^2\int_0^1(1-s)P_{a,\beta}(s|k|)\,ds\,
+                   \ind_{\{|k|\le k_0\}}\right]
+ +\frac{4\sqrt\pi}{e}\sqrt w\,e^{-k_0^2/w}.
+ \end{aligned}\tag{10}
+\]
+For each \(y,\eta\), the equation
+\(D+sk(x^2+y^2-1)+\eta=0\) has a unique simple root.
+Its weighted density is bounded by \(2P_{a,\beta}(s|k|)/\pi\).
+The second derivative of the real absolute mean is twice that density times \(k^2\),
+and the factor \(\pi\) from real projections gives (10).
+For the exceptional event, the first-order remainder is at most
+\(2|k|\E|T-1|=4|k|/e\) before multiplying by \(\pi\).
+Use \(\E[|k|\ind_{\{|k|>k_0\}}]=\sqrt{w/\pi}\,e^{-k_0^2/w}\).
+
+The envelope \(P_{a,\beta}\) is convex in \(z\). If
+\(P_{a,\beta}(z)\le A+Bz+Cz^2\) on \([0,k_0]\), then (10), divided by \(w\), is at most
+\[
+ A+\frac{2B\sqrt w}{3\sqrt\pi}+\frac{Cw}{4}
+       +\frac{4\sqrt\pi}{e\sqrt w}e^{-k_0^2/w}. \tag{11}
+\]
+At the smallest of the three actual profiles,
+\((a,\beta)=(.5592,.1432)\), the integer checker verifies
+\[
+ P(0)<1.07,\qquad P(.2)<1.18,\qquad P(.42)<1.74 .
+\]
+The two chords are bounded above by \(1.07+.55z+3z^2\).
+For \(\sqrt w\le.15\), (11) is smaller than
+\(1/.7564-.19\). The other two rows increase both \(a,\beta\) and have a
+penalty at least \(1/.7564\). This proves (3) with zero additive error.
+
+\subhead{Normalized profiles.}
+For the full box put \(p=\beta/\ell\), \(a/\ell=1-2p\), and
+\(\rho=\sqrt w/\ell\). On \(2/15\le p\le4/19,\ \rho\le.197\), the same argument
+gives, for arbitrary sharing,
+\[
+ \frac{F(q+(T-1)U)-F(q)-2\Re\langle U,F_A(q)\rangle}{\ell}
+ \le K(p)\rho^2,\qquad
+ K(p)=.940+.105\,\frac{p-2/15}{4/19-2/15}. \tag{12}
+\]
+The constants and their verification follow on the next page.
+
+\newpage
+\head{Verification of the projected costs}
+For \(P_{1-2p,p}\) at the two extreme values of \(p\), the checker verifies the
+following upper bounds, each rounded upward.
+\[
+ \begin{array}{c|rrrr|rrr}
+ \toprule
+ p & P(0)&P(.2)&P(.4)&P(.5)&A&B&C\\ \midrule
+ 2/15&.856&.925&1.170&1.750&.856&.400&3.300\\
+ 4/19&.982&1.044&1.220&1.430&.982&.320&1.600\\ \bottomrule
+ \end{array}
+\]
+On each interval between the listed \(z\)'s, convexity bounds \(P\) by the chord.
+The displayed polynomial \(A+Bz+Cz^2\) dominates every such chord.
+The checker verifies that quadratic inequality at its endpoints and, when
+appropriate, at its vertex.
+
+At \(\rho=.197\), the last term of (11) with \(k_0=.5\) is below .022.
+The function \(\rho^{-1}e^{-k_0^2/\rho^2}\) increases on the range.
+Use \(\sqrt\pi>1.77\) in the cubic-moment term. The upper bounds in (11) are
+then respectively .940 and 1.045. The envelope is convex in \(p\) as well:
+the positive denominator of each integrand is affine in \(p\), and integration
+and suprema preserve convexity. Interpolation in \(p\) proves (12).
+
+\subhead{Enclosing \(P\).}
+The supremum integral is enclosed on \(0\le x,y\le4\) with mesh \(1/256\).
+On a rectangle use the larger endpoint of \((x^2+y^2-1)^2\), the lower endpoints
+in the decreasing exponential, and
+\(a+\beta y_{\min}^2+3\beta x_{\min}^2-2k x_{\max}\) in the denominator.
+For each \(y\)-interval take the largest bound among the \(x\)-intervals.
+The denominator lower bound is positive, as checked.
+For \(x\ge4\) the numerator decreases and the denominator increases, so the
+boundary \(x=4\) covers this tail. For \(y\ge4\) the denominator is at least 1,
+and the supremum of the numerator is at most \(y^4e^{-y^2}\). Its integral is
+below \(10^{-5}\), the amount added by the checker.
+
+\head{R9. Exact reductions for the two remote cubics}
+Define the circular mean \(H(s)=\E_\theta|1+se^{i\theta}|\), and
+\[
+ j(s)=\frac{H(s)-1}{s},\qquad h(s)=H'(s),\qquad j(0)=h(0)=0 .
+\]
+Both increase from 0 to 1, by convexity of \(H\).
+Write \(R_p(t)=\sqrt t[1+p(t-2)]\) and \(\nu=\sqrt u/\ell\).
+For the two templates put
+\[
+ B_1=|X|\,\lvert |X|^2-2\rvert/\sqrt2,\quad
+ B_2=|X|\,\lvert |Y|^2-1\rvert,\quad
+ s_1=\operatorname{sgn}(|X|^2-2),\quad s_2=\operatorname{sgn}(|Y|^2-1).
+\]
+Then the normalized remote mean gain and the content coefficient are exactly
+\[
+ \frac{F(q)-F(0)}{2\ell}
+   =\nu\,\E[B_i j(\nu B_i/R_p(T))],\qquad
+ \xi_i=\E[s_i|X|(T-1)h(\nu B_i/R_p(T))].
+ \tag{13}
+\]
+The projection has only an \(X\)-coefficient, by rotating each remote coordinate,
+so \(\|\Pi_{1,0}F_A(q)\|_2=|\xi_i|\). The phase \(e^{i\phi}\) rotates this coefficient.
+
+\newpage
+\head{Positive enclosures for the content and deficit}
+The Gaussian comparator uses \(B_{\rm G}=|W|\) in the first expression in (13).
+For a lower bound on its gain and an upper bound on the cubic gain, the remaining
+integrands are nonnegative and increasing in the ratio and in the factor \(B_i\).
+For the content, separate the four positive integrals according to the signs
+of \(s_i\) and \(T-1\), taking the difference only after enclosing each integral.
+This is the point at which the cancellations required for a small first-chaos
+projection are retained.
+
+Let \(b=1025/1024\). Radial coordinates \(|Z|,|X|,|Y|\) are divided into
+mesh-\(1/1024\) intervals on \([0,5]\).
+Their masses are differences of \(e^{-x^2}\), and visible signed masses use
+the endpoint antiderivative \(-t e^{-t}\).
+Use endpoint bounds for factors \(|X|\), \(\lvert |X|^2-2\rvert\),
+\(\lvert |Y|^2-1\rvert\), and \(R_p(T)\); endpoints in \(p\) enclose a full profile interval.
+If a cell crosses the sign change for \(s_1\), assign its full upper mass to
+both sign components, and assign zero to both lower components.
+Push the bounds on all positive radii to enclosing powers \(b^j\).
+
+For each resulting positive integral a missing-mass budget of \(10^{-5}\) suffices.
+Indeed a remote tail event has probability at most \(2e^{-25}\), and
+\(\E B_i^2=\E|X|^2=1\). Cauchy--Schwarz bounds its contribution by
+\(\sqrt{2e^{-25}}<5.3\cdot10^{-6}\).
+The first visible cell, whose lower radius is zero, has mass below \(1024^{-2}<10^{-6}\).
+The visible outer tail has mass below \(e^{-25}\), or weighted mass
+\(25e^{-25}\) for the content. The total is below \(10^{-5}\).
+In the signed content, one such budget bounds the total omitted variation.
+
+\subhead{The angular tables.}
+For \(0\le z\le1\), set
+\[
+ A(z)=\sum_{k\ge1}a_kz^{2k-2},\quad C(z)=\sum_{k\ge1}2ka_kz^{2k-2},\quad
+ D(z)=\sum_{k\ge1}(2k-1)a_kz^{2k-2},
+\]
+where \(a_k=\binom{1/2}{k}^2\). Thus \(a_1=1/4\) and
+\(a_{k+1}/a_k=(2k-1)^2/(2k+2)^2\). If \(z\le1\),
+\[
+ j(z)=zA(z),\quad h(z)=zC(z),\qquad
+ j(1/z)=1-z+z^2A(z),\quad h(1/z)=1-z^2D(z).
+\]
+Every coefficient is positive. The exact sums at 1 are
+\(A(1)=4/\pi-1,\ C(1)=2/\pi,\ D(1)=1-2/\pi\), obtained directly by integrating
+\(2|\cos(\theta/2)|\).
+Truncate at 64 terms for a lower bound. For the upper bound, add \(z^{128}\)
+times an upper bound on the omitted sum at 1. The checker uses respectively
+\(.273240,.636620,.363381\) as upper bounds on the full sums.
+This encloses \(j,h\) at every required logarithmic-grid argument, including near 1.
+
+\newpage
+\head{Exact arithmetic and the content certificate}
+All numerical bounds in the checker are integers over \(2^{56}\).
+For \(e^{-x}\), \(0\le x\le25\), scale by 64, bound by alternating Taylor
+partial sums of orders 13 and 14, then square the interval six times.
+The powers \(b^j\) are enclosed by directed multiplication or division.
+Approximate logarithms and square roots supply starting guesses only; the
+returned indices and integer square roots are determined by exact comparisons.
+
+Positive histograms on the logarithmic grid combine by convolution.
+To perform these convolutions exactly, the code packs each integer coefficient
+into a 128-bit digit of a single integer and multiplies the two integers.
+Before every multiplication it checks
+\[
+ \min\{\|A\|_1\|B\|_\infty,\ \|A\|_\infty\|B\|_1\}<2^{128},
+\]
+so no coefficient can carry into its neighbor. It then extracts the digits and
+rounds the common scaling denominator outward. This is exact polynomial
+convolution using ordinary integer multiplication.
+
+On each band \(b^n\le\nu\le b^{n+1}\), use the lower endpoint for each lower
+positive integral and the upper endpoint for each upper positive integral.
+For the content subtract the appropriate upper bounds on negative components
+from lower bounds on positive components, and conversely. Let \(\xi^*\) bound
+\(|\xi_i|\), let \(G_{\rm G}^{-}\) be the lower Gaussian gain factor, and
+\(G_i^{+}\) the upper cubic gain factor in (13), including the tail budget.
+It suffices to verify
+\[
+ (\xi^*)^2 <
+ .19\cdot2(.76)b^n(G_{\rm G}^{-}-G_i^{+}) .
+\]
+The factor .76 handles every \(\ell\) in the box.
+The replay covers 20 profile intervals and each of the 1351 amplitude bands
+with \(-2600\le n\le-1250\). This enlarged range contains
+\(\sqrt u/\ell\) throughout the stated rectangle, checked by exact squared inequalities.
+The smallest positive enclosure, in units of \(2^{-56}\), is
+\[
+ 241420829874/72057594037927936>3\cdot10^{-6}.
+\]
+This proves (2). It also proves a strictly positive same-variance remote deficit
+for these examples on the range.\qed
+
+\subhead{General tensors.}
+For a general Wick cubic, Gaussian integration by parts gives the exact first-chaos
+coefficient \(\E[\bar z_jF_A(q)]=\E[\partial_{z_j}(F_A(q))]\).
+If \(F_A(y)=y\,g(|y|^2)\), this is
+\[
+ \E\big[(g(s)+sg'(s))\partial_{z_j}q
+                 +q^2g'(s)\partial_{z_j}\bar q\big],\qquad s=|q|^2.
+\]
+The constant part cancels because the derivatives of \(q\) are centered quadratics.
+The identity exposes the cubic-order content, but a sharp bound comparing this
+expression to the remote deficit for arbitrary tensors remains unresolved here.
+The certificate above uses the specified templates and their torus symmetries.
+
+\newpage
+\head{Same-variance domination for the complete shared perturbation}
+We now combine the exact content enclosures with (12) directly.
+Let \(\rho=\sqrt w/\ell\). On the target rectangle \(\rho<.197\).
+For a profile interval and a band \(b^n\le\nu\le b^{n+1}\), let \(c^*\) be the
+upper bound on \(|\xi_i|\), \(g_i^+\) the upper bound on the remote gain factor
+including the missing mass, and \(K^+\) the upper endpoint of \(K(p)\).
+For a shell-radius interval \(\rho_0\le\rho\le\rho_1\), the upper bound for the
+normalized gain over \(F(0)\) is
+\[
+ 2b^{n+1}g_i^++2\rho_1c^*+K^+\rho_1^2 .
+ \tag{14}
+\]
+By Cauchy--Schwarz, \(2\Re\langle U,F_A(q)\rangle/\ell\le2\rho|\xi_i|\),
+so this holds for every phase and every remote linear form \(U\).
+
+Choose a lower grid point \(b^m\le\sqrt{b^{2n}+\rho_0^2}\).
+The normalized Gaussian gain at the matched variance is bounded below by
+\(2b^m G_{\rm G}^{-}(b^m)\), using monotonicity in the Gaussian amplitude.
+The checker verifies that this lower bound minus (14) exceeds \(10^{-6}\).
+It uses \(-2560\le n\le-1280\), and shell endpoints on the mesh \(1/2048\)
+with final endpoint .197. The two end-amplitude tests in the script verify
+that these bands contain every \(\sqrt u/\ell\) in the target rectangle.
+Shell intervals are bisected until the inequality is certified or a mesh cell is
+reached, with further profile subdivision when necessary.
+
+The smallest certified gap in the replay is
+\[
+ \frac{72059660296}{72057594037927936}>10^{-6}.
+\]
+Multiplying by \(\ell\) proves (1).\qed
+
+\head{Replay and scope}
+Run \texttt{node verify\_shared.mjs} using Node.js 20 or later.
+The script has no external dependencies. Its final checks also establish the
+projected-envelope bounds, the Gaussian tail constants, and (3).
+
+The proven range for the two named remote templates is the full rectangle on
+page 1, larger than the surviving sloping region in the question.
+For a general shared cubic and linear form, we have the explicit Taylor estimate,
+the corrected shared differentiation identity, the zero-buffer complement transfer,
+and the strengthened A cost at the three rows. The general content inequality
+and general all-amplitudes K on the surviving rectangle remain open here.
+
+The previous disjoint theorem uses the project's remote-only input. With its
+certified error \(10^{-5}\), the resulting disjoint conclusion has error at most
+\(10^{-5}\). The explicit shared-template comparison (1) is exact.
+\end{document}

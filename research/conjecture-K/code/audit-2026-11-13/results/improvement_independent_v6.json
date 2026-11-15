@@ -1,0 +1,53 @@
+{
+  "agent": "codex-a713",
+  "status": "PASS independent exact rational serialized-cover replay; NO Lean build",
+  "certificate": "/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-audit-2026-11-13/improvement_certificate_v6.json",
+  "certificate_sha256": "693f21b4be14c4a49e1e55b6c8556b0f639fbe8ec1d1011700a39542fc89fd77",
+  "B": "713420784003651/1000000000000000",
+  "L": "17521216483/12500000000",
+  "actual_upper": "2261603817056712040758851322844120200618409620574822025192154843672242478630850583744036317940488763607039602325217061868242783776895677/3170084006194497222984187373099251683805388993323011660568675753939259219075805164387165719932133986795520000000000000000000000000000000",
+  "boxes": 11107,
+  "binding_boxes": [
+    3830
+  ],
+  "improvement_over_current": "201339/1000000000000",
+  "seconds": 3.8794554579981195,
+  "source_hashes": {
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData01.lean": "d7885708a8e76a0f285e2f115af1fbc01c08b95b5ef3be519c346d47c9839bc9",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData02.lean": "63036670cec5b2755dc99b2227b34f4f0ce4c49d0a42060355f89a5c6224906b",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData03.lean": "9651a7f247d9559085a85fb8234e11cc9b3794c1343072da6ba06ec522ebb90f",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData04.lean": "2d622b3f1887d5283dff01ddc739d5e8ad1d29187d718811bf541ebab9eaea9c",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData05.lean": "652da9d96bacfe5c526459122c6388aa8e1ff91f4d0ee2fb2641eb9253940f5b",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData06.lean": "2bcd2cdbeda18a8e079d3cb764dd6970a7b3f0ddd14f9f481ea7ef6f8a02698f",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData07.lean": "5ffb9f041a282dbb365729a532ff1e3e0130ec3cb9404031575ff962dee389bb",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData08.lean": "33ceb40866ae0a411b79cc47241f51eebc6c659f6b47b37ec926db1ac9706cee",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData09.lean": "73273e5e6d81ce551dcdfbc8f9786c7d4d2c2396b534320033a8e56a996a15dc",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData10.lean": "ac24bda250663435e15e8305cfe6fab3890f77234f61473e1fe133d550daa72b",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData11.lean": "ac577168080683e22044ae18282d85fcbb9a69ad48337381415379519c1893af",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData12.lean": "a01b32f86267bb46307ef94ef98748de74cb6fb83285a37139164cafb346fe95",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData13.lean": "4e9e5d944abd977db9cff9d2cde6f15c29db3e104a6632e48e75572d54f084db",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData14.lean": "9445ce1c08ac77ba833d9104cba8bca98aae6175b35b7c43e63932496011618a",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData15.lean": "0664a384821a93c696b172e0420b368b968513e4c53449a5aef36d002f299436",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData16.lean": "549d1c50d9c2aa3d02b689ccebd77ff758a7c67cfcb6cda7c24a2494852e53cc",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData17.lean": "f1df863ac8797e66c58b71a02e27d47b636bb800462c26126e9c41350925d0a3",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData18.lean": "2acd7f4568582994a33bcbbb6afe77c65420d848f5ad949122fa1a8c2c31a865",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/RowData19.lean": "f3c74b79e482cc16f82a43c0fb49d47f44c004c27c5beda957445b149e55566d",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/MixedData.lean": "73b0ff40bc9df24d3458719e257092c89acbb851d8ba0874cf241084098319ab",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Research/LawNodeData.lean": "8b3f40a304b8ecdc15b79833ad7ee0ebf9eddd90bc26bb43a5399fbf00b81861",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Research/LawNodeLower.lean": "fd93e726c0af3fde1828130347de96ec24146e1d174382ab942977b472fcd061",
+    "/Users/alingalatan/workspaces/grothe/Grothe/MainResult.lean": "60f8ab02fdd2d1363dca0b24175e047757ae97f3d024cf6f68e7b8854de41951",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Basic.lean": "3a1ac1ea7ff9e630dd8174d9e2b15ee72984bb829fdb3bd63ef50be70d30bff1",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Moment.lean": "589ca2ed467e67687ab9defb20834cc2bb1d2bd898c488685bf1553c0db3b17b",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Gate.lean": "11b2ed3e05ceb1e12ff81f55d36ec9f3cf0272bc8bb1475ad66a85be85017b29",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Mixed.lean": "9cab6b974ae27e78ee3f524be6ae5860ed10a2ae67bc1511e71be8379c39d1e4",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Boxes.lean": "e81f74f755d35adead7a41eef592ccba6f5f12d1dfc635d520faccb9c9ce4e0b"
+  },
+  "reused_theorems": "Existing row/node checks, NodeCaps and LawNodeLower transfer; no new analytic assumption",
+  "semantics_sources": [
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Basic.lean",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Moment.lean",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Gate.lean",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Mixed.lean",
+    "/Users/alingalatan/workspaces/grothe/Grothe/Lower/Boxes.lean"
+  ]
+}
