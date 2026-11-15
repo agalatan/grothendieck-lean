@@ -9,6 +9,7 @@ conjecture is **open**.
 | file | what it is |
 |---|---|
 | `README.md` | this file: statement, why it matters, the layers of a proof, reading order, index |
+| [Second audit](sources/reaudit-2026-11-15-codex-a7c4/AUDIT.md) | 15 November, codex-a7c4, after PR #397: response/parity scope corrections, explicit odd-sector counterexamples, disjoint-cost replay, larger content neighbourhood and conditional central consumer |
 | [Follow-up audit](sources/audit-2026-11-15-codex-a7c4/AUDIT.md) | 15 November, codex-a7c4: essential scope corrections, peak remote certificate replay, uniform one-coordinate result, independent retained-sector numerics |
 | [`STATUS.md`](STATUS.md) | the consolidated state of knowledge: every statement with its status (P / C / N / R / open / refuted), exact scope and source; the list "tried and failed" |
 | [`MONOGRAPH.md`](MONOGRAPH.md) | the monograph of 5 and 6 November, verbatim, preceded by "Errata and updates (15 November 2026)" |
@@ -62,13 +63,14 @@ In words: the supremum of Λ over the cubic chaos is attained by a Gaussian adve
   slowly with the number of remote variables (0.017, 0.021, 0.023 at ‖q‖² = 0.0463) and its limit is not known.
   Nothing of this is proved, and the remote part is the same statement for both
   (`sources/numerics-kprime-2026-11-15/README.md`; `STATUS.md`, section 11 (c)).
-- **Response-restricted forms:** only G that come from actual responses (f, g) matter. Response feasibility gives
-  remote energy ‖q‖² ≤ 0.0463 on the central rows and total ‖G‖² ≤ 0.072 (monograph §1; digest §1). Such cuts are
-  valid for the lower bound but must not be inserted into raw K.
+- **Response-restricted forms:** only G that come from actual responses (f, g) matter. At ε=1891/2500, response feasibility gives
+  remote energy ‖q‖²<0.046266 and total ‖G‖²<0.081884 for t≥0.84. The stronger total cap 0.071981
+  needs t≥0.8456 (STATUS 2.12a, independently re-derived and exactly checked). Such regional cuts
+  must not be inserted into raw K; omitted response regions still need coverage.
 
 **Where it is needed.** The box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16]. The corner
-(0.74, 0.90, 0.12) has σ* = 0 and needs separate treatment. K for *every* profile is false (profiles with
-ℓ − 2β ≲ 10⁻¹⁰ at tiny norms; monograph §1), so the box matters. Every certificate so far is stated at three rows:
+(0.74, 0.90, 0.12) has σ* = 0 and needs separate treatment if used in the consumer. K for *every* profile is false (profiles with
+ℓ − 2β ≲ 10⁻¹⁰ at tiny norms; monograph §1), so the box matters. Several principal certificates use the following three rows; whole-box results state that scope explicitly:
 
 | row | ε | ℓ | β = b | a = ℓ − 2β | σ* (maximiser of Λ(σW)) |
 |---|---|---|---|---|---|
@@ -119,15 +121,15 @@ The statuses include the follow-up audit of 15 November; details and scopes are 
 | layer | statement | status on 15 November 2026 |
 |---|---|---|
 | **L1** remote part ("K-a") | Λ(q) ≤ S + η for every remote cubic q | **P + C at the peak profile**, η=3.6·10⁻⁷: the stronger October package replayed end to end by codex-a7c4 and again by claude-b9ee, with its existing sixth-moment input identified. External certificate, not Lean (its inputs about cubic chaos are Lean theorems of the lower bound, up to the mesh of the test functions: A15 `REMOTE.md` §3a). A narrow scaled-profile tube has error <8.1·10⁻⁵ (STATUS 3.11); the other named rows and full envelope remain open. Exact K-a (η=0) is open; the separate report of 15 November remains **R**. |
-| **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1, hence 3.6·10⁻⁷ at the peak; needs mutual independence of z₁,q,U and ‖q‖² + ‖U‖² ≤ ℓ²). The stronger cost form is **P** up to a numerical kernel inequality that is **R**. |
+| **L2** core with disjoint drivers | q + (T−1)U with U independent of q reduces to L1 | **P** (same η as L1, hence 3.6·10⁻⁷ at the peak; needs mutual independence of z₁,q,U and ‖q‖² + ‖U‖² ≤ ℓ²). The stronger all-amplitude cost form is now **P + C** on the entire application box, with cost at least 1/152 and no energy cutoff (STATUS 4.2). |
 | **L3** core with shared drivers, outside the rectangle R | w ≥ 0.01125 or u ≤ 0.00551 + 0.319w ⇒ K_η, η = 10⁻⁴ | **R** (proved and certified according to the manuscript and the monograph; not re-audited; three slightly different cutoffs for w are in use). The fourth-moment method is saturated there. |
 | **L4** core on R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost κ = 0.24 plus the content inequality C(q)² ≤ κ·D(q) | Cost: **P**, with its exact checker replayed (second audit; the main audit takes it as an inherited input). Content: **P + C** for q = X·P(Y) with any complex quadratic P (constant 0.22) and for the Gaussian-factor class ΣX_jP_j(Y) (0.239); **C conditional on stored scalar bounds** for the Hermitian self-interaction family (0.23, u ≥ 0.03); for the Wick neighbourhood p ≤ u/5 (0.225) the implications are **P** and the numerical premises **R**. **Open for a general cubic** (mixed shells, several self-interacting drivers). Numerically (**N**) the supremum of C²/D is about 0.0876 at u = 0.0463 in every dimension tested (n ≤ 10), near the Wick monomial, which is a saddle, not the maximiser. |
 | **L5** sector assembly | general G = q + A + B + (z₁Q, z̄₁P, d·z₁(T−2)) | **Open.** Partial results: B-shell cost at every amplitude over a remote base (**P + C**); parity decoupling of the z-odd sectors (**P**); signed A/B Hessian at every remote base, infinitesimal only (**P + C** for the reduction and the tail, **R** for the compact part). **Missing:** a finite-amplitude joint A/B remainder bound (stated in `STATUS.md`, section 7.4), a general B-content bound, and a uniform cost for the z-odd sectors over a nonzero core. A proof of the content bound with constant 0.10 would not close the A+B core without the joint bound. After the audit (**N**, 15 November; peak row, one to three remote variables): the gain of the A and B shells over a remote cubic is at most 0.166·D(q) on what was tested, and about 0.024·D(q) for the weaker functional Λ̂ of part (a), which keeps the first-chaos penalty; that ratio rises slowly with the number of remote variables and its limit is not known (`STATUS.md`, section 11 (c)). |
-| **L6** row envelope and consumption | K_η on the envelope over t ∈ [0.84, 0.851] with exact thresholds, the σ* = 0 corner, coverage of the response regions outside R, then a Lean theorem consuming K_η | **Not built.** No `lower_of_K` or `KHyp` exists in the Lean sources. |
+| **L6** row envelope and consumption | A fixed-ε row cover with exact thresholds, coverage of all response regions, then a Lean theorem consuming K_η | **Incomplete.** The single peak row now has an exact conditional central component: all-sector K_η with η≤10⁻⁴ covers t∈[.84,.851], leaving >6.12·10⁻⁷ margin (STATUS 8). Complementary regions and the all-sector premise remain; no `lower_of_K` or `KHyp` exists. A full profile box, including the σ*=0 corner, is needed only if the chosen cover uses it. |
 
 The audit's one-line summary: the record contains substantial valid mathematics, but the remaining distance is a
 dimension-uniform finite-amplitude content theorem, a finite-amplitude A+B assembly, uniform odd-sector control,
-coverage of the response-feasible regions, and a rigorous row-envelope consumer. It recommends continuing only as a
+coverage of the response-feasible regions, and a complete rigorous row consumer; its central peak-row calculation is now exact. It recommends continuing only as a
 bounded research programme with an explicit decision point, and names the joint A/B remainder bound as the single
 next statement to attack.
 
@@ -187,6 +189,35 @@ next statement to attack.
 
 Sizes are those of the files in this folder. Descriptions of the notes are taken from the documents themselves
 (title or opening words) unless a status is added; a status in this index is always the one in `STATUS.md`.
+
+### `sources/reaudit-2026-11-15-codex-a7c4/`: second full-monograph audit
+
+New research after PR #397; no historical source was edited. Reproduction and scope are in the new audit report.
+
+| file | size | contents |
+|---|---:|---|
+| `AUDIT.md` | 14,814 B | Second-pass findings, full section coverage, completed improvements and trust limits. |
+| `FOUNDATIONS.md` | 15,161 B | Response-region corrections, re-derived energy caps, retained dual and exact central budget. |
+| `CONTENT.md` | 7,162 B | Conditional mixed-character extension widened from .006D to .01D. |
+| `REMOTE.md` | 18,103 B | All-amplitude disjoint cost; direct Rice benchmark; mesh-density and convex-cell transfer. |
+| `SECTORS.md` | 13,666 B | Sharp odd costs, explicit cubic counterexamples, parity and matrix scope corrections. |
+
+### `code/reaudit-2026-11-15-codex-a7c4/`: second full-monograph audit
+
+New research after PR #397; no historical source was edited. Reproduction and scope are in the new audit report.
+
+| file | size | contents |
+|---|---:|---|
+| `foundations_exact.py` | 4,574 B | Exact Rice tangent, response energies and conditional central endpoint budget. |
+| `foundations_exact_result.json` | 2,723 B | PASS: exact regional caps, response counterexample and central allowance. |
+| `content_constants.py` | 3,604 B | Exact scalar/partial-fraction check for the larger content neighbourhood. |
+| `content_constants.json` | 903 B | PASS: sharpened kernel constants and .01D extension budget. |
+| `sectors_exact.py` | 3,203 B | Exact finite-amplitude odd-cost witnesses and sharp n=1 constant. |
+| `sectors_exact_result.json` | 1,032 B | PASS: corner gain, false .36 flank cost and sharp full-box n=1 enclosure. |
+| `remote_disjoint_cost.py` | 6,047 B | Independent dyadic full-box disjoint-cost verifier, including infinite scale ray. |
+| `remote_disjoint_cost_result.json` | 415 B | PASS: 12 profile/278 scale intervals and uniform cost ≥1/152. |
+| `remote_benchmark_crosscheck.py` | 3,540 B | Independent direct I0/I1 Arb Gaussian benchmark and support gradients. |
+| `remote_benchmark_result.json` | 1,020 B | PASS: peak S enclosure and explicit Gaussian supporting plane. |
 
 ### `sources/audit-2026-11-15-codex-a7c4/`: bounded follow-up audit
 

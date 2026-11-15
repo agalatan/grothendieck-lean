@@ -1,0 +1,77 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS",
+  "scope": "Exact scalar checks; response/duality proofs in FOUNDATIONS.md; central consumer conditional on all-sector K_eta",
+  "inherited_input": {
+    "peak_S_upper": "1717441907077/1250000000000"
+  },
+  "rice_tangent": {
+    "A_upper": "44338139/50000000",
+    "B_upper": "432306903/1000000000"
+  },
+  "response_energy_rows": [
+    {
+      "t_min": "21/25",
+      "remote_upper": {
+        "rational": "3614477735985741843477/78125000000000000000000",
+        "decimal_diagnostic": 0.046265315020617495
+      },
+      "total_upper": {
+        "rational": "2047099051910297165175834922107691569004863853167913516936136914346379848743646431782835864910907/25000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "decimal_diagnostic": 0.08188396207641188
+      },
+      "printed_caps": [
+        "23133/500000",
+        "20471/250000"
+      ]
+    },
+    {
+      "t_min": "1057/1250",
+      "remote_upper": {
+        "rational": "3181631884615909803477/78125000000000000000000",
+        "decimal_diagnostic": 0.04072488812308365
+      },
+      "total_upper": {
+        "rational": "1799511759760027052053545374574178338403979112453067185736136914346379848743646431782835864910907/25000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "decimal_diagnostic": 0.07198047039040108
+      },
+      "printed_caps": [
+        "20363/500000",
+        "71981/1000000"
+      ]
+    },
+    {
+      "t_min": "851/1000",
+      "remote_upper": {
+        "rational": "2764244813652143193477/78125000000000000000000",
+        "decimal_diagnostic": 0.035382333614747435
+      },
+      "total_upper": {
+        "rational": "1560766870900838014399909025166862008895983112478036794936136914346379848743646431782835864910907/25000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "decimal_diagnostic": 0.06243067483603352
+      },
+      "printed_caps": [
+        "35383/1000000",
+        "62431/1000000"
+      ]
+    }
+  ],
+  "unrestricted_response_energy_lower": {
+    "rational": "1370138139841/14580000000000",
+    "decimal_diagnostic": 0.09397380931694102
+  },
+  "central_eta_max": {
+    "rational": "166713115892493/1656988750000000000",
+    "decimal_diagnostic": 0.00010061209884043751
+  },
+  "central_margin_after_eta_1e_4": {
+    "rational": "1014240892493/1656988750000000000",
+    "decimal_diagnostic": 6.120988404375105e-07
+  },
+  "wider_certified_interval": [
+    "16799/20000",
+    "681/800"
+  ],
+  "minimizer_radius": "sqrt(pi)/2; analytic proof only",
+  "dual_residual_error_bound": "||a-Pk_a||^2; analytic proof only"
+}

@@ -188,3 +188,18 @@ binaries, archives, PID files or byte-code caches are retained in the new audit 
 The review by claude-b9ee added three small text files to the same two directories (`REVIEW_claude-b9ee.md`, a
 numerical test script and its log); it used a python-flint installation in a session scratch directory, of which
 nothing is retained.
+
+
+## Second audit after PR #397 (codex-a7c4, task #398)
+
+New notes and small scripts/results are in `sources/reaudit-2026-11-15-codex-a7c4/` and
+`code/reaudit-2026-11-15-codex-a7c4/`, indexed in README. No new external data, log, archive, binary or
+dependency installation is retained. The direct Rice check reuses the existing python-flint dependency
+directory named above read-only; the other checks use only the standard library. The content and odd-cost
+checks explicitly reuse the old `odd_cost_check.py` interval/series definitions, recomputing their inputs
+rather than loading saved JSON. All new commands print results without modifying the checkout by default.
+
+The disjoint cost is an independent Python port of the already indexed historical full-box verifier,
+with interval-union coverage checks. The new benchmark uses direct Rice integrals rather than the original
+integration-by-parts implementation. Existing source files and the historical monograph body are byte-identical
+to the merged PR #397 baseline. No historical certificate file has been replaced.
