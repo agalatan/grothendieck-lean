@@ -1,0 +1,38 @@
+[
+  {
+    "included": "inputs/NEAR_GAUSSIAN_REMOTE.md",
+    "repository_path": "research/conjecture-K/sources/partial-results-2026-11-15-codex-c7e2/remote/NEAR_GAUSSIAN_REMOTE.md",
+    "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+    "sha256": "3ac91c502a81a1b381e0762e10890267c498501d66e14f217bb9a4425e28ef75"
+  },
+  {
+    "included": "inputs/GAUSSIAN_LOCAL_STABILITY.md",
+    "repository_path": "research/conjecture-K/sources/partial-results-2026-11-15-codex-c7e2/all-sector/GAUSSIAN_LOCAL_STABILITY.md",
+    "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+    "sha256": "d330558970ff9c2f395e0cd9f8d75393cab1832e811f4c1a304fa76c82302d67"
+  },
+  {
+    "included": "inputs/ODD_CORE_PROOF.md",
+    "repository_path": "research/conjecture-K/sources/odd-cubic-core-2026-11-15/PROOF.md",
+    "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+    "sha256": "94c01d774ff4b33d315b5d77dcaf27de3b55a3e9f8548d41973c6e9212b17c11"
+  },
+  {
+    "included": "inputs/NEAR_STAR_PROOF_NOTES.md",
+    "repository_path": "research/conjecture-K/sources/near-star-2026-11-15-codex-91d4/PROOF_NOTES.md",
+    "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+    "sha256": "94e095e3d2ad782305c04115f747414d4f070ce1f61b55aa94d68b5891728ed3"
+  },
+  {
+    "included": "inputs/NEAR_STAR_REPORT.md",
+    "repository_path": "research/conjecture-K/sources/near-star-2026-11-15-codex-91d4/REPORT.md",
+    "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+    "sha256": "c489c4720cc625a8db933df6fc4fae9d599995abd6a35be35db65ab14a2ff356"
+  },
+  {
+    "included": "inputs/ORIGINAL_CERTIFY.cpp",
+    "repository_path": "research/conjecture-K/code/odd-cubic-core-2026-11-15/certify.cpp",
+    "commit": "e6ebb9db478350fb5be73c6d9e4548df158f192e",
+    "sha256": "e6005b8b7cd6e53d9b4b2a6a35048fd061ce6a283f6c4687b816c1ea57a98837"
+  }
+]
