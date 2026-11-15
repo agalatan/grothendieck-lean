@@ -42,7 +42,7 @@ The research results provide sector control, a smaller response domain, and a pr
   remainder inequality, it proves joint A/B error below `.00004936`.
   A 1,000-cell exact rational certificate checks the scalar assembly.
   The exterior of that premise is proved by an exact density certificate; only
-  `|w|≤2.02`, `sqrt(S)≤1.65` remains. The joint conclusion is still conditional.
+  `|w|≤1.9`, `sqrt(S)≤1.65` remains. The joint conclusion is still conditional.
 
 The new analytic arguments are author proofs with independent review within this
 session. Their scalar premises were recomputed with exact rational or outward

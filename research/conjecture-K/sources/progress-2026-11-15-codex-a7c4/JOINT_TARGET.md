@@ -267,7 +267,7 @@ within-session peer checking, not external review.
 
 ## 6. The exterior is proved: only a compact domain remains
 
-The pointwise premise (P) holds whenever `|w|≥101/50` or
+The pointwise premise (P) holds whenever `|w|≥19/10` or
 `sqrt(S)≥33/20`. Its remaining compact interior is open. The following
 argument and exact polynomial checks are **P+C, author only**, pending
 external review. This is an additional exterior certificate, distinct
@@ -288,11 +288,11 @@ Under the invertible radial map `y=L`, it has a possibly nonradial density
     f(y)=exp(−T)|h(Z)|²/(S pi D(T))≤exp(−T)W(T)/(pi D(T)),
     D(T)=(a+bT)(a+3bT).
 
-The checker proves `D(T) sum_{j=0}^4 T^j/j!−W(T)>0` on the whole
+The checker proves `(81/100)D(T) sum_{j=0}^4 T^j/j!−W(T)>0` on the whole
 nonnegative half-line: all degree-six Bernstein coefficients are positive
-on each of the 16 consecutive intervals `[j/4,(j+1)/4]`, and all
+on each of the 64 consecutive intervals `[j/16,(j+1)/16]`, and all
 coefficients after translation `T=4+v` are positive for `v≥0`.
-Since `exp(T)` exceeds its Taylor polynomial, `f≤1/pi`.
+Since `exp(T)` exceeds its Taylor polynomial, `f≤81/(100 pi)`.
 Its mass is at most `H²=1+s²(1+rho²)`, since Gaussian orthogonality gives
 `E|h|²=S+s²|R|²`. This retains the mass of the actual direction, even
 though the density cap uses the larger radial envelope W.
@@ -300,10 +300,10 @@ though the density cap uses the larger radial envelope W.
 Layer cake, using the area of each disk, now gives for every w
 
     integral f(y)/|y+w| dy
-      ≤integral_0^infinity min(H²,1/t²) dt
-      =2H<241/100.
+      ≤integral_0^infinity min(H²,81/(100t²)) dt
+      =(9/5)H<217/100.
 
-Consequently `Rem≤(241/100)S` at every shift and amplitude. Independently,
+Consequently `Rem≤(217/100)S` at every shift and amplitude. Independently,
 the triangle inequality gives `Rem≤4E|h|≤4H sqrt(S)`, where
 `H²=1+s²(1+rho²)` by Gaussian orthogonality.
 
@@ -315,7 +315,7 @@ is at least
 
 Exact rational comparisons show
 
-    m+(1/2)(101/50)²>241/100,
+    m+(1/2)(19/10)²>217/100,
     [m(33/20)+(33/20)³]²>16H².
 
 The latter expression before squaring is positive and increasing with
@@ -330,7 +330,7 @@ Replay the exterior certificate from the repository root:
 python3 -I research/conjecture-K/code/progress-2026-11-15-codex-a7c4/joint_target_tail.py
 ```
 
-This leaves only `|w|≤2.02`, `sqrt(|A|²+|B|²)≤1.65` to certify.
+This leaves only `|w|≤1.9`, `sqrt(|A|²+|B|²)≤1.65` to certify.
 Simultaneous phase rotation permits w real and nonnegative, but A and B
 remain complex: the compact problem still has five real parameters.
 No numerical scan of this domain is a proof of (P).
