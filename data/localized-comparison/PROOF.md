@@ -1,6 +1,6 @@
 # Weighted selected-spectrum comparison
 
-The current unconditional upper bound is `K_G^C < 1.404599412097`
+The current unconditional upper bound is `K_G^C < 1.404599398251`
 (`Grothe.Statement.upper_below_tight`, `Grothe/UpperTightFinal.lean`). Its
 regrouped comparison reuses the finite mass certificates documented here, with
 the proved six-error estimates and tighter budgets of `UpperTightSix` and
@@ -98,9 +98,9 @@ The conditional endpoint assembly uses the grouped comparison budget in
 is preserved in the archive; the shared comparison above remains active.
 The unconditional endpoint instead regroups the certified band-mass squares,
 uses the six proved low-band/whole-source estimates, and deducts the forced
-linear energy from the sharp Hardy budget. Its comparison allowance is
+linear energy from the Gaussian-amplitude Hardy budget `5/4`. Its comparison allowance is
 `tightThreeBandCompareQ`, approximately `1.4922273975573793e-6`, and its full
-residual is `tightResidualQ`, approximately `1.5507303526753792e-6`.
+residual is `tightResidualQ`, approximately `1.5437125313753792e-6`.
 
 ## Inherited Gaussian inputs: what remains external
 
@@ -128,7 +128,8 @@ the fourteen original finite-band norm bounds. Those original bounds remain
 premises of the conditional route; the table-accuracy premise is discharged by
 `Final.hclose_final`. The production theorem uses the separately proved six-error
 interface in `UpperTightSix` instead. Its analytic Schur/Hardy input is
-`HardyReal.hardy_GT_tight`, with the forced linear energy deducted by `HeadHardy`.
+`HardyReal.hardy_GT_gaussian` (the Gaussian-amplitude estimate, budget `5/4`),
+with the forced linear energy deducted by `HeadHardy`.
 
 No `head_close` hypothesis replaces the native finite-head computation.
 
