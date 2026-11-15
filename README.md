@@ -2,7 +2,7 @@
 
 A Lean 4 + Mathlib proof of these bounds on the complex Grothendieck constant:
 
-$$1.401700037873 < K_G^{\mathbb{C}} < 1.404599398251$$
+$$1.401700037873 < K_G^{\mathbb{C}} < 1.404599398052$$
 
 Both inequalities are one theorem without hypotheses, `Grothe.Statement.main_bounds`
 ([`Grothe/MainResult.lean`](Grothe/MainResult.lean)). Its proof uses the three standard axioms of Lean and
@@ -16,7 +16,7 @@ finite exact computations evaluated by compiled code (`native_decide`); see
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository** | $\mathbf{1.401700037873 < K}$ | $\mathbf{K < 1.404599398251}$ |
+| Oct–Nov 2026 | **this repository** | $\mathbf{1.401700037873 < K}$ | $\mathbf{K < 1.404599398052}$ |
 
 Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
 $\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
@@ -25,7 +25,7 @@ it lies inside the interval, about $2.35 \cdot 10^{-5}$ below our upper bound.
 The lower endpoint is `Grothe.Statement.lower_target`. The upper endpoint is
 `Grothe.Statement.upper_below_tight`
 ([`Grothe/UpperTightFinal.lean`](Grothe/UpperTightFinal.lean)); it follows from the exact rational bound
-`tightValueQ`, approximately `1.4045993982506409631014`.
+`tightValueQ`, approximately `1.4045993980513008724503`.
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -55,15 +55,15 @@ definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as 
 (some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the two targets
 `UpperTarget = UpperBelow 1.4046` and `LowerTarget = LowerAbove 1.401700037873`. `UpperTarget` retains the
 earlier threshold for compatibility; the current upper theorem has the stronger type
-`UpperBelow (1404599398251 / 10^12)`. A compiled theorem whose type is one of these statements and whose
+`UpperBelow (1404599398052 / 10^12)`. A compiled theorem whose type is one of these statements and whose
 axiom report is clean proves exactly that claim.
 [`Grothe/StatementBridges.lean`](Grothe/StatementBridges.lean) proves what the targets say about the constant:
 `UpperBelow c` gives $K_G^{\mathbb C} < c$, and `LowerAbove c` gives $c < K_G^{\mathbb C}$ once some bound exists
 (the set of bounds is closed).
 
 **The current theorems** are `lower_target : LowerTarget`,
-`upper_below_tight : UpperBelow (1404599398251 / 10^12)` and
-`main_bounds : 1.401700037873 < K_G^ℂ < 1.404599398251`, all in the namespace `Grothe.Statement` and without
+`upper_below_tight : UpperBelow (1404599398052 / 10^12)` and
+`main_bounds : 1.401700037873 < K_G^ℂ < 1.404599398052`, all in the namespace `Grothe.Statement` and without
 hypotheses ([`Grothe/MainResult.lean`](Grothe/MainResult.lean),
 [`Grothe/UpperTightFinal.lean`](Grothe/UpperTightFinal.lean)). The earlier `upper_target : UpperTarget`
 was removed on 15 November 2026 (#405).
@@ -114,7 +114,7 @@ $\lvert \langle f, Tg \rangle \rvert \le B = 3567097/5000000 = 0.7134194$ for al
 
 `upper_bound_tight` exhibits the exact rational Grothendieck bound `tightValueQ`
 $= 1/(c - \delta)$, with $c = 0.7119483103461$ and
-$\delta = 1.543712531375379213976\ldots \cdot 10^{-6}$
+$\delta = 1.543611492222723794480\ldots \cdot 10^{-6}$
 ([`Grothe/UpperTightBudget.lean`](Grothe/UpperTightBudget.lean)). This gives the strict upper endpoint
 `upper_below_tight` above.
 
@@ -145,13 +145,15 @@ $\delta = 1.543712531375379213976\ldots \cdot 10^{-6}$
    - $6847009/(5 \cdot 10^{17})$: the $\ell^1$ distance, over the index pairs with $n + 3m \le 501$, from the
      table to the energies of $X = S(F_0 + v)$, where a stored finite Hermite expansion $v$ stands for $T - F_0$
      (`hclose_final`, `Grothe/UpperClose.lean`);
-   - $1.492227397557\ldots \cdot 10^{-6}$ (`tightThreeBandCompareQ`): the weighted distance, over the same
+   - $1.492126358404\ldots \cdot 10^{-6}$ (`tightThreeBandCompareQ`): the weighted distance, over the same
      index pairs, from the energies of $X$ to those of $G_T$. With $T - F_0 = h_1 + h_2/2 + h_3/6$,
      $h_j = (i\varphi)^j F_0$, it rests on six estimates: the $L^2$ distance from $h_j$ to a stored finite Hermite
      expansion $c_j$, as a whole and on the band of lowest degrees (`TightTwist.six_of_facts`,
      [`Grothe/UpperTightSix.lean`](Grothe/UpperTightSix.lean)). The comparison regroups the existing certified
      mass squares with sharper rational ceilings and charges the quadratic error once for the four unsplit
-     sources ([`Grothe/UpperTightComparison.lean`](Grothe/UpperTightComparison.lean));
+     sources ([`Grothe/UpperTightComparison.lean`](Grothe/UpperTightComparison.lean)). Its weights are the
+     coefficient costs `improvedWeight`: 51 interval-enclosed polynomial coefficients and a Wiener-norm tail at
+     radius $3/2$ ([`Grothe/Upper/ImprovedHeadWeight.lean`](Grothe/Upper/ImprovedHeadWeight.lean));
    - $233184398/10^{16}$ (`tightTailQ`): the tail of the kernel of $G_T$ itself beyond degree 501. The series
      continues holomorphically past the circle of radius $4149/4000$, and its mean square there is at most
      $B = 5/4$ (`HardyReal.hardy_GT_gaussian`,

@@ -1,6 +1,6 @@
 # Weighted selected-spectrum comparison
 
-The current unconditional upper bound is `K_G^C < 1.404599398251`
+The current unconditional upper bound is `K_G^C < 1.404599398052`
 (`Grothe.Statement.upper_below_tight`, `Grothe/UpperTightFinal.lean`). Its
 regrouped comparison reuses the finite mass certificates documented here, with
 the proved six-error estimates and tighter budgets of `UpperTightSix` and
@@ -98,8 +98,8 @@ and not built; the shared comparison above remains active.
 The unconditional endpoint regroups the certified band-mass squares,
 uses the six proved low-band/whole-source estimates, and deducts the forced
 linear energy from the Gaussian-amplitude Hardy budget `5/4`. Its comparison allowance is
-`tightThreeBandCompareQ`, approximately `1.4922273975573793e-6`, and its full
-residual is `tightResidualQ`, approximately `1.5437125313753792e-6`.
+`tightThreeBandCompareQ`, approximately `1.4921263584047238e-6`, and its full
+residual is `tightResidualQ`, approximately `1.5436114922227238e-6`.
 
 ## Inherited Gaussian inputs: what remains external
 

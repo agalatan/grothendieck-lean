@@ -1,7 +1,7 @@
 # Closing the upper half: the six Gaussian hypotheses of the three-band comparison
 
 **Current status (15 November 2026).** The unconditional upper bound is now
-`K_G^ℂ < 1.404599398251`, proved by `Grothe.Statement.upper_below_tight` in
+`K_G^ℂ < 1.404599398052`, proved by `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The accepted port facts,
 tighter panel totals and table reserves supply the six estimates through
 `TightTwist.six_of_facts`; regrouped reference masses and the finite-head deduction

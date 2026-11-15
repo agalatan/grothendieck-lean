@@ -2,8 +2,8 @@
 
 This directory retains the shared rounding source, preprocessors, energy table,
 finite-head and Hardy inputs used by the unconditional theorem
-**K_G^C < 1.404599398251**. Its exact rational Grothendieck bound is `tightValueQ`,
-approximately `1.4045993982506409631014`. The endpoint is
+**K_G^C < 1.404599398052**. Its exact rational Grothendieck bound is `tightValueQ`,
+approximately `1.4045993980513008724503`. The endpoint is
 `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean).
 
@@ -29,12 +29,12 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 
 | contribution | current allowance | proof |
 |---|---:|---|
-| weighted selected-block energy comparison | `tightThreeBandCompareQ ≈ 1.49222739755738e-6` | six proved Gaussian error bounds and regrouped certified reference masses (`UpperTightSix`, `UpperTightComparison`) |
+| weighted selected-block energy comparison | `tightThreeBandCompareQ ≈ 1.49212635840472e-6` | six proved Gaussian error bounds and regrouped certified reference masses (`UpperTightSix`, `UpperTightComparison`) |
 | finite head through degree 501 | `28153/1000000000000` | the exact finite certificate `Grothe.head_check` |
 | stored energy-table accuracy | `6847009/500000000000000000` | `Grothe.UpperQuad.Final.hclose_final`, from the accepted energy, omitted-pair and quadrature facts |
 | infinite tail after degree 501 | `233184398/10000000000000000` | the proved Gaussian-amplitude Hardy budget `5/4` with its forced linear energy deducted (`HeadHardy`, `UpperTightBudget`) |
 
-These give `tightResidualQ ≈ 1.5437125313753792e-6` and the rational bound
+These give `tightResidualQ ≈ 1.5436114922227238e-6` and the rational bound
 `1 / (slopeQ - tightResidualQ)`. The native finite-head checker uses exact dyadic
 energy data and rational polynomial coefficients. Lean proves the polynomial
 l1 constraints, locality, Gaussian comparison, table accuracy, transfer and

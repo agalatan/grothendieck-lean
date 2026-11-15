@@ -1,10 +1,10 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The current proved upper bound is **K_G^ℂ < 1.404599398251**, without
+The current proved upper bound is **K_G^ℂ < 1.404599398052**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
 [`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
 proved lower bound, `main_bounds` states
-**1.401700037873 < K_G^ℂ < 1.404599398251** in
+**1.401700037873 < K_G^ℂ < 1.404599398052** in
 [`MainResult.lean`](../Grothe/MainResult.lean).
 
 The sharper target **K_G^ℂ < 1.404598149141** has only a conditional route,
@@ -61,10 +61,10 @@ production certificates through this chain:
    `UpperChaos/HardyGaussian.lean`: the Schur estimate that retains the
    Gaussian amplitude, with its exact circle check), giving tail `233184398/10^16`.
 5. `UpperTightFinal` applies the transfer theorem with
-   `tightResidualQ ≈ 1.5437125313753792e-6`. Its exact reciprocal `tightValueQ`
-   is approximately `1.404599398250641`, strictly below `1.404599398251`.
+   `tightResidualQ ≈ 1.5436114922227238e-6`. Its exact reciprocal `tightValueQ`
+   is approximately `1.404599398051301`, strictly below `1.404599398052`.
 
-The comparison allowance is approximately `1.4922273975573793e-6`; the
+The comparison allowance is approximately `1.4921263584047238e-6`; the
 stored-table head allowance is `28153/10^12`, and the table allowance remains
 `6847009/(5·10^17)`. No Gaussian or table-accuracy premise is left open in
 this assembly. The tighter totals and budget arithmetic use kernel

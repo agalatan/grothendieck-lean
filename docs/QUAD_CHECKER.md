@@ -2,7 +2,7 @@
 
 **Current status (15 November 2026).** `Grothe.UpperQuad.Final.hclose_final` proves
 the energy-table accuracy used by the unconditional theorem
-`Grothe.Statement.upper_below_tight`, giving `K_G^ℂ < 1.404599398251`
+`Grothe.Statement.upper_below_tight`, giving `K_G^ℂ < 1.404599398052`
 ([`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean)). The twisted-source
 estimates are supplied separately by `TightTwist.six_of_facts`. The design record
 below retains its dated intermediate targets; see [LEAN_DETAILS.md](LEAN_DETAILS.md)
