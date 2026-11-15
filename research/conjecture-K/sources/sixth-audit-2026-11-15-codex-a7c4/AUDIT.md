@@ -162,7 +162,7 @@ at head b5d93043e4de610bcb581a6984d9bf36997957da, identical in tree to merged #4
 | Review item | Disposition in this pass |
 |---|---|
 | F1: pointwise raw/retained strictness does not separate the diffuse supremum; the old README statement was right in context | Accept. The earlier wording concern is a low-severity scope clarification, not a refutation of the shared remote benchmark. STATUS item82 is qualified accordingly. FOUNDATIONS supplies an explicit finite-N bound, credits earlier diffusion, and makes no Λ′ sharpness claim. |
-| F2: the original tail checker already used exact Fractions | Accept. Only #409's review check was numerical; the historical original checker was exact. Restore that provenance in STATUS7.4.5 and errata I without editing the archived fifth note. |
+| F2: the original tail checker already used exact Fractions | Accept. Only #409's review check was numerical; the historical original checker was exact. Restore that provenance in STATUS 7.4.5 and errata I without editing the archived fifth note. |
 | F3: fixed-bank limitation only | Keep its finite-bank scope; #416's new Stein certificate goes beyond it. |
 | R1–R4 and replay evidence | Record the independent re-derivations, all three byte-identical replays, exact critical-point acceptance of 33 leaves, and numerical eigenvalue cross-checks within their stated scope. 11.47 stays stronger than 11.51 on u≤.021; 11.48 is a special case. |
 | Stale README/STATUS/errata H next-step wording | Replace current summaries and priorities with the completed A-only theorem and the unresolved joint/odd interfaces. Part I supersedes part H's proposed next step. |

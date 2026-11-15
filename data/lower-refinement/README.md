@@ -1,23 +1,24 @@
 # Exact lower-witness refinement
 
-This is the acceptance input for task #378. Its complete exact-arithmetic
+This is the acceptance input for tasks #378 and #421. Its complete exact-arithmetic
 replay gives the scalar cap
 
 \[
-B=\frac{3567097}{5000000}=0.7134194,
+B=\frac{891774069}{1250000000}=0.7134192552,
 \qquad
-K_G^{\mathbb C}\geq\frac{5000000}{3567097}>1.401700037873,
+K_G^{\mathbb C}\geq\frac{1250000000}{891774069}>1.401700322371,
 \]
 
 using the repository's existing analytic reduction and Gaussian transfer.
 There is no Conjecture K premise. `LowerRefinementCheck.certRefinementBatches`
 checks the additional law bank. `Lower/FiniteMix.lean` proves soundness of finite
 mixture expressions, their box bounds and the complete cover checker. The four
-`RefinedCoverBoxes` checks and `RefinedCoverPartition` certify all 14,060 leaves
+`RefinedCoverBoxes` checks and `RefinedCoverPartition` certify all 15,096 leaves
 and coverage. `RefinedLowerCheck.lower_bound_of_completed_refinement` applies
 the existing analytic reduction and transfer. `MainResult.main_bounds` discharges
 the unchanged Gaussian node-cap hypothesis and displays the new strict endpoint.
-The increase over `1.401697117301` is `0.000002920572`.
+The increase over `1.401700037873` is `0.000000284498`. This refinement uses
+the same certified law-node bank and Gaussian witness.
 
 ## Replay
 
@@ -41,12 +42,27 @@ optimizer. Do not use `-O`: the inherited rational checker uses assertions,
 and the entry points refuse optimized Python. Paths are resolved relative to
 the scripts, so the current working directory does not affect acceptance.
 
-Successful replay reports 10,909 original boxes, 21 new law majorants,
-1,003 replaced parents, and 14,060 final leaves. The exact maximum is displayed
-as a rational number; its approximate value is `0.7134193997590335` at parent
-5588. Only rational comparisons decide acceptance. The eight negative
+Successful replay reports 10,909 original boxes, 21 additional law majorants,
+1,230 replaced parents, and 15,096 final leaves. The exact maximum is displayed
+as a rational number; its approximate value is `0.7134192551055516` at parent
+6240. Only rational comparisons decide acceptance. The eight negative
 controls reject damaged majorants, spectral parameters, subdivision trees,
 stored bounds, convex weights, node indices, and restricted-node usage.
+
+## Finding stronger covers
+
+`tools/refine_lower_existing_bank.py` constructs convex-hull chords from the
+entire certified node bank, proposes finite-mixture weights with NumPy/SciPy,
+and subdivides selected boxes. Every accepted proposal is recomputed with exact
+fractions; the old certificate remains a fallback. The final complete forest
+passes the same exact coverage and bound checker used above. Floating-point
+optimization is a discovery aid, not an acceptance condition. The exporter
+divides the resulting list into four chunks of ceiling(length/4) leaves and
+chooses a strictly smaller twelve-decimal endpoint than the reciprocal cap.
+
+The search commands, achieved cap and remaining bank limitations are recorded
+in `research/conjecture-K/sources/progress-2026-11-15-codex-a7c4/LOWER_ROUTE.md`.
+No new source integration, law witness, or Conjecture K assumption was needed.
 
 ## Inputs and provenance
 
@@ -153,7 +169,7 @@ fact is recorded in the axiom inventory. The generic mixture proofs use no
 native computation.
 
 `tools/gen_lower_refinement_cover.py` replays the complete rational certificate
-before exporting its 14,060 `MixBox` expressions and partition. Positive weights
+before exporting its 15,096 `MixBox` expressions and partition. Positive weights
 are normalized into binary mixtures; old boxes reuse the pinned original data.
 Lean independently checks the generated expressions, every range, all box caps
 and the entire partition. The four existing native box checks and existing

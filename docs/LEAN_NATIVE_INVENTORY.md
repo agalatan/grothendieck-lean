@@ -6,7 +6,7 @@ is `data/axioms/native.txt` (cap ranges, Hardy facts and others). The default re
 `scratch/Axioms.lean`, with its required declarations in `data/axioms/required.txt`. Normal `ready/*` delivery CI builds and audits
 the combined tree before merging it.
 
-The lower chain uses the 14,060-box finite-mixture cover. Its exact checks cover
+The lower chain uses the 15,096-box finite-mixture cover. Its exact checks cover
 the unchanged rows and mixed batches, the original and additional law-node banks,
 the four sequential box chunks and the partition. The existing refined-box and
 partition native facts now check the stronger certificate in place; the extra
@@ -14,7 +14,7 @@ law bank uses `LowerRefinementCheck.certRefinementBatches`.
 `certRefinedPartition` checks coverage with `treeCoverOK`; it does not assert
 disjointness. `treeCoverOK_sound` proves the coverage needed by the reduction.
 
-`MainResult.lower_target` reaches `1.401700037873` through
+`MainResult.lower_target` reaches `1.401700322371` through
 `lower_bound_of_completed_refinement`, with the same Gaussian node caps.
 `lower_bound_of_capsRest` retains its older `1.401697117301` interface to
 preserve the heavy cap-cache source boundary; it follows from the same new cover.

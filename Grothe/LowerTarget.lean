@@ -5,10 +5,10 @@ import Grothe.Research.RefinedCoverResult
 /-!
 # The lower-bound target, from the proof
 
-`Grothe.Statement.LowerTarget` (`every Grothendieck bound is above 1.401700037873`,
+`Grothe.Statement.LowerTarget` (`every Grothendieck bound is above 1.401700322371`,
 `Grothe/Statement.lean`) follows from the refined-cover certificate under the node-cap hypothesis
 `NodeCaps` (all 19 potential rows below their caps): `lowerTarget_of_nodeCaps`. With
-`Grothe.Statement.lt_constant_of_lowerAbove` it gives `1.401700037873 < K_G^ℂ` as soon as some
+`Grothe.Statement.lt_constant_of_lowerAbove` it gives `1.401700322371 < K_G^ℂ` as soon as some
 Grothendieck bound exists.
 
 This module deliberately imports only the certificate, not `Grothe.LowerAnalytic.CapNodes` (the
