@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401700037873 < K_G^ℂ < 1.404599398251` (`main_bounds`,
+The proved interval is `1.401700037873 < K_G^ℂ < 1.404599398052` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
 (`lower_target`), and so is the upper endpoint (`upper_below_tight`,
 `Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
@@ -20,23 +20,33 @@ target the rounding was designed for. The conditional theorem towards it,
 `fresh_upper_rounder` (K_G^ℂ ≤ 500000000000000000/355973699960428191 <
 1.404598148840, from fourteen finite-band Gaussian estimates that are not
 proved), is archived; the theorem without hypotheses exhibits a bound below
-`1.404599398251`.
+`1.404599398052`.
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
 shards supply their analytic interpretation. Adding the existing `10⁻¹⁵` tail/gap reserve
 and the exact dyadic table excursions gives the low-band radii; the already certified
-inner-product thresholds give smaller whole-source radii. The reference masses also
-retain the exact sums of the eighteen certified band-cap squares before taking
-rational square-root ceilings, improving the coarse high-band caps `0.0916` and `0.199`.
-`UpperTightComparison` specializes a comparison theorem with arbitrary reference-mass,
-piece-error and whole-source radii.
-`UpperHead` assembles the finite residual independently of the comparison budget,
-and `HeadHardy` deducts the linear coefficient's forced energy before bounding the tail.
-The production Hardy budget is `5/4`, supplied by the Gaussian-amplitude estimate. The resulting exact reciprocal
-`tightValueQ` is strictly below `1.404599398251`. The panel and energy-table inputs
-are unchanged. The Gaussian circle cap is independently checked by
-`HardyGaussianCheck.charts_checked`; the tighter panel-total checks use kernel reduction.
+inner-product thresholds give the whole-source radii. The comparison uses the seven
+linear-piece radii and charges the four unsplit sources once in its quadratic term.
+
+**Longer polynomial prefixes in the actual comparison.** `Upper/PolynomialHeadTail`
+proves that dilating a polynomial by `r ≥ 1` bounds its coefficient tail after index
+`L` by `r⁻ᴸ` times the dilated Wiener norm. `ImprovedHeadWeight` applies this to
+`Pⁿ (Q/X)ᵐ`: the unchanged interval operations enclose the first 51 unshifted
+coefficients, and the remaining coefficients have the uniform bound
+`(10049/10000)^501 · (10023/10000)^167 / (3/2)^51 ≤ 2·10⁻⁸`.
+The resulting `improvedWeight` is capped by both one and the previous
+21-coefficient cost. The bound concerns each polynomial's retained coefficient
+cost; it is separate from the infinite Hardy tail of the rounding kernel.
+The new finite fact `Grothe.Upper.improved_high_mass_native` recomputes the
+weighted table masses and checks square-root ceilings `0.091510352921874` for
+both high bands above 51 and `0.198919845892412` for the high band above 11,
+all within `headIdx 501`.
+Each checked mass retains the original table-error allowance `energyErrQ`.
+The four low-band caps follow from the pointwise decrease in cost.
+`tools/gen_improved_head_weight.py` reproduces the mass ceilings; Lean independently
+recomputes the interval costs and weighted masses from the stored polynomials and energies.
+`UpperTightComparison` uses these actual masses and the tighter source radii.
 
 **Gaussian-amplitude Hardy bound.** `GaussianPair` evaluates a positive Gaussian
 pair integral, and `GaussianAmplitude` applies it to the explicit amplitude
@@ -56,7 +66,14 @@ certifying tail `233184398/10¹⁶` and the new `main_bounds` endpoint.
 
 **Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
 `PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
-`TightTwist.remainder1/2/3` and the energy-table accuracy `Final.hclose_final`.
+`TightTwist.remainder1/2/3`, the longer-prefix weighted comparison, and the table
+accuracy `Final.hclose_final`. Both the mass comparison and finite-head transfer
+use the existing `energyErrQ` allowance. `UpperHead` accepts the certified
+coefficient-cost family. `HeadHardy` deducts the linear coefficient's forced weighted
+energy from the Gaussian-amplitude Hardy budget `5/4` at radius `4149/4000`, giving
+the infinite tail `233184398/10¹⁶`. The exact reciprocal `tightValueQ` is
+`1.40459939805130087245… < 1.404599398052`.
+
 Each twisted remainder comes from the 21 shard facts and the total fact of its
 power (`TwistEllCheck.remainder_of_prodShards`); the tighter total facts bound
 the actual sums by `tightPanelRadiusQ`. `TwistEllipseMassSound` supplies the step
@@ -66,7 +83,8 @@ by its upper endpoint (`norm_descendedVector_sq_le_diskM2`), so an accepted
 certificate bounds it on its closed Bernstein ellipse by its mass cap
 (`norm_descendedVector_sq_le_massCap`). `hclose_final` combines the thirteen
 energy facts (`Facts.hclose_of_facts_quad`) with `quadHyp_of_parts`: the tail,
-the omitted-pair fact and `EllCheck.quadRemainderHyp`.
+the omitted-pair fact and `EllCheck.quadRemainderHyp`. The new high-mass check
+is the only additional native acceptance fact in the coefficient-prefix refinement.
 
 **Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
 `EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
@@ -210,7 +228,8 @@ twisted evaluator's soundness bridge; it introduces no additional finite
 computation or analytic hypothesis. All consumed fact modules are registered
 in the generated root and in `data/axioms/native.txt`. `upper_below_tight`
 uses these bundles through `TightTwist.six_of_facts`, together with the tighter
-twisted remainders and the energy-table accuracy `Final.hclose_final`.
+twisted remainders, the longer-prefix comparison and the energy-table accuracy
+`Final.hclose_final`.
 
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
@@ -547,7 +566,7 @@ passes the result to `TightEndpoint.endpoint_of_comparison` (`UpperTightFinal`),
 which adds the head, the table error (`Final.hclose_final`,
 `Grothe/UpperClose.lean`) and the Hardy tail. The public `UpperTarget`
 threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the
-stricter threshold `1.404599398251`.
+stricter threshold `1.404599398052`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -1113,9 +1132,11 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   `I − R²`, the substitution `y = Rx + Sw`, and Fubini); `I − R² ≻ 0` since
   `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_kdet_pos`).
 * **Residual ledger.** The residual of the proved bound `upper_below_tight` is
-  `tightResidualQ`, approximately 1.5437·10⁻⁶: the comparison
-  `tightThreeBandCompareQ` (96.7%), the head `28153/10¹²` (1.8%), the Hardy tail
-  `233184398/10¹⁶` (1.5%) and the table error `6847009/(5·10¹⁷)` (below 0.001%).
+  `tightResidualQ = 1.54361149222272379448078027965090997314453125·10⁻⁶`: the
+  longer-prefix comparison `tightThreeBandCompareQ`
+  (`1.49212635840472379448078027965090997314453125·10⁻⁶`, 96.66%), the head
+  `28153/10¹²` (1.82%), the Hardy tail `233184398/10¹⁶` (1.51%) and the table error
+  `6847009/(5·10¹⁷)` (about 0.00089%).
   These percentages describe allowances, not fractions of the proof left
   unformalized. Full scope, source bindings and reproduction commands are in
   `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
@@ -1546,6 +1567,8 @@ and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
 complete list; the facts fall into the following groups. `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
+`Grothe.Upper.improved_high_mass_native` (the two complete high-band masses
+for the 51-coefficient costs, including the inherited table-error allowance),
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.phase_cutoff_factor_check` (the exact factor for its squared radial tail),

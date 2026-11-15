@@ -1,0 +1,61 @@
+{
+  "accepted_bounds": {
+    "imaginary_pair_lower": "1/250000",
+    "real_pair_upper": "-1/125000"
+  },
+  "agent_id": "codex-a7c4",
+  "centered_exponential_moments": {
+    "fourth": 9,
+    "third": 2
+  },
+  "explicit_remainder_bounds": {
+    "imaginary_pair": [
+      "0.000000292867631",
+      "0.000000292867632"
+    ],
+    "real_pair": [
+      "0.000001236552220",
+      "0.000001236552221"
+    ]
+  },
+  "family": "q=c X f(Y), f(Y)=|Y|^2-1; X,Y independent remote standard complex Gaussians",
+  "finite_coupling_enclosures": {
+    "Q=f_nu=1": [
+      "-0.000010558959592",
+      "-0.000008085855150"
+    ],
+    "Q=i_f_nu=i": [
+      "0.000004368336054",
+      "0.000004954071317"
+    ]
+  },
+  "imaginary_minus_real": [
+    "0.000012454191205",
+    "0.000015513030909"
+  ],
+  "integral_M": [
+    "-13.183874938294249",
+    "-13.183874938294248"
+  ],
+  "interval_helper_sha256": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+  "normalization": "Q direction ZQ; nu direction nu Z(T-2)/sqrt(2). Mixed second derivative is twice the reported coupling.",
+  "profile": {
+    "a": "699/1250",
+    "b": "179/1250"
+  },
+  "remote_amplitude": "1/1000",
+  "remote_energy": "1/1000000",
+  "scope": "Refutes a single Hermitian scalar-kernel representation of this mixed Hessian; not K, pure odd cost, or a finite-amplitude joint inequality.",
+  "small_c_slopes": {
+    "imaginary_pair": [
+      "4.661203685591619",
+      "4.661203685591620"
+    ],
+    "real_pair": [
+      "-9.322407371183240",
+      "-9.322407371183239"
+    ]
+  },
+  "status": "PASS",
+  "task": 415
+}

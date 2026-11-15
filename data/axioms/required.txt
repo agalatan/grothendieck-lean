@@ -9935,6 +9935,7 @@ Grothe.Upper.BandComparison.quadratic_sum_le_overlap
 Grothe.Upper.BandComparison.weighted_compare
 Grothe.Upper.actual_band_mass
 Grothe.Upper.actual_band_mass_of_energy_error
+Grothe.Upper.actual_improved_threeBand_mass
 Grothe.Upper.comparisonOverlap_separate
 Grothe.Upper.comparisonWeight_sound
 Grothe.Upper.comparison_check
@@ -9944,6 +9945,8 @@ Grothe.Upper.comparison_grouped_budget
 Grothe.Upper.comparison_overlap_budget
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
+Grothe.Upper.improvedWeight_sound
+Grothe.Upper.improved_high_mass_native
 Grothe.Upper.threeBandBands
 Grothe.Upper.threeBandCompareQ
 Grothe.Upper.threeBandCompareQ_exact
