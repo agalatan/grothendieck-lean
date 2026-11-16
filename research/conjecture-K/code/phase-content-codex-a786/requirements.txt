@@ -1,0 +1,2 @@
+# phase_content/requirements.txt
+python-flint==0.9.0
