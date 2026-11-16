@@ -91,6 +91,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Tint_grid
 #print axioms Grothe.LowerAnalytic.VOf_eq
 #print axioms Grothe.LowerAnalytic.VOf_frame_with_penalty
+#print axioms Grothe.LowerAnalytic.anchored_pair_nu
 #print axioms Grothe.LowerAnalytic.anchored_pair_poly
 #print axioms Grothe.LowerAnalytic.budget_c
 #print axioms Grothe.LowerAnalytic.budget_w
