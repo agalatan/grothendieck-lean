@@ -85,9 +85,12 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Circular.specV2_eq
 #print axioms Grothe.LowerAnalytic.Circular.specV4_eq
 #print axioms Grothe.LowerAnalytic.Circular.tensorFacts
+#print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qf
+#print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
+#print axioms Grothe.LowerAnalytic.TintNu_grid
 #print axioms Grothe.LowerAnalytic.Tint_grid
 #print axioms Grothe.LowerAnalytic.VOf_eq
 #print axioms Grothe.LowerAnalytic.VOf_eq_hat
@@ -95,6 +98,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.VhatOf_frame
 #print axioms Grothe.LowerAnalytic.anchored_pair_nu
 #print axioms Grothe.LowerAnalytic.anchored_pair_poly
+#print axioms Grothe.LowerAnalytic.bounds_matINu
 #print axioms Grothe.LowerAnalytic.budget_c
 #print axioms Grothe.LowerAnalytic.budget_w
 #print axioms Grothe.LowerAnalytic.capCoverFastOK_eq
@@ -9908,7 +9912,9 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.pieceRange_15x290_9
 #print axioms Grothe.LowerAnalytic.pieceRepair_14x150p0_check
 #print axioms Grothe.LowerAnalytic.pot_le_of_nodeOK
+#print axioms Grothe.LowerAnalytic.pot_le_of_nodeOKNu
 #print axioms Grothe.LowerAnalytic.pot_le_of_pieceOK
+#print axioms Grothe.LowerAnalytic.pot_le_of_piecesNu
 #print axioms Grothe.LowerAnalytic.psiT_le_majPoly
 #print axioms Grothe.LowerAnalytic.psiT_le_majPoly_of_cellOKNu
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
