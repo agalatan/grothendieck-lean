@@ -1,0 +1,29 @@
+{
+  "status": "C PASS",
+  "momentInstances": [
+    {
+      "factors": 3,
+      "dimension": 2,
+      "varianceOfConditionalVariance": "17344"
+    },
+    {
+      "factors": 2,
+      "dimension": 2,
+      "varianceOfConditionalVariance": "3584"
+    }
+  ],
+  "radiusRoomAt81Over100": "26502185939/7010000000000",
+  "rankOneBounds": {
+    "seven": "194/525",
+    "eight": "137/400"
+  },
+  "basisBoundAtDimensionEight": "605/1644",
+  "basisShiftedPolynomial": [
+    "656",
+    "3011",
+    "539",
+    "22"
+  ],
+  "verifiedProfileRows": 6,
+  "arithmetic": "Gaussian integers, integers and rational comparisons"
+}

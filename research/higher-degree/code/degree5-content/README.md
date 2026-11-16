@@ -27,8 +27,9 @@ For a remote cubic q ∈ H₂,₁ with V = |q|² and u = E V, the first-chaos co
 
     k(v) = E h(v + uτ), τ ~ Exp(1),      Ω̂[h] = (3/2)·E[V·k′(V)²] − (3/4)·(E[V·k′(V)])²/u.
 
-The quantity the ledger rows speak of is the ratio ‖c[h]‖²/(δ·Ω̂[h]), δ = E V² − 2u², on the energies
-u/u* ∈ [0.5, 1.3]; u* is the row's Gaussian energy, the maximiser of E ψ(√(u·τ)) − cost(u) (`rowlib.Row`).
+The quantity the ledger rows speak of is the ratio ‖c[h]‖²/(δ·Ω̂[h]), δ = E V² − 2u². Rows 4.20 and 4.27 of the
+ledger measure it on u/u* ∈ [0.5, 1.3]; the band of each row on which the content law is needed is in
+`../../sources/content-problem-v2-2026-11-16/PROBLEM_V2.md` §2. u* is the row's Gaussian energy, the maximiser of E ψ(√(u·τ)) − cost(u) (`rowlib.Row`).
 
 ## Files
 

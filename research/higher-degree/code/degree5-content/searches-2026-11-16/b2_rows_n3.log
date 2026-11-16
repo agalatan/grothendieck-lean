@@ -1,0 +1,19 @@
+start: the maximiser of out/b2_gen3_5_u0.85_n3_free.json (ratio 0.1925)
+t=0.80 n=3 u/u*=0.70: largest ratio A 0.2265 chi 9.56 T_rice 0.8205 (possible) | it 41 | alpha 0.249 l 0.000 L 0.000 Q 0.490 F 0.000 R3 0.260 | cof |m| [0.57 0.41] ph/pi [ 0.25 -0.19]
+t=0.80 n=3 u/u*=0.85: largest ratio A 0.1925 chi 9.27 T_rice 0.8047 (possible) | it 75 | alpha 0.239 l 0.000 L 0.000 Q 0.490 F 0.000 R3 0.272 | cof |m| [0.57 0.4 ] ph/pi [ 0.26 -0.2 ]
+t=0.80 n=3 u/u*=1.00: largest ratio A 0.1679 chi 9.06 T_rice 0.7876 (possible) | it 47 | alpha 0.231 l 0.000 L 0.000 Q 0.489 F 0.000 R3 0.280 | cof |m| [0.57 0.4 ] ph/pi [ 0.27 -0.2 ]
+t=0.82 n=3 u/u*=0.70: largest ratio A 0.2921 chi 10.13 T_rice 0.8363 (possible) | it 66 | alpha 0.268 l 0.000 L 0.000 Q 0.494 F 0.000 R3 0.239 | cof |m| [0.56 0.42] ph/pi [ 0.24 -0.18]
+t=0.82 n=3 u/u*=0.85: largest ratio A 0.2493 chi 9.76 T_rice 0.8245 (possible) | it 49 | alpha 0.256 l 0.000 L 0.000 Q 0.491 F 0.000 R3 0.253 | cof |m| [0.57 0.41] ph/pi [ 0.25 -0.19]
+t=0.82 n=3 u/u*=1.00: largest ratio A 0.2179 chi 9.49 T_rice 0.8124 (possible) | it 45 | alpha 0.247 l 0.000 L 0.000 Q 0.491 F 0.000 R3 0.263 | cof |m| [0.57 0.41] ph/pi [ 0.26 -0.19]
+t=0.84 n=3 u/u*=0.70: largest ratio A 0.4031 chi 11.07 T_rice 0.8520 (possible) | it 112 | alpha 0.298 l 0.000 L 0.000 Q 0.493 F 0.000 R3 0.209 | cof |m| [0.55 0.43] ph/pi [ 0.23 -0.17]
+t=0.84 n=3 u/u*=0.85: largest ratio A 0.3461 chi 10.60 T_rice 0.8440 (possible) | it 52 | alpha 0.283 l 0.000 L 0.000 Q 0.493 F 0.000 R3 0.224 | cof |m| [0.56 0.42] ph/pi [ 0.23 -0.18]
+t=0.84 n=3 u/u*=1.00: largest ratio A 0.3040 chi 10.23 T_rice 0.8359 (possible) | it 56 | alpha 0.271 l 0.000 L 0.000 Q 0.493 F 0.000 R3 0.236 | cof |m| [0.56 0.42] ph/pi [ 0.24 -0.18]
+t=0.845 n=3 u/u*=0.70: largest ratio A 0.4441 chi 11.51 T_rice 0.8559 (possible) | it 45 | alpha 0.309 l 0.000 L 0.000 Q 0.498 F 0.000 R3 0.194 | cof |m| [0.55 0.44] ph/pi [ 0.22 -0.16]
+t=0.845 n=3 u/u*=0.85: largest ratio A 0.3822 chi 10.91 T_rice 0.8488 (possible) | it 69 | alpha 0.292 l 0.000 L 0.000 Q 0.494 F 0.000 R3 0.214 | cof |m| [0.56 0.43] ph/pi [ 0.23 -0.17]
+t=0.845 n=3 u/u*=1.00: largest ratio A 0.3363 chi 10.54 T_rice 0.8416 (NOT possible) | it 39 | alpha 0.280 l 0.000 L 0.000 Q 0.495 F 0.000 R3 0.225 | cof |m| [0.56 0.42] ph/pi [ 0.23 -0.18] | with (R1) enforced: 0.2997 (T_rice 0.8424, chi 7.92; alpha 0.230 Q 0.417 R3 0.353)
+t=0.85 n=3 u/u*=0.70: largest ratio A 0.4940 chi 11.91 T_rice 0.8597 (possible) | it 93 | alpha 0.321 l 0.000 L 0.000 Q 0.496 F 0.000 R3 0.182 | cof |m| [0.55 0.44] ph/pi [ 0.21 -0.16]
+t=0.85 n=3 u/u*=0.85: largest ratio A 0.4263 chi 11.32 T_rice 0.8536 (possible) | it 37 | alpha 0.304 l 0.000 L 0.000 Q 0.497 F 0.000 R3 0.200 | cof |m| [0.55 0.44] ph/pi [ 0.22 -0.17]
+t=0.85 n=3 u/u*=1.00: largest ratio A 0.3758 chi 10.86 T_rice 0.8473 (NOT possible) | it 39 | alpha 0.290 l 0.000 L 0.000 Q 0.496 F 0.000 R3 0.214 | cof |m| [0.56 0.43] ph/pi [ 0.23 -0.17] | with (R1) enforced: 0.3720 (T_rice 0.8476, chi 9.79; alpha 0.269 Q 0.471 R3 0.261)
+t=0.855 n=3 u/u*=0.70: largest ratio A 0.5561 chi 12.55 T_rice 0.8635 (possible) | it 48 | alpha 0.338 l 0.000 L 0.000 Q 0.494 F 0.000 R3 0.168 | cof |m| [0.54 0.45] ph/pi [ 0.2  -0.15]
+t=0.855 n=3 u/u*=0.85: largest ratio A 0.4814 chi 11.79 T_rice 0.8583 (possible) | it 91 | alpha 0.318 l 0.000 L 0.000 Q 0.496 F 0.000 R3 0.186 | cof |m| [0.55 0.44] ph/pi [ 0.22 -0.16]
+t=0.855 n=3 u/u*=1.00: largest ratio A 0.4254 chi 11.32 T_rice 0.8530 (possible) | it 62 | alpha 0.303 l 0.000 L 0.000 Q 0.498 F 0.000 R3 0.199 | cof |m| [0.55 0.44] ph/pi [ 0.22 -0.17]

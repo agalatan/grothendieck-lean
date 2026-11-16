@@ -1,0 +1,4 @@
+PASS: both verifiers reject negative majorant
+PASS: both verifiers reject indefinite nodal matrix
+PASS: both verifiers reject invalid support budget
+PASS: both verifiers reject uncovered s interval

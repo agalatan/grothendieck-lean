@@ -8,17 +8,18 @@ certified 1.404, because the upper bound 1.404599395362 is already below 1.4046.
 This folder records what is known about higher-degree games:
 - their numerical values and the responses that bind them;
 - what the dual side and a first test of roundings show;
-- the design of a degree-5 certificate.
+- the degree-5 certificate programme: its design, a conditional certificate for a capped game, and what is known
+  about the sector inequality that the certificate assumes.
 
-It is research material: nothing here is imported by Lean or checked by CI. **Every value in it is numerical (N)**,
-apart from the statements quoted from other ledgers.
+It is research material: nothing here is imported by Lean or checked by CI. **The game values and margins are
+numerical (N)**; the rows of `STATUS.md` §4 marked **C** or **P** name their author and checker.
 
 | file | what it is |
 |---|---|
 | `README.md` | this file: notation, the state in brief, reading order |
 | [`STATUS.md`](STATUS.md) | **the ledger**: every statement with its scope, status, author and source |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository (logs, numerical archives, downloaded sources), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working reports (primal/dual search, degree-5 design, literature notes) |
+| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions) |
 | `code/` | the scripts behind them and the small result files the ledger cites |
 
 **Living documents.** `STATUS.md` is edited in place by every PR that changes the state of knowledge; copies under
@@ -47,6 +48,25 @@ record.
   - B, X11, Y: remote (2,0), (1,1), and real (1,1).
   - h∘ρ: preprocessed phase.
   - The plain phase z/|z|.
+- **The certificate rows** (STATUS §4).
+  - t = ‖P₁,₀(f + g)/2‖ is the visible linear part of a unimodular pair (f, g), and V = Re⟨f, T_λ g⟩ its value. A row
+    is a choice of multipliers (ℓ, β, b_A, b_B, ν₅) made for one t; its bound is a parabola in t (STATUS 4.1). The
+    envelope is the maximum over t of the smallest row bound, and the room of a row is 500/701 minus its bound.
+  - q is the remote cubic of a response, u = E|q|² its energy, δ = E|q|⁴ − 2u² its fourth cumulant and χ = δ/u². In
+    rows 4.19–4.28, V also stands for |q|². With ψ the potential of the row and B₅(u) its Gaussian value at the
+    energy u, D(q) = B₅(u) − E ψ(|q|) is the deficit of q, S₅ = sup_u[B₅(u) − cost(u)] the benchmark of the row,
+    and u\* (written σ\*² in some rows) its reference energy, the energy at which that supremum is attained.
+  - K₅ is the sector inequality of a row, Λ₅ ≤ S₅ + η₅ with an allowance η₅ (STATUS 4.1). The A and B shells are
+    its two sectors of first order: visible |z|² − 1 with a remote linear form, and visible z²/√2 with a remote
+    antilinear form.
+  - For a radial profile h, c[h] = Π₁[q·h(|q|²)] is the first-chaos content of q and e\* its direction;
+    k(v) = E h(v + uτ) with τ ~ Exp(1), and Ω̂[h] = (3/2)E[V·k′(V)²] − (3/4)(E[V·k′(V)])²/u. The content law is
+    ‖c[h]‖² ≤ θ·δ·Ω̂[h]; the thresholds of STATUS 4.19 are the values of θ that keep a row inside its room.
+  - The junta is a cubic of one coordinate, the Wick monomial H(y) = y(|y|² − 2)/√2. A spike is such a coordinate
+    in a diffuse bulk and c its coefficient; in the one-spike family of STATUS 4.23, c² is its share of the
+    energy and ρ = c/√(2(1 − c²)).
+  - M1a, M1b and M2 are milestones of issue #453: the conditional certificate, the research gate and the sharing
+    lemma.
 
 ## The state in brief
 
@@ -58,12 +78,16 @@ record.
 | 7 | (1, −0.906596, 0.541570, −0.242531) | 1.404113 |
 | 9 | (1, −0.93600, 0.72057, −0.59202, 0.23468) | 1.40430 |
 
-- **Bracket.** The heuristic bracket is 1.4043 ≲ K_G^ℂ ≤ 1.404599395362. Haagerup's 1/γ† = 1.404575934663742 lies
-  inside it. No rounding built from the binding responses beats Haagerup's γ_H (STATUS 3.3).
-- **The degree-5 programme.** The game is capped at λ₁ = −39/50 by the proved radius bound: (1, −39/50, 779/10000),
-  model value 1.402785 (STATUS 1.10, 4.12). A certificate for 1.402 is computed over all t, conditional on a
-  sector inequality K₅ on each row, with 3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). K₅ is open: the
-  content band t ∈ [0.80, 0.855] and small t are the two gaps (STATUS §5). The work runs under issue #453.
+- **Bracket.** The heuristic bracket is 1.4043 ≲ K_G^ℂ ≤ 1.404599395362. Its left end is a model value, not a bound
+  (STATUS 1.8). Haagerup's 1/γ† = 1.404575934663742 lies inside it. No rounding built from the binding responses
+  beats Haagerup's γ_H (STATUS 3.3).
+- **The degree-5 programme.** At t = 0 a row bound is at least λ₁ρ\*², so the proved radius bound caps the cubic
+  weight λ₁ (STATUS 4.12; the games per cap are in 1.10). For the game (1, −39/50, 779/10000), model value 1.402785,
+  a certificate for 1.402 is computed over all t, conditional on a sector inequality K₅ on each row, with 3.7·10⁻⁴ of
+  room at the binding rows (STATUS 4.17). It has one author and no independent replay. K₅ is open in several parts
+  (STATUS §5): the content band t ∈ [0.80, 0.855], where on t = 0.80 and 0.82 it is not known whether the content
+  inequality holds in every dimension (STATUS 4.28); certified constants on t ≥ 0.86; the rows 0.1365 < t < 0.65;
+  and the other pieces of the gate (STATUS 4.16). The work runs under issue #453.
 
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the
 sources it cites.
