@@ -423,6 +423,16 @@ proved family constants 0.22 to 0.239 [N · STATUS §9]. The best known value is
 X[(|X|² − 2) + z(|Y|² − 1)], z = 0.0528 + 0.2212i, at 0.08760259435; the Wick monomial (0.0875653) is a saddle, not the
 maximiser [N · 6.4.2; chapter 4, item 20].
 
+**An antiholomorphic Stein calculus.** For q ∈ H₂,₁ one has E[G·q] = Σ_j E[∂_jG·∂̄_jq]. Put a = Σ_j ∂_jq·∂̄_jq and
+c₂ = Σ_j|∂̄_jq|². The pair (a, c₂ − u) carries the fourth excess exactly:
+δ = ‖P₂,₀(q²)‖² + ‖P₃,₁(q²)‖² + 2‖c₂ − u‖², with a = P₂,₀(q²) + ½P₃,₁(q²) [P + C · 6.3.20, 6.3.21]. Content and
+deficit are linear in that pair: E[ȳ_e q h(V)] = E[ȳ_e k′(V)(q̄a + q(c₂ − u))] for every continuous radial profile h
+of polynomial growth, with the one-dimensional transform k = E h(· + uτ), and D(q) has the parallel form
+[P · 6.3.23, 6.3.24]. Cauchy–Schwarz then gives ‖c‖² ≤ δ·sup_e Ω_e, with no supremum over the radius and an exact
+budget [P · 6.3.25]. This is a bound only once sup_e Ω_e has a certified majorant, which it does not have. For the
+raw functional the route cannot reach the constants 0.10 and 0.15: it gives 0.229·D on a two-variable cubic
+[N · item 91]. For the tilt 3/5 the largest value found is 0.048·D [N · ledger §9, KAS].
+
 ### 2.6 The A-sector of the retained functional: the tilted lemma
 
 Fix the tilt s = 3/5 and put A = T − 2/5, P = p − 9/25 = 0.962052, k = P − 13/20 = 59009/189100 = 0.31205 and
@@ -1094,7 +1104,7 @@ restriction on the amplitude at every tilt tried [11.17].
 | 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 | `third-audit-2026-11-15-codex-a7c4/CONTENT_KERNELS.md`, `reaudit-2026-11-15-codex-a7c4/SECTORS.md` | `third-audit-2026-11-15-codex-a7c4/` |
 | 2.1 remote part | 3.1–3.19, 11.7–11.11, 12.8 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.5 | `third-audit-…/POTENTIAL.md`, `audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md`, `audit-2026-11-15-codex-a7c4/CLAIMS.md` | `third-audit-2026-11-15-codex-a7c4/` |
-| 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py` |
+| 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md`, `antiholomorphic-stein-2026-11-16/` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py`, `antiholomorphic-stein-2026-11-16/` |
 | 2.6 tilted lemma, retained A-core | 11.25–11.54, 11.56–11.58 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md`; `phase-content-2026-11-16-codex-a786/` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py`; `phase-content-codex-a786/` |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
 | 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md`, `odd-gap-2026-11-15-codex-91d4/`, `joint-edgeworth-2026-11-15-codex-91d4/`, `odd-AB-small-shell-2026-11-15/PROOF.md`, `uniform-local-2026-11-15-codex-4d8a/`, `round3-2026-11-15-codex-c7e2/`, `partial-q-2026-11-15-codex-91d4/` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/`, `odd-AB-small-shell-2026-11-15/`, `uniform-local-codex-4d8a/`, `round3-codex-c7e2/` |

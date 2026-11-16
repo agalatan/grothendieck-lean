@@ -866,3 +866,18 @@ The notes are copied from `/Users/alingalatan/workspaces/grothe-codex-a7c4-inter
 The author PDF used to inspect the exponents of Raghavendra–Steurer is not committed: `papers/raghavendra-steurer.pdf` in that working directory, 328,396 B, SHA-256 `623bf225425245c738b73d0b22feaa3a8b1444956a8085dbe6326582da871da4`. Downloaded from <https://www.dsteurer.org/paper/grothendieck.pdf>. Its text extraction and two page renders are disposable inspection files. No build, cloud job, or binary artifact is part of this research record.
 
 The Nourdin–Peccati book (Cambridge, 2012) was inspected using the user-supplied copy (not in the repository); 1,221,289 B, SHA-256 `dc30ba3537634dc9411750d717629d242d564457229e429cd687f1c46caa464d`. Neither the PDF nor its text extraction or page render is committed; only original reading notes and the derived estimate are included. Printed page p is PDF page p+16 in this copy.
+
+## Antiholomorphic Stein calculus (a Claude session of the user, 16 November 2026)
+
+`sources/antiholomorphic-stein-2026-11-16/` holds the delivery's `README.md` and `NOTE.md` and the independent `REVIEW.md`;
+`code/antiholomorphic-stein-2026-11-16/` holds the scripts (STATUS 6.3.20–6.3.25, the KAS row of §9, item 91). The three
+documents are verbatim copies; only their first lines were added. The delivery's README states its results before the
+review: read it with `REVIEW.md` §7, whose findings the ledger rows follow.
+- **Replay.** `python3 -I scripts/check_identities_exact.py` (standard library, 2 s) runs the exact checks. `run_all.sh`
+  replays the numerics (numpy, scipy; about one hour, the two surveys dominate); its scripts import each other from
+  `numerics/`, so they do not run under `-I`. The review worker replayed all of it.
+- **`review/`** holds four scripts of the review: `exact_check.py` (its own exact check with sympy, 80 s),
+  `indep.py` (its own model of the peak profiles), `eval_o1.py <folder of indep.py>` and `t3_mono_mp.py` (mpmath).
+- **Not copied.** The zip (35,108 B), the delivery's logs and the rest of the review's scripts and logs stay in the local
+  folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/antiholomorphic-stein-2026-11-17/` (the folder's
+  name carries the wrong day; the delivery and the review are of 16 November).
