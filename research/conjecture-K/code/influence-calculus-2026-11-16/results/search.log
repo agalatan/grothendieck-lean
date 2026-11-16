@@ -1,0 +1,4 @@
+tilt u=0.02: largest T9/D found = 0.1052 at chi=9.2 (C2/D there 0.0002; 11.49 there: gamma*delta/D=0.0967)
+tilt u=0.02: largest min(T9,gamma*delta)/D found = 0.1002 at chi=9.9 (C2/D there 0.0009; 11.49 there: gamma*delta/D=0.1002)
+tilt u=0.0463: largest T9/D found = 0.1290 at chi=9.2 (C2/D there 0.0003; 11.49 there: gamma*delta/D=0.1033)
+tilt u=0.0463: largest min(T9,gamma*delta)/D found = 0.1161 at chi=10.6 (C2/D there 0.0034; 11.49 there: gamma*delta/D=0.1162)

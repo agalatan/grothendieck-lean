@@ -1,0 +1,18 @@
+PASS random n=1 trial=0: u=10/9, chi=42.0000, (||J1||^2+||I2||^2)/delta=0.1190, ||P20 Q||^2/delta=0.1905, ||P31 Q||^2/delta=0.5714
+PASS random n=1 trial=1: u=20/9, chi=42.0000, (||J1||^2+||I2||^2)/delta=0.1190, ||P20 Q||^2/delta=0.1905, ||P31 Q||^2/delta=0.5714
+PASS random n=2 trial=0: u=503/90, chi=18.3698, (||J1||^2+||I2||^2)/delta=0.2301, ||P20 Q||^2/delta=0.0977, ||P31 Q||^2/delta=0.4421
+PASS random n=2 trial=1: u=4561/225, chi=14.7146, (||J1||^2+||I2||^2)/delta=0.1921, ||P20 Q||^2/delta=0.0594, ||P31 Q||^2/delta=0.5564
+PASS random n=2 trial=2: u=419/24, chi=17.3794, (||J1||^2+||I2||^2)/delta=0.1903, ||P20 Q||^2/delta=0.1250, ||P31 Q||^2/delta=0.4943
+PASS random n=2 trial=3: u=1709/100, chi=14.7119, (||J1||^2+||I2||^2)/delta=0.1946, ||P20 Q||^2/delta=0.1664, ||P31 Q||^2/delta=0.4445
+PASS random n=2 trial=4: u=115/9, chi=15.8991, (||J1||^2+||I2||^2)/delta=0.1750, ||P20 Q||^2/delta=0.1503, ||P31 Q||^2/delta=0.4997
+PASS random n=3 trial=0: u=35737/450, chi=10.8564, (||J1||^2+||I2||^2)/delta=0.1969, ||P20 Q||^2/delta=0.1092, ||P31 Q||^2/delta=0.4970
+PASS random n=3 trial=1: u=22273/300, chi=10.6761, (||J1||^2+||I2||^2)/delta=0.2346, ||P20 Q||^2/delta=0.0907, ||P31 Q||^2/delta=0.4401
+PASS random n=3 trial=2: u=223619/1800, chi=13.0841, (||J1||^2+||I2||^2)/delta=0.2098, ||P20 Q||^2/delta=0.0754, ||P31 Q||^2/delta=0.5050
+PASS Wick monomial :X^2 conj(X):: u=2, chi=42.0000, (||J1||^2+||I2||^2)/delta=0.1190, ||P20 Q||^2/delta=0.1905, ||P31 Q||^2/delta=0.5714
+PASS X^2 conj(Y): u=2, chi=10.0000, (||J1||^2+||I2||^2)/delta=0.5000, ||P20 Q||^2/delta=0.0000, ||P31 Q||^2/delta=0.0000
+PASS X^2(1 conj X + 1 conj Y): u=4, chi=24.0000, (||J1||^2+||I2||^2)/delta=0.2083, ||P20 Q||^2/delta=0.0833, ||P31 Q||^2/delta=0.5000
+PASS X^2(1 conj X + 2 conj Y): u=10, chi=15.1200, (||J1||^2+||I2||^2)/delta=0.3307, ||P20 Q||^2/delta=0.0212, ||P31 Q||^2/delta=0.3175
+PASS X^2(2 conj X + 1 conj Y): u=10, chi=34.3200, (||J1||^2+||I2||^2)/delta=0.1457, ||P20 Q||^2/delta=0.1492, ||P31 Q||^2/delta=0.5594
+PASS X^2(1 conj X + 3 conj Y): u=20, chi=12.4800, (||J1||^2+||I2||^2)/delta=0.4006, ||P20 Q||^2/delta=0.0064, ||P31 Q||^2/delta=0.1923
+PASS X^2(3 conj X + 1 conj Y): u=20, chi=38.0800, (||J1||^2+||I2||^2)/delta=0.1313, ||P20 Q||^2/delta=0.1702, ||P31 Q||^2/delta=0.5672
+ALL 17 EXACT CHECKS PASSED

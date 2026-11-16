@@ -1,0 +1,4 @@
+tilt u=0.02: sup|(v k')'|=1.0302, sup|v k''|=0.3202, Prop 10: ||B_h||^2 <= 1.1126*delta; Bessel (Gaussian law): sB^2=5.683e-04 = 1.4207*u^2, so Prop 10 is the smaller for chi < 1.28
+tilt u=0.0463: sup|(v k')'|=0.9105, sup|v k''|=0.2849, Prop 10: ||B_h||^2 <= 0.8696*delta; Bessel (Gaussian law): sB^2=1.669e-03 = 0.7786*u^2, so Prop 10 is the smaller for chi < 0.90
+raw u=0.02: sup|(v k')'|=1.9595, sup|v k''|=0.5598, Prop 10: ||B_h||^2 <= 3.9964*delta; Bessel (Gaussian law): sB^2=2.189e-03 = 5.4727*u^2, so Prop 10 is the smaller for chi < 1.37
+raw u=0.0463: sup|(v k')'|=1.7655, sup|v k''|=0.5051, Prop 10: ||B_h||^2 <= 3.2444*delta; Bessel (Gaussian law): sB^2=7.077e-03 = 3.3015*u^2, so Prop 10 is the smaller for chi < 1.02

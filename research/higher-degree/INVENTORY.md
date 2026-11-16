@@ -52,6 +52,10 @@ folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-res
 - `cert2/` (44 MB) and `cert2b/` (41 MB): the certificate of 4.17. `cert2b/replay2b_all.py` is the single replay
   checker; its logs are `cert2b/out/replay2b_*.log`;
 - `smallt/` (1.1 MB): the 412 certificates of 4.18, with `reverify.py` and the exact `assemble.py`;
-- `content5/` (4.4 MB): the scripts and outputs of 4.19 (`code/`, `out/`).
+- `content5/` (4.4 MB): the scripts and outputs of 4.19 (`code/`, `out/`). Copied from it into `code/degree5-content/`:
+  the profile generator (`prof.py`, `tilt.py`), `rows5.lines`, `rowlib.py`, `t4lib.py`, `t4fam.py`, `rice.py` and
+  `lawstein.py`, unedited. The six JSON tables `code/degree5-content/profiles/band_row_<t>.json` were exported from
+  its `out/prof_<k>.npz` (k = 5, 7, 9, 10, 11, 12) by `export_profiles.py`; `check_profiles.py` and its log check
+  them against the definitions. The `.npz` tables, the searches and the logs stay in the working folder.
 
 The certificate needs python-flint; it ran on a rented droplet whose run folders are deleted.

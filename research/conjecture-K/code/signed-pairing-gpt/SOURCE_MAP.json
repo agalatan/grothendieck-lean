@@ -1,0 +1,36 @@
+{
+  "repository": "https://github.com/agalatan/grothendieck-lean",
+  "commit": "b008629992e5dc6ff5672eb16c3ea72d59dcbccb",
+  "sources": [
+    {
+      "path": "research/higher-degree/STATUS.md",
+      "blob_sha": "1a53f8a33175a7db7969b4a4a563111b0b99629b",
+      "unchanged_from_initial_read": true,
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/b008629992e5dc6ff5672eb16c3ea72d59dcbccb/research/higher-degree/STATUS.md"
+    },
+    {
+      "path": "research/higher-degree/sources/degree5-capped-2026-11-16/CONTENT_LEMMA_D5.md",
+      "blob_sha": "cad5bd866f171c5dfa030b4b2b6aefc207942d1b",
+      "unchanged_from_initial_read": true,
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/b008629992e5dc6ff5672eb16c3ea72d59dcbccb/research/higher-degree/sources/degree5-capped-2026-11-16/CONTENT_LEMMA_D5.md"
+    },
+    {
+      "path": "research/conjecture-K/STATUS.md",
+      "blob_sha": "aa2b4439a113470c9b9ea89c870b30ff876544cd",
+      "unchanged_from_initial_read": true,
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/b008629992e5dc6ff5672eb16c3ea72d59dcbccb/research/conjecture-K/STATUS.md"
+    },
+    {
+      "path": "research/conjecture-K/sources/antiholomorphic-stein-2026-11-16/NOTE.md",
+      "blob_sha": "daef77b15cf3413b67c8d291e56f9878c1a6bef9",
+      "unchanged_from_initial_read": true,
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/b008629992e5dc6ff5672eb16c3ea72d59dcbccb/research/conjecture-K/sources/antiholomorphic-stein-2026-11-16/NOTE.md"
+    },
+    {
+      "path": "research/conjecture-K/sources/antiholomorphic-stein-2026-11-16/REVIEW.md",
+      "blob_sha": "131201a5d97e5933e57d289a2f510bad6154d1b5",
+      "unchanged_from_initial_read": true,
+      "url": "https://github.com/agalatan/grothendieck-lean/blob/b008629992e5dc6ff5672eb16c3ea72d59dcbccb/research/conjecture-K/sources/antiholomorphic-stein-2026-11-16/REVIEW.md"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+peak:0.0463: 1500 random cubics: ratio mean 0.9963 max 0.99846 fraction >= 1: 0.0000 (79s)
+  local search 0: start 0.99846 -> sup_t min_e ratio >= 0.998596; (A,B,C,L2,R2)/u at best e: [0.0662 0.1957 0.1521 0.1009 0.2232] (441s)

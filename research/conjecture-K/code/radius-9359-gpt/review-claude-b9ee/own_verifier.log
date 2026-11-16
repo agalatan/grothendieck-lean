@@ -1,0 +1,7 @@
+s in [0, 3]: 21 segments + tail, 80 Bernstein leaves, endpoint bounds 0.927140434818, 0.934615300504  <= 0.9359
+s in [3, 21/4]: 21 segments + tail, 84 Bernstein leaves, endpoint bounds 0.935399761053, 0.935610941607  <= 0.9359
+s in [21/4, 25/4]: 42 segments + tail, 138 Bernstein leaves, endpoint bounds 0.935827379384, 0.935886270585  <= 0.9359
+s in [25/4, 57/8]: 42 segments + tail, 134 Bernstein leaves, endpoint bounds 0.935887717895, 0.935898597609  <= 0.9359
+s in [57/8, 45/4]: 21 segments + tail, 82 Bernstein leaves, endpoint bounds 0.935891198857, 0.935744435207  <= 0.9359
+s in [45/4, 42]: 21 segments + tail, 84 Bernstein leaves, endpoint bounds 0.935374595196, 0.904289940084  <= 0.9359
+ALL CHECKS PASS: 6 certificates cover [0, 42]; 602 leaves; largest endpoint bound 0.935898597609

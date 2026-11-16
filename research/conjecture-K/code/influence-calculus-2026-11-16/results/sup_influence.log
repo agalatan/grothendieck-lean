@@ -1,0 +1,13 @@
+Theorem 7(a) check: max |P11 coefficients - (J1+I2)| = 38.88610946893518  vs 2.1316296624930054e-14
+M  n=2: sup ratio found = 0.507330   at chi=9.380, l1/u=1.8511, l2/u=0.9915, ||M||^2/delta=0.5073
+M  n=3: sup ratio found = 0.558797   at chi=5.794, l1/u=1.1663, l2/u=0.8627, ||M||^2/delta=0.5588
+L  n=2: sup ratio found = 0.500000   at chi=10.000, l1/u=2.0000, l2/u=1.0000, ||M||^2/delta=0.5000
+L  n=3: sup ratio found = 0.499999   at chi=9.984, l1/u=1.9984, l2/u=0.9993, ||M||^2/delta=0.5000
+l1 n=2: sup ratio found = 0.400000   at chi=10.000, l1/u=2.0000, l2/u=1.0000, ||M||^2/delta=0.5000
+l1 n=3: sup ratio found = 0.404461   at chi=8.856, l1/u=1.8926, l2/u=0.8991, ||M||^2/delta=0.5019
+l2 n=2: sup ratio found = 0.106747   at chi=9.271, l1/u=1.7543, l2/u=0.9948, ||M||^2/delta=0.4999
+l2 n=3: sup ratio found = 0.167584   at chi=5.940, l1/u=0.9704, l2/u=0.9978, ||M||^2/delta=0.5058
+J  n=2: sup ratio found = 0.400000   at chi=10.000, l1/u=2.0000, l2/u=1.0000, ||M||^2/delta=0.5000
+J  n=3: sup ratio found = 0.405969   at chi=8.565, l1/u=1.8602, l2/u=0.8701, ||M||^2/delta=0.5027
+I  n=2: sup ratio found = 0.106750   at chi=9.271, l1/u=1.7542, l2/u=0.9948, ||M||^2/delta=0.4999
+I  n=3: sup ratio found = 0.167584   at chi=5.940, l1/u=0.9703, l2/u=0.9977, ||M||^2/delta=0.5059
