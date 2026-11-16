@@ -121,7 +121,7 @@ removed by the rotation `z ↦ (u/|u|) z` of the fibre. -/
 theorem fibreExprC_le_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.psdOK = true)
     (hR : R.psdOK = true) {f g : ℂ → ℂ} (hfm : Measurable f) (hgm : Measurable g)
     (hfb : ∀ z, ‖f z‖ ≤ 1) (hgb : ∀ z, ‖g z‖ ≤ 1) (u : ℂ) :
-    fibreExprC E R ℓ β b1 b2 b3 f g u ≤ pot E R ℓ β (aFib b1 b2 b3) ‖u‖ := by
+    fibreExprC E R ℓ β b1 b2 b3 f g u ≤ pot E R ℓ β (aFib b1 b2 b3) 0 ‖u‖ := by
   by_cases hu : u = 0
   · subst hu
     simpa [fibreExpr, fibreExprC] using fibreExpr_le_pot E R ℓ β (aFib b1 b2 b3) hE hR

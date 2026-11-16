@@ -158,6 +158,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.capRange18_1
 #print axioms Grothe.LowerAnalytic.capRange18_2
 #print axioms Grothe.LowerAnalytic.capRange18_3
+#print axioms Grothe.LowerAnalytic.capsHold_pot
 #print axioms Grothe.LowerAnalytic.capsHold_rowPot
 #print axioms Grothe.LowerAnalytic.chaos3_reW
 #print axioms Grothe.LowerAnalytic.chargeSplit_circular

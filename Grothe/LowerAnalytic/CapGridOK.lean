@@ -160,7 +160,7 @@ lemma aFib_vec (r : Grothe.Lower.Row) (j : ℕ) (hj : j < 12) :
 theorem pot_le_of_nodeOK (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ) (rec : Recipe)
     (Nr N : ℕ) (h : ℚ) (T : Tables) (hT : TablesOK Nr N h T) (hh : 0 < h) (hN : 0 < N)
     (hNr : 0 < Nr) (hchk : nodeOK r Rg s c rec Nr N h T = true) :
-    pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) s - Grothe.Lower.capPad ≤ c := by
+    pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s - Grothe.Lower.capPad ≤ c := by
   simp only [nodeOK, Bool.and_eq_true] at hchk
   obtain ⟨hp, hpc⟩ := hchk
   have hok := gridOK_mkGrid r.ell r.beta rec T hh hN hNr

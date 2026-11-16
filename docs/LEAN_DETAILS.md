@@ -1256,10 +1256,15 @@ is proved for n ≥ 2 from the node caps of the 19 certified fibre potentials al
 PotentialReg,Tensor,Pieces,KSide,FibreIntegral,RowGaussian,Frame,Reduction}.lean`): a unitary frame moves
 P₁,₀h to the visible coordinate ζ₀ = z₀/√2 (`exists_Cop_eq`); the Gaussian measure splits as
 γ_ℂ ⊗ γ_{remote} (`split2`); the fibre potential Ψ_r(s) = sup_y [∫(|L + B·(My + sa)| + |L − B·(My + sa)|) − yᵀMy]
-is defined exactly as certified (basis B = (1, |z|²−1, z²/√2, z, z(|z|²−2)/√2, z̄), M = diag(E,E,R,R,εI₂)),
+is defined exactly as certified (basis B = (1, |z|²−1, z²/√2, z, z(|z|²−2)/√2, z̄), M = diag(E,E,R,R,εI₂)).
+In Lean it is the case ν = 0 (`rowPot`, `Jpot_zero`) of the potential with an identity tail,
+`pot E R ℓ β a ν s` = sup_y [∫(Ψ_ν(L + p, L − p) − ν) − yᵀMy] with p = B·(My + sa), where
+Ψ_ν(A, B) = sup_{|f|=|g|=1} Re(f̄A) + Re(ḡB) + ν·Re(f̄g) is the pair potential `psiT` of
+`CapMajorant.lean` (Ψ_0(A, B) = |A| + |B|, `psiT_zero`; issue #183). The potential
 bounds every fibre expression at a complex coupling u by Ψ_r(|u|) (`fibreExprC_le_pot`, rotation
-invariance), and is convex, even and Lipschitz with the header constant smax via E||z|²−1| = 2/e
-(`capsHold_rowPot`); ‖P₂,₁k‖² is bounded by the six remote projections of the fibre coefficients
+invariance; stated at ν = 0), and for every ν it is convex, even and Lipschitz with the header constant
+smax via E||z|²−1| = 2/e (`pot_convexOn`, `pot_neg`, `pot_lip`, `capsHold_pot`; for the rows
+`capsHold_rowPot`); ‖P₂,₁k‖² is bounded by the six remote projections of the fibre coefficients
 (the six mixed pieces B_j ⊗ K_j of H₂,₁(n+1), `norm_sq_starProjection_H21_le`), ‖P₁,₀k‖² splits exactly,
 and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(ε,0) (checked exactly, `rowData_gatesOK`,
 `rowGates_ok`) give the k-side inequality (`kside`); the integrated fibre bound and the k-side

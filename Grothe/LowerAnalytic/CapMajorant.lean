@@ -7,8 +7,9 @@ import Mathlib
 `δ = e₃ − e₂` and `Δ = d₂d₃ − ν² = e₂e₃ + νσ`.  For complex `A, B` and phases `w = (f, g)`,
 `|f| = |g| = 1`:
 
-* `majEll`: the affine piece `ℓ_w(A, B) = Re(f̄A) + Re(ḡB) + ν Re(f̄g)`.  The fibre potential of a
-  witness with the identity tail `ν` is `Ψ_ν(A, B) = sup_w ℓ_w(A, B)`; at `ν = 0` it is `|A| + |B|`;
+* `majEll`: the affine piece `ℓ_w(A, B) = Re(f̄A) + Re(ḡB) + ν Re(f̄g)`;
+* `psiT`: the pair potential `Ψ_ν(A, B) = sup_w ℓ_w(A, B)` of a witness with the identity tail `ν`;
+  at `ν = 0` it is `|A| + |B|` (`psiT_zero`);
 * `majPhi`: the dual majorant `Φ_d(A, B) = (d₂ + d₃)/2 + (d₃|A|² + d₂|B|² + 2ν Re(A B̄))/(2Δ)`;
 * `majH`: `h(L, p) = 4 Re(p L̄) − c₀ − c₁|L|²`, with the centre (`majC0`, `majC1`)
   `c₀ = d₂² − d₃² + ν(d₂ − d₃)(e₂² + e₃²)/(e₂e₃)`, `c₁ = −4ν(d₂ − d₃)/(e₂e₃)`;
@@ -19,8 +20,8 @@ import Mathlib
 
   `ℓ_w(L + p, L − p) ≤ Φ_d(L + p, L − p) − (γ/16) h(L, p)²`.
 
-So `Φ_d − (γ/16)h²` majorises `Ψ_ν(L + p, L − p)`; the statement is pointwise in the phases, and
-`Ψ_ν` is never formed.  `γ ≤ γ*(R)` is a condition without division on the data,
+So `Φ_d − (γ/16)h²` majorises `Ψ_ν(L + p, L − p)`; the statement is pointwise in the phases.
+`γ ≤ γ*(R)` is a condition without division on the data,
 `γ · majGammaDen ≤ 8σ(e₂e₃)²` (`le_majGammaStar_iff`).  This is Theorem 1 of the note
 `research/identity-tail/sources/lemma-2026-11-15/PROOF.tex` (issue #183), whose
 proof is followed; the equation numbers below are those of the note:
@@ -52,6 +53,14 @@ proof is followed; the equation numbers below are those of the note:
 * `anchored_pair_poly`: the same majorant written as a polynomial in `p` (the form that is
   integrated: `|L ± p|² = |L|² + |p|² ± 2 Re(p L̄)`);
 * `young_pair`: the plain Young bound (`T²/(2D)` dropped).
+
+**The pair potential** `Ψ_ν` (`psiT`) is the integrand of the fibre potential (`Jpot` in
+`FibreSup.lean`).  It is used only through its affine pieces: `majEll_le_psiT` (every piece is below
+it) and `psiT_le` (a bound of every piece bounds it).  They give `Ψ_0(A, B) = |A| + |B|`
+(`psiT_zero`), `|A| + |B| − |ν| ≤ Ψ_ν(A, B) ≤ |A| + |B| + |ν|` (`add_le_psiT`, `psiT_le_add`), the
+symmetries `Ψ_ν(B, A) = Ψ_ν(Ā, B̄) = Ψ_ν(Av, Bv) = Ψ_ν(A, B)` for `|v| = 1` (`psiT_comm`, `psiT_conj`,
+`psiT_mul_unit`, `psiT_neg`), the Lipschitz bound `psiT_le_add_norm`, convexity (`psiT_convex`) and
+continuity (`continuous_psiT`).
 -/
 
 open scoped ComplexConjugate
@@ -522,5 +531,153 @@ theorem young_pair (L p : ℂ) {A0 B0 : ℝ} (hA : 0 < A0) (hB : 0 < B0) :
   have : 0 ≤ (4 * (p * conj L).re - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 ‖L‖) :=
     div_nonneg (sq_nonneg _) (by have := majD_pos hA hB (norm_nonneg L); positivity)
   linarith
+
+/-! ### The pair potential `Ψ_ν` -/
+
+/-- `Re(f̄ w) ≤ |w|` for `|f| ≤ 1`. -/
+lemma re_conj_mul_le_norm {f : ℂ} (hf : ‖f‖ ≤ 1) (w : ℂ) : (conj f * w).re ≤ ‖w‖ := by
+  refine (Complex.re_le_norm _).trans ?_
+  rw [norm_mul, Complex.norm_conj]
+  exact mul_le_of_le_one_left (norm_nonneg _) hf
+
+/-- `|ν Re(f̄ g)| ≤ |ν|` on the closed unit disc. -/
+lemma abs_mul_re_conj_mul_le (ν : ℝ) {f g : ℂ} (hf : ‖f‖ ≤ 1) (hg : ‖g‖ ≤ 1) :
+    |ν * (conj f * g).re| ≤ |ν| := by
+  have h : |(conj f * g).re| ≤ 1 := by
+    refine (Complex.abs_re_le_norm _).trans ?_
+    rw [norm_mul, Complex.norm_conj]
+    exact (mul_le_mul hf hg (norm_nonneg _) zero_le_one).trans_eq (one_mul 1)
+  rw [abs_mul]
+  exact mul_le_of_le_one_right (abs_nonneg _) h
+
+/-- Every `w` has a phase: `|f| = 1` and `Re(f̄ w) = |w|`. -/
+lemma exists_unit_re_conj_mul (w : ℂ) : ∃ f : ℂ, ‖f‖ = 1 ∧ (conj f * w).re = ‖w‖ := by
+  obtain ⟨u, hu, hw⟩ := Complex.exists_norm_mul_eq_self w
+  have huu : conj u * u = 1 := by rw [Complex.conj_mul', hu]; norm_num
+  have e : conj u * w = (‖w‖ : ℂ) := by linear_combination (‖w‖ : ℂ) * huu - conj u * hw
+  exact ⟨u, hu, by rw [e, Complex.ofReal_re]⟩
+
+/-- An affine piece is at most `|A| + |B| + |ν|` (for `f`, `g` of the closed unit disc). -/
+lemma majEll_le_add (ν : ℝ) {f g : ℂ} (hf : ‖f‖ ≤ 1) (hg : ‖g‖ ≤ 1) (A B : ℂ) :
+    majEll ν f g A B ≤ ‖A‖ + ‖B‖ + |ν| := by
+  unfold majEll
+  linarith [re_conj_mul_le_norm hf A, re_conj_mul_le_norm hg B,
+    (le_abs_self _).trans (abs_mul_re_conj_mul_le ν hf hg)]
+
+/-- **The pair potential with a tail**: `Ψ_ν(A, B) = sup_{|f| = |g| = 1} ℓ_w(A, B)`, the supremum
+of the affine pieces `Re(f̄A) + Re(ḡB) + ν Re(f̄g)` over the phases. -/
+noncomputable def psiT (ν : ℝ) (A B : ℂ) : ℝ :=
+  ⨆ w : {w : ℂ × ℂ // ‖w.1‖ = 1 ∧ ‖w.2‖ = 1}, majEll ν w.1.1 w.1.2 A B
+
+/-- Every affine piece is below `Ψ_ν`. -/
+lemma majEll_le_psiT (ν : ℝ) {f g : ℂ} (hf : ‖f‖ = 1) (hg : ‖g‖ = 1) (A B : ℂ) :
+    majEll ν f g A B ≤ psiT ν A B :=
+  le_ciSup (f := fun w : {w : ℂ × ℂ // ‖w.1‖ = 1 ∧ ‖w.2‖ = 1} => majEll ν w.1.1 w.1.2 A B)
+    ⟨‖A‖ + ‖B‖ + |ν|, by rintro _ ⟨w, rfl⟩; exact majEll_le_add ν w.2.1.le w.2.2.le A B⟩
+    ⟨(f, g), hf, hg⟩
+
+/-- A bound of every affine piece is a bound of `Ψ_ν`. -/
+lemma psiT_le {ν : ℝ} {A B : ℂ} {c : ℝ}
+    (h : ∀ f g : ℂ, ‖f‖ = 1 → ‖g‖ = 1 → majEll ν f g A B ≤ c) : psiT ν A B ≤ c := by
+  have : Nonempty {w : ℂ × ℂ // ‖w.1‖ = 1 ∧ ‖w.2‖ = 1} := ⟨⟨(1, 1), by simp⟩⟩
+  exact ciSup_le fun w => h _ _ w.2.1 w.2.2
+
+/-- `Ψ_ν(A, B) ≤ |A| + |B| + |ν|`. -/
+lemma psiT_le_add (ν : ℝ) (A B : ℂ) : psiT ν A B ≤ ‖A‖ + ‖B‖ + |ν| :=
+  psiT_le fun _ _ hf hg => majEll_le_add ν hf.le hg.le A B
+
+/-- `|A| + |B| − |ν| ≤ Ψ_ν(A, B)` (the phases of `A` and `B`). -/
+lemma add_le_psiT (ν : ℝ) (A B : ℂ) : ‖A‖ + ‖B‖ - |ν| ≤ psiT ν A B := by
+  obtain ⟨f, hf, hfA⟩ := exists_unit_re_conj_mul A
+  obtain ⟨g, hg, hgB⟩ := exists_unit_re_conj_mul B
+  refine le_trans ?_ (majEll_le_psiT ν hf hg A B)
+  rw [majEll, hfA, hgB]
+  linarith [(neg_abs_le _).trans' (neg_le_neg (abs_mul_re_conj_mul_le ν hf.le hg.le))]
+
+/-- **Without a tail** the pair potential is `|A| + |B|`. -/
+lemma psiT_zero (A B : ℂ) : psiT 0 A B = ‖A‖ + ‖B‖ :=
+  le_antisymm ((psiT_le_add 0 A B).trans_eq (by simp)) ((add_le_psiT 0 A B).trans_eq' (by simp))
+
+lemma majEll_swap (ν : ℝ) (f g A B : ℂ) : majEll ν g f B A = majEll ν f g A B := by
+  simp only [majEll, Complex.mul_re, Complex.conj_re, Complex.conj_im]; ring
+
+/-- `Ψ_ν` is symmetric. -/
+lemma psiT_comm (ν : ℝ) (A B : ℂ) : psiT ν B A = psiT ν A B := by
+  refine le_antisymm (psiT_le fun f g hf hg => ?_) (psiT_le fun f g hf hg => ?_) <;>
+  · rw [majEll_swap]; exact majEll_le_psiT ν hg hf _ _
+
+lemma majEll_conj (ν : ℝ) (f g A B : ℂ) :
+    majEll ν (conj f) (conj g) (conj A) (conj B) = majEll ν f g A B := by
+  simp only [majEll, Complex.mul_re, Complex.conj_re, Complex.conj_im]; ring
+
+/-- `Ψ_ν(Ā, B̄) = Ψ_ν(A, B)`. -/
+lemma psiT_conj (ν : ℝ) (A B : ℂ) : psiT ν (conj A) (conj B) = psiT ν A B := by
+  refine le_antisymm (psiT_le fun f g hf hg => ?_) (psiT_le fun f g hf hg => ?_)
+  · have e := majEll_conj ν (conj f) (conj g) A B
+    rw [Complex.conj_conj, Complex.conj_conj] at e
+    rw [e]
+    exact majEll_le_psiT ν ((Complex.norm_conj f).trans hf) ((Complex.norm_conj g).trans hg) A B
+  · rw [← majEll_conj]
+    exact majEll_le_psiT ν ((Complex.norm_conj f).trans hf) ((Complex.norm_conj g).trans hg) _ _
+
+/-- Rotation invariance of `Ψ_ν`. -/
+lemma psiT_mul_unit (ν : ℝ) (A B : ℂ) {v : ℂ} (hv : ‖v‖ = 1) :
+    psiT ν (A * v) (B * v) = psiT ν A B := by
+  have hv' : ‖conj v‖ = 1 := (Complex.norm_conj v).trans hv
+  have hvv : conj v * v = 1 := by rw [Complex.conj_mul', hv]; norm_num
+  refine le_antisymm (psiT_le fun f g hf hg => ?_) (psiT_le fun f g hf hg => ?_)
+  · have e := majEll_mul_unit ν (f * conj v) (g * conj v) A B hv
+    rw [mul_assoc, mul_assoc, hvv, mul_one, mul_one] at e
+    rw [e]
+    exact majEll_le_psiT ν (by rw [norm_mul, hf, hv', mul_one]) (by rw [norm_mul, hg, hv', mul_one])
+      A B
+  · rw [← majEll_mul_unit ν f g A B hv]
+    exact majEll_le_psiT ν (by rw [norm_mul, hf, hv, mul_one]) (by rw [norm_mul, hg, hv, mul_one])
+      _ _
+
+/-- `Ψ_ν(−A, −B) = Ψ_ν(A, B)`. -/
+lemma psiT_neg (ν : ℝ) (A B : ℂ) : psiT ν (-A) (-B) = psiT ν A B := by
+  simpa using psiT_mul_unit ν A B (v := -1) (by simp)
+
+/-- `Ψ_ν` is `1`-Lipschitz in each argument. -/
+lemma psiT_le_add_norm (ν : ℝ) (A B A' B' : ℂ) :
+    psiT ν A B ≤ psiT ν A' B' + ‖A - A'‖ + ‖B - B'‖ :=
+  psiT_le fun f g hf hg => by
+    have e : majEll ν f g A B
+        = majEll ν f g A' B' + (conj f * (A - A')).re + (conj g * (B - B')).re := by
+      simp only [majEll, mul_sub, Complex.sub_re]; ring
+    rw [e]
+    linarith [majEll_le_psiT ν hf hg A' B', re_conj_mul_le_norm hf.le (A - A'),
+      re_conj_mul_le_norm hg.le (B - B')]
+
+/-- **`Ψ_ν` is convex** (a supremum of affine functions of `(A, B)`). -/
+lemma psiT_convex (ν : ℝ) {θ : ℝ} (h0 : 0 ≤ θ) (h1 : θ ≤ 1) (A B A' B' : ℂ) :
+    psiT ν ((θ : ℂ) * A + ((1 - θ : ℝ) : ℂ) * A') ((θ : ℂ) * B + ((1 - θ : ℝ) : ℂ) * B')
+      ≤ θ * psiT ν A B + (1 - θ) * psiT ν A' B' :=
+  psiT_le fun f g hf hg => by
+    have e : majEll ν f g ((θ : ℂ) * A + ((1 - θ : ℝ) : ℂ) * A')
+        ((θ : ℂ) * B + ((1 - θ : ℝ) : ℂ) * B')
+        = θ * majEll ν f g A B + (1 - θ) * majEll ν f g A' B' := by
+      simp only [majEll, Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im,
+        Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im]
+      ring
+    rw [e]
+    have := mul_le_mul_of_nonneg_left (majEll_le_psiT ν hf hg A B) h0
+    have := mul_le_mul_of_nonneg_left (majEll_le_psiT ν hf hg A' B') (by linarith : 0 ≤ 1 - θ)
+    linarith
+
+/-- `Ψ_ν` is continuous. -/
+lemma continuous_psiT (ν : ℝ) : Continuous fun w : ℂ × ℂ => psiT ν w.1 w.2 := by
+  refine (LipschitzWith.of_dist_le_mul (K := 2) fun x y => ?_).continuous
+  have d1 : ‖x.1 - y.1‖ ≤ dist x y := by
+    rw [← dist_eq_norm, Prod.dist_eq]; exact le_max_left _ _
+  have d2 : ‖x.2 - y.2‖ ≤ dist x y := by
+    rw [← dist_eq_norm, Prod.dist_eq]; exact le_max_right _ _
+  have h1 := psiT_le_add_norm ν x.1 x.2 y.1 y.2
+  have h2 := psiT_le_add_norm ν y.1 y.2 x.1 x.2
+  rw [norm_sub_rev y.1, norm_sub_rev y.2] at h2
+  rw [Real.dist_eq, abs_sub_le_iff]
+  push_cast
+  constructor <;> linarith
 
 end Grothe.LowerAnalytic
