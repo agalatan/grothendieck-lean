@@ -1,0 +1,78 @@
+{
+  "status": "P+C consumer of PROOFS.md (4.4), ledger 3.3, 3.4, 11.30, 11.40",
+  "n": 5,
+  "modulus": 31,
+  "weights": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "energyInvariant": "5/128",
+  "energyProtected": "1/2500",
+  "energyResonant": "1/200000000",
+  "energyTotal": "7892501/200000000",
+  "contentSquaredUpper": "4993323450438437622291814176772921/2500000000000000000000000000000000000000",
+  "retainedASectorExcessUpper": "9973455644779085543753820608277593611/1475225000000000000000000000000000000000000",
+  "below_11e_minus6": true,
+  "rows": [
+    {
+      "i": 0,
+      "j": 0,
+      "k": 1,
+      "charge": 0,
+      "type": "invariant",
+      "energy": "1/128"
+    },
+    {
+      "i": 1,
+      "j": 1,
+      "k": 2,
+      "charge": 0,
+      "type": "invariant",
+      "energy": "1/128"
+    },
+    {
+      "i": 2,
+      "j": 2,
+      "k": 3,
+      "charge": 0,
+      "type": "invariant",
+      "energy": "1/128"
+    },
+    {
+      "i": 3,
+      "j": 3,
+      "k": 4,
+      "charge": 0,
+      "type": "invariant",
+      "energy": "1/128"
+    },
+    {
+      "i": 4,
+      "j": 4,
+      "k": 0,
+      "charge": 0,
+      "type": "invariant",
+      "energy": "1/128"
+    },
+    {
+      "i": 0,
+      "j": 2,
+      "k": 1,
+      "charge": 3,
+      "type": "protected",
+      "energy": "1/2500"
+    },
+    {
+      "i": 0,
+      "j": 0,
+      "k": 0,
+      "charge": 1,
+      "type": "resonant",
+      "energy": "1/200000000"
+    }
+  ],
+  "passed": true
+}
