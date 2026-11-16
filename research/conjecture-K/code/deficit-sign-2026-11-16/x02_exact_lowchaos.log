@@ -1,0 +1,15 @@
+PASS (LC) n=1 trial=0: <w, Q(H - c2 H_v)> = <w, (H + V H_v) a + q H_c b> for H = v^i c^k, (i,k) in (0,0),(1,0),(0,1),(1,1),(2,0),(2,1), all w in H20
+PASS (LC) n=1 trial=1: <w, Q(H - c2 H_v)> = <w, (H + V H_v) a + q H_c b> for H = v^i c^k, (i,k) in (0,0),(1,0),(0,1),(1,1),(2,0),(2,1), all w in H20
+PASS (LC) n=2 trial=0: <w, Q(H - c2 H_v)> = <w, (H + V H_v) a + q H_c b> for H = v^i c^k, (i,k) in (0,0),(1,0),(0,1),(1,1),(2,0),(2,1), all w in H20
+PASS (LC) n=2 trial=1: <w, Q(H - c2 H_v)> = <w, (H + V H_v) a + q H_c b> for H = v^i c^k, (i,k) in (0,0),(1,0),(0,1),(1,1),(2,0),(2,1), all w in H20
+PASS (PATH) n=1, phi = v^2: d/dtheta E V_theta^m = -2 sin(theta) m(m-1) Re E[V^(m-2) conj(q_theta)^2 atilde_theta] at three rational angles (difference quotient, rel. tol. 1e-6)
+PASS (PATH) n=1, phi = v^3: d/dtheta E V_theta^m = -2 sin(theta) m(m-1) Re E[V^(m-2) conj(q_theta)^2 atilde_theta] at three rational angles (difference quotient, rel. tol. 1e-6)
+PASS (PATH) n=2, phi = v^2: d/dtheta E V_theta^m = -2 sin(theta) m(m-1) Re E[V^(m-2) conj(q_theta)^2 atilde_theta] at three rational angles (difference quotient, rel. tol. 1e-6)
+PASS (LOC) n=1: m! E c2^m - E V^m = E[conj(q)^2 a d_v gamma] + E[conj(q) b d_c gamma] for m = 2, 3; E[conj(q) b] = ||P31 q^2||^2/4
+PASS (LOC) n=2: m! E c2^m - E V^m = E[conj(q)^2 a d_v gamma] + E[conj(q) b d_c gamma] for m = 2, 3; E[conj(q) b] = ||P31 q^2||^2/4
+PASS (LOC) n=2: m! E c2^m - E V^m = E[conj(q)^2 a d_v gamma] + E[conj(q) b d_c gamma] for m = 2, 3; E[conj(q) b] = ||P31 q^2||^2/4
+PASS (LOC) n=3: m! E c2^m - E V^m = E[conj(q)^2 a d_v gamma] + E[conj(q) b d_c gamma] for m = 2, 3; E[conj(q) b] = ||P31 q^2||^2/4
+PASS (LCON) n=1: E[conj(y_j) q V^m] = E[conj(y_j)(k_v conj(q) a + k_c b)], m = 1, 2, 3, all j
+PASS (LCON) n=2: E[conj(y_j) q V^m] = E[conj(y_j)(k_v conj(q) a + k_c b)], m = 1, 2, 3, all j
+PASS (LCON) n=2: E[conj(y_j) q V^m] = E[conj(y_j)(k_v conj(q) a + k_c b)], m = 1, 2, 3, all j
+PASS (LCON) n=3: E[conj(y_j) q V^m] = E[conj(y_j)(k_v conj(q) a + k_c b)], m = 1, 2, 3, all j

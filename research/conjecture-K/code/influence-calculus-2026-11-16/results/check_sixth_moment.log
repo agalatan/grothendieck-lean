@@ -1,0 +1,12 @@
+Wick monomial (u=2): E|q|^4 = 176 = 44u^2, E|q|^6 = 90816 = 11352u^3; (3/2)(E|q|^4)^2/u = 23232 = 2904u^3
+PASS n=1 trial=0: chi=42.000  E|q|^6/u^3=11352.00 >= 2904.00;  kappa6c/u^3=10968.00 >= 2520.00
+PASS n=2 trial=0: chi=31.485  E|q|^6/u^3=7103.85 >= 1681.84;  kappa6c/u^3=6814.49 >= 1392.48
+PASS n=2 trial=1: chi=13.889  E|q|^6/u^3=1320.43 >= 378.69;  kappa6c/u^3=1189.43 >= 247.69
+PASS n=2 trial=2: chi=17.597  E|q|^6/u^3=2264.16 >= 576.05;  kappa6c/u^3=2099.79 >= 411.68
+PASS n=2 trial=3: chi=13.383  E|q|^6/u^3=1102.64 >= 354.96;  kappa6c/u^3=976.19 >= 228.51
+PASS n=2 trial=4: chi=19.494  E|q|^6/u^3=2772.71 >= 693.01;  kappa6c/u^3=2591.26 >= 511.56
+ALL SIXTH-MOMENT CHECKS PASSED
+
+real	0m1.662s
+user	0m1.581s
+sys	0m0.004s

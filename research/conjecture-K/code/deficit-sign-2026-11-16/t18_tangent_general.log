@@ -1,0 +1,11 @@
+sqrt (u=1):  a,b,c,d = [ 0.110778  0.221557 -0.221557 -0.443113]  expected sqrt(pi)/16, sqrt(pi)/8, -sqrt(pi)/8, -sqrt(pi)/4 = [ 0.110778  0.221557 -0.221557 -0.443113]
+peak (u=0.0463): a,b,c,d = [ 0.166782  0.100296  0.043162 -0.057135]
+  cubic 0 sqrt: (A,B,C,L2,R2)/u = [0.285 0.028 0.223 0.03  0.12 ]: D = 2.08164e-01 >= Jensen +5.22999e-02 >= tangent -2.20641e-02  OK
+  cubic 0 peak: (A,B,C,L2,R2)/u = [0.285 0.028 0.223 0.03  0.12 ]: D = 8.75862e-03 >= Jensen +5.71342e-03 >= tangent +2.07496e-03  OK
+  cubic 1 sqrt: (A,B,C,L2,R2)/u = [0.193 0.02  0.275 0.181 0.117]: D = 1.59214e-01 >= Jensen +2.89567e-02 >= tangent -6.60841e-02  OK
+  cubic 1 peak: (A,B,C,L2,R2)/u = [0.193 0.02  0.275 0.181 0.117]: D = 8.84299e-03 >= Jensen +4.17353e-03 >= tangent +1.63655e-03  OK
+  cubic 2 sqrt: (A,B,C,L2,R2)/u = [0.025 0.052 0.783 0.013 0.05 ]: D = 2.20524e-01 >= Jensen -2.02172e-03 >= tangent -1.09096e-02  OK
+  cubic 2 peak: (A,B,C,L2,R2)/u = [0.025 0.052 0.783 0.013 0.05 ]: D = 7.35641e-03 >= Jensen +4.40990e-04 >= tangent +3.28666e-04  OK
+  cubic 3 sqrt: (A,B,C,L2,R2)/u = [0.034 0.039 0.151 0.032 0.672]: D = 1.67059e-01 >= Jensen -8.97290e-02 >= tangent -2.92777e-01  OK
+  cubic 3 peak: (A,B,C,L2,R2)/u = [0.034 0.039 0.151 0.032 0.672]: D = 9.34627e-03 >= Jensen -7.55629e-04 >= tangent -1.27478e-03  OK
+violations in 32 cases: 0

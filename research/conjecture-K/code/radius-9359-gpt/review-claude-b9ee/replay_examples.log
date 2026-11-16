@@ -1,0 +1,5 @@
+PASS: moment law has s=5, satisfies the given moment ceilings, and E sqrt(V)>0.96.
+PASS: its radial Stein budget would be at least 19, exceeding s=5.
+PASS: the q_n moment and projection formulas hold as exact polynomial identities in n.
+PASS: E|a|^2 / E[Vb] = (n^2+10n+17)/(n^2+14n+25), tending to 1.
+examples exit 0
