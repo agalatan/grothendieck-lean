@@ -252,6 +252,11 @@ The entire family is in the main root and is checked with the `Grothe` build.
 `gaussC`, its planar presentation, rotation invariance and radial-moment reduction.
 The phase and complex Hermite calculations import it without the lower row
 certificates. The lower fibre theory uses the same declarations and normalization.
+`LowerAnalytic/ComplexGaussianSymmetry.lean` has the invariance of `gaussC` under
+z ↦ z̄ and z ↦ −z (`gaussC_map_conj`, `gaussC_map_neg`, `integral_gaussC_comp`). It
+imports `ComplexGaussianCore` only: `F0ConditionalReality` and the lower fibre
+symmetries (`CapSymmetry`) both use it, and no upper-bound module imports the witness
+or the fibre chain of the lower bound.
 
 `Lower/Stein.lean` derives `spec_of_inputs` from `gspec_of_vr` with zero shifts.
 `Lower/Law.lean` proves `node_fn_of_cut` for any integrable cut with nonnegative
