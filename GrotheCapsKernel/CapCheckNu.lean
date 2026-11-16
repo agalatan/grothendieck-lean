@@ -142,6 +142,44 @@ cosines and sines of the Gauss angles are Taylor polynomials), so the price nume
 depend on the machine.  The numerators are then made admissible exactly: `dyNum ≥ 1`, and a pair
 with `Δ ≤ 0` is replaced by `(nuNum ν, nuNum ν)` (`fixCell`). -/
 
+/-! #### `Float` constants
+
+Every constant of the per-cell `Float` code is a definition of its own, evaluated once when the
+library is loaded.  A literal written inside a function is not always compiled to such a constant:
+after a comparison the compiler may pass the Boolean result, known to equal the sign flag of the
+literal, to `Float.ofScientific` in its place; the literal is then no longer a closed term and is
+recomputed, in multi-precision arithmetic, at every use (measured: 1.5 ms per call of `dualPrices`
+written with literals). -/
+
+/-- `0`. -/
+@[noinline] def fZero : Float := 0.0
+/-- `1/2`. -/
+@[noinline] def fHalf : Float := 0.5
+/-- `1`. -/
+@[noinline] def fOne : Float := 1.0
+/-- `2`. -/
+@[noinline] def fTwo : Float := 2.0
+/-- `3`. -/
+@[noinline] def fThree : Float := 3.0
+/-- `4`. -/
+@[noinline] def fFour : Float := 4.0
+/-- `1/10`: the length of a gradient step. -/
+@[noinline] def fTenth : Float := 0.1
+/-- `10⁻³⁰`: the least value of a mean. -/
+@[noinline] def fMeanMin : Float := 1.0e-30
+/-- `10³⁰⁰`: the value of the cell objective outside its domain. -/
+@[noinline] def fObjOut : Float := 1.0e300
+/-- `10²⁹⁹`: an accepted step has an objective below it. -/
+@[noinline] def fObjMax : Float := 1.0e299
+/-- `10⁻¹⁵`: the slack of the descent test. -/
+@[noinline] def fDescent : Float := 1.0e-15
+/-- `10⁻¹³`: the relative step at which the iteration stops. -/
+@[noinline] def fStepTol : Float := 1.0e-13
+/-- `10⁻⁹`: prices with `Δ ≤ 10⁻⁹ν²` are raised. -/
+@[noinline] def fLowTol : Float := 1.0e-9
+/-- `10⁻³⁰⁰`: the least mass of a cell in the table means. -/
+@[noinline] def fMassMin : Float := 1.0e-300
+
 /-- `⌈2⁵⁰ν⌉ + 1`: a price numerator with `d > ν`. -/
 def nuNum (nu : Rat) : Nat := (-(Rat.floor (-(nu * two50)))).toNat + 1
 
@@ -153,35 +191,35 @@ def fixCell (nu : Rat) (d2 d3 : Nat) : Nat × Nat :=
 outside. -/
 def dualObj (nu sg ta ro d2 d3 : Float) : Float :=
   let D := d2 * d3 - nu * nu
-  if D > 0.0 && d2 > 0.0 && d3 > 0.0 then
-    (d2 + d3) / 2.0 + (d3 * sg + d2 * ta + 2.0 * nu * ro) / (2.0 * D)
-  else 1.0e300
+  if D > fZero && d2 > fZero && d3 > fZero then
+    (d2 + d3) / fTwo + (d3 * sg + d2 * ta + fTwo * nu * ro) / (fTwo * D)
+  else fObjOut
 
 /-- **The dual prices of a cell**: at most 12 Newton steps on the cell objective from
 `(√σ + ν, √τ + ν)`, each damped by at most 24 halvings until the objective does not increase; the
 iteration stops when a step is rejected or is below `10⁻¹³` relative.  For `ν = 0` the prices are
 `(√σ, √τ)`. -/
 def dualPrices (nu sg ta ro : Float) : Float × Float := Id.run do
-  let sg := if sg > 1.0e-30 then sg else 1.0e-30
-  let ta := if ta > 1.0e-30 then ta else 1.0e-30
-  if nu == 0.0 then return (Float.sqrt sg, Float.sqrt ta)
+  let sg := if sg > fMeanMin then sg else fMeanMin
+  let ta := if ta > fMeanMin then ta else fMeanMin
+  if nu == fZero then return (Float.sqrt sg, Float.sqrt ta)
   let mut d2 := Float.sqrt sg + nu
   let mut d3 := Float.sqrt ta + nu
   let mut f := dualObj nu sg ta ro d2 d3
   for _ in [0:12] do
     let D := d2 * d3 - nu * nu
-    let N := d3 * sg + d2 * ta + 2.0 * nu * ro
-    let g2 := 0.5 + (ta * D - N * d3) / (2.0 * D * D)
-    let g3 := 0.5 + (sg * D - N * d2) / (2.0 * D * D)
+    let N := d3 * sg + d2 * ta + fTwo * nu * ro
+    let g2 := fHalf + (ta * D - N * d3) / (fTwo * D * D)
+    let g3 := fHalf + (sg * D - N * d2) / (fTwo * D * D)
     let D3 := D * D * D
-    let h22 := (-2.0 * ta * d3 * D + 2.0 * N * d3 * d3) / (2.0 * D3)
-    let h33 := (-2.0 * sg * d2 * D + 2.0 * N * d2 * d2) / (2.0 * D3)
-    let h23 := ((ta * d2 - sg * d3 - N) * D - 2.0 * (ta * D - N * d3) * d2) / (2.0 * D3)
+    let h22 := (-fTwo * ta * d3 * D + fTwo * N * d3 * d3) / (fTwo * D3)
+    let h33 := (-fTwo * sg * d2 * D + fTwo * N * d2 * d2) / (fTwo * D3)
+    let h23 := ((ta * d2 - sg * d3 - N) * D - fTwo * (ta * D - N * d3) * d2) / (fTwo * D3)
     let det := h22 * h33 - h23 * h23
-    let ok := h22 > 0.0 && det > 0.0
-    let s2 := if ok then -(h33 * g2 - h23 * g3) / det else -g2 * 0.1
-    let s3 := if ok then -(h22 * g3 - h23 * g2) / det else -g3 * 0.1
-    let mut lam := 1.0
+    let ok := h22 > fZero && det > fZero
+    let s2 := if ok then -(h33 * g2 - h23 * g3) / det else -g2 * fTenth
+    let s3 := if ok then -(h22 * g3 - h23 * g2) / det else -g3 * fTenth
+    let mut lam := fOne
     let mut acc := false
     let mut n2 := d2
     let mut n3 := d3
@@ -190,15 +228,15 @@ def dualPrices (nu sg ta ro : Float) : Float × Float := Id.run do
       let c2 := d2 + lam * s2
       let c3 := d3 + lam * s3
       let fc := dualObj nu sg ta ro c2 c3
-      if fc < 1.0e299 && fc <= f + 1.0e-15 then
+      if fc < fObjMax && fc <= f + fDescent then
         n2 := c2
         n3 := c3
         fn := fc
         acc := true
         break
-      lam := lam * 0.5
-    let step := if acc then Float.abs (n2 - d2) + Float.abs (n3 - d3) else 0.0
-    let more := acc && step > 1.0e-13 * (Float.abs n2 + Float.abs n3)
+      lam := lam * fHalf
+    let step := if acc then Float.abs (n2 - d2) + Float.abs (n3 - d3) else fZero
+    let more := acc && step > fStepTol * (Float.abs n2 + Float.abs n3)
     d2 := n2
     d3 := n3
     f := fn
@@ -212,9 +250,9 @@ def cellOfMeans (nu : Rat) (nuF sc : Float) (Rr : Int) (sg ta ro : Float) : Nat 
   let p := dualPrices nuF sg ta ro
   let x2 := sc * p.1
   let x3 := sc * p.2
-  let low := x2 * x3 - nuF * nuF <= 1.0e-9 * (nuF * nuF)
-  let x2 := if low then x2 + 2.0 * nuF else x2
-  let x3 := if low then x3 + 2.0 * nuF else x3
+  let low := x2 * x3 - nuF * nuF <= fLowTol * (nuF * nuF)
+  let x2 := if low then x2 + fTwo * nuF else x2
+  let x3 := if low then x3 + fTwo * nuF else x3
   let d := fixCell nu (dyNum x2) (dyNum x3)
   (d.1, d.2, gNum (cellInts nu d.1 d.2) Rr)
 
@@ -229,13 +267,13 @@ def ringCellsNu (ell beta nu : Rat) (r : Recipe) (N : Nat) (h : Rat) (radF : Nat
   ((List.range N).map fun j =>
     let ev := fun (ts : List (Nat × Int × Float × Float)) =>
       ts.foldl (fun acc t => let a := angF j t.2.1
-        acc + radF i t.1 * (t.2.2.1 * a.1 + t.2.2.2 * a.2)) 0.0
+        acc + radF i t.1 * (t.2.2.1 * a.1 + t.2.2.2 * a.2)) fZero
     let mass := radF i 0 * (angF j 0).1
-    let mass := if mass > 1.0e-300 then mass else 1.0e-300
+    let mass := if mass > fMassMin then mass else fMassMin
     let vA := ev tP / mass
     let vB := ev tM / mass
     let l2 := ev tL / mass
-    cellOfMeans nu nuF sc Rr vA vB (2.0 * l2 - (vA + vB) / 2.0)).toArray
+    cellOfMeans nu nuF sc Rr vA vB (fTwo * l2 - (vA + vB) / fTwo)).toArray
 
 /-! #### Gauss-point means -/
 
@@ -262,109 +300,116 @@ def cosSinF (t : Float) : Float × Float :=
 `2j + 1` belong to the angles `−π + (2π/N)(j + 1/2 ∓ 1/(2√3))` of the cell `j`. -/
 def gaussTrig (N : Nat) : FloatArray × FloatArray := Id.run do
   let w := 6.283185307179586 / N.toFloat
-  let g := 0.5 / Float.sqrt 3.0
+  let g := fHalf / Float.sqrt fThree
   let mut c := FloatArray.empty
   let mut s := FloatArray.empty
   for j in [0:N] do
     for k in [0:2] do
-      let cs := cosSinF ((j.toFloat + 0.5 + (if k = 0 then -g else g)) * w)
+      let cs := cosSinF ((j.toFloat + fHalf + (if k = 0 then -g else g)) * w)
       c := c.push (-cs.1)
       s := s.push (-cs.2)
   return (c, s)
 
-/-- The `Float` coefficients of a polynomial of degree at most 3 in `z` and in `z̄`: the entry
-`4a + b` belongs to `zᵃ z̄ᵇ` (real parts, imaginary parts). -/
-def cpDense (P : CP) : FloatArray × FloatArray :=
-  let z : FloatArray := ⟨Array.replicate 16 0.0⟩
+/-- The `Float` coefficients of a polynomial in the six monomials `1`, `|z|²`, `z²`, `z`, `z|z|²`,
+`z̄` (the monomials of `L` and of the fibre basis): the entries `2k`, `2k + 1` are the real and the
+imaginary part of the coefficient of the `k`-th monomial.  Other monomials are ignored. -/
+def cpSix (P : CP) : FloatArray :=
+  let z : FloatArray := ⟨Array.replicate 12 fZero⟩
   P.foldl (fun acc t =>
-    if t.1 < 4 ∧ t.2.1 < 4 then
-      let k := 4 * t.1 + t.2.1
-      (acc.1.set! k (acc.1.get! k + kqF t.2.2.re), acc.2.set! k (acc.2.get! k + kqF t.2.2.im))
-    else acc) (z, z)
+    let k : Nat :=
+      if t.1 = 0 ∧ t.2.1 = 0 then 0 else if t.1 = 1 ∧ t.2.1 = 1 then 1
+      else if t.1 = 2 ∧ t.2.1 = 0 then 2 else if t.1 = 1 ∧ t.2.1 = 0 then 3
+      else if t.1 = 2 ∧ t.2.1 = 1 then 4 else if t.1 = 0 ∧ t.2.1 = 1 then 5 else 6
+    if k < 6 then
+      (acc.set! (2 * k) (acc.get! (2 * k) + kqF t.2.2.re)).set! (2 * k + 1)
+        (acc.get! (2 * k + 1) + kqF t.2.2.im)
+    else acc) z
 
-/-- The values `|A|² + e`, `|B|² + e`, `Re(A B̄) − e` at the point `r(c + i s)`, for the dense
-coefficients of `L`, of `p = B·v₀` and of the variance polynomials `B·f`. -/
-def gaussPoint (cL cP : FloatArray × FloatArray) (cV : Array (FloatArray × FloatArray))
-    (r c s : Float) : Float × Float × Float := Id.run do
+/-- The real part of a six-monomial polynomial at `z = x + iy`, with `q = |z|²`, `z² = u + iv`. -/
+@[inline] def sixRe (c : FloatArray) (x y q u v : Float) : Float :=
+  c.get! 0 + c.get! 2 * q + (c.get! 4 * u - c.get! 5 * v) + (c.get! 6 * x - c.get! 7 * y)
+    + q * (c.get! 8 * x - c.get! 9 * y) + (c.get! 10 * x + c.get! 11 * y)
+
+/-- The imaginary part of a six-monomial polynomial at `z = x + iy`. -/
+@[inline] def sixIm (c : FloatArray) (x y q u v : Float) : Float :=
+  c.get! 1 + c.get! 3 * q + (c.get! 4 * v + c.get! 5 * u) + (c.get! 6 * y + c.get! 7 * x)
+    + q * (c.get! 8 * y + c.get! 9 * x) + (c.get! 11 * x - c.get! 10 * y)
+
+/-- Three `Float`s. -/
+structure Tri where
+  a : Float
+  b : Float
+  c : Float
+
+/-- The values `|A|² + e`, `|B|² + e`, `Re(A B̄) − e` at the point `r(c + i s)`, for the coefficients
+of `L`, of `p = B·v₀` and of the variance polynomials `B·f` (`A = L + p`, `B = L − p`,
+`e = Σ |B·f|²`). -/
+def gaussPoint (cL cP : FloatArray) (cV : Array FloatArray) (r c s : Float) : Tri :=
   let x := r * c
   let y := r * s
-  let x2 := x * x - y * y
-  let y2 := 2.0 * x * y
-  let x3 := x2 * x - y2 * y
-  let y3 := x2 * y + y2 * x
-  let pr : FloatArray := ⟨#[1.0, x, x2, x3]⟩
-  let pi : FloatArray := ⟨#[0.0, y, y2, y3]⟩
-  let mut mr := FloatArray.empty
-  let mut mi := FloatArray.empty
-  for a in [0:4] do
-    for b in [0:4] do
-      mr := mr.push (pr.get! a * pr.get! b + pi.get! a * pi.get! b)
-      mi := mi.push (pi.get! a * pr.get! b - pr.get! a * pi.get! b)
-  let ev := fun (cf : FloatArray × FloatArray) => Id.run do
-    let mut re := 0.0
-    let mut im := 0.0
-    for k in [0:16] do
-      re := re + (cf.1.get! k * mr.get! k - cf.2.get! k * mi.get! k)
-      im := im + (cf.1.get! k * mi.get! k + cf.2.get! k * mr.get! k)
-    return (re, im)
-  let l := ev cL
-  let p := ev cP
-  let ar := l.1 + p.1
-  let ai := l.2 + p.2
-  let br := l.1 - p.1
-  let bi := l.2 - p.2
-  let mut ex := 0.0
-  for f in cV do
-    let v := ev f
-    ex := ex + (v.1 * v.1 + v.2 * v.2)
-  return (ar * ar + ai * ai + ex, br * br + bi * bi + ex, ar * br + ai * bi - ex)
+  let q := x * x + y * y
+  let u := x * x - y * y
+  let v := fTwo * x * y
+  let lr := sixRe cL x y q u v
+  let li := sixIm cL x y q u v
+  let pr := sixRe cP x y q u v
+  let pi := sixIm cP x y q u v
+  let ar := lr + pr
+  let ai := li + pi
+  let br := lr - pr
+  let bi := li - pi
+  let ex := cV.foldl (fun acc f =>
+    let fr := sixRe f x y q u v
+    let fi := sixIm f x y q u v
+    acc + (fr * fr + fi * fi)) fZero
+  ⟨ar * ar + ai * ai + ex, br * br + bi * bi + ex, ar * br + ai * bi - ex⟩
 
 /-- The Gauss-point means `(σ, τ, ρ)` of a cell with the radii `r₁, r₂` and the angles of
 `(c₁, s₁)`, `(c₂, s₂)`: a quarter of each of the four point values. -/
-def gaussMeans (cL cP : FloatArray × FloatArray) (cV : Array (FloatArray × FloatArray))
-    (r1 r2 c1 s1 c2 s2 : Float) : Float × Float × Float :=
+def gaussMeans (cL cP : FloatArray) (cV : Array FloatArray) (r1 r2 c1 s1 c2 s2 : Float) : Tri :=
   let a := gaussPoint cL cP cV r1 c1 s1
   let b := gaussPoint cL cP cV r1 c2 s2
   let c := gaussPoint cL cP cV r2 c1 s1
   let d := gaussPoint cL cP cV r2 c2 s2
-  (a.1 / 4.0 + b.1 / 4.0 + c.1 / 4.0 + d.1 / 4.0,
-    a.2.1 / 4.0 + b.2.1 / 4.0 + c.2.1 / 4.0 + d.2.1 / 4.0,
-    a.2.2 / 4.0 + b.2.2 / 4.0 + c.2.2 / 4.0 + d.2.2 / 4.0)
+  ⟨a.a / fFour + b.a / fFour + c.a / fFour + d.a / fFour,
+    a.b / fFour + b.b / fFour + c.b / fFour + d.b / fFour,
+    a.c / fFour + b.c / fFour + c.c / fFour + d.c / fFour⟩
 
 /-- The cells of a ring from the **Gauss-point means**. -/
 def ringCellsNuG (ell beta nu : Rat) (r : Recipe) (N : Nat) (h : Rat)
-    (cL cP : FloatArray × FloatArray) (cV : Array (FloatArray × FloatArray))
+    (cL cP : FloatArray) (cV : Array FloatArray)
     (trig : FloatArray × FloatArray) (i : Nat) : Array (Nat × Nat × Nat) :=
   let Rr : Int := (nu.den : Int) * rlNum ell beta h i
   let sc := ratF r.scale
   let nuF := ratF nu
   let hF := ratF h
-  let rm := (i.toFloat + 0.5) * hF
-  let dr := hF / 2.0 / Float.sqrt 3.0
+  let rm := (i.toFloat + fHalf) * hF
+  let dr := hF / fTwo / Float.sqrt fThree
   ((List.range N).map fun j =>
     let m := gaussMeans cL cP cV (rm - dr) (rm + dr) (trig.1.get! (2 * j)) (trig.2.get! (2 * j))
       (trig.1.get! (2 * j + 1)) (trig.2.get! (2 * j + 1))
-    cellOfMeans nu nuF sc Rr m.1 m.2.1 m.2.2).toArray
+    cellOfMeans nu nuF sc Rr m.a m.b m.c).toArray
 
 /-- The grid of a recipe for the tail `ν`, with table means or Gauss-point means. -/
 @[noinline] def mkGridNu (ell beta nu : Rat) (r : Recipe) (gauss : Bool) (Nr N : Nat) (h : Rat)
     (T : Tables) : GridDataNu :=
   let cells : Array (Array (Nat × Nat × Nat)) :=
     if gauss then
-      ((List.range Nr).map (ringCellsNuG ell beta nu r N h (cpDense (lCP ell beta))
-        (cpDense (vecCP r.v0)) ((r.var.map fun f => cpDense (vecCP f)).toArray)
+      ((List.range Nr).map (ringCellsNuG ell beta nu r N h (cpSix (lCP ell beta))
+        (cpSix (vecCP r.v0)) ((r.var.map fun f => cpSix (vecCP f)).toArray)
         (gaussTrig N))).toArray
     else
       let radA : Array (Array Float) := T.rad.map fun a => a.map ivF
       let angA : Array (Array (Float × Float)) :=
         T.ang.map fun a => a.map fun p => (ivF p.1, ivF p.2)
-      let radF := fun i m => (radA.getD i #[]).getD m 0.0
+      let radF := fun i m => (radA.getD i #[]).getD m fZero
       let angF := fun (j : Nat) (n : Int) =>
-        let p := (angA.getD j #[]).getD n.natAbs (0.0, 0.0)
+        let p := (angA.getD j #[]).getD n.natAbs (fZero, fZero)
         if n < 0 then (p.1, -p.2) else p
       ((List.range Nr).map (ringCellsNu ell beta nu r N h radF angF (polarF (priceCP ell beta r 1))
         (polarF (priceCP ell beta r (-1))) (polarF (l2CP ell beta)))).toArray
-  let get := fun i j => (cells.getD i #[]).getD j (nuNum nu, nuNum nu, 0)
+  let dflt : Nat × Nat × Nat := (nuNum nu, nuNum nu, 0)
+  let get := fun i j => (cells.getD i #[]).getD j dflt
   ⟨Nr, N, h, nu, fun i j => (get i j).1, fun i j => (get i j).2.1, fun i j => (get i j).2.2,
     rlNum ell beta h⟩
 
