@@ -1,0 +1,13 @@
+1. lemma: min D(y) over 12075 points = 0.0 at y = 0.0; min D(y)/y^2 (y > 0) = 0.00018288416; tail bound violated at 0 points
+2. vertex (1,0): R part = (34925/131072)*pi; with pi < 7/2 it is < 244475/262144 < 1
+   vertex (0,1): R part = 1/s = 25/32, so L(0,1) = 57/64 * L(0,0)
+   pi in (25/8, 7/2): True; so 25/(12 pi) < 25/(12*25/8) = 2/3 < 17/25 = 17/25 (strict because pi > 25/8)
+   L(0,0) = 0.814337519838, L(1,0) = 0.748008959151, sqrt(2/3) = 0.816496580928, sqrt(17/25) = 0.824621125124
+3. quadrature: sum of weights 1.000000000000000, E X^6 = 15.000000000000
+   5151 points of the triangle: largest J - L = -0.00265 at (0.0, 0.34); largest J = 0.797885 at (0.0, 0.0) (sqrt(2/pi) = 0.797885)
+   J(1,0) = 0.616460, closed form (1 + 4e^{-3/2})/sqrt(3 pi) = 0.616460; J(0,1) = 0.636620, 2/pi = 0.636620
+4. (p, q) = (0.30, 0.30): quadrature 0.72630, Monte Carlo 0.72682 +- 0.00034, majorant 0.76772
+4. (p, q) = (0.60, 0.10): quadrature 0.68181, Monte Carlo 0.68224 +- 0.00037, majorant 0.76563
+4. (p, q) = (0.10, 0.80): quadrature 0.67759, Monte Carlo 0.67819 +- 0.00037, majorant 0.73645
+4. (p, q) = (0.05, 0.05): quadrature 0.79326, Monte Carlo 0.79335 +- 0.00030, majorant 0.80657
+5. L(1,0) = L(0,0) at lambda = 0.18123258, where the bound is 0.80457414 (L(0,1) = 0.74285257)
