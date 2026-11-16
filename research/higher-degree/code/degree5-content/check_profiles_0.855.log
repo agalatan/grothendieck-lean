@@ -1,0 +1,6 @@
+t = 0.855  s = 0.050000  psi 1.39621069  Gamma_A -0.07631247  Gamma_B -0.04094441  Gamma_0 +0.13462160   largest difference from the table 4.5e-05
+t = 0.855  s = 0.100000  psi 1.40588897  Gamma_A -0.15030378  Gamma_B -0.08065036  Gamma_0 +0.26755044   largest difference from the table 7.2e-05
+t = 0.855  s = 0.300000  psi 1.50577240  Gamma_A -0.38665307  Gamma_B -0.20758215  Gamma_0 +0.75398560   largest difference from the table 6.4e-06
+t = 0.855  s = 1.000000  psi 2.38833822  Gamma_A -0.41111342  Gamma_B -0.21549594  Gamma_0 +1.64342201   largest difference from the table 2.7e-06
+t = 0.855  s = 3.000000  psi 6.12137211  Gamma_A -0.06052587  Gamma_B -0.00989081  Gamma_0 +1.96195025   largest difference from the table 4.6e-07
+largest difference: 7.2e-05

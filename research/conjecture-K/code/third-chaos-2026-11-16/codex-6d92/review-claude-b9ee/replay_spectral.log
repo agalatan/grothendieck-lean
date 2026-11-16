@@ -1,0 +1,14 @@
+M 2 leading principal minor signs: [1, 1, 1]
+M 3 leading principal minor signs: [1, 1, 1, 1]
+M 4 leading principal minor signs: [1, 1, 1, 1, 1]
+M 5 leading principal minor signs: [1, 1, 1, 1, 1, 1]
+M 6 leading principal minor signs: [1, 1, 1, 1, 1, 1, 1]
+M 7 leading principal minor signs: [1, 1, 1, 1, 1, 1, 1, 1]
+M 8 leading principal minor signs: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+M 9 leading principal minor signs: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+M 10 leading principal minor signs: [1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1]
+m4 = 929991/60475 m6 = 5568000573/3023750
+kappa4 = 748566/60475 kappa6 = 4961219823/3023750
+Eabs = 95*sqrt(2)/(2419*sqrt(pi)) + 2160/2419
+All exact checks passed.
+exit 0

@@ -1,0 +1,20 @@
+(1) q = :X^2 conj X: + :Y^2 conj Y:  (u = 4); lam1 = 2u/2 = 4, lam2 = u/2 = 2
+    h = v^1: |c|^2 = 2048; A_h: coefficient of :X conj X: = 12, of :X conj Y: = 0; ||A_h||^2 = 288, ||B_h||^2 = 64; (Cor 6.1)^2/|c|^2 - 1 = -2.220e-16
+    h = v^2: |c|^2 = 252315648; A_h: coefficient of :X conj X: = 4080, of :X conj Y: = 0; ||A_h||^2 = 33292800, ||B_h||^2 = 9437184; (Cor 6.1)^2/|c|^2 - 1 = 2.220e-16
+    h = v^3: |c|^2 = 244509898309632; A_h: coefficient of :X conj X: = 3922560, of :X conj Y: = 36864; ||A_h||^2 = 30775671816192, ||B_h||^2 = 10316864028672; (Cor 6.1)^2/|c|^2 - 1 = 1.009e-04
+(2) max of alpha((2 alpha)^(4/3)+beta^(4/3))^(3/2) on (4/3)alpha^2+(2/3)beta^2=1: 2.7341 at t=0.253  (NOTE2: 2.734);  3 sqrt15/4 = 2.9047, 3 sqrt10/4 = 2.3717, 3 sqrt6/4 = 1.8371
+(3) Wick monomial, tilt 3/5:
+    u=0.009: T9/u^2 = 0.3151, H/u^2 = 2.1084, H/T9 = 6.692, gamma*delta/T9 = 6.692, T9/D = 0.02183, H/D = 0.14611, D/u^2 = 14.4305
+    u=0.02: T9/u^2 = 0.2443, H/u^2 = 0.9661, H/T9 = 3.955, gamma*delta/T9 = 7.583, T9/D = 0.02538, H/D = 0.10037, D/u^2 = 9.6246
+    u=0.03: T9/u^2 = 0.2062, H/u^2 = 0.4444, H/T9 = 2.156, gamma*delta/T9 = 7.639, T9/D = 0.02736, H/D = 0.05897, D/u^2 = 7.5367
+    u=0.0463: T9/u^2 = 0.1701, H/u^2 = 0.1866, H/T9 = 1.097, gamma*delta/T9 = 8.026, T9/D = 0.03022, H/D = 0.03316, D/u^2 = 5.6274
+(4) two-point laws {0, v1}:
+    u=0.009: max over v1 of T9/u^2 = 0.7946 at v1 = 0.1522 (mass 0.0591; chi of this law 14.91)
+    u=0.02: max over v1 of T9/u^2 = 0.7490 at v1 = 0.1643 (mass 0.1217; chi of this law 6.21)
+    u=0.03: max over v1 of T9/u^2 = 0.7102 at v1 = 0.1755 (mass 0.1709; chi of this law 3.85)
+    u=0.0463: max over v1 of T9/u^2 = 0.6521 at v1 = 0.1940 (mass 0.2387; chi of this law 2.19)
+(5) plain Bessel bound against Theorem 9, in units of u^2 (and the bounds of 11.30: (19321/10^6)/u, 1/(2500u^2)):
+    u=0.009: Wick monomial law: Bz/u^2 = 0.9805, T9/u^2 = 0.3151, Bz/T9 = 3.11; Gaussian law: Bz/u^2 = 0.0175, T9/u^2 = 0.1580, Bz/T9 = 0.11;  11.30: 2.1468, 4.9383
+    u=0.02: Wick monomial law: Bz/u^2 = 0.4861, T9/u^2 = 0.2443, Bz/T9 = 1.99; Gaussian law: Bz/u^2 = 0.0280, T9/u^2 = 0.2545, Bz/T9 = 0.11;  11.30: 0.9661, 1.0000
+    u=0.03: Wick monomial law: Bz/u^2 = 0.3171, T9/u^2 = 0.2062, Bz/T9 = 1.54; Gaussian law: Bz/u^2 = 0.0323, T9/u^2 = 0.2963, Bz/T9 = 0.11;  11.30: 0.6440, 0.4444
+    u=0.0463: Wick monomial law: Bz/u^2 = 0.1908, T9/u^2 = 0.1701, Bz/T9 = 1.12; Gaussian law: Bz/u^2 = 0.0343, T9/u^2 = 0.3192, Bz/T9 = 0.11;  11.30: 0.4173, 0.1866

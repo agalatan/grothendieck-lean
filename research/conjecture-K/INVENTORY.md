@@ -839,6 +839,12 @@ the analytic argument and is not run by CI. The working proof is
     `/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/gpt-reviews/real-stein-radius-20261021/`.
   - The numerical maximisers and logs of `R3_REPORT.md` stay in
     `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/r3-chaos/`.
+- **codex-6d92 (#458; STATUS 3.21, item 95).** `sources/third-chaos-2026-11-16/codex-6d92/` holds its three issue
+  comments of 16 November, copied unchanged, and `REVIEW_claude-b9ee.md`. `code/third-chaos-2026-11-16/codex-6d92/`
+  holds its two exact scripts (`python3 -I laplace_obstruction.py`, standard library; `python3 -I spectral_obstruction.py`,
+  sympy; both pass for claude-b9ee) and, in `review-claude-b9ee/`, two independent checks with their logs (mpmath) and
+  the two replay logs. The author's other scripts and searches stay in its worktree folder
+  `handoff/third-chaos-codex-6d92/`; they were not reviewed.
 
 ## Codex-a786: phase symmetry and content (16 November 2026)
 
@@ -924,3 +930,121 @@ their first lines were added.
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/review-np-joint-2026-11-16/`.
 - **Two notes on the delivery's own records** (review §6): `PEER_REVIEW_RECEIPT.json` records an earlier text of
   `PROOF_NOTES.md` than the delivered one, and three of the fourteen rejection controls only compare fixed constants.
+
+## The sign of the deficit (a research worker of claude-b9ee, 16 November 2026)
+
+`sources/deficit-sign-2026-11-16/` holds the worker's `REPORT.md` and `REVIEW_claude-b9ee.md` (STATUS 3.23–3.26, 6.3.26,
+items 92–94, tag KDS). They are verbatim copies; only their first lines were added. `code/deficit-sign-2026-11-16/`
+holds the scripts, their small result files and their logs.
+- **Logs.** The 35 `.log` files (the largest is 6,412 B) are kept because the report cites them as its record; two warning
+  lines of `t01_zfamily.log` carry the original folder path.
+- **Replay.** `python3 -I x01_exact_identities.py` (standard library, about 3 minutes) and `python3 -I x02_exact_lowchaos.py`
+  (25 s) run the exact checks; claude-b9ee replayed both, with logs identical to the delivered ones. The numerical
+  scripts need NumPy and SciPy and are run from their folder, one thread each
+  (`OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python3 -I <script>`); they were not rerun.
+- **`review-claude-b9ee/`** holds `t2_witness_check.py`, an independent evaluation of the split of 6.3.24 and of the
+  rotation identity on the witness of item 92, with its log.
+- **Not committed** (binaries), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/deficit-sign-2026-11-16/`:
+
+| file | size | SHA-256 | what |
+|---|---|---|---|
+| `tab_peak.npz` | 80,354 B | `a8a3cd855af72048382cdc71f9c20ae92bc92dc1c43c4ec328c2203de3dd7d2e` | the peak-profile table read by `dslib.peak_profile`; produced by `code/antiholomorphic-stein-2026-11-16/numerics/tab.py` |
+| `hess_n3_wxy_peak0.0463.npy` | 10,496 B | `426f460c56142d0f89f68e87f2cde7238789d126c0954c5ddd740e3ede23062b` | Hessian of T₂ at conj(W)·X·Y, peak profile (written by `t05_hessian_n3.py`) |
+| `hess_n3_wx2y2_peak0.0463.npy` | 10,496 B | `ce0bc6182750779766a6ff9d9bb4759a9a39a42e185d7864755ff332a9fd841a` | Hessian of T₂ at conj(W)·(X² + Y²), peak profile (written by `t05_hessian_n3.py`) |
+
+## Codex-a786: the content-law inequality on a structured class (16 November 2026)
+
+`sources/content-law-2026-11-16-codex-a786/` holds the delivery's documents (`README.md`, `PROOFS.md`,
+`SCALAR_REDUCTION.md`, `AUDIT.md`, `LEDGER_PATCH.md`, `SOURCES.md`) and the independent `REVIEW.md` (STATUS
+6.3.27–6.3.29, tag KCL; `../higher-degree/STATUS.md` 4.20). They are verbatim copies; only their first lines were added.
+The delivery's ledger patch and README are read through the review: its §7 lists three required corrections (a
+misprinted "+" in (29a) among them), and the ledger rows follow its §6.
+- **Checker.** `code/content-law-codex-a786/`: `node verify.mjs` (Node 20 or later, no dependencies) reproduces
+  `results_exact.json` byte for byte. `SHA256SUMS` is the delivery's; its entries for the six documents refer to the
+  files without the added first line.
+- **Review scripts.** `code/content-law-codex-a786/review/scripts/` (16 files; `python3 -I`, one process, about five
+  minutes in all; `REVIEW.md` §9 says what each does) and `review/logs/` (the 18 logs of at most 10 KB, kept because the
+  review cites them as its record). The scripts read the degree-5 study's folder
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/content5/`.
+- **Not committed**, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a786-content-law-2026-11-16/`:
+  the zip `conjecture_k_content_law_codex_a786.zip` (22,912 B, SHA-256
+  `2d8fc12b38d47dd50fffc19b4a2c2e0da1c42b74510ea7d8e7692f0bc2ec0ac3`), the profile tables `review/data/*.npz` (12 files), and the larger logs:
+
+| file | size | SHA-256 |
+|---|---|---|
+| `review/logs/content_ratio_hp.json` | 269,142 B | `6f803b2760482bf5c59606a9a7fe18aa8377bfbf8382bf4c3cae13480ef303e9` |
+| `review/logs/content_ratio_hp.log` | 67,141 B | `a048c99d7b57d5da331417bcb52bb2422fb3202e4e1ef71dacb6203b79f06cde` |
+| `review/logs/content_ratio_hp_fine.json` | 269,299 B | `1f08eb109287a56550592847eaa35fb1eec362b9280b08b4abaed55dc90ed191` |
+| `review/logs/content_ratio_hp_fine.log` | 67,144 B | `d75f7c9adfa2ae7e1e0f0eb3d3be2d9b34aa54a99ad6e91a1526b8827dee7101` |
+| `review/logs/content_ratio_stored.json` | 269,144 B | `d17f8bedaf071a8dc99f383bfe1df37b190cdd67e61d8212e8fe91d5e50a03df` |
+| `review/logs/content_ratio_stored.log` | 67,248 B | `4fc3674c206c251d04ac8b71339255edd822b9216c0f97eb4f4bd1f2fcd89acb` |
+| `review/logs/results_exact.delivered.json` | 5,343 B | `16a0a1ba7076e3cd2697f30df20964c2257ee829007a3691a75b3fed3a7b4a7e` |
+| `review/logs/uscan.json` | 55,848 B | `a6cda850eb64a395997963190bd0ac938ee56cd7fc06411a6d982de332a8dd84` |
+
+## The signed-pairing content-law package (a GPT session of the user, 16 November 2026)
+
+`sources/signed-pairing-2026-11-16-gpt/` holds the delivery's documents (`README.md`, `PROOFS.md`, `CERTIFICATES.md`,
+`LEDGER_ADDITIONS.md`) and the independent `REVIEW.md` (STATUS 6.3.30, tag SPAIR; `../higher-degree/STATUS.md`
+4.21–4.24). They are verbatim copies; only their first lines were added. Read the delivery through the review: its §9
+lists five required corrections of wording (the bulk result is a limit model; "an infinite-dimensional family" is one
+cubic per m), and the ledger rows follow its §8.
+- **Checkers.** `code/signed-pairing-gpt/scripts/`: `node verify_gamma_exact.mjs` and `node verify_exact.mjs` (Node 20
+  or later) and `python3 certify_gamma.py` (python-flint). `verify_exact.mjs` reads `results/certificate.json`, which is
+  not committed (below); `build_certificate.py` and `variational_probe.py` are the proposal step that wrote it (NumPy,
+  SciPy). The review worker replayed all three checkers, the Arb one with python-flint 0.8.0 on a rented droplet;
+  the outputs are byte-identical to the delivered ones. `MANIFEST.sha256` is the delivery's; its entries for the four
+  documents refer to the files without the added first line.
+- **Review scripts.** `code/signed-pairing-gpt/review/scripts/` (18 files; `siglib.py` is their library) and
+  `review/logs/` (22 logs of at most 13 KB, kept because the review cites them as its record). `cert_check.py` is the
+  reviewer's own exact checker of the 121 cells; `null_highdeg.py` tests the 400 Wick controls at higher degree.
+- **Not committed**, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-signed-pairing-2026-11-16/`:
+  the zip `content_law_signed_pairing_20261116.zip` (569,629 B, SHA-256 `a8ce64c450f9349e8ec58ef1b81d1dd9c6f6ec6baf8fb65c9595bf4925df3f4c`), the reviewer's
+  `review/data/`, and:
+
+| file | size | SHA-256 |
+|---|---|---|
+| `package/results/certificate.json` | 1,195,938 B | `b6b1c91aa78896312c1c97fbca8ff33070292b639e37adc7ac0b59e8cd97c08c` |
+| `review/logs/rows_ratio.log` | 19,924 B | `d4f19664c15774e2923625b212cdf760c48da91d624eec029ad5f32d0e759dca` |
+| `review/logs/rows_ratio_quick.log` | 19,923 B | `b493e54f82eeb0aa9d179d7f8374d7ee49ed588d465616f4da6e05d687914457` |
+
+## The radius certificate ρ* ≤ 0.9359 (a GPT session of the user, 16 November 2026)
+
+`sources/radius-9359-2026-11-16-gpt/` holds the delivery's `README.md` and `REVIEW_claude-b9ee.md` (STATUS 3.7, tag
+KRAD). They are verbatim copies; only their first lines were added. `code/radius-9359-gpt/` holds the certificates and
+the verifiers.
+- **Replay.** `node verify.mjs`, `python3 -I verify.py certificates.json` and `python3 verify_examples.py` (standard
+  library; under one second each; `verify_examples.py` imports `verify.py` from its folder). `verification.txt` is the
+  delivery's record; `SHA256SUMS` is the delivery's, and its entry for `README.md` refers to the file without the added
+  first line.
+- **Independent verifier.** `review-claude-b9ee/own_verifier.py certificates.json` (standard library, 0.2 s), written
+  from the README's §§5–6 without reading the delivered verifiers, and `negative_controls.py`; their logs and the three
+  replay logs are beside them.
+- **Not part of the proof.** `discover.py` is the numerical search that produced the certificates (NumPy, SciPy and a
+  conic solver; `requirements-discovery.txt`); it was not run.
+- **Not committed:** the zip `cubic_l1_rho_0_9359.zip` (30,227 B, SHA-256 `8d8358d33c3730df2af92562d6a63eced8bba38542824d13e69e3a33a9e4b66b`), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-radius-9359-2026-11-16/`.
+
+## The influence calculus (a Claude session of the user, 16 November 2026, two versions)
+
+`sources/influence-calculus-2026-11-16/` holds the second version of the delivery (`README.md`, `NOTE2.md`,
+`ADDENDUM.md`, `LITERATURE.md`) and the independent `REVIEW.md`, which covers both versions (STATUS 3.27,
+6.3.31–6.3.35, items 96–98, tag KIC; `../higher-degree/STATUS.md` 4.25–4.26). They are verbatim copies; only their
+first lines were added. The second version contains the first with its corrections marked; read both through the
+review, whose §6 lists what the delivery overstates (F3–F7).
+- **Replay.** `code/influence-calculus-2026-11-16/`: `python3 -I scripts/check_influence_exact.py`,
+  `scripts/check_stein_energy_exact.py`, `scripts/check_fourth.py`, `scripts/check_sixth_moment.py` (standard library;
+  the scripts import `wick_exact.py` from their folder, so run them from a copy without `-I` or with the folder on the
+  path). `run_all.sh` replays the numerics (NumPy, SciPy), which read the peak-profile table produced by
+  `../antiholomorphic-stein-2026-11-16/numerics/tab.py`. `results/` holds the delivery's logs, kept because the note
+  cites them. The review worker replayed everything: identical logs, or noise in the last digit.
+- **`review/`** holds the reviewer's own exact Wick code (`exact_wickbasis.py`), its numerics (`own_numerics.py`,
+  `own_lawlevel.py`, `own_scan.py`, `own_v2.py`, `small_checks.py`), the replay drivers and their logs.
+- **Not committed**, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/influence-calculus-2026-11-16/`: the two zips
+  (`conjecture-K-influence-calculus.zip`, 41,742 B, SHA-256 `eaa4f0b5227a7c856cd1c43ee58745c4f89c4ae90f701ee9f2f43898af4a9540`;
+  `conjecture-K-influence-calculus-v2.zip`, 65,469 B, SHA-256 `f601c453f909fae575599c4ffa04c9fdb73fb06e55da40c18651cf14786459d5`), the first version as
+  delivered (`package/`), the replay logs (`review/replay-logs/`), and:
+
+| file | size | SHA-256 |
+|---|---|---|
+| `review/tab_reviewer.npz` | 122,118 B | `44d1b330464d652acaaaec713cc158932beb508b8635cdb4e704758f2d8b760d` |

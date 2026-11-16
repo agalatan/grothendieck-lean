@@ -1,0 +1,5 @@
+sqrt: 1500 random cubics: ratio mean 0.9124 max 0.98023 fraction >= 1: 0.0000 (53s)
+  local search 0: start 0.98023 -> sup_t min_e ratio >= 0.985701; (A,B,C,L2,R2)/u at best e: [0.0598 0.0338 0.6163 0.1936 0.0029] (306s)
+  local search 1: start 0.97998 -> sup_t min_e ratio >= 0.985564; (A,B,C,L2,R2)/u at best e: [1.587e-01 4.000e-04 6.130e-01 3.900e-03 6.480e-02] (535s)
+  local search 2: start 0.97812 -> sup_t min_e ratio >= 0.985770; (A,B,C,L2,R2)/u at best e: [0.069  0.0279 0.6353 0.1683 0.0025] (761s)
+  local search 3: start 0.97449 -> sup_t min_e ratio >= 0.985809; (A,B,C,L2,R2)/u at best e: [5.000e-04 6.170e-02 2.183e-01 5.173e-01 1.398e-01] (978s)

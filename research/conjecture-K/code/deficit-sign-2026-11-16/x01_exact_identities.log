@@ -1,0 +1,13 @@
+PASS general n=1 trial=0: u=5.125; (J1),(J2),(J3),(L1),(L2) hold exactly; #monomials of a = 2, ||P31 q^2||^2 = 630.4
+PASS general n=2 trial=0: u=80.46; (J1),(J2),(J3),(L1),(L2) hold exactly; #monomials of a = 11, ||P31 q^2||^2 = 8.367e+04
+PASS general n=2 trial=1: u=45.36; (J1),(J2),(J3),(L1),(L2) hold exactly; #monomials of a = 11, ||P31 q^2||^2 = 2.162e+04
+PASS general n=2 trial=2: u=175.6; (J1),(J2),(J3),(L1),(L2) hold exactly; #monomials of a = 11, ||P31 q^2||^2 = 7.322e+04
+PASS general n=2 trial=3: u=122.9; (J1),(J2),(J3),(L1),(L2) hold exactly; #monomials of a = 11, ||P31 q^2||^2 = 9.54e+04
+PASS general n=3 trial=0: u=151.2; (J1),(J2),(J3),(L1),(L2) hold exactly; #monomials of a = 36, ||P31 q^2||^2 = 9.318e+04
+PASS general n=3 trial=1: u=65.86; (J1),(J2),(J3),(L1),(L2) hold exactly; #monomials of a = 36, ||P31 q^2||^2 = 2.274e+04
+PASS a=0 class [X^2 conj(Y)]: a = 0, P31(q^2) = 0, E[V^k c2^m] = k! E[c2^(k+m)] for k <= 3, m <= 2
+PASS a=0 class [X Y conj(W)]: a = 0, P31(q^2) = 0, E[V^k c2^m] = k! E[c2^(k+m)] for k <= 3, m <= 2
+PASS a=0 class [(X^2 + c Y^2) conj(W)]: a = 0, P31(q^2) = 0, E[V^k c2^m] = k! E[c2^(k+m)] for k <= 3, m <= 2
+PASS a=0 class [X^2 conj(Y + 2iW)  (two antiholomorphic variables)]: a = 0, P31(q^2) = 0, E[V^k c2^m] = k! E[c2^(k+m)] for k <= 3, m <= 2
+PASS (H1): first variation of E[conj(q)^2 a V^k] at q0 = X^2 conj(Y) in the direction X(|X|^2+|Y|^2-3) vanishes, k <= 3
+ALL EXACT CHECKS PASSED (7 random cubics + 4 decoupled cubics)
