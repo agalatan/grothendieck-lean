@@ -1,5 +1,9 @@
 # The complex Grothendieck constant, in Lean
 
+**Work in progress.** The two bounds below are proved and checked by CI on every change; the work towards sharper
+bounds continues, and its open problems are recorded in [`research/`](research/README.md) and in
+[OVERVIEW.pdf](OVERVIEW.pdf).
+
 A Lean 4 + Mathlib proof of these bounds on the complex Grothendieck constant:
 
 $$1.401700322371 < K_G^{\mathbb{C}} < 1.404599395362$$
@@ -237,7 +241,8 @@ $\delta = 1.542247969222723794480\ldots \cdot 10^{-6}$
 | `scripts/`, `.github/workflows/`, `AGENTS.md` | CI, its helper scripts, and the working rules of the agents that maintain the repository |
 | `docs/` | `LEAN_DETAILS.md` (inventory), `overview.tex` (source of `OVERVIEW.pdf`), and design and status notes, each describing the state at its date |
 | `sign/` | GrotheSign, a separate Lake package: independent work on the coefficient signs of inverse kernel series. Not part of `Grothe`, of its axiom report or of CI; see [`sign/README.md`](sign/README.md) |
-| `miscellaneous/`, `abandonware/`, `handoff/`, `deliveries/`, `outputs/` | archives: research modules and notes, removed code, records of the search. Outside the Lake libraries: never built or imported |
+| `research/` | organised records of the open problems behind the bounds (Conjecture K, higher-degree games), with their status ledgers; not built or checked |
+| `miscellaneous/`, `abandonware/`, `handoff/`, `outputs/` | archives: research modules and notes, removed code, records of the search. Outside the Lake libraries: never built or imported |
 
 Most modules are generated: certificate data, and small modules that each check one part of it, in the kernel or
 as a `native_decide` fact, so that Lake runs the checks in separate processes. The generators are in `tools/`;
@@ -272,6 +277,27 @@ of `master`, or by a run dispatched for that purpose (`-f mode=caps`). Changes r
 after review the author comments `/land <agent-id>`, and CI checks the branch merged into the current `master` and
 moves `master` to that merge only if the check is green (`AGENTS.md` §7). Every update of `master` gets its own
 check.
+
+## Related work
+
+The table at the top lists the published bounds on the complex constant. Two recent preprints of Heilman, Jones and
+Malavolta bear directly on this repository:
+
+- S. Heilman, C. Jones, G. Malavolta, *Sharper bounds for the complex Grothendieck constant*,
+  [arXiv:2609.25462](https://arxiv.org/abs/2609.25462) (September 2026): $1.4 < K_G^{\mathbb C} < 1.404898554746$.
+- S. Heilman, C. Jones, G. Malavolta, *Primal/dual method for the Grothendieck constant*,
+  [arXiv:2610.10477](https://arxiv.org/abs/2610.10477): a primal/dual search over Hermite projection games and
+  roundings for the real constant. Its viewpoint is behind the complex search recorded in
+  [`research/higher-degree/`](research/higher-degree/README.md). Its Example 3.1, a sharp $L^1$ bound on each real
+  Hermite chaos, would imply by phase averaging the sharp complex bound that is an open problem here
+  ([`research/conjecture-K/STATUS.md`](research/conjecture-K/STATUS.md), row 3.6).
+
+For the complex constant see also S. Guo, E. X. Fang, J. Lu, *An improved lower bound for the complex Grothendieck
+constant*, [arXiv:2609.07000](https://arxiv.org/abs/2609.07000). For the real constant, the first improvements of
+the Davie–Reeds lower bound are S. Heilman, *A lower bound for Grothendieck's constant*,
+[arXiv:2603.22616](https://arxiv.org/abs/2603.22616), and C. Jones, G. Malavolta, *The Grothendieck constant is
+strictly larger than Davie–Reeds' bound*, [arXiv:2603.30039](https://arxiv.org/abs/2603.30039); see also R. Saha et
+al., *New lower and upper bounds for the Grothendieck constant*, [arXiv:2608.11158](https://arxiv.org/abs/2608.11158).
 
 ## How this was made
 
