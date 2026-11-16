@@ -138,7 +138,9 @@ check on a shared runner) or starting a cloud job. Push for a full check at a mi
 **The local master build (shared by every agent on the laptop).** Start every worktree from it instead of an empty
 build: Lake then compiles only what your branch changes.
 - **Where:** `/Users/alingalatan/workspaces/grothe/.lake/master-cache`, a consistent snapshot of a *successful*
-  master build of every module except the node-cap rows and `CapNodes`. Its `built-commit` file names the master
+  master build of the modules that `scripts/local_build_targets.py` lists: every module except the node caps
+  (rows, localised pieces, `CapNodes`), the upper-bound trees `UpperChaos` and `UpperQuad`
+  (`data/local-build-exclude.txt`), and whatever imports them. Its `built-commit` file names the master
   commit. It is produced in the dedicated worktree `/Users/alingalatan/workspaces/grothe-master-build` (detached):
   never edit, build in or remove that worktree, and never clone its live `.lake/build`.
 - **Use it:** `scripts/clone_master_build.sh <worktree>` links the shared packages and clones the snapshot with
