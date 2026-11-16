@@ -1,0 +1,32 @@
+A. sharp profile-free constants of single shared blocks
+   d  lam |   chi   | h = v    | poly sup (deg k' <= 5) | theta* (sharp) | proof, exact E[N^2/A] | Theta_d (rational) | Theta_d/theta* | checks
+   1  0.0 | 16.0000 | 1.333333 |    --    | 1.547312 | 1.666667 | 1.666667 | 1.077 | 2e-16 1e-16
+   2  0.0 |  5.5000 | 0.484848 | 0.518476 | 0.520162 | 0.539803 | 0.545455 | 1.049 | 1e-16 3e-16
+   3  0.0 |  3.2593 | 0.242424 | 0.254043 | 0.255152 | 0.272077 | 0.291246 | 1.141 | 2e-16 4e-16
+   4  0.0 |  2.3125 | 0.144144 | 0.149404 | 0.151002 | 0.166421 | 0.197072 | 1.305 | 1e-16 1e-16
+   5  0.0 |  1.7920 | 0.095238 | 0.098127 | 0.099542 | 0.112992 | 0.135020 | 1.356 | 4e-16 3e-16
+   8  0.0 |  1.0703 | 0.038929 | 0.039846 | 0.040379 | 0.048445 | 0.052109 | 1.290 | 6e-16 6e-16
+  16  0.0 |  0.5166 | 0.010082 |    --    | 0.010292 | 0.012810 | 0.012998 | 1.263 | 1e-15 1e-15
+   2  1.0 |  4.9600 | 0.215054 | 0.224619 | 0.226565 | 0.240754 | 0.545455 | 2.407 | 1e-16 3e-16
+   3  2.0 |  3.0634 | 0.070344 |    --    | 0.074889 | 0.085546 | 0.291246 | 3.889 | 1e-16 2e-16
+   3  4.0 |  3.0360 | 0.041092 | 0.042273 | 0.044315 | 0.052411 | 0.291246 | 6.572 | 1e-16 3e-16
+   (d = 1 is X(|Y|^2 - 1): theta* = 1.54731 as in the first review; the trace argument gives exactly 5/3 there)
+B. tangent architecture at m = 5, 6 (13/10 without sign averaging?)
+   m = 4: Bessel (5) 1.32258 | floor theta(E[Z | q, sign P]) 1.35427 | one tangent divergence (4.21) 1.37919 | sharp theta* 0.98135
+   m = 5: Bessel (5) 1.27677 | floor theta(E[Z | q, sign P]) 1.30678 | one tangent divergence (4.21) 1.33205 | sharp theta* 0.87400
+   m = 6: Bessel (5) 1.24110 | floor theta(E[Z | q, sign P]) 1.26985 | one tangent divergence (4.21) 1.29532 | sharp theta* 0.78802
+C. exact: Theta_d against the lower bound 16/(3(2d^2+d+1)) of h = v, d = 2 .. 2000
+   largest Theta_d/(h = v): 1.4177 at d = 5; smallest 1.1250 at d = 2; at d = 2000: 1.2503 (limit 5/4)
+   second requirement b_d/(3d) <= Theta_d with b_d <= min(1, d(d+2)/((d-2)(d-1)^2)): holds for d = 2 .. 2000; ratio (b-bound/(3d))/Theta_d = 0.306, 0.382, 0.185, 0.100 at d = 2, 3, 10, 2000
+D. the regularity constants of PROOFS section 6
+   t = 0.80  p0 = 0.5345 (> 1/2)  p1 = 0.1092 (> 1/10)  p2 = 0.00241 (> 0)
+   t = 0.82  p0 = 0.5482 (> 1/2)  p1 = 0.1174 (> 1/10)  p2 = 0.00278 (> 0)
+   t = 0.84  p0 = 0.5625 (> 1/2)  p1 = 0.1260 (> 1/10)  p2 = 0.00319 (> 0)
+   t = 0.845 p0 = 0.5662 (> 1/2)  p1 = 0.1282 (> 1/10)  p2 = 0.00330 (> 0)
+   t = 0.85  p0 = 0.5700 (> 1/2)  p1 = 0.1304 (> 1/10)  p2 = 0.00342 (> 0)
+   t = 0.855 p0 = 0.5738 (> 1/2)  p1 = 0.1326 (> 1/10)  p2 = 0.00353 (> 0)
+E. Q_1 through trace_blocks.py against the m = 1 block of multiblock.py (second review: 0.1891/0.1628 at t = 0.80, 0.2493/0.2207 at t = 0.82, u = 0.5 u*)
+   t = 0.80: 0.1891/0.1628 (trace code) against 0.1891/0.1628 (second review)
+   t = 0.82: 0.2493/0.2207 (trace code) against 0.2493/0.2207 (second review)
+ALL CHECKS PASSED
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 nice -n 10   1.42s user 0.35s system 99% cpu 1.773 total

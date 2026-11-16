@@ -7,17 +7,22 @@ different witness:
     T = P₁,₀ − ε·P₂,₁ + ν·(Id − P₁,₀ − P₂,₁),      (ε, ν) = (191/250, 47/2000).
 
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
-K ≈ 1.40212, with a margin of 1.6·10⁻⁴ to the target **1.4018** and 6·10⁻⁵ to 1.402.
+K ≈ 1.40212, with a margin of 1.6·10⁻⁴ to the target **1.4018** and 6·10⁻⁵ to 1.402. The integer certificate (ledger
+§5) is not complete. Five plateau rows have exact certificates below the 1.4018 target. For the binding rows on their
+final tables a margin of 6 to 8·10⁻⁵ is predicted, not certified; one row near t = 0.84 certifies above the target and
+its coverage by neighbouring rows, the envelope over t and the rows at small t are open. The predicted values are
+above the target of 1.402.
 
 It is research material: nothing here is imported by Lean or checked by CI. The one exception is noted where it
-occurs: the lemma of §2 of the ledger is being formalised in `Grothe/LowerAnalytic/CapMajorant.lean`.
+occurs: the lemma of §2 of the ledger is the Lean theorem `anchored_pair_nu` in
+`Grothe/LowerAnalytic/CapMajorant.lean`.
 
 | file | what it is |
 |---|---|
 | `README.md` | this file |
 | [`STATUS.md`](STATUS.md) | **the ledger**: every statement with its scope, status, author and source |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository, with paths |
-| `sources/` | verbatim copies of the working notes: the feasibility study, the correction lemma with its referee report, and the go/no-go note with the Lean plan |
+| `sources/` | verbatim copies of the working notes: the feasibility study, the correction lemma with its referee report, the go/no-go note with the Lean plan, and the report of stage 0 at its first hand-back |
 | `code/` | the reference implementation of the lemma's coefficient and its exact and numerical checks |
 
 `STATUS.md` is the living record ([`../README.md`](../README.md)); the copies under `sources/` stay verbatim and keep
@@ -32,8 +37,8 @@ their dated claims.
   eq. (4), `anchored_pair`) is built for |A| + |B|. For Ψ_ν it needs a rank-one correction with a new coefficient γ*.
   That lemma is proved (ledger §2), and without it the caps are unusable.
 - **What has to be rebuilt.** The witness and its reduction chain, the fibre potential, the cap kernel, all rows, all
-  cap modules and their registry, the law nodes and the refined cover. The node-cap rebuild is about 100 CPU-hours
-  of CI for 1.4018.
+  cap modules and their registry, the law nodes and the refined cover. The node-cap rebuild for the final tables
+  of stage 0 is estimated at 490 vCPU-hours of CI (ledger 4.1).
 - **The plan.** Stage 0: a pure-integer certificate outside Lean, as a go/no-go gate. Stage 1: generalise the Lean
   development in place, instantiated at today's witness, so that nothing changes yet. Stage 2: one pull request
   with every change that invalidates the node caps.

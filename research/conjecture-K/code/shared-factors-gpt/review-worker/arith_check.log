@@ -1,0 +1,9 @@
+radius: (500/701)/0.9359^2 = 50000000000/61401207581 = 0.81431623;  room at 81/100: 26502185939/7010000000000 = 0.0037806257;  with the old radius 0.9513293: cap 0.78812
+        81/100 <= cap: True;  82/100 <= cap: False
+basis family: theta(d) = (1/3)(1 + 2(1+7d)/(d^2(1+2d)+d));  theta(8) = 605/1644 = 0.368005 < 0.37 < theta(7) = 0.378257;  decreasing;  theta(d) < 7/20 from d = 12;  limit 1/3
+        its fourth excess chi(d) = 4(d^2(1+2d)+d)/d^4: chi(8) = 1.0703, chi(12) = 0.6968
+rank-one family: (23/50 + (227/50)/n)/3: n = 1: 5/3, n = 6: 0.40556, n = 7: 194/525 = 0.36952, n = 8: 137/400 = 0.34250, limit 23/150 = 0.1533
+        e < 11743/4320 = 2.7182870 < 68/25, so 1 - 4/e^2 < 23/50 (true value 0.458659)
+Theorem 2: 2 * 8 * 27^2 (sqrt60 + 2 sqrt2)^2 /36^3 * (3/8)^1.5 = 6.419451 < 13/2;  Corollary 3: 2 (4/3)^2 324^2 /36^3 (3/8)^1.5 = 1.837117 = 3 sqrt6/4 = 1.837117
+section 2 at m = 1 with the exact scalars (N): alpha^2 = 0.363002 (used: 23/50), J_w = 10.87888 (used: 12): bound 0.4208, 0.3708, 0.3351, 0.3084 at n = 5, 6, 7, 8; first n below 0.37: 7
+/usr/local/bin/python3 -I scripts/arith_check.py  0.08s user 0.02s system 96% cpu 0.098 total

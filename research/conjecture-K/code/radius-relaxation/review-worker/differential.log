@@ -1,0 +1,87 @@
+G row  0  lam2 -1e-04                        reviewer: reject   author: reject   
+G row  0  lam2 +2e-06                        reviewer: accept   author: accept   
+G row  0  sigma times 0.8                    reviewer: reject   author: reject   
+G row  0  phi1[3] -1e-06 (phi2 too)          reviewer: accept   author: accept   
+G row  0  phi2[30] +1e-04                    reviewer: reject   author: reject   
+G row  0  slope_2 times 1.0000005 (both)     reviewer: accept   author: accept   
+G row  0  xi2[21] +2e-04                     reviewer: reject   author: reject   
+G row  0  sigma times 0.999998               reviewer: accept   author: accept   
+G row  0  slope_2 times 0.99998 (both)       reviewer: accept   author: accept   
+G row  0  xi2[56] -2e-06                     reviewer: reject   author: reject   
+G row  0  xi2[21] -5e-08                     reviewer: reject   author: reject   
+G row  0  slope_2 times 0.9999 (both)        reviewer: accept   author: accept   
+G row 11  th4[55] -1e-07                     reviewer: reject   author: reject   
+G row 11  mu_2 times 0.998                   reviewer: accept   author: accept   
+G row 11  xia[53] -5e-05                     reviewer: reject   author: reject   
+G row 11  xia[48] +1e-04                     reviewer: reject   author: reject   
+G row 11  xia[27] +2e-08                     reviewer: reject   author: reject   
+G row 11  th2[71] +2e-02                     reviewer: reject   author: reject   
+G row 11  lam2 +5e-09                        reviewer: accept   author: accept   
+G row 11  lam0 -3.6e-06                      reviewer: reject   author: reject   
+G row 11  phi2[102] +2e-04                   reviewer: reject   author: reject   
+G row 11  lam2 -5e-04                        reviewer: reject   author: reject   
+G row 11  xi1[47] +2e-08                     reviewer: reject   author: reject   
+G row 11  lam0 -6.0e-07                      reviewer: accept   author: accept   
+G row 21  phi2[26] -1e-02                    reviewer: reject   author: reject   
+G row 21  xi2[13] +2e-04                     reviewer: reject   author: reject   
+G row 21  xi2[34] +2e-05                     reviewer: reject   author: reject   
+G row 21  th4[85] +5e-04                     reviewer: reject   author: reject   
+G row 21  phi2[87] +5e-07                    reviewer: reject   author: reject   
+G row 21  th4[12] -1e-02                     reviewer: reject   author: reject   
+G row 21  xi2[52] +5e-05                     reviewer: reject   author: reject   
+G row 21  phi2[68] +5e-06                    reviewer: reject   author: reject   
+G row 21  slope_2 times 1.00002 (both)       reviewer: reject   author: reject   
+G row 21  xi2[64] +1e-08                     reviewer: reject   author: reject   
+G row 21  lam2 +5e-10                        reviewer: accept   author: accept   
+G row 21  lam0 -1.6e-06                      reviewer: accept   author: accept   
+N row  0  lam0 -7.0e-07                      reviewer: accept   author: accept   
+N row  0  lam0 -1.5e-06                      reviewer: accept   author: accept   
+N row  0  th2[28] -1e-04                     reviewer: reject   author: reject   
+N row  0  xi2[66] +2e-05                     reviewer: accept   author: accept   
+N row  0  th2[38] -1e-07                     reviewer: accept   author: accept   
+N row  0  th4[10] -5e-03                     reviewer: reject   author: reject   
+N row  0  mu_3 times 1.0000002               reviewer: accept   author: accept   
+N row  0  phi2[28] +1e-03                    reviewer: reject   author: reject   
+N row  0  xia[96] -5e-02                     reviewer: accept   author: accept   
+N row  0  slope_2 times 0.98                 reviewer: reject   author: reject   
+N row  0  xia[7] -5e-08                      reviewer: reject   author: reject   
+N row  0  slope_1 times 0.9999998            reviewer: accept   author: accept   
+N row 13  xi2[122] +1e-05                    reviewer: accept   author: accept   
+N row 13  lam0 -3.2e-06                      reviewer: accept   author: accept   
+N row 13  lam0 -2.2e-06                      reviewer: accept   author: accept   
+N row 13  lam2 -5e-04                        reviewer: reject   author: reject   
+N row 13  mu_3 times 1.0001                  reviewer: accept   author: accept   
+N row 13  lam0 -3.3e-06                      reviewer: accept   author: accept   
+N row 13  xi1[43] -2e-05                     reviewer: reject   author: reject   
+N row 13  th2[86] +1e-07                     reviewer: accept   author: accept   
+N row 13  lam0 -3.3e-06                      reviewer: accept   author: accept   
+N row 13  th4[95] +1e-04                     reviewer: accept   author: accept   
+N row 13  lam2 -1e-05                        reviewer: reject   author: reject   
+N row 13  sigma times 1.00001                reviewer: reject   author: reject   
+N row 20  xia[36] -1e-03                     reviewer: reject   author: reject   
+N row 20  xia[115] +5e-08                    reviewer: accept   author: accept   
+N row 20  mu_2 times 1.02                    reviewer: accept   author: accept   
+N row 20  th4[35] -2e-03                     reviewer: reject   author: reject   
+N row 20  lam2 +2e-09                        reviewer: accept   author: accept   
+N row 20  sigma times 1.00001                reviewer: reject   author: reject   
+N row 20  th2[45] +2e-03                     reviewer: reject   author: reject   
+N row 20  xia[33] +2e-04                     reviewer: reject   author: reject   
+N row 20  th2[22] -1e-05                     reviewer: accept   author: accept   
+N row 20  lam0 -1.1e-06                      reviewer: accept   author: accept   
+N row 20  phi1[57] -5e-02                    reviewer: reject   author: reject   
+N row 20  xi1[44] -1e-06                     reviewer: accept   author: accept   
+N row 22  sigma times 1.0001                 reviewer: reject   author: reject   
+N row 22  lam0 -4.5e-06                      reviewer: accept   author: accept   
+N row 22  lam2 +1e-07                        reviewer: accept   author: accept   
+N row 22  slope_2 times 0.9999               reviewer: accept   author: accept   
+N row 22  mu_4 times 0.9999998               reviewer: accept   author: accept   
+N row 22  th2[108] +5e-04                    reviewer: accept   author: accept   
+N row 22  xi1[83] -5e-07                     reviewer: accept   author: accept   
+N row 22  sigma times 1.00002                reviewer: accept   author: accept   
+N row 22  lam0 -2.8e-06                      reviewer: accept   author: accept   
+N row 22  mu_3 times 0.99999999              reviewer: accept   author: accept   
+N row 22  lam2 +2e-04                        reviewer: accept   author: accept   
+N row 22  lam0 -3.1e-06                      reviewer: accept   author: accept   
+{'total': 84, 'agree': 84, 'both_accept': 43, 'both_reject': 41, 'bound_equal': 43}
+time 24.4 s
+/usr/local/bin/python3 -I differential.py $SCR/author_copy/verify_cert.py   1  22.73s user 0.33s system 93% cpu 24.581 total

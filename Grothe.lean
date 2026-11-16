@@ -9960,6 +9960,7 @@ import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.CircularFourth
 import Grothe.LowerAnalytic.CircularTensor
 import Grothe.LowerAnalytic.ComplexGaussianCore
+import Grothe.LowerAnalytic.ComplexGaussianSymmetry
 import Grothe.LowerAnalytic.Covariance
 import Grothe.LowerAnalytic.Fibre
 import Grothe.LowerAnalytic.FibreHermite
