@@ -1165,8 +1165,8 @@ support functions, both lose about $2\cdot10^{-2}$ on the best degree-5 game. Th
 with a large cubic part is forced to have a degree-five part too. Through the visible coordinate, the cubic part sees the
 average of the remote coefficient profile and the quintic part its variation, and boundedness makes the profile vary. A
 certificate that treats the chaos degrees as independent cannot see this coupling.
-The coupling is \emph{driver sharing}: in the dimension-limit model the best degree-5 game has norm $0.712464$
-($1/N=1.40358$) when its degree-5 mixed sectors $(|z_1|^2-1)W$ and $z_1^2\overline W$ are driven by the same remote cubic $W$ as
+The coupling is \emph{driver sharing}: in the dimension-limit model the best degree-5 game has norm $0.7124294$
+($1/N=1.403648$) when its degree-5 mixed sectors $(|z_1|^2-1)W$ and $z_1^2\overline W$ are driven by the same remote cubic $W$ as
 the cubic sector, and $0.724753$ when they are driven by independent copies; the optimum then switches the degree-5 part off.
 So a higher-degree certificate must let one remote residual feed several degrees through the visible coordinate. The cubic
 rows already do this for their degree-3 sectors; extending them to the degree-5 companions of the same residual is the
@@ -1190,9 +1190,14 @@ Work is tracked as GitHub issues of the repository: epics \#12 (unconditional lo
  Section~\ref{sec:trust}; the unconditional theorem uses proved estimates and exhibits a bound below $1.404599395362$.
  The energy-table accuracy, the Hermite expansion, the structural analytic bridge and the Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
- remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.
+ remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.402$,
+ then $1.403$. A design (\path{research/higher-degree/}, [N]) finds that a lossy all-sector inequality with error up to
+ about $6\cdot10^{-4}$ per row suffices for $1.402$; the current gated rows lose several times that.
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
- locate $\KG$ to about $10^{-4}$ and to test whether Haagerup's value $1/\gamma^\dagger$ is the answer.
+ locate $\KG$ to about $10^{-4}$ and to test whether Haagerup's value $1/\gamma^\dagger$ is the answer. A first search
+ (\path{research/higher-degree/}, [N]) gives model values $1.403648$, $1.404113$ and $1.40430$ for the best games of
+ degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.404599395362$. No rounding built from the binding responses
+ beats Haagerup's $\gamma_H$, and whether $1/\gamma^\dagger$ is the answer remains open.
 \item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
  appears to be open, and it is the largest single lever on the law side.
 \end{enumerate}
