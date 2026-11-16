@@ -1612,6 +1612,15 @@ integrates the squared correlation `HardyArcCover.gF` over both charts, and
 | `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): computable coverage and constrained-piece checks separated from symmetry, S-lemma and piece-node soundness (issue #12) |
 | `CapRow12/`–`CapRow15/` (`Recipes`, `AnchorRangeNN`, `Assembly`), `CapPieces/` | rows 12–15: the anchor range facts and the row assemblies `vertexCapsRow12`–`vertexCapsRow15`; the generated per-node modules of the localised nodes (data `D…`, coverage `C…`, range facts `R…`, node theorems `N…`) |
 
+**`Grothe/Lower/SpecRows`: rows with spectral nodes (no row uses it yet).** The row checker of
+`Rows.lean` with spectral witnesses (`SWit`, checked by `checkSWit` against the row's node table)
+and the zero node in place of Stein nodes; chords and prices as in `checkRow`. `checkSpecCells`
+gives `RowBound` (`rowBound_of_specCells`; for a row without gates), `checkSpecRow` adds the gate
+and the price of `checkRow`, and `RowFacts` (gate, price, `RowBound`) follows from either check
+(`rowFacts_of_checkRow`, `rowFacts_of_checkSpecRow`). A joint witness is accepted only in cells
+with `xhi ≤ x_*`. Cells are strings `xlo#xhi#rects#nodes`, a node `0` or a witness string of the
+spectral batches.
+
 **`Grothe/Lower/Cert/`: the row and mixed-batch certificate in eight single-threaded chunks.**
 `Rows0`–`Rows4` and `Batches0`–`Batches2` each hold one `native_decide`
 fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.

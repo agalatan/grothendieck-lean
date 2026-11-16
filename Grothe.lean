@@ -56,6 +56,7 @@ import Grothe.Lower.RowGateData
 import Grothe.Lower.RowGates
 import Grothe.Lower.RowReduction
 import Grothe.Lower.Rows
+import Grothe.Lower.SpecRows
 import Grothe.Lower.Stein
 import Grothe.Lower.Support
 import Grothe.Lower.Sweep
