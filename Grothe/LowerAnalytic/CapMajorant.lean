@@ -176,12 +176,10 @@ theorem maj_key_bound {e2 e3 s : ℝ} (he2 : 0 < e2) (he3 : 0 < e3) (hs : 0 ≤ 
       ≤ ((e2 + e3) ^ 2 + s * |e3 - e2|) * ‖(s : ℂ) - e2 * f - e3 * g‖ := by
   have hf2 := re_sq_add_im_sq hf
   have hg2 := re_sq_add_im_sq hg
-  have hP : 0 < e2 * e3 := mul_pos he2 he3
   obtain ⟨a, ha⟩ : ∃ a : ℝ, a = ‖f - g‖ := ⟨_, rfl⟩
   obtain ⟨b, hb⟩ : ∃ b : ℝ, b = ‖(e2 : ℂ) * f + e3 * g‖ := ⟨_, rfl⟩
   obtain ⟨ρ, hρ⟩ : ∃ ρ : ℝ, ρ = ‖(s : ℂ) - e2 * f - e3 * g‖ := ⟨_, rfl⟩
   obtain ⟨x, hx⟩ : ∃ x : ℝ, x = ((f - g) * conj ((s : ℂ) - e2 * f - e3 * g)).re := ⟨_, rfl⟩
-  have ha0 : 0 ≤ a := ha ▸ norm_nonneg _
   have hb0 : 0 ≤ b := hb ▸ norm_nonneg _
   have hρ0 : 0 ≤ ρ := hρ ▸ norm_nonneg _
   have ha2 : a ≤ 2 := by
@@ -387,7 +385,7 @@ lemma majH_mul_unit (d2 d3 ν : ℝ) (L p : ℂ) {v : ℂ} (hv : ‖v‖ = 1) :
 
   `Re(f̄(L + p)) + Re(ḡ(L − p)) + ν Re(f̄g) ≤ Φ_d(L + p, L − p) − (γ/16)(4 Re(p L̄) − c₀ − c₁|L|²)²`.
 
-At `ν = 0` this is AF eq. (4) (`anchored_pair`). -/
+At `ν = 0` this is AF eq. (4) (`anchored_real`, `anchored_pair`). -/
 theorem anchored_pair_nu (L p : ℂ) {f g : ℂ} {d2 d3 ν R γ : ℝ} (hν : 0 ≤ ν) (h2 : ν < d2)
     (h3 : ν < d3) (hR : ‖L‖ ≤ R) (hγ0 : 0 ≤ γ) (hγ : γ ≤ majGammaStar d2 d3 ν R)
     (hf : ‖f‖ = 1) (hg : ‖g‖ = 1) :
