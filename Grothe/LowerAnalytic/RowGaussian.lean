@@ -172,7 +172,7 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
     (U : (Fin (n + n) → ℝ) → ℝ) (hU : ∀ y, ‖X1 y‖ ^ 2 = ‖pres hfm hgm hfb hgb‖ ^ 2 * U y)
     (_hU0 : ∀ y, 0 ≤ U y) :
     RowSharedWith r (pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3)) (stdGaussian (n + n)) U X1
-      ⇑(X2e hfm hgm hfb hgb) ⇑(X3e hfm hgm hfb hgb) ‖pres hfm hgm hfb hgb‖ (VOf (n + 1) f g)
+      ⇑(X2e hfm hgm hfb hgb) ⇑(X3e hfm hgm hfb hgb) ‖pres hfm hgm hfb hgb‖ (VOf (n + 1) ε 0 f g)
       (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by
   set p := pres hfm hgm hfb hgb with hpdef
   set τ := ‖p‖ with hτ
@@ -251,7 +251,7 @@ theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) (f g : L2G (n + 1))
     (hP : (H10 (n + 1)).starProjection (hOf (n + 1) f g) = ((tOf (n + 1) f g : ℝ) : ℂ) • zeta0 n)
     (hcaps : ∀ k, k < rowData.length → ∀ m ∈ (rowData.getD k row01).nodeList,
       rowPot k m.1 - capPad ≤ m.2) :
-    SharedReduction rowData (VOf (n + 1) f g) (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by
+    SharedReduction rowData (VOf (n + 1) ε 0 f g) (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by
   have hfm : Measurable (trunc ⇑f) := measurable_trunc (Lp.stronglyMeasurable f).measurable
   have hgm : Measurable (trunc ⇑g) := measurable_trunc (Lp.stronglyMeasurable g).measurable
   have hfb := norm_trunc_le ⇑f

@@ -15,10 +15,11 @@ large enough) whose value `‖∑ₗ ⟪uₗ, T vₗ⟫‖` is at least `1 − �
 simple functions, and passage to the limit.
 
 `TransferInputsL2` does not name the operator: it asks for *some* `T` on some `L²` space.  Its
-instance is the Gaussian witness `T = P₁,₀ − ε P₂,₁` of `Grothe/LowerAnalytic/Witness.lean`:
-`transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → TransferInputsL2 B` proves it from
-the scalar caps `WitnessCap n B` (`‖⟪f, T g⟫‖ ≤ B` for a.e. unimodular `f, g` on `L²(γ_n)`), the
-value `‖∑ₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+ε)/(n+1)` on `u(z) = z/‖z‖` being proved there
+instance is the Gaussian witness `T = P₁,₀ − e P₂,₁ + ν(1 − P₁,₀ − P₂,₁)` of
+`Grothe/LowerAnalytic/Witness.lean` (the certified bound uses `(e, ν) = (ε, 0)`):
+`transferInputs_of_witnessCap : 0 ≤ e → 0 ≤ ν → (∀ n ≥ N, WitnessCap n e ν B) → TransferInputsL2 B`
+proves it from the scalar caps `WitnessCap n e ν B` (`‖⟪f, T g⟫‖ ≤ B` for a.e. unimodular `f, g` on
+`L²(γ_n)`), the value `‖∑ₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+e)/(n+1)` on `u(z) = z/‖z‖` being proved there
 (`norm_pairVal_witness`). The scalar-profile identities and Gaussian reduction interface
 `ReductionHyp` are developed in `WitnessCap.lean`; a checked finite cover supplies the cap.
 -/
