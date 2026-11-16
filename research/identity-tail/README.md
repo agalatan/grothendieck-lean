@@ -9,13 +9,13 @@ different witness:
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
 K ≈ 1.40212, with a margin of 1.6·10⁻⁴ to the target **1.4018** and 6·10⁻⁵ to 1.402. The integer certificate (ledger
 §5) is not complete. Five plateau rows have exact certificates below the 1.4018 target. For the binding rows on their
-final tables a margin of 6 to 8·10⁻⁵ is predicted, not certified; one row near t = 0.84 certifies above the target and
-its coverage by neighbouring rows, the envelope over t and the rows at small t are open. The predicted values are
-above the target of 1.402.
+final tables a margin of 8 to 9·10⁻⁵ is predicted, not certified (ledger 3.2); one row near t = 0.84 certifies above
+the target, and its coverage by neighbouring rows, the envelope over t and the rows at small t are open. The
+predicted values are above the target of 1.402.
 
-It is research material: nothing here is imported by Lean or checked by CI. The one exception is noted where it
-occurs: the lemma of §2 of the ledger is the Lean theorem `anchored_pair_nu` in
-`Grothe/LowerAnalytic/CapMajorant.lean`.
+It is research material: nothing here is imported by Lean or checked by CI. The exceptions are noted where they
+occur: the lemma of §2 of the ledger (`anchored_pair_nu` in `Grothe/LowerAnalytic/CapMajorant.lean`) and the first
+steps of the Lean plan (ledger 6.2: the witness, its value and its cap interface) are Lean theorems on master.
 
 | file | what it is |
 |---|---|
@@ -33,18 +33,19 @@ their dated claims.
 - **Why a tail.** Changing ε alone cannot pass 1.40185. A small positive tail lowers the plateau of the row values,
   but only if it is kept **pointwise** inside the fibre potential: |A| + |B| becomes
   Ψ_ν(A, B) = sup over unimodular (f, g) of Re(f̄A) + Re(ḡB) + ν̂·Re(f̄g).
-- **What that costs.** The node caps bound the fibre potential by a pointwise majorant. Today's majorant (Alon–Fürer
-  eq. (4), `anchored_pair`) is built for |A| + |B|. For Ψ_ν it needs a rank-one correction with a new coefficient γ*.
-  That lemma is proved (ledger §2), and without it the caps are unusable.
+- **What that costs.** The node caps bound the fibre potential by a pointwise majorant. The majorant of the present
+  certificate (Alon–Fürer eq. (4), `anchored_pair`) is built for |A| + |B|. For Ψ_ν it needs a rank-one correction
+  with a new coefficient γ\*. That lemma is a Lean theorem (ledger §2), and without it the caps are unusable.
 - **What has to be rebuilt.** The witness and its reduction chain, the fibre potential, the cap kernel, all rows, all
   cap modules and their registry, the law nodes and the refined cover. The node-cap rebuild for the final tables
   of stage 0 is estimated at 490 vCPU-hours of CI (ledger 4.1).
 - **The plan.** Stage 0: a pure-integer certificate outside Lean, as a go/no-go gate. Stage 1: generalise the Lean
-  development in place, instantiated at today's witness, so that nothing changes yet. Stage 2: one pull request
+  development in place, instantiated at the present witness, so that nothing changes yet. Stage 2: one pull request
   with every change that invalidates the node caps.
 
-**Reading order:** [`STATUS.md`](STATUS.md) §1–§3, then `sources/stage0c-2026-11-16/STAGE0C.md` (the verdict, the numbers
-and §7, the Lean plan), then `sources/lemma-2026-11-15/PROOF.tex`. The work runs under issue #183.
+**Reading order:** [`STATUS.md`](STATUS.md) §1–§5, then `sources/stage0-2026-11-16/STAGE0_FINAL.md` (its summary),
+`sources/stage0c-2026-11-16/STAGE0C.md` (the verdict, the numbers and §7, the Lean plan) and
+`sources/lemma-2026-11-15/PROOF.tex`. The work runs under issue #183.
 
 ## Notation
 
