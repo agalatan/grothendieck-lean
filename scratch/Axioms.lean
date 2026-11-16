@@ -92,6 +92,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.VOf_eq
 #print axioms Grothe.LowerAnalytic.VOf_eq_hat
 #print axioms Grothe.LowerAnalytic.VOf_frame_with_penalty
+#print axioms Grothe.LowerAnalytic.VhatOf_frame
 #print axioms Grothe.LowerAnalytic.anchored_pair_nu
 #print axioms Grothe.LowerAnalytic.anchored_pair_poly
 #print axioms Grothe.LowerAnalytic.budget_c
@@ -10065,6 +10066,7 @@ import Grothe
 #print axioms Grothe.Research.LawNodeLower.certified_rows
 #print axioms Grothe.Research.LawNodeLower.extended_batches_checked
 #print axioms Grothe.Research.LawNodeLower.lower_bound_of_law_nodes
+#print axioms Grothe.Research.LawNodeLower.lower_bound_of_tail_nodes
 #print axioms Grothe.Research.LawNodeLower.profile_bound_of_law_nodes
 #print axioms Grothe.Research.LawNodeLower.strict_lower_bound_of_law_nodes
 #print axioms Grothe.Research.LawNodeLower.transferInputs_of_law_nodes

@@ -26,10 +26,11 @@ After a phase (`g ↦ θg`, `|θ| = 1`) the pairing is real and nonnegative, so 
 cap `c` of the hat value gives the endpoint `B = (1−ν)c + ν` (`witnessCap_of_VhatOf_le`).  The rows
 of a certificate bound the hat value, and their constant `ε` is the hat weight `ε̂`.
 
-The certified witness is `(e, ν) = (ε, 0)`, where `ε̂ = ε`, `ν̂ = 0` and `V̂ = V`: everything below
-the endpoint is stated for it.  A checked finite cover bounds this profile using `‖v‖² = 2`,
-`0 ≤ t ≤ 9/10`, the crude row
-`RowOf crudeRow V t Qh v` and `SharedReduction rowData V t Qh v`. The bound `t ≤ 9/10` is proved
+The certified witness is `(e, ν) = (ε, 0)`, where `ε̂ = ε`, `ν̂ = 0` and `V̂ = V`.  The reduction
+below is stated for every witness whose hat weight is the constant of the rows, `ε̂ = ε`
+(hypothesis `epsHat e ν = ε`), and it bounds the hat value `V̂`.  A checked finite cover bounds
+`V̂` using `‖v‖² = 2`, `0 ≤ t ≤ 9/10`, the crude row
+`RowOf crudeRow V̂ t Qh v` and `SharedReduction rowData V̂ t Qh v`. The bound `t ≤ 9/10` is proved
 (`tOf_le`): `t = ‖Ph‖` with `|h| ≤ 1`, `‖Ph‖² = Re⟪h, Ph⟫ ≤ E|Ph|`, and `Ph = Σₗ cₗ zₗ` is a complex
 Gaussian, so `E|Ph| = (√π/2)‖Ph‖` (`integral_norm_linL`, by the rotation invariance
 `integral_two_linear` and the planar radius `integral_norm_gauss2` of `GaussianRadial.lean`); hence
@@ -39,13 +40,18 @@ Gaussian, so `E|Ph| = (√π/2)‖Ph‖` (`integral_norm_linL`, by the rotation 
 (`WickChaos.lean`), `∫ a² = 1/2`; the certified first-moment bound `E √U ≤ ρ` of the law
 `U = a² + b²` (`gaussian_moments`, field `mh`, which rests on the sixth-moment inequality, proved
 through the tensor facts `Circular.tensorFacts`) gives `E|Qk/‖Qk‖| ≤ ρ`, and
-`‖Qk‖² = Re⟪k, Qk⟫ ≤ E|Qk|` with `|k| ≤ 1`.
+`‖Qk‖² = Re⟪k, Qk⟫ ≤ E|Qk|` with `|k| ≤ 1`; a tail `ν̂ ≥ 0` only lowers the hat value
+(`rowOf_crude`).
 Hence the remaining hypothesis of the scalar cap, per admissible pair with `V ≥ 0`, is exactly
 (`ReductionHyp`):
 
 * a coupling vector `v` with `‖v‖² = 2` (on paper `v = z₁(|z₁|² − 2)` in the frame with `Ph = t z₁`)
-  and `SharedReduction rowData V t Qh v` (L4: the Gaussian reduction of the rows with the shared
+  and `SharedReduction rowData V̂ t Qh v` (L4: the Gaussian reduction of the rows with the shared
   residual, gate variable and potentials).
+
+For a unimodular pair the tail of the hat value is global: `Re⟪f, g⟫ = ‖h‖² − ‖k‖²`
+(`re_inner_eq_normSq_hOf_sub`), so `−2‖k‖² = Re⟪f, g⟫ − 1` (`re_inner_sub_one`), the form in which
+the integrated fibre bound carries the tail.
 
 Here `L²(γ_n)` is the real inner product space `E` of `SharedReduction` through Mathlib's
 `InnerProductSpace ℝ (Lp ℂ 2 μ)` (real part of the complex inner product, same norm).
@@ -177,6 +183,27 @@ theorem VOf_eq_hat (e : ℝ) {ν : ℝ} (hν : ν ≠ 1) {f g : L2G n}
   rw [VOf_eq, VhatOf, epsHat, nuHat]
   field_simp
   linear_combination ν * hk1
+
+/-- `Re ⟪f, g⟫ = ‖h‖² − ‖k‖²` (`f = h + k`, `g = h − k`). -/
+lemma re_inner_eq_normSq_hOf_sub (f g : L2G n) :
+    (inner ℂ f g).re = ‖hOf n f g‖ ^ 2 - ‖kOf n f g‖ ^ 2 := by
+  have hh : (inner ℂ (hOf n f g) (hOf n f g)).re = ‖hOf n f g‖ ^ 2 := by
+    rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  have hk : (inner ℂ (kOf n f g) (kOf n f g)).re = ‖kOf n f g‖ ^ 2 := by
+    rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  have hs : (inner ℂ (kOf n f g) (hOf n f g)).re = (inner ℂ (hOf n f g) (kOf n f g)).re := by
+    rw [← inner_conj_symm, Complex.conj_re]
+  have e : inner ℂ f g = inner ℂ (hOf n f g + kOf n f g) (hOf n f g - kOf n f g) := by
+    rw [hOf_add_kOf, hOf_sub_kOf]
+  rw [e, inner_add_left, inner_sub_right, inner_sub_right, Complex.add_re, Complex.sub_re,
+    Complex.sub_re, hh, hk, hs]
+  ring
+
+/-- **The tail in its global form**: for a unimodular pair `Re ⟪f, g⟫ − 1 = −2‖k‖²`. -/
+lemma re_inner_sub_one {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
+    (hg : g ∈ Unimod (stdGaussian (n + n))) :
+    (inner ℂ f g).re - 1 = -2 * ‖kOf n f g‖ ^ 2 := by
+  linarith [re_inner_eq_normSq_hOf_sub n f g, normSq_hOf_add_normSq_kOf n hf hg]
 
 /-! ### The first chaos is Gaussian: `‖P₁,₀ h‖ ≤ √π/2` for `|h| ≤ 1` -/
 
@@ -541,11 +568,14 @@ theorem normQk_le_rho {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
 
 /-- **The remaining input of the scalar cap for one pair** (`V ≥ 0` after the phase): a coupling
 vector `v` with `‖v‖² = 2` and the simultaneous Gaussian reduction of the rows
-`SharedReduction rowData V t Qh v` (L4), for the certified witness (`V = VOf n ε 0 f g`: the rows
-are those of `(e, ν) = (ε, 0)`).  (`t ≤ 9/10` is proved, `tOf_le`; the crude-row input
+`SharedReduction rowData V̂ t Qh v` (L4) for the hat value `V̂ = VhatOf n e ν f g` of the witness
+with weight `e` and tail `ν`.  The rows bound the hat value of a witness whose hat weight is their
+constant, `epsHat e ν = ε`; for the certified witness `(e, ν) = (ε, 0)` the hat value is the profile
+value `VOf n ε 0 f g` (`VhatOf_zero`).  (`t ≤ 9/10` is proved, `tOf_le`; the crude-row input
 `‖Qk‖ ≤ ρ` is proved, `normQk_le_rho`.) -/
-def ReductionHyp (f g : L2G n) : Prop :=
-  ∃ v : L2G n, ‖v‖ ^ 2 = 2 ∧ SharedReduction rowData (VOf n ε 0 f g) (tOf n f g) (QhOf n f g) v
+def ReductionHyp (e ν : ℝ) (f g : L2G n) : Prop :=
+  ∃ v : L2G n, ‖v‖ ^ 2 = 2 ∧
+    SharedReduction rowData (VhatOf n e ν f g) (tOf n f g) (QhOf n f g) v
 
 lemma exists_phase (w : ℂ) : ∃ θ : ℂ, ‖θ‖ = 1 ∧ θ * w = ‖w‖ := by
   by_cases hw : w = 0
@@ -579,17 +609,19 @@ theorem witnessCap_of_VhatOf_le {e ν c : ℝ} (hν : ν < 1)
   rw [← hval, VOf_eq_hat n e hν.ne hf hg']
   linarith [mul_le_mul_of_nonneg_left hc (sub_nonneg.2 hν.le)]
 
-/-- The crude row from the identity and `‖Qk‖ ≤ ρ` (the certified witness `(ε, 0)`). -/
-lemma rowOf_crude (f g : L2G n) (hk : ‖QkOf n f g‖ ≤ ρ) (v : L2G n) :
-    RowOf crudeRow (VOf n ε 0 f g) (tOf n f g) (QhOf n f g) v := by
+/-- The crude row from the identity and `‖Qk‖ ≤ ρ`, for the hat value of a witness whose hat
+weight is the constant `ε` of the rows and whose tail is nonnegative: the tail `−2ν̂‖k‖²` only
+lowers the value.  (The certified witness is `(e, ν) = (ε, 0)`.) -/
+lemma rowOf_crude {e ν : ℝ} (he : epsHat e ν = ε) (hν : 0 ≤ nuHat ν) (f g : L2G n)
+    (hk : ‖QkOf n f g‖ ≤ ρ) (v : L2G n) :
+    RowOf crudeRow (VhatOf n e ν f g) (tOf n f g) (QhOf n f g) v := by
   unfold RowOf RowHolds crudeRow
   simp only [Rat.cast_zero, Rat.cast_mul, Rat.cast_pow, mul_zero, zero_mul, add_zero, zero_div,
     zero_smul, sub_zero]
   have hε : (0 : ℝ) ≤ ε := by unfold ε; norm_num
-  have hρ : (0 : ℝ) ≤ ρ := by unfold ρ; norm_num
   have h2 := pow_le_pow_left₀ (norm_nonneg _) hk 2
-  rw [VOf_zero]
-  nlinarith [sq_nonneg ‖PkOf n f g‖]
+  rw [VhatOf, he]
+  nlinarith [sq_nonneg ‖PkOf n f g‖, mul_nonneg hν (sq_nonneg ‖kOf n f g‖)]
 
 end
 

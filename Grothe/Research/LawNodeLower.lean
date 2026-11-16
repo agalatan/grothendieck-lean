@@ -18,6 +18,13 @@ The original row checks and mixed-batch checks are reused. Additional batches mu
 All row potentials, the witness and the Gaussian `NodeCaps` assumption remain unchanged.
 The interface permits any extra batch accepted by the existing checker, including pure-row
 Stein certificates at new law scales. No particular new node or endpoint is asserted here.
+
+**The identity tail.**  The cover bounds the hat value of every witness whose hat weight is the
+constant `ε` of the rows, so the endpoint is stated for a weight `e ≥ 0` and a tail `0 ≤ ν < 1`
+with `epsHat e ν = ε`: the cap `B` of the hat value gives `K ≥ 1/((1 − ν)B + ν)`
+(`lower_bound_of_tail_nodes`), modulo the node caps `TailNodeCaps (nuHat ν)` of the potentials of
+the rows with the tail.  The certified witness is `(e, ν) = (ε, 0)`, where the hypothesis is
+`NodeCaps` and the bound is `1/B` (`lower_bound_of_law_nodes`).
 -/
 
 open MeasureTheory Grothe.Lower Grothe.LowerAnalytic
@@ -70,47 +77,71 @@ theorem profile_bound_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts 
   exact mixCover_bound rowData (mixedBatches ++ extraBatches) hrows hbatches B cuts boxes hcover
     X1 X2 X3 τ hX hM hS V t Qh v hv Ψ hΨ hscal ht0 ht1 hτ0 hτ1 hM.x0 hM.x1
 
-/-- The phase reduction and the endpoint (`witnessCap_of_VhatOf_le` for the certified witness
-`(e, ν) = (ε, 0)`, where the hat value is the profile value and `B = (1 − ν)B + ν`) convert the
-extended-cover cap into a scalar witness cap. -/
+/-- The phase reduction and the endpoint (`witnessCap_of_VhatOf_le`) convert the extended-cover cap
+`B` of the hat value into the scalar cap `(1 − ν)B + ν` of a witness with weight `e` and tail
+`0 ≤ ν < 1` whose hat weight is the constant `ε` of the rows.  For the certified witness
+`(e, ν) = (ε, 0)` the hat value is the profile value and the cap is `B`. -/
 theorem witnessCap_of_law_nodes_reduction (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
     (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (n : ℕ)
+    {e ν : ℝ} (he : epsHat e ν = ε) (hν0 : 0 ≤ ν) (hν1 : ν < 1)
     (hred : ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) →
-      g ∈ Unimod (stdGaussian (n + n)) → 0 ≤ VOf n ε 0 f g → ReductionHyp n f g) :
-    WitnessCap n ε 0 (B : ℝ) := by
-  have h := witnessCap_of_VhatOf_le n (e := ε) (ν := 0) (c := (B : ℝ)) zero_lt_one
-      fun f g hf hg hV => by
+      g ∈ Unimod (stdGaussian (n + n)) → 0 ≤ VOf n e ν f g → ReductionHyp n e ν f g) :
+    WitnessCap n e ν ((1 - ν) * (B : ℝ) + ν) :=
+  witnessCap_of_VhatOf_le n hν1 fun f g hf hg hV => by
     obtain ⟨v, hv, hshared⟩ := hred f g hf hg hV
-    rw [VhatOf_zero]
     exact profile_bound_of_law_nodes extraBatches B cuts boxes hextra hcover _ _ _ v hv
-      (norm_nonneg _) (tOf_le n hf hg) (rowOf_crude n f g (normQk_le_rho n hf hg) v) hshared
-  simpa using h
+      (norm_nonneg _) (tOf_le n hf hg)
+      (rowOf_crude n he (div_nonneg hν0 (sub_nonneg.2 hν1.le)) f g (normQk_le_rho n hf hg) v)
+      hshared
 
-/-- The scalar cap retains exactly the existing Gaussian `NodeCaps` assumption. -/
+/-- The scalar cap of a witness with an identity tail retains exactly one Gaussian assumption, the
+node caps `TailNodeCaps (nuHat ν)` of the potentials of the rows with the tail. -/
 theorem witnessCap_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
     (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
-    (hcaps : NodeCaps) (n : ℕ) (hn : 2 ≤ n) : WitnessCap n ε 0 (B : ℝ) := by
-  refine witnessCap_of_law_nodes_reduction extraBatches B cuts boxes hextra hcover n
+    {e ν : ℝ} (he : epsHat e ν = ε) (hν0 : 0 ≤ ν) (hν1 : ν < 1)
+    (hcaps : TailNodeCaps (nuHat ν)) (n : ℕ) (hn : 2 ≤ n) :
+    WitnessCap n e ν ((1 - ν) * (B : ℝ) + ν) := by
+  refine witnessCap_of_law_nodes_reduction extraBatches B cuts boxes hextra hcover n he hν0 hν1
     fun f g hf hg _ => ?_
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
-  exact reductionHyp_of_nodeCaps hcaps (by omega) f g hf hg
+  exact reductionHyp_of_nodeCaps he hcaps (by omega) f g hf hg
 
-/-- A complete cover using extra checked nodes supplies the same transfer inputs. -/
+/-- A complete cover using extra checked nodes supplies the transfer inputs of a witness with an
+identity tail, with the cap `(1 − ν)B + ν`. -/
 theorem transferInputs_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
-    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps) :
-    TransferInputsL2 (B : ℝ) :=
-  transferInputs_of_witnessCap (e := ε) (by norm_num [ε]) le_rfl 2 (fun n hn =>
-    witnessCap_of_law_nodes extraBatches B cuts boxes hextra hcover hcaps n hn)
+    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
+    {e ν : ℝ} (he0 : 0 ≤ e) (he : epsHat e ν = ε) (hν0 : 0 ≤ ν) (hν1 : ν < 1)
+    (hcaps : TailNodeCaps (nuHat ν)) :
+    TransferInputsL2 ((1 - ν) * (B : ℝ) + ν) :=
+  transferInputs_of_witnessCap he0 hν0 2 (fun n hn =>
+    witnessCap_of_law_nodes extraBatches B cuts boxes hextra hcover he hν0 hν1 hcaps n hn)
 
-/-- Any newly checked cover gives its reciprocal lower bound under the same `NodeCaps`. -/
+/-- **The lower bound of a witness with an identity tail, modulo its node caps**: for a weight
+`e ≥ 0` and a tail `0 ≤ ν < 1` with hat weight `epsHat e ν = ε`, a checked cover with the cap `B`
+of the hat value and the node caps of the potentials of the rows with the tail `ν̂ = nuHat ν` give
+`K ≥ 1/((1 − ν)B + ν)`. -/
+theorem lower_bound_of_tail_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
+    (hextra : extraBatches.all (checkBatch rowData) = true)
+    (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
+    {e ν : ℝ} (he0 : 0 ≤ e) (he : epsHat e ν = ε) (hν0 : 0 ≤ ν) (hν1 : ν < 1)
+    (hcaps : TailNodeCaps (nuHat ν))
+    {K : ℝ} (hK : IsGrothendieckBound K) : 1 / ((1 - ν) * (B : ℝ) + ν) ≤ K :=
+  transfer_lower
+    (transferInputs_of_law_nodes extraBatches B cuts boxes hextra hcover he0 he hν0 hν1 hcaps) hK
+
+/-- Any newly checked cover gives its reciprocal lower bound under the same `NodeCaps`: the
+certified witness `(e, ν) = (ε, 0)` in `lower_bound_of_tail_nodes`. -/
 theorem lower_bound_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
     (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps)
-    {K : ℝ} (hK : IsGrothendieckBound K) : 1 / (B : ℝ) ≤ K :=
-  transfer_lower (transferInputs_of_law_nodes extraBatches B cuts boxes hextra hcover hcaps) hK
+    {K : ℝ} (hK : IsGrothendieckBound K) : 1 / (B : ℝ) ≤ K := by
+  have h := lower_bound_of_tail_nodes extraBatches B cuts boxes hextra hcover (e := ε) (ν := 0)
+    (by norm_num [ε]) (by simp [epsHat]) le_rfl zero_lt_one
+    (by rw [show nuHat 0 = 0 by simp [nuHat]]; exact hcaps) hK
+  rwa [sub_zero, one_mul, add_zero] at h
 
 /-- A strict displayed endpoint follows by a separate rational comparison with `1 / B`. -/
 theorem strict_lower_bound_of_law_nodes (extraBatches : List JBatch) (L B : ℚ) (cuts : List String) (boxes : List MixBox)
