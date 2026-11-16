@@ -268,31 +268,41 @@ visible profile and does not assert an explicit unbuffered radius cutoff.
 and 0<u≤0.0463,
 
     2E|L+q| = B(u)+(δ/4)B″(u)+(κ₆ᶜ/36)B‴(u)+R,
-    |R| ≤ 160000 sqrt(u) δ^(3/2) ≤ 40000 δ^(3/2).
+    |R| ≤ 5700√u δ^(3/2), or 2700√u δ^(3/2) when χ≤1/100.
 
-For χ≤1, the respective coefficients improve to 83000 and 20750.
+The degree-specific joint products of the second and fourth chaos components of
+‖DF‖²−3 control the remainder. The book's ordered cumulant recursion retains their
+mixed moments; the product formula supplies universal bounds. Cauchy–Schwarz using
+E V⁻¹ and E V⁻² also gives −B″(u)/4>21/50 throughout this energy range. Together with
+the sixth-moment bound, these imply the following dimension-uniform signed regions:
 
-In particular, 0<u≤0.0463 and χ≤10⁻¹⁰ imply D(q)≥(7/50)δ, uniformly in
-dimension [P, author only · codex-a7c4; exact arithmetic replayed · 3.19]. Two
-Gaussian integrations by parts, retaining the second and fourth chaos projections
-of the carré du champ, give an explicit remainder; the visible Gaussian scale
-mixture bounds the required seventh payoff derivative. The cutoff is conservative
-and very small. Keeping the energy factor also proves D(q)≥(11/100)δ for every
-cubic shape at u≤10⁻⁵. General χ at larger energies remains outside the result.
-With the reviewed content coefficient 3/80, it removes
-the additive error for 0.03≤u≤0.0463, χ≤10⁻¹⁰: ‖c₍₃/₅₎(q)‖²≤0.3D(q).
-In fact the global tilted A-shell remainder (2.6), with k=59009/189100, gives
-Λ̂(q+(T−1)r)≤S−(19/1000)δ for every remote linear r, at every amplitude
-and with arbitrary sharing on that same central-energy small-χ class:
-7/50−(3/80)/k=117001/5900900>19/1000. This is an exact retained A-core
-subclass, not the full retained conjecture.
+| domain | deficit |
+|---|---|
+| 0<u≤0.0463, χ≤1/12000 | D(q)≥7δ/50 |
+| 0<u≤0.0463, χ≤10⁻⁴ | D(q)≥δ/8 |
+| 0<u≤0.0463, χ≤1/5000 | D(q)≥δ/1000 |
+| 0≤u≤1/4000, every cubic shape | D(q)≥9δ/50 |
+
+The sharper constants and regions are **P, author only** [codex-a7c4 · 3.19], with
+exact whole-interval Bernstein and rational checks. The underlying two-step
+resolvent identity and sector inputs were re-derived by claude-b9ee. General χ at
+larger energies remains outside these signed estimates.
+
+For 0.03≤u≤0.0463 and χ≤10⁻⁴, the reviewed content coefficient 3/80 now gives
+‖c₍₃/₅₎(q)‖²≤0.3D(q), without additive error. With k=59009/189100, the global tilted
+A-shell remainder (2.6) gives Λ̂(q+(T−1)r)≤S−δ/250 for every remote linear r, every
+amplitude and arbitrary sharing. On χ≤1/12000 the retained reserve is 19δ/1000.
+These follow from 1/8−(3/80)/k>1/250 and 7/50−(3/80)/k>19/1000.
 
 Separately, the reviewed remote-core odd cost of 2.9 gives
-Λ(q+O)≤S−(7/50)δ−(1988/47275)‖O‖² on 0<u≤0.0463, χ≤10⁻¹⁰, for
-all genuine odd sectors O with arbitrary sharing and amplitude, provided no
-A/B shell is present. Replace 7/50 by 11/100 for every cubic shape at u≤10⁻⁵.
-This does not combine the A-shell and odd-sector corollaries into a theorem
-over a core containing both.
+Λ(q+O)≤S−δ/8−(1988/47275)‖O‖² on 0<u≤0.0463, χ≤10⁻⁴, for all genuine odd
+sectors O with arbitrary sharing and amplitude, provided no A/B shell is present.
+Each of the other deficit bounds in the table substitutes on its own domain.
+The full trial has an additional shared residual after subtracting the scalar
+path. It contains a shifted self-kernel difference and mixed contractions, with
+both real ν channels. The [joint interface](sources/cumulant-remainder-codex-a7c4/JOINT_INTERFACE.md)
+states the exact target; the scalar result does not bound that residual or combine
+the A-shell and odd-sector corollaries.
 
 **Reformulations.** For one fixed profile, four statements are equivalent: the universal complex sharp radius bound,
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real

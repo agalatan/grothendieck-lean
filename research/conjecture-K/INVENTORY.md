@@ -853,7 +853,7 @@ the analytic argument and is not run by CI. The working proof is
 
 ## Interpolation and literature audit (codex-a7c4, task #464)
 
-The notes are copied from `/Users/alingalatan/workspaces/grothe-codex-a7c4-interpolation-literature/handoff/interpolation-literature-codex-a7c4/`, dated 16 November 2026. Only their provenance headers were added. The checker and result are byte-identical copies. The report links the primary literature; its accompanying proof is author-only and the universal sign remains open.
+The notes are copied from `/Users/alingalatan/workspaces/grothe-codex-a7c4-interpolation-literature/handoff/interpolation-literature-codex-a7c4/`, dated 16 November 2026. Only their provenance headers were added. The checker and result are byte-identical copies. The report links the primary literature; its accompanying identity and book corollary were re-derived by claude-b9ee in #465, and the universal sign remains open.
 
 | file | size | SHA-256 |
 |---|---:|---|
@@ -866,3 +866,18 @@ The notes are copied from `/Users/alingalatan/workspaces/grothe-codex-a7c4-inter
 The author PDF used to inspect the exponents of Raghavendra–Steurer is not committed: `papers/raghavendra-steurer.pdf` in that working directory, 328,396 B, SHA-256 `623bf225425245c738b73d0b22feaa3a8b1444956a8085dbe6326582da871da4`. Downloaded from <https://www.dsteurer.org/paper/grothendieck.pdf>. Its text extraction and two page renders are disposable inspection files. No build, cloud job, or binary artifact is part of this research record.
 
 The Nourdin–Peccati book (Cambridge, 2012) was inspected using the user-supplied copy (not in the repository); 1,221,289 B, SHA-256 `dc30ba3537634dc9411750d717629d242d564457229e429cd687f1c46caa464d`. Neither the PDF nor its text extraction or page render is committed; only original reading notes and the derived estimate are included. Printed page p is PDF page p+16 in this copy.
+
+## Signed cumulant remainder (codex-a7c4, task #467)
+
+The notes are verbatim copies, apart from provenance headers, from `/Users/alingalatan/workspaces/grothe-codex-a7c4-cumulant-remainder/handoff/codex-a7c4-cumulant-remainder`, dated 16 November 2026. The code and outputs are byte-identical copies. Only this packet is author-only; its inherited two-step identity is independently reviewed. No binary files, cloud jobs, Lean builds or external runtime dependencies are required.
+
+| file | size | SHA-256 of original |
+|---|---:|---|
+| `sources/cumulant-remainder-codex-a7c4/PROOF.md` | 12,728 B without provenance header | `08f40cfaffb5472b64907dc7ea68f4333273319dab21b3de374ca6d07dad9c29` |
+| `sources/cumulant-remainder-codex-a7c4/JOINT_INTERFACE.md` | 2,812 B without provenance header | `22312e0c0c1bc9375fa40bdf0a6e6dbee374c45c3d0fa2ef0355572478ac8d97` |
+| `code/cumulant-remainder-codex-a7c4/verify.py` | 6,894 B | `3117384738d6490f08bfa2c8487b6b99c251994f3516d4dafc80eb1f20e3fd96` |
+| `code/cumulant-remainder-codex-a7c4/constants.json` | 2,464 B | `d521288d80a2b6aa6b19b10c1c716aebcbed9d041a4e0d8e9ae8a6db2425f470` |
+| `code/cumulant-remainder-codex-a7c4/joint_controls.py` | 7,129 B | `7282fbe3e0c5173158ee13a42ffc0fbf28b1d666718b2a083f4be78e4db17615` |
+| `code/cumulant-remainder-codex-a7c4/joint_controls.json` | 1,211 B | `22b5bda40a0f3974c859872985994f1c7389389c31a470d1d20619f21ee3d0cc` |
+
+Replay: run the two commands in the packet README. `verify.py` checks all rational premises and whole-interval Bernstein coefficients; `joint_controls.py` independently compares moment and ordered Malliavin joint cumulants and checks the spectral products on a shared-field cubic. The outputs match the archived JSON files. These checks do not replace analytic review and are not run by CI.
