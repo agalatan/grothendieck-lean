@@ -60,10 +60,10 @@ record.
 
 - **Bracket.** The heuristic bracket is 1.4043 ≲ K_G^ℂ ≤ 1.404599395362. Haagerup's 1/γ† = 1.404575934663742 lies
   inside it. No rounding built from the binding responses beats Haagerup's γ_H (STATUS 3.3).
-- **The degree-5 programme.** A certificate for 1.402 at degree 5 is designed (STATUS §4). It needs a lossy all-sector
-  inequality K₅ with error up to about 6·10⁻⁴ per row. That is about twenty times the room left to the cubic route at
-  ε = 299/400 ([`../conjecture-K/STATUS.md`](../conjecture-K/STATUS.md), 8.10). Its first milestone runs under
-  issue #453.
+- **The degree-5 programme.** The game is capped at λ₁ = −39/50 by the proved radius bound: (1, −39/50, 779/10000),
+  model value 1.402785 (STATUS 1.10, 4.12). A certificate for 1.402 is computed over all t, conditional on a
+  sector inequality K₅ on each row, with 3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). K₅ is open: the
+  content band t ∈ [0.80, 0.855] and small t are the two gaps (STATUS §5). The work runs under issue #453.
 
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the
 sources it cites.

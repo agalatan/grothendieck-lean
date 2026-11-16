@@ -43,3 +43,15 @@ Not copied, cited by the ledger:
 - `spike-layer/`;
 - `primal-dual/results/round4/` and `round5/`.
 
+## The capped degree-5 game of 16 November (STATUS 4.16–4.19)
+
+`sources/degree5-capped-2026-11-16/` holds five reports, verbatim apart from their first lines: `CAPPED_GATE.md`,
+`CERT_STAGE2.md`, `CERT_STAGE2B.md`, `SMALL_T.md` and `CONTENT_LEMMA_D5.md`. Their code and outputs stay in the working
+folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/`:
+- `capgate/` (1.3 MB): the gate of 4.16;
+- `cert2/` (44 MB) and `cert2b/` (41 MB): the certificate of 4.17. `cert2b/replay2b_all.py` is the single replay
+  checker; its logs are `cert2b/out/replay2b_*.log`;
+- `smallt/` (1.1 MB): the 412 certificates of 4.18, with `reverify.py` and the exact `assemble.py`;
+- `content5/` (4.4 MB): the scripts and outputs of 4.19 (`code/`, `out/`).
+
+The certificate needs python-flint; it ran on a rented droplet whose run folders are deleted.
