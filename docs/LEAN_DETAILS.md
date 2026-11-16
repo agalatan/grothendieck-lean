@@ -2,6 +2,30 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
+**Verified adaptive envelope construction (prototype, codex-6a2f; #462).**
+`Lower/AdaptiveSearch` constructs a binary subdivision tree from a local Boolean
+test. Its invariant proves acceptance and the depth bound for every returned
+tree. Completeness with respect to every accepted tree implies that a failed
+depth excludes every certificate of at most that height in the same subdivision
+grammar. `Lower/EnvelopeSearch` instantiates this with rational quadratics
+`t² - 2ℓt + C` and midpoint subdivision. A leaf chooses any row whose two
+endpoints meet the bound. An explicit common Lipschitz constant proves successful
+termination under a uniform positive envelope margin; `construct` uses
+`Nat.find` to choose the first successful depth. The margin and its proof are
+erased from executable code, and the output's semantic proof does not evaluate
+the partition. Equality without a positive margin has no termination guarantee.
+
+`Lower/EnvelopeSearchExample` uses the existing `row01`, `row02`, `row03` data
+on `[3/100, 7/20]`. Kernel computations show failure at depth 6 and success at
+depth 7 for `711/1000`, and success at depth 8 for the stronger `7109/10000`.
+The failure theorem makes height 7 optimal for this local test and dyadic grammar,
+not for arbitrary partitions. The stronger bound supplies a construction for
+every rational target strictly above `7109/10000`, with neither depth nor cuts
+specified by the caller. The scalar consumer keeps the existing retained-square
+`RowHolds` assumptions. This exterior-interval prototype is not used by the
+headline endpoint and does not improve it. It adds no native facts or trust
+assumptions; the existing cap and quadrature checkers are unchanged.
+
 The proved interval is `1.401700322371 < K_G^ℂ < 1.404599395362` (`main_bounds`,
 `Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
 (`lower_target`), and so is the upper endpoint (`upper_below_tight`,
