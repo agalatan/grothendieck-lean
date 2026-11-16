@@ -43,3 +43,4 @@ stands, and the ledger states what stands.
 | folder | subject |
 |---|---|
 | [`conjecture-K/`](conjecture-K/README.md) | Conjecture K: the supremum of the gate-free row functional Λ over the cubic chaos H₂,₁ is its value S at the diffuse Gaussian adversary independent of z₁ (approached over increasing dimensions). Open. With an error of 10⁻⁴ it would lift the lower bound from 1.401700322371 to about 1.402, exactly about 1.4022. Start with its book, [`MONOGRAPH.md`](conjecture-K/MONOGRAPH.md). |
+| [`higher-degree/`](higher-degree/README.md) | Complex games of degree ≥ 5: the best games of degree 5, 7 and 9 and their model values (1.403648, 1.404113, 1.40430), the responses that bind them, a first test of roundings, and the design of a degree-5 certificate for 1.402. All numerical. Start with its ledger, [`STATUS.md`](higher-degree/STATUS.md). |
