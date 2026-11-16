@@ -512,7 +512,7 @@ Full (P) and the global lower-bound improvement remain open.
 
 | repository file | size | SHA-256 |
 |---|---:|---|
-| `code/directional-matrix-codex-a7c4/README.md` | 3,972 B | `4b605dce65dd3c815051054f28a890e72bc9a6adad391065f544b35e39f7e926` |
+| `code/directional-matrix-codex-a7c4/README.md` | 4,082 B | `e84a04e5111083426452d4b3ca3956e6eb838684201b78b2f81b524ee717b180` |
 | `code/directional-matrix-codex-a7c4/cone_integral.cpp` | 2,086 B | `df1d80a6d4fb3710907eb01e11cb305411d2c1b6db5bffa44b69b07a6bee5525` |
 | `code/directional-matrix-codex-a7c4/joint_family.py` | 1,954 B | `1e2518f21a8049025209e19b37099df4ed8ab407dbf21db9fa7a975db54c9e96` |
 | `code/directional-matrix-codex-a7c4/radial_matrix.cpp` | 4,298 B | `99e69ed0708ed51e2d9b30b22256c842e4f79f14dec64c302aef08fbc96a8663` |
@@ -776,3 +776,40 @@ besides the numerical archives of `remotenumerics/` (`*.npz`, `*.jsonl`), `searc
 |---|---:|---|
 | `grothendieck_1402_audit_codex_4d8a.zip` | 249,975 B | `319d5b660f5f5fb7837bc2a318282d7cd99a85ac35d1032c81426bb226a4e657` |
 | `existing-program/exterior_7475_certificate.json` (in the zip) | 387,195 B | `84c01aa39e7c7d621f37a5452ef0b6d23fa0b87d95f741d74a213112bbbb023a` |
+
+## Central aligned directions (codex-a7c4, task #431)
+
+The source and proof target all real aligned directions of (P). The full two-shard replay
+of the enclosed-midpoint source is pending; no complete-cover conclusion is asserted
+before all twenty region receipts pass. The superseded run 43743242420 was cancelled
+by its author after finding the midpoint-enclosure gap; its outputs are not certificates.
+The working proof is `handoff/codex-a7c4-central-aligned/PROOF.md` in the author worktree.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `code/central-aligned-codex-a7c4/README.md` | 3,163 B | `cfd6fccc5f38accdae216a8af10b56ed37034612ad3c3b56177c70d24395d0e2` |
+| `code/central-aligned-codex-a7c4/archive_receipts.py` | 4,773 B | `397486a3b549466d6aaa8ba31b2fd14da069dd355ce253af1164112e79e281ae` |
+| `code/central-aligned-codex-a7c4/base_curvature.cpp` | 3,595 B | `016088276b453263c6ca770bc5be3f9051db3d592f3a3b75151830c6285f2b34` |
+| `code/central-aligned-codex-a7c4/central_integral.cpp` | 5,556 B | `8e3b17bfe5669e0f9e32ed5330bf6a4aea80f7db5c09024ef15f6ed0186b6502` |
+| `code/central-aligned-codex-a7c4/jet_test.cpp` | 1,231 B | `e714e47516d3e50e9e9899a4bb218e2896535be4897aaa461f9af8d90e51b1b0` |
+| `code/central-aligned-codex-a7c4/mixed_jet.hpp` | 1,782 B | `8abc217c8fa877dd6a4f3fd9024d8047a070d0c6140bbff4d267a2d1162784c4` |
+| `code/central-aligned-codex-a7c4/phase_radius.py` | 3,613 B | `a821645392be8384e3c4635add45e64be667f65fe7811ce8871ec6f44596c9ee` |
+| `code/central-aligned-codex-a7c4/test_receipts.py` | 5,756 B | `4cfe888f5360e9af87667c9914ffb126fb15b4ee80e59b850ca38ec98694959e` |
+| `code/central-aligned-codex-a7c4/verify.py` | 18,632 B | `630d497151674c21dfd0849f0eb384d923b9e5b8e3f584a62c134edf51ffc217` |
+| `sources/central-aligned-codex-a7c4/PROOF.md` | 14,466 B | `9d2218082e17bb6b125f12edb75d9e3d5d18457f58894037a374eee701ea17ad` |
+
+## Explicit scalar Edgeworth deficit (codex-a7c4, task #446)
+
+The paper derivation and exact arithmetic checker of ledger 3.19 are author-only.
+The checker runs in under a second with the Python standard library; it does not verify
+the analytic argument and is not run by CI. The working proof is
+`handoff/codex-a7c4-edgeworth/PROOF.md` in
+`/Users/alingalatan/workspaces/grothe-codex-a7c4-conjecture-k-progress/`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `code/edgeworth-codex-a7c4/README.md` | 2,125 B | `56d8ce900928b4f53db8f55e0962db8137b553d12b66cea63e292feb6409f27a` |
+| `code/edgeworth-codex-a7c4/identity_controls.py` | 3,772 B | `f05243381a5deb998c0f818df12739383f891c8a5709494dd66c3bb5a2811e5e` |
+| `code/edgeworth-codex-a7c4/result.json` | 613 B | `4c822ec35391d86bd346b189a7e6d30e9dc036ec603fcc537e22a6b703a72e79` |
+| `code/edgeworth-codex-a7c4/verify.py` | 3,686 B | `f1063bbbe996def08d7b42cf28cd4c25a759fe3e0b944f082bf20f2980be27c0` |
+| `sources/edgeworth-codex-a7c4/PROOF.md` | 13,381 B | `8f2d478a0cd2d895a6b84d19033828a8cddda2709152c59e80dbe86778ef7dbe` |

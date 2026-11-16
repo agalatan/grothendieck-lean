@@ -255,6 +255,45 @@ Around the peak:
 
 The flank and upper rows are outside all of these.
 
+**A qualitative near-Gaussian cone.** A dimension-independent χ₀>0 gives
+E|q|≤(√π/2)√u(1−χ/32) and D(q)≥−B″(u)δ/8 for 0<χ≤χ₀, at every energy
+and every positive profile a>0, b≥0 [P, author only · codex-c7e2 · 3.18].
+This uses the total-variation Edgeworth theorem on clipped absolute values,
+then a Gaussian-buffer limit. Its universal cutoff has no evaluated numerical
+value. The following explicit result instead uses the smoothing of the peak
+visible profile and does not assert an explicit unbuffered radius cutoff.
+
+**An explicit near-Gaussian deficit.** At the peak profile, write
+κ₆ᶜ=E|q|⁶−6u³−9uδ. The scalar Edgeworth expansion gives, for every remote cubic
+and 0<u≤0.0463,
+
+    2E|L+q| = B(u)+(δ/4)B″(u)+(κ₆ᶜ/36)B‴(u)+R,
+    |R| ≤ 160000 sqrt(u) δ^(3/2) ≤ 40000 δ^(3/2).
+
+For χ≤1, the respective coefficients improve to 83000 and 20750.
+
+In particular, 0<u≤0.0463 and χ≤10⁻¹⁰ imply D(q)≥(7/50)δ, uniformly in
+dimension [P, author only · codex-a7c4; exact arithmetic replayed · 3.19]. Two
+Gaussian integrations by parts, retaining the second and fourth chaos projections
+of the carré du champ, give an explicit remainder; the visible Gaussian scale
+mixture bounds the required seventh payoff derivative. The cutoff is conservative
+and very small. Keeping the energy factor also proves D(q)≥(11/100)δ for every
+cubic shape at u≤10⁻⁵. General χ at larger energies remains outside the result.
+With the reviewed content coefficient 3/80, it removes
+the additive error for 0.03≤u≤0.0463, χ≤10⁻¹⁰: ‖c₍₃/₅₎(q)‖²≤0.3D(q).
+In fact the global tilted A-shell remainder (2.6), with k=59009/189100, gives
+Λ̂(q+(T−1)r)≤S−(19/1000)δ for every remote linear r, at every amplitude
+and with arbitrary sharing on that same central-energy small-χ class:
+7/50−(3/80)/k=117001/5900900>19/1000. This is an exact retained A-core
+subclass, not the full retained conjecture.
+
+Separately, the reviewed remote-core odd cost of 2.9 gives
+Λ(q+O)≤S−(7/50)δ−(1988/47275)‖O‖² on 0<u≤0.0463, χ≤10⁻¹⁰, for
+all genuine odd sectors O with arbitrary sharing and amplitude, provided no
+A/B shell is present. Replace 7/50 by 11/100 for every cubic shape at u≤10⁻⁵.
+This does not combine the A-shell and odd-sector corollaries into a theorem
+over a core containing both.
+
 **Reformulations.** For one fixed profile, four statements are equivalent: the universal complex sharp radius bound,
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
 PVD, which implies complex PVD; no converse is known [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. The sharp
@@ -576,12 +615,12 @@ shift interpolation prove (P) whenever |w| ≥ 5/4, at every amplitude and phase
 In particular sqrt(S_r) ≤ 1/512 suffices for every complex shift. A further sufficient condition, valid at every
 shift, is 16 S_r²+3S_r ≥ 6|2A+B|². It includes the amplitude-complete cone |2A+B|²≤S_r/2. All 438 endpoint
 matrices and 93 adaptive cone intervals pass, with exact coverage and positive-definiteness audits
-[P + C, author only · codex-a7c4 · 7.4.11–12].
+[P + C · codex-a7c4, re-derived and replayed by claude-b9ee in review #444 · 7.4.11–12].
 
 Consequently, for proportional holomorphic drivers r_B=κr_A with |κ+4|≤3, the joint bridge (7.4.10) is
 unconditional under its unchanged caps u≤0.0463 and u+V≤0.080051, allowing arbitrary sharing with the genuine
 remote cubic q. For κ=−2, completing a scalar square gives the sharper retained estimate
-Λ̂(q+A_shell+B_shell)<S+19/10⁶ [P + C, author only · codex-a7c4 · 7.4.12]. The estimate holds at the explicit
+Λ̂(q+A_shell+B_shell)<S+19/10⁶ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee in review #444 · 7.4.12]. The estimate holds at the explicit
 trial ξ₀=−(3/5)(r_A+ρr_B), with visible coefficient c=0, before taking the retained infimum. If 0.01‖U‖² is
 reserved for odd sectors, the trial's joint gain plus this reserve is below 29/10⁶ relative to Λ(q).
 Together with the unchanged signed-D odd premise of 2.9, that would give an all-sector allowance of 79/10⁶
@@ -836,8 +875,8 @@ keeps a cross term and improves J₁ by more than 3.9·10⁻⁴ on an explicit r
    with an all-sector bound there, which gives 1.40171 (2.10). At ε = 299/400 only the central interval
    (0.8165, 0.866) is left, as ten explicit all-sector inequalities (2.10). *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
-   Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 11/8 and
-   1/50000 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside its proved local pieces; its conditional assembly uses the existing tilted-content theorem.
+   Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 5/4 and
+   1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the origin profile, directional exterior and proved local pieces; its conditional assembly uses the existing tilted-content theorem.
    The other obligations are the odd sectors over A/B cores through the averaged premise (P_Ψ) of 2.9, the other rows through the
    weighted scaling of 1.6,
    and more than three remote variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).
@@ -1019,7 +1058,7 @@ restriction on the amplitude at every tilt tried [11.17].
 | 1.2–1.5 setting, budget | 2.1–2.5, 8.1–8.4, 12.1, 12.2 | `audit-2026-11-13/`, `reaudit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/MANUSCRIPT_DIGEST_K.md` | `reaudit-2026-11-15-codex-a7c4/` |
 | 1.6 retained functional | 2.10, 2.10a, 2.13, 2.14, 3.16, 3.17, 11.2–11.13 | `external-2026-11-15/`, `numerics-kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `sixth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/legacy/ch20-pinned-gate.tex` | `kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/`, `sixth-audit-2026-11-15-codex-a7c4/` |
 | 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 | `third-audit-2026-11-15-codex-a7c4/CONTENT_KERNELS.md`, `reaudit-2026-11-15-codex-a7c4/SECTORS.md` | `third-audit-2026-11-15-codex-a7c4/` |
-| 2.1 remote part | 3.1–3.18, 11.7–11.11, 12.8 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
+| 2.1 remote part | 3.1–3.19, 11.7–11.11, 12.8 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.5 | `third-audit-…/POTENTIAL.md`, `audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md`, `audit-2026-11-15-codex-a7c4/CLAIMS.md` | `third-audit-2026-11-15-codex-a7c4/` |
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py` |
 | 2.6 tilted lemma, retained A-core | 11.25–11.54 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py` |
