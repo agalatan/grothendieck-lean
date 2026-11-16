@@ -59,3 +59,15 @@ folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-res
   them against the definitions. The `.npz` tables, the searches and the logs stay in the working folder.
 
 The certificate needs python-flint; it ran on a rented droplet whose run folders are deleted.
+
+## The searches in more than two variables (16 November 2026)
+
+`code/degree5-content/searches-2026-11-16/` holds the logs of the searches of STATUS 4.28: `b2_rows_n3.log`,
+`b2_rows_n4.log` (the largest sector-A ratio per row and energy in three and four variables), `b2_gen5_5_n5_rice.log`,
+`b2_gen5_5_n5_free.log`, `b2_gen5_5_n6_free.log` (five and six variables, row 0.80) and `b2_relax_9_cs.log` (the relaxed
+problem over cofactor laws with Cauchy–Schwarz constraints, row 0.84). The search scripts (`b2_*.py` with `r4lib.py`
+and the kit) and the JSON files of the maximisers stay in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/content5/`
+(`code/`, `out/`): they are one worker's working files and have not been reviewed.
+`sources/content-problem-v2-2026-11-16/PROBLEM_V2.md` is the problem statement handed to outside sessions; its `kit/`
+is `code/degree5-content/`.
