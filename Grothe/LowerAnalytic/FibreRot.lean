@@ -8,9 +8,10 @@ rotation invariance of the planar Gaussian, and the extensionality of finite Bor
 bounded continuous functions), with the integral form `integral_rot_gaussC`.
 
 Consequence for the potential: the rotated responses `rot c f = conj(c) f(c·)` multiply `ξ` by
-`conj c` and fix `ζ`, `|d|`, `KᵀMK` and `∫ conj(L) h₀` (`coefFib_rot`, `quad_rot`, `integral_L_rot`),
-so the fibre expression at a complex coupling `u` is the real one at `|u|` (`fibreExprC_le_pot`:
-`fibreExprC … u ≤ Ψ_r(|u|)`), which is the form the row reduction needs (`u = δ p(w)`).
+`conj c` and fix `ζ`, `|d|`, `KᵀMK`, `∫ conj(L) h₀` and the tail `∫ conj(f₀) g₀` (`coefFib_rot`,
+`quad_rot`, `integral_L_rot`, `integral_conj_rot_mul_rot`), so the fibre expression at a complex
+coupling `u` is the real one at `|u|` (`fibreExprC_le_pot`: `fibreExprC … u ≤ Ψ_r(|u|)`, for every
+identity tail `ν`), which is the form the row reduction needs (`u = δ p(w)`).
 -/
 
 open MeasureTheory ProbabilityTheory Real Set Grothe.Lower
@@ -98,16 +99,28 @@ lemma integral_L_rot (ℓ β : ℝ) (h : ℂ → ℂ) :
   congr 1; funext z
   rw [rot, Lf_rot hc, map_mul]; ring
 
+/-- The tail term `∫ conj(f₀) g₀` is invariant under the rotation of both responses. -/
+lemma integral_conj_rot_mul_rot (f g : ℂ → ℂ) :
+    ∫ z, conj (rot c f z) * rot c g z ∂gaussC = ∫ z, conj (f z) * g z ∂gaussC := by
+  have h1 := conj_mul_self_of_norm hc
+  rw [← integral_rot' hc (fun z => conj (f z) * g z)]
+  congr 1; funext z
+  simp only [rot, map_mul, Complex.conj_conj]
+  linear_combination (conj (f (c * z)) * g (c * z)) * h1
+
 end rotc
 
 /-- **The fibre expression with a complex coupling** `u` (the residual value `q(w)` of the row
-reduction): `KᵀMK + 2 Re ∫ conj(L) h₀ + 2 Re(conj(u) (a·ξ))`, `ξ = (K.e1, K.e2, K.e3) = (c₁, c_A, conj c_B)`. -/
-def fibreExprC (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (f g : ℂ → ℂ) (u : ℂ) : ℝ :=
+reduction) and the identity tail `ν`:
+`KᵀMK + 2 Re ∫ conj(L) h₀ + 2 Re(conj(u) (a·ξ)) + ν (Re ∫ conj(f₀) g₀ − 1)`,
+`ξ = (K.e1, K.e2, K.e3) = (c₁, c_A, conj c_B)`. -/
+def fibreExprC (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 ν : ℝ) (f g : ℂ → ℂ) (u : ℂ) : ℝ :=
   Fib.quad E R (coefFib fun z => (f z - g z) / 2)
     + 2 * (∫ z, conj (Lf ℓ β z) * ((f z + g z) / 2) ∂gaussC).re
     + 2 * (conj u * (((1 + b1 : ℝ) : ℂ) * (coefFib fun z => (f z - g z) / 2).e1
       + (b2 : ℂ) * (coefFib fun z => (f z - g z) / 2).e2
       + (b3 : ℂ) * (coefFib fun z => (f z - g z) / 2).e3)).re
+    + ν * ((∫ z, conj (f z) * g z ∂gaussC).re - 1)
 
 lemma ip_aFib (b1 b2 b3 : ℝ) (K : Fib) :
     Fib.ip (aFib b1 b2 b3) K = (((1 + b1 : ℝ) : ℂ) * K.e1 + (b2 : ℂ) * K.e2 + (b3 : ℂ) * K.e3).re := by
@@ -116,15 +129,15 @@ lemma ip_aFib (b1 b2 b3 : ℝ) (K : Fib) :
   ring
 
 /-- **The fibre bound at a complex coupling** (S5 with S5′): for measurable responses with
-`|f₀|, |g₀| ≤ 1`, the fibre expression at coupling `u` is at most `Ψ_r(|u|)`; the phase of `u` is
-removed by the rotation `z ↦ (u/|u|) z` of the fibre. -/
-theorem fibreExprC_le_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.psdOK = true)
+`|f₀|, |g₀| ≤ 1` and every identity tail `ν`, the fibre expression at coupling `u` is at most
+`Ψ_r(|u|)`; the phase of `u` is removed by the rotation `z ↦ (u/|u|) z` of the fibre. -/
+theorem fibreExprC_le_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 ν : ℝ) (hE : E.psdOK = true)
     (hR : R.psdOK = true) {f g : ℂ → ℂ} (hfm : Measurable f) (hgm : Measurable g)
     (hfb : ∀ z, ‖f z‖ ≤ 1) (hgb : ∀ z, ‖g z‖ ≤ 1) (u : ℂ) :
-    fibreExprC E R ℓ β b1 b2 b3 f g u ≤ pot E R ℓ β (aFib b1 b2 b3) 0 ‖u‖ := by
+    fibreExprC E R ℓ β b1 b2 b3 ν f g u ≤ pot E R ℓ β (aFib b1 b2 b3) ν ‖u‖ := by
   by_cases hu : u = 0
   · subst hu
-    simpa [fibreExpr, fibreExprC] using fibreExpr_le_pot E R ℓ β (aFib b1 b2 b3) hE hR
+    simpa [fibreExpr, fibreExprC] using fibreExpr_le_pot E R ℓ β (aFib b1 b2 b3) ν hE hR
       hfm.aestronglyMeasurable hgm.aestronglyMeasurable hfb hgb 0
   have hn : (‖u‖ : ℂ) ≠ 0 := by exact_mod_cast norm_ne_zero_iff.2 hu
   set c := u / (‖u‖ : ℂ) with hcdef
@@ -138,7 +151,7 @@ theorem fibreExprC_le_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.
     rw [rot, norm_mul, Complex.norm_conj, hc, one_mul]; exact hfb _
   have hgb' : ∀ z, ‖rot c g z‖ ≤ 1 := fun z => by
     rw [rot, norm_mul, Complex.norm_conj, hc, one_mul]; exact hgb _
-  have h := fibreExpr_le_pot E R ℓ β (aFib b1 b2 b3) hE hR hfm'.aestronglyMeasurable
+  have h := fibreExpr_le_pot E R ℓ β (aFib b1 b2 b3) ν hE hR hfm'.aestronglyMeasurable
     hgm'.aestronglyMeasurable hfb' hgb' ‖u‖
   refine le_of_eq_of_le ?_ h
   have ek : (fun z => (rot c f z - rot c g z) / 2) = rot c (fun z => (f z - g z) / 2) := by
@@ -150,8 +163,8 @@ theorem fibreExprC_le_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.
   have hu' : conj u = (‖u‖ : ℂ) * conj c := by
     rw [hcdef, map_div₀, Complex.conj_ofReal]; field_simp
   unfold fibreExpr fibreExprC
-  rw [ek, eL, coefFib_rot hc, quad_rot hc, ip_aFib, hu']
-  congr 1
+  rw [ek, eL, coefFib_rot hc, quad_rot hc, ip_aFib, hu', integral_conj_rot_mul_rot hc]
+  congr 2
   rw [show ((‖u‖ : ℂ) * conj c * (((1 + b1 : ℝ) : ℂ) * (coefFib fun z => (f z - g z) / 2).e1
       + (b2 : ℂ) * (coefFib fun z => (f z - g z) / 2).e2
       + (b3 : ℂ) * (coefFib fun z => (f z - g z) / 2).e3))
