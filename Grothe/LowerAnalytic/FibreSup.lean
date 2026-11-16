@@ -19,7 +19,18 @@ Without a tail `Ψ_0(A, B) = |A| + |B|` and `J_r` is the certified function of `
 (`Jpot_zero`).  Finiteness (`Jpot_le_cap`), convexity (`pot_convexOn`), the Lipschitz bound
 (`pot_lip`) and the node-cap interface (`capsHold_pot`) hold for every `ν`: `Ψ_ν` is convex,
 `1`-Lipschitz and within `|ν|` of `Ψ_0`.  The certified rows have no tail: `rowPot` is the
-potential at `ν = 0`, and the fibre bound `fibreExpr_le_pot` is stated there.
+potential at `ν = 0`.
+
+**The fibre bound with a tail** (`fibreExpr_le_Jpot`, `fibreExpr_le_pot`).  The fibre expression
+carries the tail as `ν (Re ∫ conj(f₀) g₀ − 1)`, which is `−2ν ∫ |k₀|²` for unimodular responses
+(`|k₀|² = (1 − Re(f̄₀g₀))/2`).  In this form the integrand is the affine piece
+`Re(f̄₀(L + p)) + Re(ḡ₀(L − p)) + ν Re(f̄₀g₀) − ν`, which is below `Ψ_ν(L + p, L − p) − ν` on the
+whole bidisc `|f₀|, |g₀| ≤ 1` (`majEll_le_psiT_of_le`): the bound needs no unimodularity of the
+fibre responses, and unimodularity is used once, for the global responses, to read the tail as
+`−2ν‖k‖²`.  (With the tail written as `−2ν|k₀|²` the pointwise bound fails inside the bidisc:
+that expression is concave in `(f₀, g₀)`, and its maximum over the bidisc can exceed the one over
+the torus.)  The converse bound through the explicit phases (`Jpot_le_fibreExpr`), which gives
+finiteness, is the case `ν = 0`.
 -/
 
 open MeasureTheory Real Set Grothe.Lower
@@ -277,11 +288,14 @@ lemma Jpot_le_Jpot_zero (y : Fib) (s : ℝ) :
   unfold Jpot
   linarith
 
-/-- The fibre expression `KᵀMK + 2 Re ∫ conj(L) h₀ + 2 s aᵀK` of a pair of fibre responses. -/
+/-- The fibre expression `KᵀMK + 2 Re ∫ conj(L) h₀ + 2 s aᵀK + ν (Re ∫ conj(f₀) g₀ − 1)` of a pair
+of fibre responses, with the identity tail `ν`.  For unimodular responses the tail term is
+`−2ν ∫ |k₀|²`. -/
 def fibreExpr (f g : ℂ → ℂ) (s : ℝ) : ℝ :=
   Fib.quad E R (coefFib fun z => (f z - g z) / 2)
     + 2 * (∫ z, conj (Lf ℓ β z) * ((f z + g z) / 2) ∂gaussC).re
     + 2 * s * Fib.ip a (coefFib fun z => (f z - g z) / 2)
+    + ν * ((∫ z, conj (f z) * g z ∂gaussC).re - 1)
 
 lemma re_integral_conj_mul_le {F u : ℂ → ℂ} (hF : Integrable F gaussC)
     (hu : AEStronglyMeasurable u gaussC) (hub : ∀ z, ‖u z‖ ≤ 1) :
@@ -290,6 +304,15 @@ lemma re_integral_conj_mul_le {F u : ℂ → ℂ} (hF : Integrable F gaussC)
     (integral_mono (integrable_mul_k hu hub (integrable_conj_of hF)).norm hF.norm fun z => ?_))
   simp only [norm_mul, Complex.norm_conj]
   exact mul_le_of_le_one_right (norm_nonneg _) (hub z)
+
+/-- The real part of an integral is at most the integral of a pointwise bound of the real part. -/
+lemma re_integral_le_of_forall_re_le {G : ℂ → ℂ} {Ψ : ℂ → ℝ} (hG : Integrable G gaussC)
+    (hΨ : Integrable Ψ gaussC) (h : ∀ z, (G z).re ≤ Ψ z) :
+    (∫ z, G z ∂gaussC).re ≤ ∫ z, Ψ z ∂gaussC := by
+  have e : (∫ z, G z ∂gaussC).re = ∫ z, (G z).re ∂gaussC := by
+    simpa using (integral_re hG).symm
+  rw [e]
+  exact integral_mono hG.re hΨ h
 
 private lemma norm_half_le {u v : ℂ} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1) :
     ‖(u - v) / 2‖ ≤ 1 ∧ ‖(u + v) / 2‖ ≤ 1 := by
@@ -331,10 +354,18 @@ lemma payoff_split (p : ℂ → ℂ) (hp : Continuous p) (C : ℝ) (hC : ∀ z, 
   push_cast
   ring
 
-/-- **The fibre bound**: the fibre expression of any pair of responses is at most `J_r(K, s)`,
-`K` the coefficient vector of `k₀ = (f₀ − g₀)/2`. -/
+/-- The product `conj(f₀) g₀` of two bounded responses is integrable. -/
+lemma integrable_conj_mul : Integrable (fun z => conj (f z) * g z) gaussC := by
+  have i0 : Integrable f gaussC := by
+    simpa using integrable_mul_k hfm hfb (integrable_const (1 : ℂ))
+  exact integrable_mul_k hgm hgb (integrable_conj_of i0)
+
+/-- **The fibre bound**: the fibre expression of any pair of responses with `|f₀|, |g₀| ≤ 1` is at
+most `J_r(K, s)`, `K` the coefficient vector of `k₀ = (f₀ − g₀)/2`, for every identity tail `ν`.
+With `p = B·(MK + sa)` the expression is `∫ (ℓ_w(L + p, L − p) − ν) dγ − KᵀMK` for the pointwise
+phases `w = (f₀, g₀)`, and `ℓ_w ≤ Ψ_ν` on the bidisc. -/
 theorem fibreExpr_le_Jpot (s : ℝ) :
-    fibreExpr E R ℓ β a f g s ≤ Jpot E R ℓ β a 0 (coefFib fun z => (f z - g z) / 2) s := by
+    fibreExpr E R ℓ β a ν f g s ≤ Jpot E R ℓ β a ν (coefFib fun z => (f z - g z) / 2) s := by
   set K := coefFib fun z => (f z - g z) / 2 with hK
   have hkm : AEStronglyMeasurable (fun z => (f z - g z) / 2) gaussC := by fun_prop
   have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).1
@@ -347,13 +378,36 @@ theorem fibreExpr_le_Jpot (s : ℝ) :
     (integrable_Lf ℓ β).add (integrable_of_le_qw _ (continuous_pfn E R a K s) C hC)
   have hLM : Integrable (fun z => Lf ℓ β z - pfn E R a K s z) gaussC :=
     (integrable_Lf ℓ β).sub (integrable_of_le_qw _ (continuous_pfn E R a K s) C hC)
-  have hA := re_integral_conj_mul_le hLP hfm hfb
-  have hB := re_integral_conj_mul_le hLM hgm hgb
-  have hI : ∫ z, (‖Lf ℓ β z + pfn E R a K s z‖ + ‖Lf ℓ β z - pfn E R a K s z‖) ∂gaussC
-      = ∫ z, ‖Lf ℓ β z + pfn E R a K s z‖ ∂gaussC + ∫ z, ‖Lf ℓ β z - pfn E R a K s z‖ ∂gaussC :=
-    integral_add hLP.norm hLM.norm
-  unfold fibreExpr
-  rw [← hK, Jpot_zero, hI]
+  -- the payoffs of the two responses and the tail, as one integral
+  have i1 : Integrable (fun z => conj (Lf ℓ β z + pfn E R a K s z) * f z) gaussC :=
+    integrable_mul_k hfm hfb (integrable_conj_of hLP)
+  have i2 : Integrable (fun z => conj (Lf ℓ β z - pfn E R a K s z) * g z) gaussC :=
+    integrable_mul_k hgm hgb (integrable_conj_of hLM)
+  have i3 : Integrable (fun z => conj (f z) * g z) gaussC := integrable_conj_mul hfm hgm hfb hgb
+  have i12 : Integrable (fun z => conj (Lf ℓ β z + pfn E R a K s z) * f z
+      + conj (Lf ℓ β z - pfn E R a K s z) * g z) gaussC := i1.add i2
+  have i3' : Integrable (fun z => (ν : ℂ) * (conj (f z) * g z)) gaussC := i3.const_mul _
+  have i123 : Integrable (fun z => conj (Lf ℓ β z + pfn E R a K s z) * f z
+      + conj (Lf ℓ β z - pfn E R a K s z) * g z + (ν : ℂ) * (conj (f z) * g z)) gaussC :=
+    i12.add i3'
+  have iG : Integrable (fun z => conj (Lf ℓ β z + pfn E R a K s z) * f z
+      + conj (Lf ℓ β z - pfn E R a K s z) * g z + (ν : ℂ) * (conj (f z) * g z) - (ν : ℂ)) gaussC :=
+    i123.sub (integrable_const _)
+  have hint : ∫ z, (conj (Lf ℓ β z + pfn E R a K s z) * f z
+      + conj (Lf ℓ β z - pfn E R a K s z) * g z + (ν : ℂ) * (conj (f z) * g z) - (ν : ℂ)) ∂gaussC
+      = ∫ z, conj (Lf ℓ β z + pfn E R a K s z) * f z ∂gaussC
+        + ∫ z, conj (Lf ℓ β z - pfn E R a K s z) * g z ∂gaussC
+        + (ν : ℂ) * ∫ z, conj (f z) * g z ∂gaussC - (ν : ℂ) := by
+    rw [integral_sub i123 (integrable_const _), integral_add i12 i3', integral_add i1 i2,
+      integral_const_mul, integral_const, probReal_univ, one_smul]
+  have hle := re_integral_le_of_forall_re_le iG (integrable_Jtail E R ℓ β a ν K s) fun z => by
+    rw [Complex.sub_re, Complex.ofReal_re, ← majEll_eq_re]
+    linarith [majEll_le_psiT_of_le ν (hfb z) (hgb z) (Lf ℓ β z + pfn E R a K s z)
+      (Lf ℓ β z - pfn E R a K s z)]
+  rw [hint] at hle
+  simp only [Complex.add_re, Complex.sub_re, Complex.re_ofReal_mul, Complex.ofReal_re] at hle
+  unfold fibreExpr Jpot
+  rw [← hK]
   have hpair' : (∫ z, conj (pfn E R a K s z) * ((f z - g z) / 2) ∂gaussC).re
       = Fib.quad E R K + s * Fib.ip a K := hpair
   linarith
@@ -366,10 +420,10 @@ lemma integral_norm_eq_re (F : ℂ → ℂ) (_hF : Continuous F) :
   simp_rw [conj_mul_ph]
   rw [integral_complex_ofReal, Complex.ofReal_re]
 
-/-- **The converse bound**: `J_r(y, s)` is at most the fibre expression of the phases
-`ph(L ± B·(My + sa))` (the square `quad (y − K) ≥ 0` is dropped). -/
+/-- **The converse bound**, without a tail: `J_r(y, s)` is at most the fibre expression of the
+phases `ph(L ± B·(My + sa))` (the square `quad (y − K) ≥ 0` is dropped). -/
 theorem Jpot_le_fibreExpr (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) (s : ℝ) :
-    Jpot E R ℓ β a 0 y s ≤ fibreExpr E R ℓ β a (fun z => ph (Lf ℓ β z + pfn E R a y s z))
+    Jpot E R ℓ β a 0 y s ≤ fibreExpr E R ℓ β a 0 (fun z => ph (Lf ℓ β z + pfn E R a y s z))
       (fun z => ph (Lf ℓ β z - pfn E R a y s z)) s := by
   have hpc := continuous_pfn E R a y s
   have hLc := continuous_Lf ℓ β
@@ -404,7 +458,7 @@ theorem Jpot_le_fibreExpr (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) 
     integral_norm_eq_re (fun z => Lf ℓ β z - pfn E R a y s z) (hLc.sub hpc)] at hI
   rw [Jpot_zero]
   unfold fibreExpr
-  rw [← hK, hI]
+  rw [← hK, hI, zero_mul, add_zero]
   linarith
 
 /-- The uniform constant of the coefficient bounds, `2 E(1 + |z|²)²`. -/
@@ -448,7 +502,7 @@ lemma ip_le (v K : Fib) (c : ℝ) (h1 : ‖K.e1‖ ≤ c) (h2 : ‖K.e2‖ ≤ c
   simp only [Fib.ip]
   linarith
 
-/-- The bound of the fibre expression over all responses. -/
+/-- The bound of the fibre expression without a tail over all responses. -/
 def fibreCap (s : ℝ) : ℝ :=
   (|(E.m11 : ℝ)| + 2 * |(E.m12 : ℝ)| + 2 * |(E.m13 : ℝ)| + |(E.m22 : ℝ)| + 2 * |(E.m23 : ℝ)|
       + |(E.m33 : ℝ)| + |(R.m11 : ℝ)| + 2 * |(R.m12 : ℝ)| + |(R.m22 : ℝ)| + 1) * cq ^ 2
@@ -457,7 +511,7 @@ def fibreCap (s : ℝ) : ℝ :=
 
 lemma fibreExpr_le_cap {f g : ℂ → ℂ} (hfm : AEStronglyMeasurable f gaussC)
     (hgm : AEStronglyMeasurable g gaussC) (hfb : ∀ z, ‖f z‖ ≤ 1) (hgb : ∀ z, ‖g z‖ ≤ 1) (s : ℝ) :
-    fibreExpr E R ℓ β a f g s ≤ fibreCap E R ℓ β a s := by
+    fibreExpr E R ℓ β a 0 f g s ≤ fibreCap E R ℓ β a s := by
   have hkm : AEStronglyMeasurable (fun z => (f z - g z) / 2) gaussC := by fun_prop
   have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).1
   have hhm : AEStronglyMeasurable (fun z => (f z + g z) / 2) gaussC := by fun_prop
@@ -483,6 +537,7 @@ lemma fibreExpr_le_cap {f g : ℂ → ℂ} (hfm : AEStronglyMeasurable f gaussC)
     · rw [abs_of_nonneg h]; exact mul_le_mul_of_nonneg_left hip h
     · rw [abs_of_neg h]; nlinarith
   unfold fibreExpr fibreCap
+  rw [zero_mul, add_zero]
   linarith
 
 /-- **`Ψ_r` is finite**: `J_r(·, s)` is bounded above (without a tail by the fibre expression of
@@ -508,12 +563,12 @@ lemma Jpot_le_pot (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) (s : ℝ
   le_ciSup (bddAbove_Jpot E R ℓ β a ν hE hR s) y
 
 /-- **The fibre bound against the potential** (S5): every pair of responses with `|f₀|, |g₀| ≤ 1`
-has fibre expression at most `Ψ_r(s)` (the potential without a tail). -/
+has fibre expression at most `Ψ_r(s)`, for every identity tail `ν`. -/
 theorem fibreExpr_le_pot (hE : E.psdOK = true) (hR : R.psdOK = true) {f g : ℂ → ℂ}
     (hfm : AEStronglyMeasurable f gaussC) (hgm : AEStronglyMeasurable g gaussC)
     (hfb : ∀ z, ‖f z‖ ≤ 1) (hgb : ∀ z, ‖g z‖ ≤ 1) (s : ℝ) :
-    fibreExpr E R ℓ β a f g s ≤ pot E R ℓ β a 0 s :=
-  (fibreExpr_le_Jpot E R ℓ β a hfm hgm hfb hgb s).trans (Jpot_le_pot E R ℓ β a 0 hE hR _ s)
+    fibreExpr E R ℓ β a ν f g s ≤ pot E R ℓ β a ν s :=
+  (fibreExpr_le_Jpot E R ℓ β a ν hfm hgm hfb hgb s).trans (Jpot_le_pot E R ℓ β a ν hE hR _ s)
 
 /-! ### Convexity and the Lipschitz bound -/
 

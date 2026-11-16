@@ -202,6 +202,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.joint_scalar
 #print axioms Grothe.LowerAnalytic.kside
 #print axioms Grothe.LowerAnalytic.lower_bound_of_capsRest
+#print axioms Grothe.LowerAnalytic.majEll_le_psiT_of_le
 #print axioms Grothe.LowerAnalytic.moment_lemma
 #print axioms Grothe.LowerAnalytic.moments_of_three
 #print axioms Grothe.LowerAnalytic.nodeCap_12x140

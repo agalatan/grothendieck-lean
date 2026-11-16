@@ -196,7 +196,8 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
   have hV := VOf_frame (n + 1) f g r.ell r.beta (zeta0 n) (vL (n + 1) 0) zeta0_mem norm_zeta0 hP
     (vL_mem_H21 (n + 1) 0) (norm_vL_sq (n + 1) 0)
   have hL := inner_L_split r.ell r.beta (hOf (n + 1) f g) (hOf_ae f g hfa hga)
-  have hFib := fibre_integrated r.E R r.ell r.beta r.b1 r.b2 r.b3 hfm hgm hfb hgb hE hR Qe
+  have hFib := fibre_integrated r.E R r.ell r.beta r.b1 r.b2 r.b3 0 hfm hgm hfb hgb hE hR Qe
+  rw [zero_mul, add_zero] at hFib
   have hK := kside r.E R hE hE1 hR hR1 hR2 (measurable_kt hfm hgm) (norm_kt_le hfb hgb)
     (kOf (n + 1) f g) (kOf_ae f g hfa hga)
   -- the coupling term

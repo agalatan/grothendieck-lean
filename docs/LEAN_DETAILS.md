@@ -1260,9 +1260,13 @@ is defined exactly as certified (basis B = (1, |z|²−1, z²/√2, z, z(|z|²�
 In Lean it is the case ν = 0 (`rowPot`, `Jpot_zero`) of the potential with an identity tail,
 `pot E R ℓ β a ν s` = sup_y [∫(Ψ_ν(L + p, L − p) − ν) − yᵀMy] with p = B·(My + sa), where
 Ψ_ν(A, B) = sup_{|f|=|g|=1} Re(f̄A) + Re(ḡB) + ν·Re(f̄g) is the pair potential `psiT` of
-`CapMajorant.lean` (Ψ_0(A, B) = |A| + |B|, `psiT_zero`; issue #183). The potential
+`CapMajorant.lean` (Ψ_0(A, B) = |A| + |B|, `psiT_zero`; issue #183). For every ν the potential
 bounds every fibre expression at a complex coupling u by Ψ_r(|u|) (`fibreExprC_le_pot`, rotation
-invariance; stated at ν = 0), and for every ν it is convex, even and Lipschitz with the header constant
+invariance; integrated over the remote coordinates in `fibre_integrated`). There the fibre expression
+carries the tail as ν·(Re∫conj(f₀)g₀ − 1), which is −2ν∫|k₀|² for unimodular responses; in this form its
+integrand is an affine piece of Ψ_ν, and the bound holds for all responses with |f₀|, |g₀| ≤ 1
+(`majEll_le_psiT_of_le`), so that no unimodularity of the fibre sections is needed. The row reduction
+uses it at ν = 0. For every ν the potential is convex, even and Lipschitz with the header constant
 smax via E||z|²−1| = 2/e (`pot_convexOn`, `pot_neg`, `pot_lip`, `capsHold_pot`; for the rows
 `capsHold_rowPot`); ‖P₂,₁k‖² is bounded by the six remote projections of the fibre coefficients
 (the six mixed pieces B_j ⊗ K_j of H₂,₁(n+1), `norm_sq_starProjection_H21_le`), ‖P₁,₀k‖² splits exactly,

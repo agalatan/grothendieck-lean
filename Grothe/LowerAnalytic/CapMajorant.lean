@@ -56,7 +56,9 @@ proof is followed; the equation numbers below are those of the note:
 
 **The pair potential** `Ψ_ν` (`psiT`) is the integrand of the fibre potential (`Jpot` in
 `FibreSup.lean`).  It is used only through its affine pieces: `majEll_le_psiT` (every piece is below
-it) and `psiT_le` (a bound of every piece bounds it).  They give `Ψ_0(A, B) = |A| + |B|`
+it) and `psiT_le` (a bound of every piece bounds it).  A piece is affine in each phase, so it is
+below `Ψ_ν` on the whole closed bidisc `|f|, |g| ≤ 1` (`majEll_le_psiT_of_le`); this is the form the
+fibre bound uses, for responses that need not be unimodular.  They give `Ψ_0(A, B) = |A| + |B|`
 (`psiT_zero`), `|A| + |B| − |ν| ≤ Ψ_ν(A, B) ≤ |A| + |B| + |ν|` (`add_le_psiT`, `psiT_le_add`), the
 symmetries `Ψ_ν(B, A) = Ψ_ν(Ā, B̄) = Ψ_ν(Av, Bv) = Ψ_ν(A, B)` for `|v| = 1` (`psiT_comm`, `psiT_conj`,
 `psiT_mul_unit`, `psiT_neg`), the Lipschitz bound `psiT_le_add_norm`, convexity (`psiT_convex`) and
@@ -581,6 +583,39 @@ lemma psiT_le {ν : ℝ} {A B : ℂ} {c : ℝ}
     (h : ∀ f g : ℂ, ‖f‖ = 1 → ‖g‖ = 1 → majEll ν f g A B ≤ c) : psiT ν A B ≤ c := by
   have : Nonempty {w : ℂ × ℂ // ‖w.1‖ = 1 ∧ ‖w.2‖ = 1} := ⟨⟨(1, 1), by simp⟩⟩
   exact ciSup_le fun w => h _ _ w.2.1 w.2.2
+
+/-- The affine piece as the real part of the three payoffs `Āf + B̄g + ν f̄g`. -/
+lemma majEll_eq_re (ν : ℝ) (f g A B : ℂ) :
+    majEll ν f g A B = (conj A * f + conj B * g + (ν : ℂ) * (conj f * g)).re := by
+  simp only [majEll, Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im,
+    Complex.ofReal_re, Complex.ofReal_im]
+  ring
+
+/-- **On the closed bidisc** every affine piece is still below `Ψ_ν`: the piece is affine in each
+phase, so it increases when `f`, then `g`, is replaced by the phase of its coefficient
+(`A + νg`, then `B + νf`). -/
+lemma majEll_le_psiT_of_le (ν : ℝ) {f g : ℂ} (hf : ‖f‖ ≤ 1) (hg : ‖g‖ ≤ 1) (A B : ℂ) :
+    majEll ν f g A B ≤ psiT ν A B := by
+  obtain ⟨f', hf', hfA⟩ := exists_unit_re_conj_mul (A + (ν : ℂ) * g)
+  obtain ⟨g', hg', hgB⟩ := exists_unit_re_conj_mul (B + (ν : ℂ) * f')
+  have e1 : ∀ u : ℂ, majEll ν u g A B = (conj u * (A + (ν : ℂ) * g)).re + (conj g * B).re := by
+    intro u
+    simp only [majEll, Complex.add_re, Complex.mul_re, Complex.add_im, Complex.mul_im,
+      Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im]
+    ring
+  have e2 : ∀ u : ℂ, majEll ν f' u A B = (conj u * (B + (ν : ℂ) * f')).re + (conj f' * A).re := by
+    intro u
+    simp only [majEll, Complex.add_re, Complex.mul_re, Complex.add_im, Complex.mul_im,
+      Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im]
+    ring
+  have h1 := re_conj_mul_le_norm hf (A + (ν : ℂ) * g)
+  have h2 := re_conj_mul_le_norm hg (B + (ν : ℂ) * f')
+  have h3 := majEll_le_psiT ν hf' hg' A B
+  have a1 := e1 f
+  have a2 := e1 f'
+  have a3 := e2 g
+  have a4 := e2 g'
+  linarith
 
 /-- `Ψ_ν(A, B) ≤ |A| + |B| + |ν|`. -/
 lemma psiT_le_add (ν : ℝ) (A B : ℂ) : psiT ν A B ≤ ‖A‖ + ‖B‖ + |ν| :=
