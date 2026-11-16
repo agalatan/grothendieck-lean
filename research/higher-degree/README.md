@@ -10,8 +10,8 @@ This folder records what is known about higher-degree games:
 - what the dual side and a first test of roundings show;
 - the design of a degree-5 certificate.
 
-It is research material: nothing here is imported by Lean or checked by CI. **Every value in it is numerical (N)**,
-apart from the statements quoted from other ledgers.
+It is research material: nothing here is imported by Lean or checked by CI. **The game values and margins are numerical (N)**;
+the rows of `STATUS.md` §4 marked **C** or **P** name their author and checker.
 
 | file | what it is |
 |---|---|
@@ -60,8 +60,9 @@ record.
 
 - **Bracket.** The heuristic bracket is 1.4043 ≲ K_G^ℂ ≤ 1.404599395362. Haagerup's 1/γ† = 1.404575934663742 lies
   inside it. No rounding built from the binding responses beats Haagerup's γ_H (STATUS 3.3).
-- **The degree-5 programme.** The game is capped at λ₁ = −39/50 by the proved radius bound: (1, −39/50, 779/10000),
-  model value 1.402785 (STATUS 1.10, 4.12). A certificate for 1.402 is computed over all t, conditional on a
+- **The degree-5 programme.** At t = 0 a row bound is at least λ₁ρ*², so the proved radius bound caps the cubic weight λ₁
+  (STATUS 4.12; the games per cap are in 1.10). For the game (1, −39/50, 779/10000), model value 1.402785, a
+  certificate for 1.402 is computed over all t, conditional on a
   sector inequality K₅ on each row, with 3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). K₅ is open: the
   content band t ∈ [0.80, 0.855] and small t are the two gaps (STATUS §5). The work runs under issue #453.
 

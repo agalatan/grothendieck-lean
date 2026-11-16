@@ -1,0 +1,9 @@
+spline_pos_s2      s in [0, 3]  22 Sturm checks (segments + tail)  bound <= 0.934615300504
+fullgramB_s4       s in [3, 47/10]  22 Sturm checks (segments + tail)  bound <= 0.934569636550
+rigid2fine_s5.4    s in [47/10, 11/2]  43 Sturm checks (segments + tail)  bound <= 0.934619444773
+rigid2fine_s5.6    s in [11/2, 29/5]  43 Sturm checks (segments + tail)  bound <= 0.934619555341
+rigid2fine_s6      s in [29/5, 29/4]  43 Sturm checks (segments + tail)  bound <= 0.934602464858
+fullgramB_s7.5     s in [29/4, 12]  22 Sturm checks (segments + tail)  bound <= 0.934383742719
+spline_pos_s20     s in [12, 42]  22 Sturm checks (segments + tail)  bound <= 0.933233317972
+PASS (Sturm): all certificates; cover [0, 42]; largest bound 0.934619555341 <= rho = 46731/50000
+/usr/local/bin/python3 -I own_sturm_verifier.py ../package/certificates.json  0.19s user 0.01s system 98% cpu 0.197 total

@@ -1,0 +1,6 @@
+PASS: one-dimensional complex coefficient u,A,B,P,Q,R = 4 128 384 64 16 32
+PASS: mixed complex coefficients u,A,B,P,Q,R = 13 578 696 378 93 153
+PASS: three-dimensional sparse tensor u,A,B,P,Q,R = 13 544 1800 334 105 182
+PASS: counterexample to stronger A bounds u,A,B,P,Q,R = 8 256 256 128 32 64
+PASS: negative fourth-chaos covariance u,A,B,P,Q,R = 7 0 0 74 13 3
+PASS: both failed strengthenings have exact cubic counterexamples.

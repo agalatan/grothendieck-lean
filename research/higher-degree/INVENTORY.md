@@ -13,7 +13,7 @@ Everything else stays in the working folder:
 - `degree5-cert/out/` (logs of the design runs) and `degree5-cert/dl-hjm/`, `degree5-cert/dl-saha/` (TeX sources of
   arXiv:2609.25462 and arXiv:2608.11158, downloaded by the design worker);
 - `literature/BIBLIOGRAPHY.md` and `literature/IDEAS.md` (reading notes; IDEAS item CXO is refuted by
-  `../conjecture-K/STATUS.md` §14 item 5), and the other scripts of `literature/checks/`.
+  `../conjecture-K/STATUS.md` §13, item 5), and the other scripts of `literature/checks/`.
 
 Copied result files (in `code/primal-dual/results/`), with their working-folder originals:
 

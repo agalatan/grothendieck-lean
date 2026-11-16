@@ -31,7 +31,7 @@ Every statement in a `STATUS.md` carries one of these labels, and names its auth
 | **C** | certified by an exact or interval checker that someone other than its author replayed, with the implication from the check to the theorem inspected; "**C**, author only" likewise |
 | **Lean** | a theorem of the Lean development of this repository |
 | **N** | numerical only (floating point), with its stated accuracy; a search gives candidate values and lower bounds on a supremum, never an upper bound |
-| **R** | read from the record (a claim, a proof or a certificate of ours or of an external assistant) without full independent verification; this includes certificates replayed only by their recipient |
+| **R** | read from the record (a claim, a proof or a certificate of ours or of an external assistant) without full independent verification; this includes certificates whose delivered checker was only run, by its recipient or by the user, with no inspection of the implication from the check to the statement |
 | **open** | not proved; no claim |
 | **false** | shown false (the entry gives the counterexample and says by what: a proof, a replayed certificate or numerics) |
 
@@ -43,5 +43,5 @@ stands, and the ledger states what stands.
 | folder | subject |
 |---|---|
 | [`conjecture-K/`](conjecture-K/README.md) | Conjecture K: the supremum of the gate-free row functional Λ over the cubic chaos H₂,₁ is its value S at the diffuse Gaussian adversary independent of z₁ (approached over increasing dimensions). Open. With an error of 10⁻⁴ it would lift the lower bound from 1.401700322371 to about 1.402, exactly about 1.4022. Start with its book, [`MONOGRAPH.md`](conjecture-K/MONOGRAPH.md). |
-| [`higher-degree/`](higher-degree/README.md) | Complex games of degree ≥ 5: the best games of degree 5, 7 and 9 and their model values (1.403648, 1.404113, 1.40430), the responses that bind them, a first test of roundings, and the design of a degree-5 certificate for 1.402. All numerical. Start with its ledger, [`STATUS.md`](higher-degree/STATUS.md). |
-| [`identity-tail/`](identity-tail/README.md) | The witness P₁,₀ − εP₂,₁ + ν(Id − P₁,₀ − P₂,₁) at (ε, ν) = (191/250, 47/2000): a route to a Lean lower bound above 1.4018 with the present machinery. Model value 1.40212; the correction lemma for the node caps is proved; an integer certificate and the Lean generalisation are in progress. Start with its ledger, [`STATUS.md`](identity-tail/STATUS.md). |
+| [`higher-degree/`](higher-degree/README.md) | Complex games of degree ≥ 5: the best games of degree 5, 7 and 9 and their model values (1.403648, 1.404113, 1.40430), the responses that bind them, a first test of roundings, and the degree-5 certificate programme for 1.402: a conditional certificate for a capped game, with one sector inequality open. The game values are numerical; the certificate rows carry their own labels. Start with its ledger, [`STATUS.md`](higher-degree/STATUS.md). |
+| [`identity-tail/`](identity-tail/README.md) | The witness P₁,₀ − εP₂,₁ + ν(Id − P₁,₀ − P₂,₁) at (ε, ν) = (191/250, 47/2000): a route to a Lean lower bound above 1.4018 with the present machinery. Model value 1.40212; the correction lemma for the node caps is a Lean theorem; an integer certificate and the Lean generalisation are in progress. Start with its ledger, [`STATUS.md`](identity-tail/STATUS.md). |

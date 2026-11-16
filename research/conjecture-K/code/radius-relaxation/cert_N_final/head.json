@@ -1,0 +1,1 @@
+{"kind": "N", "claim": "93/100", "statement": "E|q| <= (93/100) ||q||_2 for every q in H_{2,1}(C^n), every n; inputs: Lean theorems, the two antiholomorphic Stein identities (ledger 6.3.20), c1, c2 >= 0, |a|^2 <= c1 c2, and the second moments of c2, c1 - c2, c1 (docstrings of verify_cert.py and check_budgets_exact.py)"}

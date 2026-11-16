@@ -1048,3 +1048,70 @@ review, whose §6 lists what the delivery overstates (F3–F7).
 | file | size | SHA-256 |
 |---|---|---|
 | `review/tab_reviewer.npz` | 122,118 B | `44d1b330464d652acaaaec713cc158932beb508b8635cdb4e704758f2d8b760d` |
+
+## The radius certificates ρ* ≤ 0.93 and ρ* ≤ 0.9387 (a research worker of claude-b9ee, 16 November 2026)
+
+`sources/radius-relaxation-2026-11-16/REVIEW.md` is the independent review (STATUS 3.7, tag KRR), a verbatim copy with
+one comment line added. `code/radius-relaxation/` holds the certificates and the scripts.
+- **The certificates.** `cert_G_final.json` (0.9387, Lean inputs only). The certificate of 0.93 is 573,042 B and is
+  kept as one file per row in `cert_N_final/`; `python3 -I join_cert_N.py` rebuilds `cert_N_final.json` and checks its
+  SHA-256 `fb7d22b8bf268bc2960d5f5ffa522d0dddf8b4daa6a95110afd8a13ba321df44`.
+- **Replay.** `python3 -I verify_cert.py cert_N_final.json` and `python3 -I verify_cert.py cert_G_final.json`
+  (standard library, exact rationals, a few seconds each); the docstring of `verify_cert.py` states the theorem, the
+  inputs with their Lean names and the proof that a verified row gives the bound. `check_budgets_exact.py` checks the
+  second-moment identities on exact cubics; `test_verifier.py` holds the verifier's own tests.
+- **Independent verifier.** `review-worker/own_verifier.py CERT.json` (Bernstein subdivision; written from the
+  statement), with `own_wick.py`, `own_identities.py` (the Lean definitions transcribed and checked on 22 exact
+  tensors), `negative_controls.py`, `differential.py`, `validate_cubics.py`, `compare_9359.py` and their logs;
+  `endpoint_bounds.log` lists the bound of every row at both ends of its s-interval.
+- **Generators and the combination.** The other scripts are the search and the construction of the certificates
+  (they need NumPy and a conic solver and were not replayed by the reviewer); `combo_scan.py`, `combo_law.py`,
+  `hermite_tests.py` and `logs/` are the numerical combination with the constraints of the outside certificates
+  (about 0.9286, **N**).
+- **Not committed:** the intermediate certificates, laws and scans, in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/radius-relaxation-2026-11-16/results/`.
+
+## The content law on independent blocks (codex-a786, second delivery)
+
+`sources/content-law-blocks-2026-11-16-codex-a786/` holds verbatim copies of the delivery's notes and of the independent review (tag KCB); only their
+first lines were added. `code/content-law-blocks-codex-a786/` holds the delivered verifier with its result files, and the reviewer's scripts
+and logs in `review-worker/`.
+- **Replay.** `node verify.mjs` and `node certify_phase.mjs` reproduce `results_exact.json` and `phase_intervals.json`.
+- **Not committed:** the zip `conjecture_k_content_law_blocks_codex_a786.zip` (39,372 B, SHA-256 `13f16b9a7e7c0089d940b4696db1f5abf5c310155db9838c32ca9b7342a4e149`), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a786-content-law-blocks-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
+
+## Shared factors and the three-derivative bound (GPT, second content-law delivery)
+
+`sources/shared-factors-2026-11-16-gpt/` holds verbatim copies of the delivery's notes and of the independent review (tag SFAC); only their
+first lines were added. `code/shared-factors-gpt/` holds the delivered verifier with its result files, and the reviewer's scripts
+and logs in `review-worker/`.
+- **Replay.** `node scripts/verify.mjs`, run in that folder, reproduces `results/replay.json`.
+- **Not committed:** the zip `content_law_shared_factors_20261116.zip` (15,859 B, SHA-256 `b97885cd4f2e763e955498dab27dd5e914f30bf958d9adc2d8bf123eabfabeed`), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-shared-factors-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
+
+## Finite reduction and the shared bulk (GPT, third content-law delivery)
+
+`sources/finite-reduction-2026-11-16-gpt/` holds verbatim copies of the delivery's notes and of the independent review (tag KFR); only their
+first lines were added. `code/finite-reduction-gpt/` holds the delivered verifier with its result files, and the reviewer's scripts
+and logs in `review-worker/`.
+- **Replay.** `node scripts/verify.mjs`, run in that folder, reproduces `results/replay.json`.
+- **Not committed:** the zip `content_law_finite_reduction_20261116.zip` (16,630 B, SHA-256 `528630828566275121c49a635215527c88542f63795f2005844d69e383e612fc`), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-finite-reduction-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
+
+## Shared matrix blocks and the tangent obstruction (codex-a786, third delivery)
+
+`sources/shared-trace-2026-11-16-codex-a786/` holds verbatim copies of the delivery's notes and of the independent review (tag KST); only their
+first lines were added. `code/shared-trace-codex-a786/` holds the delivered verifier with its result files, and the reviewer's scripts
+and logs in `review-worker/`.
+- **Replay.** `node scripts/verify.mjs`, run in that folder, reproduces `results/replay.json`; its line 60 checks the algebra of the misprinted display (20) of `PROOFS.md` (the review, §2).
+- **Not committed:** the zip `content_law_shared_trace_and_phase_obstruction_20261116.zip` (31,228 B, SHA-256 `456fa2a3dd0a4b7ff5dd511113467fa784d27803f565fa57d3cc6e004f8afa9f`), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a786-shared-trace-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
+
+## The radius certificate ρ* ≤ 0.93462 (GPT, second radius delivery)
+
+`sources/radius-93462-2026-11-16-gpt/` holds verbatim copies of the delivery's notes and of the independent review (tag KRG); only their
+first lines were added. `code/radius-93462-gpt/` holds the delivered verifier with its result files, and the reviewer's scripts
+and logs in `review-worker/`.
+- **Replay.** `node verify.mjs`, `python3 -I verify.py certificates.json`, `python3 -I verify_identities.py`, `python3 -I negative_controls.py` (standard library); `discover.py` is the numerical search and was not run.
+- **Not committed:** the zip `cubic_l1_rho_0_93462.zip` (57,384 B, SHA-256 `f4e52b13fe6d4871d34557d1ac587e703b721483eaa4d5552c305f2b22ce11f5`), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-radius-93462-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
