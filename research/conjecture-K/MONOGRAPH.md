@@ -333,7 +333,10 @@ exhausted [N · 3.7]. The radius 0.916, which the uncapped degree-5 game of `../
 sharp radius by phase averaging; it is proved for reflection-odd and conditionally Gaussian cubics and in at most
 seven real coordinates [P author only, certificates replayed · 3.21 (e)]. Moments, hypercontractivity and the cumulant
 bounds cannot give even the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace and
-small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95].
+small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. On the limit family
+a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard Gaussians),
+√0.68 holds with room: E|F| ≤ (5/(2√(3π)))‖F‖₂ = 0.8143‖F‖₂ [P · an outside session of the user, re-derived by
+claude-b9ee · 3.21 (e)].
 
 **A weighted interpolation target.** Put F=√(2/u)Re q and Γ=‖DF‖²/3. For the visible
 mixture L =_law √V W, the scalar Stein reduction gives the exact deficit formula
@@ -550,23 +553,28 @@ every u in [e, 0.0463] and every χ, with
 
 [P + C · codex-6e2b; re-derived and replayed by claude-b9ee and a reviewer agent · 11.49] The bound comes from a
 shifted Gaussian resolvent and a scalar function k_u solving (5/3 − (u/2)∂² + x∂)k_u = m″, enclosed by rational
-barriers. Uniform bounds hold as well: ‖c_{3/5}(q)‖² ≤ min{(2/25)δ, (19321/10⁶)u} and ‖c_{3/5}(q)‖ ≤ 1/50 for
+barriers. Five more coefficients, from e = 1/125, 1/50, 1/40, 3/80 and 21/500, are 49/1000, 83/2000, 393/10000,
+173/5000 and 331/10000 [P + C · codex-91d4, replayed and recomputed by a review worker of claude-b9ee · 11.62].
+Uniform bounds hold as well: ‖c_{3/5}(q)‖² ≤ min{(2/25)δ, (19321/10⁶)u} and ‖c_{3/5}(q)‖ ≤ 1/50 for
 u ≤ 0.0463 [P + C · 11.30]. Then the comparison:
 
-    ‖c_{3/5}(q)‖² ≤ (3/10)·D₊(q) + 6·10⁻⁶     for every remote cubic q with u ≤ 0.0463, in every dimension.
+    ‖c_{3/5}(q)‖² ≤ (7/25)·D₊(q) + 6·10⁻⁶     for every remote cubic q with u ≤ 0.0463, in every dimension.
 
-[P + C · codex-6e2b; re-derived by a reviewer agent of claude-b9ee, replayed in two runs, interval code not
-audited · 11.50] An exact union of 178 rectangles covers (u, χ) ∈ [0, 0.0463] × [0, 42]: on low energies by global
-Hermite moment caps of h(v) = 2E|L + √v|, above u = 2/125 by 119 global spectral Stein duals; the benchmark B is
-bounded below by chords and every budget is a polynomial in (u, √χ) with exact Bernstein coefficients. No sign of D is
-assumed, and the certificate needs no partly unreviewed content bound [C author only · 11.52]. Its margins are thin in
-places (4.3·10⁻⁷ in one box), so it rests on the interval code.
+[P + C · codex-91d4, by the method of codex-6e2b; re-derived and replayed by a review worker of claude-b9ee, who
+re-evaluated every rectangle with its own exact code; interval code not audited · 11.61] An exact union of 196
+rectangles covers (u, χ) ∈ [0, 0.0463] × [0, 42]: on low energies by global Hermite moment caps of h(v) = 2E|L + √v|,
+above u = 2/125 by 119 global spectral Stein duals; the benchmark B is bounded below by chords and every budget is a
+polynomial in (u, √χ) with exact Bernstein coefficients. No sign of D is assumed, and the certificate needs no partly
+unreviewed content bound [C author only · 11.61]. Its margins are thin in places (2.7·10⁻⁹ in one box), so it rests
+on the interval code. The same method gives the coefficient 3/10 with the ten coefficients above alone
+[P + C · codex-6e2b, re-derived by a reviewer agent of claude-b9ee, replayed in two runs · 11.50]; with these duals
+it cannot reach 3/20 (chapter 4, item 103).
 
 **The lemma, and the retained A-core.** Steps 2 and 3 give, for every remote cubic q with u ≤ 0.0463 and every remote
 linear form r, in every dimension,
 
     2E|L + q + (T − 2/5)r| − (p − 9/25)‖r‖² ≤ 2E|L + q| + κ·D₊(q) + η,
-    κ = 56730/59009 ≈ 0.9614,   η = 5673/295045000 ≈ 1.92·10⁻⁵,
+    κ = 52948/59009 ≈ 0.8973,   η = 5673/295045000 ≈ 1.92·10⁻⁵,
 
 and therefore
 
@@ -574,8 +582,9 @@ and therefore
 
 *Proof of the second line.* By the tilt, Λ̂(q + (T − 1)r) ≤ Λ(q) + κD₊(q) + η. If D(q) ≥ 0 this is
 B(u) − pu − (1 − κ)D(q) + η ≤ S + η. If D(q) < 0 it is Λ(q) + η < 1.373953883 + η by the remote cap of 2.1. ∎ With D₊
-in the lemma the remote error is not attenuated by 1 − κ (chapter 4, item 87). [lemma P + C · codex-6e2b, reviewed by
-claude-b9ee; consequence P + C · claude-b9ee, and independently codex-a7c4 · 11.51]
+in the lemma the remote error is not attenuated by 1 − κ (chapter 4, item 87). The bound is at most S once
+D(q) ≥ η/(1 − κ) = 5673/30305000 ≈ 1.87·10⁻⁴. [lemma P + C · codex-6e2b, reviewed by claude-b9ee; its κ from step 3
+· 11.61; consequence P + C · claude-b9ee, and independently codex-a7c4 · 11.51]
 
 For u ≤ 0.021 a separate certificate gives more, Λ̂(q + (T − 1)r) < S − 69/25000000, strictly below S
 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 11.47]. Two special cases of the lemma,
@@ -645,7 +654,10 @@ The lower coefficient is sharp and exceeds 0.5053 at the peak. Centering the one
 therefore gives ‖c_B − 0.5053c_A‖ ≤ 0.0035√u for every remote L² q with Π₁q = 0, in every dimension and at every
 energy [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 7.1.6]. Without orthogonality, the bound is 0.007√u.
 Raw B-content thus reduces to raw A-content; for the Gaussian-factor class C_B² ≤ (239/2000)·D [R · 7.1.3]; for
-general cubics the raw content-to-deficit inequality is open [7.1.5].
+general cubics the raw content-to-deficit inequality is open [7.1.5]. Against the fourth cumulant,
+‖c_B(q)‖² ≤ γ_B·δ for every remote cubic, with γ_B from 0.061 on 1/2000 ≤ u ≤ 1/100 down to 0.046 on
+1/25 ≤ u ≤ 0.0463, and ‖c_B(q)‖² ≤ (7/50)δ at every energy [P + C · codex-91d4, re-derived and replayed by a review
+worker of claude-b9ee · 7.1.8]; that is not a deficit bound.
 
 **Retained B-content.** At the matched tilt s_B = 0.5053·(3/5) = 15159/50000, the centered comparison and the content
 comparison of 2.6 (step 3) give
@@ -756,6 +768,15 @@ finite-amplitude cover remains **open** in general. On the real aligned plane (w
 one complex line through zero) it is proved, by a certified cover of 20 regions, with complex neighbourhoods of radius
 1/8192 around 31,090 of its boxes [P + C · codex-a7c4, re-derived and audited by claude-b9ee · 7.4.14]. Odd sectors
 over the joint core are a separate obligation; these partial interior results do not improve the lower bound.
+
+**A common cost at the A-tilt alone.** With the trial −(3/5)r_A only and h = (T − 2/5)α + z₁²·conj(β)/√2, a common
+cost 23/100 means E_{z₁}R(L + w, h) ≤ (p − 59/100)|α|² + (p − 23/100)|β|² for all complex w, α, β. It holds for |w| ≥
+7/2, for total amplitude (|α|² + |β|²)^{1/2} at least 5 or at most 1/32000, and in the cones |β| ≤ |α|/21 and |α|
+≤ |β|/56, at every w and amplitude; the rest is open [P + C · codex-91d4, re-derived and replayed by a review worker of
+claude-b9ee · 7.4.15]. No common cost above 0.24772, the least eigenvalue of the zero-core matrix at this tilt, can
+hold. Integrated, it would bound the gain by (‖c_{3/5}(q)‖² + ‖c_B(q)‖²)/(23/100) with no cap on the driver energies;
+with the coefficient 7/25 of 2.6 that is not below S, so it needs deficit bounds for both contents with coefficients
+of sum below 23/100.
 
 ### 2.9 The odd sectors
 
@@ -969,7 +990,8 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 1. **The joint remainder premise (P)** of 2.8 at the peak row: open for |w| ≤ 5/4 and 1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2,
    outside the origin profile, the directional exterior, the proved local pieces and the real aligned plane. Its
    conditional assembly uses the content comparison of 2.6. *Gives:* Λ̂(q + A + B) < S + 0.00004936 on the response
-   domain (2.8).
+   domain (2.8). A second target, with no caps on the driver energies but with content premises that are open, is
+   the common cost 23/100 at the A-tilt alone (2.8).
 2. **The odd sectors over a core with A/B shells**: remote cores are done at the peak (2.9). With A/B shells the base
    can vanish quadratically at fixed remote values, so an argument must average over the Gaussian drivers; the
    compensation of 2.9, which keeps both Q/ν channels in the conditional inequality and removes them by E Q = 0, is
@@ -1129,7 +1151,8 @@ section 13), where every source is listed.
 The ledger lists the remaining items (2, 3, 7, 8, 46, 59, 96, 97, 102) and, in its section 14, the routes that do not
 work: the fourth-moment envelopes (their refinements move the cutoff w ≈ 0.0112 by about 10⁻⁴), leading-order and
 Taylor control of the content (finite amplitude is essential), buffer insertion by Jensen, proofs from the law of the
-residual alone, the fixed moment bank for the augmented remote certificate, Cauchy–Schwarz through the law of |q|²
+residual alone, the fixed moment bank for the augmented remote certificate, the saved dual bank for a content
+coefficient 3/20 (item 103), Cauchy–Schwarz through the law of |q|²
 alone or on either Stein pair for the raw content (items 91, 93), conditioning on one coordinate beyond the cubics
 that vanish on a hyperplane (item 94), and others.
 
@@ -1174,23 +1197,23 @@ fixed tilt does as well as the free multiplier: 0.0257 at s = 0.6 and 0.0237 at 
 1.29, and on the Wick monomial the content at s = 0.6 is 0.36 times that at s = 0 [11.14].
 
 **The tilted content certificate against the truth.** The true coefficients behind the certified envelopes of step 3
-of 2.6 are 0.0468 down to 0.0321 against the certified 0.0502 down to 0.0325; on 1,298 tensors of the
-Gaussian-to-monomial family and 288 random two-variable cubics the comparison of step 3 holds with the largest
-C²/(0.3D) equal to 0.040 [11.49, 11.50]. On the Wick monomial D/δ falls from 0.73 at u = 0.0005 to 0.13 at u = 0.0463,
-which is why bounds through δ need energy-dependent coefficients [11.29].
+of 2.6 are 0.0474 down to 0.0321 against the certified 0.049 down to 0.0325; on 1,298 tensors of the
+Gaussian-to-monomial family and 288 random two-variable cubics the comparison with 3/10 holds with the largest
+C²/(0.3D) equal to 0.040 [11.49, 11.50, 11.62]. On the Wick monomial D/δ falls from 0.73 at u = 0.0005 to 0.13
+at u = 0.0463, which is why bounds through δ need energy-dependent coefficients [11.29].
 
 **Pointwise remainders of other sectors** (smallest sampled p − Rem/|r|², which would be a global cost if certified):
 
 | sectors | K | tilt (0.6, 0) |
 |---|---|---|
 | A alone | 0.320 | 0.362 (certified: at least 0.312, 2.6) |
-| A and B together | at most 0.29836 (the sharp local value at the origin, 2.8) | 0.252 |
+| A and B together | at most 0.29836 (the sharp local value at the origin, 2.8) | at most 0.24772 (the sharp local value at the origin, 2.8) |
 | B alone | 0.706 | |
 | A, B, z₁Q, z̄₁P | 0.128 | |
 | with d·z₁(T − 2) | fails pointwise (−0.387) | |
 
-[11.37, 11.45, 7.4.9] The second derivative along the sector, unlike the remainder, exceeds the budget without a
-restriction on the amplitude at every tilt tried [11.17].
+[11.37, 11.45, 7.4.9, 7.4.15] The second derivative along the sector, unlike the remainder, exceeds the budget
+without a restriction on the amplitude at every tilt tried [11.17].
 
 **Identity tail.** In the two-variable graded model the cubic head with a constant tail ν reaches the norm 0.713021
 (1.402483) at ε = 0.7681, ν = 0.0235, against 0.7131355 (1.402258) without the tail [STATUS §10]. The certificate of
