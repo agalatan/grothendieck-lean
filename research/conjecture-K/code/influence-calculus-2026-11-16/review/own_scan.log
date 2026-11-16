@@ -1,0 +1,37 @@
+== the proved bounds of the ledger for the tilt content, in units of u^2 (gamma*chi | (19321/10^6)/u | 1/(2500 u^2)):
+   u=0.009: 0.0502*chi | 2.1468 | 4.9383;  gamma*delta is the smallest only for chi < 42.76
+   u=0.02: 0.0441*chi | 0.9661 | 1.0000;  gamma*delta is the smallest only for chi < 21.91
+   u=0.03: 0.0375*chi | 0.6440 | 0.4444;  gamma*delta is the smallest only for chi < 11.85
+   u=0.0463: 0.0325*chi | 0.4173 | 0.1866;  gamma*delta is the smallest only for chi < 5.74
+== tilt u=0.02: 400 regenerated random cubics: chi in [9.8,39.6], D/delta in [0.233,0.443], C2/D max 0.0119
+   package's statistics:  T9/D min 0.0270 median 0.0610 max 0.1006 (chi=9.8); gamma*delta/D max 0.1890 (chi=39.6); min(T9,gamma*delta)/D max 0.0997 (chi=9.8); T9 < gamma*delta on 100%
+      chi in [8,16): n=139, T9/D max 0.1006, C2/D max 0.0083, gamma*delta/D max 0.1275, H/D max 0.1275, min(T9,H)/D max 0.0997
+      chi in [16,24): n=184, T9/D max 0.0697, C2/D max 0.0115, gamma*delta/D max 0.1549, H/D max 0.1488, min(T9,H)/D max 0.0697
+      chi in [24,43): n=77, T9/D max 0.0496, C2/D max 0.0119, gamma*delta/D max 0.1890, H/D max 0.1428, min(T9,H)/D max 0.0496
+   with kappa = 1/2:      T9/D max 0.0995; min(T9,gamma*delta)/D max 0.0995; T9 < gamma*delta on 100%
+   against all proved bounds, H = min(gamma*delta, (19321/10^6)u, 1/2500):  H/D max 0.1488 (chi=21.1); min(T9,H)/D max 0.0995 (chi=9.8); T9 < H on 100% of the cubics; median of H/T9 2.15, largest H/T9 3.88
+   plain Bessel bound Bz of the same law:  Bz/D min 0.0521 median 0.0631 max 0.0711 (chi=15.0); Bz < T9 on 42% of the cubics; median, smallest, largest Bz/T9: 1.05, 0.65, 1.93; min(H,Bz)/D max 0.0711 (chi=15.0); min(T9,H,Bz)/D max 0.0700; T9 < min(H,Bz) on 58%
+      monomial H(X)          chi= 42.0: C2/D=0.0117  T9/D=0.0254  gamma*delta/D=0.1924  H/D=0.1004  H/T9=3.96  Bz/D=0.0505  Bz/T9=1.99
+      X(|Y|^2-1)             chi= 16.0: C2/D=0.0064  T9/D=0.0657  gamma*delta/D=0.1229  H/D=0.1229  H/T9=1.87  Bz/D=0.0639  Bz/T9=0.97
+      mixed                  chi= 33.4: C2/D=0.0115  T9/D=0.0320  gamma*delta/D=0.1790  H/D=0.1173  H/T9=3.67  Bz/D=0.0566  Bz/T9=1.77
+      H(X)+H(Y)              chi= 21.0: C2/D=0.0094  T9/D=0.0478  gamma*delta/D=0.1415  H/D=0.1415  H/T9=2.96  Bz/D=0.0647  Bz/T9=1.36
+      X^2 conj(Y)            chi= 10.0: C2/D=0.0000  T9/D=0.0999  gamma*delta/D=0.0983  H/D=0.0983  H/T9=0.98  Bz/D=0.0636  Bz/T9=0.64
+      best tensor of 6.4.2   chi= 40.0: C2/D=0.0117  T9/D=0.0263  gamma*delta/D=0.1900  H/D=0.1039  H/T9=3.96  Bz/D=0.0523  Bz/T9=1.99
+== tilt u=0.0463: 400 regenerated random cubics: chi in [9.7,40.0], D/delta in [0.136,0.307], C2/D max 0.0118
+   package's statistics:  T9/D min 0.0318 median 0.0732 max 0.1244 (chi=9.7); gamma*delta/D max 0.2385 (chi=39.9); min(T9,gamma*delta)/D max 0.1152 (chi=11.0); T9 < gamma*delta on 96%
+      chi in [8,16): n=127, T9/D max 0.1244, C2/D max 0.0094, gamma*delta/D max 0.1473, H/D max 0.0628, min(T9,H)/D max 0.0628
+      chi in [16,24): n=178, T9/D max 0.0920, C2/D max 0.0117, gamma*delta/D max 0.1878, H/D max 0.0535, min(T9,H)/D max 0.0535
+      chi in [24,43): n=95, T9/D max 0.0655, C2/D max 0.0118, gamma*delta/D max 0.2385, H/D max 0.0449, min(T9,H)/D max 0.0449
+   with kappa = 1/2:      T9/D max 0.1228; min(T9,gamma*delta)/D max 0.1152; T9 < gamma*delta on 96%
+   against all proved bounds, H = min(gamma*delta, (19321/10^6)u, 1/2500):  H/D max 0.0628 (chi=10.1); min(T9,H)/D max 0.0628 (chi=10.1); T9 < H on 3% of the cubics; median of H/T9 0.66, largest H/T9 1.08
+   plain Bessel bound Bz of the same law:  Bz/D min 0.0344 median 0.0425 max 0.0506 (chi=16.2); Bz < T9 on 97% of the cubics; median, smallest, largest Bz/T9: 0.58, 0.37, 1.11; min(H,Bz)/D max 0.0506 (chi=16.2); min(T9,H,Bz)/D max 0.0506; T9 < min(H,Bz) on 3%
+      monomial H(X)          chi= 42.0: C2/D=0.0114  T9/D=0.0302  gamma*delta/D=0.2426  H/D=0.0332  H/T9=1.10  Bz/D=0.0339  Bz/T9=1.12
+      X(|Y|^2-1)             chi= 16.0: C2/D=0.0061  T9/D=0.0853  gamma*delta/D=0.1404  H/D=0.0504  H/T9=0.59  Bz/D=0.0418  Bz/T9=0.49
+      mixed                  chi= 33.4: C2/D=0.0113  T9/D=0.0400  gamma*delta/D=0.2225  H/D=0.0382  H/T9=0.96  Bz/D=0.0381  Bz/T9=0.95
+      H(X)+H(Y)              chi= 21.0: C2/D=0.0099  T9/D=0.0593  gamma*delta/D=0.1679  H/D=0.0459  H/T9=0.77  Bz/D=0.0443  Bz/T9=0.75
+      X^2 conj(Y)            chi= 10.0: C2/D=0.0000  T9/D=0.1220  gamma*delta/D=0.1055  H/D=0.0605  H/T9=0.50  Bz/D=0.0435  Bz/T9=0.36
+      best tensor of 6.4.2   chi= 40.0: C2/D=0.0115  T9/D=0.0314  gamma*delta/D=0.2391  H/D=0.0343  H/T9=1.09  Bz/D=0.0352  Bz/T9=1.12
+   search record '0.02|T9/D': chi=9.21  T9/D=0.1052 (kappa=1/2: 0.1012)  gamma*delta/D=0.0967  H/D=0.0967  min(T9,H)/D=0.0967  Bz/D=0.0665
+   search record '0.02|min(T9,gamma*delta)/D': chi=9.87  T9/D=0.1002 (kappa=1/2: 0.0996)  gamma*delta/D=0.1002  H/D=0.1002  min(T9,H)/D=0.0996  Bz/D=0.0664
+   search record '0.0463|T9/D': chi=9.21  T9/D=0.1290 (kappa=1/2: 0.1240)  gamma*delta/D=0.1033  H/D=0.0644  min(T9,H)/D=0.0644  Bz/D=0.0469
+   search record '0.0463|min(T9,gamma*delta)/D': chi=10.65  T9/D=0.1161 (kappa=1/2: 0.1161)  gamma*delta/D=0.1162  H/D=0.0626  min(T9,H)/D=0.0626  Bz/D=0.0487

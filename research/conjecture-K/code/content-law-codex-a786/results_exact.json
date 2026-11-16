@@ -1,0 +1,287 @@
+{
+  "label": "C: exact integer/rational arithmetic; instances are checks, not the all-profile proof",
+  "agent": "codex-a786",
+  "checks": [
+    {
+      "name": "question h(v)=v control",
+      "u": "2",
+      "m4": "176",
+      "delta": "168",
+      "content": "32",
+      "omega": "3/2",
+      "ratio": "256/63"
+    },
+    {
+      "name": "m=8 refinement",
+      "alphaSquaredUpper": "829/10368",
+      "theta": "11009947/8553600",
+      "status": "passed"
+    },
+    {
+      "name": "folded exponential constants and square-root bounds",
+      "status": "passed"
+    },
+    {
+      "name": "all polynomial instance identities and inequalities",
+      "count": 246,
+      "status": "passed"
+    }
+  ],
+  "rowComparisons": [
+    {
+      "t": "0.80",
+      "comparisonTarget": "37/100",
+      "pure_m": 21,
+      "pure_theta": "77/216",
+      "bulk_m": 36,
+      "bulk_theta": "386/1053"
+    },
+    {
+      "t": "0.82",
+      "comparisonTarget": "16/25",
+      "pure_m": 11,
+      "pure_theta": "11/18",
+      "bulk_m": 20,
+      "bulk_theta": "28/45"
+    },
+    {
+      "t": "0.84",
+      "comparisonTarget": "133/100",
+      "pure_m": 4,
+      "pure_theta": "11/9",
+      "bulk_m": 8,
+      "bulk_theta": "11009947/8553600"
+    },
+    {
+      "t": "0.845",
+      "comparisonTarget": "47/25",
+      "pure_m": 2,
+      "pure_theta": "77/45",
+      "bulk_m": 5,
+      "bulk_theta": "1297/720"
+    },
+    {
+      "t": "0.85",
+      "comparisonTarget": "5/2",
+      "pure_m": 1,
+      "pure_theta": "77/36",
+      "bulk_m": 3,
+      "bulk_theta": "29/12"
+    },
+    {
+      "t": "0.855",
+      "comparisonTarget": "37/10",
+      "pure_m": 1,
+      "pure_theta": "77/36",
+      "bulk_m": 1,
+      "bulk_theta": "55/16"
+    }
+  ],
+  "instances": [
+    {
+      "m": 1,
+      "N": 0,
+      "b": 0,
+      "u": "1",
+      "delta": "16",
+      "degree": 1,
+      "content": "4",
+      "omega": "3/4",
+      "ratio": "4/3",
+      "theta": "77/36"
+    },
+    {
+      "m": 2,
+      "N": 0,
+      "b": 0,
+      "u": "2",
+      "delta": "40",
+      "degree": 1,
+      "content": "8",
+      "omega": "3/2",
+      "ratio": "16/15",
+      "theta": "77/45"
+    },
+    {
+      "m": 3,
+      "N": 0,
+      "b": 0,
+      "u": "3",
+      "delta": "72",
+      "degree": 1,
+      "content": "12",
+      "omega": "9/4",
+      "ratio": "8/9",
+      "theta": "77/54"
+    },
+    {
+      "m": 4,
+      "N": 0,
+      "b": 0,
+      "u": "4",
+      "delta": "112",
+      "degree": 1,
+      "content": "16",
+      "omega": "3",
+      "ratio": "16/21",
+      "theta": "11/9"
+    },
+    {
+      "m": 5,
+      "N": 0,
+      "b": 0,
+      "u": "5",
+      "delta": "160",
+      "degree": 1,
+      "content": "20",
+      "omega": "15/4",
+      "ratio": "2/3",
+      "theta": "77/72"
+    },
+    {
+      "m": 8,
+      "N": 0,
+      "b": 0,
+      "u": "8",
+      "delta": "352",
+      "degree": 1,
+      "content": "32",
+      "omega": "6",
+      "ratio": "16/33",
+      "theta": "7/9"
+    },
+    {
+      "m": 9,
+      "N": 0,
+      "b": 0,
+      "u": "9",
+      "delta": "432",
+      "degree": 1,
+      "content": "36",
+      "omega": "27/4",
+      "ratio": "4/9",
+      "theta": "77/108"
+    },
+    {
+      "m": 11,
+      "N": 0,
+      "b": 0,
+      "u": "11",
+      "delta": "616",
+      "degree": 1,
+      "content": "44",
+      "omega": "33/4",
+      "ratio": "8/21",
+      "theta": "11/18"
+    },
+    {
+      "m": 20,
+      "N": 0,
+      "b": 0,
+      "u": "20",
+      "delta": "1840",
+      "degree": 1,
+      "content": "80",
+      "omega": "15",
+      "ratio": "16/69",
+      "theta": "77/207"
+    },
+    {
+      "m": 21,
+      "N": 0,
+      "b": 0,
+      "u": "21",
+      "delta": "2016",
+      "degree": 1,
+      "content": "84",
+      "omega": "63/4",
+      "ratio": "2/9",
+      "theta": "77/216"
+    },
+    {
+      "m": 36,
+      "N": 0,
+      "b": 0,
+      "u": "36",
+      "delta": "5616",
+      "degree": 1,
+      "content": "144",
+      "omega": "27",
+      "ratio": "16/117",
+      "theta": "77/351"
+    },
+    {
+      "m": 64,
+      "N": 0,
+      "b": 0,
+      "u": "64",
+      "delta": "17152",
+      "degree": 1,
+      "content": "256",
+      "omega": "48",
+      "ratio": "16/201",
+      "theta": "77/603"
+    },
+    {
+      "m": 1,
+      "N": 3,
+      "b": 1,
+      "u": "7",
+      "delta": "136",
+      "degree": 2,
+      "content": "408",
+      "omega": "866055/7",
+      "ratio": "2856/288685",
+      "theta": "55/16"
+    },
+    {
+      "m": 2,
+      "N": 3,
+      "b": 1,
+      "u": "8",
+      "delta": "160",
+      "degree": 2,
+      "content": "1056",
+      "omega": "162816",
+      "ratio": "363/8480",
+      "theta": "263/90"
+    },
+    {
+      "m": 4,
+      "N": 3,
+      "b": 1,
+      "u": "10",
+      "delta": "232",
+      "degree": 2,
+      "content": "3072",
+      "omega": "1491864/5",
+      "ratio": "245760/1802669",
+      "theta": "130/63"
+    },
+    {
+      "m": 9,
+      "N": 3,
+      "b": 1,
+      "u": "15",
+      "delta": "552",
+      "degree": 2,
+      "content": "12312",
+      "omega": "5537421/5",
+      "ratio": "3508920/14151187",
+      "theta": "775/648"
+    },
+    {
+      "m": 36,
+      "N": 3,
+      "b": 1,
+      "u": "42",
+      "delta": "5736",
+      "degree": 2,
+      "content": "165888",
+      "omega": "216894600/7",
+      "ratio": "111476736/719969575",
+      "theta": "386/1053"
+    }
+  ],
+  "polynomialInstances": 246
+}

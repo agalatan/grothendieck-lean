@@ -1,0 +1,9 @@
+PASS n=1 trial=0: J1-J6 hold exactly; ||P11 V||^2/delta = 0.2143 (<= 0.75), (||J1||^2+||I2||^2)/||M||^2 = 0.5556
+PASS n=1 trial=1: J1-J6 hold exactly; ||P11 V||^2/delta = 0.2143 (<= 0.75), (||J1||^2+||I2||^2)/||M||^2 = 0.5556
+PASS n=2 trial=0: J1-J6 hold exactly; ||P11 V||^2/delta = 0.2751 (<= 0.75), (||J1||^2+||I2||^2)/||M||^2 = 0.6832
+PASS n=2 trial=1: J1-J6 hold exactly; ||P11 V||^2/delta = 0.3537 (<= 0.75), (||J1||^2+||I2||^2)/||M||^2 = 0.6451
+PASS n=2 trial=2: J1-J6 hold exactly; ||P11 V||^2/delta = 0.2997 (<= 0.75), (||J1||^2+||I2||^2)/||M||^2 = 0.5984
+PASS n=2 trial=3: J1-J6 hold exactly; ||P11 V||^2/delta = 0.3302 (<= 0.75), (||J1||^2+||I2||^2)/||M||^2 = 0.7286
+PASS n=3 trial=0: J1-J6 hold exactly; ||P11 V||^2/delta = 0.3790 (<= 0.75), (||J1||^2+||I2||^2)/||M||^2 = 0.6069
+PASS n=3 trial=1: J1-J6 hold exactly; ||P11 V||^2/delta = 0.3207 (<= 0.75), (||J1||^2+||I2||^2)/||M||^2 = 0.5904
+ALL 8 EXACT CHECKS PASSED

@@ -1,0 +1,8 @@
+rejected (d0 lowered by 1e-5): Phi not proved nonnegative on segment 5
+rejected (W not PSD at a knot): W not PSD at a knot
+rejected (gap in the s cover): no cover of [0, 42]
+rejected (a negative multiplier): a multiplier has the wrong sign
+rejected (s-interval enlarged): endpoint bound above 9359/10000 at s = 8
+all negative controls rejected
+d0 - 1e-7: still accepted (the pointwise gap of this certificate exceeds 1e-7)
+d0 - 1e-6: still accepted (the pointwise gap of this certificate exceeds 1e-6)

@@ -1,0 +1,5 @@
+grid sizes 57600 1228800
+start   0: coarse T2 obj = -0.001542; fine D=+2.290980e-01 T1/D=+1.00122 T2/D=-0.00143 err=-2.1e-04 chi=12.820  (74s)
+start   1: coarse T2 obj = -0.001513; fine D=+2.291048e-01 T1/D=+1.00146 T2/D=-0.00146 err=-3.9e-06 chi=12.853  (94s)
+start   2: coarse T2 obj = -0.001551; fine D=+2.289387e-01 T1/D=+1.00121 T2/D=-0.00142 err=-2.1e-04 chi=12.831  (62s)
+start   3: coarse T2 obj = -0.001498; fine D=+2.289075e-01 T1/D=+1.00146 T2/D=-0.00146 err=+9.5e-07 chi=12.875  (89s)

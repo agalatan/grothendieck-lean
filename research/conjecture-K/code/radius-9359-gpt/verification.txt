@@ -1,0 +1,29 @@
+Exact verification of rho = 9359/10000
+Node v24.22.1
+Python 3.12.14
+
+$ node verify.mjs
+spline_pos_s2: s in [0, 3], bound <= 0.934615300505, 80 exact Bernstein leaves
+spline_pos_s5: s in [3, 21/4], bound <= 0.935610941608, 84 exact Bernstein leaves
+spline_fine_s6: s in [21/4, 25/4], bound <= 0.935886270586, 138 exact Bernstein leaves
+spline_fine_s6.5: s in [25/4, 57/8], bound <= 0.935898597609, 134 exact Bernstein leaves
+spline_pos_s7.5: s in [57/8, 45/4], bound <= 0.935891198858, 82 exact Bernstein leaves
+spline_pos_s20: s in [45/4, 42], bound <= 0.935374595197, 84 exact Bernstein leaves
+PASS: rho = 9359/10000; all s in [0,42] and all r >= 0; 602 exact Bernstein leaves.
+
+$ python verify.py certificates.json
+spline_pos_s2 ['0', '3'] 0.934615300504 80
+spline_pos_s5 ['3', '21/4'] 0.935610941607 84
+spline_fine_s6 ['21/4', '25/4'] 0.935886270585 138
+spline_fine_s6.5 ['25/4', '57/8'] 0.935898597609 134
+spline_pos_s7.5 ['57/8', '45/4'] 0.935891198857 82
+spline_pos_s20 ['45/4', '42'] 0.935374595196 84
+PASS: rho=9359/10000; complete coverage [0,42]; 0.27s
+
+$ python verify_examples.py
+PASS: moment law has s=5, satisfies the given moment ceilings, and E sqrt(V)>0.96.
+PASS: its radial Stein budget would be at least 19, exceeding s=5.
+PASS: the q_n moment and projection formulas hold as exact polynomial identities in n.
+PASS: E|a|^2 / E[Vb] = (n^2+10n+17)/(n^2+14n+25), tending to 1.
+
+Negative controls: both verifiers rejected a negative dual gap, a non-PSD matrix, and a gap in s coverage.

@@ -308,10 +308,14 @@ the A-shell and odd-sector corollaries.
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
 PVD, which implies complex PVD; no converse is known [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. The sharp
 radius bound E|q| ≤ (√π/2)‖q‖₂ on H₂,₁ is open; cases are proved for real BNC of order 2, one-variable H₃ at every
-scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| < 0.95133‖q‖₂ for every Wick cubic [P + C · GPT review, re-derived and replayed by claude-b9ee · 3.7]. In real second chaos,
+scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| ≤ 0.9359‖q‖₂ for every Wick cubic, by six exact dual certificates built on the radial Stein
+identities of 2.5 [P + C · a GPT session, re-derived and re-verified by claude-b9ee · 3.7]; the earlier 0.95133 came from the
+real scalar Stein family. In real second chaos,
 E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. In real third chaos the same bound would give the sharp radius by phase averaging; it
-is proved for reflection-odd and conditionally Gaussian cubics and in at most seven coordinates, and moments alone
-cannot give it [3.6, 3.21]. Exact remote K is not needed for 1.402.
+is proved for reflection-odd and conditionally Gaussian cubics and in at most seven coordinates. Moments,
+hypercontractivity and the cumulant bounds cannot give even the weak constant √0.68, and the stronger Gaussian Laplace
+and small-ball comparisons are false already for He₃(G) [3.6, 3.21; chapter 4, item 95]. Exact remote K is not needed
+for 1.402.
 
 **A weighted interpolation target.** Put F=√(2/u)Re q and Γ=‖DF‖²/3. For the visible
 mixture L =_law √V W, the existing scalar Stein reduction gives the exact deficit formula
@@ -341,6 +345,24 @@ near the optimum, with a strictly positive quadratic deficit. Their thresholds h
 (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer, radius domination holds for one
 two-variable family around the known counterexample to the stronger Laplace comparison [author only, certificates
 replayed · 3.6].
+
+**Two classes with exact remote K, and the structure of the deficit.** For q ∈ H₂,₁ put J = Σ_j(|∂_jq|² − |∂̄_jq|²).
+Then E f(|q|²) − f(0) = E[J·f′(|q|²)] for every smooth f of polynomial growth. So D_φ(q) = −Cov(J, K′(|q|²)), and the
+Laplace order, the buffer deficits and the smoothing sign are positive functionals of the single function
+N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P author only + C · 3.23]. Two classes follow.
+- If P₃,₁(q²) = 0 (equivalently a ≡ 0; every decoupled cubic), then |q|² is exponential conditionally on |∂̄q|². So
+  D_φ(q) ≥ 0 for every concave profile, and every content of q vanishes [P author only + C · 3.24].
+- If q vanishes on a complex hyperplane {X = 0}, then for every Gaussian buffer σ ≥ 0,
+  √π·√(σ² + u) − 2E|σW + q| ≥ |α|²a_σ + ‖ℓ‖²b_σ > 0, where α and ℓ are the coefficients of X(|X|² − 2) and of X². In
+  particular E|q| ≤ (√π/2)·√(u − |α|²/4 − ‖ℓ‖²/2). The class contains every one-driver cubic, in every dimension
+  [P author only · 3.25].
+
+The proof of the second class conditions on one coordinate. A component free of that coordinate enters with the wrong
+sign, so the method covers two variables numerically and not three [N · 3.25, item 94]. For a general cubic,
+D_φ = 𝒥 + two weighted contractions of the pair (a, DF·F), F = ∂̄q, where 𝒥 ≥ 0 is the deficit of the decoupled
+surrogate ⟨w, ∂̄q⟩. At the peak row all three terms are nonnegative on every cubic tested; a proof of the sign of the
+two contractions would give D(q) ≥ 0 there in every dimension [P author only for the identity, N for the signs · 3.26].
+For √v itself this split and that of 2.5 each have a term of the wrong sign on explicit cubics [N · chapter 4, item 92].
 
 ### 2.2 Disjoint drivers (L2)
 
@@ -442,6 +464,31 @@ of polynomial growth, with the one-dimensional transform k = E h(· + uτ), and 
 budget [P · 6.3.25]. This is a bound only once sup_e Ω_e has a certified majorant, which it does not have. For the
 raw functional the route cannot reach the constants 0.10 and 0.15: it gives 0.229·D on a two-variable cubic
 [N · item 91]. For the tilt 3/5 the largest value found is 0.048·D [N · ledger §9, KAS].
+
+A second, local form removes the field c₂ − u: E[ȳ_e q h(V)] = E[ȳ_e(∂_vk·q̄a + ∂_ck·b)], with k(v, c) = E h(v + cτ),
+F = ∂̄q and b = Σ_k conj(F_k)·(F·∇)F_k. The content is then linear in the pair (a, DF·F), whose budget is
+‖P₂,₀(q²)‖² + ½‖P₃,₁(q²)‖² [P author only + C · 6.3.26]. Its Cauchy–Schwarz bound is 0.128·D at the cubic above and at
+least 0.162·D at its own worst cubic, still above 0.15 [N · item 93].
+
+**A sign-conditioned bound on a structured class.** Take q = √u·X·P with X a coordinate and P a Hermitian quadratic
+form of independent coordinates. The test function of the content representation depends on P through |P| only, so P
+can be replaced by its conditional mean given |P| before Cauchy–Schwarz. For P_m = m^{−1/2}Σ_{j≤m}(|Y_j|² − 1) this
+gives ‖c[h]‖² ≤ [77/(9(m + 3))]·δ·Ω̂[h] for every profile and every energy, where
+Ω̂[h] = (3/2)E[V·k′(V)²] − (3/4)(E[V·k′(V)])²/u is a functional of the law of |q|² alone; an independent decoupled bulk
+raises the constant to 253/(18(m + 3)) + 2/(9m) [P + C · 6.3.27–6.3.29]. The class has no self-interaction of the
+driver. On the Wick monomial every constant that holds for all profiles is at least 256/63, so for a general cubic the
+profile must enter [P · 6.3.28]. A second proof subtracts from the representative Z of the content, c[h] = ⟨Z, q·k′(V)⟩,
+a polynomial with zero conditional mean given q. It covers every Hermitian cofactor with a constant below 5/3, and it
+shows that the best constant valid for all profiles and energies is θ*(q) = (2/3)(‖E[Z | q]‖² + |⟨q, Z⟩|²/u)/δ: 1.547
+at X(|Y|² − 1) and 5.000 at the Wick monomial [P for the rule, N for the values · 6.3.30].
+
+**Influences.** With J₁[a, b] = E[∂_aq·conj(∂_bq)] and I₂[j, k] = ⟨∂̄_jq, ∂̄_kq⟩ (traces 2u and u), the mixture field has
+‖c₂ − u‖² = ‖J₁‖²_HS + ‖I₂‖²_HS, so δ = ‖P₂,₀q²‖² + ‖P₃,₁q²‖² + 2‖J₁‖²_HS + 2‖I₂‖²_HS and the largest eigenvalues satisfy
+λ₁² + λ₂² ≤ δ/2, with equality only at X²Ȳ [P + C · 6.3.32]. The content is a pairing of two shadows of the profile
+with these matrices, ‖c[h]‖ ≤ √λ₁·sd[(vh)′(V)] + √λ₂·‖V·h′(V)‖₂ [P · 6.3.31, 6.3.34]. But the cubics X²(aX̄ + bȲ) have
+(λ₁, λ₂) = (2u, u) at every χ between 10 and 42, so no bound on the influences in terms of (u, χ) improves this where
+the degree-5 band fails; the loss there is the misalignment of the shadows with the influence directions, a phase
+cancellation that vanishes exactly at X²Ȳ [P, N · 6.3.33, item 98].
 
 ### 2.6 The A-sector of the retained functional: the tilted lemma
 
@@ -920,8 +967,9 @@ keeps a cross term and improves J₁ by more than 3.9·10⁻⁴ on an explicit r
 2. **The raw L4 content inequality** for general cubics on 0.00551 ≤ u ≤ 0.0463, with the constant fixed by item 1
    (0.10 under the adverse joint hypothesis). Pieces: the mixed shells, several self-interacting drivers, the
    envelopes on the self-interaction family. A candidate method is that of step 3 of 2.6: energy-dependent
-   δ-coefficients against moment caps and Stein duals in (u, χ). *Gives:* the A-core of K, and with item 1 the
-   A + B core.
+   δ-coefficients against moment caps and Stein duals in (u, χ). By the local representation of 2.5, the content
+   and the excess D − 𝒥 of the deficit over its decoupled part (2.1) are linear in one pair of fields, so the
+   target can be put as C² ≤ κ·(D − 𝒥). *Gives:* the A-core of K, and with item 1 the A + B core.
 3. **B-content for general cubics.** The peak alignment reduces it to A-content. *Gives:* the B-sector with its cost.
 4. **The odd sectors over a core with A/B shells**: remote cores are done at the peak (2.9). With A/B shells the
    base can vanish quadratically at fixed remote values, so an argument must average over the Gaussian drivers; the
@@ -1039,6 +1087,13 @@ section 13), where every source is listed.
   maximisers readjust; the valid object is the dual Λ̂ [N].
 - **11.6. A weighted cubic contraction is nonnegative.** q = X[5(|X|² − 2) + 6i(|Y|² − 1)]/√86 makes it below −1/50
   [R].
+- **92. The terms of the deficit representations are separately nonnegative for √v.** On
+  cos θ·X²Ȳ/√2 + sin θ·X(|X|² + |Y|² − 3)/√3 at θ = 0.2 the second term of the representation of 2.5 is
+  −1.33·10⁻⁴ against D = 0.2456; the comparison with the decoupled surrogate fails on the Wick monomial
+  (0.6908 > 0.6267). At the peak row no violation was found [N].
+- **95. Gaussian Laplace or small-ball domination on the real third chaos.** False for He₃(G)/√6: its density at
+  zero is 0.99868·φ(0), and the Laplace comparison fails for every t > 403. The L¹ bound and the smoothing sign are
+  not contradicted [P + C].
 
 **Response side**
 
@@ -1048,7 +1103,8 @@ section 13), where every source is listed.
 The ledger lists the remaining items (2, 3, 7, 8, 46, 59) and, in its section 14, the routes that do not work: the
 fourth-moment envelopes (saturated at w ≈ 0.0112), leading-order and Taylor control of the content (finite amplitude
 is essential), buffer insertion by Jensen, proofs from the law of the residual alone, the fixed moment bank for the
-augmented remote certificate, Cauchy–Schwarz through the law of |q|² alone, and others.
+augmented remote certificate, Cauchy–Schwarz through the law of |q|² alone or on either Stein pair for the raw content
+(items 91, 93), conditioning on one coordinate beyond the cubics that vanish on a hyperplane (item 94), and others.
 
 ## 5. Numerical evidence
 
@@ -1118,9 +1174,9 @@ restriction on the amplitude at every tilt tried [11.17].
 | 1.2–1.5 setting, budget | 2.1–2.5, 8.1–8.4, 12.1, 12.2 | `audit-2026-11-13/`, `reaudit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/MANUSCRIPT_DIGEST_K.md` | `reaudit-2026-11-15-codex-a7c4/` |
 | 1.6 retained functional | 2.10, 2.10a, 2.13, 2.14, 3.16, 3.17, 11.2–11.13 | `external-2026-11-15/`, `numerics-kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `sixth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/legacy/ch20-pinned-gate.tex` | `kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/`, `sixth-audit-2026-11-15-codex-a7c4/` |
 | 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 | `third-audit-2026-11-15-codex-a7c4/CONTENT_KERNELS.md`, `reaudit-2026-11-15-codex-a7c4/SECTORS.md` | `third-audit-2026-11-15-codex-a7c4/` |
-| 2.1 remote part | 3.1–3.19, 11.7–11.11, 12.8 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
+| 2.1 remote part | 3.1–3.27, 11.7–11.11, 12.8 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md`, `deficit-sign-2026-11-16/` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/`, `deficit-sign-2026-11-16/` |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.5 | `third-audit-…/POTENTIAL.md`, `audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md`, `audit-2026-11-15-codex-a7c4/CLAIMS.md` | `third-audit-2026-11-15-codex-a7c4/` |
-| 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md`, `antiholomorphic-stein-2026-11-16/` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py`, `antiholomorphic-stein-2026-11-16/` |
+| 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md`, `antiholomorphic-stein-2026-11-16/`, `deficit-sign-2026-11-16/`, `content-law-2026-11-16-codex-a786/`, `signed-pairing-2026-11-16-gpt/`, `influence-calculus-2026-11-16/` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py`, `antiholomorphic-stein-2026-11-16/`, `deficit-sign-2026-11-16/`, `content-law-codex-a786/`, `signed-pairing-gpt/`, `influence-calculus-2026-11-16/` |
 | 2.6 tilted lemma, retained A-core | 11.25–11.54, 11.56–11.60 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md`; `phase-content-2026-11-16-codex-a786/`, `malliavin-addendum-2026-11-16-codex-a786/` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py`; `phase-content-codex-a786/`, `malliavin-addendum-codex-a786/` |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
 | 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md`, `odd-gap-2026-11-15-codex-91d4/`, `joint-edgeworth-2026-11-15-codex-91d4/`, `odd-AB-small-shell-2026-11-15/PROOF.md`, `uniform-local-2026-11-15-codex-4d8a/`, `round3-2026-11-15-codex-c7e2/`, `partial-q-2026-11-15-codex-91d4/`, `np-joint-2026-11-16-codex-91d4/` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/`, `odd-AB-small-shell-2026-11-15/`, `uniform-local-codex-4d8a/`, `round3-codex-c7e2/` |

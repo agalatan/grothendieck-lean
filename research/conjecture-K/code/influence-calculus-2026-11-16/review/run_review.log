@@ -1,0 +1,11 @@
+== exact: start 17:41:59
+== exact: exit 0 after 19 s
+== numerics: start 17:42:18
+== numerics: exit 0 after 31 s
+== lawlevel: start 17:42:49
+== lawlevel: exit 0 after 58 s
+== scan: start 17:43:47
+== scan: exit 0 after 253 s
+== small: start 17:48:00
+== small: exit 0 after 1 s
+== all done 17:48:01

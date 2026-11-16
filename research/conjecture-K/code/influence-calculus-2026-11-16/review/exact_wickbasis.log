@@ -1,0 +1,78 @@
+self-test: product formula = monomial multiplication; E, EP, Leibniz, Gaussian IBP: OK
+PASS Wick monomial y(|y|^2-2): n=1, u=2, delta=168, chi=42.0000  [0.0 s]
+     Theorem 6 exact for h=v^m, m=0..3 (direction e=[1]); operator form with explicit shadows exact for m=1..3
+     Theorem 7: M=I2+J1 exact; ||P11V||^2=36, ||J1||^2+||I2||^2=20, tr(J1 I2)=8; ||P11V||^2/delta=0.2143 (<= 0.75); lam1/u=2.0000, lam2/u=1.0000, (lam1^2+lam2^2)/delta=0.1190
+     reviewer: ||c2-u||^2 = ||J1||^2+||I2||^2 = 20 exactly; (||J1||^2+||I2||^2)/delta = 0.1190 (<= 0.5)
+     6.3.21: |P20 q^2|^2=32, |P31 q^2|^2=96, |P11 V|^2=36, |P22 V|^2=100, |x|^2=20, |a|^2=56: both identities exact
+     Theorem 8: |Pi1(q|q|^2)|^2=1024 <= (2 sqrt(l1)|P11V| + sqrt(l2)|P20q^2|)^2=1024 <= CS 1040 <= min(7.5 u delta=2520, (3 sqrt15/4) delta^1.5=6325.15); ratio bound/truth 1.0000
+     h=v^1: |c|^2=1024; Cor 6.1 x1.000; Theorem 9 (true influences) x4.954; Bessel: sA^2/|A|^2=4.778, sB^2/|B|^2=5.500
+     h=v^2: |c|^2=117679104; Cor 6.1 x1.000; Theorem 9 (true influences) x80.450; Bessel: sA^2/|A|^2=70.560, sB^2/|B|^2=109.738
+     h=v^3: |c|^2=114386618548224; Cor 6.1 x1.000; Theorem 9 (true influences) x2155.878; Bessel: sA^2/|A|^2=1832.617, sB^2/|B|^2=3052.142
+     Proposition 12: E|q|^6/u^3=11352.000 >= 1.5 (chi+2)^2=2904.000; proof steps (moments, Dirichlet form, Stein identity) exact; Propositions 10, 11 exact
+     hand values confirmed: u=2, delta=168, P11|q|^2 = 6(|y|^2-1), content coefficient 32 (= 24 + 8) for h=v
+PASS two variables, all six basis elements (repeated indices): n=2, u=43, delta=45640, chi=24.6836  [0.2 s]
+     Theorem 6 exact for h=v^m, m=0..3 (direction e=[(1, 2), (-3, 1)]); operator form with explicit shadows exact for m=1..3
+     Theorem 7: M=I2+J1 exact; ||P11V||^2=11593, ||J1||^2+||I2||^2=6527, tr(J1 I2)=2533; ||P11V||^2/delta=0.2540 (<= 0.75); lam1/u=1.5975, lam2/u=0.8976, (lam1^2+lam2^2)/delta=0.1360
+     reviewer: ||c2-u||^2 = ||J1||^2+||I2||^2 = 6527 exactly; (||J1||^2+||I2||^2)/delta = 0.1430 (<= 0.5)
+     6.3.21: |P20 q^2|^2=6738, |P31 q^2|^2=25848, |P11 V|^2=11593, |P22 V|^2=25612, |x|^2=6527, |a|^2=13200: both identities exact
+     Theorem 8: |Pi1(q|q|^2)|^2=4143032 <= (2 sqrt(l1)|P11V| + sqrt(l2)|P20q^2|)^2=5.26565e+06 <= CS 5.26591e+06 <= min(7.5 u delta=1.47189e+07, (3 sqrt15/4) delta^1.5=2.83221e+07); ratio bound/truth 1.2710
+     h=v^1: |c|^2=4143032; Cor 6.1 x1.271; Theorem 9 (true influences) x6.015; Bessel: sA^2/|A|^2=4.096, sB^2/|B|^2=7.322
+     h=v^2: |c|^2=104790341897568; Cor 6.1 x1.185; Theorem 9 (true influences) x87.654; Bessel: sA^2/|A|^2=59.772, sB^2/|B|^2=123.246
+     h=v^3: |c|^2=21444632289239358697344; Cor 6.1 x1.187; Theorem 9 (true influences) x2309.534; Bessel: sA^2/|A|^2=1551.680, sB^2/|B|^2=3140.799
+     Proposition 12: E|q|^6/u^3=4386.012 >= 1.5 (chi+2)^2=1068.023; proof steps (moments, Dirichlet form, Stein identity) exact; Propositions 10, 11 exact
+PASS X^2 conj(Y): n=2, u=2, delta=40, chi=10.0000  [0.0 s]
+     Theorem 6 exact for h=v^m, m=0..3 (direction e=[(1, 1), (2, -1)]); operator form with explicit shadows exact for m=1..3
+     Theorem 7: M=I2+J1 exact; ||P11V||^2=20, ||J1||^2+||I2||^2=20, tr(J1 I2)=0; ||P11V||^2/delta=0.5000 (<= 0.75); lam1/u=2.0000, lam2/u=1.0000, (lam1^2+lam2^2)/delta=0.5000
+     reviewer: ||c2-u||^2 = ||J1||^2+||I2||^2 = 20 exactly; (||J1||^2+||I2||^2)/delta = 0.5000 (<= 0.5)
+     6.3.21: |P20 q^2|^2=0, |P31 q^2|^2=0, |P11 V|^2=20, |P22 V|^2=20, |x|^2=20, |a|^2=0: both identities exact
+     Theorem 8: |Pi1(q|q|^2)|^2=0 <= (2 sqrt(l1)|P11V| + sqrt(l2)|P20q^2|)^2=320 <= CS 400 <= min(7.5 u delta=600, (3 sqrt15/4) delta^1.5=734.847); ratio bound/truth inf
+     h=v^1: |c|^2=0; Cor 6.1 xinf; Theorem 9 (true influences) xinf; Bessel: sA^2/|A|^2=2.200, sB^2/|B|^2=inf
+     h=v^2: |c|^2=0; Cor 6.1 xinf; Theorem 9 (true influences) xinf; Bessel: sA^2/|A|^2=20.950, sB^2/|B|^2=inf
+     h=v^3: |c|^2=0; Cor 6.1 xinf; Theorem 9 (true influences) xinf; Bessel: sA^2/|A|^2=410.644, sB^2/|B|^2=inf
+     Proposition 12: E|q|^6/u^3=540.000 >= 1.5 (chi+2)^2=216.000; proof steps (moments, Dirichlet form, Stein identity) exact; Propositions 10, 11 exact
+PASS X(|Y|^2-1): n=2, u=1, delta=16, chi=16.0000  [0.0 s]
+     Theorem 6 exact for h=v^m, m=0..3 (direction e=[(1, 0), (1, 1)]); operator form with explicit shadows exact for m=1..3
+     Theorem 7: M=I2+J1 exact; ||P11V||^2=5, ||J1||^2+||I2||^2=3, tr(J1 I2)=1; ||P11V||^2/delta=0.3125 (<= 0.75); lam1/u=1.0000, lam2/u=1.0000, (lam1^2+lam2^2)/delta=0.1250
+     reviewer: ||c2-u||^2 = ||J1||^2+||I2||^2 = 3 exactly; (||J1||^2+||I2||^2)/delta = 0.1875 (<= 0.5)
+     6.3.21: |P20 q^2|^2=2, |P31 q^2|^2=8, |P11 V|^2=5, |P22 V|^2=8, |x|^2=3, |a|^2=4: both identities exact
+     Theorem 8: |Pi1(q|q|^2)|^2=16 <= (2 sqrt(l1)|P11V| + sqrt(l2)|P20q^2|)^2=34.6491 <= CS 36 <= min(7.5 u delta=120, (3 sqrt15/4) delta^1.5=185.903); ratio bound/truth 2.1656
+     h=v^1: |c|^2=16; Cor 6.1 x2.166; Theorem 9 (true influences) x9.748; Bessel: sA^2/|A|^2=3.400, sB^2/|B|^2=9.000
+     h=v^2: |c|^2=69696; Cor 6.1 x1.876; Theorem 9 (true influences) x127.625; Bessel: sA^2/|A|^2=39.344, sB^2/|B|^2=244.165
+     h=v^3: |c|^2=1979894016; Cor 6.1 x1.936; Theorem 9 (true influences) x3139.960; Bessel: sA^2/|A|^2=866.044, sB^2/|B|^2=6273.223
+     Proposition 12: E|q|^6/u^3=1590.000 >= 1.5 (chi+2)^2=486.000; proof steps (moments, Dirichlet form, Stein identity) exact; Propositions 10, 11 exact
+PASS H(X)+H(Y), equal independent Wick blocks: n=2, u=4, delta=336, chi=21.0000  [0.0 s]
+     Theorem 6 exact for h=v^m, m=0..3 (direction e=[(1, 0), (0, 1)]); operator form with explicit shadows exact for m=1..3
+     Theorem 7: M=I2+J1 exact; ||P11V||^2=72, ||J1||^2+||I2||^2=40, tr(J1 I2)=16; ||P11V||^2/delta=0.2143 (<= 0.75); lam1/u=1.0000, lam2/u=0.5000, (lam1^2+lam2^2)/delta=0.0595
+     reviewer: ||c2-u||^2 = ||J1||^2+||I2||^2 = 40 exactly; (||J1||^2+||I2||^2)/delta = 0.1190 (<= 0.5)
+     6.3.21: |P20 q^2|^2=64, |P31 q^2|^2=192, |P11 V|^2=72, |P22 V|^2=200, |x|^2=40, |a|^2=112: both identities exact
+     Theorem 8: |Pi1(q|q|^2)|^2=2048 <= (2 sqrt(l1)|P11V| + sqrt(l2)|P20q^2|)^2=2048 <= CS 2080 <= min(7.5 u delta=10080, (3 sqrt15/4) delta^1.5=17890.2); ratio bound/truth 1.0000
+     h=v^1: |c|^2=2048; Cor 6.1 x1.000; Theorem 9 (true influences) x5.098; Bessel: sA^2/|A|^2=4.889, sB^2/|B|^2=5.750
+     h=v^2: |c|^2=252315648; Cor 6.1 x1.000; Theorem 9 (true influences) x77.168; Bessel: sA^2/|A|^2=67.520, sB^2/|B|^2=105.923
+     h=v^3: |c|^2=244509898309632; Cor 6.1 x1.000; Theorem 9 (true influences) x2054.547; Bessel: sA^2/|A|^2=1742.502, sB^2/|B|^2=2923.884
+     Proposition 12: E|q|^6/u^3=2937.000 >= 1.5 (chi+2)^2=793.500; proof steps (moments, Dirichlet form, Stein identity) exact; Propositions 10, 11 exact
+PASS three variables, 14 basis elements: n=3, u=60, delta=38504, chi=10.6956  [1.7 s]
+     Theorem 6 exact for h=v^m, m=0..3 (direction e=[(1, 0), (0, 1), (2, -1)]); operator form with explicit shadows exact for m=1..2
+     Theorem 7: M=I2+J1 exact; ||P11V||^2=13570, ||J1||^2+||I2||^2=9364, tr(J1 I2)=2103; ||P11V||^2/delta=0.3524 (<= 0.75); lam1/u=1.3595, lam2/u=0.6618, (lam1^2+lam2^2)/delta=0.2137
+     reviewer: ||c2-u||^2 = ||J1||^2+||I2||^2 = 9364 exactly; (||J1||^2+||I2||^2)/delta = 0.2432 (<= 0.5)
+     6.3.21: |P20 q^2|^2=4436, |P31 q^2|^2=15340, |P11 V|^2=13570, |P22 V|^2=18510, |x|^2=9364, |a|^2=8271: both identities exact
+     Theorem 8: |Pi1(q|q|^2)|^2=1110304 <= (2 sqrt(l1)|P11V| + sqrt(l2)|P20q^2|)^2=6.36978e+06 <= CS 6.40491e+06 <= min(7.5 u delta=1.73268e+07, (3 sqrt15/4) delta^1.5=2.19465e+07); ratio bound/truth 5.7370
+     h=v^1: |c|^2=1110304; Cor 6.1 x5.737; Theorem 9 (true influences) x23.001; Bessel: sA^2/|A|^2=3.103, sB^2/|B|^2=10.303
+     h=v^2: |c|^2=17934761183616; Cor 6.1 x3.053; Theorem 9 (true influences) x169.591; Bessel: sA^2/|A|^2=41.620, sB^2/|B|^2=125.115
+     Proposition 12: E|q|^6/u^3=805.073 >= 1.5 (chi+2)^2=241.766; proof steps (moments, Dirichlet form, Stein identity) exact; Propositions 10, 11 exact
+PASS three variables, y0 y1 conj(y2) + i y0 y2 conj(y1) - 2 y1 y2 conj(y0): n=3, u=6, delta=360, chi=10.0000  [0.1 s]
+     Theorem 6 exact for h=v^m, m=0..3 (direction e=[(1, 1), (1, -1), (0, 2)]); operator form with explicit shadows exact for m=1..2
+     Theorem 7: M=I2+J1 exact; ||P11V||^2=108, ||J1||^2+||I2||^2=72, tr(J1 I2)=18; ||P11V||^2/delta=0.3000 (<= 0.75); lam1/u=0.8333, lam2/u=0.6667, (lam1^2+lam2^2)/delta=0.1139
+     reviewer: ||c2-u||^2 = ||J1||^2+||I2||^2 = 72 exactly; (||J1||^2+||I2||^2)/delta = 0.2000 (<= 0.5)
+     6.3.21: |P20 q^2|^2=72, |P31 q^2|^2=144, |P11 V|^2=108, |P22 V|^2=180, |x|^2=72, |a|^2=108: both identities exact
+     Theorem 8: |Pi1(q|q|^2)|^2=0 <= (2 sqrt(l1)|P11V| + sqrt(l2)|P20q^2|)^2=4025.44 <= CS 4032 <= min(7.5 u delta=16200, (3 sqrt15/4) delta^1.5=19840.9); ratio bound/truth inf
+     h=v^1: |c|^2=0; Cor 6.1 xinf; Theorem 9 (true influences) xinf; Bessel: sA^2/|A|^2=3.667, sB^2/|B|^2=6.000
+     h=v^2: |c|^2=0; Cor 6.1 xinf; Theorem 9 (true influences) xinf; Bessel: sA^2/|A|^2=43.806, sB^2/|B|^2=77.073
+     Proposition 12: E|q|^6/u^3=588.000 >= 1.5 (chi+2)^2=216.000; proof steps (moments, Dirichlet form, Stein identity) exact; Propositions 10, 11 exact
+PASS Chen-Chen-Liu (4.13), bidegree (2,1), term by term on Wick monomial: first sum 40 = 2|c2-u|^2, 6|phi_1|^2 = |P31 q^2|^2 = 96, 32|f x_(1,1) f|^2 = |P20 q^2|^2 = 32, total = delta = 168
+PASS Chen-Chen-Liu (4.13), bidegree (2,1), term by term on two variables, six basis elements: first sum 13054 = 2|c2-u|^2, 6|phi_1|^2 = |P31 q^2|^2 = 25848, 32|f x_(1,1) f|^2 = |P20 q^2|^2 = 6738, total = delta = 45640
+PASS Chen-Chen-Liu (4.13), bidegree (2,1), term by term on X^2 conj(Y): first sum 40 = 2|c2-u|^2, 6|phi_1|^2 = |P31 q^2|^2 = 0, 32|f x_(1,1) f|^2 = |P20 q^2|^2 = 0, total = delta = 40
+PASS Chen-Chen-Liu (4.13), bidegree (2,1), term by term on X(|Y|^2-1): first sum 6 = 2|c2-u|^2, 6|phi_1|^2 = |P31 q^2|^2 = 8, 32|f x_(1,1) f|^2 = |P20 q^2|^2 = 2, total = delta = 16
+PASS Chen-Chen-Liu (4.13), bidegree (2,1), term by term on three variables, 14 basis elements: first sum 18728 = 2|c2-u|^2, 6|phi_1|^2 = |P31 q^2|^2 = 15340, 32|f x_(1,1) f|^2 = |P20 q^2|^2 = 4436, total = delta = 38504
+PASS family :X^2 conj(aX+bY): has (lam1, lam2) = (2u, u) for all (a, b); |a|^2/(|a|^2+|b|^2)=0: chi=10.0000; |a|^2/(|a|^2+|b|^2)=1/17: chi=11.4394; |a|^2/(|a|^2+|b|^2)=1/5: chi=15.1200; |a|^2/(|a|^2+|b|^2)=1/2: chi=24.0000; |a|^2/(|a|^2+|b|^2)=4/5: chi=34.3200; |a|^2/(|a|^2+|b|^2)=16/17: chi=39.6747; |a|^2/(|a|^2+|b|^2)=1: chi=42.0000
+PASS random batch: 24 random cubics (n = 1, 2, 3, 4): all checks; largest (|J1|^2+|I2|^2)/delta = 0.2988 (<= 1/2)
+ALL REVIEWER EXACT CHECKS PASSED in 21.0 s
