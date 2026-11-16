@@ -1,6 +1,6 @@
 import Grothe.UpperChaos.F0ConditionalCoefficientBounds
 import Grothe.UpperChaos.RationalComplexHermite
-import Grothe.LowerAnalytic.CapSymmetry
+import Grothe.LowerAnalytic.ComplexGaussianSymmetry
 
 /-! Reality of every actual canonical conditional coefficient, and the
 corresponding exact conversion to a real stored-center error.
