@@ -881,3 +881,16 @@ review: read it with `REVIEW.md` §7, whose findings the ledger rows follow.
 - **Not copied.** The zip (35,108 B), the delivery's logs and the rest of the review's scripts and logs stay in the local
   folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/antiholomorphic-stein-2026-11-17/` (the folder's
   name carries the wrong day; the delivery and the review are of 16 November).
+
+## Codex-a786: the Malliavin addendum and the Clifford cubic (16 November 2026)
+
+`sources/malliavin-addendum-2026-11-16-codex-a786/` holds the delivery's four documents and `REVIEW_claude-b9ee.md`;
+`code/malliavin-addendum-codex-a786/` holds the checkers (STATUS 11.59, 11.60, item 90; a sentence in 6.3.22). The
+documents are verbatim copies; only their first lines were added. `BOOK_NOTES.md` is the author's own reading notes on
+Nourdin–Peccati's book; no text of the book is included.
+- **Replay.** `node verify.mjs` (Node.js 20 or later, no packages, under a second) reproduces `result.json` exactly.
+- **Second method.** `python3 -I clifford_check.py` (standard library, under a second) is claude-b9ee's independent
+  check: exact Wick calculus on the 64 monomials of the cubic, without the trace-cumulant formula and without the law R·W.
+- **Not copied.** The zip (16,740 B), `SOURCES.json` (it carries an identifier of the author's uploaded copy of the book)
+  and the replay outputs stay in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a786-malliavin-addendum-2026-11-16/`.

@@ -537,7 +537,11 @@ fourth excess χ = 18/n for equal coefficients [P · codex-a786, re-derived by c
 cubic, a perturbation h contributes at first order only through its resonant characters:
 ‖c(p₀ + h)‖ ≤ √(3v_r/2) + √11·v [P + C · 11.56]. For the five-cycle perturbed by εZ₀Z₂·conj(Z₁) the projected Taylor
 terms vanish through order four, so ‖c‖² ≤ 3·10⁷|ε|¹⁰, and the retained A-core stays below S + 4.6·10⁻⁷ at
-χ ∈ [3.6, 3.68] [P + C · 11.57, 11.58]. This does not bound the content of a general cubic: the missing step is a
+χ ∈ [3.6, 3.68] [P + C · 11.57, 11.58]. The symmetry need not be diagonal: a cubic in 16 variables built from seven
+anticommuting matrices has the law of R·W with R ~ Gamma(8, 1), fourth excess 19/18 and zero content, and its
+retained A-core is below S − (59009/189100)‖r‖² at every amplitude [P + C · 11.60]. Its scalar Stein budget is
+(109/19)δ, almost the universal 6δ: a nearly maximal budget and exact phase cancellation coexist, so sharpening the
+budget constant cannot help [P + C · item 90]. This does not bound the content of a general cubic: the missing step is a
 control of the resonant energy by the deficit of the same law.
 
 ### 2.7 The B-sector
@@ -1105,7 +1109,7 @@ restriction on the amplitude at every tilt tried [11.17].
 | 2.1 remote part | 3.1–3.19, 11.7–11.11, 12.8 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.5 | `third-audit-…/POTENTIAL.md`, `audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md`, `audit-2026-11-15-codex-a7c4/CLAIMS.md` | `third-audit-2026-11-15-codex-a7c4/` |
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md`, `antiholomorphic-stein-2026-11-16/` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py`, `antiholomorphic-stein-2026-11-16/` |
-| 2.6 tilted lemma, retained A-core | 11.25–11.54, 11.56–11.58 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md`; `phase-content-2026-11-16-codex-a786/` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py`; `phase-content-codex-a786/` |
+| 2.6 tilted lemma, retained A-core | 11.25–11.54, 11.56–11.60 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md`; `phase-content-2026-11-16-codex-a786/`, `malliavin-addendum-2026-11-16-codex-a786/` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py`; `phase-content-codex-a786/`, `malliavin-addendum-codex-a786/` |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
 | 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md`, `odd-gap-2026-11-15-codex-91d4/`, `joint-edgeworth-2026-11-15-codex-91d4/`, `odd-AB-small-shell-2026-11-15/PROOF.md`, `uniform-local-2026-11-15-codex-4d8a/`, `round3-2026-11-15-codex-c7e2/`, `partial-q-2026-11-15-codex-91d4/` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/`, `odd-AB-small-shell-2026-11-15/`, `uniform-local-codex-4d8a/`, `round3-codex-c7e2/` |
 | 2.10 response, consumer | 2.12, 2.12a, 8.1, 8.9–8.11 | `reaudit-…/FOUNDATIONS.md`, `manuscript/legacy/ch25-parts/`, `exterior-2026-11-16-codex-4d8a/` | `reaudit-…/foundations_exact.py`, `code/exterior-codex-4d8a/` |
