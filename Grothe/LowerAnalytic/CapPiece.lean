@@ -461,19 +461,22 @@ lemma qf_conj (P T : ℕ → ℕ → ℝ) (n : ℕ) (w : ℕ → ℝ) :
           T k l * (P k i * w i) * (P l j * w j) :=
         Finset.sum_congr rfl fun _ _ => Finset.sum_comm
 
-/-- **The bound of a piece at one point**: if the enclosure `lo ≤ T ≤ up` of the integrated
-coefficient matrix holds and the form of `N = pieceN …` is nonnegative at `(1, y)`, then
-`J(y, s) ≤ cap`. -/
-theorem Jpot_le_of_qfN (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
+/-- **The bound of a piece at one point, for any coefficient matrix**: if `T` bounds `J` at
+`(y, s)` (`J(y, s) ≤ qf T 13 (1, v) − yᵀMy`, `v = vec(My + sa)`), the enclosure `lo ≤ T ≤ up` holds
+and the form of `N = pieceN …` is nonnegative at `(1, y)`, then `J(y, s) ≤ cap`.  The tail `ν` of the
+potential enters only through `T`. -/
+theorem Jpot_le_of_qfN_of_le (ν : ℝ) (T : ℕ → ℕ → ℝ) (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
     (s cap : ℚ) (lo up : QMat)
-    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
+    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ T i j ∧ T i j ≤ up.at i j)
     (henc' : enclOK lo up 13 = true) (y : Fib)
+    (hT : Jpot E R ℓ β a ν y s
+      ≤ qf T 13 (wOf ((Fib.M E R y).add (a.smul s)).vec) - Fib.quad E R y)
     (hN : 0 ≤ qf (fun i j => ((pieceN (mMat E R) av s cap (loewnerUp lo up 13)).at i j : ℝ)) 13
       (wOf y.vec)) :
-    Jpot E R ℓ β a 0 y s ≤ cap := by
-  refine (Jpot_le_qf ℓ β pr E R a y s).trans ?_
+    Jpot E R ℓ β a ν y s ≤ cap := by
+  refine hT.trans ?_
   set Tup := loewnerUp lo up 13
-  have hL := qf_le_loewnerUp henc' (Tint ℓ β pr) henc
+  have hL := qf_le_loewnerUp henc' T henc
     (wOf ((Fib.M E R y).add (a.smul s)).vec)
   -- expand qf N
   have hNe : qf (fun i j => ((pieceN (mMat E R) av s cap Tup).at i j : ℝ)) 13 (wOf y.vec)
@@ -527,16 +530,41 @@ theorem Jpot_le_of_qfN (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
   rw [hq2] at hN
   linarith
 
+/-- **The bound of a piece at one point**: if the enclosure `lo ≤ T ≤ up` of the integrated
+coefficient matrix holds and the form of `N = pieceN …` is nonnegative at `(1, y)`, then
+`J(y, s) ≤ cap`. -/
+theorem Jpot_le_of_qfN (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
+    (s cap : ℚ) (lo up : QMat)
+    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
+    (henc' : enclOK lo up 13 = true) (y : Fib)
+    (hN : 0 ≤ qf (fun i j => ((pieceN (mMat E R) av s cap (loewnerUp lo up 13)).at i j : ℝ)) 13
+      (wOf y.vec)) :
+    Jpot E R ℓ β a 0 y s ≤ cap :=
+  Jpot_le_of_qfN_of_le ℓ β E R a 0 (Tint ℓ β pr) av hav s cap lo up henc henc' y
+    (Jpot_le_qf ℓ β pr E R a y s) hN
+
+/-- **The cap of a piece** (no constraints), for any coefficient matrix `T` that bounds `J(·, s)`:
+if the enclosure `lo ≤ T ≤ up` holds and `pieceOK` passes, then `Ψ(s) ≤ cap`. -/
+theorem pot_le_of_pieceOK_of_le (ν : ℝ) (T : ℕ → ℕ → ℝ) (av : ℕ → ℚ)
+    (hav : ∀ j < 12, a.vec j = av j) (s cap : ℚ) (lo up : QMat)
+    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ T i j ∧ T i j ≤ up.at i j)
+    (hT : ∀ y, Jpot E R ℓ β a ν y s
+      ≤ qf T 13 (wOf ((Fib.M E R y).add (a.smul s)).vec) - Fib.quad E R y)
+    (hchk : pieceOK lo up (mMat E R) av s cap = true) :
+    pot E R ℓ β a ν s ≤ cap := by
+  simp only [pieceOK, Bool.and_eq_true] at hchk
+  exact ciSup_le fun y => Jpot_le_of_qfN_of_le ℓ β E R a ν T av hav s cap lo up henc hchk.1 y
+    (hT y) (qf_nonneg_of_ldlOK hchk.2 _)
+
 /-- **The cap of a piece** (no constraints): if the enclosure `lo ≤ T ≤ up` of the integrated
 coefficient matrix holds and `pieceOK` passes, then `Ψ(s) ≤ cap`. -/
 theorem pot_le_of_pieceOK (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
     (s cap : ℚ) (lo up : QMat)
     (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
     (hchk : pieceOK lo up (mMat E R) av s cap = true) :
-    pot E R ℓ β a 0 s ≤ cap := by
-  simp only [pieceOK, Bool.and_eq_true] at hchk
-  exact ciSup_le fun y => Jpot_le_of_qfN ℓ β pr E R a av hav s cap lo up henc hchk.1 y
-    (qf_nonneg_of_ldlOK hchk.2 _)
+    pot E R ℓ β a 0 s ≤ cap :=
+  pot_le_of_pieceOK_of_le ℓ β E R a 0 (Tint ℓ β pr) av hav s cap lo up henc
+    (fun y => Jpot_le_qf ℓ β pr E R a y s) hchk
 
 end
 

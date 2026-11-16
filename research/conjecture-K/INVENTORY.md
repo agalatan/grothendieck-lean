@@ -845,6 +845,13 @@ the analytic argument and is not run by CI. The working proof is
   sympy; both pass for claude-b9ee) and, in `review-claude-b9ee/`, two independent checks with their logs (mpmath) and
   the two replay logs. The author's other scripts and searches stay in its worktree folder
   `handoff/third-chaos-codex-6d92/`; they were not reviewed.
+- **The Gaussian-bath family (STATUS 3.21 (e)).** `sources/third-chaos-2026-11-16/he3-bath-family/` holds the task of a
+  Codex session (`TASK.txt`, unchanged), the proof of an outside session of the user as the user relayed it
+  (`PROOF_as_pasted.md`; no other file of it exists) and the review of claude-b9ee; only the first lines of the two
+  notes were added. `code/third-chaos-2026-11-16/he3-bath-family/` holds the review's checks
+  (`python3 -I check_bath_family.py`: numpy, scipy, mpmath, about a minute; exact vertex arithmetic and floating-point
+  checks) and their log. The originals are in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/he3-bath-family-2026-11-16/`.
 
 ## Codex-a786: phase symmetry and content (16 November 2026)
 
@@ -1115,3 +1122,27 @@ and logs in `review-worker/`.
 - **Replay.** `node verify.mjs`, `python3 -I verify.py certificates.json`, `python3 -I verify_identities.py`, `python3 -I negative_controls.py` (standard library); `discover.py` is the numerical search and was not run.
 - **Not committed:** the zip `cubic_l1_rho_0_93462.zip` (57,384 B, SHA-256 `f4e52b13fe6d4871d34557d1ac587e703b721483eaa4d5552c305f2b22ce11f5`), in
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-radius-93462-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
+
+## Codex-91d4: A/B contents and joint-secant regions (task #426)
+
+`sources/ab-sector-2026-11-15-codex-91d4/` holds the notes of both phases and the independent review
+`REVIEW_claude-b9ee.md` (STATUS 7.1.8, 7.4.15, 11.61, 11.62, item 103; tag KAB). The notes are verbatim copies with only
+their first lines added; the two `MANIFEST.json` files are unchanged copies and record the SHA-256 of every delivered
+file, the notes as delivered included.
+- **Checkers.** They stay in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-ab-sector-2026-11-15/`,
+  because both `verify.py` check manifests that include the documents. With Python 3.12, python-flint and a C++17
+  compiler, `python3 -I verify.py --dependency-dir <folder containing flint>` in `route2/` replays the A cover, the B
+  barriers and the joint-secant regions (about 4 minutes on one core); `python3 -I verify.py` in the parent folder
+  replays the Phase-0 scalar checks (standard library, under a second). The review worker replayed both on Linux with
+  g++ 13.3; every regenerated result equals the delivered one up to its timing fields.
+- **The review's scripts and logs** are in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-ab-sector-2026-11-15-review/`: the exact
+  re-evaluation of the 196 rectangles (`own_cover.py`), the floating-point recomputation of the scalar profiles, the
+  angular suprema, the zero-core matrices and the joint-secant values (`own_scalar.py`, `own_misc.py`,
+  `own_secant.py`, `own_small.py`), the exact check that the one exempt box which uses the branch 3δ^{3/2} re-certifies
+  with (2/25)δ (`recert_exempt.py`, added when the review was applied to this folder), their logs, and the logs and
+  result files of the replay (`replay_full.log`, `replay/`).
+- **Not copied** (they stay in the same handoff folder): of Phase 0 `README.md`, `INTERNAL_REVIEW.md`, `ROUTE2.md`,
+  `SOURCE_RECORD.json`, `inputs/` and the numerical probes with their logs and JSON results; of route 2 `README.md`,
+  `INTERNAL_REVIEW.md`, the component readmes, the internal reviews `secant/A_INTERNAL_REVIEW.md` and
+  `b_content/REVIEW_JOINT_SECANT.md`, the numerical probes and the generated tables and logs.

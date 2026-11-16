@@ -110,16 +110,20 @@ section
 
 variable (ℓ β : ℝ) (pr : Prices ℓ β) (E : Sym3) (R : Sym2) (a : Fib)
 
-/-- **The bound of a constrained piece**: on the region of the constraints, `J(y, s) ≤ cap`. -/
-theorem Jpot_le_of_pieceOKc (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
-    (s cap : ℚ) (lo up : QMat)
-    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
+/-- **The bound of a constrained piece, for any coefficient matrix**: if `T` bounds `J` at `(y, s)`
+and the constrained check passes on an enclosure of `T`, then `J(y, s) ≤ cap` on the region of the
+constraints.  The tail `ν` of the potential enters only through `T`. -/
+theorem Jpot_le_of_pieceOKc_of_le (ν : ℝ) (T : ℕ → ℕ → ℝ) (av : ℕ → ℚ)
+    (hav : ∀ j < 12, a.vec j = av j) (s cap : ℚ) (lo up : QMat)
+    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ T i j ∧ T i j ≤ up.at i j)
     (cs : List Cons) (hchk : pieceOKc lo up (mMat E R) av s cap cs = true)
-    (y : Fib) (hy : y ∈ pieceSet E R cs) :
-    Jpot E R ℓ β a 0 y s ≤ cap := by
+    (y : Fib) (hy : y ∈ pieceSet E R cs)
+    (hT : Jpot E R ℓ β a ν y s
+      ≤ qf T 13 (wOf ((Fib.M E R y).add (a.smul s)).vec) - Fib.quad E R y) :
+    Jpot E R ℓ β a ν y s ≤ cap := by
   simp only [pieceOKc, Bool.and_eq_true, List.all_eq_true] at hchk
   obtain ⟨⟨henc', hok⟩, hldl⟩ := hchk
-  refine Jpot_le_of_qfN ℓ β pr E R a av hav s cap lo up henc henc' y ?_
+  refine Jpot_le_of_qfN_of_le ℓ β E R a ν T av hav s cap lo up henc henc' y hT ?_
   have h := qf_nonneg_of_ldlOK hldl (wOf y.vec)
   rw [qf_pieceNc] at h
   have hS : 0 ≤ (cs.map fun c => qf (fun i j => (c.sMat (mMat E R) i j : ℝ)) 13 (wOf y.vec)).sum :=
@@ -127,6 +131,16 @@ theorem Jpot_le_of_pieceOKc (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j
       obtain ⟨c, hc, rfl⟩ := List.mem_map.1 hx
       exact qf_sMat_nonneg E R (hok c hc) (hy c hc)
   linarith
+
+/-- **The bound of a constrained piece**: on the region of the constraints, `J(y, s) ≤ cap`. -/
+theorem Jpot_le_of_pieceOKc (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
+    (s cap : ℚ) (lo up : QMat)
+    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
+    (cs : List Cons) (hchk : pieceOKc lo up (mMat E R) av s cap cs = true)
+    (y : Fib) (hy : y ∈ pieceSet E R cs) :
+    Jpot E R ℓ β a 0 y s ≤ cap :=
+  Jpot_le_of_pieceOKc_of_le ℓ β E R a 0 (Tint ℓ β pr) av hav s cap lo up henc cs hchk y hy
+    (Jpot_le_qf ℓ β pr E R a y s)
 
 end
 

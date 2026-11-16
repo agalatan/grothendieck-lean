@@ -1,0 +1,186 @@
+{
+  "agent_id": "codex-91d4",
+  "baseline": "9b0937ff7386ee9fdc41a7f976ed6a6d2f814153",
+  "files": [
+    {
+      "path": "BUDGET_AUDIT.md",
+      "role": "immutable",
+      "sha256": "31ce8f3349baab5c8a1c24dfc7857fdd633ab1aee911d0c2cc5fad0f6c4626be",
+      "bytes": 10826
+    },
+    {
+      "path": "CONTENT_NUMERICS.md",
+      "role": "immutable",
+      "sha256": "184f44d43bb58dc459f3545fbec3c4b54192b2a725f6a36d8ad83e1940bec905",
+      "bytes": 7311
+    },
+    {
+      "path": "CONTENT_STRUCTURE.md",
+      "role": "immutable",
+      "sha256": "c10004df2ea5e44c03f5f422afec23940a71b3e0ddcea61ef92f990286275bb7",
+      "bytes": 7554
+    },
+    {
+      "path": "GEOMETRY.md",
+      "role": "immutable",
+      "sha256": "649ba859867275e8ca3988d89038bb1e8b53eef4d20cdd0d1c814ad089f7e9f5",
+      "bytes": 11464
+    },
+    {
+      "path": "INTERNAL_REVIEW.md",
+      "role": "immutable",
+      "sha256": "431f32115012d44fc65b539a0aa602da8c14277a92839b2cc2eee4b3f6fdc8bb",
+      "bytes": 2353
+    },
+    {
+      "path": "README.md",
+      "role": "immutable",
+      "sha256": "24439443a010743e5982001cbbee831a0917a3ee3f66d64470d877ce0440c21a",
+      "bytes": 4026
+    },
+    {
+      "path": "REPORT.md",
+      "role": "immutable",
+      "sha256": "a7b1cebae819cf9424e30b2443ea03fc0b1d3f94c15a4fec7da7bf8e6efdffc6",
+      "bytes": 7226
+    },
+    {
+      "path": "SECANT_NUMERICS.md",
+      "role": "immutable",
+      "sha256": "acd90e9859b53fc6e797e30eaf9142412656663ee1af916745c3a2bbfcf48348",
+      "bytes": 4876
+    },
+    {
+      "path": "SOURCE_RECORD.json",
+      "role": "immutable",
+      "sha256": "6098253c365ec70ff50e5b12659174beeb950c1d228dd0ac75864a81b5bd9d26",
+      "bytes": 2103
+    },
+    {
+      "path": "content_inputs.json",
+      "role": "immutable",
+      "sha256": "bc3109b8e2d489b4ee6ddfc7b48d45cc068c5e338fa75271579740a5bfd569f6",
+      "bytes": 3340
+    },
+    {
+      "path": "content_probe.log",
+      "role": "saved_run",
+      "sha256": "8a93f49da4ac520cabd30f762319dd88574d983ff9456c9fab17eb934a2aaa6c",
+      "bytes": 12780
+    },
+    {
+      "path": "content_probe.py",
+      "role": "immutable",
+      "sha256": "6ff32ee390d70a62f0450ee312812bbe8d10bc59e9c7677a7df993d4b6ae0f13",
+      "bytes": 9223
+    },
+    {
+      "path": "content_results.json",
+      "role": "saved_run",
+      "sha256": "b537a975e725778fbd8129ce63734c0c30b73503cf3821e60752fb784331b269",
+      "bytes": 84252
+    },
+    {
+      "path": "content_structure_exact.log",
+      "role": "saved_run",
+      "sha256": "ec02d8e3f74a5d35ae8a2908d49260c0af4b96ca33202651a49bce344d5c4b04",
+      "bytes": 3983
+    },
+    {
+      "path": "content_structure_exact.py",
+      "role": "immutable",
+      "sha256": "1544ba203176f896a5ee53f54e59537d05ee8688c22d44fc71b038e8a43dc1ba",
+      "bytes": 7515
+    },
+    {
+      "path": "inputs/INHERITED_JOINT_CONTENT.md",
+      "role": "immutable",
+      "sha256": "8418a08f8cd78da64f61a3a454a668eb4a1f42324d71f959e8aa7f707484f37e",
+      "bytes": 12285
+    },
+    {
+      "path": "inputs/PROVENANCE.md",
+      "role": "immutable",
+      "sha256": "5470c0758ceaa5b8d5f4dd62583905b5c15d3690cca15857a92d93d9b601fbec",
+      "bytes": 1636
+    },
+    {
+      "path": "inputs/RAW_QUADRATURE.md",
+      "role": "immutable",
+      "sha256": "292ca1a1bb02cd38c4822bfcff95f56121b4d45e16e9e6c6169ff9ab90f76db1",
+      "bytes": 636
+    },
+    {
+      "path": "inputs/TASK.txt",
+      "role": "immutable",
+      "sha256": "6e4a6b0bdf10a19e25d7ced0c8d8eb3d82dce5ae82e426db78959e19cb6c7a3d",
+      "bytes": 9450
+    },
+    {
+      "path": "inputs/deficit_dual_cover_witness.json",
+      "role": "immutable",
+      "sha256": "40962c50dad6b26069f6b42a71885db53f5f2067fefd17342cdaf7c8b8a0f261",
+      "bytes": 766723
+    },
+    {
+      "path": "inputs/odd_cost_check.py",
+      "role": "immutable",
+      "sha256": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+      "bytes": 4753
+    },
+    {
+      "path": "inputs/raw_quadrature_input.py",
+      "role": "immutable",
+      "sha256": "a4ecf5ec7ad366b32d117f94e56c4f35e7fe1cf7393a812de4fd6a00ad97d101",
+      "bytes": 4441
+    },
+    {
+      "path": "raw_probe.json",
+      "role": "saved_run",
+      "sha256": "7bda6a96927d2936642f89650ca3af858742a7512f8b84f50044f11bff1cbbbe",
+      "bytes": 2853
+    },
+    {
+      "path": "raw_probe.log",
+      "role": "saved_run",
+      "sha256": "7800cd176e31d874846a46027850c1765abcec35bad39e4b365a1a050349077d",
+      "bytes": 2852
+    },
+    {
+      "path": "raw_probe.py",
+      "role": "immutable",
+      "sha256": "76d2897e6740d955feb43247ec2355968fb9dc9988e65182e7bd0c7e9c076fc3",
+      "bytes": 4157
+    },
+    {
+      "path": "secant_probe.log",
+      "role": "saved_run",
+      "sha256": "9c8b61928d5886ea93e24e680fe0764a42cd87300a7925c029bf99cb074471af",
+      "bytes": 6045
+    },
+    {
+      "path": "secant_probe.py",
+      "role": "immutable",
+      "sha256": "476a8d9ba1dd60a8fe31ecaa8c01320c52c10e8f892b912dd3d30d80750105de",
+      "bytes": 5616
+    },
+    {
+      "path": "secant_results.json",
+      "role": "saved_run",
+      "sha256": "9d05f38e7145b1c3bd602ba5c23d5037042db18ff3a0e38a74e66732711cac1d",
+      "bytes": 9758
+    },
+    {
+      "path": "verification.log",
+      "role": "saved_run",
+      "sha256": "875227a7ce255d380c5a302510d9ba4b2c1a101272dba7408a74bb67e3242852",
+      "bytes": 26134
+    },
+    {
+      "path": "verify.py",
+      "role": "immutable",
+      "sha256": "4e9dde5759e93af457763925ff17e493c0a15bf3b5defb9e6323a464ae5f2623",
+      "bytes": 1864
+    }
+  ]
+}

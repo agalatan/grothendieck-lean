@@ -51,8 +51,8 @@ phase slack. The whole difficulty of the lower bound is the supremum of Λ over 
 The comparison object σW is the *diffuse Gaussian adversary*: the limit in law of N^{−1/2}Σ_{j≤N} H(w_j),
 H(w) = w(|w|² − 2)/√2, over fresh coordinates w_j, a limit of elements of H₂,₁ independent of z₁. If K holds, the
 supremum over **all finite dimensions** equals S and is approached by these diffuse sequences. This does not assert
-attainment in a fixed H₂,₁(ℂⁿ): at the peak, n = 1 has supremum 2E|L| < S; at the corner (0.74, 0.90, 0.12),
-σ* = 0 and G = 0 attains S.
+attainment in a fixed H₂,₁(ℂⁿ): at the peak, n = 1 has supremum 2E|L| < S; at the corner (0.74, 0.90, 0.12), σ\* = 0
+and G = 0 attains S.
 
 **Weaker forms that would suffice.**
 - **K_η:** Λ(G) ≤ S + η. For 1.402 at the peak row, η ≤ 10⁻⁴ suffices on t ∈ [0.84, 0.851], with the cap more than
@@ -66,23 +66,23 @@ attainment in a fixed H₂,₁(ℂⁿ): at the peak, n = 1 has supremum 2E|L| < 
   **P + C**); 11.47 is sharper on ‖q‖² ≤ 0.021 (below S − 2.76·10⁻⁶), 11.48 is a special case, and 11.53 extends the
   bound to a profile rectangle around the peak with error below 9.8·10⁻⁵.
 - **Response-restricted forms:** only G that come from actual responses (f, g) matter. At ε = 1891/2500, for t ≥ 0.84
-  the remote energy of a response is below 0.046266 and its total energy below 0.081884 (0.071981 for t ≥ 0.8456;
-  2.12a). Such cuts hold for responses only and must not be inserted into raw K; omitted response regions still need
-  coverage.
+  the remote energy of a response is below 0.046266 (2.12a) and its total energy below 0.080051
+  (0.070564 for t ≥ 0.8456; 2.12b). Such cuts hold for responses only and must not be inserted into raw K; omitted
+  response regions still need coverage.
 
 **Where it is needed.** The box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16]. The corner (0.74, 0.90, 0.12)
-has σ* = 0 and needs separate treatment if a row cover uses it. K for *every* profile is false (profiles with
-ℓ − 2β ≲ 10⁻¹⁰ at tiny norms; `STATUS.md`, section 13, item 1), so the box matters. The principal certificates use
-three rows; whole-box results say so:
+has σ\* = 0 and needs separate treatment if a row cover uses it. K for *every* profile is false
+(profiles with ℓ − 2β ≲ 10⁻¹⁰ at tiny norms; `STATUS.md`, section 13, item 1), so the box matters. The principal
+certificates use three rows; whole-box results say so:
 
-| row | ε | ℓ | β = b | a = ℓ − 2β | σ* (maximiser of Λ(σW)) |
+| row | ε | ℓ | β = b | a = ℓ − 2β | σ\* (maximiser of Λ(σW)) |
 |---|---|---|---|---|---|
 | peak | 1891/2500 = 0.7564 | 1057/1250 = 0.8456 | 179/1250 = 0.1432 | 699/1250 = 0.5592 | 0.2009 |
 | flank | 149/200 = 0.745 | 4267/5000 = 0.8534 | 1467/10000 = 0.1467 | 14/25 = 0.56 | 0.1726 |
 | upper | 1891/2500 = 0.7564 | 0.877 | 19/125 = 0.152 | 573/1000 = 0.573 | 0.1617 |
 
 Peak-row constants: p = 1/ε = 2500/1891; 1.3739535256614 < S < 1.3739535256616 (**C**, 3.14), attained at
-σ*² = v* ≈ 0.0403; B₀ = Λ(0) = 2E|L| = (387/500)√π = 1.3718793; S − B₀ > 0.002074245.
+σ\*² = v\* ≈ 0.0403; B₀ = Λ(0) = 2E|L| = (387/500)√π = 1.3718793; S − B₀ > 0.002074245.
 
 **Vocabulary used everywhere.** Decompose G by its dependence on z₁:
 
@@ -108,15 +108,15 @@ shells and q are the "odd-frequency" = "z-even" block.
 | row cap needed for 1.402 | below 500/701 = 0.7132667617… | `STATUS.md`, section 8 |
 | row cap needed for 1.4022 | below 5000/7011 = 0.7131650263… | `STATUS.md`, section 8 |
 | what K_η with η ≤ 10⁻⁴ would give | about 1.402 | `STATUS.md` 8.1 |
-| what exact K would give | about 1.4022 (cap 0.713160 at ε = 0.7564 from a moment LP) | **R**, floating point (`STATUS.md` 8.4) |
-| ceiling of the cubic witness family (no certificate with T_ε can exceed it) | below 1.4022581233, for every complex multiplier ε and every dimension; the model optimum is near ε = 0.7564 (model norm 0.713136). At ε = 0.75 the model gives 1.402166, at ε = 0.745 only 1.401957: the flank value ε = 149/200 cannot reach 1.402 | `docs/overview.tex`, "Limits of the witness method" ([P, C], part in Lean); `STATUS.md` 8.3, 12.2 |
-| ceiling with an identity tail (witness (1, −ε, ν, ν, …)) | 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 | **N**, model only (`STATUS.md`, section 10) |
+| what exact K would give | about 1.4022 (cap 0.713160 at ε = 0.7564 from a moment LP) | **N**, read from the record (`STATUS.md` 8.4) |
+| ceiling of the cubic witness family (no certificate with T_ε can exceed it) | below 1.4022581233, for every complex multiplier ε and every dimension; the model optimum is near ε = 0.7564 (model norm 0.7131355). At ε = 0.75 the model gives 1.402166, at ε = 0.745 only 1.401957: the flank value ε = 149/200 cannot reach 1.402 | `docs/overview.tex`, "Limits of the witness method" ([P, C], part in Lean); `STATUS.md` 8.3, 12.2 |
+| ceiling with an identity tail (witness (1, −ε, ν, ν, …)) | 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 | **N**, the game value in the model (`STATUS.md`, section 10). The certificate route, at (ε, ν) = (191/250, 47/2000) with target 1.4018, has its own ledger: [`../identity-tail/STATUS.md`](../identity-tail/STATUS.md) |
 
-The proved certificates replace sup Λ by scalar relaxations (fibre potentials, moment and Stein cuts, node caps).
-Each further decimal that way costs weeks of computation for about 10⁻⁵. K would remove the gate loss, the
-residual-law loss and the price layer at once and reach the witness's own ceiling. K gives nothing beyond that
-ceiling and nothing on the upper side; the degree-5 analogue K₅ fails numerically at its flank rows (`STATUS.md`
-12.3).
+The proved certificates replace sup Λ by scalar relaxations (fibre potentials, moment and Stein cuts, node caps). Each
+further decimal that way costs weeks of computation for about 10⁻⁵. K would remove the gate loss, the residual-law
+loss and the price layer at once and reach the witness's own ceiling. K gives nothing beyond that ceiling and nothing
+on the upper side; the degree-5 analogue K₅ fails numerically at its flank rows and at its peak row
+(`STATUS.md` 12.3).
 
 ## (c) The layers of a proof, and where each stands
 
@@ -128,17 +128,23 @@ each result, and `STATUS.md` gives its evidence.
 | **L1** remote part | Λ(q) ≤ S + η for every remote cubic q | **P + C at the peak**, η = 3.6·10⁻⁷ (3.3): an external certificate whose inputs about cubic chaos are Lean theorems (3.4). A tube and a one-sided rectangle of profiles around the peak (3.11, 3.15). The flank and upper rows and the full box are open; exact remote K is open and not needed (3.6) |
 | **L2** core with disjoint drivers | q + (T − 1)U with U independent of q | **P + C** on the whole box at every amplitude, cost at least 3/152 (4.2) |
 | **L3** core with shared drivers, explicit regions | q, r remote and orthogonal | **P + C** at the peak: Λ < S + 10⁻⁴ for u ≤ 0.00558 + 0.31907w and for w ≥ 0.0206 (6.1.1, 6.1.1a); the fourth-moment cutoff w ≥ 0.01125 is **R** (6.1.2) |
-| **L4** core on the residual R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost plus the content inequality | **K:** cost 0.24 **P** (6.2.1); content **P + C** for structured families (0.22 for X·P(Y), 0.239 for the Gaussian-factor class, 0.23 and 9/40 for self-interaction classes; 6.3); **open for a general cubic** (6.3.18; numerically sup C²/D ≈ 0.0876 at u = 0.0463). **Λ̂:** the A shell is **closed at the peak** at every amplitude (11.51) |
-| **L5** sector assembly | G = q + A + B + (z₁Q, z̄₁P, d·z₁(T − 2)) | **Open.** Proved: B-shell cost (7.1.1); peak alignment ‖c_B − 0.5053c_A‖ ≤ 0.007√u (7.1.4); zero-core odd costs (5.4); the local joint A/B form (7.3.1, 7.4.9). Missing: the finite-amplitude joint A/B bound (7.4), reduced to a compact box with shifts 0 ≤ x ≤ 2.9 (7.4.5); B-content for general cubics (7.1.5); a uniform odd-sector cost over a nonzero core (7.2.4), where the coupling with the one-coordinate cubic has two channels (7.2.5) |
-| **L6** row envelope and consumption | a fixed-ε row cover with exact thresholds, coverage of all response regions, a Lean theorem consuming K_η | **Open** apart from the central component at the peak row: an all-sector K_η with η ≤ 10⁻⁴ covers t ∈ [0.84, 0.851] (8.1); no `lower_of_K` or `KHyp` exists |
+| **L4** core on the residual R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463} | A-shell cost plus the content inequality | **K:** cost 0.24 **P** (6.2.1); content **P + C** for structured families (0.22 for X·P(Y), 0.239 for the Gaussian-factor class; 6.3.3, 6.3.4), and with conditional or **R** premises for two self-interaction classes (0.23 and 9/40; 6.3.5, 6.3.6); **open for a general cubic** (6.3.18; the largest C²/D found is 0.0876, at u = 0.0463). **Λ̂:** the A shell is **closed at the peak** at every amplitude (11.51) |
+| **L5** sector assembly | G = q + A + B + (z₁Q, z̄₁P, d·z₁(T − 2)) | **Open.** Proved: B-shell cost (7.1.1); peak alignment ‖c_B − 0.5053c_A‖ ≤ 0.0035√u for Π₁q = 0 (7.1.4, 7.1.6), the retained B-content at first order (7.1.7) and the raw B-content against the fourth cumulant (7.1.8); zero-core odd costs (5.4); odd sectors over every remote core at the peak, with arbitrary sharing, for Λ and Λ̂ (7.2.10); the local joint A/B form (7.3.1, 7.4.9); for Λ̂ at the peak, all sectors below S + 10⁻⁴ on an energy region around the zero core and below 2E\|L\| < S when q = 0 (7.5.1). Missing: the finite-amplitude joint A/B bound (7.4), reduced to a compact box with shifts 0 ≤ x ≤ 2.9 (7.4.5), and in its retained form the premise (P), proved on exteriors, on local boxes and on the real aligned plane (7.4.10–7.4.14), and a second retained target without energy caps, at the A-tilt alone, proved on four regions (7.4.15); B-content for general cubics (7.1.5); the odd sectors over a core with A/B shells (7.2.4), for Λ̂ through the averaged premise (P_Ψ) (7.5.3–7.5.11), where the coupling with the one-coordinate cubic has two channels (7.2.5). Under (P) and (P_Ψ), Λ̂(G) < S + 9.9·10⁻⁵ for every G within the response caps at the peak (7.5.3) |
+| **L6** row envelope and consumption | a fixed-ε row cover with exact thresholds, coverage of all response regions, a Lean theorem consuming K_η | **Open** apart from two pieces. At the peak row an all-sector K_η with η ≤ 10⁻⁴ covers t ∈ [0.84, 0.851] (8.1). At ε = 299/400 every response outside (0.8165, 0.866) is covered without a K premise (8.9), and ten all-sector inequalities at central rows remain, with binding allowances of 3.0 to 4.4·10⁻⁵ (8.10). One new row at ε = 149/200 with an all-sector bound there would give 1.40171 (8.5); the tested transfer of the peak results to that row exceeds its allowance (8.6). No `lower_of_K` or `KHyp` exists |
 
-**What remains.** For K: the raw content inequality of L4, the joint A/B bound, B-content, the odd sectors over a
-nonzero core, the remote part at the other rows, the response regions outside the central one and the consumer. For
-Λ̂ the A shell is done at the peak (11.51); 11.48 is a special case of it, 11.47 the only stronger statement, and
-item 83 of the ledger limits only the October moment bank, which 11.50 does not need. Still open for Λ̂: A and B
-jointly, B-content, the odd sectors, the other rows and the consumer. The order of attack is `STATUS.md`, section 15,
-and `MONOGRAPH.md`, chapter 3. The independent audit (REP) advises a bounded programme with an explicit decision
-point.
+**What remains.** A bound on sup Λ̂ on the rows of a consumer gives the lower bound; K itself is not needed for it.
+That route needs the joint premise (P) (7.4.10), the odd sectors over cores with A/B shells through the averaged
+premise (P_Ψ) (7.5.3), and a consumer whose rows these bounds fit. Under both premises the peak bound is S + 9.9·10⁻⁵
+(7.5.3); it covers t ∈ [0.84, 0.851] at ε = 1891/2500 (8.1), where four response intervals stay uncovered (8.7). The
+ten central rows at ε = 299/400 have other profiles; no transfer of the peak results to them is asserted, and their
+binding rows admit only 3.0 to 4.4·10⁻⁵ (8.10). K itself needs in addition the finite-amplitude joint A/B bound (7.4)
+and the raw content inequality of L4 (6.3.18), from which B-content follows (7.1.5). For Λ̂ the A shell is done at the
+peak (11.51); 11.48 is a special case of it, 11.47 the only stronger statement, and item 83 of the ledger limits only
+the October moment bank, which 11.50 does not need. The order of attack is `STATUS.md`, section 15, and
+`MONOGRAPH.md`, chapter 3. The independent audit of 13 November 2026 (REP) advised treating K as a bounded research
+programme with an explicit decision point, not as a near-complete route to an additional 0.0005; the A shell for Λ̂
+(11.51), the odd sectors over remote cores (7.2.10), the all-sector trial bound (7.5.1) and the cover at ε = 299/400
+(8.9) were proved after it.
 
 ## (d) Reading order
 
@@ -168,6 +174,9 @@ point.
      `REPORT_localization_history.md`. The October side: `sources/manuscript/legacy/ch20-pinned-gate.tex`,
      `ch17-crossbound.tex`, `ch25-parts/` and `sources/october-handoff/weak-k-2026-10-15/`;
    - the response side: the digest §1, `sources/manuscript/legacy/ch25-parts/`;
+   - the deliveries that the index of section (e) does not cover (among them the joint premise (P), the odd sectors
+     over cores with shells, the consumer at ε = 299/400, the radius and the content law): the rows of `STATUS.md`,
+     whose tag table (section 0) names their folders;
    - how a claim came about: `sources/log/ASSESSMENT_2026-11-04.md` (chronological, 4 to 7 November),
      `sources/prompts/`, the monograph of 5 and 6 November with its errata
      (`sources/monograph-2026-11-05/MONOGRAPH_with_errata.md`) and the ledger with its dated passages
@@ -202,6 +211,10 @@ have, means the versions kept in `sources/monograph-2026-11-05/` and `sources/st
 | `manuscript/README.md`, `stale-annotations.md`, `legacy/…`, three files of `new/` | `sources/manuscript/` |
 
 ## (e) Index: one line per file
+
+This index covers 36 of the 115 top-level folders under `sources/` and `code/`: those assembled up to 15
+November 2026. The later deliveries are indexed by [`STATUS.md`](STATUS.md) (the tag table of its section 0 and the
+"where" cells of its rows) and by [`INVENTORY.md`](INVENTORY.md).
 
 Sizes are those of the files in this folder. Descriptions of the notes are taken from the documents themselves
 (title or opening words) unless a status is added; a status in this index is always the one in `STATUS.md`.
@@ -640,7 +653,7 @@ The answer of an external assistant (agent ID codex-6e2b) to the request to prov
 
 | file | size | contents |
 |---|---:|---|
-| `RESULTS.md` | 24 KB | Numerical test of the degree-5 analogue K₅ with full tensors: holds at the peak row in every family tested, fails at the flank rows t ∈ [0.86, 0.88] by about 8·10⁻⁵. Floating point and Monte Carlo; nothing certified. |
+| `RESULTS.md` | 24 KB | Numerical test of the degree-5 analogue K₅ with full tensors: no excess at the peak row in the families it tests (many spikes give one: `../higher-degree/STATUS.md` 4.9), an excess of about 8·10⁻⁵ at the flank rows t ∈ [0.86, 0.88]. Floating point and Monte Carlo; nothing certified. |
 
 ### `sources/prompts/`: prompts and replies sent to the external assistants (5 and 6 November 2026, and one prompt of 15 November)
 
