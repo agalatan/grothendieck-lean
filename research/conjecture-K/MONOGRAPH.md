@@ -271,8 +271,8 @@ and 0<u≤0.0463,
     |R| ≤ 5700√u δ^(3/2), or 2700√u δ^(3/2) when χ≤1/100.
 
 The degree-specific joint products of the second and fourth chaos components of
-‖DF‖²−3 control the remainder. The book's ordered cumulant recursion retains their
-mixed moments; the product formula supplies universal bounds. Cauchy–Schwarz using
+‖DF‖²−3 control the remainder. The ordered cumulant recursion of Nourdin–Peccati (their Theorem 8.2.5) computes
+their mixed moments in the finite controls; the product formula (their Theorem 2.7.10) supplies the universal bounds. Cauchy–Schwarz using
 E V⁻¹ and E V⁻² also gives −B″(u)/4>21/50 throughout this energy range. Together with
 the sixth-moment bound, these imply the following dimension-uniform signed regions:
 
@@ -283,9 +283,9 @@ the sixth-moment bound, these imply the following dimension-uniform signed regio
 | 0<u≤0.0463, χ≤1/5000 | D(q)≥δ/1000 |
 | 0≤u≤1/4000, every cubic shape | D(q)≥9δ/50 |
 
-The sharper constants and regions are **P, author only** [codex-a7c4 · 3.19], with
+The sharper constants and regions are **P** [codex-a7c4, re-derived by claude-b9ee and a review worker · 3.19], with
 exact whole-interval Bernstein and rational checks. The underlying two-step
-resolvent identity and sector inputs were re-derived by claude-b9ee. General χ at
+resolvent identity and sector inputs were re-derived by claude-b9ee earlier. General χ at
 larger energies remains outside these signed estimates.
 
 For 0.03≤u≤0.0463 and χ≤10⁻⁴, the reviewed content coefficient 3/80 now gives
@@ -813,9 +813,11 @@ pay there from the even margin of (P).
 unperturbed base. Together with a recentred potential certificate, it proves the odd premise and the joint form for V ≲ 10⁻⁶ at
 every odd energy. It also proves an odd region over one strongly non-Gaussian shared core (χ = 33/128)
 [P + C · codex-c7e2 · 7.5.10]. Replacing only the cubic q by a Gaussian, with the rest of the law kept exactly, costs at most
-√(πuχ/3) + O(√H·χ^{1/4}). Near u* this gives the all-sector bound for every A/B covariance and non-diffuse odd fields once
-χ ≤ 2.5·10⁻¹¹ [P + C · codex-91d4 · 7.5.11]. On shared families the true cost is at least 190 times smaller, so what limits this
-route is the χ^{1/4} power, not the truth.
+√(πuχ/12) + O((√H₁ + √o)·χ^{1/4}), where the odd energy o enters through a factor F ≤ π that is small when the odd
+energy is small. Near u* this gives the all-sector bound for every A/B covariance and non-diffuse odd fields once
+χ ≤ 2·10⁻⁸ [P + C · codex-91d4 · 7.5.11]. On shared families the true cost is at least 66 times smaller in size;
+its power χ^{1/4} is attained (a cubic with one heavy block), with a constant at least 167 times smaller than the
+bound's [N]. What limits this route is that constant and the two-sided form of the bound.
 
 ### 2.10 Response domains and the central consumer
 
@@ -1121,7 +1123,7 @@ restriction on the amplitude at every tilt tried [11.17].
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md`, `antiholomorphic-stein-2026-11-16/` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py`, `antiholomorphic-stein-2026-11-16/` |
 | 2.6 tilted lemma, retained A-core | 11.25–11.54, 11.56–11.60 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md`; `phase-content-2026-11-16-codex-a786/`, `malliavin-addendum-2026-11-16-codex-a786/` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py`; `phase-content-codex-a786/`, `malliavin-addendum-codex-a786/` |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md`, `odd-gap-2026-11-15-codex-91d4/`, `joint-edgeworth-2026-11-15-codex-91d4/`, `odd-AB-small-shell-2026-11-15/PROOF.md`, `uniform-local-2026-11-15-codex-4d8a/`, `round3-2026-11-15-codex-c7e2/`, `partial-q-2026-11-15-codex-91d4/` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/`, `odd-AB-small-shell-2026-11-15/`, `uniform-local-codex-4d8a/`, `round3-codex-c7e2/` |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md`, `odd-gap-2026-11-15-codex-91d4/`, `joint-edgeworth-2026-11-15-codex-91d4/`, `odd-AB-small-shell-2026-11-15/PROOF.md`, `uniform-local-2026-11-15-codex-4d8a/`, `round3-2026-11-15-codex-c7e2/`, `partial-q-2026-11-15-codex-91d4/`, `np-joint-2026-11-16-codex-91d4/` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/`, `odd-AB-small-shell-2026-11-15/`, `uniform-local-codex-4d8a/`, `round3-codex-c7e2/` |
 | 2.10 response, consumer | 2.12, 2.12a, 8.1, 8.9–8.11 | `reaudit-…/FOUNDATIONS.md`, `manuscript/legacy/ch25-parts/`, `exterior-2026-11-16-codex-4d8a/` | `reaudit-…/foundations_exact.py`, `code/exterior-codex-4d8a/` |
 | 3 open problems | section 15 | the audits above | |
 | 4 false statements | section 13 (and 14) | as cited there | |
