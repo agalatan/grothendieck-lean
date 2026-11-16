@@ -1,0 +1,71 @@
+Rigorous counterexample to doubling monotonicity in the third Wiener chaos
+
+Let G and H be independent N(0,1), He_3(t)=t^3-3t, and X=He_3(G)/sqrt(6).
+Then EX^2=1. Put c=sqrt(2/pi).
+
+1. First absolute moment of X.
+
+Split the Gaussian integral at 0 and sqrt(3). Since
+ d[-(t^2-1)phi(t)]/dt = (t^3-3t)phi(t),
+one obtains
+
+ E|X| = c/sqrt(6) * (1 + 4 exp(-3/2)).
+
+2. First absolute moment after doubling.
+
+Set U=(G+H)/sqrt(2), V=(G-H)/sqrt(2). U,V remain independent N(0,1), and
+
+ (He_3(G)+He_3(H))/sqrt(12)
+   = U(U^2+3V^2-6)/sqrt(24).
+
+For a fixed real s, Gaussian integration gives
+
+ E_U[|U| |U^2+s|] / c
+   = 2+s,                         if s>=0,
+   = -s-2+4 exp(s/2),             if s<0.
+
+Apply this with s=3V^2-6. The cutoff is |V|=sqrt(2). Thus the numerator's
+absolute moment equals c times
+
+ B = E[(4-3V^2) 1_(|V|<sqrt(2))
+       +(3V^2-4) 1_(|V|>=sqrt(2))
+       +4 exp(-3+3V^2/2) 1_(|V|<sqrt(2))].
+
+Using integration by parts for the truncated second Gaussian moment, then
+the substitution V=sqrt(2)t, this simplifies to
+
+ B = -1 + (4/sqrt(pi)) [I_minus + 3 exp(-1) + 2 exp(-3) I_plus],
+ I_minus = integral_0^1 exp(-t^2) dt,
+ I_plus  = integral_0^1 exp(2t^2) dt.
+
+Hence E|(X+X')/sqrt(2)| = c B/sqrt(24).
+
+3. Fully elementary strict comparison.
+
+Taylor series and geometric tails give
+ I_minus < 3/4,
+ I_plus < 12/5,
+ exp(-1) < 37/100,
+ exp(-3) < 1/20.
+Archimedes' pi>223/71 gives 1/sqrt(pi)<100/177.
+Therefore
+
+ B < -1 + (400/177)[3/4 + 3(37/100) + 2(1/20)(12/5)]
+   = 221/59 < 15/4.
+
+On the other hand, k! >= 2*3^(k-2) for k>=2 gives e<11/4. Since
+ (11/4)^3 < (32/7)^2,
+we get exp(-3/2)>7/32, and hence
+
+ 2(1+4 exp(-3/2)) > 15/4 > B.
+
+This is exactly E|(X+X')/sqrt(2)| < E|X|. All auxiliary rational comparisons
+are replayed by doubling_certificate.py.
+
+Numerical illustrations (not used in proof):
+ E|X|                         = 0.6164602258814763...
+ E|(X+X')/sqrt(2)|            = 0.6038107930500412...
+ Ratio second/first          = 0.9794805369424318...
+
+This disproves the proposed doubling route, not the main sharp Gaussian
+L1 bound. Both displayed absolute moments remain below sqrt(2/pi).

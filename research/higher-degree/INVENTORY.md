@@ -32,3 +32,14 @@ Not copied, cited by the ledger:
 |---|---:|---|
 | `primal-dual/results/big/refine.log` | 513 B | `357ee781c2535022b54ce0b329ec1ade90293b16a826c3b11dc95702e16399fe` |
 | `primal-dual/results/round3/krivine.log` | 885 B | `07314d535619cb2ffdad53720ff7e04ba6d6fa5a67ea2905ab4b309dd8d77336` |
+
+## Degree-5 progress of 16 November (STATUS 1.10, 4.9–4.13)
+
+`sources/degree5-progress-2026-11-16/` holds the reports. Their code and outputs stay in the working folder
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/`:
+- `degree5-cert/cert/`: the certificate engine `psi5.cpp`, `law.py`, `cover.py`, `replay.py` and `envelope.py`; its outputs
+  `cert/out/` are 43 MB, with `envelope_stage1.json`, `rows_cert_all.json` and `replay_all.log`;
+- `degree5-cert/gate/` and `degree5-cert/share/`;
+- `spike-layer/`;
+- `primal-dual/results/round4/` and `round5/`.
+

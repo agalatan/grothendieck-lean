@@ -1,0 +1,132 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:large3_large_cumulant.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% Intended filepath: /workspace/scratch/3efc7fe714fa/large3_large_cumulant.tex
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}
+\begin{document}
+\section*{A dimension-free large-cumulant region for real third chaos}
+All assertions and inequalities below are rigorous. No assumption about the
+unresolved general sharp third-chaos bound is used.
+
+Let $F=I_3(f)$, where $f$ is a symmetric real tensor and
+$\mathbb EF^2=6\|f\|^2=1$. Write
+$\delta=\kappa_4(F)=\mathbb EF^4-3$ and $c=\sqrt{2/\pi}$.
+
+\begin{theorem}
+In every dimension, if $88\le\delta\le90$, then
+\[
+ \mathbb E|F|<\frac{9957}{12500}=0.79656<c.
+\]
+\end{theorem}
+
+\subsection*{Cumulant and contraction identities}
+Set $A=f\otimes_2 f$, viewed as a positive semidefinite matrix, and
+\[
+ s=\operatorname{tr}(A^2),\qquad
+ t=\|\operatorname{sym}(f\otimes_1 f)\|^2.
+\]
+Then $\operatorname{tr}A=1/6$, and
+\[
+ \delta=1296s+1944t,\qquad 0\le t\le s.
+ \tag{1}
+\]
+For completeness, the product formula gives
+\[
+ F^2=I_6(\operatorname{sym}(f\otimes f))
+ +9I_4(\operatorname{sym}(f\otimes_1f))
+ +18I_2(f\otimes_2f)+6\|f\|^2.
+\]
+The symmetrization identity is
+\[
+ 6!\|\operatorname{sym}(f\otimes f)\|^2
+ =(3!)^2\sum_{r=0}^3\binom3r^2\|f\otimes_r f\|^2
+ =72\|f\|^4+648s.
+\]
+Here $\|f\otimes_1f\|^2=\|f\otimes_2f\|^2=s$, by rearranging
+the finite sums of tensor entries. Orthogonality of distinct chaoses now gives
+(1), and $t\le s$ follows because symmetrization is an orthogonal projection.
+In particular
+\[
+ \delta\le3240s\le3240(\operatorname{tr}A)^2=90.
+ \tag{2}
+\]
+
+\subsection*{Large cumulant forces one nearly rank-one tensor component}
+Let $\lambda$ be the largest eigenvalue of $A$ and put $p=6\lambda$.
+Since $s\le\lambda\operatorname{tr}A=\lambda/6$, (2) gives
+$p\ge\delta/90$. Also
+\[
+ s\le\lambda^2+(1/6-\lambda)^2,
+ \qquad \delta\le90\bigl(p^2+(1-p)^2\bigr).
+\]
+When $\delta>45$, the first bound implies $p>1/2$, so the second implies
+\[
+ p\ge\frac{1+\sqrt{\delta/45-1}}{2}.
+ \tag{3}
+\]
+Rotate a largest eigenvector to the first coordinate and write $a=f_{111}$.
+With
+\[
+ b=\sum_{j>1}f_{11j}^2,\quad
+ q=\sum_{i,j>1}f_{1ij}^2,\quad
+ d=\sum_{i,j,k>1}f_{ijk}^2,
+\]
+symmetry gives
+\[
+ \lambda=a^2+2b+q,\qquad
+ \|f\|^2=a^2+3b+3q+d.
+\]
+Consequently $a^2\ge3\lambda-2\|f\|^2$. Thus the variance
+$v=6a^2$ of the orthogonal projection onto $\mathrm{He}_3(g_1)$ obeys
+\[
+ v\ge3p-2\ge-\frac12+\frac32\sqrt{\delta/45-1}.
+ \tag{4}
+\]
+At $\delta\ge88$, the inequality $(293/300)^2<43/45$ yields
+\[
+ v>\frac{193}{200}.
+ \tag{5}
+\]
+
+\subsection*{The explicit $L^1$ estimate}
+Direct integration gives
+\[
+ m_3:=\mathbb E\left|\frac{\mathrm{He}_3(Z)}{\sqrt6}\right|
+ =\frac{c}{\sqrt6}\left(1+4e^{-3/2}\right)<\frac{31}{50}.
+ \tag{6}
+\]
+An elementary certificate for the last inequality uses $c<4/5$,
+$1/\sqrt6<4083/10000$, and $e^{-3/2}<28/125$. The latter follows from
+$e^3>20$, certified by its Taylor sum through order eight, and
+$(28/125)^2>1/20$. Their product is
+\[
+ \frac45\frac{4083}{10000}\left(1+4\frac{28}{125}\right)
+ =0.61930944<\frac{31}{50}.
+\]
+Write $F=a\mathrm{He}_3(g_1)+W$. Orthogonality gives
+$\mathbb EW^2=1-v$, hence the triangle and Cauchy--Schwarz inequalities yield
+\[
+ \mathbb E|F|\le m_3\sqrt v+\sqrt{1-v}
+ \le\frac{31}{50}\sqrt v+\sqrt{1-v}.
+\]
+The last function is decreasing for $v\ge193/200$. Therefore, using (5),
+\[
+ \mathbb E|F|
+ <\frac{31}{50}\sqrt{\frac{193}{200}}+\sqrt{\frac7{200}}
+ <\frac{31}{50}\frac{983}{1000}+\frac{1871}{10000}
+ =\frac{9957}{12500}.
+\]
+Both square-root estimates are verified by squaring. Finally $\pi<22/7$
+gives $c>\sqrt{7/11}>9957/12500$, again by rational comparison.
+
+\subsection*{Continuous version and scope}
+Define $v_\delta=-1/2+(3/2)\sqrt{\delta/45-1}$ for $\delta>45$.
+Whenever $v_\delta\ge m_3^2/(1+m_3^2)$, the same argument yields
+\[
+ \mathbb E|F|\le m_3\sqrt{v_\delta}+\sqrt{1-v_\delta}.
+\]
+The convenient interval $[88,90]$ is rigorously covered by the explicit
+rational certificate above. This argument does not cover all intermediate
+positive cumulants. For an unnormalized $h$, the relevant cumulant is
+$\mathbb Eh^4/(\mathbb Eh^2)^2-3$, not the raw fourth cumulant.
+\end{document}

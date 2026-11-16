@@ -1,0 +1,115 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:large3_spectral_reduction.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% Intended filepath: /workspace/scratch/3efc7fe714fa/large3_spectral_reduction.tex
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\begin{document}
+\section*{An explicit coordinate reduction, including the mixed terms}
+All results in this note are rigorous. The final limitation is explicit:
+the reduction is not a proof of the general sharp $L^1$ bound.
+
+Let $F=I_3(f)$ be a normalized real third-chaos element,
+$6\|f\|^2=1$. Let $A=f\otimes_2f$ be its positive semidefinite
+one-coordinate contraction matrix. Thus $\operatorname{tr}A=1/6$.
+Given $\theta>0$, let $V$ be the span of eigenvectors with eigenvalues
+strictly greater than $\theta$, and let $P$ and $Q=1-P$ be its orthogonal
+projectors. Then
+\[
+ r:=\dim V\le\frac1{6\theta}.
+ \tag{1}
+\]
+Let $f_0=Q^{\otimes3}f$, $R=I_3(f_0)$, and $v=\mathbb ER^2$.
+For $u\in V^\perp$,
+\[
+ \langle (f_0\otimes_2 f_0)u,u\rangle
+ =\|Q^{\otimes2}f(u,\cdot,\cdot)\|^2
+ \le\|f(u,\cdot,\cdot)\|^2=\langle Au,u\rangle
+ \le\theta\|u\|^2.
+\]
+Writing $A_0=f_0\otimes_2f_0$, we therefore have $0\le A_0\le\theta I$,
+$\operatorname{tr}A_0=v/6$, and the exact contraction formula gives
+\[
+ \kappa_4(R)\le3240\operatorname{tr}(A_0^2)
+ \le540\theta v.
+ \tag{2}
+\]
+If $v>0$, division by $v^2$ yields
+\[
+ \kappa_4(R/\sqrt v)\le\frac{540\theta}{v}.
+ \tag{3}
+\]
+Consequently, for arbitrary $\epsilon,\eta>0$, choose
+$\theta=\epsilon\eta^2/540$. Then
+\[
+ \boxed{r\le\frac{90}{\epsilon\eta^2},\qquad
+ \|R\|_2<\eta\quad\hbox{or}\quad
+ \kappa_4(R/\|R\|_2)\le\epsilon.}
+ \tag{4}
+\]
+Here $\eta$ is an $L^2$-norm threshold. If it is instead a variance
+threshold, replace $\eta^2$ throughout by $\eta$.
+
+\subsection*{What remains after removing the pure-tail cubic}
+Write the independent Gaussian vectors on $V$ and $V^\perp$ as $X$ and $Y$.
+The exact orthogonal decomposition is
+\[
+ F=P_3(X)+\sum_{|\alpha|=2}\mathrm{He}_\alpha(X)L_\alpha(Y)
+      +\sum_{i=1}^r X_iQ_i(Y)+R(Y),
+ \tag{5}
+\]
+where $P_3\in H_3(X)$, $L_\alpha\in H_1(Y)$, and $Q_i\in H_2(Y)$.
+The four displayed pieces have distinct head degrees and are orthogonal.
+The tail variables appearing in the three last pieces are generally
+dependent across those pieces; no independence assertion is made.
+
+There is a quantitative restriction on the mixed quadratic coefficients.
+For a unit basis vector $e_i\in V$, set
+$M_i=Qf(e_i,\cdot,\cdot)Q$. Then $Q_i(Y)=3I_2(M_i)$, and for tail $u$,
+\[
+ \|M_i u\|^2\le\sum_{j,k}f(u,e_j,e_k)^2
+ =\langle Au,u\rangle\le\theta\|u\|^2.
+\]
+Thus $\|M_i\|_{\mathrm{op}}\le\sqrt\theta$, and the quadratic matrix
+in $Q_i$ has operator norm at most $3\sqrt\theta$. This alone is not
+a joint Gaussian approximation statement, especially when $r$ grows.
+
+For completeness, large cumulant forces a definite amount of variance in
+the structured pieces of (5). Put $z=\operatorname{tr}(PA)$ and
+$\delta=\kappa_4(F)$. Since
+\[
+ \frac\delta{3240}\le\operatorname{tr}(A^2)
+ \le\frac z6+\frac\theta6,
+\]
+we have $z\ge\delta/540-\theta$. Also $1-v\ge6z$, because tensor
+entries whose first index lies in $V$ are among the entries having at least
+one index in $V$. Therefore
+\[
+ 1-v\ge\frac\delta{90}-6\theta.
+ \tag{6}
+\]
+For $\theta\le\delta/1080$ this gives $1-v\ge\delta/180$.
+
+\subsection*{A concrete mixed obstruction to a naive reduction}
+Let $X,Y_1,\ldots,Y_N$ be independent standard Gaussians and set
+\[
+ Q_N(Y)=\frac1{\sqrt{2N}}\sum_{j=1}^N(Y_j^2-1),\qquad
+ F_N=XQ_N(Y).
+\]
+Then $F_N\in H_3$, $\mathbb EF_N^2=1$, and
+\[
+ \kappa_4(F_N)=3\bigl(3+12/N\bigr)-3=6+36/N\longrightarrow6.
+\]
+The eigenvalue of $A_N$ in the $X$ direction is $1/18$, while every $Y_j$
+eigenvalue is $1/(9N)$. Hence a fixed cutoff $0<\theta<1/18$ selects
+only $X$ for sufficiently large $N$. In (5), $P_3=0$, all $L_\alpha=0$,
+and $R=0$, while the entire $F_N$ remains in the mixed term $XQ_N(Y)$.
+Thus controlling the pure-tail remainder does not remove the mixed terms.
+This family itself satisfies the desired inequality, since
+\[
+ \mathbb E|F_N|=\sqrt{2/\pi}\,\mathbb E|Q_N|
+ \le\sqrt{2/\pi}.
+\]
+The unresolved step is a sharp estimate for general sums of all the
+pieces in (5), retaining their dependence. Treating $R$ or the $Q_i$ as
+independent Gaussian variables without a joint approximation theorem would
+be heuristic and is not part of this reduction.
+\end{document}

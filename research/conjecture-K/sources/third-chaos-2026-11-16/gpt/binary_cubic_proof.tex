@@ -1,0 +1,170 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:binary_cubic_proof.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% Intended filepath: binary_cubic_proof.tex
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\He}{\operatorname{He}}
+\title{A uniform strict Gaussian $L^1/L^2$ bound for every binary cubic chaos}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\noindent\textbf{Status.} Every step below is rigorous and elementary. The result
+covers all third-chaos polynomials in two independent real Gaussian variables,
+including arbitrary mixtures of all four cubic Hermite basis elements. It is
+not a proof in arbitrary dimension.
+
+\begin{theorem}\label{thm:binary}
+For every real $h\in H_3(\mathbb R^2)$,
+\[
+ \boxed{\E|h|\leq\sqrt{\frac{35}{18\pi}}\,\|h\|_2
+       =\sqrt{\frac2\pi}\frac{\sqrt{35}}6\,\|h\|_2.}
+\]
+In particular this is strictly stronger than the proposed Gaussian constant
+for every nonzero binary cubic.
+\end{theorem}
+
+\begin{lemma}[An angular inequality]\label{lem:angular}
+Let $\Theta$ be uniform on $[0,2\pi]$ and let
+\[
+ P(\theta)=a\cos\theta+b\sin\theta+c\cos3\theta+d\sin3\theta.
+\]
+Then
+\[
+ \E|P(\Theta)|\leq\frac{\sqrt{80}}{3\pi}
+             \bigl(\E P(\Theta)^2\bigr)^{1/2}.
+\]
+The constant in this angular inequality is sharp.
+\end{lemma}
+
+\begin{proof}
+The assertion is trivial when $P=0$. Otherwise put $f=\operatorname{sign}P$.
+The trigonometric polynomial $P$ has degree at most three and
+$P(\theta+\pi)=-P(\theta)$, so $f$ has either one or three sign changes
+per half-circle. Tangential zeros cause no sign change. Degenerate cases
+are also obtained by limits of polynomials with simple zeros.
+
+For $k\in\mathbb Z$ put
+$\widehat f(k)=\E[f(\Theta)e^{-ik\Theta}]$. Since $P$ only uses frequencies
+$\pm1,\pm3$, Cauchy--Schwarz gives
+\[
+ \E|P|=\E fP
+ \leq\bigl(2|\widehat f(1)|^2+2|\widehat f(3)|^2\bigr)^{1/2}
+       (\E P^2)^{1/2}.
+\]
+We show that the parenthesis is at most $80/(9\pi^2)$.
+
+If there is one sign change per half-circle, $f$ is a rotated signed
+half-circle indicator, and $|\widehat f(k)|=2/(\pi k)$ for positive odd $k$.
+This gives exactly $80/(9\pi^2)$.
+
+Otherwise rotate a sign-change point to zero and write the other two in
+the same half-circle as $u$ and $u+v$, where $u,v>0$ and $u+v<\pi$.
+After multiplying $f$ by $-1$ if necessary, it is $+1,-1,+1$ on the three
+successive intervals between these points and $\pi$. Direct integration,
+or integration by parts using its jumps, gives for odd positive $k$
+\[
+ |\widehat f(k)|=\frac2{\pi k}
+ \left|1-e^{iku}+e^{ik(u+v)}\right|.
+\]
+Define
+\[
+ S=\sin(u/2)\sin(v/2)\cos((u+v)/2)>0,
+ \quad
+ S_3=\sin(3u/2)\sin(3v/2)\cos(3(u+v)/2).
+\]
+Expanding the squared modulus gives
+\[
+ |1-e^{iu}+e^{i(u+v)}|^2=1-8S,
+ \quad
+ |1-e^{3iu}+e^{3i(u+v)}|^2=1-8S_3.
+\]
+We claim $S_3\geq-8S$. By triple-angle identities,
+\[
+ \frac{S_3}{S}
+ =(1+2\cos u)(1+2\cos v)(2\cos(u+v)-1).
+\]
+Set $C=\cos((u+v)/2)$ and $D=\cos((u-v)/2)$, so $0<C\leq D\leq1$.
+The right-hand side becomes
+\[
+ (4C^2-3)(4C^2+4D^2+4CD-3).
+\]
+If $4C^2-3\geq0$, the other factor is also positive, since $D\geq C$.
+If $4C^2-3<0$, the second factor is increasing in $D$, so this product
+is bounded below by its value at $D=1$, namely
+$(4C^2-3)(1+2C)^2$. Finally,
+\[
+ (4C^2-3)(1+2C)^2+8
+ =(2C-1)^2(4C^2+8C+5)\geq0.
+\]
+Thus $S_3\geq-8S$ as claimed. It follows that
+\begin{align*}
+ 2|\widehat f(1)|^2+2|\widehat f(3)|^2
+ &=\frac8{\pi^2}\left(\frac{10}{9}
+                 -8\left(S+\frac{S_3}{9}\right)\right)\\
+ &\leq\frac8{\pi^2}\left(\frac{10}{9}-\frac89 S\right)
+ <\frac{80}{9\pi^2}.
+\end{align*}
+This proves the inequality. Sharpness follows by taking
+$P(\theta)=\cos\theta-\frac13\cos3\theta$, whose sign is the sign of
+$\cos\theta$; it is proportional to the projection of that sign function
+onto frequencies $\pm1,\pm3$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:binary}]
+Write $(X,Y)=(R\cos\Theta,R\sin\Theta)$, where $R\sim\chi_2$ is independent
+of uniform $\Theta$. Every homogeneous cubic decomposes uniquely into a
+harmonic cubic plus $r^2$ times a linear form. Wick subtraction replaces
+$r^2\ell$ by $(r^2-4)\ell$, since $\Delta(r^2\ell)=8\ell$ in dimension two.
+Consequently every $h\in H_3(\mathbb R^2)$ has the form
+\[
+ h(R,\Theta)=A R^3\cos(3\Theta-\alpha)
+       +B R(R^2-4)\cos(\Theta-\beta),
+\]
+with $A,B\geq0$ and arbitrary phases. For fixed $R$, orthogonality of
+frequencies one and three gives
+\[
+ q(R):=\E_\Theta h(R,\Theta)^2
+ =\frac12\left(A^2R^6+B^2R^2(R^2-4)^2\right).
+\]
+Lemma~\ref{lem:angular}, followed by weighted Cauchy--Schwarz, yields
+\[
+ \E|h|\leq\frac{\sqrt{80}}{3\pi}\E_R\sqrt{q(R)}
+ \leq\frac{\sqrt{80}}{3\pi}
+       \sqrt{\E R\;\E(q(R)/R)}.
+\]
+The chi-two moments satisfy
+\[
+ \E R=\sqrt{\pi/2},\qquad
+ \E R^3=3\E R,\qquad \E R^5=15\E R,
+\]
+so
+\[
+ \E R\;\E(q(R)/R)=\frac\pi4(15A^2+7B^2).
+\]
+Also $\E R^2=2$, $\E R^4=8$, and $\E R^6=48$, hence
+\[
+ \|h\|_2^2=24A^2+8B^2.
+\]
+Therefore
+\begin{align*}
+ (\E|h|)^2
+ &\leq\frac{80}{9\pi^2}\frac\pi4(15A^2+7B^2)\\
+ &\leq\frac{80}{9\pi^2}\frac{7\pi}{32}(24A^2+8B^2)
+ =\frac{35}{18\pi}\|h\|_2^2,
+\end{align*}
+as desired.
+\end{proof}
+
+\paragraph{Checks.}
+The estimate includes $\He_3(X)$ by taking a polynomial independent of $Y$.
+It includes every combination of
+$\He_3(X)$, $(X^2-1)Y$, $X(Y^2-1)$, and $\He_3(Y)$; there is no reflection
+or relative-phase restriction. No numerical quadrature or external
+extremality assertion is used in the proof. The decimal value of the
+constant, for orientation only, is $0.786724786568858\ldots$, less than
+$\sqrt{2/\pi}=0.797884560802865\ldots$.
+\end{document}

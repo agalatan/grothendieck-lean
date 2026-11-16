@@ -16,6 +16,11 @@ the dual side, and the degree-5 certificate programme. Labels as in [`../README.
 | MILES | `sources/literature-2026-11-16/DEGREE5_MILESTONES.md`: Stein cuts at the degree-5 peak row; the spike channel |
 | HIGHER | `sources/literature-2026-11-16/HIGHER_DEGREE.md`: higher-degree games in the literature and in this repository |
 | ROUTEB | `sources/literature-2026-11-16/ROUTE_B_EXPERIMENT.md`: the HJM primal/dual architecture in the complex case |
+| PD45 | `sources/primal-dual-2026-11-16/REPORT_ROUNDS45.md`: degree-5 games with a cap on λ₁ |
+| GATE | `sources/degree5-progress-2026-11-16/GATE.md`: the research gate of milestone M1 |
+| SHARE | `sources/degree5-progress-2026-11-16/SHARING_LEMMA.md`: the order-2/4 sharing lemma (M2) |
+| CERT1 | `sources/degree5-progress-2026-11-16/CERT_STAGE1.md`: the conditional certificate, stage 1 |
+| SPIKE | `sources/degree5-progress-2026-11-16/SPIKE_LAYER.md`: the spike channel |
 
 **Authors and checks.** All sources were written by research workers of claude-b9ee on 15 and 16 November 2026. Their
 scripts are in `code/`. claude-b9ee read every report and checked the cutting-plane logs behind §1, but replayed no
@@ -34,6 +39,7 @@ search. Every statement below is therefore **N**, apart from those quoted from o
 | 1.7 | Degree 11: the best game so far is (1, −0.93782, 0.71823, −0.57946, 0.24933, −0.016), with N₁₁ ∈ [0.712067, 0.712092] | five cutting-plane iterations; not converged | **N** | PD2 §3; `code/primal-dual/results/cp11.json` |
 | 1.8 | Bracket: 1.40430 ≲ K_G^ℂ ≤ 1.404599395362. Haagerup's 1/γ† = 1.404575934663742 lies inside | left end: the model value of 1.6; right end: the Lean theorem `main_bounds` | left end **N**; right end **Lean** | 1.6 |
 | 1.9 | Steps between degrees: N₃ − N₅ = 7.1·10⁻⁴, N₅ − N₇ = 2.4·10⁻⁴, N₇ − N₉ = 1.0·10⁻⁴, N₉ − N₁₁ ≤ 2.6·10⁻⁵. If they kept shrinking geometrically, the limit would be about 0.71205 (K ≈ 1.4044, below 1/γ†); slower convergence from tail effects is not excluded. The test of 3.3 gives no support to this | extrapolation only | **N** (a lead) | PD2 §4 |
+| 1.10 | **Degree 5 with a cap on λ₁** (the cap set by a proved radius bound, 4.12): ε ≤ 0.75248 gives (1, −0.75248, +0.0020), 1/N = 1.402223, i.e. no gain over the cubic. ε ≤ 0.77 gives (1, −0.77, 0.0500), 1/N = 1.402595. ε ≤ 0.78 gives (1, −0.78, 0.0779), 1/N = 1.402785, a margin of 3.99·10⁻⁴ to 500/701. ε ≤ 0.7881 gives 1.402927. Identity tails add 0.4–1.9·10⁻⁵. Only visible W3 driver pairs bind; Z2, the plain phase, h∘ρ, Z3 (4 seeds) and W3+W5 stay below | gaps ≤ 8·10⁻⁷ | **N** | PD45 |
 
 ## 2. Responses
 
@@ -66,10 +72,15 @@ search. Every statement below is therefore **N**, apart from those quoted from o
 | 4.6 | **The gated architecture cannot be extended.** The gated rows of the current Lean certificate lose 3–4·10⁻³ on the degree-5 game (KSIDE §6); `docs/overview.tex` quotes about 2·10⁻² for gated rows and support functions. Both treat the degrees independently | — | **R** | KSIDE §6; `docs/overview.tex` |
 | 4.7 | **The HJM primal/dual lift does not transfer.** Its rotated-copies step needs real ±1 values; in the complex case it collapses to Parseval, and the lift loses at least 2·10⁻³ | — | **N** | ROUTEB |
 | 4.8 | **Verdict (16 November 2026).** GO for 1.402 as a lossy-K₅ programme. The plan is η₅ = 6·10⁻⁴ per binding row, of 7.8·10⁻⁴ available: cubic sectors 2.5·10⁻⁴, quintic content–deficit 1.5·10⁻⁴, spike layer 1.5·10⁻⁴, other 0.5·10⁻⁴; rows, law layer and caps cost ≤ 7·10⁻⁵ on top. NO-GO for 1.403 for now: about 2.9·10⁻⁴ would remain, including a spike channel of about 10⁻⁴. Risks, in order: the quintic content–deficit lemma; the H₁,₁ margin at finite amplitude; the mid-t rows; the size of the programme | design | **N** | DES §3, §7 |
+| 4.9 | **The research gate (M1b): GO for 1.402.** With 14 corrected rows the envelope is 0.7124295 and the room to 500/701 is 8.37–8.60·10⁻⁴ from t = 0.82 to 0.886. The η₅ needed per binding row is 1.7–2.3·10⁻⁴, against 6·10⁻⁴. Exact K₅ fails at the peak row as well: many spikes give 7.1·10⁻⁵ there and 8.2·10⁻⁵ on the flank. H₁,₁ is stable at every amplitude in its averaged form; under arbitrary sharing it needs a sharing lemma | the uncapped game of 1.2 | **N** | GATE |
+| 4.10 | **The sharing lemma (M2).** One inequality per row serves the quintic shells, the odd sector and the A/B shells: gain(q) + odd term(q) ≤ D(q) + θ·δ(q), where D is the deficit of the same law and δ the fourth cumulant. θ is 0.038–0.045 at the peak, about 0.02 at t = 0.82 and 0.022–0.026 on the flank; the law layer absorbs θδ. The cubic ledger's δ-only chain (11.49–11.50) does not transfer to orders 2 and 4: it loses 0.1–2 per row. The smallest certifiable core is the spike layer's per-coordinate telescoping (4.13) | the uncapped game | **N**; the reductions **P**, author only | SHARE |
+| 4.11 | **The conditional certificate, stage 1 (M1a).** An interval enclosure of Ψ₅ (40 ms per node) and an exact law layer with the Lean moment inputs. Under the interface hypothesis K₅ (sector bound with allowance η₅), 19 rows are certified for t ≥ 0.703, with envelope B = 0.7124786 and 7.88·10⁻⁴ of room to 500/701; 48/48 replays pass. The mid-t law gaps are larger than the design estimated: 7.5·10⁻⁴ at t = 0.74. Small t is the obstruction: with moment inputs every row bound at t = 0 is at least λ₁ρ*² | the uncapped game | **C**, author only (replayed by its author); the reductions **P**, author only | CERT1 |
+| 4.12 | **Small t: a proved radius bound caps λ₁.** At t = 0 the row bound is λ₁ρ*², with ρ* = sup E\|q\|/‖q‖₂ on H₂,₁. The uncapped game needs ρ* ≤ 0.916, which is open (`../conjecture-K/STATUS.md` 3.6, 3.21). With the verified ρ* ≤ 0.9513293 (`../conjecture-K/STATUS.md` 3.7, **P + C**), games with λ₁ ≤ 0.7881 pass. The chosen game is (1, −0.78, 0.0779), with 1/N = 1.402785, a margin of 3.99·10⁻⁴ and t = 0 slack 0.0073 (1.10) | the capped game | **P** (the reduction) + **N** (the margins) | CERT1, PD45 |
+| 4.13 | **The spike channel.** It is "content minus deficit", additive over coordinates to 10⁻⁷. The worst configuration found is 8.21·10⁻⁵ (about 12 equal spikes, c ≈ 0.05) at t = 0.87 and about 9.2·10⁻⁵ at t = 0.86. The heavy-plus-Lindeberg split fails at every threshold. Telescoping by deletion, Σ_j Ψ(c_j; background) plus interactions, should certify a cap of 1.1–1.3·10⁻⁴, at an estimated 300–3000 CPU-hours; non-additive cross-coordinate clusters are open | the uncapped game; being re-sized for the capped game | **N**; the identities **P**, author only | SPIKE |
 
 ## 5. Open problems, in priority order
 
-1. **Milestone M1 of the degree-5 programme** (issue #453), in two parts.
+1. **Milestone M1 of the degree-5 programme** (issue #453), now for the capped game (1, −0.78, 0.0779) of 4.12. Stage 1 (4.11) and the gate (4.9) were done for the uncapped game; stage 2 of the certificate (all t, with the radius input 3.7) and the re-sizing of the spike channel (4.13) are running. The original parts:
    - (a) The conditional certificate "K₅(η₅) ⇒ K_G^ℂ > 1/(B₅ + η₅)", computed exactly: rows, Arb node caps for Ψ₅, the
      law layer and the (t, σ, x, ν₅) cover. With B₅ ≈ 0.71245, η₅ ≤ 7.7·10⁻⁴ suffices for 1.402.
    - (b) The research gate: content–deficit constants at t = 0.78–0.88, H₁,₁ at finite amplitude, and a direct quadrature

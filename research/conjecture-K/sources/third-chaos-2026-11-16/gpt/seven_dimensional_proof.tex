@@ -1,0 +1,129 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:seven_dimensional_proof.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% Intended filepath: seven_dimensional_proof.tex
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}
+\newcommand{\E}{\mathbb E}
+\title{A strict Gaussian $L^1/L^2$ bound for cubic chaos in at most seven dimensions}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\noindent\textbf{Status.} This is a rigorous finite-dimensional theorem.
+The arithmetic certificate uses rational operations and integer square roots
+only. No claim for arbitrary dimension is made.
+
+\begin{theorem}
+Every nonzero real cubic Wiener-chaos polynomial depending on at most seven
+independent standard real Gaussian coordinates satisfies
+\[
+ \boxed{\E|h|<\frac{28\sqrt5}{25\pi}\|h\|_2
+       <\sqrt{\frac2\pi}\|h\|_2.}
+\]
+\end{theorem}
+
+\begin{proof}
+Add unused coordinates to work in $\mathbb R^7$. In Gaussian polar
+coordinates $g=R\Omega$, the radius and direction are independent,
+$R\sim\chi_7$, and $\Omega$ is uniform on $S^6$. Harmonic decomposition
+and Wick subtraction give
+\[
+ h(R\Omega)=R^3H_3(\Omega)+R(R^2-9)H_1(\Omega),
+\]
+with spherical harmonics of degrees three and one. They are orthogonal.
+The angular lemma from \texttt{binary\_cubic\_proof.tex} and averaging over
+Haar great circles imply for every such spherical polynomial
+\[
+ \E_\Omega|P(\Omega)|\leq\beta\|P\|_{L^2(S^6)},
+ \qquad \beta=\frac{\sqrt{80}}{3\pi}.
+\]
+The great-circle argument is explicit: apply the circle inequality on each
+random plane, then use Cauchy--Schwarz over planes. A uniform point of a
+Haar great circle is uniform on $S^6$.
+
+Normalize $\|h\|_2=1$ and let $\lambda\in[0,1]$ be the variance share of
+the harmonic-cubic component. With $T=R^2/2\sim\operatorname{Gamma}(7/2,1)$,
+spherical orthogonality gives
+\[
+ \E|h|\leq\beta F(\lambda),\qquad
+ F(\lambda)=\E\sqrt{\lambda K_3(T)+(1-\lambda)K_1(T)},
+\]
+where
+\[
+ K_3(t)=\frac{t^3}{693/8},\qquad
+ K_1(t)=\frac{t(t-9/2)^2}{63/4},\qquad
+ \E K_3(T)=\E K_1(T)=1.
+\]
+
+Set $U=\sqrt T$. Its density on $(0,\infty)$ is
+\[
+ \frac{16}{15\sqrt\pi}u^6e^{-u^2}.
+\]
+Partition the $U$ axis into intervals
+$J_j=[j/4,(j+1)/4)$, $0\leq j<24$, and $J_{24}=[6,\infty)$.
+Define
+\[
+ p_j=\Pr(U\in J_j),\quad
+ a_j=\E[K_3(U^2)\mathbf1_{J_j}],\quad
+ b_j=\E[K_1(U^2)\mathbf1_{J_j}].
+\]
+Cellwise Cauchy--Schwarz, followed by
+$\sqrt z\leq\frac12(z/\tau+\tau)$ for $\tau>0$, yields
+\[
+ F(\lambda)\leq\frac12\sum_j\tau_j+
+ \frac12\max\left\{\sum_j\frac{p_ja_j}{\tau_j},
+                       \sum_j\frac{p_jb_j}{\tau_j}\right\}.
+\]
+The accompanying certificate provides fixed positive rational $\tau_j$
+and rigorously checks that both affine endpoints are below $839/1000$,
+which is strictly below $21/25$.
+
+For completeness, all integration and normalizer bounds used in that
+check are specified here. Write
+\[
+ I_m(b)=\int_0^b u^me^{-u^2}\,du.
+\]
+The alternating Taylor remainder for $e^{-x}$, valid for every $x\geq0$,
+gives the rational bounds
+\[
+ \sum_{r=0}^{201}\frac{(-1)^r b^{m+2r+1}}{r!(m+2r+1)}
+ \leq I_m(b)\leq
+ \sum_{r=0}^{200}\frac{(-1)^r b^{m+2r+1}}{r!(m+2r+1)}.
+\]
+Only $m=6,8,10,12$ and $b=j/4$, $0\leq j\leq24$, are used. Their
+differences enclose the cell integrals. Put $C=16/(15\sqrt\pi)$.
+For any finite cell with raw integrals $I_m=\int_{J_j}u^me^{-u^2}du$,
+\[
+ p_j=CI_6,\qquad a_j=\frac{C}{693/8}I_{12},\qquad
+ b_j=\frac{C}{63/4}\left(I_{12}-9I_{10}+\frac{81}{4}I_8\right).
+\]
+Upper bounds use upper enclosures on positive terms and lower enclosures
+on negative terms. For the infinite cell, subtract a lower enclosure of
+the cumulative normalized integral from its exact total $1$.
+
+The value of $C$ is enclosed without floating point. Machin's identity
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239)
+\]
+and the alternating arctangent series give rational bounds
+$\pi_-<\pi<\pi_+$. The identity itself follows by the tangent addition
+formula and the location of the angles in $(0,\pi/2)$.
+Set $D=10^{40}$ and use integer square roots to bound $1/\sqrt\pi$ by
+\[
+ \frac{\lfloor\sqrt{D^2/\pi_+}\rfloor}{D}
+ \leq\frac1{\sqrt\pi}\leq
+ \frac{\lfloor\sqrt{D^2/\pi_-}\rfloor+1}{D}.
+\]
+Every quantity entering the affine endpoint check is therefore rational.
+The verifier explicitly checks the required normalizer inequalities,
+positivity where needed, and both final endpoint bounds.
+
+We have proved $F(\lambda)<21/25$ uniformly, and hence
+\[
+ \E|h|<\beta\frac{21}{25}=\frac{28\sqrt5}{25\pi}.
+\]
+Finally this constant is less than $\sqrt{2/\pi}$ precisely when
+$\pi>392/125$, already implied by $\pi>223/71$.
+\end{proof}
+\end{document}

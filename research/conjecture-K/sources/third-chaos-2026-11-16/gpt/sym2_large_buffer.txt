@@ -1,0 +1,38 @@
+Rigorous large-buffer smoothing sign for every normalized Wiener-chaos element
+
+Let F be in pure real chaos H_d, E F^2=1, and Gamma=||DF||^2/d.
+Put delta=E F^4-3 and m6=E F^6. For s>0 define
+
+  C(s)=E[(Gamma-1) exp(-F^2/(2s))].
+
+Then
+
+  C(s) <= -delta/(6s) + m6/(40s^2).
+
+Consequently, if delta>0, C(s)<=0 whenever
+
+  s >= 3 m6/(20 delta).
+
+Proof. Set u=F^2/(2s)>=0. The elementary alternating Taylor bounds
+e^-u <= 1-u+u^2/2 and e^-u >= 1-u, together with Gamma>=0 and
+E Gamma=1, imply
+
+ C(s) <= -(E Gamma F^2-E F^2)/(2s)+E Gamma F^4/(8s^2).
+
+The chaos integration-by-parts identity E[F a(F)]=E[Gamma a'(F)]
+applied to a(x)=x^3 and a(x)=x^5 gives
+
+ E Gamma F^2=(E F^4)/3=1+delta/3,
+ E Gamma F^4=(E F^6)/5=m6/5.
+
+Substitution proves the result. This is an explicit rigorous region, not
+a proof for every s. For d=1, Gamma=1 pointwise and C(s)=0 for every s.
+For d>=2, a nonzero pure Gaussian chaos has delta>0. For d=3,
+hypercontractivity supplies the elementary bound m6<=5^9 if one wants a
+threshold involving delta alone: s>=3*5^9/(20 delta).
+
+The stronger sharp-even-moment bound m6<=53745 would improve that number,
+but is not needed or used in the proof above.
+
+Status: every displayed assertion above is rigorous. No claim is made
+about the remaining bounded range of s.
