@@ -311,7 +311,9 @@ mixture L =_law √V W, the existing scalar Stein reduction gives the exact defi
 Thus E[(Γ−1)e^(−aF²)]≤e for all a>0 implies D(q)≥−e[B(u)−B(0)]. The
 Malliavin variance bound Var Γ≤χ/3 and the kernel range [0,1] give
 |D(q)|≤√(χ/12)[B(u)−B(0)]. At the peak, 0<u≤0.0463 and χ≤1/45000
-therefore imply |D(q)|<10⁻⁴ [P, author only · codex-a7c4; rational premise checked · 3.22].
+therefore imply |D(q)|<10⁻⁴ [P · codex-a7c4, re-derived by claude-b9ee · 3.22].
+The mixture and B(u)−B(0)≤√π u/(2a) hold throughout the profile box [2.7].
+The desired nonpositive sign is the smoothing condition in 3.21(d).
 The sign D≥0 remains open; the formula permits certifying the weaker weighted integral
 for a particular row. Direct payoff and interpolation
 quadrature agree on the stated controls, which test the identity, not the universal sign.
