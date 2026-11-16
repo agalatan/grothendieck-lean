@@ -1,0 +1,177 @@
+{
+  "source_repository": "https://github.com/agalatan/grothendieck-lean",
+  "source_commit": "e9b0a458d06e67e9a1eee1168e98f34ef577b3a0",
+  "old_epsilon": "149/200",
+  "rho": "973612157/1000000000",
+  "cap_pad": "1/100000000000",
+  "lean_theorems": {
+    "checked_row_chunks": [
+      "Grothe.Lower.certRows0",
+      "Grothe.Lower.certRows1",
+      "Grothe.Lower.certRows2",
+      "Grothe.Lower.certRows3",
+      "Grothe.Lower.certRows4"
+    ],
+    "scalar_row": "Grothe.Lower.rowOf_of_shared",
+    "gaussian_reduction": "Grothe.LowerAnalytic.reductionHyp_of_nodeCaps",
+    "projection_radius": "Grothe.LowerAnalytic.normQk_le_rho",
+    "range": "Grothe.LowerAnalytic.tOf_le_sqrt_pi",
+    "crude_row": "Grothe.LowerAnalytic.rowOf_crude",
+    "identity": "Grothe.LowerAnalytic.VOf_eq"
+  },
+  "additional_inherited_paper_theorem": "research/conjecture-K/sources/progress-2026-11-15-codex-a7c4/RESPONSE_ELLIPSOID.md, section5; Rice tangent in reaudit-2026-11-15-codex-a7c4/FOUNDATIONS.md section2",
+  "rows": [
+    {
+      "name": "RowData01.lean",
+      "path": "Grothe/Lower/RowData01.lean",
+      "ell": "4029778468619525/36028797018963968",
+      "beta": "5764607523033303/576460752303423488",
+      "cap": "143025270235277/200000000000000",
+      "sha256": "d7885708a8e76a0f285e2f115af1fbc01c08b95b5ef3be519c346d47c9839bc9"
+    },
+    {
+      "name": "RowData02.lean",
+      "path": "Grothe/Lower/RowData02.lean",
+      "ell": "477798377653985/2251799813685248",
+      "beta": "368133312798113/18014398509481984",
+      "cap": "751809211747611/1000000000000000",
+      "sha256": "63036670cec5b2755dc99b2227b34f4f0ce4c49d0a42060355f89a5c6224906b"
+    },
+    {
+      "name": "RowData03.lean",
+      "path": "Grothe/Lower/RowData03.lean",
+      "ell": "6006484708107627/18014398509481984",
+      "beta": "1436144166203299/576460752303423488",
+      "cap": "204377021684831/250000000000000",
+      "sha256": "9651a7f247d9559085a85fb8234e11cc9b3794c1343072da6ba06ec522ebb90f"
+    },
+    {
+      "name": "RowData04.lean",
+      "path": "Grothe/Lower/RowData04.lean",
+      "ell": "7072705680828319/18014398509481984",
+      "beta": "4147622819107335/144115188075855872",
+      "cap": "171523334469063/200000000000000",
+      "sha256": "2d622b3f1887d5283dff01ddc739d5e8ad1d29187d718811bf541ebab9eaea9c"
+    },
+    {
+      "name": "RowData05.lean",
+      "path": "Grothe/Lower/RowData05.lean",
+      "ell": "8704483744699069/18014398509481984",
+      "beta": "2863914927865425/72057594037927936",
+      "cap": "927452995037853/1000000000000000",
+      "sha256": "652da9d96bacfe5c526459122c6388aa8e1ff91f4d0ee2fb2641eb9253940f5b"
+    },
+    {
+      "name": "RowData06.lean",
+      "path": "Grothe/Lower/RowData06.lean",
+      "ell": "2543563985420437/4503599627370496",
+      "beta": "8369091432522617/144115188075855872",
+      "cap": "1012268604639217/1000000000000000",
+      "sha256": "2bcd2cdbeda18a8e079d3cb764dd6970a7b3f0ddd14f9f481ea7ef6f8a02698f"
+    },
+    {
+      "name": "RowData07.lean",
+      "path": "Grothe/Lower/RowData07.lean",
+      "ell": "1499492284755871/2251799813685248",
+      "beta": "1470318012254917/18014398509481984",
+      "cap": "283022973179397/250000000000000",
+      "sha256": "5ffb9f041a282dbb365729a532ff1e3e0130ec3cb9404031575ff962dee389bb"
+    },
+    {
+      "name": "RowData08.lean",
+      "path": "Grothe/Lower/RowData08.lean",
+      "ell": "6491592413796285/9007199254740992",
+      "beta": "7117413121682363/72057594037927936",
+      "cap": "300766407075513/250000000000000",
+      "sha256": "33ceb40866ae0a411b79cc47241f51eebc6c659f6b47b37ec926db1ac9706cee"
+    },
+    {
+      "name": "RowData09.lean",
+      "path": "Grothe/Lower/RowData09.lean",
+      "ell": "6815851586966399/9007199254740992",
+      "beta": "4027940465957599/36028797018963968",
+      "cap": "625211660683819/500000000000000",
+      "sha256": "73273e5e6d81ce551dcdfbc8f9786c7d4d2c2396b534320033a8e56a996a15dc"
+    },
+    {
+      "name": "RowData10.lean",
+      "path": "Grothe/Lower/RowData10.lean",
+      "ell": "7058939128553667/9007199254740992",
+      "beta": "2205902508200569/18014398509481984",
+      "cap": "642994263522709/500000000000000",
+      "sha256": "ac24bda250663435e15e8305cfe6fab3890f77234f61473e1fe133d550daa72b"
+    },
+    {
+      "name": "RowData11.lean",
+      "path": "Grothe/Lower/RowData11.lean",
+      "ell": "905929192799959/1125899906842624",
+      "beta": "4659165603047755/36028797018963968",
+      "cap": "657640441998019/500000000000000",
+      "sha256": "ac577168080683e22044ae18282d85fcbb9a69ad48337381415379519c1893af"
+    },
+    {
+      "name": "RowData12.lean",
+      "path": "Grothe/Lower/RowData12.lean",
+      "ell": "1853781613067683/2251799813685248",
+      "beta": "2421220283703917/18014398509481984",
+      "cap": "671218115478859/500000000000000",
+      "sha256": "a01b32f86267bb46307ef94ef98748de74cb6fb83285a37139164cafb346fe95"
+    },
+    {
+      "name": "RowData13.lean",
+      "path": "Grothe/Lower/RowData13.lean",
+      "ell": "3767469451835801/4503599627370496",
+      "beta": "1237078933628497/9007199254740992",
+      "cap": "1362569329974459/1000000000000000",
+      "sha256": "4e9e5d944abd977db9cff9d2cde6f15c29db3e104a6632e48e75572d54f084db"
+    },
+    {
+      "name": "RowData14.lean",
+      "path": "Grothe/Lower/RowData14.lean",
+      "ell": "3816240944764821/4503599627370496",
+      "beta": "5176732502541177/36028797018963968",
+      "cap": "68802744479191/50000000000000",
+      "sha256": "9445ce1c08ac77ba833d9104cba8bca98aae6175b35b7c43e63932496011618a"
+    },
+    {
+      "name": "RowData15.lean",
+      "path": "Grothe/Lower/RowData15.lean",
+      "ell": "3826746941975547/4503599627370496",
+      "beta": "1297530374988523/9007199254740992",
+      "cap": "344932250765913/250000000000000",
+      "sha256": "0664a384821a93c696b172e0420b368b968513e4c53449a5aef36d002f299436"
+    },
+    {
+      "name": "RowData16.lean",
+      "path": "Grothe/Lower/RowData16.lean",
+      "ell": "242733238545187/281474976710656",
+      "beta": "663926176306973/4503599627370496",
+      "cap": "279737653823821/200000000000000",
+      "sha256": "549d1c50d9c2aa3d02b689ccebd77ff758a7c67cfcb6cda7c24a2494852e53cc"
+    },
+    {
+      "name": "RowData17.lean",
+      "path": "Grothe/Lower/RowData17.lean",
+      "ell": "975569289940399/1125899906842624",
+      "beta": "2692848331364751/18014398509481984",
+      "cap": "175516513636269/125000000000000",
+      "sha256": "f1df863ac8797e66c58b71a02e27d47b636bb800462c26126e9c41350925d0a3"
+    },
+    {
+      "name": "RowData18.lean",
+      "path": "Grothe/Lower/RowData18.lean",
+      "ell": "3989178618171335/4503599627370496",
+      "beta": "5655063357795337/36028797018963968",
+      "cap": "178922740235887/125000000000000",
+      "sha256": "2acd7f4568582994a33bcbbb6afe77c65420d848f5ad949122fa1a8c2c31a865"
+    },
+    {
+      "name": "RowData19.lean",
+      "path": "Grothe/Lower/RowData19.lean",
+      "ell": "8146546019564915/9007199254740992",
+      "beta": "2886726651231291/18014398509481984",
+      "cap": "730611674980487/500000000000000",
+      "sha256": "f3c74b79e482cc16f82a43c0fb49d47f44c004c27c5beda957445b149e55566d"
+    }
+  ]
+}

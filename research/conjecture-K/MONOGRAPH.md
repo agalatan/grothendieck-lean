@@ -25,7 +25,7 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.401700322371 < K_G^ℂ < 1.404599398052 (Lean, `main_bounds`). The lower
+**Why it matters.** The proved bounds are 1.401700322371 < K_G^ℂ < 1.404599395362 (Lean, `main_bounds`). The lower
 bound comes from the cubic witness T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
@@ -37,7 +37,8 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   independent of z₁ (2.1); the A-shell with independent drivers, on the whole box (2.2); explicit regions of the
   shared-driver core (2.4); the content inequality for several structured families (2.5); the B-shell cost and the
   alignment of B- and A-contents (2.7, with a sharper author-only bound); the local joint A/B form (2.8); the odd sectors over the zero core and over every remote core, with arbitrary sharing (2.9); the
-  central part of the consumer, conditional on an all-sector bound (2.10).
+  central part of the consumer, conditional on an all-sector bound, and at ε = 299/400 the whole consumer
+  outside the central interval (0.8165, 0.866) (2.10).
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
@@ -302,6 +303,14 @@ E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. Exact remote K is not needed for 1.402.
 
 **External claims.** A report claims a remote closure in another normalisation (E|q|² ≤ 1 ⟹ Φ(q) ≤ 2853/4000, and
 three related statements); its package is not in the record, so nothing is checked [R · 11.7–11.11].
+
+**Near the Gaussian, and the radius bound.** Two author-only theorems show that K holds in a dimension-free neighbourhood
+of the Gaussian law: for the whole cubic at every amplitude when its normalised fourth excess is below some χ* > 0, and,
+near the optimum, with a strictly positive quadratic deficit. Their thresholds have no numerical value (at most of order
+10⁻¹⁶ with the stated constants), so they enter no certificate [P author only · 12.8]. Without a buffer, (E|q|)² ≤
+(1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer, radius domination holds for one
+two-variable family around the known counterexample to the stronger Laplace comparison [author only, certificates
+replayed · 3.6].
 
 ### 2.2 Disjoint drivers (L2)
 
@@ -728,6 +737,28 @@ the proof [7.5.5]. A centred joint form compares the A/B and odd sectors togethe
 Its defect F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds when W < 1/50), also when S_r ≥ 11/5
 or ω ≥ 4 [P + C · codex-91d4, re-derived and replayed by claude-b9ee · 7.5.6].
 
+**Pieces of the case with A/B shells.** Two Gaussian drivers satisfy Pr(S_r ≥ xV) ≤ e^{−x} for x ≥ 3, and (F_joint)₊ ≤ 2.198,
+so the joint obligation can be restricted to S_r ≤ 16V at a cost below 2.5·10⁻⁷; near u* this means S_r ≤ 0.641
+[P + C · codex-4d8a · 7.5.6]. A translated-base inequality,
+
+    |x + h + o| + |x + h − o| − 2|x + h| ≤ |o|²/|x| − ((K − 1)/(2K − 1))(Re x̄o)²/|x|³ + K|h|²/|x|,
+
+keeps the unperturbed |x| in the denominator and so avoids the quadratic zeros of the shifted core. It proves the odd
+premise for V ≤ 1.13·10⁻⁵ and whenever W ≥ 375V, but it charges the shells about 4.4V, about 15 times their own cost,
+and cannot go further [P + C · outside GPT · 7.5.8]. The other proved pieces need tiny odd energy, a dominant odd sector or
+proportional drivers [P + C · codex-91d4 · 7.5.7]; the remote slack S − max(F(u), Λ(q)) exceeds 10⁻⁴ for u ≤ 0.03
+[P + C · 7.2.11]. A finite joint Edgeworth expansion with explicit remainder settles a box near u*, but only for
+extremely diffuse laws [P + C · codex-91d4 · 7.5.9]. The central region, moderate V near u*, is open; the shells must
+pay there from the even margin of (P).
+
+**Two more tools.** Convexity gives D(x + h, o) ≤ (1 − θ)D(x, o/(1 − θ)) + |h|²/(θ|x|), with every inverse norm at the
+unperturbed base. Together with a recentred potential certificate, it proves the odd premise and the joint form for V ≲ 10⁻⁶ at
+every odd energy. It also proves an odd region over one strongly non-Gaussian shared core (χ = 33/128)
+[P + C · codex-c7e2 · 7.5.10]. Replacing only the cubic q by a Gaussian, with the rest of the law kept exactly, costs at most
+√(πuχ/3) + O(√H·χ^{1/4}). Near u* this gives the all-sector bound for every A/B covariance and non-diffuse odd fields once
+χ ≤ 2.5·10⁻¹¹ [P + C · codex-91d4 · 7.5.11]. On shared families the true cost is at least 190 times smaller, so what limits this
+route is the χ^{1/4} power, not the truth.
+
 ### 2.10 Response domains and the central consumer
 
 Only G that come from actual responses enter the row. Put R = √π/2 and let E_q, E_A, E_B, E_Q, E_P, E_ν be the
@@ -765,6 +796,17 @@ against 1.04·10⁻⁴ [STATUS 8.6]. One route is new component estimates at M (
 a sharper transfer or a direct all-sector estimate at M are others. For 1.402 at ε = 1891/2500, the reusable
 envelope of the old rows leaves four response intervals, among them [0.696, 0.84] [STATUS 8.7].
 
+**The exterior at ε = 299/400.** Moving the 19 Lean rows from ε₀ = 149/200 to e = 299/400 changes the payoff by
+δ(‖Qk‖² − ‖Qh‖²), δ = 1/400. The retained square absorbs −δ‖Qh‖², because
+2β²/ε₀ − ε₀‖x + (β/ε₀)v‖² − δ‖x‖² = 2β²/e − e‖x + (β/e)v‖² when ‖v‖² = 2, and ‖Qk‖ ≤ ρ or the response energies
+bound δ‖Qk‖². On 1,674 exact cells this proves V ≤ 713263/10⁶ < 500/701 for every response with t ≤ 0.8165 or
+t ≥ 0.866, with no K premise [P + C · codex-4d8a, re-derived, replayed and re-implemented by claude-b9ee ·
+STATUS 8.9]. Ten central rows cover the rest: if their retained all-sector inequalities
+Λ̂_i ≤ S_i^upper + 1/40000 hold, then K_G^ℂ ≥ 1000000/713263 > 1.402007 [benchmarks C, premises open · STATUS
+8.10]. The admissible allowances fall from 1.09·10⁻³ at t ≈ 0.82 to 3.0·10⁻⁵ at t ≈ 0.854. The binding core
+[0.8465, 0.8615] needs an all-sector error about a third of what the peak results give under (P) and (P_Ψ). At
+ε = 1891/2500, four certified shoulder benchmarks leave allowances of 1.5–3.4·10⁻⁴ [STATUS 8.11].
+
 ### 2.11 Charging response feasibility to the discarded squares
 
 [P + C · codex-9b17, re-derived and replayed by claude-b9ee in
@@ -801,6 +843,11 @@ remain unformalized. The current production cover has ε=149/200, tracks (t,τ,x
 and has already spent the first-chaos square; its caps cannot simply be reduced
 by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows yet.
 
+**Two further penalties** [P + C, author only · codex-4d8a · STATUS 2.12e, 2.12f]. Phase alignment gives
+Σ ≥ (2β²/e²)(Im ν)²/(t² + ‖G‖²/e), so Σ > (337/4000)(Im ν)² at the peak for t ≤ 0.863 and ‖G‖² ≤ 0.080051; it
+belongs to the raw row and must not be subtracted from Λ̂ again. Applying weighted Bessel to f and g separately
+keeps a cross term and improves J₁ by more than 3.9·10⁻⁴ on an explicit region.
+
 ## 3. What is open, in priority order
 
 1. **The joint A/B remainder bound at finite amplitude** (2.8), first at the peak row. Enough: the compact box
@@ -825,7 +872,8 @@ by J_λ. Neither a uniform cap improvement nor a new numerical endpoint follows 
    the peak; the flank and upper rows are outside both. *Gives:* L1 for the consumer's rows.
 6. **The response regions outside R and the consumer**: cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. A simple first step is one new row at ε = 149/200
-   with an all-sector bound there, which gives 1.40171 (2.10). *Gives:* 1.402 from K_η.
+   with an all-sector bound there, which gives 1.40171 (2.10). At ε = 299/400 only the central interval
+   (0.8165, 0.866) is left, as ten explicit all-sector inequalities (2.10). *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
    Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 5/4 and
    1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the origin profile, directional exterior and proved local pieces; its conditional assembly uses the existing tilted-content theorem.
@@ -1010,13 +1058,13 @@ restriction on the amplitude at every tilt tried [11.17].
 | 1.2–1.5 setting, budget | 2.1–2.5, 8.1–8.4, 12.1, 12.2 | `audit-2026-11-13/`, `reaudit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/MANUSCRIPT_DIGEST_K.md` | `reaudit-2026-11-15-codex-a7c4/` |
 | 1.6 retained functional | 2.10, 2.10a, 2.13, 2.14, 3.16, 3.17, 11.2–11.13 | `external-2026-11-15/`, `numerics-kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `sixth-audit-2026-11-15-codex-a7c4/FOUNDATIONS.md`, `manuscript/legacy/ch20-pinned-gate.tex` | `kprime-2026-11-15/`, `fifth-audit-2026-11-15-codex-a7c4/`, `sixth-audit-2026-11-15-codex-a7c4/` |
 | 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 | `third-audit-2026-11-15-codex-a7c4/CONTENT_KERNELS.md`, `reaudit-2026-11-15-codex-a7c4/SECTORS.md` | `third-audit-2026-11-15-codex-a7c4/` |
-| 2.1 remote part | 3.1–3.19, 11.7–11.11 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
+| 2.1 remote part | 3.1–3.19, 11.7–11.11, 12.8 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/` |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.5 | `third-audit-…/POTENTIAL.md`, `audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md`, `audit-2026-11-15-codex-a7c4/CLAIMS.md` | `third-audit-2026-11-15-codex-a7c4/` |
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py` |
 | 2.6 tilted lemma, retained A-core | 11.25–11.54 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py` |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.10, 7.5.1–7.5.6 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/` |
-| 2.10 response, consumer | 2.12, 2.12a, 8.1 | `reaudit-…/FOUNDATIONS.md`, `manuscript/legacy/ch25-parts/` | `reaudit-…/foundations_exact.py` |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md`, `odd-gap-2026-11-15-codex-91d4/`, `joint-edgeworth-2026-11-15-codex-91d4/`, `odd-AB-small-shell-2026-11-15/PROOF.md`, `uniform-local-2026-11-15-codex-4d8a/`, `round3-2026-11-15-codex-c7e2/`, `partial-q-2026-11-15-codex-91d4/` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/`, `odd-AB-small-shell-2026-11-15/`, `uniform-local-codex-4d8a/`, `round3-codex-c7e2/` |
+| 2.10 response, consumer | 2.12, 2.12a, 8.1, 8.9–8.11 | `reaudit-…/FOUNDATIONS.md`, `manuscript/legacy/ch25-parts/`, `exterior-2026-11-16-codex-4d8a/` | `reaudit-…/foundations_exact.py`, `code/exterior-codex-4d8a/` |
 | 3 open problems | section 15 | the audits above | |
 | 4 false statements | section 13 (and 14) | as cited there | |
 | 5 numerics | sections 9, 10, 11 (c), 2.3 | `numerics-kscan-2026-11-13/`, `numerics-tailgames-2026-11-14/`, `numerics-kprime-2026-11-15/`, `audit-2026-11-13/REPORT.md` §5 | `kscan-2026-11-13/`, `tailgames-2026-11-14/`, `kprime-2026-11-15/`, `audit-2026-11-13/` |

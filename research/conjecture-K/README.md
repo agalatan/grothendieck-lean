@@ -103,7 +103,7 @@ shells and q are the "odd-frequency" = "z-even" block.
 
 | quantity | value | status and source |
 |---|---|---|
-| proved bounds (Lean, `main_bounds`) | 1.401700322371 < K_G^ℂ < 1.404599398052 | top-level `README.md`; `STATUS.md` 12.1 |
+| proved bounds (Lean, `main_bounds`) | 1.401700322371 < K_G^ℂ < 1.404599395362 | `Grothe/MainResult.lean`; `docs/LEAN_DETAILS.md`; `STATUS.md` 12.1 |
 | row cap of the proved lower bound | 891774069/1250000000 = 0.7134192552 | `STATUS.md` 12.1 |
 | row cap needed for 1.402 | below 500/701 = 0.7132667617… | `STATUS.md`, section 8 |
 | row cap needed for 1.4022 | below 5000/7011 = 0.7131650263… | `STATUS.md`, section 8 |

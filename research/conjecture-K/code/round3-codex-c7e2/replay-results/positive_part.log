@@ -1,0 +1,105 @@
+{
+  "agent_id": "codex-c7e2",
+  "status": "PASS",
+  "h_interval": [
+    "-0.60807855603844108334",
+    "-0.60807855603844108333"
+  ],
+  "inherited_matrix_certificate": "PR447 full interval rows and analytic tail; source quadrature not regenerated here",
+  "source_sha256": {
+    "research/conjecture-K/code/audit-2026-11-15-codex-a7c4/odd_cost_check.py": "589681a602af1ab133d720fba3bc5b628c3b764e920f1afdc62eef5de04346b8",
+    "research/conjecture-K/code/odd-cubic-core-2026-11-15/results/all_bounds.txt": "5da551ca363e7e22b7a2b9718badeb6912294c374ddc3b0ca4516f8a75bfb309",
+    "research/conjecture-K/code/odd-cubic-core-2026-11-15/review-claude-b9ee/recomputed_all_bounds_gcc13.txt": "c55d761a859ac9942f6848729b80e8161f9a1835bbe403a314d4253489946f34"
+  },
+  "pointwise_odd_margin": "19/2500",
+  "basic_generalized_ratio": "129",
+  "certified_ratio_envelopes": [
+    [
+      "121",
+      "0"
+    ],
+    [
+      "17",
+      "607"
+    ],
+    [
+      "67",
+      "296"
+    ]
+  ],
+  "m": "7344303698127/18910000000000",
+  "m_display": 0.3883820041315177,
+  "basic_V_cap": "945500000/5327166696301873",
+  "basic_V_cap_display": 1.774864677421053e-07,
+  "nu_zero": {
+    "coefficient": "91073866937432983/1342610000000000",
+    "coefficient_display": 67.83344898178397,
+    "V_cap": "67130500000/91073866937432983",
+    "V_cap_display": 7.370994804263458e-07
+  },
+  "sqrt_region_constants": {
+    "linear_V": "33690396301873/18910000000000",
+    "mixed_VW": "2*sqrt((1736/625)*V*W)"
+  },
+  "recentered_corollaries": [
+    {
+      "beta": "7/4",
+      "identity": "q_prime=q+(15159/50000)B; H=(T-2/5)A+Z^2 conjugate(B)/sqrt(2)",
+      "general_coefficient": "4070975396301873/18910000000000",
+      "general_coefficient_display": 215.2816179958685,
+      "general_V_cap": "945500000/4070975396301873",
+      "general_V_cap_display": 2.322539214702463e-07,
+      "nu_zero_coefficient": "76259205637432983/1342610000000000",
+      "nu_zero_coefficient_display": 56.799223629671296,
+      "nu_zero_V_cap": "67130500000/76259205637432983",
+      "nu_zero_V_cap_display": 8.802937224282859e-07
+    },
+    {
+      "beta": "11/10",
+      "identity": "q_prime=q+(7/50)A+(15159/50000)B; H=(T-27/50)A+Z^2 conjugate(B)/sqrt(2)",
+      "general_coefficient": "2571412396301873/18910000000000",
+      "general_coefficient_display": 135.98161799586848,
+      "general_V_cap": "945500000/2571412396301873",
+      "general_V_cap_display": 3.6769675737730334e-07,
+      "nu_zero_coefficient": "341759751962030881/9398270000000000",
+      "nu_zero_coefficient_display": 36.3641129656874,
+      "nu_zero_V_cap": "469913500000/341759751962030881",
+      "nu_zero_V_cap_display": 1.3749819787211423e-06
+    }
+  ],
+  "recentered_inputs": "beta=7/4 and beta=11/10 are separate new inverse-potential theorems; this checker verifies their scalar consumers only",
+  "profiles": {
+    "global_cap": {
+      "u": "463/10000",
+      "coefficient": "4998889096301873/18910000000000",
+      "coefficient_display": 264.3516179958685,
+      "V_cap": "945500000/4998889096301873",
+      "V_cap_display": 1.891420237147232e-07,
+      "selected": 0
+    },
+    "near_u_star": {
+      "u": "50431/1250000",
+      "coefficient": "4741644985204913/18910000000000",
+      "coefficient_display": 250.74801613986847,
+      "V_cap": "945500000/4741644985204913",
+      "V_cap_display": 1.9940337223689042e-07,
+      "selected": 2
+    },
+    "small_u": {
+      "u": "1/100",
+      "coefficient": "1727224612301873/18910000000000",
+      "coefficient_display": 91.33921799586848,
+      "V_cap": "945500000/1727224612301873",
+      "V_cap_display": 5.474099855142359e-07,
+      "selected": 1
+    },
+    "zero_u": {
+      "u": "0",
+      "coefficient": "731280296301873/18910000000000",
+      "coefficient_display": 38.67161799586848,
+      "V_cap": "945500000/731280296301873",
+      "V_cap_display": 1.2929378854885718e-06,
+      "selected": 1
+    }
+  }
+}
