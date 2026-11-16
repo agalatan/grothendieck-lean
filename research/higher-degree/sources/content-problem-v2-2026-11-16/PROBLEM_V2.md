@@ -86,16 +86,21 @@ Here ȳ_k⋄g = ȳ_k g − ∂_k g is Wick multiplication, the adjoint of ∂̄_
 | 0.85 | 0.037940 | 0.63 | 1.09 | 2.5 | —, —, 7.4, 3.9, 2.7 | 0.8476 |
 | 0.855 | 0.032796 | 0.70 | 1.11 | 3.7 | —, —, 13.9, 6.3, 4.1 | 0.8523 |
 
-θ_room(u) is the largest constant for which the inequality below, used in our convex program over laws of V, keeps
-the row inside its error budget at the energy u (N; "—": below the band or not computed). θ_t is its minimum,
-attained between u* and 1.05u*. The numbers belong to one game; a game with a larger error budget is being computed
-and will raise every θ_t, so a method is worth more than a constant.
+θ_room(u) is the largest constant for which the inequality below, used in our convex program over laws of V, keeps the
+row inside its error budget at the energy u (N; "—": below the band or not computed). θ_t is its minimum over the
+band, attained at u* or just above it. An independent recomputation of the rows 0.80 and 0.84 agrees with the table
+within −3 % and +8 % at the five energies. The numbers belong to one game; a game with a larger error budget is being
+computed and will raise every θ_t, so a method is worth more than a constant.
 
 **TARGET.** For each row, every n, every q ∈ H₂,₁(ℂⁿ) with u = E|q|² ∈ [u₀, u_cap], and both profiles h ∈ {h_A, h_B}:
 
     ‖c[h](q)‖² ≤ θ(u)·δ(q)·Ω̂[h],          θ(u) = θ_t·max(1, u*/u)^{1.8}.                              (T)
 
-- θ(u) lies below the measured θ_room(u) at every energy of the table, so (T) suffices. Any θ(u) ≤ θ_room(u) will do.
+- θ(u) lies below the measured θ_room(u) at every energy of the table, so (T) suffices there. Between the table
+  energies the margin is thin: the independent recomputation, on a finer grid of χ (in progress), finds θ_room about
+  0.44 at 0.90u* on the row 0.80 and about 1.34 at 1.05u* on the row 0.84, where θ(u) is 0.435 and 1.33. So aim a
+  few per cent lower: (T) with 0.95·θ_t in place of θ_t is safely sufficient on these two rows. Any θ(u) ≤ θ_room(u)
+  will do.
 - **Sufficient forms, by (I) and (II):** a majorant at the content direction,
 
       Ω_{e*} ≤ θ(u)·Ω̂     or     (1 − 2‖c₂ − u‖²/δ)·Ω^loc_{e*} ≤ θ(u)·Ω̂,

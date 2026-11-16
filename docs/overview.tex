@@ -1204,8 +1204,10 @@ it) and \#29 (build infrastructure).
  The energy-table accuracy, the Hermite expansion, the structural analytic bridge and the Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.402$,
- then $1.403$. A design (\path{research/higher-degree/}, [N]) finds that a lossy all-sector inequality with error up to
- about $6\cdot10^{-4}$ per row suffices for $1.402$; the current gated rows lose several times that.
+ then $1.403$. A design (\path{research/higher-degree/}, [N]) finds that, for the game of degree $5$ that it studies, a lossy
+ all-sector inequality with error up to about $6\cdot10^{-4}$ per row suffices for $1.402$. That game needs a radius
+ bound $0.916$ on the cubic chaos, and $0.93$ is what is proved; the game with a smaller cubic weight that has a
+ conditional certificate leaves $3.7\cdot10^{-4}$ at its binding rows. The current gated rows lose several times that.
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
  locate $\KG$ to about $10^{-4}$ and to test whether Haagerup's value $1/\gamma^\dagger$ is the answer. A first search
  (\path{research/higher-degree/}, [N]) gives model values $1.403648$, $1.404113$ and $1.40430$ for the best games of
