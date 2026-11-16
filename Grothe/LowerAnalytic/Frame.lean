@@ -273,6 +273,16 @@ lemma tOf_Cop (f g : L2G m) : tOf m (Cop W f) (Cop W g) = tOf m f g := by
 lemma QhOf_Cop (f g : L2G m) : QhOf m (Cop W f) (Cop W g) = Cop W (QhOf m f g) := by
   rw [QhOf, QhOf, hOf_Cop, Q_Cop]
 
+lemma kOf_Cop (f g : L2G m) : kOf m (Cop W f) (Cop W g) = Cop W (kOf m f g) := by
+  simp only [kOf, map_smul, map_sub]
+
+/-- The hat value is invariant under a unitary frame (as `VOf_Cop`; it is a function of the norms
+of `Ph`, `Qh`, `Pk`, `Qk` and `k`). -/
+lemma VhatOf_Cop (e ν : ℝ) (f g : L2G m) :
+    VhatOf m e ν (Cop W f) (Cop W g) = VhatOf m e ν f g := by
+  simp only [VhatOf, tOf_Cop, QhOf_Cop, QkOf, PkOf, kOf_Cop, Q_Cop, P_Cop,
+    LinearIsometry.norm_map]
+
 /-! ### Moving a unit first-chaos vector to the visible coordinate -/
 
 lemma norm_sq_sum_zL (α : Fin m → ℂ) : ‖∑ l, α l • zL m l‖ ^ 2 = 2 * ∑ l, ‖α l‖ ^ 2 := by

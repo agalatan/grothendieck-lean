@@ -1237,22 +1237,27 @@ with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity 
 (e, ν); at ν = 0 it reads Re⟨f, Tg⟩ = t² − e‖P₂,₁h‖² − ‖P₁,₀k‖² + e‖P₂,₁k‖² (`VOf_zero`), and in hat
 units ε̂ = (e+ν)/(1−ν), ν̂ = ν/(1−ν) it reads Re⟨f, Tg⟩ = (1−ν)V̂ + ν with
 V̂ = t² − ε̂‖P₂,₁h‖² − ‖P₁,₀k‖² + ε̂‖P₂,₁k‖² − 2ν̂‖k‖² (`VOf_eq_hat`), so that a cap c of V̂ gives the
-scalar cap (1−ν)c + ν (`witnessCap_of_VhatOf_le`). The rows are those of (e, ν) = (ε, 0), where
-V̂ = V: `LawNodeLower.witnessCap_of_law_nodes_reduction` converts the checked
-finite-cover profile bound into `WitnessCap n ε 0 B` at its supplied cap `B`.
-It applies `profile_bound_of_law_nodes` to V = Re⟨f, Tg⟩ (after a phase),
+scalar cap (1−ν)c + ν (`witnessCap_of_VhatOf_le`). The rows bound the hat value of every witness
+whose hat weight is their constant, ε̂ = ε (hypothesis `epsHat e ν = ε`); the certified witness is
+(e, ν) = (ε, 0), where V̂ = V. `LawNodeLower.witnessCap_of_law_nodes_reduction` converts the checked
+finite-cover profile bound `B` of V̂ into `WitnessCap n e ν ((1−ν)B + ν)` for 0 ≤ ν < 1
+(`WitnessCap n ε 0 B` for the certified witness).
+It applies `profile_bound_of_law_nodes` to V̂ (after a phase),
 with the bound t ≤ 9/10 proved
 (`tOf_le`: P₁,₀h is a complex Gaussian, so ‖P₁,₀h‖² = Re⟨h, P₁,₀h⟩ ≤ E|P₁,₀h| = (√π/2)‖P₁,₀h‖, by the
 rotation invariance of the Gaussian measure and E√(x²+y²) = √(π/2) in `GaussianRadial.lean`) and the
-crude row derived from ‖P₂,₁k‖ ≤ ρ, which is proved (`normQk_le_rho`, L3): P₂,₁k ∈ H₂,₁ is a
+crude row derived from ‖P₂,₁k‖ ≤ ρ (`rowOf_crude`; a tail ν̂ ≥ 0 only lowers V̂), which is proved
+(`normQk_le_rho`, L3): P₂,₁k ∈ H₂,₁ is a
 combination of Wick cubics (`exists_wick_repr`), its real and imaginary parts are polynomials a, b with
 `Chaos3 a` and `Circular Jstd a b` for the standard complex structure (`WickChaos.lean`), so the
 certified first-moment bound E√(a² + b²) ≤ ρ of `gaussian_moments` applies to P₂,₁k/‖P₂,₁k‖, and
 ‖P₂,₁k‖² = Re⟨k, P₂,₁k⟩ ≤ E|P₂,₁k| since |k| ≤ 1. That first-moment bound rests on the sixth-moment
 inequality, which is proved for every circular cubic (all tensor facts, `Circular.tensorFacts`).
-`ReductionHyp n f g` (a coupling vector v with ‖v‖² = 2 and `SharedReduction rowData V t (P₂,₁h) v`)
-is proved for n ≥ 2 from the node caps of the 19 certified fibre potentials alone
-(`reductionHyp_of_nodeCaps`, L4, `Grothe/LowerAnalytic/{Fibre,FibreRot,FibreHermite,FibrePotential,FibreSup,
+`ReductionHyp n e ν f g` (a coupling vector v with ‖v‖² = 2 and `SharedReduction rowData V̂ t (P₂,₁h) v`)
+is proved for n ≥ 2 from the node caps of the fibre potentials of the rows with the tail ν̂ alone
+(`TailNodeCaps (nuHat ν)`; without a tail these are the 19 certified potentials and the hypothesis
+is `NodeCaps`, `tailNodeCaps_zero`;
+`reductionHyp_of_nodeCaps`, L4, `Grothe/LowerAnalytic/{Fibre,FibreRot,FibreHermite,FibrePotential,FibreSup,
 PotentialReg,Tensor,Pieces,KSide,FibreIntegral,RowGaussian,Frame,Reduction}.lean`): a unitary frame moves
 P₁,₀h to the visible coordinate ζ₀ = z₀/√2 (`exists_Cop_eq`); the Gaussian measure splits as
 γ_ℂ ⊗ γ_{remote} (`split2`); the fibre potential Ψ_r(s) = sup_y [∫(|L + B·(My + sa)| + |L − B·(My + sa)|) − yᵀMy]
@@ -1266,14 +1271,20 @@ invariance; integrated over the remote coordinates in `fibre_integrated`). There
 carries the tail as ν·(Re∫conj(f₀)g₀ − 1), which is −2ν∫|k₀|² for unimodular responses; in this form its
 integrand is an affine piece of Ψ_ν, and the bound holds for all responses with |f₀|, |g₀| ≤ 1
 (`majEll_le_psiT_of_le`), so that no unimodularity of the fibre sections is needed. The row reduction
-uses it at ν = 0. For every ν the potential is convex, even and Lipschitz with the header constant
+uses it at the tail ν̂ of the witness: the tail −2ν̂‖k‖² of V̂ (`VhatOf_frame`) is the integrated tail
+of the fibre bound, because Re⟨f, g⟩ − 1 = −2‖k‖² for a unimodular pair (`re_inner_sub_one`).
+For every ν the potential is convex, even and Lipschitz with the header constant
 smax via E||z|²−1| = 2/e (`pot_convexOn`, `pot_neg`, `pot_lip`, `capsHold_pot`; for the rows
 `capsHold_rowPot`); ‖P₂,₁k‖² is bounded by the six remote projections of the fibre coefficients
 (the six mixed pieces B_j ⊗ K_j of H₂,₁(n+1), `norm_sq_starProjection_H21_le`), ‖P₁,₀k‖² splits exactly,
 and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(ε,0) (checked exactly, `rowData_gatesOK`,
 `rowGates_ok`) give the k-side inequality (`kside`); the integrated fibre bound and the k-side
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
-variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
+variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`rowSharedWith_frame`, `sharedReduction_frame`).
+The endpoint for a witness with a tail is `LawNodeLower.lower_bound_of_tail_nodes`: for e ≥ 0 and
+0 ≤ ν < 1 with `epsHat e ν = ε`, a checked cover with the cap `B` of V̂ and `TailNodeCaps (nuHat ν)`
+give K ≥ 1/((1−ν)B + ν). `lower_bound_of_law_nodes` is its case (e, ν) = (ε, 0), with the
+hypothesis `NodeCaps` and the bound 1/B.
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement :
 NodeCaps → IsGrothendieckBound K → 1.401700322371 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:

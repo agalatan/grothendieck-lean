@@ -4,9 +4,18 @@ import Grothe.LowerAnalytic.FibreIntegral
 # The per-row Gaussian reduction in the coordinate frame (L4, assembly)
 
 For unimodular `f, g ∈ L²(γ_{n+1})` whose first-chaos part of `h` lies along the visible coordinate
-(`P₁,₀ h = t ζ₀`, `ζ₀ = z₀/√2`), the simultaneous reduction `SharedReduction rowData V t Qh v` holds
+(`P₁,₀ h = t ζ₀`, `ζ₀ = z₀/√2`), the simultaneous reduction `SharedReduction rowData V̂ t Qh v` holds
 with `v = vL 0`, the residual `p = Π_{H₂,₁}(c₀[k̃])` and the gate variable `X = Π_{H₂,₁} ξ`, given only
-the node caps of the 19 certified potentials (`shared_reduction_frame`).
+the node caps of the potentials of the rows (`sharedReduction_frame`).
+
+**The identity tail.**  The reduction is stated for the hat value `V̂ = VhatOf (n+1) e ν f g` of a
+witness with weight `e` and tail `ν` whose hat weight is the constant of the rows
+(`epsHat e ν = ε`), with the potentials at the tail `ν̂ = nuHat ν` and their node caps
+(`TailNodeCaps ν̂`) as the hypothesis.  The tail `−2ν̂‖k‖²` of the hat value (`VhatOf_frame`) is the
+integrated tail `ν̂ (Re ∫ conj(f̃) g̃ − 1)` of the fibre bound (`fibre_integrated`), because
+`Re⟪f, g⟫ − 1 = −2‖k‖²` for a unimodular pair (`re_inner_sub_one`): unimodularity is used here,
+once, and not for the fibre sections.  The certified witness is `(e, ν) = (ε, 0)`: there
+`V̂ = VOf (n+1) ε 0 f g` (`VhatOf_zero`) and `TailNodeCaps 0` is the node-cap hypothesis `NodeCaps`.
 -/
 
 open MeasureTheory ProbabilityTheory Real Set Grothe.Lower MvPolynomial
@@ -158,25 +167,31 @@ lemma kOf_ae (f g : L2G (n + 1)) (hfa : ⇑f =ᵐ[stdGaussian ((n + 1) + (n + 1)
   rw [kOf, h1, Pi.smul_apply, h2, Pi.sub_apply, h3, h4, smul_eq_mul]; ring
 
 include hfm hgm hfb hgb in
-/-- **The row inequality of the shared reduction, in the coordinate frame.** -/
+/-- **The row inequality of the shared reduction, in the coordinate frame**, for the hat value of
+a witness with weight `e` and tail `ν` whose hat weight is the constant `ε` of the rows, with the
+potential of the row at the tail `ν̂ = nuHat ν`.  The tail `−2ν̂‖k‖²` of the hat value is the
+integrated tail of the fibre bound, by `re_inner_sub_one` for the unimodular pair `f, g`. -/
 theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
     (hE1 : (r.E.subDiag (-1) ε ε).psdOK = true) (hR : R.psdOK = true)
     (hR1 : (R.subDiag (-1) ε).psdOK = true) (hR2 : (R.subDiag ε 0).psdOK = true)
-    (hcaps : CapsHold (fun s => pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s - capPad)
+    {e ν : ℝ} (he : epsHat e ν = ε)
+    (hcaps : CapsHold (fun s => pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) (nuHat ν) s - capPad)
       r.nodeList r.smax)
     (hδ : (0 : ℝ) ≤ r.delta)
-    (f g : L2G (n + 1)) (hfa : ⇑f =ᵐ[stdGaussian ((n + 1) + (n + 1))] ft)
+    (f g : L2G (n + 1)) (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
+    (hg : g ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
+    (hfa : ⇑f =ᵐ[stdGaussian ((n + 1) + (n + 1))] ft)
     (hga : ⇑g =ᵐ[stdGaussian ((n + 1) + (n + 1))] gt)
     (hP : (H10 (n + 1)).starProjection (hOf (n + 1) f g) = ((tOf (n + 1) f g : ℝ) : ℂ) • zeta0 n)
     (X1 : (Fin (n + n) → ℝ) → ℂ) (hX1 : ⇑(pres hfm hgm hfb hgb) =ᵐ[stdGaussian (n + n)] X1)
     (U : (Fin (n + n) → ℝ) → ℝ) (hU : ∀ y, ‖X1 y‖ ^ 2 = ‖pres hfm hgm hfb hgb‖ ^ 2 * U y)
     (_hU0 : ∀ y, 0 ≤ U y) :
-    RowSharedWith r (pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) 0) (stdGaussian (n + n)) U X1
-      ⇑(X2e hfm hgm hfb hgb) ⇑(X3e hfm hgm hfb hgb) ‖pres hfm hgm hfb hgb‖ (VOf (n + 1) ε 0 f g)
-      (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by
+    RowSharedWith r (pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) (nuHat ν)) (stdGaussian (n + n))
+      U X1 ⇑(X2e hfm hgm hfb hgb) ⇑(X3e hfm hgm hfb hgb) ‖pres hfm hgm hfb hgb‖
+      (VhatOf (n + 1) e ν f g) (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by
   set p := pres hfm hgm hfb hgb with hpdef
   set τ := ‖p‖ with hτ
-  set Ψ := pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 with hΨ
+  set Ψ := pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) (nuHat ν) with hΨ
   -- `τ √U = |X₁|`
   have hsq : ∀ y, τ * √(U y) = ‖X1 y‖ := fun y => by
     rw [← Real.sqrt_sq (norm_nonneg (X1 y)), hU, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
@@ -187,17 +202,25 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
       abs_of_nonneg hδ, h2, mul_assoc, hsq]
   have iQ : Integrable (fun y => Ψ ‖Qe y‖) (stdGaussian (n + n)) := by
     simpa using integrable_pot_comp (E := r.E) (R := R) (ℓ := r.ell) (β := r.beta)
-      (a := aFib r.b1 r.b2 r.b3) (ν := 0) hE hR (Lp.memLp Qe).aestronglyMeasurable
+      (a := aFib r.b1 r.b2 r.b3) (ν := nuHat ν) hE hR (Lp.memLp Qe).aestronglyMeasurable
       ((Lp.memLp Qe).integrable one_le_two).norm 1 zero_le_one
   obtain ⟨igate, hgate⟩ := integral_gate r p (X2e hfm hgm hfb hgb) (X3e hfm hgm hfb hgb) hX1
   refine ⟨hcaps, iQ.congr (hQae.mono fun y hy => hy.symm), igate, ?_⟩
   rw [integral_congr_ae hQae, hgate]
   -- the three ingredients
-  have hV := VOf_frame (n + 1) f g r.ell r.beta (zeta0 n) (vL (n + 1) 0) zeta0_mem norm_zeta0 hP
-    (vL_mem_H21 (n + 1) 0) (norm_vL_sq (n + 1) 0)
+  have hV := VhatOf_frame (n + 1) f g he r.ell r.beta (zeta0 n) (vL (n + 1) 0) zeta0_mem
+    norm_zeta0 hP (vL_mem_H21 (n + 1) 0) (norm_vL_sq (n + 1) 0)
   have hL := inner_L_split r.ell r.beta (hOf (n + 1) f g) (hOf_ae f g hfa hga)
-  have hFib := fibre_integrated r.E R r.ell r.beta r.b1 r.b2 r.b3 0 hfm hgm hfb hgb hE hR Qe
-  rw [zero_mul, add_zero] at hFib
+  have hFib := fibre_integrated r.E R r.ell r.beta r.b1 r.b2 r.b3 (nuHat ν) hfm hgm hfb hgb hE hR Qe
+  -- the tail of the fibre bound is the tail of the hat value
+  have hT : nuHat ν * ((∫ x, conj (ft x) * gt x ∂(stdGaussian ((n + 1) + (n + 1)))).re - 1)
+      = -(2 * nuHat ν * ‖kOf (n + 1) f g‖ ^ 2) := by
+    have hi : ∫ x, conj (ft x) * gt x ∂(stdGaussian ((n + 1) + (n + 1))) = inner ℂ f g := by
+      rw [inner_L2]
+      exact integral_congr_ae (by filter_upwards [hfa, hga] with x h1 h2; rw [h1, h2])
+    rw [hi, re_inner_sub_one (n + 1) hf hg]
+    ring
+  rw [hT] at hFib
   have hK := kside r.E R hE hE1 hR hR1 hR2 (measurable_kt hfm hgm) (norm_kt_le hfb hgb)
     (kOf (n + 1) f g) (kOf_ae f g hfa hga)
   -- the coupling term
@@ -243,16 +266,30 @@ theorem norm_pres_le_rho : ‖pres hfm hgm hfb hgb‖ ≤ ρ := by
 
 end shared
 
+/-- **The node caps of the potentials of the rows with an identity tail `ν`** (in hat units): at
+every stored node `(s, c)` of every row, `Ψ_ν(s) − capPad ≤ c` for the fibre potential of the row
+with the tail `ν`.  This is the hypothesis of the reduction with a tail.  Without a tail it is the
+node-cap hypothesis `NodeCaps` of the certified potentials `rowPot` (`tailNodeCaps_zero`). -/
+def TailNodeCaps (ν : ℝ) : Prop :=
+  ∀ k, k < rowData.length → ∀ m ∈ (rowData.getD k row01).nodeList,
+    pot (rowData.getD k row01).E (rowR k) (rowData.getD k row01).ell (rowData.getD k row01).beta
+      (aFib (rowData.getD k row01).b1 (rowData.getD k row01).b2 (rowData.getD k row01).b3) ν m.1
+        - capPad ≤ m.2
+
 /-- **The simultaneous Gaussian reduction of the rows in the coordinate frame**: for unimodular
-`f, g` on `ℂ^{n+1}` (`n ≥ 1`) with `P₁,₀ h = t ζ₀`, `SharedReduction rowData V t Qh v` holds with the
-coupling vector `v = vL 0`, given the node caps of the 19 certified potentials. -/
-theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) (f g : L2G (n + 1))
+`f, g` on `ℂ^{n+1}` (`n ≥ 1`) with `P₁,₀ h = t ζ₀`, `SharedReduction rowData V̂ t Qh v` holds with the
+coupling vector `v = vL 0`, for the hat value `V̂` of a witness with weight `e` and tail `ν` whose
+hat weight is the constant `ε` of the rows, given the node caps of the potentials of the rows with
+the tail `ν̂ = nuHat ν`.  (For the certified witness `(ε, 0)`: `V̂ = V` and the 19 certified
+potentials.) -/
+theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e ν = ε)
+    (f g : L2G (n + 1))
     (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
     (hg : g ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
     (hP : (H10 (n + 1)).starProjection (hOf (n + 1) f g) = ((tOf (n + 1) f g : ℝ) : ℂ) • zeta0 n)
-    (hcaps : ∀ k, k < rowData.length → ∀ m ∈ (rowData.getD k row01).nodeList,
-      rowPot k m.1 - capPad ≤ m.2) :
-    SharedReduction rowData (VOf (n + 1) ε 0 f g) (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by
+    (hcaps : TailNodeCaps (nuHat ν)) :
+    SharedReduction rowData (VhatOf (n + 1) e ν f g) (tOf (n + 1) f g) (QhOf (n + 1) f g)
+      (vL (n + 1) 0) := by
   have hfm : Measurable (trunc ⇑f) := measurable_trunc (Lp.stronglyMeasurable f).measurable
   have hgm : Measurable (trunc ⇑g) := measurable_trunc (Lp.stronglyMeasurable g).measurable
   have hfb := norm_trunc_le ⇑f
@@ -280,16 +317,11 @@ theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) (f g : L2G (n + 1))
   have hRk : rowR k = (rowGates[k]).2.2.2 := by unfold rowR; rw [List.getD_eq_getElem _ _ hk']
   have hδ := List.all_eq_true.1 rowData_delta_pos _ hr
   simp only [decide_eq_true_eq] at hδ
-  have hcaps' := capsHold_rowPot k hk (hcaps k hk)
+  have hcaps' := capsHold_rowPot (nuHat ν) k hk (hcaps k hk)
   rw [hkr] at hcaps'
-  refine ⟨rowPot k, ?_⟩
-  have e : rowPot k = pot (rowData[k]).E (rowR k) (rowData[k]).ell (rowData[k]).beta
-      (aFib (rowData[k]).b1 (rowData[k]).b2 (rowData[k]).b3) 0 := by
-    funext s; simp only [rowPot, hkr]; rfl
-  rw [e] at hcaps' ⊢
-  exact rowSharedWith_frame hfm hgm hfb hgb (rowData[k]) (rowR k) hg'.1.1 hg'.1.2
-    (hRk ▸ hRg.1.1) (hRk ▸ hRg.1.2) (hRk ▸ hRg.2) hcaps' (by exact_mod_cast hδ.le) f g hfa hga hP X1
-    hpA (fun y => eval y (radU A B)) hX (fun y => eval_radU_nonneg A B y)
+  exact ⟨_, rowSharedWith_frame hfm hgm hfb hgb (rowData[k]) (rowR k) hg'.1.1 hg'.1.2
+    (hRk ▸ hRg.1.1) (hRk ▸ hRg.1.2) (hRk ▸ hRg.2) he hcaps' (by exact_mod_cast hδ.le) f g hf hg hfa
+    hga hP X1 hpA (fun y => eval y (radU A B)) hX (fun y => eval_radU_nonneg A B y)⟩
 
 end
 

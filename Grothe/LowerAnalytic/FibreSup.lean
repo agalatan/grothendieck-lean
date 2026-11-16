@@ -735,12 +735,17 @@ def rowPot (k : ℕ) (s : ℝ) : ℝ :=
   let r := rowData.getD k row01
   pot r.E (rowR k) r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s
 
-/-- **The node-cap interface for every row**: given the node caps of the certified potential of
-row `k` (data certified outside Lean), `CapsHold (Ψ_k − capPad)` holds with the row's nodes and
-Lipschitz constant. -/
-theorem capsHold_rowPot (k : ℕ) (hk : k < rowData.length)
-    (hcaps : ∀ n ∈ (rowData.getD k row01).nodeList, rowPot k n.1 - capPad ≤ n.2) :
-    CapsHold (fun s => rowPot k s - capPad) (rowData.getD k row01).nodeList
+/-- **The node-cap interface for every row**: given the node caps of the potential of row `k`
+with the identity tail `ν` (at `ν = 0` the certified potential `rowPot k`; data certified outside
+Lean), `CapsHold (Ψ_k − capPad)` holds with the row's nodes and Lipschitz constant. -/
+theorem capsHold_rowPot (ν : ℝ) (k : ℕ) (hk : k < rowData.length)
+    (hcaps : ∀ n ∈ (rowData.getD k row01).nodeList,
+      pot (rowData.getD k row01).E (rowR k) (rowData.getD k row01).ell (rowData.getD k row01).beta
+        (aFib (rowData.getD k row01).b1 (rowData.getD k row01).b2 (rowData.getD k row01).b3) ν n.1
+          - capPad ≤ n.2) :
+    CapsHold (fun s => pot (rowData.getD k row01).E (rowR k) (rowData.getD k row01).ell
+      (rowData.getD k row01).beta (aFib (rowData.getD k row01).b1 (rowData.getD k row01).b2
+        (rowData.getD k row01).b3) ν s - capPad) (rowData.getD k row01).nodeList
       (rowData.getD k row01).smax := by
   have hmem : rowData.getD k row01 ∈ rowData := by
     rw [List.getD_eq_getElem _ _ hk]; exact List.getElem_mem hk
@@ -760,7 +765,7 @@ theorem capsHold_rowPot (k : ℕ) (hk : k < rowData.length)
       + 707107 / 1000000 * |((rowData.getD k row01).b3 : ℝ)|) ≤ ((rowData.getD k row01).smax : ℝ) := by
     simpa only [Rat.cast_mul, Rat.cast_add, Rat.cast_abs, Rat.cast_one, Rat.cast_ofNat,
       Rat.cast_div] using (Rat.cast_le (K := ℝ)).2 hsm
-  exact capsHold_pot _ _ _ _ _ _ _ 0 hg.1.1 hR _ _ hsmR hcaps
+  exact capsHold_pot _ _ _ _ _ _ _ ν hg.1.1 hR _ _ hsmR hcaps
 
 end
 

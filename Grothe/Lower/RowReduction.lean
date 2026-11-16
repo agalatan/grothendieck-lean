@@ -12,12 +12,14 @@ The scalar cap of the witness rests on `SharedReduction rowData V t Qh v` for ev
 (`handoff/research-third-decimal/PLAN_L4.md`) that need no new Gaussian infrastructure.
 
 * **Frame.** `exists_frame_vector`: a unit `ζ ∈ H₁,₀` with `P₁,₀h = t ζ`.
-* **The h-side identity** (`hside_identity`, `VOf_frame`): for `ζ ∈ H₁,₀` unit with `Ph = tζ`, a
-  coupling vector `v ∈ H₂,₁` with `‖v‖² = 2`, and real `ℓ, β`, with `L = ℓζ + βv`,
+* **The h-side identity** (`hside_identity`, `VhatOf_frame`, `VOf_frame`): for `ζ ∈ H₁,₀` unit with
+  `Ph = tζ`, a coupling vector `v ∈ H₂,₁` with `‖v‖² = 2`, and real `ℓ, β`, with `L = ℓζ + βv`,
 
   `t² − ε‖Qh‖² = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ − ε‖Qh + (β/ε)v‖²`  (an exact identity),
 
-  so `V = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ + (ε‖Qk‖² − ‖Pk‖²) − ε‖Qh + (β/ε)v‖²`.  The real inner
+  so `V = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ + (ε‖Qk‖² − ‖Pk‖²) − ε‖Qh + (β/ε)v‖²`.  For a witness with
+  an identity tail whose hat weight is `ε` the hat value `V̂` is the same expression minus
+  `2ν̂‖k‖²` (`VhatOf_frame`); `VOf_frame` is the case without a tail.  The real inner
   product of `L²(γ_n)` is the real part of the complex one (`real_inner_L2G`).
 * **Gate algebra.** `Sym3.form`/`Sym2.form` are the Hermitian forms `y*My` of the rational gate
   matrices; `psdOK` is an exact LDLᵀ positivity check with soundness `form_nonneg_of_psdOK`; the
@@ -280,8 +282,26 @@ theorem hside_identity (ℓ β t : ℝ) (h ζ v : L2G n) (hζ : ζ ∈ H10 n) (h
   field_simp
   ring
 
+/-- **The hat value in a frame**, for a witness with weight `e` and tail `ν` whose hat weight is
+the constant `ε` of the rows:
+`V̂ = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ + (ε‖Qk‖² − ‖Pk‖²) − ε‖Qh + (β/ε)v‖² − 2ν̂‖k‖²`
+for `Ph = tζ`, `L = ℓζ + βv`.  The tail `−2ν̂‖k‖²` is carried along unchanged. -/
+theorem VhatOf_frame (f g : L2G n) {e ν : ℝ} (he : epsHat e ν = ε) (ℓ β : ℝ) (ζ v : L2G n)
+    (hζ : ζ ∈ H10 n) (hζ1 : ‖ζ‖ = 1)
+    (hP : (H10 n).starProjection (hOf n f g) = ((tOf n f g : ℝ) : ℂ) • ζ) (hv : v ∈ H21 n)
+    (hv2 : ‖v‖ ^ 2 = 2) :
+    VhatOf n e ν f g = tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε
+      + 2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re
+      + (ε * ‖QkOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2)
+      - ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2
+      - 2 * nuHat ν * ‖kOf n f g‖ ^ 2 := by
+  have := hside_identity n ℓ β (tOf n f g) (hOf n f g) ζ v hζ hζ1 hP hv hv2
+  rw [VhatOf, he]
+  unfold QhOf
+  linarith
+
 /-- **The scalar profile value in a frame**: `V = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ + (ε‖Qk‖² − ‖Pk‖²)
-− ε‖Qh + (β/ε)v‖²` for `Ph = tζ`, `L = ℓζ + βv`. -/
+− ε‖Qh + (β/ε)v‖²` for `Ph = tζ`, `L = ℓζ + βv` (`VhatOf_frame` without a tail). -/
 theorem VOf_frame (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n) (hζ : ζ ∈ H10 n) (hζ1 : ‖ζ‖ = 1)
     (hP : (H10 n).starProjection (hOf n f g) = ((tOf n f g : ℝ) : ℂ) • ζ) (hv : v ∈ H21 n)
     (hv2 : ‖v‖ ^ 2 = 2) :
@@ -289,10 +309,9 @@ theorem VOf_frame (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n) (hζ : ζ ∈ H10 
       + 2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re
       + (ε * ‖QkOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2)
       - ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2 := by
-  have := hside_identity n ℓ β (tOf n f g) (hOf n f g) ζ v hζ hζ1 hP hv hv2
-  rw [VOf_zero]
-  unfold QhOf
-  linarith
+  have h := VhatOf_frame n f g (e := ε) (ν := 0) (by simp [epsHat]) ℓ β ζ v hζ hζ1 hP hv hv2
+  rw [VhatOf_zero, show nuHat 0 = 0 by simp [nuHat], mul_zero, zero_mul, sub_zero] at h
+  exact h
 
 /-- Apply a response penalty to the actual Gaussian witness row. The support bound
 pays only the complementary fractions of the two squares: `s = 0, k = 1` is

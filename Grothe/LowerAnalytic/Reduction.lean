@@ -5,11 +5,15 @@ import Grothe.LowerAnalytic.NodeCaps
 # The per-row Gaussian reduction (L4): `ReductionHyp` from the node caps
 
 `NodeCaps` is the shared node-cap hypothesis from `NodeCaps.lean`, bounding the same
-19 certified fibre potentials `rowPot k` at every stored node.
+19 certified fibre potentials `rowPot k` at every stored node.  It is the case without a tail of
+`TailNodeCaps ν` (`RowGaussian.lean`), the node caps of the potentials of the rows with the
+identity tail `ν` (`tailNodeCaps_zero`).
 
-`reductionHyp_of_nodeCaps`: for `n ≥ 2` every unimodular pair satisfies `ReductionHyp n f g`
-(rotate `P₁,₀h` to the visible coordinate by a unitary frame, then `sharedReduction_frame`).
-The refined finite-cover layer converts this reduction into the lower endpoint.
+`reductionHyp_of_nodeCaps`: for `n ≥ 2` every unimodular pair satisfies `ReductionHyp n e ν f g`
+(rotate `P₁,₀h` to the visible coordinate by a unitary frame, then `sharedReduction_frame`), for
+every witness with weight `e` and tail `ν` whose hat weight is the constant `ε` of the rows, given
+`TailNodeCaps (nuHat ν)`.  The refined finite-cover layer converts this reduction into the lower
+endpoint; the certified witness is `(e, ν) = (ε, 0)`, with the hypothesis `NodeCaps`.
 -/
 
 open MeasureTheory Grothe.Lower
@@ -18,20 +22,25 @@ namespace Grothe.LowerAnalytic
 
 noncomputable section
 
+/-- Without a tail the node caps of the potentials of the rows are `NodeCaps`. -/
+lemma tailNodeCaps_zero : TailNodeCaps 0 ↔ NodeCaps := Iff.rfl
+
 /-- **The per-row Gaussian reduction** (L4): `ReductionHyp` for every unimodular pair in dimension
-`n + 1 ≥ 2`, from the node caps alone. -/
-theorem reductionHyp_of_nodeCaps (hcaps : NodeCaps) {n : ℕ} (hn : 0 < n) (f g : L2G (n + 1))
+`n + 1 ≥ 2`, from the node caps alone, for a witness with weight `e` and tail `ν` whose hat weight
+is the constant `ε` of the rows and the node caps of the potentials with the tail `ν̂ = nuHat ν`. -/
+theorem reductionHyp_of_nodeCaps {e ν : ℝ} (he : epsHat e ν = ε) (hcaps : TailNodeCaps (nuHat ν))
+    {n : ℕ} (hn : 0 < n) (f g : L2G (n + 1))
     (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
-    (hg : g ∈ Unimod (stdGaussian ((n + 1) + (n + 1)))) : ReductionHyp (n + 1) f g := by
+    (hg : g ∈ Unimod (stdGaussian ((n + 1) + (n + 1)))) : ReductionHyp (n + 1) e ν f g := by
   obtain ⟨ζ, hζ, hζ1, hP⟩ := exists_frame_vector (n + 1) (Nat.succ_pos n) (hOf (n + 1) f g)
   obtain ⟨W, hW⟩ := exists_Cop_eq (Nat.succ_pos n) hζ hζ1
   have hP' : (H10 (n + 1)).starProjection (hOf (n + 1) (Cop W f) (Cop W g))
       = ((tOf (n + 1) (Cop W f) (Cop W g) : ℝ) : ℂ) • zeta0 n := by
     rw [hOf_Cop, P_Cop, hP, map_smul, hW, tOf_Cop]
     rfl
-  have hS := sharedReduction_frame hn (Cop W f) (Cop W g) (Cop_unimod W hf) (Cop_unimod W hg) hP'
-    hcaps
-  rw [VOf_Cop, tOf_Cop, QhOf_Cop] at hS
+  have hS := sharedReduction_frame hn he (Cop W f) (Cop W g) (Cop_unimod W hf) (Cop_unimod W hg)
+    hP' hcaps
+  rw [VhatOf_Cop, tOf_Cop, QhOf_Cop] at hS
   refine ⟨Cop W.symm (vL (n + 1) 0), by rw [LinearIsometry.norm_map, norm_vL_sq], ?_⟩
   refine sharedReduction_congr hS fun c => ?_
   rw [← LinearIsometry.norm_map (Cop W) (QhOf (n + 1) f g + c • Cop W.symm (vL (n + 1) 0))]
