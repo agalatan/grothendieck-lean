@@ -839,6 +839,12 @@ the analytic argument and is not run by CI. The working proof is
     `/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/gpt-reviews/real-stein-radius-20261021/`.
   - The numerical maximisers and logs of `R3_REPORT.md` stay in
     `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/r3-chaos/`.
+- **codex-6d92 (#458; STATUS 3.21, item 95).** `sources/third-chaos-2026-11-16/codex-6d92/` holds its three issue
+  comments of 16 November, copied unchanged, and `REVIEW_claude-b9ee.md`. `code/third-chaos-2026-11-16/codex-6d92/`
+  holds its two exact scripts (`python3 -I laplace_obstruction.py`, standard library; `python3 -I spectral_obstruction.py`,
+  sympy; both pass for claude-b9ee) and, in `review-claude-b9ee/`, two independent checks with their logs (mpmath) and
+  the two replay logs. The author's other scripts and searches stay in its worktree folder
+  `handoff/third-chaos-codex-6d92/`; they were not reviewed.
 
 ## Codex-a786: phase symmetry and content (16 November 2026)
 
@@ -946,3 +952,32 @@ holds the scripts, their small result files and their logs.
 | `tab_peak.npz` | 80,354 B | `a8a3cd855af72048382cdc71f9c20ae92bc92dc1c43c4ec328c2203de3dd7d2e` | the peak-profile table read by `dslib.peak_profile`; produced by `code/antiholomorphic-stein-2026-11-16/numerics/tab.py` |
 | `hess_n3_wxy_peak0.0463.npy` | 10,496 B | `426f460c56142d0f89f68e87f2cde7238789d126c0954c5ddd740e3ede23062b` | Hessian of T₂ at conj(W)·X·Y, peak profile (written by `t05_hessian_n3.py`) |
 | `hess_n3_wx2y2_peak0.0463.npy` | 10,496 B | `ce0bc6182750779766a6ff9d9bb4759a9a39a42e185d7864755ff332a9fd841a` | Hessian of T₂ at conj(W)·(X² + Y²), peak profile (written by `t05_hessian_n3.py`) |
+
+## Codex-a786: the content-law inequality on a structured class (16 November 2026)
+
+`sources/content-law-2026-11-16-codex-a786/` holds the delivery's documents (`README.md`, `PROOFS.md`,
+`SCALAR_REDUCTION.md`, `AUDIT.md`, `LEDGER_PATCH.md`, `SOURCES.md`) and the independent `REVIEW.md` (STATUS
+6.3.27–6.3.29, tag KCL; `../higher-degree/STATUS.md` 4.20). They are verbatim copies; only their first lines were added.
+The delivery's ledger patch and README are read through the review: its §7 lists three required corrections (a
+misprinted "+" in (29a) among them), and the ledger rows follow its §6.
+- **Checker.** `code/content-law-codex-a786/`: `node verify.mjs` (Node 20 or later, no dependencies) reproduces
+  `results_exact.json` byte for byte. `SHA256SUMS` is the delivery's; its entries for the six documents refer to the
+  files without the added first line.
+- **Review scripts.** `code/content-law-codex-a786/review/scripts/` (16 files; `python3 -I`, one process, about five
+  minutes in all; `REVIEW.md` §9 says what each does) and `review/logs/` (the 18 logs of at most 10 KB, kept because the
+  review cites them as its record). The scripts read the degree-5 study's folder
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/content5/`.
+- **Not committed**, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a786-content-law-2026-11-16/`:
+  the zip `conjecture_k_content_law_codex_a786.zip` (22,912 B, SHA-256
+  `2d8fc12b38d47dd50fffc19b4a2c2e0da1c42b74510ea7d8e7692f0bc2ec0ac3`), the profile tables `review/data/*.npz` (12 files), and the larger logs:
+
+| file | size | SHA-256 |
+|---|---|---|
+| `review/logs/content_ratio_hp.json` | 269,142 B | `6f803b2760482bf5c59606a9a7fe18aa8377bfbf8382bf4c3cae13480ef303e9` |
+| `review/logs/content_ratio_hp.log` | 67,141 B | `a048c99d7b57d5da331417bcb52bb2422fb3202e4e1ef71dacb6203b79f06cde` |
+| `review/logs/content_ratio_hp_fine.json` | 269,299 B | `1f08eb109287a56550592847eaa35fb1eec362b9280b08b4abaed55dc90ed191` |
+| `review/logs/content_ratio_hp_fine.log` | 67,144 B | `d75f7c9adfa2ae7e1e0f0eb3d3be2d9b34aa54a99ad6e91a1526b8827dee7101` |
+| `review/logs/content_ratio_stored.json` | 269,144 B | `d17f8bedaf071a8dc99f383bfe1df37b190cdd67e61d8212e8fe91d5e50a03df` |
+| `review/logs/content_ratio_stored.log` | 67,248 B | `4fc3674c206c251d04ac8b71339255edd822b9216c0f97eb4f4bd1f2fcd89acb` |
+| `review/logs/results_exact.delivered.json` | 5,343 B | `16a0a1ba7076e3cd2697f30df20964c2257ee829007a3691a75b3fed3a7b4a7e` |
+| `review/logs/uscan.json` | 55,848 B | `a6cda850eb64a395997963190bd0ac938ee56cd7fc06411a6d982de332a8dd84` |

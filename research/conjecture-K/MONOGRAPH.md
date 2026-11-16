@@ -310,8 +310,10 @@ PVD, which implies complex PVD; no converse is known [P · codex-a7c4, re-derive
 radius bound E|q| ≤ (√π/2)‖q‖₂ on H₂,₁ is open; cases are proved for real BNC of order 2, one-variable H₃ at every
 scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| < 0.95133‖q‖₂ for every Wick cubic [P + C · GPT review, re-derived and replayed by claude-b9ee · 3.7]. In real second chaos,
 E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. In real third chaos the same bound would give the sharp radius by phase averaging; it
-is proved for reflection-odd and conditionally Gaussian cubics and in at most seven coordinates, and moments alone
-cannot give it [3.6, 3.21]. Exact remote K is not needed for 1.402.
+is proved for reflection-odd and conditionally Gaussian cubics and in at most seven coordinates. Moments,
+hypercontractivity and the cumulant bounds cannot give even the weak constant √0.68, and the stronger Gaussian Laplace
+and small-ball comparisons are false already for He₃(G) [3.6, 3.21; chapter 4, item 95]. Exact remote K is not needed
+for 1.402.
 
 **A weighted interpolation target.** Put F=√(2/u)Re q and Γ=‖DF‖²/3. For the visible
 mixture L =_law √V W, the existing scalar Stein reduction gives the exact deficit formula
@@ -465,6 +467,15 @@ A second, local form removes the field c₂ − u: E[ȳ_e q h(V)] = E[ȳ_e(∂_v
 F = ∂̄q and b = Σ_k conj(F_k)·(F·∇)F_k. The content is then linear in the pair (a, DF·F), whose budget is
 ‖P₂,₀(q²)‖² + ½‖P₃,₁(q²)‖² [P author only + C · 6.3.26]. Its Cauchy–Schwarz bound is 0.128·D at the cubic above and at
 least 0.162·D at its own worst cubic, still above 0.15 [N · item 93].
+
+**A sign-conditioned bound on a structured class.** Take q = √u·X·P with X a coordinate and P a Hermitian quadratic
+form of independent coordinates. The test function of the content representation depends on P through |P| only, so P
+can be replaced by its conditional mean given |P| before Cauchy–Schwarz. For P_m = m^{−1/2}Σ_{j≤m}(|Y_j|² − 1) this
+gives ‖c[h]‖² ≤ [77/(9(m + 3))]·δ·Ω̂[h] for every profile and every energy, where
+Ω̂[h] = (3/2)E[V·k′(V)²] − (3/4)(E[V·k′(V)])²/u is a functional of the law of |q|² alone; an independent decoupled bulk
+raises the constant to 253/(18(m + 3)) + 2/(9m) [P + C · 6.3.27–6.3.29]. The class has no self-interaction of the
+driver. On the Wick monomial every constant that holds for all profiles is at least 256/63, so for a general cubic the
+profile must enter [P · 6.3.28].
 
 ### 2.6 The A-sector of the retained functional: the tilted lemma
 
@@ -1067,6 +1078,9 @@ section 13), where every source is listed.
   cos θ·X²Ȳ/√2 + sin θ·X(|X|² + |Y|² − 3)/√3 at θ = 0.2 the second term of the representation of 2.5 is
   −1.33·10⁻⁴ against D = 0.2456; the comparison with the decoupled surrogate fails on the Wick monomial
   (0.6908 > 0.6267). At the peak row no violation was found [N].
+- **95. Gaussian Laplace or small-ball domination on the real third chaos.** False for He₃(G)/√6: its density at
+  zero is 0.99868·φ(0), and the Laplace comparison fails for every t > 403. The L¹ bound and the smoothing sign are
+  not contradicted [P + C].
 
 **Response side**
 
@@ -1149,7 +1163,7 @@ restriction on the amplitude at every tilt tried [11.17].
 | 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 | `third-audit-2026-11-15-codex-a7c4/CONTENT_KERNELS.md`, `reaudit-2026-11-15-codex-a7c4/SECTORS.md` | `third-audit-2026-11-15-codex-a7c4/` |
 | 2.1 remote part | 3.1–3.26, 11.7–11.11, 12.8 | `audit-2026-11-15-codex-a7c4/REMOTE.md`, `reaudit-…/REMOTE.md`, `fourth-audit-…/REMOTE.md`, `fourth-audit-…/REFORMULATIONS.md`, `deficit-sign-2026-11-16/` | `audit-2026-11-15-codex-a7c4/`, `fourth-audit-2026-11-15-codex-a7c4/`, `deficit-sign-2026-11-16/` |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.5 | `third-audit-…/POTENTIAL.md`, `audit-2026-11-13/ADDITIONAL_ANALYTIC_AUDIT.md`, `audit-2026-11-15-codex-a7c4/CLAIMS.md` | `third-audit-2026-11-15-codex-a7c4/` |
-| 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md`, `antiholomorphic-stein-2026-11-16/`, `deficit-sign-2026-11-16/` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py`, `antiholomorphic-stein-2026-11-16/`, `deficit-sign-2026-11-16/` |
+| 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 | `fourth-audit-…/CONTENT.md`, `audit-2026-11-13/CERTIFICATE_AUDIT.md`, `received-2026-11-05/`, `sixth-audit-…/OBSTRUCTION.md`, `antiholomorphic-stein-2026-11-16/`, `deficit-sign-2026-11-16/`, `content-law-2026-11-16-codex-a786/` | `fourth-audit-2026-11-15-codex-a7c4/`, `audit-2026-11-13/`, `sixth-audit-…/gaussian_obstruction.py`, `antiholomorphic-stein-2026-11-16/`, `deficit-sign-2026-11-16/`, `content-law-codex-a786/` |
 | 2.6 tilted lemma, retained A-core | 11.25–11.54, 11.56–11.60 | `received-2026-11-15-tilted-sector/` (`REPORT.md`, `deficit_*_proof.md`, `secant_*.md`, `REVIEW_3.md`, `REVIEW_4.md`); `fifth-audit-…/REMOTE.md`; `sixth-audit-…/REMOTE.md`; `phase-content-2026-11-16-codex-a786/`, `malliavin-addendum-2026-11-16-codex-a786/` | `tilted-sector-2026-11-15/` (`verify.py`); `fifth-audit-…/remote_augmented.py`; `sixth-audit-…/retained_profile_transfer.py`; `phase-content-codex-a786/`, `malliavin-addendum-codex-a786/` |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.9 | `third-audit-…/ALIGNMENT.md`, `fourth-audit-…/JOINT.md`, `fifth-audit-…/JOINT.md`, `audit-2026-11-13/ASSEMBLY_AUDIT.md`, `improvement_joint_tail.md` | `fourth-audit-…/joint_reduction.py`, `fifth-audit-…/joint_tail.py` |
 | 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 | `audit-2026-11-15-codex-a7c4/ODD_COST.md`, `reaudit-…/SECTORS.md`, `third-audit-…/SECTORS.md`, `sixth-audit-…/JOINT.md`, `odd-cubic-core-2026-11-15/PROOF.md`, `partial-results-2026-11-15-codex-c7e2/boundary/ANISOTROPIC_REGION.md`, `near-star-2026-11-15-codex-91d4/PROOF_NOTES.md`, `odd-gap-2026-11-15-codex-91d4/`, `joint-edgeworth-2026-11-15-codex-91d4/`, `odd-AB-small-shell-2026-11-15/PROOF.md`, `uniform-local-2026-11-15-codex-4d8a/`, `round3-2026-11-15-codex-c7e2/`, `partial-q-2026-11-15-codex-91d4/`, `np-joint-2026-11-16-codex-91d4/` | `audit-2026-11-15-codex-a7c4/`, `reaudit-…/`, `third-audit-…/`, `sixth-audit-…/odd_coupling.py`, `odd-cubic-core-2026-11-15/`, `partial-results-codex-c7e2/boundary/`, `odd-AB-small-shell-2026-11-15/`, `uniform-local-codex-4d8a/`, `round3-codex-c7e2/` |
