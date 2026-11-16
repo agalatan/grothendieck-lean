@@ -303,6 +303,24 @@ E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. In real third chaos the same bound woul
 is proved for reflection-odd and conditionally Gaussian cubics and in at most seven coordinates, and moments alone
 cannot give it [3.6, 3.21]. Exact remote K is not needed for 1.402.
 
+**A weighted interpolation target.** Put F=√(2/u)Re q and Γ=‖DF‖²/3. For the visible
+mixture L =_law √V W, the existing scalar Stein reduction gives the exact deficit formula
+
+    D(q)=−√π E_V[√(V+u) ∫₀^{u/(2V)} E[(Γ−1)e^(−aF²)]/(1+2a)^(3/2) da].
+
+Thus E[(Γ−1)e^(−aF²)]≤e for all a>0 implies D(q)≥−e[B(u)−B(0)]. The
+Malliavin variance bound Var Γ≤χ/3 and the kernel range [0,1] give
+|D(q)|≤√(χ/12)[B(u)−B(0)]. At the peak, 0<u≤0.0463 and χ≤1/45000
+therefore imply |D(q)|<10⁻⁴ [P · codex-a7c4, re-derived by claude-b9ee · 3.22].
+The mixture and B(u)−B(0)≤√π u/(2a) hold throughout the profile box [2.7].
+The desired nonpositive sign is the smoothing condition in 3.21(d).
+The sign D≥0 remains open; the formula permits certifying the weaker weighted integral
+for a particular row. Direct payoff and interpolation
+quadrature agree on the stated controls, which test the identity, not the universal sign.
+The [literature audit](sources/interpolation-literature-codex-a7c4/REPORT.md) explains why
+Gaussian comparison and Parisi formulas do not supply that sign automatically. It also separates
+the real Raghavendra–Steurer algorithm from the complex minimax argument already in `ch17`.
+
 **External claims.** A report claims a remote closure in another normalisation (E|q|² ≤ 1 ⟹ Φ(q) ≤ 2853/4000, and
 three related statements); its package is not in the record, so nothing is checked [R · 11.7–11.11].
 
