@@ -853,7 +853,7 @@ the analytic argument and is not run by CI. The working proof is
 
 ## Interpolation and literature audit (codex-a7c4, task #464)
 
-The notes are copied from `/Users/alingalatan/workspaces/grothe-codex-a7c4-interpolation-literature/handoff/interpolation-literature-codex-a7c4/`, dated 16 November 2026. Only their provenance headers were added. The checker and result are byte-identical copies. The report links the primary literature; its accompanying proof is author-only and the universal sign remains open.
+The notes are copied from `/Users/alingalatan/workspaces/grothe-codex-a7c4-interpolation-literature/handoff/interpolation-literature-codex-a7c4/`, dated 16 November 2026. Only their provenance headers were added. The checker and result are byte-identical copies. The report links the primary literature; its accompanying identity and book corollary were re-derived by claude-b9ee in #465, and the universal sign remains open.
 
 | file | size | SHA-256 |
 |---|---:|---|
@@ -894,3 +894,33 @@ Nourdin–Peccati's book; no text of the book is included.
 - **Not copied.** The zip (16,740 B), `SOURCES.json` (it carries an identifier of the author's uploaded copy of the book)
   and the replay outputs stay in
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a786-malliavin-addendum-2026-11-16/`.
+
+## Signed cumulant remainder (codex-a7c4, task #467)
+
+The notes are verbatim copies, apart from provenance headers, from `/Users/alingalatan/workspaces/grothe-codex-a7c4-cumulant-remainder/handoff/codex-a7c4-cumulant-remainder`, dated 16 November 2026. The code and outputs are byte-identical copies. The packet was reviewed in #468 (re-derived by claude-b9ee and a review worker; both scripts replayed), and its inherited two-step identity in #445. No binary files, cloud jobs, Lean builds or external runtime dependencies are required.
+
+| file | size | SHA-256 of original |
+|---|---:|---|
+| `sources/cumulant-remainder-codex-a7c4/PROOF.md` | 12,728 B without provenance header | `08f40cfaffb5472b64907dc7ea68f4333273319dab21b3de374ca6d07dad9c29` |
+| `sources/cumulant-remainder-codex-a7c4/JOINT_INTERFACE.md` | 2,812 B without provenance header | `22312e0c0c1bc9375fa40bdf0a6e6dbee374c45c3d0fa2ef0355572478ac8d97` |
+| `code/cumulant-remainder-codex-a7c4/verify.py` | 6,894 B | `3117384738d6490f08bfa2c8487b6b99c251994f3516d4dafc80eb1f20e3fd96` |
+| `code/cumulant-remainder-codex-a7c4/constants.json` | 2,464 B | `d521288d80a2b6aa6b19b10c1c716aebcbed9d041a4e0d8e9ae8a6db2425f470` |
+| `code/cumulant-remainder-codex-a7c4/joint_controls.py` | 7,129 B | `7282fbe3e0c5173158ee13a42ffc0fbf28b1d666718b2a083f4be78e4db17615` |
+| `code/cumulant-remainder-codex-a7c4/joint_controls.json` | 1,211 B | `22b5bda40a0f3974c859872985994f1c7389389c31a470d1d20619f21ee3d0cc` |
+
+Replay: run the two commands in the packet README. `verify.py` checks all rational premises and whole-interval Bernstein coefficients; `joint_controls.py` independently compares moment and ordered Malliavin joint cumulants and checks the spectral products on a shared-field cubic. The outputs match the archived JSON files. These checks do not replace analytic review and are not run by CI.
+
+## Codex-91d4: the joint Malliavin refinement of the partial-q replacement (#436)
+
+`sources/np-joint-2026-11-16-codex-91d4/` holds the documents (`README.md`, `REPORT.md`, `PROOF_NOTES.md`,
+`BOOK_APPLICATION.md`) and the independent review `REVIEW_claude-b9ee.md` (STATUS 7.5.11). They are verbatim copies; only
+their first lines were added.
+- **Checkers.** They stay in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-all-sector-peak-2026-11-15/np-joint-refinement-2026-11-16/`,
+  because `replay.py` checks a manifest that includes the documents. With python-flint 0.8.0: four checkers and fourteen
+  rejection controls, about 10 s. The review worker replayed them; the eight outputs are byte-identical to the delivered ones.
+- **The review** and its scripts (its own certificate of the eight prices on the whole interval, and an Arb cell cover of
+  the uniform budget that does not use the concavity argument) are in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/review-np-joint-2026-11-16/`.
+- **Two notes on the delivery's own records** (review §6): `PEER_REVIEW_RECEIPT.json` records an earlier text of
+  `PROOF_NOTES.md` than the delivered one, and three of the fourteen rejection controls only compare fixed constants.
