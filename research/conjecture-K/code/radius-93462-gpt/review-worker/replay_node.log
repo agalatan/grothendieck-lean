@@ -1,0 +1,8 @@
+spline_pos_s2: s in [0, 3], bound <= 0.934615300505, 80 exact Bernstein leaves
+fullgramB_s4: s in [3, 47/10], bound <= 0.934569636551, 70 exact Bernstein leaves
+rigid2fine_s5.4: s in [47/10, 11/2], bound <= 0.934619444773, 120 exact Bernstein leaves
+rigid2fine_s5.6: s in [11/2, 29/5], bound <= 0.934619555342, 121 exact Bernstein leaves
+rigid2fine_s6: s in [29/5, 29/4], bound <= 0.934602464859, 118 exact Bernstein leaves
+fullgramB_s7.5: s in [29/4, 12], bound <= 0.934383742719, 80 exact Bernstein leaves
+spline_pos_s20: s in [12, 42], bound <= 0.933233317972, 84 exact Bernstein leaves
+PASS: rho = 46731/50000; all s in [0,42] and all r >= 0; 673 exact Bernstein leaves.

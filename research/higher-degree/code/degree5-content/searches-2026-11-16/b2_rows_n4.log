@@ -1,0 +1,13 @@
+start: the maximiser of out/b2_gen3_5_u0.85_n4_free.json (ratio 0.2104)
+t=0.80 n=4 u/u*=0.85: largest ratio A 0.2105 chi 7.06 T_rice 0.8066 (possible) | it 210 | alpha 0.182 l 0.000 L 0.000 Q 0.463 F 0.000 R3 0.355 | cof |m| [0.45 0.35 0.37] ph/pi [-0.27  0.2   0.19]
+t=0.80 n=4 u/u*=1.00: largest ratio A 0.1845 chi 6.85 T_rice 0.7909 (possible) | it 231 | alpha 0.171 l 0.000 L 0.000 Q 0.460 F 0.000 R3 0.368 | cof |m| [0.45 0.36 0.35] ph/pi [-0.27  0.21  0.2 ]
+t=0.82 n=4 u/u*=0.85: largest ratio A 0.2685 chi 7.42 T_rice 0.8259 (possible) | it 216 | alpha 0.199 l 0.000 L 0.000 Q 0.463 F 0.000 R3 0.337 | cof |m| [0.44 0.36 0.37] ph/pi [ 0.26 -0.18 -0.19]
+t=0.82 n=4 u/u*=1.00: largest ratio A 0.2367 chi 7.23 T_rice 0.8141 (possible) | it 152 | alpha 0.189 l 0.001 L 0.001 Q 0.462 F 0.000 R3 0.347 | cof |m| [0.45 0.35 0.37] ph/pi [ 0.26 -0.16 -0.2 ]
+t=0.84 n=4 u/u*=0.85: largest ratio A 0.3657 chi 8.10 T_rice 0.8448 (possible) | it 143 | alpha 0.224 l 0.000 L 0.001 Q 0.469 F 0.001 R3 0.305 | cof |m| [0.44 0.38 0.37] ph/pi [ 0.25 -0.17 -0.17]
+t=0.84 n=4 u/u*=1.00: largest ratio A 0.3235 chi 7.80 T_rice 0.8369 (possible) | it 127 | alpha 0.213 l 0.000 L 0.000 Q 0.464 F 0.001 R3 0.321 | cof |m| [0.44 0.37 0.36] ph/pi [ 0.24 -0.19 -0.16]
+t=0.845 n=4 u/u*=0.85: largest ratio A 0.4013 chi 8.35 T_rice 0.8495 (possible) | it 176 | alpha 0.233 l 0.000 L 0.001 Q 0.471 F 0.001 R3 0.294 | cof |m| [0.43 0.38 0.37] ph/pi [ 0.24 -0.16 -0.17]
+t=0.845 n=4 u/u*=1.00: largest ratio A 0.3554 chi 8.05 T_rice 0.8425 (possible) | it 400 | alpha 0.222 l 0.002 L 0.001 Q 0.450 F 0.003 R3 0.323 | cof |m| [0.42 0.31 0.42] ph/pi [-0.23  0.03  0.21]
+t=0.85 n=4 u/u*=0.85: largest ratio A 0.4444 chi 8.67 T_rice 0.8542 (possible) | it 230 | alpha 0.243 l 0.001 L 0.001 Q 0.472 F 0.002 R3 0.282 | cof |m| [0.43 0.38 0.37] ph/pi [ 0.23 -0.15 -0.15]
+t=0.85 n=4 u/u*=1.00: largest ratio A 0.3945 chi 8.30 T_rice 0.8481 (possible) | it 186 | alpha 0.232 l 0.001 L 0.001 Q 0.468 F 0.001 R3 0.298 | cof |m| [0.44 0.36 0.38] ph/pi [ 0.24 -0.16 -0.17]
+t=0.855 n=4 u/u*=0.85: largest ratio A 0.4979 chi 9.07 T_rice 0.8587 (possible) | it 231 | alpha 0.258 l 0.000 L 0.001 Q 0.472 F 0.002 R3 0.267 | cof |m| [0.43 0.39 0.37] ph/pi [ 0.23 -0.15 -0.14]
+t=0.855 n=4 u/u*=1.00: largest ratio A 0.4433 chi 8.68 T_rice 0.8536 (possible) | it 265 | alpha 0.244 l 0.000 L 0.000 Q 0.471 F 0.001 R3 0.284 | cof |m| [0.36 0.38 0.44] ph/pi [-0.12 -0.18  0.23]

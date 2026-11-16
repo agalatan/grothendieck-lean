@@ -1,0 +1,4 @@
+t=0.80 u/u*=0.85 free   N=2: relaxed sup >= 2.2613 | chi 0.050 alpha 0.003 T_rice 0.8141 (possible) | k22/s2^2 -1.97 | atoms 0.92+0.00i -1.08-0.00i weights 0.540 0.460
+t=0.80 u/u*=0.85 free   N=4: relaxed sup >= 2.2613 | chi 0.050 alpha 0.003 T_rice 0.8141 (possible) | k22/s2^2 -1.97 | atoms 0.92+0.04i -1.08-0.04i -0.06+0.17i -0.75+0.41i weights 0.540 0.460 0.000 0.000
+t=0.80 u/u*=1.00 free   N=2: relaxed sup >= 2.1856 | chi 0.050 alpha 0.005 T_rice 0.8008 (possible) | k22/s2^2 -1.97 | atoms 0.92-0.00i -1.09+0.00i weights 0.541 0.459
+t=0.80 u/u*=1.00 free   N=4: relaxed sup >= 2.1856 | chi 0.050 alpha 0.005 T_rice 0.8008 (possible) | k22/s2^2 -1.97 | atoms 0.92+0.00i -1.09-0.00i -1.04-0.29i 0.75-1.12i weights 0.541 0.459 0.000 0.000

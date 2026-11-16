@@ -1,0 +1,64 @@
+== exact part (C): the dual bounds of every row at the scalars of genuine cubics
+   704 (row, endpoint, cubic) triples, 0 violations, smallest slack L_e - obj.p = 4.780e-11
+== quadrature part (N): the Wick monomial, e = |y|^2 ~ Exp(1), composite Gauss-Legendre
+   G row 21: E|q| = 0.69082135, E V = 1.000000000, E V^2 = 44.000000, E V^3 = 11352.0000; brackets (I) -2.25e-18, (II) -9.78e-18; E RHS = 0.84324310, exact scalar-level bound 0.84324310 (difference 2.2e-16); row bound 0.893288; min(R2 - r) = 7.04e-06, min(RHS - R2) = 4.5e-04  ok
+   N row 22: E|q| = 0.69082135, E V = 1.000000000, E V^2 = 44.000000, E V^3 = 11352.0000; brackets (I) 4.87e-18, (II) -1.02e-18; E RHS = 0.83615431, exact scalar-level bound 0.83615431 (difference 1.1e-16); row bound 0.886315; min(R2 - r) = 7.26e-06, min(RHS - R2) = 5.2e-04  ok
+== Monte Carlo part (N): 400000 samples per cubic; means are given with 3 standard errors
+-- Wick monomial y(|y|^2-2)   d=1  s=42=42.0000  (n,h,b,y,z)=(0.25000, 0.25000, 0.25000, 0.25000, 0.25000)  kappa6=10968.000
+   E|q| = 0.68830 +- 0.00338   (quadrature: 0.690821)
+   E V 0.9816 (exact 1.0000);  E V^2 41.3904 (exact 44.0000);  E c1 1.9814 (exact 2.0000);  E c2 0.9929 (exact 1.0000);  E(c2-1)^2 4.8831 (exact 5.0000)
+   E(c1-c2-1)^2 12.5771 (exact 13.0000);  E(c1+c2-3)^2 59.2261 (exact 61.0000);  E(c1-2)^2 31.0185 (exact 32.0000);  E|a|^2 13.6295 (exact 14.0000);  E V rho 19.2008 (exact 20.0000)
+   E rho^2 = 13.6295 <= E|a|^2 = 14.0000  
+   G row 21: min(R2 - r) = 6.95e-06, min rel(RHS - R2) = 1.6e-04, min cone = 0.0e+00 ok | brackets (I) 2.5e-05 +- 9.1e-03, (II) 3.4e-04 +- 1.6e-02 ok | E|q| 0.68830 <= E RHS 0.81764 +- 0.01109 <= scalar bound 0.843243 <= row bound 0.893288 ok
+   N row 22: min(R2 - r) = 7.00e-06, min rel(RHS - R2) = 1.8e-04, min cone = 6.7e-06 ok | brackets (I) 8.9e-04 +- 9.8e-03, (II) 1.7e-03 +- 1.7e-02 ok | E|q| 0.68830 <= E RHS 0.81339 +- 0.01331 <= scalar bound 0.836154 <= row bound 0.886315 ok
+-- X^2 conj(Y)   d=2  s=10=10.0000  (n,h,b,y,z)=(0.25000, 0.25000, 0.00000, 0.00000, 0.00000)  kappa6=444.000
+   E|q| = 0.62642 +- 0.00369
+   E V 0.9985 (exact 1.0000);  E V^2 11.7560 (exact 12.0000);  E c1 1.9982 (exact 2.0000);  E c2 0.9993 (exact 1.0000);  E(c2-1)^2 5.0774 (exact 5.0000)
+   E(c1-c2-1)^2 8.9627 (exact 9.0000);  E(c1+c2-3)^2 24.9664 (exact 25.0000);  E(c1-2)^2 11.8872 (exact 12.0000);  E|a|^2 0.0000 (exact 0.0000);  E V rho 0.0000 (exact 0.0000)
+   E rho^2 = 0.0000 <= E|a|^2 = 0.0000  
+   G row 16: min(R2 - r) = 6.93e-06, min rel(RHS - R2) = 7.9e-06, min cone = 0.0e+00 ok | brackets (I) -6.9e-04 +- 2.5e-03, (II) 1.1e-04 +- 4.6e-03 ok | E|q| 0.62642 <= E RHS 0.89462 +- 0.00536 <= scalar bound 0.895234 <= row bound 0.934540 ok
+   N row 17: min(R2 - r) = 7.00e-06, min rel(RHS - R2) = 2.0e-04, min cone = 3.6e-12 ok | brackets (I) -6.2e-04 +- 2.2e-03, (II) 1.5e-04 +- 4.2e-03 ok | E|q| 0.62642 <= E RHS 0.88701 +- 0.00529 <= scalar bound 0.887639 <= row bound 0.926462 ok
+-- X(|Y|^2-1)   d=2  s=16=16.0000  (n,h,b,y,z)=(0.12500, 0.25000, 0.06250, 0.08333, 0.12500)  kappa6=1440.000
+   E|q| = 0.65253 +- 0.00359
+   E V 0.9991 (exact 1.0000);  E V^2 17.2155 (exact 18.0000);  E c1 2.0036 (exact 2.0000);  E c2 0.9993 (exact 1.0000);  E(c2-1)^2 2.9773 (exact 3.0000)
+   E(c1-c2-1)^2 8.3987 (exact 8.0000);  E(c1+c2-3)^2 28.2725 (exact 28.0000);  E(c1-2)^2 15.3583 (exact 15.0000);  E|a|^2 3.9759 (exact 4.0000);  E V rho 5.8883 (exact 6.0000)
+   E rho^2 = 3.9759 <= E|a|^2 = 4.0000  
+   G row 19: min(R2 - r) = 6.89e-06, min rel(RHS - R2) = 1.0e-07, min cone = 0.0e+00 ok | brackets (I) -7.8e-04 +- 3.9e-03, (II) -3.0e-03 +- 7.0e-03 ok | E|q| 0.65253 <= E RHS 0.87684 +- 0.00553 <= scalar bound 0.877730 <= row bound 0.922551 ok
+   N row 20: min(R2 - r) = 7.00e-06, min rel(RHS - R2) = 1.1e-04, min cone = 6.0e-07 ok | brackets (I) -7.6e-04 +- 3.9e-03, (II) -2.8e-03 +- 6.9e-03 ok | E|q| 0.65253 <= E RHS 0.86938 +- 0.00551 <= scalar bound 0.870150 <= row bound 0.914742 ok
+-- H(X)+i X^2conj(Y)+(2-i) 2X(|Y|^2-1)   d=2  s=325/18=18.0556  (n,h,b,y,z)=(0.14583, 0.21528, 0.05556, 0.10301, 0.11458)  kappa6=1990.236
+   E|q| = 0.68659 +- 0.00343
+   E V 0.9929 (exact 1.0000);  E V^2 20.4937 (exact 20.0556);  E c1 1.9966 (exact 2.0000);  E c2 0.9978 (exact 1.0000);  E(c2-1)^2 3.1389 (exact 3.1944)
+   E(c1-c2-1)^2 7.5084 (exact 7.5278);  E(c1+c2-3)^2 29.9916 (exact 30.4167);  E(c1-2)^2 15.6111 (exact 15.7778);  E|a|^2 4.1829 (exact 4.2500);  E V rho 6.6194 (exact 6.7222)
+   E rho^2 = 3.5332 <= E|a|^2 = 4.2500  
+   G row 19: min(R2 - r) = 6.89e-06, min rel(RHS - R2) = 1.2e-08, min cone = 0.0e+00 ok | brackets (I) -8.8e-04 +- 4.8e-03, (II) -3.0e-03 +- 8.9e-03 ok | E|q| 0.68659 <= E RHS 0.88322 +- 0.06352 <= scalar bound 0.869616 <= row bound 0.922551 ok
+   N row 20: min(R2 - r) = 7.00e-06, min rel(RHS - R2) = 9.7e-06, min cone = 4.9e-07 ok | brackets (I) -1.5e-03 +- 4.5e-03, (II) -4.0e-03 +- 8.1e-03 ok | E|q| 0.68659 <= E RHS 0.87369 +- 0.05652 <= scalar bound 0.862108 <= row bound 0.914742 ok
+-- d=3: H(y1)+2y1(|y2|^2-1)+2y1(|y3|^2-1)   d=3  s=346/25=13.8400  (n,h,b,y,z)=(0.11000, 0.09000, 0.09000, 0.07000, 0.07000)  kappa6=1201.728
+   E|q| = 0.69707 +- 0.00340
+   E V 0.9991 (exact 1.0000);  E V^2 16.0581 (exact 15.8400);  E c1 1.9997 (exact 2.0000);  E c2 1.0000 (exact 1.0000);  E(c2-1)^2 2.1266 (exact 2.1200)
+   E(c1-c2-1)^2 5.0384 (exact 5.0000);  E(c1+c2-3)^2 21.0872 (exact 21.0000);  E(c1-2)^2 10.9362 (exact 10.8800);  E|a|^2 4.5720 (exact 4.5600);  E V rho 6.2932 (exact 6.2400)
+   E rho^2 = 4.5720 <= E|a|^2 = 4.5600  
+   G row 18: min(R2 - r) = 6.97e-06, min rel(RHS - R2) = 5.1e-08, min cone = 0.0e+00 ok | brackets (I) 4.0e-04 +- 4.4e-03, (II) 8.1e-04 +- 8.1e-03 ok | E|q| 0.69707 <= E RHS 0.87927 +- 0.00501 <= scalar bound 0.881502 <= row bound 0.928717 ok
+   N row 19: min(R2 - r) = 7.00e-06, min rel(RHS - R2) = 1.3e-04, min cone = 1.5e-07 ok | brackets (I) 5.2e-04 +- 4.4e-03, (II) 9.0e-04 +- 7.9e-03 ok | E|q| 0.69707 <= E RHS 0.87234 +- 0.00525 <= scalar bound 0.874301 <= row bound 0.920777 ok
+-- sum of 2 independent monomials   d=2  s=21=21.0000  (n,h,b,y,z)=(0.12500, 0.12500, 0.12500, 0.12500, 0.12500)  kappa6=2742.000
+   E|q| = 0.70816 +- 0.00337
+   E V 1.0049 (exact 1.0000);  E V^2 23.4407 (exact 23.0000);  E c1 2.0060 (exact 2.0000);  E c2 1.0029 (exact 1.0000);  E(c2-1)^2 2.5207 (exact 2.5000)
+   E(c1-c2-1)^2 6.5434 (exact 6.5000);  E(c1+c2-3)^2 30.7449 (exact 30.5000);  E(c1-2)^2 16.1234 (exact 16.0000);  E|a|^2 7.0440 (exact 7.0000);  E V rho 10.1032 (exact 10.0000)
+   E rho^2 = 6.3565 <= E|a|^2 = 7.0000  
+   G row 20: min(R2 - r) = 6.97e-06, min rel(RHS - R2) = 2.9e-07, min cone = 0.0e+00 ok | brackets (I) 3.9e-04 +- 5.7e-03, (II) 8.4e-04 +- 1.0e-02 ok | E|q| 0.70816 <= E RHS 0.86405 +- 0.00704 <= scalar bound 0.867564 <= row bound 0.912398 ok
+   N row 21: min(R2 - r) = 6.98e-06, min rel(RHS - R2) = 3.6e-05, min cone = 2.4e-07 ok | brackets (I) 6.9e-04 +- 6.0e-03, (II) 1.4e-03 +- 1.1e-02 ok | E|q| 0.70816 <= E RHS 0.85748 +- 0.00811 <= scalar bound 0.860114 <= row bound 0.904871 ok
+-- sum of 8 independent monomials   d=8  s=21/4=5.2500  (n,h,b,y,z)=(0.03125, 0.03125, 0.03125, 0.03125, 0.03125)  kappa6=171.375
+   E|q| = 0.77635 +- 0.00298
+   E V 0.9987 (exact 1.0000);  E V^2 7.1236 (exact 7.2500);  E c1 1.9973 (exact 2.0000);  E c2 0.9995 (exact 1.0000);  E(c2-1)^2 0.6236 (exact 0.6250)
+   E(c1-c2-1)^2 1.6168 (exact 1.6250);  E(c1+c2-3)^2 7.5981 (exact 7.6250);  E(c1-2)^2 3.9838 (exact 4.0000);  E|a|^2 1.7389 (exact 1.7500);  E V rho 2.4708 (exact 2.5000)
+   E rho^2 = 1.3292 <= E|a|^2 = 1.7500  
+   G row 10: min(R2 - r) = 6.98e-06, min rel(RHS - R2) = 3.4e-07, min cone = 0.0e+00 ok | brackets (I) -3.2e-05 +- 2.1e-03, (II) -5.3e-05 +- 3.9e-03 ok | E|q| 0.77635 <= E RHS 0.89774 +- 0.00388 <= scalar bound 0.903280 <= row bound 0.938655 ok
+   N row 10: min(R2 - r) = 7.00e-06, min rel(RHS - R2) = 2.8e-06, min cone = 2.4e-08 ok | brackets (I) 7.1e-05 +- 1.4e-03, (II) 1.6e-04 +- 3.2e-03 ok | E|q| 0.77635 <= E RHS 0.88973 +- 0.00375 <= scalar bound 0.895998 <= row bound 0.929808 ok
+-- sum of 30 independent monomials   d=30  s=7/5=1.4000  (n,h,b,y,z)=(0.00833, 0.00833, 0.00833, 0.00833, 0.00833)  kappa6=12.187
+   E|q| = 0.83549 +- 0.00260
+   E V 0.9982 (exact 1.0000);  E V^2 3.3741 (exact 3.4000);  E c1 1.9993 (exact 2.0000);  E c2 0.9997 (exact 1.0000);  E(c2-1)^2 0.1661 (exact 0.1667)
+   E(c1-c2-1)^2 0.4320 (exact 0.4333);  E(c1+c2-3)^2 2.0260 (exact 2.0333);  E(c1-2)^2 1.0629 (exact 1.0667);  E|a|^2 0.4660 (exact 0.4667);  E V rho 0.6628 (exact 0.6667)
+   E rho^2 = 0.2975 <= E|a|^2 = 0.4667  
+   G row  2: min(R2 - r) = 6.91e-06, min rel(RHS - R2) = 6.4e-08, min cone = 0.0e+00 ok | brackets (I) -1.0e-04 +- 6.8e-04, (II) -2.1e-04 +- 1.3e-03 ok | E|q| 0.83549 <= E RHS 0.90257 +- 0.00278 <= scalar bound 0.908279 <= row bound 0.926139 ok
+   N row  2: min(R2 - r) = 6.95e-06, min rel(RHS - R2) = 7.2e-07, min cone = 1.3e-08 ok | brackets (I) -4.7e-05 +- 3.5e-04, (II) -1.9e-04 +- 1.2e-03 ok | E|q| 0.83549 <= E RHS 0.89918 +- 0.00275 <= scalar bound 0.904979 <= row bound 0.921972 ok
+exact violations: 0;  quadrature failures: 0;  Monte Carlo checks outside 3 standard errors or failing: 0;  time 3.8 s
+/usr/local/bin/python3 -I validate_cubics.py ../results/cert_G_final.json    3.34s user 0.49s system 98% cpu 3.910 total

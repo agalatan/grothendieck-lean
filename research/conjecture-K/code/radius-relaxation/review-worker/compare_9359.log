@@ -1,0 +1,9 @@
+E|a|^2 = A + B/4                                 True
+E[Vb] = A + B/2                                  True
+s = A + B + 2t                                   True
+Q0: s - 3 E d^2 - (2/3) E|a|^2 = 2 h0            True
+Q1: s - 2t - E|a|^2 = 72 y                       True
+Q2: s - E|a|^2 - 2 E[c(V-1)] = 24 y              True
+Q3: E[c(V-1)] - t = 24 y                         True
+Q4: E[Vb] - E|a|^2 = 24 y                        True
+E[c2 V] - 1 = (s - E[V rho])/2                   True

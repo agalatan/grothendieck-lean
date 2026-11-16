@@ -1,0 +1,30 @@
+1. the eight models of results/replay.json (lam = square of the holomorphic amplitude)
+  ok   u and delta of all eight stored models reproduced exactly; E V = u, E V^2 - 2u^2 = delta by own moment code
+2. content (11) = signed pairing (14), and the inequality, on polynomial profiles
+  ok   77 coordinate checks of (11) = (14), 56 instances of the inequality (largest ratio/Theta = 0.8889); h = v gives ||c||^2 = 16 sum a_j^6 u_j^2/d_j
+3. supremum of ||c||^2/(delta Omhat) over polynomial profiles, deg k' <= 0 (h = v), 2, 5; proved Theta
+  ok      Q_2                          chi 5.5000 | 0.484848 | 0.516199 | 0.518476 | Theta = 6/11 = 0.545455 (Theta/sup = 1.052)
+  ok      Q_3                          chi 3.2593 | 0.242424 | 0.253880 | 0.254043 | Theta = 173/594 = 0.291246 (Theta/sup = 1.146)
+  ok      Q_4                          chi 2.3125 | 0.144144 | 0.149382 | 0.149404 | Theta = 175/888 = 0.197072 (Theta/sup = 1.319)
+  ok      Q_5                          chi 1.7920 | 0.095238 | 0.098025 | 0.098127 | Theta = 1361/10080 = 0.135020 (Theta/sup = 1.376)
+  ok      Q_8                          chi 1.0703 | 0.038929 | 0.039663 | 0.039846 | Theta = 257/4932 = 0.052109 (Theta/sup = 1.308)
+  ok      Q_2, lam = 1                 chi 4.9600 | 0.215054 | 0.224399 | 0.224619 | Theta = 6/11 = 0.545455 (Theta/sup = 2.428)
+  ok      Q_3, lam = 4                 chi 3.0360 | 0.041092 | 0.042257 | 0.042273 | Theta = 173/594 = 0.291246 (Theta/sup = 6.890)
+  ok      Q_2 + Q_3 (equal energies)   chi 2.1898 | 0.197322 | 0.211921 | 0.211986 | Theta = 6/11 = 0.545455 (Theta/sup = 2.573)
+  ok      2 x Q_2 + bulk               chi 1.8889 | 0.104575 | 0.108450 | 0.108469 | Theta = 6/11 = 0.545455 (Theta/sup = 5.029)
+  ok      Q_3 + Q_4 lam = 1 + bulk     chi 1.8758 | 0.128398 | 0.138151 | 0.138189 | Theta = 173/594 = 0.291246 (Theta/sup = 2.108)
+4. reviewer's remark: the proof and the formula Theta^pol extend to d = 1, Q_1 = X(|Y|^2 - 1), with Theta_1 = 5/3
+  ok   Theta^pol_1 = (B_1 + 16)/(3 L_1) = 40/24 = 5/3; second requirement b_1/3 = 1/3
+  ok   Q_1: u = 1, delta = 16 (chi = 16)
+  ok   35 instances with blocks of dimension 1 (alone, several, with bulk, mixed with d = 2, 3, 4): (11) = (14) and the inequality with 5/3 (largest ratio/Theta = 0.8000)
+  ok      Q_1                          chi 16.0000 | h = v 1.333333 | polynomial sup (deg k' <= 5) 1.479730 | 5/3 = 1.666667
+  ok      Q_1 + Q_1 (a = 1, 2)         chi 10.8800 | h = v 1.019608 | polynomial sup (deg k' <= 5) 1.189758 | 5/3 = 1.666667
+  ok      3 x Q_1 + bulk               chi 3.1296 | h = v 0.150778 | polynomial sup (deg k' <= 5) 0.167402 | 5/3 = 1.666667
+  ok      Q_1 + Q_2 + Q_3 + bulk       chi 1.8586 | h = v 0.192598 | polynomial sup (deg k' <= 5) 0.216240 | 5/3 = 1.666667
+5. d = 1 and the tangent divergence of the signed-pairing package (higher-degree ledger 4.21), exact
+  ok   X S^2 = Z + N/2: the trace representative at d = 1 is Z plus half the tangent divergence
+  ok   ||Z||^2 = 41, <Z, N> = -38, ||N||^2 = 84, <N, q> = 0, <Z, q> = 4
+  ok   theta(Z) = 19/8, theta(Z + N/2) = 5/3 (this package at d = 1), theta(Z + (19/42) N) = 209/126 (the best multiple, ledger 4.21)
+  ok   R_d(S) = (S - d)^2/d + (1 - 1/d) S^2: trace part plus traceless part of the conditional variance
+ALL CHECKS PASSED
+OMP_NUM_THREADS=1 nice -n 10 /usr/local/bin/python3 -I -B    1.23s user 0.05s system 93% cpu 1.365 total

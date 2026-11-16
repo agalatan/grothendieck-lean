@@ -1,0 +1,21 @@
+{
+  "status": "C PASS",
+  "sphereDimensions": [
+    "2",
+    "3",
+    "7",
+    "32",
+    "1024"
+  ],
+  "tests": "gamma and sphere identities, trace obstruction, real matrix moments, two polynomial profiles, arithmetic constants",
+  "correlatedExample": {
+    "u": 3,
+    "delta": 104,
+    "contentHofVEqualsV": 12
+  },
+  "extraMatrixAudit": {
+    "u": "80",
+    "delta": "92672",
+    "firstContentForHofVEqualsV": "2048"
+  }
+}
