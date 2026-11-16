@@ -22,7 +22,7 @@ import Mathlib
 So `Φ_d − (γ/16)h²` majorises `Ψ_ν(L + p, L − p)`; the statement is pointwise in the phases, and
 `Ψ_ν` is never formed.  `γ ≤ γ*(R)` is a condition without division on the data,
 `γ · majGammaDen ≤ 8σ(e₂e₃)²` (`le_majGammaStar_iff`).  This is Theorem 1 of the note
-`handoff/research-third-decimal/caps-stage0b-lemma-2026-11-15/PROOF.tex` (issue #183), whose
+`research/identity-tail/sources/lemma-2026-11-15/PROOF.tex` (issue #183), whose
 proof is followed; the equation numbers below are those of the note:
 
 * Lemma 1, identity (1.1) (`majPhi_sub_majEll`, `majEll_le_majPhi`): with `M = [[d₂, −ν], [−ν, d₃]]`,
