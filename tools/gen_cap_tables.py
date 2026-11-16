@@ -9,18 +9,18 @@ The one-dimensional integrals of the polar grid of `Grothe/LowerAnalytic/CapGrid
 
 are enclosed by an exact (fractions.Fraction) mirror of the computable Lean enclosures
 `CapTab.radEncList`, `CapTab.tailEnc`, `GrotheKernel.angEnc`; each enclosure is then rounded outward
-to the dyadic grid 2^-bits, so the Lean checker `CapTab.tablesOK` accepts the printed entries
-(it recomputes the enclosures and checks `lo <= enc.lo` and `enc.hi <= hi`).
+to the dyadic grid 2^-bits.  Lean does not read this output: it computes the tables of a grid from
+the same enclosures (`mkTables`, `Grothe/LowerAnalytic/CapTablesMk.lean`).  The script is an
+independent mirror for cross-checks, and it prints the witnesses of the two bounds on pi.
 
-Output: one entry per line, in the format read by `CapTab.parseEntries`:
+Output: one entry per line:
 
     r <a> <b> <m> <lo> <hi>       radI a b m
     t <R> <m> <lo> <hi>           tailI R m
     c <N> <j> <n> <lo> <hi>       angC (thN N j) (thN N (j+1)) n
     s <N> <j> <n> <lo> <hi>       angS (thN N j) (thN N (j+1)) n
 
-with rationals written `p/q` (or `p`).  The radial entries of one ring are consecutive (the Lean
-checker caches the shared work of a ring and the ball table of one N).
+with rationals written `p/q` (or `p`).  The radial entries of one ring are consecutive.
 
 Usage:
     python3 tools/gen_cap_tables.py --h 1/200 --Nr 1600 --N 1024 [--mmax 16] [--nmax 12]
@@ -28,7 +28,7 @@ Usage:
     python3 tools/gen_cap_tables.py --pi        (the witnesses of `pi_gt_d30`, `pi_lt_d30`)
 
 `--lean NAME` writes a Lean declaration `def NAME : String := "..."` instead of the plain list.
-Constraints checked by Lean: 0 <= a <= b <= 8, 1 <= R <= 16, m <= 16, 4 <= N <= 4096, |n| <= 12.
+Ranges of the Lean enclosures: 0 <= a <= b <= 8, 1 <= R <= 16, m <= 16, 4 <= N <= 4096, |n| <= 12.
 """
 
 import argparse
