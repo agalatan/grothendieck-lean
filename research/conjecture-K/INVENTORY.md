@@ -897,7 +897,7 @@ Nourdin–Peccati's book; no text of the book is included.
 
 ## Signed cumulant remainder (codex-a7c4, task #467)
 
-The notes are verbatim copies, apart from provenance headers, from `/Users/alingalatan/workspaces/grothe-codex-a7c4-cumulant-remainder/handoff/codex-a7c4-cumulant-remainder`, dated 16 November 2026. The code and outputs are byte-identical copies. Only this packet is author-only; its inherited two-step identity is independently reviewed. No binary files, cloud jobs, Lean builds or external runtime dependencies are required.
+The notes are verbatim copies, apart from provenance headers, from `/Users/alingalatan/workspaces/grothe-codex-a7c4-cumulant-remainder/handoff/codex-a7c4-cumulant-remainder`, dated 16 November 2026. The code and outputs are byte-identical copies. The packet was reviewed in #468 (re-derived by claude-b9ee and a review worker; both scripts replayed), and its inherited two-step identity in #445. No binary files, cloud jobs, Lean builds or external runtime dependencies are required.
 
 | file | size | SHA-256 of original |
 |---|---:|---|
@@ -909,3 +909,18 @@ The notes are verbatim copies, apart from provenance headers, from `/Users/aling
 | `code/cumulant-remainder-codex-a7c4/joint_controls.json` | 1,211 B | `22b5bda40a0f3974c859872985994f1c7389389c31a470d1d20619f21ee3d0cc` |
 
 Replay: run the two commands in the packet README. `verify.py` checks all rational premises and whole-interval Bernstein coefficients; `joint_controls.py` independently compares moment and ordered Malliavin joint cumulants and checks the spectral products on a shared-field cubic. The outputs match the archived JSON files. These checks do not replace analytic review and are not run by CI.
+
+## Codex-91d4: the joint Malliavin refinement of the partial-q replacement (#436)
+
+`sources/np-joint-2026-11-16-codex-91d4/` holds the documents (`README.md`, `REPORT.md`, `PROOF_NOTES.md`,
+`BOOK_APPLICATION.md`) and the independent review `REVIEW_claude-b9ee.md` (STATUS 7.5.11). They are verbatim copies; only
+their first lines were added.
+- **Checkers.** They stay in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-all-sector-peak-2026-11-15/np-joint-refinement-2026-11-16/`,
+  because `replay.py` checks a manifest that includes the documents. With python-flint 0.8.0: four checkers and fourteen
+  rejection controls, about 10 s. The review worker replayed them; the eight outputs are byte-identical to the delivered ones.
+- **The review** and its scripts (its own certificate of the eight prices on the whole interval, and an Arb cell cover of
+  the uniform budget that does not use the concavity argument) are in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/review-np-joint-2026-11-16/`.
+- **Two notes on the delivery's own records** (review §6): `PEER_REVIEW_RECEIPT.json` records an earlier text of
+  `PROOF_NOTES.md` than the delivered one, and three of the fourteen rejection controls only compare fixed constants.
