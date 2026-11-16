@@ -189,6 +189,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.gramT_schatten
 #print axioms Grothe.LowerAnalytic.gramT_symm
 #print axioms Grothe.LowerAnalytic.gramZ_sq_le
+#print axioms Grothe.LowerAnalytic.gridOKNu_mkGridNu
 #print axioms Grothe.LowerAnalytic.gridOK_mkGrid
 #print axioms Grothe.LowerAnalytic.influence_bound
 #print axioms Grothe.LowerAnalytic.influence_pairing
@@ -9908,6 +9909,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.pieceRepair_14x150p0_check
 #print axioms Grothe.LowerAnalytic.pot_le_of_nodeOK
 #print axioms Grothe.LowerAnalytic.pot_le_of_pieceOK
+#print axioms Grothe.LowerAnalytic.psiT_le_majPoly
+#print axioms Grothe.LowerAnalytic.psiT_le_majPoly_of_cellOKNu
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
 #print axioms Grothe.LowerAnalytic.qf_nonneg_of_ldlOK
 #print axioms Grothe.LowerAnalytic.quartic_identity

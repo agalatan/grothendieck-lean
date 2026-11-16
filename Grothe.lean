@@ -65,6 +65,7 @@ import Grothe.Lower.TransferL2
 import Grothe.LowerAnalytic.Bernstein2
 import Grothe.LowerAnalytic.Bridge
 import Grothe.LowerAnalytic.CapAssembly
+import Grothe.LowerAnalytic.CapCheckNuSound
 import Grothe.LowerAnalytic.CapCheckSound
 import Grothe.LowerAnalytic.CapChordData
 import Grothe.LowerAnalytic.CapChords
