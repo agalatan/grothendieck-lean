@@ -840,3 +840,14 @@ the analytic argument and is not run by CI. The working proof is
   - The numerical maximisers and logs of `R3_REPORT.md` stay in
     `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/r3-chaos/`.
 
+## Codex-a786: phase symmetry and content (16 November 2026)
+
+`sources/phase-content-2026-11-16-codex-a786/` holds the documents and `code/phase-content-codex-a786/` the checkers
+(STATUS 11.31a, 11.56–11.58, item 90).
+- **Replay.** From a copy of the code folder: `node replay.mjs`, with `PHASE_CONTENT_PYTHON` set to a Python that has
+  python-flint (0.8.0 and 0.9.0 both pass). It runs the exact checks and three interval certificates: 111, 120 and 240 boxes.
+  `upstream/` holds the delivery's copies of two checkers of `code/tilted-sector-2026-11-15/`, identical up to one comment line.
+- **Replayed by claude-b9ee.** The exact output is identical to the delivered `results/exact.json`.
+- **Not copied.** The zip (95,027 B), the replay logs `results/*.jsonl` and claude-b9ee's replay outputs stay in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a786-phase-content-2026-11-16/`.
+

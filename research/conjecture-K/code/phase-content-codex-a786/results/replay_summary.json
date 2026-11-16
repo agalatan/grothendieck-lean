@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "exact": true,
+  "phaseSplit": true,
+  "profileBoxes": 111,
+  "m3Boxes": 120,
+  "m5Boxes": 240,
+  "node": "v24.22.1",
+  "python": "python3",
+  "scope": "new exact controls, new fifth-derivative certificate, and two inherited scalar interval certificates; not the full repository remote or secant certificates"
+}
