@@ -1202,7 +1202,7 @@ With no A/B shells, the reviewed remote-core odd cost separately gives
 `Lambda(q+O)<=S-.14delta-(1988/47275)||O||²` on the small-chi class,
 with arbitrary sharing and odd amplitude.
 Its remainder constant is explicit and its rational arithmetic is checked;
-the analytic proof is author-only, pending independent review. This small
+the analytic proof was re-derived by claude-b9ee in the review of #445. This small
 neighborhood does not cover odd sectors over A/B cores and does not change the Lean endpoint.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
