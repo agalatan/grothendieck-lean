@@ -36,7 +36,7 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
 - **Proved** (at the peak row unless the whole box is named): the remote part, Λ(q) < S + 3.6·10⁻⁷ for every cubic q
   independent of z₁ (2.1); the A-shell with independent drivers, on the whole box (2.2); explicit regions of the
   shared-driver core (2.4); the content inequality for several structured families (2.5); the B-shell cost and the
-  alignment of B- and A-contents (2.7, with a sharper author-only bound); the local joint A/B form (2.8); the odd sectors over the zero core and over every remote core, with arbitrary sharing (2.9); the
+  alignment of B- and A-contents (2.7, with a sharper author-only bound); the local joint A/B form and (P) on the real aligned plane (2.8); the odd sectors over the zero core and over every remote core, with arbitrary sharing (2.9); the
   central part of the consumer, conditional on an all-sector bound, and at ε = 299/400 the whole consumer
   outside the central interval (0.8165, 0.866) (2.10).
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
@@ -647,7 +647,11 @@ The full replay requires 560 corner jobs covering 65 amplitude cells, with exact
 estimate and retains the nonnegative singular Hessian of the norm; it requires no lower bound on the perturbed norm.
 The remaining compact region has |w| ≤ 5/4 and 1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the origin profile,
 the directional exterior 16 S_r²+3S_r ≥ 6|2A+B|², and the proved local boxes and tube.
-Its finite-amplitude cover remains **open**. Odd sectors over the joint core are a separate obligation; these
+Its finite-amplitude cover remains **open** in general. On the real aligned plane (w, A, B real, that is every triple on one
+complex line through zero) it is proved: shift curvature from the unperturbed base, semiconvex interpolation in w and
+then y, an amplitude continuation and a certified cover of 20 regions (52,262 points, 32,592 leaves), with complex
+neighbourhoods of radius 1/8192 around 31,090 direct boxes [P + C · codex-a7c4, re-derived and audited by claude-b9ee ·
+7.4.14]. Odd sectors over the joint core are a separate obligation; these
 partial interior results do not yield a new Grothendieck lower bound.
 
 ### 2.9 The odd sectors
@@ -876,7 +880,7 @@ keeps a cross term and improves J₁ by more than 3.9·10⁻⁴ on an explicit r
    (0.8165, 0.866) is left, as ten explicit all-sector inequalities (2.10). *Gives:* 1.402 from K_η.
 7. **The retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle around it (2.6).
    Left: prove the joint remainder premise (P) of 2.8 for |w| ≤ 5/4 and
-   1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the origin profile, directional exterior and proved local pieces; its conditional assembly uses the existing tilted-content theorem.
+   1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the origin profile, directional exterior, proved local pieces and the real aligned plane; its conditional assembly uses the existing tilted-content theorem.
    The other obligations are the odd sectors over A/B cores through the averaged premise (P_Ψ) of 2.9, the other rows through the
    weighted scaling of 1.6,
    and more than three remote variables in the numerics. *Gives:* the same conclusion as K_η, with larger margins (chapter 5).

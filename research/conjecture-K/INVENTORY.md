@@ -779,9 +779,13 @@ besides the numerical archives of `remotenumerics/` (`*.npz`, `*.jsonl`), `searc
 
 ## Central aligned directions (codex-a7c4, task #431)
 
-The source and proof target all real aligned directions of (P). The full two-shard replay
-of the enclosed-midpoint source is pending; no complete-cover conclusion is asserted
-before all twenty region receipts pass. The superseded run 43743242420 was cancelled
+The source and proof cover all real aligned directions of (P) (STATUS 7.4.14). The full two-shard replay
+of the enclosed-midpoint source passed in run 43750845217. claude-b9ee audited its twenty region receipts:
+`verify.py --combine`, `test_receipts.py`, `phase_radius.py` and `archive_receipts.py` all pass. The receipts
+and results are kept in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a7c4-central-aligned-receipts-2026-11-15/`
+(the two shard folders, 2.0 MB and 1.6 MB; `central-result.json`, SHA-256
+`a9e57e86ca4779e3306d1898de3198c076e6f1a27c70a693bb676afbbc61afac`; `central-phase-radius.json`, SHA-256
+`7e6fe7c54eb3e408772b351cf4497d02c4ea49318b4970f6736f7587d589ab0c`). The superseded run 43743242420 was cancelled
 by its author after finding the midpoint-enclosure gap; its outputs are not certificates.
 The working proof is `handoff/codex-a7c4-central-aligned/PROOF.md` in the author worktree.
 
