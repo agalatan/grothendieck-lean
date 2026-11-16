@@ -1,0 +1,149 @@
+{
+  "agent": "codex-a7c4",
+  "exact": {
+    "book_variance_coefficients": "PASS",
+    "change_of_variables": "PASS",
+    "kernel_covariance_factor": "1/12",
+    "moments": {
+      "complex_Wick_projection": {
+        "C_derivative_at_zero": "-21",
+        "fourth_cumulant": "63",
+        "gamma_variance": "89/9"
+      },
+      "real_He3": {
+        "C_derivative_at_zero": "-30",
+        "fourth_cumulant": "90",
+        "gamma_variance": "14"
+      }
+    },
+    "peak_1e_minus4_corollary": "PASS (rational premise; paper implication in notes)",
+    "peak_squared_deficit_bound_using_pi_lt_22_over_7": "2358059/236404707840000",
+    "weight_mass": "PASS"
+  },
+  "numerical": {
+    "comparisons": [
+      {
+        "direct": 1.1102230246251565e-16,
+        "identity_error": 1.1102230246251565e-16,
+        "model": "gaussian",
+        "order_change": 5.551115123125783e-17,
+        "path": 0.0,
+        "transformed": 0.0,
+        "u": 0.001
+      },
+      {
+        "direct": 2.7755575615628914e-16,
+        "identity_error": 2.7755575615628914e-16,
+        "model": "gaussian",
+        "order_change": 1.6653345369377348e-16,
+        "path": 0.0,
+        "transformed": 0.0,
+        "u": 0.04
+      },
+      {
+        "direct": 1.0270120175293052e-05,
+        "identity_error": 1.773314297053713e-16,
+        "model": "real_He3",
+        "order_change": 5.551115123125783e-17,
+        "path": 1.027012017511572e-05,
+        "transformed": 1.027012017511572e-05,
+        "u": 0.001
+      },
+      {
+        "direct": 0.005987812466507092,
+        "identity_error": 2.0307540371522492e-13,
+        "model": "real_He3",
+        "order_change": 9.090113045964743e-10,
+        "path": 0.005987812466710167,
+        "transformed": 0.005987812466710165,
+        "u": 0.04
+      },
+      {
+        "direct": 7.337253385031328e-06,
+        "identity_error": 1.076579722993163e-15,
+        "model": "complex_Wick_projection",
+        "order_change": 6.661338147750939e-16,
+        "path": 7.3372533839547705e-06,
+        "transformed": 7.3372533839547485e-06,
+        "u": 0.001
+      },
+      {
+        "direct": 0.0047906614713377205,
+        "identity_error": 2.468771714836393e-14,
+        "model": "complex_Wick_projection",
+        "order_change": 1.3331925580867265e-10,
+        "path": 0.004790661471313037,
+        "transformed": 0.004790661471313033,
+        "u": 0.04
+      }
+    ],
+    "gaussian_scale_mixture_sign_control": [
+      {
+        "C": -0.0005608174944330968,
+        "a": 0.001
+      },
+      {
+        "C": -0.043213915171748496,
+        "a": 0.1
+      },
+      {
+        "C": -0.1294095225512604,
+        "a": 1.0
+      },
+      {
+        "C": -0.09059310892394865,
+        "a": 10.0
+      },
+      {
+        "C": -0.03249448392541447,
+        "a": 100.0
+      }
+    ],
+    "quadrature_orders": [
+      80,
+      160
+    ],
+    "status": "floating normalization controls only",
+    "t_and_a_nodes": 72,
+    "visible_mixture": [
+      [
+        0.25,
+        0.4
+      ],
+      [
+        0.5,
+        0.9
+      ],
+      [
+        0.25,
+        1.6
+      ]
+    ]
+  },
+  "peak_budget_diagnostic": {
+    "B": 1.4268354638903147,
+    "B0": 1.3718792806008693,
+    "e_sufficient_for_deficit_loss_1e_minus4": 0.0018196314593631083,
+    "independent_rules": [
+      {
+        "B": 1.4268354638902114,
+        "laguerre_order": 96
+      },
+      {
+        "B": 1.426835463890305,
+        "laguerre_order": 192
+      }
+    ],
+    "quad_reported_error_before_prefactor": 1.3238208793184365e-12,
+    "status": "floating illustration, no certified sign bound",
+    "u": 0.04,
+    "weight_mass": 0.054956183289445404
+  },
+  "scope": "Identity controls. No all-cubic sign certificate or endpoint improvement.",
+  "task": 464,
+  "versions": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.1",
+    "sympy": "1.14.0"
+  }
+}

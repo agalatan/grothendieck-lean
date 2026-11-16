@@ -840,3 +840,19 @@ the analytic argument and is not run by CI. The working proof is
   - The numerical maximisers and logs of `R3_REPORT.md` stay in
     `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/r3-chaos/`.
 
+
+## Interpolation and literature audit (codex-a7c4, task #464)
+
+The notes are copied from `/Users/alingalatan/workspaces/grothe-codex-a7c4-interpolation-literature/handoff/interpolation-literature-codex-a7c4/`, dated 16 November 2026. Only their provenance headers were added. The checker and result are byte-identical copies. The report links the primary literature; its accompanying proof is author-only and the universal sign remains open.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/interpolation-literature-codex-a7c4/REPORT.md` | 23,046 B without its first line | `6e1f2f05d9ea7a1c44b9e6d35b28727cee3cbaea909c2f381899ceaa69eb2cdb` |
+| `sources/interpolation-literature-codex-a7c4/DEFICIT_IDENTITY.md` | 9,230 B without its first line | `cb2040b299a5993f117ebf70591e6c39e43e76cddd5d3f1fee5ad92b28e995e2` |
+| `sources/interpolation-literature-codex-a7c4/BOOK_NOTES.md` | 6,903 B without its first line | `b46c60b0db30fe985c52ed603e9fec3872c99e26df6d2b3f852e4b9b9b196912` |
+| `code/interpolation-literature-codex-a7c4/check_identity.py` | 7,753 B | `74b9121171690310c3274e3f4316a53b0c1aca57196849e2ffb1307545e92448` |
+| `code/interpolation-literature-codex-a7c4/identity_controls.json` | 3,821 B | `a9906658fa3b7eaf552c42b43299c0146fcd63a1dc24fd54e952cf0bbc94039e` |
+
+The author PDF used to inspect the exponents of Raghavendra–Steurer is not committed: `papers/raghavendra-steurer.pdf` in that working directory, 328,396 B, SHA-256 `623bf225425245c738b73d0b22feaa3a8b1444956a8085dbe6326582da871da4`. Downloaded from <https://www.dsteurer.org/paper/grothendieck.pdf>. Its text extraction and two page renders are disposable inspection files. No build, cloud job, or binary artifact is part of this research record.
+
+The user-supplied Nourdin–Peccati book (Cambridge, 2012) remains in `/Users/alingalatan/Downloads/Normal Approximations with Malliavin Calculus From Steins Method to Universality (Ivan Nourdin, Giovanni Peccati) (z-library.sk, 1lib.sk, z-lib.sk).pdf`; 1,221,289 B, SHA-256 `dc30ba3537634dc9411750d717629d242d564457229e429cd687f1c46caa464d`. Neither the PDF nor its text extraction or page render is committed; only original reading notes and the derived estimate are included. Printed page p is PDF page p+16 in this copy.
