@@ -298,8 +298,10 @@ over a core containing both.
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
 PVD, which implies complex PVD; no converse is known [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. The sharp
 radius bound E|q| ≤ (√π/2)‖q‖₂ on H₂,₁ is open; cases are proved for real BNC of order 2, one-variable H₃ at every
-scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| < 0.95133‖q‖₂ for every Wick cubic [R · 3.7]. In real second chaos,
-E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. Exact remote K is not needed for 1.402.
+scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| < 0.95133‖q‖₂ for every Wick cubic [P + C · GPT review, re-derived and replayed by claude-b9ee · 3.7]. In real second chaos,
+E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. In real third chaos the same bound would give the sharp radius by phase averaging; it
+is proved for reflection-odd and conditionally Gaussian cubics and in at most seven coordinates, and moments alone
+cannot give it [3.6, 3.21]. Exact remote K is not needed for 1.402.
 
 **External claims.** A report claims a remote closure in another normalisation (E|q|² ≤ 1 ⟹ Φ(q) ≤ 2853/4000, and
 three related statements); its package is not in the record, so nothing is checked [R · 11.7–11.11].

@@ -1,0 +1,193 @@
+Sharp L1 comparison for cubic Wiener chaos: rigorous Stein reductions
+
+All assertions below are rigorous except the explicitly identified missing sign
+conditions. No proof of the sharp bound for a general cubic is claimed.
+
+1. Exact Mills-ratio covariance identity
+
+Let X be a real element of the d-th Gaussian Wiener chaos, d >= 1, with
+E[X^2] = 1. Put
+
+    c = sqrt(2/pi),        Gamma = ||DX||^2/d.
+
+The Gaussian integration-by-parts identity gives
+
+    E[X a(X)] = E[Gamma a'(X)],       E[Gamma] = 1.
+
+For x >= 0 define the standard-normal Mills ratio and its auxiliary function
+
+    r(x) = (1-Phi(x))/phi(x)
+         = integral_0^infinity exp(-x t - t^2/2) dt,
+    w(x) = 1-x r(x)
+         = integral_0^infinity t exp(-x t - t^2/2) dt.
+
+The last equality follows by integrating the derivative of
+exp(-x t-t^2/2). In particular 0 < w(x) <= 1, and w is decreasing.
+
+The bounded odd solution of the normal Stein equation
+
+    a'(x)-x a(x) = |x|-c
+
+is, for x >= 0,
+
+    a(x) = -1+c r(x),
+
+and is extended oddly to negative x. The identity c r(0)=1 makes a(0)=0.
+Because r'(x)=x r(x)-1, its derivative is
+
+    a'(x) = -c w(|x|).
+
+Consequently integration by parts yields the exact identity
+
+    E|X|-c
+      = E[(1-Gamma)a'(X)]
+      = c E[(Gamma-1) w(|X|)].                         (1)
+
+Thus the desired bound is equivalent to the sign condition
+
+    E[(Gamma-1) w(|X|)] <= 0.                          (2)
+
+Condition (2) is a reformulation, not an established inequality for arbitrary
+cubic chaos. The Malliavin identity supplies (1) but does not by itself supply
+the sign. Replacing Gamma by the one-dimensional Stein kernel
+tau_X(X)=E[Gamma | X] gives the same formula.
+
+No pointwise expression p_X(0) E[Gamma | X=0] is needed or asserted here.
+Such an expression can be ill-defined when the density is singular at zero,
+as happens for products of independent Gaussian variables. Distributional
+delta identities at zero must instead be interpreted using a mollifier or
+the density of the Gamma-weighted pushforward measure. Formulas (1) and
+(3)-(5) use bounded smooth kernels (or a bounded C^1 Stein solution), so
+they avoid that issue entirely.
+
+Normalization check: for X=G standard normal (d=1), Gamma=1 identically.
+Both sides of (1) are zero.
+
+2. Exact Gaussian-smoothing reduction
+
+Let G be an independent standard Gaussian, s>0, and set
+
+    W_s = X+sqrt(s)G,
+    m(s) = E|W_s|,
+    phi_s(x) = (2 pi s)^(-1/2) exp(-x^2/(2s)).
+
+Gaussian smoothing gives
+
+    m'(s) = E[phi_s(X)] = p_{W_s}(0).
+
+Moreover, conditional expectation and Gaussian integration by parts give
+
+    E[X sign(W_s)]
+      = E[X (2 Phi(X/sqrt(s))-1)]
+      = 2 E[Gamma phi_s(X)],
+
+    E[sqrt(s)G sign(W_s)] = 2s E[phi_s(X)].
+
+Adding these identities,
+
+    m(s) = 2 E[(Gamma+s) phi_s(X)].                    (3)
+
+Hence
+
+    d/ds [m(s)/sqrt(1+s)]
+      = E[(1-Gamma) phi_s(X)]/(1+s)^(3/2).             (4)
+
+Thus the stronger sufficient condition for monotonicity under normalized
+Gaussian smoothing is
+
+    E[(Gamma-1) exp(-X^2/(2s))] <= 0  for every s>0.   (5)
+
+Equivalently,
+
+    2(1+s) p_{W_s}(0) >= E|W_s|.
+
+If (5) held for every cubic X, then letting s increase to infinity in (4)
+would prove E|X|<=c. Indeed m(s)/sqrt(1+s) tends to E|G|=c, while its limit
+as s decreases to zero is E|X|. Condition (5) remains unproved here.
+
+Gaussian check: Gamma=1 makes the derivative in (4) exactly zero, as required.
+
+3. A tempting stronger argument fails already for He_3
+
+It is not legitimate to assume that tau_X(x) is increasing with |x|.
+Take
+
+    X=H(G)=(G^3-3G)/sqrt(6),
+    Gamma=(G^2-1)^2/2.
+
+For a regular value x with real preimages u satisfying H(u)=x, the
+change-of-variables formula gives
+
+    p_X(x) = sum_u phi(u)/|H'(u)|,
+    tau_X(x) = [sum_u phi(u)|H'(u)|/3]
+               /[sum_u phi(u)/|H'(u)|].               (6)
+
+At x=0 the three preimages are 0 and +/-sqrt(3), and (6) gives
+
+    tau_X(0) = (1+4 exp(-3/2))/(2(1+exp(-3/2))) > 0.
+
+Now put x_c=2/sqrt(6)=sqrt(2/3). At x=x_c the equation H(u)=x has a
+double root u=-1 and a simple root u=2, because
+
+    u^3-3u-2=(u+1)^2(u-2).
+
+As x increases to x_c from below, two preimages approach u=-1. Their
+contributions to the denominator in (6) diverge like (x_c-x)^(-1/2),
+whereas their numerator contributions tend to zero like (x_c-x)^(1/2).
+The remaining preimage approaches 2 and contributes a finite quantity to
+both numerator and denominator. Therefore
+
+    lim_{x -> x_c from below} tau_X(x) = 0.
+
+This disproves monotonicity of tau_X(x) in |x|. The other simple branch is
+included in this argument and does not prevent the zero limit, because the
+denominator diverges. This does not refute either (2) or (5).
+
+For reference, direct one-dimensional integration gives
+
+    E|He_3(G)/sqrt(6)|
+      = c (1+4 exp(-3/2))/sqrt(6) < c.
+
+4. A broad cubic class with an elementary proof and exact deficit
+
+Let (G_1,...,G_m) be a standard Gaussian vector independent of another Gaussian
+vector Y. Let Q_1(Y),...,Q_m(Y) be real pure quadratic-chaos polynomials, and
+set
+
+    X = sum_i G_i Q_i(Y),        V(Y)=sum_i Q_i(Y)^2.
+
+Then X belongs to the third Wiener chaos. Conditional on Y it is centered
+Gaussian with variance V(Y), so
+
+    E|X| = c E[sqrt(V)],         E[X^2]=E[V].
+
+For E[X^2]=1, Cauchy-Schwarz immediately yields E|X|<=c. In fact there is
+the exact nonnegative deficit formula
+
+    c-E|X| = (c/2) E[(sqrt(V)-1)^2].                 (7)
+
+This includes every decoupled trilinear Gaussian form
+
+    sum_{i,j,k} a_{ijk} G_i Y_j Z_k
+
+with the three Gaussian blocks independent; Q_i(Y,Z)=sum_{j,k}a_{ijk}Y_jZ_k
+belongs to the second chaos. It also includes sums of independent such forms.
+
+For a finite-dimensional, nonzero example of this type the inequality is
+strict. Equality in (7) would force sum_i Q_i(y)^2=1 almost everywhere,
+hence everywhere by the polynomial identity theorem. Each real polynomial
+Q_i would then be bounded on all Euclidean space and therefore constant.
+Being in pure second chaos, each would be zero, a contradiction.
+
+The constant remains sharp within this subclass: use independent blocks and
+
+    X_N = (1/sqrt(N)) sum_{i=1}^N G_i (Y_i^2-1)/sqrt(2).
+
+Conditional variance V_N=N^(-1)sum_i (Y_i^2-1)^2/2 converges to 1; formula
+(7), or the law of large numbers with uniform integrability, gives
+E|X_N| -> c.
+
+Checks: a single product G_1 G_2 G_3 has E|X|=c^3 and variance one, so it
+satisfies the bound strictly. The analogous conditional-Gaussian proof also
+applies to quadratic products G_1 G_2, with E|X|=c^2. It is not a proof for
+all quadratic forms, nor for general cubic tensors with self-interactions.

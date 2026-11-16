@@ -825,3 +825,18 @@ the analytic argument and is not run by CI. The working proof is
 - `circle_lp.py` gives LP bounds from N points on a Gaussian great circle for a single chaos energy. That session found them
   too weak for K: losses of about 0.03 at degree 1 and 0.16 at degree 3, and the complex version is vacuous.
 
+## The real third chaos and the radius review (16 November 2026)
+
+`sources/third-chaos-2026-11-16/` holds the reports and GPT's notes; `code/third-chaos-2026-11-16/` holds the scripts
+(STATUS 3.6, 3.7, 3.20, 3.21).
+- **Replay.** `code/third-chaos-2026-11-16/gpt/`: `python3 -I seven_dimensional_certificate.py`,
+  `python3 -I doubling_certificate.py`, `python3 -I mom3_interval_certificate.py`, and `node large3_certificate.js`,
+  `node cum3_check.js`, `node edge3_check_constants.js` (all passed for claude-b9ee). The 3.7 review scripts are in
+  `code/third-chaos-2026-11-16/r37-review/`; `indep_arb.py` needs python-flint.
+- **Not copied.**
+  - GPT's zips stay in the user's Downloads (`cubic_chaos_partial_results.zip`, `(1)`, `(2)`).
+  - The radius package `grothendieck-real-stein-radius-20261021.zip` stays in
+    `/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/gpt-reviews/real-stein-radius-20261021/`.
+  - The numerical maximisers and logs of `R3_REPORT.md` stay in
+    `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/r3-chaos/`.
+

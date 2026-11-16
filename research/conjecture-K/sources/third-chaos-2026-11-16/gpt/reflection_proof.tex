@@ -1,0 +1,200 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:reflection_proof.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% Intended filepath: reflection_proof.tex
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\He}{\operatorname{He}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\title{The Gaussian $L^1/L^2$ constant under reflection oddness}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status and scope.}
+Every result below is rigorous.  The theorem proves the Gaussian constant
+$\sqrt{2/\pi}$ for pure Gaussian chaoses that are odd under one orthogonal
+reflection.  It does \emph{not} prove the bound for arbitrary elements of the
+third Wiener chaos: global oddness $h(-x)=-h(x)$ does not imply oddness under a
+reflection in a hyperplane.  The proof does not use the extremality assertion
+in Example~3.1 of Heilman--Jones--Malavolta.
+
+Let $\He_k$ be the probabilists' Hermite polynomials, normalized by
+$\E\He_k(X)^2=k!$ for $X\sim N(0,1)$.  Let $\Hh_d(\R^n)$ denote the span of
+the multivariate Hermite polynomials of total degree exactly $d$, with the
+Gaussian $L^2$ norm.  Write $c=\sqrt{2/\pi}=\E|X|$.
+
+\begin{theorem}[Reflection-odd chaos]\label{thm:reflection}
+Let $d\geq1$ and $h\in\Hh_d(\R^n)$.  Suppose that for a unit vector $e$,
+\[
+ h\bigl(x-2\langle x,e\rangle e\bigr)=-h(x).
+\]
+Then
+\[
+ \E|h|\leq c\norm{h}_2.
+\]
+More explicitly, after rotating $e$ to the first coordinate and writing
+$g=(X,Y)$, there is a unique expansion
+\[
+ h(X,Y)=\sum_{j=0}^{\lfloor(d-1)/2\rfloor}
+     \He_{2j+1}(X)Q_j(Y),\qquad
+ Q_j\in\Hh_{d-2j-1}(\R^{n-1}).
+\]
+With
+\[
+ b_r=\frac{\binom{2r}{r}}{4^r},\qquad
+ A_j=4^j(j!)^2\sum_{r=0}^j b_r^2,
+\]
+one has the stronger estimate
+\begin{equation}\label{eq:strong}
+ \E|h|\leq c\left(\sum_j A_j\norm{Q_j}_2^2\right)^{1/2},
+ \qquad
+ A_j\leq(2j+1)!.
+\end{equation}
+The coefficient inequality is strict for every $j\geq1$, and $A_0=1$.
+\end{theorem}
+
+\begin{proof}
+Orthogonal changes of Gaussian coordinates preserve each chaos.  Thus assume
+$e$ is the first coordinate vector.  Hermite expansion in $X$ and oddness in
+$X$ give the displayed expansion.  Its terms are mutually orthogonal, so
+\begin{equation}\label{eq:variance}
+ \norm{h}_2^2=\sum_j(2j+1)!\norm{Q_j}_2^2.
+\end{equation}
+
+Define a probability measure $\nu$ on the $X$ coordinate by
+\[
+ d\nu(x)=\frac{|x|}{c}\,d\gamma_1(x),
+\]
+where $\gamma_1$ is standard Gaussian measure.  Odd Hermite polynomials are
+divisible by $x$, so $h(X,Y)/X$ is a polynomial, with its value at zero defined
+by continuity.  Cauchy--Schwarz under $\nu\otimes\gamma_{n-1}$ gives
+\begin{align}
+ \E|h|
+ &=c\,\E_{\nu,Y}\left|\frac{h(X,Y)}{X}\right| \notag\\
+ &\leq c\left(\E_{\nu,Y}
+             \left|\frac{h(X,Y)}{X}\right|^2\right)^{1/2}.\label{eq:bias}
+\end{align}
+The $Q_j$ belong to distinct Wiener chaoses.  Their orthogonality in $Y$
+eliminates all cross terms, even though the $X$ measure has changed.  Hence
+\begin{equation}\label{eq:cross}
+ \E_{\nu,Y}\left|\frac{h}{X}\right|^2
+ =\sum_j\norm{Q_j}_2^2\,
+   \E_\nu\left(\frac{\He_{2j+1}(X)}{X}\right)^2.
+\end{equation}
+It remains to compute the scalar expectations.
+
+Under $\nu$, the variable $T=X^2/2$ has density $e^{-t}$ on $(0,\infty)$.
+The Hermite--Laguerre identity is
+\begin{equation}\label{eq:hermite-laguerre}
+ \frac{\He_{2j+1}(x)}{x}
+ =(-1)^j2^j j!L_j^{1/2}(x^2/2).
+\end{equation}
+For completeness, this follows by matching coefficients in
+\[
+ \He_m(x)=m!\sum_{k=0}^{\lfloor m/2\rfloor}
+   \frac{(-1)^k x^{m-2k}}{2^k k!(m-2k)!},
+ \qquad
+ L_j^{\alpha}(t)=\sum_{k=0}^j
+   \frac{(-1)^k}{k!}\binom{j+\alpha}{j-k}t^k.
+\]
+The Laguerre generating function
+\[
+ \sum_{j\geq0}L_j^{\alpha}(t)z^j
+ =(1-z)^{-\alpha-1}\exp\left(-\frac{tz}{1-z}\right)
+\]
+and the binomial series $(1-z)^{-1/2}=\sum_{r\geq0}b_rz^r$ imply, by
+coefficient comparison,
+\begin{equation}\label{eq:connection}
+ L_j^{1/2}(t)=\sum_{r=0}^j b_rL_{j-r}^{0}(t).
+\end{equation}
+The polynomials $L_k^0$ are orthonormal for $e^{-t}dt$ on $(0,\infty)$.
+One can verify this normalization directly from their Rodrigues formula
+\[
+ L_k^0(t)=\frac{e^t}{k!}\frac{d^k}{dt^k}(e^{-t}t^k):
+\]
+integration by parts $k$ times gives orthogonality to degrees below $k$;
+the leading coefficient $(-1)^k/k!$ then gives squared norm one.
+Equations~\eqref{eq:hermite-laguerre}--\eqref{eq:connection} now give
+\[
+ \E_\nu\left(\frac{\He_{2j+1}(X)}{X}\right)^2
+ =4^j(j!)^2\int_0^\infty e^{-t}L_j^{1/2}(t)^2\,dt
+ =4^j(j!)^2\sum_{r=0}^j b_r^2=A_j.
+\]
+
+Finally, $b_0=1$ and $0<b_r<1$ for $r\geq1$, so $b_r^2\leq b_r$,
+strictly when $r\geq1$.  The identity
+\begin{equation}\label{eq:sum}
+ \sum_{r=0}^j b_r=(2j+1)b_j
+\end{equation}
+follows by induction from $b_j=(2j-1)b_{j-1}/(2j)$: the difference of the
+right-hand sides at $j$ and $j-1$ is exactly $b_j$.
+Consequently,
+\[
+ A_j\leq4^j(j!)^2(2j+1)b_j=(2j+1)!,
+\]
+with strict inequality for $j\geq1$.  Combining this calculation with
+\eqref{eq:bias}, \eqref{eq:cross}, and \eqref{eq:variance} proves all claims.
+\end{proof}
+
+\begin{corollary}[Explicit cubic bound]\label{cor:cubic}
+If $h\in\Hh_3$ is odd under a hyperplane reflection, then after rotation
+\[
+ h(X,Y)=a\He_3(X)+XQ(Y),\qquad Q\in\Hh_2(Y),
+\]
+and
+\begin{equation}\label{eq:cubic}
+ \E|h|\leq c\sqrt{5a^2+\norm{Q}_2^2}
+ \leq c\sqrt{6a^2+\norm{Q}_2^2}=c\norm{h}_2.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:reflection} gives $A_0=1$ and
+$A_1=4(1+1/4)=5$.  There is also a direct proof: with $S=X^2$ under
+$\nu$, $S\sim\chi^2_2$, whence $\E_\nu S=2$, $\E_\nu S^2=8$, and
+$\E_\nu(S-3)^2=5$.  Since $\E Q=0$ and $X,Y$ remain independent after the
+change of measure,
+\[
+ \E_{\nu,Y}|a(S-3)+Q(Y)|^2=5a^2+\norm{Q}_2^2.
+\]
+Apply Cauchy--Schwarz as in \eqref{eq:bias}.  Ordinary Hermite orthogonality
+gives $\norm{h}_2^2=6a^2+\norm{Q}_2^2$.
+\end{proof}
+
+\paragraph{Checks and limitations.}
+\begin{itemize}
+\item For $d=1$, a nonzero reflection-odd linear form is $h=aX$, and the
+bound is an equality: $\E|h|=c\norm{h}_2$.
+\item For $d=2$, the reflection-odd case is $h=XL(Y)$ for a linear Gaussian
+form $L$ independent of $X$.  Its exact ratio is $c^2=2/\pi<c$ when
+$h\ne0$.  This checks the theorem on that subclass; the theorem makes no
+claim about \emph{all} quadratic forms based on reflection symmetry.
+\item For $h=\He_3(X)$, direct integration gives
+\[
+ \E|\He_3(X)|=c(1+4e^{-3/2}),\qquad
+ \norm{\He_3(X)}_2=\sqrt6.
+\]
+Indeed, $\E_\nu|S-3|=1+4e^{-3/2}$ for $S\sim\chi^2_2$.
+The stronger bound \eqref{eq:cubic} reads
+$\E|\He_3(X)|\leq c\sqrt5<c\sqrt6$, consistently.
+\item A product of $d$ independent standard Gaussians belongs to $\Hh_d$,
+is reflection-odd in each factor, has variance one, and has first absolute
+moment $c^d\leq c$.
+\item A general cubic has expansion in a chosen direction
+\[
+ h(X,Y)=a\He_3(X)+(X^2-1)L(Y)+XQ(Y)+R(Y),
+\]
+with $L\in\Hh_1$, $Q\in\Hh_2$, and $R\in\Hh_3$.
+The theorem applies when $L=R=0$ after some rotation.  The other terms
+prevent dividing by $X$ while retaining a polynomial with the finite
+weighted second moment used in the proof.
+\end{itemize}
+
+\end{document}

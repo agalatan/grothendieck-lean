@@ -1,0 +1,125 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:six_dimensional_proof.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% Intended filepath: six_dimensional_proof.tex
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}
+\newcommand{\E}{\mathbb E}
+\title{A strict Gaussian $L^1/L^2$ bound for cubic chaos in at most six dimensions}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\noindent\textbf{Status.} The proof is rigorous and uses only elementary
+angular inequalities, Gaussian polar decomposition, and the supplied exact
+rational certificate. It does not settle arbitrary dimension.
+
+\begin{theorem}
+Every real cubic Wiener-chaos polynomial depending on at most six independent
+standard real Gaussian coordinates satisfies
+\[
+ \boxed{\E|h|<\frac{83\sqrt5}{75\pi}\|h\|_2
+       <\sqrt{\frac2\pi}\|h\|_2\qquad(h\ne0).}
+\]
+\end{theorem}
+
+\begin{proof}
+Embed lower-dimensional polynomials into six dimensions by adding unused
+coordinates. Write a standard Gaussian vector as $R\Omega$, where
+$\Omega$ is uniform on $S^5$, $R\sim\chi_6$, and they are independent.
+Every homogeneous cubic has a unique decomposition into a harmonic cubic
+$H_3$ plus $r^2 H_1$, with $H_1$ linear. Wick subtraction therefore gives
+\[
+ h(R\Omega)=R^3H_3(\Omega)+R(R^2-8)H_1(\Omega),
+\]
+since $\Delta(r^2H_1)=16H_1$ in dimension six. The two spherical harmonics
+are orthogonal on $S^5$.
+
+For every odd polynomial of degrees one and three on a sphere,
+\begin{equation}\label{eq:angular}
+ \E_\Omega|P(\Omega)|\leq\beta(\E_\Omega P(\Omega)^2)^{1/2},
+ \qquad \beta=\frac{\sqrt{80}}{3\pi}.
+\end{equation}
+Indeed restrict $P$ to a random Haar-distributed great circle. On each such
+circle it has frequencies only $\pm1,\pm3$, so the angular lemma proved in
+\texttt{binary\_cubic\_proof.tex} applies. Average the circle inequality and
+apply Cauchy--Schwarz over the random circle. A uniform point on a Haar
+great circle is uniform on the sphere, proving \eqref{eq:angular}.
+
+Normalize $\|h\|_2=1$ and let $\lambda\in[0,1]$ be the share of its variance
+from the $R^3H_3$ term. Put $T=R^2/2\sim\operatorname{Gamma}(3,1)$, whose
+density is $t^2e^{-t}/2$. Spherical orthogonality and elementary gamma moments
+give
+\[
+ \E|h|\leq\beta F(\lambda),\qquad
+ F(\lambda)=\E\sqrt{\lambda K_3(T)+(1-\lambda)K_1(T)},
+\]
+where
+\[
+ K_3(t)=\frac{t^3}{60},\qquad
+ K_1(t)=\frac{t(t-4)^2}{12},\qquad
+ \E K_3(T)=\E K_1(T)=1.
+\]
+It remains to show $F(\lambda)<83/100$ uniformly.
+
+Partition the positive half-line into $I_j=[2j,2j+2)$ for $0\leq j<12$
+and $I_{12}=[24,\infty)$. Write
+\[
+ p_j=\Pr(T\in I_j),\quad
+ a_j=\E[K_3(T)\mathbf1_{I_j}],\quad
+ b_j=\E[K_1(T)\mathbf1_{I_j}].
+\]
+Cellwise Cauchy--Schwarz yields
+\[
+ F(\lambda)\leq\sum_{j=0}^{12}
+    \sqrt{p_j(\lambda a_j+(1-\lambda)b_j)}.
+\]
+For any positive rational $\tau_j$, the inequality
+$\sqrt z\leq(z/\tau_j+\tau_j)/2$ makes the right-hand side at most
+\[
+ \frac12\sum_j\tau_j+
+ \frac12\max\left\{\sum_j\frac{p_ja_j}{\tau_j},
+                       \sum_j\frac{p_jb_j}{\tau_j}\right\}.
+\]
+The certificate uses the following $10^{12}\tau_j$, in order:
+\[
+\begin{gathered}
+209348125670,\ 269171624541,\ 185197047213,\ 107072713153,\\
+41670053327,\ 12718770633,\ 3329218641,\ 784596676,\\
+171348368,\ 35321389,\ 6958708,\ 1321845,\ 297387.
+\end{gathered}
+\]
+The survival integrals defining the cells are elementary:
+\begin{align*}
+ \Pr(T\geq t)&=e^{-t}(1+t+t^2/2),\\
+ \E[K_3(T)\mathbf1_{T\geq t}]
+ &=e^{-t}\sum_{j=0}^{5}\frac{t^j}{j!},\\
+ \E[K_1(T)\mathbf1_{T\geq t}]
+ &=\frac{e^{-t}}{24}
+ (t^5-3t^4+4t^3+12t^2+24t+24).
+\end{align*}
+All three multiplying polynomials are positive for $t\geq0$.
+At the endpoints $t=2j$ the exponential is $q^j$, where $q=e^{-2}$.
+Set
+\[
+ L=\sum_{j=0}^{40}\frac{2^j}{j!},\qquad
+ U=L+\frac{2^{41}}{41!}\frac1{1-2/42}.
+\]
+The positive exponential series gives $L<e^2<U$, hence $1/U<q<1/L$.
+For each cell, use the upper survival bound at its left endpoint and the
+lower survival bound at its right endpoint to get rational upper bounds
+$\bar p_j,\bar a_j,\bar b_j$. These bounds and the displayed $\tau_j$ are
+checked by \texttt{six\_dimensional\_certificate.py}, using only integer
+and rational arithmetic, to satisfy
+\[
+ \frac12\left(\sum_j\tau_j+\sum_j\frac{\bar p_j\bar a_j}{\tau_j}\right)
+ <\frac{83}{100},\qquad
+ \frac12\left(\sum_j\tau_j+\sum_j\frac{\bar p_j\bar b_j}{\tau_j}\right)
+ <\frac{83}{100}.
+\]
+This proves $F(\lambda)<83/100$ for every $\lambda\in[0,1]$.
+Multiplication by $\beta$ gives the asserted constant.
+Finally $83\sqrt5/(75\pi)<\sqrt{2/\pi}$ is equivalent to
+$\pi>6889/2250$, which follows already from $\pi>223/71$.
+\end{proof}
+\end{document}

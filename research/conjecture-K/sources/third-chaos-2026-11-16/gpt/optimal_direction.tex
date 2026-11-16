@@ -1,0 +1,140 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:optimal_direction.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% Intended filepath: optimal_direction.tex
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\He}{\operatorname{He}}
+\title{Optimal-direction reduction for real cubic Wiener chaos}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\noindent\textbf{Status.} All statements below are rigorous. They give an exact
+normal form, necessary spectral constraints, and a quantitative sufficient
+region. They do not prove the unrestricted cubic Gaussian $L^1$ inequality,
+nor exhibit a counterexample to it.
+
+Write a real cubic chaos as
+\[
+ h(g)=\sum_{i,j,k=1}^n T_{ijk}:g_i g_j g_k:,
+\]
+where $T$ is a real symmetric $3$-tensor and colons denote Wick products.
+Thus $\E h^2=6\|T\|_{\mathrm F}^2$.
+
+\begin{theorem}[A maximizing direction kills the linear cross term]
+Suppose $T\ne0$. Choose a unit vector $e$ such that
+\[
+ a=T(e,e,e)=\max_{\|u\|=1}|T(u,u,u)|>0.
+\]
+After rotating $e$ to the first coordinate, write $g=(X,Y)$. Then
+\[
+ h(X,Y)=a\He_3(X)+XQ(Y)+R(Y),
+\]
+where $Q(Y)=Y^{\mathsf T}BY-\operatorname{tr}B$ with
+$B=3T(e,\cdot,\cdot)|_{e^\perp}$, and $R$ is pure cubic chaos on $e^\perp$.
+In particular the term $(X^2-1)L(Y)$ vanishes. Moreover
+\[
+ -3aI\preceq B\preceq \frac{3a}{2}I.
+\]
+For every unit $v\perp e$, putting
+$\mu=v^{\mathsf T}Bv$ and $r_v=T(v,v,v)$, one has the stronger coupling
+constraint
+\[
+ \boxed{27a r_v^2\leq(3a+\mu)^2(3a-2\mu).}
+\]
+\end{theorem}
+
+\begin{proof}
+First variation of $T(u,u,u)$ on the sphere at $u=e$ gives
+$T(e,e,v)=0$ for every $v\perp e$. The coefficient of
+$(X^2-1)L(Y)$ in the Wick expansion is exactly
+$L(Y)=3T(e,e,Y)$, so it vanishes.
+
+Fix unit $v\perp e$ and put $b=T(e,v,v)$, $r=T(v,v,v)$.
+On the circle in this plane,
+\[
+ T(e\cos\theta+v\sin\theta,e\cos\theta+v\sin\theta,e\cos\theta+v\sin\theta)
+ =a\cos^3\theta+3b\cos\theta\sin^2\theta+r\sin^3\theta.
+\]
+The second derivative at zero is $-3a+6b\leq0$, hence $b\leq a/2$.
+Evaluating at $u=(e\pm\sqrt3v)/2$ and averaging removes $r$ and gives
+$|a+9b|\leq8a$, hence $b\geq-a$. Since $\mu=3b$, these are the stated
+matrix inequalities.
+
+For the sharper bound, divide by $a$ and write $\beta=b/a$, $\rho=r/a$.
+The condition that the absolute value of the binary cubic be at most one
+on its unit circle is exactly
+\[
+ |1+3\beta t^2|+|\rho|t^3\leq(1+t^2)^{3/2}\qquad(t>0).
+\]
+Thus
+\[
+ |\rho|\leq\inf_{t>0}
+ \frac{(1+t^2)^{3/2}-|1+3\beta t^2|}{t^3}.
+\]
+For $-1\leq\beta\leq1/2$, the infimum is
+$(1+\beta)\sqrt{1-2\beta}$. Here is a direct verification. When
+$1+3\beta t^2\geq0$, the derivative of the displayed quotient has the
+sign of $1+\beta t^2-\sqrt{1+t^2}$. When the sign is negative, its derivative
+has the sign of $-1-\beta t^2-\sqrt{1+t^2}$. For $\beta\ne0$, the minimum
+occurs at $t^2=(1-2\beta)/\beta^2$, on the appropriate branch, and substitution
+gives the value stated above. For $\beta=0$ the infimum is $1$ at infinity;
+the endpoint $\beta=1/2$ is obtained as $t$ tends to zero. These observations
+also show sufficiency of this binary-plane constraint.
+
+Consequently
+\[
+ r^2\leq\frac{(a+b)^2(a-2b)}a.
+\]
+Substitute $b=\mu/3$ and multiply by $27a$.
+\end{proof}
+
+\begin{corollary}[Explicit small-residual region]
+In the normal form above set
+\[
+ q=\|Q\|_2,\qquad r=\|R\|_2,\qquad
+ c=\sqrt{2/\pi},\qquad t=\sqrt{5a^2+q^2}.
+\]
+If
+\[
+ (1-c^2)r^2+2ctr\leq c^2a^2,
+\]
+or equivalently
+\[
+ r\leq\frac{c a^2}{\sqrt{t^2+(1-c^2)a^2}+t},
+\]
+then
+\[
+ \E|h|\leq c\|h\|_2.
+\]
+This result needs no prior bound on the cubic $R$.
+If a bound $\E|R|\leq cr$ is independently available, the sufficient
+condition improves to $2tr\leq a^2$.
+\end{corollary}
+
+\begin{proof}
+The reflection-odd bound follows directly by changing the measure of $X$ to
+$|X|d\gamma_1(X)/c$:
+\[
+ \E|a\He_3(X)+XQ(Y)|\leq c\sqrt{5a^2+q^2}=ct.
+\]
+Indeed $X^2$ has law $\chi^2_2$ under this changed measure, so
+$\E(X^2-3)^2=5$, while $\E Q=0$. The triangle inequality and
+Cauchy--Schwarz give $\E|h|\leq ct+r$.
+Hermite orthogonality gives $\|h\|_2^2=6a^2+q^2+r^2=t^2+a^2+r^2$.
+The claimed condition is exactly the result of squaring
+$ct+r\leq c\sqrt{t^2+a^2+r^2}$. If $\E|R|\leq cr$ is available, instead
+use $\E|h|\leq c(t+r)$ and square once more.
+\end{proof}
+
+\paragraph{Limit of this reduction.}
+The direction maximizing the diagonal tensor contraction removes $L$ but
+does not remove $R$, nor does it make $R$ independent of $Q$. The displayed
+directional constraints control the leading homogeneous tensor of $R$;
+they do not by themselves compare the Gaussian absolute moment of the sum
+with its variance. In particular, this is not an induction proof of the
+unrestricted inequality.
+\end{document}

@@ -1,0 +1,220 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:direct3_explicit_local.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% /workspace/scratch/3efc7fe714fa/direct3_explicit_local.tex
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,hyperref}
+\newcommand{\E}{\mathbb E}\newcommand{\Pp}{\mathbb P}\newcommand{\Ga}{\Gamma}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}{Lemma}
+\begin{document}
+\title{An explicit local cubic-chaos $L^1$ bound by localized integration by parts}
+\author{}\date{}\maketitle
+All statements below are rigorous; constants are deliberately very loose.
+Write $c=\sqrt{2/\pi}$. The normalization of multiple integrals is
+$\E I_q(f)^2=q!\|f\|^2$.
+
+\begin{theorem}
+For $F\in H_3$, $\E F^2=1$, put $d=\E F^4-3$. If $0<d\le1$, then
+\[
+ \E|F|\le c(1-d/24)+10^{60}d^{5/4}.
+\]
+In particular, for $0<d\le10^{-248}$,
+\[
+ \E|F|\le c-\frac{c}{48}d<c.
+\]
+\end{theorem}
+
+\paragraph{Sources and conventions.}
+We use only the usual Gaussian integration by parts, hypercontractivity,
+normal Stein derivative bounds (equations (1.4)--(1.5) of Gaunt,
+\emph{On Stein factors in Stein's method for normal approximation},
+\url{https://arxiv.org/html/2410.05475v1}), and the explicit contraction inequality
+(4.50) in Bierme--Bonami--Nourdin--Peccati,
+\emph{Optimal Berry--Esseen rates on the Wiener space: the barrier of third and fourth cumulants},
+\url{https://arxiv.org/abs/1109.1546}.
+Its formula (3.32)/(4.47) is used to count the coefficients below.
+The bound $\operatorname{Var}(\|DF\|^2/3)\le 2d/9$ and the TV bound
+$d_{\rm TV}(F,G)\le2\sqrt{\operatorname{Var}(\|DF\|^2/3)}$
+appear in (1.1)--(1.2) of that paper. Here TV distance is $\sup_B|\mu(B)-\nu(B)|$.
+The nonsmooth test $|x|$ is never inserted directly into a higher derivative identity.
+
+\paragraph{1. Gamma operators and an explicit contraction constant.}
+Set $\Ga_0=F$ and
+$\Ga_{j+1}=\langle DF,-DL^{-1}\Ga_j\rangle$, with $L^{-1}$ annihilating constants.
+Then $A:=\Ga_1=\|DF\|^2/3$, $\E A=1$,
+$\E\Ga_2=\kappa_3/2=0$, $\E\Ga_3=d/6$.
+By Gaussian parity, $\kappa_3=0$. For a smooth function $f$ of bounded derivatives,
+\begin{equation}\label{expansion}
+\E[f'(F)-Ff(F)]= -\frac d6\E f'''(F)-\E[\Ga_4 f''''(F)].
+\end{equation}
+For $F=I_3(t)$, formula (4.47) expresses $\Ga_4$ as a sum of at most $3^4=81$
+multiple integrals, each of order at most $7$. Every coefficient is at most
+$12\cdot60^3$: the initial coefficient is at most $12$, and each later multiplier
+is $3(r-1)!\binom2{r-1}\binom{k-1}{r-1}$ with $r\le3$ and $k-1\le5$,
+hence at most $60$. Inequality (4.50) bounds each kernel norm by
+$\max_{r=1,2}\|t\otimes_rt\|^{5/2}\le d^{5/4}$ (we discard the stronger constant in (4.43)).
+The integral isometry and $\sqrt{7!}<71$ therefore give
+\begin{equation}\label{gamma_bound}
+ \|\Ga_4\|_2\le81\cdot12\cdot60^3\cdot71\,d^{5/4}<10^{11}d^{5/4}.
+\end{equation}
+Also $\Ga_4$ is a polynomial of degree at most $7$.
+
+\paragraph{2. Quantitative localized integration by parts.}
+Define $\chi(a)=0$ for $a\le1/2$, $\chi(a)=1$ for $a\ge3/4$, and
+$\chi(a)=3u^2-2u^3$ for $u=4a-2\in[0,1]$. Thus
+$0\le\chi\le1$, $|\chi'|\le6$, $|\chi''|\le96$ in the weak sense.
+Define, for $a\ge0$,
+\[
+ v(a)=\begin{cases}2-4(a-1/2)+8(a-1/2)^2,&a\le1/2,\\1/a,&a\ge1/2.\end{cases}
+\]
+This is $C^2$, with $|v|\le6$, $|v'|\le12$, $|v''|\le16$.
+Put
+\[
+ V=\tfrac13v(A)DF,\quad J=\langle DA,DF\rangle,\quad
+ B=v(A)F-\tfrac13v'(A)J,\quad TZ=BZ-\langle V,DZ\rangle.
+\]
+Here $T Z=\delta_{\rm Mall}(ZV)$, where $\delta_{\rm Mall}$ denotes Gaussian divergence.
+For $Z$ supported on $\{A\ge1/2\}$,
+\begin{equation}\label{ibp}
+ \E[Z\psi'(F)]=\E[(TZ)\psi(F)],\qquad
+ \E[Z\psi''(F)]=\E[(T^2Z)\psi(F)].
+\end{equation}
+Indeed $\langle DF,V\rangle=Av(A)=1$ on this support, and $TZ$ remains supported there.
+The $W^{2,\infty}$ cutoff is legitimate by Sobolev integration by parts, or by smooth approximation.
+
+Here are explicit, dimension-free bounds sufficient for both uses of \eqref{ibp}:
+\begin{equation}\label{Tbound}
+ \E|T^2\chi(A)|\le10^{32},\qquad
+ \E|T^2(\Ga_4\chi(A))|\le10^{32}\|\Ga_4\|_2.
+\end{equation}
+For completeness, the numerical bookkeeping follows. For $p\le32$, $j\le2$,
+\[
+ \|D^jF\|_p\le10^4,\qquad \|D^jA\|_p\le10^4.
+\]
+This follows from hypercontractivity and
+$\|A\|_2^2=1+\operatorname{Var}A\le1+2/9<4$;
+for a degree-$m$ polynomial $P$,
+$\|D^jP\|_p\le m^{j/2}(p-1)^{m/2}\|P\|_2$.
+The same argument applies to Hilbert-valued derivatives, by Minkowski's inequality.
+With $M=10^4$, Holder's inequality gives
+\[
+ \|V\|_8\le2M,\quad \|DV\|_8\le5\cdot10^8,\quad
+ \|B\|_8\le10^9,\quad \|DB\|_8\le10^{13}.
+\]
+For example,
+$\|DB\|_8\le6M+20M^2+(16/3)M^3<10^{13}$;
+products of three factors need at most their $L^{24}$ norms.
+Expanding $T^2$ gives
+\[
+ T^2 Z=(B^2-\langle V,DB\rangle)Z-2B\langle V,DZ\rangle
+ +\langle DZ,(DV)V\rangle+D^2Z[V,V].
+\]
+Consequently
+\[
+ \E|T^2Z|\le2\cdot10^{18}
+ (\|Z\|_2+\|DZ\|_2+\|D^2Z\|_2).
+\]
+For $Z=\chi(A)$ the sum is below $2\cdot10^{10}$.
+For $Z=\Ga_4\chi(A)$, writing $Q=\|\Ga_4\|_2$, the product rule gives
+\[
+ \|Z\|_2\le Q,\qquad \|DZ\|_2\le3\cdot10^6Q,\qquad
+ \|D^2Z\|_2\le3\cdot10^{12}Q.
+\]
+In the last estimate use
+$\|\Ga_4\|_4<47Q$, $\|\Ga_4\|_6<280Q$,
+$\|D\Ga_4\|_4<124Q$, and $\|D^2\Ga_4\|_2\le7Q$.
+Thus \eqref{Tbound} follows, with considerable room.
+
+\paragraph{3. A localized density estimate.}
+Hypercontractivity for the degree-four polynomial $A-1$ gives
+\begin{equation}\label{bad}
+ p_*:=\Pp(A<3/4)\le4^{16}\|A-1\|_{16}^{16}
+ \le900^{16}d^8<10^{48}d^8.
+\end{equation}
+We shall also use $p_*\le16\operatorname{Var}A<4d$.
+Let $\mu_\chi(E)=\E[\chi(A)1_{\{F\in E\}}]$.
+Two integrations by parts show that it has a Lipschitz density $p_\chi$ with
+\[
+ p_\chi(x)=\E[1_{\{F>x\}}T\chi(A)],\qquad
+ p_\chi'(x)=-\E[1_{\{F>x\}}T^2\chi(A)]
+\]
+in the weak/a.e. sense; hence $\operatorname{Lip}(p_\chi)\le10^{32}$.
+Writing $\phi$ for the standard normal density,
+\[
+ \|p_\chi-\phi\|_1\le2d_{\rm TV}(F,G)+p_*
+ \le2\sqrt d+4d\le6\sqrt d.
+\]
+If an integrable function has Lipschitz constant $L$, its supremum norm is at most
+$\sqrt{L\|u\|_1}$, by integrating the triangular lower bound around a point
+where $|u|$ nearly attains its supremum. Here $\operatorname{Lip}(p_\chi-\phi)\le2\cdot10^{32}$. It follows that
+\begin{equation}\label{density}
+ \|p_\chi-\phi\|_\infty\le4\cdot10^{16}d^{1/4}.
+\end{equation}
+No boundedness or smoothness of the density of the discarded portion of $F$ is assumed.
+
+\paragraph{4. Apply Stein to a smoothed absolute value.}
+Let $e=d^2$, $h_e(x)=\E|x+eG|$, and let $f_e$ be the usual normal Stein solution:
+\[
+ f_e'(x)-xf_e(x)=h_e(x)-\E h_e(G).
+\]
+The standard Stein derivative estimates for smooth Lipschitz tests give
+\[
+ \|f_e'\|_\infty\le2,\quad \|f_e''\|_\infty\le2,\quad
+ \|f_e''''\|_\infty\le4e^{-2}.
+\]
+For the last inequality, use $\|f_h^{(k+1)}\|_\infty\le2\|h^{(k)}\|_\infty$
+with $k=3$, and $h_e'''=2\phi_e'$, where $\phi_e$ is the $N(0,e^2)$ density.
+From \eqref{Tbound}, \eqref{bad}, and \eqref{gamma_bound},
+\begin{align*}
+ |\E\Ga_4 f_e''''(F)|
+ &\le2\E|T^2(\Ga_4\chi(A))|
+       +4e^{-2}\|\Ga_4\|_2\sqrt{p_*}\\
+ &\le (2\cdot10^{32}+4\cdot10^{24})10^{11}d^{5/4}
+ <10^{44}d^{5/4}.
+\end{align*}
+
+It remains to compare $\E f_e'''(F)$ and $\E f_e'''(G)$ without a derivative loss.
+Differentiating the Stein equation twice gives
+\[
+ f_e'''(x)=2\phi_e(x)+x f_e''(x)+2f_e'(x).
+\]
+By \eqref{density} and \eqref{bad},
+\[
+ |\E\phi_e(F)-\E\phi_e(G)|
+ \le4\cdot10^{16}d^{1/4}+p_*/(\sqrt{2\pi}e)
+ \le4\cdot10^{16}d^{1/4}+10^{48}d^6
+ <2\cdot10^{48}d^{1/4}.
+\]
+For the remaining terms, the full variation norm of $\mathcal L(F)-\mathcal L(G)$
+is at most $2\sqrt d$. Cauchy--Schwarz against its total variation measure and
+$\E F^2+\E G^2=2$ yield
+\[
+ |\E[Ff_e''(F)]-\E[Gf_e''(G)]|\le4d^{1/4},\qquad
+ 2|\E f_e'(F)-\E f_e'(G)|\le8\sqrt d.
+\]
+Thus, very conservatively,
+\begin{equation}\label{third}
+ |\E f_e'''(F)-\E f_e'''(G)|<10^{49}d^{1/4}.
+\end{equation}
+The Gaussian coefficient is exact:
+\[
+ \E f_e'''(G)=-\tfrac14\E[h_e(G)H_4(G)]
+ =\frac{c}{4(1+e^2)^{3/2}}.
+\]
+Since $|x|\le h_e(x)$, \eqref{expansion} and \eqref{third} give
+\[
+ \E|F|\le c\sqrt{1+e^2}
+ -\frac{cd}{24(1+e^2)^{3/2}}
+ +\left(10^{49}/6+10^{44}\right)d^{5/4}.
+\]
+Using $e=d^2$, $\sqrt{1+e^2}\le1+e^2/2$, and
+$(1+e^2)^{-3/2}\ge1-3e^2/2$, the first two terms are at most
+$c(1-d/24)+(1/2)d^4+(1/16)d^5$.
+This proves the claimed $10^{60}$ bound for $0<d\le1$.
+Finally $10^{60}(10^{-248})^{1/4}=10^{-2}<c/48$, proving the stated strict inequality.
+
+\paragraph{Scope.}
+This is only a local theorem. It does not settle the range $d>10^{-248}$.
+For arbitrary $h$, apply it to $F=h/\|h\|_2$ and use the standardized excess fourth cumulant.
+The $d=1$ Gaussian check gives equality and no contradiction: its fourth cumulant is zero.
+For $H_3(G)/\sqrt6$ and products of three Gaussians the standardized cumulants are not in this tiny range;
+no conclusion from the local threshold is claimed for those examples.
+\end{document}

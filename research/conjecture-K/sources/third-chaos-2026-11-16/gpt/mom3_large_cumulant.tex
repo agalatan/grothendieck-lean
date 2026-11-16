@@ -1,0 +1,245 @@
+% Verbatim from /Users/alingalatan/Downloads/cubic_chaos_partial_results (2).zip:mom3_large_cumulant.tex (16 November 2026); GPT (a ChatGPT session of the user), relayed by the user.
+% /workspace/scratch/3efc7fe714fa/mom3_large_cumulant.tex
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,geometry,hyperref}
+\geometry{margin=1in}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\He}{\operatorname{He}}
+\newcommand{\sym}{\operatorname{sym}}
+\title{An explicit large-fourth-cumulant bound in the third Gaussian chaos}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+All statements below are rigorous. The one-dimensional integral inequalities
+in Lemma~\ref{lem:certificate} have a computer-assisted proof using only exact
+integer arithmetic; the accompanying self-contained Python file is
+\texttt{mom3\_interval\_certificate.py}. No floating-point numerical integration
+is used in the proof. These results do not settle the intermediate-cumulant
+regime of the full conjecture.
+
+Write $c=\sqrt{2/\pi}$ and normalize $F\in\mathcal H_3$ by $\E F^2=1$.
+Let $\delta=\E F^4-3$. Define, for $74\leq\delta\leq90$,
+\[
+ v(\delta)=\frac{3\sqrt{\delta/45-1}-1}{2},
+ \qquad
+ K(v)=
+ \begin{cases}
+ \displaystyle\frac{973}{1000}+\frac{29}{50}\left(\frac34-v\right),
+       &v\leq\frac34,\\[4pt]
+ \displaystyle\frac{973}{1000}-\frac12\left(v-\frac34\right),
+       &v\geq\frac34.
+ \end{cases}
+\]
+
+\begin{theorem}\label{thm:main}
+For every dimension, every normalized $F\in\mathcal H_3$ with $\delta\geq74$
+satisfies
+\[
+ \E|F|<cK(v(\delta))<\frac{3124}{3125}\,c<c.
+\]
+In particular, throughout the stronger regime $\delta\geq305/4$,
+\[
+ \E|F|<c\left[\frac{973}{1000}
+       -\frac12\left(v(\delta)-\frac34\right)\right]
+ \leq\frac{973}{1000}\,c.
+\]
+\end{theorem}
+
+\paragraph{Tensor normalization and the fourth cumulant.}
+Represent $F=I_3(f)$ for a real symmetric tensor $f$, with the normalization
+$\E I_q(g)^2=q!\|g\|^2$. Thus $\|f\|^2=1/6$.
+Contractions are taken in the underlying real Gaussian Hilbert space. Put
+\[
+ A=f\otimes_2f,\qquad a=\|A\|_{\mathrm{HS}}^2,
+ \qquad b=\|\sym(f\otimes_1f)\|^2.
+\]
+Here $A$ is positive semidefinite and $\operatorname{tr}A=\|f\|^2=1/6$.
+The product formula gives
+\[
+ F^2=I_6(\sym(f\otimes f))
+       +9I_4(\sym(f\otimes_1f))+18I_2(f\otimes_2f)+6\|f\|^2.
+\]
+To evaluate the first term's variance, grouping permutations according to
+the number of indices exchanged between the two triples gives
+\[
+ 6!\|\sym(f\otimes f)\|^2
+ =(3!)^2\sum_{r=0}^3\binom3r^2\|f\otimes_rf\|^2
+ =72\|f\|^4+648a.
+\]
+We used $\|f\otimes_1f\|^2=\|f\otimes_2f\|^2$: the two contractions are
+the Gram operators $T^*T$ and $TT^*$ for the flattening of $f$ into one
+index versus two indices. Orthogonality of the chaos terms now gives the exact identity
+\[
+ \delta=1296a+1944b.
+\]
+Symmetrization is an orthogonal projection, so $b\leq a$. Consequently,
+with $C=6A$,
+\begin{equation}\label{eq:cumulant}
+ C\succeq0,\qquad\operatorname{tr}C=1,
+ \qquad \delta\leq90\operatorname{tr}(C^2)\leq90.
+\end{equation}
+All these formulas also hold for the Hilbert-space definition of a closed
+Wiener chaos, by approximation, although the requested finite-dimensional
+setting already suffices.
+
+\paragraph{A large fourth cumulant forces a large one-coordinate cubic component.}
+Let $p$ be the largest eigenvalue of $C$, and let $e$ be a corresponding unit
+eigenvector. Positivity and trace one imply
+\[
+ \operatorname{tr}(C^2)\leq p,
+ \qquad\operatorname{tr}(C^2)\leq p^2+(1-p)^2.
+\]
+If $\delta>45$, the first inequality gives $p>1/2$; combining the second
+with \eqref{eq:cumulant} therefore yields
+\begin{equation}\label{eq:p}
+ p\geq\frac{1+\sqrt{\delta/45-1}}2.
+\end{equation}
+The normalized tensor $\psi=\sqrt6 f$ has one-coordinate marginal $C$.
+Let $P$ be the orthogonal projection onto $\mathbb Re$. The three copies
+of $P$ on the tensor factors commute, and
+\[
+ P^{\otimes3}\succeq I-\sum_{j=1}^3(I-P)_j.
+\]
+Taking its quadratic form at $\psi$ gives
+\begin{equation}\label{eq:u}
+ u:=6f(e,e,e)^2
+   =\langle\psi,P^{\otimes3}\psi\rangle\geq3p-2\geq v(\delta).
+\end{equation}
+
+\paragraph{Conditional second moments improve the triangle bound.}
+Write $X=G(e)$ and let $Y$ denote the independent Gaussian coordinates in
+$e^\perp$. The exact chaos decomposition is
+\[
+ F=\alpha\He_3(X)+(X^2-1)L(Y)+XQ(Y)+R(Y),
+\]
+where $L\in\mathcal H_1(Y)$, $Q\in\mathcal H_2(Y)$, and
+$R\in\mathcal H_3(Y)$. Set
+\[
+ u=6\alpha^2,\qquad\beta=2\E L^2,\qquad\gamma=\E Q^2,
+ \qquad\eta=\E R^2.
+\]
+These quantities are nonnegative and $u+\beta+\gamma+\eta=1$.
+Define the nonnegative polynomials
+\[
+ a_0(x)=\frac{(x^3-3x)^2}{6},\qquad
+ b_0(x)=\frac{(x^2-1)^2}{2}.
+\]
+Orthogonality of the different $Y$-chaoses cancels every conditional cross
+term. Conditional Cauchy--Schwarz therefore gives
+\begin{equation}\label{eq:jensen}
+ \E|F|\leq\E\sqrt{u a_0(X)+\beta b_0(X)+\gamma X^2+\eta}.
+\end{equation}
+No independence between $L,Q,R$ is asserted or needed.
+
+\begin{lemma}[Exact integral certificate]\label{lem:certificate}
+Let $D(x)=3a_0(x)/4+1/4$ and define four unnormalized half-Gaussian integrals
+\begin{align*}
+ J&=\int_0^\infty\sqrt{D(x)}e^{-x^2/2}\,dx,\\
+ T_a&=\int_0^\infty\frac{a_0(x)-1}{\sqrt{D(x)}}e^{-x^2/2}\,dx,\\
+ T_b&=\int_0^\infty\frac{b_0(x)-1}{\sqrt{D(x)}}e^{-x^2/2}\,dx,\\
+ T_c&=\int_0^\infty\frac{x^2-1}{\sqrt{D(x)}}e^{-x^2/2}\,dx.
+\end{align*}
+Then
+\[
+ J<\frac{973}{1000},\qquad
+ -\frac{29}{25}<T_a<-1,\qquad T_b<0,\qquad T_c<0.
+\]
+\end{lemma}
+
+\begin{proof}[Exact arithmetic verification]
+The accompanying script implements directed integer interval arithmetic at
+scale $2^{96}$. On $[0,8]$ it partitions into intervals of width $1/2000$.
+The cubic $x^3-3x$ is monotone on each cell, since its only nonnegative
+critical point is the grid point $1$. Its square is enclosed including
+zero whenever its range crosses zero. The same interval rules enclose
+$(x^2-1)^2$, and $D\geq1/4$ ensures that every division is by a positive
+interval.
+
+For a density endpoint $e^{-t}$ with $0\leq t\leq32$, write
+$e^{-t}=(e^{-t/64})^{64}$. The degree-15 alternating Taylor sum at
+$t/64\leq1/2$ is a lower bound and the degree-16 sum an upper bound.
+Six interval squarings preserve this enclosure. Integer square roots with
+outward rounding enclose the other square roots. Each cell integral is
+enclosed by the cell length times the entire integrand interval.
+
+For the tails, if $x\geq8$ then $\sqrt D\leq x^3+1/2$, so its integral tail
+is bounded by
+\[
+ \left(8^2+2+\frac1{16}\right)e^{-32}<\frac{67}{2^{32}}.
+\]
+The absolute value of each of the other three integrands, before multiplication
+by the density, is at most $x^6$. Gaussian integration by parts gives
+\[
+ \int_8^\infty x^6e^{-x^2/2}\,dx
+ \leq\left(8^5+5\cdot8^3+15\cdot8+\frac{15}{8}\right)e^{-32}
+ <\frac{36000}{2^{32}}.
+\]
+Here only $e>2$ is used. The program sums the rigorous cell and tail intervals
+and verifies the four rational inequalities in the statement by exact integer
+comparisons. For readability, coarsened decimal enclosures implied by those
+exact bounds are
+\[
+ \begin{array}{c|c}
+ J &(0.9713232,\ 0.9722280)\\
+ T_a&(-1.1514429,\ -1.1491778)\\
+ T_b&(-0.6847749,\ -0.6817016)\\
+ T_c&(-0.3355140,\ -0.3326555).
+ \end{array}
+\]
+The decimal display is not used to perform any of the verification.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The tangent inequality $\sqrt z\leq\sqrt d+(z-d)/(2\sqrt d)$ for $d>0$
+applied in \eqref{eq:jensen} with $d=D(X)$ gives, since
+$\eta=1-u-\beta-\gamma$,
+\[
+ \frac{\E|F|}{c}
+ \leq J+\frac{u-3/4}{2}T_a+\frac\beta2T_b+\frac\gamma2T_c.
+\]
+The factor $c$ comes from integrating an even function against the standard
+Gaussian density. Lemma~\ref{lem:certificate} makes the last two terms
+nonpositive. Its upper and lower bounds on $T_a$ show that the right-hand
+side is strictly less than $K(u)$. The function $K$ is continuous and
+decreasing, and \eqref{eq:u} therefore gives
+$\E|F|/c<K(v(\delta))$.
+
+For $\delta\geq74$, one has
+\[
+ v(\delta)\geq\frac{3\sqrt{29/45}-1}{2}>\frac{88}{125},
+\]
+because $29/45-(301/375)^2=24/140625>0$.
+Thus
+\[
+ K(v(\delta))<K(88/125)
+ =\frac{973}{1000}+\frac{29}{50}\cdot\frac{23}{500}
+ =\frac{3124}{3125}<1.
+\]
+Finally, $v(305/4)=3/4$, giving the second displayed conclusion.
+\end{proof}
+
+\paragraph{Why the first six moment bounds alone cannot prove the conjecture.}
+This is a moment-relaxation obstruction, not a chaos counterexample.
+Let a symmetric random variable $Z$ have absolute values
+\[
+ s_0=\frac9{10},\qquad t_0=\sqrt{\frac{9219}{19}},
+ \qquad \mathbb P(|Z|=t_0)=\frac{361}{920361},
+\]
+with independent equiprobable signs. Direct algebra gives
+\[
+ \E Z^2=1,\qquad\E Z^4=93,\qquad
+ \E Z^6=\frac{21283272}{475}<53745,
+ \qquad\E|Z|>\frac9{10}>c.
+\]
+For comparison, the normalized $\He_3(G)/\sqrt6$ has fourth moment $93$
+and sixth moment $53745$, as follows by expansion and Gaussian even moments.
+Hence a proposed proof that uses only normalization, the fourth moment, and
+the uniform sixth-moment upper bound would also apply to $Z$ and cannot
+establish the desired sharp $L^1$ inequality. The tensor structure used
+above supplies essential information beyond those scalar moment constraints.
+
+\end{document}

@@ -1,0 +1,54 @@
+Rigorous local result near the Gaussian (no explicit numerical threshold)
+
+Fix an odd d >= 3. For F in the pure real Wiener chaos H_d with E F^2=1,
+write delta=kappa_4(F). Uniformly over these F as delta tends to zero,
+
+  E|F| = sqrt(2/pi) (1 - delta/24) + O_d(delta^(5/4)).
+
+Thus the desired strict inequality holds for all sufficiently small positive
+delta, but the argument here does not supply an explicit numerical threshold.
+This is a local theorem, not a proof of global Gaussian maximality.
+
+Proof and sources.
+
+1. Mansanarez, Poly, Swan, Edgeworth expansion on Wiener chaos,
+   https://arxiv.org/html/2510.14002v2 , Theorem 1.2 with m=2,
+   gives total variation error O_d(delta^(3/2)) against the signed measure
+
+     dnu(x)=phi(x)[1 + delta H_4(x)/24 + kappa_6(F) H_6(x)/720] dx.
+
+   Indeed, odd chaos is symmetric, so the odd Hermite moments vanish;
+   E H_4(F)=delta and E H_6(F)=kappa_6(F).
+   The variance of the (appropriately normalized) carre-du-champ is
+   bounded by a constant depending only on d times delta.
+
+2. Schulte, Thaele, Cumulants on Wiener chaos: moderate deviations and the
+   fourth moment theorem, https://arxiv.org/html/1410.7964v1 ,
+   Lemmas 13--17, equations (23)--(25), yield
+
+     |kappa_6(F)| <= C_d delta^(3/2).
+
+   To see the exponent, their matching bound L(d,6) is 3. Each of the
+   three matched pairs contributes a nontrivial contraction of the kernel;
+   every such contraction norm is O_d(sqrt(delta)), by the fourth-cumulant
+   identity. Constants depend only on the fixed chaos order, not dimension.
+
+3. Total variation initially controls only bounded tests. Put
+   R=delta^(-1/4) and use min(|x|,R). Its error is O_d(R delta^(3/2))
+   = O_d(delta^(5/4)). Hypercontractivity uniformly bounds E|F|^6
+   (for d=3, E|F|^6 <= 5^9). Hence
+
+     E[|F| 1_{|F|>R}] <= R^(-5) E|F|^6 = O_d(delta^(5/4)).
+
+   The signed measure nu has uniformly bounded absolute sixth moments
+   for delta <= 1 as well, so its tail satisfies the same estimate.
+
+4. Writing c=sqrt(2/pi), direct Gaussian integration gives
+
+     E|G| H_4(G) = -c,       E|G| H_6(G) = 3c.
+
+   Consequently int |x| dnu = c(1 - delta/24 + kappa_6(F)/240).
+   Step 2 absorbs the sixth-cumulant term into the stated remainder.
+
+All four steps are rigorous deductions from the cited theorems. Constants
+have not been tracked numerically; no quantitative neighborhood is claimed.
