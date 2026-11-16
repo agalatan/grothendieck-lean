@@ -1,0 +1,293 @@
+% Verbatim from /Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/caps-stage0b-lemma-2026-11-15/PROOF.tex (15 November 2026); a research worker of claude-b9ee. Only this line was added.
+\documentclass[11pt]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\C}{\mathbb{C}}
+\title{Caps stage 0b: the rank-one correction lemma for the identity-tail fibre potential $\Psi_\nu$\\[2pt]
+\large proof, sharp coefficient, and the per-cell exact check}
+\author{claude-b9ee (worker), 15 November 2026}
+\date{}
+\begin{document}
+\maketitle
+
+\noindent\textbf{Verdict: PROVED (P), for all parameters.} The correction lemma of the stage-0 report (\S3.2 of
+\texttt{caps-stage0-2026-11-15/REPORT.md}) holds for every $\nu\ge0$, all prices $d_2,d_3>\nu$, every $p\in\C$ and every $L$
+with $|L|\le R$, with the explicit coefficient $\gamma^*(R)$ of \eqref{eq:gstar}. The coefficient is sharp, and it is
+\emph{exactly} the far-regime closed form of the stage-0 report evaluated at $l=R$. Neither the condition
+$\min(e_2,e_3)>0.2\max(e_2,e_3)$ nor a lower end $l_{\rm lo}$ nor any restriction on the anchor is needed. At $\nu=0$ the
+statement is AF eq.~(4) with $R$ in place of $|L|$. The proof is elementary: one quadratic identity, completing a square, the
+Cauchy--Schwarz and reverse triangle inequalities, and a one-variable bound. Every identity used is verified symbolically by
+\texttt{verify\_identities.py}. The only finite obligation left is the per-cell rational inequality $\gamma\le\gamma^*(R)$
+(\S5), with checker \texttt{gstar.py}.
+
+\section{Statement}
+
+Let $\nu\ge 0$ and $d_2,d_3>\nu$. Put
+\[
+e_i=d_i-\nu>0,\qquad \sigma=e_2+e_3,\qquad \delta=e_3-e_2,\qquad \Delta=d_2d_3-\nu^2=e_2e_3+\nu\sigma>0 .
+\]
+For $A,B\in\C$ let
+\begin{align*}
+\Psi_\nu(A,B)&=\max_{|f|=|g|=1}\ \Re(\bar fA)+\Re(\bar gB)+\nu\Re(\bar fg),\\
+\Phi_d(A,B)&=\tfrac{d_2+d_3}{2}+\frac{d_3|A|^2+d_2|B|^2+2\nu\Re(A\bar B)}{2\Delta}\qquad\text{(the dual majorant of the study)},
+\end{align*}
+and, with the centre of the stage-0 report,
+\[
+c_1=-\frac{4\nu(d_2-d_3)}{e_2e_3},\qquad c_0=d_2^2-d_3^2+\frac{\nu(d_2-d_3)(e_2^2+e_3^2)}{e_2e_3},\qquad
+h(L,p)=4\Re(p\bar L)-c_0-c_1|L|^2 .
+\]
+For $R\ge0$ define
+\begin{equation}\label{eq:gstar}
+\Gamma(R)=4+\frac{|\delta|\,(2R+|\delta|)}{e_2e_3}=\frac{\sigma^2+2R|\delta|}{e_2e_3},\qquad
+\gamma^*(R)=\frac{8\sigma}{\Delta\,\bigl(\Delta\,\Gamma(R)^2+16R^2\bigr)}
+=\frac{8\sigma\,(e_2e_3)^2}{\Delta\bigl(\Delta(\sigma^2+2R|\delta|)^2+16R^2(e_2e_3)^2\bigr)} .
+\end{equation}
+Equivalently $\gamma^*(R)=8/D_\nu(R)$ with $D_\nu(R)=\Delta(\Delta\Gamma(R)^2+16R^2)/\sigma$, so the corrected majorant has
+exactly the shape of AF eq.~(4): $\Phi_d-h^2/(2D_\nu)$.
+
+\begin{theorem}[P]\label{thm:main}
+Let $R\ge0$ and $0\le\gamma\le\gamma^*(R)$. For all $L,p\in\C$ with $|L|\le R$,
+\[
+\Phi_d(L+p,L-p)-\frac{\gamma}{16}\,h(L,p)^2\ \ge\ \Psi_\nu(L+p,L-p).
+\]
+Moreover $\gamma^*$ is strictly decreasing in $R$; for $l>0$ with $2l\ne|\delta|$ no $\gamma>\gamma^*(l)$ satisfies the
+inequality for all $p$ at $|L|=l$ (Proposition~\ref{prop:sharp}); and at $\nu=0$,
+$\gamma^*(R)=8/\bigl(S(S^2+4R^2+4R|d_2-d_3|)\bigr)$, $S=d_2+d_3$, which is AF eq.~(4).
+\end{theorem}
+
+\section{Proof}
+
+Throughout, $w=(f,g)\in\T^2$ (that is, $|f|=|g|=1$), $V=(A,B)^T\in\C^2$, and $\ell_w(V)=\Re(\bar fA)+\Re(\bar gB)+\nu\Re(\bar fg)$, so
+that $\Psi_\nu(V)=\max_{w\in\T^2}\ell_w(V)$.
+
+\paragraph{Reduction to real $L$.} For $L=le^{i\alpha}$ the substitution $(p,f,g)\mapsto(pe^{-i\alpha},fe^{-i\alpha},ge^{-i\alpha})$
+leaves $\Phi_d(L+p,L-p)$, $h(L,p)$ and $\ell_w(L+p,L-p)$ unchanged. So it suffices to treat $L=l\in[0,R]$ real.
+
+\begin{lemma}[gap of an affine piece; identity (1.1)]\label{lem:gap}
+Let $M=\begin{pmatrix}d_2&-\nu\\-\nu&d_3\end{pmatrix}$, which is positive definite since $d_2>0$ and $\det M=\Delta>0$. Then
+$M^{-1}=\Delta^{-1}\begin{pmatrix}d_3&\nu\\\nu&d_2\end{pmatrix}$. Write $\|X\|^2=X^*M^{-1}X$. For every $V\in\C^2$ and $w\in\T^2$,
+\[
+\Phi_d(V)-\ell_w(V)=\tfrac12\,\|V-Mw\|^2\ \ (\ge0).
+\]
+\end{lemma}
+\begin{proof}
+$\|V\|^2=(d_3|A|^2+d_2|B|^2+2\nu\Re(A\bar B))/\Delta$, so $\Phi_d(V)=\frac{d_2+d_3}2+\frac12\|V\|^2$. Also
+$w^*Mw=d_2+d_3-2\nu\Re(\bar fg)$ because $|f|=|g|=1$. Hence $\frac12\|V-Mw\|^2=\frac12\|V\|^2-\Re(w^*V)+\frac12w^*Mw
+=\Phi_d(V)-\ell_w(V)$.
+\end{proof}
+
+Since $\Psi_\nu=\max_w\ell_w$, the inequality of Theorem~\ref{thm:main} at $(l,p)$ holds iff
+$E_w(p):=\frac12\|V(p)-Mw\|^2-\frac{\gamma}{16}h(l,p)^2\ge0$ for every $w$, where $V(p)=(l+p,\,l-p)$. So the theorem holds at level
+$l$ iff $\inf_{p\in\C}E_w(p)\ge0$ for every $w\in\T^2$.
+
+\begin{lemma}[elimination of $p$]\label{lem:elim}
+Fix $l\ge0$ and $w=(f,g)\in\T^2$, put $s=2l$ and
+\[
+N=|s-e_2f-e_3g|^2,\qquad \widetilde H=2s(\Re f-\Re g)+\eta(\sigma^2-s^2),\qquad \eta=\frac{\delta}{e_2e_3}=\frac{e_3-e_2}{e_2e_3}.
+\]
+If $\sigma-2\gamma\Delta l^2>0$, then
+\[
+\inf_{p\in\C}E_w(p)=\frac{1}{2\sigma}\Bigl(N-\kappa_\gamma(l)\,\widetilde H^2\Bigr),\qquad
+\kappa_\gamma(l)=\frac{\gamma\Delta^2}{8(\sigma-2\gamma\Delta l^2)} .
+\]
+If $\sigma-2\gamma\Delta l^2\le0$, $l>0$, $\gamma>0$ and $\widetilde H\ne0$, then $\inf_pE_w(p)=-\infty$.
+\end{lemma}
+\begin{proof}
+Let $U=Mw=(d_2f-\nu g,\ d_3g-\nu f)$ and write $U=(L_U+p_U,\ L_U-p_U)$, that is,
+\[
+L_U=\tfrac12(e_2f+e_3g),\qquad p_U=\tfrac12\bigl((d_2+\nu)f-(d_3+\nu)g\bigr)\qquad\text{(identities (3.1))}.
+\]
+With $X=l-L_U$ and $Y=p-p_U$ we have $V(p)-U=(X+Y,\,X-Y)$, and a direct expansion gives (identity (2.1))
+\[
+\tfrac12\|(X+Y,X-Y)\|^2=c_L|X|^2+c_P|Y|^2+2\tau\Re(X\bar Y),\qquad
+c_L=\tfrac{d_2+d_3+2\nu}{2\Delta},\ c_P=\tfrac{\sigma}{2\Delta},\ \tau=\tfrac{\delta}{2\Delta}.
+\]
+Since $c_Lc_P-\tau^2=1/\Delta$ (identity (2.2)), completing the square with $\rho=\tau/c_P=\delta/\sigma$ and $Z=Y+\rho X$ gives
+(identity (2.4))
+\[
+\tfrac12\|V(p)-U\|^2=\tfrac{2}{\sigma}|X|^2+c_P|Z|^2 .
+\]
+The function $p\mapsto h(l,p)=4l\Re p-c_0-c_1l^2$ is affine, and $p=(p_U-\rho X)+Z$. So $h(l,p)=\hat h+4l\Re Z$ with
+$\hat h:=h(l,p_U-\rho X)$, and $Z$ ranges over $\C$ as $p$ does. Therefore
+\[
+\inf_pE_w(p)=\tfrac2\sigma|X|^2+\inf_{t,\,t'\in\mathbb R}\Bigl[c_P(t^2+t'^2)-\tfrac{\gamma}{16}(\hat h+4lt)^2\Bigr].
+\]
+The infimum over $t'$ is at $t'=0$. For the infimum over $t$, put $c=c_P$, $k=\gamma/16$, $m=4l$; then $c-km^2=c_P-\gamma l^2=
+(\sigma-2\gamma\Delta l^2)/(2\Delta)$. If this is positive, the identity (5.3)
+$ct^2-k(\hat h+mt)^2=(c-km^2)(t-t_*)^2-kc\hat h^2/(c-km^2)$ gives the infimum $-\frac{\gamma}{16}\,\frac{c_P}{c_P-\gamma l^2}\,\hat h^2$.
+If it is $\le0$ with $l,\gamma>0$ and $\hat h\ne0$, the bracket is unbounded below (its quadratic coefficient is negative, or it is
+zero and the linear coefficient $-\gamma l\hat h/2$ is nonzero). Finally:
+\begin{itemize}
+\item $4|X|^2=|2l-e_2f-e_3g|^2=N$ (identity (3.2));
+\item $\hat h=\frac{\Delta}{\sigma}\widetilde H$ (identity (3.3)). This is the step where the specific centre $c_0,c_1$ enters. It
+also shows $\hat h\ne0\iff\widetilde H\ne0$;
+\item $\frac{\gamma}{16}\frac{c_P}{c_P-\gamma l^2}\bigl(\frac\Delta\sigma\bigr)^2\cdot2\sigma=\kappa_\gamma(l)$ (identity (5.4)).
+\end{itemize}
+Together these give the formula.
+\end{proof}
+
+\begin{remark}
+The centre satisfies $h=0$ on the tangent set $M(\T^2)$ of $\Phi_d$ (identity (3.4)). This is where $\Phi_d=\Psi_\nu$, so any valid
+correction must vanish there. Correspondingly, $N=0$ (the tangent point at level $l$) forces $\widetilde H=0$; see
+\eqref{eq:Hid} below.
+\end{remark}
+
+\begin{lemma}[the key inequality]\label{lem:key}
+For all $w=(f,g)\in\T^2$ and $s\ge0$, with $r=s-e_2f-e_3g$,
+\[
+|\widetilde H|\le\Gamma_s\,|r|,\qquad \Gamma_s=4+|\eta|\,(s+|\delta|)=\frac{\sigma^2+s|\delta|}{e_2e_3}.
+\]
+Equality holds at the \emph{far phases} $w_*=(-1,1)$ if $\delta\ge0$, and $w_*=(1,-1)$ if $\delta\le0$ (identities (5.1)).
+\end{lemma}
+\begin{proof}
+Using $|e_2f|=e_2$ and $|e_3g|=e_3$, i.e.\ expanding $e_3^2=|s-e_2f-r|^2$ and $e_2^2=|s-e_3g-r|^2$, one obtains the identity
+(4.1)
+\begin{equation}\label{eq:Hid}
+\widetilde H=2\Re\bigl((f-g)\bar r\bigr)+\eta\bigl(|r|^2-2s\Re r\bigr).
+\end{equation}
+\emph{First term.} By Cauchy--Schwarz, $|2\Re((f-g)\bar r)|\le2|f-g|\,|r|$.
+
+\emph{Second term.} By identity (4.2), $|r|^2-2s\Re r=|r-s|^2-s^2=|e_2f+e_3g|^2-s^2$. Since $s\ge0$, the reverse triangle
+inequality gives $\bigl||e_2f+e_3g|-s\bigr|\le|e_2f+e_3g-s|=|r|$, so
+$\bigl||r|^2-2s\Re r\bigr|=\bigl||e_2f+e_3g|-s\bigr|\,(|e_2f+e_3g|+s)\le|r|\,(|e_2f+e_3g|+s)$.
+
+\emph{Together:} $|\widetilde H|\le|r|\bigl(2a+|\eta|b+|\eta|s\bigr)$ with $a=|f-g|\in[0,2]$ and $b=|e_2f+e_3g|\ge0$. It remains
+to show $2a+|\eta|b\le4+|\eta||\delta|$.
+
+\emph{The one-variable bound.} For unit $f,g$, $b^2=\sigma^2-e_2e_3a^2$ (identities (4.3)). Hence
+$b^2-\delta^2=e_2e_3(2-a)(2+a)$ (since $\sigma^2-\delta^2=4e_2e_3$), and
+$4b^2-\delta^2a^2=\sigma^2(4-a^2)\ge0$ (identity (4.5)), so $|\delta|a\le2b$. If $\delta=0$ then $\eta=0$ and $2a\le4$. If
+$\delta\ne0$ then $b+|\delta|>0$, and
+\[
+|\eta|(b-|\delta|)=\frac{|\eta|\,e_2e_3(2-a)(2+a)}{b+|\delta|}=\frac{|\delta|(2-a)(2+a)}{b+|\delta|}\le2(2-a),
+\]
+because $|\delta|(2+a)\le2(b+|\delta|)$ is exactly $|\delta|a\le2b$. This is $2a+|\eta|b\le4+|\eta||\delta|$. In closed form
+(identity (4.4)): $(4+|\eta||\delta|-2a-|\eta|b)(b+|\delta|)(2b+|\delta|a)=(2-a)^2(2+a)\sigma^2$.
+
+Hence $|\widetilde H|\le|r|\,(4+|\eta||\delta|+|\eta|s)=\Gamma_s|r|$. At $w_*$ every step is an equality; directly,
+$\widetilde H=-(s-\delta)\Gamma_s$ at $(-1,1)$ and $\widetilde H=(s+\delta)\Gamma_s$ at $(1,-1)$ (identities (5.1)), while
+$|r|=|s\mp\delta|$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+\emph{Monotonicity.} $\Gamma(l)=\Gamma_{2l}$ is nondecreasing in $l$ and $16l^2$ is strictly increasing, so $\gamma^*$ is
+strictly decreasing. Hence $\gamma\le\gamma^*(R)\le\gamma^*(l)$ for $0\le l\le R$.
+
+\emph{Case $\gamma=0$.} The claim is $\Phi_d\ge\Psi_\nu$, immediate from Lemma~\ref{lem:gap}.
+
+\emph{Case $\gamma>0$.} Fix $l\in[0,R]$. From $\gamma\le\gamma^*(l)$ we get $\gamma\Delta^2\Gamma(l)^2+16\gamma\Delta l^2\le8\sigma$,
+so $8(\sigma-2\gamma\Delta l^2)\ge\gamma\Delta^2\Gamma(l)^2>0$. Lemma~\ref{lem:elim} therefore applies and gives
+$\kappa_\gamma(l)\le1/\Gamma(l)^2$. For every $w\in\T^2$, Lemma~\ref{lem:key} with $s=2l$ ($\Gamma_s=\Gamma(l)$, $N=|r|^2$) gives
+\[
+2\sigma\inf_pE_w(p)=N-\kappa_\gamma(l)\widetilde H^2\ \ge\ N-\widetilde H^2/\Gamma(l)^2\ \ge\ 0 .
+\]
+By the remark after Lemma~\ref{lem:gap} this is the theorem at level $l$, and the reduction to real $L$ covers all $|L|\le R$.
+
+\emph{$\nu=0$.} Then $e_i=d_i$, $\Delta=d_2d_3$ and $\sigma=S$. Using $4d_2d_3+\delta^2=S^2$,
+$\Delta\Gamma^2+16R^2=S^2(S^2+4R|\delta|+4R^2)/(d_2d_3)$, which gives AF's $8/D$ (identity (6.3)).
+\end{proof}
+
+\section{Sharpness, the radial line, and the stage-0 closed form}
+
+\begin{proposition}[sharpness, P]\label{prop:sharp}
+Let $l>0$ with $2l\ne|\delta|$, and let $\gamma>\gamma^*(l)$. Then there is $p\in\C$ with
+$\Phi_d(l+p,l-p)-\frac\gamma{16}h(l,p)^2<\Psi_\nu(l+p,l-p)$, and $p$ can be taken real.
+\end{proposition}
+\begin{proof}
+At the far phases $w_*$ we have $N=(2l-|\delta|)^2>0$ and $\widetilde H^2=\Gamma(l)^2N\ne0$. If $\sigma-2\gamma\Delta l^2>0$, then
+$\kappa_\gamma(l)>1/\Gamma(l)^2$ (the map $\gamma\mapsto\kappa_\gamma$ is increasing, and $\kappa_\gamma=1/\Gamma^2$ exactly at
+$\gamma^*$). So $\inf_pE_{w_*}(p)=\frac{N}{2\sigma}(1-\kappa_\gamma\Gamma^2)<0$. Otherwise the infimum is $-\infty$ by
+Lemma~\ref{lem:elim}. Pick $p$ with $E_{w_*}(p)<0$; then $\Phi_d-\frac\gamma{16}h^2<\ell_{w_*}\le\Psi_\nu$ at $p$. Since $f-g$ is
+real at $w_*$, the minimisation in Lemma~\ref{lem:elim} has $\Im Z=0$, and $\Im X=0$, so the minimiser is real.
+\end{proof}
+
+\begin{remark}[the binding set is the radial line, far regime]
+At $w_*$ the affine piece is $\ell_{w_*}(l+p,l-p)=2\,\epsilon\Re p-\nu$, with $\epsilon=+1$ for $w_*=(1,-1)$ and $-1$ for
+$(-1,1)$. Let $\gamma=\gamma^*(l)$ and let $p_*$ be the (real) minimiser of $E_{w_*}$. Then
+$0\le\Phi_d-\frac\gamma{16}h^2-\Psi_\nu\le E_{w_*}(p_*)=0$ at $p_*$, so $\Psi_\nu(l+p_*,l-p_*)=2|p_*|-\nu$. By the three-regime
+formula on the radial line, $\Psi_\nu>2|p|-\nu$ strictly in the inner and mid regimes. So $|p_*|\ge\nu+\sqrt{\nu^2+l^2}$: the
+binding point is on the radial line, in the far regime. This is exactly what the stage-0 numerics saw: the factor $1.05$ fails
+in every case, always on the radial line.
+\end{remark}
+
+\paragraph{Relation to \texttt{capnu.gamma\_closed} (stage 0).} The stage-0 discriminant formula
+$g_d(l,\pm)=(4c_Pk_0-b_0^2)/(lcb_0+c_Pc^2/4+4l^2k_0)$ is the condition $\inf_pE_{w}\ge0$ at the two far phases. Symbolically,
+$\min_\pm g_d(l,\pm)=\gamma^*(l)$: identities (6.1)--(6.2), checked exactly in \texttt{gstar.py}. Consequences:
+\begin{itemize}
+\item The stage-0 ``boundary formula'' (used when the vertex leaves the far regime) is never active for the binding piece at
+$\gamma=\gamma^*$, by the remark above. For the other piece it can only lower the value.
+\item $\gamma^*$ decreases in $l$, so only $l_{\rm hi}=R$ matters. The candidates at $l_{\rm lo}$ and the cap $c_P/l^2$ never bind:
+$c_P>\gamma^*(l)\,l^2$ automatically.
+\item Hence $\texttt{gamma\_closed}(d_2,d_3,\nu,l_{\rm lo},l_{\rm hi})\le\gamma^*(l_{\rm hi})$ in exact arithmetic. Equality holds
+except in degenerate cells. The one seen is the first ring at a symmetric anchor ($l_{\rm lo}=0$, $c=0$), where stage 0 returns 0.
+\end{itemize}
+So every stage-0 number computed with $\theta\cdot\texttt{gamma\_closed}$, $\theta\le1$, is covered by Theorem~\ref{thm:main},
+up to floating-point rounding. An exact pipeline must round $\gamma$ down (\S5).
+
+\section{What is \emph{not} needed, and what changes for the generator}
+
+\begin{itemize}
+\item No condition on $e_2/e_3$: the stage-0 restriction $\min(e_2,e_3)>0.2\max(e_2,e_3)$ was a numerical precaution. As
+$\min e_i\to0$, $\gamma^*=O(e_{\min}^2)$ while $c_0,c_1=O(1/e_{\min})$, so the correction stays bounded and valid. Cells with
+$e_2\le0$ or $e_3\le0$ (dual prices below $\nu$; $\le0.3\%$ of the cells on the plateau rows) keep $\gamma=0$. The uncorrected
+majorant is valid whenever $M\succ0$ (Lemma~\ref{lem:gap}).
+\item No lower end $l_{\rm lo}$, no anchor restriction ($l_{\rm lo}\ge\nu$, $\mathrm{rms}|p_0|\le l_{\rm lo}$): the theorem holds
+for all $|L|\le R$ and all $p$.
+\item Per cell: $R=r_{\rm hi}(c+\beta r_{\rm hi}^2)$ (AF \S3, the exact rational bound of $|L|$ on the ring), and
+$\gamma=$ a rational $\le\gamma^*(R)$. Everything else in the integrated majorant is unchanged (\texttt{capnu.CapRow.weights},
+\texttt{corr='nunum'}, with $\gamma$ in place of $\theta\cdot\texttt{gamma\_closed}$ and the restrictions removed).
+\end{itemize}
+
+\section{The finite part: the per-cell exact check}
+
+Theorem~\ref{thm:main} is uniform, so no certificate over parameter ranges is needed. A cell is sound iff its rational data
+satisfy, exactly,
+\begin{equation}\label{eq:cell}
+\nu\ge0,\quad d_2>\nu,\quad d_3>\nu,\quad R\ge0,\quad \gamma\ge0,\quad
+\gamma\,\Delta\Bigl(\Delta(\sigma^2+2R|\delta|)^2+16R^2(e_2e_3)^2\Bigr)\le8\sigma(e_2e_3)^2 .
+\end{equation}
+This is a polynomial comparison with no division, and is the same check in a Lean kernel. \texttt{gstar.py} provides
+\texttt{gstar\_exact}, \texttt{g\_round\_down} (a dyadic $\gamma\in(\gamma^*(1-2^{-60}),\gamma^*]$), \texttt{cell\_ok}
+(\eqref{eq:cell}) and \texttt{centre\_exact}; its self-test checks 3000 random exact cases. \texttt{cells\_compare.py} runs
+\eqref{eq:cell} (python-flint) on every cell of the 8 plateau rows $t=0.835$--$0.88$ ($\varepsilon=191/250$,
+$\hat\nu=47/1953$), at 15 anchors each ($u=0,\dots,0.7$, fibre maximisers), with the prices of \texttt{capnu}; see the log.
+\textbf{Caution, found by the checker:} floating-point $\gamma^*$ can exceed the exact value by more than $2^{-40}$ relative in
+extreme cells ($e_{\min}/e_{\max}\approx10^{-6}$, where $e=d-\nu$ cancels). The unrounded float \texttt{gamma\_closed} exceeds
+the exact $\gamma^*$ by an ulp in about 42\% of the cells. The generator must therefore compute $\gamma$ exactly and round down
+(\texttt{g\_round\_down}), or verify with \eqref{eq:cell}.
+
+\section{Machine checks}
+\begin{itemize}
+\item \texttt{verify\_identities.py} (sympy, exact; unit phases parametrised rationally): all identities (1.1)--(6.3) used
+above. Log \texttt{verify\_identities.log}: \emph{ALL IDENTITIES VERIFIED}.
+\item \texttt{gstar.py} self-test (exact): 3000 random rational cases. The stage-0 far discriminant formula equals $\gamma^*$;
+$\nu=0$ gives AF; $\gamma^*$ decreases in $R$; the rounding and verifier work.
+\item \texttt{numcheck.py} (float, N): $9.6\times10^6$ random complex $p$ over 300 random parameter sets at
+$\gamma=\gamma^*(R)$, $|L|\le R$, with no violation (minimum normalised gap $+4\times10^{-12}$). $\gamma=1.001\gamma^*$ violates
+in 300 of 300 cases, at a radial far-regime point. The reduction of Lemma~\ref{lem:elim} matches to $8\times10^{-15}$.
+\item \texttt{numcheck\_adversarial.py} (float, N): local minimisation of the reduced form and of the full gap from many starts,
+over extreme parameter ranges; see its log.
+\end{itemize}
+
+\section{Notes for the Lean kernel (stage 1/2)}
+The proof needs no transcendental functions and no case split over regimes. In order:
+(i) Lemma~\ref{lem:gap}, a ring identity after clearing $\Delta$;
+(ii) the completed square of Lemma~\ref{lem:elim}, as an explicit identity
+$E_w(p)=\frac1{2\sigma}(N-\kappa\widetilde H^2)+(c_P-\gamma l^2)(\Re Z-t_*)^2+c_P(\Im Z)^2$;
+(iii) identity \eqref{eq:Hid}, Cauchy--Schwarz, and the reverse triangle inequality for $|\cdot|$;
+(iv) the one-variable bound via $(b-|\delta|)(b+|\delta|)=e_2e_3(2-a)(2+a)$ and $4b^2-\delta^2a^2=\sigma^2(4-a^2)$ (\texttt{nlinarith}
+with these hints), plus the trivial case $\delta=0$;
+(v) the arithmetic of $\gamma\le\gamma^*(R)$, monotonicity in $R$, and \eqref{eq:cell}.
+This replaces the role of AF eq.~(4) in \texttt{CapMajorant.anchored\_pair}. The per-cell data are then just $(d_2,d_3,R,\gamma)$
+with \eqref{eq:cell}.
+
+\end{document}
