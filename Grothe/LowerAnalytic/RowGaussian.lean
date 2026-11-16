@@ -162,7 +162,7 @@ include hfm hgm hfb hgb in
 theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
     (hE1 : (r.E.subDiag (-1) ε ε).psdOK = true) (hR : R.psdOK = true)
     (hR1 : (R.subDiag (-1) ε).psdOK = true) (hR2 : (R.subDiag ε 0).psdOK = true)
-    (hcaps : CapsHold (fun s => pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) s - capPad)
+    (hcaps : CapsHold (fun s => pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s - capPad)
       r.nodeList r.smax)
     (hδ : (0 : ℝ) ≤ r.delta)
     (f g : L2G (n + 1)) (hfa : ⇑f =ᵐ[stdGaussian ((n + 1) + (n + 1))] ft)
@@ -171,12 +171,12 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
     (X1 : (Fin (n + n) → ℝ) → ℂ) (hX1 : ⇑(pres hfm hgm hfb hgb) =ᵐ[stdGaussian (n + n)] X1)
     (U : (Fin (n + n) → ℝ) → ℝ) (hU : ∀ y, ‖X1 y‖ ^ 2 = ‖pres hfm hgm hfb hgb‖ ^ 2 * U y)
     (_hU0 : ∀ y, 0 ≤ U y) :
-    RowSharedWith r (pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3)) (stdGaussian (n + n)) U X1
+    RowSharedWith r (pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) 0) (stdGaussian (n + n)) U X1
       ⇑(X2e hfm hgm hfb hgb) ⇑(X3e hfm hgm hfb hgb) ‖pres hfm hgm hfb hgb‖ (VOf (n + 1) ε 0 f g)
       (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by
   set p := pres hfm hgm hfb hgb with hpdef
   set τ := ‖p‖ with hτ
-  set Ψ := pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) with hΨ
+  set Ψ := pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 with hΨ
   -- `τ √U = |X₁|`
   have hsq : ∀ y, τ * √(U y) = ‖X1 y‖ := fun y => by
     rw [← Real.sqrt_sq (norm_nonneg (X1 y)), hU, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
@@ -187,7 +187,7 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
       abs_of_nonneg hδ, h2, mul_assoc, hsq]
   have iQ : Integrable (fun y => Ψ ‖Qe y‖) (stdGaussian (n + n)) := by
     simpa using integrable_pot_comp (E := r.E) (R := R) (ℓ := r.ell) (β := r.beta)
-      (a := aFib r.b1 r.b2 r.b3) hE hR (Lp.memLp Qe).aestronglyMeasurable
+      (a := aFib r.b1 r.b2 r.b3) (ν := 0) hE hR (Lp.memLp Qe).aestronglyMeasurable
       ((Lp.memLp Qe).integrable one_le_two).norm 1 zero_le_one
   obtain ⟨igate, hgate⟩ := integral_gate r p (X2e hfm hgm hfb hgb) (X3e hfm hgm hfb hgb) hX1
   refine ⟨hcaps, iQ.congr (hQae.mono fun y hy => hy.symm), igate, ?_⟩
@@ -283,7 +283,7 @@ theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) (f g : L2G (n + 1))
   rw [hkr] at hcaps'
   refine ⟨rowPot k, ?_⟩
   have e : rowPot k = pot (rowData[k]).E (rowR k) (rowData[k]).ell (rowData[k]).beta
-      (aFib (rowData[k]).b1 (rowData[k]).b2 (rowData[k]).b3) := by
+      (aFib (rowData[k]).b1 (rowData[k]).b2 (rowData[k]).b3) 0 := by
     funext s; simp only [rowPot, hkr]; rfl
   rw [e] at hcaps' ⊢
   exact rowSharedWith_frame hfm hgm hfb hgb (rowData[k]) (rowR k) hg'.1.1 hg'.1.2

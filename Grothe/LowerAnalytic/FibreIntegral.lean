@@ -182,13 +182,13 @@ theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n
       + formH2 R (cK hfm hgm hfb hgb 3) (cK hfm hgm hfb hgb 4) + ε * ‖cK hfm hgm hfb hgb 5‖ ^ 2
       + 2 * (∫ y, Lsec ℓ β (ft := ft) (gt := gt) y ∂(stdGaussian (n + n))).re
       + 2 * (inner ℂ Qe (aXi b1 b2 b3 hfm hgm hfb hgb)).re
-      ≤ ∫ y, pot E R ℓ β (aFib b1 b2 b3) ‖Qe y‖ ∂(stdGaussian (n + n)) := by
+      ≤ ∫ y, pot E R ℓ β (aFib b1 b2 b3) 0 ‖Qe y‖ ∂(stdGaussian (n + n)) := by
   set kt := fun x => (ft x - gt x) / 2 with hkt
   have hkm := measurable_kt hfm hgm
   have hkb := norm_kt_le hfb hgb
   -- the pointwise bound
   have hpt : ∀ y, fibreExprC E R ℓ β b1 b2 b3 (fun z => ft (joinR z y)) (fun z => gt (joinR z y))
-      (Qe y) ≤ pot E R ℓ β (aFib b1 b2 b3) ‖Qe y‖ := fun y =>
+      (Qe y) ≤ pot E R ℓ β (aFib b1 b2 b3) 0 ‖Qe y‖ := fun y =>
     fibreExprC_le_pot E R ℓ β b1 b2 b3 hE hR (hfm.comp (measurable_joinR_left y))
       (hgm.comp (measurable_joinR_left y)) (fun z => hfb _) (fun z => hgb _) (Qe y)
   -- the three parts
@@ -213,8 +213,8 @@ theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n
   have iB : Integrable (fun y => 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re) (stdGaussian (n + n)) :=
     (integrable_Lsec ℓ β hfm hgm hfb hgb).re.const_mul 2
   have iC : Integrable C (stdGaussian (n + n)) := (integrable_hre _ _).const_mul 2
-  have iP : Integrable (fun y => pot E R ℓ β (aFib b1 b2 b3) ‖Qe y‖) (stdGaussian (n + n)) := by
-    simpa using integrable_pot_comp (E := E) (R := R) (ℓ := ℓ) (β := β) (a := aFib b1 b2 b3) hE
+  have iP : Integrable (fun y => pot E R ℓ β (aFib b1 b2 b3) 0 ‖Qe y‖) (stdGaussian (n + n)) := by
+    simpa using integrable_pot_comp (E := E) (R := R) (ℓ := ℓ) (β := β) (a := aFib b1 b2 b3) (ν := 0) hE
       hR (Lp.memLp Qe).aestronglyMeasurable ((Lp.memLp Qe).integrable one_le_two).norm 1 zero_le_one
   have iAB : Integrable (fun y => A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re)
       (stdGaussian (n + n)) := iA.add iB

@@ -116,7 +116,7 @@ theorem Jpot_le_of_pieceOKc (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j
     (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
     (cs : List Cons) (hchk : pieceOKc lo up (mMat E R) av s cap cs = true)
     (y : Fib) (hy : y ∈ pieceSet E R cs) :
-    Jpot E R ℓ β a y s ≤ cap := by
+    Jpot E R ℓ β a 0 y s ≤ cap := by
   simp only [pieceOKc, Bool.and_eq_true, List.all_eq_true] at hchk
   obtain ⟨⟨henc', hok⟩, hldl⟩ := hchk
   refine Jpot_le_of_qfN ℓ β pr E R a av hav s cap lo up henc henc' y ?_
@@ -139,7 +139,7 @@ theorem Jpot_le_of_nodeOKc (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c 
     (Nr N : ℕ) (h : ℚ) (T : Tables) (cs : List Cons) (hT : TablesOK Nr N h T) (hh : 0 < h)
     (hN : 0 < N) (hNr : 0 < Nr) (hchk : nodeOKc r Rg s c rec Nr N h T cs = true)
     (y : Fib) (hy : y ∈ pieceSet r.E Rg cs) :
-    Jpot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) y s - Grothe.Lower.capPad ≤ c := by
+    Jpot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 y s - Grothe.Lower.capPad ≤ c := by
   simp only [nodeOKc, Bool.and_eq_true] at hchk
   obtain ⟨hp, hpc⟩ := hchk
   have hok := gridOK_mkGrid r.ell r.beta rec T hh hN hNr
@@ -173,13 +173,13 @@ theorem pot_le_of_pieces (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : 
     (hG : ∀ x ∈ P, 0 < x.2.1.2.2 ∧ 0 < x.2.1.2.1 ∧ 0 < x.2.1.1)
     (hcov : capCoverOK ds (P.map fun x => x.2.2.2) = true)
     (hchk : ∀ x ∈ P, nodeOKc r Rg s c x.1 x.2.1.1 x.2.1.2.1 x.2.1.2.2 x.2.2.1 x.2.2.2 = true) :
-    pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) s - Grothe.Lower.capPad ≤ c := by
-  have : pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) s ≤ c + Grothe.Lower.capPad := by
+    pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s - Grothe.Lower.capPad ≤ c := by
+  have : pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s ≤ c + Grothe.Lower.capPad := by
     refine ciSup_le fun y => ?_
     obtain ⟨pc, hpc, hy⟩ := capCover_sound r.E Rg hcov y
     obtain ⟨x, hx, rfl⟩ := List.mem_map.1 hpc
     obtain ⟨hh, hN, hNr⟩ := hG x hx
-    refine Jpot_le_of_mem_symOrbit r.E Rg r.ell r.beta _ (aFib_cj _ _ _) (aFib_ng _ _ _) s _ _
+    refine Jpot_le_of_mem_symOrbit r.E Rg r.ell r.beta _ 0 (aFib_cj _ _ _) (aFib_ng _ _ _) s _ _
       (fun w hw => ?_) hy
     linarith [Jpot_le_of_nodeOKc r Rg s c x.1 _ _ _ _ x.2.2.2 (hT x hx) hh hN hNr (hchk x hx) w hw]
   linarith

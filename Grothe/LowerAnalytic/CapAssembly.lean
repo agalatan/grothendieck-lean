@@ -36,7 +36,7 @@ lemma rowPot_sub_convexOn (k : ℕ) (hk : k < rowData.length) :
   obtain ⟨hE, hR⟩ := rowPot_psd k hk
   have hc := pot_convexOn (rowData.getD k row01).E (rowR k) (rowData.getD k row01).ell
     (rowData.getD k row01).beta (aFib (rowData.getD k row01).b1 (rowData.getD k row01).b2
-      (rowData.getD k row01).b3) hE hR
+      (rowData.getD k row01).b3) 0 hE hR
   refine ⟨convex_Ici 0, fun x _ y _ u v hu hv huv => ?_⟩
   have h := hc.2 (mem_univ x) (mem_univ y) hu hv huv
   simp only [smul_eq_mul] at h ⊢

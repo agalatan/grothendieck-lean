@@ -19,7 +19,8 @@ Prices (`Prices`): measurable `A, B > 0`, `nA ≥ 1/A`, `nB ≥ 1/B` and a corre
 
 `T = ∫ Tz dγ` (`Tz`: index `0` constant, `j + 1` the coordinate `j`; AF eq. (5)):
 `C = ∫ ν|L|² + (A+B)/2 − gδ²/16`, `hⱼ = ∫ (δν + gδ/4) uⱼ`, `Hᵢⱼ = ∫ ν Gᵢⱼ − g uᵢuⱼ`,
-`uⱼ = Re(Bⱼ L̄)`, `Gᵢⱼ = Re(Bᵢ B̄ⱼ)` (`Jpot_le_qf`).
+`uⱼ = Re(Bⱼ L̄)`, `Gᵢⱼ = Re(Bᵢ B̄ⱼ)` (`Jpot_le_qf`).  This is the potential without an identity tail
+(`Jpot … 0`, `pot … 0`; `Jpot_zero`), the one of the certified rows.
 
 **The piece check** (`pieceOK`): given rational enclosures `lo ≤ T ≤ up`, the Loewner matrix
 `T⁺ = mid + ρI` (`qf_le_loewnerUp`) and the `13 × 13` matrix
@@ -408,9 +409,9 @@ variable (E : Sym3) (R : Sym2) (a : Fib)
 
 /-- **The integrated majorant**: `J(y, s) ≤ qf T 13 (1, v) − yᵀMy` with `v = vec(My + sa)`. -/
 theorem Jpot_le_qf (y : Fib) (s : ℝ) :
-    Jpot E R ℓ β a y s
+    Jpot E R ℓ β a 0 y s
       ≤ qf (Tint ℓ β pr) 13 (wOf ((Fib.M E R y).add (a.smul s)).vec) - Fib.quad E R y := by
-  unfold Jpot
+  rw [Jpot_zero]
   have hpt : ∀ z, ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖
       ≤ qf (Tz ℓ β pr z) 13 (wOf ((Fib.M E R y).add (a.smul s)).vec) := by
     intro z
@@ -469,7 +470,7 @@ theorem Jpot_le_of_qfN (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
     (henc' : enclOK lo up 13 = true) (y : Fib)
     (hN : 0 ≤ qf (fun i j => ((pieceN (mMat E R) av s cap (loewnerUp lo up 13)).at i j : ℝ)) 13
       (wOf y.vec)) :
-    Jpot E R ℓ β a y s ≤ cap := by
+    Jpot E R ℓ β a 0 y s ≤ cap := by
   refine (Jpot_le_qf ℓ β pr E R a y s).trans ?_
   set Tup := loewnerUp lo up 13
   have hL := qf_le_loewnerUp henc' (Tint ℓ β pr) henc
@@ -532,7 +533,7 @@ theorem pot_le_of_pieceOK (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
     (s cap : ℚ) (lo up : QMat)
     (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
     (hchk : pieceOK lo up (mMat E R) av s cap = true) :
-    pot E R ℓ β a s ≤ cap := by
+    pot E R ℓ β a 0 s ≤ cap := by
   simp only [pieceOK, Bool.and_eq_true] at hchk
   exact ciSup_le fun y => Jpot_le_of_qfN ℓ β pr E R a av hav s cap lo up henc hchk.1 y
     (qf_nonneg_of_ldlOK hchk.2 _)

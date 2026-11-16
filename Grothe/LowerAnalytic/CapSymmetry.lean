@@ -17,9 +17,10 @@ y₂ + i y₅)`, `ζ = (y₆ + i y₈, y₇ + i y₉)`, `d = y₁₀ + i y₁₁
 
 With `L(z̄) = conj L(z)`, `L(−z) = −L(z)`, `M S = S M`, `quad ∘ S = quad` and `S a = a` (true for
 `aFib b₁ b₂ b₃`, which has real even coordinates only) this gives `J(S_c y, s) = J(y, s)`
-(`Jpot_cj`) and `J(S_- y, s) = J(y, s)` (`Jpot_ng`).  Hence a cap proved on pieces `Π_i` covers
-the whole fibre space as soon as the pieces and their three symmetric images cover it
-(`pot_le_of_cover`, `pot_le_sup'_of_cover`).
+(`Jpot_cj`) and `J(S_- y, s) = J(y, s)` (`Jpot_ng`), for every identity tail `ν`: the pair
+potential satisfies `Ψ_ν(Ā, B̄) = Ψ_ν(A, B)` and `Ψ_ν(−B, −A) = Ψ_ν(A, B)` (`psiT_conj`, `psiT_neg`,
+`psiT_comm`).  Hence a cap proved on pieces `Π_i` covers the whole fibre space as soon as the
+pieces and their three symmetric images cover it (`pot_le_of_cover`, `pot_le_sup'_of_cover`).
 -/
 
 open MeasureTheory ProbabilityTheory Real Set Grothe.Lower
@@ -86,7 +87,7 @@ lemma aFib_ng (b1 b2 b3 : ℝ) : (aFib b1 b2 b3).ng = aFib b1 b2 b3 := by
 
 /-! ### Invariance of `J` -/
 
-variable (E : Sym3) (R : Sym2) (ℓ β : ℝ) (a : Fib)
+variable (E : Sym3) (R : Sym2) (ℓ β : ℝ) (a : Fib) (ν : ℝ)
 
 lemma pfn_cj (ha : a.cj = a) (y : Fib) (s : ℝ) (z : ℂ) :
     pfn E R a y.cj s z = conj (pfn E R a y s (conj z)) := by
@@ -100,35 +101,33 @@ lemma pfn_ng (ha : a.ng = a) (y : Fib) (s : ℝ) (z : ℂ) :
   conv_lhs => rw [← ha, Fib.fn_ng]
 
 /-- **`J(S_c y, s) = J(y, s)`** when `S_c a = a`. -/
-theorem Jpot_cj (ha : a.cj = a) (y : Fib) (s : ℝ) : Jpot E R ℓ β a y.cj s = Jpot E R ℓ β a y s := by
+theorem Jpot_cj (ha : a.cj = a) (y : Fib) (s : ℝ) :
+    Jpot E R ℓ β a ν y.cj s = Jpot E R ℓ β a ν y s := by
   unfold Jpot
   rw [Fib.quad_cj]
   congr 1
-  have hc := continuous_pfn E R a y s
-  have hL := continuous_Lf ℓ β
   rw [← integral_gaussC_comp _ Complex.continuous_conj gaussC_map_conj _
-    (by fun_prop : Continuous fun z => ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖)]
+    (continuous_Jtail E R ℓ β a ν y s)]
   refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
   have hz : Lf ℓ β z = conj (Lf ℓ β (conj z)) := by rw [Lf_conj, Complex.conj_conj]
   beta_reduce
-  rw [pfn_cj E R a ha, hz, ← map_add, ← map_sub, Complex.norm_conj, Complex.norm_conj]
+  rw [pfn_cj E R a ha, hz, ← map_add, ← map_sub, psiT_conj]
 
-/-- **`J(S_- y, s) = J(y, s)`** when `S_- a = a` (the two terms `|L ± p|` are exchanged). -/
-theorem Jpot_ng (ha : a.ng = a) (y : Fib) (s : ℝ) : Jpot E R ℓ β a y.ng s = Jpot E R ℓ β a y s := by
+/-- **`J(S_- y, s) = J(y, s)`** when `S_- a = a` (the two arguments `L ± p` of `Ψ_ν` are exchanged
+and negated). -/
+theorem Jpot_ng (ha : a.ng = a) (y : Fib) (s : ℝ) :
+    Jpot E R ℓ β a ν y.ng s = Jpot E R ℓ β a ν y s := by
   unfold Jpot
   rw [Fib.quad_ng]
   congr 1
-  have hc := continuous_pfn E R a y s
-  have hL := continuous_Lf ℓ β
-  rw [← integral_gaussC_comp _ continuous_neg gaussC_map_neg _
-    (by fun_prop : Continuous fun z => ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖)]
+  rw [← integral_gaussC_comp _ continuous_neg gaussC_map_neg _ (continuous_Jtail E R ℓ β a ν y s)]
   refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
   have hz : Lf ℓ β z = -Lf ℓ β (-z) := by rw [Lf_neg, neg_neg]
   beta_reduce
   rw [pfn_ng E R a ha, hz,
     show -Lf ℓ β (-z) + pfn E R a y s (-z) = -(Lf ℓ β (-z) - pfn E R a y s (-z)) by ring,
     show -Lf ℓ β (-z) - pfn E R a y s (-z) = -(Lf ℓ β (-z) + pfn E R a y s (-z)) by ring,
-    norm_neg, norm_neg, add_comm]
+    psiT_neg, psiT_comm]
 
 /-! ### The coverage lemma -/
 
@@ -138,32 +137,32 @@ def symOrbit (P : Set Fib) : Set Fib :=
 
 /-- A bound of `J` on a piece holds on its orbit. -/
 lemma Jpot_le_of_mem_symOrbit (hc : a.cj = a) (hn : a.ng = a) (s q : ℝ) (P : Set Fib)
-    (hP : ∀ y ∈ P, Jpot E R ℓ β a y s ≤ q) {y : Fib} (hy : y ∈ symOrbit P) :
-    Jpot E R ℓ β a y s ≤ q := by
+    (hP : ∀ y ∈ P, Jpot E R ℓ β a ν y s ≤ q) {y : Fib} (hy : y ∈ symOrbit P) :
+    Jpot E R ℓ β a ν y s ≤ q := by
   rcases hy with ((hy | ⟨w, hw, rfl⟩) | ⟨w, hw, rfl⟩) | ⟨w, hw, rfl⟩
   · exact hP y hy
-  · rw [Jpot_cj E R ℓ β a hc]; exact hP w hw
-  · rw [Jpot_ng E R ℓ β a hn]; exact hP w hw
-  · rw [Jpot_cj E R ℓ β a hc, Jpot_ng E R ℓ β a hn]; exact hP w hw
+  · rw [Jpot_cj E R ℓ β a ν hc]; exact hP w hw
+  · rw [Jpot_ng E R ℓ β a ν hn]; exact hP w hw
+  · rw [Jpot_cj E R ℓ β a ν hc, Jpot_ng E R ℓ β a ν hn]; exact hP w hw
 
 /-- **Coverage lemma.** If the pieces `Π_i` (`i ∈ I`) together with their images under `S_c`,
 `S_-`, `S_c S_-` cover the fibre space, and `J(·, s) ≤ q_i ≤ Q` on `Π_i`, then `Ψ(s) ≤ Q`. -/
 theorem pot_le_of_cover {ι : Type*} (I : Finset ι) (P : ι → Set Fib) (q : ι → ℝ) (Q s : ℝ)
     (hc : a.cj = a) (hn : a.ng = a) (hcov : ∀ y : Fib, ∃ i ∈ I, y ∈ symOrbit (P i))
-    (hb : ∀ i ∈ I, ∀ y ∈ P i, Jpot E R ℓ β a y s ≤ q i) (hQ : ∀ i ∈ I, q i ≤ Q) :
-    pot E R ℓ β a s ≤ Q := by
+    (hb : ∀ i ∈ I, ∀ y ∈ P i, Jpot E R ℓ β a ν y s ≤ q i) (hQ : ∀ i ∈ I, q i ≤ Q) :
+    pot E R ℓ β a ν s ≤ Q := by
   refine ciSup_le fun y => ?_
   obtain ⟨i, hi, hy⟩ := hcov y
-  exact (Jpot_le_of_mem_symOrbit E R ℓ β a hc hn s (q i) (P i) (hb i hi) hy).trans (hQ i hi)
+  exact (Jpot_le_of_mem_symOrbit E R ℓ β a ν hc hn s (q i) (P i) (hb i hi) hy).trans (hQ i hi)
 
 /-- **Coverage lemma, `max` form.** For a finite nonempty family with
 `⋃ᵢ (Πᵢ ∪ S_c Πᵢ ∪ S_- Πᵢ ∪ S_c S_- Πᵢ) = univ` and `J(·, s) ≤ qᵢ` on `Πᵢ`,
 `Ψ(s) ≤ maxᵢ qᵢ`. -/
 theorem pot_le_sup'_of_cover {ι : Type*} [Fintype ι] [Nonempty ι] (P : ι → Set Fib) (q : ι → ℝ)
     (s : ℝ) (hc : a.cj = a) (hn : a.ng = a) (hcov : ⋃ i, symOrbit (P i) = univ)
-    (hb : ∀ i, ∀ y ∈ P i, Jpot E R ℓ β a y s ≤ q i) :
-    pot E R ℓ β a s ≤ Finset.univ.sup' Finset.univ_nonempty q := by
-  refine pot_le_of_cover E R ℓ β a Finset.univ P q _ s hc hn (fun y => ?_) (fun i _ => hb i)
+    (hb : ∀ i, ∀ y ∈ P i, Jpot E R ℓ β a ν y s ≤ q i) :
+    pot E R ℓ β a ν s ≤ Finset.univ.sup' Finset.univ_nonempty q := by
+  refine pot_le_of_cover E R ℓ β a ν Finset.univ P q _ s hc hn (fun y => ?_) (fun i _ => hb i)
     (fun i _ => Finset.le_sup' q (Finset.mem_univ i))
   obtain ⟨i, hi⟩ := mem_iUnion.1 (eq_univ_iff_forall.1 hcov y)
   exact ⟨i, Finset.mem_univ i, hi⟩

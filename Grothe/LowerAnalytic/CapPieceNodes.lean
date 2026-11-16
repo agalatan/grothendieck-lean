@@ -9,7 +9,8 @@ import Grothe.LowerAnalytic.CapTablesMk
 The computable checks are in `CapPieceRange`.  Here:
 
 * `NodeCap k i`: the cap statement of node `i` of row `k` (`Ψ_k(s_i) − capPad ≤ c_i`);
-* `PieceCap k i cs`: the same bound for `J(·, s_i)` on the piece region `cs` (the content of one piece);
+* `PieceCap k i cs`: the same bound for `J(·, s_i)` on the piece region `cs` (the content of one piece),
+  for the potential without a tail, as `rowPot`;
 * `nodeCap_of_pieceCaps`: coverage + every piece ⇒ the node cap;
 * `pieceCap_of_pieceOneOK`: a passing piece check ⇒ its `PieceCap`;
 * `nodeCap_of_ranges`: coverage, range facts for the checked pieces and `PieceCap` for the excluded
@@ -31,7 +32,7 @@ def PieceCap (k i : ℕ) (cs : List Cons) : Prop :=
   let r := rowData.getD k row01
   let nd := r.nodeList.getD i (0, 0)
   ∀ y ∈ pieceSet r.E (rowR k) cs,
-    Jpot r.E (rowR k) r.ell r.beta (aFib r.b1 r.b2 r.b3) y (nd.1 : ℝ) - capPad ≤ (nd.2 : ℝ)
+    Jpot r.E (rowR k) r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 y (nd.1 : ℝ) - capPad ≤ (nd.2 : ℝ)
 
 /-- The constraint lists of the pieces of a node. -/
 def pieceCons (x : ℕ × ℕ × List String × List String) : List (List Cons) :=
@@ -58,10 +59,10 @@ theorem nodeCap_of_pieceCaps (x : ℕ × ℕ × List String × List String)
   unfold NodeCap rowPot
   set r := rowData.getD x.1 row01
   set nd := r.nodeList.getD x.2.1 (0, 0)
-  have : pot r.E (rowR x.1) r.ell r.beta (aFib r.b1 r.b2 r.b3) nd.1 ≤ nd.2 + capPad := by
+  have : pot r.E (rowR x.1) r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 nd.1 ≤ nd.2 + capPad := by
     refine ciSup_le fun y => ?_
     obtain ⟨pc, hpc, hy⟩ := capCover_sound r.E (rowR x.1) hcov y
-    refine Jpot_le_of_mem_symOrbit r.E (rowR x.1) r.ell r.beta _ (aFib_cj _ _ _) (aFib_ng _ _ _)
+    refine Jpot_le_of_mem_symOrbit r.E (rowR x.1) r.ell r.beta _ 0 (aFib_cj _ _ _) (aFib_ng _ _ _)
       _ _ _ (fun w hw => ?_) hy
     linarith [hp pc hpc w hw]
   dsimp only
