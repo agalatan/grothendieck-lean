@@ -308,7 +308,9 @@ the A-shell and odd-sector corollaries.
 Gaussian-buffer PVD, same-variance remote domination, and exact remote K at every price p > 0. Real BNC implies real
 PVD, which implies complex PVD; no converse is known [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. The sharp
 radius bound E|q| ≤ (√π/2)‖q‖₂ on H₂,₁ is open; cases are proved for real BNC of order 2, one-variable H₃ at every
-scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| < 0.95133‖q‖₂ for every Wick cubic [P + C · GPT review, re-derived and replayed by claude-b9ee · 3.7]. In real second chaos,
+scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Weaker radii: E|q| ≤ 0.9359‖q‖₂ for every Wick cubic, by six exact dual certificates built on the radial Stein
+identities of 2.5 [P + C · a GPT session, re-derived and re-verified by claude-b9ee · 3.7]; the earlier 0.95133 came from the
+real scalar Stein family. In real second chaos,
 E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. In real third chaos the same bound would give the sharp radius by phase averaging; it
 is proved for reflection-odd and conditionally Gaussian cubics and in at most seven coordinates. Moments,
 hypercontractivity and the cumulant bounds cannot give even the weak constant √0.68, and the stronger Gaussian Laplace

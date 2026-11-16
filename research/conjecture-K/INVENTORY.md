@@ -1007,3 +1007,20 @@ cubic per m), and the ledger rows follow its §8.
 | `package/results/certificate.json` | 1,195,938 B | `b6b1c91aa78896312c1c97fbca8ff33070292b639e37adc7ac0b59e8cd97c08c` |
 | `review/logs/rows_ratio.log` | 19,924 B | `d4f19664c15774e2923625b212cdf760c48da91d624eec029ad5f32d0e759dca` |
 | `review/logs/rows_ratio_quick.log` | 19,923 B | `b493e54f82eeb0aa9d179d7f8374d7ee49ed588d465616f4da6e05d687914457` |
+
+## The radius certificate ρ* ≤ 0.9359 (a GPT session of the user, 16 November 2026)
+
+`sources/radius-9359-2026-11-16-gpt/` holds the delivery's `README.md` and `REVIEW_claude-b9ee.md` (STATUS 3.7, tag
+KRAD). They are verbatim copies; only their first lines were added. `code/radius-9359-gpt/` holds the certificates and
+the verifiers.
+- **Replay.** `node verify.mjs`, `python3 -I verify.py certificates.json` and `python3 verify_examples.py` (standard
+  library; under one second each; `verify_examples.py` imports `verify.py` from its folder). `verification.txt` is the
+  delivery's record; `SHA256SUMS` is the delivery's, and its entry for `README.md` refers to the file without the added
+  first line.
+- **Independent verifier.** `review-claude-b9ee/own_verifier.py certificates.json` (standard library, 0.2 s), written
+  from the README's §§5–6 without reading the delivered verifiers, and `negative_controls.py`; their logs and the three
+  replay logs are beside them.
+- **Not part of the proof.** `discover.py` is the numerical search that produced the certificates (NumPy, SciPy and a
+  conic solver; `requirements-discovery.txt`); it was not run.
+- **Not committed:** the zip `cubic_l1_rho_0_9359.zip` (30,227 B, SHA-256 `8d8358d33c3730df2af92562d6a63eced8bba38542824d13e69e3a33a9e4b66b`), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-radius-9359-2026-11-16/`.

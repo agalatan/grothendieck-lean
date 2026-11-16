@@ -1,0 +1,5 @@
+# cubic_l1_certificate/requirements-discovery.txt
+numpy>=1.26
+scipy>=1.11
+cvxpy>=1.4
+clarabel>=0.9
