@@ -8,8 +8,10 @@ different witness:
 
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
 K ≈ 1.40212, with a margin of 1.6·10⁻⁴ to the target **1.4018** and 6·10⁻⁵ to 1.402. The integer certificate (ledger
-§5) confirms the plateau of rows below the 1.4018 target, with a margin of 6 to 8·10⁻⁵; the rows at small t are not
-certified yet, and 1.402 is not reached with its tables.
+§5) is not complete. Five plateau rows have exact certificates below the 1.4018 target. For the binding rows on their
+final tables a margin of 6 to 8·10⁻⁵ is predicted, not certified; one row near t = 0.84 certifies above the target and
+its coverage by neighbouring rows, the envelope over t and the rows at small t are open. The predicted values are
+above the target of 1.402.
 
 It is research material: nothing here is imported by Lean or checked by CI. The one exception is noted where it
 occurs: the lemma of §2 of the ledger is the Lean theorem `anchored_pair_nu` in

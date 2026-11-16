@@ -1085,7 +1085,7 @@ and logs in `review-worker/`.
 `sources/shared-factors-2026-11-16-gpt/` holds verbatim copies of the delivery's notes and of the independent review (tag SFAC); only their
 first lines were added. `code/shared-factors-gpt/` holds the delivered verifier with its result files, and the reviewer's scripts
 and logs in `review-worker/`.
-- **Replay.** `node verify.mjs` reproduces `replay.json`.
+- **Replay.** `node scripts/verify.mjs`, run in that folder, reproduces `results/replay.json`.
 - **Not committed:** the zip `content_law_shared_factors_20261116.zip` (15,859 B, SHA-256 `b97885cd4f2e763e955498dab27dd5e914f30bf958d9adc2d8bf123eabfabeed`), in
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-shared-factors-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
 
@@ -1094,7 +1094,7 @@ and logs in `review-worker/`.
 `sources/finite-reduction-2026-11-16-gpt/` holds verbatim copies of the delivery's notes and of the independent review (tag KFR); only their
 first lines were added. `code/finite-reduction-gpt/` holds the delivered verifier with its result files, and the reviewer's scripts
 and logs in `review-worker/`.
-- **Replay.** `node verify.mjs` reproduces `replay.json`.
+- **Replay.** `node scripts/verify.mjs`, run in that folder, reproduces `results/replay.json`.
 - **Not committed:** the zip `content_law_finite_reduction_20261116.zip` (16,630 B, SHA-256 `528630828566275121c49a635215527c88542f63795f2005844d69e383e612fc`), in
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-finite-reduction-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
 
@@ -1103,7 +1103,7 @@ and logs in `review-worker/`.
 `sources/shared-trace-2026-11-16-codex-a786/` holds verbatim copies of the delivery's notes and of the independent review (tag KST); only their
 first lines were added. `code/shared-trace-codex-a786/` holds the delivered verifier with its result files, and the reviewer's scripts
 and logs in `review-worker/`.
-- **Replay.** `node verify.mjs` reproduces `replay.json`; its line 60 checks the algebra of the misprinted display (20) of `PROOFS.md` (the review, §2).
+- **Replay.** `node scripts/verify.mjs`, run in that folder, reproduces `results/replay.json`; its line 60 checks the algebra of the misprinted display (20) of `PROOFS.md` (the review, §2).
 - **Not committed:** the zip `content_law_shared_trace_and_phase_obstruction_20261116.zip` (31,228 B, SHA-256 `456fa2a3dd0a4b7ff5dd511113467fa784d27803f565fa57d3cc6e004f8afa9f`), in
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-a786-shared-trace-2026-11-16/`; the delivery's reading notes and source manifest are not copied.
 
