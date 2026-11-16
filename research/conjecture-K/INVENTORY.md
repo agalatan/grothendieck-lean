@@ -981,3 +981,29 @@ misprinted "+" in (29a) among them), and the ledger rows follow its §6.
 | `review/logs/content_ratio_stored.log` | 67,248 B | `4fc3674c206c251d04ac8b71339255edd822b9216c0f97eb4f4bd1f2fcd89acb` |
 | `review/logs/results_exact.delivered.json` | 5,343 B | `16a0a1ba7076e3cd2697f30df20964c2257ee829007a3691a75b3fed3a7b4a7e` |
 | `review/logs/uscan.json` | 55,848 B | `a6cda850eb64a395997963190bd0ac938ee56cd7fc06411a6d982de332a8dd84` |
+
+## The signed-pairing content-law package (a GPT session of the user, 16 November 2026)
+
+`sources/signed-pairing-2026-11-16-gpt/` holds the delivery's documents (`README.md`, `PROOFS.md`, `CERTIFICATES.md`,
+`LEDGER_ADDITIONS.md`) and the independent `REVIEW.md` (STATUS 6.3.30, tag SPAIR; `../higher-degree/STATUS.md`
+4.21–4.24). They are verbatim copies; only their first lines were added. Read the delivery through the review: its §9
+lists five required corrections of wording (the bulk result is a limit model; "an infinite-dimensional family" is one
+cubic per m), and the ledger rows follow its §8.
+- **Checkers.** `code/signed-pairing-gpt/scripts/`: `node verify_gamma_exact.mjs` and `node verify_exact.mjs` (Node 20
+  or later) and `python3 certify_gamma.py` (python-flint). `verify_exact.mjs` reads `results/certificate.json`, which is
+  not committed (below); `build_certificate.py` and `variational_probe.py` are the proposal step that wrote it (NumPy,
+  SciPy). The review worker replayed all three checkers, the Arb one with python-flint 0.8.0 on a rented droplet;
+  the outputs are byte-identical to the delivered ones. `MANIFEST.sha256` is the delivery's; its entries for the four
+  documents refer to the files without the added first line.
+- **Review scripts.** `code/signed-pairing-gpt/review/scripts/` (18 files; `siglib.py` is their library) and
+  `review/logs/` (22 logs of at most 13 KB, kept because the review cites them as its record). `cert_check.py` is the
+  reviewer's own exact checker of the 121 cells; `null_highdeg.py` tests the 400 Wick controls at higher degree.
+- **Not committed**, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-signed-pairing-2026-11-16/`:
+  the zip `content_law_signed_pairing_20261116.zip` (569,629 B, SHA-256 `a8ce64c450f9349e8ec58ef1b81d1dd9c6f6ec6baf8fb65c9595bf4925df3f4c`), the reviewer's
+  `review/data/`, and:
+
+| file | size | SHA-256 |
+|---|---|---|
+| `package/results/certificate.json` | 1,195,938 B | `b6b1c91aa78896312c1c97fbca8ff33070292b639e37adc7ac0b59e8cd97c08c` |
+| `review/logs/rows_ratio.log` | 19,924 B | `d4f19664c15774e2923625b212cdf760c48da91d624eec029ad5f32d0e759dca` |
+| `review/logs/rows_ratio_quick.log` | 19,923 B | `b493e54f82eeb0aa9d179d7f8374d7ee49ed588d465616f4da6e05d687914457` |
