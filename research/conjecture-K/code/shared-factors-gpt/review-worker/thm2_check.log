@@ -1,0 +1,23 @@
+junta X(|X|^2-2)       u 2.0000 chi  42.000 | Lambda/(sqrt(3 delta/8)/36) = 0.6424 | (8): largest relative defect 3.5e-16 | (9): largest ratio to the bound 0.528 | Cor.3: |E G Q1^3 - 324<A,K>| 6e-14, 3/4 rule 1e-13, ||c[v]||^2/delta^1.5 = 0.4703 (<= 1.8371); Theorem 2 at h = v gives 312.0
+H(X)+H(Y)              u 2.0000 chi  21.000 | Lambda/(sqrt(3 delta/8)/36) = 0.6424 | (8): largest relative defect 3.3e-16 | (9): largest ratio to the bound 0.542 | Cor.3: |E G Q1^3 - 324<A,K>| 1e-14, 3/4 rule 1e-14, ||c[v]||^2/delta^1.5 = 0.3325 (<= 1.8371); Theorem 2 at h = v gives 312.0
+X(|Y|^2-1)             u 1.0000 chi  16.000 | Lambda/(sqrt(3 delta/8)/36) = 0.7071 | (8): largest relative defect 1.6e-16 | (9): largest ratio to the bound 0.452 | Cor.3: |E G Q1^3 - 324<A,K>| 1e-15, 3/4 rule 7e-15, ||c[v]||^2/delta^1.5 = 0.2500 (<= 1.8371); Theorem 2 at h = v gives 312.0
+X^2 conj(Y)            u 1.0000 chi  10.000 | Lambda/(sqrt(3 delta/8)/36) = 0.8165 | (8): largest relative defect 2.8e-17 | (9): largest ratio to the bound 0.396 | Cor.3: |E G Q1^3 - 324<A,K>| 2e-16, 3/4 rule 5e-16, ||c[v]||^2/delta^1.5 = 0.0000 (<= 1.8371); Theorem 2 at h = v gives 312.0
+Wick+shared (0.3, i)   u 1.0000 chi  35.425 | Lambda/(sqrt(3 delta/8)/36) = 0.6444 | (8): largest relative defect 3.7e-16 | (9): largest ratio to the bound 0.640 | Cor.3: |E G Q1^3 - 324<A,K>| 7e-15, 3/4 rule 4e-15, ||c[v]||^2/delta^1.5 = 0.4727 (<= 1.8371); Theorem 2 at h = v gives 312.0
+random                 u 10.7389 chi  18.263 | Lambda/(sqrt(3 delta/8)/36) = 0.6988 | (8): largest relative defect 1.9e-16 | (9): largest ratio to the bound 0.520 | Cor.3: |E G Q1^3 - 324<A,K>| 1e-13, 3/4 rule 3e-14, ||c[v]||^2/delta^1.5 = 0.2140 (<= 1.8371); Theorem 2 at h = v gives 312.0
+random                 u 5.7106 chi  15.837 | Lambda/(sqrt(3 delta/8)/36) = 0.7204 | (8): largest relative defect 6.5e-17 | (9): largest ratio to the bound 0.552 | Cor.3: |E G Q1^3 - 324<A,K>| 6e-14, 3/4 rule 1e-14, ||c[v]||^2/delta^1.5 = 0.2606 (<= 1.8371); Theorem 2 at h = v gives 312.0
+random                 u 10.3866 chi  21.862 | Lambda/(sqrt(3 delta/8)/36) = 0.6479 | (8): largest relative defect 1.5e-16 | (9): largest ratio to the bound 0.483 | Cor.3: |E G Q1^3 - 324<A,K>| 2e-13, 3/4 rule 6e-14, ||c[v]||^2/delta^1.5 = 0.3917 (<= 1.8371); Theorem 2 at h = v gives 312.0
+random                 u 9.2916 chi  17.279 | Lambda/(sqrt(3 delta/8)/36) = 0.6982 | (8): largest relative defect 1.9e-16 | (9): largest ratio to the bound 0.504 | Cor.3: |E G Q1^3 - 324<A,K>| 1e-13, 3/4 rule 4e-14, ||c[v]||^2/delta^1.5 = 0.3170 (<= 1.8371); Theorem 2 at h = v gives 312.0
+h = 1/(1+v) + cos(v)/3  : |D^3 Re(z h)|^2 = cos^2 |T1|^2 + sin^2 |T2|^2 to 7.2e-16 (relative);  it is <= D_h^2 at all 20000 points: True (largest ratio 1.000000)
+h = exp(-2v) v          : |D^3 Re(z h)|^2 = cos^2 |T1|^2 + sin^2 |T2|^2 to 1.3e-15 (relative);  it is <= D_h^2 at all 20000 points: True (largest ratio 1.000000)
+h = v^2 - v^3/5         : |D^3 Re(z h)|^2 = cos^2 |T1|^2 + sin^2 |T2|^2 to 2.3e-16 (relative);  it is <= D_h^2 at all 20000 points: True (largest ratio 1.000000)
+inequality (6) for polynomial profiles (exact quadrature): ||c[h]||^2 / ((13/2) delta^1.5 E D_h^2(V))
+   junta X(|X|^2-2)       chi  42.000 | v: 1.51e-03   v^2: 1.17e-02   v - v^2/(4u): 1.13e-02
+   H(X)+H(Y)              chi  21.000 | v: 1.07e-03   v^2: 4.25e-03   v - v^2/(4u): 3.98e-03
+   X(|Y|^2-1)             chi  16.000 | v: 8.01e-04   v^2: 2.31e-03   v - v^2/(4u): 2.11e-03
+   X^2 conj(Y)            chi  10.000 | v: 2.00e-37   v^2: 2.70e-38   v - v^2/(4u): 1.88e-36
+   Wick+shared (0.3, i)   chi  35.425 | v: 1.51e-03   v^2: 1.15e-02   v - v^2/(4u): 1.11e-02
+   random                 chi  18.263 | v: 6.86e-04   v^2: 2.32e-03   v - v^2/(4u): 2.14e-03
+   random                 chi  15.837 | v: 8.35e-04   v^2: 4.80e-03   v - v^2/(4u): 4.56e-03
+constant: 1/4 (68 + 8 sqrt30)(3/8)^1.5 = 6.41945 < 13/2;   at h = v the theorem gives 312 delta^1.5 against 1.8371 (Corollary 3)
+ALL OK
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 /usr/local/bin/python3 -I   1.52s user 0.20s system 80% cpu 2.138 total

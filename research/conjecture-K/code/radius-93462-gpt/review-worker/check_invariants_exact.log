@@ -1,0 +1,15 @@
+Wick monomial                      d=1 u=2  (A,B,P,Q,R)=(32, 96, 16, 4, 8)  <P22c1,P22c2>=16   all checks: True
+sec. 9, two-variable cubic         d=2 u=8  (A,B,P,Q,R)=(256, 256, 128, 32, 64)  <P22c1,P22c2>=0   all checks: True
+     normalised (A,B,P,Q,R) = (4, 4, 2, 1/2, 1);  A <= 2 + B/4: False;  A + 2Q <= 2 + B/3: False  (both must be False)
+sec. 9, six-variable cubic         d=6 u=7  (A,B,P,Q,R)=(0, 0, 74, 13, 3)  <P22c1,P22c2>=-3   all checks: True
+     U diag = ['6', '6', '1', '1', '0', '0']  J diag = ['0', '0', '2', '1', '2', '2']  off-diagonal zero: True  B >= 4R: False (must be False)
+random Gaussian-integer tensor     d=2 u=106  (A,B,P,Q,R)=(22144, 97472, 36880, 9828, 10192)  <P22c1,P22c2>=14176   all checks: True
+random Gaussian-integer tensor     d=2 u=52  (A,B,P,Q,R)=(7712, 28608, 6336, 2064, 3024)  <P22c1,P22c2>=4128   all checks: True
+random Gaussian-integer tensor     d=2 u=82  (A,B,P,Q,R)=(23744, 58304, 18704, 4172, 6976)  <P22c1,P22c2>=7600   all checks: True
+random Gaussian-integer tensor     d=2 u=18  (A,B,P,Q,R)=(2592, 7776, 1296, 324, 648)  <P22c1,P22c2>=1296   all checks: True
+random Gaussian-integer tensor     d=2 u=110  (A,B,P,Q,R)=(15616, 60608, 25808, 10996, 9296)  <P22c1,P22c2>=5856   all checks: True
+random Gaussian-integer tensor     d=3 u=486  (A,B,P,Q,R)=(160640, 684032, 428400, 102796, 123264)  <P22c1,P22c2>=47744   all checks: True
+random Gaussian-integer tensor     d=3 u=418  (A,B,P,Q,R)=(261344, 669952, 294256, 97996, 113104)  <P22c1,P22c2>=54384   all checks: True
+random Gaussian-integer tensor     d=3 u=304  (A,B,P,Q,R)=(87520, 479456, 150208, 44992, 64776)  <P22c1,P22c2>=55088   all checks: True
+ALL EXACT CHECKS PASS
+/usr/local/bin/python3 -I check_invariants_exact.py  0.48s user 0.01s system 99% cpu 0.491 total

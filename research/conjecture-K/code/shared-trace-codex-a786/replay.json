@@ -1,0 +1,210 @@
+{
+  "status": "C PASS",
+  "arithmetic": "BigInt exact rational and polynomial arithmetic",
+  "symbolicChecks": "all d and all lambda>=0; shifted polynomial proofs, not samples",
+  "thetaAtDimensions": {
+    "2": "6/11",
+    "3": "173/594",
+    "4": "175/888",
+    "5": "1361/10080",
+    "8": "257/4932",
+    "16": "17327/1333080"
+  },
+  "shifted": {
+    "uniformFrom3": [
+      "0",
+      "99864",
+      "77934",
+      "19416",
+      "1482"
+    ],
+    "polDominatesBulk": [
+      "600",
+      "828",
+      "396",
+      "84",
+      "15",
+      "3"
+    ],
+    "invDominatesBulk": [
+      "828",
+      "1534",
+      "892",
+      "212",
+      "18"
+    ]
+  },
+  "sharedContinuum": {
+    "uniformD3": {
+      "terms": 14,
+      "minCoefficient": "1482"
+    },
+    "dimension2": {
+      "terms": 2,
+      "minCoefficient": "800"
+    },
+    "dimension3": {
+      "terms": 2,
+      "minCoefficient": "69336"
+    },
+    "dimension4": {
+      "terms": 2,
+      "minCoefficient": "91200"
+    },
+    "inverseFactor": {
+      "terms": 21,
+      "minCoefficient": "40"
+    },
+    "inverseContinuum": {
+      "terms": 33,
+      "minCoefficient": "240"
+    },
+    "inverseFrom5": {
+      "terms": 10,
+      "minCoefficient": "6"
+    }
+  },
+  "expUpper": "11743/4320",
+  "tangentFloorStrictlyAbove": "4/5",
+  "wickModels": [
+    {
+      "dimensions": [
+        2
+      ],
+      "amplitudes": [
+        "1"
+      ],
+      "sharedHolomorphicLambda": [
+        "0"
+      ],
+      "bulk": "0",
+      "gaussianCoordinates": 6,
+      "terms": 6,
+      "u": "4",
+      "delta": "88"
+    },
+    {
+      "dimensions": [
+        3
+      ],
+      "amplitudes": [
+        "1"
+      ],
+      "sharedHolomorphicLambda": [
+        "0"
+      ],
+      "bulk": "0",
+      "gaussianCoordinates": 12,
+      "terms": 12,
+      "u": "9",
+      "delta": "264"
+    },
+    {
+      "dimensions": [
+        2,
+        3
+      ],
+      "amplitudes": [
+        "1",
+        "1/2"
+      ],
+      "sharedHolomorphicLambda": [
+        "0",
+        "0"
+      ],
+      "bulk": "2/3",
+      "gaussianCoordinates": 21,
+      "terms": 19,
+      "u": "241/36",
+      "delta": "5707/54"
+    },
+    {
+      "dimensions": [
+        4
+      ],
+      "amplitudes": [
+        "2/3"
+      ],
+      "sharedHolomorphicLambda": [
+        "0"
+      ],
+      "bulk": "1/4",
+      "gaussianCoordinates": 23,
+      "terms": 21,
+      "u": "1033/144",
+      "delta": "1212659/10368"
+    },
+    {
+      "dimensions": [
+        3,
+        3
+      ],
+      "amplitudes": [
+        "1/2",
+        "3/2"
+      ],
+      "sharedHolomorphicLambda": [
+        "0",
+        "0"
+      ],
+      "bulk": "1/3",
+      "gaussianCoordinates": 27,
+      "terms": 25,
+      "u": "407/18",
+      "delta": "36533/27"
+    },
+    {
+      "dimensions": [
+        2
+      ],
+      "amplitudes": [
+        "1"
+      ],
+      "sharedHolomorphicLambda": [
+        "1"
+      ],
+      "bulk": "0",
+      "gaussianCoordinates": 10,
+      "terms": 10,
+      "u": "10",
+      "delta": "496"
+    },
+    {
+      "dimensions": [
+        3
+      ],
+      "amplitudes": [
+        "1"
+      ],
+      "sharedHolomorphicLambda": [
+        "4"
+      ],
+      "bulk": "0",
+      "gaussianCoordinates": 21,
+      "terms": 21,
+      "u": "57",
+      "delta": "9864"
+    },
+    {
+      "dimensions": [
+        3,
+        4
+      ],
+      "amplitudes": [
+        "1",
+        "1/3"
+      ],
+      "sharedHolomorphicLambda": [
+        "1/4",
+        "1"
+      ],
+      "bulk": "1/2",
+      "gaussianCoordinates": 60,
+      "terms": 58,
+      "u": "65/4",
+      "delta": "320971/648"
+    }
+  ],
+  "polynomialProfileChecks": 48,
+  "verifiedProfileRows": 6
+}

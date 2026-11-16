@@ -16,5 +16,8 @@ Copied into `code/`:
 - `code/lemma-review/`: the referee's independent exact checks `indep_identities.py` and `indep_identities_split.py`
   (sympy).
 
-Not copied: every log, the result files and the scripts of the model runs. The integer certificate of STATUS 5.1 runs
-on a rented machine; its outputs will be copied into `caps-stage0c-2026-11-16/` and described here when it ends.
+Not copied: every log, the result files and the scripts of the model runs. The integer certificate of STATUS §5 runs
+on a rented machine; its outputs are copied into `caps-stage0c-2026-11-16/` (`results/final/`: row headers, final cap
+tables with their SHA-256, node certificates, Stein row certificates and the toolchain; `PROGRESS.md`: the running
+status, with the answers on the radius constant quoted in STATUS 5.4). `sources/stage0-2026-11-16/STAGE0_FINAL.md` is
+the report at the first hand-back; the computation of the small-t rows and of the envelope continues.
