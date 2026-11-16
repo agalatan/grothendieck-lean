@@ -1,0 +1,64 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS exact finite polynomial controls; not a general proof",
+  "raw_cubic": "x^3+x*y^2-4*x, variance 8",
+  "joint_cumulants": {
+    "0,0": "8",
+    "0,0,0": "0",
+    "0,0,0,0": "4032",
+    "0,0,0,0,0": "0",
+    "0,0,0,0,0,0": "14039040",
+    "0,1,2": "6",
+    "0,1,1,1": "6",
+    "0,0,1,1": "40",
+    "0,0,2,2": "464",
+    "0,1,1,2,2": "0",
+    "0,0,1,1,2,2": "4816"
+  },
+  "U_joint_fourth_cumulants": {
+    "0,0,0,0": "30048",
+    "0,0,0,1": "42336",
+    "0,0,1,1": "86064",
+    "0,1,1,1": "221544",
+    "1,1,1,1": "679542"
+  },
+  "projection_norm_squares": {
+    "2,2": [
+      "2704",
+      "20032",
+      "15424",
+      "0",
+      "0"
+    ],
+    "2,4": [
+      "0",
+      "10192",
+      "52224",
+      "25572",
+      "0"
+    ],
+    "4,2": [
+      "0",
+      "10192",
+      "52224",
+      "25572",
+      "0"
+    ],
+    "4,4": [
+      "1369",
+      "36304",
+      "229252",
+      "338640",
+      "78084"
+    ]
+  },
+  "U2_norm_square": "52",
+  "U4_norm_square": "37",
+  "fourth_cumulant_unit_variance": "63",
+  "rejection_controls": [
+    "dropping mixed third",
+    "dropping mixed fourth",
+    "dropping signs",
+    "equating orthogonality with independence"
+  ]
+}
