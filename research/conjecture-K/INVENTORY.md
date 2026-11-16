@@ -1024,3 +1024,27 @@ the verifiers.
   conic solver; `requirements-discovery.txt`); it was not run.
 - **Not committed:** the zip `cubic_l1_rho_0_9359.zip` (30,227 B, SHA-256 `8d8358d33c3730df2af92562d6a63eced8bba38542824d13e69e3a33a9e4b66b`), in
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/gpt-radius-9359-2026-11-16/`.
+
+## The influence calculus (a Claude session of the user, 16 November 2026, two versions)
+
+`sources/influence-calculus-2026-11-16/` holds the second version of the delivery (`README.md`, `NOTE2.md`,
+`ADDENDUM.md`, `LITERATURE.md`) and the independent `REVIEW.md`, which covers both versions (STATUS 3.27,
+6.3.31–6.3.35, items 96–98, tag KIC; `../higher-degree/STATUS.md` 4.25–4.26). They are verbatim copies; only their
+first lines were added. The second version contains the first with its corrections marked; read both through the
+review, whose §6 lists what the delivery overstates (F3–F7).
+- **Replay.** `code/influence-calculus-2026-11-16/`: `python3 -I scripts/check_influence_exact.py`,
+  `scripts/check_stein_energy_exact.py`, `scripts/check_fourth.py`, `scripts/check_sixth_moment.py` (standard library;
+  the scripts import `wick_exact.py` from their folder, so run them from a copy without `-I` or with the folder on the
+  path). `run_all.sh` replays the numerics (NumPy, SciPy), which read the peak-profile table produced by
+  `../antiholomorphic-stein-2026-11-16/numerics/tab.py`. `results/` holds the delivery's logs, kept because the note
+  cites them. The review worker replayed everything: identical logs, or noise in the last digit.
+- **`review/`** holds the reviewer's own exact Wick code (`exact_wickbasis.py`), its numerics (`own_numerics.py`,
+  `own_lawlevel.py`, `own_scan.py`, `own_v2.py`, `small_checks.py`), the replay drivers and their logs.
+- **Not committed**, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/influence-calculus-2026-11-16/`: the two zips
+  (`conjecture-K-influence-calculus.zip`, 41,742 B, SHA-256 `eaa4f0b5227a7c856cd1c43ee58745c4f89c4ae90f701ee9f2f43898af4a9540`;
+  `conjecture-K-influence-calculus-v2.zip`, 65,469 B, SHA-256 `f601c453f909fae575599c4ffa04c9fdb73fb06e55da40c18651cf14786459d5`), the first version as
+  delivered (`package/`), the replay logs (`review/replay-logs/`), and:
+
+| file | size | SHA-256 |
+|---|---|---|
+| `review/tab_reviewer.npz` | 122,118 B | `44d1b330464d652acaaaec713cc158932beb508b8635cdb4e704758f2d8b760d` |

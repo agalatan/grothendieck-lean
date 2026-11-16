@@ -1,0 +1,20 @@
+tilt u=0.02 monomial H(X)            chi= 42.0 C2/D=0.0117 T9/D=0.0254 T9/delta=0.0058 | 11.49: gamma*delta/D=0.1924
+tilt u=0.02 best two-variable tensor chi= 40.0 C2/D=0.0117 T9/D=0.0263 T9/delta=0.0061 | 11.49: gamma*delta/D=0.1900
+tilt u=0.02 X(|Y|^2-1)               chi= 16.0 C2/D=0.0064 T9/D=0.0657 T9/delta=0.0236 | 11.49: gamma*delta/D=0.1229
+tilt u=0.02 mixed                    chi= 33.4 C2/D=0.0115 T9/D=0.0320 T9/delta=0.0079 | 11.49: gamma*delta/D=0.1790
+tilt u=0.02 H(X)+H(Y)                chi= 21.0 C2/D=0.0094 T9/D=0.0478 T9/delta=0.0149 | 11.49: gamma*delta/D=0.1415
+tilt u=0.02 400 random cubics: chi in [9.8,39.6], D/delta in [0.233,0.443]; C2/D max 0.0119; T9/D min 0.0270 median 0.0610 max 0.1006 (chi=9.8)
+    11.49 on the same cubics: gamma*delta/D max 0.1890 (chi=39.6); min(T9, gamma*delta)/D max 0.0997 (chi=9.8); T9 < gamma*delta on 100% of them
+    chi in [8,16): n=139, T9/D max 0.1006, C2/D max 0.0083, gamma*delta/D max 0.1275
+    chi in [16,24): n=184, T9/D max 0.0696, C2/D max 0.0115, gamma*delta/D max 0.1549
+    chi in [24,43): n=77, T9/D max 0.0496, C2/D max 0.0119, gamma*delta/D max 0.1890
+tilt u=0.0463 monomial H(X)            chi= 42.0 C2/D=0.0114 T9/D=0.0300 T9/delta=0.0040 | 11.49: gamma*delta/D=0.2426
+tilt u=0.0463 best two-variable tensor chi= 40.0 C2/D=0.0115 T9/D=0.0312 T9/delta=0.0042 | 11.49: gamma*delta/D=0.2391
+tilt u=0.0463 X(|Y|^2-1)               chi= 16.0 C2/D=0.0061 T9/D=0.0853 T9/delta=0.0197 | 11.49: gamma*delta/D=0.1404
+tilt u=0.0463 mixed                    chi= 33.4 C2/D=0.0113 T9/D=0.0399 T9/delta=0.0058 | 11.49: gamma*delta/D=0.2225
+tilt u=0.0463 H(X)+H(Y)                chi= 21.0 C2/D=0.0099 T9/D=0.0594 T9/delta=0.0115 | 11.49: gamma*delta/D=0.1679
+tilt u=0.0463 400 random cubics: chi in [9.7,40.0], D/delta in [0.136,0.307]; C2/D max 0.0118; T9/D min 0.0316 median 0.0732 max 0.1244 (chi=9.7)
+    11.49 on the same cubics: gamma*delta/D max 0.2385 (chi=39.9); min(T9, gamma*delta)/D max 0.1152 (chi=11.0); T9 < gamma*delta on 96% of them
+    chi in [8,16): n=127, T9/D max 0.1244, C2/D max 0.0094, gamma*delta/D max 0.1473
+    chi in [16,24): n=178, T9/D max 0.0920, C2/D max 0.0117, gamma*delta/D max 0.1878
+    chi in [24,43): n=95, T9/D max 0.0655, C2/D max 0.0118, gamma*delta/D max 0.2385
