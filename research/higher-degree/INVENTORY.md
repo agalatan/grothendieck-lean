@@ -59,3 +59,29 @@ folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-res
   them against the definitions. The `.npz` tables, the searches and the logs stay in the working folder.
 
 The certificate needs python-flint; it ran on a rented droplet whose run folders are deleted.
+
+## The searches in more than two variables (16 November 2026)
+
+`code/degree5-content/searches-2026-11-16/` holds the logs that STATUS 4.28 is read from:
+
+| logs | content |
+|---|---|
+| `b2_table_5.log`, `b2_table_7.log`, `b2_table_9.log` | two variables (the column "rank 1") and the driver class with a cofactor of rank two, rows 0.80, 0.82, 0.84; "not possible" marks a maximiser outside the response family |
+| `b2_gen3_5_n3_free.log`, `b2_rows_n3.log` | three variables: the searches at row 0.80 and the largest ratio per row and energy |
+| `b2_gen3_5_n4_free.log`, `b2_gen3_5_n4_rice.log`, `b2_rows_n4.log` | four variables, the same |
+| `b2_gen5_5_n5_free.log`, `b2_gen5_5_n5_rice.log`, `b2_gen5_5_n6_free.log` | five and six variables, row 0.80 |
+| `b2_relax_5_free.log`, `b2_twopoint.log` | the relaxed problem over cofactor laws without constraints (the two-point laws) |
+| `b2_relax_5_cs.log`, `b2_relax_7_cs.log`, `b2_relax_9_cs.log` | the same with the Cauchy–Schwarz constraints, rows 0.80, 0.82, 0.84 |
+| `r4_ref_rows7.log` | the bounds 6.3.25 and 6.3.26 of the K ledger against the truth on test cubics, row 0.82 |
+
+In the logs of the searches, "ratio A" is the objective on the nodes that the search fits, and
+"(independent nodes …)" is the same cubic on a second set of nodes: a finer tensor rule for three variables, a
+second and larger quasi-random sample for four or more. For three variables the two agree; for four or more only
+the second is a value of the ratio. `b2_rows_n3.log` and `b2_rows_n4.log` print the second alone.
+
+The search scripts (`b2_*.py` with `r4lib.py` and the kit) and the JSON files of the maximisers stay in
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/content5/`
+(`code/`, `out/`): they are one worker's working files and have not been reviewed.
+`sources/content-problem-v2-2026-11-16/PROBLEM_V2.md` is the problem statement prepared for outside sessions; its
+`kit/` is `code/degree5-content/`. The inequality (T) that it poses is one of the open steps of STATUS §5, item 2,
+not the only one.
