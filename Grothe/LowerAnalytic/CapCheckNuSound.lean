@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.CapCheckSound
+import Grothe.LowerAnalytic.CapGridOK
 import Grothe.LowerAnalytic.CapMajorant
 import GrotheCapsKernel.CapCheckNu
 
@@ -16,9 +16,10 @@ grid `gd : GridDataNu` with the prices `d₂ = gd.d2 i j`, `d₃ = gd.d3 i j`, t
 * `psiT_le_majPoly_of_cellOKNu`: hence, for `ν ≥ 0`, every `L` with `|L| ≤ rl` and every `p`,
   `Ψ_ν(L + p, L − p) ≤ majPoly (majWt d₂ d₃ ν g) L p`, the polynomial whose integral over the cell
   the checker encloses;
-* `gridOKNu_mkGridNu`: every recipe grid passes the grid check (`cellOKNu_of_gNum`: price
-  numerators `≥ nuNum ν` and the coefficient `gNum`, the exact floor of the cell inequality), so
-  a certificate needs no run-time cell check.
+* `gridOKNu_mkGridNu`: every recipe grid passes the grid check, for both rules of the cell means
+  (`fixCell_ok`: the repaired price numerators have `d₂ > 0`, `Δ > 0`; `cellOKNu_of_gNum`: with the
+  coefficient `gNum`, the exact floor of the cell inequality, such a cell passes), so a certificate
+  needs no run-time cell check.
 
 The integer data of a cell live at the common scale `s = den(ν)·2⁵⁰` (`cellInts`); the lemmas
 `*_scaled` are the corresponding identities of real numbers.
@@ -444,47 +445,56 @@ lemma nuNum_le {nu : ℚ} {D : ℕ} (h : nuNum nu ≤ D) :
   have h6 : nu.num * ((two50 : ℕ) : ℤ) < (nu.den : ℤ) * (D : ℤ) := by exact_mod_cast h5
   omega
 
-/-- **A cell with price numerators `≥ nuNum ν`, `ν ≥ 0` and the coefficient `gNum` passes the cell
-check**, given its ring bound. -/
-theorem cellOKNu_of_gNum (gd : GridDataNu) (ell beta : ℚ) (i j : ℕ) (hν : 0 ≤ gd.nu)
-    (h2 : nuNum gd.nu ≤ gd.D2 i j) (h3 : nuNum gd.nu ≤ gd.D3 i j)
+/-- **A cell with `d₂ > 0`, `Δ > 0` and the coefficient `gNum` passes the cell check**, given its
+ring bound (where `e₂ ≤ 0` or `e₃ ≤ 0` the coefficient `gNum` is `0`). -/
+theorem cellOKNu_of_gNum (gd : GridDataNu) (ell beta : ℚ) (i j : ℕ)
+    (hd : 0 < (cellInts gd.nu (gd.D2 i j) (gd.D3 i j)).Dd2)
+    (hD : 0 < (cellInts gd.nu (gd.D2 i j) (gd.D3 i j)).Dl)
     (hG : gd.G i j = gNum (cellInts gd.nu (gd.D2 i j) (gd.D3 i j)) ((gd.nu.den : ℤ) * gd.RL i))
     (hrl : rlb ell beta ((i + 1) * gd.h) ≤ gd.rl i) :
     cellOKNu gd ell beta i j = true := by
-  have hE2 := nuNum_le h2
-  have hE3 := nuNum_le h3
   have hb : (0 : ℤ) < (gd.nu.den : ℤ) := by exact_mod_cast gd.nu.den_pos
-  have hnum : (0 : ℤ) ≤ gd.nu.num := Rat.num_nonneg.2 hν
   have ht : (0 : ℤ) < ((two50 : ℕ) : ℤ) := by norm_num [two50]
-  have hNu : (0 : ℤ) ≤ gd.nu.num * ((two50 : ℕ) : ℤ) := mul_nonneg hnum ht.le
-  -- the integer cell data
   obtain ⟨c, hc⟩ : ∃ c, c = cellInts gd.nu (gd.D2 i j) (gd.D3 i j) := ⟨_, rfl⟩
-  have cE2 : c.E2 = (gd.nu.den : ℤ) * (gd.D2 i j : ℤ) - gd.nu.num * ((two50 : ℕ) : ℤ) := by
-    rw [hc]; rfl
-  have cE3 : c.E3 = (gd.nu.den : ℤ) * (gd.D3 i j : ℤ) - gd.nu.num * ((two50 : ℕ) : ℤ) := by
-    rw [hc]; rfl
-  have cDd2 : c.Dd2 = (gd.nu.den : ℤ) * (gd.D2 i j : ℤ) := by rw [hc]; rfl
-  have cDd3 : c.Dd3 = (gd.nu.den : ℤ) * (gd.D3 i j : ℤ) := by rw [hc]; rfl
-  have cNu : c.Nu = gd.nu.num * ((two50 : ℕ) : ℤ) := by rw [hc]; rfl
-  have cDl : c.Dl = c.Dd2 * c.Dd3 - c.Nu * c.Nu := by rw [hc]; rfl
   have cSg : c.Sg = c.E2 + c.E3 := by rw [hc]; rfl
   have cs : c.s = (gd.nu.den : ℤ) * ((two50 : ℕ) : ℤ) := by rw [hc]; rfl
-  have p2 : 0 < c.E2 := by rw [cE2]; exact hE2
-  have p3 : 0 < c.E3 := by rw [cE3]; exact hE3
-  have hD2 : c.Dd2 = c.E2 + c.Nu := by rw [cDd2, cE2, cNu]; ring
-  have hD3 : c.Dd3 = c.E3 + c.Nu := by rw [cDd3, cE3, cNu]; ring
-  have hNu' : 0 ≤ c.Nu := by rw [cNu]; exact hNu
-  have pD : 0 < c.Dl := by
-    rw [cDl, hD2, hD3]
-    nlinarith [mul_pos p2 p3, mul_nonneg hNu' p2.le, mul_nonneg hNu' p3.le]
   have hRr : (0 : ℤ) ≤ (gd.nu.den : ℤ) * (gd.RL i : ℤ) := mul_nonneg hb.le (Int.natCast_nonneg _)
-  have hcell := gNum_mul_cellDen_le c p2 p3 pD cSg (by rw [cs]; exact mul_pos hb ht) hRr
+  rw [← hc] at hd hD
   simp only [cellOKNu, Bool.and_eq_true, decide_eq_true_eq, ← hc]
-  refine ⟨⟨⟨by rw [hD2]; omega, pD⟩, hrl⟩, ?_⟩
+  refine ⟨⟨⟨hd, hD⟩, hrl⟩, ?_⟩
   split_ifs with hE
-  · omega
   · rw [decide_eq_true_eq, hG, ← hc]
-    exact hcell
+    unfold gNum
+    split_ifs with h3
+    · rfl
+    · exact absurd (hE.elim Or.inl fun h => Or.inr (Or.inl h)) h3
+  · rw [decide_eq_true_eq, hG, ← hc]
+    have hE' := not_or.1 hE
+    exact gNum_mul_cellDen_le c (not_le.1 hE'.1) (not_le.1 hE'.2) hD cSg
+      (by rw [cs]; exact mul_pos hb ht) hRr
+
+/-- **The repaired price numerators are admissible**: `d₂ > 0` and `Δ > 0`, whatever the `Float`
+prices were. -/
+lemma fixCell_ok {nu : ℚ} (hν : 0 ≤ nu) {a b : ℕ} (ha : 1 ≤ a) :
+    0 < (cellInts nu (fixCell nu a b).1 (fixCell nu a b).2).Dd2 ∧
+      0 < (cellInts nu (fixCell nu a b).1 (fixCell nu a b).2).Dl := by
+  have hb : (0 : ℤ) < (nu.den : ℤ) := by exact_mod_cast nu.den_pos
+  unfold fixCell
+  split_ifs with h
+  · have hE := nuNum_le (le_refl (nuNum nu))
+    have hnum : (0 : ℤ) ≤ nu.num := Rat.num_nonneg.2 hν
+    have ht : (0 : ℤ) < ((two50 : ℕ) : ℤ) := by norm_num [two50]
+    have hNu : (0 : ℤ) ≤ nu.num * ((two50 : ℕ) : ℤ) := mul_nonneg hnum ht.le
+    constructor
+    · show (0 : ℤ) < (nu.den : ℤ) * ((nuNum nu : ℕ) : ℤ)
+      omega
+    · show (0 : ℤ) < (nu.den : ℤ) * ((nuNum nu : ℕ) : ℤ) * ((nu.den : ℤ) * ((nuNum nu : ℕ) : ℤ))
+        - nu.num * ((two50 : ℕ) : ℤ) * (nu.num * ((two50 : ℕ) : ℤ))
+      nlinarith
+  · constructor
+    · show (0 : ℤ) < (nu.den : ℤ) * (a : ℤ)
+      exact mul_pos hb (by exact_mod_cast ha)
+    · exact not_le.1 h
 
 /-- The ring bound of a recipe grid: `rlb((i+1)h) ≤ rlNum/2⁵⁰`. -/
 lemma rlb_le_rlNum (ell beta h : ℚ) (i : ℕ) :
@@ -499,36 +509,51 @@ lemma rlb_le_rlNum (ell beta h : ℚ) (i : ℕ) :
     rw [e]; exact_mod_cast this
   exact h1.trans h2
 
-/-- The shape of a cell of a recipe grid with a tail. -/
-lemma mkGridNu_cell (ell beta nu : ℚ) (r : Recipe) {Nr N : ℕ} (h : ℚ) (T : Tables) {i j : ℕ}
-    (hi : i < Nr) (hj : j < N) :
-    ∃ d2 d3 : ℕ, nuNum nu ≤ d2 ∧ nuNum nu ≤ d3 ∧
-      (mkGridNu ell beta nu r Nr N h T).D2 i j = d2 ∧ (mkGridNu ell beta nu r Nr N h T).D3 i j = d3 ∧
-      (mkGridNu ell beta nu r Nr N h T).G i j
+/-- The shape of a cell of a recipe grid with a tail, for either rule of the cell means. -/
+lemma mkGridNu_cell (ell beta nu : ℚ) (hν : 0 ≤ nu) (r : Recipe) (gauss : Bool) {Nr N : ℕ} (h : ℚ)
+    (T : Tables) {i j : ℕ} (hi : i < Nr) (hj : j < N) :
+    ∃ d2 d3 : ℕ, 0 < (cellInts nu d2 d3).Dd2 ∧ 0 < (cellInts nu d2 d3).Dl ∧
+      (mkGridNu ell beta nu r gauss Nr N h T).D2 i j = d2 ∧
+      (mkGridNu ell beta nu r gauss Nr N h T).D3 i j = d3 ∧
+      (mkGridNu ell beta nu r gauss Nr N h T).G i j
         = gNum (cellInts nu d2 d3) ((nu.den : ℤ) * rlNum ell beta h i) ∧
-      (mkGridNu ell beta nu r Nr N h T).RL i = rlNum ell beta h i := by
+      (mkGridNu ell beta nu r gauss Nr N h T).RL i = rlNum ell beta h i := by
   unfold mkGridNu
-  dsimp only
-  rw [toArray_map_range_getD _ _ _ hi]
-  unfold ringCellsNu
-  dsimp only
-  rw [toArray_map_range_getD _ _ _ hj]
-  exact ⟨_, _, le_max_right _ _, le_max_right _ _, rfl, rfl, rfl, rfl⟩
+  cases gauss
+  · simp only [Bool.false_eq_true, ↓reduceIte]
+    rw [toArray_map_range_getD _ _ _ hi]
+    unfold ringCellsNu
+    dsimp only
+    rw [toArray_map_range_getD _ _ _ hj]
+    unfold cellOfMeans
+    refine ⟨_, _, (fixCell_ok hν (dyNum_pos _)).1, (fixCell_ok hν (dyNum_pos _)).2, rfl, rfl, ?_,
+      ?_⟩ <;> first | rfl | trivial
+  · simp only [↓reduceIte]
+    rw [toArray_map_range_getD _ _ _ hi]
+    unfold ringCellsNuG
+    dsimp only
+    rw [toArray_map_range_getD _ _ _ hj]
+    unfold cellOfMeans
+    refine ⟨_, _, (fixCell_ok hν (dyNum_pos _)).1, (fixCell_ok hν (dyNum_pos _)).2, rfl, rfl, ?_,
+      ?_⟩ <;> first | rfl | trivial
 
-/-- **Every recipe grid with a tail `0 ≤ ν < 1` passes the grid check**: the price numerators are
-at least `nuNum ν` and the correction coefficients are the exact floors `gNum`, so the checker never
-has to run `gridOKNu` (the `Float` steps only choose the numerators). -/
-theorem gridOKNu_mkGridNu (ell beta nu : ℚ) (r : Recipe) {Nr N : ℕ} {h : ℚ} (T : Tables)
-    (hh : 0 < h) (hN : 0 < N) (hNr : 0 < Nr) (hν0 : 0 ≤ nu) (hν1 : nu < 1) :
-    gridOKNu (mkGridNu ell beta nu r Nr N h T) ell beta = true := by
+/-- **Every recipe grid with a tail `0 ≤ ν < 1` passes the grid check**, for either rule of the cell
+means: the price numerators are repaired exactly (`fixCell`) and the correction coefficients are the
+exact floors `gNum`, so the checker never has to run `gridOKNu` (the `Float` steps only choose the
+numerators). -/
+theorem gridOKNu_mkGridNu (ell beta nu : ℚ) (r : Recipe) (gauss : Bool) {Nr N : ℕ} {h : ℚ}
+    (T : Tables) (hh : 0 < h) (hN : 0 < N) (hNr : 0 < Nr) (hν0 : 0 ≤ nu) (hν1 : nu < 1) :
+    gridOKNu (mkGridNu ell beta nu r gauss Nr N h T) ell beta = true := by
   simp only [gridOKNu, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true, List.mem_range]
   refine ⟨⟨⟨⟨⟨hh, hN⟩, hNr⟩, hν0⟩, hν1⟩, fun i hi j hj => ?_⟩
   have hi' : i < Nr := hi
   have hj' : j < N := hj
-  obtain ⟨d2, d3, h2, h3, e2, e3, eG, eRL⟩ := mkGridNu_cell ell beta nu r h T hi' hj'
-  refine cellOKNu_of_gNum _ ell beta i j hν0 (by rw [e2]; exact h2) (by rw [e3]; exact h3) ?_ ?_
+  obtain ⟨d2, d3, h2, h3, e2, e3, eG, eRL⟩ := mkGridNu_cell ell beta nu hν0 r gauss h T hi' hj'
+  have hnu : (mkGridNu ell beta nu r gauss Nr N h T).nu = nu := rfl
+  refine cellOKNu_of_gNum _ ell beta i j (by rw [e2, e3, hnu]; exact h2)
+    (by rw [e2, e3, hnu]; exact h3) ?_ ?_
   · rw [eG, e2, e3, eRL]; rfl
-  · have hgh : (mkGridNu ell beta nu r Nr N h T).h = h := rfl
+  · have hgh : (mkGridNu ell beta nu r gauss Nr N h T).h = h := rfl
     have := rlb_le_rlNum ell beta h i
     simpa only [GridDataNu.rl, eRL, hgh] using this
 

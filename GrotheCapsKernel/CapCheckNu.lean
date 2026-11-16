@@ -119,28 +119,113 @@ def gridOKNu (gd : GridDataNu) (ell beta : Rat) : Bool :=
     decide (gd.nu < 1) &&
     (List.range gd.Nr).all fun i => (List.range gd.N).all fun j => cellOKNu gd ell beta i j
 
-/-! ### Prices from a recipe (search only: soundness never depends on these values) -/
+/-! ### Prices from a recipe (search only: soundness never depends on these values)
 
-/-- `⌈2⁵⁰ν⌉ + 1`: the least price numerator used, so that `d > ν` in every cell of a recipe grid. -/
+The prices mirror the generator of the certificate, so that a stored cap is reproduced within its
+margin.  Per cell it forms three means of the recipe at its anchor (`A = L + p`, `B = L − p`,
+`e = Σ |B·f|²` over the variance vectors):
+
+  `σ = ⟨|A|² + e⟩`,  `τ = ⟨|B|² + e⟩`,  `ρ = ⟨Re(A B̄) − e⟩`,
+
+by one of two rules, and takes the prices that minimise the cell objective
+
+  `(d₂ + d₃)/2 + (d₃σ + d₂τ + 2νρ)/(2(d₂d₃ − ν²))`
+
+by a damped Newton iteration from `(√σ + ν, √τ + ν)` (`dualPrices`).  The two rules of the means:
+* **table means** (`gauss = false`; the anchored nodes of the generator): Gaussian-weighted means
+  from the moment tables;
+* **Gauss-point means** (`gauss = true`; the localised and global pieces of the generator): the
+  unweighted mean over the `2 × 2` Gauss points of the cell.
+
+All `Float` code uses `+`, `−`, `×`, `÷` and `sqrt` only (correctly rounded on every platform; the
+cosines and sines of the Gauss angles are Taylor polynomials), so the price numerators do not
+depend on the machine.  The numerators are then made admissible exactly: `dyNum ≥ 1`, and a pair
+with `Δ ≤ 0` is replaced by `(nuNum ν, nuNum ν)` (`fixCell`). -/
+
+/-- `⌈2⁵⁰ν⌉ + 1`: a price numerator with `d > ν`. -/
 def nuNum (nu : Rat) : Nat := (-(Rat.floor (-(nu * two50)))).toNat + 1
 
-/-- The cell numerators `(D2, D3, G)` of a ring: today's `Float` root-mean-square prices shifted by
-`ν` (at least `nuNum ν`), and the exact largest `G` of the cell inequality.
+/-- The exact repair of a pair of price numerators: when `Δ ≤ 0` both become `nuNum ν`. -/
+def fixCell (nu : Rat) (d2 d3 : Nat) : Nat × Nat :=
+  if (cellInts nu d2 d3).Dl ≤ 0 then (nuNum nu, nuNum nu) else (d2, d3)
 
-**Provisional price rule.**  Root-mean-square prices plus `ν` are exact only where `L + p` and `L − p`
-are aligned.  The stage-0 certificate of the tail witness prices every cell by the minimiser of
-`(d₂ + d₃)/2 + (d₃ σ + d₂ τ + 2νρ)/(2(d₂d₃ − ν²))` over `(d₂, d₃)` (the cell means `σ`, `τ`, `ρ` of
-`|L + p|²`, `|L − p|²`, `Re((L + p)(L − p)‾)`; damped Newton iteration from the values used here).  On
-its pieces the present rule gives values larger by `3·10⁻⁴` to `4·10⁻³`, far above the margin `2·10⁻⁹`
-of its cap tables, so this function must be replaced by that iteration before any cap data is checked
-with it.  Soundness is not affected: it rests on `cellOKNu` alone. -/
+/-- The cell objective `(d₂ + d₃)/2 + (d₃σ + d₂τ + 2νρ)/(2Δ)` on `d₂, d₃, Δ > 0`, and `10³⁰⁰`
+outside. -/
+def dualObj (nu sg ta ro d2 d3 : Float) : Float :=
+  let D := d2 * d3 - nu * nu
+  if D > 0.0 && d2 > 0.0 && d3 > 0.0 then
+    (d2 + d3) / 2.0 + (d3 * sg + d2 * ta + 2.0 * nu * ro) / (2.0 * D)
+  else 1.0e300
+
+/-- **The dual prices of a cell**: at most 12 Newton steps on the cell objective from
+`(√σ + ν, √τ + ν)`, each damped by at most 24 halvings until the objective does not increase; the
+iteration stops when a step is rejected or is below `10⁻¹³` relative.  For `ν = 0` the prices are
+`(√σ, √τ)`. -/
+def dualPrices (nu sg ta ro : Float) : Float × Float := Id.run do
+  let sg := if sg > 1.0e-30 then sg else 1.0e-30
+  let ta := if ta > 1.0e-30 then ta else 1.0e-30
+  if nu == 0.0 then return (Float.sqrt sg, Float.sqrt ta)
+  let mut d2 := Float.sqrt sg + nu
+  let mut d3 := Float.sqrt ta + nu
+  let mut f := dualObj nu sg ta ro d2 d3
+  for _ in [0:12] do
+    let D := d2 * d3 - nu * nu
+    let N := d3 * sg + d2 * ta + 2.0 * nu * ro
+    let g2 := 0.5 + (ta * D - N * d3) / (2.0 * D * D)
+    let g3 := 0.5 + (sg * D - N * d2) / (2.0 * D * D)
+    let D3 := D * D * D
+    let h22 := (-2.0 * ta * d3 * D + 2.0 * N * d3 * d3) / (2.0 * D3)
+    let h33 := (-2.0 * sg * d2 * D + 2.0 * N * d2 * d2) / (2.0 * D3)
+    let h23 := ((ta * d2 - sg * d3 - N) * D - 2.0 * (ta * D - N * d3) * d2) / (2.0 * D3)
+    let det := h22 * h33 - h23 * h23
+    let ok := h22 > 0.0 && det > 0.0
+    let s2 := if ok then -(h33 * g2 - h23 * g3) / det else -g2 * 0.1
+    let s3 := if ok then -(h22 * g3 - h23 * g2) / det else -g3 * 0.1
+    let mut lam := 1.0
+    let mut acc := false
+    let mut n2 := d2
+    let mut n3 := d3
+    let mut fn := f
+    for _ in [0:24] do
+      let c2 := d2 + lam * s2
+      let c3 := d3 + lam * s3
+      let fc := dualObj nu sg ta ro c2 c3
+      if fc < 1.0e299 && fc <= f + 1.0e-15 then
+        n2 := c2
+        n3 := c3
+        fn := fc
+        acc := true
+        break
+      lam := lam * 0.5
+    let step := if acc then Float.abs (n2 - d2) + Float.abs (n3 - d3) else 0.0
+    let more := acc && step > 1.0e-13 * (Float.abs n2 + Float.abs n3)
+    d2 := n2
+    d3 := n3
+    f := fn
+    if !more then break
+  return (d2, d3)
+
+/-- The numerators `(D2, D3, G)` of a cell from its means: the dual prices times the scale of the
+recipe, raised by `2ν` when `Δ ≤ 10⁻⁹ν²`, rounded down to `2⁻⁵⁰` (`dyNum`), repaired exactly
+(`fixCell`), with the exact largest `G` of the cell inequality. -/
+def cellOfMeans (nu : Rat) (nuF sc : Float) (Rr : Int) (sg ta ro : Float) : Nat × Nat × Nat :=
+  let p := dualPrices nuF sg ta ro
+  let x2 := sc * p.1
+  let x3 := sc * p.2
+  let low := x2 * x3 - nuF * nuF <= 1.0e-9 * (nuF * nuF)
+  let x2 := if low then x2 + 2.0 * nuF else x2
+  let x3 := if low then x3 + 2.0 * nuF else x3
+  let d := fixCell nu (dyNum x2) (dyNum x3)
+  (d.1, d.2, gNum (cellInts nu d.1 d.2) Rr)
+
+/-- The cells of a ring from the **table means**: `σ`, `τ` and `⟨|L|²⟩` are Gaussian-weighted cell
+means of the polar terms `tP`, `tM`, `tL`, and `ρ = 2⟨|L|²⟩ − (σ + τ)/2`. -/
 def ringCellsNu (ell beta nu : Rat) (r : Recipe) (N : Nat) (h : Rat) (radF : Nat → Nat → Float)
-    (angF : Nat → Int → Float × Float) (tP tM : List (Nat × Int × Float × Float)) (i : Nat) :
+    (angF : Nat → Int → Float × Float) (tP tM tL : List (Nat × Int × Float × Float)) (i : Nat) :
     Array (Nat × Nat × Nat) :=
-  let RL := rlNum ell beta h i
+  let Rr : Int := (nu.den : Int) * rlNum ell beta h i
   let sc := ratF r.scale
   let nuF := ratF nu
-  let lo := nuNum nu
   ((List.range N).map fun j =>
     let ev := fun (ts : List (Nat × Int × Float × Float)) =>
       ts.foldl (fun acc t => let a := angF j t.2.1
@@ -149,26 +234,140 @@ def ringCellsNu (ell beta nu : Rat) (r : Recipe) (N : Nat) (h : Rat) (radF : Nat
     let mass := if mass > 1.0e-300 then mass else 1.0e-300
     let vA := ev tP / mass
     let vB := ev tM / mass
-    let d2 : Nat := max (dyNum (sc * Float.sqrt (if vA > 1.0e-24 then vA else 1.0e-24) + nuF)) lo
-    let d3 : Nat := max (dyNum (sc * Float.sqrt (if vB > 1.0e-24 then vB else 1.0e-24) + nuF)) lo
-    (d2, d3, gNum (cellInts nu d2 d3) ((nu.den : Int) * RL))).toArray
+    let l2 := ev tL / mass
+    cellOfMeans nu nuF sc Rr vA vB (2.0 * l2 - (vA + vB) / 2.0)).toArray
 
-/-- The grid of a recipe for the tail `ν`. -/
-@[noinline] def mkGridNu (ell beta nu : Rat) (r : Recipe) (Nr N : Nat) (h : Rat) (T : Tables) :
-    GridDataNu :=
-  let radA : Array (Array Float) := T.rad.map fun a => a.map ivF
-  let angA : Array (Array (Float × Float)) := T.ang.map fun a => a.map fun p => (ivF p.1, ivF p.2)
-  let radF := fun i m => (radA.getD i #[]).getD m 0.0
-  let angF := fun (j : Nat) (n : Int) =>
-    let p := (angA.getD j #[]).getD n.natAbs (0.0, 0.0)
-    if n < 0 then (p.1, -p.2) else p
-  let tP := polarF (priceCP ell beta r 1)
-  let tM := polarF (priceCP ell beta r (-1))
+/-! #### Gauss-point means -/
+
+/-- `(cos y, sin y)` for `|y| ≤ π/4`: the Taylor polynomials of degree 18 and 19. -/
+def cosSinSmall (y : Float) : Float × Float :=
+  let u := y * y
+  let c := 1.0 - u / 2.0 * (1.0 - u / 12.0 * (1.0 - u / 30.0 * (1.0 - u / 56.0 * (1.0 - u / 90.0 *
+    (1.0 - u / 132.0 * (1.0 - u / 182.0 * (1.0 - u / 240.0 * (1.0 - u / 306.0))))))))
+  let s := y * (1.0 - u / 6.0 * (1.0 - u / 20.0 * (1.0 - u / 42.0 * (1.0 - u / 72.0 *
+    (1.0 - u / 110.0 * (1.0 - u / 156.0 * (1.0 - u / 210.0 * (1.0 - u / 272.0 *
+      (1.0 - u / 342.0)))))))))
+  (c, s)
+
+/-- `(cos t, sin t)` for `0 ≤ t ≤ 2π`, by reduction to `|y| ≤ π/4`. -/
+def cosSinF (t : Float) : Float × Float :=
+  let hp := 1.5707963267948966
+  let k := (t / hp + 0.5).floor
+  let cs := cosSinSmall (t - k * hp)
+  let q := k.toUInt64.toNat % 4
+  if q = 0 then cs else if q = 1 then (-cs.2, cs.1) else if q = 2 then (-cs.1, -cs.2)
+  else (cs.2, -cs.1)
+
+/-- The cosines and the sines of the Gauss angles of the `N` angular cells: the entries `2j` and
+`2j + 1` belong to the angles `−π + (2π/N)(j + 1/2 ∓ 1/(2√3))` of the cell `j`. -/
+def gaussTrig (N : Nat) : FloatArray × FloatArray := Id.run do
+  let w := 6.283185307179586 / N.toFloat
+  let g := 0.5 / Float.sqrt 3.0
+  let mut c := FloatArray.empty
+  let mut s := FloatArray.empty
+  for j in [0:N] do
+    for k in [0:2] do
+      let cs := cosSinF ((j.toFloat + 0.5 + (if k = 0 then -g else g)) * w)
+      c := c.push (-cs.1)
+      s := s.push (-cs.2)
+  return (c, s)
+
+/-- The `Float` coefficients of a polynomial of degree at most 3 in `z` and in `z̄`: the entry
+`4a + b` belongs to `zᵃ z̄ᵇ` (real parts, imaginary parts). -/
+def cpDense (P : CP) : FloatArray × FloatArray :=
+  let z : FloatArray := ⟨Array.replicate 16 0.0⟩
+  P.foldl (fun acc t =>
+    if t.1 < 4 ∧ t.2.1 < 4 then
+      let k := 4 * t.1 + t.2.1
+      (acc.1.set! k (acc.1.get! k + kqF t.2.2.re), acc.2.set! k (acc.2.get! k + kqF t.2.2.im))
+    else acc) (z, z)
+
+/-- The values `|A|² + e`, `|B|² + e`, `Re(A B̄) − e` at the point `r(c + i s)`, for the dense
+coefficients of `L`, of `p = B·v₀` and of the variance polynomials `B·f`. -/
+def gaussPoint (cL cP : FloatArray × FloatArray) (cV : Array (FloatArray × FloatArray))
+    (r c s : Float) : Float × Float × Float := Id.run do
+  let x := r * c
+  let y := r * s
+  let x2 := x * x - y * y
+  let y2 := 2.0 * x * y
+  let x3 := x2 * x - y2 * y
+  let y3 := x2 * y + y2 * x
+  let pr : FloatArray := ⟨#[1.0, x, x2, x3]⟩
+  let pi : FloatArray := ⟨#[0.0, y, y2, y3]⟩
+  let mut mr := FloatArray.empty
+  let mut mi := FloatArray.empty
+  for a in [0:4] do
+    for b in [0:4] do
+      mr := mr.push (pr.get! a * pr.get! b + pi.get! a * pi.get! b)
+      mi := mi.push (pi.get! a * pr.get! b - pr.get! a * pi.get! b)
+  let ev := fun (cf : FloatArray × FloatArray) => Id.run do
+    let mut re := 0.0
+    let mut im := 0.0
+    for k in [0:16] do
+      re := re + (cf.1.get! k * mr.get! k - cf.2.get! k * mi.get! k)
+      im := im + (cf.1.get! k * mi.get! k + cf.2.get! k * mr.get! k)
+    return (re, im)
+  let l := ev cL
+  let p := ev cP
+  let ar := l.1 + p.1
+  let ai := l.2 + p.2
+  let br := l.1 - p.1
+  let bi := l.2 - p.2
+  let mut ex := 0.0
+  for f in cV do
+    let v := ev f
+    ex := ex + (v.1 * v.1 + v.2 * v.2)
+  return (ar * ar + ai * ai + ex, br * br + bi * bi + ex, ar * br + ai * bi - ex)
+
+/-- The Gauss-point means `(σ, τ, ρ)` of a cell with the radii `r₁, r₂` and the angles of
+`(c₁, s₁)`, `(c₂, s₂)`: a quarter of each of the four point values. -/
+def gaussMeans (cL cP : FloatArray × FloatArray) (cV : Array (FloatArray × FloatArray))
+    (r1 r2 c1 s1 c2 s2 : Float) : Float × Float × Float :=
+  let a := gaussPoint cL cP cV r1 c1 s1
+  let b := gaussPoint cL cP cV r1 c2 s2
+  let c := gaussPoint cL cP cV r2 c1 s1
+  let d := gaussPoint cL cP cV r2 c2 s2
+  (a.1 / 4.0 + b.1 / 4.0 + c.1 / 4.0 + d.1 / 4.0,
+    a.2.1 / 4.0 + b.2.1 / 4.0 + c.2.1 / 4.0 + d.2.1 / 4.0,
+    a.2.2 / 4.0 + b.2.2 / 4.0 + c.2.2 / 4.0 + d.2.2 / 4.0)
+
+/-- The cells of a ring from the **Gauss-point means**. -/
+def ringCellsNuG (ell beta nu : Rat) (r : Recipe) (N : Nat) (h : Rat)
+    (cL cP : FloatArray × FloatArray) (cV : Array (FloatArray × FloatArray))
+    (trig : FloatArray × FloatArray) (i : Nat) : Array (Nat × Nat × Nat) :=
+  let Rr : Int := (nu.den : Int) * rlNum ell beta h i
+  let sc := ratF r.scale
+  let nuF := ratF nu
+  let hF := ratF h
+  let rm := (i.toFloat + 0.5) * hF
+  let dr := hF / 2.0 / Float.sqrt 3.0
+  ((List.range N).map fun j =>
+    let m := gaussMeans cL cP cV (rm - dr) (rm + dr) (trig.1.get! (2 * j)) (trig.2.get! (2 * j))
+      (trig.1.get! (2 * j + 1)) (trig.2.get! (2 * j + 1))
+    cellOfMeans nu nuF sc Rr m.1 m.2.1 m.2.2).toArray
+
+/-- The grid of a recipe for the tail `ν`, with table means or Gauss-point means. -/
+@[noinline] def mkGridNu (ell beta nu : Rat) (r : Recipe) (gauss : Bool) (Nr N : Nat) (h : Rat)
+    (T : Tables) : GridDataNu :=
   let cells : Array (Array (Nat × Nat × Nat)) :=
-    ((List.range Nr).map (ringCellsNu ell beta nu r N h radF angF tP tM)).toArray
+    if gauss then
+      ((List.range Nr).map (ringCellsNuG ell beta nu r N h (cpDense (lCP ell beta))
+        (cpDense (vecCP r.v0)) ((r.var.map fun f => cpDense (vecCP f)).toArray)
+        (gaussTrig N))).toArray
+    else
+      let radA : Array (Array Float) := T.rad.map fun a => a.map ivF
+      let angA : Array (Array (Float × Float)) :=
+        T.ang.map fun a => a.map fun p => (ivF p.1, ivF p.2)
+      let radF := fun i m => (radA.getD i #[]).getD m 0.0
+      let angF := fun (j : Nat) (n : Int) =>
+        let p := (angA.getD j #[]).getD n.natAbs (0.0, 0.0)
+        if n < 0 then (p.1, -p.2) else p
+      ((List.range Nr).map (ringCellsNu ell beta nu r N h radF angF (polarF (priceCP ell beta r 1))
+        (polarF (priceCP ell beta r (-1))) (polarF (l2CP ell beta)))).toArray
   let get := fun i j => (cells.getD i #[]).getD j (nuNum nu, nuNum nu, 0)
   ⟨Nr, N, h, nu, fun i j => (get i j).1, fun i j => (get i j).2.1, fun i j => (get i j).2.2,
     rlNum ell beta h⟩
+
 
 /-! ### The weights -/
 
