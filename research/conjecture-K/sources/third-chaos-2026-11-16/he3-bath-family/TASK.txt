@@ -1,0 +1,62 @@
+Investigate the following standalone Gaussian inequality. Try both proving it and finding a counterexample; do not assume it is true.
+
+Let X, Y, Z be independent N(0,1) random variables. For arbitrary real a, b, c, define
+
+    F = a(X³ − 3X) + bXY + cZ.
+
+Prove or disprove
+
+    E|F| ≤ sqrt(17/25) · sqrt(6a² + b² + c²).
+
+Here EF² = 6a² + b² + c², so the target is equivalently
+
+    Var(|F|) ≥ (8/25) EF².
+
+The target constant is sqrt(0.68) ≈ 0.824621125. Proving the sharper Gaussian constant sqrt(2/pi) is not required.
+
+WHY THIS MATTERS
+
+This family arises as a distributional limit of pure third Wiener chaos. If X, U₁,…,U_N, V₁,…,V_N are independent standard Gaussians, then
+
+    F_N = a(X³ − 3X)
+          + bX / sqrt(2N) · Σ_i (U_i² − 1)
+          + c / sqrt(6N) · Σ_i (V_i³ − 3V_i)
+
+belongs to the third Wiener chaos, has the same second moment as F, and converges in distribution and first absolute moment to F.
+
+Thus this subproblem captures a cubic term in one coordinate, a mixed term involving that coordinate, and an independent Gaussian remainder.
+
+EXPLICIT TWO-PARAMETER REDUCTION
+
+For nonzero coefficients, scaling and symmetry allow normalization
+
+    6a² = p,    b² = q,    c² = 1 − p − q,
+    p ≥ 0, q ≥ 0, p + q ≤ 1.
+
+Conditionally on X = x, F is Gaussian with
+
+    μ(x) = sqrt(p/6) · (x³ − 3x),
+    v(x) = qx² + 1 − p − q.
+
+Consequently, the problem is to prove uniformly over this compact triangle that
+
+    J(p,q) = ∫_R Ψ(μ(x), v(x)) φ(x) dx ≤ sqrt(17/25),
+
+where φ(x) = exp(−x²/2)/sqrt(2π), and
+
+    Ψ(μ,v) = sqrt(2v/π) exp(−μ²/(2v))
+             + μ erf(μ/sqrt(2v))               for v > 0,
+
+    Ψ(μ,0) = |μ|.
+
+WHAT TO DELIVER
+
+Either:
+
+1. A complete analytic proof; or
+2. A rigorous computational certificate covering the entire parameter triangle, its boundary, and the Gaussian integration tails; or
+3. Explicit parameters giving a violation, with a certified error bound.
+
+Numerical optimization may guide the investigation, but a finite grid or an optimizer’s output is not a uniform proof. Handle v = 0 through the stated continuous extension. Verify numerical constants using exact rational inequalities or validated interval arithmetic.
+
+Earlier exploratory searches found no violation, but this is not evidence to assume the inequality. Clearly distinguish proved statements, numerical observations, and conjectures. If you cannot finish, identify the precise remaining inequality or certification step.
