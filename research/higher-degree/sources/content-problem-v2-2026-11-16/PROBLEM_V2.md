@@ -1,15 +1,21 @@
-<!-- Verbatim copy of the problem statement handed to outside sessions on 16 November 2026 (claude-b9ee, from a draft of the content worker; its kit/ is ../../code/degree5-content/, its ref/ scripts are outside the repository). Only this line was added. -->
+<!-- Copy of the problem statement prepared for outside sessions on 16 November 2026 (text by claude-b9ee and its content worker; the numbers were checked by the worker against its logs). Its kit/ is ../../code/degree5-content/; its ref/ scripts are outside the repository. Only this line was added. -->
 # The content inequality on its energy band: problem statement, version 2
 
 16 November 2026. Self-contained: a reader needs Gaussian analysis and the files of §6, nothing else.
-**What it is for.** (T) of §2 is the one analytic step still missing in a certificate for the lower bound
-K_G^ℂ ≥ 1.402 of the complex Grothendieck constant by a game of degree 5; everything else in that certificate is
-proved or certified by exact computation.
-Labels: **P** proved on paper, **C** exact or interval-certified, **N** floating point (a search is a lower bound on
-a supremum). Version 1 asked for one constant at every energy; that statement is false (§4) and is withdrawn.
+**What it is for.** The lower bound K_G^ℂ ≥ 1.402 for the complex Grothendieck constant would follow from a game
+of degree 5 whose certificate is conditional on an inequality between a gain and a deficit of the same law, row by
+row. (T) of §2 is what that inequality still needs on the six rows t ∈ [0.80, 0.855], where the certificate has
+least room. It is one of several open steps, not the last one: on the rows t ≥ 0.86 the argument closes in floating
+point and its constants are not certified, the rows 0.14 < t < 0.65 need a separate argument, some finite-amplitude
+and odd-sector pieces are open, and the conditional certificate has one author and no independent review. The
+numbers of §2 that define (T) (the allowances θ_room, the band ends) are floating-point computations (N).
+Labels: **P** proved on paper, **C** exact or interval-certified, **N** floating point (a search gives a lower
+bound on a supremum, up to the accuracy of its quadrature). Version 1 asked for one constant at every energy;
+that statement is false (§4) and is withdrawn.
 **Status of the target (T) of §2: open in both directions.** On the rows 0.84 to 0.855 every search is far below
-the allowance. On the rows 0.80 and 0.82 the largest ratio found grows with the number of variables and has not
-levelled off at six variables (§3), so (T) may be false there in high dimension. Either answer is wanted.
+the allowance. On every row the largest ratio found grows with the number of variables; on the row 0.80, the only
+one searched beyond four variables, it is still growing at six (§3), where it is a factor 2.1 below the allowance.
+So (T) may be false on the rows 0.80 and 0.82 in high dimension. Either answer is wanted.
 
 ## 1. Definitions
 
@@ -95,12 +101,16 @@ and will raise every θ_t, so a method is worth more than a constant.
       Ω_{e*} ≤ θ(u)·Ω̂     or     (1 − 2‖c₂ − u‖²/δ)·Ω^loc_{e*} ≤ θ(u)·Ω̂,
 
   or any other bound of ‖c[h]‖² by θ(u)·δ times a functional of the law of V and of the row data. **They are not
-  equivalent to (T), and on the low rows they are false.** Row 0.80 at u*: θ(u)·Ω̂ = 0.0416 for the first test cubic
+  equivalent to (T), and on the row 0.80 they are false.** Row 0.80 at u*: θ(u)·Ω̂ = 0.0416 for the first test cubic
   of §5, where (I) gives 0.0478; for the cofactor cubic 0.0332 against (I) = 0.0622 and (II) = 0.0435; for the two
-  juntas 0.0404 against 0.0446 and 0.0456. So on the rows 0.80 and 0.82 no bound through (I) or (II) at the content
-  direction can prove (T): the content itself has to be bounded more sharply. On the rows 0.84 to 0.855 both forms
-  hold on every test cubic with a factor about 2 to spare, and there (T) would follow from a majorant of Ω_{e*} or of
-  Ω^loc_{e*} by a functional of the law.
+  juntas 0.0404 against 0.0446 and 0.0456. (On that row, at u*, (I) exceeds the allowance on five of seven test
+  cubics and (II) on two; at 0.85u* both do on the cofactor cubic.) So on the row 0.80 no bound through (I) or (II)
+  at the content direction can prove (T): the content itself has to be bounded more sharply. On the row 0.82, (I)
+  exceeds the allowance at u* on the cofactor cubic only (0.0596 against 0.0526), and (II) stays below it on every
+  test cubic, with a smallest factor 1.27. On the rows 0.84 to 0.855 both forms hold on every test cubic (smallest
+  factors 1.7, 2.3, 2.9, 4.3 for (I) and 2.4, 3.3, 4.1, 6.0 for (II)), and there (T) would follow from a majorant
+  of Ω_{e*} or of Ω^loc_{e*} by a functional of the law. The test cubics have two or three variables; (I) and (II)
+  were not computed on the maximisers of §3 with four or more.
 - A proof may be computer-assisted (interval arithmetic on the profile tables or on the definitions of §6), but any
   reduction to finitely many parameters must be a proof. A proof for a class of cubics is useful if the class
   contains the maximisers of §3, or shows what bounds their ratio as the number of variables grows.
@@ -120,34 +130,54 @@ and will raise every θ_t, so a method is worth more than a constant.
 ## 3. What is known
 
 **Numerics (N): the largest ratio found grows with the number of variables.** Sector A (sector B is lower on every
-case). Searches over all of H₂,₁(ℂⁿ) by local optimisation from several starts (driver-class starts and random
-starts end at the same values to three digits); every maximiser listed satisfies the response restriction of §2.
-A search gives a lower bound on the supremum, never an upper bound.
+case). Searches over all of H₂,₁(ℂⁿ) by local optimisation from several starts. For n = 3 and 4, driver-class
+starts and random starts end at the same values to three digits; for n = 5, two starts from the four-variable
+maximiser and one random start agree to 0.6 %; for n = 6 there are two starts from the five-variable maximiser
+only. Every maximiser listed satisfies the response restriction of §2, except the three entries marked †.
+A search gives a lower bound on the supremum, up to the accuracy of the evaluation described under the table,
+and never an upper bound.
 
 | row t | u/u* | n = 2 | n = 3 | n = 4 | n = 5 | n = 6 | θ_room(u) | θ_room / largest |
 |---|---|---|---|---|---|---|---|---|
-| 0.80 | 0.85 | 0.160 | 0.193 | 0.211 | 0.231 | 0.253 | 0.49 | 1.9 |
-| 0.80 | 1.00 | 0.137 | 0.168 | 0.185 | 0.204 | — | 0.36 | 1.8 |
+| 0.80 | 0.85 | 0.160 | 0.193 | 0.210 | 0.224 | 0.236 | 0.49 | 2.1 |
+| 0.80 | 1.00 | 0.137† | 0.168 | 0.185 | 0.198 | — | 0.36 | 1.8 |
 | 0.82 | 0.85 | 0.213 | 0.249 | 0.269 | — | — | 0.91 | 3.4 |
-| 0.82 | 1.00 | 0.183 | 0.218 | 0.237 | — | — | 0.66 | 2.8 |
+| 0.82 | 1.00 | 0.183† | 0.218 | 0.237 | — | — | 0.66 | 2.8 |
 | 0.84 | 0.85 | 0.309 | 0.346 | 0.366 | — | — | 2.2 | 6.0 |
-| 0.84 | 1.00 | 0.267 | 0.304 | 0.324 | — | — | 1.44 | 4.5 |
-| 0.845 | 0.85 | 0.345 | 0.382 | 0.401 | — | — | 2.7 | 6.7 |
+| 0.84 | 1.00 | 0.267† | 0.304 | 0.324 | — | — | 1.44 | 4.5 |
+| 0.845 | 0.85 | 0.345 | 0.382 | 0.401 | — | — | 2.7 | 6.8 |
 | 0.85 | 0.85 | 0.390 | 0.426 | 0.444 | — | — | 3.9 | 8.8 |
-| 0.855 | 0.85 | 0.447 | — | 0.498 | — | — | 6.3 | 12.7 |
+| 0.855 | 0.85 | 0.447 | 0.481 | 0.498 | — | — | 6.3 | 12.6 |
 
-- **No sign of convergence in n on the row 0.80:** each added variable adds about 0.02, while the fourth excess of
-  the maximiser falls (χ = 16, 9.3, 7.1, 5.6, 4.5 for n = 2, …, 6 at 0.85u*). At that rate the allowance would be
-  reached near n ≈ 15. Whether the growth saturates is the first thing to find out (§2, status of the target). On
-  the rows from 0.84 on the growth is slower (a factor 1.2 from n = 2 to n = 4) and the allowance is 4 to 13 times
-  larger than the largest ratio found.
+† Not a possible response by the restriction of §2: the two-variable maximisers at u* violate it.
+
+How the entries are computed. δ is exact for every n. n = 2, 3: tensor quadrature. n ≥ 4: the search maximises the
+ratio on a fitting sample of 2^18 quasi-random points, and the entry is the ratio of the cubic it returns on an
+independent sample (2^19 points for n = 4, 2^20 for n = 5, 6), accurate to about 0.5 %. The value on the fitting
+sample is biased upward, by 1.3 %, 3.3 % and 7 % at n = 4, 5, 6 (0.213, 0.231, 0.253 on the row 0.80 at 0.85u*),
+and must not be quoted. For the same reason the true maxima at n = 5, 6 may be 1 to 2 % above the entries.
+
+- **Still growing at n = 6 on the row 0.80.** The increments per added variable are 0.033, 0.018, 0.014, 0.012 at
+  0.85u* (0.031, 0.017, 0.013 at u*), while the fourth excess of the maximiser falls (χ = 14.8, 9.3, 7.0, 5.6, 4.5
+  for n = 2, …, 6 at 0.85u*). The increments decrease, but the data do not decide the limit: a decay like 1/n
+  (logarithmic growth; the allowance would be reached only for n in the hundreds) fits them as well as a geometric
+  decay with ratio 0.8 to 0.9 (a limit between 0.29 and 0.35, below the allowance 0.49). Whether the growth
+  saturates below the allowance is the first thing to find out (§2, status of the target). From n = 2 to n = 4 the
+  ratio grows by the factors 1.32, 1.26, 1.19, 1.16, 1.14, 1.11 on the six rows; from the row 0.84 on the allowance
+  is 4 to 13 times the largest ratio found.
 - **The shape of the maximisers.** Relative to the content direction X, with y the other variables:
   q = a·X(|X|² − 2)/√2 + X·Q(y) + R₃(y), where Q(y) = Σ_j m_j(|y_j|² − 1) in suitable coordinates and R₃ is a cubic
-  in y alone. Shares of the energy u: for n = 2, the junta part 0.40 and X·Q 0.60, with Q of rank one and no R₃
-  (the "worst" cubic of §5); for n = 4 at the row 0.80, the junta part 0.18, X·Q 0.46 and R₃ 0.36, with
-  |m_j| ≈ 0.45, 0.36, 0.37 and phases about −0.27π, 0.20π, 0.19π; for n = 5 the junta part is 0.14 and R₃ has 0.41 to
-  0.44. The parts X²·conj(ℓ(y)), (|X|² − 1)·ℓ(y) and
-  conj(X)·F(y) vanish to three digits. So the maximisers leave the class "X times a form": they are not divisible
+  in y alone. Shares of the energy u at the row 0.80 (squared norms of the orthogonal parts): for n = 2, the junta
+  part 0.38 and X·Q 0.62, with Q of rank one and no R₃ (the "worst" cubic of §5 is close to it); for n = 3: 0.24,
+  0.49 and R₃ 0.27; for n = 4: 0.18, 0.46 and 0.36, with |m_j| ≈ 0.45, 0.36, 0.37 and phases about −0.27π, 0.20π,
+  0.19π; for n = 5: 0.14–0.15, 0.38–0.45 and 0.40–0.44; for n = 6: 0.12, 0.37–0.39 and 0.49–0.50. The parts
+  X²·conj(ℓ(y)), (|X|² − 1)·ℓ(y) and conj(X)·F(y) carry at most 0.002 of the energy at the best maximisers, and the
+  matrix of Q is normal to within 0.03 (norm of its commutator with its adjoint). In three variables the
+  maximiser is, up to a unitary change of variables and to two digits,
+  √u·[0.49·X(|X|² − 2)/√2 + 0.57e^{0.26πi}·X(|y₁|² − 1) + 0.40e^{−0.20πi}·X(|y₂|² − 1) + 0.52·y₂²ȳ₁/√2]
+  (χ = 9.65; ratio 0.191 at the row 0.80, 0.85u*, where the maximiser has 0.193). At u* on that row it has, per δ,
+  truth 0.0196, (I) = 0.0448, (II) = 0.0312 and Ω̂ = 0.1181, so the allowance θ(u)·Ω̂ is 0.0425: (I) exceeds it and
+  (II) is below it by a factor 1.36. So the maximisers leave the class "X times a form": they are not divisible
   by a linear form, and no class theorem below contains them.
 - The ratio decreases in u on the band; θ_room(u) decreases faster. The binding energies are 0.85u*–1.05u*.
 - **A tool (P) and what it gives.** For q = X·(a(|X|² − 2) + Z) with Z independent of X, at fixed energy u the content
@@ -156,9 +186,12 @@ A search gives a lower bound on the supremum, never an upper bound.
   μ it suffices to check laws with at most k + 1 atoms. With only E Z = 0 and E|Z|² fixed the inequality is
   **false** for such laws (§4). Every cofactor Z = Σ_j m_j(|y_j|² − 1) satisfies, with s₂ = E|Z|² and
   k₂₂ = E|Z|⁴ − 2s₂² − |E Z²|²: |E Z²Z̄|² ≤ (2/3)s₂k₂₂, |E Z³|² ≤ (2/3)s₂k₂₂ and k₂₂ ≤ 6s₂² (Cauchy–Schwarz between
-  Σm²m̄, Σ|m|² and Σ|m|⁴). With these constraints the relaxed supremum found so far is 1.19 at the row 0.84, 0.85u*
-  (allowance 2.2) and 1.13 at u* (allowance 1.44) (N, lower bounds). So on the upper rows this route may close the
-  driver class; it does not cover the maximisers with R₃ ≠ 0, and it has not been evaluated on the lower rows.
+  Σm²m̄, Σ|m|² and Σ|m|⁴). They are convex or, once
+  the complex numbers E Z², E Z²Z̄ and E Z³ are fixed, linear. With them the relaxed supremum found so far (N; lower
+  bounds from a light search, at most 6 atoms) is 1.19 at the row 0.84, 0.85u* (allowance 2.2) and 1.13 at u*
+  (allowance 1.44); 1.02 and 0.95 at the row 0.82 (allowances 0.91 and 0.66); 0.89 and 0.82 at the row 0.80
+  (allowances 0.49 and 0.36). So with these constraints the relaxation fails on the rows 0.80 and 0.82, and on the
+  row 0.84 it is not refuted but has little room. It does not cover the maximisers with R₃ ≠ 0.
 
 **Bounds (I), (II) at the content direction (N).** In units of δΩ̂, two-variable cubics, band energies:
 (I) gives 0.13–1.5 and (II) 0.20–1.1; (II) is 0.6–1.0 times (I) except on the junta at the lower rows. Both are
@@ -251,7 +284,8 @@ Sector A, two rows, u/u* ∈ {0.7, 0.85, 1.0}. All entries are per δ: truth = �
 
 - Read a line as: truth ≤ (I), (II) by proof; (T) asks truth ≤ θ(u)·Ω̂. The last two columns are the same for the
   five cubics of a row and energy. Example: row 0.80, 0.85u*, worst: 0.01773 ≤ 0.482 × 0.11241 = 0.0542, a factor 3.1
-  ("worst" is the largest ratio in two variables; cubics in more variables have larger ratios, §3).
+  ("worst" is close to the largest ratio in two variables, 0.158 against 0.160; cubics in more variables have larger
+  ratios, §3).
 - Accuracy: three digits (a three-dimensional quadrature with 692,224 nodes; a coarser rule agrees to 0.8 %). On the
   junta a one-dimensional rule gives Ω̂[h_A] = 0.06732 at the row 0.84, 0.85u* (the script of §6), against 0.06727.
 - Sector B, same cases: `ref/r4_ref.json` (§6). Its contents and Ω̂ are about 5 times smaller.
