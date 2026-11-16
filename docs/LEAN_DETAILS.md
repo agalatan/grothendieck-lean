@@ -1222,16 +1222,24 @@ for a finite measure space with an operator T on L², a scalar cap
 H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics
 zₐz_b z̄_c − 2δ_ac z_b − 2δ_bc zₐ, which lie in it by the complex Wick identity
 E[z̄ᵢzₐz_b z̄_c] = 4(δ_ia δ_bc + δ_ib δ_ac), `WickCubic.lean`),
-and `witness n = P₁,₀ − εP₂,₁` (orthogonal projections, ε = 149/200). The **value half** of
-`TransferInputsL2` is proved: for uₗ = zₗ/‖z‖, `norm_pairVal_witness : 1 − (1+ε)/(n+1) ≤ ‖Σₗ⟨uₗ, T uₗ⟩‖`
-(from E‖z‖² = 2n, E‖z‖⁴ = 4n(n+1), E‖z‖ ≥ 2n/√(2(n+1)) and the orthogonality of the two chaos
-ranges), and `transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → TransferInputsL2 B`, where
-`WitnessCap n B` is the scalar cap ‖⟨f, T g⟩‖ ≤ B of `witness n` over a.e. unimodular f, g.
+and `witness n e ν = P₁,₀ − eP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` (orthogonal projections; a weight e ≥ 0 of
+the third chaos and an identity tail ν ≥ 0 on the complement of the two chaoses). The certified
+bound uses (e, ν) = (ε, 0), the operator P₁,₀ − εP₂,₁ with ε = 149/200. The **value half** of
+`TransferInputsL2` is proved for every e ≥ 0 and ν ≥ 0: for uₗ = zₗ/‖z‖,
+`norm_pairVal_witness : 1 − (1+e)/(n+1) ≤ ‖Σₗ⟨uₗ, T uₗ⟩‖`
+(from E‖z‖² = 2n, E‖z‖⁴ = 4n(n+1), E‖z‖ ≥ 2n/√(2(n+1)), the orthogonality of the two chaos
+ranges, and the positivity of the tail), and
+`transferInputs_of_witnessCap : 0 ≤ e → 0 ≤ ν → (∀ n ≥ N, WitnessCap n e ν B) → TransferInputsL2 B`,
+where `WitnessCap n e ν B` is the scalar cap ‖⟨f, T g⟩‖ ≤ B of `witness n e ν` over a.e. unimodular
+f, g.
 The **scalar-cap half** is reduced to the certificate (`WitnessCap.lean`): for unimodular f, g
-with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity `VOf_eq`,
-Re⟨f, Tg⟩ = t² − ε‖P₂,₁h‖² − ‖P₁,₀k‖² + ε‖P₂,₁k‖², is proved, and
-`LawNodeLower.witnessCap_of_law_nodes_reduction` converts the checked
-finite-cover profile bound into `WitnessCap n B` at its supplied cap `B`.
+with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity `VOf_eq` is proved for every
+(e, ν); at ν = 0 it reads Re⟨f, Tg⟩ = t² − e‖P₂,₁h‖² − ‖P₁,₀k‖² + e‖P₂,₁k‖² (`VOf_zero`), and in hat
+units ε̂ = (e+ν)/(1−ν), ν̂ = ν/(1−ν) it reads Re⟨f, Tg⟩ = (1−ν)V̂ + ν with
+V̂ = t² − ε̂‖P₂,₁h‖² − ‖P₁,₀k‖² + ε̂‖P₂,₁k‖² − 2ν̂‖k‖² (`VOf_eq_hat`), so that a cap c of V̂ gives the
+scalar cap (1−ν)c + ν (`witnessCap_of_VhatOf_le`). The rows are those of (e, ν) = (ε, 0), where
+V̂ = V: `LawNodeLower.witnessCap_of_law_nodes_reduction` converts the checked
+finite-cover profile bound into `WitnessCap n ε 0 B` at its supplied cap `B`.
 It applies `profile_bound_of_law_nodes` to V = Re⟨f, Tg⟩ (after a phase),
 with the bound t ≤ 9/10 proved
 (`tOf_le`: P₁,₀h is a complex Gaussian, so ‖P₁,₀h‖² = Re⟨h, P₁,₀h⟩ ≤ E|P₁,₀h| = (√π/2)‖P₁,₀h‖, by the

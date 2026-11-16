@@ -90,6 +90,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
 #print axioms Grothe.LowerAnalytic.Tint_grid
 #print axioms Grothe.LowerAnalytic.VOf_eq
+#print axioms Grothe.LowerAnalytic.VOf_eq_hat
 #print axioms Grothe.LowerAnalytic.VOf_frame_with_penalty
 #print axioms Grothe.LowerAnalytic.anchored_pair_nu
 #print axioms Grothe.LowerAnalytic.anchored_pair_poly
@@ -10055,6 +10056,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.vertexCapsRow18
 #print axioms Grothe.LowerAnalytic.vertexCaps_of_capsRest
 #print axioms Grothe.LowerAnalytic.wickL_mem_H21
+#print axioms Grothe.LowerAnalytic.witnessCap_of_VhatOf_le
 #print axioms Grothe.LowerAnalytic.young_pair
 #print axioms Grothe.Research.LawNodeCheck.certLawNodes
 #print axioms Grothe.Research.LawNodeLower.certified_mixed_batches
