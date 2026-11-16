@@ -99,8 +99,8 @@ computed and will raise every θ_t, so a method is worth more than a constant.
 - θ(u) lies below the measured θ_room(u) at every energy of the table, so (T) suffices there. Between the table
   energies the margin is thin: the independent recomputation, on a finer grid of χ (in progress), finds θ_room about
   0.44 at 0.90u* on the row 0.80 and about 1.34 at 1.05u* on the row 0.84, where θ(u) is 0.435 and 1.33. So aim a
-  few per cent lower: (T) with 0.95·θ_t in place of θ_t is safely sufficient on these two rows. Any θ(u) ≤ θ_room(u)
-  will do.
+  few per cent lower: on these two rows (T) with 0.95·θ_t in place of θ_t has numerical slack at the energies and
+  values of χ tested; sufficiency over the whole band is not certified. Any θ(u) ≤ θ_room(u) will do.
 - **Sufficient forms, by (I) and (II):** a majorant at the content direction,
 
       Ω_{e*} ≤ θ(u)·Ω̂     or     (1 − 2‖c₂ − u‖²/δ)·Ω^loc_{e*} ≤ θ(u)·Ω̂,
