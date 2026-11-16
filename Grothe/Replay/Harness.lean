@@ -79,13 +79,14 @@ def runPiece (tag : String) (eps nu : ℚ) (T : Tables) (x : Piece) : IO Unit :=
   let cap := parseRat x.cap
   let py := parseRat x.pyval
   let rc := parseRecipe x.recipe
-  let gd := mkGridNu ell beta nu rc x.gauss 1600 x.N (1 / 200) T
-  let hsh := hashGrid gd
+  let gd ← IO.lazyPure fun _ => mkGridNu ell beta nu rc x.gauss 1600 x.N (1 / 200) T
+  let tg ← IO.monoMsNow
+  let hsh ← IO.lazyPure fun _ => hashGrid gd
   let t1 ← IO.monoMsNow
-  let M := matINu ell beta gd T
+  let M ← IO.lazyPure fun _ => matINu ell beta gd T
   let lo := loQ M
   let up := hiQ M
-  let enc := enclOK lo up 13
+  let enc ← IO.lazyPure fun _ => enclOK lo up 13
   let t2 ← IO.monoMsNow
   let ds := parseDirs x.dirs
   let cs := x.cons.map (parseCons ds)
@@ -97,17 +98,24 @@ def runPiece (tag : String) (eps nu : ℚ) (T : Tables) (x : Piece) : IO Unit :=
   let Np : QMat := QMat.ofFn 13 fun i j => Nc.at (perm i) (perm j)
   let r := ldl Np 13
   let pivOK := (List.range 12).all fun k => decide (0 < r.2.getD k 0)
-  let capMin := -(r.2.getD 12 0)
+  let capMin ← IO.lazyPure fun _ => -(r.2.getD 12 0)
   let t3 ← IO.monoMsNow
   -- the check of a piece fact, with the real `pieceOKc`
-  let ok := polyBoundsOKNu ell beta && pieceOKc lo up Mq av s (cap + capPad) cs
+  let ok ← IO.lazyPure fun _ => polyBoundsOKNu ell beta && pieceOKc lo up Mq av s (cap + capPad) cs
   let t4 ← IO.monoMsNow
-  emit tag s!"RP {x.name} | ok={ok} enc={enc} consOK={cs.all Cons.ok} pivOK={pivOK} | leanMin-py(1e-18)={q18 (capMin - py)} | cap+pad-leanMin(1e-18)={q18 (cap + capPad - capMin)} | cap-py(1e-18)={q18 (cap - py)} | G0cells={hsh.2} hash={hsh.1} | D(100,10)={gd.D2 100 10},{gd.D3 100 10},{gd.G 100 10} D(800,100)={gd.D2 800 100},{gd.D3 800 100},{gd.G 800 100} | ms grid={t1 - t0} matI={t2 - t1} min={t3 - t2} check={t4 - t3}"
+  emit tag s!"RP {x.name} | ok={ok} enc={enc} consOK={cs.all Cons.ok} pivOK={pivOK} | leanMin-py(1e-18)={q18 (capMin - py)} | cap+pad-leanMin(1e-18)={q18 (cap + capPad - capMin)} | cap-py(1e-18)={q18 (cap - py)} | G0cells={hsh.2} hash={hsh.1} | D(100,10)={gd.D2 100 10},{gd.D3 100 10},{gd.G 100 10} D(800,100)={gd.D2 800 100},{gd.D3 800 100},{gd.G 800 100} | ms grid={tg - t0} hash={t1 - tg} matI={t2 - t1} min={t3 - t2} check={t4 - t3}"
+
+/-- A hash of the bits of a `FloatArray`. -/
+def hashFloats (a : FloatArray) : Nat :=
+  (List.range a.size).foldl (fun acc k => (acc * 1000003 + (a.get! k).toBits.toNat) % 2305843009213693951) 0
 
 def runAll (tag : String) (eps nu : ℚ) (ps : List Piece) : IO Unit := do
+  emit tag s!"RP consts {[fZero, fHalf, fOne, fTwo, fThree, fFour, fTenth, fMeanMin, fObjOut, fObjMax, fDescent, fStepTol, fLowTol, fMassMin].map (·.toBits)}"
   for n in (ps.map (·.N)).eraseDups do
+    let tr := gaussTrig n
+    emit tag s!"RP trig {n}: cos {hashFloats tr.1} sin {hashFloats tr.2}"
     let t0 ← IO.monoMsNow
-    let T := mkTables 1600 n (1 / 200)
+    let T ← IO.lazyPure fun _ => mkTables 1600 n (1 / 200)
     let sz := T.rad.size + T.ang.size
     let t1 ← IO.monoMsNow
     emit tag s!"RP tables 1600x{n} ({sz}): {t1 - t0} ms"
