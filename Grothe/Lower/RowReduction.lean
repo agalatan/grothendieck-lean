@@ -285,12 +285,12 @@ theorem hside_identity (ℓ β t : ℝ) (h ζ v : L2G n) (hζ : ζ ∈ H10 n) (h
 theorem VOf_frame (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n) (hζ : ζ ∈ H10 n) (hζ1 : ‖ζ‖ = 1)
     (hP : (H10 n).starProjection (hOf n f g) = ((tOf n f g : ℝ) : ℂ) • ζ) (hv : v ∈ H21 n)
     (hv2 : ‖v‖ ^ 2 = 2) :
-    VOf n f g = tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε
+    VOf n ε 0 f g = tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε
       + 2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re
       + (ε * ‖QkOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2)
       - ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2 := by
   have := hside_identity n ℓ β (tOf n f g) (hOf n f g) ζ v hζ hζ1 hP hv hv2
-  rw [VOf_eq]
+  rw [VOf_zero]
   unfold QhOf
   linarith
 
@@ -310,11 +310,11 @@ theorem VOf_frame_with_penalty (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n)
       - (1 - k) * (ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2) ≤ C)
     (hJ : J ≤ s * ‖PkOf n f g‖ ^ 2 +
       k * (ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2)) :
-    VOf n f g ≤ tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε +
+    VOf n ε 0 f g ≤ tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε +
       C - max 0 J := by
   have hε : (0 : ℝ) ≤ ε := by norm_num [ε]
   have hrow := VOf_frame n f g ℓ β ζ v hζ hζ1 hP hv hv2
-  apply ResponsePenalty.row_bound_of_split (VOf n f g)
+  apply ResponsePenalty.row_bound_of_split (VOf n ε 0 f g)
     (tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε +
       2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re +
       ε * ‖QkOf n f g‖ ^ 2)

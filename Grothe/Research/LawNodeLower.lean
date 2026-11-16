@@ -70,30 +70,28 @@ theorem profile_bound_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts 
   exact mixCover_bound rowData (mixedBatches ++ extraBatches) hrows hbatches B cuts boxes hcover
     X1 X2 X3 τ hX hM hS V t Qh v hv Ψ hΨ hscal ht0 ht1 hτ0 hτ1 hM.x0 hM.x1
 
-/-- The existing phase reduction converts the extended-cover cap into a scalar witness cap. -/
+/-- The phase reduction and the endpoint (`witnessCap_of_VhatOf_le` for the certified witness
+`(e, ν) = (ε, 0)`, where the hat value is the profile value and `B = (1 − ν)B + ν`) convert the
+extended-cover cap into a scalar witness cap. -/
 theorem witnessCap_of_law_nodes_reduction (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
     (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (n : ℕ)
     (hred : ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) →
-      g ∈ Unimod (stdGaussian (n + n)) → 0 ≤ VOf n f g → ReductionHyp n f g) :
-    WitnessCap n (B : ℝ) := by
-  intro f hf g hg
-  obtain ⟨θ, hθ, hθw⟩ := exists_phase (inner ℂ f (witness n g))
-  have hval : VOf n f (θ • g) = ‖inner ℂ f (witness n g)‖ := by
-    rw [VOf, map_smul, inner_smul_right, hθw, Complex.ofReal_re]
-  have hV : 0 ≤ VOf n f (θ • g) := hval ▸ norm_nonneg _
-  have hg' := smul_mem_unimod n hθ hg
-  obtain ⟨v, hv, hshared⟩ := hred f (θ • g) hf hg' hV
-  rw [← hval]
-  exact profile_bound_of_law_nodes extraBatches B cuts boxes hextra hcover _ _ _ v hv
-    (norm_nonneg _) (tOf_le n hf hg')
-    (rowOf_crude n f (θ • g) (normQk_le_rho n hf hg') v) hshared
+      g ∈ Unimod (stdGaussian (n + n)) → 0 ≤ VOf n ε 0 f g → ReductionHyp n f g) :
+    WitnessCap n ε 0 (B : ℝ) := by
+  have h := witnessCap_of_VhatOf_le n (e := ε) (ν := 0) (c := (B : ℝ)) zero_lt_one
+      fun f g hf hg hV => by
+    obtain ⟨v, hv, hshared⟩ := hred f g hf hg hV
+    rw [VhatOf_zero]
+    exact profile_bound_of_law_nodes extraBatches B cuts boxes hextra hcover _ _ _ v hv
+      (norm_nonneg _) (tOf_le n hf hg) (rowOf_crude n f g (normQk_le_rho n hf hg) v) hshared
+  simpa using h
 
 /-- The scalar cap retains exactly the existing Gaussian `NodeCaps` assumption. -/
 theorem witnessCap_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts : List String) (boxes : List MixBox)
     (hextra : extraBatches.all (checkBatch rowData) = true)
     (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true)
-    (hcaps : NodeCaps) (n : ℕ) (hn : 2 ≤ n) : WitnessCap n (B : ℝ) := by
+    (hcaps : NodeCaps) (n : ℕ) (hn : 2 ≤ n) : WitnessCap n ε 0 (B : ℝ) := by
   refine witnessCap_of_law_nodes_reduction extraBatches B cuts boxes hextra hcover n
     fun f g hf hg _ => ?_
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
@@ -104,7 +102,7 @@ theorem transferInputs_of_law_nodes (extraBatches : List JBatch) (B : ℚ) (cuts
     (hextra : extraBatches.all (checkBatch rowData) = true)
     (hcover : checkMixCover rowData (mixedBatches ++ extraBatches) B cuts boxes = true) (hcaps : NodeCaps) :
     TransferInputsL2 (B : ℝ) :=
-  transferInputs_of_witnessCap 2 (fun n hn =>
+  transferInputs_of_witnessCap (e := ε) (by norm_num [ε]) le_rfl 2 (fun n hn =>
     witnessCap_of_law_nodes extraBatches B cuts boxes hextra hcover hcaps n hn)
 
 /-- Any newly checked cover gives its reciprocal lower bound under the same `NodeCaps`. -/
