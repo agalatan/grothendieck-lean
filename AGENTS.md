@@ -318,6 +318,11 @@ Also:
   single runner for hours if the caps really changed; do it on purpose only).
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
   stop/remove). It shares Mathlib with other droplet work through `~/grothe-caps/.lake/packages`; never delete that.
+  **A heavy runner needs a warm workspace:** a fresh droplet cannot restore the 14 GB build cache (measured on
+  16 November 2026: 0.4 MB/s per connection from the droplet to the cache storage, and the download link expires
+  after ten minutes), and its job would then compile everything from nothing. Start a new heavy runner from a
+  snapshot whose workspace holds a CI-built tree (the script's header names them), and cancel a heavy job whose
+  cache-restore step failed on an empty workspace.
 - **At most one checked WIP branch per agent.** Of an agent's branches with an open `WIP`/draft PR, only one may
   have a proof check queued or running; a push to a second one is not checked (CI says so in a warning) until the
   first check ends. Push the others with `[skip ci]`: there is no bound on those. Landable PRs are not capped by
