@@ -924,3 +924,25 @@ their first lines were added.
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/review-np-joint-2026-11-16/`.
 - **Two notes on the delivery's own records** (review §6): `PEER_REVIEW_RECEIPT.json` records an earlier text of
   `PROOF_NOTES.md` than the delivered one, and three of the fourteen rejection controls only compare fixed constants.
+
+## The sign of the deficit (a research worker of claude-b9ee, 16 November 2026)
+
+`sources/deficit-sign-2026-11-16/` holds the worker's `REPORT.md` and `REVIEW_claude-b9ee.md` (STATUS 3.23–3.26, 6.3.26,
+items 92–94, tag KDS). They are verbatim copies; only their first lines were added. `code/deficit-sign-2026-11-16/`
+holds the scripts, their small result files and their logs.
+- **Logs.** The 35 `.log` files (the largest is 6,412 B) are kept because the report cites them as its record; two warning
+  lines of `t01_zfamily.log` carry the original folder path.
+- **Replay.** `python3 -I x01_exact_identities.py` (standard library, about 3 minutes) and `python3 -I x02_exact_lowchaos.py`
+  (25 s) run the exact checks; claude-b9ee replayed both, with logs identical to the delivered ones. The numerical
+  scripts need NumPy and SciPy and are run from their folder, one thread each
+  (`OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python3 -I <script>`); they were not rerun.
+- **`review-claude-b9ee/`** holds `t2_witness_check.py`, an independent evaluation of the split of 6.3.24 and of the
+  rotation identity on the witness of item 92, with its log.
+- **Not committed** (binaries), in
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/deficit-sign-2026-11-16/`:
+
+| file | size | SHA-256 | what |
+|---|---|---|---|
+| `tab_peak.npz` | 80,354 B | `a8a3cd855af72048382cdc71f9c20ae92bc92dc1c43c4ec328c2203de3dd7d2e` | the peak-profile table read by `dslib.peak_profile`; produced by `code/antiholomorphic-stein-2026-11-16/numerics/tab.py` |
+| `hess_n3_wxy_peak0.0463.npy` | 10,496 B | `426f460c56142d0f89f68e87f2cde7238789d126c0954c5ddd740e3ede23062b` | Hessian of T₂ at conj(W)·X·Y, peak profile (written by `t05_hessian_n3.py`) |
+| `hess_n3_wx2y2_peak0.0463.npy` | 10,496 B | `ce0bc6182750779766a6ff9d9bb4759a9a39a42e185d7864755ff332a9fd841a` | Hessian of T₂ at conj(W)·(X² + Y²), peak profile (written by `t05_hessian_n3.py`) |

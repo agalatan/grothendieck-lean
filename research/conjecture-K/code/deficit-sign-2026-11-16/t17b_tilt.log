@@ -1,0 +1,2 @@
+tilt start 0: coarse max 0.03461; fine: projected local bound/D = 0.03461, C^2/D = 0.00695, chi = 20.54 (344s)
+tilt start 1: coarse max 0.02850; fine: projected local bound/D = 0.02850, C^2/D = 0.01176, chi = 27.97 (340s)
