@@ -211,6 +211,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.majEll_le_psiT_of_le
 #print axioms Grothe.LowerAnalytic.moment_lemma
 #print axioms Grothe.LowerAnalytic.moments_of_three
+#print axioms Grothe.LowerAnalytic.nodeCapNu_of_rangeOK
+#print axioms Grothe.LowerAnalytic.nodeCapNu_of_ranges
 #print axioms Grothe.LowerAnalytic.nodeCap_12x140
 #print axioms Grothe.LowerAnalytic.nodeCap_12x141
 #print axioms Grothe.LowerAnalytic.nodeCap_12x142
@@ -9913,8 +9915,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.pieceRepair_14x150p0_check
 #print axioms Grothe.LowerAnalytic.pot_le_of_nodeOK
 #print axioms Grothe.LowerAnalytic.pot_le_of_nodeOKNu
+#print axioms Grothe.LowerAnalytic.pot_le_of_pieceBoundsNu
 #print axioms Grothe.LowerAnalytic.pot_le_of_pieceOK
-#print axioms Grothe.LowerAnalytic.pot_le_of_piecesNu
 #print axioms Grothe.LowerAnalytic.psiT_le_majPoly
 #print axioms Grothe.LowerAnalytic.psiT_le_majPoly_of_cellOKNu
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
@@ -10037,6 +10039,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.stein_slack
 #print axioms Grothe.LowerAnalytic.tOf_le
 #print axioms Grothe.LowerAnalytic.tablesOK_mk
+#print axioms Grothe.LowerAnalytic.tailNodeCaps_nuHat
+#print axioms Grothe.LowerAnalytic.tailNodeCaps_of_vertexCaps
 #print axioms Grothe.LowerAnalytic.tauC_eq_sym
 #print axioms Grothe.LowerAnalytic.tenGa_le_half
 #print axioms Grothe.LowerAnalytic.tenH_eq_gram

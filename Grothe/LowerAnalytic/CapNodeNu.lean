@@ -11,8 +11,8 @@ For a tail `0 ≤ ν < 1` and tables that satisfy `TablesOK`:
   potential of the row;
 * `Jpot_le_of_nodeOKcNu`: a passing constrained check `nodeOKcNu` gives `J(y, s) − capPad ≤ c` on
   the region of the constraints;
-* `pot_le_of_piecesNu`: a piece list that passes the coverage check `capCoverOK` and whose pieces
-  pass `nodeOKcNu` gives `Ψ_ν(s) − capPad ≤ c`.
+* `pot_le_of_pieceBoundsNu`: constraint lists that pass the coverage check `capCoverOK`, with
+  `J(y, s) − capPad ≤ c` on each region, give `Ψ_ν(s) − capPad ≤ c` (for any real tail).
 
 The chain: every recipe grid passes the grid check (`gridOKNu_mkGridNu`), its weights are
 admissible (`gridWtsNu`), the integrated majorant bounds `J` (`Jpot_le_qfNu`), the kernel matrix
@@ -70,26 +70,20 @@ theorem Jpot_le_of_nodeOKcNu (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (nu
   push_cast at hJ
   linarith
 
-/-- **A node from its pieces, with a tail**: if the pieces cover the fibre space modulo the
-symmetries and every piece passes its constrained check on its grid, then `Ψ_ν(s) − capPad ≤ c`. -/
-theorem pot_le_of_piecesNu (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (nu : ℚ) (hν0 : 0 ≤ nu)
-    (hν1 : nu < 1) (s c : ℚ) (gauss : Bool) (ds : List (List ℚ))
-    (P : List (Recipe × (ℕ × ℕ × ℚ) × Tables × List Cons))
-    (hT : ∀ x ∈ P, TablesOK x.2.1.1 x.2.1.2.1 x.2.1.2.2 x.2.2.1)
-    (hG : ∀ x ∈ P, 0 < x.2.1.2.2 ∧ 0 < x.2.1.2.1 ∧ 0 < x.2.1.1)
-    (hcov : capCoverOK ds (P.map fun x => x.2.2.2) = true)
-    (hchk : ∀ x ∈ P, nodeOKcNu r Rg nu s c x.1 gauss x.2.1.1 x.2.1.2.1 x.2.1.2.2 x.2.2.1 x.2.2.2
-      = true) :
-    pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) nu s - Grothe.Lower.capPad ≤ c := by
-  have : pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) nu s ≤ c + Grothe.Lower.capPad := by
+/-- **A node from its pieces, with a tail**: if the regions of the constraint lists `Cs` cover the
+fibre space modulo the symmetries (`capCoverOK`) and `J(y, s) − capPad ≤ c` holds on each of them,
+then `Ψ_ν(s) − capPad ≤ c`. -/
+theorem pot_le_of_pieceBoundsNu (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (ν s c : ℝ)
+    (ds : List (List ℚ)) (Cs : List (List Cons)) (hcov : capCoverOK ds Cs = true)
+    (hp : ∀ cs ∈ Cs, ∀ y ∈ pieceSet r.E Rg cs,
+      Jpot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) ν y s - Grothe.Lower.capPad ≤ c) :
+    pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) ν s - Grothe.Lower.capPad ≤ c := by
+  have : pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) ν s ≤ c + Grothe.Lower.capPad := by
     refine ciSup_le fun y => ?_
     obtain ⟨pc, hpc, hy⟩ := capCover_sound r.E Rg hcov y
-    obtain ⟨x, hx, rfl⟩ := List.mem_map.1 hpc
-    obtain ⟨hh, hN, hNr⟩ := hG x hx
-    refine Jpot_le_of_mem_symOrbit r.E Rg r.ell r.beta _ nu (aFib_cj _ _ _) (aFib_ng _ _ _) s _ _
+    refine Jpot_le_of_mem_symOrbit r.E Rg r.ell r.beta _ ν (aFib_cj _ _ _) (aFib_ng _ _ _) s _ _
       (fun w hw => ?_) hy
-    linarith [Jpot_le_of_nodeOKcNu r Rg nu hν0 hν1 s c x.1 gauss _ _ _ _ x.2.2.2 (hT x hx) hh hN
-      hNr (hchk x hx) w hw]
+    linarith [hp pc hpc w hw]
   linarith
 
 end

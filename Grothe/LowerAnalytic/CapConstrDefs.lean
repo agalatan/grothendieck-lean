@@ -29,9 +29,14 @@ def Cons.sMat (Mq : ℕ → ℕ → ℚ) (c : Cons) (i j : ℕ) : ℚ :=
 def Cons.ok (c : Cons) : Bool :=
   decide (0 ≤ c.lam) && decide (0 ≤ c.mu) && (c.hi.isSome || decide (c.lam = 0))
 
-/-- `N − Σᶜ Sᶜ`. -/
+/-- `N₀ − Σᶜ Sᶜ` for a tabulated matrix `N₀`. -/
+def pieceNcOf (Mq : ℕ → ℕ → ℚ) (N0 : QMat) (cs : List Cons) : QMat :=
+  QMat.ofFn 13 fun i j => N0.at i j - (cs.map fun c => c.sMat Mq i j).sum
+
+/-- `N − Σᶜ Sᶜ`.  The matrix `N` of the unconstrained check is tabulated once (as an argument of
+`pieceNcOf`), not once for each of the `169` entries. -/
 def pieceNc (Mq : ℕ → ℕ → ℚ) (av : ℕ → ℚ) (s cap : ℚ) (Tup : QMat) (cs : List Cons) : QMat :=
-  QMat.ofFn 13 fun i j => (pieceN Mq av s cap Tup).at i j - (cs.map fun c => c.sMat Mq i j).sum
+  pieceNcOf Mq (pieceN Mq av s cap Tup) cs
 
 /-- **The constrained piece check**: enclosure sanity, admissible multipliers, exact `LDLᵀ`. -/
 def pieceOKc (lo up : QMat) (Mq : ℕ → ℕ → ℚ) (av : ℕ → ℚ) (s cap : ℚ) (cs : List Cons) : Bool :=

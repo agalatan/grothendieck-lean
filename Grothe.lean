@@ -9831,6 +9831,7 @@ import Grothe.LowerAnalytic.CapPieces.R15x290_8
 import Grothe.LowerAnalytic.CapPieces.R15x290_9
 import Grothe.LowerAnalytic.CapPolar
 import Grothe.LowerAnalytic.CapRangeDefs
+import Grothe.LowerAnalytic.CapRangeNuDefs
 import Grothe.LowerAnalytic.CapRecipeData
 import Grothe.LowerAnalytic.CapRow00
 import Grothe.LowerAnalytic.CapRow01
@@ -9956,6 +9957,7 @@ import Grothe.LowerAnalytic.CapRow16
 import Grothe.LowerAnalytic.CapRow17
 import Grothe.LowerAnalytic.CapRow18
 import Grothe.LowerAnalytic.CapRows
+import Grothe.LowerAnalytic.CapRowsNu
 import Grothe.LowerAnalytic.CapSym
 import Grothe.LowerAnalytic.CapSymmetry
 import Grothe.LowerAnalytic.CapTables

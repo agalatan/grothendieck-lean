@@ -83,7 +83,7 @@ lemma qf_pieceNc (av : ℕ → ℚ) (s cap : ℚ) (Tup : QMat) (cs : List Cons) 
         - (cs.map fun c => qf (fun i j => (c.sMat (mMat E R) i j : ℝ)) 13 w).sum := by
   rw [qf_congr (m' := fun i j => ((pieceN (mMat E R) av s cap Tup).at i j : ℝ)
       - (cs.map fun c => (c.sMat (mMat E R) i j : ℝ)).sum) w
-      fun i hi j hj => by rw [pieceNc, QMat.at_ofFn _ hi hj]; push_cast; simp [List.map_map, Function.comp_def]]
+      fun i hi j hj => by rw [pieceNc, pieceNcOf, QMat.at_ofFn _ hi hj]; push_cast; simp [List.map_map, Function.comp_def]]
   have : ∀ (m : ℕ → ℕ → ℝ) (l : List (ℕ → ℕ → ℝ)),
       qf (fun i j => m i j - (l.map fun f => f i j).sum) 13 w
         = qf m 13 w - (l.map fun f => qf f 13 w).sum := by
