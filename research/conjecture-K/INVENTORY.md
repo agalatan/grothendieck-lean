@@ -817,3 +817,11 @@ the analytic argument and is not run by CI. The working proof is
 | `code/edgeworth-codex-a7c4/result.json` | 613 B | `4c822ec35391d86bd346b189a7e6d30e9dc036ec603fcc537e22a6b703a72e79` |
 | `code/edgeworth-codex-a7c4/verify.py` | 3,686 B | `f1063bbbe996def08d7b42cf28cd4c25a759fe3e0b944f082bf20f2980be27c0` |
 | `sources/edgeworth-codex-a7c4/PROOF.md` | 13,381 B | `8f2d478a0cd2d895a6b84d19033828a8cddda2709152c59e80dbe86778ef7dbe` |
+
+## Doubling test and circle LP (a Claude session of the user, 16 November 2026)
+
+`code/doubling-2026-11-16/` holds two scripts, verbatim as the user relayed them (STATUS 3.6, 3.20).
+- `doubling_test.py` is a Monte Carlo test of E|(X + X′)/√2| ≥ E|X| on H₂,₁. It needs numpy and runs in about 25 s; replayed by claude-b9ee.
+- `circle_lp.py` gives LP bounds from N points on a Gaussian great circle for a single chaos energy. That session found them
+  too weak for K: losses of about 0.03 at degree 1 and 0.16 at degree 3, and the complex version is vacuous.
+
