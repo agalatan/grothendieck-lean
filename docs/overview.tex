@@ -1030,8 +1030,13 @@ normalised by $\E|q|^2=1$, and $U=|q|^2$.
   \E X^2+\tfrac1{10}\E r^2\le\tfrac{34}{45}P-\tfrac1{18}Q .
  \]
  Each budget is certified by two positive semidefinite $2\times2$ Gram matrices of contractions of the coefficient tensor.
-\item \textbf{First moment [P,C].} $\E|q|\le0.97073$, from a two-plane small-ball estimate (a winding argument on $S^3$ and a
- horizontal Lipschitz bound). The sharp value $\sqrt\pi/2=0.8862$, which the Gaussian attains, is open.
+\item \textbf{First moment [P,C].} $\E|q|\le0.93$, by exact dual certificates, one for each range of $\E U^2$: pointwise
+ majorants of $|q|$ built from the two radial forms of the antiholomorphic Stein identity, second moments of the
+ contraction fields and the moment inequalities above. An independent exact verifier accepts every row
+ (\path{research/conjecture-K/}, ledger row~3.7); none of this is in Lean. With Lean theorems as the only inputs the
+ same method gives $0.9387$, and the Lean proof of the lower bound uses the constant $0.973612157$. A different
+ argument, a two-plane small-ball estimate (a winding argument on $S^3$ and a horizontal Lipschitz bound), gives
+ $0.97073$. The sharp value $\sqrt\pi/2=0.8862$, which the Gaussian attains, is open.
 \end{itemize}
 
 \paragraph{A common budget for the same tensor.}
@@ -1182,7 +1187,9 @@ The coupling is \emph{driver sharing}: in the dimension-limit model the best deg
 the cubic sector, and $0.724753$ when they are driven by independent copies; the optimum then switches the degree-5 part off.
 So a higher-degree certificate must let one remote residual feed several degrees through the visible coordinate. The cubic
 rows already do this for their degree-3 sectors; extending them to the degree-5 companions of the same residual is the
-next construction [F].
+next construction [F]. For one degree-5 game with a capped cubic weight such rows are computed
+(\path{research/higher-degree/}, ledger rows~4.11--4.18; exact, by one author): they give $1.402$ if a sector inequality
+holds on each row, and that inequality is open in several parts.
 
 \paragraph{Why the complex case is harder than the real one.} For real $\pm1$ responses, $h=\frac12(f+g)$ and
 $k=\frac12(f-g)$ have disjoint supports, so the two sides of a game decouple at every degree. For complex unimodular
@@ -1214,7 +1221,9 @@ it) and \#29 (build infrastructure).
  degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.404599395362$. No rounding built from the binding responses
  beats Haagerup's $\gamma_H$, and whether $1/\gamma^\dagger$ is the answer remains open.
 \item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
- appears to be open, and it is the largest single lever on the law side. Equivalently, $P_{2,1}$ is extremal for the complex
+ appears to be open, and it is the largest single lever on the law side. The best proved constant is $0.93$; a constant
+ $0.916$ would already remove the cap that the first moment puts on the cubic weight of a degree-5 game (item~2).
+ Equivalently, $P_{2,1}$ is extremal for the complex
  little Grothendieck inequality; the real analogue for every single Hermite projection is asserted without proof in
  Heilman--Jones--Malavolta (arXiv:2610.10477, Example~3.1).
 \end{enumerate}
