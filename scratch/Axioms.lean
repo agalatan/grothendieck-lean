@@ -40,6 +40,7 @@ import Grothe
 #print axioms Grothe.Lower.chainTo_sound
 #print axioms Grothe.Lower.checkJ_sound
 #print axioms Grothe.Lower.checkSWit_sound
+#print axioms Grothe.Lower.chord_goal
 #print axioms Grothe.Lower.coupled_of_gram
 #print axioms Grothe.Lower.cover_sound
 #print axioms Grothe.Lower.cutSum_cell
@@ -60,12 +61,17 @@ import Grothe
 #print axioms Grothe.Lower.posOn_sound
 #print axioms Grothe.Lower.reserved_gram_budget
 #print axioms Grothe.Lower.rowBound_of_check
+#print axioms Grothe.Lower.rowBound_of_specCells
 #print axioms Grothe.Lower.rowData_gatesOK
+#print axioms Grothe.Lower.rowFacts_of_checkRow
+#print axioms Grothe.Lower.rowFacts_of_checkSpecRow
 #print axioms Grothe.Lower.rowGates_ok
 #print axioms Grothe.Lower.rowOf_of_shared
 #print axioms Grothe.Lower.rowTNode_sound
+#print axioms Grothe.Lower.scell_sound
 #print axioms Grothe.Lower.spec_of_inputs
 #print axioms Grothe.Lower.steinCut_of_inputs
+#print axioms Grothe.Lower.swit_tb
 #print axioms Grothe.Lower.transfer_lower
 #print axioms Grothe.Lower.treeCoverOK_sound
 #print axioms Grothe.Lower.vslab_bound
