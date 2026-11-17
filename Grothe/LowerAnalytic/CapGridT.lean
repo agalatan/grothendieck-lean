@@ -2,18 +2,10 @@ import Grothe.LowerAnalytic.CapGrid
 import GrotheCapsKernel.CapCheck
 
 /-!
-# Grid prices and the exact cell decomposition of the integrated majorant
+# Bounds used by the grid of the checker
 
-`GridData`: a uniform grid (`Nr` rings of width `h`, `N` angular cells) with rational cell
-prices `pa, pb`, reciprocal bounds `na, nb` and correction coefficients `gg`; on the tail
-`A = B = nA = nB = 1`, `g = 0`.  `gridOK` checks the cell conditions (`1 ≤ na·pa`, `1 ≤ nb·pb`,
-`0 ≤ gg`, `gg·D(pa, pb, rlb((i+1)h)) ≤ 8` with `rlb(r) = r(|ℓ − 2β| + |β|r²) ≥ |L|` on `|z| ≤ r`,
-bounds by `c`); `gridPrices` are then admissible `Prices`.
-
-**The decomposition** (`Tint_grid`): every entry of `T = ∫ Tz dγ` is the finite sum over the cells
-of `TzW (cell weights) (cellT i j)` plus the tail term `TzW wTail tailT`, where `TzW` is the
-entry formula (`ν|L|² + ξ`, `τ uⱼ`, `ν Gᵢⱼ − γ uᵢuⱼ`) applied to the cell functional of the
-polynomials (`cellTerms`, `tailTerms`).
+`norm_Lf_le_rlb`: `|L| ≤ rlb(r) = r(|ℓ − 2β| + |β|r²)` on `|z| ≤ r`; `thN_bounds`, `eval_oneCP`, `absQ_eq`: the elementary
+bounds behind the cell conditions of the grid of the checker with a tail (`CapGridTNu.lean`).
 -/
 
 open MeasureTheory Real Set Finset GrotheKernel

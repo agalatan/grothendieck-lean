@@ -3,29 +3,14 @@ import Grothe.LowerAnalytic.CapMajorant
 import Grothe.LowerAnalytic.CapPieceDefs
 
 /-!
-# A cap of the fibre potential from an integrated majorant (routes A, P, M; AF §§2–6)
+# The piece check for any enclosed coefficient matrix
 
-Prices (`Prices`): measurable `A, B > 0`, `nA ≥ 1/A`, `nB ≥ 1/B` and a correction coefficient
-`0 ≤ g ≤ 8/D(A, B, |L|)`.  The anchored-pair majorant (`anchored_pair`) gives pointwise
-(`priced_pair`)
-
-  `|L + p| + |L − p| ≤ ν(|L|² + |p|²) + 2δν x + (A+B)/2 − (g/16)(4x − δ)²`,
-  `ν = (nA + nB)/2`, `δν = (nA − nB)/2`, `δ = A² − B²`, `x = Re(p L̄)`,
-
-(`g = 8/D`, `nA = 1/A`, `nB = 1/B` is AF eq. (4); `g = 0` is the plain Young bound).  With
-`p = B·v`, integrating gives for every `v ∈ ℝ¹²`
-
-  `∫ (|L + p| + |L − p|) dγ ≤ C + 2hᵀv + vᵀHv = qf T 13 (1, v)`,
-
-`T = ∫ Tz dγ` (`Tz`: index `0` constant, `j + 1` the coordinate `j`; AF eq. (5)):
-`C = ∫ ν|L|² + (A+B)/2 − gδ²/16`, `hⱼ = ∫ (δν + gδ/4) uⱼ`, `Hᵢⱼ = ∫ ν Gᵢⱼ − g uᵢuⱼ`,
-`uⱼ = Re(Bⱼ L̄)`, `Gᵢⱼ = Re(Bᵢ B̄ⱼ)` (`Jpot_le_qf`).  This is the potential without an identity tail
-(`Jpot … 0`, `pot … 0`; `Jpot_zero`), the one of the certified rows.
-
-**The piece check** (`pieceOK`): given rational enclosures `lo ≤ T ≤ up`, the Loewner matrix
-`T⁺ = mid + ρI` (`qf_le_loewnerUp`) and the `13 × 13` matrix
-`N = cap e₀e₀ᵀ + diag(0, M) − Pᵀ T⁺ P` (`P(1, y) = (1, My + sa)`), the exact `LDLᵀ` check of `N`
-proves `J(y, s) ≤ cap` for every `y`, hence `Ψ(s) ≤ cap` (`pot_le_of_pieceOK`).
+For a grid of the fibre the integrated majorant is a quadratic form `qf T 13 (1, v)` in the parameters `v ∈ ℝ¹²`, with
+the coefficient functions `uⱼ = Re(Bⱼ L̄)` (`uF`), `Gᵢⱼ = Re(Bᵢ B̄ⱼ)` (`GF`) and their integrability. Given a matrix `T`
+whose form bounds `J` (`hT`) and rational enclosures `lo ≤ T ≤ up`, the Loewner matrix `T⁺ = mid + ρI` and the
+`13 × 13` matrix `N = cap e₀e₀ᵀ + diag(0, M) − Pᵀ T⁺ P` (`P(1, y) = (1, My + sa)`), the exact `LDLᵀ` check of `N`
+proves `J(y, s) ≤ cap` for every `y` (`Jpot_le_of_qfN_of_le`), hence `Ψ(s) ≤ cap` (`pot_le_of_pieceOK_of_le`). The
+matrix `T` of the checker with a tail is `TintNu` (`CapGridTNu.lean`).
 -/
 
 open MeasureTheory Finset Grothe.Lower
@@ -53,18 +38,15 @@ lemma integrable_of_le_pow (F : ℂ → ℝ) (hF : Continuous F) (C : ℝ) (n : 
 
 lemma qw_eq (z : ℂ) : qw z = (1 + Complex.normSq z) ^ 2 := rfl
 
-/-! ### Prices -/
+/-! ### The coefficient functions -/
 
-variable (ℓ β : ℝ) (pr : Prices ℓ β)
+variable (ℓ β : ℝ)
 
 /-- `uⱼ = Re(Bⱼ L̄)`. -/
 def uF (j : ℕ) (z : ℂ) : ℝ := (Bfun j z * conj (Lf ℓ β z)).re
 /-- `Gᵢⱼ = Re(Bᵢ B̄ⱼ)`. -/
 def GF (i j : ℕ) (z : ℂ) : ℝ := (Bfun i z * conj (Bfun j z)).re
 
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
 /-! ### The quadratic-form identity -/
 
 /-- `(1, v)`. -/
@@ -175,16 +157,6 @@ lemma integrable_bdd_mul' {f g : ℂ → ℝ} (hf : Measurable f) (c : ℝ) (hc 
   hg.bdd_mul hf.aestronglyMeasurable (Filter.Eventually.of_forall fun z => by
     rw [Real.norm_eq_abs]; exact hc z)
 
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
-variable {ℓ β} in
 /-! ### The cap of a piece -/
 
 variable (E : Sym3) (R : Sym2) (a : Fib)

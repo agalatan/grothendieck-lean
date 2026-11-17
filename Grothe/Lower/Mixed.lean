@@ -1,54 +1,22 @@
 import Grothe.Lower.Rows
 
 /-!
-# Mixed potentials: common-law node bounds, chords in `τ`, and the mixed node tables
+# Spectral witnesses
 
-With one law `U` and one scale `τ` for all rows (`SharedReduction` in `Support.lean`), the
-potential of a mixture of two rows with weights `(1−θ, θ)` is
-
-  `F_λ(s) = (1−θ) Ψᵢ(δᵢ s) + θ Ψⱼ(δⱼ s)`,
-
-convex and known through the node caps of its components.  A `TNode` is a certified
-`τ`-node `(τ, P)` with `E Φ(τ√U) ≤ P.J 0 1 x` for the row's or the mixture's potential, either a
-Stein node of a source row rescaled to `τ = σ/δ` (`rowTNode`) or one of the exact node
-certificates for the mixed table, with Stein or spectral cuts (`JBatch`, `checkBatch`,
-`batch_sound`); `capAt`/`capsHold_mix` build the node caps of `F_λ` from those of its components.
+A spectral witness (`SWit`, `parseSWit`) certifies a node of a row with a spectral cut; `checkSWit` is its exact check
+and `checkSWit_sound` its soundness, used by the rows with spectral nodes (`SpecRows.lean`).
 -/
 
 open MeasureTheory
 
 namespace Grothe.Lower
 
-/-! ### Convexity -/
-
-/-! ### The node caps of a mixed potential -/
-
 /-- The first node is at `0`. -/
 def headZero : List (ℚ × ℚ) → Bool
   | n :: _ => n.1 == 0
   | [] => false
 
-/-! ### Certified `τ`-nodes -/
-
-section nodes
-
-variable {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ] (U : Ω → ℝ)
-  (x : ℝ)
-
-variable {μ U x}
-
-end nodes
-
-/-! ### The `τ`-nodes of a source row -/
-
-section rownodes
-
-variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ] {U : Ω → ℝ}
-  {x : ℝ}
-
-end rownodes
-
-/-! ### The mixed node tables -/
+/-! ### Spectral witnesses -/
 
 /-- A spectral witness: the node `τ`, the majorant, the parameters `(λ, μ, t, β, ν)`, the knot
 values of the test and the cited law budget (`GBud.sep` for the inherited spectral cut). -/
@@ -164,12 +132,5 @@ lemma checkSWit_sound {Ψ : ℝ → ℝ} {nodes : List (ℚ × ℚ)} {smax : ℚ
     refine major_sound Ψ nodes smax hΨ tau y.list _ vs _ (fun u _ hk => ?_) hsw v hv
     rw [jspecPolys_getD]
     exact jspecG_cell vs z lam mu t be nu _ _ _ u hk
-
-section batch
-
-variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ] {U : Ω → ℝ}
-  {x : ℝ}
-
-end batch
 
 end Grothe.Lower

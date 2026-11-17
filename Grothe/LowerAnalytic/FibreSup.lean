@@ -18,8 +18,7 @@ where `Ψ_ν(A, B) = sup_{|f| = |g| = 1} Re(f̄A) + Re(ḡB) + ν Re(f̄g)` is t
 Without a tail `Ψ_0(A, B) = |A| + |B|` and `J_r` is the certified function of `FibrePotential.lean`
 (`Jpot_zero`).  Finiteness (`Jpot_le_cap`), convexity (`pot_convexOn`), the Lipschitz bound
 (`pot_lip`) and the node-cap interface (`capsHold_pot`) hold for every `ν`: `Ψ_ν` is convex,
-`1`-Lipschitz and within `|ν|` of `Ψ_0`.  The certified rows have no tail: `rowPot` is the
-potential at `ν = 0`.
+`1`-Lipschitz and within `|ν|` of `Ψ_0`.
 
 **The fibre bound with a tail** (`fibreExpr_le_Jpot`, `fibreExpr_le_pot`).  The fibre expression
 carries the tail as `ν (Re ∫ conj(f₀) g₀ − 1)`, which is `−2ν ∫ |k₀|²` for unimodular responses
@@ -730,8 +729,7 @@ theorem capsHold_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 ν : ℝ) (hE : E.ps
 /-! ### The potentials of the rows -/
 
 /-- **The node-cap interface for every row**: given the node caps of the potential of row `k`
-with the identity tail `ν` (at `ν = 0` the certified potential `rowPot k`; data certified outside
-Lean), `CapsHold (Ψ_k − capPad)` holds with the row's nodes and Lipschitz constant. -/
+with the identity tail `ν` (`TailNodeCaps`, certified by `CapNodes.lean`), `CapsHold (Ψ_k − capPad)` holds with the row's nodes and Lipschitz constant. -/
 theorem capsHold_rowPot (ν : ℝ) (k : ℕ) (hk : k < rowData.length)
     (hcaps : ∀ n ∈ (rowData.getD k row01).nodeList,
       pot (rowData.getD k row01).E (rowR k) (rowData.getD k row01).ell (rowData.getD k row01).beta

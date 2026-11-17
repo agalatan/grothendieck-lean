@@ -2,14 +2,12 @@ import Grothe.LowerAnalytic.CapGridT
 import Grothe.Upper.IntervalSound
 
 /-!
-# Soundness of the cap checker (`GrotheCapsKernel/CapCheck.lean`)
+# Interval lemmas of the cap checker (`GrotheCapsKernel`)
 
-* `TablesOK Nr N h T`: the shared tables enclose the one-dimensional integrals `radI`, `tailI`,
-  `angC`, `angS` (the only analytic input; closed by the table enclosures, L-e);
-* `matI_mem`: then every entry of the kernel matrix `matI` encloses the corresponding entry of the
-  integrated coefficient matrix `Tint` of the grid prices (`Tint_grid` + interval arithmetic);
-* `pot_le_of_nodeOK`: `nodeOK` (grid check + piece check at `cap + capPad`) gives
-  `Ψ(s) − capPad ≤ cap` for the potential of the row.
+`TablesOK Nr N h T`: the shared tables enclose the one-dimensional integrals `radI`, `tailI`, `angC`, `angS` (the only
+analytic input; closed by the table enclosures). The interval arithmetic of the kernel is sound (`mem_sumI`,
+`mem_sqrt2I`, `mem_ofKQ`, `mem_polyI`, `mem_tailPolyI`, `mem_entryPolys_*`, `bounds_of_mem`); the enclosure of the
+integrated matrix of the checker with a tail uses them (`CapCheckNuMat.lean`).
 -/
 
 open MeasureTheory Real Set Finset GrotheKernel Grothe.Upper

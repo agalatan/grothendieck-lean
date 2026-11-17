@@ -3,18 +3,10 @@ import Grothe.LowerAnalytic.CapConstr
 import Grothe.LowerAnalytic.CapTablesMk
 
 /-!
-# Localised node caps from piece lists (route M of PLAN_CAPS): soundness
+# The constraints of the pieces of a localised node
 
-The computable checks are in `CapPieceRange`.  Here:
-
-* `NodeCap k i`: the cap statement of node `i` of row `k` (`Ψ_k(s_i) − capPad ≤ c_i`);
-* `PieceCap k i cs`: the same bound for `J(·, s_i)` on the piece region `cs` (the content of one piece),
-  for the potential without a tail, as `rowPot`;
-* `nodeCap_of_pieceCaps`: coverage + every piece ⇒ the node cap;
-* `pieceCap_of_pieceOneOK`: a passing piece check ⇒ its `PieceCap`;
-* `nodeCap_of_ranges`: coverage, range facts for the checked pieces and `PieceCap` for the excluded
-  pieces ⇒ the node cap (this is what the generated node modules use);
-* `nodeCap_of_pieceNodeOK`: the whole node in one check.
+`pieceCons x`: the constraint lists of the pieces of a node record `x` (`CapPieceRange.lean`), the regions that the
+coverage fact `pieceCoverOK` covers and the piece facts bound; `pieceGrids_adm`: the piece grids are admissible.
 -/
 
 open GrotheKernel Grothe.Lower

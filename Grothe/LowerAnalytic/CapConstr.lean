@@ -3,16 +3,13 @@ import Grothe.LowerAnalytic.CapGridOK
 import Grothe.LowerAnalytic.CapCover
 
 /-!
-# Constrained pieces: the S-lemma bound on a region (route M of PLAN_CAPS)
+# Constrained pieces: the S-lemma bound on a region
 
-On the region `Π = {y : loᶜ ≤ τᶜ(y) ≤ hiᶜ}` of a piece (`τᶜ(y) = vᶜ·vec(M y)`, `pieceSet`), every
-term `λᶜ (τᶜ − loᶜ)(hiᶜ − τᶜ) + μᶜ (τᶜ − loᶜ)` with `λᶜ, μᶜ ≥ 0` is nonnegative (MIDCAPS Lemma 1).
-As a quadratic form in `(1, y)` it has the matrix `Cons.sMat` (`qf_sMat`).  Subtracting these
-forms from the matrix `N` of the unconstrained check (`pieceN`) gives `pieceNc`; if its exact
-`LDLᵀ` has nonnegative pivots then `J(y, s) ≤ cap` on `Π` (`Jpot_le_of_pieceOKc`).  With the
-prices and enclosures of a recipe on a grid (`nodeOKc`, the constrained analogue of `nodeOK`)
-this is `Jpot_le_of_nodeOKc`.  A node is certified by a piece list that passes `capCoverOK` and
-`nodeOKc` on every piece (`pot_le_of_pieces`).
+On the region `Π = {y : loᶜ ≤ τᶜ(y) ≤ hiᶜ}` of a piece (`τᶜ(y) = vᶜ·vec(M y)`, `pieceSet`), every term
+`λᶜ (τᶜ − loᶜ)(hiᶜ − τᶜ) + μᶜ (τᶜ − loᶜ)` with `λᶜ, μᶜ ≥ 0` is nonnegative. As a quadratic form in `(1, y)` it has the
+matrix `Cons.sMat` (`qf_sMat`).  Subtracting these forms from the matrix `N` of the unconstrained check (`pieceN`) gives
+`pieceNc`; if its exact `LDLᵀ` has nonnegative pivots then `J(y, s) ≤ cap` on `Π`, for any enclosed coefficient matrix
+(`Jpot_le_of_pieceOKc_of_le`).
 -/
 
 open MeasureTheory Finset GrotheKernel Grothe.Lower Grothe.Upper

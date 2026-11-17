@@ -1,13 +1,11 @@
-import Grothe.Lower.RowGateData
 import Grothe.LowerAnalytic.CapChords
 import Grothe.LowerAnalytic.CapNodeDefs
 import Grothe.LowerAnalytic.CapTablesData
 
 /-!
-# Computable range checks for the vertex-node caps
+# Admissible grids
 
-The heavy native facts need only these predicates, rational data and the
-precompiled checker. `CapRows` proves their soundness for the fibre potentials.
+`gridAdm`: the grid parameters `(radial cells, angular cells, radial step)` that the checker accepts (`pieceGrids_adm`).
 -/
 
 open GrotheKernel Grothe.Lower

@@ -143,16 +143,6 @@ def rowGatesOK (r : Row) : Bool :=
 /-- **The `E`-gates of all rows hold** (exact rational arithmetic). -/
 theorem rowData_gatesOK : rowData.all rowGatesOK = true := by decide +kernel
 
-/-! ### Assembly of the row inequality from the fibre bound -/
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
-
-/-- **The row inequality from the fibre bound.**  If the pre-potential bracket `Bk` of the row
-satisfies `Bk ≤ Ψ(δ|p|)` a.e. (the pointwise fibre bound) and the integrated k-side bound
-
-  `V ≤ t² − 2ℓt + 2β²/ε + E Bk − δτ² − E[gate(p, X₂, X₃)] − ε‖Qh + (β/ε)v‖²`
-
-holds, then `RowSharedWith` holds with the law `U = |p|²/τ²`. -/
 end Grothe.Lower
 
 /-! ### The frame and the h-side identity on `L²(γ_n)` -/
