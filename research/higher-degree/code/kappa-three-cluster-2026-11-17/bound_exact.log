@@ -1,8 +1,11 @@
-3c(c+1)^3 (k(c) - 2 + 8/(3c)) = 6*c**2 + 18*c + 8 (positive coefficients, so > 0 for c > 0)
-k(c) - 2c^2/(c+1)^2 = 4*c**2/(3*(c + 1)**3)
-c =  4: k(c) = 544/375 = 1.450667, previous bound 1.280000, needed 257/200 (1.612u*) / 129/100 (1.449u*): met
-c =  5: k(c) = 125/81 = 1.543210, previous bound 1.388889, needed 701/500 (1.612u*) / 1407/1000 (1.449u*): met
-c =  6: k(c) = 552/343 = 1.609329, previous bound 1.469388, needed 1483/1000 (1.612u*) / 186/125 (1.449u*): met
-c =  8: k(c) = 3712/2187 = 1.697302, previous bound 1.580247, needed 1591/1000 (1.612u*) / 399/250 (1.449u*): met
-c = 10: k(c) = 7000/3993 = 1.753068, previous bound 1.652893, needed 829/500 (1.612u*) / 831/500 (1.449u*): met
-c = 12: k(c) = 3936/2197 = 1.791534, previous bound 1.704142, needed 341/200 (1.612u*) / 427/250 (1.449u*): met
+PASS strict gaps for the Wick and spherical floors.
+PASS the third-moment coefficient and both Gamma coupling costs.
+PASS c=2 sharp example: Gaussian moments 4, 72; kappa 4/3.
+PASS c=4 sharp example: Gaussian moments 16, 800; kappa 8/5.
+PASS same kappa 15/8 with third moments 5067/1000 and 5301/1000 around Gamma's 165/32.
+PASS c=4: numerical target 129/100 below Wick 544/375 and sphere 8/5.
+PASS c=5: numerical target 1407/1000 below Wick 125/81 and sphere 5/3.
+PASS c=6: numerical target 186/125 below Wick 552/343 and sphere 12/7.
+PASS c=8: numerical target 399/250 below Wick 3712/2187 and sphere 16/9.
+PASS c=10: numerical target 831/500 below Wick 7000/3993 and sphere 20/11.
+PASS c=12: numerical target 427/250 below Wick 3936/2197 and sphere 24/13.
