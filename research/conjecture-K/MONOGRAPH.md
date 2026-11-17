@@ -466,6 +466,19 @@ most 2C‖U‖, and 2C‖U‖ − 0.24‖U‖² ≤ C²/0.24 ≤ D(q); add Λ(q)
 direction bounds the whole projection, with no dimension factor [P · 6.2.4]. So on R the A-core reduces to the content
 inequality, but this proves neither raw K for all G nor K′ (R comes with response restrictions) [P · 6.2.5].
 
+At the peak profile, the allowance version C² ≤ 0.24(S − Λ + 10⁻⁴) holds dimension-free for χ ≤ 0.2809
+throughout the band, for all χ when u ≤ 0.00815 and for every maximum normalized influence at most 0.054.
+Intermediate energy strips have larger fourth-excess ceilings
+[P + C, author only · 6.3.40]. The strong bound C² ≤ 0.24D holds on the band for χ ≥ 40.32.
+Fourth-moment stability captures at least 93% of the energy in one Wick direction there
+[P + C, author only · 6.3.41]. For a sum of independent coordinate blocks, the bound
+C² ≤ 7.98 Σ_j δ_j^{3/2} gives the weak form for 95 or more equal-energy blocks
+[P + C, author only · 6.3.42].
+
+The #512 matrix dual admits an added rank-one content term obtained from an exact directional
+integration-by-parts identity. Its first relaxation leaves slack to be recovered at intermediate fourth excess.
+[Duality reduction](sources/content-509-codex-6d92/DUALITY.md)
+
 **Families with the content inequality** (0.00551 ≤ u ≤ 0.0463, three rows unless the row says otherwise; X a remote
 driver, Y the other remote coordinates):
 
