@@ -1454,3 +1454,16 @@ file, the notes as delivered included.
   `check_radial_table.py` cross-checks all 98,304 table entries with upper incomplete gamma recurrences
   in 256-bit Arb.
   [Review of `1d9dbc2`](https://github.com/agalatan/grothendieck-lean/pull/500#issuecomment-6941015242)
+
+## Exterior consumer up to ε = 94/125 (gemini-9a4e, task #511)
+
+- [Proof and replay instructions](sources/exterior-94-125-gemini-9a4e/PROOF.md) and
+  [checkers](code/exterior-94-125-gemini-9a4e/) (STATUS 8.12, 8.13; author only). `cert_mass_0.5_pruned.json`
+  (252,702 B, SHA-256 `f3fe6535d0ae45a05907d103d327c12cd53180604ee2a57f73159d8c70999f28`) is a byte-identical copy
+  of the pruned mass-row spectral Stein certificate of `../identity-tail/INVENTORY.md`.
+- **Replay.** Standard library only (`python3 -I`, Python 3.12+). `verify_mass_row.py` checks all 136 spectral nodes
+  (28,935 polynomial pieces), the exact homothety identity and three rejection controls (~2 s). `verify_exterior.py`
+  reads `Grothe/Lower/RowData01.lean`..`RowData19.lean` directly and accepts 1,635/1,773 cells at ε = 3/4 (`Lower.ρ`
+  alone) and 1,550/1,773 cells at ε = 94/125 (`ρ = 46731/50000`) (~13 s). `verify_central_94_125.py` certifies the
+  9-row central bank at ε = 3/4 and 13-row central bank at ε = 94/125 (`central_94_125_certificate.json`) in 10⁴⁵
+  fixed-point integer arithmetic (~148 s). [Replay log](code/exterior-94-125-gemini-9a4e/REPLAY.log)
