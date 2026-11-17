@@ -3,9 +3,9 @@ import Grothe.LowerAnalytic.FibreIntegral
 import Grothe.Lower.MassFacts
 
 /-!
-# The mass row of the identity-tail certificate in the frame
+# The mass row in the frame
 
-The mass row `λ = 1/2` replaces the crude row of the cover (certificate worker, `PROGRESS.md` §7(e)). For a unimodular
+The mass row `λ = 1/2` is the scalar row of the envelope for small `t` (`Grothe/Lower/Envelope.lean`). For a unimodular
 pair `f, g`, with `h = (f + g)/2`, `k = (f − g)/2`, `t = ‖P₁,₀ h‖`, `q = P₂,₁ k`, the hat weight `ε̂ = 25/31` and the hat tail
 `ν̂` with `c = 2ν̂ + λ`:
 

@@ -2,10 +2,10 @@ import Grothe.Lower.SpecRows
 import Grothe.Lower.Cert.MassRow
 
 /-!
-# The mass row of the identity-tail certificate: the law-level bound
+# The mass row: the law-level bound
 
-The mass row (λ = 1/2, the scalar row of the cover in place of the crude row) needs three facts (certificate worker,
-`PROGRESS.md` §7(e)); this file proves the third, the law-level bound, and the scalar inequality behind the second:
+The mass row (λ = 1/2, the scalar row of the envelope for small `t`) rests on three facts (`MassRowFrame.lean`); this file
+proves the third, the law-level bound, and the scalar inequality behind the second:
 
 * `phiMass_ge`, `phiMass_attain`: with `φ_c(r) = ε²r²/c` for `r ≤ c/ε` and `2εr − c` beyond (`ε, c > 0`),
   `2εry − cy² ≤ φ_c(r)` for `0 ≤ y ≤ 1`, with equality at `y = min(εr/c, 1)` (so `φ_c` is the supremum of these affine

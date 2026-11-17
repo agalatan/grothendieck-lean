@@ -297,9 +297,9 @@ def main(check=False):
         f"/-- The cap of the hat value checked by the envelope. -/\ndef envB : ℚ := {ENV_B.numerator} / {ENV_B.denominator}\n\n"
         "/-- The cells `lo,hi,i,j,θ` of the envelope. -/\ndef envCells : List String := [\n" +
         ",\n".join("  " + lean_str(c) for c in ecells) + "]\n\nend Grothe.Lower\n")
-    files["Cert/Envelope.lean"] = ("import Grothe.Lower.Envelope\nimport Grothe.Lower.EnvelopeData\nimport Grothe.Lower.RowData\n\n"
-        "/-! # The check of the envelope " + HEADER + " -/\n\nnamespace Grothe.Lower\n\n"
-        "theorem certEnvelope : checkEnv rowData envB envCells = true := by native_decide\n\nend Grothe.Lower\n")
+    files["Cert/Envelope.lean"] = ("import Grothe.Lower.Envelope\nimport Grothe.Lower.EnvelopeData\nimport Grothe.Lower.MassFacts\n"
+        "import Grothe.Lower.RowData\n\n/-! # The check of the envelope " + HEADER + " -/\n\nnamespace Grothe.Lower\n\n"
+        "theorem certEnvelope : checkEnv rowData massS envB envCells = true := by native_decide\n\nend Grothe.Lower\n")
     if check:
         bad = [k for k, v in files.items() if not (out / k).exists() or (out / k).read_text() != v]
         if bad:
