@@ -10,6 +10,7 @@
 #             $MAIN/.lake/master-build.pid, log in $MAIN/.lake/master-build.log).
 #   --status  only report the local build cache: which master commit it holds, and whether a build is running.
 set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/agent_ids.sh"
 MAIN=/Users/alingalatan/workspaces/grothe
 PIDF="$MAIN/.lake/master-build.pid"
 LOG="$MAIN/.lake/master-build.log"
@@ -45,9 +46,9 @@ AGENT="${AGENT_ID:-}"
 owner_of() {  # the ID in the branch name (AGENTS.md §3), else the Agent-ID of its oldest commit not in master
   # (its creator: later commits may be another agent's, e.g. a janitor's merge of master)
   local b=$1 c id
-  if [[ "$b" =~ ^((codex|claude)-[0-9a-f]{4})/ ]]; then echo "${BASH_REMATCH[1]}"; return; fi
-  if [[ "$b" =~ ^(ready|work|cloud)/((codex|claude)-[0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[2]}"; return; fi
-  if [[ "$b" =~ ^(codex|claude)/([0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"; return; fi
+  if [[ "$b" =~ ^($agent_id_re)/ ]]; then echo "${BASH_REMATCH[1]}"; return; fi
+  if [[ "$b" =~ ^(ready|work|cloud)/($agent_id_re)- ]]; then echo "${BASH_REMATCH[2]}"; return; fi
+  if [[ "$b" =~ ^$agent_kind_re/([0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"; return; fi
   for c in $(git -C "$MAIN" rev-list --reverse "origin/master..origin/$b" 2>/dev/null); do
     id=$(git -C "$MAIN" log -1 --format=%B "$c" | sed -n 's/.*Agent-ID: *\([A-Za-z]*-[0-9a-f]*\).*/\1/p' | head -1)
     [ -n "$id" ] && { echo "$id"; return; }
@@ -135,7 +136,7 @@ audit() {
       elif [[ "$rev" == failure* ]]; then
         action="PR #$prn is blocked by review: answer every comment, fix, push, ask for a new review"
       elif [ -z "$action" ]; then
-        action="PR #$prn waits for a review by the other side (AGENTS.md §7a); answer any comments"
+        action="PR #$prn waits for a review by a different agent family (AGENTS.md §7a); answer any comments"
       fi
     elif [ -z "$action" ]; then
       action="no pull request: open one to land it (RFC/WIP labels if not finished), or delete the branch once it has served its purpose (§14)"

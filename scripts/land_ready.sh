@@ -7,6 +7,7 @@
 # base, source, tree = 40-hex; lean = true|false; pr = number); BRANCH (<agent-id>/<topic>); PR and SHA (the request
 # as dispatched by land.yml); CHECK_RUN (this run); GH_TOKEN, GITHUB_REPOSITORY, GITHUB_SERVER_URL.
 set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/agent_ids.sh"
 : "${INFO:?}" "${BRANCH:?}" "${PR:?}" "${SHA:?}" "${CHECK_RUN:?}"
 check_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${CHECK_RUN}"
 
@@ -45,14 +46,12 @@ if [ "$task_ok" != 1 ]; then
   echo "::notice::PR #${PR} is checked green but not landed: its description names no open issue labelled 'type: task' (write Closes #n or Refs #n; an epic alone does not count, AGENTS.md §1)"; exit 0
 fi
 
-# 2. an approving review of exactly this commit, by the other side (scripts/review.sh)
-author=${BRANCH%%-*}
+# 2. an approving review of exactly this commit, from a different agent family (scripts/review.sh)
+author=${BRANCH%%/*}
 review=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${source}/statuses?per_page=100" \
   --jq '[.[] | select(.context == "Independent review")] | first // empty | "\(.state)\t\(.description)"')
-state=${review%%$'\t'*}; desc=${review#*$'\t'}
-reviewer=$(sed -nE 's/^\[((claude|codex)-[0-9a-f]{4})\].*/\1/p' <<< "$desc")
-if [ "$state" != success ] || [ -z "$reviewer" ] || [ "${reviewer%%-*}" = "$author" ]; then
-  echo "::notice::PR #${PR} is checked green but not landed: no approving review of ${source:0:12} by the other side (${desc:-none})"; exit 0
+if ! reviewer=$(approved_reviewer "$author" "$review"); then
+  echo "::notice::PR #${PR} is checked green but not landed: no approving review of ${source:0:12} by a different agent family (${review:-none})"; exit 0
 fi
 
 # 3. recreate exactly the checked merge

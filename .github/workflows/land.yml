@@ -10,7 +10,7 @@ name: Land a pull request
 # (scripts/land_ready.sh). GitHub then marks the PR merged.
 # Refused, with a comment saying why: a commenter who is not the repository's account (every agent acts as it), a
 # closed or draft PR, a PR not into master or from a fork, an RFC/WIP label, an ID that does not own the branch
-# (<agent-id>/<topic>), or no approving review of the PR's current commit by the other side.
+# (<agent-id>/<topic>), or no approving review of the PR's current commit by a different agent family.
 
 on:
   issue_comment:
@@ -44,6 +44,7 @@ jobs:
           ASSOCIATION: ${{ github.event.comment.author_association }}
           OWNER: ${{ github.repository_owner }}
         run: |
+          source scripts/agent_ids.sh
           refuse() { gh pr comment "$PR" --body "[grothe-ci] \`/land\` refused: $1"; echo "::error::$1"; exit 1; }
           # every agent acts through the repository's own account; a comment from anyone else does not land
           [ "$COMMENTER" = "$OWNER" ] || refuse "only the repository's account (\`$OWNER\`) lands pull requests; the comment is by \`$COMMENTER\`."
@@ -59,14 +60,13 @@ jobs:
           [ "$(jq -r .isDraft <<< "$pr")" = false ] || refuse "the PR is a draft."
           labels=$(jq -r '[.labels[].name] | join(" ")' <<< "$pr")
           for l in RFC WIP; do [[ " $labels " == *" $l "* ]] && refuse "the PR is labelled $l; remove the label when it is ready."; done
-          [[ "$id" =~ ^(claude|codex)-[0-9a-f]{4}$ ]] || refuse "write \`/land <your-agent-id>\`, e.g. \`/land codex-2ca4\`."
+          is_agent_id "$id" || refuse "write \`/land <your-agent-id>\`, e.g. \`/land codex-2ca4\`."
           owner=${branch%%/*}
           [ "$owner" = "$id" ] || refuse "\`$branch\` belongs to \`$owner\`; only its author lands it."
           review=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${sha}/statuses?per_page=100" \
-            --jq '[.[] | select(.context == "Independent review")] | first // empty | "\(.state) \(.description)"')
-          reviewer=$(sed -nE 's/^[a-z]+ \[((claude|codex)-[0-9a-f]{4})\].*/\1/p' <<< "$review")
-          if [ "${review%% *}" != success ] || [ -z "$reviewer" ] || [ "${reviewer%%-*}" = "${id%%-*}" ]; then
-            refuse "no approving review of the current commit \`${sha:0:12}\` by the other side (scripts/review.sh). Review: ${review:-none}"
+            --jq '[.[] | select(.context == "Independent review")] | first // empty | "\(.state)\t\(.description)"')
+          if ! reviewer=$(approved_reviewer "$id" "$review"); then
+            refuse "no approving review of the current commit \`${sha:0:12}\` by a different agent family (scripts/review.sh). Review: ${review:-none}"
           fi
           # the landing check is bound to this PR and this commit: it refuses to land anything else
           gh workflow run lean.yml --ref "$branch" -f land=true -f pr="$PR" -f sha="$sha"
