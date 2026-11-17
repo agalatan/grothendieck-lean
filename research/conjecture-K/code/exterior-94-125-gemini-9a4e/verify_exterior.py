@@ -17,6 +17,8 @@ and proves `V_eps(f, g) < 500/701` across all exterior response cells:
 if not __debug__:
     raise RuntimeError("Run without -O; assertions are required.")
 
+import hashlib
+import json
 import re
 import time
 from fractions import Fraction as F
@@ -47,13 +49,26 @@ def machin_pi_bounds(terms=18):
 
 
 def load_lean_rows(repo_root):
-    rows = []
-    for p in sorted((repo_root / "Grothe/Lower").glob("RowData[0-9][0-9].lean")):
-        body = p.read_text().split(": Row :=", 1)[1]
-        nums = re.findall(r"\((\d+) : ℚ\)(?:\s*/\s*(\d+))?", body)[:6]
-        ell, beta, cap = (F(int(nums[i][0]), int(nums[i][1] or 1)) for i in (0, 1, 5))
-        rows.append((p.name, ell, beta, cap))
-    assert len(rows) == 19, f"Expected 19 Lean rows, found {len(rows)}"
+    manifest_path = repo_root / "research/conjecture-K/code/exterior-codex-4d8a/inherited_rows.json"
+    manifest = json.loads(manifest_path.read_text())
+    assert F(manifest["old_epsilon"]) == E0
+    assert F(manifest["rho"]) == RHO_LEAN
+    assert F(manifest["cap_pad"]) == PAD
+    rows = [(r["name"], F(r["ell"]), F(r["beta"]), F(r["cap"])) for r in manifest["rows"]]
+    assert len(rows) == 19, f"Expected 19 pinned Lean rows, found {len(rows)}"
+
+    types_path = repo_root / "Grothe/Lower/RowDataTypes.lean"
+    if types_path.exists():
+        m_eps = re.search(r"def\s+ε\s*:\s*ℚ\s*:=\s*(\d+)\s*/\s*(\d+)", types_path.read_text())
+        if m_eps and F(int(m_eps.group(1)), int(m_eps.group(2))) == E0:
+            for r in manifest["rows"]:
+                p = repo_root / r["path"]
+                raw = p.read_bytes()
+                assert hashlib.sha256(raw).hexdigest() == r["sha256"], f"SHA-256 mismatch on {p}"
+                body = raw.decode("utf-8").split(": Row :=", 1)[1]
+                nums = re.findall(r"\((\d+) : ℚ\)(?:\s*/\s*(\d+))?", body)[:6]
+                ell, beta, cap = (F(int(nums[i][0]), int(nums[i][1] or 1)) for i in (0, 1, 5))
+                assert (ell, beta, cap) == (F(r["ell"]), F(r["beta"]), F(r["cap"]))
     return rows
 
 

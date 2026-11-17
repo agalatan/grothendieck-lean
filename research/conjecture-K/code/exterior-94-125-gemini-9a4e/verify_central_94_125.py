@@ -11,10 +11,10 @@ Certifies:
    J(v) = sqrt(pi * (ell^2 + v)) - v/eps, J'(v) = sqrt(pi)/(2*sqrt(ell^2 + v)) - 1/eps.
 2. Nine central rows covering [159/200, 108/125] = [0.795, 0.864] at eps = 3/4
    (where Lean's `Lower.rho` alone closes the exterior), certifying S_i < S_i^upper
-   and exact allowance eta_max_i > 75/10^6 (> 7.5e-5, > 2.47x STATUS 8.10) on every row.
+   and exact allowance eta_max_i > 75/10^6 (minimum > 7.57e-5, > 2.49x STATUS 8.10) on every row.
 3. Thirteen central rows covering [1503/2000, 863/1000] = [0.7515, 0.863] at eps = 94/125
    (where `rho = 93462/100000` of STATUS 3.7 closes the exterior), certifying S_i < S_i^upper
-   and exact allowance eta_max_i > 1/10000 (10^-4; minimum > 1.018e-4, > 3.36x STATUS 8.10)
+   and exact allowance eta_max_i > 1/10000 (10^-4; minimum > 1.021e-4, > 3.36x STATUS 8.10)
    on every row, with Row 8 ([0.840, 0.847]) strictly inside the proved remote rectangle
    (STATUS 3.15) and proved retained A-core rectangle (STATUS 11.53).
 4. Three rejection controls (unbracketed variance, deflated S_upper, excessive eta).
@@ -467,6 +467,8 @@ def verify_row8_peak_rectangles(res8):
     a8 = ell8 - 2 * beta8
     # STATUS 3.15 (remote rectangle) & STATUS 11.53 (retained A-core rectangle):
     assert F(74, 100) <= e_f <= F(76, 100)
+    assert a8 / lam - F(699, 1250) == F(188043, 940000000)
+    assert beta8 / lam - F(179, 1250) == F(9400131, 18800000000)
     assert 0 <= a8 / lam - F(699, 1250) <= F(1, 2500) <= F(1, 2000)
     assert 0 <= beta8 / lam - F(179, 1250) <= F(1, 800) <= F(1, 625)
     # Scaled response energies on Row 8:

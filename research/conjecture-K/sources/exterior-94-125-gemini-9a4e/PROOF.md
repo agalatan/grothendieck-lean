@@ -5,17 +5,17 @@
 
 1. **Zero-tail spectral mass row via exact homothety transfer (§1).** For every $\varepsilon > 0$ with $c(\varepsilon) := \frac{2141}{3150}\varepsilon < 1$, the piecewise quadratic-linear potential $\varphi_c^{(\varepsilon)}(r) = \max_{y \in [0, 1]}(2\varepsilon r y - c y^2)$ satisfies the exact homothety identity
    $$\varphi_{c(\varepsilon)}^{(\varepsilon)}(r) = \frac{\varepsilon}{\varepsilon_1}\,\varphi_{c_1}^{(\varepsilon_1)}(r)\qquad\forall r \ge 0,\quad \varepsilon_1 = \frac{25}{31},\; c_1 = \frac{2141}{3906}.$$
-   Replaying the 136-node pruned spectral Stein certificate `cert_mass_0.5_pruned.json` (SHA-256 `f3fe6535d0ae45a05907d103d327c12cd53180604ee2a57f73159d8c70999f28`) directly against the Lean definitions (`Moments`, `SteinCut`, `Lower.ρ`) therefore proves, for **every** pure-cubic witness $T_\varepsilon = P_{1,0} - \varepsilon P_{2,1}$ ($\nu = 0$, no identity tail) and every unimodular pair $(f, g)$,
+   Replaying the 136-node pruned spectral Stein certificate `cert_mass_0.5_pruned.json` (`../identity-tail/STATUS.md` 5.5, fact (3); SHA-256 `f3fe6535d0ae45a05907d103d327c12cd53180604ee2a57f73159d8c70999f28`, **C**, outside Lean, whose hypotheses are Lean's `Moments`, `SteinCut` and `Lower.ρ`) therefore proves, for **every** pure-cubic witness $T_\varepsilon = P_{1,0} - \varepsilon P_{2,1}$ ($\nu = 0$, no identity tail) and every unimodular pair $(f, g)$,
    $$V_\varepsilon(f, g) \le (1 - c(\varepsilon))\,t^2 + c(\varepsilon) + \frac{\varepsilon}{\varepsilon_1}\,S_1 - \|P_{1,0} k\|_2^2 - \varepsilon\|P_{2,1} h\|_2^2,\qquad S_1 = \frac{3798855002922010337121170986221578569}{22939068096000000000000000000000000000}.$$
    This eliminates the $t \approx 0$ crude-row barrier ($\varepsilon \rho^2 < 500/701$) that previously prevented pushing the single-witness exterior consumer above $\varepsilon = 299/400 = 0.7475$ (`STATUS.md` 8.9).
 
 2. **Exterior consumer at $\varepsilon = 3/4 = 0.7500$ from Lean's `Lower.ρ` alone (§2).** Combining the homothety-transferred mass row, the 19 Lean rows at $\varepsilon_0 = 149/200$, retained-square two-row mixing (`RowHolds.mix`, `Grothe/LowerAnalytic/Rows.lean`), operator-change square recompletion, and the response-energy bound `2.12b` (**P + C**), **without** any external radius bound beyond Lean's `Lower.ρ = 973612157/10^9`, proves
    $$V_{3/4}(f, g) \le \frac{7132652}{10^7} < \frac{500}{701}\qquad\text{whenever } t \le \frac{159}{200} = 0.795 \text{ or } \frac{108}{125} = 0.864 \le t \le \frac{\sqrt{\pi}}{2}$$
-   (1,635 of 1,773 exact cells $[j/2000, (j+1)/2000]$ accepted; 613 use `2.12b`). On the remaining central interval $[159/200, 108/125]$, a certified 9-row bank achieves a minimum admissible all-sector allowance **$> 7.55\cdot 10^{-5}$** ($> 2.49\times$ the $3.03\cdot 10^{-5}$ binding allowance at $\varepsilon = 299/400$ in `STATUS.md` 8.10).
+   (1,635 of 1,773 exact cells $[j/2000, (j+1)/2000]$ accepted; 613 use `2.12b`). On the remaining central interval $[159/200, 108/125]$, a certified 9-row bank achieves a minimum admissible all-sector allowance **$> 7.57\cdot 10^{-5}$** (exact $7.5748\cdot 10^{-5}$, $> 2.49\times$ the $3.03\cdot 10^{-5}$ binding allowance at $\varepsilon = 299/400$ in `STATUS.md` 8.10).
 
 3. **Exterior consumer at $\varepsilon = 94/125 = 0.7520$ with $> 10^{-4}$ central allowance (§§2–4).** Adding the reviewed radius certificate $\rho = 46731/50000 = 0.93462$ (`STATUS.md` 3.7, **P + C**) proves
    $$V_{94/125}(f, g) \le \frac{7132660}{10^7} < \frac{500}{701}\qquad\text{whenever } t \le \frac{1503}{2000} = 0.7515 \text{ or } \frac{863}{1000} = 0.863 \le t \le \frac{\sqrt{\pi}}{2}$$
-   (1,550 of 1,773 exact cells accepted; 454 use `2.12b`). On the remaining central interval $[1503/2000, 863/1000]$, a certified 13-row bank satisfies $S_i < S_i^{\mathrm{upper}}$ with **every single row admitting an exact all-sector error budget $\eta_{\max, i} > 10^{-4}$** (minimum allowance $> 1.018\cdot 10^{-4}$, a **$3.36\times$ increase** over `STATUS.md` 8.10 and strictly above the $9.936\cdot 10^{-5}$ all-sector peak error budget of `STATUS.md` 7.5.3). Moreover, Row 8 ($[21/25, 847/1000] = [0.840, 0.847]$, $\ell_8 = 4209371/5\cdot 10^6$, $\beta_8 = 1428641/10^7$) lies strictly inside **both** the proved remote profile rectangle (`STATUS.md` 3.15) and the proved retained $A$-core rectangle (`STATUS.md` 11.53) with $u < \lambda^2 \cdot 0.0463$ ($\lambda = 1880/1891$), so Layers L1 and L4 (the retained $A$-core at every amplitude and sharing) are already unconditionally proved below $\eta_{\max, 8}$ on that central slab.
+   (1,550 of 1,773 exact cells accepted; 454 use `2.12b`). On the remaining central interval $[1503/2000, 863/1000]$, a certified 13-row bank satisfies $S_i < S_i^{\mathrm{upper}}$ with **every single row admitting an exact all-sector error budget $\eta_{\max, i} > 10^{-4}$** (minimum allowance $> 1.021\cdot 10^{-4}$, a **$> 3.36\times$ increase** over `STATUS.md` 8.10 and strictly above the $99\cdot 10^{-6}$ all-sector peak error budget of `STATUS.md` 7.5.3). Moreover, Row 8 ($[21/25, 847/1000] = [0.840, 0.847]$, $\ell_8 = 4209371/5\cdot 10^6$, $\beta_8 = 1428641/10^7$) lies strictly inside **both** the proved remote profile rectangle (`STATUS.md` 3.15) and the proved retained $A$-core rectangle (`STATUS.md` 11.53) with $u < \lambda^2 \cdot 0.0463$ ($\lambda = 1880/1891$), so Layers L1 and L4 (the retained $A$-core at every amplitude and sharing) are already unconditionally proved below $\eta_{\max, 8}$ on that central slab.
 
 ---
 
@@ -41,7 +41,7 @@ where $c(\varepsilon) = \frac{2141}{3150}\varepsilon$, $\varepsilon_1 = \frac{25
 
 *Proof.* Since $Q$ is an orthogonal projection, $\sigma^2 = \|Q k\|_2^2 = \operatorname{Re}\langle k, q\rangle$, whence $\varepsilon\sigma^2 = 2\varepsilon\operatorname{Re}\langle k, q\rangle - \varepsilon\sigma^2$. Subtracting and adding $c(\varepsilon)\|k\|_2^2$ and applying Lemma 1.1 pointwise at $r = |q(\omega)|$ and $y = |k(\omega)| \in [0, 1]$ gives
 $$\varepsilon\sigma^2 - c(\varepsilon)\|k\|_2^2 = \mathbb{E}\big[2\varepsilon\operatorname{Re}(\overline{k}\,q) - c(\varepsilon)|k|^2\big] - \varepsilon\sigma^2 \le \mathbb{E}\big[\varphi_{c(\varepsilon)}^{(\varepsilon)}(|q|)\big] - \varepsilon\sigma^2 = \frac{\varepsilon}{\varepsilon_1}\Big(\mathbb{E}\big[\varphi_{c_1}^{(\varepsilon_1)}(|q|)\big] - \varepsilon_1\sigma^2\Big).$$
-If $\sigma = 0$, the parenthesis equals $0 < S_1$. If $\sigma > 0$, then $0 < \sigma \le \rho_{\mathrm{Lean}} = \frac{973612157}{10^9}$ (`normQk_le_rho`) and the normalised modulus-squared law $U = |q|^2/\sigma^2$ satisfies Lean's `Moments` and `SteinCut` (`exists_wick_repr`, `gaussian_moments`, `gaussian_gramInputs`, `steinCut_of_inputs`). The exact script `verify_mass_row.py` transcribes Lean's `posCert`, `posOn`, `tailOn`, `cutCells`, `specPolyV`, `sweepTop`, and `chordMax` and verifies on all 136 spectral nodes (28,935 polynomial pieces) of `cert_mass_0.5_pruned.json` that $\Psi(s) := \varphi_{c_1}^{(\varepsilon_1)}(s/\delta)$ ($\delta = 3/4$) satisfies `CapsHold` ($\kappa = \frac{100799999981}{78468750000} \le \varepsilon_1/\delta^2$, $s_{\max} = \frac{2151}{1000} \ge 2\varepsilon_1/\delta$) and
+If $\sigma = 0$, the parenthesis equals $0 < S_1$. If $\sigma > 0$, then $0 < \sigma \le \rho_{\mathrm{Lean}} = \frac{973612157}{10^9}$ (`normQk_le_rho`) and the normalised modulus-squared law $U = |q|^2/\sigma^2$ satisfies Lean's `Moments` and `SteinCut` (`exists_wick_repr`, `gaussian_moments`, `gaussian_gramInputs`, `steinCut_of_inputs`). The exact script `verify_mass_row.py` transcribes Lean's `posCert`, `posOn`, `tailOn`, `cutCells`, `specPolyV`, `sweepTop`, and `chordMax` and verifies on all 136 spectral nodes (28,935 polynomial pieces) of `cert_mass_0.5_pruned.json` that $\Psi(s) := \varphi_{c_1}^{(\varepsilon_1)}(s/\delta)$ ($\delta = 3/4$) satisfies `CapsHold` ($\kappa = \frac{358422939}{250000000} \le \varepsilon_1/\delta^2$ with $\frac{\varepsilon_1}{\delta^2} - \kappa = \frac{19}{69750000000}$, $s_{\max} = \frac{2151}{1000} \ge 2\varepsilon_1/\delta$) and
 $$\mathbb{E}\big[\varphi_{c_1}^{(\varepsilon_1)}(\sigma\sqrt{U})\big] - \varepsilon_1\sigma^2 \le \mathbb{E}\big[\Psi(\delta\sigma\sqrt{U})\big] - \kappa(\delta\sigma)^2 \le S_1 - 10^{-11} < S_1\qquad\forall\sigma \in [0, \rho_{\mathrm{Lean}}].$$
 Since $0 < c(\varepsilon) < 1$ and $\|k\|_2^2 \le 1 - t^2$, we conclude
 $$\varepsilon\sigma^2 = \big(\varepsilon\sigma^2 - c(\varepsilon)\|k\|_2^2\big) + c(\varepsilon)\|k\|_2^2 \le \frac{\varepsilon}{\varepsilon_1}\,S_1 + c(\varepsilon)(1 - t^2),$$
@@ -51,7 +51,7 @@ which yields the theorem upon adding $t^2 - \|P_{1,0} k\|_2^2 - \varepsilon\|Q h
 
 ## 2. Two-row mixing, operator change, and exact 1,773-cell exterior covers
 
-Each of the 19 Lean rows $R_i = (\ell_i, \beta_i, \mathrm{cap}_i)$ (`Grothe/Lower/RowData01.lean`..`RowData19.lean`) is proved in Lean (`RowHolds`, `Grothe/LowerAnalytic/Rows.lean`) at $\varepsilon_0 = \frac{149}{200}$ with one common vector $v \in H_{2,1}$ satisfying $\|v\|_2^2 = 2$ (`norm_vL_sq`):
+Each of the 19 Lean rows $R_i = (\ell_i, \beta_i, \mathrm{cap}_i)$ (`Grothe/Lower/RowData01.lean`..`RowData19.lean`) is proved in Lean via `Grothe.Lower.rowOf_of_shared` and `Grothe.LowerAnalytic.reductionHyp_of_nodeCaps` (satisfying `RowHolds` of `Grothe/LowerAnalytic/Rows.lean`, which also defines `RowHolds.mix`) at $\varepsilon_0 = \frac{149}{200}$ with one common vector $v \in H_{2,1}$ satisfying $\|v\|_2^2 = 2$ (`norm_vL_sq`):
 $$V_{\varepsilon_0}(f, g) \le t^2 - 2\ell_i t + C_i - \varepsilon_0\left\|Q h + \frac{\beta_i}{\varepsilon_0}v\right\|_2^2,\qquad C_i = \frac{2\beta_i^2}{\varepsilon_0} + \mathrm{cap}_i + 10^{-11}.$$
 
 ### Lemma 2.1 (Retained-square mixing + operator-change recompletion)
@@ -99,7 +99,13 @@ with $x(t) = t(a + bt)^2/v$, $z(t) = x(t)/2$, and $y_n(z) = e^{-z} I_n(z)$.
 
 ### 4.1 Thirteen central rows covering $[1503/2000, 863/1000] = [0.7515, 0.863]$ at $\varepsilon = 94/125 = 0.7520$
 
-Every terminating decimal or fraction below is exact (`central_94_125_certificate.json`). For each row $i \in \{1, \dots, 13\}$, if every actual unimodular response with $t \in I_i$ satisfies the retained all-sector inequality
+For a row $(\ell_i, \beta_i)$ at witness multiplier $\varepsilon > 0$ (price $p = 1/\varepsilon$), put $a_i = \ell_i - 2\beta_i$, $L_i = z_1(a_i + \beta_i|z_1|^2)$, and define the retained functional (`STATUS.md` 2.10a; A15R `FOUNDATIONS.md` §§3–4)
+$$\widehat{\Lambda}_i(G) := \min_{\xi \in H_{1,0}}\big\{\|\xi\|_2^2 + \mathbb{E}|L_i + G - \xi| + \mathbb{E}|L_i - G + \xi|\big\} - \frac{\|G\|_2^2}{\varepsilon}.$$
+As proved in A15R `FOUNDATIONS.md` §§3–4, every phase-normalised unimodular response with $P_{1,0} h = t z_1$ satisfies the retained row inequality
+$$V_\varepsilon(f, g) \le t^2 - 2\ell_i t + \frac{2\beta_i^2}{\varepsilon} + \widehat{\Lambda}_i(\varepsilon Q k).$$
+Since $t \mapsto t^2 - 2\ell_i t + 2\beta_i^2/\varepsilon$ is convex on $I_i = [t_{\mathrm{lo}, i}, t_{\mathrm{hi}, i}]$, its maximum on $I_i$ occurs at $\{t_{\mathrm{lo}, i}, t_{\mathrm{hi}, i}\}$, so the exact admissible all-sector error budget above $S_i^{\mathrm{upper}}$ below the target $\frac{500}{701}$ is
+$$\eta_{\max, i} := \frac{500}{701} - \max_{t \in \{t_{\mathrm{lo}, i}, t_{\mathrm{hi}, i}\}}\!\left(t^2 - 2\ell_i t + \frac{2\beta_i^2}{\varepsilon}\right) - S_i^{\mathrm{upper}}.$$
+Every terminating decimal or fraction below is exact (`central_94_125_certificate.json`). For each row $i \in \{1, \dots, 13\}$ at $\varepsilon = \frac{94}{125}$, if every actual unimodular response with $t \in I_i$ satisfies the retained all-sector inequality
 $$\widehat{\Lambda}_i\!\left(\frac{94}{125} P_{2,1} k\right) \le S_i^{\mathrm{upper}} + \frac{1}{10000},\tag{$C_i$}$$
 then combining with Theorem 2.2 gives $\|P_{1,0} - \frac{94}{125} P_{2,1}\|_{\infty \to 1} < \frac{500}{701}$ and $K_G^{\mathbb{C}} > \frac{701}{500} = 1.402$.
 
@@ -121,18 +127,18 @@ then combining with Theorem 2.2 gives $\|P_{1,0} - \frac{94}{125} P_{2,1}\|_{\in
 
 - **Minimum central allowance across all 13 rows:** $\eta_{\max, 9} = \frac{2691299123611}{26357600000000000} \approx 1.02107\cdot 10^{-4} > 10^{-4}$, leaving an exact reserve $\frac{55539123611}{26357600000000000} > 2.107\cdot 10^{-6}$ after spending $10^{-4}$ on every row.
 - **Unconditional L1 + L4 closure on Row 8 ($[0.840, 0.847]$):** With $\lambda = \frac{94/125}{1891/2500} = \frac{1880}{1891}$, Row 8 has $a_8 = \ell_8 - 2\beta_8 = \frac{556146}{10^6}$, satisfying
-  $$0 < \frac{a_8}{\lambda} - \frac{699}{1250} = \frac{537323}{2686250000} < \frac{1}{2500},\qquad 0 < \frac{\beta_8}{\lambda} - \frac{179}{1250} = \frac{1175017}{2350000000} < \frac{1}{800},$$
+  $$0 < \frac{a_8}{\lambda} - \frac{699}{1250} = \frac{188043}{940000000} < \frac{1}{2500},\qquad 0 < \frac{\beta_8}{\lambda} - \frac{179}{1250} = \frac{9400131}{18800000000} < \frac{1}{800},$$
   and $\frac{u_{\mathrm{cap}, 8}}{\lambda^2} < 0.046267 < 0.0463$, $\frac{\|G\|_{\mathrm{cap}, 8}^2}{\lambda^2} < 0.080051$. Hence **both** `STATUS.md` 3.15 ($\Lambda(q) < S_8 + 9.934\cdot 10^{-5}$) and `STATUS.md` 11.53 ($\widehat{\Lambda}_8(q + (T - 1)r) < S_8 + 9.79\cdot 10^{-5}$) apply directly to Row 8 without any new remote or $A$-core profile transfer.
 
 ### 4.2 Nine central rows covering $[159/200, 108/125] = [0.795, 0.864]$ at $\varepsilon = 3/4 = 0.7500$
 
-Certified in the same script (`ROWS_3_4` in `verify_central_94_125.py` and `central_94_125_certificate.json`), every row has $\eta_{\max, i} > \frac{3}{40000} = 7.5\cdot 10^{-5}$ (minimum $\frac{26549658193}{350500000000000} \approx 7.575\cdot 10^{-5}$ on Row 7, $[0.8515, 0.856]$), paired with an exterior cover that uses **only** Lean's `Lower.ρ` as its radius input.
+Certified in the same script (`ROWS_3_4` in `verify_central_94_125.py` and `central_94_125_certificate.json`), every row has $\eta_{\max, i} > \frac{3}{40000} = 7.5\cdot 10^{-5}$ (minimum $\frac{26549658193}{350500000000000} \approx 7.5748\cdot 10^{-5} > 7.57\cdot 10^{-5}$ on Row 7, $[0.8515, 0.856]$, $> 2.49\times$ `STATUS.md` 8.10), paired with an exterior cover that uses **only** Lean's `Lower.ρ` as its radius input.
 
 ---
 
 ## 5. Replay instructions
 
-All three checkers require **only Python 3 and its standard library** (`python3 -I`, no `flint`, `numpy`, or `scipy`), reject `-O`, and run in under one minute total on a single laptop core:
+All three checkers require **only Python 3 and its standard library** (`python3 -I`, no `flint`, `numpy`, or `scipy`), reject `-O`, and run in about 2.7 minutes total (~2 s + ~14 s + ~148 s) on a single laptop core:
 
 ```sh
 cd research/conjecture-K/code/exterior-94-125-gemini-9a4e

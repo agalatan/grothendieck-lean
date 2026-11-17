@@ -56,12 +56,13 @@ pieces hold at the peak row or near it. Three single-witness routes to 1.402 are
 with error at most 1.006·10⁻⁴ at the peak row covers t ∈ [0.84, 0.851], and four response intervals stay uncovered. At
 ε = 299/400 everything outside (0.8165, 0.866) is proved, and ten all-sector inequalities at other profiles remain;
 they are stated with allowance 2.5·10⁻⁵, and the largest admissible allowances on the binding rows are 3.0–4.4·10⁻⁵.
-At ε = 94/125 = 0.752 everything outside (0.7515, 0.863) is proved [author only], and thirteen central rows admit at
-least 1.021·10⁻⁴ > 10⁻⁴ on every row (with Row 8 on [0.840, 0.847] inside the proved remote and retained A-core
+At ε = 94/125 = 0.752 everything outside the wider central interval (0.7515, 0.863) is proved [author only], and thirteen central rows (rows 1–7 off the peak box, reaching u/λ² ≤ 0.134) admit at
+least 1.021·10⁻⁴ > 10⁻⁴ on every row (> 3.36× the binding room at ε = 299/400, with Row 8 on [0.840, 0.847] inside the proved remote and retained A-core
 rectangles; at ε = 3/4 Lean's `Lower.ρ` alone closes the exterior outside (0.795, 0.864) with nine central rows
-admitting > 7.56·10⁻⁵). The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the open premises (P) and (P_Ψ)
-(2.8, 2.9): three times too large for the binding rows at ε = 299/400, and within the > 10⁻⁴ allowance of every row at
-ε = 94/125 once extended to those profiles. With the retained functional the A-shell uses 2·10⁻⁵ of the budget; the B-shell, the joint A/B interaction and
+admitting > 7.57·10⁻⁵). The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the open premises (P) and (P_Ψ)
+(2.8, 2.9): three times too large for the binding rows at ε = 299/400, and below the allowance of every row at ε = 94/125,
+but only at the peak profile; each of the thirteen rows needs its own all-sector bound (open; the profile transfer costs
+≈ 7·10⁻⁴, 8.6). With the retained functional the A-shell uses 2·10⁻⁵ of the budget; the B-shell, the joint A/B interaction and
 the shared odd-sector interactions remain missing. With the raw functional of K the content inequality is also
 missing. The gain at stake is about 3·10⁻⁴ on the constant.
 
@@ -972,13 +973,14 @@ STATUS 8.9]. Ten central rows cover the rest: if their retained all-sector inequ
 **The exterior at ε = 3/4 and ε = 94/125.** Pushing ε above 299/400 was blocked near t = 0 by the crude row t² + ερ².
 Setting c(ε) = (2141/3150)ε makes the piecewise potential φ_{c(ε)}^{(ε)}(r) = max_{y∈[0,1]}(2εry − c(ε)y²) equal to
 (ε/ε₁)·φ_{c₁}^{(ε₁)}(r) identically on [0, ∞) (ε₁ = 25/31, c₁ = 2141/3906), so the 136-node pruned spectral Stein
-certificate `cert_mass_0.5_pruned.json` transfers without an identity tail to give
-V_ε ≤ (1 − c(ε))t² + c(ε) + (ε/ε₁)S₁ − ‖P₁,₀k‖² − ε‖P₂,₁h‖² from Lean's `Moments`, `SteinCut` and `Lower.ρ` alone.
+certificate `cert_mass_0.5_pruned.json` (`../identity-tail/STATUS.md` 5.5, fact (3); **C**, outside Lean, whose hypotheses are
+Lean's `Moments`, `SteinCut` and `Lower.ρ`) transfers without an identity tail to give
+V_ε ≤ (1 − c(ε))t² + c(ε) + (ε/ε₁)S₁ − ‖P₁,₀k‖² − ε‖P₂,₁h‖².
 Combined with the 19 Lean rows, retained-square two-row mixing (`RowHolds.mix`), operator-change recompletion and 2.12b,
 this proves V_{3/4} ≤ 7132652/10⁷ < 500/701 outside (0.795, 0.864) using `Lower.ρ` alone, and, adding ρ = 46731/50000
-(2.1), V_{94/125} ≤ 7132660/10⁷ < 500/701 outside (0.7515, 0.863) [P + C, author only · gemini-9a4e · STATUS 8.12].
+(2.1), V_{94/125} ≤ 7132660/10⁷ < 500/701 outside (0.7515, 0.863) [homothety and covers P + C, author only · gemini-9a4e · STATUS 8.12].
 Outward-rounded integer Rice enclosures certify nine central rows on [0.795, 0.864] at ε = 3/4 with allowances above
-7.56·10⁻⁵, and thirteen central rows on [0.7515, 0.863] at ε = 94/125 with **every row admitting η_{max,i} > 10⁻⁴**
+7.57·10⁻⁵, and thirteen central rows on [0.7515, 0.863] at ε = 94/125 with **every row admitting η_{max,i} > 10⁻⁴**
 (minimum > 1.021·10⁻⁴, above the 9.9·10⁻⁵ peak budget of 2.9); Row 8 on [0.840, 0.847] lies strictly inside the proved
 remote and retained A-core rectangles of 2.1 and 2.6 with u/λ² < 0.0463 [P + C, author only; central premises open ·
 STATUS 8.13].
@@ -1043,7 +1045,7 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    first step is one new row at ε = 149/200 with an all-sector bound there, which gives 1.40171. At ε = 299/400 only
    the central interval (0.8165, 0.866) is left, as ten explicit all-sector inequalities; their binding rows admit
    3.0–4.4·10⁻⁵, less than the 9.9·10⁻⁵ of item 2. At ε = 94/125 only (0.7515, 0.863) is left (author only), as
-   thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.56·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`
+   thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.57·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`
    alone), with Row 8 on [0.840, 0.847] already inside the proved remote and retained A-core rectangles. Rows away from
    that peak rectangle still need remote, A-core and all-sector estimates on their own profiles and energy caps
    (2.1, 2.6), with the weighted scaling of 1.6; the flank and upper rows are outside both. *Gives:* 1.402.
