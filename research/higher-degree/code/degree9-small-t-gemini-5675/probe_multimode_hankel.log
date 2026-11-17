@@ -12,7 +12,7 @@
   ell= 1200: V_9=0.71214716896 (vs W/|W|: +5.41431e-05, 1/V_9=1.4042041) | 2-chaos diff=-1.708e-03 | D7 diff=-2.909e-03
   ell= 1600: V_9=0.71216038773 (vs W/|W|: +6.73619e-05, 1/V_9=1.4041781) | 2-chaos diff=-1.298e-03 | D7 diff=-2.203e-03
 
-3. Pure C^ell four-mode charge-1 profile on C^{2000}:
+3. Pure C^ell four-mode charge-1 profile (ell = 1500, 2000, 2500):
   ell= 1500: V_9=0.71215411072 (vs W/|W|: +6.10849e-05, 1/V_9=1.4041904) | 2-chaos diff=-1.419e-03 | D7 diff=-2.377e-03
   ell= 2000: V_9=0.71212842148 (vs W/|W|: +3.53957e-05, 1/V_9=1.4042411) | 2-chaos diff=-1.095e-03 | D7 diff=-1.824e-03
   ell= 2500: V_9=0.71209863565 (vs W/|W|: +5.60984e-06, 1/V_9=1.4042998) | 2-chaos diff=-9.017e-04 | D7 diff=-1.496e-03

@@ -199,10 +199,10 @@ The numerical probe reads these files within the PV3 working folder named above.
 
 ## The degree-9 small-t and two-chaos study (gemini-5675, 17 November 2026, #524)
 
-All files of `D9ST` (STATUS 1.6, 2.6, 4.36–4.38) are committed in the repository, with no external working-folder artefacts:
+All files of `D9ST` (STATUS 1.6, 1.8, 1.9, 2.6, 4.36–4.38) are committed in the repository, with no external working-folder artefacts:
 - `sources/degree9-small-t-2026-11-17-gemini-5675/PROOF.md`: complete proofs and dependency inventory.
 - `code/degree9-small-t-gemini-5675/`:
   - `python3 -I verify_two_chaos_diffuse.py` (`verify_two_chaos_diffuse.log`): exact outward-rational certificate (**C**, Python stdlib only) for the diffuse two-chaos theorem (`0 ≤ c ≤ 2`), the `c = 21/10` witness, and the chirp polynomials.
-  - `python3 -I verify_t0_refutation_exact.py` (`verify_t0_refutation_exact.log`): exact `Fraction` universal `τ⁴`, `τ⁸` and `1/ℓ²` series plus outward integer interval enclosures (**C**, Python stdlib only) certifying `V₉(1/50) − V₉(0) > 0` (`ℓ = 1`) and `V₉ ∈ [0.712140692470, 0.712141619442] > 0.71211` (`ℓ = 1600, τ = 1/20, α₃,₂ = 3/250`).
-  - `python3 -I verify_small_t_and_wick.py` (`verify_small_t_and_wick.log`): exact outward-rational certificates (**C**, Python stdlib only) for the `SMALL_T` Parseval obstruction at degrees 7 and 9, the necessary radius caps, the global diffuse Gaussian ideal `B₉*,Gauss = (181333/800000)π`, and the 2880-matching Wick classification of `‖R₉(q)‖₂²`.
+  - `python3 -I verify_t0_refutation_exact.py` (`verify_t0_refutation_exact.log`): exact `Fraction` universal `τ⁴`, `τ⁸` and `1/ℓ²` series plus outward integer interval enclosures (**C**, Python stdlib only) certifying `V₉(1/50) − V₉(0) ∈ [+1.399512·10⁻⁸, +1.431863·10⁻⁸] > 0` (`ℓ = 1`) and `V₉ ∈ [0.712140692470, 0.712141619442] > 0.71211` (`ℓ = 1600, τ = 1/20, α₃,₂ = 3/250`).
+  - `python3 -I verify_small_t_and_wick.py` (`verify_small_t_and_wick.log`): exact outward-rational certificates (**C**, Python stdlib only) for the `SMALL_T` Parseval obstruction at degrees 7 (`≥ 0.75146`) and 9 (`≥ 0.72057`), the necessary radius caps (`≤ 0.899299` for two-chaos at `c₉`, `≤ 0.886359` and `≤ 0.899374` for dual `B < 250/351`, `≤ 0.94767` and `≤ 0.94044` for primal Parseval), the global diffuse Gaussian ideal `B₉*,Gauss = (181333/800000)π`, and the 2880-matching Wick classification of `‖R₉(q)‖₂²`.
   - `probe_multimode_hankel.py` (`probe_multimode_hankel.log`): multi-coordinate Hankel numerical probe (**N**; run with Python 3.12.3, NumPy and SciPy).

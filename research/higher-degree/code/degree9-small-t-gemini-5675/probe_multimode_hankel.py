@@ -13,9 +13,9 @@ Reproduces:
   2. Pure C^ell two-mode profile with H_{3,2} leakage cancellation:
        f(z) = ph(sum_{j=1}^{1200} [H_{2,1}(z_j) + (3/250) H_{3,2}(z_j)]), g = -f
      giving V_9 = 0.71214717 (+5.41e-5 above W_3/|W_3|).
-  3. Pure C^ell five-mode profile on C^{2000}:
-       f(z) = ph(sum_{j=1}^{2000} sum_{m=1}^4 alpha_m H_{m+1,m}(z_j)), g = -f
-     giving V_9 = 0.71215285 (+5.98e-5 above W_3/|W_3|).
+  3. Pure C^ell four-mode charge-1 profile (ell = 1500, 2000, 2500):
+       f(z) = ph(sum_{j=1}^ell sum_{m=1}^4 alpha_m H_{m+1,m}(z_j)), g = -f
+     giving V_9 = 0.71215411 at ell = 1500 (+6.11e-5 above W_3/|W_3|) and 0.71212842 at ell = 2000.
   4. Bath + 1600-spike two-mode profile:
        f(z, W_3) = ph(W_3 + (2/25) sum_{j=1}^{1600} [H_{2,1}(z_j) + (3/250) H_{3,2}(z_j)]), g = -f
      giving V_9 = 0.71215418 (+6.12e-5 above W_3/|W_3|, 1/V_9 = 1.404190).
@@ -161,9 +161,9 @@ def main():
             f"| 2-chaos diff={vtc-BASE_TC:+.3e} | D7 diff={v7-BASE_D7:+.3e}"
         )
 
-    # 3. Pure C^ell multi-mode profile (including H_{1,0}, H_{2,1}, H_{3,2}, H_{4,3}, H_{5,4})
-    # Weights fitted on C^{2000}: [0, 1.0, 0.0135, -0.0042, 0.0009]
-    print("\n3. Pure C^ell four-mode charge-1 profile on C^{2000}:")
+    # 3. Pure C^ell four-mode charge-1 profile (H_{2,1}, H_{3,2}, H_{4,3}, H_{5,4})
+    # Weights [0, 1.0, 0.0135, -0.0042, 0.0009], evaluated across ell = 1500, 2000, 2500.
+    print("\n3. Pure C^ell four-mode charge-1 profile (ell = 1500, 2000, 2500):")
     h_4mode = (
         herm_c_rad(2, 1, r_rad)
         + 0.0135 * herm_c_rad(3, 2, r_rad)

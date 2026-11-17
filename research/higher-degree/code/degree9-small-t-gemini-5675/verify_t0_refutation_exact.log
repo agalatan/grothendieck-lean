@@ -1,6 +1,6 @@
 === Part 1: Exact Rational Series & Universal Perturbation Identities ===
 [PASS] (1b.i) Universal two-chaos tau^4 variation strictly negative for all 0 <= c <= 0.3 and all B in H_{2,1}.
-[PASS] (1b.ii) Degree-7 universal tau^4 coeffs strictly negative: [-0.027349447916666665, -0.0056541614583333335, -0.07162295833333333, -0.0037292291666666667].
+[PASS] (1b.ii) Degree-7 universal tau^4 coeffs strictly negative: ['-2625547/96000000', '-1085599/192000000', '-1718951/24000000', '-179003/48000000'].
 [PASS] (1b.iii) Degree-9 universal tau^4 formula verified; at H_{2,1}(z_1) gives +248589/3200000 > 0.
 [PASS] (1c) Exact 1-spike+bath series verified:
        (V_9(tau) - V_9(0))/pi = +248589/3200000 tau^4 -667197/5120 tau^6 +219348680259/12800000 tau^8 + O(tau^10).
@@ -8,11 +8,11 @@
        V_9(f_ell, -f_ell)/pi = 181333/800000 + (248589/3200000)/ell + (-4371711867/25600000)/ell^2 + O(ell^-3).
 
 === Part 2: Outward Interval Enclosures at Concrete Finite Parameters ===
-[PASS] (2a) Concrete 1-spike+bath (ell=1, tau=1/50) certified in 13.48s:
+[PASS] (2a) Concrete 1-spike+bath (ell=1, tau=1/50) certified in 26.23s:
        V_9(1/50) - V_9(0) in [+1.399512e-08, +1.431863e-08] > 0
        => N_9^0 is strictly NOT attained by the diffuse remote-only pair.
-[PASS] (2b) Concrete 1600-spike+bath (ell=1600, tau=1/20, alpha_32=3/250) certified in 63.24s:
+[PASS] (2b) Concrete 1600-spike+bath (ell=1600, tau=1/20, alpha_32=3/250) certified in 95.13s:
        V_9 in [0.712140692470, 0.712141619442] (width 9.270e-07)
        excess over W_3/|W_3| >= +4.766665e-05; excess over 0.71211 (N_9 + 10^-5) >= +3.069247e-05.
 
-ALL CHECKS IN verify_t0_refutation_exact.py PASSED in 76.75s.
+ALL CHECKS IN verify_t0_refutation_exact.py PASSED in 121.60s.
