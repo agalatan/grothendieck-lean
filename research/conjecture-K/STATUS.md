@@ -1126,8 +1126,7 @@ ordered by what a proof of 1.402 through Λ̂ needs first; part B lists what K n
    relaxations through second moments of the kernels stop near 0.9286.
 
 **C. Other routes to the same decimals** have their own ledgers. The identity-tail witness, for a Lean bound above
-1.4018 with the present machinery (section 10; [`../identity-tail/STATUS.md`](../identity-tail/STATUS.md)): several of its
-plateau rows have exact certificates; the coverage of the plateau, its rows at small t and its Lean port are in
-progress. The games of degree 5 and higher ([`../higher-degree/STATUS.md`](../higher-degree/STATUS.md)): the open steps
+1.4018 with the present machinery (section 10; [`../identity-tail/STATUS.md`](../identity-tail/STATUS.md)): its integer
+certificate is complete outside Lean, with a margin of 5.6·10⁻⁵ to 5000/7009, and its Lean port is in progress. The games of degree 5 and higher ([`../higher-degree/STATUS.md`](../higher-degree/STATUS.md)): the open steps
 are listed in section 5 of that ledger; the one that uses rows of this ledger (6.3.23 to 6.3.39 and 11.31a) is a
 content lemma on a band of energies, on the rows t ∈ [0.80, 0.855], open in both directions (4.28 there).
