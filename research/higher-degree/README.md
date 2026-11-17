@@ -80,9 +80,9 @@ record.
 | 5 | (1, −0.84896, 0.28180) | 1.403648 |
 | 5 + identity tail | (1, −0.86328, 0.33459), ν = −0.01384 | 1.40374 |
 | 7 | (1, −0.906596, 0.541570, −0.242531) | 1.404113 |
-| 9 | (1, −0.93600, 0.72057, −0.59202, 0.23468) | 1.40430 |
+| 9 | (1, −0.93600, 0.72057, −0.59202, 0.23468) | 1.40430 (PD2 pool); < 1.404218 (**P + C**, author only), 1.40418 (**N**) with t = 0 multi-spike pairs (STATUS 1.6, 2.6) |
 
-- **Bracket.** The heuristic bracket is 1.4043 ≲ K_G^ℂ ≤ 1.404599395362. Its left end is a model value, not a bound
+- **Bracket.** The heuristic bracket is 1.4043 ≲ K_G^ℂ ≤ 1.404599395362 (with λ₉ of STATUS 1.6 itself capped at 1/N(λ₉) < 1.404218 before retuning against mesoscopic t = 0 multi-spike responses; STATUS 1.6, 1.8, 2.6). Its left end is a model value, not a bound
   (STATUS 1.8). Haagerup's 1/γ† = 1.404575934663742 lies inside it. No rounding built from the binding responses
   beats Haagerup's γ_H (STATUS 3.3).
 - **The degree-5 programme.** At t = 0 a row bound is at least λ₁ρ\*², so the proved radius bound caps the cubic

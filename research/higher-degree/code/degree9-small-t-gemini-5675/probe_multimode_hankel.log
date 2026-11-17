@@ -1,0 +1,22 @@
+=== Numerical Probe (N): Multi-Coordinate Hankel Evaluation at t = 0 ===
+
+1. Pure parameter-free cubic sum f_ell(z) = ph(sum_{j=1}^ell H_{2,1}(z_j)), g = -f:
+  ell=  500: V_9=0.71078802212 (vs W/|W|: -1.30500e-03, asymp diff: +3.53e-04) | 2-chaos diff=-4.096e-03 | D7 diff=-7.266e-03
+  ell= 2000: V_9=0.71208700664 (vs W/|W|: -6.01918e-06, asymp diff: +6.08e-06) | 2-chaos diff=-9.783e-04 | D7 diff=-1.747e-03
+  ell= 4000: V_9=0.71212127957 (vs W/|W|: +2.82538e-05, asymp diff: +7.71e-07) | 2-chaos diff=-4.853e-04 | D7 diff=-8.662e-04
+  ell=10000: V_9=0.71211211591 (vs W/|W|: +1.90901e-05, asymp diff: +4.98e-08) | 2-chaos diff=-1.932e-04 | D7 diff=-3.445e-04
+  ell=50000: V_9=0.71209769267 (vs W/|W|: +4.66685e-06, asymp diff: +4.13e-10) | 2-chaos diff=-3.855e-05 | D7 diff=-6.869e-05
+
+2. Pure C^ell two-mode profile H_{2,1}(z_j) + (3/250) H_{3,2}(z_j), g = -f:
+  ell=  800: V_9=0.71199535782 (vs W/|W|: -9.76680e-05, 1/V_9=1.4045035) | 2-chaos diff=-2.545e-03 | D7 diff=-4.354e-03
+  ell= 1200: V_9=0.71214716896 (vs W/|W|: +5.41431e-05, 1/V_9=1.4042041) | 2-chaos diff=-1.708e-03 | D7 diff=-2.909e-03
+  ell= 1600: V_9=0.71216038773 (vs W/|W|: +6.73619e-05, 1/V_9=1.4041781) | 2-chaos diff=-1.298e-03 | D7 diff=-2.203e-03
+
+3. Pure C^ell four-mode charge-1 profile on C^{2000}:
+  ell= 1500: V_9=0.71215411072 (vs W/|W|: +6.10849e-05, 1/V_9=1.4041904) | 2-chaos diff=-1.419e-03 | D7 diff=-2.377e-03
+  ell= 2000: V_9=0.71212842148 (vs W/|W|: +3.53957e-05, 1/V_9=1.4042411) | 2-chaos diff=-1.095e-03 | D7 diff=-1.824e-03
+  ell= 2500: V_9=0.71209863565 (vs W/|W|: +5.60984e-06, 1/V_9=1.4042998) | 2-chaos diff=-9.017e-04 | D7 diff=-1.496e-03
+
+4. Bath + ell-spike two-mode family f(z, W_3), g = -f:
+  tau=0.05, ell=1600: V_9=0.71214118564 (vs W/|W|: +4.81598e-05, vs 0.71211: +3.11856e-05, 1/V_9=1.4042159) | 2-chaos diff=-8.364e-04 | D7 diff=-1.422e-03
+  tau=0.08, ell=1600: V_9=0.71215417787 (vs W/|W|: +6.11521e-05, vs 0.71211: +4.41779e-05, 1/V_9=1.4041903) | 2-chaos diff=-1.079e-03 | D7 diff=-1.833e-03
