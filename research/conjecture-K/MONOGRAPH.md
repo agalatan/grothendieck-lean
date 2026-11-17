@@ -350,7 +350,7 @@ Gaussians; equality only when a = b = 0), also with any independent Gaussian sca
 the nodal set, which comes from a martingale–isoperimetric bound; it holds numerically on about 200 cubics, but no
 mechanism for it is known where the sharp bound is open [P; N · 3.21 (e10)]. Without restriction, E|h| ≤ 0.8872‖h‖₂ in
 every dimension, by rotations on a Gaussian circle restricted to the at most three sign changes per half-turn of a
-cubic; such rotations cannot reach √0.68 [P + C author only; N · 3.21 (e9)]. Moments, hypercontractivity and the
+cubic; the tested rotation certificates do not reach √0.68 [N · 3.21 (e9)]. Moments, hypercontractivity and the
 cumulant bounds cannot give even the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace
 and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 itself is proved, beyond
 the classes above, for a correlation of at least 0.7931, for κ₄ ≥ 70.5, in at most eleven coordinates and for harmonic

@@ -1008,12 +1008,15 @@ scripts, logs and run times of the first four, in folders of the same names, and
   `python3 -I s2_check.py` (sympy identities, mpmath, a 4000 × 8000 grid on S²) and `python3 -I s2_search.py` (the
   300-start search).
 - **TCH3c, `omega3/`.** `REPORT.md` is a research worker's report, saved by claude-b9ee. `work/` holds its 14 scripts,
-  the five batch scripts of its droplet runs, 27 tensor files `pert_*.npy` (192 to 344 B) with `tensor_list.txt`, and
-  four logs, three of them identical to those of its `logs/`, which is `raw-logs/` here (a folder named `logs/` is
-  ignored by git in this repository) and holds the 16 raw outputs. Not copied: `work/__pycache__/` (two byte-code
-  files, 13,903 B and 36,119 B).
-- **Logs and data.** The logs, run times and tensor files are copied because the documents cite them as their record;
-  none is above 300 KB.
+  the five batch scripts of its droplet runs, `tensor_list.txt` and four logs, three of them identical to those of its
+  `logs/`, which is `raw-logs/` here (a folder named `logs/` is ignored by git in this repository) and holds the 16 raw
+  outputs. Not copied: `work/__pycache__/` (two byte-code files, 13,903 B and 36,119 B), and the 27 tensor files
+  `pert_*.npy` that `tensor_list.txt` names (192 to 344 B; binaries, which the README keeps out): `python3 -I
+  make_tensors.py`, run in `work/`, writes them byte for byte (checked on 17 Nov 2026 with NumPy 2.3.5), and their
+  hashes are in the second table below. `det2d.py`, `run_case.py`, `run_pair.py`, `surface_screen.py` and `batch3.sh`
+  read them.
+- **Logs and data.** The logs and run times are copied because the documents cite them as their record; none is
+  above 300 KB.
 - **Private paths.** Scanned as before: besides the handoff paths, the droplet paths
   `/home/agalatan/claude-b9ee-capslemma/venv/bin/python3` (a Python interpreter, in `rank1-cert/PROOF.md` §6,
   `run_all.sh` and the omega3 batch scripts) and `~/claude-b9ee-omega3` (in those batch scripts). Nothing was changed.
@@ -1080,6 +1083,35 @@ scripts, logs and run times of the first four, in folders of the same names, and
 | `code/third-chaos-2026-11-17/omega3/work/make_tensors.py` | 1,406 B | `ff053643b5f7e99249fca69ba0d3a4e3c42dfbf38c19f8da0f40e0a7350a088b` |
 | `code/third-chaos-2026-11-17/omega3/work/near_h3_det2d.log` | 4,160 B | `150366248f592984763cb2b2c204a879bffd9abc968fa918fbfbd16c2856e46d` |
 | `code/third-chaos-2026-11-17/omega3/work/omega3lib.py` | 17,028 B | `d1a832e07924005d9a1561fd55a5f633da462f600eb865f9eee42b9d14af3f72` |
+| `code/third-chaos-2026-11-17/omega3/work/run_case.py` | 3,525 B | `71bbc1eb8ee91ace95b96da67f4f213788b39c719bc8eec9db20f8a66a572625` |
+| `code/third-chaos-2026-11-17/omega3/work/run_pair.py` | 3,813 B | `c8f256c2a279e65d0dcda5790cbb6a3dc0ab9d9b47def774020600edef746baa` |
+| `code/third-chaos-2026-11-17/omega3/work/scan2.py` | 1,644 B | `16b99fcd47a12a101bc35a3eb1fafe653a4dc2418dc59bb9d739d7e420278270` |
+| `code/third-chaos-2026-11-17/omega3/work/surface_screen.py` | 4,701 B | `0063e256507b7c250b54345d77f5b02d4bd0ff294c22eb2990bf8e566261e873` |
+| `code/third-chaos-2026-11-17/omega3/work/swapped_check.log` | 1,248 B | `d9643974f8d63c1d19e834e7782126d4e2edf133e81b1fc595298be415e6caa2` |
+| `code/third-chaos-2026-11-17/omega3/work/tensor_list.txt` | 559 B | `e4aa8f6c0d8ffc68637005849536181259eff029af5060f8083ada915fa11f13` |
+| `code/third-chaos-2026-11-17/omega3/work/test_rootmass.py` | 1,468 B | `c4f1aae46a17c26ed7c532b0d305a4ca4361e27cefd8d22df66c703052adb07d` |
+| `code/third-chaos-2026-11-17/omega3/work/val_F2.py` | 1,671 B | `9cbadc14413ac4438f5387035ca9416e269c1811a1a2bac3435496ed96e06b15` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch1.out` | 5,674 B | `c2885aac2e7afc19bd647888cf32a9b4afea936a77aff706dea38353e9d546a2` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch2.out` | 8,573 B | `b452eeb07cc3281b6eb870ad7fb9705a412787725867561dbc11eb39f698ca42` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch3.out` | 13,950 B | `bd976181a7ca3e7f1180631a29a9a5ca15bfcb26e45d7ba4053757602b3f214b` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch5.out` | 6,051 B | `1cf36166445e2eefc2bc57c532fb1888f309968a8e897e178ebf36a1b65cac09` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch6.out` | 2,022 B | `47bf796df92e7a2d2b70b9cd1e820da741f1c47800a9e9e5d3819e516d5b76cc` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch7.out` | 1,541 B | `b52ed0be66e9e1f730ec5faa2e701096ac6b512ef60e405f6a3dbe6cac2c8f6c` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/bath_grid2.out` | 8,432 B | `f3838235f8d6e902a668a262eb7b808c5564781c1a24a16d80b4d1461a0c304a` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/bath_grid_part1.out` | 10,548 B | `137919ab5b67d4c2051d39a0116b0d34e4a89fa441a899d470059d0bfb43aca5` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/eps_test.log` | 3,078 B | `ccdb84a2ed570ee651ad34e020bace4df50674012f461bb4f2579f281a8f02d9` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/h3_1d.log` | 2,321 B | `d178d7f8553b692136ee1eafe7dd1bca0e99599deb8e427acbc8c5abb4ea9043` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/near_h3_det2d.log` | 4,160 B | `150366248f592984763cb2b2c204a879bffd9abc968fa918fbfbd16c2856e46d` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2_part1.out` | 14,560 B | `3be6adc84acf2fdfe02999deea4d147c101e3214c4c140a10b61dd75733ed4f8` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2b_0.out` | 5,249 B | `ff5ba8aa785447a128679e15013cfb1d0e79495718c4a6a80282048997c11f66` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2b_1.out` | 5,247 B | `09b4321e1ccd052a8b80a6829b53c6934835a242786c8098e22d583931e12847` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/surface_screen.log` | 6,784 B | `83b50dcb97dcaf6d20e856948d5a8d9fa636bb59c749752a166264aa22bfd8ce` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/swapped_check.log` | 1,248 B | `d9643974f8d63c1d19e834e7782126d4e2edf133e81b1fc595298be415e6caa2` |
+
+Not kept (binaries; `make_tensors.py` writes them in `work/`):
+
+| file | size | SHA-256 |
+|---|---:|---|
 | `code/third-chaos-2026-11-17/omega3/work/pert_He2x1_x2_+0.10.npy` | 192 B | `911afa9f8de10a0f295130e184df1749e30ae192a6e3d1dc9073dcb7778be655` |
 | `code/third-chaos-2026-11-17/omega3/work/pert_He2x1_x2_+0.20.npy` | 192 B | `65dff2c4cdafbf46cd9b963dab9578e775d8a3f99c9f01beb5c8fb85a8cc2c76` |
 | `code/third-chaos-2026-11-17/omega3/work/pert_He2x1_x2_+0.35.npy` | 192 B | `c1e7567b75c82cf526ab2f92afda059a02b9265e5f75f80a9f26ecb4b20ef2d9` |
@@ -1107,30 +1139,6 @@ scripts, logs and run times of the first four, in folders of the same names, and
 | `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_mHe2x3_+0.30.npy` | 344 B | `2994656cf709a0204adbce90cf78ed02e5856a1fe40f8fdca884e3d2de96be2d` |
 | `code/third-chaos-2026-11-17/omega3/work/pert_x1x2x3_+0.20.npy` | 344 B | `0eee9c353b776a840748c5f30966f1bf7d6a2dc0a8a40d0b123ec0fe9816c6a9` |
 | `code/third-chaos-2026-11-17/omega3/work/pert_x1x2x3_+0.50.npy` | 344 B | `14a5b8a86e9ff8b634abd4f81ebfc861ddfb0dcf16725da16a4811a1f39cc687` |
-| `code/third-chaos-2026-11-17/omega3/work/run_case.py` | 3,525 B | `71bbc1eb8ee91ace95b96da67f4f213788b39c719bc8eec9db20f8a66a572625` |
-| `code/third-chaos-2026-11-17/omega3/work/run_pair.py` | 3,813 B | `c8f256c2a279e65d0dcda5790cbb6a3dc0ab9d9b47def774020600edef746baa` |
-| `code/third-chaos-2026-11-17/omega3/work/scan2.py` | 1,644 B | `16b99fcd47a12a101bc35a3eb1fafe653a4dc2418dc59bb9d739d7e420278270` |
-| `code/third-chaos-2026-11-17/omega3/work/surface_screen.py` | 4,701 B | `0063e256507b7c250b54345d77f5b02d4bd0ff294c22eb2990bf8e566261e873` |
-| `code/third-chaos-2026-11-17/omega3/work/swapped_check.log` | 1,248 B | `d9643974f8d63c1d19e834e7782126d4e2edf133e81b1fc595298be415e6caa2` |
-| `code/third-chaos-2026-11-17/omega3/work/tensor_list.txt` | 559 B | `e4aa8f6c0d8ffc68637005849536181259eff029af5060f8083ada915fa11f13` |
-| `code/third-chaos-2026-11-17/omega3/work/test_rootmass.py` | 1,468 B | `c4f1aae46a17c26ed7c532b0d305a4ca4361e27cefd8d22df66c703052adb07d` |
-| `code/third-chaos-2026-11-17/omega3/work/val_F2.py` | 1,671 B | `9cbadc14413ac4438f5387035ca9416e269c1811a1a2bac3435496ed96e06b15` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/batch1.out` | 5,674 B | `c2885aac2e7afc19bd647888cf32a9b4afea936a77aff706dea38353e9d546a2` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/batch2.out` | 8,573 B | `b452eeb07cc3281b6eb870ad7fb9705a412787725867561dbc11eb39f698ca42` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/batch3.out` | 13,950 B | `bd976181a7ca3e7f1180631a29a9a5ca15bfcb26e45d7ba4053757602b3f214b` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/batch5.out` | 6,051 B | `1cf36166445e2eefc2bc57c532fb1888f309968a8e897e178ebf36a1b65cac09` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/batch6.out` | 2,022 B | `47bf796df92e7a2d2b70b9cd1e820da741f1c47800a9e9e5d3819e516d5b76cc` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/batch7.out` | 1,541 B | `b52ed0be66e9e1f730ec5faa2e701096ac6b512ef60e405f6a3dbe6cac2c8f6c` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/bath_grid2.out` | 8,432 B | `f3838235f8d6e902a668a262eb7b808c5564781c1a24a16d80b4d1461a0c304a` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/bath_grid_part1.out` | 10,548 B | `137919ab5b67d4c2051d39a0116b0d34e4a89fa441a899d470059d0bfb43aca5` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/eps_test.log` | 3,078 B | `ccdb84a2ed570ee651ad34e020bace4df50674012f461bb4f2579f281a8f02d9` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/h3_1d.log` | 2,321 B | `d178d7f8553b692136ee1eafe7dd1bca0e99599deb8e427acbc8c5abb4ea9043` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/near_h3_det2d.log` | 4,160 B | `150366248f592984763cb2b2c204a879bffd9abc968fa918fbfbd16c2856e46d` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2_part1.out` | 14,560 B | `3be6adc84acf2fdfe02999deea4d147c101e3214c4c140a10b61dd75733ed4f8` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2b_0.out` | 5,249 B | `ff5ba8aa785447a128679e15013cfb1d0e79495718c4a6a80282048997c11f66` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2b_1.out` | 5,247 B | `09b4321e1ccd052a8b80a6829b53c6934835a242786c8098e22d583931e12847` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/surface_screen.log` | 6,784 B | `83b50dcb97dcaf6d20e856948d5a8d9fa636bb59c749752a166264aa22bfd8ce` |
-| `code/third-chaos-2026-11-17/omega3/raw-logs/swapped_check.log` | 1,248 B | `d9643974f8d63c1d19e834e7782126d4e2edf133e81b1fc595298be415e6caa2` |
 
 ## Codex-a786: phase symmetry and content (16 November 2026)
 
