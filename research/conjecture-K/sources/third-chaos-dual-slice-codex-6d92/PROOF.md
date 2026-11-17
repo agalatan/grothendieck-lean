@@ -528,7 +528,7 @@ used $Q_\Gamma(s+1,z)=Q_\Gamma(s,z)+z^s e^{-z}/\Gamma(s+1)$ with initial
 values $Q_\Gamma(1,z)=e^{-z}$ and $Q_\Gamma(1/2,z)=\operatorname{erfc}(\sqrt z)$.
 [Independent review](https://github.com/agalatan/grothendieck-lean/pull/500#issuecomment-6941015242)
 
-Run the five checkers from the repository root with Python 3.12,
+Run the five checkers and the lookup-table cross-check from the repository root with Python 3.12,
 python-flint 0.9.0 and NumPy 2.3.5. The circle checker uses only the
 standard library. Each script exits on a failed assertion.
 
@@ -537,4 +537,5 @@ cert_dir=research/conjecture-K/code/third-chaos-dual-slice-codex-6d92
 for check in rank planes stein regression circle; do
   python3 -I "$cert_dir/certify_${check}.py" || exit 1
 done
+python3 -I "$cert_dir/check_radial_table.py"
 ```
