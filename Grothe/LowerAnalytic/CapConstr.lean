@@ -105,7 +105,7 @@ end
 
 section
 
-variable (ℓ β : ℝ) (pr : Prices ℓ β) (E : Sym3) (R : Sym2) (a : Fib)
+variable (ℓ β : ℝ) (E : Sym3) (R : Sym2) (a : Fib)
 
 /-- **The bound of a constrained piece, for any coefficient matrix**: if `T` bounds `J` at `(y, s)`
 and the constrained check passes on an enclosure of `T`, then `J(y, s) ≤ cap` on the region of the

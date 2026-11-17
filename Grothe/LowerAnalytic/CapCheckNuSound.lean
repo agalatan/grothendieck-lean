@@ -180,6 +180,9 @@ lemma cellInts_E3 (nu : ℚ) (D2 D3 : ℕ) :
 lemma cellInts_Dl (nu : ℚ) (D2 D3 : ℕ) :
     (cellInts nu D2 D3).Dl = (cellInts nu D2 D3).Dd2 * (cellInts nu D2 D3).Dd3
       - (cellInts nu D2 D3).Nu * (cellInts nu D2 D3).Nu := rfl
+lemma cellInts_Sg (nu : ℚ) (D2 D3 : ℕ) :
+    (cellInts nu D2 D3).Sg = (cellInts nu D2 D3).Dd2 - (cellInts nu D2 D3).Nu
+      + ((cellInts nu D2 D3).Dd3 - (cellInts nu D2 D3).Nu) := rfl
 /-- The real cell data of a grid. -/
 lemma gridDataNu_cast (gd : GridDataNu) (i j : ℕ) :
     ((gd.d2 i j : ℚ) : ℝ) = (gd.D2 i j : ℝ) / 2 ^ 50 ∧ ((gd.d3 i j : ℚ) : ℝ) = (gd.D3 i j : ℝ) / 2 ^ 50 ∧

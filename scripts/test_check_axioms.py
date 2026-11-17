@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("refined-cover", "law-nodes")
+MODES = ()
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -41,23 +41,13 @@ class CheckAxiomsTests(unittest.TestCase):
 
     def test_existing_policy_headlines_and_native_restrictions(self):
         headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
-                     "Grothe.Statement.lower_target",
-                     "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data",
-                     "Grothe.LowerAnalytic.lower_bound_of_capsRest"}
+                     "Grothe.Statement.lower_target", "Grothe.Statement.lowerTarget_of_tailNodeCaps",
+                     "Grothe.LowerAnalytic.tailNodeCaps_cert", "Grothe.LowerAnalytic.lower_bound_of_tailNodeCaps"}
         self.assertTrue(headlines <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
         self.assertNotIn("Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1", CHECKER.NATIVE)
         self.assertIn("Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1",
                       CHECKER.NATIVE)
-
-    def test_topic_policies_preserve_required_families(self):
-        for mode, expected in (("refined-cover", CHECKER.REFINED_LOWER),
-                               ("law-nodes", CHECKER.LAW_NODES)):
-            with self.subTest(mode=mode):
-                required,native=CHECKER.audit_policy(mode)
-                self.assertEqual(required, expected)
-                self.assertTrue(expected <= CHECKER.REQUIRED)
-                self.assertEqual(native, CHECKER.NATIVE)
 
     def test_data_registries_preserve_topic_modes_and_local_native_facts(self):
         self.assertEqual(set(CHECKER.MODES), set(MODES))
@@ -65,10 +55,9 @@ class CheckAxiomsTests(unittest.TestCase):
             with self.subTest(mode=mode):
                 path = ROOT / "data/axioms/modes" / f"{mode}.required.txt"
                 self.assertEqual(CHECKER.names(path), CHECKER.audit_policy(mode)[0])
-        local_native = {f"Grothe.Research.RefinedLowerCheck.{name}._native.native_decide.ax_1_1"
-                        for name in ("certRefinedBoxes0", "certRefinedBoxes1", "certRefinedBoxes2",
-                                     "certRefinedBoxes3", "certRefinedPartition")}
-        local_native.add("Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1")
+        local_native = {f"Grothe.Lower.{name}._native.native_decide.ax_1_1"
+                        for name in ("certEnvelope", "certMassRow", "massCapsOK", "certRow01", "certRow14")}
+        local_native.add("Grothe.LowerAnalytic.chordsOKRow00._native.native_decide.ax_1_1")
         self.assertTrue(local_native <= CHECKER.NATIVE)
 
     def test_mode_lists_are_sorted_checked_and_normalized(self):
@@ -145,9 +134,9 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(self.run_main([arg], self.report())[0], 2)
 
     def test_multiline_standard_report_passes(self):
-        text = self.report("law-nodes").replace("[propext, Classical.choice, Quot.sound]",
-                                              "[propext,\n Classical.choice,\n Quot.sound]")
-        self.assertEqual(self.run_main(["--law-nodes"], text)[0], 0)
+        text = self.report().replace("[propext, Classical.choice, Quot.sound]",
+                                     "[propext,\n Classical.choice,\n Quot.sound]")
+        self.assertEqual(self.run_main([], text)[0], 0)
 
     def test_archived_mode_is_not_an_active_policy(self):
         for arg in ("--haagerup-power", "--upper-comparison", "--hardy-budget"):
@@ -219,13 +208,12 @@ class CheckAxiomsTests(unittest.TestCase):
                 with self.subTest(diagnostic=diagnostic, text_start=text[:80]):
                     self.assertEqual(self.run_main([], text)[0], 1)
 
-    def test_each_topic_mode_keeps_strict_report_consumption(self):
-        for mode in ("refined-cover", "law-nodes"):
-            for extra in ("error: failed to load module\n",
-                          "'Extra.unchecked' depends on axioms: [sorryAx\n",
-                          "'Extra.unchecked' depends on axioms: []junk\n"):
-                with self.subTest(mode=mode, extra=extra):
-                    self.assertEqual(self.run_main([f"--{mode}"], self.report(mode) + extra)[0], 1)
+    def test_default_mode_keeps_strict_report_consumption(self):
+        for extra in ("error: failed to load module\n",
+                      "'Extra.unchecked' depends on axioms: [sorryAx\n",
+                      "'Extra.unchecked' depends on axioms: []junk\n"):
+            with self.subTest(extra=extra):
+                self.assertEqual(self.run_main([], self.report() + extra)[0], 1)
 
     def test_import_does_not_parse_arguments_or_read_stdin(self):
         code = ("import importlib.util, sys\n"

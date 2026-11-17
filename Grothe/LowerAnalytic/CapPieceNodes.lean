@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.CapPieceRange
+import Grothe.LowerAnalytic.CapRangeDefs
 import Grothe.LowerAnalytic.CapConstr
 import Grothe.LowerAnalytic.CapTablesMk
 
@@ -22,8 +23,5 @@ lemma pieceGrids_adm : ∀ G ∈ pieceGrids, gridAdm G = true := by
   simp only [pieceGrids, List.mem_cons, List.not_mem_nil, or_false] at hG
   rcases hG with rfl | rfl | rfl | rfl | rfl <;> simp [gridAdm] <;> norm_num
 
-noncomputable section
-
-end
 
 end Grothe.LowerAnalytic

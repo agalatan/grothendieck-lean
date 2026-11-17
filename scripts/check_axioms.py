@@ -14,14 +14,14 @@ The lists are data files, one name per line, sorted, union-merged by git (.gitat
 duplicates by `tools/gen_root_imports.py --check`:
 * default report: data/axioms/required.txt, data/axioms/native.txt;
 * audit modes (one flag at most): data/axioms/modes/<mode>.required.txt, and <mode>.native.txt if present
-  (otherwise the default native list). Modes: --refined-cover, --law-nodes.
+  (otherwise the default native list). No audit mode is defined at present.
 """
 import argparse, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXDIR = os.path.join(ROOT, "data", "axioms")
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
-MODES = ("refined-cover", "law-nodes")
+MODES = ()
 
 
 def names(path):
@@ -41,8 +41,6 @@ def audit_policy(mode):
 
 # the default lists, as module constants (used by the tests and by other tools)
 REQUIRED, NATIVE = audit_policy("default")
-REFINED_LOWER = audit_policy("refined-cover")[0]
-LAW_NODES = audit_policy("law-nodes")[0]
 
 
 # A name may contain apostrophes; its closing quote precedes the report phrase.
