@@ -82,7 +82,6 @@ import Grothe.LowerAnalytic.CapCoord
 import Grothe.LowerAnalytic.CapCover
 import Grothe.LowerAnalytic.CapCoverDefs
 import Grothe.LowerAnalytic.CapCoverFast
-import Grothe.LowerAnalytic.CapExcluded
 import Grothe.LowerAnalytic.CapGrid
 import Grothe.LowerAnalytic.CapGridOK
 import Grothe.LowerAnalytic.CapGridT
@@ -99,8 +98,6 @@ import Grothe.LowerAnalytic.CapPieceDefs
 import Grothe.LowerAnalytic.CapPieceNodes
 import Grothe.LowerAnalytic.CapPieceNu
 import Grothe.LowerAnalytic.CapPieceRange
-import Grothe.LowerAnalytic.CapPieceRepair
-import Grothe.LowerAnalytic.CapPieceRepairDefs
 import Grothe.LowerAnalytic.CapPieces.C00x0
 import Grothe.LowerAnalytic.CapPieces.C00x12
 import Grothe.LowerAnalytic.CapPieces.C00x15

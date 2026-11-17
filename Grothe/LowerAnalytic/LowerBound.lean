@@ -34,7 +34,7 @@ theorem profile_bound (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤
     (hred : SharedReduction rowData V t Qh v) : V ≤ (envB : ℝ) := by
   obtain ⟨Ω, _, μ, _, U, X1, X2, X3, τ, x, hM, hSI, hτ0, hτ1, hX, hshared⟩ := hred
   have hS : SteinCut μ U := steinCut_of_inputs μ hM hSI
-  refine env_bound rowData massS envB envCells certEnvelope hv ht0 ht1 ?_
+  refine env_bound rowData massS envB envCells certEnvelope (Qh := Qh) hv ht0 ht1 ?_
   rintro (_ | k) m a h
   · cases h
     exact rowOf_massTangent hmass m v
@@ -51,7 +51,7 @@ theorem witnessCap_cert (hcaps : TailNodeCaps (nuHat (47 / 2000))) (n : ℕ) (hn
   refine witnessCap_of_VhatOf_le (m + 1) (by norm_num) fun f g hf hg _ => ?_
   obtain ⟨v, hv, hshared⟩ := reductionHyp_of_nodeCaps he hcaps (n := m) (by omega) f g hf hg
   exact profile_bound _ _ _ v hv (norm_nonneg _) (tOf_le (m + 1) hf hg)
-    (massRow_frame (by omega) he hν hf hg) hshared
+    (massRow_frame (m + 1) (by omega) he hν hf hg) hshared
 
 /-- **The lower bound, modulo the node caps**: `K ≥ 1/((1 − ν)envB + ν)` for every Grothendieck bound `K`, given the node
 caps `TailNodeCaps (nuHat (47/2000))` of the potentials of the rows with the tail of the witness. -/
