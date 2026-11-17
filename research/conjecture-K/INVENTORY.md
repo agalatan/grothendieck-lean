@@ -956,9 +956,8 @@ and 106), copied in the same way: one first line added to each document, and the
   `python3 -I lp_circle.py 3 7 9 11`). They have no logs.
 - **TCH3c, `omega3/README.md`.** claude-b9ee's re-derivation of Gemini's martingale–isoperimetric bound (17 November
   2026, 06:17), with the quadrature for h₃ in one variable in `code/third-chaos-2026-11-17/omega3/`
-  (`python3 -I h3_R.py`, numpy and scipy; its output is `h3_R.log`). Another worker will add a report and scripts to
-  the handoff folder later; this copy holds the three files that were there at 06:19, and the ledger cites none of the
-  later ones.
+  (`python3 -I h3_R.py`, numpy and scipy; its output is `h3_R.log`). These were the three files there at 06:19; the
+  worker's report, its files and the corrected `README.md` came with the third batch (next section).
 - **Logs.** The three logs of `runs_yo/` and `h3_R.log` are copied because the ledger cites them as records (STATUS
   3.8 and 3.21 (e)).
 - **Private paths.** The three folders were scanned as in the previous section: no path, link, e-mail address, IP
@@ -980,9 +979,158 @@ and 106), copied in the same way: one first line added to each document, and the
 | `code/third-chaos-2026-11-17/gemini-weak/checks/check3.py` | 1,426 B | `89f05b517f8e9b55bd8974a5bbee378d390996995e1dffaf58c3832dfdb7da5c` |
 | `code/third-chaos-2026-11-17/gemini-weak/checks/check4.py` | 853 B | `947129dc01bb94e257b684fb19bc4e6ecfceb0ce9a5628e25a4bd48842fab353` |
 | `code/third-chaos-2026-11-17/gemini-weak/checks/lp_circle.py` | 1,882 B | `c6766f68fdca54b6f4209e8fc3b65f395c845ca1bec02e17945ca1a79eed52d1` |
-| `sources/third-chaos-2026-11-17/omega3/README.md` | 1,281 B without its first line | `45c68c55a676d30856289845dcfd5f0b8cf68506ec24ed6462017567ec81f30e` |
+| `sources/third-chaos-2026-11-17/omega3/README.md` (the corrected version of the third batch) | 1,465 B without its first line | `0fdda6651030e36e660fd3c87f26d4df91dbe56733e9c6d4db83158e3be5029a` |
 | `code/third-chaos-2026-11-17/omega3/h3_R.py` | 1,683 B | `8cb120208cf54f57b862645920c2ccfa015bd0addf6809f3d9c38a112207b513` |
 | `code/third-chaos-2026-11-17/omega3/h3_R.log` | 201 B | `6a116f65d5385e624b49687cfb30b410d80d9aa3a51d122fe5ddc337ab62b8b0` |
+
+## The real third chaos, third batch: rank-one and slicing certificates, Gemini reviews, S², Ω₃ (17 November 2026)
+
+`sources/third-chaos-2026-11-17/` gains `rank1-cert/`, `slice-cert/`, `gemini-weak2/` and `s2-constant/` (tags TCH4a to
+TCH4d) and `omega3/REPORT.md` of TCH3c, whose `README.md` is replaced by its corrected version (STATUS 3.21 (e) and
+item 107). Each document has one added first line; the `.txt` prompt has none. `code/third-chaos-2026-11-17/` gains the
+scripts, logs and run times of the first four, in folders of the same names, and `omega3/work/` and
+`omega3/raw-logs/`. The originals are in `rank1-cert-2026-11-17/`, `slice-cert-2026-11-17/`, `gemini-weak2-2026-11-17/`,
+`s2-constant-2026-11-17/` and `omega3-2026-11-17/` under
+`/Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/`; every file there is copied or listed below.
+- **TCH4a, `rank1-cert/`.** `./run_all.sh <python>` (python-flint 0.9.0 and mpmath 1.3.0; under a minute, one core)
+  replays `c01_H.py` to `c04_Psi.py` (Arb) and `n01_floats.py` (floating point) and rewrites the logs, `env.log` and the
+  `*.time` files; every script ends with RESULT: ALL CHECKS PASSED. The worker ran it on the laptop and on the droplet,
+  with byte-identical logs (`env.log`, `env_yo.log`).
+- **TCH4b, `slice-cert/`.** `python3 -I harmonic_exact.py` (standard library, exact rationals),
+  `python3 -I radial_cert.py 1000` (Arb, about 35 s), `python3 -I lp_cert.py` (exact maxima over the restricted
+  patterns, and Arb; about 10 s), `python3 -I lp_scan.py` and `python3 -I sanity_checks.py` (floating point and Monte
+  Carlo). The first three were re-run in a second environment, with identical logs apart from timings.
+- **TCH4c, `gemini-weak2/`.** `REVIEW2.md` and `REVIEW3.md` record the second and third Gemini answers, which are not
+  kept; `checks/` holds four scripts (`python3 -I checks/<name>.py`), without logs. Not copied:
+  `CORRECTIONS_FOR_GEMINI.txt` (3,996 B, SHA-256 `83ed9b99d819e2911795ae976f8725915e7948e31f895b5e5d14c51e72a33319`),
+  a message to Gemini, not a source.
+- **TCH4d, `s2-constant/`.** `REVIEW.md` and the prompt it answers; the Gemini answer is not kept.
+  `python3 -I s2_check.py` (sympy identities, mpmath, a 4000 × 8000 grid on S²) and `python3 -I s2_search.py` (the
+  300-start search).
+- **TCH3c, `omega3/`.** `REPORT.md` is a research worker's report, saved by claude-b9ee. `work/` holds its 14 scripts,
+  the five batch scripts of its droplet runs, 27 tensor files `pert_*.npy` (192 to 344 B) with `tensor_list.txt`, and
+  four logs, three of them identical to those of its `logs/`, which is `raw-logs/` here (a folder named `logs/` is
+  ignored by git in this repository) and holds the 16 raw outputs. Not copied: `work/__pycache__/` (two byte-code
+  files, 13,903 B and 36,119 B).
+- **Logs and data.** The logs, run times and tensor files are copied because the documents cite them as their record;
+  none is above 300 KB.
+- **Private paths.** Scanned as before: besides the handoff paths, the droplet paths
+  `/home/agalatan/claude-b9ee-capslemma/venv/bin/python3` (a Python interpreter, in `rank1-cert/PROOF.md` §6,
+  `run_all.sh` and the omega3 batch scripts) and `~/claude-b9ee-omega3` (in those batch scripts). Nothing was changed.
+- **Not copied:** the `SHA256SUMS` files of `rank1-cert-2026-11-17/` (1,497 B), `slice-cert-2026-11-17/` (884 B),
+  `gemini-weak2-2026-11-17/` (488 B) and `s2-constant-2026-11-17/` (333 B): the copies were checked against them, and
+  since the documents moved to `sources/` with a first line added, their hashes are given in the table instead.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-2026-11-17/rank1-cert/PROOF.md` | 22,125 B without its first line | `647f01fef8131db5c97fd1bfc3bd18deec02f115a9f9c291debe322b80be5fe2` |
+| `sources/third-chaos-2026-11-17/slice-cert/PROOF.md` | 23,621 B without its first line | `ef0cd3293262fa33a8a3ead3834c2ae0609c8b84f85e64fd44bdd48f1c648ef2` |
+| `sources/third-chaos-2026-11-17/gemini-weak2/REVIEW2.md` | 4,839 B without its first line | `940b6daf134e78689fde37936fdfa032548fb84754b0f8050505abb7a2478e4b` |
+| `sources/third-chaos-2026-11-17/gemini-weak2/REVIEW3.md` | 2,105 B without its first line | `614d0c84ff7f96366464e43ab84df4d142688133b312d822dee42e4afd0487b1` |
+| `sources/third-chaos-2026-11-17/s2-constant/REVIEW.md` | 5,021 B without its first line | `86cb8ce5a578a91210726554cddbee79bf26ad931c89f409f5fd9190bc6fd72d` |
+| `sources/third-chaos-2026-11-17/omega3/REPORT.md` | 10,513 B without its first line | `23e23380988c41cb3189129c448c0b0f840d41b6b1d8ef1ad66153f326d09f41` |
+| `sources/third-chaos-2026-11-17/s2-constant/PROMPT_S2_CONSTANT_2026-11-17.txt` | 3,241 B | `ed47f61ceebec32b3813be5628ddb0df84b532abfb71431e01b4395c4ab40c4b` |
+| `code/third-chaos-2026-11-17/rank1-cert/c01_H.log` | 682 B | `f6b6b0240f408ac630c9db274865f9eedd2b7a38e0a7548c573ac88e1a68cee3` |
+| `code/third-chaos-2026-11-17/rank1-cert/c01_H.py` | 3,375 B | `a3e678c0e897e0c5f6272fd149cfb42d0947a98b144b9071b149b7860f8bbc17` |
+| `code/third-chaos-2026-11-17/rank1-cert/c01_H.time` | 29 B | `05c55b2eae492194568528c7e8159bfb9a9de67a619dbd30d68f4add84d2c883` |
+| `code/third-chaos-2026-11-17/rank1-cert/c02_D_grid.log` | 1,574 B | `c9cf2bf02fad9c57cfdcd3e608d30bb24e29f6fb9c554e75a47ba4d6a92da06c` |
+| `code/third-chaos-2026-11-17/rank1-cert/c02_D_grid.py` | 4,846 B | `682480084dc882323de2c0af6f31fb25d3c7be2b99612a542c0a156e228886f9` |
+| `code/third-chaos-2026-11-17/rank1-cert/c02_D_grid.time` | 29 B | `f8188b0495f6090d72a80eb21552960ee84c8a06f2bd27254638009d919acc84` |
+| `code/third-chaos-2026-11-17/rank1-cert/c03_D_near1.log` | 1,063 B | `fc40bcd4bf463ce194cc426d1ea383b9b44c2c9546a8c5cb0b776bcbab658413` |
+| `code/third-chaos-2026-11-17/rank1-cert/c03_D_near1.py` | 6,505 B | `7daa3afd13a22ecbfc807d1dac4de548dfbe22d2f4688a5065e24cf02c2ea566` |
+| `code/third-chaos-2026-11-17/rank1-cert/c03_D_near1.time` | 29 B | `1f00c70a85b25c45237e698754bbdddf8fd5ead47ffa49dd985ec51b93d2688a` |
+| `code/third-chaos-2026-11-17/rank1-cert/c04_Psi.log` | 1,772 B | `a4492bdbee674c60e64f22b156661f22da2c8b2d11404e80f848388c5d99a2f7` |
+| `code/third-chaos-2026-11-17/rank1-cert/c04_Psi.py` | 9,961 B | `5a4f0e5235a8b68f6d0662e72efb655a06bfa3f8fbb5b56335c6a49bbbc4995a` |
+| `code/third-chaos-2026-11-17/rank1-cert/c04_Psi.time` | 31 B | `87682326cab84bce01fe91481073d1c88d054b6c69bde57ff1b0aa89eedf898e` |
+| `code/third-chaos-2026-11-17/rank1-cert/env.log` | 82 B | `be5bc6c21519392f43a9e34ee6d6343c40b9c1bde0ecf742e294857d51c64dd7` |
+| `code/third-chaos-2026-11-17/rank1-cert/env_yo.log` | 92 B | `b196d83b27e4449891bc320a0e6effa08ee6210e8c96572b84391da4bc93d999` |
+| `code/third-chaos-2026-11-17/rank1-cert/n01_floats.log` | 3,548 B | `720bf8626ceeae8b9a2f170d18ee96e44c059ccee929a1e0f9cfe417603b5d1f` |
+| `code/third-chaos-2026-11-17/rank1-cert/n01_floats.py` | 3,658 B | `70f644d4b1fabb312ce52cf2a101b4d1d49d938afe42ddba986762dd8193e6e0` |
+| `code/third-chaos-2026-11-17/rank1-cert/n01_floats.time` | 29 B | `31834418a2e0a5630d9af0fbdaa24ac99caca76da5698f72a2e21a08303782fd` |
+| `code/third-chaos-2026-11-17/rank1-cert/run_all.sh` | 697 B | `bae52de89a81b99645be77991a0392e313c7de382de281e17bd837953957b54d` |
+| `code/third-chaos-2026-11-17/slice-cert/harmonic_exact.log` | 2,436 B | `459fd5ab896a7e4d7d10abfd5bf4bdf46413a040e372b842a6ce584d69e487dd` |
+| `code/third-chaos-2026-11-17/slice-cert/harmonic_exact.py` | 5,043 B | `4425b98280eaff8cfb8a3a2d907cc31359fdfc145be478ee75648bd18e41de29` |
+| `code/third-chaos-2026-11-17/slice-cert/lp_cert.log` | 4,805 B | `ac4525e6860b352d5089db2235b21ccecd9094e80e722b684ae963991422c7cf` |
+| `code/third-chaos-2026-11-17/slice-cert/lp_cert.py` | 7,999 B | `3e398861e12748ec9e41e96b33d1ae0f57d8c4a0075dc170a5ce990c98ca25d4` |
+| `code/third-chaos-2026-11-17/slice-cert/lp_scan.log` | 1,323 B | `ed256debc7206ce745b701bf33890f75282d504359f53e70f3b390cd20786c52` |
+| `code/third-chaos-2026-11-17/slice-cert/lp_scan.py` | 861 B | `92dc4b1fa6ea31ce42b39aa4ad6eb31f1e09b4dc4b10a9cc2643ac9cabe68a14` |
+| `code/third-chaos-2026-11-17/slice-cert/radial_cert.log` | 2,096 B | `5fe20a46568496e0136cdf837dbc9f553422ca7434f7dab7ff6d62eeedcd50e8` |
+| `code/third-chaos-2026-11-17/slice-cert/radial_cert.py` | 10,196 B | `ab622f63b926bd92e574a73b9101527f56bce477923f431fa71a8429f302f7ab` |
+| `code/third-chaos-2026-11-17/slice-cert/sanity_checks.log` | 2,725 B | `1cc10e70cdca10c8e9d0c39929876a00c05d29cbdfeed5d6c8e3bc008504db32` |
+| `code/third-chaos-2026-11-17/slice-cert/sanity_checks.py` | 6,586 B | `e913d50ff6fd59d5233b120ca06b05558f07616d65c123711e475ad54c35bd9c` |
+| `code/third-chaos-2026-11-17/gemini-weak2/checks/g134.py` | 3,854 B | `c837b0cf5e3af0aa73c3338a737a8d945938231cd27f35606e37a0ff99af6adf` |
+| `code/third-chaos-2026-11-17/gemini-weak2/checks/g5_lp.py` | 1,462 B | `ad9d27b35e24610aad6b72d0b4f8c475ee5666ce7145131dc82bdd7368bac848` |
+| `code/third-chaos-2026-11-17/gemini-weak2/checks/g_n9.py` | 1,126 B | `b9df2812c4233c177f934fb29fbcd50b77e93c686651c0b57e35d15327ca4b87` |
+| `code/third-chaos-2026-11-17/gemini-weak2/checks/lp_restricted.py` | 1,917 B | `4381276ce16e5f71ee5adc02c1db673ef0fbe5c4e16df79291c6c38ffd4a6499` |
+| `code/third-chaos-2026-11-17/s2-constant/s2_check.py` | 2,866 B | `f914ba35aaa761eb0ed0eb1e62c014e3baf2fdfa1876a626c5908743d2aef1a7` |
+| `code/third-chaos-2026-11-17/s2-constant/s2_search.py` | 1,603 B | `2060a253225e850842e2a0ae712273cff8cc1e128e740674e6c0b3affac17ea4` |
+| `code/third-chaos-2026-11-17/omega3/work/batch1.sh` | 760 B | `488f6eff9757acf0626f763588753219dd0fa2cd8a619b6779531ac5194a849b` |
+| `code/third-chaos-2026-11-17/omega3/work/batch2.sh` | 976 B | `f1412fc1d7e17ee04a90ba4930ddd3a7e7631d539779669c27e8db148b5e627d` |
+| `code/third-chaos-2026-11-17/omega3/work/batch3.sh` | 550 B | `547eef74417d112477424321bd65fa7d29b3ec8590fe0cf181ab365cf2da1d5e` |
+| `code/third-chaos-2026-11-17/omega3/work/batch5.sh` | 833 B | `6f0bf4196a3c823ab503dafb366b837b0bfc073dd891e5b4b80ad53281a8d7ef` |
+| `code/third-chaos-2026-11-17/omega3/work/batch6.sh` | 740 B | `5cbf011426eebefe6d6eb45593f0a43bff2d184de46b32fe652b4824681989e8` |
+| `code/third-chaos-2026-11-17/omega3/work/bath_grid.py` | 1,474 B | `ef5e6505a8f3363ad3c52aa612a696be7d0d7ffaa1f96a17d6c75ab70c16f7d1` |
+| `code/third-chaos-2026-11-17/omega3/work/bath_limit.py` | 4,936 B | `0bd143708b526c62529da990daf8da7098ac438f423817db84e14674198ec142` |
+| `code/third-chaos-2026-11-17/omega3/work/cg2.py` | 4,373 B | `794985797806a63068f08f3c263f3f34c874479cb33d396c703a5a7e1e2c0c52` |
+| `code/third-chaos-2026-11-17/omega3/work/det2d.py` | 6,472 B | `c2770db974a4535c5867eebcb45e2cb3b42936dd8e5f254768bc0c014cd1be26` |
+| `code/third-chaos-2026-11-17/omega3/work/eps_test.py` | 1,124 B | `b559ffe8243ced04e6b5ad3772f0868f24b96ad13dff2b436262296d34c4ad7a` |
+| `code/third-chaos-2026-11-17/omega3/work/h3_1d.log` | 2,321 B | `d178d7f8553b692136ee1eafe7dd1bca0e99599deb8e427acbc8c5abb4ea9043` |
+| `code/third-chaos-2026-11-17/omega3/work/h3_1d.log.head` | 1,358 B | `e5272f95a999a7fab0ecd30f32a24163ed8f615f2890dbe9cf846cc2a21bac8f` |
+| `code/third-chaos-2026-11-17/omega3/work/h3_1d.py` | 2,818 B | `6d87408d212826674fbf2c3225a5f7640f975d782ceecab4162c065ca5621c9b` |
+| `code/third-chaos-2026-11-17/omega3/work/make_tensors.py` | 1,406 B | `ff053643b5f7e99249fca69ba0d3a4e3c42dfbf38c19f8da0f40e0a7350a088b` |
+| `code/third-chaos-2026-11-17/omega3/work/near_h3_det2d.log` | 4,160 B | `150366248f592984763cb2b2c204a879bffd9abc968fa918fbfbd16c2856e46d` |
+| `code/third-chaos-2026-11-17/omega3/work/omega3lib.py` | 17,028 B | `d1a832e07924005d9a1561fd55a5f633da462f600eb865f9eee42b9d14af3f72` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_He2x1_x2_+0.10.npy` | 192 B | `911afa9f8de10a0f295130e184df1749e30ae192a6e3d1dc9073dcb7778be655` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_He2x1_x2_+0.20.npy` | 192 B | `65dff2c4cdafbf46cd9b963dab9578e775d8a3f99c9f01beb5c8fb85a8cc2c76` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_He2x1_x2_+0.35.npy` | 192 B | `c1e7567b75c82cf526ab2f92afda059a02b9265e5f75f80a9f26ecb4b20ef2d9` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_He2x1_x2_+0.50.npy` | 192 B | `3b9dfc7cb4b5a1cc75f13099674fed105e48884c920316bf2d2626bef8907be7` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_He2x1_x2_+0.80.npy` | 192 B | `e988ba88fe4ef8099447ac2d2ad753058fc789d137ad560fbfe5428001fb352e` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_h3_2_+0.20.npy` | 192 B | `e388f7c267fb43af2f73ef73c68f838d61675f98c4e2e58f49b4129fc54163ee` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_h3_2_+0.50.npy` | 192 B | `80b2934776da6d63063b870f1399699feda701d5f9becbcf8a9077b4deb5b1d0` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_+0.10.npy` | 192 B | `739924b44f643650ec72155996974a769689fb1bdfc35861c43e09c705c0f61c` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_+0.20.npy` | 192 B | `f5345e39e8e68f8da91b5a66c9cc438e971e8ed048639a8ed99c4564043f7607` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_+0.35.npy` | 192 B | `6fc8dc3446d8e7d92c26b3332ab08e97e109dae8bd16a3a1d9c998b7b2c585fc` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_+0.50.npy` | 192 B | `6ef1544162ecffc8ca84d112e5834903b92e2d2c9229ad9258429e81c2676bac` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_+0.80.npy` | 192 B | `79bddd933ce9c57f09465aa2a0f2338c4b792d1c8a2b86f50cdd1d80761eacd8` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_+1.20.npy` | 192 B | `34e200c49ff569098635fd13398700e1c9bce3687cb1747f923d7504cb19ed8e` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_+1.57.npy` | 192 B | `29e42430f0e7fecefb1b96f2f3729b7e4a9001abf04533a629bfb5d927772c46` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_-0.10.npy` | 192 B | `6475d39ff3364784b41dc9e841780fe9a0e857758908689016128eae347623db` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_-0.20.npy` | 192 B | `5e06ba0cc7a3b5341f818aa07d3d4c985bc0edaaba48b082a83371017960b6e1` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_-0.35.npy` | 192 B | `8e1ff0e7efd997f61946bfbc90e7b7732ce0a3011503d0196f37f124942b0753` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_-0.50.npy` | 192 B | `02a391cf9cc9e2f82d0532a6dffa8102bd6d29c7af0f0ea37cdd4f0cf20edb4d` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_-0.80.npy` | 192 B | `53dcba1c02a9dc3871ad259d89720e2ae24a9ee710c76c675d42d93ccbfec4cc` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_-1.20.npy` | 192 B | `cd421c6704f85e14124dc8f57492d3d4a9a3c6c7e797dc6743c0f22aa0cd7843` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_He2x3_+0.20.npy` | 344 B | `e08fe3b4e7c3c23370b1f88ae4cddc6741da2466ee29742a8ce55e1345d58fda` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_He2x3_+0.40.npy` | 344 B | `21e9b61974f668a39f3b3ba8cfc8180edb6e53eda703e39e7bad86b2d4837838` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_He2x3_-0.20.npy` | 344 B | `9118bd652a30a1796ec8e5b4e5a715c3f728d5309cf008e746c21f2e46472571` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_He2x3_-0.40.npy` | 344 B | `4c622cbc8ae8e4c8d0f863c52ddb037527648a4db73822a9e5ff454d67598571` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1_He2x2_mHe2x3_+0.30.npy` | 344 B | `2994656cf709a0204adbce90cf78ed02e5856a1fe40f8fdca884e3d2de96be2d` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1x2x3_+0.20.npy` | 344 B | `0eee9c353b776a840748c5f30966f1bf7d6a2dc0a8a40d0b123ec0fe9816c6a9` |
+| `code/third-chaos-2026-11-17/omega3/work/pert_x1x2x3_+0.50.npy` | 344 B | `14a5b8a86e9ff8b634abd4f81ebfc861ddfb0dcf16725da16a4811a1f39cc687` |
+| `code/third-chaos-2026-11-17/omega3/work/run_case.py` | 3,525 B | `71bbc1eb8ee91ace95b96da67f4f213788b39c719bc8eec9db20f8a66a572625` |
+| `code/third-chaos-2026-11-17/omega3/work/run_pair.py` | 3,813 B | `c8f256c2a279e65d0dcda5790cbb6a3dc0ab9d9b47def774020600edef746baa` |
+| `code/third-chaos-2026-11-17/omega3/work/scan2.py` | 1,644 B | `16b99fcd47a12a101bc35a3eb1fafe653a4dc2418dc59bb9d739d7e420278270` |
+| `code/third-chaos-2026-11-17/omega3/work/surface_screen.py` | 4,701 B | `0063e256507b7c250b54345d77f5b02d4bd0ff294c22eb2990bf8e566261e873` |
+| `code/third-chaos-2026-11-17/omega3/work/swapped_check.log` | 1,248 B | `d9643974f8d63c1d19e834e7782126d4e2edf133e81b1fc595298be415e6caa2` |
+| `code/third-chaos-2026-11-17/omega3/work/tensor_list.txt` | 559 B | `e4aa8f6c0d8ffc68637005849536181259eff029af5060f8083ada915fa11f13` |
+| `code/third-chaos-2026-11-17/omega3/work/test_rootmass.py` | 1,468 B | `c4f1aae46a17c26ed7c532b0d305a4ca4361e27cefd8d22df66c703052adb07d` |
+| `code/third-chaos-2026-11-17/omega3/work/val_F2.py` | 1,671 B | `9cbadc14413ac4438f5387035ca9416e269c1811a1a2bac3435496ed96e06b15` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch1.out` | 5,674 B | `c2885aac2e7afc19bd647888cf32a9b4afea936a77aff706dea38353e9d546a2` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch2.out` | 8,573 B | `b452eeb07cc3281b6eb870ad7fb9705a412787725867561dbc11eb39f698ca42` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch3.out` | 13,950 B | `bd976181a7ca3e7f1180631a29a9a5ca15bfcb26e45d7ba4053757602b3f214b` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch5.out` | 6,051 B | `1cf36166445e2eefc2bc57c532fb1888f309968a8e897e178ebf36a1b65cac09` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch6.out` | 2,022 B | `47bf796df92e7a2d2b70b9cd1e820da741f1c47800a9e9e5d3819e516d5b76cc` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/batch7.out` | 1,541 B | `b52ed0be66e9e1f730ec5faa2e701096ac6b512ef60e405f6a3dbe6cac2c8f6c` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/bath_grid2.out` | 8,432 B | `f3838235f8d6e902a668a262eb7b808c5564781c1a24a16d80b4d1461a0c304a` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/bath_grid_part1.out` | 10,548 B | `137919ab5b67d4c2051d39a0116b0d34e4a89fa441a899d470059d0bfb43aca5` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/eps_test.log` | 3,078 B | `ccdb84a2ed570ee651ad34e020bace4df50674012f461bb4f2579f281a8f02d9` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/h3_1d.log` | 2,321 B | `d178d7f8553b692136ee1eafe7dd1bca0e99599deb8e427acbc8c5abb4ea9043` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/near_h3_det2d.log` | 4,160 B | `150366248f592984763cb2b2c204a879bffd9abc968fa918fbfbd16c2856e46d` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2_part1.out` | 14,560 B | `3be6adc84acf2fdfe02999deea4d147c101e3214c4c140a10b61dd75733ed4f8` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2b_0.out` | 5,249 B | `ff5ba8aa785447a128679e15013cfb1d0e79495718c4a6a80282048997c11f66` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/scan2b_1.out` | 5,247 B | `09b4321e1ccd052a8b80a6829b53c6934835a242786c8098e22d583931e12847` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/surface_screen.log` | 6,784 B | `83b50dcb97dcaf6d20e856948d5a8d9fa636bb59c749752a166264aa22bfd8ce` |
+| `code/third-chaos-2026-11-17/omega3/raw-logs/swapped_check.log` | 1,248 B | `d9643974f8d63c1d19e834e7782126d4e2edf133e81b1fc595298be415e6caa2` |
 
 ## Codex-a786: phase symmetry and content (16 November 2026)
 

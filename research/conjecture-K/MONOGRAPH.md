@@ -335,23 +335,29 @@ At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over
 in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4), which D₁ therefore settles at p = 1
 [P · 3.8]. With a first-chaos part the bound is proved when the second-chaos part has a spectrum symmetric about 0
 [P + C author only · 3.21 (e5)]. In real third chaos the same bound would give the sharp radius by phase averaging.
-It is open in general and proved on these classes:
-reflection-odd and conditionally Gaussian cubics, cubics in at most seven real coordinates, κ₄ ≥ 74 and very small
-κ₄ [P author only, certificates replayed · 3.21 (e1)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
-inequality [P + C author only · 3.21 (e2)]; harmonic cubics in at most eleven coordinates, and the normalised
-elementary symmetric cubic e₃ in any number of variables [P author only · 3.21 (e3), (e4)]; four-partite cubics and,
-in the chaos of every order d ≥ 2, the (d + 1)-partite elements [P + C author only · 3.21 (e5)]; and the limit
-family a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard
+It is open in general and proved on these classes: reflection-odd and conditionally Gaussian cubics, cubics in at most
+seven real coordinates, κ₄ ≥ 74 and very small κ₄ [P author only, certificates replayed · 3.21 (e1)]; by slicing along
+great circles with a weighted circle lemma, the whole third chaos in at most eight coordinates and harmonic cubics in
+at most twelve [P + C author only · 3.21 (e3)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
+inequality [P + C author only · 3.21 (e2)]; the normalised elementary symmetric cubic e₃ in any number of variables
+[P author only · 3.21 (e4)]; every h whose correlation with some He₃(⟨v, X⟩)/√6 is at least 0.8339 at a maximising
+direction (0.8362 for any direction), and hence every h with κ₄ ≥ 73.6 [P + C author only · 3.21 (e4)]; four-partite
+cubics and, in the chaos of every order d ≥ 2, the (d + 1)-partite elements [P + C author only · 3.21 (e5)]; and the
+limit family a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard
 Gaussians; equality only when a = b = 0), also with any independent Gaussian scale mixture added
 [P + C author only · 3.21 (e6)]. On conditionally Gaussian cubics even the smoothing sign of 3.21 (d) holds
-[P · 3.21 (e7)]. Without restriction E|h| ≤ 0.8907‖h‖₂ in every dimension, the best that rotations on a Gaussian
-circle give [P; the optimality N · 3.21 (e9)], and the sharp bound holds as soon as h correlates more than 0.8362
-with some He₃(⟨v, X⟩)/√6 [P + N · 3.21 (e4)]. Moments, hypercontractivity and the cumulant bounds cannot give even
-the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace and small-ball comparisons are
-false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 itself is proved, beyond the classes above, for a
-correlation above 0.7964 and in at most ten coordinates [P + N · 3.21 (e9)], and for κ₄ ≤ 0.0268
-[P author only · 3.21 (e9)]. The largest ratio E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates
-[N · 3.21 (e8)].
+[P · 3.21 (e7)]. Another sufficient condition is Ω₃, a covariance inequality between Γ and a weight concentrated near
+the nodal set, which comes from a martingale–isoperimetric bound; it holds numerically on about 200 cubics, but no
+mechanism for it is known where the sharp bound is open [P; N · 3.21 (e10)]. Without restriction, E|h| ≤ 0.8872‖h‖₂ in
+every dimension, by rotations on a Gaussian circle restricted to the at most three sign changes per half-turn of a
+cubic; such rotations cannot reach √0.68 [P + C author only; N · 3.21 (e9)]. Moments, hypercontractivity and the
+cumulant bounds cannot give even the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace
+and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 itself is proved, beyond
+the classes above, for a correlation of at least 0.7931, for κ₄ ≥ 70.5, in at most eleven coordinates and for harmonic
+cubics in at most fifteen [P + C author only · 3.21 (e9)], and for κ₄ ≤ 0.0268 [P author only · 3.21 (e9)]. On the
+2-sphere the L¹/L² constant of odd cubics is conjectured to be √55/8 = 0.9270, attained by the hemisphere: it is
+proved for zonal sign patterns, and the hemisphere is a strict local maximum [P · 3.21 (e3)]. The largest ratio
+E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates [N · 3.21 (e8)].
 
 **A weighted interpolation target.** Put F=√(2/u)Re q and Γ=‖DF‖²/3. For the visible
 mixture L =_law √V W, the scalar Stein reduction gives the exact deficit formula
@@ -1163,7 +1169,7 @@ section 13), where every source is listed.
 - **69. The total response energy is below 0.072.** It needs t ≥ 0.8456; at t ≥ 0.84 the cap is 0.080051, and a
   response at t = 0 has energy above 0.09 [P + C].
 
-The ledger lists the remaining items (2, 3, 7, 8, 46, 59, 96, 97, 102, 104–106) and, in its section 14, the routes
+The ledger lists the remaining items (2, 3, 7, 8, 46, 59, 96, 97, 102, 104–107) and, in its section 14, the routes
 that do not work: the fourth-moment envelopes (their refinements move the cutoff w ≈ 0.0112 by about 10⁻⁴),
 leading-order and Taylor control of the content (finite amplitude is essential), buffer insertion by Jensen, proofs
 from the law of the residual alone, the fixed moment bank for the augmented remote certificate, the saved dual bank

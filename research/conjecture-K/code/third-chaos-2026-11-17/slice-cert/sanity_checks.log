@@ -1,0 +1,33 @@
+1. tau_3(n) = (n+2)/(4(n-1)): Monte Carlo ratio E[e3]/E[e1+e3] for random harmonic cubics
+   n= 2  MC 1.00000  formula 1.00000
+   n= 3  MC 0.62664  formula 0.62500
+   n= 5  MC 0.43781  formula 0.43750
+   n= 8  MC 0.35702  formula 0.35714
+   n=12  MC 0.31889  formula 0.31818
+   x1 x2 x3: E prod_j (U_j^2 + V_j^2) vs 8/((n-1) n (n+4)):
+   n=3  MC 1.904664e-01  formula 1.904762e-01
+   n=5  MC 4.440787e-02  formula 4.444444e-02
+   n=9  MC 8.532346e-03  formula 8.547009e-03
+2. cross term E_circle <L, Y>_circle = E_Theta[L Y] = 0 (L linear, Y harmonic cubic), relative to sqrt(E L^2 E Y^2)
+   n=3  MC -1.39e-03 (std error ~ 3.2e-03)
+   n=6  MC 2.19e-04 (std error ~ 3.2e-03)
+3. weighted circle lemma: max over random g of mean|g|^2 / ((8/pi^2)(1 + 1/(9 gamma))(e1 + gamma e3))
+   gamma = 0.8500  max ratio 1.04046263  (> 1: the lemma fails below 8/9, e.g. g = sin 3 phi)
+   gamma = 0.8889  max ratio 1.00000020  (= 1 up to quadrature error: equality at g = sin 3 phi for gamma = 8/9, at sin + sin 3/3 for gamma = 1)
+   gamma = 1.0000  max ratio 1.00000035  (= 1 up to quadrature error: equality at g = sin 3 phi for gamma = 8/9, at sin + sin 3/3 for gamma = 1)
+   gamma = 1.5000  max ratio 0.99999494  
+   gamma = 3.0000  max ratio 0.99996653  
+   gamma = 10.0000  max ratio 0.99991561  
+   per-radius optimum vs the plain constant 4 sqrt5/(3 pi): (2 sqrt2/pi)(sqrt e1 + sqrt e3/3) <= (4 sqrt5/(3 pi)) sqrt(e1 + e3): True
+4. three-cut patterns: 1 - |w3|^2 = -(1 - |w1|^2) P(a,b,c), P = prod (1 + 2 cos a_j), a + b + c = pi; max P = 8
+   identity max error 8.9e-15;  1 - |w1|^2 >= 0: True;  max P on the sample 7.999916 (equilateral: 8)
+5. radius-R check of A(R), B(R) and E_circle mean|g| <= Psi(A, B) for a random F in V_3(n)
+   n=5 R=1.500: E e1 MC 0.3016 formula 0.3023 | E e3 MC 0.0094 formula 0.0095 | E mean|g| 0.4496 <= Psi 0.5242
+   n=5 R=2.646: E e1 MC 0.3706 formula 0.3675 | E e3 MC 0.2844 formula 0.2858 | E mean|g| 0.6624 <= Psi 0.7529
+   n=5 R=4.000: E e1 MC 11.7472 formula 11.7943 | E e3 MC 3.3958 formula 3.4133 | E mean|g| 3.2180 <= Psi 3.6772
+   n=8 R=1.500: E e1 MC 0.3838 formula 0.3843 | E e3 MC 0.0023 formula 0.0023 | E mean|g| 0.5126 <= Psi 0.5726
+   n=8 R=3.162: E e1 MC 0.3704 formula 0.3683 | E e3 MC 0.2039 formula 0.2046 | E mean|g| 0.6014 <= Psi 0.7083
+   n=8 R=4.000: E e1 MC 3.1244 formula 3.1286 | E e3 MC 0.8352 formula 0.8381 | E mean|g| 1.5555 <= Psi 1.8794
+6. restriction: sampled circle sign sequences of F in V_3(n) have 1 or 3 sign changes per half-turn (N = 61)
+   n=4: counts of sign changes over 20000 circles: {np.int64(1): np.int64(13474), np.int64(3): np.int64(6526)}
+   n=9: counts of sign changes over 20000 circles: {np.int64(1): np.int64(12650), np.int64(3): np.int64(7350)}

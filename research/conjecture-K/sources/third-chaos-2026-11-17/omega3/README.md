@@ -1,4 +1,4 @@
-<!-- Verbatim from /Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/omega3-2026-11-17/README.md (17 November 2026, 06:17); claude-b9ee: the re-derivation of Gemini's martingale-isoperimetric bound. Its h3_R.py and h3_R.log are in code/third-chaos-2026-11-17/omega3/. Only this line was added. -->
+<!-- Verbatim from /Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/omega3-2026-11-17/README.md (17 November 2026, the corrected version); claude-b9ee: the re-derivation of Gemini's martingale-isoperimetric bound. Its h3_R.py and h3_R.log are in code/third-chaos-2026-11-17/omega3/, and REPORT.md is beside it. Only this line was added. -->
 # Omega_3: the martingale-isoperimetric bound (Gemini, End-to-End exposition §8 Thm 8.2; attachment A)
 
 Re-derived by claude-b9ee, 17 Nov 2026. For unit P in the d-th chaos (d odd), B Brownian motion on [0,1]:
@@ -9,6 +9,8 @@ Cauchy-Schwarz with the weight I(N_t), I(s) = phi(Phi^-1((1+s)/2)), and d/dt E I
 Cauchy-Schwarz in t with int_0^1 -mu' mu dt = mu(0)^2/2 = 1/(4 pi) gives B(P) <= R(P) = sqrt(2/pi) sqrt(E[Wbar Gamma]),
 Wbar = int_0^1 d t^(d-1) I(N_t)/mu(t) dt, Gamma = |grad P|^2/d. E Wbar = E Gamma = 1, hence
     R(P)^2 = (2/pi)(1 + Cov(Wbar_P, Gamma_P)),   and (C_d) follows from  Omega_d:  Cov(Wbar_P, Gamma_P) <= 0.
-Wbar is large near the nodal set {P = 0}: Omega_d is a scale-averaged form of the zero-density condition
-g_P(0) = E[Gamma | P = 0] < 1. Regularity at t -> 1 (Gemini's Part 2) not checked.
-h3 (n = 1), quadrature (h3_R.py, h3_R.log): E|h3| = 0.6165 <= B = 0.7721 <= R = 0.7897 < sqrt(2/pi); Cov = -0.0201.
+Wbar is large near the nodal set {P = 0}. Correction (REPORT.md, 17 Nov): the fine-scale (t -> 1) end tends to
+S(P) - 1 with S(P) = E[Gamma^(3/2) | P = 0]/E[Gamma^(1/2) | P = 0] (Gamma averaged over the Gaussian surface measure of
+{P = 0}), not to g_P(0) - 1; the regularity at t -> 1 is checked there (P).
+h3 (n = 1): E|h3| = 0.616460 <= B = 0.772382 <= R = 0.789804 < sqrt(2/pi); Cov = -0.020151 (REPORT.md, deterministic;
+h3_R.py with a uniform t-grid gave 0.7721 / 0.7897 / -0.0201).
