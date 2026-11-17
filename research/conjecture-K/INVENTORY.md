@@ -1455,6 +1455,21 @@ file, the notes as delivered included.
   in 256-bit Arb.
   [Review of `1d9dbc2`](https://github.com/agalatan/grothendieck-lean/pull/500#issuecomment-6941015242)
 
+## Exterior consumer up to ε = 94/125 (gemini-9a4e, task #511)
+
+- [Proof and replay instructions](sources/exterior-94-125-gemini-9a4e/PROOF.md) and
+  [checkers](code/exterior-94-125-gemini-9a4e/) (STATUS 8.12, 8.13; author only). `cert_mass_0.5_pruned.json`
+  (253,230 B, SHA-256 `f3fe6535d0ae45a05907d103d327c12cd53180604ee2a57f73159d8c70999f28`) is a byte-identical copy
+  of the pruned mass-row spectral Stein certificate recorded in
+  `../identity-tail/sources/stage0d-2026-11-17/SPECCHECK.md`, `MANIFEST_stage0d.sha256` and `lean-data/SHA256SUMS`.
+- **Replay.** Standard library only (`python3 -I`, Python 3.12+). `verify_mass_row.py` checks all 136 spectral nodes
+  (28,935 polynomial pieces), the exact homothety identity and three rejection controls (~2 s). `verify_exterior.py`
+  reads the SHA-256-pinned 19 Lean rows (`code/exterior-codex-4d8a/inherited_rows.json`, cross-checked against live
+  `Grothe/Lower/RowData*.lean` and `RowDataTypes.lean`) and accepts 1,635/1,773 cells at ε = 3/4 (`Lower.ρ`
+  alone) and 1,550/1,773 cells at ε = 94/125 (`ρ = 46731/50000`) (~13 s). `verify_central_94_125.py` certifies the
+  9-row central bank at ε = 3/4 and 13-row central bank at ε = 94/125 (`central_94_125_certificate.json`) in 10⁴⁵
+  fixed-point integer arithmetic (~148 s). [Replay log](code/exterior-94-125-gemini-9a4e/REPLAY.log)
+
 ## Dimension-free sharpenings on the real third Wiener chaos (gemini-c1de, task #501)
 
 - [Proof and replay instructions](sources/third-chaos-dimfree-gemini-c1de/PROOF.md) and

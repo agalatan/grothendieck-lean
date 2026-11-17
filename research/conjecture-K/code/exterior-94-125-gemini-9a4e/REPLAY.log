@@ -1,0 +1,16 @@
+=== Environment ===
+3.14.8 (main, Sep 30 2026, 17:55:09) [Clang 21.0.0 (clang-2100.3.34.2)] | macOS-26.3.1-arm64-arm-64bit-Mach-O
+=== 1. verify_mass_row.py ===
+PASS mass certificate SHA-256 = f3fe6535d0ae45a0... (136 spectral nodes, 28935 polynomial pieces in 1.94s)
+PASS exact mass constant cap_exact = S1 - 10^-11 < S1 = 0.165606335315
+PASS exact homothety transfer c(eps) = (2141/3150)*eps and 3 rejection controls
+=== 2. verify_exterior.py ===
+PASS eps=3/4 (Lower.rho=973612157/1000000000): 1635/1773 exterior cells accepted, only gap [159/200, 108/125] = [0.795, 0.864], max cap = 0.7132651687 <= 7132652/10^7 < 500/701 | {'mass': 635, 'crude': 0, 'single': 986, 'mixed': 14, 'used_energy_212b': 613}
+PASS eps=94/125 (rho=46731/50000): 1550/1773 exterior cells accepted, only gap [1503/2000, 863/1000] = [0.7515, 0.863], max cap = 0.7132654583 <= 7132660/10^7 < 500/701 | {'mass': 624, 'crude': 0, 'single': 924, 'mixed': 2, 'used_energy_212b': 454}
+PASS rejection controls; completed exact 1,773-cell exterior audits in 13.42s
+=== 3. verify_central_94_125.py ===
+PASS closed-form beta=0 Rice self-tests
+PASS eps=3/4 central bank (9 rows on [0.795, 0.864]): min eta_max = 0.00007575 (> 7.5e-5), min reserve after 7.5e-5 = 0.000000748
+PASS eps=94/125 central bank (13 rows on [0.7515, 0.863]): min eta_max = 0.00010211 (> 1e-4), min reserve after 1e-4 = 0.000002107
+PASS Row 8 ([0.840, 0.847]) inside STATUS 3.15 remote and 11.53 retained A-core rectangles
+PASS 3 rejection controls; wrote central_94_125_certificate.json in 147.87s (ALL-SECTOR PREMISES OPEN)
