@@ -133,50 +133,50 @@
     {
       "u_min": "1/100",
       "K_A_enclosure": [
-        "7.162759847594572",
-        "7.162759847594573"
+        "7.153589673218030",
+        "7.153589673218031"
       ],
-      "certified_upper": "1433/200"
+      "certified_upper": "3577/500"
     },
     {
       "u_min": "1/50",
       "K_A_enclosure": [
-        "6.163547499580859",
-        "6.163547499580860"
+        "6.116744353333771",
+        "6.116744353333772"
       ],
-      "certified_upper": "617/100"
+      "certified_upper": "6117/1000"
     },
     {
       "u_min": "3/100",
       "K_A_enclosure": [
-        "5.426965999667682",
-        "5.426965999667683"
+        "5.322698405887722",
+        "5.322698405887723"
       ],
-      "certified_upper": "543/100"
+      "certified_upper": "5323/1000"
     },
     {
       "u_min": "7/200",
       "K_A_enclosure": [
-        "5.131153810752536",
-        "5.131153810752537"
+        "4.994600993636170",
+        "4.994600993636171"
       ],
-      "certified_upper": "257/50"
+      "certified_upper": "5"
     },
     {
       "u_min": "1/25",
       "K_A_enclosure": [
-        "4.872220143379042",
-        "4.872220143379043"
+        "4.707387969041720",
+        "4.707387969041721"
       ],
-      "certified_upper": "122/25"
+      "certified_upper": "471/100"
     },
     {
       "u_min": "11/250",
       "K_A_enclosure": [
-        "4.688813292756376",
-        "4.688813292756377"
+        "4.492244102093882",
+        "4.492244102093883"
       ],
-      "certified_upper": "469/100"
+      "certified_upper": "9/2"
     }
   ],
   "peak_low_influence_C_inf": [
@@ -185,7 +185,9 @@
   ],
   "peak_low_influence_certified_upper": "507/100",
   "peak_low_influence_raw_core_tau_threshold": "1/455",
+  "peak_low_influence_implied_chi_max": "10/91",
   "covers_and_corollaries": {
+    "v2_at_zero_certified_upper": "1673/1000",
     "zero_dual_raw_core_chi_max": "9/100",
     "zero_dual_raw_core_margin": "200428660081/50000000000000000",
     "pure_python_S_lower_at_v0_floor15": "1.373953503240499",
@@ -196,10 +198,10 @@
       ],
       "domain_chi": [
         "0",
-        "2209/10000"
+        "1/4"
       ],
-      "box_count": 72,
-      "strict_margin_floor15": "0.000000339234255"
+      "box_count": 101,
+      "strict_margin_floor15": "0.000000266568403"
     },
     "cover_A2_raw_core_u_le_002": {
       "domain_u": [
@@ -208,10 +210,10 @@
       ],
       "domain_chi": [
         "0",
-        "729/400"
+        "49/25"
       ],
-      "box_count": 2,
-      "strict_margin_floor15": "0.000017961413761"
+      "box_count": 4,
+      "strict_margin_floor15": "0.000066201000296"
     },
     "cover_B_signed_deficit_1e6": {
       "claim": "C_A(q)^2 <= (6/25) D(q) + 1/1000000 (signed D)",
@@ -221,28 +223,61 @@
       ],
       "domain_chi": [
         "0",
-        "1/16"
+        "841/10000"
       ],
       "box_count": 55,
-      "min_stein_margin_floor15": "0.000000153789805"
+      "min_stein_margin_floor15": "0.000000174045811"
     },
     "cover_C_exact_deficit_zero_slack": {
       "claim": "C_A(q)^2 <= (6/25) D(q) (exact zero slack)",
       "analytic_near_gaussian": "(0, 463/10000] x [0, 1/10000] via 3.19",
       "analytic_low_energy_all_shapes": "[0, 1/4000] x [0, 42] via 3.19",
-      "continuum_domain_u": [
+      "maclaurin_domain_u": [
         "1/4000",
+        "3/250"
+      ],
+      "maclaurin_domain_chi": [
+        "1/64",
+        "49/625"
+      ],
+      "maclaurin_box_count": 1,
+      "stein_domain_u": [
+        "3/250",
         "463/10000"
       ],
-      "continuum_domain_chi": [
-        "1/64",
-        "1/16"
+      "stein_domain_chi": [
+        "49/10000",
+        "49/625"
       ],
-      "continuum_box_count": 55,
-      "min_stein_margin_floor15": "0.000000275580315"
+      "stein_box_count": 54,
+      "min_stein_margin_floor15": "0.000000074213627"
+    },
+    "cover_D_strict_deficit_positivity": {
+      "claim": "D(q) > 0 (strict peak remote deficit positivity)",
+      "analytic_complement_319": "(0, 463/10000] x (0, 1/5000] and (0, 1/4000] x (0, 42] via 3.19",
+      "maclaurin_domain_u": [
+        "1/4000",
+        "3/250"
+      ],
+      "maclaurin_domain_chi": [
+        "1/64",
+        "49/100"
+      ],
+      "maclaurin_box_count": 1,
+      "maclaurin_min_margin_floor15": "0.000000000812386",
+      "stein_domain_u": [
+        "3/250",
+        "463/10000"
+      ],
+      "stein_domain_chi": [
+        "49/10000",
+        "49/100"
+      ],
+      "stein_box_count": 74,
+      "min_stein_margin_floor15": "0.000000214115522"
     },
     "stein_duals_verified": 79
   },
   "negative_controls_passed": 5,
-  "elapsed_seconds": 4.1
+  "elapsed_seconds": 4.511
 }

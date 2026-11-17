@@ -11,44 +11,59 @@ acceptance. Assertions must be enabled (running with `-O` raises RuntimeError).
 
 What this script certifies:
   1. Outward 220-bit dyadic rational enclosures of the endpoint Laplace moments
-     M_j^A, M_j^B at the peak, flank, and upper rows, proving the sharp
-     universal O(delta^{3/2}) bounds:
+     M_j^A, M_j^B at the peak, flank, and upper rows, proving the universal
+     O(delta^{3/2}) bounds (where the exponent 3/2 is attained; see 6.3.12):
        - Peak:  K_A(0) < 5353/625 = 8.5648, K_B(0) < 9801/5000 = 1.9602,
                 K_{A - sqrt(2)B}(0) < 9/10 = 0.90;
        - Flank: K_A(0) < 427/50 = 8.54,     K_B(0) < 77/40 = 1.925;
        - Upper: K_A(0) < 1493/200 = 7.465,  K_B(0) < 167/100 = 1.67.
-  2. Algebraic Radau-Hermite polynomial upper bounds Q_2(y) >= (1 + y)^{-5/2}
-     for all y >= 0 (verified via Q_2(y) > 0 and Q_2(y)^2 (1 + y)^5 - 1 >= 0
-     in exact Fraction arithmetic), certifying energy-smoothed constants
-     K_A(u) on [0.01, 0.0463] down to K_A(0.044) < 469/100 = 4.69.
+  2. Algebraic degree-4 Radau-Hermite polynomial upper bounds
+     Q_4(y) >= (1 + y)^{-5/2} for all y >= 0 (verified via Q_4(y) > 0 and
+     Q_4(y)^2 (1 + y)^5 - 1 = y (y - y_1)^2 (y - y_2)^2 R_10(y) >= 0 in exact
+     Fraction arithmetic), certifying energy-smoothed constants K_A(u) at the
+     peak row:
+       u >= 1/100: 3577/500 = 7.154,   u >= 1/50:  6117/1000 = 6.117,
+       u >= 3/100: 5323/1000 = 5.323,  u >= 7/200: 5,
+       u >= 1/25:  471/100 = 4.71,     u >= 11/250: 9/2 = 4.50.
   3. Universal linear-in-delta raw A-content bound gamma_univ^A = 32/(225 pi a^4)
      < 58/125 = 0.464 at the peak row, and algebraic Bernstein proof of
      (1 - (1 - t)e^{-t})^2 < (26/25) t for all t > 0, certifying the
-     low-influence raw content bound C_A(q)^2 <= (507/100) u^2 tau_max(q) across
-     all chi in [0, 42] (closing the raw A-core on [0, 0.0463] x [0, 42] for
-     tau_max(q) <= 1/455).
+     low-influence raw content bound C_A(q)^2 <= (507/100) u^2 tau_max(q).
+     Because every remote (2,1)-cubic satisfies delta <= 50 u^2 tau_max(q)
+     (so chi <= 50 tau_max(q)), tau_max(q) <= 1/455 implies chi <= 10/91 < 1/4
+     (inside Cover A1) and closes the raw A-core directly from 3.3 + 3.14 + 6.2.1
+     without Stein duals.
   4. Analytical consequences with zero new duals:
-       - Closing open row 6.1.5 (chi <= 0.05) and all 0 <= chi <= 9/100 = 0.09
-         on 0 <= u <= 463/10000 from 3.3 + 3.14 + 6.2.1 + K_A(0) < 5353/625;
+       - Closing row 6.1.5 (chi <= 0.05) and all 0 <= chi <= 9/100 = 0.09 on
+         0 <= u <= 463/10000 from 3.3 + 3.14 + 6.2.1 + K_A(0) < 5353/625;
        - Exact zero-slack C_A(q)^2 <= (4/125) D(q) < (6/25) D(q) on
-         (0, 463/10000] x [0, 10^{-4}] and C_A(q)^2 <= (2/25) D(q) < (6/25) D(q)
+         (0, 463/10000] x [0, 1/10000] and C_A(q)^2 <= (2/25) D(q) < (6/25) D(q)
          for all shapes chi in [0, 42] on [0, 1/4000] (from 3.19 + K_A(0)).
   5. Fresh pure-Python algebraic Radau-Hermite lower bounds L_8(y) <= sqrt(1 + y)
      for all y >= 0, certifying the Gaussian Rice benchmark B_lo(u) <= B(u) at
-     all 55 energy nodes without Bessel functions or external libraries, plus
-     closed-form Stieltjes-Maclaurin deficit bounds on [0, 3/200].
+     all 55 energy nodes without Bessel functions or external libraries,
+     self-contained verification of -V''(0) < 1673/1000 (giving
+     |V''(s)| <= -V''(0) < 1673/1000 for all s >= 0 by complete monotonicity 2.7),
+     and closed-form Stieltjes-Maclaurin deficit bounds on [0, 3/200].
   6. Complete exact continuum covers (gap-free rectangle partitions, exact
      half-line polynomial verification against SHA-256-pinned profile-caps.json
      and moment-boxes.json):
        - Cover A1: Lambda(q) + (25/6) C_A(q)^2 < S_lo + 10^{-4} on
-                   [0, 463/10000] x [0, 11/50] (all 0 <= chi <= 0.22);
+                   [0, 463/10000] x [0, 1/4] (all 0 <= chi <= 0.25);
        - Cover A2: Lambda(q) + (25/6) C_A(q)^2 < S_lo + 10^{-4} on
-                   [0, 1/50] x [0, 9/5] (all 0 <= chi <= 1.80 for u <= 0.02);
+                   [0, 1/50] x [0, 49/25] (all 0 <= chi <= 1.96 for u <= 0.02);
        - Cover B:  Signed C_A(q)^2 <= (6/25) D(q) + 10^{-6} on
-                   [0, 463/10000] x [0, 3/50] (all 0 <= chi <= 0.06, implying
-                   Lambda(q + (T-1)U) < S + 4.17e-6 without 3.3);
+                   [0, 463/10000] x [0, 841/10000] (all 0 <= chi <= 0.0841,
+                   implying Lambda(q + (T-1)U) < S + 4.17e-6 without 3.3);
        - Cover C:  Exact zero-slack C_A(q)^2 <= (6/25) D(q) on
-                   [1/4000, 463/10000] x [1/64, 1/16] (0.015625 <= chi <= 0.0625).
+                   [1/4000, 3/250] x [1/64, 49/625] and
+                   [3/250, 463/10000] x [49/10000, 49/625]
+                   (leaving only the near-Gaussian gap (1/10000, 1/64) on
+                   (1/4000, 3/250] and (1/10000, 49/10000) on [3/250, 463/10000]
+                   below 49/625 = 0.0784);
+       - Cover D:  Strict peak remote deficit positivity D(q) > 0 on
+                   [1/4000, 3/250] x [1/64, 49/100] and
+                   [3/250, 463/10000] x [49/10000, 49/100] (complementing 3.19).
   7. Five negative/rejection self-tests verifying that perturbed duals,
      perturbed Radau polynomials, partition gaps, and over-tight bounds fail.
 """
@@ -80,6 +95,7 @@ C6 = Q(4045313, 100000)
 KAPPA = Q(6, 25)
 S_LOWER_314 = Q('1.3739535256614')
 REMOTE_CAP_33 = Q(1373953883, 10**9)
+V2_BOUND = Q(1673, 1000)  # Certified upper bound on -V''(0) >= |V''(s)| for all s >= 0
 
 # ============================================================================
 # 1. Outward 220-bit Dyadic Rational Interval Arithmetic
@@ -187,7 +203,7 @@ def j0_integral(a, b):
     return exp_positive(r) * (PI / (b * Interval(r).sqrt()) - 2 * SQRT_PI * erf_series / b)
 
 
-def single_pole_integrals(a, b, n=24):
+def single_pole_integrals(a, b, n=26):
     """Enclose I_k = int_0^inf exp(-x^2) / (a + b x^2)^k dx for k = 0..n."""
     a, b = Q(a), Q(b)
     out = [SQRT_PI / 2, j0_integral(a, b) / 2]
@@ -362,28 +378,46 @@ def weighted_integral(terms, a, ia, ib):
 # ============================================================================
 # 4. Theorem 1 & 2 Verification: O(delta^{3/2}), K_A(u), O(delta), Low-Influence
 # ============================================================================
-def certify_radau_q2(root_ratio):
-    """Construct and algebraically certify Q_2(y) >= (1 + y)^{-5/2} for all y >= 0
-    where 1 + y_1 = root_ratio^2 (exact rational square)."""
-    r = Q(root_ratio)
-    assert r > 1
-    y1 = r * r - 1
-    inv_r = Q(1) / r
-    f1 = inv_r**5
-    df1 = Q(-5, 2) * (inv_r**7)
-    c2 = (1 - f1 + y1 * df1) / (y1 * y1)
-    a0 = Q(1)
-    a1 = df1 - 2 * y1 * c2
-    a2 = c2
-    q2 = [a0, a1, a2]
-    # Verify Q_2(y) > 0 for all y >= 0:
-    assert positive_on(q2, Q(0), y1 + 2, depth=14) and tail_positive(q2, y1 + 2)
-    # Verify Q_2(y)^2 * (1 + y)^5 - 1 = y * (y - y_1)^2 * quot(y) >= 0 for all y >= 0:
-    diff = poly_add(poly_mul(poly_mul(q2, q2), poly_pow([Q(1), Q(1)], 5)), [Q(-1)])
-    factor = poly_mul([Q(0), Q(1)], poly_pow([-y1, Q(1)], 2))
-    quot = poly_div_exact(diff, factor)
-    assert positive_on(quot, Q(0), y1 + 4, depth=14) and tail_positive(quot, y1 + 4)
-    return q2
+def certify_radau_q4(r1, r2):
+    """Construct and algebraically certify degree-4 Radau-Hermite polynomial
+    Q_4(y) >= (1 + y)^{-5/2} for all y >= 0, interpolating (1 + y)^{-5/2} at y = 0
+    and to first order at y_1 = r1^2 - 1, y_2 = r2^2 - 1 (1 < r1 < r2 in Q)."""
+    r1, r2 = Q(r1), Q(r2)
+    assert 1 < r1 < r2
+    y1, y2 = r1 * r1 - 1, r2 * r2 - 1
+    z = [Q(0), y1, y1, y2, y2]
+    inv1, inv2 = Q(1) / r1, Q(1) / r2
+    fvals = [Q(1), inv1**5, inv1**5, inv2**5, inv2**5]
+    dvals = {y1: Q(-5, 2) * (inv1**7), y2: Q(-5, 2) * (inv2**7)}
+    n = 5
+    tab = [[Q(0)] * n for _ in range(n)]
+    for i in range(n):
+        tab[i][0] = fvals[i]
+    for j in range(1, n):
+        for i in range(n - j):
+            if z[i + j] == z[i]:
+                tab[i][j] = dvals[z[i]]
+            else:
+                tab[i][j] = (tab[i + 1][j - 1] - tab[i][j - 1]) / (z[i + j] - z[i])
+    q4 = [Q(0)] * n
+    basis = [Q(1)]
+    for j in range(n):
+        for k, bc in enumerate(basis):
+            q4[k] += tab[0][j] * bc
+        if j < n - 1:
+            nb = [Q(0)] * (len(basis) + 1)
+            for k, bc in enumerate(basis):
+                nb[k] -= z[j] * bc
+                nb[k + 1] += bc
+            basis = nb
+    # 1) Verify Q_4(y) > 0 for all y >= 0:
+    assert positive_on(q4, Q(0), y2 + 2, depth=16) and tail_positive(q4, y2 + 2)
+    # 2) Verify Q_4(y)^2 * (1 + y)^5 - 1 = y * (y - y_1)^2 * (y - y_2)^2 * R_10(y) >= 0 on [0, inf):
+    diff = poly_add(poly_mul(poly_mul(q4, q4), poly_pow([Q(1), Q(1)], 5)), [Q(-1)])
+    fac = poly_mul([Q(0), Q(1)], poly_mul(poly_pow([-y1, Q(1)], 2), poly_pow([-y2, Q(1)], 2)))
+    quot = poly_div_exact(diff, fac)
+    assert positive_on(quot, Q(0), y2 + 4, depth=16) and tail_positive(quot, y2 + 4)
+    return q4
 
 
 def certify_section_ab():
@@ -396,16 +430,16 @@ def certify_section_ab():
     peak_moments = None
 
     for name, (a, b, ka_cap, kb_cap, kdiff_cap, gamma_cap) in rows.items():
-        ia = single_pole_integrals(a, b, n=24)
-        ib = single_pole_integrals(a, 3 * b, n=24)
+        ia = single_pole_integrals(a, b, n=26)
+        ib = single_pole_integrals(a, 3 * b, n=26)
         ta = {(2, 0): Q(1)}
         tb = {(3, 1): Q(1)}
         ma = []
         mb = [(ia[0] - a * ia[1]) / (b * SQRT_2)]
-        for j in range(5):
+        for j in range(6):
             ang = Q(comb(2 * j + 2, j + 1), 4**(j + 1))
             ma.append(ang * weighted_integral(ta, a, ia, ib))
-            if j >= 1:
+            if 1 <= j <= 4:
                 mb.append(ang * weighted_integral(tb, a, ia, ib) / SQRT_2)
                 tb = expand_recurrence(tb, b)
             ta = expand_recurrence(ta, b)
@@ -439,35 +473,33 @@ def certify_section_ab():
         if name == 'peak':
             peak_moments = (a, b, ia, ib, ma)
 
-    # Peak OU-smoothed K_A(u) bounds via algebraically certified Q_2(y) >= (1 + y)^{-5/2}
+    # Peak OU-smoothed K_A(u) bounds via algebraically certified Q_4(y) >= (1 + y)^{-5/2}
     a_pk, b_pk, ia_pk, ib_pk, ma_pk = peak_moments
-    # L_j = int_0^inf lam^{j + 1/2} mu_A(d lam) = M_{j+1}^A / ((sqrt(pi)/2) * comb(2j+4, j+2) / 4^{j+2})
+    # L_j = int_0^inf lam^{j + 1/2} mu_A(d lam) = (2 * 4^{j+2} / (sqrt(pi) * comb(2j+4, j+2))) * M_{j+1}^A
     L_mom = []
-    for j in range(3):
+    for j in range(5):
         c_ang = Q(comb(2 * j + 4, j + 2), 4**(j + 2))
         L_mom.append(ma_pk[j + 1] / ((SQRT_PI / 2) * c_ang))
-    Z_mom = [Q(3, 4), Q(9, 20), Q(27, 80)]  # int_0^1 z^{1/3} (1 - z^2)^k dz
+    Z_mom = [Q(3, 4)]  # int_0^1 z^{1/3} (1 - z^2)^k dz
+    for k in range(1, 5):
+        Z_mom.append(Z_mom[-1] * Q(3 * k, 3 * k + 2))
 
     ka_slabs_spec = [
-        (Q(0), Q(1), Q(5353, 625)),
-        (Q(1, 100), Q(25, 24), Q(1433, 200)),
-        (Q(1, 50), Q(13, 12), Q(617, 100)),
-        (Q(3, 100), Q(10, 9), Q(543, 100)),
-        (Q(7, 200), Q(9, 8), Q(514, 100)),
-        (Q(1, 25), Q(8, 7), Q(488, 100)),
-        (Q(11, 250), Q(7, 6), Q(469, 100)),
+        (Q(0), None, Q(5353, 625)),
+        (Q(1, 100), (Q(41, 40), Q(9, 8)), Q(3577, 500)),
+        (Q(1, 50), (Q(21, 20), Q(5, 4)), Q(6117, 1000)),
+        (Q(3, 100), (Q(15, 14), Q(4, 3)), Q(5323, 1000)),
+        (Q(7, 200), (Q(13, 12), Q(7, 5)), Q(5)),
+        (Q(1, 25), (Q(11, 10), Q(3, 2)), Q(471, 100)),
+        (Q(11, 250), (Q(11, 10), Q(3, 2)), Q(9, 2)),
     ]
     ka_smoothed = []
-    for u_edge, r_sq, cap_target in ka_slabs_spec:
+    for u_edge, r_pair, cap_target in ka_slabs_spec:
         if u_edge == 0:
             ka_val = (Q(3, 4) * SQRT_6) * ma_pk[1] * ma_pk[1]
         else:
-            q2 = certify_radau_q2(r_sq)
-            psi2_0 = (2 / SQRT_PI) * (
-                q2[0] * Z_mom[0] * L_mom[0]
-                + q2[1] * Z_mom[1] * L_mom[1] * u_edge
-                + q2[2] * Z_mom[2] * L_mom[2] * (u_edge**2)
-            )
+            q4 = certify_radau_q4(*r_pair)
+            psi2_0 = (2 / SQRT_PI) * sum(q4[k] * Z_mom[k] * L_mom[k] * (u_edge**k) for k in range(5))
             assert psi2_0.lo > 0
             # (pi^2 / 8) * (3/8)^{3/2} = (3 sqrt(6) / 256) * pi^2
             ka_val = (Q(3, 256) * SQRT_6) * PI * PI * psi2_0 * psi2_0
@@ -497,9 +529,10 @@ def certify_section_ab():
     term_inf = Interval(Q(52, 25)).sqrt() + Q(1) / (2 * E_CONST).sqrt()
     c_inf_pk = (Q(4, 9) / (PI * (a_pk**4))) * term_inf * term_inf
     assert c_inf_pk.hi < Q(507, 100), c_inf_pk.enclosure()
-    # Check tau_max <= 1/455 closes [0, 463/10000] x [0, 42] via 3.3 + 3.14 + 6.2.1:
+    # Check tau_max <= 1/455 (which forces chi <= 50 * tau_max <= 10/91 < 1/4) closes directly via 3.3 + 3.14 + 6.2.1:
     s_slack_33 = S_LOWER_314 + Q(1, 10000) - REMOTE_CAP_33
     assert (Q(25, 6) * Q(507, 100) * (Q(463, 10000)**2) * Q(1, 455)) < s_slack_33
+    assert Q(50) * Q(1, 455) == Q(10, 91) and Q(10, 91) < Q(1, 4)
 
     return row_results, ka_smoothed, c_inf_pk, peak_moments
 
@@ -547,7 +580,7 @@ def build_radau_sqrt_l8():
         fac_l8 = poly_mul(fac_l8, poly_pow([-y, Q(1)], 2))
     quot_l8 = poly_div_exact(diff_sq, fac_l8)
     assert positive_on(quot_l8, Q(0), Q(4), depth=16)
-    # 2) On [4, inf): -L_8(y) >= 0 (so L_8(y) <= 0 < sqrt(1 + y) trivially!).
+    # 2) On [4, inf): -L_8(y) >= 0 (so L_8(y) <= 0 < sqrt(1 + y)).
     assert tail_positive(poly_scale(poly, -1), Q(4))
     return poly
 
@@ -571,7 +604,7 @@ def compute_deficit_moments_and_rice_poly(a_pk, b_pk, ia_pk, ib_pk):
     assert all(x.lo > 0 for x in md)
 
     l8 = build_radau_sqrt_l8()
-    # For u >= 0, taking the lower endpoint of each (l8[k] * md[k]) interval preserves a global lower bound!
+    # For u >= 0, taking the lower endpoint of each (l8[k] * md[k]) interval preserves a global lower bound.
     b_rice_lo = [(l8[k] * md[k]).lo for k in range(9)]
     return v_derivs, b_rice_lo
 
@@ -582,12 +615,12 @@ def compute_deficit_moments_and_rice_poly(a_pk, b_pk, ia_pk, ib_pk):
 def ka_piecewise(u_lo):
     out = Q(5353, 625)
     for edge, val in (
-        (Q(1, 100), Q(1433, 200)),
-        (Q(1, 50), Q(617, 100)),
-        (Q(3, 100), Q(543, 100)),
-        (Q(7, 200), Q(514, 100)),
-        (Q(1, 25), Q(488, 100)),
-        (Q(11, 250), Q(469, 100)),
+        (Q(1, 100), Q(3577, 500)),
+        (Q(1, 50), Q(6117, 1000)),
+        (Q(3, 100), Q(5323, 1000)),
+        (Q(7, 200), Q(5)),
+        (Q(1, 25), Q(471, 100)),
+        (Q(11, 250), Q(9, 2)),
     ):
         if u_lo >= edge:
             out = val
@@ -689,6 +722,9 @@ def verify_partition(boxes, u_lo, u_hi, x_lo, x_hi):
 
 
 def certify_analytical_and_covers(v_derivs, b_rice_lo):
+    # --- Self-contained check that -V''(0) < 1673/1000 (giving |V''(s)| < 1673/1000 for all s >= 0 by 2.7) ---
+    assert (-v_derivs[2]).hi < V2_BOUND, (-v_derivs[2]).enclosure()
+
     # --- Analytical Zero-Dual Consequences ---
     # 1) Closing open row 6.1.5 (chi <= 0.05) and all 0 <= chi <= 9/100 on [0, 463/10000]
     u_top = Q(463, 10000)
@@ -696,19 +732,16 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
     lhs_09 = REMOTE_CAP_33 + (Q(5353, 625) / KAPPA) * (u_top**3) * (x_09**3)
     target_a = S_LOWER_314 + Q(1, 10000)
     assert lhs_09 < target_a
-    # Also check delta <= 1981/10^7: (1981/10^7)^3 <= ((target_a - REMOTE_CAP_33) * KAPPA / K_A0)^2
+    # Check delta <= 1981/10^7 and u <= 217/100000 (across all chi <= 42):
     delta_cut = Q(1981, 10**7)
     assert (delta_cut**3) * (Q(5353, 625)**2) < ((target_a - REMOTE_CAP_33) * KAPPA)**2
-    # And check all chi <= 42 on u <= 217/100000 = 0.00217:
     assert Q(42) * (Q(217, 100000)**2) < delta_cut
 
     # 2) Near-Gaussian (chi <= 10^{-4}) and small-energy (u <= 1/4000, all chi <= 42) exact C_A^2 <= (6/25) D(q) via 3.19:
-    #    For chi <= 10^{-4}, 3.19 gives D(q) >= delta / 8, while K_A0 * u_top * sqrt(10^{-4}) * delta < (4/125)*(delta/8)?
-    #    Wait: K_A0 * u_top * (1/100) = (5353/625)*(463/10000)*(1/100) = 2478439 / 625000000 < 1/250,
-    #    and (1/250) / (1/8) = 4/125 < 6/25!
+    #    On chi <= 10^{-4} (sqrt(chi) <= 1/100), 3.19 gives D(q) >= delta / 8, so C_A^2 <= (4/125) D(q):
     assert Q(5353, 625) * u_top * Q(1, 100) < Q(4, 125) * Q(1, 8)
     assert Q(4, 125) < KAPPA
-    #    For u <= 1/4000 and all chi <= 42 (sqrt(chi) < 13/2), 3.19 gives D(q) >= (9/50) delta:
+    #    On u <= 1/4000 and all chi <= 42 (sqrt(chi) < 13/2), 3.19 gives D(q) >= (9/50) delta, so C_A^2 <= (2/25) D(q):
     assert Q(13, 2)**2 > 42
     assert Q(5353, 625) * Q(1, 4000) * Q(13, 2) < Q(2, 25) * Q(9, 50)
     assert Q(2, 25) < KAPPA
@@ -720,26 +753,24 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
 
     # 4) Closed-form Stieltjes-Maclaurin bivariate deficit polynomial on [0, 3/200]:
     #    D(q) >= (-V2/2 - (3/2) V3 u) u^2 x^2 - (C6/6) V3 u^3 x^3 + V4 u^4 + V5 u^5 + V6 u^6
-    #    Take safe lower endpoints on positive/signed coefficients for u >= 0, x >= 0:
     c2_lo = (-v_derivs[2] / 2).lo        # > 0.836
     c3_hi = v_derivs[3].hi               # > 0, subtracted
     v4_lo = v_derivs[4].lo               # < 0
     v5_lo = v_derivs[5].lo               # > 0
     v6_lo = v_derivs[6].lo               # < 0
 
-    def maclaurin_margin_grid(eta_q, ka_q):
-        # Returns 7x4 grid of sum_{i=0..6, j=0..3} g[i][j] u^i x^j for KAPPA * D_Mac(u, x) + eta_q - ka_q * u^3 x^3
+    def maclaurin_margin_grid(eta_q, ka_q, scale_d=KAPPA):
         g = [[Q(0)] * 4 for _ in range(7)]
         g[0][0] = Q(eta_q)
-        g[2][2] = KAPPA * c2_lo
-        g[3][2] = -KAPPA * Q(3, 2) * c3_hi
-        g[3][3] = -KAPPA * (C6 / 6) * c3_hi - Q(ka_q)
-        g[4][0] = KAPPA * v4_lo
-        g[5][0] = KAPPA * v5_lo
-        g[6][0] = KAPPA * v6_lo
+        g[2][2] = scale_d * c2_lo
+        g[3][2] = -scale_d * Q(3, 2) * c3_hi
+        g[3][3] = -scale_d * (C6 / 6) * c3_hi - Q(ka_q)
+        g[4][0] = scale_d * v4_lo
+        g[5][0] = scale_d * v5_lo
+        g[6][0] = scale_d * v6_lo
         return g
 
-    # Certify [0, 3/200] x [0, 1/2] (0 <= chi <= 0.25) for signed C_A^2 <= (6/25) D(q) + 10^{-6} with Maclaurin alone!
+    # Certify [0, 3/200] x [0, 1/2] (0 <= chi <= 0.25) for signed C_A^2 <= (6/25) D(q) + 10^{-6} with Maclaurin alone:
     mac_signed_boxes = []
     q_mac = [(Q(0), Q(3, 200), Q(0), Q(1, 2), 0)]
     while q_mac:
@@ -757,10 +788,10 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
             q_mac.extend([(a, b, c, m, dep + 1), (a, b, m, d, dep + 1)])
     assert verify_partition(mac_signed_boxes, Q(0), Q(3, 200), Q(0), Q(1, 2))
 
-    # Certify [1/4000, 3/250] x [1/8, 1/2] (1/64 <= chi <= 1/4 on u in [0.00025, 0.012]) for EXACT zero-slack C_A^2 <= (6/25) D(q)!
-    x_c_lo = Q(1, 8)
+    # Certify [1/4000, 3/250] x [1/8, 1/2] (1/64 <= chi <= 1/4 on u in [0.00025, 0.012]) for exact zero-slack C_A^2 <= (6/25) D(q):
+    x_c_mac_lo = Q(1, 8)
     mac_exact_boxes = []
-    q_mac0 = [(Q(1, 4000), Q(3, 250), x_c_lo, Q(1, 2), 0)]
+    q_mac0 = [(Q(1, 4000), Q(3, 250), x_c_mac_lo, Q(1, 2), 0)]
     while q_mac0:
         a, b, c, d, dep = q_mac0.pop()
         grid = maclaurin_margin_grid(Q(0), ka_piecewise(a))
@@ -774,7 +805,15 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
         else:
             m = (c + d) / 2
             q_mac0.extend([(a, b, c, m, dep + 1), (a, b, m, d, dep + 1)])
-    assert verify_partition(mac_exact_boxes, Q(1, 4000), Q(3, 250), x_c_lo, Q(1, 2))
+    assert verify_partition(mac_exact_boxes, Q(1, 4000), Q(3, 250), x_c_mac_lo, Q(1, 2))
+
+    # Certify strict D(q) > 0 on [1/4000, 3/250] x [1/8, 7/10] (1/64 <= chi <= 49/100 on u in [0.00025, 0.012]):
+    x_d_hi = Q(7, 10)
+    d_pos_mac_grid = maclaurin_margin_grid(Q(0), Q(0), scale_d=Q(1))
+    d_pos_mac_coeffs = bernstein_2d(d_pos_mac_grid, (Q(1, 4000), Q(3, 250), x_c_mac_lo, x_d_hi))
+    assert min(d_pos_mac_coeffs) > 0
+    d_pos_mac_boxes = [(Q(1, 4000), Q(3, 250), x_c_mac_lo, x_d_hi)]
+    assert verify_partition(d_pos_mac_boxes, Q(1, 4000), Q(3, 250), x_c_mac_lo, x_d_hi)
 
     # --- Load & Verify Upstream Caps and Stein Dual Bank ---
     for fname, sha in EXPECTED_UPSTREAM_SHA256.items():
@@ -800,11 +839,7 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
         models_by_u[Q(m['v'])].append((idx, list(map(Q, m['coefficients']))))
     assert all(models_by_u.values())
 
-    # Verify |h''(s)| < 3 bound used in energy-slab interpolation:
-    a_pk, b_pk = Q(699, 1250), Q(179, 1250)
-    assert ((a_pk**-3) + 4 * b_pk * (a_pk**-4)) / 4 < 3
-
-    # --- Cover A1 ([0, 463/10000] x [0, 47/100], chi <= 0.2209 > 11/50) & Cover A2 ([0, 1/50] x [0, 27/20], chi <= 1.8225 > 9/5) ---
+    # --- Cover A1 ([0, 463/10000] x [0, 1/2], chi <= 1/4) & Cover A2 ([0, 1/50] x [0, 7/5], chi <= 49/25) ---
     def moment_cover_lambda(u_lo, u_hi, x_lo, x_hi):
         boxes = []
         stack = [(u_lo, u_hi, x_lo, x_hi, 0)]
@@ -843,9 +878,8 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
         assert verify_partition(boxes, u_lo, u_hi, x_lo, x_hi)
         return boxes, worst
 
-    # Cover A1: [0, 7/200] via moment_polys, [7/200, 463/10000] via Stein slabs, x in [0, 47/100] (47^2/10000 = 2209/10000 > 11/50)
-    x_a1 = Q(47, 100)
-    assert x_a1 * x_a1 > Q(11, 50)
+    # Cover A1: [0, 7/200] via moment_polys, [7/200, 463/10000] via Stein slabs, x in [0, 1/2] (chi <= 1/4)
+    x_a1 = Q(1, 2)
     a1_moment_boxes, a1_worst = moment_cover_lambda(Q(0), Q(7, 200), Q(0), x_a1)
     a1_stein_boxes = []
     stein_u_a1 = [u for u in energies if u >= Q(7, 200)]
@@ -854,7 +888,9 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
         stack_x = [(Q(0), x_a1, 0)]
         while stack_x:
             xL, xR, dep = stack_x.pop()
-            interp = Q(3, 8) * (2 + xR * xR) * ((uR - uL)**2)
+            # By complete monotonicity (2.7), |V''(s)| <= -V''(0) < V2_BOUND = 1673/1000, so
+            # |d^2/du^2 E[V(u|Q|^2)]| <= V2_BOUND * (2 + xR^2), giving chord allowance (V2_BOUND / 8) (2 + xR^2) (du)^2:
+            interp = V2_BOUND * Q(1, 8) * (2 + xR * xR) * ((uR - uL)**2)
             surcharge = (ka / KAPPA) * (uR**3) * (xR**3)
             end_up = []
             for u_end in (uL, uR):
@@ -874,42 +910,37 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
     a1_all = a1_moment_boxes + a1_stein_boxes
     assert verify_partition(a1_all, Q(0), u_top, Q(0), x_a1)
 
-    # Cover A2: [0, 1/50] x [0, 27/20] (chi <= 729/400 = 1.8225 > 9/5 = 1.80)
-    x_a2 = Q(27, 20)
-    assert x_a2 * x_a2 > Q(9, 5)
+    # Cover A2: [0, 1/50] x [0, 7/5] (chi <= 49/25 = 1.96)
+    x_a2 = Q(7, 5)
     a2_boxes, a2_worst = moment_cover_lambda(Q(0), Q(1, 50), Q(0), x_a2)
 
-    # --- Cover B (Signed C_A^2 <= (6/25) D(q) + 10^{-6} on [0, 463/10000] x [0, 1/4]?? Wait: x = 1/4 is chi <= 0.0625 > 3/50 = 0.06!) ---
-    x_b = Q(1, 4)  # x = 1/4 => chi <= 1/16 = 0.0625 > 3/50 = 0.06 > 0.05!
-    assert x_b * x_b > Q(3, 50)
+    # --- Stein Deficit Slabs Helper (for Cover B, Cover C, and Cover D) ---
     b_lo_at = {u: poly_eval(b_rice_lo, u) for u in energies}
 
-    def certify_stein_deficit_slabs(u_nodes, x_lo, x_hi, eta_q):
+    def certify_stein_deficit_slabs(u_nodes, x_lo, x_hi, eta_q, include_ka=True, strict=False):
         out_boxes = []
         min_margin = Q(1)
+        scale_d = KAPPA if include_ka else Q(1)
         for uL, uR in zip(u_nodes, u_nodes[1:]):
-            ka = ka_piecewise(uL)
+            ka = ka_piecewise(uL) if include_ka else Q(0)
             stack_x = [(x_lo, x_hi, 0)]
             while stack_x:
                 xL, xR, dep = stack_x.pop()
-                # Concavity of B gives B(u) >= chord(B_lo(uL), B_lo(uR)); |d^2/du^2 E[V(u|Q|^2)]| <= 3(2 + xR^2):
-                interp_loss = KAPPA * Q(3, 8) * (2 + xR * xR) * ((uR - uL)**2)
-                # At each endpoint u in {uL, uR}, check exact 1D Bernstein nonnegativity in x in [xL, xR] of:
-                #   KAPPA * (B_lo(u) - F_dual(u, x)) + eta_q - interp_loss - ka * uR^3 * x^3 >= 0!
+                # Concavity of B gives B(u) >= chord(B_lo(uL), B_lo(uR)); |d^2/du^2 E[V(u|Q|^2)]| <= V2_BOUND * (2 + xR^2):
+                interp_loss = scale_d * V2_BOUND * Q(1, 8) * (2 + xR * xR) * ((uR - uL)**2)
                 end_margins = []
                 ok_both = True
                 for u_end in (uL, uR):
                     best_m = None
                     for _, P in models_by_u[u_end]:
-                        # Polynomial in x: d0 + d2 x^2 + d3 x^3
-                        d0 = KAPPA * (b_lo_at[u_end] - (P[0] + P[1] + 2 * P[2] + 6 * P[3])) + eta_q - interp_loss
-                        d2 = -KAPPA * (P[2] + 9 * P[3])
-                        d3 = -KAPPA * P[3] * C6 - ka * (uR**3)
+                        d0 = scale_d * (b_lo_at[u_end] - (P[0] + P[1] + 2 * P[2] + 6 * P[3])) + eta_q - interp_loss
+                        d2 = -scale_d * (P[2] + 9 * P[3])
+                        d3 = -scale_d * P[3] * C6 - ka * (uR**3)
                         b_coeffs = bernstein_1d([d0, Q(0), d2, d3], xL, xR)
                         m_val = min(b_coeffs)
                         if best_m is None or m_val > best_m:
                             best_m = m_val
-                    if best_m is None or best_m < 0:
+                    if best_m is None or (best_m <= 0 if strict else best_m < 0):
                         ok_both = False
                         break
                     end_margins.append(best_m)
@@ -917,32 +948,43 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
                     out_boxes.append((uL, uR, xL, xR))
                     min_margin = min(min_margin, min(end_margins))
                 else:
-                    assert dep < 12, ('Stein deficit cover failed', uL, uR, xL, xR, eta_q)
+                    assert dep < 12, ('Stein deficit cover failed', uL, uR, xL, xR, eta_q, include_ka, strict)
                     xm = (xL + xR) / 2
                     stack_x.extend([(xL, xm, dep + 1), (xm, xR, dep + 1)])
         assert verify_partition(out_boxes, u_nodes[0], u_nodes[-1], x_lo, x_hi)
         return out_boxes, min_margin
 
-    # Cover B: [0, 3/250] from Maclaurin signed cover (trimmed to x <= 1/4), [3/250, 463/10000] from Stein slabs!
+    # Cover B: Signed C_A(q)^2 <= (6/25) D(q) + 10^{-6} on [0, 463/10000] x [0, 29/100] (0 <= chi <= 841/10000 = 0.0841)
+    x_b = Q(29, 100)
     b_mac_sub = []
     for a, b, c, d in mac_signed_boxes:
         aa, bb = max(a, Q(0)), min(b, Q(3, 250))
         cc, dd = max(c, Q(0)), min(d, x_b)
         if aa < bb and cc < dd:
             b_mac_sub.append((aa, bb, cc, dd))
-    b_stein_boxes, b_stein_min = certify_stein_deficit_slabs(energies, Q(0), x_b, Q(1, 10**6))
+    b_stein_boxes, b_stein_min = certify_stein_deficit_slabs(energies, Q(0), x_b, Q(1, 10**6), include_ka=True, strict=False)
     cover_b_all = b_mac_sub + b_stein_boxes
     assert verify_partition(cover_b_all, Q(0), u_top, Q(0), x_b)
 
-    # Cover C: Exact zero-slack C_A(q)^2 <= (6/25) D(q) on [1/4000, 463/10000] x [1/8, 1/4] (1/64 <= chi <= 1/16)
+    # Cover C: Exact zero-slack C_A(q)^2 <= (6/25) D(q) on:
+    #   - [1/4000, 3/250] x [1/8, 7/25] (chi in [1/64, 49/625] = [0.015625, 0.0784]) via Maclaurin, and
+    #   - [3/250, 463/10000] x [7/100, 7/25] (chi in [49/10000, 49/625] = [0.0049, 0.0784]) via Stein slabs.
+    x_c_stein_lo = Q(7, 100)
+    x_c_hi = Q(7, 25)
     c_mac_sub = []
     for a, b, c, d in mac_exact_boxes:
-        cc, dd = max(c, x_c_lo), min(d, x_b)
+        cc, dd = max(c, x_c_mac_lo), min(d, x_c_hi)
         if cc < dd:
             c_mac_sub.append((a, b, cc, dd))
-    c_stein_boxes, c_stein_min = certify_stein_deficit_slabs(energies, x_c_lo, x_b, Q(0))
-    cover_c_all = c_mac_sub + c_stein_boxes
-    assert verify_partition(cover_c_all, Q(1, 4000), u_top, x_c_lo, x_b)
+    assert verify_partition(c_mac_sub, Q(1, 4000), Q(3, 250), x_c_mac_lo, x_c_hi)
+    c_stein_boxes, c_stein_min = certify_stein_deficit_slabs(energies, x_c_stein_lo, x_c_hi, Q(0), include_ka=True, strict=False)
+    assert verify_partition(c_stein_boxes, Q(3, 250), u_top, x_c_stein_lo, x_c_hi)
+
+    # Cover D: Strict peak remote deficit positivity D(q) > 0 on:
+    #   - [1/4000, 3/250] x [1/8, 7/10] (chi in [1/64, 49/100] = [0.015625, 0.49]) via Maclaurin, and
+    #   - [3/250, 463/10000] x [7/100, 7/10] (chi in [49/10000, 49/100] = [0.0049, 0.49]) via Stein slabs.
+    d_stein_boxes, d_stein_min = certify_stein_deficit_slabs(energies, x_c_stein_lo, x_d_hi, Q(0), include_ka=False, strict=True)
+    assert verify_partition(d_stein_boxes, Q(3, 250), u_top, x_c_stein_lo, x_d_hi)
 
     def fmt_floor(q_val, digits=15):
         q_val = Q(q_val)
@@ -952,6 +994,7 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
         return f'{n // unit}.{str(n % unit).zfill(digits)}'
 
     return {
+        'v2_at_zero_certified_upper': str(V2_BOUND),
         'zero_dual_raw_core_chi_max': '9/100',
         'zero_dual_raw_core_margin': str(target_a - lhs_09),
         'pure_python_S_lower_at_v0_floor15': fmt_floor(s_lo_pure, 15),
@@ -978,10 +1021,25 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
             'claim': 'C_A(q)^2 <= (6/25) D(q) (exact zero slack)',
             'analytic_near_gaussian': '(0, 463/10000] x [0, 1/10000] via 3.19',
             'analytic_low_energy_all_shapes': '[0, 1/4000] x [0, 42] via 3.19',
-            'continuum_domain_u': ['1/4000', str(u_top)],
-            'continuum_domain_chi': ['1/64', str(x_b * x_b)],
-            'continuum_box_count': len(cover_c_all),
+            'maclaurin_domain_u': ['1/4000', '3/250'],
+            'maclaurin_domain_chi': ['1/64', str(x_c_hi * x_c_hi)],
+            'maclaurin_box_count': len(c_mac_sub),
+            'stein_domain_u': ['3/250', str(u_top)],
+            'stein_domain_chi': ['49/10000', str(x_c_hi * x_c_hi)],
+            'stein_box_count': len(c_stein_boxes),
             'min_stein_margin_floor15': fmt_floor(c_stein_min, 15),
+        },
+        'cover_D_strict_deficit_positivity': {
+            'claim': 'D(q) > 0 (strict peak remote deficit positivity)',
+            'analytic_complement_319': '(0, 463/10000] x (0, 1/5000] and (0, 1/4000] x (0, 42] via 3.19',
+            'maclaurin_domain_u': ['1/4000', '3/250'],
+            'maclaurin_domain_chi': ['1/64', str(x_d_hi * x_d_hi)],
+            'maclaurin_box_count': len(d_pos_mac_boxes),
+            'maclaurin_min_margin_floor15': fmt_floor(min(d_pos_mac_coeffs), 15),
+            'stein_domain_u': ['3/250', str(u_top)],
+            'stein_domain_chi': ['49/10000', str(x_d_hi * x_d_hi)],
+            'stein_box_count': len(d_stein_boxes),
+            'min_stein_margin_floor15': fmt_floor(d_stein_min, 15),
         },
         'stein_duals_verified': len(dual_bank['models']),
     }
@@ -1006,10 +1064,11 @@ def run_negative_controls(peak_ma1):
     bad_dual['coefficients'] = [str(p_orig[0] - Q(1, 10000))] + [str(x) for x in p_orig[1:]]
     assert not check_stein_node(bad_dual, knots, caps, depth=20), 'Negative control 2 failed!'
 
-    # Control 3: Perturbed Q_2(y) downward by -10^{-3} y must fail Q_2(y)^2 (1+y)^5 - 1 >= 0
-    q2_good = certify_radau_q2(Q(9, 8))
-    q2_bad = [q2_good[0], q2_good[1] - Q(1, 1000), q2_good[2]]
-    diff_bad = poly_add(poly_mul(poly_mul(q2_bad, q2_bad), poly_pow([Q(1), Q(1)], 5)), [Q(-1)])
+    # Control 3: Perturbed Q_4(y) downward by -10^{-3} y must fail Q_4(y)^2 (1+y)^5 - 1 >= 0
+    q4_good = certify_radau_q4(Q(11, 10), Q(3, 2))
+    q4_bad = list(q4_good)
+    q4_bad[1] -= Q(1, 1000)
+    diff_bad = poly_add(poly_mul(poly_mul(q4_bad, q4_bad), poly_pow([Q(1), Q(1)], 5)), [Q(-1)])
     assert not positive_on(diff_bad[1:], Q(0), Q(2), depth=14), 'Negative control 3 failed!'
 
     # Control 4: Perturbed L_8(y) upward by +10^{-4} y must fail (1+y) - L_8(y)^2 >= 0
@@ -1052,6 +1111,7 @@ def main():
         'peak_low_influence_C_inf': c_inf_pk.enclosure(),
         'peak_low_influence_certified_upper': '507/100',
         'peak_low_influence_raw_core_tau_threshold': '1/455',
+        'peak_low_influence_implied_chi_max': '10/91',
         'covers_and_corollaries': cover_summary,
         'negative_controls_passed': n_neg,
         'elapsed_seconds': elapsed,

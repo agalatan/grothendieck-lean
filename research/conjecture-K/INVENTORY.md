@@ -1534,3 +1534,18 @@ file, the notes as delivered included.
 - **Certificate in the repository:** `code/complex-radius-gemini-2762/cert_916.json` (241,550 B, SHA-256 `cf0cc1a0d95ebb08db44b90afd2179ac47b1a185477eeddc7288926862f5abab`), 23 contiguous rows covering s ∈ [0, 42], largest row bound `108089090381367422881337516582714174209/118059162071741130342400000000000000000` (`0.915550207917660944… < 0.9155502080`) on s ∈ [4, 17/4].
 - **Replay (Python 3 standard library only, isolated `-I`):** `python3 -I verify_cert.py cert_916.json` (exact integer Sturm chains), `python3 -I verify_bernstein.py cert_916.json` (independent exact verifier by 4×4 matrix determinants and Bernstein subdivision), `python3 -I check_identities_exact.py` (25 exact Wick cubics in d = 1…6), `python3 -I negative_controls.py cert_916.json`, and `python3 -I check_degree5_small_t.py`. [Replay log](code/complex-radius-gemini-2762/REPLAY.log)
 - **Independent reviews.** Codex-6d92 ([review of `b048eaf`](https://github.com/agalatan/grothendieck-lean/pull/512#pullrequestreview-5935955446)) and claude-b9ee ([review of `43c1a91`](https://github.com/agalatan/grothendieck-lean/pull/512#issuecomment-6945108838)) independently re-derived the third-order Stein identities, the kernel moments, the matrix/endpoint implications and Proposition 5 (`PROOF.md` §0.1, added by codex-6d92 and checked in exact rationals by `check_degree5_small_t.py`), verified the SHA-256 of `cert_916.json`, and replayed all five standard-library scripts (`verify_cert.py` on three machines across both reviews), with claude-b9ee also recomputing all 46 endpoint bounds and testing 26 cubics in d = 1…40.
+
+
+## Raw content O(δ^{3/2}) bounds, bounded-kurtosis covers and peak deficit positivity (gemini-5331, task #513)
+
+- [Proof and replay instructions](sources/raw-content-2026-11-17-gemini-5331/PROOF.md) and
+  [verifier and witnesses](code/raw-content-2026-11-17-gemini-5331/) (tag KRAW; STATUS 3.29, 6.1.5, 6.3.18, 6.3.40; author only). Every file is under 300 KB and committed in the repository; no external files are left outside.
+- **Replay (Python 3 standard library only, isolated `-I`):** `python3 -I verify_raw_content.py` checks 220-bit outward dyadic Laplace enclosures for $A$ and $B$, degree-4 Radau–Hermite polynomial majorants $Q_4(y) \ge (1 + y)^{-5/2}$ for $K_A(u)$, universal $O(\delta)$ and low-influence bounds, degree-8 Radau–Hermite Rice lower bounds $B_{\text{lo}}(u) \le B(u)$, bivariate Stieltjes–Maclaurin deficit polynomials, all 79 rational Stein duals against SHA-256-pinned `profile-caps.json` and `moment-boxes.json`, gap-free continuum partitions for Covers A1, A2, B, C and D, and 5 rejection controls (~4.5 s). `generate_stein_duals.py` is candidate proposal code only (**N**, replayed byte-identically by `claude-b9ee` in [RFC review of `b18e47309`](https://github.com/agalatan/grothendieck-lean/pull/518#issuecomment-6946512641)).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/raw-content-2026-11-17-gemini-5331/PROOF.md` | 41,936 B | `89da94eda42c290520c96763cde353cb4728edd5fbb2de3201d5becbb89c7a27` |
+| `code/raw-content-2026-11-17-gemini-5331/verify_raw_content.py` | 48,851 B | `5a9f02b1da7b00894fa87139c01155a11666ab83c3301bd197a481ade43f5107` |
+| `code/raw-content-2026-11-17-gemini-5331/verify_raw_content_result.json` | 6,904 B | `9741b6241f6d06c018fb40f6522df50ff68f716ecaa589be32b086b045d6f80d` |
+| `code/raw-content-2026-11-17-gemini-5331/stein_duals.json` | 264,035 B | `1bc9010b260944c7bbf8cb7057c262b40bf6bf6637421213168d6afe42189008` |
+| `code/raw-content-2026-11-17-gemini-5331/generate_stein_duals.py` | 10,318 B | `f002baa14b30e1944d497d560470c0421b3e661187b9906f47e61840171edf65` |
