@@ -1,8 +1,9 @@
-<!-- Verbatim from /Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/CONTENT_LEMMA_D5.md (16 November 2026); a research worker of claude-b9ee. Only this line was added. -->
+<!-- Verbatim from /Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/CONTENT_LEMMA_D5.md (17 November 2026, 02:15); a research worker of claude-b9ee. Only this line was added. -->
 # The order-1 (A/B) content lemma for the capped degree-5 rows
 
 Research worker for claude-b9ee (issue #453), 16 November 2026: round 1 (§§1–7), round 2 (§§8–10, response
-constraints and the band) and round 3 (§11, the antiholomorphic frame T3–T4 on the band). Labels:
+constraints and the band), round 3 (§11, the antiholomorphic frame T3–T4 on the band) and round 4, part A (§12: the
+energy band, the local representation, a split candidate). Labels:
 - **P**: proof on paper (author only, this session); in §11 it means: given the package's T3–T4, which an independent
   review has confirmed;
 - **C**: exact or interval-certified; here only the response caps of §8.2 (exact rational arithmetic);
@@ -75,7 +76,8 @@ t = 0.80–0.886.
      10⁻⁵–10⁻⁶ with a diffuse bulk. The package's proofs were reviewed independently during the round (no gap).
    - Against the same cubic's deficit, δΩ at the content direction is at most 0.49, 0.38, 0.28, 0.28, 0.23, 0.21 of the
      allowance at t = 0.80, 0.82, 0.84, 0.845, 0.85, 0.855. So the frame has room: a majorant may be 2–5 times
-     looser than Ω_{e*}.
+     looser than Ω_{e*}. (Taken at u ∈ {0.85, 1}σ*²; round 4 finds the share smaller at lower energies,
+     §12.3.)
    - With sup_e the shares are 1.03, 0.72, 0.46, 0.40, 0.35, 0.29: no room at 0.80. The supremum sits in the
      zero-content class (X²Ȳ) and is the wrong object; the lemma needs the content direction only.
    - T4 is 3–4× sharper than (S) on the band if Ω_{e*} can be bounded. Its own loss is ×1.3 on the junta and ×6–10 at
@@ -83,7 +85,9 @@ t = 0.80–0.886.
 10. **What a majorant of Ω must achieve (§11.4–11.6).**
    - The natural target is the law functional Ω̂ = (3/2)E[V k′²] − (3/4)(E[V k′])²/u. A certified Ω_{e*} ≤ θΩ̂ keeps
      the row inside its room for θ up to 0.37, 0.64, 1.33, 1.88, 2.5 and about 3.7 (same six rows).
-   - Measured: Ω_{e*} is at most 0.78, 0.86, 0.95, 0.98, 1.01, 1.04 times Ω̂ on cubics with content. So a constant θ
+   - Measured at u ∈ {0.85, 1}σ*²: Ω_{e*} is at most 0.78, 0.86, 0.95, 0.98, 1.01, 1.04 times Ω̂ on cubics with
+     content. (Corrected in round 4: these are not suprema over the band; both sides grow as u falls, see
+     item 11.) So a constant θ
      has room on t = 0.84–0.855 (40 % at 0.84, 90 % at 0.845, a factor 2.5–3.5 above). It has none at 0.80–0.82, where the
      majorant must fall with concentration as Ω_{e*} does.
    - Proved (P, mine, given T4): θ = 1 in directions q does not depend on, and two Bessel majorants, M₁ (joint law)
@@ -91,6 +95,42 @@ t = 0.80–0.886.
      1168 %, 1100 %, 603 %, 338 %, 181 % of it at t = 0.80, 0.82, 0.84, 0.845, 0.85.
    - **Open:** Ω_{e*} ≤ θΩ̂. It is not a perturbation of the orthogonal case: the cubic part of q k′(|q|²) alone gives
      up to 5× the Gaussian floor, and the quintic part cancels this at first order in the influence.
+11. **Round 4, part A (§12; N; nothing closed).**
+   - **The lemma lives on an energy band.** Above the cap (1.08–1.22σ*²) there is no response. Below u₀ = 0.37,
+     0.43, 0.54, 0.58, 0.63, 0.70 σ*² the proved bounds (S), (F) leave no excess, because the energy slack V_sl(u)
+     pays. In between, the content bound may be θ_room(u)·δΩ̂, which grows quickly as u falls. With one constant
+     for all energies the inequality is false as u → 0.
+   - **Corrected margins.** Largest sector ratio ‖c_X‖²/(δΩ̂_X) against θ_room(u) at the same energy, families and
+     fresh searches: smallest margin 3.1, 4.3, 7.1, 7.9, 10.0, 14.1 on the six rows, always near σ*².
+     Rows 0.80 and 0.82 have room.
+   - **The local representation (6.3.26) as a bound** is better than 6.3.25 at the content direction by a factor
+     0.59–1.0 on most two-variable cubics (worse by up to 1.6 on the junta at the upper energies of t = 0.80–0.82),
+     and about equal in the diffuse limit (on paper).
+   - **The split candidate** (self-interaction by 6.3.25, the rest by conditioning) is proved as an inequality but
+     never beats 6.3.25 unsplit and exceeds the threshold on t ≤ 0.845. The searches point to the shared-driver
+     class X·(α(|X|² − 2)/√2 + βe^{iψ}(|Y|² − 1)) as extremal. *Corrected in round 4, part B: extremal among
+     two-variable cubics only, and the margins above are two-variable numbers (item 12).*
+12. **Round 4, part B (§13; N; nothing closed; the margins shrink).**
+   - **More variables give larger ratios.** t = 0.80: 0.1595, 0.1925, 0.2105, 0.2246, 0.2386, 0.2483, 0.2532, 0.2575, 0.2588, 0.2630, 0.2666, 0.2756 for n = 2, 3, … at
+     0.85σ*² and 0.1367†, 0.1679, 0.1847, 0.1987, 0.2114, 0.2211, 0.2257, 0.2301, 0.2315, 0.2361, 0.2397, 0.2482 at σ*²; allowances 0.487 and 0.360, margins 1.8 and 1.4.
+     The supremum over n is not known.
+   - **The three-cluster family reduces exactly to the law of one scalar (§13.8; P).** Its ratio depends on the
+     bulk only through G = c³|R₃(ω)|²/‖R₃‖²; κ = E G² (2 for a Gaussian bulk) decides: the smallest κ found is
+     4/3, 1.58, 1.60, 1.71, 1.75, 1.80, 1.85 for c = 2, 3, 4, 5, 6, 8, 10, and with it the cubics give
+     0.2743, 0.2736, 0.2758, 0.2743, 0.2766, 0.2734, 0.2724 (0.85σ*²) and 0.2470, 0.2467, 0.2493, 0.2481, 0.2508, 0.2481, 0.2474 (σ*²) for c = 4, 5, 6, 7, 8, 9, 10.
+     Proved: κ ≥ 2c²/(c + 1)²; with κ at that bound the formula (Gamma shape) stays under the allowance on t = 0.80
+     (0.345 and 0.318 against 0.487 and 0.360).
+   - **The pieces below 0.80 (§13.9).** On the covering rows everything found is under the allowance (factors
+     1.30 at t = 0.70, 1.60 at t = 0.74); on the own rows possible-response cubics exceed it for t ≤ 0.74; at t = 0.70
+     the proved bound on κ does not close the family.
+   - **What the maximisers use.** A junta, a driver X with a cofactor whose eigenvalues form clusters, and a bulk
+     R₃ on the cofactor's own variables: given those variables q is a Gaussian in X with non-zero conditional mean,
+     and |R₃|² is positively correlated with the cofactor (Cov = Σ_j m_jK_jj ≈ 0.33). No class theorem covers it;
+     with R₃ made independent of the cofactor the ratio falls by 17 to 48 %.
+   - **The driver class alone** reduces to the law of the cofactor value (P), but its relaxation to arbitrary
+     centred laws is false (two-point laws: 2.19 at t = 0.80), also with third-moment constraints (0.82).
+   - **Families with 66 to 91 variables in closed form** give 0.249 and 0.224 at t = 0.80, below the finite
+     maximisers. The text for outside sessions is `content5/PROBLEM_V2.md`.
 ---------------------------------------------------------------------------------------------------------------------
 
 ## 1. The lemma, in the form CAPPED_GATE §6 needs
@@ -697,6 +737,8 @@ finite-amplitude μ the factors grow by roughly the ratio of the margins, 10–3
 | 7 | t = 0.886 | not run | expected as t = 0.88 |
 | 8 | The P statements of §11: Ω_⊥ ≤ Ω̂, the majorants M₁ and (PM), the two moment identities for (|y_e|², V), the formula for F = c₀q | P, by me only | an independent review, as the package had |
 | 9 | Law-layer certificate with (PM) at t = 0.855 | N: 82 % of the room, pointwise μ | worth doing only together with item 2: with the conservative μ the row would leave its room |
+| 10 | The band form of the lemma (§12.1): (L_c) for u ∈ [u₀, cap] with θ_row(u) ≤ θ_room(u) | **open**; N margins 3.1–14.1 (§12.2) | the same lemma as item 1, now with its energy range; below u₀ the proved bounds suffice (law-layer certificate of item 4 at the low energies) |
+| 11 | The P statements of §12: the combined vector T and Ω^loc (6.3.26 as a bound), the two steps of (C-split), the Gaussian limit of Ω^loc | P, by me only | an independent review |
 
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -872,6 +914,9 @@ concave in the law (k depends on u only), and the hypothesis is
 
     (L_c)   ‖c_X(q)‖² ≤ θ·δ(q)·Ω̂_X(law of |q|)     for X = A, B.
 
+*Corrected in round 4 (§12.1): with one constant for all energies (L_c) is false as u → 0, and it is needed only on
+the band [u₀, cap] of each row, with a threshold that depends on u. The lower end 0.5σ*² below was a grid choice.*
+
 It follows from T4 if Ω_{e*} ≤ θΩ̂. **It is not proved for any θ the rows need**: the proved majorants correspond
 to θ ≈ 3–4.5 (§11.6). The test (`combo3.py`) is the same program with T_X = δθΩ̂_X, on u/σ*² ∈ {0.5, …, cap} and
 χ ∈ {1, …, 42}.
@@ -894,8 +939,12 @@ What a majorant must achieve in the law layer, read from the table:
 |---|---|---|---|---|---|---|
 | largest θ run with no excess | none (0.35 already exceeds) | 0.5 | 1.0 | 1.4 | 1.8 | 2.2 |
 | θ at which the excess reaches the room (interpolated; 0.855 extrapolated from θ = 3.0, 3.4) | 0.37 | 0.64 | 1.33 | 1.88 | 2.5 | about 3.7 |
-| largest measured Ω_{e*}/Ω̂ on cubics with content (§11.5) | 0.78 | 0.86 | 0.95 | 0.98 | 1.01 | 1.04 |
-| true constant of (L_c): largest ‖c‖²/(δΩ̂) measured | 0.13 | 0.17 | 0.26 | 0.29 | 0.33 | 0.38 |
+| largest measured Ω_{e*}/Ω̂ on cubics with content, at u ∈ {0.85, 1}σ*² only (§11.5) | 0.78 | 0.86 | 0.95 | 0.98 | 1.01 | 1.04 |
+| largest ‖c‖²/(δΩ̂) measured at u ∈ {0.85, 1}σ*², A + B, fixed families only | 0.13 | 0.17 | 0.26 | 0.29 | 0.33 | 0.38 |
+
+*Corrected in round 4: the last two rows are not suprema over the band. Both quantities grow as u falls, and so does
+the threshold; the comparison must be made energy by energy (§12.2). The first two rows are the row minima of the
+threshold, attained near σ*².*
 
 - **t = 0.84–0.855: there is room for a constant θ.** A certified bound Ω_{e*} ≤ θΩ̂ would keep the row inside its
   room for θ up to 1.33, 1.88, 2.5 and about 3.7. The measured Ω_{e*} stays at or below 1.04·Ω̂. So the majorant
@@ -913,7 +962,8 @@ What a majorant must achieve in the law layer, read from the table:
 ### 11.5 How large Ω is against Ω̂ (N)
 
 Fixed families of §11.3, both energies, all six rows (`t4fam_*.json`, `t4m1_*.json`); the first row is
-at t = 0.80 and the last at 0.855:
+at t = 0.80 and the last at 0.855. *Round 4: the energies are u ∈ {0.85, 1}σ*² only; values across the band are in
+§12.2–12.3.*
 
 | quantity | 0.80 | 0.82 | 0.84 | 0.845 | 0.85 | 0.855 |
 |---|---|---|---|---|---|---|
@@ -925,7 +975,9 @@ at t = 0.80 and the last at 0.855:
 
 - A search at t = 0.84, u = 0.9σ*² (`t4theta.py`, started and stopped early): sup_eΩ_e/Ω̂ = 1.34 at c = 1, χ = 12;
   Ω_{e*}/Ω̂ = 1.22 at an X²Ȳ-like cubic with no content, and 1.10 at c = 0.7 with ‖c‖²/δ = 7·10⁻⁴.
-- So on cubics whose content matters, Ω_{e*} ≤ 1.04·Ω̂ on everything tested. It is a numerical observation.
+- So on cubics whose content matters, Ω_{e*} ≤ 1.04·Ω̂ on everything tested at these two energies. It is a numerical
+  observation. *Round 4: at 0.5σ*² the largest Ω_{e*}/Ω̂ on the same twelve cubics is
+  0.91, 0.98, 1.07, 1.09, 1.17, 1.27 (rows 0.80, 0.82, 0.84, 0.845, 0.85, 0.855); the threshold there is larger too (§12.2).*
 - **sup_e is the wrong object.** It is attained in the zero-content class and exceeds Ω̂ by up to 54 %, growing
   with t. The lemma needs the content direction only.
 - The loss of T4 at the content direction is ×1.3 on the junta and ×6–10 at low kurtosis, where the content is
@@ -1023,3 +1075,829 @@ which is up to 5 times the Gaussian floor (junta direction: 1 + 2 + 2).
 - Reading: the frame has room at the content direction on every row (third column). The law layer has room for a
   constant θ on 0.84–0.855 only. The one proved majorant fits at 0.855 only, and only with the pointwise μ.
 - Shares in columns 3–4 are lower bounds on suprema (families and searches); columns 5–6 are sampled cells.
+
+---------------------------------------------------------------------------------------------------------------------
+
+## 12. Round 4, part A (16 November, evening): the energy band, the local representation, the split candidate
+
+**Nothing in this section closes a row.** It corrects §11.4–11.5 (the measured constants were taken at too few
+energies), states the lemma on its energy band, evaluates the local representation as a bound, and tests one
+candidate for the general lemma.
+
+Inputs, all reviewed:
+- the review of codex-a786's class result,
+  `handoff/research-degree5/codex-a786-content-law-2026-11-16/REVIEW.md` §§4.4–4.6, 5.3 (its scripts reproduce the
+  logs `content5/out/t4fam_<k>.log` to every printed digit);
+- the local content representation, `handoff/research-degree5/deficit-sign-2026-11-16/REPORT.md` §6.5 (Prop. 6.4,
+  re-derived by the coordinator; K ledger 6.3.26 to appear), with the notation of its §6.2.
+
+Labels as before. Everything is N unless marked; a search gives a lower bound on a supremum. Rows are
+t = 0.80, 0.82, 0.84, 0.845, 0.85, 0.855; tilt (0.4, 0.3); κ_AB = 0.82; pointwise μ. "Ratio" means
+‖c_X[h]‖²/(δ·Ω̂_X[h]) for a sector X ∈ {A, B}.
+Code: `r4lib.py`, `r4_low.py`, `r4_theta.py`, `r4_ratio.py`, `r4_local.py`, `r4_split.py`, `r4_tables.py`,
+`r4_xz.py`, `r4_rand.py`, `r4_kappa.py`, `r4_t4band.py`, `r4_md.py`, `sec12_text.py`, `r4_finalize.py`; outputs
+`out/r4_*`. Laptop only, at most two single-threaded processes, about 1.5 CPU-hours.
+
+### 12.1 The energies at which the content inequality is needed (A1a)
+
+(S3-AB) asks, for every possible response: ‖c_{A,s}‖² + ‖c_{B,t}‖² ≤ 4μκ_AB·(D(q) + V_sl(u)) + 4μη_AB.
+- D(q) ≥ 0 is the cubic's own deficit; it is of the order of δ.
+- V_sl(u) = S₅ − B₅(u) + cost(u) is the energy slack. It does not depend on the cubic. It vanishes at u = σ*² and
+  grows on both sides; V_sl(0⁺) = 7.0·10⁻³, 4.2·10⁻³, 2.1·10⁻³, 1.7·10⁻³, 1.3·10⁻³, 9.6·10⁻⁴ on the six rows.
+- The content is at most a constant times δ, and δ ≤ 42u² (ledger 3.4).
+
+So the energies split into three ranges.
+
+1. **u > cap: nothing to prove.** No response has u above the cap of §8.2 (P + C): 1.22, 1.16, 1.14, 1.08, 1.09,
+   1.11 σ*² on the six rows, at t_lo. The band never reaches 1.3σ*².
+2. **Low energies: V_sl pays, with proved bounds.**
+   - u ≤ 0.1σ*²: the slack alone is four to six times the proved content bound. The last column below is
+     (γ_A + γ_B)(u)·42u²/(4μκ_AB·V_sl(u)) at 0.1σ*², with γ from (S) of §3.3 and δ ≤ 42u²; it falls roughly like u²
+     below that. With D ≥ 0 this would be a law-free proof. D ≥ 0 is itself a statement of the law layer (the Stein
+     layer gives D ≥ d_St·δ, §4.3), so the certified form is the next line.
+   - Up to u₀: the test of §8.4 with the proved bounds only, (S) and (F) with the Stein layer and (R1), has no
+     excess (`r4_low.py`; χ ∈ {2, 8, 16, 30, 42}). Entries: largest excess as a share of the stage-2 room.
+
+| t | cap/σ*² | u/σ*² = 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | excess reaches 0 at | reaches the room at | (S)·42u² against the slack alone, at 0.1σ*² |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0.80 | 1.22 | -252 % | -177 % | -81 % | +32 % | +160 % | +298 % | +447 % | 0.37 | 0.45 | 0.24 |
+| 0.82 | 1.16 | -365 % | -278 % | -175 % | -46 % | +96 % | +259 % | +438 % | 0.43 | 0.50 | 0.20 |
+| 0.84 | 1.14 | -334 % | -264 % | -198 % | -127 % | -41 % | +72 % | +186 % | 0.54 | 0.62 | 0.17 |
+| 0.845 | 1.08 | -287 % | -227 % | -175 % | -119 % | -62 % | +19 % | +107 % | 0.58 | 0.69 | 0.16 |
+| 0.85 | 1.09 | -223 % | -177 % | -137 % | -101 % | -61 % | -19 % | +42 % | 0.63 | 0.79 (with §8.4) | 0.15 |
+| 0.855 | 1.11 | -162 % | -129 % | -100 % | -76 % | -53 % | -26 % | +0 % | 0.70 | 0.94 (with §8.4) | 0.15 |
+
+   At 0.8σ*² the same test gave +207 %, +106 %, +35 % at t = 0.845, 0.85, 0.855 (§8.4), so the room is reached at
+   0.79σ*² and 0.94σ*² on the last two rows. On this range V_sl(u) ≈ V_sl(0⁺)·(1 − u/σ*²)² within 15 %.
+3. **The band [u₀, cap]: here, and only here, an unproved content bound is needed.**
+   - u₀ = 0.37, 0.43, 0.54, 0.58, 0.63, 0.70 σ*² if the proved bounds must leave no excess;
+   - u₀ = 0.45, 0.50, 0.62, 0.69, 0.79, 0.94 σ*² if they may use the whole stage-2 room.
+
+**Why round 3 started at 0.5σ*².** It was the lower end of my grid, not a property of the rows. The correct lower
+ends are the u₀ above: lower than 0.5σ*² at t = 0.80 and 0.82, higher on the other rows.
+
+**The allowance as a function of u.** In the band, write the open inequality as ‖c_X‖² ≤ θ·δ·Ω̂_X and ask, at each
+energy, for the largest θ that keeps the row inside its room (θ_room(u)) or leaves no excess (θ₀(u)), in the test of
+§11.4 (b) restricted to that energy (`r4_theta.py`). The tables of §12.2 give both. They grow quickly as u falls,
+because V_sl grows. The single row constants of §11.4 (0.37, …, 3.7) are the minima of θ_room(u), attained near σ*².
+
+**The correct statement.** For a row, for u ∈ [u₀, cap], for every remote cubic that is a possible response, and
+for X = A, B:
+
+    (L_c, band)    ‖c_X(q)‖² ≤ θ_row(u)·δ(q)·Ω̂_X(law of |q|),     θ_row(u) ≤ θ_room(u).
+
+- With one constant for all u > 0 the inequality is **false** (REVIEW §4.5): as u → 0 the ratio of a smooth profile
+  tends to that of h(v) = v, which is 256/63 on the junta and 16/(3(m + 3)) on X·P_m. The band excludes that range,
+  and below the band nothing is asked.
+
+### 12.2 The measured ratio across the band, and the corrected margins (A1b)
+
+**Corrected in round 4, part B (§13): the ratios and margins of this section are two-variable numbers.** With more
+variables the largest ratios found on t = 0.80 are 0.2761 (0.85σ*²) and 0.2505 (σ*²), margins 1.8 and 1.4; on
+t = 0.82 the margins are {0.913 / b82a:.1f} and {0.657 / b82b:.1f}. The upper rows were searched to n = 4 only; with the three-cluster
+family of §13.8 their margins are 3.8 and more.
+
+- Families: the twelve cubics of §11.3 at u/σ*² ∈ {0.3, 0.4, 0.5, 0.7, 0.85, 1} (`r4_ratio.py fam`; (R1) is tested
+  for the cubics without bulk, and those that are not possible responses at an energy are left out there).
+- Fresh searches for the largest sector-A ratio (`r4_ratio.py search`): Nelder–Mead over the six complex
+  coefficients of the core, four starts (junta, H(X) + H(Y), X(|Y|² − 1), random), c ∈ {1, 0.8}, at the energies
+  named in the tables. The B ratio is below the A ratio on every case.
+- My evaluator reproduces the reviewer's table (REVIEW §4.4) at 0.5σ*², sector A, to the digits printed there.
+- In the tables the ratio is the largest over the families, the searches and the scan of §12.4 that were run at
+  that energy (at 0.6σ*²: the families only), possible responses only.
+
+**t = 0.80** (band from 0.37σ*²):
+
+| u/σ*² | θ₀(u) | θ_room(u) | ratio, sector A | sector B | summed | maximiser of A | θ_room(u)/largest ratio |
+|---|---|---|---|---|---|---|---|
+| 0.20 (below the band) | — | — | 0.500 | 0.450 | 0.490 | junta H(X) | — |
+| 0.30 (below the band) | > 50 | > 50 ((F) suffices) | 0.351 | 0.313 | 0.344 | H(X) + H(Y) | > 50 |
+| 0.40 | 3.63 | 10.36 | 0.320 | 0.282 | 0.313 | search (no bulk, χ = 16) | 32.4 |
+| 0.50 | — | 2.80 | 0.262 | 0.226 | 0.255 | search (no bulk, χ = 16) | 10.7 |
+| 0.60 | — | 1.33 | 0.185 | 0.155 | 0.180 | H(X) + H(Y) | 7.2 |
+| 0.70 | — | 0.84 | 0.191 | 0.161 | 0.186 | shared driver, α = 0.62, β = 0.78, ψ = 0.37π (scan of §12.4) | 4.4 |
+| 0.85 | 0.33 | 0.49 | 0.160 | 0.131 | 0.155 | shared driver, α = 0.62, β = 0.79, ψ = 0.39π (scan of §12.4) | 3.1 |
+| 1.00 | 0.24 | 0.36 | 0.082 | 0.069 | 0.080 | spike + bulk, c = 0.5 | 4.4 |
+
+**t = 0.82** (band from 0.43σ*²):
+
+| u/σ*² | θ₀(u) | θ_room(u) | ratio, sector A | sector B | summed | maximiser of A | θ_room(u)/largest ratio |
+|---|---|---|---|---|---|---|---|
+| 0.30 (below the band) | > 50 | > 50 ((F) suffices) | 0.455 | 0.412 | 0.447 | junta H(X) | > 50 |
+| 0.40 | 8.46 | > 50 ((F) suffices) | 0.419 | 0.375 | 0.411 | search (no bulk, χ = 17) | > 50 |
+| 0.50 | 3.12 | 5.18 | 0.345 | 0.305 | 0.338 | search (no bulk, χ = 17) | 15.0 |
+| 0.70 | — | 1.46 | 0.255 | 0.219 | 0.249 | shared driver, α = 0.63, β = 0.78, ψ = 0.35π (scan of §12.4) | 5.7 |
+| 0.85 | 0.65 | 0.91 | 0.213 | 0.180 | 0.208 | shared driver, α = 0.62, β = 0.78, ψ = 0.36π (scan of §12.4) | 4.3 |
+| 1.00 | 0.47 | 0.66 | 0.112 | 0.095 | 0.109 | spike + bulk, c = 0.5 | 5.9 |
+
+**t = 0.84** (band from 0.54σ*²):
+
+| u/σ*² | θ₀(u) | θ_room(u) | ratio, sector A | sector B | summed | maximiser of A | θ_room(u)/largest ratio |
+|---|---|---|---|---|---|---|---|
+| 0.30 (below the band) | > 50 | > 50 ((F) suffices) | 0.673 | 0.599 | 0.660 | junta H(X) | > 50 |
+| 0.40 (below the band) | — | — | 0.586 | 0.534 | 0.578 | shared driver, α = 0.69, β = 0.73, ψ = 0.23π (scan of §12.4) | — |
+| 0.50 | 7.44 | 23.95 | 0.488 | 0.440 | 0.480 | search (no bulk, χ = 18) | 49.1 |
+| 0.70 | — | 3.69 | 0.366 | 0.324 | 0.359 | shared driver, α = 0.65, β = 0.76, ψ = 0.31π (scan of §12.4) | 10.1 |
+| 0.85 | — | 2.19 | 0.309 | 0.269 | 0.302 | search (no bulk, χ = 16) | 7.1 |
+| 1.00 | — | 1.44 | 0.173 | 0.143 | 0.168 | spike + bulk, c = 0.85 | 8.3 |
+
+**t = 0.845** (band from 0.58σ*²):
+
+| u/σ*² | θ₀(u) | θ_room(u) | ratio, sector A | sector B | summed | maximiser of A | θ_room(u)/largest ratio |
+|---|---|---|---|---|---|---|---|
+| 0.30 (below the band) | > 50 | > 50 ((F) suffices) | 0.755 | 0.676 | 0.742 | junta H(X) | > 50 |
+| 0.40 (below the band) | — | — | 0.648 | 0.593 | 0.639 | shared driver, α = 0.70, β = 0.72, ψ = 0.20π (scan of §12.4) | — |
+| 0.50 (below the band) | 10.49 | > 50 ((F) suffices) | 0.542 | 0.491 | 0.533 | search (no bulk, χ = 19) | > 50 |
+| 0.70 | — | 5.00 | 0.409 | 0.364 | 0.401 | shared driver, α = 0.65, β = 0.76, ψ = 0.28π (scan of §12.4) | 12.2 |
+| 0.85 | 1.85 | 2.73 | 0.345 | 0.304 | 0.338 | search (no bulk, χ = 17) | 7.9 |
+| 1.00 | — | 2.01 | 0.198 | 0.164 | 0.193 | spike + bulk, c = 0.85 | 10.2 |
+
+**t = 0.85** (band from 0.63σ*²):
+
+| u/σ*² | θ₀(u) | θ_room(u) | ratio, sector A | sector B | summed | maximiser of A | θ_room(u)/largest ratio |
+|---|---|---|---|---|---|---|---|
+| 0.30 (below the band) | > 50 | > 50 ((F) suffices) | 0.841 | 0.787 | 0.832 | junta H(X) | > 50 |
+| 0.40 (below the band) | — | — | 0.722 | 0.665 | 0.712 | shared driver, α = 0.71, β = 0.71, ψ = 0.16π (scan of §12.4) | — |
+| 0.50 (below the band) | 15.66 | > 50 ((F) suffices) | 0.607 | 0.553 | 0.598 | shared driver, α = 0.69, β = 0.73, ψ = 0.22π (scan of §12.4) | > 50 |
+| 0.70 | — | 7.37 | 0.460 | 0.413 | 0.452 | shared driver, α = 0.66, β = 0.75, ψ = 0.27π (scan of §12.4) | 16.0 |
+| 0.85 | — | 3.91 | 0.390 | 0.347 | 0.383 | search (no bulk, χ = 17) | 10.0 |
+| 1.00 | — | 2.67 | 0.230 | 0.193 | 0.224 | spike + bulk, c = 0.85 | 11.6 |
+
+**t = 0.855** (band from 0.70σ*²):
+
+| u/σ*² | θ₀(u) | θ_room(u) | ratio, sector A | sector B | summed | maximiser of A | θ_room(u)/largest ratio |
+|---|---|---|---|---|---|---|---|
+| 0.30 (below the band) | > 50 | > 50 ((F) suffices) | 0.960 | 0.906 | 0.951 | junta H(X) | > 50 |
+| 0.40 (below the band) | — | — | 0.812 | 0.755 | 0.803 | shared driver, α = 0.72, β = 0.69, ψ = 0.00π (scan of §12.4) | — |
+| 0.50 (below the band) | 21.71 | > 50 ((F) suffices) | 0.686 | 0.633 | 0.678 | shared driver, α = 0.70, β = 0.71, ψ = 0.19π (scan of §12.4) | > 50 |
+| 0.70 | — | 13.86 | 0.525 | 0.476 | 0.517 | shared driver, α = 0.67, β = 0.74, ψ = 0.24π (scan of §12.4) | 26.4 |
+| 0.85 | — | 6.29 | 0.447 | 0.401 | 0.439 | search (no bulk, χ = 18) | 14.1 |
+| 1.00 | — | 4.09 | 0.271 | 0.231 | 0.264 | spike + bulk, c = 0.85 | 15.1 |
+
+Summary:
+
+| t | band of the open inequality, u/σ*² | smallest margin θ_room(u)/ratio, possible responses | at u/σ*² | maximiser there | the same if cubics excluded by (R1) are counted | row constant of round 3 against the largest ratio in the band |
+|---|---|---|---|---|---|---|
+| 0.80 | [0.37, 1.22] | 3.1 | 0.85 | shared driver, α = 0.62, β = 0.79, ψ = 0.39π (scan of §12.4) | 2.6 | 1.2 |
+| 0.82 | [0.43, 1.16] | 4.3 | 0.85 | shared driver, α = 0.62, β = 0.78, ψ = 0.36π (scan of §12.4) | 3.6 | 1.5 |
+| 0.84 | [0.54, 1.14] | 7.1 | 0.85 | search (no bulk, χ = 16) | 5.4 | 2.7 |
+| 0.845 | [0.58, 1.08] | 7.9 | 0.85 | search (no bulk, χ = 17) | 6.7 | 4.6 |
+| 0.85 | [0.63, 1.09] | 10.0 | 0.85 | search (no bulk, χ = 17) | 7.9 | 5.4 |
+| 0.855 | [0.70, 1.11] | 14.1 | 0.85 | search (no bulk, χ = 18) | 10.5 | 7.0 |
+
+- **Both sides grow as u falls, and the threshold grows faster.** On every row the smallest margin is therefore near
+  σ*², not at the low end of the band: 3.1, 4.3, 7.1, 7.9, 10.0, 14.1 on the six rows, at u/σ*² = 0.85 on each.
+- **At and above σ*²** the maximisers are not possible responses (R1). If they are counted all the same, the
+  smallest margins become 2.6, 3.6, 5.4, 6.7, 7.9, 10.5. The row minimum of the threshold (0.37, 0.64, 1.33, 1.88, 2.5,
+  3.7, from §11.4, attained just above σ*²) against the ratio at σ*² gives 2.7, 3.5, 5.0, 6.3, 7.4, 9.5.
+- **Rows 0.80 and 0.82 still have room.** Their smallest energy-matched margins are 3.1 and 4.3. The reviewer's 1.7
+  and 2.2 compare the ratio at 0.5σ*² with the row constant, which belongs to σ*². At 0.5σ*² itself:
+  t = 0.80, θ_room = 2.80 against a largest ratio of 0.262: margin 10.7;
+  t = 0.82, θ_room = 5.18 against a largest ratio of 0.345: margin 15.0.
+  Had one constant been required over the whole band, the margins would be the last column of the summary (1.2 and
+  1.5 on these two rows); it is not required.
+- **The worst cubics are not the four families.** Every search ends at a shared-driver cubic
+  X·(α(|X|² − 2)/√2 + βe^{iψ}(|Y|² − 1)) with α ≈ 0.6–0.7, β ≈ 0.7–0.8 and a relative phase ψ ≈ 0.2–0.35π: a junta and
+  a rank-one cofactor on the same driver X (the family "Wick + shared" at another point). Its ratio is about 20 %
+  above that of H(X) + H(Y). With a bulk (c = 0.8) the maximum is lower. The rows "scan of §12.4" maximise over
+  (α, β, ψ) directly.
+- The margins are against searches over two core variables with at most a diffuse bulk, from four starts: lower
+  bounds on the suprema. They use the larger sector (A) and the pointwise μ.
+
+### 12.3 The local representation as a bound (A2)
+
+**Statement used (6.3.26; REPORT Prop. 6.4).** With k(v, c) = E_τ h(v + cτ), F = ∂̄q, W_k = (F·∇)F_k:
+
+    E[ȳ_e q h(V)] = ⟨y_e q ∂_vk(V, c₂), a⟩ + Σ_k ⟨y_e F_k ∂_ck(V, c₂), W_k⟩.
+
+**The bound (P, mine; same Cauchy–Schwarz as 6.3.25).** a = a₂,₀ + a₃,₁ with a₂,₀ = P₂,₀q², a₃,₁ = ½P₃,₁q², and
+W_k = ∂̄_ka₃,₁ (REVIEW of the package, T2c). So the two pairings with the (3,1) part combine into one vector:
+
+    c_e = ⟨P₂,₀G₁, a₂,₀⟩ + ⟨T, a₃,₁⟩,     G₁ = y_e q ∂_vk,   T = P₃,₁G₁ + Σ_k ȳ_k⋄P₃,₀(y_e F_k ∂_ck),
+    |c_e|² ≤ (‖P₂,₀G₁‖·b₁ + ½‖T‖·b₂)² ≤ (δ − 2‖c₂ − u‖²)·Ω^loc_e,     Ω^loc_e = ‖P₂,₀G₁‖² + ¼‖T‖²,
+
+with b₁ = ‖P₂,₀q²‖, b₂ = ‖P₃,₁q²‖ and b₁² + b₂² = δ − 2‖c₂ − u‖². The middle expression is the bound "with the true
+component norms".
+
+**Checks (N).** On 220 cases the representation agrees with the direct content to 3e-03 (relative), the
+pairing through the projections and T to the same accuracy, and b₁² + b₂² + 2‖c₂ − u‖² = δ to 5e-06.
+
+**Evaluation** (`r4_local.py`): two-variable cubics without bulk, at each sector's content direction, summed over
+A and B, in units of δΩ̂. Largest over the cases at each energy:
+
+| t | u/σ*² | truth: ‖c‖² | 6.3.25: δΩ_{e*} | 6.3.26: (δ − 2‖c₂−u‖²)Ω^loc_{e*} | 6.3.26 with the true component norms | 6.3.26 / 6.3.25: range over the cases | share of the allowance: 6.3.25, 6.3.26 |
+|---|---|---|---|---|---|---|---|
+| 0.80 | 0.35 | 0.35 | 0.93 | 0.65 | 0.65 | 0.61–0.96 | 0.160, 0.124 |
+| 0.80 | 0.50 | 0.26 | 0.84 | 0.58 | 0.58 | 0.59–1.09 | 0.250, 0.202 |
+| 0.80 | 0.70 | 0.19 | 0.75 | 0.52 | 0.51 | 0.59–1.30 | 0.345, 0.286 |
+| 0.80 | 0.85 | 0.15 | 0.71 | 0.49 | 0.48 | 0.59–1.45 | 0.390, 0.334 |
+| 0.80 | 1.00 | 0.13 | 0.67 | 0.47 | 0.45 | 0.59–1.59 | 0.417, 0.373 |
+| 0.82 | 0.35 | 0.46 | 1.01 | 0.73 | 0.72 | 0.62–0.90 | 0.126, 0.095 |
+| 0.82 | 0.50 | 0.34 | 0.92 | 0.64 | 0.64 | 0.62–0.97 | 0.198, 0.152 |
+| 0.82 | 0.70 | 0.25 | 0.83 | 0.58 | 0.57 | 0.62–1.11 | 0.263, 0.212 |
+| 0.82 | 0.85 | 0.21 | 0.78 | 0.54 | 0.54 | 0.61–1.22 | 0.302, 0.247 |
+| 0.82 | 1.00 | 0.18 | 0.74 | 0.51 | 0.51 | 0.61–1.33 | 0.329, 0.275 |
+| 0.84 | 0.35 | 0.64 | 1.23 | 0.87 | 0.86 | 0.63–0.88 | 0.095, 0.071 |
+| 0.84 | 0.50 | 0.48 | 1.03 | 0.74 | 0.73 | 0.62–0.90 | 0.150, 0.110 |
+| 0.84 | 0.70 | 0.36 | 0.93 | 0.66 | 0.66 | 0.62–0.95 | 0.200, 0.151 |
+| 0.84 | 0.85 | 0.30 | 0.88 | 0.62 | 0.62 | 0.63–1.01 | 0.225, 0.174 |
+| 0.84 | 1.00 | 0.26 | 0.84 | 0.59 | 0.58 | 0.63–1.09 | 0.242, 0.193 |
+| 0.845 | 0.35 | 0.71 | 1.31 | 0.93 | 0.92 | 0.64–0.88 | 0.087, 0.067 |
+| 0.845 | 0.50 | 0.53 | 1.08 | 0.78 | 0.76 | 0.63–0.89 | 0.138, 0.101 |
+| 0.845 | 0.70 | 0.40 | 0.97 | 0.69 | 0.69 | 0.62–0.92 | 0.184, 0.137 |
+| 0.845 | 0.85 | 0.34 | 0.92 | 0.64 | 0.64 | 0.62–0.97 | 0.208, 0.158 |
+| 0.845 | 1.00 | 0.29 | 0.87 | 0.61 | 0.61 | 0.63–1.03 | 0.224, 0.175 |
+| 0.85 | 0.35 | 0.78 | 1.41 | 1.00 | 0.99 | 0.64–0.88 | 0.079, 0.062 |
+| 0.85 | 0.50 | 0.60 | 1.17 | 0.83 | 0.82 | 0.63–0.89 | 0.125, 0.091 |
+| 0.85 | 0.70 | 0.45 | 1.01 | 0.72 | 0.72 | 0.62–0.90 | 0.169, 0.124 |
+| 0.85 | 0.85 | 0.38 | 0.95 | 0.68 | 0.68 | 0.62–0.93 | 0.190, 0.142 |
+| 0.85 | 1.00 | 0.33 | 0.91 | 0.64 | 0.64 | 0.63–0.98 | 0.206, 0.157 |
+| 0.855 | 0.35 | 0.88 | 1.52 | 1.08 | 1.07 | 0.65–0.88 | 0.072, 0.057 |
+| 0.855 | 0.50 | 0.68 | 1.27 | 0.90 | 0.89 | 0.63–0.88 | 0.113, 0.082 |
+| 0.855 | 0.70 | 0.52 | 1.06 | 0.76 | 0.75 | 0.63–0.89 | 0.152, 0.111 |
+| 0.855 | 0.85 | 0.44 | 1.00 | 0.71 | 0.71 | 0.62–0.90 | 0.172, 0.127 |
+| 0.855 | 1.00 | 0.38 | 0.95 | 0.68 | 0.68 | 0.62–0.93 | 0.187, 0.140 |
+
+By cubic, all rows and energies:
+
+| cubic | 6.3.26 / 6.3.25 | 6.3.25 / truth | 6.3.26 (true norms) / truth | budget share (δ − 2‖c₂−u‖²)/δ |
+|---|---|---|---|---|
+| H(X) + H(Y) | 0.88–1.02 | 1.70–3.67 | 1.47–3.76 | 0.76 |
+| Wick + shared | 0.79–1.04 | 1.38–2.43 | 1.07–2.45 | 0.75 |
+| X(\|Y\|² − 1) | 0.69–0.76 | 2.20–7.35 | 1.59–4.96 | 0.63 |
+| junta H(X) | 0.82–1.59 | 1.24–1.60 | 1.00–2.48 | 0.76 |
+| random | 0.62–0.71 | 2.26–4.38 | 1.46–3.05 | 0.67 |
+| search maximiser found at 0.40σ*² | 0.65–0.72 | 1.71–3.12 | 1.20–2.04 | 0.65–0.67 |
+| search maximiser found at 0.50σ*² | 0.63–0.82 | 1.35–3.16 | 1.05–1.97 | 0.64–0.71 |
+| search maximiser found at 0.85σ*² | 0.59–0.76 | 1.48–3.23 | 1.10–1.83 | 0.62–0.67 |
+
+Verdict:
+- **It is better than 6.3.25 at the content direction on the cofactor types everywhere, and on the junta-like
+  types except at the upper energies of the lower rows.** Ratio of the two bounds: 0.69–0.76 on X(|Y|² − 1),
+  0.62–0.71 on the random cubic, 0.79–1.04 on Wick + shared, 0.88–1.02 on H(X) + H(Y), 0.82–1.59 on the junta
+  (above 1 at t = 0.80 from 0.5σ*², at t = 0.82 from 0.7σ*², at t = 0.84–0.845 near σ*²), and 0.59–0.82 on the search
+  maximisers of §12.2.
+- The largest value over the cases falls from 1.52 to 1.08 (units of δΩ̂; t = 0.855, u = 0.35σ*²), a factor 0.71: the
+  binding case for both is X(|Y|² − 1).
+- Where the gain comes from: the budget, δ − 2‖c₂ − u‖² = 0.62–0.76 of δ on these cubics, and the single vector T.
+  With the true component norms the bound equals the truth on the junta wherever the two pairings have the same
+  sign (in one variable the two chaos spaces are one-dimensional); where they cancel it overshoots (range
+  1.00–2.48; the largest at t = 0.80, σ*²).
+- **Not evaluated with a diffuse bulk** (it needs two-dimensional smoothing tables in (|q|, c₂); §12.5). On paper
+  (P, a sketch), in the Gaussian limit: c₂ → u and T → (c₀ + κ₂)·y_e⋄q with κ₂ = E[∂_ck(V, u)]. Both c₀ and κ₂ equal
+  E[(G/2)h′(uG)], G ~ Gamma(2); numerically κ₂/c₀ = 1.000 ± 0.001 on the six rows (`r4_kappa.py`). So Ω^loc → c₀²u,
+  which is 4/3 of the floor of 6.3.25; the budget factor is 0.76 for a spike and 0.63 for X(|Y|² − 1) + bulk, and
+  the ratio of the two bounds tends to 1.02 and 0.83. At the low-kurtosis end, where Ω_{e*}/Ω̂ of 6.3.25 is largest,
+  the local bound is about equal to it: **it does not lower the maximum over the hard families.**
+- As a route it has the status of 6.3.25: it needs a certified majorant of Ω^loc at the content direction. It has
+  a smaller budget and no pairing with c₂ − u.
+
+### 12.4 A candidate for the general lemma: the split at the content direction (A3)
+
+**The candidate.** At the content direction e (X′ = y_e, Y′ the orthogonal coordinates) write q = S + C:
+- S, self-interaction in X′: the span of H(X′), X′²·conj(ℓ(Y′)) and (|X′|² − 1)·L(Y′);
+- C, the cofactor part: X′·Q(Y′) + conj(X′)·F(Y′) + R(Y′).
+
+The Stein fields of 6.3.23 split as (a, x) = (a_S, x_S) + (a_R, x_R), where (a_S, x_S) are the fields of the cubic S
+alone and (a_R, x_R) the rest (cross terms and the fields of C). Then (P, mine; both steps are the reviewed ones
+applied to a part of the fields):
+
+    c_e[h] = E[ȳ_e k′(V)(q̄ a_S + q x_S)] + E[k′(V)·M_R(V)],       M_R(v) = E[ȳ_e(q̄ a_R + q x_R) | V = v],
+    |first term|²  ≤ δ_S·Ω_e[h],            δ_S = E|S|⁴ − 2(E|S|²)²        (6.3.25 with the budget of S),
+    |second term|² ≤ θ_R·δ·Ω̂[h],           θ_R = (2/(3δ))·(E[|M_R(V)|²/V] + |E M_R|²/u)   (the dual form, REVIEW §5.3).
+
+    (C-split)    ‖c[h]‖² ≤ δ·Ω̂[h]·R_split,       R_split = (√((δ_S/δ)·Ω_{e*}/Ω̂) + √θ_R)².
+
+- For S = q it is 6.3.25; for C = q it is the sharp profile-free constant θ*(q, e) of REVIEW §5.3.
+- **What the law program would have to carry:** three numbers that are not functions of the law of |q|: the budget
+  share δ_S/δ, a majorant of Ω_{e*}/Ω̂ for the self part, and θ_R, that is the conditional field M_R(V). The first
+  could be a new scalar; the other two need new lemmas (a majorant of Ω at a self-interaction direction; a
+  conditional-sign bound for a general cofactor, of which the class result is the case X·P_m).
+
+**Test** (`r4_split.py`; conditional expectations given V by 200 quantile bins; two-variable cubics without bulk;
+u/σ*² ∈ {0.35, 0.5, 0.7, 0.85, 1}; both sectors). In units of δΩ̂:
+
+| cubic (t = 0.84, sector A) | u_S/u | δ_S/δ | truth at u/σ*² = 0.35, 0.50, 0.70, 0.85, 1.00 | 6.3.25 alone | θ*(q, e*) alone | θ_R | split |
+|---|---|---|---|---|---|---|---|
+| H(X) + ½X(\|Y\|² − 1) | 0.80 | 0.85 | 0.61, 0.43, 0.31, 0.25, 0.21 | 0.79, 0.58, 0.44, 0.37, 0.33 | 4.48 | 0.06 | 1.15, 0.92, 0.75, 0.67, 0.61 |
+| H(X) + H(Y) | 0.25 | 0.13 | 0.55, 0.42, 0.31, 0.26, 0.22 | 1.00, 0.81, 0.67, 0.60, 0.55 | 2.41 | 1.33 | 2.27, 2.17, 2.08, 2.04, 2.01 |
+| Wick + shared | 0.91 | 0.99 | 0.58, 0.41, 0.29, 0.23, 0.20 | 0.83, 0.62, 0.46, 0.39, 0.34 | 4.66 | 0.00 | 0.92, 0.70, 0.54, 0.46, 0.41 |
+| X(\|Y\|² − 1) | 0.00 | 0.00 | 0.45, 0.35, 0.26, 0.22, 0.19 | 1.14, 1.03, 0.94, 0.89, 0.85 | 1.57 | 1.57 | 1.57, 1.57, 1.57, 1.57, 1.57 |
+| X(\|Y\|² − 1) + 0.3H(X) | 0.08 | 0.02 | 0.54, 0.42, 0.32, 0.27, 0.23 | 0.90, 0.77, 0.67, 0.63, 0.59 | 2.09 | 1.84 | 2.18, 2.16, 2.13, 2.12, 2.12 |
+| junta H(X) | 1.00 | 1.00 | 0.58, 0.41, 0.29, 0.23, 0.19 | 0.73, 0.52, 0.37, 0.30, 0.25 | 4.99 | 0.00 | 0.73, 0.52, 0.37, 0.30, 0.25 |
+| random | 0.61 | 0.69 | 0.51, 0.38, 0.29, 0.24, 0.21 | 1.24, 1.02, 0.84, 0.75, 0.68 | 2.53 | 0.06–0.10 | 1.38, 1.20, 1.06, 0.99, 0.93 |
+| search maximiser found at 0.50σ*² | 0.45 | 0.46 | 0.65, 0.49, 0.36, 0.31, 0.26 | 1.00, 0.80, 0.65, 0.58, 0.53 | 2.96 | 0.67 | 2.23, 2.03, 1.86, 1.78, 1.72 |
+| search maximiser found at 0.85σ*² | 0.41 | 0.42 | 0.63, 0.48, 0.37, 0.31, 0.27 | 1.07, 0.87, 0.71, 0.64, 0.58 | 2.61 | 0.74 | 2.34, 2.15, 1.98, 1.90, 1.84 |
+
+| t | largest truth | largest 6.3.25 alone | largest split | smallest split / (6.3.25 alone) | cases where a proved step is violated |
+|---|---|---|---|---|---|
+| 0.80 | 0.36 | 0.94 | 2.13 | 1.00 | 0 of 100 |
+| 0.82 | 0.47 | 1.02 | 2.15 | 1.00 | 0 of 100 |
+| 0.84 | 0.65 | 1.24 | 2.34 | 1.00 | 0 of 90 |
+| 0.845 | 0.71 | 1.32 | 2.41 | 1.00 | 0 of 90 |
+| 0.85 | 0.79 | 1.42 | 2.46 | 1.00 | 0 of 90 |
+| 0.855 | 0.89 | 1.53 | 2.52 | 1.00 | 0 of 90 |
+
+- **Consistency.** The two proved steps hold on all 560 evaluations, and the two pieces add up to the content (largest
+  T3 error 5e-03).
+- **(C-split) does not survive.** It is never below 6.3.25 unsplit: the ratio of the two is 1.00 on the pure junta
+  and up to 5.1. Its largest value is 2.13, 2.15, 2.34, 2.41, 2.46, 2.52 on the six rows.
+- **Against the threshold of §12.2, energy by energy** (largest (C-split)/θ_room(u) over the band):
+  5.8, 3.2, 1.5, 1.1, 0.8, 0.5 at t = 0.80, …, 0.855. Below 1 only on t = 0.85–0.855, where 6.3.25 unsplit is
+  smaller still (0.34, 0.23 of the threshold).
+- **The obstruction, with numbers** (t = 0.84, u = 0.85σ*², sector A):
+  1. *The conditioning step is profile-free.* On the rank-one cofactor X(|Y|² − 1) it gives θ_R = 1.57 (REVIEW §4.6:
+     1.547 sharp), where 6.3.25 gives 0.89, 6.3.26 gives 0.62 and the truth is 0.22. No profile-free constant is
+     below 4/3 there (the ratio of h(v) = v), and the thresholds near σ*² on t ≤ 0.84 are below 4/3.
+  2. *The content direction does not separate cores from cofactors.* H(X) + H(Y) has content direction
+     (X + Y)/√2; there u_S/u = 0.25 and δ_S/δ = 0.13, so most of a sum of two juntas counts as cofactor, with
+     θ_R = 1.33 against a truth of 0.26.
+  3. *The triangle inequality between the two pieces.* Random cubic: the pieces are 0.48 and 0.09, (C-split) is
+     0.99, 6.3.25 unsplit 0.75.
+- **What the searches point to instead.** The maximisers of the ratio are shared-driver cubics q = √u·X·Z with
+  Z = α(|X|² − 2)/√2 + βe^{iψ}(|Y|² − 1) (§12.2). In that class the content is √u·E[|X|²·Z·h(u|X|²|Z|²)]: the junta
+  and the cofactor are one object, and the conditioning of the class result would become a bound on the conditional
+  mean of the phase of Z given (|X|², |Z|), with the profile kept. A scan of the class over (α, β, ψ) (`r4_xz.py`)
+  gives the rows "scan" of §12.2. As a candidate:
+
+      (C-XZ)   on the band, the sector ratio of every remote cubic is at most its supremum over the shared-driver class.
+
+  Its right side is one number per row and energy, so the law program needs nothing new; the supremum over the
+  class is a two-dimensional integral per (α, β, ψ) and can be certified. **It is a conjecture read off the searches,
+  not a consequence of the split**, and the reduction of a general cubic to the class is the open step.
+  Support (N): the four-start searches (0.5σ*² and 0.85σ*² on every row) all end in the class; and from random starts
+  only (`r4_rand.py`, eight at t = 0.80 and eight at t = 0.84, u = 0.85σ*²) no run ends above the class value
+  (0.1595 and 0.3088): seven end within 0.5 % of it, at unitary rotations of the class, the others below. Rank m > 1
+  cofactors (X·P_m) were not scanned here; REVIEW §4.2 has them below m = 1.
+  **Corrected in round 4, part B (§13): (C-XZ) is false beyond two variables.** Cofactors with two or three complex
+  eigenvalues exceed the class value (0.1780, 0.1833 against 0.1595 at t = 0.80, 0.85σ*²), and cubics in 3 to 10
+  variables reach 0.1925 to 0.2761; their maximisers have a part free of the content direction (§13.5).
+
+### 12.5 What was not done
+
+- **A2 with a diffuse bulk.** Only two-variable cubics without bulk were evaluated; the diffuse limit is on paper
+  only (§12.3).
+- **Searches.** Two core variables, c ∈ {1, 0.8}, four starts, sector A, at 0.5σ*² and 0.85σ*² (and 0.4σ*² at
+  t = 0.80, 0.82). (R1) is checked on the maximiser, not imposed during the search.
+- **Thresholds.** θ_room(u) on five energies per row (eight at t = 0.80, 0.82), χ ∈ {2, 8, 16, 30, 42}, by
+  bracketing and linear interpolation; nothing between σ*² and the cap beyond the row minimum of round 3.
+- **The low end u₀** is interpolated on a grid of 0.1σ*², with the same five values of χ. The scan of the
+  shared-driver class was not run at 0.6σ*².
+- **A3.** One candidate tested, and it fails; (C-XZ) is a conjecture from searches over two core variables. No
+  cofactor of rank above one and no cubic in three or more variables was tested.
+- `big` and `yo` were not used. Nothing was committed, pushed or posted.
+
+---------------------------------------------------------------------------------------------------------------------
+
+## 13. Round 4, part B (16 November, night): the driver class, more variables, families with many variables
+
+**Nothing in this section closes a row, and two statements of §12 are corrected: (C-XZ) is false beyond two
+variables, and the margins of §12.2 are two-variable numbers.** With more variables the largest sector-A ratio is
+higher: 0.2761 at 0.85σ*² and 0.2505 at σ*² on t = 0.80, against allowances 0.487 and 0.360 (factors
+1.76 and 1.44; they were 3.1 and 2.6 in two variables). The largest values belong to a family with three clusters
+of c variables (n = 3c + 1) that reduces exactly to the law of one scalar (§13.8); with the bulk of smallest
+fourth-moment ratio found its values for c = 4, 5, 6, 7, 8, 9, 10 are 0.2743, 0.2736, 0.2758, 0.2743, 0.2766, 0.2734, 0.2724 at 0.85σ*² and
+0.2470, 0.2467, 0.2493, 0.2481, 0.2508, 0.2481, 0.2474 at σ*². The supremum over the number of variables is not known.
+
+- The text for outside sessions is `content5/PROBLEM_V2.md`: the coordinator's edition with my corrections and the
+  consolidated update of this round. It is the single source for the hand-out; its §3 has the tables below.
+- Labels as before; everything is N unless marked. A search gives a lower bound on a supremum, up to the accuracy
+  of its quadrature. Present game (1, −39/50, 779/10000); the rows of the game A of the sibling worker were not used.
+- Machines: the laptop until 19:50 (two processes behind a load guard); then `big`, cores 32–47, folder
+  `/root/claude-b9ee-content6` (copied to `content5/out/big/`).
+
+### 13.1 The classes
+
+Fix a unit direction e, X = y_e, R = |X|², and let Y be the orthogonal coordinates. Write h₂(R) = (R − 2)/√2, so that
+X·h₂(R) is the junta H(X). Every cubic of energy u is uniquely
+
+    q = √u·[α·X·h₂(R) + X²·conj(ℓ(Y)) + (R − 1)·L(Y) + X·Q(Y) + X̄·F(Y) + R₃(Y)],
+
+with ℓ, L linear, Q ∈ H₁,₁(Y), F ∈ H₂,₀(Y), R₃ ∈ H₂,₁(Y).
+- **Class H** (ledger 3.26): q vanishes on {X = 0}, that is L = 0 and R₃ = 0.
+- **Driver class 𝒟**: in addition ℓ = 0 and F = 0:
+
+      q = √u·X·Z,     Z = α·h₂(R) + Q(Y),     α ≥ 0,   α² + ‖Q‖² = 1.
+
+  The cofactor Q = Y*MY − tr M is any element of H₁,₁(Y) in any number of variables. For a normal matrix M it is
+  Q = Σ_j m_j(T_j − 1) with complex eigenvalues m_j and independent T_j = |Y_j|² ~ Exp(1); the rank is the number of m_j.
+- The extremal family of §12.2 is 𝒟 with a cofactor of rank one, m = βe^{iψ}.
+
+### 13.2 What the quantities become on 𝒟 (B2 (a); P)
+
+Given Y the cubic is a function of X alone, q = √u·X·(α·h₂(R) + w) with w = Q(Y). Hence:
+
+1. **Content.** For a direction e′ orthogonal to X, ȳ_{e′}·q·h(V) is X times a function of (R, Y), so c_{e′} = 0. The
+   content direction is X for every profile, and
+
+       c_X[h] = √u·E[R·Z·h(u·R·|Z|²)] = √u·∫ g(w) dμ_Q(w),      g(w) = E_R[R·(α·h₂(R) + w)·h(u·R·|α·h₂(R) + w|²)],
+
+   where μ_Q is the law of the complex number Q.
+2. **Budget.** V = u·R·|Z|² and δ = u²(∫ m₄ dμ_Q − 2), with the polynomial
+
+       m₄(w) = E_R[R²·|α·h₂(R) + w|⁴] = 44α⁴ + 32√2·α³·Re w + 4α²·(4(Re w)² + 2|w|²) + 4√2·α·|w|²·Re w + 2|w|⁴.
+
+   For a normal cofactor: E(Re Q)² = Σ(Re m_j)², E[|Q|²·Re Q] = 2Σ|m_j|²·Re m_j,
+   E|Q|⁴ = 2β⁴ + |Σm_j²|² + 6Σ|m_j|⁴ (β² = Σ|m_j|²). So
+
+       χ = 40α⁴ + 2 + Σ_j [16α²(Re m_j)² + 8√2·α·|m_j|²·Re m_j + 12|m_j|⁴] + 2|Σ_j m_j²|²  ≥  2 + 40α⁴,
+
+   each bracket being at least 10|m_j|⁴. (Checks: 42 at the junta, 16 at X(|Y|² − 1), 16.02 at the test cubic "worst".)
+3. **Law functional.** Ω̂[h] = (3/2)∫A₂ dμ_Q − (3/4)(∫A₁ dμ_Q)²/u, with A_i(w) = E_R[V·k′(V)^i] at V = u·R·|α·h₂(R) + w|².
+4. **So the ratio on 𝒟 is a function of (α, u) and of the law μ_Q only**, through the four one-dimensional kernels
+   g, m₄, A₁, A₂ of w ∈ ℂ:
+
+       r_h(q) = |∫g dμ_Q|² / (u·(∫m₄ dμ_Q − 2)·Ω̂).
+
+   Two cofactors with the same law on ℂ give the same ratio, in any dimension.
+5. **Stein fields.** c₂ = u·(α²R²/2 + R·N_Q) and a = u·X²·(α²(R − 1) + α·Q/√2 + Γ_Q), with N_Q = Σ_j|∂̄_jQ|² and
+   Γ_Q = Σ_j ∂_jQ·∂̄_jQ (for a normal cofactor N_Q = Σ|m_j|²T_j, Γ_Q = Σm_j²T_j).
+6. **Ω_X and Ω^loc_X are not functions of μ_Q.** They contain the projections of functions of (Q, N_Q, Γ_Q) onto
+   H₁,₁(Y) and H₂,₂(Y). At rank one they are two-dimensional integrals (the numbers of §12.3).
+
+**Answer to "is there a closed or one-dimensional form".** The integration over the driver is one-dimensional and
+explicit, as for the radius. What is left is an integral of the kernels against the law of the cofactor value on ℂ,
+and this cannot be closed as it was for the radius: there one Cauchy–Schwarz in R under the weight |X| sufficed,
+because the integrand was positive. Here g changes sign, and the cancellation E Q = 0 has to be kept.
+
+**Class H in general (P).** Given Y, q = √u·(α·X·h₂(R) + s̄·X² + w·X + f·X̄) with (s, w, f) = (ℓ(Y), Q(Y), F(Y)). Now
+|q|² depends on the phase of X, the content has components along Y, and the kernels are functions on ℂ³ that also
+involve the gradients of ℓ, Q, F. In two variables the searches of §12.2 over all six coefficients end in 𝒟 (N).
+
+### 13.3 The landscape inside 𝒟 (N)
+
+- Rank one (the two-variable family of §12.2) is **not** extremal in 𝒟. Sector A, t = 0.80, 0.85σ*²: equal eigenvalues
+  of rank 1, 2, 3, 4, 8, 21: 0.1595, 0.1707, 0.1725, 0.1723, 0.1696, 0.1660; free complex eigenvalues: rank two
+  0.1780 (a conjugate pair 0.625e^{±0.24πi}, α = 0.47), rank three 0.1833 (0.533e^{±0.28πi} and 0.500, α = 0.43); a
+  Gaussian cofactor 0.1628. At t = 0.84: 0.3087 (rank one), 0.3331 (rank two), 0.2911 (Gaussian).
+- Rank one against rank two on every row at 0.7, 0.85, 1.0 σ*² (`b2_table.py`): 0.80: 0.1915/0.2120, 0.1595/0.1780,
+  0.1367†/0.1536; 0.82: 0.2551/0.2782, 0.2134/0.2349, 0.1835†/0.2034†; 0.84: 0.3665/0.3911, 0.3088/0.3331,
+  0.2669†/0.2903; 0.845: 0.4086/0.4331, 0.3452/0.3699, 0.2990†/0.3231†; 0.85: 0.4603/0.4841, 0.3902/0.4148,
+  0.3387†/0.3633†; 0.855: 0.5255/0.5476, 0.4472/0.4712, 0.3894†/0.4140 († not a possible response by (R1)).
+
+### 13.4 The relaxation over cofactor laws (P for the lemma, N for the values)
+
+- **Convexity (P).** At fixed (α, u) the content and δ are linear in the law μ of the cofactor value and Ω̂ is
+  concave; for every λ > 0 and phase φ the functional 2Re(e^{−iφ}c_X) − λθδ − Ω̂/λ is convex in μ, and (T) on 𝒟 is its
+  nonpositivity. Under k linear constraints its supremum is attained on laws with at most k + 1 atoms.
+- **With E Z = 0 and E|Z|² fixed only, (T) is false.** α = 0 and Z ∈ {s, −1/s} with probabilities 1/(1 + s²),
+  s²/(1 + s²): as s → 1 the law of V tends to the exponential law and the ratio tends to 2u·c₀²/Ω̂(Gauss) (P),
+  c₀ = E[V k′(V)]/u at the Gaussian law: 2.19, 2.34, 2.47, 2.51, 2.54, 2.56 on the six rows at σ*²
+  (`b2_twopoint.py`). At χ = 2, 8, 16 on t = 0.80: 1.65, 0.96, 0.61 (the cofactor X(|Y|² − 1), χ = 16, has 0.094).
+  For h(v) = v the ratio is 8/3 for every s (P).
+- **With the third-moment constraints** |E Z²Z̄|², |E Z³|² ≤ (2/3)·s₂·k₂₂ and k₂₂ ≤ 6s₂² (s₂ = E|Z|²,
+  k₂₂ = E|Z|⁴ − 2s₂² − |E Z²|²; valid for every normal second-chaos cofactor, by Cauchy–Schwarz between Σm²m̄, Σ|m|²,
+  Σ|m|⁴), laws with 4 to 6 atoms give at least 0.89 and 0.82 at t = 0.80 (0.85σ*², σ*²; allowances 0.49, 0.36), 1.02
+  and 0.95 at t = 0.82 (0.91, 0.66), 1.19 and 1.13 at t = 0.84 (2.2, 1.44) (`b2_relax.py`). (R1) does not cut these
+  laws. So the relaxation fails on t = 0.80, 0.82 and is not refuted at t = 0.84. The true values in 𝒟 are 4 to 5
+  times smaller: atomic laws are far from chaos laws, and moment constraints do not see it.
+
+### 13.5 General cubics in n = 3, …, 13 variables, and the three-cluster family beyond (N)
+
+Searches: all of H₂,₁(ℂⁿ) for n ≤ 8 with analytic gradients (`b2_gen3.py`, `b2_gen5.py`, `b2_gen7.py`; δ exact;
+the other integrals on a fitting sample; the value quoted is on independent samples), and reduced families
+(`b2_bip.py`, `b2_fam.py`). Largest values by n, with the measured values on two independent samples, the value on
+the fitting sample ("fit": biased upward, never to be quoted), the fourth excess, the energy shares of the parts
+relative to the content direction, and the values of the full searches:
+
+| t | u/σ*² | n | largest ratio A | two independent samples | fit | χ | junta | X·Q | R₃ | where found | full searches |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0.80 | 0.85 | 3 | 0.1925 | — | 0.1926 (2^18) | 9.27 | 0.239 | 0.490 | 0.271 | full | 0.1925, 0.1925, 0.1925, 0.1925 |
+| 0.80 | 0.85 | 4 | 0.2105 | — | — | 7.06 | 0.182 | 0.463 | 0.355 | full | 0.2105, 0.2104, 0.2101, 0.2100 |
+| 0.80 | 0.85 | 5 | 0.2246 | 0.2247, 0.2246 | 0.2254 (2^20) | 5.57 | 0.154 | 0.463 | 0.383 | bipartite (2,2) | 0.2246, 0.2245, 0.2245, 0.2244 |
+| 0.80 | 0.85 | 6 | 0.2386 | 0.2387, 0.2384 | 0.2428 (2^20) | 4.53 | 0.124 | 0.398 | 0.476 | full | 0.2386, 0.2376, 0.2365, 0.2364 |
+| 0.80 | 0.85 | 7 | 0.2483 | 0.2485, 0.2482 | 0.2505 (2^20) | 3.84 | 0.109 | 0.386 | 0.506 | clusters 2,2,2 | 0.2474, 0.2474, 0.2472 |
+| 0.80 | 0.85 | 8 | 0.2532 | 0.2531, 0.2532 | 0.2613 (2^20) | 3.36 | 0.099 | 0.374 | 0.527 | bipartite (3,4) | 0.2525, 0.2515 |
+| 0.80 | 0.85 | 9 | 0.2575 | 0.2575, 0.2575 | 0.2660 (2^20) | 3.01 | 0.091 | 0.363 | 0.546 | bipartite (3,5) | — |
+| 0.80 | 0.85 | 10 | 0.2588 | — | — | 2.83 | 0.089 | 0.366 | 0.545 | clusters 3,3,3, bulk of smallest κ (§13.8) | — |
+| 0.80 | 0.85 | 11 | 0.2630 | 0.2628, 0.2632 | 0.2799 (2^20) | 2.48 | 0.079 | 0.338 | 0.583 | bipartite (4,6) | — |
+| 0.80 | 0.85 | 12 | 0.2666 | 0.2664, 0.2669 | 0.2793 (2^20) | 2.29 | 0.075 | 0.331 | 0.594 | clusters 4,3,4 | — |
+| 0.80 | 0.85 | 13 | 0.2756 | 0.2750, 0.2761 | — | 2.06 | 0.071 | 0.312 | 0.617 | clusters 4,4,4, bulk of smallest κ (§13.8) | — |
+| 0.80 | 0.85 | 16 | 0.2739 | 0.2742, 0.2736 | — | 1.77 | 0.066 | 0.304 | 0.630 | clusters 5,5,5, bulk of smallest κ (§13.8) | — |
+| 0.80 | 0.85 | 19 | 0.2748 | 0.2743, 0.2752 | — | 1.50 | 0.060 | 0.287 | 0.653 | clusters 6,6,6, bulk of smallest κ (§13.8) | — |
+| 0.80 | 0.85 | 22 | 0.2743 | — | — | 1.34 | 0.058 | 0.277 | 0.665 | clusters 7,7,7, bulk of smallest κ (§13.8) | — |
+| 0.80 | 0.85 | 25 | 0.2761 | 0.2757, 0.2766 | — | 1.17 | 0.053 | 0.261 | 0.687 | clusters 8,8,8, bulk of smallest κ (§13.8) | — |
+| 0.80 | 0.85 | 28 | 0.2734 | — | — | 1.08 | 0.052 | 0.256 | 0.692 | clusters 9,9,9, bulk of smallest κ (§13.8) | — |
+| 0.80 | 0.85 | 31 | 0.2731 | 0.2732, 0.2730 | — | 0.99 | 0.050 | 0.248 | 0.702 | clusters 10,10,10, bulk of smallest κ (§13.8) | — |
+| 0.80 | 1.00 | 3 | 0.1679 | — | 0.1682 (2^18) | 9.04 | 0.231 | 0.489 | 0.279 | full | 0.1679, 0.1679, 0.1679, 0.1679 |
+| 0.80 | 1.00 | 4 | 0.1847 | — | 0.1870 (2^18) | 6.86 | 0.175 | 0.456 | 0.368 | full | 0.1847, 0.1847, 0.1845, 0.1844 |
+| 0.80 | 1.00 | 5 | 0.1987 | — | 0.2043 (2^18) | 5.36 | 0.139 | 0.431 | 0.427 | full | 0.1987, 0.1983, 0.1982, 0.1982 |
+| 0.80 | 1.00 | 6 | 0.2114 | 0.2114, 0.2115 | 0.2157 (2^20) | 4.40 | 0.118 | 0.391 | 0.488 | full | 0.2114, 0.2110, 0.2108 |
+| 0.80 | 1.00 | 7 | 0.2211 | — | — | 3.73 | 0.103 | 0.383 | 0.515 | clusters 2,2,2, bulk of smallest κ (§13.8) | 0.2206, 0.2205, 0.2202 |
+| 0.80 | 1.00 | 8 | 0.2257 | 0.2261, 0.2253 | 0.2308 (2^20) | 3.28 | 0.094 | 0.374 | 0.532 | bipartite (3,4) | 0.2253, 0.2252 |
+| 0.80 | 1.00 | 9 | 0.2301 | 0.2302, 0.2300 | 0.2377 (2^20) | 2.93 | 0.085 | 0.360 | 0.555 | bipartite (3,5) | — |
+| 0.80 | 1.00 | 10 | 0.2315 | — | — | 2.74 | 0.084 | 0.361 | 0.556 | clusters 3,3,3, bulk of smallest κ (§13.8) | — |
+| 0.80 | 1.00 | 11 | 0.2361 | 0.2361, 0.2362 | 0.2505 (2^20) | 2.41 | 0.075 | 0.332 | 0.592 | bipartite (4,6) | — |
+| 0.80 | 1.00 | 12 | 0.2397 | 0.2395, 0.2399 | 0.2510 (2^20) | 2.21 | 0.070 | 0.326 | 0.604 | clusters 4,3,4 | — |
+| 0.80 | 1.00 | 13 | 0.2482 | 0.2477, 0.2487 | — | 1.98 | 0.066 | 0.306 | 0.627 | clusters 4,4,4, bulk of smallest κ (§13.8) | — |
+| 0.80 | 1.00 | 16 | 0.2470 | 0.2474, 0.2467 | — | 1.70 | 0.061 | 0.299 | 0.640 | clusters 5,5,5, bulk of smallest κ (§13.8) | — |
+| 0.80 | 1.00 | 19 | 0.2482 | 0.2478, 0.2487 | — | 1.45 | 0.056 | 0.280 | 0.663 | clusters 6,6,6, bulk of smallest κ (§13.8) | — |
+| 0.80 | 1.00 | 22 | 0.2481 | — | — | 1.29 | 0.054 | 0.271 | 0.675 | clusters 7,7,7, bulk of smallest κ (§13.8) | — |
+| 0.80 | 1.00 | 25 | 0.2505 | 0.2501, 0.2509 | — | 1.12 | 0.049 | 0.255 | 0.696 | clusters 8,8,8, bulk of smallest κ (§13.8) | — |
+| 0.80 | 1.00 | 28 | 0.2481 | — | — | 1.04 | 0.048 | 0.250 | 0.701 | clusters 9,9,9, bulk of smallest κ (§13.8) | — |
+| 0.80 | 1.00 | 31 | 0.2479 | 0.2480, 0.2479 | — | 0.95 | 0.047 | 0.242 | 0.712 | clusters 10,10,10, bulk of smallest κ (§13.8) | — |
+| 0.82 | 0.85 | 3 | 0.2493 | — | — | 9.76 | 0.256 | 0.491 | 0.253 | full | 0.2493 |
+| 0.82 | 0.85 | 4 | 0.2685 | — | — | 7.42 | 0.199 | 0.463 | 0.337 | full | 0.2685 |
+| 0.82 | 0.85 | 5 | 0.2835 | — | 0.2878 (2^20) | 5.87 | 0.165 | 0.462 | 0.371 | full | 0.2835, 0.2835, 0.2833 |
+| 0.82 | 0.85 | 6 | 0.2975 | 0.2975, 0.2976 | 0.3042 (2^20) | 4.81 | 0.138 | 0.407 | 0.452 | full | 0.2975, 0.2964, 0.2961 |
+| 0.82 | 0.85 | 7 | 0.3075 | — | — | 4.10 | 0.122 | 0.396 | 0.482 | clusters 2,2,2, bulk of smallest κ (§13.8) | — |
+| 0.82 | 0.85 | 8 | 0.3060 | 0.3067, 0.3053 | 0.3110 (2^20) | 3.84 | 0.119 | 0.414 | 0.467 | clusters 2,3,2 | — |
+| 0.82 | 0.85 | 10 | 0.3172 | — | — | 3.04 | 0.100 | 0.376 | 0.523 | clusters 3,3,3, bulk of smallest κ (§13.8) | — |
+| 0.82 | 0.85 | 13 | 0.3314 | — | — | 2.23 | 0.081 | 0.324 | 0.595 | clusters 4,4,4, bulk of smallest κ (§13.8) | — |
+| 0.82 | 0.85 | 16 | 0.3295 | — | — | 1.92 | 0.075 | 0.317 | 0.608 | clusters 5,5,5, bulk of smallest κ (§13.8) | — |
+| 0.82 | 0.85 | 19 | 0.3305 | — | — | 1.64 | 0.070 | 0.299 | 0.631 | clusters 6,6,6, bulk of smallest κ (§13.8) | — |
+| 0.82 | 0.85 | 25 | 0.3290 | — | — | 1.29 | 0.062 | 0.273 | 0.666 | clusters 8,8,8, bulk of smallest κ (§13.8) | — |
+| 0.82 | 1.00 | 3 | 0.2179 | — | — | 9.49 | 0.247 | 0.491 | 0.263 | full | 0.2179 |
+| 0.82 | 1.00 | 4 | 0.2367 | — | — | 7.23 | 0.189 | 0.462 | 0.347 | full | 0.2367 |
+| 0.82 | 1.00 | 5 | 0.2525 | — | 0.2558 (2^20) | 5.67 | 0.155 | 0.438 | 0.407 | full | 0.2525, 0.2511, 0.2505 |
+| 0.82 | 1.00 | 6 | 0.2646 | 0.2647, 0.2646 | 0.2669 (2^20) | 4.67 | 0.131 | 0.425 | 0.444 | bipartite (2,3) | — |
+| 0.82 | 1.00 | 7 | 0.2752 | — | — | 3.96 | 0.115 | 0.391 | 0.494 | clusters 2,2,2, bulk of smallest κ (§13.8) | — |
+| 0.82 | 1.00 | 8 | 0.2735 | 0.2739, 0.2730 | 0.2786 (2^20) | 3.69 | 0.111 | 0.411 | 0.478 | clusters 2,3,2 | — |
+| 0.82 | 1.00 | 10 | 0.2855 | — | — | 2.92 | 0.094 | 0.371 | 0.535 | clusters 3,3,3, bulk of smallest κ (§13.8) | — |
+| 0.82 | 1.00 | 13 | 0.3005 | — | — | 2.13 | 0.076 | 0.317 | 0.607 | clusters 4,4,4, bulk of smallest κ (§13.8) | — |
+| 0.82 | 1.00 | 16 | 0.2993 | — | — | 1.84 | 0.071 | 0.309 | 0.620 | clusters 5,5,5, bulk of smallest κ (§13.8) | — |
+| 0.82 | 1.00 | 19 | 0.3010 | — | — | 1.56 | 0.065 | 0.292 | 0.644 | clusters 6,6,6, bulk of smallest κ (§13.8) | — |
+| 0.82 | 1.00 | 25 | 0.3008 | — | — | 1.22 | 0.057 | 0.266 | 0.677 | clusters 8,8,8, bulk of smallest κ (§13.8) | — |
+
+- Sequences on t = 0.80 for n = 2, 3, …: 0.1595, 0.1925, 0.2105, 0.2246, 0.2386, 0.2483, 0.2532, 0.2575, 0.2588, 0.2630, 0.2666, 0.2756 at 0.85σ*² and
+  0.1367†, 0.1679, 0.1847, 0.1987, 0.2114, 0.2211, 0.2257, 0.2301, 0.2315, 0.2361, 0.2397, 0.2482 at σ*². On t = 0.82: 0.2134, 0.2493, 0.2685, 0.2835, 0.2975, 0.3075, 0.3075, 0.3172, 0.3314 and
+  0.1835†, 0.2179, 0.2367, 0.2525, 0.2646, 0.2752, 0.2752, 0.2855, 0.3005.
+- Accuracy: spread between independent samples of one cubic 0.03–0.27 % (n = 4), 0.10–0.26 % (n = 5), 0.1–0.4 %
+  (n = 6 to 10). Fitting bias in the full searches with 2^20 points: 1.4 %, 1.8 %, 3.8 %, 5.2 % for n = 5, 6, 7, 8
+  (3.3 % and 7 % for n = 5, 6 with 2^18). The first report of the n = 5, 6 values quoted the fit (0.231, 0.253,
+  0.204); the values are 0.2246, 0.2386, 0.1987.
+- **Structure.** Relative to the content direction X: q = a·H(X) + X·Q(y) + R₃(y); the parts X²·conj(ℓ),
+  (|X|² − 1)·L, conj(X)·F carry at most 0.002 of the energy. Q is normal to within 0.03; for n ≥ 5 its eigenvalues
+  come in clusters of equal values; in suitable coordinates R₃ consists of monomials y_a y_b ȳ_c with three
+  different variables, all of which carry eigenvalues (n = 7: clusters 0.27e^{−0.23πi}, 0.27e^{0.23πi}, 0.20, two
+  variables each, one variable of each cluster in every monomial). n = 3 in closed form (t = 0.80, 0.85σ*²):
+  0.49·H(X) + 0.57e^{0.26πi}·X(|y₁|² − 1) + 0.40e^{−0.20πi}·X(|y₂|² − 1) + 0.52·y₂²ȳ₁/√2 (ratio 0.1905).
+- **Reduced families.** Bipartite (clusters A, B; R₃ = Σ_{c∈A}(ȳ_c·P_c(y_B) + y_c·N_c(y_B))): equal to the full maxima
+  for n = 3, 4, 5 and 0.3 % below for n = 6; three clusters with R₃ on monomials across clusters: equal for n = 7;
+  all monomials with three different variables: equal for n = 7, below for n ≤ 6. Each gives lower bounds further
+  out (table). `content5/ref/bipartite.py` is a self-contained version for the hand-out.
+- **(I), (II) at the content direction** on the three-variable cubics (`b2_ref3.py`; t = 0.80, σ*², per δ): rank-two
+  driver cubic: truth 0.0177, (I) 0.0493, (II) 0.0319; three-variable maximiser: 0.0198, 0.0473, 0.0306; allowance
+  0.0425. On t = 0.82 (I) exceeds the allowance at σ*² on the cofactor cubic only, and (II) is below it on all seven
+  test cubics (smallest factor 1.27).
+
+### 13.6 What the maximisers use (P for the identities, N for the numbers)
+
+- Given y, q = √u·[X·(a·h₂(|X|²) + z) + r] with (z, r) = (Q(y), R₃(y)). The law of V and the content along X depend
+  on y only through (z, |r|²): the ratio is a functional of a and of the joint law of (Q(y), |R₃(y)|²).
+- Cov(Q, |R₃|²) = Σ_j m_j·K_jj with K_jj = Σ_μ |B_μ|²·deg_j(μ) ≥ 0 and Σ_j K_jj = 3‖R₃‖² (P: (|y_j|² − 1) is diagonal on
+  Wick monomials of one bidegree, with eigenvalue the degree in y_j, ȳ_j). Measured: 0.285, 0.331, 0.332, 0.330 for
+  n = 3, …, 6, real and positive in the phase of the junta; correlation coefficient 0.45–0.54. Check at n = 3 from the
+  coefficients: 0.2835e^{−0.02πi}.
+- Surgery (`b2_surgery.py`; t = 0.80, 0.85σ*²; every variant renormalised; δ by quadrature here, values good to 1 %):
+
+| n | maximiser | R₃ on an independent copy of y | R₃ → independent Gaussian | without R₃ | without junta | no junta, R₃ independent | X·Q alone |
+|---|---|---|---|---|---|---|---|
+| 3 | 0.193 | 0.160 | 0.154 | 0.172 | 0.133 | 0.089 | 0.121 |
+| 4 | 0.210 | 0.153 | 0.153 | 0.176 | 0.148 | 0.066 | 0.116 |
+| 5 | 0.223 | 0.154 | 0.160 | 0.185 | 0.158 | 0.066 | 0.117 |
+| 6 | 0.238 | 0.139 | 0.154 | 0.181 | 0.173 | 0.049 | 0.108 |
+| 7 | 0.247 | 0.129 | 0.150 | 0.180 | 0.182 | 0.041 | 0.101 |
+
+  An independent bulk lowers the ratio; the dependent one raises it. The classes of the theorems have a bulk on fresh
+  variables (independent of every cofactor) and no junta.
+
+### 13.7 Families with many variables whose ratio is a two-dimensional integral
+
+J shared variables with one eigenvalue m, S = Σ|y_j|² ~ Gamma(J), W a standard complex Gaussian:
+q = √u·[X·(a·h₂(|X|²) + m(S − J)) + σ(S)·W].
+(a) Limit model (P: a limit of cubics): bulk b·ȳ_j·Γ_j with Γ_j the Gaussian limit of a diffuse holomorphic
+quadratic in fresh variables; σ² = b²S. (b) Genuine cubics in 1 + J + J(J+1)/2 variables: bulk g·P_cd(y)·conj(L_cd),
+c ≤ d, with fresh variables L_cd; σ² = g²S²/2 exactly. Content along X only (P). Code `b2_limit.py` (tables of the
+Gaussian smoothing; checked against the driver-class code, 0.1596/0.1594 and 0.1777/0.1775, and against a direct
+simulation, 0.2110/0.2101), `b2_limgam.py`, `b2_limgam2.py`. Largest ratio over the parameters, t = 0.80:
+
+| J | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 14 | 16 | 20 | 30 | 40 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| (a), 0.85σ*² | 0.2101 | 0.2359 | 0.2429 | 0.2439 | 0.2421 | 0.2398 | 0.2332 | 0.2281 | — | 0.2171 | — | 0.2040 | — | — |
+| (a), σ*² | 0.1867 | 0.2116 | 0.2187 | 0.2200 | 0.2187 | 0.2169 | 0.2113 | — | — | — | — | — | — | — |
+| (b), 0.85σ*² | — | 0.2041 | 0.2223 | 0.2330 | — | 0.2440 | 0.2481 | 0.2492 | 0.2492 | — | 0.2458 | 0.2425 | 0.2318 | 0.2238 |
+| (b), σ*² | — | — | — | 0.2066 | — | 0.2176 | 0.2221 | 0.2237 | 0.2241 | — | 0.2218 | 0.2191 | 0.2102 | — |
+
+- (a) peaks at J = 4, (b) near J = 10 to 12 (66 to 91 variables); both then fall. All maximisers are possible
+  responses. With unequal parameters at J = 2, with two clusters, or with an added independent bulk nothing is gained.
+  Without the junta (a = 0), (a) gives at most 0.203.
+- (a) is reached slowly by genuine cubics: Γ replaced by a quadratic in K = 2, 4, 8 fresh variables at the J = 1
+  maximiser gives 0.152, 0.178, 0.190 against 0.210.
+- For a = 0 both are centred conditionally Gaussian mixtures (P): given y, q ~ N_ℂ(0, uS′) with S′ = |Z|² + σ², and
+  c_X = √u·E[Z·Φ_u(S′)], Φ_u(s) = E[(vh)′(u s τ)], δ = 2u²·Var S′. They differ from the classes of the theorems only in
+  the term σ²(y), a bulk variance that depends on the cofactor variables: E[Z·σ²] = J·m·b² in (a), m·g²·J(J+1) in (b).
+- The finite maximisers of §13.5 are above both families: their R₃ has three eigenvalue-carrying variables per
+  monomial (covariance with the cofactor 3 × mean eigenvalue × bulk energy, against 2 in (b) and 1 in (a)).
+
+### 13.8 The three-cluster family: an exact reduction to the law of one scalar (P), and what decides its supremum (N)
+
+Written on 17 November, 00:10 to 01:30 (Bucharest), after the searches with clusters 4,4,4.
+
+**Reduction (P).** Three clusters of c cofactor variables (n = 3c + 1), S_k = Σ_{j∈k}|y_j|². Assume (H1) the eigenvalue
+is constant on each cluster, and (H2) R₃ is supported on the 3c³ monomials y_a y_b ȳ_c with a, b, c in three different
+clusters. By (H2) R₃ is homogeneous of degree one in each cluster: R₃(y) = (S₁S₂S₃)^{1/2}·R₃(ω), with ω uniform on the
+product of the three unit spheres and independent of (S₁, S₂, S₃). So q has the law of
+
+    q = √u·[X·A + σ·√G·e^{iψ}],   A = a·h₂(|X|²) + Σ_k m_k(S_k − c),   σ² = s_R·S₁S₂S₃/c³,   a² + cΣ_k|m_k|² + s_R = 1,
+
+with |X|² ~ Exp(1), S_k ~ Gamma(c), ψ uniform, G = c³|R₃(ω)|²/‖R₃‖² (E G = 1), all independent. Then
+V = u(|X|²|A|² + σ²G + 2|X||A|σ√G cos φ), c_X = √u·E[(|X|²A + (A/|A|)|X|σ√G cos φ)·h(V)], the content is along X,
+δ = u²(E[|X|⁴|A|⁴ + 4|X|²|A|²σ² + κσ⁴] − 2) with κ = E G² = (c/(c+1))³·E|R₃|⁴/(E|R₃|²)²: the ratio is an integral over
+five moduli and one angle and depends on R₃ **only through the law of G**. κ = 2 for a bulk that is Gaussian given
+the cluster sums, κ = 1 for a fixed modulus.
+
+*Why the content is along X (P).* Average ȳ_j·q·h(V) over the phase of X first: with a = √u·X·A and r = √u·R₃,
+E_φ[(a e^{iφ} + r)·h(|a e^{iφ} + r|²)] = r·Ψ(|a|, |r|) with Ψ real (rotate φ; reflect φ). So
+c_j = E[ȳ_j·R₃·Ψ̃(|X|, S, |R₃|)]. For y_j in cluster k take another cluster k′ and the map y^{(k′)} → −y^{(k′)}: it
+preserves the law, S and |R₃|, fixes ȳ_j, and changes the sign of R₃ (every monomial is of degree one in every
+cluster). The integrand is odd under it, so c_j = 0. The same averaging gives the formula for c_X.
+
+**The searches found this structure (N; `b2_condlaw.py`).** At the search maximisers for c = 2, 3, 4 (0.85σ*²):
+eigenvalues constant on clusters to 1–8 %; E[|R₃|² | all moduli] = s_R·S₁S₂S₃/c³ to 1 % (relative squared error
+0.002, 0.012, 0.010); Cov(Z, |R₃|²) = s_R·Σ_k m_k to 1 %; κ = 1.3342, 1.5914, 1.6186. The three types of monomial
+(which cluster carries the conjugate) are anti-correlated in energy: E[|t_k|²|t_l|²] is 0.49 to 0.85 of the product
+of the conditional means, which brings κ below the value of one type.
+
+**Models against the searches (N).** A Gaussian bulk (G exponential; `b2_limprod.py`) and a Gamma law for G with
+the measured κ (`b2_limshape.py`), each maximised over (a, m_k, s_R), t = 0.80:
+
+| c | search 0.85σ*² | Gaussian bulk | Gamma, measured κ | search σ*² | Gaussian bulk | Gamma, measured κ |
+|---|---|---|---|---|---|---|
+| 2 | 0.2483 | 0.2231 | 0.2489 | 0.2209 | 0.1966 | 0.2232 |
+| 3 | 0.2575 | 0.2371 | 0.2586 | 0.2310 | 0.2103 | 0.2307 |
+| 4 | 0.2715 | 0.2445 | 0.2738 | 0.2402 | 0.2178 | 0.2405 |
+
+The Gaussian bulk is 8 to 11 % low (it peaks at c = 8: 0.2505, 0.2513, 0.2479 at 0.85σ*² and 0.2244, 0.2259, 0.2238
+at σ*² for c = 6, 8, 12); the Gamma law with the measured κ agrees to 0.1–1 %.
+
+**The bulk of smallest κ (N; `b2_kappa.py`: exact fourth moments by the class Quartic, L-BFGS from 2 to 9 random
+starts; the smallest value found, an upper bound of the infimum).**
+
+| c | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| smallest κ found | 1.0000 | 1.3333 | 1.5800 | 1.6000 | 1.7057 | 1.7481 | 1.7930 | 1.7997 | 1.8329 | 1.8476 |
+| (2 − κ)·c | 1.00 | 1.33 | 1.26 | 1.60 | 1.47 | 1.51 | 1.45 | 1.60 | 1.50 | 1.52 |
+| one type alone, 2(1 + 3/c)/(1 + 1/c)³ | 1.0000 | 1.4815 | 1.6875 | 1.7920 | 1.8519 | 1.8892 | 1.9141 | 1.9314 | 1.9440 | 1.9534 |
+| κ at the search maximiser (0.85σ*²) | — | 1.3342 | 1.5914 | 1.6186 | — | — | — | — | — | — |
+
+One type alone has κ ≥ 2(1 + 3/c)/(1 + 1/c)³ with equality for tensors whose three flattenings have flat singular
+values (P: E|T(ω)|⁴ = 2(‖T‖⁴ + Σ_k Tr G_k²)/(c(c+1))³ with G_k the Gram matrices of the flattenings). For c = 2 the
+value 4/3 is attained by R₃ = z₂(x̄₁y₁ + x̄₂y₂) + z̄₁(x₁y₂ − x₂y₁) (P, by |⟨x, y⟩|² + |x∧y|² = |x|²|y|²: on the unit
+spheres |R₃|² = (1 − t)p + t(1 − p) + 2√(t(1 − t)p(1 − p))·cos ψ with p, t uniform on [0, 1], so E|R₃|² = 1/2 and
+E|R₃|⁴ = 1/3). That 4/3 is the minimum, and every value for c ≥ 3 (8/5 to ten digits at c = 4), is the optimiser's
+finding, not proved. The search maximisers have κ within 0.1 %, 0.7 %, 1.2 % of these values.
+
+**A lower bound (P): κ ≥ 2c²/(c + 1)² for every cubic of the family** (0.89, 1.28, 1.58, 1.70, 1.77 at c = 2, 4, 8, 12,
+16). Proof. Write R₃ = t₁ + t₂ + t₃ by type. The types have different characters under the phases of the clusters, so
+E|R₃|⁴ = Σ_k E|t_k|⁴ + 4Σ_{k<l} E|t_k|²|t_l|² (Gaussian expectations). (i) E|t_k|²|t_l|² ≥ E|t_k|²·E|t_l|²: with the
+fourth moments of the spheres the left side is (c(c+1))⁻³ times a sum of eight contractions of the two tensors
+(each mode "straight" or "swapped"); ‖T_k‖²‖T_l‖² and three others are non-negative (traces of products of
+positive semi-definite Gram matrices, or sums of squares), and each of the remaining four is bounded in modulus by
+one of those three (Cauchy–Schwarz: Σ_{kn} E_{kn} conj(E_{nk}) ≥ −‖E‖²). It is also Theorem 1.1 of Malicet, Nourdin,
+Peccati, Poly, J. Funct. Anal. 270 (2016), arXiv:1503.02154, with d = 2, applied to real and imaginary parts
+(checked by the coordinator). (ii) E|t_k|⁴ = 2(‖T_k‖⁴ + Σ_j Tr G_j²) ≥ 2(1 + 3/c)(E|t_k|²)². With w_k the weights of
+the types, E|R₃|⁴ ≥ (2 + (6/c)Σ_k w_k²)(E|R₃|²)² ≥ (2 + 2/c)(E|R₃|²)², and κ = (c/(c+1))³·E|R₃|⁴/(E|R₃|²)². ∎
+Numerically (c = 2, 3; 12 starts) the minimum of the ratio in (i) is 1.000000 and that in (ii) is 2(1 + 3/c) to six
+digits: each inequality is attained, not both at once. So κ → 2 in this family, at a rate between 1.26/c and 4/c.
+
+**The formula at the proved bound (N; G of Gamma shape; `b2_limshape.py`, tag "low").** t = 0.80, c = 2, 3, 4, 5, 6, 7, 8, 10, 12, 16, 24, 40:
+0.285, 0.333, 0.341, 0.345, 0.345, 0.345, 0.343, 0.338, 0.334, 0.323, 0.304, 0.275 at 0.85σ*² and 0.258, 0.305, 0.313, 0.317, 0.318, 0.318, 0.317, 0.313, 0.309, 0.300, 0.282, 0.257 at σ*²
+(κ = 1 where the bound is below 1). The largest are 0.345 and 0.318: below the allowances 0.487 and 0.360 by 1.41
+and 1.13. Two-point laws of G with the same two moments (`b2_twoG.py`): G ∈ {0, κ} gives 0.3238 (c = 6) and 0.3219
+(c = 12) at σ*², G = 1 ± √(κ − 1) gives 0.3180 and 0.3150 (Gamma: 0.3181, 0.3092). The supremum over all laws of G
+with these two moments (three atoms suffice, by the convexity of §13.4) was started (`b2_atomG.py`) and stopped
+for the low rows; it is not computed.
+
+**Cubics with that bulk (N; `b2_kfam.py`, checked by `b2_kfam_check.py`).** R₃ = √s_R × the minimiser; only
+(a, m₁, m₂, m₃, s_R) optimised (8 real parameters, nothing fitted to a sample); the law of G from 2^20 samples
+(24-node Gauss rule of the empirical measure); product quadrature in the moduli. In brackets: the same cubic
+evaluated directly in 3c + 1 variables on two independent samples of 2^21 points.
+
+| t | u/σ*² | c = 2 (n = 7) | c = 3 (n = 10) | c = 4 (n = 13) | c = 5 (n = 16) | c = 6 (n = 19) | c = 7 (n = 22) | c = 8 (n = 25) | c = 9 (n = 28) | c = 10 (n = 31) | allowance | allowance / largest |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0.80 | 0.85 | 0.2483 | 0.2588 | 0.2743 (0.2756) | 0.2736 (0.2739) | 0.2758 (0.2748) | 0.2743 | 0.2766 (0.2761) | 0.2734 | 0.2724 (0.2731) | 0.487 | 1.76 |
+| 0.80 | 1.00 | 0.2211 | 0.2315 | 0.2470 (0.2482) | 0.2467 (0.2470) | 0.2493 (0.2482) | 0.2481 | 0.2508 (0.2505) | 0.2481 | 0.2474 (0.2479) | 0.36 | 1.44 |
+| 0.82 | 0.85 | 0.3075 | 0.3172 | 0.3314 | 0.3295 | 0.3305 | — | 0.3290 | — | — | 0.913 | 2.75 |
+| 0.82 | 1.00 | 0.2752 | 0.2855 | 0.3005 | 0.2993 | 0.3010 | — | 0.3008 | — | — | 0.657 | 2.18 |
+| 0.84 | 0.85 | 0.4014 | 0.4074 | 0.4177 | 0.4130 | 0.4113 | — | 0.4053 | — | — | 2.19 | 5.24 |
+| 0.84 | 1.00 | 0.3614 | 0.3692 | 0.3814 | 0.3780 | 0.3775 | — | 0.3735 | — | — | 1.44 | 3.78 |
+| 0.845 | 0.85 | 0.4347 | 0.4390 | 0.4474 | 0.4416 | 0.4388 | — | 0.4310 | — | — | 2.73 | 6.10 |
+| 0.845 | 1.00 | 0.3921 | 0.3986 | 0.4093 | 0.4049 | 0.4035 | — | 0.3979 | — | — | 2 | 4.89 |
+| 0.85 | 0.85 | 0.4743 | 0.4763 | 0.4823 | 0.4752 | 0.4710 | — | 0.4611 | — | — | 3.91 | 8.11 |
+| 0.85 | 1.00 | 0.4287 | 0.4333 | 0.4421 | 0.4365 | 0.4338 | — | 0.4264 | — | — | 2.7 | 6.11 |
+| 0.855 | 0.85 | 0.5227 | 0.5215 | 0.5243 | 0.5155 | 0.5097 | — | 0.4972 | — | — | 6.29 | 12.00 |
+| 0.855 | 1.00 | 0.4735 | 0.4755 | 0.4815 | 0.4744 | 0.4703 | — | 0.4604 | — | — | 4.1 | 8.51 |
+
+Every cubic checked directly is a possible response (R1). The searches with 205 coefficients were low by 1.5 % and
+3 % at c = 4 (0.2715 and 0.2402).
+
+**Sensitivity to κ (N).** With G ~ Gamma(k)/k, k = 1/(κ − 1), and κ = 1.6: 0.3019, 0.3330 at c = 6, 8 (t = 0.80,
+0.85σ*²; 0.2752 at c = 6 at σ*²), against 0.2758, 0.2766 with the smallest κ found; κ = 1.6 at c = 12 would give
+0.4956, above the allowance, but it is excluded by the bound (1.704). (2 − κ)·c has stayed between 1.26 and 1.60 for
+the c computed. Open: the value of κ_min(c) between the proved bound and the values found, and the laws of G beyond
+their second moment.
+
+Hand-out scripts: `content5/ref/kappa.py` (explicit cubic, minimisation of κ, the formula, the direct check),
+`content5/ref/clusters.py` (the search), `content5/ref/bulk/` (the minimisers).
+
+### 13.9 The pieces below 0.80 (17 November, 01:25 to 02:30; N)
+
+Scope change of 17 November (coordinator, from the degree-5 worker): the certificate needs the content inequality on
+the pieces t ∈ [0.70, 0.80) too. Profiles in kit format with exact derivatives, t_lo, the cap and the allowance lists:
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/degree5-newcap-2026-11-16/profiles_low/` (covering rows
+copied to `content5/kit/profiles_low/`). Code: `content5/code/b2_lowr.py` (validated on the kit row 0.80: 0.1595,
+0.2743 / 0.2756 as stored), table `b2_lowtab.py`. Each search is run free and then with (R1) at the file's t_lo
+(penalty, then checked on independent samples). u* below is σ*² of the row in the file.
+
+**Covering rows at the binding energy of each piece** (cluster cubics: formula, direct check in brackets; † the
+two-variable maximum is not a possible response; ‡ limits of cubics):
+
+| piece t | covering row t′ | u* of that row | t_lo | u_cap/u* | binding u/u* | θ_room there | θ_room at u/u* nearby | largest ratio found (possible responses) | θ_room / largest | smallest factor over the energies run (at u/u*) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0.78 | 0.82 | 0.06825 | 0.7749 | 1.724 | 1.448 | 0.5232 | 1.400: 0.545, 1.500: 0.523 | 0.2417 (clusters 8,8,8) | 2.17 | 2.17 (1.448) |
+| 0.76 | 0.81 | 0.07812 | 0.7549 | 1.776 | 1.456 | 0.4000 | 1.400: 0.414, 1.496: 0.412 | 0.2167 (clusters 8,8,8) | 1.85 | 1.85 (1.456) |
+| 0.74 | 0.80 | 0.08787 | 0.7349 | 1.818 | 1.455 | 0.3141 | 1.400: 0.325, 1.500: 0.323 | 0.1962 (clusters 8,8,8) | 1.60 | 1.60 (1.455) |
+| 0.72 | 0.79 | 0.09752 | 0.7149 | 1.854 | 1.492 | 0.2587 | 1.409: 0.263, 1.529: 0.267 | 0.1749 (clusters 8,8,8) | 1.48 | 1.44 (1.400) |
+| 0.70 | 0.79 | 0.09752 | 0.6949 | 2.070 | 1.612 | 0.2190 | 1.537: 0.225, 1.656: 0.222 | 0.1650 (clusters 8,8,8) | 1.33 | 1.30 (1.449) |
+
+| piece t (row t′) | u/u* | θ_room | n = 2, all cubics† | (1,2), n = 4 | (2,2), n = 5 | (2,3), n = 6 | 2,2,2, n = 7 | c = 4, n = 13 | c = 6 | c = 8, n = 25 | c = 10 | driver J = 1 + bulks‡ | driver J = 2 + bulks‡ | Gamma G at the proved κ, c = 4, 6, 8 (model) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0.78 (0.82) | 1.448 | 0.5232 | 0.1295 | 0.1762 | 0.1895 | 0.2018 | 0.2118 | 0.2376 (0.2387) | 0.2400 | 0.2417 | 0.2384 | 0.1791 | — | 0.3037, 0.3081, 0.3073 |
+| 0.76 (0.81) | 1.456 | 0.4000 | 0.1101 | 0.1535 | 0.1659 | 0.1775 | 0.1871 | 0.2118 (0.2128) | 0.2146 | 0.2167 | 0.2141 | 0.1579 | — | 0.2765, 0.2816, 0.2810 |
+| 0.74 (0.80) | 1.455 | 0.3141 | 0.0956 | 0.1361 | 0.1475 | 0.1585 | 0.1678 | 0.1910 (0.1919) | 0.1938 | 0.1962 | 0.1939 | 0.1414 | 0.1626 | 0.2548, 0.2594, 0.2589 |
+| 0.72 (0.79) | 1.492 | 0.2587 | 0.0819 | 0.1100 | 0.1295 | 0.1397 | 0.1479 | 0.1699 (0.1706) | 0.1725 | 0.1749 | 0.1730 | 0.1251 | — | 0.2318, 0.2360, 0.2353 |
+| 0.70 (0.79) | 1.612 | 0.2190 | 0.0760 | 0.1117 | 0.1215 | 0.1313 | 0.1394 | 0.1601 (0.1609) | 0.1626 | 0.1650 | 0.1632 | 0.1178 | 0.1359 | 0.2210, 0.2248, 0.2242 |
+
+**Own rows** (the row tuned at t itself):
+
+| piece t | own row: u* | binding u/u* | θ_room there | largest ratio found (possible responses) | θ_room / largest | smallest n found above the allowance |
+|---|---|---|---|---|---|---|
+| 0.78 | 0.10704 | 0.900 | 0.3499 | 0.2282 (clusters 8,8,8) | 1.53 | none |
+| 0.76 | 0.12574 | 0.891 | 0.2326 | 0.1981 (clusters 8,8,8) | 1.17 | none |
+| 0.74 | 0.14398 | 0.894 | 0.1605 | 0.1711 (clusters 8,8,8) | 0.94 | n = 13: clusters 4,4,4, 0.1659 |
+| 0.72 | 0.16174 | 0.894 | 0.1144 | 0.1484 (clusters 8,8,8) | 0.77 | n = 13: clusters 4,4,4, 0.1437 |
+| 0.70 | 0.17904 | 0.878 | 0.0845 | 0.1306 (clusters 8,8,8) | 0.65 | n = 4: bipartite (1,2), 0.0868 |
+
+**Findings.** (1) On the own rows the inequality with the allowance is false: possible-response cubics exceed it
+(table) for t ≤ 0.74, from four variables on at t = 0.70. (2) On the covering rows it holds for everything found: the
+smallest value of allowance/(largest ratio) over the energies run is 1.30 at t = 0.70 (at 1.449 u*: allowance 0.2323,
+ratio 0.1787) and 1.60 at t = 0.74; by energy (u/u*: factor): t = 0.70: 1.035: 1.43, 1.242: 1.31, 1.449: 1.30, 1.500: 1.31, 1.537: 1.31, 1.612: 1.33, 1.656: 1.37; t = 0.72: 1.298: 1.47, 1.400: 1.44, 1.492: 1.48; t = 0.74: 1.400: 1.62, 1.455: 1.60, 1.500: 1.68. (3) At these energies (1.4 to 1.65 σ*² of the covering row) the
+largest ratios in two and three variables are not possible responses and no possible response was found near them;
+from n = 4 on the maximisers are possible responses without penalty. (4) The proved bound on κ does not close the
+three-cluster family at t = 0.70: the Gamma formula at the bound exceeds the allowance by up to 2.6 % at 1.612 u* and
+3.4 % at 1.449 u* (it is below it for c = 3 and c = 16). The κ at which
+it reaches the allowance, per c, at the energy of the smallest allowance (1.612 u*):
+
+| c | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16 |
+|---|---|---|---|---|---|---|---|---|
+| κ*(c): the formula equals θ_room = 0.2190 | bound suffices | 1.285 | 1.402 | 1.483 | 1.591 | 1.658 | 1.705 | bound suffices |
+| proved lower bound | 1.125 | 1.280 | 1.389 | 1.469 | 1.580 | 1.653 | 1.704 | 1.772 |
+| formula at the proved bound | 0.2136 | 0.2210 | 0.2239 | 0.2248 | 0.2242 | 0.2219 | 0.2194 | 0.2133 |
+| smallest κ found (2 − 1.6/c beyond c = 10) | 1.580 | 1.600 | 1.706 | 1.748 | 1.800 | 1.848 | 1.875 | 1.906 |
+| formula at that κ | 0.1475 | 0.1605 | 0.1604 | 0.1628 | 0.1654 | 0.1635 | 0.1620 | 0.1590 |
+
+at the energy of the smallest factor (1.449 u*):
+
+| c | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16 |
+|---|---|---|---|---|---|---|---|---|
+| κ*(c): the formula equals θ_room = 0.2323 | bound suffices | 1.290 | 1.407 | 1.488 | 1.596 | 1.662 | 1.708 | bound suffices |
+| proved lower bound | 1.125 | 1.280 | 1.389 | 1.469 | 1.580 | 1.653 | 1.704 | 1.772 |
+| formula at the proved bound | 0.2281 | 0.2360 | 0.2392 | 0.2402 | 0.2397 | 0.2372 | 0.2347 | 0.2281 |
+| smallest κ found (2 − 1.6/c beyond c = 10) | 1.580 | 1.600 | 1.706 | 1.748 | 1.800 | 1.848 | 1.875 | 1.906 |
+| formula at that κ | 0.1602 | 0.1739 | 0.1739 | 0.1764 | 0.1790 | 0.1770 | 0.1753 | 0.1720 |
+
+and at t = 0.74 (1.455 u*):
+
+| c | 4 | 6 | 8 | 12 |
+|---|---|---|---|---|
+| κ*(c): the formula equals θ_room = 0.3141 | bound suffices | bound suffices | bound suffices | bound suffices |
+| proved lower bound | 1.280 | 1.469 | 1.580 | 1.704 |
+| formula at the proved bound | 0.2548 | 0.2594 | 0.2589 | 0.2535 |
+| smallest κ found (2 − 1.6/c beyond c = 10) | 1.600 | 1.748 | 1.800 | 1.875 |
+| formula at that κ | 0.1911 | 0.1937 | 0.1964 | 0.1921 |
+
+The class "driver with J ≤ 2 cofactor variables + Gaussian bulks" (limits of cubics; it contains a spike with a
+bulk) gives 0.1178 (J = 1) and 0.1359 (J = 2) at t = 0.70 and 0.1414, 0.1626 at t = 0.74 among possible responses:
+below the cluster cubics.
+
+The text for outside sessions with these rows is `content5/PROBLEM_V3.md`.
+
+### 13.10 What was not done
+
+- No upper bound: nothing here bounds the supremum over the number of variables. The searches for n ≥ 8 are local,
+  few, and mostly in families chosen by hand.
+- The richer limit object (a finite core plus terms F_k(y)·W_k with Gaussian W_k) was sampled through (a) and (b)
+  only; no hybrid of a finite core with Gaussian terms was optimised.
+- Rows 0.84 to 0.855 were searched to n = 4 only (the three-cluster family of §13.8 was evaluated there); t = 0.82
+  to n = 10.
+- κ was minimised from 2 to 9 random starts only, for c ≤ 10; the proved lower bound 2c²/(c + 1)² is far from the
+  values found; other bulk structures (four clusters, unequal clusters, bipartite) were not analysed through their
+  conditional laws; the three-atom supremum over the law of G was not computed.
+- On the pieces below 0.80: one energy per piece for t = 0.76, 0.78, three for t = 0.72, 0.74, seven for t = 0.70 (the
+  scan with the largest cubic only); sector A only; no search over all cubics beyond two variables on those rows.
+- (I) and (II) were not computed on maximisers with four or more variables.
+- The tables of §8.4, §11.4, §12.1, §12.2 were **not** recomputed with a direct Γ′ and a finer grid of χ (the review
+  found the spline derivative of Γ wrong by up to 3.7·10⁻² at small radii, θ_room 0.6 to 8 % too low, and the grid
+  χ ∈ {2, 8, 16, 30, 42} missing the binding values 14 and 36). The published allowances are on the safe side.
+- Nothing was committed, pushed or posted.

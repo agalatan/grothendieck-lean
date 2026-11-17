@@ -62,13 +62,14 @@ of the working folder, whose other outputs are described in the next two section
 ## The capped degree-5 game of 16 November (STATUS 4.16–4.19)
 
 `sources/degree5-capped-2026-11-16/` holds five reports, verbatim apart from their first lines: `CAPPED_GATE.md`,
-`CERT_STAGE2.md`, `CERT_STAGE2B.md`, `SMALL_T.md` and `CONTENT_LEMMA_D5.md`. Their code and outputs stay in the working
+`CERT_STAGE2.md`, `CERT_STAGE2B.md`, `SMALL_T.md` and `CONTENT_LEMMA_D5.md` (the version of 17 November, with rounds 4A
+and 4B in §§12–13; its hash is in the last section). Their code and outputs stay in the working
 folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/`:
 - `capgate/` (1.3 MB): the gate of 4.16;
 - `cert2/` (44 MB) and `cert2b/` (41 MB): the certificate of 4.17. `cert2b/replay2b_all.py` is the single replay
   checker; its logs are `cert2b/out/replay2b_*.log`;
 - `smallt/` (1.1 MB): the 412 certificates of 4.18, with `reverify.py` and the exact `assemble.py`;
-- `content5/` (7.6 MB; the folder is in use and grows): the scripts and outputs of 4.19 (`code/`, `out/`). Copied
+- `content5/` (19 MB; the folder is in use and grows): the scripts and outputs of 4.19 (`code/`, `out/`). Copied
   from it into `code/degree5-content/`:
   the profile generator (`prof.py`, `tilt.py`), `rows5.lines`, `rowlib.py`, `t4lib.py`, `t4fam.py`, `rice.py` and
   `lawstein.py`, unedited. The six JSON tables `code/degree5-content/profiles/band_row_<t>.json` were exported from
@@ -98,7 +99,67 @@ the second is a value of the ratio. `b2_rows_n3.log` and `b2_rows_n4.log` print 
 
 The search scripts (`b2_*.py` with `r4lib.py` and the kit) and the JSON files of the maximisers stay in
 `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/content5/`
-(`code/`, `out/`): they are one worker's working files and have not been reviewed.
+(`code/`, `out/`): they are one worker's working files. A review worker re-evaluated the maximisers with n ≤ 6 at
+t = 0.80 (STATUS 4.28; R4A §4.5); nothing else of them has been reviewed.
 `sources/content-problem-v2-2026-11-16/PROBLEM_V2.md` is the problem statement prepared for outside sessions; its
 `kit/` is `code/degree5-content/`. The inequality (T) that it poses is one of the open steps of STATUS §5, item 2,
 not the only one.
+
+## The content band reviewed, the scope and the low rows (17 November 2026; STATUS 4.28–4.35)
+
+Copied into `sources/`, verbatim apart from the first line of each `.md` file:
+- `sources/degree5-content-review-round4a-2026-11-17/REVIEW_ROUND4A.md` (R4A): the review of CONT5 §12. Its scripts,
+  logs and data stay in `content5/review-round4a/` of the working folder (1.2 MB: `scripts/`, `logs/`, `data/`; its
+  §11 lists them).
+- `sources/degree5-newcap-2026-11-17/PROGRESS.md` (NEWCAP): the degree-5 worker's report in its final state, and
+  `SCOPE_TABLE.txt`, the scope table of STATUS 4.31 (copied unedited, without a header line). The worker's folder
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/degree5-newcap-2026-11-16/`
+  (48 MB) keeps the code (`thresholds/`, `gate/`, `smallt/`, `rows/`, `radius/`, `cert2c/`), the outputs
+  (`thresholds/games/`, where `g078big/` is the scope run) and complete copies of its two droplet folders
+  (`big_copy/`, 11 MB; `yo_copy/`, 12 MB). The droplet folders themselves, `big:/root/claude-b9ee-d5newcap` and
+  `yo:~/claude-b9ee-d5newcap`, were left in place by the worker.
+- `sources/content-problem-v2-2026-11-16/PROBLEM_V3.md` (PV3) is version 3 of the problem statement (17 November,
+  02:13; 696 lines), which adds the pieces below 0.80; its `kit/profiles_low/` is `code/degree5-content/profiles_low/`
+  (the same five files). The low-row data of CONT5 §13.9 stay in the working folder: the table
+  `content5/out/b2_lowtab.txt` and the 65 records `content5/out/big/b2_lowr_*.json` (6.5 MB), written by
+  `content5/code/b2_lowr.py` and `b2_lowtab.py`.
+- `sources/content-problem-v2-2026-11-16/PROBLEM_V2.md` (PV2) is the version of 17 November, 01:25 (585 lines). The
+  same file is in the package for outside sessions,
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/content-problem-v2-2026-11-16/content-problem-v2/`
+  (with `kit/`, `ref/` and `SHA256SUMS`; zipped as `content-problem-v2.zip`). Its `ref/` scripts (`bipartite.py`,
+  `clusters.py`, `kappa.py` and `bulk/bulk_c<c>.json`, c = 2, …, 10) are in `content5/ref/` of the working folder;
+  the searches with n ≥ 7 and on the low rows (`b2_gen7.py`, `b2_kappa.py`, `b2_low*.py`, `r4_low.py`, `r4_kappa.py`)
+  are in `content5/code/`, their outputs in `content5/out/`. The paragraph of its §2 on the rows below 0.80 quotes
+  the scope before the final run of the degree-5 worker; STATUS 4.31 has the final values.
+
+The spectral scan of STATUS 4.35 is in the degree-5 worker's working folder
+`/Users/alingalatan/workspaces/grothe/handoff/research-degree5/degree5-spec-2026-11-17/`
+(840 KB, in use; no hashes): `PROGRESS.md`, `code/spec_scan.py` (the scan), `code/collect.py` (the table:
+`python3 code/collect.py out/A_*.jsonl out/B_*.jsonl out/C_*.jsonl`), the records `out/A_*`, `B_*`, `C_*` (`.jsonl`)
+and `logs/`. The ledger quotes its scan of the direct bound only; the law rows with spectral cuts that the folder also
+holds (`code/spec_row.py`) are not quoted.
+
+Copied into `code/degree5-content/profiles_low/` (LOWKIT), unedited, with a new `README.md`: the five profiles of the
+covering rows, from `profiles_low/` of the worker's folder. The profiles of the rows tuned at t itself
+(`band_row_<t>_own.json`) are not copied.
+
+| file (paths relative to `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/`) | size | SHA-256 |
+|---|---:|---|
+| `claude-research-2026-11-15/degree5-cert/content5/REVIEW_ROUND4A.md` (the original of R4A) | 95,599 B | `5424d4ca2fb2224911012ab68b3028b5abfd75758169399576b7df062a8c6b7b` |
+| `degree5-newcap-2026-11-16/PROGRESS.md` (the original of NEWCAP) | 54,390 B | `8fbab395d2ab170741cbe9708aa4edb84521b9fc72cfb6ee6eaf48da2da59861` |
+| `degree5-newcap-2026-11-16/profiles_low/SCOPE_TABLE.txt` (copied) | 3,383 B | `5abfb090c3139c1110217160705b462c53f5e7163998fecc8dd0201b926647c7` |
+| `claude-research-2026-11-15/degree5-cert/content5/PROBLEM_V2.md` (the original of PV2) | 50,378 B | `2fdb9e7a73ef205912014106fca3cc2c874a92f4aec8ea00609e2fde87a5bb73` |
+| `claude-research-2026-11-15/degree5-cert/content5/PROBLEM_V3.md` (the original of PV3) | 60,457 B | `8222551f8eefeaf640d06e78c6a3be3b49339b5799b78d2ff6a3b8861dfdf9ce` |
+| `claude-research-2026-11-15/degree5-cert/CONTENT_LEMMA_D5.md` (the original of CONT5, version of 17 November, 02:15; 1902 lines) | 153,886 B | `d3ffedc03369f3f2ec311e8cde515eed6718ce0edd887e47935bcd5b2c95d57f` |
+| `claude-research-2026-11-15/degree5-cert/content5/out/b2_lowtab.txt` (the low-row table of CONT5 §13.9, not copied) | 4,314 B | `7d5ba89461ac03b580456d6ad173230eb79a394ee08ce9c7224086a6f6701708` |
+| `content-problem-v2-2026-11-16/content-problem-v2.zip` (the package, not copied) | 350,379 B | `f18a04986e941959e0fffa17d139388671b6c3a0a8061216d17cc8bedaeee926` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.70.json` (copied) | 94,609 B | `c66c77221dd984fa4daa7eb8d36ab12f80d868e79ed85641c118637c19376c1a` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.72.json` (copied) | 94,866 B | `3f2ccc90af124df905194f6509376d332f57dd852d57d854e7dc0b5c742c821a` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.74.json` (copied) | 94,755 B | `c21abd20ab511286ee7d93d75144d0fbbf326f34bade9277e84484ed5435e5b1` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.76.json` (copied) | 94,740 B | `ed618494f5af8944332ffbdcff75add8641d62a6ace0095156a3d9eac84adae2` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.78.json` (copied) | 94,864 B | `91b828c1857a36d51e1f95ee3de88189204f95006e9eac44565fa1095ff82fde` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.70_own.json` (not copied) | 94,961 B | `4f1a2727e86cbde7242890e4d25aa5351b45d86a60b925f23cb235e98cf108ef` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.72_own.json` (not copied) | 94,984 B | `a44ccd79828bfdf4eddcf6c69054d0da829fdb00bc9202f041ace98e7ece6cb9` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.74_own.json` (not copied) | 94,765 B | `2f01c6ac1f4b26775ab0537eaca50e7014ae7dc932c6b5e79c359d54eb444956` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.76_own.json` (not copied) | 94,849 B | `f11f813c1f35bfb5a0c18223131d1a7b3c0e64623f868f3ce4f3089d33c83338` |
+| `degree5-newcap-2026-11-16/profiles_low/band_row_0.78_own.json` (not copied) | 94,885 B | `9e87da333e1a00a77b4105c13f51d4e9b86e239a4fc87d91c03868c1b6b39446` |

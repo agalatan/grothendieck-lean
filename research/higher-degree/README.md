@@ -19,7 +19,7 @@ numerical (N)**; the rows of `STATUS.md` §4 marked **C** or **P** name their au
 | `README.md` | this file: notation, the state in brief, reading order |
 | [`STATUS.md`](STATUS.md) | **the ledger**: every statement with its scope, status, author and source |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository (logs, numerical archives, downloaded sources), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions) |
+| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma) |
 | `code/` | the scripts behind them and the small result files the ledger cites |
 
 **Living documents.** `STATUS.md` is edited in place by every PR that changes the state of knowledge; copies under
@@ -53,7 +53,7 @@ record.
     is a choice of multipliers (ℓ, β, b_A, b_B, ν₅) made for one t; its bound is a parabola in t (STATUS 4.1). The
     envelope is the maximum over t of the smallest row bound, and the room of a row is 500/701 minus its bound.
   - q is the remote cubic of a response, u = E|q|² its energy, δ = E|q|⁴ − 2u² its fourth cumulant and χ = δ/u². In
-    rows 4.19–4.28, V also stands for |q|². With ψ the potential of the row and B₅(u) its Gaussian value at the
+    rows 4.19–4.34, V also stands for |q|². With ψ the potential of the row and B₅(u) its Gaussian value at the
     energy u, D(q) = B₅(u) − E ψ(|q|) is the deficit of q, S₅ = sup_u[B₅(u) − cost(u)] the benchmark of the row,
     and u\* (written σ\*² in some rows) its reference energy, the energy at which that supremum is attained.
   - K₅ is the sector inequality of a row, Λ₅ ≤ S₅ + η₅ with an allowance η₅ (STATUS 4.1). The A and B shells are
@@ -61,7 +61,11 @@ record.
     antilinear form.
   - For a radial profile h, c[h] = Π₁[q·h(|q|²)] is the first-chaos content of q and e\* its direction;
     k(v) = E h(v + uτ) with τ ~ Exp(1), and Ω̂[h] = (3/2)E[V·k′(V)²] − (3/4)(E[V·k′(V)])²/u. The content law is
-    ‖c[h]‖² ≤ θ·δ·Ω̂[h]; the thresholds of STATUS 4.19 are the values of θ that keep a row inside its room.
+    ‖c[h]‖² ≤ θ·δ·Ω̂[h]. Its allowance θ_room(u) is the largest θ that keeps a row inside its room at the energy u
+    in the law-layer relaxation (sufficient, not necessary; STATUS 4.29); the thresholds of STATUS 4.19 are minima
+    of such allowances over a row's band of energies.
+  - From the switch point t_s up, the certificate uses Gaussian rows, each tuned for one t (tuned rows); below t_s
+    it uses law rows (STATUS 4.17, 4.31). A covering row is a tuned row used on a piece of t below its tuning point.
   - The junta is a cubic of one coordinate, the Wick monomial H(y) = y(|y|² − 2)/√2. A spike is such a coordinate
     in a diffuse bulk and c its coefficient; in the one-spike family of STATUS 4.23, c² is its share of the
     energy and ρ = c/√(2(1 − c²)).
@@ -82,12 +86,14 @@ record.
   (STATUS 1.8). Haagerup's 1/γ† = 1.404575934663742 lies inside it. No rounding built from the binding responses
   beats Haagerup's γ_H (STATUS 3.3).
 - **The degree-5 programme.** At t = 0 a row bound is at least λ₁ρ\*², so the proved radius bound caps the cubic
-  weight λ₁ (STATUS 4.12; the games per cap are in 1.10). For the game (1, −39/50, 779/10000), model value 1.402785,
-  a certificate for 1.402 is computed over all t, conditional on a sector inequality K₅ on each row, with 3.7·10⁻⁴ of
-  room at the binding rows (STATUS 4.17). It has one author and no independent replay. K₅ is open in several parts
-  (STATUS §5): the content band t ∈ [0.80, 0.855], where on t = 0.80 and 0.82 it is not known whether the content
-  inequality holds in every dimension (STATUS 4.28); certified constants on t ≥ 0.86; the rows 0.1365 < t < 0.65;
-  and the other pieces of the gate (STATUS 4.16). The work runs under issue #453.
+  weight λ₁ (STATUS 4.12; the games per cap are in 1.10 and 4.33). For the game (1, −39/50, 779/10000), model value
+  1.402785, a certificate for 1.402 is computed over all t, conditional on a sector inequality K₅ on each row, with
+  3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). It has one author and no independent replay. K₅ is open in
+  several parts (STATUS §5), none of them the only one: the content lemma on every tuned row from t = 0.647 to
+  0.886, whose binding rows are the lowest and need covering rows (STATUS 4.31, 4.32); whether the content
+  inequality holds in every dimension (STATUS 4.28, 4.30); certified constants on t ≥ 0.86; the law rows between
+  the direct bound (proved up to t = 0.1365; numerically up to 0.228 with the radius 0.93 and spectral Stein cuts:
+  STATUS 4.18, 4.35) and t = 0.647; and the other pieces of the gate (STATUS 4.16). The work runs under issue #453.
 
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the
 sources it cites.
