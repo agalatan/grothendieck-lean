@@ -727,13 +727,7 @@ theorem capsHold_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 ν : ℝ) (hE : E.ps
     linarith [pot_lip E R ℓ β (aFib b1 b2 b3) ν hE hR s t hst, mul_le_mul_of_nonneg_right hsm hts,
       mul_le_mul_of_nonneg_left hc (by linarith : (0 : ℝ) ≤ 2 * (t - s))]
 
-/-! ### The potentials of the 19 rows -/
-
-/-- The certified fibre potential of the `k`-th row (`E`, `ℓ`, `β`, `b` from `rowData`, `R` from
-`rowGates`): the potential without a tail (`ν = 0`). -/
-def rowPot (k : ℕ) (s : ℝ) : ℝ :=
-  let r := rowData.getD k row01
-  pot r.E (rowR k) r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s
+/-! ### The potentials of the rows -/
 
 /-- **The node-cap interface for every row**: given the node caps of the potential of row `k`
 with the identity tail `ν` (at `ν = 0` the certified potential `rowPot k`; data certified outside

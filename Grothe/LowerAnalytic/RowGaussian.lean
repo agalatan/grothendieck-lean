@@ -280,8 +280,7 @@ def TailNodeCaps (ν : ℝ) : Prop :=
 `f, g` on `ℂ^{n+1}` (`n ≥ 1`) with `P₁,₀ h = t ζ₀`, `SharedReduction rowData V̂ t Qh v` holds with the
 coupling vector `v = vL 0`, for the hat value `V̂` of a witness with weight `e` and tail `ν` whose
 hat weight is the constant `ε` of the rows, given the node caps of the potentials of the rows with
-the tail `ν̂ = nuHat ν`.  (For the certified witness `(ε, 0)`: `V̂ = V` and the 19 certified
-potentials.) -/
+the tail `ν̂ = nuHat ν`. -/
 theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e ν = ε)
     (f g : L2G (n + 1))
     (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))

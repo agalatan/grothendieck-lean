@@ -62,12 +62,4 @@ def parseDirs (l : List String) : List (List ℚ) := l.map fun d => (d.splitOn "
 
 /-! ### Constrained node checks -/
 
-/-- **The constrained node check** (the analogue of `nodeOK` on a piece region). -/
-def nodeOKc (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ) (rec : Recipe)
-    (Nr N : ℕ) (h : ℚ) (T : Tables) (cs : List Cons) : Bool :=
-  let gd := mkGrid r.ell r.beta rec Nr N h T
-  let M := matI r.ell r.beta gd T
-  polyBoundsOK r.ell r.beta &&
-    pieceOKc (loQ M) (hiQ M) (mMat r.E Rg) (avOf r) s (c + Grothe.Lower.capPad) cs
-
 end Grothe.LowerAnalytic

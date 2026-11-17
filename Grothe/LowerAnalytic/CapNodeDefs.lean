@@ -37,13 +37,4 @@ def mMat (E : Sym3) (R : Sym2) (i j : ℕ) : ℚ :=
 def avOf (r : Grothe.Lower.Row) (j : ℕ) : ℚ :=
   if j = 0 then 1 + r.b1 else if j = 1 then r.b2 else if j = 2 then r.b3 else 0
 
-/-- **The node check**: the polynomial degrees fit the tables and the piece check passes at
-`c + capPad` (the grid check holds for every recipe grid, `gridOK_mkGrid`). -/
-def nodeOK (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ) (rec : Recipe) (Nr N : ℕ)
-    (h : ℚ) (T : Tables) : Bool :=
-  let gd := mkGrid r.ell r.beta rec Nr N h T
-  let M := matI r.ell r.beta gd T
-  polyBoundsOK r.ell r.beta &&
-    pieceOK (loQ M) (hiQ M) (mMat r.E Rg) (avOf r) s (c + Grothe.Lower.capPad)
-
 end Grothe.LowerAnalytic

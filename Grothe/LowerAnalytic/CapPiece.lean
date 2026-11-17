@@ -55,32 +55,6 @@ lemma qw_eq (z : ℂ) : qw z = (1 + Complex.normSq z) ^ 2 := rfl
 
 /-! ### Prices -/
 
-/-- Admissible prices: measurable `A, B > 0`, reciprocal bounds `nA ≥ 1/A`, `nB ≥ 1/B`, and a
-square-correction coefficient `0 ≤ g ≤ 8/D(A, B, |L|)`, all bounded by `c`. -/
-structure Prices (ℓ β : ℝ) where
-  A : ℂ → ℝ
-  B : ℂ → ℝ
-  nA : ℂ → ℝ
-  nB : ℂ → ℝ
-  g : ℂ → ℝ
-  c : ℝ
-  mA : Measurable A
-  mB : Measurable B
-  mnA : Measurable nA
-  mnB : Measurable nB
-  mg : Measurable g
-  posA : ∀ z, 0 < A z
-  posB : ∀ z, 0 < B z
-  hnA : ∀ z, 1 ≤ nA z * A z
-  hnB : ∀ z, 1 ≤ nB z * B z
-  hg0 : ∀ z, 0 ≤ g z
-  hg : ∀ z, g z * majD (A z) (B z) ‖Lf ℓ β z‖ ≤ 8
-  bA : ∀ z, A z ≤ c
-  bB : ∀ z, B z ≤ c
-  bnA : ∀ z, nA z ≤ c
-  bnB : ∀ z, nB z ≤ c
-  bg : ∀ z, g z ≤ c
-
 variable (ℓ β : ℝ) (pr : Prices ℓ β)
 
 /-- `uⱼ = Re(Bⱼ L̄)`. -/
@@ -89,31 +63,8 @@ def uF (j : ℕ) (z : ℂ) : ℝ := (Bfun j z * conj (Lf ℓ β z)).re
 def GF (i j : ℕ) (z : ℂ) : ℝ := (Bfun i z * conj (Bfun j z)).re
 
 variable {ℓ β} in
-/-- `ν = (nA + nB)/2`. -/
-def nuF (z : ℂ) : ℝ := (pr.nA z + pr.nB z) / 2
 variable {ℓ β} in
-/-- `δν = (nA − nB)/2`. -/
-def dnuF (z : ℂ) : ℝ := (pr.nA z - pr.nB z) / 2
 variable {ℓ β} in
-/-- `δ = A² − B²`. -/
-def delF (z : ℂ) : ℝ := pr.A z ^ 2 - pr.B z ^ 2
-
-/-- The constant coefficient `ν|L|² + (A+B)/2 − gδ²/16`. -/
-def c0F (z : ℂ) : ℝ :=
-  nuF pr z * ‖Lf ℓ β z‖ ^ 2 + (pr.A z + pr.B z) / 2 - pr.g z * delF pr z ^ 2 / 16
-/-- The linear coefficients `(δν + gδ/4) uⱼ`. -/
-def hF (j : ℕ) (z : ℂ) : ℝ := (dnuF pr z + pr.g z * delF pr z / 4) * uF ℓ β j z
-/-- The quadratic coefficients `ν Gᵢⱼ − g uᵢuⱼ`. -/
-def HF (i j : ℕ) (z : ℂ) : ℝ := nuF pr z * GF i j z - pr.g z * (uF ℓ β i z * uF ℓ β j z)
-
-/-- The pointwise `13 × 13` coefficient matrix. -/
-def Tz (z : ℂ) (i j : ℕ) : ℝ :=
-  if i = 0 then (if j = 0 then c0F ℓ β pr z else hF ℓ β pr (j - 1) z)
-  else if j = 0 then hF ℓ β pr (i - 1) z else HF ℓ β pr (i - 1) (j - 1) z
-
-/-- The integrated coefficient matrix `T = ∫ Tz dγ`. -/
-def Tint (i j : ℕ) : ℝ := ∫ z, Tz ℓ β pr z i j ∂gaussC
-
 /-! ### The quadratic-form identity -/
 
 /-- `(1, v)`. -/
@@ -149,80 +100,6 @@ lemma re_sum_mul (v : ℕ → ℝ) (z : ℂ) :
   rw [Finset.sum_mul, Complex.re_sum]
   refine Finset.sum_congr rfl fun j _ => ?_
   simp only [uF, mul_assoc, Complex.re_ofReal_mul]
-  ring
-
-/-- **The priced majorant**: `|L + p| + |L − p| ≤ ν(|L|² + |p|²) + 2δν x + (A+B)/2 − (g/16)(4x − δ)²`,
-`x = Re(p L̄)`. -/
-theorem priced_pair (z : ℂ) (p : ℂ) :
-    ‖Lf ℓ β z + p‖ + ‖Lf ℓ β z - p‖ ≤ nuF pr z * (‖Lf ℓ β z‖ ^ 2 + ‖p‖ ^ 2)
-      + 2 * dnuF pr z * (p * conj (Lf ℓ β z)).re + (pr.A z + pr.B z) / 2
-      - pr.g z / 16 * (4 * (p * conj (Lf ℓ β z)).re - delF pr z) ^ 2 := by
-  have hA := pr.posA z
-  have hB := pr.posB z
-  have h := anchored_pair (Lf ℓ β z) p hA hB (le_refl ‖Lf ℓ β z‖)
-  have hD := majD_pos hA hB (norm_nonneg (Lf ℓ β z))
-  set D := majD (pr.A z) (pr.B z) ‖Lf ℓ β z‖
-  set X := (p * conj (Lf ℓ β z)).re
-  have hT : (4 * X - (pr.A z ^ 2 - pr.B z ^ 2)) ^ 2 / (2 * D)
-      ≥ pr.g z / 16 * (4 * X - (pr.A z ^ 2 - pr.B z ^ 2)) ^ 2 := by
-    have h1 : pr.g z / 16 ≤ 1 / (2 * D) := by
-      rw [div_le_div_iff₀ (by norm_num) (by positivity)]
-      linarith [pr.hg z]
-    rw [div_eq_mul_one_div ((4 * X - (pr.A z ^ 2 - pr.B z ^ 2)) ^ 2), mul_comm]
-    exact mul_le_mul_of_nonneg_right h1 (sq_nonneg _)
-  have hYA : (‖Lf ℓ β z + p‖ ^ 2 + pr.A z ^ 2) / (2 * pr.A z)
-      ≤ pr.nA z * ‖Lf ℓ β z + p‖ ^ 2 / 2 + pr.A z / 2 := by
-    have h1 : 1 / pr.A z ≤ pr.nA z := by rw [div_le_iff₀ hA]; exact pr.hnA z
-    have e : (‖Lf ℓ β z + p‖ ^ 2 + pr.A z ^ 2) / (2 * pr.A z)
-        = (1 / pr.A z) * ‖Lf ℓ β z + p‖ ^ 2 / 2 + pr.A z / 2 := by field_simp
-    rw [e]
-    linarith [mul_le_mul_of_nonneg_right h1 (sq_nonneg ‖Lf ℓ β z + p‖)]
-  have hYB : (‖Lf ℓ β z - p‖ ^ 2 + pr.B z ^ 2) / (2 * pr.B z)
-      ≤ pr.nB z * ‖Lf ℓ β z - p‖ ^ 2 / 2 + pr.B z / 2 := by
-    have h1 : 1 / pr.B z ≤ pr.nB z := by rw [div_le_iff₀ hB]; exact pr.hnB z
-    have e : (‖Lf ℓ β z - p‖ ^ 2 + pr.B z ^ 2) / (2 * pr.B z)
-        = (1 / pr.B z) * ‖Lf ℓ β z - p‖ ^ 2 / 2 + pr.B z / 2 := by field_simp
-    rw [e]
-    linarith [mul_le_mul_of_nonneg_right h1 (sq_nonneg ‖Lf ℓ β z - p‖)]
-  have e2 := normSq_add_eq (Lf ℓ β z) p
-  have e3 := normSq_sub_eq (Lf ℓ β z) p
-  simp only [nuF, dnuF, delF]
-  rw [e2] at hYA h
-  rw [e3] at hYB h
-  have key : pr.nA z * (‖Lf ℓ β z‖ ^ 2 + ‖p‖ ^ 2 + 2 * X) / 2 + pr.A z / 2
-      + (pr.nB z * (‖Lf ℓ β z‖ ^ 2 + ‖p‖ ^ 2 - 2 * X) / 2 + pr.B z / 2)
-      = (pr.nA z + pr.nB z) / 2 * (‖Lf ℓ β z‖ ^ 2 + ‖p‖ ^ 2) + 2 * ((pr.nA z - pr.nB z) / 2) * X
-        + (pr.A z + pr.B z) / 2 := by ring
-  linarith [hT, hYA, hYB, h, key]
-
-/-- **The pointwise bound**: `|L + p| + |L − p| ≤ qf (Tz z) 13 (1, v)` for `p = Σ vⱼ Bⱼ`. -/
-theorem pointwise_le_qf (v : ℕ → ℝ) (z : ℂ) :
-    ‖Lf ℓ β z + ∑ j ∈ range 12, (v j : ℂ) * Bfun j z‖
-      + ‖Lf ℓ β z - ∑ j ∈ range 12, (v j : ℂ) * Bfun j z‖ ≤ qf (Tz ℓ β pr z) 13 (wOf v) := by
-  have h := priced_pair ℓ β pr z (∑ j ∈ range 12, (v j : ℂ) * Bfun j z)
-  rw [normSq_sum, re_sum_mul] at h
-  refine h.trans (le_of_eq ?_)
-  rw [qf_succ]
-  simp only [Tz, wOf, Nat.add_one_ne_zero, ↓reduceIte, Nat.add_sub_cancel]
-  have hx : (∑ j ∈ range 12, uF ℓ β j z * v j) ^ 2
-      = ∑ i ∈ range 12, ∑ j ∈ range 12, uF ℓ β i z * uF ℓ β j z * v i * v j := by
-    rw [sq, Finset.sum_mul_sum]
-    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
-  simp only [c0F, hF, HF]
-  generalize hX : ∑ j ∈ range 12, uF ℓ β j z * v j = X at hx h
-  have e1 : ∑ j ∈ range 12, ((dnuF pr z + pr.g z * delF pr z / 4) * uF ℓ β j z
-      + (dnuF pr z + pr.g z * delF pr z / 4) * uF ℓ β j z) * 1 * v j
-      = 2 * (dnuF pr z + pr.g z * delF pr z / 4) * X := by
-    rw [← hX, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun j _ => by ring
-  have e2 : ∑ i ∈ range 12, ∑ j ∈ range 12, (nuF pr z * GF i j z
-      - pr.g z * (uF ℓ β i z * uF ℓ β j z)) * v i * v j
-      = nuF pr z * ∑ i ∈ range 12, ∑ j ∈ range 12, GF i j z * v i * v j - pr.g z * X ^ 2 := by
-    rw [hx, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]
-    exact Finset.sum_congr rfl fun j _ => by ring
-  rw [e1, e2]
   ring
 
 /-! ### Integrability of the coefficients -/
@@ -299,128 +176,18 @@ lemma integrable_bdd_mul' {f g : ℂ → ℝ} (hf : Measurable f) (c : ℝ) (hc 
     rw [Real.norm_eq_abs]; exact hc z)
 
 variable {ℓ β} in
-lemma abs_le_c {f : ℂ → ℝ} (h0 : ∀ z, 0 ≤ f z) (h1 : ∀ z, f z ≤ pr.c) (z : ℂ) : |f z| ≤ pr.c := by
-  rw [abs_of_nonneg (h0 z)]; exact h1 z
-
 variable {ℓ β} in
-lemma nA_pos (z : ℂ) : 0 < pr.nA z := by
-  have h := pr.hnA z; have hA := pr.posA z
-  by_contra hn; have := not_lt.1 hn; nlinarith
 variable {ℓ β} in
-lemma nB_pos (z : ℂ) : 0 < pr.nB z := by
-  have h := pr.hnB z; have hB := pr.posB z
-  by_contra hn; have := not_lt.1 hn; nlinarith
-
 variable {ℓ β} in
-lemma abs_nuF_le (z : ℂ) : |nuF pr z| ≤ pr.c := by
-  unfold nuF
-  have := nA_pos pr z; have := nB_pos pr z; have := pr.bnA z; have := pr.bnB z
-  rw [abs_of_pos (by positivity)]; linarith
-
 variable {ℓ β} in
-lemma abs_dnuF_le (z : ℂ) : |dnuF pr z| ≤ pr.c := by
-  unfold dnuF
-  have := nA_pos pr z; have := nB_pos pr z; have := pr.bnA z; have := pr.bnB z
-  rw [abs_le]; constructor <;> linarith
-
 variable {ℓ β} in
-lemma abs_delF_le (z : ℂ) : |delF pr z| ≤ pr.c ^ 2 := by
-  unfold delF
-  have hA := pr.posA z; have hB := pr.posB z; have := pr.bA z; have := pr.bB z
-  have h1 : pr.A z ^ 2 ≤ pr.c ^ 2 := pow_le_pow_left₀ hA.le (pr.bA z) 2
-  have h2 : pr.B z ^ 2 ≤ pr.c ^ 2 := pow_le_pow_left₀ hB.le (pr.bB z) 2
-  rw [abs_le]; constructor <;> nlinarith [sq_nonneg (pr.A z), sq_nonneg (pr.B z)]
-
 variable {ℓ β} in
-lemma measurable_nuF : Measurable (nuF pr) := by
-  unfold nuF; have := pr.mnA; have := pr.mnB; fun_prop
 variable {ℓ β} in
-lemma measurable_dnuF : Measurable (dnuF pr) := by
-  unfold dnuF; have := pr.mnA; have := pr.mnB; fun_prop
 variable {ℓ β} in
-lemma measurable_delF : Measurable (delF pr) := by
-  unfold delF; have := pr.mA; have := pr.mB; fun_prop
-
-lemma integrable_c0F : Integrable (c0F ℓ β pr) gaussC := by
-  have h1 := integrable_bdd_mul' (measurable_nuF pr) _ (abs_nuF_le pr) (integrable_normL_sq ℓ β)
-  have h2 := integrable_bdd_mul' (f := fun z => (pr.A z + pr.B z) / 2 - pr.g z * delF pr z ^ 2 / 16)
-    (g := fun _ => (1 : ℝ))
-    (by have := pr.mA; have := pr.mB; have := pr.mg; have := measurable_delF pr; fun_prop)
-    (pr.c + pr.c * (pr.c ^ 2) ^ 2 / 16) (fun z => by
-      have hA := pr.posA z; have hB := pr.posB z; have := pr.bA z; have := pr.bB z
-      have hg0 := pr.hg0 z; have hg1 := pr.bg z
-      have hd := abs_delF_le pr z
-      have hd2 : delF pr z ^ 2 ≤ (pr.c ^ 2) ^ 2 := by
-        rw [← sq_abs]; exact pow_le_pow_left₀ (abs_nonneg _) hd 2
-      have e : 0 ≤ pr.g z * delF pr z ^ 2 / 16 := by positivity
-      have e2 : pr.g z * delF pr z ^ 2 / 16 ≤ pr.c * (pr.c ^ 2) ^ 2 / 16 := by
-        linarith [mul_le_mul hg1 hd2 (sq_nonneg _) (hg0.trans hg1)]
-      rw [abs_le]; constructor <;> linarith)
-    (integrable_const 1)
-  refine (h1.add h2).congr (Filter.Eventually.of_forall fun z => ?_)
-  simp [c0F]; ring
-
 variable {ℓ β} in
-lemma measurable_hcoef : Measurable (fun z => dnuF pr z + pr.g z * delF pr z / 4) := by
-  have := measurable_dnuF pr; have := measurable_delF pr; have := pr.mg; fun_prop
-
-lemma integrable_hF (j : ℕ) : Integrable (hF ℓ β pr j) gaussC :=
-  integrable_bdd_mul' (measurable_hcoef pr)
-    (pr.c + pr.c * pr.c ^ 2 / 4) (fun z => by
-      have hg0 := pr.hg0 z; have hg1 := pr.bg z
-      have hd := abs_delF_le pr z
-      refine (abs_add_le _ _).trans (add_le_add (abs_dnuF_le pr z) ?_)
-      rw [abs_div, abs_mul, abs_of_nonneg hg0, abs_of_pos (by norm_num : (0 : ℝ) < 4)]
-      have := mul_le_mul hg1 hd (abs_nonneg _) (hg0.trans hg1)
-      linarith)
-    (integrable_uF ℓ β j)
-
-lemma integrable_HF (i j : ℕ) : Integrable (HF ℓ β pr i j) gaussC := by
-  have h1 := integrable_bdd_mul' (measurable_nuF pr) _ (abs_nuF_le pr) (integrable_GF i j)
-  have h2 := integrable_bdd_mul' pr.mg pr.c (abs_le_c pr pr.hg0 pr.bg) (integrable_uu ℓ β i j)
-  exact (h1.sub h2).congr (Filter.Eventually.of_forall fun z => by simp [HF])
-
-lemma integrable_Tz (i j : ℕ) : Integrable (fun z => Tz ℓ β pr z i j) gaussC := by
-  unfold Tz
-  split_ifs
-  · exact integrable_c0F ℓ β pr
-  · exact integrable_hF ℓ β pr _
-  · exact integrable_hF ℓ β pr _
-  · exact integrable_HF ℓ β pr _ _
-
-lemma integral_qf (w : ℕ → ℝ) :
-    ∫ z, qf (Tz ℓ β pr z) 13 w ∂gaussC = qf (Tint ℓ β pr) 13 w := by
-  unfold qf Tint
-  rw [integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ =>
-    ((integrable_Tz ℓ β pr i j).mul_const _).mul_const _]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [integral_finsetSum _ fun j _ => ((integrable_Tz ℓ β pr i j).mul_const _).mul_const _]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [integral_mul_const, integral_mul_const]
-
-lemma integrable_qf (w : ℕ → ℝ) : Integrable (fun z => qf (Tz ℓ β pr z) 13 w) gaussC := by
-  unfold qf
-  exact integrable_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ =>
-    ((integrable_Tz ℓ β pr i j).mul_const _).mul_const _
-
 /-! ### The cap of a piece -/
 
 variable (E : Sym3) (R : Sym2) (a : Fib)
-
-/-- **The integrated majorant**: `J(y, s) ≤ qf T 13 (1, v) − yᵀMy` with `v = vec(My + sa)`. -/
-theorem Jpot_le_qf (y : Fib) (s : ℝ) :
-    Jpot E R ℓ β a 0 y s
-      ≤ qf (Tint ℓ β pr) 13 (wOf ((Fib.M E R y).add (a.smul s)).vec) - Fib.quad E R y := by
-  rw [Jpot_zero]
-  have hpt : ∀ z, ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖
-      ≤ qf (Tz ℓ β pr z) 13 (wOf ((Fib.M E R y).add (a.smul s)).vec) := by
-    intro z
-    have h := pointwise_le_qf ℓ β pr ((Fib.M E R y).add (a.smul s)).vec z
-    rw [← fn_eq_sum] at h
-    exact h
-  have := integral_mono (integrable_Jint E R ℓ β a y s) (integrable_qf ℓ β pr _) hpt
-  rw [integral_qf] at this
-  linarith
 
 /-! ### The finite check -/
 
@@ -530,19 +297,6 @@ theorem Jpot_le_of_qfN_of_le (ν : ℝ) (T : ℕ → ℕ → ℝ) (av : ℕ → 
   rw [hq2] at hN
   linarith
 
-/-- **The bound of a piece at one point**: if the enclosure `lo ≤ T ≤ up` of the integrated
-coefficient matrix holds and the form of `N = pieceN …` is nonnegative at `(1, y)`, then
-`J(y, s) ≤ cap`. -/
-theorem Jpot_le_of_qfN (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
-    (s cap : ℚ) (lo up : QMat)
-    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
-    (henc' : enclOK lo up 13 = true) (y : Fib)
-    (hN : 0 ≤ qf (fun i j => ((pieceN (mMat E R) av s cap (loewnerUp lo up 13)).at i j : ℝ)) 13
-      (wOf y.vec)) :
-    Jpot E R ℓ β a 0 y s ≤ cap :=
-  Jpot_le_of_qfN_of_le ℓ β E R a 0 (Tint ℓ β pr) av hav s cap lo up henc henc' y
-    (Jpot_le_qf ℓ β pr E R a y s) hN
-
 /-- **The cap of a piece** (no constraints), for any coefficient matrix `T` that bounds `J(·, s)`:
 if the enclosure `lo ≤ T ≤ up` holds and `pieceOK` passes, then `Ψ(s) ≤ cap`. -/
 theorem pot_le_of_pieceOK_of_le (ν : ℝ) (T : ℕ → ℕ → ℝ) (av : ℕ → ℚ)
@@ -555,16 +309,6 @@ theorem pot_le_of_pieceOK_of_le (ν : ℝ) (T : ℕ → ℕ → ℝ) (av : ℕ �
   simp only [pieceOK, Bool.and_eq_true] at hchk
   exact ciSup_le fun y => Jpot_le_of_qfN_of_le ℓ β E R a ν T av hav s cap lo up henc hchk.1 y
     (hT y) (qf_nonneg_of_ldlOK hchk.2 _)
-
-/-- **The cap of a piece** (no constraints): if the enclosure `lo ≤ T ≤ up` of the integrated
-coefficient matrix holds and `pieceOK` passes, then `Ψ(s) ≤ cap`. -/
-theorem pot_le_of_pieceOK (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
-    (s cap : ℚ) (lo up : QMat)
-    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
-    (hchk : pieceOK lo up (mMat E R) av s cap = true) :
-    pot E R ℓ β a 0 s ≤ cap :=
-  pot_le_of_pieceOK_of_le ℓ β E R a 0 (Tint ℓ β pr) av hav s cap lo up henc
-    (fun y => Jpot_le_qf ℓ β pr E R a y s) hchk
 
 end
 

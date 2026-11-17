@@ -68,11 +68,9 @@ import Grothe.Lower.TransferFinite
 import Grothe.Lower.TransferL2
 import Grothe.LowerAnalytic.Bernstein2
 import Grothe.LowerAnalytic.Bridge
-import Grothe.LowerAnalytic.CapAssembly
 import Grothe.LowerAnalytic.CapCheckNuMat
 import Grothe.LowerAnalytic.CapCheckNuSound
 import Grothe.LowerAnalytic.CapCheckSound
-import Grothe.LowerAnalytic.CapChordData
 import Grothe.LowerAnalytic.CapChords
 import Grothe.LowerAnalytic.CapCommon
 import Grothe.LowerAnalytic.CapCommonFacts
@@ -3259,7 +3257,6 @@ import Grothe.LowerAnalytic.CapRow13.AnchorRange13
 import Grothe.LowerAnalytic.CapRow13.Assembly
 import Grothe.LowerAnalytic.CapRow13.Bridge
 import Grothe.LowerAnalytic.CapRow13.Data
-import Grothe.LowerAnalytic.CapRows
 import Grothe.LowerAnalytic.CapRowsNu
 import Grothe.LowerAnalytic.CapSym
 import Grothe.LowerAnalytic.CapSymmetry
@@ -3294,7 +3291,6 @@ import Grothe.LowerAnalytic.MassRowFrame
 import Grothe.LowerAnalytic.MixedChaos
 import Grothe.LowerAnalytic.MomentLemma
 import Grothe.LowerAnalytic.Moments
-import Grothe.LowerAnalytic.NodeCaps
 import Grothe.LowerAnalytic.Pieces
 import Grothe.LowerAnalytic.Potential
 import Grothe.LowerAnalytic.PotentialReg

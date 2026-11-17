@@ -435,67 +435,6 @@ theorem anchored_pair_nu (L p : ℂ) {f g : ℂ} {d2 d3 ν R γ : ℝ} (hν : 0 
 
 /-! ### The case `ν = 0`: AF eq. (4) -/
 
-/-- The denominator `D = S(S² + 4R² + 4R|A₀ − B₀|)`. -/
-noncomputable def majD (A0 B0 R : ℝ) : ℝ :=
-  (A0 + B0) * ((A0 + B0) ^ 2 + 4 * R ^ 2 + 4 * R * |A0 - B0|)
-
-lemma majD_pos {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : 0 ≤ R) : 0 < majD A0 B0 R := by
-  unfold majD
-  have : 0 ≤ 4 * R * |A0 - B0| := by have := abs_nonneg (A0 - B0); positivity
-  have : 0 < (A0 + B0) ^ 2 := by positivity
-  have : 0 < A0 + B0 := by linarith
-  positivity
-
-/-- At `ν = 0` the denominator of `γ*(R)` is `(A₀B₀)² S D`. -/
-lemma majGammaDen_zero (A0 B0 R : ℝ) :
-    majGammaDen A0 B0 0 R = (A0 * B0) ^ 2 * ((A0 + B0) * majD A0 B0 R) := by
-  have h := sq_abs (B0 - A0)
-  rw [majGammaDen, majD, abs_sub_comm A0 B0]
-  linear_combination (4 * (A0 * B0) ^ 2 * R ^ 2) * h
-
-/-- At `ν = 0`, `γ*(R) = 8/D` is the coefficient of AF eq. (4) (identity (6.3)). -/
-lemma majGammaStar_zero {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : 0 ≤ R) :
-    majGammaStar A0 B0 0 R = 8 / majD A0 B0 R := by
-  have hD := (majD_pos hA hB hR).ne'
-  rw [majGammaStar, majGammaDen_zero]
-  field_simp
-  ring
-
-/-- **The anchored majorant, real form** (AF eq. (4)): `anchored_pair_nu` at `ν = 0` and
-`γ = γ*(R) = 8/D`, for the real `L = (A − B)/2`, `p = (A + B)/2` and the phases `(1, −1)`. -/
-theorem anchored_real {A B A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : 0 ≤ R)
-    (hd : |A - B| ≤ 2 * R) :
-    A + B ≤ (A ^ 2 + A0 ^ 2) / (2 * A0) + (B ^ 2 + B0 ^ 2) / (2 * B0)
-      - (A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 R) := by
-  have hD := majD_pos hA hB hR
-  have hL : ‖(((A - B) / 2 : ℝ) : ℂ)‖ ≤ R := by
-    rw [Complex.norm_real, Real.norm_eq_abs, abs_div, abs_two]; linarith
-  have h := anchored_pair_nu (((A - B) / 2 : ℝ) : ℂ) (((A + B) / 2 : ℝ) : ℂ) (f := 1) (g := -1)
-    le_rfl hA hB hL (div_nonneg (by norm_num) hD.le) (majGammaStar_zero hA hB hR).ge
-    (by simp) (by simp)
-  have e1 : (((A - B) / 2 : ℝ) : ℂ) + (((A + B) / 2 : ℝ) : ℂ) = (A : ℂ) := by push_cast; ring
-  have e2 : (((A - B) / 2 : ℝ) : ℂ) - (((A + B) / 2 : ℝ) : ℂ) = ((-B : ℝ) : ℂ) := by
-    push_cast; ring
-  have e3 : majEll 0 1 (-1) (A : ℂ) ((-B : ℝ) : ℂ) = A + B := by simp [majEll]
-  have e4 : majPhi A0 B0 0 (A : ℂ) ((-B : ℝ) : ℂ)
-      = (A ^ 2 + A0 ^ 2) / (2 * A0) + (B ^ 2 + B0 ^ 2) / (2 * B0) := by
-    rw [majPhi, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs,
-      abs_neg, sq_abs, sq_abs]
-    field_simp; ring
-  have e5 : majH A0 B0 0 (((A - B) / 2 : ℝ) : ℂ) (((A + B) / 2 : ℝ) : ℂ)
-      = A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2) := by
-    rw [majH, majC0, majC1, Complex.conj_ofReal, ← Complex.ofReal_mul, Complex.ofReal_re]; ring
-  have e6 : 8 / majD A0 B0 R / 16 * (A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2)) ^ 2
-      = (A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 R) := by
-    field_simp; ring
-  rw [e1, e2, e3, e4, e5, e6] at h
-  exact h
-
-lemma norm_add_sub_norm_sub_le (L p : ℂ) : |‖L + p‖ - ‖L - p‖| ≤ 2 * ‖L‖ := by
-  calc |‖L + p‖ - ‖L - p‖| = |‖L + p‖ - ‖p - L‖| := by rw [norm_sub_rev L p]
-    _ ≤ ‖L + p - (p - L)‖ := abs_norm_sub_norm_le _ _
-    _ = 2 * ‖L‖ := by rw [show L + p - (p - L) = 2 * L by ring, norm_mul]; norm_num
-
 lemma normSq_add_eq (L p : ℂ) : ‖L + p‖ ^ 2 = ‖L‖ ^ 2 + ‖p‖ ^ 2 + 2 * (p * conj L).re := by
   rw [← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq,
     Complex.normSq_add]
@@ -505,41 +444,6 @@ lemma normSq_sub_eq (L p : ℂ) : ‖L - p‖ ^ 2 = ‖L‖ ^ 2 + ‖p‖ ^ 2 - 
   rw [← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq,
     Complex.normSq_sub]
   simp [Complex.mul_re]; ring
-
-/-- **The anchored-pair majorant** (AF eq. (4)). -/
-theorem anchored_pair (L p : ℂ) {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : ‖L‖ ≤ R) :
-    ‖L + p‖ + ‖L - p‖ ≤ (‖L + p‖ ^ 2 + A0 ^ 2) / (2 * A0) + (‖L - p‖ ^ 2 + B0 ^ 2) / (2 * B0)
-      - (4 * (p * conj L).re - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 R) := by
-  have hT : ‖L + p‖ ^ 2 - ‖L - p‖ ^ 2 = 4 * (p * conj L).re := by
-    rw [normSq_add_eq, normSq_sub_eq]; ring
-  have h := anchored_real hA hB ((norm_nonneg L).trans hR)
-    ((norm_add_sub_norm_sub_le L p).trans (by linarith))
-  rwa [hT] at h
-
-/-- **The anchored-pair majorant as a polynomial in `p`**: with `x = Re(p L̄)`,
-`|L + p| + |L − p| ≤ ν(|L|² + |p|²) + 2δν x + (A₀ + B₀)/2 − (4x − (A₀² − B₀²))²/(2D)`,
-`ν = (1/A₀ + 1/B₀)/2`, `δν = (1/A₀ − 1/B₀)/2`. -/
-theorem anchored_pair_poly (L p : ℂ) {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : ‖L‖ ≤ R) :
-    ‖L + p‖ + ‖L - p‖ ≤ (1 / A0 + 1 / B0) / 2 * (‖L‖ ^ 2 + ‖p‖ ^ 2)
-      + 2 * ((1 / A0 - 1 / B0) / 2) * (p * conj L).re + (A0 + B0) / 2
-      - (4 * (p * conj L).re - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 R) := by
-  have h := anchored_pair L p hA hB hR
-  rw [normSq_add_eq, normSq_sub_eq] at h
-  have e : (‖L‖ ^ 2 + ‖p‖ ^ 2 + 2 * (p * conj L).re + A0 ^ 2) / (2 * A0)
-      + (‖L‖ ^ 2 + ‖p‖ ^ 2 - 2 * (p * conj L).re + B0 ^ 2) / (2 * B0)
-      = (1 / A0 + 1 / B0) / 2 * (‖L‖ ^ 2 + ‖p‖ ^ 2)
-        + 2 * ((1 / A0 - 1 / B0) / 2) * (p * conj L).re + (A0 + B0) / 2 := by
-    field_simp; ring
-  linarith
-
-/-- **The plain Young bound** (route P): `|L + p| + |L − p| ≤ ν(|L|² + |p|²) + 2δν Re(p L̄) + (A₀+B₀)/2`. -/
-theorem young_pair (L p : ℂ) {A0 B0 : ℝ} (hA : 0 < A0) (hB : 0 < B0) :
-    ‖L + p‖ + ‖L - p‖ ≤ (1 / A0 + 1 / B0) / 2 * (‖L‖ ^ 2 + ‖p‖ ^ 2)
-      + 2 * ((1 / A0 - 1 / B0) / 2) * (p * conj L).re + (A0 + B0) / 2 := by
-  have h := anchored_pair_poly L p hA hB le_rfl
-  have : 0 ≤ (4 * (p * conj L).re - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 ‖L‖) :=
-    div_nonneg (sq_nonneg _) (by have := majD_pos hA hB (norm_nonneg L); positivity)
-  linarith
 
 /-! ### The pair potential `Ψ_ν` -/
 

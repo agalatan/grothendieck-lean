@@ -5,7 +5,7 @@ import Grothe.Lower.Envelope
 /-!
 # From the Gaussian reduction of the rows to the norm cap
 
-The Gaussian reduction of the witness `T = P₁,₀ − ε P₂,₁` for a fixed admissible pair produces
+The Gaussian reduction of the witness (in hat units, weight `ε`) for a fixed admissible pair produces
 *one* residual `p = Q_w c₁` in the cubic chaos of the remote coordinates, with scale `τ = ‖p‖₂`
 and normalized law `U = |p|²/τ²`, and *one* gate variable `X = Q_w(c₁, c_A, conj c_B)` whose
 first coordinate is `p`; every row `r` then satisfies, with its own potential `Ψ_r` (node caps up

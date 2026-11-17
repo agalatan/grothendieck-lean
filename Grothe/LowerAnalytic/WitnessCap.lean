@@ -26,22 +26,19 @@ After a phase (`g ↦ θg`, `|θ| = 1`) the pairing is real and nonnegative, so 
 cap `c` of the hat value gives the endpoint `B = (1−ν)c + ν` (`witnessCap_of_VhatOf_le`).  The rows
 of a certificate bound the hat value, and their constant `ε` is the hat weight `ε̂`.
 
-The certified witness is `(e, ν) = (ε, 0)`, where `ε̂ = ε`, `ν̂ = 0` and `V̂ = V`.  The reduction
-below is stated for every witness whose hat weight is the constant of the rows, `ε̂ = ε`
-(hypothesis `epsHat e ν = ε`), and it bounds the hat value `V̂`.  A checked finite cover bounds
-`V̂` using `‖v‖² = 2`, `0 ≤ t ≤ 9/10`, the crude row
-`RowOf crudeRow V̂ t Qh v` and `SharedReduction rowData V̂ t Qh v`. The bound `t ≤ 9/10` is proved
+The reduction below is stated for every witness whose hat weight is the constant of the rows, `ε̂ = ε`
+(hypothesis `epsHat e ν = ε`), and it bounds the hat value `V̂`.  The envelope bounds `V̂` using
+`‖v‖² = 2`, `0 ≤ t ≤ 9/10`, the mass row and `SharedReduction rowData V̂ t Qh v`. The bound `t ≤ 9/10` is proved
 (`tOf_le`): `t = ‖Ph‖` with `|h| ≤ 1`, `‖Ph‖² = Re⟪h, Ph⟫ ≤ E|Ph|`, and `Ph = Σₗ cₗ zₗ` is a complex
 Gaussian, so `E|Ph| = (√π/2)‖Ph‖` (`integral_norm_linL`, by the rotation invariance
 `integral_two_linear` and the planar radius `integral_norm_gauss2` of `GaussianRadial.lean`); hence
-`t ≤ √π/2 < 0.9`.  The crude row follows from the identity and `‖Qk‖ ≤ ρ`, which is proved
+`t ≤ √π/2 < 0.9`.  The Stein side uses `‖Qk‖ ≤ ρ`, which is proved
 (`normQk_le_rho`, item L3): `Qk ∈ H₂,₁` is a combination of Wick cubics (`exists_wick_repr`), so
 `Qk/‖Qk‖ = a + ib` a.e. with `a, b` real polynomials, `Chaos3 a` and `Circular Jstd a b`
 (`WickChaos.lean`), `∫ a² = 1/2`; the certified first-moment bound `E √U ≤ ρ` of the law
 `U = a² + b²` (`gaussian_moments`, field `mh`, which rests on the sixth-moment inequality, proved
 through the tensor facts `Circular.tensorFacts`) gives `E|Qk/‖Qk‖| ≤ ρ`, and
-`‖Qk‖² = Re⟪k, Qk⟫ ≤ E|Qk|` with `|k| ≤ 1`; a tail `ν̂ ≥ 0` only lowers the hat value
-(`rowOf_crude`).
+`‖Qk‖² = Re⟪k, Qk⟫ ≤ E|Qk|` with `|k| ≤ 1`.
 Hence the remaining hypothesis of the scalar cap, per admissible pair with `V ≥ 0`, is exactly
 (`ReductionHyp`):
 
@@ -383,7 +380,7 @@ theorem tOf_le {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
     linarith [Real.pi_lt_d2]
   linarith
 
-/-! ### `H₂,₁` consists of circular cubics: the first-moment bound and the crude row -/
+/-! ### `H₂,₁` consists of circular cubics: the first-moment bound -/
 
 /-- Every element of `H₂,₁` is a combination of Wick cubics. -/
 theorem exists_wick_repr {ψ : L2G n} (hψ : ψ ∈ H21 n) :
