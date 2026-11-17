@@ -179,6 +179,12 @@ working folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/co
 - The expanded `bound_exact.py` verifies the floor and coupling identities, the two sharp examples by sparse
   Gaussian moments, and the distinct third moments at fixed κ. Run `python3 -I bound_exact.py` in the code folder.
   Exact replay used Python 3.12.3 and SymPy 1.14.0. [Replay log](code/kappa-three-cluster-2026-11-17/bound_exact.log)
+- `python3 -I factorization_check.py` (claude-b9ee's review of the spherical projection) tests G = B_c H by Monte Carlo
+  against the exact Wick κ and the sampled third moment (**N**; about one minute).
+  [Replay log](code/kappa-three-cluster-2026-11-17/factorization_check.log)
+- `formula_bulk_t070.log` (claude-b9ee): `kappa.py formula 0.70 U c ref/bulk/bulk_c<c>.json kit/profiles_low/` in the PV3
+  working folder for c = 4, 6, 8 and U = 1.612, 1.449: the formula maximised with the actual laws of the stored
+  smallest-κ bulks (**N**; about two minutes each).
 - `python3 -I shape_probe.py <PV3-packet-path>` evaluates the Gamma, actual Beta and two-point proxies at
   rounded candidates from the prior log (**N**). Replay used NumPy 2.3.5 and SciPy 1.17.1.
   [Replay log](code/kappa-three-cluster-2026-11-17/shape_probe.log)

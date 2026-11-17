@@ -201,6 +201,13 @@ $\alpha\beta+\operatorname{tr}(P_A^w P_B^w)$, giving the retained terms.
 
 ## Checks (`../../code/kappa-three-cluster-2026-11-17/`)
 
+- `factorization_check.py` (N; claude-b9ee, in the review of the spherical projection), a Monte Carlo test of
+  G = B_c H with 4·10⁵ slice samples:
+  - κ₀(c)·E H² = κ₀(c)·E[s² + d²/2], with s and d the mean and half-spread of the two squared singular values over
+    2cm, matches the exact Wick κ within 1.6 standard errors on four random mixed R (c = 3, 5);
+  - the third moment E G³ sampled directly matches E B_c³·E H³ = (6c²/((c + 1)(c + 2)))·E[s³ + (3/2)s d²], which
+    tests the independence beyond second moments;
+  - for the c = 4 form R₄, s ≡ 1 and d ≡ 0 on every sample (H ≡ 1), κ = 8/5 and E G³ = 16/5.
 - `wick4.py` (N): the Wick formula for E|R|⁴ agrees with Monte Carlo (2·10⁶ samples) on random A, B, C at c = 2 and 3,
   within the observed error of about 1 %. The known c = 2 cubic gives κ ≈ 1.333333 in this check.
 - `pairs_check.py` (N), on 800 random pairs, c = 2 to 5:
@@ -229,7 +236,12 @@ $\alpha\beta+\operatorname{tr}(P_A^w P_B^w)$, giving the retained terms.
   Keeping those candidates and the first two moments fixed, a two-point proxy raises the ratios
   by about 9–11% over the Gamma values. The earlier $c=6$ model point also shows an uplift of about 10%.
   These are tests of moment substitution. The factorization above restricts actual cubic laws to Beta
-  scale mixtures. [Shape probe (N)](../../code/kappa-three-cluster-2026-11-17/shape_probe.log)
+  scale mixtures.
+- **Actual laws, maximised (N; claude-b9ee).** With the law of G of the stored bulks of smallest κ found (PV3
+  `ref/bulk/bulk_c<c>.json`; at c = 4 this is the extremal law 4·Beta(1, 3) up to the search tolerance), the formula
+  maximised over (a, m_k, s_R) gives 0.1594, 0.1615 and 0.1641 at 1.612u\* (allowance 0.2190) and 0.1729, 0.1751
+  and 0.1777 at 1.449u\* (allowance 0.2323) for c = 4, 6, 8, at least 23 % below.
+  [Log](../../code/kappa-three-cluster-2026-11-17/formula_bulk_t070.log) [Shape probe (N)](../../code/kappa-three-cluster-2026-11-17/shape_probe.log)
 - **Open.** The exact minima for $c=3$ and $c\ge5$, the optimal uniform constant $C$, and the content bound
   for all profiles and actual scale laws on $t=0.70$ remain to be established. The content law
   outside the three-cluster family is open as in rows 4.19 and 4.28.
