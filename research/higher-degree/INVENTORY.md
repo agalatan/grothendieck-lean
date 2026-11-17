@@ -163,3 +163,36 @@ covering rows, from `profiles_low/` of the worker's folder. The profiles of the 
 | `degree5-newcap-2026-11-16/profiles_low/band_row_0.74_own.json` (not copied) | 94,765 B | `2f01c6ac1f4b26775ab0537eaca50e7014ae7dc932c6b5e79c359d54eb444956` |
 | `degree5-newcap-2026-11-16/profiles_low/band_row_0.76_own.json` (not copied) | 94,849 B | `f11f813c1f35bfb5a0c18223131d1a7b3c0e64623f868f3ce4f3089d33c83338` |
 | `degree5-newcap-2026-11-16/profiles_low/band_row_0.78_own.json` (not copied) | 94,885 B | `9e87da333e1a00a77b4105c13f51d4e9b86e239a4fc87d91c03868c1b6b39446` |
+
+## The three-cluster κ bound (claude-b9ee, 17 November 2026, #507)
+
+`sources/kappa-three-cluster-2026-11-17/NOTE.md` gives the original Wick bound and the spherical projection
+follow-up by codex-6d92. The latter proves κ ≥ 2c/(c + 1), the exact minima at c = 2 and 4, and the law
+comparison in STATUS 4.30.
+`code/kappa-three-cluster-2026-11-17/` holds its four scripts (`wick4.py`, `pairs_check.py`, `minkappa.py`,
+`bound_exact.py`, run with `python3 -I` in that folder) and five small logs, kept because the note cites them:
+`wick4.log`, `pairs_check.log`, `minkappa.log`, `bound_exact.log` and `formula_t070.log`. The last one holds the outputs of
+`kappa.py formula 0.70 U c k(c) kit/profiles_low/` for U = 1.612 and 1.449 and c = 4, 5, 6, 8, 10, 12, run in the PV3
+working folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/content-problem-v3-2026-11-17/content-problem-v3/`
+(about 30–50 s each, sampled, **N**).
+
+- The expanded `bound_exact.py` verifies the floor and coupling identities, the two sharp examples by sparse
+  Gaussian moments, and the distinct third moments at fixed κ. Run `python3 -I bound_exact.py` in the code folder.
+  Exact replay used Python 3.12.3 and SymPy 1.14.0. [Replay log](code/kappa-three-cluster-2026-11-17/bound_exact.log)
+- `python3 -I factorization_check.py` (claude-b9ee's review of the spherical projection) tests G = B_c H by Monte Carlo
+  against the exact Wick κ and the sampled third moment (**N**; about one minute).
+  [Replay log](code/kappa-three-cluster-2026-11-17/factorization_check.log)
+- `formula_bulk_t070.log` (claude-b9ee): `kappa.py formula 0.70 U c ref/bulk/bulk_c<c>.json kit/profiles_low/` in the PV3
+  working folder for c = 4, 6, 8 and U = 1.612, 1.449: the formula maximised with the actual laws of the stored
+  smallest-κ bulks (**N**; about two minutes each).
+- `python3 -I shape_probe.py <PV3-packet-path>` evaluates the Gamma, actual Beta and two-point proxies at
+  rounded candidates from the prior log (**N**). Replay used NumPy 2.3.5 and SciPy 1.17.1.
+  [Replay log](code/kappa-three-cluster-2026-11-17/shape_probe.log)
+
+The numerical probe reads these files within the PV3 working folder named above.
+
+| File | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `ref/kappa.py` | 11070 | `d485e520e27168b5e42eaa9f7d6161cf65c4bec5f7c3f67a9443d28deb69dd46` |
+| `ref/bipartite.py` | 13733 | `2dbc6b4543e631a26e749bf28b8b915afc33ca480b4e28fab209940df6256004` |
+| `kit/profiles_low/band_row_0.70.json` | 94609 | `c66c77221dd984fa4daa7eb8d36ab12f80d868e79ed85641c118637c19376c1a` |
