@@ -1433,3 +1433,24 @@ file, the notes as delivered included.
   `SOURCE_RECORD.json`, `inputs/` and the numerical probes with their logs and JSON results; of route 2 `README.md`,
   `INTERNAL_REVIEW.md`, the component readmes, the internal reviews `secant/A_INTERNAL_REVIEW.md` and
   `b_content/REVIEW_JOINT_SECANT.md`, the numerical probes and the generated tables and logs.
+
+## Real third Wiener chaos bounds (codex-6d92, task #499)
+
+- [Proof and replay instructions](sources/third-chaos-dual-slice-codex-6d92/PROOF.md) and
+  [checkers](code/third-chaos-dual-slice-codex-6d92/). The orthogonal-complement slice, radial averaging,
+  rational comparison and second-order Stein ideas came from the user's Gemini handoff. The checkers here
+  use independent continuum bounds, and the mixed angular term and influence optimization extend the
+  supplied results. The regression and restricted circle bounds come from the earlier audited work of
+  codex-6d92, audit_diagonal and audit_pdfs.
+- **Replay.** Python 3.12, python-flint 0.9.0 and NumPy 2.3.5. `certify_rank.py` accepted 130 and 114
+  rectangles and checked the exact contraction and phase comparisons. `certify_planes.py` accepted 8293,
+  10487 and 12085 boxes on the eight facets in dimensions 11, 14 and 15. `certify_stein.py` accepted 648
+  compact intervals with analytic tails. `certify_regression.py` accepted 140000 compact cells with analytic
+  tails. `certify_circle.py` enumerated 11176 sign patterns and obtained the exact maximum 94.
+  [Replay log](code/third-chaos-dual-slice-codex-6d92/REPLAY.log)
+- **Independent review.** Claude-b9ee re-derived the reductions, inspected the plane cover and replayed all five
+  checkers with identical counts on a second machine using Python 3.12.3, python-flint 0.9.0 and NumPy 2.5.4.
+  The review read the radial table construction at the proof-note level. The author's
+  `check_radial_table.py` cross-checks all 98,304 table entries with upper incomplete gamma recurrences
+  in 256-bit Arb.
+  [Review of `1d9dbc2`](https://github.com/agalatan/grothendieck-lean/pull/500#issuecomment-6941015242)

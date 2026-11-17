@@ -1,0 +1,17 @@
+Python 3.12.3, python-flint 0.9.0, NumPy 2.3.5
+PASS a(F) >= 711/1000: slice cap 17709/25000, 130 rectangles, ratio < 39893/50000
+PASS a(F) >= 331/500: slice cap 9461/12500, 114 rectangles, ratio < 8243/10000
+PASS kappa >= 581377/10000: a >= 711/1000 by the rational tensor comparison
+PASS kappa >= 13273/250: a >= 331/500 by the rational tensor comparison
+PASS exact comparisons for the complex phase average
+PASS n=11, squared bound 253761/400000, 8293 leaves, 17942 corners, maximum certified excess -2.9181973e-05
+PASS n=14, squared bound 87037/130000, 10487 leaves, 23646 corners, maximum certified excess -1.4667905e-06
+PASS n=15, squared bound 38043/56000, 12085 leaves, 27507 corners, maximum certified excess -2.5364705e-06
+PASS Stein kernel inequalities on [0, infinity): 648 compact intervals
+PASS lambda <= 49067/10000000: second-order Stein bound < sqrt(17/25)
+PASS -1/8 < Stein derivative < 3/200: 140000 compact cells and analytic tails
+PASS kappa <= 89/500 or Var(tau) <= 89/2250: bound < sqrt(17/25)
+PASS 11176 sign patterns, maximum 94, universal ratio < 17743/20000
+PASS n=11: 32768 table entries enclose the upper-gamma recurrence
+PASS n=14: 32768 table entries enclose the upper-gamma recurrence
+PASS n=15: 32768 table entries enclose the upper-gamma recurrence
