@@ -60,9 +60,10 @@ $a C+a_0\mu(1-a^2)/a$, a convex function of $a$ on $[a_0,1]$. Its endpoint
 maximum is $\max(C,a_0C+\mu(1-a_0^2))$, strictly below the number in the last
 column, which is strictly below the corresponding target.
 
-Here is the scalar certificate. By Gaussian symmetry $\Psi(q,b)=\Psi(q,-b)$.
-On $|q|\le13/4$, $0\le b\le13/4$ the function $\Psi$ is convex in $(q,b)$. For a
-rectangle use convex interpolation from its corners, subtract its quadratic,
+By Gaussian symmetry $\Psi(q,b)=\Psi(q,-b)$. The function $\Psi$ is convex
+on all of $\mathbb R^2$ as an average of absolute values of affine functions.
+On $|q|\le13/4$, $0\le b\le13/4$ use convex interpolation from the corners
+of each rectangle, subtract its quadratic,
 and pay at most $a_0\mu(h_q^2+h_b^2)$, with $h_q,h_b$ the two half-widths.
 Subdivision proves the required cap. At a corner, a primitive of
 $(h_3(x)+qx+b)\phi(x)$ is
@@ -225,11 +226,28 @@ $$
 \Phi_n(A,B)=|\xi|m_3(1-2P((n+3)/2,z))+|\eta|m_1(2P((n+1)/2,z)-1).
 $$
 
-The ratio table uses the coefficient of larger magnitude as a factor
-and the quotient in $[-1,1]$ as the argument of a one-dimensional function.
-The upper bound for each bin adds its radius times
-$\mathbb E|f_g(D)|$ or $\mathbb E|f_h(D)|$, using the triangle inequality.
-The same constants enclose the effect of rounding angular coefficient values.
+Write $S=2^{26}$ for the fixed-point scale and $K=8192$ for the number
+of bins per unit of ratio. For integer midpoint coefficients $(a,b)$,
+let $d$ be the coefficient of greater magnitude and $e$ the other.
+If $d\ne0$, set $t=e/d$. By homogeneity and invariance under simultaneous
+sign reversal, $\Phi_n(a/S,b/S)$ equals $|d|/S$ times $\Phi_n(1,t)$ or
+$\Phi_n(t,1)$ according to the dominant coordinate. For $d=0$ both
+coefficients vanish and the midpoint value is zero. The bin index is
+
+$$
+j=\min\!\left(2K-1,\left\lfloor\frac{K(|d|+\operatorname{sgn}(d)e)}{|d|}\right\rfloor\right).
+$$
+
+This places $t$ in $[j/K-1,(j+1)/K-1]$, including $t=1$ in the last bin.
+Each table entry $U_j$ is an integer upper bound for $S$ times the
+normalized radial mean on its whole bin. It is obtained from the value
+at the bin center plus the radius $1/(2K)$ times $\mathbb E|f_h(D)|$ or
+$\mathbb E|f_g(D)|$, respectively, by the triangle inequality.
+The midpoint contribution in scale $S$ is bounded above by
+$\lceil |d| U_j/S\rceil$. The verifier rounds the angular coefficient
+products outward, swapping the interval endpoints for a negative
+multiplier. It adds the two maximal distances from the midpoint times
+their radial Lipschitz constants, rounded up in the same scale.
 
 For angular integration, interpolate $A_\theta,B_\theta$ by chords between
 $m=2048$ uniform steps on $[0,\pi]$. On an interval of length $h=\pi/m$
@@ -238,8 +256,15 @@ function $u$. Convexity of $\Phi_n$ and periodicity bound its chord integral
 by the discrete endpoint mean. Add the chord error with the same radial
 Lipschitz constants, using frequency squares $1$ and $9$ in the second
 derivative bounds. Arb encloses the trig functions, radial integrals and
-error constants. They are rounded outward to fixed-point integers at
-scale $2^{26}$. All final box decisions are exact integer comparisons.
+error constants, which are rounded outward in scale $S$.
+After adding the chord correction, the upper bound on $\Psi_n$ has
+denominator $mS^2$, and the value of $Q$ at the corner has denominator
+$10^4 S^2$. The comparison therefore uses the common positive denominator
+$10^4(mS^2)^2$. In the vectorized integer arithmetic, $|a|\le2S$,
+$|b|\le8S$ and $U_j\le3S$. The bounds $100S^2$, $20KS$ and $100mS$
+cover the intermediate products, the bin numerators and the sums
+over angles, respectively. The code checks these against $2^{63}$
+and uses Python integers for the final squared comparison.
 
 ## 4. Second-order Stein bound for small $\lambda$
 
@@ -493,6 +518,15 @@ two-branch contraction estimate strengthen its dimension and influence
 conclusions. Sections 5 and 6 preserve the earlier audited estimates.
 The checkers establish the displayed numerical premises using Arb or
 integer and rational arithmetic. The analytic reductions are given above.
+
+In #500, claude-b9ee re-derived the reductions, inspected the plane cover and
+replayed all five checkers on a second machine. The review read the
+radial table construction at the proof-note level. The author also
+cross-checked all 98,304 table entries in 256-bit Arb. For the
+regularized upper incomplete gamma function $Q_\Gamma$, the cross-check
+used $Q_\Gamma(s+1,z)=Q_\Gamma(s,z)+z^s e^{-z}/\Gamma(s+1)$ with initial
+values $Q_\Gamma(1,z)=e^{-z}$ and $Q_\Gamma(1/2,z)=\operatorname{erfc}(\sqrt z)$.
+[Independent review](https://github.com/agalatan/grothendieck-lean/pull/500#issuecomment-6941015242)
 
 Run the five checkers from the repository root with Python 3.12,
 python-flint 0.9.0 and NumPy 2.3.5. The circle checker uses only the
