@@ -119,8 +119,10 @@ At the peak: p = 1/ε = 2500/1891;
     B₀ = Λ(0) = 2E|L| = 387√π/500 ∈ (1.371879280600869, 1.371879280600870),
     1.3739535256614 < S < 1.3739535256616,      S − B₀ > 0.002074245,
 
-with S attained near v₀ = σ\*² = 403448/10⁷ [C · codex-a7c4, replayed by claude-b9ee · 3.14]. The profile constants
-used below are j₀ = ½E|L|⁻¹ ∈ [1.431973791291431, 1.431973791291432], g₀ ∈ [−0.835135932614130, −0.835135932614129]
+where S is attained at u_\* = σ\*², the unique maximiser of B(u) − pu, with B(u) = 2E|L + √u·W| (1.8).
+At the peak, 0.0403448 < u_\* < 0.0403449 [P + C · 2.7c], near the rational reference energy
+v₀ = 403448/10⁷ [C · codex-a7c4, replayed by claude-b9ee · 3.14]. The profile constants used below are
+j₀ = ½E|L|⁻¹ ∈ [1.431973791291431, 1.431973791291432], g₀ ∈ [−0.835135932614130, −0.835135932614129]
 and k_A = p − E[(T − 1)²/(2|L|)] = 0.320054504 (1.8).
 
 The corner (ε, ℓ, β) = (0.74, 0.90, 0.12) of the box has σ\* = 0; Theorem B (2.3) covers it, several other proofs do
@@ -226,18 +228,6 @@ C(q) = ‖Π₁[q·g(|q|²)]‖: the first-order term of Λ(q + (T − 1)U) in a
     c_s(q) = Π₁[q·h_s(|q|²)],   h_s = (g − g₀) − s(j₀ − j)
 
 (subtracting the constants changes nothing because Π₁q = 0).
-
-For the peak radial profile φ(r) = 2E|L + √r|, complete monotonicity gives global rational bounds
-`g(r)−g₀ ≤ g′(0)r/(1+1.29r)` and `φ(r) ≤ φ(0)+φ′(0)r+φ″(0)r²/(2(1+2.14r))`
-[P/C, author only · 2.7b]. The Gaussian buffer satisfies
-`S−(B(u)−pu) ≥ (27/25)(u−u_*)²` on `0.00551 ≤ u ≤ 0.0463` [P/C, author only · 2.7c].
-These bounds do not close the content inequality: at `u=0.0403448`, the expectation of the Taylor cubic
-`φ(0)+φ′(0)r+φ″(0)r²/2+φ‴(0)r³/6`, less `pu+S`, exceeds `0.00010675513`, already larger than
-`η=10⁻⁴`; the rational bound with denominator `1+2.14r` loses more. A sharper rational parameter
-`φ‴(0)/(−3φ″(0)) ≈ 1.4224237982` passes the Gaussian budget numerically at u_* and 0.0463, but its global validity and the
-subsequent content-versus-deficit comparison remain open [N · 2.7b–c]. The fourth-moment identity of 6.3.21
-controls the size of the Stein defect; it does not establish the sign of its correlation with the Hessian in
-Gaussian interpolation. The signed deficit estimate of 3.19 applies on its stated near-Gaussian region.
 
 ### 1.9 The six layers of a proof
 
@@ -503,6 +493,18 @@ conditional covariance; yet G = Q − (i/1250)(T − 1)X has Λ(G) > S + 7·10�
 [P + C, N · codex-a7c4, re-derived and replayed by claude-b9ee · 6.5.1].
 Q is not a cubic (E‖DQ‖² = u₀(1 + 64π²/81) > 3u₀), so K is not refuted, but the law of the residual, orthogonality
 and radial tests cannot suffice: the Wick structure (E‖Dq‖² = 3u, the resolvent identity) must enter.
+
+**Scalar profile bounds and the Gaussian budget.** For the peak radial profile φ(r) = 2E|L + √r|, complete
+monotonicity gives global rational bounds g(r) − g₀ ≤ g′(0)r/(1 + 1.29r) and
+φ(r) ≤ φ(0) + φ′(0)r + φ″(0)r²/(2(1 + 2.14r)) [P + C · 2.7b]. The Gaussian buffer satisfies
+S − (B(u) − pu) ≥ (27/25)(u − u_\*)² on 0.00551 ≤ u ≤ 0.0463 [P + C · 2.7c], with u_\* defined in 1.4.
+These bounds do not close the content inequality: at u = 0.0403448, the expectation of the Taylor cubic
+φ(0) + φ′(0)r + φ″(0)r²/2 + φ‴(0)r³/6, less pu + S, exceeds 0.00010675513, already larger than
+η = 10⁻⁴; the rational bound with denominator 1 + 2.14r loses more. A sharper rational parameter
+φ‴(0)/(−3φ″(0)) ≈ 1.4224237982 passes the Gaussian budget numerically at u_\* and 0.0463, but its global validity
+and the subsequent content-versus-deficit comparison remain open [N · 2.7b–c]. The fourth-moment identity of 6.3.21
+controls the size of the Stein defect; it does not establish the sign of its correlation with the Hessian in
+Gaussian interpolation. The signed deficit estimate of 3.19 applies on its stated near-Gaussian region.
 
 **Numerically** the supremum of C²/D at u = 0.0463 is about 0.0876 in every dimension tested (n ≤ 10), against the
 proved family constants 0.22 to 0.239 [N · STATUS §9]. The best known value is the two-variable tensor

@@ -6,9 +6,11 @@ Baseline: `8914e52afdcab1dc821e69b59781f363e0487702`.
 
 The input is the user's Gemini draft, preserved in `GEMINI_DRAFT.md` beside
 this note. It is a proposed programme, not a proof. The computations and
-repairs below are by codex-a7c4. New paper arguments are **P, author only**;
-new exact/interval calculations are **C, author only**. Floating quadrature
-and searches are **N**, including the proposed optimal damping constants.
+repairs below are by codex-a7c4. The paper arguments are **P** and the
+exact/interval calculations are **C**: claude-b9ee and its review worker
+re-derived the claims and replayed both certificate scripts, as recorded in
+`REVIEW_claude-b9ee.md`. Floating quadrature and searches remain **N**,
+including the proposed optimal damping constants.
 No Lean theorem or Grothendieck lower bound changes.
 
 ## Verdict
@@ -45,7 +47,7 @@ nonnegativity of `D` or of `D+B_G`.
 ## 1. Requested block: endpoint derivatives
 
 These are derivatives, not Taylor coefficients divided by factorials.
-The displayed endpoints are outward rational intervals (**C, author only**).
+The displayed endpoints are outward rational intervals (**C**).
 
 | quantity | lower endpoint | upper endpoint |
 |---|---:|---:|
@@ -112,7 +114,7 @@ The numerical optimizer gives (**N**)
     u_* ≈ 0.0403448094113431,
     S   ≈ 1.373953525661483.
 
-The independent Arb calculation certifies (**C, author only**)
+The independent Arb calculation certifies (**C**)
 
     0.0403448 < u_* < 0.0403449,
     1.3739535256614 < S < 1.3739535256616.
@@ -204,7 +206,7 @@ There is a simple certified alternative. Write
     μ_safe = g′(0)/(2(−g(0)))
            ∈ [1.292712228422288864,1.292712228422288865]. (6)
 
-Consequently `μ=129/100` is globally valid (**P/C, author only**), and
+Consequently `μ=129/100` is globally valid (**P + C**), and
 the rigorous bracket is `μ_safe ≤ μ_max ≤ 2μ_safe`, using the infinite-radius
 constraint for the upper end. The proof uses the actual positive Laplace measure, not observed grid signs.
 
@@ -255,7 +257,7 @@ Jensen for the convex reciprocal gives
     λ_safe = Φ‴(0)/(2|Φ″(0)|)
       ∈ [2.133635697251235014,2.133635697251235015].       (10)
 
-So `λ=107/50` works globally (**P/C, author only**), and the rigorous
+So `λ=107/50` works globally (**P + C**), and the rigorous
 bracket is `λ₀ ≤ λ_min ≤ λ_safe`. Both scalar
 inequalities used in (6) and (10) are equivalent to
 `x−2+(x+2)e^(−x)≥0`; this function vanishes at zero and its derivative
@@ -376,17 +378,21 @@ stronger identity (STATUS 6.3.21) supplies the missing weights. With
 Hence `‖P₁,₁V‖²≤3δ/4` and `‖P₂,₀q²‖²≤δ`. The jointly weighted bound
 in the second line, combined with (15), gives
 `‖Π₁(qV)‖²≤(15/2)uδ`; see `influence-calculus-2026-11-16/NOTE2.md`,
-Theorem 8. Still stronger δ^(3/2) bounds are in STATUS 6.3.12.
+Theorem 8. The δ^(3/2) bounds in STATUS 6.3.12 are complementary: its
+`(3√6/4)δ^(3/2)` bound is smaller than `(15/2)uδ` exactly when
+`0<χ<50/3`, since the ratio of the bounds is `(√6/10)√χ`.
+At `χ=42`, as on the Wick cubic, `(15/2)uδ` is smaller.
+The crossover is checked exactly in `constants_exact.py`.
 For tensor rescaling, u is quadratic in T, δ and the squared projections
 in (16) are quartic, and `‖Π₁(qV)‖²` is sextic. They cannot all be
 quartic contractions, as the draft claims.
 
 More useful for the *full* profile than a leading Taylor term is the existing
 resolvent (STATUS 6.3.23): with
-`𝔞=Σ(∂_jq)(∂̄_jq)` and `k(v)=∫₀∞e^(−s)g(v+us)ds`,
+`𝔞=Σ(∂_jq)(∂̄_jq)` and `K_u(v)=∫₀∞e^(−s)g(v+us)ds`,
 
-    k−uk′=g,
-    E[conj(ξ)qg(V)] = E[conj(ξ)k′(V)(conj(q)𝔞+q(c₂−u))]. (17)
+    K_u−uK_u′=g,
+    E[conj(ξ)qg(V)] = E[conj(ξ)K_u′(V)(conj(q)𝔞+q(c₂−u))]. (17)
 
 This preserves the profile damping and vanishes with the Stein defect. Its
 projected Cauchy bound, the local variant, and a signed deficit formula are
@@ -470,14 +476,24 @@ From the repository root, use the scripts under
 ```sh
 python3 -I research/conjecture-K/code/gemini-plan-audit-2026-11-17/constants_exact.py
 python3 -I research/conjecture-K/code/gemini-plan-audit-2026-11-17/benchmark_exact.py
-OPENBLAS_NUM_THREADS=1 python3 research/conjecture-K/code/gemini-plan-audit-2026-11-17/diagnostics.py --output numerical.json
+(
+  set -eu
+  gemini_audit_output=$(mktemp "${TMPDIR:-/tmp}/codex-a7c4-gemini-audit.XXXXXX")
+  trap 'rm -f "$gemini_audit_output"' EXIT
+  OPENBLAS_NUM_THREADS=1 python3 research/conjecture-K/code/gemini-plan-audit-2026-11-17/diagnostics.py --output "$gemini_audit_output"
+  cmp "$gemini_audit_output" research/conjecture-K/code/gemini-plan-audit-2026-11-17/numerical.json
+)
 ```
 
 The first needs only the standard library. The second used python-flint 0.9.0
 at 128-bit precision. The third used NumPy 2.3.5 and SciPy 1.17.1. Its output
 is **N** irrespective of the requested tolerance. Matching JSON files are
 committed beside the scripts; the benchmark prints progress before its JSON.
-Assertions must be enabled for both certificate scripts.
+Assertions must be enabled for both certificate scripts. The temporary-output
+comparison is byte-for-byte in the recorded numerical environment; other
+NumPy/SciPy versions can move the last digits and optimizer locations, as the
+independent review reports. Such differences do not upgrade or invalidate a
+numerical search's status as **N**.
 
 `constants_exact.py` computes, rather than reads, the derivative enclosures
 via `third-audit-2026-11-15-codex-a7c4/content_kernels_exact.py` and its outward

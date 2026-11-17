@@ -52,6 +52,11 @@ assert Q(m4, u0*u0)-2 == 42
 assert Q(m6, u0**3) == 11352
 assert Q(v*v, u0*(m4-2*u0*u0)) == Q(64,21)
 
+# (3 sqrt(6)/4) delta^(3/2) beats (15/2) u delta exactly when
+# 0 < chi=delta/u^2 < ((15/2)/(3 sqrt(6)/4))^2.
+leading_bound_crossover = Q(15,2)**2 / (6*Q(3,4)**2)
+assert leading_bound_crossover == Q(50,3)
+
 # Analytic CM/Jensen lemmas in NOTE.md give these global rational envelopes.
 mu_safe=g[1]/(-2*g[0])
 lambda_safe=phi[3]/(-2*phi[2])
@@ -72,6 +77,7 @@ out = {
     'safe_rational_choices': {'mu':'129/100','lambda':'107/50'},
     'winding_energy_ratio': (1 + PI*PI*Q(64,81)).enclosure(18),
     'wick_cubic': {'m4_over_u2':44,'m6_over_u3':11352,'leading_ratio':'64/21'},
+    'leading_bound_crossover_chi': str(leading_bound_crossover),
     'sanity_family_fourth_excess': {
         'I': str(Q(factorial(2)**2)-2),
         'II': str(Q(m4,u0*u0)-2),

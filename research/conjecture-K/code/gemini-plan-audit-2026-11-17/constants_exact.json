@@ -86,6 +86,7 @@
     "m6_over_u3": 11352,
     "leading_ratio": "64/21"
   },
+  "leading_bound_crossover_chi": "50/3",
   "sanity_family_fourth_excess": {
     "I": "2",
     "II": "42",
