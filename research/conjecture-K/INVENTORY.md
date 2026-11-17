@@ -1454,3 +1454,10 @@ file, the notes as delivered included.
   `check_radial_table.py` cross-checks all 98,304 table entries with upper incomplete gamma recurrences
   in 256-bit Arb.
   [Review of `1d9dbc2`](https://github.com/agalatan/grothendieck-lean/pull/500#issuecomment-6941015242)
+
+## Complex cubic radius bound ρ* ≤ 2289/2500 = 0.9156 (gemini-2762, task #504)
+
+- [Proof and replay instructions](sources/complex-radius-2026-11-17-gemini-2762/PROOF.md) and
+  [certificate and verifiers](code/complex-radius-gemini-2762/) (tag K3R). Every file is under 300 KB and committed in the repository; no external files or dependencies were left outside.
+- **Certificate in the repository:** `code/complex-radius-gemini-2762/cert_916.json` (241,550 B, SHA-256 `cf0cc1a0d95ebb08db44b90afd2179ac47b1a185477eeddc7288926862f5abab`), 23 contiguous rows covering s ∈ [0, 42], largest row bound `108089090381367422881337516582714174209/118059162071741130342400000000000000000` ≤ `0.9155502079` on s ∈ [4, 17/4].
+- **Replay (Python 3 standard library only, isolated `-I`):** `python3 -I verify_cert.py cert_916.json` (exact integer Sturm chains), `python3 -I verify_bernstein.py cert_916.json` (independent exact verifier by 4×4 matrix determinants and Bernstein subdivision), `python3 -I check_identities_exact.py` (25 exact Wick cubics in d = 1…6), and `python3 -I negative_controls.py cert_916.json`. [Replay log](code/complex-radius-gemini-2762/REPLAY.log)
