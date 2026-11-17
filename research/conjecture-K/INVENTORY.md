@@ -1470,6 +1470,39 @@ file, the notes as delivered included.
   9-row central bank at ε = 3/4 and 13-row central bank at ε = 94/125 (`central_94_125_certificate.json`) in 10⁴⁵
   fixed-point integer arithmetic (~148 s). [Replay log](code/exterior-94-125-gemini-9a4e/REPLAY.log)
 
+## Dimension-free sharpenings on the real third Wiener chaos (gemini-c1de, task #501)
+
+- [Proof and replay instructions](sources/third-chaos-dimfree-gemini-c1de/PROOF.md) and
+  [checkers](code/third-chaos-dimfree-gemini-c1de/) (STATUS 3.21 (e4), 3.21 (e9)). Every file of the
+  delivery is committed below; no external data files are used.
+- **Replay.** Python 3.12.3 and `python-flint` 0.9.0 (`certify_sixth.py` and `certify_circle_211.py` use
+  only the Python standard library). `certify_sixth.py` checked 6 full-rank Wick tensor controls on the six
+  connected cubic multigraphs (`Chaos3.wick4`, `Chaos3.wick6`) and accepted 638 + 37 rational intervals for
+  $|\kappa_6| \le 67\kappa_4^{3/2}$. `certify_circle_211.py` enumerated all 21,946 canonical sign patterns
+  ($N = 211$), obtained exact maximum 130, and verified the ratio below $44357/50000$.
+  `certify_stein_quartic.py` accepted 3,505 boxes on $[0, 1]^2 \times [0, 4/625]$ with 30,000 compact cells
+  and analytic tails. `certify_regression_sixth.py` accepted 69,553 rational spline-tail intervals and 11
+  $\kappa_4$-intervals on $[0, 91/500]$ with 35,000 compact cells and analytic tails. `certify_rank_slice.py`
+  accepted 19 majorants (2,089 $\Psi$-rectangles, 199,625 $(a,s,\kappa_R)$-cells) for $a \ge 0.642$ and 15
+  majorants (1,740 $\Psi$-rectangles, 92,805 $(a,s,\kappa_R)$-cells, all $\alpha = 0$) for $a \ge 0.700$.
+  `certify_tensor.py` checked 3 exact $\mathbb{R}^4$ tensor controls and accepted 6,225 leaves (5,044 pruned)
+  at $a \le 0.642$ and 6,715 leaves (6,786 pruned) at $a \le 0.700$.
+  [Replay log](code/third-chaos-dimfree-gemini-c1de/REPLAY.log)
+- **Independent review.** `claude-b9ee` re-derived all eight claims by hand, replayed all six checkers with
+  output identical to `REPLAY.log`, and cross-checked every certified constant with independent code.
+  [Review of `bab26f939`](https://github.com/agalatan/grothendieck-lean/pull/519#issuecomment-6946728230)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-dimfree-gemini-c1de/PROOF.md` | 39,077 B | `7bdaccaf3b2568b378d4fadc19e0f3daa2b45b377511759d0d13e57220325e4f` |
+| `code/third-chaos-dimfree-gemini-c1de/REPLAY.log` | 933 B | `c37396c593e33ec10b4b6b512da12d21c70641a88ce826b964bca001a545bc4f` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_circle_211.py` | 3,764 B | `0f9f4894d79a9b781b214d1f23babc9920d1d24103e1f3d4f7b3806b95360177` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_rank_slice.py` | 14,703 B | `92898cde865a86e2d2ed6ac53dc3a1d243e4be144de059bb7216f85fcd42dede` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_regression_sixth.py` | 7,274 B | `539d193cc1a7753fb1378c5137a38b0762e3735aca9ed62194f8844f26ce2291` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_sixth.py` | 10,893 B | `1bbe6649ccfc612aae34d9612f507ca624cd5dcbabd88eadfc78caaf9359a7a6` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_stein_quartic.py` | 10,924 B | `094919eec9f064ab66aebe54011fc587489486befad3b97e635288f1afd3d3b8` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_tensor.py` | 14,590 B | `ef4b2e42bfe3afe546242067b5931b4d127634364077e0ddb9c35105527fd057` |
+
 ## Complex cubic radius bound ρ* ≤ 2289/2500 = 0.9156 (gemini-2762, task #504)
 
 - [Proof and replay instructions](sources/complex-radius-2026-11-17-gemini-2762/PROOF.md) and
