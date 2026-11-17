@@ -222,6 +222,18 @@ C(q) = ‖Π₁[q·g(|q|²)]‖: the first-order term of Λ(q + (T − 1)U) in a
 
 (subtracting the constants changes nothing because Π₁q = 0).
 
+For the peak radial profile φ(r) = 2E|L + √r|, complete monotonicity gives global rational bounds
+`g(r)−g₀ ≤ g′(0)r/(1+1.29r)` and `φ(r) ≤ φ(0)+φ′(0)r+φ″(0)r²/(2(1+2.14r))`
+[P/C, author only · 2.7b]. The Gaussian buffer satisfies
+`S−(B(u)−pu) ≥ (27/25)(u−u_*)²` on `0.00551 ≤ u ≤ 0.0463` [P/C, author only · 2.7c].
+These bounds do not close the content inequality: at `u=0.0403448`, the expectation of the Taylor cubic
+`φ(0)+φ′(0)r+φ″(0)r²/2+φ‴(0)r³/6`, less `pu+S`, exceeds `0.00010675513`, already larger than
+`η=10⁻⁴`; the rational bound with denominator `1+2.14r` loses more. A sharper rational parameter
+`φ‴(0)/(−3φ″(0)) ≈ 1.4224237982` passes the Gaussian budget numerically at u_* and 0.0463, but its global validity and the
+subsequent content-versus-deficit comparison remain open [N · 2.7b–c]. The fourth-moment identity of 6.3.21
+controls the size of the Stein defect; it does not establish the sign of its correlation with the Hessian in
+Gaussian interpolation. The signed deficit estimate of 3.19 applies on its stated near-Gaussian region.
+
 ### 1.9 The six layers of a proof
 
 K_η must hold for every G, not only for the core. A proof has six layers:

@@ -1,0 +1,76 @@
+{
+  "agent_id": "codex-a7c4",
+  "status": "PASS: Arb interval arithmetic, author only",
+  "python_flint": "0.9.0",
+  "precision_bits": 128,
+  "u_star_bracket": [
+    "50431/1250000",
+    "403449/10000000"
+  ],
+  "S": "[1.37395352566148 +/- 4.97e-15]",
+  "left_derivative": "[2.1313974303e-8 +/- 3.33e-19]",
+  "right_derivative": "[-2.05157065229e-7 +/- 5.32e-19]",
+  "Lambda_second_at_band_top": "[-2.16622449175286647 +/- 3.96e-18]",
+  "band_buffer_coefficient": "27/25",
+  "buffer_domain": [
+    "551/100000",
+    "463/10000"
+  ],
+  "rows": [
+    {
+      "u": "551/100000",
+      "Lambda_Gauss": "[1.3724353137561724941 +/- 5.24e-20]",
+      "Gaussian_buffer": "[0.00151821190531 +/- 2.48e-15]",
+      "cubic_Lambda_upper_minus_S": "[-0.00151816122804 +/- 4.99e-15]",
+      "cubic_budget_failure": false,
+      "safe_rational_Lambda_upper_minus_S": "[-0.00151763895275 +/- 1.17e-15]",
+      "safe_rational_budget_failure": false
+    },
+    {
+      "u": "1/100",
+      "Lambda_Gauss": "[1.3728178546340144728 +/- 3.02e-20]",
+      "Gaussian_buffer": "[0.00113567102747 +/- 1.64e-15]",
+      "cubic_Lambda_upper_minus_S": "[-0.00113514757232 +/- 3.98e-15]",
+      "cubic_budget_failure": false,
+      "safe_rational_Lambda_upper_minus_S": "[-0.00113237876242 +/- 1.97e-15]",
+      "safe_rational_budget_failure": false
+    },
+    {
+      "u": "1/50",
+      "Lambda_Gauss": "[1.3734581842370976559 +/- 5.73e-20]",
+      "Gaussian_buffer": "[0.00049534142439 +/- 4.83e-15]",
+      "cubic_Lambda_upper_minus_S": "[-0.00048774476012 +/- 3.12e-15]",
+      "cubic_budget_failure": false,
+      "safe_rational_Lambda_upper_minus_S": "[-0.00047112561279 +/- 4.71e-15]",
+      "safe_rational_budget_failure": false
+    },
+    {
+      "u": "3/100",
+      "Lambda_Gauss": "[1.3738290016092354751 +/- 6.28e-20]",
+      "Gaussian_buffer": "[0.00012452405225 +/- 2.65e-15]",
+      "cubic_Lambda_upper_minus_S": "[-8.921209726e-5 +/- 1.77e-15]",
+      "cubic_budget_failure": false,
+      "safe_rational_Lambda_upper_minus_S": "[-4.898354671e-5 +/- 1.63e-15]",
+      "safe_rational_budget_failure": false
+    },
+    {
+      "u": "50431/1250000",
+      "Lambda_Gauss": "[1.3739535256614828336 +/- 4.05e-20]",
+      "Gaussian_buffer": "[+/- 2.14e-15]",
+      "cubic_Lambda_upper_minus_S": "[0.00010675513441 +/- 3.96e-15]",
+      "cubic_budget_failure": true,
+      "safe_rational_Lambda_upper_minus_S": "[0.00017020545953 +/- 1.93e-15]",
+      "safe_rational_budget_failure": true
+    },
+    {
+      "u": "463/10000",
+      "Lambda_Gauss": "[1.3739139635020414511 +/- 3.46e-20]",
+      "Gaussian_buffer": "[3.956215944e-5 +/- 3.52e-15]",
+      "cubic_Lambda_upper_minus_S": "[0.00013802402217 +/- 1.10e-15]",
+      "cubic_budget_failure": true,
+      "safe_rational_Lambda_upper_minus_S": "[0.00020712016849 +/- 1.36e-15]",
+      "safe_rational_budget_failure": true
+    }
+  ],
+  "meaning": "The specific Taylor-coefficient cubic majorant cannot close the weak target by itself; this does not refute the target."
+}
