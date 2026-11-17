@@ -1,0 +1,57 @@
+== H1: the trigonometric lemma ==
+PASS  g = sin a + (1/3) sin 3a = 2 sin a (1 - (2/3) sin^2 a), so sign g = sign sin a
+PASS  (1/2pi) int |g| = 20/(9 pi) and (1/2pi) int g^2 = 5/9
+PASS  ratio = 4 sqrt5/(3 pi)
+PASS  sign(sin a): hat sigma_1 = 2/(pi i 1), |hat sigma_1| = 2/(1 pi)
+PASS  sign(sin a): hat sigma_3 = 2/(pi i 3), |hat sigma_3| = 2/(3 pi)
+PASS  m = 1: ||P sigma||^2 = 2(2/pi)^2 (1 + 1/9) = 80/(9 pi^2)
+PASS  m = 3, k = 1: hat sigma_k = (2/(pi i k))(1 - e^{-ikx} + e^{-ik(x+y)})
+PASS  m = 3, k = 3: hat sigma_k = (2/(pi i k))(1 - e^{-ikx} + e^{-ik(x+y)})
+PASS  m = 3: 2|hat sigma_1|^2 + 2|hat sigma_3|^2 = (8/pi^2) Phi(x, y, z)
+PASS  Phi = 10/9 - (8/9)(9 Pi1 - Pi3), Pi1 = prod sin(x_i/2), Pi3 = prod sin(3x_i/2)  (x+y+z = pi)
+PASS  sin 3s = sin s (1 + 2 cos 2s), hence Pi3 = Pi1 * prod(1 + 2 cos x_i)
+PASS  sum cos x_i = 1 + 4 Pi1 for x + y + z = pi
+PASS  AM-GM step: (3 + 2*(3/2))/3 = 2 and 2^3 = 8 < 9
+== H2: harmonic cubics ==
+PASS  E R^6 = n(n+2)(n+4) for R ~ chi_n (n = 1..12)
+PASS  pi > 1979/630: int_0^1 x^4(1-x)^4 dx = 1/630 (and 22/7 - pi = int x^4(1-x)^4/(1+x^2) < 1/630)
+PASS  n =  2: kappa_n^2 = 3/32 * pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n =  3: kappa_n^2 = 128/105 / pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n =  4: kappa_n^2 = 75/512 * pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n =  5: kappa_n^2 = 512/315 / pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n =  6: kappa_n^2 = 735/4096 * pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n =  7: kappa_n^2 = 32768/17325 / pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n =  8: kappa_n^2 = 6615/32768 * pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n =  9: kappa_n^2 = 131072/63063 / pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n = 10: kappa_n^2 = 114345/524288 * pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n = 11: kappa_n^2 = 2097152/945945 / pi, so kappa_n c_3 < sqrt(2/pi)
+PASS  n = 12: kappa_n^2 = 3864861/16777216 * pi > 9 pi/40, so kappa_n c_3 > sqrt(2/pi): the bound stops at n = 11
+PASS  a square-free multilinear cubic is harmonic (e.g. Laplacian of e_3(z1..z5) = 0)
+PASS  cubic forms in (cos a, sin a): cos^3, cos^2 sin, cos sin^2, sin^3 lie in span{cos a, sin a, cos 3a, sin 3a}
+== H3: the rank-one criterion ==
+PASS  (1/2) E w = 5/(4 sqrt(3 pi)) and divided by sqrt(2/pi) it is 5/(4 sqrt 6)
+PASS  c^2: E[1/w]/(2 sqrt(2/pi)) = (5/(4 sqrt 6)) * pi * 1/2
+PASS  b^2: E[X^2/w]/(2 sqrt(2/pi)) = (5/(4 sqrt 6)) * pi * 25/64
+PASS  a^2: E[H^2/w]/(2 sqrt(2/pi)) = (5/(4 sqrt 6)) * pi * 34925/131072
+PASS  C - A = 30611/131072 and C - B = 7/64
+PASS  (5/(4 sqrt6))(1 + pi Q) < 1  <=>  Q < (4 sqrt6 - 5)/(5 pi)  (algebra)
+PASS  sqrt 6 > 2449/1000 (2449^2 = 5997601 < 6 000 000) and sqrt 6 < 24495/10000
+PASS  rational sufficient criterion: 1/2 - (4 sqrt6 - 5)/(5 pi) < 1/2 - (4*2449/1000 - 5)/(5*22/7) = 487/2500
+== H4: complete cubics e_3 ==
+PASS  N = 3: e3 = C(N,3) N^{-3/2} He3(W1) - ((N-2)/(2 sqrt N)) W1 (|Z'|^2 - (N-1)) + R3(Z'), R3 shift-invariant: True; a^2 = 2/9, b^2 = 1/3, c^2 = 4/9 (formulas (N-1)(N-2)/N^2, 3(N-2)/N^2, 4/N^2: True); h2(W1)L term = 0
+PASS  N = 4: e3 = C(N,3) N^{-3/2} He3(W1) - ((N-2)/(2 sqrt N)) W1 (|Z'|^2 - (N-1)) + R3(Z'), R3 shift-invariant: True; a^2 = 3/8, b^2 = 3/8, c^2 = 1/4 (formulas (N-1)(N-2)/N^2, 3(N-2)/N^2, 4/N^2: True); h2(W1)L term = 0
+PASS  N = 5: e3 = C(N,3) N^{-3/2} He3(W1) - ((N-2)/(2 sqrt N)) W1 (|Z'|^2 - (N-1)) + R3(Z'), R3 shift-invariant: True; a^2 = 12/25, b^2 = 9/25, c^2 = 4/25 (formulas (N-1)(N-2)/N^2, 3(N-2)/N^2, 4/N^2: True); h2(W1)L term = 0
+PASS  N = 6: e3 = C(N,3) N^{-3/2} He3(W1) - ((N-2)/(2 sqrt N)) W1 (|Z'|^2 - (N-1)) + R3(Z'), R3 shift-invariant: True; a^2 = 5/9, b^2 = 1/3, c^2 = 1/9 (formulas (N-1)(N-2)/N^2, 3(N-2)/N^2, 4/N^2: True); h2(W1)L term = 0
+PASS  N = 7: e3 = C(N,3) N^{-3/2} He3(W1) - ((N-2)/(2 sqrt N)) W1 (|Z'|^2 - (N-1)) + R3(Z'), R3 shift-invariant: True; a^2 = 30/49, b^2 = 15/49, c^2 = 4/49 (formulas (N-1)(N-2)/N^2, 3(N-2)/N^2, 4/N^2: True); h2(W1)L term = 0
+PASS  N = 8: e3 = C(N,3) N^{-3/2} He3(W1) - ((N-2)/(2 sqrt N)) W1 (|Z'|^2 - (N-1)) + R3(Z'), R3 shift-invariant: True; a^2 = 21/32, b^2 = 9/32, c^2 = 1/16 (formulas (N-1)(N-2)/N^2, 3(N-2)/N^2, 4/N^2: True); h2(W1)L term = 0
+PASS  criterion LHS(N) = A'(1 - 3t + 2t^2) + B'(3t - 6t^2), t = 1/N: coefficients 3(B'-A') < 0 and 2A' - 6B' < 0, so LHS increases with N
+PASS  N = 11: LHS = 142821/720896 > 5357/27500 (rational sufficient criterion)
+PASS  N = 10: LHS = 318507/1638400 < 1/2 - (4 sqrt6 - 5)/(5 pi) (the right side is > 1/2 - (4*2.4495 - 5)/(5*1979/630) = 0.194518, since sqrt6 < 2.4495 and pi > 1979/630): the criterion fails at N = 10
+      (H3) bound for e3 along u: N = 11: 0.99429, N = 12: 0.98936, N -> oo: 0.93749  (times sqrt(2/pi); float display only)
+== Comparison with the ledger: kappa_4 of P_N (exact) ==
+      E e3^4 = 27 C(N,3) + 324 C(N,4) + 1350 C(N,5) + 1860 C(N,6): counts {3: 27, 4: 324, 5: 1350, 6: 1860}
+PASS  the count formula agrees with exact Gaussian moments of e3^4 for N = 3..6
+PASS  kappa_4(P_N) >= 74 for every N >= 26: E e3^4 - 77 C(N,3)^2 at N = 26 + s has only nonnegative coefficients in s
+PASS  kappa_4(P_25) < 74 and kappa_4(P_26) >= 74 (exact: 84657/1150, 48237/650)
+
+ALL CHECKS PASSED

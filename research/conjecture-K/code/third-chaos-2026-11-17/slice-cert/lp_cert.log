@@ -1,0 +1,46 @@
+Python 3.14.8, numpy 2.5.5, Arb precision 256 bits
+N = 21: 1351 restricted patterns (= N + C(N,3)), 38 distinct autocorrelation rows, lags k = 1..10
+   floating LP (odd m <= 6001): value 0.790179501, mu = -0.0e+00, support: w_4 = 2.765628, w_5 = -1.382814, w_9 = -1.382814
+   integer weights (LP solution / 1.382814): w_4 = 2, w_5 = -1, w_9 = -1   (sum = 0)
+   exact max over the restricted patterns: N t = 12, t = 4/7; attained by 406 pattern(s), e.g. one with 1 sign change(s) per half-turn
+   delta_m = +2 c_4^m -1 c_5^m -1 c_9^m:  >= 0 for every m >= 1 by the lemma: True;  Arb sweep, odd m <= 20001 (m != 3): all > 0
+   delta_3 = [0.7231629910855963214272945 +/- 2.00e-26]
+   CERTIFIED: (E|F|)^2 <= W_3(sign F) ||F||^2 <= c_21 ||F||^2, c_21 = t/delta_3 = [0.79017950098739907726 +/- 3.23e-21], sqrt = [0.88892041319085426730 +/- 1.08e-21]  [LP 0.790179501]  (0.1s)
+
+N = 31: 4526 restricted patterns (= N + C(N,3)), 81 distinct autocorrelation rows, lags k = 1..15
+   floating LP (odd m <= 6001): value 0.790101890, mu = -0.0e+00, support: w_6 = 3.061645, w_7 = -1.530822, w_13 = -1.530822
+   integer weights (LP solution / 1.530822): w_6 = 2, w_7 = -1, w_13 = -1   (sum = 0)
+   exact max over the restricted patterns: N t = 16, t = 16/31; attained by 1333 pattern(s), e.g. one with 1 sign change(s) per half-turn
+   delta_m = +2 c_6^m -1 c_7^m -1 c_13^m:  >= 0 for every m >= 1 by the lemma: True;  Arb sweep, odd m <= 20001 (m != 3): all > 0
+   delta_3 = [0.6532436368185828952584631 +/- 2.02e-26]
+   CERTIFIED: (E|F|)^2 <= W_3(sign F) ||F||^2 <= c_31 ||F||^2, c_31 = t/delta_3 = [0.79010189027130548768 +/- 4.18e-21], sqrt = [0.88887675763927222156 +/- 3.03e-21]  [LP 0.790101890]  (0.1s)
+
+N = 45: 14235 restricted patterns (= N + C(N,3)), 170 distinct autocorrelation rows, lags k = 1..22
+   floating LP (odd m <= 6001): value 0.788157895, mu = -2.9e-15, support: w_8 = 4.728948, w_9 = -3.546711, w_20 = -1.182237
+   integer weights (LP solution / 1.182237): w_8 = 4, w_9 = -3, w_20 = -1   (sum = 0)
+   exact max over the restricted patterns: N t = 30, t = 2/3; attained by 3570 pattern(s), e.g. one with 1 sign change(s) per half-turn
+   delta_m = +4 c_8^m -3 c_9^m -1 c_20^m:  >= 0 for every m >= 1 by the lemma: True;  Arb sweep, odd m <= 20001 (m != 3): all > 0
+   delta_3 = [0.8458542003890055419664668 +/- 1.46e-26]
+   CERTIFIED: (E|F|)^2 <= W_3(sign F) ||F||^2 <= c_45 ||F||^2, c_45 = t/delta_3 = [0.78815789572253572458 +/- 7.66e-23], sqrt = [0.88778257232417877903 +/- 2.64e-21]  [LP 0.788157895]  (0.2s)
+
+N = 61: 36051 restricted patterns (= N + C(N,3)), 311 distinct autocorrelation rows, lags k = 1..30
+   floating LP (odd m <= 6001): value 0.787863464, mu = -0.0e+00, support: w_11 = 6.007459, w_12 = -4.805967, w_27 = -1.201492
+   integer weights (LP solution / 1.201492): w_11 = 5, w_12 = -4, w_27 = -1   (sum = 0)
+   exact max over the restricted patterns: N t = 40, t = 40/61; attained by 8906 pattern(s), e.g. one with 1 sign change(s) per half-turn
+   delta_m = +5 c_11^m -4 c_12^m -1 c_27^m:  >= 0 for every m >= 1 by the lemma: True;  Arb sweep, odd m <= 20001 (m != 3): all > 0
+   delta_3 = [0.8322986589743388330736191 +/- 2.56e-26]
+   CERTIFIED: (E|F|)^2 <= W_3(sign F) ||F||^2 <= c_61 ||F||^2, c_61 = t/delta_3 = [0.78786346445170745224 +/- 2.50e-21], sqrt = [0.88761673285923776136 +/- 3.10e-21]  [LP 0.787863464]  (0.5s)
+
+N = 121: 288101 restricted patterns (= N + C(N,3)), 1221 distinct autocorrelation rows, lags k = 1..60
+   floating LP (odd m <= 6001): value 0.787081457, mu = 0.0e+00, support: w_23 = 11.278049, w_24 = -10.024932, w_53 = -1.253117
+   integer weights (LP solution / 1.253117): w_23 = 9, w_24 = -8, w_53 = -1   (sum = 0)
+   exact max over the restricted patterns: N t = 76, t = 76/121; attained by 71269 pattern(s), e.g. one with 1 sign change(s) per half-turn
+   delta_m = +9 c_23^m -8 c_24^m -1 c_53^m:  >= 0 for every m >= 1 by the lemma: True;  Arb sweep, odd m <= 20001 (m != 3): all > 0
+   delta_3 = [0.7980103807703411292192934 +/- 2.12e-26]
+   CERTIFIED: (E|F|)^2 <= W_3(sign F) ||F||^2 <= c_121 ||F||^2, c_121 = t/delta_3 = [0.78708145744595175510 +/- 1.30e-21], sqrt = [0.88717611410922902230 +/- 3.67e-21]  [LP 0.787081457]  (9.5s)
+
+MAIN RESULT (N = 61): for every n and every F in V_3(n):  (E|F|)^2 <= c_61 ||F||_2^2,
+   c_61 = (40/61) / (5 cos^3(11 pi/61) - 4 cos^3(12 pi/61) - cos^3(27 pi/61)) in [0.787863464451707452 +/- 2.43e-19]
+   hence (E|F|)^2 <= 0.7878635 ||F||_2^2 and E|F| <= 0.8876168 ||F||_2:  True, True
+BONUS (N = 121): c_121 = (76/121) / (+9 cos^3(23 pi/121) -8 cos^3(24 pi/121) -1 cos^3(53 pi/121)) in [0.787081457445951755 +/- 9.88e-20]: (E|F|)^2 <= 0.7870815 ||F||_2^2, E|F| <= 0.8871762 ||F||_2:  True, True
+info (N = 21, same weights): the maximum over all 2^20 sign patterns is 4, giving 5.5313 instead of 0.790180

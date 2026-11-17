@@ -1,0 +1,5 @@
+random mixed R, trial 0      c=3: E s = 0.9989 | kappa Wick 2.05326, kappa_0 E H^2 2.04764 (+-0.00382) | E G^3 direct 6.4470 (+-0.0475), factorised 6.4389 | mean d^2 1.07e-01
+random mixed R, trial 1      c=3: E s = 0.9993 | kappa Wick 1.89442, kappa_0 E H^2 1.89133 (+-0.00191) | E G^3 direct 5.0872 (+-0.0274), factorised 5.1069 | mean d^2 3.11e-01
+random mixed R, trial 0      c=5: E s = 1.0003 | kappa Wick 1.99474, kappa_0 E H^2 1.99597 (+-0.00195) | E G^3 direct 5.9922 (+-0.0414), factorised 5.9610 | mean d^2 2.15e-01
+random mixed R, trial 1      c=5: E s = 0.9993 | kappa Wick 1.97912, kappa_0 E H^2 1.97633 (+-0.00196) | E G^3 direct 5.7923 (+-0.0375), factorised 5.7835 | mean d^2 1.79e-01
+c=4 extremal R_4             c=4: E s = 1.0000 | kappa Wick 1.60000, kappa_0 E H^2 1.60000 (+-0.00000) | E G^3 direct 3.1871 (+-0.0098), factorised 3.2000 | mean d^2 0.00e+00

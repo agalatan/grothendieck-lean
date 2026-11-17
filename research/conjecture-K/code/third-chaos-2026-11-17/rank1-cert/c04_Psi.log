@@ -1,0 +1,16 @@
+python-flint 0.9.0  prec 128 bits;  K = [0.890661380583861 +/- 2.35e-16]  K^2 = [0.793277694864 +/- 4.52e-13]
+PASS K > sqrt(17/25) and K > sqrt(2/pi) (the vertex (0,0,1) is above both targets)
+Part 1: certified slice suprema at the clean values (tangent line at the numerical maximiser t0)
+  weak  sqrt(17/25): a0 = 0.7931, t0 = 0.0014085, first piece on branch 2, crossings ['0.072706', '1.717075', '1.745385']
+     V <= 0.824604926754, G in [-4.556e-11, -4.556e-11], sup_t Phi(a0^2, t, s - t) <= 0.824604926754, target [0.824621125124 +/- 4.68e-13]
+PASS weak  sqrt(17/25): sup over the slice a = 0.7931 is < target, margin >= 1.620e-5
+  sharp sqrt(2/pi) : a0 = 0.8339, t0 = 0.0010817, first piece on branch 2, crossings ['0.062651', '1.717188', '1.745663']
+     V <= 0.797873708193, G in [-6.405e-11, -6.405e-11], sup_t Phi(a0^2, t, s - t) <= 0.797873708193, target [0.797884560803 +/- 1.35e-13]
+PASS sharp sqrt(2/pi) : sup over the slice a = 0.8339 is < target, margin >= 1.085e-5
+Part 2: certified lower bounds at the values of REVIEW2 item G3 (where the bound fails)
+PASS weak  sqrt(17/25): at a = 0.79264, Phi(a^2, t, s - t) >= 0.8248867644 > target for t = 0.0014121 (b^2 = t, c^2 = s - t)
+PASS sharp sqrt(2/pi) : at a = 0.83362, Phi(a^2, t, s - t) >= 0.7980696896 > target for t = 0.0010840 (b^2 = t, c^2 = s - t)
+Part 3: brackets of the thresholds of this bound (slice supremum = target), resolution 1e-5
+PASS weak  sqrt(17/25): the threshold lies in (0.79307, 0.79308]: sup over the slice >= 0.8246233199 > target at a = 0.79307, <= 0.8246171890 < target at a = 0.79308
+PASS sharp sqrt(2/pi) : the threshold lies in (0.83388, 0.83389]: sup over the slice >= 0.7978877130 > target at a = 0.83388, <= 0.7978807107 < target at a = 0.83389
+RESULT: ALL CHECKS PASSED

@@ -212,7 +212,7 @@ have, means the versions kept in `sources/monograph-2026-11-05/` and `sources/st
 
 ## (e) Index: one line per file
 
-This index covers 36 of the 115 top-level folders under `sources/` and `code/`: those assembled up to 15
+This index covers 36 of the 117 top-level folders under `sources/` and `code/`: those assembled up to 15
 November 2026. The later deliveries are indexed by [`STATUS.md`](STATUS.md) (the tag table of its section 0 and the
 "where" cells of its rows) and by [`INVENTORY.md`](INVENTORY.md).
 

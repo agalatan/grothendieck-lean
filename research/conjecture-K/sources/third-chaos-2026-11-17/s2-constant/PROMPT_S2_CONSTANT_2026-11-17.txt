@@ -1,0 +1,22 @@
+PROBLEM: an L1-L2 constant for odd cubic polynomials on the 2-sphere
+
+SETTING. S^2 is the unit sphere in R^3 with the normalised surface measure (total mass 1). Let T be the space of restrictions to S^2 of odd polynomials of degree at most 3 in (x, y, z); equivalently T = H_1 + H_3, the spherical harmonics of degrees 1 and 3 (dimension 3 + 7 = 10). Define
+    C := max over nonzero Y in T of ||Y||_1 / ||Y||_2     (norms in L^p of the normalised measure on S^2).
+
+THE CIRCLE CASE (known, for orientation). On the circle, for g in span{cos t, sin t, cos 3t, sin 3t}, the maximum of ||g||_1/||g||_2 is 4 sqrt5/(3 pi) = 0.949017, attained only at sin t + (1/3) sin 3t up to rotation and scaling. Proof: by L2 duality C^2 is the maximum of ||P sigma||_2^2 over the sign patterns sigma = sign(g) (P the orthogonal projection onto the space); such a g has 1 or 3 sign changes per half-turn, and an exact identity shows that 3 changes always do worse than 1.
+
+CONJECTURE. C = sqrt(55)/8 = 0.927025..., attained at Y* = z (9 - 7 z^2) (up to rotation and scaling), whose sign is the hemisphere sign(z). Evidence: Y* is exactly the projection of sign(z) onto T (Legendre coefficients 3 (1/2)^2 + 7 (1/8)^2 = 55/64), and 9 - 7z^2 > 0 on [-1, 1], so sign(Y*) = sign(z). Other patterns we checked do worse: the zonal three-band patterns sign(z (z^2 - b^2)) give less than 55/64 for every 0 < b < 1, and the octant pattern sign(xyz) gives about 0.665.
+
+TASKS, in order of value
+1. Prove C = sqrt(55)/8, or find the true C and a maximiser. A proof has to handle every sign pattern of a nonzero Y in T (the nodal set of an odd cubic on S^2), not only zonal ones; reducing to zonal patterns by a symmetrisation argument would be ideal. If you can only prove part (for example the zonal case, or patterns with a given topology), say exactly what is proved.
+2. Weighted version, as on the circle. For a, b > 0 and Y = Y_1 + Y_3 (Y_l in H_l), find
+       M(a, b) := max ||Y||_1^2 / (a ||Y_1||_2^2 + b ||Y_3||_2^2),
+   at least for b/a in a range containing the one where the hemisphere stays optimal (on the circle the analogous condition was b/a >= 8/9).
+3. Optional: the same questions on S^(k-1), k >= 4 (the hemisphere value has a closed form for every k; as k -> infinity it should tend to 7/(3 pi) = 0.742723, the value of ||Pi_1 sign(X_1)||^2 + ||Pi_3 sign(X_1)||^2 in Gaussian space).
+
+WHY WE WANT IT. Slicing Gaussian space by random 3-dimensional subspaces instead of circles, with this constant, improves our bounds for L1/L2 ratios of cubic Wiener chaos in fixed dimension, and it is the first step of a sphere version of a rotation argument.
+
+HOW TO WORK
+- Do not write or run code, and do not state a numerical value that you have not derived exactly by hand. If you need a number, write a "COMPUTE:" request (the exact integral or finite check and the inequality it must satisfy) with your guess marked "ESTIMATE"; we will evaluate it.
+- Label each statement P (complete proof written out), S (sketch, with the missing step named) or H (heuristic). A complete proof of a narrower statement beats a sketch of the full one.
+- Think it through before you write; at the end of your answer, list briefly what you proved (P) and what remains (S, H).

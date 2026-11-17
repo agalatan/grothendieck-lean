@@ -1,6 +1,6 @@
 # Rules for AI agents working on this repository
 
-Several agents (Codex instances and Claude sessions) work on this repository at the same time, on two shared
+Several agents (Codex, Claude and Gemini) work on this repository at the same time, on two shared
 machines (the user's laptop and the droplet). These rules keep them from overwriting each other's work. Read all of
 them before doing anything.
 
@@ -55,13 +55,17 @@ the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: clau
   push). Tick the task in its epic.
 - **Attack plans and research ideas are issues too** (`area: research`), with the full reasoning and numbers. Do not
   leave them only in a local file.
+- **Research tasks** (`area: research`) are worked as `research/README.md` says ("Working on a research task"): every
+  number that a proof uses comes from a committed script in exact rational or interval arithmetic that a reviewer can
+  replay, and drafts from other models are checked step by step before anything is recorded.
 
 ## 2. Agent ID: make yourself identifiable
 
 Many agents run at once, and several Codex conversations start with the same words, so the user cannot otherwise
 tell which conversation owns a droplet folder, a branch or a running build. At the start of every session:
 
-1. **Pick an agent ID:** your kind plus four random hex digits, e.g. `codex-7f3a` or `claude-b21e`
+1. **Pick an agent ID:** your family (`codex`, `claude` or `gemini`) plus four random lowercase hex digits, e.g.
+   `codex-7f3a`, `claude-b21e` or `gemini-3e2a`
    (`printf 'codex-%04x\n' $RANDOM`). Keep it for the whole conversation.
 2. **Make it visible:** start your first reply with `Agent ID: codex-7f3a`. If your interface lets you name the
    conversation, put the ID at the start of the title, e.g. `codex-7f3a — lower refined cover`.
@@ -91,12 +95,13 @@ tell which conversation owns a droplet folder, a branch or a running build. At t
   | Codex instance (`codex-7f3a`) | `codex-7f3a/<topic>` | `/Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>` |
   | Claude session (`claude-b21e`) | `claude-b21e/<topic>` | `/Users/alingalatan/workspaces/grothe-claude-b21e-<topic>` |
   | Claude worker (sub-agent) | `claude-b21e/<topic>` (its session's ID) | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
+  | Gemini session (`gemini-3e2a`) | `gemini-3e2a/<topic>` | `/Users/alingalatan/workspaces/grothe-gemini-3e2a-<topic>` |
 
   Older branches named `work/…`, `ready/…`, `cloud/…`, `codex/…` or `claude/…`: rename them to `<agent-id>/<topic>`
   (push the new name, delete the old one) and open a PR to land them; `ready/` no longer lands anything.
 
 - **Say who made it:** every branch is your ID followed by the topic, e.g. `codex-7f3a/refined-cover`; every commit
-  subject starts with `[codex]` or `[claude]`, e.g. `[codex] Lower: joint image compatibility`. CI's landing commits
+  subject starts with `[codex]`, `[claude]` or `[gemini]`, e.g. `[codex] Lower: joint image compatibility`. CI's landing commits
   read `Merge <branch> (PR #n, landed by CI)`.
 - **Never force-push and never rewrite pushed history.** Never use `git stash` in a shared checkout, and never
   `reset --hard`, `clean` or `checkout --` files you did not create.
@@ -247,8 +252,8 @@ Report to the user: the PR, the landing run, and the resulting master commit.
 
 ## 7a. Independent review (approved by the user, 3 November 2026, #225)
 
-Every PR is reviewed by the other side before it lands: a Codex reviewer for a `claude-…` branch, a Claude reviewer
-for a `codex-…` branch. **Everyone reviews open PRs**: look at them on every timer round (§7, step 8); the managers
+Every PR is reviewed by an agent from a different family before it lands. The supported families are Claude, Codex
+and Gemini. **Everyone reviews open PRs**: look at them on every timer round (§7, step 8); the managers
 assign reviewers when needed (#225). `RFC` and `WIP` PRs get comments on the approach; only a PR without those labels
 gets a verdict.
 - **When:** while its checks run; read the diff and the check's log.

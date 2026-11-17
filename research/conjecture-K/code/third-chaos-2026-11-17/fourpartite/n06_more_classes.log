@@ -1,0 +1,8 @@
+(a) H2(x1) x3 + x1 x2 x4 + (x1 + x2) x3 x4 type, t = [-0.207  2.023  0.064  0.365]: 0.65998000 (Gauss-Hermite 40^2)
+(b) 1 independent copies of K_4^(3) (equal weights, 4 coordinates): 0.67026 +- 0.01370
+(b) 2 independent copies of K_4^(3) (equal weights, 8 coordinates): 0.77913 +- 0.01259
+(b) 4 independent copies of K_4^(3) (equal weights, 16 coordinates): 0.86923 +- 0.00944
+(b) 8 independent copies of K_4^(3) (equal weights, 32 coordinates): 0.91316 +- 0.00717
+(c) K_5^(4) in the 4th chaos, t = [ 0.251 -0.223  0.239 -0.54   1.086]: 0.53851919 (Gauss-Hermite 24^3)
+(c) 3 independent copies of K_5^(4) (15 coordinates, equal weights): 0.72819 +- 0.01308
+time 197 s

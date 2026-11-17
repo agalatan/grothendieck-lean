@@ -1,0 +1,21 @@
+grid p_j = j/1000, j = 0..999 (p = 1 not evaluated; concavity covers [p_{M-1}, 1]); Arb prec 64 bits, T = 16
+cross-check (mpmath 30 digits, independent integrator) at three points:
+   n= 8 p=9/20   Arb [0.79708040082562338742, 0.79708040082562339524]   mpmath 0.7970804008256233921062   ok
+   n=11 p=2/5    Arb [0.82346514754542239047, 0.82346514754542239964]   mpmath 0.8234651475454223958097   ok
+   n= 5 p=3/5    Arb [0.75326527140881126769, 0.75326527140881127459]   mpmath 0.7532652714088112720240   ok
+
+ n   max_j U_j (grid)  argmax p   certified B_n >= max_p J_n(p)  (worst interval)     target       result   margin     time
+ 2   0.657695468        0.811      0.657695667  ([0.811, 0.812], p = 0.8115)  sqrt(2/pi)   PROVED  1.40e-01   2.8s
+ 3   0.701829524        0.707      0.701829659  ([0.707, 0.708], p = 0.7075)  sqrt(2/pi)   PROVED  9.61e-02   2.9s
+ 4   0.731387479        0.629      0.731387647  ([0.628, 0.629], p = 0.6285)  sqrt(2/pi)   PROVED  6.65e-02   3.0s
+ 5   0.753469929        0.567      0.753470065  ([0.566, 0.567], p = 0.5665)  sqrt(2/pi)   PROVED  4.44e-02   3.0s
+ 6   0.770912101        0.517      0.770912210  ([0.516, 0.517], p = 0.5165)  sqrt(2/pi)   PROVED  2.70e-02   3.1s
+ 7   0.785166465        0.476      0.785166566  ([0.475, 0.476], p = 0.4755)  sqrt(2/pi)   PROVED  1.27e-02   3.1s
+ 8   0.797092585        0.442      0.797092724  ([0.441, 0.442], p = 0.4415)  sqrt(2/pi)   PROVED  7.92e-04   3.3s
+ 9   0.807247453        0.413      0.807247592  ([0.412, 0.413], p = 0.4125)  sqrt(17/25)  PROVED  1.74e-02   3.2s
+10   0.816014576        0.388      0.816014695  ([0.387, 0.388], p = 0.3875)  sqrt(17/25)  PROVED  8.61e-03   3.3s
+11   0.823669694        0.366      0.823669828  ([0.366, 0.367], p = 0.3665)  sqrt(17/25)  PROVED  9.51e-04   3.3s
+12   0.830417654        0.347      max_p J_12(p) >= 0.830417653 > sqrt(17/25) = 0.824621125...: True   3.4s
+
+Arb integrals evaluated: all enclosures have radius < 1e-14 (asserted).
+CERTIFIED: for every F in V_3(n): E|F| <= B_n ||F||_2 with B_n < sqrt(2/pi) for 2 <= n <= 8 and B_n < sqrt(17/25) for 2 <= n <= 11.
