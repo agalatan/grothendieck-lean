@@ -1,0 +1,29 @@
+# codex-6d92 · PR #522 · author replay
+# Python 3.12.3, python-flint 0.9.0. Commands run from the repository root.
+
+$ python3 -I research/conjecture-K/code/content-509-codex-6d92/verify_staircase.py .
+PASS all energies, tau <= 21/1000 margin 3.3946811e-06
+OU enclosures [('551/100000', '966509/125000'), ('3/500', '7665313/1000000'), ('1/25', '2343897/500000'), ('463/10000', '870297/200000')]
+PASS 0 163/20000 chi 42003361/1000000 12 margin 1.2117722e-05
+PASS 163/20000 9/1000 chi 57121/2500 7 margin 6.6594748e-07
+PASS 9/1000 1/100 chi 1521/100 8 margin 8.2118017e-06
+PASS 1/100 3/250 chi 3969/400 7 margin 3.2862192e-06
+PASS 3/250 3/200 chi 56169/10000 2 margin 1.3872096e-07
+PASS 3/200 1/50 chi 25281/10000 6 margin 2.6443425e-05
+PASS 1/50 1/40 chi 784/625 6 margin 1.7561083e-05
+PASS 1/40 3/100 chi 6241/10000 2 margin 9.5534801e-06
+PASS 3/100 7/200 chi 368449/1000000 8 margin 2.6157437e-06
+PASS 7/200 39/1000 chi 328329/1000000 8 margin 4.3888558e-06
+PASS 39/1000 463/10000 chi 2809/10000 15 margin 1.0041908e-06
+PASS follow-up all energies, tau <= 27/500 chi >= 2809/10000 margin 4.0958272e-06 cells 31
+PASS follow-up all energies, tau <= 11/200 chi >= 11449/40000 margin 3.1271072e-07 cells 32
+PASS follow-up all energies, tau <= 61/1000 chi >= 9409/10000 margin 1.0390155e-07 cells 24
+
+$ python3 -I research/conjecture-K/code/content-509-codex-6d92/verify_high_excess.py
+49 [8.77234564411613589657889454822025228519284529767534170952e-5 +/- 6e-65]
+High-excess content proof, chi >= 1008/25 , 412 subintervals
+High-excess strong margin >= [4.78570137936732445082224335497929205089927548948566088163e-5 +/- 7.72e-64]
+Bprime lower bound [1.30886237274409723017692845391066789518486286372000245055 +/- 4.36e-57]
+
+$ python3 -I research/conjecture-K/code/content-509-codex-6d92/verify_blocks.py
+K_0 < 7.98 and the weak bound for 95 equal-energy independent blocks passed.
