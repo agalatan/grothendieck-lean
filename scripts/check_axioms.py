@@ -78,10 +78,11 @@ def parse_reports(text):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    modes = parser.add_mutually_exclusive_group()
-    for mode in MODES:
-        modes.add_argument(f"--{mode}", action="store_const", const=mode, dest="mode",
-                           help=f"check the {mode} report")
+    if MODES:  # an empty mutually exclusive group breaks argparse's usage text on Python <= 3.12
+        modes = parser.add_mutually_exclusive_group()
+        for mode in MODES:
+            modes.add_argument(f"--{mode}", action="store_const", const=mode, dest="mode",
+                               help=f"check the {mode} report")
     parser.set_defaults(mode="default")
     args = parser.parse_args(argv)
     required, native = audit_policy(args.mode)
