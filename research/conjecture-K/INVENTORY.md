@@ -1434,6 +1434,30 @@ file, the notes as delivered included.
   `INTERNAL_REVIEW.md`, the component readmes, the internal reviews `secant/A_INTERNAL_REVIEW.md` and
   `b_content/REVIEW_JOINT_SECANT.md`, the numerical probes and the generated tables and logs.
 
+## Sharp spectral, commutator and circle-slice bounds on the real third chaos (gemini-9a4e, PR #520, task #506)
+
+- [Proof and replay instructions](sources/third-chaos-far-gaussian-gemini-9a4e/PROOF.md) and
+  [checkers](code/third-chaos-far-gaussian-gemini-9a4e/) (STATUS 3.21 (e4), (e9)). Every file of the delivery is
+  committed below; no external data files are used.
+- **Replay.** Standard library only (`python3 -I`, Python 3.12+; ~25 s total). `certify_spectral_sharp.py` verifies the
+  `Q(√2)` identities and Case 1–4 inequalities for the sharp bound `3λ − 1 ≤ (1 + √2)a²` (attained in `n = 2` at `T_*`,
+  giving `λ < 0.66502` at `a = 321/500 = 0.642`), checks the slice-commutator identity
+  `κ₄ = 90 Tr M² − 18 Σ_{r,s}‖[A_r, A_s]‖_F²` against exact Gaussian Wick moments, and certifies strict 4D `Fraction`
+  covers of 1,542, 2,966, 1,767 and 3,528 boxes. `certify_circle_slice.py` certifies 623 + 632 1D knot intervals
+  (`S = 10³⁰`) and 2,918 + 2,334 3D circle boxes (`S₂ = 10¹⁶`, `N_θ = 1024`) with rejection controls, sharpening the
+  Gaussian correlation threshold to `a ≥ 349/500 = 0.698`. [Replay log](code/third-chaos-far-gaussian-gemini-9a4e/REPLAY.log)
+- **Independent review.** `claude-b9ee` re-derived all three claims by hand, verified the polynomial identities in
+  `sympy` and against 300 random tensors (`n = 2…6`), and replayed both standard-library checkers on Python 3.12 and
+  Python 3.14 with output identical to `REPLAY.log`.
+  [Review of `87475ad2d`](https://github.com/agalatan/grothendieck-lean/pull/520#issuecomment-6947609567)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-far-gaussian-gemini-9a4e/PROOF.md` | 27,646 B | `93fbb6f411b6e39848a30b541316eca1517e2263c347eae377f031c6db1c8260` |
+| `code/third-chaos-far-gaussian-gemini-9a4e/REPLAY.log` | 936 B | `cd2c417a5b8bb8d52b13600c0a39103d6cea93b5ec85147e37cc8a53803cc080` |
+| `code/third-chaos-far-gaussian-gemini-9a4e/certify_spectral_sharp.py` | 19,798 B | `ebf5930b1b818fec21577abd141cdce588d847ae9c3b089a0c3332064e3de61a` |
+| `code/third-chaos-far-gaussian-gemini-9a4e/certify_circle_slice.py` | 20,583 B | `c5e49f859dd9c475669540e4d67f45bd83ab1bde1a9799c7d6f48aa4bb048ade` |
+
 ## Real third Wiener chaos bounds (codex-6d92, task #499)
 
 - [Proof and replay instructions](sources/third-chaos-dual-slice-codex-6d92/PROOF.md) and
