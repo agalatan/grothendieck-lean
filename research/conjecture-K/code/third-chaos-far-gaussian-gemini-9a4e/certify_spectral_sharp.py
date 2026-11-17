@@ -13,13 +13,13 @@ Verifies:
 2. Exact fourth-cumulant commutator identity
      `kappa_4(I_3(T)/sqrt(6)) == 90 * tr(M^2) - 18 * sum_{r,s=1}^n ||A_r A_s - A_s A_r||_F^2`
    checked directly against exact 8th-degree Gaussian Wick moments on rational tensors in R^2, R^3, R^4.
-3. Exact `Fraction` 4D box-subdivision certificates using the `(1, 2)` commutator entry
+3. Exact `Fraction` 4D box-subdivision certificates (strict `<`) using the `(1, 2)` commutator entry
    `(A_2 A_1 - A_1 A_2)_{12} = s^2 + b^2 + u - x*b - s*d`:
-   - `a(T) <= 129/200 = 0.645  ==>  kappa_4(T) <= 473/10 = 47.3`   (lowering 53.0920 -> 47.3 for (T)),
-   - `a(T) <= 349/500 = 0.698  ==>  kappa_4(T) <= 991/20 = 49.55`  (lowering 58.1377 -> 49.55 for sqrt(2/pi)),
-   and, already at the previously reviewed #500 thresholds `0.662` and `0.711` alone:
-   - `a(T) <= 331/500 = 0.662  ==>  kappa_4(T) <= 48`,
-   - `a(T) <= 711/1000 = 0.711 ==>  kappa_4(T) <= 503/10 = 50.3`.
+   - `a(T) <= 129/200 = 0.645  ==>  kappa_4(T) < 473/10 = 47.3`,
+   - `a(T) <= 349/500 = 0.698  ==>  kappa_4(T) < 991/20 = 49.55`,
+   and at #500's thresholds `0.662` and `0.711`:
+   - `a(T) <= 331/500 = 0.662  ==>  kappa_4(T) < 48`,
+   - `a(T) <= 711/1000 = 0.711 ==>  kappa_4(T) < 503/10 = 50.3`.
 4. Rejection controls.
 """
 if not __debug__:
@@ -156,9 +156,10 @@ def verify_sharp_1_plus_sqrt2():
     # Factor out (t - t_st)^2:
     lin_factor = [-t_st, Q2(1)]
     sq_factor = poly_mul_q2(lin_factor, lin_factor)
-    # Remainder linear factor must be ((2 - sqrt(2))*t + (3 + 2*sqrt(2)))? Compute exact quotient!
+    # Exact quotient linear factor is 6 + 4*sqrt(2) - (5 + 7*sqrt(2)/2)*t:
     c0_rem = diff_t[0] / sq_factor[0]
     c1_rem = diff_t[3] / sq_factor[2]
+    assert c0_rem == Q2(6, 4) and c1_rem == Q2(-5, F(-7, 2))
     assert diff_t == poly_mul_q2(sq_factor, [c0_rem, c1_rem])
     # On t in [0, 1], c0_rem + c1_rem * t is affine; check positivity at t = 0 and t = 1!
     assert c0_rem > 0 and (c0_rem + c1_rem) > 0
@@ -228,6 +229,13 @@ def verify_sharp_1_plus_sqrt2():
     # Check (3/2)*sqrt((159/400)^2 + 2/5) < 1 + sqrt(2) - 43/40 = sqrt(2) - 3/40:
     rhs_c4 = Q2(F(-3, 40), 1)
     assert rhs_c4 > 0 and rhs_c4 * rhs_c4 > Q2(F(9, 4) * (F(159, 400) ** 2 + F(2, 5)))
+
+    # Combined spectral cutoff at #519's a_0 = 321/500 = 0.642 and crossover with (1 + a^2)/2:
+    L_642 = (1 + (1 + R2) * (F(321, 500) ** 2)) / 3
+    assert Q2(F(66501, 100000)) < L_642 and L_642 < Q2(F(33251, 50000))
+    cross_a2 = Q2(F(1, 7), F(2, 7))  # 1 / (2*sqrt(2) - 1) = (2*sqrt(2) + 1) / 7
+    assert Q2(-1, 2) * cross_a2 == Q2(1)
+    assert Q2(F(7395, 10000) ** 2) < cross_a2 and cross_a2 < Q2(F(7396, 10000) ** 2)
 
     # Paper-only kappa_4 cutoffs from 3*lambda - 1 <= (1 + sqrt(2))*a_0^2 alone:
     for a0_f, paper_cap in (
@@ -365,7 +373,7 @@ def _iv_sq(a0, a1):
 
 
 def certify_k4_box(a0_f, k4_cap, max_depth=36):
-    """Exact Fraction 4D subdivision proving a(T) <= a0_f ==> kappa_4(T) <= k4_cap."""
+    """Exact Fraction 4D subdivision proving a(T) <= a0_f ==> kappa_4(T) < k4_cap (strict)."""
     a0_sq = a0_f * a0_f
     accepted = 0
     stack = [((F(0), a0_f), (F(0), a0_f), (-a0_f, a0_f), (-a0_f, a0_f), 0)]
@@ -390,12 +398,12 @@ def certify_k4_box(a0_f, k4_cap, max_depth=36):
             accepted += 1
             continue
         base_hi = 50 + 20 * del_hi * (del_hi - 1)
-        if base_hi <= k4_cap:
+        if base_hi < k4_cap:
             accepted += 1
             continue
 
         c_lo = s0 * s0 + b2_lo - _iv_mul(x0, x1, b0, b1)[1] - _iv_mul(s0, s1, d0, d1)[1]
-        if c_lo > 0 and base_hi - 72 * c_lo * c_lo <= k4_cap:
+        if c_lo > 0 and base_hi - 72 * c_lo * c_lo < k4_cap:
             accepted += 1
             continue
 
@@ -436,16 +444,16 @@ def main():
     print("PASS exact Gaussian Wick moment check of kappa_4(T) == 90*tr(M^2) - 18*sum ||[A_r, A_s]||_F^2")
 
     n_prac_500 = certify_k4_box(F(331, 500), F(48, 1))
-    print(f"PASS exact 4D Fraction cover at #500 a0=331/500=0.662: kappa_4 <= 48 ({n_prac_500} boxes)")
+    print(f"PASS exact 4D Fraction cover at #500 a0=331/500=0.662: kappa_4 < 48 ({n_prac_500} boxes)")
 
     n_gaus_500 = certify_k4_box(F(711, 1000), F(503, 10))
-    print(f"PASS exact 4D Fraction cover at #500 a0=711/1000=0.711: kappa_4 <= 503/10 = 50.3 ({n_gaus_500} boxes)")
+    print(f"PASS exact 4D Fraction cover at #500 a0=711/1000=0.711: kappa_4 < 503/10 = 50.3 ({n_gaus_500} boxes)")
 
     n_prac = certify_k4_box(F(129, 200), F(473, 10))
-    print(f"PASS exact 4D Fraction cover for (T) (a0=129/200=0.645): kappa_4 <= 473/10 = 47.3 ({n_prac} boxes)")
+    print(f"PASS exact 4D Fraction cover for (T) (a0=129/200=0.645): kappa_4 < 473/10 = 47.3 ({n_prac} boxes)")
 
     n_sharp = certify_k4_box(F(349, 500), F(991, 20))
-    print(f"PASS exact 4D Fraction cover for sqrt(2/pi) (a0=349/500=0.698): kappa_4 <= 991/20 = 49.55 ({n_sharp} boxes)")
+    print(f"PASS exact 4D Fraction cover for sqrt(2/pi) (a0=349/500=0.698): kappa_4 < 991/20 = 49.55 ({n_sharp} boxes)")
 
     run_rejection_controls()
     print(f"PASS rejection controls; completed in {time.time() - t0:.2f}s")

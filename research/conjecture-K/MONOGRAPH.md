@@ -38,8 +38,9 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   box (2.2); explicit regions of the shared-driver core (2.4); the content inequality for several structured families
   (2.5); the B-shell cost and the alignment of B- and A-contents (2.7); the local joint A/B form, and the retained
   joint premise (P) on the real aligned plane (2.8); the odd sectors over the zero core and over every remote core,
-  with arbitrary sharing (2.9); the central part of the consumer, conditional on an all-sector bound, and at
-  ε = 299/400 the whole consumer outside the central interval (0.8165, 0.866) (2.10).
+  with arbitrary sharing (2.9); the central part of the consumer, conditional on an all-sector bound, at
+  ε = 299/400 the whole consumer outside (0.8165, 0.866), and by homothety transfer of the spectral mass row the
+  whole consumer outside (0.795, 0.864) at ε = 3/4 and outside (0.7515, 0.863) at ε = 94/125 [author only] (2.10).
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
@@ -51,13 +52,17 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
 
 **How far.** Apart from L2, Theorems A and B, the one-coordinate results and the three-row sector costs, the finished
-pieces hold at the peak row or near it. Two routes to 1.402 are mapped (2.10). At ε = 1891/2500 an all-sector bound
+pieces hold at the peak row or near it. Three single-witness routes to 1.402 are mapped (2.10). At ε = 1891/2500 an all-sector bound
 with error at most 1.006·10⁻⁴ at the peak row covers t ∈ [0.84, 0.851], and four response intervals stay uncovered. At
 ε = 299/400 everything outside (0.8165, 0.866) is proved, and ten all-sector inequalities at other profiles remain;
 they are stated with allowance 2.5·10⁻⁵, and the largest admissible allowances on the binding rows are 3.0–4.4·10⁻⁵.
-The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the open premises (P) and (P_Ψ)
-(2.8, 2.9): enough for the central interval of the first route, three times too large for the binding rows of the
-second. With the retained functional the A-shell uses 2·10⁻⁵ of the budget; the B-shell, the joint A/B interaction and
+At ε = 94/125 = 0.752 everything outside the wider central interval (0.7515, 0.863) is proved [author only], and thirteen central rows (rows 1–7 off the peak box, reaching u/λ² ≤ 0.134) admit at
+least 1.021·10⁻⁴ > 10⁻⁴ on every row (> 3.36× the binding room at ε = 299/400, with Row 8 on [0.840, 0.847] inside the proved remote and retained A-core
+rectangles; at ε = 3/4 Lean's `Lower.ρ` alone closes the exterior outside (0.795, 0.864) with nine central rows
+admitting > 7.57·10⁻⁵). The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the open premises (P) and (P_Ψ)
+(2.8, 2.9): three times too large for the binding rows at ε = 299/400, and below the allowance of every row at ε = 94/125,
+but only at the peak profile; each of the thirteen rows needs its own all-sector bound (open; the profile transfer costs
+≈ 7·10⁻⁴, 8.6). With the retained functional the A-shell uses 2·10⁻⁵ of the budget; the B-shell, the joint A/B interaction and
 the shared odd-sector interactions remain missing. With the raw functional of K the content inequality is also
 missing. The gain at stake is about 3·10⁻⁴ on the constant.
 
@@ -233,7 +238,7 @@ K_η must hold for every G, not only for the core. A proof has six layers:
 | L3 | the core with shared drivers: explicit regions | proved regions at the peak; one region **R** | 2.4 |
 | L4 | the core on the residual region: cost plus content | K: families proved, general cubics open; Λ̂: closed at the peak | 2.5, 2.6 |
 | L5 | all sectors together | B cost and alignment proved; odd sectors over remote cores proved (peak); joint A/B and odd sectors over A/B cores open | 2.7–2.9 |
-| L6 | row envelope and consumption | peak central interval: proved conditionally on an all-sector bound; at ε = 299/400 everything outside (0.8165, 0.866) proved; ten central rows and the Lean consumer open | 2.10 |
+| L6 | row envelope and consumption | peak central interval: proved conditionally on an all-sector bound; exterior proved outside (0.8165, 0.866) at ε = 299/400 and outside (0.7515, 0.863) at ε = 94/125 (author only, 13 central rows each with > 10⁻⁴ allowance); central all-sector bounds and Lean consumer open | 2.10 |
 
 ## 2. What is proved
 
@@ -323,13 +328,15 @@ a real chaos variable X of order k, the sign condition E[(Γ − σ²)e^{−sX²
 scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Without a buffer,
 (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer, radius domination
 holds for one two-variable family around the known counterexample to the stronger Laplace comparison
-[author only, certificates replayed · 3.6]. In every dimension E|q| ≤ (93/100)‖q‖₂ for every Wick cubic: a certificate
-of 23 rows bounds E|q| as a function of the fourth excess χ on [0, 42], from the radial Stein identities of 2.5
-[P + C · a research worker of claude-b9ee, with an independent review · 3.7]. With Lean theorems as its only inputs
-the same method gives 9387/10000, and two outside certificates of the same kind give 9359/10000 and 46731/50000
-[P + C · 3.7]. All their constraints together give about 0.9286; the second-moment information on the kernels is then
-exhausted [N · 3.7]. The radius 0.916, which the uncapped degree-5 game of `../higher-degree` needs, is not reached
-[3.7, 3.21]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a second, computer-assisted proof exists
+[author only, certificates replayed · 3.6]. In every dimension **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂** for every Wick
+cubic (strictly below 0.916‖q‖₂ when q ≠ 0): a 23-row certificate on χ ∈ [0, 42] augments the second-moment relaxation
+below with two third-order radial forms of 2.5 (tests q̄(c₂ − 1)g₃(V) and qāg₄(V)) coupled through ∂̄_ka = W_k and
+E Σ_k|W_k|² = 24y, passing the 0.916 radius test of the uncapped degree-5 game in `../higher-degree` [P + C ·
+gemini-2762, independently reviewed by codex-6d92 and claude-b9ee · 3.7, 3.21]. From the two first-order radial Stein
+identities of 2.5 alone, a 23-row certificate gives E|q| ≤ (93/100)‖q‖₂ [P + C · a research worker of claude-b9ee, with
+an independent review · 3.7]; with Lean theorems as its only inputs that second-moment method gives 9387/10000, two
+outside certificates give 9359/10000 and 46731/50000 [P + C · 3.7], and all second-moment constraints on the kernels
+together stop near 0.9286 [N · 3.7]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a second, computer-assisted proof exists
 [P + C author only, double precision · an outside session of the user, its certificate re-run by claude-b9ee · 3.8].
 At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over unit x, for independent standard exponentials Eⱼ,
 in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4), which D₁ therefore settles at p = 1
@@ -340,25 +347,22 @@ very small κ₄ [P author only, certificates replayed · 3.21 (e1)]; by slicing
 integration, the whole third chaos in at most eleven coordinates [P + C · 3.21 (e3)]; harmonic cubics in at
 most twelve [P + C author only · 3.21 (e3)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
 inequality [P + C author only · 3.21 (e2)]; the normalised elementary symmetric cubic e₃ in any number of variables
-[P author only · 3.21 (e4)]; every h whose correlation with some He₃(⟨v, X⟩)/√6 is at least 0.711,
-and every h with κ₄ ≥ 58.1377 [P + C · 3.21 (e4)], sharpened to correlation at least 349/500 = 0.698 and
-κ₄ ≥ 991/20 = 49.55 by a decoupled circle-slice majorant, the sharp spectral inequality 3λ − 1 ≤ (1 + √2)a² and the
-slice-commutator identity κ₄ = 90 Tr M² − 18 Σ_{r,s}‖[A_r, A_s]‖_F² [P + C author only · 3.21 (e4)]; four-partite cubics and, in the chaos of every order
+[P author only · 3.21 (e4)]; every h whose correlation with some He₃(⟨v, X⟩)/√6 is at least 0.698,
+for maximal tensor influence at least 0.692, and every h with κ₄ ≥ 49 [P + C · 3.21 (e4)]; four-partite cubics and, in the chaos of every order
 d ≥ 2, the (d + 1)-partite elements [P + C author only · 3.21 (e5)]; and the
 limit family a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard
 Gaussians; equality only when a = b = 0), also with any independent Gaussian scale mixture added
 [P + C author only · 3.21 (e6)]. On conditionally Gaussian cubics even the smoothing sign of 3.21 (d) holds
 [P · 3.21 (e7)]. Another sufficient condition is Ω₃, a covariance inequality between Γ and a weight concentrated near
 the nodal set, which comes from a martingale–isoperimetric bound; it holds numerically on about 200 cubics, but no
-mechanism for it is known where the sharp bound is open [P; N · 3.21 (e10)]. Every nonzero h satisfies E|h| < 0.88715‖h‖₂
+mechanism for it is known where the sharp bound is open [P; N · 3.21 (e10)]. Every nonzero h satisfies E|h| < 0.88714‖h‖₂
 in every dimension, by rotations on a Gaussian circle restricted to the at most three sign changes per half-turn of a
 cubic [P + C · 3.21 (e9)(i)]. The tested rotation certificates do not reach √0.68 [N · 3.21 (e9)]. Moments, hypercontractivity and the
 cumulant bounds cannot give even the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace
 and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 is also proved in at most
-fifteen coordinates, for correlation at least 0.662, for κ₄ ≥ 53.0920, for maximal tensor influence at most 0.0049067,
-and for Var(‖∇h‖²/3) ≤ 89/2250 when E h² = 1 (the variance condition includes κ₄ ≤ 89/500)
-[P + C · 3.21 (e9)(ii)–(iv)], and for correlation at least 129/200 = 0.645 or κ₄ ≥ 473/10 = 47.3
-[P + C author only · 3.21 (e9)(iii)]. On the 2-sphere the L¹/L² constant of odd cubics is
+fifteen coordinates, for correlation at least 0.642, for κ₄ ≥ 46.6, for maximal tensor influence at least 0.66502 or at most 0.0064,
+for Var(‖∇h‖²/3) ≤ 89/2250 when E h² = 1, and for κ₄ ≤ 91/500 = 0.182
+[P + C · 3.21 (e9)(ii)–(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
 conjectured to be √55/8 = 0.9270, attained by the hemisphere: it is
 proved for zonal sign patterns, and the hemisphere is a strict local maximum [P · 3.21 (e3)]. The largest ratio
 E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates [N · 3.21 (e8)].
@@ -968,6 +972,21 @@ STATUS 8.9]. Ten central rows cover the rest: if their retained all-sector inequ
 [0.8465, 0.8615] needs an all-sector error about a third of what the peak results give under (P) and (P_Ψ). At
 ε = 1891/2500, four certified shoulder benchmarks leave allowances of 1.5–3.4·10⁻⁴ [STATUS 8.11].
 
+**The exterior at ε = 3/4 and ε = 94/125.** Pushing ε above 299/400 was blocked near t = 0 by the crude row t² + ερ².
+Setting c(ε) = (2141/3150)ε makes the piecewise potential φ_{c(ε)}^{(ε)}(r) = max_{y∈[0,1]}(2εry − c(ε)y²) equal to
+(ε/ε₁)·φ_{c₁}^{(ε₁)}(r) identically on [0, ∞) (ε₁ = 25/31, c₁ = 2141/3906), so the 136-node pruned spectral Stein
+certificate `cert_mass_0.5_pruned.json` (`../identity-tail/STATUS.md` 5.5, fact (3); **C**, outside Lean, whose hypotheses are
+Lean's `Moments`, `SteinCut` and `Lower.ρ`) transfers without an identity tail to give
+V_ε ≤ (1 − c(ε))t² + c(ε) + (ε/ε₁)S₁ − ‖P₁,₀k‖² − ε‖P₂,₁h‖².
+Combined with the 19 Lean rows, retained-square two-row mixing (`RowHolds.mix`), operator-change recompletion and 2.12b,
+this proves V_{3/4} ≤ 7132652/10⁷ < 500/701 outside (0.795, 0.864) using `Lower.ρ` alone, and, adding ρ = 46731/50000
+(2.1), V_{94/125} ≤ 7132660/10⁷ < 500/701 outside (0.7515, 0.863) [homothety and covers P + C, author only · gemini-9a4e · STATUS 8.12].
+Outward-rounded integer Rice enclosures certify nine central rows on [0.795, 0.864] at ε = 3/4 with allowances above
+7.57·10⁻⁵, and thirteen central rows on [0.7515, 0.863] at ε = 94/125 with **every row admitting η_{max,i} > 10⁻⁴**
+(minimum > 1.021·10⁻⁴, above the 9.9·10⁻⁵ peak budget of 2.9); Row 8 on [0.840, 0.847] lies strictly inside the proved
+remote and retained A-core rectangles of 2.1 and 2.6 with u/λ² < 0.0463 [P + C, author only; central premises open ·
+STATUS 8.13].
+
 ### 2.11 Charging response feasibility to the discarded squares
 
 Let H=z₁(T−2)/√2 and Σ=‖P₁,₀k‖²+ε‖P₂,₁h+(√2β/ε)H‖². For every actual bounded response, in every finite dimension and
@@ -1027,9 +1046,11 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    t-dependent energy caps, and state the consumer in Lean. The peak bound covers t ∈ [0.84, 0.851] only. A simple
    first step is one new row at ε = 149/200 with an all-sector bound there, which gives 1.40171. At ε = 299/400 only
    the central interval (0.8165, 0.866) is left, as ten explicit all-sector inequalities; their binding rows admit
-   3.0–4.4·10⁻⁵, less than the 9.9·10⁻⁵ of item 2. Rows away from the peak also need the remote part there:
-   certificates for the row envelope beyond the tube and the rectangle around the peak (2.1, 2.6), with the weighted
-   scaling of 1.6; the flank and upper rows are outside both. *Gives:* 1.402.
+   3.0–4.4·10⁻⁵, less than the 9.9·10⁻⁵ of item 2. At ε = 94/125 only (0.7515, 0.863) is left (author only), as
+   thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.57·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`
+   alone), with Row 8 on [0.840, 0.847] already inside the proved remote and retained A-core rectangles. Rows away from
+   that peak rectangle still need remote, A-core and all-sector estimates on their own profiles and energy caps
+   (2.1, 2.6), with the weighted scaling of 1.6; the flank and upper rows are outside both. *Gives:* 1.402.
 4. **Numerics for Λ̂ with more than three remote variables** (chapter 5).
 
 **B. Conjecture K itself.**
@@ -1053,8 +1074,9 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 7. **Exact remote K** (2.1), which the peak row does not need: it is known on the classes named in 2.1. The routes are
    the smoothing sign of the weighted interpolation formula and the sign of the two weighted contractions of the
    deficit (2.1).
-8. **A radius below 0.916 on H₂,₁**, which the uncapped degree-5 game of `../higher-degree` needs: 0.93 is proved, and
-   the relaxations through second moments of the kernels stop near 0.9286 (2.1).
+8. **The sharp radius ρ\* = √π/2 on H₂,₁** (2.1; 3.6) and the real third-chaos target E\|h\| ≤ √0.68‖h‖₂ (3.21 (a),
+   (e9)). Directly on H₂,₁, ρ\* ≤ 2289/2500 = 0.9156 < 0.916 is proved outside Lean [P + C · 3.7], passing the radius
+   test of the uncapped degree-5 game.
 
 **C. Other routes to the same decimals** have their own ledgers. The identity-tail witness raises the model ceiling to
 1.40248; its certificate and its Lean form are recorded in `../identity-tail/STATUS.md`. The games of degree 5 and
@@ -1257,7 +1279,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.6 tilted lemma, retained A-core | 11.25–11.60 |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.14 |
 | 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 |
-| 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.11 |
+| 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |
 | 4 false statements | section 13 (and 14) |
 | 5 numerics | sections 9, 10, 11 (c), 2.3 |

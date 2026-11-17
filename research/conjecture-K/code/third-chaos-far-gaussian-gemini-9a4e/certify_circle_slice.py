@@ -489,12 +489,12 @@ def certify_regime(label, a0_s, ell_s, alpha_s, phi_strs, c0_s, mu1_s, mu3_s, pr
 
 
 def run_rejection_controls():
-    # 1. Self-test E|h_3(X)| == (1 + 4 e^(-3/2)) / sqrt(3 pi) within 10^-7:
+    # 1. Self-test E|h_3(X)| == (1 + 4 e^(-3/2)) / sqrt(3 pi) ~ 0.6165 within 10^-6:
     u00 = psi_upper_int(Q(0), Q(0))
     assert u00 >= E_ABS_H3.lo
     assert u00 - E_ABS_H3.lo < S // 10**6
 
-    # 2. Lowering phi_0 below E|h_3(X)| ~ 0.7254 at q = b = 0 must fail Stage 1:
+    # 2. Lowering phi_0 = 0.710 below sup_q (Psi(q, 0) - ell*q - alpha*q^2) ~ 0.7182 must fail Stage 1:
     bad_phi = [
         Q("0.710000"), Q("0.721530"), Q("0.728709"), Q("0.740837"), Q("0.758021"), Q("0.780614"),
         Q("0.802894"), Q("0.822333"), Q("0.840566"), Q("0.876053"), Q("0.903701"), Q("0.922165"),
@@ -503,7 +503,7 @@ def run_rejection_controls():
     ]
     try:
         certify_stage1_1d_knots(bad_phi, Q("-0.135"), Q("0.400"))
-        raise AssertionError("Control failed to reject invalid phi_0 = 0.710 < E|h_3(X)|")
+        raise AssertionError("Control failed to reject invalid phi_0 = 0.710 below Stage-1 supremum")
     except AssertionError as exc:
         assert "failed to reject" not in str(exc)
 

@@ -51,9 +51,25 @@ outward-rounded integer interval arithmetic:
    = 90\operatorname{tr}(M^2) - 18\sum_{r,s=1}^n \|A_r A_s - A_s A_r\|_F^2.
    $$
    Retaining the single off-diagonal commutator entry $(A_2 A_1 - A_1 A_2)_{12} = s^2 + b^2 + u - x b - s d$
-   in the top-$M$-eigenvector frame lowers the dimension-free cumulant thresholds to:
-   - `(T)` whenever $\kappa_4(F) \ge \frac{473}{10} = 47.3$ (lowering $53.0920 \to 47.3$; already $\kappa_4 \ge 48$ from #500's $a \ge 0.662$ alone), and
-   - the Gaussian bound whenever $\kappa_4(F) \ge \frac{991}{20} = 49.55$ (lowering $58.1377 \to 49.55$; already $\kappa_4 \ge 50.3$ from #500's $a \ge 0.711$ alone).
+   in the top-$M$-eigenvector frame certifies strict upper bounds on $\kappa_4(F)$ when $a(T) \le a_0$, lowering
+   #500's cumulant thresholds within this packet to:
+   - `(T)` whenever $\kappa_4(F) \ge \frac{473}{10} = 47.3$ ($a(T) \le 0.645 \implies \kappa_4(F) < 47.3$; already $\kappa_4 \ge 48$ from #500's $a \ge 0.662$ alone), and
+   - the Gaussian bound whenever $\kappa_4(F) \ge \frac{991}{20} = 49.55$ ($a(T) \le 0.698 \implies \kappa_4(F) < 49.55$; already $\kappa_4 \ge 50.3$ from #500's $a \ge 0.711$ alone).
+
+**Comparison with [#519](https://github.com/agalatan/grothendieck-lean/pull/519)
+([`sources/third-chaos-dimfree-gemini-c1de/PROOF.md`](../third-chaos-dimfree-gemini-c1de/PROOF.md)).**
+Independently, #519 used degree-six majorants with $|\kappa_6| \le 67\kappa_4^{3/2}$ and full matrix-block defect
+bounds to prove `(T)` for $a \ge \frac{321}{500} = 0.642$, $\lambda \ge 0.668$, or $\kappa_4 \ge 46.6$ (plus
+$\lambda \le 0.0064$ and $\kappa_4 \le 0.182$), and the Gaussian bound for $a \ge 0.700$, $\lambda \ge 0.692$, or
+$\kappa_4 \ge 49$. Combining both packets:
+- For the sharp Gaussian bound, §1's $a \ge \frac{349}{500} = 0.698$ (which uses only $\mathbb E[R^2]$) sharpens
+  #519's $a \ge 0.700$, while #519's $\lambda \ge 0.692$ and $\kappa_4 \ge 49$ are stronger than $49.55$.
+- For `(T)`, #519's $a \ge 0.642$ and $\kappa_4 \ge 46.6$ are stronger than $0.645$ and $47.3$, while applying
+  Theorem 2.1 ($3\lambda - 1 \le (1 + \sqrt{2})a^2$) at #519's threshold $a = \frac{321}{500} = 0.642$ sharpens
+  #519's $\lambda \ge 0.668$ to $\lambda \ge \frac{1 + (1+\sqrt{2})(321/500)^2}{3} = 0.66501887\dots$ (in particular
+  $\lambda \ge \frac{33251}{50000} = 0.66502$). Note also that #519's slot-counting bound $\lambda \le \frac{1 + a^2}{2}$
+  improves on Theorem 2.1 only for $a > \sqrt{\frac{2\sqrt{2} + 1}{7}} = 0.739539\dots$, and that Theorem 3.1's
+  $18\sum_{r,s}\|[A_r, A_s]\|_F^2$ equals #519's $54\|U - \widetilde U\|_{\mathrm{HS}}^2$.
 
 All terminating decimals used as proof inputs below denote exact rationals.
 
@@ -249,7 +265,7 @@ restriction of all three slots of $T$ to $W := \operatorname{span}(e_1, e_2) \co
 
 Counting occurrences of index $1$ in $\|T\|_{\mathrm{HS}}^2 = 1$ gives
 $1 = x^2 + 3s^2 + 3\sum_{j,k\ge 2} T_{1jk}^2 + \|T|_{e_1^\perp}\|_{\mathrm{HS}}^2$ while
-$\lambda(T) = x^2 + s^2 + \sum_{j,k\ge 2} T_{1jk}^2$, hence
+$\lambda(T) = x^2 + 2s^2 + \sum_{j,k\ge 2} T_{1jk}^2$, hence
 $3\lambda(T) - 1 = 2x^2 + 3s^2 - \|T|_{e_1^\perp}\|_{\mathrm{HS}}^2 \le 2x^2 + 3s^2 - d^2$.
 Meanwhile, on $W$, $\|\widetilde T\|_{\mathrm{HS}}^2 = x^2 + 3s^2 + 3b^2 + d^2$ and
 $M(\widetilde T)_{11} = x^2 + 2s^2 + b^2$, so
@@ -324,7 +340,8 @@ $f(b, D) \le \max\{2, f(b, D_{\mathrm{ub}}(b))\}$. Cover $[-1, \frac{1}{2}]$ by 
 
 Finally, for $T_*$, $N := 3\cos^2(\pi/8) + \sin^2(\pi/8) = 2 + \frac{\sqrt{2}}{2}$, $M(T_*) = \operatorname{diag}(2\cos^2(\pi/8)/N, (\cos^2(\pi/8)+\sin^2(\pi/8))/N)$
 has $\lambda(T_*) = 2\cos^2(\pi/8)/N$, so $3\lambda(T_*) - 1 = (1 + \sqrt{2})/N$. On $u^2 + v^2 = 1$ with $t = v^2 \in [0, 1]$,
-$1 - t\big(-3\cos(\pi/8)(1-t) + \sin(\pi/8)t\big)^2 = \big(t - (1 - \frac{\sqrt{2}}{2})\big)^2\!\big((2 - \sqrt{2})t + 3 + 2\sqrt{2}\big) \ge 0$
+$1 - t\big(-3\cos(\pi/8)(1-t) + \sin(\pi/8)t\big)^2 = \big(t - (1 - \frac{\sqrt{2}}{2})\big)^2\!\big(6 + 4\sqrt{2} - (5 + \frac{7\sqrt{2}}{2})t\big) \ge 0$
+(since the linear factor equals $6 + 4\sqrt{2} > 0$ at $t = 0$ and $1 + \frac{\sqrt{2}}{2} > 0$ at $t = 1$)
 with equality at $t_* = 1 - \frac{\sqrt{2}}{2}$, proving $a(T_*)^2 = 1/N$ and $(3\lambda(T_*) - 1)/a(T_*)^2 = 1 + \sqrt{2}$. $\square$
 
 ---
@@ -402,29 +419,26 @@ $\Delta > \frac{1}{2}$. Finally, for every $(m, k) \in \mathbb Z^2 \setminus \{(
 $\|T(w, w, \cdot)\|_2 \le a(T) \le a_0$ to $w = (m e_1 + k e_2)/\sqrt{m^2 + k^2}$ gives
 
 $$
-(m^2 x + 2mk s + k^2 b)^2 + (m^2 s + 2mk b + k^2 d)^2 \le (m^2 + k^2)^4 a_0^2,
+(m^2 x + 2mk s + k^2 b)^2 + (m^2 s + 2mk b + k^2 d)^2 \le (m^2 + k^2)^2 a_0^2,
 $$
 
 together with $x^2 + 3s^2 + 3b^2 + d^2 \le 1$. Subdividing $[0, a_0]^2 \times [-a_0, a_0]^2$ in exact
-`fractions.Fraction` arithmetic, `certify_spectral_sharp.py` verifies:
-- at `#500`'s reviewed thresholds alone: $a(T) \le \frac{331}{500} = 0.662 \implies \kappa_4(F) \le 48$ ($1{,}542$ boxes)
-  and $a(T) \le \frac{711}{1000} = 0.711 \implies \kappa_4(F) \le \frac{503}{10} = 50.3$ ($2{,}966$ boxes);
-- combined with §1: $a(T) \le \frac{129}{200} = 0.645 \implies \kappa_4(F) \le \frac{473}{10} = 47.3$ ($1{,}767$ boxes)
-  and $a(T) \le \frac{349}{500} = 0.698 \implies \kappa_4(F) \le \frac{991}{20} = 49.55$ ($3{,}528$ boxes);
-- paper-only (using Theorem 2.1 without 4D subdivision): $\kappa_4(F) < 50.09$ at $a_0 = 0.645$ ($\lambda < 0.668125$)
-  and $\kappa_4(F) < 54.15$ at $a_0 = 0.698$ ($\lambda < 0.725405$).
+`fractions.Fraction` arithmetic with strict box acceptance (`< k4_cap`), `certify_spectral_sharp.py` verifies:
+- at `#500`'s reviewed thresholds alone: $a(T) \le \frac{331}{500} = 0.662 \implies \kappa_4(F) < 48$ ($1{,}542$ boxes)
+  and $a(T) \le \frac{711}{1000} = 0.711 \implies \kappa_4(F) < \frac{503}{10} = 50.3$ ($2{,}966$ boxes);
+- combined with §1: $a(T) \le \frac{129}{200} = 0.645 \implies \kappa_4(F) < \frac{473}{10} = 47.3$ ($1{,}767$ boxes)
+  and $a(T) \le \frac{349}{500} = 0.698 \implies \kappa_4(F) < \frac{991}{20} = 49.55$ ($3{,}528$ boxes);
+- paper-only (using Theorem 2.1 without 4D subdivision): $\kappa_4(F) < 50.09$ at $a_0 = 0.645$ ($\lambda < 0.668125$),
+  $\kappa_4(F) < 54.15$ at $a_0 = 0.698$ ($\lambda < 0.725405$), and at #519's $a_0 = \frac{321}{500} = 0.642$,
+  $\lambda(T) \le \frac{1 + (1 + \sqrt{2})(321/500)^2}{3} < \frac{33251}{50000} = 0.66502$.
 
-Combining with §1 proves `(T)` for $\kappa_4(F) \ge 47.3$ and the Gaussian bound for $\kappa_4(F) \ge 49.55$.
-Together with the existing rank, small-$\lambda$, and $\operatorname{Var}(\|\nabla F\|^2/3)$ bounds of
-`sources/third-chaos-dual-slice-codex-6d92/PROOF.md`, any counterexample to `(T)` is confined to
-
-$$
-\operatorname{rank}(M) \ge 16,\qquad
-a(T) < 0.645,\qquad
-0.0049067 < \lambda(T) < \frac{1 + (1+\sqrt{2})(0.645)^2}{3} \approx 0.668124,\qquad
-\operatorname{Var}\!\left(\frac{\|\nabla F\|^2}{3}\right) > \frac{89}{2250},\qquad
-\frac{89}{500} < \kappa_4(F) < 47.3.
-$$
+Combining this note with [`sources/third-chaos-dual-slice-codex-6d92/PROOF.md`](../third-chaos-dual-slice-codex-6d92/PROOF.md)
+and [`sources/third-chaos-dimfree-gemini-c1de/PROOF.md`](../third-chaos-dimfree-gemini-c1de/PROOF.md) (#519), any
+counterexample outside the structured classes is confined to:
+- for `(T)`: $\operatorname{rank}(M) \ge 16$, $a(T) < 0.642$, $0.0064 < \lambda(T) < 0.66502$,
+  $\operatorname{Var}(\|\nabla F\|^2/3) > \frac{89}{2250}$, and $0.182 < \kappa_4(F) < 46.6$;
+- for the sharp Gaussian bound $\sqrt{2/\pi}$: $\operatorname{rank}(M) \ge 12$, $a(T) < 0.698$, $\lambda(T) < 0.692$,
+  and $\kappa_4(F) < 49$.
 
 ---
 

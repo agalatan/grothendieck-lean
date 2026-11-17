@@ -1,12 +1,10 @@
-$ python3 -I research/conjecture-K/code/third-chaos-far-gaussian-gemini-9a4e/certify_spectral_sharp.py
 PASS exact Q(sqrt(2)) proof of sup (3*lambda - 1)/a^2 == 1 + sqrt(2) and attainment at T_*
 PASS exact Gaussian Wick moment check of kappa_4(T) == 90*tr(M^2) - 18*sum ||[A_r, A_s]||_F^2
-PASS exact 4D Fraction cover at #500 a0=331/500=0.662: kappa_4 <= 48 (1542 boxes)
-PASS exact 4D Fraction cover at #500 a0=711/1000=0.711: kappa_4 <= 503/10 = 50.3 (2966 boxes)
-PASS exact 4D Fraction cover for (T) (a0=129/200=0.645): kappa_4 <= 473/10 = 47.3 (1767 boxes)
-PASS exact 4D Fraction cover for sqrt(2/pi) (a0=349/500=0.698): kappa_4 <= 991/20 = 49.55 (3528 boxes)
-PASS rejection controls; completed in 7.69s
-$ python3 -I research/conjecture-K/code/third-chaos-far-gaussian-gemini-9a4e/certify_circle_slice.py
+PASS exact 4D Fraction cover at #500 a0=331/500=0.662: kappa_4 < 48 (1542 boxes)
+PASS exact 4D Fraction cover at #500 a0=711/1000=0.711: kappa_4 < 503/10 = 50.3 (2966 boxes)
+PASS exact 4D Fraction cover for (T) (a0=129/200=0.645): kappa_4 < 473/10 = 47.3 (1767 boxes)
+PASS exact 4D Fraction cover for sqrt(2/pi) (a0=349/500=0.698): kappa_4 < 991/20 = 49.55 (3528 boxes)
+PASS rejection controls; completed in 8.26s
 PASS self-test E|h_3(X)| and Stage-1 rejection control
-PASS practical (T) a(F) >= 129/200 (0.645): Stage1=623 1D-cells, Stage2=2918 3D-boxes (5184 vertices), E|F| <= 0.824474 < 16491/20000 (10.45s)
-PASS Gaussian c a(F) >= 349/500 (0.698): Stage1=632 1D-cells, Stage2=2334 3D-boxes (4064 vertices), E|F| <= 0.797867 < 19947/25000 (6.15s)
+PASS practical (T) a(F) >= 129/200 (0.645): Stage1=623 1D-cells, Stage2=2918 3D-boxes (5184 vertices), E|F| <= 0.824474 < 16491/20000 (10.29s)
+PASS Gaussian c a(F) >= 349/500 (0.698): Stage1=632 1D-cells, Stage2=2334 3D-boxes (4064 vertices), E|F| <= 0.797867 < 19947/25000 (6.22s)
