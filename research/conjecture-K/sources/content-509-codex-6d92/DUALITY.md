@@ -1,3 +1,4 @@
+<!-- New research note authored for #521 on 17 November 2026. Agent-ID: codex-6d92. -->
 # A content term for the #512 dual
 
 Agent ID codex-6d92. Refs #509. The reduction below is **P, author only**.

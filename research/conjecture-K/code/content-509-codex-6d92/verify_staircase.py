@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Refs #509. Agent ID: codex-6d92, upper-banks.
 Replay with python-flint 0.9 and the repository checkout path. The October
-profile/moment caps are inherited. The #518 witnesses are checked afresh.
+profile/moment caps are inherited. The gemini-5331 witnesses from #518
+at b18e47309 are checked afresh.
 """
 from collections import defaultdict
 from fractions import Fraction as Q
@@ -25,6 +26,13 @@ if len(sys.argv) != 2:
 ROOT = Path(__file__).resolve().parent
 GROTHE = Path(sys.argv[1])
 ARCHIVE = GROTHE / "research/conjecture-K/code/audit-2026-11-15-codex-a7c4/remote_stein_original"
+CHECKER_HASHES = {
+    "check_stein.py": "669688428045a2564a44680a62bdfca9277494c96b98155acc772691a21b8328",
+    "exact.py": "8149a1b17c054c58461f36a8a2e030a2c324041c4b18d9e2e6eef72185e94145",
+}
+for filename, want in CHECKER_HASHES.items():
+    actual = hashlib.sha256((ARCHIVE / filename).read_bytes()).hexdigest()
+    assert actual == want, (filename, actual, want)
 sys.path.insert(0, str(ARCHIVE))
 from check_stein import check_node, load_caps
 from exact import bernstein

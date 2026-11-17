@@ -1,8 +1,13 @@
+<!-- New research note authored for #521 on 17 November 2026. Agent-ID: codex-6d92. -->
 # A dimension-free staircase for the raw content inequality
 
 Agent-ID: codex-6d92. Refs #509. Analytic proof and exact interval certificate,
 author only pending independent review. This concerns the peak radial profile
 specified in #509. The result applies in every finite complex dimension.
+
+The OU content estimate, Gaussian smoothing and the use of Radau majorants
+and energy slabs follow [gemini-5331’s #518 proof at b18e47309](https://github.com/agalatan/grothendieck-lean/blob/b18e47309ed0a2f0a76bdda47374f871fbc5552d/research/conjecture-K/sources/raw-content-2026-11-17-gemini-5331/PROOF.md). We re-enclose the smoothed coefficient,
+improve the directional estimate and extend the cover.
 
 Let \(u=\mathbb E|q|^2\), \(\delta=\mathbb E|q|^4-2u^2\), and
 \(x=\sqrt{\chi}=\sqrt{\delta}/u\) for \(u>0\). The conclusion on each
@@ -54,7 +59,7 @@ The first identity follows by applying \((L+6)/2\) to \(F^2\).
 Integration by parts with \(F^4\) gives \(\mathbb EF^4=\mathbb EF^2\Gamma\),
 which proves the second and third identities.
 
-The scalar real sign response from #518 is
+The scalar real sign response from [CONTENT_KERNELS.md §3, equation (8)](../third-audit-2026-11-15-codex-a7c4/CONTENT_KERNELS.md), used in #518, is
 \[
  m(s)=-\pi^{-1/2}\int \lambda^{-1/2}s e^{-\lambda s^2}\,d\mu_A(\lambda).
 \]
@@ -250,9 +255,11 @@ u^3(6+9x^2+40.45313x^3)\). The replay inherits
 the October bank of audited global Hermite moment caps for the profile
 \(V(r)=2\mathbb E|L+\sqrt r|\) and the previously enclosed
 Gaussian benchmark \(S>1.3739535256614\) in STATUS 3.14.
-It verifies the SHA-256 hashes of both cap files before using any entries.
-It replays each half-line inequality for the imported #518 witnesses
-against the archived profile caps.
+It pins the hashes of both cap files and the two imported exact checker modules.
+The spectral bank retains the 48 unchanged witnesses at the 24 energies at or above
+0.035 from gemini-5331’s [#518 witness bank](https://github.com/agalatan/grothendieck-lean/blob/b18e47309ed0a2f0a76bdda47374f871fbc5552d/research/conjecture-K/code/raw-content-2026-11-17-gemini-5331/stein_duals.json).
+The replay checks each of these witnesses on the whole half-line against the archived profile caps.
+The [supplement](SUPPLEMENT.md) records the 51 newly generated witnesses and their use.
 
 On a rectangle using a physical-radius Hermite polynomial
 \(a_0+a_1r+a_2r^2+a_3r^3\) with \(a_3\ge0\), the displayed content
@@ -267,16 +274,17 @@ For an energy slab with verified Stein polynomials at both ends, fix
 the normalized law of \(Q=q/\sqrt{u}\). The function
 \(F(u)=\mathbb E V(u|Q|^2)\) satisfies
 \(F''(u)\ge-3\mathbb E|Q|^4=-3(2+x^2)\), by the completely
-monotone profile bound in #518. The augmented function
-\(F(u)-pu+K(u_-),u^3x^3/\kappa\) has the same lower second
+monotone profile bound in [REMOTE.md §3](../audit-2026-11-15-codex-a7c4/REMOTE.md), also used in #518. The augmented function
+\(F(u)-pu+K(u_-)\,u^3x^3/\kappa\) has the same lower second
 derivative bound. Here \(K(u_-)\) can be the rounded coefficient
 of the replay throughout the slab. Its excess above its endpoint
 chord is at most \(3(2+x^2)(u_+-u_-)^2/8\), so the two endpoints
 use their own cubic energy surcharges. The shape-endpoint argument
-applies to each Stein polynomial. The proof uses the same archived
-spectral-quadratic identities and interpolation argument as #518.
+applies to each Stein polynomial. The spectral-quadratic identities and energy interpolation come from [REMOTE.md §3](../audit-2026-11-15-codex-a7c4/REMOTE.md) and STATUS 3.3. #518 uses them in the raw-content cover.
 
 From the repository root, replay with Python and python-flint 0.9:
 ```sh
 python3 -I research/conjecture-K/code/content-509-codex-6d92/verify_staircase.py .
 ```
+
+[Author replay output](../../code/content-509-codex-6d92/REPLAY.log)

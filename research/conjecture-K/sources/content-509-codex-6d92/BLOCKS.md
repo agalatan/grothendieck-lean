@@ -1,3 +1,4 @@
+<!-- New research note authored for #521 on 17 November 2026. Agent-ID: codex-6d92. -->
 # Directional and independent-block content bounds
 
 Agent ID codex-6d92. Refs #509. The analytic statements are **P, author only** and the scalar replay is **C, author only**.
@@ -27,7 +28,7 @@ Split the index \(l\) in \(W\) into \(l=0\) and \(l\ne0\). For each \(c\), the f
 \]
 For the last step set \(x=\sqrt{AB}\) and \(z=\sqrt{ps/3}\). Then \(A^2+B^2\ge2x^2\) and \(2x^2+6(z-x)_+^2\ge3z^2/2\), by completing the square on \(x\le z\) and by \(2x^2\ge2z^2\) on \(x\ge z\). Using \(p^2+s^2+ps/2\ge5(p+s)^2/8\) and weighted Cauchy–Schwarz yields \(E(D_HF)^2\le\sqrt{13\delta/160}\).
 
-For a real odd angular score \(m_*\), let \(\Psi\) be the one-dimensional OU resolvent of #518, Section 3.1. The identity is \(E[Hm_*(F)]=E[D_HF(\Gamma-3EF^2)\Psi''(F)]\), where \(\Gamma=\|DF\|^2\). It follows by one integration by parts and testing the resolvent equation against the second chaos \(D_HF\). Since \(\operatorname{Var}(\Gamma)\le2\kappa_4(F)\) and \(\kappa_4(F)=3\delta/8\), the bound above improves \(E(D_HF)^2\le\sqrt{3\delta/32}\) by the factor \(\sqrt{13/15}\). Thus every \(K(u)\delta^{3/2}\) bound on squared content obtained by that proof improves by the same factor.
+For a real odd angular score \(m_*\), let \(\Psi\) be the one-dimensional OU resolvent used in §§3.1–3.3 of [gemini-5331’s #518 proof at b18e47309](https://github.com/agalatan/grothendieck-lean/blob/b18e47309ed0a2f0a76bdda47374f871fbc5552d/research/conjecture-K/sources/raw-content-2026-11-17-gemini-5331/PROOF.md). Those sections give the baseline raw-content bound used below. The directional improvement and the independent-block argument here strengthen that bound. The identity is \(E[Hm_*(F)]=E[D_HF(\Gamma-3EF^2)\Psi''(F)]\), where \(\Gamma=\|DF\|^2\). It follows by one integration by parts and testing the resolvent equation against the second chaos \(D_HF\). Since \(\operatorname{Var}(\Gamma)\le2\kappa_4(F)\) and \(\kappa_4(F)=3\delta/8\), the bound above improves \(E(D_HF)^2\le\sqrt{3\delta/32}\) by the factor \(\sqrt{13/15}\). Thus every \(K(u)\delta^{3/2}\) bound on squared content obtained by that proof improves by the same factor.
 
 ## Disjoint independent blocks
 

@@ -1534,3 +1534,15 @@ file, the notes as delivered included.
 - **Certificate in the repository:** `code/complex-radius-gemini-2762/cert_916.json` (241,550 B, SHA-256 `cf0cc1a0d95ebb08db44b90afd2179ac47b1a185477eeddc7288926862f5abab`), 23 contiguous rows covering s ∈ [0, 42], largest row bound `108089090381367422881337516582714174209/118059162071741130342400000000000000000` (`0.915550207917660944… < 0.9155502080`) on s ∈ [4, 17/4].
 - **Replay (Python 3 standard library only, isolated `-I`):** `python3 -I verify_cert.py cert_916.json` (exact integer Sturm chains), `python3 -I verify_bernstein.py cert_916.json` (independent exact verifier by 4×4 matrix determinants and Bernstein subdivision), `python3 -I check_identities_exact.py` (25 exact Wick cubics in d = 1…6), `python3 -I negative_controls.py cert_916.json`, and `python3 -I check_degree5_small_t.py`. [Replay log](code/complex-radius-gemini-2762/REPLAY.log)
 - **Independent reviews.** Codex-6d92 ([review of `b048eaf`](https://github.com/agalatan/grothendieck-lean/pull/512#pullrequestreview-5935955446)) and claude-b9ee ([review of `43c1a91`](https://github.com/agalatan/grothendieck-lean/pull/512#issuecomment-6945108838)) independently re-derived the third-order Stein identities, the kernel moments, the matrix/endpoint implications and Proposition 5 (`PROOF.md` §0.1, added by codex-6d92 and checked in exact rationals by `check_degree5_small_t.py`), verified the SHA-256 of `cert_916.json`, and replayed all five standard-library scripts (`verify_cert.py` on three machines across both reviews), with claude-b9ee also recomputing all 46 endpoint bounds and testing 26 cubics in d = 1…40.
+
+## Raw content comparison (codex-6d92, PR #522, task #521)
+
+- [Staircase proof](sources/content-509-codex-6d92/STAIRCASE.md),
+  [Stein witnesses](sources/content-509-codex-6d92/SUPPLEMENT.md),
+  [high-excess proof](sources/content-509-codex-6d92/HIGH_EXCESS.md), and
+  [independent-block proof](sources/content-509-codex-6d92/BLOCKS.md).
+- **Replay.** The [verifiers](code/content-509-codex-6d92/) use Python and python-flint.
+  The [author replay log](code/content-509-codex-6d92/REPLAY.log) records all three exact-arithmetic or
+  interval-arithmetic replays and their output.
+- **Witness provenance.** The bank includes 48 unchanged rows at 24 energies from gemini-5331's
+  [source revision of PR #518](https://github.com/agalatan/grothendieck-lean/tree/b18e47309ed0a2f0a76bdda47374f871fbc5552d).

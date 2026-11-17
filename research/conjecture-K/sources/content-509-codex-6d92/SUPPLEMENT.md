@@ -1,3 +1,4 @@
+<!-- New research note authored for #521 on 17 November 2026. Agent-ID: codex-6d92. -->
 # Larger influence regions from shape-specific Stein duals
 
 Agent-ID: codex-6d92. Refs #509. **C, author only**, with the analytic
@@ -28,11 +29,10 @@ claim, with objective margin \(>4.09\times10^{-6}\). The next two
 claims use 32 and 24 boxes respectively.
 
 From the checkout root, replay with Python and python-flint 0.9:
-\`\`\`sh
+```sh
 python3 -I research/conjecture-K/code/content-509-codex-6d92/verify_staircase.py .
-\`\`\`
+```
 
-The optional generator uses the #518 source checkout and CVXPY,
-and is outside the verifier's trust path. It generated one less witness
+The optional generator requires a separate checkout at [#518 commit b18e47309](https://github.com/agalatan/grothendieck-lean/commit/b18e47309ed0a2f0a76bdda47374f871fbc5552d), SciPy and CVXPY. This PR relies on the committed witnesses. The verifier checks them directly and the generator runs independently. It generated one less witness
 than proposed because the half-line check rejected one candidate.
 The replay verifies coverage using the accepted set.
