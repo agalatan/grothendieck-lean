@@ -32,6 +32,11 @@ PMAX = [Fr(1, 32), Fr(1, 8), Fr(1, 32), Fr(1, 96), Fr(3, 64)]
 EROW = [Fr(32), Fr(8), Fr(32), Fr(96), Fr(0)]
 
 
+def require(cond, msg='verification condition failed'):
+    if not cond:
+        raise ValueError(msg)
+
+
 def cut_vector(typ, theta):
     m = [Fr(1), Fr(0), Fr(1), Fr(3), Fr(-1)]
     t3 = [Fr(0), Fr(0), Fr(0), Fr(3), Fr(-1)]
@@ -75,7 +80,7 @@ def row_endpoint_bounds(row):
         pd = row['par'][end]
         al = [Fr(x) for x in pd['alpha']]
         sb = Fr(pd['sqrt_ub'])
-        assert sb > 0 and sb * sb >= s_e
+        require(sb > 0 and sb * sb >= s_e, 'sqrt_ub failed')
         eta = Fr(pd['eta'])
         dJ = [
             l3[1] * (150 * al[0] * S0[j] + (198 + Fr(150) / al[0]) * H0[j])
@@ -85,7 +90,7 @@ def row_endpoint_bounds(row):
         resid = [dlin[j] + sb * dJ[j] - eta * EROW[j] for j in range(5)]
         for typ, theta, yv in pd['cuts']:
             yv = Fr(yv)
-            assert yv >= 0
+            require(yv >= 0, 'negative cut multiplier')
             a_ = cut_vector(typ, None if theta is None else Fr(theta))
             resid = [resid[j] + yv * a_[j] for j in range(5)]
         L = eta + sum(max(resid[j], Fr(0)) * PMAX[j] for j in range(5))
@@ -99,14 +104,14 @@ def row_endpoint_bounds(row):
 def dec_ceil(q, digits=10):
     scale = 10 ** digits
     n = (q.numerator * scale + q.denominator - 1) // q.denominator
-    assert Fr(n - 1, scale) < q <= Fr(n, scale)
+    require(Fr(n - 1, scale) < q <= Fr(n, scale), 'dec_ceil enclosure failed')
     return f'{n // scale}.{n % scale:0{digits}d}'
 
 
 def atan_enclosure(x, pairs=4):
     """For x in (0, 1), integral_0^x dt/(1+t^2) = sum_{k=0}^{2*pairs-1} (-1)^k x^{2k+1}/(2k+1) + R,
     with 0 < R = integral_0^x t^{4*pairs}/(1+t^2) dt < x^{4*pairs+1}/(4*pairs+1)."""
-    assert 0 < x < 1 and pairs >= 1
+    require(0 < x < 1 and pairs >= 1, 'invalid atan_enclosure input')
     s = Fr(0)
     for k in range(2 * pairs):
         term = (x ** (2 * k + 1)) / (2 * k + 1)
@@ -126,7 +131,6 @@ def main():
     for i, row in enumerate(cert['rows']):
         blo, bhi = row_endpoint_bounds(row)
         bd = max(blo, bhi)
-        # Verify dec_ceil on both endpoints and row max
         _ = dec_ceil(blo, 10), dec_ceil(bhi, 10), dec_ceil(bd, 10)
         if bd > worst:
             worst = bd
@@ -136,22 +140,22 @@ def main():
         108089090381367422881337516582714174209,
         118059162071741130342400000000000000000,
     )
-    assert worst_row == 10 and worst == expected_worst
-    assert Fr(9155502079, 10**10) < worst < Fr(9155502080, 10**10)
+    require(worst_row == 10 and worst == expected_worst, 'worst row mismatch')
+    require(Fr(9155502079, 10**10) < worst < Fr(9155502080, 10**10), 'worst decimal enclosure failed')
     print(f'[1/3] Directed 10-decimal ceiling of worst row {worst_row}: {dec_ceil(worst, 10)} (PASS)')
 
     target = Fr(500, 701)
     claim = Fr(2289, 2500)
     cap_claim = target / (claim * claim)
-    assert cap_claim == Fr(3125000000, 3672904221)
-    assert Fr(8508253447, 10**10) < cap_claim < Fr(8508253448, 10**10)
+    require(cap_claim == Fr(3125000000, 3672904221), 'cap_claim fraction mismatch')
+    require(Fr(8508253447, 10**10) < cap_claim < Fr(8508253448, 10**10), 'cap_claim decimal enclosure failed')
     print(f'[2/3] Exact t=0 radius cap (500/701)/(2289/2500)^2 = {cap_claim} <= {dec_ceil(cap_claim, 10)} (PASS)')
 
     lo5, hi5 = atan_enclosure(Fr(1, 5), pairs=4)
     lo239, hi239 = atan_enclosure(Fr(1, 239), pairs=2)
     pi_lo = 4 * (4 * lo5 - hi239)
     pi_hi = 4 * (4 * hi5 - lo239)
-    assert Fr(314159265358, 10**11) < pi_lo < pi_hi < Fr(314159265360, 10**11)
+    require(Fr(314159265358, 10**11) < pi_lo < pi_hi < Fr(314159265360, 10**11), 'pi enclosure failed')
 
     eps = Fr(39, 50)
     eta = Fr(779, 10000)
@@ -160,16 +164,15 @@ def main():
         ('rho_0 = 2289/2500', Fr(2289, 2500), Fr(2484, 10000)),
         ('rho_0 = 93/100', Fr(93, 100), Fr(198, 1000)),
     ]
-    assert worst < checks[0][1] < checks[1][1]
+    require(worst < checks[0][1] < checks[1][1], 'rho_0 ordering failed')
     for label, rho0, t_hi in checks:
         c0_ub = eps * rho0 * rho0 + (eta * eta) / (pi_lo * eps)
         val_ub = (1 - eta) * t_hi * t_hi + c0_ub
         slack = target - val_ub
-        assert slack > 0, f'failed for {label} at t={t_hi}'
-        # Also verify the next 10^-4 step exceeds target when using pi_hi (tightness of threshold)
+        require(slack > 0, f'failed for {label} at t={t_hi}')
         t_next = t_hi + Fr(1, 10000)
         val_lb_next = (1 - eta) * t_next * t_next + eps * rho0 * rho0 + (eta * eta) / (pi_hi * eps)
-        assert val_lb_next > target
+        require(val_lb_next > target, f'next step unexpectedly passed for {label}')
         print(f'   {label:24s}: c0 <= {dec_ceil(c0_ub, 10)}, V({t_hi}) <= {dec_ceil(val_ub, 10)} < 500/701 (slack > {float(slack):.3e})')
     print('[3/3] Direct small-t degree-5 bounds verified in exact rationals (PASS).')
 

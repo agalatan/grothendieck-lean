@@ -1,42 +1,42 @@
 # Replay log for complex-radius-gemini-2762 (task #504, 17 Nov 2026)
-# Pure stdlib isolated runs: Python 3.14.8 (`python3 -I`)
-# Optional numerical diagnostic run (`validate_cubics.py`): Python 3.12.3, NumPy 2.3.5
+# Pure stdlib isolated runs: Python 3.14.8 (`python3 -I`; also verified with `python3 -I -O`)
+# Optional numerical diagnostic run (`validate_cubics.py`): Python 3.12.3, NumPy 2.3.5 (no SciPy/Clarabel)
 
 # SHA-256 of committed files:
 # cf0cc1a0d95ebb08db44b90afd2179ac47b1a185477eeddc7288926862f5abab  cert_916.json (241,550 bytes)
-# 0c98845f5399e8785c21852568c155534a22a001848b0182d0b6ac58966538d8  verify_cert.py
+# 310f2d12712c059c3bd48a7601e684c170d3d0f82ace81f42c4dd766429a2a18  verify_cert.py
 # 16540e4429fa30c367ee18167640cf3a18699d98e13ff433d61c2f93cfa544b0  verify_bernstein.py
 # eee19bf71ea5f6a193bc6a1316d0c144fc65538cc00ced7b3166e4ea13955809  check_identities_exact.py
-# 9fd70bd3a694c1a37e53f9f66cd30d4431334ba468513a037d1e1cb76a39125c  negative_controls.py
-# efea0b105208df087bd8961948516a67e30c7fa1fa4dd80ab628b482b80afc68  validate_cubics.py
+# 048f0701bdc71bd8224a5a18cf2b11bd9e75c9e9d365d856b62ac1fec3cf4d03  negative_controls.py
+# 010dd35588a453a2cbfe7f99fedfd8e6cca0304da5ed16c168767945533533aa  check_degree5_small_t.py
+# acd6444fd7d3dde0e38c6fdd853eea2e77145f5ed25bb7c8fdaaebc9a70ed26d  validate_cubics.py
 # 267f309230b35ae4545303c1d8457d46064d4a5d1775f13cde0c7cb2150027d0  make_cert.py
-# 59bc2e597313881379673505e8cc36f49718874cdd64d2bde24870e943143390  check_degree5_small_t.py
 
 $ python3 -I verify_cert.py cert_916.json
-row  0  s in [     0,    1/2]  K=133  PASS  bound <= 0.9031327076  (lo=0.8969328027, hi=0.9031327076)
-row  1  s in [   1/2,      1]  K=133  PASS  bound <= 0.9085554634  (lo=0.9051071124, hi=0.9085554634)
-row  2  s in [     1,    3/2]  K=133  PASS  bound <= 0.9120067424  (lo=0.9099997567, hi=0.9120067424)
-row  3  s in [   3/2,      2]  K=133  PASS  bound <= 0.9139070194  (lo=0.9127647427, hi=0.9139070194)
-row  4  s in [     2,    5/2]  K=133  PASS  bound <= 0.9150535171  (lo=0.9144571690, hi=0.9150535171)
-row  5  s in [   5/2,      3]  K=154  PASS  bound <= 0.9150341013  (lo=0.9147590007, hi=0.9150341013)
-row  6  s in [     3,   13/4]  K=154  PASS  bound <= 0.9152574838  (lo=0.9151286033, hi=0.9152574838)
-row  7  s in [  13/4,    7/2]  K=154  PASS  bound <= 0.9154192530  (lo=0.9153453122, hi=0.9154192530)
-row  8  s in [   7/2,   15/4]  K=154  PASS  bound <= 0.9155127046  (lo=0.9154869144, hi=0.9155127046)
-row  9  s in [  15/4,      4]  K=154  PASS  bound <= 0.9155408367  (lo=0.9155408367, hi=0.9155408367)
-row 10  s in [     4,   17/4]  K=154  PASS  bound <= 0.9155502079  (lo=0.9155502079, hi=0.9155502079)
-row 11  s in [  17/4,    9/2]  K=154  PASS  bound <= 0.9155361450  (lo=0.9155361450, hi=0.9155359694)
-row 12  s in [   9/2,   19/4]  K=154  PASS  bound <= 0.9154954541  (lo=0.9154954541, hi=0.9154765398)
-row 13  s in [  19/4,      5]  K=154  PASS  bound <= 0.9154233277  (lo=0.9154233277, hi=0.9153721376)
-row 14  s in [     5,   11/2]  K=154  PASS  bound <= 0.9153232097  (lo=0.9153232097, hi=0.9152283308)
-row 15  s in [  11/2,      6]  K=154  PASS  bound <= 0.9150544889  (lo=0.9150544889, hi=0.9148615361)
-row 16  s in [     6,      7]  K=154  PASS  bound <= 0.9147094457  (lo=0.9147094457, hi=0.9143544453)
-row 17  s in [     7,      8]  K=133  PASS  bound <= 0.9141151244  (lo=0.9141151244, hi=0.9134544520)
-row 18  s in [     8,     10]  K=133  PASS  bound <= 0.9133375745  (lo=0.9133375745, hi=0.9121958309)
-row 19  s in [    10,     14]  K=133  PASS  bound <= 0.9108677899  (lo=0.9108677899, hi=0.9089691646)
-row 20  s in [    14,     20]  K=133  PASS  bound <= 0.9089792893  (lo=0.9089792893, hi=0.9043548876)
-row 21  s in [    20,     30]  K=133  PASS  bound <= 0.8952143646  (lo=0.8952143646, hi=0.8870256746)
-row 22  s in [    30,     42]  K=133  PASS  bound <= 0.8794227010  (lo=0.8794227010, hi=0.8662181168)
-covered s in [0, 42];  all rows pass: True;  worst row = 10;  max bound = 108089090381367422881337516582714174209/118059162071741130342400000000000000000  (<= 0.9155502079)  [122.71s]
+row  0  s in [     0,    1/2]  K=133  PASS  bound <= 0.9031327077  (lo<=0.8969328028, hi<=0.9031327077)
+row  1  s in [   1/2,      1]  K=133  PASS  bound <= 0.9085554635  (lo<=0.9051071124, hi<=0.9085554635)
+row  2  s in [     1,    3/2]  K=133  PASS  bound <= 0.9120067424  (lo<=0.9099997567, hi<=0.9120067424)
+row  3  s in [   3/2,      2]  K=133  PASS  bound <= 0.9139070195  (lo<=0.9127647427, hi<=0.9139070195)
+row  4  s in [     2,    5/2]  K=133  PASS  bound <= 0.9150535172  (lo<=0.9144571690, hi<=0.9150535172)
+row  5  s in [   5/2,      3]  K=154  PASS  bound <= 0.9150341013  (lo<=0.9147590008, hi<=0.9150341013)
+row  6  s in [     3,   13/4]  K=154  PASS  bound <= 0.9152574838  (lo<=0.9151286033, hi<=0.9152574838)
+row  7  s in [  13/4,    7/2]  K=154  PASS  bound <= 0.9154192530  (lo<=0.9153453122, hi<=0.9154192530)
+row  8  s in [   7/2,   15/4]  K=154  PASS  bound <= 0.9155127046  (lo<=0.9154869145, hi<=0.9155127046)
+row  9  s in [  15/4,      4]  K=154  PASS  bound <= 0.9155408367  (lo<=0.9155408367, hi<=0.9155408367)
+row 10  s in [     4,   17/4]  K=154  PASS  bound <= 0.9155502080  (lo<=0.9155502080, hi<=0.9155502080)
+row 11  s in [  17/4,    9/2]  K=154  PASS  bound <= 0.9155361450  (lo<=0.9155361450, hi<=0.9155359694)
+row 12  s in [   9/2,   19/4]  K=154  PASS  bound <= 0.9154954542  (lo<=0.9154954542, hi<=0.9154765399)
+row 13  s in [  19/4,      5]  K=154  PASS  bound <= 0.9154233277  (lo<=0.9154233277, hi<=0.9153721377)
+row 14  s in [     5,   11/2]  K=154  PASS  bound <= 0.9153232098  (lo<=0.9153232098, hi<=0.9152283309)
+row 15  s in [  11/2,      6]  K=154  PASS  bound <= 0.9150544889  (lo<=0.9150544889, hi<=0.9148615362)
+row 16  s in [     6,      7]  K=154  PASS  bound <= 0.9147094457  (lo<=0.9147094457, hi<=0.9143544453)
+row 17  s in [     7,      8]  K=133  PASS  bound <= 0.9141151244  (lo<=0.9141151244, hi<=0.9134544520)
+row 18  s in [     8,     10]  K=133  PASS  bound <= 0.9133375746  (lo<=0.9133375746, hi<=0.9121958310)
+row 19  s in [    10,     14]  K=133  PASS  bound <= 0.9108677899  (lo<=0.9108677899, hi<=0.9089691647)
+row 20  s in [    14,     20]  K=133  PASS  bound <= 0.9089792893  (lo<=0.9089792893, hi<=0.9043548876)
+row 21  s in [    20,     30]  K=133  PASS  bound <= 0.8952143646  (lo<=0.8952143646, hi<=0.8870256746)
+row 22  s in [    30,     42]  K=133  PASS  bound <= 0.8794227010  (lo<=0.8794227010, hi<=0.8662181169)
+covered s in [0, 42];  all rows pass: True;  worst row = 10;  max bound = 108089090381367422881337516582714174209/118059162071741130342400000000000000000  (<= 0.9155502080)  [93.40s]
 claim  E|q| <= 2289/2500 ||q||_2  for every q in H_{2,1}:  VERIFIED
 
 $ python3 -I verify_bernstein.py cert_916.json
@@ -94,29 +94,29 @@ $ python3 -I check_identities_exact.py
 [25/25] d=6 random #2              u=208    s= 3.9911  m<= 0  EXACT PASS
 All 25 instances passed every exact rational check in 87.60s.
 
-$ python3 -I negative_controls.py cert_916.json
+$ python3 -I -O negative_controls.py cert_916.json
 [1/3] 14 polynomial positivity unit controls: ALL PASS
 [2/3] 49 row & cover negative controls: ALL REJECTED BY BOTH VERIFIERS
 [3/3] 20 differential perturbation trials: 20/20 exact agreements (7 accepted, 13 rejected)
 ALL NEGATIVE CONTROLS AND DIFFERENTIAL CHECKS PASSED.
 
-$ python3 -B validate_cubics.py cert_916.json
-[1/3] Exact weak-duality check: 360 (endpoint, cubic) pairs PASS; min slack = 2.410e-10
-[2/3] Wick monomial quadrature: max|E[Br_1..4]| = 3.14e-17; E|q|=0.690821 < E[RHS]=0.827892 <= B_row=0.879423
-   MC Wick monomial           (d= 1, s=42.00): min(RHS-|q|)=1.43e-02 > 0 | E|q|=0.69019 <= E[RHS]=0.81499 <= B_row=0.879423
-   MC Z1^2 conj(Z2)           (d= 2, s=10.00): min(RHS-|q|)=5.54e-03 > 0 | E|q|=0.63057 <= E[RHS]=0.88026 <= B_row=0.913338
-   MC Z1(|Z2|^2 - 1)          (d= 2, s=16.00): min(RHS-|q|)=1.56e-03 > 0 | E|q|=0.65205 <= E[RHS]=0.86113 <= B_row=0.908979
-   MC Z1 Z2 conj(Z3)          (d= 3, s= 6.00): min(RHS-|q|)=2.52e-03 > 0 | E|q|=0.69547 <= E[RHS]=0.88966 <= B_row=0.915054
-   MC Cyclic 3-chain          (d= 3, s= 6.00): min(RHS-|q|)=9.16e-03 > 0 | E|q|=0.70534 <= E[RHS]=0.89337 <= B_row=0.915054
-   MC Z1(|Z2|^2+|Z3|^2-2)     (d= 3, s=10.00): min(RHS-|q|)=4.23e-03 > 0 | E|q|=0.67335 <= E[RHS]=0.86929 <= B_row=0.913338
-   MC Sum of 10 monomials     (d=10, s= 4.20): min(RHS-|q|)=2.80e-03 > 0 | E|q|=0.78923 <= E[RHS]=0.89216 <= B_row=0.915550
-   MC Sum of 14 monomials     (d=14, s= 3.00): min(RHS-|q|)=2.85e-03 > 0 | E|q|=0.80630 <= E[RHS]=0.89704 <= B_row=0.915034
-[3/3] All 8 genuine cubic Monte Carlo pointwise & expectation checks PASS.
-
-$ python3 -I check_degree5_small_t.py
+$ python3 -I -O check_degree5_small_t.py
 [1/3] Directed 10-decimal ceiling of worst row 10: 0.9155502080 (PASS)
 [2/3] Exact t=0 radius cap (500/701)/(2289/2500)^2 = 3125000000/3672904221 <= 0.8508253448 (PASS)
    rho_0 = 915551/1000000  : c0 <= 0.6562986893, V(497/2000) <= 0.7132404390 < 500/701 (slack > 2.632e-05)
    rho_0 = 2289/2500       : c0 <= 0.6563686758, V(621/2500) <= 0.7132646064 < 500/701 (slack > 2.155e-06)
    rho_0 = 93/100          : c0 <= 0.6770984550, V(99/500) <= 0.7132484634 < 500/701 (slack > 1.830e-05)
 [3/3] Direct small-t degree-5 bounds verified in exact rationals (PASS).
+
+$ python3 -B validate_cubics.py cert_916.json
+[1/3] Exact weak-duality check: 360 (endpoint, cubic) pairs PASS; min slack = 2.410e-10
+[2/3] Wick monomial quadrature: max|E[Br_1..4]| = 3.14e-17; E|q|=0.690821 < E[RHS]=0.827892 <= B_row=0.879423
+   MC Wick monomial           (d= 1, s=42.00): min(z^T P z)=9.10e-03 > 0, min(RHS-|q|)=1.43e-02 > 0 | E|q|=0.69019 < E[RHS]=0.81499 <= B_row=0.879423
+   MC Z1^2 conj(Z2)           (d= 2, s=10.00): min(z^T P z)=9.97e-04 > 0, min(RHS-|q|)=5.54e-03 > 0 | E|q|=0.63057 < E[RHS]=0.88026 <= B_row=0.913338
+   MC Z1(|Z2|^2 - 1)          (d= 2, s=16.00): min(z^T P z)=1.56e-03 > 0, min(RHS-|q|)=1.56e-03 > 0 | E|q|=0.65205 < E[RHS]=0.86113 <= B_row=0.908979
+   MC Z1 Z2 conj(Z3)          (d= 3, s= 6.00): min(z^T P z)=7.13e-05 > 0, min(RHS-|q|)=2.52e-03 > 0 | E|q|=0.69547 < E[RHS]=0.88966 <= B_row=0.915054
+   MC Cyclic 3-chain          (d= 3, s= 6.00): min(z^T P z)=3.43e-05 > 0, min(RHS-|q|)=9.16e-03 > 0 | E|q|=0.70534 < E[RHS]=0.89337 <= B_row=0.915054
+   MC Z1(|Z2|^2+|Z3|^2-2)     (d= 3, s=10.00): min(z^T P z)=4.41e-04 > 0, min(RHS-|q|)=4.23e-03 > 0 | E|q|=0.67335 < E[RHS]=0.86929 <= B_row=0.913338
+   MC Sum of 10 monomials     (d=10, s= 4.20): min(z^T P z)=1.43e-05 > 0, min(RHS-|q|)=2.80e-03 > 0 | E|q|=0.78923 < E[RHS]=0.89216 <= B_row=0.915550
+   MC Sum of 14 monomials     (d=14, s= 3.00): min(z^T P z)=1.45e-05 > 0, min(RHS-|q|)=2.85e-03 > 0 | E|q|=0.80630 < E[RHS]=0.89704 <= B_row=0.915034
+[3/3] All 8 genuine cubic Monte Carlo pointwise & expectation checks PASS.

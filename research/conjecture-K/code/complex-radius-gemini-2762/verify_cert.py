@@ -13,7 +13,7 @@ to u = E|q|^2 = 1 with excess fourth moment s = E|q|^4 - 2 in [s_lo, s_hi]:
         E|q| <= max(B(s_lo), B(s_hi)),
 
 checks that the rows partition [0, 42] contiguously (s <= 42 is a Lean theorem), and checks that the
-maximum bound across all rows is strictly below the rational claim (9157/10000 < 0.916).
+maximum bound across all rows is strictly below the rational claim in `cert['claim']` (2289/2500 = 0.9156 < 0.916).
 
 ============================================================================================
 NOTATION.
@@ -22,7 +22,7 @@ NOTATION.
   q in H_{2,1}(C^n) with u = E|q|^2 = 1,  V = |q|^2,  r = sqrt(V),  F_k = dbar_k q in H_{2,0}(C^n);
   c_1 = sum_j |d_j q|^2 >= 0,   c_2 = sum_k |F_k|^2 >= 0,   a = sum_j (d_j q) F_j;
   W_k = sum_j F_j (d_j F_k) in H_{3,0}(C^n),   w = sum_k |W_k|^2 >= 0,   b_loc = sum_k conj(F_k) W_k;
-  on {V > 0}:  rho = Re(conj(q)^2 a)/V,   alpha_2 = |a|^2,   tilde_beta = Re(conj(q) b_loc).
+  rho = Re(conj(q)^2 a)/V on {V > 0} and rho = 0 on {V = 0},  alpha_2 = |a|^2,  tilde_beta = Re(conj(q) b_loc).
 
 ANALYTIC INPUTS (proved in sources/complex-radius-2026-11-17-gemini-2762/PROOF.md and checked on
 polynomial instances up to dimension 6 by check_identities_exact.py):
@@ -108,6 +108,16 @@ EROW = [Fr(32), Fr(8), Fr(32), Fr(96), Fr(0)]
 S0 = [Fr(8), Fr(2), Fr(8), Fr(0), Fr(8)]
 H0 = [Fr(8, 3), Fr(2, 3), Fr(8, 3), Fr(24), Fr(-16, 3)]
 PMAX = [Fr(1, 32), Fr(1, 8), Fr(1, 32), Fr(1, 96), Fr(3, 64)]
+
+
+def require(cond, msg='verification condition failed'):
+    if not cond:
+        raise ValueError(msg)
+
+
+def dec_ceil10(q):
+    n = (q.numerator * 10**10 + q.denominator - 1) // q.denominator
+    return '%d.%010d' % (n // 10**10, n % 10**10)
 
 
 # ------------------------------------------------------------------ exact polynomial arithmetic (low -> high)
@@ -281,14 +291,14 @@ def cut_vector(typ, theta):
 def verify_row(row, quiet=False):
     e = [Fr(x) for x in row['knots']]
     K = len(e) - 1
-    assert K >= 1 and e[0] == 0 and all(e[i] < e[i + 1] for i in range(K)), 'invalid knots'
+    require(K >= 1 and e[0] == 0 and all(e[i] < e[i + 1] for i in range(K)), 'invalid knots')
     u = [x * x for x in e]
-    assert isinstance(row['knot_den'], int) and row['knot_den'] > 0, 'invalid knot_den'
+    require(isinstance(row['knot_den'], int) and row['knot_den'] > 0, 'invalid knot_den')
     kden = Fr(row['knot_den'])
 
     def get_karr(nm):
         raw = row[nm]
-        assert len(raw) == K + 1 and all(isinstance(x, int) for x in raw), 'invalid array ' + nm
+        require(len(raw) == K + 1 and all(isinstance(x, int) for x in raw), 'invalid array ' + nm)
         return [Fr(x, kden) for x in raw]
 
     phi1, phi2 = get_karr('phi1'), get_karr('phi2')
@@ -296,7 +306,10 @@ def verify_row(row, quiet=False):
     psi_a = get_karr('psi_a')
     xi2, xi1, xia = get_karr('xi2'), get_karr('xi1'), get_karr('xia')
 
-    assert len(row['lam']) == 3 and len(row['slope']) == 2 and len(row['l3']) == 3 and len(row['m_ker']) == 3
+    require(
+        len(row['lam']) == 3 and len(row['slope']) == 2 and len(row['l3']) == 3 and len(row['m_ker']) == 3,
+        'invalid scalar tuple lengths',
+    )
     lam0, lam1, lam2 = (Fr(x) for x in row['lam'])
     slope = [Fr(x) for x in row['slope']]
     l3 = [Fr(x) for x in row['l3']]
@@ -306,19 +319,19 @@ def verify_row(row, quiet=False):
     mu_w = Fr(row['mu_w'])
     sig = Fr(row['sigma'])
 
-    assert all(x >= 0 for x in l3), 'l3 >= 0 failed'
+    require(all(x >= 0 for x in l3), 'l3 >= 0 failed')
     lam3 = sum(l3)
-    assert lam3 > 0, 'lam3 > 0 failed'
-    assert m00 >= 0 and m11 > 0 and m00 * m11 - m01 * m01 >= 0, 'M_ker PSD / m11 > 0 failed'
-    assert mu_a >= 0 and mu_rho > 0 and mu_w > 0, 'mu signs failed'
+    require(lam3 > 0, 'lam3 > 0 failed')
+    require(m00 >= 0 and m11 > 0 and m00 * m11 - m01 * m01 >= 0, 'M_ker PSD / m11 > 0 failed')
+    require(mu_a >= 0 and mu_rho > 0 and mu_w > 0, 'mu signs failed')
 
     # (C1) Knotwise inequalities
     for k in range(K + 1):
-        assert xi2[k] >= 0 and xi1[k] >= 0 and xia[k] ** 2 <= 4 * xi1[k] * xi2[k], 'C* failed at knot %d' % k
-        assert psi_a[k] >= 0 and psi_a[k] + mu_a - phi4[k] >= 0, 'psi_a failed at knot %d' % k
-        assert m00 - phi3[k] > 0, 'D1 failed at knot %d' % k
+        require(xi2[k] >= 0 and xi1[k] >= 0 and xia[k] ** 2 <= 4 * xi1[k] * xi2[k], 'C* failed at knot %d' % k)
+        require(psi_a[k] >= 0 and psi_a[k] + mu_a - phi4[k] >= 0, 'psi_a failed at knot %d' % k)
+        require(m00 - phi3[k] > 0, 'D1 failed at knot %d' % k)
         d2k = m11 * (m00 - phi3[k]) - (m01 - Fr(1, 2) * psi_a[k]) ** 2
-        assert d2k > 0, 'D2 failed at knot %d' % k
+        require(d2k > 0, 'D2 failed at knot %d' % k)
 
     # (C2) Piecewise Sylvester minors on [e_k, e_{k+1}] and [e_K, oo)
     G_val = [Fr(0), Fr(0), Fr(0), Fr(0)]
@@ -368,12 +381,12 @@ def verify_row(row, quiet=False):
         ok2 = positive_on(compose_r2(D2), a_lo, b_hi)
 
         if k == 0:
-            assert not g34 or g34[0] == 0, 'G_3(0)+G_4(0) must vanish'
+            require(not g34 or g34[0] == 0, 'G_3(0)+G_4(0) must vanish')
             g34_div_v = g34[1:] if len(g34) > 1 else []
             tau_w_v = pmul(vv, pscale(pmul(g34_div_v, g34_div_v), Fr(1) / (4 * mu_w)))
 
             for vy in (vY1, vY2, vY3, vY4):
-                assert not vy or vy[0] == 0, 'vY_i(0) must vanish'
+                require(not vy or vy[0] == 0, 'vY_i(0) must vanish')
             Y1_v = vY1[1:] if len(vY1) > 1 else []
             Y2_v = vY2[1:] if len(vY2) > 1 else []
             Y3_v = vY3[1:] if len(vY3) > 1 else []
@@ -452,17 +465,17 @@ def verify_row(row, quiet=False):
             continue
         pd = row['par'][end]
         al = [Fr(x) for x in pd['alpha']]
-        assert len(al) == 2 and all(x > 0 for x in al), 'alpha > 0 failed'
+        require(len(al) == 2 and all(x > 0 for x in al), 'alpha > 0 failed')
         dJ = [l3[1] * (150 * al[0] * S0[i] + (198 + Fr(150) / al[0]) * H0[i])
               + l3[2] * (Fr(135, 2) * al[1] * S0[i] + (Fr(11781, 32) + Fr(135, 2) / al[1]) * H0[i]) for i in range(5)]
         sb = Fr(pd['sqrt_ub'])
-        assert sb > 0 and sb * sb >= s_e, 'sqrt_ub failed'
+        require(sb > 0 and sb * sb >= s_e, 'sqrt_ub failed')
         c = [dlin[i] + sb * dJ[i] for i in range(5)]
         eta = Fr(pd['eta'])
         resid = [c[i] - eta * EROW[i] for i in range(5)]
         for typ, theta, yv in pd['cuts']:
             yv = Fr(yv)
-            assert yv >= 0, 'negative cut multiplier'
+            require(yv >= 0, 'negative cut multiplier')
             a_ = cut_vector(typ, None if theta is None else Fr(theta))
             resid = [resid[i] + yv * a_[i] for i in range(5)]
         L = eta + sum(max(resid[i], Fr(0)) * PMAX[i] for i in range(5))
@@ -489,7 +502,7 @@ def main():
     with open(path, encoding='utf-8') as fh:
         cert = json.load(fh)
     rows = cert['rows']
-    assert len(rows) >= 1, 'empty rows'
+    require(len(rows) >= 1, 'empty rows')
     worst = None
     worst_idx = -1
     prev = Fr(rows[0]['s_lo']) if partial else Fr(0)
@@ -497,7 +510,7 @@ def main():
     allok = True
     for i, row in enumerate(rows):
         s_lo, s_hi = Fr(row['s_lo']), Fr(row['s_hi'])
-        assert s_lo == prev and s_hi > s_lo, 'rows must be contiguous' + ('' if partial else ' from 0')
+        require(s_lo == prev and s_hi > s_lo, 'rows must be contiguous' + ('' if partial else ' from 0'))
         prev = s_hi
         res = verify_row(row, quiet=quiet)
         allok = allok and res['ok']
@@ -505,13 +518,13 @@ def main():
             worst = res['bound']
             worst_idx = i
         if not quiet:
-            print('row %2d  s in [%6s, %6s]  K=%3d  %s  bound <= %.10f  (lo=%.10f, hi=%.10f)' % (
+            print('row %2d  s in [%6s, %6s]  K=%3d  %s  bound <= %s  (lo<=%s, hi<=%s)' % (
                 i, row['s_lo'], row['s_hi'], res['K'], 'PASS' if res['ok'] else 'FAIL',
-                float(res['bound']), float(res['bounds']['lo']), float(res['bounds']['hi'])), flush=True)
+                dec_ceil10(res['bound']), dec_ceil10(res['bounds']['lo']), dec_ceil10(res['bounds']['hi'])), flush=True)
     covered = prev
     dt = time.time() - t0
-    print('covered s in [%s, %s];  all rows pass: %s;  worst row = %d;  max bound = %s  (<= %.10f)  [%.2fs]' % (
-        start, covered, allok, worst_idx, worst, float(worst) + 1e-12, dt))
+    print('covered s in [%s, %s];  all rows pass: %s;  worst row = %d;  max bound = %s  (<= %s)  [%.2fs]' % (
+        start, covered, allok, worst_idx, worst, dec_ceil10(worst), dt))
     target = cert.get('claim')
     if target is not None and not partial:
         t = Fr(target)

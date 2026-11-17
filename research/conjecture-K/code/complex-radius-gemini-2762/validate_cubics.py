@@ -3,16 +3,17 @@
 
 Usage:  python3 -B validate_cubics.py [CERT.json]
 
-Performs three end-to-end checks on eight genuine Wick cubics q in H_{2,1}(C^d) (s from 1.4 to 42):
+Dependencies: Python 3 standard library + NumPy only.
+Performs three end-to-end checks on eight genuine Wick cubics q in H_{2,1}(C^d) (s from 3 to 42):
   1. [C, exact Fractions] Verifies that at every nonzero endpoint of every row in cert_916.json,
      the normalised contraction vector p = pi/s of each cubic satisfies (d_lin + sb d_J(alpha)).p <= L_e.
   2. [N, 1D piecewise Gauss-Legendre quadrature on the Wick monomial] Integrates the actual spline
      brackets Br_1, Br_2, Br_3, Br_4 of the last row against Exp(1) (splitting at knot preimages),
      confirming |E[Br_i]| < 10^{-13} for all four identities, and checks E|q| < E[RHS] <= B_row.
-  3. [N, Monte Carlo, 200,000 samples per cubic] Evaluates q, c_1, c_2, a, W_k, w, b_loc, rho, alpha_2,
+  3. [N, Monte Carlo, 150,000 samples per cubic] Evaluates q, c_1, c_2, a, W_k, w, b_loc, rho, alpha_2,
      tilde_beta from first principles on 8 cubics (Wick monomial, Z_1^2 conj(Z_2), Z_1(|Z_2|^2-1),
-     Z_1 Z_2 conj(Z_3), cyclic 3-chain, Z_1(|Z_2|^2+|Z_3|^2-2), and sums of 6 and 30 independent Wick
-     monomials), asserting at EVERY sample:
+     Z_1 Z_2 conj(Z_3), cyclic 3-chain, Z_1(|Z_2|^2+|Z_3|^2-2), and sums of 10 and 14 independent Wick
+     monomials), checking at every sample (up to IEEE-754 rounding):
        - tilde_beta^2 <= V c_2 w  and  rho^2 <= alpha_2 <= c_1 c_2,
        - z^T P(r) z > 0  for z = (c_2, c_1, rho, 1)^T,
        - RHS(z) - |q| >= z^T P(r) z > 0,
@@ -31,16 +32,47 @@ import numpy as np
 from numpy.polynomial.legendre import leggauss
 
 import check_identities_exact as CIE
-import make_cert as MC
 import verify_bernstein as VB
 import verify_cert as VC
+
+
+def require(cond, msg='validation check failed'):
+    if not cond:
+        raise ValueError(msg)
+
+
+def hat_test_matrices(uk, v):
+    """Continuous piecewise-linear hat basis in v on knots uk[0]=0 < ... < uk[K], constant beyond uk[K]."""
+    K = len(uk)
+    F = np.zeros((K, len(v)))
+    G = np.zeros((K, len(v)))
+    for k in range(K):
+        if k > 0:
+            a_, b_ = uk[k - 1], uk[k]
+            x = np.clip(v, a_, b_)
+            F[k] += np.where((v > a_) & (v <= b_), (v - a_) / (b_ - a_), 0.0)
+            G[k] += (x - a_) ** 2 / (2.0 * (b_ - a_))
+        if k < K - 1:
+            a_, b_ = uk[k], uk[k + 1]
+            x = np.clip(v, a_, b_)
+            F[k] += np.where((v > a_) & (v <= b_), (b_ - v) / (b_ - a_), 0.0)
+            G[k] += (x - a_) - (x - a_) ** 2 / (2.0 * (b_ - a_))
+            if k == 0:
+                F[k] += np.where(v <= a_, 1.0, 0.0)
+        else:
+            F[k] += np.where(v > uk[k], 1.0, 0.0)
+            G[k] += np.maximum(v - uk[k], 0.0)
+    Y = np.zeros_like(F)
+    nz = v > 0
+    Y[:, nz] = F[:, nz] - G[:, nz] / v[nz][None, :]
+    return F, G, Y
 
 
 def eval_row_functions(row, r_arr):
     ek = np.array([float(Fr(x)) for x in row['knots']])
     uk = ek ** 2
     v = r_arr ** 2
-    Fm, Gm, Ym = MC.hat_test_matrices(uk, v)
+    Fm, Gm, Ym = hat_test_matrices(uk, v)
     gvm = np.zeros_like(Gm)
     nz = v > 0
     gvm[:, nz] = Gm[:, nz] / v[nz]
@@ -72,36 +104,50 @@ def eval_row_functions(row, r_arr):
     return out
 
 
+def eval_quad_form(fn, r, V, c1, c2, rho):
+    """Evaluate z^T P(r) z on samples for z = (c_2, c_1, rho, 1)^T."""
+    m00, m01, m11 = fn['m_ker']
+    lam0, lam1, lam2 = fn['lam']
+    M11 = m00 - fn['phi3']
+    M12 = m01 - 0.5 * fn['psi_a']
+    M13 = -0.5 * (fn['Y3'] + fn['Y4'])
+    M33 = fn['mu_rho'] + fn['mu_a'] + fn['psi_a'] - fn['phi4']
+    tau_w = V * ((fn['g3'] + fn['g4']) ** 2) / (4.0 * fn['mu_w'])
+    b1 = 0.5 * (-fn['phi1'] + fn['phi3'] + fn['G3'] - 2.0 * m00 - 4.0 * m01 - tau_w - fn['xi2'])
+    b2 = 0.5 * (-0.5 * fn['phi2'] - 2.0 * m01 - 4.0 * m11 - fn['xi1'])
+    b3 = 0.5 * (-fn['Y1'] - 0.5 * fn['Y2'] + fn['sig'] * V + fn['Y3'] + fn['G4'] - fn['xia'])
+    q1 = lam0 + m00 + 4.0 * m01 + 4.0 * m11 + lam1 * V + lam2 * V ** 2 + fn['lam3'] * V ** 3 + fn['G1'] + fn['G2'] - fn['G3'] - r
+    return (
+        M11 * c2 ** 2 + m11 * c1 ** 2 + M33 * rho ** 2
+        + 2.0 * M12 * c1 * c2 + 2.0 * M13 * c2 * rho
+        + 2.0 * b1 * c2 + 2.0 * b2 * c1 + 2.0 * b3 * rho + q1
+    )
+
+
 def eval_tensor_mc(t_np, z_samp):
     """Evaluate q, c_1, c_2, a, w, b_loc on N_mc samples in C^d for symmetric tensor t_np (u = 1)."""
-    # q = sum_{a,b,c} t_{abc} (z_a z_b zbar_c - delta_{ac} z_b - delta_{bc} z_a)
-    N_mc, d = z_samp.shape
     zc = np.conj(z_samp)
-    tr_vec = np.einsum('aac->c', t_np)  # wait: sum_a t_{a, b, a}!
-    lin_coeff = 2.0 * np.einsum('aba->b', t_np)  # since t_{abc} = t_{bac}
+    lin_coeff = 2.0 * np.einsum('aba->b', t_np)
 
-    # F_c = dbar_c q = sum_{a,b} t_{abc} z_a z_b
-    zz = z_samp[:, :, None] * z_samp[:, None, :]  # (N, d, d)
-    F = np.einsum('abc,nab->nc', t_np, zz)        # (N, d)
+    zz = z_samp[:, :, None] * z_samp[:, None, :]
+    F = np.einsum('abc,nab->nc', t_np, zz)
     q = np.einsum('nc,nc->n', F, zc) - z_samp @ lin_coeff
 
-    # d_j q = 2 sum_{b,c} t_{jbc} z_b zbar_c - lin_coeff[j]
-    z_zc = z_samp[:, :, None] * zc[:, None, :]    # (N, d, d)
+    z_zc = z_samp[:, :, None] * zc[:, None, :]
     dq = 2.0 * np.einsum('jbc,nbc->nj', t_np, z_zc) - lin_coeff[None, :]
 
     c1 = np.sum(np.abs(dq) ** 2, axis=1)
     c2 = np.sum(np.abs(F) ** 2, axis=1)
     a_val = np.sum(dq * F, axis=1)
 
-    # d_j F_k = 2 sum_b t_{jbk} z_b;  W_k = sum_j F_j (d_j F_k)
-    dF = 2.0 * np.einsum('jbk,nb->njk', t_np, z_samp)  # (N, d, d): d_j F_k
-    W = np.einsum('nj,njk->nk', F, dF)                 # (N, d)
+    dF = 2.0 * np.einsum('jbk,nb->njk', t_np, z_samp)
+    W = np.einsum('nj,njk->nk', F, dF)
     w = np.sum(np.abs(W) ** 2, axis=1)
     bloc = np.sum(np.conj(F) * W, axis=1)
 
     V = np.abs(q) ** 2
     r = np.sqrt(V)
-    rho = np.real((np.conj(q) ** 2) * a_val) / np.maximum(V, 1e-300)
+    rho = np.where(V > 0.0, np.real((np.conj(q) ** 2) * a_val) / np.maximum(V, 1e-300), 0.0)
     alpha2 = np.abs(a_val) ** 2
     tbeta = np.real(np.conj(q) * bloc)
     return q, r, V, c1, c2, rho, alpha2, w, tbeta
@@ -109,33 +155,25 @@ def eval_tensor_mc(t_np, z_samp):
 
 def build_test_cubics():
     cubics = []
-    # 1. Wick monomial (d=1, s=42)
     t = CIE.empty_tensor(1); CIE.set_sym(t, 0, 0, 0, CIE.QComplex(1, 0))
     cubics.append(('Wick monomial', t, 1))
-    # 2. Z1^2 conj(Z2) (d=2, s=10)
     t = CIE.empty_tensor(2); CIE.set_sym(t, 0, 0, 1, CIE.QComplex(1, 0))
     cubics.append(('Z1^2 conj(Z2)', t, 2))
-    # 3. Z1(|Z2|^2 - 1) (d=2, s=16)
     t = CIE.empty_tensor(2); CIE.set_sym(t, 0, 1, 1, CIE.QComplex(1, 0))
     cubics.append(('Z1(|Z2|^2 - 1)', t, 2))
-    # 4. Z1 Z2 conj(Z3) (d=3, s=6)
     t = CIE.empty_tensor(3); CIE.set_sym(t, 0, 1, 2, CIE.QComplex(1, 0))
     cubics.append(('Z1 Z2 conj(Z3)', t, 3))
-    # 5. Cyclic 3-chain (d=3, s=6)
     t = CIE.empty_tensor(3)
     for j in range(3):
         CIE.set_sym(t, j, j, (j + 1) % 3, CIE.QComplex(1, 0))
     cubics.append(('Cyclic 3-chain', t, 3))
-    # 6. Z1(|Z2|^2 + |Z3|^2 - 2) (d=3, s=10)
     t = CIE.empty_tensor(3)
     CIE.set_sym(t, 0, 1, 1, CIE.QComplex(1, 0)); CIE.set_sym(t, 0, 2, 2, CIE.QComplex(1, 0))
     cubics.append(('Z1(|Z2|^2+|Z3|^2-2)', t, 3))
-    # 7. Sum of 10 independent Wick monomials (d=10, s=4.2, right at the global peak!)
     t = CIE.empty_tensor(10)
     for j in range(10):
         CIE.set_sym(t, j, j, j, CIE.QComplex(1, 0))
     cubics.append(('Sum of 10 monomials', t, 10))
-    # 8. Sum of 14 independent Wick monomials (d=14, s=3.0)
     t = CIE.empty_tensor(14)
     for j in range(14):
         CIE.set_sym(t, j, j, j, CIE.QComplex(1, 0))
@@ -190,7 +228,7 @@ def main():
             for _, _, p, _ in p_vecs:
                 lhs = sum(c[i] * p[i] for i in range(5))
                 sl = L_e - lhs
-                assert sl >= 0, f'Dual violation: {sl}'
+                require(sl >= 0, f'Dual violation: {sl}')
                 if min_dual_slack is None or sl < min_dual_slack:
                     min_dual_slack = sl
                 n_pairs += 1
@@ -202,7 +240,6 @@ def main():
     # 2. 1D quadrature on the Wick monomial q(z) = z(|z|^2 - 2)/sqrt(2), |z|^2 = t ~ Exp(1)
     row_42 = rows[-1]
     bnd_42 = row_bounds[-1]
-    # Exact preimages of knots r(t) = sqrt(t/2) * |t - 2| = e_k => t(t - 2)^2 - 2 e_k^2 = 0
     ek_42 = [float(Fr(x)) for x in row_42['knots']]
     knot_ts = [0.0, 2.0]
     for ev in ek_42:
@@ -227,13 +264,10 @@ def main():
         wts = half * gw * np.exp(-ts)
         V = 0.5 * ts * ((ts - 2.0) ** 2)
         r = np.sqrt(V)
-        # On q = z(t - 2)/sqrt(2): d_z q = (2t - 2)/sqrt(2) = sqrt(2)(t-1), F = z^2/sqrt(2) => c1 = 2(t-1)^2, c2 = t^2/2
         c1 = 2.0 * ((ts - 1.0) ** 2)
         c2 = 0.5 * (ts ** 2)
-        # qbar^2 a = (zbar^2 (t-2)^2 / 2) * (sqrt(2)(t-1) * z^2 / sqrt(2)) = t^2 (t-2)^2 (t-1) / 2 = V * t(t-1)
         rho = ts * (ts - 1.0)
         alpha2 = c1 * c2
-        # W = F * d_z F = (z^2/sqrt(2)) * (sqrt(2) z) = z^3 => w = t^3, qbar * Fbar * W = (zbar(t-2)/sqrt(2))*(zbar^2/sqrt(2))*z^3 = t^3(t-2)/2
         w = ts ** 3
         tbeta = 0.5 * (ts ** 3) * (ts - 2.0)
 
@@ -254,8 +288,8 @@ def main():
         eq_quad += float(wts @ r)
         erhs_quad += float(wts @ rhs)
 
-    assert np.max(np.abs(br_means)) < 1e-13, f'Quadrature Stein bracket nonzero: {br_means}'
-    assert eq_quad < erhs_quad <= bnd_42 + 1e-12
+    require(np.max(np.abs(br_means)) < 1e-13, f'Quadrature Stein bracket nonzero: {br_means}')
+    require(eq_quad < erhs_quad <= bnd_42 + 1e-12, 'Quadrature expectation order failed')
     print(f'[2/3] Wick monomial quadrature: max|E[Br_1..4]| = {np.max(np.abs(br_means)):.2e}; '
           f'E|q|={eq_quad:.6f} < E[RHS]={erhs_quad:.6f} <= B_row={bnd_42:.6f}', flush=True)
 
@@ -272,7 +306,6 @@ def main():
                     if not val.iszero():
                         t_np[a, b, c] = (float(val.re) + 1j * float(val.im)) * scale
 
-        # Locate covering row
         row_cov = None
         row_bnd = None
         for idx_rw, rw in enumerate(rows):
@@ -280,20 +313,24 @@ def main():
                 row_cov = rw
                 row_bnd = row_bounds[idx_rw]
                 break
-        assert row_cov is not None
+        require(row_cov is not None, f'No covering row for s={s_fr}')
 
         z_samp = (rng.standard_normal((N_mc, d)) + 1j * rng.standard_normal((N_mc, d))) / np.sqrt(2.0)
         _, r, V, c1, c2, rho, alpha2, w, tbeta = eval_tensor_mc(t_np, z_samp)
 
-        assert np.all(rho ** 2 <= alpha2 + 1e-12 * np.maximum(1.0, alpha2))
-        assert np.all(alpha2 <= c1 * c2 + 1e-12 * np.maximum(1.0, c1 * c2))
-        assert np.all(tbeta ** 2 <= V * c2 * w + 1e-12 * np.maximum(1.0, V * c2 * w))
+        require(bool(np.all(rho ** 2 <= alpha2 + 1e-12 * np.maximum(1.0, alpha2))), f'{name}: rho^2 <= alpha2')
+        require(bool(np.all(alpha2 <= c1 * c2 + 1e-12 * np.maximum(1.0, c1 * c2))), f'{name}: alpha2 <= c1*c2')
+        require(bool(np.all(tbeta ** 2 <= V * c2 * w + 1e-12 * np.maximum(1.0, V * c2 * w))), f'{name}: tbeta^2 <= V*c2*w')
 
         fn = eval_row_functions(row_cov, r)
         br1 = fn['G1'] - c2 * fn['phi1'] - rho * fn['Y1']
         br2 = fn['G2'] - 0.5 * c1 * fn['phi2'] - 0.5 * rho * fn['Y2']
         br3 = c2 * (c2 - 1.0) * fn['phi3'] - (c2 - 1.0) * fn['G3'] + (c2 - 1.0) * rho * fn['Y3'] + tbeta * fn['g3']
         br4 = alpha2 * fn['phi4'] - rho * fn['G4'] + c2 * rho * fn['Y4'] + tbeta * fn['g4']
+
+        for idx_b, br in enumerate((br1, br2, br3, br4), 1):
+            se = float(np.std(br) / np.sqrt(N_mc))
+            require(abs(float(np.mean(br))) <= 6.0 * se + 1e-12, f'{name}: Br_{idx_b} mean outside 6 SE')
 
         m00, m01, m11 = fn['m_ker']
         ker_pen = m00 * (c2 - 1.0) ** 2 + 2.0 * m01 * (c2 - 1.0) * (c1 - 2.0) + m11 * (c1 - 2.0) ** 2
@@ -302,10 +339,16 @@ def main():
                + br1 + br2 - br3 - br4 + fn['sig'] * V * rho
                + ker_pen + fn['mu_a'] * alpha2 + fn['mu_rho'] * rho ** 2 + fn['mu_w'] * w)
 
+        qform = eval_quad_form(fn, r, V, c1, c2, rho)
+        min_qf = float(np.min(qform))
+        require(min_qf > 0.0, f'{name}: z^T P(r) z <= 0 ({min_qf})')
         min_pt_gap = float(np.min(rhs - r))
-        assert min_pt_gap > 0.0, f'{name}: pointwise majorant failed ({min_pt_gap})'
-        print(f'   MC {name:<23s} (d={d:2d}, s={float(s_fr):5.2f}): min(RHS-|q|)={min_pt_gap:.2e} > 0 | '
-              f'E|q|={float(r.mean()):.5f} <= E[RHS]={float(rhs.mean()):.5f} <= B_row={row_bnd:.6f}', flush=True)
+        require(bool(np.all(rhs - r >= qform - 1e-11 * np.maximum(1.0, np.abs(rhs)))), f'{name}: RHS - |q| < z^T P z')
+        require(min_pt_gap > 0.0, f'{name}: pointwise majorant failed ({min_pt_gap})')
+        eq_m, erhs_m = float(r.mean()), float(rhs.mean())
+        require(eq_m < erhs_m <= row_bnd + 4.0 * float(np.std(rhs) / np.sqrt(N_mc)), f'{name}: MC expectation order')
+        print(f'   MC {name:<23s} (d={d:2d}, s={float(s_fr):5.2f}): min(z^T P z)={min_qf:.2e} > 0, min(RHS-|q|)={min_pt_gap:.2e} > 0 | '
+              f'E|q|={eq_m:.5f} < E[RHS]={erhs_m:.5f} <= B_row={row_bnd:.6f}', flush=True)
 
     print('[3/3] All 8 genuine cubic Monte Carlo pointwise & expectation checks PASS.')
 

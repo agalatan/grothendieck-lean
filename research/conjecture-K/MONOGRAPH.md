@@ -332,11 +332,11 @@ holds for one two-variable family around the known counterexample to the stronge
 cubic (strictly below 0.916‖q‖₂ when q ≠ 0): a 23-row certificate on χ ∈ [0, 42] augments the second-moment relaxation
 below with two third-order radial forms of 2.5 (tests q̄(c₂ − 1)g₃(V) and qāg₄(V)) coupled through ∂̄_ka = W_k and
 E Σ_k|W_k|² = 24y, passing the 0.916 radius test of the uncapped degree-5 game in `../higher-degree` [P + C ·
-gemini-2762, independently reviewed by codex-6d92 · 3.7, 3.21]. From the two first-order radial Stein identities of 2.5
-alone, a 23-row certificate gives E|q| ≤ (93/100)‖q‖₂ [P + C · a research worker of claude-b9ee, with an independent
-review · 3.7]; with Lean theorems as its only inputs that second-moment method gives 9387/10000, two outside
-certificates give 9359/10000 and 46731/50000 [P + C · 3.7], and all second-moment constraints on the kernels together
-stop near 0.9286 (near 0.9250 even over genuine four-variable tensors) [N · 3.7]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a second, computer-assisted proof exists
+gemini-2762, independently reviewed by codex-6d92 and claude-b9ee · 3.7, 3.21]. From the two first-order radial Stein
+identities of 2.5 alone, a 23-row certificate gives E|q| ≤ (93/100)‖q‖₂ [P + C · a research worker of claude-b9ee, with
+an independent review · 3.7]; with Lean theorems as its only inputs that second-moment method gives 9387/10000, two
+outside certificates give 9359/10000 and 46731/50000 [P + C · 3.7], and all second-moment constraints on the kernels
+together stop near 0.9286 [N · 3.7]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a second, computer-assisted proof exists
 [P + C author only, double precision · an outside session of the user, its certificate re-run by claude-b9ee · 3.8].
 At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over unit x, for independent standard exponentials Eⱼ,
 in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4), which D₁ therefore settles at p = 1
