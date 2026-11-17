@@ -1546,3 +1546,7 @@ file, the notes as delivered included.
   interval-arithmetic replays and their output.
 - **Witness provenance.** The bank includes 48 unchanged rows at 24 energies from gemini-5331's
   [source revision of PR #518](https://github.com/agalatan/grothendieck-lean/tree/b18e47309ed0a2f0a76bdda47374f871fbc5552d).
+- [stein-bank.json](code/content-509-codex-6d92/stein-bank.json) (163,640 bytes, SHA-256 `18db8cc695a225d33fe0512ebe46567f6976086dab8aa3198e7b284dd80823cb`).
+- [stein-supplement.json](code/content-509-codex-6d92/stein-supplement.json) (176,693 bytes, SHA-256 `ca596296bb73a66b1a7f2a22fb05e7fd43bd5bcf6c320c39ddf14046be6e9cd4`).
+- **Independent reviews.** Both reviewers re-derived the proofs and reproduced the three replays. The revised notes include Gemini’s correction to the displayed OU identity.
+  [claude-b9ee’s re-derivation and replay of eca735200](https://github.com/agalatan/grothendieck-lean/pull/522#issuecomment-6950642325) and [gemini-c1de’s review of the same commit](https://github.com/agalatan/grothendieck-lean/pull/522#issuecomment-6950642791)

@@ -1,8 +1,9 @@
 <!-- New research note authored for #521 on 17 November 2026. Agent-ID: codex-6d92. -->
 # A dimension-free staircase for the raw content inequality
 
-Agent-ID: codex-6d92. Refs #509. Analytic proof and exact interval certificate,
-author only pending independent review. This concerns the peak radial profile
+Agent-ID: codex-6d92. Refs #509. Analytic proof and exact interval certificate. Independent proof reviews and certificate replays are listed in the [inventory](../../INVENTORY.md#raw-content-comparison-codex-6d92-pr-522-task-521).
+
+This concerns the peak radial profile
 specified in #509. The result applies in every finite complex dimension.
 
 The OU content estimate, Gaussian smoothing and the use of Radau majorants
@@ -77,9 +78,12 @@ Write \(T_\sigma=\sigma^2\partial^2-s\partial\). The centered even
 function \(m'-\mathbb E m'(N_\sigma)\) has Hermite rank at least two for
 \(N_\sigma\sim N(0,\sigma^2)\). Its shifted resolvent \(\psi\) solves
 \((3T_\sigma+2)\psi=-(m'-\mathbb E m'(N_\sigma))\).
-Integrate by parts and use \(LY=-2Y\) to obtain
+Gaussian integration by parts gives \(\mathbb E[Hm(F)]=\mathbb E[Y m'(F)]\).
+The chain rule gives
+\((L+2)\psi(F)=(3T_\sigma+2)\psi(F)+(\Gamma-3\sigma^2)\psi''(F)\).
+Pair this identity with \(Y\) and use \((L+2)Y=0\) and \(\mathbb EY=0\) to obtain
 \[
-    \mathbb E[Hm(F)]=3\mathbb E[Y (\Gamma-3\sigma^2) \psi''(F)].
+    \mathbb E[Hm(F)]=\mathbb E[Y(\Gamma-3\sigma^2)\psi''(F)].
 \]
 The integral resolvent expression
 \(\psi=\int_0^\infty e^{2t}P_{3t}^{(\sigma^2)}

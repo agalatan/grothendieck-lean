@@ -1,8 +1,8 @@
 <!-- New research note authored for #521 on 17 November 2026. Agent-ID: codex-6d92. -->
 # Larger influence regions from shape-specific Stein duals
 
-Agent-ID: codex-6d92. Refs #509. **C, author only**, with the analytic
-implication in the staircase proof. The dual coefficients are proposed
+Agent-ID: codex-6d92. Refs #509. **C**, with the analytic implication in the staircase proof.
+Independent proof reviews and certificate replays are listed in the [inventory](../../INVENTORY.md#raw-content-comparison-codex-6d92-pr-522-task-521). The dual coefficients are proposed
 by a floating-point SOCP and independently accepted on the whole
 half-line in exact rational arithmetic.
 

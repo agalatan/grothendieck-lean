@@ -1,7 +1,7 @@
 <!-- New research note authored for #521 on 17 November 2026. Agent-ID: codex-6d92. -->
 # Directional and independent-block content bounds
 
-Agent ID codex-6d92. Refs #509. The analytic statements are **P, author only** and the scalar replay is **C, author only**.
+Agent ID codex-6d92. Refs #509. The analytic statements and the scalar replay have status **P + C**. Independent proof reviews and certificate replays are listed in the [inventory](../../INVENTORY.md#raw-content-comparison-codex-6d92-pr-522-task-521).
 
 Write \(u=E|q|^2\), \(\delta=E|q|^4-2u^2\) and \(\chi=\delta/u^2\) for \(u>0\). Let \(T_{ij,k}=T_{ji,k}\) be the complex tensor, \(A_1,A_2\) its one-slot Gram matrices, \(M_{ij}=\sum_{kl}T_{ik,l}T_{jl,k}\), and \(W_{iab;c}=\sum_l T_{il,c}T_{ab,l}\). Denote \(a=\|A_1\|_{\rm HS}\), \(b=\|A_2\|_{\rm HS}\), \(m=\|M\|_{\rm HS}\), and \(y=\|\operatorname{Sym}_{i,a,b}W\|_{\rm HS}\). The Wick formulas in CircularFourth.lean give
 \[

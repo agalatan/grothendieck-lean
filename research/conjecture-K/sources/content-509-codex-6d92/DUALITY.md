@@ -1,7 +1,7 @@
 <!-- New research note authored for #521 on 17 November 2026. Agent-ID: codex-6d92. -->
 # A content term for the #512 dual
 
-Agent ID codex-6d92. Refs #509. The reduction below is **P, author only**.
+Agent ID codex-6d92. Refs #509. The reduction below has status **P**. Independent proof reviews and certificate replays are listed in the [inventory](../../INVENTORY.md#raw-content-comparison-codex-6d92-pr-522-task-521).
 
 Fix the physical energy \(u>0\), normalize \(Q=q/\sqrt u\), and write \(v=|Q|^2\), \(c_2=\sum|\bar\partial_jQ|^2\) and \(a=\sum(\partial_jQ)(\bar\partial_jQ)\), with \(c_1,\rho,\alpha_2,w\) in the normalization of #512. In particular \(\rho=\operatorname{Re}(\bar Q^2a)/v\) when \(v>0\), \(\rho=0\) at \(v=0\), and \(\alpha_2=|a|^2\). Put \(h(v)=g(uv)\).
 

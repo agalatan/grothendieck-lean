@@ -7,7 +7,7 @@ At the peak profile $(a,b,\varepsilon)=(699/1250,179/1250,1891/2500)$, every rem
 $$
 C(q)^2\le \frac{6}{25}D(q).
 $$
-The allowance version follows from $S-\Lambda(q)\ge D(q)$. The analytical argument is **P, author only** and the scalar check is **C, author only**.
+The allowance version follows from $S-\Lambda(q)\ge D(q)$. The analytical argument and the scalar check have status **P + C**. Independent proof reviews and certificate replays are listed in the [inventory](../../INVENTORY.md#raw-content-comparison-codex-6d92-pr-522-task-521).
 
 ## 1. Large fourth excess forces a Wick direction
 
@@ -100,13 +100,50 @@ To justify the branch, for real \(h,y\),
 \]
 On \(h=-1/2\), this is at most \(-(a-b/2)^2/2<-1/9\). Consequently the number of roots of \(H(t)=s\) with \(\Re t>-1/2\) is locally constant throughout \(\Re s>-(a-b/2)^2/2\). Roots cannot escape to infinity on compact sets of \(s\) and none can cross the boundary line there. At \(s=0\) there is exactly one such root, \(t=0\), as the other two equal \(-a/b<-1/2\). The critical points \(-a/b\) and \(-a/(3b)\) are both left of the line as well. The unique root on the right therefore defines an analytic inverse everywhere on that half-plane. For real \(s\ge 0\), the hyperbolic expression in the checker gives this root by the identity \(\sinh(3x)=3\sinh x+4\sinh^3x\).
 
-Set \(d=1/3\) and \(e=1/7\). For the radial strip \(x=\xi+i\eta\), \(|\eta|\le d\), keep \(\theta\) real to get \(\Re s\ge \xi^2-d^2\). For the angular strip \(\theta=\phi+i\eta\), \(|\eta|\le e\), keep \(x=\xi\) real. Then \(\Re(\cos^2\theta)\ge-\sinh^2 e\) and \(|\cos\theta|\le\cosh e\). The check \(4\sinh^2e<d^2\) gives \(\Re s\ge\xi^2-d^2\) for \(r\le4\) there too. These shifts are used separately. In both cases \(H(\Re t)\ge\Re s\), by the displayed real-part formula and \(\Re t>-1/2\). On \(|\xi|\ge1\), put \(Y=|\xi|^{2/3}\). The inequality \((a+b)^2<1-d^2\) gives \(H(Y)\le\xi^2(a+b)^2<\xi^2-d^2\). On \(|\xi|\ge4\), \(2Y\ge5\), and the checked inequality \(8(a/5+b)^2<1-d^2/16\) gives \(H(2Y)\le8\xi^2(a/5+b)^2<\xi^2-d^2\). Since \(H\) is increasing on \([-1/2,\infty)\), this proves \(\Re t\ge Y\) and \(\Re t\ge2Y\) on the respective ranges. In particular the integral over \(\xi\) of \(e^{-\Re t}\) is at most \(2e^{1/2}+2\int_0^\infty e^{-\xi^{2/3}}d\xi=2e^{1/2}+3\sqrt\pi/2<8\).
+Set $d=1/3$ and $e=1/7$. For the radial strip $x=\xi+i\eta$, $|\eta|\le d$,
+keep $\theta$ real to get $\Re s\ge \xi^2-d^2$. For the angular strip
+$\theta=\phi+i\eta$, $|\eta|\le e$, keep $x=\xi$ real. Here
+$\Re(\cos^2\theta)\ge-\sinh^2 e$ and $|\cos\theta|\le\cosh e$. The check
+$4\sinh^2 e<d^2$ gives $\Re s\ge \xi^2-d^2$ for $r\le4$ in the angular strip.
+Use these shifts separately. In either strip, the real-part formula and
+$\Re t>-1/2$ imply $H(\Re t)\ge\Re s\ge\xi^2-d^2$.
 
-For the radial trapezoid of step \(h\), shift the Fourier transform contour to height \(d\) with the decaying sign for each nonzero frequency. The strip integral bound gives \(|\widehat F(k/h)|\le 8K_j e^{-2\pi d|k|/h}\) on the real-angle integrand, using Fourier convention \(e^{-2\pi i\omega x}\). Summing the nonzero Poisson terms bounds the error by \(16K_j/(e^{2\pi d/h}-1)\), before the common factor \(1/2\). For the angular trapezoid, first integrate in \(x\). The resulting function is analytic and \(\pi\)-periodic, with absolute bound \(8K_j\cosh(e)^{2j+2}\) on the angular strip. Shifting the Fourier coefficient for \(e^{2ik\theta}\) bounds it by \(8K_j\cosh(e)^{2j+2}e^{-2e|k|}\). The average over \(N\) angular nodes retains exactly the multiples of \(N\), so the angular error is \(16K_j\cosh(e)^{2j+2}/(e^{2eN}-1)\). The contour shifts are justified by the uniform integrable bound above. Lastly, the two radial tails of the discrete sum beyond \(x_0\ge 4\) are bounded by the decreasing integral
-\[
+For $|\xi|\ge1$, put $Y=|\xi|^{2/3}$. The checked inequality
+$(a+b)^2<1-d^2$ gives $H(Y)\le \xi^2(a+b)^2<\xi^2-d^2$.
+For $|\xi|\ge4$, we have $2Y\ge5$ and $8(a/5+b)^2<1-d^2/16$. Hence
+$$
+H(2Y)=8Y^3(a/(2Y)+b)^2\le 8\xi^2(a/5+b)^2<\xi^2-d^2 .
+$$
+Since $H$ is increasing on $[-1/2,\infty)$, these comparisons give
+$\Re t>Y$ when $|\xi|\ge1$ and $\Re t>2Y$ when $|\xi|\ge4$.
+In either strip, the integral over $\xi$ of $e^{-\Re t}$ is at most
+$$
+2e^{1/2}+2\int_0^\infty e^{-\xi^{2/3}}\,d\xi
+=2e^{1/2}+\frac{3\sqrt\pi}{2}<8.
+$$
+
+For the radial trapezoid of step $h$, shift the Fourier transform contour
+to height $d$ with the decaying sign for each nonzero frequency. With $\theta$
+real and Fourier convention $e^{-2\pi i\omega x}$, the strip integral bound gives
+$|\widehat F(k/h)|\le8K_j e^{-2\pi d|k|/h}$ for the radial integrand $F$.
+Summing over nonzero $k$ via Poisson summation bounds the radial error by
+$16K_j/(e^{2\pi d/h}-1)$, before the common factor $1/2$.
+
+For the angular trapezoid, first integrate in $x$. The resulting function is
+analytic and $\pi$-periodic, with absolute bound $8K_j\cosh(e)^{2j+2}$ on the
+angular strip. Shifting the contour for the coefficient of $e^{2ik\theta}$
+bounds its absolute value by $8K_j\cosh(e)^{2j+2}e^{-2e|k|}$. The average
+over $N$ equally spaced angular nodes retains exactly the multiples of $N$.
+Summing the nonzero retained coefficients bounds the angular error by
+$16K_j\cosh(e)^{2j+2}/(e^{2eN}-1)$. The uniform integrable bounds justify both
+contour shifts.
+
+The radial estimate $\Re t>2|x|^{2/3}$ for $|x|\ge4$ bounds the two tails of
+the discrete radial sum beyond $x_0\ge4$ by the decreasing integral
+$$
 2K_j\int_{x_0}^\infty e^{-2x^{2/3}}dx
 \le \frac32K_j(Y_0+1/2)e^{-2Y_0},\qquad Y_0=x_0^{2/3}.
-\]
+$$
 Here the substitution \(Y=x^{2/3}\) and \(\sqrt Y\le Y\) on the tail give the last bound. The code adds these three errors and includes the factor \(1/2\), using \(h=1/12,\ x_0=64,\ N=100\).
 
 On each compact radius interval \([r_0,r_1]\subset[0,4]\), complete monotonicity of \(-g\) gives the upper bound \(g(r_1)+2r_1g'(r_0)\). For \(r\ge4\), use \((2x-1)e^{-x}\le (5/2)e^{-7/5}e^{-x/5}\), which follows by maximizing \((2x-1)e^{-4x/5}\) at \(x=7/4\). Apply it with \(x=r\lambda\) to each atom of \(-g(r)=\int e^{-r\lambda}\,d\nu_A(\lambda)\). The bound on the tail is \((5/2)e^{-7/5}[-g(4/5)]\). The checker compares this and all compact cells with \(0.17\).
