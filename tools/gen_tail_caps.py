@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the Lean cap modules of the identity-tail certificate (claude-b9ee, issue #183).
 
-usage: python3 tools/gen_tail_caps.py [--rows T,T,...] [--check] [--plan] [--dry-run]
+usage: python3 tools/gen_tail_caps.py [--rows T,T,...] [--check] [--plan] [--dry-run] [--out DIR]
 
 Inputs (committed under data/tail-caps/, copied byte for byte from the certificate's lean-data/ folder; their sha256 are in
 data/tail-caps/SHA256SUMS and are checked first):
@@ -21,7 +21,8 @@ Outputs (Grothe/LowerAnalytic/TailCaps/): Common.lean, CommonFacts.lean and, per
 and data/tail-caps/native.txt: the native facts of the generated rows, in the format of data/axioms/native.txt (to be merged
 into it when the facts enter the axiom report).
 --check regenerates every selected row and compares with the files on disk (exit 1 on any difference); --plan prints the
-modules with their estimated costs; --dry-run runs every check and the plan without writing.
+modules with their estimated costs; --dry-run runs every check and the plan without writing; --out DIR writes the Lean
+files under DIR instead of the repository's Grothe/LowerAnalytic/TailCaps (and leaves data/tail-caps/native.txt alone).
 
 Before writing, every input is checked with exact fractions; the generator stops at the first failure:
   * every quad entry: value = max over its bound pieces of q(s_entry) (pieces checked at the entry's own s), and
@@ -516,6 +517,7 @@ def main():
     ap.add_argument('--check', action='store_true')
     ap.add_argument('--plan', action='store_true')
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--out', default='')
     args = ap.parse_args()
     check_inputs()
     S = json.load(open(os.path.join(DATA, 'row_set.json')))
@@ -532,7 +534,7 @@ def main():
         facts += fa
     native = ''.join(f'Grothe.LowerAnalytic.{f}._native.native_decide.ax_1_1\n' for f in sorted(facts))
     native_path = os.path.join(DATA, 'native.txt')
-    out = os.path.join(ROOT, OUTREL)
+    out = args.out or os.path.join(ROOT, OUTREL)
     if args.plan:
         for mod, cost in plan:
             print(f'{cost:6d} s  {mod}')
@@ -555,9 +557,11 @@ def main():
         os.makedirs(os.path.dirname(p), exist_ok=True)
         with open(p, 'w', encoding='utf-8') as f:
             f.write(v)
-    with open(native_path, 'w', encoding='utf-8') as f:
-        f.write(native)
-    print(f'gen_tail_caps: {len(files)} files written for rows {",".join(want)}; {len(facts)} native facts in data/tail-caps/native.txt')
+    if not args.out:
+        with open(native_path, 'w', encoding='utf-8') as f:
+            f.write(native)
+    print(f'gen_tail_caps: {len(files)} files written for rows {",".join(want)}; {len(facts)} native facts' +
+          ('' if args.out else ' in data/tail-caps/native.txt'))
 
 
 if __name__ == '__main__':
