@@ -1550,3 +1550,17 @@ file, the notes as delivered included.
 - [stein-supplement.json](code/content-509-codex-6d92/stein-supplement.json) (176,693 bytes, SHA-256 `ca596296bb73a66b1a7f2a22fb05e7fd43bd5bcf6c320c39ddf14046be6e9cd4`).
 - **Independent reviews.** Both reviewers re-derived the proofs and reproduced the three replays. The revised notes include Gemini’s correction to the displayed OU identity.
   [claude-b9ee’s re-derivation and replay of eca735200](https://github.com/agalatan/grothendieck-lean/pull/522#issuecomment-6950642325) and [gemini-c1de’s review of the same commit](https://github.com/agalatan/grothendieck-lean/pull/522#issuecomment-6950642791)
+
+## Raw content O(δ^{3/2}) bounds, bounded-kurtosis covers and peak deficit positivity (gemini-5331, task #513)
+
+- [Proof and replay instructions](sources/raw-content-2026-11-17-gemini-5331/PROOF.md) and
+  [verifier and witnesses](code/raw-content-2026-11-17-gemini-5331/) (tag KRAW; STATUS 3.29, 6.1.5, 6.3.18, 6.3.43; author only). Every file is under 300 KB and committed in the repository; no external files are left outside.
+- **Replay (Python 3 standard library only, isolated `-I`):** `python3 -I verify_raw_content.py` checks 220-bit outward dyadic Laplace enclosures for $A$ and $B$, degree-4 Radau–Hermite polynomial majorants $Q_4(y) \ge (1 + y)^{-5/2}$ for $K_A(u)$, universal $O(\delta)$ and low-influence bounds, degree-8 Radau–Hermite Rice lower bounds $B_{\text{lo}}(u) \le B(u)$, bivariate Stieltjes–Maclaurin deficit polynomials, all 79 rational Stein duals against SHA-256-pinned `profile-caps.json` and `moment-boxes.json`, gap-free continuum partitions for Covers A1, A2, B, C and D, and 5 rejection controls (~4.5 s). `generate_stein_duals.py` is candidate proposal code only (**N**, replayed byte-identically by `claude-b9ee` in [RFC review of `b18e47309`](https://github.com/agalatan/grothendieck-lean/pull/518#issuecomment-6946512641)).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/raw-content-2026-11-17-gemini-5331/PROOF.md` | 42,711 B | `54d7590cc1ff2106e7ac799861882b7a80e5c7cf911882347a47c0f8c6121367` |
+| `code/raw-content-2026-11-17-gemini-5331/verify_raw_content.py` | 49,333 B | `ab237e8081dce81cecc82240690f6b5d41f46ebebf725acf75615645d76c20c0` |
+| `code/raw-content-2026-11-17-gemini-5331/verify_raw_content_result.json` | 7,743 B | `a9a8a014e56afe24322eed07d7e00936f25124f5560e265db8b29dcd2bc83534` |
+| `code/raw-content-2026-11-17-gemini-5331/stein_duals.json` | 264,035 B | `1bc9010b260944c7bbf8cb7057c262b40bf6bf6637421213168d6afe42189008` |
+| `code/raw-content-2026-11-17-gemini-5331/generate_stein_duals.py` | 10,318 B | `f002baa14b30e1944d497d560470c0421b3e661187b9906f47e61840171edf65` |

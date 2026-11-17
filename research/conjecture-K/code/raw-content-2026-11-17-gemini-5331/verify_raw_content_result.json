@@ -1,0 +1,294 @@
+{
+  "agent_id": "gemini-5331",
+  "issue": "#513 (part of #509, #177)",
+  "status": "PASS",
+  "arithmetic": "100% pure-Python standard library Fraction + 220-bit outward dyadic Interval + exact Bernstein",
+  "upstream_sha256": {
+    "profile-caps.json": "01c2e2a7b4af452ce8729ec47cb0cd2c3aa7e1368c6b58336270c2a19b349514",
+    "moment-boxes.json": "cef37c2a66eacd66296add7ed2efc5a8d6afc336d2ed614102de08429d449695"
+  },
+  "stein_duals_sha256": "1bc9010b260944c7bbf8cb7057c262b40bf6bf6637421213168d6afe42189008",
+  "row_constants": {
+    "peak": {
+      "M0_A": [
+        "0.835135932614129",
+        "0.835135932614130"
+      ],
+      "M1_A": [
+        "2.159180864970276",
+        "2.159180864970277"
+      ],
+      "M0_B": [
+        "0.422028097139578",
+        "0.422028097139579"
+      ],
+      "M1_B": [
+        "1.032202342636649",
+        "1.032202342636650"
+      ],
+      "K_A0": [
+        "8.564754800975330",
+        "8.564754800975331"
+      ],
+      "K_A0_certified_upper": "5353/625",
+      "K_B0": [
+        "1.957341342937411",
+        "1.957341342937412"
+      ],
+      "K_B0_certified_upper": "9801/5000",
+      "K_A_minus_sqrt2_B0": [
+        "0.898712582399415",
+        "0.898712582399416"
+      ],
+      "gamma_univ_A": [
+        "0.462965828107072",
+        "0.462965828107073"
+      ],
+      "gamma_univ_A_certified_upper": "58/125"
+    },
+    "flank": {
+      "M0_A": [
+        "0.834219312255545",
+        "0.834219312255546"
+      ],
+      "M1_A": [
+        "2.155783240349229",
+        "2.155783240349230"
+      ],
+      "M0_B": [
+        "0.419305326658911",
+        "0.419305326658912"
+      ],
+      "M1_B": [
+        "1.023250889123476",
+        "1.023250889123477"
+      ],
+      "K_A0": [
+        "8.537821507023552",
+        "8.537821507023553"
+      ],
+      "K_A0_certified_upper": "427/50",
+      "K_B0": [
+        "1.923539681395188",
+        "1.923539681395189"
+      ],
+      "K_B0_certified_upper": "77/40",
+      "K_A_minus_sqrt2_B0": [
+        "0.922671257237126",
+        "0.922671257237127"
+      ],
+      "gamma_univ_A": [
+        "0.460325972661551",
+        "0.460325972661552"
+      ],
+      "gamma_univ_A_certified_upper": "58/125"
+    },
+    "upper": {
+      "M0_A": [
+        "0.815437685021030",
+        "0.815437685021031"
+      ],
+      "M1_A": [
+        "2.015418576857009",
+        "2.015418576857010"
+      ],
+      "M0_B": [
+        "0.408640551146144",
+        "0.408640551146145"
+      ],
+      "M1_B": [
+        "0.952822872169293",
+        "0.952822872169294"
+      ],
+      "K_A0": [
+        "7.462208908441006",
+        "7.462208908441007"
+      ],
+      "K_A0_certified_upper": "1493/200",
+      "K_B0": [
+        "1.667866308816736",
+        "1.667866308816737"
+      ],
+      "K_B0_certified_upper": "167/100",
+      "K_A_minus_sqrt2_B0": [
+        "0.819578202265962",
+        "0.819578202265963"
+      ],
+      "gamma_univ_A": [
+        "0.419951464043159",
+        "0.419951464043160"
+      ],
+      "gamma_univ_A_certified_upper": "21/50"
+    }
+  },
+  "peak_smoothed_K_A": [
+    {
+      "u_min": "0",
+      "radau_bound_enclosure": [
+        "8.564754800975330",
+        "8.564754800975331"
+      ],
+      "note": "encloses exact K_A(0)",
+      "certified_upper": "5353/625"
+    },
+    {
+      "u_min": "1/100",
+      "radau_bound_enclosure": [
+        "7.153589673218030",
+        "7.153589673218031"
+      ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
+      "certified_upper": "3577/500"
+    },
+    {
+      "u_min": "1/50",
+      "radau_bound_enclosure": [
+        "6.116744353333771",
+        "6.116744353333772"
+      ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
+      "certified_upper": "6117/1000"
+    },
+    {
+      "u_min": "3/100",
+      "radau_bound_enclosure": [
+        "5.322698405887722",
+        "5.322698405887723"
+      ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
+      "certified_upper": "5323/1000"
+    },
+    {
+      "u_min": "7/200",
+      "radau_bound_enclosure": [
+        "4.994600993636170",
+        "4.994600993636171"
+      ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
+      "certified_upper": "5"
+    },
+    {
+      "u_min": "1/25",
+      "radau_bound_enclosure": [
+        "4.707387969041720",
+        "4.707387969041721"
+      ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
+      "certified_upper": "471/100"
+    },
+    {
+      "u_min": "11/250",
+      "radau_bound_enclosure": [
+        "4.492244102093882",
+        "4.492244102093883"
+      ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
+      "certified_upper": "9/2"
+    }
+  ],
+  "peak_low_influence_C_inf": [
+    "5.065170797456077",
+    "5.065170797456078"
+  ],
+  "peak_low_influence_certified_upper": "507/100",
+  "peak_low_influence_raw_core_tau_threshold": "1/455",
+  "peak_low_influence_implied_chi_max": "10/91",
+  "covers_and_corollaries": {
+    "minus_v2_at_zero_enclosure": [
+      "1.672596014280266",
+      "1.672596014280267"
+    ],
+    "v2_at_zero_certified_upper": "1673/1000",
+    "zero_dual_raw_core_chi_max": "9/100",
+    "zero_dual_raw_core_margin": "200428660081/50000000000000000",
+    "pure_python_S_lower_at_v0_floor15": "1.373953503240499",
+    "cover_A1_raw_core_full_band": {
+      "domain_u": [
+        "0",
+        "463/10000"
+      ],
+      "domain_chi": [
+        "0",
+        "1/4"
+      ],
+      "box_count": 101,
+      "strict_margin_floor15": "0.000000266568403"
+    },
+    "cover_A2_raw_core_u_le_002": {
+      "domain_u": [
+        "0",
+        "1/50"
+      ],
+      "domain_chi": [
+        "0",
+        "49/25"
+      ],
+      "box_count": 4,
+      "strict_margin_floor15": "0.000066201000296"
+    },
+    "cover_B_signed_deficit_1e6": {
+      "claim": "C_A(q)^2 <= (6/25) D(q) + 1/1000000 (signed D)",
+      "domain_u": [
+        "0",
+        "463/10000"
+      ],
+      "domain_chi": [
+        "0",
+        "841/10000"
+      ],
+      "box_count": 55,
+      "min_stein_margin_floor15": "0.000000174045811"
+    },
+    "cover_C_exact_deficit_zero_slack": {
+      "claim": "C_A(q)^2 <= (6/25) D(q) (exact zero slack)",
+      "analytic_near_gaussian": "(0, 463/10000] x [0, 1/10000] via 3.19",
+      "analytic_low_energy_all_shapes": "[0, 1/4000] x [0, 42] via 3.19",
+      "maclaurin_domain_u": [
+        "1/4000",
+        "3/250"
+      ],
+      "maclaurin_domain_chi": [
+        "1/64",
+        "49/625"
+      ],
+      "maclaurin_box_count": 1,
+      "stein_domain_u": [
+        "3/250",
+        "463/10000"
+      ],
+      "stein_domain_chi": [
+        "49/10000",
+        "49/625"
+      ],
+      "stein_box_count": 54,
+      "min_stein_margin_floor15": "0.000000074213627"
+    },
+    "cover_D_strict_deficit_positivity": {
+      "claim": "D(q) > 0 (strict peak remote deficit positivity)",
+      "analytic_complement_319": "(0, 463/10000] x (0, 1/5000] and (0, 1/4000] x (0, 42] via 3.19",
+      "maclaurin_domain_u": [
+        "1/4000",
+        "3/250"
+      ],
+      "maclaurin_domain_chi": [
+        "1/64",
+        "49/100"
+      ],
+      "maclaurin_box_count": 1,
+      "maclaurin_min_margin_floor15": "0.000000000812386",
+      "stein_domain_u": [
+        "3/250",
+        "463/10000"
+      ],
+      "stein_domain_chi": [
+        "49/10000",
+        "49/100"
+      ],
+      "stein_box_count": 74,
+      "min_stein_margin_floor15": "0.000000214115522"
+    },
+    "stein_duals_verified": 79
+  },
+  "negative_controls_passed": 5,
+  "elapsed_seconds": 4.752
+}
