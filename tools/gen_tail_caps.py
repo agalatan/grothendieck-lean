@@ -18,6 +18,8 @@ Outputs (Grothe/LowerAnalytic/TailCaps/): Common.lean, CommonFacts.lean and, per
   RowKK/R<iii>_<J>.lean its piece facts (pieceRangeOKNu), one grid per module
   RowKK/N<iii>.lean    its cap (nodeCapNu_of_ranges)
   RowKK/Assembly.lean  the row's vertex caps, chord fact, PSD fact and node caps (tailCapsKK)
+  RowKK/Bridge.lean    the row of the caps and the row of the Stein side (`tailSteinRowKK`, Grothe/Lower/TailRows, written by
+                       `gen_lower_data.py --tail`) have the same constants and node table (`rfl`)
 and data/tail-caps/native.txt: the native facts of the generated rows, in the format of data/axioms/native.txt (to be merged
 into it when the facts enter the axiom report).
 --check regenerates every selected row and compares with the files on disk (exit 1 on any difference); --plan prints the
@@ -508,6 +510,21 @@ end Grothe.LowerAnalytic
 '''
     plan.append((f'{pre}.Assembly', 5))
     facts.append(f'tailChordsOK{K}')
+    fields = ['ell', 'beta', 'delta', 'kappa', 'smax', 'E', 'b1', 'b2', 'b3', 'nodes']
+    files['Bridge.lean'] = (f'''import {pre}.Data
+import Grothe.Lower.TailRows.Row{K}
+
+/-! # Row {row.K} (`t = {row.t}`): the row of the caps is the row of the Stein side {HEADER}
+
+The cap data `tailRow{K}` and the Stein row `tailSteinRow{K}` (`gen_lower_data.py --tail`) are written from the same constants
+and the same cap table; their common fields agree by `rfl`. -/
+
+namespace Grothe.LowerAnalytic
+
+theorem tailBridge{K} :
+    ''' + ' ∧\n      '.join(f'Grothe.Lower.tailSteinRow{K}.{fl} = tailRow{K}.{fl}' for fl in fields) +
+        ' :=\n  ⟨' + ', '.join('rfl' for _ in fields) + '⟩\n\nend Grothe.LowerAnalytic\n')
+    plan.append((f'{pre}.Bridge', 2))
     return {f'Row{K}/{k}': v for k, v in files.items()}, plan, facts
 
 
