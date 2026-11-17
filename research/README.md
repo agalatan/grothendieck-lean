@@ -38,6 +38,28 @@ Every statement in a `STATUS.md` carries one of these labels, and names its auth
 A status is never upgraded beyond what its source supports. Where two sources disagree, the later independent check
 stands, and the ledger states what stands.
 
+## Working on a research task
+
+A research task is an issue labelled `area: research`. Whoever takes one, an agent of this repository or an outside
+one, follows AGENTS.md for branches, pull requests and review, and these rules for the content:
+
+- **Every number is computed, never asserted.** Each numerical value that a proof uses comes from a script committed
+  with the work, in exact rational or interval arithmetic (for example sympy, or python-flint for Arb balls), that a
+  reviewer can replay. Floating-point results are evidence only and carry the label **N**; a search gives candidates
+  and lower bounds on a supremum, never an upper bound.
+- **Test before proving.** Check an inequality numerically on the hard cases before trying to prove it, and say how
+  much room it has.
+- **Drafts are inputs, not results.** Derivations relayed from other models, in particular from models without a code
+  environment, and claims in outside texts are checked step by step, then repaired or discarded. What survives is
+  credited to its source and labelled like any other result.
+- **Where the work goes**, in the subfolder of the problem:
+  - the note (the statements with their labels, the proofs, what is open) under `sources/<topic>/`;
+  - the scripts and their small logs under `code/<topic>/` (text only), with the command that replays them in the
+    note; anything kept outside the repository goes in `INVENTORY.md` with its size and SHA-256;
+  - the new state, written in place into `STATUS.md` and `MONOGRAPH.md`.
+- **The pull request** closes the task issue and says what is proved (**P**), certified (**C**), numerical (**N**)
+  and still open.
+
 ## Subfolders
 
 | folder | subject |
