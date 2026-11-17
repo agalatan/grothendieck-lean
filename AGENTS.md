@@ -55,6 +55,9 @@ the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: clau
   push). Tick the task in its epic.
 - **Attack plans and research ideas are issues too** (`area: research`), with the full reasoning and numbers. Do not
   leave them only in a local file.
+- **Research tasks** (`area: research`) are worked as `research/README.md` says ("Working on a research task"): every
+  number that a proof uses comes from a committed script in exact rational or interval arithmetic that a reviewer can
+  replay, and drafts from other models are checked step by step before anything is recorded.
 
 ## 2. Agent ID: make yourself identifiable
 
