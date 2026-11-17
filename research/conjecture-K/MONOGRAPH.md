@@ -301,7 +301,10 @@ the following dimension-uniform signed regions:
 | 0≤u≤1/4000, every cubic shape | D(q)≥9δ/50 |
 
 These constants and regions are **P** [codex-a7c4, re-derived by claude-b9ee and a review worker, with exact
-whole-interval Bernstein and rational checks · 3.19]. General χ at larger energies is outside these signed estimates.
+whole-interval Bernstein and rational checks · 3.19]. Complementing them away from the diffuse limit, exact rational
+verification of 79 Stein duals and a bivariate Stieltjes–Maclaurin deficit polynomial proves strict positivity D(q) > 0
+at the peak on [1/4000, 3/250] × [1/64, 49/100] and [3/250, 0.0463] × [49/10000, 49/100], leaving only the narrow
+near-Gaussian sliver above χ = 1/5000 and high kurtosis χ > 49/100 [P + C, author only · gemini-5331 · 3.29].
 
 For 0.03≤u≤0.0463 and χ≤10⁻⁴, the content coefficient 3/80 of 2.6 gives
 ‖c₍₃/₅₎(q)‖²≤0.3D(q), without additive error. With k=59009/189100, the global tilted
@@ -451,7 +454,9 @@ rectangle**
     R = {w < 0.01125, 0.00551 + 0.319w < u ≤ 0.0463}
 
 (with the proved regions alone, {w < 0.0206, 0.00558 + 0.31907w < u ≤ 0.0463}). The upper end u ≤ 0.0463 is the
-response bound on the remote energy (2.10). Its near-Gaussian part δ/u² ≤ 0.05 has no proof [open · 6.1.5].
+response bound on the remote energy (2.10). For a remote Gaussian linear form r with w ≤ 0.0113, its bounded-kurtosis
+strip χ = δ/u² ≤ 0.2809 across the band (including χ ≤ 0.05; χ ≤ 9/100 directly from the remote cap, χ ≤ 1/4 in stdlib,
+all χ on u ≤ 0.00815, and τ_max ≤ 0.054) satisfies Λ < S + 10⁻⁴ [P + C · 6.3.40; P + C, author only · gemini-5331 · 6.1.5, 6.3.43].
 
 ### 2.5 The A-sector of K: cost and content (L4)
 
@@ -499,10 +504,23 @@ A, p = E|P|² [P + C · 6.3.1]. The self-interaction family has a deficit identi
 [P · 6.3.7]. The families do not add up: the cross terms between shells survive phase averaging
 (q = X̄Y² + (|X|² − 1)Y has energy 3 and E[X̄q|q|²] = 6) [P + C · 6.3.8].
 
+**Bounded kurtosis and universal O(δ^{3/2}) bounds.** By the positive Laplace-atom representation of the scalar
+responses m_A and m_B, both attain their global third-derivative suprema uniquely at 0, giving
+‖c_A(q)‖² ≤ (3√6/4)g′(0)²·δ^{3/2} (< 5353/625·δ^{3/2} at the peak; ‖c_B(q)‖² < 9801/5000·δ^{3/2}; exponent 3/2 sharp,
+3√6/4 ≈ 1.8371 matching the universal leading-tensor coefficient of 6.3.12, where the Hermitian one-driver class has
+absolute coefficient ≤ 0.481, ratio ≈ 0.262) at every energy and dimension, lowered to < 9/2·δ^{3/2} for u ≥ 0.044 by 1-D
+Ornstein–Uhlenbeck smoothing (sharpened by √(13/15) in 6.3.42), together with ‖c_A(q)‖² ≤ [32/(225πa⁴)]·δ (< 58/125·δ
+at the peak). Combined with the Edgeworth bounds of 2.1, spectral Stein duals and Stieltjes–Maclaurin deficit envelopes,
+this gives signed C(q)² ≤ (6/25)D(q) + 10⁻⁶ on [0, 0.0463] × [0, 841/10000] and exact zero-slack C(q)² ≤ (6/25)D(q) on
+(0, 0.0463] × [0, 10⁻⁴], on [0, 1/4000] × [0, 42], on [1/4000, 3/250] × [1/64, 49/625] and on
+[3/250, 0.0463] × [49/10000, 49/625] (leaving only the near-Gaussian sliver above 10⁻⁴ uncertified below 49/625 for the
+zero-slack form) [P + C, author only · gemini-5331 · 6.3.43].
+
 **Open in L4:** the self-interaction family with non-Hermitian P and Wick share between 1/16 and 4/5, where an
 envelope giving 0.22 is true on grids [N · 6.3.13]; the small-Wick strip [6.3.14]; the same family for u < 0.03 with
 large P [6.3.15]; the mixed one-driver shells X̄B(Y), (|X|² − 1)V(Y), X²W̄(Y), R₀(Y) [6.3.16]; several
-self-interacting drivers [6.3.17]; and the **raw content inequality for an arbitrary cubic on R** [open · 6.3.18].
+self-interacting drivers [6.3.17]; and the **raw content inequality for an arbitrary intermediate-kurtosis cubic on R**
+[open · 6.3.18].
 
 **What a proof must use.** At the peak, Q = √u₀·X·exp(2πi·F₂(|X|²)) with F₂(r) = 1 − (r + 1)e^{−r} and
 u₀ = 403448/10⁷ has exactly the law of √u₀·W, is orthogonal to the whole remote first chaos and has the matched
@@ -574,7 +592,10 @@ has ‖c₂ − u‖² = ‖J₁‖²_HS + ‖I₂‖²_HS, and the largest eige
 (λ₁, λ₂) = (2u, u) at every χ between 10 and 42, so no bound on the influences in terms of (u, χ) improves this where
 the degree-5 certificate needs it (binding cells at χ = 16 and 30). The loss there is the misalignment of the shadows
 with the influence directions: at X²Ȳ (χ = 10) the content vanishes while every factor of the bound stays of order one
-[P, N · 6.3.33, item 98].
+[P, N · 6.3.33, item 98]. For the raw A-profile, bounding the two shadows linearly in V = |q|² via its Laplace measure
+gives C(q)² ≤ C_inf(a)·u²·τ_max(q), τ_max(q) = max(λ₁/(2u), λ₂/u) (C_inf < 507/100 at the peak); since every cubic
+satisfies χ ≤ 42τ_max(q) [P + C · 6.3.42] (and ≤ 50τ_max(q) directly [6.3.43]), τ_max(q) ≤ 1/455 closes the raw A-core
+without Stein duals, and adding Stein duals extends the weak form to τ_max(q) ≤ 0.054 [P + C · 6.3.40; P + C, author only · 6.3.43].
 
 ### 2.6 The A-sector of the retained functional: the tilted lemma
 
@@ -1093,9 +1114,12 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    certificate. With such an m the A + B gain is a quadratic form in the contents at every amplitude, as step 2 of 2.6
    is for the tilted A-sector. *Gives:* the A + B core of K from content bounds.
 6. **The raw L4 content inequality** for general cubics on 0.00551 ≤ u ≤ 0.0463, with the constant fixed by item 5
-   (0.10 under the adverse joint hypothesis). Pieces: the mixed shells, several self-interacting drivers, the
-   envelopes on the self-interaction family. A candidate method is that of step 3 of 2.6: energy-dependent
-   δ-coefficients against moment caps and Stein duals in (u, χ). By the local representation of 2.5, the content and
+   (0.10 under the adverse joint hypothesis). For the A-only constant 6/25, the staircase and small-influence class
+   (χ ≤ 0.2809 across the band, τ_max ≤ 0.054), high excess χ ≥ 40.32, and independent blocks are covered (2.5 ·
+   6.3.40–6.3.42), together with bounded kurtosis against D (signed +10⁻⁶ on χ ≤ 841/10000, exact zero-slack on
+   χ ≤ 49/625 outside the near-Gaussian sliver above 10⁻⁴; 2.5 · 6.3.43, author only). Open pieces at intermediate/high
+   kurtosis: the mixed shells, several self-interacting drivers, the envelopes on the self-interaction family. By the
+   local representation of 2.5, the content and
    the excess D − 𝒥_dec of the deficit over that of the decoupled surrogate (2.1) are linear in one pair of fields, so
    the target can be put as C² ≤ κ·(D − 𝒥_dec). Cauchy–Schwarz on either Stein pair falls short of the needed
    constants (2.5; items 91, 93), so a proof must use the angles between the fields. Near cubics with a phase symmetry
@@ -1304,7 +1328,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 1.2–1.5 setting, budget | 2.1–2.5, 8.1–8.4, 12.1, 12.2 |
 | 1.6 retained functional | 2.10, 2.10a, 2.13, 2.14, 3.16, 3.17, 11.2–11.13 |
 | 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 |
-| 2.1 remote part | 3.1–3.28, 11.7–11.11, 12.8 |
+| 2.1 remote part | 3.1–3.29, 11.7–11.11, 12.8 |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.6, 6.3.19 |
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.60 |
