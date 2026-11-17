@@ -1,0 +1,25 @@
+rigorous pi bounds (Machin, exact rationals): 3.1415926535897932384626433832795028841971 <= pi <= 3.1415926535897932384626433832795028841971
+
+ n  parity  Q_n (b_n^2 = Q_n pi^(e-2))                         b_n (float)     b_n < sqrt(2/pi)   b_n < sqrt(17/25)
+ 2  even  3/4                                                     0.488602511903   PROVED            PROVED
+ 3  odd   1072/105                                                0.573822976788   PROVED            PROVED
+ 4  even  1275/1024                                               0.629549926724   PROVED            PROVED
+ 5  odd   4384/315                                                0.669969738609   PROVED            PROVED
+ 6  even  6321/4096                                               0.700870829449   PROVED            PROVED
+ 7  odd   94208/5775                                              0.725342439609   PROVED            PROVED
+ 8  even  114345/65536                                            0.745235762556   PROVED            PROVED
+ 9  odd   1134592/63063                                           0.761741709114   PROVED            PROVED
+10  even  495495/262144                                           0.775665974249   PROVED            PROVED
+11  odd   90963968/4729725                                        0.787575040434   PROVED            PROVED
+12  even  67108041/33554432                                       0.797879668297   PROVED            PROVED
+13  odd   72876032/3610035                                        0.806885374636   fails             PROVED
+14  even  279954675/134217728                                     0.814824322681   fails             PROVED
+15  odd   130728067072/6241750515                                 0.821876207010   fails             PROVED
+16  even  4627342863/2147483648                                   0.828182350069   fails             fails
+
+n = 12: b_12^2 = Q_12/pi with Q_12 = 67108041/33554432; sharp bound <=> Q_12 < 2 <=> 67108041 < 67108864 (margin ratio 1.226e-05)
+        equivalently 135135^2 * 382 / 231 = 30198618450 < 2 * 122880^2 = 30198988800
+monotonicity checked for 2 <= n < 30: a_{n+2}^2/a_n^2 = (n+3)^2/(n(n+6)) > 1 and (35n-38)/(n-1) = 35 - 3/(n-1) increasing
+
+CERTIFIED: harmonic cubics: E|F| < sqrt(2/pi) ||F||_2 for all n <= 12 (checked n = 11, 12; parity monotonicity),
+           E|F| < sqrt(17/25) ||F||_2 for all n <= 15 (checked n = 14, 15; every n <= 16 is listed above).
