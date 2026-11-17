@@ -598,6 +598,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.nodeCap_15x290
 #print axioms Grothe.LowerAnalytic.nodeCap_of_rangeOK
 #print axioms Grothe.LowerAnalytic.nodeCaps_of_vertexCaps
+#print axioms Grothe.LowerAnalytic.nodeCaps_of_vertexCapsNu
 #print axioms Grothe.LowerAnalytic.normQk_le_rho
 #print axioms Grothe.LowerAnalytic.norm_pairVal_witness
 #print axioms Grothe.LowerAnalytic.norm_sq_starProjection_H21_le
@@ -10040,7 +10041,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.tOf_le
 #print axioms Grothe.LowerAnalytic.tablesOK_mk
 #print axioms Grothe.LowerAnalytic.tailNodeCaps_nuHat
-#print axioms Grothe.LowerAnalytic.tailNodeCaps_of_vertexCaps
 #print axioms Grothe.LowerAnalytic.tauC_eq_sym
 #print axioms Grothe.LowerAnalytic.tenGa_le_half
 #print axioms Grothe.LowerAnalytic.tenH_eq_gram

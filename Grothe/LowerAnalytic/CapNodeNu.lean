@@ -7,8 +7,10 @@ import Grothe.LowerAnalytic.CapConstr
 
 For a tail `0 ≤ ν < 1` and tables that satisfy `TablesOK`:
 
-* `pot_le_of_nodeOKNu`: a passing node check `nodeOKNu` gives `Ψ_ν(s) − capPad ≤ c` for the fibre
-  potential of the row;
+* `pot_le_of_nodeOKNu`: a passing node check `nodeOKNu` at the weight `ε` of the rows gives
+  `Ψ_ν(s) − capPad ≤ c` for the fibre potential of the row (the checks take the weight as an
+  argument, `mMatE`, so that the facts of a certificate can be checked before `ε` is set to its
+  weight);
 * `Jpot_le_of_nodeOKcNu`: a passing constrained check `nodeOKcNu` gives `J(y, s) − capPad ≤ c` on
   the region of the constraints;
 * `pot_le_of_pieceBoundsNu`: constraint lists that pass the coverage check `capCoverOK`, with
@@ -25,15 +27,21 @@ open MeasureTheory Finset GrotheKernel Grothe.Lower Grothe.Upper
 
 namespace Grothe.LowerAnalytic
 
+/-- The matrix of the fibre form at the weight `ε` of the rows is `mMat`. -/
+lemma mMatE_eps (E : Grothe.Lower.Sym3) (R : Grothe.Lower.Sym2) : mMatE E R Grothe.Lower.ε = mMat E R := rfl
+
 noncomputable section
 
-/-- **Soundness of the node check with a tail**: `Ψ_ν(s) − capPad ≤ c`. -/
-theorem pot_le_of_nodeOKNu (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (nu : ℚ) (hν0 : 0 ≤ nu)
+/-- **Soundness of the node check with a tail**: `Ψ_ν(s) − capPad ≤ c`, for the check at the
+weight `eps = ε` of the rows. -/
+theorem pot_le_of_nodeOKNu {eps : ℚ} (heps : eps = Grothe.Lower.ε) (r : Grothe.Lower.Row)
+    (Rg : Grothe.Lower.Sym2) (nu : ℚ) (hν0 : 0 ≤ nu)
     (hν1 : nu < 1) (s c : ℚ) (rec : Recipe) (gauss : Bool) (Nr N : ℕ) (h : ℚ) (T : Tables)
     (hT : TablesOK Nr N h T) (hh : 0 < h) (hN : 0 < N) (hNr : 0 < Nr)
-    (hchk : nodeOKNu r Rg nu s c rec gauss Nr N h T = true) :
+    (hchk : nodeOKNu eps r Rg nu s c rec gauss Nr N h T = true) :
     pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) nu s - Grothe.Lower.capPad ≤ c := by
-  simp only [nodeOKNu, Bool.and_eq_true] at hchk
+  subst heps
+  simp only [nodeOKNu, Bool.and_eq_true, mMatE_eps] at hchk
   obtain ⟨hp, hpc⟩ := hchk
   have hok := gridOKNu_mkGridNu r.ell r.beta nu rec gauss T hh hN hNr hν0 hν1
   set gd := mkGridNu r.ell r.beta nu rec gauss Nr N h T
@@ -49,14 +57,16 @@ theorem pot_le_of_nodeOKNu (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (nu :
   linarith
 
 /-- **Soundness of the constrained node check with a tail**: `J(y, s) − capPad ≤ c` on the piece
-region. -/
-theorem Jpot_le_of_nodeOKcNu (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (nu : ℚ)
+region, for the check at the weight `eps = ε` of the rows. -/
+theorem Jpot_le_of_nodeOKcNu {eps : ℚ} (heps : eps = Grothe.Lower.ε) (r : Grothe.Lower.Row)
+    (Rg : Grothe.Lower.Sym2) (nu : ℚ)
     (hν0 : 0 ≤ nu) (hν1 : nu < 1) (s c : ℚ) (rec : Recipe) (gauss : Bool) (Nr N : ℕ) (h : ℚ)
     (T : Tables) (cs : List Cons) (hT : TablesOK Nr N h T) (hh : 0 < h) (hN : 0 < N)
-    (hNr : 0 < Nr) (hchk : nodeOKcNu r Rg nu s c rec gauss Nr N h T cs = true)
+    (hNr : 0 < Nr) (hchk : nodeOKcNu eps r Rg nu s c rec gauss Nr N h T cs = true)
     (y : Fib) (hy : y ∈ pieceSet r.E Rg cs) :
     Jpot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) nu y s - Grothe.Lower.capPad ≤ c := by
-  simp only [nodeOKcNu, Bool.and_eq_true] at hchk
+  subst heps
+  simp only [nodeOKcNu, Bool.and_eq_true, mMatE_eps] at hchk
   obtain ⟨hp, hpc⟩ := hchk
   have hok := gridOKNu_mkGridNu r.ell r.beta nu rec gauss T hh hN hNr hν0 hν1
   set gd := mkGridNu r.ell r.beta nu rec gauss Nr N h T
