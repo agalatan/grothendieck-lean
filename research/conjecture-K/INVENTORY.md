@@ -1434,6 +1434,30 @@ file, the notes as delivered included.
   `INTERNAL_REVIEW.md`, the component readmes, the internal reviews `secant/A_INTERNAL_REVIEW.md` and
   `b_content/REVIEW_JOINT_SECANT.md`, the numerical probes and the generated tables and logs.
 
+## Sharp spectral, commutator and circle-slice bounds on the real third chaos (gemini-9a4e, PR #520, task #506)
+
+- [Proof and replay instructions](sources/third-chaos-far-gaussian-gemini-9a4e/PROOF.md) and
+  [checkers](code/third-chaos-far-gaussian-gemini-9a4e/) (STATUS 3.21 (e4), (e9)). Every file of the delivery is
+  committed below; no external data files are used.
+- **Replay.** Standard library only (`python3 -I`, Python 3.12+; ~25 s total). `certify_spectral_sharp.py` verifies the
+  `Q(√2)` identities and Case 1–4 inequalities for the sharp bound `3λ − 1 ≤ (1 + √2)a²` (attained in `n = 2` at `T_*`,
+  giving `λ < 0.66502` at `a = 321/500 = 0.642`), checks the slice-commutator identity
+  `κ₄ = 90 Tr M² − 18 Σ_{r,s}‖[A_r, A_s]‖_F²` against exact Gaussian Wick moments, and certifies strict 4D `Fraction`
+  covers of 1,542, 2,966, 1,767 and 3,528 boxes. `certify_circle_slice.py` certifies 623 + 632 1D knot intervals
+  (`S = 10³⁰`) and 2,918 + 2,334 3D circle boxes (`S₂ = 10¹⁶`, `N_θ = 1024`) with rejection controls, sharpening the
+  Gaussian correlation threshold to `a ≥ 349/500 = 0.698`. [Replay log](code/third-chaos-far-gaussian-gemini-9a4e/REPLAY.log)
+- **Independent review.** `claude-b9ee` re-derived all three claims by hand, verified the polynomial identities in
+  `sympy` and against 300 random tensors (`n = 2…6`), and replayed both standard-library checkers on Python 3.12 and
+  Python 3.14 with output identical to `REPLAY.log`.
+  [Review of `87475ad2d`](https://github.com/agalatan/grothendieck-lean/pull/520#issuecomment-6947609567)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-far-gaussian-gemini-9a4e/PROOF.md` | 27,646 B | `93fbb6f411b6e39848a30b541316eca1517e2263c347eae377f031c6db1c8260` |
+| `code/third-chaos-far-gaussian-gemini-9a4e/REPLAY.log` | 936 B | `cd2c417a5b8bb8d52b13600c0a39103d6cea93b5ec85147e37cc8a53803cc080` |
+| `code/third-chaos-far-gaussian-gemini-9a4e/certify_spectral_sharp.py` | 19,798 B | `ebf5930b1b818fec21577abd141cdce588d847ae9c3b089a0c3332064e3de61a` |
+| `code/third-chaos-far-gaussian-gemini-9a4e/certify_circle_slice.py` | 20,583 B | `c5e49f859dd9c475669540e4d67f45bd83ab1bde1a9799c7d6f48aa4bb048ade` |
+
 ## Real third Wiener chaos bounds (codex-6d92, task #499)
 
 - [Proof and replay instructions](sources/third-chaos-dual-slice-codex-6d92/PROOF.md) and
@@ -1454,3 +1478,59 @@ file, the notes as delivered included.
   `check_radial_table.py` cross-checks all 98,304 table entries with upper incomplete gamma recurrences
   in 256-bit Arb.
   [Review of `1d9dbc2`](https://github.com/agalatan/grothendieck-lean/pull/500#issuecomment-6941015242)
+
+## Exterior consumer up to ε = 94/125 (gemini-9a4e, task #511)
+
+- [Proof and replay instructions](sources/exterior-94-125-gemini-9a4e/PROOF.md) and
+  [checkers](code/exterior-94-125-gemini-9a4e/) (STATUS 8.12, 8.13; author only). `cert_mass_0.5_pruned.json`
+  (253,230 B, SHA-256 `f3fe6535d0ae45a05907d103d327c12cd53180604ee2a57f73159d8c70999f28`) is a byte-identical copy
+  of the pruned mass-row spectral Stein certificate recorded in
+  `../identity-tail/sources/stage0d-2026-11-17/SPECCHECK.md`, `MANIFEST_stage0d.sha256` and `lean-data/SHA256SUMS`.
+- **Replay.** Standard library only (`python3 -I`, Python 3.12+). `verify_mass_row.py` checks all 136 spectral nodes
+  (28,935 polynomial pieces), the exact homothety identity and three rejection controls (~2 s). `verify_exterior.py`
+  reads the SHA-256-pinned 19 Lean rows (`code/exterior-codex-4d8a/inherited_rows.json`, cross-checked against live
+  `Grothe/Lower/RowData*.lean` and `RowDataTypes.lean`) and accepts 1,635/1,773 cells at ε = 3/4 (`Lower.ρ`
+  alone) and 1,550/1,773 cells at ε = 94/125 (`ρ = 46731/50000`) (~13 s). `verify_central_94_125.py` certifies the
+  9-row central bank at ε = 3/4 and 13-row central bank at ε = 94/125 (`central_94_125_certificate.json`) in 10⁴⁵
+  fixed-point integer arithmetic (~148 s). [Replay log](code/exterior-94-125-gemini-9a4e/REPLAY.log)
+
+## Dimension-free sharpenings on the real third Wiener chaos (gemini-c1de, task #501)
+
+- [Proof and replay instructions](sources/third-chaos-dimfree-gemini-c1de/PROOF.md) and
+  [checkers](code/third-chaos-dimfree-gemini-c1de/) (STATUS 3.21 (e4), 3.21 (e9)). Every file of the
+  delivery is committed below; no external data files are used.
+- **Replay.** Python 3.12.3 and `python-flint` 0.9.0 (`certify_sixth.py` and `certify_circle_211.py` use
+  only the Python standard library). `certify_sixth.py` checked 6 full-rank Wick tensor controls on the six
+  connected cubic multigraphs (`Chaos3.wick4`, `Chaos3.wick6`) and accepted 638 + 37 rational intervals for
+  $|\kappa_6| \le 67\kappa_4^{3/2}$. `certify_circle_211.py` enumerated all 21,946 canonical sign patterns
+  ($N = 211$), obtained exact maximum 130, and verified the ratio below $44357/50000$.
+  `certify_stein_quartic.py` accepted 3,505 boxes on $[0, 1]^2 \times [0, 4/625]$ with 30,000 compact cells
+  and analytic tails. `certify_regression_sixth.py` accepted 69,553 rational spline-tail intervals and 11
+  $\kappa_4$-intervals on $[0, 91/500]$ with 35,000 compact cells and analytic tails. `certify_rank_slice.py`
+  accepted 19 majorants (2,089 $\Psi$-rectangles, 199,625 $(a,s,\kappa_R)$-cells) for $a \ge 0.642$ and 15
+  majorants (1,740 $\Psi$-rectangles, 92,805 $(a,s,\kappa_R)$-cells, all $\alpha = 0$) for $a \ge 0.700$.
+  `certify_tensor.py` checked 3 exact $\mathbb{R}^4$ tensor controls and accepted 6,225 leaves (5,044 pruned)
+  at $a \le 0.642$ and 6,715 leaves (6,786 pruned) at $a \le 0.700$.
+  [Replay log](code/third-chaos-dimfree-gemini-c1de/REPLAY.log)
+- **Independent review.** `claude-b9ee` re-derived all eight claims by hand, replayed all six checkers with
+  output identical to `REPLAY.log`, and cross-checked every certified constant with independent code.
+  [Review of `bab26f939`](https://github.com/agalatan/grothendieck-lean/pull/519#issuecomment-6946728230)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-dimfree-gemini-c1de/PROOF.md` | 39,077 B | `7bdaccaf3b2568b378d4fadc19e0f3daa2b45b377511759d0d13e57220325e4f` |
+| `code/third-chaos-dimfree-gemini-c1de/REPLAY.log` | 933 B | `c37396c593e33ec10b4b6b512da12d21c70641a88ce826b964bca001a545bc4f` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_circle_211.py` | 3,764 B | `0f9f4894d79a9b781b214d1f23babc9920d1d24103e1f3d4f7b3806b95360177` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_rank_slice.py` | 14,703 B | `92898cde865a86e2d2ed6ac53dc3a1d243e4be144de059bb7216f85fcd42dede` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_regression_sixth.py` | 7,274 B | `539d193cc1a7753fb1378c5137a38b0762e3735aca9ed62194f8844f26ce2291` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_sixth.py` | 10,893 B | `1bbe6649ccfc612aae34d9612f507ca624cd5dcbabd88eadfc78caaf9359a7a6` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_stein_quartic.py` | 10,924 B | `094919eec9f064ab66aebe54011fc587489486befad3b97e635288f1afd3d3b8` |
+| `code/third-chaos-dimfree-gemini-c1de/certify_tensor.py` | 14,590 B | `ef4b2e42bfe3afe546242067b5931b4d127634364077e0ddb9c35105527fd057` |
+
+## Complex cubic radius bound ρ* ≤ 2289/2500 = 0.9156 (gemini-2762, task #504)
+
+- [Proof and replay instructions](sources/complex-radius-2026-11-17-gemini-2762/PROOF.md) and
+  [certificate and verifiers](code/complex-radius-gemini-2762/) (tag K3R). Every file is under 300 KB and committed in the repository; no external files or dependencies were left outside.
+- **Certificate in the repository:** `code/complex-radius-gemini-2762/cert_916.json` (241,550 B, SHA-256 `cf0cc1a0d95ebb08db44b90afd2179ac47b1a185477eeddc7288926862f5abab`), 23 contiguous rows covering s ∈ [0, 42], largest row bound `108089090381367422881337516582714174209/118059162071741130342400000000000000000` (`0.915550207917660944… < 0.9155502080`) on s ∈ [4, 17/4].
+- **Replay (Python 3 standard library only, isolated `-I`):** `python3 -I verify_cert.py cert_916.json` (exact integer Sturm chains), `python3 -I verify_bernstein.py cert_916.json` (independent exact verifier by 4×4 matrix determinants and Bernstein subdivision), `python3 -I check_identities_exact.py` (25 exact Wick cubics in d = 1…6), `python3 -I negative_controls.py cert_916.json`, and `python3 -I check_degree5_small_t.py`. [Replay log](code/complex-radius-gemini-2762/REPLAY.log)
+- **Independent reviews.** Codex-6d92 ([review of `b048eaf`](https://github.com/agalatan/grothendieck-lean/pull/512#pullrequestreview-5935955446)) and claude-b9ee ([review of `43c1a91`](https://github.com/agalatan/grothendieck-lean/pull/512#issuecomment-6945108838)) independently re-derived the third-order Stein identities, the kernel moments, the matrix/endpoint implications and Proposition 5 (`PROOF.md` §0.1, added by codex-6d92 and checked in exact rationals by `check_degree5_small_t.py`), verified the SHA-256 of `cert_916.json`, and replayed all five standard-library scripts (`verify_cert.py` on three machines across both reviews), with claude-b9ee also recomputing all 46 endpoint bounds and testing 26 cubics in d = 1…40.
