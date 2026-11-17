@@ -1,0 +1,90 @@
+== Section 1: reduction ==
+PASS  E He3(X)^2 = 6, so E F^2 = 6a^2 + b^2 + c^2
+PASS  E H^2 = 1, E H^4 = 93 (used only in remarks)
+== Section 2 (Lemma 2.1 and further constants) ==
+PASS  pi > 25/8: (1-x^2)(1+x^2/2)^2 = 1 - 3x^4/4 - x^6/4
+PASS  pi > 25/8: 6*int_0^{1/2} (1 + x^2/2) dx = 25/8
+PASS  pi < 22/7: int_0^1 x^4(1-x)^4/(1+x^2) dx = 22/7 - pi
+PASS  e > 163/60 = sum_{k<=5} 1/k!
+PASS  tail sum_{k>=6} 1/k! <= (1/720) sum_j 6^-j = 1/600
+PASS  e < 1631/600 < 68/25
+PASS  68/25 < 25/9, so e^(1/2) < 5/3, e^(-1/2) > 3/5
+PASS  (68/25)^3 = 314432/15625 < 81/4, so e^(3/2) < 9/2, e^(-3/2) > 2/9
+PASS  e^(9/2) < (9/2)^3 = 729/8 < 92
+PASS  e^3 < (68/25)^3 < 21
+PASS  e^4 = e^3 * e < 21 * 3 = 63
+PASS  e^(7/2) < (25/9)^(7/2) = (5/3)^7 = 78125/2187 < 36
+PASS  e^(49/8) < e^(13/2) = e^(7/2) e^3 < 36*21 = 756
+PASS  sqrt(15) > 19/5 (361 < 375)
+PASS  sqrt(pi) < 9/5 (22/7 < 81/25)
+PASS  sqrt(10/7) < 6/5 (10/7 < 36/25)
+PASS  e^(9/2) < 90.03 (from e < 1631/600: (1631/600)^9 < 90.03^2)
+== Section 3: pointwise bounds on Psi ==
+PASS  f'(y) = int_0^y e^{-t^2/2} dt and f''(y) = e^{-y^2/2}
+PASS  (M4): int_0^Y (Y - t) t^2 dt = Y^4/12
+PASS  (M4): sqrt(v) * (mu/sqrt v)^4 / (12 (2 + mu^2/v)) = mu^4 / (12 sqrt(v) (2v + mu^2))
+PASS  (M1) Komatsu: r^2 + y r = 1 and r = (sqrt(y^2+4) - y)/2
+PASS  (M1) Komatsu: r'(y) = -r/sqrt(y^2+4)
+PASS  (M1) (y^2+2)^2 - y^2(y^2+4) = 4
+== Section 5: outer region 3p + 5q >= 1 (weight sqrt(3/(2pi)) e^{(7/50) x^2}) ==
+PASS  L(1,0) = (1 + c pi) 5/(4 sqrt(3 pi)) with c = (1/12)(15/s^3 - 18/s^2 + 9/s) = 34925/131072
+PASS  L(0,1)/L(0,0) = (1 + 1/s)/2 = 57/64
+PASS  L(0,0)/S = 5/sqrt(24) < 49/48  (25*48^2 = 57600 < 57624 = 24*49^2)
+PASS  L(0,1)/S = (57/64)(5/sqrt 24) < 44/48  ((57/64)^2 (25/24) = 27075/32768 < 121/144)
+PASS  L(1,0)/S < (1/2)(1 + (34925/131072)(22/7)) 5/sqrt 24 = 4214635/(917504 sqrt 24)
+PASS    and (4214635/917504)^2 / 24 < (46/48)^2
+PASS  (49/48)(1-p-q) + (46/48)p + (44/48)q = (49 - 3p - 5q)/48
+== Section 6: the corner, common bounds ==
+PASS  on K: q < (1-3p)/5 and m = 1-p give q/m <= 1/5 < 3/10 (since (1-3p)/(5(1-p)) <= 1/5)
+PASS  (6.1) (1 + u/2 - u^2/8 + u^3/16)^2 - (1+u) = u^4 (16 + (2-u)^2)/256
+PASS  (6.1) P(-1) = 5/16 > 0 and P'(u) = 1/2 - u/4 + 3u^2/16 has discriminant 1/16 - 3/8 < 0
+PASS  (6.1) E(X^2-1) = 0, E(X^2-1)^2 = 2, E(X^2-1)^3 = 8
+PASS  (6.1) sqrt(m) E sqrt(1+u) <= sqrt(m)(1 - (q/m)^2/4 + (q/m)^3/2) and 1/4 - (3/10)/2 = 1/10
+PASS  (6.2) on [-3/10, 0]: chord of (1+u)^(-1/2) has slope (sqrt(10/7)-1)/(3/10) < (6/5-1)/(3/10) = 2/3
+PASS  (6.2) (1+u)(1-u/7)^2 - 1 = (u/49)(35 - 13u + u^2)
+PASS  (6.2) 35 - 13u + u^2 is decreasing on [0, 13/2] and equals 7/4 > 0 at u = 7/2
+PASS  (6.2) on |x| <= 7/2: u <= (3/10)(49/4 - 1) = 27/8 < 7/2
+PASS  (6.2) int_0^1 (1/6) x^2 (1-x^2)(3-x^2)^2 dx = 4/27, so E[H^2(1-X^2); |X|<=1] <= 8/(27 sqrt(2 pi))
+PASS  (6.2) (x^2-1)H^2 at 5/2 = 29575/512 > 57, at 11/4 = 22568315/131072 > 172, at 3 = 432
+PASS  (6.2) (x^2-1)H(x)^2 is nondecreasing on [sqrt 3, oo): d/dx at x = sqrt3 + t has coefficients >= 0 in t
+PASS  (6.2) 121/32 < 4 (so e^{-x^2/2} >= e^{-4} > 1/63 on [5/2, 11/4])
+PASS  (6.2) pieces 19/42 + 43/50 + 4/7 = 989/525
+PASS  (6.2) (1/7)(989/525) = 989/3675 > 16/81 = (2/3)(8/27)
+PASS  (6.3) sqrt(1-p) + p/(2 sqrt(1-p)) - 1 = p^2/(2 sqrt(1-p)(2 - p + 2 sqrt(1-p)))
+== Section 7: Case A, 0 < p <= 1/9 ==
+PASS  alpha(p) < 1/7: sqrt(8/9) > 16/17 (8*289 > 9*256) and (32/17)(17/9 + 32/17) = 18464/2601 > 7
+PASS  (i) (6/5)^2/10 = 36/250 > 1/7
+PASS  (ii) q < 6p/5 <= 6/45 = 2/15
+PASS  (ii) with x^2 = 2w + 3: H^2 = (2/3) w^2 (2w+3), H^4 = (4/9) w^4 (2w+3)^2
+PASS  (ii) v = 1 - p + q(2w+2) <= 1 + (2/15)(2w+2) = (4w+19)/15
+PASS  (ii) ((4w+19)/15)(2w+3) = (4w+19)(4w+6)/30 and AM-GM ((4w+19)+(4w+6))/2 = 4w + 25/2
+PASS  (ii) int_0^oo w^3 (2w+3) e^{-w} dw = 66
+PASS  (ii) D = int_0^oo w^2 (4w + 25/2) G(w) e^{-w} dw = 9338/9
+PASS  (ii) 66^2 / (9338/9) = 39204/9338
+PASS  (ii) 8 sqrt(15) e^{-3/2} / (9 sqrt(pi)) > 8 (19/5)(2/9)(5/9)/9 = 304/729
+PASS  (ii) (304/729)(39204/9338) = 73568/42021 > 12/7
+== Section 9: Case C, 1/5 < p < 1/3 (corrected arithmetic) ==
+PASS  q < (1 - 3/5)/5 = 2/25 and 1 - p < 4/5
+PASS  v < 4/5 + (2/25)(x^2-1) = (18 + 2x^2)/25 <= 4x^2/25 iff x^2 >= 9
+PASS  int_{9/2}^oo (2s-3)^2 e^{-s} ds = 68 e^{-9/2}
+PASS  E[H^2/|X|; |X|>=3] = (2/(6 sqrt(2 pi))) * 68 e^{-9/2}, and (5/4)*(68/3) = 85/3
+PASS  int_3^oo (x^3 - 3x) e^{-x^2/2} dx = 8 e^{-9/2}
+PASS  sqrt(pi/2) * 2 * 8 e^{-9/2} / (sqrt 6 sqrt(2 pi)) = (4 sqrt 6/3) e^{-9/2}
+PASS  monotonicity: 2A/(3B) = 85/(12 sqrt(3 pi)) > sqrt 5 iff 7225 > 2160 pi; true as 2160*22/7 < 7225
+PASS  g(sqrt 3) = e^{-9/2} (3A - 3 sqrt3 B) = e^{-9/2} (85/sqrt(2 pi) - 12 sqrt 2)
+PASS  alpha(1/3) = 3/(8 + 10 sqrt(2/3))
+PASS  rational enclosures: r1 = 0.398862 <= sqrt(7/44), r2 = 1.414214 >= sqrt 2, r3 = 0.816496 <= sqrt(2/3)
+PASS  e^{-9/2}(85/sqrt(2 pi) - 12 sqrt 2) > (85 r1 - 12 r2)/90.03 = 0.188078 > 3/(8 + 10 r3) = 0.185587 >= alpha(1/3)
+      (with only Lemma 2.1, e^{9/2} < 729/8, the same bound is 0.185818: still > 0.185587, margin 2.32e-04)
+PASS    same inequality with e^{9/2} < 729/8 only
+      (Gemini line 2921 claims 3(1/92)(100/3 - 17) = 49/92; the correct value of its own bound is (1/92)(100/3 - 17) = 49/276 = 0.17754 < alpha(1/3))
+PASS    the uncorrected Gemini constant 49/276 is indeed below alpha(1/3) > 0.18558
+== Section 11 (what was wrong): the Gemini Case-B arithmetic (line 2917) ==
+PASS  Case B denominator: int w^2 (12w+35)((8/45)(3w+13) + (2/15) w^2 (2w+3)) e^{-w} dw = 44368/9
+      correct value of the Case-B Cauchy-Schwarz bound with Lemma 2.1 constants: 9196/8319 = 1.10542; Gemini states 18392/8319 = 2.21084 (factor 2.0000)
+PASS    Gemini Case B value is exactly twice the correct one
+PASS    12 alpha(1/5) > 12/(2 r (9/5 + 2r)) > 1.8684 with r = 0.8945 >= sqrt(4/5)
+PASS    the correct Case-B value 9196/8319 is below 1.8684 < 12 alpha(1/5), so the Case-B argument fails
+PASS    (Gemini: alpha(p) < 10/63 for p <= 1/5, i.e. 2 sqrt(4/5)(9/5 + 2 sqrt(4/5)) > 63/10: true)
+
+ALL CHECKS PASSED

@@ -1,0 +1,12 @@
+n = 1: M_n = 0.61646023 = 0.772618 * sqrt(2/pi)
+n = 2: M_n = 0.69498283 = 0.871032 * sqrt(2/pi)
+n = 3: M_n = 0.72657126 = 0.910622 * sqrt(2/pi)
+n = 4: M_n = 0.74396695 = 0.932424 * sqrt(2/pi)
+n = 5: M_n = 0.76292356 = 0.956183 * sqrt(2/pi)
+n = 6: M_n = 0.78820189 = 0.987865 * sqrt(2/pi)
+n = 7: M_n = 0.80856665 = 1.01339 * sqrt(2/pi)   >= sqrt(2/pi): the radial argument stops
+n = 8: M_n = 0.82533832 = 1.03441 * sqrt(2/pi)   >= sqrt(2/pi): the radial argument stops
+n = 9: M_n = 0.8393972 = 1.05203 * sqrt(2/pi)   >= sqrt(2/pi): the radial argument stops
+n = 3, one-variable form: sup (80/3)h^2/Q = 0.82923248 at t = 2.28966; at t = 2: 0.801505; so M_3 = 0.910622 * sqrt(2/pi)
+the slip in the [2, 17/8] step: 392/361 + 1/16 = 1.1483726 = 6633/5776, written 6723/5776 (a weaker, still valid bound)
+28 sqrt5/(25 pi) = 0.79717405

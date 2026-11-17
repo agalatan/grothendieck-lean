@@ -1,0 +1,4 @@
+d29c338f6c82cf50e4762343116e0b7ebd5209ab3f41cd3c492760602f061b0c  verify_harmonic.py
+409d16c1500b320e5e98eff195d0f1548136ece4ce2cd77e98dfd184212289d7  numerics_harmonic.py
+3.12.3 sympy 1.14.0 numpy 2.5.5 scipy 1.18.1
+Linux 6.8.0-110-generic x86_64
