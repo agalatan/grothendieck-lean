@@ -10,6 +10,7 @@
 # 9fd70bd3a694c1a37e53f9f66cd30d4431334ba468513a037d1e1cb76a39125c  negative_controls.py
 # efea0b105208df087bd8961948516a67e30c7fa1fa4dd80ab628b482b80afc68  validate_cubics.py
 # 267f309230b35ae4545303c1d8457d46064d4a5d1775f13cde0c7cb2150027d0  make_cert.py
+# 59bc2e597313881379673505e8cc36f49718874cdd64d2bde24870e943143390  check_degree5_small_t.py
 
 $ python3 -I verify_cert.py cert_916.json
 row  0  s in [     0,    1/2]  K=133  PASS  bound <= 0.9031327076  (lo=0.8969328027, hi=0.9031327076)
@@ -111,3 +112,11 @@ $ python3 -B validate_cubics.py cert_916.json
    MC Sum of 10 monomials     (d=10, s= 4.20): min(RHS-|q|)=2.80e-03 > 0 | E|q|=0.78923 <= E[RHS]=0.89216 <= B_row=0.915550
    MC Sum of 14 monomials     (d=14, s= 3.00): min(RHS-|q|)=2.85e-03 > 0 | E|q|=0.80630 <= E[RHS]=0.89704 <= B_row=0.915034
 [3/3] All 8 genuine cubic Monte Carlo pointwise & expectation checks PASS.
+
+$ python3 -I check_degree5_small_t.py
+[1/3] Directed 10-decimal ceiling of worst row 10: 0.9155502080 (PASS)
+[2/3] Exact t=0 radius cap (500/701)/(2289/2500)^2 = 3125000000/3672904221 <= 0.8508253448 (PASS)
+   rho_0 = 915551/1000000  : c0 <= 0.6562986893, V(497/2000) <= 0.7132404390 < 500/701 (slack > 2.632e-05)
+   rho_0 = 2289/2500       : c0 <= 0.6563686758, V(621/2500) <= 0.7132646064 < 500/701 (slack > 2.155e-06)
+   rho_0 = 93/100          : c0 <= 0.6770984550, V(99/500) <= 0.7132484634 < 500/701 (slack > 1.830e-05)
+[3/3] Direct small-t degree-5 bounds verified in exact rationals (PASS).

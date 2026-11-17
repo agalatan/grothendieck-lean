@@ -323,16 +323,15 @@ a real chaos variable X of order k, the sign condition E[(Γ − σ²)e^{−sX²
 scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Without a buffer,
 (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer, radius domination
 holds for one two-variable family around the known counterexample to the stronger Laplace comparison
-[author only, certificates replayed · 3.6]. In every dimension **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂ < 0.916‖q‖₂**
-for every Wick cubic: a 23-row certificate on χ ∈ [0, 42] augments the second-moment relaxation below with two
-third-order radial forms of 2.5 (tests q̄(c₂ − 1)g₃(V) and qāg₄(V)) coupled through ∂̄_ka = W_k and E Σ_k|W_k|² = 24y,
-passing the 0.916 threshold that the uncapped degree-5 game of `../higher-degree` needs [P + C, author only ·
-gemini-2762, with two independent exact verifiers · 3.7, 3.21]. The strongest independently reviewed bound is
-E|q| ≤ (93/100)‖q‖₂, from a 23-row certificate using the two first-order radial Stein identities of 2.5 [P + C · a
-research worker of claude-b9ee, with an independent review · 3.7]; with Lean theorems as its only inputs that
-second-moment method gives 9387/10000, two outside certificates give 9359/10000 and 46731/50000 [P + C · 3.7], and all
-second-moment constraints on the kernels together stop near 0.9286 (near 0.9250 even over genuine four-variable
-tensors) [N · 3.7]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a second, computer-assisted proof exists
+[author only, certificates replayed · 3.6]. In every dimension **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂** for every Wick
+cubic (strictly below 0.916‖q‖₂ when q ≠ 0): a 23-row certificate on χ ∈ [0, 42] augments the second-moment relaxation
+below with two third-order radial forms of 2.5 (tests q̄(c₂ − 1)g₃(V) and qāg₄(V)) coupled through ∂̄_ka = W_k and
+E Σ_k|W_k|² = 24y, passing the 0.916 radius test of the uncapped degree-5 game in `../higher-degree` [P + C ·
+gemini-2762, independently reviewed by codex-6d92 · 3.7, 3.21]. From the two first-order radial Stein identities of 2.5
+alone, a 23-row certificate gives E|q| ≤ (93/100)‖q‖₂ [P + C · a research worker of claude-b9ee, with an independent
+review · 3.7]; with Lean theorems as its only inputs that second-moment method gives 9387/10000, two outside
+certificates give 9359/10000 and 46731/50000 [P + C · 3.7], and all second-moment constraints on the kernels together
+stop near 0.9286 (near 0.9250 even over genuine four-variable tensors) [N · 3.7]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a second, computer-assisted proof exists
 [P + C author only, double precision · an outside session of the user, its certificate re-run by claude-b9ee · 3.8].
 At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over unit x, for independent standard exponentials Eⱼ,
 in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4), which D₁ therefore settles at p = 1
@@ -1053,9 +1052,9 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 7. **Exact remote K** (2.1), which the peak row does not need: it is known on the classes named in 2.1. The routes are
    the smoothing sign of the weighted interpolation formula and the sign of the two weighted contractions of the
    deficit (2.1).
-8. **Independent review of the radius bound ρ\* ≤ 2289/2500 = 0.9156 < 0.916 on H₂,₁** [P + C, author only ·
-   gemini-2762 · 3.7], which the uncapped degree-5 game of `../higher-degree` needs (independently reviewed: 0.93;
-   relaxations through second moments of the kernels stop near 0.9286, 2.1).
+8. **The sharp radius ρ\* = √π/2 on H₂,₁** (2.1; 3.6) and the real third-chaos target E\|h\| ≤ √0.68‖h‖₂ (3.21 (a),
+   (e9)). Directly on H₂,₁, ρ\* ≤ 2289/2500 = 0.9156 < 0.916 is proved outside Lean [P + C · 3.7], passing the radius
+   test of the uncapped degree-5 game.
 
 **C. Other routes to the same decimals** have their own ledgers. The identity-tail witness raises the model ceiling to
 1.40248; its certificate and its Lean form are recorded in `../identity-tail/STATUS.md`. The games of degree 5 and
