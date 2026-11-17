@@ -163,3 +163,13 @@ covering rows, from `profiles_low/` of the worker's folder. The profiles of the 
 | `degree5-newcap-2026-11-16/profiles_low/band_row_0.74_own.json` (not copied) | 94,765 B | `2f01c6ac1f4b26775ab0537eaca50e7014ae7dc932c6b5e79c359d54eb444956` |
 | `degree5-newcap-2026-11-16/profiles_low/band_row_0.76_own.json` (not copied) | 94,849 B | `f11f813c1f35bfb5a0c18223131d1a7b3c0e64623f868f3ce4f3089d33c83338` |
 | `degree5-newcap-2026-11-16/profiles_low/band_row_0.78_own.json` (not copied) | 94,885 B | `9e87da333e1a00a77b4105c13f51d4e9b86e239a4fc87d91c03868c1b6b39446` |
+
+## The three-cluster κ bound (claude-b9ee, 17 November 2026, #507)
+
+`sources/kappa-three-cluster-2026-11-17/NOTE.md` states and proves κ ≥ 2c²(3c + 5)/(3(c + 1)³) (STATUS 4.30 (i)).
+`code/kappa-three-cluster-2026-11-17/` holds its four scripts (`wick4.py`, `pairs_check.py`, `minkappa.py`,
+`bound_exact.py`, run with `python3 -I` in that folder) and five small logs, kept because the note cites them:
+`wick4.log`, `pairs_check.log`, `minkappa.log`, `bound_exact.log` and `formula_t070.log`. The last one holds the outputs of
+`kappa.py formula 0.70 U c k(c) kit/profiles_low/` for U = 1.612 and 1.449 and c = 4, 5, 6, 8, 10, 12, run in the PV3
+working folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/content-problem-v3-2026-11-17/content-problem-v3/`
+(about 30–50 s each, sampled, **N**).
