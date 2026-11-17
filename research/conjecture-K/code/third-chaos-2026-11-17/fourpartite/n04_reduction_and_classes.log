@@ -1,0 +1,12 @@
+== (1) reduction checks ==
+m=1 n=2: E|g| SVD-Fourier 1.5199288451 | two-step conditioning 1.5199288345 | sqrt(2/pi)E sqrt(V) 1.5199290395 | sqrt(2/pi)||g|| 1.5461136104 (E V = 3.7549372485 vs ||g||^2 = 3.7549372485) | ratio 0.983064
+m=2 n=2: E|g| SVD-Fourier 1.4572053267 | two-step conditioning 1.4572439838 | sqrt(2/pi)E sqrt(V) 1.6960624812 | sqrt(2/pi)||g|| 1.6983650302 (E V = 4.5308736879 vs ||g||^2 = 4.5308736879) | ratio 0.858005
+m=2 n=3: E|g| SVD-Fourier 3.0920818235 | two-step conditioning 3.0920962700 | sqrt(2/pi)E sqrt(V) 3.1447610040 | sqrt(2/pi)||g|| 3.2588540007 (E V = 16.6820602483 vs ||g||^2 = 16.6820602483) | ratio 0.948825
+== (2) classes of 4-partite cubics: E|P|/(sqrt(2/pi)||P||_2) ==
+K_4^(3), 4 coordinates, random coefficients [ 0.349 -0.674  1.672 -0.872]: 0.66023430 (Gauss-Hermite, 60^2 nodes)
+K_4^(3), equal coefficients: 0.68151348
+blow-up of K_4^(3), parts 3+3+3+3 (12 coordinates), Gaussian tensors: 0.84366 +- 0.01031 (MC over (X1,X2))
+two edge-types T134 + T234 (12 coordinates; = tripartite-like in X3,X4 given X1,X2): 0.81598 +- 0.00707
+tripartite cubic T(X1,X3,X4), parts 4+4+4: 0.83657 +- 0.00848
+tight cycle C_7^(3) (7 coordinates, strong 4-colouring 0123012): 0.74859 +- 0.01190
+time 148 s

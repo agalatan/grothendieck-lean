@@ -853,6 +853,137 @@ the analytic argument and is not run by CI. The working proof is
   checks) and their log. The originals are in
   `/Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/he3-bath-family-2026-11-16/`.
 
+## The real third chaos: four proofs and two reviews (17 November 2026)
+
+`sources/third-chaos-2026-11-17/` (tag TCH2; STATUS 3.8, 3.21 (e), items 104 and 105) holds verbatim copies of the
+four proofs (`bath/`, `diag/`, `fourpartite/`, `harmonic/`), of the review of the two Gemini conversation logs
+(`gemini-review/REVIEW.md`) and of the review of two texts of another assistant's session, with those two texts
+(`he3-radial-n3/`); only their first lines were added. `code/third-chaos-2026-11-17/` holds the scripts, their logs
+and the data of the certificates, byte-identical, in folders of the same names. The originals are in
+`/Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/gemini-log-2026-11-17/` (the four folders and
+`REVIEW.md`) and `/Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/he3-radial-n3-2026-11-17/`;
+every file there is copied or listed below.
+- **Links in the copies.** "This folder" in a proof is its folder under `code/third-chaos-2026-11-17/`;
+  `../REVIEW.md` in `diag/PROOF_DIAGONAL.md` is `gemini-review/REVIEW.md`; `../../he3-bath-family-2026-11-16/` in
+  `bath/PROOF_BATH.md` is `sources/third-chaos-2026-11-16/he3-bath-family/`; `source/gemini-chain.txt` and
+  `source/gemini-rigurous.txt`, which the proofs and the review cite by line number, are the two Gemini logs (below).
+- **Replay** (Python 3.12 with python-flint 0.9.0 for Arb, sympy, mpmath, numpy and scipy). The certificates and
+  exact checks ran on the droplet (two numerical scripts of `fourpartite/` on the laptop); claude-b9ee replayed every
+  certificate and exact check, with identical output.
+  - `bath/`: `python3 -I verify_constants.py` (77 exact checks), `python3 -I certify_caseB.py` (Arb: the 172 boxes
+    of Case B and the 106-box cross-check of Case C), `python3 -I numerics.py` (**N**); about a minute in all.
+  - `diag/`: `run_c01.sh` writes `psi_grid.txt` and `psi_grid_contour.txt` in about 6 minutes on 4 cores. Its `cd`
+    line names the droplet folder where it ran (`~/claude-b9ee-diagsum`); run it in a copy of this folder with that
+    line adapted. Then `python3 -I c02_bnd.py` and `python3 -I c03_main.py` (6 s; it ends with
+    ALL CHECKS PASSED). `c00_exact.py` checks the exact inputs. `SHA256SUMS` lists every other file of the folder,
+    and the copies match it. `n0*_N.py` and `t01_arb_speed.py` are design numerics (**N**).
+  - `fourpartite/`: `python3 -I c01_K_certify.py` (Arb, 25 s), `python3 -I c02_K_crosscheck_iv.py 10` (mpmath.iv,
+    17 cells, 44 s); the `n0*.py` scripts are numerics (**N**; `n04` to `n06` import each other, so run them in this
+    folder).
+  - `harmonic/`: `python3 -I verify_harmonic.py` (48 exact checks, about 15 s), `python3 -I numerics_harmonic.py`
+    (**N**, about 40 s).
+  - `he3-radial-n3/`: `python3 -I radial_Mn.py` (mpmath; the constants M_n of 3.21 (e1), **N**).
+- **Exceptions to the rules of this folder.** The logs are copied because the proofs cite them as their record.
+  `diag/psi_grid.txt` (1,520,968 B) is above the 300 KB limit: it is the data of the certificate of 3.21 (e2), which
+  `c03_main.py` reads and `SHA256SUMS` pins, and the record of item 104.
+- **Private paths.** Every copied file was scanned for paths, links, e-mail addresses, IP addresses and tokens.
+  Besides paths under `/Users/alingalatan/workspaces/grothe/handoff/` and one arXiv link, the only ones are the
+  droplet folders `~/claude-b9ee-diagsum` (in `diag/run_c01.sh` and `PROOF_DIAGONAL.md`) and
+  `~/claude-b9ee-fourpartite` (in `PROOF_4PARTITE.md`, which says it was deleted). Nothing was changed.
+- **Not copied** (they stay under `/Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/`):
+  - the two Gemini conversation logs relayed by the user, which contain local paths of the user's machine:
+    `gemini-log-2026-11-17/source/gemini-chain.txt` (649,693 B, 4,545 lines, SHA-256
+    `90ab2c383e6d467190d094735db1ec7b6fe3a9eda0d31c85e6e6dd8611b0c035`) and
+    `gemini-log-2026-11-17/source/gemini-rigurous.txt` (69,315 B, 660 lines, SHA-256
+    `32117df9935941ce7ce5965e3ea09b120ba7bb74568096912cffc95fc58aeb10`). The second was not reviewed
+    (`gemini-review/REVIEW.md`).
+  - `PROMPT_WEAK_BOUND_2026-11-17.txt` (6,788 B, SHA-256
+    `c5d8922313f3f4e564dfe879762e4ee300a6d1af0a4adb4538c4dfd300bff3fa`): a prompt of 17 November for an outside
+    session on the weak bound √(17/25) of 3.21 (a). TCH3b reviews a Gemini answer to it (next section).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-2026-11-17/bath/PROOF_BATH.md` | 24,941 B without its first line | `1ed9f7f5b685a7ad7f1cbbd3e978f3c9103e6249e472016035bc910ac97285d5` |
+| `sources/third-chaos-2026-11-17/diag/PROOF_DIAGONAL.md` | 15,115 B without its first line | `c48e80fad2fa526ad32c1592443382b0540d635d1ab936fb29dc6d4b04731cbd` |
+| `sources/third-chaos-2026-11-17/fourpartite/PROOF_4PARTITE.md` | 30,646 B without its first line | `0e27927db6c83e67dc5e698fd3a6536e5a7b624438cfb81f6194fff5d66b8979` |
+| `sources/third-chaos-2026-11-17/harmonic/PROOF_HARMONIC.md` | 20,967 B without its first line | `33a232f267ab6777415eb554a226163c40ba5ea0f617aa79db174174e9e7c60b` |
+| `sources/third-chaos-2026-11-17/gemini-review/REVIEW.md` | 5,748 B without its first line | `e086726c3629e72ecd22a848f72340bf24d789dc5f043b44cc45d9ad639cbb8d` |
+| `sources/third-chaos-2026-11-17/he3-radial-n3/REVIEW_claude-b9ee.md` | 3,379 B without its first line | `6d3bcad385d73b3c1cd13fb19e2307f9a65cc59887e65a54e767777c5bedd605` |
+| `sources/third-chaos-2026-11-17/he3-radial-n3/PASTE1_hjm_example31.md` | 14,634 B without its first line | `bcf29cb60af76be6bc625314ee41cd86032e7821502477c3513bc50d19dee4b2` |
+| `sources/third-chaos-2026-11-17/he3-radial-n3/PASTE2_radial_n3.md` | 41,968 B without its first line | `e92adbdc453f9c98b80ff979513d5a2364dd9f207845ee956998b1895a1bef9a` |
+| `code/third-chaos-2026-11-17/bath/verify_constants.py` | 14,936 B | `92cae0101fccb73c92d6876a1ef6aad3d73367ad4e1307e08a9334dc21eb71a6` |
+| `code/third-chaos-2026-11-17/bath/verify_constants.log` | 5,970 B | `b185e6928259c4fbc2ad6383a5ee69eb4ac86d752a42884c8857d3c46563740d` |
+| `code/third-chaos-2026-11-17/bath/certify_caseB.py` | 6,295 B | `41d357d3e2a026a788e7c7ad0dabdbca9994021729425ebd91d37cfca42c0d3a` |
+| `code/third-chaos-2026-11-17/bath/certify_caseB.log` | 36,593 B | `6423c148f58a8920ddb6083a15626806341c46a491d7d95022b1929175fc5f87` |
+| `code/third-chaos-2026-11-17/diag/SHA256SUMS` (the hashes of the other 24 files of the folder) | 1,966 B | `44fa0961e58581db148a9742eabd3b6e6a54ca84a824e5bb1edc77eaabca70f4` |
+| `code/third-chaos-2026-11-17/diag/psi_grid.txt` | 1,520,968 B | `4f37d3a852b890d786324f81dba098218dda4e6dcd6d1b45c5a8db74d125f491` |
+| `code/third-chaos-2026-11-17/fourpartite/c01_K_certify.py` | 7,619 B | `32e1ee1edba39c8a148ef1335f426fc81e6d7b32897c2ca8e779cc6867a4b522` |
+| `code/third-chaos-2026-11-17/fourpartite/c01_K_certify.log` | 13,016 B | `3a9169704a179e8fc6d3b76b6f8631f3ec3f643c3eb3e9e0d2dd2c20ff032f79` |
+| `code/third-chaos-2026-11-17/fourpartite/c02_K_crosscheck_iv.py` | 3,260 B | `a92e9eada336f7fdf5ff5b33c53e7ceafe57d5313f455eaf617b92825285afa8` |
+| `code/third-chaos-2026-11-17/fourpartite/c02_K_crosscheck_iv.log` | 2,011 B | `176b8c52c8ce9118ab9f140e5fe3d0e926f0af0cf7ccbcfef2cc06df8a2c1e7a` |
+| `code/third-chaos-2026-11-17/harmonic/verify_harmonic.py` | 13,195 B | `d29c338f6c82cf50e4762343116e0b7ebd5209ab3f41cd3c492760602f061b0c` |
+| `code/third-chaos-2026-11-17/harmonic/verify_harmonic.log` | 5,097 B | `c001e11273f4b34b91ca4a9d90b2debaeb39fba9ed7f1caa3a11b0a5a5022b2c` |
+| `code/third-chaos-2026-11-17/he3-radial-n3/radial_Mn.py` | 2,155 B | `11f83ff03042993d8eee3696c0c0c088b0844447126f3980d32175f521be45f2` |
+| `code/third-chaos-2026-11-17/he3-radial-n3/radial_Mn.log` | 829 B | `d81539f9a3ae1873817e73eeef2e6b6108862e013cc4d7e9c650b717018e198c` |
+
+## The real third chaos, second batch: the HJM note, the weak target and Ω₃ (17 November 2026)
+
+Three more folders of `sources/third-chaos-2026-11-17/` (tags TCH3a, TCH3b and TCH3c; STATUS 3.8, 3.21 (e), items 104
+and 106), copied in the same way: one first line added to each document, and the scripts and logs byte-identical under
+`code/third-chaos-2026-11-17/`, in folders of the same names. The originals are in `hjm-note-2026-11-17/`,
+`gemini-weak-2026-11-17/` and `omega3-2026-11-17/` under
+`/Users/alingalatan/workspaces/grothe/handoff/research-third-chaos/`; every file there is copied or listed below.
+- **TCH3a, `hjm-note/HJM_Example3.1_d2_d3.md`.** A consolidation note on Example 3.1 of arXiv:2610.10477 for d = 2 and
+  3, written by an outside assistant session of the user and supplied on 17 November 2026 at about 06:00. It
+  consolidates Gemini material (two logs, attachments A to C and several expositions; only the two logs exist here, as
+  the previous section says) and audits it in its §7. Its §6 Gap 3 calls the diagonal sums, the Gaussian-bath family
+  and the 4-partite cubics unproved: the note predates STATUS 3.21 (e2), (e5) and (e6), which prove them, so this is
+  not an error. `code/third-chaos-2026-11-17/hjm-note/` holds its two scripts and, in `runs_yo/`, claude-b9ee's
+  re-runs of them on the droplet:
+  - `python3 -I certify_d2.py` (numpy, scipy, mpmath; all cores, 87 s there) is the certificate of Theorem 4.7 and
+    ends with CERTIFIED. `runs_yo/certify.log`: 5,053 cells, smallest lower bound 8.55·10⁻⁸, no failures. The note
+    says 5,059 cells: its adaptive first phase depends on library versions, and every final cell is checked by the
+    rigorous bound. IEEE double with a slack of 10⁻⁹, not interval arithmetic.
+  - `python3 -I certify_d2.py --soundness` compares the bound with the true integral at 40 random spectra
+    (`runs_yo/sound.log`: no violation, smallest difference 0.0182).
+  - `python3 -I verify_example31.py` (numpy, scipy; one to two minutes) recomputes the numbers of the note in double
+    precision (`runs_yo/verify.log`; every number matches the note).
+- **TCH3b, `gemini-weak/REVIEW.md`.** claude-b9ee's review of a Gemini answer to the prompt
+  `PROMPT_WEAK_BOUND_2026-11-17.txt` of the previous section. The user pasted the answer into the session of
+  claude-b9ee on 17 November 2026; it is not kept, and REVIEW.md records its claims with their true values.
+  `code/third-chaos-2026-11-17/gemini-weak/checks/` holds the five checks of the review (mpmath, numpy, scipy;
+  `python3 -I <name>.py`, and `lp_circle.py` takes the degree and the numbers of points, for example
+  `python3 -I lp_circle.py 3 7 9 11`). They have no logs.
+- **TCH3c, `omega3/README.md`.** claude-b9ee's re-derivation of Gemini's martingale–isoperimetric bound (17 November
+  2026, 06:17), with the quadrature for h₃ in one variable in `code/third-chaos-2026-11-17/omega3/`
+  (`python3 -I h3_R.py`, numpy and scipy; its output is `h3_R.log`). Another worker will add a report and scripts to
+  the handoff folder later; this copy holds the three files that were there at 06:19, and the ledger cites none of the
+  later ones.
+- **Logs.** The three logs of `runs_yo/` and `h3_R.log` are copied because the ledger cites them as records (STATUS
+  3.8 and 3.21 (e)).
+- **Private paths.** The three folders were scanned as in the previous section: no path, link, e-mail address, IP
+  address or token.
+- **Not copied:** the two `SHA256SUMS` files of the handoff folders (511 B and 494 B). The documents moved to
+  `sources/` with a first line added, so the lists no longer match the layout; their hashes are those of the table.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-2026-11-17/hjm-note/HJM_Example3.1_d2_d3.md` | 51,160 B without its first line | `0113cb0690e11ce8e8690667f1b6b1531f5049b48f9fafd9b2015f4800b19a17` |
+| `sources/third-chaos-2026-11-17/gemini-weak/REVIEW.md` | 4,268 B without its first line | `5f95aa510f54d7af6e10bbf6fc20fa60763e792d98c36d9aca1c6c2299be44de` |
+| `code/third-chaos-2026-11-17/hjm-note/certify_d2.py` | 10,018 B | `df244d6c07a1b8bb8d13173efd1885db7fbc6d86b5cfe3cbe24954810d3eae0e` |
+| `code/third-chaos-2026-11-17/hjm-note/verify_example31.py` | 6,677 B | `877f3472a014d7fcea1c08c26d281985392f73d9a7b433212c9681559ab169e3` |
+| `code/third-chaos-2026-11-17/hjm-note/runs_yo/certify.log` | 6,108 B | `90be7291f9ef8f2e26e7cd1cc75fbf0a6a6dc1d574f16f295b51d030aff0da08` |
+| `code/third-chaos-2026-11-17/hjm-note/runs_yo/sound.log` | 2,136 B | `c1f77967e524d083e7cf88e8dfdee038fbafc30c454183362aa80aeaffe7ee68` |
+| `code/third-chaos-2026-11-17/hjm-note/runs_yo/verify.log` | 2,125 B | `0eba0666eb2ee46be23ec90e7ad5c197da1efdae695c802ed2b6de4386667cbe` |
+| `code/third-chaos-2026-11-17/gemini-weak/checks/check1.py` | 1,738 B | `6f65ca572d2b98e98c6513b48aa6664fea5a320439afea03a5174fe1a4288a7f` |
+| `code/third-chaos-2026-11-17/gemini-weak/checks/check2.py` | 1,432 B | `6bc8b8e1085e3ab65647e8e3bf449858b4cb3bed5f21c50cd733d9e6744b5b3b` |
+| `code/third-chaos-2026-11-17/gemini-weak/checks/check3.py` | 1,426 B | `89f05b517f8e9b55bd8974a5bbee378d390996995e1dffaf58c3832dfdb7da5c` |
+| `code/third-chaos-2026-11-17/gemini-weak/checks/check4.py` | 853 B | `947129dc01bb94e257b684fb19bc4e6ecfceb0ce9a5628e25a4bd48842fab353` |
+| `code/third-chaos-2026-11-17/gemini-weak/checks/lp_circle.py` | 1,882 B | `c6766f68fdca54b6f4209e8fc3b65f395c845ca1bec02e17945ca1a79eed52d1` |
+| `sources/third-chaos-2026-11-17/omega3/README.md` | 1,281 B without its first line | `45c68c55a676d30856289845dcfd5f0b8cf68506ec24ed6462017567ec81f30e` |
+| `code/third-chaos-2026-11-17/omega3/h3_R.py` | 1,683 B | `8cb120208cf54f57b862645920c2ccfa015bd0addf6809f3d9c38a112207b513` |
+| `code/third-chaos-2026-11-17/omega3/h3_R.log` | 201 B | `6a116f65d5385e624b49687cfb30b410d80d9aa3a51d122fe5ddc337ab62b8b0` |
+
 ## Codex-a786: phase symmetry and content (16 November 2026)
 
 `sources/phase-content-2026-11-16-codex-a786/` holds the documents and `code/phase-content-codex-a786/` the checkers

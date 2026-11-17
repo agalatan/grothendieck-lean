@@ -1,0 +1,9 @@
+sqrt(2/pi) = 0.79788; E|h| exact = 0.61646
+n =   1, M = 1.0000: E|S| Fourier 0.61648 (truncation <= 7.1e-04), MC 0.61623 +- 0.00039; Delta = 0.2850
+n =   2, M = 0.7071: E|S| Fourier 0.60383 (truncation <= 5.0e-04), MC 0.60425 +- 0.00040; Delta = 0.3048
+n =   2, M = 0.7400: E|S| Fourier 0.60487 (truncation <= 5.3e-04), MC 0.60504 +- 0.00040; Delta = 0.3032
+n =   3, M = 0.5774: E|S| Fourier 0.62733 (truncation <= 4.1e-04), MC 0.62759 +- 0.00039; Delta = 0.2679
+n =   4, M = 0.5000: E|S| Fourier 0.63914 (truncation <= 3.6e-04), MC 0.63920 +- 0.00039; Delta = 0.2494
+n =   2, M = 0.9000: E|S| Fourier 0.61789 (truncation <= 6.4e-04), MC 0.61753 +- 0.00039; Delta = 0.2827
+n =   3, M = 0.6000: E|S| Fourier 0.62708 (truncation <= 4.3e-04), MC 0.62744 +- 0.00039; Delta = 0.2683
+n =  25, M = 0.2000: E|S| Fourier 0.73039 (truncation <= 1.4e-04), MC 0.73086 +- 0.00034; Delta = 0.1060

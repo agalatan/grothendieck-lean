@@ -329,14 +329,29 @@ of 23 rows bounds E|q| as a function of the fourth excess χ on [0, 42], from th
 the same method gives 9387/10000, and two outside certificates of the same kind give 9359/10000 and 46731/50000
 [P + C · 3.7]. All their constraints together give about 0.9286; the second-moment information on the kernels is then
 exhausted [N · 3.7]. The radius 0.916, which the uncapped degree-5 game of `../higher-degree` needs, is not reached
-[3.7, 3.21]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8]. In real third chaos the same bound would give the
-sharp radius by phase averaging; it is proved for reflection-odd and conditionally Gaussian cubics and in at most
-seven real coordinates [P author only, certificates replayed · 3.21 (e)]. Moments, hypercontractivity and the cumulant
-bounds cannot give even the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace and
-small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. On the limit family
-a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard Gaussians),
-√0.68 holds with room: E|F| ≤ (5/(2√(3π)))‖F‖₂ = 0.8143‖F‖₂ [P · an outside session of the user, re-derived by
-claude-b9ee · 3.21 (e)].
+[3.7, 3.21]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a second, computer-assisted proof exists
+[P + C author only, double precision · an outside session of the user, its certificate re-run by claude-b9ee · 3.8].
+At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over unit x, for independent standard exponentials Eⱼ,
+in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4), which D₁ therefore settles at p = 1
+[P · 3.8]. With a first-chaos part the bound is proved when the second-chaos part has a spectrum symmetric about 0
+[P + C author only · 3.21 (e5)]. In real third chaos the same bound would give the sharp radius by phase averaging.
+It is open in general and proved on these classes:
+reflection-odd and conditionally Gaussian cubics, cubics in at most seven real coordinates, κ₄ ≥ 74 and very small
+κ₄ [P author only, certificates replayed · 3.21 (e1)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
+inequality [P + C author only · 3.21 (e2)]; harmonic cubics in at most eleven coordinates, and the normalised
+elementary symmetric cubic e₃ in any number of variables [P author only · 3.21 (e3), (e4)]; four-partite cubics and,
+in the chaos of every order d ≥ 2, the (d + 1)-partite elements [P + C author only · 3.21 (e5)]; and the limit
+family a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard
+Gaussians; equality only when a = b = 0), also with any independent Gaussian scale mixture added
+[P + C author only · 3.21 (e6)]. On conditionally Gaussian cubics even the smoothing sign of 3.21 (d) holds
+[P · 3.21 (e7)]. Without restriction E|h| ≤ 0.8907‖h‖₂ in every dimension, the best that rotations on a Gaussian
+circle give [P; the optimality N · 3.21 (e9)], and the sharp bound holds as soon as h correlates more than 0.8362
+with some He₃(⟨v, X⟩)/√6 [P + N · 3.21 (e4)]. Moments, hypercontractivity and the cumulant bounds cannot give even
+the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace and small-ball comparisons are
+false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 itself is proved, beyond the classes above, for a
+correlation above 0.7964 and in at most ten coordinates [P + N · 3.21 (e9)], and for κ₄ ≤ 0.0268
+[P author only · 3.21 (e9)]. The largest ratio E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates
+[N · 3.21 (e8)].
 
 **A weighted interpolation target.** Put F=√(2/u)Re q and Γ=‖DF‖²/3. For the visible
 mixture L =_law √V W, the scalar Stein reduction gives the exact deficit formula
@@ -1148,11 +1163,11 @@ section 13), where every source is listed.
 - **69. The total response energy is below 0.072.** It needs t ≥ 0.8456; at t ≥ 0.84 the cap is 0.080051, and a
   response at t = 0 has energy above 0.09 [P + C].
 
-The ledger lists the remaining items (2, 3, 7, 8, 46, 59, 96, 97, 102) and, in its section 14, the routes that do not
-work: the fourth-moment envelopes (their refinements move the cutoff w ≈ 0.0112 by about 10⁻⁴), leading-order and
-Taylor control of the content (finite amplitude is essential), buffer insertion by Jensen, proofs from the law of the
-residual alone, the fixed moment bank for the augmented remote certificate, the saved dual bank for a content
-coefficient 3/20 (item 103), Cauchy–Schwarz through the law of |q|²
+The ledger lists the remaining items (2, 3, 7, 8, 46, 59, 96, 97, 102, 104–106) and, in its section 14, the routes
+that do not work: the fourth-moment envelopes (their refinements move the cutoff w ≈ 0.0112 by about 10⁻⁴),
+leading-order and Taylor control of the content (finite amplitude is essential), buffer insertion by Jensen, proofs
+from the law of the residual alone, the fixed moment bank for the augmented remote certificate, the saved dual bank
+for a content coefficient 3/20 (item 103), Cauchy–Schwarz through the law of |q|²
 alone or on either Stein pair for the raw content (items 91, 93), conditioning on one coordinate beyond the cubics
 that vanish on a hyperplane (item 94), and others.
 
