@@ -69,15 +69,16 @@ def main():
         neg_part = c4_u * (M ** 4) * (hi ** 2) + c1_u * (hi ** 5) + c0_u * (hi ** 6)
         return pos_part - neg_part
 
-    todo_w = [(Q(0), Q(1))]
+    todo_w = [(Q(0), Q(1), 0)]
     leaves_w = 0
     while todo_w:
-        lo, hi = todo_w.pop()
+        lo, hi, dep_w = todo_w.pop()
         if q_u_lo(lo, hi) > 0:
             leaves_w += 1
         else:
+            assert dep_w < 40
             mid = (lo + hi) / 2
-            todo_w.extend(((lo, mid), (mid, hi)))
+            todo_w.extend(((lo, mid, dep_w + 1), (mid, hi, dep_w + 1)))
 
     beta = ball(beta_q)
     gamma = ball(gamma_q)

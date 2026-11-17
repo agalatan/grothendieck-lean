@@ -25,14 +25,16 @@ $$
 
 ## Summary by status label
 
-All new proofs and certificates below carry **P + C, author only** (`gemini-c1de`) until independently
-re-derived and replayed. All terminating decimals used as proof inputs denote exact rationals.
+All proofs and certificates below carry **P + C** (`gemini-c1de`, [#519](https://github.com/agalatan/grothendieck-lean/pull/519);
+independently re-derived and replayed by `claude-b9ee`,
+[review](https://github.com/agalatan/grothendieck-lean/pull/519#issuecomment-6946728230)).
+All terminating decimals used as proof inputs denote exact rationals.
 
-- **Proved and certified (`P + C, author only`)**:
+- **Proved and certified (`P + C`)**:
   1. **Universal sixth-cumulant bound (§1, `certify_sixth.py`)**: for every unit $F \in V_3(\mathbb{R}^n)$ and every $n \ge 1$,
      $$|\kappa_6(F)| \le 67\,\kappa_4(F)^{3/2}, \qquad \mathbb{E}[F^6] \le 15 + 15\kappa_4(F) + 67\,\kappa_4(F)^{3/2}.$$
   2. **Eigenvector-coupled tensor and fourth-cumulant defect bounds (§2, `certify_tensor.py`)**:
-     - Closed-form universal inequality: $\lambda \le \frac{1 + a(F)^2}{2}$ in every dimension.
+     - Closed-form universal inequality: $\lambda \le \frac{1 + a(F)^2}{2}$ in every dimension (sharper than $3\lambda - 1 \le \frac{20788}{8019}a(F)^2$ of #500 for $a(F) > 0.677$; standalone and not used in the branch-and-bound below).
      - Coupled invariant bounds:
        $$a(F) \le \frac{321}{500} = 0.642 \implies \lambda < \frac{167}{250} = 0.668 \text{ and } \kappa_4(F) < \frac{233}{5} = 46.6;$$
        $$a(F) \le \frac{7}{10} = 0.700 \implies \lambda < \frac{173}{250} = 0.692 \text{ and } \kappa_4(F) < 49.$$
@@ -53,7 +55,7 @@ re-derived and replayed. All terminating decimals used as proof inputs denote ex
      $$\mathbb{E}|F| < \frac{44357}{50000}\|F\|_2 = 0.88714\,\|F\|_2$$
      (certified upper bound $< 0.8871354\,\|F\|_2$, sharpening $17743/20000 = 0.88715$ of #500).
 - **Open**:
-  - Unrestricted $\mathbb{E}|F| \le \sqrt{17/25}\|F\|_2$ and $\mathbb{E}|F| \le \sqrt{2/\pi}\|F\|_2$ in every dimension. Outside the proved structured classes, a counterexample to the practical target must simultaneously have $\operatorname{rank}(M) \ge 16$ (and $n \ge 18$ once five-plane slicing is recorded), $a(F) < 0.642$, $0.0064 < \lambda < 0.668$, $\operatorname{Var}\tau > 89/2250$, and $0.182 < \kappa_4(F) < 46.6$. A counterexample to the sharp Gaussian bound outside the proved structured classes must have $\operatorname{rank}(M) \ge 12$, $a(F) < 0.700$, $\lambda < 0.692$, and $\kappa_4(F) < 49$.
+  - Unrestricted $\mathbb{E}|F| \le \sqrt{17/25}\|F\|_2$ and $\mathbb{E}|F| \le \sqrt{2/\pi}\|F\|_2$ in every dimension. Outside the proved structured classes, a counterexample to the practical target must simultaneously have $\operatorname{rank}(M) \ge 16$, $a(F) < 0.642$, $0.0064 < \lambda < 0.668$, $\operatorname{Var}\tau > 89/2250$, and $0.182 < \kappa_4(F) < 46.6$. A counterexample to the sharp Gaussian bound outside the proved structured classes must have $\operatorname{rank}(M) \ge 12$, $a(F) < 0.700$, $\lambda < 0.692$, and $\kappa_4(F) < 49$.
 
 ---
 
@@ -65,9 +67,11 @@ $A \succeq 0$ and $\|A\|_{\mathrm{HS}}^2 = \operatorname{tr}((T^\top T)^2) = \op
 orthogonal projection of $A$ onto an index-permutation subspace (averaging the three pairings of four indices), $\widetilde{U}$ is symmetric on
 $\mathbb{R}^{n^2}$ and $0 \le u = \|\widetilde{U}\|_{\mathrm{HS}}^2 \le \|A\|_{\mathrm{HS}}^2 = m$.
 
-Expanding $\mathbb{E}[I_3(T)^6]/6^3 - 15\mathbb{E}[I_3(T)^4]/6^2 + 30$ over connected $3$-regular Wick multigraphs on six vertices
-(see also `Grothe/LowerAnalytic/SixthMoment.lean` for the complex counterpart, and `certify_sixth.py` for exact multivariate
-Gaussian verification on four 3-variable tensors including a generic ten-parameter tensor) gives
+By the Lean Wick cumulant theorems `Grothe.LowerAnalytic.Chaos3.wick4` (`Grothe/LowerAnalytic/CircularTensor.lean`) and
+`Grothe.LowerAnalytic.Chaos3.wick6` (`Grothe/LowerAnalytic/WickSix.lean`), the six isomorphism classes of connected $3$-regular
+multigraphs on six vertices (`wg6_72` … `wg6_77` in `Grothe/LowerAnalytic/WickGraphData.lean`) rewrite in terms of five tensor
+contraction invariants (`certify_sixth.py` also verifies both identities directly against exact multivariate Gaussian integration
+on six $\mathbb{R}^3$ tensors spanning full rank $6$ across `wg6_72` … `wg6_77`):
 
 $$
 \kappa_6(F) = 216\Big(\frac{135}{2}\operatorname{tr}(\widetilde{U}^3) - 20\operatorname{tr}(M^3)
@@ -99,7 +103,7 @@ $$
 On $[0, 1]$ the script `certify_sixth.py` bisects in exact rational arithmetic (638 and 37 subintervals) to certify
 that $216^2(\frac{135}{2}x^3 + 45x^2 + 150x)^2 < 67^2(36 + 54x^2)^3$ and
 $216^2(\frac{135}{2}x^3 + 150x + 20)^2 < 67^2(36 + 54x^2)^3$ throughout $[0, 1]$ (at $x = 1$, corresponding to $h_3(X_1)$,
-$\kappa_4 = 90$ and $\kappa_6 = 52380 = 61.345\dots \times 90^{3/2} < 67 \times 90^{3/2}$). Since $\mathbb{E}[F^2] = 1$,
+$\kappa_4 = 90$ and $\kappa_6 = 52380 = 61.348\dots \times 90^{3/2} < 67 \times 90^{3/2}$). Since $\mathbb{E}[F^2] = 1$,
 $\mathbb{E}[F^6] = 15 + 15\kappa_4 + \kappa_6 \le 15 + 15\kappa_4 + 67\kappa_4^{3/2}$.
 
 ---
@@ -193,8 +197,9 @@ When $a \le a_0$, the variables $(x, s, b, P)$ satisfy five coupled constraints:
    $90\operatorname{tr}(M^2) - \kappa_4 = 54(m - u) = 54\|A - \widetilde{U}\|_{\mathrm{HS}}^2$.
    Restrict this sum of squares to the index tuples $(i, j, k, \ell)$ containing two $1$'s and two indices in $\{2, \dots, n\}$.
    For each ordered pair $(p, q) \in \{2, \dots, n\}^2$, put $H_{pq} = A_{11pq} = x B_{pq} + s C_{pq}$ and
-   $G_{pq} = A_{1p1q} = s^2 \delta_{p2}\delta_{q2} + (B^2)_{pq}$. Among the six index placements of the two $1$'s,
-   $(1, 1, p, q)$ and $(p, q, 1, 1)$ give $A = H_{pq}$ while $(1, p, 1, q), (1, q, 1, p), (p, 1, q, 1), (q, 1, p, 1)$ give $A = G_{pq}$,
+   $G_{pq} = A_{1p1q} = s^2 \delta_{p2}\delta_{q2} + (B^2)_{pq} = G_{qp}$. Among the six index placements of the two $1$'s
+   with $(p, q)$ in order in the remaining two slots, $(1, 1, p, q)$ and $(p, q, 1, 1)$ give $A = H_{pq}$ while
+   $(1, p, 1, q), (1, p, q, 1), (p, 1, 1, q), (p, 1, q, 1)$ give $A = G_{pq}$,
    so $\widetilde{U} = \frac{1}{3}(H_{pq} + 2 G_{pq})$ on all six. Summing $(A - \widetilde{U})^2$ over these disjoint orbits yields
 
    $$
@@ -538,17 +543,19 @@ $\lambda < 0.692$, $\kappa_4(F) < 49$ for the sharp Gaussian bound $\mathbb{E}|F
 
 ---
 
-## Replay
+## Replay and provenance
+
+In [#519](https://github.com/agalatan/grothendieck-lean/pull/519#issuecomment-6946728230), `claude-b9ee` independently
+re-derived all eight claims, replayed all six checkers with identical output, and cross-checked every certified constant
+with independent code.
 
 Run all six checkers from the repository root with Python 3.12 and `python-flint` 0.9.0 (`certify_sixth.py` and
-`certify_circle_211.py` use only the Python standard library). Each script rejects `-O` and exits nonzero on any failed assertion.
+`certify_circle_211.py` use only the Python standard library). Each script rejects `-O` and exits nonzero on any failed assertion;
+their exact standard output is recorded in [`REPLAY.log`](../../code/third-chaos-dimfree-gemini-c1de/REPLAY.log).
 
 ```sh
 cert_dir=research/conjecture-K/code/third-chaos-dimfree-gemini-c1de
-python3 -I "$cert_dir/certify_sixth.py"
-python3 -I "$cert_dir/certify_circle_211.py"
-python3 -B "$cert_dir/certify_stein_quartic.py"
-python3 -B "$cert_dir/certify_regression_sixth.py"
-python3 -B "$cert_dir/certify_rank_slice.py"
-python3 -B "$cert_dir/certify_tensor.py"
+for check in sixth circle_211 stein_quartic regression_sixth rank_slice tensor; do
+  python3 -I "$cert_dir/certify_${check}.py" || exit 1
+done
 ```

@@ -10,14 +10,18 @@ For F = I_3(T) / sqrt(6) in the real third Wiener chaos with symmetric T and
     U_tilde_{ijkl} = (A_{ijkl} + A_{ikjl} + A_{iljk}) / 3,  u = ||U_tilde||_HS^2.
 
 This script checks in exact rational arithmetic (Python standard library only):
-  1. On four explicit 3-variable symmetric tensors (including a generic asymmetric
-     rational tensor with ten distinct independent entries), the Wick identities
+  1. The Wick cumulant formulas (proved in Lean as `Grothe.LowerAnalytic.Chaos3.wick4` in
+     `Grothe/LowerAnalytic/CircularTensor.lean` and `Grothe.LowerAnalytic.Chaos3.wick6` in
+     `Grothe/LowerAnalytic/WickSix.lean`, expressing the six connected cubic multigraphs
+     `wg6_72` ... `wg6_77` in terms of five tensor contraction invariants):
          kappa_4(F) = 36 m + 54 u,
          kappa_6(F) = 216 * ( (135/2) tr(U_tilde^3) - 20 tr(M^3)
                             + (135/2) <vec M, U_tilde vec M>
                             + (165/2) <T M, U_tilde T>
                             + 45 ||U_tilde T||_HS^2 )
-     agree identically with exact multivariate Gaussian integration of F^4 and F^6.
+     agree identically with exact multivariate Gaussian integration of F^4 and F^6 on
+     six explicit 3-variable symmetric tensors whose evaluation matrix on the six connected
+     cubic multigraphs `wg6_72` ... `wg6_77` has nonzero exact rational determinant (full rank 6).
   2. Over x = sqrt(u / m) in [0, 1], both upper and lower Cauchy-Schwarz envelopes
      stay strictly inside 67 * kappa_4(F)^(3/2), certifying
          |kappa_6(F)| <= 67 * kappa_4(F)^(3/2)
@@ -163,11 +167,62 @@ def wick_cumulants_from_tensor(T):
     return norm2, k4, k6
 
 
+WG6_CONNECTED = (
+    ((0, 1), (0, 1), (0, 2), (1, 2), (2, 3), (3, 4), (3, 5), (4, 5), (4, 5)),
+    ((0, 1), (0, 1), (0, 2), (1, 3), (2, 3), (2, 4), (3, 5), (4, 5), (4, 5)),
+    ((0, 1), (0, 1), (0, 2), (1, 3), (2, 4), (2, 4), (3, 5), (3, 5), (4, 5)),
+    ((0, 1), (0, 1), (0, 2), (1, 3), (2, 4), (2, 5), (3, 4), (3, 5), (4, 5)),
+    ((0, 1), (0, 2), (0, 3), (1, 2), (1, 4), (2, 5), (3, 4), (3, 5), (4, 5)),
+    ((0, 1), (0, 2), (0, 3), (1, 4), (1, 5), (2, 4), (2, 5), (3, 4), (3, 5)),
+)
+
+
+def eval_multigraph(T, edges):
+    n = len(T)
+    inc = [[] for _ in range(6)]
+    for e_idx, (u, v) in enumerate(edges):
+        inc[u].append(e_idx)
+        inc[v].append(e_idx)
+    tot = Q(0)
+    for col in itertools.product(range(n), repeat=9):
+        prod = Q(1)
+        for v in range(6):
+            a, b, c = inc[v]
+            val = T[col[a]][col[b]][col[c]]
+            if not val:
+                prod = Q(0)
+                break
+            prod *= val
+        tot += prod
+    return tot
+
+
+def exact_det(mat):
+    m = len(mat)
+    A = [row[:] for row in mat]
+    det = Q(1)
+    for col in range(m):
+        piv = next((r for r in range(col, m) if A[r][col] != 0), None)
+        if piv is None:
+            return Q(0)
+        if piv != col:
+            A[col], A[piv] = A[piv], A[col]
+            det = -det
+        det *= A[col][col]
+        for r in range(col + 1, m):
+            fac = A[r][col] / A[col][col]
+            for k in range(col, m):
+                A[r][k] -= fac * A[col][k]
+    return det
+
+
 def verify_wick_identities():
     test_cases = [
         ("h_3(X_1)", {(0, 0, 0): Q(1)}),
         ("X_1 X_2 X_3", {(0, 1, 2): Q(1)}),
         ("Re((X_1+iX_2)^3)", {(0, 0, 0): Q(1), (0, 1, 1): Q(-3)}),
+        ("chain_cubic", {(0, 0, 1): Q(1), (1, 2, 2): Q(1)}),
+        ("diag_plus_xyz", {(0, 0, 0): Q(1), (1, 1, 1): Q(1), (0, 1, 2): Q(2)}),
         ("generic_sym3_R3", {
             (0, 0, 0): Q(3, 5), (1, 1, 1): Q(-1, 2), (2, 2, 2): Q(2, 7),
             (0, 0, 1): Q(4, 5), (0, 0, 2): Q(-3, 4), (0, 1, 1): Q(1, 3),
@@ -175,8 +230,10 @@ def verify_wick_identities():
             (0, 1, 2): Q(-7, 5),
         }),
     ]
+    wg_rows = []
     for label, weights in test_cases:
         T = sym3_from_weights(3, weights)
+        wg_rows.append([eval_multigraph(T, g) for g in WG6_CONNECTED])
         norm2, k4_wick, k6_wick = wick_cumulants_from_tensor(T)
         p1 = wick_cubic_poly(T)
         p2 = poly_mul(p1, p1)
@@ -191,6 +248,7 @@ def verify_wick_identities():
         assert k4_wick == k4_mom, (label, k4_wick, k4_mom)
         assert k6_wick == k6_mom, (label, k6_wick, k6_mom)
         assert (k6_mom ** 2) <= (67 ** 2) * (k4_mom ** 3), (label, k6_mom, k4_mom)
+    assert exact_det(wg_rows) != 0
     return len(test_cases)
 
 
@@ -236,7 +294,7 @@ def main():
     # Exact check on h_3(X_1): x = 1 gives kappa_4 = 90, kappa_6 = 52380 < 67 * 90^(3/2).
     assert (52380 ** 2) < (67 ** 2) * (90 ** 3)
     print(
-        f"PASS certify_sixth: {n_ctrl} exact Wick tensor controls, "
+        f"PASS certify_sixth: {n_ctrl} rank-6 Wick tensor controls, "
         f"{l_pos} + {l_neg} rational intervals for |kappa_6| <= 67 * kappa_4^(3/2)"
     )
 

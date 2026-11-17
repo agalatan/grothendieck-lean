@@ -281,7 +281,7 @@ def certify_tensor_4d(a0_str, lam_target_str, k4_target_str, grids):
                         brk = arb(1) - arb(m_idx) * L_max
                         if brk < lam_lo_b:
                             break
-                        if brk <= lam_hi_b:
+                        if not (brk > lam_hi_b):
                             cand_lams.append(brk)
                         m_idx += 1
 

@@ -1,5 +1,4 @@
-Python 3.12.3, python-flint 0.9.0
-PASS certify_sixth: 4 exact Wick tensor controls, 638 + 37 rational intervals for |kappa_6| <= 67 * kappa_4^(3/2)
+PASS certify_sixth: 6 rank-6 Wick tensor controls, 638 + 37 rational intervals for |kappa_6| <= 67 * kappa_4^(3/2)
 PASS certify_circle_211: 21946 patterns (11 spot-checked), max=130, ratio_sq < (44357/50000)^2
 PASS certify_stein_quartic lambda <= 4/625 (0.0064): 3505 boxes, 30000 compact cells + analytic tails
 PASS certify_regression_sixth: W_M tail=69553 intervals, kappa_4 <= 91/500 (0.1820): 11 k-intervals, 35000 compact cells + analytic tails

@@ -230,7 +230,7 @@ def certify_domain_cover(a0_str, target, k4_hi_str, maj_list):
         passed = False
         for C, _, mq2, al, mb2, mb4, mb6 in majs:
             inner_hi = C + mq2 * sq2_hi + al * u_cap_hi * sr_hi + mb2 * sr2_hi - mb4 * eb4_lo + mb6 * eb6_hi
-            val_hi = a_hi * inner_hi if inner_hi > 0 else a_lo * inner_hi
+            val_hi = a_hi * inner_hi if arb(inner_hi.upper()) > 0 else a_lo * inner_hi
             if val_hi < target:
                 passed = True
                 break
