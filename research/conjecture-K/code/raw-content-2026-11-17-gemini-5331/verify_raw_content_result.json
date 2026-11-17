@@ -124,58 +124,65 @@
   "peak_smoothed_K_A": [
     {
       "u_min": "0",
-      "K_A_enclosure": [
+      "radau_bound_enclosure": [
         "8.564754800975330",
         "8.564754800975331"
       ],
+      "note": "encloses exact K_A(0)",
       "certified_upper": "5353/625"
     },
     {
       "u_min": "1/100",
-      "K_A_enclosure": [
+      "radau_bound_enclosure": [
         "7.153589673218030",
         "7.153589673218031"
       ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
       "certified_upper": "3577/500"
     },
     {
       "u_min": "1/50",
-      "K_A_enclosure": [
+      "radau_bound_enclosure": [
         "6.116744353333771",
         "6.116744353333772"
       ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
       "certified_upper": "6117/1000"
     },
     {
       "u_min": "3/100",
-      "K_A_enclosure": [
+      "radau_bound_enclosure": [
         "5.322698405887722",
         "5.322698405887723"
       ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
       "certified_upper": "5323/1000"
     },
     {
       "u_min": "7/200",
-      "K_A_enclosure": [
+      "radau_bound_enclosure": [
         "4.994600993636170",
         "4.994600993636171"
       ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
       "certified_upper": "5"
     },
     {
       "u_min": "1/25",
-      "K_A_enclosure": [
+      "radau_bound_enclosure": [
         "4.707387969041720",
         "4.707387969041721"
       ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
       "certified_upper": "471/100"
     },
     {
       "u_min": "11/250",
-      "K_A_enclosure": [
+      "radau_bound_enclosure": [
         "4.492244102093882",
         "4.492244102093883"
       ],
+      "note": "encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)",
       "certified_upper": "9/2"
     }
   ],
@@ -187,6 +194,10 @@
   "peak_low_influence_raw_core_tau_threshold": "1/455",
   "peak_low_influence_implied_chi_max": "10/91",
   "covers_and_corollaries": {
+    "minus_v2_at_zero_enclosure": [
+      "1.672596014280266",
+      "1.672596014280267"
+    ],
     "v2_at_zero_certified_upper": "1673/1000",
     "zero_dual_raw_core_chi_max": "9/100",
     "zero_dual_raw_core_margin": "200428660081/50000000000000000",
@@ -279,5 +290,5 @@
     "stein_duals_verified": 79
   },
   "negative_controls_passed": 5,
-  "elapsed_seconds": 4.511
+  "elapsed_seconds": 4.752
 }

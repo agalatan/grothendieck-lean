@@ -36,9 +36,10 @@ What this script certifies:
   4. Analytical consequences with zero new duals:
        - Closing row 6.1.5 (chi <= 0.05) and all 0 <= chi <= 9/100 = 0.09 on
          0 <= u <= 463/10000 from 3.3 + 3.14 + 6.2.1 + K_A(0) < 5353/625;
-       - Exact zero-slack C_A(q)^2 <= (4/125) D(q) < (6/25) D(q) on
-         (0, 463/10000] x [0, 1/10000] and C_A(q)^2 <= (2/25) D(q) < (6/25) D(q)
-         for all shapes chi in [0, 42] on [0, 1/4000] (from 3.19 + K_A(0)).
+       - Exact zero-slack C_A(q)^2 <= (4/125) D(q) <= (6/25) D(q) on
+         (0, 463/10000] x [0, 1/10000] and C_A(q)^2 <= (2/25) D(q) <= (6/25) D(q)
+         for all shapes chi in [0, 42] on (0, 1/4000] (strict < whenever
+         delta > 0, and equality C_A(0)^2 = D(0) = 0 at q = 0; from 3.19 + K_A(0)).
   5. Fresh pure-Python algebraic Radau-Hermite lower bounds L_8(y) <= sqrt(1 + y)
      for all y >= 0, certifying the Gaussian Rice benchmark B_lo(u) <= B(u) at
      all 55 energy nodes without Bessel functions or external libraries,
@@ -506,7 +507,12 @@ def certify_section_ab():
         assert ka_val.hi < cap_target, (u_edge, ka_val.enclosure(), cap_target)
         ka_smoothed.append({
             'u_min': str(u_edge),
-            'K_A_enclosure': ka_val.enclosure(),
+            'radau_bound_enclosure': ka_val.enclosure(),
+            'note': (
+                'encloses exact K_A(0)'
+                if u_edge == 0
+                else 'encloses the Q_4 Radau upper-bound functional; only the upper endpoint bounds exact K_A(u)'
+            ),
             'certified_upper': str(cap_target),
         })
 
@@ -658,7 +664,14 @@ def check_stein_node(row, knots, caps, depth=20):
     v = Q(row['v'])
     values = list(map(Q, row['phi']))
     beta, t, lam, mu, nu = (Q(row[k]) for k in ('beta', 't', 'lam', 'mu', 'nu'))
-    if not (lam > 0 and mu > 0 and nu >= 0 and knots[0] == 0 and len(knots) == len(values)):
+    if not (
+        lam > 0
+        and mu > 0
+        and nu >= 0
+        and knots[0] == 0
+        and len(knots) == len(values)
+        and all(a < b for a, b in zip(knots, knots[1:]))
+    ):
         return False
     P = list(map(Q, row['coefficients']))
     if not (len(P) == 4 and P[3] >= 0):
@@ -994,6 +1007,7 @@ def certify_analytical_and_covers(v_derivs, b_rice_lo):
         return f'{n // unit}.{str(n % unit).zfill(digits)}'
 
     return {
+        'minus_v2_at_zero_enclosure': (-v_derivs[2]).enclosure(),
         'v2_at_zero_certified_upper': str(V2_BOUND),
         'zero_dual_raw_core_chi_max': '9/100',
         'zero_dual_raw_core_margin': str(target_a - lhs_09),
