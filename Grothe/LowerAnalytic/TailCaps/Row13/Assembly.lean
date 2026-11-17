@@ -29,7 +29,7 @@ namespace Grothe.LowerAnalytic
 
 set_option maxRecDepth 100000
 
-theorem tailExclCaps13 (heps : tailEps = Grothe.Lower.ε) :
+theorem tailExclCaps13 (_heps : tailEps = Grothe.Lower.ε) :
     ExclCapsNu tailNu tailRow13 tailR13 tailExcl13 := by
   intro i hmem
   simp [tailExcl13] at hmem

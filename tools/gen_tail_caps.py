@@ -460,6 +460,7 @@ end Grothe.LowerAnalytic
 ''' + '\n'.join(f'  · exact tailNodeCap{K}_{I} heps' for _, I in ncaps))
     else:
         excl_proof = f'  intro i hmem\n  simp [tailExcl{K}] at hmem'
+    excl_heps = 'heps' if ncaps else '_heps'   # a row without excluded nodes does not use the weight
     if len(ranges) == 1:
         vbody = f'  exact nodeCapNu_of_rangeOK heps tailNu_nonneg tailNu_lt_one tailAnchor{K}_00 (tailExclCaps{K} heps)\n    (Nat.zero_le _) hi hi hc'
     else:
@@ -487,7 +488,7 @@ namespace Grothe.LowerAnalytic
 
 set_option maxRecDepth 100000
 
-theorem tailExclCaps{K} (heps : tailEps = Grothe.Lower.ε) :
+theorem tailExclCaps{K} ({excl_heps} : tailEps = Grothe.Lower.ε) :
     ExclCapsNu tailNu tailRow{K} tailR{K} tailExcl{K} := by
 {excl_proof}
 
