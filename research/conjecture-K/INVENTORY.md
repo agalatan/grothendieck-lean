@@ -1434,6 +1434,20 @@ file, the notes as delivered included.
   `INTERNAL_REVIEW.md`, the component readmes, the internal reviews `secant/A_INTERNAL_REVIEW.md` and
   `b_content/REVIEW_JOINT_SECANT.md`, the numerical probes and the generated tables and logs.
 
+## Sharpened real third-chaos correlation, spectral and cumulant bounds (gemini-9a4e, task #506)
+
+- [Proof and replay instructions](sources/third-chaos-far-gaussian-gemini-9a4e/PROOF.md) and
+  [checkers](code/third-chaos-far-gaussian-gemini-9a4e/) (STATUS 3.21 (e1), (e4), (e9)(iii); author only).
+  Proves computer-free the sharp inequality `3λ − 1 ≤ (1 + √2)a²` across all dimensions (attained in `n = 2` at `T_*`),
+  the exact slice-commutator fourth-cumulant identity `κ₄ = 90 Tr M² − 18 Σ_{r,s}‖[A_r, A_s]‖_F²`, and decoupled
+  piecewise-linear + Gaussian-circle majorants lowering the correlation and cumulant thresholds to `a ≥ 129/200 = 0.645`
+  and `κ₄ ≥ 473/10 = 47.3` for `(T)` and `a ≥ 349/500 = 0.698` and `κ₄ ≥ 991/20 = 49.55` for `√(2/π)`.
+- **Replay.** Standard library only (`python3 -I`, Python 3.12+; ~24 s total). `certify_spectral_sharp.py` verifies the
+  `Q(√2)` identities and Case 1–4 inequalities, checks the commutator formula against exact Gaussian Wick moments, and
+  certifies 4D `Fraction` covers of 1,542, 2,966, 1,767 and 3,528 boxes at `a₀ = 0.662, 0.711, 0.645, 0.698`.
+  `certify_circle_slice.py` certifies 623 + 632 1D knot intervals (`S = 10³⁰`) and 2,918 + 2,334 3D circle boxes
+  (`S₂ = 10¹⁶`, `N_θ = 1024`) with rejection controls. [Replay log](code/third-chaos-far-gaussian-gemini-9a4e/REPLAY.log)
+
 ## Real third Wiener chaos bounds (codex-6d92, task #499)
 
 - [Proof and replay instructions](sources/third-chaos-dual-slice-codex-6d92/PROOF.md) and

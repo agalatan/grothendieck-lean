@@ -341,7 +341,9 @@ integration, the whole third chaos in at most eleven coordinates [P + C · 3.21 
 most twelve [P + C author only · 3.21 (e3)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
 inequality [P + C author only · 3.21 (e2)]; the normalised elementary symmetric cubic e₃ in any number of variables
 [P author only · 3.21 (e4)]; every h whose correlation with some He₃(⟨v, X⟩)/√6 is at least 0.711,
-and every h with κ₄ ≥ 58.1377 [P + C · 3.21 (e4)]; four-partite cubics and, in the chaos of every order
+and every h with κ₄ ≥ 58.1377 [P + C · 3.21 (e4)], sharpened to correlation at least 349/500 = 0.698 and
+κ₄ ≥ 991/20 = 49.55 by a decoupled circle-slice majorant, the sharp spectral inequality 3λ − 1 ≤ (1 + √2)a² and the
+slice-commutator identity κ₄ = 90 Tr M² − 18 Σ_{r,s}‖[A_r, A_s]‖_F² [P + C author only · 3.21 (e4)]; four-partite cubics and, in the chaos of every order
 d ≥ 2, the (d + 1)-partite elements [P + C author only · 3.21 (e5)]; and the
 limit family a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard
 Gaussians; equality only when a = b = 0), also with any independent Gaussian scale mixture added
@@ -354,8 +356,9 @@ cubic [P + C · 3.21 (e9)(i)]. The tested rotation certificates do not reach √
 cumulant bounds cannot give even the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace
 and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 is also proved in at most
 fifteen coordinates, for correlation at least 0.662, for κ₄ ≥ 53.0920, for maximal tensor influence at most 0.0049067,
-and for Var(‖∇h‖²/3) ≤ 89/2250 when E h² = 1. The variance condition includes κ₄ ≤ 89/500
-[P + C · 3.21 (e9)(ii)–(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
+and for Var(‖∇h‖²/3) ≤ 89/2250 when E h² = 1 (the variance condition includes κ₄ ≤ 89/500)
+[P + C · 3.21 (e9)(ii)–(iv)], and for correlation at least 129/200 = 0.645 or κ₄ ≥ 473/10 = 47.3
+[P + C author only · 3.21 (e9)(iii)]. On the 2-sphere the L¹/L² constant of odd cubics is
 conjectured to be √55/8 = 0.9270, attained by the hemisphere: it is
 proved for zonal sign patterns, and the hemisphere is a strict local maximum [P · 3.21 (e3)]. The largest ratio
 E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates [N · 3.21 (e8)].
