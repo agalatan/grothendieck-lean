@@ -609,20 +609,6 @@ theorem witnessCap_of_VhatOf_le {e ν c : ℝ} (hν : ν < 1)
   rw [← hval, VOf_eq_hat n e hν.ne hf hg']
   linarith [mul_le_mul_of_nonneg_left hc (sub_nonneg.2 hν.le)]
 
-/-- The crude row from the identity and `‖Qk‖ ≤ ρ`, for the hat value of a witness whose hat
-weight is the constant `ε` of the rows and whose tail is nonnegative: the tail `−2ν̂‖k‖²` only
-lowers the value.  (The certified witness is `(e, ν) = (ε, 0)`.) -/
-lemma rowOf_crude {e ν : ℝ} (he : epsHat e ν = ε) (hν : 0 ≤ nuHat ν) (f g : L2G n)
-    (hk : ‖QkOf n f g‖ ≤ ρ) (v : L2G n) :
-    RowOf crudeRow (VhatOf n e ν f g) (tOf n f g) (QhOf n f g) v := by
-  unfold RowOf RowHolds crudeRow
-  simp only [Rat.cast_zero, Rat.cast_mul, Rat.cast_pow, mul_zero, zero_mul, add_zero, zero_div,
-    zero_smul, sub_zero]
-  have hε : (0 : ℝ) ≤ ε := by unfold ε; norm_num
-  have h2 := pow_le_pow_left₀ (norm_nonneg _) hk 2
-  rw [VhatOf, he]
-  nlinarith [sq_nonneg ‖PkOf n f g‖, mul_nonneg hν (sq_nonneg ‖kOf n f g‖)]
-
 end
 
 end Grothe.LowerAnalytic

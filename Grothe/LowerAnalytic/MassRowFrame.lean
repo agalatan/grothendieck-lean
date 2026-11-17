@@ -1,6 +1,6 @@
 import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.FibreIntegral
-import Grothe.Lower.TailRows.MassFacts
+import Grothe.Lower.MassFacts
 
 /-!
 # The mass row of the identity-tail certificate in the frame
@@ -69,9 +69,9 @@ lemma twice_normSq_QkOf_le {e c : ℝ} (he : 0 < e) (hc : 0 < c) {f g : L2G m}
 /-- **Fact 3 in the frame**: `E φ_c(|q|) − ε̂‖q‖² ≤ S` for the mass row (`ε̂ = 25/31`, `c = 2ν̂ + 1/2`). -/
 theorem integral_phiMass_QkOf_le (hm : 0 < m) {f g : L2G m} (hf : f ∈ Unimod (stdGaussian (m + m)))
     (hg : g ∈ Unimod (stdGaussian (m + m))) :
-    Integrable (fun x => phiMass massEps massC ‖QkOf m f g x‖) (stdGaussian (m + m)) ∧
-      ∫ x, phiMass massEps massC ‖QkOf m f g x‖ ∂(stdGaussian (m + m))
-        - (massEps : ℝ) * ‖QkOf m f g‖ ^ 2 ≤ massS := by
+    Integrable (fun x => phiMass ε massC ‖QkOf m f g x‖) (stdGaussian (m + m)) ∧
+      ∫ x, phiMass ε massC ‖QkOf m f g x‖ ∂(stdGaussian (m + m))
+        - (ε : ℝ) * ‖QkOf m f g‖ ^ 2 ≤ massS := by
   obtain ⟨A, B, hA, hc, haa, hq⟩ :=
     poly_rep_H21 m hm (p := QkOf m f g) ((H21 m).starProjection_apply_mem (kOf m f g))
   have hM := gaussian_moments A B hA haa hc
@@ -83,16 +83,16 @@ theorem integral_phiMass_QkOf_le (hm : 0 < m) {f g : L2G m} (hf : f ∈ Unimod (
     rw [← Real.sqrt_sq (norm_nonneg _), Complex.sq_norm, Complex.normSq_mk, radU]
     simp only [map_add, map_mul]
   have hU : Measurable fun x => eval x (radU A B) := (MvPolynomial.continuous_eval _).measurable
-  have hint : Integrable (fun x => phiMass massEps massC (‖QkOf m f g‖ * √(eval x (radU A B))))
+  have hint : Integrable (fun x => phiMass ε massC (‖QkOf m f g‖ * √(eval x (radU A B))))
       (stdGaussian (m + m)) := by
-    refine Integrable.mono' ((hM.ih.const_mul (2 * (massEps : ℝ) * ‖QkOf m f g‖))) ?_ ?_
+    refine Integrable.mono' ((hM.ih.const_mul (2 * (ε : ℝ) * ‖QkOf m f g‖))) ?_ ?_
     · exact ((measurable_phiMass _ _).comp (measurable_const.mul hU.sqrt)).aestronglyMeasurable
     · refine Filter.Eventually.of_forall fun x => ?_
-      rw [Real.norm_eq_abs, abs_of_nonneg (phiMass_nonneg massEps_pos massC_pos _)]
-      have := phiMass_le massEps_pos massC_pos (mul_nonneg (norm_nonneg (QkOf m f g)) (Real.sqrt_nonneg (eval x (radU A B))))
+      rw [Real.norm_eq_abs, abs_of_nonneg (phiMass_nonneg epsR_pos massC_pos _)]
+      have := phiMass_le epsR_pos massC_pos (mul_nonneg (norm_nonneg (QkOf m f g)) (Real.sqrt_nonneg (eval x (radU A B))))
       linarith
-  have hcongr : (fun x => phiMass massEps massC ‖QkOf m f g x‖) =ᵐ[stdGaussian (m + m)]
-      fun x => phiMass massEps massC (‖QkOf m f g‖ * √(eval x (radU A B))) := by
+  have hcongr : (fun x => phiMass ε massC ‖QkOf m f g x‖) =ᵐ[stdGaussian (m + m)]
+      fun x => phiMass ε massC (‖QkOf m f g‖ * √(eval x (radU A B))) := by
     filter_upwards [hnq] with x hx
     rw [hx]
   refine ⟨hint.congr hcongr.symm, ?_⟩
@@ -101,14 +101,14 @@ theorem integral_phiMass_QkOf_le (hm : 0 < m) {f g : L2G m} (hf : f ∈ Unimod (
 
 /-- **The mass row** `λ = 1/2` for a unimodular pair: `V̂ ≤ (1 − λ)t² + λ + S − ε̂‖Qh‖²`, for a witness whose hat weight is
 `ε̂ = 25/31` and whose hat tail `ν̂` has `2ν̂ + λ = c`. -/
-theorem massRow_frame (hm : 0 < m) {e ν : ℝ} (he : epsHat e ν = (massEps : ℝ))
+theorem massRow_frame (hm : 0 < m) {e ν : ℝ} (he : epsHat e ν = (ε : ℝ))
     (hν : 2 * nuHat ν + 1 / 2 = (massC : ℝ)) {f g : L2G m}
     (hf : f ∈ Unimod (stdGaussian (m + m))) (hg : g ∈ Unimod (stdGaussian (m + m))) :
     VhatOf m e ν f g
-      ≤ (1 - 1 / 2) * tOf m f g ^ 2 + 1 / 2 + (massS : ℝ) - (massEps : ℝ) * ‖QhOf m f g‖ ^ 2 := by
+      ≤ (1 - 1 / 2) * tOf m f g ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖QhOf m f g‖ ^ 2 := by
   obtain ⟨hi, h3⟩ := integral_phiMass_QkOf_le m hm hf hg
   have h1 := normSq_kOf_le m hf hg
-  have h2 := twice_normSq_QkOf_le m massEps_pos massC_pos hf hg hi
+  have h2 := twice_normSq_QkOf_le m epsR_pos massC_pos hf hg hi
   have hν' : 2 * nuHat ν = (massC : ℝ) - 1 / 2 := by linarith
   rw [VhatOf, he, hν']
   nlinarith [sq_nonneg ‖PkOf m f g‖]

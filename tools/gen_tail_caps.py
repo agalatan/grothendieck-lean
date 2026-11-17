@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
-"""Generate the Lean cap modules of the identity-tail certificate (claude-b9ee, issue #183).
+"""Generate the Lean modules of the node caps of the lower-bound certificate.
 
-usage: python3 tools/gen_tail_caps.py [--rows T,T,...] [--check] [--plan] [--dry-run] [--out DIR]
+usage: python3 tools/gen_tail_caps.py [--check] [--plan] [--dry-run] [--out DIR]
 
-Inputs (committed under data/tail-caps/, copied byte for byte from the certificate's lean-data/ folder; their sha256 are in
-data/tail-caps/SHA256SUMS and are checked first):
-  row_set.json                        the final row set: per cap row its name t, index, θ (15 rationals), δ, κ, smax
+Inputs (committed under data/tail-caps/; their sha256 are in data/tail-caps/SHA256SUMS and are checked first):
+  row_set.json                        the row set: per cap row its name t, index, θ (15 rationals), δ, κ, smax
   <t>/table.json                      the cap table: nodes s_i, caps c_i, sources
   <t>/bind.json                       the record and the live pieces behind every quad entry, the ends of every chord entry
   <t>/records.jsonl, <t>/index.json   the bound records (each line checked against the sha256 of the binding)
 
-Outputs (Grothe/LowerAnalytic/TailCaps/): Common.lean, CommonFacts.lean and, per row K (two digits, the index of row_set.json),
-  RowKK/Data.lean      the row's cap data (tailRowKK, tailRKK, tailChordsKK, tailRecsKK, tailExclKK)
-  RowKK/AnchorJJ.lean  native facts rangeOKNu over consecutive node ranges (anchored nodes: table means; global: Gauss means)
-  RowKK/D<iii>.lean    per localised node i: its directions and pieces (`grid;recipe;constraints`)
-  RowKK/C<iii>.lean    its coverage fact (pieceCoverFastOK)
-  RowKK/R<iii>_<J>.lean its piece facts (pieceRangeOKNu), one grid per module
-  RowKK/N<iii>.lean    its cap (nodeCapNu_of_ranges)
-  RowKK/Assembly.lean  the row's vertex caps, chord fact, PSD fact and node caps (tailCapsKK)
-  RowKK/Bridge.lean    the row of the caps and the row of the Stein side (`tailSteinRowKK`, Grothe/Lower/TailRows, written by
-                       `gen_lower_data.py --tail`) have the same constants and node table (`rfl`)
-and data/tail-caps/native.txt: the native facts of the generated rows, in the format of data/axioms/native.txt (to be merged
-into it when the facts enter the axiom report).
---check regenerates every selected row and compares with the files on disk (exit 1 on any difference); --plan prints the
-modules with their estimated costs; --dry-run runs every check and the plan without writing; --out DIR writes the Lean
-files under DIR instead of the repository's Grothe/LowerAnalytic/TailCaps (and leaves data/tail-caps/native.txt alone).
+Outputs (Grothe/LowerAnalytic/): CapCommon.lean (the tail ν̂ and the grid), CapCommonFacts.lean, CapNodes.lean (the node caps
+of all rows, `TailNodeCaps (nuHat (47/2000))`) and, per row K (two digits, the index of row_set.json = its index in `rowData`),
+  CapRowKK/Data.lean            the row's cap data (capRowKK, capRKK, capChordsKK, capRecsKK, capExclKK)
+  CapRowKK/AnchorRangeJJ.lean   native facts rangeOKNu over consecutive node ranges (anchored nodes: table means; global:
+                                Gauss means)
+  CapPieces/DKKx<i>.lean        per localised node i: its directions and pieces (`grid;recipe;constraints`)
+  CapPieces/CKKx<i>.lean        its coverage fact (pieceCoverFastOK)
+  CapPieces/RKKx<i>_<J>.lean    its piece facts (pieceRangeOKNu), one grid per module
+  CapPieces/NKKx<i>.lean        its cap (nodeCapNu_of_ranges)
+  CapRowKK/Assembly.lean        the row's vertex caps, chord fact, PSD fact and node caps (capsRowKK)
+  CapRowKK/Bridge.lean          the row of the caps and the row of the Stein side (`rowSS`, SS = KK + 1, written by
+                                `gen_lower_data.py`) have the same constants and node table (`rfl`)
+and data/tail-caps/native.txt: the native facts of the node caps, in the format of data/axioms/native.txt (merged into it).
+--check regenerates every file and compares with the files on disk (exit 1 on any difference); --plan prints the modules
+with their estimated costs; --dry-run runs every check and the plan without writing; --out DIR writes the Lean files under
+DIR instead of the repository's Grothe/LowerAnalytic (and leaves data/tail-caps/native.txt alone).
 
 Before writing, every input is checked with exact fractions; the generator stops at the first failure:
   * every quad entry: value = max over its bound pieces of q(s_entry) (pieces checked at the entry's own s), and
@@ -42,8 +42,8 @@ from fractions import Fraction as F
 sys.set_int_max_str_digits(0)
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, 'data', 'tail-caps')
-OUTREL = os.path.join('Grothe', 'LowerAnalytic', 'TailCaps')
-MOD = 'Grothe.LowerAnalytic.TailCaps'
+OUTREL = os.path.join('Grothe', 'LowerAnalytic')
+MOD = 'Grothe.LowerAnalytic'
 EPS = F(25, 31)
 NU = F(47, 1953)
 MARGIN = F(2, 10**9)
@@ -241,42 +241,45 @@ class Row:
 HEADER = '(generated by `tools/gen_tail_caps.py`; do not edit)'
 
 
+def tag_of(K, i):
+    return f'{K}x{i}'
+
+
 def common_files():
     return {
-        'Common.lean': f'''import Grothe.LowerAnalytic.CapRangeNuDefs
+        'CapCommon.lean': f"""import Grothe.LowerAnalytic.CapRangeNuDefs
 
 /-!
-# The identity-tail certificate: weight, tail and grid of its caps {HEADER}
+# The tail and the grid of the node caps {HEADER}
 
-Witness `(ε, ν) = (191/250, 47/2000)`, in hat units `ε̂ = 25/31`, `ν̂ = 47/1953`.
+The witness `T = P₁,₀ − εP₂,₁ + ν(Id − P₁,₀ − P₂,₁)` with `(ε, ν) = (191/250, 47/2000)` has the hat weight
+`ε̂ = 25/31` (the weight `ε` of the rows) and the hat tail `ν̂ = 47/1953`; the node caps bound the fibre potentials of the
+rows with that tail.
 -/
 
 namespace Grothe.LowerAnalytic
 
-/-- The hat weight `ε̂ = 25/31` of the certificate: the weight of the fibre form of its caps. -/
-def tailEps : ℚ := 25 / 31
-
-/-- The hat tail `ν̂ = 47/1953` of the certificate. -/
-def tailNu : ℚ := 47 / 1953
+/-- The hat tail `ν̂ = 47/1953` of the witness. -/
+def capNu : ℚ := 47 / 1953
 
 /-- The grid of the whole-fibre nodes: `1600 × 256` on `[0, 8]`. -/
-def tailGrids : List (ℕ × ℕ × ℚ) := [(1600, 256, 1 / 200)]
+def capGrids : List (ℕ × ℕ × ℚ) := [(1600, 256, 1 / 200)]
 
 end Grothe.LowerAnalytic
-''',
-        'CommonFacts.lean': f'''import Grothe.LowerAnalytic.CapRowsNu
-import {MOD}.Common
+""",
+        'CapCommonFacts.lean': f"""import Grothe.LowerAnalytic.CapRowsNu
+import Grothe.LowerAnalytic.CapCommon
 
-/-! # The tail of the certificate lies in `[0, 1)` {HEADER} -/
+/-! # The tail of the node caps lies in `[0, 1)` {HEADER} -/
 
 namespace Grothe.LowerAnalytic
 
-theorem tailNu_nonneg : (0 : ℚ) ≤ tailNu := by norm_num [tailNu]
+theorem capNu_nonneg : (0 : ℚ) ≤ capNu := by norm_num [capNu]
 
-theorem tailNu_lt_one : tailNu < 1 := by norm_num [tailNu]
+theorem capNu_lt_one : capNu < 1 := by norm_num [capNu]
 
 end Grothe.LowerAnalytic
-'''}
+"""}
 
 
 def or_split(var, bounds, last):
@@ -294,7 +297,8 @@ def or_split(var, bounds, last):
 
 def row_files(row):
     K = f'{row.K:02d}'
-    pre = f'{MOD}.Row{K}'
+    S = f'{row.K + 1:02d}'                                  # the Stein row `rowSS` of `rowData` (1-based)
+    pre = f'{MOD}.CapRow{K}'
     files, plan, facts = {}, [], []
     n = len(row.nodes)
     nodes_str = ';'.join(f'{qs(s)}:{qs(c)}' for s, c in zip(row.nodes, row.caps))
@@ -309,10 +313,10 @@ def row_files(row):
     for _, _, rec, _ in row.local:
         kinds[rec['kind']] = kinds.get(rec['kind'], 0) + 1
     E, R = row.E, row.R
-    files['Data.lean'] = f'''import {MOD}.Common
+    files[f'CapRow{K}/Data.lean'] = f"""import {MOD}.CapCommon
 
 /-!
-# Cap data of row {row.K} (`t = {row.t}`) of the identity-tail certificate {HEADER}
+# Cap data of row {row.K} (`t = {row.t}`) {HEADER}
 
 Row constants θ from `data/tail-caps/row_set.json`; cap table `data/tail-caps/{row.t}/table.json` (sha256
 `{row.table_sha}`), its binding and bound records in the same folder. {n} nodes up to `s = {qs(row.nodes[-1])}`:
@@ -325,7 +329,7 @@ set_option maxRecDepth 100000
 
 /-- Row {row.K} (`t = {row.t}`): forcing parameters, `δ`, `κ`, `smax`, even block, coupling and cap table `s:c;…` (the
 row bound and the law certificate of the row are not part of its cap data). -/
-def tailRow{K} : Grothe.Lower.Row :=
+def capRow{K} : Grothe.Lower.Row :=
   ⟨{ql(row.ell)}, {ql(row.beta)}, {ql(row.delta)}, {ql(row.kappa)}, {ql(row.smax)}, (0 : ℚ),
    ⟨{", ".join(ql(v) for v in E)}⟩,
    {ql(row.b[0])}, {ql(row.b[1])}, {ql(row.b[2])},
@@ -333,25 +337,25 @@ def tailRow{K} : Grothe.Lower.Row :=
    "", []⟩
 
 /-- The odd block `R` of row {row.K}. -/
-def tailR{K} : Grothe.Lower.Sym2 := ⟨{", ".join(ql(v) for v in R)}⟩
+def capR{K} : Grothe.Lower.Sym2 := ⟨{", ".join(ql(v) for v in R)}⟩
 
 /-- The chord nodes `(node, left vertex, right vertex)` of row {row.K}. -/
-def tailChords{K} : List (ℕ × ℕ × ℕ) := [{", ".join(f"({i}, {a}, {b})" for i, a, b in row.chords)}]
+def capChords{K} : List (ℕ × ℕ × ℕ) := [{", ".join(f"({i}, {a}, {b})" for i, a, b in row.chords)}]
 
 /-- The whole-fibre nodes of row {row.K}: `(node, grid, Gauss-point means?, recipe)`. -/
-def tailRecs{K} : List (ℕ × ℕ × Bool × String) := [
+def capRecs{K} : List (ℕ × ℕ × Bool × String) := [
 {(",\n").join(recs)}]
 
 /-- The localised nodes of row {row.K} (certified by their pieces). -/
-def tailExcl{K} : List ℕ := [{", ".join(str(i) for i in excl)}]
+def capExcl{K} : List ℕ := [{", ".join(str(i) for i in excl)}]
 
 end Grothe.LowerAnalytic
-'''
+"""
     # whole-fibre range facts
     ranges = row.anchor_ranges()
     for J, (lo, hi, cost) in enumerate(ranges):
-        hi_t = f'tailRow{K}.nodeList.length' if hi == n else str(hi)
-        files[f'Anchor{J:02d}.lean'] = f'''import {pre}.Data
+        hi_t = f'capRow{K}.nodeList.length' if hi == n else str(hi)
+        files[f'CapRow{K}/AnchorRange{J:02d}.lean'] = f"""import {pre}.Data
 
 /-! # Whole-fibre nodes `{lo} ≤ i < {hi}` of row {row.K} (`t = {row.t}`) {HEADER} -/
 
@@ -359,51 +363,51 @@ open GrotheKernel Grothe.Lower
 
 namespace Grothe.LowerAnalytic
 
-theorem tailAnchor{K}_{J:02d} :
-    rangeOKNu tailEps tailNu tailRow{K} tailR{K} tailChords{K} (parseRecsNu tailRecs{K}) tailGrids
-      tailExcl{K} {lo} {hi_t} = true := by
+theorem row{K}AnchorRange{J:02d} :
+    rangeOKNu ε capNu capRow{K} capR{K} capChords{K} (parseRecsNu capRecs{K}) capGrids
+      capExcl{K} {lo} {hi_t} = true := by
   native_decide
 
 end Grothe.LowerAnalytic
-'''
-        plan.append((f'{pre}.Anchor{J:02d}', cost))
-        facts.append(f'tailAnchor{K}_{J:02d}')
+"""
+        plan.append((f'{pre}.AnchorRange{J:02d}', cost))
+        facts.append(f'row{K}AnchorRange{J:02d}')
     # localised nodes
     ncaps = []
     for i, key, rec, pcs in sorted(row.local, key=lambda x: x[0]):
-        I = f'{i:03d}'
+        tag = tag_of(K, i)
         dirs, pieces = row.node_record(i, key, rec, pcs)
         m = len(pieces)
-        files[f'D{I}.lean'] = f'''/-! # Pieces of node {i} of row {row.K} (`t = {row.t}`, `s = {qs(row.nodes[i])}`, cap `{qs(row.caps[i])}`; record `{key}` of kind `{rec["kind"]}` at `s = {rec["s"]}`) {HEADER} -/
+        files[f'CapPieces/D{tag}.lean'] = f"""/-! # Pieces of node {i} of row {row.K} (`t = {row.t}`, `s = {qs(row.nodes[i])}`, cap `{qs(row.caps[i])}`; record `{key}` of kind `{rec["kind"]}` at `s = {rec["s"]}`) {HEADER} -/
 
 namespace Grothe.LowerAnalytic
 
 set_option maxRecDepth 100000
 
 /-- Node {i} of row {row.K}: directions `d₀, v₂, v₃` and pieces `grid;recipe;constraints`. -/
-def tailNode{K}_{I} : Nat × Nat × List String × List String :=
+def pieceNode_{tag} : Nat × Nat × List String × List String :=
   ({row.K}, {i}, [{", ".join(lstr(d) for d in dirs)}], [
 {(",\n").join("    " + lstr(p) for _, p in pieces)}])
 
 end Grothe.LowerAnalytic
-'''
-        files[f'C{I}.lean'] = f'''import Grothe.LowerAnalytic.CapPieceRange
-import {pre}.D{I}
+"""
+        files[f'CapPieces/C{tag}.lean'] = f"""import Grothe.LowerAnalytic.CapPieceRange
+import {MOD}.CapPieces.D{tag}
 
 /-! # Coverage of node {i} of row {row.K} (`t = {row.t}`) {HEADER} -/
 
 namespace Grothe.LowerAnalytic
 
-theorem tailCover{K}_{I} : pieceCoverFastOK tailNode{K}_{I} = true := by native_decide
+theorem pieceCover_{tag} : pieceCoverFastOK pieceNode_{tag} = true := by native_decide
 
 end Grothe.LowerAnalytic
-'''
-        plan.append((f'{pre}.C{I}', 5))
-        facts.append(f'tailCover{K}_{I}')
+"""
+        plan.append((f'{MOD}.CapPieces.C{tag}', 5))
+        facts.append(f'pieceCover_{tag}')
         pr = Row.piece_ranges(pieces)
         for J, (lo, hi, cost) in enumerate(pr):
-            files[f'R{I}_{J}.lean'] = f'''import {pre}.Data
-import {pre}.D{I}
+            files[f'CapPieces/R{tag}_{J}.lean'] = f"""import {pre}.Data
+import {MOD}.CapPieces.D{tag}
 
 /-! # Pieces `{lo} ≤ j < {hi}` of node {i} of row {row.K} (`t = {row.t}`) {HEADER} -/
 
@@ -411,25 +415,25 @@ open GrotheKernel Grothe.Lower
 
 namespace Grothe.LowerAnalytic
 
-theorem tailPieces{K}_{I}_{J} :
-    pieceRangeOKNu tailEps tailNu tailRow{K} tailR{K} tailNode{K}_{I} {lo} {hi} = true := by
+theorem pieceRange_{tag}_{J} :
+    pieceRangeOKNu ε capNu capRow{K} capR{K} pieceNode_{tag} {lo} {hi} = true := by
   native_decide
 
 end Grothe.LowerAnalytic
-'''
-            plan.append((f'{pre}.R{I}_{J}', cost))
-            facts.append(f'tailPieces{K}_{I}_{J}')
-        imports = '\n'.join([f'import {MOD}.CommonFacts', f'import {pre}.Data', f'import {pre}.C{I}'] +
-                            [f'import {pre}.R{I}_{J}' for J in range(len(pr))])
+"""
+            plan.append((f'{MOD}.CapPieces.R{tag}_{J}', cost))
+            facts.append(f'pieceRange_{tag}_{J}')
+        imports = '\n'.join([f'import {MOD}.CapCommonFacts', f'import {pre}.Data', f'import {MOD}.CapPieces.C{tag}'] +
+                            [f'import {MOD}.CapPieces.R{tag}_{J}' for J in range(len(pr))])
         if len(pr) == 1:
-            body = f'  exact pieceOneOKNu_of_range tailPieces{K}_{I}_0 (Nat.zero_le _) hj'
+            body = f'  exact pieceOneOKNu_of_range pieceRange_{tag}_0 (Nat.zero_le _) hj'
         else:
             disj, pats = or_split('j', [lo for lo, _, _ in pr[1:]], m)
-            cases = [f'pieceOneOKNu_of_range tailPieces{K}_{I}_0 (Nat.zero_le _) h'] + \
-                    [f'pieceOneOKNu_of_range tailPieces{K}_{I}_{J} h1 h2' for J in range(1, len(pr))]
+            cases = [f'pieceOneOKNu_of_range pieceRange_{tag}_0 (Nat.zero_le _) h'] + \
+                    [f'pieceOneOKNu_of_range pieceRange_{tag}_{J} h1 h2' for J in range(1, len(pr))]
             body = (f'  rcases (by omega : {disj}) with {pats}\n' +
                     '\n'.join(f'  · exact {c}' for c in cases))
-        files[f'N{I}.lean'] = f'''{imports}
+        files[f'CapPieces/N{tag}.lean'] = f"""{imports}
 
 /-! # The cap of node {i} of row {row.K} (`t = {row.t}`) from its {m} pieces {HEADER} -/
 
@@ -437,32 +441,31 @@ namespace Grothe.LowerAnalytic
 
 set_option maxRecDepth 100000
 
-/-- **The cap of node {i} of row {row.K}** with the tail `ν̂`, at the weight `ε̂` of the certificate. -/
-theorem tailNodeCap{K}_{I} (heps : tailEps = Grothe.Lower.ε) : NodeCapNu tailNu tailRow{K} tailR{K} {i} := by
-  refine nodeCapNu_of_ranges heps tailNu_nonneg tailNu_lt_one tailRow{K} tailR{K} tailNode{K}_{I}
-    (pieceCoverOK_of_fast tailCover{K}_{I}) (fun j hj => ?_)
-  have hn : tailNode{K}_{I}.2.2.2.length = {m} := rfl
+/-- **The cap of node {i} of row {row.K}** with the tail `ν̂`. -/
+theorem nodeCap_{tag} : NodeCapNu capNu capRow{K} capR{K} {i} := by
+  refine nodeCapNu_of_ranges rfl capNu_nonneg capNu_lt_one capRow{K} capR{K} pieceNode_{tag}
+    (pieceCoverOK_of_fast pieceCover_{tag}) (fun j hj => ?_)
+  have hn : pieceNode_{tag}.2.2.2.length = {m} := rfl
   rw [hn] at hj
 {body}
 
 end Grothe.LowerAnalytic
-'''
-        plan.append((f'{pre}.N{I}', 2))
-        ncaps.append((i, I))
+"""
+        plan.append((f'{MOD}.CapPieces.N{tag}', 2))
+        ncaps.append((i, tag))
     # assembly
-    imports = '\n'.join([f'import {MOD}.CommonFacts', f'import {pre}.Data'] +
-                        [f'import {pre}.Anchor{J:02d}' for J in range(len(ranges))] +
-                        [f'import {pre}.N{I}' for _, I in ncaps])
+    imports = '\n'.join([f'import {MOD}.CapCommonFacts', f'import {pre}.Data'] +
+                        [f'import {pre}.AnchorRange{J:02d}' for J in range(len(ranges))] +
+                        [f'import {MOD}.CapPieces.N{tag}' for _, tag in ncaps])
     if ncaps:
-        excl_proof = (f'''  intro i hmem _hi
-  simp only [tailExcl{K}, List.mem_cons, List.not_mem_nil, or_false] at hmem
+        excl_proof = (f"""  intro i hmem _hi
+  simp only [capExcl{K}, List.mem_cons, List.not_mem_nil, or_false] at hmem
   rcases hmem with {" | ".join("rfl" for _ in ncaps)}
-''' + '\n'.join(f'  · exact tailNodeCap{K}_{I} heps' for _, I in ncaps))
+""" + '\n'.join(f'  · exact nodeCap_{tag}' for _, tag in ncaps))
     else:
-        excl_proof = f'  intro i hmem\n  simp [tailExcl{K}] at hmem'
-    excl_heps = 'heps' if ncaps else '_heps'   # a row without excluded nodes does not use the weight
+        excl_proof = f'  intro i hmem\n  simp [capExcl{K}] at hmem'
     if len(ranges) == 1:
-        vbody = f'  exact nodeCapNu_of_rangeOK heps tailNu_nonneg tailNu_lt_one tailAnchor{K}_00 (tailExclCaps{K} heps)\n    (Nat.zero_le _) hi hi hc'
+        vbody = f'  exact nodeCapNu_of_rangeOK rfl capNu_nonneg capNu_lt_one row{K}AnchorRange00 exclCapsRow{K}\n    (Nat.zero_le _) hi hi hc'
     else:
         bounds = [lo for lo, _, _ in ranges[1:]]
         parts = [f'i < {bounds[0]}'] + [f'({bounds[k - 1]} ≤ i ∧ i < {bounds[k]})' for k in range(1, len(bounds))] + [f'{bounds[-1]} ≤ i']
@@ -470,16 +473,15 @@ end Grothe.LowerAnalytic
         lines = [f'  rcases (show {" ∨ ".join(parts)} by omega) with {" | ".join(pats)}']
         for J in range(len(ranges)):
             args = '(Nat.zero_le _) h' if J == 0 else ('h1 hi' if J == len(ranges) - 1 else 'h1 h2')
-            lines.append(f'  · exact nodeCapNu_of_rangeOK heps tailNu_nonneg tailNu_lt_one tailAnchor{K}_{J:02d}\n      (tailExclCaps{K} heps) {args} hi hc')
+            lines.append(f'  · exact nodeCapNu_of_rangeOK rfl capNu_nonneg capNu_lt_one row{K}AnchorRange{J:02d}\n      exclCapsRow{K} {args} hi hc')
         vbody = '\n'.join(lines)
-    files['Assembly.lean'] = f'''{imports}
+    files[f'CapRow{K}/Assembly.lean'] = f"""{imports}
 
 /-!
-# The node caps of row {row.K} (`t = {row.t}`) of the identity-tail certificate {HEADER}
+# The node caps of row {row.K} (`t = {row.t}`) {HEADER}
 
 The vertex caps from the whole-fibre range facts and the caps of the localised nodes, the chord nodes by convexity
-(`nodeCaps_of_vertexCapsNu`). Every statement takes `tailEps = ε`: the facts are checked at the weight `ε̂ = 25/31` of the
-certificate, which is the rows' weight `ε` once the rows of the repository are those of the certificate.
+(`nodeCaps_of_vertexCapsNu`).
 -/
 
 open GrotheKernel Grothe.Lower
@@ -488,50 +490,89 @@ namespace Grothe.LowerAnalytic
 
 set_option maxRecDepth 100000
 
-theorem tailExclCaps{K} ({excl_heps} : tailEps = Grothe.Lower.ε) :
-    ExclCapsNu tailNu tailRow{K} tailR{K} tailExcl{K} := by
+theorem exclCapsRow{K} : ExclCapsNu capNu capRow{K} capR{K} capExcl{K} := by
 {excl_proof}
 
-theorem tailVertexCaps{K} (heps : tailEps = Grothe.Lower.ε) :
-    VertexCapsRowNu tailNu tailRow{K} tailR{K} tailChords{K} := by
+theorem vertexCapsRow{K} : VertexCapsRowNu capNu capRow{K} capR{K} capChords{K} := by
   intro i hi hc
 {vbody}
 
-theorem tailChordsOK{K} : chordOKLow tailRow{K}.nodeList tailChords{K} = true := by native_decide
+theorem chordsOKRow{K} : chordOKLow capRow{K}.nodeList capChords{K} = true := by native_decide
 
-theorem tailPsd{K} : tailRow{K}.E.psdOK = true ∧ tailR{K}.psdOK = true := by decide +kernel
+theorem psdRow{K} : capRow{K}.E.psdOK = true ∧ capR{K}.psdOK = true := by decide +kernel
 
-/-- **The node caps of row {row.K}** (`t = {row.t}`) with the tail `ν̂`, at the weight `ε̂` of the certificate. -/
-theorem tailCaps{K} (heps : tailEps = Grothe.Lower.ε) :
-    ∀ m ∈ tailRow{K}.nodeList, pot tailRow{K}.E tailR{K} tailRow{K}.ell tailRow{K}.beta
-      (aFib tailRow{K}.b1 tailRow{K}.b2 tailRow{K}.b3) tailNu m.1 - capPad ≤ m.2 :=
-  nodeCaps_of_vertexCapsNu tailPsd{K}.1 tailPsd{K}.2 tailChordsOK{K} (tailVertexCaps{K} heps)
+/-- **The node caps of row {row.K}** (`t = {row.t}`) with the tail `ν̂`. -/
+theorem capsRow{K} :
+    ∀ m ∈ capRow{K}.nodeList, pot capRow{K}.E capR{K} capRow{K}.ell capRow{K}.beta
+      (aFib capRow{K}.b1 capRow{K}.b2 capRow{K}.b3) capNu m.1 - capPad ≤ m.2 :=
+  nodeCaps_of_vertexCapsNu psdRow{K}.1 psdRow{K}.2 chordsOKRow{K} vertexCapsRow{K}
 
 end Grothe.LowerAnalytic
-'''
+"""
     plan.append((f'{pre}.Assembly', 5))
-    facts.append(f'tailChordsOK{K}')
+    facts.append(f'chordsOKRow{K}')
     fields = ['ell', 'beta', 'delta', 'kappa', 'smax', 'E', 'b1', 'b2', 'b3', 'nodes']
-    files['Bridge.lean'] = (f'''import {pre}.Data
-import Grothe.Lower.TailRows.Row{K}
+    files[f'CapRow{K}/Bridge.lean'] = (f"""import {pre}.Data
+import Grothe.Lower.RowData{S}
 
 /-! # Row {row.K} (`t = {row.t}`): the row of the caps is the row of the Stein side {HEADER}
 
-The cap data `tailRow{K}` and the Stein row `tailSteinRow{K}` (`gen_lower_data.py --tail`) are written from the same constants
-and the same cap table; their common fields agree by `rfl`. -/
+The cap data `capRow{K}` and the Stein row `row{S}` (`gen_lower_data.py`) are written from the same constants and the
+same cap table; their common fields agree by `rfl`, and `R` is the gate of the row (`rowGates`). -/
 
 namespace Grothe.LowerAnalytic
 
-theorem tailBridge{K} :
-    ''' + ' ∧\n      '.join(f'Grothe.Lower.tailSteinRow{K}.{fl} = tailRow{K}.{fl}' for fl in fields) +
+theorem capBridge{K} :
+    """ + ' ∧\n      '.join(f'Grothe.Lower.row{S}.{fl} = capRow{K}.{fl}' for fl in fields) +
         ' :=\n  ⟨' + ', '.join('rfl' for _ in fields) + '⟩\n\nend Grothe.LowerAnalytic\n')
     plan.append((f'{pre}.Bridge', 2))
-    return {f'Row{K}/{k}': v for k, v in files.items()}, plan, facts
+    return files, plan, facts
+
+
+def capnodes_file(rows):
+    """`CapNodes.lean`: the node caps of every row of `rowData` with the tail `ν̂ = nuHat ν`."""
+    imports = ''.join(f'import {MOD}.CapRow{r.K:02d}.Assembly\nimport {MOD}.CapRow{r.K:02d}.Bridge\n' for r in rows)
+    cases = []
+    for r in rows:
+        K = f'{r.K:02d}'
+        cases.append(f"""  · have hk : rowData.getD {r.K} row01 = row{r.K + 1:02d} := rfl
+    have hR : rowR {r.K} = capR{K} := rfl
+    obtain ⟨hl, hb, -, -, -, hE, h1, h2, h3, hn⟩ := capBridge{K}
+    rw [hk] at hm ⊢
+    rw [hR, hl, hb, hE, h1, h2, h3]
+    exact capsRow{K} m (by simpa only [Row.nodeList, hn] using hm)""")
+    n = len(rows)
+    return f"""{imports}import Grothe.LowerAnalytic.RowGaussian
+
+/-!
+# The node caps of the rows {HEADER}
+
+`TailNodeCaps (nuHat (47/2000))`: at every node `(s, c)` of every row of `rowData`, `Ψ(s) − capPad ≤ c` for the fibre
+potential of the row with the tail `ν̂ = 47/1953` (`capsRowKK`, through the bridges `capBridgeKK` from the cap data to the
+rows and the gate matrices `rowR`).
+-/
+
+open GrotheKernel Grothe.Lower
+
+namespace Grothe.LowerAnalytic
+
+set_option maxRecDepth 100000
+
+/-- **The node caps of the rows** with the tail of the witness `(191/250, 47/2000)`. -/
+theorem tailNodeCaps_cert : TailNodeCaps (nuHat (47 / 2000)) := by
+  refine tailNodeCaps_nuHat (nu := capNu) (by norm_num [nuHat, capNu]) ?_
+  intro k hk m hm
+  have hlen : rowData.length = {n} := rfl
+  rw [hlen] at hk
+  interval_cases k
+{chr(10).join(cases)}
+
+end Grothe.LowerAnalytic
+"""
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--rows', default='')
     ap.add_argument('--check', action='store_true')
     ap.add_argument('--plan', action='store_true')
     ap.add_argument('--dry-run', action='store_true')
@@ -539,17 +580,16 @@ def main():
     args = ap.parse_args()
     check_inputs()
     S = json.load(open(os.path.join(DATA, 'row_set.json')))
-    caprows = [P for P in S['pieces'] if P.get('kind') == 'caprow']
-    want = [t for t in args.rows.split(',') if t] or [P['name'] for P in caprows]
+    caprows = sorted((P for P in S['pieces'] if P.get('kind') == 'caprow'), key=lambda P: P['index'])
+    assert [P['index'] for P in caprows] == list(range(len(caprows)))
     files, plan, facts = dict(common_files()), [], []
-    for t in want:
-        P = next((P for P in caprows if P['name'] == t), None)
-        if P is None:
-            die(f'no cap row {t} in row_set.json')
-        fs, pl, fa = row_files(Row(P))
+    rows = [Row(P) for P in caprows]
+    for row in rows:
+        fs, pl, fa = row_files(row)
         files.update(fs)
         plan += pl
         facts += fa
+    files['CapNodes.lean'] = capnodes_file(rows)
     native = ''.join(f'Grothe.LowerAnalytic.{f}._native.native_decide.ax_1_1\n' for f in sorted(facts))
     native_path = os.path.join(DATA, 'native.txt')
     out = args.out or os.path.join(ROOT, OUTREL)
@@ -558,17 +598,17 @@ def main():
             print(f'{cost:6d} s  {mod}')
         print(f'{len(plan)} modules, {sum(c for _, c in plan)} s estimated (one process on yo)')
     if args.dry_run:
-        print(f'gen_tail_caps --dry-run: rows {",".join(want)} pass every check; {len(files)} files would be written')
+        print(f'gen_tail_caps --dry-run: all {len(rows)} rows pass every check; {len(files)} files would be written')
         return
     if args.check:
         bad = [k for k, v in files.items() if not os.path.exists(os.path.join(out, k)) or open(os.path.join(out, k), encoding='utf-8').read() != v]
         if not os.path.exists(native_path) or open(native_path, encoding='utf-8').read() != native:
-            bad.append('../../../data/tail-caps/native.txt')
+            bad.append('../../data/tail-caps/native.txt')
         for k in bad:
             print(f'differs: {OUTREL}/{k}')
         if bad:
             sys.exit(1)
-        print(f'gen_tail_caps --check: {len(files)} files of rows {",".join(want)} reproduce byte for byte')
+        print(f'gen_tail_caps --check: {len(files)} files reproduce byte for byte')
         return
     for k, v in files.items():
         p = os.path.join(out, k)
@@ -578,7 +618,7 @@ def main():
     if not args.out:
         with open(native_path, 'w', encoding='utf-8') as f:
             f.write(native)
-    print(f'gen_tail_caps: {len(files)} files written for rows {",".join(want)}; {len(facts)} native facts' +
+    print(f'gen_tail_caps: {len(files)} files written; {len(facts)} native facts' +
           ('' if args.out else ' in data/tail-caps/native.txt'))
 
 
