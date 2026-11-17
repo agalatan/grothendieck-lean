@@ -4,7 +4,7 @@ The current proved upper bound is **K_G^ℂ < 1.404599395362**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
 [`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
 proved lower bound, `main_bounds` states
-**1.401700322371 < K_G^ℂ < 1.404599395362** in
+**1.4018 < K_G^ℂ < 1.404599395362** in
 [`MainResult.lean`](../Grothe/MainResult.lean).
 
 The sharper target **K_G^ℂ < 1.404598149141** has only a conditional route,
@@ -245,13 +245,11 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   error targets must not be confused with established numerical enclosures.
   The omitted-input Hilbert–Schmidt route, archived in `abandonware/`, is a
   separate way to seek those bounds, not an assumption of `main_bounds`.
-* The lower endpoint is also closed: `lower_target` and `capsRest` in
-  `MainResult.lean` give `1.401700322371 < K_G^ℂ` after all node-cap rows are
-  certified and the exclusion list is empty. The endpoint comes from
-  `Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement`
-  under the same `NodeCaps`; the finite-mixture refinement of the cover
-  leaves the Gaussian cap computations unchanged. The main theorem has no
-  remaining `CapsRest` assumption.
+* The lower endpoint is also closed: `lower_target` in `MainResult.lean`
+  gives `1.4018 < K_G^ℂ` from the certificate of the witness with an identity
+  tail (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows
+  (`tailNodeCaps_cert`); see [LEAN_DETAILS.md](LEAN_DETAILS.md) and
+  [CAPS.md](CAPS.md).
 
 ## 5. Historical `ComparisonInputs` plan for the original sharper caps
 
