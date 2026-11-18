@@ -21,10 +21,33 @@ finite exact computations evaluated by compiled code (`native_decide`); see
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
 | Oct–Nov 2026 | **this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K < 1.404599395362}$ |
+| Nov 2026 | **this repository**, [article](haagerup-article/main.pdf) (computer-assisted) | | $\mathbf{K \le 1.40456109 < 1/\gamma^\dagger}$ |
 
 Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
-$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
-it lies inside the interval, about $2.35 \cdot 10^{-5}$ below our upper bound.
+$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, was proposed by Haagerup (1987) as the
+exact value. It lies inside the Lean interval above, about $2.35 \cdot 10^{-5}$ below its upper end, but it is not the
+constant.
+
+## Haagerup's value is not the constant
+
+**The article: [haagerup-article/main.pdf](haagerup-article/main.pdf)** (on arXiv soon). It proves
+
+$$K_G^{\mathbb{C}} \le 1.40456109 < 1/\gamma^\dagger = 1.4045759\ldots,$$
+
+so the conjecture $K_G^{\mathbb{C}} = 1/\gamma^\dagger$ is false.
+- **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
+  rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
+- **The proof is computer-assisted.** Its finitely many numerical facts are certified in exact rational and
+  interval arithmetic, and were re-checked with independently written code. The certificate is in
+  [`haagerup-article/certificate/`](haagerup-article/certificate).
+- **The Lean companion.** A small, separate Lean package,
+  [`haagerup-article/lean`](haagerup-article/lean), has its own CI job and imports only Mathlib. Its theorem
+  `HaagerupRefutation.upper_bound`
+  ([`UpperBound.lean`](haagerup-article/lean/HaagerupRefutation/UpperBound.lean)) derives the bound from three
+  certified facts per channel. Lean proves everything else, including the whole numerical budget by exact evaluation.
+- **Not yet part of `main_bounds`.** Bringing this bound into the main development above is in progress.
+- **How it was found.** The construction was discovered with AI, at the end of this project; the article's last
+  section describes how.
 
 The lower endpoint is `Grothe.Statement.lower_target`. The upper endpoint is
 `Grothe.Statement.upper_below_tight`

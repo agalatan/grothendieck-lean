@@ -1135,6 +1135,15 @@ rationals. The Hardy covers of the GT and phase channels and the heads of the GT
 phase-free variant (four channels, $\KG\le1.40456425$) avoids the phase bridge.
 % SRC: [SR] "What I would do next" (6.5e8 vs 4.8e9, "a guess"); 330 bits [RC] Findings 2; [LP] item 7.
 
+\paragraph{A companion package.} Independently of that development, the folder of this article contains a small
+Lean~4 package, \texttt{HaagerupRefutation}, which imports only Mathlib and has its own continuous-integration job. Its
+theorem \lean{HaagerupRefutation.upper\_bound} states $\KG\le1.40456109$ and $\KG<1/\gd$ for six kernel sequences that
+satisfy three facts per channel: each is dominated (Definition~\ref{def:realisable}); its first $251$ coefficients lie
+within a stated $\ell^1$ distance of the certificate's head data; and its tail is below a stated bound. Lean proves the
+transfer bound, the closure under mixtures and the bound $\gd<0.7119595$, and it checks the whole budget by exact
+evaluation of the head data, which a committed script generates from the certificate. The three facts per channel are
+what Sections~2--7 and the interval computation establish.
+
 % ============================================================================================
 \section{Discussion}\label{sec:discussion}
 
