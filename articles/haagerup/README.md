@@ -1,6 +1,6 @@
 # Six-channel certificate for the complex Grothendieck constant
 
-The advertised bound is $K_G^{\mathbb C} \le 140457588/100000000 = 1.40457588$. A separate integral estimate gives $1.40457588 < 1/\gamma^\dagger$. In the parent repository, `Grothe.UpperSix.bound` uses the scalar and vector optima from `Grothe.Statement`. End-to-end verification of this branch is in progress. [Upper entrypoint](../../Grothe/UpperResult.lean).
+The theorem for the six-channel certificate states $K_G^{\mathbb C} \le 140457588/100000000 = 1.40457588$. A separate integral estimate gives $1.40457588 < 1/\gamma^\dagger$. In the parent repository, `Grothe.UpperSix.bound` uses the scalar and vector optima from `Grothe.Statement`. [Upper entrypoint](../../Grothe/UpperResult.lean).
 
 | Proof | Source |
 |---|---|

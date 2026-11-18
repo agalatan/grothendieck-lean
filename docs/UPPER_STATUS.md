@@ -1,6 +1,6 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The six-channel proof at the advertised value `K_G^ℂ ≤ 1.40457588` is under end-to-end verification. The same upper entrypoint states the strict comparison with the reciprocal phase integral. [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../articles/haagerup/README.md).
+The six-channel upper entrypoint states `K_G^ℂ ≤ 1.40457588`. The separate phase-integral estimate puts that rational strictly below `1/γ†`. [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../articles/haagerup/README.md).
 
 ## Earlier single-channel construction
 
@@ -20,13 +20,11 @@ all proved, and the energy-table discrepancy bound `6847009/(5·10^17)`, which
 The single-channel proof uses six certified low-band and whole-source estimates,
 tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `117/100`) with a linear-energy
 deduction. Its entrypoint is `upper_below_tight`, and the energy-table accuracy
-`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). Every module
-under `Grothe/` is in the import closure of `MainResult.lean`; unused formulations are
-kept outside the build, in [the committed archive](../miscellaneous/other-bounds/README.md)
+`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). The generated root includes this proof alongside the six-channel proof used by
+`MainResult.lean`. Alternative single-channel formulations are in [the committed archive](../miscellaneous/other-bounds/README.md)
 and in [`abandonware/`](../abandonware/README.md).
-Shared Gaussian phase identity and Laplace infrastructure remain in the proof.
 
-Sections 1 and 4 describe the current status. Sections 2, 3 and 5 retain
+Sections 1 and 4 describe this single-channel construction. Sections 2, 3 and 5 retain
 construction history and the original sharper-target plan, with completed
 steps identified. Their old costs, residual shares and proposed tolerances
 are not the current theorem's budget or a schedule of remaining work.
@@ -233,7 +231,7 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
 * The actual table accuracy is **proved**, not an open quadrature project:
   `Final.hclose_final` combines the accepted energy facts with the full
   quadrature remainder, tail and omitted-pair bounds. It supplies the table
-  input to the current endpoint.
+  input to `upper_below_tight`.
 * Every even phase moment is identified with a finite rational calculation on
   the production phase (`integral_phiT_pow_even` in `ConcretePhaseMoments`).
   `PhaseMoment2`, `PhaseMoment4`, `PhaseMoment6` and `PhaseMomentNorms` provide

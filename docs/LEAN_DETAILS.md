@@ -11,8 +11,8 @@ The earlier `upper_below_tight` proof uses one Gaussian rounding. Its budgets, q
 **Reading this inventory.** Most paragraphs describe one module or one result.
 Where a paragraph says that a result takes an estimate as a hypothesis, or that
 it gives no numerical bound, this describes that result; it is not an open
-input of the main theorems, which have no hypotheses. Every module under
-`Grothe/` is in the import closure of `Grothe/MainResult.lean`. A module called
+input of the main theorems, which have no hypotheses. The generated root imports both the six-channel proof used by
+`Grothe/MainResult.lean` and the independent single-channel proof. A module called
 *archived* below is kept outside the libraries, in `abandonware/`
 (`abandonware/README.md`) unless the text names `miscellaneous/`; it is not
 built or checked. The value `1.404598149141` is the
@@ -64,9 +64,9 @@ acceptance is applied in `HardyGaussian`, using the interval soundness proved by
 `HardyGaussianSound`; holomorphy and Parseval then yield
 `HardyReal.hardy_GT_gaussian` for the actual rounding.
 `UpperTightFinal` uses this budget and deducts the forced linear energy,
-certifying tail `219549168/10¹⁶` and the new `main_bounds` endpoint.
+certifying the single-channel tail `219549168/10¹⁶`.
 
-**Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
+**Single-channel endpoint assembly.** `upper_below_tight` combines the port-fact bundles
 `PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
 `TightTwist.remainder1/2/3`, the longer-prefix weighted comparison, and the table
 accuracy `Final.hclose_final`. Both the mass comparison and finite-head transfer
@@ -572,8 +572,8 @@ radii (`localized_comparison_tight_three_band`, `UpperTightComparison`) and
 passes the result to `TightEndpoint.endpoint_of_comparison` (`UpperTightFinal`),
 which adds the head, the table error (`Final.hclose_final`,
 `Grothe/UpperClose.lean`) and the Hardy tail. The public `UpperTarget`
-threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the
-stricter threshold `1.404599395362`.
+threshold is `1.4046`. The single-channel theorem `upper_below_tight` gives
+the strict threshold `1.404599395362`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -875,8 +875,8 @@ optima and the fixed-dimension test `isGrothendieckBound_iff_fixed_dim`
 (`PolarizedGram`); and a rational support-defect correction with its quartic
 Newton contraction (`LowerAnalytic/JointDefect`, `LowerAnalytic/QuarticNewton`).
 
-**Upper bound.** The proved upper bound is `upper_below_tight` ("Upper endpoint
-assembly" at the top of this file). The sharper value that the rounding was
+**Single-channel upper bound.** The theorem `upper_below_tight` uses the
+assembly described above. The sharper value that the rounding was
 designed for is conditional and archived: `fresh_upper_rounder`
 (`UpperChaos/GroupedRounder`, with `UpperChaos/GroupedComparison` and
 `Upper/GroupedBridge`) proves

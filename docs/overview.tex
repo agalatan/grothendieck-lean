@@ -31,9 +31,8 @@
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
 \Large $1.401700322371\;<\;\KG\;\le\;1.40457588$\\[6pt]
-\normalsize The upper endpoint is the advertised six-channel rational bound. The
-combined statement is \lean{Grothe.Statement.main\_bounds}. End-to-end
-verification of the six-channel proof is in progress on this branch.\vspace{4pt}
+\normalsize The combined theorem is \lean{Grothe.Statement.main\_bounds}.
+The six-channel upper endpoint is the rational number $140457588/100000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -289,7 +288,7 @@ and $\cos^4\theta$ are $1/2$ and $3/8$, so the mean of $Q$ is $117/100$.
 Consequently the actual kernel satisfies
 $\sum_{n<J}c_n^2(4149/4000)^{4n+2}\le117/100$ for every $J$.
 The finite head then supplies the linear-energy deduction used by
-\lean{main\_bounds}. The modules \path{GaussianPair},
+\lean{upper\_below\_tight}. The modules \path{GaussianPair},
 \path{GaussianAmplitude}, \path{SchurMainGaussian} and
 \path{HardyGaussian} under \path{Grothe/UpperChaos/} prove this chain;
 \path{HardyGaussianCheck}, \path{HardyGaussianFacts} and
@@ -307,7 +306,7 @@ $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded to
 \paragraph{Supporting results.}
 The paragraphs from here to the end of this subsection, and the one after the
 references, record further Lean results about the same rounding, all in the
-import closure of the final theorems: bindings of the stored source data and
+import closure of the single-channel theorem. They include bindings of the stored source data and
 analytic lemmas. Several are
 interfaces that take numerical estimates as hypotheses, and the text says which.
 The earlier single-channel theorem has discharged its Gaussian hypotheses: \lean{upper\_below\_tight}
@@ -956,8 +955,8 @@ integrals still require certification before they can improve either endpoint.
 
 \textbf{[P,C; polynomial certificate in Lean, archived]} The entire Gaussian-phase cubic-preprocessor family
 $H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
-has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119464829\ldots$, the reciprocal of
-the proved bound (the sharper target $1.404598149141$ corresponds to $0.7119473997\ldots$).
+has full reciprocal score at most $0.71186$. Even the earlier single-channel bound
+has reciprocal $0.7119464829\ldots$, above this ceiling.
 The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certificates handle all complex phases.
 Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
 responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction

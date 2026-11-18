@@ -1,16 +1,18 @@
 # The complex Grothendieck constant, in Lean
 
-The endpoint for the six-channel certificate is
-\[
-1.401700322371 < K_G^{\mathbb C} \le 1.40457588 .
-\]
-The lower inequality is certified on master. End-to-end verification of the new upper endpoint is in progress on this branch. The previous checked interval on master has upper endpoint $1.404599395362$.
+The two-sided theorem for the complex Grothendieck constant is
+
+$$
+1.401700322371 < K_G^{\mathbb C} \le 1.40457588.
+$$
 
 The upper entrypoint states that $140457588/100000000$ is admissible for every finite complex matrix. It also compares the constant with Haagerup’s proposed value,
-\[
+
+$$
  K_G^{\mathbb C} \le 1.40457588 < 1/\gamma^\dagger, \qquad
- \gamma^\dagger=\int_0^{\pi/2}\frac{\cos^2 t}{\sqrt{1+\sin^2 t}}\,dt .
-\]
+ \gamma^\dagger=\int_0^{\pi/2}\frac{\cos^2 t}{\sqrt{1+\sin^2 t}}\,dt.
+$$
+
 The comparison uses rational bounds on the integral. [Upper theorem](Grothe/UpperResult.lean) · [Two-sided theorem](Grothe/MainResult.lean) · [Six-channel proof and build instructions](articles/haagerup/README.md).
 
 | year | who | lower bound | upper bound |
@@ -20,7 +22,7 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K\le 1.40457588}$ (six-channel check pending) |
+| Oct–Nov 2026 | **this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K\le 1.40457588}$ |
 
 [OVERVIEW.pdf](OVERVIEW.pdf) describes the mathematics, the finite certificate checks and the open problems.
 
@@ -138,12 +140,12 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
 | `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |
 | `Grothe/UpperTightBudget.lean`, `Grothe/UpperTightComparison.lean` | single-channel budgets and the comparison with independent reference mass and error radii |
 | `Grothe/UpperTightSix.lean`, `Grothe/UpperTightPanelTotals.lean` | six Gaussian error estimates; kernel checks of tighter totals of the existing panel caps |
-| `Grothe/Transfer.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality of the upper bound |
+| `Grothe/Transfer.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality used by the single-channel proof |
 | `Grothe/Lower/` | the lower certificate: its checker in exact rational arithmetic with the soundness of rows, Stein cuts, node certificates and boxes; the generated row data; the transfer to finite matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis of the lower bound: the witness, chaos projections, the law of cubic chaos (moments, spectral and Gram budgets, Wick expansions), the potentials $\Psi_r$ and the row reduction; the node caps (`Cap*.lean`, the generated rows `CapRowKK` and pieces `CapPieces/`) |
 | `Grothe/Research/` | the box cover of the lower certificate, further node certificates, and the resulting theorem `lower_bound_of_refined_cover_data` |
 | `Grothe/Haagerup/` | the phase $z/\lvert z \rvert$ of a complex Gaussian: Hermite coefficients, kernel, Laplace representation |
-| `Grothe/Upper/` | the upper bound apart from Gaussian analysis: two-coordinate kernels, disk-valued roundings, tensor realisation of the preprocessors, soundness of the head computation, residual and tail arithmetic, comparison budgets; `Data.lean` holds the rounding parameters, the preprocessors and the energy table |
+| `Grothe/Upper/` | the single-channel upper proof apart from Gaussian analysis: two-coordinate kernels, disk-valued roundings, tensor realisation of the preprocessors, soundness of the head computation, residual and tail arithmetic, comparison budgets; `Data.lean` holds the rounding parameters, the preprocessors and the energy table |
 | `Grothe/UpperChaos/` | chaos calculus on $\mathbb{C}^2$ (Hermite basis, Mehler formula, charge, energies), the rounding, the phase cover, the Hardy tail, the comparison with $X$, the stored Hermite expansions, and generated certificate modules |
 | `Grothe/UpperQuad/` | the quadrature: soundness of its checkers, the energy, port and ellipse facts, the Gauss–Legendre remainder on Bernstein ellipses |
 | `GrotheKernel/`, `GrotheCapsKernel/`, `GrotheQuadKernel/`, `GrotheQuadExtKernel/` | checker programs that do not import Mathlib, precompiled by Lake: kernel head, phase cover and Hardy arcs; node caps; quadrature of the energy table; its extension to the $h_j$ and the omitted pairs |
@@ -167,6 +169,15 @@ in [OVERVIEW.pdf](OVERVIEW.pdf). Both grew with the proofs and have not yet been
 paragraph in them calls an input a hypothesis or open, the theorems named above are the current state.
 
 ## Building
+
+From the repository root, these commands check the six-channel upper bound and audit its axioms.
+
+```sh
+lake build Grothe.UpperResult
+lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six
+```
+
+The combined development, including the lower certificate, uses
 
 ```sh
 lake exe cache get   # Mathlib v4.34.1 (toolchain leanprover/lean4:v4.34.1)
@@ -216,6 +227,6 @@ al., *New lower and upper bounds for the Grothendieck constant*, [arXiv:2608.111
 ## How this was made
 
 The numerical constructions and certificates were produced in a collaboration between several AI research
-systems; this Lean development checks them. The certificate data is committed in `data/`, with the generators
-and replay scripts in `tools/`; records of the search are archived in `handoff/` and `miscellaneous/`. No step of
+systems; this Lean development checks them. The six-channel cell arrays and overlap tables are Lean literals in `Grothe/UpperSix/Haagerup/Data/`.
+Other certificates have inputs in `data/` and generators and replay scripts in `tools/`. Search records are archived in `handoff/` and `miscellaneous/`. No step of
 the two proofs rests on a certificate that is checked outside Lean.

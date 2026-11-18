@@ -3,9 +3,10 @@ import Haagerup
 /-!
 # Kernel Axiom Audit for `Haagerup`
 
-Verifies that `upper_below_haagerup` and `constant_lt_inv_gammaDagger` depend only on standard Lean
-axioms (`propext`, `Classical.choice`, `Quot.sound`) plus `Lean.ofReduceBool` and
-`Lean.trustCompiler` from finite `native_decide` checks.
+Prints the transitive axiom dependencies of the standalone headline theorems.
+Lean reports each compiled Boolean check under its own `_native.native_decide` axiom.
+The parent repository verifies its upper endpoint against
+`data/axioms/modes/upper-six.native.txt` using `scripts/check_axioms.py --upper-six`.
 
 Agent-ID: gemini-21d5
 -/
