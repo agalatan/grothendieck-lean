@@ -771,6 +771,30 @@ class CoexistTests(unittest.TestCase):
             self.assertIsNone(c.ProcFS().read(2))
         self.assertEqual([r["pid"] for r in rows], [3])
 
+    def test_shared_proc_inventory_skips_a_process_that_exits_between_reads(self):
+        # Run 44108045971 failed with "cannot read basic process 44080: ProcessLookupError": Linux answers ESRCH,
+        # not ENOENT, when a process exits between the reads of its stat and status files.
+        base = self.root / "proc-esrch"
+        for pid in (3, 4):
+            directory = base / str(pid)
+            directory.mkdir(parents=True)
+            fields = ["S", "200", str(pid), *("0" for _ in range(19))]
+            fields[19] = "12345"
+            (directory / "stat").write_text(f"{pid} (lean) " + " ".join(fields))
+            (directory / "status").write_text(f"Uid:\t{os.getuid()}\t{os.getuid()}\t{os.getuid()}\t{os.getuid()}\n")
+        real_path, real_read_text = c.Path, Path.read_text
+
+        def read_text(path, *args, **kwargs):
+            if path.name == "status" and path.parent.name == "4":
+                raise ProcessLookupError(3, "No such process")
+            return real_read_text(path, *args, **kwargs)
+
+        with patch.object(c, "Path", side_effect=lambda value: base if str(value) == "/proc" else real_path(value)), \
+                patch.object(Path, "read_text", read_text):
+            rows = c.ProcFS().snapshot()
+            self.assertIsNone(c.ProcFS().basic(4))
+        self.assertEqual([r["pid"] for r in rows], [3])
+
 
 class ProcCommandTests(unittest.TestCase):
     def setUp(self):
