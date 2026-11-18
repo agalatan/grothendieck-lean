@@ -1,53 +1,65 @@
-# Ancillary files: the six-channel certificate and its verifier
+# Ancillary files: the Lean proof
 
-These files certify the numerical facts of Section 4 of the article, which give `K_G^C <= 1/D < 1.40456109 < 1/γ†`.
-They contain no Lean files. The Lean companion (Appendix B of the article) is kept in the repository
-<https://github.com/agalatan/grothendieck-lean>, folder `haagerup-article/lean`.
+This folder is a standalone Lean 4 package that proves the article's theorem, with no hypotheses:
+
+```lean
+theorem Haagerup.isBound_cert :
+    Haagerup.Statement.IsBound (140457588 / 100000000 : ℝ)
+theorem Haagerup.constant_lt_inv_gammaDagger :
+    Haagerup.Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger
+```
+
+that is, `K_G^ℂ ≤ 1.40457588 < 1/γ† = 1.4045759346…`.
+
+- `IsBound K` says `V(A) ≤ K · C(A)` for every finite complex matrix `A`, where `C(A)` is the optimum over unimodular
+  scalars and `V(A)` the optimum over unit vectors of `ℂ^ι`, for every finite type `ι`.
+- `complexGrothendieckConstant` is the infimum of all such `K`.
+- `gammaDagger` is Haagerup's integral `∫₀^{π/2} cos² t / √(1 + sin² t) dt`.
+
+All of these are defined in `Grothe/UpperSix/Haagerup/Statement.lean`.
+
+The certificate data (cell maps, Fourier tables, sum-of-squares witnesses, overlap tables, channel parameters) are
+Lean literals in `Grothe/UpperSix/Haagerup/Data/` and `Grothe/UpperSix/Haagerup/Parameters.lean`. Lean checks them;
+there are no other data files and no external verifier.
+
+## Build
+
+Lean and Mathlib versions are pinned in `lean-toolchain` and `lake-manifest.json` (Mathlib `v4.34.1`).
+
+```sh
+lake exe cache get      # Mathlib's compiled files
+lake build              # about 30 minutes on 4 cores
+lake env lean Axioms.lean
+```
+
+## What to trust
+
+The axiom report lists `propext`, `Classical.choice` and `Quot.sound`. It also lists the finite computations checked
+with `native_decide`, which the compiled evaluator runs instead of the kernel; they are named in `native.txt`.
+
+| computation | facts |
+|---|---|
+| norm bounds of the two cell maps | `tcell_sos_ok`, `tig_sos_ok` |
+| their overlap tables | `tcell_rows_ok`, `tig_mu_ok` |
+| the head sum of the six channels | `head_sum_ok` |
+| the Hardy-space contour estimates, per channel | `reg0_ok`…`reg5_ok`, `mean0_ok`…`mean5_ok` |
+
+Every other step, including the rational comparisons of the tails and the weights, is checked by the kernel.
 
 ## Files
 
-| file | content |
+| proof | source |
 |---|---|
-| `channels.json` | the six channels: kind (`GT`, `tiger`, `phase`), weight `w`, polynomials `P`, `Q` (GT) or `R`, Hardy-circle parameters `r`, `j`; exact rationals as strings |
-| `tiger.json` | the tiger grid: `Npsi` angle cells, radial edges `e1`, `e2` (exact rationals, last edge `inf`), `q_shift`, the reflection rule `G[p] = F[(p + Npsi/2) mod Npsi]`, the convention |
-| `tiger.npz` | `F_re`, `F_im`: int64, shape (64, 48, 48); the value of `F` on a cell is `(F_re + i F_im) / 2^20` |
-| `gt_energy.npz` | the exact dyadic GT energy table `E[n, m] = a / 2^k` (arrays `m`, `n`, `a`, `k`, int64, 21,168 entries) and the rationals `bQ`, `etaQ`, `energyErrQ` (`[numerator, denominator]`) |
-| `verify_certificate.py` | the verifier; it reads only this folder |
-| `export_gt_energy.py` | how `gt_energy.npz` was made from the repository's `Grothe/Upper/Data.lean` (needs the repository; not needed to verify) |
-| `requirements.txt` | the pinned versions of python-flint and numpy |
-| `SHA256SUMS` | the SHA-256 hashes of the files above and of this README |
-
-## Verify
-
-```sh
-sha256sum -c SHA256SUMS
-python3 -m venv venv && venv/bin/pip install -r requirements.txt
-venv/bin/python verify_certificate.py
-```
-
-The verifier prints one `PASS` or `FAIL` line per check, then the budget. Its last line is
-`ALL CHECKS PASSED: K_G^C <= 1/D < 1.40456109 < 1/gamma_dagger`, and its exit status is 0 only if every check passes.
-It runs in about 5 minutes on one core (Python 3.12, python-flint 0.9.0, numpy 2.5.4).
-
-## What is checked
-
-| check | content |
-|---|---|
-| channel data | the kinds, the weights `w1..w6` and the polynomials `P1, Q1, P2, Q2, P3, Q3, R4, R5, R6` equal Table 1 of the article exactly; the weights are positive and sum to 1 |
-| dominated | the hypotheses of the realisation argument of Section 3: `ℓ¹(P), ℓ¹(Q), ℓ¹(R) ≤ 1`, `Q(0) = 0`, and `|F| ≤ 1` on every tiger cell, in exact integers. Domination itself is the mathematical statement of Section 3; it is not a numerical fact |
-| head comparison | GT channels: the universal comparison and table allowance, from the energy table, is below `1494117/10^12`. Tiger and phase channels: their head coefficients are the exact values, enclosed in the balls of the next two checks |
-| `h_0` | `h_0` of the mixture is above `711968933048/10^12` |
-| head `ℓ¹` | `Σ_{k=1..250} |h_k|` is below `1248782/10^12` |
-| tails | `Σ_i w_i tail_i` is below `32/10^9`; each `tail_i` bounds `Σ_{k>250} |h_{i,k}|` by a Hardy-circle cover of radius `r_i` |
-| budget | the exact rational budget `D_cert` of Section 4, and `γ† < 7119595/10^7` (Lemma 4.1, which the Lean companion also proves) |
+| the matrix optima, admissible bounds, the constant and γ† | `Grothe/UpperSix/Haagerup/Statement.lean` |
+| convex transfer from the signed head and the six tail estimates | `Grothe/UpperSix/Haagerup/Transfer.lean` |
+| cell maps, Hermite energies and finite interval enclosures | `Grothe/UpperSix/Haagerup/CellHermite.lean`, `CellOverlap.lean`, `CellOverlapCore.lean` |
+| disk positivity, circle means and infinite tails | `Grothe/UpperSix/Haagerup/SchurHardy.lean`, `ContourChecks/` |
+| the six channels, weights, 251 head coefficients and the budget | `Grothe/UpperSix/Haagerup/CertCheck.lean` |
+| the strict comparison with `1/γ†` | `Grothe/UpperSix/Haagerup/GammaDagger.lean`, `Grothe/UpperSix/Haagerup.lean` |
+| the interval and table checkers | `Grothe/UpperSix/HaagerupKernel/` |
 
 ## Provenance
 
-- `channels.json`, `tiger.json`, `tiger.npz`: the certificate of the article.
-- `gt_energy.npz`: exported with `python3 export_gt_energy.py Grothe/Upper/Data.lean gt_energy.npz` from the
-  grothendieck-lean repository at commit `a14d87418` (the file was last changed in `6db57a0e7`; its SHA-256 is
-  `cec1bb15c67969c215a82264bee9c31e116554e33c6821b189ce527d9e442cc7`). The export is deterministic: it gives the same
-  bytes every time.
-- The seven error radii of the GT comparison are written in the verifier, with their source in the same repository:
-  `Grothe/UpperTightBudget.lean` (`tightQuadRadiusQ`, `tightLowReserveQ`, `tightScaledRQ`, `tightThreeBandErrorQ`)
-  and `Grothe/Upper/ComparisonGroups.lean` (`comparisonGroupRadiusQ 0`).
+These files are copied byte for byte from the folder `Grothe/UpperSix/` of
+<https://github.com/agalatan/grothendieck-lean>, where the same theorems also give the upper bound of
+`Grothe.Statement.main_bounds`. The repository's CI job `haagerup-article.yml` fails if the two copies differ.

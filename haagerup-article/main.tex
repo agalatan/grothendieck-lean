@@ -89,7 +89,7 @@ where $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$ for
   \frac{1}{\gd} \;=\; 1.4045759346637420\ldots
   \end{gathered}
 \end{equation}
-Haagerup \cite[p.~202]{Haa87} remarked that his bound is probably not sharp and called $1/\gd$ ``a perhaps more plausible candidate'' for $\KGC$. Recently, Heilman, Jones, and Malavolta \cite{HJM26} obtained the first strict improvement below $1/\gamma_H$ ($\KGC < 1.40489856$, alongside the lower bound $\KGC > 1.4$ building on Davie \cite{Dav84} and Guo--Fang--Lu \cite{GFL26}). The Lean~4 development \cite{Gal26} narrowed the interval to $1.4017003 < \KGC < 1.4045994$, proved in Lean without hypotheses (the upper bound by two-coordinate symmetric Gaussian rounding), stopping $2.35 \times 10^{-5}$ short of $1/\gd$.
+Haagerup \cite[p.~202]{Haa87} remarked that his bound is probably not sharp and called $1/\gd$ ``a perhaps more plausible candidate'' for $\KGC$. Recently, Heilman, Jones, and Malavolta \cite{HJM26} obtained the first strict improvement below $1/\gamma_H$ ($\KGC < 1.40489856$, alongside the lower bound $\KGC > 1.4$ building on Davie \cite{Dav84} and Guo--Fang--Lu \cite{GFL26}). The Lean~4 development \cite{Gal26} proves, without hypotheses, $1.4017003 < \KGC \le 1.40457588$. Its upper bound comes from a six-channel mixture of the same kind as the one here, with every channel estimate checked in Lean, and is therefore itself below $1/\gd$ (Appendix~\ref{app:lean}).
 
 In this paper we cross Haagerup's barrier $1/\gd$: his value is a strict upper bound for $\KGC$.
 
@@ -340,33 +340,32 @@ AI systems are not authors of this paper; the author takes full responsibility f
 
 \appendix
 
-\section{Companion Ancillary Archive and 256-Bit Ball Verification}\label{app:arb}
+\section{Ancillary Files}\label{app:arb}
 
-To ensure permanent, self-contained reproducibility directly from the arXiv submission without external dependencies, the companion ancillary directory \texttt{/anc} bundles the exact certificate data and deterministic ball-arithmetic verifier (checksummed in \texttt{anc/SHA256SUMS}; Lean files are not part of it, see Appendix~\ref{app:lean}):
+The ancillary directory \texttt{anc/} of the arXiv submission is a standalone Lean~4 package holding a complete, hypothesis-free proof of $\KGC \le 1.40457588 < 1/\gd$ (Appendix~\ref{app:lean}). The certificate data are Lean literals inside it; there are no other data files and no external verifier.
 \begin{itemize}
-  \item \texttt{anc/gt\_energy.npz}: Exact $21{,}168$-entry dyadic bivariate Hermite energy table ($a \cdot 2^{-k}$) of the symmetric $\C^2$ rounder $G_T$, exported by \texttt{anc/export\_gt\_energy.py} from \texttt{Grothe/Upper/Data.lean} of \cite{Gal26}; the seven-band truncation radii are written in the verifier, with their source there.
-  \item \texttt{anc/tiger.json} and \texttt{anc/tiger.npz}: Exact $64 \times 48 \times 48$ integer arrays $(F_{\mathrm{re}}, F_{\mathrm{im}}) \in [-2^{20}, 2^{20}]^2$ ($q_{\mathrm{shift}} = 20$) and rational radial grid endpoints $e_1, e_2 \in \frac{1}{36}\Z \cup \{\infty\}$ defining the reflected pair \eqref{eq:tiger-sym}.
-  \item \texttt{anc/channels.json}: Exact rational weights $w_i$, polynomial numerators over $\Delta = 10^{12}$, and Hardy parameters $(r_i, j_i)$ of Table~\ref{tab:cert}.
-  \item \texttt{anc/verify\_certificate.py} (versions pinned in \texttt{anc/requirements.txt}): Standalone \texttt{python-flint} (\texttt{flint.ctx.prec = 256}, $\approx 77$ decimal digits) ball-arithmetic script executing four deterministic checks:
-  \begin{enumerate}
-    \item \emph{Universal \texttt{GT} comparison:} Accumulates the seven spectral band squared masses $B_j = \sum_{p \in \mathrm{band}_j} \mathrm{energyTable}(p) + \varepsilon_{\mathrm{table}}$ and confirms $\varepsilon_{\mathrm{GT,univ}} \in [1.4941163372 \times 10^{-6} \pm 5 \times 10^{-31}] < \frac{1494117}{10^{12}}$.
-    \item \emph{Exact \texttt{tiger} overlaps:} Verifies $F_{\mathrm{re}}^2 + F_{\mathrm{im}}^2 \le 2^{40}$ in exact 64-bit integers across all $147{,}456$ cells, evaluates the $64$-point complex DFT in \texttt{acb\_mat} and the Laguerre cell matrices $\tilde{J}_{n,a}$ at 1024-bit internal ball precision up to $a=251, n=250$, and sums $(-1)^m \operatorname{sinc}^2(\pi m/64) |\langle \widehat{F}_{m \bmod 64}, \psi_{n_1,n_2}^{(|m|,|1-m|)}\rangle|^2$ across all $502$ modes $m \in [-250, 251]$.
-    \item \emph{Head polynomial series:} Propagates truncated polynomials in \texttt{arb\_poly} to degree $K = 250$ for $P_i, Q_i, R_i$, confirming $\widetilde{H}_0 \in [0.71196893304878 \pm 10^{-30}] > \frac{711968933048}{10^{12}}$ and $\sum_{k=1}^{250} |\widetilde{H}_k| \in [1.24878095 \times 10^{-6} \pm 10^{-30}] < \frac{1248782}{10^{12}}$.
-    \item \emph{Hardy circle and harmonic covers:} Subdivides $[0,\pi]$ into $256$ base arcs (adaptive depth $\le 12$) in \texttt{acb} at $(r_i, j_i)$, certifying open-disk kernel positivity $\RePart(I_2 \pm R_i((r_i + 10^{-5})e^{i\theta})) \succ 0$ and integrating the factored Schur majorant $(Z - C_r)Z^{-1}(Z + C_r)$ to confirm $\sum_{i=1}^6 w_i \,\mathrm{tail}_i \in [3.00 \times 10^{-8} \pm 1.22 \times 10^{-9}] < \frac{32}{10^9}$.
-  \end{enumerate}
+  \item \texttt{lakefile.toml}, \texttt{lean-toolchain}, \texttt{lake-manifest.json}: the package, with Lean and Mathlib pinned (Mathlib \texttt{v4.34.1}).
+  \item \texttt{Grothe/UpperSix/Haagerup/Statement.lean}: the definitions of the statement (the scalar and vector optima of a finite complex matrix, admissible constants, $\KGC$ as their infimum, and $\gd$ as the integral \eqref{eq:gd-def}).
+  \item \texttt{Grothe/UpperSix/Haagerup/}: the proof, from the convex transfer (\texttt{Transfer.lean}) through the cell maps and their Hermite energies (\texttt{CellHermite.lean}, \texttt{CellOverlap.lean}), the disk positivity and Hardy-space tails (\texttt{SchurHardy.lean}, \texttt{ContourChecks/}) and the bound on $\gd$ (\texttt{GammaDagger.lean}) to the assembly of the six channels (\texttt{CertCheck.lean}).
+  \item \texttt{Grothe/UpperSix/Haagerup/Data/} and \texttt{Parameters.lean}: the certificate data, namely the integer Fourier tables and sum-of-squares witnesses of the two cell maps, their overlap tables, and the rational weights and parameters of the six channels.
+  \item \texttt{Grothe/UpperSix/HaagerupKernel/}: the exact interval and table checkers that the finite computations run.
+  \item \texttt{Axioms.lean} and \texttt{native.txt}: the axiom report of the main theorems and the list of finite computations evaluated with \texttt{native\_decide} (Appendix~\ref{app:lean}).
 \end{itemize}
+With the pinned toolchain installed, \texttt{lake exe cache get} fetches Mathlib's compiled files, \texttt{lake build} checks the whole proof (about 30 minutes on four cores), and \texttt{lake env lean Axioms.lean} prints the axioms. The sources are a byte-for-byte copy of the folder \texttt{Grothe/UpperSix} of the repository~\cite{Gal26}, whose continuous integration rebuilds this package and fails if the two copies differ.
 
-\section{Lean Companion}\label{app:lean}
+\section{The Lean Proof}\label{app:lean}
 
-The Lean files are not part of the ancillary archive. They are kept in the repository~\cite{Gal26}, folder \texttt{haagerup-article/lean}: a standalone Lean~4 package \texttt{HaagerupBound}, which imports only Mathlib and has its own continuous-integration job. Its entry point is
+The main theorems of the package are
 \begin{quote}\small\ttfamily
-theorem HaagerupBound.upper\_bound (facts : ChannelFacts) :\\
-\hspace*{2em}complexGrothendieckConstant $\le$ 140456109 / 100000000 $\wedge$\\
-\hspace*{2em}complexGrothendieckConstant $<$ 1 / haagerupDagger
+theorem Haagerup.isBound\_cert :\\
+\hspace*{2em}Haagerup.Statement.IsBound (140457588 / 100000000 : $\mathbb{R}$)\\[3pt]
+theorem Haagerup.constant\_lt\_inv\_gammaDagger :\\
+\hspace*{2em}Haagerup.Statement.complexGrothendieckConstant\\
+\hspace*{4em}< 1 / Haagerup.Statement.gammaDagger
 \end{quote}
-Here \texttt{complexGrothendieckConstant} is defined as the infimum of the constants $K \ge 0$ in \eqref{eq:groth-def}, over all matrices and all $\C^N$, and \texttt{haagerupDagger} as the integral in \eqref{eq:gd-def}. Lean proves Lemma~\ref{lem:transfer} with the closure under convex combinations, Lemma~\ref{lem:gd-upper} in the form $0 < \gd < 7119595/10^7$, and the whole budget of Section~\ref{sec:cert}: the head data of the certificate, generated from \texttt{anc/} by a committed script, are evaluated exactly in the kernel (\texttt{decide +kernel}, no \texttt{native\_decide}), which gives $D \ge 0.71196618737$ and $1/D < 1.40456109$. The theorem depends only on the axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+Here \texttt{IsBound K} states $V(A) \le K\,C(A)$ for every finite complex matrix $A$, where $C(A)$ is the optimum over unimodular scalars and $V(A)$ the optimum over unit vectors of $\C^\iota$ for every finite type $\iota$, as in \eqref{eq:groth-def}; \texttt{complexGrothendieckConstant} is the infimum of all such $K$; and \texttt{gammaDagger} is the integral \eqref{eq:gd-def}. The two theorems together state $\KGC \le 1.40457588 < 1/\gd$. They have no hypotheses.
 
-What Lean does not check is the hypothesis \texttt{facts}. It provides, for each of the six channels, a real sequence $h^{(i)}$ with three properties: $h^{(i)}$ is absolutely summable and satisfies \eqref{eq:dominated}, which Section~\ref{sec:mechanism} establishes; its first $251$ terms lie within the stated $\ell^1$ distance of the head data; and $\sum_{k > 250} |h^{(i)}_k|$ is below the stated tail bound. The last two are the interval computations of Section~\ref{sec:cert} and Appendix~\ref{app:arb}. This first version therefore checks the deduction and the arithmetic, not the numerics or the Gaussian realisation. Proving these in Lean as well, without hypotheses, as for the bounds $1.4017003 < \KGC < 1.4045994$ of~\cite{Gal26}, is ongoing work.
+Lean checks every step: the transfer from a dominated radial series to an admissible constant, the realisation of each channel by a disk-valued rounding scheme, the enclosure of the first $251$ coefficients of each channel, the Hardy-space bounds on the tails, the convex combination of the six channels, and $\frac{140457588}{10^8} < 1/\gd$. The axiom report (\texttt{Axioms.lean}) lists \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}, and the $17$ finite computations of \texttt{native.txt}, which the compiled evaluator runs (\texttt{native\_decide}) instead of the kernel: the norm bounds and overlap tables of the two cell maps, the head sum of the six channels, and, per channel, the region and circle-mean checks of the Hardy-space tail. The rational comparisons of the tails and the weights are checked by the kernel. In the repository~\cite{Gal26} the same theorems give the upper bound of \texttt{Grothe.Statement.main\_bounds}, $1.4017003 < \KGC \le 1.40457588$.
 
 \begin{thebibliography}{99}
 
