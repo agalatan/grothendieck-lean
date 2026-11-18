@@ -76,6 +76,7 @@
 \newcommand{\cI}{\mathcal{I}}
 \newcommand{\Wc}{\mathsf{W}}
 \newcommand{\Dc}{\mathsf{D}}
+\newcommand{\Ac}{\mathsf{A}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\sinc}{\operatorname{sinc}}
 \newcommand{\lean}[1]{\texttt{\small #1}}
@@ -97,16 +98,20 @@ Grothendieck constant satisfies $\KG\le1.40456109<1/\gd=1.404575934663\ldots$: H
 upper bound for $\KG$. This resolves a conjecture of Haagerup (1987) about this value. The value $1.40456109$ is
 fixed only for this purpose and is not meant to be the best upper bound; sharper bounds, and their formal
 verification in Lean, are developed continuously at \url{https://github.com/agalatan/grothendieck-lean}.
-The bound comes from an explicit rounding scheme: a convex combination of six Gaussian rounding channels, one of which is a
-pair of disk-valued maps of two complex Gaussian coordinates, given by a table of $294{,}912$ integers. We explain why
-$1/\gd$ is a natural barrier. No rounding scheme gives a bound below the reciprocal of the value of its kernel at imaginary
-correlation; this value is $\gd$ for the phase of one coordinate, and no preprocessing of the phase raises it. The
-two-coordinate pair exceeds this ceiling by about $1.07\cdot10^{-3}$, and steerable channels built from an existing
-two-coordinate rounder cancel its wrong-sign coefficients. The proof is computer-assisted: finitely many inequalities
-are verified in exact rational and $256$-bit ball arithmetic, and the verification has been repeated with independently
-written code. The construction was discovered with AI, at the end of a two-month research and formalisation project
-carried out by the author together with AI agents; the last section describes how it was found. A formalisation in Lean~4 is in progress; we state precisely which steps are formalised. As a by-product,
-the phase of a single coordinate does not maximise the complex analogue of K\"onig's functional on $\C^2$.
+
+Every rounding scheme gives $\KG\le1/\mathsf{D}$, and $\mathsf{D}$ never exceeds the scheme's ceiling, the modulus of its
+correlation function at the imaginary point $t=i$. All schemes used so far have ceiling at most $\gd$; for Haagerup's phase
+rounding it is exactly $\gd$. This is why $1/\gd$ acted as a barrier. What is new here is a scheme that rounds the two
+vectors with \emph{different} maps: a map $f$ of two complex Gaussian coordinates for one vector, and its reflection
+$f(-z_1,z_2)$ for the other. Its ceiling is $\gd+1.07\cdot10^{-3}$. Mixed with five channels whose coefficients cancel
+its wrong-sign coefficients, it gives $\mathsf{D}\ge\gd+7.5\cdot10^{-6}$.
+
+The proof is computer-assisted: finitely many inequalities are verified in exact rational and $256$-bit ball
+arithmetic, and the verification was repeated with independently written code. A Lean~4 companion checks the deduction
+and the whole budget exactly, from the certified facts. The construction was discovered with AI, at the end of a
+two-month research and formalisation project carried out by the author together with AI agents; the last section
+describes how. As a by-product, the phase of a single coordinate does not maximise the complex analogue of K\"onig's
+functional on $\C^2$.
 \end{abstract}
 % SRC numbers in the abstract: gd [VL]; 1/gd [NUM out_alternating.log]; 1.40456109 [SR],[VL]; 294,912 [SUM];
 % 1.07e-3 = W(tiger)-gd, averaged partial sums 1.0719690924e-3 [RCL combine_mu.log].
@@ -204,6 +209,67 @@ scheme are verified in exact rational and $256$-bit ball arithmetic, and they ha
 written code, which gives $\Dc(h)-\gd\ge7.5286\cdot10^{-6}$. The rounded margin is $1/\gd-1.40456109>1.484\cdot10^{-5}$.
 % SRC: 7.5286e-6 [RC] (7.528576e-6); 1/gd - 1.40456109 = 1.4844664e-5 [DER].
 
+
+
+\subsection{The idea in five steps}\label{sec:method}
+\paragraph{1. What a rounding scheme gives.} A rounding scheme turns two unit vectors with inner product $t$ into two
+random numbers in the closed unit disc whose correlation is $H(t)=\sum_{k\ge0}h_k\,t|t|^{2k}$. If
+$\Dc(h):=h_0-\sum_{k\ge1}|h_k|>0$, then $\KG\le1/\Dc(h)$ (Theorem~\ref{thm:transfer}). Every upper bound on $\KG$,
+Haagerup's and ours included, comes from a scheme whose coefficients $h=(h_k)$ make $\Dc(h)$ large. Schemes can be
+mixed, and the vectors can be preprocessed first (Section~\ref{sec:transfer}).
+
+\paragraph{2. The barrier at $1/\gd$.} Each coefficient sequence $h$ has a second number, its \emph{ceiling}
+\[
+ \Wc(h):=\Bigl|\sum_{k\ge0}(-1)^kh_k\Bigr|=|H(i)|,
+\]
+the value of the correlation at the imaginary point $t=i$. Always $\Dc(h)\le\Wc(h)$, and the ceiling of a mixture is
+at most the average of the ceilings. Haagerup's scheme rounds one Gaussian coordinate by its phase $z/|z|$; its ceiling
+is exactly $\gd$, and no preprocessing raises it (Proposition~\ref{prop:phase}). Every scheme used before this paper has
+ceiling at most $\gd$: Haagerup's, the mixtures of Heilman, Jones and Malavolta~\cite{HJM26}, and the two-coordinate
+rounder $G_T$ of~\cite{GL}, whose ceiling is $\gd-9.95\cdot10^{-6}$. For any scheme on one coordinate we conjecture the
+same, with numerical support (Conjecture~\ref{conj:one}). Since $\Dc\le\Wc$, none of these schemes, and no mixture of
+them, can prove $\KG<1/\gd$. To go below $1/\gd$ one needs a scheme with ceiling above $\gd$.
+
+\paragraph{3. What is new: round the two vectors with different maps.} All the schemes above round both vectors with
+the same map. We use two complex Gaussian coordinates $z=(z_1,z_2)$ per vector, round one vector with a map $f$ and
+the other with $g=f\circ S$, where $S(z_1,z_2)=(-z_1,z_2)$ flips the sign of the first coordinate. Here is why this
+helps. Our $f$ is close to the phase of $z_2$, plus a component that carries the phase of $z_1$. In the ceiling this
+component enters with a minus sign when $g=f$, and with a plus sign when $g=f\circ S$. Since $|f|\le1$, the
+component costs a little of the phase of $z_2$; with the reflection it pays back more than it costs. The pair we use,
+found by numerical optimisation over maps that are constant on $64\times48\times48$ polar cells (Section~\ref{sec:tiger}),
+gives a scheme with ceiling $\gd+1.07\cdot10^{-3}$. We call it the \emph{tiger} pair, after the ``tiger partition''
+with which Braverman, Makarychev, Makarychev and Naor beat Krivine's bound in the real case~\cite{BMMN}.
+
+\paragraph{4. What is new: cancel the wrong signs.} A ceiling above $\gd$ is necessary but not enough: $\Dc(h)=\Wc(h)$
+only when every coefficient has the alternating sign, $(-1)^kh_k\le0$ for $k\ge1$. The tiger scheme has many
+coefficients of the wrong sign; alone it gives only $\Dc=0.6995$, that is, $\KG\le1.4245$. We therefore mix it, with
+weight $1.9\%$, with three channels made from $G_T$ and two phase channels. Each $G_T$ channel is $G_T$ composed with an
+\emph{alternating} polynomial preprocessor: such preprocessors do not change the ceiling, but they shape the signs of
+the coefficients, and we choose them to cancel the tiger's wrong-sign coefficients. The six-channel mixture has
+$\Dc\ge\gd+7.5\cdot10^{-6}$ (Section~\ref{sec:mixture}).
+
+\paragraph{5. What has to be computed, and why it is hard.} $\Dc$ of the mixture needs all of its coefficients: the
+$251$ coefficients with $k\le250$ explicitly, and a bound on all the others. The margin over $\gd$ is only
+$7.5\cdot10^{-6}$, so each term must be known to about $10^{-8}$.
+\begin{itemize}
+\item The tiger coefficients are overlaps of a function given on $147{,}456$ cells with the Laguerre functions of the
+ Gaussian chaos. The formulas are exact, but their recurrence loses about $330$ bits, so we use $640$-bit ball
+ arithmetic (Appendix~\ref{app:laguerre}).
+\item The $G_T$ coefficients come from a table of $21{,}168$ Gaussian energies of $G_T$, certified to within
+ $1.494\cdot10^{-6}$ per unit weight. This is the largest error term of the budget (Section~\ref{sec:gt}).
+\item The phase coefficients are Haagerup's explicit series.
+\item The coefficients with $k>250$ are bounded by Hardy-space estimates for the correlation continued to a disc of
+ radius $r>1$, checked on the circle by interval covers (Section~\ref{sec:tails}).
+\end{itemize}
+All of this is done in exact rational and interval arithmetic and was re-checked twice with independent code
+(Section~\ref{sec:verification}). A Lean companion checks the deduction and the whole budget exactly, from these
+certified facts (Section~\ref{sec:lean}).
+% SRC: tiger D alone 0.69954 [DER from RCL heads.log: c0 = 0.70836151834, sum|c_k| = 0.008826109123];
+% 1.4245 = 1/kappa of the October inversion [CT inv_256_J150.log: 1.42454619917]; W(G_T)-gd = -9.95e-6 [DER from
+% W(G_T)=0.7119487068 [NUM out_mixture_heads.log alt=0.711948707], [GEM]]; weight 0.0188 [CF]; 7.53e-6 [VL];
+% 147,456 = 64*48*48 cells; 330 bits [RC] Findings 2; 1.494e-6 allowance [VL].
+
+\subsection{A by-product}\label{sec:byproduct}
 The proof also settles a question about the functional that underlies Haagerup's conjecture. Let $J$ be the operator
 that multiplies the charge-one Wick chaos of degree $2k+1$ by $(-1)^k$ (Section~\ref{sec:ceiling}), and let
 $C_m$ be the supremum of $|\ip f{Jg}|$ over measurable maps $f,g:\C^m\to\Dbar$ of charge one, the norm being that of
@@ -222,47 +288,6 @@ complex counterpart of the result of~\cite[Theorem~4.4]{BMMN} that a two-dimensi
 K\"onig's real functional. Numerically the pair of Section~\ref{sec:tiger} gives $C_2\ge\gd+1.07\cdot10^{-3}$, but that
 value rests on partial sums of a slowly converging series, and we do not use it in the proof.
 % SRC: BMMN Thm 4.4: [BM]. 1.07e-3: [RCL combine_mu.log].
-
-\subsection{The method in brief}\label{sec:method}
-\paragraph{Transfer.} A rounding scheme produces, for any two unit vectors with inner product $t$, two disk-valued
-random variables with correlation $H(t)=\sum_kh_k\,t|t|^{2k}$. If $\Dc(h)>0$ then $\KG\le1/\Dc(h)$
-(Theorem~\ref{thm:transfer}). Mixtures, preprocessing of the vectors by tensor powers, and the use of two different
-functions on the two sides are all allowed (Section~\ref{sec:transfer}).
-
-\paragraph{The alternating ceiling.} Trivially $\Dc(h)\le\Wc(h):=|\sum_k(-1)^kh_k|$, the modulus of the kernel continued
-to imaginary correlation $t=i$. $\Wc$ is affine under mixing, and \emph{alternating} preprocessors leave it unchanged. For
-the phase, $\Wc=|\varphi(i)|=\gd$, and no preprocessing of the phase raises it (Proposition~\ref{prop:phase}). We
-conjecture, with numerical support, that no disk-valued pair of one complex coordinate does better
-(Conjecture~\ref{conj:one}). This is why $1/\gd$ is a barrier for schemes built from one coordinate
-(Section~\ref{sec:ceiling}).
-
-\paragraph{A two-coordinate pair.} A pair $(f,g)$ of disk-valued maps is a rounding scheme in which one vector is
-rounded with $f$ and the other with $g$. Its ceiling $\Wc(f,g)$ is the ceiling $\Wc(h)$ of the coefficients of its
-kernel; equivalently $\Wc(f,g)=|\ip f{Jg}|$ (Section~\ref{sec:operatorJ}). For the phase of one coordinate, $f=g=\ph(z_2)$,
-it equals $\gd$. The pair of Section~\ref{sec:tiger}, which we call the \emph{tiger} pair after the ``tiger
-partition'' of~\cite{BMMN}, has $\Wc(f,g)\approx\gd+1.07\cdot10^{-3}$. Its map $f$ is close to the phase of $z_2$,
-modulated by $|z_1|$ and by the relative angle of the two coordinates, and $g=f\circ S$ with $S(z_1,z_2)=(-z_1,z_2)$.
-The excess comes from a trade-off. Since $|f|\le1$, giving $f$ a component that carries the phase of $z_1$ costs part
-of the phase of $z_2$, whose contribution to $\Wc$ drops below $\gd$. With $g=f$ that component would lower $\Wc$
-further. The reflection $S$ reverses the sign with which it enters $\Wc$, so it raises $\Wc$, by more than it cost.
-Section~\ref{sec:tiger} gives the split by angular modes.
-
-\paragraph{Cancelling the wrong signs.} On its own the tiger is useless: most of its residual has the wrong sign,
-$\Dc\approx0.6995$, and inverting its kernel in Krivine's manner gives only $\KG\le1.4245$. The repository's two-coordinate
-rounder $G_T$~\cite{GL} has the ceiling $\Wc(G_T)=\gd-9.95\cdot10^{-6}$, and its production scheme comes within
-$2\cdot10^{-6}$ of that ceiling. Composing $G_T$ with different alternating preprocessors gives a large family of
-channels, all with the same ceiling, whose residuals can be steered. A mixture of the tiger (weight $0.0188$) with three
-such channels and two preprocessed phase channels cancels the residual down to $1.25\cdot10^{-6}$ and keeps $\Dc-\gd\ge7.53\cdot10^{-6}$
-(Section~\ref{sec:mixture}).
-% SRC: tiger D alone 0.69954 [DER from RCL heads.log: c0 = 0.70836151834, sum|c_k| = 0.008826109123];
-% 1.4245 = 1/kappa of the October inversion [CT inv_256_J150.log: 1.42454619917]; W(G_T)-gd = -9.95e-6 [DER from
-% W(G_T)=0.7119487068 [NUM out_mixture_heads.log alt=0.711948707], [GEM]]; 2e-6 = W(G_T) - D_master = 1.94e-6 [DER, OV];
-% weight 0.0188 [CF]; residual 1.25e-6 [VL]; 7.53e-6 [VL].
-
-\paragraph{Tails and the table.} The infinitely many coefficients beyond degree $501$ are bounded by Hardy-space estimates
-for the continuation of each channel's kernel to a disc of radius $r>1$ (Section~\ref{sec:tails}). The energies of $G_T$
-are taken from an exact table whose $\ell^1$ error, $1.494\cdot10^{-6}$ per unit weight, is paid once
-(Section~\ref{sec:gt}).
 
 \subsection{Scope of this paper}\label{sec:scope}
 This paper has one purpose: to show that Haagerup's value $1/\gd$ is a strict upper bound for $\KG$. For that it
@@ -456,9 +481,10 @@ inequality, written for the inverse series, is Lemma~2.4 of~\cite{BMMN}. There t
 \emph{alternating} schemes~\cite[Definition~2.2]{BMMN}.
 % SRC: BMMN Lemma 2.4 and Definition 2.2: [BM] Sections 3-4.
 
-\subsection{\texorpdfstring{The operator $J$ and the ceiling of a pair}{The operator J and the ceiling of a pair}}\label{sec:operatorJ}
+\subsection{\texorpdfstring{The operator $J$ and the alternating overlap of a pair}{The operator J and the alternating overlap of a pair}}\label{sec:operatorJ}
 Let $J=\sum_k(-1)^kP_k$ on the charge-one subspace of $L^2(\gamma_m)$. It is a self-adjoint unitary. For charge-one
-$f,g$ put $\Wc(f,g)=|\ip f{Jg}|$. Let $C_m$ be the supremum of $\Wc(f,g)$ over measurable charge-one maps
+$f,g$ put $\Ac(f,g)=|\ip f{Jg}|$, the \emph{alternating overlap} of the pair; a pair with alternating
+preprocessors is a scheme whose ceiling is $\Ac(f,g)$ (Lemma~\ref{lem:pre}). Let $C_m$ be the supremum of $\Ac(f,g)$ over measurable charge-one maps
 $f,g:\C^m\to\Dbar$. Then $C_m\le1$ and $C_m\le C_{m+1}$.
 
 \begin{lemma}\label{lem:pre}
@@ -468,7 +494,7 @@ $T_sg(z)=\E\,g\bigl(s_1z_1+\sqrt{1-s_1^2}\,Z_1,\dots,s_mz_m+\sqrt{1-s_m^2}\,Z_m\
  \sum_j(-1)^jh_j=\ip f{J\,T_sg}.
 \]
 Consequently $\Wc(h)\le C_m$. If every $R_l$ is \emph{alternating}, that is, $R_l(-1)=\|R_l\|_1=1$, then
-$\Wc(h)=\Wc(f,g)$.
+$\Wc(h)=\Ac(f,g)$.
 \end{lemma}
 \begin{proof}
 By absolute convergence, $\sum_j(-1)^jh_j=\Phi(-1)=\sum a_{\alpha,\beta}(-1)^{|\beta|}\prod_ls_l^{\alpha_l+\beta_l}$. By
@@ -628,7 +654,7 @@ They are negative for $129$ indices, from $k=60$ on. A symmetric pair $g=f$ woul
 
 \paragraph{Size of the ceiling.} For the certified pair the partial sums $S_K=\sum_{k\le K}(-1)^k\mu_k$ give
 $S_{250}-\gd=1.0722\cdot10^{-3}$ and $S_{249}-\gd=1.0717\cdot10^{-3}$. Repeated averaging of consecutive partial sums
-settles at $\Wc(f,f\circ S)-\gd\approx1.07197\cdot10^{-3}$ (Figure~\ref{fig:mu}). The raw overlaps decay only like
+settles at $\Ac(f,f\circ S)-\gd\approx1.07197\cdot10^{-3}$ (Figure~\ref{fig:mu}). The raw overlaps decay only like
 $k^{-3/2}$ because $F$ is piecewise constant, so this value is a numerical estimate and is not used in the proof. In the
 proof the tiger enters only through a preprocessor $R$ with $R(1)<1$, which makes the composed series converge
 geometrically (Section~\ref{sec:tails}). Unconstrained searches on uniform grids gave $9.55\cdot10^{-4}$ on $32$ angle
@@ -726,7 +752,7 @@ channel of the certificate, with $P=0.99183-0.00817X$ and $Q=-X$, has residual $
 third, with $P=0.09137-0.82519X-0.08343X^3$ and $Q=-X$, has $c_0=0.066$ and residual $0.80$. Likewise all phase$(R)$
 channels with alternating $R$ have $\Wc=\gd$. A mixture of the tiger with such channels has the ceiling
 \[
- \Wc\approx w_{\mathrm{tiger}}\,\Wc(f,f\circ S)+w_{\mathrm{GT}}\,\Wc(G_T)+w_{\mathrm{ph}}\,\gd ,
+ \Wc\approx w_{\mathrm{tiger}}\,\Ac(f,f\circ S)+w_{\mathrm{GT}}\,\Wc(G_T)+w_{\mathrm{ph}}\,\gd ,
 \]
 and the problem is to choose the weights and the polynomials so that the residuals cancel. The ceiling is then nearly
 attained.
@@ -779,7 +805,7 @@ not part of the certificate.
 \toprule
 contribution & value ($\times10^{-6}$)\\
 \midrule
-tiger: $w_4\,(\Wc(f,f\circ S)-\gd)=0.0187971\times1071.97$ & $+20.150$\\
+tiger: $w_4\,(\Ac(f,f\circ S)-\gd)=0.0187971\times1071.97$ & $+20.150$\\
 GT: $(w_1+w_2+w_3)(\Wc(G_T)-\gd)=0.980967\times(-9.953)$ & $-9.764$\\
 phase: $w_5+w_6$ times $0$ & $0.000$\\
 \midrule
@@ -791,7 +817,7 @@ Hardy tails $\sum_iw_iT_i$ (Section~\ref{sec:tails}) & $-0.031$\\
 $\Dc-\gd$ (certified) & $\ge7.5276$\\
 \bottomrule
 \end{tabular}
-\caption{The ceiling ledger. The first block uses the float values $\Wc(f,f\circ S)-\gd\approx1.07197\cdot10^{-3}$ and
+\caption{The ceiling ledger. The first block uses the float values $\Ac(f,f\circ S)-\gd\approx1.07197\cdot10^{-3}$ and
 $\Wc(G_T)=0.7119487068$, and it agrees with the directly computed ceiling of the head ($+10.386$) to $10^{-10}$. The last
 three losses are the certified ones.}\label{tab:ledger}
 \end{table}
