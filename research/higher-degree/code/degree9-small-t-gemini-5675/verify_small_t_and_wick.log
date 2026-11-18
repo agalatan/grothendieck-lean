@@ -1,0 +1,21 @@
+=== Certificate 3: Small-t Obstructions, Multi-Chaos Gaussian Ideal & Wick Norms ===
+[PASS] Degree-9 SMALL_T Parseval obstruction: even at G_3 = 0 and ANY C_9 in H_{5,4},
+       t=0 bound >= a_2 = 0.72057000 > 250/351 = 0.71225071 (margin +8.31929e-03).
+[PASS] Degree-7 SMALL_T Parseval obstruction: at sigma = 3/4, exact Gaussian t=0 value
+       >= 0.7514661225 >= 0.75146 > 250/351 = 0.7122507123 (margin +3.92154e-02).
+[PASS] Necessary radius caps certified:
+       Two-chaos at c_9 = 5867/23400 (<= pi/4 - c_9*pi/32): rho_* <= 0.89929844 < 0.899299
+       Degree 7 dual (B < 250/351): rho_* <= 0.88635877 (gap to sqrt(pi)/2: 1.318e-04)
+       Degree 9 dual (B < 250/351): 2-chaos <= 31250/41067 = 0.76095162 => rho_* <= 0.89937332 < 0.899374
+       Primal Parseval ((1+a_1)rho_*^2 - 1 <= 250/351): D7 <= 0.94766390, D9 <= 0.94043980.
+[PASS] Degree-7 multi-chaos Gaussian ideal B_7^{*,Gauss} = (226649/1000000)*pi = 0.7120388333,
+       conditional reach below 250/351: t_0 >= 0.014556.
+[PASS] Degree-9 multi-chaos Gaussian ideal B_9^{*,Gauss} = (181333/800000)*pi = 0.7120930258
+       certified globally over ALL (sigma_3, v) in [0, inf)^2:
+         sup_{x>0} sqrt(2*pi*x) e^{-x} I_0(x) <= 1.190301 < 1.20 (for x>=3: <= 1.058523 < 1.08),
+         E[1/(2|m^*|)] <= 1.188655, sup_{v>0, lambda>=0.95} dPsi/dv <= 1.376167 < 1/a_2 = 1.387790,
+         conditional reach at B_9^{*,Gauss}: t_0 >= 0.012557 (and at B_0 = 0.71216: t_0 >= 0.009524).
+[PASS] Exact 2880-matching Wick classification of ||R_9(q)||_2^2:
+       19 real classes (1x[2,2,2]=16, 4x[2,4]=336, 14x[6]=2528; sum=2880),
+       exact Fraction norms verified on canonical blocks: 4, 6, 36, 180 (1+c_{2,4} = 4, 6, 10, 22).
+ALL CHECKS IN verify_small_t_and_wick.py PASSED.
