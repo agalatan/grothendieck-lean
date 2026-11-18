@@ -1,0 +1,18 @@
+# HaagerupBound: the Lean part of the article in `haagerup-article/` (its TeX and PDF sit next to this folder).
+#
+# A standalone Lake package, like `sign/`: it is not part of the `Grothe` target, of its axiom report or of the proof
+# check in `lean.yml`, and the repository's lakefile.toml does not mention it (AGENTS.md rule 7). Its own CI job is
+# `.github/workflows/haagerup-article.yml`.
+#
+# Mathlib and its dependencies are the repository's own: every entry of lake-manifest.json here is a path into the
+# root's `.lake/packages`, so the versions are always the root's (lean-toolchain, lake-manifest.json), nothing is
+# downloaded, and Lake never checks out anything in the shared packages. Build: `lake build` in this directory.
+name = "haagerupBound"
+defaultTargets = ["HaagerupBound"]
+
+[[require]]
+name = "mathlib"
+path = "../../.lake/packages/mathlib"
+
+[[lean_lib]]
+name = "HaagerupBound"
