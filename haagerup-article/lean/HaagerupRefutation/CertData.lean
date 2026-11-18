@@ -12,9 +12,9 @@ The weights and parameters of the six channels of the mixture:
 
 Every polynomial has degree `≤ 3` with exact rational coefficients in `10⁻¹² ℤ`.
 
-The file also records the rational bounds of the budget (computed outside Lean) and checks its arithmetic
-exactly: `haagerupUpperQ < certDLowerQ` and `1 / certDLowerQ < 14045611 / 10000000`. The theorems in
-`Main` use the weights and these bounds; the polynomials, radii and `j` parameters are not used there.
+The weights are those of `haagerup-article/certificate/channels.json`, in its channel order. `Assembly` uses the
+weights (and `HaagerupConstant` uses `haagerupUpperQ`); the polynomials, radii and `j` parameters document the
+channels and are not used by the theorems.
 -/
 
 namespace HaagerupRefutation.CertData
@@ -42,12 +42,6 @@ theorem w6_nonneg : (0 : ℚ) ≤ w6 := by norm_num [w6]
 
 theorem weights_sum_eq_one : weights.sum = 1 := by
   norm_num [weights, w1, w2, w3, w4, w5, w6]
-
-/-- Combined weight on the three `GT` channels. -/
-def wGT : ℚ := w1 + w2 + w3
-
-theorem wGT_eq : wGT = 980967063161 / 1000000000000 := by
-  norm_num [wGT, w1, w2, w3]
 
 /-- Coefficient `ℓ¹`-norm `∑ |c_k|` of a polynomial represented as `List ℚ` (low-to-high degree). -/
 def l1Norm (cs : List ℚ) : ℚ :=
@@ -125,37 +119,7 @@ theorem schur_params_in_open_half :
     (0 < j4 ∧ j4 < 1 / 2) ∧ (0 < j5 ∧ j5 < 1 / 2) ∧ (0 < j6 ∧ j6 < 1 / 2) := by
   norm_num [j1, j2, j3, j4, j5, j6]
 
--- =========================================================================
--- Certified Rational Enclosure Bounds from `cert_final` (256-Bit Arb)
--- =========================================================================
-
-/-- Lower bound on linear slope `h_0` of the 6-channel mixture (`0.711968933048...`). -/
-def h0LowerQ : ℚ := 711968933048 / 1000000000000
-
-/-- Upper bound on finite head residual `∑_{k=1}^{250} |h_k|` (`1.248781... × 10⁻⁶`). -/
-def headL1UpperQ : ℚ := 1248782 / 1000000000000
-
-/-- Upper bound on universal (`w ≡ 1`) `GT` comparison + table error (`1.49411634... × 10⁻⁶`). -/
-def univGTErrUpperQ : ℚ := 1494117 / 1000000000000
-
-/-- Upper bound on combined infinite Hardy tail `∑_{k > 250} |h_k|` (`3.122 × 10⁻⁸`). -/
-def hardyTailUpperQ : ℚ := 32 / 1000000000
-
-/-- Total certified lower bound `D_cert` on `h_0 - ∑_{k ≥ 1} |h_k|`. -/
-def certDLowerQ : ℚ :=
-  h0LowerQ - headL1UpperQ - wGT * univGTErrUpperQ - hardyTailUpperQ
-
-/-- Certified rational upper bound on Haagerup's `γ†` (`0.711958659778... < 0.7119595`). -/
+/-- A rational upper bound on Haagerup's `γ†` (`0.711958659778... < 0.7119595`), proved in `HaagerupConstant`. -/
 def haagerupUpperQ : ℚ := 7119595 / 10000000
-
-/-- `haagerupUpperQ < certDLowerQ` (indeed `certDLowerQ > 0.71196618`), in exact rational arithmetic. -/
-theorem certDLower_gt_haagerupUpper : haagerupUpperQ < certDLowerQ := by
-  norm_num [certDLowerQ, haagerupUpperQ, h0LowerQ, headL1UpperQ, wGT, w1, w2, w3,
-            univGTErrUpperQ, hardyTailUpperQ]
-
-/-- `1 / certDLowerQ < 1.4045611`, in exact rational arithmetic. -/
-theorem inv_certDLower_lt_bound : 1 / certDLowerQ < 14045611 / 10000000 := by
-  norm_num [certDLowerQ, h0LowerQ, headL1UpperQ, wGT, w1, w2, w3,
-            univGTErrUpperQ, hardyTailUpperQ]
 
 end HaagerupRefutation.CertData

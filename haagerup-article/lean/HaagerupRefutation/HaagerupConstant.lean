@@ -156,7 +156,7 @@ theorem one_div_sqrt_two_sub_le_majorant {u : ℝ} (hu0 : 0 ≤ u) (hu1 : u ≤ 
   rw [div_le_iff₀ hpos, majorantPoly]
   nlinarith
 
-/-! ### Main theorem: `γ† < 7119595 / 10000000` -/
+/-! ### The bound `γ† < 7119595 / 10000000` -/
 
 /-- The rational number `∑_{k ≤ 20} c_k w_{k+1} + 3 c₂₁ w₂₂`, with `w_n = wFactor n`. -/
 def majorantSum : ℚ :=

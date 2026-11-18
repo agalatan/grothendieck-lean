@@ -1,11 +1,22 @@
 # The Haagerup article
 
-The article (its TeX source and PDF, next to this file) and its Lean companion in `lean/`.
+The article (its TeX source and PDF, next to this file), its certificate data in `certificate/`, and in `lean/` an
+isolated, independent Lean check of its upper bound:
+
+```lean
+theorem HaagerupRefutation.upper_bound (facts : ChannelFacts) :
+    complexGrothendieckConstant ≤ 140456109 / 100000000 ∧
+    complexGrothendieckConstant < 1 / haagerupDagger
+```
+
+Start here: `HaagerupRefutation.upper_bound` in `lean/HaagerupRefutation/UpperBound.lean`. The theorem is conditional
+on `facts : ChannelFacts`, three facts per channel that the article establishes outside Lean (see "What Lean proves,
+and what it assumes" below).
 
 ## The article: `main.tex`, `main.pdf`
 
 - Build with `latexmk -pdf main.tex` (pdflatex). The bibliography is inside the file. The figures in `figures/` are
-  made by `figures/make_figures.py` from the certificate data, which is not in the repository yet.
+  made by `figures/make_figures.py` from the certificate data in `certificate/`.
 - Every number has a `% SRC:` comment naming its source; `[DER]` marks arithmetic done in the draft. **Before arXiv,
   strip all comments**, for example with `arxiv_latex_cleaner`: the comments name internal files.
 - Open items for the author (rendered in red):
@@ -22,8 +33,11 @@ The article (its TeX source and PDF, next to this file) and its Lean companion i
 
 ## `lean/`: the Lake package `HaagerupRefutation`
 
-- **Separate target.** It is not part of the `Grothe` target, its axiom report or the proof check in `lean.yml`, and
-  the repository's `lakefile.toml` does not mention it (AGENTS.md rule 7).
+- **Isolated.** The package imports only Mathlib, never the repository's `Grothe` development, and checks only the
+  upper bound `K_G^ℂ ≤ 1.40456109 < 1/γ†`. It is not part of the `Grothe` target, its axiom report or the proof
+  check in `lean.yml`, and the repository's `lakefile.toml` does not mention it (AGENTS.md rule 7). (The generator
+  `lean/scripts/gen_head_data.py` reads the GT table energies of `Grothe/Upper/Data.lean` as input data; no Lean
+  module of the package imports `Grothe`.)
 - **Own CI job.** `.github/workflows/haagerup-article.yml` runs only when a file under `haagerup-article/` changes,
   when the Lean or Mathlib version changes (`lean-toolchain`, `lake-manifest.json`), or by hand.
 - **Mathlib.** It uses the repository's own Mathlib: every entry of `lean/lake-manifest.json` is a path into the
@@ -32,30 +46,39 @@ The article (its TeX source and PDF, next to this file) and its Lean companion i
   `scripts/clone_master_build.sh`): `cd haagerup-article/lean && lake build`. For the axioms:
   `lake env lean Axioms.lean`.
 - **Files.**
-  - `HaagerupRefutation/CertData.lean`: the exact rational data of the certificate (weights and parameters of the
-    six channels, the rational bounds of the budget) and exact checks of the budget arithmetic.
-  - `HaagerupRefutation/HaagerupConstant.lean`: `haagerupDagger = ∫₀^{π/2} cos² t / √(1 + sin² t) dt` and
-    `0 < haagerupDagger < 0.7119595`.
+  - `HaagerupRefutation/UpperBound.lean`: the entrypoint `upper_bound`, the definitions it uses, and a guide from the
+    statement down to the proofs.
+  - `HaagerupRefutation/Assembly.lean`: `ChannelFacts`; the budget `D`, evaluated exactly from `HeadData` by the
+    kernel (`budgetNum_eq`); the two bounds.
   - `HaagerupRefutation/ConvexTransfer.lean`: `classicalNorm`, `quantumNorm`, `complexGrothendieckConstant`; the
     tensor-power lemma, `DominatedRadialSeries`, the transfer theorem
     `complexGrothendieckConstant_le_inv_of_dominated`, closure under convex combinations, and the head/tail margin.
-  - `HaagerupRefutation/Main.lean`: the hypothesis structure `VerifiedSixChannelData` and the two conditional
-    theorems.
-- **What Lean proves, and what it assumes.** For every `cert : VerifiedSixChannelData`,
-  `complexGrothendieckConstant ≤ 1.4045611` (`complexGrothendieckConstant_le_of_certificate`) and
-  `complexGrothendieckConstant < 1 / haagerupDagger`
-  (`complexGrothendieckConstant_lt_inv_haagerupDagger_of_certificate`), using only `propext`, `Classical.choice` and
-  `Quot.sound`. The assumptions are the fields of `cert`, which are not checked in Lean: six real sequences
-  `h_true i` that are dominated radial series (each channel's kernel series is realised by a disk-valued rounding
-  scheme), approximations `h_app i` within the allowances `chHeadErr i` on `0..250`, tail bounds `tail_err i`, and
-  the numerical enclosures of `h₀`, of the head `ℓ¹` norm and of the weighted tails. Nothing in Lean ties `h_true` to
-  the channels of the article; those facts are established outside Lean.
+  - `HaagerupRefutation/HaagerupConstant.lean`: `haagerupDagger = ∫₀^{π/2} cos² t / √(1 + sin² t) dt` and
+    `0 < haagerupDagger < 0.7119595`.
+  - `HaagerupRefutation/CertData.lean`: the weights and parameters of the six channels, as in
+    `certificate/channels.json`.
+  - `HaagerupRefutation/HeadData.lean`: generated by `lean/scripts/gen_head_data.py` from `certificate/` (do not edit):
+    the head centres, radii and tails of the six channels at the scale `10^30`. `lean/scripts/check_budget.py`
+    recomputes the budget from it in exact rational arithmetic.
+- **What Lean proves, and what it assumes.** `upper_bound` holds for every `facts : ChannelFacts`, and its axioms are
+  only `propext`, `Classical.choice` and `Quot.sound`. The hypotheses are statements about the true kernel
+  coefficient sequences of the article's six channels, given as the free field `facts.h : Fin 6 → ℕ → ℝ`. Lean does
+  not construct these sequences; the article does, in Sections 2–6. Per channel `i`, the three facts are:
+  - `dominated`: the channel is realised by a disk-valued rounding scheme, so `h i` is a `DominatedRadialSeries`
+    (Section 2);
+  - `head`: `∑_{k ≤ 250} |h i k - cᵢ(k)| ≤ rᵢ`, with the centres `cᵢ(k)` and radii `rᵢ` of `HeadData` (Sections 6–7);
+  - `tail`: `∑_{k > 250} |h i k| ≤ τᵢ`, with the tails `τᵢ` of `HeadData` (Section 5).
+
+  Lean checks everything else: the budget `D = ∑ᵢ wᵢ cᵢ(0) - ∑_{k=1}^{250} |∑ᵢ wᵢ cᵢ(k)| - ∑ᵢ wᵢ rᵢ - ∑ᵢ wᵢ τᵢ`,
+  exactly (`D = 0.7119661873703793…`, so `1/D = 1.4045610841… < 1.40456109`); the margin
+  `D ≤ H 0 - ∑_{k ≥ 1} |H k|` of the mixture `H = ∑ᵢ wᵢ hᵢ`; the transfer theorem; and `γ† < 0.7119595 < D`.
 
 ## Rules
 
 - No `sorry`, `axiom`, `native_decide` or unchecked code. CI checks this, and accepts only `propext`,
   `Classical.choice` and `Quot.sound` in the axioms of every theorem listed in `lean/Axioms.lean`.
-- The externally computed facts (interval-arithmetic enclosures of the channel coefficients and tails) enter only as
-  explicit hypotheses of the headline theorem. Each hypothesis is a statement about a concretely defined object, and
-  none restates the conclusion.
+- What is established outside Lean enters only as the hypothesis `ChannelFacts` of `upper_bound`. Its field `h` is
+  free: the hypotheses are statements about six sequences that the article defines, and Lean does not tie `h` to
+  those definitions. Every number in the hypotheses is exact data from `HeadData.lean`, and no hypothesis restates
+  the conclusion.
 - The article says exactly what Lean checks and what is computed outside it.
