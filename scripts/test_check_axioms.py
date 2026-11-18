@@ -50,6 +50,16 @@ class CheckAxiomsTests(unittest.TestCase):
         self.assertIn("Grothe.UpperReplacement.WideFacts.first_gt_circle._native.native_decide.ax_1_1",
                       CHECKER.NATIVE)
 
+    def test_upper_mixture_rejects_native_axioms_for_kernel_tail_facts(self):
+        for theorem in ("TailFacts.numerics", "LinearTail.estimates_checked"):
+            with self.subTest(theorem=theorem):
+                name = f"Grothe.UpperReplacement.{theorem}"
+                axiom = f"{name}._native.native_decide.ax_1_1"
+                report = self.report("upper-mixture") + f"'{name}' depends on axioms: [{axiom}]\n"
+                code, stdout, _ = self.run_main(["--upper-mixture"], report)
+                self.assertEqual(code, 1)
+                self.assertIn(f"DISALLOWED AXIOM in {name}: {axiom}", stdout)
+
     def test_upper_mixture_checks_the_rational_and_integral_endpoints(self):
         required, native = CHECKER.audit_policy("upper-mixture")
         self.assertTrue({"Grothe.UpperReplacement.constant_le",

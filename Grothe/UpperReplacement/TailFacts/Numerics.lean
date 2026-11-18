@@ -7,6 +7,6 @@ namespace Grothe.UpperReplacement.TailFacts
 
 set_option maxHeartbeats 0 in
 theorem numerics : TailInputs.numericalChecks = true := by
-  native_decide
+  decide +kernel
 
 end Grothe.UpperReplacement.TailFacts

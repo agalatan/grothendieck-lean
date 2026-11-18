@@ -56,7 +56,7 @@ theorem estimates_checked : ∀ i : Fin 18,
     ((budget i - linearLower i ^ 2 * radius i ^ 2) / radius i ^ 4) *
       (radius i)⁻¹ ^ 1002 ≤ ceiling i ^ 2 * (1 - (radius i)⁻¹ ^ 4) ∧
     ((channelAt i).kind = .tiger → ceiling i = tail i) := by
-  native_decide
+  decide +kernel
 
 set_option maxRecDepth 10000 in
 set_option maxHeartbeats 0 in

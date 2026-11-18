@@ -1567,9 +1567,11 @@ the merged tree before a pull request lands.
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
-complete list. The mixture uses exact cell-head witnesses, the signed head
-sum, channel contours, the universal GT mass comparison, linear-energy
-ceilings and roots of unity. Shared checks also include
+complete list. The mixture uses native checks for the exact cell-head witnesses,
+the signed head sum, channel contours, GT table support, band masses, the first
+GT energy floor and the roots of unity. Lean's kernel verifies the rational
+Hardy tail estimates, including the per-channel linear-energy deductions and
+the cell truncation allowance. Shared checks also include
 `Grothe.Upper.comparison_check` for the earlier selected-band interface,
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),

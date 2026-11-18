@@ -131,11 +131,15 @@ head-budget check.
 
 ## Trust and local verification
 
-The analytic arguments and rational budget arithmetic use Lean's kernel.
-`native_decide` is used for the explicitly registered finite computations, including
-the pre-existing GT certificates. No external numerical result is used as an
-unproved analytic premise. Native facts are recorded in `data/axioms/native.txt`,
-and the endpoint's transitive dependencies must pass the axiom audit.
+Lean's kernel verifies the rational tail inequalities for all eighteen channels,
+their weighted sums, and the cell truncation allowance. These checks are
+`TailFacts.numerics`, `LinearTail.estimates_checked`, and `LinearTail.weighted_ceiling`.
+The GT first-energy floor in `LinearTail.first_energy_checked` reads the full
+energy table and uses `native_decide`. The cell-residue contractions, signed
+head, root tables, contour covers, and GT table support and band masses also
+use registered native checks. These trust Lean's compiler and runtime in
+addition to its kernel. The endpoint audit checks transitive dependencies
+against `data/axioms/native.txt`.
 
 Build and audit the upper theorem locally with
 

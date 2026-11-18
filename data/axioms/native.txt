@@ -9301,7 +9301,6 @@ Grothe.UpperReplacement.HeadWitnessFacts.group05_checked._native.native_decide.a
 Grothe.UpperReplacement.HeadWitnessFacts.group06_checked._native.native_decide.ax_1_1
 Grothe.UpperReplacement.HeadWitnessFacts.group07_checked._native.native_decide.ax_1_1
 Grothe.UpperReplacement.HeadWitnessFacts.head_checked._native.native_decide.ax_1_1
-Grothe.UpperReplacement.LinearTail.estimates_checked._native.native_decide.ax_1_1
 Grothe.UpperReplacement.LinearTail.first_energy_checked._native.native_decide.ax_1_1
 Grothe.UpperReplacement.RootData.roots128_eq._native.native_decide.ax_1_1
 Grothe.UpperReplacement.RootData.roots64_eq._native.native_decide.ax_1_1
@@ -9322,7 +9321,6 @@ Grothe.UpperReplacement.TailFacts.channel14._native.native_decide.ax_1_1
 Grothe.UpperReplacement.TailFacts.channel15._native.native_decide.ax_1_1
 Grothe.UpperReplacement.TailFacts.channel16._native.native_decide.ax_1_1
 Grothe.UpperReplacement.TailFacts.channel17._native.native_decide.ax_1_1
-Grothe.UpperReplacement.TailFacts.numerics._native.native_decide.ax_1_1
 Grothe.UpperReplacement.WideFacts.first_gt_circle._native.native_decide.ax_1_1
 Grothe.UpperReplacement.WideFacts.first_gt_region._native.native_decide.ax_1_1
 Grothe.head_check._native.native_decide.ax_1_1

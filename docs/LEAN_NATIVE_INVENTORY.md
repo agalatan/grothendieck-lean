@@ -30,8 +30,9 @@ variants have separate preserved inventories under
 checks the signed finite head. `TailFacts.Channel01` through `Channel17` and
 the separate `WideFacts` checks cover all eighteen disks and circles.
 `GTMass` checks all seven unweighted mass ceilings, `TableSupport` checks
-the stored bidegrees, and `LinearTailFacts` checks the bounds used to
-deduct linear energy on the GT and phase channels. `RootChecks` identifies the
+the stored bidegrees, and `LinearTail.first_energy_checked` reads the GT
+first-energy floor from that table. Lean's kernel verifies the per-channel
+tail budgets and their linear-energy deductions. `RootChecks` identifies the
 stored roots of unity with their certified enclosures. The exact source
 and verification record are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
 
