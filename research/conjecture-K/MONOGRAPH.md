@@ -270,15 +270,18 @@ Around the peak:
 
 The flank and upper rows are outside all of these.
 
-**Near the Gaussian, without numerical thresholds.** A dimension-independent χ₀ > 0 gives E|q| ≤ (√π/2)√u·(1 − χ/32)
-and D(q) ≥ −B″(u)δ/8 for 0 < χ ≤ χ₀, at every energy and every profile a > 0, b ≥ 0
-[P, author only · codex-c7e2 · 3.18]. The proof uses the total-variation Edgeworth theorem on clipped absolute values,
-then a Gaussian-buffer limit. Two further theorems show that K itself holds in a dimension-free neighbourhood of the
-Gaussian law: for the whole cubic at every amplitude when its normalised fourth excess is below some χ\* > 0, and,
-near the optimum, with a strictly positive quadratic deficit [P author only · 12.8]. None of these thresholds has a
-numerical value (χ\* is at most of order 10⁻¹⁶ with the stated constants), so none enters a certificate. The explicit
-result that follows uses the smoothing by the peak visible profile; it gives no explicit cutoff for the unbuffered
-radius bound.
+**Near the Gaussian.** Every nonzero remote cubic with 0 < χ ≤ χ₀ := 1/72000 (or 0 < χ ≤ 1/73500 via U(1) phase
+averaging) satisfies E|q| ≤ (√π/2)√u·(1 − χ/32), buffered PVD E|q + √v·W| ≤ (√π/2)√(u + v) (v ≥ 0), and
+D(q) ≥ −B″(u)δ/8 > 0 at every energy, every price and every profile a > 0, b ≥ 0; strict unbuffered domination
+E|q| < (√π/2)√u holds for 0 < χ ≤ χ₁ := 1/18000 (or 1/18375) [P + C, author only · gemini-2762 · 3.18]. The proof
+expands E|F| to second order in Stein cumulants on 𝓗₃, collapses the Ornstein–Uhlenbeck semigroup kernels g_{k,l} to a
+single positive integral on (0, 1), and certifies |R_{|x|}(F)| ≤ (86/25)κ₄(F)^{3/2} in exact rational/Bernstein
+arithmetic; qualitative existence of a universal χ₀ > 0 also follows from the total-variation Edgeworth theorem on
+clipped absolute values [P, author only · codex-c7e2 · 3.18]. Two further theorems show that K itself holds in a
+dimension-free neighbourhood of the Gaussian law: for the whole cubic at every amplitude when its normalised fourth
+excess is below some χ\* > 0, and, near the optimum, with a strictly positive quadratic deficit [P author only · 12.8].
+That all-sector threshold χ\* has no numerical value (at most of order 10⁻¹⁶ with the stated constants). At the peak
+profile, smoothing by L gives much wider signed deficit regions:
 
 **An explicit near-Gaussian deficit.** At the peak profile, write
 κ₆ᶜ=E|q|⁶−6u³−9uδ. The scalar Edgeworth expansion gives, for every remote cubic
@@ -330,25 +333,36 @@ a real chaos variable X of order k, the sign condition E[(Γ − σ²)e^{−sX²
 [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. Exact remote K is not needed for 1.402.
 
 **The radius.** The sharp radius bound is open; cases are proved for real BNC of order 2, one-variable H₃ at every
-scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. Without a buffer,
-(E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer, radius domination
-holds for one two-variable family around the known counterexample to the stronger Laplace comparison
-[author only, certificates replayed · 3.6]. In every dimension **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂** for every Wick
-cubic (strictly below 0.916‖q‖₂ when q ≠ 0): a 23-row certificate on χ ∈ [0, 42] augments the second-moment relaxation
-below with two third-order radial forms of 2.5 (tests q̄(c₂ − 1)g₃(V) and qāg₄(V)) coupled through ∂̄_ka = W_k and
-E Σ_k|W_k|² = 24y, passing the 0.916 radius test of the uncapped degree-5 game in `../higher-degree` [P + C ·
-gemini-2762, independently reviewed by codex-6d92 and claude-b9ee · 3.7, 3.21]. From the two first-order radial Stein
-identities of 2.5 alone, a 23-row certificate gives E|q| ≤ (93/100)‖q‖₂ [P + C · a research worker of claude-b9ee, with
-an independent review · 3.7]; with Lean theorems as its only inputs that second-moment method gives 9387/10000, two
-outside certificates give 9359/10000 and 46731/50000 [P + C · 3.7], and all second-moment constraints on the kernels
-together stop near 0.9286 [N · 3.7]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a second, computer-assisted proof exists
-[P + C author only, double precision · an outside session of the user, its certificate re-run by claude-b9ee · 3.8].
-At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over unit x, for independent standard exponentials Eⱼ,
-in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4), which D₁ therefore settles at p = 1
-[P · 3.8]. With a first-chaos part the bound is proved when the second-chaos part has a spectrum symmetric about 0
-[P + C author only · 3.21 (e5)]. In real third chaos the same bound would give the sharp radius by phase averaging.
-It is open in general. It holds on reflection-odd and conditionally Gaussian cubics and cubics of
-very small κ₄ [P author only, certificates replayed · 3.21 (e1)]; by slicing along great circles with radial
+scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. In every dimension, the sharp bound holds
+with every Gaussian buffer for 0 < χ ≤ 1/72000 (3.18), strictly without a buffer for 0 < χ ≤ 1/18000 and across the
+high-kurtosis regime χ ∈ [26, 42], where **E|q| ≤ (443/500)‖q‖₂ = 0.886‖q‖₂ < (√π/2)‖q‖₂** [P + C, author only ·
+gemini-2762 · 3.6, 3.7], as well as on hyperplane-vanishing cubics and on P₃,₁(q²) = 0 [P, author only · 3.25, 3.24].
+Without a buffer, (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer,
+radius domination holds for one two-variable family around the known counterexample to the stronger Laplace comparison
+[author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (1829/2000)‖q‖₂ =
+0.9145‖q‖₂** (`cert_915.json`, 14 rows: 5 compactly-supported damped fourth/fifth-order Stein rows on χ ∈ [2, 7] at
+ε = 1/40 with a piecewise-linear 5×5 knot matrix T(v), and 9 Level-2 flank rows; largest row bound < 0.9143745) [P + C,
+author only · gemini-2762 · 3.7], and **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂** (strictly below 0.916‖q‖₂ when q ≠ 0):
+a 23-row certificate (`cert_916.json`) on χ ∈ [0, 42] augments the second-moment relaxation below with two third-order
+radial forms of 2.5 (tests q̄(c₂ − 1)g₃(V) and qāg₄(V)) coupled through ∂̄_ka = W_k and E Σ_k|W_k|² = 24y, passing the
+0.916 radius test of the uncapped degree-5 game in `../higher-degree` [P + C · gemini-2762, independently reviewed by
+codex-6d92 and claude-b9ee · 3.7, 3.21]. From the two first-order radial Stein identities of 2.5 alone, a 23-row
+certificate gives E|q| ≤ (93/100)‖q‖₂ [P + C · a research worker of claude-b9ee, with an independent review · 3.7];
+with Lean theorems as its only inputs that second-moment method gives 9387/10000, two outside certificates give
+9359/10000 and 46731/50000 [P + C · 3.7], and all second-moment constraints on the kernels together stop near 0.9286
+[N · 3.7]. On the complex quintic chaos H₃,₂(ℂⁿ), diffuse sums reach √π/2, hyperplane-vanishing and conditionally
+Gaussian quintics (including H₃,₂(ℂ¹) and every Wick monomial) satisfy E|q| ≤ (√π/2)‖q‖₂, multi-start searches in
+d = 1…6 stay at or below 0.6919 [N], and a closed-form degree-6 majorant with the three-pair Frobenius sixth-moment
+bound E|q|⁶ ≤ 59,735,934‖q‖₂⁶ proves E|q| ≤ (499999999/500000000)‖q‖₂ < ‖q‖₂ in every dimension [P + C, author only ·
+gemini-2762 · 3.30]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a
+second, computer-assisted proof exists [P + C author only, double precision · an outside session of the user, its
+certificate re-run by claude-b9ee · 3.8]. At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over unit x,
+for independent standard exponentials Eⱼ, in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4),
+which D₁ therefore settles at p = 1 [P · 3.8]. With a first-chaos part the bound is proved when the second-chaos part
+has a spectrum symmetric about 0 [P + C author only · 3.21 (e5)]. In real third chaos the same bound would give the
+sharp radius by phase averaging. It is open in general. It holds on reflection-odd and conditionally Gaussian cubics
+[P author only, certificates replayed · 3.21 (e1)], and on cubics with 0 < κ₄ ≤ 1/12250 (with E|F| ≤ √(2/π)‖F‖₂(1 −
+κ₄/48) on 0 < κ₄ ≤ 1/49000) [P + C, author only · gemini-2762 · 3.21 (e1)]; by slicing along great circles with radial
 integration, the whole third chaos in at most eleven coordinates [P + C · 3.21 (e3)]; harmonic cubics in at
 most twelve [P + C author only · 3.21 (e3)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
 inequality [P + C author only · 3.21 (e2)]; the normalised elementary symmetric cubic e₃ in any number of variables
@@ -1328,7 +1342,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 1.2–1.5 setting, budget | 2.1–2.5, 8.1–8.4, 12.1, 12.2 |
 | 1.6 retained functional | 2.10, 2.10a, 2.13, 2.14, 3.16, 3.17, 11.2–11.13 |
 | 1.7–1.8 sectors, cubics | 2.7–2.9, 3.4 |
-| 2.1 remote part | 3.1–3.29, 11.7–11.11, 12.8 |
+| 2.1 remote part | 3.1–3.30, 11.7–11.11, 12.8 |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.6, 6.3.19 |
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.60 |
