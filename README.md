@@ -25,10 +25,10 @@ finite exact computations evaluated by compiled code (`native_decide`); see
 
 Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
 $\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, was proposed by Haagerup (1987) as the
-exact value. It lies inside the Lean interval above, about $2.35 \cdot 10^{-5}$ below its upper end, but it is not the
-constant.
+exact value. It lies inside the Lean interval above, about $2.35 \cdot 10^{-5}$ below its upper end; in fact it is a
+strict upper bound for the constant.
 
-## Haagerup's value is not the constant
+## Haagerup's value is a strict upper bound
 
 **The article: [haagerup-article/main.pdf](haagerup-article/main.pdf)** (on arXiv soon). It proves
 
