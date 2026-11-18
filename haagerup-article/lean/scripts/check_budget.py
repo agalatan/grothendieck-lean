@@ -13,7 +13,7 @@ weights w_i of channels.json,
 If (b) sum_{k<=250} |h_i(k) - c_i(k)| <= r_i and (c) sum_{k>250} |h_i(k)| <= tau_i hold for every channel, then
 D_lean <= h(0) - sum_{k>=1} |h(k)| for the mixture h = sum_i w_i h_i (ConvexTransfer.cert_margin_of_head_and_tails);
 with (a), each h_i dominated, the transfer theorem gives K_G^C <= 1/D_lean. Exit status 0 iff D_lean > 7119595/10^7
-(> gamma_dagger, by HaagerupConstant) and 1/D_lean < 14045611/10^7.
+(> gamma_dagger, by HaagerupConstant) and 1/D_lean < 140456109/10^8.
 """
 import json
 import os
@@ -25,7 +25,7 @@ from fractions import Fraction
 KH = 250
 NCH = 6
 GD_UPPER = Fraction(7119595, 10**7)
-K_TARGET = Fraction(14045611, 10**7)
+K_TARGET = Fraction(140456109, 10**8)
 HERE = os.path.dirname(os.path.abspath(__file__))
 LEAN = os.path.join(HERE, "..", "HaagerupBound", "HeadData.lean")
 CHANNELS = os.path.join(HERE, "..", "..", "anc", "channels.json")
@@ -96,9 +96,9 @@ def main():
     print(f"  D_lean - 7119595/10^7             = {dec(D - GD_UPPER, 12)}   ({'ok' if ok1 else 'FAILS'})")
     if D > 0:
         print(f"  1/D_lean                          = {dec(1 / D, 30)}")
-        print(f"  14045611/10^7 - 1/D_lean          = {dec(K_TARGET - 1 / D, 12)}   ({'ok' if ok2 else 'FAILS'})")
+        print(f"  140456109/10^8 - 1/D_lean         = {dec(K_TARGET - 1 / D, 12)}   ({'ok' if ok2 else 'FAILS'})")
     if ok1 and ok2:
-        print("BUDGET OK: D_lean > 7119595/10^7 and 1/D_lean < 14045611/10^7")
+        print("BUDGET OK: D_lean > 7119595/10^7 and 1/D_lean < 140456109/10^8")
         return 0
     print("BUDGET FAILS")
     return 1

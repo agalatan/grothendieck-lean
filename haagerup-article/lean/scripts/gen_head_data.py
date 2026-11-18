@@ -601,7 +601,7 @@ With `S = scale = 10^30`, the certificate's computation gives, for every `i`,
 With the weights `w_i` of `channels.json` (`CertData.w1`, …, `CertData.w6`) and `c_i(k) = (centre i)[k] / S`,
 `D = ∑_i w_i c_i(0) - ∑_(k=1)^250 |∑_i w_i c_i(k)| - ∑_i w_i radius i / S - ∑_i w_i tail i / S` is
 `{d_dec}…`. `python3 -I haagerup-article/lean/scripts/check_budget.py` checks exactly that
-`D > 7119595/10^7` and `1/D < 14045611/10^7`.
+`D > 7119595/10^7` and `1/D < 140456109/10^8`.
 
 ## Where the numbers come from
 
