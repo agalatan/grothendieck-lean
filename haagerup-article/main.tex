@@ -236,11 +236,16 @@ conjecture, with numerical support, that no disk-valued pair of one complex coor
 (Conjecture~\ref{conj:one}). This is why $1/\gd$ is a barrier for schemes built from one coordinate
 (Section~\ref{sec:ceiling}).
 
-\paragraph{A two-coordinate pair.} The pair $(f,f\circ S)$, with $S(z_1,z_2)=(-z_1,z_2)$, of
-Section~\ref{sec:tiger}, which we call the \emph{tiger} pair after the ``tiger partition'' of~\cite{BMMN}, has
-$\Wc\approx\gd+1.07\cdot10^{-3}$. It is close to the phase of $z_2$, modulated by $|z_1|$ and by the relative angle of the
-two coordinates. The reflection $S$ turns the contribution of the mode carrying the phase of $z_1$ from a loss into a
-gain.
+\paragraph{A two-coordinate pair.} A pair $(f,g)$ of disk-valued maps is a rounding scheme in which one vector is
+rounded with $f$ and the other with $g$. Its ceiling $\Wc(f,g)$ is the ceiling $\Wc(h)$ of the coefficients of its
+kernel; equivalently $\Wc(f,g)=|\ip f{Jg}|$ (Section~\ref{sec:operatorJ}). For the phase of one coordinate, $f=g=\ph(z_2)$,
+it equals $\gd$. The pair of Section~\ref{sec:tiger}, which we call the \emph{tiger} pair after the ``tiger
+partition'' of~\cite{BMMN}, has $\Wc(f,g)\approx\gd+1.07\cdot10^{-3}$. Its map $f$ is close to the phase of $z_2$,
+modulated by $|z_1|$ and by the relative angle of the two coordinates, and $g=f\circ S$ with $S(z_1,z_2)=(-z_1,z_2)$.
+The excess comes from a trade-off. Since $|f|\le1$, giving $f$ a component that carries the phase of $z_1$ costs part
+of the phase of $z_2$, whose contribution to $\Wc$ drops below $\gd$. With $g=f$ that component would lower $\Wc$
+further. The reflection $S$ reverses the sign with which it enters $\Wc$, so it raises $\Wc$, by more than it cost.
+Section~\ref{sec:tiger} gives the split by angular modes.
 
 \paragraph{Cancelling the wrong signs.} On its own the tiger is useless: most of its residual has the wrong sign,
 $\Dc\approx0.6995$, and inverting its kernel in Krivine's manner gives only $\KG\le1.4245$. The repository's two-coordinate
@@ -588,7 +593,8 @@ overlaps $\mu_k=\sum_m(-1)^m\sum_{n_1+n_2=k-k_0(m)}|c_{m,n}(f)|^2$ are real, but
 For the symmetric choice $g=f$ the signs would be $(-1)^{k_0(m)}$. The two choices agree on $m\le0$ and differ on
 $m\ge1$, in particular on $m=1$, where both have $k_0=0$. Since $\cJ_1\otimes\cJ_0$ is an involution,
 $\langle F_1,(\cJ_1\otimes\cJ_0)F_1\rangle=\|F_1^{\mathrm{even}}\|^2-\|F_1^{\mathrm{odd}}\|^2$, where even and odd refer to
-$n_1+n_2$. So the reflection turns energy of the mode $m=1$ at odd levels from a loss into a gain.
+$n_1+n_2$. So with $g=f$ the energy of the mode $m=1$ at odd levels is subtracted from $\ip f{Jg}$, and with
+$g=f\circ S$ it is added.
 
 \paragraph{The pair.} The pair used here was found by best-response iteration for $\Wc$ on cell-valued maps. Without any
 symmetry constraint, the optimum of this search on $32$ angle cells satisfies $G(\cdot,\cdot,\psi)=F(\cdot,\cdot,\psi+\pi)$
