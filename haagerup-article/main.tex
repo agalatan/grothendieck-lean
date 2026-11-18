@@ -94,7 +94,9 @@
 \begin{abstract}
 Let $\gd=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}\,dt=0.711958659778\ldots$. We prove that the complex
 Grothendieck constant satisfies $\KG\le1.40456109<1/\gd=1.404575934663\ldots$: Haagerup's value $1/\gd$ is a strict
-upper bound for $\KG$. This resolves a conjecture of Haagerup (1987) about this value.
+upper bound for $\KG$. This resolves a conjecture of Haagerup (1987) about this value. The value $1.40456109$ is
+fixed only for this purpose and is not meant to be the best upper bound; sharper bounds, and their formal
+verification in Lean, are developed continuously at \url{https://github.com/agalatan/grothendieck-lean}.
 The bound comes from an explicit rounding scheme: a convex combination of six Gaussian rounding channels, one of which is a
 pair of disk-valued maps of two complex Gaussian coordinates, given by a table of $294{,}912$ integers. We explain why
 $1/\gd$ is a natural barrier. No rounding scheme gives a bound below the reciprocal of the value of its kernel at imaginary
@@ -256,6 +258,13 @@ such channels and two preprocessed phase channels cancels the residual down to $
 for the continuation of each channel's kernel to a disc of radius $r>1$ (Section~\ref{sec:tails}). The energies of $G_T$
 are taken from an exact table whose $\ell^1$ error, $1.494\cdot10^{-6}$ per unit weight, is paid once
 (Section~\ref{sec:gt}).
+
+\subsection{Scope of this paper}\label{sec:scope}
+This paper has one purpose: to show that Haagerup's value $1/\gd$ is a strict upper bound for $\KG$. For that it
+freezes one certificate and the value $1.40456109$ it proves, which is enough as long as it lies below $1/\gd$. We do
+not try to give the best upper bound, not even at the time of writing. The search for sharper bounds, and their
+formal verification in Lean~4, is continuous work in the repository~\cite{GL},
+\url{https://github.com/agalatan/grothendieck-lean}; its README states the current best bounds.
 
 \subsection{Status of the proof}\label{sec:status}
 Theorem~\ref{thm:main} is a computer-assisted theorem. Its analytic steps are proved in this paper (some only in sketch,
@@ -1155,8 +1164,9 @@ Together with the Lean-verified lower bound of~\cite{GL},
 The lower bound comes from the Hermite projection game $P_{1,0}-\frac{149}{200}P_{2,1}$. Games of higher degree should
 do better, but none has been certified yet: the best game of degree~$9$ found so far is worth about $1.40418$ numerically,
 and at most $1.404218$. If that value is close to the truth, $\KG$ lies within about $4\cdot10^{-4}$ below our upper
-bound. The new upper bound improves the Lean-verified $1.404599395362$ by $3.8\cdot10^{-5}$, and shows that Haagerup's
-value is a strict upper bound.
+bound. The upper bound of this paper lies $3.8\cdot10^{-5}$ below the Lean-verified $1.404599395362$ and shows that
+Haagerup's value is a strict upper bound. As said in Section~\ref{sec:scope}, it is frozen for that purpose; the
+current bounds are those of~\cite{GL}.
 % SRC: [OV] (lower bound 1.401700322371, witness epsilon = 149/200, upper 1.404599395362); degree-9 model value
 % 1.40430-1.40431 [HD] 1.6 (N, numerical); 3.8e-5 = 1.404599395362 - 1.40456109 [DER].
 
@@ -1393,8 +1403,8 @@ with $f=\ph(z_1)$ recovers $\sinc(1/64)^2$ times Haagerup's $r_k$ in the mode $m
  than Krivine's bound}, FOCS 2011; Forum Math.\ Pi 1 (2013), e4; arXiv:1103.6161. \todo{verify the journal reference}
 \bibitem{GFL26} Guo, Fang, Lu, arXiv:2609.07000 (2026). \todo{full author names and title}
 \bibitem{GL} \emph{grothendieck-lean}: a Lean~4/Mathlib development of bounds for the complex Grothendieck constant,
- 2026, \url{https://github.com/agalatan/grothendieck-lean}, commit \texttt{25d56fcbb}. \todo{authors; decide whether
- the repository is cited publicly}
+ 2026--, \url{https://github.com/agalatan/grothendieck-lean} (continuously updated; the bounds quoted here are those
+ of commit \texttt{25d56fcbb}). \todo{authors}
 \bibitem{Gr53} A.~Grothendieck, \emph{R\'esum\'e de la th\'eorie m\'etrique des produits tensoriels topologiques},
  Bol.\ Soc.\ Mat.\ S\~ao Paulo 8 (1953), 1--79. \todo{verify}
 \bibitem{Ha87} U.~Haagerup, \emph{A new upper bound for the complex Grothendieck constant}, Israel J.\ Math.\ 60 (1987),
