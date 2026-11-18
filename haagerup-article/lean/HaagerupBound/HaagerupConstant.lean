@@ -3,7 +3,7 @@ import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Tactic.LinearCombination
-import HaagerupRefutation.CertData
+import HaagerupBound.CertData
 
 /-!
 # Enclosure of Haagerup's constant `γ†`
@@ -21,7 +21,7 @@ Defines `haagerupDagger := ∫ t in 0..π/2, cos² t / √(1 + sin² t)` and pro
    `∫₀^{π/2} cos^{2k+2} t dt = (2k+1)/(2k+2) ∫₀^{π/2} cos^{2k} t dt`, and bound `π` from above.
 -/
 
-namespace HaagerupRefutation
+namespace HaagerupBound
 
 open MeasureTheory intervalIntegral Real
 
@@ -229,4 +229,4 @@ theorem haagerupDagger_lt_upper : haagerupDagger < (CertData.haagerupUpperQ : �
         gcongr
     _ < _ := hnum
 
-end HaagerupRefutation
+end HaagerupBound

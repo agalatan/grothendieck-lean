@@ -1,9 +1,9 @@
-import HaagerupRefutation.Assembly
+import HaagerupBound.Assembly
 
 /-!
 # The upper bound
 
-Start here. `HaagerupRefutation.upper_bound` is the article's upper bound as Lean checks it:
+Start here. `HaagerupBound.upper_bound` is the article's upper bound as Lean checks it:
 
 ```lean
 theorem upper_bound (facts : ChannelFacts) :
@@ -55,7 +55,7 @@ Lean. The definitions in the statement:
 4. `CertData.lean` and `HeadData.lean`: the exact data (the weights; the head centres, radii and tails).
 -/
 
-namespace HaagerupRefutation
+namespace HaagerupBound
 
 /-- **The article's main theorem.** Given the three certified facts per channel (`ChannelFacts`), the complex
 Grothendieck constant is at most 1.40456109, hence strictly below `1/γ†`: Haagerup's value is a strict upper bound. -/
@@ -65,4 +65,4 @@ theorem upper_bound (facts : ChannelFacts) :
   ⟨complexGrothendieckConstant_le_of_channelFacts facts,
     complexGrothendieckConstant_lt_inv_haagerupDagger_of_channelFacts facts⟩
 
-end HaagerupRefutation
+end HaagerupBound

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate HaagerupRefutation/HeadData.lean: per channel of the six-channel certificate, the centres of the head
+"""Generate HaagerupBound/HeadData.lean: per channel of the six-channel certificate, the centres of the head
 coefficients h_i(0..250), an l1 radius of the head and a bound on the tail beyond 250, as integers at the scale 10^30.
 The output is byte for byte reproducible.
 
@@ -16,7 +16,7 @@ Tested with Python 3.14.8, python-flint 0.9.0 and numpy 2.5.5. One process, one 
 to nice 10 at least.
 
 Inputs (all committed; nothing else is read):
-  haagerup-article/certificate/channels.json, tiger.json, tiger.npz   checked against certificate/SHA256SUMS
+  haagerup-article/anc/channels.json, tiger.json, tiger.npz   checked against anc/SHA256SUMS
   Grothe/Upper/Data.lean                     the GT energy table energyStrs, bQ, etaQ, energyErrQ, and the production
                                              column pList, qList, slopeQ, headCapQ (a self-test of the table convention)
   Grothe/UpperTightBudget.lean, Grothe/Upper/ComparisonGroups.lean, Grothe/Upper/ThreeBandBudget.lean,
@@ -59,8 +59,8 @@ KH = 250                      # head k = 0..KH; the tail is k > KH
 SCALE = 10 ** 30              # common scale of every integer in HeadData.lean
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
-CERT_REL = "haagerup-article/certificate"
-OUT_REL = "haagerup-article/lean/HaagerupRefutation/HeadData.lean"
+CERT_REL = "haagerup-article/anc"
+OUT_REL = "haagerup-article/lean/HaagerupBound/HeadData.lean"
 DATA_REL = "Grothe/Upper/Data.lean"
 CERT_FILES = ["channels.json", "tiger.json", "tiger.npz"]
 t0 = time.time()
@@ -137,7 +137,7 @@ def check_inputs():
         for line in fh:
             h, name = line.split()
             sums[name] = h
-    assert sorted(sums) == sorted(CERT_FILES), sums
+    assert set(CERT_FILES) <= set(sums), sums
     for name in CERT_FILES:
         assert sha256(CERT_REL + "/" + name) == sums[name], f"SHA-256 mismatch: {name}"
     return {CERT_REL + "/" + n: sums[n] for n in CERT_FILES} | {DATA_REL: sha256(DATA_REL)}
@@ -621,7 +621,7 @@ All in 256-bit Arb balls, as in the certificate's verifier, then rounded in exac
   lower bound of `h_i(0)` (for GT: the table value minus `ε_GT`).
 -/
 """
-    body = ["namespace HaagerupRefutation.HeadData", "",
+    body = ["namespace HaagerupBound.HeadData", "",
             "/-- The common scale `S = 10^30` of every number below. -/",
             f"def scale : Nat := {SCALE}", ""]
     for i, d in enumerate(data):
@@ -641,7 +641,7 @@ All in 256-bit Arb balls, as in the certificate's verifier, then rounded in exac
     body.append("def tail : Fin 6 → Nat")
     body += [f"  | {i} => {d['tail']}" for i, d in enumerate(data)]
     body.append("")
-    body.append("end HaagerupRefutation.HeadData")
+    body.append("end HaagerupBound.HeadData")
     return head + "\n" + "\n".join(body) + "\n"
 
 

@@ -10,9 +10,9 @@ root (about 3 minutes on one core)
 and add `--check` to verify instead that this file is reproduced byte for byte.
 
 Inputs (SHA-256):
-* `haagerup-article/certificate/channels.json` `189028a62efe566a591fc993e1cfa686f43da68d52da00dce20703572e80aa08`
-* `haagerup-article/certificate/tiger.json` `f3c15e2217a3fb53d33167f5ed086f45bbcee0484a037c2753e4337b719bf4ab`
-* `haagerup-article/certificate/tiger.npz` `27cf6265ab1071eaf50c840468bff6a195793821e79a229e92260962ec51c6cc`
+* `haagerup-article/anc/channels.json` `189028a62efe566a591fc993e1cfa686f43da68d52da00dce20703572e80aa08`
+* `haagerup-article/anc/tiger.json` `f3c15e2217a3fb53d33167f5ed086f45bbcee0484a037c2753e4337b719bf4ab`
+* `haagerup-article/anc/tiger.npz` `27cf6265ab1071eaf50c840468bff6a195793821e79a229e92260962ec51c6cc`
 * `Grothe/Upper/Data.lean` `cec1bb15c67969c215a82264bee9c31e116554e33c6821b189ce527d9e442cc7`
 * the radii and bands of the GT comparison (`Grothe/UpperTightBudget.lean`, `Grothe/Upper/ThreeBandBudget.lean` and
   the definitions they use), checked verbatim by the generator.
@@ -56,7 +56,7 @@ All in 256-bit Arb balls, as in the certificate's verifier, then rounded in exac
   lower bound of `h_i(0)` (for GT: the table value minus `ε_GT`).
 -/
 
-namespace HaagerupRefutation.HeadData
+namespace HaagerupBound.HeadData
 
 /-- The common scale `S = 10^30` of every number below. -/
 def scale : Nat := 1000000000000000000000000000000
@@ -610,4 +610,4 @@ def tail : Fin 6 → Nat
   | 4 => 224644191304866247193165
   | 5 => 2076470064724747
 
-end HaagerupRefutation.HeadData
+end HaagerupBound.HeadData

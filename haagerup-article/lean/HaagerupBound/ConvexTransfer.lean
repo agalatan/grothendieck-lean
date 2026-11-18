@@ -25,7 +25,7 @@ This file proves:
   tails beyond `K`.
 -/
 
-namespace HaagerupRefutation
+namespace HaagerupBound
 
 /-- Classical bilinear norm `C(A) = sup_{|z_p| ≤ 1, |w_q| ≤ 1} ‖∑_{p,q} A_{pq} conj(z_p) w_q‖`. -/
 noncomputable def classicalNorm {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
@@ -395,4 +395,4 @@ theorem cert_margin_of_head_and_tails {ι : Type*} (s : Finset ι) (K : ℕ)
   rw [h_tsum_split]
   linarith
 
-end HaagerupRefutation
+end HaagerupBound

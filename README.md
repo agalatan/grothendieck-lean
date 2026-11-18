@@ -39,11 +39,11 @@ Haagerup (1987).
   rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
 - **The proof is computer-assisted.** Its finitely many numerical facts are certified in exact rational and
   interval arithmetic, and were re-checked with independently written code. The certificate is in
-  [`haagerup-article/certificate/`](haagerup-article/certificate).
+  [`haagerup-article/anc/`](haagerup-article/anc).
 - **The Lean companion.** A small, separate Lean package,
   [`haagerup-article/lean`](haagerup-article/lean), has its own CI job and imports only Mathlib. Its theorem
-  `HaagerupRefutation.upper_bound`
-  ([`UpperBound.lean`](haagerup-article/lean/HaagerupRefutation/UpperBound.lean)) derives the bound from three
+  `HaagerupBound.upper_bound`
+  ([`UpperBound.lean`](haagerup-article/lean/HaagerupBound/UpperBound.lean)) derives the bound from three
   certified facts per channel. Lean proves everything else, including the whole numerical budget by exact evaluation.
 - **Not yet part of `main_bounds`.** Bringing this bound into the main development above is in progress.
 - **How it was found.** The construction was discovered with AI, at the end of this project; the article's last

@@ -1,7 +1,7 @@
-import HaagerupRefutation.CertData
-import HaagerupRefutation.ConvexTransfer
-import HaagerupRefutation.HaagerupConstant
-import HaagerupRefutation.HeadData
+import HaagerupBound.CertData
+import HaagerupBound.ConvexTransfer
+import HaagerupBound.HaagerupConstant
+import HaagerupBound.HeadData
 
 /-!
 # The hypotheses `ChannelFacts`, the budget, and the two bounds
@@ -24,7 +24,7 @@ Lean checks the deduction from these facts:
    `complexGrothendieckConstant_lt_inv_haagerupDagger_of_channelFacts`.
 -/
 
-namespace HaagerupRefutation
+namespace HaagerupBound
 
 /-! ### The weights -/
 
@@ -201,4 +201,4 @@ theorem complexGrothendieckConstant_lt_inv_haagerupDagger_of_channelFacts (c : C
     (haagerupDagger_pos.trans hlt) c.budget_le_margin).trans_lt
     (one_div_lt_one_div_of_lt haagerupDagger_pos hlt)
 
-end HaagerupRefutation
+end HaagerupBound

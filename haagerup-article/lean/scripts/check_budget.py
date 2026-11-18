@@ -27,8 +27,8 @@ NCH = 6
 GD_UPPER = Fraction(7119595, 10**7)
 K_TARGET = Fraction(14045611, 10**7)
 HERE = os.path.dirname(os.path.abspath(__file__))
-LEAN = os.path.join(HERE, "..", "HaagerupRefutation", "HeadData.lean")
-CHANNELS = os.path.join(HERE, "..", "..", "certificate", "channels.json")
+LEAN = os.path.join(HERE, "..", "HaagerupBound", "HeadData.lean")
+CHANNELS = os.path.join(HERE, "..", "..", "anc", "channels.json")
 getcontext().prec = 40
 
 

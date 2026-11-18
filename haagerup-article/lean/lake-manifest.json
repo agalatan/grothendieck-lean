@@ -84,7 +84,7 @@
    "configFile": "lakefile.toml"
   }
  ],
- "name": "haagerupRefutation",
+ "name": "haagerupBound",
  "lakeDir": ".lake",
  "fixedToolchain": false
 }

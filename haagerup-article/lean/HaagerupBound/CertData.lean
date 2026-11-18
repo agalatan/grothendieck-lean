@@ -12,12 +12,12 @@ The weights and parameters of the six channels of the mixture:
 
 Every polynomial has degree `≤ 3` with exact rational coefficients in `10⁻¹² ℤ`.
 
-The weights are those of `haagerup-article/certificate/channels.json`, in its channel order. `Assembly` uses the
+The weights are those of `haagerup-article/anc/channels.json`, in its channel order. `Assembly` uses the
 weights (and `HaagerupConstant` uses `haagerupUpperQ`); the polynomials, radii and `j` parameters document the
 channels and are not used by the theorems.
 -/
 
-namespace HaagerupRefutation.CertData
+namespace HaagerupBound.CertData
 
 /-- Common denominator `10^12` for certificate weights and polynomial coefficients. -/
 def certDenom : ℚ := 1000000000000
@@ -122,4 +122,4 @@ theorem schur_params_in_open_half :
 /-- A rational upper bound on Haagerup's `γ†` (`0.711958659778... < 0.7119595`), proved in `HaagerupConstant`. -/
 def haagerupUpperQ : ℚ := 7119595 / 10000000
 
-end HaagerupRefutation.CertData
+end HaagerupBound.CertData

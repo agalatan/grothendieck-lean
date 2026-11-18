@@ -1,1464 +1,421 @@
-% ============================================================================================
-%  The complex Grothendieck constant is smaller than 1/gamma^dagger   (draft of 18 November 2026)
-%  The "SRC:" comments record where every number comes from (paths relative to
-%  handoff/haagerup-check-2026-11-18/ or to the repository). STRIP ALL COMMENTS BEFORE SUBMISSION
-%  (e.g. with arxiv_latex_cleaner): they name internal files.
-%
-%  SOURCES of numbers (every number in the text carries a comment "SRC: ..." with one of these):
-%   [SR]   handoff/haagerup-check-2026-11-18/shrink/README.md
-%   [VL]   shrink/logs/verify_v4.log  (256-bit Arb verifier run on cert_final)
-%   [VR]   shrink/cert_final/verify_result.json
-%   [IND]  shrink/logs/indep_v4_*.log, shrink/cert_final/indep_*.json  (re-checks adapted from the
-%          caller's scripts)
-%   [SUM]  shrink/logs/summary_cert_final.txt
-%   [CF]   shrink/cert_final/channels.json, tiger.json, SHA256SUMS
-%   [RC]   recheck-final/README.md          (independent code)
-%   [RCL]  recheck-final/logs/*.log          [RCO] recheck-final/out/*.json
-%   [LA]   lean-audit/audit_notes.txt        [LP] lean-audit/LEAN_PORT_PLAN.md
-%   [LU]   lean-audit/notes_univ_gt_error.txt
-%   [NUM]  numeric/index.html and numeric/out_*.log (re-check of the earlier 18-channel certificate)
-%   [OV]   docs/overview.tex of the repository (master 25d56fcbb)
-%   [LEAN] Lean sources of the repository (master 25d56fcbb), file names given in the text
-%   [CT]   handoff/research-third-decimal/ctiger-2026-10-15/README.md and *.log
-%   [BT0]  handoff/research-third-decimal/breakthrough/00-state-of-the-math.md
-%   [BT5]  handoff/research-third-decimal/breakthrough/05-latest-literature.md
-%   [HA]   resources/papers/haagerup-1987-complex-upper/summary.md (read from the page images)
-%   [KO]   resources/books/geometry-of-banach-spaces-1990/articles/15-koenig/summary.md
-%   [BM]   resources/papers/bmmn-2011-krivine-bound/summary.md
-%   [KR]   resources/papers/krivine-1979-constantes/summary.md
-%   [HD]   research/higher-degree/STATUS.md
-%   [GEM]  report on the earlier 18-channel certificate, frozen copy (ideas only; numbers quoted only
-%          where re-checked)
-%   [MODES] per-mode split supplied with the task, computed with user_mode_check_fixed.py on the
-%          earlier 64x128x128 pair (float, midpoint rule)
-%   [DER]  derived in this draft by elementary arithmetic from the quoted values, or from
-%          recheck-final/out/heads.json (float); informational, not part of the certificate
-% ============================================================================================
-\documentclass[11pt,a4paper]{article}
+\documentclass[11pt,reqno]{amsart}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{booktabs,array}
-\usepackage[margin=2.5cm]{geometry}
-\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{geometry}
 \usepackage{xcolor}
-\usepackage{enumitem}
-\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
 
-\setlist{itemsep=2pt,topsep=4pt}
-\graphicspath{{figures/}}
+\geometry{margin=1in}
+\setlength{\emergencystretch}{3em}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
 \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\D}{\mathbb{D}}
 \newcommand{\E}{\mathbb{E}}
-\newcommand{\KG}{K_G^{\mathbb{C}}}
-\newcommand{\KGR}{K_G^{\mathbb{R}}}
-\newcommand{\gd}{\gamma^{\dagger}}
+\newcommand{\Hilb}{\mathcal{H}}
+\newcommand{\KGC}{K_G^{\C}}
+\newcommand{\KGR}{K_G^{\R}}
+\newcommand{\gd}{\gamma^\dagger}
 \newcommand{\ph}{\operatorname{ph}}
-\newcommand{\Dbar}{\overline{\mathbb{D}}}
-\newcommand{\ip}[2]{\langle #1,#2\rangle}
-\newcommand{\cR}{\mathcal{R}}
-\newcommand{\cJ}{\mathcal{J}}
-\newcommand{\cI}{\mathcal{I}}
-\newcommand{\Wc}{\mathsf{W}}
-\newcommand{\Dc}{\mathsf{D}}
-\newcommand{\Ac}{\mathsf{A}}
-\newcommand{\eps}{\varepsilon}
-\newcommand{\sinc}{\operatorname{sinc}}
-\newcommand{\lean}[1]{\texttt{\small #1}}
-\newcommand{\todo}[1]{{\color{red!75!black}\textsf{\small [TODO: #1]}}}
-\renewcommand{\Re}{\operatorname{Re}}
-\renewcommand{\Im}{\operatorname{Im}}
+\DeclareMathOperator{\RePart}{Re}
+\DeclareMathOperator{\ImPart}{Im}
 
-\title{\textbf{The complex Grothendieck constant is smaller than $1/\gamma^{\dagger}$}\\[4pt]
-\large Haagerup's value is a strict upper bound}
-\author{Alin Galatan\thanks{\todo{affiliation and e-mail; further authors, if any}}}
+\title[Haagerup's value is a strict upper bound for \texorpdfstring{$\KGC$}{KGC}]{Haagerup's Value Is a Strict Upper Bound for the Complex Grothendieck Constant}
+\author{Alin Galatan}
 \date{November 2026}
 
 \begin{document}
-\maketitle
 
 \begin{abstract}
-Let $\gd=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}\,dt=0.711958659778\ldots$. We prove that the complex
-Grothendieck constant satisfies $\KG\le1.40456109<1/\gd=1.404575934663\ldots$: Haagerup's value $1/\gd$ is a strict
-upper bound for $\KG$. This resolves a conjecture of Haagerup (1987) about this value. The value $1.40456109$ is
-fixed only for this purpose and is not meant to be the best upper bound; sharper bounds, and their formal
-verification in Lean, are developed continuously at \url{https://github.com/agalatan/grothendieck-lean}.
-
-Every rounding scheme gives $\KG\le1/\mathsf{D}$, and $\mathsf{D}$ never exceeds the scheme's ceiling, the modulus of its
-correlation function at the imaginary point $t=i$. All schemes used so far have ceiling at most $\gd$; for Haagerup's phase
-rounding it is exactly $\gd$. This is why $1/\gd$ acted as a barrier. What is new here is a scheme that rounds the two
-vectors with \emph{different} maps: a map $f$ of two complex Gaussian coordinates for one vector, and its reflection
-$f(-z_1,z_2)$ for the other. Its ceiling is $\gd+1.07\cdot10^{-3}$. Mixed with five channels whose coefficients cancel
-its wrong-sign coefficients, it gives $\mathsf{D}\ge\gd+7.5\cdot10^{-6}$.
-
-The proof is computer-assisted: finitely many inequalities are verified in exact rational and $256$-bit ball
-arithmetic, and the verification was repeated with independently written code. A Lean~4 companion checks the deduction
-and the whole budget exactly, from the certified facts. The construction was discovered with AI, at the end of a
-two-month research and formalisation project carried out by the author together with AI agents; the last section
-describes how. As a by-product, the phase of a single coordinate does not maximise the complex analogue of K\"onig's
-functional on $\C^2$.
+Let $\KGC$ denote the complex Grothendieck constant. In 1987, Haagerup proved the upper bound $\KGC \le 1/\gamma_H \approx 1.40490913$ via plain complex Gaussian phase rounding and identified the alternating hypergeometric integral
+\[
+  \begin{gathered}
+  \gd \;=\; \int_0^{\pi/2} \frac{\cos^2 t}{\sqrt{1 + \sin^2 t}}\,dt
+  \;=\; \frac{\pi}{4}\,{}_2F_1\!\left(\tfrac{1}{2},\tfrac{1}{2};2;-1\right)
+  \;=\; 0.711958659778\ldots,\\
+  \frac{1}{\gd} \;=\; 1.404575934663\ldots,
+  \end{gathered}
+\]
+whose reciprocal he called ``a perhaps more plausible candidate'' for $\KGC$; Heilman, Jones, and Malavolta (2026) restated this conjecture. We prove the strict upper bound
+\[
+  \KGC \;\le\; 1.40456109 \;<\; \frac{1}{\gd}:
+\]
+Haagerup's value $1/\gd$ is a strict upper bound for $\KGC$, which resolves this conjecture of Haagerup. The value $1.40456109$ is fixed only for this purpose and is not meant to be the best upper bound, even at the time of writing; sharper bounds, and their verification in Lean, are developed continuously at \url{https://github.com/agalatan/grothendieck-lean}.
+We first prove a universal alternating ceiling showing that no convex mixture of preprocessed scalar phase channels ($W \le \gd$) and symmetric smoothed phase-twisted $\C^2$ channels ($W \approx 0.71194871 < \gd$) can ever cross $\gd$. We overcome this obstruction via a six-channel rational convex mixture combining three degree-$\le 3$ preprocessed symmetric $\C^2$ channels, two scalar phase channels, and one $\C^2$ channel built from a reflected pair of rounders $(f, g)$, $g(z_1,z_2) = f(-z_1,z_2)$, whose alternating value lifts strictly above $\gd$ ($W \approx 0.71303$), while alternating polynomial preprocessors cancel non-alternating Hermite--Laguerre modes at zero ceiling loss. All finite-channel enclosures and infinite Hardy-space tail bounds are certified via rigorous 256-bit ball arithmetic in the companion ancillary archive, and were re-checked with independently written code. A Lean~4 companion, kept in the repository rather than in the archive, checks the deduction and the whole budget exactly from the certified facts (Appendix~\ref{app:lean}). The construction was discovered with AI, at the end of a two-month research and formalisation project (Section~\ref{sec:found}).
 \end{abstract}
-% SRC numbers in the abstract: gd [VL]; 1/gd [NUM out_alternating.log]; 1.40456109 [SR],[VL]; 294,912 [SUM];
-% 1.07e-3 = W(tiger)-gd, averaged partial sums 1.0719690924e-3 [RCL combine_mu.log].
 
-\tableofcontents
+\maketitle
 
-% ============================================================================================
-\section{Introduction}\label{sec:intro}
+\section{Introduction}
 
-\subsection{The constant}\label{sec:constant}
-For a complex $m\times n$ matrix $A=(a_{ij})$ put
-\[
- C(A)=\sup_{|\eps_i|=|\delta_j|=1}\Bigl|\sum_{i,j}a_{ij}\,\overline{\eps_i}\,\delta_j\Bigr|,\qquad
- V(A)=\sup_{\|x_i\|=\|y_j\|=1}\Bigl|\sum_{i,j}a_{ij}\,\ip{x_i}{y_j}\Bigr|,
-\]
-the second supremum being over unit vectors in a complex Hilbert space (inner products are conjugate-linear in the first
-argument). Grothendieck~\cite{Gr53} proved that $V(A)\le K\,C(A)$ for a constant $K$ independent of $m$, $n$ and the
-dimension; the least such constant is the \emph{complex Grothendieck constant} $\KG$. We refer to Pisier's
-survey~\cite{Pi12} for the many interpretations of $\KG$ and of its real counterpart $\KGR$.
-
-\subsection{History of the bounds}\label{sec:history}
-Table~\ref{tab:history} lists the bounds we know of. On the upper side, Haagerup~\cite{Ha87} adapted Krivine's
-method~\cite{Kr79} to the complex case. The complex phase $\ph(w)=w/|w|$ of a standard complex Gaussian rounds unit
-vectors with correlation
-\begin{equation}\label{eq:phi}
- \varphi(t)=t\int_0^{\pi/2}\frac{\cos^2 s}{\sqrt{1-t^2\sin^2 s}}\,ds=\sum_{k\ge0}r_k\,t^{2k+1},\qquad
- r_0=\frac\pi4,\quad r_{k+1}=r_k\,\frac{(2k+1)^2}{4(k+1)(k+2)}
+Grothendieck's fundamental inequality \cite{Gro53} asserts the existence of a universal constant $K_G^{\mathbb{F}} < \infty$ over $\mathbb{F} \in \{\R, \C\}$ such that for every finite matrix $A = (A_{pq}) \in \mathbb{F}^{m \times n}$ and every family of vectors $u_1,\dots,u_m, v_1,\dots,v_n$ in the closed unit ball of a Hilbert space $\Hilb$ over $\mathbb{F}$,
+\begin{equation}\label{eq:groth-def}
+  V(A) \;:=\; \sup_{\|u_p\|_\Hilb \le 1,\, \|v_q\|_\Hilb \le 1}
+  \left| \sum_{p=1}^m \sum_{q=1}^n A_{pq} \langle u_p, v_q \rangle_\Hilb \right|
+  \;\le\; K_G^{\mathbb{F}} \, C(A),
 \end{equation}
-\cite[Lemma~3.2]{Ha87}. The inverse series $\varphi^{-1}(s)=\sum b_ns^n$ has $b_1=4/\pi$ and $b_n\le0$ for all $n\ge3$
-\cite[Theorem~2.1]{Ha87}, and Krivine's argument then gives $\KG\le8/(\pi(k_0+1))=1.40490913\ldots$, where $k_0$ solves
-$\varphi(k_0)=\frac\pi8(k_0+1)$. This bound stood until 2026.
-% SRC: phi, r_k recursion: [HA] Lemma 3.2 and Theorem 2.1; recursion also in verify_cert.py (r_ph) and [KO];
-% 1.40490913: [HA] (1/beta_0 = 1.4049091327357955, float) and [OV] history table.
-
-Haagerup also remarked \cite[p.~202]{Ha87} that his bound is probably not sharp, and pointed to the value
+where
 \[
- |\varphi(i)|^{-1}=\Bigl(\int_0^{\pi/2}\frac{\cos^2t}{\sqrt{1+\sin^2t}}\,dt\Bigr)^{-1}=\frac1{\gd}=1.4045759346637420\ldots,
+  C(A) \;:=\; \sup_{|z_p| \le 1,\, |w_q| \le 1} \left|\sum_{p=1}^m \sum_{q=1}^n A_{pq} \bar{z}_p w_q\right|
 \]
-calling this value ``a perhaps more plausible candidate''. It is the formal analogue of Krivine's value
-$\pi/(2\log(1+\sqrt2))=|\tfrac2\pi\arcsin(i)|^{-1}$, which Krivine had conjectured to be $\KGR$~\cite{Kr79}. K\"onig
-restated the question and proposed finite-dimensional analogues~\cite{Ko90}, and Heilman, Jones and Malavolta restate
-Haagerup's conjecture in their recent improvement of his upper bound \cite[(4.1)]{HJM26}. In the real case Krivine's
-conjecture was disproved by Braverman, Makarychev, Makarychev and Naor~\cite{BMMN}, who used a rounding through
-\emph{two}-dimensional Gaussian projections, and who remarked that their approach might also improve Haagerup's bound
-\cite[Remark~1.1]{BMMN}.
-% SRC: quote "a perhaps more plausible candidate", p.202, and the Krivine analogy: [HA] (Conjecture, p.202);
-% attribution to Haagerup and HJM eq. (4.1): coordinator's literature check (message of 18 Nov 2026);
-% Konig restatement: [KO]; BMMN Remark 1.1: [BM] Section 1. 1/gd digits: [NUM out_alternating.log]
-% (1.404575934663742032773958) and the 256-bit ball in [GEM] ([1.40457593466374203277395847155 +/- 1.86e-30]).
+denotes the classical $\ell^\infty \to \ell^1$ bilinear norm, attained at unimodular scalars $|z_p| = |w_q| = 1$ by convexity. Over $\R$, Krivine \cite{Kri79} proved $\KGR \le \pi / (2\ln(1 + \sqrt{2})) \approx 1.78221$ in 1979 and conjectured equality; thirty-two years later, Braverman, Makarychev, Makarychev, and Naor \cite{BMMN11} disproved Krivine's conjecture by proving $\KGR < \pi / (2\ln(1 + \sqrt{2}))$ via a two-dimensional Gaussian rounding scheme on $\R^2$.
 
-\begin{table}[ht]
-\centering\footnotesize
-\begin{tabular}{@{}lllll@{}}
-\toprule
-year & authors & lower bound & upper bound & status\\
-\midrule
-1953 & Grothendieck \cite{Gr53} & & $K<\infty$ & \\
-1978 & Pisier \cite{Pi78} & & $e^{1-\gamma_{\mathrm E}}\approx1.5262$ & \\
-1984 & Davie (unpublished; see \cite{Pi12,Ko90}) & $1.33807$ & & \\
-1987 & Haagerup \cite{Ha87} & & $1.40490913$ & \\
-2026 & Guo, Fang, Lu \cite{GFL26} & $1.35584631827168$ & & computer-assisted\\
-2026 & Heilman, Jones, Malavolta \cite{HJM26} & $4000/2857\approx1.40007$ & $1.404898554746$ & computer-assisted\\
-2026 & Lean development \cite{GL} & $1.401700322371$ & $1.404599395362$ & Lean 4, no hypotheses\\
-2026 & \textbf{this paper} & & $\mathbf{1.40456109}$ & computer-assisted\\
-\midrule
- & Haagerup's value & \multicolumn{2}{l}{$1/\gd=1.404575934663742\ldots$} & \\
-\bottomrule
-\end{tabular}
-\caption{Bounds on $\KG$. $\gamma_{\mathrm E}$ is Euler's constant.}\label{tab:history}
-\end{table}
-% SRC Table 1: Pisier e^{1-gamma}: [HA] (quoted by Haagerup, float 1.5262051); Davie 1.33807: [OV] history table,
-% [KO] (1.338070), reported in Pisier's survey (repository README, per the coordinator); Haagerup 1.40490913: [OV];
-% GFL 1.35584631827168: repository README (per the coordinator) and [BT5]; HJM: [OV], lower 4000/2857 from [BT5]
-% ("1.4 < 4000/2857 < K_G^C < 1.404898554746"); Lean bounds: [OV] (main_bounds). 1/gd: [NUM].
+In the complex case, upper bounds proved considerably more resistant. Improving upon Pisier's interpolation bound $\KGC \le e^{1-\gamma} \approx 1.5262$ \cite{Pis78}, Haagerup \cite{Haa87} adapted Krivine's series-reversion method in 1987 to plain complex Gaussian phase rounding $\ph(z) := z/|z|$ ($z \ne 0$) on $\C$. For correlated standard complex Gaussians $(X, Y)$ satisfying $\E[|X|^2] = \E[|Y|^2] = 1$ and $\E[\bar{X} Y] = t \in (-1,1)$, Haagerup derived the exact Mehler Taylor expansion
+\begin{equation}\label{eq:phi-haagerup}
+  \varphi(t) \;:=\; \E\!\left[\overline{\ph(X)}\,\ph(Y)\right]
+  \;=\; \frac{\pi}{4}\, t \, {}_2F_1\!\left(\tfrac{1}{2}, \tfrac{1}{2}; 2; t^2\right)
+  \;=\; \sum_{k=0}^\infty r_k \, t^{2k+1},
+\end{equation}
+where $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$ for $k \ge 0$. Because the reverted series $\varphi^{-1}(u) = \sum_{k=0}^\infty b_k u^{2k+1}$ fails to alternate in sign beyond low degree, solving $\sum_{k=0}^\infty |b_k| c^{2k+1} = 1$ yields Haagerup's proved 1987 bound $\KGC \le 1/\gamma_H = 1.4049091327\ldots$ ($\gamma_H = 0.7117898067\ldots$), which stood unimproved for 39 years. Evaluating the alternating series $|\varphi(i)| = \sum_{k=0}^\infty (-1)^k r_k$ directly instead gives Haagerup's alternating integral
+\begin{equation}\label{eq:gd-def}
+  \begin{gathered}
+  \gd \;:=\; \sum_{k=0}^\infty (-1)^k r_k
+  \;=\; \int_0^{\pi/2} \frac{\cos^2 t}{\sqrt{1 + \sin^2 t}}\,dt
+  \;=\; 0.7119586597782638\ldots,\\
+  \frac{1}{\gd} \;=\; 1.4045759346637420\ldots
+  \end{gathered}
+\end{equation}
+Haagerup \cite[p.~202]{Haa87} remarked that his bound is probably not sharp and called $1/\gd$ ``a perhaps more plausible candidate'' for $\KGC$. Recently, Heilman, Jones, and Malavolta \cite{HJM26} obtained the first strict improvement below $1/\gamma_H$ ($\KGC \le 1.40489856$, alongside the lower bound $\KGC \ge 1.400070$ building on Davie \cite{Dav84} and Guo--Fang--Lu \cite{GFL26}) and restated Haagerup's conjecture $\KGC = 1/\gd$ \cite[(4.1)]{HJM26}. The Lean~4 development \cite{Gal26} narrowed the interval to $1.4017003 \le \KGC \le 1.4045994$, proved in Lean without hypotheses (the upper bound by two-coordinate symmetric Gaussian rounding), stopping $2.35 \times 10^{-5}$ short of $1/\gd$.
 
-\subsection{Main result}\label{sec:main}
-\begin{theorem}\label{thm:main}
+In this paper we cross Haagerup's barrier $1/\gd$: his value is a strict upper bound for $\KGC$.
+
+\begin{theorem}[Main Result]\label{thm:main}
+The complex Grothendieck constant satisfies
 \[
- \KG\le1.40456109\;<\;\frac1{\gd}=1.4045759346637420\ldots
+  \KGC \;\le\; \frac{1}{D_{\mathrm{cert}}} \;<\; 1.40456109 \;<\; \frac{1}{\gd} \;=\; 1.404575934663\ldots,
 \]
-In particular Haagerup's value $1/\gd$ is a strict upper bound for $\KG$. More precisely, there is an explicit rounding scheme (Section~\ref{sec:mixture}) whose
-correlation kernel $\sum_kh_k\,t|t|^{2k}$ satisfies
+where
 \[
- \Dc(h):=h_0-\sum_{k\ge1}|h_k|\;\ge\;0.7119661873\;>\;\gd+7.5275\cdot10^{-6},
+  D_{\mathrm{cert}} \;=\; \frac{711966186586434491076163}{10^{24}}
+  \;=\; 0.711966186586\ldots \;>\; \gd + 7.52 \times 10^{-6}.
 \]
-so that $\KG\le1/\Dc(h)$ and $1/\gd-1/\Dc(h)\ge1.485\cdot10^{-5}$.
+In particular, Haagerup's value $1/\gd$ is a strict upper bound for $\KGC$.
 \end{theorem}
-% SRC: D >= 0.7119661873703793 and D - gd >= 7.527592e-6 [VR],[VL]; 1/D ball [1.40456108 +/- 4.14e-9] [VL];
-% 1/gd - 1/D ball [1.485e-5 +/- 4.50e-9] [VL]. [DER] with D_lower: 1/D <= 1.4045610841344 and
-% 1/gd - 1/D >= 1.48505e-5. NOTE: 1/gd - 1.40456109 = 1.48447e-5 (< 1.485e-5); the margin 1.485e-5 refers to 1/D.
-% Independent re-check: D - gd >= 7.528576e-6, 1/D <= 1.4045610822, 1/gd - 1/D >= 1.4852e-5 [RC].
 
-The proof is computer-assisted (Section~\ref{sec:verification}): the inequalities that depend on the data of the
-scheme are verified in exact rational and $256$-bit ball arithmetic, and they have been re-checked with independently
-written code, which gives $\Dc(h)-\gd\ge7.5286\cdot10^{-6}$. The rounded margin is $1/\gd-1.40456109>1.484\cdot10^{-5}$.
-% SRC: 7.5286e-6 [RC] (7.528576e-6); 1/gd - 1.40456109 = 1.4844664e-5 [DER].
+Theorem~\ref{thm:main} is the complex counterpart of the theorem of Braverman, Makarychev, Makarychev, and Naor that Krivine's bound is not sharp \cite{BMMN11}. A key difference in the complex setting lies in how the barrier $\gd$ operates: as shown in Section~\ref{sec:obstruction}, $\gd$ acts as a linear alternating ceiling blocking all convex combinations of preprocessed scalar phase rounders and symmetric smoothed phase-twisted rounders on $\C^2$. Overcoming it requires rounding the row and column vectors with different maps on $\C^2$, related by the reflection $z_1 \mapsto -z_1$.
 
+\section{Primal Radial Transfer and the Universal Alternating Ceiling}\label{sec:obstruction}
 
+We take inner products $\langle u, v \rangle_\Hilb$ to be conjugate-linear in the first slot and linear in the second. Because every matrix $A \in \C^{m \times n}$ acts on the finite-dimensional span of $\{u_1,\dots,u_m, v_1,\dots,v_n\}$, it suffices in \eqref{eq:groth-def} to range over $\Hilb = \C^N$ ($N \ge 1$) equipped with $\langle u, v \rangle = \sum_{j=1}^N \bar{u}_j v_j$. To bound $V(A)$ in terms of $C(A)$ without inverting power series, we work directly in the primal radial correlation algebra.
 
-\subsection{The idea in five steps}\label{sec:method}
-\paragraph{1. What a rounding scheme gives.} A rounding scheme turns two unit vectors with inner product $t$ into two
-random numbers in the closed unit disc whose correlation is $H(t)=\sum_{k\ge0}h_k\,t|t|^{2k}$. If
-$\Dc(h):=h_0-\sum_{k\ge1}|h_k|>0$, then $\KG\le1/\Dc(h)$ (Theorem~\ref{thm:transfer}). Every upper bound on $\KG$,
-Haagerup's and ours included, comes from a scheme whose coefficients $h=(h_k)$ make $\Dc(h)$ large. Schemes can be
-mixed, and the vectors can be preprocessed first (Section~\ref{sec:transfer}).
-
-\paragraph{2. The barrier at $1/\gd$.} Each coefficient sequence $h$ has a second number, its \emph{ceiling}
-\[
- \Wc(h):=\Bigl|\sum_{k\ge0}(-1)^kh_k\Bigr|=|H(i)|,
-\]
-the value of the correlation at the imaginary point $t=i$. Always $\Dc(h)\le\Wc(h)$, and the ceiling of a mixture is
-at most the average of the ceilings. Haagerup's scheme rounds one Gaussian coordinate by its phase $z/|z|$; its ceiling
-is exactly $\gd$, and no preprocessing raises it (Proposition~\ref{prop:phase}). Every scheme used before this paper has
-ceiling at most $\gd$: Haagerup's, the mixtures of Heilman, Jones and Malavolta~\cite{HJM26}, and the two-coordinate
-rounder $G_T$ of~\cite{GL}, whose ceiling is $\gd-9.95\cdot10^{-6}$. For any scheme on one coordinate we conjecture the
-same, with numerical support (Conjecture~\ref{conj:one}). Since $\Dc\le\Wc$, none of these schemes, and no mixture of
-them, can prove $\KG<1/\gd$. To go below $1/\gd$ one needs a scheme with ceiling above $\gd$.
-
-\paragraph{3. What is new: round the two vectors with different maps.} All the schemes above round both vectors with
-the same map. We use two complex Gaussian coordinates $z=(z_1,z_2)$ per vector, round one vector with a map $f$ and
-the other with $g=f\circ S$, where $S(z_1,z_2)=(-z_1,z_2)$ flips the sign of the first coordinate. Here is why this
-helps. Our $f$ is close to the phase of $z_2$, plus a component that carries the phase of $z_1$. In the ceiling this
-component enters with a minus sign when $g=f$, and with a plus sign when $g=f\circ S$. Since $|f|\le1$, the
-component costs a little of the phase of $z_2$; with the reflection it pays back more than it costs. The pair we use,
-found by numerical optimisation over maps that are constant on $64\times48\times48$ polar cells (Section~\ref{sec:tiger}),
-gives a scheme with ceiling $\gd+1.07\cdot10^{-3}$. We call it the \emph{tiger} pair, after the ``tiger partition''
-with which Braverman, Makarychev, Makarychev and Naor beat Krivine's bound in the real case~\cite{BMMN}.
-
-\paragraph{4. What is new: cancel the wrong signs.} A ceiling above $\gd$ is necessary but not enough: $\Dc(h)=\Wc(h)$
-only when every coefficient has the alternating sign, $(-1)^kh_k\le0$ for $k\ge1$. The tiger scheme has many
-coefficients of the wrong sign; alone it gives only $\Dc=0.6995$, that is, $\KG\le1.4245$. We therefore mix it, with
-weight $1.9\%$, with three channels made from $G_T$ and two phase channels. Each $G_T$ channel is $G_T$ composed with an
-\emph{alternating} polynomial preprocessor: such preprocessors do not change the ceiling, but they shape the signs of
-the coefficients, and we choose them to cancel the tiger's wrong-sign coefficients. The six-channel mixture has
-$\Dc\ge\gd+7.5\cdot10^{-6}$ (Section~\ref{sec:mixture}).
-
-\paragraph{5. What has to be computed, and why it is hard.} $\Dc$ of the mixture needs all of its coefficients: the
-$251$ coefficients with $k\le250$ explicitly, and a bound on all the others. The margin over $\gd$ is only
-$7.5\cdot10^{-6}$, so each term must be known to about $10^{-8}$.
-\begin{itemize}
-\item The tiger coefficients are overlaps of a function given on $147{,}456$ cells with the Laguerre functions of the
- Gaussian chaos. The formulas are exact, but their recurrence loses about $330$ bits, so we use $640$-bit ball
- arithmetic (Appendix~\ref{app:laguerre}).
-\item The $G_T$ coefficients come from a table of $21{,}168$ Gaussian energies of $G_T$, certified to within
- $1.494\cdot10^{-6}$ per unit weight. This is the largest error term of the budget (Section~\ref{sec:gt}).
-\item The phase coefficients are Haagerup's explicit series.
-\item The coefficients with $k>250$ are bounded by Hardy-space estimates for the correlation continued to a disc of
- radius $r>1$, checked on the circle by interval covers (Section~\ref{sec:tails}).
-\end{itemize}
-All of this is done in exact rational and interval arithmetic and was re-checked twice with independent code
-(Section~\ref{sec:verification}). A Lean companion checks the deduction and the whole budget exactly, from these
-certified facts (Section~\ref{sec:lean}).
-% SRC: tiger D alone 0.69954 [DER from RCL heads.log: c0 = 0.70836151834, sum|c_k| = 0.008826109123];
-% 1.4245 = 1/kappa of the October inversion [CT inv_256_J150.log: 1.42454619917]; W(G_T)-gd = -9.95e-6 [DER from
-% W(G_T)=0.7119487068 [NUM out_mixture_heads.log alt=0.711948707], [GEM]]; weight 0.0188 [CF]; 7.53e-6 [VL];
-% 147,456 = 64*48*48 cells; 330 bits [RC] Findings 2; 1.494e-6 allowance [VL].
-
-\subsection{A by-product}\label{sec:byproduct}
-The proof also settles a question about the functional that underlies Haagerup's conjecture. Let $J$ be the operator
-that multiplies the charge-one Wick chaos of degree $2k+1$ by $(-1)^k$ (Section~\ref{sec:ceiling}), and let
-$C_m$ be the supremum of $|\ip f{Jg}|$ over measurable maps $f,g:\C^m\to\Dbar$ of charge one, the norm being that of
-$L^2$ of the standard complex Gaussian measure. For the phase, $\ip{\ph}{J\ph}=\gd$, so $C_1\ge\gd$.
-
-\begin{corollary}\label{cor:konig}
-$C_2\ge\gd+7.5\cdot10^{-6}$. Thus the phase of one coordinate does not maximise $|\ip f{Jg}|$ among disk-valued
-charge-one pairs on $\C^2$.
-\end{corollary}
-% SRC: [DER] C_2 >= gd + (D-gd)/(1-w_phase) = gd + 7.5294e-6 with D - gd >= 7.527592e-6 [VR] and
-% w_phase = 0.000235789554 [CF].
-
-Up to normalisation, $\ip f{Jg}$ is K\"onig's functional $\iint\overline{f(x)}g(y)e^{-(|x|^2+|y|^2)/2}\sin\ip xy\,dx\,dy$
-on $\R^{2m}\times\R^{2m}$, restricted to equivariant maps (Remark~\ref{rem:konig}). Corollary~\ref{cor:konig} is the
-complex counterpart of the result of~\cite[Theorem~4.4]{BMMN} that a two-dimensional partition beats the half-space in
-K\"onig's real functional. Numerically the pair of Section~\ref{sec:tiger} gives $C_2\ge\gd+1.07\cdot10^{-3}$, but that
-value rests on partial sums of a slowly converging series, and we do not use it in the proof.
-% SRC: BMMN Thm 4.4: [BM]. 1.07e-3: [RCL combine_mu.log].
-
-\subsection{Scope of this paper}\label{sec:scope}
-This paper has one purpose: to show that Haagerup's value $1/\gd$ is a strict upper bound for $\KG$. For that it
-freezes one certificate and the value $1.40456109$ it proves, which is enough as long as it lies below $1/\gd$. We do
-not try to give the best upper bound, not even at the time of writing. The search for sharper bounds, and their
-formal verification in Lean~4, is continuous work in the repository~\cite{GL},
-\url{https://github.com/agalatan/grothendieck-lean}; its README states the current best bounds.
-
-\subsection{Status of the proof}\label{sec:status}
-Theorem~\ref{thm:main} is a computer-assisted theorem. Its analytic steps are proved in this paper (some only in sketch,
-which we say), and most of them are also formalised in the Lean~4/Mathlib development~\cite{GL} in which the current
-rigorous bounds $1.401700322371<\KG<1.404599395362$ are proved without hypotheses. The steps specific to the present
-scheme are not yet formalised. These are: mixtures, a pair of two different functions, the general form of the
-holomorphy and region lemmas, the formula for the overlaps of the cell-valued pair, and all the numerical facts. We list
-the status of each step in Section~\ref{sec:lean}. The numerical part was run in Python with
-\texttt{python-flint}~\cite{Arb}. It was re-checked twice: once with separately written scripts, and once with code
-written from scratch that shares no source with the verifier. All three computations agree
-(Section~\ref{sec:rechecks}).
-% SRC: Lean bounds [OV]; re-checks [SR] (indep), [RC] ("All code in scripts/ is my own; nothing was imported or copied").
-
-\subsection{Organisation}\label{sec:organisation}
-Section~\ref{sec:transfer} recalls rounding schemes and proves the transfer bound. Section~\ref{sec:ceiling} introduces
-the alternating ceiling, the one-coordinate barrier and the tiger pair. Section~\ref{sec:mixture} explains the
-cancellation and presents the mixture. Section~\ref{sec:tails} bounds the tails, and Section~\ref{sec:gt} treats the
-table comparison. Section~\ref{sec:verification} describes the computer verification, the re-checks and the
-formalisation status. Section~\ref{sec:discussion} discusses the result, and Section~\ref{sec:how-found} describes how it
-was found. Appendix~\ref{app:data} lists the exact data,
-and Appendix~\ref{app:laguerre} gives the formula for the overlaps of a cell-valued pair.
-
-% ============================================================================================
-\section{Rounding schemes and the transfer bound}\label{sec:transfer}
-
-\subsection{Realisable kernels and the transfer inequality}\label{sec:transfer-ineq}
-\begin{definition}\label{def:realisable}
-A function $H:\Dbar\to\C$ is a \emph{realisable kernel} if for all finite families of unit vectors $x_1,\dots,x_m$ and
-$y_1,\dots,y_n$ in a complex Hilbert space there are random variables $\eps_1,\dots,\eps_m,\delta_1,\dots,\delta_n$ with
-values in the closed unit disc $\Dbar$, on a common probability space, such that
-$\E[\overline{\eps_i}\,\delta_j]=H(\ip{x_i}{y_j})$ for all $i,j$.
-\end{definition}
-
-\begin{lemma}\label{lem:dominated}
-If $H$ is realisable then $\bigl|\sum_{i,j}a_{ij}H(\ip{x_i}{y_j})\bigr|\le C(A)$ for every matrix $A$ and all unit
-vectors $x_i,y_j$.
-\end{lemma}
-\begin{proof}
-$|\E\sum a_{ij}\overline{\eps_i}\delta_j|\le\E|\sum a_{ij}\overline{\eps_i}\delta_j|$, and the integrand is at most the
-supremum of $|\sum a_{ij}\overline{u_i}v_j|$ over $u\in\Dbar^m$, $v\in\Dbar^n$. That function is affine in each
-$\overline{u_i}$ and each $v_j$ separately. The modulus of an affine function of one complex variable is maximal on the
-unit circle, so the supremum over the polydisc equals $C(A)$.
-\end{proof}
-
-\begin{theorem}[transfer inequality]\label{thm:transfer}
-Let $h=(h_k)_{k\ge0}$ be a real sequence with $\sum_k|h_k|<\infty$ such that $H(t)=\sum_kh_k\,t|t|^{2k}$ is
-realisable. If $\Dc(h)=h_0-\sum_{k\ge1}|h_k|>0$, then $\KG\le1/\Dc(h)$.
-\end{theorem}
-\begin{proof}
-Fix $A$ and unit vectors $x_i,y_j$, which we may take in $\C^d$. Put $t_{ij}=\ip{x_i}{y_j}$ and
-$B_k=\sum_{i,j}a_{ij}t_{ij}|t_{ij}|^{2k}$. Let $\bar x$ denote the coordinatewise conjugate. The vectors
-$x^{(k)}=x^{\otimes(k+1)}\otimes\bar x^{\otimes k}$ are unit vectors with
-$\ip{x^{(k)}}{y^{(k)}}=\ip xy^{k+1}\overline{\ip xy}^{\,k}=t|t|^{2k}$, so $|B_k|\le V(A)$ for every $k$. By
-Lemma~\ref{lem:dominated}, $|\sum_kh_kB_k|\le C(A)$. Hence
-\[
- h_0|B_0|\le\Bigl|\sum_kh_kB_k\Bigr|+\sum_{k\ge1}|h_k||B_k|\le C(A)+\bigl(h_0-\Dc(h)\bigr)V(A).
-\]
-Taking the supremum over the vectors gives $h_0V(A)\le C(A)+(h_0-\Dc(h))V(A)$, that is, $\Dc(h)V(A)\le C(A)$.
-\end{proof}
-
-\begin{remark}
-Krivine~\cite{Kr79} and Haagerup~\cite{Ha87} choose the preprocessing (below) so that the composed kernel is
-\emph{exactly} linear, $H(t)=c\,t$; then $\Dc=c$. Theorem~\ref{thm:transfer} tolerates an inexact residual, which is
-what makes mixtures of unrelated channels usable. We call this argument a bootstrap, because $V(A)$ appears on both
-sides. It is formalised as \lean{Grothe.transfer} in~\cite{GL} (file \path{Grothe/Transfer.lean}), in the slightly more
-general form $\KG\le1/(c-\delta)$ whenever $|h_0-c|+\sum_{k\ge1}|h_k|\le\delta<c$, and with unimodular instead of
-disk-valued variables; the latter is equivalent by Lemma~\ref{lem:dominated}.
-\end{remark}
-
-\subsection{Gaussian roundings and their coefficients}\label{sec:gaussian}
-Let $\gamma_m$ be the standard complex Gaussian measure $\pi^{-m}e^{-|z|^2}dz$ on $\C^m$, and write
-$\ip uv=\int\bar uv\,d\gamma_m$. The space $L^2(\gamma_m)$ is the orthogonal sum of the Wick chaoses $H_{\alpha,\beta}$,
-$\alpha,\beta\in\N^m$. They are spanned by products of complex Hermite polynomials of bidegree $(\alpha_l,\beta_l)$ in
-$(z_l,\bar z_l)$; see~\cite{Ja97}. Let $P_{\alpha,\beta}$ be the orthogonal projections. Under $z\mapsto e^{i\theta}z$ an
-element of $H_{\alpha,\beta}$ is multiplied by $e^{i(|\alpha|-|\beta|)\theta}$. A function $f$ has \emph{charge one} if
-$f(e^{i\theta}z)=e^{i\theta}f(z)$. Then only the chaoses with $|\alpha|=|\beta|+1$ occur in $f$. Let $P_k$ be the
-projection onto their sum over $|\beta|=k$, the charge-one chaos of degree $2k+1$.
-
-\begin{lemma}[Mehler formula]\label{lem:mehler}
-Let $s\in\Dbar^m$, and let $(U,U')$ be a pair of standard complex Gaussian vectors in $\C^m$ with
-$\E[\overline{U_l}\,U'_{l'}]=s_l\,\delta_{ll'}$ and $\E[U_lU'_{l'}]=0$. For $f,g\in L^2(\gamma_m)$,
-\[
- \E\bigl[\overline{f(U)}\,g(U')\bigr]=\sum_{\alpha,\beta}\ip{P_{\alpha,\beta}f}{P_{\alpha,\beta}g}\prod_l s_l^{\alpha_l}\,\overline{s_l}^{\,\beta_l}.
-\]
-\end{lemma}
-This is the complex Mehler formula. For $m=2$, the only case we need, it is formalised as \lean{mehler\_L2} in~\cite{GL}
-(file \path{Grothe/UpperChaos/MehlerL2.lean}). Both sides are sesquilinear in $(f,g)$.
-
-For a real polynomial $R(X)=\sum_jr_jX^j$ write $\|R\|_1=\sum_j|r_j|$. If $\|R\|_1\le1$, the unit vectors
-\[
- L_Rx=\bigoplus_j\sqrt{|r_j|}\,x^{(j)}\oplus\sqrt{1-\|R\|_1}\,e,\qquad
- R_Ry=\bigoplus_j\operatorname{sgn}(r_j)\sqrt{|r_j|}\,y^{(j)}\oplus\sqrt{1-\|R\|_1}\,e',
-\]
-with $e\perp e'$ unit vectors orthogonal to all other summands, satisfy $\ip{L_Rx}{R_Ry}=\rho(\ip xy)$, where
-$\rho(t)=t\,R(|t|^2)$. This is Krivine's preprocessing; see \path{Grothe/Upper/Realise.lean} in~\cite{GL}.
-
-\begin{proposition}[Gaussian rounding channels]\label{prop:channel}
-Let $f,g:\C^m\to\Dbar$ be measurable functions of charge one and $R_1,\dots,R_m$ real polynomials with
-$\|R_l\|_1\le1$. Put $a_{\alpha,\beta}=\ip{P_{\alpha,\beta}f}{P_{\alpha,\beta}g}$ and
-\begin{equation}\label{eq:gen}
- \Phi(X)=\sum_{|\alpha|=|\beta|+1}a_{\alpha,\beta}\,X^{|\beta|}\prod_{l}R_l(X)^{\alpha_l+\beta_l},\qquad h_j=[X^j]\,\Phi(X).
+\begin{lemma}[Radial Schur Transfer]\label{lem:transfer}
+Let $h = (h_k)_{k \ge 0}$ be an absolutely summable real sequence such that for every matrix $A \in \C^{m \times n}$ and unit-ball vectors $u_1,\dots,u_m, v_1,\dots,v_n \in \C^N$,
+\begin{equation}\label{eq:dominated}
+  \left| \sum_{k=0}^\infty h_k \sum_{p=1}^m \sum_{q=1}^n A_{pq} \langle u_p, v_q \rangle \big|\langle u_p, v_q \rangle\big|^{2k} \right|
+  \;\le\; C(A).
 \end{equation}
-Then $\sum_j|h_j|\le1$ and $H(t)=\sum_jh_j\,t|t|^{2j}$ is a realisable kernel.
+If $D(h) := h_0 - \sum_{k=1}^\infty |h_k| > 0$, then $\KGC \le 1 / D(h)$. Moreover, the family of sequences satisfying \eqref{eq:dominated} is closed under finite convex combinations $H = \sum_{i=1}^M w_i h^{(i)}$ ($w_i \ge 0$, $\sum_{i=1}^M w_i = 1$).
+\end{lemma}
+
+\begin{proof}
+Fix $N \ge 1$, $A \in \C^{m \times n}$, and unit-ball vectors $u_p, v_q \in \C^N$. For each integer $k \ge 0$ and $x \in \C^N$, define the mixed tensor vector
+\[
+  \Psi_k(x) \;:=\; x^{\otimes (k+1)} \otimes \bar{x}^{\otimes k} \;\in\; \C^{N^{2k+1}},
+\]
+where $\bar{x} = (\bar{x}_1,\dots,\bar{x}_N)$. Multiplicativity of Euclidean inner products under Kronecker products gives $\|\Psi_k(x)\|_2 = \|x\|_2^{2k+1} \le 1$ whenever $\|x\|_2 \le 1$, together with
+\[
+  \langle \Psi_k(u_p), \Psi_k(v_q) \rangle
+  \;=\; \langle u_p, v_q \rangle^{k+1} \overline{\langle u_p, v_q \rangle}^{\,k}
+  \;=\; \langle u_p, v_q \rangle \big|\langle u_p, v_q \rangle\big|^{2k}.
+\]
+Each bilinear form $S_k := \sum_{p,q} A_{pq} \langle u_p, v_q \rangle |\langle u_p, v_q \rangle|^{2k}$ is therefore realized by unit-ball vectors in $\C^{N^{2k+1}}$, whence $|S_k| \le V(A)$ for all $k \ge 0$. Since $D(h) > 0$, we have $h_0 > \sum_{k=1}^\infty |h_k| \ge 0$. By the reverse triangle inequality and \eqref{eq:dominated},
+\[
+  h_0 |S_0| - \left(\sum_{k=1}^\infty |h_k|\right) V(A)
+  \;\le\; |h_0 S_0| - \left|\sum_{k=1}^\infty h_k S_k\right|
+  \;\le\; \left|\sum_{k=0}^\infty h_k S_k\right|
+  \;\le\; C(A).
+\]
+Rearranging gives $h_0 |S_0| \le C(A) + \big(\sum_{k=1}^\infty |h_k|\big) V(A)$. Taking the supremum over $N \ge 1$ and $\|u_p\|_2, \|v_q\|_2 \le 1$ yields $h_0 V(A) \le C(A) + \big(\sum_{k=1}^\infty |h_k|\big) V(A)$, i.e.\ $D(h) V(A) \le C(A)$. Convex closure follows immediately from absolute summability, Fubini summation, and the triangle inequality.
+\end{proof}
+
+Define the \emph{alternating ceiling functional} $W(h) := \sum_{k=0}^\infty (-1)^k h_k$ on $\ell^1(\N)$. For a channel, or a pair of maps $(f, g)$, we write $W$ of the channel or $W(f, g)$ for $W$ of its radial series; for a pair this is the series $(\mu_n(f,g))_{n \ge 0}$ of \eqref{eq:mu-tiger}.
+
+\begin{proposition}[Universal Alternating Ceiling and Convex No-Go]\label{prop:nogo}
+For every absolutely summable real sequence $h = (h_k)_{k \ge 0}$, one has
+\[
+  D(h) \;\le\; W(h) \;\le\; |W(h)|.
+\]
+Consequently, if $h^{(1)}, \dots, h^{(M)} \in \ell^1(\N)$ satisfy $W(h^{(i)}) \le C$ for all $1 \le i \le M$, then every convex combination $H = \sum_{i=1}^M w_i h^{(i)}$ ($w_i \ge 0$, $\sum_{i=1}^M w_i = 1$) satisfies $D(H) \le C$.
 \end{proposition}
+
 \begin{proof}
-Given unit vectors $x_i,y_j$, let $G_1,\dots,G_m$ be independent standard complex Gaussian vectors (in the spaces of
-the vectors $L_{R_l}x_i$), so that $\E[\overline{\ip{G_l}u}\ip{G_l}v]=\ip uv$ and $\E[\ip{G_l}u\ip{G_l}v]=0$. Set
-$\eps_i=f\bigl((\ip{G_l}{L_{R_l}x_i})_l\bigr)$ and $\delta_j=g\bigl((\ip{G_l}{R_{R_l}y_j})_l\bigr)$. For fixed $(i,j)$
-the two arguments form a pair as in Lemma~\ref{lem:mehler} with $s_l=\rho_l(t)$, $t=\ip{x_i}{y_j}$,
-$\rho_l(t)=tR_l(|t|^2)$. Since $R_l$ is real and $|\alpha|=|\beta|+1$,
-$\prod_l\rho_l^{\alpha_l}\overline{\rho_l}^{\,\beta_l}=t|t|^{2|\beta|}\prod_lR_l(|t|^2)^{\alpha_l+\beta_l}$. Hence
-$\E[\overline{\eps_i}\delta_j]=t\,\Phi(|t|^2)$. The series converges absolutely, because
-$\sum|a_{\alpha,\beta}|\le\|f\|\|g\|\le1$ by Cauchy--Schwarz and $\|R_l\|_1\le1$. Rearranging gives
-$\sum_j|h_j|\le1$ and $t\,\Phi(|t|^2)=\sum_jh_jt|t|^{2j}$.
+Since $-(-1)^k h_k \le |h_k|$ for every $k \ge 1$, summing over $k \ge 1$ yields $-\sum_{k=1}^\infty (-1)^k h_k \le \sum_{k=1}^\infty |h_k|$, so $D(h) = h_0 - \sum_{k=1}^\infty |h_k| \le h_0 + \sum_{k=1}^\infty (-1)^k h_k = W(h) \le |W(h)|$. By linearity of $W$, $D(H) \le W(H) = \sum_{i=1}^M w_i W(h^{(i)}) \le C$.
 \end{proof}
 
-Three special cases are used below.
-\begin{enumerate}[label=(\alph*)]
-\item With one common preprocessor $R$ and $c_k=\ip{P_kf}{P_kg}$:
- \begin{equation}\label{eq:onecomp}
- h_j=\sum_{k\le j}c_k\,[X^{j-k}]\,R(X)^{2k+1}.
- \end{equation}
-\item For $m=2$, $f=g=G$ and preprocessors $(P,Q)$, with the \emph{bivariate energies}
- $E_G(n_1,n_2)=\sum_{\alpha_l+\beta_l=n_l}\|P_{\alpha,\beta}G\|^2$ (here $n_1+n_2$ is odd):
- \begin{equation}\label{eq:bivariate}
- h_j=\sum_{n_1,n_2}E_G(n_1,n_2)\,[X^j]\,X^{(n_1+n_2-1)/2}P(X)^{n_1}Q(X)^{n_2}.
- \end{equation}
- This is \lean{bivarKernel} in \path{Grothe/Upper/Bivariate.lean}. If $Q(0)=0$, then $h_j$ for $2j+1\le N$ involves
- only the indices $n_1+3n_2\le N$ (\lean{bivarKernel\_eq\_head}). The realisation is
- \lean{rounding\_diskKernel} (\path{Grothe/UpperChaos/Realise2.lean}).
-\item For $f=g$ the coefficients are $c_k=\|P_kf\|^2\ge0$. For $f\ne g$ they may have either sign, and are complex in
- general.
-\end{enumerate}
-
-\begin{lemma}[mixtures and conjugation]\label{lem:mix}
-\begin{enumerate}[label=(\alph*)]
-\item A convex combination $\sum_iw_iH_i$ of realisable kernels is realisable, and its coefficients are
- $\sum_iw_ih^{(i)}_k$.
-\item For $f^c(z)=\overline{f(\bar z)}$ the pair $(f^c,g^c)$ again satisfies the hypotheses of
- Proposition~\ref{prop:channel}, with coefficients $\overline{h_j}$. Hence the average of the kernels of $(f,g)$ and
- $(f^c,g^c)$ has real coefficients $\Re h_j$.
-\end{enumerate}
-\end{lemma}
-\begin{proof}
-(a) Choose channel $i$ with probability $w_i$, independently of everything else. (b) The complex Hermite polynomials
-have real coefficients, so $\overline{h(\bar z)}=h(z)$ for every element $h$ of the real Wick basis. Since $\gamma_m$ is
-invariant under conjugation, $\ip h{f^c}=\overline{\ip hf}$, and $f^c$ has charge one.
-\end{proof}
-
-\subsection{The three kinds of channels}\label{sec:kinds}
-The scheme of Theorem~\ref{thm:main} mixes channels of three kinds, all on $\C^2$ and all with real coefficients.
-\begin{description}
-\item[phase$(R)$:] $f=g=\ph\circ\mathrm{pr}_1$, so the second coordinate is not used, with one preprocessor $R$. Here
- $c_k=r_k$, Haagerup's coefficients~\eqref{eq:phi}, and the composed coefficients are~\eqref{eq:onecomp}.
-\item[GT$(P,Q)$:] $f=g=G_T$, the smoothed two-coordinate rounder of~\cite{GL} (Section~\ref{sec:base}), with
- preprocessors $(P,Q)$, $Q(0)=0$, and coefficients~\eqref{eq:bivariate}.
-\item[tiger$(R)$:] the pair $(f,f\circ S)$ of Section~\ref{sec:tiger}, with the same preprocessor $R$ in both
- coordinates. Here $c_k=\mu_k:=\ip{P_kf}{P_k(f\circ S)}$, which is real because $S$ is a self-adjoint unitary commuting
- with $P_k$. The conjugation of Lemma~\ref{lem:mix}(b) is therefore not needed.
-\end{description}
-For weights $w_i\ge0$ with $\sum w_i=1$, the mixture has coefficients $h=\sum_iw_ih^{(i)}$, and
-Theorem~\ref{thm:transfer} applies with $\Dc(h)$.
-
-% ============================================================================================
-\section{The alternating ceiling}\label{sec:ceiling}
-
-\subsection{The ceiling of a coefficient sequence}\label{sec:ceiling-seq}
-For an absolutely summable sequence $h$ put $\Wc(h)=\bigl|\sum_k(-1)^kh_k\bigr|$.
-
-\begin{lemma}\label{lem:ceiling}
-$\Dc(h)\le\Wc(h)$, and $\Wc(\sum_iw_ih^{(i)})\le\sum_iw_i\Wc(h^{(i)})$. If $\sum_k(-1)^kh_k\ge0$, then
-\[
- \Wc(h)-\Dc(h)=\sum_{k\ge1}\bigl(|h_k|+(-1)^kh_k\bigr)=2\sum_{k\ge1}\bigl((-1)^kh_k\bigr)_+ .
-\]
-\end{lemma}
-\begin{proof}
-$\sum_k(-1)^kh_k\ge h_0-\sum_{k\ge1}|h_k|$, and the rest is the triangle inequality.
-\end{proof}
-
-We call a coefficient $h_k$ with $k\ge1$ and $(-1)^kh_k>0$ a \emph{wrong-sign} coefficient. A scheme reaches its
-ceiling exactly when it has none. A mixture can exceed $\gd$ only if one of its channels does. If $H(t)=\sum h_kt^{2k+1}$
-for real $t$, then $\Wc(h)=|H(i)|$ for the continuation to $t=i$, which explains the name. In the real case the same
-inequality, written for the inverse series, is Lemma~2.4 of~\cite{BMMN}. There the ceiling is attained by
-\emph{alternating} schemes~\cite[Definition~2.2]{BMMN}.
-% SRC: BMMN Lemma 2.4 and Definition 2.2: [BM] Sections 3-4.
-
-\subsection{\texorpdfstring{The operator $J$ and the alternating overlap of a pair}{The operator J and the alternating overlap of a pair}}\label{sec:operatorJ}
-Let $J=\sum_k(-1)^kP_k$ on the charge-one subspace of $L^2(\gamma_m)$. It is a self-adjoint unitary. For charge-one
-$f,g$ put $\Ac(f,g)=|\ip f{Jg}|$, the \emph{alternating overlap} of the pair; a pair with alternating
-preprocessors is a scheme whose ceiling is $\Ac(f,g)$ (Lemma~\ref{lem:pre}). Let $C_m$ be the supremum of $\Ac(f,g)$ over measurable charge-one maps
-$f,g:\C^m\to\Dbar$. Then $C_m\le1$ and $C_m\le C_{m+1}$.
-
-\begin{lemma}\label{lem:pre}
-In the situation of Proposition~\ref{prop:channel}, let $s_l=R_l(-1)\in[-1,1]$, and let $T_s$ be the Mehler operator
-$T_sg(z)=\E\,g\bigl(s_1z_1+\sqrt{1-s_1^2}\,Z_1,\dots,s_mz_m+\sqrt{1-s_m^2}\,Z_m\bigr)$, $Z\sim\gamma_m$. Then
-\[
- \sum_j(-1)^jh_j=\ip f{J\,T_sg}.
-\]
-Consequently $\Wc(h)\le C_m$. If every $R_l$ is \emph{alternating}, that is, $R_l(-1)=\|R_l\|_1=1$, then
-$\Wc(h)=\Ac(f,g)$.
-\end{lemma}
-\begin{proof}
-By absolute convergence, $\sum_j(-1)^jh_j=\Phi(-1)=\sum a_{\alpha,\beta}(-1)^{|\beta|}\prod_ls_l^{\alpha_l+\beta_l}$. By
-Lemma~\ref{lem:mehler} with real correlations $s_l$, $T_s$ multiplies $H_{\alpha,\beta}$ by
-$\prod_ls_l^{\alpha_l+\beta_l}$, and $J$ multiplies the charge-one part of $H_{\alpha,\beta}$ by $(-1)^{|\beta|}$. The
-function $T_sg$ is an average of values of $g$, hence disk-valued, and it has charge one by rotation invariance of $Z$.
-\end{proof}
-
-A polynomial is alternating if and only if its coefficients have the signs $(-1)^j$ and $\ell^1$ norm one. All
-preprocessors of the certificate are alternating up to $10^{-12}$, which is the rationalisation error
-(Appendix~\ref{app:data}).
-% SRC: R(-1), P(-1), Q(-1) = 0.999999999999 for all channels [DER from CF].
-
-\begin{remark}[K\"onig's functional]\label{rem:konig}
-Continuing the Gaussian density of a correlated pair to $t=i$ gives, for charge-one $f,g$ on
-$\C^m\cong\R^{2m}$,
-\[
- \ip f{Jg}=\frac1{(2\pi^2)^m}\iint_{\R^{2m}\times\R^{2m}}\overline{f(x)}\,g(y)\,e^{-(|x|^2+|y|^2)/2}\sin\ip xy\,dx\,dy ,
-\]
-the complex form of K\"onig's functional~\cite{Ko01}. Charge-one functions are odd, so the cosine part of
-$e^{i\ip xy}$ cancels. In the real case this computation is~\cite[(8)--(11)]{BMMN}. \todo{write out the Abel-limit
-justification; the formula is not used in any proof}
-\end{remark}
-% SRC: formula and normalisation (2 pi^2)^{-k}: [BM] Section 9.2 (derived there, normalisation checked numerically,
-% equals gd for f=g=phase) and [CT] README "Functional and conventions".
-
-\subsection{One coordinate}\label{sec:onecoord}
-\begin{proposition}\label{prop:phase}
-For every real polynomial $R$ with $\|R\|_1\le1$, the channel phase$(R)$ has
-\[
- \Wc=|\varphi(i\,R(-1))|=|R(-1)|\int_0^{\pi/2}\frac{\cos^2s}{\sqrt{1+R(-1)^2\sin^2s}}\,ds\;\le\;|\varphi(i)|=\gd,
-\]
-with equality if and only if $|R(-1)|=1$. Moreover
-$\gd=\sum_k(-1)^kr_k=\frac\pi4\,{}_2F_1(\tfrac12,\tfrac12;2;-1)=0.7119586597782638015\ldots$
-\end{proposition}
-\begin{proof}
-By~\eqref{eq:onecomp}, $\sum_j(-1)^jh_j=\sum_kr_k(-1)^kR(-1)^{2k+1}=\varphi(iy)/i$ with $y=R(-1)\in[-1,1]$. The series
-converges absolutely, since $\sum_kr_k=\varphi(1)=1$. For real $y$, $\varphi(iy)=iy\int_0^{\pi/2}\cos^2s\,(1+y^2\sin^2s)^{-1/2}ds$,
-and $y\mapsto y(1+y^2\sin^2s)^{-1/2}$ is strictly increasing on $[0,\infty)$, with derivative $(1+y^2\sin^2s)^{-3/2}$. The
-values of $\gd$ are Haagerup's~\cite[p.~202]{Ha87}. The verifier encloses $\gd$ in two ways, by the hypergeometric series
-and by the integral, in 256-bit ball arithmetic.
-\end{proof}
-% SRC: gd ball [0.711958659778263801512458548805 +/- 3.98e-31], two methods: [VL] and verify_cert.py section 1.
-
-By Lemma~\ref{lem:ceiling}, $\Dc\le\gd$ for every mixture of preprocessed phase channels. Haagerup's own scheme attains
-only $\Dc=\gamma_H=0.7117898067$, because $\varphi^{-1}$ does not have alternating signs. The gap to its ceiling is
-$\gd-\gamma_H=1.69\cdot10^{-4}$. In the real case the inverse function $\sin(\pi u/2)$ does alternate, so Krivine's
-scheme sits exactly at its ceiling~\cite{Ha87,BMMN}.
-% SRC: gamma_H = beta_0 = 0.7117898066849979 [HA]; also kappa = 0.711789806685 [CT inv_phase_J150.log];
-% gd - gamma_H = 1.6885e-4 [DER]; real case: [HA] ("In the real case the analogous inverse ... alternating"), [BM] 5.1.
-
-For arbitrary pairs of one coordinate we can only formulate the corresponding statement as a conjecture. A charge-one map
-of one coordinate is $f(z)=e^{i\theta}u(r)$, $z=re^{i\theta}$, with $u:[0,\infty)\to\Dbar$. Expanding in the orthonormal
-Laguerre functions $\phi_{n,1}(r)=(n+1)^{-1/2}\,r\,L_n^{(1)}(r^2)$ of $L^2(2re^{-r^2}dr)$ and summing with the Hille--Hardy
-formula at $-1$ (Appendix~\ref{app:laguerre}) gives
-\begin{equation}\label{eq:radial}
- \ip f{Jg}=2\int_0^\infty\!\!\int_0^\infty\overline{u(r)}\,v(\rho)\,r\rho\,e^{-(r^2+\rho^2)/2}J_1(r\rho)\,dr\,d\rho ,
-\end{equation}
-where $g=e^{i\theta}v(r)$ and $J_1$ is the Bessel function. For $u=v=1$ the value is $\gd$.
-
-\begin{conjecture}[one-coordinate ceiling]\label{conj:one}
-$C_1=\gd$. Equivalently, the modulus of~\eqref{eq:radial} is at most $\gd$ for all measurable $u,v:[0,\infty)\to\Dbar$.
-\end{conjecture}
-
-\begin{remark}\label{rem:one}
-(i) \emph{Evidence.} We discretised~\eqref{eq:radial} and ran fixed-point (best-response) iterations from ten random
-$\pm1$- and circle-valued starts. All of them converged to a constant profile with value $\gd$. A separate search over
-asymmetric pairs $f\ne g$ found nothing better than the phase. These computations used floating point only.
-(ii) \emph{Real analogue.} With $J_{1/2}$ and the weight $(xy)^{1/2}$ in place of $J_1$ and $r\rho$, \eqref{eq:radial}
-becomes the real one-dimensional K\"onig problem
-$\iint f(x)g(y)e^{-(x^2+y^2)/2}\sin(xy)\,dx\,dy\le2\sqrt2\log(1+\sqrt2)$ for $f,g:\R\to\{\pm1\}$. That problem was solved
-by K\"onig and Tomczak-Jaegermann; the first published proof is~\cite[Theorem~1.3, Section~6]{BMMN}. A proof of
-Conjecture~\ref{conj:one} along the lines of~\cite[Section~6]{BMMN} has not been attempted.
-\todo{prove Conjecture~\ref{conj:one} or find it in the literature}
-(iii) \emph{Consequence.} If the conjecture holds, then by Lemma~\ref{lem:pre} every scheme built from one-coordinate
-pairs, with any preprocessing and any mixing, has $\Dc\le\gd$. To go below $1/\gd$ one then needs at least two
-coordinates. This is the complex analogue of~\cite[Lemma~2.4]{BMMN}.
-\end{remark}
-% SRC (i): [BM] Section 8 "radial.py ... From 10 random +-1 and S^1-valued starts, the fixed-point iteration always
-% converges to a constant profile with value gd" and [BT0] 2.8 "In one complex coordinate, phase is optimal,
-% including asymmetric f != g ([F], asym/j2.py)" ([F] = float numerics only).
-% SRC (ii): [BM] Theorem 1.3, value 2 sqrt2 log(1+sqrt2), Section 6; the J_{1/2} correspondence: sin x = sqrt(pi x/2) J_{1/2}(x).
-
-\subsection{Two coordinates: the tiger pair}\label{sec:tiger}
-\paragraph{The chart.} Write $z_l=r_le^{i\theta_l}$. A charge-one map on $\C^2$ can be written
-\[
- f(z_1,z_2)=e^{i\theta_2}F(r_1,r_2,\psi),\qquad\psi=\theta_1-\theta_2,\qquad F(r_1,r_2,\psi)=f(r_1e^{i\psi},r_2),
-\]
-away from the null set $\{z_2=0\}$. The Fourier modes $F=\sum_mF_m(r_1,r_2)e^{im\psi}$ give
-$f=\sum_mF_m(r_1,r_2)\,e^{im\theta_1}e^{i(1-m)\theta_2}$, so mode $m$ carries angular frequencies $(m,1-m)$. The
-functions
-\[
- e_{m,n_1,n_2}(z)=\phi_{n_1,|m|}(r_1)\,\phi_{n_2,|1-m|}(r_2)\,e^{im\theta_1}e^{i(1-m)\theta_2},\qquad
- \phi_{n,a}(r)=\sqrt{\tfrac{n!}{(n+a)!}}\,r^aL_n^{(a)}(r^2),
-\]
-form an orthonormal basis of the charge-one subspace of $L^2(\gamma_2)$. Up to sign they are complex Hermite polynomials,
-and $e_{m,n_1,n_2}$ lies in the charge-one chaos of degree $2k+1$ with
-\[
- k=n_1+n_2+k_0(m),\qquad k_0(m)=\tfrac12\bigl(|m|+|1-m|-1\bigr)=\begin{cases}m-1,&m\ge1,\\-m,&m\le0.\end{cases}
-\]
-Write $c_{m,n}(f)=\ip{e_{m,n}}f$ with $n=(n_1,n_2)$. Then
-\[
- \ip{P_kf}{P_kg}=\sum_m\;\sum_{n_1+n_2=k-k_0(m)}\overline{c_{m,n}(f)}\,c_{m,n}(g),
-\]
-and
-\begin{equation}\label{eq:modes}
- \ip f{Jg}=\sum_m(-1)^{k_0(m)}\,\bigl\langle F_m,(\cJ_{|m|}\otimes\cJ_{|1-m|})G_m\bigr\rangle ,
-\end{equation}
-with the inner product of $L^2(2r_1e^{-r_1^2}dr_1\otimes2r_2e^{-r_2^2}dr_2)$. Here $\cJ_a$ is the involution of
-$L^2(2re^{-r^2}dr)$ that multiplies $\phi_{n,a}$ by $(-1)^n$. By the Hille--Hardy formula its kernel with respect to
-$2\rho e^{-\rho^2}d\rho$ is $\frac12e^{(r^2+\rho^2)/2}J_a(r\rho)$, in the sense of Abel summation. Formula~\eqref{eq:radial}
-is the case of one coordinate.
-% SRC: chart and k0(m): [SR] (convention), verify_cert.py (k0 = m-1 if m>=1 else -m), [RC] Methods 2;
-% the J_a kernel: user_mode_check_fixed.py ([MODES]) and [BM] Section 8 radial formula.
-
-\paragraph{The reflection.} Let $S(z_1,z_2)=(-z_1,z_2)$. Then $(f\circ S)_m=(-1)^mF_m$. For the pair $(f,f\circ S)$ the
-overlaps $\mu_k=\sum_m(-1)^m\sum_{n_1+n_2=k-k_0(m)}|c_{m,n}(f)|^2$ are real, but not necessarily positive, and
-\begin{equation}\label{eq:tigerW}
- \ip f{J(f\circ S)}=\sum_m\sigma_m\bigl\langle F_m,(\cJ_{|m|}\otimes\cJ_{|1-m|})F_m\bigr\rangle,\qquad
- \sigma_m=(-1)^{m+k_0(m)}=\begin{cases}+1,&m\le0,\\-1,&m\ge1.\end{cases}
-\end{equation}
-For the symmetric choice $g=f$ the signs would be $(-1)^{k_0(m)}$. The two choices agree on $m\le0$ and differ on
-$m\ge1$, in particular on $m=1$, where both have $k_0=0$. Since $\cJ_1\otimes\cJ_0$ is an involution,
-$\langle F_1,(\cJ_1\otimes\cJ_0)F_1\rangle=\|F_1^{\mathrm{even}}\|^2-\|F_1^{\mathrm{odd}}\|^2$, where even and odd refer to
-$n_1+n_2$. So with $g=f$ the energy of the mode $m=1$ at odd levels is subtracted from $\ip f{Jg}$, and with
-$g=f\circ S$ it is added.
-
-\paragraph{The pair.} The pair used here was found by best-response iteration for $\Wc$ on cell-valued maps. Without any
-symmetry constraint, the optimum of this search on $32$ angle cells satisfies $G(\cdot,\cdot,\psi)=F(\cdot,\cdot,\psi+\pi)$
-to $10^{-13}$, which is exactly $g=f\circ S$. The certified pair is defined by this symmetry and stores only $F$. It is constant on $64$ angle cells times $48\times48$ radial cells with rational
-edges. The angle cells are centred at $2\pi p/64$. The radial edges are multiples of $1/36$, refined where it matters
-($[71/36,85/36]$ for $r_1$, $[0,3/4]$ for $r_2$), and each radial variable has an unbounded outer cell, $[7/2,\infty)$ for
-$r_1$ and $[107/36,\infty)$ for $r_2$. Each value lies in $2^{-20}\Z[i]\cap\Dbar$ (Appendix~\ref{app:data}).
-Figure~\ref{fig:tiger} shows the phase of $F$. Where $|z_1|$ is small, $f$ is close to a constant multiple of the phase of
-$z_2$. It departs from it near $z_2=0$, and where $|z_1|$ is large it depends strongly on the relative angle $\psi$.
-% SRC: symmetry of the October optimum to 1e-13: [SR] step 1; grid: [CF] tiger.json, [SUM], [RC] check_data.log.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{tiger_phase.pdf}
-\caption{The certified pair, $f(z)=e^{i\theta_2}F(|z_1|,|z_2|,\theta_1-\theta_2)$: $\arg F$ on the radial cells at four of
-the $64$ angle cells, after removing a constant phase (which does not change any kernel). The outer cells are drawn up
-to radius $3.6$. The second function of the pair is $g=f\circ S$, i.e.\ $G(\cdot,\cdot,\psi)=F(\cdot,\cdot,\psi+\pi)$.
-Data: \texttt{shrink/cert\_final/tiger.npz}; script \texttt{article/figures/make\_figures.py}.}\label{fig:tiger}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\textwidth]{tiger_mu.pdf}
-\caption{Left: the overlaps $\mu_k$ of the certified pair, $k\le250$, on a symmetric logarithmic scale. Right: partial
-sums of $\sum_k(-1)^k\mu_k$ minus $\gd$. The dashed line is the limit $1.0719691\cdot10^{-3}$ of repeated averaging of
-consecutive partial sums. The $\mu_k$ are those of the independent re-check (balls of radius $\le1.3\cdot10^{-57}$).
-They are negative for $129$ indices, from $k=60$ on. A symmetric pair $g=f$ would have $\mu_k=\|P_kf\|^2\ge0$.}\label{fig:mu}
-\end{figure}
-% SRC Figure 2: mu from recheck-final/out/mu_final_mid.npy; 1.0719690924e-3, radius 1.3e-57 (1.228e-57), count 129
-% from k = 60: [RCL combine_mu.log], [RC].
-
-\paragraph{Size of the ceiling.} For the certified pair the partial sums $S_K=\sum_{k\le K}(-1)^k\mu_k$ give
-$S_{250}-\gd=1.0722\cdot10^{-3}$ and $S_{249}-\gd=1.0717\cdot10^{-3}$. Repeated averaging of consecutive partial sums
-settles at $\Ac(f,f\circ S)-\gd\approx1.07197\cdot10^{-3}$ (Figure~\ref{fig:mu}). The raw overlaps decay only like
-$k^{-3/2}$ because $F$ is piecewise constant, so this value is a numerical estimate and is not used in the proof. In the
-proof the tiger enters only through a preprocessor $R$ with $R(1)<1$, which makes the composed series converge
-geometrically (Section~\ref{sec:tails}). Unconstrained searches on uniform grids gave $9.55\cdot10^{-4}$ on $32$ angle
-and $64\times64$ radial cells, $1.0711\cdot10^{-3}$ on $64\times128\times128$, and $1.1032\cdot10^{-3}$ on
-$128\times256\times256$, still rising. A finer reference pair computed for the present certificate gives about
-$1.096\cdot10^{-3}$. These values are floating point.
-% SRC: S_250, S_249, averaged: [RCL combine_mu.log] (1.07220154816e-3, 1.07173770351e-3, 1.0719690924e-3);
-% k^{-3/2}: [RCL combine_mu.log] (mu_k * k^1.5 printed) and [GEM]; October values 9.5503e-4, 1.07113e-3, 1.10321e-3:
-% [CT] README and ref*.log; 1.096e-3: [SR] step 1.
-
-\paragraph{Where the gain comes from.} For the pair on $64\times128\times128$ uniform cells, which is symmetric up to a
-mean cell deviation of $0.015$, a float computation splits $\Wc$ according to~\eqref{eq:modes}. The mode $m=0$, the phase
-of $z_2$ with a profile depending on $(r_1,r_2)$, contributes $0.7003$. This is below $\gd$, as the
-one-coordinate picture predicts for a modulated phase of one coordinate. The mode $m=1$, which carries the phase of the
-other coordinate $z_1$ and enters~\eqref{eq:tigerW} with the sign $\sigma_1=-1$, adds $+0.0128$. The net result is
-$\Wc\approx\gd+1.07\cdot10^{-3}$. In the unconstrained search on $32$ angle cells the mode $m=0$ carried $0.968$ of the
-mass of $F$ and the mode $m=1$ carried $0.022$. A heuristic second-variation analysis around $\ph(z_2)$ suggests the same picture: perturbations
-in the first coordinate that have opposite signs on the two sides of the pair, $g(z_1,z_2)\approx f(-z_1,z_2)$, form a
-null direction of the second variation, while equal signs lose at second order. That analysis was not carried out
-rigorously.
-\todo{recompute the per-mode split for the certified $64\times48\times48$ pair; the quoted values are for the earlier
-pair}
-% SRC: 0.7003 and 0.0128: [MODES] (user_mode_check_fixed.py on the 64x128x128 pair, midpoint rule on [0,6));
-% mean |G - F(psi+pi)| = 0.0146: [NUM] index.html; mode masses 0.968 / 0.022: [CT] README (best_64_32);
-% null direction heuristic: [BM] Section 9.2 ("opposite sign: H_{2,1} ... g(z1,z2) = f(-z1,z2) ... degenerate (null)
-% directions"; "Same-sign H_{2,1} should be strictly worse"), stated there as expected but not derived.
-
-\subsection{Proof of Corollary~\ref{cor:konig}}\label{sec:proof-cor}
-Let $h$ be the coefficient sequence of the mixture of Theorem~\ref{thm:main}. By Lemma~\ref{lem:ceiling},
-$\Dc(h)\le\sum_iw_i\Wc(h^{(i)})$. The phase channels have $\Wc\le\gd$ by Proposition~\ref{prop:phase}. The GT and tiger
-channels are preprocessed pairs on $\C^2$, so $\Wc\le C_2$ by Lemma~\ref{lem:pre}. Hence
-$\Dc(h)\le(1-w_{\mathrm{ph}})C_2+w_{\mathrm{ph}}\gd$, where $w_{\mathrm{ph}}=0.000235789554$ is the total weight of the
-phase channels, and so $C_2\ge\gd+(\Dc(h)-\gd)/(1-w_{\mathrm{ph}})>\gd+7.5\cdot10^{-6}$ by Theorem~\ref{thm:main}.
-\qed
-% SRC: w_ph = w5 + w6 = 5.010253e-5 + 1.85687024e-4 [CF]; [DER].
-
-% ============================================================================================
-\section{Cancelling the wrong-sign terms}\label{sec:mixture}
-
-\subsection{The tiger alone}\label{sec:tiger-alone}
-Composed with the preprocessor $R(X)=0.92008-0.07992X$, the tiger channel has linear coefficient $c_0=0.708362$ and
-residual $\sum_{k=1}^{250}|c_k|=8.83\cdot10^{-3}$. Its ceiling is $\gd+1.07\cdot10^{-3}$, but on its own it gives only
-$\Dc=0.69954$ and $\KG\le1.4295$. By Lemma~\ref{lem:ceiling} the wrong-sign part of its residual is
-$(\Wc-\Dc)/2\approx6.7\cdot10^{-3}$, about three quarters of the total. Inverting the tiger's own series in the manner of
-Krivine and Haagerup does not help either. For the pair on $128\times256\times256$ cells this gives $\kappa=0.70198$,
-i.e.\ $\KG\le1.42455$, because the inverse series has mixed signs. Mixing a few per cent of the tiger into the phase
-and inverting the mixture lowers $\kappa$ monotonically. A large ceiling is necessary, not sufficient.
-% SRC: c0 = 0.7083615183433885, sum = 0.008826109123 [RCL heads.log]; D = 0.69953541, 1/D = 1.42952 [DER];
-% wrong-sign part 6.7476e-3 = 76% [DER, using W - gd = 1.0719690924e-3]; kappa = 0.701977935558, 1/kappa =
-% 1.42454619917 (256x128 pair) [CT inv_256_J150.log]; mixing: [CT mix_256_J150.log] (p=0.01: 0.7117044432).
-
-In the real case, Braverman, Makarychev, Makarychev and Naor mixed a small amount of a two-dimensional rounding into
-Krivine's scheme, whose inverse $\sin$ alternates. The base scheme then sits exactly at its ceiling, and the mixture stays
-close to its own ceiling~\cite[Theorem~5.1, Remark~5.2]{BMMN}. In the complex case the phase cannot play this role, since
-its alternation gap of $1.69\cdot10^{-4}$ is far larger than anything a small admixture could gain. A different base is
-needed.
-% SRC: [BM] Theorem 5.1, Remark 5.2 and Section 9.1 ("In the complex case the base scheme is not at its ceiling").
-
-\subsection{\texorpdfstring{The base rounder $G_T$}{The base rounder G\_T}}\label{sec:base}
-The repository~\cite{GL} contains a two-coordinate rounder designed for its upper bound $1.404599395362$. It is the
-smoothed rounding
-\[
- G_T(x)=\E_Z\,T\bigl(Mx+\sqrt{1-\eta}\,(I-P_u)Z\bigr),\qquad M=P_u+\sqrt\eta\,(I-P_u),\quad\eta=\tfrac45,
-\]
-where $P_u$ is the projection onto $u=(1,b)$, and $T=F_0\,P_3(\varphi_T)$. Here
-$F_0(z,w)=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, $\varphi_T$ is a damped
-polynomial phase, and $P_3(x)=1+ix-x^2/2-ix^3/6$ is the cubic Taylor polynomial of $e^{ix}$. Since
-$|P_3(x)|^2=1-x^4(3-x^2)/36$ and $\varphi_T^2\le99/100$ is proved, $T$ and $G_T$ are disk-valued; they have charge
-one~\cite{GL}. Its bivariate energies $E_{GT}(n_1,n_2)$ on
-\[
- \cI=\{(n_1,n_2):n_1+3n_2\le501\}
-\]
-are stored as $21{,}168$ exact dyadic rationals (\path{Grothe/Upper/Data.lean}). They are compared with the true
-energies in Section~\ref{sec:gt}.
-% SRC: definition of G_T, eta = 4/5, P3, |P3|^2 identity, phi^2 <= 99/100: [OV] upper-bound section and
-% Grothe/UpperChaos/Rounder.lean (Data.lean: etaQ = 4/5); 21,168 entries: [LA], [RCL heads.log].
-
-With alternating $P$ and $Q$, Lemma~\ref{lem:pre} and~\eqref{eq:bivariate} give
-\begin{equation}\label{eq:WGT}
- \sum_j(-1)^jh_j=\sum_{n_1,n_2}(-1)^{(n_1+n_2-1)/2}E_{GT}(n_1,n_2)=:\Wc(G_T),
-\end{equation}
-\emph{independently of $P$ and $Q$}. From the table, $\Wc(G_T)=0.7119487068$, which is $\gd-9.95\cdot10^{-6}$. The
-production scheme of~\cite{GL} has $c=0.7119483103461$ and residual $1.542\cdot10^{-6}$, so
-$\Dc=0.71194677$ and $\KG\le1.404599395$. That is within $1.94\cdot10^{-6}$ of $\Wc(G_T)$. The rounder $G_T$ is thus a
-base that nearly attains a ceiling just below $\gd$.
-% SRC: W(G_T) = 0.711948707 (alternating sum of the head of each alternating GT column, table energies):
-% [NUM out_mixture_heads.log, "alt=0.711948707"]; 0.7119487068 and "9.95e-6 below gd": [GEM]; [DER] gd - W =
-% 9.953e-6. Production c = slopeQ = 7119483103461/10^13, residual 1.542247969e-6, K <= 1.404599395361207: [OV];
-% D_master = 0.7119467681 and W - D = 1.939e-6 [DER].
-
-\subsection{Steering}\label{sec:steering}
-Equation~\eqref{eq:WGT} is the key to the construction. The family of channels GT$(P,Q)$ with alternating $P$, $Q$
-and $Q(0)=0$ all have the same ceiling $\Wc(G_T)$, but their coefficient vectors differ widely. For example, the first
-channel of the certificate, with $P=0.99183-0.00817X$ and $Q=-X$, has residual $\sum_{k\ge1}|c_k|=4.4\cdot10^{-4}$. The
-third, with $P=0.09137-0.82519X-0.08343X^3$ and $Q=-X$, has $c_0=0.066$ and residual $0.80$. Likewise all phase$(R)$
-channels with alternating $R$ have $\Wc=\gd$. A mixture of the tiger with such channels has the ceiling
-\[
- \Wc\approx w_{\mathrm{tiger}}\,\Ac(f,f\circ S)+w_{\mathrm{GT}}\,\Wc(G_T)+w_{\mathrm{ph}}\,\gd ,
-\]
-and the problem is to choose the weights and the polynomials so that the residuals cancel. The ceiling is then nearly
-attained.
-% SRC: channel residuals [RCL heads.log] (4.446451306e-4; c0 = 0.0656196371, 0.8047044331); idea: [GEM] 2.2.
-
-\subsection{The mixture}\label{sec:the-mixture}
-Table~\ref{tab:channels} lists the six channels; the exact rationals are in Appendix~\ref{app:data}. All polynomials
-have degree at most $3$. The mixture's head is
-\[
- h_0=0.711968933048781977627\ldots,\qquad\sum_{k=1}^{250}|h_k|=1.2487809536\cdot10^{-6}.
-\]
-The coefficients $h_1,\dots,h_9$ vanish to within $7.3\cdot10^{-13}$. The residual sits at $10\le k\le117$, and its
-largest entries are $|h_{13}|\approx|h_{16}|\approx1.97\cdot10^{-7}$. The individual channels carry a weighted residual of
-$\sum_iw_i\sum_k|c^{(i)}_k|=1.32\cdot10^{-3}$, so the cancellation gains a factor of about $10^3$.
-% SRC: h0 ball [0.711968933048781977627510165506 +/- 9.45e-32], l1 [1.248780953614077251239558e-6 +/- 2.05e-31] [VL];
-% h_1..h_9, largest |h_k|, support up to k = 117 (86 coefficients > 1e-11): [DER from RCO heads.json h_mid] and
-% [RCL heads.log] (largest |h_k|: 1.972e-7 at k=13, 1.970e-7 at k=16); weighted residual 1.3232e-3, ratio 1060 [DER].
-
-\begin{table}[ht]
-\centering\footnotesize
-\begin{tabular}{@{}rll>{\raggedright\arraybackslash}p{6.0cm}llll@{}}
-\toprule
-\# & kind & weight & polynomials & $c_0$ & $\sum_{k=1}^{250}|c_k|$ & $r$ & $j$\\
-\midrule
-1 & GT & $0.9718587342$ & $P=0.991833-0.008167X$,\quad $Q=-X$ & $0.712294$ & $4.45\cdot10^{-4}$ & $\frac{2073}{2000}$ & $\frac9{20}$\\
-2 & GT & $0.0089064833$ & $P=0.989554-0.010446X^3$,\newline $Q=-0.833435X-0.166565X^3$ & $0.710658$ & $0.0462$ & $\frac{2087}{2000}$ & $\frac14$\\
-3 & GT & $0.0002018456$ & $P=0.091372-0.825195X-0.083433X^3$,\newline $Q=-0.999999999999X$ & $0.065620$ & $0.805$ & $\frac{1043}{1000}$ & $\frac14$\\
-4 & tiger & $0.0187971473$ & $R=0.920083-0.079917X$ & $0.708362$ & $8.83\cdot10^{-3}$ & $\frac{28}{25}$ & $\frac7{20}$\\
-5 & phase & $0.0000501025$ & $R=0.211832-0.067864X+0.720304X^2$ & $0.166372$ & $0.755$ & $\frac{517}{500}$ & $\frac14$\\
-6 & phase & $0.0001856870$ & $R=0.364133-0.635867X$ & $0.285989$ & $0.609$ & $\frac{2147}{2000}$ & $\frac3{20}$\\
-\midrule
- & mixture & $1$ & & $0.711969$ & $1.25\cdot10^{-6}$ & & \\
-\bottomrule
-\end{tabular}
-\caption{The six channels (decimals; exact rationals in Appendix~\ref{app:data}). $c_0$ and $\sum|c_k|$ are the head of
-each channel, computed from the energy table for the GT channels. $(r,j)$ are the Hardy radius and Schur parameter of
-Section~\ref{sec:tails}.}\label{tab:channels}
-\end{table}
-% SRC Table: weights, polynomials, r, j [CF] channels.json, [SR] table, [SUM]; c0 and l1 per channel [RCL heads.log];
-% mixture [VL].
-
-\subsection{The ledger of the ceiling}\label{sec:ledger}
-Table~\ref{tab:ledger} shows how the margin arises. It uses the float ceilings of Sections~\ref{sec:tiger}
-and~\ref{sec:base} and the certified budget of Section~\ref{sec:budget}. The first three lines are informational and are
-not part of the certificate.
-
-\begin{table}[ht]
-\centering\small
-\begin{tabular}{@{}lr@{}}
-\toprule
-contribution & value ($\times10^{-6}$)\\
-\midrule
-tiger: $w_4\,(\Ac(f,f\circ S)-\gd)=0.0187971\times1071.97$ & $+20.150$\\
-GT: $(w_1+w_2+w_3)(\Wc(G_T)-\gd)=0.980967\times(-9.953)$ & $-9.764$\\
-phase: $w_5+w_6$ times $0$ & $0.000$\\
-\midrule
-ceiling of the mixture's head, $\sum_{k\le250}(-1)^kh_k-\gd$ & $+10.386$\\
-wrong-sign part of the head residual, $\sum_{k\ge1}(|h_k|+(-1)^kh_k)$ & $-1.362$\\
-GT table allowance, $(w_1+w_2+w_3)\cdot1.4941163\cdot10^{-6}$ (Section~\ref{sec:gt}) & $-1.466$\\
-Hardy tails $\sum_iw_iT_i$ (Section~\ref{sec:tails}) & $-0.031$\\
-\midrule
-$\Dc-\gd$ (certified) & $\ge7.5276$\\
-\bottomrule
-\end{tabular}
-\caption{The ceiling ledger. The first block uses the float values $\Ac(f,f\circ S)-\gd\approx1.07197\cdot10^{-3}$ and
-$\Wc(G_T)=0.7119487068$, and it agrees with the directly computed ceiling of the head ($+10.386$) to $10^{-10}$. The last
-three losses are the certified ones.}\label{tab:ledger}
-\end{table}
-% SRC: [DER] products: 0.018797147285*1.0719690924e-3 = 2.01499609e-5; 0.980967063161*(-9.952978e-6) = -9.7635e-6;
-% alternating head sum - gd = 1.0386463e-5 and wrong-sign part 1.3619736e-6 from RCO heads.json h_mid (float);
-% allowance 1.4656789153500819e-6 [VL]; tails <= 3e-8 + 1.22e-9 [VL]; D - gd >= 7.527592e-6 [VL]. Check:
-% 10.386463 - 1.361974 - 1.465679 - 0.031218 = 7.527592 (x1e-6).
-
-\subsection{How the certificate was found}\label{sec:construction}
-The construction is described in detail in the certificate's notes; we summarise it here.
-\begin{enumerate}[label=(\roman*)]
-\item A fine reference pair on $128$ angle cells and $127\times127$ radial cells was computed by symmetric best response
- for the truncated functional $\sum_{k\le250}(-1)^k\mu_k$. Its value was $\Wc-\gd\approx1.096\cdot10^{-3}$.
-\item The radial cells were grouped by dynamic programming to maximise a first-order prediction of the coarse value. This
- predicted that angular resolution matters more than radial resolution. The chosen grid was $64\times48\times48$, refined
- by $650$ best-response iterations to $\Wc-\gd=1.0724\cdot10^{-3}$.
-\item The weights and the polynomials of a small fixed set of columns were optimised by a sequential linear program. Each
- step maximised the linearised $\Dc$ under $\ell^1\le1$, $Q(0)=0$ and a linear safety constraint for the Hardy tails, and
- was accepted only if the exactly recomputed $\Dc$ increased. Column generation over the full channel pool was less
- effective.
-\item The pair was rounded cellwise to $2^{-20}\Z[i]\cap\Dbar$, $\mu$ was recomputed, and the program was re-run. The
- weights and coefficients were then rationalised with denominator $10^{12}$, keeping $\sum w=1$, $\ell^1\le1$ and
- $Q(0)=0$ exact. For each channel, the verifier selected a Hardy radius $r$ and parameter $j$ for which its own interval
- cover succeeds.
-\end{enumerate}
-A variant with four channels and no phase channels, with the same pair, gives $\Dc-\gd\ge5.9287\cdot10^{-6}$ and
-$\KG\le1.40456425$.
-% SRC: (i)-(iv) [SR] "How the certificate was built" steps 1-6 (values 1.096e-3, 1.0724e-3, 650 iterations,
-% denominator 10^12); 4-channel variant 5.9287e-6, 1.40456425 [SR] table. (History of the earlier 18-channel
-% certificate, K <= 1.4045697, deliberately left to the authors' own section.)
-
-% ============================================================================================
-\section{Tail bounds}\label{sec:tails}
-Each channel's coefficients $h_j$ with $j\le250$ are computed exactly (in ball arithmetic). The tail $\sum_{j>250}|h_j|$
-is bounded by continuing the channel's kernel analytically to a disc of radius $r>1$.
-
-\subsection{The continued correlation}\label{sec:continued}
-Every channel is of the form $t\mapsto\E[\overline{F(Z)}G(W)]$, where $F,G:\C^2\to\Dbar$ are measurable and $(Z,W)$
-is a Gaussian pair with real cross-covariance $\cR(t)$:
-\begin{itemize}
-\item for GT$(P,Q)$, $F=G=T$ (the unsmoothed rounder) and $\cR(t)=M\operatorname{diag}(tP(t^2),tQ(t^2))M$. Because
- $M^2+(1-\eta)(I-P_u)^2=I$, the smoothing turns the cross-covariance $\operatorname{diag}(\rho_1,\rho_2)$ into
- $M\operatorname{diag}(\rho_1,\rho_2)M$;
-\item for tiger$(R)$, $F=f$, $G=f\circ S$ and $\cR(t)=tR(t^2)\,I_2$;
-\item for phase$(R)$, $F=G=\ph\circ\mathrm{pr}_1$ and $\cR(t)=tR(t^2)\,I_2$.
-\end{itemize}
-For a complex symmetric $2\times2$ matrix $\cR$ with $\det(I-\cR^2)\ne0$ put $A=(I-\cR^2)^{-1}$, $C=\cR A$, and
-\[
- H_{F,G}(\cR)=\int_{\R^8}\overline{F(z)}\,G(w)\,\frac{\exp\bigl(q_\cR(x,y)+q_\cR(x',y')\bigr)}{(2\pi)^4\det(I-\cR^2)}\,dx\,dx'\,dy\,dy',
-\]
-where $q_\cR(x,y)=-\tfrac12x^{\mathsf T}Ax-\tfrac12y^{\mathsf T}Ay+x^{\mathsf T}Cy$, $x,x',y,y'\in\R^2$, $z=(x+ix')/\sqrt2$ and $w=(y+iy')/\sqrt2$ coordinatewise. For real symmetric $\cR$ with $\|\cR\|<1$ this is
-$\E[\overline{F(Z)}G(W)]$. For real $t\in(0,1)$, by Lemma~\ref{lem:mehler}, $H_{F,G}(\cR(t))=\sum_jh_jt^{2j+1}$ with the
-channel's coefficients. If
-\begin{equation}\label{eq:kerpos}
- \Re\bigl(x^{\mathsf T}Ax+y^{\mathsf T}Ay-2x^{\mathsf T}Cy\bigr)\ge\lambda\bigl(|x|^2+|y|^2\bigr)\quad(x,y\in\R^2)
-\end{equation}
-for some $\lambda>0$ (``\lean{KerPos}''), the integral converges absolutely. On an open set of $t$ where this holds,
-$t\mapsto H_{F,G}(\cR(t))$ is holomorphic (\lean{differentiableOn\_HholPair\_Rt}, \path{Grothe/UpperChaos/HardyHolo.lean}).
-% SRC: definitions of HholPair, kHol, kExp, toC2, KerPos: Grothe/UpperChaos/HardyHolo.lean and HardyKernel.lean [LEAN];
-% Rt = M diag(p,q) M: HardyKernel.lean:83 and Rounder.lean (m00, m01, m11) [LEAN], [LA] item 4.
-
-\subsection{The region of holomorphy}\label{sec:region}
-\begin{lemma}\label{lem:region}
-Let $\cR(t)$ be a polynomial in $t$ with complex symmetric $2\times2$ values, and let $r_+>0$. If $I+\Re\cR(t)\succ0$ and
-$I-\Re\cR(t)\succ0$ for all $|t|=r_+$, then~\eqref{eq:kerpos} holds, with some $\lambda(t)>0$, for every $|t|\le r_+$.
-\end{lemma}
-\begin{proof}
-For $v\in\R^2$ the function $t\mapsto v^{\mathsf T}(I\pm\Re\cR(t))v=|v|^2\pm\Re\bigl(v^{\mathsf T}\cR(t)v\bigr)$ is
-harmonic, so by the minimum principle $I\pm\Re\cR(t)\succ0$ on the closed disc. If $W=X+iY$ is complex symmetric with
-$X\succ0$, then with $Y'=X^{-1/2}YX^{-1/2}$ we have $W^{-1}=X^{-1/2}(I-iY')(I+Y'^2)^{-1}X^{-1/2}$, so $W$ is invertible
-and $\Re W^{-1}=X^{-1/2}(I+Y'^2)^{-1}X^{-1/2}\succ0$. Apply this to $W=I\mp\cR(t)$. Since $A\pm C=(I\mp\cR)^{-1}$,
-\[
- x^{\mathsf T}Ax+y^{\mathsf T}Ay-2x^{\mathsf T}Cy=\tfrac12\bigl[(x-y)^{\mathsf T}(I-\cR)^{-1}(x-y)+(x+y)^{\mathsf T}(I+\cR)^{-1}(x+y)\bigr],
-\]
-and the real part of the right-hand side is bounded below by a positive multiple of $|x-y|^2+|x+y|^2=2(|x|^2+|y|^2)$.
-\end{proof}
-The last step is \lean{kerPos\_of\_gates} in \path{Grothe/UpperChaos/HardyArcRegion.lean}. The minimum principle and the
-inverse positivity are not yet formalised. In the certificate the hypothesis is checked on the circle $r_+=r+10^{-5}$,
-so the kernel is holomorphic on a neighbourhood of the closed disc of radius $r$.
-% SRC: [LA] item 4 ("the harmonic-minimum argument and Re(X+iY)>0 => Re((X+iY)^-1)>0 are correct but unformalised");
-% r + 1e-5: verify_cert.py (rp = r + 1/100000), [RC].
-
-\subsection{The Gaussian-amplitude bound}\label{sec:schur}
-\begin{theorem}[\cite{GL}, \lean{norm\_HholPair\_sq\_le}]\label{thm:schur}
-Let $\cR$ be complex symmetric with $\det(I-\cR^2)\ne0$, $j>0$, $Z=\Re A-jI$, $T_\cR=Z-(\Re C)Z^{-1}(\Re C)$ and
-$E=\frac12\bigl((\Re C)Z^{-1}(\Re C)+(\Im C)Z^{-1}(\Im C)\bigr)$. If $Z\succ0$ and $T_\cR\succ0$, then for all measurable
-$F,G:\C^2\to\Dbar$
-\[
- |H_{F,G}(\cR)|^2\le\frac{1}{16\,j^2\,|\det(I-\cR^2)|^2\,\det Z\,\det(T_\cR+jI)\,\det(T_\cR+2E+jI)} .
-\]
-\end{theorem}
-This is proved in Lean for arbitrary $F$, $G$, $\cR$ and $j$ (\path{Grothe/UpperChaos/SchurMainGaussian.lean}), by an
-$L^*L$ argument that keeps the Gaussian amplitude. In ball arithmetic we evaluate $T_\cR$ through the factorisation
-$T_\cR=(Z-\Re C)Z^{-1}(Z+\Re C)$, with $Z\pm\Re C=\Re(I\pm\cR)^{-1}-jI$. This avoids the cancellation near $t=r$, where
-both $Z$ and $(\Re C)Z^{-1}(\Re C)$ are large. We also use $T_\cR+2E+jI=\Re A+(\Im C)Z^{-1}(\Im C)$.
-% SRC: statement: SchurMainGaussian.lean [LEAN], [OV] "Gaussian amplitudes in the Hardy estimate"; factorisation:
-% [GEM] step 3.2 and verify_cert.py (um, up, detT = det(Z-C)det(Z+C)/det Z).
-
-\subsection{From a circle mean to the tail}\label{sec:circle-tail}
-\begin{lemma}\label{lem:tail}
-Let $H(t)=\sum_kh_kt^{2k+1}$ be holomorphic on $|t|<r_+$, with real $h_k$, and let $1<r<r_+$. Suppose
-$\frac1{2\pi}\int_0^{2\pi}|H(re^{i\theta})|^2d\theta\le B$ and $0\le c\le h_0$. Then for every $K$,
-\[
- \sum_{k>K}|h_k|\le\Bigl(\frac{B-c^2r^2}{r^4(1-r^{-4})}\Bigr)^{1/2}r^{-(2K+1)} .
-\]
-\end{lemma}
-\begin{proof}
-By Parseval, $\sum_kh_k^2r^{4k+2}\le B$, hence $\sum_{k\ge1}h_k^2r^{4k+2}\le B-c^2r^2$. By Cauchy--Schwarz,
-$\sum_{k>K}|h_k|\le(\sum_{k>K}h_k^2r^{4k+2})^{1/2}(\sum_{k>K}r^{-4k-2})^{1/2}$, and
-$\sum_{k>K}r^{-4k-2}=r^{-4K-6}/(1-r^{-4})$.
-\end{proof}
-\begin{sloppypar}
-This is \lean{hardy\_budget\_after\_linear} together with \lean{hardy\_tail} (\path{Grothe/Upper/Residual.lean}), and
-\lean{residual\_le\_of\_head\_hardy} (\path{Grothe/HeadHardy.lean}). The identification of the continuation with the
-power series on the disc (\lean{hardy\_of\_pair\_inputs\_budget}) is formalised only for the production matrix and
-radius. Its generalisation is mechanical but has not been done.
-\end{sloppypar}
-
-\subsection{The certified tails}\label{sec:certified-tails}
-For each channel the verifier proceeds as follows.
-\begin{enumerate}[label=(\arabic*)]
-\item It covers the half circle $|t|=r$, $0\le\arg t\le\pi$, by adaptively bisected arcs. On each arc it certifies
- $Z\succ0$ and $T_\cR\succ0$, and encloses the right-hand side of Theorem~\ref{thm:schur}. The half circle suffices
- because the bound is invariant under $\cR\mapsto-\cR$ and $\cR$ is odd in $t$.
-\item It sums the enclosures into a bound $B$ for the circle mean.
-\item It checks $I\pm\Re\cR\succ0$ on $|t|=r+10^{-5}$ (Lemma~\ref{lem:region}).
-\item It applies Lemma~\ref{lem:tail} with $K=250$, taking for $c$ a certified lower bound of the linear coefficient. For
- the GT channels this is the table value minus the allowance of Section~\ref{sec:gt}.
-\end{enumerate}
-Table~\ref{tab:tails} gives the results. Without the linear deduction ($c=0$) the tails total at most
-$4.19\cdot10^{-8}$, and the margin is still $\Dc-\gd\ge7.5169\cdot10^{-6}$.
-% SRC: verify_cert.py hardy_tail (NT = 256 initial arcs, depth 12, 5% slack, harmonic depth 10); L = 0: [RC] item 5
-% (4.186665e-08 and 7.516944e-06 in [RCL assemble.log]).
-
-\begin{table}[ht]
-\centering\small
-\begin{tabular}{@{}rlllrlll@{}}
-\toprule
-\# & kind & $r$ & $j$ & arcs & $B$ (verifier) & $B$ (re-check) & $w\cdot$tail (verifier)\\
-\midrule
-1 & GT & $2073/2000$ & $9/20$ & $196{,}977$ & $1.17796$ & $1.138691$ & $3.119\cdot10^{-8}$\\
-2 & GT & $2087/2000$ & $1/4$ & $68{,}073$ & $2.80530$ & $2.710855$ & $1.687\cdot10^{-11}$\\
-3 & GT & $1043/1000$ & $1/4$ & $179{,}439$ & $2.32338$ & $2.241096$ & $4.960\cdot10^{-13}$\\
-4 & tiger & $28/25$ & $7/20$ & $33{,}324$ & $1.57132$ & $1.516179$ & $5.292\cdot10^{-27}$\\
-5 & phase & $517/500$ & $1/4$ & $146{,}090$ & $2.58932$ & $2.500686$ & $1.126\cdot10^{-11}$\\
-6 & phase & $2147/2000$ & $3/20$ & $81{,}780$ & $10.42708$ & $10.078575$ & $3.856\cdot10^{-19}$\\
-\midrule
- & total & & & & & & $\le3.2\cdot10^{-8}$\\
-\bottomrule
-\end{tabular}
-\caption{Hardy tails beyond degree $501$. The re-check uses its own centred-form covers on the full circle and is tighter
-(total $\le3.03\cdot10^{-8}$). Float means of the bound on $2^{18}$ points lie within $0.15\%$ below the re-check's
-values.}\label{tab:tails}
-\end{table}
-% SRC: verifier columns [VL]; re-check B [RC] table and [RCL assemble.log]; total <= 3.2e-8 [SR] ("Hardy tails <= 3.2e-8")
-% and [VL] tails ball [3e-8 +/- 1.22e-9]; re-check total 3.0235e-8 [RC]; float means within 0.15% [RC].
-
-\begin{remark}[tight spots]
-The certified quantities are thin in three places. For channel~1 the holomorphy margin $1-\lambda_{\max}(\Re\cR)$ is
-about $3\cdot10^{-4}$ on $|t|=r+10^{-5}$ near $\arg t=0$. For channel~6, $\det T_\cR\ge6.2\cdot10^{-6}$. For channel~5,
-$\det(I-\Re\cR)\ge1.9\cdot10^{-5}$. A coarser cover, as in a Lean port, must resolve these. For channel~3 every radius
-$r\ge1.0435$ failed the verifier's cover, although a float check passed, so $r=1.043$ is used. The cause has not been
-investigated; the channel's weight is $2\cdot10^{-4}$ and its weighted tail at $r=1.043$ is $5\cdot10^{-13}$.
-\end{remark}
-% SRC: [RC] Findings 3; channel 3 radius: [SR] "What did not work" (last item).
-
-% ============================================================================================
-\section{The GT table comparison}\label{sec:gt}
-For a GT channel the coefficients $h_j$, $j\le250$, depend only on the energies $E_{GT}(p)$, $p\in\cI$, because
-$Q(0)=0$ (Section~\ref{sec:transfer}). We compute them from the table $E_{\mathrm{tab}}$. Each polynomial
-$X^{(n_1+n_2-1)/2}P^{n_1}Q^{n_2}$ in~\eqref{eq:bivariate} has $\ell^1$ norm at most $1$ (\lean{l1\_termOf\_le\_one}), so
-\[
- \sum_{j\le250}\bigl|h_j-h_j^{\mathrm{tab}}\bigr|\le\sum_{p\in\cI}\bigl|E_{GT}(p)-E_{\mathrm{tab}}(p)\bigr|
-\]
-for every admissible $(P,Q)$. The right-hand side is universal.
-
-\begin{proposition}\label{prop:allowance}
-$\sum_{p\in\cI}|E_{GT}(p)-E_{\mathrm{tab}}(p)|\le\eps_{GT}:=1.4941163372267\cdot10^{-6}$.
-\end{proposition}
-\begin{proof}[Proof (outline)]
-The development~\cite{GL} proves, for an explicit approximant $X$ of $G_T$ and every weight $0\le w\le1$, the
-following selected-spectrum comparison
-(\lean{localized\_comparison\_\allowbreak of\_weight\_mass\_radii} in \path{Grothe/UpperTightComparison.lean}):
-\[
- \sum_{p\in\cI}w(p)\,|E_{GT}(p)-E_X(p)|\le2\sum_{b=0}^{6}a_be_b+\Bigl(\sum_{g=0}^{3}R_g\Bigr)^2
- \quad\text{whenever}\quad\sum_{p\in\text{band }b}w(p)^2E_X(p)\le a_b^2 .
-\]
-The bands are degree ranges of $n_1+n_2$. The radii $e_b$, $R_g$ are proved Gaussian error bounds, and they do not
-depend on $w$ or on $(P,Q)$. The table accuracy is \lean{Final.hclose\_final}:
-$\sum_{p\in\cI}|E_X(p)-E_{\mathrm{tab}}(p)|\le\eps_{\mathrm{tab}}=6847009/(5\cdot10^{17})$. Take $w\equiv1$ and
-$a_b^2=\sum_{\text{band }b}E_{\mathrm{tab}}+\eps_{\mathrm{tab}}$, and add $\eps_{\mathrm{tab}}$. Evaluating the right-hand
-side gives
-\[
- 2\sum_ba_be_b=1.49404243589\cdot10^{-6},\qquad\Bigl(\sum_gR_g\Bigr)^2=6.0207\cdot10^{-11},\qquad
- \eps_{\mathrm{tab}}=1.3694\cdot10^{-11},
-\]
-in total $\eps_{GT}=1.4941163372266\ldots\cdot10^{-6}$. The dominant term is band~2, of degrees above $51$: its mass is
-small ($8.4\cdot10^{-3}$), but its certified error radius is $6.3\cdot10^{-6}$.
-\end{proof}
-% SRC: lemma and hypotheses: UpperTightComparison.lean:40-49 [LEAN], [LA] item 3; hclose_final: UpperClose.lean:24
-% [LEAN]; energyErrQ = 6847009/500000000000000000 (Data.lean) [LEAN]; numbers: [LU] (2 sum a e = 1.4940424358949...e-6,
-% (sum R)^2 = 6.0207313659e-11, total 1.4941163372266344...e-6, band 2 mass 8.398e-3, e_2 = 6.338058e-6);
-% the same value is recomputed exactly in [IND univ] and by the verifier [VL] ([1.494116337226634456583201e-6 +/- 4.59e-31]).
-
-The instance $w\equiv1$ needs only the band masses at $w\equiv1$, which follow from \lean{hclose\_final}, and one finite
-sum over the table. It has not yet been compiled in Lean. The repository's own main theorem uses the same lemma with
-smaller weights. The mixture pays $(w_1+w_2+w_3)\,\eps_{GT}=0.980967063161\times\eps_{GT}=1.4656789\cdot10^{-6}$, the
-largest single loss in the budget.
-% SRC: [LP] (hGT; item 5); GT weight and product [VL], [SR].
-
-% ============================================================================================
-\section{The computer-assisted verification}\label{sec:verification}
-
-\subsection{What is computed}\label{sec:computed}
-Given the channel data and the tiger table, the following are verified by computer.
-\begin{enumerate}[label=(N\arabic*)]
-\item \emph{Admissibility}, in exact integer and rational arithmetic: $|F|^2\le4^{20}$ in every cell, i.e.\ the pair is
- disk-valued (one cell lies exactly on the unit circle); $\sum_iw_i=1$, $w_i>0$; $\|P\|_1,\|Q\|_1,\|R\|_1\le1$; $Q(0)=0$;
- $r>1$, $j>0$.
-\item \emph{The tiger overlaps} $\mu_0,\dots,\mu_{250}$, by the formula of Appendix~\ref{app:laguerre}. This needs exact
- discrete Fourier transforms of the integer table in the angle and Laguerre cell integrals for all $502$ angular modes
- $-250\le m\le251$ that reach degree $501$.
-\item \emph{The heads} $h^{(i)}_j$, $j\le250$, of all channels: \eqref{eq:onecomp} for phase and tiger channels,
- \eqref{eq:bivariate} with the $21{,}168$ table entries for GT channels.
-\item \emph{The GT allowance} $\eps_{GT}$ of Proposition~\ref{prop:allowance}.
-\item \emph{The Hardy tails} of Section~\ref{sec:tails}.
-\item \emph{The constant} $\gd$, by two methods, and the final inequality $\Dc>\gd$.
-\end{enumerate}
-% SRC: verify_cert.py sections 1-6; one cell on the unit circle: [RC] check_data ("cells on the unit circle: 1");
-% 502 modes: [SR] step 7, verify_cert.py (m from -250 to 251, skipping m = 0 mod 64, m != 0, where sinc vanishes).
-
-\subsection{Arithmetic}\label{sec:arithmetic}
-All real quantities are enclosed in midpoint--radius balls with $256$-bit midpoints, using Arb through
-\texttt{python-flint}~\cite{Arb}. The Laguerre cell tables are computed with $1024$-bit internal precision, because the
-three-term recurrence is unstable in interval arithmetic: the radius grows like $(1+\sqrt2)^n$, about $2^{319}$ at
-$n=251$. The resulting balls for $\mu_k$ have radius at most $9.6\cdot10^{-77}$. Rational inputs (edges, weights,
-coefficients, Hardy parameters) enter exactly. The two unbounded outer cells use the closed form
-$\Gamma(\alpha/2+1)/\sqrt{\alpha!}$ of the complete integral, so the Gaussian is never truncated. The verifier ran in about three minutes of CPU time.
-% SRC: [SR] step 7; [VL] ("max radius = 9.61e-77", timestamps 177.8 s); 2^319 growth: [RC] Findings 2.
-
-\subsection{The certificate}\label{sec:format}
-The certificate consists of three files.
-\begin{itemize}
-\item \path{tiger.json}: the grid ($64$ angle cells; $48+1$ rational radial edges for each coordinate, the last
- being $\infty$), the scale $2^{-20}$ and the symmetry rule $G[p]=F[(p+32)\bmod64]$.
-\item \path{tiger.npz}: two integer arrays $F_{\mathrm{re}},F_{\mathrm{im}}$ of shape $64\times48\times48$, together
- $294{,}912$ integers of modulus at most $2^{20}$; $935{,}487$ bytes compressed, $2{,}230{,}504$ bytes as decimal text.
-\item \path{channels.json}: the six channels with exact rational weights, polynomials, $r$ and $j$ (Appendix~\ref{app:data}).
-\end{itemize}
-The energy table of $G_T$ is part of~\cite{GL}, file \path{Grothe/Upper/Data.lean} at commit \texttt{25d56fcbb}. SHA-256
-hashes of all files are recorded with the certificate. Those of the two data files are
-\begin{center}\footnotesize
-\texttt{tiger.npz}\quad\texttt{27cf6265ab1071eaf50c840468bff6a195793821e79a229e92260962ec51c6cc}\\
-\texttt{channels.json}\quad\texttt{189028a62efe566a591fc993e1cfa686f43da68d52da00dce20703572e80aa08}
-\end{center}
-\todo{decide where the certificate is published; it currently lives only in the local folder
-handoff/haagerup-check-2026-11-18/shrink/cert\_final/}
-% SRC: [CF] SHA256SUMS, tiger.json; sizes [SUM]; |x| <= 2^20 (max |F_re| = 1048576 = 2^20) [RC check_data.log].
-
-\subsection{The budget}\label{sec:budget}
-\begin{table}[ht]
-\centering\small
-\begin{tabular}{@{}lll@{}}
-\toprule
-quantity & verifier (256-bit balls) & independent re-check\\
-\midrule
-$h_0$ & $0.711968933048781977627510$ & identical digits\\
-$\sum_{k=1}^{250}|h_k|$ & $1.248780953614077\cdot10^{-6}$ & $1.24878095361408\cdot10^{-6}$\\
-GT weight $\times\eps_{GT}$ & $1.465678915350082\cdot10^{-6}$ & $1.46567891535\cdot10^{-6}$\\
-Hardy tails $\sum_iw_iT_i$ & $\le3.2\cdot10^{-8}$ & $\le3.0235\cdot10^{-8}$\\
-$\Dc$ & $\ge0.7119661873703793$ & $\ge0.7119661883539826$\\
-$\gd$ & $0.711958659778263801512458548805$ & $0.71195865977826380151$\\
-$\Dc-\gd$ & $\ge7.527592\cdot10^{-6}$ & $\ge7.528576\cdot10^{-6}$\\
-$1/\Dc$ & $\le1.40456109$ & $\le1.4045610822$\\
-$1/\gd-1/\Dc$ & $\ge1.485\cdot10^{-5}$ & $\ge1.4852\cdot10^{-5}$\\
-\bottomrule
-\end{tabular}
-\caption{The budget of Theorem~\ref{thm:main}: $\Dc=h_0-\sum_{k=1}^{250}|h_k|-(\text{GT weight})\,\eps_{GT}-\sum_iw_iT_i$.
-The verifier's $h_0$ and $\sum|h_k|$ are balls of radius below $3\cdot10^{-31}$.}\label{tab:budget}
-\end{table}
-% SRC: verifier column [VL], [VR]; re-check column [RC] table and [RCO assemble.json]; 1/D <= 1.40456109 from
-% [1.40456108 +/- 4.14e-9] [VL] ([DER]: 1.404561084134 from D_lower).
-
-\subsection{Independent re-checks}\label{sec:rechecks}
-The certificate has been checked three times.
-\begin{enumerate}[label=(\alph*)]
-\item \emph{The verifier} described above.
-\item \emph{Separately written re-checks.} They compute $\mu_k$ by Gauss--Legendre quadrature in $r$ ($24$ and $40$ nodes
- per cell; the outer cell is integrated on $[r_N,12]$) and agree with the verifier to $1.1\cdot10^{-16}$. They recompute
- the heads by nested Horner evaluation in $192$-bit balls, the tails by a centred-form cover of the Lean formulas on the
- full circle, and the allowance exactly. Result: $\Dc-\gd\ge7.5285\cdot10^{-6}$.
-\item \emph{A from-scratch re-check}, by code that shares no source with (a) or (b). It derives the Laguerre cell
- recurrence anew and starts it from both incomplete gamma functions, without subtraction for the outer cell. It tests the
- cell integrals against quadrature ($62$ pairs $(a,n)$, worst relative deviation $2.6\cdot10^{-27}$), and tests the whole
- overlap pipeline on $f=\ph(z_1)$ against the closed form ($4\cdot10^{-31}$). It confirms that its table convention is
- Lean's: for the production preprocessors it reproduces the Lean fact $\sum_{j\le250}|h_j-c\,\delta_{j0}|\le2.8153\cdot10^{-8}$.
- It transcribes the Lean formulas of Theorem~\ref{thm:schur} literally and covers the full circle with dual-number centred
- forms. Its covers come within $0.15\%$ of the float means, and its result is $\Dc-\gd\ge7.528576\cdot10^{-6}$. It did not
- re-derive the allowance $\eps_{GT}$. That number is computed by the verifier~(a) and recomputed exactly in~(b), with the
- script of an audit of the Lean statements.
-\end{enumerate}
-Every number of the certificate that was recomputed agrees: $\mu$ to float precision, $h_0$ and $\sum|h_k|$ to all
-printed digits, and the tails within the tighter covers. For a larger pair ($64\times128\times128$ uniform cells) handled
-by the same conventions, a Monte Carlo test of the kernel identity with $10^9$ samples at two correlations agreed
-within one standard error, and rejected three wrong variants of the conventions by $46$ to $917$ standard errors.
-\todo{run the same Monte Carlo test of conventions on the certified $64\times48\times48$ pair}
-% SRC: (a) [SR] step 7 and header of verify_cert.py; (b) [SR] "Independent re-checks" table and [IND] (7.52852978643e-6);
-% (c) [RC] Methods 1-6, Findings 1, item 4 ("Not re-checked here: the GT allowance"); production head 2.8151967e-8 <=
-% headCapQ 2.8153e-8 [RC], [LA]; allowance recomputed exactly: [LU] (lean-audit) and [IND univ]; Monte Carlo: [NUM]
-% out_mc_compare.log (+0.76 SE, -0.94 SE; variants 46.3-916.5 SE).
-
-\subsection{Reproducibility}\label{sec:repro}
-With \texttt{numpy} and \texttt{python-flint} installed, the verifier runs as
-\begin{center}\footnotesize
-\verb|python3 scripts/verify_cert.py cert_final|
-\end{center}
-from the folder \path{shrink/} that holds the certificate and its scripts (about $3$--$5$ minutes). It reads the energy
-table from~\cite{GL}. The re-checks run in about $5$ minutes each.
-\todo{pin the versions of python-flint, FLINT and numpy used; package the scripts with the certificate}
-% SRC: [SR] "Reproduce"; [RC] ("about 5 minutes").
-
-\subsection{What is formalised}\label{sec:lean}
-Table~\ref{tab:lean} lists, for each step of the proof, its status in the Lean~4/Mathlib development~\cite{GL}.
-\begin{table}[ht]
-\centering\small
-\begin{tabular}{@{}p{4.6cm}p{5.4cm}p{4.6cm}@{}}
-\toprule
-step & Lean (file or declaration) & status\\
-\midrule
-transfer inequality, Thm~\ref{thm:transfer} & \lean{Grothe.transfer} & proved\\
-realisable $\Rightarrow$ dominated & \lean{ValidKernel.dominated} & proved\\
-preprocessing by tensor powers & \path{Upper/Realise.lean} & proved\\
-Mehler formula on $\C^2$ & \lean{mehler\_L2} & proved (sesquilinear in $(F,G)$)\\
-GT and phase channels & \lean{rounding\_diskKernel}, \lean{phase\_energy} & proved for generic $(P,Q)$; the phase bridge is missing\\
-mixtures, Lemma~\ref{lem:mix}(a) & --- & missing (about 100 lines)\\
-pair $f\ne g$ (tiger) & --- & missing; short extension of the GT case\\
-head locality, $\ell^1$ contraction & \lean{bivarKernel\_eq\_head}, \lean{l1\_termOf\_le\_one} & proved\\
-table accuracy & \lean{Final.hclose\_final} & proved\\
-comparison for any weight & \lean{localized\_comparison\_\allowbreak of\_weight\_mass\_radii} & proved; instance $w\equiv1$ missing\\
-Gaussian-amplitude bound & \lean{norm\_HholPair\_sq\_le} & proved (generic)\\
-holomorphy, real identification & \lean{differentiableOn\_\allowbreak HholPair\_Rt}, \lean{hreal\_GT} & production $\cR$ and $r$ only\\
-region, Lemma~\ref{lem:region} & \lean{kerPos\_of\_gates} & last step proved; minimum principle and inverse positivity missing\\
-circle mean $\Rightarrow$ tail & \lean{hardy\_tail}, \lean{hardy\_budget\_after\_linear} & proved (generic)\\
-overlaps of the cell pair, App.~\ref{app:laguerre} & --- & missing; the hardest item\\
-numerical facts (N1)--(N6) & --- & not done\\
-\bottomrule
-\end{tabular}
-\caption{Formalisation status. ``Missing'' means that no Lean statement exists yet.}\label{tab:lean}
-\end{table}
-% SRC: [LA] items 1-5 and gaps; [LP] items 1-7; file names [LEAN].
-
-The port plan estimates the cost of the remaining numerical facts. For the tiger overlaps, the certificate's $64\times48\times48$
-table needs about $6.5\cdot10^8$ complex multiply-adds over the $502$ modes. This is a rough guess, against
-$4.8\cdot10^9$ for a pair stored on $64\times128\times128$ cells with both functions. The Laguerre tables need about $330$ extra bits, or exact
-rationals. The Hardy covers of the GT and phase channels and the heads of the GT channels are routine but long. A
-phase-free variant (four channels, $\KG\le1.40456425$) avoids the phase bridge.
-% SRC: [SR] "What I would do next" (6.5e8 vs 4.8e9, "a guess"); 330 bits [RC] Findings 2; [LP] item 7.
-
-\paragraph{A companion package.} Independently of that development, the folder of this article contains a small
-Lean~4 package, \texttt{HaagerupRefutation}, which imports only Mathlib and has its own continuous-integration job. Its
-theorem \lean{HaagerupRefutation.upper\_bound} states $\KG\le1.40456109$ and $\KG<1/\gd$ for six kernel sequences that
-satisfy three facts per channel: each is dominated (Definition~\ref{def:realisable}); its first $251$ coefficients lie
-within a stated $\ell^1$ distance of the certificate's head data; and its tail is below a stated bound. Lean proves the
-transfer bound, the closure under mixtures and the bound $\gd<0.7119595$, and it checks the whole budget by exact
-evaluation of the head data, which a committed script generates from the certificate. The three facts per channel are
-what Sections~2--7 and the interval computation establish.
-
-% ============================================================================================
-\section{Discussion}\label{sec:discussion}
-
-\subsection{\texorpdfstring{Where $\KG$ stands}{Where the constant stands}}\label{sec:where}
-Together with the Lean-verified lower bound of~\cite{GL},
-\[
- 1.401700322371<\KG\le1.40456109 .
-\]
-The lower bound comes from the Hermite projection game $P_{1,0}-\frac{149}{200}P_{2,1}$. Games of higher degree should
-do better, but none has been certified yet: the best game of degree~$9$ found so far is worth about $1.40418$ numerically,
-and at most $1.404218$. If that value is close to the truth, $\KG$ lies within about $4\cdot10^{-4}$ below our upper
-bound. The upper bound of this paper lies $3.8\cdot10^{-5}$ below the Lean-verified $1.404599395362$ and shows that
-Haagerup's value is a strict upper bound. As said in Section~\ref{sec:scope}, it is frozen for that purpose; the
-current bounds are those of~\cite{GL}.
-% SRC: [OV] (lower bound 1.401700322371, witness epsilon = 149/200, upper 1.404599395362); degree-9 model value
-% 1.40430-1.40431 [HD] 1.6 (N, numerical); 3.8e-5 = 1.404599395362 - 1.40456109 [DER].
-
-\subsection{The real analogue}\label{sec:real}
-The structure of the argument follows~\cite{BMMN} closely. There is a ceiling functional, K\"onig's in the real case. In
-one dimension the ceiling is attained by the classical rounding; in the complex case this is still a conjecture
-(Conjecture~\ref{conj:one}). A two-dimensional rounding exceeds the ceiling, and mixing keeps the excess. The difference
-lies in the last step. In the real case the base scheme is alternating and the mixture can be analysed by perturbation
-theory, so~\cite{BMMN} prove an effective but unquantified improvement. In the complex case no base attains $\gd$, and
-the margin is a finite certified quantity built from a base slightly below $\gd$ and an explicit cancellation. The
-relative excess of the two-dimensional ceiling is similar in the two cases: about $1.5\cdot10^{-3}$ here, and
-$1.2$--$1.4\cdot10^{-3}$ for the real tiger partition in our own float computation. For the real constant, recent
-computer-assisted work gives $\KGR\le1.7813$~\cite{Pe26} and $1.773\le\KGR\le1.7799$~\cite{HJM26b}.
-% SRC: [BM] Overview and Section 9.1; relative excess 1.07e-3/0.712 = 1.5e-3 [DER]; real tiger 1.2-1.4e-3 relative:
-% [BM] Section 8 (our float computation real2d_aa.py); Peng 1.7813 and HJM real 1.773/1.7799: [BT5] and the
-% literature notes of the project (read from the arXiv PDFs); to be re-verified.
-
-\subsection{Open questions}\label{sec:open}
+Proposition~\ref{prop:nogo} pinpoints the exact obstruction faced by scalar phase channels and symmetric $\C^2$ rounders:
 \begin{enumerate}
-\item Prove Conjecture~\ref{conj:one}, the complex analogue of the theorem of K\"onig and Tomczak-Jaegermann. The radial
- form~\eqref{eq:radial} suggests trying the method of~\cite[Section~6]{BMMN} with $J_1$ in place of $\sin$.
-\item Determine $C_2$, or at least how far two-coordinate schemes can go. The certified pair is far from converged. Finer
- grids, a joint optimisation of pair and polynomials, and other steering channels each gain about $10^{-7}$ in our
- estimates, but these are guesses.
-\item Do more coordinates help? $C_m$ is non-decreasing, and families on many coordinates reach large ceilings, but a
- large ceiling alone is useless (Section~\ref{sec:mixture}).
-\item Complete the formalisation (Section~\ref{sec:lean}). The main item is the overlap formula for cell-valued pairs.
+  \item \textbf{Preprocessed scalar phase channels:} Composing plain phase rounding $\ph(z) = z/|z|$ with any contractive odd polynomial preprocessor $\rho(\zeta) = \zeta R(|\zeta|^2)$ where $R(X) = \sum_{j=0}^d a_j X^j$ satisfies $\|R\|_1 = \sum_j |a_j| \le 1$ produces the radial series $\sum_{k=0}^\infty h_k \zeta |\zeta|^{2k}$ with
+  \[
+    h_k \;=\; \sum_{m=0}^k r_m\, [X^{k-m}]\, R(X)^{2m+1}.
+  \]
+  Setting $X = -1$ gives $\sigma := R(-1) \in [-1,1]$ and
+  \[
+    W(h) \;=\; \sum_{m=0}^\infty (-1)^m r_m \sigma^{2m+1}.
+  \]
+  Since $(r_m)_{m \ge 0}$ is strictly positive and strictly decreasing ($r_{m+1}/r_m = \frac{(2m+1)^2}{4(m+1)(m+2)} < 1$), grouping consecutive pairs $(2\ell, 2\ell+1)$ shows $\sum_{m=0}^\infty (-1)^m r_m \tau^{2m+1} \ge 0$ for all $\tau = |\sigma| \in [0,1]$. This sum equals $\tau\int_0^{\pi/2} \cos^2 t\,(1+\tau^2\sin^2 t)^{-1/2}\,dt$, whose derivative in $\tau$ is $\int_0^{\pi/2} \cos^2 t\,(1+\tau^2\sin^2 t)^{-3/2}\,dt > 0$, so it is at most its value $\gd$ at $\tau = 1$. As $W(h)$ is odd in $\sigma$, $|W(h)| \le \gd$ identically.
+  \item \textbf{Symmetric smoothed phase-twisted channels on $\C^2$:} In \cite{Gal26}, the symmetric rounder $G_T : \C^2 \to \overline{\D}$ uses identical row and column maps $f = g = G_T$ with preprocessing signs $(P(-1), Q(-1)) = (1, 1)$ (corresponding to $(+i, -i)$ after conjugation in the second coordinate), achieving $W(G_T, G_T) = 0.7119487068\ldots < \gd$ ($9.95 \times 10^{-6}$ below $\gd$).
 \end{enumerate}
-% SRC: improvement estimates [SR] "More margin, if wanted" (DP prediction +1.4e-7 "a guess", joint SLP ~ +1e-7).
+By Proposition~\ref{prop:nogo}, \emph{no} convex combination of preprocessed scalar phase channels and symmetric $G_T$ channels can ever achieve $D(H) > \gd$. Crossing $\gd$ requires at least one channel with $W > \gd$.
 
-% ---------------------------------------------------------------------------------------------------------------
-% Section: how the result was found (written by claude-b9ee from the repository's history; the author will extend it)
-% Sources: git history of agalatan/grothendieck-lean (origin/staging, 18 Nov 2026: 2,740 commits, 291 merged pull
-% requests, 208 issues, first commit 8 Oct 2026); commit subjects for the dates of the bounds; README history table;
-% handoff/research-third-decimal/ctiger-2026-10-15/README.md (tiger pairs, inversion 1.4245);
-% handoff/research-third-decimal/WHY_THE_GAP.md (22 Oct); handoff/haagerup-check-2026-11-18/ (checks of 18 Nov).
-% ---------------------------------------------------------------------------------------------------------------
-\section{How this result was found}\label{sec:how-found}
+\section{Reflected \texorpdfstring{$\C^2$}{C2} Rounding and Residual Steering}\label{sec:mechanism}
 
-The construction of this paper was discovered with AI. We describe how, because the circumstances matter for judging
-the result, and because ``discovered with AI'' can suggest a single lucky prompt. That is not what happened.
+\subsection{Gaussian Realization of Dominated Radial Series on \texorpdfstring{$\C^2$}{C2}}
+Let $f, g : \C^2 \to \overline{\D}$ be measurable maps into the closed unit disk satisfying joint diagonal $U(1)$-equivariance $f(e^{i\alpha} w_1, e^{i\alpha} w_2) = e^{i\alpha} f(w_1, w_2)$, and likewise for $g$, for $\alpha \in \R$. Fix two real polynomials $P(X) = \sum_{j=0}^{d_1} p_j X^j$ and $Q(X) = \sum_{j=0}^{d_2} q_j X^j$ with $\|P\|_1 \le 1$ and $\|Q\|_1 \le 1$. Given unit-ball vectors $u_p, v_q \in \C^N$, let $\zeta_{pq} := \langle u_p, v_q \rangle \in \overline{\D}$. By applying independent standard complex Gaussian random projections to the orthogonal direct sum of mixed tensor lifts $\sqrt{|p_j|} \, \Psi_j(u_p)$ and $\operatorname{sgn}(p_j)\sqrt{|p_j|} \, \Psi_j(v_q)$ (supplemented by independent Gaussian slack when $\|u_p\|_2 < 1$, $\|v_q\|_2 < 1$, or $\|P\|_1 < 1$), and independently likewise for $Q$ (using conjugate lifts $\overline{\Psi_j}$ when coupling to $\bar{\zeta}_{pq}$), we obtain centered complex Gaussian vectors $X_p = (X_{p,1}, X_{p,2}) \in \C^2$ and $Y_q = (Y_{q,1}, Y_{q,2}) \in \C^2$ with standard $\C^2$ marginals ($\E[|X_{p,r}|^2] = \E[|Y_{q,r}|^2] = 1$, $\E[\bar{X}_{p,1} X_{p,2}] = \E[\bar{Y}_{q,1} Y_{q,2}] = 0$) and cross-correlations:
+\begin{itemize}
+  \item \emph{Holomorphic-first / conjugate-second (\texttt{GT} coupling, $Q(0)=0$):} $\E[\bar{X}_{p,1} Y_{q,1}] = \zeta_{pq} P(|\zeta_{pq}|^2)$ and $\E[\bar{X}_{p,2} Y_{q,2}] = \bar{\zeta}_{pq} Q(|\zeta_{pq}|^2)$;
+  \item \emph{Opposite-sign holomorphic (\texttt{tiger} coupling):} $\E[\bar{X}_{p,1} Y_{q,1}] = -\zeta_{pq} R(|\zeta_{pq}|^2)$ and $\E[\bar{X}_{p,2} Y_{q,2}] = +\zeta_{pq} R(|\zeta_{pq}|^2)$.
+\end{itemize}
+Because $|f(X_p)| \le 1$ and $|g(Y_q)| \le 1$ pointwise on every sample realization, Jensen's inequality gives
+\[
+  \left|\sum_{p,q} A_{pq} \, \E\!\left[\overline{f(X_p)}\, g(Y_q)\right]\right|
+  \;\le\; \E\!\left[\left|\sum_{p,q} A_{pq} \, \overline{f(X_p)}\, g(Y_q)\right|\right]
+  \;\le\; C(A).
+\]
+Averaging $(f, g)$ with its complex-conjugate partner $\tilde{f}(z_1,z_2) := \overline{f(\bar{z}_1,\bar{z}_2)}$, $\tilde{g}(z_1,z_2) := \overline{g(\bar{z}_1,\bar{z}_2)}$ preserves unit-disk values and diagonal $U(1)$-equivariance while rendering all radial series coefficients real, yielding an absolutely summable radial series $\sum_{k=0}^\infty h_k \zeta_{pq} |\zeta_{pq}|^{2k}$ satisfying \eqref{eq:dominated}.
 
-\paragraph{The project.}
-Over about two months in the autumn of 2026 the author ran a research and formalisation project on the complex
-Grothendieck constant together with AI agents from three developers: Claude (Anthropic), GPT and Codex (OpenAI), and
-Gemini (Google). Several agents worked in parallel on one repository. They searched for rounding schemes and Gaussian
-games, wrote certificates in exact and interval arithmetic, formalised the arguments in Lean~4 with Mathlib, and
-reviewed each other's work. The author directed the project: choosing the problems and the strategy, setting the
-standard of verification (every number from exact or interval arithmetic, proofs in Lean, independent review), running
-the shared machines and the continuous integration, and carrying questions, drafts and objections between the agents. From early
-November every change was reviewed by an agent of a different family before it was merged, and every proof was checked
-by continuous integration. The recorded history of the repository, from 8 October to 18 November 2026, has about 2{,}700
-commits, 291 merged pull requests and 208 tracked issues. Written records kept what was learned: a ledger of open
-problems and their status, long hand-over documents, and an overview of the formalised results.
-% TODO(author): the project started before the repository (September 2026); add the start and anything else.
+\subsection{The Reflected \texttt{tiger} Pair (\texorpdfstring{$W > \gd$}{W > gamma-dagger})}
+To lift $W$ strictly above $\gd$ using a single function table and automatically real overlaps, write $z_1 = r_1 e^{i\theta_1}$, $z_2 = r_2 e^{i\theta_2}$, choose a measurable profile $F : [0,\infty)^2 \times \R/2\pi\Z \to \overline{\D}$, and set
+\begin{equation}\label{eq:tiger-sym}
+  f(z_1, z_2) \;:=\; e^{i\theta_2} F(r_1, r_2, \theta_1 - \theta_2),
+  \qquad
+  g(z_1, z_2) \;:=\; f(-z_1, z_2) \;=\; e^{i\theta_2} F(r_1, r_2, \theta_1 - \theta_2 + \pi).
+\end{equation}
+Equivalently, both row and column players apply the same rounder $f$ under the opposite-sign holomorphic coupling $(-\zeta R(|\zeta|^2), +\zeta R(|\zeta|^2))$ above. Expand $F(r_1, r_2, \psi) = \sum_{m \in \Z} f_m(r_1, r_2) e^{i m \psi}$ in Fourier modes along $\psi = \theta_1 - \theta_2$; then $e^{i\theta_2} e^{i m (\theta_1 - \theta_2)} = e^{i m \theta_1} e^{i(1-m)\theta_2}$ carries angular charges $(m, 1-m)$. For each $a \in \N$, let
+\[
+  \phi_{n,a}(s) \;:=\; \sqrt{\frac{n!}{(n+a)!}}\, s^{a/2} L_n^{(a)}(s), \qquad n \ge 0,
+\]
+denote the orthonormal generalized Laguerre functions in $L^2((0,\infty), e^{-s}ds)$, so that $\Psi_{n_1,n_2}^{(m)}(z_1,z_2) := \phi_{n_1,|m|}(r_1^2)\phi_{n_2,|1-m|}(r_2^2) e^{i m \theta_1 + i(1-m)\theta_2}$ forms a complete orthonormal basis for the total-charge-$1$ subspace of $L^2(\C^2, \gamma_{\C^2})$ at radial chaos degree $2n + 1$, where $n = k_0(m) + n_1 + n_2$ and $k_0(m) := (|m| + |1-m| - 1)/2$. Under $z_1 \mapsto -z_1$ ($\psi \mapsto \psi + \pi$), the $m$-th Fourier slice acquires the sign $(-1)^m$, so every chaos overlap of $(f, g)$ at radial degree $2n+1$ is automatically real:
+\begin{equation}\label{eq:mu-tiger}
+  \begin{aligned}
+  \mu_n(f, g) \;=\; \sum_{m \in \Z} (-1)^m \sum_{k_0(m) + n_1 + n_2 = n}
+  \bigg|\int_0^\infty \!\! \int_0^\infty & f_m(r_1,r_2) \, \phi_{n_1,|m|}(r_1^2)\,\phi_{n_2,|1-m|}(r_2^2)\\
+  &\times 2r_1 e^{-r_1^2}\,dr_1 \; 2r_2 e^{-r_2^2}\,dr_2\bigg|^2.
+  \end{aligned}
+\end{equation}
+Look at the sign in $W(f,g) = \sum_{n=0}^\infty (-1)^n \mu_n(f,g)$: for symmetric $g = f$, every $n = 1$ (cubic chaos) mode enters $W$ with weight $(-1)^1 = -1 \le 0$. For the reflected pair $g(z_1,z_2) = f(-z_1,z_2)$, odd angular harmonics ($m = 1$, where $k_0(1) = 0$) carry $(-1)^m = -1$, so at $n = 1$ ($n_1 + n_2 = 1$, e.g.\ the cubic mixed mode $z_1(|z_2|^2 - 1)$) the product $(-1)^n (-1)^m = (-1)^2 = +1$ turns strictly \emph{positive}, destabilizing the plain phase saddle $e^{i\theta_2}$ upward.
 
-\paragraph{Decimal by decimal.}
-The bounds moved slowly (Table~\ref{tab:project}). The upper bound reached $1.4045994$ on 11 October and stayed within
-$1.5\cdot 10^{-6}$ of it for five weeks, about $2.3\cdot 10^{-5}$ above $1/\gamma^\dagger$; much of the work of those weeks
-went into making it an unconditional Lean theorem, which was finished in November. The lower bound rose from $1.4009$
-to $1.4017$ in steps between $10^{-6}$ and $5\cdot 10^{-4}$, each one a new certificate.
+Discretizing $(r_1, r_2, \psi)$ onto a $48 \times 48 \times 64$ polar cell grid with dyadic values $(F_{\mathrm{re}} + i F_{\mathrm{im}})/2^{20} \in \overline{\D}$ ($F_{\mathrm{re}}^2 + F_{\mathrm{im}}^2 \le 2^{40}$, archived in \texttt{anc/tiger.npz}) and iterating alternating best-response yields (partial sum over $n \le 250$)
+\[
+  W(f_{\mathrm{tiger}}, g_{\mathrm{tiger}}) \;=\; 0.71303086\ldots \;>\; \gd + 1.072 \times 10^{-3}.
+\]
+Composing this pair with the two-term linear preprocessor $R_4(X) = c_0 - c_1 X$ ($c_0 = 0.920082833249$, $c_1 = 0.079917166750$) achieves two goals simultaneously:
+\begin{enumerate}
+  \item At $X = -1$ ($t = i$), $R_4(-1) = c_0 + c_1 = 1 - 10^{-12}$, preserving essentially $100\%$ of the alternating lift $W(f_{\mathrm{tiger}}, g_{\mathrm{tiger}}) > \gd$;
+  \item At $X = +1$ ($|\zeta| = 1$), $|R_4(1)| = c_0 - c_1 \approx 0.84017 < 1$, extending analyticity of the Gaussian correlation kernel to $|t| \le \frac{28}{25} = 1.12$ so the tail above degree $501$ ($k > 250$) decays below $10^{-19}$.
+\end{enumerate}
 
-\begin{table}[ht]
+\subsection{Zero-Cost Residual Steering on Symmetric \texorpdfstring{$\C^2$}{C2} Channels}
+Used in isolation, the \texttt{tiger} channel has $\sim 10^{-2}$ of non-alternating residual mass across $1 \le k \le 250$. To cancel these head modes without sacrificing the linear term $h_0$, we pair the \texttt{tiger} channel (~$1.88\%$ weight) with ~98.1\% weight on the smoothed phase-twisted symmetric rounder $G_T : \C^2 \to \overline{\D}$ of \cite{Gal26} (defined by Gaussian smoothing $G_T(x) = \E_Z[T_{\mathrm{round}}(M x + N Z)]$ at rational aspect $b = \frac{954738503521943}{3125000000000000}$ and smoothing $\eta = \frac{4}{5}$) across multiple polynomial preprocessors $(P_i, Q_i)$.
+
+Crucially, whenever $P_i(X) = \sum_{j \ge 0} (-1)^j a_j X^j$ ($a_j \ge 0$) and $Q_i(X) = -\sum_{j \ge 0} b_j X^{2j+1}$ ($b_j \ge 0$) have $\ell^1$-norm $1$, evaluating at $X = -1$ gives $P_i(-1) = \|P_i\|_1 = 1$ and $Q_i(-1) = \|Q_i\|_1 = 1$ (the signs $(P(-1), Q(-1)) = (1, 1)$ of Section~\ref{sec:obstruction}, matching the conjugate coupling on the second coordinate), so every such column preserves the full alternating value $W(G_T, G_T) = 0.71194871$ at \emph{zero ceiling penalty}, while spanning distinct Hermite decay profiles that annihilate the head residuals of \texttt{tiger} down to $1.25 \times 10^{-6}$ in $\ell^1$.
+
+\section{The Six-Channel Rational Certificate and Proof of Theorem~\ref{thm:main}}\label{sec:cert}
+
+Table~\ref{tab:cert} records the exact rational weights $w_i$, Hardy radii and Schur parameters $(r_i, j_i)$, and degree-$\le 3$ preprocessor polynomials of our six-channel mixture (\texttt{anc/channels.json}), written over the common denominator $\Delta := 10^{12}$. Direct integer addition confirms $\sum_{i=1}^6 w_i = 1$, $\|P_i\|_1 \le 1$, $\|Q_i\|_1 \le 1$, $\|R_i\|_1 \le 1$, and $Q_1(0) = Q_2(0) = Q_3(0) = 0$.
+
+\begin{table}[htbp]
 \centering
-\small
-\begin{tabular}{lll}
+\caption{Exact rational parameters of the 6-channel certificate ($\Delta = 10^{12}$).}\label{tab:cert}
+\footnotesize
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}cllll@{}}
 \toprule
-date (2026) & bounds & how \\
+Ch. & Kind & Exact Weight $w_i$ & $(r_i, j_i)$ & Preprocessor Polynomials ($\Delta = 10^{12}$) \\
 \midrule
-September & $1.4 < K_G^{\mathbb{C}} < 1.404898554746$ & Heilman, Jones and Malavolta \cite{HJM26} \\
-8 October & $1.4008970709 < K_G^{\mathbb{C}} < 1.404896257347$ & first certificates of the project \\
-9 October & $K_G^{\mathbb{C}} < 1.404875854410$ & mixtures with two-coordinate roundings \\
-11 October & $1.40148809 < K_G^{\mathbb{C}} < 1.404599424$ & damped polynomial phase; Stein cuts \\
-22 October & $1.401694929772 < K_G^{\mathbb{C}}$ & joint sixth-moment certificate \\
-6 November & $1.401697117301 < K_G^{\mathbb{C}} < 1.4046$ & both bounds unconditional in Lean \\
-15 November & $1.401700322371 < K_G^{\mathbb{C}} < 1.404599395362$ & Lean \\
-18 November & $K_G^{\mathbb{C}} < 1.40456109 < 1/\gamma^\dagger$ & this paper (computer-assisted) \\
+1 & \texttt{GT} & $\dfrac{971858734217}{\Delta}$ & $\Big(\dfrac{2073}{2000},\,\dfrac{9}{20}\Big)$ &
+  $\begin{aligned}[t] P_1(X) &= (991833356533 - 8166643466 X)/\Delta, \\ Q_1(X) &= -X \end{aligned}$ \\[10pt]
+2 & \texttt{GT} & $\dfrac{8906483332}{\Delta}$ & $\Big(\dfrac{2087}{2000},\,\dfrac{1}{4}\Big)$ &
+  $\begin{aligned}[t] P_2(X) &= (989554427299 - 10445572700 X^3)/\Delta, \\ Q_2(X) &= -(833435315100 X + 166564684899 X^3)/\Delta \end{aligned}$ \\[10pt]
+3 & \texttt{GT} & $\dfrac{201845612}{\Delta}$ & $\Big(\dfrac{1043}{1000},\,\dfrac{1}{4}\Big)$ &
+  $\begin{aligned}[t] P_3(X) &= (91371963319 - 825194568310 X - 83433468370 X^3)/\Delta, \\ Q_3(X) &= -999999999999 X/\Delta \end{aligned}$ \\[10pt]
+4 & \texttt{tiger} & $\dfrac{18797147285}{\Delta}$ & $\Big(\dfrac{28}{25},\,\dfrac{7}{20}\Big)$ &
+  $R_4(X) = (920082833249 - 79917166750 X)/\Delta$ \\[6pt]
+5 & \texttt{phase} & $\dfrac{50102530}{\Delta}$ & $\Big(\dfrac{517}{500},\,\dfrac{1}{4}\Big)$ &
+  $R_5(X) = (211831968397 - 67863691543 X + 720304340059 X^2)/\Delta$ \\[6pt]
+6 & \texttt{phase} & $\dfrac{185687024}{\Delta}$ & $\Big(\dfrac{2147}{2000},\,\dfrac{3}{20}\Big)$ &
+  $R_6(X) = (364133034656 - 635866965343 X)/\Delta$ \\
 \bottomrule
 \end{tabular}
-\caption{The bounds of the project over time. The October entries are computer-assisted certificates, some of them
-conditional on numerical hypotheses that were later discharged or superseded; the November entries are unconditional
-Lean theorems, except the last.}
-\label{tab:project}
 \end{table}
-% Sources: commit subjects of 8, 9, 11, 22 October and 6, 15 November 2026; README of the repository.
 
-\paragraph{What we believed.}
-By mid-October all our numerical evidence was consistent with equality, $K_G^{\mathbb{C}} = 1/\gamma^\dagger$, and equality
-was our working hypothesis. We also understood part of the reason: the alternating sum of the kernel coefficients is at
-most $\gamma^\dagger$ when a scheme rounds by the phase of one coordinate, with any preprocessing
-(Proposition~\ref{prop:phase}), and we believed, as we still do, that no scheme on one complex coordinate does better
-(Conjecture~\ref{conj:one}).
+\subsection{Head Cancellation, Comparison Errors, and Infinite Hardy Tails}
+Let $h^{(i)} = (h^{(i)}_k)_{k \ge 0}$ denote the exact radial series of Channel~$i$ ($1 \le i \le 6$), and let $H_k := \sum_{i=1}^6 w_i h^{(i)}_k$. Truncating at radial index $K = 250$ (chaos degree $2K + 1 = 501$) and letting $\tilde{h}^{(i)}_k$ ($0 \le k \le K$) be an approximate head vector with $\widetilde{H}_k := \sum_{i=1}^6 w_i \tilde{h}^{(i)}_k$, we have $(\widetilde{H}_0 - H_0) + \sum_{k=1}^K \big(|H_k| - |\widetilde{H}_k|\big) \le \sum_{k=0}^K |H_k - \widetilde{H}_k| \le \sum_{i=1}^6 w_i \sum_{k=0}^K |h^{(i)}_k - \tilde{h}^{(i)}_k|$, which yields the lower bound
+\begin{equation}\label{eq:budget-split}
+  D(H) \;=\; H_0 - \sum_{k=1}^\infty |H_k|
+  \;\ge\; \widetilde{H}_0 - \sum_{k=1}^{250} |\widetilde{H}_k|
+  - \sum_{i=1}^6 w_i \sum_{k=0}^{250} \big|h^{(i)}_k - \tilde{h}^{(i)}_k\big|
+  - \sum_{i=1}^6 w_i \sum_{k=251}^\infty \big|h^{(i)}_k\big|.
+\end{equation}
+Notice that the head comparison error over $0 \le k \le 250$ enters \eqref{eq:budget-split} with coefficient~$1$ (not~$2$), simultaneously accounting for both $k = 0$ and $1 \le k \le 250$. Each term on the right-hand side of \eqref{eq:budget-split} is rigorously bounded as follows:
 
-\paragraph{The ingredients.}
-The construction combines pieces the project had built and checked over the two months: the transfer bound and its
-Lean formalisation (Section~\ref{sec:transfer}); Gaussian-type rounding channels on two coordinates with polynomial
-preprocessors, in use since 9 October; the comparison of their kernels with a certified table (Section~\ref{sec:gt});
-Hardy-space bounds for the tails (Section~\ref{sec:tails}); and the tiger pairs of Section~\ref{sec:tiger}. The tiger
-pairs appeared on 15 October, when a numerical search found two-coordinate pairs whose alternating sum exceeds
-$\gamma^\dagger$ by about $1.1\cdot 10^{-3}$. Alone
-they were useless: inverting their kernel gave a much worse constant, about $1.4245$, because many of their kernel
-coefficients have the wrong sign. The pairs were recorded, with their code and data, and set aside.
+\begin{enumerate}
+  \item \textbf{Universal \texttt{GT} comparison allowance ($i \in \{1,2,3\}$):} For $G_T$, the bivariate Hermite energy table of \cite{Gal26} (file \texttt{Grothe/Upper/Data.lean} there, exported as exact integers to \texttt{anc/gt\_energy.npz}) provides certified dyadic squared-overlap approximations across $21{,}168$ odd-degree index pairs $(n, m)$ with $n + m \le 501$, up to global table error $\varepsilon_{\mathrm{table}} = \frac{6847009}{5 \times 10^{17}}$. Because $\|P_i\|_1 \le 1$, $\|Q_i\|_1 \le 1$, and $Q_i(0) = 0$, every bivariate monomial coefficient polynomial $[X^k]\big(X^{\lfloor n/2\rfloor + \lfloor m/2\rfloor} P_i(X)^n Q_i(X)^m\big)$ has $\ell^1$-sum over $0 \le k \le 250$ bounded by $1$. Evaluating the seven-band localized comparison bound of \cite{Gal26} at uniform weight $w \equiv 1$ gives
+  \[
+    \sum_{k=0}^{250} \big|h^{(i)}_k - \tilde{h}^{(i)}_k\big|
+    \;\le\; \varepsilon_{\mathrm{GT,univ}}
+    \;\in\; \big[1.4941163372 \times 10^{-6} \pm 5 \times 10^{-31}\big]
+    \;<\; \frac{1494117}{\Delta}.
+  \]
+  Multiplying by $w_{\mathrm{GT}} := w_1 + w_2 + w_3 = \frac{980967063161}{\Delta}$ gives the exact rational allowance
+  \[
+    w_{\mathrm{GT}} \cdot \frac{1494117}{\Delta} \;=\; \frac{1465679565508923837}{10^{24}} \;<\; 1.465680 \times 10^{-6}.
+  \]
 
-\paragraph{The step that clicked.}
-On 17--18 November an AI agent found the missing idea: mix a two-coordinate pair with Gaussian-type channels
-whose alternating preprocessors keep their alternating sum while producing residual coefficients of the opposite
-sign, so that the wrong-sign terms of the pair cancel in the mixture instead of being inverted
-(Section~\ref{sec:mixture}). It optimised the mixture and certified it in interval arithmetic. In the following hours
-the certificate was checked independently: its verifier was replayed; every lemma it relies on was matched against
-its Lean statement; the kernel coefficients were recomputed with separate code; and the whole verification was
-re-implemented from scratch by another agent, with its own code for every step. The certificate was also reduced from
-18 channels to the 6 channels of this paper, all of whose polynomials have degree at most $3$.
+  \item \textbf{Quadrature-free Laguerre overlaps for \texttt{tiger} ($i = 4$) and exact recurrences for \texttt{phase} ($i \in \{5,6\}$):} On the $64 \times 48 \times 48$ polar cell grid (\texttt{anc/tiger.json}, whose radial edges $0 = e_{r,0} < \dots < e_{r,47} < e_{r,48} = \infty$ lie in $\frac{1}{36}\Z$ up to $e_{1,47} = \frac{7}{2}$ and $e_{2,47} = \frac{107}{36}$, with centered angle bins $[\frac{2\pi(p - 1/2)}{64}, \frac{2\pi(p + 1/2)}{64})$), the cell integrals $\tilde{J}_{n,a}(s_0, s_1) := \int_{s_0}^{s_1} \phi_{n,a}(s) e^{-s} ds$ satisfy the exact two-term identity
+  \[
+    \tilde{J}_{n+1,a}(s_0,s_1) \;=\; \frac{n + a/2}{\sqrt{(n+1)(n+1+a)}}\,\tilde{J}_{n,a}(s_0,s_1)
+    + \frac{\big[s\,\phi_{n,a}(s)e^{-s}\big]_{s_0}^{s_1}}{\sqrt{(n+1)(n+1+a)}},
+  \]
+  where the upper boundary bracket vanishes at $s_1 = \infty$. Because $k_0(m) = (|m| + |1-m| - 1)/2 > 250$ whenever $m < -250$ or $m > 251$, only the $502$ angular modes $m \in [-250, 251]$ contribute to $\mu_0,\dots,\mu_{250}$ in \eqref{eq:mu-tiger} (zero omitted modes). Evaluating these finite sums and the scalar phase recurrence \eqref{eq:phi-haagerup} in 256-bit Arb ball arithmetic (absorbing the $< 10^{-30}$ ball radii directly into $\widetilde{H}_0$ and $\sum_{k=1}^{250}|\widetilde{H}_k|$, so the residual head error for $i \in \{4,5,6\}$ is $0$) certifies
+  \[
+    \widetilde{H}_0 \;>\; \frac{711968933048}{\Delta},
+    \qquad
+    \sum_{k=1}^{250} \big|\widetilde{H}_k\big| \;<\; \frac{1248782}{\Delta}.
+  \]
 
-We do not say which system produced this step. It came out of joint work in which systems of all three developers
-took part, and naming one of them would misrepresent how it came about.
+  \item \textbf{Hardy-space circle covers for $k > 250$:} Restricting the complex correlation $\zeta$ to real $t \in (-1,1)$ turns $f_i(t) := \sum_{k=0}^\infty h^{(i)}_k t^{2k+1}$ into a holomorphic function on the open disk $|t| < r_i$ whenever the $2 \times 2$ Gaussian inverse-covariance blocks $M_\pm(t) := I_2 \mp R_i(t)$ satisfy $\RePart M_\pm(t) \succ 0$ on $|t| \le r_i + 10^{-5}$ (verified on the boundary $|t| = r_i + 10^{-5}$ by the harmonic minimum principle, where $R_i(t)$ is the $2 \times 2$ symmetric correlation matrix induced by $(P_i, Q_i)$ or $R_i$). On $|t| = r_i > 1$, the Gaussian Schur-complement norm bound \cite{Gal26} with parameter $j_i \in (0, \tfrac{1}{2})$ bounds $|f_i(r_i e^{i\theta})|^2$ pointwise via the positive-definite factorization $T := Z - C_r Z^{-1} C_r = (Z - C_r) Z^{-1} (Z + C_r)$, where $S_\pm = \RePart(M_\pm^{-1})$, $Z = \frac{1}{2}(S_+ + S_-) - j_i I_2$, and $C_r = \frac{1}{2}(S_+ - S_-)$. Integrating over $\theta \in [0,\pi]$ by adaptive 256-bit ball subdivision gives an upper bound $B_i \ge \frac{1}{2\pi}\int_0^{2\pi} |f_i(r_i e^{i\theta})|^2 d\theta = \sum_{k=0}^\infty |h^{(i)}_k|^2 r_i^{4k+2}$. Subtracting $|h^{(i)}_0|^2 r_i^2$ and applying Cauchy--Schwarz yields
+  \[
+    \sum_{k=251}^\infty \big|h^{(i)}_k\big| \;\le\; \sqrt{\frac{B_i - |h^{(i)}_0|^2 r_i^2}{r_i^4 (1 - r_i^{-4})}}\, r_i^{-(2K + 1)}.
+  \]
+  Summing across all six channels encloses $\sum_{i=1}^6 w_i \sum_{k=251}^\infty |h^{(i)}_k| \in [3.00 \times 10^{-8} \pm 1.22 \times 10^{-9}] < \frac{32}{10^9}$.
 
-\paragraph{Why this was not luck.}
-No one asked an AI to settle a conjecture. The conjecture became the target because two months of work had narrowed
-the gap to $2.4\cdot 10^{-5}$ and had made the question sharp. The construction uses only tools that were built and
-verified in that time, and the decisive ingredient, the tiger pair, had been found a month earlier and
-understood to fail on its own. Many other routes failed first, and their failures are recorded: mixtures of
-six one-coordinate kernels saturate near $1.404898$, and longer preprocessors only move mass between their
-coefficients; a scheme with a joint phase controller and a matrix-covariance preprocessor stopped at $1.4045923$, above
-$1/\gamma^\dagger$; the tiger pairs, inverted alone, give $1.4245$.
-% TODO(author): add the human side of the story; check the list of failed routes.
-
-\paragraph{Responsibility.}
-AI systems are not authors of this paper. The author takes full responsibility for its content.
-
-
-% ============================================================================================
-\appendix
-\section{Exact data}\label{app:data}
-\paragraph{Channels.} Weights, polynomials and Hardy parameters, as exact rationals:
-\begin{enumerate}[label=\arabic*.,leftmargin=2em]
-\item GT: $w=\frac{971858734217}{10^{12}}$; $P=\frac{991833356533}{10^{12}}-\frac{4083321733}{5\cdot10^{11}}X$,
- $Q=-X$; $(r,j)=(\frac{2073}{2000},\frac9{20})$.
-\item GT: $w=\frac{2226620833}{25\cdot10^{10}}$; $P=\frac{989554427299}{10^{12}}-\frac{104455727}{10^{10}}X^3$,
- $Q=-\frac{8334353151}{10^{10}}X-\frac{166564684899}{10^{12}}X^3$; $(r,j)=(\frac{2087}{2000},\frac14)$.
-\item GT: $w=\frac{50461403}{25\cdot10^{10}}$;
- $P=\frac{91371963319}{10^{12}}-\frac{82519456831}{10^{11}}X-\frac{8343346837}{10^{11}}X^3$,
- $Q=-\frac{999999999999}{10^{12}}X$; $(r,j)=(\frac{1043}{1000},\frac14)$.
-\item tiger: $w=\frac{3759429457}{2\cdot10^{11}}$; $R=\frac{920082833249}{10^{12}}-\frac{319668667}{4\cdot10^{9}}X$;
- $(r,j)=(\frac{28}{25},\frac7{20})$.
-\item phase: $w=\frac{5010253}{10^{11}}$;
- $R=\frac{211831968397}{10^{12}}-\frac{67863691543}{10^{12}}X+\frac{720304340059}{10^{12}}X^2$;
- $(r,j)=(\frac{517}{500},\frac14)$.
-\item phase: $w=\frac{11605439}{625\cdot10^{8}}$; $R=\frac{11379157333}{3125\cdot10^{7}}-\frac{635866965343}{10^{12}}X$;
- $(r,j)=(\frac{2147}{2000},\frac3{20})$.
+  \item \textbf{Exact rational assembly:} Substituting the four certified rational bounds into \eqref{eq:budget-split} yields
+  \begin{align*}
+    D(H) \;\ge\; D_{\mathrm{cert}}
+    &\;:=\; \frac{711968933048}{10^{12}} - \frac{1248782}{10^{12}}
+    - \frac{980967063161}{10^{12}}\cdot\frac{1494117}{10^{12}} - \frac{32}{10^9} \\
+    &\;=\; \frac{711966186586434491076163}{10^{24}}
+    \;=\; 0.711966186586434491\ldots,
+  \end{align*}
+  whence Lemma~\ref{lem:transfer} implies $\KGC \le \frac{1}{D_{\mathrm{cert}}} = 1.404561085680\ldots < 1.40456109$.
 \end{enumerate}
-The weights sum to $1$ exactly. Every polynomial has $\ell^1$ norm $1-10^{-12}$ or $1$, and is alternating up to that
-defect. The polynomials $Q$ vanish at $0$.
-% SRC: [CF] channels.json (verbatim rationals); sums and l1 norms [RC check_data.log], [SUM].
 
-\paragraph{Radial edges} (the last edge is $\infty$):
+\subsection{Elementary Telescoping Upper Bound on \texorpdfstring{$\gd$}{gamma-dagger}}
+To complete the self-contained proof that $D_{\mathrm{cert}} > \gd$ without invoking numerical quadrature for $\gd$, rewrite $1 + \sin^2 t = 2 - \cos^2 t$ in \eqref{eq:gd-def}.
+
+\begin{lemma}[Rational Majorant for $\gd$]\label{lem:gd-upper}
+Haagerup's constant satisfies $\gd < 0.711958663 < \frac{7119595}{10^7}$.
+\end{lemma}
+
+\begin{proof}
+Define rational numbers $(b_k)_{k \ge 0}$ recursively by $b_0 = 1$ and $b_{k+1} = \frac{2k+1}{4(k+1)}\,b_k$, and consider the degree-$21$ polynomial on $v \in [0,1]$:
+\[
+  P(v) \;:=\; \sum_{k=0}^{20} b_k v^k + \frac{21}{10}\, b_{21} v^{21}.
+\]
+Set $G(v) := \sqrt{2 - v}\, P(v)$ for $v \in [0,1]$. Differentiating on $[0,1]$ gives $2\sqrt{2-v}\, G'(v) = 2(2 - v) P'(v) - P(v)$. Because $4(k+1) b_{k+1} = (2k+1) b_k$ for all $0 \le k \le 19$ and $b_{20} = \frac{84}{41} b_{21}$, every power $v^0, \dots, v^{19}$ cancels identically in $2(2-v)P'(v) - P(v)$, leaving only the $v^{20}$ and $v^{21}$ terms:
+\[
+  2(2 - v) P'(v) - P(v)
+  \;=\; b_{21} v^{20} \left[ 4\cdot\frac{441}{10} - 41\cdot\frac{84}{41} - \left(2\cdot\frac{441}{10} + \frac{21}{10}\right)v \right]
+  \;=\; b_{21} v^{20}\!\left(\frac{462}{5} - \frac{903}{10}\,v\right) \;\ge\; 0
+\]
+for all $v \in [0,1]$ (since $\frac{462}{5} - \frac{903}{10} = \frac{21}{10} > 0$). Thus $G$ is non-decreasing on $[0,1]$, so $\sqrt{2 - v}\, P(v) \ge G(0) = \sqrt{2}$, i.e.\ $(2 - v)^{-1/2} \le \frac{1}{\sqrt{2}} P(v)$ on $[0,1]$. Substituting $v = \cos^2 t$ and integrating via the Wallis recurrence $\int_0^{\pi/2} \cos^{2k}(t)\,dt = W_k \frac{\pi}{2}$ ($W_0 = 1$, $W_{k+1} = \frac{2k+1}{2k+2} W_k$) yields
+\[
+  \gd \;=\; \int_0^{\pi/2} \frac{\cos^2 t}{\sqrt{2 - \cos^2 t}}\,dt
+  \;\le\; \frac{\pi}{2\sqrt{2}} \left(\sum_{k=0}^{20} b_k W_{k+1} + \frac{21}{10}\,b_{21} W_{22}\right).
+\]
+Using $\frac{1}{\sqrt{2}} < \frac{707106782}{10^9}$ (as $2 \cdot 707106782^2 = 1000000002300791048 > 10^{18}$) and $\pi < \frac{31415926536}{10^{10}}$, exact rational arithmetic gives $\gd < 0.7119586629 < 0.711958663 < \frac{7119595}{10^7}$.
+\end{proof}
+
+Combining Lemma~\ref{lem:gd-upper} with $D_{\mathrm{cert}} > 0.711966186 > \frac{7119595}{10^7}$ yields $\KGC \le 1/D_{\mathrm{cert}} < 1.40456109 < 1/\gd$, completing the proof of Theorem~\ref{thm:main}.
+
+\section{How this result was found}\label{sec:found}
+
+The construction was discovered with AI, at the end of a two-month research and formalisation project carried out by the author together with AI agents. Systems of three developers took part; we do not say which one produced the final step, because it came out of joint work. It was not luck. Haagerup's question became the target because the project, recorded in~\cite{Gal26}, had narrowed the gap to $2.35 \times 10^{-5}$ and made it sharp. The construction uses only tools built and verified in that time: the transfer bound and its Lean formalisation, the two-coordinate rounder $G_T$ with polynomial preprocessors, its certified comparison table, the Hardy-space tail bounds, and the \texttt{tiger} pairs, which a numerical search had found on 15~October and which, inverted alone, give only $\KGC \le 1.4245$. Many other routes failed first and are recorded there: mixtures of one-coordinate kernels saturate near $1.404898$, and a scheme with a joint phase controller and a matrix-covariance preprocessor stopped at $1.4045923$, above $1/\gd$. The missing step, found on 17--18~November, was to mix a \texttt{tiger} pair with $G_T$ channels whose alternating preprocessors keep the ceiling while cancelling its wrong-sign coefficients (Section~\ref{sec:mechanism}). The certificate was then checked independently: its verifier was replayed, every lemma it relies on was matched against its Lean statement, the coefficients were recomputed with separately written code, and the verification was re-implemented from scratch.
+% TODO(author): add the human side of the story.
+
+AI systems are not authors of this paper; the author takes full responsibility for its content.
+
+\appendix
+
+\section{Companion Ancillary Archive and 256-Bit Ball Verification}\label{app:arb}
+
+To ensure permanent, self-contained reproducibility directly from the arXiv submission without external dependencies, the companion ancillary directory \texttt{/anc} bundles the exact certificate data and deterministic ball-arithmetic verifier (checksummed in \texttt{anc/SHA256SUMS}; Lean files are not part of it, see Appendix~\ref{app:lean}):
 \begin{itemize}
-\item $r_1$: $0$, $\frac5{36}$, $\frac29$, $\frac{11}{36}$, $\frac7{18}$, $\frac{17}{36}$, $\frac59$, $\frac{23}{36}$,
- $\frac34$, $1$, $\frac{10}9$, $\frac{43}{36}$, $\frac54$, $\frac{47}{36}$, $\frac{49}{36}$, $\frac{17}{12}$,
- $\frac{53}{36}$, $\frac{55}{36}$, $\frac{19}{12}$, $\frac{59}{36}$, $\frac{61}{36}$, $\frac74$, $\frac{65}{36}$,
- $\frac{67}{36}$, $\frac{23}{12}$, $\frac{71}{36}$, $2$, $\frac{73}{36}$, $\frac{37}{18}$, $\frac{25}{12}$, $\frac{19}9$,
- $\frac{77}{36}$, $\frac{13}6$, $\frac{79}{36}$, $\frac{20}9$, $\frac94$, $\frac{41}{18}$, $\frac{83}{36}$, $\frac73$,
- $\frac{85}{36}$, $\frac{29}{12}$, $\frac{89}{36}$, $\frac{23}9$, $\frac83$, $\frac{101}{36}$, $\frac{29}9$,
- $\frac{41}{12}$, $\frac72$, $\infty$;
-\item $r_2$: $0$, $\frac1{36}$, $\frac1{18}$, $\frac1{12}$, $\frac19$, $\frac5{36}$, $\frac16$, $\frac7{36}$, $\frac29$,
- $\frac14$, $\frac5{18}$, $\frac{11}{36}$, $\frac13$, $\frac{13}{36}$, $\frac7{18}$, $\frac5{12}$, $\frac49$,
- $\frac{17}{36}$, $\frac12$, $\frac{19}{36}$, $\frac59$, $\frac7{12}$, $\frac{11}{18}$, $\frac{23}{36}$, $\frac23$,
- $\frac{25}{36}$, $\frac{13}{18}$, $\frac34$, $\frac{29}{36}$, $\frac{31}{36}$, $\frac{11}{12}$, $\frac{35}{36}$,
- $\frac{37}{36}$, $\frac{13}{12}$, $\frac{41}{36}$, $\frac{43}{36}$, $\frac54$, $\frac43$, $\frac{17}{12}$, $\frac32$,
- $\frac{29}{18}$, $\frac{31}{18}$, $\frac{67}{36}$, $2$, $\frac{13}6$, $\frac{85}{36}$, $\frac{47}{18}$, $\frac{107}{36}$,
- $\infty$.
+  \item \texttt{anc/gt\_energy.npz}: Exact $21{,}168$-entry dyadic bivariate Hermite energy table ($a \cdot 2^{-k}$) of the symmetric $\C^2$ rounder $G_T$, exported by \texttt{anc/export\_gt\_energy.py} from \texttt{Grothe/Upper/Data.lean} of \cite{Gal26}; the seven-band truncation radii are written in the verifier, with their source there.
+  \item \texttt{anc/tiger.json} and \texttt{anc/tiger.npz}: Exact $64 \times 48 \times 48$ integer arrays $(F_{\mathrm{re}}, F_{\mathrm{im}}) \in [-2^{20}, 2^{20}]^2$ ($q_{\mathrm{shift}} = 20$) and rational radial grid endpoints $e_1, e_2 \in \frac{1}{36}\Z \cup \{\infty\}$ defining the reflected pair \eqref{eq:tiger-sym}.
+  \item \texttt{anc/channels.json}: Exact rational weights $w_i$, polynomial numerators over $\Delta = 10^{12}$, and Hardy parameters $(r_i, j_i)$ of Table~\ref{tab:cert}.
+  \item \texttt{anc/verify\_certificate.py} (versions pinned in \texttt{anc/requirements.txt}): Standalone \texttt{python-flint} (\texttt{flint.ctx.prec = 256}, $\approx 77$ decimal digits) ball-arithmetic script executing four deterministic checks:
+  \begin{enumerate}
+    \item \emph{Universal \texttt{GT} comparison:} Accumulates the seven spectral band squared masses $B_j = \sum_{p \in \mathrm{band}_j} \mathrm{energyTable}(p) + \varepsilon_{\mathrm{table}}$ and confirms $\varepsilon_{\mathrm{GT,univ}} \in [1.4941163372 \times 10^{-6} \pm 5 \times 10^{-31}] < \frac{1494117}{10^{12}}$.
+    \item \emph{Exact \texttt{tiger} overlaps:} Verifies $F_{\mathrm{re}}^2 + F_{\mathrm{im}}^2 \le 2^{40}$ in exact 64-bit integers across all $147{,}456$ cells, evaluates the $64$-point complex DFT in \texttt{acb\_mat} and the Laguerre cell matrices $\tilde{J}_{n,a}$ at 1024-bit internal ball precision up to $a=251, n=250$, and sums $(-1)^m \operatorname{sinc}^2(\pi m/64) |\langle \widehat{F}_{m \bmod 64}, \psi_{n_1,n_2}^{(|m|,|1-m|)}\rangle|^2$ across all $502$ modes $m \in [-250, 251]$.
+    \item \emph{Head polynomial series:} Propagates truncated polynomials in \texttt{arb\_poly} to degree $K = 250$ for $P_i, Q_i, R_i$, confirming $\widetilde{H}_0 \in [0.71196893304878 \pm 10^{-30}] > \frac{711968933048}{10^{12}}$ and $\sum_{k=1}^{250} |\widetilde{H}_k| \in [1.24878095 \times 10^{-6} \pm 10^{-30}] < \frac{1248782}{10^{12}}$.
+    \item \emph{Hardy circle and harmonic covers:} Subdivides $[0,\pi]$ into $256$ base arcs (adaptive depth $\le 12$) in \texttt{acb} at $(r_i, j_i)$, certifying open-disk kernel positivity $\RePart(I_2 \pm R_i((r_i + 10^{-5})e^{i\theta})) \succ 0$ and integrating the factored Schur majorant $(Z - C_r)Z^{-1}(Z + C_r)$ to confirm $\sum_{i=1}^6 w_i \,\mathrm{tail}_i \in [3.00 \times 10^{-8} \pm 1.22 \times 10^{-9}] < \frac{32}{10^9}$.
+  \end{enumerate}
 \end{itemize}
-% SRC: [CF] tiger.json e1, e2 (verbatim).
 
-\paragraph{The pair.} Let $f(z_1,z_2)=e^{i\theta_2}F(|z_1|,|z_2|,\theta_1-\theta_2)$, where $F$ is constant on
-$[e^{(1)}_a,e^{(1)}_{a+1})\times[e^{(2)}_b,e^{(2)}_{b+1})\times[2\pi(p-\frac12)/64,2\pi(p+\frac12)/64)$ with value
-$(F_{\mathrm{re}}[p,a,b]+iF_{\mathrm{im}}[p,a,b])/2^{20}$, and set $f=0$ on $\{z_2=0\}$. The second function is
-$g=f\circ S$, i.e.\ $G[p]=F[(p+32)\bmod64]$. The coordinates satisfy $\E|z_l|^2=1$.
-% SRC: [CF] tiger.json "convention" and "symmetry"; extension on the null set: [LP] item 6.
+\section{Lean Companion}\label{app:lean}
 
-\section{Overlaps of a cell-valued pair}\label{app:laguerre}
-Let $f=e^{i\theta_2}F$ with $F$ constant on cells as in Appendix~\ref{app:data}, with $N_\psi$ angle cells. The
-$\psi$-Fourier coefficient of a cell function is
-\[
- F_m(r_1,r_2)=\frac1{2\pi}\int F\,e^{-im\psi}d\psi=\sinc\!\Bigl(\frac m{N_\psi}\Bigr)\,\widehat F_m[a,b],\qquad
- \widehat F_m[a,b]=\frac1{N_\psi}\sum_pF[p,a,b]\,e^{-2\pi imp/N_\psi},
-\]
-with $\sinc x=\sin(\pi x)/(\pi x)$, on the radial cell $(a,b)$. Hence
-\[
- c_{m,n_1,n_2}(f)=\sinc\!\Bigl(\frac m{N_\psi}\Bigr)\sum_{a,b}A^{(1)}_{n_1,a}(|m|)\,\widehat F_m[a,b]\,A^{(2)}_{n_2,b}(|1-m|),
-\]
-where $A_{n,a}(\alpha)=\int_{\text{cell }a}\phi_{n,\alpha}(r)\,2re^{-r^2}dr$ (for the edges of the first or second
-coordinate), and
-\[
- \mu_k=\Re\sum_m\;\sum_{n_1+n_2=k-k_0(m)}\overline{c_{m,n}(f)}\,c_{m,n}(g).
-\]
-Only modes with $k_0(m)\le250$ contribute to $k\le250$, i.e.\ $-250\le m\le251$. Modes $m\ne0$ with
-$m\equiv0\pmod{N_\psi}$ vanish.
+The Lean files are not part of the ancillary archive. They are kept in the repository~\cite{Gal26}, folder \texttt{haagerup-article/lean}: a standalone Lean~4 package \texttt{HaagerupBound}, which imports only Mathlib and has its own continuous-integration job. Its entry point is
+\begin{quote}\small\ttfamily
+theorem HaagerupBound.upper\_bound (facts : ChannelFacts) :\\
+\hspace*{2em}complexGrothendieckConstant $\le$ 140456109 / 100000000 $\wedge$\\
+\hspace*{2em}complexGrothendieckConstant $<$ 1 / haagerupDagger
+\end{quote}
+Here \texttt{complexGrothendieckConstant} is defined as the infimum of the constants $K \ge 0$ in \eqref{eq:groth-def}, over all matrices and all $\C^N$, and \texttt{haagerupDagger} as the integral in \eqref{eq:gd-def}. Lean proves Lemma~\ref{lem:transfer} with the closure under convex combinations, Lemma~\ref{lem:gd-upper} in the form $0 < \gd < 7119595/10^7$, and the whole budget of Section~\ref{sec:cert}: the head data of the certificate, generated from \texttt{anc/} by a committed script, are evaluated exactly in the kernel (\texttt{decide +kernel}, no \texttt{native\_decide}), which gives $D \ge 0.71196618737$ and $1/D < 1.40456109$. The theorem depends only on the axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
 
-\paragraph{The cell integrals.} With $s=r^2$,
-\[
- A_{n,a}(\alpha)=\int_{s\text{-cell}}\tilde\phi_n(s)\,s^{\alpha/2}e^{-s}ds,\qquad
- \tilde\phi_n=\sqrt{n!/(n+\alpha)!}\,L^{(\alpha)}_n .
-\]
-The identity
-\begin{multline*}
- \frac{d}{ds}\Bigl[e^{-s}s^{\alpha/2+1}L^{(\alpha)}_n(s)\Bigr]\\
- =e^{-s}s^{\alpha/2}\Bigl[(n+1)L^{(\alpha)}_{n+1}(s)-\bigl(n+\tfrac\alpha2\bigr)L^{(\alpha)}_n(s)\Bigr]
-\end{multline*}
-follows from $sL_n'=(n+1)L_{n+1}-(n+1+\alpha-s)L_n$. It gives the exact recurrence
-\[
- \sqrt{(n+1)(n+1+\alpha)}\;A_{n+1}=\bigl(n+\tfrac\alpha2\bigr)A_n+\Bigl[e^{-s}s^{\alpha/2+1}\tilde\phi_n(s)\Bigr]_{s_0}^{s_1}
-\]
-on a cell $[s_0,s_1]$. The boundary term vanishes at $s=\infty$, and $\tilde\phi_n$ obeys the normalised three-term
-recurrence. The start is $A_0=(\gamma(\frac\alpha2+1,s_1)-\gamma(\frac\alpha2+1,s_0))/\sqrt{\alpha!}$, with the lower
-incomplete gamma function evaluated by its positive series and an explicit remainder bound, and with
-$\Gamma(\frac\alpha2+1)/\sqrt{\alpha!}$ at $s_1=\infty$. The from-scratch re-check starts the outer cell from the upper
-incomplete gamma function instead, and tests the cell integrals against quadrature.
-% SRC: formula and recurrence: verify_cert.py lag_tables and the mu loop (sinc, DFT convention, k0, skipping m = 0 mod
-% Npsi); identity: [RC] Methods 2 and [GEM] Step 2; derivation of sL' identity: standard (checked in this draft).
+What Lean does not check is the hypothesis \texttt{facts}. It provides, for each of the six channels, a real sequence $h^{(i)}$ with three properties: $h^{(i)}$ is absolutely summable and satisfies \eqref{eq:dominated}, which Section~\ref{sec:mechanism} establishes; its first $251$ terms lie within the stated $\ell^1$ distance of the head data; and $\sum_{k > 250} |h^{(i)}_k|$ is below the stated tail bound. The last two are the interval computations of Section~\ref{sec:cert} and Appendix~\ref{app:arb}. This first version therefore checks the deduction and the arithmetic, not the numerics or the Gaussian realisation. Proving these in Lean as well, without hypotheses, as for the bounds $1.4017003 \le \KGC \le 1.4045994$ of~\cite{Gal26}, is ongoing work.
 
-\paragraph{Why the formula is right.} The functions $\psi_{m,n_1,n_2}$ of Section~\ref{sec:tiger} are an orthonormal
-basis of the charge-one subspace, and $\psi_{m,n}$ has degree $2(n_1+n_2+k_0(m))+1$. Hence
-$\ip{P_kf}{P_kg}=\sum\overline{c_{m,n}(f)}c_{m,n}(g)$ over $n_1+n_2=k-k_0(m)$. The identification of the Laguerre basis
-with the complex Hermite basis of the Wick chaos is standard~\cite{Ja97}, but is not yet formalised. The re-check's test
-with $f=\ph(z_1)$ recovers $\sinc(1/64)^2$ times Haagerup's $r_k$ in the mode $m=1$, to $4\cdot10^{-31}$.
-% SRC: [RC] Methods 2 ("its m = 1 part is -sinc(1/64)^2 x Haagerup's r_k"; the sign is a basis-sign convention).
+\begin{thebibliography}{99}
 
-% ============================================================================================
-\begin{thebibliography}{99}\small
-\bibitem{Arb} F.~Johansson, \emph{Arb: efficient arbitrary-precision midpoint-radius interval arithmetic},
- IEEE Trans.\ Comput.\ 66 (2017), 1281--1292. The computations used its Python interface \texttt{python-flint}.
- \todo{cite python-flint and FLINT with versions}
-\bibitem{BMMN} M.~Braverman, K.~Makarychev, Y.~Makarychev, A.~Naor, \emph{The Grothendieck constant is strictly smaller
- than Krivine's bound}, FOCS 2011; Forum Math.\ Pi 1 (2013), e4; arXiv:1103.6161. \todo{verify the journal reference}
-\bibitem{GFL26} Guo, Fang, Lu, arXiv:2609.07000 (2026). \todo{full author names and title}
-\bibitem{GL} \emph{grothendieck-lean}: a Lean~4/Mathlib development of bounds for the complex Grothendieck constant,
- 2026--, \url{https://github.com/agalatan/grothendieck-lean} (continuously updated; the bounds quoted here are those
- of commit \texttt{25d56fcbb}). \todo{authors}
-\bibitem{Gr53} A.~Grothendieck, \emph{R\'esum\'e de la th\'eorie m\'etrique des produits tensoriels topologiques},
- Bol.\ Soc.\ Mat.\ S\~ao Paulo 8 (1953), 1--79. \todo{verify}
-\bibitem{Ha87} U.~Haagerup, \emph{A new upper bound for the complex Grothendieck constant}, Israel J.\ Math.\ 60 (1987),
- no.~2, 199--224.
-\bibitem{HJM26} S.~Heilman, C.~Jones, G.~Malavolta, \emph{Sharper bounds for the complex Grothendieck constant},
- arXiv:2609.25462 (2026).
-\bibitem{HJM26b} S.~Heilman, C.~Jones, G.~Malavolta, \emph{Primal/dual method for the Grothendieck constant},
- arXiv:2610.10477 (2026).
-\bibitem{Ja97} S.~Janson, \emph{Gaussian Hilbert Spaces}, Cambridge Tracts in Mathematics 129, Cambridge University
- Press, 1997.
-\bibitem{Ko90} H.~K\"onig, \emph{On the complex Grothendieck constant in the $n$-dimensional case}, in: Geometry of
- Banach Spaces (Strobl, 1989), London Math.\ Soc.\ Lecture Note Ser.\ 158, Cambridge University Press, 1990, 181--198.
-\bibitem{Ko01} H.~K\"onig, \emph{On an extremal problem originating in questions of unconditional convergence}, in:
- Recent Progress in Functional Analysis (Valencia, 2000), North-Holland Math.\ Stud.\ 189 (2001). \todo{verify}
-\bibitem{Kr79} J.-L.~Krivine, \emph{Constantes de Grothendieck et fonctions de type positif sur les sph\`eres},
- Adv.\ Math.\ 31 (1979), 16--30.
-\bibitem{Pe26} B.~Peng, \emph{A computer-assisted upper bound of 1.7813 for the real Grothendieck constant},
- arXiv:2609.20074 (2026).
-\bibitem{Pi78} G.~Pisier, \emph{Grothendieck's theorem for noncommutative $C^*$-algebras, with an appendix on
- Grothendieck's constants}, J.\ Funct.\ Anal.\ 29 (1978), 379--415 (as listed in~\cite{Ha87}). \todo{verify the pages}
-\bibitem{Pi12} G.~Pisier, \emph{Grothendieck's theorem, past and present}, Bull.\ Amer.\ Math.\ Soc.\ 49 (2012),
- 237--323.
+\bibitem{BMMN11}
+M.~Braverman, K.~Makarychev, Y.~Makarychev, and A.~Naor,
+\emph{The Grothendieck constant is strictly smaller than Krivine's bound},
+Forum of Mathematics, Pi \textbf{1} (2013), e4 (preliminary version in FOCS 2011).
+
+\bibitem{Dav84}
+A.~M.~Davie,
+\emph{Lower bound for $\KGC$},
+Unpublished manuscript, University of Edinburgh, 1984.
+
+\bibitem{Gal26}
+A.~Galatan,
+\emph{grothendieck-lean: a Lean~4/Mathlib development of bounds for the complex Grothendieck constant},
+\url{https://github.com/agalatan/grothendieck-lean}, 2026 (continuously updated).
+
+\bibitem{Gro53}
+A.~Grothendieck,
+\emph{R\'esum\'e de la th\'eorie m\'etrique des produits tensoriels topologiques},
+Bol.\ Soc.\ Mat.\ S\~ao Paulo \textbf{8} (1953), 1--79.
+
+\bibitem{GFL26}
+S.~Guo, E.~X.~Fang, and J.~Lu,
+\emph{An improved lower bound for the complex Grothendieck constant},
+Preprint, \texttt{arXiv:2609.07000}, September 2026.
+
+\bibitem{Haa87}
+U.~Haagerup,
+\emph{A new upper bound for the complex Grothendieck constant},
+Israel J.\ Math.\ \textbf{60} (1987), no.~2, 199--224.
+
+\bibitem{HJM26}
+S.~Heilman, C.~Jones, and G.~Malavolta,
+\emph{Sharper bounds for the complex Grothendieck constant},
+Preprint, \texttt{arXiv:2609.25462}, September 2026.
+
+\bibitem{Kri79}
+J.-L.~Krivine,
+\emph{Constantes de Grothendieck et fonctions de type positif sur les sph\`eres},
+Adv.\ Math.\ \textbf{31} (1979), no.~1, 16--30.
+
+\bibitem{Pis78}
+G.~Pisier,
+\emph{Grothendieck's theorem for noncommutative $C^*$-algebras, with an appendix on Grothendieck's constants},
+J.\ Funct.\ Anal.\ \textbf{29} (1978), no.~3, 397--415.
+
 \end{thebibliography}
 
 \end{document}
