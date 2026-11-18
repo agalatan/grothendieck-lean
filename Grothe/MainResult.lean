@@ -1,11 +1,11 @@
 -- Grothe/MainResult.lean
 import Grothe.LowerTarget
-import Grothe.UpperTightFinal
+import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.CapExcluded
 
 /-!
-# The main result: `1.401700322371 < K_G^ℂ < 1.404599395362`
+# The main result: `1.401700322371 < K_G^ℂ ≤ 1.40457588`
 
 The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of
 `Grothe/Statement.lean`.
@@ -14,9 +14,8 @@ The double inequality of the repository's goal, stated for the constant `K_G^ℂ
   (`capRowsDone` lists all 19 rows), and the certified rows exclude no nodes (`capExcl_eq_nil`).
 * `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above
   `1.401700322371`.
-* `upper_below_tight` (`Grothe/UpperTightFinal.lean`): **the upper bound, unconditional**: some
-  Grothendieck bound is below `1.404599395362`.
-* `main_bounds`: **`1.401700322371 < K_G^ℂ < 1.404599395362`**, without hypotheses.
+* `Grothe.UpperSix.bound` proves the admissibility of `140457588 / 100000000` for every matrix.
+* `main_bounds`: **`1.401700322371 < K_G^ℂ ≤ 1.40457588`**, without hypotheses.
 -/
 
 namespace Grothe.Statement
@@ -33,14 +32,11 @@ theorem capsRest : CapsRest := by
 theorem lower_target : LowerTarget :=
   lowerTarget_of_nodeCaps (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest capsRest))
 
-/-- **The main result** `1.401700322371 < K_G^ℂ < 1.404599395362`. -/
+/-- **The main result** `1.401700322371 < K_G^ℂ ≤ 1.40457588`. -/
 theorem main_bounds :
     (1401700322371 / 10 ^ 12 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant < 1404599395362 / 10 ^ 12 := by
-  have hU := upper_below_tight
-  have hne : ∃ K, IsBound K := hU.imp fun _ h ↦ h.1
-  have hlo := lt_constant_of_lowerAbove hne lower_target
-  have hup := constant_lt_of_upperBelow hU
-  exact ⟨by norm_num at hlo ⊢; exact hlo, by norm_num at hup ⊢; exact hup⟩
+      complexGrothendieckConstant ≤ 140457588 / 100000000 := by
+  have hlo := lt_constant_of_lowerAbove ⟨_, Grothe.UpperSix.bound⟩ lower_target
+  exact ⟨by norm_num at hlo ⊢; exact hlo, Grothe.UpperSix.constant_le⟩
 
 end Grothe.Statement

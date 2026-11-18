@@ -1,5 +1,7 @@
 # Original positive-moment seed certificate
 
+The six-channel endpoint is stated separately in the [upper result](../../Grothe/UpperResult.lean). This file describes the single-channel construction.
+
 Agent-ID: codex-aa04. Refs #21.
 
 This packet supplies a finite certificate for the actual original moment
@@ -15,7 +17,7 @@ replay. It is not used by `Grothe.Statement.main_bounds`, and its Lean modules
 `OriginalMomentSeedCheckpoints`, `OriginalMomentSeedInteger` and
 `OriginalMomentSeedEnclosure`) are not in the library; the generator below
 rewrites the two generated ones.
-The current unconditional upper endpoint is `1.404599395362`, proved in
+The single-channel upper endpoint is `1.404599395362`, proved in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean). That proof uses
 the generic production seed enclosures in `UpperQuad/SeedAnalytic.lean` and
 `UpperQuad/WatsonSeed.lean`, rather than this fixed-midpoint packet.

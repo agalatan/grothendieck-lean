@@ -2,17 +2,17 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401700322371 < K_G^ℂ < 1.404599395362` (`main_bounds`,
-`Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
-(`lower_target`), and so is the upper endpoint (`upper_below_tight`,
-`Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
-phase identity and Laplace modules under `Grothe/Haagerup/`.
+The six-channel statement is `1.401700322371 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+
+The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The upper-only build wrapper compiles these same sources. The paper’s companion theorem `HaagerupBound.upper_bound` gives the article’s value `1.40456109` from its `ChannelFacts` hypothesis. [Production certificate](../articles/haagerup/README.md) · [Article companion](../haagerup-article/lean/HaagerupBound/UpperBound.lean).
+
+The earlier `upper_below_tight` proof uses one Gaussian rounding. Its budgets, quadrature, and auxiliary refinements are documented below.
 
 **Reading this inventory.** Most paragraphs describe one module or one result.
 Where a paragraph says that a result takes an estimate as a hypothesis, or that
 it gives no numerical bound, this describes that result; it is not an open
-input of the main theorems, which have no hypotheses. Every module under
-`Grothe/` is in the import closure of `Grothe/MainResult.lean`. A module called
+input of the main theorems, which have no hypotheses. The generated root imports both the six-channel proof used by
+`Grothe/MainResult.lean` and the independent single-channel proof. A module called
 *archived* below is kept outside the libraries, in `abandonware/`
 (`abandonware/README.md`) unless the text names `miscellaneous/`; it is not
 built or checked. The value `1.404598149141` is the
@@ -64,9 +64,9 @@ acceptance is applied in `HardyGaussian`, using the interval soundness proved by
 `HardyGaussianSound`; holomorphy and Parseval then yield
 `HardyReal.hardy_GT_gaussian` for the actual rounding.
 `UpperTightFinal` uses this budget and deducts the forced linear energy,
-certifying tail `219549168/10¹⁶` and the new `main_bounds` endpoint.
+certifying the single-channel tail `219549168/10¹⁶`.
 
-**Upper endpoint assembly.** `upper_below_tight` combines the port-fact bundles
+**Single-channel endpoint assembly.** `upper_below_tight` combines the port-fact bundles
 `PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
 `TightTwist.remainder1/2/3`, the longer-prefix weighted comparison, and the table
 accuracy `Final.hclose_final`. Both the mass comparison and finite-head transfer
@@ -572,8 +572,8 @@ radii (`localized_comparison_tight_three_band`, `UpperTightComparison`) and
 passes the result to `TightEndpoint.endpoint_of_comparison` (`UpperTightFinal`),
 which adds the head, the table error (`Final.hclose_final`,
 `Grothe/UpperClose.lean`) and the Hardy tail. The public `UpperTarget`
-threshold remains `1.4046`; `main_bounds` uses `upper_below_tight` and the
-stricter threshold `1.404599395362`.
+threshold is `1.4046`. The single-channel theorem `upper_below_tight` gives
+the strict threshold `1.404599395362`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -875,8 +875,8 @@ optima and the fixed-dimension test `isGrothendieckBound_iff_fixed_dim`
 (`PolarizedGram`); and a rational support-defect correction with its quartic
 Newton contraction (`LowerAnalytic/JointDefect`, `LowerAnalytic/QuarticNewton`).
 
-**Upper bound.** The proved upper bound is `upper_below_tight` ("Upper endpoint
-assembly" at the top of this file). The sharper value that the rounding was
+**Single-channel upper bound.** The theorem `upper_below_tight` uses the
+assembly described above. The sharper value that the rounding was
 designed for is conditional and archived: `fresh_upper_rounder`
 (`UpperChaos/GroupedRounder`, with `UpperChaos/GroupedComparison` and
 `Upper/GroupedBridge`) proves
