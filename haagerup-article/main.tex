@@ -151,6 +151,8 @@ The complex Grothendieck constant satisfies
 where $D_{\mathrm{cert}} > 0.711966186 > \gd + 7.52 \times 10^{-6}$. In particular, $\KGC \ne 1/\gd$.
 \end{theorem}
 
+\noindent\textbf{What Lean proves, and what is certified outside it.} Lean~4 proves the reduction: the theorem \texttt{main\_refutation} of Appendix~\ref{app:lean} derives both inequalities of Theorem~\ref{thm:main} from any term of the structure \texttt{VerifiedSixChannelData}, and Lean constructs no such term. The fields of that structure are certified outside Lean. The ancillary data and the verifier of Appendix~\ref{app:arb} check the head comparison, the Hardy tails and the three enclosures against the exact rational constants of the Lean file. The remaining field, the domination of each channel, is the realisation argument of Section~\ref{sec:mechanism}; the verifier checks its numerical hypotheses.
+
 Theorem~\ref{thm:main} provides the complex counterpart to the Braverman--Makarychev--Makarychev--Naor refutation of Krivine's real conjecture \cite{BMMN11}, though the mechanism is sharper: whereas Krivine's real constant already arose from an alternating $\tanh$/$\sinh$ inversion on $\R$, Haagerup's constant $\gd$ is a universal alternating spectral ceiling across \emph{all} one-coordinate and symmetric two-coordinate channels (Section~\ref{sec:obstruction}). Crossing $\gd$ mathematically forces breaking symmetry between Alice's and Bob's rounders on $\C^2$.
 
 \section{Radial Transfer and the Universal Alternating Obstruction}\label{sec:obstruction}
@@ -299,6 +301,8 @@ Thus $G(v) \ge G(0) = \sqrt{2}$ on $[0,1]$, so $(1 + \sin^2 t)^{-1/2} \le \frac{
 
 The following standalone Lean~4 file (compatible with \texttt{Mathlib4}, zero \texttt{sorry}s, zero custom axioms) formally verifies: (1) all exact rational certificate norms and budget inequalities of Table~\ref{tab:cert}; (2) the telescoping derivative bound $0 < \gd < \frac{7119595}{10^7}$; (3) the universal alternating ceiling and convex no-go theorem (Proposition~\ref{prop:nogo}); and (4) the Hilbert tensor-power Schur transfer theorem (Lemma~\ref{lem:transfer}) directly on $(\C^N, \langle u,v\rangle = \sum_i \bar{u}_i v_i)$ and master refutation theorems reducing $\KGC \le 1.40456109 < 1/\gd$ to \texttt{VerifiedSixChannelData}.
 
+\textbf{Scope.} The theorem \texttt{main\_refutation} at the end of the file is a reduction. It proves $\KGC \le 1.40456109$ and $\KGC < 1/\gd$ for every term \texttt{cert : VerifiedSixChannelData}, and Lean constructs no such term. The fields of the structure (\texttt{dominated}, \texttt{head\_comparison}, \texttt{hardy\_tails}, \texttt{h0\_enclosure}, \texttt{head\_l1\_encl}, \texttt{tail\_enclosure}) are certified outside Lean, by the ancillary data and the verifier of Appendix~\ref{app:arb}. For \texttt{dominated}, which is the realisation argument of Section~\ref{sec:mechanism}, the verifier checks the numerical hypotheses. The listing is the file \texttt{lean/HaagerupRefutation/Main.lean}, included verbatim. It builds with \texttt{lake build -{}-wfail} on Lean~v4.34.1 and Mathlib, and its headline theorems depend only on the axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+
 \lstinputlisting[language=Lean4]{lean/HaagerupRefutation/Main.lean}
 
 \section{256-Bit Arb Ball Verification Protocol}\label{app:arb}
@@ -310,6 +314,45 @@ To audit \texttt{VerifiedSixChannelData} in \texttt{python-flint} (\texttt{flint
   \item \textbf{Head Polynomial Evaluation:} Propagate truncated power series in \texttt{arb\_poly} up to degree $K = 250$ for the exact rational polynomials $P_i, Q_i, R_i$ of Table~\ref{tab:cert}, verifying $\widetilde{H}_0 > \frac{711968933048}{10^{12}}$ and $\sum_{k=1}^{250} |\widetilde{H}_k| < \frac{1248782}{10^{12}}$.
   \item \textbf{Adaptive Circle \& Harmonic Covers:} Subdivide $[0,\pi]$ into $256$ base arcs (adaptive depth $\le 12$) in \texttt{acb} at $(r_i, j_i)$ from Table~\ref{tab:cert}, certifying $\RePart(I_2 \pm R_i((r_i + 10^{-5})e^{i\theta})) \succ 0$ and summing the factored Schur integrand $(Z - C_r)Z^{-1}(Z + C_r)$ to confirm $\sum_{i=1}^6 w_i \,\mathrm{tail}_i \in [3.00 \times 10^{-8} \pm 1.3 \times 10^{-9}] < \frac{32}{10^9}$.
 \end{enumerate}
+
+\subsection*{Ancillary files and the verification command}
+The certificate and the verifier are the ancillary files of this article (directory \texttt{anc/}). The file \texttt{verify\_certificate.py} reads only that directory and checks every field of \texttt{VerifiedSixChannelData} against the exact rational constants of the Lean file of Appendix~\ref{app:lean}, by the four steps above:
+\begin{itemize}
+  \item the channel data of \texttt{channels.json} equal the Lean constants $w_i$, $P_i$, $Q_i$, $R_i$ of Table~\ref{tab:cert};
+  \item for \texttt{dominated}: $\|P_i\|_1, \|Q_i\|_1, \|R_i\|_1 \le 1$, $Q_i(0) = 0$, and $|F| \le 1$ on every \texttt{tiger} cell, in exact integers;
+  \item for \texttt{head\_comparison}: $\varepsilon_{\mathrm{GT,univ}} < \frac{1494117}{10^{12}}$, from the energy table \texttt{gt\_energy.npz};
+  \item for \texttt{h0\_enclosure}: $\widetilde{H}_0 > \frac{711968933048}{10^{12}}$;
+  \item for \texttt{head\_l1\_encl}: $\sum_{k=1}^{250} |\widetilde{H}_k| < \frac{1248782}{10^{12}}$;
+  \item for \texttt{hardy\_tails} and \texttt{tail\_enclosure}: $\sum_i w_i\,\mathrm{tail}_i < \frac{32}{10^9}$;
+  \item the exact budget of \texttt{cert\_rational\_margins}.
+\end{itemize}
+It prints one line per check and exits with status $0$ only if every check passes. The energy table \texttt{gt\_energy.npz} holds the $21{,}168$ dyadic energies $a/2^k$ of \cite{Gal26} as exact integers. It is exported from the file \texttt{Grothe/Upper/Data.lean} of that repository by \texttt{export\_gt\_energy.py}, deterministically. The ancillary files and their SHA-256 hashes:
+% BEGIN ANC HASHES
+\begin{center}
+\scriptsize
+\begin{tabular}{@{}ll@{}}
+\toprule
+File & SHA-256 \\
+\midrule
+\texttt{channels.json} & \texttt{189028a62efe566a591fc993e1cfa686f43da68d52da00dce20703572e80aa08} \\
+\texttt{tiger.json} & \texttt{f3c15e2217a3fb53d33167f5ed086f45bbcee0484a037c2753e4337b719bf4ab} \\
+\texttt{tiger.npz} & \texttt{27cf6265ab1071eaf50c840468bff6a195793821e79a229e92260962ec51c6cc} \\
+\texttt{gt\_energy.npz} & \texttt{5f5ca82df84cbf6e888b645b76453e06e813ff305b8e0d0880d192fbdd25e94d} \\
+\texttt{verify\_certificate.py} & \texttt{175ffc3c4aee99d3b15662eb0f4634aec3f9a18960ea2f64fa8e2cfb813fe234} \\
+\texttt{requirements.txt} & \texttt{950e506346e3f3a8b43140bbd28b3ab85dfdbaa9d00f8d0c850a11a65ada8e6e} \\
+\texttt{export\_gt\_energy.py} & \texttt{6fb8e3a88e4193426687ea169c8a3890bd45116d6ae95127ea15a3ef93b56235} \\
+\texttt{README.md} & \texttt{6233b2c0c29fc1956c7d3c82705ce5ac8d5b24e28be0722d6cf46359f211f696} \\
+\bottomrule
+\end{tabular}
+\end{center}
+% END ANC HASHES
+To verify, run in the directory \texttt{anc/}:
+\begin{verbatim}
+sha256sum -c SHA256SUMS
+python3 -m venv venv && venv/bin/pip install -r requirements.txt
+venv/bin/python verify_certificate.py
+\end{verbatim}
+The last line of the output is \texttt{ALL FIELDS OF VerifiedSixChannelData CERTIFIED}.
 
 \begin{thebibliography}{99}
 

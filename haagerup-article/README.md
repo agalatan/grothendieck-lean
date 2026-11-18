@@ -43,8 +43,20 @@ bounds, with the facts the proof uses:
   501;
 - `h0_enclosure`, `head_l1_encl`, `tail_enclosure`: the enclosures of the weighted head and tails.
 
-These facts are certified outside Lean, in 256-bit Arb ball arithmetic (Appendix B of the article). Nothing in Lean
-ties `h_true` to the six rounding schemes of Table 1: any family of sequences with these properties gives the bound.
+These facts are certified outside Lean, in 256-bit Arb ball arithmetic, by the ancillary files in `anc/` (Appendix B
+of the article). Nothing in Lean ties `h_true` to the six rounding schemes of Table 1: any family of sequences with
+these properties gives the bound.
+
+## `anc/`: the certificate and its verifier (arXiv ancillary files)
+
+- `channels.json`, `tiger.json`, `tiger.npz`: the certificate.
+- `gt_energy.npz`: the GT energy table in exact integers, exported from `Grothe/Upper/Data.lean` by
+  `export_gt_energy.py` (deterministic bytes).
+- `verify_certificate.py`: reads only `anc/` and checks every field of `VerifiedSixChannelData` against the rational
+  constants of the Lean file. `requirements.txt` pins python-flint and numpy; `SHA256SUMS` lists the hashes, which
+  Appendix B of the article repeats.
+- Verify: `cd anc && sha256sum -c SHA256SUMS && python3 verify_certificate.py` (about 5 minutes on one core). See
+  `anc/README.md`.
 
 ## Separate target, own CI job
 
