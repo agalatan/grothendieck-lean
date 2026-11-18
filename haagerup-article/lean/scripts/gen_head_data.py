@@ -736,6 +736,11 @@ def main():
     pen = sum(w[i] * (data[i]["radius"] + data[i]["tail"]) for i in range(6))
     D = (lin - res_ - pen) / SCALE
     log(f"D_lean = {float(D):.16f}, 1/D_lean = {float(1 / D):.12f}")
+    # The claim itself: the budget must prove K_G^C <= 1/D < 1.40456109 and gamma_dagger < 7119595/10^7 < D.
+    if not (D > Fraction(7119595, 10**7) and 1 / D < Fraction(140456109, 10**8)):
+        print(f"the budget does not prove the bound: D = {float(D):.16f}, 1/D = {float(1 / D):.12f} "
+              "(it needs D > 0.7119595 and 1/D < 1.40456109)", file=sys.stderr)
+        sys.exit(1)
 
     text = render(hashes, chans, eps_gt, data, D)
     out = path(OUT_REL)
