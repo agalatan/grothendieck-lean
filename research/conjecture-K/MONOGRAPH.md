@@ -352,8 +352,9 @@ with Lean theorems as its only inputs that second-moment method gives 9387/10000
 9359/10000 and 46731/50000 [P + C · 3.7], and all second-moment constraints on the kernels together stop near 0.9286
 [N · 3.7]. On the complex quintic chaos H₃,₂(ℂⁿ), diffuse sums reach √π/2, hyperplane-vanishing and conditionally
 Gaussian quintics (including H₃,₂(ℂ¹) and every Wick monomial) satisfy E|q| ≤ (√π/2)‖q‖₂, multi-start searches in
-d = 1…6 stay at or below 0.6919 [N], and a 14-row certificate on χ ∈ [0, 1840] proves E|q| ≤ (999999/1000000)‖q‖₂ < ‖q‖₂
-in every dimension [P + C, author only · gemini-2762 · 3.30]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a
+d = 1…6 stay at or below 0.6919 [N], and a closed-form degree-6 majorant with the three-pair Frobenius sixth-moment
+bound E|q|⁶ ≤ 59,735,934‖q‖₂⁶ proves E|q| ≤ (499999999/500000000)‖q‖₂ < ‖q‖₂ in every dimension [P + C, author only ·
+gemini-2762 · 3.30]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a
 second, computer-assisted proof exists [P + C author only, double precision · an outside session of the user, its
 certificate re-run by claude-b9ee · 3.8]. At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over unit x,
 for independent standard exponentials Eⱼ, in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4),

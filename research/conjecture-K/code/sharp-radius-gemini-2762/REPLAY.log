@@ -1,12 +1,7 @@
-=== Exact Replay Suite (python3 -I -O, stdlib only, zero floats) ===
-Python: 3.14.8 flags: 1 1
-002dc15f7de8d265665a0bd5bb512875921e13be566d5de698a6a3a265754abc  cert_915.json
-f0074f28c7ee33f864999a4a8891e91773414640703be3e65d9c4d8bdf890a1a  cert_h32.json
-  283678 cert_915.json
-   51236 cert_h32.json
-  334914 total
+=== Exact stdlib -I -O replay from empty working directory (2026-11-18T00:17:01Z) ===
+Python: Python 3.14.8
 
---- [1/6] python3 -I -O verify_near_gaussian.py ---
+--- [1/5] verify_near_gaussian.py ---
 === Exact Near-Gaussian Verification (pure stdlib, zero floats) ===
 1. Hermite-Gaussian SOS / discriminant checks: PASS (disc_hi=-95/64, disc_lo=-51/4, disc_d=-20)
 2. Machin pi enclosure: pi in [3.1415926535, 3.1415926536]
@@ -36,18 +31,18 @@ f0074f28c7ee33f864999a4a8891e91773414640703be3e65d9c4d8bdf890a1a  cert_h32.json
      chi_1 = 1/18000 = 0.0000555555 < 0.0000561340  (strict E|q| < (sqrt(pi)/2)*||q||_2)
 VERIFIED EXACTLY: near-Gaussian explicit cone PASS.
 
---- [2/6] python3 -I -O check_identities_exact.py ---
-Part A (H_{2,1} exact Wick identities (V), (VI), (VII) & Gram-phase CS, d=2,3): PASS
-Part B (H_{3,2} exact Wick identities, Form I/II, q_1 cumulants, 9 Hyperplane margins): PASS
-   Exact Var(c_2 - 2u) <= 12*(||V_5||^2 - u^2) and <= (1013/100)*delta: PASS
-   Exact 154,578 bipartite multigraph enumeration (68 buckets):
-     total/1728 = 59735934, connected/1728 = 59719368, C_{6,(3,2)} <= 115302.880138 <= 115400: PASS
+--- [2/5] check_identities_exact.py ---
+Part A (H_{2,1} exact Wick (V)-(VII), symbolic damped (V_eps)-(VII_eps) + Psi_6'/Psi_7', Gram-phase CS): PASS
+Part B (H_{3,2} exact Wick, Form I/II, 10*delta budget, 9 Hyperplane shells, 1/sqrt(a!b!)): PASS
+   Universal sixth moment E|q|^6 <= 59735934 ||q||_2^6 & 3-pair Frobenius checks: PASS
+   Closed-form B=11000 majorant P(x) > 0 on [0, oo) (Sturm + Bernstein 15 leaves):
+     E|q|/||q||_2 <= 1 - 2.091828e-9 < 499999999/500000000 < 1: PASS
 Part C (exact degree-5 small-t consequences at (eps, eta) = (39/50, 779/10000)): PASS
    rho_0 = 1829/2000: lambda_1 <= 2000000000/2345013941 (>= 0.852873), V <= (9221/10000)t^2 + 0.654799 < 500/701 for t <= 0.2518
    rho_0 = 183/200:   lambda_1 <= 20000000/23475789   (>= 0.851941), V <= (9221/10000)t^2 + 0.655512 < 500/701 for t <= 0.2502
 ALL EXACT IDENTITIES VERIFIED (zero floats).
 
---- [3/6] python3 -I -O verify_cert_level3.py cert_915.json ---
+--- [3/5] verify_cert_level3.py cert_915.json ---
 row  0 [L2]  s in [     0,      1]  K=110  PASS  bound <= 0.9081593779  (lo<=0.9025590264, hi<=0.9081593779)
 row  1 [L2]  s in [     1,    3/2]  K=110  PASS  bound <= 0.9113884748  (lo<=0.9093674712, hi<=0.9113884748)
 row  2 [L2]  s in [   3/2,      2]  K=110  PASS  bound <= 0.9134174317  (lo<=0.9122698743, hi<=0.9134174317)
@@ -62,11 +57,11 @@ row 10 [L2]  s in [    10,     18]  K=110  PASS  bound <= 0.9106435225  (lo<=0.9
 row 11 [L2]  s in [    18,     26]  K=110  PASS  bound <= 0.8983629410  (lo<=0.8983629410, hi<=0.8916379377)
 row 12 [L2]  s in [    26,     28]  K=110  PASS  bound <= 0.8858291448  (lo<=0.8858291448, hi<=0.8827123462)
 row 13 [L2]  s in [    28,     42]  K=110  PASS  bound <= 0.8838174635  (lo<=0.8838174635, hi<=0.8704349173)
-covered s in [0, 42];  all rows pass: True;  worst row = 5;  max bound = 234065164214019206310668315551053737400241729/255983918816774582499039772672000000000000000  (<= 0.9143744861)  [38.59s]
+covered s in [0, 42];  all rows pass: True;  worst row = 5;  max bound = 234065164214019206310668315551053737400241729/255983918816774582499039772672000000000000000  (<= 0.9143744861)  [100.05s]
 claim  E|q| <= 1829/2000 ||q||_2  for every q in H_{2,1}:  VERIFIED
 high-kurtosis sharp claim  E|q| <= 443/500 ||q||_2 < (sqrt(pi)/2)||q||_2  on chi in [26, 42]:  VERIFIED  (max <= 0.8858291448)
 
---- [4/6] python3 -I -O verify_bernstein_level3.py cert_915.json ---
+--- [4/5] verify_bernstein_level3.py cert_915.json ---
 row  0 [L2]  s in [     0,      1]  PASS (Bernstein leaves=  348, max_depth= 7)  bound <= 0.9081593779
 row  1 [L2]  s in [     1,    3/2]  PASS (Bernstein leaves=  342, max_depth= 3)  bound <= 0.9113884748
 row  2 [L2]  s in [   3/2,      2]  PASS (Bernstein leaves=  341, max_depth= 3)  bound <= 0.9134174317
@@ -81,30 +76,13 @@ row 10 [L2]  s in [    10,     18]  PASS (Bernstein leaves=  333, max_depth= 0) 
 row 11 [L2]  s in [    18,     26]  PASS (Bernstein leaves=  334, max_depth= 1)  bound <= 0.8983629410
 row 12 [L2]  s in [    26,     28]  PASS (Bernstein leaves=  333, max_depth= 0)  bound <= 0.8858291448
 row 13 [L2]  s in [    28,     42]  PASS (Bernstein leaves=  333, max_depth= 0)  bound <= 0.8838174635
-Bernstein verifier: covered [0, 42], total_leaves=10007, max_depth=8, worst_row=5, max_bound=234065164214019206310668315551053737400241729/255983918816774582499039772672000000000000000 (<= 0.9143744861) [20.95s]
+Bernstein verifier: covered [0, 42], total_leaves=10007, max_depth=8, worst_row=5, max_bound=234065164214019206310668315551053737400241729/255983918816774582499039772672000000000000000 (<= 0.9143744861) [40.90s]
 claim  E|q| <= 1829/2000 ||q||_2  for every q in H_{2,1}:  VERIFIED (Bernstein)
 high-kurtosis sharp claim  E|q| <= 443/500 ||q||_2 < (sqrt(pi)/2)||q||_2  on chi in [26, 42]:  VERIFIED (Bernstein, max <= 0.8858291448)
 
---- [5/6] python3 -I -O verify_cert_h32.py cert_h32.json ---
-row  0  s in [      0,     1/2]  K=78  PASS (Sturm+Bernstein, leaves=  99)  bound <= 0.9311737100
-row  1  s in [    1/2,       1]  K=78  PASS (Sturm+Bernstein, leaves=  92)  bound <= 0.9508890538
-row  2  s in [      1,       2]  K=78  PASS (Sturm+Bernstein, leaves=  95)  bound <= 0.9803568324
-row  3  s in [      2,       4]  K=78  PASS (Sturm+Bernstein, leaves=  95)  bound <= 0.9962476492
-row  4  s in [      4,       8]  K=78  PASS (Sturm+Bernstein, leaves=  89)  bound <= 0.9982996295
-row  5  s in [      8,      16]  K=78  PASS (Sturm+Bernstein, leaves=  90)  bound <= 0.9991500103
-row  6  s in [     16,      32]  K=78  PASS (Sturm+Bernstein, leaves=  90)  bound <= 0.9995814254
-row  7  s in [     32,      64]  K=88  PASS (Sturm+Bernstein, leaves= 103)  bound <= 0.9997883672
-row  8  s in [     64,     140]  K=88  PASS (Sturm+Bernstein, leaves=  98)  bound <= 0.9999217839
-row  9  s in [    140,     230]  K= 1  PASS (Sturm+Bernstein, leaves=  12)  bound <= 0.9999968653
-row 10  s in [    230,     380]  K= 1  PASS (Sturm+Bernstein, leaves=  12)  bound <= 0.9999960267
-row 11  s in [    380,     630]  K= 1  PASS (Sturm+Bernstein, leaves=  12)  bound <= 0.9999949275
-row 12  s in [    630,    1050]  K= 1  PASS (Sturm+Bernstein, leaves=  12)  bound <= 0.9999935171
-row 13  s in [   1050,    1840]  K= 1  PASS (Sturm+Bernstein, leaves=  13)  bound <= 0.9999920761
-H_{3,2} dual verifier (Sturm + Bernstein): covered [0, 1840], leaves=912, worst_row=9, max_bound <= 0.9999968653 [5.00s]
-claim  E|q| <= 999999/1000000 ||q||_2 < ||q||_2  for every q in H_{3,2}(C^n):  VERIFIED
+--- [5/5] negative_controls.py cert_915.json ---
+[1] Polynomial, near-Gaussian & H_{3,2} ray negative controls: 38 checks ALL REJECTED as required.
+[2] H_{2,1} Level-2 & Damped Level-3 negative controls (Sturm + Bernstein + CLI -O): 56 checks ALL REJECTED.
+ALL 94 NEGATIVE CONTROLS PASSED.
 
---- [6/6] python3 -I -O negative_controls.py cert_915.json cert_h32.json ---
-[1] Polynomial & near-Gaussian negative controls: 40 checks ALL REJECTED as required.
-[2] H_{2,1} Level-2 & Damped Level-3 negative controls (Sturm + Bernstein + CLI -O): 54 checks ALL REJECTED.
-[3] H_{3,2} quintic chaos negative controls (Sturm + Bernstein + CLI -O): 10 checks ALL REJECTED.
-ALL 104 NEGATIVE CONTROLS PASSED.
+=== ALL 5 EXACT STDLIB -I -O REPLAYS PASSED ===

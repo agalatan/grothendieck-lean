@@ -25,9 +25,9 @@ makes STATUS.md rows 3.18 and 3.21 (e1) unconditionally explicit):
 2. Exact Gaussian scale-mixture envelopes |g_{k,l}(x)| <= A_{k,l} + B_{k,l} |x| on all of R:
    In the reviewed two-step third-chaos cumulant-remainder identity (edgeworth-codex-a7c4/PROOF.md
    eq. (9); cumulant-remainder-codex-a7c4/PROOF.md & verify.py), for h(x) = |x| (c = sqrt(2/pi)),
-   the normal Stein derivative admits the elementary identity
+   solving phi'_{|x|}(x) - x phi_{|x|}(x) = |x| - c gives the even Gaussian scale mixture
      phi'_{|x|}(x) = -(c/2) int_0^1 (1 - w)^{-1/2} exp(-w x^2 / (2(1 - w))) dw,
-   which collapses every two-step function g_{k,l}(x) = (A_{l/3} A_{k/3} psi)(x)
+   which collapses every two-step resolvent function g_{k,l}(x) = (R_{2 - l/3} R_{4 - k/3} v_{|x|})(x)
    (k in {2, 4}, l in {0, 2, 4, 6, 8}) to the single monotone-kernel integral on theta in (0, 1):
      g_{k,l}(x) = -(c/2) int_0^1 W_{k/3, l/3}(theta) theta^2 [ (1-theta)^{-5/2} h_4(theta x^2/(1-theta)) - 3 ] d(theta),
    where W_{a,b}(theta) = ((theta^{-(b+4)/2}-1)/(b+4) - (theta^{-(a+2)/2}-1)/(a+2)) / (b+2-a) > 0

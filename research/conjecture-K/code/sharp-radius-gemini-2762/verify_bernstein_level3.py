@@ -4,7 +4,7 @@
 Usage:  python3 -I verify_bernstein_level3.py CERT.json [--quiet]
 
 Standard library only; zero floating-point operations (`float` is never called); `-O`-safe `require(...)`.
-Independent of verify_cert_level3.py in four ways:
+Independent of verify_cert_level3.py in five ways:
   1. Positivity of univariate polynomials on segments [a, b] and rays [a, oo) is decided by exact
      integer Bernstein coefficients and de Casteljau subdivision (no Sturm chains).
   2. Knot primitives G_1, ..., G_7 at knots u_k are computed independently by the exact trapezoid rule
@@ -13,7 +13,12 @@ Independent of verify_cert_level3.py in four ways:
      the 3x3 matrix A_0(v), the FULL 5x5 matrix diag(1, 1, 1, s_3, 1) P_s(v) diag(1, 1, 1, s_3, 1),
      and the 4x4 matrix S_k P^{(0)}(r) S_k are assembled directly as matrices of Poly objects and
      their leading principal minors / determinants are computed by generic recursive Laplace det_mat().
-  4. Contraction expectations and dual cuts are built from named linear forms in (n, h, b, y, z).
+  4. Algebraic independence: on every Damped Level-3 interval [u_k, u_{k+1}] (k = 0 .. K_0 - 1), both
+     the (tilde_beta, tilde_beta_perp) coupling vector V(v) and the post-T(v) majorant minus r are built
+     symbolically from the raw Stein brackets (I)-(IV) and (V_eps)-(VII_eps) in Q[v, c_2][c_1, rho, alpha_2]
+     (clearing (1 + eps c_2)^4) and verified coefficient-by-coefficient to equal the sum of the certified
+     nonnegative blocks (catching any sign or coefficient error in A_0, P_s, P^{(0)}, or V(v)).
+  5. Contraction expectations and dual cuts are built from named linear forms in (n, h, b, y, z).
 """
 import json
 import sys
@@ -118,6 +123,33 @@ class Poly:
 
 V_VAR = Poly([Fr(0), Fr(1)])
 R_VAR = Poly([Fr(0), Fr(1)])
+
+
+def biv_add(A, B):
+    m = max(len(A), len(B))
+    return [(A[i] if i < len(A) else Poly()) + (B[i] if i < len(B) else Poly()) for i in range(m)]
+
+
+def biv_sub(A, B):
+    m = max(len(A), len(B))
+    return [(A[i] if i < len(A) else Poly()) - (B[i] if i < len(B) else Poly()) for i in range(m)]
+
+
+def biv_mul(A, B):
+    if not A or not B:
+        return []
+    out = [Poly() for _ in range(len(A) + len(B) - 1)]
+    for i, a in enumerate(A):
+        if a.c:
+            for j, b in enumerate(B):
+                if b.c:
+                    out[i + j] = out[i + j] + a * b
+    return out
+
+
+def biv_eq(A, B):
+    m = max(len(A), len(B))
+    return all((A[i].c if i < len(A) else []) == (B[i].c if i < len(B) else []) for i in range(m))
 
 
 def det_mat(M):
@@ -333,6 +365,14 @@ def verify_row_bernstein(row):
             for idx, nm in enumerate(('phi5', 'phi6', 'phi7')):
                 G_3d[idx][k + 1] = G_3d[idx][k] + Fr(1, 2) * (arr[nm][k] + arr[nm][k + 1]) * du
         require(h5_0 + G_3d[0][K0] == 0 and G_3d[1][K0] == 0 and G_3d[2][K0] == 0, 'trapezoid compact support failed')
+        C2_B = [Poly(), Poly([Fr(1)])]
+        C2_M1 = [Poly([Fr(-1)]), Poly([Fr(1)])]
+        C2_M1_2 = biv_mul(C2_M1, C2_M1)
+        D_B = [Poly([Fr(1)]), Poly([eps])]
+        D2_B = biv_mul(D_B, D_B)
+        D3_B = biv_mul(D2_B, D_B)
+        D4_B = biv_mul(D2_B, D2_B)
+        DM1_B = [Poly(), Poly([eps])]
 
     stats = dict(leaves=0, max_depth=0)
     lam_poly = Poly([lam[0] + m00 + 4 * m01 + 4 * m11, lam[1], lam[2], lam3])
@@ -514,6 +554,130 @@ def verify_row_bernstein(row):
                 ]
             for m_sz in (2, 3, 4):
                 require(check_pos(det_mat([r[:m_sz] for r in P0_mat[:m_sz]]), r_lo, r_hi, stats), f'P0 minor {m_sz} k={k}')
+
+            # (d) Algebraically independent symbolic verification in Q[v, c_2][c_1, rho, alpha_2]
+            #     directly from the raw Stein brackets (I)-(IV) and (V_eps)-(VII_eps) (clearing D^4 = (1 + eps c_2)^4):
+            # 1) Check V_list against raw (tilde_beta, tilde_beta_perp) coupling (cleared by D^2):
+            lhs_vb0 = biv_add(biv_mul([V_list[0]], D2_B), biv_add(biv_mul([V_list[1]], D_B), [V_list[2]]))
+            rhs_vb0 = biv_add(
+                biv_mul([g3 + g4], D2_B),
+                biv_add(
+                    biv_mul([-V_VAR * h5, V_VAR * p5], D_B),
+                    biv_add(
+                        biv_mul([inv_e * g6], biv_sub(D2_B, [Poly([c_1pe2])])),
+                        biv_mul([g7], biv_mul(D_B, C2_M1)),
+                    ),
+                ),
+            )
+            require(biv_eq(lhs_vb0, rhs_vb0), f'raw V_list[0..2] mismatch k={k}')
+            lhs_vb1 = biv_add(biv_mul([V_list[3]], D_B), [V_list[4]])
+            rhs_vb1 = biv_add(biv_mul([V_VAR * p5], D_B), [c_1pe * g7])
+            require(biv_eq(lhs_vb1, rhs_vb1), f'raw V_list[3..4] mismatch k={k}')
+
+            # 2) Check all 6 channels (alpha_2, rho^2, rho, c_1^2, c_1, 1) of raw post-T(v) majorant == certified blocks:
+            T_bot_D2 = biv_add(biv_mul([T_p[3][3]], D2_B), biv_add(biv_mul([2 * T_p[3][4]], D_B), [T_p[4][4]]))
+            T_top_D4 = biv_add(
+                biv_mul([T_p[0][0]], D4_B),
+                biv_add(
+                    biv_mul([2 * T_p[0][1]], D3_B),
+                    biv_add(
+                        biv_mul([T_p[1][1] + 2 * T_p[0][2]], D2_B),
+                        biv_add(biv_mul([2 * T_p[1][2]], D_B), [T_p[2][2]]),
+                    ),
+                ),
+            )
+            T_cr_D3 = biv_add(
+                biv_mul([T_p[0][3]], D3_B),
+                biv_add(
+                    biv_mul([T_p[1][3] + T_p[0][4]], D2_B),
+                    biv_add(biv_mul([T_p[2][3] + T_p[1][4]], D_B), [T_p[2][4]]),
+                ),
+            )
+
+            # alpha_2 channel (cleared by D^4):
+            raw_al2 = biv_sub(
+                biv_sub(biv_mul([Poly([mu_a]) - p4], D4_B), biv_mul([p7], biv_mul(D3_B, C2_M1))),
+                biv_mul(C2_B, T_bot_D2),
+            )
+            A0_D4 = biv_add(
+                biv_mul([A0_00], D4_B),
+                biv_add(
+                    biv_mul([2 * A0_01], D3_B),
+                    biv_add(biv_mul([A0_11 + 2 * A0_02], D2_B), biv_add(biv_mul([2 * A0_12], D_B), [A0_22])),
+                ),
+            )
+            A1_D2 = biv_add(biv_mul([a1_0p], D2_B), biv_add(biv_mul([2 * a1_1p], D_B), [a1_2p]))
+            th_al = psa + Poly([mu_a]) - p4 - dal_p
+            blk_al2 = biv_sub(biv_add(biv_add(A0_D4, biv_mul(DM1_B, A1_D2)), biv_mul([th_al], D4_B)), biv_mul([psa], D4_B))
+            require(biv_eq(raw_al2, blk_al2), f'raw alpha_2 channel mismatch k={k}')
+
+            # rho^2 channel (cleared by D^4):
+            raw_rho2 = biv_add(biv_sub(biv_mul([Poly([mu_rho])], D4_B), biv_mul(C2_B, T_bot_D2)), biv_mul(C2_B, T_bot_D2))
+            blk_rho2 = biv_add(
+                biv_mul([M33 - th_al], D4_B),
+                biv_add(
+                    biv_mul([trt1_p], D2_B),
+                    biv_add([trt2_p], biv_add(biv_mul([trt1_p], biv_sub(D4_B, D2_B)), biv_mul([trt2_p], biv_sub(D4_B, [Poly([Fr(1)])])))),
+                ),
+            )
+            require(biv_eq(raw_rho2, blk_rho2), f'raw rho^2 channel mismatch k={k}')
+
+            # rho channel (cleared by v * D^4):
+            if k == 0:
+                vU3_0, vU3_1, vU3_2 = V_VAR * U3_0, V_VAR * U3_1, V_VAR * U3_2
+                vM13_chk, vb3_chk = V_VAR * M13, V_VAR * b3
+            else:
+                vU3_0, vU3_1, vU3_2 = U3_0, U3_1, U3_2
+                vM13_chk, vb3_chk = vM13, vb3
+            raw_vrho = biv_sub(
+                biv_sub(
+                    biv_mul([V_VAR * (sig * V_VAR - xap) - vY1 - Fr(1, 2) * vY2], D4_B),
+                    biv_add(
+                        biv_mul([vY3], biv_mul(D4_B, C2_M1)),
+                        biv_add(
+                            biv_mul([-V_VAR * g4, vY4], D4_B),
+                            biv_add(biv_mul([vY6], biv_mul(D3_B, C2_M1_2)), biv_mul([-V_VAR * g7, vY7], biv_mul(D3_B, C2_M1))),
+                        ),
+                    ),
+                ),
+                biv_mul([2 * V_VAR], biv_mul(C2_B, T_cr_D3)),
+            )
+            vU3_D2 = biv_add(biv_mul([vU3_0], D2_B), biv_add(biv_mul([vU3_1], D_B), [vU3_2]))
+            vU4_D2 = biv_add(biv_mul([V_VAR * U4_0], D2_B), biv_add(biv_mul([V_VAR * U4_1], D_B), [V_VAR * U4_2]))
+            blk_vrho = biv_add(
+                biv_mul([Poly([Fr(2)])], biv_add(biv_mul(D_B, vU3_D2), vU4_D2)),
+                biv_mul([Poly([Fr(2)])], biv_mul(D4_B, [vb3_chk, vM13_chk])),
+            )
+            require(biv_eq(raw_vrho, blk_vrho), f'raw rho channel mismatch k={k}')
+
+            # c_1^2 and c_1 channels:
+            raw_c1 = [Poly([-2 * m01 - 4 * m11]) - Fr(1, 2) * p2 - x1p, Poly([2 * m01])]
+            blk_c1 = [2 * b2_v, psa + 2 * M12]
+            require(biv_eq(raw_c1, blk_c1), f'raw c_1 channel mismatch k={k}')
+
+            # Pure-c_2 / constant channel (cleared by D^4; -r cancels on both sides):
+            base_c2 = [
+                Poly([lam[0] + m00 + 4 * m01 + 4 * m11, lam[1], lam[2], lam3]) + g1 + g2 - g3,
+                Poly([-2 * m00 - 4 * m01]) - x2p - p1 + p3 + g3,
+                Poly([m00]) - p3,
+            ]
+            raw_1 = biv_sub(
+                biv_sub(biv_mul(base_c2, D4_B), biv_mul([-g6, p6], biv_mul(D3_B, C2_M1_2))),
+                biv_mul(C2_B, T_top_D4),
+            )
+            Ps_top_D4 = biv_add(
+                biv_mul([P_00], D4_B),
+                biv_add(
+                    biv_mul([2 * P_01], D3_B),
+                    biv_add(biv_mul([P_11 + 2 * P_02], D2_B), biv_add(biv_mul([2 * P_12], D_B), [P_22])),
+                ),
+            )
+            B1_D2 = biv_add(biv_mul([b1_0p], D2_B), biv_add(biv_mul([2 * b1_1p], D_B), [b1_2p]))
+            blk_1 = biv_add(
+                biv_add(Ps_top_D4, biv_mul(DM1_B, B1_D2)),
+                biv_mul([q1_rem, 2 * b1, M11], D4_B),
+            )
+            require(biv_eq(raw_1, blk_1), f'raw constant/c_2 channel mismatch k={k}')
 
     d_lin_form = (m00 * VAR_C2 + m01 * CROSS_2_C2_C1 + m11 * VAR_C1
                   + (mu_a + mu_rho) * E_ABS_A2 + mu_w * E_W + sig * E_VRHO)

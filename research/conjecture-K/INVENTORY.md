@@ -1568,25 +1568,21 @@ file, the notes as delivered included.
 ## Explicit sharp-radius regimes, damped Level-3 hierarchy, and complex quintic chaos H₃,₂ (gemini-2762, task #523)
 
 - [Proof and replay instructions](sources/sharp-radius-2026-11-17-gemini-2762/PROOF.md) and
-  [certificates, verifiers, generators and diagnostics](code/sharp-radius-gemini-2762/) (tag KSR; STATUS 3.6, 3.7, 3.18, 3.21 (e1), 3.30; author only). Every file is under 300 KB and committed in the repository; no external files or dependencies were left outside.
-- **Certificates in the repository:**
+  [certificate, verifiers, generator and diagnostics](code/sharp-radius-gemini-2762/) (tag KSR; STATUS 3.6, 3.7, 3.18, 3.21 (e1), 3.30; author only). Every file is under 300 KB and committed in the repository; no external files or dependencies were left outside.
+- **Certificate in the repository:**
   - `code/sharp-radius-gemini-2762/cert_915.json` (283,678 B, SHA-256 `002dc15f7de8d265665a0bd5bb512875921e13be566d5de698a6a3a265754abc`), 14 contiguous rows covering s ∈ [0, 42] (5 Compactly-Supported Damped Level-3 rows on [2, 7] at ε = 1/40 on [0, 68²], 9 Level-2 flank rows on [0, 2] ∪ [7, 42]), global maximum `234065164214019206310668315551053737400241729/255983918816774582499039772672000000000000000` (`≤ 0.9143744861 < 1829/2000 = 0.9145`) on s ∈ [15/4, 9/2], and `≤ 0.8858291448 < 443/500 = 0.886 < √π/2` across s ∈ [26, 42].
-  - `code/sharp-radius-gemini-2762/cert_h32.json` (51,236 B, SHA-256 `f0074f28c7ee33f864999a4a8891e91773414640703be3e65d9c4d8bdf890a1a`), 14 contiguous rows covering s ∈ [0, 1840] on H₃,₂(ℂⁿ), global maximum `≤ 0.9999968653 < 999999/1000000 < 1` on s ∈ [140, 230].
-- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations):** `python3 -I -O verify_near_gaussian.py` (κ₀ = 1/49000, κ₁ = 1/12250, χ₀ = 1/72000, χ₁ = 1/18000), `python3 -I -O check_identities_exact.py` (H₂,₁ `(V)`–`(VII)`, H₃,₂ identities, 9 Hyperplane shell constants, 154,578 bipartite multigraphs, degree-5 small-t bounds), `python3 -I -O verify_cert_level3.py cert_915.json` (Sturm, ~39 s), `python3 -I -O verify_bernstein_level3.py cert_915.json` (Bernstein, 10,007 leaves, ~21 s), `python3 -I -O verify_cert_h32.py cert_h32.json` (dual Sturm + Bernstein, 912 leaves, ~5 s), and `python3 -I -O negative_controls.py cert_915.json cert_h32.json` (104 adversarial rejection checks). [Replay log](code/sharp-radius-gemini-2762/REPLAY.log)
+- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations):** `python3 -I -O verify_near_gaussian.py` (κ₀ = 1/49000, κ₁ = 1/12250, χ₀ = 1/72000, χ₁ = 1/18000), `python3 -I -O check_identities_exact.py` (H₂,₁ `(V)`–`(VII)` and symbolic damped `(V_ε)`–`(VII_ε)` with Ψ₆′/Ψ₇′, H₃,₂ `Form I/II`, 10δ budget, 9 Hyperplane shell constants & 1/√(a!b!) Wick norms, 3-pair Frobenius & closed-form B = 11000 `< 1` majorant, degree-5 small-t bounds), `python3 -I -O verify_cert_level3.py cert_915.json` (Sturm, ~100 s), `python3 -I -O verify_bernstein_level3.py cert_915.json` (Bernstein + symbolic ℚ[v, c₂] raw-bracket check, 10,007 leaves, ~41 s), and `python3 -I -O negative_controls.py cert_915.json` (94 adversarial checks). [Replay log](code/sharp-radius-gemini-2762/REPLAY.log)
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/sharp-radius-2026-11-17-gemini-2762/PROOF.md` | 47,389 B | `9984090ea6867c69f5622ff454dffc373e568bfcef3deeff9b0e51a2734de31e` |
-| `code/sharp-radius-gemini-2762/REPLAY.log` | 9,012 B | `00647ea67452ed18481270dff999c201866bd2b23954f39543f58b01f514fb27` |
+| `sources/sharp-radius-2026-11-17-gemini-2762/PROOF.md` | 61,812 B | `68f0027d80b0cfa4705c1f5de04c0101826986c4be37606a16d1608c070c4cde` |
+| `code/sharp-radius-gemini-2762/REPLAY.log` | 7,068 B | `2b2ac8ae0c4713cd7008a5e2cb2c5ce2e1a061e0ae6d23366519f555b93f6210` |
 | `code/sharp-radius-gemini-2762/cert_915.json` | 283,678 B | `002dc15f7de8d265665a0bd5bb512875921e13be566d5de698a6a3a265754abc` |
-| `code/sharp-radius-gemini-2762/cert_h32.json` | 51,236 B | `f0074f28c7ee33f864999a4a8891e91773414640703be3e65d9c4d8bdf890a1a` |
-| `code/sharp-radius-gemini-2762/check_identities_exact.py` | 29,664 B | `8576c579e3ece150f77acdd9357c2c2e4fba30af5e236499d5e78c68be6b69e8` |
+| `code/sharp-radius-gemini-2762/check_identities_exact.py` | 35,885 B | `04156cf80aa5267d9b587d8603c72c766b8926c50b99f2d81870a540fe7e51f9` |
 | `code/sharp-radius-gemini-2762/diagnose_916.py` | 21,629 B | `4ccce8131e0591f5e0caa0cd3743dea475cc57de93c1caf0da7c7efe538d21d1` |
-| `code/sharp-radius-gemini-2762/make_cert_h32.py` | 19,213 B | `cc6197da9f2d4130c2f7e0d63dc1e3072f3a773582015ad341b097ca6d05a2f6` |
 | `code/sharp-radius-gemini-2762/make_cert_level3.py` | 64,003 B | `ef43d1707b7a0d48ded7938f6630d7bb7f538725f818e2e6dfcd2576e0b4f520` |
-| `code/sharp-radius-gemini-2762/negative_controls.py` | 11,451 B | `49b4e8422f9d6fced34dd0f46843b8faf4273b3ed2717019abc5b195909dc976` |
+| `code/sharp-radius-gemini-2762/negative_controls.py` | 11,606 B | `dd4ae132590356df8db8f191a06af33bb04ea7f086036737f36ccc085e8a76cc` |
 | `code/sharp-radius-gemini-2762/search_quintic_h32.py` | 9,907 B | `7ea117f0d2feaa0dcd8e6c1ace4aea1de9eeb36079a049f3daca73e526432744` |
-| `code/sharp-radius-gemini-2762/verify_bernstein_level3.py` | 25,968 B | `a81a0a304bb8d8f94dd0e9087bf856582cf3f5804ba574e7a776fc2979669db5` |
-| `code/sharp-radius-gemini-2762/verify_cert_h32.py` | 16,350 B | `3c565ac64c52c1ae2aae558fe9be78eafa4eda126f34d2c935a0929e6e95ffe7` |
+| `code/sharp-radius-gemini-2762/verify_bernstein_level3.py` | 33,794 B | `f29d591f76bef769d84c1aa39442220bd89edfaabae652370c0c8387d56b1ff8` |
 | `code/sharp-radius-gemini-2762/verify_cert_level3.py` | 33,802 B | `1bed4cddd974a0fb5dc7354684a4641e6fe1e58153ed9997c8e405255dd65b6d` |
-| `code/sharp-radius-gemini-2762/verify_near_gaussian.py` | 21,546 B | `51b360261cb9d1c0e4b16170297b6764264ed346b2f51abe4e83934bec09de9c` |
+| `code/sharp-radius-gemini-2762/verify_near_gaussian.py` | 21,596 B | `f096ef67fab2ffa6567a31dfc770dbf0bb1793652d42c1a828fa93a6179d1b28` |
