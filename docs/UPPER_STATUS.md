@@ -1,9 +1,12 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The current proved upper bound is **K_G^ℂ < 1.404599395362**, without
+The six-channel proof at the advertised value `K_G^ℂ ≤ 1.40457588` is under end-to-end verification. The same upper entrypoint states the strict comparison with the reciprocal phase integral. [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../articles/haagerup/README.md).
+
+## Earlier single-channel construction
+
+The single-channel upper bound is **K_G^ℂ < 1.404599395362**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
-[`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
-proved lower bound, `main_bounds` states
+[`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Its former two-sided statement was
 **1.401700322371 < K_G^ℂ < 1.404599395362** in
 [`MainResult.lean`](../Grothe/MainResult.lean).
 
@@ -14,9 +17,9 @@ from fourteen original Gaussian finite-band error inequalities, which are not
 all proved, and the energy-table discrepancy bound `6847009/(5·10^17)`, which
 `Final.hclose_final` proves for the actual frozen response.
 
-The current proof uses six certified low-band and whole-source estimates,
+The single-channel proof uses six certified low-band and whole-source estimates,
 tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `117/100`) with a linear-energy
-deduction. `main_bounds` uses `upper_below_tight`, and the energy-table accuracy
+deduction. Its entrypoint is `upper_below_tight`, and the energy-table accuracy
 `Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). Every module
 under `Grothe/` is in the import closure of `MainResult.lean`; unused formulations are
 kept outside the build, in [the committed archive](../miscellaneous/other-bounds/README.md)
@@ -39,7 +42,7 @@ cache matches the node-cap sources.
 
 ## 1. What is proved
 
-### Current unconditional assembly
+### Single-channel assembly
 
 `upper_below_tight` uses the same concrete rounding `GT` and accepted
 production certificates through this chain:
@@ -225,7 +228,7 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   archived in `abandonware/` (not built).
   The error decomposition, supports and actual centers are formalized.
   `ComparisonInputs` is still a conditional interface for arbitrary `G, X`;
-  the current unconditional theorem uses a different seven-piece comparison
+  the single-channel theorem uses a different seven-piece comparison
   with proved low-band and whole-source radii.
 * The actual table accuracy is **proved**, not an open quadrature project:
   `Final.hclose_final` combines the accepted energy facts with the full
@@ -262,7 +265,7 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
 `certify_taylor_comparison.py`, `taylor_comparison_result.json`). The error decomposition,
 spectral support, concrete center data and phase moments are now implemented.
 The plan below records the original eighteen-piece route and its old cost
-estimates. The current unconditional proof instead uses the six certified
+estimates. The single-channel proof uses the six certified
 inputs and grouped comparison in §1; the original finer Gaussian caps remain
 separate targets.*
 

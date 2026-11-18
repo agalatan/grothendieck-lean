@@ -2,11 +2,11 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The proved interval is `1.401700322371 < K_G^ℂ < 1.404599395362` (`main_bounds`,
-`Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
-(`lower_target`), and so is the upper endpoint (`upper_below_tight`,
-`Grothe/UpperTightFinal.lean`). The upper proof imports the shared Gaussian
-phase identity and Laplace modules under `Grothe/Haagerup/`.
+The six-channel statement is `1.401700322371 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+
+The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The separate article package builds these same sources. [Certificate and checks](../articles/haagerup/README.md).
+
+The earlier `upper_below_tight` proof uses one Gaussian rounding. Its budgets, quadrature, and auxiliary refinements are documented below.
 
 **Reading this inventory.** Most paragraphs describe one module or one result.
 Where a paragraph says that a result takes an estimate as a hypothesis, or that

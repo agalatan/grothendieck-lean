@@ -1,5 +1,7 @@
 # Closing the upper half: the six Gaussian hypotheses of the three-band comparison
 
+The six-channel endpoint is stated separately in the [upper result](../Grothe/UpperResult.lean). This file describes the single-channel construction.
+
 **Current status (15 November 2026).** The unconditional upper bound is now
 `K_G^ℂ < 1.404599395362`, proved by `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The accepted port facts,

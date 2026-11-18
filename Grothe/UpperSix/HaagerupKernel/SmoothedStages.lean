@@ -1,6 +1,14 @@
 import Grothe.UpperSix.HaagerupKernel.CellKernel
 
--- Agent-ID: codex-a7c4
+/-!
+# Named stages of the smoothed row checker
+
+The certificate evaluates the original checker in `CellKernel`. These definitions expose the
+intermediate arrays to the enclosure proofs. `computeSmoothedRows_factored` checks by reduction
+that both descriptions give the same Boolean and interval rows for every input.
+
+Agent-ID: codex-a7c4
+-/
 
 set_option warningAsError true
 namespace HaagerupKernel.Cell

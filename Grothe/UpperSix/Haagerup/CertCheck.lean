@@ -1,7 +1,11 @@
 import Grothe.UpperSix.Haagerup.CellOverlap
-import Grothe.UpperSix.Haagerup.Data.TCellData
-import Grothe.UpperSix.Haagerup.Data.TigerData
-import Grothe.UpperSix.Haagerup.Data.OverlapData
+import Grothe.UpperSix.Haagerup.HeadCheck
+import Grothe.UpperSix.Haagerup.ContourChecks.Channel0
+import Grothe.UpperSix.Haagerup.ContourChecks.Channel1
+import Grothe.UpperSix.Haagerup.ContourChecks.Channel2
+import Grothe.UpperSix.Haagerup.ContourChecks.Channel3
+import Grothe.UpperSix.Haagerup.ContourChecks.Channel4
+import Grothe.UpperSix.Haagerup.ContourChecks.Channel5
 
 set_option warningAsError true
 
@@ -29,162 +33,10 @@ open HaagerupKernel HaagerupKernel.Cell HaagerupKernel.Hardy Haagerup.Data
 
 /-! ### 1. Rational certificate parameters -/
 
-def d12Q : ℚ := 1000000000000
-def d6Q : ℚ := 1000000
-
-def ctQ : ℚ := 23187 / 24245
-def stQ : ℚ := 7084 / 24245
-def seQ : ℚ := 87841 / 98209
-def ceQ : ℚ := 43920 / 98209
-
-def wQ : Fin 6 → ℚ
-  | 0 => 855656321685 / d12Q
-  | 1 => 87304183672 / d12Q
-  | 2 => 156229336 / d12Q
-  | 3 => 117021055 / d12Q
-  | 4 => 56415370682 / d12Q
-  | 5 => 350873570 / d12Q
-
-def p0Q : List ℚ := [991 / 1000, -9 / 1000]
-def q0Q : List ℚ := [0, -1]
-
-def p1Q : List ℚ := [99 / 100, -1 / 100]
-def q1Q : List ℚ := [0, -1]
-
-def p2Q : List ℚ := [
-  91987193366 / d12Q, -494518221970 / d12Q, 403975324766 / d12Q, -99055436 / d12Q,
-  0, 0, 0, -27080072 / d12Q, -217490491 / d12Q, -7730415 / d12Q,
-  0, -10946266 / d12Q, 0, 475570792 / d12Q, 8681386426 / d12Q
-]
-
-def r3Q : List ℚ := [980543369477 / d12Q, -19456630523 / d12Q]
-def r4Q : List ℚ := [930767036298 / d12Q, -69232963702 / d12Q]
-
-def p5Q : List ℚ := [
-  963782504048 / d12Q, -7609745775 / d12Q, 0, -26371854429 / d12Q,
-  0, 0, 0, 0, 0, 0, 0, 0, 2235895748 / d12Q
-]
-def q5Q : List ℚ := [0, -1]
-
-def rhoQ : Fin 6 → ℚ
-  | 0 => 1037 / 1000
-  | 1 => 1037 / 1000
-  | 2 => 103 / 100
-  | 3 => 207 / 200
-  | 4 => 109 / 100
-  | 5 => 1037 / 1000
-
-def regRQ : Fin 6 → ℚ
-  | 0 => 1038 / 1000
-  | 1 => 4153 / 4000
-  | 2 => 259 / 250
-  | 3 => 259 / 250
-  | 4 => 1091 / 1000
-  | 5 => 4153 / 4000
-
-def jCertQ : Fin 6 → ℚ
-  | 0 => 1 / 4
-  | 1 => 1 / 4
-  | 2 => 1 / 5
-  | 3 => 2 / 5
-  | 4 => 2 / 5
-  | 5 => 1 / 5
-
-def budgetQ : Fin 6 → ℚ
-  | 0 => 2528814 / d6Q
-  | 1 => 2507841 / d6Q
-  | 2 => 2919013 / d6Q
-  | 3 => 1692090 / d6Q
-  | 4 => 1658129 / d6Q
-  | 5 => 3355048 / d6Q
-
-def tailQ : Fin 6 → ℚ
-  | 0 => 50024 / d12Q
-  | 1 => 49816 / d12Q
-  | 2 => 1785796 / d12Q
-  | 3 => 110835 / d12Q
-  | 4 => 3 / d12Q
-  | 5 => 57619 / d12Q
-
-def cCertQ : ℚ := 711974258589 / d12Q
-def headCapCertQ : ℚ := 6157850 / d12Q
-def deltaCertQ : ℚ := 621 / 100000000
-
-def headICert : Fin 6 → List Ival
-  | 0 => bivarT 251 tcellRows (p0Q.map ofRatI) (q0Q.map ofRatI) 501 167
-  | 1 => bivarT 251 tcellRows (p1Q.map ofRatI) (q1Q.map ofRatI) 501 167
-  | 2 => bivarT 251 (onedRowsI 251 (haagMuList 251)) (p2Q.map ofRatI) [] 503 0
-  | 3 => bivarT 251 (onedRowsI 251 tigMuList) (r3Q.map ofRatI) [] 503 0
-  | 4 => bivarT 251 (onedRowsI 251 tigMuList) (r4Q.map ofRatI) [] 503 0
-  | 5 => bivarT 251 tcellRows (p5Q.map ofRatI) (q5Q.map ofRatI) 501 167
-
-/-! ### 2. Native computational gates (`regionOK`, `circleMeanOK`, `tail_cmp`, `head_ok`) -/
-
-set_option maxRecDepth 10000 in
-private theorem reg0_ok : regionOK (smoothedRData ctQ stQ seQ p0Q q0Q) (regRQ 0) = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem reg1_ok : regionOK (smoothedRData ctQ stQ seQ p1Q q1Q) (regRQ 1) = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem reg2_ok : regionOK (unsmoothedRData p2Q []) (regRQ 2) = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem reg3_ok : regionOK (unsmoothedRData (r3Q.map (- ·)) r3Q) (regRQ 3) = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem reg4_ok : regionOK (unsmoothedRData (r4Q.map (- ·)) r4Q) (regRQ 4) = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem reg5_ok : regionOK (smoothedRData ctQ stQ seQ p5Q q5Q) (regRQ 5) = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem mean0_ok :
-    circleMeanOK (smoothedRData ctQ stQ seQ p0Q q0Q) (rhoQ 0) (jCertQ 0) (budgetQ 0) 16 = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem mean1_ok :
-    circleMeanOK (smoothedRData ctQ stQ seQ p1Q q1Q) (rhoQ 1) (jCertQ 1) (budgetQ 1) 16 = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem mean2_ok :
-    circleMeanOK (unsmoothedRData p2Q []) (rhoQ 2) (jCertQ 2) (budgetQ 2) 16 = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem mean3_ok :
-    circleMeanOK (unsmoothedRData (r3Q.map (- ·)) r3Q) (rhoQ 3) (jCertQ 3) (budgetQ 3) 12 = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem mean4_ok :
-    circleMeanOK (unsmoothedRData (r4Q.map (- ·)) r4Q) (rhoQ 4) (jCertQ 4) (budgetQ 4) 12 = true := by
-  native_decide
-
-set_option maxRecDepth 10000 in
-private theorem mean5_ok :
-    circleMeanOK (smoothedRData ctQ stQ seQ p5Q q5Q) (rhoQ 5) (jCertQ 5) (budgetQ 5) 16 = true := by
-  native_decide
-
 private theorem tails_rat_ok :
     (List.finRange 6).all (fun p =>
       decide (budgetQ p * (rhoQ p)⁻¹ ^ 1006 ≤ tailQ p ^ 2 * (1 - (rhoQ p)⁻¹ ^ 4))) = true := by
   decide +kernel
-
-set_option maxRecDepth 10000 in
-private theorem head_sum_ok :
-    decide (absSum (addL (sumL ((List.finRange 6).map fun p =>
-      (headICert p).map (mulI (ofRatI (wQ p))))) [negI (ofRatI cCertQ)]) ≤
-      ofRatLo headCapCertQ) = true := by
-  native_decide
 
 /-! ### 3. Analytic channel assembly and `isBound_cert` -/
 

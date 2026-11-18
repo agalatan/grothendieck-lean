@@ -1,0 +1,9 @@
+Grothe.UpperSix.bound
+Grothe.UpperSix.constant_le
+Grothe.UpperSix.constant_lt_inv_gammaDagger
+Haagerup.inv_gammaDagger_gt
+Haagerup.isBound_cert
+Haagerup.mem_bivarT_smoothed
+Haagerup.mem_muTigOf
+Haagerup.modeOverlapsAt_sound
+Haagerup.upper_below_haagerup
