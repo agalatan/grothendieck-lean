@@ -21,10 +21,34 @@ finite exact computations evaluated by compiled code (`native_decide`); see
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
 | Oct–Nov 2026 | **this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K < 1.404599395362}$ |
+| Nov 2026 | **this repository**, [article](haagerup-article/main.pdf) (computer-assisted) | | $\mathbf{K \le 1.40456109 < 1/\gamma^\dagger}$ |
 
 Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
-$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
-it lies inside the interval, about $2.35 \cdot 10^{-5}$ below our upper bound.
+$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, was proposed by Haagerup (1987) as the
+exact value. It lies inside the Lean interval above, about $2.35 \cdot 10^{-5}$ below its upper end; in fact it is a
+strict upper bound for the constant.
+
+## Haagerup's value is a strict upper bound
+
+**The article: [haagerup-article/main.pdf](haagerup-article/main.pdf)** (on arXiv soon). It proves
+
+$$K_G^{\mathbb{C}} \le 1.40456109 < 1/\gamma^\dagger = 1.4045759\ldots,$$
+
+so the conjecture $K_G^{\mathbb{C}} = 1/\gamma^\dagger$ is false.
+- **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
+  rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
+- **The proof is computer-assisted.** Its finitely many numerical facts are certified in exact rational and
+  interval arithmetic, and were re-checked with independently written code. The certificate and its verifier are the
+  article's ancillary files, in [`haagerup-article/anc/`](haagerup-article/anc).
+- **The Lean companion.** A small, separate Lean package,
+  [`haagerup-article/lean`](haagerup-article/lean), has its own CI job and imports only Mathlib. Its theorem
+  `HaagerupRefutation.main_refutation`
+  ([`Main.lean`](haagerup-article/lean/HaagerupRefutation/Main.lean)) derives the bound from a term of the structure
+  `VerifiedSixChannelData`; it is conditional on that hypothesis, and Lean constructs no such term. The fields of the
+  structure are certified outside Lean, by the ancillary data and the verifier in
+  [`haagerup-article/anc/`](haagerup-article/anc).
+- **Not yet part of `main_bounds`.** Bringing this bound into the main development above is in progress.
+- **How it was found.** The construction was discovered with AI, at the end of this project.
 
 The lower endpoint is `Grothe.Statement.lower_target`. The upper endpoint is
 `Grothe.Statement.upper_below_tight`
