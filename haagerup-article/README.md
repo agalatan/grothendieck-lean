@@ -2,6 +2,24 @@
 
 The article (its TeX source and PDF, next to this file) and its Lean companion in `lean/`.
 
+## The article: `main.tex`, `main.pdf`
+
+- Build with `latexmk -pdf main.tex` (pdflatex). The bibliography is inside the file. The figures in `figures/` are
+  made by `figures/make_figures.py` from the certificate data, which is not in the repository yet.
+- Every number has a `% SRC:` comment naming its source; `[DER]` marks arithmetic done in the draft. **Before arXiv,
+  strip all comments**, for example with `arxiv_latex_cleaner`: the comments name internal files.
+- Open items for the author (rendered in red):
+  - the author line;
+  - the author's own account in Section 9, "How this result was found", which has `% TODO(author)` comments;
+  - where the certificate and its scripts are published (Section 7.3), with pinned versions of python-flint,
+    FLINT and numpy (Section 7.6);
+  - Remark 3.3 (an Abel-limit justification, not used by any proof) and Conjecture 3.5 (the one-coordinate ceiling,
+    supported only numerically);
+  - the per-mode split in Section 3.4 and the Monte Carlo convention test in Section 7.5, which were run on an
+    earlier pair, not on the certified one;
+  - bibliography details: FLINT and python-flint versions, the journal reference for Braverman–Makarychev–
+    Makarychev–Naor, Guo–Fang–Lu, the Lean repository, Grothendieck 1953, König 2001, and the pages of Pisier 1978.
+
 ## `lean/`: the Lake package `HaagerupRefutation`
 
 - **Separate target.** It is not part of the `Grothe` target, its axiom report or the proof check in `lean.yml`, and
