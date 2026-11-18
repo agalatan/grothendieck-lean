@@ -96,13 +96,14 @@ In this paper we cross Haagerup's barrier $1/\gd$: his value is a strict upper b
 \begin{theorem}[Main Result]\label{thm:main}
 The complex Grothendieck constant satisfies
 \[
-  \KGC \;\le\; \frac{1}{D_{\mathrm{cert}}} \;<\; 1.40456109 \;<\; \frac{1}{\gd} \;=\; 1.404575934663\ldots,
+  \KGC \;\le\; \frac{1}{D} \;<\; 1.40456109 \;<\; \frac{1}{\gd} \;=\; 1.404575934663\ldots,
 \]
 where
 \[
-  D_{\mathrm{cert}} \;=\; \frac{711966186586434491076163}{10^{24}}
-  \;=\; 0.711966186586\ldots \;>\; \gd + 7.52 \times 10^{-6}.
+  D \;=\; \frac{711966187370379309212814761305187782062687}{10^{42}}
+  \;=\; 0.711966187370\ldots \;>\; \gd + 7.52 \times 10^{-6}
 \]
+is the budget of Section~\ref{sec:cert}, and $1/D = 1.404561084134\ldots$ The Lean companion (Appendix~\ref{app:lean}) evaluates $D$ exactly, and its CI job recomputes the data that define $D$ from the certificate and fails unless $D > 7119595/10^7$ and $1/D < 1.40456109$.
 In particular, Haagerup's value $1/\gd$ is a strict upper bound for $\KGC$.
 \end{theorem}
 
@@ -270,42 +271,40 @@ Notice that the head comparison error over $0 \le k \le 250$ enters \eqref{eq:bu
     \;\in\; \big[1.4941163372 \times 10^{-6} \pm 5 \times 10^{-31}\big]
     \;<\; \frac{1494117}{\Delta}.
   \]
-  Multiplying by $w_{\mathrm{GT}} := w_1 + w_2 + w_3 = \frac{980967063161}{\Delta}$ gives the exact rational allowance
-  \[
-    w_{\mathrm{GT}} \cdot \frac{1494117}{\Delta} \;=\; \frac{1465679565508923837}{10^{24}} \;<\; 1.465680 \times 10^{-6}.
-  \]
+  The head radius $\rho_i$ of each \texttt{GT} channel in the head data is this allowance plus the rounding of the head centres to multiples of $10^{-30}$, rounded up; with $w_{\mathrm{GT}} := w_1 + w_2 + w_3 = \frac{980967063161}{\Delta}$ they contribute $w_{\mathrm{GT}}\,\rho_1 = 1.465678915350\ldots \times 10^{-6}$.
 
   \item \textbf{Quadrature-free Laguerre overlaps for \texttt{tiger} ($i = 4$) and exact recurrences for \texttt{phase} ($i \in \{5,6\}$):} On the $64 \times 48 \times 48$ polar cell grid (\texttt{anc/tiger.json}, whose radial edges $0 = e_{r,0} < \dots < e_{r,47} < e_{r,48} = \infty$ lie in $\frac{1}{36}\Z$ up to $e_{1,47} = \frac{7}{2}$ and $e_{2,47} = \frac{107}{36}$, with centered angle bins $[\frac{2\pi(p - 1/2)}{64}, \frac{2\pi(p + 1/2)}{64})$), the cell integrals $\tilde{J}_{n,a}(s_0, s_1) := \int_{s_0}^{s_1} \phi_{n,a}(s) e^{-s} ds$ satisfy the exact two-term identity
   \[
     \tilde{J}_{n+1,a}(s_0,s_1) \;=\; \frac{n + a/2}{\sqrt{(n+1)(n+1+a)}}\,\tilde{J}_{n,a}(s_0,s_1)
     + \frac{\big[s\,\phi_{n,a}(s)e^{-s}\big]_{s_0}^{s_1}}{\sqrt{(n+1)(n+1+a)}},
   \]
-  where the upper boundary bracket vanishes at $s_1 = \infty$. Because $k_0(m) = (|m| + |1-m| - 1)/2 > 250$ whenever $m < -250$ or $m > 251$, only the $502$ angular modes $m \in [-250, 251]$ contribute to $\mu_0,\dots,\mu_{250}$ in \eqref{eq:mu-tiger} (zero omitted modes). Evaluating these finite sums and the scalar phase recurrence \eqref{eq:phi-haagerup} in 256-bit Arb ball arithmetic (absorbing the $< 10^{-30}$ ball radii directly into $\widetilde{H}_0$ and $\sum_{k=1}^{250}|\widetilde{H}_k|$, so the residual head error for $i \in \{4,5,6\}$ is $0$) certifies
+  where the upper boundary bracket vanishes at $s_1 = \infty$. Because $k_0(m) = (|m| + |1-m| - 1)/2 > 250$ whenever $m < -250$ or $m > 251$, only the $502$ angular modes $m \in [-250, 251]$ contribute to $\mu_0,\dots,\mu_{250}$ in \eqref{eq:mu-tiger} (zero omitted modes). Evaluating these finite sums and the scalar phase recurrence \eqref{eq:phi-haagerup} in 256-bit Arb ball arithmetic gives the head centres $\tilde{h}^{(i)}_k$ (ball midpoints rounded to multiples of $10^{-30}$) and head radii $\rho_i < 10^{-28}$ for $i \in \{4,5,6\}$ (ball radii plus rounding). For the \texttt{GT} channels the centres are the table coefficients. Exactly,
   \[
-    \widetilde{H}_0 \;>\; \frac{711968933048}{\Delta},
+    \widetilde{H}_0 \;=\; 0.711968933048781977\ldots,
     \qquad
-    \sum_{k=1}^{250} \big|\widetilde{H}_k\big| \;<\; \frac{1248782}{\Delta}.
+    \sum_{k=1}^{250} \big|\widetilde{H}_k\big| \;=\; 1.248780953614\ldots \times 10^{-6}.
   \]
 
   \item \textbf{Hardy-space circle covers for $k > 250$:} Restricting the complex correlation $\zeta$ to real $t \in (-1,1)$ turns $f_i(t) := \sum_{k=0}^\infty h^{(i)}_k t^{2k+1}$ into a holomorphic function on the open disk $|t| < r_i$ whenever the $2 \times 2$ Gaussian inverse-covariance blocks $M_\pm(t) := I_2 \mp R_i(t)$ satisfy $\RePart M_\pm(t) \succ 0$ on $|t| \le r_i + 10^{-5}$ (verified on the boundary $|t| = r_i + 10^{-5}$ by the harmonic minimum principle, where $R_i(t)$ is the $2 \times 2$ symmetric correlation matrix induced by $(P_i, Q_i)$ or $R_i$). On $|t| = r_i > 1$, the Gaussian Schur-complement norm bound \cite{Gal26} with parameter $j_i \in (0, \tfrac{1}{2})$ bounds $|f_i(r_i e^{i\theta})|^2$ pointwise via the positive-definite factorization $T := Z - C_r Z^{-1} C_r = (Z - C_r) Z^{-1} (Z + C_r)$, where $S_\pm = \RePart(M_\pm^{-1})$, $Z = \frac{1}{2}(S_+ + S_-) - j_i I_2$, and $C_r = \frac{1}{2}(S_+ - S_-)$. Integrating over $\theta \in [0,\pi]$ by adaptive 256-bit ball subdivision gives an upper bound $B_i \ge \frac{1}{2\pi}\int_0^{2\pi} |f_i(r_i e^{i\theta})|^2 d\theta = \sum_{k=0}^\infty |h^{(i)}_k|^2 r_i^{4k+2}$. Subtracting $|h^{(i)}_0|^2 r_i^2$ and applying Cauchy--Schwarz yields
   \[
     \sum_{k=251}^\infty \big|h^{(i)}_k\big| \;\le\; \sqrt{\frac{B_i - |h^{(i)}_0|^2 r_i^2}{r_i^4 (1 - r_i^{-4})}}\, r_i^{-(2K + 1)}.
   \]
-  Summing across all six channels encloses $\sum_{i=1}^6 w_i \sum_{k=251}^\infty |h^{(i)}_k| \in [3.00 \times 10^{-8} \pm 1.22 \times 10^{-9}] < \frac{32}{10^9}$.
+  The head data store the upper end $\tau_i$ of each enclosure, rounded up at scale $10^{-30}$; summed with the weights, $\sum_{i=1}^6 w_i \tau_i = 3.121853370\ldots \times 10^{-8}$.
 
-  \item \textbf{Exact rational assembly:} Substituting the four certified rational bounds into \eqref{eq:budget-split} yields
+  \item \textbf{Exact assembly:} Substituting the head centres, the head radii $\rho_i$ and the tails $\tau_i$ into \eqref{eq:budget-split} yields, in exact rational arithmetic,
   \begin{align*}
-    D(H) \;\ge\; D_{\mathrm{cert}}
-    &\;:=\; \frac{711968933048}{10^{12}} - \frac{1248782}{10^{12}}
-    - \frac{980967063161}{10^{12}}\cdot\frac{1494117}{10^{12}} - \frac{32}{10^9} \\
-    &\;=\; \frac{711966186586434491076163}{10^{24}}
-    \;=\; 0.711966186586434491\ldots,
+    D(H) \;\ge\; D
+    &\;:=\; \widetilde{H}_0 - \sum_{k=1}^{250} \big|\widetilde{H}_k\big| - \sum_{i=1}^6 w_i \rho_i - \sum_{i=1}^6 w_i \tau_i \\
+    &\;=\; 0.711968933048781977\ldots - 1.248780953614\ldots \times 10^{-6} \\
+    &\qquad - 1.465678915350\ldots \times 10^{-6} - 3.121853370\ldots \times 10^{-8} \\
+    &\;=\; \frac{711966187370379309212814761305187782062687}{10^{42}}
+    \;=\; 0.711966187370379309\ldots,
   \end{align*}
-  whence Lemma~\ref{lem:transfer} implies $\KGC \le \frac{1}{D_{\mathrm{cert}}} = 1.404561085680\ldots < 1.40456109$.
+  whence Lemma~\ref{lem:transfer} implies $\KGC \le \frac{1}{D} = 1.404561084134\ldots < 1.40456109$. This is the computation that the Lean companion carries out in the kernel and that its CI job checks (Appendix~\ref{app:lean}).
 \end{enumerate}
 
 \subsection{Elementary Telescoping Upper Bound on \texorpdfstring{$\gd$}{gamma-dagger}}
-To complete the self-contained proof that $D_{\mathrm{cert}} > \gd$ without invoking numerical quadrature for $\gd$, rewrite $1 + \sin^2 t = 2 - \cos^2 t$ in \eqref{eq:gd-def}.
+To complete the self-contained proof that $D > \gd$ without invoking numerical quadrature for $\gd$, rewrite $1 + \sin^2 t = 2 - \cos^2 t$ in \eqref{eq:gd-def}.
 
 \begin{lemma}[Rational Majorant for $\gd$]\label{lem:gd-upper}
 Haagerup's constant satisfies $\gd < 0.711958663 < \frac{7119595}{10^7}$.
@@ -330,7 +329,7 @@ for all $v \in [0,1]$ (since $\frac{462}{5} - \frac{903}{10} = \frac{21}{10} > 0
 Using $\frac{1}{\sqrt{2}} < \frac{707106782}{10^9}$ (as $2 \cdot 707106782^2 = 1000000002300791048 > 10^{18}$) and $\pi < \frac{31415926536}{10^{10}}$, exact rational arithmetic gives $\gd < 0.7119586629 < 0.711958663 < \frac{7119595}{10^7}$.
 \end{proof}
 
-Combining Lemma~\ref{lem:gd-upper} with $D_{\mathrm{cert}} > 0.711966186 > \frac{7119595}{10^7}$ yields $\KGC \le 1/D_{\mathrm{cert}} < 1.40456109 < 1/\gd$, completing the proof of Theorem~\ref{thm:main}.
+Combining Lemma~\ref{lem:gd-upper} with $D > 0.711966187 > \frac{7119595}{10^7}$ yields $\KGC \le 1/D < 1.40456109 < 1/\gd$, completing the proof of Theorem~\ref{thm:main}.
 
 \section{How this result was found}\label{sec:found}
 

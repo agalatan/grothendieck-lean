@@ -1,6 +1,6 @@
 # Ancillary files: the six-channel certificate and its verifier
 
-These files certify the numerical facts of Section 4 of the article: `K_G^C <= 1/D_cert < 1.40456109 < 1/γ†`.
+These files certify the numerical facts of Section 4 of the article, which give `K_G^C <= 1/D < 1.40456109 < 1/γ†`.
 They contain no Lean files. The Lean companion (Appendix B of the article) is kept in the repository
 <https://github.com/agalatan/grothendieck-lean>, folder `haagerup-article/lean`.
 
