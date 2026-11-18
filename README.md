@@ -22,36 +22,21 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K\le 1.40457588}$ |
+| Oct–Nov 2026 | **two-sided Lean theorem in this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K\le 1.40457588}$ |
 
 ## Haagerup's value is a strict upper bound
 
-**The article: [haagerup-article/main.pdf](haagerup-article/main.pdf)** (on arXiv soon). It proves that
-$K_G^{\mathbb{C}}$ is strictly below Haagerup's value:
+The six-channel construction places the complex Grothendieck constant strictly below
+Haagerup’s proposed value $1/\gamma^\dagger = 1.4045759\ldots$. The two numerical bounds have different proofs.
 
-$$K_G^{\mathbb{C}} \le 1.40456109 < 1/\gamma^\dagger = 1.4045759\ldots,$$
+| Upper bound for $K_G^{\mathbb C}$ | What establishes it |
+|---|---|
+| $1.40457588$ | Lean proves `Grothe.UpperSix.bound` for every finite complex matrix and discharges the six channels’ estimates. This is the upper endpoint of `Grothe.Statement.main_bounds`. [Production proof](Grothe/UpperResult.lean) · [Build instructions](#building) |
+| $1.40456109$ | The paper proves domination analytically and certifies the head and tail estimates by interval arithmetic. Its Lean theorem `HaagerupBound.upper_bound` takes these facts as a `ChannelFacts` hypothesis and checks the transfer and numerical budget. [Paper](haagerup-article/main.pdf) · [Certificate verifier](haagerup-article/anc/README.md) · [Companion theorem](haagerup-article/lean/HaagerupBound/UpperBound.lean) |
 
-thus resolving this conjecture of Haagerup (1987).
+The paper describes how AI helped find the reflected two-coordinate rounding and the mixture. Its numerical enclosures were reproduced with independently written code. The companion imports only Mathlib and has a [separate CI check](.github/workflows/haagerup-article.yml).
 
-- **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
-  rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
-- **The proof is computer-assisted.** Its finitely many numerical facts are certified in exact rational and
-  interval arithmetic, and were re-checked with independently written code. The certificate is in
-  [`haagerup-article/anc/`](haagerup-article/anc).
-- **The Lean companion.** A small, separate Lean package,
-  [`haagerup-article/lean`](haagerup-article/lean), has its own CI job and imports only Mathlib. Its theorem
-  `HaagerupBound.upper_bound`
-  ([`UpperBound.lean`](haagerup-article/lean/HaagerupBound/UpperBound.lean)) derives the bound from three
-  facts supplied by the article for each channel. They establish domination, a finite-head enclosure and an infinite-tail bound.
-  Lean evaluates the article’s whole numerical budget from these data.
-- **The production theorem.** `Grothe.UpperSix.bound` proves the admissibility of $1.40457588$ for every finite
-  matrix, with the channel estimates discharged in Lean. This is the six-channel bound used in `main_bounds`. [Production proof](Grothe/UpperResult.lean).
-- **How it was found.** The construction was discovered with AI, at the end of this project; the article's last
-  section describes how.
-
-**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
-constructions, what exactly the computer checks, the new inequalities and obstructions found along
-the way, and why the remaining gap is hard.
+For an introduction to the upper and lower constructions, read the [overview source on this branch](docs/overview.tex) or the [PDF built from `master`](OVERVIEW.pdf).
 
 ## The constant
 
@@ -152,9 +137,8 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
   soundness proof holds for every choice (`gridOK_mkGrid`).
 - **Caches.** CI does not evaluate every fact in every run. It restores the build of an earlier CI run, and Lake
   reuses a stored module only if the hashes of its source, its imports and the toolchain match. For the heaviest
-  facts, the node caps and the energy table, the cache also carries a hash of their sources, written by the run
-  that evaluated them and compared before the cache is used (`scripts/caps_stamp.py`). So a green check means
-  that CI has evaluated every fact for exactly these sources, not that it did so in that run.
+  facts, the node caps and the energy table, CI also checks a source digest before using the cache. A run marked
+  “no proof change” inherits the parent’s proof result. The workflow log records whether it ran the Lean build and axiom audits. [Cache check](scripts/caps_stamp.py) · [Proof workflow](.github/workflows/lean.yml).
 
 ## Layout
 
@@ -180,7 +164,7 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
 | `QuadRun.lean` | `quadrun`, a diagnostic driver of the quadrature checker; not a default target, not built by CI |
 | `data/` | inputs of the generated modules (certificates, recipes, plans, tables); `data/axioms/` holds the lists read by the axiom check |
 | `tools/` | generators of the data modules, replay scripts and numerical cross-checks |
-| `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
+| `scratch/Axioms.lean`, `scratch/UpperSixAxioms.lean`, `scripts/check_axioms.py` | repository-wide and six-channel axiom reports and their checker |
 | `scripts/`, `.github/workflows/`, `AGENTS.md` | CI, its helper scripts, and the working rules of the agents that maintain the repository |
 | `docs/` | `LEAN_DETAILS.md` (inventory), `overview.tex` (source of `OVERVIEW.pdf`), and design and status notes, each describing the state at its date |
 | `sign/` | GrotheSign, a separate Lake package: independent work on the coefficient signs of inverse kernel series. Not part of `Grothe`, of its axiom report or of CI; see [`sign/README.md`](sign/README.md) |
@@ -197,38 +181,23 @@ paragraph in them calls an input a hypothesis or open, the theorems named above 
 
 ## Building
 
-From the repository root, these commands check the six-channel upper bound and audit its axioms.
+### Six-channel upper bound
 
-```sh
+From a fresh checkout, run `lake exe cache get` to download compiled Mathlib dependencies. The repository pins Lean and Mathlib to `v4.34.1`. Then run these commands from the repository root in Bash or Zsh.
+
+```bash
+set -o pipefail
 lake build Grothe.UpperResult
 lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six
 ```
 
-The combined development, including the lower certificate, uses
+`Grothe.UpperResult` builds the upper proof independently of the lower node caps. The audit checks that every required upper theorem appears and that its transitive axioms are among Lean’s three standard axioms and the named six-channel computations. [Required theorems](data/axioms/modes/upper-six.required.txt) · [Six-channel native allowlist](data/axioms/modes/upper-six.native.txt).
 
-```sh
-lake exe cache get   # Mathlib v4.34.1 (toolchain leanprover/lean4:v4.34.1)
-lake build
-lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
-```
+### Full proof check
 
-The directory `sign/` is a separate Lake package with its own instructions; these commands do not build it.
+CI runs `lake build Grothe` for the combined development, then checks the generated imports, the sources and both axiom reports. The combined build includes all lower node caps and the single-channel energy facts. A cold build takes several CPU-days. The upper-only command above is the local build for the six-channel theorem. [Proof workflow](.github/workflows/lean.yml) · [Pinned dependencies and build costs](lakefile.toml).
 
-`lake build` builds the single target `Grothe`: both proofs with all their `native_decide` facts. From an empty
-build directory every fact is evaluated, which takes several days of CPU time: `lakefile.toml` records about 21
-CPU-hours for the fifteen range-checked cap rows and about ten hours for each energy-table fact, and there are
-other facts besides. The dependencies, Mathlib and LeanCert, are pinned in the same file.
-
-CI ([`.github/workflows/lean.yml`](.github/workflows/lean.yml)) checks pushed branches: it builds `Grothe`,
-checks that the root import files are the generated ones, rejects the constructs listed
-[above](#what-the-computer-checks-and-what-is-trusted) and checks the axiom report. A change that touches nothing
-Lean builds or checks skips the build. Runs start from the build cache described above. When the sources of the
-heaviest facts change, no cache fits them: the check of an ordinary pushed branch then fails at once and says so,
-and the facts are evaluated again on a self-hosted machine by the landing check of the pull request, by the check
-of `master`, or by a run dispatched for that purpose (`-f mode=caps`). Changes reach `master` through pull requests:
-after review the author comments `/land <agent-id>`, and CI checks the branch merged into the current `master` and
-moves `master` to that merge only if the check is green (`AGENTS.md` §7). Every update of `master` gets its own
-check.
+Changes ordinarily reach `master` through a reviewed pull request and a check of the merged tree. During the lower-bound build for #525, `staging` serves as the integration branch. The coordination issue records when that arrangement ends. [Landing rules](AGENTS.md#7-landing-work-the-checklist) · [Staging notice](https://github.com/agalatan/grothendieck-lean/issues/225#issuecomment-6951470679).
 
 ## Related work
 

@@ -1,17 +1,13 @@
 # Native source inventory
 
 This inventory covers the named native facts allowed for the single `Grothe`
-target, plus the four anonymous table diagnostics below. The current allowlist
-is `data/axioms/native.txt` (cap ranges, Hardy facts and others). The default report is
-`scratch/Axioms.lean`, with its required declarations in `data/axioms/required.txt`. Normal `ready/*` delivery CI builds and audits
-the combined tree before merging it.
+target, plus the four anonymous table diagnostics below. The current repository-wide allowlist is `data/axioms/native.txt`. The combined report is
+`scratch/Axioms.lean`, with its required declarations in `data/axioms/required.txt`.
 
-The six-channel upper endpoint has its own transitive audit. From the repository root, run
-`lake build Grothe.UpperResult`, then
-`lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six`.
-The allowlist names the two cell witnesses, both overlap-table checks, the weighted head,
-and each channel’s disk and circle checks. The rational tail comparisons reduce in the
-kernel. [Upper-only allowlist](../data/axioms/modes/upper-six.native.txt).
+The proof-check workflow also audits `scratch/UpperSixAxioms.lean` against the required six-channel
+allowlist. It covers the two cell witnesses, both overlap-table checks, the weighted head, and each
+channel’s disk and circle checks. The rational tail comparisons reduce in the kernel.
+[Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
 
 The lower chain uses the 15,096-box finite-mixture cover. Its exact checks cover
 the unchanged rows and mixed batches, the original and additional law-node banks,
