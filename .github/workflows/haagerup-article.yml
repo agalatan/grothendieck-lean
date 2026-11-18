@@ -2,7 +2,8 @@ name: Haagerup article (Lean)
 
 # The Lean part of the article in haagerup-article/: the standalone Lake package haagerup-article/lean. It is not part
 # of the Grothe target or of lean.yml's proof check. This job runs only when a file under haagerup-article/ changes,
-# when the Lean or Mathlib version changes (lean-toolchain, lake-manifest.json), or when this file changes; or by hand
+# when the Lean or Mathlib version changes (lean-toolchain, lake-manifest.json), when one of the six repository files
+# that the head-data generator reads changes, or when this file changes; or by hand
 # (workflow_dispatch). It builds the package with warnings as errors, rejects sorry, axioms and unchecked code,
 # regenerates HeadData.lean from the certificate in anc/, and accepts only propext, Classical.choice and Quot.sound
 # in the axioms of haagerup-article/lean/Axioms.lean.
@@ -14,6 +15,13 @@ on:
       - 'lean-toolchain'
       - 'lake-manifest.json'
       - '.github/workflows/haagerup-article.yml'
+      # read by haagerup-article/lean/scripts/gen_head_data.py (the GT table and the verbatim comparison constants)
+      - 'Grothe/Upper/Data.lean'
+      - 'Grothe/Upper/ComparisonData.lean'
+      - 'Grothe/Upper/ComparisonGroups.lean'
+      - 'Grothe/Upper/ThreeBandBudget.lean'
+      - 'Grothe/UpperTightBudget.lean'
+      - 'GrotheKernel/BandMass.lean'
   workflow_dispatch:
 
 permissions:
