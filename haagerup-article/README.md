@@ -13,8 +13,6 @@ Start here: `HaagerupBound.upper_bound` in `lean/HaagerupBound/UpperBound.lean`.
 on `facts : ChannelFacts`, three facts per channel that the article establishes outside Lean (see "What Lean proves,
 and what it assumes" below).
 
-The repository’s production Lean proof discharges all channel estimates for the upper bound $1.40457588$. [Production theorem and build instructions](../articles/haagerup/README.md).
-
 ## The article: `main.tex`, `main.pdf`
 
 - Build with `latexmk -pdf main.tex` (pdflatex). The bibliography is inside the file. The article has 10 pages: the

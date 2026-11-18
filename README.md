@@ -26,17 +26,32 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 
 ## Haagerup's value is a strict upper bound
 
-The six-channel construction places the complex Grothendieck constant strictly below
-Haagerup’s proposed value $1/\gamma^\dagger = 1.4045759\ldots$. The two numerical bounds have different proofs.
+**The article: [haagerup-article/main.pdf](haagerup-article/main.pdf)** (on arXiv soon). It proves that
+$K_G^{\mathbb{C}}$ is strictly below Haagerup's value:
 
-| Upper bound for $K_G^{\mathbb C}$ | What establishes it |
-|---|---|
-| $1.40457588$ | Lean proves `Grothe.UpperSix.bound` for every finite complex matrix and discharges the six channels’ estimates. This is the upper endpoint of `Grothe.Statement.main_bounds`. [Production proof](Grothe/UpperResult.lean) · [Build instructions](#building) |
-| $1.40456109$ | The paper proves domination analytically and certifies the head and tail estimates by interval arithmetic. Its Lean theorem `HaagerupBound.upper_bound` takes these facts as a `ChannelFacts` hypothesis and checks the transfer and numerical budget. [Paper](haagerup-article/main.pdf) · [Certificate verifier](haagerup-article/anc/README.md) · [Companion theorem](haagerup-article/lean/HaagerupBound/UpperBound.lean) |
+$$K_G^{\mathbb{C}} \le 1.40456109 < 1/\gamma^\dagger = 1.4045759\ldots,$$
 
-The paper describes how AI helped find the reflected two-coordinate rounding and the mixture. Its numerical enclosures were reproduced with independently written code. The companion imports only Mathlib and has a [separate CI check](.github/workflows/haagerup-article.yml).
+thus resolving this conjecture of Haagerup (1987).
 
-For an introduction to the upper and lower constructions, read the [overview source on this branch](docs/overview.tex) or the [PDF built from `master`](OVERVIEW.pdf).
+- **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
+  rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
+- **The proof is computer-assisted.** Its finitely many numerical facts are certified in exact rational and
+  interval arithmetic, and were re-checked with independently written code. The certificate is in
+  [`haagerup-article/anc/`](haagerup-article/anc).
+- **The Lean companion.** A small, separate Lean package,
+  [`haagerup-article/lean`](haagerup-article/lean), has its own CI job and imports only Mathlib. Its theorem
+  `HaagerupBound.upper_bound`
+  ([`UpperBound.lean`](haagerup-article/lean/HaagerupBound/UpperBound.lean)) derives the bound from three
+  facts supplied by the article for each channel. They establish domination, a finite-head enclosure and an infinite-tail bound.
+  Lean evaluates the article’s whole numerical budget from these data.
+- **The production theorem.** `Grothe.UpperSix.bound` proves the admissibility of $1.40457588$ for every finite
+  matrix, with the channel estimates discharged in Lean. This is the six-channel bound used in `main_bounds`. [Production proof](Grothe/UpperResult.lean).
+- **How it was found.** The construction was discovered with AI, at the end of this project; the article's last
+  section describes how.
+
+**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
+constructions, what exactly the computer checks, the new inequalities and obstructions found along
+the way, and why the remaining gap is hard.
 
 ## The constant
 
@@ -175,9 +190,9 @@ Most modules are generated: certificate data, and small modules that each check 
 as a `native_decide` fact, so that Lake runs the checks in separate processes. The generators are in `tools/`;
 most read their inputs from `data/`.
 
-The module-by-module inventory is [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md), and the mathematics is explained
-in [OVERVIEW.pdf](OVERVIEW.pdf). Both grew with the proofs and have not yet been revised as a whole: where a
-paragraph in them calls an input a hypothesis or open, the theorems named above are the current state.
+The [module inventory](docs/LEAN_DETAILS.md) lists the proof modules. The [overview source](docs/overview.tex)
+explains the mathematics on this branch. CI builds [OVERVIEW.pdf](OVERVIEW.pdf) from `master`. For current
+hypotheses, consult the theorem statements linked above.
 
 ## Building
 
@@ -197,7 +212,7 @@ lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --up
 
 CI runs `lake build Grothe` for the combined development, then checks the generated imports, the sources and both axiom reports. The combined build includes all lower node caps and the single-channel energy facts. A cold build takes several CPU-days. The upper-only command above is the local build for the six-channel theorem. [Proof workflow](.github/workflows/lean.yml) · [Pinned dependencies and build costs](lakefile.toml).
 
-Changes ordinarily reach `master` through a reviewed pull request and a check of the merged tree. During the lower-bound build for #525, `staging` serves as the integration branch. The coordination issue records when that arrangement ends. [Landing rules](AGENTS.md#7-landing-work-the-checklist) · [Staging notice](https://github.com/agalatan/grothendieck-lean/issues/225#issuecomment-6951470679).
+The `sign/` directory builds GrotheSign as a separate Lake package. [GrotheSign build instructions](sign/README.md).
 
 ## Related work
 
