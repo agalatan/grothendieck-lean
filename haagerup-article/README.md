@@ -31,8 +31,25 @@ The article (its TeX source and PDF, next to this file) and its Lean companion i
 - **Build.** In a checkout or worktree whose `.lake/packages` holds Mathlib (`lake exe cache get` in the root, or
   `scripts/clone_master_build.sh`): `cd haagerup-article/lean && lake build`. For the axioms:
   `lake env lean Axioms.lean`.
-- **Files.** `HaagerupRefutation/CertData.lean` holds the exact rational data of the certificate (6 channels) and the
-  arithmetic of its budget.
+- **Files.**
+  - `HaagerupRefutation/CertData.lean`: the exact rational data of the certificate (weights and parameters of the
+    six channels, the rational bounds of the budget) and exact checks of the budget arithmetic.
+  - `HaagerupRefutation/HaagerupConstant.lean`: `haagerupDagger = ∫₀^{π/2} cos² t / √(1 + sin² t) dt` and
+    `0 < haagerupDagger < 0.7119595`.
+  - `HaagerupRefutation/ConvexTransfer.lean`: `classicalNorm`, `quantumNorm`, `complexGrothendieckConstant`; the
+    tensor-power lemma, `DominatedRadialSeries`, the transfer theorem
+    `complexGrothendieckConstant_le_inv_of_dominated`, closure under convex combinations, and the head/tail margin.
+  - `HaagerupRefutation/Main.lean`: the hypothesis structure `VerifiedSixChannelData` and the two conditional
+    theorems.
+- **What Lean proves, and what it assumes.** For every `cert : VerifiedSixChannelData`,
+  `complexGrothendieckConstant ≤ 1.4045611` (`complexGrothendieckConstant_le_of_certificate`) and
+  `complexGrothendieckConstant < 1 / haagerupDagger`
+  (`complexGrothendieckConstant_lt_inv_haagerupDagger_of_certificate`), using only `propext`, `Classical.choice` and
+  `Quot.sound`. The assumptions are the fields of `cert`, which are not checked in Lean: six real sequences
+  `h_true i` that are dominated radial series (each channel's kernel series is realised by a disk-valued rounding
+  scheme), approximations `h_app i` within the allowances `chHeadErr i` on `0..250`, tail bounds `tail_err i`, and
+  the numerical enclosures of `h₀`, of the head `ℓ¹` norm and of the weighted tails. Nothing in Lean ties `h_true` to
+  the channels of the article; those facts are established outside Lean.
 
 ## Rules
 

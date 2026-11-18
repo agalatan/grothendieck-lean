@@ -3,15 +3,18 @@ import Mathlib.Algebra.BigOperators.Group.List.Basic
 import Mathlib.Tactic.NormNum
 
 /-!
-# Exact Rational Certificate Data (`cert_final`)
+# Exact rational data of the certificate
 
-Self-contained exact `ℚ` parameters for the 6-channel convex mixture refuting
-Haagerup's conjecture `K_G^ℂ = 1 / γ†`:
+The weights and parameters of the six channels of the mixture:
 * 3 `GT` channels (`Ch1`, `Ch2`, `Ch3`)
 * 1 symmetric `tiger` channel (`Ch4`)
 * 2 `phase` channels (`Ch5`, `Ch6`)
 
 Every polynomial has degree `≤ 3` with exact rational coefficients in `10⁻¹² ℤ`.
+
+The file also records the rational bounds of the budget (computed outside Lean) and checks its arithmetic
+exactly: `haagerupUpperQ < certDLowerQ` and `1 / certDLowerQ < 14045611 / 10000000`. The theorems in
+`Main` use the weights and these bounds; the polynomials, radii and `j` parameters are not used there.
 -/
 
 namespace HaagerupRefutation.CertData
@@ -145,13 +148,13 @@ def certDLowerQ : ℚ :=
 /-- Certified rational upper bound on Haagerup's `γ†` (`0.711958659778... < 0.7119595`). -/
 def haagerupUpperQ : ℚ := 7119595 / 10000000
 
-/-- Exact rational verification that `certDLowerQ > 0.71196618 > haagerupUpperQ` and
-`1 / certDLowerQ < 1.4045611`! -/
+/-- `haagerupUpperQ < certDLowerQ` (indeed `certDLowerQ > 0.71196618`), in exact rational arithmetic. -/
 theorem certDLower_gt_haagerupUpper : haagerupUpperQ < certDLowerQ := by
   norm_num [certDLowerQ, haagerupUpperQ, h0LowerQ, headL1UpperQ, wGT, w1, w2, w3,
             univGTErrUpperQ, hardyTailUpperQ]
 
-theorem inv_certDLower_lt_world_record : 1 / certDLowerQ < 14045611 / 10000000 := by
+/-- `1 / certDLowerQ < 1.4045611`, in exact rational arithmetic. -/
+theorem inv_certDLower_lt_bound : 1 / certDLowerQ < 14045611 / 10000000 := by
   norm_num [certDLowerQ, h0LowerQ, headL1UpperQ, wGT, w1, w2, w3,
             univGTErrUpperQ, hardyTailUpperQ]
 

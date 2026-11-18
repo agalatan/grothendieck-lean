@@ -52,4 +52,6 @@ jobs:
           lake env lean Axioms.lean > axioms.txt
           cat axioms.txt
           grep -q "depends on axioms" axioms.txt
-          ! grep "depends on axioms" axioms.txt | grep -vE "depends on axioms: \[(propext|Classical\.choice|Quot\.sound)(, (propext|Classical\.choice|Quot\.sound))*\]$"
+          # Lean wraps a long axiom list over several lines: join the output, then check each list.
+          tr '\n' ' ' < axioms.txt | grep -oE "depends on axioms: \[[^]]*\]" | tr -s ' ' > axiom-lists.txt
+          ! grep -vE "^depends on axioms: \[(propext|Classical\.choice|Quot\.sound)(, (propext|Classical\.choice|Quot\.sound))*\]$" axiom-lists.txt
