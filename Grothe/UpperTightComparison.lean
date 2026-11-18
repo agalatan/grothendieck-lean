@@ -1,6 +1,5 @@
 -- Grothe/UpperTightComparison.lean
-import Grothe.Upper.ImprovedHeadMass
-import Grothe.UpperChaos.ThreeBandComparison
+import Grothe.UpperChaos.ThreeBandRegrouping
 import Grothe.UpperTightBudget
 
 /-!
@@ -80,7 +79,7 @@ theorem localized_comparison_of_weight_mass_radii (hφ : PhiBound)
 
 section TightInputs
 
-variable (hφ : PhiBound) (hf : OriginalFiniteChecks)
+variable (hφ : PhiBound)
   (hfirst : ‖projOn (firstCenterBandModes 0) (taylorL2 hφ 1 - firstCenter)‖ ≤
     (tightLowErrorQ 0 : ℝ))
   (hsecond : ‖projOn (secondCenterBandModes 0) (taylorL2 hφ 2 - secondCenter)‖ ≤
@@ -91,7 +90,7 @@ variable (hφ : PhiBound) (hf : OriginalFiniteChecks)
   (hwholeSecond : ‖taylorL2 hφ 2 - secondCenter‖ ≤ 2 * (tightScaledRQ 1 : ℝ))
   (hwholeThird : ‖taylorL2 hφ 3 - thirdCenter‖ ≤ 6 * (tightScaledRQ 2 : ℝ))
 
-include hf hwholeFirst hwholeSecond hwholeThird
+include hwholeFirst hwholeSecond hwholeThird
 
 /-- The tight whole-source bounds include the Taylor factorials exactly once. -/
 theorem norm_rawSource_tight_le (p : Fin 4) :
@@ -99,7 +98,7 @@ theorem norm_rawSource_tight_le (p : Fin 4) :
   fin_cases p
   · change ‖rawSource hφ 0‖ ≤ (comparisonGroupRadiusQ 0 : ℝ)
     rw [rawSource_zero]
-    exact norm_roundingDifference_le_of_checks hf
+    simpa [comparisonGroupRadiusQ] using norm_roundingDifference_le
   · change ‖rawSource hφ 1‖ ≤ (tightScaledRQ 0 : ℝ)
     rw [rawSource_one]
     exact hwholeFirst
@@ -118,12 +117,12 @@ theorem norm_rawSource_tight_le (p : Fin 4) :
 theorem norm_source_tight_le (p : Fin 4) :
     ‖source hφ p‖ ≤ (tightGroupRadiusQ p : ℝ) :=
   (norm_smoothOp_le _).trans
-    (norm_rawSource_tight_le hφ hf hwholeFirst hwholeSecond hwholeThird p)
+    (norm_rawSource_tight_le hφ hwholeFirst hwholeSecond hwholeThird p)
 
 private theorem norm_threePiece_tight_whole_le (j : Fin 7) :
     ‖threePiece hφ j‖ ≤ (tightGroupRadiusQ (threeBandPower j) : ℝ) :=
   ((modeSpace (bandModes (threeBandBands j))).norm_starProjection_apply_le _).trans
-    (norm_source_tight_le hφ hf hwholeFirst hwholeSecond hwholeThird _)
+    (norm_source_tight_le hφ hwholeFirst hwholeSecond hwholeThird _)
 
 include hfirst hsecond hthird in
 /-- Low pieces use their captured errors; high pieces use independent whole-source bounds. -/
@@ -131,7 +130,7 @@ theorem norm_threePiece_tight_le (j : Fin 7) :
     ‖threePiece hφ j‖ ≤ (tightThreeBandErrorQ j : ℝ) := by
   fin_cases j
   · change ‖threePiece hφ 0‖ ≤ (tightGroupRadiusQ 0 : ℝ)
-    exact norm_threePiece_tight_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 0
+    exact norm_threePiece_tight_whole_le hφ hwholeFirst hwholeSecond hwholeThird 0
   · change ‖bandProj (comparisonBand (firstCapturedIndex 0))
         (smoothOp (rawSource hφ 1))‖ ≤ (tightLowErrorQ 0 : ℝ)
     refine (norm_bandProj_smoothOp_le _ _).trans ?_
@@ -141,7 +140,7 @@ theorem norm_threePiece_tight_le (j : Fin 7) :
     rw [← firstCenterBandModes_eq_comparison]
     exact hfirst
   · simpa [tightThreeBandErrorQ, tightGroupRadiusQ, threeBandPower] using
-      norm_threePiece_tight_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 2
+      norm_threePiece_tight_whole_le hφ hwholeFirst hwholeSecond hwholeThird 2
   · change ‖bandProj (comparisonBand (secondCapturedIndex 0))
         (smoothOp (rawSource hφ 2))‖ ≤ ((tightLowErrorQ 1 / 2 : ℚ) : ℝ)
     refine (norm_bandProj_smoothOp_le _ _).trans ?_
@@ -153,7 +152,7 @@ theorem norm_threePiece_tight_le (j : Fin 7) :
     rw [hscale, Rat.cast_div, Rat.cast_ofNat]
     linarith
   · simpa [tightThreeBandErrorQ, tightGroupRadiusQ, threeBandPower] using
-      norm_threePiece_tight_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 4
+      norm_threePiece_tight_whole_le hφ hwholeFirst hwholeSecond hwholeThird 4
   · change ‖bandProj (comparisonBand (thirdCapturedIndex 0))
         (smoothOp (rawSource hφ 3))‖ ≤ ((tightLowErrorQ 2 / 6 : ℚ) : ℝ)
     refine (norm_bandProj_smoothOp_le _ _).trans ?_
@@ -165,49 +164,9 @@ theorem norm_threePiece_tight_le (j : Fin 7) :
     rw [hscale, Rat.cast_div, Rat.cast_ofNat]
     linarith
   · simpa [tightThreeBandErrorQ, tightGroupRadiusQ, threeBandPower] using
-      norm_threePiece_tight_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 6
-
-include hfirst hsecond hthird in
-/-- The tighter error and grouped mass radii specialize the same generic comparison. -/
-theorem localized_comparison_tight_three_band_of_checks
-    (hclose : ∑ p ∈ headIdx 501,
-      |energy (productionX hφ) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
-    ∑ p ∈ headIdx 501, improvedWeight p *
-      |energy (productionG hφ) p - energy (productionX hφ) p| ≤
-      (tightThreeBandCompareQ : ℝ) := by
-  have hc := localized_comparison_of_weight_mass_radii hφ improvedWeight improvedWeight_bounds (fun j ↦ (tightThreeBandMassQ j : ℝ))
-    (fun j ↦ (tightThreeBandErrorQ j : ℝ)) (fun p ↦ (tightGroupRadiusQ p : ℝ))
-    (fun j ↦ Rat.cast_nonneg.mpr (tightThreeBandMassQ_nonneg j))
-    (fun j ↦ Rat.cast_nonneg.mpr (tightThreeBandErrorQ_nonneg j))
-    (actual_improved_threeBand_mass hf (fun p ↦ energy_nonneg (productionX hφ) p) hclose)
-    (norm_threePiece_tight_le hφ hf hfirst hsecond hthird
-      hwholeFirst hwholeSecond hwholeThird)
-    (norm_source_tight_le hφ hf hwholeFirst hwholeSecond hwholeThird)
-  simpa only [tightThreeBandCompareQ, tightThreeBandQuadraticQ, Rat.cast_add,
-    Rat.cast_mul, Rat.cast_sum, Rat.cast_pow, Rat.cast_ofNat] using hc
+      norm_threePiece_tight_whole_le hφ hwholeFirst hwholeSecond hwholeThird 6
 
 end TightInputs
-
-/-- Production comparison from the six tighter Gaussian bounds and unchanged table accuracy. -/
-theorem localized_comparison_tight_three_band
-    (hfirst : ‖projOn (firstCenterBandModes 0) (firstTaylorL2 - firstCenter)‖ ≤
-      (tightLowErrorQ 0 : ℝ))
-    (hsecond : ‖projOn (secondCenterBandModes 0) (secondTaylorL2 - secondCenter)‖ ≤
-      (tightLowErrorQ 1 : ℝ))
-    (hthird : ‖projOn (thirdCenterBandModes 0) (thirdTaylorL2 - thirdCenter)‖ ≤
-      (tightLowErrorQ 2 : ℝ))
-    (hwholeFirst : ‖firstTaylorL2 - firstCenter‖ ≤ (tightScaledRQ 0 : ℝ))
-    (hwholeSecond : ‖secondTaylorL2 - secondCenter‖ ≤ 2 * (tightScaledRQ 1 : ℝ))
-    (hwholeThird : ‖thirdTaylorL2 - thirdCenter‖ ≤ 6 * (tightScaledRQ 2 : ℝ))
-    (hclose : ∑ p ∈ headIdx 501,
-      |energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
-        (Xfun frozenCorrectionFn)) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
-    ∑ p ∈ headIdx 501, improvedWeight p *
-      |energy ((memLp_GT phiBound).toLp GT) p -
-        energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
-          (Xfun frozenCorrectionFn)) p| ≤ (tightThreeBandCompareQ : ℝ) :=
-  localized_comparison_tight_three_band_of_checks phiBound productionFiniteChecks
-    hfirst hsecond hthird hwholeFirst hwholeSecond hwholeThird hclose
 
 end
 end Grothe.UpperChaos.ThreeBandRegrouping

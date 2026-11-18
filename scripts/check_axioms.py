@@ -21,7 +21,7 @@ import argparse, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXDIR = os.path.join(ROOT, "data", "axioms")
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
-MODES = ("refined-cover", "law-nodes")
+MODES = ("refined-cover", "law-nodes", "upper-mixture")
 
 
 def names(path):

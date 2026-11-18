@@ -9,3 +9,8 @@ Grothe\.LowerAnalytic\.CapRow[0-9]+(\..*)?
 # The upper-bound trees (large kernel-checked modules and the energy-table facts, about ten hours each).
 Grothe\.UpperChaos\..*
 Grothe\.UpperQuad\..*
+
+# New mixture witnesses and adaptive contours have their own targeted verification.
+Grothe\.UpperReplacement\.HeadWitnessFacts\.Group[0-9]+
+Grothe\.UpperReplacement\.TailFacts\.Channel[0-9]+
+Grothe\.UpperReplacement\.WideFacts

@@ -25,6 +25,16 @@ The current inventory covers the active target and lower proof. Archived upper
 variants have separate preserved inventories under
 `miscellaneous/other-bounds/snapshot/data/axioms/`; they are not active permissions.
 
+**Finite inputs of the signed mixture.** `HeadWitnessFacts.Group00` through
+`Group07` each replay eight angular residues. `HeadWitnessFacts.head_checked`
+checks the signed finite head. `TailFacts.Channel01` through `Channel17` and
+the separate `WideFacts` checks cover all eighteen disks and circles.
+`GTMass` checks all seven unweighted mass ceilings, `TableSupport` checks
+the stored bidegrees, and `LinearTailFacts` checks the bounds used to
+deduct linear energy on the GT and phase channels. `RootChecks` identifies the
+stored roots of unity with their certified enclosures. The exact source
+and verification record are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
+
 **Exact production phase moments (#40(b)).** `PhaseMomentEval` integrates the
 integer polynomial obtained by clearing arbitrary rational denominators.
 `integral_phiT_pow_even` in `ConcretePhaseMoments` binds the result to the actual
@@ -143,8 +153,6 @@ and is not an isolated timing of the native computation.
 | `Grothe.UpperChaos.phi_cover_check_3` | `Grothe/UpperChaos/PhiCoverCheck3.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_4` | `Grothe/UpperChaos/PhiCoverCheck4.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_5` | `Grothe/UpperChaos/PhiCoverCheck5.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.UpperChaos.HardyGaussianCheck.charts_checked` | `Grothe/UpperChaos/HardyGaussianFacts.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No per-fact timing established here |
-| `Grothe.UpperChaos.hardy_region_check` | `Grothe/UpperChaos/HardyArcRegionCheck.lean:10` | yes | Indirect via scratch/Axioms.lean HardyGaussian.hardy_of_real, HardyReal.hardy_GT_gaussian | GitHub-hosted module build 8.7 s |
 | `Grothe.Research.LawNodeCheck.certLawNodes` | `Grothe/Research/LawNodeCheck.lean:14` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.Research.LowerRefinementCheck.certRefinementBatches` | `Grothe/Research/LowerRefinementCheck.lean` | yes | Direct #print axioms in scratch/Axioms.lean and scratch/LowerRefinementAxioms.lean | Exact checkBatch replay of the additional law bank; local whole-module build 62 s |
 | `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0` | `Grothe/Research/RefinedCoverBoxes0.lean:11` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 9.3 s; indexed decoding with proved equality to the original checker |

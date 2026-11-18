@@ -1,45 +1,19 @@
-# Upper bound: formalisation status and next steps (cold-start notes)
+# Upper-bound formalization
 
-The current proved upper bound is **K_G^ℂ < 1.404599395362**, without
-hypotheses: `Grothe.Statement.upper_below_tight` in
-[`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
-proved lower bound, `main_bounds` states
-**1.401700322371 < K_G^ℂ < 1.404599395362** in
-[`MainResult.lean`](../Grothe/MainResult.lean).
+The proposed mixture endpoint states `K_G^ℂ ≤ 1000000000000000/711962052581159 < 1.404569241261`.
+It uses eighteen rounding channels, the shared GT table comparison and
+separate circle estimates. The check status, exact budgets and local
+reproduction commands are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
 
-The sharper target **K_G^ℂ < 1.404598149141** has only a conditional route,
-archived in [`abandonware/`](../abandonware/README.md) and not built:
-`fresh_upper_rounder` gives `K_G^ℂ ≤ 500000000000000000/355973699960428191 < 1.404598148840`
-from fourteen original Gaussian finite-band error inequalities, which are not
-all proved, and the energy-table discrepancy bound `6847009/(5·10^17)`, which
-`Final.hclose_final` proves for the actual frozen response.
+## Previous single-channel construction
 
-The current proof uses six certified low-band and whole-source estimates,
-tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `117/100`) with a linear-energy
-deduction. `main_bounds` uses `upper_below_tight`, and the energy-table accuracy
-`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). Every module
-under `Grothe/` is in the import closure of `MainResult.lean`; unused formulations are
-kept outside the build, in [the committed archive](../miscellaneous/other-bounds/README.md)
-and in [`abandonware/`](../abandonware/README.md).
-Shared Gaussian phase identity and Laplace infrastructure remain in the proof.
+The sections below record the single-channel implementation at commit
+`7e81493e3`. Their module names, timings and proposed refinements refer to
+that revision.
 
-Sections 1 and 4 describe the current status. Sections 2, 3 and 5 retain
-construction history and the original sharper-target plan, with completed
-steps identified. Their old costs, residual shares and proposed tolerances
-are not the current theorem's budget or a schedule of remaining work.
+## 1. Single-channel results
 
-Build only changed modules locally. Full builds, including all node caps, run
-through the repository proof-check workflow; see `AGENTS.md` for worktree and delivery rules.
-
-The combined tree includes the concrete rounder, the phase cover, the refined
-Hardy tail and the holomorphic-kernel definitions. Use an owned worktree and
-an owned directory for light droplet builds; the shared package cache can be read
-without copying it. CI routes a full build to the droplet runner when no verified
-cache matches the node-cap sources.
-
-## 1. What is proved
-
-### Current unconditional assembly
+### Single-channel endpoint assembly
 
 `upper_below_tight` uses the same concrete rounding `GT` and accepted
 production certificates through this chain:

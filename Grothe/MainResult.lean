@@ -1,46 +1,23 @@
--- Grothe/MainResult.lean
-import Grothe.LowerTarget
-import Grothe.UpperTightFinal
-import Grothe.LowerAnalytic.CapNodes
-import Grothe.LowerAnalytic.CapExcluded
+import Grothe.LowerResult
+import Grothe.UpperResult
 
 /-!
-# The main result: `1.401700322371 < K_G^ℂ < 1.404599395362`
+# The two-sided bound for the complex Grothendieck constant
 
-The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of
-`Grothe/Statement.lean`.
+The upper certificate supplies an element of the set of admissible bounds.
+The lower certificate bounds every element of that set and hence its attained infimum.
 
-* `capsRest`: the remaining node-cap hypothesis holds. Every row is certified in Lean
-  (`capRowsDone` lists all 19 rows), and the certified rows exclude no nodes (`capExcl_eq_nil`).
-* `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above
-  `1.401700322371`.
-* `upper_below_tight` (`Grothe/UpperTightFinal.lean`): **the upper bound, unconditional**: some
-  Grothendieck bound is below `1.404599395362`.
-* `main_bounds`: **`1.401700322371 < K_G^ℂ < 1.404599395362`**, without hypotheses.
+Agent-ID: codex-a7c4.
 -/
 
 namespace Grothe.Statement
 
-open Grothe.LowerAnalytic
-
-/-- **The remaining node-cap hypothesis holds**: all rows are certified and none excludes a node. -/
-theorem capsRest : CapsRest := by
-  refine ⟨fun k hk hd => ?_, fun k _ => exclCaps_capExcl k⟩
-  have h19 : Grothe.Lower.rowData.length = 19 := rfl
-  exact absurd (by simp only [capRowsDone, List.mem_cons, List.not_mem_nil, or_false]; omega) hd
-
-/-- **The lower bound**: every Grothendieck bound is above `1.401700322371`. -/
-theorem lower_target : LowerTarget :=
-  lowerTarget_of_nodeCaps (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest capsRest))
-
-/-- **The main result** `1.401700322371 < K_G^ℂ < 1.404599395362`. -/
+/-- The complex Grothendieck constant lies strictly between the two certified thresholds. -/
 theorem main_bounds :
     (1401700322371 / 10 ^ 12 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant < 1404599395362 / 10 ^ 12 := by
-  have hU := upper_below_tight
-  have hne : ∃ K, IsBound K := hU.imp fun _ h ↦ h.1
-  have hlo := lt_constant_of_lowerAbove hne lower_target
-  have hup := constant_lt_of_upperBelow hU
-  exact ⟨by norm_num at hlo ⊢; exact hlo, by norm_num at hup ⊢; exact hup⟩
+      complexGrothendieckConstant < 1404569241261 / 10 ^ 12 := by
+  obtain ⟨K, hK, _⟩ := Grothe.UpperReplacement.upper_below
+  have hlo := lt_constant_of_lowerAbove ⟨K, hK⟩ lower_target
+  exact ⟨by norm_num at hlo ⊢; exact hlo, Grothe.UpperReplacement.constant_lt⟩
 
 end Grothe.Statement

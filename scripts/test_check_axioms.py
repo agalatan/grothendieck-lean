@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("refined-cover", "law-nodes")
+MODES = ("refined-cover", "law-nodes", "upper-mixture")
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -40,15 +40,26 @@ class CheckAxiomsTests(unittest.TestCase):
                        for name in sorted(required))
 
     def test_existing_policy_headlines_and_native_restrictions(self):
-        headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
+        headlines = {"Grothe.Statement.main_bounds", "Grothe.UpperReplacement.upper_below",
                      "Grothe.Statement.lower_target",
                      "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data",
                      "Grothe.LowerAnalytic.lower_bound_of_capsRest"}
         self.assertTrue(headlines <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
         self.assertNotIn("Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1", CHECKER.NATIVE)
-        self.assertIn("Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1",
+        self.assertIn("Grothe.UpperReplacement.WideFacts.first_gt_circle._native.native_decide.ax_1_1",
                       CHECKER.NATIVE)
+
+    def test_upper_mixture_checks_the_rational_and_integral_endpoints(self):
+        required, native = CHECKER.audit_policy("upper-mixture")
+        self.assertTrue({"Grothe.UpperReplacement.constant_le",
+                         "Grothe.UpperReplacement.constant_lt_inv_gammaDagger"} <= required)
+        expected = {name for name in CHECKER.REQUIRED if name.startswith("Grothe.UpperReplacement.")}
+        self.assertEqual(required, expected)
+        self.assertEqual(native, CHECKER.NATIVE)
+        report = (ROOT / "scratch/UpperMixtureAxioms.lean").read_text().splitlines()
+        self.assertEqual({line.removeprefix("#print axioms ") for line in report
+                          if line.startswith("#print axioms ")}, required)
 
     def test_topic_policies_preserve_required_families(self):
         for mode, expected in (("refined-cover", CHECKER.REFINED_LOWER),

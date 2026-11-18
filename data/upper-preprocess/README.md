@@ -1,18 +1,13 @@
-# Current polynomial preprocessing certificate
+# Shared GT input and the original preprocessing certificate
 
-This directory retains the shared rounding source, preprocessors, energy table,
-finite-head and Hardy inputs used by the unconditional theorem
-**K_G^C < 1.404599395362**. Its exact rational Grothendieck bound is `tightValueQ`,
-approximately `1.4045993953612070749249`. The endpoint is
-`Grothe.Statement.upper_below_tight` in
-[`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean).
+The mixture uses the GT rounding and energy table in this directory. Its
+channel weights, preprocessors, response cells and contour budgets are in
+`data/upper-replacement/`. The [mixture certificate guide](../../docs/UPPER_CERTIFICATE.md)
+records the exact upper statement and local check status.
 
-The byte-pinned data and generators retain historical intermediate endpoint
-metadata for reproducibility. The active numerical ledger is
-[`Grothe/UpperTightBudget.lean`](../../Grothe/UpperTightBudget.lean).
-The smaller endpoint `1.404598148840` is conditional on stronger comparison inputs and
-archived, as explained below. Previous endpoint documentation is preserved
-in `miscellaneous/other-bounds/snapshot/data/upper-preprocess/README.md`.
+The rest of this file describes the earlier single-channel computation at
+commit `7e81493e3`. Its recorded allowances and commands belong to that
+revision.
 
 ## Mathematical assembly and trust boundary
 

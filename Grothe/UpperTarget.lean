@@ -3,9 +3,9 @@ import Grothe.StatementBridges
 /-!
 # From a Grothendieck bound to the upper statement
 
-`upperBelow_of_bound`: a Grothendieck bound below `c` proves `UpperBelow c` (`Grothe/Statement.lean`). The upper
-bound `upper_below_tight` (`Grothe/UpperTightFinal.lean`) uses it. What `UpperBelow c` says about the constant
-(`K_G^ℂ < c`) is `constant_lt_of_upperBelow` in `Grothe/StatementBridges.lean`.
+`upperBelow_of_bound` turns an admissible bound below `c` into `UpperBelow c`.
+`Grothe.UpperResult` applies it to the mixture. `constant_lt_of_upperBelow`
+in `Grothe.StatementBridges` gives the strict inequality for the infimum.
 -/
 
 namespace Grothe.Statement

@@ -1,12 +1,10 @@
-# The quadrature checker for the energy table (`hclose`), design and status
+# The quadrature checker for the energy table
 
-**Current status (15 November 2026).** `Grothe.UpperQuad.Final.hclose_final` proves
-the energy-table accuracy used by the unconditional theorem
-`Grothe.Statement.upper_below_tight`, giving `K_G^ℂ < 1.404599395362`
-([`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean)). The twisted-source
-estimates are supplied separately by `TightTwist.six_of_facts`. The design record
-below retains its dated intermediate targets; see [LEAN_DETAILS.md](LEAN_DETAILS.md)
-for the current endpoint assembly.
+`Grothe.UpperQuad.Final.hclose_final` bounds the ℓ¹ error in the frozen
+reference energies. The mixture uses it in `GTClosed.table_error`, together
+with the six low-band and whole-source estimates. The design record below
+describes how the original quadrature was verified. The private endpoint and
+its verification status are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
 
 *Issue #303 (task of #21 under the relaxed goal K < 1.4046). Agent-ID: claude-b9ee. Written at
 master `b886bb57`, 4 November 2026. This document is the design record: the soundness
@@ -15,8 +13,7 @@ repository; nothing below is proved unless it names a theorem on master.*
 
 ## 1. What is being discharged
 
-The upper endpoint (`TightEndpoint.endpoint_of_comparison`, `Grothe/UpperTightFinal.lean`) takes the
-table accuracy
+The unweighted GT comparison takes the table accuracy
 
 ```
 hclose : ∑ p ∈ headIdx 501, |energy X p − energyTable p| ≤ energyErrQ

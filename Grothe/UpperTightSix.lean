@@ -1,4 +1,4 @@
-import Grothe.UpperQuad.TwistSix
+import Grothe.UpperQuad.TwistTail
 import Grothe.UpperTightBudget
 
 /-!
@@ -11,6 +11,63 @@ Every source function and center is the original production object.
 
 Agent-ID: codex-c8a4. Refs #389.
 -/
+
+namespace Grothe.UpperQuad
+
+open MeasureTheory GrotheQuad Grothe.UpperChaos Grothe.UpperQuad.PortFacts Grothe.Upper
+open Grothe.UpperChaos.WholeCenterEnergies
+open scoped InnerProductSpace
+
+noncomputable section
+
+/-! ### The centers as the kernel's dyadic arrays -/
+
+lemma firstCenter_coeff (q c d : ℕ) :
+    (firstCenterCoeff q c d : ℝ) = centerR (centerInts 1) (twistParams 1).E q c d := by
+  simp only [firstCenterCoeff, firstCenterAt, centerR, centerInts, twistParams, ↓reduceIte,
+    Array.getD_eq_getD_getElem?, gradedFlat, gradedFlatIndex]
+  push_cast
+  rfl
+
+lemma secondCenter_coeff (q c d : ℕ) :
+    (secondCenterCoeff q c d : ℝ) = centerR (centerInts 2) (twistParams 2).E q c d := by
+  simp only [secondCenterCoeff, secondCenterAt, centerR, centerInts, twistParams,
+    Array.getD_eq_getD_getElem?, gradedFlat, gradedFlatIndex]
+  push_cast
+  norm_num
+
+lemma thirdCenter_coeff (q c d : ℕ) :
+    (thirdCenterCoeff q c d : ℝ) = centerR (centerInts 3) (twistParams 3).E q c d := by
+  simp only [thirdCenterCoeff, PackedDyadic.coeff, thirdCenterExponent, centerR, centerInts,
+    twistParams, Array.getD_eq_getD_getElem?, gradedFlat]
+  push_cast
+  norm_num
+
+/-! ### The whole errors -/
+
+/-- From `Re⟨c, hpow j⟩ ≥ θ − ‖c‖ρ`, the norms and the margin, the whole error is at most `R`. -/
+lemma whole_of_inner {F c : Lp ℂ 2 mu2} {m E θ R Cn ρ ρI : ℝ} (hF : ‖F‖ ^ 2 = m) (hc : ‖c‖ ^ 2 = E)
+    (hCn : ‖c‖ ≤ Cn) (hρ : 0 ≤ ρ) (hρI : Cn * ρ ≤ ρI) (hR : 0 ≤ R)
+    (hI : θ - ‖c‖ * ρ ≤ Complex.re ⟪c, F⟫_ℂ) (hm : (m + E - R ^ 2) / 2 + ρI ≤ θ) :
+    ‖F - c‖ ≤ R := by
+  have h1 : ‖F - c‖ ^ 2 = m - 2 * Complex.re ⟪c, F⟫_ℂ + E := by
+    rw [norm_sub_sq (𝕜 := ℂ), hF, hc, inner_re_symm (𝕜 := ℂ)]
+    rfl
+  have h2 : ‖c‖ * ρ ≤ Cn * ρ := mul_le_mul_of_nonneg_right hCn hρ
+  have h3 : ‖F - c‖ ^ 2 ≤ R ^ 2 := by rw [h1]; nlinarith
+  exact (pow_le_pow_iff_left₀ (norm_nonneg _) hR (by norm_num)).mp h3
+
+lemma low_of_margin {x ρ ρL cap e : ℝ} (hx : x ≤ ρ + Real.sqrt e) (hρ : ρ ≤ ρL) (hcap : ρL ≤ cap)
+    (he : e ≤ (cap - ρL) ^ 2) : x ≤ cap := by
+  have : Real.sqrt e ≤ cap - ρL := Real.sqrt_le_iff.mpr ⟨by linarith, he⟩
+  linarith
+
+lemma quad_of_rem (j : ℕ) {ρ R : ℝ} (hρ : 0 ≤ ρ) (hR : 1 / 10 ^ 15 + ρ = R)
+    (h : TwistRemainderHyp j ρ) : TwistQuadHyp j R :=
+  hR ▸ twistQuadHyp_of_remainder j hρ h
+
+end
+end Grothe.UpperQuad
 
 namespace Grothe.UpperQuad.TightTwist
 
