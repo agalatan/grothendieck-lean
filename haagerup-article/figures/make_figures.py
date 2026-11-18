@@ -1,7 +1,8 @@
-"""Figures for the article draft (local only).
+"""Figures for the article.
 
-Reads the certified tiger (shrink/cert_final) and the overlaps mu_k of the independent re-check
-(recheck-final/out/mu_final_mid.npy); writes tiger_phase.pdf and tiger_mu.pdf next to this script.
+Reads the certified tiger pair (haagerup-article/certificate/) and the overlaps mu_k computed by an
+independent re-check of the certificate (a float64 .npy file, given by HAAGERUP_MU); writes
+tiger_phase.pdf and tiger_mu.pdf next to this script.
 No new numbers are computed for the text: the plots only display material data.
 
 usage:  uv run --offline --no-project --with numpy --with matplotlib python3 make_figures.py
@@ -16,12 +17,11 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-BASE = "/Users/alingalatan/workspaces/grothe/handoff/haagerup-check-2026-11-18"
-CERT = os.path.join(BASE, "shrink", "cert_final")
-MU = os.path.join(BASE, "recheck-final", "out", "mu_final_mid.npy")
 OUT = os.path.dirname(os.path.abspath(__file__))
-GAMMA_DAGGER = 0.7119586597782638  # verifier log, shrink/logs/verify_v4.log
-W_EXCESS = 1.0719690924e-3  # recheck-final/logs/combine_mu.log, averaged partial sums
+CERT = os.environ.get("HAAGERUP_CERT", os.path.join(OUT, "..", "certificate"))
+MU = os.environ["HAAGERUP_MU"]  # overlaps mu_0..mu_250 of the certified pair, float64 midpoints
+GAMMA_DAGGER = 0.7119586597782638  # certificate verifier
+W_EXCESS = 1.0719690924e-3  # averaged partial sums of the independent re-check
 R_SHOW = 3.6  # the outer cells [7/2, inf) and [107/36, inf) are drawn up to this radius
 
 tj = json.load(open(os.path.join(CERT, "tiger.json")))
