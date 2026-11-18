@@ -13,7 +13,7 @@ $$
  \gamma^\dagger=\int_0^{\pi/2}\frac{\cos^2 t}{\sqrt{1+\sin^2 t}}\,dt.
 $$
 
-The comparison uses rational bounds on the integral. [Upper theorem](Grothe/UpperResult.lean) · [Two-sided theorem](Grothe/MainResult.lean) · [Six-channel proof and build instructions](articles/haagerup/README.md).
+The comparison uses rational bounds on the integral. [Upper theorem](Grothe/UpperResult.lean) · [Two-sided theorem](Grothe/MainResult.lean) · [Six-channel proof and build instructions](haagerup-article/anc/README.md).
 
 | year | who | lower bound | upper bound |
 |---|---|---|---|
@@ -35,17 +35,11 @@ thus resolving this conjecture of Haagerup (1987).
 
 - **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
   rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
-- **The proof is computer-assisted.** Its finitely many numerical facts are certified in exact rational and
-  interval arithmetic, and were re-checked with independently written code. The certificate is in
-  [`haagerup-article/anc/`](haagerup-article/anc).
-- **The Lean companion.** A small, separate Lean package,
-  [`haagerup-article/lean`](haagerup-article/lean), has its own CI job and imports only Mathlib. Its theorem
-  `HaagerupBound.upper_bound`
-  ([`UpperBound.lean`](haagerup-article/lean/HaagerupBound/UpperBound.lean)) derives the bound from three
-  facts supplied by the article for each channel. They establish domination, a finite-head enclosure and an infinite-tail bound.
-  Lean evaluates the article’s whole numerical budget from these data.
-- **The production theorem.** `Grothe.UpperSix.bound` proves the admissibility of $1.40457588$ for every finite
-  matrix, with the channel estimates discharged in Lean. This is the six-channel bound used in `main_bounds`. [Production proof](Grothe/UpperResult.lean).
+- **The Lean proof.** The article's ancillary folder [`haagerup-article/anc/`](haagerup-article/anc) is a
+  standalone Lean package that proves $K_G^{\mathbb{C}} \le 1.40457588 < 1/\gamma^\dagger$ without hypotheses. Its
+  sources are a byte-for-byte copy of [`Grothe/UpperSix/`](Grothe/UpperSix), the six-channel proof that also gives
+  the upper bound of `main_bounds` ([`Grothe/UpperResult.lean`](Grothe/UpperResult.lean)). Its own CI job checks the
+  copy, the build and the axioms. [Build instructions and trust](haagerup-article/anc/README.md).
 - **How it was found.** The construction was discovered with AI, at the end of this project; the article's last
   section describes how.
 
@@ -161,7 +155,7 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
 | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | Two-sided theorem and the six-channel bound for the standard constant |
-| `Grothe/UpperSix/`, `articles/haagerup/` | Shared six-channel proof sources and their standalone build |
+| `Grothe/UpperSix/`, `haagerup-article/anc/` | the six-channel proof sources and their standalone copy, the article's ancillary files |
 | `Grothe/UpperClose.lean` | certified energy-table accuracy `hclose_final` |
 | `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |
 | `Grothe/UpperTightBudget.lean`, `Grothe/UpperTightComparison.lean` | single-channel budgets and the comparison with independent reference mass and error radii |

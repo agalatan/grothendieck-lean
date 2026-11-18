@@ -7,7 +7,7 @@ set_option warningAsError true
 /-!
 # Haagerup's value is a strict upper bound for the complex Grothendieck constant
 
-The production endpoint and the standalone `articles/haagerup` build both use these theorems.
+The production endpoint and the article's ancillary package `haagerup-article/anc` both use these theorems.
 
 Proves:
 * `Haagerup.isBound_cert : Haagerup.Statement.IsBound (140457588 / 100000000 : ℝ)` (`1.40457588`),
