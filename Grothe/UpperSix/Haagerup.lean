@@ -5,9 +5,9 @@ import Grothe.UpperSix.Haagerup.CertCheck
 set_option warningAsError true
 
 /-!
-# Disproving Haagerup's Conjecture on the Complex Grothendieck Constant
+# Haagerup's value is a strict upper bound for the complex Grothendieck constant
 
-Top-level theorem module for the standalone `articles/haagerup` target.
+The production endpoint and the standalone `articles/haagerup` build both use these theorems.
 
 Proves:
 * `Haagerup.isBound_cert : Haagerup.Statement.IsBound (140457588 / 100000000 : ℝ)` (`1.40457588`),

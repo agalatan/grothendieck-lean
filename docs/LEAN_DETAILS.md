@@ -4,7 +4,7 @@ This file lists, module by module, what the Lean development proves and which in
 
 The six-channel statement is `1.401700322371 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
-The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The separate article package builds these same sources. [Certificate and checks](../articles/haagerup/README.md).
+The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The upper-only build wrapper compiles these same sources. The paper’s companion theorem `HaagerupBound.upper_bound` gives the article’s value `1.40456109` from its `ChannelFacts` hypothesis. [Production certificate](../articles/haagerup/README.md) · [Article companion](../haagerup-article/lean/HaagerupBound/UpperBound.lean).
 
 The earlier `upper_below_tight` proof uses one Gaussian rounding. Its budgets, quadrature, and auxiliary refinements are documented below.
 

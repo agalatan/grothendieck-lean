@@ -2,6 +2,8 @@
 
 The theorem for the six-channel certificate states $K_G^{\mathbb C} \le 140457588/100000000 = 1.40457588$. A separate integral estimate gives $1.40457588 < 1/\gamma^\dagger$. In the parent repository, `Grothe.UpperSix.bound` uses the scalar and vector optima from `Grothe.Statement`. [Upper entrypoint](../../Grothe/UpperResult.lean).
 
+This directory builds the production proof from `Grothe/UpperSix/`. The paper’s separate companion theorem `HaagerupBound.upper_bound` derives the article’s value $1.40456109$ assuming `ChannelFacts` for its six channels. [Article and companion](../../haagerup-article/README.md).
+
 | Proof | Source |
 |---|---|
 | Unit scalar and vector optima, admissible bounds, the phase integral | [Statement](../../Grothe/UpperSix/Haagerup/Statement.lean) |

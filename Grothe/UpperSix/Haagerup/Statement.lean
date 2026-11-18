@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 set_option warningAsError true
 
 /-!
-# Statement: Refuting Haagerup's conjecture on the complex Grothendieck constant
+# The finite-matrix constant and Haagerup's proposed value
 
 Self-standing definitions of:
 * the scalar optimum `scalarOpt A = sup_{|εᵢ| = |δⱼ| = 1} |∑ᵢⱼ aᵢⱼ conj(εᵢ) δⱼ|`;
@@ -13,7 +13,7 @@ Self-standing definitions of:
 * `IsBound K`: `∀ m n A, vectorOpt A ≤ K * scalarOpt A`;
 * `complexGrothendieckConstant = sInf {K | IsBound K}`;
 * Haagerup's integral `gammaDagger = ∫₀^{π/2} cos² t (1 + sin² t)^{-1/2} dt` (`≈ 0.711958659778`),
-  so Haagerup's conjectured upper bound is `1 / gammaDagger ≈ 1.404575934664`.
+  so Haagerup's proposed value for the constant is `1 / gammaDagger ≈ 1.404575934664`.
 
 Also proves `constant_lt_of_upperBelow : UpperBelow c → complexGrothendieckConstant < c` without
 any external dependencies.

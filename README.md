@@ -24,7 +24,34 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
 | Oct–Nov 2026 | **this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K\le 1.40457588}$ |
 
-[OVERVIEW.pdf](OVERVIEW.pdf) describes the mathematics, the finite certificate checks and the open problems.
+## Haagerup's value is a strict upper bound
+
+**The article: [haagerup-article/main.pdf](haagerup-article/main.pdf)** (on arXiv soon). It proves that
+$K_G^{\mathbb{C}}$ is strictly below Haagerup's value:
+
+$$K_G^{\mathbb{C}} \le 1.40456109 < 1/\gamma^\dagger = 1.4045759\ldots,$$
+
+thus resolving this conjecture of Haagerup (1987).
+
+- **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
+  rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
+- **The proof is computer-assisted.** Its finitely many numerical facts are certified in exact rational and
+  interval arithmetic, and were re-checked with independently written code. The certificate is in
+  [`haagerup-article/anc/`](haagerup-article/anc).
+- **The Lean companion.** A small, separate Lean package,
+  [`haagerup-article/lean`](haagerup-article/lean), has its own CI job and imports only Mathlib. Its theorem
+  `HaagerupBound.upper_bound`
+  ([`UpperBound.lean`](haagerup-article/lean/HaagerupBound/UpperBound.lean)) derives the bound from three
+  facts supplied by the article for each channel. They establish domination, a finite-head enclosure and an infinite-tail bound.
+  Lean evaluates the article’s whole numerical budget from these data.
+- **The production theorem.** `Grothe.UpperSix.bound` proves the admissibility of $1.40457588$ for every finite
+  matrix, with the channel estimates discharged in Lean. This is the six-channel bound used in `main_bounds`. [Production proof](Grothe/UpperResult.lean).
+- **How it was found.** The construction was discovered with AI, at the end of this project; the article's last
+  section describes how.
+
+**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
+constructions, what exactly the computer checks, the new inequalities and obstructions found along
+the way, and why the remaining gap is hard.
 
 ## The constant
 

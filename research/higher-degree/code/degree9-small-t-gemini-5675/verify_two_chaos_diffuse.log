@@ -1,0 +1,17 @@
+=== Certificate 1: Diffuse Two-Chaos Optimality of W_3 / |W_3| ===
+[PASS] pi enclosed to width < 10^-35: [3.1415926535897931, 3.1415926535897931]
+[PASS] Root r_{0,zero} of g_2(r_0) = 0 on (0, 2) enclosed in width 5.684e-14:
+       r_{0,zero} in [0.378372927322, 0.378372927323] subset (0, 1)
+       g_2(r_lo) >= +2.5809e-14 > 0 > -2.9117e-14 >= g_2(r_hi)
+[PASS] Region I (0 < r_0 <= r_{0,zero}): r_{0,zero} < 1 certified => H'(r_0) > 0 => F_c'(r_0) < 0 for all 0 <= c <= 2.
+[PASS] Region II (r_{0,zero} <= r_0 <= 2):
+       g_1(r_lo) in [0.6376976247, 0.6376976247]
+       g_1(2)    in [-0.4227938215, -0.4227938215]
+       sup_{r_0 in [r_{0,zero}, 2]} g_1(r_0)^2 <= 0.4066582606 < 3*pi/16 = 0.5890486225
+[PASS] Region III (r_0 >= 2): g_2(2) <= -0.6908213220 < -sqrt(2*pi)/8 = -0.3133285343,
+       and for all r_0 >= 2, |g_1(r_0)| < sqrt(pi)/2 and g_2(r_0) < -sqrt(2*pi)/8 => F_c(r_0) < pi/4 - c*pi/32.
+[PASS] Sharpness witness at c = 21/10 > 2, r_0 = 1/100:
+       F_{2.1}(1/100) >= 0.579335634381 > 0.579231145506 >= pi/4 - (21/10)*pi/32
+       (certified excess >= +1.044889e-04)
+[PASS] Exact polynomial check for chirp family F_d = ph(W_1) exp(i d Im(W_1* W_2)): strictly suboptimal for 0 <= c <= 2, d != 0.
+ALL CHECKS IN verify_two_chaos_diffuse.py PASSED.
