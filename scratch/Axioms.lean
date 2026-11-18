@@ -12141,6 +12141,9 @@ import Grothe
 #print axioms Grothe.UpperQuad.twist_j3_low_margin
 #print axioms Grothe.UpperQuad.twist_j3_whole_margin
 #print axioms Grothe.UpperQuad.unnormalise_represents
+#print axioms Grothe.UpperSix.bound
+#print axioms Grothe.UpperSix.constant_le
+#print axioms Grothe.UpperSix.constant_lt_inv_gammaDagger
 #print axioms Grothe.haagerup_dominated
 #print axioms Grothe.hardy_budget_after_linear
 #print axioms Grothe.hardy_tail

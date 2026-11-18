@@ -1,5 +1,7 @@
 # The complex Grothendieck constant, in Lean
 
+The six-channel upper-bound proof on this branch targets $K_G^{\mathbb C} \le 1.40457588$. Its end-to-end Lean check is pending. The theorem for finite complex matrices and the comparison with Haagerup’s phase integral are in [the upper entrypoint](Grothe/UpperResult.lean).
+
 **Work in progress.** The two bounds below are proved and checked by CI on every change; the work towards sharper
 bounds continues, and its open problems are recorded in [`research/`](research/README.md) and in
 [OVERVIEW.pdf](OVERVIEW.pdf).
