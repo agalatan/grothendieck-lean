@@ -84,7 +84,7 @@
 \renewcommand{\Im}{\operatorname{Im}}
 
 \title{\textbf{The complex Grothendieck constant is smaller than $1/\gamma^{\dagger}$}\\[4pt]
-\large A computer-assisted refutation of Haagerup's conjecture $K_G^{\mathbb C}=1/\gamma^{\dagger}$}
+\large Haagerup's value is a strict upper bound}
 \author{Alin Galatan\thanks{\todo{affiliation and e-mail; further authors, if any}}}
 \date{November 2026}
 
@@ -92,9 +92,9 @@
 \maketitle
 
 \begin{abstract}
-Let $\gd=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}\,dt=0.711958659778\ldots$. Haagerup (1987) conjectured that the
-complex Grothendieck constant is $\KG=1/\gd=1.404575934663\ldots$. We prove that $\KG\le1.40456109$; in particular
-the conjecture is false.
+Let $\gd=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}\,dt=0.711958659778\ldots$. We prove that the complex
+Grothendieck constant satisfies $\KG\le1.40456109<1/\gd=1.404575934663\ldots$: Haagerup's value $1/\gd$ is a strict
+upper bound for $\KG$. This resolves a conjecture of Haagerup (1987) about this value.
 The bound comes from an explicit rounding scheme: a convex combination of six Gaussian rounding channels, one of which is a
 pair of disk-valued maps of two complex Gaussian coordinates, given by a table of $294{,}912$ integers. We explain why
 $1/\gd$ is a natural barrier. No rounding scheme gives a bound below the reciprocal of the value of its kernel at imaginary
@@ -139,9 +139,9 @@ $\varphi(k_0)=\frac\pi8(k_0+1)$. This bound stood until 2026.
 % SRC: phi, r_k recursion: [HA] Lemma 3.2 and Theorem 2.1; recursion also in verify_cert.py (r_ph) and [KO];
 % 1.40490913: [HA] (1/beta_0 = 1.4049091327357955, float) and [OV] history table.
 
-Haagerup also remarked \cite[p.~202]{Ha87} that his bound is probably not sharp, and conjectured that
+Haagerup also remarked \cite[p.~202]{Ha87} that his bound is probably not sharp, and pointed to the value
 \[
- \KG=|\varphi(i)|^{-1}=\Bigl(\int_0^{\pi/2}\frac{\cos^2t}{\sqrt{1+\sin^2t}}\,dt\Bigr)^{-1}=\frac1{\gd}=1.4045759346637420\ldots,
+ |\varphi(i)|^{-1}=\Bigl(\int_0^{\pi/2}\frac{\cos^2t}{\sqrt{1+\sin^2t}}\,dt\Bigr)^{-1}=\frac1{\gd}=1.4045759346637420\ldots,
 \]
 calling this value ``a perhaps more plausible candidate''. It is the formal analogue of Krivine's value
 $\pi/(2\log(1+\sqrt2))=|\tfrac2\pi\arcsin(i)|^{-1}$, which Krivine had conjectured to be $\KGR$~\cite{Kr79}. K\"onig
@@ -170,7 +170,7 @@ year & authors & lower bound & upper bound & status\\
 2026 & Lean development \cite{GL} & $1.401700322371$ & $1.404599395362$ & Lean 4, no hypotheses\\
 2026 & \textbf{this paper} & & $\mathbf{1.40456109}$ & computer-assisted\\
 \midrule
- & Haagerup's conjectured value & \multicolumn{2}{l}{$1/\gd=1.404575934663742\ldots$} & \\
+ & Haagerup's value & \multicolumn{2}{l}{$1/\gd=1.404575934663742\ldots$} & \\
 \bottomrule
 \end{tabular}
 \caption{Bounds on $\KG$. $\gamma_{\mathrm E}$ is Euler's constant.}\label{tab:history}
@@ -185,7 +185,7 @@ year & authors & lower bound & upper bound & status\\
 \[
  \KG\le1.40456109\;<\;\frac1{\gd}=1.4045759346637420\ldots
 \]
-In particular $\KG\neq1/\gd$. More precisely, there is an explicit rounding scheme (Section~\ref{sec:mixture}) whose
+In particular Haagerup's value $1/\gd$ is a strict upper bound for $\KG$. More precisely, there is an explicit rounding scheme (Section~\ref{sec:mixture}) whose
 correlation kernel $\sum_kh_k\,t|t|^{2k}$ satisfies
 \[
  \Dc(h):=h_0-\sum_{k\ge1}|h_k|\;\ge\;0.7119661873\;>\;\gd+7.5275\cdot10^{-6},
@@ -1155,8 +1155,8 @@ Together with the Lean-verified lower bound of~\cite{GL},
 The lower bound comes from the Hermite projection game $P_{1,0}-\frac{149}{200}P_{2,1}$. Games of higher degree should
 do better, but none has been certified yet: the best game of degree~$9$ found so far is worth about $1.40418$ numerically,
 and at most $1.404218$. If that value is close to the truth, $\KG$ lies within about $4\cdot10^{-4}$ below our upper
-bound. The new upper bound improves the Lean-verified $1.404599395362$ by $3.8\cdot10^{-5}$, and moves the upper bound
-below Haagerup's conjectured value.
+bound. The new upper bound improves the Lean-verified $1.404599395362$ by $3.8\cdot10^{-5}$, and shows that Haagerup's
+value is a strict upper bound.
 % SRC: [OV] (lower bound 1.401700322371, witness epsilon = 149/200, upper 1.404599395362); degree-9 model value
 % 1.40430-1.40431 [HD] 1.6 (N, numerical); 3.8e-5 = 1.404599395362 - 1.40456109 [DER].
 
@@ -1274,7 +1274,7 @@ We do not say which system produced this step. It came out of joint work in whic
 took part, and naming one of them would misrepresent how it came about.
 
 \paragraph{Why this was not luck.}
-No one asked an AI to refute a conjecture. The conjecture became the target because two months of work had narrowed
+No one asked an AI to settle a conjecture. The conjecture became the target because two months of work had narrowed
 the gap to $2.4\cdot 10^{-5}$ and had made the question sharp. The construction uses only tools that were built and
 verified in that time, and the decisive ingredient, the tiger pair, had been found a month earlier and
 understood to fail on its own. Many other routes failed first, and their failures are recorded: mixtures of

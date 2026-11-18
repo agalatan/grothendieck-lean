@@ -58,7 +58,7 @@ Lean. The definitions in the statement:
 namespace HaagerupRefutation
 
 /-- **The article's main theorem.** Given the three certified facts per channel (`ChannelFacts`), the complex
-Grothendieck constant is at most 1.40456109, hence strictly below `1/γ†`: Haagerup's proposed value is not it. -/
+Grothendieck constant is at most 1.40456109, hence strictly below `1/γ†`: Haagerup's value is a strict upper bound. -/
 theorem upper_bound (facts : ChannelFacts) :
     complexGrothendieckConstant ≤ 140456109 / 100000000 ∧
     complexGrothendieckConstant < 1 / haagerupDagger :=

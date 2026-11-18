@@ -23,10 +23,9 @@ finite exact computations evaluated by compiled code (`native_decide`); see
 | Oct–Nov 2026 | **this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K < 1.404599395362}$ |
 | Nov 2026 | **this repository**, [article](haagerup-article/main.pdf) (computer-assisted) | | $\mathbf{K \le 1.40456109 < 1/\gamma^\dagger}$ |
 
-Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
-$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, was proposed by Haagerup (1987) as the
-exact value. It lies inside the Lean interval above, about $2.35 \cdot 10^{-5}$ below its upper end; in fact it is a
-strict upper bound for the constant.
+Haagerup's value $1/\gamma^\dagger = 1.4045759\ldots$, where
+$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, is a strict upper bound for the constant:
+$K_G^{\mathbb{C}} < 1/\gamma^\dagger$ (below). This resolves a conjecture of Haagerup (1987) about this value.
 
 ## Haagerup's value is a strict upper bound
 
@@ -34,7 +33,8 @@ strict upper bound for the constant.
 
 $$K_G^{\mathbb{C}} \le 1.40456109 < 1/\gamma^\dagger = 1.4045759\ldots,$$
 
-so the conjecture $K_G^{\mathbb{C}} = 1/\gamma^\dagger$ is false.
+so Haagerup's value $1/\gamma^\dagger$ is a strict upper bound for $K_G^{\mathbb{C}}$, resolving a conjecture of
+Haagerup (1987).
 - **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
   rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
 - **The proof is computer-assisted.** Its finitely many numerical facts are certified in exact rational and
