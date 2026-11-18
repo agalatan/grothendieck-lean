@@ -22,7 +22,7 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K\le 1.40457588}$ |
+| Oct–Nov 2026 | **two-sided Lean theorem in this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K\le 1.40457588}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -146,9 +146,8 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
   soundness proof holds for every choice (`gridOK_mkGrid`).
 - **Caches.** CI does not evaluate every fact in every run. It restores the build of an earlier CI run, and Lake
   reuses a stored module only if the hashes of its source, its imports and the toolchain match. For the heaviest
-  facts, the node caps and the energy table, the cache also carries a hash of their sources, written by the run
-  that evaluated them and compared before the cache is used (`scripts/caps_stamp.py`). So a green check means
-  that CI has evaluated every fact for exactly these sources, not that it did so in that run.
+  facts, the node caps and the energy table, CI also checks a source digest before using the cache. A run marked
+  “no proof change” inherits the parent’s proof result. The workflow log records whether it ran the Lean build and axiom audits. [Cache check](scripts/caps_stamp.py) · [Proof workflow](.github/workflows/lean.yml).
 
 ## Layout
 
@@ -174,7 +173,7 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
 | `QuadRun.lean` | `quadrun`, a diagnostic driver of the quadrature checker; not a default target, not built by CI |
 | `data/` | inputs of the generated modules (certificates, recipes, plans, tables); `data/axioms/` holds the lists read by the axiom check |
 | `tools/` | generators of the data modules, replay scripts and numerical cross-checks |
-| `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
+| `scratch/Axioms.lean`, `scratch/UpperSixAxioms.lean`, `scripts/check_axioms.py` | repository-wide and six-channel axiom reports and their checker |
 | `scripts/`, `.github/workflows/`, `AGENTS.md` | CI, its helper scripts, and the working rules of the agents that maintain the repository |
 | `docs/` | `LEAN_DETAILS.md` (inventory), `overview.tex` (source of `OVERVIEW.pdf`), and design and status notes, each describing the state at its date |
 | `sign/` | GrotheSign, a separate Lake package: independent work on the coefficient signs of inverse kernel series. Not part of `Grothe`, of its axiom report or of CI; see [`sign/README.md`](sign/README.md) |
@@ -185,44 +184,29 @@ Most modules are generated: certificate data, and small modules that each check 
 as a `native_decide` fact, so that Lake runs the checks in separate processes. The generators are in `tools/`;
 most read their inputs from `data/`.
 
-The module-by-module inventory is [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md), and the mathematics is explained
-in [OVERVIEW.pdf](OVERVIEW.pdf). Both grew with the proofs and have not yet been revised as a whole: where a
-paragraph in them calls an input a hypothesis or open, the theorems named above are the current state.
+The [module inventory](docs/LEAN_DETAILS.md) lists the proof modules. The [overview source](docs/overview.tex)
+explains the mathematics on this branch. CI builds [OVERVIEW.pdf](OVERVIEW.pdf) from `master`. For current
+hypotheses, consult the theorem statements linked above.
 
 ## Building
 
-From the repository root, these commands check the six-channel upper bound and audit its axioms.
+### Six-channel upper bound
 
-```sh
+From a fresh checkout, run `lake exe cache get` to download compiled Mathlib dependencies. The repository pins Lean and Mathlib to `v4.34.1`. Then run these commands from the repository root in Bash or Zsh.
+
+```bash
+set -o pipefail
 lake build Grothe.UpperResult
 lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six
 ```
 
-The combined development, including the lower certificate, uses
+`Grothe.UpperResult` builds the upper proof independently of the lower node caps. The audit checks that every required upper theorem appears and that its transitive axioms are among Lean’s three standard axioms and the named six-channel computations. [Required theorems](data/axioms/modes/upper-six.required.txt) · [Six-channel native allowlist](data/axioms/modes/upper-six.native.txt).
 
-```sh
-lake exe cache get   # Mathlib v4.34.1 (toolchain leanprover/lean4:v4.34.1)
-lake build
-lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
-```
+### Full proof check
 
-The directory `sign/` is a separate Lake package with its own instructions; these commands do not build it.
+CI runs `lake build Grothe` for the combined development, then checks the generated imports, the sources and both axiom reports. The combined build includes all lower node caps and the single-channel energy facts. A cold build takes several CPU-days. The upper-only command above is the local build for the six-channel theorem. [Proof workflow](.github/workflows/lean.yml) · [Pinned dependencies and build costs](lakefile.toml).
 
-`lake build` builds the single target `Grothe`: both proofs with all their `native_decide` facts. From an empty
-build directory every fact is evaluated, which takes several days of CPU time: `lakefile.toml` records about 21
-CPU-hours for the fifteen range-checked cap rows and about ten hours for each energy-table fact, and there are
-other facts besides. The dependencies, Mathlib and LeanCert, are pinned in the same file.
-
-CI ([`.github/workflows/lean.yml`](.github/workflows/lean.yml)) checks pushed branches: it builds `Grothe`,
-checks that the root import files are the generated ones, rejects the constructs listed
-[above](#what-the-computer-checks-and-what-is-trusted) and checks the axiom report. A change that touches nothing
-Lean builds or checks skips the build. Runs start from the build cache described above. When the sources of the
-heaviest facts change, no cache fits them: the check of an ordinary pushed branch then fails at once and says so,
-and the facts are evaluated again on a self-hosted machine by the landing check of the pull request, by the check
-of `master`, or by a run dispatched for that purpose (`-f mode=caps`). Changes reach `master` through pull requests:
-after review the author comments `/land <agent-id>`, and CI checks the branch merged into the current `master` and
-moves `master` to that merge only if the check is green (`AGENTS.md` §7). Every update of `master` gets its own
-check.
+The `sign/` directory builds GrotheSign as a separate Lake package. [GrotheSign build instructions](sign/README.md).
 
 ## Related work
 

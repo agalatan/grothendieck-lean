@@ -13,8 +13,9 @@ Fails unless
 The lists are data files, one name per line, sorted, union-merged by git (.gitattributes), checked for order and
 duplicates by `tools/gen_root_imports.py --check`:
 * default report: data/axioms/required.txt, data/axioms/native.txt;
-* audit modes (one flag at most): data/axioms/modes/<mode>.required.txt, and <mode>.native.txt if present
-  (otherwise the default native list). Modes: --refined-cover, --law-nodes, --upper-six.
+* --upper-six requires both modes/upper-six.required.txt and modes/upper-six.native.txt under data/axioms/;
+* --refined-cover and --law-nodes use modes/<mode>.required.txt and inherit the default native list
+  unless a mode-specific native list is present.
 """
 import argparse, os, re, sys
 
@@ -31,12 +32,14 @@ def names(path):
 
 def audit_policy(mode):
     """The required results and the native allowlist of one mode, from the data files."""
-    native = names(os.path.join(AXDIR, "native.txt"))
+    native_path = os.path.join(AXDIR, "native.txt")
     if mode == "default":
-        return names(os.path.join(AXDIR, "required.txt")), native
+        return names(os.path.join(AXDIR, "required.txt")), names(native_path)
     required = names(os.path.join(AXDIR, "modes", f"{mode}.required.txt"))
     mode_native = os.path.join(AXDIR, "modes", f"{mode}.native.txt")
-    return required, (names(mode_native) if os.path.exists(mode_native) else native)
+    if mode == "upper-six" or os.path.exists(mode_native):
+        native_path = mode_native
+    return required, names(native_path)
 
 
 # the default lists, as module constants (used by the tests and by other tools)
@@ -86,7 +89,11 @@ def main(argv=None):
                            help=f"check the {mode} report")
     parser.set_defaults(mode="default")
     args = parser.parse_args(argv)
-    required, native = audit_policy(args.mode)
+    try:
+        required, native = audit_policy(args.mode)
+    except OSError as error:
+        print(f"cannot read {args.mode} axiom policy: {error}", file=sys.stderr)
+        return 1
     try:
         reports = parse_reports(sys.stdin.read())
     except ValueError as error:
