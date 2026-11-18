@@ -50,11 +50,11 @@ Let $\KGC$ denote the complex Grothendieck constant. In 1987, Haagerup proved th
   \frac{1}{\gd} \;=\; 1.404575934663\ldots,
   \end{gathered}
 \]
-whose reciprocal he called ``a perhaps more plausible candidate'' for $\KGC$; Heilman, Jones, and Malavolta (2026) restated this conjecture. We prove the strict upper bound
+whose reciprocal he called ``a perhaps more plausible candidate'' for $\KGC$. We prove that $\KGC$ is strictly below Haagerup's value:
 \[
-  \KGC \;\le\; 1.40456109 \;<\; \frac{1}{\gd}:
+  \KGC \;\le\; 1.40456109 \;<\; \frac{1}{\gd},
 \]
-Haagerup's value $1/\gd$ is a strict upper bound for $\KGC$, which resolves this conjecture of Haagerup. The value $1.40456109$ is fixed only for this purpose and is not meant to be the best upper bound, even at the time of writing; sharper bounds, and their verification in Lean, are developed continuously at \url{https://github.com/agalatan/grothendieck-lean}.
+thus resolving this conjecture of Haagerup. The value $1.40456109$ is fixed only for this purpose and is not meant to be the best upper bound, even at the time of writing; sharper bounds, and their verification in Lean, are developed continuously at \url{https://github.com/agalatan/grothendieck-lean}.
 We first prove a universal alternating ceiling showing that no convex mixture of preprocessed scalar phase channels ($W \le \gd$) and symmetric smoothed phase-twisted $\C^2$ channels ($W \approx 0.71194871 < \gd$) can ever cross $\gd$. We overcome this obstruction via a six-channel rational convex mixture combining three degree-$\le 3$ preprocessed symmetric $\C^2$ channels, two scalar phase channels, and one $\C^2$ channel built from a reflected pair of rounders $(f, g)$, $g(z_1,z_2) = f(-z_1,z_2)$, whose alternating value lifts strictly above $\gd$ ($W \approx 0.71303$), while alternating polynomial preprocessors cancel non-alternating Hermite--Laguerre modes at zero ceiling loss. All finite-channel enclosures and infinite Hardy-space tail bounds are certified via rigorous 256-bit ball arithmetic in the companion ancillary archive, and were re-checked with independently written code. A Lean~4 companion, kept in the repository rather than in the archive, checks the deduction and the whole budget exactly from the certified facts (Appendix~\ref{app:lean}). The construction was discovered with AI, at the end of a two-month research and formalisation project (Section~\ref{sec:found}).
 \end{abstract}
 
@@ -89,7 +89,7 @@ where $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$ for
   \frac{1}{\gd} \;=\; 1.4045759346637420\ldots
   \end{gathered}
 \end{equation}
-Haagerup \cite[p.~202]{Haa87} remarked that his bound is probably not sharp and called $1/\gd$ ``a perhaps more plausible candidate'' for $\KGC$. Recently, Heilman, Jones, and Malavolta \cite{HJM26} obtained the first strict improvement below $1/\gamma_H$ ($\KGC \le 1.40489856$, alongside the lower bound $\KGC \ge 1.400070$ building on Davie \cite{Dav84} and Guo--Fang--Lu \cite{GFL26}) and restated Haagerup's conjecture $\KGC = 1/\gd$ \cite[(4.1)]{HJM26}. The Lean~4 development \cite{Gal26} narrowed the interval to $1.4017003 \le \KGC \le 1.4045994$, proved in Lean without hypotheses (the upper bound by two-coordinate symmetric Gaussian rounding), stopping $2.35 \times 10^{-5}$ short of $1/\gd$.
+Haagerup \cite[p.~202]{Haa87} remarked that his bound is probably not sharp and called $1/\gd$ ``a perhaps more plausible candidate'' for $\KGC$. Recently, Heilman, Jones, and Malavolta \cite{HJM26} obtained the first strict improvement below $1/\gamma_H$ ($\KGC < 1.40489856$, alongside the lower bound $\KGC > 1.4$ building on Davie \cite{Dav84} and Guo--Fang--Lu \cite{GFL26}). The Lean~4 development \cite{Gal26} narrowed the interval to $1.4017003 < \KGC < 1.4045994$, proved in Lean without hypotheses (the upper bound by two-coordinate symmetric Gaussian rounding), stopping $2.35 \times 10^{-5}$ short of $1/\gd$.
 
 In this paper we cross Haagerup's barrier $1/\gd$: his value is a strict upper bound for $\KGC$.
 
@@ -367,7 +367,7 @@ theorem HaagerupBound.upper\_bound (facts : ChannelFacts) :\\
 \end{quote}
 Here \texttt{complexGrothendieckConstant} is defined as the infimum of the constants $K \ge 0$ in \eqref{eq:groth-def}, over all matrices and all $\C^N$, and \texttt{haagerupDagger} as the integral in \eqref{eq:gd-def}. Lean proves Lemma~\ref{lem:transfer} with the closure under convex combinations, Lemma~\ref{lem:gd-upper} in the form $0 < \gd < 7119595/10^7$, and the whole budget of Section~\ref{sec:cert}: the head data of the certificate, generated from \texttt{anc/} by a committed script, are evaluated exactly in the kernel (\texttt{decide +kernel}, no \texttt{native\_decide}), which gives $D \ge 0.71196618737$ and $1/D < 1.40456109$. The theorem depends only on the axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
 
-What Lean does not check is the hypothesis \texttt{facts}. It provides, for each of the six channels, a real sequence $h^{(i)}$ with three properties: $h^{(i)}$ is absolutely summable and satisfies \eqref{eq:dominated}, which Section~\ref{sec:mechanism} establishes; its first $251$ terms lie within the stated $\ell^1$ distance of the head data; and $\sum_{k > 250} |h^{(i)}_k|$ is below the stated tail bound. The last two are the interval computations of Section~\ref{sec:cert} and Appendix~\ref{app:arb}. This first version therefore checks the deduction and the arithmetic, not the numerics or the Gaussian realisation. Proving these in Lean as well, without hypotheses, as for the bounds $1.4017003 \le \KGC \le 1.4045994$ of~\cite{Gal26}, is ongoing work.
+What Lean does not check is the hypothesis \texttt{facts}. It provides, for each of the six channels, a real sequence $h^{(i)}$ with three properties: $h^{(i)}$ is absolutely summable and satisfies \eqref{eq:dominated}, which Section~\ref{sec:mechanism} establishes; its first $251$ terms lie within the stated $\ell^1$ distance of the head data; and $\sum_{k > 250} |h^{(i)}_k|$ is below the stated tail bound. The last two are the interval computations of Section~\ref{sec:cert} and Appendix~\ref{app:arb}. This first version therefore checks the deduction and the arithmetic, not the numerics or the Gaussian realisation. Proving these in Lean as well, without hypotheses, as for the bounds $1.4017003 < \KGC < 1.4045994$ of~\cite{Gal26}, is ongoing work.
 
 \begin{thebibliography}{99}
 
