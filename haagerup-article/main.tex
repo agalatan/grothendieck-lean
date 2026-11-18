@@ -1,0 +1,363 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+\geometry{margin=1in}
+\emergencystretch=3em
+\raggedbottom
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Hilb}{\mathcal{H}}
+\newcommand{\KGC}{K_G^{\C}}
+\newcommand{\KGR}{K_G^{\R}}
+\newcommand{\gd}{\gamma^\dagger}
+\newcommand{\ph}{\operatorname{ph}}
+\DeclareMathOperator{\RePart}{Re}
+\DeclareMathOperator{\ImPart}{Im}
+
+\definecolor{codebg}{RGB}{248,249,251}
+\definecolor{codeframe}{RGB}{215,220,228}
+\definecolor{kwcolor}{RGB}{0,70,155}
+\definecolor{cmtcolor}{RGB}{95,105,115}
+
+% Every non-ASCII symbol appearing in Appendix A is explicitly mapped below:
+\lstdefinelanguage{Lean4}{
+  morekeywords={import,namespace,end,def,noncomputable,theorem,lemma,structure,where,
+                have,let,in,by,calc,exact,refine,intro,rintro,rw,simp,only,norm_num,
+                ring,ring_nf,linarith,nlinarith,positivity,unfold,dsimp,congr,ext,
+                induction,with,rcases,fun,forall,exists,if,then,else,open,scoped,
+                apply,convert,using,push_cast,exact_mod_cast,omega,field_simp,at,
+                fin_cases,constructor,change,simpa,set},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  literate=
+    {ℝ}{{$\mathbb{R}$}}1
+    {ℂ}{{$\mathbb{C}$}}1
+    {ℚ}{{$\mathbb{Q}$}}1
+    {ℕ}{{$\mathbb{N}$}}1
+    {∑}{{$\sum$}}1
+    {∫}{{$\int$}}1
+    {≤}{{$\le$}}1
+    {≥}{{$\ge$}}1
+    {≠}{{$\ne$}}1
+    {∈}{{$\in$}}1
+    {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1
+    {→}{{$\to$}}1
+    {↦}{{$\mapsto$}}1
+    {∧}{{$\wedge$}}1
+    {‖}{{$\|$}}1
+    {⟨}{{$\langle$}}1
+    {⟩}{{$\rangle$}}1
+    {₀}{{$_0$}}1
+    {·}{{$\cdot$}}1
+    {ι}{{$\iota$}}1
+    {←}{{$\leftarrow$}}1
+}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  rulecolor=\color{codeframe},
+  keywordstyle=\color{kwcolor}\bfseries,
+  commentstyle=\color{cmtcolor}\itshape,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  upquote=true
+}
+
+\title[Disproving Haagerup's Conjecture for $\KGC$]{Disproving Haagerup's Conjecture for the Complex Grothendieck Constant}
+\author{Alin Galatan}
+\date{November 2026}
+
+\begin{document}
+
+\begin{abstract}
+Let $\KGC$ denote the complex Grothendieck constant. In 1987, Haagerup proved the upper bound $\KGC \le 1/\gamma_H \approx 1.40490913$ via plain complex Gaussian phase rounding and identified the alternating hypergeometric integral
+\begin{gather*}
+  \gd \;=\; \int_0^{\pi/2} \frac{\cos^2 t}{\sqrt{1 + \sin^2 t}}\,dt
+  \;=\; \frac{\pi}{4}\,{}_2F_1\!\left(\tfrac{1}{2},\tfrac{1}{2};2;-1\right)
+  \;=\; 0.711958659778\ldots, \\
+  \frac{1}{\gd} \;=\; 1.404575934663\ldots,
+\end{gather*}
+as a natural barrier, recently conjectured to equal $\KGC$ by Heilman, Jones, and Malavolta (2026). We refute the equality $\KGC = 1/\gd$ by proving the strict upper bound
+\[
+  \KGC \;\le\; 1.40456109 \;<\; \frac{1}{\gd}.
+\]
+We first prove a universal alternating obstruction showing that no convex mixture of one-coordinate rounders or symmetric two-coordinate \texttt{GT} rounders can ever cross $\gd$. We overcome this barrier via a six-channel rational convex mixture combining three degree-$\le 3$ preprocessed symmetric $\C^2$ channels, two scalar phase channels, and one reflection-antisymmetric $\C^2$ rounding channel $g(z_1,z_2) = f(-z_1,z_2)$ whose alternating value lifts strictly above $\gd$ ($W \approx 0.71303$), while alternating preprocessors cancel non-alternating Hermite modes at zero ceiling loss. The analytic transfer spine, convex no-go theorem, and rational upper bound on $\gd$ are formally verified in Lean~4 (included verbatim in Appendix~A), and the finite six-channel enclosures are certified in 256-bit Arb ball arithmetic (Appendix~B).
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Grothendieck's fundamental inequality \cite{Gro53} asserts the existence of a universal constant $K_G^{\mathbb{F}} < \infty$ over $\mathbb{F} \in \{\R, \C\}$ such that for every finite matrix $A = (A_{pq}) \in \mathbb{F}^{m \times n}$ and every family of vectors $u_1,\dots,u_m, v_1,\dots,v_n$ in the unit ball of a Hilbert space $\Hilb$ over $\mathbb{F}$,
+\begin{equation}\label{eq:groth-def}
+  V(A) \;:=\; \sup_{\|u_p\|_\Hilb \le 1,\, \|v_q\|_\Hilb \le 1}
+  \left| \sum_{p=1}^m \sum_{q=1}^n A_{pq} \langle u_p, v_q \rangle_\Hilb \right|
+  \;\le\; K_G^{\mathbb{F}} \, C(A),
+\end{equation}
+where $C(A) := \sup_{|z_p| \le 1,\, |w_q| \le 1} \big|\sum_{p,q} A_{pq} \bar{z}_p w_q\big|$ is the classical $\ell^\infty \to \ell^1$ bilinear norm (attained at unimodular scalars $|z_p| = |w_q| = 1$ by convexity). Over $\R$, Krivine \cite{Kri79} established $\KGR \le \pi / (2\ln(1 + \sqrt{2})) \approx 1.78221$ in 1979 and conjectured equality; thirty-two years later, Braverman, Makarychev, Makarychev, and Naor \cite{BMMN11} refuted Krivine's conjecture by showing $\KGR < \pi / (2\ln(1 + \sqrt{2}))$ via a two-dimensional rounding scheme on $\R^2$.
+
+In the complex case, progress has been markedly more rigid. Following Pisier's interpolation bound $\KGC \le e^{1-\gamma} \approx 1.5262$ \cite{Pis78}, Haagerup \cite{Haa87} adapted Krivine's series-reversion method in 1987 to plain complex Gaussian phase rounding $\ph(z) := z/|z|$ on $\C$. For $(X, Y)$ correlated standard complex Gaussians with $\E[\bar{X} Y] = t \in (-1,1)$ and $\E[|X|^2] = \E[|Y|^2] = 1$, Haagerup computed the Mehler correlation
+\begin{equation}\label{eq:phi-haagerup}
+  \varphi(t) \;:=\; \E\!\left[\overline{\ph(X)}\,\ph(Y)\right]
+  \;=\; \frac{\pi}{4}\, t \, {}_2F_1\!\left(\tfrac{1}{2}, \tfrac{1}{2}; 2; t^2\right)
+  \;=\; \sum_{k=0}^\infty r_k \, t^{2k+1},
+\end{equation}
+where $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$. Because the reverted series $\varphi^{-1}(u) = \sum_{k=0}^\infty b_k u^{2k+1}$ fails to alternate in sign at higher degrees, solving $\sum_{k=0}^\infty |b_k| c^{2k+1} = 1$ yields Haagerup's proved 1987 constant $\KGC \le 1/\gamma_H = 1.4049091327\ldots$ ($\gamma_H = 0.7117898067\ldots$), which stood unimproved for 39 years. Evaluating the alternating series $|\varphi(i)| = \sum_{k=0}^\infty (-1)^k r_k$ directly instead gives Haagerup's alternating integral
+\begin{equation}\label{eq:gd-def}
+  \begin{gathered}
+  \gd \;:=\; \sum_{k=0}^\infty (-1)^k r_k
+  \;=\; \int_0^{\pi/2} \frac{\cos^2 t}{\sqrt{1 + \sin^2 t}}\,dt
+  \;=\; 0.7119586597782638\ldots, \\
+  \frac{1}{\gd} \;=\; 1.4045759346637420\ldots
+  \end{gathered}
+\end{equation}
+Haagerup \cite{Haa87} noted $1/\gd$ as a natural candidate value should the sign defect of $\varphi^{-1}$ be surmountable, and Heilman, Jones, and Malavolta \cite{HJM26}---who achieved the first improvement past $1/\gamma_H$ ($\KGC \le 1.40489856$, alongside $\KGC \ge 1.400070$, building on Davie \cite{Dav84} and Guo--Fang--Lu \cite{GFL26})---explicitly conjectured $\KGC = 1/\gd$. Subsequent Lean-verified two-coordinate symmetric rounding in \texttt{grothendieck-lean} \cite{Gal26} narrowed the interval to $1.4017003 \le \KGC \le 1.4045994$, stopping $2.35 \times 10^{-5}$ short of $1/\gd$.
+
+In this paper, we cross Haagerup's barrier $1/\gd$ and refute the conjecture $\KGC = 1/\gd$.
+
+\begin{theorem}[Main Result]\label{thm:main}
+The complex Grothendieck constant satisfies
+\[
+  \KGC \;\le\; \frac{1}{D_{\mathrm{cert}}} \;<\; 1.40456109 \;<\; \frac{1}{\gd} \;=\; 1.404575934663\ldots,
+\]
+where $D_{\mathrm{cert}} > 0.711966186 > \gd + 7.52 \times 10^{-6}$. In particular, $\KGC \ne 1/\gd$.
+\end{theorem}
+
+Theorem~\ref{thm:main} provides the complex counterpart to the Braverman--Makarychev--Makarychev--Naor refutation of Krivine's real conjecture \cite{BMMN11}, though the mechanism is sharper: whereas Krivine's real constant already arose from an alternating $\tanh$/$\sinh$ inversion on $\R$, Haagerup's constant $\gd$ is a universal alternating spectral ceiling across \emph{all} one-coordinate and symmetric two-coordinate channels (Section~\ref{sec:obstruction}). Crossing $\gd$ mathematically forces breaking symmetry between Alice's and Bob's rounders on $\C^2$.
+
+\section{Radial Transfer and the Universal Alternating Obstruction}\label{sec:obstruction}
+
+By finite-dimensional exhaustion of $V(A)$, it suffices in \eqref{eq:groth-def} to range over $\Hilb = \C^N$ ($N \ge 1$) with inner product $\langle u, v \rangle := \sum_{j=1}^N \bar{u}_j v_j$ (conjugate-linear in the first slot). To bound $V(A)$ by $C(A)$ via Gaussian rounding without series reversion, we work directly in the primal radial correlation algebra.
+
+\begin{lemma}[Radial Schur Transfer]\label{lem:transfer}
+Let $h = (h_k)_{k \ge 0}$ be an absolutely summable real sequence such that for every matrix $A \in \C^{m \times n}$ and unit-ball vectors $u_p, v_q \in \C^N$,
+\begin{equation}\label{eq:dominated}
+  \left| \sum_{k=0}^\infty h_k \sum_{p=1}^m \sum_{q=1}^n A_{pq} \langle u_p, v_q \rangle \big|\langle u_p, v_q \rangle\big|^{2k} \right|
+  \;\le\; C(A).
+\end{equation}
+If $D(h) := h_0 - \sum_{k=1}^\infty |h_k| > 0$, then $\KGC \le 1 / D(h)$. Moreover, the family of sequences satisfying \eqref{eq:dominated} is closed under finite convex combinations $H = \sum_{i=1}^M w_i h^{(i)}$ ($w_i \ge 0$, $\sum_i w_i = 1$).
+\end{lemma}
+
+\begin{proof}
+For each $k \ge 0$ and $x \in \C^N$ with $\|x\|_2 \le 1$, consider the mixed tensor vector $\Psi_k(x) := x^{\otimes (k+1)} \otimes \bar{x}^{\otimes k} \in \C^{N^{2k+1}}$. Then $\|\Psi_k(x)\|_2 = \|x\|_2^{2k+1} \le 1$ and $\langle \Psi_k(u_p), \Psi_k(v_q) \rangle = \langle u_p, v_q \rangle |\langle u_p, v_q \rangle|^{2k}$. Consequently, each bilinear form $S_k := \sum_{p,q} A_{pq} \langle u_p, v_q \rangle |\langle u_p, v_q \rangle|^{2k}$ satisfies $|S_k| \le V(A)$. By the reverse triangle inequality and \eqref{eq:dominated},
+\[
+  h_0 |S_0| - \left(\sum_{k=1}^\infty |h_k|\right) V(A)
+  \;\le\; |h_0 S_0| - \left|\sum_{k=1}^\infty h_k S_k\right|
+  \;\le\; \left|\sum_{k=0}^\infty h_k S_k\right|
+  \;\le\; C(A).
+\]
+Taking the supremum over $\|u_p\|_2, \|v_q\|_2 \le 1$ yields $h_0 V(A) - \big(\sum_{k=1}^\infty |h_k|\big) V(A) \le C(A)$, i.e.\ $D(h) V(A) \le C(A)$. Convex closure follows immediately from linearity and the triangle inequality. (Both statements are proved unconditionally in Appendix~A.)
+\end{proof}
+
+Define the \emph{alternating ceiling functional} $W(h) := \sum_{k=0}^\infty (-1)^k h_k$.
+
+\begin{proposition}[Universal Alternating Ceiling and Convex No-Go]\label{prop:nogo}
+For every absolutely summable sequence $h = (h_k)_{k \ge 0}$, one has $D(h) \le W(h) \le |W(h)|$. Consequently, if $h^{(1)}, \dots, h^{(M)}$ is any pool of channels satisfying $W(h^{(i)}) \le \gd$ for all $i$, then every convex combination $H = \sum_{i=1}^M w_i h^{(i)}$ satisfies $D(H) \le \gd$.
+\end{proposition}
+
+\begin{proof}
+Since $-(-1)^k h_k \le |h_k|$ for every $k \ge 1$, summing over $k \ge 1$ gives $-\sum_{k=1}^\infty (-1)^k h_k \le \sum_{k=1}^\infty |h_k|$, so $D(h) = h_0 - \sum_{k=1}^\infty |h_k| \le h_0 + \sum_{k=1}^\infty (-1)^k h_k = W(h)$. Since $W$ is linear, $D(\sum_i w_i h^{(i)}) \le \sum_i w_i W(h^{(i)}) \le \gd$.
+\end{proof}
+
+Proposition~\ref{prop:nogo} explains why all prior architectures stalled strictly below $\gd$:
+\begin{enumerate}
+  \item \textbf{One-coordinate channels ($d=1$):} Let $f, g : \C \to \overline{\D}$ be measurable unit-disk rounders composed with an odd contractive Gaussian preprocessor $\rho(t) = t R(t^2)$ ($\|R\|_1 \le 1$, so $|\rho(i)| = |R(-1)| \le 1$). Expanding $f, g$ in orthonormal complex Hermite--Laguerre polynomials shows that at $t = i$, the charge-$1$ alternating Mehler operator $\Gamma = \sum_{k=0}^\infty (-1)^k P_{2k+1}^{(1)}$ acts radially with strictly positive kernel on $e^{i\theta}$, attaining its unique unit-disk maximum at $f(z) = g(z) = z/|z|$ with value $\gd$. Thus $W(h) \le \gd$ for \emph{every} one-coordinate channel.
+  \item \textbf{Symmetric two-coordinate channels:} In \cite{Gal26}, the smoothed phase-twisted rounder $G_T : \C^2 \to \overline{\D}$ uses identical maps $f = g = G_T$ with preprocessing signs $(p(i), q(i)) = (+i, +i)$, achieving $W(G_T, G_T) = 0.7119487068 < \gd$ ($9.95 \times 10^{-6}$ below $\gd$) because the symmetric second variation of $\langle f, \Gamma f \rangle$ around $z_2/|z_2|$ is negative definite.
+\end{enumerate}
+By Proposition~\ref{prop:nogo}, \emph{any} proof of $\KGC < 1/\gd$ via Lemma~\ref{lem:transfer} must include at least one channel with $W > \gd$.
+
+\section{Reflection-Antisymmetric \texorpdfstring{$\C^2$}{C\^{}2} Rounding and Residual Steering}\label{sec:mechanism}
+
+\subsection{Realizing Dominated Radial Channels on \texorpdfstring{$\C^2$}{C\^{}2}}
+Let $f, g : \C^2 \to \overline{\D}$ be measurable maps into the closed unit disk satisfying joint diagonal $U(1)$-equivariance $g(e^{i\phi} w_1, e^{i\phi} w_2) = e^{i\phi} g(w_1, w_2)$. Given unit-ball vectors $u_p, v_q \in \C^N$ and two odd polynomials $p_1(t) = t P(t^2)$, $p_2(t) = t Q(t^2)$ with $\|P\|_1 \le 1, \|Q\|_1 \le 1$, independent standard complex Gaussian projections $G^{(1)}, G^{(2)}$ (using tensor-power channels corresponding to the monomials of $P, Q$) generate correlated Gaussian pairs $(X_p, Y_q)$ on $\C^2$ with coordinatewise cross-correlations $\big(p_1(\langle u_p, v_q\rangle),\, p_2(\langle u_p, v_q\rangle)\big)$ at $\langle u_p, v_q \rangle \in \overline{\D}$. By diagonal $U(1)$-equivariance, taking the real part (equivalently, averaging $(f,g)$ with its conjugate-reflection $(\tilde{f}, \tilde{g})$) produces an absolutely summable radial series
+\[
+  \RePart \E\!\left[\overline{f(X_p)}\, g(Y_q)\right] \;=\; \sum_{k=0}^\infty h_k \langle u_p, v_q \rangle \big|\langle u_p, v_q \rangle\big|^{2k}
+\]
+satisfying \eqref{eq:dominated} because $|f(X_p)| \le 1$ and $|g(Y_q)| \le 1$ pointwise on every realization.
+
+\subsection{Reflection-Antisymmetric \texttt{tiger} Channel (\texorpdfstring{$W > \gd$}{W > gamma-dagger})}
+To break the symmetric ceiling $W \le \gd$ without doubling storage or creating imaginary overlap residuals, choose $f(z_1, z_2) = e^{i\theta_2} F(|z_1|, |z_2|, \theta_1 - \theta_2)$ with $|F| \le 1$ and define Bob's rounder by reflection in the first coordinate:
+\begin{equation}\label{eq:tiger-sym}
+  g(z_1, z_2) \;:=\; f(-z_1, z_2) \;=\; e^{i\theta_2} F(|z_1|, |z_2|, \theta_1 - \theta_2 + \pi).
+\end{equation}
+Equivalently, Alice and Bob apply the \emph{same} rounder $f$ to Gaussian channels with opposite-sign preprocessors $(-t R(t^2), +t R(t^2))$. Expanding $F$ in angular harmonics $e^{i m (\theta_1 - \theta_2)}$ ($m \in \Z$), the shift $\Delta\theta \mapsto \Delta\theta + \pi$ multiplies the $m$-th harmonic by $(-1)^m$. Consequently, every chaos overlap of $(f, g)$ at radial degree $2n+1$ simplifies to a \emph{strictly real} signed squared norm:
+\begin{equation}\label{eq:mu-tiger}
+  \mu_n(f, g) \;=\; \sum_{m \in \Z} (-1)^m \sum_{k_0(m) + n_1 + n_2 = n} \big|\langle f_m, \psi_{n_1, n_2}^{(|m|, |1-m|)} \rangle_{L^2(\gamma_{\C^2})}\big|^2 \;\in\; \R,
+\end{equation}
+where $k_0(m) = (|m| + |1-m| - 1)/2$ and $\psi_{n_1,n_2}^{(A,B)}(r_1,r_2) = \phi_{n_1,A}(r_1^2)\phi_{n_2,B}(r_2^2)$ are the orthonormal Laguerre functions on $\R_+^2$ with respect to $e^{-(s_1+s_2)}ds_1 ds_2$. At $n = 1$ (degree~$3$) and $m = 1$, $(-1)^n (-1)^m = (-1)^2 = +1$, flipping the sign of the degree-$3$ mode in $W(f,g) = \sum_{n=0}^\infty (-1)^n \mu_n(f,g)$ from negative to positive. Optimizing $F$ by alternating best-response on a $64 \times 48 \times 48$ polar cell grid quantized to $2^{-20}\Z[i]$ ($\max |F|^2 = 2^{40}/2^{40} = 1$) achieves
+\[
+  W(f_{\mathrm{tiger}}, g_{\mathrm{tiger}}) \;=\; 0.71303109\ldots \;>\; \gd + 1.072 \times 10^{-3}.
+\]
+Composing both coordinates with the contractive cubic preprocessor $\rho_4(t) = t R_4(t^2)$ where $R_4(X) = c_0 - c_1 X$ ($c_0, c_1 > 0$, $c_0 + c_1 \approx 1$) simultaneously:
+\begin{enumerate}
+  \item Preserves $R_4(-1) = c_0 + c_1 = 1 - 10^{-12}$, retaining $100\%$ of the alternating ceiling $W$ at $t = i$;
+  \item Contracts the real-axis maximum to $R_4(1) = c_0 - c_1 \approx 0.840 < 1$, extending holomorphy of the Mehler correlation to the disk $|t| \le \frac{28}{25} = 1.12$ so the tail above degree $501$ ($k > 250$) collapses below $10^{-19}$.
+\end{enumerate}
+
+\subsection{Zero-Cost Residual Steering on \texttt{GT}}
+Alone, the \texttt{tiger} channel carries $\sim 10^{-2}$ of non-alternating mode mass on $1 \le k \le 250$. Rather than freezing the symmetric two-coordinate rounder $G_T$ \cite{Gal26} at a single preprocessor, observe that for \emph{any} alternating polynomial $P(X) = \sum_{j \ge 0} (-1)^j a_j X^j$ ($a_j \ge 0$, $\sum_j a_j = 1$) and $Q(X) = -\sum_{j \ge 0} b_j X^{2j+1}$ ($b_j \ge 0$, $\sum_j b_j = 1$), evaluating at $X = -1$ ($t = i$) gives $P(-1) = \sum_j a_j = 1$ and $Q(-1) = 1$. Hence every such column preserves the full symmetric ceiling $W(G_T, G_T) = 0.71194871$ at \emph{zero loss}, while generating linearly independent signed Hermite profiles $(h_1, \dots, h_{250})$ that cancel the \texttt{tiger} channel's residuals inside the convex sum.
+
+\section{The Six-Channel Rational Certificate and Error Budget}\label{sec:cert}
+
+Table~\ref{tab:cert} specifies the exact rational parameters of our six-channel mixture (\texttt{cert\_final}). Every weight $w_i$ and polynomial coefficient lies in $10^{-12}\Z$, satisfying $\sum_{i=1}^6 w_i = 1$, $\|P_i\|_1, \|Q_i\|_1, \|R_i\|_1 \le 1$, and $Q_i(0) = 0$ (verified in exact $\Q$ arithmetic in Appendix~A).
+
+\begin{table}[htbp]
+\centering
+\caption{Exact rational parameters of the 6-channel certificate ($\Delta = 10^{12}$).}\label{tab:cert}
+\footnotesize
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}cllll@{}}
+\toprule
+Ch. & Kind & Exact Weight $w_i$ & $(r_i, j_i)$ & Preprocessor Polynomials ($\Delta = 10^{12}$) \\
+\midrule
+1 & \texttt{GT} & $\dfrac{971858734217}{\Delta}$ & $\Big(\dfrac{2073}{2000},\,\dfrac{9}{20}\Big)$ &
+  $\begin{aligned}[t] P_1(X) &= (991833356533 - 8166643466 X)/\Delta, \\ Q_1(X) &= -X \end{aligned}$ \\[10pt]
+2 & \texttt{GT} & $\dfrac{8906483332}{\Delta}$ & $\Big(\dfrac{2087}{2000},\,\dfrac{1}{4}\Big)$ &
+  $\begin{aligned}[t] P_2(X) &= (989554427299 - 10445572700 X^3)/\Delta, \\ Q_2(X) &= -(833435315100 X + 166564684899 X^3)/\Delta \end{aligned}$ \\[10pt]
+3 & \texttt{GT} & $\dfrac{201845612}{\Delta}$ & $\Big(\dfrac{1043}{1000},\,\dfrac{1}{4}\Big)$ &
+  $\begin{aligned}[t] P_3(X) &= (91371963319 - 825194568310 X - 83433468370 X^3)/\Delta, \\ Q_3(X) &= -999999999999 X/\Delta \end{aligned}$ \\[10pt]
+4 & \texttt{tiger} & $\dfrac{18797147285}{\Delta}$ & $\Big(\dfrac{28}{25},\,\dfrac{7}{20}\Big)$ &
+  $R_4(X) = (920082833249 - 79917166750 X)/\Delta$ \\[6pt]
+5 & \texttt{phase} & $\dfrac{50102530}{\Delta}$ & $\Big(\dfrac{517}{500},\,\dfrac{1}{4}\Big)$ &
+  $R_5(X) = (211831968397 - 67863691543 X + 720304340059 X^2)/\Delta$ \\[6pt]
+6 & \texttt{phase} & $\dfrac{185687024}{\Delta}$ & $\Big(\dfrac{2147}{2000},\,\dfrac{3}{20}\Big)$ &
+  $R_6(X) = (364133034656 - 635866965343 X)/\Delta$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Head Cancellation, Universal \texttt{GT} Comparison, and Hardy Tails}
+Split the combined radial series $H_k = \sum_{i=1}^6 w_i h^{(i)}_k$ at $K = 250$ (chaos degree $2K+1 = 501$). Letting $\tilde{h}^{(i)}_k$ denote the finite-table / Arb-midpoint approximation on $0 \le k \le 250$ and $\widetilde{H}_k := \sum_{i=1}^6 w_i \tilde{h}^{(i)}_k$, the triangle inequality on $\{0,\dots,K\}$ yields
+\begin{equation}\label{eq:budget-split}
+  H_0 - \sum_{k=1}^\infty |H_k|
+  \;\ge\; \widetilde{H}_0 - \sum_{k=1}^{250} |\widetilde{H}_k|
+  - \sum_{i=1}^6 w_i \sum_{k=0}^{250} \big|h^{(i)}_k - \tilde{h}^{(i)}_k\big|
+  - \sum_{i=1}^6 w_i \sum_{k=251}^\infty \big|h^{(i)}_k\big|.
+\end{equation}
+Notice that the head comparison error $\sum_{k=0}^{250} |h^{(i)}_k - \tilde{h}^{(i)}_k|$ is paid \emph{only once}, simultaneously covering both $k=0$ and $1 \le k \le 250$. The four terms on the right-hand side of \eqref{eq:budget-split} are enclosed in 256-bit Arb ball arithmetic (Appendix~B) as follows:
+\begin{enumerate}
+  \item \textbf{Universal \texttt{GT} comparison allowance:} Because $Q_i(0) = 0$ and $\|P_i\|_1, \|Q_i\|_1 \le 1$, each bivariate monomial coefficient polynomial of $G_T$ on $\mathrm{headIdx}(501)$ has $\ell^1$-norm $\le 1$. Evaluating the seven-band comparison inequality of \cite{Gal26} (\texttt{UpperTightComparison}) at uniform weight $w \equiv 1$ across the $21{,}168$-entry dyadic energy table gives $\varepsilon_{\mathrm{GT,univ}} \le 1.49411634 \times 10^{-6} < \frac{1494117}{10^{12}}$. Multiplied by $w_{\mathrm{GT}} = w_1 + w_2 + w_3 = \frac{980967063161}{10^{12}}$, the total \texttt{GT} comparison tax is bounded by $1.465680 \times 10^{-6}$.
+  \item \textbf{Exact Laguerre cell overlaps for \texttt{tiger}:} On the $64 \times 48 \times 48$ rational polar grid (with 47 finite intervals in $\frac{1}{36}\Z$ up to $r_1 = \frac{7}{2}$, $r_2 = \frac{107}{36}$ plus the unbounded tail bins $[\frac{7}{2},\infty)$ and $[\frac{107}{36},\infty)$), the cumulative Laguerre cell integrals $\tilde{J}_{n,a}(s_0, s_1) = \sqrt{n!/(n+a)!}\int_{s_0}^{s_1} s^{a/2} L_n^{(a)}(s) e^{-s}ds$ satisfy the quadrature-free recurrence
+  \[
+    \tilde{J}_{n+1,a}(s_0,s_1) \;=\; \frac{n + a/2}{\sqrt{(n+1)(n+1+a)}}\,\tilde{J}_{n,a}(s_0,s_1)
+    + \frac{\big[s^{a/2+1}\phi_{n,a}(s)e^{-s}\big]_{s_0}^{s_1}}{\sqrt{(n+1)(n+1+a)}}
+  \]
+  (with upper bracket $0$ at $s_1 = \infty$). Summing all $502$ active angular modes $m \in \{-250,\dots,251\}$ (zero omitted modes at $k \le 250$) at 1024-bit internal ball precision encloses $\mu_0,\dots,\mu_{250}$ to radius $< 10^{-75}$.
+  \item \textbf{Hardy circle tails ($k > 250$):} On each circle $|t| = r_i > 1$ (Table~\ref{tab:cert}), open-disk kernel positivity on $|t| \le r_i + 10^{-5}$ is certified on the boundary via the harmonic minimum principle for $\RePart(I_2 \pm R(t)) \succ 0$, and the Schur bound \cite{Gal26} (\texttt{SchurMainGaussian}) is integrated over $\theta \in [0,\pi]$ using the cancellation-free factorization $Z - C_r Z^{-1} C_r = (Z - C_r) Z^{-1} (Z + C_r)$. Subtracting $|c_0|^2 r_i^2$ by Parseval bounds the weighted tail across all six channels by $3.13 \times 10^{-8} < \frac{32}{10^9}$.
+  \item \textbf{Combined rational budget:} In 256-bit Arb, $\widetilde{H}_0 \in [0.71196893304878 \pm 10^{-30}] > \frac{711968933048}{10^{12}}$ and $\sum_{k=1}^{250} |\widetilde{H}_k| \in [1.24878095 \times 10^{-6} \pm 10^{-30}] < \frac{1248782}{10^{12}}$, yielding the exact rational lower bound
+  \[
+    D_{\mathrm{cert}} \;:=\; \frac{711968933048}{10^{12}} - \frac{1248782}{10^{12}}
+    - \frac{980967063161}{10^{12}}\cdot\frac{1494117}{10^{12}} - \frac{32}{10^9}
+    \;=\; 0.711966186586\ldots
+  \]
+\end{enumerate}
+
+\subsection{Elementary Telescoping Bound on \texorpdfstring{$\gd$}{gamma-dagger} and Proof of Theorem~\ref{thm:main}}
+To bound $\gd$ from above purely algebraically without elliptic quadrature, write $1 + \sin^2 t = 2 - \cos^2 t$. For $v \in [0,1]$, define the degree-$21$ rational polynomial
+\[
+  P(v) \;:=\; \sum_{k=0}^{20} b_k v^k + \frac{21}{10}\, b_{21} v^{21},
+  \qquad b_0 = 1, \quad b_{k+1} = \frac{2k+1}{4(k+1)}\,b_k.
+\]
+Differentiating $G(v) := \sqrt{2 - v}\, P(v)$ gives $2\sqrt{2-v}\, G'(v) = 2(2 - v) P'(v) - P(v)$. Because $4(k+1) b_{k+1} = (2k+1) b_k$, every coefficient of $v^0, \dots, v^{19}$ cancels identically, leaving
+\[
+  2(2 - v) P'(v) - P(v) \;=\; b_{21} v^{20}\!\left(\frac{462}{5} - \frac{903}{10}\,v\right) \;>\; 0
+  \qquad \forall v \in (0, 1].
+\]
+Thus $G(v) \ge G(0) = \sqrt{2}$ on $[0,1]$, so $(1 + \sin^2 t)^{-1/2} \le \frac{1}{\sqrt{2}} P(\cos^2 t) < \frac{707106782}{10^9} P(\cos^2 t)$. Integrating against $\cos^2 t$ via the exact Wallis recurrence $W_{k+1} = \frac{2k+1}{2k+2} W_k$ ($W_0 = \frac{\pi}{2}$) and $\pi < 3.1415926536$ yields $\gd < 0.711958662 < \frac{7119595}{10^7} < D_{\mathrm{cert}}$, completing the proof of Theorem~\ref{thm:main}.
+
+\appendix
+
+\section{Self-Contained Lean 4 Formalization of the Analytic Spine}\label{app:lean}
+
+The following standalone Lean~4 file (compatible with \texttt{Mathlib4}, zero \texttt{sorry}s, zero custom axioms) formally verifies: (1) all exact rational certificate norms and budget inequalities of Table~\ref{tab:cert}; (2) the telescoping derivative bound $0 < \gd < \frac{7119595}{10^7}$; (3) the universal alternating ceiling and convex no-go theorem (Proposition~\ref{prop:nogo}); and (4) the Hilbert tensor-power Schur transfer theorem (Lemma~\ref{lem:transfer}) directly on $(\C^N, \langle u,v\rangle = \sum_i \bar{u}_i v_i)$ and master refutation theorems reducing $\KGC \le 1.40456109 < 1/\gd$ to \texttt{VerifiedSixChannelData}.
+
+\lstinputlisting[language=Lean4]{lean/HaagerupRefutation/Main.lean}
+
+\section{256-Bit Arb Ball Verification Protocol}\label{app:arb}
+
+To audit \texttt{VerifiedSixChannelData} in \texttt{python-flint} (\texttt{flint.ctx.prec = 256}), the standalone verifier executes four deterministic steps in rigorous midpoint-radius ball arithmetic:
+\begin{enumerate}
+  \item \textbf{Universal \texttt{GT} Error:} Accumulate the seven spectral band squared masses $B_j = \sum_{p \in \mathrm{band}_j} \mathrm{energyTable}(p) + \varepsilon_{\mathrm{table}}$ across the $21{,}168$ dyadic entries of \cite{Gal26} and evaluate $\varepsilon_{\mathrm{GT,univ}} = 2\sum_{j=0}^6 \sqrt{B_j}\,e_j + \big(\sum_{g=0}^3 R_g\big)^2 + \varepsilon_{\mathrm{table}} \in [1.4941163372 \times 10^{-6} \pm 5 \times 10^{-31}] < \frac{1494117}{10^{12}}$.
+  \item \textbf{Exact \texttt{tiger} Overlaps:} Verify $F_{\mathrm{re}}[p,i,j]^2 + F_{\mathrm{im}}[p,i,j]^2 \le 2^{40}$ in exact 64-bit integers across all $64 \times 48 \times 48$ cells, compute the $64$-point complex DFT along $p$ in \texttt{acb\_mat}, evaluate the Laguerre cell matrices $\tilde{J}_{n,a}(e_i^2, e_{i+1}^2)$ at 1024-bit internal precision up to $a=251, n=250$, and sum $(-1)^m \operatorname{sinc}^2(\pi m/64) |\langle \widehat{F}_{m \bmod 64}, \psi_{n_1,n_2}^{(|m|,|1-m|)}\rangle|^2$ over all $m \in [-250, 251]$.
+  \item \textbf{Head Polynomial Evaluation:} Propagate truncated power series in \texttt{arb\_poly} up to degree $K = 250$ for the exact rational polynomials $P_i, Q_i, R_i$ of Table~\ref{tab:cert}, verifying $\widetilde{H}_0 > \frac{711968933048}{10^{12}}$ and $\sum_{k=1}^{250} |\widetilde{H}_k| < \frac{1248782}{10^{12}}$.
+  \item \textbf{Adaptive Circle \& Harmonic Covers:} Subdivide $[0,\pi]$ into $256$ base arcs (adaptive depth $\le 12$) in \texttt{acb} at $(r_i, j_i)$ from Table~\ref{tab:cert}, certifying $\RePart(I_2 \pm R_i((r_i + 10^{-5})e^{i\theta})) \succ 0$ and summing the factored Schur integrand $(Z - C_r)Z^{-1}(Z + C_r)$ to confirm $\sum_{i=1}^6 w_i \,\mathrm{tail}_i \in [3.00 \times 10^{-8} \pm 1.3 \times 10^{-9}] < \frac{32}{10^9}$.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+\bibitem{BMMN11}
+M.~Braverman, K.~Makarychev, Y.~Makarychev, and A.~Naor,
+\emph{The Grothendieck constant is strictly smaller than Krivine's bound},
+Forum of Mathematics, Pi \textbf{1} (2013), e4 (preliminary version in FOCS 2011).
+
+\bibitem{Dav84}
+A.~M.~Davie,
+\emph{Lower bound for $\KGC$},
+Unpublished manuscript, University of Edinburgh, 1984.
+
+\bibitem{Gal26}
+A.~Galatan,
+\emph{\texttt{grothendieck-lean}: Formalized bounds on the real and complex Grothendieck constants in Lean~4},
+2026.
+
+\bibitem{Gro53}
+A.~Grothendieck,
+\emph{R\'esum\'e de la th\'eorie m\'etrique des produits tensoriels topologiques},
+Bol.\ Soc.\ Mat.\ S\~ao Paulo \textbf{8} (1953), 1--79.
+
+\bibitem{GFL26}
+Z.~Guo, K.~Fang, and C.~Lu,
+\emph{Explicit lower bounds for the complex Grothendieck constant},
+Preprint, \texttt{arXiv:2609.07000}, September 2026.
+
+\bibitem{Haa87}
+U.~Haagerup,
+\emph{A new upper bound for the complex Grothendieck constant},
+Israel J.\ Math.\ \textbf{60} (1987), no.~2, 199--224.
+
+\bibitem{HJM26}
+S.~Heilman, D.~Jones, and G.~Malavolta,
+\emph{Improved bounds and conjectures for the complex Grothendieck constant},
+Preprint, \texttt{arXiv:2609.25462}, September 2026.
+
+\bibitem{Kri79}
+J.-L.~Krivine,
+\emph{Constantes de Grothendieck et fonctions de type positif sur les sph\`eres},
+Adv.\ Math.\ \textbf{31} (1979), no.~1, 16--30.
+
+\bibitem{Pis78}
+G.~Pisier,
+\emph{Grothendieck's theorem for noncommutative $C^*$-algebras, with an appendix on Grothendieck's constants},
+J.\ Funct.\ Anal.\ \textbf{29} (1978), no.~3, 397--415.
+
+\end{thebibliography}
+
+\end{document}

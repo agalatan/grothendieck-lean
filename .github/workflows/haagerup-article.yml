@@ -1,0 +1,57 @@
+name: Haagerup article (Lean)
+
+# The Lean part of the article in haagerup-article/: the standalone Lake package haagerup-article/lean. It is not part
+# of the Grothe target or of lean.yml's proof check. This job runs only when a file under haagerup-article/ changes,
+# when the Lean or Mathlib version changes (lean-toolchain, lake-manifest.json), or when this file changes; or by hand
+# (workflow_dispatch). It builds the package with warnings as errors, rejects sorry, axioms and unchecked code, and
+# accepts only propext, Classical.choice and Quot.sound in the axioms of haagerup-article/lean/Axioms.lean.
+
+on:
+  push:
+    paths:
+      - 'haagerup-article/**'
+      - 'lean-toolchain'
+      - 'lake-manifest.json'
+      - '.github/workflows/haagerup-article.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: haagerup-article-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lean:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      # The package takes Mathlib and its dependencies by path from the root's .lake/packages (its lake-manifest.json),
+      # so the root's Mathlib cache is all it needs.
+      - name: Lean toolchain and Mathlib (from the Mathlib cache)
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: true
+          use-github-cache: false
+          build: false
+
+      - name: Build the article package (warnings are errors)
+        working-directory: haagerup-article/lean
+        run: lake build --wfail
+
+      - name: No sorry, axiom or unchecked code
+        run: |
+          ! grep -rn --include='*.lean' --exclude-dir=.lake -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|native_decide|debug\.skipKernelTC|Task\.spawn' haagerup-article/lean
+
+      - name: Axioms (only propext, Classical.choice and Quot.sound)
+        working-directory: haagerup-article/lean
+        run: |
+          lake env lean Axioms.lean > axioms.txt
+          cat axioms.txt
+          grep -q "depends on axioms" axioms.txt
+          # Lean wraps a long axiom list over several lines: join the output, then check each list.
+          tr '\n' ' ' < axioms.txt | grep -oE "depends on axioms: \[[^]]*\]" | tr -s ' ' > axiom-lists.txt
+          ! grep -vE "^depends on axioms: \[(propext|Classical\.choice|Quot\.sound)(, (propext|Classical\.choice|Quot\.sound))*\]$" axiom-lists.txt
