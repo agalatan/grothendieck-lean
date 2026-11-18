@@ -1,6 +1,6 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The six-channel upper entrypoint states `K_G^ℂ ≤ 1.40457588`. The separate phase-integral estimate puts that rational strictly below `1/γ†`. [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../articles/haagerup/README.md).
+The six-channel upper entrypoint states `K_G^ℂ ≤ 1.40457588`. The separate phase-integral estimate puts that rational strictly below `1/γ†`. [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../haagerup-article/anc/README.md).
 
 ## Earlier single-channel construction
 
