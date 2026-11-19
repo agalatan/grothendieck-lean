@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Pure fixtures and fake children: these tests never execute Lake or Lean."""
+"""Pure fixtures and fake children: these tests never execute Lake or Lean.
+
+The fixture is the small identity-tail caps layout of scripts/test_caps_stamp.py (write_layout), with its registry.
+"""
 import argparse
 from contextlib import contextmanager, redirect_stdout, redirect_stderr
 import io
@@ -13,28 +16,16 @@ from unittest.mock import patch
 
 import build_caps_batches as b
 import caps_coexist as c
-VALIDATE = b.validate_registry
+import caps_stamp as s
+from test_caps_stamp import LA, LEAVES, NS, PURE, write_layout
 
 
 class Fixture(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
-        for path, text in {
-            "lakefile.toml": 'name = "grothe"\n[[lean_lib]]\nname = "GrotheCapsKernel"\nprecompileModules = true\n',
-            "lake-manifest.json": "{}\n", "lean-toolchain": "leanprover/lean4:v4.34.1\n",
-            "GrotheCapsKernel.lean": "import GrotheCapsKernel.Basic\n",
-            "GrotheCapsKernel/Basic.lean": "def plain : Nat := 1\n",
-            "Grothe/Data.lean": "import GrotheCapsKernel.Basic\ndef data : Nat := 2\n",
-            "Grothe/A.lean": "import Grothe.Data\ntheorem a : True := by native_decide\n",
-            "Grothe/B.lean": "import Grothe.Data\ntheorem b : True := by native_decide\n",
-            b.DIRECT[0]: "-- directly hashed assembly\n",
-            b.DIRECT[1]: "-- directly hashed Row12 assembly\n",
-            b.EXECUTION[0]: "# fixture runner source\n", b.EXECUTION[1]: "# fixture stamp source\n",
-            b.EXECUTION[2]: "# fixture coexist source\n",
-        }.items():
-            self.write(path, text)
+        self.root = Path(self.temp.name).resolve()
+        write_layout(self.root)
         self.registry_path = self.root / b.REGISTRY
         self.registry = self.regenerate()
         self.args = argparse.Namespace(root=self.root, registry=self.registry_path,
@@ -48,108 +39,125 @@ class Fixture(unittest.TestCase):
         destination.write_text(text)
 
     def regenerate(self):
-        graph = b.Graph(self.root)
-        roots = ["Grothe/A.lean", "Grothe/B.lean"]
-        ordered = graph.ordered(["GrotheCapsKernel", *map(b.module, roots)])
-        pure = [b.source_path(name) for name in ordered if b.source_path(name) not in roots]
-        registry = {"format": b.FORMAT, "row": 12, "compute_roots": roots, "pure_roots": pure,
-                    "direct_hash_roots": b.DIRECT, "max_parallel_leaves": 2, "lean_child_threads": 1,
-                    "execution_source_sha256": {path: b.sha((self.root / path).read_bytes()) for path in b.EXECUTION},
-                    "source_sha256": {path: b.sha((self.root / path).read_bytes())
-                                      for path in set(roots + pure + b.DIRECT + b.CONFIG)}}
-        self.registry_path.parent.mkdir(parents=True, exist_ok=True)
-        self.registry_path.write_text(json.dumps(registry))
-        return registry
+        return s.write_registry(self.root)
 
     def validate(self, root=None, registry=None):
-        VALIDATE(root or self.root, registry or self.registry, census=False)
+        return b.validate_registry(root or self.root, registry or self.registry)
+
+    def plan(self, jobs, proof_jobs=None):
+        return list(b.groups(self.registry, jobs, b.assembly_prerequisites(self.root, self.registry), proof_jobs))
 
 
-class GraphTests(Fixture):
-    def test_exact_pure_closure(self):
-        self.validate()
-        self.assertEqual(self.registry["pure_roots"], ["GrotheCapsKernel/Basic.lean", "GrotheCapsKernel.lean", "Grothe/Data.lean"])
+ASSEMBLY_PREREQUISITES = ["Grothe/LowerAnalytic/Bridge.lean", "Grothe/LowerAnalytic/Soundness.lean",
+                          LA + "CapCommonFacts.lean", LA + "CapPieces/N00x3.lean"]
+INDEPENDENT = [p for p in LEAVES if not p.endswith("/Assembly.lean")]
 
-    def test_hidden_native_import_rejected(self):
-        self.write("Grothe/Data.lean", "theorem hidden : True := by native_decide\n")
-        self.registry = self.regenerate()
-        with self.assertRaisesRegex(b.BuildError, "hidden unregistered native"):
-            self.validate()
 
-    def test_comment_and_string_mentions_are_pure(self):
-        self.write("Grothe/Data.lean", '/- native_decide /- nested -/ -/\n-- native_decide\ndef s := "native_decide"\n')
-        self.registry = self.regenerate()
-        self.validate()
+class PlanTests(Fixture):
+    def test_registry_is_valid_and_its_view_is_complete(self):
+        view = self.validate()
+        self.assertEqual(view["pure_roots"], PURE)
+        self.assertEqual(set(view["compute_roots"]), set(LEAVES))
+        self.assertEqual(view, self.registry)
 
-    def test_native_leaf_must_not_depend_on_native_leaf(self):
-        self.write("Grothe/B.lean", "import Grothe.A\ntheorem b : True := by native_decide\n")
-        self.registry = self.regenerate()
-        with self.assertRaisesRegex(b.BuildError, "dependent native leaves"):
-            self.validate()
+    def test_assembly_prerequisites_are_the_rest_of_the_assemblies_closure(self):
+        self.assertEqual(b.assembly_prerequisites(self.root, self.registry), ASSEMBLY_PREREQUISITES)
 
-    def test_cycle_rejected(self):
-        self.write("Grothe/Data.lean", "import Grothe.A\n")
-        with self.assertRaisesRegex(b.BuildError, "import cycle"):
-            self.regenerate()
-
-    def test_missing_project_import_rejected(self):
-        self.write("Grothe/Data.lean", "import Grothe.Missing\n")
-        with self.assertRaisesRegex(b.BuildError, "missing or symlinked"):
-            self.regenerate()
-
-    def test_missing_source_pin_rejected(self):
-        self.registry["source_sha256"].pop("Grothe/A.lean")
-        with self.assertRaisesRegex(b.BuildError, "pin inventory"):
-            self.validate()
-
-    def test_duplicate_root_rejected(self):
-        self.registry["compute_roots"].append("Grothe/A.lean")
-        with self.assertRaisesRegex(b.BuildError, "duplicate"):
-            self.validate()
-
-    def test_changed_source_rejected(self):
-        self.write("Grothe/A.lean", "theorem a : True := by native_decide\n-- changed\n")
-        with self.assertRaisesRegex(b.BuildError, "source changed"):
-            self.validate()
-
-    def test_symlinked_source_rejected(self):
-        path = self.root / "Grothe/A.lean"
-        path.rename(self.root / "Grothe/Original.lean")
-        path.symlink_to(self.root / "Grothe/Original.lean")
-        with self.assertRaisesRegex(b.BuildError, "invalid pinned source"):
-            self.validate()
-
-    def test_unsupported_import_syntax_rejected(self):
-        self.write("Grothe/Data.lean", "import GrotheCapsKernel.Basic; import Grothe.A\n")
-        with self.assertRaises(Exception):
-            self.regenerate()
-
-    def test_native_plan_sorts_leaves_by_piece_cost_heaviest_first(self):
-        selections = {"12": {"12:140": {"grids": [3, 3, 3, 3, 1, 1, 1, 1] + [1] * 200},
-                             "12:270": {"grids": [1] * 130}}}
-        R = b.Path("Grothe/LowerAnalytic/CapPieces/")
-        heavy, light = R / "R12x140_0.lean", R / "R12x140_1.lean"
-        slice_, assembly, plain = R / "C12x270_0.lean", R / "C12x270.lean", b.Path("Grothe/Other.lean")
-        self.assertGreater(b.leaf_cost(heavy, selections), b.leaf_cost(light, selections))
-        self.assertGreater(b.leaf_cost(light, selections), b.leaf_cost(slice_, selections))
-        self.assertEqual(b.leaf_cost(assembly, selections), 0.0)
-        self.assertEqual(b.leaf_cost(plain, selections), 1.0)
-        registry = dict(self.registry, compute_roots=[str(assembly), str(light), str(slice_), str(heavy)])
-        plan = [t for phase, ts in b.groups(registry, 1, selections) if phase == "native" for t in ts]
-        self.assertEqual(plan, [b.module(str(heavy)), b.module(str(light)), b.module(str(slice_)), b.module(str(assembly))])
-        unsorted = [t for phase, ts in b.groups(registry, 1) if phase == "native" for t in ts]
-        self.assertEqual(unsorted, [b.module(str(assembly)), b.module(str(light)), b.module(str(slice_)), b.module(str(heavy))])
-
-    def test_groups_are_at_most_jobs_and_pure_first(self):
-        plan = list(b.groups(self.registry, 2))
-        self.assertEqual([phase for phase, _ in plan], ["pure", "pure", "native"])
-        self.assertTrue(all(len(targets) <= 2 for _, targets in plan))
-        self.assertEqual(list(b.groups(self.registry, 1))[-2:], [("native", ["Grothe.A"]), ("native", ["Grothe.B"])])
-        self.assertTrue(all(len(targets) <= 3 for _, targets in b.groups(self.registry, 3)))
-        for bad in (0, -1, 2.0):
+    def test_plan_kinds_order_and_bound(self):
+        plan = self.plan(2)
+        kinds = [kind for kind, _ in plan]
+        self.assertEqual(kinds, ["pure"] * 4 + ["native"] * 3 + ["pure"] * 2 + ["assembly"])
+        self.assertTrue(all(1 <= len(targets) <= 2 for _, targets in plan))
+        self.assertEqual([m for kind, ms in plan if kind == "pure" for m in ms],
+                         [b.module(p) for p in PURE + ASSEMBLY_PREREQUISITES])
+        self.assertEqual(plan[-1], ("assembly", [f"{NS}.CapRow01.Assembly", f"{NS}.CapRow00.Assembly"]))
+        for bad in (0, -1, 2.0, True):
             with self.assertRaises(b.BuildError):
                 list(b.groups(self.registry, bad))
+            with self.assertRaises(b.BuildError):
+                list(b.groups(self.registry, 2, (), bad))
         self.assertGreaterEqual(b.machine_jobs(), 1)
+
+    def test_proof_layer_groups_follow_their_memory_budget(self):
+        plan = self.plan(4, proof_jobs=1)
+        self.assertEqual([len(targets) for kind, targets in plan],
+                         [4, 4, 4, 2] + [1] * 4 + [1, 1])   # leaves 4, 2; the proof layer one by one
+        self.assertEqual([kind for kind, _ in plan], ["pure", "pure", "native", "native"] + ["pure"] * 4 + ["assembly"] * 2)
+        self.assertEqual(self.plan(2, proof_jobs=5), self.plan(2))   # never more than --jobs
+        self.assertEqual((b.proof_jobs(8, 25), b.proof_jobs(8, 7.9), b.proof_jobs(30, 182), b.proof_jobs(2, 182)),
+                         (3, 1, 22, 2))
+
+    def test_leaves_are_exactly_the_compute_roots_heaviest_first(self):
+        for jobs in (1, 2, 3, 8):
+            plan = self.plan(jobs)
+            leaves = [m for kind, ms in plan if kind != "pure" for m in ms]
+            self.assertEqual(sorted(leaves), sorted(b.module(p) for p in LEAVES))
+            native = [m for kind, ms in plan if kind == "native" for m in ms]
+            self.assertEqual(native, [b.module(p) for p in sorted(INDEPENDENT, key=lambda p: (-LEAVES[p][1], p))])
+            self.assertEqual(native[0], f"{NS}.CapPieces.R00x3_0")   # 590 s
+            self.assertEqual(native[-1], f"{NS}.CapPieces.C00x3")    # 5 s
+
+    def test_every_import_is_built_by_an_earlier_group_or_its_own(self):
+        source = s.Sources(self.root)
+        for jobs in (1, 2, 3, 8):
+            done = set()
+            for kind, targets in self.plan(jobs):
+                for target in targets:
+                    for dependency in source.imports(target) or []:
+                        if s.is_project(dependency):
+                            self.assertIn(dependency, done | set(targets), (jobs, kind, target))
+                done |= set(targets)
+
+    def test_source_change_blocks_the_plan(self):
+        self.write(LA + "CapDefs.lean", (self.root / LA / "CapDefs.lean").read_text() + "-- changed\n")
+        with self.assertRaisesRegex(s.ClosureError, "source_sha256: changed Grothe/LowerAnalytic/CapDefs.lean"):
+            self.validate()
+        with redirect_stderr(io.StringIO()) as error:
+            self.assertEqual(b.main(["--root", str(self.root), "--plan"]), 1)
+        self.assertIn("FAIL: data/tail-caps/build.json does not match the sources", error.getvalue())
+
+    def test_hidden_native_import_and_dependent_leaves_are_rejected(self):
+        self.write(LA + "CapPieces/D00x3.lean", f"namespace {NS}\ntheorem hidden : True := by native_decide\nend {NS}\n")
+        with self.assertRaisesRegex(s.ClosureError, "native fact"):
+            self.regenerate()
+        write_layout(self.root)
+        self.write(LA + "CapPieces/R00x3_1.lean", f"import {NS}.CapPieces.R00x3_0\n" +
+                   (self.root / LA / "CapPieces/R00x3_1.lean").read_text())
+        with self.assertRaisesRegex(s.ClosureError, "dependent native leaves"):
+            self.regenerate()
+
+    def test_cycle_missing_import_and_symlink_are_rejected(self):
+        self.write(LA + "CapDefs.lean", f"import {NS}.CapCommon\n")
+        with self.assertRaisesRegex(s.ClosureError, "import cycle"):
+            self.regenerate()
+        self.write(LA + "CapDefs.lean", "import Grothe.Missing\n")
+        with self.assertRaisesRegex(s.ClosureError, "does not exist"):
+            self.regenerate()
+        write_layout(self.root)
+        path = self.root / LA / "CapPieces/C00x3.lean"
+        path.rename(self.root / "Original.lean")
+        path.symlink_to(self.root / "Original.lean")
+        with self.assertRaisesRegex(s.ClosureError, "symlink"):
+            self.validate()
+
+    def test_tampered_registry_is_rejected(self):
+        for field, change in (("compute_roots", lambda v: v["compute_roots"].append(LA + "CapPieces/R00x3_0.lean")),
+                              ("pure_roots", lambda v: v["pure_roots"].reverse()),
+                              ("source_sha256", lambda v: v["source_sha256"].pop(LA + "CapDefs.lean")),
+                              ("leaf_cost_seconds", lambda v: v["leaf_cost_seconds"].update({INDEPENDENT[0]: 0}))):
+            with self.subTest(field=field):
+                value = json.loads(json.dumps(self.registry))
+                change(value)
+                with self.assertRaisesRegex(s.ClosureError, field):
+                    self.validate(registry=value)
+
+    def test_write_registry_alias_reproduces_the_registry(self):
+        before = self.registry_path.read_bytes()
+        self.registry_path.unlink()
+        with redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(b.main(["--root", str(self.root), "--write-registry"]), 0)
+        self.assertIn("8 compute roots", output.getvalue())
+        self.assertEqual(self.registry_path.read_bytes(), before)
 
 
 def idle_watch(*_):
@@ -173,7 +181,7 @@ class OverlayTests(unittest.TestCase):
                 runner.adopt_overlay()
             self.assertEqual(runner.overlay.read_bytes(), stale)
         finally:
-            fixture.tearDown()
+            fixture.doCleanups()
 
     def test_overlay_symlink_is_rejected_and_its_target_untouched(self):
         class Linked(Fixture):
@@ -191,7 +199,7 @@ class OverlayTests(unittest.TestCase):
             self.assertEqual(target.read_bytes(), b"external = true\n")
             self.assertTrue(runner.overlay.is_symlink())
         finally:
-            fixture.tearDown()
+            fixture.doCleanups()
 
     def test_stale_overlay_of_an_earlier_run_is_replaced(self):
         class Stale(Fixture):
@@ -207,7 +215,7 @@ class OverlayTests(unittest.TestCase):
             runner.adopt_overlay()
             self.assertEqual(runner.overlay.read_bytes(), runner.overlay_data)
         finally:
-            fixture.tearDown()
+            fixture.doCleanups()
 
     def test_only_weak_args_change(self):
         source = b'name="grothe"\n[[lean_lib]]\nname="GrotheCapsKernel"\nprecompileModules=true\n'
@@ -231,8 +239,8 @@ class OverlayTests(unittest.TestCase):
             b.overlay_bytes(b'name="grothe"\n[[lean_lib]]\nname="Grothe"\nmoreLeanArgs="-j1"\n')
 
     def test_unterminated_lean_comment_is_not_silently_pure(self):
-        with self.assertRaises(b.BuildError):
-            b.lean_code("/- native_decide")
+        with self.assertRaises(s.ClosureError):
+            s.lean_code("/- native_decide")
 
 
 class GuardTests(Fixture):
@@ -763,6 +771,30 @@ class CoexistTests(unittest.TestCase):
             self.assertIsNone(c.ProcFS().read(2))
         self.assertEqual([r["pid"] for r in rows], [3])
 
+    def test_shared_proc_inventory_skips_a_process_that_exits_between_reads(self):
+        # Run 44108045971 failed with "cannot read basic process 44080: ProcessLookupError": Linux answers ESRCH,
+        # not ENOENT, when a process exits between the reads of its stat and status files.
+        base = self.root / "proc-esrch"
+        for pid in (3, 4):
+            directory = base / str(pid)
+            directory.mkdir(parents=True)
+            fields = ["S", "200", str(pid), *("0" for _ in range(19))]
+            fields[19] = "12345"
+            (directory / "stat").write_text(f"{pid} (lean) " + " ".join(fields))
+            (directory / "status").write_text(f"Uid:\t{os.getuid()}\t{os.getuid()}\t{os.getuid()}\t{os.getuid()}\n")
+        real_path, real_read_text = c.Path, Path.read_text
+
+        def read_text(path, *args, **kwargs):
+            if path.name == "status" and path.parent.name == "4":
+                raise ProcessLookupError(3, "No such process")
+            return real_read_text(path, *args, **kwargs)
+
+        with patch.object(c, "Path", side_effect=lambda value: base if str(value) == "/proc" else real_path(value)), \
+                patch.object(Path, "read_text", read_text):
+            rows = c.ProcFS().snapshot()
+            self.assertIsNone(c.ProcFS().basic(4))
+        self.assertEqual([r["pid"] for r in rows], [3])
+
 
 class ProcCommandTests(unittest.TestCase):
     def setUp(self):
@@ -1013,7 +1045,7 @@ class RunnerTests(Fixture):
             process.alive = False
 
         return b.Runner(self.args, self.registry, popen=popen, watch=watch, killpg=killpg,
-                        sleep=lambda _: None, validate=lambda root, registry: self.validate(root, registry),
+                        sleep=lambda _: None, validate=b.validate_registry,
                         members=lambda pgid: [process.pid] if process.alive else [])
 
     def test_success_records_real_group_and_does_not_mark_cache(self):
@@ -1061,14 +1093,14 @@ class RunnerTests(Fixture):
     def test_source_change_between_groups_prevents_new_child(self):
         runner = self.runner()
         runner.run_group("native", ["Grothe.A"], 1)
-        self.write("Grothe/Data.lean", "def changed : Nat := 3\n")
+        self.write(LA + "CapDefs.lean", "-- changed computation\n")
         with self.assertRaisesRegex(b.BuildError, "source (metadata )?changed"):
             runner.run_group("native", ["Grothe.B"], 2)
         self.assertEqual(len(self.calls), 1)
 
-    def test_changed_execution_helper_rejected(self):
-        self.write(b.EXECUTION[0], "# changed runner\n")
-        with self.assertRaisesRegex(b.BuildError, "source (metadata )?changed"):
+    def test_source_change_before_the_first_group_prevents_any_child(self):
+        self.write(LA + "CapPieces/R00x3_0.lean", (self.root / LA / "CapPieces/R00x3_0.lean").read_text() + "-- changed\n")
+        with self.assertRaisesRegex(s.ClosureError, "does not match the sources"):
             self.runner().run_group("native", ["Grothe.A"], 1)
         self.assertFalse(self.calls)
 
@@ -1179,12 +1211,21 @@ class RunnerTests(Fixture):
 
     def test_plan_is_read_only_and_does_not_spawn(self):
         before = sorted(str(p.relative_to(self.root)) for p in self.root.rglob("*"))
-        with patch.object(b, "validate_registry", side_effect=lambda root, registry: self.validate(root, registry)), \
-                patch.object(b.subprocess, "Popen", side_effect=AssertionError("plan spawned a child")), \
+        with patch.object(b.subprocess, "Popen", side_effect=AssertionError("plan spawned a child")), \
+                patch.object(s.subprocess, "run", side_effect=AssertionError("plan ran the generator")), \
                 redirect_stdout(io.StringIO()) as output:
-            result = b.main(["--root", str(self.root), "--plan"])
+            result = b.main(["--root", str(self.root), "--plan", "--jobs", "3"])
         self.assertEqual(result, 0)
-        self.assertEqual(json.loads(output.getvalue())["compute_roots"], 2)
+        plan = json.loads(output.getvalue())
+        self.assertEqual((plan["compute_roots"], plan["pure_roots"], plan["assembly_prerequisites"]), (8, 8, 4))
+        self.assertEqual(plan["native_kind_counts"], {"anchor_ranges": 3, "covers": 1, "piece_ranges": 2, "assemblies": 2})
+        self.assertEqual(plan["estimated_leaf_seconds"], sum(cost for _, cost in LEAVES.values()))
+        self.assertEqual(plan["proof_jobs"], b.proof_jobs(3, max(b.GIB_PER_LEAF, b.machine_memory_gib() - 6)))
+        self.assertEqual(plan["groups"], [[kind, targets] for kind, targets in self.plan(3, plan["proof_jobs"])])
+        self.assertEqual(plan["group_counts"]["native"], 2)
+        # the caps_shards job of lean.yml: every group that is not `pure` holds computational leaves
+        leaves = [m for kind, mods in plan["groups"] if kind != "pure" for m in mods]
+        self.assertEqual(sorted(leaves), sorted(b.module(p) for p in LEAVES))
         self.assertEqual(before, sorted(str(p.relative_to(self.root)) for p in self.root.rglob("*")))
 
 

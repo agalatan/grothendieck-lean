@@ -13,15 +13,15 @@ Fails unless
 The lists are data files, one name per line, sorted, union-merged by git (.gitattributes), checked for order and
 duplicates by `tools/gen_root_imports.py --check`:
 * default report: data/axioms/required.txt, data/axioms/native.txt;
-* audit modes (one flag at most): data/axioms/modes/<mode>.required.txt, and <mode>.native.txt if present
-  (otherwise the default native list). Modes: --refined-cover, --law-nodes, --upper-six.
+* --upper-six requires both modes/upper-six.required.txt and modes/upper-six.native.txt under data/axioms/;
+  it is the only audit mode at present (one flag at most).
 """
 import argparse, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXDIR = os.path.join(ROOT, "data", "axioms")
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
-MODES = ("refined-cover", "law-nodes", "upper-six")
+MODES = ("upper-six",)
 
 
 def names(path):
@@ -31,18 +31,18 @@ def names(path):
 
 def audit_policy(mode):
     """The required results and the native allowlist of one mode, from the data files."""
-    native = names(os.path.join(AXDIR, "native.txt"))
+    native_path = os.path.join(AXDIR, "native.txt")
     if mode == "default":
-        return names(os.path.join(AXDIR, "required.txt")), native
+        return names(os.path.join(AXDIR, "required.txt")), names(native_path)
     required = names(os.path.join(AXDIR, "modes", f"{mode}.required.txt"))
     mode_native = os.path.join(AXDIR, "modes", f"{mode}.native.txt")
-    return required, (names(mode_native) if os.path.exists(mode_native) else native)
+    if mode == "upper-six" or os.path.exists(mode_native):
+        native_path = mode_native
+    return required, names(native_path)
 
 
 # the default lists, as module constants (used by the tests and by other tools)
 REQUIRED, NATIVE = audit_policy("default")
-REFINED_LOWER = audit_policy("refined-cover")[0]
-LAW_NODES = audit_policy("law-nodes")[0]
 
 
 # A name may contain apostrophes; its closing quote precedes the report phrase.
@@ -80,13 +80,18 @@ def parse_reports(text):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    modes = parser.add_mutually_exclusive_group()
-    for mode in MODES:
-        modes.add_argument(f"--{mode}", action="store_const", const=mode, dest="mode",
-                           help=f"check the {mode} report")
+    if MODES:  # an empty mutually exclusive group breaks argparse's usage text on Python <= 3.12
+        modes = parser.add_mutually_exclusive_group()
+        for mode in MODES:
+            modes.add_argument(f"--{mode}", action="store_const", const=mode, dest="mode",
+                               help=f"check the {mode} report")
     parser.set_defaults(mode="default")
     args = parser.parse_args(argv)
-    required, native = audit_policy(args.mode)
+    try:
+        required, native = audit_policy(args.mode)
+    except OSError as error:
+        print(f"cannot read {args.mode} axiom policy: {error}", file=sys.stderr)
+        return 1
     try:
         reports = parse_reports(sys.stdin.read())
     except ValueError as error:

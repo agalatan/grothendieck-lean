@@ -19,8 +19,8 @@ def parseQ (s : String) : ℚ :=
 /-- Parse a comma-separated list of rationals. -/
 def parseQs (s : String) : List ℚ := if s = "" then [] else (s.splitOn ",").map parseQ
 
-/-- The witness parameter `ε = 149/200`. -/
-def ε : ℚ := 149 / 200
+/-- The weight `ε = 25/31` of the rows: the hat weight `ε̂ = (e + ν)/(1 − ν)` of the witness `(e, ν) = (191/250, 47/2000)`. -/
+def ε : ℚ := 25 / 31
 
 /-- The slack `10⁻¹¹` added to the node caps of the potentials. -/
 def capPad : ℚ := 1 / 100000000000

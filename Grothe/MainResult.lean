@@ -2,39 +2,29 @@
 import Grothe.LowerTarget
 import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
-import Grothe.LowerAnalytic.CapExcluded
 
 /-!
-# The main result: `1.401700322371 < K_G^ℂ ≤ 1.40457588`
+# The main result: `1.4018 < K_G^ℂ ≤ 1.40457588`
 
-The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of
-`Grothe/Statement.lean`.
+The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`.
 
-* `capsRest`: the remaining node-cap hypothesis holds. Every row is certified in Lean
-  (`capRowsDone` lists all 19 rows), and the certified rows exclude no nodes (`capExcl_eq_nil`).
-* `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above
-  `1.401700322371`.
+* `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above `1.4018`, from the certificate of
+  the witness `(191/250, 47/2000)` (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows (`tailNodeCaps_cert`).
 * `Grothe.UpperSix.bound` proves the admissibility of `140457588 / 100000000` for every matrix.
-* `main_bounds`: **`1.401700322371 < K_G^ℂ ≤ 1.40457588`**, without hypotheses.
+* `main_bounds`: **`1.4018 < K_G^ℂ ≤ 1.40457588`**, without hypotheses.
 -/
 
 namespace Grothe.Statement
 
 open Grothe.LowerAnalytic
 
-/-- **The remaining node-cap hypothesis holds**: all rows are certified and none excludes a node. -/
-theorem capsRest : CapsRest := by
-  refine ⟨fun k hk hd => ?_, fun k _ => exclCaps_capExcl k⟩
-  have h19 : Grothe.Lower.rowData.length = 19 := rfl
-  exact absurd (by simp only [capRowsDone, List.mem_cons, List.not_mem_nil, or_false]; omega) hd
-
-/-- **The lower bound**: every Grothendieck bound is above `1.401700322371`. -/
+/-- **The lower bound**: every Grothendieck bound is above `1.4018`. -/
 theorem lower_target : LowerTarget :=
-  lowerTarget_of_nodeCaps (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest capsRest))
+  lowerTarget_of_tailNodeCaps tailNodeCaps_cert
 
-/-- **The main result** `1.401700322371 < K_G^ℂ ≤ 1.40457588`. -/
+/-- **The main result** `1.4018 < K_G^ℂ ≤ 1.40457588`. -/
 theorem main_bounds :
-    (1401700322371 / 10 ^ 12 : ℝ) < complexGrothendieckConstant ∧
+    (7009 / 5000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 140457588 / 100000000 := by
   have hlo := lt_constant_of_lowerAbove ⟨_, Grothe.UpperSix.bound⟩ lower_target
   exact ⟨by norm_num at hlo ⊢; exact hlo, Grothe.UpperSix.constant_le⟩

@@ -194,7 +194,7 @@ P = p − 9/25 = 0.962052, 𝒥(q, r) = 2E\|L + q + A·r\| − P‖r‖² − F(
    thirteen central rows at ε = 94/125 then admit > 10⁻⁴ on every row (minimum > 1.021·10⁻⁴, Row 8 inside 3.15 and
    11.53; 8.13, benchmarks **C, author only**, premises open).
 10. **What K would give.** K_η with η ≤ 10⁻⁴ gives about 1.402; exact K about 1.4022; no certificate with the cubic
-   witness exceeds 1.4022581233 (12.2). The proved lower bound, without K, is 1.401700322371 (Lean, 12.1).
+   witness exceeds 1.4022581233 (12.2). The cubic witness without K gives 1.401700322371 (12.1); the Lean lower bound, 1.4018, comes from the identity-tail witness (`research/identity-tail/`).
 
 ## 2. The statement and its reductions
 
@@ -609,7 +609,7 @@ Rem(w, ρ) = 2[f(w, ρ) − f(w, 0) − ⟨∇_ρf(w, 0), ρ⟩].
 
 | # | result | status | where |
 |---|---|---|---|
-| 12.1 | The proved lower bound, independent of K: K_G^ℂ ≥ 1250000000/891774069 > 1.401700322371, from the same cubic witness and source/law bank with 15,096 leaves, cap B = 891774069/1250000000 = 0.7134192552. It does not reach 1.4018, whose cap threshold is 5000/7009 | **Lean**: `lower_bound_of_completed_refinement`, `lower_target`, `main_bounds`; targeted builds and full CI run 43690956235 at 5446f03d780fbb10e53be00e0e40516738366fd2 pass, including the axiom report. Exact complete-partition replay and eight rejection controls pass | KPROG `LOWER_ROUTE.md`; `data/lower-refinement/`; `docs/LEAN_DETAILS.md` |
+| 12.1 | The proved lower bound, independent of K: K_G^ℂ ≥ 1250000000/891774069 > 1.401700322371, from the same cubic witness and source/law bank with 15,096 leaves, cap B = 891774069/1250000000 = 0.7134192552. It does not reach 1.4018, whose cap threshold is 5000/7009 | **Lean** until #525 (`lower_bound_of_completed_refinement`, then `lower_target`; replaced by the identity-tail witness, 1.4018); targeted builds and full CI run 43690956235 at 5446f03d780fbb10e53be00e0e40516738366fd2 pass, including the axiom report. Exact complete-partition replay and eight rejection controls pass | KPROG `LOWER_ROUTE.md`; `data/lower-refinement/`; `docs/LEAN_DETAILS.md` |
 | 12.2 | Ceiling of the cubic witness family: below 1.4022581233 for every complex multiplier and every dimension. In the diffuse model the central cap is optimal at ε ≈ 0.7563721594, with reciprocal 1.402258123278 (400 and 800 radial nodes agree to about 3·10⁻¹⁴) | **R** here (`docs/overview.tex` prints [P, C], with the generic arithmetic in Lean); the model value **N** (codex-8d2f; the model, not the full norm) | `docs/overview.tex` ("Limits of the witness method"); ROWS `REPORT.md` |
 | 12.5 | An upper bound K_G^ℂ < 1.404896400821 claimed in EXT-R | **R**; weaker than the proved 1.404599395362 (`main_bounds`) and unrelated to K | EXT-R |
 | 12.6 | The fourth-moment theorem for homogeneous sums (arXiv:1407.6216) assumes centred, variance-one inputs with EX³ = 0 and is asymptotic: it gives no finite-amplitude content or deficit bound | **R** (codex-a7c4, A15R `FOUNDATIONS.md` §5, compared with the primary statement in A15F) | A15R `FOUNDATIONS.md` §5 |

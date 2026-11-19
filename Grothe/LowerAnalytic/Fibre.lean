@@ -128,10 +128,6 @@ lemma map_visE : (γP n).map (visE n) = gaussC := by
 /-- The point with visible coordinate `z` and remote coordinates `w`. -/
 def join (z : ℂ) (w : RemT n → ℝ) : Fin ((n + 1) + (n + 1)) → ℝ := (splitE n).symm (w, visU n z)
 
-lemma splitE_symm_eq (w : RemT n → ℝ) (u : VisT n → ℝ) :
-    (splitE n).symm (w, u) = join n (visC n u) w := by
-  rw [join, visU_visC]
-
 lemma splitE_symm_apply (w : RemT n → ℝ) (u : VisT n → ℝ) (i : Fin ((n + 1) + (n + 1))) :
     (splitE n).symm (w, u) i = if h : isVis n i then u ⟨i, h⟩ else w ⟨i, h⟩ := rfl
 
@@ -152,51 +148,6 @@ lemma zc_join (z : ℂ) (w : RemT n → ℝ) : zc (n + 1) 0 (join n z w) = (√2
     exact join_i1 n z w
 
 variable {n}
-
-/-- **Fubini in fibre form.** -/
-theorem integral_split {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    (G : (Fin ((n + 1) + (n + 1)) → ℝ) → E) (hG : Integrable G (stdGaussian ((n + 1) + (n + 1)))) :
-    ∫ x, G x ∂(stdGaussian ((n + 1) + (n + 1)))
-      = ∫ w, ∫ z, G (join n z w) ∂gaussC ∂(γW n) := by
-  have hm := measurePreserving_splitE n
-  have h1 : ∫ x, G x ∂(stdGaussian ((n + 1) + (n + 1)))
-      = ∫ p, G ((splitE n).symm p) ∂((γW n).prod (γP n)) := by
-    rw [← hm.integral_comp' (fun p => G ((splitE n).symm p))]
-    simp
-  have hi : Integrable (fun p => G ((splitE n).symm p)) ((γW n).prod (γP n)) :=
-    ((hm.symm (splitE n)).integrable_comp_emb (splitE n).symm.measurableEmbedding).2 hG
-  rw [h1, integral_prod _ hi]
-  congr 1
-  funext w
-  rw [← map_visE n, integral_map_equiv]
-  simp only [splitE_symm_eq]
-  rfl
-
-/-- **An a.e. property holds on a.e. fibre.** -/
-theorem ae_split {P : (Fin ((n + 1) + (n + 1)) → ℝ) → Prop}
-    (h : ∀ᵐ x ∂(stdGaussian ((n + 1) + (n + 1))), P x) :
-    ∀ᵐ w ∂(γW n), ∀ᵐ z ∂gaussC, P (join n z w) := by
-  have hm := measurePreserving_splitE n
-  have h2 : ∀ᵐ p ∂((γW n).prod (γP n)), P ((splitE n).symm p) := by
-    rw [← hm.map_eq, (splitE n).measurableEmbedding.ae_map_iff]
-    simpa using h
-  filter_upwards [Measure.ae_ae_of_ae_prod h2] with w hw
-  rw [← map_visE n, (visE n).measurableEmbedding.ae_map_iff]
-  filter_upwards [hw] with u hu
-  rwa [splitE_symm_eq] at hu
-
-/-- The fibre sections of an integrable function are integrable for a.e. `w`. -/
-theorem integrable_split {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    {G : (Fin ((n + 1) + (n + 1)) → ℝ) → E} (hG : Integrable G (stdGaussian ((n + 1) + (n + 1)))) :
-    ∀ᵐ w ∂(γW n), Integrable (fun z => G (join n z w)) gaussC := by
-  have hm := measurePreserving_splitE n
-  have hi : Integrable (fun p => G ((splitE n).symm p)) ((γW n).prod (γP n)) :=
-    ((hm.symm (splitE n)).integrable_comp_emb (splitE n).symm.measurableEmbedding).2 hG
-  filter_upwards [hi.prod_right_ae] with w hw
-  rw [← map_visE n, (visE n).measurableEmbedding.integrable_map_iff]
-  refine hw.congr (Filter.Eventually.of_forall fun u => ?_)
-  simp only [Function.comp, splitE_symm_eq]
-  rfl
 
 end
 

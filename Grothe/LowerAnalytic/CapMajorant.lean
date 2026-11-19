@@ -54,6 +54,13 @@ proof is followed; the equation numbers below are those of the note:
   integrated: `|L ± p|² = |L|² + |p|² ± 2 Re(p L̄)`);
 * `young_pair`: the plain Young bound (`T²/(2D)` dropped).
 
+**The cell majorant in the form of the cap checker** (`psiT_le_majPoly`).  Under the cell
+condition `MajCell d₂ d₃ ν R γ` (prices with `d₂ > 0`, `d₂d₃ > ν²`; `γ = 0`, or `d₂, d₃ > ν` and the
+cell inequality without division), `Ψ_ν(L + p, L − p)` is at most a polynomial in `|L|²`, `|p|²` and
+`x = Re(p L̄)` with the seven exact weights `majWt` (`majPhi_sub_eq_majPoly`): this is the per-cell
+statement that a cap certificate with a tail instantiates (cell radius `R`, rounded-down `γ`, exact
+centre).
+
 **The pair potential** `Ψ_ν` (`psiT`) is the integrand of the fibre potential (`Jpot` in
 `FibreSup.lean`).  It is used only through its affine pieces: `majEll_le_psiT` (every piece is below
 it) and `psiT_le` (a bound of every piece bounds it).  A piece is affine in each phase, so it is
@@ -428,67 +435,6 @@ theorem anchored_pair_nu (L p : ℂ) {f g : ℂ} {d2 d3 ν R γ : ℝ} (hν : 0 
 
 /-! ### The case `ν = 0`: AF eq. (4) -/
 
-/-- The denominator `D = S(S² + 4R² + 4R|A₀ − B₀|)`. -/
-noncomputable def majD (A0 B0 R : ℝ) : ℝ :=
-  (A0 + B0) * ((A0 + B0) ^ 2 + 4 * R ^ 2 + 4 * R * |A0 - B0|)
-
-lemma majD_pos {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : 0 ≤ R) : 0 < majD A0 B0 R := by
-  unfold majD
-  have : 0 ≤ 4 * R * |A0 - B0| := by have := abs_nonneg (A0 - B0); positivity
-  have : 0 < (A0 + B0) ^ 2 := by positivity
-  have : 0 < A0 + B0 := by linarith
-  positivity
-
-/-- At `ν = 0` the denominator of `γ*(R)` is `(A₀B₀)² S D`. -/
-lemma majGammaDen_zero (A0 B0 R : ℝ) :
-    majGammaDen A0 B0 0 R = (A0 * B0) ^ 2 * ((A0 + B0) * majD A0 B0 R) := by
-  have h := sq_abs (B0 - A0)
-  rw [majGammaDen, majD, abs_sub_comm A0 B0]
-  linear_combination (4 * (A0 * B0) ^ 2 * R ^ 2) * h
-
-/-- At `ν = 0`, `γ*(R) = 8/D` is the coefficient of AF eq. (4) (identity (6.3)). -/
-lemma majGammaStar_zero {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : 0 ≤ R) :
-    majGammaStar A0 B0 0 R = 8 / majD A0 B0 R := by
-  have hD := (majD_pos hA hB hR).ne'
-  rw [majGammaStar, majGammaDen_zero]
-  field_simp
-  ring
-
-/-- **The anchored majorant, real form** (AF eq. (4)): `anchored_pair_nu` at `ν = 0` and
-`γ = γ*(R) = 8/D`, for the real `L = (A − B)/2`, `p = (A + B)/2` and the phases `(1, −1)`. -/
-theorem anchored_real {A B A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : 0 ≤ R)
-    (hd : |A - B| ≤ 2 * R) :
-    A + B ≤ (A ^ 2 + A0 ^ 2) / (2 * A0) + (B ^ 2 + B0 ^ 2) / (2 * B0)
-      - (A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 R) := by
-  have hD := majD_pos hA hB hR
-  have hL : ‖(((A - B) / 2 : ℝ) : ℂ)‖ ≤ R := by
-    rw [Complex.norm_real, Real.norm_eq_abs, abs_div, abs_two]; linarith
-  have h := anchored_pair_nu (((A - B) / 2 : ℝ) : ℂ) (((A + B) / 2 : ℝ) : ℂ) (f := 1) (g := -1)
-    le_rfl hA hB hL (div_nonneg (by norm_num) hD.le) (majGammaStar_zero hA hB hR).ge
-    (by simp) (by simp)
-  have e1 : (((A - B) / 2 : ℝ) : ℂ) + (((A + B) / 2 : ℝ) : ℂ) = (A : ℂ) := by push_cast; ring
-  have e2 : (((A - B) / 2 : ℝ) : ℂ) - (((A + B) / 2 : ℝ) : ℂ) = ((-B : ℝ) : ℂ) := by
-    push_cast; ring
-  have e3 : majEll 0 1 (-1) (A : ℂ) ((-B : ℝ) : ℂ) = A + B := by simp [majEll]
-  have e4 : majPhi A0 B0 0 (A : ℂ) ((-B : ℝ) : ℂ)
-      = (A ^ 2 + A0 ^ 2) / (2 * A0) + (B ^ 2 + B0 ^ 2) / (2 * B0) := by
-    rw [majPhi, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs,
-      abs_neg, sq_abs, sq_abs]
-    field_simp; ring
-  have e5 : majH A0 B0 0 (((A - B) / 2 : ℝ) : ℂ) (((A + B) / 2 : ℝ) : ℂ)
-      = A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2) := by
-    rw [majH, majC0, majC1, Complex.conj_ofReal, ← Complex.ofReal_mul, Complex.ofReal_re]; ring
-  have e6 : 8 / majD A0 B0 R / 16 * (A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2)) ^ 2
-      = (A ^ 2 - B ^ 2 - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 R) := by
-    field_simp; ring
-  rw [e1, e2, e3, e4, e5, e6] at h
-  exact h
-
-lemma norm_add_sub_norm_sub_le (L p : ℂ) : |‖L + p‖ - ‖L - p‖| ≤ 2 * ‖L‖ := by
-  calc |‖L + p‖ - ‖L - p‖| = |‖L + p‖ - ‖p - L‖| := by rw [norm_sub_rev L p]
-    _ ≤ ‖L + p - (p - L)‖ := abs_norm_sub_norm_le _ _
-    _ = 2 * ‖L‖ := by rw [show L + p - (p - L) = 2 * L by ring, norm_mul]; norm_num
-
 lemma normSq_add_eq (L p : ℂ) : ‖L + p‖ ^ 2 = ‖L‖ ^ 2 + ‖p‖ ^ 2 + 2 * (p * conj L).re := by
   rw [← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq,
     Complex.normSq_add]
@@ -498,41 +444,6 @@ lemma normSq_sub_eq (L p : ℂ) : ‖L - p‖ ^ 2 = ‖L‖ ^ 2 + ‖p‖ ^ 2 - 
   rw [← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq,
     Complex.normSq_sub]
   simp [Complex.mul_re]; ring
-
-/-- **The anchored-pair majorant** (AF eq. (4)). -/
-theorem anchored_pair (L p : ℂ) {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : ‖L‖ ≤ R) :
-    ‖L + p‖ + ‖L - p‖ ≤ (‖L + p‖ ^ 2 + A0 ^ 2) / (2 * A0) + (‖L - p‖ ^ 2 + B0 ^ 2) / (2 * B0)
-      - (4 * (p * conj L).re - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 R) := by
-  have hT : ‖L + p‖ ^ 2 - ‖L - p‖ ^ 2 = 4 * (p * conj L).re := by
-    rw [normSq_add_eq, normSq_sub_eq]; ring
-  have h := anchored_real hA hB ((norm_nonneg L).trans hR)
-    ((norm_add_sub_norm_sub_le L p).trans (by linarith))
-  rwa [hT] at h
-
-/-- **The anchored-pair majorant as a polynomial in `p`**: with `x = Re(p L̄)`,
-`|L + p| + |L − p| ≤ ν(|L|² + |p|²) + 2δν x + (A₀ + B₀)/2 − (4x − (A₀² − B₀²))²/(2D)`,
-`ν = (1/A₀ + 1/B₀)/2`, `δν = (1/A₀ − 1/B₀)/2`. -/
-theorem anchored_pair_poly (L p : ℂ) {A0 B0 R : ℝ} (hA : 0 < A0) (hB : 0 < B0) (hR : ‖L‖ ≤ R) :
-    ‖L + p‖ + ‖L - p‖ ≤ (1 / A0 + 1 / B0) / 2 * (‖L‖ ^ 2 + ‖p‖ ^ 2)
-      + 2 * ((1 / A0 - 1 / B0) / 2) * (p * conj L).re + (A0 + B0) / 2
-      - (4 * (p * conj L).re - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 R) := by
-  have h := anchored_pair L p hA hB hR
-  rw [normSq_add_eq, normSq_sub_eq] at h
-  have e : (‖L‖ ^ 2 + ‖p‖ ^ 2 + 2 * (p * conj L).re + A0 ^ 2) / (2 * A0)
-      + (‖L‖ ^ 2 + ‖p‖ ^ 2 - 2 * (p * conj L).re + B0 ^ 2) / (2 * B0)
-      = (1 / A0 + 1 / B0) / 2 * (‖L‖ ^ 2 + ‖p‖ ^ 2)
-        + 2 * ((1 / A0 - 1 / B0) / 2) * (p * conj L).re + (A0 + B0) / 2 := by
-    field_simp; ring
-  linarith
-
-/-- **The plain Young bound** (route P): `|L + p| + |L − p| ≤ ν(|L|² + |p|²) + 2δν Re(p L̄) + (A₀+B₀)/2`. -/
-theorem young_pair (L p : ℂ) {A0 B0 : ℝ} (hA : 0 < A0) (hB : 0 < B0) :
-    ‖L + p‖ + ‖L - p‖ ≤ (1 / A0 + 1 / B0) / 2 * (‖L‖ ^ 2 + ‖p‖ ^ 2)
-      + 2 * ((1 / A0 - 1 / B0) / 2) * (p * conj L).re + (A0 + B0) / 2 := by
-  have h := anchored_pair_poly L p hA hB le_rfl
-  have : 0 ≤ (4 * (p * conj L).re - (A0 ^ 2 - B0 ^ 2)) ^ 2 / (2 * majD A0 B0 ‖L‖) :=
-    div_nonneg (sq_nonneg _) (by have := majD_pos hA hB (norm_nonneg L); positivity)
-  linarith
 
 /-! ### The pair potential `Ψ_ν` -/
 
@@ -714,5 +625,110 @@ lemma continuous_psiT (ν : ℝ) : Continuous fun w : ℂ × ℂ => psiT ν w.1 
   rw [Real.dist_eq, abs_sub_le_iff]
   push_cast
   constructor <;> linarith
+
+/-! ### The cell majorant in the form of the cap checker -/
+
+/-- `Φ_d(L + p, L − p)` as a polynomial in `|L|²`, `|p|²` and `x = Re(p L̄)`:
+`(d₂ + d₃)/2 + ((d₂ + d₃ + 2ν)|L|² + (d₂ + d₃ − 2ν)|p|² + 2(d₃ − d₂)x)/(2Δ)`. -/
+lemma majPhi_add_sub (d2 d3 ν : ℝ) (L p : ℂ) :
+    majPhi d2 d3 ν (L + p) (L - p) = (d2 + d3) / 2
+      + ((d2 + d3 + 2 * ν) * ‖L‖ ^ 2 + (d2 + d3 - 2 * ν) * ‖p‖ ^ 2
+        + 2 * (d3 - d2) * (p * conj L).re) / (2 * (d2 * d3 - ν ^ 2)) := by
+  have hx : ((L + p) * conj (L - p)).re = ‖L‖ ^ 2 - ‖p‖ ^ 2 := by
+    rw [← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq]
+    simp only [Complex.normSq_apply, map_sub, Complex.mul_re, Complex.add_re, Complex.add_im,
+      Complex.sub_re, Complex.sub_im, Complex.conj_re, Complex.conj_im]
+    ring
+  rw [majPhi, hx, normSq_add_eq, normSq_sub_eq]
+  ring
+
+/-- **The seven weights of a cell**, indexed by the monomial they multiply, in the order of the cap
+kernel (`cellW` of `GrotheCapsKernel/CapCheckNu.lean`): with `Δ = d₂d₃ − ν²` and the centre
+`(c₀, c₁)`,
+
+* `0`: `c_P = (d₂ + d₃ − 2ν)/(2Δ)` (of `|p|²`),
+* `1`: `(d₂ + d₃)/2 − γc₀²/16` (the constant),
+* `2`: `τ + γc₀/4`, `τ = (d₃ − d₂)/(2Δ)` (of `2x`, `x = Re(p L̄)`),
+* `3`: `γ` (of `−x²`),
+* `4`: `c_L − γc₀c₁/8`, `c_L = (d₂ + d₃ + 2ν)/(2Δ)` (of `|L|²`),
+* `5`: `γc₁/4` (of `2|L|²x`),
+* `6`: `−γc₁²/16` (of `|L|⁴`).
+
+At `ν = 0`: `c₁ = 0`, the weights `5`, `6` vanish, and `0`, `4` are both `(1/d₂ + 1/d₃)/2`. -/
+noncomputable def majWt (d2 d3 ν γ : ℝ) (w : ℕ) : ℝ :=
+  match w with
+  | 0 => (d2 + d3 - 2 * ν) / (2 * (d2 * d3 - ν ^ 2))
+  | 1 => (d2 + d3) / 2 - γ * majC0 d2 d3 ν ^ 2 / 16
+  | 2 => (d3 - d2) / (2 * (d2 * d3 - ν ^ 2)) + γ * majC0 d2 d3 ν / 4
+  | 3 => γ
+  | 4 => (d2 + d3 + 2 * ν) / (2 * (d2 * d3 - ν ^ 2)) - γ * majC0 d2 d3 ν * majC1 d2 d3 ν / 8
+  | 5 => γ * majC1 d2 d3 ν / 4
+  | _ => -(γ * majC1 d2 d3 ν ^ 2 / 16)
+
+/-- The cell polynomial of the weights `W`:
+`W₁ + W₄|L|² + W₆|L|⁴ + W₀|p|² + 2W₂x + 2W₅|L|²x − W₃x²`, `x = Re(p L̄)`. -/
+noncomputable def majPoly (W : ℕ → ℝ) (L p : ℂ) : ℝ :=
+  W 1 + W 4 * ‖L‖ ^ 2 + W 6 * ‖L‖ ^ 4 + W 0 * ‖p‖ ^ 2 + 2 * W 2 * (p * conj L).re
+    + 2 * W 5 * (‖L‖ ^ 2 * (p * conj L).re) - W 3 * (p * conj L).re ^ 2
+
+/-- `Φ_d(L + p, L − p) − (γ/16)h(L, p)²` is the cell polynomial of the weights `majWt`. -/
+lemma majPhi_sub_eq_majPoly (d2 d3 ν γ : ℝ) (L p : ℂ) :
+    majPhi d2 d3 ν (L + p) (L - p) - γ / 16 * majH d2 d3 ν L p ^ 2
+      = majPoly (majWt d2 d3 ν γ) L p := by
+  rw [majPhi_add_sub, majH]
+  simp only [majPoly, majWt]
+  ring
+
+/-- **The cell condition of a cap certificate with the tail `ν`**, for the cell radius `R ≥ |L|`:
+prices with `d₂ > 0` and `d₂d₃ > ν²` (the dual form is positive definite), and a correction
+coefficient `γ` that is
+
+* either `0` (the cells with `e₂ ≤ 0` or `e₃ ≤ 0`, `eᵢ = dᵢ − ν`; no further condition),
+* or nonnegative, with `d₂, d₃ > ν` and the cell inequality without division
+  `γ · Δ(Δ(σ² + 2R|δ|)² + 16R²(e₂e₃)²) ≤ 8σ(e₂e₃)²`, that is `γ ≤ γ*(R)` (`le_majGammaStar_iff`);
+  a certificate takes for `γ` a rational rounded down from `γ*(R)`.
+
+The centre `(c₀, c₁)` of the correction is the exact one (`majC0`, `majC1`). -/
+def MajCell (d2 d3 ν R γ : ℝ) : Prop :=
+  0 < d2 ∧ ν ^ 2 < d2 * d3 ∧
+    (γ = 0 ∨ (ν < d2 ∧ ν < d3 ∧ 0 ≤ γ ∧
+      γ * majGammaDen d2 d3 ν R ≤ 8 * (d2 + d3 - 2 * ν) * ((d2 - ν) * (d3 - ν)) ^ 2))
+
+/-- **The majorant of the pair potential with `γ ≤ γ*(R)`** (`anchored_pair_nu` for the supremum
+over the phases): for `ν ≥ 0`, `d₂, d₃ > ν`, `|L| ≤ R` and `0 ≤ γ ≤ γ*(R)`,
+`Ψ_ν(L + p, L − p) ≤ Φ_d(L + p, L − p) − (γ/16)h(L, p)²`. -/
+theorem psiT_le_majorant (L p : ℂ) {d2 d3 ν R γ : ℝ} (hν : 0 ≤ ν) (h2 : ν < d2) (h3 : ν < d3)
+    (hR : ‖L‖ ≤ R) (hγ0 : 0 ≤ γ) (hγ : γ ≤ majGammaStar d2 d3 ν R) :
+    psiT ν (L + p) (L - p)
+      ≤ majPhi d2 d3 ν (L + p) (L - p) - γ / 16 * majH d2 d3 ν L p ^ 2 :=
+  psiT_le fun _ _ hf hg => anchored_pair_nu L p hν h2 h3 hR hγ0 hγ hf hg
+
+/-- **The plain dual majorant** (the cells with `γ = 0`): for `d₂ > 0` and `d₂d₃ > ν²`,
+`Ψ_ν(A, B) ≤ Φ_d(A, B)`. -/
+theorem psiT_le_majPhi {d2 d3 ν : ℝ} (h2 : 0 < d2) (hΔ : ν ^ 2 < d2 * d3) (A B : ℂ) :
+    psiT ν A B ≤ majPhi d2 d3 ν A B :=
+  psiT_le fun _ _ hf hg => majEll_le_majPhi h2 hΔ hf hg A B
+
+/-- **The cell majorant of the pair potential, in the form of the cap checker**: under the cell
+condition `MajCell d₂ d₃ ν R γ`, for every `L` of the cell (`|L| ≤ R`) and every `p`,
+
+  `Ψ_ν(L + p, L − p) ≤ W₁ + W₄|L|² + W₆|L|⁴ + W₀|p|² + 2W₂x + 2W₅|L|²x − W₃x²`,  `x = Re(p L̄)`,
+
+with the seven weights `W = majWt d₂ d₃ ν γ`.  With `p = B·v` this is a quadratic form in
+`(1, v)`, which the checker integrates cell by cell; the integrand of the fibre potential is
+`Ψ_ν(L + p, L − p) − ν`. -/
+theorem psiT_le_majPoly {d2 d3 ν R γ : ℝ} (hν : 0 ≤ ν) (hc : MajCell d2 d3 ν R γ) {L : ℂ}
+    (hR : ‖L‖ ≤ R) (p : ℂ) :
+    psiT ν (L + p) (L - p) ≤ majPoly (majWt d2 d3 ν γ) L p := by
+  rw [← majPhi_sub_eq_majPoly]
+  obtain ⟨h2, hΔ, rfl | ⟨h2', h3', hγ0, hcell⟩⟩ := hc
+  · simpa using psiT_le_majPhi h2 hΔ (L + p) (L - p)
+  · exact psiT_le_majorant L p hν h2' h3' hR hγ0
+      ((le_majGammaStar_iff hν h2' h3' ((norm_nonneg L).trans hR)).2 hcell)
+
+/-- The cell condition of the region outside the grid: unit prices and no correction, for a tail
+`ν² < 1`.  There `Ψ_ν(L + p, L − p) ≤ 1 + |L|²/(1 − ν) + |p|²/(1 + ν)`. -/
+lemma majCell_one {ν : ℝ} (hν : ν ^ 2 < 1) (R : ℝ) : MajCell 1 1 ν R 0 :=
+  ⟨one_pos, by simpa using hν, Or.inl rfl⟩
 
 end Grothe.LowerAnalytic
