@@ -290,18 +290,4 @@ lemma TB.chord {Φ : ℝ → ℝ} (hconv : ConvexOn ℝ (Set.Ici 0) Φ) (τ0 τ1
     nlinarith [mul_le_mul_of_nonneg_left hv0 (by linarith : 0 ≤ 1 - lam),
       mul_le_mul_of_nonneg_left hv1 l0]
 
-omit [IsProbabilityMeasure μ] in
-/-- Mixing two potentials with nonnegative weights at the same scale. -/
-lemma TB.mix {Φ0 Φ1 : ℝ → ℝ} (w0 w1 : ℝ) (hw0 : 0 ≤ w0) (hw1 : 0 ≤ w1) {s v0 v1 : ℝ}
-    (hT0 : TB μ U Φ0 s v0) (hT1 : TB μ U Φ1 s v1) :
-    TB μ U (fun r => w0 * Φ0 r + w1 * Φ1 r) s (w0 * v0 + w1 * v1) := by
-  obtain ⟨B0, hB0, hle0, hv0⟩ := hT0
-  obtain ⟨B1, hB1, hle1, hv1⟩ := hT1
-  refine ⟨fun ω => w0 * B0 ω + w1 * B1 ω, (hB0.const_mul _).add (hB1.const_mul _), fun ω => ?_, ?_⟩
-  · have a := mul_le_mul_of_nonneg_left (hle0 ω) hw0
-    have b := mul_le_mul_of_nonneg_left (hle1 ω) hw1
-    linarith
-  · rw [integral_add (hB0.const_mul _) (hB1.const_mul _), integral_const_mul, integral_const_mul]
-    nlinarith [mul_le_mul_of_nonneg_left hv0 hw0, mul_le_mul_of_nonneg_left hv1 hw1]
-
 end Grothe.Lower

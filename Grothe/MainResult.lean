@@ -2,40 +2,30 @@
 import Grothe.LowerTarget
 import Grothe.UpperTightFinal
 import Grothe.LowerAnalytic.CapNodes
-import Grothe.LowerAnalytic.CapExcluded
 
 /-!
-# The main result: `1.401700322371 < K_G^ℂ < 1.404599395362`
+# The main result: `1.4018 < K_G^ℂ < 1.404599395362`
 
-The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of
-`Grothe/Statement.lean`.
+The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`.
 
-* `capsRest`: the remaining node-cap hypothesis holds. Every row is certified in Lean
-  (`capRowsDone` lists all 19 rows), and the certified rows exclude no nodes (`capExcl_eq_nil`).
-* `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above
-  `1.401700322371`.
+* `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above `1.4018`, from the certificate of
+  the witness `(191/250, 47/2000)` (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows (`tailNodeCaps_cert`).
 * `upper_below_tight` (`Grothe/UpperTightFinal.lean`): **the upper bound, unconditional**: some
   Grothendieck bound is below `1.404599395362`.
-* `main_bounds`: **`1.401700322371 < K_G^ℂ < 1.404599395362`**, without hypotheses.
+* `main_bounds`: **`1.4018 < K_G^ℂ < 1.404599395362`**, without hypotheses.
 -/
 
 namespace Grothe.Statement
 
 open Grothe.LowerAnalytic
 
-/-- **The remaining node-cap hypothesis holds**: all rows are certified and none excludes a node. -/
-theorem capsRest : CapsRest := by
-  refine ⟨fun k hk hd => ?_, fun k _ => exclCaps_capExcl k⟩
-  have h19 : Grothe.Lower.rowData.length = 19 := rfl
-  exact absurd (by simp only [capRowsDone, List.mem_cons, List.not_mem_nil, or_false]; omega) hd
-
-/-- **The lower bound**: every Grothendieck bound is above `1.401700322371`. -/
+/-- **The lower bound**: every Grothendieck bound is above `1.4018`. -/
 theorem lower_target : LowerTarget :=
-  lowerTarget_of_nodeCaps (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest capsRest))
+  lowerTarget_of_tailNodeCaps tailNodeCaps_cert
 
-/-- **The main result** `1.401700322371 < K_G^ℂ < 1.404599395362`. -/
+/-- **The main result** `1.4018 < K_G^ℂ < 1.404599395362`. -/
 theorem main_bounds :
-    (1401700322371 / 10 ^ 12 : ℝ) < complexGrothendieckConstant ∧
+    (7009 / 5000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant < 1404599395362 / 10 ^ 12 := by
   have hU := upper_below_tight
   have hne : ∃ K, IsBound K := hU.imp fun _ h ↦ h.1

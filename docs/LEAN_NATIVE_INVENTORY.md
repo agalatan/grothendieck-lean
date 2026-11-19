@@ -1,29 +1,36 @@
 # Native source inventory
 
-This inventory covers the named native facts allowed for the single `Grothe`
-target, plus the four anonymous table diagnostics below. The current allowlist
-is `data/axioms/native.txt` (cap ranges, Hardy facts and others). The default report is
-`scratch/Axioms.lean`, with its required declarations in `data/axioms/required.txt`. Normal `ready/*` delivery CI builds and audits
-the combined tree before merging it.
-
-The lower chain uses the 15,096-box finite-mixture cover. Its exact checks cover
-the unchanged rows and mixed batches, the original and additional law-node banks,
-the four sequential box chunks and the partition. The existing refined-box and
-partition native facts now check the stronger certificate in place; the extra
-law bank uses `LowerRefinementCheck.certRefinementBatches`.
-`certRefinedPartition` checks coverage with `treeCoverOK`; it does not assert
-disjointness. `treeCoverOK_sound` proves the coverage needed by the reduction.
-
-`MainResult.lower_target` reaches `1.401700322371` through
-`lower_bound_of_completed_refinement`, with the same Gaussian node caps.
-`lower_bound_of_capsRest` retains its older `1.401697117301` interface to
-preserve the heavy cap-cache source boundary; it follows from the same new cover.
-The original cap range computations are unchanged. Generated localized-piece
-facts outside this supported target are a separate campaign.
-
-The current inventory covers the active target and lower proof. Archived upper
-variants have separate preserved inventories under
+This inventory describes the native facts (`native_decide`) allowed for the single `Grothe` target: those of the lower
+bound by family and module pattern, and the evidence recorded for upper-bound facts. The complete allowlist is
+`data/axioms/native.txt`, read by `scripts/check_axioms.py`. The default report is `scratch/Axioms.lean`, with its
+required declarations in `data/axioms/required.txt`; CI checks it on every pushed branch, and on the merged tree before
+a pull request lands. Archived upper variants have separate preserved inventories under
 `miscellaneous/other-bounds/snapshot/data/axioms/`; they are not active permissions.
+
+## Lower bound
+
+Every native fact of the lower bound is one sequential exact computation; most of them sit in modules of their own, so
+that Lake checks them in separate processes. All of them are in the axiom closure of `lower_target` and `main_bounds`,
+which `scratch/Axioms.lean` reports. Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
+number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a block of consecutive nodes or pieces.
+
+| family | facts | module | what is checked | used by |
+|---|---|---|---|---|
+| row checks | `Grothe.Lower.certRowSS` | `Grothe/Lower/Cert/RowSS.lean` | `checkRow rowSS` (Stein nodes) or, for the rows 0.4 and 0.6, `checkSpecRow rowSS` (spectral nodes) | `rowData_facts` |
+| mass row: cells | `Grothe.Lower.certMassRow` | `Grothe/Lower/Cert/MassRow.lean` | `checkSpecCells massRow` | `mass_law_bound` |
+| mass row: node caps | `Grothe.Lower.massCapsOK` | `Grothe/Lower/MassFacts.lean` | `φ_c(s/δ) ≤ c` at every node `(s, c)` of the mass row's table | `massCaps` |
+| envelope | `Grothe.Lower.certEnvelope` | `Grothe/Lower/Cert/Envelope.lean` | `checkEnv rowData massS envB envCells` | `profile_bound` |
+| node caps: range facts | `Grothe.LowerAnalytic.rowKKAnchorRangeJJ` | `Grothe/LowerAnalytic/CapRowKK/AnchorRangeJJ.lean` | `rangeOKNu` over consecutive whole-fibre nodes (anchored and global) | `vertexCapsRowKK`, through `nodeCapNu_of_rangeOK` |
+| node caps: coverage facts | `Grothe.LowerAnalytic.pieceCover_KKx<i>` | `Grothe/LowerAnalytic/CapPieces/CKKx<i>.lean` | `pieceCoverFastOK`: the pieces of a localised node cover the fibre space up to the symmetries of the potential | `nodeCap_KKx<i>`, through `pieceCoverOK_of_fast` |
+| node caps: piece facts | `Grothe.LowerAnalytic.pieceRange_KKx<i>_<J>` | `Grothe/LowerAnalytic/CapPieces/RKKx<i>_<J>.lean` | `pieceRangeOKNu` over consecutive pieces of a localised node, on one grid | `nodeCap_KKx<i>`, through `pieceOneOKNu_of_range` |
+| node caps: chord facts | `Grothe.LowerAnalytic.chordsOKRowKK` | `Grothe/LowerAnalytic/CapRowKK/Assembly.lean` | `chordOKLow`: the cap of every chord node of the row is above the chord of its two vertex nodes, at the vertex caps lowered by `10⁻¹²` | `capsRowKK`, through `nodeCaps_of_vertexCapsNu` |
+
+The generators write these modules and their lines of `data/axioms/native.txt`: `tools/gen_lower_data.py` the row
+checks, the mass row's facts and the envelope; `tools/gen_tail_caps.py` the node-cap facts, which it also lists in
+`data/tail-caps/native.txt` ([CAPS.md](CAPS.md)). The node-cap facts take about 340 CPU-hours in all, dominated by the
+piece facts; CI replays them from a verified build cache. No per-fact timing is recorded here.
+
+## Upper bound
 
 **Exact production phase moments (#40(b)).** `PhaseMomentEval` integrates the
 integer polynomial obtained by clearing arbitrary rational denominators.
@@ -55,79 +62,6 @@ and is not an isolated timing of the native computation.
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
 | `Grothe.UpperChaos.phase_cutoff_factor_check` | `Grothe/UpperChaos/PhaseRadialTail.lean` | yes | Direct #print axioms; also used by integral_phiT_sq_radial_tail_lt | [Run 40581194949](https://github.com/agalatan/grothendieck-lean/actions/runs/40581194949): full build and axiom audit passed; 6.8 s whole-module build |
-| `Grothe.Lower.certBatches0` | `Grothe/Lower/Cert/Batches0.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 337 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
-| `Grothe.Lower.certBatches1` | `Grothe/Lower/Cert/Batches1.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 344 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
-| `Grothe.Lower.certBatches2` | `Grothe/Lower/Cert/Batches2.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 395 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
-| `Grothe.Lower.certRows0` | `Grothe/Lower/Cert/Rows0.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 967 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
-| `Grothe.Lower.certRows1` | `Grothe/Lower/Cert/Rows1.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 1108 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
-| `Grothe.Lower.certRows2` | `Grothe/Lower/Cert/Rows2.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 557 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
-| `Grothe.Lower.certRows3` | `Grothe/Lower/Cert/Rows3.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 1220 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
-| `Grothe.Lower.certRows4` | `Grothe/Lower/Cert/Rows4.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 392 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
-| `Grothe.LowerAnalytic.capChords_check` | `Grothe/LowerAnalytic/CapAssembly.lean:64` | yes | Direct #print axioms in scratch/Axioms.lean; also used by nodeCaps_of_vertexCaps | Unmeasured per fact at audited commit |
-| `Grothe.LowerAnalytic.capRange00_0` | `Grothe/LowerAnalytic/CapRow00.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2255 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange00_1` | `Grothe/LowerAnalytic/CapRow00.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2255 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange00_2` | `Grothe/LowerAnalytic/CapRow00.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2255 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange00_3` | `Grothe/LowerAnalytic/CapRow00.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2255 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange01_0` | `Grothe/LowerAnalytic/CapRow01.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2322 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange01_1` | `Grothe/LowerAnalytic/CapRow01.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2322 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange01_2` | `Grothe/LowerAnalytic/CapRow01.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2322 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange01_3` | `Grothe/LowerAnalytic/CapRow01.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2322 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange02_0` | `Grothe/LowerAnalytic/CapRow02.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2355 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange02_1` | `Grothe/LowerAnalytic/CapRow02.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2355 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange02_2` | `Grothe/LowerAnalytic/CapRow02.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2355 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange02_3` | `Grothe/LowerAnalytic/CapRow02.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2355 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange03_0` | `Grothe/LowerAnalytic/CapRow03.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2594 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange03_1` | `Grothe/LowerAnalytic/CapRow03.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2594 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange03_2` | `Grothe/LowerAnalytic/CapRow03.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2594 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange03_3` | `Grothe/LowerAnalytic/CapRow03.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2594 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange04_0` | `Grothe/LowerAnalytic/CapRow04.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2727 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange04_1` | `Grothe/LowerAnalytic/CapRow04.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2727 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange04_2` | `Grothe/LowerAnalytic/CapRow04.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2727 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange04_3` | `Grothe/LowerAnalytic/CapRow04.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2727 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange05_0` | `Grothe/LowerAnalytic/CapRow05.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2807 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange05_1` | `Grothe/LowerAnalytic/CapRow05.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2807 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange05_2` | `Grothe/LowerAnalytic/CapRow05.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2807 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange05_3` | `Grothe/LowerAnalytic/CapRow05.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 2807 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange06_0` | `Grothe/LowerAnalytic/CapRow06.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 3593 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange06_1` | `Grothe/LowerAnalytic/CapRow06.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 3593 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange06_2` | `Grothe/LowerAnalytic/CapRow06.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 3593 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange06_3` | `Grothe/LowerAnalytic/CapRow06.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 3593 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange07_0` | `Grothe/LowerAnalytic/CapRow07.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 3029 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange07_1` | `Grothe/LowerAnalytic/CapRow07.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 3029 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange07_2` | `Grothe/LowerAnalytic/CapRow07.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 3029 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange07_3` | `Grothe/LowerAnalytic/CapRow07.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 3029 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange08_0` | `Grothe/LowerAnalytic/CapRow08.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 6005 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange08_1` | `Grothe/LowerAnalytic/CapRow08.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 6005 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange08_2` | `Grothe/LowerAnalytic/CapRow08.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 6005 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange08_3` | `Grothe/LowerAnalytic/CapRow08.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 6005 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange09_0` | `Grothe/LowerAnalytic/CapRow09.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9940 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange09_1` | `Grothe/LowerAnalytic/CapRow09.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9940 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange09_2` | `Grothe/LowerAnalytic/CapRow09.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9940 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange09_3` | `Grothe/LowerAnalytic/CapRow09.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9940 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange10_0` | `Grothe/LowerAnalytic/CapRow10.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9782 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange10_1` | `Grothe/LowerAnalytic/CapRow10.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9782 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange10_2` | `Grothe/LowerAnalytic/CapRow10.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9782 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange10_3` | `Grothe/LowerAnalytic/CapRow10.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9782 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange11_0` | `Grothe/LowerAnalytic/CapRow11.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9409 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange11_1` | `Grothe/LowerAnalytic/CapRow11.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9409 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange11_2` | `Grothe/LowerAnalytic/CapRow11.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9409 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange11_3` | `Grothe/LowerAnalytic/CapRow11.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9409 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange16_0` | `Grothe/LowerAnalytic/CapRow16.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9884 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange16_1` | `Grothe/LowerAnalytic/CapRow16.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9884 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange16_2` | `Grothe/LowerAnalytic/CapRow16.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9884 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange16_3` | `Grothe/LowerAnalytic/CapRow16.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 9884 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange17_0` | `Grothe/LowerAnalytic/CapRow17.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 10377 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange17_1` | `Grothe/LowerAnalytic/CapRow17.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 10377 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange17_2` | `Grothe/LowerAnalytic/CapRow17.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 10377 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange17_3` | `Grothe/LowerAnalytic/CapRow17.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 10377 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange18_0` | `Grothe/LowerAnalytic/CapRow18.lean:18` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 10069 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange18_1` | `Grothe/LowerAnalytic/CapRow18.lean:24` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 10069 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange18_2` | `Grothe/LowerAnalytic/CapRow18.lean:30` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 10069 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `Grothe.LowerAnalytic.capRange18_3` | `Grothe/LowerAnalytic/CapRow18.lean:36` | yes | Indirect via scratch/Axioms.lean lower_bound_of_capsRest and vertexCaps_of_capsRest | Unmeasured per range; historical four-range row module 10069 s; docs/CAPS_STATUS.md (historical 4304b22) |
-| `anonymous example at Grothe/LowerAnalytic/CapTables.lean:1203` | `Grothe/LowerAnalytic/CapTables.lean:1203` | NO | Not allowlisted or reported; anonymous example, no named endpoint dependency established | Unmeasured per fact at audited commit |
-| `anonymous example at Grothe/LowerAnalytic/CapTables.lean:1205` | `Grothe/LowerAnalytic/CapTables.lean:1205` | NO | Not allowlisted or reported; anonymous example, no named endpoint dependency established | Unmeasured per fact at audited commit |
-| `anonymous example at Grothe/LowerAnalytic/CapTables.lean:1208` | `Grothe/LowerAnalytic/CapTables.lean:1208` | NO | Not allowlisted or reported; anonymous example, no named endpoint dependency established | Unmeasured per fact at audited commit |
-| `anonymous example at Grothe/LowerAnalytic/CapTables.lean:1211` | `Grothe/LowerAnalytic/CapTables.lean:1214` | NO | Not allowlisted or reported; anonymous example, no named endpoint dependency established | Unmeasured per fact at audited commit |
 | `Grothe.Upper.comparison_check` | `Grothe/Upper/ComparisonMass.lean:65` | yes | Direct #print axioms in scratch/Axioms.lean | Unmeasured per fact at audited commit |
 | `Grothe.UpperChaos.phase_moment2_check` | `Grothe/UpperChaos/PhaseMoment2.lean:20` | yes | Direct #print axioms in scratch/Axioms.lean; also used by integral_phiT_sq | [Delivery run 40468150361](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361): 4.8 s whole-module build, not isolated native evaluation |
 | `Grothe.UpperChaos.phase_moment4_check` | `Grothe/UpperChaos/PhaseMoment4.lean:20` | yes | Direct #print axioms; also used by integral_phiT_pow_four and PhaseMomentNorms | [Run 40471192509](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509): 31 s whole-module build |
@@ -136,7 +70,7 @@ and is not an isolated timing of the native computation.
 | `Grothe.UpperChaos.firstCenter_band_energy_check` | `Grothe/UpperChaos/TaylorFirstBandNorms.lean:30` | yes | Direct #print axioms; actual projected integer energy of the preserved center | [Run40490363431](https://github.com/agalatan/grothendieck-lean/actions/runs/40490363431): 7.1s whole-module compilation; run failed later in the tail adapter |
 | `Grothe.UpperChaos.secondCenter_band_energy_check` | `Grothe/UpperChaos/TaylorSecondBandNorms.lean:30` | yes | Direct #print axioms; actual projected integer energy of the preserved center | [Run40490363431](https://github.com/agalatan/grothendieck-lean/actions/runs/40490363431): 5.7s whole-module compilation; run failed later in the tail adapter |
 | `Grothe.UpperChaos.taylor_centers_decode_check` | `Grothe/UpperChaos/TaylorRounding.lean:49` | yes | Direct #print axioms; First/second parsing and sizes; frozen size uses the standard source proof | [Run40490363431](https://github.com/agalatan/grothendieck-lean/actions/runs/40490363431): 12s whole-module compilation; run failed later in the tail adapter |
-| `Grothe.head_check` | `Grothe/Upper/Final.lean:44` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 62 s; docs/NATIVE_SEQ_STATUS.md:25; not isolated native/current-commit measurement |
+| `Grothe.head_check` | `Grothe/Upper/Final.lean:44` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 62 s; not isolated native/current-commit measurement |
 | `Grothe.UpperChaos.phi_cover_check_0` | `Grothe/UpperChaos/PhiCoverCheck0.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_1` | `Grothe/UpperChaos/PhiCoverCheck1.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_2` | `Grothe/UpperChaos/PhiCoverCheck2.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
@@ -145,10 +79,3 @@ and is not an isolated timing of the native computation.
 | `Grothe.UpperChaos.phi_cover_check_5` | `Grothe/UpperChaos/PhiCoverCheck5.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.HardyGaussianCheck.charts_checked` | `Grothe/UpperChaos/HardyGaussianFacts.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No per-fact timing established here |
 | `Grothe.UpperChaos.hardy_region_check` | `Grothe/UpperChaos/HardyArcRegionCheck.lean:10` | yes | Indirect via scratch/Axioms.lean HardyGaussian.hardy_of_real, HardyReal.hardy_GT_gaussian | GitHub-hosted module build 8.7 s |
-| `Grothe.Research.LawNodeCheck.certLawNodes` | `Grothe/Research/LawNodeCheck.lean:14` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.Research.LowerRefinementCheck.certRefinementBatches` | `Grothe/Research/LowerRefinementCheck.lean` | yes | Direct #print axioms in scratch/Axioms.lean and scratch/LowerRefinementAxioms.lean | Exact checkBatch replay of the additional law bank; local whole-module build 62 s |
-| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0` | `Grothe/Research/RefinedCoverBoxes0.lean:11` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 9.3 s; indexed decoding with proved equality to the original checker |
-| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes1` | `Grothe/Research/RefinedCoverBoxes1.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 10 s; indexed decoding with proved equality to the original checker |
-| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes2` | `Grothe/Research/RefinedCoverBoxes2.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 14 s; indexed decoding with proved equality to the original checker |
-| `Grothe.Research.RefinedLowerCheck.certRefinedBoxes3` | `Grothe/Research/RefinedCoverBoxes3.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 12 s; indexed decoding with proved equality to the original checker |
-| `Grothe.Research.RefinedLowerCheck.certRefinedPartition` | `Grothe/Research/RefinedCoverPartition.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Local Lean 4.34.1 whole-module build: 3.1 s; indexed decoding with proved equality to the original checker |

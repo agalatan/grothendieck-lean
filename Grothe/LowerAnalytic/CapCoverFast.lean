@@ -69,27 +69,4 @@ lemma capCoverFastOK_eq (ds : List (List ℚ)) (P : List (List Cons)) :
   simp only [capCoverFastOK, capCoverOK, coverAtFirst, coverSamples,
     filtered_pieceAt_eq, Bool.and_eq_true, List.all_eq_true, List.mem_eraseDups]
 
-/-- One residue-class slice of the duplicate-free first-coordinate samples.
-`K = 0` is not a valid partition; the assembly theorem requires `0 < K`. -/
-def capCoverOKSlice (ds : List (List ℚ)) (P : List (List Cons)) (i K : ℕ) : Bool :=
-  suppOK (ds.getD 1 []) [6, 7, 10] && suppOK (ds.getD 2 []) [8, 9, 11] &&
-    (List.range (coverSamples ds P 0).length).all fun n =>
-      !decide (n % K = i) || coverAtFirst ds P ((coverSamples ds P 0).getD n 0)
-
-/-- Checking every slice checks every original sample. -/
-theorem capCoverOK_of_slices {ds : List (List ℚ)} {P : List (List Cons)} {K : ℕ}
-    (hK : 0 < K) (h : ∀ i < K, capCoverOKSlice ds P i K = true) :
-    capCoverOK ds P = true := by
-  rw [← capCoverFastOK_eq]
-  have h0 := h 0 hK
-  simp only [capCoverOKSlice, Bool.and_eq_true, List.all_eq_true] at h0
-  simp only [capCoverFastOK, Bool.and_eq_true, List.all_eq_true]
-  refine ⟨h0.1, ?_⟩
-  intro q hq
-  obtain ⟨n, hn, rfl⟩ := List.getElem_of_mem hq
-  have hs := h (n % K) (Nat.mod_lt n hK)
-  simp only [capCoverOKSlice, Bool.and_eq_true, List.all_eq_true] at hs
-  have hs := hs.2 n (List.mem_range.mpr hn)
-  simpa [List.getD, List.getElem?_eq_getElem hn] using hs
-
 end Grothe.LowerAnalytic

@@ -14,8 +14,7 @@ witness with weight `e` and tail `ν` whose hat weight is the constant of the ro
 (`TailNodeCaps ν̂`) as the hypothesis.  The tail `−2ν̂‖k‖²` of the hat value (`VhatOf_frame`) is the
 integrated tail `ν̂ (Re ∫ conj(f̃) g̃ − 1)` of the fibre bound (`fibre_integrated`), because
 `Re⟪f, g⟫ − 1 = −2‖k‖²` for a unimodular pair (`re_inner_sub_one`): unimodularity is used here,
-once, and not for the fibre sections.  The certified witness is `(e, ν) = (ε, 0)`: there
-`V̂ = VOf (n+1) ε 0 f g` (`VhatOf_zero`) and `TailNodeCaps 0` is the node-cap hypothesis `NodeCaps`.
+once, and not for the fibre sections.
 -/
 
 open MeasureTheory ProbabilityTheory Real Set Grothe.Lower MvPolynomial
@@ -268,8 +267,7 @@ end shared
 
 /-- **The node caps of the potentials of the rows with an identity tail `ν`** (in hat units): at
 every stored node `(s, c)` of every row, `Ψ_ν(s) − capPad ≤ c` for the fibre potential of the row
-with the tail `ν`.  This is the hypothesis of the reduction with a tail.  Without a tail it is the
-node-cap hypothesis `NodeCaps` of the certified potentials `rowPot` (`tailNodeCaps_zero`). -/
+with the tail `ν`.  This is the hypothesis of the reduction with a tail. -/
 def TailNodeCaps (ν : ℝ) : Prop :=
   ∀ k, k < rowData.length → ∀ m ∈ (rowData.getD k row01).nodeList,
     pot (rowData.getD k row01).E (rowR k) (rowData.getD k row01).ell (rowData.getD k row01).beta
@@ -280,8 +278,7 @@ def TailNodeCaps (ν : ℝ) : Prop :=
 `f, g` on `ℂ^{n+1}` (`n ≥ 1`) with `P₁,₀ h = t ζ₀`, `SharedReduction rowData V̂ t Qh v` holds with the
 coupling vector `v = vL 0`, for the hat value `V̂` of a witness with weight `e` and tail `ν` whose
 hat weight is the constant `ε` of the rows, given the node caps of the potentials of the rows with
-the tail `ν̂ = nuHat ν`.  (For the certified witness `(ε, 0)`: `V̂ = V` and the 19 certified
-potentials.) -/
+the tail `ν̂ = nuHat ν`. -/
 theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e ν = ε)
     (f g : L2G (n + 1))
     (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))

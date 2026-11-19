@@ -46,20 +46,6 @@ def gatePrice (N : Sym3) (g1 g2 g3 : ℚ) : ℚ :=
   N.m11 + 2 * g1 - (N.m33 * (N.m12 + g2) ^ 2 - 2 * N.m23 * (N.m12 + g2) * (N.m13 + g3)
     + N.m22 * (N.m13 + g3) ^ 2) / (N.m22 * N.m33 - N.m23 ^ 2)
 
-/-- The mixture `(1−θ)A + θB`. -/
-def Sym3.mix (θ : ℚ) (A B : Sym3) : Sym3 :=
-  ⟨(1 - θ) * A.m11 + θ * B.m11, (1 - θ) * A.m12 + θ * B.m12, (1 - θ) * A.m13 + θ * B.m13,
-   (1 - θ) * A.m22 + θ * B.m22, (1 - θ) * A.m23 + θ * B.m23, (1 - θ) * A.m33 + θ * B.m33⟩
-
-/-- The gate form is affine in `(N, g)`. -/
-lemma gateForm_mix (θ : ℚ) (A B : Sym3) (a1 a2 a3 b1 b2 b3 : ℚ) (X1 X2 X3 : ℂ) :
-    gateForm (Sym3.mix θ A B) ((1 - θ) * a1 + θ * b1) ((1 - θ) * a2 + θ * b2)
-        ((1 - θ) * a3 + θ * b3) X1 X2 X3
-      = (1 - θ) * gateForm A a1 a2 a3 X1 X2 X3 + θ * gateForm B b1 b2 b3 X1 X2 X3 := by
-  simp only [gateForm, Sym3.mix]
-  push_cast
-  ring
-
 /-- Completion of the square over `(u, v)` with `p` fixed, real form. -/
 lemma real_completion (n w1 w2 m22 m23 m33 p u v : ℝ) (h22 : 0 < m22)
     (hdet : 0 < m22 * m33 - m23 ^ 2) :
