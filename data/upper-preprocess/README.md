@@ -1,14 +1,14 @@
-# Current polynomial preprocessing certificate
+# Polynomial preprocessing for the single-channel certificate
 
 This directory retains the shared rounding source, preprocessors, energy table,
-finite-head and Hardy inputs used by the unconditional theorem
+finite-head and Hardy inputs used by the single-channel theorem
 **K_G^C < 1.404599395362**. Its exact rational Grothendieck bound is `tightValueQ`,
 approximately `1.4045993953612070749249`. The endpoint is
 `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean).
 
 The byte-pinned data and generators retain historical intermediate endpoint
-metadata for reproducibility. The active numerical ledger is
+metadata for reproducibility. The single-channel numerical ledger is
 [`Grothe/UpperTightBudget.lean`](../../Grothe/UpperTightBudget.lean).
 The smaller endpoint `1.404598148840` is conditional on stronger comparison inputs and
 archived, as explained below. Previous endpoint documentation is preserved

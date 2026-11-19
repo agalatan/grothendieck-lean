@@ -30,39 +30,20 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4018\;<\;\KG\;<\;1.404599395362$\\[6pt]
+\Large $1.4018\;<\;\KG\;\le\;1.40457588$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
-(\lean{main\_bounds}); the computer-assisted inputs are native finite checks listed in
+(\lean{Grothe.Statement.main\_bounds}); the computer-assisted inputs are native finite checks listed in
 the axiom report (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is \lean{lower\_target}; the upper bound
-\lean{upper\_below\_tight} gives the displayed strict threshold.\vspace{4pt}
+The lower bound is \lean{lower\_target}; the six-channel upper endpoint is the rational number $140457588/100000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
-The tighter upper estimate reuses the accepted quadrature and energy certificates.
-Their actual panel-cap sums fit $8\cdot10^{-15}$, $16\cdot10^{-15}$ and
-$1131\cdot10^{-15}$, checked by kernel reduction. The existing tail and gap reserve,
-exact dyadic table excursions and certified inner-product thresholds give the
-low-band and whole-source errors. The comparison retains 51 polynomial
-coefficients per block, with an analytic remainder at dilation radius $3/2$.
-One new finite native check certifies the resulting high-band masses; the four
-low-band caps follow from the pointwise decrease in coefficient cost.
-The finite head also forces a positive linear coefficient; its weighted square
-is deducted from the Hardy budget before bounding the infinite tail.
-These estimates enter the displayed bound without additional hypotheses.
-
-The source-node rounding ledger (\lean{Q0NodeMassLedgerSharp}) verifies its exact
-rational arithmetic and transfers a squared-mass cap to a norm cap. It is an
-arithmetic implication: the raw-error and smoothing estimates are its
-hypotheses. The accuracy of the energy table that the upper bound uses is
-proved separately (\lean{Final.hclose\_final}).
-
-The finite twisted-source bundle module (\lean{UpperQuad.PortFacts.Bundles})
-packages the production table flags, range checks, final checks and
-phase-degree bound for powers $j=1,2,3$ into the soundness bridge's exact
-finite-fact interface. The upper bound \lean{upper\_below\_tight} combines these three
-bundles with the proved tighter quadrature remainders
-(\lean{TightTwist.remainder1}--\lean{3}) and the proved energy-table accuracy.
+The upper certificate mixes three smoothed cell channels, one phase channel and
+two reflected tiger channels. Its transfer theorem uses the signed sum of the
+first 251 coefficients together with a Hardy bound for each infinite tail.
+The standard finite-matrix theorem is \lean{Grothe.UpperSix.bound}.
+The companion theorem \lean{Grothe.UpperSix.constant\_lt\_inv\_gammaDagger}
+compares the infimum with the reciprocal phase integral.
 
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
@@ -110,15 +91,14 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4018}$ & $\mathbf{1.404599395362}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4018}$ & $\mathbf{1.40457588}$\\\bottomrule
 \end{tabular}
 \end{center}
-Lean exhibits an exact rational Grothendieck bound strictly below the displayed threshold $1.404599395362$.
-The rounding was designed for a sharper value, below $1.404598149141$, for which Lean has only a conditional
-theorem, archived and not built (Section~\ref{sec:trust}).
-Haagerup's integral
-$1/\gamma^\dagger=1.404575934\ldots$, $\gamma^\dagger=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}dt$, has been proposed as the
-exact value. It lies inside our interval, about $2.35\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
+The six-channel endpoint is the rational number $140457588/100000000$.
+For Haagerup's phase integral
+$\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
+the separate integral estimate gives $1.40457588<1/\gamma^\dagger$.
+For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 
 \section{Two dual constructions}
@@ -130,7 +110,20 @@ The standard complex Gaussian measure, its rotation invariance and radial-moment
 form a shared Lean foundation. The upper rounding proof depends on this foundation
 independently of the lower row certificates.
 
-\subsection{Upper bounds: rounding schemes}
+\subsection{Upper bounds by rounding}
+
+The six-channel construction, its data and its checker are in
+\path{Grothe/UpperSix/}. Cell-map energies for the three smoothed channels
+and the two reflected channels feed interval coefficients. The phase channel
+uses its analytic Hermite coefficients. The finite check takes absolute values
+after mixing the signed coefficients. Each infinite tail is controlled by a
+mean on its own circle. The advertised rational bound follows from the reciprocal
+gap in the transfer theorem. The production theorem applies to every finite
+complex matrix and uses the scalar and vector optima in \path{Grothe/Statement.lean}.
+The article in \path{haagerup-article/} bundles these Lean sources, byte for
+byte, as its ancillary package \path{haagerup-article/anc}.
+
+\subsubsection*{Earlier single-channel construction}
 
 The formal quadrature development includes exact polynomial identities for
 each original Gauss order from $1$ to $64$.  Rational polynomial certificates,
@@ -299,7 +292,7 @@ and $\cos^4\theta$ are $1/2$ and $3/8$, so the mean of $Q$ is $117/100$.
 Consequently the actual kernel satisfies
 $\sum_{n<J}c_n^2(4149/4000)^{4n+2}\le117/100$ for every $J$.
 The finite head then supplies the linear-energy deduction used by
-\lean{main\_bounds}. The modules \path{GaussianPair},
+\lean{upper\_below\_tight}. The modules \path{GaussianPair},
 \path{GaussianAmplitude}, \path{SchurMainGaussian} and
 \path{HardyGaussian} under \path{Grothe/UpperChaos/} prove this chain;
 \path{HardyGaussianCheck}, \path{HardyGaussianFacts} and
@@ -317,10 +310,10 @@ $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded to
 \paragraph{Supporting results.}
 The paragraphs from here to the end of this subsection, and the one after the
 references, record further Lean results about the same rounding, all in the
-import closure of the final theorems: bindings of the stored source data and
+import closure of the single-channel theorem. They include bindings of the stored source data and
 analytic lemmas. Several are
 interfaces that take numerical estimates as hypotheses, and the text says which.
-Those hypotheses are not open inputs of the main result: \lean{upper\_below\_tight}
+The earlier single-channel theorem has discharged its Gaussian hypotheses: \lean{upper\_below\_tight}
 has no hypotheses, and it obtains its six Gaussian estimates and the accuracy of
 the energy table from the quadrature above. Other ways of certifying these inputs
 are archived in \path{abandonware/} and are not built; the text mentions them
@@ -818,6 +811,12 @@ This prototype retains the row inequalities as hypotheses and is not a premise
 of the headline lower bound. No native computation is added.
 
 \section{What exactly the computer checks}\label{sec:trust}
+The six-channel endpoint uses exact Boolean checks on the two bounded cell maps,
+their overlap data, the signed head, and the Hardy contours. Their soundness is
+proved in Lean. The rational tail comparisons use kernel reduction. The output of
+\path{haagerup-article/anc/Axioms.lean} lists the axioms of the endpoint itself.
+The discussion below also records the independent single-channel proof and the
+lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
@@ -837,7 +836,7 @@ for the node caps: the node ranges of every row, the coverage and the pieces of 
 nodes of every row.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
 change, evaluates them on its own runner.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599395362$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders. The longer-prefix costs feed the actual comparison; \lean{Final.hclose\_final} supplies the head's table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Earlier single-channel upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599395362$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders. The longer-prefix costs feed the actual comparison; \lean{Final.hclose\_final} supplies the head's table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the explicit decomposition of $G_T-X$
 (\lean{difference\_pieces}) and the weighted comparison; the Hardy tail (holomorphic continuation, Schur bound, circle
@@ -872,7 +871,7 @@ The sharper value that the rounding was designed for,
 has only a conditional theorem (\lean{UpperChaos.fresh\_upper\_rounder}), archived and not built: it needs
 fourteen finite Gaussian band-error estimates that are not proved.
 
-The regrouped comparison used by \lean{upper\_below\_tight} retains only
+The single-channel comparison used by \lean{upper\_below\_tight} retains only
 the lowest bands $(0,51]$, $(0,51]$, $(0,11]$ and groups the remaining supports
 orthogonally. It assumes those three low-band estimates, three independent
 whole Taylor-error estimates and the frozen-response table accuracy. The linear
@@ -952,7 +951,7 @@ The common holomorphy and Parseval transfer reduces these Hardy estimates to sum
 Gaussian identification of the odd series, which \lean{HardyReal.hreal\_GT} proves for $G_T$:
 the smoothed Mehler pair has the law of $(U, RU+SW)$ (characteristic functions), whose density on $\mathbb R^8$ is the
 holomorphic kernel at the real cross covariance (Cholesky substitution). Together with the Gaussian-amplitude
-circle check, this proves \lean{hardy\_GT\_gaussian}, the Hardy input used by the current upper bound.
+circle check, this proves \lean{hardy\_GT\_gaussian}, the Hardy input used by the single-channel bound.
 Thirteen algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms, and the generic response and quintic-transfer lemmas, which add no
 native facts, were proved in Lean. Their modules are now archived in \path{miscellaneous/research/}: they are not built
@@ -990,8 +989,8 @@ integrals still require certification before they can improve either endpoint.
 
 \textbf{[P,C; polynomial certificate in Lean, archived]} The entire Gaussian-phase cubic-preprocessor family
 $H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
-has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119464829\ldots$, the reciprocal of
-the proved bound (the sharper target $1.404598149141$ corresponds to $0.7119473997\ldots$).
+has full reciprocal score at most $0.71186$. Even the earlier single-channel bound
+has reciprocal $0.7119464829\ldots$, above this ceiling.
 The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certificates handle all complex phases.
 Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
 responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction
@@ -1235,12 +1234,11 @@ in the second.
 \section{Open problems}
 Work is tracked as GitHub issues of the repository: the open epics are \#22 (a better lower bound) and \#34 (research
 plans). Three epics are closed: \#12 (unconditional lower bound: \lean{lower\_target}), \#17 (inputs of the upper bound:
-\lean{upper\_below\_tight} for the threshold $1.404599395362$; the sharper value is item~1 below, and no issue tracks
-it) and \#29 (build infrastructure).
+\lean{upper\_below\_tight} for the earlier threshold $1.404599395362$) and \#29 (build infrastructure).
 \begin{enumerate}
-\item Prove the sharper upper bound that the rounding was designed for, below $1.404598149141$. What is missing are the
+\item For the earlier single-channel rounding, verify the originally planned budget below $1.404598149141$. What is missing are the
  fourteen finite-band Gaussian error estimates with their original caps, the hypotheses of the archived conditional theorem of
- Section~\ref{sec:trust}; the unconditional theorem uses proved estimates and exhibits a bound below $1.404599395362$.
+ Section~\ref{sec:trust}; its single-channel theorem uses proved estimates and exhibits a bound below $1.404599395362$.
  The energy-table accuracy, the Hermite expansion, the structural analytic bridge and the Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.402$,
@@ -1249,10 +1247,10 @@ it) and \#29 (build infrastructure).
  bound $0.916$ on the cubic chaos, and $0.93$ is what is proved; the game with a smaller cubic weight that has a
  conditional certificate leaves $3.7\cdot10^{-4}$ at its binding rows. The current gated rows lose several times that.
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
- locate $\KG$ to about $10^{-4}$ and to test whether Haagerup's value $1/\gamma^\dagger$ is the answer. A first search
+ locate $\KG$ to about $10^{-4}$ using higher-degree games. A first search
  (\path{research/higher-degree/}, [N]) gives model values $1.403648$, $1.404113$ and $1.40430$ for the best games of
- degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.404599395362$. No rounding built from the binding responses
- beats Haagerup's $\gamma_H$, and whether $1/\gamma^\dagger$ is the answer remains open.
+ degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.40457588$. No rounding built from the binding responses
+ beats Haagerup's $\gamma_H$ within that family. The independent six-channel comparison is stated above.
 \item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
  appears to be open, and it is the largest single lever on the law side. The best proved constant is $0.93$; a constant
  $0.916$ would already remove the cap that the first moment puts on the cubic weight of a degree-5 game (item~2).

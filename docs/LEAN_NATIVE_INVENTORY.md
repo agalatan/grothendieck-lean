@@ -4,7 +4,14 @@ This inventory describes the native facts (`native_decide`) allowed for the sing
 bound by family and module pattern, and the evidence recorded for upper-bound facts. The complete allowlist is
 `data/axioms/native.txt`, read by `scripts/check_axioms.py`. The default report is `scratch/Axioms.lean`, with its
 required declarations in `data/axioms/required.txt`; CI checks it on every pushed branch, and on the merged tree before
-a pull request lands. Archived upper variants have separate preserved inventories under
+a pull request lands.
+
+The proof-check workflow also audits `scratch/UpperSixAxioms.lean` against the required six-channel
+allowlist. It covers the two cell witnesses, both overlap-table checks, the weighted head, and each
+channel’s disk and circle checks. The rational tail comparisons reduce in the kernel.
+[Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
+
+Archived upper variants have separate preserved inventories under
 `miscellaneous/other-bounds/snapshot/data/axioms/`; they are not active permissions.
 
 ## Lower bound

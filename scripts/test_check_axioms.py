@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ()
+MODES = ("upper-six",)
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -122,6 +122,27 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(code, 1)
                 self.assertIn("DISALLOWED AXIOM", stdout)
 
+    def test_upper_six_rejects_native_fact_allowed_by_combined_report(self):
+        fact = "Grothe.Lower.certEnvelope._native.native_decide.ax_1_1"
+        record = f"'Grothe.UpperSix.bound' depends on axioms: [{fact}]\n"
+        self.assertEqual(self.run_main([], self.report() + record)[0], 0)
+        code, stdout, _ = self.run_main(["--upper-six"], self.report("upper-six") + record)
+        self.assertEqual(code, 1)
+        self.assertIn(f"DISALLOWED AXIOM in Grothe.UpperSix.bound: {fact}", stdout)
+
+    def test_upper_six_requires_its_native_policy_file(self):
+        theorem = "Grothe.UpperSix.bound"
+        report = f"'{theorem}' does not depend on any axioms\n"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "modes").mkdir()
+            (root / "modes/upper-six.required.txt").write_text(theorem + "\n", encoding="utf-8")
+            (root / "native.txt").write_text("Test.globalNative\n", encoding="utf-8")
+            with patch.object(CHECKER, "AXDIR", root):
+                code, _, stderr = self.run_main(["--upper-six"], report)
+        self.assertEqual(code, 1)
+        self.assertIn("upper-six.native.txt", stderr)
+
     def test_all_distinct_mode_pairs_are_rejected_in_both_orders(self):
         for first, second in itertools.permutations(MODES, 2):
             with self.subTest(first=first, second=second):
@@ -207,6 +228,14 @@ class CheckAxiomsTests(unittest.TestCase):
                          self.report() + diagnostic):
                 with self.subTest(diagnostic=diagnostic, text_start=text[:80]):
                     self.assertEqual(self.run_main([], text)[0], 1)
+
+    def test_each_topic_mode_keeps_strict_report_consumption(self):
+        for mode in MODES:
+            for extra in ("error: failed to load module\n",
+                          "'Extra.unchecked' depends on axioms: [sorryAx\n",
+                          "'Extra.unchecked' depends on axioms: []junk\n"):
+                with self.subTest(mode=mode, extra=extra):
+                    self.assertEqual(self.run_main([f"--{mode}"], self.report(mode) + extra)[0], 1)
 
     def test_default_mode_keeps_strict_report_consumption(self):
         for extra in ("error: failed to load module\n",

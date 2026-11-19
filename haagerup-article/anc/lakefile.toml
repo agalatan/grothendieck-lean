@@ -1,0 +1,19 @@
+# The Lean proof of the article, as a standalone Lake package (the arXiv ancillary files).
+#
+# The sources in Grothe/UpperSix/ are byte-identical to the folder of the same name in the repository
+# https://github.com/agalatan/grothendieck-lean (the CI job .github/workflows/haagerup-article.yml checks this), where
+# they also prove the upper bound of Grothe.Statement.main_bounds. They import only Mathlib.
+#
+# Build: `lake exe cache get && lake build`; axioms: `lake env lean Axioms.lean`.
+name = "haagerupArticle"
+defaultTargets = ["HaagerupArticle"]
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "v4.34.1"
+
+[[lean_lib]]
+name = "HaagerupArticle"
+globs = ["Grothe.UpperSix.+"]
