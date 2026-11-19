@@ -1,7 +1,7 @@
 # Conjecture K: start here
 
-Conjecture K is an open statement about Gaussian chaos. If it were proved, even up to an error of 10⁻⁴, the lower
-bound of this repository would rise from 1.401700322371 to about 1.402 (exact K: about 1.4022). This folder is the
+Conjecture K is an open statement about Gaussian chaos. If it were proved, even up to an error of 10⁻⁴, the cubic
+witness would give about 1.402 (exact K: about 1.4022), above the Lean lower bound 1.4018 of the identity-tail witness. This folder is the
 organised record of everything known about it: the statement, what is proved, what is only computed, what is false,
 and what does not work. It is research material: nothing here is imported by Lean or checked by CI, and the
 conjecture is **open**.
@@ -103,7 +103,7 @@ shells and q are the "odd-frequency" = "z-even" block.
 
 | quantity | value | status and source |
 |---|---|---|
-| proved bounds (Lean, `main_bounds`) | 1.401700322371 < K_G^ℂ < 1.404599395362 | `Grothe/MainResult.lean`; `docs/LEAN_DETAILS.md`; `STATUS.md` 12.1 |
+| proved bounds (Lean, `main_bounds`) | 1.4018 < K_G^ℂ ≤ 1.40457588 | `Grothe/MainResult.lean`; `docs/LEAN_DETAILS.md`; `STATUS.md` 12.1 |
 | row cap of the proved lower bound | 891774069/1250000000 = 0.7134192552 | `STATUS.md` 12.1 |
 | row cap needed for 1.402 | below 500/701 = 0.7132667617… | `STATUS.md`, section 8 |
 | row cap needed for 1.4022 | below 5000/7011 = 0.7131650263… | `STATUS.md`, section 8 |

@@ -1,6 +1,8 @@
 # Weighted selected-spectrum comparison
 
-The current unconditional upper bound is `K_G^C < 1.404599395362`
+The six-channel endpoint is stated separately in the [upper result](../../Grothe/UpperResult.lean). This file describes the single-channel construction.
+
+The single-channel upper bound is `K_G^C < 1.404599395362`
 (`Grothe.Statement.upper_below_tight`, `Grothe/UpperTightFinal.lean`). Its
 regrouped comparison reuses the finite mass certificates documented here, with
 the proved six-error estimates and tighter budgets of `UpperTightSix` and

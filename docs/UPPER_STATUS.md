@@ -1,11 +1,13 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The current proved upper bound is **K_G^ℂ < 1.404599395362**, without
+The six-channel upper entrypoint states `K_G^ℂ ≤ 1.40457588`. The separate phase-integral estimate puts that rational strictly below `1/γ†`. [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../haagerup-article/anc/README.md).
+
+## Earlier single-channel construction
+
+The single-channel upper bound is **K_G^ℂ < 1.404599395362**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
-[`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). Together with the
-proved lower bound, `main_bounds` states
-**1.4018 < K_G^ℂ < 1.404599395362** in
-[`MainResult.lean`](../Grothe/MainResult.lean).
+[`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The combined statement `main_bounds` in
+[`MainResult.lean`](../Grothe/MainResult.lean) uses the six-channel bound instead.
 
 The sharper target **K_G^ℂ < 1.404598149141** has only a conditional route,
 archived in [`abandonware/`](../abandonware/README.md) and not built:
@@ -14,16 +16,14 @@ from fourteen original Gaussian finite-band error inequalities, which are not
 all proved, and the energy-table discrepancy bound `6847009/(5·10^17)`, which
 `Final.hclose_final` proves for the actual frozen response.
 
-The current proof uses six certified low-band and whole-source estimates,
+The single-channel proof uses six certified low-band and whole-source estimates,
 tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `117/100`) with a linear-energy
-deduction. `main_bounds` uses `upper_below_tight`, and the energy-table accuracy
-`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). Every module
-under `Grothe/` is in the import closure of `MainResult.lean`; unused formulations are
-kept outside the build, in [the committed archive](../miscellaneous/other-bounds/README.md)
+deduction. Its entrypoint is `upper_below_tight`, and the energy-table accuracy
+`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). The generated root includes this proof alongside the six-channel proof used by
+`MainResult.lean`. Alternative single-channel formulations are in [the committed archive](../miscellaneous/other-bounds/README.md)
 and in [`abandonware/`](../abandonware/README.md).
-Shared Gaussian phase identity and Laplace infrastructure remain in the proof.
 
-Sections 1 and 4 describe the current status. Sections 2, 3 and 5 retain
+Sections 1 and 4 describe this single-channel construction. Sections 2, 3 and 5 retain
 construction history and the original sharper-target plan, with completed
 steps identified. Their old costs, residual shares and proposed tolerances
 are not the current theorem's budget or a schedule of remaining work.
@@ -39,7 +39,7 @@ cache matches the node-cap sources.
 
 ## 1. What is proved
 
-### Current unconditional assembly
+### Single-channel assembly
 
 `upper_below_tight` uses the same concrete rounding `GT` and accepted
 production certificates through this chain:
@@ -225,12 +225,12 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   archived in `abandonware/` (not built).
   The error decomposition, supports and actual centers are formalized.
   `ComparisonInputs` is still a conditional interface for arbitrary `G, X`;
-  the current unconditional theorem uses a different seven-piece comparison
+  the single-channel theorem uses a different seven-piece comparison
   with proved low-band and whole-source radii.
 * The actual table accuracy is **proved**, not an open quadrature project:
   `Final.hclose_final` combines the accepted energy facts with the full
   quadrature remainder, tail and omitted-pair bounds. It supplies the table
-  input to the current endpoint.
+  input to `upper_below_tight`.
 * Every even phase moment is identified with a finite rational calculation on
   the production phase (`integral_phiT_pow_even` in `ConcretePhaseMoments`).
   `PhaseMoment2`, `PhaseMoment4`, `PhaseMoment6` and `PhaseMomentNorms` provide
@@ -260,7 +260,7 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
 `certify_taylor_comparison.py`, `taylor_comparison_result.json`). The error decomposition,
 spectral support, concrete center data and phase moments are now implemented.
 The plan below records the original eighteen-piece route and its old cost
-estimates. The current unconditional proof instead uses the six certified
+estimates. The single-channel proof uses the six certified
 inputs and grouped comparison in §1; the original finer Gaussian caps remain
 separate targets.*
 

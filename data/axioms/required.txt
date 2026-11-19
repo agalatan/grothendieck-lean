@@ -1474,6 +1474,9 @@ Grothe.UpperQuad.phaseDegOK
 Grothe.UpperQuad.re_inner_ge_of_facts
 Grothe.UpperQuad.six_of_facts
 Grothe.UpperQuad.twistQuadHyp_of_remainder
+Grothe.UpperSix.bound
+Grothe.UpperSix.constant_le
+Grothe.UpperSix.constant_lt_inv_gammaDagger
 Grothe.hardy_budget_after_linear
 Grothe.head_residual_le
 Grothe.linear_lower
