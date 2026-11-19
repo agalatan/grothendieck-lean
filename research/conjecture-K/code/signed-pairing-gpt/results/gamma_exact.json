@@ -1,0 +1,21 @@
+{
+  "status": "C: PASS",
+  "symbolic_moments": "identities in the indeterminate m, exact integer coefficients",
+  "general_hermitian_bounds": "5/3 for all spectra; 13/10 when kappa <= 1/6",
+  "infinite_tails": [
+    {
+      "m_min": "34",
+      "theta": "7/20"
+    },
+    {
+      "m_min": "19",
+      "theta": "3/5"
+    },
+    {
+      "m_min": "8",
+      "theta": "13/10"
+    }
+  ],
+  "polynomial_all_m_theta": "5/3",
+  "profile_rows_checked": 6
+}

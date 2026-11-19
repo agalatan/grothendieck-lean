@@ -1,0 +1,12 @@
+a=0.408 b=0.000 u=1.000 sigma=0.0: true deficit 0.178570 >= bound 0.066490  OK
+a=0.408 b=0.000 u=1.000 sigma=0.3: true deficit 0.179415 >= bound 0.072901  OK
+a=0.408 b=0.000 u=1.000 sigma=1.0: true deficit 0.114579 >= bound 0.058770  OK
+a=0.408 b=0.000 u=1.000 sigma=3.0: true deficit 0.027218 >= bound 0.007780  OK
+a=0.300 b=0.678 u=1.000 sigma=0.0: true deficit 0.175090 >= bound 0.035905  OK
+a=0.300 b=0.678 u=1.000 sigma=0.3: true deficit 0.161064 >= bound 0.039366  OK
+a=0.300 b=0.678 u=1.000 sigma=1.0: true deficit 0.093645 >= bound 0.031736  OK
+a=0.300 b=0.678 u=1.000 sigma=3.0: true deficit 0.020079 >= bound 0.004201  OK
+a=0.100 b=0.970 u=1.000 sigma=0.0: true deficit 0.222049 >= bound 0.003989  OK
+a=0.100 b=0.970 u=1.000 sigma=0.3: true deficit 0.194380 >= bound 0.004374  OK
+a=0.100 b=0.970 u=1.000 sigma=1.0: true deficit 0.101310 >= bound 0.003526  OK
+a=0.100 b=0.970 u=1.000 sigma=3.0: true deficit 0.020081 >= bound 0.000467  OK

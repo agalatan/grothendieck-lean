@@ -1,0 +1,45 @@
+{
+  "status": "C: exact Gaussian-integer matrices and rational/integer moment arithmetic",
+  "passed": true,
+  "pauliWords": [
+    "IIY",
+    "IYX",
+    "XYZ",
+    "YIZ",
+    "YXX",
+    "YZX",
+    "ZYZ"
+  ],
+  "complexVariables": {
+    "X": 8,
+    "Y": 8
+  },
+  "clifford": {
+    "realDimension": 16,
+    "matrices": 9,
+    "allRelationsVerified": true
+  },
+  "quadraticMapNormIdentity": "sum_a (G^T P_a G)^2 = |G|^4, verified coefficient by coefficient",
+  "exactLaw": "q has the law R W, with R Gamma(shape=8, scale=1) independent of standard complex Gaussian W",
+  "moments": {
+    "u": "72",
+    "m4": "15840",
+    "delta": "5472",
+    "ES2": "7920",
+    "ERS": "720",
+    "EGradient": "216",
+    "EGradient2": "62352",
+    "varGradient": "15696",
+    "budget": "31392"
+  },
+  "normalized": {
+    "u": "1",
+    "delta": "19/18",
+    "budget": "109/18",
+    "spectralCorrection": "5/18"
+  },
+  "budgetRatio": "109/19",
+  "maximumImprovementFactorForCoefficientSix": "114/109",
+  "zeroContent": "P: matrix sign symmetries, checked above and proved in PROOFS.md",
+  "scope": "This does not prove the general content/deficit inequality or a new Grothendieck endpoint."
+}

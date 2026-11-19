@@ -1,0 +1,18 @@
+raw u=0.02 monomial H(X)            chi= 42.0 C2/D=0.0691 T9/D=0.1427 T9/delta=0.0327
+raw u=0.02 best two-variable tensor chi= 40.0 C2/D=0.0689 T9/D=0.1468 T9/delta=0.0341
+raw u=0.02 X(|Y|^2-1)               chi= 16.0 C2/D=0.0330 T9/D=0.3196 T9/delta=0.1147
+raw u=0.02 mixed                    chi= 33.4 C2/D=0.0660 T9/D=0.1718 T9/delta=0.0423
+raw u=0.02 H(X)+H(Y)                chi= 21.0 C2/D=0.0493 T9/D=0.2446 T9/delta=0.0762
+raw u=0.02 400 random cubics: chi in [9.8,39.6], D/delta in [0.233,0.443]; C2/D max 0.0684; T9/D min 0.1496 median 0.2998 max 0.4673 (chi=9.8)
+    chi in [8,16): n=139, T9/D max 0.4673, C2/D max 0.0425
+    chi in [16,24): n=184, T9/D max 0.3352, C2/D max 0.0622
+    chi in [24,43): n=77, T9/D max 0.2465, C2/D max 0.0684
+raw u=0.0463 monomial H(X)            chi= 42.0 C2/D=0.0876 T9/D=0.1851 T9/delta=0.0248
+raw u=0.0463 best two-variable tensor chi= 40.0 C2/D=0.0876 T9/D=0.1913 T9/delta=0.0260
+raw u=0.0463 X(|Y|^2-1)               chi= 16.0 C2/D=0.0410 T9/D=0.4530 T9/delta=0.1049
+raw u=0.0463 mixed                    chi= 33.4 C2/D=0.0840 T9/D=0.2333 T9/delta=0.0341
+raw u=0.0463 H(X)+H(Y)                chi= 21.0 C2/D=0.0653 T9/D=0.3334 T9/delta=0.0645
+raw u=0.0463 400 random cubics: chi in [9.7,40.0], D/delta in [0.136,0.307]; C2/D max 0.0873; T9/D min 0.1932 median 0.3971 max 0.6498 (chi=9.7)
+    chi in [8,16): n=127, T9/D max 0.6498, C2/D max 0.0589
+    chi in [16,24): n=178, T9/D max 0.4860, C2/D max 0.0820
+    chi in [24,43): n=95, T9/D max 0.3546, C2/D max 0.0873

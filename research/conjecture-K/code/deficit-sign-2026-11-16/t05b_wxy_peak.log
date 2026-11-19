@@ -1,0 +1,6 @@
+eigvec 0 (coarse eig/D -1.565e-05): | coarse 24r x 8: Q/D eps=.05: +0.00050, eps=.1: +0.00164 (min T2/D at eps=.1: +1.42e-05) 
+eigvec 0 (coarse eig/D -1.565e-05): | coarse 24r x 8: Q/D eps=.05: +0.00050, eps=.1: +0.00164 (min T2/D at eps=.1: +1.42e-05) | medium 36r x 12: Q/D eps=.05: +0.00050, eps=.1: +0.00164 (min T2/D at eps=.1: +1.42e-05) 
+eigvec 0 (coarse eig/D -1.565e-05): | coarse 24r x 8: Q/D eps=.05: +0.00050, eps=.1: +0.00164 (min T2/D at eps=.1: +1.42e-05) | medium 36r x 12: Q/D eps=.05: +0.00050, eps=.1: +0.00164 (min T2/D at eps=.1: +1.42e-05) | fine 45r x 16: Q/D eps=.05: +0.00050, eps=.1: +0.00164 (min T2/D at eps=.1: +1.42e-05) 
+eigvec 1 (coarse eig/D -5.972e-07): | coarse 24r x 8: Q/D eps=.05: +0.00013, eps=.1: +0.00014 (min T2/D at eps=.1: +9.93e-07) 
+eigvec 1 (coarse eig/D -5.972e-07): | coarse 24r x 8: Q/D eps=.05: +0.00013, eps=.1: +0.00014 (min T2/D at eps=.1: +9.93e-07) | medium 36r x 12: Q/D eps=.05: +0.00013, eps=.1: +0.00014 (min T2/D at eps=.1: +9.94e-07) 
+eigvec 1 (coarse eig/D -5.972e-07): | coarse 24r x 8: Q/D eps=.05: +0.00013, eps=.1: +0.00014 (min T2/D at eps=.1: +9.93e-07) | medium 36r x 12: Q/D eps=.05: +0.00013, eps=.1: +0.00014 (min T2/D at eps=.1: +9.94e-07) | fine 45r x 16: Q/D eps=.05: +0.00013, eps=.1: +0.00014 (min T2/D at eps=.1: +9.94e-07) 

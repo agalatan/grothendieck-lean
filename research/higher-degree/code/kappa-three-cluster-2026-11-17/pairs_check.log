@@ -1,0 +1,3 @@
+pairing identities: (c,c,st) = |A|^2|B|^2 and (c,c,tw) = tr(P_A^w P_B^w) hold (rel. 1e-9) on 800 random pairs
+smallest normalised sums of the three remaining pairs (each must be >= 0): {(1, 1): '2.091e-02', (1, 0): '2.005e-01', (0, 1): '2.058e-01'}
+min over random mixed R of (E|R|^4 - bound)/(E|R|^2)^2: {2: '0.6860', 3: '0.4634', 4: '0.2596', 6: '0.1449', 8: '0.0761'}

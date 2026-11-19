@@ -1,3 +1,4 @@
+import Grothe.LowerAnalytic.ComplexGaussianSymmetry
 import Grothe.LowerAnalytic.FibreSup
 
 /-!
@@ -5,7 +6,8 @@ import Grothe.LowerAnalytic.FibreSup
 
 The fibre potential `Ψ(s) = sup_y J(y, s)` (`pot`, `Jpot` in `FibreSup.lean`) has two symmetries,
 induced by the measure-preserving maps `z ↦ z̄` and `z ↦ −z` of the standard complex Gaussian
-`gaussC` (`gaussC_map_conj`, `gaussC_map_neg`).  In the packing `Fib` (`η = (y₀ + i y₃, y₁ + i y₄,
+`gaussC` (`gaussC_map_conj`, `gaussC_map_neg`, in `ComplexGaussianSymmetry.lean`, which does not
+depend on the fibre theory).  In the packing `Fib` (`η = (y₀ + i y₃, y₁ + i y₄,
 y₂ + i y₅)`, `ζ = (y₆ + i y₈, y₇ + i y₉)`, `d = y₁₀ + i y₁₁`) they act on the dual variable by
 
 * `Fib.cj` (`S_c`): conjugate every complex coordinate, i.e. flip the real coordinates
@@ -15,9 +17,10 @@ y₂ + i y₅)`, `ζ = (y₆ + i y₈, y₇ + i y₉)`, `d = y₁₀ + i y₁₁
 
 With `L(z̄) = conj L(z)`, `L(−z) = −L(z)`, `M S = S M`, `quad ∘ S = quad` and `S a = a` (true for
 `aFib b₁ b₂ b₃`, which has real even coordinates only) this gives `J(S_c y, s) = J(y, s)`
-(`Jpot_cj`) and `J(S_- y, s) = J(y, s)` (`Jpot_ng`).  Hence a cap proved on pieces `Π_i` covers
-the whole fibre space as soon as the pieces and their three symmetric images cover it
-(`pot_le_of_cover`, `pot_le_sup'_of_cover`).
+(`Jpot_cj`) and `J(S_- y, s) = J(y, s)` (`Jpot_ng`), for every identity tail `ν`: the pair
+potential satisfies `Ψ_ν(Ā, B̄) = Ψ_ν(A, B)` and `Ψ_ν(−B, −A) = Ψ_ν(A, B)` (`psiT_conj`, `psiT_neg`,
+`psiT_comm`).  Hence a cap proved on pieces `Π_i` covers the whole fibre space as soon as the
+pieces and their three symmetric images cover it (`pot_le_of_cover`, `pot_le_sup'_of_cover`).
 -/
 
 open MeasureTheory ProbabilityTheory Real Set Grothe.Lower
@@ -26,66 +29,6 @@ open scoped ComplexConjugate
 namespace Grothe.LowerAnalytic
 
 noncomputable section
-
-/-! ### Invariance of the Gaussian -/
-
-/-- The coordinatewise sign maps `x ↦ x`, `x ↦ −x` on `Fin 2 → ℝ`. -/
-lemma stdGaussian_two_map_coord (f : Fin 2 → ℝ → ℝ) (hm : ∀ i, Measurable (f i))
-    (hf : ∀ i, (gaussianReal 0 1).map (f i) = gaussianReal 0 1) :
-    (stdGaussian 2).map (fun x i => f i (x i)) = stdGaussian 2 := by
-  unfold stdGaussian
-  rw [Measure.pi_map_pi (hμ := fun i => by rw [hf i]; infer_instance) (fun i => (hm i).aemeasurable)]
-  simp only [hf]
-
-lemma gaussianReal_map_neg_std : (gaussianReal 0 1).map (fun x : ℝ => -x) = gaussianReal 0 1 := by
-  rw [gaussianReal_map_neg, neg_zero]
-
-/-- The sign pattern of `z ↦ z̄`. -/
-def sgnC : Fin 2 → ℝ → ℝ := ![fun x => x, fun x => -x]
-/-- The sign pattern of `z ↦ −z`. -/
-def sgnN : Fin 2 → ℝ → ℝ := ![fun x => -x, fun x => -x]
-
-lemma toC_sgnC (x : Fin 2 → ℝ) : toC (fun i => sgnC i (x i)) = conj (toC x) := by
-  simp [toC, sgnC, map_div₀, Complex.conj_ofReal]
-
-lemma toC_sgnN (x : Fin 2 → ℝ) : toC (fun i => sgnN i (x i)) = -toC x := by
-  simp [toC, sgnN]; ring
-
-lemma measurable_sgnC (i : Fin 2) : Measurable (sgnC i) := by
-  fin_cases i <;> simp [sgnC] <;> fun_prop
-
-lemma measurable_sgnN (i : Fin 2) : Measurable (sgnN i) := by
-  fin_cases i <;> simp [sgnN] <;> fun_prop
-
-lemma map_sgnC (i : Fin 2) : (gaussianReal 0 1).map (sgnC i) = gaussianReal 0 1 := by
-  fin_cases i
-  · simp [sgnC, Measure.map_id']
-  · simpa [sgnC] using gaussianReal_map_neg_std
-
-lemma map_sgnN (i : Fin 2) : (gaussianReal 0 1).map (sgnN i) = gaussianReal 0 1 := by
-  fin_cases i <;> simpa [sgnN] using gaussianReal_map_neg_std
-
-lemma gaussC_map_of (g : ℂ → ℂ) (hg : Measurable g) (f : Fin 2 → ℝ → ℝ) (hm : ∀ i, Measurable (f i))
-    (hf : ∀ i, (gaussianReal 0 1).map (f i) = gaussianReal 0 1)
-    (hgt : ∀ x, toC (fun i => f i (x i)) = g (toC x)) : gaussC.map g = gaussC := by
-  have hmf : Measurable (fun (x : Fin 2 → ℝ) i => f i (x i)) :=
-    measurable_pi_iff.mpr fun i => (hm i).comp (measurable_pi_apply i)
-  have h1 : g ∘ toC = toC ∘ (fun x i => f i (x i)) := funext fun x => (hgt x).symm
-  rw [gaussC, Measure.map_map hg measurable_toC, h1, ← Measure.map_map measurable_toC hmf,
-    stdGaussian_two_map_coord f hm hf]
-
-/-- **`gaussC` is invariant under `z ↦ z̄`.** -/
-theorem gaussC_map_conj : gaussC.map (fun z => conj z) = gaussC :=
-  gaussC_map_of _ Complex.continuous_conj.measurable sgnC measurable_sgnC map_sgnC toC_sgnC
-
-/-- **`gaussC` is invariant under `z ↦ −z`.** -/
-theorem gaussC_map_neg : gaussC.map (fun z => -z) = gaussC :=
-  gaussC_map_of _ measurable_neg sgnN measurable_sgnN map_sgnN toC_sgnN
-
-lemma integral_gaussC_comp (g : ℂ → ℂ) (hg : Continuous g) (hmap : gaussC.map g = gaussC)
-    (F : ℂ → ℝ) (hF : Continuous F) : ∫ z, F (g z) ∂gaussC = ∫ z, F z ∂gaussC := by
-  conv_rhs => rw [← hmap]
-  rw [integral_map hg.measurable.aemeasurable hF.aestronglyMeasurable]
 
 /-! ### The fibre functions under the symmetries -/
 
@@ -144,7 +87,7 @@ lemma aFib_ng (b1 b2 b3 : ℝ) : (aFib b1 b2 b3).ng = aFib b1 b2 b3 := by
 
 /-! ### Invariance of `J` -/
 
-variable (E : Sym3) (R : Sym2) (ℓ β : ℝ) (a : Fib)
+variable (E : Sym3) (R : Sym2) (ℓ β : ℝ) (a : Fib) (ν : ℝ)
 
 lemma pfn_cj (ha : a.cj = a) (y : Fib) (s : ℝ) (z : ℂ) :
     pfn E R a y.cj s z = conj (pfn E R a y s (conj z)) := by
@@ -158,35 +101,33 @@ lemma pfn_ng (ha : a.ng = a) (y : Fib) (s : ℝ) (z : ℂ) :
   conv_lhs => rw [← ha, Fib.fn_ng]
 
 /-- **`J(S_c y, s) = J(y, s)`** when `S_c a = a`. -/
-theorem Jpot_cj (ha : a.cj = a) (y : Fib) (s : ℝ) : Jpot E R ℓ β a y.cj s = Jpot E R ℓ β a y s := by
+theorem Jpot_cj (ha : a.cj = a) (y : Fib) (s : ℝ) :
+    Jpot E R ℓ β a ν y.cj s = Jpot E R ℓ β a ν y s := by
   unfold Jpot
   rw [Fib.quad_cj]
   congr 1
-  have hc := continuous_pfn E R a y s
-  have hL := continuous_Lf ℓ β
   rw [← integral_gaussC_comp _ Complex.continuous_conj gaussC_map_conj _
-    (by fun_prop : Continuous fun z => ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖)]
+    (continuous_Jtail E R ℓ β a ν y s)]
   refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
   have hz : Lf ℓ β z = conj (Lf ℓ β (conj z)) := by rw [Lf_conj, Complex.conj_conj]
   beta_reduce
-  rw [pfn_cj E R a ha, hz, ← map_add, ← map_sub, Complex.norm_conj, Complex.norm_conj]
+  rw [pfn_cj E R a ha, hz, ← map_add, ← map_sub, psiT_conj]
 
-/-- **`J(S_- y, s) = J(y, s)`** when `S_- a = a` (the two terms `|L ± p|` are exchanged). -/
-theorem Jpot_ng (ha : a.ng = a) (y : Fib) (s : ℝ) : Jpot E R ℓ β a y.ng s = Jpot E R ℓ β a y s := by
+/-- **`J(S_- y, s) = J(y, s)`** when `S_- a = a` (the two arguments `L ± p` of `Ψ_ν` are exchanged
+and negated). -/
+theorem Jpot_ng (ha : a.ng = a) (y : Fib) (s : ℝ) :
+    Jpot E R ℓ β a ν y.ng s = Jpot E R ℓ β a ν y s := by
   unfold Jpot
   rw [Fib.quad_ng]
   congr 1
-  have hc := continuous_pfn E R a y s
-  have hL := continuous_Lf ℓ β
-  rw [← integral_gaussC_comp _ continuous_neg gaussC_map_neg _
-    (by fun_prop : Continuous fun z => ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖)]
+  rw [← integral_gaussC_comp _ continuous_neg gaussC_map_neg _ (continuous_Jtail E R ℓ β a ν y s)]
   refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
   have hz : Lf ℓ β z = -Lf ℓ β (-z) := by rw [Lf_neg, neg_neg]
   beta_reduce
   rw [pfn_ng E R a ha, hz,
     show -Lf ℓ β (-z) + pfn E R a y s (-z) = -(Lf ℓ β (-z) - pfn E R a y s (-z)) by ring,
     show -Lf ℓ β (-z) - pfn E R a y s (-z) = -(Lf ℓ β (-z) + pfn E R a y s (-z)) by ring,
-    norm_neg, norm_neg, add_comm]
+    psiT_neg, psiT_comm]
 
 /-! ### The coverage lemma -/
 
@@ -196,35 +137,13 @@ def symOrbit (P : Set Fib) : Set Fib :=
 
 /-- A bound of `J` on a piece holds on its orbit. -/
 lemma Jpot_le_of_mem_symOrbit (hc : a.cj = a) (hn : a.ng = a) (s q : ℝ) (P : Set Fib)
-    (hP : ∀ y ∈ P, Jpot E R ℓ β a y s ≤ q) {y : Fib} (hy : y ∈ symOrbit P) :
-    Jpot E R ℓ β a y s ≤ q := by
+    (hP : ∀ y ∈ P, Jpot E R ℓ β a ν y s ≤ q) {y : Fib} (hy : y ∈ symOrbit P) :
+    Jpot E R ℓ β a ν y s ≤ q := by
   rcases hy with ((hy | ⟨w, hw, rfl⟩) | ⟨w, hw, rfl⟩) | ⟨w, hw, rfl⟩
   · exact hP y hy
-  · rw [Jpot_cj E R ℓ β a hc]; exact hP w hw
-  · rw [Jpot_ng E R ℓ β a hn]; exact hP w hw
-  · rw [Jpot_cj E R ℓ β a hc, Jpot_ng E R ℓ β a hn]; exact hP w hw
-
-/-- **Coverage lemma.** If the pieces `Π_i` (`i ∈ I`) together with their images under `S_c`,
-`S_-`, `S_c S_-` cover the fibre space, and `J(·, s) ≤ q_i ≤ Q` on `Π_i`, then `Ψ(s) ≤ Q`. -/
-theorem pot_le_of_cover {ι : Type*} (I : Finset ι) (P : ι → Set Fib) (q : ι → ℝ) (Q s : ℝ)
-    (hc : a.cj = a) (hn : a.ng = a) (hcov : ∀ y : Fib, ∃ i ∈ I, y ∈ symOrbit (P i))
-    (hb : ∀ i ∈ I, ∀ y ∈ P i, Jpot E R ℓ β a y s ≤ q i) (hQ : ∀ i ∈ I, q i ≤ Q) :
-    pot E R ℓ β a s ≤ Q := by
-  refine ciSup_le fun y => ?_
-  obtain ⟨i, hi, hy⟩ := hcov y
-  exact (Jpot_le_of_mem_symOrbit E R ℓ β a hc hn s (q i) (P i) (hb i hi) hy).trans (hQ i hi)
-
-/-- **Coverage lemma, `max` form.** For a finite nonempty family with
-`⋃ᵢ (Πᵢ ∪ S_c Πᵢ ∪ S_- Πᵢ ∪ S_c S_- Πᵢ) = univ` and `J(·, s) ≤ qᵢ` on `Πᵢ`,
-`Ψ(s) ≤ maxᵢ qᵢ`. -/
-theorem pot_le_sup'_of_cover {ι : Type*} [Fintype ι] [Nonempty ι] (P : ι → Set Fib) (q : ι → ℝ)
-    (s : ℝ) (hc : a.cj = a) (hn : a.ng = a) (hcov : ⋃ i, symOrbit (P i) = univ)
-    (hb : ∀ i, ∀ y ∈ P i, Jpot E R ℓ β a y s ≤ q i) :
-    pot E R ℓ β a s ≤ Finset.univ.sup' Finset.univ_nonempty q := by
-  refine pot_le_of_cover E R ℓ β a Finset.univ P q _ s hc hn (fun y => ?_) (fun i _ => hb i)
-    (fun i _ => Finset.le_sup' q (Finset.mem_univ i))
-  obtain ⟨i, hi⟩ := mem_iUnion.1 (eq_univ_iff_forall.1 hcov y)
-  exact ⟨i, Finset.mem_univ i, hi⟩
+  · rw [Jpot_cj E R ℓ β a ν hc]; exact hP w hw
+  · rw [Jpot_ng E R ℓ β a ν hn]; exact hP w hw
+  · rw [Jpot_cj E R ℓ β a ν hc, Jpot_ng E R ℓ β a ν hn]; exact hP w hw
 
 end
 

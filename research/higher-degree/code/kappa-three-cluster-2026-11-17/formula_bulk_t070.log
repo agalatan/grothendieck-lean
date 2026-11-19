@@ -1,0 +1,19 @@
+# ref/kappa.py formula 0.70 U c ref/bulk/bulk_c<c>.json kit/profiles_low/ (PV3 working folder): the formula maximised over (a, m_k, s_R) with the actual law of G of the stored bulk of smallest kappa found (c = 4: the extremal law, kappa = 8/5); N
+row 0.70, u = 1.61 u*, three clusters of 4 (n = 13), the bulk of ref/bulk/bulk_c4.json (kappa 1.6000):
+  ratio 0.1594   (the formula on an independent sample of 2^21 points; on the sample used for the search: 0.1587)
+  chi 1.78;  a^2 = 0.052, c sum |m_k|^2 = 0.285, s_R = 0.663;  m_k = 0.138 e^{-0.11 pi i}, 0.141 e^{-0.15 pi i}, 0.180 e^{+0.25 pi i}  [51 s]
+row 0.70, u = 1.45 u*, three clusters of 4 (n = 13), the bulk of ref/bulk/bulk_c4.json (kappa 1.6000):
+  ratio 0.1729   (the formula on an independent sample of 2^21 points; on the sample used for the search: 0.1720)
+  chi 1.81;  a^2 = 0.054, c sum |m_k|^2 = 0.288, s_R = 0.658;  m_k = 0.140 e^{-0.11 pi i}, 0.141 e^{-0.14 pi i}, 0.180 e^{+0.25 pi i}  [40 s]
+row 0.70, u = 1.61 u*, three clusters of 6 (n = 19), the bulk of ref/bulk/bulk_c6.json (kappa 1.7481):
+  ratio 0.1615   (the formula on an independent sample of 2^21 points; on the sample used for the search: 0.1639)
+  chi 1.29;  a^2 = 0.044, c sum |m_k|^2 = 0.258, s_R = 0.698;  m_k = 0.119 e^{-0.12 pi i}, 0.098 e^{-0.10 pi i}, 0.139 e^{+0.25 pi i}  [73 s]
+row 0.70, u = 1.45 u*, three clusters of 6 (n = 19), the bulk of ref/bulk/bulk_c6.json (kappa 1.7481):
+  ratio 0.1751   (the formula on an independent sample of 2^21 points; on the sample used for the search: 0.1777)
+  chi 1.31;  a^2 = 0.046, c sum |m_k|^2 = 0.259, s_R = 0.694;  m_k = 0.117 e^{-0.13 pi i}, 0.102 e^{-0.12 pi i}, 0.139 e^{+0.24 pi i}  [42 s]
+row 0.70, u = 1.61 u*, three clusters of 8 (n = 25), the bulk of ref/bulk/bulk_c8.json (kappa 1.7997):
+  ratio 0.1641   (the formula on an independent sample of 2^21 points; on the sample used for the search: 0.1663)
+  chi 0.97;  a^2 = 0.036, c sum |m_k|^2 = 0.229, s_R = 0.736;  m_k = 0.095 e^{-0.11 pi i}, 0.086 e^{-0.13 pi i}, 0.110 e^{+0.22 pi i}  [49 s]
+row 0.70, u = 1.45 u*, three clusters of 8 (n = 25), the bulk of ref/bulk/bulk_c8.json (kappa 1.7997):
+  ratio 0.1777   (the formula on an independent sample of 2^21 points; on the sample used for the search: 0.1803)
+  chi 0.99;  a^2 = 0.037, c sum |m_k|^2 = 0.233, s_R = 0.731;  m_k = 0.096 e^{-0.11 pi i}, 0.087 e^{-0.13 pi i}, 0.111 e^{+0.22 pi i}  [55 s]

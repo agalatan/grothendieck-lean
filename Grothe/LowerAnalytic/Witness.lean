@@ -3,7 +3,7 @@ import Grothe.Lower.Transfer
 import Grothe.Lower.Moment
 
 /-!
-# The Gaussian witness `T = P₁,₀ − ε P₂,₁` and its value on `z/‖z‖` (L5, value half)
+# The Gaussian witness `T = P₁,₀ − e P₂,₁ + ν(1 − P₁,₀ − P₂,₁)` and its value on `z/‖z‖` (L5, value half)
 
 The complex Gaussian space `ℂⁿ = ℝ^{n+n}` carries the standard Gaussian measure
 `stdGaussian (n + n)` (`z_l = x_l + i y_l`, `E|z_l|² = 2`; the normalisation is immaterial for the
@@ -16,22 +16,27 @@ projections and for the unimodular test family).  In `L²(γ_n)`:
   element of `H₁,₀` and the Wick cubics are orthogonal to `H₁,₀` (`wickL_mem_H21` in
   `WickCubic.lean`, by the complex Wick identity).  Both are finite-dimensional, so
   the orthogonal projections `P₁,₀ = (H10 n).starProjection`, `P₂,₁ = (H21 n).starProjection`
-  exist, and the **witness** is `witness n = P₁,₀ − ε P₂,₁`, `ε = 149/200`
-  (`witnessOf n K` for a general closed `K`; the value theorem needs only `K ⊥ H₁,₀`).
+  exist, and the **witness** with the weight `e ≥ 0` of the third chaos and the identity tail
+  `ν ≥ 0` is `witness n e ν = P₁,₀ − e P₂,₁ + ν (1 − P₁,₀ − P₂,₁)`
+  (`witnessOf n K e ν` for a general closed `K`; the value theorem needs only `K ⊥ H₁,₀`).
+  The lower bound uses `(e, ν) = (191/250, 47/2000)`, whose hat weight is the weight `ε = 25/31` of the rows.
 * `uL n l = z_l/‖z‖` (`0` at `z = 0`) is the unimodular-normalised coordinate family:
   `∑ₗ |uₗ|² ≤ 1` everywhere (`sum_normSq_uc_le`).
 
-**The value theorem** (`norm_pairVal_witness`): `‖∑ₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+ε)/(n+1)`.  Proof:
-`Re ⟪u, T u⟫ = ‖P₁,₀u‖² − ε‖P₂,₁u‖²` and `‖P₁,₀u‖² + ‖P₂,₁u‖² ≤ ‖u‖²` (the ranges are orthogonal), so
-the value is at least `(1+ε) A − ε S` with `A = ∑ₗ ‖P₁,₀ uₗ‖²` and `S = ∑ₗ ‖uₗ‖² ≤ 1`.  Since
+**The value theorem** (`norm_pairVal_witness`): `‖∑ₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+e)/(n+1)` for every weight
+`e ≥ 0` and tail `ν ≥ 0`.  Proof:
+`Re ⟪u, T u⟫ = ‖P₁,₀u‖² − e‖P₂,₁u‖² + ν(‖u‖² − ‖P₁,₀u‖² − ‖P₂,₁u‖²)` and
+`‖P₁,₀u‖² + ‖P₂,₁u‖² ≤ ‖u‖²` (the ranges are orthogonal), so the tail is positive semidefinite,
+`Re ⟪u, T u⟫ ≥ (1+e)‖P₁,₀u‖² − e‖u‖²` (`re_inner_witnessOf_ge`), and
+the value is at least `(1+e) A − e S` with `A = ∑ₗ ‖P₁,₀ uₗ‖²` and `S = ∑ₗ ‖uₗ‖² ≤ 1`.  Since
 `z_l ∈ H₁,₀` with `‖z_l‖² = 2`, `‖P₁,₀ uₗ‖² ≥ |⟪z_l, uₗ⟫|²/2 = m_l²/2` with
 `m_l = E[|z_l|²/‖z‖] ≥ 0`, `∑ₗ m_l = E‖z‖`, and `E‖z‖ ≥ 2n/√(2(n+1))` from `E‖z‖² = 2n`,
 `E‖z‖⁴ = 4n(n+1)` and the pointwise bound `r ≥ (3c²r² − r⁴)/(2c³)` (`r(r−c)²(r+2c) ≥ 0`) at
 `c² = 2(n+1)`; by Cauchy–Schwarz `A ≥ (E‖z‖)²/(2n) ≥ n/(n+1)`, whence the bound
-`(1+ε)n/(n+1) − ε = 1 − (1+ε)/(n+1)`.  (The exact value is `a_n − ε(1 − a_n)` with
+`(1+e)n/(n+1) − e = 1 − (1+e)/(n+1)`.  (Without tail the exact value is `a_n − e(1 − a_n)` with
 `a_n = Γ(n+½)²/(nΓ(n)²) ≥ 1 − 1/(4n)`; the elementary moment bound `a_n ≥ n/(n+1)` suffices.)
 
-**The transfer link** (`transferInputs_of_witnessCap`): if the scalar cap `WitnessCap n B`
+**The transfer link** (`transferInputs_of_witnessCap`): if the scalar cap `WitnessCap n e ν B`
 (`‖⟪f, T g⟫‖ ≤ B` for a.e. unimodular `f, g`) holds for all large `n`, then `TransferInputsL2 B`,
 and `transfer_lower` gives `1 / B ≤ K` for every Grothendieck bound `K`.
 The scalar cap itself is the subject of `WitnessCap.lean`.
@@ -304,16 +309,36 @@ end proj
 
 /-! ### The witness and its value on `z/‖z‖` -/
 
-/-- The operator `P₁,₀ − ε P_K` for a closed subspace `K` (the intended `K` is `H₂,₁`). -/
-def witnessOf (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] : L2G n →L[ℂ] L2G n :=
-  (H10 n).starProjection - ((ε : ℝ) : ℂ) • K.starProjection
+/-- The operator `P₁,₀ − e P_K + ν (1 − P₁,₀ − P_K)` for a closed subspace `K` (the intended `K` is
+`H₂,₁`): `P₁,₀ − e P_K` with the **identity tail** `ν` on the complement of `H₁,₀ ⊕ K`. -/
+def witnessOf (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] (e ν : ℝ) :
+    L2G n →L[ℂ] L2G n :=
+  (H10 n).starProjection - (e : ℂ) • K.starProjection
+    + (ν : ℂ) • (ContinuousLinearMap.id ℂ (L2G n) - (H10 n).starProjection - K.starProjection)
 
-lemma re_inner_witnessOf (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] (u : L2G n) :
-    (inner ℂ u (witnessOf n K u)).re
-      = ‖(H10 n).starProjection u‖ ^ 2 - ε * ‖K.starProjection u‖ ^ 2 := by
-  simp only [witnessOf, FunLike.coe_sub, Pi.sub_apply, FunLike.coe_smul, Pi.smul_apply,
-    inner_sub_right, inner_smul_right, Complex.sub_re, Complex.re_ofReal_mul,
-    re_inner_starProjection]
+lemma witnessOf_apply (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] (e ν : ℝ)
+    (u : L2G n) :
+    witnessOf n K e ν u = (H10 n).starProjection u - (e : ℂ) • K.starProjection u
+      + (ν : ℂ) • (u - (H10 n).starProjection u - K.starProjection u) := rfl
+
+lemma re_inner_witnessOf (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] (e ν : ℝ)
+    (u : L2G n) :
+    (inner ℂ u (witnessOf n K e ν u)).re
+      = ‖(H10 n).starProjection u‖ ^ 2 - e * ‖K.starProjection u‖ ^ 2
+        + ν * (‖u‖ ^ 2 - ‖(H10 n).starProjection u‖ ^ 2 - ‖K.starProjection u‖ ^ 2) := by
+  have hu : (inner ℂ u u).re = ‖u‖ ^ 2 := by rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  simp only [witnessOf_apply, inner_add_right, inner_sub_right, inner_smul_right, Complex.add_re,
+    Complex.sub_re, Complex.re_ofReal_mul, re_inner_starProjection, hu]
+
+/-- **The tail is positive semidefinite**: for `K ⊥ H₁,₀`, `e ≥ 0` and `ν ≥ 0`,
+`Re ⟪u, T u⟫ ≥ (1+e)‖P₁,₀u‖² − e‖u‖²` (the bound of the operator without tail). -/
+lemma re_inner_witnessOf_ge (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection]
+    (hK : K ≤ (H10 n)ᗮ) {e ν : ℝ} (he : 0 ≤ e) (hν : 0 ≤ ν) (u : L2G n) :
+    (1 + e) * ‖(H10 n).starProjection u‖ ^ 2 - e * ‖u‖ ^ 2
+      ≤ (inner ℂ u (witnessOf n K e ν u)).re := by
+  rw [re_inner_witnessOf]
+  have h := sub_nonneg.2 (normSq_starProjection_add_le (H10 n) K hK u)
+  linarith [mul_nonneg hν h, mul_nonneg he h]
 
 lemma zL_mem_H10 (l : Fin n) : zL n l ∈ H10 n := Submodule.subset_span ⟨l, rfl⟩
 
@@ -364,33 +389,29 @@ lemma sum_normSq_starProjection_uL (hn : 0 < n) :
   rw [div_le_iff₀ (by positivity)] at h6
   nlinarith
 
-/-- **The value of the witness on `z/‖z‖`**: for every closed `K ⊥ H₁,₀`,
-`Re Σₗ ⟪uₗ, (P₁,₀ − εP_K) uₗ⟫ ≥ 1 − (1+ε)/(n+1)`. -/
+/-- **The value of the witness on `z/‖z‖`**: for every closed `K ⊥ H₁,₀`, every weight `e ≥ 0` and
+every tail `ν ≥ 0`, `Re Σₗ ⟪uₗ, (P₁,₀ − eP_K + ν(1 − P₁,₀ − P_K)) uₗ⟫ ≥ 1 − (1+e)/(n+1)`. -/
 theorem re_pairVal_witnessOf (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection]
-    (hK : K ≤ (H10 n)ᗮ) (hn : 0 < n) :
-    1 - (1 + ε) / (n + 1) ≤ (pairVal (witnessOf n K) (uL n) (uL n)).re := by
+    (hK : K ≤ (H10 n)ᗮ) {e ν : ℝ} (he : 0 ≤ e) (hν : 0 ≤ ν) (hn : 0 < n) :
+    1 - (1 + e) / (n + 1) ≤ (pairVal (witnessOf n K e ν) (uL n) (uL n)).re := by
   unfold pairVal
   rw [Complex.re_sum]
-  simp_rw [re_inner_witnessOf]
-  rw [Finset.sum_sub_distrib, ← Finset.mul_sum]
   have hA := sum_normSq_starProjection_uL n hn
   have hS := normSq_uL_le_sum n
-  have hB : ∑ l, ‖K.starProjection (uL n l)‖ ^ 2
-      ≤ ∑ l, ‖uL n l‖ ^ 2 - ∑ l, ‖(H10 n).starProjection (uL n l)‖ ^ 2 := by
-    rw [← Finset.sum_sub_distrib]
-    exact Finset.sum_le_sum fun l _ => by
-      linarith [normSq_starProjection_add_le (H10 n) K hK (uL n l)]
-  have hε : (0 : ℝ) ≤ ε := by unfold ε; norm_num
+  have hsum : (1 + e) * ∑ l, ‖(H10 n).starProjection (uL n l)‖ ^ 2 - e * ∑ l, ‖uL n l‖ ^ 2
+      ≤ ∑ l, (inner ℂ (uL n l) (witnessOf n K e ν (uL n l))).re := by
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]
+    exact Finset.sum_le_sum fun l _ => re_inner_witnessOf_ge n K hK he hν (uL n l)
   have hn' : (0 : ℝ) < n + 1 := by positivity
   rw [div_le_iff₀ hn'] at hA
-  have h2 : (1 + ε) * (1 - ∑ l, ‖(H10 n).starProjection (uL n l)‖ ^ 2) ≤ (1 + ε) / (n + 1) := by
+  have h2 : (1 + e) * (1 - ∑ l, ‖(H10 n).starProjection (uL n l)‖ ^ 2) ≤ (1 + e) / (n + 1) := by
     rw [le_div_iff₀ hn']; nlinarith
-  nlinarith [mul_le_mul_of_nonneg_left hB hε, mul_le_mul_of_nonneg_left hS hε]
+  linarith [mul_le_mul_of_nonneg_left hS he]
 
 theorem norm_pairVal_witnessOf (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection]
-    (hK : K ≤ (H10 n)ᗮ) (hn : 0 < n) :
-    1 - (1 + ε) / (n + 1) ≤ ‖pairVal (witnessOf n K) (uL n) (uL n)‖ :=
-  (re_pairVal_witnessOf n K hK hn).trans (Complex.re_le_norm _)
+    (hK : K ≤ (H10 n)ᗮ) {e ν : ℝ} (he : 0 ≤ e) (hν : 0 ≤ ν) (hn : 0 < n) :
+    1 - (1 + e) / (n + 1) ≤ ‖pairVal (witnessOf n K e ν) (uL n) (uL n)‖ :=
+  (re_pairVal_witnessOf n K hK he hν hn).trans (Complex.re_le_norm _)
 
 
 /-! ### The third chaos `H₂,₁` and the witness -/
@@ -436,17 +457,19 @@ instance : (H21 n).HasOrthogonalProjection := by
 
 lemma H21_le_orthogonal : H21 n ≤ (H10 n)ᗮ := inf_le_right
 
-/-- **The witness** `T = P₁,₀ − ε P₂,₁` on `L²(γ_n)`, `ε = 149/200`. -/
-def witness : L2G n →L[ℂ] L2G n := witnessOf n (H21 n)
+/-- **The witness** `T = P₁,₀ − e P₂,₁ + ν (1 − P₁,₀ − P₂,₁)` on `L²(γ_n)`, with the weight `e` of
+the third chaos and the identity tail `ν`.  The lower bound uses `witness n (191/250) (47/2000)`. -/
+def witness (e ν : ℝ) : L2G n →L[ℂ] L2G n := witnessOf n (H21 n) e ν
 
-/-- **The value of the witness on the family `uₗ = zₗ/‖z‖`**: `‖Σₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+ε)/(n+1)`. -/
-theorem norm_pairVal_witness (hn : 0 < n) :
-    1 - (1 + ε) / (n + 1) ≤ ‖pairVal (witness n) (uL n) (uL n)‖ :=
-  norm_pairVal_witnessOf n _ (H21_le_orthogonal n) hn
+/-- **The value of the witness on the family `uₗ = zₗ/‖z‖`**: `‖Σₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+e)/(n+1)`
+for every weight `e ≥ 0` and tail `ν ≥ 0`. -/
+theorem norm_pairVal_witness {e ν : ℝ} (he : 0 ≤ e) (hν : 0 ≤ ν) (hn : 0 < n) :
+    1 - (1 + e) / (n + 1) ≤ ‖pairVal (witness n e ν) (uL n) (uL n)‖ :=
+  norm_pairVal_witnessOf n _ (H21_le_orthogonal n) he hν hn
 
-/-- The scalar cap `B` of the witness in dimension `n`: `‖⟪f, T g⟫‖ ≤ B` for a.e. unimodular
-`f, g ∈ L²(γ_n)`. -/
-def WitnessCap (n : ℕ) (B : ℝ) : Prop := ScalarCap (stdGaussian (n + n)) (witness n) B
+/-- The scalar cap `B` of the witness `(e, ν)` in dimension `n`: `‖⟪f, T g⟫‖ ≤ B` for a.e.
+unimodular `f, g ∈ L²(γ_n)`. -/
+def WitnessCap (n : ℕ) (e ν B : ℝ) : Prop := ScalarCap (stdGaussian (n + n)) (witness n e ν) B
 
 lemma ae_sum_normSq_uL_le : ∀ᵐ x ∂(stdGaussian (n + n)), ∑ l, ‖uL n l x‖ ^ 2 ≤ 1 := by
   have h : ∀ᵐ x ∂(stdGaussian (n + n)), ∀ l, uL n l x = uc n l x :=
@@ -455,25 +478,25 @@ lemma ae_sum_normSq_uL_le : ∀ᵐ x ∂(stdGaussian (n + n)), ∑ l, ‖uL n l 
   simp_rw [hx]
   exact sum_normSq_uc_le n x
 
-/-- **The transfer inputs from the scalar caps of the witness**: if `WitnessCap n B` holds for all
-large `n`, then `TransferInputsL2 B` (the value side is `norm_pairVal_witness`). -/
-theorem transferInputs_of_witnessCap {B : ℝ} (N : ℕ) (hcap : ∀ n, N ≤ n → WitnessCap n B) :
-    TransferInputsL2 B := by
+/-- **The transfer inputs from the scalar caps of the witness**: if `WitnessCap n e ν B` holds for
+all large `n` (for one weight `e ≥ 0` and one tail `ν ≥ 0`), then `TransferInputsL2 B` (the value
+side is `norm_pairVal_witness`). -/
+theorem transferInputs_of_witnessCap {e ν B : ℝ} (he : 0 ≤ e) (hν : 0 ≤ ν) (N : ℕ)
+    (hcap : ∀ n, N ≤ n → WitnessCap n e ν B) : TransferInputsL2 B := by
   intro δ hδ
-  have hε : (0 : ℝ) < ε := by unfold ε; norm_num
-  obtain ⟨n, hNn, hn, hδn⟩ : ∃ n : ℕ, N ≤ n ∧ 0 < n ∧ (1 + ε) / (n + 1) ≤ δ := by
-    refine ⟨max N ⌈(1 + (ε : ℝ)) / δ⌉₊, le_max_left _ _, ?_, ?_⟩
-    · have : 0 < ⌈(1 + (ε : ℝ)) / δ⌉₊ := Nat.ceil_pos.2 (div_pos (by linarith) hδ)
+  obtain ⟨n, hNn, hn, hδn⟩ : ∃ n : ℕ, N ≤ n ∧ 0 < n ∧ (1 + e) / (n + 1) ≤ δ := by
+    refine ⟨max N ⌈(1 + e) / δ⌉₊, le_max_left _ _, ?_, ?_⟩
+    · have : 0 < ⌈(1 + e) / δ⌉₊ := Nat.ceil_pos.2 (div_pos (by linarith) hδ)
       exact lt_of_lt_of_le this (le_max_right _ _)
-    · have h1 : (1 + (ε : ℝ)) / δ ≤ ⌈(1 + (ε : ℝ)) / δ⌉₊ := Nat.le_ceil _
-      have h2 : (⌈(1 + (ε : ℝ)) / δ⌉₊ : ℝ) ≤ ((max N ⌈(1 + (ε : ℝ)) / δ⌉₊ : ℕ) : ℝ) := by
+    · have h1 : (1 + e) / δ ≤ ⌈(1 + e) / δ⌉₊ := Nat.le_ceil _
+      have h2 : (⌈(1 + e) / δ⌉₊ : ℝ) ≤ ((max N ⌈(1 + e) / δ⌉₊ : ℕ) : ℝ) := by
         exact_mod_cast le_max_right _ _
       rw [div_le_iff₀ (by positivity)]
       rw [div_le_iff₀ hδ] at h1
       nlinarith
-  exact ⟨Fin (n + n) → ℝ, inferInstance, stdGaussian (n + n), inferInstance, witness n, Fin n,
+  exact ⟨Fin (n + n) → ℝ, inferInstance, stdGaussian (n + n), inferInstance, witness n e ν, Fin n,
     inferInstance, uL n, uL n, hcap n hNn, ae_sum_normSq_uL_le n, ae_sum_normSq_uL_le n,
-    le_trans (by linarith) (norm_pairVal_witness n hn)⟩
+    le_trans (by linarith) (norm_pairVal_witness n he hν hn)⟩
 
 end
 

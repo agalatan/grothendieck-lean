@@ -1,0 +1,6 @@
+c=6 u/u*=1.449 kappa=1.609329 seed=17: Gamma 0.195901, two-point 0.216239 (+10.38%)
+c=6 u/u*=1.449 kappa=1.609329 seed=23: Gamma 0.198831, two-point 0.218556 (+9.92%)
+c=4 u/u*=1.612 kappa=1.600000 seed=17: Gamma 0.155874, Beta 0.154835 (-0.67%), two-point 0.173089 (+11.04%)
+c=4 u/u*=1.612 kappa=1.600000 seed=23: Gamma 0.158206, Beta 0.157269 (-0.59%), two-point 0.174986 (+10.61%)
+c=4 u/u*=1.449 kappa=1.600000 seed=17: Gamma 0.168873, Beta 0.168020 (-0.50%), two-point 0.185480 (+9.83%)
+c=4 u/u*=1.449 kappa=1.600000 seed=23: Gamma 0.171576, Beta 0.170823 (-0.44%), two-point 0.187658 (+9.37%)

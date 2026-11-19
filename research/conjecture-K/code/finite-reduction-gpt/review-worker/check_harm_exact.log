@@ -1,0 +1,4 @@
+PASS trial 0: Delta(harm P) = 0 for (1,1) and (2,1); Q_M orthogonal to H10, H01; ||Q_M||^2 = sum||dbar_j Q_M||^2 = (1/2) sum||d_j Q_M||^2 = 8.68e+04; uncorrected top parts: ||.||^2 = 4.048e+05 != sum||dbar_j .||^2 = 1.446e+05
+PASS trial 1: Delta(harm P) = 0 for (1,1) and (2,1); Q_M orthogonal to H10, H01; ||Q_M||^2 = sum||dbar_j Q_M||^2 = (1/2) sum||d_j Q_M||^2 = 5.447e+04; uncorrected top parts: ||.||^2 = 2.174e+05 != sum||dbar_j .||^2 = 8.566e+04
+PASS trial 2: Delta(harm P) = 0 for (1,1) and (2,1); Q_M orthogonal to H10, H01; ||Q_M||^2 = sum||dbar_j Q_M||^2 = (1/2) sum||d_j Q_M||^2 = 3684; uncorrected top parts: ||.||^2 = 6447 != sum||dbar_j .||^2 = 4056
+ALL EXACT CHECKS PASSED (N_2 Q_M = Q_M and N_1 Q_M = 2 Q_M in quadratic-form sense, with orthogonality to the first chaos)

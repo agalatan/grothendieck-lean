@@ -1,0 +1,12 @@
+d =  2  chi = 5.5000  theta* = 0.52016  formula (1) = 0.78788  ratio at h = v: 0.48485
+d =  3  chi = 3.2593  theta* = 0.25515  formula (1) = 0.55556  ratio at h = v: 0.24242
+d =  4  chi = 2.3125  theta* = 0.15100  formula (1) = 0.46396  ratio at h = v: 0.14414
+d =  5  chi = 1.7920  theta* = 0.09954  formula (1) = 0.41905  ratio at h = v: 0.09524
+d =  6  chi = 1.4630  theta* = 0.07040  formula (1) = 0.39381  ratio at h = v: 0.06751
+d =  7  chi = 1.2362  theta* = 0.05233  formula (1) = 0.37826  ratio at h = v: 0.05031
+d =  8  chi = 1.0703  theta* = 0.04038  formula (1) = 0.36800  ratio at h = v: 0.03893
+d =  9  chi = 0.9438  theta* = 0.03208  formula (1) = 0.36090  ratio at h = v: 0.03101
+d = 10  chi = 0.8440  theta* = 0.02608  formula (1) = 0.35577  ratio at h = v: 0.02528
+d = 11  chi = 0.7633  theta* = 0.02162  formula (1) = 0.35194  ratio at h = v: 0.02100
+d = 12  chi = 0.6968  theta* = 0.01821  formula (1) = 0.34902  ratio at h = v: 0.01772
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 /usr/local/bin/python3 -I    2.14s user 0.59s system 98% cpu 2.777 total

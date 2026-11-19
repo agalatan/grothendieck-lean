@@ -1,0 +1,10 @@
+E1  X(|Y|^2-1) + conj(Z) Y^2: u = 3, sum p_i f_i == 0; E V^2 = 122, 2 E A^2 = 122; E V^3 = 21498, 6 E A^3 = 21498; conditionally exponential to third order: True
+   delta = 104; ||c[v]||^2 = 144; ratio ||c||^2/(delta*Omega-hat) at h = v: 8/13 = 0.6154
+   formula (4):  u, delta, theta = (np.float64(3.0), np.float64(104.0), np.float64(0.8974358974358975))  (35/39 = 0.8974358974358975 )
+E2  shared receivers, sum p_i f_i = 0: u = 4, sum p_i f_i == 0; E V^2 = 72, 2 E A^2 = 72; E V^3 = 3456, 6 E A^3 = 3456; conditionally exponential to third order: True
+   delta = 40; ||c[v]||^2 = 0; ratio ||c||^2/(delta*Omega-hat) at h = v: 0 = 0.0000
+   formula (4):  u, delta, theta = (np.float64(4.0), np.float64(40.0), np.float64(0.43333333333333335))  against exact u, delta = 4.0 40.0
+E3  X y1 conj(y2) + conj(X) y1^2 (pseudo-covariance != 0): u = 3, sum p_i f_i != 0; E V^2 = 104, 2 E A^2 = 80; E V^3 = 13608, 6 E A^3 = 7560; conditionally exponential to third order: False
+   receiver 0: E[conj(X) q V] = (0+0i), regression value 2 E[p A] = (0+0i)
+   delta = 86; ||c[v]||^2 = 0; ratio ||c||^2/(delta*Omega-hat) at h = v: 0 = 0.0000
+ALL ASSERTIONS PASSED

@@ -1,0 +1,13 @@
+equal, m = 1             kappa 1.00000 | alpha^2 = 0.36300241 = E g(P) (diff 0e+00) = E[(1-B) s'(P)] (diff 3e-16) | sup|x s| 1.000, sup|s'| 1.417 | Lemma 2: 1.0000; sharpened: 1.0000; (2/3) s3^2 = 0.66667 | ok
+equal, m = 2             kappa 0.50000 | alpha^2 = 0.20197933 = E g(P) (diff 0e+00) = E[(1-B) s'(P)] (diff 6e-17) | sup|x s| 1.000, sup|s'| 0.891 | Lemma 2: 1.0000; sharpened: 1.0000; (2/3) s3^2 = 0.33333 | ok
+equal, m = 4             kappa 0.25000 | alpha^2 = 0.10894198 = E g(P) (diff 0e+00) = E[(1-B) s'(P)] (diff 3e-17) | sup|x s| 1.000, sup|s'| 0.563 | Lemma 2: 1.0000; sharpened: 1.0000; (2/3) s3^2 = 0.16667 | ok
+equal, m = 16            kappa 0.06250 | alpha^2 = 0.03221724 = E g(P) (diff 0e+00) = E[(1-B) s'(P)] (diff 3e-17) | sup|x s| 1.000, sup|s'| 0.271 | Lemma 2: 0.5000; sharpened: 0.4101; (2/3) s3^2 = 0.04167 | ok
+equal, m = 64            kappa 0.01562 | alpha^2 = 0.00922426 = E g(P) (diff 2e-18) = E[(1-B) s'(P)] (diff 1e-16) | sup|x s| 1.000, sup|s'| 0.154 | Lemma 2: 0.2500; sharpened: 0.1777; (2/3) s3^2 = 0.01042 | ok
+equal, m = 576           kappa 0.00174 | alpha^2 = 0.00113109 = E g(P) (diff 2e-19) = E[(1-B) s'(P)] (diff 6e-16) | sup|x s| 1.000, sup|s'| 0.103 | Lemma 2: 0.0833; sharpened: 0.0511; (2/3) s3^2 = 0.00116 | ok
+pair (0.8000, -0.6000)   kappa 0.53920 | alpha^2 = 0.02863401 = E g(P) (diff 3e-18) = E[(1-B) s'(P)] (diff 2e-17) | sup|x s| 1.000, sup|s'| 0.224 | Lemma 2: 1.0000; sharpened: 1.0000; (2/3) s3^2 = 0.05841 | ok
+pair (0.9231, -0.3846)   kappa 0.74791 | alpha^2 = 0.13800778 = E g(P) (diff 0e+00) = E[(1-B) s'(P)] (diff 3e-17) | sup|x s| 1.000, sup|s'| 0.476 | Lemma 2: 1.0000; sharpened: 1.0000; (2/3) s3^2 = 0.35491 | ok
+kappa needed for theta below the six targets (K, M, a^2 evaluated at kappa; equal to the package's (27) in the first line):
+  Lemma 2, alpha^2 <= 2 sqrt(kappa)              0.37: 1/535  0.64: 1/206  1.33: 1/58  1.88: 1/32  2.50: 1/19
+  sharpened, alpha^2 <= sqrt(kappa)(1 + alpha)   0.37: 1/283  0.64: 1/122  1.33: 1/40  1.88: 1/23  2.50: 1/15
+LEMMA 2 CHECKS PASSED
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 nice -n 10   323.07s user 2.59s system 94% cpu 5:45.49 total

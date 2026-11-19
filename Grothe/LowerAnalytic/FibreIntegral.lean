@@ -10,7 +10,9 @@ For bounded measurable responses `f̃, g̃` on `ℝ^{(n+1)+(n+1)}`, `k̃ = (f̃ 
   `(c₀, c₁, conj c₂, c₃, c₄, c₅)(y)`;
 * `inner_L_split`: `⟪ℓζ₀ + βv, h⟫ = ∫_y ∫_z conj(L(z)) h̃(joinR z y)` for the frame vector
   `ζ₀ = z₀/√2` and the coupling vector `v = vL 0`;
-* `fibre_integrated`: integrating `fibreExprC ≤ Ψ(|q|)` over `y`.
+* `fibre_integrated`: integrating `fibreExprC ≤ Ψ(|q|)` over `y`, for every identity tail `ν`: the
+  tail terms `ν (Re ∫_z conj(f̃) g̃ − 1)` of the fibres integrate to `ν (Re ∫ conj(f̃) g̃ − 1)`
+  (`Tsec`, Fubini), which is `−2ν‖k‖²` for unimodular responses.
 -/
 
 open MeasureTheory ProbabilityTheory Real Set Grothe.Lower
@@ -150,7 +152,7 @@ lemma measurable_joinR_left (y : Fin (n + n) → ℝ) : Measurable fun z : ℂ =
 
 section integrated2
 
-variable (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ)
+variable (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 ν : ℝ)
   {ft gt : (Fin ((n + 1) + (n + 1)) → ℝ) → ℂ} (hfm : Measurable ft) (hgm : Measurable gt)
   (hfb : ∀ x, ‖ft x‖ ≤ 1) (hgb : ∀ x, ‖gt x‖ ≤ 1)
 
@@ -176,32 +178,68 @@ lemma integrable_Lsec : Integrable (Lsec ℓ β (ft := ft) (gt := gt)) (stdGauss
   simp only [norm_mul, Complex.norm_conj]
   exact mul_le_of_le_one_right (norm_nonneg _) (norm_ht_le hfb hgb _)
 
-/-- **The integrated fibre bound.** -/
+/-- The fibre tail term `∫_z conj(f̃(joinR z y)) g̃(joinR z y)`. -/
+def Tsec (y : Fin (n + n) → ℝ) : ℂ := ∫ z, conj (ft (joinR z y)) * gt (joinR z y) ∂gaussC
+
+include hfm hgm hfb hgb in
+lemma integrable_Tsec : Integrable (Tsec (ft := ft) (gt := gt)) (stdGaussian (n + n)) := by
+  have hm : StronglyMeasurable (Tsec (ft := ft) (gt := gt)) := by
+    have hf : StronglyMeasurable fun p : (Fin (n + n) → ℝ) × ℂ =>
+        conj (ft (joinR p.2 p.1)) * gt (joinR p.2 p.1) := by
+      have hj : Measurable fun p : (Fin (n + n) → ℝ) × ℂ => joinR p.2 p.1 :=
+        split2.symm.measurable.comp (measurable_fst.prodMk measurable_snd)
+      exact ((Complex.continuous_conj.measurable.comp (hfm.comp hj)).mul
+        (hgm.comp hj)).stronglyMeasurable
+    exact hf.integral_prod_right'
+  refine MemLp.integrable one_le_two (MemLp.of_bound hm.aestronglyMeasurable 1
+    (Filter.Eventually.of_forall fun y => ?_))
+  refine (norm_integral_le_integral_norm _).trans ((integral_mono_of_nonneg
+    (Filter.Eventually.of_forall fun _ => norm_nonneg _) (integrable_const (1 : ℝ))
+    (Filter.Eventually.of_forall fun z => ?_)).trans_eq (by simp))
+  simp only [norm_mul, Complex.norm_conj]
+  exact (mul_le_mul (hfb _) (hgb _) (norm_nonneg _) zero_le_one).trans_eq (one_mul 1)
+
+include hfm hgm hfb hgb in
+/-- Fubini for the tail term: `∫_y ∫_z conj(f̃) g̃ = ∫ conj(f̃) g̃`. -/
+lemma integral_Tsec : ∫ y, Tsec (ft := ft) (gt := gt) y ∂(stdGaussian (n + n))
+    = ∫ x, conj (ft x) * gt x ∂(stdGaussian ((n + 1) + (n + 1))) := by
+  have hi : Integrable (fun x => conj (ft x) * gt x) (stdGaussian ((n + 1) + (n + 1))) := by
+    refine MemLp.integrable one_le_two (MemLp.of_bound
+      ((Complex.continuous_conj.measurable.comp hfm).mul hgm).aestronglyMeasurable 1
+      (Filter.Eventually.of_forall fun x => ?_))
+    simp only [norm_mul, Complex.norm_conj]
+    exact (mul_le_mul (hfb _) (hgb _) (norm_nonneg _) zero_le_one).trans_eq (one_mul 1)
+  rw [integral_split2 _ hi]
+  rfl
+
+/-- **The integrated fibre bound**, for every identity tail `ν`. -/
 theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n) :
     formH3 E (cK hfm hgm hfb hgb 0) (cK hfm hgm hfb hgb 1) (conjL (cK hfm hgm hfb hgb 2))
       + formH2 R (cK hfm hgm hfb hgb 3) (cK hfm hgm hfb hgb 4) + ε * ‖cK hfm hgm hfb hgb 5‖ ^ 2
       + 2 * (∫ y, Lsec ℓ β (ft := ft) (gt := gt) y ∂(stdGaussian (n + n))).re
       + 2 * (inner ℂ Qe (aXi b1 b2 b3 hfm hgm hfb hgb)).re
-      ≤ ∫ y, pot E R ℓ β (aFib b1 b2 b3) ‖Qe y‖ ∂(stdGaussian (n + n)) := by
+      + ν * ((∫ x, conj (ft x) * gt x ∂(stdGaussian ((n + 1) + (n + 1)))).re - 1)
+      ≤ ∫ y, pot E R ℓ β (aFib b1 b2 b3) ν ‖Qe y‖ ∂(stdGaussian (n + n)) := by
   set kt := fun x => (ft x - gt x) / 2 with hkt
   have hkm := measurable_kt hfm hgm
   have hkb := norm_kt_le hfb hgb
   -- the pointwise bound
-  have hpt : ∀ y, fibreExprC E R ℓ β b1 b2 b3 (fun z => ft (joinR z y)) (fun z => gt (joinR z y))
-      (Qe y) ≤ pot E R ℓ β (aFib b1 b2 b3) ‖Qe y‖ := fun y =>
-    fibreExprC_le_pot E R ℓ β b1 b2 b3 hE hR (hfm.comp (measurable_joinR_left y))
+  have hpt : ∀ y, fibreExprC E R ℓ β b1 b2 b3 ν (fun z => ft (joinR z y)) (fun z => gt (joinR z y))
+      (Qe y) ≤ pot E R ℓ β (aFib b1 b2 b3) ν ‖Qe y‖ := fun y =>
+    fibreExprC_le_pot E R ℓ β b1 b2 b3 ν hE hR (hfm.comp (measurable_joinR_left y))
       (hgm.comp (measurable_joinR_left y)) (fun z => hfb _) (fun z => hgb _) (Qe y)
   -- the three parts
   set A : (Fin (n + n) → ℝ) → ℝ := fun y => E.form (cK hfm hgm hfb hgb 0 y) (cK hfm hgm hfb hgb 1 y)
       (conjL (cK hfm hgm hfb hgb 2) y) + R.form (cK hfm hgm hfb hgb 3 y) (cK hfm hgm hfb hgb 4 y)
       + ε * ‖cK hfm hgm hfb hgb 5 y‖ ^ 2 with hA
   set C : (Fin (n + n) → ℝ) → ℝ := fun y => 2 * hre (Qe y) (aXi b1 b2 b3 hfm hgm hfb hgb y) with hC
-  have hF : ∀ᵐ y ∂(stdGaussian (n + n)), fibreExprC E R ℓ β b1 b2 b3 (fun z => ft (joinR z y))
-      (fun z => gt (joinR z y)) (Qe y) = A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re + C y := by
+  have hF : ∀ᵐ y ∂(stdGaussian (n + n)), fibreExprC E R ℓ β b1 b2 b3 ν (fun z => ft (joinR z y))
+      (fun z => gt (joinR z y)) (Qe y) = A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re + C y
+        + ν * ((Tsec (ft := ft) (gt := gt) y).re - 1) := by
     filter_upwards [cfL_ae hkm hkb 0, cfL_ae hkm hkb 1, cfL_ae hkm hkb 2, cfL_ae hkm hkb 3,
       cfL_ae hkm hkb 4, cfL_ae hkm hkb 5, conjL_ae (cK hfm hgm hfb hgb 2),
       aXi_ae b1 b2 b3 hfm hgm hfb hgb] with y h0 h1 h2 h3 h4 h5 h6 h7
-    simp only [fibreExprC, hA, hC, Lsec]
+    simp only [fibreExprC, hA, hC, Lsec, Tsec]
     rw [coefFib_section kt y]
     simp only [Fib.quad]
     rw [h6, h0, h1, h2, h3, h4, h5, h7]
@@ -213,16 +251,23 @@ theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n
   have iB : Integrable (fun y => 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re) (stdGaussian (n + n)) :=
     (integrable_Lsec ℓ β hfm hgm hfb hgb).re.const_mul 2
   have iC : Integrable C (stdGaussian (n + n)) := (integrable_hre _ _).const_mul 2
-  have iP : Integrable (fun y => pot E R ℓ β (aFib b1 b2 b3) ‖Qe y‖) (stdGaussian (n + n)) := by
-    simpa using integrable_pot_comp (E := E) (R := R) (ℓ := ℓ) (β := β) (a := aFib b1 b2 b3) hE
-      hR (Lp.memLp Qe).aestronglyMeasurable ((Lp.memLp Qe).integrable one_le_two).norm 1 zero_le_one
+  have iTr : Integrable (fun y => (Tsec (ft := ft) (gt := gt) y).re) (stdGaussian (n + n)) :=
+    (integrable_Tsec hfm hgm hfb hgb).re
+  have iT : Integrable (fun y => ν * ((Tsec (ft := ft) (gt := gt) y).re - 1))
+      (stdGaussian (n + n)) := (iTr.sub (integrable_const 1)).const_mul ν
+  have iP : Integrable (fun y => pot E R ℓ β (aFib b1 b2 b3) ν ‖Qe y‖) (stdGaussian (n + n)) := by
+    simpa using integrable_pot_comp (E := E) (R := R) (ℓ := ℓ) (β := β) (a := aFib b1 b2 b3)
+      (ν := ν) hE hR (Lp.memLp Qe).aestronglyMeasurable
+      ((Lp.memLp Qe).integrable one_le_two).norm 1 zero_le_one
   have iAB : Integrable (fun y => A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re)
       (stdGaussian (n + n)) := iA.add iB
   have iS : Integrable (fun y => A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re + C y)
       (stdGaussian (n + n)) := iAB.add iC
-  have hmono := integral_mono_ae iS iP (by
+  have iST : Integrable (fun y => A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re + C y
+      + ν * ((Tsec (ft := ft) (gt := gt) y).re - 1)) (stdGaussian (n + n)) := iS.add iT
+  have hmono := integral_mono_ae iST iP (by
     filter_upwards [hF] with y hy using hy.ge.trans (hpt y))
-  rw [integral_add iAB iC, integral_add iA iB] at hmono
+  rw [integral_add iS iT, integral_add iAB iC, integral_add iA iB] at hmono
   have eA : ∫ y, A y ∂(stdGaussian (n + n))
       = formH3 E (cK hfm hgm hfb hgb 0) (cK hfm hgm hfb hgb 1) (conjL (cK hfm hgm hfb hgb 2))
         + formH2 R (cK hfm hgm hfb hgb 3) (cK hfm hgm hfb hgb 4) + ε * ‖cK hfm hgm hfb hgb 5‖ ^ 2 := by
@@ -243,7 +288,14 @@ theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n
     simpa using integral_re (integrable_Lsec ℓ β hfm hgm hfb hgb)
   have eC : ∫ y, C y ∂(stdGaussian (n + n)) = 2 * (inner ℂ Qe (aXi b1 b2 b3 hfm hgm hfb hgb)).re := by
     rw [hC, integral_const_mul, re_inner_eq_integral]
-  rwa [eA, eB, eC] at hmono
+  have eT : ∫ y, ν * ((Tsec (ft := ft) (gt := gt) y).re - 1) ∂(stdGaussian (n + n))
+      = ν * ((∫ x, conj (ft x) * gt x ∂(stdGaussian ((n + 1) + (n + 1)))).re - 1) := by
+    have hre : ∫ y, (Tsec (ft := ft) (gt := gt) y).re ∂(stdGaussian (n + n))
+        = (∫ y, Tsec (ft := ft) (gt := gt) y ∂(stdGaussian (n + n))).re := by
+      simpa using integral_re (integrable_Tsec hfm hgm hfb hgb)
+    rw [integral_const_mul, integral_sub iTr (integrable_const 1), integral_const, probReal_univ,
+      one_smul, hre, integral_Tsec hfm hgm hfb hgb]
+  rwa [eA, eB, eC, eT] at hmono
 
 end integrated2
 

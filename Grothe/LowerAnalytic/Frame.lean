@@ -250,9 +250,9 @@ lemma P_Cop (u : L2G m) : (H10 m).starProjection (Cop W u) = Cop W ((H10 m).star
 lemma Q_Cop (u : L2G m) : (H21 m).starProjection (Cop W u) = Cop W ((H21 m).starProjection u) :=
   starProjection_Cop W _ (Cop_H21 W) (Cop_H21 W.symm) u
 
-lemma witness_Cop (u : L2G m) : witness m (Cop W u) = Cop W (witness m u) := by
-  simp only [witness, witnessOf, sub_apply, smul_apply,
-    P_Cop, Q_Cop, map_sub, map_smul]
+lemma witness_Cop (e ν : ℝ) (u : L2G m) :
+    witness m e ν (Cop W u) = Cop W (witness m e ν u) := by
+  simp only [witness, witnessOf_apply, P_Cop, Q_Cop, map_add, map_sub, map_smul]
 
 lemma Cop_unimod {f : L2G m} (hf : f ∈ Unimod (stdGaussian (m + m))) :
     Cop W f ∈ Unimod (stdGaussian (m + m)) := by
@@ -261,7 +261,7 @@ lemma Cop_unimod {f : L2G m} (hf : f ∈ Unimod (stdGaussian (m + m))) :
   filter_upwards [Cop_ae W f, (measurePreserving_Phi W).quasiMeasurePreserving.ae hf'] with x h1 h2
   rw [h1]; exact h2
 
-lemma VOf_Cop (f g : L2G m) : VOf m (Cop W f) (Cop W g) = VOf m f g := by
+lemma VOf_Cop (e ν : ℝ) (f g : L2G m) : VOf m e ν (Cop W f) (Cop W g) = VOf m e ν f g := by
   rw [VOf, VOf, witness_Cop, LinearIsometry.inner_map_map]
 
 lemma hOf_Cop (f g : L2G m) : hOf m (Cop W f) (Cop W g) = Cop W (hOf m f g) := by
@@ -272,6 +272,16 @@ lemma tOf_Cop (f g : L2G m) : tOf m (Cop W f) (Cop W g) = tOf m f g := by
 
 lemma QhOf_Cop (f g : L2G m) : QhOf m (Cop W f) (Cop W g) = Cop W (QhOf m f g) := by
   rw [QhOf, QhOf, hOf_Cop, Q_Cop]
+
+lemma kOf_Cop (f g : L2G m) : kOf m (Cop W f) (Cop W g) = Cop W (kOf m f g) := by
+  simp only [kOf, map_smul, map_sub]
+
+/-- The hat value is invariant under a unitary frame (as `VOf_Cop`; it is a function of the norms
+of `Ph`, `Qh`, `Pk`, `Qk` and `k`). -/
+lemma VhatOf_Cop (e ν : ℝ) (f g : L2G m) :
+    VhatOf m e ν (Cop W f) (Cop W g) = VhatOf m e ν f g := by
+  simp only [VhatOf, tOf_Cop, QhOf_Cop, QkOf, PkOf, kOf_Cop, Q_Cop, P_Cop,
+    LinearIsometry.norm_map]
 
 /-! ### Moving a unit first-chaos vector to the visible coordinate -/
 

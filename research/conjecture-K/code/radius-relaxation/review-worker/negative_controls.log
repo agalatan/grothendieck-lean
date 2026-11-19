@@ -1,0 +1,102 @@
+unit: (t-1/3)^2 + 1e-9 on [0,1]   (leaves 15, depth 14)                                  accepted  as expected
+unit: (t-1/3)^2 - 1e-9 on [0,1]                                                          rejected  as expected
+unit: (t-1/3)^2 on [0,1] (a double zero inside; not strictly positive)                   rejected  as expected
+unit: r^2 - 2 on [2,3]                                                                   accepted  as expected
+unit: r^2 - 2 on [1,3]                                                                   rejected  as expected
+unit: r on [0,1] (zero at the end point)                                                 rejected  as expected
+unit: (x-5)^2 + 1e-6 on [0,oo)   (leaves 16, depth 15)                                   accepted  as expected
+unit: (x-5)^2 - 1e-6 on [0,oo)                                                           rejected  as expected
+unit: (x-5)^2 - 1e-6 on [6,oo)                                                           accepted  as expected
+unit: 1 + x - 1e-12 x^3 on [0,oo) (negative far out)                                     rejected  as expected
+unit: (r^2-2)^2 (r^6+1) - 1e-12 on [1,2]                                                 rejected  as expected
+unit: (r^2-2)^2 (r^6+1) + 1e-12 on [1,2]   (leaves 22, depth 21)                         accepted  as expected
+G row 11 unperturbed  (bound 0.938680170)                                                accepted  as expected
+G row 11: lam0 lowered by 1e-05  -> (C2)                                                 rejected  as expected   (C2) fails on pieces [8, 9, 10, 11, 13, 62]
+G row 11: lam0 lowered by 1e-06                                                          accepted  (informational: the margin of the pointwise inequality)
+G row 11: phi1 at knot 34 changed by 1/100                                               rejected  as expected   (C2) fails on pieces [33, 34]
+G row 11: phi1 at knot 34 changed by -1/100                                              rejected  as expected   (C2) fails on pieces [34, 35, 36, 37, 38, 39]
+G row 11: phi1 at knot 102 changed by 1/100                                              reviewer accepts, author accepts  agree (differential)
+G row 11: phi1 at knot 101 changed by -1/1000                                            reviewer accepts, author accepts  agree (differential)
+G row 11: mu_5 halved                                                                    rejected  as expected   (C2) fails on pieces [5, 6, 7, 8, 9, 10]
+G row 11: mu_3 times 9/10                                                                rejected  as expected   (C2) fails on pieces [7, 8, 9, 10, 11, 12]
+G row 11: sign of sigma flipped  -> (C2) or bound                                        rejected  as expected   (C2) fails on pieces [7, 8, 9, 10, 11, 71]
+G row 11: xia at knot 51 pushed out of the cone  -> (C1)                                 rejected  as expected   cone at knot 51
+G row 11: xi1 at knot 51 negative  -> (C1)                                               rejected  as expected   cone at knot 51
+G row 11: th2 nonzero with mu_2 = 0  -> (C1)                                             rejected  as expected   th2 must vanish (mu_2 = 0)
+G row 11: phi2 != 2 phi1 with mu_1 = 0 (th1 != 0)  -> (C1)                               rejected  as expected   th1 must vanish identically (mu_1 = 0), piece 50
+G row 11: l3s negative                                                                   rejected  as expected   l3 >= 0
+G row 11: mu_3 negative                                                                  rejected  as expected   mu >= 0
+G row 11: first cut multiplier negative  -> (C3)                                         rejected  as expected   cut multiplier >= 0
+G row 11: alpha_b negative  -> (C3)                                                      rejected  as expected   alpha > 0
+G row 11: sqrt_ub lowered by 0.1%  -> (C3)                                               rejected  as expected   sqrt_ub
+G row 11: cut b <= n dropped: a valid row with a larger bound (0.944456)                 accepted  as expected
+G row 11: coordinate cuts dropped: a valid row, bound not larger (difference 5.6e-18)    accepted  as expected
+G row 11: tangent cut with theta < 0                                                     rejected  as expected   ValueError theta
+G row 11: unknown cut type                                                               rejected  as expected   ValueError theta
+G: row 11 removed  -> cover                                                              rejected  as expected   row 11: the s-intervals are not contiguous from 0
+G: last row ends at s = 41  -> cover                                                     rejected  as expected   max bound = 22168548173242027115651510643893912049397/2361672152210369
+G: first row starts at s = 1/10  -> cover                                                rejected  as expected   row 0: the s-intervals are not contiguous from 0
+G: claim lowered to the bound of row 11                                                  rejected  as expected   9478937600000000000000000:  NOT VERIFIED
+G row 11: s_hi raised by 3 (valid sqrt bound): bound 0.976201                            rejected  as expected   bound >= claim
+N row 13 unperturbed  (bound 0.929997068)                                                accepted  as expected
+N row 13: lam0 lowered by 1e-05  -> (C2)                                                 rejected  as expected   (C2) fails on pieces [6, 7, 8, 9, 10, 11]
+N row 13: lam0 lowered by 1e-06                                                          accepted  (informational: the margin of the pointwise inequality)
+N row 13: phi1 at knot 41 changed by 1/100                                               rejected  as expected   (C2) fails on pieces [40, 41]
+N row 13: phi1 at knot 41 changed by -1/100                                              rejected  as expected   (C2) fails on pieces [40, 41, 42, 43, 44, 45]
+N row 13: phi2 at knot 82 changed by 1/100                                               reviewer accepts, author accepts  agree (differential)
+N row 13: phi1 at knot 123 changed by 1/100                                              reviewer accepts, author accepts  agree (differential)
+N row 13: phi1 at knot 122 changed by -1/1000                                            reviewer accepts, author accepts  agree (differential)
+N row 13: th4 at knot 61 changed by 1/10000                                              reviewer accepts, author accepts  agree (differential)
+N row 13: xi2 at knot 30 changed by 1/100000                                             reviewer rejects, author rejects  agree (differential)
+N row 13: mu_5 halved                                                                    rejected  as expected   (C2) fails on pieces [2, 4, 5, 6, 7, 8]
+N row 13: mu_3 times 9/10                                                                rejected  as expected   (C2) fails on pieces [0, 1, 2, 3, 4, 5]
+N row 13: sign of sigma flipped  -> (C2) or bound                                        rejected  as expected   (C2) fails on pieces [2, 3, 4, 5, 6, 7]
+N row 13: xia at knot 61 pushed out of the cone  -> (C1)                                 rejected  as expected   cone at knot 61
+N row 13: xi1 at knot 61 negative  -> (C1)                                               rejected  as expected   cone at knot 61
+N row 13: xi1 raised by 1/100 everywhere (still in the cone)  -> (C2)                    rejected  as expected   (C2) fails on pieces [0, 1, 2, 3, 4, 5]
+N row 13: l3s negative                                                                   rejected  as expected   l3 >= 0
+N row 13: mu_3 negative                                                                  rejected  as expected   mu >= 0
+N row 13: first cut multiplier negative  -> (C3)                                         rejected  as expected   cut multiplier >= 0
+N row 13: alpha_b negative  -> (C3)                                                      rejected  as expected   alpha > 0
+N row 13: sqrt_ub lowered by 0.1%  -> (C3)                                               rejected  as expected   sqrt_ub
+N row 13: cut b <= n dropped: a valid row with a larger bound (0.936720)                 accepted  as expected
+N row 13: coordinate cuts dropped: a valid row, bound not larger (difference 1.2e-08)    accepted  as expected
+N row 13: tangent cut with theta < 0                                                     rejected  as expected   ValueError theta
+N row 13: unknown cut type                                                               rejected  as expected   ValueError theta
+N: row 13 removed  -> cover                                                              rejected  as expected   row 13: the s-intervals are not contiguous from 0
+N: last row ends at s = 41  -> cover                                                     rejected  as expected   max bound = 596256844912268693634676958731461230922775746431/641138413
+N: first row starts at s = 1/10  -> cover                                                rejected  as expected   row 0: the s-intervals are not contiguous from 0
+N: claim lowered to the bound of row 13                                                  rejected  as expected   0668497920000000000000000:  NOT VERIFIED
+N row 13: s_hi raised by 3 (valid sqrt bound): bound 0.958771                            rejected  as expected   bound >= claim
+N row 0 unperturbed  (bound 0.912291140)                                                 accepted  as expected
+N row 0: lam0 lowered by 1e-05  -> (C2)                                                  rejected  as expected   (C2) fails on pieces [2, 3, 4, 5, 6, 7]
+N row 0: lam0 lowered by 1e-06                                                           accepted  (informational: the margin of the pointwise inequality)
+N row 0: phi1 at knot 41 changed by 1/100                                                rejected  as expected   (C2) fails on pieces [40, 41]
+N row 0: phi1 at knot 41 changed by -1/100                                               rejected  as expected   (C2) fails on pieces [40, 41, 42, 43, 44, 45]
+N row 0: phi2 at knot 82 changed by 1/100                                                reviewer accepts, author accepts  agree (differential)
+N row 0: phi1 at knot 123 changed by 1/100                                               reviewer accepts, author accepts  agree (differential)
+N row 0: phi1 at knot 122 changed by -1/1000                                             reviewer accepts, author accepts  agree (differential)
+N row 0: th4 at knot 61 changed by 1/10000                                               reviewer accepts, author accepts  agree (differential)
+N row 0: xi2 at knot 30 changed by 1/100000                                              reviewer rejects, author rejects  agree (differential)
+N row 0: mu_5 halved                                                                     rejected  as expected   (C2) fails on pieces [1, 2, 3, 4, 5, 6]
+N row 0: mu_3 times 9/10                                                                 rejected  as expected   (C2) fails on pieces [1, 2, 3, 4, 5, 6]
+N row 0: sign of sigma flipped  -> (C2) or bound                                         rejected  as expected   (C2) fails on pieces [1, 2, 3, 4, 5, 6]
+N row 0: xia at knot 61 pushed out of the cone  -> (C1)                                  rejected  as expected   cone at knot 61
+N row 0: xi1 at knot 61 negative  -> (C1)                                                rejected  as expected   cone at knot 61
+N row 0: xi1 raised by 1/100 everywhere (still in the cone)  -> (C2)                     rejected  as expected   (C2) fails on pieces [0, 1, 2, 3, 4, 5]
+N row 0: l3s negative                                                                    rejected  as expected   l3 >= 0
+N row 0: mu_3 negative                                                                   rejected  as expected   mu >= 0
+N row 0: first cut multiplier negative  -> (C3)                                          rejected  as expected   cut multiplier >= 0
+N row 0: alpha_b negative  -> (C3)                                                       rejected  as expected   alpha > 0
+N row 0: sqrt_ub lowered by 0.1%  -> (C3)                                                rejected  as expected   sqrt_ub
+N row 0: cut b <= n dropped: a valid row with a larger bound (0.918622)                  accepted  as expected
+N row 0: coordinate cuts dropped: a valid row, bound not larger (difference 3.9e-18)     accepted  as expected
+N row 0: tangent cut with theta < 0                                                      rejected  as expected   ValueError theta
+N row 0: unknown cut type                                                                rejected  as expected   ValueError theta
+N: row 0 removed  -> cover                                                               rejected  as expected   row 0: the s-intervals are not contiguous from 0
+N: last row ends at s = 41  -> cover                                                     rejected  as expected   max bound = 596256844912268693634676958731461230922775746431/641138413
+N: first row starts at s = 1/10  -> cover                                                rejected  as expected   row 0: the s-intervals are not contiguous from 0
+N: claim lowered to the bound of row 0                                                   rejected  as expected   6172313600000000000000000:  NOT VERIFIED
+N row 0: s_hi raised by 3 (valid sqrt bound): bound 1.225421                             rejected  as expected   bound >= claim
+97 controls, 0 unexpected
+/usr/local/bin/python3 -I negative_controls.py ../results/cert_G_final.json    25.47s user 0.24s system 95% cpu 26.810 total

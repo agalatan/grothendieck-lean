@@ -8,19 +8,31 @@ import Grothe.Lower.RowData
 # The scalar cap of the witness: the exact interface to the certificate (L5, cap half)
 
 For unimodular `f, g ∈ L²(γ_n)` write `h = (f+g)/2`, `k = (f−g)/2` (so `|h|² + |k|² = 1` a.e.),
-`P = P₁,₀`, `Q = P₂,₁`.  Since `T = P − εQ` is self-adjoint, the **polarisation identity**
-(`VOf_eq`, the identity (eq:identity) of the paper) holds for every pair:
+`P = P₁,₀`, `Q = P₂,₁`.  Since `T = P − eQ + ν(1 − P − Q)` (the witness with the weight `e` and the
+identity tail `ν`) is self-adjoint, the **polarisation identity** (`VOf_eq`; the identity
+(eq:identity) of the paper is the case `ν = 0`, `VOf_zero`) holds for every pair, with `t = ‖Ph‖`:
 
-  `Re ⟪f, T g⟫ = ⟪h, T h⟫ − ⟪k, T k⟫ = t² − ε‖Qh‖² − ‖Pk‖² + ε‖Qk‖²`,   `t = ‖Ph‖`.
+  `Re ⟪f, T g⟫ = ⟪h, T h⟫ − ⟪k, T k⟫`
+  `= t² − e‖Qh‖² − ‖Pk‖² + e‖Qk‖² + ν(‖h‖² − t² − ‖Qh‖²) − ν(‖k‖² − ‖Pk‖² − ‖Qk‖²)`.
+
+For a unimodular pair `‖h‖² + ‖k‖² = 1`, and in **hat units** `ε̂ = (e+ν)/(1−ν)`, `ν̂ = ν/(1−ν)`
+(`T = (1−ν)(P − ε̂Q + ν̂)`; `VOf_eq_hat`, `ν ≠ 1`):
+
+  `Re ⟪f, T g⟫ = (1−ν)[t² − ε̂‖Qh‖² − ‖Pk‖² + ε̂‖Qk‖² + ν̂(1 − 2‖k‖²)] = (1−ν) V̂ + ν`,
+  `V̂ = t² − ε̂‖Qh‖² − ‖Pk‖² + ε̂‖Qk‖² − 2ν̂‖k‖²` (`VhatOf`).
 
 After a phase (`g ↦ θg`, `|θ| = 1`) the pairing is real and nonnegative, so the scalar cap
-`‖⟪f, T g⟫‖ ≤ B` becomes the bound `V ≤ B` for the **scalar profile value** `V = Re ⟪f, T g⟫`.
-A checked finite cover bounds this profile using `‖v‖² = 2`, `0 ≤ t ≤ 9/10`, the crude row
-`RowOf crudeRow V t Qh v` and `SharedReduction rowData V t Qh v`. The bound `t ≤ 9/10` is proved
+`‖⟪f, T g⟫‖ ≤ B` becomes the bound `V ≤ B` for the **scalar profile value** `V = Re ⟪f, T g⟫`, and a
+cap `c` of the hat value gives the endpoint `B = (1−ν)c + ν` (`witnessCap_of_VhatOf_le`).  The rows
+of a certificate bound the hat value, and their constant `ε` is the hat weight `ε̂`.
+
+The reduction below is stated for every witness whose hat weight is the constant of the rows, `ε̂ = ε`
+(hypothesis `epsHat e ν = ε`), and it bounds the hat value `V̂`.  The envelope bounds `V̂` using
+`‖v‖² = 2`, `0 ≤ t ≤ 9/10`, the mass row and `SharedReduction rowData V̂ t Qh v`. The bound `t ≤ 9/10` is proved
 (`tOf_le`): `t = ‖Ph‖` with `|h| ≤ 1`, `‖Ph‖² = Re⟪h, Ph⟫ ≤ E|Ph|`, and `Ph = Σₗ cₗ zₗ` is a complex
 Gaussian, so `E|Ph| = (√π/2)‖Ph‖` (`integral_norm_linL`, by the rotation invariance
 `integral_two_linear` and the planar radius `integral_norm_gauss2` of `GaussianRadial.lean`); hence
-`t ≤ √π/2 < 0.9`.  The crude row follows from the identity and `‖Qk‖ ≤ ρ`, which is proved
+`t ≤ √π/2 < 0.9`.  The Stein side uses `‖Qk‖ ≤ ρ`, which is proved
 (`normQk_le_rho`, item L3): `Qk ∈ H₂,₁` is a combination of Wick cubics (`exists_wick_repr`), so
 `Qk/‖Qk‖ = a + ib` a.e. with `a, b` real polynomials, `Chaos3 a` and `Circular Jstd a b`
 (`WickChaos.lean`), `∫ a² = 1/2`; the certified first-moment bound `E √U ≤ ρ` of the law
@@ -31,8 +43,12 @@ Hence the remaining hypothesis of the scalar cap, per admissible pair with `V �
 (`ReductionHyp`):
 
 * a coupling vector `v` with `‖v‖² = 2` (on paper `v = z₁(|z₁|² − 2)` in the frame with `Ph = t z₁`)
-  and `SharedReduction rowData V t Qh v` (L4: the Gaussian reduction of the rows with the shared
+  and `SharedReduction rowData V̂ t Qh v` (L4: the Gaussian reduction of the rows with the shared
   residual, gate variable and potentials).
+
+For a unimodular pair the tail of the hat value is global: `Re⟪f, g⟫ = ‖h‖² − ‖k‖²`
+(`re_inner_eq_normSq_hOf_sub`), so `−2‖k‖² = Re⟪f, g⟫ − 1` (`re_inner_sub_one`), the form in which
+the integrated fibre bound carries the tail.
 
 Here `L²(γ_n)` is the real inner product space `E` of `SharedReduction` through Mathlib's
 `InnerProductSpace ℝ (Lp ℂ 2 μ)` (real part of the complex inner product, same norm).
@@ -49,21 +65,22 @@ variable (n : ℕ)
 
 /-! ### Self-adjointness and the polarisation identity -/
 
-lemma inner_witnessOf_symm (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] (x y : L2G n) :
-    inner ℂ (witnessOf n K x) y = inner ℂ x (witnessOf n K y) := by
-  simp only [witnessOf, FunLike.coe_sub, Pi.sub_apply, FunLike.coe_smul, Pi.smul_apply,
-    inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right,
-    Submodule.inner_starProjection_left_eq_right, Complex.conj_ofReal]
+lemma inner_witnessOf_symm (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] (e ν : ℝ)
+    (x y : L2G n) :
+    inner ℂ (witnessOf n K e ν x) y = inner ℂ x (witnessOf n K e ν y) := by
+  simp only [witnessOf_apply, inner_add_left, inner_add_right, inner_sub_left, inner_sub_right,
+    inner_smul_left, inner_smul_right, Submodule.inner_starProjection_left_eq_right,
+    Complex.conj_ofReal]
 
 /-- Polarisation: `Re ⟪h + k, T (h − k)⟫ = Re ⟪h, T h⟫ − Re ⟪k, T k⟫` for the self-adjoint `T`. -/
-lemma re_inner_witnessOf_polar (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection]
+lemma re_inner_witnessOf_polar (K : Submodule ℂ (L2G n)) [K.HasOrthogonalProjection] (e ν : ℝ)
     (h k : L2G n) :
-    (inner ℂ (h + k) (witnessOf n K (h - k))).re
-      = (inner ℂ h (witnessOf n K h)).re - (inner ℂ k (witnessOf n K k)).re := by
+    (inner ℂ (h + k) (witnessOf n K e ν (h - k))).re
+      = (inner ℂ h (witnessOf n K e ν h)).re - (inner ℂ k (witnessOf n K e ν k)).re := by
   rw [map_sub, inner_add_left, inner_sub_right, inner_sub_right]
-  have e : inner ℂ k (witnessOf n K h) = conj (inner ℂ h (witnessOf n K k)) := by
+  have hs : inner ℂ k (witnessOf n K e ν h) = conj (inner ℂ h (witnessOf n K e ν k)) := by
     rw [← inner_conj_symm, inner_witnessOf_symm]
-  rw [e]
+  rw [hs]
   simp only [Complex.sub_re, Complex.add_re, Complex.conj_re]
   ring
 
@@ -87,8 +104,8 @@ def QkOf (f g : L2G n) : L2G n := (H21 n).starProjection (kOf n f g)
 /-- `Pk = P₁,₀ k`. -/
 def PkOf (f g : L2G n) : L2G n := (H10 n).starProjection (kOf n f g)
 
-/-- The scalar profile value `V = Re ⟪f, T g⟫`. -/
-def VOf (f g : L2G n) : ℝ := (inner ℂ f (witness n g)).re
+/-- The scalar profile value `V = Re ⟪f, T g⟫` of the witness with weight `e` and tail `ν`. -/
+def VOf (e ν : ℝ) (f g : L2G n) : ℝ := (inner ℂ f (witness n e ν g)).re
 
 lemma hOf_add_kOf (f g : L2G n) : hOf n f g + kOf n f g = f := by
   unfold hOf kOf; rw [← smul_add, add_add_sub_cancel, ← two_smul ℂ f, smul_smul,
@@ -98,13 +115,92 @@ lemma hOf_sub_kOf (f g : L2G n) : hOf n f g - kOf n f g = g := by
   unfold hOf kOf; rw [← smul_sub, add_sub_sub_cancel, ← two_smul ℂ g, smul_smul,
     inv_mul_cancel₀ two_ne_zero, one_smul]
 
-/-- **The exact identity** `Re ⟪f, T g⟫ = t² − ε‖Qh‖² − ‖Pk‖² + ε‖Qk‖²` (eq:identity). -/
-theorem VOf_eq (f g : L2G n) :
-    VOf n f g = tOf n f g ^ 2 - ε * ‖QhOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2 + ε * ‖QkOf n f g‖ ^ 2 := by
-  have h := re_inner_witnessOf_polar n (H21 n) (hOf n f g) (kOf n f g)
+/-- **The exact identity** (eq:identity, with the tail `ν`), for every pair:
+`Re ⟪f, T g⟫ = t² − e‖Qh‖² − ‖Pk‖² + e‖Qk‖² + ν(‖h‖² − t² − ‖Qh‖²) − ν(‖k‖² − ‖Pk‖² − ‖Qk‖²)`. -/
+theorem VOf_eq (e ν : ℝ) (f g : L2G n) :
+    VOf n e ν f g = tOf n f g ^ 2 - e * ‖QhOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2 + e * ‖QkOf n f g‖ ^ 2
+      + ν * (‖hOf n f g‖ ^ 2 - tOf n f g ^ 2 - ‖QhOf n f g‖ ^ 2)
+      - ν * (‖kOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2 - ‖QkOf n f g‖ ^ 2) := by
+  have h := re_inner_witnessOf_polar n (H21 n) e ν (hOf n f g) (kOf n f g)
   rw [hOf_add_kOf, hOf_sub_kOf, re_inner_witnessOf, re_inner_witnessOf] at h
   unfold VOf witness tOf QhOf PkOf QkOf
   rw [h]; ring
+
+/-- **The exact identity without tail** (eq:identity): at `ν = 0`,
+`Re ⟪f, T g⟫ = t² − e‖Qh‖² − ‖Pk‖² + e‖Qk‖²`. -/
+theorem VOf_zero (e : ℝ) (f g : L2G n) :
+    VOf n e 0 f g = tOf n f g ^ 2 - e * ‖QhOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2 + e * ‖QkOf n f g‖ ^ 2 := by
+  simpa using VOf_eq n e 0 f g
+
+/-! ### Hat units and the endpoint -/
+
+/-- `ε̂ = (e + ν)/(1 − ν)`: the weight of `P₂,₁` in hat units, `T = (1−ν)(P₁,₀ − ε̂ P₂,₁ + ν̂)`. -/
+def epsHat (e ν : ℝ) : ℝ := (e + ν) / (1 - ν)
+
+/-- `ν̂ = ν/(1 − ν)`: the tail in hat units. -/
+def nuHat (ν : ℝ) : ℝ := ν / (1 - ν)
+
+/-- **The profile value in hat units**: `V̂ = t² − ε̂‖Qh‖² − ‖Pk‖² + ε̂‖Qk‖² − 2ν̂‖k‖²`. -/
+def VhatOf (e ν : ℝ) (f g : L2G n) : ℝ :=
+  tOf n f g ^ 2 - epsHat e ν * ‖QhOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2
+    + epsHat e ν * ‖QkOf n f g‖ ^ 2 - 2 * nuHat ν * ‖kOf n f g‖ ^ 2
+
+/-- Without tail the hat value is the profile value. -/
+lemma VhatOf_zero (e : ℝ) (f g : L2G n) : VhatOf n e 0 f g = VOf n e 0 f g := by
+  rw [VOf_zero]; simp [VhatOf, epsHat, nuHat]
+
+/-- A unimodular function has norm one in `L²(γ_n)`. -/
+lemma norm_sq_of_mem_unimod {f : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n))) : ‖f‖ ^ 2 = 1 := by
+  have hf' : ∀ᵐ x ∂(stdGaussian (n + n)), ‖f x‖ = 1 := hf
+  have hre : (inner ℂ f f).re = ‖f‖ ^ 2 := by rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  have h2 : ∫ x, conj (f x) * f x ∂(stdGaussian (n + n)) = 1 := by
+    rw [integral_congr_ae (g := fun _ => (1 : ℂ))]
+    · simp
+    · filter_upwards [hf'] with x hx
+      rw [Complex.conj_mul', hx]; norm_num
+  rw [← hre, inner_L2, h2, Complex.one_re]
+
+/-- `‖h‖² + ‖k‖² = 1` for a unimodular pair (parallelogram law). -/
+lemma normSq_hOf_add_normSq_kOf {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
+    (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖hOf n f g‖ ^ 2 + ‖kOf n f g‖ ^ 2 = 1 := by
+  have e1 := norm_sq_of_mem_unimod n hf
+  have e2 := norm_sq_of_mem_unimod n hg
+  have hp := parallelogram_law_with_norm ℂ f g
+  have h2 : ‖(2 : ℂ)⁻¹‖ = 2⁻¹ := by simp
+  rw [hOf, kOf, norm_smul, norm_smul, mul_pow, mul_pow, h2]
+  linarith
+
+/-- **The identity in hat units**: for a unimodular pair and `ν ≠ 1`,
+`Re ⟪f, T g⟫ = (1−ν)[t² − ε̂‖Qh‖² − ‖Pk‖² + ε̂‖Qk‖² + ν̂(1 − 2‖k‖²)] = (1−ν) V̂ + ν`. -/
+theorem VOf_eq_hat (e : ℝ) {ν : ℝ} (hν : ν ≠ 1) {f g : L2G n}
+    (hf : f ∈ Unimod (stdGaussian (n + n))) (hg : g ∈ Unimod (stdGaussian (n + n))) :
+    VOf n e ν f g = (1 - ν) * VhatOf n e ν f g + ν := by
+  have h1 : (1 : ℝ) - ν ≠ 0 := sub_ne_zero.2 (Ne.symm hν)
+  have hk1 := normSq_hOf_add_normSq_kOf n hf hg
+  rw [VOf_eq, VhatOf, epsHat, nuHat]
+  field_simp
+  linear_combination ν * hk1
+
+/-- `Re ⟪f, g⟫ = ‖h‖² − ‖k‖²` (`f = h + k`, `g = h − k`). -/
+lemma re_inner_eq_normSq_hOf_sub (f g : L2G n) :
+    (inner ℂ f g).re = ‖hOf n f g‖ ^ 2 - ‖kOf n f g‖ ^ 2 := by
+  have hh : (inner ℂ (hOf n f g) (hOf n f g)).re = ‖hOf n f g‖ ^ 2 := by
+    rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  have hk : (inner ℂ (kOf n f g) (kOf n f g)).re = ‖kOf n f g‖ ^ 2 := by
+    rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  have hs : (inner ℂ (kOf n f g) (hOf n f g)).re = (inner ℂ (hOf n f g) (kOf n f g)).re := by
+    rw [← inner_conj_symm, Complex.conj_re]
+  have e : inner ℂ f g = inner ℂ (hOf n f g + kOf n f g) (hOf n f g - kOf n f g) := by
+    rw [hOf_add_kOf, hOf_sub_kOf]
+  rw [e, inner_add_left, inner_sub_right, inner_sub_right, Complex.add_re, Complex.sub_re,
+    Complex.sub_re, hh, hk, hs]
+  ring
+
+/-- **The tail in its global form**: for a unimodular pair `Re ⟪f, g⟫ − 1 = −2‖k‖²`. -/
+lemma re_inner_sub_one {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
+    (hg : g ∈ Unimod (stdGaussian (n + n))) :
+    (inner ℂ f g).re - 1 = -2 * ‖kOf n f g‖ ^ 2 := by
+  linarith [re_inner_eq_normSq_hOf_sub n f g, normSq_hOf_add_normSq_kOf n hf hg]
 
 /-! ### The first chaos is Gaussian: `‖P₁,₀ h‖ ≤ √π/2` for `|h| ≤ 1` -/
 
@@ -284,7 +380,7 @@ theorem tOf_le {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
     linarith [Real.pi_lt_d2]
   linarith
 
-/-! ### `H₂,₁` consists of circular cubics: the first-moment bound and the crude row -/
+/-! ### `H₂,₁` consists of circular cubics: the first-moment bound -/
 
 /-- Every element of `H₂,₁` is a combination of Wick cubics. -/
 theorem exists_wick_repr {ψ : L2G n} (hψ : ψ ∈ H21 n) :
@@ -469,10 +565,14 @@ theorem normQk_le_rho {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
 
 /-- **The remaining input of the scalar cap for one pair** (`V ≥ 0` after the phase): a coupling
 vector `v` with `‖v‖² = 2` and the simultaneous Gaussian reduction of the rows
-`SharedReduction rowData V t Qh v` (L4).  (`t ≤ 9/10` is proved, `tOf_le`; the crude-row input
+`SharedReduction rowData V̂ t Qh v` (L4) for the hat value `V̂ = VhatOf n e ν f g` of the witness
+with weight `e` and tail `ν`.  The rows bound the hat value of a witness whose hat weight is their
+constant, `epsHat e ν = ε`; for the certified witness `(e, ν) = (ε, 0)` the hat value is the profile
+value `VOf n ε 0 f g` (`VhatOf_zero`).  (`t ≤ 9/10` is proved, `tOf_le`; the crude-row input
 `‖Qk‖ ≤ ρ` is proved, `normQk_le_rho`.) -/
-def ReductionHyp (f g : L2G n) : Prop :=
-  ∃ v : L2G n, ‖v‖ ^ 2 = 2 ∧ SharedReduction rowData (VOf n f g) (tOf n f g) (QhOf n f g) v
+def ReductionHyp (e ν : ℝ) (f g : L2G n) : Prop :=
+  ∃ v : L2G n, ‖v‖ ^ 2 = 2 ∧
+    SharedReduction rowData (VhatOf n e ν f g) (tOf n f g) (QhOf n f g) v
 
 lemma exists_phase (w : ℂ) : ∃ θ : ℂ, ‖θ‖ = 1 ∧ θ * w = ‖w‖ := by
   by_cases hw : w = 0
@@ -490,17 +590,21 @@ lemma smul_mem_unimod {μ : Measure (Fin (n + n) → ℝ)} {θ : ℂ} (hθ : ‖
   filter_upwards [Lp.coeFn_smul θ g, hg'] with x h1 h2
   rw [h1, Pi.smul_apply, norm_smul, hθ, h2, one_mul]
 
-/-- The crude row from the identity and `‖Qk‖ ≤ ρ`. -/
-lemma rowOf_crude (f g : L2G n) (hk : ‖QkOf n f g‖ ≤ ρ) (v : L2G n) :
-    RowOf crudeRow (VOf n f g) (tOf n f g) (QhOf n f g) v := by
-  unfold RowOf RowHolds crudeRow
-  simp only [Rat.cast_zero, Rat.cast_mul, Rat.cast_pow, mul_zero, zero_mul, add_zero, zero_div,
-    zero_smul, sub_zero]
-  have hε : (0 : ℝ) ≤ ε := by unfold ε; norm_num
-  have hρ : (0 : ℝ) ≤ ρ := by unfold ρ; norm_num
-  have h2 := pow_le_pow_left₀ (norm_nonneg _) hk 2
-  rw [VOf_eq]
-  nlinarith [sq_nonneg ‖PkOf n f g‖]
+/-- **The endpoint in hat units** (with the phase reduction): for a tail `ν < 1`, a cap `c` of the
+hat value `V̂` over the unimodular pairs with `V ≥ 0` gives the scalar cap `B = (1−ν)c + ν` of the
+witness.  At `ν = 0` this is `B = c` for `V̂ = V`. -/
+theorem witnessCap_of_VhatOf_le {e ν c : ℝ} (hν : ν < 1)
+    (h : ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) → g ∈ Unimod (stdGaussian (n + n)) →
+      0 ≤ VOf n e ν f g → VhatOf n e ν f g ≤ c) :
+    WitnessCap n e ν ((1 - ν) * c + ν) := by
+  intro f hf g hg
+  obtain ⟨θ, hθ, hθw⟩ := exists_phase (inner ℂ f (witness n e ν g))
+  have hval : VOf n e ν f (θ • g) = ‖inner ℂ f (witness n e ν g)‖ := by
+    rw [VOf, map_smul, inner_smul_right, hθw, Complex.ofReal_re]
+  have hg' := smul_mem_unimod n hθ hg
+  have hc := h f (θ • g) hf hg' (hval ▸ norm_nonneg _)
+  rw [← hval, VOf_eq_hat n e hν.ne hf hg']
+  linarith [mul_le_mul_of_nonneg_left hc (sub_nonneg.2 hν.le)]
 
 end
 

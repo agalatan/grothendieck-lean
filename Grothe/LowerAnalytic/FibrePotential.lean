@@ -21,16 +21,22 @@ invertible (`E ≻ 0`, `R ≻ 0`), the supremum over `m` in (1) is the supremum 
 
   `J_r(y, s) = ∫ (|L + B·(My + s a)| + |L − B·(My + s a)|) dγ − yᵀMy`             (`Jpot`),
 
-and `Ψ_r(s) = sup_y J_r(y, s)` (`pot`).  This file has the fibre functions, their growth bounds and
-the packed variable; proved in `FibreSup.lean`:
+and `Ψ_r(s) = sup_y J_r(y, s)` (`pot`).  In `FibreSup.lean` both take one more parameter, the
+weight `ν` of an identity tail of the witness: the integrand `|A| + |B|` becomes
+`Ψ_ν(A, B) − ν` with the pair potential `Ψ_ν` (`psiT`), and the formulas above are the case `ν = 0`
+(`Jpot_zero`).  This file has the fibre
+functions, their growth bounds and the packed variable; proved in `FibreSup.lean`:
 
 * `fibreExpr_le_Jpot`: for `f₀, g₀` with `|f₀|, |g₀| ≤ 1`, `h₀ = (f₀+g₀)/2`, `k₀ = (f₀−g₀)/2` and
   the coefficient vector `K = coefFib k₀` (`K_j = ∫ conj(B_j) k₀`, packed), the fibre expression
   `KᵀMK + 2 Re ∫ conj(L) h₀ + 2 s aᵀK` is at most `J_r(K, s) ≤ Ψ_r(s)` (the `≤` direction of the
-  reduction to (1); the pointwise fibre bound S5 of the row reduction).
-* `Jpot_le_fibreExpr`: conversely `J_r(y, s)` is the fibre expression of the phases of `L ± B·v`
-  minus a nonnegative square, so `Ψ_r(s) ≤ 2 E|L| + 2s Σ|a_j| E|B_j| + Σ|M_ij| E|B_i| E|B_j|`
-  (`pot_bddAbove`).
+  reduction to (1); the pointwise fibre bound S5 of the row reduction).  With a tail `ν` the fibre
+  expression has the further term `ν (Re ∫ conj(f₀) g₀ − 1)`, which is `−2ν ∫ |k₀|²` for unimodular
+  responses, and the bound holds for every `ν`.
+* `Jpot_le_fibreExpr`: conversely, without a tail, `J_r(y, s)` is the fibre expression of the phases
+  of `L ± B·v` minus a nonnegative square, so
+  `Ψ_r(s) ≤ 2 E|L| + 2s Σ|a_j| E|B_j| + Σ|M_ij| E|B_i| E|B_j|` (`Jpot_le_cap`, `bddAbove_Jpot`; with
+  a tail by comparison, `Jpot_le_Jpot_zero`).
 * `pot_convexOn`: `Ψ_r` is convex (a supremum of convex functions of `s`).
 * `pot_lipschitz`: `Ψ_r(t) ≤ Ψ_r(s) + smax_r (t − s)` for `0 ≤ s ≤ t`, from
   `|J_r(y, t) − J_r(y, s)| ≤ 2(t − s) E|B·a| ≤ 2(t − s)(|1 + b₁| + (2/e)|b₂| + |b₃|/√2)` and the

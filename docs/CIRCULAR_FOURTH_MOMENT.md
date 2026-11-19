@@ -171,22 +171,13 @@ This classifies fourth-moment equality; it is not asserted for every
 even-moment inequality above.
 
 For the lower-bound law parameter `x²=E|q|⁴−2`, the sharp range is
-`0 ≤ x ≤ sqrt(42) < 13/2`, instead of the current `31/4` cover. Narrowing
-the production range and regenerating its certificates is a separate change;
-the new moment inequality alone does not prove a new Grothendieck endpoint.
+`0 ≤ x ≤ sqrt(42) < 13/2`, instead of the range `x ≤ 31/4` that the law cells
+of the rows cover. Narrowing that range and regenerating the row certificates
+is a separate change; the moment inequality alone does not prove a new
+Grothendieck endpoint. Numerically, the three-moment first-moment relaxation
+attains its maximum near `x = 1.38037`, well inside the improved range; simply
+reducing the cutoff therefore does not improve the constant `ρ` it gives.
 
-An exact scan of `data/lower-unshifted/cover.json`, comparing the squares of
-rational endpoints with 42, finds 20 boxes whose `x`-lower endpoint is above
-`sqrt(42)`, and another 388 that cross this cutoff. None of the former 20 is
-among the 939 boxes whose stored upper bound
-exceeds `0.71342`; four of the crossing boxes are among those 939. The maximum
-stored upper bound is still attained in a retained box. These counts describe
-the existing certificate, not a regenerated
-or Lean-checked smaller cover. Numerically, the existing three-moment
-first-moment relaxation attains its maximum near `x = 1.38037`, well inside
-the improved range; simply reducing the cutoff therefore does not improve that
-relaxation's current `ρ`.
-
-Run `python3 tools/circular_moment_audit.py` for exact integer moment calculations
-and an exact scan of the stored cover. The script is a diagnostic;
-it does not prove the tensor inequality or verify the Lean modules.
+Run `python3 tools/circular_moment_audit.py` for exact integer moment calculations.
+The script is a diagnostic; it does not prove the tensor inequality or verify
+the Lean modules.

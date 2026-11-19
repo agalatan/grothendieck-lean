@@ -12,19 +12,21 @@ The scalar cap of the witness rests on `SharedReduction rowData V t Qh v` for ev
 (`handoff/research-third-decimal/PLAN_L4.md`) that need no new Gaussian infrastructure.
 
 * **Frame.** `exists_frame_vector`: a unit `ζ ∈ H₁,₀` with `P₁,₀h = t ζ`.
-* **The h-side identity** (`hside_identity`, `VOf_frame`): for `ζ ∈ H₁,₀` unit with `Ph = tζ`, a
-  coupling vector `v ∈ H₂,₁` with `‖v‖² = 2`, and real `ℓ, β`, with `L = ℓζ + βv`,
+* **The h-side identity** (`hside_identity`, `VhatOf_frame`, `VOf_frame`): for `ζ ∈ H₁,₀` unit with
+  `Ph = tζ`, a coupling vector `v ∈ H₂,₁` with `‖v‖² = 2`, and real `ℓ, β`, with `L = ℓζ + βv`,
 
   `t² − ε‖Qh‖² = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ − ε‖Qh + (β/ε)v‖²`  (an exact identity),
 
-  so `V = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ + (ε‖Qk‖² − ‖Pk‖²) − ε‖Qh + (β/ε)v‖²`.  The real inner
+  so `V = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ + (ε‖Qk‖² − ‖Pk‖²) − ε‖Qh + (β/ε)v‖²`.  For a witness with
+  an identity tail whose hat weight is `ε` the hat value `V̂` is the same expression minus
+  `2ν̂‖k‖²` (`VhatOf_frame`); `VOf_frame` is the case without a tail.  The real inner
   product of `L²(γ_n)` is the real part of the complex one (`real_inner_L2G`).
 * **Gate algebra.** `Sym3.form`/`Sym2.form` are the Hermitian forms `y*My` of the rational gate
   matrices; `psdOK` is an exact LDLᵀ positivity check with soundness `form_nonneg_of_psdOK`; the
   shell inequalities `shell0_le` (`E ⪰ diag(−1, ε, ε)`), `shellR_le`, `shellR_le'` (`R ⪰ diag(−1, ε)`,
   `R ⪰ diag(ε, 0)`); the identity `gateForm_eq_Eform` between the retained gate form of a row,
   `X*NX + 2Re(conj X₁ (g·X))` with `N = E − diag(ε − δ, 0, 0)`, `g = δb`, and the paper's
-  `X*EX − (ε − δ)|X₁|² + 2δ Re(conj X₁ (b·X))`.  The three `E`-gates of all 19 rows are checked
+  `X*EX − (ε − δ)|X₁|² + 2δ Re(conj X₁ (b·X))`.  The three `E`-gates of all rows are checked
   exactly (`rowData_gatesOK`, kernel `decide`).
 * **The coupling vector** `vL n l = z_l(|z_l|² − 4)/(2√2)`, i.e. `ζ(|ζ|² − 2)` for the unit
   coordinate `ζ = z_l/√2`: `vL_mem_H21` and `norm_vL_sq : ‖vL n l‖² = 2`, from the Gaussian
@@ -134,70 +136,12 @@ theorem Sym2.form_nonneg_of_psdOK (M : Sym2) (h : M.psdOK = true) (y1 y2 : ℂ) 
   simp only [Sym2.form, hre_eq]
   nlinarith [hr, hi]
 
-/-- **Shell 0 of the `E`-gate**: `E ⪰ diag(−1, ε, ε)` gives
-`−|y₁|² + ε|y₂|² + ε|y₃|² ≤ y*Ey`. -/
-theorem shell0_le (E : Sym3) (h : (E.subDiag (-1) ε ε).psdOK = true) (y1 y2 y3 : ℂ) :
-    -‖y1‖ ^ 2 + ε * ‖y2‖ ^ 2 + ε * ‖y3‖ ^ 2 ≤ E.form y1 y2 y3 := by
-  have h0 := Sym3.form_nonneg_of_psdOK _ h y1 y2 y3
-  simp only [Sym3.form, Sym3.subDiag, hre_self] at h0 ⊢
-  push_cast at h0
-  linarith
-
-/-- **Shell 0 of the `R`-gate**: `R ⪰ diag(−1, ε)` gives `−|y₁|² + ε|y₂|² ≤ y*Ry`. -/
-theorem shellR_le (R : Sym2) (h : (R.subDiag (-1) ε).psdOK = true) (y1 y2 : ℂ) :
-    -‖y1‖ ^ 2 + ε * ‖y2‖ ^ 2 ≤ R.form y1 y2 := by
-  have h0 := Sym2.form_nonneg_of_psdOK _ h y1 y2
-  simp only [Sym2.form, Sym2.subDiag, hre_self] at h0 ⊢
-  push_cast at h0
-  linarith
-
-/-- **Shell `(1,1)` of the `R`-gate**: `R ⪰ diag(ε, 0)` gives `ε|y₁|² ≤ y*Ry`. -/
-theorem shellR_le' (R : Sym2) (h : (R.subDiag ε 0).psdOK = true) (y1 y2 : ℂ) :
-    ε * ‖y1‖ ^ 2 ≤ R.form y1 y2 := by
-  have h0 := Sym2.form_nonneg_of_psdOK _ h y1 y2
-  simp only [Sym2.form, Sym2.subDiag, hre_self] at h0 ⊢
-  push_cast at h0
-  linarith
-
 /-- The three `E`-gates of a row: `E ⪰ 0`, `E ⪰ diag(−1, ε, ε)`, `N = E − diag(ε − δ, 0, 0) ⪰ 0`. -/
 def rowGatesOK (r : Row) : Bool :=
   r.E.psdOK && (r.E.subDiag (-1) ε ε).psdOK && r.N.psdOK
 
-/-- **The `E`-gates of all 19 rows hold** (exact rational arithmetic). -/
+/-- **The `E`-gates of all rows hold** (exact rational arithmetic). -/
 theorem rowData_gatesOK : rowData.all rowGatesOK = true := by decide +kernel
-
-/-! ### Assembly of the row inequality from the fibre bound -/
-
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
-
-/-- `δ τ √U = δ |p|` for `U = |p|²/τ²`, `τ > 0`. -/
-lemma scale_sqrt_law {Ω : Type*} (p : Ω → ℂ) (τ δ : ℝ) (hτ : 0 < τ) (ω : Ω) :
-    δ * τ * √(‖p ω‖ ^ 2 / τ ^ 2) = δ * ‖p ω‖ := by
-  rw [Real.sqrt_div' _ (sq_nonneg τ), Real.sqrt_sq (norm_nonneg _), Real.sqrt_sq hτ.le]
-  field_simp
-
-/-- **The row inequality from the fibre bound.**  If the pre-potential bracket `Bk` of the row
-satisfies `Bk ≤ Ψ(δ|p|)` a.e. (the pointwise fibre bound) and the integrated k-side bound
-
-  `V ≤ t² − 2ℓt + 2β²/ε + E Bk − δτ² − E[gate(p, X₂, X₃)] − ε‖Qh + (β/ε)v‖²`
-
-holds, then `RowSharedWith` holds with the law `U = |p|²/τ²`. -/
-theorem rowSharedWith_of_bracket (r : Row) {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
-    [IsProbabilityMeasure μ] (Ψ : ℝ → ℝ)
-    (hΨ : CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax)
-    (p X2 X3 : Ω → ℂ) (τ : ℝ) (hτ : 0 < τ) (U : Ω → ℝ) (hU : ∀ ω, U ω = ‖p ω‖ ^ 2 / τ ^ 2)
-    (Bk : Ω → ℝ) (hBk : ∀ᵐ ω ∂μ, Bk ω ≤ Ψ (r.delta * ‖p ω‖))
-    (hBi : Integrable Bk μ) (hΨi : Integrable (fun ω => Ψ (r.delta * ‖p ω‖)) μ)
-    (hgi : Integrable (fun ω => r.gate (p ω) (X2 ω) (X3 ω)) μ)
-    (V t : ℝ) (Qh v : H)
-    (hk : V ≤ t ^ 2 - 2 * r.ell * t + 2 * r.beta ^ 2 / ε + ∫ ω, Bk ω ∂μ - r.delta * τ ^ 2
-      - ∫ ω, r.gate (p ω) (X2 ω) (X3 ω) ∂μ - ε * ‖Qh + ((r.beta : ℝ) / ε) • v‖ ^ 2) :
-    RowSharedWith r Ψ μ U p X2 X3 τ V t Qh v := by
-  have e : ∀ ω, (r.delta : ℝ) * τ * √(U ω) = r.delta * ‖p ω‖ := fun ω => by
-    rw [hU]; exact scale_sqrt_law p τ r.delta hτ ω
-  simp only [RowSharedWith, e]
-  refine ⟨hΨ, hΨi, hgi, ?_⟩
-  linarith [integral_mono_ae hBi hΨi hBk]
 
 end Grothe.Lower
 
@@ -280,19 +224,36 @@ theorem hside_identity (ℓ β t : ℝ) (h ζ v : L2G n) (hζ : ζ ∈ H10 n) (h
   field_simp
   ring
 
+/-- **The hat value in a frame**, for a witness with weight `e` and tail `ν` whose hat weight is
+the constant `ε` of the rows:
+`V̂ = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ + (ε‖Qk‖² − ‖Pk‖²) − ε‖Qh + (β/ε)v‖² − 2ν̂‖k‖²`
+for `Ph = tζ`, `L = ℓζ + βv`.  The tail `−2ν̂‖k‖²` is carried along unchanged. -/
+theorem VhatOf_frame (f g : L2G n) {e ν : ℝ} (he : epsHat e ν = ε) (ℓ β : ℝ) (ζ v : L2G n)
+    (hζ : ζ ∈ H10 n) (hζ1 : ‖ζ‖ = 1)
+    (hP : (H10 n).starProjection (hOf n f g) = ((tOf n f g : ℝ) : ℂ) • ζ) (hv : v ∈ H21 n)
+    (hv2 : ‖v‖ ^ 2 = 2) :
+    VhatOf n e ν f g = tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε
+      + 2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re
+      + (ε * ‖QkOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2)
+      - ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2
+      - 2 * nuHat ν * ‖kOf n f g‖ ^ 2 := by
+  have := hside_identity n ℓ β (tOf n f g) (hOf n f g) ζ v hζ hζ1 hP hv hv2
+  rw [VhatOf, he]
+  unfold QhOf
+  linarith
+
 /-- **The scalar profile value in a frame**: `V = t² − 2ℓt + 2β²/ε + 2 Re⟪L, h⟫ + (ε‖Qk‖² − ‖Pk‖²)
-− ε‖Qh + (β/ε)v‖²` for `Ph = tζ`, `L = ℓζ + βv`. -/
+− ε‖Qh + (β/ε)v‖²` for `Ph = tζ`, `L = ℓζ + βv` (`VhatOf_frame` without a tail). -/
 theorem VOf_frame (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n) (hζ : ζ ∈ H10 n) (hζ1 : ‖ζ‖ = 1)
     (hP : (H10 n).starProjection (hOf n f g) = ((tOf n f g : ℝ) : ℂ) • ζ) (hv : v ∈ H21 n)
     (hv2 : ‖v‖ ^ 2 = 2) :
-    VOf n f g = tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε
+    VOf n ε 0 f g = tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε
       + 2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re
       + (ε * ‖QkOf n f g‖ ^ 2 - ‖PkOf n f g‖ ^ 2)
       - ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2 := by
-  have := hside_identity n ℓ β (tOf n f g) (hOf n f g) ζ v hζ hζ1 hP hv hv2
-  rw [VOf_eq]
-  unfold QhOf
-  linarith
+  have h := VhatOf_frame n f g (e := ε) (ν := 0) (by simp [epsHat]) ℓ β ζ v hζ hζ1 hP hv hv2
+  rw [VhatOf_zero, show nuHat 0 = 0 by simp [nuHat], mul_zero, zero_mul, sub_zero] at h
+  exact h
 
 /-- Apply a response penalty to the actual Gaussian witness row. The support bound
 pays only the complementary fractions of the two squares: `s = 0, k = 1` is
@@ -310,11 +271,11 @@ theorem VOf_frame_with_penalty (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n)
       - (1 - k) * (ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2) ≤ C)
     (hJ : J ≤ s * ‖PkOf n f g‖ ^ 2 +
       k * (ε * ‖QhOf n f g + (β / ε) • v‖ ^ 2)) :
-    VOf n f g ≤ tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε +
+    VOf n ε 0 f g ≤ tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε +
       C - max 0 J := by
   have hε : (0 : ℝ) ≤ ε := by norm_num [ε]
   have hrow := VOf_frame n f g ℓ β ζ v hζ hζ1 hP hv hv2
-  apply ResponsePenalty.row_bound_of_split (VOf n f g)
+  apply ResponsePenalty.row_bound_of_split (VOf n ε 0 f g)
     (tOf n f g ^ 2 - 2 * ℓ * tOf n f g + 2 * β ^ 2 / ε +
       2 * (inner ℂ ((ℓ : ℂ) • ζ + (β : ℂ) • v) (hOf n f g)).re +
       ε * ‖QkOf n f g‖ ^ 2)

@@ -1,0 +1,7 @@
+c=2 trial 0: exact 891.90092  MC 890.91049  rel.diff 1.1e-03  | bound 528.46716  (exact >= bound: True)
+c=2 trial 1: exact 1462.10064  MC 1475.42603  rel.diff 9.1e-03  | bound 993.73322  (exact >= bound: True)
+c=2 trial 2: exact 459.18561  MC 462.67965  rel.diff 7.6e-03  | bound 326.05317  (exact >= bound: True)
+c=3 trial 0: exact 8172.09888  MC 8232.07531  rel.diff 7.3e-03  | bound 6251.60512  (exact >= bound: True)
+c=3 trial 1: exact 12061.09873  MC 12013.02365  rel.diff 4.0e-03  | bound 8329.21927  (exact >= bound: True)
+c=3 trial 2: exact 18844.46440  MC 18689.68159  rel.diff 8.2e-03  | bound 13208.11612  (exact >= bound: True)
+ledger c=2 example: E|R|^4/(E|R|^2)^2 = 4.500000, kappa = 1.333333 (expect 4/3 = 1.333333), bound kappa >= 1.185185

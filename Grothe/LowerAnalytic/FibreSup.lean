@@ -1,11 +1,35 @@
+import Grothe.LowerAnalytic.CapMajorant
 import Grothe.LowerAnalytic.FibrePotential
 
 /-!
 # The fibre potential `Ψ_r` as a supremum: finiteness, convexity, Lipschitz bound, node caps
 
-Continuation of `FibrePotential.lean`.  `Jpot E R ℓ β a y s` is the function `J_r(y, s)` of the
-certified potential written in the variable `y = M⁻¹m`, and `pot E R ℓ β a s = ⨆ y, J_r(y, s)` is
+Continuation of `FibrePotential.lean`.  `Jpot E R ℓ β a ν y s` is the function `J_r(y, s)` of the
+certified potential written in the variable `y = M⁻¹m`, and `pot E R ℓ β a ν s = ⨆ y, J_r(y, s)` is
 `Ψ_r(s)` (see the module docstring of `FibrePotential.lean` for the conventions).
+
+**The identity tail.**  The potential takes a tail parameter `ν` (the weight `ν̂` of the identity
+tail of the witness, in hat units): with `p = B·(My + sa)`,
+
+  `J_r(y, s) = ∫ (Ψ_ν(L + p, L − p) − ν) dγ − yᵀMy`,
+
+where `Ψ_ν(A, B) = sup_{|f| = |g| = 1} Re(f̄A) + Re(ḡB) + ν Re(f̄g)` is the pair potential `psiT` of
+`CapMajorant.lean`: for unimodular fibre responses `f₀, g₀` the tail `−2ν|k₀|²` is `ν Re(f̄₀g₀) − ν`.
+Without a tail `Ψ_0(A, B) = |A| + |B|` and `J_r` is the certified function of `FibrePotential.lean`
+(`Jpot_zero`).  Finiteness (`Jpot_le_cap`), convexity (`pot_convexOn`), the Lipschitz bound
+(`pot_lip`) and the node-cap interface (`capsHold_pot`) hold for every `ν`: `Ψ_ν` is convex,
+`1`-Lipschitz and within `|ν|` of `Ψ_0`.
+
+**The fibre bound with a tail** (`fibreExpr_le_Jpot`, `fibreExpr_le_pot`).  The fibre expression
+carries the tail as `ν (Re ∫ conj(f₀) g₀ − 1)`, which is `−2ν ∫ |k₀|²` for unimodular responses
+(`|k₀|² = (1 − Re(f̄₀g₀))/2`).  In this form the integrand is the affine piece
+`Re(f̄₀(L + p)) + Re(ḡ₀(L − p)) + ν Re(f̄₀g₀) − ν`, which is below `Ψ_ν(L + p, L − p) − ν` on the
+whole bidisc `|f₀|, |g₀| ≤ 1` (`majEll_le_psiT_of_le`): the bound needs no unimodularity of the
+fibre responses, and unimodularity is used once, for the global responses, to read the tail as
+`−2ν‖k‖²`.  (With the tail written as `−2ν|k₀|²` the pointwise bound fails inside the bidisc:
+that expression is concave in `(f₀, g₀)`, and its maximum over the bidisc can exceed the one over
+the torus.)  The converse bound through the explicit phases (`Jpot_le_fibreExpr`), which gives
+finiteness, is the case `ν = 0`.
 -/
 
 open MeasureTheory Real Set Grothe.Lower
@@ -172,7 +196,7 @@ lemma conj_mul_ph (w : ℂ) : conj w * ph w = (‖w‖ : ℂ) := by
 
 /-! ### The function `J_r` and the potential -/
 
-variable (E : Sym3) (R : Sym2) (ℓ β : ℝ) (a : Fib)
+variable (E : Sym3) (R : Sym2) (ℓ β : ℝ) (a : Fib) (ν : ℝ)
 
 /-- The residual direction `B·(M y + s a)`. -/
 def pfn (y : Fib) (s : ℝ) (z : ℂ) : ℂ := ((Fib.M E R y).add (a.smul s)).fn z
@@ -182,12 +206,16 @@ lemma pfn_eq (y : Fib) (s : ℝ) (z : ℂ) : pfn E R a y s z = (Fib.M E R y).fn 
 
 lemma continuous_pfn (y : Fib) (s : ℝ) : Continuous (pfn E R a y s) := Fib.continuous_fn _
 
-/-- `J_r(y, s) = ∫ (|L + B·(My + sa)| + |L − B·(My + sa)|) dγ − yᵀMy`. -/
+/-- `J_r(y, s) = ∫ (Ψ_ν(L + p, L − p) − ν) dγ − yᵀMy`, `p = B·(My + sa)`, with the pair potential
+`Ψ_ν` (`psiT`) of the identity tail `ν`.  Without a tail it is
+`∫ (|L + B·(My + sa)| + |L − B·(My + sa)|) dγ − yᵀMy` (`Jpot_zero`). -/
 def Jpot (y : Fib) (s : ℝ) : ℝ :=
-  ∫ z, (‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖) ∂gaussC - Fib.quad E R y
+  ∫ z, (psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν) ∂gaussC
+    - Fib.quad E R y
 
-/-- **The fibre potential** `Ψ_r(s) = sup_y J_r(y, s)` (the certified potential, eq. (1)). -/
-def pot (s : ℝ) : ℝ := ⨆ y : Fib, Jpot E R ℓ β a y s
+/-- **The fibre potential** `Ψ_r(s) = sup_y J_r(y, s)` with the identity tail `ν` (at `ν = 0` the
+certified potential, eq. (1)). -/
+def pot (s : ℝ) : ℝ := ⨆ y : Fib, Jpot E R ℓ β a ν y s
 
 lemma integrable_norm_L_add (v : Fib) (σ : ℝ) :
     Integrable (fun z => ‖Lf ℓ β z + (σ : ℂ) * v.fn z‖) gaussC := by
@@ -215,11 +243,58 @@ lemma integrable_Jint (y : Fib) (s : ℝ) :
     Integrable (fun z => ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖) gaussC :=
   (integrable_norm_L_plus E R ℓ β a y s).add (integrable_norm_L_minus E R ℓ β a y s)
 
-/-- The fibre expression `KᵀMK + 2 Re ∫ conj(L) h₀ + 2 s aᵀK` of a pair of fibre responses. -/
+/-- The integrand of `J_r` is continuous. -/
+lemma continuous_Jtail (y : Fib) (s : ℝ) :
+    Continuous fun z => psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν :=
+  ((continuous_psiT ν).comp (((continuous_Lf ℓ β).add (continuous_pfn E R a y s)).prodMk
+    ((continuous_Lf ℓ β).sub (continuous_pfn E R a y s)))).sub continuous_const
+
+/-- The integrand of `J_r` is integrable: it is within `2|ν|` of `|L + p| + |L − p|`. -/
+lemma integrable_Jtail (y : Fib) (s : ℝ) :
+    Integrable (fun z => psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν)
+      gaussC := by
+  have hd : Integrable (fun z => ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖
+      + 2 * |ν|) gaussC := (integrable_Jint E R ℓ β a y s).add (integrable_const _)
+  refine hd.mono' (continuous_Jtail E R ℓ β a ν y s).aestronglyMeasurable
+    (Filter.Eventually.of_forall fun z => ?_)
+  have h1 := psiT_le_add ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z)
+  have h2 := add_le_psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z)
+  have h3 := norm_nonneg (Lf ℓ β z + pfn E R a y s z)
+  have h4 := norm_nonneg (Lf ℓ β z - pfn E R a y s z)
+  rw [Real.norm_eq_abs, abs_le]
+  constructor <;> linarith [le_abs_self ν, neg_abs_le ν]
+
+/-- **Without a tail** `J_r(y, s) = ∫ (|L + B·(My + sa)| + |L − B·(My + sa)|) dγ − yᵀMy`, the
+function of the certified potential. -/
+lemma Jpot_zero (y : Fib) (s : ℝ) :
+    Jpot E R ℓ β a 0 y s
+      = ∫ z, (‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖) ∂gaussC
+        - Fib.quad E R y := by
+  simp only [Jpot, psiT_zero, sub_zero]
+
+/-- The tail changes `J_r` by at most the constant `|ν| − ν` (zero for `ν ≥ 0`) upwards. -/
+lemma Jpot_le_Jpot_zero (y : Fib) (s : ℝ) :
+    Jpot E R ℓ β a ν y s ≤ Jpot E R ℓ β a 0 y s + (|ν| - ν) := by
+  have hd : Integrable (fun z => ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖
+      + (|ν| - ν)) gaussC := (integrable_Jint E R ℓ β a y s).add (integrable_const _)
+  have hpt : ∀ z, psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν
+      ≤ ‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖ + (|ν| - ν) := fun z => by
+    linarith [psiT_le_add ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z)]
+  have hm := integral_mono (integrable_Jtail E R ℓ β a ν y s) hd hpt
+  rw [integral_add (integrable_Jint E R ℓ β a y s) (integrable_const _), integral_const,
+    probReal_univ, one_smul] at hm
+  rw [Jpot_zero]
+  unfold Jpot
+  linarith
+
+/-- The fibre expression `KᵀMK + 2 Re ∫ conj(L) h₀ + 2 s aᵀK + ν (Re ∫ conj(f₀) g₀ − 1)` of a pair
+of fibre responses, with the identity tail `ν`.  For unimodular responses the tail term is
+`−2ν ∫ |k₀|²`. -/
 def fibreExpr (f g : ℂ → ℂ) (s : ℝ) : ℝ :=
   Fib.quad E R (coefFib fun z => (f z - g z) / 2)
     + 2 * (∫ z, conj (Lf ℓ β z) * ((f z + g z) / 2) ∂gaussC).re
     + 2 * s * Fib.ip a (coefFib fun z => (f z - g z) / 2)
+    + ν * ((∫ z, conj (f z) * g z ∂gaussC).re - 1)
 
 lemma re_integral_conj_mul_le {F u : ℂ → ℂ} (hF : Integrable F gaussC)
     (hu : AEStronglyMeasurable u gaussC) (hub : ∀ z, ‖u z‖ ≤ 1) :
@@ -228,6 +303,15 @@ lemma re_integral_conj_mul_le {F u : ℂ → ℂ} (hF : Integrable F gaussC)
     (integral_mono (integrable_mul_k hu hub (integrable_conj_of hF)).norm hF.norm fun z => ?_))
   simp only [norm_mul, Complex.norm_conj]
   exact mul_le_of_le_one_right (norm_nonneg _) (hub z)
+
+/-- The real part of an integral is at most the integral of a pointwise bound of the real part. -/
+lemma re_integral_le_of_forall_re_le {G : ℂ → ℂ} {Ψ : ℂ → ℝ} (hG : Integrable G gaussC)
+    (hΨ : Integrable Ψ gaussC) (h : ∀ z, (G z).re ≤ Ψ z) :
+    (∫ z, G z ∂gaussC).re ≤ ∫ z, Ψ z ∂gaussC := by
+  have e : (∫ z, G z ∂gaussC).re = ∫ z, (G z).re ∂gaussC := by
+    simpa using (integral_re hG).symm
+  rw [e]
+  exact integral_mono hG.re hΨ h
 
 private lemma norm_half_le {u v : ℂ} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1) :
     ‖(u - v) / 2‖ ≤ 1 ∧ ‖(u + v) / 2‖ ≤ 1 := by
@@ -269,10 +353,18 @@ lemma payoff_split (p : ℂ → ℂ) (hp : Continuous p) (C : ℝ) (hC : ∀ z, 
   push_cast
   ring
 
-/-- **The fibre bound**: the fibre expression of any pair of responses is at most `J_r(K, s)`,
-`K` the coefficient vector of `k₀ = (f₀ − g₀)/2`. -/
+/-- The product `conj(f₀) g₀` of two bounded responses is integrable. -/
+lemma integrable_conj_mul : Integrable (fun z => conj (f z) * g z) gaussC := by
+  have i0 : Integrable f gaussC := by
+    simpa using integrable_mul_k hfm hfb (integrable_const (1 : ℂ))
+  exact integrable_mul_k hgm hgb (integrable_conj_of i0)
+
+/-- **The fibre bound**: the fibre expression of any pair of responses with `|f₀|, |g₀| ≤ 1` is at
+most `J_r(K, s)`, `K` the coefficient vector of `k₀ = (f₀ − g₀)/2`, for every identity tail `ν`.
+With `p = B·(MK + sa)` the expression is `∫ (ℓ_w(L + p, L − p) − ν) dγ − KᵀMK` for the pointwise
+phases `w = (f₀, g₀)`, and `ℓ_w ≤ Ψ_ν` on the bidisc. -/
 theorem fibreExpr_le_Jpot (s : ℝ) :
-    fibreExpr E R ℓ β a f g s ≤ Jpot E R ℓ β a (coefFib fun z => (f z - g z) / 2) s := by
+    fibreExpr E R ℓ β a ν f g s ≤ Jpot E R ℓ β a ν (coefFib fun z => (f z - g z) / 2) s := by
   set K := coefFib fun z => (f z - g z) / 2 with hK
   have hkm : AEStronglyMeasurable (fun z => (f z - g z) / 2) gaussC := by fun_prop
   have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).1
@@ -285,13 +377,36 @@ theorem fibreExpr_le_Jpot (s : ℝ) :
     (integrable_Lf ℓ β).add (integrable_of_le_qw _ (continuous_pfn E R a K s) C hC)
   have hLM : Integrable (fun z => Lf ℓ β z - pfn E R a K s z) gaussC :=
     (integrable_Lf ℓ β).sub (integrable_of_le_qw _ (continuous_pfn E R a K s) C hC)
-  have hA := re_integral_conj_mul_le hLP hfm hfb
-  have hB := re_integral_conj_mul_le hLM hgm hgb
-  have hI : ∫ z, (‖Lf ℓ β z + pfn E R a K s z‖ + ‖Lf ℓ β z - pfn E R a K s z‖) ∂gaussC
-      = ∫ z, ‖Lf ℓ β z + pfn E R a K s z‖ ∂gaussC + ∫ z, ‖Lf ℓ β z - pfn E R a K s z‖ ∂gaussC :=
-    integral_add hLP.norm hLM.norm
+  -- the payoffs of the two responses and the tail, as one integral
+  have i1 : Integrable (fun z => conj (Lf ℓ β z + pfn E R a K s z) * f z) gaussC :=
+    integrable_mul_k hfm hfb (integrable_conj_of hLP)
+  have i2 : Integrable (fun z => conj (Lf ℓ β z - pfn E R a K s z) * g z) gaussC :=
+    integrable_mul_k hgm hgb (integrable_conj_of hLM)
+  have i3 : Integrable (fun z => conj (f z) * g z) gaussC := integrable_conj_mul hfm hgm hfb hgb
+  have i12 : Integrable (fun z => conj (Lf ℓ β z + pfn E R a K s z) * f z
+      + conj (Lf ℓ β z - pfn E R a K s z) * g z) gaussC := i1.add i2
+  have i3' : Integrable (fun z => (ν : ℂ) * (conj (f z) * g z)) gaussC := i3.const_mul _
+  have i123 : Integrable (fun z => conj (Lf ℓ β z + pfn E R a K s z) * f z
+      + conj (Lf ℓ β z - pfn E R a K s z) * g z + (ν : ℂ) * (conj (f z) * g z)) gaussC :=
+    i12.add i3'
+  have iG : Integrable (fun z => conj (Lf ℓ β z + pfn E R a K s z) * f z
+      + conj (Lf ℓ β z - pfn E R a K s z) * g z + (ν : ℂ) * (conj (f z) * g z) - (ν : ℂ)) gaussC :=
+    i123.sub (integrable_const _)
+  have hint : ∫ z, (conj (Lf ℓ β z + pfn E R a K s z) * f z
+      + conj (Lf ℓ β z - pfn E R a K s z) * g z + (ν : ℂ) * (conj (f z) * g z) - (ν : ℂ)) ∂gaussC
+      = ∫ z, conj (Lf ℓ β z + pfn E R a K s z) * f z ∂gaussC
+        + ∫ z, conj (Lf ℓ β z - pfn E R a K s z) * g z ∂gaussC
+        + (ν : ℂ) * ∫ z, conj (f z) * g z ∂gaussC - (ν : ℂ) := by
+    rw [integral_sub i123 (integrable_const _), integral_add i12 i3', integral_add i1 i2,
+      integral_const_mul, integral_const, probReal_univ, one_smul]
+  have hle := re_integral_le_of_forall_re_le iG (integrable_Jtail E R ℓ β a ν K s) fun z => by
+    rw [Complex.sub_re, Complex.ofReal_re, ← majEll_eq_re]
+    linarith [majEll_le_psiT_of_le ν (hfb z) (hgb z) (Lf ℓ β z + pfn E R a K s z)
+      (Lf ℓ β z - pfn E R a K s z)]
+  rw [hint] at hle
+  simp only [Complex.add_re, Complex.sub_re, Complex.re_ofReal_mul, Complex.ofReal_re] at hle
   unfold fibreExpr Jpot
-  rw [← hK, hI]
+  rw [← hK]
   have hpair' : (∫ z, conj (pfn E R a K s z) * ((f z - g z) / 2) ∂gaussC).re
       = Fib.quad E R K + s * Fib.ip a K := hpair
   linarith
@@ -304,10 +419,10 @@ lemma integral_norm_eq_re (F : ℂ → ℂ) (_hF : Continuous F) :
   simp_rw [conj_mul_ph]
   rw [integral_complex_ofReal, Complex.ofReal_re]
 
-/-- **The converse bound**: `J_r(y, s)` is at most the fibre expression of the phases
-`ph(L ± B·(My + sa))` (the square `quad (y − K) ≥ 0` is dropped). -/
+/-- **The converse bound**, without a tail: `J_r(y, s)` is at most the fibre expression of the
+phases `ph(L ± B·(My + sa))` (the square `quad (y − K) ≥ 0` is dropped). -/
 theorem Jpot_le_fibreExpr (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) (s : ℝ) :
-    Jpot E R ℓ β a y s ≤ fibreExpr E R ℓ β a (fun z => ph (Lf ℓ β z + pfn E R a y s z))
+    Jpot E R ℓ β a 0 y s ≤ fibreExpr E R ℓ β a 0 (fun z => ph (Lf ℓ β z + pfn E R a y s z))
       (fun z => ph (Lf ℓ β z - pfn E R a y s z)) s := by
   have hpc := continuous_pfn E R a y s
   have hLc := continuous_Lf ℓ β
@@ -340,8 +455,9 @@ theorem Jpot_le_fibreExpr (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) 
     integral_add hLP.norm hLM.norm
   rw [integral_norm_eq_re (fun z => Lf ℓ β z + pfn E R a y s z) (hLc.add hpc),
     integral_norm_eq_re (fun z => Lf ℓ β z - pfn E R a y s z) (hLc.sub hpc)] at hI
-  unfold Jpot fibreExpr
-  rw [← hK, hI]
+  rw [Jpot_zero]
+  unfold fibreExpr
+  rw [← hK, hI, zero_mul, add_zero]
   linarith
 
 /-- The uniform constant of the coefficient bounds, `2 E(1 + |z|²)²`. -/
@@ -385,7 +501,7 @@ lemma ip_le (v K : Fib) (c : ℝ) (h1 : ‖K.e1‖ ≤ c) (h2 : ‖K.e2‖ ≤ c
   simp only [Fib.ip]
   linarith
 
-/-- The bound of the fibre expression over all responses. -/
+/-- The bound of the fibre expression without a tail over all responses. -/
 def fibreCap (s : ℝ) : ℝ :=
   (|(E.m11 : ℝ)| + 2 * |(E.m12 : ℝ)| + 2 * |(E.m13 : ℝ)| + |(E.m22 : ℝ)| + 2 * |(E.m23 : ℝ)|
       + |(E.m33 : ℝ)| + |(R.m11 : ℝ)| + 2 * |(R.m12 : ℝ)| + |(R.m22 : ℝ)| + 1) * cq ^ 2
@@ -394,7 +510,7 @@ def fibreCap (s : ℝ) : ℝ :=
 
 lemma fibreExpr_le_cap {f g : ℂ → ℂ} (hfm : AEStronglyMeasurable f gaussC)
     (hgm : AEStronglyMeasurable g gaussC) (hfb : ∀ z, ‖f z‖ ≤ 1) (hgb : ∀ z, ‖g z‖ ≤ 1) (s : ℝ) :
-    fibreExpr E R ℓ β a f g s ≤ fibreCap E R ℓ β a s := by
+    fibreExpr E R ℓ β a 0 f g s ≤ fibreCap E R ℓ β a s := by
   have hkm : AEStronglyMeasurable (fun z => (f z - g z) / 2) gaussC := by fun_prop
   have hkb : ∀ z, ‖(f z - g z) / 2‖ ≤ 1 := fun z => (norm_half_le (hfb z) (hgb z)).1
   have hhm : AEStronglyMeasurable (fun z => (f z + g z) / 2) gaussC := by fun_prop
@@ -420,43 +536,48 @@ lemma fibreExpr_le_cap {f g : ℂ → ℂ} (hfm : AEStronglyMeasurable f gaussC)
     · rw [abs_of_nonneg h]; exact mul_le_mul_of_nonneg_left hip h
     · rw [abs_of_neg h]; nlinarith
   unfold fibreExpr fibreCap
+  rw [zero_mul, add_zero]
   linarith
 
-/-- **`Ψ_r` is finite**: `J_r(·, s)` is bounded above. -/
+/-- **`Ψ_r` is finite**: `J_r(·, s)` is bounded above (without a tail by the fibre expression of
+the phases, `Jpot_le_fibreExpr`; in general by comparison with it). -/
 theorem Jpot_le_cap (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) (s : ℝ) :
-    Jpot E R ℓ β a y s ≤ fibreCap E R ℓ β a s := by
-  refine (Jpot_le_fibreExpr E R ℓ β a hE hR y s).trans (fibreExpr_le_cap E R ℓ β a ?_ ?_
-    (fun _ => norm_ph_le _) (fun _ => norm_ph_le _) s)
-  · exact (measurable_ph.comp ((continuous_Lf ℓ β).add
-      (continuous_pfn E R a y s)).measurable).aestronglyMeasurable
-  · exact (measurable_ph.comp ((continuous_Lf ℓ β).sub
-      (continuous_pfn E R a y s)).measurable).aestronglyMeasurable
+    Jpot E R ℓ β a ν y s ≤ fibreCap E R ℓ β a s + (|ν| - ν) := by
+  have h0 : Jpot E R ℓ β a 0 y s ≤ fibreCap E R ℓ β a s := by
+    refine (Jpot_le_fibreExpr E R ℓ β a hE hR y s).trans (fibreExpr_le_cap E R ℓ β a ?_ ?_
+      (fun _ => norm_ph_le _) (fun _ => norm_ph_le _) s)
+    · exact (measurable_ph.comp ((continuous_Lf ℓ β).add
+        (continuous_pfn E R a y s)).measurable).aestronglyMeasurable
+    · exact (measurable_ph.comp ((continuous_Lf ℓ β).sub
+        (continuous_pfn E R a y s)).measurable).aestronglyMeasurable
+  linarith [Jpot_le_Jpot_zero E R ℓ β a ν y s]
 
 lemma bddAbove_Jpot (hE : E.psdOK = true) (hR : R.psdOK = true) (s : ℝ) :
-    BddAbove (range fun y => Jpot E R ℓ β a y s) :=
-  ⟨fibreCap E R ℓ β a s, by rintro _ ⟨y, rfl⟩; exact Jpot_le_cap E R ℓ β a hE hR y s⟩
+    BddAbove (range fun y => Jpot E R ℓ β a ν y s) :=
+  ⟨fibreCap E R ℓ β a s + (|ν| - ν), by
+    rintro _ ⟨y, rfl⟩; exact Jpot_le_cap E R ℓ β a ν hE hR y s⟩
 
 lemma Jpot_le_pot (hE : E.psdOK = true) (hR : R.psdOK = true) (y : Fib) (s : ℝ) :
-    Jpot E R ℓ β a y s ≤ pot E R ℓ β a s :=
-  le_ciSup (bddAbove_Jpot E R ℓ β a hE hR s) y
+    Jpot E R ℓ β a ν y s ≤ pot E R ℓ β a ν s :=
+  le_ciSup (bddAbove_Jpot E R ℓ β a ν hE hR s) y
 
 /-- **The fibre bound against the potential** (S5): every pair of responses with `|f₀|, |g₀| ≤ 1`
-has fibre expression at most `Ψ_r(s)`. -/
+has fibre expression at most `Ψ_r(s)`, for every identity tail `ν`. -/
 theorem fibreExpr_le_pot (hE : E.psdOK = true) (hR : R.psdOK = true) {f g : ℂ → ℂ}
     (hfm : AEStronglyMeasurable f gaussC) (hgm : AEStronglyMeasurable g gaussC)
     (hfb : ∀ z, ‖f z‖ ≤ 1) (hgb : ∀ z, ‖g z‖ ≤ 1) (s : ℝ) :
-    fibreExpr E R ℓ β a f g s ≤ pot E R ℓ β a s :=
-  (fibreExpr_le_Jpot E R ℓ β a hfm hgm hfb hgb s).trans (Jpot_le_pot E R ℓ β a hE hR _ s)
+    fibreExpr E R ℓ β a ν f g s ≤ pot E R ℓ β a ν s :=
+  (fibreExpr_le_Jpot E R ℓ β a ν hfm hgm hfb hgb s).trans (Jpot_le_pot E R ℓ β a ν hE hR _ s)
 
 /-! ### Convexity and the Lipschitz bound -/
 
 lemma Jpot_convex (y : Fib) (s t θ : ℝ) (h0 : 0 ≤ θ) (h1 : θ ≤ 1) :
-    Jpot E R ℓ β a y (θ * s + (1 - θ) * t)
-      ≤ θ * Jpot E R ℓ β a y s + (1 - θ) * Jpot E R ℓ β a y t := by
-  have hpt : ∀ z, ‖Lf ℓ β z + pfn E R a y (θ * s + (1 - θ) * t) z‖
-        + ‖Lf ℓ β z - pfn E R a y (θ * s + (1 - θ) * t) z‖
-      ≤ θ * (‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖)
-        + (1 - θ) * (‖Lf ℓ β z + pfn E R a y t z‖ + ‖Lf ℓ β z - pfn E R a y t z‖) := by
+    Jpot E R ℓ β a ν y (θ * s + (1 - θ) * t)
+      ≤ θ * Jpot E R ℓ β a ν y s + (1 - θ) * Jpot E R ℓ β a ν y t := by
+  have hpt : ∀ z, psiT ν (Lf ℓ β z + pfn E R a y (θ * s + (1 - θ) * t) z)
+        (Lf ℓ β z - pfn E R a y (θ * s + (1 - θ) * t) z) - ν
+      ≤ θ * (psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν)
+        + (1 - θ) * (psiT ν (Lf ℓ β z + pfn E R a y t z) (Lf ℓ β z - pfn E R a y t z) - ν) := by
     intro z
     have e1 : Lf ℓ β z + pfn E R a y (θ * s + (1 - θ) * t) z
         = (θ : ℂ) * (Lf ℓ β z + pfn E R a y s z) + ((1 - θ : ℝ) : ℂ) * (Lf ℓ β z + pfn E R a y t z) := by
@@ -464,68 +585,68 @@ lemma Jpot_convex (y : Fib) (s t θ : ℝ) (h0 : 0 ≤ θ) (h1 : θ ≤ 1) :
     have e2 : Lf ℓ β z - pfn E R a y (θ * s + (1 - θ) * t) z
         = (θ : ℂ) * (Lf ℓ β z - pfn E R a y s z) + ((1 - θ : ℝ) : ℂ) * (Lf ℓ β z - pfn E R a y t z) := by
       simp only [pfn_eq]; push_cast; ring
-    have n : ∀ u v : ℂ, ‖(θ : ℂ) * u + ((1 - θ : ℝ) : ℂ) * v‖ ≤ θ * ‖u‖ + (1 - θ) * ‖v‖ := by
-      intro u v
-      refine (norm_add_le _ _).trans (le_of_eq ?_)
-      rw [norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs,
-        Real.norm_eq_abs, abs_of_nonneg h0, abs_of_nonneg (by linarith)]
     rw [e1, e2]
-    have := n (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z + pfn E R a y t z)
-    linarith [n (Lf ℓ β z - pfn E R a y s z) (Lf ℓ β z - pfn E R a y t z)]
-  have hm := integral_mono (integrable_Jint E R ℓ β a y _)
-    (((integrable_Jint E R ℓ β a y s).const_mul θ).add
-      ((integrable_Jint E R ℓ β a y t).const_mul (1 - θ))) hpt
-  have hsum : ∫ z, (θ * (‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖)
-        + (1 - θ) * (‖Lf ℓ β z + pfn E R a y t z‖ + ‖Lf ℓ β z - pfn E R a y t z‖)) ∂gaussC
-      = θ * ∫ z, (‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖) ∂gaussC
-        + (1 - θ) * ∫ z, (‖Lf ℓ β z + pfn E R a y t z‖ + ‖Lf ℓ β z - pfn E R a y t z‖) ∂gaussC := by
-    rw [integral_add ((integrable_Jint E R ℓ β a y s).const_mul θ)
-      ((integrable_Jint E R ℓ β a y t).const_mul (1 - θ)), integral_const_mul, integral_const_mul]
+    linarith [psiT_convex ν h0 h1 (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z)
+      (Lf ℓ β z + pfn E R a y t z) (Lf ℓ β z - pfn E R a y t z)]
+  have hm := integral_mono (integrable_Jtail E R ℓ β a ν y _)
+    (((integrable_Jtail E R ℓ β a ν y s).const_mul θ).add
+      ((integrable_Jtail E R ℓ β a ν y t).const_mul (1 - θ))) hpt
+  have hsum : ∫ z, (θ * (psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν)
+        + (1 - θ) * (psiT ν (Lf ℓ β z + pfn E R a y t z) (Lf ℓ β z - pfn E R a y t z) - ν)) ∂gaussC
+      = θ * ∫ z, (psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν) ∂gaussC
+        + (1 - θ) * ∫ z, (psiT ν (Lf ℓ β z + pfn E R a y t z) (Lf ℓ β z - pfn E R a y t z) - ν)
+          ∂gaussC := by
+    rw [integral_add ((integrable_Jtail E R ℓ β a ν y s).const_mul θ)
+      ((integrable_Jtail E R ℓ β a ν y t).const_mul (1 - θ)), integral_const_mul, integral_const_mul]
   unfold Jpot
   linarith [hm.trans_eq hsum]
 
 /-- **`Ψ_r` is convex.** -/
 theorem pot_convexOn (hE : E.psdOK = true) (hR : R.psdOK = true) :
-    ConvexOn ℝ univ (pot E R ℓ β a) := by
+    ConvexOn ℝ univ (pot E R ℓ β a ν) := by
   refine ⟨convex_univ, fun s _ t _ θ μ h0 hμ hsum => ?_⟩
   obtain rfl : μ = 1 - θ := by linarith
   simp only [smul_eq_mul]
-  refine ciSup_le fun y => (Jpot_convex E R ℓ β a y s t θ h0 (by linarith)).trans ?_
-  exact add_le_add (mul_le_mul_of_nonneg_left (Jpot_le_pot E R ℓ β a hE hR y s) h0)
-    (mul_le_mul_of_nonneg_left (Jpot_le_pot E R ℓ β a hE hR y t) hμ)
+  refine ciSup_le fun y => (Jpot_convex E R ℓ β a ν y s t θ h0 (by linarith)).trans ?_
+  exact add_le_add (mul_le_mul_of_nonneg_left (Jpot_le_pot E R ℓ β a ν hE hR y s) h0)
+    (mul_le_mul_of_nonneg_left (Jpot_le_pot E R ℓ β a ν hE hR y t) hμ)
 
 /-- `J_r(y, t) ≤ J_r(y, s) + 2(t − s) E|B·a|` for `s ≤ t`. -/
 lemma Jpot_lip (y : Fib) (s t : ℝ) (hst : s ≤ t) :
-    Jpot E R ℓ β a y t ≤ Jpot E R ℓ β a y s + 2 * (t - s) * ∫ z, ‖a.fn z‖ ∂gaussC := by
+    Jpot E R ℓ β a ν y t ≤ Jpot E R ℓ β a ν y s + 2 * (t - s) * ∫ z, ‖a.fn z‖ ∂gaussC := by
   have hA : Integrable (fun z => ‖a.fn z‖) gaussC :=
     (integrable_of_le_qw _ a.continuous_fn _ (fun z => a.norm_fn_le z)).norm
-  have hpt : ∀ z, ‖Lf ℓ β z + pfn E R a y t z‖ + ‖Lf ℓ β z - pfn E R a y t z‖
-      ≤ (‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖) + 2 * (t - s) * ‖a.fn z‖ := by
+  have hpt : ∀ z, psiT ν (Lf ℓ β z + pfn E R a y t z) (Lf ℓ β z - pfn E R a y t z) - ν
+      ≤ (psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν)
+        + 2 * (t - s) * ‖a.fn z‖ := by
     intro z
-    have e1 : Lf ℓ β z + pfn E R a y t z = (Lf ℓ β z + pfn E R a y s z) + ((t - s : ℝ) : ℂ) * a.fn z := by
+    have e1 : Lf ℓ β z + pfn E R a y t z - (Lf ℓ β z + pfn E R a y s z)
+        = ((t - s : ℝ) : ℂ) * a.fn z := by
       simp only [pfn_eq]; push_cast; ring
-    have e2 : Lf ℓ β z - pfn E R a y t z = (Lf ℓ β z - pfn E R a y s z) - ((t - s : ℝ) : ℂ) * a.fn z := by
+    have e2 : Lf ℓ β z - pfn E R a y t z - (Lf ℓ β z - pfn E R a y s z)
+        = -(((t - s : ℝ) : ℂ) * a.fn z) := by
       simp only [pfn_eq]; push_cast; ring
     have hn : ‖((t - s : ℝ) : ℂ) * a.fn z‖ = (t - s) * ‖a.fn z‖ := by
       rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith)]
-    rw [e1, e2]
-    have := norm_add_le (Lf ℓ β z + pfn E R a y s z) (((t - s : ℝ) : ℂ) * a.fn z)
-    linarith [norm_sub_le (Lf ℓ β z - pfn E R a y s z) (((t - s : ℝ) : ℂ) * a.fn z)]
-  have hm := integral_mono (integrable_Jint E R ℓ β a y t)
-    ((integrable_Jint E R ℓ β a y s).add (hA.const_mul (2 * (t - s)))) hpt
-  have hsum : ∫ z, ((‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖)
+    have h := psiT_le_add_norm ν (Lf ℓ β z + pfn E R a y t z) (Lf ℓ β z - pfn E R a y t z)
+      (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z)
+    rw [e1, e2, norm_neg, hn] at h
+    linarith
+  have hm := integral_mono (integrable_Jtail E R ℓ β a ν y t)
+    ((integrable_Jtail E R ℓ β a ν y s).add (hA.const_mul (2 * (t - s)))) hpt
+  have hsum : ∫ z, ((psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν)
         + 2 * (t - s) * ‖a.fn z‖) ∂gaussC
-      = ∫ z, (‖Lf ℓ β z + pfn E R a y s z‖ + ‖Lf ℓ β z - pfn E R a y s z‖) ∂gaussC
+      = ∫ z, (psiT ν (Lf ℓ β z + pfn E R a y s z) (Lf ℓ β z - pfn E R a y s z) - ν) ∂gaussC
         + 2 * (t - s) * ∫ z, ‖a.fn z‖ ∂gaussC := by
-    rw [integral_add (integrable_Jint E R ℓ β a y s) (hA.const_mul _), integral_const_mul]
+    rw [integral_add (integrable_Jtail E R ℓ β a ν y s) (hA.const_mul _), integral_const_mul]
   unfold Jpot
   linarith [hm.trans_eq hsum]
 
 /-- **The Lipschitz bound of `Ψ_r`** with constant `2 E|B·a|`. -/
 theorem pot_lip (hE : E.psdOK = true) (hR : R.psdOK = true) (s t : ℝ) (hst : s ≤ t) :
-    pot E R ℓ β a t ≤ pot E R ℓ β a s + 2 * (t - s) * ∫ z, ‖a.fn z‖ ∂gaussC :=
-  ciSup_le fun y => (Jpot_lip E R ℓ β a y s t hst).trans
-    (by linarith [Jpot_le_pot E R ℓ β a hE hR y s])
+    pot E R ℓ β a ν t ≤ pot E R ℓ β a ν s + 2 * (t - s) * ∫ z, ‖a.fn z‖ ∂gaussC :=
+  ciSup_le fun y => (Jpot_lip E R ℓ β a ν y s t hst).trans
+    (by linarith [Jpot_le_pot E R ℓ β a ν hE hR y s])
 
 /-! ### The Lipschitz constant of a row and the node caps -/
 
@@ -581,15 +702,15 @@ lemma inv_sqrt_two_le : 1 / √2 ≤ 707107 / 1000000 := by
   nlinarith [sq_nonneg (707107 / 1000000 * √2 - 1)]
 
 /-- **The node-cap interface of a potential**: convexity, the Lipschitz header and the node caps
-(the data certified outside Lean) give `CapsHold (Ψ − capPad)`. -/
-theorem capsHold_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.psdOK = true)
+(the data certified outside Lean) give `CapsHold (Ψ − capPad)`, for every tail `ν`. -/
+theorem capsHold_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 ν : ℝ) (hE : E.psdOK = true)
     (hR : R.psdOK = true) (nodes : List (ℚ × ℚ)) (smax : ℚ)
     (hsm : 2 * (|1 + b1| + 7358 / 10000 * |b2| + 707107 / 1000000 * |b3|) ≤ smax)
-    (hcaps : ∀ n ∈ nodes, pot E R ℓ β (aFib b1 b2 b3) n.1 - capPad ≤ n.2) :
-    CapsHold (fun s => pot E R ℓ β (aFib b1 b2 b3) s - capPad) nodes smax where
+    (hcaps : ∀ n ∈ nodes, pot E R ℓ β (aFib b1 b2 b3) ν n.1 - capPad ≤ n.2) :
+    CapsHold (fun s => pot E R ℓ β (aFib b1 b2 b3) ν s - capPad) nodes smax where
   convex := by
     refine ⟨convex_Ici 0, fun x _ y _ u v hu hv huv => ?_⟩
-    have h := (pot_convexOn E R ℓ β (aFib b1 b2 b3) hE hR).2 (mem_univ x) (mem_univ y) hu hv huv
+    have h := (pot_convexOn E R ℓ β (aFib b1 b2 b3) ν hE hR).2 (mem_univ x) (mem_univ y) hu hv huv
     simp only [smul_eq_mul] at h ⊢
     have : u * (capPad : ℝ) + v * capPad = capPad := by rw [← add_mul, huv, one_mul]
     linarith
@@ -602,23 +723,21 @@ theorem capsHold_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.psdOK
       linarith [mul_le_mul_of_nonneg_left two_div_exp_one_le (abs_nonneg b2),
         mul_le_mul_of_nonneg_left inv_sqrt_two_le (abs_nonneg b3)]
     have hts : 0 ≤ t - s := by linarith
-    linarith [pot_lip E R ℓ β (aFib b1 b2 b3) hE hR s t hst, mul_le_mul_of_nonneg_right hsm hts,
+    linarith [pot_lip E R ℓ β (aFib b1 b2 b3) ν hE hR s t hst, mul_le_mul_of_nonneg_right hsm hts,
       mul_le_mul_of_nonneg_left hc (by linarith : (0 : ℝ) ≤ 2 * (t - s))]
 
-/-! ### The potentials of the 19 rows -/
+/-! ### The potentials of the rows -/
 
-/-- The certified fibre potential of the `k`-th row (`E`, `ℓ`, `β`, `b` from `rowData`, `R` from
-`rowGates`). -/
-def rowPot (k : ℕ) (s : ℝ) : ℝ :=
-  let r := rowData.getD k row01
-  pot r.E (rowR k) r.ell r.beta (aFib r.b1 r.b2 r.b3) s
-
-/-- **The node-cap interface for every row**: given the node caps of the certified potential of
-row `k` (data certified outside Lean), `CapsHold (Ψ_k − capPad)` holds with the row's nodes and
-Lipschitz constant. -/
-theorem capsHold_rowPot (k : ℕ) (hk : k < rowData.length)
-    (hcaps : ∀ n ∈ (rowData.getD k row01).nodeList, rowPot k n.1 - capPad ≤ n.2) :
-    CapsHold (fun s => rowPot k s - capPad) (rowData.getD k row01).nodeList
+/-- **The node-cap interface for every row**: given the node caps of the potential of row `k`
+with the identity tail `ν` (`TailNodeCaps`, certified by `CapNodes.lean`), `CapsHold (Ψ_k − capPad)` holds with the row's nodes and Lipschitz constant. -/
+theorem capsHold_rowPot (ν : ℝ) (k : ℕ) (hk : k < rowData.length)
+    (hcaps : ∀ n ∈ (rowData.getD k row01).nodeList,
+      pot (rowData.getD k row01).E (rowR k) (rowData.getD k row01).ell (rowData.getD k row01).beta
+        (aFib (rowData.getD k row01).b1 (rowData.getD k row01).b2 (rowData.getD k row01).b3) ν n.1
+          - capPad ≤ n.2) :
+    CapsHold (fun s => pot (rowData.getD k row01).E (rowR k) (rowData.getD k row01).ell
+      (rowData.getD k row01).beta (aFib (rowData.getD k row01).b1 (rowData.getD k row01).b2
+        (rowData.getD k row01).b3) ν s - capPad) (rowData.getD k row01).nodeList
       (rowData.getD k row01).smax := by
   have hmem : rowData.getD k row01 ∈ rowData := by
     rw [List.getD_eq_getElem _ _ hk]; exact List.getElem_mem hk
@@ -638,7 +757,7 @@ theorem capsHold_rowPot (k : ℕ) (hk : k < rowData.length)
       + 707107 / 1000000 * |((rowData.getD k row01).b3 : ℝ)|) ≤ ((rowData.getD k row01).smax : ℝ) := by
     simpa only [Rat.cast_mul, Rat.cast_add, Rat.cast_abs, Rat.cast_one, Rat.cast_ofNat,
       Rat.cast_div] using (Rat.cast_le (K := ℝ)).2 hsm
-  exact capsHold_pot _ _ _ _ _ _ _ hg.1.1 hR _ _ hsmR hcaps
+  exact capsHold_pot _ _ _ _ _ _ _ ν hg.1.1 hR _ _ hsmR hcaps
 
 end
 

@@ -1,0 +1,45 @@
+A1. symbolic identities
+  ok   (20): E_T[T(2H-1)^2] = 9 + 8b^2, E_T[T H^2] = 4 + 2b^2, E_T[T H] = 2   (H = 2 + (T-2)b)
+  ok   (31a): the cross and square coefficients are 24 + 16b^2 and 16 + 8b^2
+  ok   (12) + (13) = (14) pointwise, using C_i = A(1 - b_i), E C_i = 1 - rho_i
+  ok   E_T[T(2-T)T^k] = -k E_T[T^(k+1)] for k = 0..6 (the T-integration by parts behind (13), on monomials)
+A2. constants
+  ok   kappa <= 1/64: 2 sqrt(17 alpha^2 24 kappa) = sqrt(51/8) < 81/32
+  ok      theta = 79/67 + 1/12 = 1015/804 = 1.262438 < 13/10
+  ok   kappa <= 1/576: 2 sqrt(17 alpha^2 24 kappa) = sqrt(17/72) < 35/72
+  ok      theta = 568/1737 + 1/36 = 2465/6948 = 0.354778 < 37/100
+         (27) in floating point: F(1/64) = 1.261423, F(1/576) = 0.354745; F reaches 0.37, 0.64, 1.33, 1.88, 2.5 at kappa = 1/534.9, 1/206.1, 1/58.4, 1/31.7, 1/18.7
+  ok   x^p/(4+12x) increases on [0, 1/3] for p = 1/2, 3/4, 1 (derivative has the sign of 4p + 12(p-1)x)
+  ok   (31b): 17(2/3) + 24 + 8 sqrt(2/3) <= 34/3 + 24 + 20/3 = 42
+  ok   (31): (2/3)(42 + 16)/(4(m+3)) + 2/(9m) = 29/(3(m+3)) + 2/(9m)
+  ok   rank one: L_1 <= 17/2 + 24 + 4 sqrt2 < 77/2, theta = (2/3)(77/32 + 1) + 1/6 = 39/16, and m >= 2 is covered by it
+  ok   the analytic bound 29/(3(m+3)) + 2/(9m) decreases in m
+  ok   analytic minimum ranks for the six targets: [24, 13, 5, 3, 1, 1] (PROOFS section 5: 24, 13, 5, 3, 1, 1), with minimality
+  ok   their constants: 119/324, 1163/1872, 451/360, 91/54, 39/16, 39/16
+  ok   all ranks >=  2: K_2 <= 1817/1000 = 1.81700, K_m (m > 2) <= 7/4, a^2 <= 21/100, theta <= 1361/750 = 1.814667 <= claimed 1361/750 < 47/25
+  ok   all ranks >=  4: K_4 <= 2761/2100 = 1.31476, K_m (m > 4) <= 21/16, a^2 <= 11/100, theta <= 8153/6300 = 1.294127 <= claimed 8153/6300 < 13/10
+  ok   all ranks >= 12: K_12 <= 406/625 = 0.64960, K_m (m > 12) <= 21/32, a^2 <= 1/20, theta <= 91/144 = 0.631944 <= claimed 91/144 < 16/25
+  ok   all ranks >= 23: K_23 <= 14819/39000 = 0.37997, K_m (m > 23) <= 7/18, a^2 <= 3/125, theta <= 16226/43875 = 0.369823 <= claimed 16226/43875 < 37/100
+  ok   minimum ranks with the interval constants: [23, 12, 4, 2, 1, 1] (INTERVAL_PROOF: 23, 12, 4, 2, 1, 1), with minimality among the stated bounds
+A3. own exact multi-block polynomial instances
+  ok   the nine stored examples (h = v) reproduced exactly by independent code: u, delta, every content coordinate, Omhat, ratio
+  ok   the balanced identity (14) equals the direct content exactly in 190 coordinate checks (6 models x 2 bulks x 5 polynomial profiles), own moment code
+A4. supremum over polynomial profiles (deg k' <= 5) of ||c||^2/(delta Omhat), multi-block; proved constant; h = v value 64 sum rho_i^3 s_i^2/(3 chi)
+     model                                            | chi    | h = v    | deg<=2   | deg<=5   | proved theta
+  ok   1 x m=1                                          | 16.0000 | 1.333333 | 1.459001 | 1.479730 | 2.437500
+  ok   2 x m=1, equal weights                           | 8.0000 | 0.666667 | 0.724244 | 0.731905 | 2.437500
+  ok   4 x m=1, equal weights                           | 4.0000 | 0.333333 | 0.357687 | 0.359655 | 2.437500
+  ok   7 x m=1, equal weights                           | 2.2857 | 0.190476 | 0.201515 | 0.201839 | 2.437500
+  ok   2 x m=1, weights 4 : 1                           | 10.8800 | 1.019608 | 1.167959 | 1.189758 | 2.437500
+  ok   2 x m=1 with bulk UV (rho_0 = 1/3)               | 4.2222 | 0.374269 | 0.434772 | 0.439141 | 2.437500
+  ok   m = 1 and m = 4, weights 1 : 9, bulk             | 3.4643 | 0.411249 | 0.559286 | 0.570156 | 2.437500
+  ok   4 x m=4, equal weights                           | 1.7500 | 0.190476 | 0.215019 | 0.215734 | 1.294127
+  ok   7 x m=4 with bulk                                | 1.1983 | 0.023406 | 0.023508 | 0.023520 | 1.294127
+  ok   3 x m=9, unequal weights, bulk                   | 2.2506 | 0.219591 | 0.319696 | 0.321558 | 0.830247
+  ok   (3/5,4/5) and (3/5,-4/5), weights 1 : 4, bulk    | 5.1110 | 0.118599 | 0.175614 | 0.177005 | 4.668405 (Lemma 2, alpha^2 <= min(1, 2 sqrt kappa))
+A5. COORDINATE_OBSTRUCTION (1): ||E[q_m | F_E]||^2 = (c/m)(k - 1 + 2(1-c)^2), c = ||Proj_E X||^2, on random rational subspaces
+  ok   formula (1) holds exactly on 66 random rational subspaces (m = 2, 3, 5, 8; every k from 1 to m + 1; real coefficients)
+  ok   k = 1: 8/27 - 2c(1-c)^2 = 2(c - 1/3)^2 (4/3 - c) >= 0 on [0, 1]
+  ok   k >= 2: (k-1) - c(k-1+2(1-c)^2) = (1-c)(k-1-2c(1-c)) >= 0
+ALL CHECKS PASSED
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 nice -n 10   2.10s user 0.18s system 80% cpu 2.819 total

@@ -1,0 +1,50 @@
+monomial y(|y|^2-2)                        d=1 u=2     (n,h,b,y,z)=(0.25000, 0.25000, 0.25000, 0.25000, 0.25000)  s=42.00000  EV^3=11352.0000  scalar 11394.9823  J2 20606.1273  J3 20636.3197  ALL OK
+X^2 conj(Y)                                d=2 u=2     (n,h,b,y,z)=(0.25000, 0.25000, 0.00000, 0.00000, 0.00000)  s=10.00000  EV^3=540.0000  scalar 1375.2403  J2 1987.0822  J3 1682.3648  ALL OK
+2 X(|Y|^2-1)                               d=2 u=4     (n,h,b,y,z)=(0.12500, 0.25000, 0.06250, 0.08333, 0.12500)  s=16.00000  EV^3=1590.0000  scalar 2739.0003  J2 4673.3877  J3 4417.9745  ALL OK
+H(X)+H(Y)                                  d=2 u=4     (n,h,b,y,z)=(0.12500, 0.12500, 0.12500, 0.12500, 0.12500)  s=21.00000  EV^3=2937.0000  scalar 4087.9701  J2 7344.6017  J3 7355.2763  ALL OK
+H(X)+i X^2conj(Y)+(2-i) 2X(|Y|^2-1)        d=2 u=24    (n,h,b,y,z)=(0.14583, 0.21528, 0.05556, 0.10301, 0.11458)  s=18.05556  EV^3=2158.7361  scalar 3272.1191  J2 5802.4031  J3 5717.5658  ALL OK
+random d=2 #0                              d=2 u=154   (n,h,b,y,z)=(0.14442, 0.21323, 0.03782, 0.05958, 0.08572)  s=13.25721  EV^3=1245.1422  scalar 2077.9916  J2 3495.0848  J3 3268.2756  ALL OK
+random d=2 #1                              d=2 u=82    (n,h,b,y,z)=(0.16850, 0.21014, 0.06797, 0.10743, 0.12388)  s=19.56098  EV^3=2762.8379  scalar 3681.8058  J2 6489.8401  J3 6338.3199  ALL OK
+random d=2 #2                              d=2 u=134   (n,h,b,y,z)=(0.14352, 0.19787, 0.10448, 0.10782, 0.15170)  s=19.86946  EV^3=3000.7147  scalar 3767.6962  J2 6519.8752  J3 6234.6609  ALL OK
+random d=2 #3                              d=2 u=118   (n,h,b,y,z)=(0.19671, 0.16095, 0.04137, 0.10959, 0.12238)  s=19.42718  EV^3=2552.7863  scalar 3644.7550  J2 6458.7057  J3 6351.1267  ALL OK
+H(y1)+2y1(|y2|^2-1)+2y1(|y3|^2-1)          d=3 u=10    (n,h,b,y,z)=(0.11000, 0.09000, 0.09000, 0.07000, 0.07000)  s=13.84000  ALL OK
+H(X)+H(Y)+H(Z)                             d=3 u=6     (n,h,b,y,z)=(0.08333, 0.08333, 0.08333, 0.08333, 0.08333)  s=14.00000  ALL OK
+random d=3 #0                              d=3 u=266   (n,h,b,y,z)=(0.10553, 0.12489, 0.01976, 0.04635, 0.07444)  s=9.45819  ALL OK
+random d=3 #1                              d=3 u=158   (n,h,b,y,z)=(0.10499, 0.14249, 0.04022, 0.05719, 0.09089)  s=11.27672  ALL OK
+random d=3 #2                              d=3 u=258   (n,h,b,y,z)=(0.09238, 0.13504, 0.01929, 0.05340, 0.08985)  s=9.77982  ALL OK
+random d=4 #0 (dense, entries up to 99)    d=4 u=785060 (n,h,b,y,z)=(0.07697, 0.09782, 0.01927, 0.03238, 0.05654)  s=6.97083  ALL OK
+random d=4 #1 (dense, entries up to 99)    d=4 u=825428 (n,h,b,y,z)=(0.07473, 0.08597, 0.01114, 0.03821, 0.06696)  s=7.10390  ALL OK
+random d=4 #2 (dense, entries up to 99)    d=4 u=910252 (n,h,b,y,z)=(0.06710, 0.08807, 0.01667, 0.03571, 0.06160)  s=6.81323  ALL OK
+random d=4 #3 (dense, entries up to 99)    d=4 u=870462 (n,h,b,y,z)=(0.07598, 0.09231, 0.01723, 0.03439, 0.05656)  s=7.02265  ALL OK
+random d=4 #4 (dense, entries up to 99)    d=4 u=942356 (n,h,b,y,z)=(0.07127, 0.08129, 0.02163, 0.02697, 0.06356)  s=6.21230  ALL OK
+random d=4 #5 (dense, entries up to 99)    d=4 u=746886 (n,h,b,y,z)=(0.07337, 0.08746, 0.01079, 0.02970, 0.05553)  s=6.24460  ALL OK
+random d=5 (sparse)                        d=5 u=1486  (n,h,b,y,z)=(0.06329, 0.08219, 0.01266, 0.02448, 0.04395)  s=5.43830  ALL OK
+random d=6 (sparse, light mode)            d=6 u=8264  (n,h,b,y,z)=(0.05410, 0.06529, 0.00920, 0.02056, 0.04031)  s=4.52135  ALL OK
+
+checks per case:
+    A: N1 q = 2q, N2 q = q
+    E|q|^2 = 2 sum|t|^2, E c1 = 2u, E c2 = u
+    B: Circular J, Chaos3, E a^2 = E b^2 = u, E ab = 0
+    B: gram(gramT J a b) = 4 X(t) for N,H,B,Y,Z
+    B: cubicTensorNormSq(gramT) = E a^2
+    B: gramT symmetric in slots 1,2
+    B: radS = 2(c1+c2), radA + i radB = 4a
+    B: c1 - c2 = 2 sum_ij J_ij d_i a d_j b
+    B: radN = 8 Re(conj(q)^2 a)
+    B: Lean fourth_moment_contractions (real side)
+    C: s  = 32n+8h+32b+96y
+    C: E(c2-u)^2 = 16n+4h
+    C: E(c1-c2-u)^2 = 16n+20h+16b   [new]
+    C: E(c1+c2-3u)^2 = 80n+20h+16b+96y+32z
+    C: E(c1-2u)^2 = 32n+16h+16b+48y+16z   [new]
+    C: E|a|^2 = 32b+24y
+    C: E conj(q)^2 a = 32b+48y (real)
+    C: |P11 V|^2 = 16n+4h+16z, |P11 c2|^2 = 16n, <P11V,P11c2> = 16n+8z
+    C: <V-c2, c2-u> = 24y
+    D: (I),(II) for G = v^2
+    D: (I),(II) for G = v^3
+    E: cuts
+    E: n <= 1/4, h <= 1/4, 0 < s <= 42, s = (8/3)s0 + 4 h0
+    F: E V^3 <= scalar, J2, J3 bounds (floats of exact numbers)
+22 cases, 0 failures, 11.1 s
+/usr/local/bin/python3 own_identities.py  11.06s user 0.04s system 99% cpu 11.180 total

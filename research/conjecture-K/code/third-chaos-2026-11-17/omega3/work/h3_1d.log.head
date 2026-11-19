@@ -1,0 +1,9 @@
+gauss d=1 nv=16  E|P|=0.797885  B(spec)=0.797885  B(ident)=0.797885  R=0.797885  Cov=+0.000000  (int d t^(d-1)=1.00000000; max rel diff of the two mu-prime = 3.3e-14)
+gauss d=1 nv=24  E|P|=0.797885  B(spec)=0.797885  B(ident)=0.797885  R=0.797885  Cov=+0.000000  (int d t^(d-1)=1.00000000; max rel diff of the two mu-prime = 1.3e-12)
+gauss d=1 nv=32  E|P|=0.797885  B(spec)=0.797885  B(ident)=0.797885  R=0.797885  Cov=+0.000000  (int d t^(d-1)=1.00000000; max rel diff of the two mu-prime = 6.0e-13)
+gauss d=1 nv=48  E|P|=0.797885  B(spec)=0.797885  B(ident)=0.797885  R=0.797885  Cov=+0.000000  (int d t^(d-1)=1.00000000; max rel diff of the two mu-prime = 1.7e-11)
+h3    d=3 nv=16  E|P|=0.616460  B(spec)=0.772382  B(ident)=0.772382  R=0.789804  Cov=-0.020151  (int d t^(d-1)=1.00000000; max rel diff of the two mu-prime = 1.8e-03)
+h3    d=3 nv=24  E|P|=0.616460  B(spec)=0.772382  B(ident)=0.772382  R=0.789804  Cov=-0.020151  (int d t^(d-1)=1.00000000; max rel diff of the two mu-prime = 2.2e-04)
+h3    d=3 nv=32  E|P|=0.616460  B(spec)=0.772382  B(ident)=0.772382  R=0.789804  Cov=-0.020151  (int d t^(d-1)=1.00000000; max rel diff of the two mu-prime = 1.5e-05)
+h3    d=3 nv=48  E|P|=0.616460  B(spec)=0.772382  B(ident)=0.772382  R=0.789804  Cov=-0.020151  (int d t^(d-1)=1.00000000; max rel diff of the two mu-prime = 1.0e-07)
+sqrt(2/pi) = 0.797885

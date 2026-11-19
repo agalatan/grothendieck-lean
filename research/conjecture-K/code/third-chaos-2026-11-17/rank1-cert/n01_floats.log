@@ -1,0 +1,49 @@
+H(0.7964) = 0.82458868402819   sqrt(17/25) - H = 3.24411e-5
+H(0.8362) = 0.797857349697732   sqrt(2/pi)  - H = 2.72111e-5
+thresholds (findroot): weak (0.7963485238 + 2.996272867e-95j), sharp (0.8361619947 + 0.0j)
+D1, D2 on a grid of a (compare: c02 certifies sup D1 <= -0.0804, sup D2 <= -0.2287 on [0.79, 0.9995])
+   a = 0.79  D1 = -0.1054338121  D2 = -0.2388021124
+   a = 0.7964  D1 = -0.1072860368  D2 = -0.2412395037
+   a = 0.8  D1 = -0.1083577591  D2 = -0.2426360076
+   a = 0.8362  D1 = -0.1205678844  D2 = -0.25787705
+   a = 0.85  D1 = -0.1260810398  D2 = -0.264386408
+   a = 0.9  D1 = -0.1525644027  D2 = -0.2929560946
+   a = 0.95  D1 = -0.2018409681  D2 = -0.3373152845
+   a = 0.99  D1 = -0.3309680121  D2 = -0.4254856247
+near a = 1 (eps = 1 - a^2): D_k ~ -(alpha_k - beta_k) L + const, L = ln(1/eps)/2; slopes per unit of L
+   eps = 1e-3  D1 = -0.59452729  D2 = -0.56692127
+   eps = 1e-4  D1 = -0.80167345  D2 = -0.67127609  slopes -0.17992 -0.090641
+   eps = 1e-5  D1 = -1.0092653  D2 = -0.77517639  slopes -0.18031 -0.090247
+   eps = 1e-6  D1 = -1.2169179  D2 = -0.87901577  slopes -0.18036 -0.090194
+   eps = 1e-7  D1 = -1.4245782  D2 = -0.98284751  slopes -0.18037 -0.090187
+   eps = 1e-8  D1 = -1.6322395  D2 = -1.0866783  slopes -0.18037 -0.090186
+   predicted slopes alpha - beta (ideal, r -> 0): D1 0.18037, D2 0.090186
+G3 bound: t-profile of Psi(a, t) (brute force with min; the Arb tangent bound of c04 is the last column)
+   a = 0.7931  t = 0       Psi = 0.824339796935  target - Psi = 0.0002813
+   a = 0.7931  t = 1e-6    Psi = 0.824341014511  target - Psi = 0.0002801
+   a = 0.7931  t = 1e-5    Psi = 0.824348804436  target - Psi = 0.0002723
+   a = 0.7931  t = 1e-4    Psi = 0.824398084367  target - Psi = 0.000223
+   a = 0.7931  t = 5e-4    Psi = 0.824516890716  target - Psi = 0.0001042
+   a = 0.7931  t = 1e-3    Psi = 0.824587398624  target - Psi = 3.373e-5
+   a = 0.7931  t = 1.2e-3  Psi = 0.824600234542  target - Psi = 2.089e-5
+   a = 0.7931  t = 1.4e-3  Psi = 0.824604915862  target - Psi = 1.621e-5
+   a = 0.7931  t = 1.6e-3  Psi = 0.824600177722  target - Psi = 2.095e-5
+   a = 0.7931  t = 2e-3    Psi = 0.824561396617  target - Psi = 5.973e-5
+   a = 0.7931  t = 5e-3    Psi = 0.824253163656  target - Psi = 0.000368
+   a = 0.7931  t = 2e-2    Psi = 0.822615210263  target - Psi = 0.002006
+   a = 0.7931  t = 1e-1    Psi = 0.811215756232  target - Psi = 0.01341
+   max over the listed t: 0.824604915862 at t = 1.4e-3;  c04 certified sup over all t <= 0.824604926754
+   a = 0.8339  t = 0       Psi = 0.797687929924  target - Psi = 0.0001966
+   a = 0.8339  t = 1e-6    Psi = 0.797689043722  target - Psi = 0.0001955
+   a = 0.8339  t = 1e-5    Psi = 0.797696049631  target - Psi = 0.0001885
+   a = 0.8339  t = 1e-4    Psi = 0.797738848831  target - Psi = 0.0001457
+   a = 0.8339  t = 5e-4    Psi = 0.797832907299  target - Psi = 5.165e-5
+   a = 0.8339  t = 1e-3    Psi = 0.79787290603  target - Psi = 1.165e-5
+   a = 0.8339  t = 1.2e-3  Psi = 0.797871923837  target - Psi = 1.264e-5
+   a = 0.8339  t = 1.4e-3  Psi = 0.79785778002  target - Psi = 2.678e-5
+   a = 0.8339  t = 1.6e-3  Psi = 0.79783468628  target - Psi = 4.987e-5
+   a = 0.8339  t = 2e-3    Psi = 0.797788393669  target - Psi = 9.617e-5
+   a = 0.8339  t = 5e-3    Psi = 0.797436663002  target - Psi = 0.0004479
+   a = 0.8339  t = 2e-2    Psi = 0.795559548105  target - Psi = 0.002325
+   a = 0.8339  t = 1e-1    Psi = 0.782258371202  target - Psi = 0.01563
+   max over the listed t: 0.79787290603 at t = 1e-3;  c04 certified sup over all t <= 0.797873708193

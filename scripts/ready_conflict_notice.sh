@@ -7,6 +7,7 @@
 # comments once per branch commit on every issue its commits reference (Refs/Closes #n), so the owner, the user and
 # the janitor (AGENTS.md §7) see it without having to notice it. DRY_RUN=1 prints the comment instead of posting it.
 set -u
+source "$(dirname "${BASH_SOURCE[0]}")/agent_ids.sh"
 branch=$1; shift
 files=("$@")
 tip=$(git rev-parse --short "origin/$branch")
@@ -14,7 +15,7 @@ master=$(git rev-parse --short origin/master)
 log=$(git log --reverse --format=%B "origin/master..origin/$branch")   # oldest first: the creator leads
 owners=$(printf '%s\n' "$log" | sed -nE 's/.*Agent-ID: *([A-Za-z]+-[0-9a-f]+).*/\1/p')
 # the owner named by the branch (AGENTS.md §3: <agent-id>/<topic>) comes first
-[[ "$branch" =~ ^((codex|claude)-[0-9a-f]{4})/ ]] && owners="${BASH_REMATCH[1]}
+[[ "$branch" =~ ^($agent_id_re)/ ]] && owners="${BASH_REMATCH[1]}
 $owners"
 owners=$(printf '%s\n' "$owners" | awk 'NF && !seen[$0]++' | paste -sd ' ' -)
 issues=$(printf '%s\n' "$log" | grep -oiE '(refs|close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+' \

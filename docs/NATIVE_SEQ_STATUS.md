@@ -15,50 +15,17 @@ records the native computations and their timing evidence. The scalar
 sixteenth-power check uses `decide +kernel`, so its scalar-tail consequences
 use only standard axioms.
 
-The current lower theorem is
-`Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement`, with
-endpoint `1.401700322371`. `MainResult.lower_target` discharges its unchanged
-Gaussian `NodeCaps` premise. The finite checks cover the original rows and
-mixed batches, both law-node banks, four refined-box chunks and the full
-coverage tree. The box and partition facts check the stronger 15,096-box
-cover in place of the previous cover. `lower_bound_of_capsRest` retains the
-weaker endpoint `1.401697117301` for the cached cap-assembly interface.
+The native checks of the lower bound are the row checks `Grothe/Lower/Cert/RowSS.lean`, the cells and the node
+caps of the mass row, the envelope (`Grothe/Lower/Cert/Envelope.lean`) and the node-cap facts: the range facts of
+the whole-fibre nodes, the coverage and piece facts of the localised nodes and the chord facts of every row
+([CAPS.md](CAPS.md)). Each is one sequential computation; the node caps are split into many modules, so that Lake
+checks them in separate processes.
 
-The old `Lower/Cert/Boxes0–3`, `Lower/Cert/Partition`, `RowCheck` and old-constant
-corollaries are retired. The generic `treeCoverOK`/`treeCoverOK_sound` pair proves
-coverage for the refined certificate. It requires both recursive children and
-includes cut boundaries; it omits the old unused straddler scan. Thus the old
-partition-specific proposal [#56](https://github.com/agalatan/grothendieck-lean/issues/56)
-is moot. No runtime saving has been measured for this change.
-
-The independent precompiled `GrotheCapsKernel` library holds the cap checker.
-The heavy range modules import its computation layer, while soundness and the
-refined lower-cover assembly stay outside that computation closure. Full caps
-verification and shared-cache publication run only through the droplet runner.
-A successful runner build checks both axiom reports, records the source digest in
-its verified cache and saves the branch cache; subsequent CI replays that cache.
-
-## Earlier measurements for retained chunks
-
-These module build timings were recorded on droplet `yo` under shared load on
-23 October 2026. They include elaboration and one sequential native check per
-module; they are not new measurements of the current candidate.
-
-| Chunk | Wall time |
-|---|---:|
-| `Rows0` | 967 s |
-| `Rows1` | 1,108 s |
-| `Rows2` | 557 s |
-| `Rows3` | 1,220 s |
-| `Rows4` | 392 s |
-| `Batches0` | 337 s |
-| `Batches1` | 344 s |
-| `Batches2` | 395 s |
-
-The earlier caps run at `4304b22` took 239 min 41 s wall time across fifteen
-four-range modules. Individual row modules took 2,255–10,377 s. These figures
-motivate reusing a verified cache; they do not predict the combined runner build's
-runtime. No timing for an individual range fact was isolated.
+The independent precompiled `GrotheCapsKernel` library holds the cap checker. The node-cap fact modules import only
+its computation layer and rational data, while soundness and the row assemblies stay outside that computation
+closure. The node caps are verified, and the shared cache published, only by CI on its heavy runner: a successful
+build checks the axiom report, records the source digest in its verified cache and saves the cache; subsequent CI
+replays that cache.
 
 ## Why process parallelism is permitted
 
