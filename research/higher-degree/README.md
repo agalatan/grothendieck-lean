@@ -1,9 +1,9 @@
 # Higher-degree games: start here
 
-The proved lower bound K_G^ℂ > 1.401700322371 comes from the cubic witness P₁,₀ − (149/200)P₂,₁. Even a perfect
-evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
+The proved lower bound K_G^ℂ > 1.4018 comes from the cubic witness P₁,₀ − (191/250)P₂,₁ with an identity tail
+([`../identity-tail/`](../identity-tail/README.md)). Even a perfect evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
 ledger 12.2). Larger lower bounds need games of higher degree. In particular, the third decimal of K_G^ℂ needs a
-certified 1.404, because the upper bound 1.404599395362 is already below 1.4046.
+certified 1.404, because the upper bound 1.40457588 is already below 1.4046.
 
 This folder records what is known about higher-degree games:
 - their numerical values and the responses that bind them;
