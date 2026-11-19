@@ -3,7 +3,7 @@
 The two-sided theorem for the complex Grothendieck constant is
 
 $$
-1.401700322371 < K_G^{\mathbb C} \le 1.40457588.
+1.4018 < K_G^{\mathbb C} \le 1.40457588.
 $$
 
 The upper entrypoint states that $140457588/100000000$ is admissible for every finite complex matrix. It also compares the constant with Haagerup’s proposed value,
@@ -22,7 +22,7 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **two-sided Lean theorem in this repository** | $\mathbf{1.401700322371 < K}$ | $\mathbf{K\le 1.40457588}$ |
+| Oct–Nov 2026 | **two-sided Lean theorem in this repository** | $\mathbf{1.4018 < K}$ | $\mathbf{K\le 1.40457588}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -76,45 +76,35 @@ definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as 
 
 ### The lower bound
 
-The witness is the operator $T = P_{1,0} - \tfrac{149}{200} P_{2,1}$ on $L^2$ of the standard Gaussian measure of
-$\mathbb{C}^n$, where $P_{1,0}$ and $P_{2,1}$ are the orthogonal projections onto the linear functions of $z$ and
-onto the cubic Wick chaos of bidegree $(2,1)$ (`witness`,
+The witness is the operator $T = P_{1,0} - \tfrac{191}{250} P_{2,1} + \tfrac{47}{2000}(1 - P_{1,0} - P_{2,1})$ on
+$L^2$ of the standard Gaussian measure of $\mathbb{C}^n$, where $P_{1,0}$ and $P_{2,1}$ are the orthogonal
+projections onto the linear functions of $z$ and onto the cubic Wick chaos of bidegree $(2,1)$, and the last term is
+an identity tail on the complement of the two chaoses (`witness`,
 [`Grothe/LowerAnalytic/Witness.lean`](Grothe/LowerAnalytic/Witness.lean)). The proof shows that
-$\lvert \langle f, Tg \rangle \rvert \le B = 891774069/1250000000 = 0.7134192552$ for all unimodular $f$, $g$ and all $n \ge 2$.
+$\lvert \langle f, Tg \rangle \rvert \le B = (1-\nu)\,B_{\mathrm{env}} + \nu$, with $\nu = 47/2000$ and
+$B_{\mathrm{env}} = 7064131/10^7$, for all unimodular $f$, $g$ and all $n \ge 2$; $1/B = 1.40191\ldots > 1.4018$.
 
 1. **Transfer.** For $u_\ell = z_\ell / \lVert z \rVert$ the sum $\sum_\ell \langle u_\ell, T u_\ell \rangle$ has
-   modulus at least $1 - \tfrac{349}{200}/(n+1)$ (`norm_pairVal_witness`), so every Grothendieck bound is at least
-   $1/B > 1.401700322371$ (`transfer_lower`, `Grothe/Lower/Transfer.lean`, which passes to finite matrices).
-2. **Reduction.** It suffices to bound $\mathrm{Re} \langle f, Tg \rangle$ (multiply $g$ by a phase). Let
-   $h = (f+g)/2$ and $k = (f-g)/2$, in coordinates where $P_{1,0} h$ lies on one coordinate. From the hypothesis
-   `NodeCaps` of step 4, `reductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 19 inequalities
-   for $\mathrm{Re} \langle f, Tg \rangle$, the rows. Row $r$ contains a convex function $\Psi_r$ of one real
-   variable, the supremum over twelve real parameters of an explicit integral against one complex Gaussian
-   variable minus a quadratic form (`rowPot`, `Grothe/LowerAnalytic/FibreSup.lean`). It is evaluated at a multiple
-   of $\lvert p \rvert$, where $p$ is the cubic chaos part, in the other coordinates, of the average of $k$ over
-   that coordinate. For the law of $U = \lvert p \rvert^2 / \lVert p \rVert^2$ (when $p = 0$, for example for
-   $f = g$, a fixed normalised cubic chaos takes its place: `poly_rep_H21`) Lean proves what holds for every
-   cubic chaos of bidegree $(2,1)$ in any number of variables: $\mathbb{E}\,U^2 \le 44$, a bound on
-   $\mathbb{E}\,U^3$ from the Wick expansion of the sixth cumulant, and the Stein cuts, families of inequalities
-   $\mathbb{E}\,G(U) \ge 0$ from Gaussian integration by parts (`gaussian_moments`, `steinCut_of_inputs`).
-3. **A finite certificate.** Three real parameters remain: $t = \lVert P_{1,0} h \rVert$, $\tau = \lVert p \rVert$,
-   and $x$ with $\mathbb{E}\,U^2 = 2 + x^2$. Boxes cover their domain; on each box a combination of rows and of
-   certified bounds on $\mathbb{E}\,\Psi_r$ gives $\mathrm{Re} \langle f, Tg \rangle \le B$ (`cover_sound`,
-   `box_sound`, `Grothe/Lower/Boxes.lean`). `native_decide` facts check the rows, the node certificates, every
-   box and the cover. The result, in `Grothe/Research/RefinedCoverResult.lean`, is
-   `lower_bound_of_completed_refinement : NodeCaps → IsGrothendieckBound K → 1.401700322371 < K`. Its cover
-   has 15,096 leaves; on some of them a finite convex mixture of rows replaces a single row
-   (`mixCover_bound`, `Grothe/Lower/FiniteMix.lean`), and 21 additional law witnesses are checked by one native fact
-   (`certRefinementBatches`, `Grothe/Research/LowerRefinementCheck.lean`).
-4. **The node caps.** `NodeCaps` says that each $\Psi_r$, less $10^{-11}$, lies below a stored rational at each
-   stored node. By convexity the vertex nodes suffice (`nodeCaps_of_vertexCaps`). At a vertex node, a pointwise
-   majorant with prices on a polar grid bounds the integral by a quadratic form in the parameters, whose
-   coefficients are enclosed by verified interval tables; an exact $LDL^{\mathsf T}$ factorisation then certifies
-   the cap for all parameters (`pot_le_of_nodeOK`, `Grothe/LowerAnalytic/CapGridOK.lean`). Some nodes of rows
-   12–15 need a finer argument: pieces cut out by linear constraints cover the parameter space up to two
-   symmetries of $\Psi_r$, and each piece has its own certificate (`nodeCap_of_ranges`,
-   `Grothe/LowerAnalytic/CapPieces/`). `capsRest` (`Grothe/MainResult.lean`) collects the 19 rows, and
-   `lower_target` is `lowerTarget_of_nodeCaps (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest capsRest))`.
+   modulus at least $1 - (1+e)/(n+1)$ with $e = 191/250$ (`norm_pairVal_witness`), so every Grothendieck bound is
+   at least $1/B$ (`transfer_lower`, `transferInputs_of_witnessCap`).
+2. **Reduction.** With $h = (f+g)/2$, $k = (f-g)/2$ and $t = \lVert P_{1,0} h \rVert \le 9/10$, the polarisation
+   identity gives $\mathrm{Re} \langle f, Tg \rangle = (1-\nu)\hat V + \nu$, where $\hat V$ has the weights
+   $\hat\varepsilon = 25/31$ and $\hat\nu = 47/1953$ (`VOf_eq_hat`). From the hypothesis `TailNodeCaps` of step 4,
+   `reductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 14 inequalities for $\hat V$, the
+   rows. Row $r$ contains a convex function $\Psi_r$ of one real variable, the fibre potential with the tail
+   $\hat\nu$: a supremum over real parameters of an explicit integral against one complex Gaussian variable minus a
+   quadratic form (`pot`, `Grothe/LowerAnalytic/FibreSup.lean`). Lean proves the facts it uses about the law of a
+   cubic chaos of bidegree $(2,1)$ in any number of variables: $\mathbb{E}\,\lvert q\rvert^4 \le 44\,(\mathbb{E}\,\lvert q\rvert^2)^2$,
+   the sixth-moment inequality, and the Stein cuts from Gaussian integration by parts. A mass row bounds the
+   cubic part $\lVert P_{2,1} k \rVert$ (`massRow`, `Grothe/Lower/MassRow.lean`).
+3. **The envelope.** Two scalar rows mix with a weight $\theta \in [0,1]$ into a row (`RowHolds.mix`). The envelope
+   has 1,800 cells covering $t \in [0, 9/10]$; on each a row, the tangent of the mass row or a mixture of two of them
+   is at most $B_{\mathrm{env}}$ (`certEnvelope`, soundness `env_bound`, `Grothe/Lower/Envelope.lean`).
+   `profile_bound` (`Grothe/LowerAnalytic/LowerBound.lean`) applies it to the rows of the reduction.
+4. **The node caps.** `TailNodeCaps` says that each $\Psi_r$, less $10^{-11}$, lies below a stored rational at each
+   stored node. `tailNodeCaps_cert` (`Grothe/LowerAnalytic/CapNodes.lean`) proves them with the checker
+   `GrotheCapsKernel/CapCheckNu.lean` ([CAPS.md](docs/CAPS.md)), and `lower_target` is
+   `lowerTarget_of_tailNodeCaps tailNodeCaps_cert` (`Grothe/MainResult.lean`).
 
 ### The upper bound
 
@@ -127,14 +117,14 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
 ### What the computer checks and what is trusted
 
 - **The Lean kernel** checks every definition and every proof step, including the soundness theorems of the
-  checkers (for example `box_sound`, `pot_le_of_nodeOK`, `head_le_of_check`). Besides the facts of the next item,
+  checkers (for example `env_bound`, `pot_le_of_nodeOKNu`, `head_le_of_check`). Besides the facts of the next item,
   the axiom report allows only `propext`, `Classical.choice` and `Quot.sound`.
 - **Compiled code** evaluates the `native_decide` facts. Each fact is a decidable statement about committed data,
   usually that a checker program returns `true`; the programs do interval and exact rational arithmetic on finite
   data. Lean does not reduce them in the kernel: it runs them as compiled code and records each result as an
   axiom named after the fact. This trusts the Lean compiler and its runtime in addition to the kernel. The
-  allowed facts are listed in `data/axioms/native.txt`: for the lower bound, the rows, node certificates, boxes
-  and cover of the certificate and the node caps (chord nodes, ranges of nodes, pieces and their coverage); for
+  allowed facts are listed in `data/axioms/native.txt`: for the lower bound, the rows, the mass row and the envelope
+  of the certificate and the node caps (chord nodes, ranges of nodes, pieces and their coverage); for
   the six-channel upper bound, the cell witnesses, overlap tables, weighted head and Hardy contour checks. The precise list is in the axiom report. The six rational tail comparisons use kernel reduction.
 - **The axiom report** is produced and checked by
   `lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py`. The check fails if a theorem of
@@ -161,9 +151,8 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
 | `Grothe/UpperTightBudget.lean`, `Grothe/UpperTightComparison.lean` | single-channel budgets and the comparison with independent reference mass and error radii |
 | `Grothe/UpperTightSix.lean`, `Grothe/UpperTightPanelTotals.lean` | six Gaussian error estimates; kernel checks of tighter totals of the existing panel caps |
 | `Grothe/Transfer.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality used by the single-channel proof |
-| `Grothe/Lower/` | the lower certificate: its checker in exact rational arithmetic with the soundness of rows, Stein cuts, node certificates and boxes; the generated row data; the transfer to finite matrices |
+| `Grothe/Lower/` | the lower certificate: its checker in exact rational arithmetic with the soundness of rows, Stein cuts, the mass row and the envelope; the generated row data; the transfer to finite matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis of the lower bound: the witness, chaos projections, the law of cubic chaos (moments, spectral and Gram budgets, Wick expansions), the potentials $\Psi_r$ and the row reduction; the node caps (`Cap*.lean`, the generated rows `CapRowKK` and pieces `CapPieces/`) |
-| `Grothe/Research/` | the box cover of the lower certificate, further node certificates, and the resulting theorem `lower_bound_of_refined_cover_data` |
 | `Grothe/Haagerup/` | the phase $z/\lvert z \rvert$ of a complex Gaussian: Hermite coefficients, kernel, Laplace representation |
 | `Grothe/Upper/` | the single-channel upper proof apart from Gaussian analysis: two-coordinate kernels, disk-valued roundings, tensor realisation of the preprocessors, soundness of the head computation, residual and tail arithmetic, comparison budgets; `Data.lean` holds the rounding parameters, the preprocessors and the energy table |
 | `Grothe/UpperChaos/` | chaos calculus on $\mathbb{C}^2$ (Hermite basis, Mehler formula, charge, energies), the rounding, the phase cover, the Hardy tail, the comparison with $X$, the stored Hermite expansions, and generated certificate modules |

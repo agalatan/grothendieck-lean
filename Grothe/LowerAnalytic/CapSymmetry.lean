@@ -145,28 +145,6 @@ lemma Jpot_le_of_mem_symOrbit (hc : a.cj = a) (hn : a.ng = a) (s q : ℝ) (P : S
   · rw [Jpot_ng E R ℓ β a ν hn]; exact hP w hw
   · rw [Jpot_cj E R ℓ β a ν hc, Jpot_ng E R ℓ β a ν hn]; exact hP w hw
 
-/-- **Coverage lemma.** If the pieces `Π_i` (`i ∈ I`) together with their images under `S_c`,
-`S_-`, `S_c S_-` cover the fibre space, and `J(·, s) ≤ q_i ≤ Q` on `Π_i`, then `Ψ(s) ≤ Q`. -/
-theorem pot_le_of_cover {ι : Type*} (I : Finset ι) (P : ι → Set Fib) (q : ι → ℝ) (Q s : ℝ)
-    (hc : a.cj = a) (hn : a.ng = a) (hcov : ∀ y : Fib, ∃ i ∈ I, y ∈ symOrbit (P i))
-    (hb : ∀ i ∈ I, ∀ y ∈ P i, Jpot E R ℓ β a ν y s ≤ q i) (hQ : ∀ i ∈ I, q i ≤ Q) :
-    pot E R ℓ β a ν s ≤ Q := by
-  refine ciSup_le fun y => ?_
-  obtain ⟨i, hi, hy⟩ := hcov y
-  exact (Jpot_le_of_mem_symOrbit E R ℓ β a ν hc hn s (q i) (P i) (hb i hi) hy).trans (hQ i hi)
-
-/-- **Coverage lemma, `max` form.** For a finite nonempty family with
-`⋃ᵢ (Πᵢ ∪ S_c Πᵢ ∪ S_- Πᵢ ∪ S_c S_- Πᵢ) = univ` and `J(·, s) ≤ qᵢ` on `Πᵢ`,
-`Ψ(s) ≤ maxᵢ qᵢ`. -/
-theorem pot_le_sup'_of_cover {ι : Type*} [Fintype ι] [Nonempty ι] (P : ι → Set Fib) (q : ι → ℝ)
-    (s : ℝ) (hc : a.cj = a) (hn : a.ng = a) (hcov : ⋃ i, symOrbit (P i) = univ)
-    (hb : ∀ i, ∀ y ∈ P i, Jpot E R ℓ β a ν y s ≤ q i) :
-    pot E R ℓ β a ν s ≤ Finset.univ.sup' Finset.univ_nonempty q := by
-  refine pot_le_of_cover E R ℓ β a ν Finset.univ P q _ s hc hn (fun y => ?_) (fun i _ => hb i)
-    (fun i _ => Finset.le_sup' q (Finset.mem_univ i))
-  obtain ⟨i, hi⟩ := mem_iUnion.1 (eq_univ_iff_forall.1 hcov y)
-  exact ⟨i, Finset.mem_univ i, hi⟩
-
 end
 
 end Grothe.LowerAnalytic

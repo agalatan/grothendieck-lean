@@ -14,15 +14,14 @@ The lists are data files, one name per line, sorted, union-merged by git (.gitat
 duplicates by `tools/gen_root_imports.py --check`:
 * default report: data/axioms/required.txt, data/axioms/native.txt;
 * --upper-six requires both modes/upper-six.required.txt and modes/upper-six.native.txt under data/axioms/;
-* --refined-cover and --law-nodes use modes/<mode>.required.txt and inherit the default native list
-  unless a mode-specific native list is present.
+  it is the only audit mode at present (one flag at most).
 """
 import argparse, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXDIR = os.path.join(ROOT, "data", "axioms")
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
-MODES = ("refined-cover", "law-nodes", "upper-six")
+MODES = ("upper-six",)
 
 
 def names(path):
@@ -44,8 +43,6 @@ def audit_policy(mode):
 
 # the default lists, as module constants (used by the tests and by other tools)
 REQUIRED, NATIVE = audit_policy("default")
-REFINED_LOWER = audit_policy("refined-cover")[0]
-LAW_NODES = audit_policy("law-nodes")[0]
 
 
 # A name may contain apostrophes; its closing quote precedes the report phrase.
@@ -83,10 +80,11 @@ def parse_reports(text):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    modes = parser.add_mutually_exclusive_group()
-    for mode in MODES:
-        modes.add_argument(f"--{mode}", action="store_const", const=mode, dest="mode",
-                           help=f"check the {mode} report")
+    if MODES:  # an empty mutually exclusive group breaks argparse's usage text on Python <= 3.12
+        modes = parser.add_mutually_exclusive_group()
+        for mode in MODES:
+            modes.add_argument(f"--{mode}", action="store_const", const=mode, dest="mode",
+                               help=f"check the {mode} report")
     parser.set_defaults(mode="default")
     args = parser.parse_args(argv)
     try:

@@ -1,19 +1,13 @@
 import Grothe.LowerAnalytic.Frame
-import Grothe.LowerAnalytic.NodeCaps
 
 /-!
 # The per-row Gaussian reduction (L4): `ReductionHyp` from the node caps
 
-`NodeCaps` is the shared node-cap hypothesis from `NodeCaps.lean`, bounding the same
-19 certified fibre potentials `rowPot k` at every stored node.  It is the case without a tail of
-`TailNodeCaps ν` (`RowGaussian.lean`), the node caps of the potentials of the rows with the
-identity tail `ν` (`tailNodeCaps_zero`).
-
 `reductionHyp_of_nodeCaps`: for `n ≥ 2` every unimodular pair satisfies `ReductionHyp n e ν f g`
 (rotate `P₁,₀h` to the visible coordinate by a unitary frame, then `sharedReduction_frame`), for
 every witness with weight `e` and tail `ν` whose hat weight is the constant `ε` of the rows, given
-`TailNodeCaps (nuHat ν)`.  The refined finite-cover layer converts this reduction into the lower
-endpoint; the certified witness is `(e, ν) = (ε, 0)`, with the hypothesis `NodeCaps`.
+`TailNodeCaps (nuHat ν)` (`RowGaussian.lean`), the node caps of the potentials of the rows with the identity tail.
+The envelope converts this reduction into the lower endpoint (`LowerBound.lean`).
 -/
 
 open MeasureTheory Grothe.Lower
@@ -21,9 +15,6 @@ open MeasureTheory Grothe.Lower
 namespace Grothe.LowerAnalytic
 
 noncomputable section
-
-/-- Without a tail the node caps of the potentials of the rows are `NodeCaps`. -/
-lemma tailNodeCaps_zero : TailNodeCaps 0 ↔ NodeCaps := Iff.rfl
 
 /-- **The per-row Gaussian reduction** (L4): `ReductionHyp` for every unimodular pair in dimension
 `n + 1 ≥ 2`, from the node caps alone, for a witness with weight `e` and tail `ν` whose hat weight

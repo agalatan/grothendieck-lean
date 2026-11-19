@@ -67,7 +67,8 @@ class ProcFS:
                     "flags": int(fields[6]),
                     "rss": max(0, int(fields[21])) * os.sysconf("SC_PAGE_SIZE"),
                     "comm": raw[raw.index("(") + 1:end]}
-        except FileNotFoundError:
+        except (FileNotFoundError, ProcessLookupError):
+            # Linux reports a process that exits between two /proc reads as ENOENT or ESRCH: it is gone.
             return None
         except (OSError, ValueError, IndexError, StopIteration, UnicodeError) as error:
             raise CoexistError(f"cannot read basic process {pid}: {type(error).__name__}") from error
@@ -117,8 +118,8 @@ class ProcFS:
                 final = basic()
                 if final is None:
                     return None
-            except FileNotFoundError:
-                # A missing cmdline path alone must not hide a live/reused PID.
+            except (FileNotFoundError, ProcessLookupError):
+                # A missing cmdline path (ENOENT or ESRCH) alone must not hide a live/reused PID.
                 final = basic()
                 if final is None:
                     return None
@@ -171,7 +172,7 @@ class ProcFS:
             require(all(process[field] == after[field] for field in ("pid", "start_ticks", "pgid", "uid")),
                     "controller identity changed during authentication")
             return dict(process, cwd=cwd, environ=env)
-        except FileNotFoundError:
+        except (FileNotFoundError, ProcessLookupError):
             return None
         except (OSError, ValueError, StopIteration, UnicodeError) as error:
             raise CoexistError(f"cannot validate process {pid}: {type(error).__name__}") from error
