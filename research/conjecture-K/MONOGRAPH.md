@@ -1028,9 +1028,9 @@ improves the bound; it stays the cheapest test of K at one row. The responses th
 tested triangle/support transfer of the peak results exceeds the allowance: the profile change alone costs 7·10⁻⁴
 against 1.04·10⁻⁴ [STATUS 8.6]. One route is new component estimates at M (remote cap, joint premise, odd premise); a
 sharper transfer or a direct all-sector estimate at M are others. For 1.402 at ε = 1891/2500, the reusable envelope of
-the 19 Lean rows leaves four response intervals, among them [0.696, 0.84] [STATUS 8.7].
+the 19 rows at ε = 149/200 leaves four response intervals, among them [0.696, 0.84] [STATUS 8.7].
 
-**The exterior at ε = 299/400.** Moving the 19 Lean rows from ε₀ = 149/200 to e = 299/400 changes the payoff by
+**The exterior at ε = 299/400.** Moving the 19 rows (in Lean until #525) from ε₀ = 149/200 to e = 299/400 changes the payoff by
 δ(‖Qk‖² − ‖Qh‖²), δ = 1/400. The retained square absorbs −δ‖Qh‖², because
 2β²/ε₀ − ε₀‖x + (β/ε₀)v‖² − δ‖x‖² = 2β²/e − e‖x + (β/e)v‖² when ‖v‖² = 2, and ‖Qk‖ ≤ ρ or the response energies
 bound δ‖Qk‖². On 1,674 exact cells this proves V ≤ 713263/10⁶ < 500/701 for every response with t ≤ 0.8165 or
@@ -1044,10 +1044,10 @@ STATUS 8.9]. Ten central rows cover the rest: if their retained all-sector inequ
 **The exterior at ε = 3/4 and ε = 94/125.** Pushing ε above 299/400 was blocked near t = 0 by the crude row t² + ερ².
 Setting c(ε) = (2141/3150)ε makes the piecewise potential φ_{c(ε)}^{(ε)}(r) = max_{y∈[0,1]}(2εry − c(ε)y²) equal to
 (ε/ε₁)·φ_{c₁}^{(ε₁)}(r) identically on [0, ∞) (ε₁ = 25/31, c₁ = 2141/3906), so the 136-node pruned spectral Stein
-certificate `cert_mass_0.5_pruned.json` (`../identity-tail/STATUS.md` 5.5, fact (3); **C**, outside Lean, whose hypotheses are
-Lean's `Moments`, `SteinCut` and `Lower.ρ`) transfers without an identity tail to give
+certificate `cert_mass_0.5_pruned.json` (`../identity-tail/STATUS.md` 5.5, fact (3); **Lean** at ε₁ since #525, `certMassRow` in `Grothe/Lower/Cert/MassRow.lean`,
+with hypotheses Lean's `Moments`, `SteinCut` and `Lower.ρ`) transfers without an identity tail to give
 V_ε ≤ (1 − c(ε))t² + c(ε) + (ε/ε₁)S₁ − ‖P₁,₀k‖² − ε‖P₂,₁h‖².
-Combined with the 19 Lean rows, retained-square two-row mixing (`RowHolds.mix`), operator-change recompletion and 2.12b,
+Combined with the 19 rows at ε = 149/200, retained-square two-row mixing (`RowHolds.mix`), operator-change recompletion and 2.12b,
 this proves V_{3/4} ≤ 7132652/10⁷ < 500/701 outside (0.795, 0.864) using `Lower.ρ` alone, and, adding ρ = 46731/50000
 (2.1), V_{94/125} ≤ 7132660/10⁷ < 500/701 outside (0.7515, 0.863) [homothety and covers P + C, author only · gemini-9a4e · STATUS 8.12].
 Outward-rounded integer Rice enclosures certify nine central rows on [0.795, 0.864] at ε = 3/4 with allowances above

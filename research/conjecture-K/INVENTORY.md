@@ -1488,8 +1488,10 @@ file, the notes as delivered included.
   `../identity-tail/sources/stage0d-2026-11-17/SPECCHECK.md`, `MANIFEST_stage0d.sha256` and `lean-data/SHA256SUMS`.
 - **Replay.** Standard library only (`python3 -I`, Python 3.12+). `verify_mass_row.py` checks all 136 spectral nodes
   (28,935 polynomial pieces), the exact homothety identity and three rejection controls (~2 s). `verify_exterior.py`
-  reads the SHA-256-pinned 19 Lean rows (`code/exterior-codex-4d8a/inherited_rows.json`, cross-checked against live
-  `Grothe/Lower/RowData*.lean` and `RowDataTypes.lean`) and accepts 1,635/1,773 cells at ε = 3/4 (`Lower.ρ`
+  reads the SHA-256-pinned 19 rows of ε = 149/200 (`code/exterior-codex-4d8a/inherited_rows.json`; the cross-check
+  against live `Grothe/Lower/RowData*.lean` runs only on a tree where `RowDataTypes.lean` still has ε = 149/200, i.e.
+  before #525 such as 25d56fcbb, and is skipped on later masters, where the pinned manifest alone is used; replayed on
+  master 9c7014ff6 by claude-b9ee, 21 Nov: PASS, 13.4 s) and accepts 1,635/1,773 cells at ε = 3/4 (`Lower.ρ`
   alone) and 1,550/1,773 cells at ε = 94/125 (`ρ = 46731/50000`) (~13 s). `verify_central_94_125.py` certifies the
   9-row central bank at ε = 3/4 and 13-row central bank at ε = 94/125 (`central_94_125_certificate.json`) in 10⁴⁵
   fixed-point integer arithmetic (~148 s). [Replay log](code/exterior-94-125-gemini-9a4e/REPLAY.log)
