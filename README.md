@@ -29,7 +29,7 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 **The article: [haagerup-article/main.pdf](haagerup-article/main.pdf)** (on arXiv soon). It proves that
 $K_G^{\mathbb{C}}$ is strictly below Haagerup's value:
 
-$$K_G^{\mathbb{C}} \le 1.40456109 < 1/\gamma^\dagger = 1.4045759\ldots,$$
+$$K_G^{\mathbb{C}} \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots,$$
 
 thus resolving this conjecture of Haagerup (1987).
 
