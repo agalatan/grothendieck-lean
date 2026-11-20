@@ -5,6 +5,8 @@ The article (its TeX source and PDF, next to this file) and, in `anc/` (the arXi
 ```lean
 theorem Haagerup.isBound_cert :
     Haagerup.Statement.IsBound (140457588 / 100000000 : ℝ)
+theorem Haagerup.inv_gammaDagger_gt :
+    (140457588 / 100000000 : ℝ) < 1 / Haagerup.Statement.gammaDagger
 theorem Haagerup.constant_lt_inv_gammaDagger :
     Haagerup.Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger
 ```
@@ -21,6 +23,7 @@ that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`an
   `% TODO(author)` comment, to strip before arXiv).
 - `figures/make_figures.py` decodes `f_tig` and `tigMuList` directly from `anc/Grothe/UpperSix/Haagerup/Data/` and
   writes `figures/tiger_mu.pdf` (Figure 1) and `figures/tiger_phase.pdf`.
+- Run `python3 figures/check_alternating.py` here to reproduce the plotted endpoint and the full alternating-sum enclosures for channels 0 and 4 using integer arithmetic.
 
 ## `anc/`: the Lean package
 
