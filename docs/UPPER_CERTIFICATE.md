@@ -80,11 +80,13 @@ Grothendieck upper bound. Those shared certificates remain part of the proof.
 polynomial with an exact trigonometric antiderivative. The endpoint also states
 `constant_lt_inv_gammaDagger`, comparing the complex constant with its reciprocal.
 
-The single-rounder head, adjusted Hardy budget, weighted three-band transfer and
+The earlier single-rounder head, adjusted Hardy budget, weighted three-band transfer and
 looser port error endpoints are retired. The active proof still uses the
 underlying Gaussian integrals, interval arithmetic and certified energy table.
 The old source is available in the branch history. The two numerical endpoints
 have separate import graphs, checked in `scripts/test_local_build_targets.py`.
+
+The arXiv article uses its own six-channel proof and frozen bound. Its Lean sources and data are independent of the eighteen-channel endpoint. [Six-channel bridge](../Grothe/UpperSixResult.lean) · [Article proof](../haagerup-article/anc/README.md).
 
 ## Reproducing the data locally
 
@@ -139,7 +141,7 @@ energy table and uses `native_decide`. The cell-residue contractions, signed
 head, root tables, contour covers, and GT table support and band masses also
 use registered native checks. These trust Lean's compiler and runtime in
 addition to its kernel. The endpoint audit checks transitive dependencies
-against `data/axioms/native.txt`.
+against `data/axioms/modes/upper-mixture.native.txt`.
 
 Build and audit the upper theorem locally with
 
@@ -150,7 +152,7 @@ lake env lean scratch/UpperMixtureAxioms.lean | python3 scripts/check_axioms.py 
 ```
 
 The focused report checks the exact rational bound, the strict decimal and
-the phase-integral comparison against the repository's native allowlist.
+the phase-integral comparison against the eighteen-channel native allowlist.
 
 The lower certificate has its own target, `Grothe.LowerResult`. Both sides use
 the same definition of the constant in `Grothe.Statement`, together with

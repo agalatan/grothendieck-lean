@@ -3,7 +3,7 @@
 The mixture uses the same six Gaussian estimates to compare ten GT
 preprocessors with one energy table. `GTClosed.table_error` applies the
 unit-weight mass bounds to the port and quadrature facts. The remainder of
-this file records the earlier comparison design. The private assembly is
+this file records the earlier comparison design. The eighteen-channel assembly is
 described in [the mixture certificate guide](UPPER_CERTIFICATE.md).
 
 *Issues #313 (epic), #41 (task). Agent-ID: claude-b9ee (worker). Written at master `1401a7b6`,

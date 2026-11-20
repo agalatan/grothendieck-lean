@@ -19,7 +19,7 @@ projections and for the unimodular test family).  In `L²(γ_n)`:
   exist, and the **witness** with the weight `e ≥ 0` of the third chaos and the identity tail
   `ν ≥ 0` is `witness n e ν = P₁,₀ − e P₂,₁ + ν (1 − P₁,₀ − P₂,₁)`
   (`witnessOf n K e ν` for a general closed `K`; the value theorem needs only `K ⊥ H₁,₀`).
-  The certified lower bound uses `(e, ν) = (ε, 0)`, the operator `P₁,₀ − ε P₂,₁`, `ε = 149/200`.
+  The lower bound uses `(e, ν) = (191/250, 47/2000)`, whose hat weight is the weight `ε = 25/31` of the rows.
 * `uL n l = z_l/‖z‖` (`0` at `z = 0`) is the unimodular-normalised coordinate family:
   `∑ₗ |uₗ|² ≤ 1` everywhere (`sum_normSq_uc_le`).
 
@@ -458,8 +458,7 @@ instance : (H21 n).HasOrthogonalProjection := by
 lemma H21_le_orthogonal : H21 n ≤ (H10 n)ᗮ := inf_le_right
 
 /-- **The witness** `T = P₁,₀ − e P₂,₁ + ν (1 − P₁,₀ − P₂,₁)` on `L²(γ_n)`, with the weight `e` of
-the third chaos and the identity tail `ν`.  The certified one is `witness n ε 0 = P₁,₀ − ε P₂,₁`,
-`ε = 149/200`. -/
+the third chaos and the identity tail `ν`.  The lower bound uses `witness n (191/250) (47/2000)`. -/
 def witness (e ν : ℝ) : L2G n →L[ℂ] L2G n := witnessOf n (H21 n) e ν
 
 /-- **The value of the witness on the family `uₗ = zₗ/‖z‖`**: `‖Σₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+e)/(n+1)`

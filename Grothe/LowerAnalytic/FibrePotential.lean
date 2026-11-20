@@ -22,9 +22,9 @@ invertible (`E ≻ 0`, `R ≻ 0`), the supremum over `m` in (1) is the supremum 
   `J_r(y, s) = ∫ (|L + B·(My + s a)| + |L − B·(My + s a)|) dγ − yᵀMy`             (`Jpot`),
 
 and `Ψ_r(s) = sup_y J_r(y, s)` (`pot`).  In `FibreSup.lean` both take one more parameter, the
-weight `ν` of an identity tail of the witness (issue #183): the integrand `|A| + |B|` becomes
+weight `ν` of an identity tail of the witness: the integrand `|A| + |B|` becomes
 `Ψ_ν(A, B) − ν` with the pair potential `Ψ_ν` (`psiT`), and the formulas above are the case `ν = 0`
-(`Jpot_zero`), which is the potential `rowPot` of the certified rows.  This file has the fibre
+(`Jpot_zero`).  This file has the fibre
 functions, their growth bounds and the packed variable; proved in `FibreSup.lean`:
 
 * `fibreExpr_le_Jpot`: for `f₀, g₀` with `|f₀|, |g₀| ≤ 1`, `h₀ = (f₀+g₀)/2`, `k₀ = (f₀−g₀)/2` and

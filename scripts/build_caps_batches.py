@@ -1,9 +1,31 @@
 #!/usr/bin/env python3
-"""Build the registered caps leaves in bounded groups, without certifying a cache.
+"""Build the node caps' computational leaves in bounded groups, without certifying a cache.
 
-The registry is a source/build plan, not a verification receipt. Lake still checks
-its own traces on every invocation. The ordinary full Grothe build, strict audit,
-Bridge probe and successful Actions upload must follow this preparatory step.
+usage: python3 scripts/build_caps_batches.py [--plan] [--jobs N] [--rss-limit-gib G] [--disk-floor-gib 3] [...]
+       python3 scripts/build_caps_batches.py --write-registry    (the same as python3 scripts/caps_stamp.py --write-registry)
+
+The plan comes from the registry data/tail-caps/build.json, which scripts/caps_stamp.py first checks against the sources
+(nothing is built if they differ). Groups of at most --jobs modules, each one `lake build` whose Lean children run
+single-threaded (a Lake overlay that adds only `weakLeanArgs = ["-j1"]`), in this order:
+  pure      the computation closure of the leaves (the checker library, the row data, the ...Defs modules, CapCommon,
+            the rows' Data and the pieces' D modules), in topological order;
+  native    the leaves CapRowKK/AnchorRangeJJ, CapPieces/C* and CapPieces/R* (one native fact each), by the cost
+            estimate of tools/gen_tail_caps.py's plan (recorded in the registry), heaviest first;
+  pure      what the row assemblies import beyond that (the node theorems CapPieces/N*, CapCommonFacts and the
+            analytic modules of the soundness chain), in topological order; derived from the import graph when
+            planning, not registered (none of it is a caps leaf, though an analytic module may hold a native fact);
+  assembly  the row assemblies CapRowKK/Assembly (one native fact each, chordsOKRowKK), last: they import the leaves.
+Every import of a group's modules is built by an earlier group or within the group, so a group never runs more than
+--jobs Lean processes. The groups of the proof layer (the second `pure` phase and the assemblies) hold at most one
+module per GIB_PER_PROOF GiB of the RSS limit: their Lean processes load the analytic soundness chain, and the guard
+adds up the resident sets (mapped .olean pages included) of all owned processes. --plan prints the plan as JSON
+(`groups`: a list of [kind, [modules]]; every group that is not `pure` holds computational leaves) and builds
+nothing. The guard pauses (exit 75) on foreign Lean/Lake work, owned RSS above the limit, free disk below the floor, a
+stop file, or a Lean child without -j1; re-invoking the same command resumes (Lake reuses exactly what is built;
+receipts never skip a target).
+
+The registry is a source/build plan, not a verification receipt. Lake still checks its own traces on every invocation;
+the full Grothe build, the axiom report, CI's probe and its cache upload must follow this preparatory step.
 """
 from __future__ import annotations
 
@@ -24,21 +46,12 @@ import sys
 import time
 import tomllib
 
-from caps_stamp import ClosureError, imports_of, is_project
-import caps_stamp as active_registry
+from caps_stamp import ClosureError
+import caps_stamp
 import caps_coexist
 
 ROOT = Path(__file__).resolve().parents[1]
-REGISTRY = "data/caps-m/plan/row-certificates/row12-build.json"
-OLD_ROWS = (*range(12), 16, 17, 18)
-DIRECT = ["Grothe/LowerAnalytic/CapNodes.lean", "Grothe/LowerAnalytic/CapRow12/Assembly.lean"]
-CONFIG = ["lakefile.toml", "lake-manifest.json", "lean-toolchain"]
-EXECUTION = ["scripts/build_caps_batches.py", "scripts/caps_stamp.py", "scripts/caps_coexist.py"]
-FORMAT = "caps-bounded-build-v1"
-ACTIVE_DECLARATION_FIELDS = {"format", "scope", "legacy_rows_input", "legacy_rows", "active_rows", "retained_proofs", "provenance"}
-ACTIVE_DERIVED_FIELDS = ("compute_roots", "direct_hash_roots", "pure_roots", "native_declarations_by_root",
-                         "input_sha256", "computation_input_sha256", "source_sha256", "execution_source_sha256",
-                         "derived_counts", "max_parallel_leaves", "lean_child_threads")
+REGISTRY = caps_stamp.REGISTRY
 
 
 class BuildError(Exception):
@@ -81,289 +94,53 @@ def source_path(name: str) -> str:
     return name.replace(".", "/") + ".lean"
 
 
-def lean_code(text: str) -> str:
-    """Remove nested comments and strings before looking for native tactics."""
-    out, i, depth, quoted = [], 0, 0, False
-    while i < len(text):
-        if depth:
-            if text.startswith("/-", i):
-                depth += 1
-                i += 2
-            elif text.startswith("-/", i):
-                depth -= 1
-                i += 2
-            else:
-                i += 1
-        elif quoted:
-            if text[i] == "\\":
-                i += 2
-            elif text[i] == '"':
-                quoted = False
-                i += 1
-                out.append(" ")
-            else:
-                i += 1
-        elif text.startswith("--", i):
-            end = text.find("\n", i)
-            i = len(text) if end < 0 else end
-        elif text.startswith("/-", i):
-            depth = 1
-            i += 2
-            out.append(" ")
-        elif text[i] == '"':
-            quoted = True
-            i += 1
-            out.append(" ")
-        else:
-            out.append(text[i])
-            i += 1
-    if depth or quoted:
-        raise BuildError("unterminated Lean comment/string")
-    return "".join(out)
+def validate_registry(root: Path, registry: dict) -> dict:
+    """The registry's checked view (caps_stamp.check_registry): it must be exactly what the sources give."""
+    return caps_stamp.check_registry(caps_stamp.Sources(root), registry)
 
 
-class Graph:
-    def __init__(self, root: Path, overlay: Path | None = None):
-        self.root, self.overlay = root, overlay
-        self.dependencies: dict[str, list[str]] = {}
-        self.native: dict[str, bool] = {}
-
-    def path(self, relative: str) -> Path:
-        relative_path(relative)
-        candidate = self.overlay / relative if self.overlay else None
-        path = candidate if candidate and candidate.is_file() else self.root / relative
-        if not path.is_file() or path.is_symlink():
-            raise BuildError(f"missing or symlinked source: {relative}")
-        return path
-
-    def load(self, name: str) -> None:
-        if name in self.dependencies:
-            return
-        path = self.path(source_path(name))
-        self.dependencies[name] = [m for m in imports_of(path) if is_project(m)]
-        self.native[name] = bool(re.search(r"\bnative_decide\b", lean_code(path.read_text())))
-        for imported in self.dependencies[name]:
-            self.load(imported)
-
-    def ordered(self, roots: list[str]) -> list[str]:
-        result, active, done = [], set(), set()
-
-        def visit(name):
-            if name in active:
-                raise BuildError(f"project import cycle at {name}")
-            if name in done:
-                return
-            self.load(name)
-            active.add(name)
-            for dependency in self.dependencies[name]:
-                visit(dependency)
-            active.remove(name)
-            done.add(name)
-            result.append(name)
-
-        for name in roots:
-            visit(name)
-        return result
+def assembly_prerequisites(root: Path, registry: dict) -> list[str]:
+    """What the row assemblies import beyond the pure roots and the compute roots, in topological order."""
+    order, _ = caps_stamp.graph(caps_stamp.Sources(root), [module(p) for p in registry["assembly_roots"]])
+    built = set(registry["pure_roots"]) | set(registry["compute_roots"])
+    return [source_path(name) for name in order if source_path(name) not in built]
 
 
-def expected_roots(root: Path) -> list[str]:
-    plan = root / "data/caps-m/plan/row-certificates"
-    generation = json.loads((plan / "row12-generation.json").read_text())
-    pieces = json.loads((plan / "row12-pieces.json").read_text())
-    anchors = json.loads((plan / "row12-anchors.json").read_text())
-    chunk, span = generation["piece_chunk"], generation["anchor_range_size"]
-    if generation["row"] != 12 or chunk != 4 or span != 16:
-        raise BuildError("unexpected Row12 generation profile")
-    if len(pieces) != 88 or len({p["i"] for p in pieces}) != 88:
-        raise BuildError("expected 88 distinct Row12 localized nodes")
-    roots = [f"Grothe/LowerAnalytic/CapRow{k:02d}.lean" for k in OLD_ROWS]
-    roots += [f"Grothe/LowerAnalytic/CapPieces/C12x{p['i']}.lean" for p in pieces]
-    roots += [f"Grothe/LowerAnalytic/CapPieces/R12x{p['i']}_{i}.lean"
-              for p in pieces for i in range(math.ceil(len(p["pieces"]) / chunk))]
-    roots += [f"Grothe/LowerAnalytic/CapRow12/AnchorRange{i:02d}.lean"
-              for i in range(math.ceil(anchors["census"]["nodes"] / span))]
-    if len(roots) != 1322:
-        raise BuildError(f"expected 15 + 1307 compute roots, got {len(roots)}")
-    return roots
+def groups(registry: dict, jobs: int, prerequisites=(), proof_jobs: int | None = None):
+    """(kind, modules) groups in build order (module docstring): at most `jobs` modules each, at most `proof_jobs`
+    (default `jobs`) in the groups of the proof layer."""
+    proof_jobs = jobs if proof_jobs is None else proof_jobs
+    for value in (jobs, proof_jobs):
+        if type(value) is not int or value < 1:
+            raise BuildError("jobs must be a positive integer")
+    cost = registry["leaf_cost_seconds"]
+    last = set(registry["assembly_roots"])
+
+    def by_cost(paths):
+        return sorted(paths, key=lambda path: (-cost[path], path))
+
+    for kind, paths, size in (("pure", list(registry["pure_roots"]), jobs),
+                              ("native", by_cost(p for p in registry["compute_roots"] if p not in last), jobs),
+                              ("pure", list(prerequisites), min(jobs, proof_jobs)),
+                              ("assembly", by_cost(last), min(jobs, proof_jobs))):
+        for i in range(0, len(paths), size):
+            yield kind, list(map(module, paths[i:i + size]))
 
 
-def active_declaration(value: dict) -> dict:
-    """Schema projection only; all row/input derivation belongs to caps_stamp."""
-    required = {"format", "legacy_rows_input", "legacy_rows", "active_rows", "retained_proofs"}
-    if (not isinstance(value, dict) or value.get("format") != active_registry.ACTIVE_FORMAT
-            or not required <= set(value)
-            or not set(value) <= ACTIVE_DECLARATION_FIELDS | set(ACTIVE_DERIVED_FIELDS)):
-        raise BuildError("need an explicit complete v2 active-row declaration")
-    return {key: item for key, item in value.items() if key in ACTIVE_DECLARATION_FIELDS}
-
-
-def current_active_registry(root: Path):
-    """Observe the ONE canonical registry, never discover active rows by glob."""
-    path = active_registry._active_path(root, REGISTRY, optional=True)
-    try:
-        path.lstat()
-    except FileNotFoundError:
-        return path, None, None
-    data = path.read_bytes()
-    value = active_registry._active_json(data)
-    known_v1 = (isinstance(value, dict) and value.get("format") == FORMAT
-                and type(value.get("row")) is int and value["row"] == 12)
-    known_v2 = isinstance(value, dict) and value.get("format") == active_registry.ACTIVE_FORMAT
-    if not (known_v1 or known_v2):
-        raise BuildError("existing canonical active registry is malformed or has an unknown format")
-    return path, data, value
-
-
-def preserve_active_declarations(previous, declaration):
-    """Add rows/proofs; no implicit drop or replacement of an activated record."""
-    if previous is None:
-        return
-    if not isinstance(previous, dict):
-        raise BuildError("existing canonical active registry is malformed")
-    rows = {item["row"]: item for item in declaration["active_rows"]}
-    if previous.get("format") == FORMAT and type(previous.get("row")) is int and previous["row"] == 12:
-        if 12 not in rows:
-            raise BuildError("v1 Row12 must remain explicitly active during migration")
-        # These are v1's fixed historical input locations, not a new row census.
-        for key, suffix in (("generation_config", "generation"), ("pieces", "pieces"),
-                            ("selection", "selection"), ("anchors", "anchors")):
-            if rows[12][key] != f"data/caps-m/plan/row-certificates/row12-{suffix}.json":
-                raise BuildError("v1 Row12 input declarations must be preserved")
-        return
-    old = active_declaration(previous)
-    old_rows = old["active_rows"]
-    if not isinstance(old_rows, list) or any(not isinstance(item, dict) or type(item.get("row")) is not int for item in old_rows):
-        raise BuildError("existing active-row declarations are malformed")
-    for item in old_rows:
-        if not active_registry._active_equal(rows.get(item["row"]), item):
-            raise BuildError("active row cannot be dropped/replaced by registry regeneration")
-    for item in old["retained_proofs"]:
-        if not any(active_registry._active_equal(item, new) for new in declaration["retained_proofs"]):
-            raise BuildError("retained proof cannot be dropped/replaced by registry regeneration")
-
-
-def registry_snapshot_unchanged(root, snapshot):
-    _, data, _ = snapshot
-    if current_active_registry(root)[1] != data:
-        raise BuildError("canonical active registry changed during preparation")
-
-
-def derive_active_build_registry(root: Path, declaration: dict, *, materialized: bool = True) -> dict:
-    """Pure shared-source derivation; neither preparation nor regeneration writes."""
-    root = Path(root).absolute()
-    snapshot = current_active_registry(root)
-    declaration = active_declaration(declaration)
-    view = active_registry.derive_active_registry(root, declaration, require_materialized=materialized)
-    preserve_active_declarations(snapshot[2], declaration)
-    registry_snapshot_unchanged(root, snapshot)
-    if not materialized:
-        return {"format": "caps-active-registry-source-proposal/v1", "active_declaration": declaration,
-                "declaration_view": view, "materialized": False, "active_registry_published": False,
-                "native_verified": False, "cache_uploaded": False}
-    return declaration | {name: view[name] for name in ACTIVE_DERIVED_FIELDS}
-
-
-def make_registry(root: Path, overlay: Path | None = None, *, active_declaration_value: dict | None = None) -> dict:
-    """Explicit regeneration; preserve the historical v1 call/return contract."""
-    # Preserve v1's historical Path call contract (macOS /var may be aliased).
-    # The explicit v2 derivation below still requires its canonical root.
-    snapshot = current_active_registry(Path(root).resolve())
-    previous = snapshot[2]
-    if active_declaration_value is not None or (isinstance(previous, dict) and previous.get("format") == active_registry.ACTIVE_FORMAT):
-        if overlay is not None:
-            raise BuildError("v2 registry requires materialized canonical sources, never an inactive overlay")
-        value = derive_active_build_registry(root, active_declaration_value if active_declaration_value is not None else previous)
-        registry_snapshot_unchanged(Path(root).resolve(), snapshot)
-        return value
-    roots = expected_roots(root)
-    graph = Graph(root, overlay)
-    heavy = set(map(module, roots))
-    ordered = graph.ordered(["GrotheCapsKernel", *map(module, roots)])
-    for name in ordered:
-        if graph.native[name] != (name in heavy):
-            raise BuildError(f"unregistered native fact or non-native compute root: {name}")
-        if name in heavy and any(dep in heavy for dep in graph.ordered(graph.dependencies[name])):
-            raise BuildError(f"compute roots must be independent leaves: {name}")
-    pure = [source_path(name) for name in ordered if name not in heavy]
-    files = sorted(set(roots + pure + DIRECT + CONFIG))
-    return {"format": FORMAT, "row": 12, "scope": "preparatory native leaf build; full Grothe/audit still required",
-            "compute_roots": roots, "direct_hash_roots": DIRECT, "pure_roots": pure,
-            "source_sha256": {path: sha(graph.path(path).read_bytes()) for path in files},
-            "execution_source_sha256": {path: sha((root / path).read_bytes()) for path in EXECUTION},
-            "compute_count": 1322, "row12_compute_count": 1307,
-            "native_kind_counts": {"existing_row_modules": 15, "row12_coverage_leaves": 88,
-                                   "row12_piece_range_leaves": 1194, "row12_anchor_range_leaves": 25},
-            "max_parallel_leaves": 2, "lean_child_threads": 1}
-
-
-def overlay_proposal_destination(root: Path, target: Path):
-    """Inactive overlays may create only a NEW, clearly non-active artifact."""
-    relative = str(target.relative_to(root))
-    canonical = root / REGISTRY
-    if target.resolve() == canonical.resolve():
-        raise BuildError("an inactive overlay cannot publish the canonical active registry")
-    active_registry._active_path(root, relative, optional=True)
-    allowed = (".lake/caps-registry-proposals/", "handoff/caps-centre/registry-proposals/")
-    if not relative.startswith(allowed) or not relative.endswith(".json") or target.exists():
-        raise BuildError("overlay preparation requires a NEW confined inactive registry-proposal JSON path")
-
-
-def propose_active_registry(root: Path, declaration_path: Path) -> dict:
-    """Explicit declaration-only stdout proposal; no generated source discovery."""
-    relative = str(declaration_path.relative_to(root))
-    source = active_registry._active_path(root, relative)
-    data = source.read_bytes()
-    declaration = active_registry._active_json(data)
-    if not isinstance(declaration, dict) or not set(declaration) <= ACTIVE_DECLARATION_FIELDS:
-        raise BuildError("source proposal must contain declarations only, never materialized registry pins")
-    value = derive_active_build_registry(root, declaration, materialized=False)
-    if active_registry._active_path(root, relative).read_bytes() != data:
-        raise BuildError("active declaration source changed while planning")
-    return value | {"declaration_source": relative, "declaration_sha256": sha(data)}
-
-
-def validate_registry(root: Path, registry: dict, *, census: bool = True) -> None:
-    if isinstance(registry, dict) and registry.get("format") == active_registry.ACTIVE_FORMAT:
-        if census is not True:
-            raise BuildError("v2 materialized inventory validation cannot bypass its census")
-        active_registry.read_active_registry(root, registry, require_materialized=True)
-        return
-    if registry.get("format") != FORMAT or registry.get("row") != 12:
-        raise BuildError("unsupported caps build registry")
-    roots, pure = registry.get("compute_roots"), registry.get("pure_roots")
-    if not isinstance(roots, list) or not isinstance(pure, list) or not roots:
-        raise BuildError("missing compute/pure roots")
-    if len(set(roots + pure)) != len(roots + pure):
-        raise BuildError("duplicate or overlapping caps build roots")
-    if registry.get("direct_hash_roots") != DIRECT:
-        raise BuildError("incorrect direct source boundary")
-    if registry.get("max_parallel_leaves") != 2 or registry.get("lean_child_threads") != 1:
-        raise BuildError("unsupported concurrency profile")
-    if census and roots != expected_roots(root):
-        raise BuildError("compute roots disagree with tracked Row12 generation inputs")
-    pins = registry.get("source_sha256")
-    if not isinstance(pins, dict) or set(pins) != set(roots + pure + DIRECT + CONFIG):
-        raise BuildError("source pin inventory mismatch")
-    execution = registry.get("execution_source_sha256")
-    if not isinstance(execution, dict) or set(execution) != set(EXECUTION):
-        raise BuildError("execution source pin inventory mismatch")
-    for path, digest in {**pins, **execution}.items():
-        relative_path(path)
-        target = root / path
-        if not re.fullmatch("[0-9a-f]{64}", digest) or not target.is_file() or target.is_symlink():
-            raise BuildError(f"invalid pinned source: {path}")
-        if sha(target.read_bytes()) != digest:
-            raise BuildError(f"source changed: {path}; regenerate/review the build registry")
-    graph = Graph(root)
-    heavy = set(map(module, roots))
-    actual = graph.ordered(["GrotheCapsKernel", *map(module, roots)])
-    if [source_path(name) for name in actual if name not in heavy] != pure:
-        raise BuildError("pure prerequisite closure/order mismatch")
-    for name in actual:
-        if graph.native[name] != (name in heavy):
-            raise BuildError(f"hidden unregistered native import or invalid compute root: {name}")
-        if name in heavy and any(dep in heavy for dep in graph.ordered(graph.dependencies[name])):
-            raise BuildError(f"dependent native leaves: {name}")
+def plan_summary(registry: dict, plan: list, prerequisites: list, jobs: int, proof_jobs: int,
+                 registry_sha256: str) -> dict:
+    counts = registry["derived_counts"]
+    group_counts = {}
+    for kind, _ in plan:
+        group_counts[kind] = group_counts.get(kind, 0) + 1
+    return {"compute_roots": len(registry["compute_roots"]), "pure_roots": len(registry["pure_roots"]),
+            "assembly_prerequisites": len(prerequisites),
+            "native_kind_counts": {key: counts[key] for key in ("anchor_ranges", "covers", "piece_ranges", "assemblies")},
+            "estimated_leaf_seconds": sum(registry["leaf_cost_seconds"].values()),
+            "jobs": jobs, "proof_jobs": proof_jobs, "group_counts": group_counts, "groups": plan,
+            "source_pins": len(registry["source_sha256"]), "registry_sha256": registry_sha256,
+            "resume": "reinvoke unchanged command; Lake reuses exact existing outputs, receipts do not skip targets",
+            "full_Grothe_audit_and_cache_upload_required_afterwards": True}
 
 
 def overlay_bytes(source: bytes) -> bytes:
@@ -393,12 +170,21 @@ def overlay_bytes(source: bytes) -> bytes:
     return result
 
 
-GIB_PER_LEAF = 3.5        # peak RSS of one single-threaded leaf (measured: range pieces 3.0 GiB), with margin
+GIB_PER_LEAF = 3.5        # peak RSS of one single-threaded leaf, with margin (measured: range pieces of the old checker
+                          # 3.0 GiB; tail-checker leaves 1.9-2.5 GB on yo, LEAN_STAGE2_DESIGN.md §13)
 RSS_HEADROOM_GIB = 6      # memory left to the OS, the runner and Lake itself
+GIB_PER_PROOF = 8         # budget of one Lean process of the proof layer (node theorems, soundness chain, assemblies):
+                          # not measured; they import far more of Mathlib than the leaves, and the guard counts the
+                          # mapped .olean pages of every process
+
+
+def proof_jobs(jobs: int, rss_limit_gib: float) -> int:
+    """Proof-layer modules to build at once: at most `jobs`, and one per GIB_PER_PROOF GiB of the RSS limit."""
+    return max(1, min(jobs, int(rss_limit_gib // GIB_PER_PROOF)))
 
 
 def machine_jobs() -> int:
-    """Leaves to run at once: one per usable CPU, but never more than the memory holds (8 GiB each)."""
+    """Leaves to run at once: one per usable CPU, but never more than the memory holds (GIB_PER_LEAF each)."""
     try:
         cpus = len(os.sched_getaffinity(0))
     except AttributeError:
@@ -415,51 +201,6 @@ def machine_memory_gib() -> int:
     except OSError:
         pass
     return 24 + RSS_HEADROOM_GIB   # unknown platform: the original 24 GiB budget
-
-
-GRID_POINTS = {1: 400 * 128, 2: 1600 * 256, 3: 1600 * 1024, 4: 1600 * 1152, 5: 3200 * 256}
-PIECE_RE = re.compile(r"CapPieces/([CR])(\d+)x(\d+)(?:_(\d+))?\.lean$")
-
-
-def leaf_cost(root: Path, selections: dict) -> float:
-    """Relative cost of a compute leaf, from the certificate grids of its pieces (`rowKK-selection.json`).
-
-    A range module `R<row>x<node>_<k>` checks pieces `[4k, 4k+4)` of its node on their grids; a coverage
-    slice costs about its share of the node's pieces; a coverage assembly costs nothing. Unknown leaves
-    cost 1. Lake builds a group's leaves in parallel, so a group of equally expensive leaves keeps every
-    slot busy; the plan therefore sorts leaves by this cost, heaviest first."""
-    m = PIECE_RE.search(str(root))
-    if not m:
-        return 1.0
-    kind, row, node, k = m.group(1), m.group(2), m.group(3), m.group(4)
-    grids = selections.get(row, {}).get(f"{row}:{node}", {}).get("grids", [])
-    if kind == "R":
-        pieces = grids[4 * int(k):4 * int(k) + 4] if k is not None else grids
-        return sum(GRID_POINTS.get(g, GRID_POINTS[2]) for g in pieces) / GRID_POINTS[2] + 0.5
-    if k is None:
-        return 0.0 if len(grids) >= 128 else 0.2 + 0.5 * len(grids) / 64
-    return 0.2 + 0.5 * min(len(grids), 64) / 64
-
-
-def load_selections(root: Path) -> dict:
-    out = {}
-    for path in sorted(root.glob("data/caps-m/plan/row-certificates/row*-selection.json")):
-        row = path.name[len("row"):-len("-selection.json")]
-        try:
-            out[row] = json.loads(path.read_text())
-        except (OSError, ValueError):
-            pass
-    return out
-
-
-def groups(registry: dict, jobs: int, selections: dict | None = None):
-    if type(jobs) is not int or jobs < 1:
-        raise BuildError("jobs must be a positive integer")
-    for phase, roots in (("pure", registry["pure_roots"]), ("native", registry["compute_roots"])):
-        if phase == "native" and selections:
-            roots = sorted(roots, key=lambda r: -leaf_cost(Path(r), selections))
-        for i in range(0, len(roots), jobs):
-            yield phase, list(map(module, roots[i:i + jobs]))
 
 
 def process_rows(proc=None) -> list[dict]:
@@ -634,14 +375,13 @@ class Runner:
         return result
 
     def check(self, pgid=None, *, full=False):
-        # Hash/parse the whole certificate source once at the start and once at the end (full=True):
-        # about 9 s each. Between groups and while polling, the inode/mtime/ctime/size of every pinned
+        # Hash/parse the whole caps source once at the start and once at the end (full=True): a few
+        # seconds each. Between groups and while polling, the inode/mtime/ctime/size of every pinned
         # source must be unchanged, which costs milliseconds.
         if full or self.source_stats is None:
             self.validate(self.args.root, self.registry)
         stats = {}
-        inputs = self.registry.get("input_sha256", {}) if self.registry.get("format") == active_registry.ACTIVE_FORMAT else {}
-        for relative in {*self.registry["source_sha256"], *self.registry["execution_source_sha256"], *inputs}:
+        for relative in self.registry["source_sha256"]:
             stat = (self.args.root / relative).stat()
             stats[relative] = (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
         if self.source_stats is not None and stats != self.source_stats:
@@ -782,19 +522,19 @@ class Runner:
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--registry", type=Path, default=Path(REGISTRY))
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--plan", action="store_true", help="validate and print groups; perform no builds or writes")
-    modes.add_argument("--write-registry", action="store_true", help="regenerate the reviewed source/build inventory")
-    modes.add_argument("--propose-active-registry", type=Path, metavar="DECLARATION",
-                       help="stdout-only additive v2 declaration proposal; no activation, builds or writes")
-    parser.add_argument("--source-overlay", type=Path, help="registry preparation only: read candidate sources from this overlay")
+    modes.add_argument("--write-registry", action="store_true",
+                       help="regenerate the registry from the sources (scripts/caps_stamp.py --write-registry)")
     parser.add_argument("--jobs", type=int, default=None,
-                        help="leaves built at once (default: usable CPUs, at most one per 8 GiB of RAM beyond 6 GiB headroom)")
+                        help=f"leaves built at once (default: usable CPUs, at most one per {GIB_PER_LEAF} GiB of RAM "
+                             f"beyond {RSS_HEADROOM_GIB} GiB headroom)")
     parser.add_argument("--rss-limit-gib", type=float, default=None,
-                        help="pause when the owned leaves exceed this aggregate RSS (default: RAM minus 6 GiB)")
+                        help=f"pause when the owned leaves exceed this aggregate RSS (default: RAM minus {RSS_HEADROOM_GIB} GiB)")
     parser.add_argument("--disk-floor-gib", type=float, default=3)
     parser.add_argument("--max-batches", type=int, default=0, help="pause after N complete groups; 0 means the whole plan")
     parser.add_argument("--run-dir", type=Path, default=Path(".lake/caps-batches"))
@@ -820,33 +560,11 @@ def main(argv=None):
         for path in (args.run_dir, args.stop_file):
             if path.relative_to(args.root).parts[0] != ".lake":
                 raise BuildError("owned run/stop paths must be under .lake")
-        if args.propose_active_registry:
-            if args.source_overlay:
-                raise BuildError("v2 declaration proposals use explicit canonical inputs, never a source overlay")
-            proposal = args.propose_active_registry
-            if not proposal.is_absolute():
-                relative_path(str(proposal))
-                proposal = args.root / proposal
-            proposal.relative_to(args.root)
-            print(json.dumps(propose_active_registry(args.root, proposal), indent=2, sort_keys=True))
-            return 0
-        if args.source_overlay and not args.write_registry:
-            raise BuildError("source overlay is allowed only when writing a preparation registry")
+        registry_name = args.registry.relative_to(args.root).as_posix()
         if args.write_registry:
-            active_registry._active_path(args.root, str(args.registry.relative_to(args.root)), optional=True)
-            if args.source_overlay:
-                overlay_proposal_destination(args.root, args.registry)
-            value = make_registry(args.root, args.source_overlay)
-            args.registry.parent.mkdir(parents=True, exist_ok=True)
-            if args.source_overlay:
-                value = {"format": "caps-build-registry-overlay-proposal/v1", "registry_proposal": value,
-                         "active_registry_published": False, "materialized": False, "native_verified": False}
-                with args.registry.open("x") as stream:
-                    stream.write(json.dumps(value, indent=2, sort_keys=True) + "\n")
-            else:
-                atomic_json(args.registry, value)
-            print("Wrote an inactive source proposal; no activation or verification performed" if args.source_overlay else
-                  f"Wrote {len(value['compute_roots'])} compute roots; no Lean build or verification performed")
+            view = caps_stamp.write_registry(args.root, rel=registry_name)
+            print(f"Wrote {registry_name}: {len(view['compute_roots'])} compute roots; "
+                  "no Lean build or verification performed")
             return 0
         if args.jobs is None:
             args.jobs = machine_jobs()
@@ -857,18 +575,14 @@ def main(argv=None):
                 or args.poll_seconds <= 0 or args.max_batches < 0 or args.jobs < 1):
             raise BuildError("require RSS in (0, RAM] GiB, disk floor >= 3 GiB, positive polling interval and jobs >= 1")
         data = args.registry.read_bytes()
-        registry = active_registry._active_json(data)
         args.registry_sha256 = sha(data)
-        validate_registry(args.root, registry)
-        plan = list(groups(registry, args.jobs, load_selections(args.root)))
+        registry = validate_registry(args.root, caps_stamp.parse_json(data, registry_name))
+        prerequisites = assembly_prerequisites(args.root, registry)
+        layer_jobs = proof_jobs(args.jobs, args.rss_limit_gib)
+        plan = list(groups(registry, args.jobs, prerequisites, layer_jobs))
         if args.plan:
-            print(json.dumps({"compute_roots": len(registry["compute_roots"]),
-                              "pure_roots": len(registry["pure_roots"]), "groups": plan,
-                              "native_kind_counts": registry.get("native_kind_counts", {}),
-                              "source_pins": len(registry["source_sha256"]),
-                              "registry_sha256": args.registry_sha256,
-                              "resume": "reinvoke unchanged command; Lake reuses exact existing outputs, receipts do not skip targets",
-                              "full_Grothe_audit_and_cache_upload_required_afterwards": True}, indent=2))
+            print(json.dumps(plan_summary(registry, plan, prerequisites, args.jobs, layer_jobs, args.registry_sha256),
+                             indent=2))
             return 0
         if not sys.platform.startswith("linux"):
             raise BuildError("actual bounded builds are supported only on the Linux droplet/CI; use --plan here")
@@ -900,7 +614,8 @@ def main(argv=None):
                 runner.coexist.close()
             for sig, handler in previous.items():
                 signal.signal(sig, handler)
-        print("Registered leaves built. Full Grothe build, combined strict audit, Bridge probe and cache upload remain required.")
+        print("Registered leaves and row assemblies built. The full Grothe build, the axiom report, the Bridge probe "
+              "and the cache upload remain required.")
         return 0
     except Pause as error:
         print(f"PAUSED: {error}", file=sys.stderr)

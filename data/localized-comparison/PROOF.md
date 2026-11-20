@@ -1,6 +1,6 @@
 # Weighted selected-spectrum comparison
 
-The shared GT comparison in the private mixture uses unit coefficient cost,
+The shared GT comparison in the eighteen-channel mixture uses unit coefficient cost,
 seven independently enclosed band masses and the six Gaussian estimates.
 The following record describes the earlier weighted comparison. The new
 proof and its exact budgets are in [the mixture certificate guide](../../docs/UPPER_CERTIFICATE.md).

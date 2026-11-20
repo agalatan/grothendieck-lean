@@ -5,6 +5,8 @@ It uses eighteen rounding channels, the shared GT table comparison and
 separate circle estimates. The check status, exact budgets and local
 reproduction commands are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
 
+The article and its standalone proof give the six-channel result `K_G^ℂ ≤ 1.40457588`. The repository exports the same result for its standard constant. [Six-channel entrypoint](../Grothe/UpperSixResult.lean) · [Article package](../haagerup-article/anc/README.md).
+
 ## Previous single-channel construction
 
 The sections below record the single-channel implementation at commit
@@ -199,12 +201,12 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   archived in `abandonware/` (not built).
   The error decomposition, supports and actual centers are formalized.
   `ComparisonInputs` is still a conditional interface for arbitrary `G, X`;
-  the current unconditional theorem uses a different seven-piece comparison
+  the single-channel theorem uses a different seven-piece comparison
   with proved low-band and whole-source radii.
 * The actual table accuracy is **proved**, not an open quadrature project:
   `Final.hclose_final` combines the accepted energy facts with the full
   quadrature remainder, tail and omitted-pair bounds. It supplies the table
-  input to the current endpoint.
+  input to `upper_below_tight`.
 * Every even phase moment is identified with a finite rational calculation on
   the production phase (`integral_phiT_pow_even` in `ConcretePhaseMoments`).
   `PhaseMoment2`, `PhaseMoment4`, `PhaseMoment6` and `PhaseMomentNorms` provide
@@ -219,13 +221,11 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   error targets must not be confused with established numerical enclosures.
   The omitted-input Hilbert–Schmidt route, archived in `abandonware/`, is a
   separate way to seek those bounds, not an assumption of `main_bounds`.
-* The lower endpoint is also closed: `lower_target` and `capsRest` in
-  `MainResult.lean` give `1.401700322371 < K_G^ℂ` after all node-cap rows are
-  certified and the exclusion list is empty. The endpoint comes from
-  `Grothe.Research.RefinedLowerCheck.lower_bound_of_completed_refinement`
-  under the same `NodeCaps`; the finite-mixture refinement of the cover
-  leaves the Gaussian cap computations unchanged. The main theorem has no
-  remaining `CapsRest` assumption.
+* The lower endpoint is also closed: `lower_target` in `MainResult.lean`
+  gives `1.4018 < K_G^ℂ` from the certificate of the witness with an identity
+  tail (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows
+  (`tailNodeCaps_cert`); see [LEAN_DETAILS.md](LEAN_DETAILS.md) and
+  [CAPS.md](CAPS.md).
 
 ## 5. Historical `ComparisonInputs` plan for the original sharper caps
 
@@ -236,7 +236,7 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
 `certify_taylor_comparison.py`, `taylor_comparison_result.json`). The error decomposition,
 spectral support, concrete center data and phase moments are now implemented.
 The plan below records the original eighteen-piece route and its old cost
-estimates. The current unconditional proof instead uses the six certified
+estimates. The single-channel proof uses the six certified
 inputs and grouped comparison in §1; the original finer Gaussian caps remain
 separate targets.*
 

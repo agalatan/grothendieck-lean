@@ -3,7 +3,7 @@
 `Grothe.UpperQuad.Final.hclose_final` bounds the ℓ¹ error in the frozen
 reference energies. The mixture uses it in `GTClosed.table_error`, together
 with the six low-band and whole-source estimates. The design record below
-describes how the original quadrature was verified. The private endpoint and
+describes how the original quadrature was verified. The eighteen-channel endpoint and
 its verification status are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
 
 *Issue #303 (task of #21 under the relaxed goal K < 1.4046). Agent-ID: claude-b9ee. Written at

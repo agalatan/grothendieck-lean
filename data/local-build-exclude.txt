@@ -2,15 +2,18 @@
 # One regular expression per line, matched against the whole module name. A module that imports one of these,
 # directly or through other modules, is skipped too. Blank lines and lines starting with # are ignored.
 #
-# The node caps: rows, localised pieces and their assembly (about 100 CPU-hours of native_decide; verified by CI).
+# The node caps: rows, localised pieces and their assembly (about 340 CPU-hours of native_decide; verified by CI).
 Grothe\.LowerAnalytic\.CapNodes
 Grothe\.LowerAnalytic\.CapPieces\..*
 Grothe\.LowerAnalytic\.CapRow[0-9]+(\..*)?
 # The upper-bound trees (large kernel-checked modules and the energy-table facts, about ten hours each).
 Grothe\.UpperChaos\..*
 Grothe\.UpperQuad\..*
+# Six-channel overlap table and Hardy contour evaluations. CI and targeted upper builds check these.
+Grothe\.UpperSix\.Haagerup\.Data\.OverlapData
+Grothe\.UpperSix\.Haagerup\.ContourChecks\..*
 
-# New mixture witnesses and adaptive contours have their own targeted verification.
+# Eighteen-channel mixture witnesses and adaptive contours have their own targeted verification.
 Grothe\.UpperReplacement\.HeadWitnessFacts\.Group[0-9]+
 Grothe\.UpperReplacement\.TailFacts\.Channel[0-9]+
 Grothe\.UpperReplacement\.WideFacts

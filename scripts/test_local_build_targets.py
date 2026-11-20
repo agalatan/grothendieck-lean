@@ -78,7 +78,11 @@ class Repository(unittest.TestCase):
         upper = set(caps_stamp.closure(['Grothe.UpperResult']))
         lower = set(caps_stamp.closure(['Grothe.LowerResult']))
         self.assertTrue({'Grothe.LowerTarget', 'Grothe.LowerAnalytic.CapNodes'} <= lower)
+        article = set(caps_stamp.closure(['Grothe.UpperSixResult']))
         self.assertIn('Grothe.UpperReplacement.GTClosed', upper)
+        self.assertIn('Grothe.UpperSix.Haagerup.CertCheck', article)
+        self.assertFalse(any(m.startswith('Grothe.UpperSix') for m in upper))
+        self.assertFalse(any(m.startswith('Grothe.UpperReplacement') for m in article))
         self.assertTrue(upper.isdisjoint({'Grothe.MainResult', 'Grothe.LowerResult', 'Grothe.LowerTarget'}))
         self.assertFalse(sorted(m for m in upper if m.startswith(('Grothe.LowerAnalytic.CapRow',
                                                                  'Grothe.LowerAnalytic.CapPieces.',

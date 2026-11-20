@@ -3,16 +3,13 @@ import Grothe.LowerAnalytic.CapGridOK
 import Grothe.LowerAnalytic.CapCover
 
 /-!
-# Constrained pieces: the S-lemma bound on a region (route M of PLAN_CAPS)
+# Constrained pieces: the S-lemma bound on a region
 
-On the region `Π = {y : loᶜ ≤ τᶜ(y) ≤ hiᶜ}` of a piece (`τᶜ(y) = vᶜ·vec(M y)`, `pieceSet`), every
-term `λᶜ (τᶜ − loᶜ)(hiᶜ − τᶜ) + μᶜ (τᶜ − loᶜ)` with `λᶜ, μᶜ ≥ 0` is nonnegative (MIDCAPS Lemma 1).
-As a quadratic form in `(1, y)` it has the matrix `Cons.sMat` (`qf_sMat`).  Subtracting these
-forms from the matrix `N` of the unconstrained check (`pieceN`) gives `pieceNc`; if its exact
-`LDLᵀ` has nonnegative pivots then `J(y, s) ≤ cap` on `Π` (`Jpot_le_of_pieceOKc`).  With the
-prices and enclosures of a recipe on a grid (`nodeOKc`, the constrained analogue of `nodeOK`)
-this is `Jpot_le_of_nodeOKc`.  A node is certified by a piece list that passes `capCoverOK` and
-`nodeOKc` on every piece (`pot_le_of_pieces`).
+On the region `Π = {y : loᶜ ≤ τᶜ(y) ≤ hiᶜ}` of a piece (`τᶜ(y) = vᶜ·vec(M y)`, `pieceSet`), every term
+`λᶜ (τᶜ − loᶜ)(hiᶜ − τᶜ) + μᶜ (τᶜ − loᶜ)` with `λᶜ, μᶜ ≥ 0` is nonnegative. As a quadratic form in `(1, y)` it has the
+matrix `Cons.sMat` (`qf_sMat`).  Subtracting these forms from the matrix `N` of the unconstrained check (`pieceN`) gives
+`pieceNc`; if its exact `LDLᵀ` has nonnegative pivots then `J(y, s) ≤ cap` on `Π`, for any enclosed coefficient matrix
+(`Jpot_le_of_pieceOKc_of_le`).
 -/
 
 open MeasureTheory Finset GrotheKernel Grothe.Lower Grothe.Upper
@@ -83,7 +80,7 @@ lemma qf_pieceNc (av : ℕ → ℚ) (s cap : ℚ) (Tup : QMat) (cs : List Cons) 
         - (cs.map fun c => qf (fun i j => (c.sMat (mMat E R) i j : ℝ)) 13 w).sum := by
   rw [qf_congr (m' := fun i j => ((pieceN (mMat E R) av s cap Tup).at i j : ℝ)
       - (cs.map fun c => (c.sMat (mMat E R) i j : ℝ)).sum) w
-      fun i hi j hj => by rw [pieceNc, QMat.at_ofFn _ hi hj]; push_cast; simp [List.map_map, Function.comp_def]]
+      fun i hi j hj => by rw [pieceNc, pieceNcOf, QMat.at_ofFn _ hi hj]; push_cast; simp [List.map_map, Function.comp_def]]
   have : ∀ (m : ℕ → ℕ → ℝ) (l : List (ℕ → ℕ → ℝ)),
       qf (fun i j => m i j - (l.map fun f => f i j).sum) 13 w
         = qf m 13 w - (l.map fun f => qf f 13 w).sum := by
@@ -108,18 +105,22 @@ end
 
 section
 
-variable (ℓ β : ℝ) (pr : Prices ℓ β) (E : Sym3) (R : Sym2) (a : Fib)
+variable (ℓ β : ℝ) (E : Sym3) (R : Sym2) (a : Fib)
 
-/-- **The bound of a constrained piece**: on the region of the constraints, `J(y, s) ≤ cap`. -/
-theorem Jpot_le_of_pieceOKc (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
-    (s cap : ℚ) (lo up : QMat)
-    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
+/-- **The bound of a constrained piece, for any coefficient matrix**: if `T` bounds `J` at `(y, s)`
+and the constrained check passes on an enclosure of `T`, then `J(y, s) ≤ cap` on the region of the
+constraints.  The tail `ν` of the potential enters only through `T`. -/
+theorem Jpot_le_of_pieceOKc_of_le (ν : ℝ) (T : ℕ → ℕ → ℝ) (av : ℕ → ℚ)
+    (hav : ∀ j < 12, a.vec j = av j) (s cap : ℚ) (lo up : QMat)
+    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ T i j ∧ T i j ≤ up.at i j)
     (cs : List Cons) (hchk : pieceOKc lo up (mMat E R) av s cap cs = true)
-    (y : Fib) (hy : y ∈ pieceSet E R cs) :
-    Jpot E R ℓ β a 0 y s ≤ cap := by
+    (y : Fib) (hy : y ∈ pieceSet E R cs)
+    (hT : Jpot E R ℓ β a ν y s
+      ≤ qf T 13 (wOf ((Fib.M E R y).add (a.smul s)).vec) - Fib.quad E R y) :
+    Jpot E R ℓ β a ν y s ≤ cap := by
   simp only [pieceOKc, Bool.and_eq_true, List.all_eq_true] at hchk
   obtain ⟨⟨henc', hok⟩, hldl⟩ := hchk
-  refine Jpot_le_of_qfN ℓ β pr E R a av hav s cap lo up henc henc' y ?_
+  refine Jpot_le_of_qfN_of_le ℓ β E R a ν T av hav s cap lo up henc henc' y hT ?_
   have h := qf_nonneg_of_ldlOK hldl (wOf y.vec)
   rw [qf_pieceNc] at h
   have hS : 0 ≤ (cs.map fun c => qf (fun i j => (c.sMat (mMat E R) i j : ℝ)) 13 (wOf y.vec)).sum :=
@@ -133,56 +134,6 @@ end
 /-! ### Soundness of constrained node checks -/
 
 noncomputable section
-
-/-- **Soundness of the constrained node check**: `J(y, s) − capPad ≤ c` on the piece region. -/
-theorem Jpot_le_of_nodeOKc (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ) (rec : Recipe)
-    (Nr N : ℕ) (h : ℚ) (T : Tables) (cs : List Cons) (hT : TablesOK Nr N h T) (hh : 0 < h)
-    (hN : 0 < N) (hNr : 0 < Nr) (hchk : nodeOKc r Rg s c rec Nr N h T cs = true)
-    (y : Fib) (hy : y ∈ pieceSet r.E Rg cs) :
-    Jpot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 y s - Grothe.Lower.capPad ≤ c := by
-  simp only [nodeOKc, Bool.and_eq_true] at hchk
-  obtain ⟨hp, hpc⟩ := hchk
-  have hok := gridOK_mkGrid r.ell r.beta rec T hh hN hNr
-  set gd := mkGrid r.ell r.beta rec Nr N h T with hgd
-  have hT' : TablesOK gd.Nr gd.N gd.h T := hT
-  have hJ := Jpot_le_of_pieceOKc (r.ell : ℝ) r.beta (gridPrices hok) r.E Rg
-    (aFib r.b1 r.b2 r.b3) (avOf r) (aFib_vec r) s (c + Grothe.Lower.capPad) _ _ ?_ cs hpc y hy
-  · push_cast at hJ; linarith
-  intro I hI J hJ
-  have hM : ((matI r.ell r.beta gd T).getD I #[]).getD J zeroI
-      = if I ≤ J then entryOf r.ell r.beta (cwSpec gd T) (tailPolyI T) I J
-        else entryOf r.ell r.beta (cwSpec gd T) (tailPolyI T) J I := by
-    rw [matI_eq, matOf_getD _ _ _ _ hI hJ]
-  have hmem : mem (Tint r.ell r.beta (gridPrices hok) I J)
-      (((matI r.ell r.beta gd T).getD I #[]).getD J zeroI) := by
-    rw [hM]
-    split_ifs
-    · exact mem_entryOf hok hp hT' hI hJ
-    · rw [Tint_symm]; exact mem_entryOf hok hp hT' hJ hI
-  have hsz : I < (matI r.ell r.beta gd T).size := by rw [matI_eq]; simp [matOf, hI]
-  have hsz2 : J < ((matI r.ell r.beta gd T).getD I #[]).size := by
-    rw [matI_eq]; unfold matOf; rw [toArray_map_range_getD _ _ _ hI]; simp [hJ]
-  rw [loQ_at _ hsz hsz2, hiQ_at _ hsz hsz2]
-  exact bounds_of_mem hmem
-
-/-- **A node from its pieces**: if the pieces cover the fibre space modulo the symmetries and
-every piece passes its constrained check on its grid, then `Ψ(s) − capPad ≤ c`. -/
-theorem pot_le_of_pieces (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ)
-    (ds : List (List ℚ)) (P : List (Recipe × (ℕ × ℕ × ℚ) × Tables × List Cons))
-    (hT : ∀ x ∈ P, TablesOK x.2.1.1 x.2.1.2.1 x.2.1.2.2 x.2.2.1)
-    (hG : ∀ x ∈ P, 0 < x.2.1.2.2 ∧ 0 < x.2.1.2.1 ∧ 0 < x.2.1.1)
-    (hcov : capCoverOK ds (P.map fun x => x.2.2.2) = true)
-    (hchk : ∀ x ∈ P, nodeOKc r Rg s c x.1 x.2.1.1 x.2.1.2.1 x.2.1.2.2 x.2.2.1 x.2.2.2 = true) :
-    pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s - Grothe.Lower.capPad ≤ c := by
-  have : pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) 0 s ≤ c + Grothe.Lower.capPad := by
-    refine ciSup_le fun y => ?_
-    obtain ⟨pc, hpc, hy⟩ := capCover_sound r.E Rg hcov y
-    obtain ⟨x, hx, rfl⟩ := List.mem_map.1 hpc
-    obtain ⟨hh, hN, hNr⟩ := hG x hx
-    refine Jpot_le_of_mem_symOrbit r.E Rg r.ell r.beta _ 0 (aFib_cj _ _ _) (aFib_ng _ _ _) s _ _
-      (fun w hw => ?_) hy
-    linarith [Jpot_le_of_nodeOKc r Rg s c x.1 _ _ _ _ x.2.2.2 (hT x hx) hh hN hNr (hchk x hx) w hw]
-  linarith
 
 end
 

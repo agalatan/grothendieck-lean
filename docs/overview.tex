@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401700322371\;<\;\KG\;<\;1.404569241261$\\[6pt]
+\Large $1.4018\;<\;\KG\;<\;1.404569241261$\\[6pt]
 \normalsize The lower theorem is \lean{lower\_target}. The proposed upper
 endpoint is \lean{UpperReplacement.upper\_below}. The two statements enter
 \lean{main\_bounds}. Local verification is in progress. The record is in
@@ -61,7 +61,7 @@ the three tightened quadrature remainders and the energy-table accuracy.
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
-first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0029$, and verify
+first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0028$, and verify
 the arguments in Lean. This note explains the problem, the two constructions, exactly what the computer checks, the new inequalities and
 obstructions found along the way, and why the remaining gap is hard: the two sides are dual optimisation problems, and the obstruction on both is the nonlinear (cubic and
 higher) structure of bounded functions of Gaussian vectors.
@@ -104,7 +104,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.401700322371}$ & $\mathbf{1.404569241261}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4018}$ & $\mathbf{1.404569241261}$\\\bottomrule
 \end{tabular}
 \end{center}
 The signed mixture gives the exact upper candidate
@@ -125,7 +125,25 @@ The standard complex Gaussian measure, its rotation invariance and radial-moment
 form a shared Lean foundation. The upper rounding proof depends on this foundation
 independently of the lower row certificates.
 
-\subsection{Upper bounds: rounding schemes}
+\subsection{Upper bounds by rounding}
+
+The arXiv article and its ancillary package use a separate six-channel certificate
+for $\KG\le 1.40457588<1/\gamma^\dagger$. The repository bridge for this proof is
+\path{Grothe/UpperSixResult.lean}. The eighteen-channel certificate used by
+\lean{main\_bounds} has its own entrypoint, \path{Grothe/UpperResult.lean}.
+
+The six-channel construction, its data and its checker are in
+\path{Grothe/UpperSix/}. Cell-map energies for the three smoothed channels
+and the two reflected channels feed interval coefficients. The phase channel
+uses its analytic Hermite coefficients. The finite check takes absolute values
+after mixing the signed coefficients. Each infinite tail is controlled by a
+mean on its own circle. The advertised rational bound follows from the reciprocal
+gap in the transfer theorem. The six-channel theorem applies to every finite
+complex matrix and uses the scalar and vector optima in \path{Grothe/Statement.lean}.
+The article in \path{haagerup-article/} bundles these Lean sources, byte for
+byte, as its ancillary package \path{haagerup-article/anc}.
+
+\subsubsection*{Quadrature shared with the earlier single-channel construction}
 
 The formal quadrature development includes exact polynomial identities for
 each original Gauss order from $1$ to $64$.  Rational polynomial certificates,
@@ -669,31 +687,35 @@ responses are archived.
 \subsection{Lower bounds: Hermite projection games}
 A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ while its \emph{scalar} value is small. We use
 \[
- T=P_{1,0}-\epsilon\,P_{2,1},\qquad \epsilon=\tfrac{149}{200},
+ T=P_{1,0}-e\,P_{2,1}+\nu\,(\mathrm{Id}-P_{1,0}-P_{2,1}),\qquad (e,\nu)=\bigl(\tfrac{191}{250},\tfrac{47}{2000}\bigr),
 \]
-the projection onto linear functions minus a multiple of the projection onto the cubic chaos.
+the projection onto linear functions minus a multiple of the projection onto the cubic chaos, plus a small multiple of
+the identity on all the other chaoses (an \emph{identity tail}).
 \begin{itemize}
-\item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+\epsilon)/(n+1)\to1$.
-\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.7134192552$.
+\item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+e)/(n+1)\to1$.
+\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu=0.71331239215$, with
+ $\hat B=0.7064131$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401700322371$.
-The complete cover has 15,096 boxes. It refines the preceding 10,909-box cover with 21 additional law majorants and
-finite convex mixtures, all using the original source caps and Stein inequalities. Their batches, every box and the full partition
-are checked separately. The common gate matrix is mixed before completing the square, preserving information across components.
-Adaptive binary splits retain every scale interpolation domain. The acceptance data and deterministic exporters are retained in
-\path{data/lower-refinement/}; the original source data stay unchanged.
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.40191\ldots>1.4018$.
 
-The scalar cap is the hard part. Writing $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$,
+The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
+The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
+and $\hat\nu=\nu/(1-\nu)=47/1953$ one has $\Re\langle f,Tg\rangle=(1-\nu)\hat V+\nu$ with
 \[
- \Re\langle f,Tg\rangle=t^2-\epsilon\|P_{2,1}h\|^2-\|P_{1,0}k\|^2+\epsilon\|P_{2,1}k\|^2,\qquad t=\|P_{1,0}h\|.
+ \hat V=t^2-\hat\epsilon\|P_{2,1}h\|^2-\|P_{1,0}k\|^2+\hat\epsilon\|P_{2,1}k\|^2-2\hat\nu\|k\|^2,
 \]
-Only the last term is positive: we must show that a \emph{bounded} function cannot have too large a cubic part without
-paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ splits into pieces that involve $z_1$
-(\emph{visible} sectors) and a \emph{remote} residual $q\in H_{2,1}$ in the other coordinates. The proof then has four layers.
+and it suffices to show $\hat V\le\hat B$.
+Only the term $\hat\epsilon\|P_{2,1}k\|^2$ is positive: we must show that a \emph{bounded} function cannot have too large a
+cubic part without paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, the cubic part of $k$ splits into pieces that
+involve $z_1$ (\emph{visible} sectors) and a \emph{remote} residual $q\in H_{2,1}$ in the other coordinates. The proof then
+has four layers.
 \begin{enumerate}
-\item \textbf{Row reduction.} For each of 19 profiles $r$, the contribution of the visible sectors is the supremum of an
- explicit finite-dimensional Gaussian integral, a convex one-variable \emph{potential} $\Psi_r$, evaluated at the scale of
- the remote residual. One gate variable is shared across rows.
+\item \textbf{Row reduction.} For each of 14 rows, with nominal $t$ from $0.4$ to $0.8875$, the contribution of the
+ visible sectors is the supremum of an explicit finite-dimensional Gaussian integral, a convex one-variable
+ \emph{potential} $\Psi_r$, evaluated at the scale of the remote residual. The tail stays pointwise inside the integrand:
+ $|A|+|B|$ becomes the pair potential $\Psi_{\hat\nu}(A,B)=\sup_{|f|=|g|=1}\Re(\bar fA)+\Re(\bar gB)+\hat\nu\Re(\bar fg)$.
+ One gate variable is shared across rows, and each row gives
+ $\hat V\le t^2-2\ell t+C-\hat\epsilon\|P_{2,1}h+(\beta/\hat\epsilon)v\|^2$, with the square retained.
 \item \textbf{The law of the remote cubic.} What remains is a statement about the distribution of $U=|q|^2/\E|q|^2$ for an
  arbitrary cubic Wick polynomial in arbitrarily many variables. We use exact identities and inequalities valid for
  \emph{every} such cubic: the sharp fourth-moment cap $\E U^2\le44$; the sixth-moment bound
@@ -701,16 +723,31 @@ paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ 
  expansion of the sixth cumulant; a first-moment bound; and families of \emph{Stein cuts}
  $\E\,G(U)\ge0$, obtained by Gaussian integration by parts and completing squares against spectral budgets, a covariance
  order and \emph{contraction-Gram budgets} (positive semidefinite Gram matrices of the coefficient tensor).
-\item \textbf{A finite certificate.} The parameters are covered by $15{,}096$ boxes in $(t,\tau,x)$; on each box a positive
- combination of rows and node certificates ($351$ existing mixed nodes, two added pure-row law nodes, three added mixed-source Young nodes, 21 further law majorants and $9{,}237$ row nodes, each a polynomial majorant checked in
- exact rational arithmetic) bounds the scalar value by $B$.
-\item \textbf{The node caps.} The certificate uses each potential only through upper bounds at finitely many nodes,
- $\Psi_r(s_i)-10^{-11}\le c_i$ (\lean{NodeCaps}). Lean proves them. By convexity it suffices to treat the vertex nodes.
- At a vertex node a pointwise majorant with prices on a polar grid bounds the integral by a quadratic form in the twelve
- real parameters; its coefficients are enclosed by verified interval tables, and an exact $LDL^{\mathsf T}$
- factorisation certifies the cap for all parameters. Some nodes of rows 12--15 need a finer argument, a cover of the
- parameter space by pieces cut out by linear constraints, up to two symmetries of the potential.
+\item \textbf{A finite certificate.} Each row certifies its constant $C$: on cells covering the range $x\le31/4$ of
+ $x^2=\E U^2-2$, moment rectangles and polynomial majorants at finitely many nodes, combined with Stein cuts (twelve
+ rows) or spectral cuts (the rows $0.4$ and $0.6$) and checked in exact rational arithmetic, bound
+ $\E\Psi_r(\sigma\sqrt U)-\kappa\sigma^2$ for every admissible law. For small $t$ a \emph{mass row} with $\lambda=1/2$
+ needs no fibre reduction. With $q=P_{2,1}k$, $c=2\hat\nu+\lambda$ and $\varphi_c(r)=\max_{0\le y\le1}(2\hat\epsilon ry-cy^2)$,
+ it combines $\|k\|^2\le1-t^2$, the bound $2\hat\epsilon\|q\|^2-c\|k\|^2\le\E\varphi_c(|q|)$ (from
+ $\|q\|^2=\Re\langle k,q\rangle$ and $|k|\le1$) and a law bound
+ $\E\varphi_c(|q|)-\hat\epsilon\|q\|^2\le S$, certified with spectral cuts like a row, into
+ $\hat V\le(1-\lambda)t^2+\lambda+S-\hat\epsilon\|P_{2,1}h\|^2$, $S=0.165606335315\ldots$; its tangents
+ $(\ell,\beta,C)=(\lambda m,0,\lambda+S+\lambda m^2)$ are rows. An \emph{envelope} of $1{,}800$ cells of width $1/2000$
+ covers $t\in[0,9/10]$: on each cell one row, a tangent of the mass row, or a mixture of two rows (the retained squares
+ mix exactly) bounds $\hat V$ by $\hat B$. Its maximum is $0.7064129749\ldots$, near $t=0.837$.
+\item \textbf{The node caps.} The rows use each potential only through upper bounds at the nodes of its table,
+ $\Psi_r(s_i)-10^{-11}\le c_i$ (\lean{TailNodeCaps}). Lean proves them. By convexity it suffices to treat the vertex
+ nodes; $238$ of the $2{,}012$ table entries are chord nodes. At a vertex node a pointwise majorant of the pair potential
+ with prices on a polar grid (a rank-one correction of the anchored-pair majorant, needed for the tail) bounds the
+ integral by a quadratic form in the twelve real parameters; its coefficients are enclosed by verified interval tables,
+ and an exact $LDL^{\mathsf T}$ factorisation certifies the cap for all parameters. Localised nodes need a finer
+ argument: a cover of the parameter space by pieces cut out by one to three linear constraints, up to two symmetries of
+ the potential, with one S-lemma certificate per piece.
 \end{enumerate}
+\lean{profile\_bound} assembles the rows, the mass row and the envelope into $\hat V\le\hat B$ for $t\in[0,9/10]$, and
+$t\le\sqrt\pi/2<9/10$ is proved. \lean{witnessCap\_cert} turns this into the scalar cap $B$ of the witness, and the
+transfer gives $K\ge1/B$ for every Grothendieck bound $K$ (\lean{lower\_bound\_of\_tailNodeCaps}). Its only hypothesis
+is the node caps, which \lean{tailNodeCaps\_cert} discharges. No form of Conjecture~K is assumed.
 
 \subsection{The primal/dual viewpoint}
 For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
@@ -721,14 +758,6 @@ coefficients $c_m(\mu)$ and Hermite projection games $Q=\sum_m q_m\Pi_m$,
 The complex programme uses charge-one bidegrees. A global complex minimax identity is not established here;
 the two endpoint proofs use separate one-sided transfer theorems. An upper bound comes from a realizable kernel,
 and a lower bound from a game with a uniform scalar norm cap. Finite-pool duality alone does not certify either global claim.
-
-\paragraph{Finite-mixture refinement.}
-\lean{Lower/FiniteMix.lean} proves soundness for arbitrary finite component expressions,
-their box bounds and the complete cover checker. Convex-hull chords from the certified law bank,
-new mixture weights and subdivision give a complete 15,096-leaf cover, exported reproducibly
-and checked in Lean. The resulting cap is $891774069/1250000000$;
-its reciprocal is strictly greater than $1.401700322371$. The original Gaussian node-cap hypotheses are discharged by the same
-existing cap proofs. No form of Conjecture K is assumed.
 
 Separate paper results in the Conjecture K monograph strengthen the common-response
 energy ellipsoid and reduce a joint-sector estimate to a specified pointwise remainder
@@ -755,22 +784,32 @@ class, at every odd amplitude and sharing. These are separate subclasses;
 odd sectors over A/B cores remain open. Neither result is a premise of the Lean endpoint.
 
 \section{What exactly the computer checks}\label{sec:trust}
+The eighteen-channel root endpoint checks the signed head, the cell and GT data,
+and the channel contours using exact Boolean computations. Lean's kernel verifies
+the rational tail comparisons. The endpoint's transitive axioms are reported by
+\path{scratch/UpperMixtureAxioms.lean}.
+The six-channel article uses exact Boolean checks on the two bounded cell maps,
+their overlap data, the signed head, and the Hardy contours. Their soundness is
+proved in Lean. The rational tail comparisons use kernel reduction. The output of
+\path{haagerup-article/anc/Axioms.lean} lists the axioms of the endpoint itself.
+The table below records the root upper and lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.401700322371$, without hypotheses. The intermediate theorem \lean{lower\_bound\_of\_completed\_refinement : NodeCaps → IsGrothendieckBound K → 1.401700322371 < K} keeps the node caps as a hypothesis, which \lean{capsRest}, \lean{vertexCaps\_of\_capsRest} and \lean{nodeCaps\_of\_vertexCaps} discharge.}\\[2pt]
-the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
-the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
-gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
-Wick identity; the soundness of the certificate checker (rows, node certificates, boxes, cover);
-the node caps \lean{NodeCaps} (the 19 potentials $\Psi_r$, defined in Lean, lie below their stored rational caps at the
-tabulated nodes): convexity of the potentials, the anchored-pair majorant on a polar grid, verified interval tables, the
-exact $LDL^{\mathsf T}$ check, and for the localized nodes of rows 12--15 the coverage by constrained pieces;
-\lean{capsRest}: every row is certified and no row excludes a node
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.4018$, without hypotheses. The intermediate theorem \lean{lower\_bound\_of\_tailNodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
+the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices;
+the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
+(frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and
+contraction-Gram inequalities for every circular cubic, including the sixth-cumulant Wick identity; the soundness of the
+row checkers (Stein and spectral nodes) and of the envelope with its mixtures of rows;
+the node caps \lean{TailNodeCaps} (the 14 potentials $\Psi_r$ with the tail $\hat\nu$, defined in Lean, lie below their
+stored rational caps at the tabulated nodes): convexity of the potentials, the majorant of the pair potential with
+prices on a polar grid, verified interval tables, the exact $LDL^{\mathsf T}$ check, and for the localised nodes the
+coverage by constrained pieces and the S-lemma
 &
-the rows, the node certificates (original batches and the added law nodes), every box of the cover and the cover itself;
-for the node caps: the chord nodes, the node ranges of every row (for rows 12--15 the anchor ranges), and for the localized
-nodes of rows 12--15 their piece ranges, coverage checks and repaired pieces.
+the 14 rows; the cells and the node caps of the mass row; the envelope;
+for the node caps: the node ranges of every row, the coverage and the pieces of every localised node, and the chord
+nodes of every row.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
 change, evaluates them on its own runner.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline
@@ -866,19 +905,22 @@ facts. Lower facts cover rows, batches, law nodes, the finite cover and node
 caps.
 The report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
 No \lean{sorry}. CI builds the single target \lean{Grothe}, node caps included, and checks its one axiom report on every pushed branch; a change reaches \texttt{master} through a pull request, after the same check has passed on its merge with the current \texttt{master}.
-The cap-range checks of the fifteen range-checked rows take about 21 CPU-hours cold, and the energy-table facts about ten hours each, so CI replays them from a verified build cache.
+The node-cap facts take about 340 CPU-hours in all, and the energy-table facts about ten hours each, so CI replays them from a verified build cache.
 A hash of their computation sources is recorded with the cache. The numerical cap checker has its own precompiled library,
 \lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
 The digest is part of the build-cache key: when no verified cache matches, CI runs the same check on
 the self-hosted runner, which builds, audits and marks \path{.lake/build/caps-closure.sha} before saving
 the cache. That persistent build supplies later CI replay; no separate manual verification is needed.
-A digest alone is not verification. The localised-piece checkers of rows 12--15
-likewise import only computable definitions and rational data, and their results are wired into the row assemblies
-(\path{Grothe/LowerAnalytic/CapRow12/Assembly.lean} to \path{CapRow15/Assembly.lean}).
-The mixture circle certificates use the adaptive Gaussian-amplitude cover
-on every chart of each channel. Integration, holomorphy and Parseval give
-its Hardy inequality. Subtracting the forced linear energy on the GT and phase channels
-gives the rational weighted tail in \lean{Assembly.mixture\_tail}.
+A digest alone is not verification. The node-cap facts import only computable definitions, the checker and rational
+data; their results are assembled for each row in \path{Grothe/LowerAnalytic/CapRowKK/Assembly.lean} and for all rows in
+\path{CapNodes.lean} (\path{docs/CAPS.md}).
+The production circle certificate \lean{HardyGaussianCheck.charts\_checked} verifies the
+fixed-amplitude Gaussian majorant $Q(\cos\theta)$ on all four closed chart halves
+at radius $4149/4000$, with exact angular mean $117/100$.
+Its soundness proof supplies the positive-definiteness gates and the pointwise bound;
+integration and Parseval give \lean{HardyReal.hardy\_GT\_gaussian}. The final theorem deducts
+the linear coefficient's forced weighted square through \lean{HeadHardy} before applying
+the tail Cauchy--Schwarz estimate, giving tail $219549168/10^{16}$.
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
 (\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
@@ -888,7 +930,7 @@ The common holomorphy and Parseval transfer reduces these Hardy estimates to sum
 Gaussian identification of the odd series, which \lean{HardyReal.hreal\_GT} proves for $G_T$:
 the smoothed Mehler pair has the law of $(U, RU+SW)$ (characteristic functions), whose density on $\mathbb R^8$ is the
 holomorphic kernel at the real cross covariance (Cholesky substitution). Together with the Gaussian-amplitude
-circle check, this proves \lean{hardy\_GT\_gaussian}, the Hardy input used by the current upper bound.
+circle check, this proves \lean{hardy\_GT\_gaussian}, the Hardy input used by the single-channel bound.
 Thirteen algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms, and the generic response and quintic-transfer lemmas, which add no
 native facts, were proved in Lean. Their modules are now archived in \path{miscellaneous/research/}: they are not built
@@ -1017,8 +1059,9 @@ part of the contraction budget before accepting a Stein cut. Signed reserve
 coefficients are retained. Ordinary and joint Gram budgets specialize one signed-reserve
 soundness theorem. Likewise, ordinary spectral cuts specialize the general shifted-cut
 theorem, and Stein and spectral nodes use the same polynomial-majorant integration lemma for an
-arbitrary integrable cut with nonnegative expectation. The endpoint uses 41 such nodes, with each node restricted
-to its proved kurtosis range; the full checker and analytic bridge are in Lean.
+arbitrary integrable cut with nonnegative expectation. The spectral row checker accepts such nodes, each restricted
+to its proved kurtosis range, and the full checker and analytic bridge are in Lean; the spectral nodes of the rows of
+the lower bound cite only the separate budgets.
 Retaining the upper bound on the negative cumulant contraction yields a stronger
 parameterized moment family. An exact transport identity then upgrades a node's
 majorant when its budget permits a larger moment-cut weight, without a new
@@ -1105,9 +1148,9 @@ allocates each square exactly once are formalized in
 \texttt{VOf\_frame\_with\_penalty} connects the consumer to the witness identity.
 At the research peak profile the scalar h-only cut is greater than $10^{-4}$
 throughout $t\geq0.8456$, $D\geq0.04$, where $D$ is the weighted six-sector energy.
-The Gaussian Gram instantiation and a compatible support cover are still
-required. The production $(t,\tau,x)$ cover does not track $D$, and the proved
-numerical lower endpoint is unchanged.
+The Gaussian Gram instantiation and a certificate that tracks $D$ are still
+required: the rows and the envelope of the lower bound do not, and these lemmas
+leave its endpoint unchanged.
 
 \subsection{Limits of the witness method}
 \begin{itemize}
@@ -1138,8 +1181,10 @@ numerical lower endpoint is unchanged.
 \section{Why the gap is hard}
 \paragraph{The witness class caps the lower bound.} A game supported on degrees $\{1,3\}$ sees only the cubic constraint on
 roundings. Even a perfect evaluation of the norm of $P_{1,0}-\epsilon P_{2,1}$ cannot certify more than $1.4022581233$
-(the certified family ceiling above). Proved obstructions are known for higher degrees: every game of degree $\le5$ is
-capped at $1.4036705$, and every game of degree $\le7$ at $1.4044895$, both below Haagerup's value. Reaching the upper
+(the certified family ceiling above). An identity tail, as in the witness of the Lean lower bound, acts pointwise and
+raises this ceiling only to about $1.40248$ in the model [F]. Proved obstructions are known for higher degrees: every
+game of degree $\le5$ is capped at $1.4036705$, and every game of degree $\le7$ at $1.4044895$, both below Haagerup's
+value. Reaching the upper
 end of the interval therefore needs games of degree $\ge9$; in the real case the certified game uses all odd degrees up to
 $21$.
 
@@ -1177,10 +1222,11 @@ tails also contribute to the gap.
  all-sector inequality with error up to about $6\cdot10^{-4}$ per row suffices for $1.402$. That game needs a radius
  bound $0.916$ on the cubic chaos, and $0.93$ is what is proved; the game with a smaller cubic weight that has a
  conditional certificate leaves $3.7\cdot10^{-4}$ at its binding rows. The current gated rows lose several times that.
-\item Run a complex primal/dual search alternating linear programs over games
-of degree $\le D$ and pools of roundings to narrow the interval. A first search
-(\path{research/higher-degree/}, [N]) gives model values $1.403648$,
-$1.404113$ and $1.40430$ for the best games of degree $5$, $7$ and $9$.
+\item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
+ locate $\KG$ to about $10^{-4}$ using higher-degree games. A first search
+ (\path{research/higher-degree/}, [N]) gives model values $1.403648$, $1.404113$ and $1.40430$ for the best games of
+ degree $5$, $7$ and $9$, so $1.4043\lesssim\KG<1.404569241261$. No rounding built from the binding responses
+ beats Haagerup's $\gamma_H$ within that family. The independent six-channel comparison is stated above.
 \item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
  appears to be open, and it is the largest single lever on the law side. The best proved constant is $0.93$; a constant
  $0.916$ would already remove the cap that the first moment puts on the cubic weight of a degree-5 game (item~2).

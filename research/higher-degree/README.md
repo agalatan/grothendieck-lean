@@ -1,9 +1,9 @@
 # Higher-degree games: start here
 
-The proved lower bound K_G^ℂ > 1.401700322371 comes from the cubic witness P₁,₀ − (149/200)P₂,₁. Even a perfect
-evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
+The proved lower bound K_G^ℂ > 1.4018 comes from the cubic witness P₁,₀ − (191/250)P₂,₁ with an identity tail
+([`../identity-tail/`](../identity-tail/README.md)). Even a perfect evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
 ledger 12.2). Larger lower bounds need games of higher degree. In particular, the third decimal of K_G^ℂ needs a
-certified 1.404, because the upper bound 1.404599395362 is already below 1.4046.
+certified 1.404, because the upper bound 1.40457588 is already below 1.4046.
 
 This folder records what is known about higher-degree games:
 - their numerical values and the responses that bind them;
@@ -12,7 +12,7 @@ This folder records what is known about higher-degree games:
   about the sector inequality that the certificate assumes.
 
 It is research material: nothing here is imported by Lean or checked by CI. **The game values and margins are
-numerical (N)**; the rows of `STATUS.md` §4 marked **C** or **P** name their author and checker.
+numerical (N)**, apart from the **P** or **C** parts of `STATUS.md` rows 1.6, 1.9, 2.6 and §4, which name their author and checker.
 
 | file | what it is |
 |---|---|
@@ -80,10 +80,10 @@ record.
 | 5 | (1, −0.84896, 0.28180) | 1.403648 |
 | 5 + identity tail | (1, −0.86328, 0.33459), ν = −0.01384 | 1.40374 |
 | 7 | (1, −0.906596, 0.541570, −0.242531) | 1.404113 |
-| 9 | (1, −0.93600, 0.72057, −0.59202, 0.23468) | 1.40430 |
+| 9 | (1, −0.93600, 0.72057, −0.59202, 0.23468) | < 1.404218 (**P + C**, author only), 1.4041781 (**N**) against t = 0 multi-spike pairs (1.40430 in the PD2 pool; at most 1.40430 after retuning, open; STATUS 1.6, 1.8, 2.6) |
 
-- **Bracket.** The heuristic bracket is 1.4043 ≲ K_G^ℂ ≤ 1.404599395362. Its left end is a model value, not a bound
-  (STATUS 1.8). Haagerup's 1/γ† = 1.404575934663742 lies inside it. No rounding built from the binding responses
+- **Bracket.** Upper bound K_G^ℂ ≤ 1.404599395362 (**Lean**); heuristic lower end at most 1.40430, open after STATUS 2.6 (λ₉ of STATUS 1.6 itself is below 1.404218 certified and ≈ 1.4041781 numerically against mesoscopic t = 0 multi-spike pairs, and a degree-9 game retuned against the larger pool is at most 1.40430; STATUS 1.6, 1.8, 2.6). Its left end is a model estimate, not a bound
+  (STATUS 1.8). Haagerup's 1/γ† = 1.404575934663742 lies below the upper bound. No rounding built from the binding responses
   beats Haagerup's γ_H (STATUS 3.3).
 - **The degree-5 programme.** At t = 0 a row bound is at least λ₁ρ\*², so the proved radius bound caps the cubic
   weight λ₁ (STATUS 4.12; the games per cap are in 1.10 and 4.33). For the game (1, −39/50, 779/10000), model value
