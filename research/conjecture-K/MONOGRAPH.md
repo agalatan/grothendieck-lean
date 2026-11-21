@@ -342,10 +342,14 @@ Without a buffer, (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at mos
 radius domination holds for one two-variable family around the known counterexample to the stronger Laplace comparison
 [author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (4571/5000)‖q‖₂ =
 0.9142‖q‖₂** (combining the universal phase-averaged linear bound E|q| ≤ (√π/2)‖q‖₂(1 + (26449/5000000)χ) < 0.9121‖q‖₂
-on χ ∈ [0, 11/2] with rows 7–13 of `cert_915.json` on χ ∈ [11/2, 42]; `cert_915.json` alone gives **1829/2000 =
-0.9145** via 5 compactly-supported damped fourth/fifth-order Stein rows on χ ∈ [2, 7] at ε = 1/40 with a piecewise-linear
-5×5 knot matrix T(v) and 9 Level-2 flank rows, largest row bound < 0.9143745) [P + C, author only · gemini-2762 · 3.7],
-and **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂** (strictly below 0.916‖q‖₂ when q ≠ 0):
+on χ ∈ [0, 11/2] with rows 7–13 of `cert_915.json` on χ ∈ [11/2, 42], whose Sturm and Bernstein checkers were replayed
+by codex-062a while Row 7's damped Level-3 proof remains author only; `cert_915.json` alone gives **1829/2000 = 0.9145**
+via 5 compactly-supported damped fourth/fifth-order Stein rows on χ ∈ [2, 7] at ε = 1/40 with a piecewise-linear 5×5 knot
+matrix T(v) and 9 Level-2 flank rows, largest row bound < 0.9143745) [P, author only + C · gemini-2762, rows 7–13
+replayed by codex-062a · 3.7], **E|q| ≤ (2287/2500)‖q‖₂ = 0.9148‖q‖₂** (combining that phase-averaged linear bound on
+χ ∈ [0, 6] with the Level-2 flank rows 16–22 of `cert_916.json` on χ ∈ [6, 42]) [P + C · gemini-2762, independently
+reviewed by codex-062a, codex-6d92 and claude-b9ee · 3.7], and **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂** (strictly below
+0.916‖q‖₂ when q ≠ 0):
 a 23-row certificate (`cert_916.json`) on χ ∈ [0, 42] augments the second-moment relaxation below with two third-order
 radial forms of 2.5 (tests q̄(c₂ − 1)g₃(V) and qāg₄(V)) coupled through ∂̄_ka = W_k and E Σ_k|W_k|² = 24y, passing the
 0.916 radius test of the uncapped degree-5 game in `../higher-degree` [P + C · gemini-2762, independently reviewed by
@@ -387,7 +391,7 @@ for Var(‖∇h‖²/3) ≤ 89/2250 when E h² = 1, and for κ₄ ≤ 91/500 = 0
 [P + C · 3.21 (e9)(ii)–(iv)], and extended via a one-step Ornstein–Uhlenbeck resolvent identity with a V₂ ⊥ V₄
 cross-multiplier to **Var(‖∇h‖²/3) ≤ 373/200 = 1.865** when E h² = 1 and **κ₄ ≤ 19/2 = 9.5** (covering all four Cartan
 isoparametric cubics, from universal linear bounds E|h| ≤ √(2/π)‖h‖₂(1 + (26449/7500000)κ₄) and E|h| ≤ √(2/π)‖h‖₂(1 +
-(717/40000)Var(‖∇h‖²/3)/‖h‖₂⁴)) [P + C, author only · gemini-2762 · 3.21 (e9)(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
+(717/40000)Var(‖∇h‖²/3)/‖h‖₂⁴)) [P + C · gemini-2762, re-derived and replayed by codex-062a · 3.21 (e9)(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
 conjectured to be √55/8 = 0.9270, attained by the hemisphere: it is
 proved for zonal sign patterns, and the hemisphere is a strict local maximum [P · 3.21 (e3)]. The largest ratio
 E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates [N · 3.21 (e8)].
