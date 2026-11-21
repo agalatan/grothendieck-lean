@@ -1,13 +1,18 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The six-channel upper entrypoint states `K_G^ℂ ≤ 1.40457588`. The separate phase-integral estimate puts that rational strictly below `1/γ†`. [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../haagerup-article/anc/README.md).
+The eighteen-channel upper entrypoint states `K_G^ℂ ≤ 10^{15} / 711962052581159 < 1.404569241261`
+([`UpperResult.lean`](../Grothe/UpperResult.lean), documented in
+[`UPPER_CERTIFICATE.md`](UPPER_CERTIFICATE.md)). The standalone six-channel package
+(`K_G^ℂ ≤ 1.40457588`, [`UpperSixResult.lean`](../Grothe/UpperSixResult.lean)) and
+its separate phase-integral estimate (`1.40457588 < 1/γ†`) remain built alongside it
+([six-channel build and audit](../haagerup-article/anc/README.md)).
 
 ## Earlier single-channel construction
 
 The single-channel upper bound is **K_G^ℂ < 1.404599395362**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
 [`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The combined statement `main_bounds` in
-[`MainResult.lean`](../Grothe/MainResult.lean) uses the six-channel bound instead.
+[`MainResult.lean`](../Grothe/MainResult.lean) uses the eighteen-channel mixture bound instead.
 
 The sharper target **K_G^ℂ < 1.404598149141** has only a conditional route,
 archived in [`abandonware/`](../abandonware/README.md) and not built:

@@ -2270,6 +2270,17 @@ import Grothe
 #print axioms Grothe.UpperQuad.twist_j3_low_margin
 #print axioms Grothe.UpperQuad.twist_j3_whole_margin
 #print axioms Grothe.UpperQuad.unnormalise_represents
+#print axioms Grothe.UpperReplacement.Assembly.bound_of_checks
+#print axioms Grothe.UpperReplacement.GTClosed.table_error
+#print axioms Grothe.UpperReplacement.MixtureHead.signed_head
+#print axioms Grothe.UpperReplacement.bound
+#print axioms Grothe.UpperReplacement.bound_of_table_error
+#print axioms Grothe.UpperReplacement.constant_le
+#print axioms Grothe.UpperReplacement.constant_lt
+#print axioms Grothe.UpperReplacement.constant_lt_inv_gammaDagger
+#print axioms Grothe.UpperReplacement.gammaDagger_bounds
+#print axioms Grothe.UpperReplacement.inv_gammaDagger_gt
+#print axioms Grothe.UpperReplacement.upper_below
 #print axioms Grothe.UpperSix.bound
 #print axioms Grothe.UpperSix.constant_le
 #print axioms Grothe.UpperSix.constant_lt_inv_gammaDagger

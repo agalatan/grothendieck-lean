@@ -1,6 +1,6 @@
 # Closing the upper half: the six Gaussian hypotheses of the three-band comparison
 
-The six-channel endpoint is stated separately in the [upper result](../Grothe/UpperResult.lean). This file describes the single-channel construction.
+The eighteen-channel mixture endpoint (`Grothe/UpperResult.lean`, `docs/UPPER_CERTIFICATE.md`) and the standalone six-channel endpoint (`Grothe/UpperSixResult.lean`) are stated separately. This file describes the single-channel construction and the shared `GT` twisted-quadrature closure.
 
 **Single-channel result (15 November 2026).** This construction gives
 `K_G^ℂ < 1.404599395362`, proved by `Grothe.Statement.upper_below_tight` in

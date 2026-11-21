@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import caps_stamp  # noqa: E402
 import local_build_targets as lbt  # noqa: E402
 
 
@@ -69,6 +70,27 @@ class Plan(unittest.TestCase):
 
 class Repository(unittest.TestCase):
     """The real tree: the node caps and the upper-bound trees are skipped, the lower chain is built."""
+
+    def test_upper_and_lower_proofs_build_independently(self):
+        root = Path(__file__).resolve().parent.parent
+        self.assertEqual(set(caps_stamp.imports_of(root / 'Grothe/MainResult.lean')),
+                         {'Grothe.LowerResult', 'Grothe.UpperResult'})
+        upper = set(caps_stamp.closure(['Grothe.UpperResult']))
+        lower = set(caps_stamp.closure(['Grothe.LowerResult']))
+        self.assertTrue({'Grothe.LowerTarget', 'Grothe.LowerAnalytic.CapNodes'} <= lower)
+        article = set(caps_stamp.closure(['Grothe.UpperSixResult']))
+        self.assertIn('Grothe.UpperReplacement.GTClosed', upper)
+        self.assertIn('Grothe.UpperSix.Haagerup.CertCheck', article)
+        self.assertFalse(any(m.startswith('Grothe.UpperSix') for m in upper))
+        self.assertFalse(any(m.startswith('Grothe.UpperReplacement') for m in article))
+        self.assertTrue(upper.isdisjoint({'Grothe.MainResult', 'Grothe.LowerResult', 'Grothe.LowerTarget'}))
+        self.assertFalse(sorted(m for m in upper if m.startswith(('Grothe.LowerAnalytic.CapRow',
+                                                                 'Grothe.LowerAnalytic.CapPieces.',
+                                                                 'Grothe.LowerAnalytic.CapNodes'))))
+        self.assertNotIn('Grothe.MainResult', lower)
+        # The fixed-point interval operations are shared by the lower cap proofs.
+        self.assertEqual({m for m in lower if m.startswith('Grothe.Upper')},
+                         {'Grothe.Upper.IntervalSound'})
 
     def test_repository(self):
         root = Path(__file__).resolve().parent.parent

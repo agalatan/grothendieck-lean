@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("upper-six",)
+MODES = ("upper-six", "upper-mixture")
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -129,6 +129,17 @@ class CheckAxiomsTests(unittest.TestCase):
         code, stdout, _ = self.run_main(["--upper-six"], self.report("upper-six") + record)
         self.assertEqual(code, 1)
         self.assertIn(f"DISALLOWED AXIOM in Grothe.UpperSix.bound: {fact}", stdout)
+
+    def test_upper_mixture_rejects_lower_and_article_native_facts(self):
+        for fact in ("Grothe.Lower.certEnvelope._native.native_decide.ax_1_1",
+                     "Haagerup.head_sum_ok._native.native_decide.ax_1_1"):
+            with self.subTest(fact=fact):
+                record = f"'Grothe.UpperReplacement.bound' depends on axioms: [{fact}]\n"
+                self.assertEqual(self.run_main([], self.report() + record)[0], 0)
+                code, stdout, _ = self.run_main(["--upper-mixture"],
+                                                self.report("upper-mixture") + record)
+                self.assertEqual(code, 1)
+                self.assertIn(f"DISALLOWED AXIOM in Grothe.UpperReplacement.bound: {fact}", stdout)
 
     def test_upper_six_requires_its_native_policy_file(self):
         theorem = "Grothe.UpperSix.bound"
