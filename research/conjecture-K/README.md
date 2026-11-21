@@ -103,8 +103,9 @@ shells and q are the "odd-frequency" = "z-even" block.
 
 | quantity | value | status and source |
 |---|---|---|
-| proved bounds (Lean, `main_bounds`) | 1.4018 < K_G^ℂ ≤ 1.40457588 | `Grothe/MainResult.lean`; `docs/LEAN_DETAILS.md`; `STATUS.md` 12.1 |
-| row cap of the proved lower bound | 891774069/1250000000 = 0.7134192552 | `STATUS.md` 12.1 |
+| proved bounds (Lean, `main_bounds`) | 1.4018 < K_G^ℂ < 1.404569241261 | `Grothe/MainResult.lean`; `docs/LEAN_DETAILS.md` |
+| witness cap of the proved lower bound (identity-tail witness) | B = (1 − 47/2000)·7064131/10⁷ + 47/2000 = 14266247843/20000000000 = 0.71331239215 < 5000/7009 (1/B = 1.4019103…) | `../identity-tail/STATUS.md` 5.1; `Grothe/Lower/EnvelopeData.lean` |
+| row cap of the cubic-witness cover (Lean until #525) | 891774069/1250000000 = 0.7134192552 | `STATUS.md` 12.1 |
 | row cap needed for 1.402 | below 500/701 = 0.7132667617… | `STATUS.md`, section 8 |
 | row cap needed for 1.4022 | below 5000/7011 = 0.7131650263… | `STATUS.md`, section 8 |
 | what K_η with η ≤ 10⁻⁴ would give | about 1.402 | `STATUS.md` 8.1 |
