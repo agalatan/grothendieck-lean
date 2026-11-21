@@ -56,8 +56,8 @@ whose reciprocal he called ``a perhaps more plausible candidate'' for $\KGC$. We
 \[
   \KGC \;\le\; \frac{140457588}{10^8} \;=\; 1.40457588 \;<\; \frac{1}{\gd},
 \]
-thus resolving this conjecture of Haagerup. The bound $1.40457588$ is frozen for this article so that the construction and its formal verification remain as clean and compact as possible; sharper bounds evolve continuously in \url{https://github.com/agalatan/grothendieck-lean}.
-Interpreting $1/\KGC$ as the value of a zero-sum game between randomized Gaussian rounders and adversarial Hermite--Wick chaos projections, we show that the alternating adversary $q_k = (-1)^k$ imposes a universal ceiling $W(h) = \sum_{k=0}^\infty (-1)^k h_k$ blocking all convex combinations of preprocessed scalar phase rounders ($|W| \le \gd$) and symmetric smoothed cell rounders on $\C^2$ ($W \approx 0.711920 < \gd$). We cross this barrier with a six-channel rational convex mixture built from two $64 \times 64 \times 36$ Fourier-cell maps on $\C^2$: a reflected pair $(f_{\mathrm{tig}}, g_{\mathrm{tig}})$ with $g_{\mathrm{tig}}(z_1,z_2) = f_{\mathrm{tig}}(-z_1,z_2)$ whose alternating value lifts strictly above $\gd$ ($W \approx 0.712902$), and a rotated Ornstein--Uhlenbeck smoothed map $f_{\mathrm{sm}}$ whose alternating polynomial preprocessors cancel nonlinear chaos distortion across $1 \le k \le 250$ at zero loss in $W$, supplemented by a scalar phase fine-tuning channel. Although none of the six channels beats Haagerup's 1987 bound on its own, destructive interference of their higher harmonics reduces the combined $\ell^1$ distortion below $6.21 \times 10^{-6}$. The ancillary directory \texttt{anc/} is a standalone, hypothesis-free Lean~4 proof of the entire theorem (Appendices~\ref{app:arb} and~\ref{app:lean}). The construction was discovered with AI at the end of a two-month research and formalisation project (Section~\ref{sec:found}).
+thus resolving this conjecture of Haagerup.
+Our proof uses a six-channel mixture of Gaussian rounders. For a channel with radial coefficients $h_k$, the alternating sum $W(h)=\sum_{k\ge0}(-1)^k h_k$ bounds its guaranteed slope $D(h)=h_0-\sum_{k\ge1}|h_k|$ from above. Preprocessed scalar phase channels satisfy $W(h)\le\gd$. We use a reflected pair of two-coordinate Fourier-cell maps with $W(h)\approx0.712901>\gd$. Three channels based on a smoothed cell map and one scalar phase channel help cancel the higher coefficients of the two reflected channels. The mixture has total nonlinear distortion below $6.21\times10^{-6}$. The standalone Lean~4 package in \texttt{anc/} proves the displayed inequalities without hypotheses (Appendices~\ref{app:arb} and~\ref{app:lean}). Section~\ref{sec:found} describes the discovery of the construction.
 \end{abstract}
 
 \maketitle
@@ -82,7 +82,7 @@ In the complex case, upper bounds proved considerably more resistant. Improving 
   \;=\; \frac{\pi}{4}\, t \, {}_2F_1\!\left(\tfrac{1}{2}, \tfrac{1}{2}; 2; t^2\right)
   \;=\; \sum_{k=0}^\infty r_k \, t^{2k+1},
 \end{equation}
-where $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$ for $k \ge 0$. Because the reverted series $\varphi^{-1}(u) = \sum_{k=0}^\infty b_k u^{2k+1}$ fails to alternate in sign beyond degree~$5$ ($b_k < 0$ for $k \ge 3$), solving $\sum_{k=0}^\infty |b_k| c^{2k+1} = 1$ yields Haagerup's proved 1987 bound $\KGC \le 1/\gamma_H = 1.4049091327\ldots$ ($\gamma_H = 0.7117898067\ldots$), which stood unimproved for 39 years. Evaluating the alternating series $|\varphi(i)| = \sum_{k=0}^\infty (-1)^k r_k$ directly instead gives Haagerup's alternating integral
+where $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$ for $k \ge 0$. Writing $\varphi^{-1}(u) = \sum_{k=0}^\infty b_k u^{2k+1}$, Haagerup obtains the slope $\gamma_H$ by solving $\sum_{k=0}^\infty |b_k| \gamma_H^{2k+1}=1$. His bound is $\KGC \le 1/\gamma_H = 1.4049091327\ldots$ ($\gamma_H=0.7117898067\ldots$). Evaluating the alternating series $|\varphi(i)| = \sum_{k=0}^\infty (-1)^k r_k$ directly instead gives Haagerup's alternating integral
 \begin{equation}\label{eq:gd-def}
   \begin{gathered}
   \gd \;:=\; \sum_{k=0}^\infty (-1)^k r_k
@@ -93,7 +93,7 @@ where $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$ for
 \end{equation}
 Haagerup \cite[p.~202]{Haa87} remarked that his bound $1/\gamma_H$ is probably not sharp and called $1/\gd$ ``a perhaps more plausible candidate'' for $\KGC$.
 
-Very recently, both the real and complex constants saw a wave of renewed progress: over $\R$, Saha, Li, Xue, Chaudhuri, Klivans, Kothari, and Meka \cite{SLX26} sharpened the two-chaos Krivine approach via Gaussianized Rademacher chaos, and Heilman, Jones, and Malavolta \cite{HJM26b} combined primal/dual Hermite searches to place $\KGR \in [1.773, 1.7799]$; over $\C$, Heilman, Jones, and Malavolta \cite{HJM26} obtained the first strict improvement below $1/\gamma_H$, proving $\KGC < 1.40489856$ via convex mixtures of preprocessed scalar phase rounders (alongside the lower bound $\KGC > 1.4$, building on Davie \cite{Dav84}, K\"onig \cite{Kon90}, and Guo--Fang--Lu \cite{GFL26}). The Lean~4 development \cite{Gal26} proves, without hypotheses, $1.4018 < \KGC \le 1.40457588$. Its upper bound comes from a six-channel mixture of the same kind as the one here, with every channel estimate checked in Lean, and is therefore itself below $1/\gd$ (Appendix~\ref{app:lean}).
+Recent bounds in the real case include those of Saha et al.~\cite{SLX26} and the interval $1.773\le\KGR\le1.7799$ of Heilman, Jones, and Malavolta~\cite{HJM26b}. In the complex case, the latter authors proved $1.4<\KGC<1.40489856$~\cite{HJM26}, improving on Haagerup's proved upper bound $1/\gamma_H$. The Lean~4 development~\cite{Gal26} proves $1.4018<\KGC\le1.40457588$. Its upper bound uses the six channels presented here.
 
 In this paper we cross Haagerup's barrier $1/\gd$: his value is a strict upper bound for $\KGC$.
 
@@ -108,24 +108,24 @@ The complex Grothendieck constant satisfies
 In particular, Haagerup's value $1/\gd$ is a strict upper bound for $\KGC$.
 \end{theorem}
 
-The rational bound $\frac{140457588}{10^8}$ in Theorem~\ref{thm:main} is proved without hypotheses in the standalone Lean~4 package in \texttt{anc/} (Appendices~\ref{app:arb} and~\ref{app:lean}), frozen at this value to keep the certificate self-contained and compact while sharper bounds ($1.4018 < \KGC \le 1.40457588$ at the time of writing) continue to evolve in \cite{Gal26}.
+The standalone Lean~4 package in \texttt{anc/} proves both inequalities in Theorem~\ref{thm:main} (Appendices~\ref{app:arb} and~\ref{app:lean}).
 
-Theorem~\ref{thm:main} is the complex counterpart of the theorem of Braverman, Makarychev, Makarychev, and Naor \cite{BMMN11} that Krivine's bound is not sharp, but the geometry of the barrier is markedly different. Over $\R$, Krivine's constant is already achieved by a single 1D sign rounder whose inverse series alternates cleanly. Over $\C$, 1D phase mixtures saturate near $1.404898$ \cite{HJM26}, well above $1/\gd$, and even passing to symmetric $\C^2$ rounders leaves $\gd$ untouched: as shown in Section~\ref{sec:obstruction}, $\gd$ is enforced by an alternating Hermite adversary that blocks every convex combination of preprocessed scalar phase channels and our symmetric smoothed cell rounders on $\C^2$. Crossing $\gd$ requires breaking row--column symmetry on $\C^2$ via the reflection $(z_1, z_2) \mapsto (-z_1, z_2)$ and pairing that reflected channel with symmetric steering channels in a six-strategy mixture.
+In the real case, Braverman, Makarychev, Makarychev, and Naor~\cite{BMMN11} proved the strict inequality below Krivine's bound using a two-coordinate rounding scheme. Our complex construction also uses two coordinates. Reflection in the first coordinate produces a channel whose alternating sum exceeds $\gd$. Section~\ref{sec:obstruction} explains why such a channel is needed for our direct slope estimate.
 
 \section{Rounding, Hermite Games, and Why Mixtures Win}\label{sec:obstruction}
 
-Before introducing the two-coordinate cell maps of Section~\ref{sec:mechanism}, it is worth stepping back to ask what every upper-bound construction since Grothendieck \cite{Gro53} is actually optimizing, who the implicit adversary is, and why modern bounds invariably rely on convex mixtures (``soups'') of several rounding strategies rather than a single polished map.
+The proof uses a sequence of radial correlation coefficients to bound $\KGC$. We first derive the slope guaranteed by one such sequence and then examine how it changes under mixtures.
 
 \subsection{Primal Radial Transfer and the Hunt for Pure Linearity}
 We take inner products $\langle u, v \rangle_\Hilb$ to be conjugate-linear in the first slot and linear in the second. Because every matrix $A \in \C^{m \times n}$ acts on the finite-dimensional span of $\{u_1,\dots,u_m, v_1,\dots,v_n\}$, it suffices in \eqref{eq:groth-def} to range over $\Hilb = \C^N$ ($N \ge 1$) with $\langle u, v \rangle = \sum_{r=1}^N \bar{u}_r v_r$.
 
-Every Gaussian rounding scheme converts Hilbert-space inner products $\zeta_{pq} := \langle u_p, v_q \rangle \in \overline{\D}$ into random disk-valued scalars $Z_p, W_q \in \overline{\D}$ whose expected correlation has a radial series expansion
+Each charge-$1$ Gaussian scheme constructed in Section~\ref{sec:mechanism} converts Hilbert-space inner products $\zeta_{pq} := \langle u_p, v_q \rangle \in \overline{\D}$ into random disk-valued scalars $Z_p, W_q \in \overline{\D}$ whose expected correlation has a radial series expansion
 \[
   \E[\bar{Z}_p W_q] \;=\; H(\zeta_{pq}) \;=\; \sum_{k=0}^\infty h_k \, \zeta_{pq} |\zeta_{pq}|^{2k}, \qquad h_k \in \R.
 \]
-If a rounding scheme could realize a purely linear correlation $H(\zeta) = h_0 \zeta$ with $h_0 > 0$ and $h_k = 0$ for all $k \ge 1$, Jensen's inequality would immediately yield $h_0 V(A) \le C(A)$, hence $\KGC \le 1/h_0$. However, no non-zero linear functional on Gaussian space stays bounded in the unit disk $\overline{\D}$: clamping outputs to $|Z_p|, |W_q| \le 1$ inevitably generates \emph{nonlinear harmonic distortion} across higher odd powers $\zeta |\zeta|^{2k}$ ($k \ge 1$).
+If a rounding scheme could realize a purely linear correlation $H(\zeta) = h_0 \zeta$ with $h_0 > 0$ and $h_k = 0$ for all $k \ge 1$, Jensen's inequality would immediately yield $h_0 V(A) \le C(A)$, hence $\KGC \le 1/h_0$.
 
-From Krivine \cite{Kri79} to the present, every upper-bound proof is a method for cancelling or bounding this higher-order distortion while preserving as much of the linear slope $h_0$ as possible. Krivine \cite{Kri79}, Haagerup \cite{Haa87}, Braverman et al.\ \cite{BMMN11}, and Saha et al.\ \cite{SLX26} cancel $h_k$ ($k \ge 1$) \emph{before} rounding, by lifting $u_p, v_q$ into an infinite direct sum of tensor powers to invert $H$ analytically. Following the primal viewpoint developed in \cite{HJM26,HJM26b,Gal26}, one can bypass series inversion altogether and pay for residual nonlinear harmonics directly in $\ell^1$: as noted in \cite[Lemma~3.5]{HJM26}, the resulting budget $D(h) = h_0 - \sum_{k=1}^\infty |h_k|$ is exact for optimal tensor-power repair.
+Haagerup's series-reversion method compensates for the nonlinear coefficients by preprocessing the input vectors. Here we bound the contribution of these coefficients directly by their absolute sum. The following transfer estimate gives a sufficient slope for the Grothendieck inequality.
 
 \begin{lemma}[Radial Schur Transfer]\label{lem:transfer}
 Let $h = (h_k)_{k \ge 0}$ be an absolutely summable real sequence such that for every matrix $A \in \C^{m \times n}$ and unit-ball vectors $u_1,\dots,u_m, v_1,\dots,v_n \in \C^N$,
@@ -158,21 +158,12 @@ Rearranging gives $h_0 |S_0| \le C(A) + \big(\sum_{k=1}^\infty |h_k|\big) V(A)$.
 \end{proof}
 
 \subsection{The Adversarial Hermite Game and the Alternating Barrier}
-Lemma~\ref{lem:transfer} admits a transparent zero-sum game interpretation, mirroring the Gaussian minimax duality established by Raghavendra--Steurer \cite{RS09}, Naor--Regev \cite{NR14}, and Heilman--Jones--Malavolta \cite{HJM26b}. Notice the identity
+For a fixed real sequence $h\in\ell^1$, the slope in Lemma~\ref{lem:transfer} is the minimum of a linear payoff over real multipliers $q_k\in[-1,1]$ with $q_0=1$,
 \begin{equation}\label{eq:minimax-form}
   D(h) \;=\; h_0 - \sum_{k=1}^\infty |h_k|
   \;=\; \inf_{q_0 = 1,\; |q_k| \le 1} \sum_{k=0}^\infty q_k h_k.
 \end{equation}
-Here the two players are:
-\begin{itemize}
-  \item \textbf{The Rounder (upper-bound player):} selects a realizable correlation sequence $h \in \mathcal{C}$ via randomized disk-valued maps on complex Gaussian space, striving to maximize $D(h)$.
-  \item \textbf{The Adversary (lower-bound player):} selects a multiplier sequence $q = (1, q_1, q_2, \dots)$ with $q_k \in [-1, 1]$, representing a continuous matrix kernel $Q(z, w) = P_{1,0}(z, w) + \sum_{k=1}^\infty q_k P_{k+1,k}(z, w)$ built from the orthogonal projectors $P_{k+1,k}$ onto the charge-$1$ complex Hermite--Wick chaos subspaces of bidegree $(k+1, k)$ on Gaussian space $(\C^N, \gamma_{\C^N})$ as $N \to \infty$.
-\end{itemize}
-Why does this adversary have leverage? Coordinate vectors $u_z = z/\sqrt{N}$ live purely in the degree-$1$ linear chaos $P_{1,0}$, where every higher projector $P_{k+1,k}$ ($k \ge 1$) vanishes identically; thus $Q$ retains unit vector value $V \ge 1$. By contrast, any unimodular scalar rounding $|Z(z)| = |W(w)| = 1$ must spill $L^2$-energy into higher chaoses $k \ge 1$, and the adversary chooses $q_k = -\operatorname{sgn}(h_k)$ to penalize every mode in which the rounder leaks correlation. Concrete lower bounds for $\KGC$ are explicit instances of this adversary: Davie \cite{Dav84} and Guo--Fang--Lu \cite{GFL26} penalize all higher modes uniformly ($q_k = -\lambda$), while \cite{HJM26,Gal26} concentrate negative weight on cubic chaos $P_{2,1}$ ($k = 1$).
-
-Comparing $\R$ and $\C$ clarifies why the complex game is subtler. Over $\R$, binary rounders $f, g : \R^d \to \{\pm 1\}$ decompose into $f_+ = \frac{1}{2}(f+g)$ and $f_- = \frac{1}{2}(f-g)$ taking values in $\{-1,0,1\}$ with \emph{disjoint supports} ($f_+ f_- \equiv 0$, \cite[Prop.~2.4]{HJM26b}), decoupling the symmetric and antisymmetric parts of the game, while $\arcsin^{-1}(u) = \sin u$ alternates in sign at every odd degree. Over $\C$, unimodular outputs $e^{i(\alpha+\theta)}$ and $e^{i(\alpha-\theta)}$ remain coupled through a shared continuous phase $\alpha \in \R/2\pi\Z$, and $\varphi^{-1}(u)$ loses sign alternation at degree~$7$.
-
-In the complex game, one specific adversary explains why $1/\gd$ stood as a natural barrier: the \emph{alternating adversary} $q_k = (-1)^k$ (studied in finite dimensions by K\"onig \cite{Kon90}), whose payoff against a rounder $h \in \ell^1(\N)$ is the \emph{alternating ceiling functional}
+Indeed, one may take $q_k=-\operatorname{sgn}(h_k)$ for $k\ge1$. Choosing a realizable $h$ with $D(h)>0$ gives a lower bound on $1/\KGC$ by Lemma~\ref{lem:transfer}. One particular choice of multiplier, $q_k=(-1)^k$, gives the \emph{alternating ceiling functional}
 \[
   W(h) \;:=\; \sum_{k=0}^\infty (-1)^k h_k.
 \]
@@ -189,24 +180,19 @@ Consequently, if $h^{(1)}, \dots, h^{(M)} \in \ell^1(\N)$ satisfy $W(h^{(i)}) \l
 Setting $q_k = (-1)^k \in \{\pm 1\}$ in \eqref{eq:minimax-form} gives $-(-1)^k h_k \le |h_k|$ for each $k \ge 1$, so $D(h) = h_0 - \sum_{k=1}^\infty |h_k| \le h_0 + \sum_{k=1}^\infty (-1)^k h_k = W(h) \le |W(h)|$. By linearity of $W$, $D(H) \le W(H) = \sum_{i=1}^M w_i W(h^{(i)}) \le C$.
 \end{proof}
 
-Proposition~\ref{prop:nogo} pinpoints the exact obstruction faced by scalar phase channels and symmetric $\C^2$ rounders:
+We apply Proposition~\ref{prop:nogo} to the following channels.
 \begin{enumerate}
   \item \textbf{Preprocessed scalar phase channels:} Composing plain phase rounding $\ph(z) = z/|z|$ with any contractive odd polynomial preprocessor $\rho(\zeta) = \zeta R(|\zeta|^2)$, where $R(X) = \sum_{j=0}^d a_j X^j \in \R[X]$ satisfies $\|R\|_1 := \sum_j |a_j| \le 1$, produces the radial series $\sum_{k=0}^\infty h_k \zeta |\zeta|^{2k}$ with
   \[
     h_k \;=\; \sum_{m=0}^k r_m\, [X^{k-m}]\, R(X)^{2m+1}.
   \]
   Setting $X = -1$ gives $\sigma := R(-1) \in [-1,1]$ and $W(h) = \sum_{m=0}^\infty (-1)^m r_m \sigma^{2m+1}$. Since $(r_m)_{m \ge 0}$ is strictly positive and strictly decreasing ($r_{m+1}/r_m = \frac{(2m+1)^2}{4(m+1)(m+2)} < 1$), grouping consecutive pairs $(2\ell, 2\ell+1)$ shows $\sum_{m=0}^\infty (-1)^m r_m \tau^{2m+1} \ge 0$ for all $\tau = |\sigma| \in [0,1]$. This sum equals $\tau\int_0^{\pi/2} \cos^2 t\,(1+\tau^2\sin^2 t)^{-1/2}\,dt$, whose derivative in $\tau$ is $\int_0^{\pi/2} \cos^2 t\,(1+\tau^2\sin^2 t)^{-3/2}\,dt > 0$, so it attains its maximum $\gd$ at $\tau = 1$. As $W(h)$ is odd in $\sigma$, $|W(h)| \le \gd$ identically.
-  \item \textbf{Symmetric smoothed cell channels on $\C^2$:} Our symmetric smoothed two-coordinate rounder $f_{\mathrm{sm}} : \C^2 \to \overline{\D}$ (Section~\ref{sec:mechanism}), evaluated at its optimal alternating signs $(P(-1), Q(-1)) = (1, 1)$, achieves $W(f_{\mathrm{sm}}) = 0.71191988\ldots < \gd$ ($3.88 \times 10^{-5}$ below $\gd$).
+  \item \textbf{Smoothed cell channels $0$, $1$, and $5$.} For these channels $P(-1)=Q(-1)=1$. Substitution in the absolutely summable expansion~\eqref{eq:bivar-kernel} gives the same full alternating sum in each case. Evaluating the head of channel~$0$ through $k=250$ using its tabulated energy intervals and adding its tail allowance $50024/10^{12}$ gives $W<0.7119200<\gd$. The calculation is reproduced by \path{figures/check_alternating.py}.
 \end{enumerate}
-By Proposition~\ref{prop:nogo}, \emph{no} convex combination of preprocessed scalar phase channels and symmetric $f_{\mathrm{sm}}$ channels can ever achieve $D(H) > \gd$. Against those families, the alternating adversary $q_k = (-1)^k$ is unbeatable; crossing $\gd$ requires at least one rounding strategy with $W > \gd$.
+Every convex mixture of the scalar phase channels in item~1 and the three channels in item~2 therefore has $D(H)\le\gd$. To prove $D(H)>\gd$, a mixture must include at least one channel with $W>\gd$.
 
-\subsection{Why a Convex ``Soup'' of Strategies Wins}
-Once one strategy achieves $W > \gd$, why not use it alone instead of mixing six strategies with unequal weights? Three structural principles force a randomized mixture:
-\begin{enumerate}
-  \item \textbf{Parseval rigidity of pure strategies:} Any single measurable rounder $G : \C^d \to \overline{\D}$ has $\|G\|_{L^2}^2 \le 1$ while its linear projection satisfies $h_0 < 1$; by Parseval's identity, the remaining energy must appear across higher Hermite modes, leaving a fixed sign signature $(h_1, h_2, \dots)$ that the adversary punishes via $q_k = -\operatorname{sgn}(h_k)$.
-  \item \textbf{Killing nonlinear correlation while keeping linear correlation:} Tossing a biased die to pick channel $p$ with probability $w_p$ averages the correlation curves $H = \sum_p w_p h^{(p)}$. Because every channel has $h_0^{(p)} > 0$, their linear slopes add \emph{constructively}, whereas channels equipped with different preprocessors carry \emph{opposite signs} on higher modes $k \ge 1$ and interfere \emph{destructively} ($\sum_p w_p h_k^{(p)} \approx 0$). Mixing does not kill correlation indiscriminately: it selectively annihilates higher-order harmonic correlation so the average behaves almost like a pure linear map $H(\zeta) \approx H_0 \zeta$.
-  \item \textbf{Division of labor among specialists:} Breaking row--column symmetry on $\C^2$ lifts $W$ comfortably above $\gd$ ($W \approx 0.712902$), defeating the alternating adversary $q_k = (-1)^k$, but creates large non-alternating head residuals ($\sum_{k \ge 1} |h_k| \approx 0.0253$ even after linear preprocessing, giving only $\KGC \le 1.4460$ alone). Conversely, symmetric smoothed $\C^2$ channels have $W < \gd$ (and alone give at best $1.4075$), yet under alternating preprocessors they span rich Hermite decay profiles at \emph{zero loss in $W$}. Weighting the high-ceiling specialist at ${\sim}5.65\%$ and the low-distortion steering workhorses at ${\sim}94.35\%$ captures both advantages simultaneously: none of the six channels in Table~\ref{tab:cert} beats Haagerup's $1.404909$ individually, yet their convex combination proves $\KGC \le 1.40457588 < 1/\gd$.
-\end{enumerate}
+\subsection{How the Six Channels Work Together}
+Choosing a single channel $p$ for all vectors with probability $w_p$ gives the averaged coefficients $H_k=\sum_p w_p h^{(p)}_k$. The linear slopes add with their weights, while opposite signs can cancel at each higher index before the absolute value is taken in $D(H)$. In Table~\ref{tab:cert} the two reflected channels together carry about $5.65\%$ of the weight and supply the lift above $\gd$. The other four channels help reduce the sum of the higher absolute coefficients. Section~\ref{sec:cert} bounds the residual of the mixture.
 
 \section{Two-Coordinate Cell Rounders, Reflection, and Steering}\label{sec:mechanism}
 
@@ -283,17 +269,26 @@ where $J_{n,a,i} := \int_{9i^2/1024}^{9(i+1)^2/1024} \phi_{n,a}(s) e^{-s}\,ds$ (
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.95\textwidth]{figures/tiger_mu.pdf}
-  \caption{Left: certified radial overlaps $\mu_k(f_{\mathrm{tig}})$ ($0 \le k \le 250$) of the reflected $64 \times 64 \times 36$ cell pair $(f_{\mathrm{tig}}, g_{\mathrm{tig}})$. Right: alternating partial sums $S_K = \sum_{k=0}^K (-1)^k \mu_k(f_{\mathrm{tig}})$ minus Haagerup's constant $\gd$, converging to $+9.43 \times 10^{-4}$ above $\gd$.}\label{fig:tiger-mu}
+  \caption{Left: certified radial overlaps $\mu_k(f_{\mathrm{tig}})$ ($0 \le k \le 250$) of the reflected $64 \times 64 \times 36$ cell pair $(f_{\mathrm{tig}}, g_{\mathrm{tig}})$. Right: alternating partial sums $S_K = \sum_{k=0}^K (-1)^k \mu_k(f_{\mathrm{tig}})$ relative to $\gd$. The right endpoint is the unpreprocessed partial sum $S_{250}$, with $S_{250}-\gd\approx9.42914\times10^{-4}$.}\label{fig:tiger-mu}
 \end{figure}
 
 Look at the sign in $W(f_{\mathrm{tig}}) = \sum_{n=0}^\infty (-1)^n \mu_n(f_{\mathrm{tig}})$: for any symmetric scheme $(Q = +P)$, cubic modes ($n = 1$) enter $W$ with weight $(-1)^1 \le 0$. Under reflection $z_1 \mapsto -z_1$, odd angular harmonics ($m = 1$, where $k_0(1) = 0$) carry $(-1)^m = -1$, so at $n = 1$ ($n_1 + n_2 = 1$, such as the mixed cubic chaos $z_1(|z_2|^2 - 1)$) the product $(-1)^n (-1)^m = +1$ turns \emph{positive}, destabilizing the plain phase saddle upward. Optimizing the $64 \times 64 \times 36$ Fourier table yields (Figure~\ref{fig:tiger-mu})
 \[
-  W_{250}(f_{\mathrm{tig}}) \;=\; \sum_{n=0}^{250} (-1)^n \mu_n(f_{\mathrm{tig}}) \;=\; 0.71290157\ldots \;>\; \gd + 9.429 \times 10^{-4}.
+  S_{250} \;=\; \sum_{n=0}^{250} (-1)^n \mu_n(f_{\mathrm{tig}}) \;=\; 0.71290157\ldots \;>\; \gd + 9.429 \times 10^{-4}.
 \]
-Composing $f_{\mathrm{tig}}$ with a two-term alternating linear polynomial $R(X) = c_0 - c_1 X$ ($c_0, c_1 > 0$, $c_0 + c_1 = 1$, Channels~$3$ and~$4$ of Table~\ref{tab:cert}) satisfies $R(-1) = c_0 + c_1 = 1$---preserving $100\%$ of the alternating lift $W > \gd$---while contracting $|R(1)| = c_0 - c_1 < 1$ on the unit circle so that the correlation kernel extends holomorphically beyond $|t| = 1$ with rapidly decaying Hardy tail.
+For channels~$3$ and~$4$ the polynomial $R(X)=a-bX$ has $a,b>0$ and $a+b=1$. Since $R(-1)=1$, the full alternating sum of each channel equals $\sum_{n\ge0}(-1)^n\mu_n$. To enclose it, channel~$4$ has the partial sum
+\[
+  S_{250}^{(4)}
+  =\sum_{n=0}^{250}(-1)^n\mu_n
+    \sum_{j=0}^{\min(2n+1,250-n)}
+    \binom{2n+1}{j}a^{2n+1-j}b^j .
+\]
+Using the tabulated intervals for $\mu_n$ and the tail allowance $\tau_4=3/10^{12}$ gives
+$0.712901282238<W<0.712901282245$ (see \path{figures/check_alternating.py}).
+Thus the full sum exceeds $\gd$ by about $9.42622\times10^{-4}$. Section~\ref{sec:cert} establishes the analytic continuation and the Hardy estimates that justify the tail allowances.
 
 \subsection{Rotated Ornstein--Uhlenbeck Smoothing and Zero-Cost Residual Steering}
-Used on its own, $f_{\mathrm{tig}}$ has $\sum_{n=1}^{250} |\mu_n(f_{\mathrm{tig}})| \approx 0.16923$ ($1/D_{250} \approx 1.6641$). To cancel its non-alternating head modes without eroding the linear slope, we pair it with a smoothed symmetric rounder $f_{\mathrm{sm}} : \C^2 \to \overline{\D}$ built from our second $64 \times 64 \times 36$ cell map $T_{\mathrm{cell}}$ via rotated Ornstein--Uhlenbeck smoothing:
+From the midpoints of the raw overlap intervals we estimate $\sum_{n=1}^{250} |\mu_n(f_{\mathrm{tig}})| \approx 0.16923$ ($1/D_{250} \approx 1.6641$). To cancel its non-alternating head modes without eroding the linear slope, we pair it with a smoothed symmetric rounder $f_{\mathrm{sm}} : \C^2 \to \overline{\D}$ built from our second $64 \times 64 \times 36$ cell map $T_{\mathrm{cell}}$ via rotated Ornstein--Uhlenbeck smoothing:
 \begin{equation}\label{eq:smooth-map}
   f_{\mathrm{sm}}(z_1, z_2) \;:=\; \int_{\C} T_{\mathrm{cell}}\!\Big(c_\theta z_1 + s_\theta z_2,\; s_\eta(-s_\theta z_1 + c_\theta z_2) + c_\eta \xi\Big)\, d\gamma_{\C}(\xi),
 \end{equation}
@@ -307,8 +302,8 @@ satisfying $c_\theta^2 + s_\theta^2 = 1$ and $s_\eta^2 + c_\eta^2 = 1$. Averagin
 
 Coupling $f_{\mathrm{sm}}$ with $Q(X) = -X$ and an alternating polynomial $P(X) = \sum_j a_j X^j$ satisfying $(-1)^j a_j \ge 0$ and $\|P\|_1 = 1$ (Channels~$0$, $1$, and~$5$, including the $+a_{12} X^{12}$ term of $P_5$ since $(-1)^{12} = +1$) delivers two decisive properties:
 \begin{enumerate}
-  \item \textbf{Banded finite head support:} Because $Q(X)^{d_2} = (-1)^{d_2} X^{d_2}$, a pair $(d_1, d_2)$ contributes to $h_k$ in \eqref{eq:bivar-kernel} only when $\lfloor d_1/2\rfloor + \lfloor d_2/2\rfloor + d_2 \le k$, i.e.\ $d_1 + 3 d_2 \le 2k + 1$. Thus the entire head $0 \le k \le 250$ depends \emph{only} on the finite triangular set of $21{,}077$ odd-sum pairs $(d_1, d_2)$ with $d_1 + 3d_2 \le 501$ ($d_2 \le 167$), with zero truncation error from higher bivariate degrees.
-  \item \textbf{Zero-cost alternating steering:} At $X = -1$, every such channel satisfies $P(-1) = \|P\|_1 = +1$ and $Q(-1) = +1$, preserving the full alternating value $W_{250}(f_{\mathrm{sm}}) = 0.71191988\ldots$ at \emph{zero ceiling loss} while varying the Hermite decay profile across $1 \le k \le 250$ to cancel the head residuals of the reflected $f_{\mathrm{tig}}$ channels.
+  \item \textbf{Banded finite head support:} Because $Q(X)^{d_2} = (-1)^{d_2} X^{d_2}$, a pair $(d_1, d_2)$ contributes to $h_k$ in \eqref{eq:bivar-kernel} only when $\lfloor d_1/2\rfloor + \lfloor d_2/2\rfloor + d_2 \le k$, i.e.\ $d_1 + 3 d_2 \le 2k + 1$. Thus the entire head $0 \le k \le 250$ depends \emph{only} on the finite triangular set of $21{,}168$ odd-sum pairs $(d_1, d_2)$ with $d_1 + 3d_2 \le 501$ ($d_2 \le 167$), with zero truncation error from higher bivariate degrees.
+  \item \textbf{Zero-cost alternating steering:} At $X = -1$, every such channel satisfies $P(-1) = \|P\|_1 = +1$ and $Q(-1) = +1$, preserving the full alternating sum $W(f_{\mathrm{sm}})$ while varying the Hermite decay profile across $1 \le k \le 250$ to cancel the head residuals of the reflected $f_{\mathrm{tig}}$ channels.
 \end{enumerate}
 
 \section{The Six-Channel Rational Certificate and Proof of Theorem~\ref{thm:main}}\label{sec:cert}
@@ -336,7 +331,7 @@ $5$ & $f_{\mathrm{sm}}$ & $\dfrac{350873570}{\Delta}$ & $\Big(\dfrac{1037}{1000}
 \end{table}
 
 \begin{remark}[Destructive Harmonic Interference Across Channels]
-Evaluated individually over $0 \le k \le 250$, the six channels have $1/D_{250}(h^{(p)})$ equal to $1.40750$ ($p=0$), $1.41162$ ($p=1$), $D_{250} = -0.76048 < 0$ ($p=2$), $1.56696$ ($p=3$), $1.44599$ ($p=4$), and $1.52614$ ($p=5$): \emph{not one} beats Haagerup's 1987 bound $1.404909$ on its own. Yet across the convex combination $H_k = \sum_{p=0}^5 w_p h_k^{(p)}$, their nonlinear distortion $\sum_{k=1}^{250} |h_k^{(p)}|$ (ranging from $1.38 \times 10^{-3}$ on Channel~$0$ and $2.53 \times 10^{-2}$ on Channel~$4$ up to $0.833$ on Channel~$2$) cancels down to $\sum_{k=1}^{250} |H_k| = 6.1578477\ldots \times 10^{-6}$.
+For a single channel define $D_{250}(h)=h_0-\sum_{k=1}^{250}|h_k|$. From the interval midpoints we obtain the approximate reciprocals $1/D_{250}$ of $1.40750$, $1.41162$, $1.56696$, $1.44599$, and $1.52614$ for $p=0,1,3,4,5$, respectively. Channel~$2$ has $D_{250}\approx-0.76048$. The corresponding midpoint estimate for the mixed head is $\sum_{k=1}^{250}|H_k|\approx6.1578477\times10^{-6}$. These figures describe cancellation in the finite head. The proof below uses interval endpoints and bounds the entire tail.
 \end{remark}
 
 \subsection{Fixed-Point Head Enclosures and Infinite Hardy-Space Tails}
@@ -348,7 +343,7 @@ Fix the target linear slope $c_{\mathrm{cert}} := \frac{711974258589}{10^{12}}$.
 \end{equation}
 Every term on the right-hand side of \eqref{eq:budget-split} is enclosed in exact integer interval arithmetic:
 \begin{enumerate}
-  \item \textbf{Square-root-free polar Laguerre/Hermite head enclosures ($0 \le k \le 250$):} On the radial grid $s_i = (3i/32)^2 = 9i^2/1024$ ($0 \le i \le 64$), the normalization factors $\sqrt{n!/(n+a)!}$ in $\phi_{n,a}(s)$ pair up into rational rising factorials $(n+a)!/n! = \prod_{r=1}^a (n+r)$ as soon as one forms squared norms in \eqref{eq:mu-tiger} and in the smoothed Hermite inner products of \eqref{eq:smooth-map}, while the polar area factors $(2\pi) \cdot \pi^{-1} \cdot \frac{1}{2} = 1$ cancel $\pi$ identically. Enclosing $\exp(-9i^2/1024)$ and the base lower incomplete gamma integrals via $480$-term Taylor series at fixed-point scale $2^{-1024}$, propagating across $0 \le a \le 18$ and $0 \le n \le 250$ by the exact integer-coefficient Laguerre boundary recurrences, and contracting with $f_{\mathrm{tig}}$, $T_{\mathrm{cell}}$, and the rational binomial smoothing coefficients produces certified $2^{-128}$-scaled interval tables for $\mu_0(f_{\mathrm{tig}}),\dots,\mu_{250}(f_{\mathrm{tig}})$ and for the $21{,}077$ bivariate energies $E_{f_{\mathrm{sm}}}(d_1, d_2)$ on $d_1 + 3d_2 \le 501$ (of widths $\le 8730 \times 2^{-128} < 2^{-114}$ and $\le 126 \times 2^{-128} < 2^{-121}$, respectively). Convolving these tables and the $251$-entry rational interval enclosure of \eqref{eq:phi-haagerup} with $(P_p, Q_p)$ in $2^{-128}$ fixed-point interval arithmetic certifies
+  \item \textbf{Square-root-free polar Laguerre/Hermite head enclosures ($0 \le k \le 250$):} On the radial grid $s_i = (3i/32)^2 = 9i^2/1024$ ($0 \le i \le 64$), the normalization factors $\sqrt{n!/(n+a)!}$ in $\phi_{n,a}(s)$ pair up into rational rising factorials $(n+a)!/n! = \prod_{r=1}^a (n+r)$ as soon as one forms squared norms in \eqref{eq:mu-tiger} and in the smoothed Hermite inner products of \eqref{eq:smooth-map}, while the polar area factors $(2\pi) \cdot \pi^{-1} \cdot \frac{1}{2} = 1$ cancel $\pi$ identically. Enclosing $\exp(-9i^2/1024)$ and the base lower incomplete gamma integrals via $480$-term Taylor series at fixed-point scale $2^{-1024}$, propagating across $0 \le a \le 18$ and $0 \le n \le 250$ by the exact integer-coefficient Laguerre boundary recurrences, and contracting with $f_{\mathrm{tig}}$, $T_{\mathrm{cell}}$, and the rational binomial smoothing coefficients produces certified $2^{-128}$-scaled interval tables for $\mu_0(f_{\mathrm{tig}}),\dots,\mu_{250}(f_{\mathrm{tig}})$ and for the $21{,}168$ bivariate energies $E_{f_{\mathrm{sm}}}(d_1, d_2)$ on $d_1 + 3d_2 \le 501$ (of widths $\le 8730 \times 2^{-128} < 2^{-114}$ and $\le 126 \times 2^{-128} < 2^{-121}$, respectively). Convolving these tables and the $251$-entry rational interval enclosure of \eqref{eq:phi-haagerup} with $(P_p, Q_p)$ in $2^{-128}$ fixed-point interval arithmetic certifies
   \[
     |H_0 - c_{\mathrm{cert}}| + \sum_{k=1}^{250} |H_k|
     \;\le\; \mathrm{headCap}_{\mathrm{cert}} \;:=\; \frac{6157850}{10^{12}}
@@ -394,7 +389,7 @@ Haagerup's constant satisfies $0.711958633 < \gd < 0.711958683$; in particular, 
 \end{lemma}
 
 \begin{proof}
-Let $P_{14}(x) := \sum_{k=0}^{14} \binom{2k}{k} 4^{-k} x^k$ be the degree-$14$ Taylor polynomial of $(1 - x)^{-1/2}$. Grouping consecutive terms $(c_{2m} + c_{2m+1} x) x^{2m}$ for $0 \le m \le 6$ plus $c_{14} x^{14}$ shows $P_{14}(x) > 0$ on $[-\tfrac{1}{3}, \tfrac{1}{3}]$, since $c_{2m+1}/c_{2m} = \frac{4m+1}{2m+2} < 3$. Because $(1 - x)(\sum_{k=0}^\infty c_k x^k)^2 = 1$ as formal power series and $c_k > 0$, truncating at degree~$14$ leaves an exact polynomial identity
+Let $P_{14}(x) := \sum_{k=0}^{14} \binom{2k}{k} 4^{-k} x^k$ be the degree-$14$ Taylor polynomial of $(1 - x)^{-1/2}$. Grouping consecutive terms $(c_{2m} + c_{2m+1} x) x^{2m}$ for $0 \le m \le 6$ plus $c_{14} x^{14}$ shows $P_{14}(x) > 0$ on $[-\tfrac{1}{3}, \tfrac{1}{3}]$, since $c_{2m+1}/c_{2m} = \frac{4m+1}{4m+2} < 1$. Because $(1 - x)(\sum_{k=0}^\infty c_k x^k)^2 = 1$ as formal power series and $c_k > 0$, truncating at degree~$14$ leaves an exact polynomial identity
 \[
   (1 - x) P_{14}(x)^2 \;=\; 1 - \sum_{m=15}^{29} d_m x^m
 \]
@@ -408,14 +403,14 @@ Expanding $\frac{1}{2}(1 + \cos 2t) P_{14}(\frac{1}{3}\cos 2t)$ in powers of $\c
 \[
   q_0 \;=\; \frac{40545758045051663}{73040694872113152}.
 \]
-Since $\sin(0) = \sin(\pi) = 0$, the Fundamental Theorem of Calculus gives $\int_0^{\pi/2} \cos^2 t\, P_{14}(\frac{1}{3}\cos 2t)\,dt = F(\pi/2) - F(0) = q_0 \frac{\pi}{2}$. Combining this with the standard $20$-digit rational enclosure $314159265358979323846 \times 10^{-20} < \pi < 314159265358979323847 \times 10^{-20}$ yields $0.711958633 < \gd < 0.711958683$. Finally, $\frac{140457588}{10^8} \times \frac{711958683}{10^9} = \frac{99999996144920904}{10^{17}} < 1$, whence $\frac{140457588}{10^8} < 1/\gd$.
+Since $\sin(0) = \sin(\pi) = 0$, the Fundamental Theorem of Calculus gives $\int_0^{\pi/2} \cos^2 t\, P_{14}(\frac{1}{3}\cos 2t)\,dt = F(\pi/2) - F(0) = q_0 \frac{\pi}{2}$. Combining this with the standard $20$-digit rational enclosure $314159265358979323846 \times 10^{-20} < \pi < 314159265358979323847 \times 10^{-20}$ yields $0.711958633 < \gd < 0.711958683$. Finally, $\frac{140457588}{10^8} \times \frac{711958683}{10^9} = \frac{99999999369836604}{10^{17}} < 1$, whence $\frac{140457588}{10^8} < 1/\gd$.
 \end{proof}
 
 Combining Lemma~\ref{lem:gd-upper} with $\KGC \le \frac{140457588}{10^8}$ completes the proof of Theorem~\ref{thm:main}.
 
 \section{How This Result Was Found}\label{sec:found}
 
-The construction was discovered with AI, at the end of a two-month research and formalisation project carried out by the author together with AI agents. Systems of three developers took part; we do not say which one produced the final step, because it came out of joint work. It was not luck. Haagerup's question became the target because the project, recorded in~\cite{Gal26}, had narrowed the gap to $2.35 \times 10^{-5}$ and made it sharp. Many routes failed first and are recorded there: mixtures of one-coordinate phase kernels saturate near $1.404898$, and a two-coordinate scheme with a joint phase controller and a matrix-covariance preprocessor stopped at $1.4045923$, still above $1/\gd$, obstructed by the alternating ceiling of Proposition~\ref{prop:nogo}. Meanwhile, an alternating best-response search on 15~October had uncovered reflected two-coordinate ``tiger'' pairs whose alternating series lifted strictly above $\gd$, though inverted in isolation they gave only $\KGC \le 1.4245$. The missing step, found on 17--18~November, was to combine a reflected cell pair with smoothed symmetric $\C^2$ channels whose alternating polynomial preprocessors preserve the ceiling while cancelling the reflected pair's non-alternating head harmonics, and then to distill the entire analytic and interval machinery into the self-contained six-channel Lean~4 proof bundled in \texttt{anc/}. Every layer of the argument was audited independently across separate codebases and verified end to end by Lean~4.
+The construction was discovered with AI, at the end of a two-month research and formalisation project carried out by the author together with AI agents. Systems of three developers took part; we do not say which one produced the final step, because it came out of joint work. It was not luck. Haagerup's question became the target because the project, recorded in~\cite{Gal26}, had narrowed the gap to $2.35 \times 10^{-5}$ and made it sharp. In earlier numerical searches recorded in~\cite{Gal26}, a two-coordinate scheme with a joint phase controller and a matrix-covariance preprocessor reached $1.4045923$, above $1/\gd$. On 15~October an alternating best-response search found an earlier reflected pair with alternating sum above $\gd$. Series inversion for that October pair gave $1.4245$. The construction of 17--18~November uses the pair specified in Section~\ref{sec:mechanism} in two channels, together with the smoothed and scalar channels of Table~\ref{tab:cert}. The standalone Lean~4 proof in \texttt{anc/} verifies Theorem~\ref{thm:main} for this mixture.
 % TODO(author): add the human side of the story.
 
 AI systems are not authors of this paper; the author takes full responsibility for its content.
@@ -437,10 +432,13 @@ With the pinned toolchain installed, \texttt{lake exe cache get} fetches Mathlib
 
 \section{The Lean Proof}\label{app:lean}
 
-The two top-level theorems proved in \texttt{Grothe/UpperSix/Haagerup.lean} are:
+The following declarations, exported by \path{Grothe/UpperSix/Haagerup.lean}, give the two comparisons and their consequence.
 \begin{quote}\small\ttfamily
 theorem Haagerup.isBound\_cert :\\
 \hspace*{2em}Haagerup.Statement.IsBound (140457588 / 100000000 : $\mathbb{R}$)\\[3pt]
+theorem Haagerup.inv\_gammaDagger\_gt :\\
+\hspace*{2em}(140457588 / 100000000 : $\mathbb{R}$)\\
+\hspace*{4em}< 1 / Haagerup.Statement.gammaDagger\\[3pt]
 theorem Haagerup.constant\_lt\_inv\_gammaDagger :\\
 \hspace*{2em}Haagerup.Statement.complexGrothendieckConstant\\
 \hspace*{4em}< 1 / Haagerup.Statement.gammaDagger
