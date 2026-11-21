@@ -3,7 +3,7 @@
 The two-sided theorem for the complex Grothendieck constant is
 
 $$
-1.4018 < K_G^{\mathbb C} \le 1.40457588.
+1.40191 < K_G^{\mathbb C} \le 1.40457588.
 $$
 
 The upper entrypoint states that $140457588/100000000$ is admissible for every finite complex matrix. It also compares the constant with Haagerup’s proposed value,
@@ -22,7 +22,7 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **two-sided Lean theorem in this repository** | $\mathbf{1.4018 < K}$ | $\mathbf{K\le 1.40457588}$ |
+| Oct–Nov 2026 | **two-sided Lean theorem in this repository** | $\mathbf{1.40191 < K}$ | $\mathbf{K\le 1.40457588}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -82,7 +82,7 @@ projections onto the linear functions of $z$ and onto the cubic Wick chaos of bi
 an identity tail on the complement of the two chaoses (`witness`,
 [`Grothe/LowerAnalytic/Witness.lean`](Grothe/LowerAnalytic/Witness.lean)). The proof shows that
 $\lvert \langle f, Tg \rangle \rvert \le B = (1-\nu)\,B_{\mathrm{env}} + \nu$, with $\nu = 47/2000$ and
-$B_{\mathrm{env}} = 7064131/10^7$, for all unimodular $f$, $g$ and all $n \ge 2$; $1/B = 1.40191\ldots > 1.4018$.
+$B_{\mathrm{env}} = 7064131/10^7$, for all unimodular $f$, $g$ and all $n \ge 2$; $1/B = 1.4019103\ldots > 1.40191$.
 
 1. **Transfer.** For $u_\ell = z_\ell / \lVert z \rVert$ the sum $\sum_\ell \langle u_\ell, T u_\ell \rangle$ has
    modulus at least $1 - (1+e)/(n+1)$ with $e = 191/250$ (`norm_pairVal_witness`), so every Grothendieck bound is
