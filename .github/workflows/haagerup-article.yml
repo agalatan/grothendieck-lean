@@ -5,13 +5,14 @@ name: Haagerup article (Lean)
 # the Grothe target also builds (lean.yml). This job checks that the copy is exact and that the package builds on its
 # own, with the pinned Lean and Mathlib, warning-free, without sorry, axioms or unchecked code, and with no axioms
 # beyond propext, Classical.choice, Quot.sound and the native_decide facts listed in haagerup-article/anc/native.txt.
-# It runs when a file under haagerup-article/ or Grothe/UpperSix/ changes, when the Lean or Mathlib version changes,
-# when this file changes, or by hand (workflow_dispatch).
+# It runs when a file under haagerup-article/anc/ or Grothe/UpperSix/ changes, when the Lean or Mathlib version
+# changes, when this file changes, or by hand (workflow_dispatch). Edits of the article's text alone (main.tex,
+# main.pdf, figures/, README.md) do not run it: the job checks only the Lean package.
 
 on:
   push:
     paths:
-      - 'haagerup-article/**'
+      - 'haagerup-article/anc/**'
       - 'Grothe/UpperSix/**'
       - 'lean-toolchain'
       - 'lake-manifest.json'
