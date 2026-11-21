@@ -4,7 +4,7 @@ This file lists, module by module, what the Lean development proves and which in
 
 The upper-only target is `Grothe.UpperResult` and the lower-only target is `Grothe.LowerResult`.
 `Grothe.MainResult` imports both and combines their conclusions.
-The combined statement is `1.4018 < K_G^ℂ < 1.404569241261`. The upper proof gives the rational bound `1000000000000000/711962052581159`.
+The combined statement is `1.40191 < K_G^ℂ < 1.404569241261`. The upper proof gives the rational bound `1000000000000000/711962052581159`.
 The upper construction uses the shared Gaussian phase identity and the GT
 quadrature and energy-table proofs. Its local verification status and exact
 replay commands are recorded in [the certificate guide](UPPER_CERTIFICATE.md).
@@ -1096,11 +1096,11 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   their own reproduction commands in [the certificate guide](UPPER_CERTIFICATE.md).
 
 **Lower bound.** `lower_target : LowerTarget` (`Grothe/LowerResult.lean`) is
-`lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `7009/5000 = 1.4018`.
+`lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `140191/100000 = 1.40191`.
 `lowerTarget_of_tailNodeCaps` (`Grothe/LowerTarget.lean`) applies `lower_bound_of_tailNodeCaps`
 (`Grothe/LowerAnalytic/LowerBound.lean`): for every Grothendieck bound `K`, `1/((1 − ν)·envB + ν) ≤ K` with
 `ν = 47/2000` and `envB = 7064131/10⁷`, given the node caps `TailNodeCaps (nuHat (47/2000))`; the reciprocal is
-`1.40191… > 1.4018`. **The node caps are the only hypothesis of `lower_bound_of_tailNodeCaps`**: the bounds
+`1.4019103… > 1.40191`. **The node caps are the only hypothesis of `lower_bound_of_tailNodeCaps`**: the bounds
 Ψ_r(s_i) − 10⁻¹¹ ≤ c_i of the potentials of the 14 rows with the tail ν̂ at the nodes of their tables.
 `tailNodeCaps_cert` (`Grothe/LowerAnalytic/CapNodes.lean`) proves them ([CAPS.md](CAPS.md)), so `lower_target` has
 no hypothesis. The chain: `transfer_lower` gives `1/B ≤ K` from `TransferInputsL2 B`;

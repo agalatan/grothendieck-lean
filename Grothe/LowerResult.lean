@@ -11,7 +11,7 @@ namespace Grothe.Statement
 
 open Grothe.LowerAnalytic
 
-/-- **The lower bound**: every Grothendieck bound is above `1.4018`. -/
+/-- The identity-tail witness gives the strict lower target for every Grothendieck bound. -/
 theorem lower_target : LowerTarget :=
   lowerTarget_of_tailNodeCaps tailNodeCaps_cert
 

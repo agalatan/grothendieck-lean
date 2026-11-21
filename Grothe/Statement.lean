@@ -70,8 +70,8 @@ def LowerAbove (c : ℝ) : Prop := ∀ K, IsBound K → c < K
 /-- **The upper-bound target:** some Grothendieck bound is below `1.4046`. -/
 def UpperTarget : Prop := UpperBelow (14046 / 10000)
 
-/-- **The lower-bound target:** every Grothendieck bound is above `1.4018`. -/
-def LowerTarget : Prop := LowerAbove (7009 / 5000)
+/-- **The lower-bound target:** every Grothendieck bound is above `1.40191`. -/
+def LowerTarget : Prop := LowerAbove (140191 / 100000)
 
 end
 

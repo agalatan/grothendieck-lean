@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4018\;<\;\KG\;<\;1.404569241261$\\[6pt]
+\Large $1.40191\;<\;\KG\;<\;1.404569241261$\\[6pt]
 \normalsize The two-sided theorem \lean{main\_bounds} combines \lean{lower\_target}
 with \lean{UpperReplacement.upper\_below}. The exact upper certificate and the commands
 for checking it are in \path{docs/UPPER_CERTIFICATE.md}.\vspace{4pt}
@@ -103,7 +103,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4018}$ & $\mathbf{1.404569241261}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.404569241261}$\\\bottomrule
 \end{tabular}
 \end{center}
 The signed mixture gives the exact upper candidate
@@ -695,7 +695,7 @@ the identity on all the other chaoses (an \emph{identity tail}).
 \item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu=0.71331239215$, with
  $\hat B=0.7064131$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.40191\ldots>1.4018$.
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.4019103\ldots>1.40191$.
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
@@ -795,7 +795,7 @@ The table below records the root upper and lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.4018$, without hypotheses. The intermediate theorem \lean{lower\_bound\_of\_tailNodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.40191$, without hypotheses. The intermediate theorem \lean{lower\_bound\_of\_tailNodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
 the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices;
 the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
 (frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and
