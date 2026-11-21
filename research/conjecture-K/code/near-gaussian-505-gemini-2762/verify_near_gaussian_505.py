@@ -51,16 +51,18 @@ WHAT THIS SCRIPT PROVES AND CERTIFIES (Issue #505, part of #501; STATUS.md 3.21 
 
    - Triple 2: (alpha_hat, beta_hat, gamma_hat) = (913/40000, 5239/120000, -2927/100000)
      (where beta_hat - 1/24 = alpha_hat - 1/48 = 239/120000) certifies across [0, oo):
-       E|F| <= sqrt(2/pi) * ||F||_2 * (1 + (717/40000) * Var(tau))          for ALL F in V_3(R^n),
-     and strictly E|F| < sqrt(17/25) * ||F||_2 whenever 0 <= Var(tau) <= 373/200 = 1.865
+       E|F| <= sqrt(2/pi) * (1 + (717/40000) * Var(tau))          for ALL unit F in V_3(R^n)
+       (equivalently E|F| <= sqrt(2/pi)*||F||_2*(1 + (717/40000)*Var(||DF||^2/3)/||F||_2^4) for nonzero F),
+     and strictly E|F| < sqrt(17/25) for unit F whenever 0 <= Var(tau) <= 373/200 = 1.865
      (in particular <= 93/50 = 1.86; 47.1x larger than the previous 89/2250 = 0.039555...).
 
 4. Complex cubic chaos H_{2,1}(C^n) phase-averaging corollary:
    Since F_theta = sqrt(2)*Re(e^{-i*theta} q) has kappa_4(F_theta) = (3/2)*chi(q),
      E|q| <= (sqrt(pi)/2) * ||q||_2 * (1 + (26449/5000000) * chi(q))        for ALL q in H_{2,1}(C^n),
    giving E|q| <= (9121/10000)*||q||_2 on chi in [0, 11/2] (and <= (9074/10000)*||q||_2 on [0, 9/2]);
-   combined with rows 7..13 of `cert_915.json` on chi in [11/2, 42] (max < 0.9141875), this sharpens
-   the global unconditional radius on H_{2,1}(C^n) from 1829/2000 = 0.9145 to 4571/5000 = 0.9142.
+   combined with rows 7..13 of `../sharp-radius-gemini-2762/cert_915.json` on chi in [11/2, 42]
+   (verified separately by `verify_cert_level3.py` and `verify_bernstein_level3.py`, max < 0.9141875),
+   this sharpens the global radius on H_{2,1}(C^n) from 1829/2000 = 0.9145 to 4571/5000 = 0.9142.
 ============================================================================================
 """
 import ast
@@ -90,11 +92,20 @@ def dec_ceil10(q):
     return '%d.%010d' % (n // 10**10, n % 10**10)
 
 
-def fmt_signed10(q):
+def fmt_lo10(q):
+    """Outward decimal lower bound (rounded toward -oo) to 10 fractional digits."""
     q = Fr(q)
     if q < 0:
         return '-' + dec_ceil10(-q)
     return '+' + dec_floor10(q)
+
+
+def fmt_hi10(q):
+    """Outward decimal upper bound (rounded toward +oo) to 10 fractional digits."""
+    q = Fr(q)
+    if q < 0:
+        return '-' + dec_floor10(-q)
+    return '+' + dec_ceil10(q)
 
 
 S = 10**15  # Exact fixed-point integer scale: integer n represents exact Fraction(n, S)
@@ -648,6 +659,10 @@ def main():
     n_rej = run_negative_controls(tables, knots, pi_lo, cache)
     elapsed_ms = (time.monotonic_ns() - t0) // 1000000
 
+    # Verify outward decimal formatters enclose both positive and negative rationals:
+    for q_test in (he3_lhs_lo, he3_lhs_hi, he3_rhs_lo, he3_rhs_hi, -he3_lhs_hi, Fr(-1, 3), Fr(0)):
+        require(Fr(fmt_lo10(q_test)) <= q_test <= Fr(fmt_hi10(q_test)), 'outward formatter check failed')
+
     if not quiet:
         print('=== Exact Near-Gaussian Weak-Target (T) Verifier [Issue #505, zero floats] ===')
         print(f'1. Foundations: SOS identity PASS; exp(-42) < 10^-15 PASS; pi in [{dec_floor10(pi_lo)}, {dec_ceil10(pi_hi)}]')
@@ -657,15 +672,15 @@ def main():
         print(f'   At kappa_4 <= 19/2 = 9.5: (1 + S_hat*19/2)^2 = {dec_ceil10(lhs_sq_1)} < (17/50)*pi_lo = {dec_floor10(rhs_sq_target)}  ==> (T) PASS!')
         print(f'3. Triple 2 [Var(tau)]: ({al2}, {be2}, {gm2}) certified on [0, oo) in {leaves2} leaves')
         print(f'   min d_1 = {dec_floor10(min_d1_2)}, min Schur det margin = {dec_floor10(min_det_2)}')
-        print(f'   Universal bound: E|F| <= sqrt(2/pi)*||F||_2*(1 + {V_hat_2}*Var(tau))    (V_hat = {dec_ceil10(V_hat_2)})')
-        print(f'   At Var(tau) <= 373/200 = 1.865 (=> 93/50 = 1.86): (1 + V_hat*373/200)^2 = {dec_ceil10(lhs_sq_2)} < {dec_floor10(rhs_sq_target)}  ==> (T) PASS!')
+        print(f'   Universal bound (||F||_2 = 1): E|F| <= sqrt(2/pi)*(1 + {V_hat_2}*Var(tau))  (V_hat = {dec_ceil10(V_hat_2)})')
+        print(f'   For ||F||_2 = 1, Var(tau) <= 373/200 = 1.865 (=> 93/50 = 1.86): (1 + V_hat*373/200)^2 = {dec_ceil10(lhs_sq_2)} < {dec_floor10(rhs_sq_target)}  ==> (T) PASS!')
         print('4. Cartan isoparametric cubics (all 4 inside both cones):')
         for nd, k4c, vtc in cartan_rows:
             print(f'   n={nd:2d}: kappa_4 = {str(k4c):>7s} ({dec_ceil10(k4c)} < 9.5),  Var(tau) = {str(vtc):>5s} ({dec_ceil10(vtc)} < 1.86)')
-        print(f'5. Exact He_3(Z)/sqrt(6) control: closed form [{ fmt_signed10(he3_lhs_lo) }, { fmt_signed10(he3_lhs_hi) }] overlaps 1-step integral [{ fmt_signed10(he3_rhs_lo) }, { fmt_signed10(he3_rhs_hi) }] PASS')
+        print(f'5. Exact He_3(Z)/sqrt(6) control: closed form [{ fmt_lo10(he3_lhs_lo) }, { fmt_hi10(he3_lhs_hi) }] overlaps 1-step integral [{ fmt_lo10(he3_rhs_lo) }, { fmt_hi10(he3_rhs_hi) }] PASS')
         print('6. Complex H_{2,1}(C^n) phase-averaging corollary:')
         print('   E|q|/||q||_2 <= (sqrt(pi)/2)*(1 + (26449/5000000)*chi): < 0.9074 on [0, 9/2], < 0.9121 on [0, 11/2]')
-        print(f'   Combined with cert_915.json rows 7..13 on [11/2, 42]: global rho_* <= 4571/5000 = 0.9142 (deg-5 lam_1 <= {lam1_cap_new} > 0.85343, small-t <= 0.2527)')
+        print(f'   With cert_915.json rows 7..13 on [11/2, 42] (verify_bernstein_level3.py): rho_* <= 4571/5000 = 0.9142 (certifies deg-5 t=0 test for lam_1 <= {lam1_cap_new} > 0.85343; small-t <= 0.2527)')
         print(f'7. Negative controls & AST zero-float audit: {n_rej} adversarial checks ALL REJECTED as required.')
         print(f'ALL CHECKS PASSED ({elapsed_ms} ms, cached x-evaluations = {len(cache)}).')
 
