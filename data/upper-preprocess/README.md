@@ -6,6 +6,10 @@ finite-head and Hardy inputs used by the single-channel theorem
 approximately `1.4045993953612070749249`. The endpoint is
 `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean).
+The eighteen-channel mixture (`Grothe/UpperReplacement/`, documented in
+[`docs/UPPER_CERTIFICATE.md`](../../docs/UPPER_CERTIFICATE.md)) also shares the
+same `GT` rounding and certified energy table here, while storing its channel
+weights, cell responses and contour budgets in `data/upper-replacement/`.
 
 The byte-pinned data and generators retain historical intermediate endpoint
 metadata for reproducibility. The single-channel numerical ledger is

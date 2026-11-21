@@ -1,6 +1,6 @@
 # Weighted selected-spectrum comparison
 
-The six-channel endpoint is stated separately in the [upper result](../../Grothe/UpperResult.lean). This file describes the single-channel construction.
+The eighteen-channel mixture endpoint (`Grothe/UpperResult.lean`) and the standalone six-channel endpoint (`Grothe/UpperSixResult.lean`) are stated separately. This file describes the single-channel construction.
 
 The single-channel upper bound is `K_G^C < 1.404599395362`
 (`Grothe.Statement.upper_below_tight`, `Grothe/UpperTightFinal.lean`). Its
