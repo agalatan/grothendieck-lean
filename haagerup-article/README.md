@@ -5,6 +5,8 @@ The article (its TeX source and PDF, next to this file) and, in `anc/` (the arXi
 ```lean
 theorem Haagerup.isBound_cert :
     Haagerup.Statement.IsBound (140457588 / 100000000 : ℝ)
+theorem Haagerup.inv_gammaDagger_gt :
+    (140457588 / 100000000 : ℝ) < 1 / Haagerup.Statement.gammaDagger
 theorem Haagerup.constant_lt_inv_gammaDagger :
     Haagerup.Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger
 ```
@@ -21,12 +23,14 @@ that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`an
   `% TODO(author)` comment, to strip before arXiv).
 - `figures/make_figures.py` decodes `f_tig` and `tigMuList` directly from `anc/Grothe/UpperSix/Haagerup/Data/` and
   writes `figures/tiger_mu.pdf` (Figure 1) and `figures/tiger_phase.pdf`.
+- Run `python3 figures/check_alternating.py` here to reproduce the plotted endpoint and the full alternating-sum enclosures for channels 0 and 4 using integer arithmetic.
 
 ## `anc/`: the Lean package
 
 - **What it is.** `anc/Grothe/UpperSix/` is a byte-for-byte copy of the repository's
-  [`Grothe/UpperSix/`](../Grothe/UpperSix), which the `Grothe` target builds as the upper bound of
-  `Grothe.Statement.main_bounds`. The sources import only Mathlib. The certificate data are Lean literals in
+  [`Grothe/UpperSix/`](../Grothe/UpperSix), which the `Grothe` target also builds. The article and this package are
+  frozen at `1.40457588`; they do not quote the repository's current bounds, which keep moving. The sources import
+  only Mathlib. The certificate data are Lean literals in
   `Grothe/UpperSix/Haagerup/Data/` and `Parameters.lean`; there are no other data files.
 - **Its own Lake package.** It has its own `lakefile.toml`, `lean-toolchain` and `lake-manifest.json`, with the same
   Lean and Mathlib as the root, so it builds from a plain copy of the folder (`lake exe cache get && lake build`, about
