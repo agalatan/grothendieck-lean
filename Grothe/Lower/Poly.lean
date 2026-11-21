@@ -216,9 +216,7 @@ lemma posCert_sound (p : List ℚ) (lo hi : ℚ) (h : posCert p lo hi = true)
   have hS := shiftS_eval lo.num lo.den (toInts (commonDen p) p) y hb.ne'
   rw [hx] at hS
   suffices hA : 0 ≤ evalZ (shiftS lo.num lo.den (toInts (commonDen p) p)) y by
-    have h3 : 0 ≤ ((lo.den : ℤ) : ℝ) ^ (toInts (commonDen p) p).length
-        * evalZ (toInts (commonDen p) p) u := by rw [← hS]; exact mul_nonneg hb.le hA
-    exact nonneg_of_mul_nonneg_right h3 (pow_pos hb _)
+    exact nonneg_of_mul_nonneg_right (hS ▸ mul_nonneg hb.le hA) (pow_pos hb _)
   rcases hy0.eq_or_lt with hyz | hypos
   · rw [← hyz, evalZ_zero]; exact_mod_cast h0
   · obtain ⟨r, hr⟩ : ∃ r : ℚ, r = 1 / ((lo.den : ℚ) * (hi - lo)) := ⟨_, rfl⟩
@@ -240,14 +238,11 @@ lemma posCert_sound (p : List ℚ) (lo hi : ℚ) (h : posCert p lo hi = true)
     rw [hx2] at hS2
     have hB := evalZ_nonneg _ hd t ht0
     have hrev : 0 ≤ evalZ (shiftS lo.num lo.den (toInts (commonDen p) p)).reverse (1 / y) :=
-      nonneg_of_mul_nonneg_right (by rw [← hS2]; exact mul_nonneg hdp.le hB) (pow_pos hdp _)
+      nonneg_of_mul_nonneg_right (hS2 ▸ mul_nonneg hdp.le hB) (pow_pos hdp _)
     have key := evalL_reverse ((shiftS lo.num lo.den (toInts (commonDen p) p)).map
       ((↑) : ℤ → ℝ)) y hypos.ne'
     rw [← List.map_reverse] at key
-    have h4 : 0 ≤ y * evalZ (shiftS lo.num lo.den (toInts (commonDen p) p)) y := by
-      unfold evalZ at hrev ⊢
-      rw [← key]; exact mul_nonneg (pow_nonneg hypos.le _) hrev
-    exact nonneg_of_mul_nonneg_right h4 hypos
+    exact nonneg_of_mul_nonneg_right (key ▸ mul_nonneg (pow_nonneg hypos.le _) hrev) hypos
 
 lemma posOn_sound (p : List ℚ) : ∀ (d : ℕ) (lo hi : ℚ), lo < hi → posOn p d lo hi = true →
     ∀ u : ℝ, (lo : ℝ) ≤ u → u ≤ hi → 0 ≤ evalL (p.map ((↑) : ℚ → ℝ)) u
@@ -270,8 +265,8 @@ def taylorNonneg (p : List ℚ) (t : ℚ) : Bool := (shiftL p t).all fun c => de
 lemma taylor_sound (p : List ℚ) (t : ℚ) (h : taylorNonneg p t = true) (u : ℝ)
     (hu : (t : ℝ) ≤ u) : 0 ≤ evalL (p.map ((↑) : ℚ → ℝ)) u := by
   simp only [taylorNonneg, List.all_eq_true, decide_eq_true_eq] at h
-  have := evalL_nonneg_of_nonneg (shiftL p t) h (u - t) (by linarith)
-  rwa [evalL_shiftL, add_sub_cancel] at this
+  rw [← add_sub_cancel (t : ℝ) u, ← evalL_shiftL]
+  exact evalL_nonneg_of_nonneg (shiftL p t) h (u - t) (sub_nonneg.2 hu)
 
 /-- Positivity on `[u, ∞)`: Taylor coefficients at `u`, or positivity on `[u, 2u]` and the same
 test from `2u`, at most `n` times. -/

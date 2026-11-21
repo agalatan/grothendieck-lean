@@ -139,26 +139,24 @@ def cutPolys (vs z : List ℚ) : List (List ℚ) :=
 
 lemma cutPolysFrom_getD (be al : ℚ) : ∀ (cells : List CutCell) (i k : ℕ), k < cells.length →
     (cutPolysFrom be al i cells).getD k [] = cutPolyV (i + k) (cells.getD k ⟨0, 0, 0⟩) be al
-  | [], _, _, h => absurd h (by simp)
-  | c :: r, i, 0, _ => by simp [cutPolysFrom]
-  | c :: r, i, k + 1, h => by
+  | [], _, _, h => nomatch h
+  | _ :: _, i, 0, _ => by simp [cutPolysFrom]
+  | _ :: r, i, k + 1, h => by
     simp only [cutPolysFrom, List.getD_cons_succ]
-    rw [cutPolysFrom_getD be al r (i + 1) k (by simpa using h)]
-    congr 1
-    omega
+    rw [cutPolysFrom_getD be al r (i + 1) k (Nat.lt_of_succ_lt_succ h),
+      Nat.add_right_comm, Nat.add_assoc]
 
 lemma pickIdx_le (vs : List ℚ) (v : ℝ) : pickIdx vs v ≤ vs.length := by
   induction vs with
-  | nil => simp [pickIdx]
+  | nil => rfl
   | cons t r ih => simp only [pickIdx, List.length_cons]; split_ifs <;> omega
 
 lemma cutPolys_getD (vs z : List ℚ) (v : ℝ) :
     (cutPolys vs z).getD (pickIdx vs v) []
       = cutPolyV (pickIdx vs v) ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩)
           (z.getD vs.length 0) (z.getD (vs.length + 1) 0) := by
-  have h := cutPolysFrom_getD (z.getD vs.length 0) (z.getD (vs.length + 1) 0) (cutCells vs z) 0
-    (pickIdx vs v) (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
-  rwa [zero_add] at h
+  rw [cutPolys, cutPolysFrom_getD _ _ _ _ _
+    (cutCells_length vs z ▸ Nat.lt_succ_of_le (pickIdx_le vs v)), zero_add]
 
 /-- The polynomial piece on the `k`-th mesh cell of a combination of cuts given by their
 weights and polynomial pieces. -/
@@ -294,21 +292,19 @@ def specPolys (vs z : List ℚ) (lam mu t be nu : ℚ) : List (List ℚ) :=
 lemma specPolysFrom_getD (lam mu t be nu : ℚ) : ∀ (cells : List CutCell) (i k : ℕ),
     k < cells.length → (specPolysFrom lam mu t be nu i cells).getD k []
       = specPolyV (i + k) (cells.getD k ⟨0, 0, 0⟩) lam mu t be nu
-  | [], _, _, h => absurd h (by simp)
-  | c :: r, i, 0, _ => by simp [specPolysFrom]
-  | c :: r, i, k + 1, h => by
+  | [], _, _, h => nomatch h
+  | _ :: _, i, 0, _ => by simp [specPolysFrom]
+  | _ :: r, i, k + 1, h => by
     simp only [specPolysFrom, List.getD_cons_succ]
-    rw [specPolysFrom_getD lam mu t be nu r (i + 1) k (by simpa using h)]
-    congr 1
-    omega
+    rw [specPolysFrom_getD lam mu t be nu r (i + 1) k (Nat.lt_of_succ_lt_succ h),
+      Nat.add_right_comm, Nat.add_assoc]
 
 lemma specPolys_getD (vs z : List ℚ) (lam mu t be nu : ℚ) (v : ℝ) :
     (specPolys vs z lam mu t be nu).getD (pickIdx vs v) []
       = specPolyV (pickIdx vs v) ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩)
           lam mu t be nu := by
-  have h := specPolysFrom_getD lam mu t be nu (cutCells vs z) 0 (pickIdx vs v)
-    (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
-  rwa [zero_add] at h
+  rw [specPolys, specPolysFrom_getD _ _ _ _ _ _ _ _
+    (cutCells_length vs z ▸ Nat.lt_succ_of_le (pickIdx_le vs v)), zero_add]
 
 /-! ### The general spectral cut: budget shifts -/
 
@@ -421,21 +417,19 @@ def gspecPolys (vs z : List ℚ) (lam mu t be nu af ag : ℚ) : List (List ℚ) 
 lemma gspecPolysFrom_getD (lam mu t be nu af ag : ℚ) : ∀ (cells : List CutCell) (i k : ℕ),
     k < cells.length → (gspecPolysFrom lam mu t be nu af ag i cells).getD k []
       = gspecPolyV (i + k) (cells.getD k ⟨0, 0, 0⟩) lam mu t be nu af ag
-  | [], _, _, h => absurd h (by simp)
-  | c :: r, i, 0, _ => by simp [gspecPolysFrom]
-  | c :: r, i, k + 1, h => by
+  | [], _, _, h => nomatch h
+  | _ :: _, i, 0, _ => by simp [gspecPolysFrom]
+  | _ :: r, i, k + 1, h => by
     simp only [gspecPolysFrom, List.getD_cons_succ]
-    rw [gspecPolysFrom_getD lam mu t be nu af ag r (i + 1) k (by simpa using h)]
-    congr 1
-    omega
+    rw [gspecPolysFrom_getD lam mu t be nu af ag r (i + 1) k (Nat.lt_of_succ_lt_succ h),
+      Nat.add_right_comm, Nat.add_assoc]
 
 lemma gspecPolys_getD (vs z : List ℚ) (lam mu t be nu af ag : ℚ) (v : ℝ) :
     (gspecPolys vs z lam mu t be nu af ag).getD (pickIdx vs v) []
       = gspecPolyV (pickIdx vs v) ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩)
           lam mu t be nu af ag := by
-  have h := gspecPolysFrom_getD lam mu t be nu af ag (cutCells vs z) 0 (pickIdx vs v)
-    (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
-  rwa [zero_add] at h
+  rw [gspecPolys, gspecPolysFrom_getD _ _ _ _ _ _ _ _ _ _
+    (cutCells_length vs z ▸ Nat.lt_succ_of_le (pickIdx_le vs v)), zero_add]
 
 /-! ### The joint cut: the term `ζ(−u³ + 9u² − 12)` -/
 
@@ -475,19 +469,18 @@ lemma jspecPolysFrom_getD (lam mu t be nu af ag ze : ℚ) : ∀ (cells : List Cu
     k < cells.length → (jspecPolysFrom lam mu t be nu af ag ze i cells).getD k []
       = addLq (gspecPolyV (i + k) (cells.getD k ⟨0, 0, 0⟩) lam mu t be nu af ag)
           (jointPolyV (i + k) ze)
-  | [], _, _, h => absurd h (by simp)
-  | c :: r, i, 0, _ => by simp [jspecPolysFrom]
-  | c :: r, i, k + 1, h => by
+  | [], _, _, h => nomatch h
+  | _ :: _, i, 0, _ => by simp [jspecPolysFrom]
+  | _ :: r, i, k + 1, h => by
     simp only [jspecPolysFrom, List.getD_cons_succ]
-    rw [jspecPolysFrom_getD lam mu t be nu af ag ze r (i + 1) k (by simpa using h)]
-    congr 2 <;> omega
+    rw [jspecPolysFrom_getD lam mu t be nu af ag ze r (i + 1) k (Nat.lt_of_succ_lt_succ h),
+      Nat.add_right_comm, Nat.add_assoc]
 
 lemma jspecPolys_getD (vs z : List ℚ) (lam mu t be nu af ag ze : ℚ) (v : ℝ) :
     (jspecPolys vs z lam mu t be nu af ag ze).getD (pickIdx vs v) []
       = addLq (gspecPolyV (pickIdx vs v) ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩)
           lam mu t be nu af ag) (jointPolyV (pickIdx vs v) ze) := by
-  have h := jspecPolysFrom_getD lam mu t be nu af ag ze (cutCells vs z) 0 (pickIdx vs v)
-    (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
-  rwa [zero_add] at h
+  rw [jspecPolys, jspecPolysFrom_getD _ _ _ _ _ _ _ _ _ _ _
+    (cutCells_length vs z ▸ Nat.lt_succ_of_le (pickIdx_le vs v)), zero_add]
 
 end Grothe.Lower
