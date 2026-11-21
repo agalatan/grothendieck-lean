@@ -11,7 +11,7 @@ theorem Haagerup.constant_lt_inv_gammaDagger :
     Haagerup.Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger
 ```
 
-that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`anc/README.md`](anc/README.md).
+that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. The manuscript cites the version of `Grothe.Statement.main_bounds` that combined this six-channel proof with the strict lower bound of `1.40191`. [Theorem at the article revision](https://github.com/agalatan/grothendieck-lean/blob/97622ad449746e13c76b1b795e8be1b724fcfb61/Grothe/MainResult.lean) · [Standalone proof](anc/README.md)
 
 ## The article: `main.tex`, `main.pdf`
 
@@ -28,14 +28,14 @@ that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`an
 ## `anc/`: the Lean package
 
 - **What it is.** `anc/Grothe/UpperSix/` is a byte-for-byte copy of the repository's
-  [`Grothe/UpperSix/`](../Grothe/UpperSix), which the `Grothe` target builds as the upper bound of
-  `Grothe.Statement.main_bounds`. The sources import only Mathlib. The certificate data are Lean literals in
+  [`Grothe/UpperSix/`](../Grothe/UpperSix), which the repository exports through its [six-channel entrypoint](../Grothe/UpperSixResult.lean). The sources import only Mathlib. The certificate data are Lean literals in
   `Grothe/UpperSix/Haagerup/Data/` and `Parameters.lean`; there are no other data files.
 - **Its own Lake package.** It has its own `lakefile.toml`, `lean-toolchain` and `lake-manifest.json`, with the same
   Lean and Mathlib as the root, so it builds from a plain copy of the folder (`lake exe cache get && lake build`, about
   30 minutes on 4 cores). The root `lakefile.toml` does not mention it (AGENTS.md rule 7).
-- **Own CI job.** `.github/workflows/haagerup-article.yml` runs when a file under `haagerup-article/` or
-  `Grothe/UpperSix/` changes, when the Lean or Mathlib version changes, or by hand. It fails unless:
+- **Own CI job.** `.github/workflows/haagerup-article.yml` runs on changes to `haagerup-article/anc/`,
+  `Grothe/UpperSix/`, `lean-toolchain`, `lake-manifest.json`, or the workflow itself. It also runs on manual dispatch.
+  The check verifies that
   - `anc/Grothe/UpperSix/` equals `Grothe/UpperSix/`, and the toolchain and Mathlib pins equal the root's;
   - there is no `sorry`, `axiom` or unchecked code;
   - the package builds with warnings as errors;
@@ -43,7 +43,7 @@ that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`an
     `native_decide` facts listed in `anc/native.txt`.
 - **Changing the proof.** Change `Grothe/UpperSix/` through an ordinary PR and copy the folder into
   `anc/Grothe/UpperSix/` in the same PR: `rsync -a --delete Grothe/UpperSix/ haagerup-article/anc/Grothe/UpperSix/`.
-  If the theorem's value changes, the article states the new value.
+  The article states its frozen six-channel value.
 
 ## Rules
 

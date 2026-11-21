@@ -13,15 +13,15 @@ Fails unless
 The lists are data files, one name per line, sorted, union-merged by git (.gitattributes), checked for order and
 duplicates by `tools/gen_root_imports.py --check`:
 * default report: data/axioms/required.txt, data/axioms/native.txt;
-* --upper-six requires both modes/upper-six.required.txt and modes/upper-six.native.txt under data/axioms/;
-  it is the only audit mode at present (one flag at most).
+* --upper-six and --upper-mixture each require their own pair of required and native lists under
+  data/axioms/modes/.
 """
 import argparse, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXDIR = os.path.join(ROOT, "data", "axioms")
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
-MODES = ("upper-six",)
+MODES = ("upper-six", "upper-mixture")
 
 
 def names(path):
@@ -36,9 +36,7 @@ def audit_policy(mode):
         return names(os.path.join(AXDIR, "required.txt")), names(native_path)
     required = names(os.path.join(AXDIR, "modes", f"{mode}.required.txt"))
     mode_native = os.path.join(AXDIR, "modes", f"{mode}.native.txt")
-    if mode == "upper-six" or os.path.exists(mode_native):
-        native_path = mode_native
-    return required, names(native_path)
+    return required, names(mode_native)
 
 
 # the default lists, as module constants (used by the tests and by other tools)

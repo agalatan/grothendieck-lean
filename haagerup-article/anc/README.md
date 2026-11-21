@@ -61,5 +61,4 @@ Every other step, including the rational comparisons of the tails and the weight
 ## Provenance
 
 These files are copied byte for byte from the folder `Grothe/UpperSix/` of
-<https://github.com/agalatan/grothendieck-lean>, where the same theorems also give the upper bound of
-`Grothe.Statement.main_bounds`. The repository's CI job `haagerup-article.yml` fails if the two copies differ.
+<https://github.com/agalatan/grothendieck-lean>, which exports the same six-channel bound through `Grothe.UpperSixResult`. The repository's CI job `haagerup-article.yml` fails if the two copies differ.

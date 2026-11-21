@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("upper-six",)
+MODES = ("upper-six", "upper-mixture")
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -40,14 +40,33 @@ class CheckAxiomsTests(unittest.TestCase):
                        for name in sorted(required))
 
     def test_existing_policy_headlines_and_native_restrictions(self):
-        headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
+        headlines = {"Grothe.Statement.main_bounds", "Grothe.UpperReplacement.upper_below",
+                     "Grothe.UpperSix.bound",
                      "Grothe.Statement.lower_target", "Grothe.Statement.lowerTarget_of_tailNodeCaps",
                      "Grothe.LowerAnalytic.tailNodeCaps_cert", "Grothe.LowerAnalytic.lower_bound_of_tailNodeCaps"}
         self.assertTrue(headlines <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
         self.assertNotIn("Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1", CHECKER.NATIVE)
-        self.assertIn("Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1",
+        self.assertIn("Grothe.UpperReplacement.WideFacts.first_gt_circle._native.native_decide.ax_1_1",
                       CHECKER.NATIVE)
+
+    def test_upper_mixture_limits_native_trust_to_the_eighteen_channel_proof(self):
+        required, native = CHECKER.audit_policy("upper-mixture")
+        self.assertEqual(required, {n for n in CHECKER.REQUIRED if n.startswith("Grothe.UpperReplacement.")})
+        report = (ROOT / "scratch/UpperMixtureAxioms.lean").read_text().splitlines()
+        self.assertEqual({line.removeprefix("#print axioms ") for line in report
+                          if line.startswith("#print axioms ")}, required)
+        self.assertTrue(native <= CHECKER.NATIVE)
+        self.assertTrue(native.isdisjoint(CHECKER.audit_policy("upper-six")[1]))
+        for fact in ("Grothe.Lower.certEnvelope", "Haagerup.head_sum_ok", "Grothe.head_check",
+                     "Grothe.Upper.comparison_check", "Grothe.UpperReplacement.TailFacts.numerics",
+                     "Grothe.UpperReplacement.LinearTail.estimates_checked"):
+            with self.subTest(fact=fact):
+                axiom = f"{fact}._native.native_decide.ax_1_1"
+                extra = f"'Grothe.UpperReplacement.bound' depends on axioms: [{axiom}]\n"
+                code, stdout, _ = self.run_main(["--upper-mixture"], self.report("upper-mixture") + extra)
+                self.assertEqual(code, 1)
+                self.assertIn("DISALLOWED AXIOM", stdout)
 
     def test_data_registries_preserve_topic_modes_and_local_native_facts(self):
         self.assertEqual(set(CHECKER.MODES), set(MODES))

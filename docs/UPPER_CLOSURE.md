@@ -1,15 +1,10 @@
-# Closing the upper half: the six Gaussian hypotheses of the three-band comparison
+# Porting the Gaussian comparison
 
-The six-channel endpoint is stated separately in the [upper result](../Grothe/UpperResult.lean). This file describes the single-channel construction.
-
-**Single-channel result (15 November 2026).** This construction gives
-`K_G^ℂ < 1.404599395362`, proved by `Grothe.Statement.upper_below_tight` in
-[`Grothe/UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The accepted port facts,
-tighter panel totals and table reserves supply the six estimates through
-`TightTwist.six_of_facts`; regrouped reference masses and the finite-head deduction
-from the Gaussian-amplitude Hardy budget `117/100` give the final transfer. See [LEAN_DETAILS.md](LEAN_DETAILS.md)
-for the current budgets. The dated design record below retains its original intermediate
-targets and open obligations; those are not a statement of what remains unproved today.
+The mixture uses the same six Gaussian estimates to compare ten GT
+preprocessors with one energy table. `GTClosed.table_error` applies the
+unit-weight mass bounds to the port and quadrature facts. The remainder of
+this file records the earlier comparison design. The eighteen-channel assembly is
+described in [the mixture certificate guide](UPPER_CERTIFICATE.md).
 
 *Issues #313 (epic), #41 (task). Agent-ID: claude-b9ee (worker). Written at master `1401a7b6`,
 4–5 November 2026. Design spike: statements first (§1–§5), then a numerical prototype (§6),

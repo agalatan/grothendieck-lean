@@ -2,25 +2,20 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+The upper-only target is `Grothe.UpperResult` and the lower-only target is `Grothe.LowerResult`.
+`Grothe.MainResult` imports both and combines their conclusions.
+The combined statement is `1.40191 < K_G^ℂ < 1.404569241261`. The upper proof gives the rational bound `1000000000000000/711962052581159`.
+The upper construction uses the shared Gaussian phase identity and the GT
+quadrature and energy-table proofs. Its local verification status and exact
+replay commands are recorded in [the certificate guide](UPPER_CERTIFICATE.md).
 
-The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
+The arXiv article uses a separate six-channel proof of `K_G^ℂ ≤ 1.40457588 < 1/γ†`. The repository bridge exports the same six-channel results and has its own axiom audit. [Six-channel bridge](../Grothe/UpperSixResult.lean) · [Standalone package](../haagerup-article/anc/README.md).
 
-The earlier `upper_below_tight` proof (`Grothe/UpperTightFinal.lean`, `K_G^ℂ < 1.404599395362`) uses one Gaussian rounding and imports the shared Gaussian phase identity and Laplace modules under `Grothe/Haagerup/`. Its budgets, quadrature, and auxiliary refinements are documented below.
-
-**Reading this inventory.** Most paragraphs describe one module or one result.
-Where a paragraph says that a result takes an estimate as a hypothesis, or that
-it gives no numerical bound, this describes that result; it is not an open
-input of the main theorems, which have no hypotheses. The generated root imports both the six-channel proof used by
-`Grothe/MainResult.lean` and the independent single-channel proof. A module called
-*archived* below is kept outside the libraries, in `abandonware/`
-(`abandonware/README.md`) unless the text names `miscellaneous/`; it is not
-built or checked. The value `1.404598149141` is the
-target the rounding was designed for. The conditional theorem towards it,
-`fresh_upper_rounder` (K_G^ℂ ≤ 500000000000000000/355973699960428191 <
-1.404598148840, from fourteen finite-band Gaussian estimates that are not
-proved), is archived; the theorem without hypotheses exhibits a bound below
-`1.404599395362`.
+**Reading this inventory.** Intermediate theorems expose the estimates they use.
+The production assembly supplies them from named certificates. The generated
+`Grothe` root also imports supporting modules. Archived results live in
+`abandonware/` or in the named subdirectory of `miscellaneous/`.
+The older one-channel proposal `fresh_upper_rounder` is archived.
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
@@ -29,52 +24,30 @@ and the exact dyadic table excursions gives the low-band radii; the already cert
 inner-product thresholds give the whole-source radii. The comparison uses the seven
 linear-piece radii and charges the four unsplit sources once in its quadratic term.
 
-**Longer polynomial prefixes in the actual comparison.** `Upper/PolynomialHeadTail`
-proves that dilating a polynomial by `r ≥ 1` bounds its coefficient tail after index
-`L` by `r⁻ᴸ` times the dilated Wiener norm. `ImprovedHeadWeight` applies this to
-`Pⁿ (Q/X)ᵐ`: the unchanged interval operations enclose the first 51 unshifted
-coefficients, and the remaining coefficients have the uniform bound
-`(10049/10000)^501 · (10023/10000)^167 / (3/2)^51 ≤ 2·10⁻⁸`.
-The resulting `improvedWeight` is capped by both one and the previous
-21-coefficient cost. The bound concerns each polynomial's retained coefficient
-cost; it is separate from the infinite Hardy tail of the rounding kernel.
-The new finite fact `Grothe.Upper.improved_high_mass_native` recomputes the
-weighted table masses and checks square-root ceilings `0.091510352921874` for
-both high bands above 51 and `0.198919845892412` for the high band above 11,
-all within `headIdx 501`.
-Each checked mass retains the original table-error allowance `energyErrQ`.
-The four low-band caps follow from the pointwise decrease in cost.
-`tools/gen_improved_head_weight.py` reproduces the mass ceilings; Lean independently
-recomputes the interval costs and weighted masses from the stored polynomials and energies.
-`UpperTightComparison` uses these actual masses and the tighter source radii.
+**Signed finite head.** Ten GT preprocessors, seven phase preprocessors and one
+pair of cell responses have nonnegative rational weights summing to one.
+`HeadCompute` adds their signed coefficients at equal radial index. Separate
+Hermite and interval arguments put the actual cell coefficients inside a
+replayable array for each of 64 angular residues. Composition of the cell
+polynomial precedes its cutoff at index 126. The finite mixture has linear
+coefficient at least `711964618746086/10¹⁵`. Its absolute sum over indices
+1 through 250 is at most `873503595/10¹⁵`.
 
-**Gaussian-amplitude Hardy bound.** `GaussianPair` evaluates a positive Gaussian
-pair integral, and `GaussianAmplitude` applies it to the explicit amplitude
-left in the `L*L` argument. For `A=(I-R²)⁻¹`, `B=A-jI`, `C=RA`,
-`Z=Re B`, `T=Z-Re(C) Z⁻¹ Re(C)` and
-`E=(Re(C) Z⁻¹ Re(C)+Im(C) Z⁻¹ Im(C))/2`, the pair correlation satisfies
-`|H|² ≤ [16 j² |det(I-R²)|² det Z det(T+jI) det(T+2E+jI)]⁻¹`
-under the existing positive-definiteness gates. `SchurMainGaussian` proves
-this for measurable disk-valued responses. `HardyGaussianCheck` bounds it
-by `(513 + 297cos²θ − 204cos⁴θ)/500` over all four closed halves of
-the two circle charts, with outward 128-bit interval arithmetic and a
-depth-bounded covering proof. Its exact angular average is `117/100`, using
-the circle means `1/2` and `3/8` of `cos²θ` and `cos⁴θ`. The native
-acceptance is applied in `HardyGaussian`, using the interval soundness proved by
-`HardyGaussianSound`; holomorphy and Parseval then yield
-`HardyReal.hardy_GT_gaussian` for the actual rounding.
-`UpperTightFinal` uses this budget and deducts the forced linear energy,
-certifying the single-channel tail `219549168/10¹⁶`.
+**Uniform GT table comparison.** The comparison uses unit coefficient cost on
+each band. `GTMass` encloses all seven masses with the energy-table tolerance.
+`GTClosed.table_error` combines those masses, the three low and three whole
+Gaussian error estimates, and `Final.hclose_final`. The total weighted charge
+for the GT head discrepancy and early cell cutoff is `1467492832/10¹⁵`, including
+the error at index zero.
 
-**Single-channel endpoint assembly.** `upper_below_tight` combines the port-fact bundles
-`PortFacts.j1FactsOf/j2FactsOf/j3FactsOf`, the covered-set twisted remainders
-`TightTwist.remainder1/2/3`, the longer-prefix weighted comparison, and the table
-accuracy `Final.hclose_final`. Both the mass comparison and finite-head transfer
-use the existing `energyErrQ` allowance. `UpperHead` accepts the certified
-coefficient-cost family. `HeadHardy` deducts the linear coefficient's forced weighted
-energy from the Gaussian-amplitude Hardy budget `117/100` at radius `4149/4000`, giving
-the infinite tail `219549168/10¹⁶`. The exact reciprocal `tightValueQ` is
-`1.40459939536120707492… < 1.404599395362`.
+**Circle estimates and transfer.** Each channel has its own covariance,
+radius and mean-square estimate. `CircleWideSound` integrates the interval
+upper bounds over a complete cover of each circle. The GT and phase channels each deduct the square of their own linear
+coefficient times the square of the contour radius from the Parseval budget.
+The weighted tail from index 251 has ceiling `225168500/10¹⁵`.
+`Assembly.bound_of_checks` transfers the resulting gap
+`711962052581159/1000000000000000` to the rational Grothendieck bound.
+`GammaDagger` also proves `1.40457588 < 1/γ†` for the phase integral.
 
 Each twisted remainder comes from the 21 shard facts and the total fact of its
 power (`TwistEllCheck.remainder_of_prodShards`); the tighter total facts bound
@@ -228,10 +201,9 @@ final checks, range facts and phase-degree theorem into `j1FactsOf`,
 `j2FactsOf` and `j3FactsOf`. It uses the `FactsOf` interface from the
 twisted evaluator's soundness bridge; it introduces no additional finite
 computation or analytic hypothesis. All consumed fact modules are registered
-in the generated root and in `data/axioms/native.txt`. `upper_below_tight`
-uses these bundles through `TightTwist.six_of_facts`, together with the tighter
-twisted remainders, the longer-prefix comparison and the energy-table accuracy
-`Final.hclose_final`.
+in the generated root and in `data/axioms/native.txt`. `GTClosed.table_error`
+uses these bundles through `TightTwist.six_of_facts`, the three quadrature
+remainders, and the table accuracy `Final.hclose_final`.
 
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
@@ -339,7 +311,7 @@ are `2.56852947444587e-6`, `5.71439509703932e-10`, and `1.68238736430120e-11`.
 identity to give `norm_hpow_one_sq`, `norm_hpow_two_sq`, and
 `norm_hpow_three_sq`. These are total energies; band-tail estimates also
 need captured Hermite energy and approximation errors. The three whole-error
-estimates of `upper_below_tight` use these norms (`UpperTightSix.lean`).
+estimates of `UpperReplacement.upper_below` use these norms (`UpperTightSix.lean`).
 The targets in `data/phase-moments/targets.json` are expected exact values,
 not integral assumptions: each numerical leaf computes from the production
 phase. `python3 tools/gen_phase_moment_data.py --check` verifies source binding
@@ -428,7 +400,7 @@ on which the approximant vanishes using those three scalar inputs. These
 results formalize both tail routes; the Gaussian inner-product enclosures and
 the approximant coefficient data are their hypotheses. The final theorem bounds
 its three whole errors in the second way (`whole_of_inner` in
-`UpperQuad/TwistSix.lean`), with the inner products bounded from the port facts.
+`UpperTightSix.lean`), with the inner products bounded from the port facts.
 
 `WholeCenterEnergies` identifies the complete squared norms of the original
 centers with the exact sum of six first-center energies, the exact sum of four
@@ -553,27 +525,20 @@ pieces into `ComparisonInputs` for the actual rounding and
 charge-one premise. These fourteen Gaussian inequalities are not proved with
 these caps. The conditional theorem built on them, `fresh_upper_concrete_taylor`
 (a bound below `1.404598149141`), is archived (`GroupedRounder`);
-`upper_below_tight` uses the three-band regrouping below instead.
+`UpperReplacement.upper_below` uses the three-band regrouping below instead.
 
-`ThreeBandRegrouping` gives the regrouping that the final theorem uses: retain the lowest
-bands `(0,51]`, `(0,51]`, `(0,11]`, and group each remaining spectral support
-orthogonally. Its linear comparison uses rounding, three low-band errors and
-three high-band errors; its quadratic term uses the rounding error and the
-three whole Taylor errors, without adding the low errors again. The whole
-raw-error hypotheses have radii `R₁`, `2 R₂`, `6 R₃`, where `R` is the existing
-`comparisonGroupRadiusQ`. `UpperTightSix` proves the three whole-error bounds
-with the smaller radii `tightScaledRQ` from the port facts and the twisted
-quadrature remainders (`TightTwist.hwholeFirst_of_facts`,
-`hwholeSecond_of_facts`, `hwholeThird_of_facts`).
-`ThreeBandComparison` binds the regrouping to the actual frozen source and
-the current energy table; `ThreeBandBudget` (`Grothe/Upper/`) holds its seven
-bands. `upper_bound_tight` applies the regrouping with the tighter certified
-radii (`localized_comparison_tight_three_band`, `UpperTightComparison`) and
-passes the result to `TightEndpoint.endpoint_of_comparison` (`UpperTightFinal`),
-which adds the head, the table error (`Final.hclose_final`,
-`Grothe/UpperClose.lean`) and the Hardy tail. The public `UpperTarget`
-threshold is `1.4046`. The single-channel theorem `upper_below_tight` gives
-the strict threshold `1.404599395362`.
+`ThreeBandRegrouping` splits each Taylor power into its lowest band and its
+orthogonal complement. The degree cutoffs for the three powers are 51, 51 and
+11. The linear error uses the rounding source and the six resulting pieces.
+The quadratic error uses the rounding source and the three whole Taylor errors.
+Their unscaled radii are `R₁`, `2 R₂` and `6 R₃`, where
+`Rᵢ = tightScaledRQ (i − 1)`. `UpperTightSix` proves these bounds from the
+port facts and the quadrature remainders. The rounding source uses
+`norm_roundingDifference_le`.
+
+`Upper/ThreeBandBudget.lean` defines the seven bands.
+`GTComparison.univ_gt_table_l1_error` applies the comparison with unit weight
+and the stored table accuracy. Its conclusion applies to all ten GT preprocessors.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -681,7 +646,7 @@ moments (`IndependentSource…`), coherent transforms and Fock coefficients
 (`Bipartite…`, `QuadraticPolynomial…`), matrix tails and rectangle operators
 (`Actual…`), the rational source-norm evaluator (`ActualSource…`,
 `RationalChargeOrthogonality`, `RationalCovariance…`) and the Gaussian
-parameter gates and masses (`OriginalHS…`). `upper_below_tight` bounds the
+parameter gates and masses (`OriginalHS…`). `UpperReplacement.upper_below` bounds the
 Taylor errors through the twisted quadrature (`UpperQuad/`).
 
 `RadialLaguerre` identifies the actual production polynomial
@@ -875,14 +840,10 @@ optima and the fixed-dimension test `isGrothendieckBound_iff_fixed_dim`
 (`PolarizedGram`); and a rational support-defect correction with its quartic
 Newton contraction (`LowerAnalytic/JointDefect`, `LowerAnalytic/QuarticNewton`).
 
-**Single-channel upper bound.** The theorem `upper_below_tight` uses the
-assembly described above. The sharper value that the rounding was
-designed for is conditional and archived: `fresh_upper_rounder`
-(`UpperChaos/GroupedRounder`, with `UpperChaos/GroupedComparison` and
-`Upper/GroupedBridge`) proves
-`IsGrothendieckBound (500000000000000000/355973699960428191)`, which is below
-`1.404598148840`, from fourteen finite-band Gaussian error estimates that are
-not proved and the table accuracy.
+**Upper bound.** The mixture certificate and its exact reciprocal gap are
+described at the top of this inventory. The archived construction
+`fresh_upper_rounder` concerns a single response and takes fourteen
+finite-band Gaussian estimates as hypotheses.
 
 `ProductionFiniteLaplace` defines `finiteLaplacePhase η T z` by integrating the
 actual softened phase kernel over `[0,T]`, including the `1/sqrt π` factor.
@@ -1119,47 +1080,22 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
 * The table accuracy `energy_close` (the stored energies are within
   6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹) is a hypothesis of the general
   interface; for the actual truncation it is **proved** (`Final.hclose_final`).
-  The Hardy input (the
-  weighted square-sum bound 117/100 at radius 4149/4000 for the kernel of G_T) is
-  **proved**: `HardyReal.hardy_GT_gaussian`. Validity, summability, parity, and the phase cover
-  for the actual rounding are derived. `HardyHolo.lean` proves
-  `hardy_of_pair_inputs_budget` from positive kernel decay on a disc of radius greater
-  than 4149/4000, identification of the real odd series with the continued
-  kernel, and a bound on its circle mean. Holomorphy, continuation,
-  Parseval, the decay region and the circle mean (`HardyGaussian.hmean`) are proved, and
-  `HardyGaussian.hardy_of_real` derives the `hardy` statement with budget 117/100 for every
-  measurable disk-valued pair from summable real odd coefficients and their
-  Gaussian-law identification. `HardyReal.hreal_GT` supplies that
-  identification for G_T: unfolding the smoothing (`mehler_smoothed`), the
-  Mehler pair `(MX + NZ, MY + NZ')` has the law of `(U, RU + SW)`
-  (`HardyRealLaw.law_swap`: characteristic functions, `M² + N² = I`, and the
-  covariance identity `HardyRealCov.cov_eq`), and its density on ℝ⁸ is
-  `kHol R` at the real cross covariance `R = Rt t`
-  (`HardyRealDensity.integral_pair_eq_kHol`: the explicit Cholesky factor of
-  `I − R²`, the substitution `y = Rx + Sw`, and Fubini); `I − R² ≻ 0` since
-  `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_kdet_pos`).
-* **Residual ledger.** The residual of the proved bound `upper_below_tight` is
-  `tightResidualQ = 1.54224796922272379448078027965090997314453125·10⁻⁶`: the
-  longer-prefix comparison `tightThreeBandCompareQ`
-  (`1.49212635840472379448078027965090997314453125·10⁻⁶`, 96.75%), the head
-  `28153/10¹²` (1.83%), the Hardy tail `219549168/10¹⁶` (1.42%) and the table error
-  `6847009/(5·10¹⁷)` (about 0.00089%).
-  These percentages describe allowances, not fractions of the proof left
-  unformalized. Full scope, source bindings and reproduction commands are in
-  `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
-  the mathematical argument.
-* The certified weighted head bound forces `h₀ ≥ slopeQ − tightHeadResidualQ`.
-  `HeadHardy` uses `hardy_budget_after_linear` to deduct its weighted square
-  from the Gaussian-amplitude budget `117/100`; exact kernel arithmetic proves
-  tail `219549168/10¹⁶`.
-  This deduction is used by `upper_below_tight`.
-* **Independent replay.** The source computations were replayed on a different machine: the
-  nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
-  contour tail, comparison and endpoint pass on the regenerated data (energy table reproduced
-  to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
-  formal verification.
+  The mixture applies the shared real Gaussian density identification to each
+  channel's covariance. `CircleWideSound` supplies the analytic continuation
+  and mean-square transfer for a disk-valued pair from its accepted region
+  and circle checks. `TailSound` uses the resulting per-channel Hardy bounds
+  both at the final cutoff and at the earlier cell cutoff.
+* **Residual accounting.** The signed head uses a one-sided linear floor.
+  The total finite comparison charge includes the linear discrepancy once.
+  Adding the budgets for the nonlinear finite head, its comparison and the
+  infinite tail gives `2566164927/10¹⁵`. Subtracting this amount from the linear
+  floor gives `711962052581159/1000000000000000`. The GT and phase linear deductions are in `TailSound.channel_tail_ceiling`.
+* **Independent replay of the earlier GT construction.** The original node
+  table and Taylor centres were regenerated independently. The mixture's
+  dyadic responses, finite head, circle inputs and rational budgets have
+  their own reproduction commands in [the certificate guide](UPPER_CERTIFICATE.md).
 
-**Lower bound.** `lower_target : LowerTarget` (`Grothe/MainResult.lean`) is
+**Lower bound.** `lower_target : LowerTarget` (`Grothe/LowerResult.lean`) is
 `lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `140191/100000 = 1.40191`.
 `lowerTarget_of_tailNodeCaps` (`Grothe/LowerTarget.lean`) applies `lower_bound_of_tailNodeCaps`
 (`Grothe/LowerAnalytic/LowerBound.lean`): for every Grothendieck bound `K`, `1/((1 − ν)·envB + ν) ≤ K` with
@@ -1466,7 +1402,7 @@ it); these lemmas do not strengthen `main_bounds`.
 | `ProductComplete`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: tensor completeness from one-coordinate completeness by Fubini, Gaussian mixing law by characteristic functions, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
 | `Realise2`, `Structural` | two-channel rounding with tensor-realised preprocessors (`rounding_diskKernel`); the structural fields (validity, summability, parity) as theorems |
 | `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
-| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `upper_below_tight` |
+| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `UpperReplacement.upper_below` |
 | `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
 | `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
 | `Gauss2`, `Sym2R`, `SchurTest`, `LstarL`, `SchurKernel`, `SchurBound`, `SchurIntegrability`, `SchurMain` | Gaussian integrals, weighted Schur test and kernel factorization; the Gaussian Schur bound for every measurable disk-valued response pair under its positive-definiteness gates (`norm_HholPair_sq_le`) |
@@ -1485,17 +1421,10 @@ for the incumbent rounding they are proved (`HardyReal.hreal_GT` and the checks 
 `SchurMain.norm_HholPair_sq_le` proves the Gaussian Schur bound for the same
 response pairs under `j > 0`, `Z ≻ 0` and `T ≻ 0`. These structural theorems
 alone do not discharge `hardy` for a changed rounding or improve an endpoint.
-The region and circle inputs are checked in Lean with the precompiled interval
-evaluator `GrotheKernel.HardyArc` (interval soundness `HardyArcSound`, circle
-charts `HardyArcCircle`, data `HardyArcData`): `hardy_region_check` proves
-`KerPos` on the disc of radius `51863/50000` (`HardyArcRegion`), and
-`HardyGaussianCheck.charts_checked` bounds the Gaussian-amplitude expression by
-`(513 + 297cos²θ − 204cos⁴θ)/500` on all four closed halves of the two charts of the circle
-`|t| = 4149/4000` (soundness `HardyGaussianSound`). `HardyGaussian.hmean`
-integrates the squared correlation `HardyArcCover.gF` over both charts, and
-`HardyGaussian.hardy_of_real` (budget `117/100`) retains coefficient summability
-(`hs`) and the real identification (`hreal`) as explicit inputs;
-`HardyReal.lean` supplies both for G_T, giving `HardyReal.hardy_GT_gaussian`.
+The current endpoint uses the shared interval evaluator `GrotheKernel.HardyArc`.
+`CircleWideSound` proves that a passing cover bounds the actual angular mean,
+with every closed chart cell included. `TailSound` specializes the resulting
+Parseval inequalities to the GT, phase and two-response cell channels.
 
 **`Grothe/Lower/`: the rows, the mass row and the envelope**
 
@@ -1539,15 +1468,17 @@ the merged tree before a pull request lands.
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
-complete list; the facts fall into the following groups. `Grothe.head_check` (the upper head),
-`Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.Upper.improved_high_mass_native` (the two complete high-band masses
-for the 51-coefficient costs, including the inherited table-error allowance),
+complete list. The mixture uses native checks for the exact cell-head witnesses,
+the signed head sum, channel contours, GT table support, band masses, the first
+GT energy floor and the roots of unity. Lean's kernel verifies the rational
+Hardy tail estimates, including the per-channel linear-energy deductions and
+the cell truncation allowance. Shared checks also include
+`Grothe.Upper.comparison_check` for the earlier selected-band interface,
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.phase_cutoff_factor_check` (the exact factor for its squared radial tail),
-`Grothe.UpperChaos.HardyGaussianCheck.charts_checked` (the Gaussian circle cap of the Hardy tail),
-`Grothe.UpperChaos.hardy_region_check` (its decay region),
+the disk and whole-circle checks in `UpperReplacement.TailFacts` and
+`UpperReplacement.WideFacts`,
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), the stored-expansion checks
 (`taylor_centers_decode_check`, `rounding_energy_check`,

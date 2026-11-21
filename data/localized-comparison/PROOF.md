@@ -1,12 +1,9 @@
 # Weighted selected-spectrum comparison
 
-The six-channel endpoint is stated separately in the [upper result](../../Grothe/UpperResult.lean). This file describes the single-channel construction.
-
-The single-channel upper bound is `K_G^C < 1.404599395362`
-(`Grothe.Statement.upper_below_tight`, `Grothe/UpperTightFinal.lean`). Its
-regrouped comparison reuses the finite mass certificates documented here, with
-the proved six-error estimates and tighter budgets of `UpperTightSix` and
-`UpperTightBudget`.
+The shared GT comparison in the eighteen-channel mixture uses unit coefficient cost,
+seven independently enclosed band masses and the six Gaussian estimates.
+The following record describes the earlier weighted comparison. The new
+proof and its exact budgets are in [the mixture certificate guide](../../docs/UPPER_CERTIFICATE.md).
 
 The conditional target `K_G^C < 1.404598148840` built on the eighteen-piece
 comparison below is archived in `abandonware/` and not built: its fourteen

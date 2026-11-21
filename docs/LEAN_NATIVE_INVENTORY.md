@@ -11,6 +11,19 @@ allowlist. It covers the two cell witnesses, both overlap-table checks, the weig
 channel’s disk and circle checks. The rational tail comparisons reduce in the kernel.
 [Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
 
+The root eighteen-channel report uses `scratch/UpperMixtureAxioms.lean` and its own [native allowlist](../data/axioms/modes/upper-mixture.native.txt).
+
+**Finite inputs of the signed mixture.** `HeadWitnessFacts.Group00` through
+`Group07` each replay eight angular residues. `HeadWitnessFacts.head_checked`
+checks the signed finite head. `TailFacts.Channel01` through `Channel17` and
+the separate `WideFacts` checks cover all eighteen disks and circles.
+`GTMass` checks all seven unweighted mass ceilings, `TableSupport` checks
+the stored bidegrees, and `LinearTail.first_energy_checked` reads the GT
+first-energy floor from that table. Lean's kernel verifies the per-channel
+tail budgets and their linear-energy deductions. `RootChecks` identifies the
+stored roots of unity with their certified enclosures. The exact source
+and verification record are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
+
 Archived upper variants have separate preserved inventories under
 `miscellaneous/other-bounds/snapshot/data/axioms/`; they are not active permissions.
 
@@ -84,5 +97,3 @@ and is not an isolated timing of the native computation.
 | `Grothe.UpperChaos.phi_cover_check_3` | `Grothe/UpperChaos/PhiCoverCheck3.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_4` | `Grothe/UpperChaos/PhiCoverCheck4.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_5` | `Grothe/UpperChaos/PhiCoverCheck5.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.UpperChaos.HardyGaussianCheck.charts_checked` | `Grothe/UpperChaos/HardyGaussianFacts.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No per-fact timing established here |
-| `Grothe.UpperChaos.hardy_region_check` | `Grothe/UpperChaos/HardyArcRegionCheck.lean:10` | yes | Indirect via scratch/Axioms.lean HardyGaussian.hardy_of_real, HardyReal.hardy_GT_gaussian | GitHub-hosted module build 8.7 s |
