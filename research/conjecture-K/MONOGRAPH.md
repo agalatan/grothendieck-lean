@@ -25,8 +25,8 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.4018 < K_G^ℂ ≤ 1.40457588 (Lean, `main_bounds`). The lower bound of
-the cubic witness alone is 1.401700322371 (12.1); Lean's 1.4018 adds an identity tail to it. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
+**Why it matters.** The proved bounds are 1.40191 < K_G^ℂ ≤ 1.40457588 (Lean, `main_bounds`). The lower bound of
+the cubic witness alone is 1.401700322371 (12.1); Lean's 1.40191 adds an identity tail to it. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
 1.4022; no certificate with this witness exceeds 1.4022581233.
@@ -130,10 +130,12 @@ not, and it matters only if a row cover uses it [R · 2.5].
 
 ### 1.5 What K would give
 
-- The complete lower cover gives K_G^ℂ ≥ 1250000000/891774069 > 1.401700322371, with row cap
-  891774069/1250000000 = 0.7134192552 [Lean · 12.1].
-- 1.4018 needs a row cap below 5000/7009 = 0.7133685261…; the Lean cover of the cubic witness does not reach it, and
-  the route to it is the identity-tail witness (`../identity-tail/STATUS.md`).
+- The complete lower cover of the cubic witness gives K_G^ℂ ≥ 1250000000/891774069 > 1.401700322371, with row cap
+  891774069/1250000000 = 0.7134192552 [Lean until #525 · 12.1]; master no longer carries it.
+- 1.4018 needs a row cap below 5000/7009 = 0.7133685261…; the cover of the cubic witness does not reach it. Lean
+  proves 1.40191 with the identity-tail witness instead (#525, whose design target was 1.4018; `main_bounds`;
+  `../identity-tail/`), so a consumer of K at the cubic witness improves the proved bound only if it gives more than
+  1.40191 (row cap below 100000/140191 = 0.7133125…).
 - 1.402 needs a row cap below 500/701 = 0.7132667617…; 1.4022 below 5000/7011 = 0.7131650263….
 - At the peak row an all-sector bound Λ ≤ S + η with η ≤ 10⁻⁴ covers the response interval t ∈ [0.84, 0.851] for
   1.402, with the cap more than 6.12·10⁻⁷ below 500/701; the largest admissible allowance on that interval is
@@ -339,10 +341,16 @@ high-kurtosis regime χ ∈ [26, 42], where **E|q| ≤ (443/500)‖q‖₂ = 0.8
 gemini-2762 · 3.6, 3.7], as well as on hyperplane-vanishing cubics and on P₃,₁(q²) = 0 [P, author only · 3.25, 3.24].
 Without a buffer, (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer,
 radius domination holds for one two-variable family around the known counterexample to the stronger Laplace comparison
-[author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (1829/2000)‖q‖₂ =
-0.9145‖q‖₂** (`cert_915.json`, 14 rows: 5 compactly-supported damped fourth/fifth-order Stein rows on χ ∈ [2, 7] at
-ε = 1/40 with a piecewise-linear 5×5 knot matrix T(v), and 9 Level-2 flank rows; largest row bound < 0.9143745) [P + C,
-author only · gemini-2762 · 3.7], and **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂** (strictly below 0.916‖q‖₂ when q ≠ 0):
+[author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (4571/5000)‖q‖₂ =
+0.9142‖q‖₂** (combining the universal phase-averaged linear bound E|q| ≤ (√π/2)‖q‖₂(1 + (26449/5000000)χ) < 0.9121‖q‖₂
+on χ ∈ [0, 11/2] with rows 7–13 of `cert_915.json` on χ ∈ [11/2, 42], whose Sturm and Bernstein checkers were replayed
+by codex-062a while Row 7's damped Level-3 proof remains author only; `cert_915.json` alone gives **1829/2000 = 0.9145**
+via 5 compactly-supported damped fourth/fifth-order Stein rows on χ ∈ [2, 7] at ε = 1/40 with a piecewise-linear 5×5 knot
+matrix T(v) and 9 Level-2 flank rows, largest row bound < 0.9143745) [P, author only + C · gemini-2762, rows 7–13
+replayed by codex-062a · 3.7], **E|q| ≤ (2287/2500)‖q‖₂ = 0.9148‖q‖₂** (combining that phase-averaged linear bound on
+χ ∈ [0, 6] with the Level-2 flank rows 16–22 of `cert_916.json` on χ ∈ [6, 42]) [P + C · gemini-2762, independently
+reviewed by codex-062a, codex-6d92 and claude-b9ee · 3.7], and **E|q| ≤ (2289/2500)‖q‖₂ = 0.9156‖q‖₂** (strictly below
+0.916‖q‖₂ when q ≠ 0):
 a 23-row certificate (`cert_916.json`) on χ ∈ [0, 42] augments the second-moment relaxation below with two third-order
 radial forms of 2.5 (tests q̄(c₂ − 1)g₃(V) and qāg₄(V)) coupled through ∂̄_ka = W_k and E Σ_k|W_k|² = 24y, passing the
 0.916 radius test of the uncapped degree-5 game in `../higher-degree` [P + C · gemini-2762, independently reviewed by
@@ -381,7 +389,10 @@ cumulant bounds cannot give even the constant √0.68 there, the real form of 0.
 and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 is also proved in at most
 fifteen coordinates, for correlation at least 0.642, for κ₄ ≥ 46.6, for maximal tensor influence at least 0.66502 or at most 0.0064,
 for Var(‖∇h‖²/3) ≤ 89/2250 when E h² = 1, and for κ₄ ≤ 91/500 = 0.182
-[P + C · 3.21 (e9)(ii)–(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
+[P + C · 3.21 (e9)(ii)–(iv)], and extended via a one-step Ornstein–Uhlenbeck resolvent identity with a V₂ ⊥ V₄
+cross-multiplier to **Var(‖∇h‖²/3) ≤ 373/200 = 1.865** when E h² = 1 and **κ₄ ≤ 19/2 = 9.5** (covering all four Cartan
+isoparametric cubics, from universal linear bounds E|h| ≤ √(2/π)‖h‖₂(1 + (26449/7500000)κ₄) and E|h| ≤ √(2/π)‖h‖₂(1 +
+(717/40000)Var(‖∇h‖²/3)/‖h‖₂⁴)) [P + C · gemini-2762, re-derived and replayed by codex-062a · 3.21 (e9)(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
 conjectured to be √55/8 = 0.9270, attained by the hemisphere: it is
 proved for zonal sign patterns, and the hemisphere is a strict local maximum [P · 3.21 (e3)]. The largest ratio
 E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates [N · 3.21 (e8)].
@@ -1018,16 +1029,18 @@ interval upper bounds for S at each row; coverage of the energies outside the re
 omitted response region; an error ledger with exact thresholds; a single witness operator behind rows with different
 ε. No Lean statement of a K-consumer exists [open · STATUS §8].
 
-**A first consumer.** A simple first consumer keeps the present witness ε = 149/200 and its 19 Lean rows. These rows
+**A first consumer.** A simple first consumer keeps the witness ε = 149/200 and its 19 rows (in Lean until #525,
+which replaced that witness by the identity-tail witness and its 14 rows). These rows
 and the crude row already cover every response t except [0.84, 0.8555]. One new row M = (149/200, 0.84775, 0.1450976)
 on that interval, with an all-sector bound Λ̂_M ≤ S_M + 10⁻⁴, would give K_G ≥ 1.40171 [C, P author only · codex-8d2f,
-replayed by claude-b9ee · STATUS 8.5]. The responses there fit the peak energy box after the weighted scaling, but the
+replayed by claude-b9ee · STATUS 8.5]. This is below the 1.40191 that Lean now proves, so the consumer no longer
+improves the bound; it stays the cheapest test of K at one row. The responses there fit the peak energy box after the weighted scaling, but the
 tested triangle/support transfer of the peak results exceeds the allowance: the profile change alone costs 7·10⁻⁴
 against 1.04·10⁻⁴ [STATUS 8.6]. One route is new component estimates at M (remote cap, joint premise, odd premise); a
 sharper transfer or a direct all-sector estimate at M are others. For 1.402 at ε = 1891/2500, the reusable envelope of
-the 19 Lean rows leaves four response intervals, among them [0.696, 0.84] [STATUS 8.7].
+the 19 rows at ε = 149/200 leaves four response intervals, among them [0.696, 0.84] [STATUS 8.7].
 
-**The exterior at ε = 299/400.** Moving the 19 Lean rows from ε₀ = 149/200 to e = 299/400 changes the payoff by
+**The exterior at ε = 299/400.** Moving the 19 rows (in Lean until #525) from ε₀ = 149/200 to e = 299/400 changes the payoff by
 δ(‖Qk‖² − ‖Qh‖²), δ = 1/400. The retained square absorbs −δ‖Qh‖², because
 2β²/ε₀ − ε₀‖x + (β/ε₀)v‖² − δ‖x‖² = 2β²/e − e‖x + (β/e)v‖² when ‖v‖² = 2, and ‖Qk‖ ≤ ρ or the response energies
 bound δ‖Qk‖². On 1,674 exact cells this proves V ≤ 713263/10⁶ < 500/701 for every response with t ≤ 0.8165 or
@@ -1041,10 +1054,10 @@ STATUS 8.9]. Ten central rows cover the rest: if their retained all-sector inequ
 **The exterior at ε = 3/4 and ε = 94/125.** Pushing ε above 299/400 was blocked near t = 0 by the crude row t² + ερ².
 Setting c(ε) = (2141/3150)ε makes the piecewise potential φ_{c(ε)}^{(ε)}(r) = max_{y∈[0,1]}(2εry − c(ε)y²) equal to
 (ε/ε₁)·φ_{c₁}^{(ε₁)}(r) identically on [0, ∞) (ε₁ = 25/31, c₁ = 2141/3906), so the 136-node pruned spectral Stein
-certificate `cert_mass_0.5_pruned.json` (`../identity-tail/STATUS.md` 5.5, fact (3); **C**, outside Lean, whose hypotheses are
-Lean's `Moments`, `SteinCut` and `Lower.ρ`) transfers without an identity tail to give
+certificate `cert_mass_0.5_pruned.json` (`../identity-tail/STATUS.md` 5.5, fact (3); **Lean** at ε₁ since #525, `certMassRow` in `Grothe/Lower/Cert/MassRow.lean`,
+with hypotheses Lean's `Moments`, `SteinCut` and `Lower.ρ`) transfers without an identity tail to give
 V_ε ≤ (1 − c(ε))t² + c(ε) + (ε/ε₁)S₁ − ‖P₁,₀k‖² − ε‖P₂,₁h‖².
-Combined with the 19 Lean rows, retained-square two-row mixing (`RowHolds.mix`), operator-change recompletion and 2.12b,
+Combined with the 19 rows at ε = 149/200, retained-square two-row mixing (`RowHolds.mix`), operator-change recompletion and 2.12b,
 this proves V_{3/4} ≤ 7132652/10⁷ < 500/701 outside (0.795, 0.864) using `Lower.ρ` alone, and, adding ρ = 46731/50000
 (2.1), V_{94/125} ≤ 7132660/10⁷ < 500/701 outside (0.7515, 0.863) [homothety and covers P + C, author only · gemini-9a4e · STATUS 8.12].
 Outward-rounded integer Rice enclosures certify nine central rows on [0.795, 0.864] at ε = 3/4 with allowances above
@@ -1110,7 +1123,8 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    the response caps at the peak (2.9).
 3. **A consumer whose rows these bounds fit** (2.10): cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. The peak bound covers t ∈ [0.84, 0.851] only. A simple
-   first step is one new row at ε = 149/200 with an all-sector bound there, which gives 1.40171. At ε = 299/400 only
+   first step is one new row at ε = 149/200 with an all-sector bound there, which gives 1.40171 (below the proved
+   1.40191, so a test of K only). At ε = 299/400 only
    the central interval (0.8165, 0.866) is left, as ten explicit all-sector inequalities; their binding rows admit
    3.0–4.4·10⁻⁵, less than the 9.9·10⁻⁵ of item 2. At ε = 94/125 only (0.7515, 0.863) is left (author only), as
    thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.57·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`

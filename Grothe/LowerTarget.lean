@@ -5,10 +5,10 @@ import Grothe.LowerAnalytic.LowerBound
 /-!
 # The lower-bound target, from the proof
 
-`Grothe.Statement.LowerTarget` (`every Grothendieck bound is above 1.4018`, `Grothe/Statement.lean`) follows from the
+`Grothe.Statement.LowerTarget` (`every Grothendieck bound is above 1.40191`, `Grothe/Statement.lean`) follows from the
 certificate of the witness with an identity tail `(191/250, 47/2000)` under the node-cap hypothesis
 `TailNodeCaps (nuHat (47/2000))` (the node caps of the potentials of the 14 rows with the tail):
-`lowerTarget_of_tailNodeCaps`. With `Grothe.Statement.lt_constant_of_lowerAbove` it gives `1.4018 < K_G^ℂ` as soon as
+`lowerTarget_of_tailNodeCaps`. With `Grothe.Statement.lt_constant_of_lowerAbove` it gives `1.40191 < K_G^ℂ` as soon as
 some Grothendieck bound exists.
 
 This module deliberately imports only the certificate, not `Grothe.LowerAnalytic.CapNodes` (the node caps themselves,

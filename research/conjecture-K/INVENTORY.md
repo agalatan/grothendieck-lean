@@ -1488,8 +1488,10 @@ file, the notes as delivered included.
   `../identity-tail/sources/stage0d-2026-11-17/SPECCHECK.md`, `MANIFEST_stage0d.sha256` and `lean-data/SHA256SUMS`.
 - **Replay.** Standard library only (`python3 -I`, Python 3.12+). `verify_mass_row.py` checks all 136 spectral nodes
   (28,935 polynomial pieces), the exact homothety identity and three rejection controls (~2 s). `verify_exterior.py`
-  reads the SHA-256-pinned 19 Lean rows (`code/exterior-codex-4d8a/inherited_rows.json`, cross-checked against live
-  `Grothe/Lower/RowData*.lean` and `RowDataTypes.lean`) and accepts 1,635/1,773 cells at ε = 3/4 (`Lower.ρ`
+  reads the SHA-256-pinned 19 rows of ε = 149/200 (`code/exterior-codex-4d8a/inherited_rows.json`; the cross-check
+  against live `Grothe/Lower/RowData*.lean` runs only on a tree where `RowDataTypes.lean` still has ε = 149/200, i.e.
+  before #525 such as 25d56fcbb, and is skipped on later masters, where the pinned manifest alone is used; replayed on
+  master 9c7014ff6 by claude-b9ee, 21 Nov: PASS, 13.4 s) and accepts 1,635/1,773 cells at ε = 3/4 (`Lower.ρ`
   alone) and 1,550/1,773 cells at ε = 94/125 (`ρ = 46731/50000`) (~13 s). `verify_central_94_125.py` certifies the
   9-row central bank at ε = 3/4 and 13-row central bank at ε = 94/125 (`central_94_125_certificate.json`) in 10⁴⁵
   fixed-point integer arithmetic (~148 s). [Replay log](code/exterior-94-125-gemini-9a4e/REPLAY.log)
@@ -1586,3 +1588,16 @@ file, the notes as delivered included.
 | `code/sharp-radius-gemini-2762/verify_bernstein_level3.py` | 33,794 B | `f29d591f76bef769d84c1aa39442220bd89edfaabae652370c0c8387d56b1ff8` |
 | `code/sharp-radius-gemini-2762/verify_cert_level3.py` | 33,802 B | `1bed4cddd974a0fb5dc7354684a4641e6fe1e58153ed9997c8e405255dd65b6d` |
 | `code/sharp-radius-gemini-2762/verify_near_gaussian.py` | 21,596 B | `f096ef67fab2ffa6567a31dfc770dbf0bb1793652d42c1a828fa93a6179d1b28` |
+
+## Near-Gaussian weak target (T) via one-step OU resolvent and V₂ ⊥ V₄ cross-multiplier (gemini-2762, task #505)
+
+- [Proof and replay instructions](sources/near-gaussian-505-2026-11-21-gemini-2762/PROOF.md) and
+  [exact verifier and replay log](code/near-gaussian-505-gemini-2762/) (tag KNG505; STATUS 3.7, 3.21 (e9)(iv)). Every file is under 40 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations):** `python3 -I -O verify_near_gaussian_505.py` verifies the exact SOS polynomial identity, $e^{-42} < 10^{-15}$, Machin $\pi$ bounds, Triple 1 ($\kappa_4 \le 19/2 = 9.5$, 217 leaves), Triple 2 ($\operatorname{Var}(\tau) \le 373/200 = 1.865$ at unit variance, 257 leaves), all four Cartan isoparametric cubics ($n = 5, 8, 14, 26$), the $\operatorname{He}_3(Z)/\sqrt{6}$ closed-form interval overlap, the $H_{2,1}(\mathbb{C}^n)$ phase-averaging bounds ($\rho_* \le 4571/5000 = 0.9142$ when combined with rows 7–13 of `code/sharp-radius-gemini-2762/cert_915.json` replayed via `python3 -I -O code/sharp-radius-gemini-2762/verify_bernstein_level3.py code/sharp-radius-gemini-2762/cert_915.json` / `verify_cert_level3.py`, [row log](code/sharp-radius-gemini-2762/REPLAY.log); certifying the degree-5 $t = 0$ test for $\lambda_1 \le 12500000000/14646722741 > 0.85343$ and small-$t$ bound up to $t \le 0.2527$), 12 adversarial negative controls, and an AST self-audit confirming zero `float` literals or calls (~60 s). [Replay log](code/near-gaussian-505-gemini-2762/REPLAY.log)
+- **Independent review.** `codex-062a` ([review of `6feca0d0b`](https://github.com/agalatan/grothendieck-lean/pull/551#issuecomment-7054870268), [approval of `ebf09bc0f`](https://github.com/agalatan/grothendieck-lean/pull/551#issuecomment-7055075448)) re-derived the one-step OU resolvent multiplier and signs in `(2.8)`–`(2.9)`, checked endpoint domination, the $V_2 \perp V_4$ orthogonality step, the $2 \times 2$ Schur determinant test and Cartan normalization, verified all three file sizes and SHA-256 hashes, replayed `python3 -I -O verify_near_gaussian_505.py` (matching the 217- and 257-leaf covers and outward interval `[+3.5226183161, +3.5226183162]`), and independently ran both `verify_cert_level3.py` and `verify_bernstein_level3.py` on rows 7–13 of `cert_915.json` (`[11/2, 42]`, max $\le 0.9141874875$).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/near-gaussian-505-2026-11-21-gemini-2762/PROOF.md` | 39,228 B | `9b1aba951d6fd0c5fdf0728bab594ef5f2451b1804476eef017792b1df0e73a4` |
+| `code/near-gaussian-505-gemini-2762/verify_near_gaussian_505.py` | 33,563 B | `520af8aa5f7161b70ba99292527af286b7644a4f99e6f493b452b687dcc810bd` |
+| `code/near-gaussian-505-gemini-2762/REPLAY.log` | 2,000 B | `81df44fc756d0d5fe6a45ad542c13a57e12fa77b1d759112ed6557815112ed47` |
