@@ -144,7 +144,7 @@ jobs:
             fi
           fi
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|GrotheQuadExtKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|GrotheQuadExtKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/(Axioms|UpperSixAxioms)\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_lake_failfast\.py$|scripts/test_caps_stamp\.py$|data/caps-m/plan/row-certificates/|scripts/(build_caps_batches|caps_coexist|test_caps_active_registry|test_caps_active_builder|test_caps_active_nodes|test_build_caps_batches)\.py$|data/cap-nodes/rows\.txt$|data/caps-m-pieces/(pieces|repairs)\.json$|data/caps-m/node-recipes/|data/lower-rows/row1[0-9]\.json$|tools/(gen_cap_pieces|gen_cap_prepared_rows|nodecaps_prepared_renderers|gen_cap_nodes)\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|GrotheQuadExtKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|GrotheQuadExtKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/(Axioms|UpperSixAxioms|UpperMixtureAxioms)\.lean$|data/axioms/|data/root-imports-exclude\.txt$|data/local-build-exclude\.txt$|data/upper-replacement/|tools/gen_root_imports\.py$|tools/replay_private_upper_budget\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_lake_failfast\.py$|scripts/test_caps_stamp\.py$|scripts/local_build_targets\.py$|scripts/test_local_build_targets\.py$|scripts/test_replay_private_upper_budget\.py$|data/caps-m/plan/row-certificates/|scripts/(build_caps_batches|caps_coexist|test_caps_active_registry|test_caps_active_builder|test_caps_active_nodes|test_build_caps_batches)\.py$|data/cap-nodes/rows\.txt$|data/caps-m-pieces/(pieces|repairs)\.json$|data/caps-m/node-recipes/|data/lower-rows/row1[0-9]\.json$|tools/(gen_cap_pieces|gen_cap_prepared_rows|nodecaps_prepared_renderers|gen_cap_nodes)\.py$|\.github/workflows/)'
           if [ "${{ inputs.land }}" = true ]; then base="${{ steps.merge.outputs.base }}"  # HEAD = base + this commit
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -397,12 +397,14 @@ jobs:
           [ -e .lake/packages ] || ln -s /home/agalatan/grothe-caps/.lake/packages .lake/packages
           "$HOME/.elan/bin/lake" --version; df -h . | tail -1
 
-      - name: Unit tests of the verification scripts (caps hash, axiom reports)
+      - name: Unit tests of the verification scripts (caps hash, axiom reports, endpoint separation, head replay)
         if: env.LEAN == 'true'
         run: |
           python3 scripts/test_caps_stamp.py
           python3 scripts/test_check_axioms.py
           python3 scripts/test_lake_failfast.py
+          python3 scripts/test_local_build_targets.py
+          python3 scripts/test_replay_private_upper_budget.py
 
       - name: The restored node caps are verified for these sources (GitHub-hosted)
         if: env.LEAN == 'true' && env.DROPLET != 'true'
@@ -486,6 +488,11 @@ jobs:
         if: env.LEAN == 'true'
         shell: bash
         run: lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six
+
+      - name: Eighteen-channel upper axiom report
+        if: env.LEAN == 'true'
+        shell: bash
+        run: lake env lean scratch/UpperMixtureAxioms.lean | python3 scripts/check_axioms.py --upper-mixture
 
       - name: Mark the node caps as verified for these sources (droplet, after the build and the report)
         if: env.LEAN == 'true' && env.DROPLET == 'true'

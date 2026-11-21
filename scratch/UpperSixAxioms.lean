@@ -1,4 +1,4 @@
-import Grothe.UpperResult
+import Grothe.UpperSixResult
 
 -- Agent-ID: codex-a7c4
 set_option pp.fullNames true

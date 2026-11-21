@@ -12,3 +12,7 @@ Grothe\.UpperQuad\..*
 # Six-channel overlap table and Hardy contour evaluations. CI and targeted upper builds check these.
 Grothe\.UpperSix\.Haagerup\.Data\.OverlapData
 Grothe\.UpperSix\.Haagerup\.ContourChecks\..*
+# Eighteen-channel upper mixture native checks (cell-head residue groups and contour covers).
+Grothe\.UpperReplacement\.HeadWitnessFacts(\..*)?
+Grothe\.UpperReplacement\.TailFacts(\..*)?
+Grothe\.UpperReplacement\.WideFacts

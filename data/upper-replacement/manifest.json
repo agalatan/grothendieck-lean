@@ -1,0 +1,28 @@
+{
+  "agent_id": "codex-a7c4",
+  "inputs": [
+    {
+      "path": "cell-inputs.npz",
+      "sha256": "cd95bb2964de41113752e8df8ab40cc91beee1d7506413e1953004917578df9b",
+      "audited_source_sha256": "619879da7e68a056ecc211796cfa823f82030ba709f9264f29d62a6f882575de",
+      "members_sha256": {
+        "F_re_i.npy": "5c43cf24ef6e8c2424b28b0d4d0bb6e59e4047ac5d76d42c0ab0d60733c5664d",
+        "F_im_i.npy": "432d1d0efe137875fec793c8149145fe2a094f843295f64c1c4dce674ea5d84e",
+        "G_re_i.npy": "78dbe294fbd66edcd593a9e0ca604bec96a93f3fde8294cf3c576f5c8b72f88f",
+        "G_im_i.npy": "79153d0b98f5bf653cca85b0fb90d83311cdd63de7ac803bf48eec0f96c982a9",
+        "q_shift.npy": "fdd6d7b917de358b71690d305a981b5d7d45d609a2ac95634b8b6943896ec135"
+      }
+    },
+    {
+      "path": "exact-columns.json",
+      "sha256": "e3df2d3ae7765cfcae8458daa098afa2133fe4167ed3a997bb73d7f22eecbde8"
+    }
+  ],
+  "arithmetic": "exact integers and rational numbers; no floating-point certificate premises",
+  "cell_shape": [
+    64,
+    128,
+    128
+  ],
+  "cell_dyadic_exponent": 26
+}
