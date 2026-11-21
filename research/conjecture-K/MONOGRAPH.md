@@ -25,8 +25,8 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.4018 < K_G^ℂ ≤ 1.40457588 (Lean, `main_bounds`). The lower bound of
-the cubic witness alone is 1.401700322371 (12.1); Lean's 1.4018 adds an identity tail to it. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
+**Why it matters.** The proved bounds are 1.40191 < K_G^ℂ ≤ 1.40457588 (Lean, `main_bounds`). The lower bound of
+the cubic witness alone is 1.401700322371 (12.1); Lean's 1.40191 adds an identity tail to it. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
 1.4022; no certificate with this witness exceeds 1.4022581233.
@@ -133,8 +133,9 @@ not, and it matters only if a row cover uses it [R · 2.5].
 - The complete lower cover of the cubic witness gives K_G^ℂ ≥ 1250000000/891774069 > 1.401700322371, with row cap
   891774069/1250000000 = 0.7134192552 [Lean until #525 · 12.1]; master no longer carries it.
 - 1.4018 needs a row cap below 5000/7009 = 0.7133685261…; the cover of the cubic witness does not reach it. Lean
-  proves 1.4018 with the identity-tail witness instead (#525, `main_bounds`; `../identity-tail/`), so a consumer of K
-  at the cubic witness improves the proved bound only if it gives more than 1.4018.
+  proves 1.40191 with the identity-tail witness instead (#525, whose design target was 1.4018; `main_bounds`;
+  `../identity-tail/`), so a consumer of K at the cubic witness improves the proved bound only if it gives more than
+  1.40191 (row cap below 100000/140191 = 0.7133125…).
 - 1.402 needs a row cap below 500/701 = 0.7132667617…; 1.4022 below 5000/7011 = 0.7131650263….
 - At the peak row an all-sector bound Λ ≤ S + η with η ≤ 10⁻⁴ covers the response interval t ∈ [0.84, 0.851] for
   1.402, with the cap more than 6.12·10⁻⁷ below 500/701; the largest admissible allowance on that interval is
@@ -1032,7 +1033,7 @@ omitted response region; an error ledger with exact thresholds; a single witness
 which replaced that witness by the identity-tail witness and its 14 rows). These rows
 and the crude row already cover every response t except [0.84, 0.8555]. One new row M = (149/200, 0.84775, 0.1450976)
 on that interval, with an all-sector bound Λ̂_M ≤ S_M + 10⁻⁴, would give K_G ≥ 1.40171 [C, P author only · codex-8d2f,
-replayed by claude-b9ee · STATUS 8.5]. This is below the 1.4018 that Lean now proves, so the consumer no longer
+replayed by claude-b9ee · STATUS 8.5]. This is below the 1.40191 that Lean now proves, so the consumer no longer
 improves the bound; it stays the cheapest test of K at one row. The responses there fit the peak energy box after the weighted scaling, but the
 tested triangle/support transfer of the peak results exceeds the allowance: the profile change alone costs 7·10⁻⁴
 against 1.04·10⁻⁴ [STATUS 8.6]. One route is new component estimates at M (remote cap, joint premise, odd premise); a
@@ -1123,7 +1124,7 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 3. **A consumer whose rows these bounds fit** (2.10): cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. The peak bound covers t ∈ [0.84, 0.851] only. A simple
    first step is one new row at ε = 149/200 with an all-sector bound there, which gives 1.40171 (below the proved
-   1.4018, so a test of K only). At ε = 299/400 only
+   1.40191, so a test of K only). At ε = 299/400 only
    the central interval (0.8165, 0.866) is left, as ten explicit all-sector inequalities; their binding rows admit
    3.0–4.4·10⁻⁵, less than the 9.9·10⁻⁵ of item 2. At ε = 94/125 only (0.7515, 0.863) is left (author only), as
    thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.57·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`
