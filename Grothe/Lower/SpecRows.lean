@@ -168,17 +168,13 @@ lemma spNode_tb (hM : Moments μ U x) (hS : SteinCut μ U) (hΨ : CapsHold Ψ no
   cases n with
   | zero =>
     refine ⟨?_, le_refl _⟩
-    simp only [SpNode.ok] at h
-    obtain ⟨m, rest, hn⟩ : ∃ m rest, nodes = m :: rest := by
-      cases nodes with
-      | nil => simp [headZero] at h
-      | cons m rest => exact ⟨m, rest, rfl⟩
-    rw [hn] at h
-    simp only [headZero, beq_iff_eq] at h
-    have hc := hΨ.caps m (by rw [hn]; simp)
-    rw [h] at hc
-    simp only [SpNode.sigma, SpNode.val, hn, List.headD_cons, Rat.cast_zero]
-    exact TB.zero _ (by simpa using hc)
+    cases nodes with
+    | nil => nomatch h
+    | cons m rest =>
+      simp only [SpNode.ok, headZero, beq_iff_eq] at h
+      have hc := h ▸ hΨ.caps m (List.mem_cons_self ..)
+      simp only [SpNode.sigma, SpNode.val, List.headD_cons, Rat.cast_zero]
+      exact TB.zero _ (by exact_mod_cast hc)
   | wit w =>
     simp only [SpNode.ok, Bool.and_eq_true, decide_eq_true_eq] at h
     obtain ⟨⟨hτ, hc⟩, hxc⟩ := h
@@ -207,7 +203,7 @@ lemma scell_sound (hM : Moments μ U x) (hS : SteinCut μ U) (hΨ : CapsHold Ψ 
   simp only [checkSCell, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true] at h
   obtain ⟨⟨⟨hx0, hchain⟩, hpieces⟩, hnodes⟩ := h
   obtain ⟨pc, hpc, hlo, hhi⟩ :=
-    chainTo_sound SpPiece.lo SpPiece.hi c.pieces 0 stop hchain σ (by simpa using h0) h1
+    chainTo_sound SpPiece.lo SpPiece.hi c.pieces 0 stop hchain σ (by exact_mod_cast h0) h1
   have hok := hpieces pc hpc
   simp only [SCell.pieces, List.mem_append, List.mem_map] at hpc
   rcases hpc with ⟨r, -, rfl⟩ | ⟨⟨p, n⟩, hpn, rfl⟩
@@ -228,9 +224,9 @@ theorem rowBound_of_specCells (r : Row) (h : checkSpecCells r = true) : RowBound
   obtain ⟨⟨hmesh, hchain⟩, hcells⟩ := h
   intro Ω _ μ _ U x Ψ σ hM hS hΨ h0 h1 hf
   obtain ⟨c, hc, hc1, hc2⟩ :=
-    chainTo_sound SCell.xlo SCell.xhi r.scellList 0 xMax hchain x (by simpa using hM.x0) hM.x1
+    chainTo_sound SCell.xlo SCell.xhi r.scellList 0 xMax hchain x (by exact_mod_cast hM.x0) hM.x1
   exact scell_sound μ hM hS hΨ r.vs hmesh r.kappa r.cap (r.delta * ρ) c (hcells c hc) hc1 hc2 σ h0
-    (by push_cast; exact h1) hf
+    (by exact_mod_cast h1) hf
 
 /-- What the consumers of a checked row use (`rowOf_of_shared`): the gate, the price and the row
 bound. -/
