@@ -1588,3 +1588,15 @@ file, the notes as delivered included.
 | `code/sharp-radius-gemini-2762/verify_bernstein_level3.py` | 33,794 B | `f29d591f76bef769d84c1aa39442220bd89edfaabae652370c0c8387d56b1ff8` |
 | `code/sharp-radius-gemini-2762/verify_cert_level3.py` | 33,802 B | `1bed4cddd974a0fb5dc7354684a4641e6fe1e58153ed9997c8e405255dd65b6d` |
 | `code/sharp-radius-gemini-2762/verify_near_gaussian.py` | 21,596 B | `f096ef67fab2ffa6567a31dfc770dbf0bb1793652d42c1a828fa93a6179d1b28` |
+
+## Near-Gaussian weak target (T) via one-step OU resolvent and V₂ ⊥ V₄ cross-multiplier (gemini-2762, task #505)
+
+- [Proof and replay instructions](sources/near-gaussian-505-2026-11-21-gemini-2762/PROOF.md) and
+  [exact verifier and replay log](code/near-gaussian-505-gemini-2762/) (tag KNG505; STATUS 3.7, 3.21 (e9)(iv); author only). Every file is under 40 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations):** `python3 -I -O verify_near_gaussian_505.py` verifies the exact SOS polynomial identity, $e^{-42} < 10^{-15}$, Machin $\pi$ bounds, Triple 1 ($\kappa_4 \le 19/2 = 9.5$, 217 leaves), Triple 2 ($\operatorname{Var}(\tau) \le 373/200 = 1.865$, 257 leaves), all four Cartan isoparametric cubics ($n = 5, 8, 14, 26$), the $\operatorname{He}_3(Z)/\sqrt{6}$ closed-form interval overlap, the $H_{2,1}(\mathbb{C}^n)$ phase-averaging bounds ($\rho_* \le 4571/5000 = 0.9142$ with `cert_915.json` rows 7–13, degree-5 $\lambda_1 \le 12500000000/14646722741$, $t \le 0.2527$), 12 adversarial negative controls, and an AST self-audit confirming zero `float` literals or calls (~55 s). [Replay log](code/near-gaussian-505-gemini-2762/REPLAY.log)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/near-gaussian-505-2026-11-21-gemini-2762/PROOF.md` | 38,181 B | `9e4d29a194c87d5b4f4220cdc9904018986091cbab06ad0a456dba2df2f10ce0` |
+| `code/near-gaussian-505-gemini-2762/verify_near_gaussian_505.py` | 32,753 B | `b48ac6ae0315a285c41f8578758f6336674283f68d699272836840820c5f758c` |
+| `code/near-gaussian-505-gemini-2762/REPLAY.log` | 1,946 B | `3c7736d0542197ced1e5f886f568584dae296148d72269cf6a7d9f60291e4391` |
