@@ -1,0 +1,21 @@
+=== Exact Near-Gaussian Weak-Target (T) Verifier [Issue #505, zero floats] ===
+1. Foundations: SOS identity PASS; exp(-42) < 10^-15 PASS; pi in [3.1415926535, 3.1415926536]
+2. Triple 1 [kappa_4]: (5649/250000, 22597/500000, -5753/200000) certified on [0, oo) in 217 leaves
+   min d_1 = 0.0000992285, min Schur det margin = 0.0000000003
+   Universal bound: E|F| <= sqrt(2/pi)*||F||_2*(1 + 26449/7500000*kappa_4(F))  (S_hat <= 0.0035265334)
+   At kappa_4 <= 19/2 = 9.5: (1 + S_hat*19/2)^2 = 1.0681265219 < (17/50)*pi_lo = 1.0681415022  ==> (T) PASS!
+3. Triple 2 [Var(tau)]: (913/40000, 5239/120000, -2927/100000) certified on [0, oo) in 257 leaves
+   min d_1 = 0.0003095373, min Schur det margin = 0.0000000002
+   Universal bound (||F||_2 = 1): E|F| <= sqrt(2/pi)*(1 + 717/40000*Var(tau))  (V_hat = 0.0179250000)
+   For ||F||_2 = 1, Var(tau) <= 373/200 = 1.865 (=> 93/50 = 1.86): (1 + V_hat*373/200)^2 = 1.0679778233 < 1.0681415022  ==> (T) PASS!
+4. Cartan isoparametric cubics (all 4 inside both cones):
+   n= 5: kappa_4 =  324/35 (9.2571428572 < 9.5),  Var(tau) = 64/35 (1.8285714286 < 1.86)
+   n= 8: kappa_4 =    27/5 (5.4000000000 < 9.5),  Var(tau) = 11/10 (1.1000000000 < 1.86)
+   n=14: kappa_4 =   81/28 (2.8928571429 < 9.5),  Var(tau) = 17/28 (0.6071428572 < 1.86)
+   n=26: kappa_4 =  135/91 (1.4835164836 < 9.5),  Var(tau) = 29/91 (0.3186813187 < 1.86)
+5. Exact He_3(Z)/sqrt(6) control: closed form [+3.5226183161, +3.5226183162] overlaps 1-step integral [+3.4828857698, +3.5624781955] PASS
+6. Complex H_{2,1}(C^n) phase-averaging corollary:
+   E|q|/||q||_2 <= (sqrt(pi)/2)*(1 + (26449/5000000)*chi): < 0.9074 on [0, 9/2], < 0.9121 on [0, 11/2]
+   With cert_915.json rows 7..13 on [11/2, 42] (verify_bernstein_level3.py): rho_* <= 4571/5000 = 0.9142 (certifies deg-5 t=0 test for lam_1 <= 12500000000/14646722741 > 0.85343; small-t <= 0.2527)
+7. Negative controls & AST zero-float audit: 12 adversarial checks ALL REJECTED as required.
+ALL CHECKS PASSED (68744 ms, cached x-evaluations = 366).
