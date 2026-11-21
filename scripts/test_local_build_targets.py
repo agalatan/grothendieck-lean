@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Tests of scripts/local_build_targets.py. Run: python3 scripts/test_local_build_targets.py"""
+import re
 import sys
 import tempfile
 import unittest
@@ -7,6 +8,43 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import local_build_targets as lbt  # noqa: E402
+
+LOWER_CAP_RE = re.compile(
+    r'^(Grothe\.LowerAnalytic\.Cap(Nodes|Row[0-9]+|Pieces)(\.|$)'
+    r'|Grothe\.Lower\.(Envelope|RowData|MassRow)'
+    r'|Grothe\.Lower(Target|Result)$)'
+)
+UPPER_SIX_RE = re.compile(r'^(Grothe\.UpperSix(\.|$)|Grothe\.UpperSixResult$)')
+UPPER_MIX_RE = re.compile(r'^(Grothe\.UpperReplacement(\.|$)|Grothe\.UpperResult$)')
+UPPER_HEAVY_RE = re.compile(r'^Grothe\.Upper(Quad|Chaos)(\.|$)')
+
+
+def import_closure(root: Path, start: str, imports_fn=lbt.imports_of) -> set[str]:
+    seen: set[str] = set()
+    stack = [start]
+    while stack:
+        mod = stack.pop()
+        if mod in seen:
+            continue
+        seen.add(mod)
+        path = root.joinpath(*mod.split('.')).with_suffix('.lean')
+        if path.is_file():
+            stack.extend(imports_fn(path))
+    return seen
+
+
+def endpoint_separation_violations(root: Path, imports_fn=lbt.imports_of) -> list[str]:
+    violations: list[str] = []
+    checks = [
+        ('Grothe.UpperResult', (LOWER_CAP_RE, UPPER_SIX_RE)),
+        ('Grothe.UpperSixResult', (LOWER_CAP_RE, UPPER_MIX_RE, UPPER_HEAVY_RE)),
+        ('Grothe.LowerResult', (UPPER_MIX_RE, UPPER_SIX_RE, UPPER_HEAVY_RE)),
+    ]
+    for endpoint, forbidden in checks:
+        for mod in sorted(import_closure(root, endpoint, imports_fn)):
+            if any(pat.match(mod) for pat in forbidden):
+                violations.append(f'{endpoint} -> {mod}')
+    return violations
 
 
 def write(root: Path, rel: str, text: str) -> None:
@@ -85,27 +123,21 @@ class Repository(unittest.TestCase):
 
     def test_endpoint_import_graphs_are_separated(self):
         root = Path(__file__).resolve().parent.parent
-        def closure(start: str) -> set[str]:
-            seen: set[str] = set()
-            stack = [start]
-            while stack:
-                mod = stack.pop()
-                if mod in seen:
-                    continue
-                seen.add(mod)
-                path = root.joinpath(*mod.split('.')).with_suffix('.lean')
-                if path.is_file():
-                    stack.extend(lbt.imports_of(path))
-            return seen
-        upper_mix = closure('Grothe.UpperResult')
-        lower = closure('Grothe.LowerResult')
-        upper_six = closure('Grothe.UpperSixResult')
-        self.assertNotIn('Grothe.LowerAnalytic.CapNodes', upper_mix)
-        self.assertNotIn('Grothe.UpperSix.Haagerup', upper_mix)
-        self.assertNotIn('Grothe.UpperReplacement.MixtureCertificate', lower)
-        self.assertNotIn('Grothe.UpperSix.Haagerup', lower)
-        self.assertNotIn('Grothe.LowerAnalytic.CapNodes', upper_six)
-        self.assertNotIn('Grothe.UpperReplacement.MixtureCertificate', upper_six)
+        self.assertEqual(endpoint_separation_violations(root), [])
+
+    def test_separation_catches_direct_lower_cap_row_and_piece_imports(self):
+        root = Path(__file__).resolve().parent.parent
+        upper_path = root / 'Grothe/UpperResult.lean'
+        for injected in ('Grothe.LowerAnalytic.CapRow00.Assembly',
+                         'Grothe.LowerAnalytic.CapPieces.P00'):
+            with self.subTest(injected=injected):
+                def fake_imports(path: Path, extra=injected):
+                    mods = list(lbt.imports_of(path))
+                    if path == upper_path:
+                        mods.append(extra)
+                    return mods
+                violations = endpoint_separation_violations(root, imports_fn=fake_imports)
+                self.assertIn(f'Grothe.UpperResult -> {injected}', violations)
 
 
 if __name__ == '__main__':

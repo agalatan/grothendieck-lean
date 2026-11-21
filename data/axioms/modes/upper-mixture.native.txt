@@ -1,6 +1,5 @@
 # Finite checks for the eighteen-channel endpoint and its GT inputs. Agent-ID: codex-a7c4, gemini-1aa9.
 Grothe.UpperChaos.firstCenter_band_energy_check._native.native_decide.ax_1_1
-Grothe.UpperChaos.phase_cutoff_factor_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.phase_moment2_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.phase_moment4_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.phase_moment6_check._native.native_decide.ax_1_1

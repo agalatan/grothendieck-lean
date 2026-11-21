@@ -139,6 +139,7 @@ class CheckAxiomsTests(unittest.TestCase):
             "Grothe.Upper.improved_high_mass_native._native.native_decide.ax_1_1",
             "Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1",
             "Grothe.UpperChaos.hardy_region_check._native.native_decide.ax_1_1",
+            "Grothe.UpperChaos.phase_cutoff_factor_check._native.native_decide.ax_1_1",
             "Grothe.UpperChaos.taylor_centers_decode_check._native.native_decide.ax_1_1",
         )
         for fact in disallowed:

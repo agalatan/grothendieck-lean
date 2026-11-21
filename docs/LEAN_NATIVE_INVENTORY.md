@@ -17,8 +17,10 @@ allowlists (neither falls back to `data/axioms/native.txt`):
   (`WideFacts.first_gt_region`, `first_gt_circle`, `TailFacts.channel01`–`channel17`), the
   unweighted GT band-mass and support checks (`GTComparison.mass_checked`, `table_within`), and the
   shared GT energy-table, phase-cover, phase-moment, port, and ellipse facts (`GTClosed.table_error`).
-  It explicitly excludes lower-bound, six-channel `Haagerup.*`, and retired single-channel head/Hardy/comparison
-  native facts. [Eighteen-channel allowlist](../data/axioms/modes/upper-mixture.native.txt) ·
+  It checks that every required theorem appears in the real Lean report and that all reported axioms
+  lie in the three standard Lean axioms plus this allowlist, excluding lower-bound, six-channel
+  `Haagerup.*`, and retired single-channel head/Hardy/comparison/cutoff/decode native facts from the
+  theorem's transitive axiom dependencies. [Eighteen-channel allowlist](../data/axioms/modes/upper-mixture.native.txt) ·
   [Certificate notes](UPPER_CERTIFICATE.md).
 * **Standalone six-channel (`--upper-six`)**: `scratch/UpperSixAxioms.lean` audited against
   `data/axioms/modes/upper-six.native.txt`. It covers the two cell witnesses, both overlap-table checks,

@@ -76,10 +76,12 @@ The cell channel uses its full budget. The weighted tail ceiling is
 
 `GTMass` verifies the seven unweighted band masses, `TableSupport` checks the support of the shared
 GT energy table, and `GTInterface` and `GTComparison` connect the actual GT rounding to the energy
-table directly via `norm_roundingDifference_le` (avoiding the single-channel head and comparison
-checks). `GTClosed` supplies its premises using the existing quadrature, port, and panel
-certificates (`UpperTightSix`, `UpperTightPanelTotals`, `UpperClose`). It does not assume any
-previous Grothendieck upper bound.
+table directly via `norm_roundingDifference_le` (excluding the retired single-channel head,
+comparison, and Hardy native facts from the theorem's transitive axiom dependencies; a cold build of
+`Grothe.UpperResult` still compiles `UpperTightComparison` / `ImprovedHeadWeightFacts` because the
+shared `Grothe/Upper/` tree is left untouched). `GTClosed` supplies its premises using the existing
+quadrature, port, and panel certificates (`UpperTightSix`, `UpperTightPanelTotals`, `UpperClose`).
+It does not assume any previous Grothendieck upper bound.
 
 `MixtureHead.signed_head` supplies the finite polynomial inequalities without hypotheses.
 `Assembly.bound_of_checks` combines them with the GT table and contour estimates.
@@ -115,16 +117,22 @@ python3 tools/gen_private_upper_roots.py --check
 python3 tools/replay_private_upper_budget.py
 ```
 
-To regenerate the exact cell-head calculation and independently check its sums, run
+To regenerate the exact cell-head calculation from repository sources and independently check its
+sums and bit-for-bit `HeadCompute.mixtureHead` agreement, run
 
 ```sh
 python3 tools/replay_private_upper_head.py --output-dir .lake/private-upper-head
 python3 tools/replay_private_upper_budget.py --head-dir .lake/private-upper-head
 ```
 
-This takes about 35–40 minutes single-threaded. It builds only named computation libraries and writes exact
-integer interval endpoints. For each group `g` from 0 through 7, generate its Lean
-witness with:
+`tools/replay_private_upper_head.py` builds only the named computation libraries and runs
+`tools/private_upper_head.lean` (via `FastGroup.groupResidues`, about 35–40 minutes
+single-threaded) to write `head125-residue-0.txt` through `head125-residue-63.txt`,
+`head125-grades.txt`, and `head125-mixture.txt`. `tools/replay_private_upper_budget.py --head-dir`
+verifies that `head125-grades.txt` equals the sum of the 64 residue files and that
+`head125-mixture.txt` matches `HeadCompute.mixtureHead` recomputed from those grades,
+`exact-columns.json`, and `Grothe/Upper/Data.lean` (`energyRows`). For each group `g` from 0
+through 7, generate its Lean witness from those `.txt` files with:
 
 ```sh
 python3 tools/gen_private_upper_head_witness.py \
@@ -147,10 +155,11 @@ The GT first-energy floor in `LinearTail.first_energy_checked` reads the full
 energy table and uses `native_decide`. The cell-residue contractions, signed
 head, root tables, contour covers, and GT table support and band masses also
 use registered native checks. These trust Lean's compiler and runtime in
-addition to its kernel. The focused audit checks transitive dependencies
-against the scoped allowlist `data/axioms/modes/upper-mixture.native.txt` (excluding
-lower-bound, six-channel `Haagerup.*`, and retired single-channel head/Hardy/comparison native facts),
-and the combined audit checks the whole repository against `data/axioms/native.txt`.
+addition to its kernel. The focused audit checks that every required theorem appears in the real Lean report and that all
+transitive axioms it reports lie in the three standard Lean axioms plus the scoped allowlist
+`data/axioms/modes/upper-mixture.native.txt` (excluding lower-bound, six-channel `Haagerup.*`, and
+retired single-channel head/Hardy/comparison/cutoff/decode native facts); the combined audit checks
+the whole repository against `data/axioms/native.txt`.
 
 Build and audit the upper theorem with:
 

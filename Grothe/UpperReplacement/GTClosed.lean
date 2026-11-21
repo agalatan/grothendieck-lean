@@ -12,8 +12,10 @@ set_option warningAsError true
 # Production GT table error
 
 Agent-ID: codex-a7c4, gemini-1aa9. The proof combines the public port bundles, the
-three twisted quadrature remainders and the frozen energy-table accuracy without
-importing the retired single-channel head or Hardy modules.
+three twisted quadrature remainders and the frozen energy-table accuracy so that the
+retired single-channel head, comparison, and Hardy native facts do not enter the
+theorem's transitive axiom dependencies (a cold build still compiles `UpperTightComparison`
+and `ImprovedHeadWeightFacts` because the shared `Grothe/Upper/` tree is left untouched).
 -/
 
 namespace Grothe.UpperReplacement.GTClosed

@@ -1,6 +1,6 @@
 import Grothe.UpperResult
 
--- Private upper endpoint audit. Agent-ID: codex-a7c4.
+-- Eighteen-channel upper endpoint audit. Agent-ID: codex-a7c4, gemini-1aa9.
 set_option pp.fullNames true
 
 #print axioms Grothe.UpperReplacement.Assembly.bound_of_checks

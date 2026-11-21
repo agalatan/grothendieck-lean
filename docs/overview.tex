@@ -94,14 +94,17 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.404569241261}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work (\lean{main\_bounds})} & $\mathbf{1.40191}$ & $\mathbf{1.404569241261}$\\\bottomrule
 \end{tabular}
 \end{center}
-The eighteen-channel mixture endpoint is the rational number $10^{15}/711962052581159 < 1.404569241261$.
-For Haagerup's phase integral
+The table lists the exported \lean{main\_bounds} upper endpoint, the eighteen-channel mixture
+rational $10^{15}/711962052581159 < 1.404569241261$. For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
-the separate integral estimate gives $10^{15}/711962052581159 < 1.404569241261 < 1/\gamma^\dagger$
-(and the preserved standalone six-channel package also gives $1.40457588 < 1/\gamma^\dagger$).
+the separate integral estimate gives $10^{15}/711962052581159 < 1.404569241261 < 1/\gamma^\dagger$.
+The preserved standalone six-channel proof (\path{Grothe/UpperSixResult.lean}) derives the
+intermediate rational $10^{12}/711968048589 = 1.404557412347\ldots$
+(\path{Grothe/UpperSix/Haagerup/CertCheck.lean}) before weakening it to its exported rational
+$1.40457588 < 1/\gamma^\dagger$.
 For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 

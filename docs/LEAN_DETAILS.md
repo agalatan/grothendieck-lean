@@ -1161,7 +1161,7 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Lower bound.** `lower_target : LowerTarget` (`Grothe/MainResult.lean`) is
+**Lower bound.** `lower_target : LowerTarget` (`Grothe/LowerResult.lean`) is
 `lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `140191/100000 = 1.40191`.
 `lowerTarget_of_tailNodeCaps` (`Grothe/LowerTarget.lean`) applies `lower_bound_of_tailNodeCaps`
 (`Grothe/LowerAnalytic/LowerBound.lean`): for every Grothendieck bound `K`, `1/((1 − ν)·envB + ν) ≤ K` with

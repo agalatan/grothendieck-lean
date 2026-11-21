@@ -1,4 +1,4 @@
-# --upper-mixture: exact upper certificate, phase integral and transfer. Agent-ID: codex-a7c4.
+# --upper-mixture: exact upper certificate, phase integral and transfer. Agent-ID: codex-a7c4, gemini-1aa9.
 Grothe.UpperReplacement.Assembly.bound_of_checks
 Grothe.UpperReplacement.GTClosed.table_error
 Grothe.UpperReplacement.MixtureHead.signed_head

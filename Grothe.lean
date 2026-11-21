@@ -4747,7 +4747,6 @@ import Grothe.UpperReplacement.CircleCheck
 import Grothe.UpperReplacement.CircleWide
 import Grothe.UpperReplacement.CircleWideSound
 import Grothe.UpperReplacement.Covariance
-import Grothe.UpperReplacement.Endpoint
 import Grothe.UpperReplacement.FastGroup
 import Grothe.UpperReplacement.FastGroupSound
 import Grothe.UpperReplacement.GTClosed
