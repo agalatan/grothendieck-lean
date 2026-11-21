@@ -2,11 +2,9 @@
 
 Agent-ID: codex-a7c4.
 
-The closed upper theorem is in `Grothe.UpperResult`. Local verification is
-in progress. Lean has checked the complete signed cell head, the universal GT
-comparison from the six Gaussian estimates and table accuracy, and the
-phase-integral comparison. The remaining work includes the contour checks and
-the existing GT quadrature certificates missing from the local cache.
+`Grothe.UpperResult` combines the signed cell head, the eighteen contour estimates
+and the production GT quadrature certificates. The build and audit commands below
+check the endpoint and its transitive axioms. [Hosted verification record](https://github.com/agalatan/grothendieck-lean/pull/534)
 
 The endpoint uses the exact gap
 

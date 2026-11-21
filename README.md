@@ -33,8 +33,9 @@ $$K_G^{\mathbb{C}} \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots,$$
 
 thus resolving this conjecture of Haagerup (1987).
 
-- **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
-  rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
+- **The bound.** The article mixes six Gaussian rounding channels. Two reflected channels have alternating
+  coefficient sums above $\gamma^\dagger$. Cancellation of higher coefficients across the six channels gives
+  the mixture a guaranteed slope above $\gamma^\dagger$.
 - **The Lean proof.** The article's ancillary folder [`haagerup-article/anc/`](haagerup-article/anc) is a
   standalone Lean package that proves $K_G^{\mathbb{C}} \le 1.40457588 < 1/\gamma^\dagger$ without hypotheses. Its
   sources are a byte-for-byte copy of [`Grothe/UpperSix/`](Grothe/UpperSix), and the repository exposes the article's six-channel result through its

@@ -1,9 +1,8 @@
 # Upper-bound formalization
 
-The proposed mixture endpoint states `K_G^ℂ ≤ 1000000000000000/711962052581159 < 1.404569241261`.
-It uses eighteen rounding channels, the shared GT table comparison and
-separate circle estimates. The check status, exact budgets and local
-reproduction commands are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
+The eighteen-channel endpoint states `K_G^ℂ ≤ 1000000000000000/711962052581159 < 1.404569241261`.
+It uses the shared GT table comparison and a separate circle estimate for each channel.
+The exact budgets and the commands to check the proof are in [the mixture certificate guide](UPPER_CERTIFICATE.md).
 
 The article and its standalone proof give the six-channel result `K_G^ℂ ≤ 1.40457588`. The repository exports the same result for its standard constant. [Six-channel entrypoint](../Grothe/UpperSixResult.lean) · [Article package](../haagerup-article/anc/README.md).
 
