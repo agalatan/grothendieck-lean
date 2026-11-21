@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.4018 (`main_bounds`, PR #525) comes from this witness. It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.40191 (`main_bounds`; PR #525 stated 1.4018, the certificate's design target) comes from this witness. It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 

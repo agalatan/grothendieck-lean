@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.4018 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
 
@@ -1160,11 +1160,11 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   formal verification.
 
 **Lower bound.** `lower_target : LowerTarget` (`Grothe/MainResult.lean`) is
-`lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `7009/5000 = 1.4018`.
+`lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `140191/100000 = 1.40191`.
 `lowerTarget_of_tailNodeCaps` (`Grothe/LowerTarget.lean`) applies `lower_bound_of_tailNodeCaps`
 (`Grothe/LowerAnalytic/LowerBound.lean`): for every Grothendieck bound `K`, `1/((1 − ν)·envB + ν) ≤ K` with
 `ν = 47/2000` and `envB = 7064131/10⁷`, given the node caps `TailNodeCaps (nuHat (47/2000))`; the reciprocal is
-`1.40191… > 1.4018`. **The node caps are the only hypothesis of `lower_bound_of_tailNodeCaps`**: the bounds
+`1.4019103… > 1.40191`. **The node caps are the only hypothesis of `lower_bound_of_tailNodeCaps`**: the bounds
 Ψ_r(s_i) − 10⁻¹¹ ≤ c_i of the potentials of the 14 rows with the tail ν̂ at the nodes of their tables.
 `tailNodeCaps_cert` (`Grothe/LowerAnalytic/CapNodes.lean`) proves them ([CAPS.md](CAPS.md)), so `lower_target` has
 no hypothesis. The chain: `transfer_lower` gives `1/B ≤ K` from `TransferInputsL2 B`;
