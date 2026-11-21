@@ -6,10 +6,25 @@ bound by family and module pattern, and the evidence recorded for upper-bound fa
 required declarations in `data/axioms/required.txt`; CI checks it on every pushed branch, and on the merged tree before
 a pull request lands.
 
-The proof-check workflow also audits `scratch/UpperSixAxioms.lean` against the required six-channel
-allowlist. It covers the two cell witnesses, both overlap-table checks, the weighted head, and each
-channel’s disk and circle checks. The rational tail comparisons reduce in the kernel.
-[Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
+The proof-check workflow also audits two focused upper-only reports against their own scoped native
+allowlists (neither falls back to `data/axioms/native.txt`):
+
+* **Eighteen-channel mixture (`--upper-mixture`)**: `scratch/UpperMixtureAxioms.lean` audited against
+  `data/axioms/modes/upper-mixture.native.txt`. It covers the eight cell-head residue groups
+  (`HeadWitnessFacts.group00_checked`–`group07_checked`), the aggregate signed head
+  (`HeadWitnessFacts.head_checked`), the root tables (`RootData.roots64_eq`, `roots128_eq`), the
+  GT first-energy floor (`LinearTail.first_energy_checked`), the eighteen adaptive contour checks
+  (`WideFacts.first_gt_region`, `first_gt_circle`, `TailFacts.channel01`–`channel17`), the
+  unweighted GT band-mass and support checks (`GTComparison.mass_checked`, `table_within`), and the
+  shared GT energy-table, phase-cover, phase-moment, port, and ellipse facts (`GTClosed.table_error`).
+  It explicitly excludes lower-bound, six-channel `Haagerup.*`, and retired single-channel head/Hardy/comparison
+  native facts. [Eighteen-channel allowlist](../data/axioms/modes/upper-mixture.native.txt) ·
+  [Certificate notes](UPPER_CERTIFICATE.md).
+* **Standalone six-channel (`--upper-six`)**: `scratch/UpperSixAxioms.lean` audited against
+  `data/axioms/modes/upper-six.native.txt`. It covers the two cell witnesses, both overlap-table checks,
+  the weighted head, and each channel's disk and circle checks. The rational tail comparisons reduce in
+  the kernel. [Run the upper-only audit](../README.md#building) ·
+  [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
 
 Archived upper variants have separate preserved inventories under
 `miscellaneous/other-bounds/snapshot/data/axioms/`; they are not active permissions.

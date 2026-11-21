@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("upper-six",)
+MODES = ("upper-six", "upper-mixture")
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -130,18 +130,40 @@ class CheckAxiomsTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn(f"DISALLOWED AXIOM in Grothe.UpperSix.bound: {fact}", stdout)
 
-    def test_upper_six_requires_its_native_policy_file(self):
-        theorem = "Grothe.UpperSix.bound"
-        report = f"'{theorem}' does not depend on any axioms\n"
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            (root / "modes").mkdir()
-            (root / "modes/upper-six.required.txt").write_text(theorem + "\n", encoding="utf-8")
-            (root / "native.txt").write_text("Test.globalNative\n", encoding="utf-8")
-            with patch.object(CHECKER, "AXDIR", root):
-                code, _, stderr = self.run_main(["--upper-six"], report)
-        self.assertEqual(code, 1)
-        self.assertIn("upper-six.native.txt", stderr)
+    def test_upper_mixture_rejects_foreign_and_retired_native_facts(self):
+        disallowed = (
+            "Grothe.Lower.certEnvelope._native.native_decide.ax_1_1",
+            "Haagerup.head_sum_ok._native.native_decide.ax_1_1",
+            "Grothe.head_check._native.native_decide.ax_1_1",
+            "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
+            "Grothe.Upper.improved_high_mass_native._native.native_decide.ax_1_1",
+            "Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1",
+            "Grothe.UpperChaos.hardy_region_check._native.native_decide.ax_1_1",
+            "Grothe.UpperChaos.taylor_centers_decode_check._native.native_decide.ax_1_1",
+        )
+        for fact in disallowed:
+            with self.subTest(fact=fact):
+                record = f"'Grothe.UpperReplacement.bound' depends on axioms: [{fact}]\n"
+                self.assertEqual(self.run_main([], self.report() + record)[0], 0)
+                code, stdout, _ = self.run_main(["--upper-mixture"],
+                                                self.report("upper-mixture") + record)
+                self.assertEqual(code, 1)
+                self.assertIn(f"DISALLOWED AXIOM in Grothe.UpperReplacement.bound: {fact}", stdout)
+
+    def test_every_topic_mode_requires_its_native_policy_file(self):
+        for mode in MODES:
+            with self.subTest(mode=mode):
+                theorem = sorted(CHECKER.audit_policy(mode)[0])[0]
+                report = f"'{theorem}' does not depend on any axioms\n"
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = Path(tmp)
+                    (root / "modes").mkdir()
+                    (root / f"modes/{mode}.required.txt").write_text(theorem + "\n", encoding="utf-8")
+                    (root / "native.txt").write_text("Test.globalNative\n", encoding="utf-8")
+                    with patch.object(CHECKER, "AXDIR", root):
+                        code, _, stderr = self.run_main([f"--{mode}"], report)
+                self.assertEqual(code, 1)
+                self.assertIn(f"{mode}.native.txt", stderr)
 
     def test_all_distinct_mode_pairs_are_rejected_in_both_orders(self):
         for first, second in itertools.permutations(MODES, 2):

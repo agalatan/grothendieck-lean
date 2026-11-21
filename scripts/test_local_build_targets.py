@@ -83,6 +83,30 @@ class Repository(unittest.TestCase):
         self.assertFalse([m for m in targets if '.CapPieces.' in m or m.startswith('Grothe.UpperChaos.')])
         self.assertLess(len(targets), 1000)
 
+    def test_endpoint_import_graphs_are_separated(self):
+        root = Path(__file__).resolve().parent.parent
+        def closure(start: str) -> set[str]:
+            seen: set[str] = set()
+            stack = [start]
+            while stack:
+                mod = stack.pop()
+                if mod in seen:
+                    continue
+                seen.add(mod)
+                path = root.joinpath(*mod.split('.')).with_suffix('.lean')
+                if path.is_file():
+                    stack.extend(lbt.imports_of(path))
+            return seen
+        upper_mix = closure('Grothe.UpperResult')
+        lower = closure('Grothe.LowerResult')
+        upper_six = closure('Grothe.UpperSixResult')
+        self.assertNotIn('Grothe.LowerAnalytic.CapNodes', upper_mix)
+        self.assertNotIn('Grothe.UpperSix.Haagerup', upper_mix)
+        self.assertNotIn('Grothe.UpperReplacement.MixtureCertificate', lower)
+        self.assertNotIn('Grothe.UpperSix.Haagerup', lower)
+        self.assertNotIn('Grothe.LowerAnalytic.CapNodes', upper_six)
+        self.assertNotIn('Grothe.UpperReplacement.MixtureCertificate', upper_six)
+
 
 if __name__ == '__main__':
     unittest.main()

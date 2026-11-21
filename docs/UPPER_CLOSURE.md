@@ -1,6 +1,6 @@
 # Closing the upper half: the six Gaussian hypotheses of the three-band comparison
 
-The six-channel endpoint is stated separately in the [upper result](../Grothe/UpperResult.lean). This file describes the single-channel construction.
+The active eighteen-channel mixture endpoint is in the [upper result](../Grothe/UpperResult.lean) ([certificate notes](UPPER_CERTIFICATE.md)), and the standalone six-channel endpoint is in [`UpperSixResult.lean`](../Grothe/UpperSixResult.lean). This file describes the single-channel construction.
 
 **Single-channel result (15 November 2026).** This construction gives
 `K_G^ℂ < 1.404599395362`, proved by `Grothe.Statement.upper_below_tight` in

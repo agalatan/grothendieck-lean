@@ -2,17 +2,19 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, in `Grothe/LowerResult.lean`, without hypotheses) and the eighteen-channel mixture upper proof (`Grothe/UpperResult.lean`) to give `1.40191 < K_G^ℂ ≤ 10^15 / 711962052581159` (`< 1.404569241261`). `Grothe.UpperResult` exports `Grothe.UpperReplacement.bound`, `isBound`, `constant_le`, `upper_below`, `constant_lt`, and `constant_lt_inv_gammaDagger`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Eighteen-channel certificate](UPPER_CERTIFICATE.md) · [Combined statement](../Grothe/MainResult.lean).
 
-The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
+The eighteen-channel mixture (`Grothe/UpperReplacement/`) mixes ten smoothed GT channels, seven phase channels, and one symmetrized two-response cell channel. Its signed head through index 250 is summed before taking absolute values (`HeadCompute`, `FastGroup`, `FastGroupSound`, `HeadWitnessSound`, `MixtureHead`); its eighteen infinite tails are bounded via adaptive circle covers (`CircleWide`, `CircleWideSound`, `WideFacts`, `TailFacts`, `TailSound`); and its GT comparison reuses the certified energy table and twisted quadrature bounds directly (`GTMass`, `TableSupport`, `GTComparison`, `GTClosed`).
+
+The standalone six-channel proof (`Grothe.UpperSix.bound`, `constant_le`, and `constant_lt_inv_gammaDagger`, giving `K_G^ℂ ≤ 1.40457588 < 1/γ†`) is preserved in [`Grothe/UpperSixResult.lean`](../Grothe/UpperSixResult.lean). The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
 
 The earlier `upper_below_tight` proof (`Grothe/UpperTightFinal.lean`, `K_G^ℂ < 1.404599395362`) uses one Gaussian rounding and imports the shared Gaussian phase identity and Laplace modules under `Grothe/Haagerup/`. Its budgets, quadrature, and auxiliary refinements are documented below.
 
 **Reading this inventory.** Most paragraphs describe one module or one result.
 Where a paragraph says that a result takes an estimate as a hypothesis, or that
 it gives no numerical bound, this describes that result; it is not an open
-input of the main theorems, which have no hypotheses. The generated root imports both the six-channel proof used by
-`Grothe/MainResult.lean` and the independent single-channel proof. A module called
+input of the main theorems, which have no hypotheses. The generated root imports the eighteen-channel mixture proof used by
+`Grothe/MainResult.lean`, the standalone six-channel proof (`Grothe/UpperSixResult.lean`), and the independent single-channel proof (`Grothe/UpperTightFinal.lean`). A module called
 *archived* below is kept outside the libraries, in `abandonware/`
 (`abandonware/README.md`) unless the text names `miscellaneous/`; it is not
 built or checked. The value `1.404598149141` is the
