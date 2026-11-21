@@ -1041,13 +1041,17 @@ normalised by $\E|q|^2=1$, and $U=|q|^2$.
   \E X^2+\tfrac1{10}\E r^2\le\tfrac{34}{45}P-\tfrac1{18}Q .
  \]
  Each budget is certified by two positive semidefinite $2\times2$ Gram matrices of contractions of the coefficient tensor.
-\item \textbf{First moment [P,C].} $\E|q|\le0.93$, by exact dual certificates, one for each range of $\E U^2$: pointwise
- majorants of $|q|$ built from the two radial forms of the antiholomorphic Stein identity, second moments of the
- contraction fields and the moment inequalities above. An independent exact verifier accepts every row
- (\path{research/conjecture-K/}, ledger row~3.7); none of this is in Lean. With Lean theorems as the only inputs the
- same method gives $0.9387$, and the Lean proof of the lower bound uses the constant $0.973612157$. A different
- argument, a two-plane small-ball estimate (a winding argument on $S^3$ and a horizontal Lipschitz bound), gives
- $0.97073$. The sharp value $\sqrt\pi/2=0.8862$, which the Gaussian attains, is open.
+\item \textbf{First moment [Lean].} $\E|q|<93/100=0.93$, by exact dual certificates covering $\E U^2-2\in[0,42]$
+ in 23~rows: pointwise majorants of $|q|$ built from the two radial forms of the antiholomorphic Stein identity
+ (\path{AntiStein.lean}), second moments of the contraction fields and the moment inequalities above. A pure-integer
+ Bernstein row checker (\path{RadiusRowCheck.lean}), its analytic soundness theorem (\path{RadiusCheck.lean}), and
+ all 23~rows (\path{RadiusRows/Row00}--\path{Row22}, checked by \lean{decide +kernel} with no \lean{native\_decide}
+ axioms) assemble into \lean{first\_moment\_lt\_93} (\path{SharpRadius.lean}), discharging the first-moment field of
+ \lean{gaussian\_moments} and giving \lean{normQk\_le\_93} on~$H_{2,1}$ (\path{WitnessCap.lean}); the lower-bound
+ envelope still uses the weaker constant $0.973612157$. Outside Lean, third- and higher-order antiholomorphic Stein
+ certificates reach $0.9156$ [P,C] and $0.9145$ [P,C, author only] (\path{research/conjecture-K/}, ledger row~3.7),
+ and a two-plane small-ball estimate gives $0.97073$. The sharp value $\sqrt\pi/2=0.8862$, which the Gaussian
+ attains, is open.
 \end{itemize}
 
 \paragraph{A common budget for the same tensor.}
