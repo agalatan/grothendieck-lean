@@ -2,6 +2,30 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
+**Verified adaptive envelope construction (prototype, codex-6a2f; #462).**
+`Lower/AdaptiveSearch` constructs a binary subdivision tree from a local Boolean
+test. Its invariant proves acceptance and the depth bound for every returned
+tree. Completeness with respect to every accepted tree implies that a failed
+depth excludes every certificate of at most that height in the same subdivision
+grammar. `Lower/EnvelopeSearch` instantiates this with rational quadratics
+`t² - 2ℓt + C` and midpoint subdivision. A leaf chooses any row whose two
+endpoints meet the bound. An explicit common Lipschitz constant proves successful
+termination under a uniform positive envelope margin; `construct` uses
+`Nat.find` to choose the first successful depth. The margin and its proof are
+erased from executable code, and the output's semantic proof does not evaluate
+the partition. Equality without a positive margin has no termination guarantee.
+
+`Lower/EnvelopeSearchExample` uses the existing `row01`, `row02`, `row03` data
+on `[2/5, 3/5]`. Kernel computations show failure at depth 6 and success at
+depth 7 for `69702/100000`, and success at depth 8 for the stronger `697/1000`.
+The failure theorem makes height 7 optimal for this local test and dyadic grammar,
+not for arbitrary partitions. The stronger bound supplies a construction for
+every rational target strictly above `697/1000`, with neither depth nor cuts
+specified by the caller. The scalar consumer keeps the existing retained-square
+`RowHolds` assumptions. This exterior-interval prototype is not used by the
+headline endpoint and does not improve it. It adds no native facts or trust
+assumptions; the existing cap and quadrature checkers are unchanged.
+
 `Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).

@@ -9,6 +9,7 @@ import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.HeadHardy
 import Grothe.ListPoly
+import Grothe.Lower.AdaptiveSearch
 import Grothe.Lower.Basic
 import Grothe.Lower.Cert.Envelope
 import Grothe.Lower.Cert.MassRow
@@ -30,6 +31,8 @@ import Grothe.Lower.Cert.Rows
 import Grothe.Lower.Cuts
 import Grothe.Lower.Envelope
 import Grothe.Lower.EnvelopeData
+import Grothe.Lower.EnvelopeSearch
+import Grothe.Lower.EnvelopeSearchExample
 import Grothe.Lower.Gate
 import Grothe.Lower.Gram
 import Grothe.Lower.Law

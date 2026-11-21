@@ -792,6 +792,24 @@ $\Lambda(q+O)\leq S-(7/50)\delta-(1988/47275)\|O\|^2$ on the small-$\chi$
 class, at every odd amplitude and sharing. These are separate subclasses;
 odd sectors over A/B cores remain open. Neither result is a premise of the Lean endpoint.
 
+\paragraph{A verified adaptive construction.}
+The separate prototype in \lean{Lower/EnvelopeSearch} constructs a dyadic
+partition for a finite bank of rational quadratic row envelopes
+$f_r(t)=t^2-2\ell_rt+C_r$. It tries a single row at the two endpoints of a cell
+and otherwise bisects. The invariant of \lean{Lower/AdaptiveSearch} proves
+acceptance and coverage for every successful run. Completeness in the fixed
+subdivision grammar also turns failure at depth $d$ into a proof that no
+accepted tree of height at most $d$ exists.
+If every point has a row below $B-\delta$, with $\delta>0$, a common Lipschitz
+constant $L$ guarantees success whenever $L(b-a)\leq\delta 2^d$.
+An executable constructor therefore searches for its own depth, justified by
+the margin theorem, without evaluating the resulting partition in its proof.
+Using the production rows 1--3 on $[2/5,3/5]$, kernel computations establish
+minimum height 7 at $B=69702/100000$ and a stronger cap $697/1000$ at depth 8.
+The latter supplies constructions for every larger rational target.
+This prototype retains the row inequalities as hypotheses and is not a premise
+of the headline lower bound. No native computation is added.
+
 \section{What exactly the computer checks}\label{sec:trust}
 The six-channel endpoint uses exact Boolean checks on the two bounded cell maps,
 their overlap data, the signed head, and the Hardy contours. Their soundness is
