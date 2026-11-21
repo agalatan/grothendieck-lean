@@ -81,7 +81,11 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Chaos3.wick4
 #print axioms Grothe.LowerAnalytic.Chaos3.wick6
 #print axioms Grothe.LowerAnalytic.Circular.chaos3_right
+#print axioms Grothe.LowerAnalytic.Circular.fourth_moment_antistein
 #print axioms Grothe.LowerAnalytic.Circular.fourth_moment_le_variance
+#print axioms Grothe.LowerAnalytic.Circular.gE_radC1_sub_two_sq
+#print axioms Grothe.LowerAnalytic.Circular.gE_radC2_sub_one_sq
+#print axioms Grothe.LowerAnalytic.Circular.gE_radD_sub_one_sq
 #print axioms Grothe.LowerAnalytic.Circular.gaussian_fourth_moment_le_44
 #print axioms Grothe.LowerAnalytic.Circular.gaussian_sixth
 #print axioms Grothe.LowerAnalytic.Circular.gaussian_x_le_sqrt42
@@ -101,6 +105,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.VOf_frame_with_penalty
 #print axioms Grothe.LowerAnalytic.VhatOf_frame
 #print axioms Grothe.LowerAnalytic.anchored_pair_nu
+#print axioms Grothe.LowerAnalytic.antiStein_I
+#print axioms Grothe.LowerAnalytic.antiStein_II
 #print axioms Grothe.LowerAnalytic.bounds_matINu
 #print axioms Grothe.LowerAnalytic.budget_c
 #print axioms Grothe.LowerAnalytic.budget_w
@@ -135,6 +141,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fibreGram_eq
 #print axioms Grothe.LowerAnalytic.fibre_integrated
 #print axioms Grothe.LowerAnalytic.filtered_pieceAt_eq
+#print axioms Grothe.LowerAnalytic.first_moment_le_93
+#print axioms Grothe.LowerAnalytic.first_moment_lt_93
 #print axioms Grothe.LowerAnalytic.first_moment_lt_rho
 #print axioms Grothe.LowerAnalytic.fluctuation_bound
 #print axioms Grothe.LowerAnalytic.fn_eq_sum
@@ -155,6 +163,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.integral_conj_zc_mul_wc
 #print axioms Grothe.LowerAnalytic.integral_gaussC_polar
 #print axioms Grothe.LowerAnalytic.integral_norm_gauss2
+#print axioms Grothe.LowerAnalytic.integral_norm_le_93_mul_norm_of_mem_H21
+#print axioms Grothe.LowerAnalytic.integral_norm_le_93_of_mem_H21
 #print axioms Grothe.LowerAnalytic.integral_norm_le_rho_of_mem_H21
 #print axioms Grothe.LowerAnalytic.integral_norm_linL
 #print axioms Grothe.LowerAnalytic.integral_rad_ge
@@ -169,10 +179,12 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.nodeCapNu_of_rangeOK
 #print axioms Grothe.LowerAnalytic.nodeCapNu_of_ranges
 #print axioms Grothe.LowerAnalytic.nodeCaps_of_vertexCapsNu
+#print axioms Grothe.LowerAnalytic.normQk_le_93
 #print axioms Grothe.LowerAnalytic.normQk_le_rho
 #print axioms Grothe.LowerAnalytic.norm_pairVal_witness
 #print axioms Grothe.LowerAnalytic.norm_sq_starProjection_H21_le
 #print axioms Grothe.LowerAnalytic.norm_starProjection_H10_le
+#print axioms Grothe.LowerAnalytic.norm_starProjection_H21_le_93
 #print axioms Grothe.LowerAnalytic.pieceAtCoord_of_pieceAt
 #print axioms Grothe.LowerAnalytic.pieceCoverOK_of_fast
 #print axioms Grothe.LowerAnalytic.pot_le_of_nodeOKNu
@@ -183,7 +195,11 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
 #print axioms Grothe.LowerAnalytic.qf_nonneg_of_ldlOK
 #print axioms Grothe.LowerAnalytic.quartic_identity
+#print axioms Grothe.LowerAnalytic.radAB_sq_le_radC1_mul_radC2
 #print axioms Grothe.LowerAnalytic.radial_cut
+#print axioms Grothe.LowerAnalytic.radiusRow_sound
+#print axioms Grothe.LowerAnalytic.radiusRows_chain
+#print axioms Grothe.LowerAnalytic.radiusRows_ok
 #print axioms Grothe.LowerAnalytic.reductionHyp_of_nodeCaps
 #print axioms Grothe.LowerAnalytic.rotD_reW
 #print axioms Grothe.LowerAnalytic.rowSharedWith_frame
