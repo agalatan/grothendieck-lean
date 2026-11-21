@@ -11,7 +11,7 @@ theorem Haagerup.constant_lt_inv_gammaDagger :
     Haagerup.Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger
 ```
 
-that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`anc/README.md`](anc/README.md).
+that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. The manuscript cites the version of `Grothe.Statement.main_bounds` that combined this six-channel proof with the strict lower bound of `1.40191`. [Theorem at the article revision](https://github.com/agalatan/grothendieck-lean/blob/97622ad449746e13c76b1b795e8be1b724fcfb61/Grothe/MainResult.lean) · [Standalone proof](anc/README.md)
 
 ## The article: `main.tex`, `main.pdf`
 
@@ -33,8 +33,9 @@ that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`an
 - **Its own Lake package.** It has its own `lakefile.toml`, `lean-toolchain` and `lake-manifest.json`, with the same
   Lean and Mathlib as the root, so it builds from a plain copy of the folder (`lake exe cache get && lake build`, about
   30 minutes on 4 cores). The root `lakefile.toml` does not mention it (AGENTS.md rule 7).
-- **Own CI job.** `.github/workflows/haagerup-article.yml` runs when a file under `haagerup-article/` or
-  `Grothe/UpperSix/` changes, when the Lean or Mathlib version changes, or by hand. It fails unless:
+- **Own CI job.** `.github/workflows/haagerup-article.yml` runs on changes to `haagerup-article/anc/`,
+  `Grothe/UpperSix/`, `lean-toolchain`, `lake-manifest.json`, or the workflow itself. It also runs on manual dispatch.
+  The check verifies that
   - `anc/Grothe/UpperSix/` equals `Grothe/UpperSix/`, and the toolchain and Mathlib pins equal the root's;
   - there is no `sorry`, `axiom` or unchecked code;
   - the package builds with warnings as errors;
