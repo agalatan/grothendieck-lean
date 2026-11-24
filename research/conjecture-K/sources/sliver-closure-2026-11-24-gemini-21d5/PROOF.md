@@ -20,14 +20,19 @@ By evaluating the exact Gaussian scale-mixture representation of the two-step Or
 
 *For every $n \ge 1$ and every remote cubic $q \in H_{2,1}(\mathbb{C}^n)$ with $0 < u \le \frac{463}{10000}$, the expansion*
 $$2\,\mathbb{E}|L + q| = B(u) + \frac{\delta}{4}\,B''(u) + \frac{\kappa_6^{\mathbb{C}}}{36}\,B'''(u) + R(q)$$
-*satisfies the slabwise monotone upper bounds $|R(q)| \le R_{\mathrm{cap}}(u)\,\delta^{3/2}$ of Table 1 (in particular $R_{\mathrm{cap}}(u) \le 109$ on $[\frac{28}{625}, \frac{463}{10000}]$, compared with $2700\sqrt{0.0463} \approx 581.2$ in `KCR`), while $-B''(u)/4 \ge 0.54054119$ and $B'''(u) \le 17.541631$ at the top of the band (compared with $0.42$ and $47$ in `KCR`). Consequently, uniformly in dimension:*
+*satisfies the slabwise monotone upper bounds of Table 1:*
+- *for **all shapes** $\chi \in [0, 42]$ ($\|F\|_4 \le \beta_{\mathrm{all}} = \frac{2851}{1000}$, since $(\frac{2851}{1000})^4 - 66 = \frac{67651496401}{10^{12}} > 0$), $|R(q)| \le R_{\mathrm{cap}}^{\mathrm{all}}(u)\,\delta^{3/2}$ with **$R_{\mathrm{cap}}^{\mathrm{all}}(u) \le 256$ across all of $(0, \frac{463}{10000}]$**, **$R_{\mathrm{cap}}^{\mathrm{all}}(u) \le 93$ on $(0, \frac{1}{1600}]$**, and **$R_{\mathrm{cap}}^{\mathrm{all}}(u) \le \frac{349}{2} = 174.5$ on $[\frac{28}{625}, \frac{463}{10000}]$** (compared with $5700\sqrt{0.0463} \approx 1226.5$ in `KCR`);*
+- *under the fourth-moment shape restriction $\|F\|_4 \le \beta$ ($\chi \le \chi_\beta := \frac{2}{3}(\beta^4 - 3)$), $|R(q)| \le R_{\mathrm{cap}}^{\beta}(u)\,\delta^{3/2}$ with **$R_{\mathrm{cap}}^{\beta}(u) \le \frac{299}{2} = 149.5$ across $(0, \frac{463}{10000}]$** and **$R_{\mathrm{cap}}^{\beta}(u) \le 109$ on $[\frac{28}{625}, \frac{463}{10000}]$** for all **$\chi \le \frac{9364}{390625} = 0.02397184$** ($\beta = \frac{33}{25}$; compared with $2700\sqrt{0.0463} \approx 581.2$ on $\chi \le \frac{1}{100}$ in `KCR`), and $R_{\mathrm{cap}}^{\beta}(u) \le \frac{271}{2} = 135.5$ on $(0, \frac{3}{250}]$ for all **$\chi \le \frac{17147}{80000} = 0.21433750$** ($\beta = \frac{27}{20}$);*
+- *while $-B''(u)/4 \ge 0.54054119$ and $B'''(u) \le 17.541631$ at the top of the band (compared with $0.42$ and $47$ in `KCR`).*
+
+*Consequently, uniformly in dimension:*
 
 1. **Signed $\frac{7}{50}\delta$ and $\frac{1}{8}\delta$ regimes ($48\times$ and $45\times$ wider in $\chi$):**
    - *Whenever $0 < u \le \frac{463}{10000}$ and $0 \le \chi \le \frac{1}{250} = 0.004$, $D(q) \ge \frac{7}{50}\,\delta$.*
    - *Whenever $0 < u \le \frac{463}{10000}$ and $0 \le \chi \le \frac{9}{2000} = 0.0045$, $D(q) \ge \frac{1}{8}\,\delta$.*
 2. **All-shape small-energy regimes ($2.5\times$ and $3\times$ wider in $u$):**
-   - *Whenever $0 \le u \le \frac{1}{1600} = 0.000625$, every shape ($0 \le \chi \le 42$ when $u > 0$) satisfies $D(q) \ge \frac{9}{50}\,\delta$ (certified $\ge 0.19640955\,\delta$) and exact $\|c_A(q)\|^2 \le \frac{6}{25}\,D(q)$ (strict when $q \ne 0$).*
-   - *Whenever $0 < u \le \frac{3}{4000} = 0.00075$, every nonzero remote cubic ($0 < \chi \le 42$) satisfies $D(q) \ge 0.04533944\,\delta > 0$.*
+   - *Whenever $0 \le u \le \frac{1}{1600} = 0.000625$, every shape ($0 \le \chi \le 42$ when $u > 0$) satisfies $D(q) \ge \frac{9}{50}\,\delta$ (certified $\ge 0.24922205\,\delta$) and exact $\|c_A(q)\|^2 \le \frac{6}{25}\,D(q)$ (strict when $q \ne 0$).*
+   - *Whenever $0 < u \le \frac{3}{4000} = 0.00075$, every nonzero remote cubic ($0 < \chi \le 42$) satisfies $D(q) \ge 0.10627694\,\delta > 0$.*
 3. **Retained A-shell and shell-free odd-sector corollaries:**
    - *On $\frac{3}{100} \le u \le \frac{463}{10000}$, $\|c_{3/5}(q)\|_2^2 \le \frac{3}{10}\,D(q)$ and $\hat\Lambda(q + (T - 1)r) \le S - \frac{\delta}{250}$ hold for every remote linear form $r$ (all amplitudes and sharing) up to $\chi \le \frac{9}{2000}$ (and $\hat\Lambda(q + (T - 1)r) \le S - \frac{19}{1000}\delta$ up to $\chi \le \frac{1}{250}$).*
    - *With no A/B shells, $\Lambda(q + O) \le S - \frac{\delta}{8} - \frac{1988}{47275}\|O\|_2^2$ holds on $0 < u \le \frac{463}{10000}$ for $\chi \le \frac{9}{2000}$, for all genuine odd sectors $O$ with arbitrary sharing.*
@@ -148,23 +153,23 @@ Finally, since $\kappa_6^{\mathbb{C}} \le C_6\,\delta^{3/2}$ with $C_6 = \frac{4
 $$D(q) \ge \left[-\frac{B''(u_{\mathrm{hi}})}{4} - \left(\frac{C_6}{36}\,B'''(u_{\mathrm{lo}}) + R_{\mathrm{cap}}\right)u_{\mathrm{hi}}\sqrt{\chi}\right]\delta,$$
 and since $\|c_A(q)\|_2^2 \le K_A(u_{\mathrm{lo}})\,\delta^{3/2} = K_A(u_{\mathrm{lo}})\,u\sqrt{\chi}\,\delta \le K_A(u_{\mathrm{lo}})\,u_{\mathrm{hi}}\sqrt{\chi}\,\delta$, exact $\|c_A(q)\|_2^2 \le \frac{6}{25}\,D(q)$ holds whenever
 $$-\frac{B''(u_{\mathrm{hi}})}{4} - \left(\frac{C_6}{36}\,B'''(u_{\mathrm{lo}}) + R_{\mathrm{cap}} + \frac{25}{6}\,K_A(u_{\mathrm{lo}})\right)u_{\mathrm{hi}}\sqrt{\chi} \ge 0$$
-(and $\chi$ lies within the fourth-moment cap $\chi_{\beta} = \frac{2}{3}(\beta_{\mathrm{use}}^4 - 3)$ used to build $P_5$).
+(and $\chi$ lies within the fourth-moment cap $\chi_{\beta} = \frac{2}{3}(\beta_{\mathrm{use}}^4 - 3)$ used to build $P_5$; all three $\chi_{\max}$ columns in Table 1 are clamped to $\chi_\beta$ and generated directly from `verify_sliver_closure_result.json`).
 
-| Slab $[u_{\mathrm{lo}}, u_{\mathrm{hi}}]$ | $-B''(u_{\mathrm{hi}})/4 \ge$ | $B'''(u_{\mathrm{lo}}) \le$ | $R_{\mathrm{cap}}$ | $\chi_{\max}(D > 0)$ | $\chi_{\max}(C_A^2 \le \frac{6}{25}D)$ (unsmoothed $K_A(0)$) | $\chi_{\max}(C_A^2 \le \frac{6}{25}D)$ (smoothed $K_A(u)$) |
-|---|---:|---:|---:|---:|---:|---:|
-| $(0,\, 1/1600]$ (all shapes) | `0.82252951` | `42.824527` | `106` (`44` at $\beta_{\mathrm{low}}$) | `42` (`3/4000` for $D>0$) | `42` ($D \ge \frac{9}{50}\delta$) | `42` |
-| $[1/1600,\, 1/250]$ | `0.79113799` | `41.982559` | `109` | `0.26200500` | `0.26200500` | `0.26200500` |
-| $[1/250,\, 1/125]$ | `0.75702307` | `37.879741` | `136` | `0.26200500` | `0.19506899` | `0.19506899` |
-| $[1/125,\, 1/100]$ | `0.74110642` | `33.855600` | `265/2` | `0.18883868` | `0.12913884` | `0.12913884` |
-| $[1/100,\, 3/250]$ | `0.72588947` | `32.127639` | `271/2` | `0.12426104` | `0.08515857` | `0.09020197` |
-| $[3/250,\, 9/500]$ | `0.68402537` | `30.560346` | `299/2` | `0.02396906` | `0.02396906` | `0.02396906` |
-| $[9/500,\, 3/125]$ | `0.64707721` | `26.640744` | `143` | `0.02396906` | `0.01670190` | `0.01768445` |
-| $[3/125,\, 3/100]$ | `0.61420862` | `23.594069` | `271/2` | `0.01596951` | `0.01072455` | `0.01192301` |
-| $[3/100,\, 7/200]$ | `0.58943884` | `21.164397` | `126` | `0.01264211` | `0.00824514` | `0.00959132` |
-| $[7/200,\, 1/25]$ | `0.56670334` | `19.534560` | `241/2` | `0.00989147` | `0.00632528` | `0.00752840` |
-| $[1/25,\, 43/1000]$ | `0.55392454` | `18.286872` | `227/2` | `0.00923501` | `0.00575994` | `0.00702690` |
-| $[43/1000,\, 28/625]$ | `0.54654081` | `17.760550` | `221/2` | `0.00874482` | `0.00539161` | `0.00660737` |
-| $[28/625,\, 463/10000]$ | `0.54054119` | `17.541631` | `109` | `0.00822736` | `0.00504314` | `0.00626813` |
+| Slab $[u_{\mathrm{lo}}, u_{\mathrm{hi}}]$ | $-B''(u_{\mathrm{hi}})/4 \ge$ | $B'''(u_{\mathrm{lo}}) \le$ | $R_{\mathrm{cap}}^{\mathrm{all}}$ ($\chi \le 42$) | $(\beta,\, \chi_\beta)$ | $R_{\mathrm{cap}}^{\beta}$ ($\chi \le \chi_\beta$) | $\chi_{\max}(D > 0)$ | $\chi_{\max}(C_A^2 \le \frac{6}{25}D)$ ($K_A(0)$) | $\chi_{\max}(C_A^2 \le \frac{6}{25}D)$ ($K_A(u)$) |
+|---|---:|---:|---:|---|---:|---:|---:|---:|
+| $(0,\, 1/1600]$ | `0.82252951` | `42.824527` | `93` | `27/20` (`17147/80000`) | `44` | `0.21433750` (`42` via $R_{\mathrm{cap}}^{\mathrm{all}}$) | `0.21433750` (`42` via $R_{\mathrm{cap}}^{\mathrm{all}}$) | `0.21433750` (`42` via $R_{\mathrm{cap}}^{\mathrm{all}}$) |
+| $[1/1600,\, 1/250]$ | `0.79113799` | `41.982559` | `437/2` | `27/20` (`17147/80000`) | `109` | `0.21433750` | `0.21433750` | `0.21433750` |
+| $[1/250,\, 1/125]$ | `0.75702307` | `37.879741` | `251` | `27/20` (`17147/80000`) | `136` | `0.21433750` | `0.19506899` | `0.19506899` |
+| $[1/125,\, 1/100]$ | `0.74110642` | `33.855600` | `238` | `27/20` (`17147/80000`) | `265/2` | `0.18883868` | `0.12913884` | `0.12913884` |
+| $[1/100,\, 3/250]$ | `0.72588947` | `32.127639` | `238` | `27/20` (`17147/80000`) | `271/2` | `0.12426104` | `0.08515857` | `0.09020197` |
+| $[3/250,\, 9/500]$ | `0.68402537` | `30.560346` | `256` | `33/25` (`9364/390625`) | `299/2` | `0.02397184` | `0.02397184` | `0.02397184` |
+| $[9/500,\, 3/125]$ | `0.64707721` | `26.640744` | `477/2` | `33/25` (`9364/390625`) | `143` | `0.02397184` | `0.01670190` | `0.01768445` |
+| $[3/125,\, 3/100]$ | `0.61420862` | `23.594069` | `222` | `33/25` (`9364/390625`) | `271/2` | `0.01596951` | `0.01072455` | `0.01192301` |
+| $[3/100,\, 7/200]$ | `0.58943884` | `21.164397` | `409/2` | `33/25` (`9364/390625`) | `126` | `0.01264211` | `0.00824514` | `0.00959132` |
+| $[7/200,\, 1/25]$ | `0.56670334` | `19.534560` | `387/2` | `33/25` (`9364/390625`) | `241/2` | `0.00989147` | `0.00632528` | `0.00752840` |
+| $[1/25,\, 43/1000]$ | `0.55392454` | `18.286872` | `182` | `33/25` (`9364/390625`) | `227/2` | `0.00923501` | `0.00575994` | `0.00702690` |
+| $[43/1000,\, 28/625]$ | `0.54654081` | `17.760550` | `353/2` | `33/25` (`9364/390625`) | `221/2` | `0.00874482` | `0.00539161` | `0.00660737` |
+| $[28/625,\, 463/10000]$ | `0.54054119` | `17.541631` | `349/2` | `33/25` (`9364/390625`) | `109` | `0.00822736` | `0.00504314` | `0.00626813` |
 
 On $(0, \frac{3}{250}]$, the minimum certified $\chi_{\max}(D > 0)$ is $> 0.1242 > \frac{1}{9} > \frac{1}{64}$ and the minimum certified $\chi_{\max}(C_A^2 \le \frac{6}{25}D)$ is $> 0.0851 > \frac{2}{25} > \frac{49}{625} > \frac{1}{64}$. On $[\frac{3}{250}, \frac{463}{10000}]$, the minimum certified $\chi_{\max}(D > 0)$ is $> 0.00822 > \frac{1}{125} = 0.0080 > \frac{49}{10000} = 0.0049$, and the minimum certified $\chi_{\max}(C_A^2 \le \frac{6}{25}D)$ is $> 0.00504 > \frac{1}{200} = 0.0050 > \frac{49}{10000}$ even with unsmoothed $K_A(0)$ alone ($> 0.00626 > \frac{3}{500} = 0.0060$ with smoothed $K_A(u)$). Every sliver in `3.29`, `6.3.18`, and `6.3.43` is therefore closed with strict overlap.
 
@@ -179,4 +184,4 @@ python3 -I research/conjecture-K/code/sliver-closure-gemini-21d5/verify_sliver_c
 python3 -I -O research/conjecture-K/code/sliver-closure-gemini-21d5/verify_sliver_closure.py --quiet
 ```
 
-The verifier completes in ~2.2 seconds, performs a startup AST self-audit rejecting any floating-point literal or call, derives all visible moments and Markov–Krein polynomials from first principles, checks all 15 whole-interval degree-10 Bernstein contraction certificates, and executes 6 adversarial negative controls (rejecting an over-tight $\frac{21}{5}\sqrt{s}$ Hermite bound, a perturbed Hermite $P_5$, a corrupted inverse-moment series, an over-tight $R_{\mathrm{cap}} = 50$ on the top slab, an over-wide $\chi = \frac{1}{20}$ at $u = \frac{463}{10000}$, and a gapped slab partition).
+The verifier completes in ~5.4 seconds, performs a startup AST self-audit rejecting any floating-point literal or call, derives all visible moments and Markov–Krein polynomials from first principles, checks all 27 whole-interval degree-10 Bernstein contraction certificates (13 all-shapes slabs at $\beta_{\mathrm{all}} = \frac{2851}{1000}$, 13 near-Gaussian slabs at $\beta \in \{\frac{27}{20}, \frac{33}{25}\}$, and the $[1/1600, 3/4000]$ all-shapes positivity slab), and executes 7 adversarial negative controls (rejecting an over-tight $\frac{21}{5}\sqrt{s}$ Hermite bound, a perturbed Hermite $P_5$, a corrupted inverse-moment series, an over-tight $R_{\mathrm{cap}} = 50$ on the top slab, an over-wide $\chi = \frac{1}{20}$ at $u = \frac{463}{10000}$, a gapped slab partition, and applying the near-Gaussian top-slab cap $109$ at all-shapes $\beta_{\mathrm{all}} = \frac{2851}{1000}$).

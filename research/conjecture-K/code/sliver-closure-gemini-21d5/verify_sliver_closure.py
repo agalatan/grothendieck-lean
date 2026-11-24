@@ -932,12 +932,12 @@ def verify_all(quiet=False, write_result=False):
     require(verify_slab_partition(slabs[5:], Q(3, 250), U_TOP), "Main-band slab partition invalid")
 
     # Fourth-moment caps beta_ub >= (3 + (3/2)*chi_max)^{1/4}:
-    BETA_ALL = Q(3)          # 3^4 = 81 > 66 = 3 + (3/2)*42 (all shapes chi <= 42)
-    BETA_LOW = Q(27, 20)     # (27/20)^4 = 531441/160000 = 3.3215 > 3 + (3/2)*(1/5) = 3.30 (chi <= 1/5)
-    BETA_01  = Q(33, 25)     # (33/25)^4 = 3.03595 > 3 + (3/2)*(1/100) = 3.015 (chi <= 1/100)
-    require(BETA_ALL ** 4 > 3 + Q(3, 2) * 42, "BETA_ALL fourth-moment check")
-    require(BETA_LOW ** 4 > 3 + Q(3, 2) * Q(1, 5), "BETA_LOW fourth-moment check")
-    require(BETA_01 ** 4 > 3 + Q(3, 2) * Q(1, 100), "BETA_01 fourth-moment check")
+    BETA_ALL = Q(2851, 1000) # (2851/1000)^4 - 66 = 67651496401/10^12 > 0 (all shapes chi <= 42)
+    BETA_LOW = Q(27, 20)     # (27/20)^4 = 531441/160000 => chi <= 17147/80000 = 0.21433750
+    BETA_01  = Q(33, 25)     # (33/25)^4 = 1185921/390625 => chi <= 9364/390625 = 0.02397184
+    require(BETA_ALL ** 4 - 66 == Q(67651496401, 10 ** 12) > 0, "BETA_ALL fourth-moment check")
+    require(Q(2, 3) * (BETA_LOW ** 4 - 3) == Q(17147, 80000), "BETA_LOW exact chi cap check")
+    require(Q(2, 3) * (BETA_01 ** 4 - 3) == Q(9364, 390625), "BETA_01 exact chi cap check")
 
     # Universal unsmoothed peak raw A-content constant K_A(0) < 5353/625 (6.3.43(a))
     # and directional sharpening sqrt(13/15)*K_A(0) < 798/100 (6.3.42), plus 6.3.43(a) smoothed K_A(u):
@@ -991,12 +991,24 @@ def verify_all(quiet=False, write_result=False):
     SQ_D8    = sqrt_ub(CHI_D_EIGHTH)
     SQ_D750  = sqrt_ub(CHI_D_7_50)
 
-    # First check (0, 1/1600] (D >= (9/50)delta & C_A^2 <= (6/25)D) and (0, 1/1250] (D > 0) for ALL SHAPES chi <= 42!
+    def find_min_half_int_rcap(P5_poly, lo_half=40, hi_half=600):
+        lo_r, hi_r = lo_half, hi_half
+        while lo_r < hi_r:
+            mid_r = (lo_r + hi_r) // 2
+            ok_m, _ = certify_R_cap_on_slab(P5_poly, Q(mid_r, 2))
+            if ok_m:
+                hi_r = mid_r
+            else:
+                lo_r = mid_r + 1
+        rc = Q(lo_r, 2)
+        ok_f, lv_f = certify_R_cap_on_slab(P5_poly, rc)
+        require(ok_f, f"Bernstein certification failed at R_cap={rc}")
+        return rc, lv_f
+
+    # First check (0, 1/1600] (D >= (9/50)delta & C_A^2 <= (6/25)D) and (0, 3/4000] (D > 0) for ALL SHAPES chi <= 42!
     P5_all0 = build_slab_P5(Q(0), Q(1, 1600), BETA_ALL, knots, w_table, upper_table, md3_hi_fn, m3_hi_fn, md4_hi_fn)
-    R_cap_all0 = Q(106)
-    ok_all0, lv_all0 = certify_R_cap_on_slab(P5_all0, R_cap_all0)
-    require(ok_all0, "All-shapes Bernstein R_cap on (0, 1/1600] failed")
-    total_bern_leaves += lv_all0
+    R_cap_all0, _ = find_min_half_int_rcap(P5_all0, 40, 300)
+    require(R_cap_all0 == Q(93), f"Expected R_cap_all0 = 93, got {R_cap_all0}")
     b2_0 = b2_lo_fn(Q(1, 1600))
     b3_0 = b3_hi_fn(Q(0))
     c6_loss_0 = (C6_CPLX / 36) * b3_0
@@ -1006,31 +1018,36 @@ def verify_all(quiet=False, write_result=False):
     require(ca_coeff_all0 > 0, "All-shapes C_A^2 < (6/25)*D on (0, 1/1600] failed")
 
     P5_all_pos = build_slab_P5(Q(1, 1600), Q(3, 4000), BETA_ALL, knots, w_table, upper_table, md3_hi_fn, m3_hi_fn, md4_hi_fn)
-    R_cap_all_pos = Q(112)
-    ok_allp, lv_allp = certify_R_cap_on_slab(P5_all_pos, R_cap_all_pos)
-    require(ok_allp, "All-shapes Bernstein R_cap on [1/1600, 3/4000] failed")
+    R_cap_all_pos, lv_allp = find_min_half_int_rcap(P5_all_pos, 40, 300)
     total_bern_leaves += lv_allp
     d_coeff_all_pos = b2_lo_fn(Q(3, 4000)) - ((C6_CPLX / 36) * b3_hi_fn(Q(1, 1600)) + R_cap_all_pos) * Q(3, 4000) * SQ_ALL
     require(d_coeff_all_pos > 0, f"All-shapes D > 0 on [1/1600, 3/4000] failed: {d_coeff_all_pos}")
 
+    max_rcap_all = Q(0)
+    max_rcap_beta = Q(0)
+
     for idx, (u_lo, u_hi) in enumerate(slabs):
+        # 1) Whole-domain all-shapes (chi in [0, 42], BETA_ALL = 2851/1000) remainder cap on every slab:
+        P5_all_s = build_slab_P5(u_lo, u_hi, BETA_ALL, knots, w_table, upper_table, md3_hi_fn, m3_hi_fn, md4_hi_fn)
+        r_cap_all_s, lv_all_s = find_min_half_int_rcap(P5_all_s, 40, 600)
+        total_bern_leaves += lv_all_s
+        if r_cap_all_s > max_rcap_all:
+            max_rcap_all = r_cap_all_s
+
+        # 2) Shape-restricted near-Gaussian remainder cap on [u_lo, u_hi]:
         is_low = (u_hi <= Q(3, 250))
         beta_use = BETA_LOW if is_low else BETA_01
         P5_s = build_slab_P5(u_lo, u_hi, beta_use, knots, w_table, upper_table, md3_hi_fn, m3_hi_fn, md4_hi_fn)
-
-        # Find tight integer/half-integer R_cap via exact binary search verified by Bernstein!
-        lo_r, hi_r = 40, 400
-        while lo_r < hi_r:
-            mid_r = (lo_r + hi_r) // 2
-            ok_m, _ = certify_R_cap_on_slab(P5_s, Q(mid_r, 2))
-            if ok_m:
-                hi_r = mid_r
-            else:
-                lo_r = mid_r + 1
-        r_cap = Q(lo_r, 2)
-        ok_s, lv_s = certify_R_cap_on_slab(P5_s, r_cap)
-        require(ok_s, f"Bernstein certification failed on slab {idx} [{u_lo}, {u_hi}] at R_cap={r_cap}")
+        r_cap, lv_s = find_min_half_int_rcap(P5_s, 40, 400)
         total_bern_leaves += lv_s
+        if r_cap > max_rcap_beta:
+            max_rcap_beta = r_cap
+        # Also verify monotonicity in beta: since BETA_01 = 33/25 <= beta_use on every slab,
+        # r_cap (<= max_rcap_beta = 299/2) holds on every slab for chi <= 9364/390625 as well!
+        if is_low:
+            P5_01_low = build_slab_P5(u_lo, u_hi, BETA_01, knots, w_table, upper_table, md3_hi_fn, m3_hi_fn, md4_hi_fn)
+            ok_01_low, _ = certify_R_cap_on_slab(P5_01_low, r_cap)
+            require(ok_01_low, "Monotonicity check at BETA_01 on low slab failed")
 
         b2 = b2_lo_fn(u_hi)
         b3 = b3_hi_fn(u_lo)
@@ -1038,25 +1055,25 @@ def verify_all(quiet=False, write_result=False):
         ka_sm = ka_smoothed_6343(u_lo)
 
         if is_low:
-            # Verify D > 0 up to chi = 1/6 (> 1/64) and C_A^2 <= (6/25)D up to chi = 1/10 (> 49/625 > 1/64)
+            # Verify D > 0 up to chi = 1/9 (> 1/64) and C_A^2 <= (6/25)D up to chi = 2/25 (> 49/625 > 1/64)
             rem_d = b2 - (c6_loss + r_cap) * u_hi * SQ_LOW_D
             rem_c0 = b2 - (c6_loss + r_cap + KA_UNSMOOTHED / KAPPA_RAW) * u_hi * SQ_LOW_C
             require(rem_d > 0, f"Low-energy D > 0 failed on [{u_lo}, {u_hi}]")
             require(rem_c0 > 0, f"Low-energy C_A^2 <= 0.24 D failed on [{u_lo}, {u_hi}]")
         else:
-            # Verify D > 0 up to chi = 1/100 (> 49/10000), C_A^2 <= (6/25)D up to 1/200 (unsmoothed K_A(0))
-            # and up to 13/2000 (smoothed K_A(u)), BOTH > 49/10000!
+            # Verify D > 0 up to chi = 1/125 (> 49/10000), C_A^2 <= (6/25)D up to 1/200 (unsmoothed K_A(0))
+            # and up to 3/500 (smoothed K_A(u)), BOTH > 49/10000!
             rem_d = b2 - (c6_loss + r_cap) * u_hi * SQ_HI_D
             rem_c0 = b2 - (c6_loss + r_cap + KA_UNSMOOTHED / KAPPA_RAW) * u_hi * SQ_HI_C0
             rem_cs = b2 - (c6_loss + r_cap + ka_sm / KAPPA_RAW) * u_hi * SQ_HI_CS
-            require(rem_d > 0, f"Main-band D > 0 at chi=1/100 failed on [{u_lo}, {u_hi}]")
+            require(rem_d > 0, f"Main-band D > 0 at chi=1/125 failed on [{u_lo}, {u_hi}]")
             require(rem_c0 > 0, f"Main-band unsmoothed C_A^2 <= 0.24 D at chi=1/200 failed on [{u_lo}, {u_hi}]")
             require(rem_cs > 0, f"Main-band smoothed C_A^2 <= 0.24 D at chi=3/500 failed on [{u_lo}, {u_hi}]")
 
-        # Across ALL slabs in (0, 463/10000]: verify D >= (1/8)*delta for chi <= 1/200 and D >= (7/50)*delta for chi <= 1/250!
+        # Across ALL slabs in (0, 463/10000]: verify D >= (1/8)*delta for chi <= 9/2000 and D >= (7/50)*delta for chi <= 1/250!
         rem_d8 = b2 - (c6_loss + r_cap) * u_hi * SQ_D8
         rem_d750 = b2 - (c6_loss + r_cap) * u_hi * SQ_D750
-        require(rem_d8 > Q(1, 8), f"D >= delta/8 at chi<=1/200 failed on [{u_lo}, {u_hi}]: {rem_d8}")
+        require(rem_d8 > Q(1, 8), f"D >= delta/8 at chi<=9/2000 failed on [{u_lo}, {u_hi}]: {rem_d8}")
         require(rem_d750 > Q(7, 50), f"D >= (7/50)*delta at chi<=1/250 failed on [{u_lo}, {u_hi}]: {rem_d750}")
 
         # Exact certified chi thresholds on this slab (clamped to beta_use's fourth-moment validity cap):
@@ -1075,12 +1092,23 @@ def verify_all(quiet=False, write_result=False):
             "slab": [str(u_lo), str(u_hi)],
             "minus_B2_quarter_lb": dec_floor(b2, 8),
             "B3_ub": dec_ceil(b3, 6),
-            "R_cap_exact": str(r_cap),
-            "bernstein_leaves": lv_s,
+            "R_cap_all_shapes_exact": str(r_cap_all_s),
+            "all_shapes_bernstein_leaves": lv_all_s,
+            "beta_use": str(beta_use),
+            "chi_beta_cap_exact": str(chi_beta_cap),
+            "chi_beta_cap_floor8": dec_floor(chi_beta_cap, 8),
+            "R_cap_beta_exact": str(r_cap),
+            "beta_bernstein_leaves": lv_s,
             "chi_max_D_pos_floor8": dec_floor(chi_d_pos, 8),
             "chi_max_CA_unsmoothed_floor8": dec_floor(chi_ca_0, 8),
             "chi_max_CA_smoothed_floor8": dec_floor(chi_ca_sm, 8),
         })
+
+    require(Q(slab_reports[0]["R_cap_all_shapes_exact"]) == R_cap_all0, "Slab 0 all-shapes cap consistency")
+    require(max_rcap_all == Q(256), f"Expected max all-shapes R_cap = 256, got {max_rcap_all}")
+    require(Q(slab_reports[-1]["R_cap_all_shapes_exact"]) == Q(349, 2), "Expected top-slab all-shapes R_cap = 349/2")
+    require(max_rcap_beta == Q(299, 2), f"Expected max near-Gaussian R_cap = 299/2, got {max_rcap_beta}")
+    require(Q(slab_reports[-1]["R_cap_beta_exact"]) == Q(109), "Expected top-slab near-Gaussian R_cap = 109")
 
     # Verify retained A-shell reserves from D >= (1/8)*delta (chi <= 1/200) and D >= (7/50)*delta (chi <= 1/250)
     # exactly as in KCR verify.py lines 140-144 (on 3/100 <= u <= 463/10000, ||c_{3/5}(q)||^2 <= (3/80)*delta, cost 59009/189100):
@@ -1127,13 +1155,18 @@ def verify_all(quiet=False, write_result=False):
     # Control 5: Over-wide chi = 1/20 = 0.05 on top slab MUST fail analytic D > 0 bound!
     b2_top = b2_lo_fn(U_TOP)
     b3_top = b3_hi_fn(Q(56, 1250))
-    r_top = Q(slab_reports[-1]["R_cap_exact"])
+    r_top = Q(slab_reports[-1]["R_cap_beta_exact"])
     bad_d_margin = b2_top - ((C6_CPLX / 36) * b3_top + r_top) * U_TOP * sqrt_ub(Q(1, 20))
     require(bad_d_margin < 0, "Negative control 5 failed: top-slab analytic bound did not reject chi = 1/20")
 
     # Control 6: Slab partition with a gap MUST be rejected by verify_slab_partition!
     gapped_slabs = slabs[:5] + slabs[6:]
     require(not verify_slab_partition(gapped_slabs, Q(0), U_TOP), "Negative control 6 failed: accepted gapped slab partition")
+
+    # Control 7: Applying near-Gaussian R_cap = 109 on top slab at all-shapes BETA_ALL MUST be rejected!
+    P5_top_all = build_slab_P5(Q(56, 1250), U_TOP, BETA_ALL, knots, w_table, upper_table, md3_hi_fn, m3_hi_fn, md4_hi_fn)
+    ok_bad_beta_all, _ = certify_R_cap_on_slab(P5_top_all, Q(109))
+    require(not ok_bad_beta_all, "Negative control 7 failed: accepted near-Gaussian R_cap = 109 at BETA_ALL")
 
     elapsed_ms = int((time.monotonic() - t0) * 1000)
 
@@ -1148,6 +1181,20 @@ def verify_all(quiet=False, write_result=False):
         "energy_slabs": len(slabs),
         "total_contraction_bernstein_leaves": total_bern_leaves + 0,
         "certified_regimes": {
+            "all_shapes_band_remainder": {
+                "domain_u": "(0, 463/10000]",
+                "domain_chi": "[0, 42]",
+                "beta_all": str(BETA_ALL),
+                "R_cap_band_max": str(max_rcap_all),
+                "R_cap_top_slab": str(slab_reports[-1]["R_cap_all_shapes_exact"]),
+            },
+            "near_gaussian_band_remainder": {
+                "domain_u": "(0, 463/10000]",
+                "domain_chi_band": "9364/390625",
+                "domain_chi_low_band_0_to_3_250": "17147/80000",
+                "R_cap_band_max": str(max_rcap_beta),
+                "R_cap_top_slab": str(slab_reports[-1]["R_cap_beta_exact"]),
+            },
             "all_shapes_small_energy": {
                 "domain_u_9_50_and_CA": "(0, 1/1600]",
                 "domain_u_D_pos": "(0, 3/4000]",
@@ -1177,7 +1224,7 @@ def verify_all(quiet=False, write_result=False):
             },
         },
         "slabs": slab_reports,
-        "negative_controls_passed": 6,
+        "negative_controls_passed": 7,
         "elapsed_ms": elapsed_ms,
     }
 
