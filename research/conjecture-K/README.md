@@ -136,7 +136,8 @@ each result, and `STATUS.md` gives its evidence.
 
 **What remains.** A bound on sup Λ̂ on the rows of a consumer gives the lower bound; K itself is not needed for it.
 At the peak, (P) is proved for every complex shift and both complex drivers (7.4.16). The remaining requirements are
-the averaged odd-sector premise (P_Ψ) outside its proved regions and a consumer covering the other row profiles.
+the averaged odd-sector premise (P_Ψ) beyond its proved regions and a consumer covering the other row profiles.
+For every allowed shell energy, the phase-circle estimate proves (P_Ψ) throughout W ≤ 1/3000000 (7.5.4a, independently checked).
 On the peak domain the general all-sector bound under (P_Ψ) is S + 9.9·10⁻⁵
 (7.5.3); it covers t ∈ [0.84, 0.851] at ε = 1891/2500 (8.1), where four response intervals stay uncovered (8.7). The
 ten central rows at ε = 299/400 have other profiles; no transfer of the peak results to them is asserted, and their
