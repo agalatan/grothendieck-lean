@@ -1,19 +1,30 @@
 # The complex Grothendieck constant, in Lean
 
-The two-sided theorem for the complex Grothendieck constant is
+This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.40191 < K_G^{\mathbb C} \le 1.40457588.
+1.40191 < K_G^{\mathbb C} \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
-The upper entrypoint states that $140457588/100000000$ is admissible for every finite complex matrix. It also compares the constant with Haagerup’s proposed value,
+$K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
+is the value that Haagerup proposed for it in 1987, with
+$\gamma^\dagger=\int_0^{\pi/2}\frac{\cos^2 t}{\sqrt{1+\sin^2 t}}dt$. So the constant is strictly below Haagerup's
+value, which resolves this conjecture of Haagerup.
 
-$$
- K_G^{\mathbb C} \le 1.40457588 < 1/\gamma^\dagger, \qquad
- \gamma^\dagger=\int_0^{\pi/2}\frac{\cos^2 t}{\sqrt{1+\sin^2 t}}\,dt.
-$$
+## The constants
 
-The comparison uses rational bounds on the integral. [Upper theorem](Grothe/UpperResult.lean) · [Two-sided theorem](Grothe/MainResult.lean) · [Six-channel proof and build instructions](haagerup-article/anc/README.md).
+| | value | exact form in Lean | theorem |
+|---|---|---|---|
+| lower bound | $1.40191 < K_G^{\mathbb C}$ | `140191 / 100000` | `Grothe.Statement.main_bounds` (first part), `Grothe.Statement.lower_target` |
+| upper bound | $K_G^{\mathbb C} \le 1.40457588$ | `140457588 / 100000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSix.constant_le` |
+| Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` |
+
+The two bounds are 0.00267 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
+parameters behind it and the other numbers that appear in the repository (older bounds, thresholds, targets).
+Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's value](Grothe/UpperResult.lean) ·
+[the definitions they are stated with](Grothe/Statement.lean).
+
+## History of the bounds
 
 | year | who | lower bound | upper bound |
 |---|---|---|---|
@@ -22,7 +33,7 @@ The comparison uses rational bounds on the integral. [Upper theorem](Grothe/Uppe
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **two-sided Lean theorem in this repository** | $\mathbf{1.40191 < K}$ | $\mathbf{K\le 1.40457588}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.40191 < K}$ | $\mathbf{K\le 1.40457588}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -67,12 +78,25 @@ classical and quantum correlations in two-party Bell experiments (real case).
 ## What is proved
 
 **The statement** is [`Grothe/Statement.lean`](Grothe/Statement.lean). It imports only Mathlib and holds only
-definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as their infimum, `UpperBelow c`
-(some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the fixed comparison targets `UpperTarget` and `LowerTarget`.
-`Grothe.UpperSix.bound` has type `Grothe.Statement.IsBound (140457588 / 100000000 : ℝ)`.
-`Grothe.UpperSix.constant_le` states the corresponding weak inequality for the infimum.
-`Grothe.UpperSix.constant_lt_inv_gammaDagger` states the strict comparison with the reciprocal phase integral.
-`Grothe.Statement.main_bounds` combines the new upper endpoint with `Grothe.Statement.lower_target`. [Statement](Grothe/Statement.lean) · [Upper endpoint](Grothe/UpperResult.lean) · [Both bounds](Grothe/MainResult.lean).
+definitions, so reading it is enough to know what the theorems say:
+
+- `scalarOpt A` and `vectorOpt A` are $C(A)$ and $V(A)$ above, for a finite complex matrix $A$;
+- `IsBound K` says that $V(A) \le K \cdot C(A)$ for every finite complex matrix $A$ of every size;
+- `complexGrothendieckConstant` is the infimum of all such $K$, that is, $K_G^{\mathbb C}$;
+- `LowerAbove c` says that every such $K$ is above $c$, and `UpperBelow c` that some such $K$ is below $c$.
+
+**The theorems.**
+
+- `Grothe.Statement.main_bounds`: $1.40191 < K_G^{\mathbb C} \le 1.40457588$ (as the rationals `140191 / 100000`
+  and `140457588 / 100000000`).
+- `Grothe.UpperSix.bound : IsBound (140457588 / 100000000)`: for every finite complex matrix $A$,
+  $V(A) \le 1.40457588 \cdot C(A)$. This is what the upper bound means for a single matrix;
+  `Grothe.UpperSix.constant_le` restates it as $K_G^{\mathbb C} \le 1.40457588$.
+- `Grothe.UpperSix.constant_lt_inv_gammaDagger`: $K_G^{\mathbb C} < 1/\gamma^\dagger$. Lean proves
+  $1.40457588 < 1/\gamma^\dagger$ from rational bounds on the integral $\gamma^\dagger$.
+- `Grothe.Statement.lower_target`: every $K$ with `IsBound K` is above $1.40191$.
+
+[Statement](Grothe/Statement.lean) · [Upper bound](Grothe/UpperResult.lean) · [Both bounds](Grothe/MainResult.lean).
 
 ### The lower bound
 
@@ -110,9 +134,9 @@ $B_{\mathrm{env}} = 7064131/10^7$, for all unimodular $f$, $g$ and all $n \ge 2$
 
 The certificate mixes three preprocessed versions of a smoothed cell rounding, one phase rounding and two reflected tiger channels. Each of the six functions maps into the complex unit disk. The transfer theorem turns an approximately linear correlation kernel into a bound for the ratio of vector and scalar optima.
 
-Lean adds the signed channel coefficients through index 250, bounds their joint deviation from a linear kernel, and controls each infinite tail by a Hardy circle-mean estimate. The dyadic overlap tables have finite recomputation checks and mathematical enclosure proofs. The resulting reciprocal gap yields the advertised rational endpoint. [Transfer theorem](Grothe/UpperSix/Haagerup/Transfer.lean) · [Certificate](Grothe/UpperSix/Haagerup/CertCheck.lean).
+Lean adds the signed channel coefficients through index 250, bounds their joint deviation from a linear kernel, and controls each infinite tail by a Hardy circle-mean estimate. The dyadic overlap tables have finite recomputation checks and mathematical enclosure proofs. The resulting bound is $K_G^{\mathbb C} \le 1.40457588$. [Transfer theorem](Grothe/UpperSix/Haagerup/Transfer.lean) · [Certificate](Grothe/UpperSix/Haagerup/CertCheck.lean).
 
-The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1.404599395362$. Its quadrature and energy-table construction are documented separately. [Single-channel proof](Grothe/UpperTightFinal.lean) · [Construction notes](docs/UPPER_STATUS.md).
+An older proof with a single rounding channel is still in the repository. It is independent of the six-channel proof and gives the weaker bound $K_G^{\mathbb C}<1.404599395362$, which is above Haagerup's value. Its quadrature and energy-table construction are documented separately. [Single-channel proof](Grothe/UpperTightFinal.lean) · [Construction notes](docs/UPPER_STATUS.md).
 
 ### What the computer checks and what is trusted
 
@@ -128,7 +152,7 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
   the six-channel upper bound, the cell witnesses, overlap tables, weighted head and Hardy contour checks. The precise list is in the axiom report. The six rational tail comparisons use kernel reduction.
 - **The axiom report** is produced and checked by
   `lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py`. The check fails if a theorem of
-  `data/axioms/required.txt` (including the current endpoint theorems) is missing from the report, or if
+  `data/axioms/required.txt` (including `main_bounds` and the upper-bound theorems) is missing from the report, or if
   any reported theorem uses an axiom other than the three standard ones and the allowed facts. CI also rejects
   `sorry`, `axiom`, `implemented_by`, `extern`, `unsafe`, `debug.skipKernelTC` and `Task.spawn` in the sources, so
   nothing is unproved or exempt from the kernel, no code runs in place of a definition, and no checker uses
@@ -144,7 +168,7 @@ The previous single-channel proof gives the independent bound $K_G^{\mathbb C}<1
 | path | content |
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
-| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | Two-sided theorem and the six-channel bound for the standard constant |
+| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorem `main_bounds` with both bounds; the six-channel upper bound and the comparison with Haagerup's value |
 | `Grothe/UpperSix/`, `haagerup-article/anc/` | the six-channel proof sources and their standalone copy, the article's ancillary files |
 | `Grothe/UpperClose.lean` | certified energy-table accuracy `hclose_final` |
 | `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |

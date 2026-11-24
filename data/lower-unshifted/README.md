@@ -1,5 +1,11 @@
 # Complete cover with pure-row and mixed-source law nodes
 
+> **Status (24 November 2026): record of a superseded certificate.** This folder describes the lower bound
+> 1.401697117301, proved before the identity-tail certificate. The Lean modules it fed (`LawNodeData`,
+> `LawNodeCheck`) and its exporter were removed in #525, and no proof reads this data now. The repository's lower
+> bound is 1.40191 < K ([`docs/CONSTANTS.md`](../../docs/CONSTANTS.md)). Wherever the text below says "current", read
+> "at the time of this record".
+
 The complete certificate has **10,909 boxes**, with
 
 ```

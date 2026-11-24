@@ -1,0 +1,41 @@
+name: Document checks
+
+# Two fast checks of the documents (seconds, no Lean build):
+#   * scripts/check_constants.py reads the bounds from the Lean statement (Grothe/MainResult.lean,
+#     Grothe/Statement.lean) and checks that the documents quote them (docs/CONSTANTS.md);
+#   * scripts/check_md_links.py checks the relative links of the tracked Markdown files outside the archives.
+# The result is information for the author of the branch. It is not part of the proof check and does not gate
+# landing (scripts/land_ready.sh does not read it).
+
+on:
+  push:
+    paths:
+      - '**.md'
+      - 'docs/overview.tex'
+      - 'Grothe/MainResult.lean'
+      - 'Grothe/Statement.lean'
+      - 'scripts/check_constants.py'
+      - 'scripts/test_check_constants.py'
+      - 'scripts/check_md_links.py'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  documents:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Tests of the constants check
+        run: python3 scripts/test_check_constants.py
+      - name: The documents quote the bounds that Lean states
+        run: python3 scripts/check_constants.py
+      - name: Relative links of the Markdown documents
+        run: python3 scripts/check_md_links.py

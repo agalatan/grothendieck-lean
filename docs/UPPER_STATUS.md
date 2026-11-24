@@ -1,6 +1,6 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The six-channel upper entrypoint states `K_G^ℂ ≤ 1.40457588`. The separate phase-integral estimate puts that rational strictly below `1/γ†`. [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../haagerup-article/anc/README.md).
+This file documents the older single-channel upper proof (`K_G^ℂ < 1.404599395362`), which is still in the tree. The upper bound of the main theorem `main_bounds` comes from the six-channel proof in `Grothe/UpperSix/` instead: Lean proves `K_G^ℂ ≤ 1.40457588` (`140457588/100000000`, `Grothe.UpperSix.constant_le`), and a separate estimate of the phase integral shows that this rational is strictly below Haagerup's value `1/γ†` (`constant_lt_inv_gammaDagger`). [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../haagerup-article/anc/README.md).
 
 ## Earlier single-channel construction
 
@@ -138,8 +138,8 @@ earlier `φ² ≤ 3` cover.
 
 Source certificate: `tools/verify_upper_hardy.py`, with the full current preprocessing,
 contour data and analytic input in `data/upper-preprocess/` (see its README). Kernel `H(t) = Σ_j h_j t^{2j+1}`, `h = kernelCoeff(energy GT)`.
-The incumbent Hardy input is proved. The original route (detailed in
-`PLAN_UPPER.md` §6f) was:
+The incumbent Hardy input is proved. The original route (from §6f of the planning note
+`PLAN_UPPER.md`, which is not in the repository) was:
 
 1. **Holomorphic continuation.** For complex symmetric 2×2 `R` with `I ± Re R ≻ 0` define
    `H(R) = ∫∫ T(x + iξ) conj T(y + iη) k_R(x,y) k_R(ξ,η)` (real 2-vectors), with the holomorphic Gaussian

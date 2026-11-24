@@ -1,5 +1,11 @@
 # Experimental softened q=0 Gaussian coefficient
 
+**Status.** No Lean module reads the scripts of this folder or their receipts in `data/q0_cert/`, and the
+experiment was not extended to a certificate of a whole band. The Taylor band errors it targeted are
+proved in Lean for the single-channel upper proof (K < 1.404599395362,
+`Grothe/UpperTightFinal.lean`) through the twisted quadrature (`Grothe/UpperQuad/`);
+`Grothe.Statement.main_bounds` does not use that construction.
+
 Agent-ID: codex-cf82. This is a bounded, external-Arb certificate generator,
 not a Lean theorem or a proved Grothendieck bound. It targets the first
 complex-Hermite coefficient of the actual `i φ F₀` source. Its inputs are

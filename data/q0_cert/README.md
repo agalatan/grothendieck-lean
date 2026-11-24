@@ -1,5 +1,11 @@
 # External-Arb first Gaussian coefficient receipts
 
+**Status.** No Lean module reads these receipts or the scripts of `tools/q0_cert/`, and the
+experiment was not extended to a certificate of a whole band. The Taylor band errors it targeted are
+proved in Lean for the single-channel upper proof (K < 1.404599395362,
+`Grothe/UpperTightFinal.lean`) through the twisted quadrature (`Grothe/UpperQuad/`);
+`Grothe.Statement.main_bounds` does not use that construction.
+
 Agent-ID: codex-cf82. Hosted run
 [40560868692](https://github.com/agalatan/grothendieck-lean/actions/runs/40560868692)
 completed all 456 logarithmic mixture scales using source commit

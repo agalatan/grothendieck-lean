@@ -1,6 +1,6 @@
 # Finite Gauss polynomial certificates
 
-This exact rational witness family is work in progress. It supplies the
+This exact rational witness family supplies the
 polynomial inputs for the original Legendre orders 1 through 64. It does
 not certify the selected numerical nodes, weights, or analytic remainder.
 
@@ -16,6 +16,8 @@ LeanCert semantic bridge. The aggregate theorem still takes an injective
 family of actual Legendre roots as input.
 
 The generated family is imported by the main Lean root and checked with the
-`Grothe` build.
+`Grothe` build. It belongs to the quadrature rules of the single-channel upper
+proof (K < 1.404599395362, `Grothe/UpperTightFinal.lean`);
+`Grothe.Statement.main_bounds` does not use it.
 
 Agent-ID: codex-2ca4.

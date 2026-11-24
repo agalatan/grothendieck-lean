@@ -110,9 +110,9 @@ boundary layers but does not by itself bound derivatives, quadrature cost,
 or the residual norm.
 
 Two scalar diagnostics illustrate both progress and limitations.
-`arb_mixture_radial_tile.py` proves single-mode contributions are tiny on
+`arb_mixture_radial_tile.py` (not in the repository) proves single-mode contributions are tiny on
 some [0,1] panels. For m=160 on [15,16],
-`check_radial_suppression.py` instead proves an absolute contribution below
+`check_radial_suppression.py` (not in the repository) instead proves an absolute contribution below
 2.51e-75 using the real Gaussian exponent and a profile interval bound.
 These are individual-mode results; no summation over all modes, scales or
 panels is certified, and the selected energy head extends much farther than
@@ -124,10 +124,10 @@ modulus below 3e-21. Together with the shared m≥9 omission, only m≤5 need
 quadrature on J for this coefficient. This refinement is scalar and must
 not be substituted for the vector omission budget.
 
-`benchmark_radial_subset.py` replays individual Arb integrals for the
+`benchmark_radial_subset.py` (not in the repository) replays individual Arb integrals for the
 q=0 coefficient on s∈[0,4] at m=-200,-50,-10,0,10,50,100,200. Each of
 the eight was finite in one run, taking 7--444 integrand evaluations and
 0.016--1.08 seconds per scale. The result covers only one radial panel and
 eight of the earlier 401-scale variant: it is not the new sum, an aggregate rounding bound, or an
-end-to-end runtime estimate. The complete softened q=0 coefficient remains
-an open computation.
+end-to-end runtime estimate. The complete softened q=0 coefficient was computed
+later (`Q0_COVER_STATUS.md`).
