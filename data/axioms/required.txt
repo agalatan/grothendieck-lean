@@ -28,6 +28,7 @@ Grothe.Lower.certRow12
 Grothe.Lower.certRow13
 Grothe.Lower.certRow14
 Grothe.Lower.gram_joint_of_scalars
+Grothe.Lower.mass_law_bound
 Grothe.Lower.rowData_facts
 Grothe.LowerAnalytic.Circular.fourth_moment_le_variance
 Grothe.LowerAnalytic.Circular.gaussian_fourth_moment_le_44

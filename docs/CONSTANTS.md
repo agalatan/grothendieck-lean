@@ -73,6 +73,10 @@ bound $K < 1.40490913\ldots$
 | $1/B$ | $1.4019103\ldots$ | what the certificate gives; the theorem states the rounded value $1.40191 < 1/B$ |
 | $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
 
+The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
+At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine
+at $v=c\delta/(\hat\varepsilon\tau)$. Lean checks both branches in the kernel. [Mass-row certificate](../Grothe/Lower/Cert/MassRow.lean).
+
 ## Behind the upper bound
 
 The six-channel proof (`Grothe/UpperSix/`, copied byte for byte in `haagerup-article/anc/`) mixes six Gaussian

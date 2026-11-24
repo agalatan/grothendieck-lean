@@ -1,6 +1,5 @@
 # Each is a documented finite exact computation (README.md, docs/LEAN_NATIVE_INVENTORY.md).
 # native_decide facts allowed in the default axiom report (one per line, sorted; union-merged by git).
-Grothe.Lower.certMassRow._native.native_decide.ax_1_1
 Grothe.Lower.certRow01._native.native_decide.ax_1_1
 Grothe.Lower.certRow02._native.native_decide.ax_1_1
 Grothe.Lower.certRow03._native.native_decide.ax_1_1
