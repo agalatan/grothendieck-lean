@@ -45,9 +45,9 @@ $(P_\Psi)$ (`STATUS.md` 7.5.3) at the peak row of Conjecture K:
    ($2.50\times$ stronger than `7.5.8`'s $W \ge 375\,V$) and linear small-shell
    closure $V \le 1241/68750000 \approx 1.8051\cdot 10^{-5}$ under $(P)$ (against the $49.64\cdot 10^{-6}$ budget of $(P_\Psi)$).
 
-The full central region of $(P_\Psi)$ / $F_{\mathrm{joint}}$ at moderate
-$V \in (11/100000, 0.080051 - u]$, global $(P)$ in its complex interior, and the
-row consumer remain **open**.
+The global $(P)$ proof makes Part D unconditional on the peak energy domain.
+The moderate-shell odd-sector estimate outside the proved regions and the multi-row
+consumer remain open. [Global proof, Corollary 3](../global-complex-P-gemini-c1de/PROOF.md)
 
 ---
 

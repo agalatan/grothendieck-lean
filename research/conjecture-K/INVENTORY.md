@@ -1636,7 +1636,7 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 30,063 B | `5056d92a3d2c46397b7fc6da8919e716e2e6a265b648e93e6bb68260ac92c7a9` |
+| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 30,132 B | `6a7a183b8ea45ce67b193f7c99b822dbd6381a123e1f49a1f19b07e2a5cc2141` |
 | `code/sharp-joint-secant-gemini-c1de/README.md` | 2,511 B | `a1afe71db70059e894f147179b236c6014e543c0c3e7d79bfb910347381c9d7b` |
 | `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp` | 49,440 B | `f12d15b3d4631b280a552e4e17e721beb71fac5bde8a2d08703a4d5d5c7c026f` |
 | `code/sharp-joint-secant-gemini-c1de/verify.py` | 20,019 B | `d3af1484f65301dab967a09abd53dec171625999892501b44b2a8e3757e3e6e9` |
