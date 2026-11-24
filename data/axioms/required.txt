@@ -11,6 +11,13 @@ Grothe.Haag.measurable_phaseLaplaceKernel
 Grothe.Haag.norm_phaseLaplaceKernel_le
 Grothe.Haag.ph_eq_phaseLaplace
 Grothe.Haag.phaseMoment_weighted
+Grothe.Lower.SharedGate.availableSaving
+Grothe.Lower.SharedGate.cell_bound
+Grothe.Lower.SharedGate.check
+Grothe.Lower.SharedGate.endpoint_eq
+Grothe.Lower.SharedGate.pair_ok
+Grothe.Lower.SharedGate.rounded_lt
+Grothe.Lower.SharedGate.smallRectangle_ok
 Grothe.Lower.SharpEnvelope.check
 Grothe.Lower.SharpEnvelope.endpoint_eq
 Grothe.Lower.SharpEnvelope.exact_scalar_cap
@@ -63,6 +70,8 @@ Grothe.LowerAnalytic.normQk_le_rho
 Grothe.LowerAnalytic.norm_pairVal_witness
 Grothe.LowerAnalytic.pieceAtCoord_of_pieceAt
 Grothe.LowerAnalytic.pieceCoverOK_of_fast
+Grothe.LowerAnalytic.sharedGate_lower_of_tailNodeCaps
+Grothe.LowerAnalytic.sharedGate_profile
 Grothe.LowerAnalytic.sharp_lower_bound_of_tailNodeCaps
 Grothe.LowerAnalytic.tailNodeCaps_cert
 Grothe.LowerAnalytic.tenH_le_tenS
@@ -70,10 +79,13 @@ Grothe.LowerAnalytic.tenS_le_sq_sum
 Grothe.LowerAnalytic.transferInputs_of_witnessCap
 Grothe.Statement.constant_lt_tight_upper
 Grothe.Statement.lowerTarget_of_tailNodeCaps
+Grothe.Statement.lower_bound_shared_gate
 Grothe.Statement.lower_bound_sharp
 Grothe.Statement.lower_target
 Grothe.Statement.main_bounds
 Grothe.Statement.main_bounds_refined
+Grothe.Statement.sharedGateEndpoint_le_of_tailNodeCaps
+Grothe.Statement.shared_gate_endpoint
 Grothe.Statement.sharp_lower_endpoint
 Grothe.Statement.upper_below_tight
 Grothe.Statement.upper_bound_tight

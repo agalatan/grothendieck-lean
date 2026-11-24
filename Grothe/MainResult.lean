@@ -3,12 +3,14 @@ import Grothe.LowerTarget
 import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.SharpEnvelopeBound
+import Grothe.LowerAnalytic.SharedGateBound
 
 /-!
 # The main result: `1.40191 < K_G^ℂ ≤ 1.40455741`
 
 The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`.
 
+* `lower_bound_shared_gate` gives **`1.40191478 < K_G^ℂ`** by coupling the active gates.
 * `lower_bound_sharp` proves **`1.4019109461 < K_G^ℂ`** from the affine mixture of the same certified rows.
 * `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above `1.40191`, from the certificate of
   the witness `(191/250, 47/2000)` (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows (`tailNodeCaps_cert`).
@@ -37,6 +39,18 @@ theorem lower_bound_sharp :
   refine lt_of_lt_of_le ?_ sharp_lower_endpoint
   simpa only [Rat.cast_div, Rat.cast_ofNat] using
     (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt
+
+/-- The common Gaussian gate of row08 and row09 gives this exact lower endpoint. -/
+theorem shared_gate_endpoint :
+    (Grothe.Lower.SharedGate.endpoint : ℝ) ≤ complexGrothendieckConstant :=
+  sharedGateEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
+
+/-- The common-gate lower endpoint rounded strictly downward to eight decimals. -/
+theorem lower_bound_shared_gate :
+    (140191478 / 100000000 : ℝ) < complexGrothendieckConstant := by
+  refine lt_of_lt_of_le ?_ shared_gate_endpoint
+  simpa only [Rat.cast_div, Rat.cast_ofNat] using
+    (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharedGate.rounded_lt
 
 /-- **The main result** `1.40191 < K_G^ℂ ≤ 1.40455741`. -/
 theorem main_bounds :

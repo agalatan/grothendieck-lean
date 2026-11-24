@@ -22,6 +22,13 @@ import Grothe
 #print axioms Grothe.Lower.ResponsePenalty.row_bound
 #print axioms Grothe.Lower.ResponsePenalty.row_bound_of_split
 #print axioms Grothe.Lower.ResponsePenalty.v_block
+#print axioms Grothe.Lower.SharedGate.availableSaving
+#print axioms Grothe.Lower.SharedGate.cell_bound
+#print axioms Grothe.Lower.SharedGate.check
+#print axioms Grothe.Lower.SharedGate.endpoint_eq
+#print axioms Grothe.Lower.SharedGate.pair_ok
+#print axioms Grothe.Lower.SharedGate.rounded_lt
+#print axioms Grothe.Lower.SharedGate.smallRectangle_ok
 #print axioms Grothe.Lower.SharpEnvelope.check
 #print axioms Grothe.Lower.SharpEnvelope.endpoint_eq
 #print axioms Grothe.Lower.SharpEnvelope.exact_scalar_cap
@@ -193,6 +200,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.rotD_reW
 #print axioms Grothe.LowerAnalytic.rowSharedWith_frame
 #print axioms Grothe.LowerAnalytic.scalar_sixth
+#print axioms Grothe.LowerAnalytic.sharedGate_lower_of_tailNodeCaps
+#print axioms Grothe.LowerAnalytic.sharedGate_profile
 #print axioms Grothe.LowerAnalytic.sharedReduction_frame
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
 #print axioms Grothe.LowerAnalytic.sharp_lower_bound_of_tailNodeCaps
@@ -227,11 +236,14 @@ import Grothe
 #print axioms Grothe.Statement.isClosed_bounds
 #print axioms Grothe.Statement.le_constant_of_lowerAbove
 #print axioms Grothe.Statement.lowerTarget_of_tailNodeCaps
+#print axioms Grothe.Statement.lower_bound_shared_gate
 #print axioms Grothe.Statement.lower_bound_sharp
 #print axioms Grothe.Statement.lower_target
 #print axioms Grothe.Statement.lt_constant_of_lowerAbove
 #print axioms Grothe.Statement.main_bounds
 #print axioms Grothe.Statement.main_bounds_refined
+#print axioms Grothe.Statement.sharedGateEndpoint_le_of_tailNodeCaps
+#print axioms Grothe.Statement.shared_gate_endpoint
 #print axioms Grothe.Statement.sharp_lower_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upperBelow_of_constant_lt
