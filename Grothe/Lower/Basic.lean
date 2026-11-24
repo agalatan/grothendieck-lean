@@ -65,8 +65,7 @@ def evalL {R : Type*} [Semiring R] : List R → R → R
 /-- The `k`-th coefficient (zero outside the list). -/
 def coeffL {R : Type*} [Zero R] (p : List R) (k : ℕ) : R := p.getD k 0
 
-@[simp] lemma coeffL_nil {R : Type*} [Zero R] (k : ℕ) : coeffL ([] : List R) k = 0 := by
-  simp [coeffL]
+@[simp] lemma coeffL_nil {R : Type*} [Zero R] (k : ℕ) : coeffL ([] : List R) k = 0 := rfl
 
 @[simp] lemma coeffL_cons_zero {R : Type*} [Zero R] (a : R) (l : List R) :
     coeffL (a :: l) 0 = a := rfl
@@ -182,15 +181,12 @@ theorem quadVal_le_quadMax (c0 c1 c2 α β : ℚ) (t : ℝ) (hα : (α : ℝ) �
     by_cases hin : α ≤ v ∧ v ≤ β
     · -- vertex inside: the vertex value is a candidate
       have hvmax : (quadVal c0 c1 c2 v : ℚ) ≤ (quadMax c0 c1 c2 α β : ℚ) := by
-        simp only [quadMax, hc2', ite_true]
-        rw [← hv, ite_eq_left hin]
+        rw [quadMax, ite_eq_left hc2', ← hv, ite_eq_left hin]
         exact le_max_right _ _
-      have hvval : ((quadVal c0 c1 c2 v : ℚ) : ℝ) = c0 - c1 ^ 2 / (4 * c2) := by
-        simp only [quadVal]; push_cast; rw [hvr]; field_simp; ring
-      have : (c0 : ℝ) + c1 * t + c2 * t ^ 2 ≤ c0 - c1 ^ 2 / (4 * c2) := by
-        rw [hsq]; nlinarith [sq_nonneg (t - (v : ℝ))]
-      calc (c0 : ℝ) + c1 * t + c2 * t ^ 2 ≤ c0 - c1 ^ 2 / (4 * c2) := this
-        _ = ((quadVal c0 c1 c2 v : ℚ) : ℝ) := hvval.symm
+      calc (c0 : ℝ) + c1 * t + c2 * t ^ 2
+          ≤ c0 - c1 ^ 2 / (4 * c2) := by rw [hsq]; nlinarith [sq_nonneg (t - (v : ℝ))]
+        _ = ((quadVal c0 c1 c2 v : ℚ) : ℝ) := by
+            simp only [quadVal]; push_cast; rw [hvr]; field_simp; ring
         _ ≤ _ := by exact_mod_cast hvmax
     · -- vertex outside: monotone on the interval
       have hvout : (v : ℝ) < α ∨ (β : ℝ) < v := by
