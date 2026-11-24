@@ -1629,15 +1629,15 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 ## Sharp global joint secant inequality and multiscale unconditional closure of F_joint (gemini-c1de, refs #436)
 
 - [Proof and replay instructions](sources/sharp-joint-secant-gemini-c1de/PROOF.md) and
-  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/sharp-joint-secant-gemini-c1de/) (tag KJSEC; STATUS 7.5.12; **P + C, author only**). Every file is under 50 KB and committed in the repository; no external files or dependencies were left outside.
+  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/sharp-joint-secant-gemini-c1de/) (tag KJSEC; STATUS 7.5.12; **P + C**, [independent review of the corrected #594](https://github.com/agalatan/grothendieck-lean/pull/594#issuecomment-7142979900)). Every file is under 50 KB and committed in the repository; no external files or dependencies were left outside.
 - **Replay:**
   - Verify saved `result.json` + exact rational assembly (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/test_controls.py` (10 negative/corruption controls).
   - Full C++17 outward-rounded interval replay (~4.5 min on Apple Silicon, regenerating `result.json`): `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py --replay-cpp`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 29,916 B | `51d58bc732ba4b586c95cd4b1648f65b35de146a5a91410e1748e946f848f962` |
-| `code/sharp-joint-secant-gemini-c1de/README.md` | 2,351 B | `a34d031ab125f9a6df39435ee71ca6dea1c8198fd69a9565d14cf5a1f88bd7d2` |
+| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 30,063 B | `5056d92a3d2c46397b7fc6da8919e716e2e6a265b648e93e6bb68260ac92c7a9` |
+| `code/sharp-joint-secant-gemini-c1de/README.md` | 2,511 B | `a1afe71db70059e894f147179b236c6014e543c0c3e7d79bfb910347381c9d7b` |
 | `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp` | 49,440 B | `f12d15b3d4631b280a552e4e17e721beb71fac5bde8a2d08703a4d5d5c7c026f` |
 | `code/sharp-joint-secant-gemini-c1de/verify.py` | 20,019 B | `d3af1484f65301dab967a09abd53dec171625999892501b44b2a8e3757e3e6e9` |
 | `code/sharp-joint-secant-gemini-c1de/result.json` | 4,315 B | `b983b798fba62e50e5273a11d14160a5f33fdf0b327ae53dd477a4040042292b` |
@@ -1646,15 +1646,15 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 ## Global 4D complex closure of premise (P) on ℂ³ (gemini-c1de, refs #431)
 
 - [Proof and replay instructions](sources/global-complex-P-gemini-c1de/PROOF.md) and
-  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/global-complex-P-gemini-c1de/) (tag KGCP; STATUS 7.4.10, 7.4.16; **P + C, author only**). All files are committed in the repository with zero external dependencies left outside.
+  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/global-complex-P-gemini-c1de/) (tag KGCP; STATUS 7.4.10, 7.4.16; **P + C**, [independent proof check and full replay of #604](https://github.com/agalatan/grothendieck-lean/pull/604#issuecomment-7144799609)). All files are committed in the repository with zero external dependencies left outside.
 - **Replay:**
   - Verify saved `result.json` + exact rational audit of Parts 1–3, handoffs, and Part 4–5 summaries (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/test_controls.py` (19 negative/corruption controls including live C++ hotspot false-target control and `-DNDEBUG` compile rejection).
   - Full C++17 outward-rounded interval replay (~5–6.5 min on Apple Silicon, 8 threads; compiles/runs to a temporary file, audits all 5 parts, and verifies exact equality against committed `result.json` without overwriting it; pass `--replay-cpp --update-result` only to intentionally regenerate `result.json`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py --replay-cpp`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/global-complex-P-gemini-c1de/PROOF.md` | 34,991 B | `a51afd33db077279ad833260fdb15666831f8c5daa65920259951c98c781aa80` |
-| `code/global-complex-P-gemini-c1de/README.md` | 2,311 B | `d75ef4e6526a36013f26702e0421b4bc1821692321ce523b7ec67f0ea836335e` |
+| `sources/global-complex-P-gemini-c1de/PROOF.md` | 35,478 B | `f8f9a5145146374513ed61f60aac93bad5caa8067edeaa2bd125135952493f37` |
+| `code/global-complex-P-gemini-c1de/README.md` | 2,441 B | `e1851ff9142b95167def32bf050d26966b79d7210fd12adb778d444a4be65588` |
 | `code/global-complex-P-gemini-c1de/certify_global_P.cpp` | 82,627 B | `8f92945db425c7617f221b50f5ed49f6947081dd820da1d8d01a5e51a65677b0` |
 | `code/global-complex-P-gemini-c1de/verify.py` | 17,606 B | `f3185a6855870edd6502fcc0697f105154d16fdf6f91c70591c9cf85434d9a76` |
 | `code/global-complex-P-gemini-c1de/result.json` | 310,952 B | `7a6111229837c0bfe95d583c5afe62f013795b82a91f979ae9d4337a535e39d5` |

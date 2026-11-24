@@ -37,7 +37,7 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   Λ(q) < S + 3.6·10⁻⁷ for every cubic q independent of z₁ (2.1); the A-shell with independent drivers, on the whole
   box (2.2); explicit regions of the shared-driver core (2.4); the content inequality for several structured families
   (2.5); the B-shell cost and the alignment of B- and A-contents (2.7); the local joint A/B form, and the retained
-  joint premise (P) on the real aligned plane (2.8; certified globally on all of ℂ³ in 7.4.16 [author only]); the odd sectors over the zero core and over every remote core,
+  joint premise (P) for all complex shifts and both complex drivers (2.8, 7.4.16); the odd sectors over the zero core and over every remote core,
   with arbitrary sharing (2.9); the central part of the consumer, conditional on an all-sector bound, at
   ε = 299/400 the whole consumer outside (0.8165, 0.866), and by homothety transfer of the spectral mass row the
   whole consumer outside (0.795, 0.864) at ε = 3/4 and outside (0.7515, 0.863) at ε = 94/125 [author only] (2.10).
@@ -59,7 +59,7 @@ they are stated with allowance 2.5·10⁻⁵, and the largest admissible allowan
 At ε = 94/125 = 0.752 everything outside the wider central interval (0.7515, 0.863) is proved [author only], and thirteen central rows (rows 1–7 off the peak box, reaching u/λ² ≤ 0.134) admit at
 least 1.021·10⁻⁴ > 10⁻⁴ on every row (> 3.36× the binding room at ε = 299/400, with Row 8 on [0.840, 0.847] inside the proved remote and retained A-core
 rectangles; at ε = 3/4 Lean's `Lower.ρ` alone closes the exterior outside (0.795, 0.864) with nine central rows
-admitting > 7.57·10⁻⁵). The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the premises (P) (certified globally on ℂ³ in 7.4.16, author only; awaits review) and the open averaged odd-sector premise (P_Ψ)
+admitting > 7.57·10⁻⁵). The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the averaged odd-sector premise (P_Ψ) outside the certified regions
 (2.8, 2.9): three times too large for the binding rows at ε = 299/400, and below the allowance of every row at ε = 94/125,
 but only at the peak profile; each of the thirteen rows needs its own all-sector bound (open; the profile transfer costs
 ≈ 7·10⁻⁴, 8.6). With the retained functional the A-shell uses 2·10⁻⁵ of the budget; the B-shell, the joint A/B interaction and
@@ -264,8 +264,8 @@ profiles [STATUS §15].
 
     through Λ̂ (enough for the bound, 1.6):
       remote cap (3.3)  →  retained A-core, S + 2·10⁻⁵ (11.51: tilt 11.12, remainder 11.39, gain 11.40, content 11.61)
-        →  A + B core, S + 4.936·10⁻⁵ (7.4.10)            premise (P) certified globally on ℂ³ (7.4.16, author only; awaits review)
-        →  all six sectors, S + 9.9·10⁻⁵ (7.5.3)           (P) certified in 7.4.16 (author only); odd premise (P_Ψ): open
+        →  A + B core, S + 4.936·10⁻⁵ (7.4.10)            unconditional on the peak energy domain (7.4.16)
+        →  all six sectors, S + 9.9·10⁻⁵ (7.5.3)           odd premise (P_Ψ) open outside the proved regions (7.4.16, 7.5.12)
         →  consumer (8.1, 8.9–8.13)                        central rows and the Lean statement: open
 
     through Λ (Conjecture K itself):
@@ -931,10 +931,10 @@ the resulting cost widens the audited radius 1/8192 by a factor of 256 [P + C, a
 The origin, amplitude and directional exteriors also cover this radius over the 1,502 inherited boxes. Thus the
 condition ‖Im(A,B)‖₂ ≤ max(|Re A|,|Re B|)/32 suffices at **every shift and amplitude** in this frame. In particular
 the retained A+B bound S + 4936/10⁸ holds on the complex proportional-driver family described in the proof, under
-the energy caps of 7.4.10. Arbitrary phases are certified in 7.4.16 below (author only); odd sectors over the joint core remain open.
+the energy caps of 7.4.10. Section 7.4.16 covers arbitrary phases. Moderate odd energies over the joint core remain open outside the proved regions.
 [Proof and replay](sources/central-aligned-codex-a7c4/COMPLEX_PHASES.md)
 
-**Global 4D complex closure of (P) [P + C, author only · gemini-c1de · 7.4.16].** By U(1) phase rotation and
+**Global 4D complex closure of (P) [P + C · gemini-c1de, independently checked by codex-a7c4 · 7.4.16].** By U(1) phase rotation and
 conjugation symmetry, (P) reduces to w ≥ 0 and Im A ≥ 0 in ℝ⁴. On any shifted-polar partition {Q_k} of L + w = r e^{iθ}
 (where dμ = 2 r f(T) dr dθ / (2π) is C^∞ everywhere, cancelling 1/r identically), Cauchy–Schwarz weighted by √|L + w|
 yields the cell Gram upper bound U_WCS(w, v) = Σ_k 2(√(A_k(A_k + 2 b_kᵀv + vᵀM_k v)) − A_k − b_kᵀv) + Rem_tail, which
@@ -944,10 +944,10 @@ interval arithmetic. Combining (1) 448 MVT potential slabs on [0, 8] plus an exa
 shift curvature ∂_ww Rem ≥ −480 S_r, (4) 56 slabs of 3D ray-convexity cube shells on [0, 5/16] (904,850 3D boxes, 0
 open, closing s₀(w) to ‖v‖_∞ = 1/8 via the exact discriminant ((ρ − 1)/(ρ + 1))² ≤ η), and (5) 54 slabs of a 4D
 adaptive WCS bulk cover on [0, 11/8] (271,520 4D boxes, 0 open, closing s_bulk ≤ ‖v‖₂ ≤ √(3/4)) certifies (P) on all
-of ℂ³ [P + C, author only · gemini-c1de · 7.4.16]. Together with the independently reviewed conditional bridge (7.4.10),
+of ℂ³ [P + C · gemini-c1de, independently checked by codex-a7c4 · 7.4.16]. Together with the independently reviewed conditional bridge (7.4.10),
 this yields Λ̂(q + A + B) < S + 4936/10⁸ unconditionally on u ≤ 0.0463, u + V ≤ 0.080051 for arbitrary holomorphic A/B
-drivers and sharing, awaiting independent re-derivation and replay; odd sectors over general A/B cores at moderate V
-remain open. [Proof and replay](sources/global-complex-P-gemini-c1de/PROOF.md)
+drivers and sharing. On the same energy domain, the six-sector bound Λ̂(G) < S + 99·10⁻⁶ holds whenever
+W ≥ min{550V − 1241/125000, (20575/138)V − 1241/690000}. Moderate shell energy outside the established odd-sector regions remains open. [Proof](sources/global-complex-P-gemini-c1de/PROOF.md) · [independent proof check and full replay of #604](https://github.com/agalatan/grothendieck-lean/pull/604#issuecomment-7144799609)
 
 **A common cost at the A-tilt alone.** With the trial −(3/5)r_A only and h = (T − 2/5)α + z₁²·conj(β)/√2, a common
 cost 23/100 means E_{z₁}R(L + w, h) ≤ (p − 59/100)|α|² + (p − 23/100)|β|² for all complex w, α, β. It holds for |w| ≥
@@ -1072,7 +1072,7 @@ from the even margin of (P). What is proved lies around it.
   unconditional odd-dominance cone W ≥ 179V (and W ≥ 150V for recentred (P_Ψ)), and through an 18-level staircase in
   S_r and exact two-driver Gaussian tail expectations proves E F_joint(c\*) ≤ 4.9712·10⁻⁵ < 50·10⁻⁶ — hence
   Λ̂(G) < S + 99.36·10⁻⁶ < S + 10⁻⁴ for all six sectors at the peak **without assuming (P)** — for every
-  0 ≤ V ≤ 11/100000 = 1.1·10⁻⁴ [P + C, author only · gemini-c1de · 7.5.12].
+  0 ≤ V ≤ 11/100000 = 1.1·10⁻⁴ [P + C · gemini-c1de, independently checked by codex-a7c4 · 7.5.12].
 - **Tiny odd energy, a dominant odd sector, or proportional drivers** [P + C · codex-91d4 · 7.5.7]; the remote slack
   S − max(B(u) − pu, Λ(q)) exceeds 10⁻⁴ for u ≤ 0.03 [P + C · 7.2.11].
 - **Extremely diffuse laws.** A finite joint Edgeworth expansion with explicit remainder settles a box near u\*
@@ -1193,18 +1193,16 @@ ordered by what a proof of 1.402 through Λ̂ needs first; part B lists what K n
 **A. The bound through the retained functional Λ̂.** The A-sector is closed at the peak and on a profile rectangle
 around it (2.6). The route gives the same conclusion as K_η, with larger numerical margins (chapter 5).
 
-1. **The joint remainder premise (P)** of 2.8 at the peak row: **certified globally on all of ℂ³ by 7.4.16 [P + C,
-   author only · gemini-c1de]** via Weighted Cauchy–Schwarz cell Gram matrices, 3D ray-convexity cube shells, and a 4D
-   adaptive bulk cover (awaiting independent re-derivation and replay; previously reviewed pieces cover the exteriors,
-   origin profile, local boxes, and real aligned plane). *Gives:* once 7.4.16 is independently reviewed,
-   Λ̂(q + A + B) < S + 0.00004936 unconditionally on the full response domain of 7.4.10 (2.8). A second target, with no
+1. **Completed.** At the peak row the joint remainder premise (P) holds on all of ℂ³ (7.4.16, **P + C**).
+   With the bridge of 7.4.10 this gives Λ̂(q + A + B) < S + 0.00004936 throughout u ≤ 0.0463,
+   u + V ≤ 0.080051, with arbitrary sharing and phases (2.8). A second target, with no
    caps on the driver energies but with content premises that are open, is the common cost 23/100 at the A-tilt alone
    (2.8).
 2. **The odd sectors over a core with A/B shells**: remote cores are done at the peak (2.9). With A/B shells the base
    can vanish quadratically at fixed remote values, so an argument must average over the Gaussian drivers; the
    compensation of 2.9, which keeps both Q/ν channels in the conditional inequality and removes them by E Q = 0, is
    the model. The target is the averaged premise (P_Ψ) of 2.9, or the compact averaged bound of its centred joint
-   form, outside the energy region around the zero core. *Gives:* with item 1, Λ̂(G) < S + 9.9·10⁻⁵ for every G within
+   form, outside the small-energy and odd-dominance regions of 7.4.16 and 7.5.12. *Gives:* with item 1, Λ̂(G) < S + 9.9·10⁻⁵ for every G within
    the response caps at the peak (2.9).
 3. **A consumer whose rows these bounds fit** (2.10): cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. The peak bound covers t ∈ [0.84, 0.851] only. A simple

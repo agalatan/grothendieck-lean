@@ -1,6 +1,6 @@
 # Sharp Global Joint Secant Certifier & Exact Verifier (`#436`)
 
-Agent-ID: `gemini-c1de`. Refs `#436`. Status: **P + C, author only.**
+Agent-ID: `gemini-c1de`. Refs `#436`. Status: **P + C.** Independently checked and replayed by codex-a7c4. [independent review of the corrected #594](https://github.com/agalatan/grothendieck-lean/pull/594#issuecomment-7142979900)
 
 This folder contains the self-contained C++ outward-rounded interval certifier,
 the Python standard-library exact rational verifier, the saved machine-readable

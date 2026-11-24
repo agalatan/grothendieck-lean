@@ -1,7 +1,7 @@
 # Global 4D Complex Premise (P) on $\mathbb{C}^3$ via Weighted Cauchy–Schwarz Cell Gram Matrices and 3D Ray-Convexity Shells
 
 **Author:** `gemini-c1de` (Refs `#431`)  
-**Status:** **`P + C, author only`** (awaiting independent re-derivation and replay by another agent family)  
+**Status:** **P + C**, independently re-derived and replayed by codex-a7c4. [Full review of #604](https://github.com/agalatan/grothendieck-lean/pull/604#issuecomment-7144799609)
 **Target:** `STATUS.md` `7.4.10` (Open Problem #1 of Conjecture K, `STATUS.md` §15 Part A.1)  
 **Code & Certificate:** [`code/global-complex-P-gemini-c1de/`](../../code/global-complex-P-gemini-c1de/)
 
@@ -32,20 +32,20 @@ Q_w(A, B) := Q_0(A, B) + \frac{|w|^2}{2} S_r,
 B_P(w, A, B) := Q_w(A, B) + S_r^2.
 $$
 
-### Theorem 1 (Global 4D Complex Premise `(P)`) — `P + C, author only`
+### Theorem 1 (Global 4D Complex Premise `(P)`) — `P + C`
 For **every** triple $(w, A, B) \in \mathbb{C}^3$,
 $$
 \mathrm{Rem}(w, A, B) \le B_P(w, A, B) = \left(p - \frac{463}{5000}\right) S_r - \frac{67}{100}|R|^2 - \frac{2}{25}|U|^2 + \left(\frac{|w|^2}{2} + S_r\right) S_r,
 $$
 with strict inequality whenever $(A, B) \neq (0, 0)$.
 
-### Corollary 2 (Unconditional Retained Joint $A+B$ Bound on the Peak Domain) — `P + C, author only` (via Theorem 1 + independently reviewed `7.4.10`)
+### Corollary 2 (Unconditional Retained Joint $A+B$ Bound on the Peak Domain) — `P + C` (via Theorem 1 + independently reviewed `7.4.10`)
 Combining Theorem 1 with the independently re-derived and replayed conditional bridge of `STATUS.md` `7.4.10` (`P + C`, `codex-a7c4` / `claude-b9ee`, rev. `#428`), for **every** genuine remote cubic $q$ and **every** pair of holomorphic $A/B$ drivers $(r_A, r_B)$ (with arbitrary dimension and arbitrary sharing/dependence) satisfying $u = \|q\|^2 \le 0.0463$ and $u + V = \|q\|^2 + \|r_A\|^2 + \|r_B\|^2 \le 0.080051$,
 $$
 \widehat{\Lambda}(q + A + B) < S + \frac{4936}{10^8}.
 $$
 
-### Corollary 3 (Unconditional Six-Sector Cones via `7.5.3` + `7.5.12(iv)`) — `P + C, author only`
+### Corollary 3 (Unconditional Six-Sector Cones via `7.5.3` + `7.5.12(iv)`) — `P + C`
 As observed by `codex-a7c4` during the review of `#604`, combining Theorem 1 with the independently reviewed conditional six-sector assembly of `STATUS.md` `7.5.3` and the two exact affine bounds of `7.5.12(iv)` against the $49.64\cdot 10^{-6} = \frac{1241}{25000000}$ budget of $(P_\Psi)$ immediately makes the former conditional odd-dominance region unconditional on the admissible domain of `7.5.3` ($u \le 0.0463$, $u + V \le 0.080051$): whenever
 $$
 W \ge \min\!\left\{550\,V - \frac{1241}{125000},\; \frac{20575}{138}\,V - \frac{1241}{690000}\right\}
@@ -143,7 +143,19 @@ Subtracting $A_k = \int_{Q_k} |L+w|\,d\mu$ and $B_k(v) = \int_{Q_k} \mathrm{Re}(
 $$
 \sum_k \Phi(A_k, B_k(v), C_k(v)) = \sum_k v^\top\!\left(M_k - \frac{b_k b_k^\top}{A_k}\right) v + O(\|v\|^3),
 $$
-with zero $O(1)$ and zero $O(\|v\|)$ gap relative to $\mathrm{Rem}(w, v)$. On the innermost radial ring $0 \le r \le \delta_0$ around $L + w = 0$, $d\mu = c r\,dr\,d\theta + O(r^3)\,dr\,d\theta$, so $b_k^2/A_k$ recovers $\frac{3}{4}$ of the exact radial projection on that ring (leaving a radial loss of order $\delta_0$, as pointed out by `codex-a7c4`); our graded radial mesh $r_j = 3.5\,(j/n_1)^{3/2}$ makes $\delta_0$ small ($O(n_1^{-3/2})$), while the proof uses only the **exact finite-partition Cauchy–Schwarz inequality** of Lemma 2.1 with explicit outward enclosures of every $(A_k, b_k, M_k)$. Evaluating $U_{\mathrm{WCS}}(w, v)$ requires only $O(1)$ arithmetic per cell once the grid at $w$ is precomputed.
+with zero $O(1)$ and zero $O(\|v\|)$ gap relative to $\mathrm{Rem}(w, v)$.
+
+On an innermost cell $Q=[0,\delta]\times I$ with $|I|>0$, set $z_*=L^{-1}(-w)$, $c_w=f(H^{-1}(|w|^2))/\pi$ and $a(\theta)=\mathrm{Re}(e^{-i\theta}h(z_*))$ for fixed drivers. Smoothness in §1.2 gives $d\mu=(c_w r+O(r^2))\,dr\,d\theta$ uniformly in $\theta$. At $w=0$ the density remainder is $O(r^3)$. Hence
+$$
+ A_Q=\frac{c_w|I|}{3}\delta^3+O(\delta^4),\qquad
+ B_Q=\frac{c_w}{2}\delta^2\int_I a+O(\delta^3).
+$$
+The exact radial projection integrated over this cell is $c_w\delta\int_I a^2+O(\delta^2)$, by integrating $\mathrm{Re}(e^{-i\theta}h)^2/r$ against $d\mu$. When $\int_I a^2>0$, the limiting fraction recovered by $B_Q^2/A_Q$ is
+$$
+ \frac34\,\frac{(\int_I a)^2}{|I|\int_I a^2}.
+$$
+Thus $3/4$ is the radial factor. Angular averaging can lower the recovered fraction, including to zero on a sector with $\int_I a=0$. The absolute loss is $O(\delta)$ for fixed drivers. The graded mesh has $\delta=3.5/n_1^{3/2}$. The certificate uses Lemma 2.1 and outward enclosures for each cell.
+Evaluating $U_{\mathrm{WCS}}(w, v)$ requires only $O(1)$ arithmetic per cell once the grid at $w$ is precomputed.
 
 ### Lemma 2.2 (Exact Monotonicity of $\Phi$ for Outward Interval Arithmetic)
 On the domain $A > 0$, $C \ge 0$, $A + 2B + C > 0$:
