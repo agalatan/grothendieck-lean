@@ -269,14 +269,20 @@ profiles [STATUS §15].
         →  consumer (8.1, 8.9–8.13)                        central rows and the Lean statement: open
 
     through Λ (Conjecture K itself):
-      remote cap (3.3)  →  A-core by cost 6.2.1 and the content inequality (6.2.3)     content: open in general (6.3.18)
+      remote sign D(q) ≥ 0 on the class handled  →  A-core by cost 6.2.1 and the content inequality
+        C(q)² ≤ κ·D(q) (6.2.3), which already forces D(q) ≥ 0 there                    content: open in general (6.3.18)
         →  A + B core (7.4, with the constants of 7.4.2; B-content from A-content, 7.1.6)   joint bound: open
         →  odd sectors over cores with A/B shells (7.2.4)                              open
         →  consumer                                                                    open
 
 Outside both chains and proved: disjoint drivers (4.2), Theorems A and B (5.1, 5.2), the odd sectors over the zero core
-and over remote cores (5.4, 7.2.10), and the all-sector bound on an energy region around the zero core (7.5.1). Exact
-remote K, D(q) ≥ 0 (3.5, 3.6), is a separate open problem that neither chain needs at the peak.
+and over remote cores (5.4, 7.2.10), and the all-sector bound on an energy region around the zero core (7.5.1). The two
+chains use different remote inputs. The Λ̂ chain consumes the remote cap 3.3, Λ(q) < S + 3.6·10⁻⁷, whose positive
+allowance at zero driver is paid inside its displayed totals. The Λ chain needs Λ(q) ≤ S, so it cannot consume 3.3 as a
+sharp input: the strong content route 6.2.3 assumes C(q)² ≤ κ·D(q) on the class being handled, which contains D(q) ≥ 0
+there, and its weaker variant uses a priced slack η, with η = 0 for a sharp conclusion. These are premises on the class
+at hand. They are distinct from the all-energy, all-price sharp radius conjecture D(q) ≥ 0 for every q (3.5, 3.6),
+which is a separate open problem that neither chain needs in full.
 
 ## 2. What is proved
 
