@@ -2,6 +2,14 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
+The root theorem `Grothe.UpperSix.constant_le_exact` bounds the constant above by the exact rational
+$\frac{10^{27}}{711968557929438692542239077}$. With the existing lower result,
+`Grothe.Statement.main_bounds_refined` gives $1.40191<K_G^{\mathbb C}\le 1.40455641$.
+`Grothe/UpperSixExact/` changes the first polynomial and certifies six lower bounds on
+the linear coefficients alongside the mixed head. Subtracting their squared contributions
+from the six Hardy estimates gives the exact tail cost. The other five contour checks,
+the weights and the interval overlap proofs are shared with the article certificate.
+
 `Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40455741` (in Lean `140191/100000` and `140455741/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
@@ -1538,12 +1546,14 @@ the merged tree before a pull request lands.
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
-complete list; the facts fall into the following groups. The six-channel upper proof
+complete list; the facts fall into the following groups. The six-channel article upper proof
 uses the `Haagerup.Data` cell-witness and overlap-table facts (`Haagerup.Data.tcell_rows_ok`,
-`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`; its own list is `data/axioms/modes/upper-six.native.txt`),
-while its weighted head convolution (`Haagerup.head_sum_ok`), its channel disk and circle checks
-(`Haagerup.reg0_ok`–`reg5_ok`, `Haagerup.mean0_ok`–`mean5_ok`), and its rational tail comparisons
-reduce directly in the kernel.
+`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`), while its weighted head convolution (`Haagerup.head_sum_ok`),
+its six channel disk and circle checks (`Haagerup.reg0_ok`–`reg5_ok`, `Haagerup.mean0_ok`–`mean5_ok`),
+and its rational tail comparisons reduce directly in the kernel. The sharpened root endpoint
+(`Grothe/UpperSixExact/`) reuses the kernel-checked contours for channels 1–5 and adds
+`Haagerup.SixChannelExact.head_and_floors_ok`, `region_ok`, and `mean_ok` (the combined upper-six
+allowlist is `data/axioms/modes/upper-six.native.txt`).
 The single-channel upper proof uses `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.Upper.improved_high_mass_native` (the two complete high-band masses

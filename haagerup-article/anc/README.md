@@ -49,7 +49,7 @@ Every other step—including the six-channel head sum, the Hardy-space disk and 
 | proof | source |
 |---|---|
 | the matrix optima, admissible bounds, the constant and γ† | `Grothe/UpperSix/Haagerup/Statement.lean` |
-| convex transfer from the signed head and the six tail estimates | `Grothe/UpperSix/Haagerup/Transfer.lean` |
+| convex transfer from the signed head and the six tail estimates | `Grothe/UpperSix/Haagerup/Transfer.lean`, `FastHeadSound.lean` (`convex_transfer_head`) |
 | cell maps, Hermite energies and finite interval enclosures | `Grothe/UpperSix/Haagerup/CellHermite.lean`, `CellOverlap.lean`, `CellOverlapCore.lean` |
 | boundary disk positivity, circle means and infinite tails | `Grothe/UpperSix/Haagerup/SchurHardy.lean`, `TaylorHardySound.lean`, `ContourChecks/` |
 | the six-channel head sum, weights, 251 head coefficients and the budget | `Grothe/UpperSix/Haagerup/HeadCheck.lean`, `FastHeadSound.lean`, `CertCheck.lean` |
