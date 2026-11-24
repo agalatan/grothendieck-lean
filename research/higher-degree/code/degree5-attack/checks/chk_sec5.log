@@ -1,0 +1,16 @@
+row tuned at 0.79
+  s=0.0 second-order min eig 0.351 | tau=0.02: 0.351 tau=0.05: 0.352 tau=0.10: 0.356 tau=0.20: 0.371
+  s=0.2 second-order min eig 0.368 | tau=0.02: 0.366 tau=0.05: 0.367 tau=0.10: 0.370 tau=0.20: 0.383
+  s=0.4 second-order min eig 0.387 | tau=0.02: 0.387 tau=0.05: 0.388 tau=0.10: 0.390 tau=0.20: 0.398
+  s=0.6 second-order min eig 0.420 | tau=0.02: 0.420 tau=0.05: 0.422 tau=0.10: 0.419 tau=0.20: 0.411
+  s=0.8 second-order min eig 0.456 | tau=0.02: 0.441 tau=0.05: 0.415 tau=0.10: 0.369 tau=0.20: 0.273
+  s=1.0 second-order min eig 0.367 | tau=0.02: 0.356 tau=0.05: 0.338 tau=0.10: 0.311 tau=0.20: 0.278
+  s=1.3 second-order min eig 0.411 | tau=0.02: 0.409 tau=0.05: 0.407 tau=0.10: 0.410 tau=0.20: 0.435
+row tuned at 0.82
+  s=0.0 second-order min eig 0.400 | tau=0.02: 0.400 tau=0.05: 0.401 tau=0.10: 0.404 tau=0.20: 0.417
+  s=0.2 second-order min eig 0.415 | tau=0.02: 0.415 tau=0.05: 0.416 tau=0.10: 0.419 tau=0.20: 0.431
+  s=0.4 second-order min eig 0.436 | tau=0.02: 0.437 tau=0.05: 0.438 tau=0.10: 0.441 tau=0.20: 0.455
+  s=0.6 second-order min eig 0.465 | tau=0.02: 0.465 tau=0.05: 0.466 tau=0.10: 0.470 tau=0.20: 0.487
+  s=0.8 second-order min eig 0.522 | tau=0.02: 0.511 tau=0.05: 0.489 tau=0.10: 0.448 tau=0.20: 0.357
+  s=1.0 second-order min eig 0.424 | tau=0.02: 0.413 tau=0.05: 0.395 tau=0.10: 0.367 tau=0.20: 0.323
+  s=1.3 second-order min eig 0.434 | tau=0.02: 0.430 tau=0.05: 0.426 tau=0.10: 0.423 tau=0.20: 0.435

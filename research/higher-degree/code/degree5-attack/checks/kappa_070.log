@@ -1,0 +1,5 @@
+row 0.70, u = 1.61 u*, three clusters of 4 (n = 13), the bulk of ref/bulk/bulk_c4.json (kappa 1.6000):
+  ratio 0.1594   (the formula on an independent sample of 2^21 points; on the sample used for the search: 0.1587)
+  chi 1.78;  a^2 = 0.052, c sum |m_k|^2 = 0.285, s_R = 0.663;  m_k = 0.138 e^{-0.11 pi i}, 0.141 e^{-0.15 pi i}, 0.180 e^{+0.25 pi i}  [56 s]
+  the cubic in 13 variables, direct: ratio 0.1609 (two independent samples of 2^21 points: 0.1606, 0.1611); chi 1.78; response margin 0.7172 against t_lo = 0.6949 (a possible response)  [113 s]
+c = 2, R3 = z_2 <x, y> + conj(z_1) (x ^ y):  kappa = 1.3333333333  (4/3 = 1.3333333333);  the first term alone: 1.7777777778 (16/9)
