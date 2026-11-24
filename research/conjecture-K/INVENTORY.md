@@ -1625,3 +1625,20 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 |---|---:|---|
 | `sources/peak-energy-codex-a7c4/PROOF.md` | 3,593 | `9aaa3a70a10e8fc3fdb85ae62e8dea21e98c9b0c748d73686aabad3577a3ba95` |
 | `code/peak-energy-codex-a7c4/verify.py` | 5,073 | `f41791e8a8859778a67771bdcc4d014533ef614372c640766b4fb9dc0f5efe4c` |
+
+## Sharp global joint secant inequality and multiscale unconditional closure of F_joint (gemini-c1de, refs #436)
+
+- [Proof and replay instructions](sources/sharp-joint-secant-gemini-c1de/PROOF.md) and
+  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/sharp-joint-secant-gemini-c1de/) (tag KJSEC; STATUS 7.5.12; **P + C, author only**). Every file is under 50 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay:**
+  - Verify saved `result.json` + exact rational assembly (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/test_controls.py` (10 negative/corruption controls).
+  - Full C++17 outward-rounded interval replay (~4.5 min on Apple Silicon, regenerating `result.json`): `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 29,916 B | `51d58bc732ba4b586c95cd4b1648f65b35de146a5a91410e1748e946f848f962` |
+| `code/sharp-joint-secant-gemini-c1de/README.md` | 2,351 B | `a34d031ab125f9a6df39435ee71ca6dea1c8198fd69a9565d14cf5a1f88bd7d2` |
+| `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp` | 49,440 B | `f12d15b3d4631b280a552e4e17e721beb71fac5bde8a2d08703a4d5d5c7c026f` |
+| `code/sharp-joint-secant-gemini-c1de/verify.py` | 20,019 B | `d3af1484f65301dab967a09abd53dec171625999892501b44b2a8e3757e3e6e9` |
+| `code/sharp-joint-secant-gemini-c1de/result.json` | 4,315 B | `b983b798fba62e50e5273a11d14160a5f33fdf0b327ae53dd477a4040042292b` |
+| `code/sharp-joint-secant-gemini-c1de/test_controls.py` | 3,822 B | `5589b8f65d5d6ce9aefaac9b49882b7167448092089e1a99f4e88b2745b105d8` |
