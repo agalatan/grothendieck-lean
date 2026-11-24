@@ -1,0 +1,128 @@
+{
+  "agent_id": "gemini-21d5",
+  "gate1_ast_audit": {
+    "ast_zero_float": true,
+    "line_count": 1088
+  },
+  "gate2_four_square_identity": {
+    "checked_dims": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "sharp_cases": {
+      "c=1": {
+        "e4": "8",
+        "kappa": "1",
+        "m2": "1"
+      },
+      "c=2": {
+        "e4": "72",
+        "kappa": "4/3",
+        "m2": "4"
+      },
+      "c=4": {
+        "e4": "800",
+        "kappa": "8/5",
+        "m2": "16"
+      }
+    }
+  },
+  "gate3_quantitative_hurwitz_gap": {
+    "eps0": "1/16",
+    "odd_c_gaps": {
+      "c=11": {
+        "certified_lower_bound": "71368711/38928384",
+        "delta_c": "7/38928384",
+        "floor": "11/6"
+      },
+      "c=3": {
+        "certified_lower_bound": "294913/196608",
+        "delta_c": "1/196608",
+        "floor": "3/2"
+      },
+      "c=5": {
+        "certified_lower_bound": "1228801/737280",
+        "delta_c": "1/737280",
+        "floor": "5/3"
+      },
+      "c=7": {
+        "certified_lower_bound": "3211265/1835008",
+        "delta_c": "1/1835008",
+        "floor": "7/4"
+      },
+      "c=9": {
+        "certified_lower_bound": "5529601/3072000",
+        "delta_c": "1/3072000",
+        "floor": "9/5"
+      }
+    },
+    "polar_lhs_upper_bound": "421390358777521/450868486864896"
+  },
+  "gate4_c3_algebraic_construction": {
+    "a0_dec16": [
+      "0.8580943294965527",
+      "0.8580943294965528"
+    ],
+    "kappa_star_3_dec16": [
+      "1.5800204772465800",
+      "1.5800204772465801"
+    ],
+    "rational_witnesses": {
+      "127/148": {
+        "gap_above_algebraic_opt_ceil": "0.0000000000385738",
+        "kappa_dec16_ceil": "1.5800204772851538",
+        "kappa_exact": "275200228539/174175102472"
+      },
+      "43/50": {
+        "gap_above_algebraic_opt_ceil": "0.0000007380848413",
+        "kappa_dec16_ceil": "1.5800212153314213",
+        "kappa_exact": "3588402627/2271110408"
+      }
+    }
+  },
+  "gate5_block_constructions_and_C_opt": {
+    "c=10": {
+      "C_val": "99380/65219",
+      "dec16": "1.8476210920130637",
+      "kappa": "120500/65219"
+    },
+    "c=5": {
+      "C_val": "755/513",
+      "dec16": "1.7056530214424952",
+      "kappa": "875/513",
+      "rational_convergent_265_153": "9110106865625/5341125510747"
+    },
+    "c=6": {
+      "C_val": "2148/1421",
+      "dec16": "1.7480647431386348",
+      "kappa": "2484/1421",
+      "rational_convergent_2889_1292": "1084158438052563/620204967984175"
+    },
+    "c=7_coupled_rational": {
+      "dec16_ceil": "1.7960135779517026",
+      "disjoint_R4_R3_floor_dec16": "1.7981048730360098",
+      "kappa": "90370589404268985/50317319709427712"
+    },
+    "c=8": {
+      "C_val": "1168/729",
+      "C_val_dec16_floor": "1.6021947873799725",
+      "dec16": "1.7997256515775035",
+      "e4": "2624",
+      "kappa": "1312/729",
+      "m2": "32",
+      "margin_above_8_over_5": "8/3645"
+    },
+    "c=9": {
+      "C_val": "6579/4375",
+      "dec16": "1.8329142857142858",
+      "kappa": "8019/4375"
+    }
+  },
+  "gate6_negative_controls": {
+    "negative_controls_passed": 6
+  },
+  "issue": 507
+}
