@@ -225,7 +225,7 @@ The family $\{h_{a,b}\}_{a,b\ge0}$ is an orthonormal basis of $L^2(\C,\gamma_{\C
 \end{equation}
 where $L_n^{(\alpha)}$ is the generalized Laguerre polynomial. The integer $m=a-b$ is the \emph{charge} of $h_{a,b}$: $h_{a,b}(cz)=c^{m}h_{a,b}(z)$ for $|c|=1$. The charge-one polynomials are $h_{k+1,k}(z) = (-1)^k z\,L_k^{(1)}(|z|^2)/\sqrt{k+1}$; up to the signs $(-1)^k$ this is the basis used in~\cite{HJM26}.
 
-If $(X,Y)$ is a centered, jointly complex Gaussian pair with $\E|X|^2=\E|Y|^2=1$, $\E[XY]=0$ and $\E[\bar X Y]=\rho\in\overline{\D}$, then Mehler's formula reads
+Let $(X,Y)$ be a centered, jointly Gaussian pair of proper complex variables: $\E[X^2]=\E[Y^2]=\E[XY]=0$, so that each of $X$, $Y$ has law $\gamma_\C$ once $\E|X|^2=\E|Y|^2=1$. If $\E[\bar X Y]=\rho\in\overline{\D}$, then Mehler's formula reads
 \begin{equation}\label{eq:mehler}
   \E\big[\overline{h_{a,b}(X)}\,h_{a',b'}(Y)\big] \;=\; \delta_{a,a'}\,\delta_{b,b'}\;\rho^{a}\,\bar\rho^{\,b}.
 \end{equation}
@@ -485,7 +485,7 @@ By Proposition~\ref{prop:nogo}, the slope of the mixture is at most $W(H)=\sum_p
 \[
   0.711968053 \;<\; c_{\mathrm{cert}}-\delta_{\mathrm{cert}} \;\le\; D(H) \;\le\; W(H) \;<\; 0.711975481 .
 \]
-So the certified slope is within $7.5\times10^{-6}$ of the alternating ceiling of these six channels, and most of that difference is the nonlinear head sum $6.16\times10^{-6}$. A better bound from the same rounding maps would need more channels to cancel the head; a substantially better bound needs rounding maps with a larger alternating sum.
+So the certified slope is within $7.5\times10^{-6}$ of the alternating sum of this mixture, and most of that difference is the nonlinear head sum $6.16\times10^{-6}$. This comparison concerns the mixture of Table~\ref{tab:cert} only: $W(H)$ and the head sum both depend on the weights and on the preprocessors, and other choices for the same six maps can lower the head sum; we did not try to optimise them further. What Proposition~\ref{prop:nogo} gives for every mixture of these maps, with preprocessors normalised as in Table~\ref{tab:cert} ($P(-1)=Q(-1)=1$, respectively $R(-1)=1$), is $D(H)\le\max_p W(h^{(p)})<0.712901282245$. A slope above that value needs rounding maps with a larger alternating sum.
 
 \subsection{Open questions}
 \begin{enumerate}
