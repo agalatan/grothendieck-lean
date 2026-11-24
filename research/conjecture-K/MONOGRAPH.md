@@ -1046,6 +1046,10 @@ radius gives W ≤ 1/3000000 for every admissible core, with arbitrary sharing a
 The real projection of the rotated core is a constant plus one cosine. Its sharp angular sublevel estimate gives
 $\mathbb E\Psi(X,O)-pW\le (9/20)W+(71/20)W^{3/4}$ [P + C · independently re-derived and replayed by claude-b9ee and gemini-c1de · 7.5.4a]. [Proof and exact replay](sources/angular-odd-strip-codex-a7c4/PROOF.md)
 
+The radial weight $g(t)=\sqrt{t/(a+bt)}$ is concave. Two integrations by parts give
+$\mathbb E[g(T)((T-2)^2/2-1)]\le0$, cancelling the extra cost of the odd radial mode. This lowers the coefficient of $W^{3/4}$ to $109/40$ and extends the strip to $W\le1/2100000$.
+Across visible radii the phase tangency is controlled by a cubic. Its real sublevel lengths also give $\mathbb E\Psi(X,O)\le37000W^{11/12}$, a stronger power at the origin. A conditional zero circle makes the odd increment at least of order $h^2\log(1/h)$ for a perpendicular odd field of amplitude $h$. A linear estimate in the odd energy must therefore use more information about the remote law [P + C · author only · 7.5.4b]. [Radial estimate and exact replay](sources/radial-phase-power-codex-a7c4/PROOF.md)
+
 The particular cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of
 about six near u\* [7.5.5]. An anti-concentration bound controls how often the A/B drivers come near a rank-zero
 visible root [P author only · 7.5.4], but rank-one zero curves, and a value defect that vanishes identically outside
@@ -1055,7 +1059,7 @@ mean. Under the caps u ≤ 0.0463 and u + V ≤ 0.080051 it reduces the target t
 F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds when W < 1/50), also when S_r ≥ 11/5 or ω ≥ 4
 [P + C · codex-91d4, re-derived and replayed by claude-b9ee · 7.5.6].
 
-**Pieces of the case with A/B shells.** For moderate V near u\*, row 7.5.4a covers small odd energy uniformly. The averaged odd premise remains open at larger W outside the small-shell estimates below.
+**Pieces of the case with A/B shells.** For moderate V near u\*, rows 7.5.4a–b cover small odd energy uniformly. The averaged odd premise remains open at larger W outside the small-shell estimates below.
 
 - **A cut on the drivers.** Two Gaussian drivers satisfy Pr(S_r ≥ xV) ≤ e^{−x} for x ≥ 3, and (F_joint)₊ ≤ 2.198, so
   the joint obligation can be restricted to S_r ≤ 16V at a cost below 2.5·10⁻⁷; near u\* this means S_r ≤ 0.641
