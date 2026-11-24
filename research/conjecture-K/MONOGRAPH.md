@@ -1041,8 +1041,12 @@ secant is bounded by Ψ(X, H) = 2(√(|X|² + |H|²) − |X|) − (Re X·conj H)
 
 with X = L + E + (3/5)R, would give Λ̂(G) < S + 99·10⁻⁶ for every G at the peak with u ≤ 0.0463 and u + V ≤ 0.080051
 [P + C · 7.5.3]. In its secant form (P_Ψ) holds for every core without A/B shells (7.2.10); with A/B shells it is
-open. It holds for odd energy below 6.16·10⁻¹⁰ [P author only · 7.5.4], every numerical test supports it, and the
-particular cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of
+open outside the regions below. The elementary estimate gives W ≤ 6.16·10⁻¹⁰ (7.5.4). Conditioning on the visible
+radius gives W ≤ 1/3000000 for every admissible core, with arbitrary sharing and any allowed shell energy V.
+The real projection of the rotated core is a constant plus one cosine. Its sharp angular sublevel estimate gives
+EΨ(X,O) − pW ≤ (9/20)W + (71/20)$W^{3/4}$ [P + C, author only · 7.5.4a]. [Proof and exact replay](sources/angular-odd-strip-codex-a7c4/PROOF.md)
+
+The particular cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of
 about six near u\* [7.5.5]. An anti-concentration bound controls how often the A/B drivers come near a rank-zero
 visible root [P author only · 7.5.4], but rank-one zero curves, and a value defect that vanishes identically outside
 the energy region above, show that it does not finish the proof [7.5.5]. A centred joint form compares the A/B and odd
