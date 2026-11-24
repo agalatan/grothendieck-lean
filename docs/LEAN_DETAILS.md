@@ -1270,14 +1270,18 @@ V̂ ≤ t² − 2ℓt + C − ε̂‖Qh + (β/ε̂)v‖², C = 2β²/ε̂ + cap 
 `Row.env`).
 
 **The mass row.** `massRow_frame` (`Grothe/LowerAnalytic/MassRowFrame.lean`) proves, for a unimodular pair and
-λ = 1/2, V̂ ≤ (1 − λ)t² + λ + S − ε̂‖Qh‖² with S = `massS` = 0.165606335315… (`Grothe/Lower/MassFacts.lean`), from
+λ = 1/2, V̂ ≤ (1 − λ)t² + λ + S − ε̂‖Qh‖² with S = `massS` = 0.165606335315… (`Grothe/Lower/MassNodes.lean`), from
 three facts: ‖k‖² ≤ 1 − t² (`normSq_kOf_le`); 2ε̂‖q‖² − c‖k‖² ≤ E φ_c(|q|) for q = P₂,₁k and c = 2ν̂ + λ (`massC`),
 where φ_c(r) = ε̂²r²/c for r ≤ c/ε̂ and 2ε̂r − c beyond is the supremum of 2ε̂ry − cy² over 0 ≤ y ≤ 1
 (`twice_normSq_QkOf_le`, `phiMass_ge`); and the law bound E φ_c(|q|) − ε̂‖q‖² ≤ S (`integral_phiMass_QkOf_le`).
-The mass row has the explicit potential Ψ(s) = φ_c(4s/3). `massNodes` pairs each radius of `massRow` with
-the exact rational value of Ψ at that radius. `massCapsOK` gives equality for every entry by construction,
-and `massCaps` supplies convexity, the node bounds and the Lipschitz estimate. The spectral cell check uses
-the same table (`certMassRow : checkSpecCells massRow massNodes = true`). Since κδ² ≤ ε̂, the row bound
+At witness scale τ, the mass potential is Ψ(τv) = φ_c(τv/δ), with δ = 3/4 and v = √U.
+It is quadratic up to v = cδ/(ε̂τ) and affine beyond. On each interval of the spectral mesh,
+`massWitOK` checks a polynomial majorant against the applicable branch and the polynomial for the
+separate spectral cut. It splits the interval at the breakpoint when needed and checks the last
+half-line with a Taylor bound. `massWit_tb` integrates each checked majorant using the spectral
+Stein inequality. The 24 witnesses are shared across 21 bands covering the fourth-moment parameter
+0 ≤ x ≤ 31/4. Within each band, convexity bounds the expectation at intermediate scales by chords.
+Lean checks the witnesses and the chord cover in its kernel. Since κδ² ≤ ε̂, the row bound
 at δσ gives `mass_law_bound` for every 0 ≤ σ ≤ ρ, and ‖q‖ ≤ ρ (`normQk_le_rho`). The tangents of the mass row are scalar rows: (λm, 0, λ + S + λm²) for every m
 (`massTangent`, `rowOf_massTangent`, `Grothe/Lower/Envelope.lean`).
 
@@ -1311,8 +1315,7 @@ certificates, the generated modules, their data and their cost are described in 
   on L²(γ_n) with its value on z/‖z‖, the orthogonality of the chaos ranges, the polarisation identity in hat
   units, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1 (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2))
   and the transfer inputs from the scalar caps. The single-threaded native computations cover
-  the row checks `certRowSS` (`Grothe/Lower/Cert/`), the mass row's spectral check `certMassRow`, and the
-  node-cap facts. The complete allowlist is `data/axioms/native.txt`. [Node-cap certificates](CAPS.md).
+  the row checks `certRowSS` (`Grothe/Lower/Cert/`) and the node-cap facts. The complete allowlist is `data/axioms/native.txt`. [Node-cap certificates](CAPS.md).
 * Inputs of `profile_bound` (all of them are derived in Lean: the shared reduction by `reductionHyp_of_nodeCaps`
   from the node caps, which `tailNodeCaps_cert` proves, and the mass row by `massRow_frame`): ‖v‖² = 2 and
   0 ≤ t ≤ 9/10; the mass row V̂ ≤ (1 − λ)t² + λ + S − ε̂‖Qh‖² (`hmass`); the simultaneous Gaussian reduction of the
@@ -1528,15 +1531,17 @@ integrates the squared correlation `HardyArcCover.gF` over both charts, and
 | `Law`, `Moment`, `Stein`, `Cuts`, `Gram`, `Poly`, `Basic` | the law of the normalised residual (`Moments`, `SteinCut`); the summed, spectral and budget-shifted Stein cuts, their test functions and polynomial pieces; the law budgets a spectral node may cite (`GBud`); exact polynomial arithmetic and Bernstein positivity |
 | `Sweep`, `Rows`, `Mixed`, `SpecRows` | the majorant sweeps of a capped convex potential; the row checker with Stein nodes (`checkRow`, `rowBound_of_check`); spectral witnesses (`SWit`, `checkSWit`); the row checker with spectral nodes (`checkSpecCells`, `checkSpecRow`) and `RowFacts` |
 | `Gate`, `RowReduction`, `Support` | the retained gate square and its completion with a fixed first coordinate; the per-row Gaussian reduction (`VhatOf_frame`); `SharedReduction` and `rowOf_of_shared` |
-| `MassRow`, `MassNodes`, `MassFacts` | the mass row λ = 1/2, its exact node values (`massNodes`, `massCapsOK`), and its law bound (`phiMass`, `massCaps`, `mass_law_bound`) |
+| `MassRow`, `MassNodes`, `MassPotential` | the mass-row parameters, the explicit potential (`phiMass`) and its convexity |
+| `MassWitnessData`, `MassWitness`, `MassCover`, `MassFacts` | the shared spectral witnesses, the polynomial majorants, the cover by chords and the integrated bound `mass_law_bound` |
 | `Envelope`, `EnvelopeData` | scalar rows and their mixtures, the typed cell checker `checkEnvCells` and its soundness theorem `env_bound_of_cells`, generated `envCells` and `envB` |
-| `Cert/Row01`–`Cert/Row14`, `Cert/MassRow`, `Cert/Envelope`, `Cert/Rows` | native row checks `certRowSS` and `certMassRow`, kernel-checked envelope `certEnvelope`, and `rowData_facts` |
+| `Cert/Row01`–`Cert/Row14`, `Cert/Rows` | native row checks `certRowSS` and their assembly `rowData_facts` |
+| `Cert/MassWitnesses`, `Cert/MassRow`, `Cert/Envelope` | kernel checks of the spectral witnesses and their chord cover (`certMassRow`), and of the final envelope (`certEnvelope`) |
 | `TransferFinite`, `TransferL2`, `Transfer` | the transfer from the Gaussian witness to finite matrices (`transfer_lower`) |
 
 **`Grothe/Lower/SpecRows`: rows with spectral nodes.** The row checker of `Rows.lean` with spectral witnesses
 (`SWit`, checked by `checkSWit` against the row's node table) and the zero node in place of Stein nodes; chords and
-prices as in `checkRow`. `checkSpecCells` gives `RowBound` (`rowBound_of_specCells`; all that a row without gates
-needs, the mass row), `checkSpecRow` adds the gate and the price of `checkRow`, and `RowFacts` (gate, price,
+prices as in `checkRow`. `rowBound_of_specCells` turns `checkSpecCells` into `RowBound`.
+`checkSpecRow` adds the gate and the price of `checkRow`, and `RowFacts` (gate, price,
 `RowBound`) follows from either check (`rowFacts_of_checkRow`, `rowFacts_of_checkSpecRow`). Cells are strings
 `xlo#xhi#rects#nodes`, a node `0` or a witness string. A witness may cite a contraction-Gram, coupled or joint
 budget (`GBud`; the joint kind is checked by `jointCert` and connected to the actual cubic by
@@ -1562,10 +1567,14 @@ the merged tree before a pull request lands.
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
-complete list; the facts fall into the following groups. The six-channel upper proof
-uses the facts in the `Haagerup` namespace (`Haagerup.Data.tcell_rows_ok`, `tcell_sos_ok`,
-`tig_mu_ok`, `tig_sos_ok`, `Haagerup.head_sum_ok`, `Haagerup.mean0_ok`–`mean5_ok`,
-`Haagerup.reg0_ok`–`reg5_ok`; its own list is `data/axioms/modes/upper-six.native.txt`).
+complete list; the facts fall into the following groups. The six-channel article upper proof
+uses the `Haagerup.Data` cell-witness and overlap-table facts (`Haagerup.Data.tcell_rows_ok`,
+`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`), while its weighted head convolution (`Haagerup.head_sum_ok`),
+its six channel disk and circle checks (`Haagerup.reg0_ok`–`reg5_ok`, `Haagerup.mean0_ok`–`mean5_ok`),
+and its rational tail comparisons reduce directly in the kernel. The sharpened root endpoint
+(`Grothe/UpperSixExact/`) reuses the kernel-checked contours for channels 1–5 and adds
+`Haagerup.SixChannelExact.head_and_floors_ok`, `region_ok`, and `mean_ok` (the combined upper-six
+allowlist is `data/axioms/modes/upper-six.native.txt`).
 The single-channel upper proof uses `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.Upper.improved_high_mass_native` (the two complete high-band masses
@@ -1583,8 +1592,7 @@ energy-table facts `UpperQuad.Facts.gradeBlockNN`, `evenCheck` and
 `omittedCheck`, the ellipse shards `UpperQuad.EllCheck.shardNN` of the energy
 quadrature, the port facts `UpperQuad.PortFacts.jN…` of the three Taylor powers
 and the twisted ellipse facts `UpperQuad.TwistEllCheck.Facts.jN…`.
-The lower-bound facts are the row checks `Grothe.Lower.certRowSS`, the mass row's
-spectral cell check `certMassRow`,
+The lower-bound native facts are the row checks `Grothe.Lower.certRowSS`
 and the node-cap facts in `Grothe.LowerAnalytic`: the range facts `rowKKAnchorRangeJJ`
 of the whole-fibre nodes, the coverage facts `pieceCover_KKx<i>` and the piece facts
 `pieceRange_KKx<i>_<J>` of the localised nodes, and the chord facts `chordsOKRowKK`.

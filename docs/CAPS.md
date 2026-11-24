@@ -32,9 +32,9 @@ these are theorems. The node caps are the remaining finite information:
 * `lower_target` (`Grothe/MainResult.lean`) is `lowerTarget_of_tailNodeCaps tailNodeCaps_cert`. The hypothesis enters
   through `lower_bound_of_tailNodeCaps`, `witnessCap_cert` and the shared reduction `reductionHyp_of_nodeCaps`.
 
-The mass row has an explicit potential. Its table `massNodes` pairs each tabulated radius with the exact
-rational value of that potential. `massCapsOK` proves the resulting equality for every entry, and the
-spectral cell check uses this same table. [Mass nodes](../Grothe/Lower/MassNodes.lean).
+The mass row uses the explicit quadratic and affine branches of its potential. Lean checks the spectral
+majorant on each branch, then checks the chords between certified scales throughout the fourth-moment
+range. Both checks run in the kernel. [Mass row](../Grothe/Lower/Cert/MassRow.lean).
 
 ## The tables
 

@@ -1,5 +1,5 @@
 import Grothe.Lower.AffineEnvelope
-import Grothe.Lower.MassFacts
+import Grothe.Lower.MassNodes
 import Grothe.Lower.RowData
 
 set_option warningAsError true

@@ -13,6 +13,7 @@ import Grothe.Lower.AffineEnvelope
 import Grothe.Lower.Basic
 import Grothe.Lower.Cert.Envelope
 import Grothe.Lower.Cert.MassRow
+import Grothe.Lower.Cert.MassWitnesses
 import Grothe.Lower.Cert.Row01
 import Grothe.Lower.Cert.Row02
 import Grothe.Lower.Cert.Row03
@@ -35,9 +36,13 @@ import Grothe.Lower.EnvelopeData
 import Grothe.Lower.Gate
 import Grothe.Lower.Gram
 import Grothe.Lower.Law
+import Grothe.Lower.MassCover
 import Grothe.Lower.MassFacts
 import Grothe.Lower.MassNodes
+import Grothe.Lower.MassPotential
 import Grothe.Lower.MassRow
+import Grothe.Lower.MassWitness
+import Grothe.Lower.MassWitnessData
 import Grothe.Lower.Mixed
 import Grothe.Lower.Moment
 import Grothe.Lower.Poly
@@ -4750,6 +4755,7 @@ import Grothe.UpperSix.Haagerup.ContourChecks.Channel5
 import Grothe.UpperSix.Haagerup.Data.OverlapData
 import Grothe.UpperSix.Haagerup.Data.TCellData
 import Grothe.UpperSix.Haagerup.Data.TigerData
+import Grothe.UpperSix.Haagerup.FastHeadSound
 import Grothe.UpperSix.Haagerup.GammaDagger
 import Grothe.UpperSix.Haagerup.GaussianCore
 import Grothe.UpperSix.Haagerup.HeadCheck
@@ -4761,13 +4767,16 @@ import Grothe.UpperSix.Haagerup.SmoothedEnergy
 import Grothe.UpperSix.Haagerup.SmoothedMidpoints
 import Grothe.UpperSix.Haagerup.SmoothedRows
 import Grothe.UpperSix.Haagerup.Statement
+import Grothe.UpperSix.Haagerup.TaylorHardySound
 import Grothe.UpperSix.Haagerup.Transfer
 import Grothe.UpperSix.HaagerupKernel
 import Grothe.UpperSix.HaagerupKernel.Basic
 import Grothe.UpperSix.HaagerupKernel.CellKernel
+import Grothe.UpperSix.HaagerupKernel.FastHead
 import Grothe.UpperSix.HaagerupKernel.Hardy
 import Grothe.UpperSix.HaagerupKernel.SmoothedStages
 import Grothe.UpperSix.HaagerupKernel.Table
+import Grothe.UpperSix.HaagerupKernel.TaylorHardy
 import Grothe.UpperSixExact.Bound
 import Grothe.UpperSixExact.Contour
 import Grothe.UpperSixExact.Head

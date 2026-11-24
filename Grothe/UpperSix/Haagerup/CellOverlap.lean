@@ -51,21 +51,23 @@ private theorem entry_mem {cr ci qr qi : Array Int} {ct st se ce : ℝ}
   intro p hp
   exact smoothedTerms_sound hk hdm (hg k hk) hb hb' hgood p hp
 
-/-- The checked rows enclose every smoothed-channel head coefficient through index 250. -/
-theorem mem_bivarT_smoothed {creArr cimArr qreArr qimArr : Array Int}
+/-- The checked rows enclose every nonzero smoothed-channel mode overlap in `headIdx 501`. -/
+theorem smoothedRowsCheck_table_sound {creArr cimArr qreArr qimArr : Array Int}
     (hsos : sosAllOK creArr cimArr qreArr qimArr = true)
     {cn sn chyp se ce ehyp : ℕ}
     (hd : ((cn : ℝ) / chyp) ^ 2 + ((sn : ℝ) / chyp) ^ 2 = 1)
     (he : ((se : ℝ) / ehyp) ^ 2 + ((ce : ℝ) / ehyp) ^ 2 = 1)
     {rows : List RowI}
-    (hcheck : smoothedRowsCheck creArr cimArr cn sn chyp se ce ehyp rows = true)
-    {P Q : ℝ[X]} {PI QI : List Ival}
-    (hQ0 : Q.coeff 0 = 0) (hP : memB 251 P PI) (hQ : memB 251 Q QI) :
+    (hcheck : smoothedRowsCheck creArr cimArr cn sn chyp se ce ehyp rows = true) :
     let ct := (cn : ℝ) / chyp; let st := (sn : ℝ) / chyp
     let seR := (se : ℝ) / ehyp; let ceR := (ce : ℝ) / ehyp
     let G := (memLp_smoothMap ct st seR ceR (measurable_cellFn creArr cimArr)
       (norm_cellFn_le hsos)).toLp (smoothMap ct st seR ceR (cellFn creArr cimArr))
-    ∀ j < 251, mem (bivarKernel P Q (energy G) j) ((bivarT 251 rows PI QI 501 167).getD j zeroI) := by
+    (∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → energy G p = 0) ∧
+    (flatIdx rows).Nodup ∧
+    (∀ p ∈ flatIdx rows, p ∈ headIdx 501) ∧
+    (∀ p ∈ headIdx 501, p ∉ flatIdx rows → energy G p = 0) ∧
+    (∀ r ∈ rows, r.1 ≤ 167 ∧ ∀ e ∈ r.2, e.1 ≤ 501 ∧ mem (energy G (e.1, r.1)) e.2) := by
   let ct := (cn : ℝ) / chyp
   let st := (sn : ℝ) / chyp
   let seR := (se : ℝ) / ehyp
@@ -115,12 +117,9 @@ theorem mem_bivarT_smoothed {creArr cimArr qreArr qimArr : Array Int}
   have shape := flatIdx_ofFn_props (M := 168) rfl hrows (fun m t => congrArg Prod.fst
     (smoothedEntry_eq b400 ks (1-m.val%2+2*t.val) m.val))
   obtain ⟨hnod,hiff,hrow⟩ := shape
-  apply mem_bivarT_of_table (N := 501) (K := 251) (NZ := 501) (MW := 167)
-    (by omega) hQ0 hP hQ (energy G) hpar hnod (fun p hp => ((hiff p).1 hp).2)
-    (fun p hp hn => hpar p (by
+  refine ⟨hpar, hnod, fun p hp => ((hiff p).1 hp).2, fun p hp hn => hpar p (by
       have : (p.1+p.2)%2 ≠ 1 := fun h => hn ((hiff p).2 ⟨h,hp⟩)
-      omega))
-  intro r hr
+      omega), fun r hr => ?_⟩
   obtain ⟨hd2,ent⟩ := hrow r hr
   refine ⟨hd2,fun e he' => ?_⟩
   obtain ⟨hle,m,t,heq,rfl⟩ := ent e he'
@@ -138,6 +137,25 @@ theorem mem_bivarT_smoothed {creArr cimArr qreArr qimArr : Array Int}
   have ho : (d1+d2)%2 = 1 := by dsimp only [d1]; omega
   exact entry_mem hd he hsos hdeg ho
     (fun _ hk _ ha _ hb => gammaLookup_sound hv hg hk (by omega) (by omega)) bs.1 bs.2 hk
+
+/-- The checked rows enclose every smoothed-channel head coefficient through index 250. -/
+theorem mem_bivarT_smoothed {creArr cimArr qreArr qimArr : Array Int}
+    (hsos : sosAllOK creArr cimArr qreArr qimArr = true)
+    {cn sn chyp se ce ehyp : ℕ}
+    (hd : ((cn : ℝ) / chyp) ^ 2 + ((sn : ℝ) / chyp) ^ 2 = 1)
+    (he : ((se : ℝ) / ehyp) ^ 2 + ((ce : ℝ) / ehyp) ^ 2 = 1)
+    {rows : List RowI}
+    (hcheck : smoothedRowsCheck creArr cimArr cn sn chyp se ce ehyp rows = true)
+    {P Q : ℝ[X]} {PI QI : List Ival}
+    (hQ0 : Q.coeff 0 = 0) (hP : memB 251 P PI) (hQ : memB 251 Q QI) :
+    let ct := (cn : ℝ) / chyp; let st := (sn : ℝ) / chyp
+    let seR := (se : ℝ) / ehyp; let ceR := (ce : ℝ) / ehyp
+    let G := (memLp_smoothMap ct st seR ceR (measurable_cellFn creArr cimArr)
+      (norm_cellFn_le hsos)).toLp (smoothMap ct st seR ceR (cellFn creArr cimArr))
+    ∀ j < 251, mem (bivarKernel P Q (energy G) j) ((bivarT 251 rows PI QI 501 167).getD j zeroI) := by
+  obtain ⟨hpar, hnod, hsub, hcov, hrow⟩ := smoothedRowsCheck_table_sound hsos hd he hcheck
+  exact mem_bivarT_of_table (N := 501) (K := 251) (NZ := 501) (MW := 167)
+    (by omega) hQ0 hP hQ _ hpar hnod hsub hcov hrow
 
 end
 end Haagerup
