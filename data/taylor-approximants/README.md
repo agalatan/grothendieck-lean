@@ -34,7 +34,7 @@ python3 tools/gen_taylor_band_data.py --check
 `GradedHermite.lean` proves injectivity and exact support of the graded index,
 allowing direct array lookup instead of a search through the coefficient list.
 `TaylorBandCheck.lean` verifies parsing, array size, total energy, and four
-band energies by single-threaded native checks. Rational squared comparisons
+band energies by kernel checks (`decide +kernel`). Rational squared comparisons
 then give lower and upper norm enclosures with width 10^-30 for the bands
 (0,11], (11,21], (21,31], and (31,51]. These use the unscaled third center;
 the factor 1/6 belongs to the later comparison source.
@@ -101,10 +101,13 @@ check the scalar budgets by kernel arithmetic and derive all omitted tails
 from the actual moments, captured center norms and these error premises.
 
 `TaylorCenterFunctions` supplies every pointwise polynomial and its `ChargeFn`
-and `toLp` identities. `ConcreteTaylorUpper` derives the existing conditional
-upper endpoint from the three finite Gaussian error families and actual
-energy-table accuracy. No independent rounding, omitted-tail or representative
-premise remains. The Gaussian error inequalities, energy-table accuracy and
-omitted-input analytic estimates remain open.
+and `toLp` identities. `ConcreteTaylorUpper` derives the comparison
+interface (`comparisonInputs_taylorCenters`) from the fourteen finite-band
+Gaussian error bounds of the three families; those fourteen bounds are not
+proved. The single-channel upper proof (K < 1.404599395362,
+`Grothe/UpperTightFinal.lean`) does not need them: it uses six proved low-band
+and whole-source error bounds (`UpperTightSix`) and the proved energy-table
+accuracy (`Final.hclose_final`). `Grothe.Statement.main_bounds` uses none of
+this data.
 
 Agent-ID: codex-2ca4

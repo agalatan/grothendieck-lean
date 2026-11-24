@@ -1,6 +1,6 @@
 # Partial interior certificate for (P)
 
-Agent-ID: codex-a7c4. Refs #431. **P + C, author only**; independent review pending.
+Agent-ID: codex-a7c4. Refs #431. **P + C**; re-derived and replayed by claude-b9ee (rev. #437; `../../STATUS.md` §0, tag KINT).
 
 This package proves the uniform small-amplitude strip, the origin neighborhood,
 the critical five-parameter box, and stronger nonlinear exteriors in [the proof](../../sources/compact-joint-2026-11-15-codex-a7c4/PROOF.md).

@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""Tests of scripts/check_constants.py on small synthetic repositories."""
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import check_constants as cc  # noqa: E402
+
+MAIN = """theorem main_bounds :
+    (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
+      complexGrothendieckConstant ≤ 140457588 / 100000000 := by
+"""
+STATEMENT = "def LowerTarget : Prop := LowerAbove (140191 / 100000)\n"
+GOOD = "We prove 1.40191 < K ≤ 1.40457588, that is `140191 / 100000` and `140457588 / 100000000`.\n"
+
+
+def make(root: Path, main=MAIN, statement=STATEMENT, docs=None):
+    files = {"Grothe/MainResult.lean": main, "Grothe/Statement.lean": statement}
+    for rel in cc.QUOTING:
+        files[rel] = GOOD
+    files.update(docs or {})
+    for rel, text in files.items():
+        path = root / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+
+
+class CheckConstants(unittest.TestCase):
+    def run_check(self, **kwargs):
+        with tempfile.TemporaryDirectory() as tmp:
+            make(Path(tmp), **kwargs)
+            return cc.check(Path(tmp))
+
+    def test_decimal(self):
+        self.assertEqual(cc.decimal(140191, 100000), "1.40191")
+        self.assertEqual(cc.decimal(140457588, 100000000), "1.40457588")
+        self.assertEqual(cc.decimal(14046, 10000), "1.4046")
+        self.assertEqual(cc.decimal(3, 1), "3")
+        with self.assertRaises(ValueError):
+            cc.decimal(1, 3)
+
+    def test_good(self):
+        (lo, up), problems = self.run_check()
+        self.assertEqual((lo, up), ("1.40191", "1.40457588"))
+        self.assertEqual(problems, [])
+
+    def test_missing_bound(self):
+        _, problems = self.run_check(docs={"docs/LEAN_DETAILS.md": "We prove 1.40191 < K.\n"})
+        self.assertEqual(problems, ["docs/LEAN_DETAILS.md: does not state the upper bound 1.40457588"])
+
+    def test_longer_decimal_is_not_the_bound(self):
+        _, problems = self.run_check(docs={"docs/overview.tex": "1.401915 and 1.40457588\n"})
+        self.assertEqual(problems, ["docs/overview.tex: does not state the lower bound 1.40191"])
+
+    def test_retired_in_strict(self):
+        _, problems = self.run_check(docs={"README.md": GOOD + "Formerly 1.4018 < K.\n"})
+        self.assertEqual(problems, ["README.md:2: mentions the older bound 1.4018"])
+
+    def test_retired_elsewhere_is_allowed(self):
+        _, problems = self.run_check(docs={"research/README.md": GOOD + "The design target was 1.4018.\n"})
+        self.assertEqual(problems, [])
+
+    def test_constants_page_needs_rationals(self):
+        _, problems = self.run_check(docs={"docs/CONSTANTS.md": "1.40191 < K ≤ 1.40457588\n"})
+        self.assertEqual(len(problems), 2)
+        self.assertTrue(all(p.startswith("docs/CONSTANTS.md: does not state the exact") for p in problems))
+
+    def test_targets_disagree(self):
+        with self.assertRaises(ValueError):
+            self.run_check(statement="def LowerTarget : Prop := LowerAbove (14018 / 10000)\n")
+
+    def test_unrecognised_statement(self):
+        with self.assertRaises(ValueError):
+            self.run_check(main="theorem main_bounds : True := trivial\n")
+
+
+if __name__ == "__main__":
+    unittest.main()

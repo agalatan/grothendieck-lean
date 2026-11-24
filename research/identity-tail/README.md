@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.40191 (`main_bounds`; PR #525 stated 1.4018, the certificate's design target) comes from this witness. It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.40191 = 140191/100000 (`main_bounds`) comes from this witness. The certificate was designed for the target 1.4018, which PR #525 stated; #553 states the 1.40191 that the same certificate gives. It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 
@@ -8,8 +8,9 @@ records how the new witness was found and certified:
 
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
 K ≈ 1.40212 (ledger 3.1). **The integer certificate is complete** (ledger 5.1): an exact envelope over t ∈ [0, 0.9]
-stays below the target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵; for this witness it gives
-1/B = 1.401911. Three other workers re-checked its node caps, its spectral rows and 31 of its cap pieces with code of their own,
+stays below the design target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵; its exact maximum gives
+1/B = 1.4019105…. Lean checks the envelope against the rounded cap B̂ ≤ 7064131/10⁷, that is
+B = 14266247843/20000000000 = 0.71331239215 and 1/B = 1.4019103…, and states K > 1.40191. Three other workers re-checked its node caps, its spectral rows and 31 of its cap pieces with code of their own,
 and 5.1 lists what is checked by one hand only. It does not reach 1.402. The whole certificate is now in Lean
 (`lower_target`, `Grothe/MainResult.lean`; ledger §6 records the port).
 
@@ -32,15 +33,16 @@ their dated claims.
 - **Why a tail.** Changing ε alone cannot pass 1.40185. A small positive tail lowers the plateau of the row values,
   but only if it is kept **pointwise** inside the fibre potential: |A| + |B| becomes
   Ψ_ν(A, B) = sup over unimodular (f, g) of Re(f̄A) + Re(ḡB) + ν̂·Re(f̄g).
-- **What that costs.** The node caps bound the fibre potential by a pointwise majorant. The majorant of the present
-  certificate (Alon–Fürer eq. (4), `anchored_pair`) is built for |A| + |B|. For Ψ_ν it needs a rank-one correction
+- **What that costs.** The node caps bound the fibre potential by a pointwise majorant. The majorant of the previous
+  certificate (Alon–Fürer eq. (4)) is built for |A| + |B|. For Ψ_ν it needs a rank-one correction
   with a new coefficient γ\*. That lemma is a Lean theorem (ledger §2), and without it the caps are unusable.
 - **What has to be rebuilt.** The witness and its reduction chain, the fibre potential, the cap kernel, all rows, all
   cap modules and their registry, the law nodes and the refined cover. The node-cap run for the final row set is
   estimated at about 300 vCPU-hours on GitHub-hosted runners (ledger 4.1).
 - **The plan.** Stage 0: a pure-integer certificate outside Lean, as a go/no-go gate; it is complete (ledger 5.1).
-  Stage 1: generalise the Lean development in place, instantiated at the present witness, so that nothing changes
-  yet. Stage 2: one pull request with every change that invalidates the node caps (ledger 6.3).
+  Stage 1: generalise the Lean development in place, instantiated at the previous witness, so that nothing changes
+  yet. Stage 2: one pull request with every change that invalidates the node caps (ledger 6.3). All three stages are
+  done (#525).
 
 **Reading order:** [`STATUS.md`](STATUS.md) §5, §6 and §7, then `sources/stage0d-2026-11-17/PROGRESS.md` (its §0: the
 statement, the pieces and who checked what), `sources/stage0d-2026-11-17/LEAN_STAGE2_DESIGN.md` (the Lean plan of
@@ -52,6 +54,7 @@ record), `sources/stage0c-2026-11-16/STAGE0C.md` (the verdict and the numbers of
 - P_{m,n}: the projection onto the complex Wick chaos of bidegree (m, n).
 - Hat units: T = (1 − ν)·[P₁,₀ − ε̂P₂,₁ + ν̂·Id] with ε̂ = (ε + ν)/(1 − ν) = 25/31 and ν̂ = ν/(1 − ν) = 47/1953. A row value
   in original units is N = (1 − ν)·cap_hat + ν.
-- Targets: 5000/7009 = 0.713368526 (K > 1.4018) and 500/701 = 0.713266762 (K > 1.402).
+- Targets: 5000/7009 = 0.713368526 (K > 1.4018, the design target) and 500/701 = 0.713266762 (K > 1.402, not reached).
+  The Lean statement K > 1.40191 needs B < 100000/140191 = 0.713312552.
 - Prices d₂, d₃ of a cell; e_i = d_i − ν̂, σ = e₂ + e₃, δ = e₃ − e₂, Δ = d₂d₃ − ν̂².
-- Route M: the localised node caps of the present certificate (rows 12–15), as opposed to anchored caps.
+- Route M: the localised node caps of the previous certificate (its rows 12–15), as opposed to anchored caps.

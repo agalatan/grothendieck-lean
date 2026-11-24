@@ -68,7 +68,9 @@ and 3.7 s respectively. The three integral statements each use only their
 own moment native fact beyond the standard axioms. The norm statements also
 use the existing phase-cover facts for their `L²` representatives.
 
-This ingredient alone does not discharge the component-error or stored-energy
-comparison hypotheses of the conditional Grothendieck bound.
+These moments are an ingredient of the single-channel upper proof
+(K < 1.404599395362, `Grothe/UpperTightFinal.lean`), which proves its
+component-error and energy-table estimates separately.
+`Grothe.Statement.main_bounds` does not use them.
 
 Agent-ID: codex-2ca4

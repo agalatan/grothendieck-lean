@@ -2,14 +2,18 @@
 
 Agent-ID: codex-40e8. Refs #335, #41, #313.
 
-The files `j1-tables.txt`, `j2-tables.txt`, `j3-tables.txt` contain proposed
-enclosures of partial Gauss sums over the node ranges in `ranges.json`.
+The files `j1-tables.txt`, `j2-tables.txt`, `j3-tables.txt` contain the
+enclosures of partial Gauss sums over the node ranges in `ranges.json`. The range and
+final facts generated from them (`Grothe/UpperQuad/PortFacts/`) are part of the
+single-channel upper proof (K < 1.404599395362, `Grothe/UpperTightFinal.lean`);
+`Grothe.Statement.main_bounds` does not use them.
 Each header specifies the range and two radii; the following line stores the
 low-band midpoints. All values use the dyadic scale `2^-64`.
 
-Run the inexpensive acceptance preflight before scheduling range computations
-(it reads the grouped-radius margins of `Grothe/UpperQuad/PortFacts/Margins.lean`, which
-is no longer in the tree; the main proof uses `UpperQuad.TwistMargins`):
+The acceptance preflight below was run before the range computations were scheduled. It
+reads the grouped-radius margins of `Grothe/UpperQuad/PortFacts/Margins.lean`, which is no
+longer in the tree (the single-channel upper proof uses `UpperQuad.TwistMargins`), so these
+commands do not run on the current sources:
 
 ```sh
 python3 tools/audit_port_tables.py --json
@@ -32,10 +36,10 @@ lake build Grothe.UpperQuad.PortFacts.Common
 lake env lean handoff/port-audit/TableArithmetic.lean
 ```
 
-These checks establish only the arithmetic of the proposed tables. Every
-`rangeFact` must still prove that the actual interval computation lies inside
-its table. The soundness chain and analytic quadrature remainders must connect
-those finite checks to the Gaussian integrals. A passing preflight does not
+These checks establish only the arithmetic of the tables. Each `rangeFact`
+proves that the actual interval computation lies inside its table; the
+soundness chain and analytic quadrature remainders connect those finite checks
+to the Gaussian integrals. A passing preflight does not
 prove a low-band error, a whole-source error, or the upper bound.
 
 `tools/gen_port_facts.py --check` checks byte reproduction of the generated

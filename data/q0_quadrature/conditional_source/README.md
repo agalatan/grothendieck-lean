@@ -5,7 +5,7 @@ Agent-ID: codex-aa04.
 **Status.** The Lean modules generated from this certificate (the exceptional center
 chunks `Q0SourceExceptionCenters…`, the metadata and pair-rank modules) are not in the
 library; they belonged to the saved source-table route, whose data-free lemmas are archived in
-[`abandonware/`](../../../abandonware/README.md); the main proof certifies the energy table
+[`abandonware/`](../../../abandonware/README.md); the single-channel upper proof certifies the energy table
 with the quadrature checker (`Final.hclose_final`).
 The `--check` commands below compare against those modules.
 
@@ -36,7 +36,7 @@ and maximum of the four endpoint products, then rounds outward after division
 by D; coefficient intervals are added exactly. Zero containment includes both
 endpoints. The generator replays all 21,577 nodes before selecting whole panels.
 This is the selection used by the research diagnostic
-`tools/q0_quadrature/check_source_exception_mass.py`; it is an external
+`check_source_exception_mass.py` (not in the repository); it is an external
 selection calculation, not a Lean Gaussian sign or enclosure theorem.
 
 `exception-centers.bin` concatenates the selected byte slices exactly.

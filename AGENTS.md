@@ -39,7 +39,7 @@ or closed.
 
 All planned work is tracked as GitHub Issues: **epics** (label `type: epic`), with **tasks** (`type: task`) as
 sub-issues. Labels give the area (`area: lean`, `area: docs`, `area: infra`, `area: research`, `area: compute`),
-the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: claude`) and the status
+the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: claude`, `owner: gemini`) and the status
 (`status: in progress`, `status: blocked`, `status: needs decision`).
 
 - **Every PR serves a task issue.** The PR description names at least one **open issue labelled `type: task`**
@@ -133,8 +133,8 @@ git -C /Users/alingalatan/workspaces/grothe worktree add -b codex-7f3a/<topic> \
 Resuming an existing worktree: sync, then combine your branch with master (§6) before continuing.
 
 **What to build on the laptop.** Only the modules you change and the modules that import them:
-`lake build Grothe.X.Y Grothe.X.Z`. **Never `lake build` or `lake build Grothe`:** the root includes the 15 node-cap
-rows (`CapRowKK`) and their assembly `CapNodes`, about 21 CPU-hours cold. Those are verified by CI only (§8, §10),
+`lake build Grothe.X.Y Grothe.X.Z`. **Never `lake build` or `lake build Grothe`:** the root includes the node-cap
+rows (`CapRowKK`) and their assembly `CapNodes`, hundreds of CPU-hours cold. Those are verified by CI only (§8, §10),
 and nothing but the root imports them, so you never need them locally. **While developing, check your work with
 small, targeted builds of the modules you changed** (§12, "where to build"), not by pushing a WIP branch (a full proof
 check on a shared runner) or starting a cloud job. Push for a full check at a milestone (§8), or run
@@ -186,7 +186,9 @@ especially a re-push after a CI failure, a review or a conflict):
    - shared scripts: take master's version and re-apply only your intended change;
    - `README.md` is frozen (§7, step 4): a PR that still touches it drops its README change in the merge.
 5. **Quick local checks only (seconds to minutes):** `python3 tools/gen_root_imports.py --check`, the script tests
-   (`python3 scripts/test_*.py`) if you touched scripts, and the Lean modules you are editing anyway while you work.
+   (`python3 scripts/test_*.py`) if you touched scripts, the document checks (`python3 scripts/check_constants.py`
+   and `python3 scripts/check_md_links.py`) if you touched documents or a bound, and the Lean modules you are
+   editing anyway while you work.
    Do not repeat CI's full check before pushing (§7): a red check costs one more push, a duplicate check costs a
    full build every time.
 
@@ -216,7 +218,11 @@ without a PR (`RFC`/`WIP` labels for early feedback).
    every other PR. Never write counts of the axiom report or of native facts into documents (they conflict with
    every concurrent PR; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a bound, a
    hypothesis or the axiom report changed, update
-   `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same PR. **Never build or commit `OVERVIEW.pdf`:**
+   `docs/CONSTANTS.md` (the page that states every constant exactly), `docs/overview.tex` and
+   `docs/LEAN_DETAILS.md` in the same PR; `python3 scripts/check_constants.py` reads the bounds from the Lean
+   statement and lists the documents that still quote an old value (CI runs it on every push that touches
+   documents, `.github/workflows/docs.yml`; its result is information, it does not gate landing). The article in
+   `haagerup-article/` is frozen and is not updated when a bound changes. **Never build or commit `OVERVIEW.pdf`:**
    CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
    (`merge=ours` in `.gitattributes`).
 5. **Open the PR** (`gh pr create --base master --head <agent-id>/<topic>`), if not already open, and remove any
@@ -491,8 +497,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   `research/`: organised records of open problems that the user asked to keep in the repository (#375). It holds
   text, scripts and small result files only, nothing in it is imported, built or checked, and
   `research/README.md` gives its rules.
-- Bounds and hypotheses are stated in `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
-  `docs/LEAN_DETAILS.md` (§7, step 4).
+- Bounds and hypotheses are stated in `docs/CONSTANTS.md`, `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it)
+  and `docs/LEAN_DETAILS.md` (§7, step 4).
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose (a change to a precompiled library invalidates every
   module that imports it): never import other kernel modules into it.
@@ -500,7 +506,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   added to or changed in it recompiles all of them (about ten hours each). Keep it frozen; new kernel code for the
   upper bound (the port's twisted kernel, the omitted pairs, ...) goes in `GrotheQuadExtKernel/`.
 - **The lake files are pinned.** The node-cap registry (`source_sha256` in
-  `data/caps-m/plan/row-certificates/row12-build.json`) records the hash of every file in the caps closure, and that
+  `data/tail-caps/build.json`) records the hash of every file in the caps closure, and that
   closure contains `lakefile.toml`, `lake-manifest.json` and `lean-toolchain` besides the Lean sources. If one of them
   changes, `python3 scripts/caps_stamp.py --digest` fails (`materialized registry source/order mismatch`), the route
   job of every proof check gets an empty digest, and each check asks for a rebuild of all node caps on the droplets

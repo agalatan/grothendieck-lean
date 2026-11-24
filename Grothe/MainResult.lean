@@ -10,7 +10,8 @@ The double inequality of the repository's goal, stated for the constant `K_G^ℂ
 
 * `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above `1.40191`, from the certificate of
   the witness `(191/250, 47/2000)` (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows (`tailNodeCaps_cert`).
-* `Grothe.UpperSix.bound` proves the admissibility of `140457588 / 100000000` for every matrix.
+* `Grothe.UpperSix.bound`: **the upper bound, unconditional**: `V(A) ≤ 1.40457588 · C(A)` for every finite complex
+  matrix `A` (`IsBound (140457588 / 100000000)`), from the six-channel proof.
 * `main_bounds`: **`1.40191 < K_G^ℂ ≤ 1.40457588`**, without hypotheses.
 -/
 

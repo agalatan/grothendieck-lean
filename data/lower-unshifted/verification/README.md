@@ -1,3 +1,9 @@
+> **Status (24 November 2026): record of a superseded certificate.** This folder describes the lower bound
+> 1.401697117301, proved before the identity-tail certificate. The Lean modules it fed (`LawNodeData`,
+> `LawNodeCheck`) and its exporter were removed in #525, and no proof reads this data now. The repository's lower
+> bound is 1.40191 < K ([`docs/CONSTANTS.md`](../../../docs/CONSTANTS.md)). Wherever the text below says "current", read
+> "at the time of this record".
+
 The current lower endpoint has a successful full Lean CI receipt: run [40234828241](https://github.com/agalatan/grothendieck-lean/actions/runs/40234828241) at `5f46810672e97231883db052b614c966399512b1`. `CI.json` pins the endpoint import closure, certificate inputs, environment and archived evidence. That run built the default `Grothe` target (9,161 jobs), passed the safety scan, and checked 451 axiom-report entries using 24 of 84 permitted native facts. The lower endpoint itself uses 14 native facts. Its analytic premises remain explicit.
 
 The current endpoint closure contains 113 repository Lean files; 113 are byte-identical to the tested commit.
