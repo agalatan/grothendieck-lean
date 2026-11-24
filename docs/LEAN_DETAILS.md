@@ -10,7 +10,7 @@ the linear coefficients alongside the mixed head. Subtracting their squared cont
 from the six Hardy estimates gives the exact tail cost. The other five contour checks,
 the weights and the interval overlap proofs are shared with the article certificate.
 
-`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40455741` (in Lean `140191/100000` and `140455741/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40455741` (in Lean `140191/100000` and `140455741/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean). The sharp lower theorem in the same module gives `1.4019109461 < K_G^ℂ`.
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
 
@@ -1181,6 +1181,19 @@ no hypothesis. The chain: `transfer_lower` gives `1/B ≤ K` from `TransferInput
 envelope bound `profile_bound`. `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an
 operator T on L², a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with
 Σₗ|uₗ|² ≤ 1 and Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
+
+**Sharp lower endpoint.** `Grothe.Statement.sharp_lower_endpoint` gives $K_G^{\mathbb C}\ge
+1.401910946113565640\ldots$ and `lower_bound_sharp` gives the strict decimal bound $1.4019109461<K_G^{\mathbb C}$.
+In `Grothe/Lower/Cert/SharpEnvelope.lean` the fifteen intervals cover $[0,9/10]$. On
+$[1672/2000,1675/2000]$ the weight on row 0.845 is affine in $t$, and the resulting quadratic attains its maximum
+inside the interval. `affineEnvelope_bound` includes the vertex in the rational maximum.
+`sharp_lower_bound_of_tailNodeCaps` applies the scalar cap to the same Gaussian witness.
+The chain and its arithmetic use Lean kernel reduction. The existing row and node verifications supply the input inequalities.
+
+`SharpEnvelope.scalar_contact` exhibits a simultaneous solution of the reduced row inequalities at
+$t=0.8366035304980132\ldots$ and $\hat V=\hat B_*$. It satisfies all fourteen inequalities with their norm
+penalties and all mass tangents. Any improvement beyond this exact endpoint requires further information from the
+Gaussian witness, stronger input rows or a different witness.
 
 **How the two halves fit.** The Gaussian witness is defined in Lean
 (`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,

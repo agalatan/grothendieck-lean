@@ -27,14 +27,13 @@ noncomputable section
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
-/-- **The envelope caps the hat value**: the mass row and the shared reduction of the rows give `V ≤ envB` for
-`t ∈ [0, 9/10]`. -/
-theorem profile_bound (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
+/-- The scalar rows available from a shared Gaussian reduction and the mass bound. -/
+theorem envRows_of_shared {V t : ℝ} {Qh v : E}
     (hmass : V ≤ (1 - 1 / 2) * t ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖Qh‖ ^ 2)
-    (hred : SharedReduction rowData V t Qh v) : V ≤ (envB : ℝ) := by
+    (hred : SharedReduction rowData V t Qh v) :
+    ∀ k m a, envRowAt rowData massS m k = some a → RowOf a V t Qh v := by
   obtain ⟨Ω, _, μ, _, U, X1, X2, X3, τ, x, hM, hSI, hτ0, hτ1, hX, hshared⟩ := hred
   have hS : SteinCut μ U := steinCut_of_inputs μ hM hSI
-  refine env_bound rowData massS envB envCells certEnvelope (Qh := Qh) hv ht0 ht1 ?_
   rintro (_ | k) m a h
   · cases h
     exact rowOf_massTangent hmass m v
@@ -42,16 +41,33 @@ theorem profile_bound (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤
     have hm := List.mem_of_getElem? hr
     exact rowOf_of_shared r (rowData_facts r hm) hM hS hτ0 hτ1 hX (hshared r hm)
 
-/-- **The scalar cap of the witness** `(191/250, 47/2000)`, modulo the node caps of the rows with its tail. -/
-theorem witnessCap_cert (hcaps : TailNodeCaps (nuHat (47 / 2000))) (n : ℕ) (hn : 2 ≤ n) :
-    WitnessCap n (191 / 250) (47 / 2000) ((1 - 47 / 2000) * (envB : ℝ) + 47 / 2000) := by
+/-- **The envelope caps the hat value**: the mass row and the shared reduction of the rows give `V ≤ envB` for
+`t ∈ [0, 9/10]`. -/
+theorem profile_bound (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
+    (hmass : V ≤ (1 - 1 / 2) * t ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖Qh‖ ^ 2)
+    (hred : SharedReduction rowData V t Qh v) : V ≤ (envB : ℝ) := by
+  exact env_bound rowData massS envB envCells certEnvelope hv ht0 ht1 (envRows_of_shared hmass hred)
+
+/-- Transport any uniform scalar profile cap for these rows to their original Gaussian witness. -/
+theorem witnessCap_of_profile_upper {B : ℝ}
+    (hp : ∀ {F : Type} [NormedAddCommGroup F] [InnerProductSpace ℝ F] (V t : ℝ) (Qh v : F),
+      ‖v‖ ^ 2 = 2 → 0 ≤ t → t ≤ 9 / 10 →
+      V ≤ (1 - 1 / 2) * t ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖Qh‖ ^ 2 →
+      SharedReduction rowData V t Qh v → V ≤ B)
+    (hcaps : TailNodeCaps (nuHat (47 / 2000))) (n : ℕ) (hn : 2 ≤ n) :
+    WitnessCap n (191 / 250) (47 / 2000) ((1 - 47 / 2000) * B + 47 / 2000) := by
   have he : epsHat (191 / 250) (47 / 2000) = ε := by norm_num [epsHat, ε]
   have hν : 2 * nuHat (47 / 2000) + 1 / 2 = (massC : ℝ) := by norm_num [nuHat, massC]
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
   refine witnessCap_of_VhatOf_le (m + 1) (by norm_num) fun f g hf hg _ => ?_
   obtain ⟨v, hv, hshared⟩ := reductionHyp_of_nodeCaps he hcaps (n := m) (by omega) f g hf hg
-  exact profile_bound _ _ _ v hv (norm_nonneg _) (tOf_le (m + 1) hf hg)
+  exact hp _ _ _ v hv (norm_nonneg _) (tOf_le (m + 1) hf hg)
     (massRow_frame (m + 1) (by omega) he hν hf hg) hshared
+
+/-- **The scalar cap of the witness** `(191/250, 47/2000)`, modulo the node caps of the rows with its tail. -/
+theorem witnessCap_cert (hcaps : TailNodeCaps (nuHat (47 / 2000))) (n : ℕ) (hn : 2 ≤ n) :
+    WitnessCap n (191 / 250) (47 / 2000) ((1 - 47 / 2000) * (envB : ℝ) + 47 / 2000) := by
+  exact witnessCap_of_profile_upper (@profile_bound) hcaps n hn
 
 /-- **The lower bound, modulo the node caps**: `K ≥ 1/((1 − ν)envB + ν)` for every Grothendieck bound `K`, given the node
 caps `TailNodeCaps (nuHat (47/2000))` of the potentials of the rows with the tail of the witness. -/
