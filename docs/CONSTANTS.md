@@ -7,12 +7,13 @@ documents quote them.
 
 ## The current bounds
 
-$$1.40191 < K \le 1.40455741 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.40191 < K \le 1.40455641 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
 | lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
-| upper bound (weak, $\le$) | `1.40455741` | `140455741 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
+| root upper bound, rounded | `1.40455641` | `140455641 / 100000000` | `Grothe.Statement.main_bounds_refined`, second part | `Grothe/MainResult.lean` |
+| article upper bound (weak, $\le$) | `1.40455741` | `140455741 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
 `main_bounds` reads
@@ -36,6 +37,16 @@ $V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Gro
   $V(A) \le 1.40455741\,C(A)$.
 - Lower bound: `lower_target : LowerAbove (140191 / 100000)`. Every Grothendieck bound is above $1.40191$; for every
   $K \le 1.40191$ some matrix has $V(A) > K\,C(A)$.
+
+### Stronger root certificate
+
+The root theorem `Grothe.UpperSix.constant_le_exact` gives
+$K\le 10^{27}/711968557929438692542239077 = 1.404556407530439478\ldots$.
+Its finite-matrix form is `Grothe.UpperSix.bound_exact`. Rounding upward gives
+$1.40191 < K \le 1.40455641$ in `Grothe.Statement.main_bounds_refined`.
+The six weights are those of the article. The first channel uses a degree-20 polynomial
+and each tail budget deducts the energy forced by its linear coefficient. The exact head
+cap is $4481751845/10^{15}$ and the weighted tail cost is $42740716307457760923/10^{27}$.
 
 ## Haagerup's value
 
