@@ -788,6 +788,8 @@ and results are kept in `/Users/alingalatan/workspaces/grothe/handoff/research-d
 `7e6fe7c54eb3e408772b351cf4497d02c4ea49318b4970f6736f7587d589ab0c`). The superseded run 43743242420 was cancelled
 by its author after finding the midpoint-enclosure gap; its outputs are not certificates.
 The working proof is `handoff/codex-a7c4-central-aligned/PROOF.md` in the author worktree.
+The [independent-phase estimate](sources/central-aligned-codex-a7c4/COMPLEX_PHASES.md) uses these same twenty
+receipts. Its [exact replay](code/central-aligned-codex-a7c4/phase_tubes.py) computes radius 1/32 over the direct boxes.
 
 | file | size | SHA-256 |
 |---|---:|---|

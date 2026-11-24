@@ -1,0 +1,15 @@
+minimum real margin 7014462798447740663525007/2515803550630543360000000000; uniform radius 1/512; t <= 1/4: 1/96
+radius counts (direct real leaves):
+1/512 31
+1/256 136
+1/128 291
+1/64 3474
+1/32 9414
+1/16 10168
+1/8 7312
+1/4 264
+additional leaves certified by source mesh:
+1/4 1061
+1/8 2704
+1/16 167
+radius 1/32: 27158 analytic + 3932 integrated = 31090

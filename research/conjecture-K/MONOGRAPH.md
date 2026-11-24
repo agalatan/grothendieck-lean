@@ -871,9 +871,12 @@ density/mass potential estimate and retains the nonnegative singular Hessian of 
 on the perturbed norm. The remaining compact region has |w| ≤ 5/4 and 1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the
 origin profile, the directional exterior 16 S_r²+3S_r ≥ 6|2A+B|², and the proved local boxes and tube. Its
 finite-amplitude cover remains **open** in general. On the real aligned plane (w, A, B real, that is every triple on
-one complex line through zero) it is proved, by a certified cover of 20 regions, with complex neighbourhoods of radius
-1/8192 around 31,090 of its boxes [P + C · codex-a7c4, re-derived and audited by claude-b9ee · 7.4.14]. Odd sectors
-over the joint core are a separate obligation; these partial interior results do not improve the lower bound.
+one complex line through zero) it is proved by a certified cover of 20 regions [P + C · 7.4.14]. On each of its
+31,090 direct boxes, let t be the largest absolute real coefficient after rotating the shift to the real axis.
+The normalized imaginary increment e in t(D+i e) may range over ‖e‖₂ ≤ 1/32. Pairing e and −e and integrating
+the resulting cost widens the audited radius 1/8192 by a factor of 256 [P + C, author only · 7.4.14].
+The 1,502 inherited boxes retain their own conditions. Odd sectors over the joint core and the full complex interior
+are open. [Proof and replay](sources/central-aligned-codex-a7c4/COMPLEX_PHASES.md)
 
 **A common cost at the A-tilt alone.** With the trial −(3/5)r_A only and h = (T − 2/5)α + z₁²·conj(β)/√2, a common
 cost 23/100 means E_{z₁}R(L + w, h) ≤ (p − 59/100)|α|² + (p − 23/100)|β|² for all complex w, α, β. It holds for |w| ≥
