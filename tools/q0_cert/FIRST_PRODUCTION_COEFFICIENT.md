@@ -117,8 +117,8 @@ the required interval count, cancellation error and runtime are not known.
 The actual profile coefficients include square roots and π through `nrmHalf`,
 so a rational interval implementation must certify those inputs too, as
 well as the prefactor 2/sqrt(π). Exact rational checks of the numerical
-budget constants and both band counts are in `check_first_coefficient_budget.py`;
-they do not establish the analytic inequalities or a coefficient enclosure.
+budget constants and both band counts were made by `check_first_coefficient_budget.py`
+(not in the repository); they do not establish the analytic inequalities or a coefficient enclosure.
 
 The unit-parameter LeanCert pilot bounds an elementary slice of the base
 conditional kernel; it does not enclose the two-variable integral (1),

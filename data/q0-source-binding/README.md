@@ -3,7 +3,7 @@
 **Status.** The Lean modules of this binding (`Q0LiteralSourceData`, the `Q0Chunk…`
 chunks, `Q0SourceChunkAssembly` and `Q0BinaryLiteralAssemblyBridge`) are not in the
 library; they belonged to the saved source-table route, whose data-free lemmas are archived in
-[`abandonware/`](../../abandonware/README.md); the main proof certifies the energy table
+[`abandonware/`](../../abandonware/README.md); the single-channel upper proof certifies the energy table
 with the quadrature checker (`Final.hclose_final`).
 The `--check` commands below compare against those modules.
 

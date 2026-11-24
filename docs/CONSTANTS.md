@@ -1,0 +1,95 @@
+# The constants
+
+This page states every bound on the complex Grothendieck constant $K = K_G^{\mathbb C}$ that this repository
+proves, exactly as Lean states it, and explains the other numbers that appear in the sources and documents.
+`scripts/check_constants.py` reads the two bounds from the Lean statement and checks that this page and the other
+documents quote them.
+
+## The current bounds
+
+$$1.40191 < K \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots$$
+
+| | decimal | exact rational in Lean | theorem | file |
+|---|---|---|---|---|
+| lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
+| upper bound (weak, $\le$) | `1.40457588` | `140457588 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
+| Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
+
+`main_bounds` reads
+
+```lean
+theorem main_bounds :
+    (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
+      complexGrothendieckConstant ≤ 140457588 / 100000000
+```
+
+It has no hypotheses. Its axioms are Lean's three standard ones and the `native_decide` facts listed in
+`data/axioms/native.txt`.
+
+**What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
+$\lvert\sum a_{ij}\overline{\varepsilon_i}\delta_j\rvert$ over unimodular scalars and $V(A)$ the supremum of
+$\lvert\sum a_{ij}\langle x_i,y_j\rangle\rvert$ over unit vectors of a complex Hilbert space
+(`scalarOpt`, `vectorOpt` in `Grothe/Statement.lean`). A number $K$ is a *Grothendieck bound* (`IsBound K`) if
+$V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds.
+
+- Upper bound: `Grothe.UpperSix.bound : IsBound (140457588 / 100000000)`. For every finite complex matrix,
+  $V(A) \le 1.40457588\,C(A)$.
+- Lower bound: `lower_target : LowerAbove (140191 / 100000)`. Every Grothendieck bound is above $1.40191$; for every
+  $K \le 1.40191$ some matrix has $V(A) > K\,C(A)$.
+
+## Haagerup's value
+
+$\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt = 0.711958659\ldots$ (`Haagerup.Statement.gammaDagger`,
+`Grothe/UpperSix/Haagerup/Statement.lean`), and $1/\gamma^\dagger = 1.404575934\ldots$ is the value Haagerup proposed
+for $K$ in 1987.
+
+| fact | Lean |
+|---|---|
+| $0.711958633 < \gamma^\dagger < 0.711958683$ | `Haagerup.gammaDagger_bounds` (`Grothe/UpperSix/Haagerup/GammaDagger.lean`) |
+| $1.40457588 < 1/\gamma^\dagger$ | `Haagerup.inv_gammaDagger_gt` |
+| $K < 1/\gamma^\dagger$ | `Grothe.UpperSix.constant_lt_inv_gammaDagger` |
+
+The upper bound is below Haagerup's value by about $5\cdot10^{-8}$. Haagerup's own 1987 theorem is the weaker
+bound $K < 1.40490913\ldots$
+
+## Behind the lower bound
+
+| quantity | value | meaning |
+|---|---|---|
+| $\varepsilon$ | `191/250` | weight of the cubic chaos in the witness $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$ |
+| $\nu$ | `47/2000` | weight of the identity tail |
+| $B_{\mathrm{env}}$ | `7064131/10000000` | bound of the envelope certificate (1,800 cells) |
+| $B = (1-\nu)B_{\mathrm{env}} + \nu$ | `14266247843/20000000000` $= 0.71331239215$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
+| $1/B$ | $1.4019103\ldots$ | what the certificate gives; the theorem states the rounded value $1.40191 < 1/B$ |
+| $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
+
+## Behind the upper bound
+
+The six-channel proof (`Grothe/UpperSix/`, copied byte for byte in `haagerup-article/anc/`) mixes six Gaussian
+rounding channels. `Haagerup.isBound_cert` proves `IsBound (140457588 / 100000000)`; the rational is the stated
+endpoint of that certificate, and the comparison with $1/\gamma^\dagger$ above is a separate theorem.
+
+## Other numbers you will meet
+
+None of these is the current bound.
+
+| number | what it is | where |
+|---|---|---|
+| `1.404599395362` | the bound of the older single-channel upper proof, $K < 1.404599395362$. Still proved and independent of the six-channel proof, but weaker, and above Haagerup's value | `Grothe.Statement.upper_below_tight`, `constant_lt_tight_upper` (`Grothe/UpperTightFinal.lean`); `docs/UPPER_STATUS.md` |
+| `1.4046` (`14046 / 10000`) | the threshold in the definition `Grothe.Statement.UpperTarget`, a fixed comparison target from before the six-channel proof. Both upper proofs are below it | `Grothe/Statement.lean` |
+| `1.4018` | the design target of the lower certificate. The certificate reached $1/B = 1.4019103\ldots$, and the theorem states $1.40191$ | `research/identity-tail/` |
+| `1.401700322371` | the previous lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail. No longer the statement | history in `research/` |
+| `1.40490913…` | Haagerup's 1987 upper bound | prior work |
+| `1.404898554746`, `1.4` | Heilman–Jones–Malavolta's bounds, September 2026 | prior work |
+| `1.35584631827168` | Guo–Fang–Lu's lower bound, September 2026 | prior work |
+| `1.33807` | Davie's lower bound, 1984 | prior work |
+| `1.402`, `1.403`, `1.4023`, … | research targets and ceilings of methods, not theorems | `research/` |
+
+## When a bound changes
+
+1. Change the Lean statement (`Grothe/Statement.lean`, `Grothe/MainResult.lean`) and prove it.
+2. Run `python3 scripts/check_constants.py`. It lists every document that still quotes the old value.
+3. Update this page, `README.md`, `docs/LEAN_DETAILS.md`, `docs/overview.tex`, the research ledgers that quote the
+   bound and the project skill, until the script passes.
+
+The article in `haagerup-article/` is frozen at `1.40457588` on purpose and is not updated.

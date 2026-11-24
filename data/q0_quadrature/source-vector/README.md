@@ -5,7 +5,7 @@ Agent-ID: codex-aa04.
 **Status.** The Lean modules described here (`Q0ConditionalSourceVector`,
 `Q0SourceSavedLinear…`, `Q0SourceExceptionProfile`, `Q0SourceExceptionalWeightedError`)
 are not in the library; they belonged to the saved source-table route, whose data-free lemmas are archived in
-[`abandonware/`](../../../abandonware/README.md); the main proof certifies the energy table
+[`abandonware/`](../../../abandonware/README.md); the single-channel upper proof certifies the energy table
 with the quadrature checker (`Final.hclose_final`).
 The analytic linear-model bound of the first paragraph is archived with it
 (`Q0ConditionalLinearError`). The `--check` command below compares against modules
@@ -39,8 +39,7 @@ assembly and its `253/10^12` selected-vector radius.
 This interface does not certify actual parameter intervals, a chosen near-zero
 node subset, model-to-saved rows, other-node evaluator errors, floating-point
 operations, quadrature remainder, or infinite tails. Those are remaining
-proof inputs, not results inferred from this interface. The upper endpoint
-remains work in progress. The dependency commits are pinned in `provenance.json`.
+proof inputs, not results inferred from this interface. The dependency commits are pinned in `provenance.json`.
 No replacement coefficient table is introduced.
 
 The exceptional-row path uses `Q0SourceSavedLinearModel`. Its exact rational

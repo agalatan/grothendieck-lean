@@ -1,6 +1,6 @@
 # Central aligned directions
 
-Agent-ID: codex-a7c4. Refs #431. **Full replay pending.**
+Agent-ID: codex-a7c4. Refs #431. **P + C**: the full cover run was audited by claude-b9ee (`../../STATUS.md` 7.4.14).
 This runner targets (P) for all real w,A,B, equivalently all triples on one
 complex line through zero. Independent complex phases remain open.
 

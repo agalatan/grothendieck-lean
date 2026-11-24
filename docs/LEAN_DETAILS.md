@@ -26,7 +26,7 @@ specified by the caller. The scalar consumer keeps the existing retained-square
 headline endpoint and does not improve it. It adds no native facts or trust
 assumptions; the existing cap and quadrature checkers are unchanged.
 
-`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40457588`. The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40457588` (in Lean `140191/100000` and `140457588/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
 
@@ -595,9 +595,9 @@ bands. `upper_bound_tight` applies the regrouping with the tighter certified
 radii (`localized_comparison_tight_three_band`, `UpperTightComparison`) and
 passes the result to `TightEndpoint.endpoint_of_comparison` (`UpperTightFinal`),
 which adds the head, the table error (`Final.hclose_final`,
-`Grothe/UpperClose.lean`) and the Hardy tail. The public `UpperTarget`
-threshold is `1.4046`. The single-channel theorem `upper_below_tight` gives
-the strict threshold `1.404599395362`.
+`Grothe/UpperClose.lean`) and the Hardy tail. `Statement.UpperTarget` is the fixed
+comparison target `K_G^ℂ < 1.4046` (`14046/10000`), not the bound of the main theorem.
+The single-channel theorem `upper_below_tight` gives `K_G^ℂ < 1.404599395362`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
 and `HermiteTranslationBessel` prove the finite Hermite translation bound
@@ -1563,7 +1563,11 @@ the merged tree before a pull request lands.
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
-complete list; the facts fall into the following groups. `Grothe.head_check` (the upper head),
+complete list; the facts fall into the following groups. The six-channel upper proof
+uses the facts in the `Haagerup` namespace (`Haagerup.Data.tcell_rows_ok`, `tcell_sos_ok`,
+`tig_mu_ok`, `tig_sos_ok`, `Haagerup.head_sum_ok`, `Haagerup.mean0_ok`–`mean5_ok`,
+`Haagerup.reg0_ok`–`reg5_ok`; its own list is `data/axioms/modes/upper-six.native.txt`).
+The single-channel upper proof uses `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.Upper.improved_high_mass_native` (the two complete high-band masses
 for the 51-coefficient costs, including the inherited table-error allowance),

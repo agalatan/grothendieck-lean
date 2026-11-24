@@ -28,8 +28,9 @@ that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`an
 ## `anc/`: the Lean package
 
 - **What it is.** `anc/Grothe/UpperSix/` is a byte-for-byte copy of the repository's
-  [`Grothe/UpperSix/`](../Grothe/UpperSix), which the `Grothe` target builds as the upper bound of
-  `Grothe.Statement.main_bounds`. The sources import only Mathlib. The certificate data are Lean literals in
+  [`Grothe/UpperSix/`](../Grothe/UpperSix), which the `Grothe` target also builds. The article and this package are
+  frozen at `1.40457588`; they do not quote the repository's current bounds, which keep moving. The sources import
+  only Mathlib. The certificate data are Lean literals in
   `Grothe/UpperSix/Haagerup/Data/` and `Parameters.lean`; there are no other data files.
 - **Its own Lake package.** It has its own `lakefile.toml`, `lean-toolchain` and `lake-manifest.json`, with the same
   Lean and Mathlib as the root, so it builds from a plain copy of the folder (`lake exe cache get && lake build`, about
