@@ -1408,8 +1408,8 @@ certificates, the generated modules, their data and their cost are described in 
   contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is.
   `reductionHyp_of_nodeCaps` (`Reduction.lean`) constructs the gate variable
   and per-row `RowShared` reduction from the node caps. The mass row uses the
-  proved bound `normQk_le_rho` in `WitnessCap.lean`. The sharper cubic radius bound
-  E|q| < (93/100) ‖q‖₂ is formalized in `AntiStein.lean` (the two radial forms of the
+  proved bound `normQk_le_rho` in `WitnessCap.lean`. The certified cubic radius upper bound
+  E|q| ≤ (93/100) ‖q‖₂ (strict for q ≠ 0) is formalized in `AntiStein.lean` (the two radial forms of the
   antiholomorphic Stein identity `antiStein_I`, `antiStein_II`, the Cauchy–Schwarz cone
   `radAB_sq_le_radC1_mul_radC2`, and the exact contraction variances `Circular.gE_radC1_sub_two_sq`,
   `Circular.gE_radC2_sub_one_sq`, `Circular.gE_radD_sub_one_sq`, `Circular.fourth_moment_antistein`),

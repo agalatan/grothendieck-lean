@@ -2,7 +2,7 @@ import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Nat.Choose.Basic
 
 /-!
-# Computable integer-Bernstein checker for the sharp cubic radius certificate
+# Computable integer-Bernstein checker for the 0.93 cubic radius certificate
 
 This lightweight module has no heavy analysis imports so that each of the 23 row certificate
 modules (`Grothe/LowerAnalytic/RadiusRows/Row00.lean`..`Row22.lean`) can verify `checkRadiusRow`
@@ -159,7 +159,7 @@ structure EndPar where
   cuts : List CutTerm
   deriving DecidableEq, Repr
 
-/-- One row of the sharp cubic radius certificate (`cert_N_final`).
+/-- One row of the certified cubic radius bound (`cert_N_final`).
 Knots are stored as `K_i : ℕ` representing `e_i = K_i / 10`; knot arrays are scaled by
 `arrScale = 2^36`; `mu`, `slope`, `sigma` by `muScale = 2^50`; `lam`, `l3` by `lamScale = 2^62`. -/
 structure RadiusRow where

@@ -5,7 +5,7 @@ import Grothe.LowerAnalytic.SixthMoment
 import Mathlib.Data.Rat.BigOperators
 
 /-!
-# Soundness of the sharp cubic radius row checker
+# Soundness of the cubic radius row checker
 
 This file proves the analytic soundness of `checkRadiusRow` (`Grothe/LowerAnalytic/RadiusRowCheck.lean`)
 for every circular cubic Gaussian chaos `q = a + i b` (`Circular J a b`, `Chaos3 a`, `E a² = 1/2`):

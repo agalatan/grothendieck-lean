@@ -561,7 +561,7 @@ theorem normQk_le_rho {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
     (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖QkOf n f g‖ ≤ ρ :=
   norm_starProjection_H21_le_rho n (norm_kOf_le n hf hg)
 
-/-- **Sharp first-moment bound on `H₂,₁`**: `E|ψ| ≤ 93/100` for every unit `ψ ∈ H₂,₁`
+/-- **Certified first-moment upper bound on `H₂,₁`**: `E|ψ| ≤ 93/100` for every unit `ψ ∈ H₂,₁`
 (from the antiholomorphic Stein calculus and kernel-verified 23-row certificate
 `first_moment_le_93`). -/
 theorem integral_norm_le_93_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n)
@@ -575,8 +575,8 @@ theorem integral_norm_le_93_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n)
   rw [hx, Complex.norm_def, Complex.normSq_mk, radU]
   simp only [map_add, map_mul]
 
-/-- **Homogeneous sharp first-moment bound on `H₂,₁`**: `E|ψ| ≤ (93/100) ‖ψ‖` for every
-`ψ ∈ H₂,₁`. -/
+/-- **Homogeneous certified first-moment upper bound on `H₂,₁`**: `E|ψ| ≤ (93/100) ‖ψ‖` for
+every `ψ ∈ H₂,₁` (including `ψ = 0`). -/
 theorem integral_norm_le_93_mul_norm_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n) :
     ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) ≤ (93 / 100) * ‖ψ‖ := by
   rcases (norm_nonneg ψ).eq_or_lt with h0 | h0
@@ -598,8 +598,8 @@ theorem integral_norm_le_93_mul_norm_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n
     rw [h4, inv_mul_le_iff₀ h0] at h3
     linarith
 
-/-- **Sharp projection duality on `H₂,₁`**: the projection of a function bounded by one has norm at
-most `93/100`, since `‖Πc‖² = Re⟪c, Πc⟫ ≤ E|Πc| ≤ (93/100) ‖Πc‖`. -/
+/-- **Certified projection duality on `H₂,₁`**: the projection of a function bounded by one has
+norm at most `93/100`, since `‖Πc‖² = Re⟪c, Πc⟫ ≤ E|Πc| ≤ (93/100) ‖Πc‖`. -/
 theorem norm_starProjection_H21_le_93 {c : L2G n}
     (hc : ∀ᵐ x ∂(stdGaussian (n + n)), ‖c x‖ ≤ 1) :
     ‖(H21 n).starProjection c‖ ≤ 93 / 100 := by
@@ -613,7 +613,7 @@ theorem norm_starProjection_H21_le_93 {c : L2G n}
       hw ▸ norm_sq_starProjection_le_integral n (H21 n) hc
     nlinarith
 
-/-- **Sharp cubic projection bound** `‖P₂,₁ k‖ ≤ 93/100` for a unimodular pair. -/
+/-- **Certified cubic projection upper bound** `‖P₂,₁ k‖ ≤ 93/100` for a unimodular pair. -/
 theorem normQk_le_93 {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
     (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖QkOf n f g‖ ≤ 93 / 100 :=
   norm_starProjection_H21_le_93 n (norm_kOf_le n hf hg)

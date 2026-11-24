@@ -24,25 +24,26 @@ import Grothe.LowerAnalytic.RadiusRows.Row21
 import Grothe.LowerAnalytic.RadiusRows.Row22
 
 /-!
-# The sharp cubic radius bound `E|q| < (93/100) ‖q‖₂` on `H₂,₁(ℂⁿ)`
+# The certified cubic radius upper bound `E|q| ≤ (93/100) ‖q‖₂` on `H₂,₁(ℂⁿ)`
 
 Assembles the 23 kernel-checked rows (`Row00`–`Row22`, covering `s = E|q|⁴ − 2 ∈ [0, 42]`)
 with the soundness theorem `radiusRow_sound` (`RadiusCheck.lean`), the antiholomorphic Stein
 calculus (`AntiStein.lean`) and the circular fourth-moment cap `E|q|⁴ ≤ 44`
-(`Circular.gaussian_fourth_moment_le_44`) to prove
+(`Circular.gaussian_fourth_moment_le_44`) to prove the strict normalized bound
 
   `∫ x, √(eval x (radU a b)) ∂(stdGaussian d) < 93 / 100`
 
-for every normalized circular cubic Gaussian chaos `q = a + i b` in any finite dimension.
-All 23 rows are verified by proof-producing kernel reduction (`decide +kernel`) with no
-`native_decide` axioms.
+for every normalized circular cubic Gaussian chaos `q = a + i b` in any finite dimension
+(giving the homogeneous bound `E|q| ≤ (93/100) ‖q‖₂` on all of `H₂,₁`, including `q = 0`, in
+`WitnessCap.lean`). All 23 rows are verified by proof-producing kernel reduction (`decide +kernel`)
+with no `native_decide` axioms.
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
 
 namespace Grothe.LowerAnalytic
 
-/-- The 23 rows of the sharp cubic radius certificate covering `s ∈ [0, 42]`. -/
+/-- The 23 rows of the certified cubic radius bound covering `s ∈ [0, 42]`. -/
 def radiusRows : List RadiusRow :=
   [radiusRow00, radiusRow01, radiusRow02, radiusRow03, radiusRow04, radiusRow05,
    radiusRow06, radiusRow07, radiusRow08, radiusRow09, radiusRow10, radiusRow11,
@@ -83,8 +84,8 @@ theorem radiusRows_ok : ∀ r ∈ radiusRows, checkRadiusRow r (93 / 100) = true
   · exact radiusRow21_ok
   · exact radiusRow22_ok
 
-/-- **Sharp cubic radius bound (`< 93/100`)**: for every normalized circular cubic Gaussian chaos
-`q = a + i b` (`Chaos3 a`, `E a² = 1/2`, `Circular J a b`), `E|q| < 93/100`. -/
+/-- **Certified cubic radius upper bound (`< 93/100`)**: for every normalized circular cubic
+Gaussian chaos `q = a + i b` (`Chaos3 a`, `E a² = 1/2`, `Circular J a b`), `E|q| < 93/100`. -/
 theorem first_moment_lt_93 {d : ℕ} (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
     (hc : Circular J a b) :
