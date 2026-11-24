@@ -2,13 +2,14 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The root theorem `Grothe.UpperSix.constant_le_exact` bounds the constant above by the exact rational
-$\frac{10^{27}}{711968557929438692542239077}$. With the existing lower result,
-`Grothe.Statement.main_bounds_refined` gives $1.40191<K_G^{\mathbb C}\le 1.40455641$.
-`Grothe/UpperSixExact/` changes the first polynomial and certifies six lower bounds on
-the linear coefficients alongside the mixed head. Subtracting their squared contributions
-from the six Hardy estimates gives the exact tail cost. The other five contour checks,
-the weights and the interval overlap proofs are shared with the article certificate.
+The upper theorem `Grothe.UpperSix.constant_le_phase` proves
+$K_G^{\mathbb C}\le 10^{27}/711968558203721328194311213$. With the existing lower result,
+`Grothe.Statement.main_bounds_phase` gives $1.40191<K_G^{\mathbb C}\le 1.404556407$.
+`Grothe/UpperSixExact/` changes the first polynomial and certifies six lower bounds on the linear
+coefficients alongside the mixed head. Subtracting their squared contributions from the Hardy estimates
+gives the tail cost. The phase channel uses 321 coefficients from exact Haagerup moments.
+Each of the five cell channels uses 251. The previous common-cutoff endpoint gives
+$K_G^{\mathbb C}\le 1.40455641$ in `Grothe.Statement.main_bounds_refined`.
 
 `Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40455741` (in Lean `140191/100000` and `140455741/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
@@ -30,7 +31,7 @@ target the rounding was designed for. The conditional theorem towards it,
 proved), is archived; the theorem without hypotheses exhibits a bound below
 `1.404599395362`.
 
-**Different head lengths in a mixture.** A channel with a list of length $m$ encloses its true coefficients up to index $m-1$. The finite head sum pads that list with zeros. The error between the polynomial and the true kernel costs at most the channel’s absolute tail from $m$, multiplied by its mixture weight. The theorem also covers an empty list. [Lean transfer theorem](../Grothe/Upper/VariableCutoff.lean).
+**Different head lengths in a mixture.** A channel with a list of length $m$ encloses its true coefficients up to index $m-1$. The finite head sum pads that list with zeros. The error between the polynomial and the true kernel costs at most the channel’s absolute tail from $m$, multiplied by its mixture weight. The theorem also covers an empty list. [Lean transfer theorem](../Grothe/UpperSixExact/VariableCutoff.lean).
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted

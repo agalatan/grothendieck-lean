@@ -65,6 +65,7 @@ Grothe.Statement.constant_lt_tight_upper
 Grothe.Statement.lowerTarget_of_tailNodeCaps
 Grothe.Statement.lower_target
 Grothe.Statement.main_bounds
+Grothe.Statement.main_bounds_phase
 Grothe.Statement.main_bounds_refined
 Grothe.Statement.upper_below_tight
 Grothe.Statement.upper_bound_tight
@@ -1477,13 +1478,13 @@ Grothe.UpperQuad.six_of_facts
 Grothe.UpperQuad.twistQuadHyp_of_remainder
 Grothe.UpperSix.bound
 Grothe.UpperSix.bound_exact
+Grothe.UpperSix.bound_phase
 Grothe.UpperSix.constant_le
 Grothe.UpperSix.constant_le_exact
+Grothe.UpperSix.constant_le_phase
 Grothe.UpperSix.constant_lt_inv_gammaDagger
 Grothe.hardy_budget_after_linear
 Grothe.head_residual_le
 Grothe.linear_lower
 Grothe.tail_le
 Grothe.tail_numeric
-Haagerup.convex_transfer_variable_ival
-Haagerup.residual_of_channel_cutoffs

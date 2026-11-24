@@ -1,4 +1,5 @@
 import Grothe.UpperSixExact.Head
+import Grothe.UpperSixExact.VariableCutoff
 import Grothe.UpperSixExact.Contour
 import Grothe.UpperSix.Haagerup.CellOverlap
 import Grothe.UpperSix.Haagerup.ContourChecks.Channel1
@@ -27,7 +28,7 @@ open HaagerupKernel HaagerupKernel.Cell HaagerupKernel.Hardy Haagerup.Data
 private theorem tails_rat_ok :
     (List.finRange 6).all (fun p =>
       decide (((circleBudget p - linearFloor p ^ 2 * rhoQ p ^ 2) / rhoQ p ^ 4) *
-        (rhoQ p)⁻¹ ^ 1002 ≤ tailCap p ^ 2 * (1 - (rhoQ p)⁻¹ ^ 4))) = true := by
+        (rhoQ p)⁻¹ ^ (2 * (2 * lastIndex p + 1)) ≤ phaseTailCap p ^ 2 * (1 - (rhoQ p)⁻¹ ^ 4))) = true := by
   decide +kernel
 
 /-! ### The six analytic kernels -/
@@ -47,7 +48,7 @@ private lemma l1_ofListQ_le_one {l : List ℚ}
 
 private lemma tail_cmp_of_fin (p : Fin 6) :
     (((circleBudget p : ℝ) - (linearFloor p : ℝ) ^ 2 * (rhoQ p : ℝ) ^ 2) / (rhoQ p : ℝ) ^ 4) *
-      (rhoQ p : ℝ)⁻¹ ^ 1002 ≤ (tailCap p : ℝ) ^ 2 * (1 - (rhoQ p : ℝ)⁻¹ ^ 4) := by
+      (rhoQ p : ℝ)⁻¹ ^ (2 * (2 * lastIndex p + 1)) ≤ (phaseTailCap p : ℝ) ^ 2 * (1 - (rhoQ p : ℝ)⁻¹ ^ 4) := by
   have hall := List.all_eq_true.1 tails_rat_ok p (List.mem_finRange p)
   have q := (Rat.cast_le (K := ℝ)).2 (of_decide_eq_true hall)
   simpa only [Rat.cast_mul, Rat.cast_pow, Rat.cast_inv, Rat.cast_div, Rat.cast_sub, Rat.cast_one] using q
@@ -141,7 +142,7 @@ private lemma hChan_dominated (p : Fin 6) : DominatedKernel (radialKernel (hChan
       memLp_fTig hp4 hq4).dominated
   · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hp5 hq5).dominated
 
-private lemma hChan_mem (p : Fin 6) (n : ℕ) (hn : n < 251) :
+private lemma hChan_mem (p : Fin 6) (n : ℕ) (hn : n < lastIndex p + 1) :
     mem (hChan p n) ((headIntervals p).getD n zeroI) := by
   have hdR : ((23187 : ℝ) / 24245) ^ 2 + ((7084 : ℝ) / 24245) ^ 2 = 1 := by norm_num
   have heR : ((87841 : ℝ) / 98209) ^ 2 + ((43920 : ℝ) / 98209) ^ 2 = 1 := by norm_num
@@ -160,7 +161,7 @@ private lemma hChan_mem (p : Fin 6) (n : ℕ) (hn : n < 251) :
       (phase_bivarKernel_eq (ofListQ p2Q) n).trans
         (bivarKernel_oned_eq_head (ofListQ p2Q) 0 haagCoeff (Nat.lt_succ_self n)).symm
     rw [heq]
-    exact mem_bivarT_oned (Q := 0) (memB_ofListQ p2Q 251) haagCoeff
+    exact mem_bivarT_oned (Q := 0) (memB_ofListQ p2Q 321) haagCoeff
       (fun _ hk => mem_haagMuList hk) n hn
   · dsimp only [hChan, headIntervals, headICert, gTigLp, memLp_fTig, fTig]
     rw [ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ r3Q) n]
@@ -193,15 +194,15 @@ private theorem tail_after_linear (h : ℕ → ℝ) (r B L T : ℝ) (K : ℕ) (h
     (hardy_budget_after_linear h r B L (zero_lt_one.trans hr) hL h0 hB) K T hT hcmp
 
 private lemma hChan_tail (p : Fin 6) :
-    ∑' n, |hChan p (n + 251)| ≤ (tailCap p : ℝ) := by
+    ∑' n, |hChan p (n + (lastIndex p + 1))| ≤ (phaseTailCap p : ℝ) := by
   have hr1 : 1 < (rhoQ p : ℝ) := by fin_cases p <;> norm_num [rhoQ]
-  have hT0 : 0 ≤ (tailCap p : ℝ) := by fin_cases p <;> norm_num [tailCap]
+  have hT0 : 0 ≤ (phaseTailCap p : ℝ) := by fin_cases p <;> norm_num [phaseTailCap, tailCap]
   have hL0 : 0 ≤ (linearFloor p : ℝ) := by fin_cases p <;> norm_num [linearFloor]
   have hchecked : ofRatHi (linearFloor p) ≤ ((headIntervals p).getD 0 zeroI).lo :=
-    of_decide_eq_true (List.all_eq_true.1 (of_decide_eq_true head_and_floors_ok).2 p (List.mem_finRange p))
-  have h0 := lower_of_interval (hChan_mem p 0 (by decide)) hchecked
+    of_decide_eq_true (List.all_eq_true.1 (of_decide_eq_true head_and_floors_ok).2.1 p (List.mem_finRange p))
+  have h0 := lower_of_interval (hChan_mem p 0 (Nat.zero_lt_succ _)) hchecked
   refine tail_after_linear (hChan p) (rhoQ p : ℝ) (circleBudget p : ℝ) (linearFloor p : ℝ)
-    (tailCap p : ℝ) 250 hr1 hL0 h0 hT0 ?_ (tail_cmp_of_fin p)
+    (phaseTailCap p : ℝ) (lastIndex p) hr1 hL0 h0 hT0 ?_ (tail_cmp_of_fin p)
   intro J
   fin_cases p
   · exact hardy_smoothed_channel hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
@@ -230,24 +231,44 @@ private lemma hChan_tail (p : Fin 6) :
       (by norm_num [jCertQ]) (by norm_num [circleBudget, budgetQ, d6Q]) reg5_ok mean5_ok J
 
 /-- Admissibility at the exact transfer endpoint. -/
-private theorem transfer_bound : Statement.IsBound (1 / ((slope : ℝ) - (residual : ℝ))) := by
+private theorem transfer_bound : Statement.IsBound (1 / ((slope : ℝ) - (phaseResidual : ℝ))) := by
   have hw0 : ∀ p : Fin 6, 0 ≤ (wQ p : ℝ) := fun p => by fin_cases p <;> norm_num [wQ, d12Q]
   have hw1 : ∑ p : Fin 6, (wQ p : ℝ) = 1 := by
     rw [← Rat.cast_sum, show ∑ p : Fin 6, wQ p = 1 by decide +kernel, Rat.cast_one]
-  have hδ : (headCap : ℝ) + ∑ p : Fin 6, (wQ p : ℝ) * (tailCap p : ℝ) ≤ (residual : ℝ) := by
-    have hq : headCap + ∑ p : Fin 6, wQ p * tailCap p ≤ residual := by decide +kernel
+  have hδ : (headCap : ℝ) + ∑ p : Fin 6, (wQ p : ℝ) * (phaseTailCap p : ℝ) ≤ (phaseResidual : ℝ) := by
+    have hq : headCap + ∑ p : Fin 6, wQ p * phaseTailCap p ≤ phaseResidual := le_rfl
     simpa only [Rat.cast_add, Rat.cast_sum, Rat.cast_mul] using (Rat.cast_le (K := ℝ)).2 hq
-  have hδc : (residual : ℝ) < (slope : ℝ) := by norm_num [residual, slope]
-  exact convex_transfer_ival (K := 250) hw0 hw1 hChan_summable hChan_dominated
-      hChan_mem hChan_tail (of_decide_eq_true head_sum_ok) hδ hδc
+  have hδc : (phaseResidual : ℝ) < (slope : ℝ) := by norm_num [phaseResidual_eq, slope]
+  apply convex_transfer_variable_ival (N := 320) hw0 hw1 hChan_summable hChan_dominated
+    (headI := headIntervals) (tl := fun p => (phaseTailCap p : ℝ))
+  · intro p
+    rw [head_length]
+    simp only [lastIndex]
+    split <;> decide
+  · intro p n hn
+    exact hChan_mem p n ((head_length p) ▸ hn)
+  · intro p
+    rw [head_length]
+    exact hChan_tail p
+  · exact of_decide_eq_true head_sum_ok
+  · exact hδ
+  · exact hδc
 
 /-- Admissibility for every finite complex matrix at the exact rational endpoint. -/
-theorem isBound_exact :
-    Statement.IsBound ((10 : ℝ) ^ 27 / 711968557929438692542239077) := by
-  have hv : 1 / ((slope : ℝ) - (residual : ℝ)) = (10 : ℝ) ^ 27 / 711968557929438692542239077 := by
-    norm_num [slope, residual]
+theorem isBound_phase :
+    Statement.IsBound ((10 : ℝ) ^ 27 / 711968558203721328194311213) := by
+  have hv : 1 / ((slope : ℝ) - (phaseResidual : ℝ)) = (10 : ℝ) ^ 27 / 711968558203721328194311213 := by
+    norm_num [slope, phaseResidual_eq]
   rw [← hv]
   exact transfer_bound
+
+/-- The previous exact finite-matrix bound follows from the stronger phase-channel bound. -/
+theorem isBound_exact :
+    Statement.IsBound ((10 : ℝ) ^ 27 / 711968557929438692542239077) := by
+  intro m n A
+  have hnonneg : 0 ≤ Statement.scalarOpt A :=
+    Real.sSup_nonneg fun r ⟨_, _, _, _, hr⟩ => hr ▸ norm_nonneg _
+  exact (isBound_phase m n A).trans (mul_le_mul_of_nonneg_right (by norm_num) hnonneg)
 
 end
 

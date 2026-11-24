@@ -39,4 +39,13 @@ theorem constant_le_exact :
     Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / 711968557929438692542239077 :=
   csInf_le Haagerup.Statement.bounds_bddBelow bound_exact
 
+/-- Admissibility for every finite matrix with the phase head extended through index 320. -/
+theorem bound_phase : Statement.IsBound ((10 : ℝ) ^ 27 / 711968558203721328194311213) :=
+  Haagerup.SixChannelExact.isBound_phase
+
+/-- The unequal phase cutoff gives the exact upper endpoint 1.404556406989340536… . -/
+theorem constant_le_phase :
+    Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / 711968558203721328194311213 :=
+  csInf_le Haagerup.Statement.bounds_bddBelow bound_phase
+
 end Grothe.UpperSix

@@ -3339,7 +3339,6 @@ import Grothe.Upper.PolynomialHeadTail
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.Upper.ThreeBandBudget
-import Grothe.Upper.VariableCutoff
 import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.ArraySquareEnergy
 import Grothe.UpperChaos.BandProj
@@ -4769,6 +4768,7 @@ import Grothe.UpperSixExact.Bound
 import Grothe.UpperSixExact.Contour
 import Grothe.UpperSixExact.Head
 import Grothe.UpperSixExact.Parameters
+import Grothe.UpperSixExact.VariableCutoff
 import Grothe.UpperTarget
 import Grothe.UpperTightBudget
 import Grothe.UpperTightComparison
