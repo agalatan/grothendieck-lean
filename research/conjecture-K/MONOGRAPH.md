@@ -340,24 +340,29 @@ the following dimension-uniform signed regions:
 
 | domain | deficit |
 |---|---|
-| 0<u≤0.0463, χ≤1/12000 | D(q)≥7δ/50 |
-| 0<u≤0.0463, χ≤10⁻⁴ | D(q)≥δ/8 |
-| 0<u≤0.0463, χ≤1/5000 | D(q)≥δ/1000 |
-| 0≤u≤1/4000, every cubic shape | D(q)≥9δ/50 |
+| 0<u≤0.0463, χ≤1/12000 (1/250, author only) | D(q)≥7δ/50 |
+| 0<u≤0.0463, χ≤10⁻⁴ (9/2000, author only) | D(q)≥δ/8 |
+| 0<u≤0.0463, χ≤1/5000 (0<χ≤1/125: D>0, author only) | D(q)≥δ/1000 |
+| 0≤u≤1/4000 (1/1600, author only), every cubic shape | D(q)≥9δ/50 |
 
-These constants and regions are **P** [codex-a7c4, re-derived by claude-b9ee and a review worker, with exact
-whole-interval Bernstein and rational checks · 3.19]. Complementing them away from the diffuse limit, exact rational
-verification of 79 Stein duals and a bivariate Stieltjes–Maclaurin deficit polynomial proves strict positivity D(q) > 0
-at the peak on [1/4000, 3/250] × [1/64, 49/100] and [3/250, 0.0463] × [49/10000, 49/100], leaving only the narrow
-near-Gaussian sliver above χ = 1/5000 and high kurtosis χ > 49/100 [P + C, author only · gemini-5331 · 3.29].
+The unparenthesised constants and regions are **P** [codex-a7c4, re-derived by claude-b9ee and a review worker, with
+exact whole-interval Bernstein and rational checks · 3.19]; evaluating the Gaussian scale mixture directly on the
+smoothed kernel B_{V,θ} = V_L + u(1 − θ) with Wiener-chaos orthogonality U ∈ 𝓗₂ ⊕ 𝓗₄ ⊥ 𝓗₀ ⊕ 𝓗₆ ⊕ 𝓗₈,
+|h₄(s) − 3| ≤ (17/4)√s and Markov–Krein polynomial envelopes on V_L^{−k} gives the parenthesised widenings, D(q) > 0 on
+(0, 3/250] × (0, 1/9] and (0, 3/4000] × (0, 42] [P + C, author only · gemini-21d5 · 3.19]. Combined with exact rational
+verification of 79 Stein duals and a bivariate Stieltjes–Maclaurin deficit polynomial on [1/4000, 3/250] × [1/64, 49/100]
+and [3/250, 0.0463] × [49/10000, 49/100], strict positivity D(q) > 0 holds across the full connected domain
+(0, 0.0463] × (0, 49/100] ∪ (0, 3/4000] × (0, 42] with no near-Gaussian sliver, leaving only χ > 49/100 for u > 3/4000
+[P + C, author only · gemini-5331, gemini-21d5 · 3.29].
 
-For 0.03≤u≤0.0463 and χ≤10⁻⁴, the content coefficient 3/80 of 2.6 gives
+For 0.03≤u≤0.0463 and χ≤10⁻⁴ (9/2000, author only), the content coefficient 3/80 of 2.6 gives
 ‖c₍₃/₅₎(q)‖²≤0.3D(q), without additive error. With k=59009/189100, the global tilted
 A-shell remainder (2.6) gives Λ̂(q+(T−1)r)≤S−δ/250 for every remote linear r, every
-amplitude and arbitrary sharing. On χ≤1/12000 the retained reserve is 19δ/1000.
+amplitude and arbitrary sharing. On χ≤1/12000 (1/250, author only) the retained reserve is 19δ/1000.
 These follow from 1/8−(3/80)/k>1/250 and 7/50−(3/80)/k>19/1000.
 
-Separately, the reviewed remote-core odd cost of 2.9 gives Λ(q+O)≤S−δ/8−(1988/47275)‖O‖² on 0<u≤0.0463, χ≤10⁻⁴, for
+Separately, the reviewed remote-core odd cost of 2.9 gives Λ(q+O)≤S−δ/8−(1988/47275)‖O‖² on 0<u≤0.0463, χ≤10⁻⁴ (9/2000,
+author only), for
 all genuine odd sectors O with arbitrary sharing and amplitude, provided no A/B shell is present. Each of the other
 deficit bounds in the table substitutes on its own domain. These scalar results do not combine the A-shell and
 odd-sector corollaries. For the fixed all-sector trial of 2.9 the same expansion leaves, beyond the scalar deficit, a
@@ -581,10 +586,9 @@ responses m_A and m_B, both attain their global third-derivative suprema uniquel
 absolute coefficient ≤ 0.481, ratio ≈ 0.262) at every energy and dimension, lowered to < 9/2·δ^{3/2} for u ≥ 0.044 by 1-D
 Ornstein–Uhlenbeck smoothing (sharpened by √(13/15) in 6.3.42), together with ‖c_A(q)‖² ≤ [32/(225πa⁴)]·δ (< 58/125·δ
 at the peak). Combined with the Edgeworth bounds of 2.1, spectral Stein duals and Stieltjes–Maclaurin deficit envelopes,
-this gives signed C(q)² ≤ (6/25)D(q) + 10⁻⁶ on [0, 0.0463] × [0, 841/10000] and exact zero-slack C(q)² ≤ (6/25)D(q) on
-(0, 0.0463] × [0, 10⁻⁴], on [0, 1/4000] × [0, 42], on [1/4000, 3/250] × [1/64, 49/625] and on
-[3/250, 0.0463] × [49/10000, 49/625] (leaving only the near-Gaussian sliver above 10⁻⁴ uncertified below 49/625 for the
-zero-slack form) [P + C, author only · gemini-5331 · 6.3.43].
+this gives signed C(q)² ≤ (6/25)D(q) + 10⁻⁶ on [0, 0.0463] × [0, 841/10000] and exact zero-slack C(q)² ≤ (6/25)D(q)
+across the full connected domain [0, 0.0463] × [0, 49/625] ∪ [0, 1/1600] × [0, 42] ∪ [0, 3/250] × [0, 1/4] with no
+near-Gaussian sliver [P + C, author only · gemini-5331, gemini-21d5 · 6.3.43].
 
 **Open in L4:** the self-interaction family with non-Hermitian P and Wick share between 1/16 and 4/5, where an
 envelope giving 0.22 is true on grids [N · 6.3.13]; the small-Wick strip [6.3.14]; the same family for u < 0.03 with
@@ -1198,8 +1202,8 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 6. **The raw L4 content inequality** for general cubics on 0.00551 ≤ u ≤ 0.0463, with the constant fixed by item 5
    (0.10 under the adverse joint hypothesis). For the A-only constant 6/25, the staircase and small-influence class
    (χ ≤ 0.2809 across the band, τ_max ≤ 0.054), high excess χ ≥ 40.32, and independent blocks are covered (2.5 ·
-   6.3.40–6.3.42), together with bounded kurtosis against D (signed +10⁻⁶ on χ ≤ 841/10000, exact zero-slack on
-   χ ≤ 49/625 outside the near-Gaussian sliver above 10⁻⁴; 2.5 · 6.3.43, author only). Open pieces at intermediate/high
+   6.3.40–6.3.42), together with bounded kurtosis against D (signed +10⁻⁶ on χ ≤ 841/10000, exact zero-slack across
+   χ ≤ 49/625 with no near-Gaussian sliver; 2.5 · 6.3.43, author only). Open pieces at intermediate/high
    kurtosis: the mixed shells, several self-interacting drivers, the envelopes on the self-interaction family. By the
    local representation of 2.5, the content and
    the excess D − 𝒥_dec of the deficit over that of the decoupled surrogate (2.1) are linear in one pair of fields, so

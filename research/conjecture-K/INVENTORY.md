@@ -1603,3 +1603,16 @@ file, the notes as delivered included.
 | `sources/near-gaussian-505-2026-11-21-gemini-2762/PROOF.md` | 39,228 B | `9b1aba951d6fd0c5fdf0728bab594ef5f2451b1804476eef017792b1df0e73a4` |
 | `code/near-gaussian-505-gemini-2762/verify_near_gaussian_505.py` | 33,563 B | `520af8aa5f7161b70ba99292527af286b7644a4f99e6f493b452b687dcc810bd` |
 | `code/near-gaussian-505-gemini-2762/REPLAY.log` | 2,000 B | `81df44fc756d0d5fe6a45ad542c13a57e12fa77b1d759112ed6557815112ed47` |
+
+## Smoothed two-step OU deficit remainder and near-Gaussian sliver closure (gemini-21d5, task #593)
+
+- [Proof and replay instructions](sources/sliver-closure-2026-11-24-gemini-21d5/PROOF.md) and
+  [exact zero-float verifier, receipt and replay log](code/sliver-closure-gemini-21d5/) (tag KSLIV; STATUS 3.18, 3.19, 3.29, 6.3.18, 6.3.43; author only). Every file is under 60 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations):** `python3 -I -O verify_sliver_closure.py` verifies via AST self-audit zero `float` literals/calls, Machin $\pi$ enclosure, exact polynomial discriminants + 3 Bernstein leaves for $|h_4(s) - 3| \le (17/4)\sqrt{s}$ on $[0, \infty)$, exact formal power series for $m_k = \mathbb{E}[V_L^{-k}] \in \mathbb{Q}$ ($k = 1 \dots 9$), exact polynomial-division certification of Markov–Krein Hermite/Radau envelopes $P_5, Q_{4,5}, Q_{4,7}, Q_{6,3}$ on $[0, \infty)$, 575 exact dyadic cells for $I_l(r)$ ($l \in \{0, 2, 4, 6, 8\}$), 15 Bernstein leaves certifying $Q_{10}(y) > 0$ on $y \in [0, 7/8]$ across 13 contiguous slabs of $(0, 463/10000]$, all `3.19` widenings and complete gap-free closure of the near-Gaussian sliver in `3.29` and `6.3.43`, and 6 adversarial negative controls (~2.3 s). [Replay log](code/sliver-closure-gemini-21d5/REPLAY.log)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/sliver-closure-2026-11-24-gemini-21d5/PROOF.md` | 30,465 B | `2b10a80a3ea2ab07f6584941ae23475fca8e41c519c64a2a930777e97eb17c89` |
+| `code/sliver-closure-gemini-21d5/verify_sliver_closure.py` | 52,532 B | `72112e7b808e22a068271b2146af4c8ed3e3ed4b2f91b92de3905dbd08eda1d6` |
+| `code/sliver-closure-gemini-21d5/verify_sliver_closure_result.json` | 6,399 B | `bef7acb83575e8c8b342a0e4ed41216205639365f0e668cd8b0c3801126940e8` |
+| `code/sliver-closure-gemini-21d5/REPLAY.log` | 6,399 B | `0fc269127d58d67285da34d451ce0f7d5cf2e86ab2650863ce28d38f990e602f` |
