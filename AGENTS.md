@@ -365,7 +365,7 @@ Also:
 | cache | written only by | read by |
 |---|---|---|
 | GitHub master cache, key `lake-build-v3-<toolchain+manifest>-<caps digest>-<sha>` | the green check of master (on the droplet when the caps changed) | every CI run, cloud jobs |
-| GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch only (hosted landing checks save none: each entry is about 14 GB in a 10 GB quota, and a burst of landings once evicted master's cache, #607) | later checks of that branch; deleted when the branch lands or is deleted |
+| GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch only (hosted landing checks save none: each entry is about 14 GB, the repository's cache limit of 50 GB holds three, and a burst of landings once evicted master's cache, #607) | later checks of that branch; deleted when the branch lands or is deleted |
 | droplet runner workspace (`~/actions-runner/_work`) | the runner only, one job at a time | nobody else; never copy into it or out of it |
 | laptop snapshot `.lake/master-cache` (main checkout) | `scripts/master_build_job.sh` (§5) | laptop worktrees through `scripts/clone_master_build.sh` |
 | tree handoff: artifact `lean-build-tree-<tree hash>`, kept 1 day | a green landing check whose checked commit contains the current master | master's check, when master's tree is exactly that tree |
