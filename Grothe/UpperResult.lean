@@ -1,10 +1,11 @@
 import Grothe.Statement
 import Grothe.UpperSix.Haagerup
+import Grothe.UpperSixExact.Bound
 
 set_option warningAsError true
 
 /-!
-# The upper bound `K_G^ℂ ≤ 1.40455741 < 1/γ†`, from the six-channel proof
+# The six-channel finite-matrix and constant upper bounds
 
 The six-channel proof (`Grothe/UpperSix/`) has its own copy of the definitions, so that it also builds as the
 standalone package `haagerup-article/anc/`. That copy and `Grothe/Statement.lean` quantify over the same finite
@@ -28,5 +29,14 @@ theorem constant_le : Statement.complexGrothendieckConstant ≤ (140455741 / 100
 theorem constant_lt_inv_gammaDagger :
     Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger :=
   Haagerup.constant_lt_inv_gammaDagger
+
+/-- Finite-matrix upper bound after subtracting the six certified linear energies. -/
+theorem bound_exact : Statement.IsBound ((10 : ℝ) ^ 27 / 711968557929438692542239077) :=
+  Haagerup.SixChannelExact.isBound_exact
+
+/-- The stronger root certificate gives an upper bound of 1.404556407530439478… . -/
+theorem constant_le_exact :
+    Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / 711968557929438692542239077 :=
+  csInf_le Haagerup.Statement.bounds_bddBelow bound_exact
 
 end Grothe.UpperSix
