@@ -49,10 +49,9 @@ theorem norm_phaseLaplaceKernel_le (z : ℂ) (t : ℝ) (ht : 0 < t) :
 theorem integrable_mul_phaseLaplaceKernel_at {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) {P f : Ω → ℂ} (hf : Measurable f) (hP : Integrable P μ)
     (t : ℝ) (ht : 0 < t) :
-    Integrable (fun u => P u * phaseLaplaceKernel (f u) t) μ := by
-  exact hP.mul_bdd
-    (measurable_phaseLaplaceKernel.comp (hf.prodMk measurable_const)).aestronglyMeasurable
-    (Filter.Eventually.of_forall fun u => norm_phaseLaplaceKernel_le (f u) t ht)
+    Integrable (fun u => P u * phaseLaplaceKernel (f u) t) μ := hP.mul_bdd
+  (measurable_phaseLaplaceKernel.comp (hf.prodMk measurable_const)).aestronglyMeasurable
+  (Filter.Eventually.of_forall fun u ↦ norm_phaseLaplaceKernel_le (f u) t ht)
 
 end
 end Grothe.Haag

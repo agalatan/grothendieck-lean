@@ -7,7 +7,9 @@ coefficients, enclosed by the existing outward-rounded 128-bit interval
 operations. If the column retains more than 51 coefficients, it adds the uniform
 remainder `1/50000000`. The final cost is the minimum of this value, one, and the
 original short-prefix cost. No polynomial, energy-table entry, or inherited
-energy-table tolerance changes.
+energy-table tolerance changes. The costs are used by the single-channel upper
+proof (K < 1.404599395362, `Grothe/UpperTightFinal.lean`);
+`Grothe.Statement.main_bounds` does not use them.
 
 For `r = 3/2`, the exact coefficient lists satisfy
 

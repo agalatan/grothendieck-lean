@@ -104,21 +104,20 @@ lemma nextStep_spec (hiN : ℚ) (k : ℕ) (vs : List ℚ) (n : ℚ × ℚ) (rest
   | nil => simp [nextStep, pickIdx]
   | cons t r =>
     by_cases h1 : t < hiN
-    · rw [show nextStep hiN k (t :: r) n rest = (t, k + 1, r, n :: rest) by simp [nextStep, h1]]
-      refine ⟨h1.le, fun v hv => by simp [pickIdx, hv], fun v hv => ?_, Or.inl rfl⟩
-      have hn : ¬ v < (t : ℝ) := not_lt.2 hv
-      simp only [pickIdx, hn, ↓reduceIte]; omega
+    · simp only [nextStep, h1, ↓reduceIte]
+      refine ⟨h1.le, fun v hv ↦ by simp [pickIdx, hv], fun v hv ↦ ?_, Or.inl trivial⟩
+      simp only [pickIdx, not_lt.2 hv, ↓reduceIte]
+      rw [Nat.add_right_comm, Nat.add_assoc]
     · by_cases h2 : t = hiN
-      · rw [show nextStep hiN k (t :: r) n rest = (t, k + 1, r, rest) by simp [nextStep, h2]]
-        refine ⟨h2.le, fun v hv => by simp [pickIdx, hv], fun v hv => ?_, Or.inr ⟨rfl, h2⟩⟩
-        have hn : ¬ v < (t : ℝ) := not_lt.2 hv
-        simp only [pickIdx, hn, ↓reduceIte]; omega
-      · rw [show nextStep hiN k (t :: r) n rest = (hiN, k, t :: r, rest) by
-          simp [nextStep, h1, h2]]
+      · subst h2
+        simp only [nextStep, lt_irrefl, ↓reduceIte]
+        refine ⟨le_rfl, fun v hv ↦ by simp [pickIdx, hv], fun v hv ↦ ?_, Or.inr ⟨trivial, trivial⟩⟩
+        simp only [pickIdx, not_lt.2 hv, ↓reduceIte]
+        rw [Nat.add_right_comm, Nat.add_assoc]
+      · simp only [nextStep, h1, h2, ↓reduceIte]
         have h3 : hiN < t := lt_of_le_of_ne (not_lt.1 h1) (Ne.symm h2)
-        refine ⟨le_rfl, fun v hv => ?_, fun v _ => rfl, Or.inr ⟨rfl, rfl⟩⟩
-        have : v < (t : ℝ) := hv.trans (by exact_mod_cast h3)
-        simp [pickIdx, this]
+        exact ⟨le_rfl, fun v hv ↦ by simp [pickIdx, hv.trans (Rat.cast_lt.2 h3)],
+          fun _ _ ↦ trivial, Or.inr ⟨trivial, trivial⟩⟩
 
 /-- The sweep from `lo` in mesh cell `k`, with remaining mesh points `vs` and remaining nodes
 (the first one at or before `σ·lo`). -/
@@ -155,13 +154,13 @@ theorem sweep_sound (Ψ : ℝ → ℝ) (smax σ : ℚ) (hσ : 0 < σ) (maj : Lis
   have hσR : (0 : ℝ) < σ := by exact_mod_cast hσ
   intro f
   induction f with
-  | zero => intro lo k vs nodes h; simp [sweep] at h
+  | zero => intro _ _ _ _ h; nomatch h
   | succ f ih =>
     intro lo k vs nodes h hlo hcaps hhead hidx v hv
     have hloR : (0 : ℝ) ≤ lo := by exact_mod_cast hlo
     have hv0 : (0 : ℝ) ≤ v := hloR.trans hv
     cases nodes with
-    | nil => simp [sweep] at h
+    | nil => nomatch h
     | cons n ns' =>
       obtain ⟨hn0, hn1⟩ := hhead n (by simp)
       have hn0R : (0 : ℝ) ≤ n.1 := by exact_mod_cast hn0
@@ -193,9 +192,7 @@ theorem sweep_sound (Ψ : ℝ → ℝ) (smax σ : ℚ) (hσ : 0 < σ) (maj : Lis
         obtain ⟨s1, s2, s3, s4⟩ := nextStep_spec (n'.1 / σ) k vs n (n' :: ns)
         generalize nextStep (n'.1 / σ) k vs n (n' :: ns) = st at hlt hpos hrec s1 s2 s3 s4
         have hnnR : (n.1 : ℝ) < n'.1 := by exact_mod_cast hnn
-        have hhiq : σ * st.1 ≤ n'.1 := by
-          have := mul_le_mul_of_nonneg_left s1 hσ.le
-          rwa [mul_div_cancel₀ _ hσ.ne'] at this
+        have hhiq : σ * st.1 ≤ n'.1 := (le_div_iff₀' hσ).mp s1
         have hhi : (σ : ℝ) * st.1 ≤ n'.1 := by exact_mod_cast hhiq
         have hk' : k = 0 ∨ 0 < v :=
           hk.imp id fun h0 => lt_of_lt_of_le (by exact_mod_cast h0) hv

@@ -59,11 +59,8 @@ lemma cutG_eq (vs z : List ℚ) (v : ℝ) :
 open Classical in
 lemma measurable_pickIdx : ∀ vs : List ℚ, Measurable (pickIdx vs)
   | [] => measurable_const
-  | t :: rest => by
-    have h := measurable_pickIdx rest
-    change Measurable fun v : ℝ => if v < (t : ℝ) then 0 else pickIdx rest v + 1
-    exact Measurable.ite (measurableSet_lt measurable_id measurable_const) measurable_const
-      ((measurable_of_countable (· + 1)).comp h)
+  | _ :: rest => Measurable.ite (measurableSet_lt measurable_id measurable_const) measurable_const
+      ((measurable_of_countable (· + 1)).comp (measurable_pickIdx rest))
 
 /-- A function given cell by cell by measurable pieces is measurable. -/
 lemma measurable_cellwise (vs z : List ℚ) (F : CutCell → ℝ → ℝ) (hF : ∀ c, Measurable (F c)) :
@@ -180,7 +177,7 @@ lemma cutY_le_pos (vs z : List ℚ) (v t : ℝ) (ht : 0 < t) (hv : t ≤ v) :
   have h3 : |e / u| ≤ |e| * (1 / t ^ 2) := by
     rw [abs_div, abs_of_pos hup, div_eq_mul_one_div]
     exact mul_le_mul_of_nonneg_left hinv (abs_nonneg e)
-  have hM : 0 ≤ cellBound vs z := le_trans (by positivity) h
+  have hM := cellBound_nonneg vs z
   have hti : 0 ≤ 1 / t ^ 2 := by positivity
   rw [e1]
   calc |b / 2 * u - e / u| ≤ |b| / 2 * u + |e| * (1 / t ^ 2) := by
@@ -649,7 +646,6 @@ theorem jspec_of_inputs (hM : Moments μ U x) (hS : GramInputs μ U) (vs z : Lis
 /-- **The Stein cuts follow from the analytic inputs.** -/
 theorem steinCut_of_inputs (hM : Moments μ U x) (hS : GramInputs μ U) : SteinCut μ U :=
   ⟨cut_of_inputs μ hM hS.toSteinInputs, spec_of_inputs μ hM hS.toSteinInputs,
-    gspec_of_inputs μ hM hS, fun vs z lam mu t be nu g j hvs hlam hmu hnu hok hx =>
-      jspec_of_inputs μ hM hS vs z lam mu t be nu g j hvs hlam hmu hnu hok hx⟩
+    gspec_of_inputs μ hM hS, jspec_of_inputs μ hM hS⟩
 
 end Grothe.Lower

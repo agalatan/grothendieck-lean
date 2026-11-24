@@ -43,25 +43,17 @@ def pad (k : Fin 2) (x : EuclideanSpace ℂ ι) : EuclideanSpace ℂ (ι ⊕ Fin
   WithLp.toLp 2 (Sum.elim (fun a => x a)
     (fun k' => if k' = k then ((√(1 - ‖x‖ ^ 2) : ℝ) : ℂ) else 0))
 
-lemma sum_norm_sq_eq (x : EuclideanSpace ℂ ι) : ∑ a, ‖x a‖ ^ 2 = ‖x‖ ^ 2 := by
-  rw [EuclideanSpace.norm_eq, Real.sq_sqrt (sum_nonneg fun _ _ => sq_nonneg _)]
+lemma sum_norm_sq_eq (x : EuclideanSpace ℂ ι) : ∑ a, ‖x a‖ ^ 2 = ‖x‖ ^ 2 :=
+  (EuclideanSpace.norm_sq_eq x).symm
 
 lemma norm_pad (k : Fin 2) (x : EuclideanSpace ℂ ι) (hx : ‖x‖ ≤ 1) : ‖pad k x‖ = 1 := by
-  have h0 : 0 ≤ 1 - ‖x‖ ^ 2 := by nlinarith [norm_nonneg x]
+  have h0 : 0 ≤ 1 - ‖x‖ ^ 2 := sub_nonneg.mpr ((sq_le_one_iff₀ (norm_nonneg x)).mpr hx)
   rw [EuclideanSpace.norm_eq, Real.sqrt_eq_one]
-  simp only [pad, PiLp.toLp_apply, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]
-  rw [sum_norm_sq_eq]
-  have h2 : ∑ k' : Fin 2, ‖(if k' = k then ((√(1 - ‖x‖ ^ 2) : ℝ) : ℂ) else 0)‖ ^ 2
-      = 1 - ‖x‖ ^ 2 := by
-    fin_cases k <;>
-      simp [Fin.sum_univ_two, Complex.norm_real, Real.norm_eq_abs,
-        abs_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt h0]
-  rw [h2]; ring
+  simp [pad, Fintype.sum_sum_type, sum_norm_sq_eq, apply_ite Norm.norm, ite_pow,
+    Real.sq_sqrt h0]
 
 lemma inner_pad (x y : EuclideanSpace ℂ ι) : inner ℂ (pad 0 x) (pad 1 y) = inner ℂ x y := by
-  simp only [PiLp.inner_apply, pad, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr,
-    Fin.sum_univ_two]
-  simp
+  simp [PiLp.inner_apply, pad]
 
 /-- The vector optimum bounds the bilinear form on families in the closed unit ball
 (pad the vectors to unit vectors in two extra coordinates). -/
@@ -83,11 +75,9 @@ theorem _root_.Grothe.IsGrothendieckBound.one_le {K : ℝ} (hK : IsGrothendieckB
     apply csSup_le (scalarSet_nonempty A)
     rintro r ⟨ε, δ, hε, hδ, rfl⟩
     simp [A, hε, hδ]
-  have h := hK 1 1 A
-  have hC0 := scalarOpt_nonneg A
-  rcases le_or_gt 0 K with hK0 | hK0
-  · nlinarith [mul_le_mul_of_nonneg_left hC hK0]
-  · nlinarith [mul_nonpos_of_nonpos_of_nonneg hK0.le hC0]
+  have h := hV.trans (hK 1 1 A)
+  exact h.trans (mul_le_of_le_one_right
+    (pos_of_mul_pos_left (zero_lt_one.trans_le h) (scalarOpt_nonneg A)).le hC)
 
 /-! ### Cell maps and the matrix of `T` -/
 
@@ -135,14 +125,12 @@ theorem finite_transfer {K B : ℝ} (hK : IsGrothendieckBound K) (T : H →L[ℂ
     {x : Fin N → EuclideanSpace ℂ ι} {y : Fin M → EuclideanSpace ℂ ι}
     (hx : ∀ i, ‖x i‖ ≤ 1) (hy : ∀ j, ‖y j‖ ≤ 1) :
     ‖pairVal T (cellVec L x) (cellVec L' y)‖ ≤ K * B := by
-  have hC : scalarOpt (cellMatrix T L L') ≤ B := by
-    refine csSup_le (scalarSet_nonempty _) ?_
-    rintro r ⟨ε, δ, hε, hδ, rfl⟩
-    rw [← inner_cell]
-    exact hB ε δ hε hδ
+  have hC : scalarOpt (cellMatrix T L L') ≤ B :=
+    csSup_le (scalarSet_nonempty _) fun _ ⟨ε, δ, hε, hδ, hr⟩ ↦
+      hr ▸ inner_cell T L L' ε δ ▸ hB ε δ hε hδ
   rw [pairVal_cellVec]
   exact (le_vectorOpt_of_ball _ hx hy).trans ((hK _ _ _).trans
-    (mul_le_mul_of_nonneg_left hC (by linarith [hK.one_le])))
+    (mul_le_mul_of_nonneg_left hC (zero_le_one.trans hK.one_le)))
 
 end Cells
 

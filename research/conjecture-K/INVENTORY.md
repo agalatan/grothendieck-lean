@@ -60,8 +60,8 @@ The command of `IMPROVEMENT.md` for the independent check is
 
 The checker reads the Lean row and batch data under the hard-coded root `/Users/alingalatan/workspaces/grothe` and
 compares source hashes. It was run against commit `32cfb7d87`; one of the pinned Lean files
-(`Grothe/Research/LawNodeLower.lean`) has since been golfed without statement changes, and a rerun on the current
-`master` has not been tried.
+(`Grothe/Research/LawNodeLower.lean`) was then golfed without statement changes and left master with the cubic-witness
+cover in #525, so the checker cannot be rerun against the current `master`.
 
 The report on the tilted sector of 15 November (`STATUS.md`, section 11 (b)) was rewritten in place by its author
 five times, so its copies cannot all be compared with the working files; the hashes say which versions the
@@ -403,8 +403,8 @@ pending external review; internal re-derivations are not external review. The
 ellipsoid checker uses the previously reviewed Rice tangent as an explicit input.
 No third-party dependency, binary, or private Lean build is added.
 
-The complete lower cover is production proof data under `data/lower-refinement/`,
-with its generator and Lean export; it is not an omitted research-only certificate.
+The complete lower cover was production proof data under `data/lower-refinement/`,
+with its generator and Lean export, until #525 replaced the cubic witness (the folder is no longer on master); it is not an omitted research-only certificate.
 Exploratory searches, the frozen-source obstruction and candidate joint envelopes
 remain in the owning worktree's ignored `handoff/codex-a7c4-progress/` and
 `handoff/codex-a7c4-next-{lower,odd,joint,content}/` folders. Their research conclusions

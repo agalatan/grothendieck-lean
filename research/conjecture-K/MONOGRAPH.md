@@ -143,8 +143,8 @@ not, and it matters only if a row cover uses it [R · 2.5].
 - Under exact K the cap would be about 0.713160 at ε = 0.7564, that is 1.40221 [N, read from the record · 8.4].
 - No certificate with T_ε exceeds 1.4022581233, for any multiplier and dimension [R here · 12.2]; at ε = 149/200 the
   witness cannot reach 1.402 at all [R · 8.3]. A witness with an identity tail, (1, −ε, ν, ν, …), has the model
-  ceiling 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 [N · STATUS §10]; its certificate, at (ε, ν) = (191/250, 47/2000) with
-  target 1.4018, is the subject of `../identity-tail/STATUS.md`. The degree-5 analogue of K fails numerically at its
+  ceiling 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 [N · STATUS §10]; its certificate, at (ε, ν) = (191/250, 47/2000), designed for the
+  target 1.4018 and proving 1.40191 in Lean, is the subject of `../identity-tail/STATUS.md`. The degree-5 analogue of K fails numerically at its
   flank rows and at its peak row (chapter 4, item 12.3).
 
 ### 1.6 The retained functional Λ̂

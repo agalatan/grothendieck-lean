@@ -5,7 +5,9 @@ finite-head and Hardy inputs used by the single-channel theorem
 **K_G^C < 1.404599395362**. Its exact rational Grothendieck bound is `tightValueQ`,
 approximately `1.4045993953612070749249`. The endpoint is
 `Grothe.Statement.upper_below_tight` in
-[`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean).
+[`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean). The repository's upper bound
+K ≤ 1.40457588 (`Grothe.Statement.main_bounds`, six channels, [`Grothe/UpperResult.lean`](../../Grothe/UpperResult.lean))
+is proved separately and uses none of this data.
 
 The byte-pinned data and generators retain historical intermediate endpoint
 metadata for reproducibility. The single-channel numerical ledger is

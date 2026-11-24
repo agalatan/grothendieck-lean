@@ -104,14 +104,14 @@ shells and q are the "odd-frequency" = "z-even" block.
 | quantity | value | status and source |
 |---|---|---|
 | proved bounds (Lean, `main_bounds`) | 1.40191 < K_G^ℂ ≤ 1.40457588 | `Grothe/MainResult.lean`; `docs/LEAN_DETAILS.md` |
-| witness cap of the proved lower bound (identity-tail witness) | B = (1 − 47/2000)·7064131/10⁷ + 47/2000 = 14266247843/20000000000 = 0.71331239215 < 5000/7009 (1/B = 1.4019103…) | `../identity-tail/STATUS.md` 5.1; `Grothe/Lower/EnvelopeData.lean` |
+| witness cap of the proved lower bound (identity-tail witness) | B = (1 − 47/2000)·7064131/10⁷ + 47/2000 = 14266247843/20000000000 = 0.71331239215 < 100000/140191 (1/B = 1.4019103…; (ε, ν) = (191/250, 47/2000)) | `../identity-tail/STATUS.md` 5.1; `Grothe/Lower/EnvelopeData.lean` |
 | row cap of the cubic-witness cover (Lean until #525) | 891774069/1250000000 = 0.7134192552 | `STATUS.md` 12.1 |
 | row cap needed for 1.402 | below 500/701 = 0.7132667617… | `STATUS.md`, section 8 |
 | row cap needed for 1.4022 | below 5000/7011 = 0.7131650263… | `STATUS.md`, section 8 |
 | what K_η with η ≤ 10⁻⁴ would give | about 1.402 | `STATUS.md` 8.1 |
 | what exact K would give | about 1.4022 (cap 0.713160 at ε = 0.7564 from a moment LP) | **N**, read from the record (`STATUS.md` 8.4) |
 | ceiling of the cubic witness family (no certificate with T_ε can exceed it) | below 1.4022581233, for every complex multiplier ε and every dimension; the model optimum is near ε = 0.7564 (model norm 0.7131355). At ε = 0.75 the model gives 1.402166, at ε = 0.745 only 1.401957: the flank value ε = 149/200 cannot reach 1.402 | `docs/overview.tex`, "Limits of the witness method" ([P, C], part in Lean); `STATUS.md` 8.3, 12.2 |
-| ceiling with an identity tail (witness (1, −ε, ν, ν, …)) | 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 | **N**, the game value in the model (`STATUS.md`, section 10). The certificate route, at (ε, ν) = (191/250, 47/2000) with target 1.4018, has its own ledger: [`../identity-tail/STATUS.md`](../identity-tail/STATUS.md) |
+| ceiling with an identity tail (witness (1, −ε, ν, ν, …)) | 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 | **N**, the game value in the model (`STATUS.md`, section 10). The certificate at (ε, ν) = (191/250, 47/2000), designed for the target 1.4018 and proving 1.40191 in Lean, has its own ledger: [`../identity-tail/STATUS.md`](../identity-tail/STATUS.md) |
 
 The proved certificates replace sup Λ by scalar relaxations (fibre potentials, moment and Stein cuts, node caps). Each
 further decimal that way costs weeks of computation for about 10⁻⁵. K would remove the gate loss, the residual-law
