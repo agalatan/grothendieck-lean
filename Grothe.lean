@@ -36,6 +36,7 @@ import Grothe.Lower.Gate
 import Grothe.Lower.Gram
 import Grothe.Lower.Law
 import Grothe.Lower.MassFacts
+import Grothe.Lower.MassNodes
 import Grothe.Lower.MassRow
 import Grothe.Lower.Mixed
 import Grothe.Lower.Moment

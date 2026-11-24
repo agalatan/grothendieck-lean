@@ -20,7 +20,9 @@ Outputs (Grothe/Lower/):
   RowGateData.lean     `rowGates` (ℓ, β, δ, R) and `rowR`;  RowGates.lean: their exact checks
   EnvelopeData.lean    the envelope: `envB` and the cells `lo,hi,i,j,θ` of [0, 9/10] (scalar row 0 the mass row's tangent,
                        k + 1 the row k)
-  Cert/RowSS.lean, Cert/MassRow.lean, Cert/Envelope.lean   the native checks;  Cert/Rows.lean: `RowFacts` of every row
+  Cert/RowSS.lean, Cert/MassRow.lean   the native row checks
+  Cert/Envelope.lean   the kernel-checked envelope
+  Cert/Rows.lean       `RowFacts` of every row
 Before writing, the data are checked with exact fractions: the gates of every row at ε̂ (E ≻ 0, E ⪰ diag(−1, ε̂, ε̂),
 N = E − diag(ε̂ − δ, 0, 0) ≻ 0, R ≻ 0, R ⪰ diag(−1, ε̂), R ⪰ diag(ε̂, 0)), κ ≤ 1/δ − bᵀN⁻¹b, the Lipschitz header, the node
 caps of every row against its cap table, the mass row's table against φ_c, and every cell of the envelope against `envB`.
@@ -257,9 +259,9 @@ def main(check=False):
            f"{len(cells)} `x`-cells ({nst} spectral nodes); cap S − capPad")
     files["MassRow.lean"] = row_module("massRow", doc, (Q(0), Q(0), delta, kappa, smax, Sval - PAD),
                                        (Q(0),) * 6, (Q(0),) * 3, nodes, mesh_vs(R), cells)
-    files["Cert/MassRow.lean"] = ("import Grothe.Lower.SpecRows\nimport Grothe.Lower.MassRow\n\n/-! # The cell check of the mass "
+    files["Cert/MassRow.lean"] = ("import Grothe.Lower.SpecRows\nimport Grothe.Lower.MassNodes\n\n/-! # The cell check of the mass "
                                   "row " + HEADER + " -/\n\nnamespace Grothe.Lower\n\n"
-                                  "theorem certMassRow : checkSpecCells massRow = true := by native_decide\n\nend Grothe.Lower\n")
+                                  "theorem certMassRow : checkSpecCells massRow massNodes = true := by native_decide\n\nend Grothe.Lower\n")
     # the envelope
     env = json.load(open(src / "env_final_clean.json"))
     assert Q(env["eps"]) == EPSH and Q(env["step"]) == Q(1, 2000) and len(env["cells"]) == 1800
@@ -270,36 +272,71 @@ def main(check=False):
         e = env["rows"][t]
         assert Q(e["ell"]) == l and Q(e["beta"]) == bb and Q(e["C"]) <= C <= Q(e["C"]) + Q(1, 10**15), t
 
-    def quadmax(a0, a1, lo, hi):        # max over [lo, hi] of t² + a1 t + a0
-        return max(lo * lo + a1 * lo + a0, hi * hi + a1 * hi + a0)
-    ecells, worst = [], Q(0)
-    for k, (a, b2, th, val) in enumerate(env["cells"]):
-        lo, hi, th = Q(k, 2000), Q(k + 1, 2000), Q(th)
-        i, j = index[a], index[b2]
-        assert 0 <= th <= 1 and (i != 0 or (j == 0 and th == 0))
-        m = (lo + hi) / 2
+    step = Q(env["step"])
+    size = len(env["cells"])
+    assert lam == Q(1, 2) and step * size == Q(9, 10)
 
-        def sc(i):
-            if i == 0:
-                return (lam * m, Q(0), lam + Sval + lam * m * m)
-            return scal[rows[i - 1]["t"]]
-        (la, ba, Ca), (lb, bbb, Cb) = sc(i), sc(j)
-        C = (1 - th) * Ca + th * Cb - 2 * (1 - th) * th * (ba - bbb) ** 2 / EPSH
-        v = quadmax(C, -2 * ((1 - th) * la + th * lb), lo, hi)
-        assert v <= Q(val) + Q(1, 10**15) and v <= ENV_B, (k, float(v))
-        worst = max(worst, v)
-        ecells.append(f"{qs(lo)},{qs(hi)},{i},{j},{qs(th)}")
-    files["EnvelopeData.lean"] = ("import Mathlib.Data.Rat.Floor\n\n/-!\n# The envelope of the rows " + HEADER + "\n\n"
-        f"From `data/tail-rows/env_final_clean.json`: the {len(ecells)} cells `[n/2000, (n + 1)/2000]` of `[0, 9/10]`, each with "
+    def scalar_row(i, midpoint):
+        if i == 0:
+            return lam * midpoint, Q(0), lam + Sval + lam * midpoint**2
+        return scal[rows[i - 1]["t"]]
+
+    def cell_max(mixture, start, end):
+        lo, hi = start * step, end * step
+        mid = (lo + hi) / 2
+        i, j, theta = mixture
+        la, ba, ca = scalar_row(i, mid)
+        lb, bb, cb = scalar_row(j, mid)
+        ell = (1 - theta) * la + theta * lb
+        cap = (1 - theta) * ca + theta * cb - 2 * (1 - theta) * theta * (ba - bb)**2 / EPSH
+        return cap + max(lo * (lo - 2 * ell), hi * (hi - 2 * ell))
+
+    mixtures = set()
+    fine_max = Q(0)
+    for k, (a, b, weight, val) in enumerate(env["cells"]):
+        i, j, theta = index[a], index[b], Q(weight)
+        assert 0 <= theta <= 1 and (i != 0 or (j == 0 and theta == 0))
+        mixture = (i, j, theta)
+        value = cell_max(mixture, k, k + 1)
+        assert value <= Q(val) + Q(1, 10**15) and value <= ENV_B, (k, value)
+        mixtures.add(mixture)
+        fine_max = max(fine_max, value)
+
+    def reach(start, mixture):
+        # For a fixed mixture the underlying quadratic is convex. At either endpoint a
+        # midpoint mass tangent adds the same nonnegative multiple of (hi - lo)^2.
+        # Thus the maximum on [start, end] is nondecreasing as end grows.
+        lo, hi = start, size + 1
+        while lo + 1 < hi:
+            mid = (lo + hi) // 2
+            if cell_max(mixture, start, mid) <= fine_max:
+                lo = mid
+            else:
+                hi = mid
+        return lo
+
+    ecells, worst = [], Q(0)
+    start = 0
+    while start < size:
+        end, mixture = max((reach(start, mix), mix) for mix in mixtures)
+        assert end > start, ("uncovered grid point", start)
+        value = cell_max(mixture, start, end)
+        assert value <= fine_max
+        worst = max(worst, value)
+        i, j, theta = mixture
+        ecells.append(f"  ⟨{q(start * step)}, {q(end * step)}, {i}, {j}, {q(theta)}⟩")
+        start = end
+    files["EnvelopeData.lean"] = ("import Grothe.Lower.Envelope\n\n/-!\n# The envelope of the rows " + HEADER + "\n\n"
+        f"From `data/tail-rows/env_final_clean.json`: a cover of `[0, 9/10]` by {len(ecells)} intervals, each with "
         "the scalar rows `i`, `j` and the weight `θ` of\nits mixture (`0` the tangent of the mass row at the midpoint of the "
         f"cell, `k + 1` the row `k`). Its maximum is {float(worst):.10f}.\n-/\n\n"
         "namespace Grothe.Lower\n\n"
         f"/-- The cap of the hat value checked by the envelope. -/\ndef envB : ℚ := {ENV_B.numerator} / {ENV_B.denominator}\n\n"
-        "/-- The cells `lo,hi,i,j,θ` of the envelope. -/\ndef envCells : List String := [\n" +
-        ",\n".join("  " + lean_str(c) for c in ecells) + "]\n\nend Grothe.Lower\n")
-    files["Cert/Envelope.lean"] = ("import Grothe.Lower.Envelope\nimport Grothe.Lower.EnvelopeData\nimport Grothe.Lower.MassFacts\n"
+        "/-- The cells `lo,hi,i,j,θ` of the envelope. -/\ndef envCells : List EnvCell := [\n" +
+        ",\n".join(ecells) + "]\n\nend Grothe.Lower\n")
+    files["Cert/Envelope.lean"] = ("import Grothe.Lower.EnvelopeData\nimport Grothe.Lower.MassNodes\n"
         "import Grothe.Lower.RowData\n\n/-! # The check of the envelope " + HEADER + " -/\n\nnamespace Grothe.Lower\n\n"
-        "theorem certEnvelope : checkEnv rowData massS envB envCells = true := by native_decide\n\nend Grothe.Lower\n")
+        "theorem certEnvelope : checkEnvCells rowData massS envB envCells = true := by\n  decide +kernel\n\nend Grothe.Lower\n")
     if check:
         bad = [k for k, v in files.items() if not (out / k).exists() or (out / k).read_text() != v]
         if bad:

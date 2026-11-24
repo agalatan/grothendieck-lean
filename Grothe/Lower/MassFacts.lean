@@ -1,4 +1,5 @@
 import Grothe.Lower.SpecRows
+import Grothe.Lower.MassNodes
 import Grothe.Lower.Cert.MassRow
 
 /-!
@@ -12,10 +13,10 @@ proves the third, the law-level bound, and the scalar inequality behind the seco
   functions of `r`);
 * `phiMass_convexOn_mul`, `phiMass_lip_mul`: `s ↦ φ_c(ks)` is convex on `[0, ∞)` and `2εk`-Lipschitz there (`k ≥ 0`);
 * `massCaps`: the potential `Ψ(s) = φ_c(s/δ)` of the mass row (`δ = 3/4`, `c = 2ν̂ + λ`, `ε = ε̂ = 25/31`) satisfies the node
-  caps, convexity and Lipschitz bound of the row (`CapsHold`), the caps by one exact check (`massCapsOK`);
+  caps, convexity and Lipschitz bound of the row (`CapsHold`), with exact potential values at the nodes (`massCapsOK`);
 * `mass_law_bound`: for every law with the moments and the Stein cuts and every `0 ≤ σ ≤ ρ`,
   `E φ_c(σ√U) − ε̂σ² ≤ S`, `S = S(1/2)` of the certificate, from the cell check of the mass row
-  (`certMassRow`, `rowBound_of_specCells`) at `σ' = δσ`, since `κδ² ≤ ε̂`.
+  (`certMassRow`, `goal_of_specCells`) at `σ' = δσ`, since `κδ² ≤ ε̂`.
 -/
 
 open MeasureTheory
@@ -95,15 +96,6 @@ lemma phiMass_lip_mul {e c k : ℝ} (he : 0 < e) (hc : 0 < c) (hk : 0 ≤ k) {s 
 
 /-! ### The mass row -/
 
-/-- `c = 2ν̂ + λ` with `ν̂ = 47/1953`, `λ = 1/2`. -/
-def massC : ℚ := 2 * (47 / 1953) + 1 / 2
-
-/-- The bound `S(1/2)` of the mass row (the certificate's exact value). -/
-def massS : ℚ := 3798855002922010337121170986221578569 / 22939068096000000000000000000000000000
-
-/-- `φ_c` on rationals. -/
-def phiQ (e c r : ℚ) : ℚ := if r ≤ c / e then e ^ 2 * r ^ 2 / c else 2 * e * r - c
-
 lemma phiQ_cast (e c r : ℚ) : ((phiQ e c r : ℚ) : ℝ) = phiMass e c r := by
   unfold phiQ phiMass
   have hiff : ((r : ℝ) ≤ (c : ℝ) / (e : ℝ)) ↔ r ≤ c / e := by rw [← Rat.cast_div, Rat.cast_le]
@@ -116,11 +108,6 @@ lemma phiQ_cast (e c r : ℚ) : ((phiQ e c r : ℚ) : ℝ) = phiMass e c r := by
     simp only [h, h', ↓reduceIte]
     push_cast
     ring
-
-/-- **The node caps of the mass row**, by one exact check: `φ_c(r/δ) ≤ c_r` at every node of its table. -/
-theorem massCapsOK :
-    massRow.nodeList.all (fun m => decide (phiQ ε massC (m.1 / massRow.delta) ≤ m.2)) = true := by
-  native_decide
 
 lemma massRow_delta : massRow.delta = 3 / 4 := rfl
 
@@ -139,16 +126,13 @@ lemma epsR_pos : (0 : ℝ) < (ε : ℝ) := by norm_num [ε]
 lemma massC_pos : (0 : ℝ) < (massC : ℝ) := by norm_num [massC]
 
 /-- **`CapsHold` for the mass row**: convexity, the node caps and the Lipschitz constant `smax`. -/
-theorem massCaps : CapsHold massPot massRow.nodeList massRow.smax := by
+theorem massCaps : CapsHold massPot massNodes massRow.smax := by
   refine ⟨phiMass_convexOn_mul epsR_pos massC_pos (by norm_num), fun n hn => ?_, fun s t hs hst => ?_⟩
-  · have h := of_decide_eq_true (List.all_eq_true.1 massCapsOK n hn)
-    rw [massRow_delta] at h
-    have h' : ((phiQ ε massC (n.1 / (3 / 4)) : ℚ) : ℝ) ≤ (n.2 : ℝ) := by exact_mod_cast h
-    rw [phiQ_cast] at h'
-    have e : (4 / 3 : ℝ) * (n.1 : ℝ) = ((n.1 / (3 / 4) : ℚ) : ℝ) := by push_cast; ring
-    unfold massPot
-    rw [e]
-    exact h'
+  · apply le_of_eq
+    rw [massCapsOK hn, massRow_delta, phiQ_cast, massPot]
+    congr 1
+    push_cast
+    ring
   · have h := phiMass_lip_mul (k := 4 / 3) epsR_pos massC_pos (by norm_num) hs hst
     unfold massPot
     have hk : 2 * (ε : ℝ) * (4 / 3) ≤ (massRow.smax : ℝ) := by
@@ -162,14 +146,14 @@ theorem mass_law_bound {Ω : Type} [MeasurableSpace Ω] {μ : Measure Ω} [IsPro
     {x : ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) {σ : ℝ} (h0 : 0 ≤ σ) (h1 : σ ≤ ρ)
     (hf : Integrable (fun ω => phiMass ε massC (σ * √(U ω))) μ) :
     ∫ ω, phiMass ε massC (σ * √(U ω)) ∂μ - (ε : ℝ) * σ ^ 2 ≤ massS := by
-  have hb := rowBound_of_specCells massRow certMassRow
   have e1 : ∀ ω, massPot ((3 / 4 : ℝ) * σ * √(U ω)) = phiMass ε massC (σ * √(U ω)) := by
     intro ω
     unfold massPot
     congr 1
     ring
   have hδ : ((massRow.delta : ℚ) : ℝ) = 3 / 4 := by rw [massRow_delta]; norm_num
-  have h := hb Ω μ U x massPot ((3 / 4 : ℝ) * σ) hM hS massCaps (by positivity)
+  have h := goal_of_specCells μ massRow certMassRow hM hS massCaps (σ := (3 / 4 : ℝ) * σ)
+    (by positivity)
     (by rw [hδ]; exact mul_le_mul_of_nonneg_left h1 (by norm_num))
     (by simpa only [e1] using hf)
   simp only [e1] at h

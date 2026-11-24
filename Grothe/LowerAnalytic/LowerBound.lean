@@ -13,7 +13,7 @@ The witness `T = P₁,₀ − eP₂,₁ + ν(Id − P₁,₀ − P₂,₁)` with
   rows with the tail) and the checks of the rows (`rowData_facts`: `checkRow` for the plain rows, `checkSpecRow` for the
   spectral ones) give the scalar inequality of every row (`rowOf_of_shared`);
 * the mass row gives `V̂ ≤ (1 − λ)t² + λ + S − ε‖Qh‖²` with `λ = 1/2` (`massRow_frame`), i.e. the scalar rows of its tangents;
-* the envelope (`certEnvelope`, `env_bound`) mixes them into `V̂ ≤ envB` for `t ∈ [0, 9/10]` (`profile_bound`).
+* the envelope (`certEnvelope`, `env_bound_of_cells`) mixes them into `V̂ ≤ envB` for `t ∈ [0, 9/10]` (`profile_bound`).
 
 The phase reduction turns the cap of the hat value into the cap `(1 − ν)envB + ν` of the witness (`witnessCap_cert`), and
 the transfer gives `K ≥ 1/((1 − ν)envB + ν)` for every Grothendieck bound `K` (`lower_bound_of_tailNodeCaps`).
@@ -46,7 +46,7 @@ theorem envRows_of_shared {V t : ℝ} {Qh v : E}
 theorem profile_bound (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
     (hmass : V ≤ (1 - 1 / 2) * t ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖Qh‖ ^ 2)
     (hred : SharedReduction rowData V t Qh v) : V ≤ (envB : ℝ) := by
-  exact env_bound rowData massS envB envCells certEnvelope hv ht0 ht1 (envRows_of_shared hmass hred)
+  exact env_bound_of_cells rowData massS envB envCells certEnvelope hv ht0 ht1 (envRows_of_shared hmass hred)
 
 /-- Transport any uniform scalar profile cap for these rows to their original Gaussian witness. -/
 theorem witnessCap_of_profile_upper {B : ℝ}
