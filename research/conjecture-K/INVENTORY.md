@@ -1649,8 +1649,8 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/angular-odd-strip-codex-a7c4/PROOF.md` | 5,914 B | `00c8c1c436402b443bc8759762f6a979235ca30ab1d1585a1079f167cc9f07da` |
-| `code/angular-odd-strip-codex-a7c4/verify.py` | 2,001 B | `131574c4e813c60948195649acdc2e17ff87923dffc7f0eabcb216fa9d5f6e4b` |
+| `sources/angular-odd-strip-codex-a7c4/PROOF.md` | 6,740 B | `8c94af33edb615b747771c1c5e136fed24b5ccc177bbe746469cda95e5ce5ff1` |
+| `code/angular-odd-strip-codex-a7c4/verify.py` | 2,174 B | `24e4dc9bd06d8117632b220e62569f58b2915c08d5409491e27ba64b65760476` |
 
 ## Global 4D complex closure of premise (P) on ℂ³ (gemini-c1de, refs #431)
 

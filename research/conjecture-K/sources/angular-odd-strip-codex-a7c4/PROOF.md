@@ -1,6 +1,6 @@
 # A uniform odd-energy strip from the visible phase circle
 
-Agent-ID: codex-a7c4. Task [#610](https://github.com/agalatan/grothendieck-lean/issues/610). Status **P + C, author only**.
+Agent-ID: codex-a7c4. Task [#610](https://github.com/agalatan/grothendieck-lean/issues/610). The phase and radial proof and the rational replay were checked independently by claude-b9ee and gemini-c1de. [Claude review](https://github.com/agalatan/grothendieck-lean/pull/611#issuecomment-7146401720) · [Gemini review](https://github.com/agalatan/grothendieck-lean/pull/611#issuecomment-7146413669)
 
 At the peak row of the monograph, the averaged premise $(P_\Psi)$ holds with the single trial $c=0$ for every admissible core with
 \[
@@ -28,7 +28,7 @@ Use the notation of rows 7.5.2–7.5.4. The standard proper complex Gaussian vis
  d(T)=(T-2)/\sqrt2,\qquad
  W=\mathbb E|Q|^2+\mathbb E|P|^2+|\nu|^2.
 \]
-Here $\mathbb E Q=0$ and $\nu$ is a constant. Set $M=|Q+\nu d(T)|+|P|$ and $H=\sqrt T\,M$. Then $|O|\le H$ at every visible angle. [Visible-variable formula](../all-sector-peak-2026-11-15-codex-91d4/analytic/ODD_RADIAL_QUADRATURE.md)
+Here $\mathbb E Q=0$ and $\nu$ is a constant. Angular orthogonality, independence from $T$, and $\mathbb E[Td(T)^2]=(6-4\cdot2+4)/2=1$ give $\mathbb E|O|^2=W$. Set $M=|Q+\nu d(T)|+|P|$ and $H=\sqrt T\,M$. Then $|O|\le H$ at every visible angle. [Visible-variable formula](../all-sector-peak-2026-11-15-codex-91d4/analytic/ODD_RADIAL_QUADRATURE.md)
 
 Write $Y=|X|$. The nonnegative directional term subtracted in $\Psi$ gives
 \[
@@ -83,6 +83,10 @@ The last expression in (5) increases on $W\ge0$. At $W_0=1/3\,000\,000$,
  \left(\frac{71}{20}\right)^4 W_0^3
  < \left(\frac{1241}{25\,000\,000}-\frac9{20}W_0\right)^4,
 \]
-and the quantity in parentheses on the right is positive. Consequently the odd charge is below $49.64\cdot10^{-6}$. Row 7.5.4 gives $\sigma(u)-D_-(q)>-0.36\cdot10^{-6}$ on the admissible domain. Adding the nonnegative $0.01\|U\|^2$ pays the charge in $(P_\Psi)$, and row 7.5.3 gives the stated strict six-sector bound. The rest of the moderate-energy odd sector is still open. [Ledger](../../STATUS.md)
+and the quantity in parentheses on the right is positive. Consequently the odd charge is below $49.64\cdot10^{-6}$. To see exactly which remote estimate enters, let $\sigma=S-(B(u)-pu)\ge0$ and $D=B(u)-2\mathbb E|L+q|$. Since $D_-=\max(0,-D)$ and $\Lambda(q)=2\mathbb E|L+q|-pu$,
+\[
+ \sigma-D_-=\min(\sigma,\sigma+D)=\min(\sigma,S-\Lambda(q)).
+\]
+The independently verified peak remote cap of row 3.3 gives $\Lambda(q)<1.373953883$, and row 3.14 gives $S>1.3739535256614$. The difference of these rational endpoints is strictly below $0.36\cdot10^{-6}$. Thus $\sigma-D_->-0.36\cdot10^{-6}$ directly. With $0.01\|U\|^2\ge0$ this proves $(P_\Psi)$, and row 7.5.3 gives the strict six-sector bound. Sharpness in (1) concerns the angular event at one radius. The optimal dependence on $W$ after averaging remains open. [Ledger](../../STATUS.md)
 
 Replay the rational comparisons with `python3 -I research/conjecture-K/code/angular-odd-strip-codex-a7c4/verify.py`. [Exact verifier](../../code/angular-odd-strip-codex-a7c4/verify.py)
