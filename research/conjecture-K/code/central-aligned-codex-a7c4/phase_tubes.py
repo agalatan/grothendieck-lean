@@ -61,6 +61,12 @@ def constants():
     m = A - F(1, 8) / (2 * B)
     assert m > 0 and 3 * F(1, 96) ** 2 < m * MIN_MARGIN
     assert HOLDER_CUBED * F(1, 512) ** 5 < MIN_MARGIN ** 3 / 4
+    assert (2 + F(1, RADIUS_DEN)**2) / 1024**2 < F(1, 512)**2
+    assert F(7, 8)**2 > F(3, 4)
+    energy = F(2, 49)
+    driver_energy = F(1, 16)**2 + F(1, 32)**2 + F(1, 640)**2
+    assert F(1, 640)/F(1, 16) == F(1, 40) < F(1, RADIUS_DEN)
+    assert energy <= F(463, 10000) and energy + driver_energy <= F(80051, 10**6)
     print(f"minimum real margin {MIN_MARGIN}; uniform radius 1/512; t <= 1/4: 1/96")
 
 
@@ -82,6 +88,23 @@ def dyadic_radius(margin, tlo, m):
     return radius
 
 
+def inherited_region(chart, cell, radius, cover):
+    """Apply row 7.4.11 or 7.4.12 to the entire complex cylinder above the real box."""
+    wl, wh, yl, yh, tl, th = cell
+    amax, bmax, smin = cover.direction_bounds(chart, yl, yh)
+    physical_smax = th**2 * (amax**2 + bmax**2 + radius**2)
+    if any(lo <= wl and wh <= hi and physical_smax <= cap**2 for lo, hi, cap in cover.PROFILE):
+        return "origin"
+    if tl**2 * smin >= F(3, 4):
+        return "amplitude"
+    endpoints = [cover.coefficients(chart, y) for y in (yl, yh)]
+    real_part = 16 * tl**2 * smin**2 + 3 * smin - 6 * max((2*a+b)**2 for a, b in endpoints)
+    # |2e_A+e_B|² <= 5||e||²; the term 16 t² ||e||⁴ only increases the reserve.
+    if real_part + min(0, 32 * tl**2 * smin - 27) * radius**2 >= 0:
+        return "direction"
+    raise AssertionError(f"uncovered inherited region at chart {chart}, {cell}")
+
+
 def replay(receipts):
     # validate checks the stored corner bounds, source hashes and complete trees.
     # The numerical upper endpoints are the outward source integrals of the pinned run.
@@ -90,6 +113,7 @@ def replay(receipts):
     assert cover.QA > 0 and cover.QA * cover.QB > cover.QC ** 2
     seen, counts = {}, Counter()
     grids = Counter()
+    inherited = Counter()
     target_radius = F(1, RADIUS_DEN)
     minimum = None
     paths = sorted(receipts.rglob("region-*.json"), key=lambda p: p.name)
@@ -104,13 +128,14 @@ def replay(receipts):
         points = {tuple(map(F, row[:4])): cover.hex_fraction(row[4]) - cover.target(*map(F, row[:4]))
                   for row in data["points"]}
         for chart, root, pathcode, kind in data["leaves"]:
-            if kind != "c":
-                continue
             lo, hi = cover.amplitude_roots()[root]
             cell = (F(i, 16), F(i + 1, 16), F(-1), F(1), lo, hi)
             for digit in pathcode:
                 axis, side = divmod(int(digit), 2)
                 cell = cover.split(cell, axis)[side]
+            if kind != "c":
+                inherited[inherited_region(chart, cell, target_radius, cover)] += 1
+                continue
             margin = -max(points[k] for k in cover.corners(chart, cell))
             margin -= sum(cover.errors(chart, cell, curvature))
             assert margin > 0
@@ -136,6 +161,9 @@ def replay(receipts):
     analytic = sum(c for radius, c in counts.items() if radius >= target_radius)
     assert analytic + sum(grids.values()) == 31090
     print(f"radius {target_radius}: {analytic} analytic + {sum(grids.values())} integrated = 31090")
+    assert sum(inherited.values()) == 1502
+    print("inherited boxes at the same radius:", ", ".join(f"{k} {v}" for k,v in sorted(inherited.items())))
+    print(f"all {sum(counts.values()) + sum(inherited.values())} boxes covered at radius {target_radius}")
 
 
 if __name__ == "__main__":

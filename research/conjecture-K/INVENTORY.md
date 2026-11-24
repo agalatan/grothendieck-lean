@@ -789,7 +789,7 @@ and results are kept in `/Users/alingalatan/workspaces/grothe/handoff/research-d
 by its author after finding the midpoint-enclosure gap; its outputs are not certificates.
 The working proof is `handoff/codex-a7c4-central-aligned/PROOF.md` in the author worktree.
 The [independent-phase estimate](sources/central-aligned-codex-a7c4/COMPLEX_PHASES.md) uses these same twenty
-receipts. Its [exact replay](code/central-aligned-codex-a7c4/phase_tubes.py) computes radius 1/32 over the direct boxes.
+receipts. Its [exact replay](code/central-aligned-codex-a7c4/phase_tubes.py) computes radius 1/32 over all 32,592 boxes.
 
 | file | size | SHA-256 |
 |---|---:|---|

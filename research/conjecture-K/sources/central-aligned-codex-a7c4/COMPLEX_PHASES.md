@@ -1,15 +1,17 @@
 # Independent complex phases near the real cover of (P)
 
-Agent-ID: codex-a7c4. Task #580. **P + C, author only.** At the peak profile, all
-31,090 directly certified real boxes in row 7.4.14 satisfy (P) for the entire ball
+Agent-ID: codex-a7c4. Task #580. **P + C, author only.** At the peak profile,
+(P) holds at every shift and amplitude whenever, after rotating w to the real axis,
+the coefficients satisfy
 
-    (w, t(D+i e)),    e ∈ ℝ²,    ‖e‖₂ ≤ 1/32.
+    √((Im A)²+(Im B)²) ≤ max(|Re A|,|Re B|)/32.
 
-Here w is real after a common rotation, t>0 and D is in one of the four real
-charts (±1,y), (y,±1) of the original box. The physical imaginary increment is
-t e. The previous audited radius in these coordinates was 1/8192. The 1,502
-leaves certified by inherited regions retain their original conditions. General
-complex (P), the odd-sector premise and the row consumer remain open.
+If w=0, any common rotation satisfying this test suffices. For a nonzero real
+part let t=max(|Re A|,|Re B|) and write (A,B)=t(D+i e). Then D is in one of
+the four real charts (±1,y), (y,±1) and ‖e‖₂≤1/32. On the 31,090 direct boxes
+the previous audited radius was 1/8192 in these coordinates. Section 5 extends
+the same tube across every inherited box and beyond the compact chart domain.
+General complex (P), the odd-sector premise and the row consumer remain open.
 
 ## 1. Pair opposite imaginary increments
 
@@ -133,6 +135,40 @@ degree-40 Taylor lower bound on exp(x). All square roots use integer square
 root with directed rounding. Each accepted upper sum, including the tail, is
 strictly below its leaf's original μ. The three mesh widths 1/4, 1/8 and
 1/16 certify respectively 1,061, 2,704 and 167 additional leaves.
+
+## 5. All shifts and amplitudes; complex proportional drivers
+
+For a real chart let S=‖D‖² and E=‖e‖²≤1/32². Physical squared amplitude is
+t²(S+E). On an inherited origin leaf, compare its upper bound directly with the
+squared cap of the shift profile in row 7.4.11. On an amplitude leaf, t²S≥3/4
+suffices by 7.4.12. The directional exterior in that row, divided by t², reads
+
+    16t²(S+E)²+3(S+E) ≥ 6[(2D_A+D_B)²+(2e_A+e_B)²].
+
+Its left side minus its right side is at least the real reserve plus
+(32t²S−27)E, by (2e_A+e_B)²≤5E. Bound the real reserve below using S_min,
+t_min and the larger endpoint value of (2D_A+D_B)². It suffices to add
+min(0,32 t_min² S_min−27)/32² to this lower bound. The exact replay passes
+1,266 origin leaves, 43 amplitude leaves and 193 directional leaves, exhausting
+the 1,502 inherited leaves. Together with section 4 this covers all 32,592 leaves.
+
+Outside the tree, |w|≥5/4 is an all-direction exterior. For t≤1/1024,
+t²(S+E)≤(2+1/32²)/1024² < (1/512)², the universal origin cap.
+For t≥7/8, t²(S+E)≥(7/8)²>3/4 because S≥1. If t=0 the phase condition
+forces A=B=0 and (P) is equality. These cases give the stated global tube.
+
+As an application, let Y and Y_j be independent standard complex Gaussians and
+q=Y[γ(|Y|²−2)+Σ_j d_j(|Y_j|²−1)] for real γ,d_j. Let r_A=αY and r_B=βY
+with complex α,β satisfying the displayed phase condition in the fixed frame
+of Y. After rotating Y to the real axis, q is real, so the pointwise bound
+applies almost surely. If the real shift has the opposite sign, rotate all
+three variables by a further minus sign. Under u=2γ²+Σ d_j²≤0.0463 and
+u+|α|²+|β|²≤0.080051, row 7.4.10 consequently gives
+Λ̂(q+A_shell+B_shell)<S_G+4936/10⁸, with its usual retained trial
+ξ₀=−(3/5)(r_A+0.5053r_B).
+For example γ=1/7, α=1/16, β=(1+i/20)/32 gives a normalized imaginary
+component 1/40 and a nonreal driver ratio 1/2+i/40. The example and its
+energy caps are checked by the constant replay.
 
 ## Replay
 

@@ -13,3 +13,5 @@ additional leaves certified by source mesh:
 1/8 2704
 1/16 167
 radius 1/32: 27158 analytic + 3932 integrated = 31090
+inherited boxes at the same radius: amplitude 43, direction 193, origin 1266
+all 32592 boxes covered at radius 1/32
