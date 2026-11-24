@@ -74,7 +74,7 @@ bound $K < 1.40490913\ldots$
 |---|---|---|
 | $\varepsilon$ | `191/250` | weight of the cubic chaos in the witness $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$ |
 | $\nu$ | `47/2000` | weight of the identity tail |
-| $B_{\mathrm{env}}$ | `7064131/10000000` | bound of the envelope certificate (1,800 cells) |
+| $B_{\mathrm{env}}$ | `7064131/10000000` | bound of the 16-cell envelope certificate |
 | $B = (1-\nu)B_{\mathrm{env}} + \nu$ | `14266247843/20000000000` $= 0.71331239215$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
 | $1/B$ | $1.4019103\ldots$ | what the certificate gives; the theorem states the rounded value $1.40191 < 1/B$ |
 | $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |

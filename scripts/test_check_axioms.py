@@ -56,7 +56,7 @@ class CheckAxiomsTests(unittest.TestCase):
                 path = ROOT / "data/axioms/modes" / f"{mode}.required.txt"
                 self.assertEqual(CHECKER.names(path), CHECKER.audit_policy(mode)[0])
         local_native = {f"Grothe.Lower.{name}._native.native_decide.ax_1_1"
-                        for name in ("certEnvelope", "certMassRow", "massCapsOK", "certRow01", "certRow14")}
+                        for name in ("certMassRow", "certRow01", "certRow14")}
         local_native.add("Grothe.LowerAnalytic.chordsOKRow00._native.native_decide.ax_1_1")
         self.assertTrue(local_native <= CHECKER.NATIVE)
 
@@ -122,8 +122,17 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(code, 1)
                 self.assertIn("DISALLOWED AXIOM", stdout)
 
+    def test_combined_report_rejects_native_envelope_and_mass_node_axioms(self):
+        for name in ("Grothe.Lower.certEnvelope", "Grothe.Lower.massCapsOK"):
+            with self.subTest(name=name):
+                fact = f"{name}._native.native_decide.ax_1_1"
+                record = f"'{name}' depends on axioms: [{fact}]\n"
+                code, stdout, _ = self.run_main([], self.report() + record)
+                self.assertEqual(code, 1)
+                self.assertIn(f"DISALLOWED AXIOM in {name}: {fact}", stdout)
+
     def test_upper_six_rejects_native_fact_allowed_by_combined_report(self):
-        fact = "Grothe.Lower.certEnvelope._native.native_decide.ax_1_1"
+        fact = "Grothe.Lower.certMassRow._native.native_decide.ax_1_1"
         record = f"'Grothe.UpperSix.bound' depends on axioms: [{fact}]\n"
         self.assertEqual(self.run_main([], self.report() + record)[0], 0)
         code, stdout, _ = self.run_main(["--upper-six"], self.report("upper-six") + record)

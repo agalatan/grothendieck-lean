@@ -1264,24 +1264,27 @@ V̂ ≤ t² − 2ℓt + C − ε̂‖Qh + (β/ε̂)v‖², C = 2β²/ε̂ + cap 
 three facts: ‖k‖² ≤ 1 − t² (`normSq_kOf_le`); 2ε̂‖q‖² − c‖k‖² ≤ E φ_c(|q|) for q = P₂,₁k and c = 2ν̂ + λ (`massC`),
 where φ_c(r) = ε̂²r²/c for r ≤ c/ε̂ and 2ε̂r − c beyond is the supremum of 2ε̂ry − cy² over 0 ≤ y ≤ 1
 (`twice_normSq_QkOf_le`, `phiMass_ge`); and the law bound E φ_c(|q|) − ε̂‖q‖² ≤ S (`integral_phiMass_QkOf_le`).
-The law bound is a row bound (`mass_law_bound`): the mass row `massRow` (`Grothe/Lower/MassRow.lean`, generated) has
-the explicit potential Ψ(s) = φ_c(4s/3), with its node caps, convexity and Lipschitz bound (`massCaps`; the caps by
-the native check `massCapsOK`), and spectral cells checked by `certMassRow : checkSpecCells massRow = true`
-(`rowBound_of_specCells`); since κδ² ≤ ε̂ the row bound at δσ gives the law bound for every 0 ≤ σ ≤ ρ, and
-‖q‖ ≤ ρ (`normQk_le_rho`). The tangents of the mass row are scalar rows: (λm, 0, λ + S + λm²) for every m
+The mass row has the explicit potential Ψ(s) = φ_c(4s/3). `massNodes` pairs each radius of `massRow` with
+the exact rational value of Ψ at that radius. `massCapsOK` gives equality for every entry by construction,
+and `massCaps` supplies convexity, the node bounds and the Lipschitz estimate. The spectral cell check uses
+the same table (`certMassRow : checkSpecCells massRow massNodes = true`). Since κδ² ≤ ε̂, the row bound
+at δσ gives `mass_law_bound` for every 0 ≤ σ ≤ ρ, and ‖q‖ ≤ ρ (`normQk_le_rho`). The tangents of the mass row are scalar rows: (λm, 0, λ + S + λm²) for every m
 (`massTangent`, `rowOf_massTangent`, `Grothe/Lower/Envelope.lean`).
 
 **The envelope.** A scalar row (ℓ, β, C) is the retained-square inequality V ≤ t² − 2ℓt + C − ε‖Qh + (β/ε)v‖²
 (`RowHolds`, `Grothe/LowerAnalytic/Rows.lean`); two scalar rows mix with a weight θ ∈ [0, 1] into the row of the
-mixed parameters with C = (1−θ)Cᵢ + θCⱼ − (2/ε)θ(1−θ)(βᵢ − βⱼ)² (`RowHolds.mix`). The envelope (`envCells`,
-`Grothe/Lower/EnvelopeData.lean`, generated from `data/tail-rows/env_final_clean.json`) has 1,800 cells
-[n/2000, (n+1)/2000] covering t ∈ [0, 9/10]; each names two scalar rows (0 the tangent of the mass row at the
-midpoint of the cell, k + 1 the row k) and a weight θ: 1,585 cells use a single row or the mass row, 215 a mixture
-of two rows. `checkEnv rowData massS envB envCells` checks that the cells are consecutive from 0 to 9/10 and that
-on each cell the mixture is at most `envB = 7064131/10⁷` (`capVal`, the maximum of a quadratic in t on the cell);
-its native fact is `certEnvelope` (`Lower/Cert/Envelope.lean`) and its soundness `env_bound`. The maximum of the
-envelope is 0.7064129749…, on the cell [0.8365, 0.837] (the rows 0.835 and 0.845, θ = 1/2). `profile_bound`
-(`LowerBound.lean`) applies `env_bound` to the scalar rows of the shared reduction and to the mass row.
+mixed parameters with C = (1−θ)Cᵢ + θCⱼ − (2/ε)θ(1−θ)(βᵢ − βⱼ)² (`RowHolds.mix`). The generator takes row pairs and weights from the
+1,800 search cells in `data/tail-rows/env_final_clean.json` and emits `envCells : List EnvCell` in
+`Grothe/Lower/EnvelopeData.lean`. Its 16 consecutive intervals cover t ∈ [0, 9/10]. Each record stores the
+rational endpoints and weight θ together with the two row indices. Row index 0 selects the mass
+tangent at the interval midpoint, and index k + 1 selects row k. For a fixed mixture the bound is a convex
+quadratic in t, so its maximum on the interval occurs at an endpoint. `certEnvelope` (`Lower/Cert/Envelope.lean`)
+reduces `checkEnvCells rowData massS envB envCells` in the kernel. The checker verifies coverage and
+`capVal ≤ envB = 7064131/10⁷` directly on the rational records. The maximum is
+0.7064129749… on [1673/2000, 1675/2000], where the rows 0.835 and 0.845 have equal weight. `profile_bound`
+(`LowerBound.lean`) applies `env_bound_of_cells` to the scalar rows of the shared reduction and to the mass
+row. For callers supplying `List String`, `checkEnv` parses the cells and `env_bound` gives the corresponding
+soundness theorem.
 
 **The node caps.** `TailNodeCaps (nuHat (47/2000))` (`RowGaussian.lean`): at every node (s, c) of every row,
 Ψ(s) − 10⁻¹¹ ≤ c for the fibre potential of the row with the tail ν̂. `tailNodeCaps_cert` assembles the caps
@@ -1297,9 +1300,9 @@ certificates, the generated modules, their data and their cost are described in 
   square mixes by an exact identity) and the envelope. Lean also checks the endpoint and proves the Gaussian witness
   on L²(γ_n) with its value on z/‖z‖, the orthogonality of the chaos ranges, the polarisation identity in hat
   units, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1 (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2))
-  and the transfer inputs from the scalar caps. The finite checks are single-threaded `native_decide` facts: the
-  row checks `certRowSS` (`Grothe/Lower/Cert/`), the mass row's `certMassRow` and `massCapsOK`, the envelope
-  `certEnvelope`, and the node-cap facts ([CAPS.md](CAPS.md)); `data/axioms/native.txt` is the complete list.
+  and the transfer inputs from the scalar caps. The single-threaded native computations cover
+  the row checks `certRowSS` (`Grothe/Lower/Cert/`), the mass row's spectral check `certMassRow`, and the
+  node-cap facts. The complete allowlist is `data/axioms/native.txt`. [Node-cap certificates](CAPS.md).
 * Inputs of `profile_bound` (all of them are derived in Lean: the shared reduction by `reductionHyp_of_nodeCaps`
   from the node caps, which `tailNodeCaps_cert` proves, and the mass row by `massRow_frame`): ‖v‖² = 2 and
   0 ≤ t ≤ 9/10; the mass row V̂ ≤ (1 − λ)t² + λ + S − ε̂‖Qh‖² (`hmass`); the simultaneous Gaussian reduction of the
@@ -1515,9 +1518,9 @@ integrates the squared correlation `HardyArcCover.gF` over both charts, and
 | `Law`, `Moment`, `Stein`, `Cuts`, `Gram`, `Poly`, `Basic` | the law of the normalised residual (`Moments`, `SteinCut`); the summed, spectral and budget-shifted Stein cuts, their test functions and polynomial pieces; the law budgets a spectral node may cite (`GBud`); exact polynomial arithmetic and Bernstein positivity |
 | `Sweep`, `Rows`, `Mixed`, `SpecRows` | the majorant sweeps of a capped convex potential; the row checker with Stein nodes (`checkRow`, `rowBound_of_check`); spectral witnesses (`SWit`, `checkSWit`); the row checker with spectral nodes (`checkSpecCells`, `checkSpecRow`) and `RowFacts` |
 | `Gate`, `RowReduction`, `Support` | the retained gate square and its completion with a fixed first coordinate; the per-row Gaussian reduction (`VhatOf_frame`); `SharedReduction` and `rowOf_of_shared` |
-| `MassRow`, `MassFacts` | the mass row λ = 1/2 (generated) and its law bound (`phiMass`, `massCaps`, `mass_law_bound`) |
-| `Envelope`, `EnvelopeData` | scalar rows, the tangents of the mass row, mixtures and the envelope check (`checkEnv`, `env_bound`); its cells and `envB` (generated) |
-| `Cert/Row01`–`Cert/Row14`, `Cert/MassRow`, `Cert/Envelope`, `Cert/Rows` | the native checks `certRowSS`, `certMassRow`, `certEnvelope`; `rowData_facts` |
+| `MassRow`, `MassNodes`, `MassFacts` | the mass row λ = 1/2, its exact node values (`massNodes`, `massCapsOK`), and its law bound (`phiMass`, `massCaps`, `mass_law_bound`) |
+| `Envelope`, `EnvelopeData` | scalar rows and their mixtures, the typed cell checker `checkEnvCells` and its soundness theorem `env_bound_of_cells`, generated `envCells` and `envB` |
+| `Cert/Row01`–`Cert/Row14`, `Cert/MassRow`, `Cert/Envelope`, `Cert/Rows` | native row checks `certRowSS` and `certMassRow`, kernel-checked envelope `certEnvelope`, and `rowData_facts` |
 | `TransferFinite`, `TransferL2`, `Transfer` | the transfer from the Gaussian witness to finite matrices (`transfer_lower`) |
 
 **`Grothe/Lower/SpecRows`: rows with spectral nodes.** The row checker of `Rows.lean` with spectral witnesses
@@ -1571,12 +1574,12 @@ energy-table facts `UpperQuad.Facts.gradeBlockNN`, `evenCheck` and
 quadrature, the port facts `UpperQuad.PortFacts.jN…` of the three Taylor powers
 and the twisted ellipse facts `UpperQuad.TwistEllCheck.Facts.jN…`.
 The lower-bound facts are the row checks `Grothe.Lower.certRowSS`, the mass row's
-`certMassRow` (its cells) and `massCapsOK` (its node caps), the envelope `certEnvelope`,
+spectral cell check `certMassRow`,
 and the node-cap facts in `Grothe.LowerAnalytic`: the range facts `rowKKAnchorRangeJJ`
 of the whole-fibre nodes, the coverage facts `pieceCover_KKx<i>` and the piece facts
 `pieceRange_KKx<i>_<J>` of the localised nodes, and the chord facts `chordsOKRowKK`.
 Every native check is single-threaded (no `Task.spawn`). All
-other accepted finite computations (the polynomial norms, the moment covers, the positivity of
+other accepted finite computations (the envelope `certEnvelope`, the polynomial norms, the moment covers, the positivity of
 the row blocks `psdRowKK`) use proof-producing kernel reduction, including the canonical
 continuation-block checks.
 The report is `lake env lean scratch/Axioms.lean`, checked in CI;
