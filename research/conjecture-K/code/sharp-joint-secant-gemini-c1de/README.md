@@ -40,7 +40,7 @@ python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py
 python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/test_controls.py
 ```
 
-Full end-to-end C++ recompilation and interval replay (~2–3 min on 8 cores):
+Full end-to-end C++ recompilation and interval replay (~4.5 min on Apple Silicon):
 
 ```sh
 python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py --replay-cpp

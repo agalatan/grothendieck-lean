@@ -43,7 +43,7 @@ $(P_\Psi)$ (`STATUS.md` 7.5.3) at the peak row of Conjecture K:
 4. **Sharpened recentred $(P_\Psi)$ cone (`Part D`).** Applying Theorem 1 to
    the recentred split $X = (L + w) + H$ of `7.5.8` yields $W \ge 150\,V$
    ($2.50\times$ stronger than `7.5.8`'s $W \ge 375\,V$) and linear small-shell
-   closure $V \le 1/55000 \approx 1.8182\cdot 10^{-5}$ under $(P)$.
+   closure $V \le 1241/68750000 \approx 1.8051\cdot 10^{-5}$ under $(P)$ (against the $49.64\cdot 10^{-6}$ budget of $(P_\Psi)$).
 
 The full central region of $(P_\Psi)$ / $F_{\mathrm{joint}}$ at moderate
 $V \in (11/100000, 0.080051 - u]$, global $(P)$ in its complex interior, and the
@@ -137,7 +137,7 @@ $$|Y + K + O| + |Y + K - O| - 2|Y| - 2\operatorname{Re}(K\overline{\operatorname
     + \big(|Y + K + O| + |Y + K - O| - 2|Y + K|\big),$$
 and bound the two terms separately without losing the alignment of $Y$.
 
-**Theorem 2(a) (Sharp Rational Bulk Even Majorant).** *For every
+**Theorem 2(a) (Rational Bulk Even Majorant).** *For every
 $\eta \in (0, 1]$, every $X \ge -\eta$, and every $Y \in \mathbb{R}$,*
 $$2\Big(\sqrt{(1 + X)^2 + Y^2} - (1 + X)\Big)
   \;\le\; \frac{\eta^2}{1 - \eta + \eta^2} X^2 + \frac{1}{1 - \eta + \eta^2} Y^2.$$
@@ -391,7 +391,7 @@ $$g'''(t) = \frac{x^3}{t^4}\left(\frac{x}{t} - 2\right) e^{-x/t}.$$
 Given certified thresholds $0 < K_1 < \dots < K_m$ with monotone upper slopes
 $0 \le c_1 \le c_2 \le \dots \le c_m \le c_{\mathrm{top}}$ such that
 $F_{\mathrm{joint}}(c^*) \le c_j S_r$ whenever $S_r \le K_j$ (for all $w \ge 0$,
-by Part A on $w \ge 7/5$ and Part C on $w \in [0, 7/5]$) and
+by Part A on $w \ge 11/8$ and Part C on $w \in [0, 11/8]$) and
 $F_{\mathrm{joint}}(c^*) \le c_{\mathrm{top}} S_r$ globally (by Part B), we
 have pointwise for every $S_r \ge 0$:
 $$F_{\mathrm{joint}}(c^*) \;\le\; \Psi_{\mathrm{st}}(S_r)
@@ -411,7 +411,7 @@ for **all** $0 \le V \le V_{\max}$.
 All four parts are certified by `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp`
 (compiled with `-ffp-contract=off`, outward-rounded IEEE-754 intervals, 230 exact
 dyadic binary64 $w$-slabs on $[0, 8]$, exact `std::hexfloat` output, full replay
-~2 min on 8 cores) and audited in exact rational arithmetic by
+~4.5 min on Apple Silicon) and audited in exact rational arithmetic by
 `code/sharp-joint-secant-gemini-c1de/verify.py` (Python 3 standard library only,
 `python3 -I`, < 2 s on `result.json`):
 
@@ -421,7 +421,7 @@ dyadic binary64 $w$-slabs on $[0, 8]$, exact `std::hexfloat` output, full replay
 | **B1** | Global $L = 13/4$, all $w, A, B, Q, P, \nu$ (no $(P)$, no $\|\nu\|^2 \le 1/50$) | $F_{\mathrm{joint}}(c^*) \le \frac{3053}{1000} S_r - S_r^2 - \frac{1}{200}\omega'$; gives $F_{\mathrm{joint}}(c^*) \le 0$ for $S_r \ge 3.053$, and linear closure for $V \le \frac{1}{61060} \approx 1.6377\cdot 10^{-5}$ | $44.5\times$ larger linear closure than `7.5.10` ($3.67\cdot 10^{-7}$); removes $\|\nu\|^2 \le 1/50$ from large-$S_r$ exterior |
 | **B2** | Global $L = 5$, all $w, A, B, Q, P, \nu$ (no $(P)$) | $F_{\mathrm{joint}}(c^*) \le \frac{4929}{1000} S_r - S_r^2 - \frac{69}{2500}\omega'$; ratio $\frac{4929/1000}{69/2500} = 178.587\ldots < 179$, closing **unconditional** cone $W \ge 179\,V$ | $2.09\times$ wider than `7.5.8`'s $W \ge 375\,V$, and does **not** assume $(P)$ |
 | **C** | 18-level multiscale staircase on $w \in [0, 11/8]$ + Part A on $w \ge 11/8$ + Part B1 top $c_{\mathrm{top}} = 3053/1000$ | $\mathbb{E}[F_{\mathrm{joint}}(c^*)] \le \frac{49711749}{10^{12}} \approx 4.971175\cdot 10^{-5} < 50\cdot 10^{-6}$ for **all** $0 \le V \le \frac{11}{100000} = 1.1\cdot 10^{-4}$ (and $\le \frac{38098983}{10^{12}} \approx 3.8099\cdot 10^{-5}$ for $V \le 10^{-4}$), giving $\widehat{\Lambda}(G) < S + 99.36\cdot 10^{-6} < S + 10^{-4}$ unconditionally on the domain of `7.5.6` | **$299\times$** larger than `7.5.10`'s unconditional $3.67\cdot 10^{-7}$ and **$9.73\times$** larger than `7.5.8`'s conditional $1.13\cdot 10^{-5}$ |
-| **D** | Recentred $(P_\Psi)$ split of `7.5.8` at $L = 13/4$ and $L = 5$ | $\mathbb{E} D(X, O - c^* z_1) + |c^*|^2 - pW \le \frac{11}{4} V - \frac{1}{200} W$ (linear $V \le \frac{1}{55000} \approx 1.8182\cdot 10^{-5}$) and $\le \frac{823}{200} V - \frac{69}{2500} W$ (ratio $149.094\ldots < 150$, cone $W \ge 150\,V$) | $2.50\times$ wider cone than `7.5.8`'s $W \ge 375\,V$ |
+| **D** | Recentred $(P_\Psi)$ split of `7.5.8` at $L = 13/4$ and $L = 5$ | $\mathbb{E} D(X, O - c^* z_1) + |c^*|^2 - pW \le \frac{11}{4} V - \frac{1}{200} W$ (linear $V \le \frac{1241}{68750000} \approx 1.8051\cdot 10^{-5}$ against the $49.64\cdot 10^{-6}$ budget of $(P_\Psi)$) and $\le \frac{823}{200} V - \frac{69}{2500} W$ (ratio $149.094\ldots < 150$, cone $W \ge 150\,V$) | $2.50\times$ wider cone than `7.5.8`'s $W \ge 375\,V$ |
 
 ### Staircase levels (`Part C`, exact rational upper slopes $c_j$)
 

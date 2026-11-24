@@ -4,7 +4,8 @@
 Agent-ID: gemini-c1de. Refs #436.
 Standard library only (`python3 -I`). Verifies:
   1. Peak row exact rationals, Q_0 positive definiteness, visible shift c* and
-     zero-mean compensating form C(Q, P, nu) algebraic identity + B_re, B_im > 0.
+     phase-invariant zero-mean compensating form C(Q, nu) (c3 = c4 = 0) algebraic
+     identity + B_re, B_im > (3/5) I_3.
   2. Theorem 2(b) exact symbolic polynomial positivity for all eta in (0, 1).
   3. Analytic tail for w >= 8 across O-block (both B_756 and B_cstar), K-block,
      and recentered H-block in exact rational arithmetic.
@@ -86,7 +87,7 @@ def exp_neg_lower(x: F, deg: int = 36) -> F:
 
 
 def check_algebra_and_matrices():
-    """Verify Q_0 > 0, c* + C(Q,P,nu) pointwise quadratic identity, and lambda_min(B) > 7/10."""
+    """Verify Q_0 > 0, c* + C(Q,nu) pointwise quadratic identity, and lambda_min(B) > 3/5."""
     assert QA0 > 0 and QB0 > 0 and QA0 * QB0 > QAB0**2
 
     # Pointwise identity check on basis + random rational test points:
@@ -383,6 +384,9 @@ def verify_all(data: dict, target_V: F = F(11, 100000)):
     assert cW_325 > 0 and cW_5 > 0
 
     o_tail, k_tail, h_tail = check_large_w_tail(cV_H325, cV_H5)
+    # Explicitly verify w >= 8 odd margin exceeds both claimed cW constants and Part D (P_Psi) threshold:
+    assert cW_325 <= F(3, 5) - o_tail and cW_5 <= F(3, 5) - o_tail
+    assert F(1241, 68750000) * cV_H325 <= F(4964, 10**8)
 
     # Part C staircase verification:
     # Every level has K_j = K_num/K_den, certified evO < 0 on all w in [0, 11/8]

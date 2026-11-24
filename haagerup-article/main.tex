@@ -285,17 +285,17 @@ The coefficients are real because the energies $E_G(d_1,d_2)$ and the polynomial
 When $G(z_1, z_2) = \ph(z_1)$ depends only on the first coordinate and $Q \equiv 0$, $E_G(2m+1, 0) = r_m$ and \eqref{eq:bivar-kernel} reduces immediately to Haagerup's preprocessed scalar series $h_k = \sum_{m=0}^k r_m [X^{k-m}] P(X)^{2m+1}$.
 
 \subsection{Parametric \texorpdfstring{$64 \times 64 \times 36$}{64 x 64 x 36} Fourier-Cell Maps and Fej\'er--Riesz Certificates}
-Both of our two-coordinate maps belong to a single piecewise-trigonometric family on $\C^2$. Partition $[0, 6)^2$ into $64 \times 64 = 4{,}096$ radial squares $I_i \times I_j$ of width $\frac{3}{32}$, where $I_i := [\frac{3i}{32}, \frac{3(i+1)}{32})$ ($0 \le i < 64$). Given integer tables $c_{r,\ell,i,j}, c_{i,\ell,i,j} \in \Z$ ($0 \le \ell < 36$), set $F(z_1, z_2) := 0$ if $z_1 = 0$, $z_2 = 0$, $|z_1| \ge 6$, or $|z_2| \ge 6$, and otherwise set
+Both of our two-coordinate maps belong to a single piecewise-trigonometric family on $\C^2$. Partition $[0, 6)^2$ into $64 \times 64 = 4{,}096$ radial squares $I_i \times I_j$ of width $\frac{3}{32}$, where $I_i := [\frac{3i}{32}, \frac{3(i+1)}{32})$ ($0 \le i < 64$). Given integer tables $c^{\mathrm{re}}_{\ell,i,j}, c^{\mathrm{im}}_{\ell,i,j} \in \Z$ ($0 \le \ell < 36$) (the subscripts $i,j$ index cells; the letter $i$ multiplying $c^{\mathrm{im}}$ below is the imaginary unit), set $F(z_1, z_2) := 0$ if $z_1 = 0$, $z_2 = 0$, $|z_1| \ge 6$, or $|z_2| \ge 6$, and otherwise set
 \begin{equation}\label{eq:cell-fn}
-  F(z_1, z_2) \;:=\; \ph(z_2)\, \bar{w}^{17} \sum_{\ell=0}^{35} \frac{c_{r,\ell,i,j} + i\, c_{i,\ell,i,j}}{2^{24}}\, w^\ell,
+  F(z_1, z_2) \;:=\; \ph(z_2)\, \bar{w}^{17} \sum_{\ell=0}^{35} \frac{c^{\mathrm{re}}_{\ell,i,j} + i\, c^{\mathrm{im}}_{\ell,i,j}}{2^{24}}\, w^\ell,
   \qquad w \;:=\; \ph(z_1)\,\overline{\ph(z_2)} \;\in\; \T,
 \end{equation}
 for $(|z_1|, |z_2|) \in I_i \times I_j$. Since $\ph(c z_r) = c\,\ph(z_r)$ leaves $w$ and $(|z_1|, |z_2|)$ invariant when $|c| = 1$, $F$ satisfies \eqref{eq:charge-one}, and writing $m = \ell - 17 \in [-17, 18]$ expands $F$ on each cell into $36$ exact relative-phase harmonics $\ph(z_2) w^m = e^{i m \theta_1 + i(1-m)\theta_2}$.
 
-Certifying $|F(z_1, z_2)| \le 1$ uniformly over the continuous circle $w \in \T$ on all $4{,}096$ cells uses a sum-of-squares certificate: each cell carries a companion integer Fej\'er--Riesz polynomial $Q_{i,j}(w) = \sum_{\ell=0}^{35} (q_{r,\ell,i,j} + i\, q_{i,\ell,i,j}) w^\ell$ chosen so that $1 - 2^{-48}|C_{i,j}(w)|^2 \approx 2^{-48}|Q_{i,j}(w)|^2$, where $C_{i,j}(w) := \sum_{\ell=0}^{35} (c_{r,\ell,i,j} + i\, c_{i,\ell,i,j}) w^\ell$ is the integer polynomial of~\eqref{eq:cell-fn}. Expanding $|C_{i,j}(w)|^2 + |Q_{i,j}(w)|^2 = \sum_{m=-35}^{35} D_m w^m$ on $|w| = 1$, where $D_m = \sum_{d=0}^{35-m} (C_{d+m}\bar{C}_d + Q_{d+m}\bar{Q}_d)$ for $m \ge 0$, every off-diagonal autocorrelation $D_m$ ($m \ge 1$) cancels down to rounding noise, and the triangle inequality gives the exact integer bound
+Certifying $|F(z_1, z_2)| \le 1$ uniformly over the continuous circle $w \in \T$ on all $4{,}096$ cells uses a sum-of-squares certificate: each cell carries a companion integer Fej\'er--Riesz polynomial $S_{i,j}(w) = \sum_{\ell=0}^{35} (s^{\mathrm{re}}_{\ell,i,j} + i\, s^{\mathrm{im}}_{\ell,i,j}) w^\ell$ chosen so that $1 - 2^{-48}|C_{i,j}(w)|^2 \approx 2^{-48}|S_{i,j}(w)|^2$, where $C_{i,j}(w) := \sum_{\ell=0}^{35} (c^{\mathrm{re}}_{\ell,i,j} + i\, c^{\mathrm{im}}_{\ell,i,j}) w^\ell$ is the integer polynomial of~\eqref{eq:cell-fn}. Expanding $|C_{i,j}(w)|^2 + |S_{i,j}(w)|^2 = \sum_{m=-35}^{35} \kappa_m w^m$ on $|w| = 1$, where $\kappa_m = \sum_{d=0}^{35-m} (C_{d+m}\bar{C}_d + S_{d+m}\bar{S}_d)$ for $m \ge 0$, every off-diagonal autocorrelation $\kappa_m$ ($m \ge 1$) cancels down to rounding noise, and the triangle inequality gives the exact integer bound
 \[
-  \big|C_{i,j}(w)\big|^2 \;\le\; \big|C_{i,j}(w)\big|^2 + \big|Q_{i,j}(w)\big|^2
-  \;\le\; D_0 + 2 \sum_{m=1}^{35} \big(|\RePart D_m| + |\ImPart D_m|\big) \;\le\; 2^{48},
+  \big|C_{i,j}(w)\big|^2 \;\le\; \big|C_{i,j}(w)\big|^2 + \big|S_{i,j}(w)\big|^2
+  \;\le\; \kappa_0 + 2 \sum_{m=1}^{35} \big(|\RePart \kappa_m| + |\ImPart \kappa_m|\big) \;\le\; 2^{48},
 \]
 whence $|F(z_1, z_2)| = 2^{-24}|C_{i,j}(w)| \le 1$ everywhere on $\C^2$.
 
@@ -313,7 +313,7 @@ Accordingly, in \eqref{eq:bivar-kernel} the bivariate series collapses to a 1D c
 In polar coordinates $z_r = |z_r| e^{i\theta_r}$, let $\phi_{n,a}(s) := \sqrt{\frac{n!}{(n+a)!}}\, s^{a/2} L_n^{(a)}(s)$ ($s = |z|^2$) denote the orthonormal generalized Laguerre basis of $L^2((0,\infty), e^{-s}ds)$. Each angular harmonic $m = \ell - 17 \in [-17, 18]$ has minimum radial index $k_0(m) := (|m| + |1-m| - 1)/2$ and parity $(-1)^{d_1} = (-1)^m$, giving the exact $36$-mode sum
 \begin{equation}\label{eq:mu-tiger}
   \mu_n(f_{\mathrm{tig}}) \;=\; \sum_{m = -17}^{18} (-1)^m \sum_{k_0(m) + n_1 + n_2 = n}
-  \left|\sum_{i,j=0}^{63} \frac{c_{r,m+17,i,j} + i\,c_{i,m+17,i,j}}{2^{24}}\, J_{n_1,|m|,i}\, J_{n_2,|1-m|,j}\right|^2,
+  \left|\sum_{i,j=0}^{63} \frac{c^{\mathrm{re}}_{m+17,i,j} + i\,c^{\mathrm{im}}_{m+17,i,j}}{2^{24}}\, J_{n_1,|m|,i}\, J_{n_2,|1-m|,j}\right|^2,
 \end{equation}
 where $J_{n,a,i} := \int_{9i^2/1024}^{9(i+1)^2/1024} \phi_{n,a}(s) e^{-s}\,ds$ (with zero omitted angular modes, since $f_{\mathrm{tig}}$ has finite Fourier support $m \in [-17, 18]$).
 
