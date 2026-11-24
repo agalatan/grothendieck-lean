@@ -118,10 +118,10 @@ def Row.scellList (r : Row) : List SCell := r.cells.map parseSCell
 /-! ### The row checks -/
 
 /-- **The cell part of a row with spectral nodes**: the mesh is valid, the `x`-cells cover
-`[0, 31/4]`, and every cell is certified up to `δρ`. -/
-def checkSpecCells (r : Row) : Bool :=
+`[0, 31/4]`, and the supplied node caps certify every cell up to `δρ`. -/
+def checkSpecCells (r : Row) (nodes : List (ℚ × ℚ) := r.nodeList) : Bool :=
   meshOK 0 r.vs && chainTo SCell.xlo SCell.xhi 0 xMax r.scellList &&
-    allPar (checkSCell r.nodeList r.smax r.vs r.kappa r.cap (r.delta * ρ)) r.scellList
+    allPar (checkSCell nodes r.smax r.vs r.kappa r.cap (r.delta * ρ)) r.scellList
 
 /-- **The row check with spectral nodes**: the gate and the price of `checkRow`, and the cells with
 spectral nodes. -/
@@ -215,18 +215,24 @@ lemma scell_sound (hM : Moments μ U x) (hS : SteinCut μ U) (hΨ : CapsHold Ψ 
     simp only [checkSpPiece, spChordOK, Bool.and_eq_true, decide_eq_true_eq] at hok
     exact chord_goal μ hΨ.convex kap cap _ _ _ _ hp0 hok.1 hTp hTn hok.2 σ hlo hhi
 
+/-- The checked spectral cells bound the integrated potential for the same table of node caps. -/
+theorem goal_of_specCells (r : Row) (h : checkSpecCells r nodes = true) (hM : Moments μ U x)
+    (hS : SteinCut μ U) (hΨ : CapsHold Ψ nodes r.smax) {σ : ℝ} (h0 : 0 ≤ σ)
+    (h1 : σ ≤ r.delta * ρ) : Goal μ U Ψ r.kappa r.cap σ := by
+  simp only [checkSpecCells, allPar_eq, Bool.and_eq_true, List.all_eq_true] at h
+  obtain ⟨⟨hmesh, hchain⟩, hcells⟩ := h
+  obtain ⟨c, hc, hc1, hc2⟩ :=
+    chainTo_sound SCell.xlo SCell.xhi r.scellList 0 xMax hchain x (by exact_mod_cast hM.x0) hM.x1
+  exact scell_sound μ hM hS hΨ r.vs hmesh r.kappa r.cap (r.delta * ρ) c (hcells c hc) hc1 hc2 σ h0
+    (by exact_mod_cast h1)
+
 end real
 
 /-- **What the cell part with spectral nodes certifies**: the statement `RowBound` of
 `checkRow`. -/
 theorem rowBound_of_specCells (r : Row) (h : checkSpecCells r = true) : RowBound r := by
-  simp only [checkSpecCells, allPar_eq, Bool.and_eq_true, List.all_eq_true] at h
-  obtain ⟨⟨hmesh, hchain⟩, hcells⟩ := h
-  intro Ω _ μ _ U x Ψ σ hM hS hΨ h0 h1 hf
-  obtain ⟨c, hc, hc1, hc2⟩ :=
-    chainTo_sound SCell.xlo SCell.xhi r.scellList 0 xMax hchain x (by exact_mod_cast hM.x0) hM.x1
-  exact scell_sound μ hM hS hΨ r.vs hmesh r.kappa r.cap (r.delta * ρ) c (hcells c hc) hc1 hc2 σ h0
-    (by exact_mod_cast h1) hf
+  intro Ω _ μ _ U x Ψ σ hM hS hΨ h0 h1
+  exact goal_of_specCells μ r h hM hS hΨ h0 h1
 
 /-- What the consumers of a checked row use (`rowOf_of_shared`): the gate, the price and the row
 bound. -/

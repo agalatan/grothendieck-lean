@@ -12,7 +12,7 @@ Every row `r` of the certificate gives, in the shared reduction, the scalar ineq
 cell `[lo, hi]` of `t` the mixture is at most `capVal`, the maximum there of a quadratic in `t`.
 
 The envelope is a chain of cells covering `[0, 9/10]`, each naming two scalar rows and a weight; the mass row is taken at
-the midpoint of the cell (`envRowAt`, `checkEnv`). `env_bound` turns its check into `V ≤ B`.
+the midpoint of the cell (`envRowAt`). `checkEnvCells` checks the typed cells and `env_bound_of_cells` proves `V ≤ B`.
 -/
 
 namespace Grothe.Lower
@@ -66,10 +66,13 @@ def envCellOK (rows : List Row) (S B : ℚ) (c : EnvCell) : Bool :=
   | some a, some b => decide (0 ≤ c.θ ∧ c.θ ≤ 1 ∧ capVal a b c.θ c.lo c.hi ≤ B)
   | _, _ => false
 
+/-- Check that the cells cover `[0, 9/10]` consecutively and that each mixture is bounded by `B`. -/
+def checkEnvCells (rows : List Row) (S B : ℚ) (cells : List EnvCell) : Bool :=
+  chainTo EnvCell.lo EnvCell.hi 0 (9 / 10) cells && allPar (envCellOK rows S B) cells
+
 /-- **The check of the envelope**: its cells are consecutive from `0` to `9/10` and each is bounded by `B`. -/
 def checkEnv (rows : List Row) (S B : ℚ) (cells : List String) : Bool :=
-  let cs := cells.map parseEnvCell
-  chainTo EnvCell.lo EnvCell.hi 0 (9 / 10) cs && allPar (envCellOK rows S B) cs
+  checkEnvCells rows S B (cells.map parseEnvCell)
 
 /-- The retained-square inequality of a scalar row at `ε`. -/
 def RowOf (row : EnvRow) (V t : ℝ) (Qh v : E) : Prop :=
@@ -85,13 +88,13 @@ lemma rowOf_massTangent {S : ℚ} {V t : ℝ} {Qh : E}
     Rat.cast_one, Rat.cast_ofNat]
   nlinarith [sq_nonneg (t - m)]
 
-/-- **Soundness of the envelope**: if every scalar row of the envelope holds (at every point `m`), the check bounds `V` by
-`B` for every `t ∈ [0, 9/10]`. -/
-theorem env_bound (rows : List Row) (S B : ℚ) (cells : List String) (h : checkEnv rows S B cells = true)
+/-- If every scalar row holds, a checked chain of cells bounds `V` on `[0, 9/10]`. -/
+theorem env_bound_of_cells (rows : List Row) (S B : ℚ) (cells : List EnvCell)
+    (h : checkEnvCells rows S B cells = true)
     {V t : ℝ} {Qh v : E} (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
     (hscal : ∀ k m a, envRowAt rows S m k = some a → RowOf a V t Qh v) : V ≤ B := by
   have hε : (0 : ℝ) < ε := by norm_num [ε]
-  simp only [checkEnv, allPar_eq, Bool.and_eq_true, List.all_eq_true] at h
+  simp only [checkEnvCells, allPar_eq, Bool.and_eq_true, List.all_eq_true] at h
   obtain ⟨c, hc, hlo, hhi⟩ :=
     chainTo_sound EnvCell.lo EnvCell.hi _ 0 (9 / 10) h.1 t (by simpa using ht0) (by push_cast; linarith)
   have hok := h.2 c hc
@@ -114,5 +117,12 @@ theorem env_bound (rows : List Row) (S B : ℚ) (cells : List String) (h : check
   refine le_trans (le_trans (le_of_le_of_eq h1 ?_) hq) hB
   push_cast
   ring
+
+/-- **Soundness of the envelope**: if every scalar row of the envelope holds (at every point `m`), the check bounds `V` by
+`B` for every `t ∈ [0, 9/10]`. -/
+theorem env_bound (rows : List Row) (S B : ℚ) (cells : List String) (h : checkEnv rows S B cells = true)
+    {V t : ℝ} {Qh v : E} (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
+    (hscal : ∀ k m a, envRowAt rows S m k = some a → RowOf a V t Qh v) : V ≤ B :=
+  env_bound_of_cells rows S B (cells.map parseEnvCell) h hv ht0 ht1 hscal
 
 end Grothe.Lower

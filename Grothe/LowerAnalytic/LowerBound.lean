@@ -13,7 +13,7 @@ The witness `T = P₁,₀ − eP₂,₁ + ν(Id − P₁,₀ − P₂,₁)` with
   rows with the tail) and the checks of the rows (`rowData_facts`: `checkRow` for the plain rows, `checkSpecRow` for the
   spectral ones) give the scalar inequality of every row (`rowOf_of_shared`);
 * the mass row gives `V̂ ≤ (1 − λ)t² + λ + S − ε‖Qh‖²` with `λ = 1/2` (`massRow_frame`), i.e. the scalar rows of its tangents;
-* the envelope (`certEnvelope`, `env_bound`) mixes them into `V̂ ≤ envB` for `t ∈ [0, 9/10]` (`profile_bound`).
+* the envelope (`certEnvelope`, `env_bound_of_cells`) mixes them into `V̂ ≤ envB` for `t ∈ [0, 9/10]` (`profile_bound`).
 
 The phase reduction turns the cap of the hat value into the cap `(1 − ν)envB + ν` of the witness (`witnessCap_cert`), and
 the transfer gives `K ≥ 1/((1 − ν)envB + ν)` for every Grothendieck bound `K` (`lower_bound_of_tailNodeCaps`).
@@ -34,7 +34,7 @@ theorem profile_bound (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤
     (hred : SharedReduction rowData V t Qh v) : V ≤ (envB : ℝ) := by
   obtain ⟨Ω, _, μ, _, U, X1, X2, X3, τ, x, hM, hSI, hτ0, hτ1, hX, hshared⟩ := hred
   have hS : SteinCut μ U := steinCut_of_inputs μ hM hSI
-  refine env_bound rowData massS envB envCells certEnvelope (Qh := Qh) hv ht0 ht1 ?_
+  refine env_bound_of_cells rowData massS envB envCells certEnvelope (Qh := Qh) hv ht0 ht1 ?_
   rintro (_ | k) m a h
   · cases h
     exact rowOf_massTangent hmass m v

@@ -745,11 +745,14 @@ has four layers.
  needs no fibre reduction. With $q=P_{2,1}k$, $c=2\hat\nu+\lambda$ and $\varphi_c(r)=\max_{0\le y\le1}(2\hat\epsilon ry-cy^2)$,
  it combines $\|k\|^2\le1-t^2$, the bound $2\hat\epsilon\|q\|^2-c\|k\|^2\le\E\varphi_c(|q|)$ (from
  $\|q\|^2=\Re\langle k,q\rangle$ and $|k|\le1$) and a law bound
- $\E\varphi_c(|q|)-\hat\epsilon\|q\|^2\le S$, certified with spectral cuts like a row, into
+ $\E\varphi_c(|q|)-\hat\epsilon\|q\|^2\le S$, certified with spectral cuts using the exact rational values
+ of $\varphi_c$ at the scaled node radii, into
  $\hat V\le(1-\lambda)t^2+\lambda+S-\hat\epsilon\|P_{2,1}h\|^2$, $S=0.165606335315\ldots$; its tangents
- $(\ell,\beta,C)=(\lambda m,0,\lambda+S+\lambda m^2)$ are rows. An \emph{envelope} of $1{,}800$ cells of width $1/2000$
- covers $t\in[0,9/10]$: on each cell one row, a tangent of the mass row, or a mixture of two rows (the retained squares
- mix exactly) bounds $\hat V$ by $\hat B$. Its maximum is $0.7064129749\ldots$, near $t=0.837$.
+ $(\ell,\beta,C)=(\lambda m,0,\lambda+S+\lambda m^2)$ are rows. The \emph{envelope} covers $t\in[0,9/10]$ with 16 intervals.
+ On each interval one row, a tangent of the mass row, or a fixed mixture bounds $\hat V$ by a convex quadratic in $t$.
+ Its maximum occurs at an endpoint. Lean's kernel checks the cover and the bound $\hat B$ directly on
+ the rational endpoints and weights of the selected rows.
+ The largest interval maximum is $0.7064129749\ldots$ on $[1673/2000,1675/2000]$.
 \item \textbf{The node caps.} The rows use each potential only through upper bounds at the nodes of its table,
  $\Psi_r(s_i)-10^{-11}\le c_i$ (\lean{TailNodeCaps}). Lean proves them. By convexity it suffices to treat the vertex
  nodes; $238$ of the $2{,}012$ table entries are chord nodes. At a vertex node a pointwise majorant of the pair potential
@@ -813,13 +816,13 @@ the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its 
 the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
 (frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and
 contraction-Gram inequalities for every circular cubic, including the sixth-cumulant Wick identity; the soundness of the
-row checkers (Stein and spectral nodes) and of the envelope with its mixtures of rows;
+row checkers (Stein and spectral nodes), the envelope mixture argument and the kernel check of its intervals;
 the node caps \lean{TailNodeCaps} (the 14 potentials $\Psi_r$ with the tail $\hat\nu$, defined in Lean, lie below their
 stored rational caps at the tabulated nodes): convexity of the potentials, the majorant of the pair potential with
 prices on a polar grid, verified interval tables, the exact $LDL^{\mathsf T}$ check, and for the localised nodes the
 coverage by constrained pieces and the S-lemma
 &
-the 14 rows; the cells and the node caps of the mass row; the envelope;
+the 14 rows; the spectral cell check of the mass row;
 for the node caps: the node ranges of every row, the coverage and the pieces of every localised node, and the chord
 nodes of every row.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
@@ -911,7 +914,7 @@ ellipse certificates.
 
 The repository-wide audit covers the native facts listed in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check, for the upper bound, the head, selected-band masses, the phase cover, the second, fourth and sixth phase moments and the squared radial phase tail, the Hardy region and circle, the stored expansions, the energy-table blocks, the port facts, the ellipse certificates and
 \lean{improved\_high\_mass\_native} for the longer-prefix high-band masses;
-for the lower bound, the row checks, the cells and node caps of the mass row, the envelope, and the node caps (the range facts of the whole-fibre nodes, the coverage and piece facts of the localised nodes, and the chord facts).
+for the lower bound, the row checks, the spectral cells of the mass row, and the node caps (the range facts of the whole-fibre nodes, the coverage and piece facts of the localised nodes, and the chord facts).
 The report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
 No \lean{sorry}. CI builds the single target \lean{Grothe}, node caps included, and checks its one axiom report on every pushed branch; a change reaches \texttt{master} through a pull request, after the same check has passed on its merge with the current \texttt{master}.
 The node-cap facts take about 340 CPU-hours in all, and the energy-table facts about ten hours each, so CI replays them from a verified build cache.
