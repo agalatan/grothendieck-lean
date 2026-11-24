@@ -178,6 +178,3 @@ Grothendieck endpoint. Numerically, the three-moment first-moment relaxation
 attains its maximum near `x = 1.38037`, well inside the improved range; simply
 reducing the cutoff therefore does not improve the constant `ρ` it gives.
 
-Run `python3 tools/circular_moment_audit.py` for exact integer moment calculations.
-The script is a diagnostic; it does not prove the tensor inequality or verify
-the Lean modules.

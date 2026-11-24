@@ -76,7 +76,6 @@ None of these is the current bound.
 | number | what it is | where |
 |---|---|---|
 | `1.404599395362` | the bound of the older single-channel upper proof, $K < 1.404599395362$. Still proved and independent of the six-channel proof, but weaker, and above Haagerup's value | `Grothe.Statement.upper_below_tight`, `constant_lt_tight_upper` (`Grothe/UpperTightFinal.lean`); `docs/UPPER_STATUS.md` |
-| `1.4046` (`14046 / 10000`) | the threshold in the definition `Grothe.Statement.UpperTarget`, a fixed comparison target from before the six-channel proof. Both upper proofs are below it | `Grothe/Statement.lean` |
 | `1.4018` | the design target of the lower certificate. The certificate reached $1/B = 1.4019103\ldots$, and the theorem states $1.40191$ | `research/identity-tail/` |
 | `1.401700322371` | the previous lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail. No longer the statement | history in `research/` |
 | `1.40490913…` | Haagerup's 1987 upper bound | prior work |

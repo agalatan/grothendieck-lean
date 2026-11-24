@@ -571,8 +571,7 @@ bands. `upper_bound_tight` applies the regrouping with the tighter certified
 radii (`localized_comparison_tight_three_band`, `UpperTightComparison`) and
 passes the result to `TightEndpoint.endpoint_of_comparison` (`UpperTightFinal`),
 which adds the head, the table error (`Final.hclose_final`,
-`Grothe/UpperClose.lean`) and the Hardy tail. `Statement.UpperTarget` is the fixed
-comparison target `K_G^ℂ < 1.4046` (`14046/10000`), not the bound of the main theorem.
+`Grothe/UpperClose.lean`) and the Hardy tail.
 The single-channel theorem `upper_below_tight` gives `K_G^ℂ < 1.404599395362`.
 
 **Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`

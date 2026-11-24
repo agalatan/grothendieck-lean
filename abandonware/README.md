@@ -16,15 +16,15 @@ Code removed from the active libraries but kept for reference. Nothing here is b
 
 Policy (user, 4 and 15 November 2026): Lean code that the main theorem `main_bounds` does not use leaves the
 libraries. Modules worth keeping are moved here; the rest is deleted (git history keeps it, and generated modules can be
-regenerated from their generators in `tools/` and inputs in `data/`).
+regenerated from their generators and inputs, which are in git history: `tools/` and `data/` keep only what an
+existing module was generated from).
 
 ## Whole modules: `abandonware/Grothe/` (15 November 2026, #422)
 
 After #383 the libraries held about 2,580 modules outside the import closure of `Grothe.MainResult`. The 210 worth
 keeping are here, verbatim, at their original path below `abandonware/` (`abandonware/Grothe/UpperChaos/X.lean` was
 `Grothe/UpperChaos/X.lean` at master 36ab13004). [`MANIFEST-2026-11-15.tsv`](MANIFEST-2026-11-15.tsv) lists every one with
-its family and the reason it is kept. The other ~2,370 were deleted: generated modules (their generators and inputs stay in
-`tools/` and `data/`), pure axiom audits, superseded certificates and endpoints, and scaffolding.
+its family and the reason it is kept. The other ~2,370 were deleted: generated modules (their generators and inputs are in git history), pure axiom audits, superseded certificates and endpoints, and scaffolding.
 
 | what | modules | content |
 |---|---|---|
