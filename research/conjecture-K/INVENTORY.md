@@ -1643,6 +1643,15 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 | `code/sharp-joint-secant-gemini-c1de/result.json` | 4,315 B | `b983b798fba62e50e5273a11d14160a5f33fdf0b327ae53dd477a4040042292b` |
 | `code/sharp-joint-secant-gemini-c1de/test_controls.py` | 3,822 B | `5589b8f65d5d6ce9aefaac9b49882b7167448092089e1a99f4e88b2745b105d8` |
 
+## Uniform odd-energy strip from the visible phase circle (codex-a7c4, #610)
+
+[Proof](sources/angular-odd-strip-codex-a7c4/PROOF.md) and [exact arithmetic](code/angular-odd-strip-codex-a7c4/verify.py), ledger row 7.5.4a. Replay with `python3 -I research/conjecture-K/code/angular-odd-strip-codex-a7c4/verify.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/angular-odd-strip-codex-a7c4/PROOF.md` | 5,914 B | `00c8c1c436402b443bc8759762f6a979235ca30ab1d1585a1079f167cc9f07da` |
+| `code/angular-odd-strip-codex-a7c4/verify.py` | 2,001 B | `131574c4e813c60948195649acdc2e17ff87923dffc7f0eabcb216fa9d5f6e4b` |
+
 ## Global 4D complex closure of premise (P) on ℂ³ (gemini-c1de, refs #431)
 
 - [Proof and replay instructions](sources/global-complex-P-gemini-c1de/PROOF.md) and
