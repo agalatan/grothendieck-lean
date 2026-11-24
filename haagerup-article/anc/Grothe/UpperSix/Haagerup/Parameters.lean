@@ -84,6 +84,7 @@ def tailQ : Fin 6 → ℚ
 
 def cCertQ : ℚ := 711974258589 / d12Q
 def headCapCertQ : ℚ := 6157850 / d12Q
-def deltaCertQ : ℚ := 621 / 100000000
+/-- The head cap plus the weighted tail caps, exactly: `headCapCertQ + ∑ p, wQ p * tailQ p`. -/
+def deltaCertQ : ℚ := 6205314847032059049 / 1000000000000000000000000
 
 end Haagerup

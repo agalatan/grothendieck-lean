@@ -85,14 +85,10 @@ lemma cellVal_cellIdx (ω : Ω) : cellVal s (cellIdx s ω) = s ω := by
 
 omit [Fintype ι] in
 lemma measurable_cellIdx : Measurable (cellIdx s) :=
-  measurable_to_countable' fun i => by
-    have : cellIdx s ⁻¹' {i} = s ⁻¹' {cellVal s i} := by
-      ext ω
-      simp only [Set.mem_preimage, Set.mem_singleton_iff]
-      constructor
-      · rintro rfl; exact (cellVal_cellIdx s ω).symm
-      · intro h; simp [cellIdx, h, cellVal]
-    rw [this]; exact s.measurableSet_fiber _
+  measurable_to_countable' fun i ↦ by
+    convert s.measurableSet_fiber (cellVal s i) using 1
+    ext ω
+    exact s.range.equivFin.eq_symm_apply.symm.trans Subtype.ext_iff
 
 omit [Fintype ι] in
 lemma memLp_cell (c : Fin s.range.card → ℂ) : MemLp (fun ω => c (cellIdx s ω)) 2 μ :=
@@ -171,10 +167,9 @@ theorem norm_pairVal_le {K B : ℝ} (hK : IsGrothendieckBound K) {T : Lp ℂ 2 �
     (hv : ∀ᵐ ω ∂μ, ∑ ℓ, ‖v ℓ ω‖ ^ 2 ≤ 1) : ‖pairVal T u v‖ ≤ K * B := by
   obtain ⟨s, hs1, hs⟩ := exists_simple_approx μ u hu
   obtain ⟨t, ht1, ht⟩ := exists_simple_approx μ v hv
-  have hval : ∀ s : SimpleFunc Ω (EuclideanSpace ℂ ι), (∀ ω, ‖s ω‖ ≤ 1) →
-      ∀ i, ‖cellVal s i‖ ≤ 1 := fun s hs i => by
-    obtain ⟨ω, hω⟩ := SimpleFunc.mem_range.1 (s.range.equivFin.symm i).2
-    rw [cellVal, ← hω]; exact hs ω
+  have hval (s : SimpleFunc Ω (EuclideanSpace ℂ ι)) (hs : ∀ ω, ‖s ω‖ ≤ 1) (i) :
+      ‖cellVal s i‖ ≤ 1 :=
+    (SimpleFunc.forall_mem_range (f := s) (p := fun x ↦ ‖x‖ ≤ 1)).2 hs _ (s.range.equivFin.symm i).2
   have e : ∀ s : SimpleFunc Ω (EuclideanSpace ℂ ι),
       simpleCoord μ s = cellVec (cellMap μ s) (cellVal s) :=
     fun s => funext fun ℓ => (cellVec_cellMap μ s ℓ).symm

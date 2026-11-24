@@ -10,16 +10,9 @@ single-channel upper proof (K < 1.404599395362, `Grothe/UpperTightFinal.lean`);
 Each header specifies the range and two radii; the following line stores the
 low-band midpoints. All values use the dyadic scale `2^-64`.
 
-The acceptance preflight below was run before the range computations were scheduled. It
-reads the grouped-radius margins of `Grothe/UpperQuad/PortFacts/Margins.lean`, which is no
-longer in the tree (the single-channel upper proof uses `UpperQuad.TwistMargins`), so these
-commands do not run on the current sources:
+An acceptance preflight (`tools/audit_port_tables.py`, removed with the grouped-radius margins it read) was run
+before the range computations were scheduled.
 
-```sh
-python3 tools/audit_port_tables.py --json
-python3 tools/audit_port_tables.py --cross-check-generator
-python3 tools/audit_port_tables.py --lean-output handoff/port-audit/TableArithmetic.lean
-```
 
 The independent preflight reads the exact center literals in the Lean sources,
 checks dimensions and range coverage against the actual panel and bracket

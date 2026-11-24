@@ -7,12 +7,12 @@ documents quote them.
 
 ## The current bounds
 
-$$1.40191 < K \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.40191 < K \le 1.40455741 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
 | lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
-| upper bound (weak, $\le$) | `1.40457588` | `140457588 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
+| upper bound (weak, $\le$) | `1.40455741` | `140455741 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
 `main_bounds` reads
@@ -20,7 +20,7 @@ $$1.40191 < K \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots$$
 ```lean
 theorem main_bounds :
     (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant ≤ 140457588 / 100000000
+      complexGrothendieckConstant ≤ 140455741 / 100000000
 ```
 
 It has no hypotheses. Its axioms are Lean's three standard ones and the `native_decide` facts listed in
@@ -32,8 +32,8 @@ $\lvert\sum a_{ij}\langle x_i,y_j\rangle\rvert$ over unit vectors of a complex H
 (`scalarOpt`, `vectorOpt` in `Grothe/Statement.lean`). A number $K$ is a *Grothendieck bound* (`IsBound K`) if
 $V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds.
 
-- Upper bound: `Grothe.UpperSix.bound : IsBound (140457588 / 100000000)`. For every finite complex matrix,
-  $V(A) \le 1.40457588\,C(A)$.
+- Upper bound: `Grothe.UpperSix.bound : IsBound (140455741 / 100000000)`. For every finite complex matrix,
+  $V(A) \le 1.40455741\,C(A)$.
 - Lower bound: `lower_target : LowerAbove (140191 / 100000)`. Every Grothendieck bound is above $1.40191$; for every
   $K \le 1.40191$ some matrix has $V(A) > K\,C(A)$.
 
@@ -46,10 +46,10 @@ for $K$ in 1987.
 | fact | Lean |
 |---|---|
 | $0.711958633 < \gamma^\dagger < 0.711958683$ | `Haagerup.gammaDagger_bounds` (`Grothe/UpperSix/Haagerup/GammaDagger.lean`) |
-| $1.40457588 < 1/\gamma^\dagger$ | `Haagerup.inv_gammaDagger_gt` |
+| $1.40455741 < 1/\gamma^\dagger$ | `Haagerup.inv_gammaDagger_gt` |
 | $K < 1/\gamma^\dagger$ | `Grothe.UpperSix.constant_lt_inv_gammaDagger` |
 
-The upper bound is below Haagerup's value by about $5\cdot10^{-8}$. Haagerup's own 1987 theorem is the weaker
+The upper bound is below Haagerup's value by about $1.9\cdot10^{-5}$. Haagerup's own 1987 theorem is the weaker
 bound $K < 1.40490913\ldots$
 
 ## Behind the lower bound
@@ -66,8 +66,14 @@ bound $K < 1.40490913\ldots$
 ## Behind the upper bound
 
 The six-channel proof (`Grothe/UpperSix/`, copied byte for byte in `haagerup-article/anc/`) mixes six Gaussian
-rounding channels. `Haagerup.isBound_cert` proves `IsBound (140457588 / 100000000)`; the rational is the stated
-endpoint of that certificate, and the comparison with $1/\gamma^\dagger$ above is a separate theorem.
+rounding channels.
+
+| quantity | value | meaning |
+|---|---|---|
+| $c$ | `cCertQ = 711974258589 / 10^12` | the target linear slope: the rational that the mixed correlation kernel is compared with (the kernel's actual first coefficient differs from it by about $10^{-12}$, which the head bound counts) |
+| $\delta$ | `deltaCertQ = 6205314847032059049 / 10^24` | the certified deviation of the kernel from $c\,t$: head cap $6.15785\cdot10^{-6}$ plus weighted tail caps $4.746\ldots\cdot10^{-8}$, exactly |
+| $1/(c-\delta)$ | `10^24 / 711968053274152967940951` $= 1.4045574031\ldots$ | what the transfer theorem gives (an intermediate step of `Haagerup.isBound_cert`) |
+| stated bound | `140455741 / 100000000` | $1/(c-\delta)$ rounded up to eight decimals: `Haagerup.isBound_cert`, `Grothe.UpperSix.bound`, `main_bounds` |
 
 ## Other numbers you will meet
 
@@ -76,7 +82,6 @@ None of these is the current bound.
 | number | what it is | where |
 |---|---|---|
 | `1.404599395362` | the bound of the older single-channel upper proof, $K < 1.404599395362$. Still proved and independent of the six-channel proof, but weaker, and above Haagerup's value | `Grothe.Statement.upper_below_tight`, `constant_lt_tight_upper` (`Grothe/UpperTightFinal.lean`); `docs/UPPER_STATUS.md` |
-| `1.4046` (`14046 / 10000`) | the threshold in the definition `Grothe.Statement.UpperTarget`, a fixed comparison target from before the six-channel proof. Both upper proofs are below it | `Grothe/Statement.lean` |
 | `1.4018` | the design target of the lower certificate. The certificate reached $1/B = 1.4019103\ldots$, and the theorem states $1.40191$ | `research/identity-tail/` |
 | `1.401700322371` | the previous lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail. No longer the statement | history in `research/` |
 | `1.40490913…` | Haagerup's 1987 upper bound | prior work |
@@ -92,4 +97,5 @@ None of these is the current bound.
 3. Update this page, `README.md`, `docs/LEAN_DETAILS.md`, `docs/overview.tex`, the research ledgers that quote the
    bound and the project skill, until the script passes.
 
-The article in `haagerup-article/` is frozen at `1.40457588` on purpose and is not updated.
+The article in `haagerup-article/` states the bound of its own Lean package, `1.40455741`. It does not quote the
+repository's bounds, and is not updated when they change after it is posted.
