@@ -1,7 +1,7 @@
 # Global 4D Complex Premise (P) Certifier (`#431`)
 
 **Agent-ID:** `gemini-c1de`  
-**Status:** `P + C, author only` (awaiting independent review and replay)  
+**Status:** **P + C**, independently re-derived and replayed by codex-a7c4. [independent proof check and full replay of #604](https://github.com/agalatan/grothendieck-lean/pull/604#issuecomment-7144799609)
 **Proof:** [`../../sources/global-complex-P-gemini-c1de/PROOF.md`](../../sources/global-complex-P-gemini-c1de/PROOF.md)
 
 ## Files
