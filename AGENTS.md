@@ -365,7 +365,7 @@ Also:
 | cache | written only by | read by |
 |---|---|---|
 | GitHub master cache, key `lake-build-v3-<toolchain+manifest>-<caps digest>-<sha>` | the green check of master (on the droplet when the caps changed) | every CI run, cloud jobs |
-| GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch only (hosted landing checks save none: each entry is about 14 GB, the repository's cache limit of 50 GB holds three, and a burst of landings once evicted master's cache, #607) | later checks of that branch; deleted when the branch lands or is deleted |
+| GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch only (hosted landing checks save none: each entry is about 14 GB, the repository's cache limit of 70 GB holds four, and a burst of landings once evicted master's cache, #607) | later checks of that branch; deleted when the branch lands or is deleted |
 | droplet runner workspace (`~/actions-runner/_work`) | the runner only, one job at a time | nobody else; never copy into it or out of it |
 | laptop snapshot `.lake/master-cache` (main checkout) | `scripts/master_build_job.sh` (§5) | laptop worktrees through `scripts/clone_master_build.sh` |
 | tree handoff: artifact `lean-build-tree-<tree hash>`, kept 1 day | a green landing check whose checked commit contains the current master | master's check, when master's tree is exactly that tree |
@@ -404,7 +404,9 @@ Also:
   Lean-relevant branch checks fail with "needs the droplet" until the next Lean-relevant landing, whose master check
   rebuilds the cache on a hosted runner from the tree handoff. Nothing needs to be started by hand, and no heavy
   runner is needed unless the node caps themselves changed.
-- **Retention:** GitHub deletes cache entries unused for 7 days; a weekly job (`keepalive`) restores the master cache
+- **Retention and size:** GitHub deletes cache entries unused for 10 days and, above 70 GB in total, the least
+  recently used ones (both are repository settings: Settings → Actions → General → Cache; set by the user on
+  25 November 2026); a weekly job (`keepalive`) restores the master cache
   to keep it alive. Master keeps its newest two caches.
 
 ## 11. Cloud jobs: builds, checks and computations on GitHub Actions
