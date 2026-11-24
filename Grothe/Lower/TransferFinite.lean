@@ -43,20 +43,14 @@ def pad (k : Fin 2) (x : EuclideanSpace ℂ ι) : EuclideanSpace ℂ (ι ⊕ Fin
   WithLp.toLp 2 (Sum.elim (fun a => x a)
     (fun k' => if k' = k then ((√(1 - ‖x‖ ^ 2) : ℝ) : ℂ) else 0))
 
-lemma sum_norm_sq_eq (x : EuclideanSpace ℂ ι) : ∑ a, ‖x a‖ ^ 2 = ‖x‖ ^ 2 := by
-  rw [EuclideanSpace.norm_eq, Real.sq_sqrt (sum_nonneg fun _ _ => sq_nonneg _)]
+lemma sum_norm_sq_eq (x : EuclideanSpace ℂ ι) : ∑ a, ‖x a‖ ^ 2 = ‖x‖ ^ 2 :=
+  (EuclideanSpace.norm_sq_eq x).symm
 
 lemma norm_pad (k : Fin 2) (x : EuclideanSpace ℂ ι) (hx : ‖x‖ ≤ 1) : ‖pad k x‖ = 1 := by
-  have h0 : 0 ≤ 1 - ‖x‖ ^ 2 := by nlinarith [norm_nonneg x]
+  have h0 : 0 ≤ 1 - ‖x‖ ^ 2 := sub_nonneg.mpr ((sq_le_one_iff₀ (norm_nonneg x)).mpr hx)
   rw [EuclideanSpace.norm_eq, Real.sqrt_eq_one]
-  simp only [pad, PiLp.toLp_apply, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]
-  rw [sum_norm_sq_eq]
-  have h2 : ∑ k' : Fin 2, ‖(if k' = k then ((√(1 - ‖x‖ ^ 2) : ℝ) : ℂ) else 0)‖ ^ 2
-      = 1 - ‖x‖ ^ 2 := by
-    fin_cases k <;>
-      simp [Fin.sum_univ_two, Complex.norm_real, Real.norm_eq_abs,
-        abs_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt h0]
-  rw [h2]; ring
+  simp [pad, Fintype.sum_sum_type, sum_norm_sq_eq, apply_ite Norm.norm, ite_pow,
+    Real.sq_sqrt h0]
 
 lemma inner_pad (x y : EuclideanSpace ℂ ι) : inner ℂ (pad 0 x) (pad 1 y) = inner ℂ x y := by
   simp [PiLp.inner_apply, pad]

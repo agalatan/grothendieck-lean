@@ -27,12 +27,8 @@ theorem bounds_bddBelow : BddBelow {K | IsBound K} :=
 /-- The set of Grothendieck bounds is closed: it is the intersection over all matrices `A` of the
 closed half-lines `{K | V(A) ≤ K · C(A)}`. -/
 theorem isClosed_bounds : IsClosed {K : ℝ | IsBound K} := by
-  have h : {K : ℝ | IsBound K} = ⋂ (m : ℕ) (n : ℕ) (A : Fin m → Fin n → ℂ),
-      {K : ℝ | Grothe.Statement.vectorOpt A ≤ K * Grothe.Statement.scalarOpt A} := by
-    ext K
-    simp only [Set.mem_ofPred_eq, Set.mem_iInter, IsBound]
-  rw [h]
-  exact isClosed_iInter fun m => isClosed_iInter fun n => isClosed_iInter fun A =>
+  simp only [IsBound, Set.ofPred_forall]
+  exact isClosed_iInter fun m ↦ isClosed_iInter fun n ↦ isClosed_iInter fun A ↦
     isClosed_le continuous_const (continuous_id.mul continuous_const)
 
 /-- Once some Grothendieck bound exists, the constant `K_G^ℂ` is itself a Grothendieck bound. -/
@@ -42,7 +38,7 @@ theorem constant_isBound (hne : ∃ K, IsBound K) : IsBound complexGrothendieckC
 /-- `UpperBelow c` gives `K_G^ℂ < c`. -/
 theorem constant_lt_of_upperBelow {c : ℝ} (h : UpperBelow c) : complexGrothendieckConstant < c := by
   obtain ⟨K, hK, hlt⟩ := h
-  exact lt_of_le_of_lt (csInf_le bounds_bddBelow hK) hlt
+  exact csInf_lt_of_lt bounds_bddBelow hK hlt
 
 /-- Conversely, once some Grothendieck bound exists, `K_G^ℂ < c` gives a bound below `c`. -/
 theorem upperBelow_of_constant_lt {c : ℝ} (hne : ∃ K, IsBound K)

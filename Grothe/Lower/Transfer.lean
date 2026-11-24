@@ -45,7 +45,7 @@ theorem transfer_lower {B K : ℝ} (hT : TransferInputsL2 B) (hK : IsGrothendiec
   have h : 1 ≤ K * B := le_of_forall_sub_le fun δ hδ => by
     obtain ⟨Ω, _, μ, _, T, ι, _, u, v, hcap, hu, hv, hval⟩ := hT δ hδ
     exact hval.trans (norm_pairVal_le μ hK hcap hu hv)
-  have hB : 0 < B := pos_of_mul_pos_right (a := K) (by linarith) (by linarith [hK.one_le])
+  have hB : 0 < B := pos_of_mul_pos_right (zero_lt_one.trans_le h) (zero_le_one.trans hK.one_le)
   exact (div_le_iff₀ hB).2 h
 
 end Grothe.Lower
