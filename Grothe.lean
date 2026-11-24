@@ -3339,6 +3339,7 @@ import Grothe.Upper.PolynomialHeadTail
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.Upper.ThreeBandBudget
+import Grothe.Upper.VariableCutoff
 import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.ArraySquareEnergy
 import Grothe.UpperChaos.BandProj

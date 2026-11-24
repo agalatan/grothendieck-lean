@@ -2292,6 +2292,7 @@ import Grothe
 #print axioms Haagerup.Data.tcell_sos_ok
 #print axioms Haagerup.Data.tig_mu_ok
 #print axioms Haagerup.Data.tig_sos_ok
+#print axioms Haagerup.convex_transfer_variable_ival
 #print axioms Haagerup.head_sum_ok
 #print axioms Haagerup.isBound_cert
 #print axioms Haagerup.mean0_ok
@@ -2309,4 +2310,5 @@ import Grothe
 #print axioms Haagerup.reg3_ok
 #print axioms Haagerup.reg4_ok
 #print axioms Haagerup.reg5_ok
+#print axioms Haagerup.residual_of_channel_cutoffs
 #print axioms Haagerup.upper_below_haagerup

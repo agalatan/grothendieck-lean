@@ -22,6 +22,8 @@ target the rounding was designed for. The conditional theorem towards it,
 proved), is archived; the theorem without hypotheses exhibits a bound below
 `1.404599395362`.
 
+**Different head lengths in a mixture.** A channel with a list of length $m$ encloses its true coefficients up to index $m-1$. The finite head sum pads that list with zeros. The error between the polynomial and the true kernel costs at most the channel’s absolute tail from $m$, multiplied by its mixture weight. The theorem also covers an empty list. [Lean transfer theorem](../Grothe/Upper/VariableCutoff.lean).
+
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
 shards supply their analytic interpretation. Adding the existing `10⁻¹⁵` tail/gap reserve

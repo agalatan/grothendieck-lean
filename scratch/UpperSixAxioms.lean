@@ -1,3 +1,4 @@
+import Grothe.Upper.VariableCutoff
 import Grothe.UpperResult
 
 -- Agent-ID: codex-a7c4
@@ -12,3 +13,5 @@ set_option pp.fullNames true
 #print axioms Haagerup.mem_muTigOf
 #print axioms Haagerup.modeOverlapsAt_sound
 #print axioms Haagerup.upper_below_haagerup
+#print axioms Haagerup.convex_transfer_variable_ival
+#print axioms Haagerup.residual_of_channel_cutoffs

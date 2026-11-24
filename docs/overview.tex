@@ -770,6 +770,13 @@ The complex programme uses charge-one bidegrees. A global complex minimax identi
 the two endpoint proofs use separate one-sided transfer theorems. An upper bound comes from a realizable kernel,
 and a lower bound from a game with a uniform scalar norm cap. Finite-pool duality alone does not certify either global claim.
 
+For a convex mixture with weights $w_p$ and coefficient sequences $h_p(n)$,
+each finite interval list may have its own length $m_p$.
+The signed sum uses the coefficients with $n<m_p$ and pads each list with zeros.
+The true mixture differs from this polynomial by at most
+$\sum_p w_p\sum_{n\ge m_p}|h_p(n)|$ in $\ell^1$.
+The resulting finite-matrix bound is \lean{convex\_transfer\_variable\_ival}.
+
 Separate paper results in the Conjecture K monograph strengthen the common-response
 energy ellipsoid and reduce a joint-sector estimate to a specified pointwise remainder
 inequality. An exact rational checker verifies the conditional error budget, but

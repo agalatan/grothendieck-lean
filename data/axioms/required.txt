@@ -1482,3 +1482,5 @@ Grothe.head_residual_le
 Grothe.linear_lower
 Grothe.tail_le
 Grothe.tail_numeric
+Haagerup.convex_transfer_variable_ival
+Haagerup.residual_of_channel_cutoffs
