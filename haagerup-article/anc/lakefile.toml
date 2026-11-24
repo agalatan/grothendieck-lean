@@ -1,6 +1,6 @@
 # The Lean proof of the article, as a standalone Lake package (the arXiv ancillary files).
 #
-# The sources in Grothe/UpperSix/ are byte-identical to the folder of the same name in the repository
+# The sources in  are byte-identical to the folder of the same name in the repository
 # https://github.com/agalatan/grothendieck-lean (the CI job .github/workflows/haagerup-article.yml checks this), where
 # they also prove the upper bound of Grothe.Statement.main_bounds. They import only Mathlib.
 #
@@ -16,4 +16,4 @@ rev = "v4.34.1"
 
 [[lean_lib]]
 name = "HaagerupArticle"
-globs = ["Grothe.UpperSix.+"]
+globs = ["+"]

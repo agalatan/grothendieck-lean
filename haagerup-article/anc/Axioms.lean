@@ -1,4 +1,4 @@
-import Grothe.UpperSix.Haagerup
+import Haagerup
 
 /-!
 # Axioms of the article's theorems

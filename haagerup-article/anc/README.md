@@ -16,10 +16,10 @@ that is, `K_G^ℂ ≤ 1.40455741 < 1/γ† = 1.4045759346…`.
 - `complexGrothendieckConstant` is the infimum of all such `K`.
 - `gammaDagger` is Haagerup's integral `∫₀^{π/2} cos² t / √(1 + sin² t) dt`.
 
-All of these are defined in `Grothe/UpperSix/Haagerup/Statement.lean`.
+All of these are defined in `Haagerup/Statement.lean`.
 
 The certificate data (cell maps, Fourier tables, sum-of-squares witnesses, overlap tables, channel parameters) are
-Lean literals in `Grothe/UpperSix/Haagerup/Data/` and `Grothe/UpperSix/Haagerup/Parameters.lean`. Lean checks them;
+Lean literals in `Haagerup/Data/` and `Haagerup/Parameters.lean`. Lean checks them;
 there are no other data files and no external verifier.
 
 ## Build
@@ -48,16 +48,16 @@ Every other step—including the six-channel head sum, the Hardy-space disk and 
 
 | proof | source |
 |---|---|
-| the matrix optima, admissible bounds, the constant and γ† | `Grothe/UpperSix/Haagerup/Statement.lean` |
-| convex transfer from the signed head and the six tail estimates | `Grothe/UpperSix/Haagerup/Transfer.lean`, `FastHeadSound.lean` (`convex_transfer_head`) |
-| cell maps, Hermite energies and finite interval enclosures | `Grothe/UpperSix/Haagerup/CellHermite.lean`, `CellOverlap.lean`, `CellOverlapCore.lean` |
-| boundary disk positivity, circle means and infinite tails | `Grothe/UpperSix/Haagerup/SchurHardy.lean`, `TaylorHardySound.lean`, `ContourChecks/` |
-| the six-channel head sum, weights, 251 head coefficients and the budget | `Grothe/UpperSix/Haagerup/HeadCheck.lean`, `FastHeadSound.lean`, `CertCheck.lean` |
-| the strict comparison with `1/γ†` | `Grothe/UpperSix/Haagerup/GammaDagger.lean`, `Grothe/UpperSix/Haagerup.lean` |
-| the exact integer, interval, Taylor-model and Kronecker checkers | `Grothe/UpperSix/HaagerupKernel/` |
+| the matrix optima, admissible bounds, the constant and γ† | `Haagerup/Statement.lean` |
+| convex transfer from the signed head and the six tail estimates | `Haagerup/Transfer.lean`, `FastHeadSound.lean` (`convex_transfer_head`) |
+| cell maps, Hermite energies and finite interval enclosures | `Haagerup/CellHermite.lean`, `CellOverlap.lean`, `CellOverlapCore.lean` |
+| boundary disk positivity, circle means and infinite tails | `Haagerup/SchurHardy.lean`, `TaylorHardySound.lean`, `ContourChecks/` |
+| the six-channel head sum, weights, 251 head coefficients and the budget | `Haagerup/HeadCheck.lean`, `FastHeadSound.lean`, `CertCheck.lean` |
+| the strict comparison with `1/γ†` | `Haagerup/GammaDagger.lean`, `Haagerup.lean` |
+| the exact integer, interval, Taylor-model and Kronecker checkers | `HaagerupKernel/` |
 
 ## Provenance
 
-These files are copied byte for byte from the folder `Grothe/UpperSix/` of
+These files are copied byte for byte from the folder `` of
 <https://github.com/agalatan/grothendieck-lean>, which keeps evolving; this package is a snapshot frozen at
 `1.40455741`. The repository's CI job `haagerup-article.yml` fails if the two copies differ.
