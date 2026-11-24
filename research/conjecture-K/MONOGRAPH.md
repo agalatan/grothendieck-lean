@@ -340,20 +340,24 @@ the following dimension-uniform signed regions:
 
 | domain | deficit |
 |---|---|
-| 0<u≤0.0463, χ≤1/12000 (1/250, author only) | D(q)≥7δ/50 |
-| 0<u≤0.0463, χ≤10⁻⁴ (9/2000, author only) | D(q)≥δ/8 |
-| 0<u≤0.0463, χ≤1/5000 (0<χ≤1/125: D>0, author only) | D(q)≥δ/1000 |
-| 0≤u≤1/4000 (1/1600, author only), every cubic shape | D(q)≥9δ/50 |
+| 0<u≤0.0463, χ≤1/250 | D(q)≥7δ/50 [3.19] |
+| 0<u≤0.0463, χ≤9/2000 | D(q)≥δ/8 [3.19] |
+| 0<u≤0.0463, χ≤1/5000 | D(q)≥δ/1000 [3.19] |
+| 0≤u≤69/100000, every shape | D(q)≥9δ/50 [3.19a] |
+| 0<u≤83/100000, 0<χ≤42 | D(q)>0 [3.19a] |
 
-The unparenthesised constants and regions are **P** [codex-a7c4, re-derived by claude-b9ee and a review worker, with
-exact whole-interval Bernstein and rational checks · 3.19]; evaluating the Gaussian scale mixture directly on the
-smoothed kernel B_{V,θ} = V_L + u(1 − θ) with Wiener-chaos orthogonality U ∈ 𝓗₂ ⊕ 𝓗₄ ⊥ 𝓗₀ ⊕ 𝓗₆ ⊕ 𝓗₈,
-|h₄(s) − 3| ≤ (17/4)√s and Markov–Krein polynomial envelopes on V_L^{−k} gives the parenthesised widenings, D(q) > 0 on
-(0, 3/250] × (0, 1/9] and (0, 3/4000] × (0, 42] [P + C, author only · gemini-21d5 · 3.19]. Combined with exact rational
-verification of 79 Stein duals and a bivariate Stieltjes–Maclaurin deficit polynomial on [1/4000, 3/250] × [1/64, 49/100]
-and [3/250, 0.0463] × [49/10000, 49/100], strict positivity D(q) > 0 holds across the full connected domain
-(0, 0.0463] × (0, 49/100] ∪ (0, 3/4000] × (0, 42] with no near-Gaussian sliver, leaving only χ > 49/100 for u > 3/4000
-[P + C, author only · gemini-5331, gemini-21d5 · 3.29].
+The original signed estimates are **P** on χ≤1/12000, χ≤10⁻⁴, χ≤1/5000 and u≤1/4000 respectively
+[codex-a7c4, re-derived by claude-b9ee and a review worker · 3.19]. The smoothed Gaussian scale mixture,
+the orthogonality of 𝓗₂ ⊕ 𝓗₄ to 𝓗₀ ⊕ 𝓗₆ ⊕ 𝓗₈, and the Hermite envelope |h₄(s)−3|≤(17/4)√s
+give the wider signed regimes [P + C · gemini-21d5, independently reviewed by codex-a7c4 · 3.19].
+On 56 energy intervals the absolute remainder is at most (467/2)δ^(3/2) for every shape,
+or (265/2)δ^(3/2) for χ≤9364/390625. Nine low-energy intervals give the last two rows
+[P + C, author only · codex-a7c4 · 3.19a].
+
+The smoothed expansion gives D(q)>0 on (0,3/250] × (0,1/9] and on [3/250,0.0463] × (0,1/125].
+The 79 Stein duals and the Stieltjes–Maclaurin estimate cover the adjoining larger shapes in 3.29.
+Together these give strict positivity on (0,0.0463] × (0,49/100] ∪ (0,83/100000] × (0,42].
+The remaining shapes in this peak positivity problem have χ>49/100 and u>83/100000 [3.19a, 3.29].
 
 For 0.03≤u≤0.0463 and χ≤10⁻⁴ (9/2000, author only), the content coefficient 3/80 of 2.6 gives
 ‖c₍₃/₅₎(q)‖²≤0.3D(q), without additive error. With k=59009/189100, the global tilted
@@ -587,8 +591,8 @@ absolute coefficient ≤ 0.481, ratio ≈ 0.262) at every energy and dimension, 
 Ornstein–Uhlenbeck smoothing (sharpened by √(13/15) in 6.3.42), together with ‖c_A(q)‖² ≤ [32/(225πa⁴)]·δ (< 58/125·δ
 at the peak). Combined with the Edgeworth bounds of 2.1, spectral Stein duals and Stieltjes–Maclaurin deficit envelopes,
 this gives signed C(q)² ≤ (6/25)D(q) + 10⁻⁶ on [0, 0.0463] × [0, 841/10000] and exact zero-slack C(q)² ≤ (6/25)D(q)
-across the full connected domain [0, 0.0463] × [0, 49/625] ∪ [0, 1/1600] × [0, 42] ∪ [0, 3/250] × [0, 1/4] with no
-near-Gaussian sliver [P + C, author only · gemini-5331, gemini-21d5 · 6.3.43].
+across the full connected domain [0, 0.0463] × [0, 49/625] ∪ [0, 7/10000] × [0, 42] ∪ [0, 3/250] × [0, 1/4] with no
+near-Gaussian sliver. The all-shapes extension to 7/10000 uses the unsmoothed raw A-content constant 5353/625 [P + C, author only · codex-a7c4 · 3.19a; gemini-5331, gemini-21d5 · 6.3.43].
 
 **Open in L4:** the self-interaction family with non-Hermitian P and Wick share between 1/16 and 4/5, where an
 envelope giving 0.22 is true on grids [N · 6.3.13]; the small-Wick strip [6.3.14]; the same family for u < 0.03 with
