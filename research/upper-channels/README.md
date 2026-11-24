@@ -13,8 +13,9 @@ a = 0.9194…, gives the model slope D = 0.711974083612, that is 1/D = 1.4045455
 The head of the new channel is an exact interval composition of grades that Lean already verifies on the
 eighteen-channel branch, and its allowance (8.9·10⁻¹⁰) is the one that branch already pays for the same channel type;
 both were re-derived here independently (ledger §4). The cell channel cannot be written inside the six-channel
-framework: a certificate needs the cell machinery of the eighteen-channel branch, which is not on master
-(ledger §5).
+framework: a certificate needs the cell machinery of the eighteen-channel branch, which is not on master.
+The candidate has exactly six channels with positive weight, so the six-channel assembly of master keeps its
+shape: the new cell pair takes the slot of channel 4 (ledger §5).
 
 ## The model
 
@@ -37,7 +38,7 @@ h_k^{(p)} cancel across channels before the absolute value is taken, so the best
 
 | | six channels | eighteen channels |
 |---|---|---|
-| where | master, `Grothe/UpperSix/` (article: `haagerup-article/main.tex`) | branch `origin/gemini-1aa9/upper-mixture`, `Grothe/UpperReplacement/` (its `docs/UPPER_CERTIFICATE.md`); commit `76c4647b` used here |
+| where | master, `Grothe/UpperSix/` (article: `haagerup-article/main.tex`); read here at commit `f6620f3b` | the branch `gemini-1aa9/upper-mixture` of pull request #556 (closed, the branch deleted): `Grothe/UpperReplacement/`, its `docs/UPPER_CERTIFICATE.md`; read here at commit `76c4647b`, which `refs/pull/556/head` keeps |
 | certified D, 1/D | 0.711968053274, 1.4045574031 (the Lean bound of master) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
 | channel types | smoothed 64×64×36 cell map with (P, Q = −X): channels 0, 1, 5; phase with a degree-14 preprocessor: 2; reflected cell map with (−R, R): 3, 4 | ten GT channels, seven phase channels, one cell channel (a pair of responses on 64 angular × 128 × 128 radial cells, both coordinates preprocessed by R) |
 | head data | `Haagerup/Data/OverlapData.lean` (interval tables at scale 2⁻¹²⁸), `Haagerup/Parameters.lean` | `data/upper-replacement/exact-columns.json`, `cell-inputs.npz`, `Grothe/Upper/Data.lean`, `HeadWitnessFacts/Group00`–`07` (cell grades), `RootData.lean` |
@@ -63,7 +64,7 @@ In this folder the 24 channels are numbered 0–5 (the six) and 6–23 (the eigh
 Python 3 with `numpy`, `scipy`, `mpmath` and `python-flint` (0.9 was used). From `research/upper-channels/code/`:
 
 ```sh
-./fetch_sources.sh                       # src6/ and src18/ from git (ignored by git); needs the branch commit
+./fetch_sources.sh                       # src6/ and src18/ from the two pinned commits (ignored by git)
 python3 channels.py out 8                # the 24 head vectors, exact intervals: out/channel-00.json ... -23.json
 python3 analyse.py out results.json      # validation, the LPs for six / eighteen / union            (ledger §1, §2)
 python3 colgen.py out colgen.json        # new preprocessors, assumed allowances                     (ledger §3)
@@ -78,11 +79,22 @@ python3 schur_tail.py schur_tail.json 9/10 91942572547021/100000000000000 93/100
 python3 mixture_real.py out src18 results.json mixture_real.json                                  # (ledger 4.6, 4.7)
 ```
 
-`cell_grades.py` with 30 processes took 25 s for 126 grades and 145 s for 251 on a 32-core machine;
-`schur_tail.py` takes a few minutes; everything else takes seconds. The JSON files kept in `code/` are the outputs
-of these commands on 24 November 2026; [`INVENTORY.md`](INVENTORY.md) says where the logs and the 24 channel vectors
-are. `analyse.py` prints one stale remark ("certified: c − 6.21e-6"): master's `Parameters.lean` now states the exact
-sum 6205314847032059049/10²⁴ of the head cap and the weighted tails, which is what the script's own numbers use.
+**The inputs are pinned.** `fetch_sources.sh` reads the six-channel data at master commit
+`f6620f3b6bb3a8defc0ab37569eb744e4afa4726` and the eighteen-channel data at commit
+`76c4647b7de50c89aba82da63a3ee3d37f7c0cc3`, fetched as `refs/pull/556/head` of origin where the clone does not have it;
+it stops if that ref points elsewhere or if `cell-inputs.npz` does not have its recorded SHA-256. It was tested from
+an empty clone.
+
+**Exact values between scripts.** `results.json` carries every allowance twice: as a rounded decimal for reading and
+as the exact rational (`certified_exact`, `hypothetical_exact`, `gt_error_per_unit_exact`, `cell_truncation_exact`).
+The other scripts read only the exact fields; weights and head intervals are stored exactly as well.
+
+**Running times and what was run where.** `cell_grades.py` with 30 processes took 25 s for 126 grades and 145 s for
+251 on a 32-core machine; `schur_tail.py` takes a few minutes; everything else takes seconds to a minute.
+`grades-250.json` and `schur_tail.json` are the outputs of the 32-core machine; every other JSON file of `code/` is the
+output of the chain above run from this folder on a laptop (all commands except `cell_grades.py` and
+`schur_tail.py`), with the 24 channel vectors and `heads-250.json` byte-identical to those of the first machine. All
+runs are of 24 November 2026; [`INVENTORY.md`](INVENTORY.md) says where the logs and the 24 channel vectors are.
 
 | file | what it is |
 |---|---|

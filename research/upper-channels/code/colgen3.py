@@ -19,7 +19,7 @@ def run(label, base_idx, allow, ncap=None):
     w, Dv, Hk = solve(Hm, av)
     labels = [names[i] for i in base_idx] + ["NEW cell18 " + c[1] for c in cands]
     ivs = [[(int(x), int(y)) for x, y in chans[i]["head"]] for i in base_idx]
-    aq = [Q(res["allowances"][names[i]]["certified"]) for i in base_idx]
+    aq = [Q(res["allowances"][names[i]]["certified_exact"]) for i in base_idx]
     for c in cands:
         aq.append(Q(allow).limit_denominator(10**15)); ivs.append(None)
     den = 10**12

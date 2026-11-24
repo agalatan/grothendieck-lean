@@ -16,7 +16,7 @@ import mpmath as mp
 mp.mp.dps = 30
 f = lambda q, n=15: mp.nstr(mp.mpf(q.numerator) / q.denominator, n)
 exec((HERE / "colgen.py").read_text().split("def solve(Hm, av):")[1].split("out = {")[0].join(["def solve(Hm, av):", ""]))
-GT_ERR = float(res["gt_error_per_unit"])
+GT_ERR = float(Q(res["gt_error_per_unit_exact"]))
 D0 = solve(H, np.array(a))[1]
 out = {}
 # how much head mass lies beyond index 125 for a 1D tiger-type channel with a ~ 0.93 (six's table, which goes to 250)
@@ -59,7 +59,7 @@ w, sel, av = run("24 + fine grid, cell18 only (assumed a_p = 1e-8) [for exact re
 D = 1 << 128
 g = C.grades18()
 ivs = [[(int(x), int(y)) for x, y in c["head"]] for c in chans]
-aq = [Q(res["allowances"][c["name"]]["certified"]) for c in chans]
+aq = [Q(res["allowances"][c["name"]]["certified_exact"]) for c in chans]
 for c in sel:
     ch = rp.compose(126, c[2], g); ivs.append(list(ch) + [(0, 0)] * (251 - len(ch))); aq.append(Q(1, 10**8))
 den = 10**12

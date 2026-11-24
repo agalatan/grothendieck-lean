@@ -33,7 +33,7 @@ names = [c["name"] for c in chans]
 IV = [[(int(x), int(y)) for x, y in c["head"]] for c in chans]
 H = np.array([[(lo + hi) / 2 / D for lo, hi in iv] for iv in IV])
 res = json.loads(RES.read_text())
-A = [Q(res["allowances"][n]["certified"]) for n in names]
+A = [Q(res["allowances"][n]["certified_exact"]) for n in names]   # exact rationals, never the display decimals
 G = lean_grades(SRC18); Gf = [(lo + hi) / 2 / D for lo, hi in G]
 NEW_ALLOW = rp.hardy_ceiling(Q(109, 100), Q(2), 126) + rp.hardy_ceiling(Q(109, 100), Q(2), 251)
 HEADROOM = 1.4   # certified budgets of the six exceed the float circle means by at most 34 %
@@ -50,7 +50,7 @@ def allow_of(a):
         else:
             rr = st.r_reg(R); rhos = [r for r in np.arange(1.0025, 1.30, 0.0025) if r < rr - 0.002]
             b = st.best(R, R, 126, rhos, np.arange(0.05, 0.5, 0.05)) if rhos else None
-            _allow[a] = Q(1) if b is None else Q(min(1.0, st.tail(b[3] * HEADROOM, b[1], 126))).limit_denominator(10 ** 15)
+            _allow[a] = Q(1) if b is None else Q(math.ceil(min(1.0, st.tail(b[3] * HEADROOM, b[1], 126)) * 10 ** 15), 10 ** 15)
     return _allow[a]
 
 def oned(nu, P, m=126):

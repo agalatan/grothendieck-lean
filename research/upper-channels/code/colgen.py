@@ -49,7 +49,7 @@ def oned(nu, P, m=M):
 chans = [json.loads((Path(sys.argv[1]) / f"channel-{i:02d}.json").read_text()) for i in range(24)]
 H = np.array([[ (int(a) + int(b)) / 2 / D for a, b in c["head"]] for c in chans])
 res = json.loads((HERE / "results.json").read_text())
-a = [float(res["allowances"][c["name"]]["certified"]) for c in chans]
+a = [float(Q(res["allowances"][c["name"]]["certified_exact"])) for c in chans]
 
 tig, rows6 = C.six_tables()
 tigf = [mid(x) for x in tig]
@@ -72,7 +72,7 @@ for i, c in enumerate(chans):
     errs.append(float(np.abs(v - H[i]).sum()))
 print("float recomputation, sum_k |error| per channel: max %.2e" % max(errs))
 
-GT_ERR = float(res["gt_error_per_unit"])
+GT_ERR = float(Q(res["gt_error_per_unit_exact"]))
 ASSUMED = {"tig": 1.10835e-7, "cell": 5.7619e-8, "phase": 1.785796e-6, "GT": GT_ERR + 2.74e-7, "cell18": 1e-8}
 cands = []
 grid = [0.90, 0.92, 0.94, 0.95, 0.96, 0.97, 0.975, 0.98, 0.985, 0.99, 0.992, 0.994, 0.996, 0.998, 0.999]

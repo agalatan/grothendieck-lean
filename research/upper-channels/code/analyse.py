@@ -54,7 +54,7 @@ T6 = sum(w * t for w, t in zip(w6, tail6))
 print("six: H0 in [%s, %s]" % (f(n6["lin_lo"]), f(n6["lin_hi"])))
 print("six: nonlinear head sum (upper endpoint) =", f(n6["nonlin_hi"], 12), " midpoint model =", f(n6["nonlin_mid"], 12))
 print("six: Lean quantity absSum(head - c) =", f(abs6, 12), "<= headCap 6.15785e-6 :", abs6 <= cap6, " slack", f(cap6 - abs6, 4))
-print("six: weighted tails =", f(T6, 8), " c - absSum - tails =", f(c6 - abs6 - T6, 15), " (certified: c - 6.21e-6 = %s)" % f(c6 - Q(621, 10**8), 15))
+print("six: weighted tails =", f(T6, 8), " c - absSum - tails =", f(c6 - abs6 - T6, 15), " (certified: c - delta = %s)" % f(c6 - Q(6205314847032059049, 10**24), 15))
 ok6 = abs6 <= cap6 and cap6 - abs6 < Q(1, 10**10)
 out["six_validation"] = dict(H0_lo=f(n6["lin_lo"]), H0_hi=f(n6["lin_hi"]), nonlinear_hi=f(n6["nonlin_hi"], 14),
                              absSum_minus_c=f(abs6, 14), headCap="6.15785e-6", passed=bool(ok6), weighted_tail=f(T6, 10))
@@ -102,8 +102,11 @@ if not (ok6 and ok18):
 a_cert = tail6 + [t + by_kind[c["kind"]] for c, t in zip(cols, tails18)]
 # hypothetical: the search's own tail estimate info[3] for the eighteen's channels where smaller (NOT certified)
 a_hyp = tail6 + [min(t, Q(c["info"][3])) + by_kind[c["kind"]] for c, t in zip(cols, tails18)]
-out["allowances"] = {n: dict(certified=f(a, 8), hypothetical=f(b, 8)) for n, a, b in zip(names, a_cert, a_hyp)}
+# *_exact fields hold the rationals as "p/q" and are the ones other scripts read; the decimal fields are for display only
+out["allowances"] = {n: dict(certified=f(a, 8), hypothetical=f(b, 8), certified_exact=str(a), hypothetical_exact=str(b))
+                     for n, a, b in zip(names, a_cert, a_hyp)}
 out["gt_error_per_unit"] = f(gt_error, 12); out["cell_truncation"] = f(trunc, 8)
+out["gt_error_per_unit_exact"] = str(gt_error); out["cell_truncation_exact"] = str(trunc)
 
 # ---------------- B. LP ----------------
 Hmid = np.array([[float(Q(lo + hi, 2 * D)) for lo, hi in c["iv"]] for c in chans])  # 24 x 251
