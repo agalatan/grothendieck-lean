@@ -13,7 +13,7 @@ algebraic identity `(1 - x) P₁₄(x)² = 1 - ∑_{m=15}^{29} d_m x^m` with `d_
 so `|1 - (1 - x) P₁₄(x)²| ≤ 3⁻¹⁵` on `|x| ≤ 1/3`. Integrating the explicit trigonometric primitive
 `q₀ t + sin(2t) Q(cos(2t))` of `cos² t * P₁₄(cos(2t)/3)` on `[0, π / 2]` certifies
 
-  `(140457588 : ℝ) / 10^8 < 1 / gammaDagger`.
+  `(140455742 : ℝ) / 10^8 < 1 / gammaDagger`.
 
 Agent-ID: gemini-21d5
 -/
@@ -294,11 +294,11 @@ theorem gammaDagger_bounds :
 theorem gammaDagger_pos : 0 < gammaDagger :=
   lt_trans (by norm_num) gammaDagger_bounds.1
 
-/-- Certified rational lower bound `(140457588 / 10^8) < 1 / γ†`. -/
-theorem inv_gammaDagger_gt : (140457588 / 100000000 : ℝ) < 1 / gammaDagger := by
+/-- Certified rational lower bound `(140455742 / 10^8) < 1 / γ†`. -/
+theorem inv_gammaDagger_gt : (140455742 / 100000000 : ℝ) < 1 / gammaDagger := by
   rw [lt_div_iff₀ gammaDagger_pos]
-  calc (140457588 / 100000000 : ℝ) * gammaDagger
-      < (140457588 / 100000000 : ℝ) * (711958683 / 1000000000) := by
+  calc (140455742 / 100000000 : ℝ) * gammaDagger
+      < (140455742 / 100000000 : ℝ) * (711958683 / 1000000000) := by
         gcongr; exact gammaDagger_bounds.2
     _ < 1 := by norm_num
 

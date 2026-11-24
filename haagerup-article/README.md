@@ -4,14 +4,14 @@ The article (its TeX source and PDF, next to this file) and, in `anc/` (the arXi
 
 ```lean
 theorem Haagerup.isBound_cert :
-    Haagerup.Statement.IsBound (140457588 / 100000000 : ℝ)
+    Haagerup.Statement.IsBound (140455742 / 100000000 : ℝ)
 theorem Haagerup.inv_gammaDagger_gt :
-    (140457588 / 100000000 : ℝ) < 1 / Haagerup.Statement.gammaDagger
+    (140455742 / 100000000 : ℝ) < 1 / Haagerup.Statement.gammaDagger
 theorem Haagerup.constant_lt_inv_gammaDagger :
     Haagerup.Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger
 ```
 
-that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`anc/README.md`](anc/README.md).
+that is, `K_G^ℂ ≤ 1.40455742 < 1/γ†`, without hypotheses. Start with [`anc/README.md`](anc/README.md).
 
 ## The article: `main.tex`, `main.pdf`
 
@@ -29,7 +29,7 @@ that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`an
 
 - **What it is.** `anc/Grothe/UpperSix/` is a byte-for-byte copy of the repository's
   [`Grothe/UpperSix/`](../Grothe/UpperSix), which the `Grothe` target also builds. The article and this package are
-  frozen at `1.40457588`; they do not quote the repository's current bounds, which keep moving. The sources import
+  frozen at `1.40455742`; they do not quote the repository's current bounds, which keep moving. The sources import
   only Mathlib. The certificate data are Lean literals in
   `Grothe/UpperSix/Haagerup/Data/` and `Parameters.lean`; there are no other data files.
 - **Its own Lake package.** It has its own `lakefile.toml`, `lean-toolchain` and `lake-manifest.json`, with the same
@@ -48,7 +48,7 @@ that is, `K_G^ℂ ≤ 1.40457588 < 1/γ†`, without hypotheses. Start with [`an
 
 ## Rules
 
-- The article states exactly the value that the Lean package proves (`1.40457588`), and says exactly what Lean
+- The article states exactly the value that the Lean package proves (`1.40455742`), and says exactly what Lean
   checks: everything, with the finite computations listed in `anc/native.txt` run by the compiled evaluator
   (`native_decide`).
 - No `sorry`, `axiom`, `implemented_by`, `extern` or `unsafe`. CI checks this.

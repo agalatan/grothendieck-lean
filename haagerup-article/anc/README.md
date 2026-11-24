@@ -4,12 +4,12 @@ This folder is a standalone Lean 4 package that proves the article's theorem, wi
 
 ```lean
 theorem Haagerup.isBound_cert :
-    Haagerup.Statement.IsBound (140457588 / 100000000 : ℝ)
+    Haagerup.Statement.IsBound (140455742 / 100000000 : ℝ)
 theorem Haagerup.constant_lt_inv_gammaDagger :
     Haagerup.Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger
 ```
 
-that is, `K_G^ℂ ≤ 1.40457588 < 1/γ† = 1.4045759346…`.
+that is, `K_G^ℂ ≤ 1.40455742 < 1/γ† = 1.4045759346…`.
 
 - `IsBound K` says `V(A) ≤ K · C(A)` for every finite complex matrix `A`, where `C(A)` is the optimum over unimodular
   scalars and `V(A)` the optimum over unit vectors of `ℂ^ι`, for every finite type `ι`.
@@ -62,4 +62,4 @@ Every other step, including the rational comparisons of the tails and the weight
 
 These files are copied byte for byte from the folder `Grothe/UpperSix/` of
 <https://github.com/agalatan/grothendieck-lean>, which keeps evolving; this package is a snapshot frozen at
-`1.40457588`. The repository's CI job `haagerup-article.yml` fails if the two copies differ.
+`1.40455742`. The repository's CI job `haagerup-article.yml` fails if the two copies differ.
