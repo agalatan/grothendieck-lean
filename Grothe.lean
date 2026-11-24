@@ -4764,6 +4764,10 @@ import Grothe.UpperSix.HaagerupKernel.CellKernel
 import Grothe.UpperSix.HaagerupKernel.Hardy
 import Grothe.UpperSix.HaagerupKernel.SmoothedStages
 import Grothe.UpperSix.HaagerupKernel.Table
+import Grothe.UpperSixExact.Bound
+import Grothe.UpperSixExact.Contour
+import Grothe.UpperSixExact.Head
+import Grothe.UpperSixExact.Parameters
 import Grothe.UpperTarget
 import Grothe.UpperTightBudget
 import Grothe.UpperTightComparison

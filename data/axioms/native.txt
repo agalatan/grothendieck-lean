@@ -2414,6 +2414,9 @@ Haagerup.Data.tcell_rows_ok._native.native_decide.ax_1_1
 Haagerup.Data.tcell_sos_ok._native.native_decide.ax_1_1
 Haagerup.Data.tig_mu_ok._native.native_decide.ax_1_1
 Haagerup.Data.tig_sos_ok._native.native_decide.ax_1_1
+Haagerup.SixChannelExact.head_and_floors_ok._native.native_decide.ax_1_1
+Haagerup.SixChannelExact.mean_ok._native.native_decide.ax_1_1
+Haagerup.SixChannelExact.region_ok._native.native_decide.ax_1_1
 Haagerup.head_sum_ok._native.native_decide.ax_1_1
 Haagerup.mean0_ok._native.native_decide.ax_1_1
 Haagerup.mean1_ok._native.native_decide.ax_1_1
