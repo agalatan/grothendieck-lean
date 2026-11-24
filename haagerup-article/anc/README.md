@@ -41,10 +41,8 @@ with `native_decide`, which the compiled evaluator runs instead of the kernel; t
 |---|---|
 | norm bounds of the two cell maps | `tcell_sos_ok`, `tig_sos_ok` |
 | their overlap tables | `tcell_rows_ok`, `tig_mu_ok` |
-| the head sum of the six channels | `head_sum_ok` |
-| the Hardy-space contour estimates, per channel | `reg0_ok`…`reg5_ok`, `mean0_ok`…`mean5_ok` |
 
-Every other step, including the rational comparisons of the tails and the weights, is checked by the kernel.
+Every other step—including the six-channel head sum, the Hardy-space disk and circle-mean estimates, and the rational comparisons of the tails and the weights—is checked by the kernel.
 
 ## Files
 
@@ -53,10 +51,10 @@ Every other step, including the rational comparisons of the tails and the weight
 | the matrix optima, admissible bounds, the constant and γ† | `Grothe/UpperSix/Haagerup/Statement.lean` |
 | convex transfer from the signed head and the six tail estimates | `Grothe/UpperSix/Haagerup/Transfer.lean` |
 | cell maps, Hermite energies and finite interval enclosures | `Grothe/UpperSix/Haagerup/CellHermite.lean`, `CellOverlap.lean`, `CellOverlapCore.lean` |
-| disk positivity, circle means and infinite tails | `Grothe/UpperSix/Haagerup/SchurHardy.lean`, `ContourChecks/` |
-| the six channels, weights, 251 head coefficients and the budget | `Grothe/UpperSix/Haagerup/CertCheck.lean` |
+| boundary disk positivity, circle means and infinite tails | `Grothe/UpperSix/Haagerup/SchurHardy.lean`, `TaylorHardySound.lean`, `ContourChecks/` |
+| the six-channel head sum, weights, 251 head coefficients and the budget | `Grothe/UpperSix/Haagerup/HeadCheck.lean`, `FastHeadSound.lean`, `CertCheck.lean` |
 | the strict comparison with `1/γ†` | `Grothe/UpperSix/Haagerup/GammaDagger.lean`, `Grothe/UpperSix/Haagerup.lean` |
-| the interval and table checkers | `Grothe/UpperSix/HaagerupKernel/` |
+| the exact integer, interval, Taylor-model and Kronecker checkers | `Grothe/UpperSix/HaagerupKernel/` |
 
 ## Provenance
 

@@ -4746,6 +4746,7 @@ import Grothe.UpperSix.Haagerup.ContourChecks.Channel5
 import Grothe.UpperSix.Haagerup.Data.OverlapData
 import Grothe.UpperSix.Haagerup.Data.TCellData
 import Grothe.UpperSix.Haagerup.Data.TigerData
+import Grothe.UpperSix.Haagerup.FastHeadSound
 import Grothe.UpperSix.Haagerup.GammaDagger
 import Grothe.UpperSix.Haagerup.GaussianCore
 import Grothe.UpperSix.Haagerup.HeadCheck
@@ -4757,13 +4758,16 @@ import Grothe.UpperSix.Haagerup.SmoothedEnergy
 import Grothe.UpperSix.Haagerup.SmoothedMidpoints
 import Grothe.UpperSix.Haagerup.SmoothedRows
 import Grothe.UpperSix.Haagerup.Statement
+import Grothe.UpperSix.Haagerup.TaylorHardySound
 import Grothe.UpperSix.Haagerup.Transfer
 import Grothe.UpperSix.HaagerupKernel
 import Grothe.UpperSix.HaagerupKernel.Basic
 import Grothe.UpperSix.HaagerupKernel.CellKernel
+import Grothe.UpperSix.HaagerupKernel.FastHead
 import Grothe.UpperSix.HaagerupKernel.Hardy
 import Grothe.UpperSix.HaagerupKernel.SmoothedStages
 import Grothe.UpperSix.HaagerupKernel.Table
+import Grothe.UpperSix.HaagerupKernel.TaylorHardy
 import Grothe.UpperTarget
 import Grothe.UpperTightBudget
 import Grothe.UpperTightComparison

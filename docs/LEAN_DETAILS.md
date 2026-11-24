@@ -1539,9 +1539,11 @@ The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sou
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
 complete list; the facts fall into the following groups. The six-channel upper proof
-uses the facts in the `Haagerup` namespace (`Haagerup.Data.tcell_rows_ok`, `tcell_sos_ok`,
-`tig_mu_ok`, `tig_sos_ok`, `Haagerup.head_sum_ok`, `Haagerup.mean0_ok`–`mean5_ok`,
-`Haagerup.reg0_ok`–`reg5_ok`; its own list is `data/axioms/modes/upper-six.native.txt`).
+uses the `Haagerup.Data` cell-witness and overlap-table facts (`Haagerup.Data.tcell_rows_ok`,
+`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`; its own list is `data/axioms/modes/upper-six.native.txt`),
+while its weighted head convolution (`Haagerup.head_sum_ok`), its channel disk and circle checks
+(`Haagerup.reg0_ok`–`reg5_ok`, `Haagerup.mean0_ok`–`mean5_ok`), and its rational tail comparisons
+reduce directly in the kernel.
 The single-channel upper proof uses `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.Upper.improved_high_mass_native` (the two complete high-band masses

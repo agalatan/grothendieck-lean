@@ -1,19 +1,26 @@
 import Grothe.UpperSix.Haagerup.Parameters
-import Grothe.UpperSix.Haagerup.SchurHardy
+import Grothe.UpperSix.HaagerupKernel.TaylorHardy
 
 set_option warningAsError true
 
--- Agent-ID: gemini-21d5, codex-a7c4
+-- Agent-ID: gemini-21d5, codex-a7c4, gemini-1aa9
 namespace Haagerup
-open HaagerupKernel.Hardy
+open HaagerupKernel.TaylorHardy
 
-set_option maxRecDepth 10000 in
-theorem reg5_ok : regionOK (smoothedRData ctQ stQ seQ p5Q q5Q) (regRQ 5) = true := by
-  native_decide
+def reg5Steps : List Nat := [1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2]
 
-set_option maxRecDepth 10000 in
+def mean5Steps : List Nat := [
+  1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8
+]
+
+theorem reg5_ok : regQ1SmoothedOK ctQ stQ seQ p5Q q5Q (regRQ 5) 4 reg5Steps = true := by
+  decide +kernel
+
 theorem mean5_ok :
-    circleMeanOK (smoothedRData ctQ stQ seQ p5Q q5Q) (rhoQ 5) (jCertQ 5) (budgetQ 5) 16 = true := by
-  native_decide
+    meanQ1SmoothedOK ctQ stQ seQ p5Q q5Q (rhoQ 5) (jCertQ 5) (budgetQ 5) 8 mean5Steps = true := by
+  decide +kernel
 
 end Haagerup
