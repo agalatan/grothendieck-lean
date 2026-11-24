@@ -224,6 +224,7 @@ import Grothe
 #print axioms Grothe.Statement.lower_target
 #print axioms Grothe.Statement.lt_constant_of_lowerAbove
 #print axioms Grothe.Statement.main_bounds
+#print axioms Grothe.Statement.main_bounds_refined
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upperBelow_of_constant_lt
 #print axioms Grothe.Statement.upper_below_tight
@@ -2271,7 +2272,9 @@ import Grothe
 #print axioms Grothe.UpperQuad.twist_j3_whole_margin
 #print axioms Grothe.UpperQuad.unnormalise_represents
 #print axioms Grothe.UpperSix.bound
+#print axioms Grothe.UpperSix.bound_exact
 #print axioms Grothe.UpperSix.constant_le
+#print axioms Grothe.UpperSix.constant_le_exact
 #print axioms Grothe.UpperSix.constant_lt_inv_gammaDagger
 #print axioms Grothe.haagerup_dominated
 #print axioms Grothe.hardy_budget_after_linear
@@ -2293,6 +2296,7 @@ import Grothe
 #print axioms Haagerup.Data.tig_mu_ok
 #print axioms Haagerup.Data.tig_sos_ok
 #print axioms Haagerup.convex_transfer_variable_ival
+#print axioms Haagerup.SixChannelExact.isBound_exact
 #print axioms Haagerup.head_sum_ok
 #print axioms Haagerup.isBound_cert
 #print axioms Haagerup.mean0_ok
