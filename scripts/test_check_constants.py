@@ -128,6 +128,21 @@ class CheckConstants(unittest.TestCase):
         _, problems = self.run_check(main=main, docs={**docs, "Grothe/UpperResult.lean": UPPER})
         self.assertTrue(any("needs both" in error for error in problems))
 
+    def test_sharp_lower_needs_strict_rounding_and_exact_documentation(self):
+        claim = "theorem lower_bound_sharp : (14019109461 / 10000000000 : ℝ) < complexGrothendieckConstant := by"
+        exact_path = "Grothe/Lower/Cert/SharpEnvelope.lean"
+        exact_line = "theorem endpoint_eq : endpoint = 1401910946101 / 1000000000000 := by decide"
+        numeric_docs = {rel: GOOD + "1.4019109461, exact 1401910946101 / 1000000000000."
+                        for rel in ("docs/CONSTANTS.md", "docs/overview.tex", "docs/LEAN_DETAILS.md")}
+        sources = {**numeric_docs, exact_path: exact_line}
+        _, problems = self.run_check(main=MAIN + claim, docs=sources)
+        self.assertEqual(problems, [])
+        _, problems = self.run_check(main=MAIN + claim, docs={**sources, exact_path: exact_line.replace("6101", "6100")})
+        self.assertTrue(any("strictly downward" in item for item in problems))
+        mismatched = {**sources, "docs/CONSTANTS.md": numeric_docs["docs/CONSTANTS.md"].replace("6101 /", "6102 /")}
+        _, problems = self.run_check(main=MAIN + claim, docs=mismatched)
+        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact sharp lower fraction"])
+
     def test_targets_disagree(self):
         with self.assertRaises(ValueError):
             self.run_check(statement="def LowerTarget : Prop := LowerAbove (14018 / 10000)\n")
