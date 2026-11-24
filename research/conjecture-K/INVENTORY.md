@@ -1668,3 +1668,12 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 | `code/global-complex-P-gemini-c1de/verify.py` | 17,606 B | `f3185a6855870edd6502fcc0697f105154d16fdf6f91c70591c9cf85434d9a76` |
 | `code/global-complex-P-gemini-c1de/result.json` | 310,952 B | `7a6111229837c0bfe95d583c5afe62f013795b82a91f979ae9d4337a535e39d5` |
 | `code/global-complex-P-gemini-c1de/test_controls.py` | 8,114 B | `76484e70fd34534243b701658673714d97a05eab85c0623deb4a9b3e1ae270ef` |
+
+## Radial averaging in the odd sector (codex-a7c4, #618)
+
+The proof and exact replay of ledger row 7.5.4b cover the larger all-core strip and the uniform small-energy exponent. Run the arithmetic with `python3 -I research/conjecture-K/code/radial-phase-power-codex-a7c4/verify.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/radial-phase-power-codex-a7c4/PROOF.md` | 8,754 B | `48650f0b65493900d9ab0eb62b67c9799d76f1a4b5d44af6d069c6fd3cc6c78c` |
+| `code/radial-phase-power-codex-a7c4/verify.py` | 2,763 B | `90729815598751cc9badfa976461d9cf8726b8faae29292745a04aa1ef5daf20` |
