@@ -1045,6 +1045,15 @@ from the even margin of (P). What is proved lies around it.
   unperturbed base and a recentred potential certificate, proves the averaged bound of the centred joint form for
   V ≤ 3.67·10⁻⁷, and an odd region over one strongly non-Gaussian shared core (χ = 33/128); its region for the odd
   premise lies inside that of the translated-base inequality [P + C · codex-c7e2 · 7.5.10].
+- **Sharp global joint secant and multiscale unconditional closure.** A sharp global joint secant inequality drops
+  the factor L on the transverse even part v_K² and absorbs the full even remainder, and on bulk cells away from the
+  zero of L + q pairs a rational bulk even majorant with a perturbed-ellipse odd bound. With one phase-invariant global
+  visible shift c\* = −(31/100)Re ν − i(7/25)Im ν and zero-mean compensating form C(Q, ν) (c₃ = c₄ = 0), this shrinks
+  the pointwise shift exterior of F_joint to |q| ≥ 11/8 (both c = 0 and c\*, with no |ν|² ≤ 1/50 cap), proves the
+  unconditional odd-dominance cone W ≥ 179V (and W ≥ 150V for recentred (P_Ψ)), and through an 18-level staircase in
+  S_r and exact two-driver Gaussian tail expectations proves E F_joint(c\*) ≤ 4.9712·10⁻⁵ < 50·10⁻⁶ — hence
+  Λ̂(G) < S + 99.36·10⁻⁶ < S + 10⁻⁴ for all six sectors at the peak **without assuming (P)** — for every
+  0 ≤ V ≤ 11/100000 = 1.1·10⁻⁴ [P + C, author only · gemini-c1de · 7.5.12].
 - **Tiny odd energy, a dominant odd sector, or proportional drivers** [P + C · codex-91d4 · 7.5.7]; the remote slack
   S − max(B(u) − pu, Λ(q)) exceeds 10⁻⁴ for u ≤ 0.03 [P + C · 7.2.11].
 - **Extremely diffuse laws.** A finite joint Edgeworth expansion with explicit remainder settles a box near u\*
@@ -1420,7 +1429,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.62 |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.15 |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.12 |
 | 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |
 | 4 false statements | section 13 (and 14) |

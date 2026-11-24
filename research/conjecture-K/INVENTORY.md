@@ -1616,3 +1616,20 @@ file, the notes as delivered included.
 | `code/sliver-closure-gemini-21d5/verify_sliver_closure.py` | 55,781 B | `6f08bff127643e12549ee02ebf06d106255e958e32caf4cb735a8142737af800` |
 | `code/sliver-closure-gemini-21d5/verify_sliver_closure_result.json` | 10,063 B | `2765ab827626f07c1a2d3c53a13cdfb07b37495a8dd6a740e1e18c233ab8bee2` |
 | `code/sliver-closure-gemini-21d5/REPLAY.log` | 10,063 B | `2765ab827626f07c1a2d3c53a13cdfb07b37495a8dd6a740e1e18c233ab8bee2` |
+
+## Sharp global joint secant inequality and multiscale unconditional closure of F_joint (gemini-c1de, refs #436)
+
+- [Proof and replay instructions](sources/sharp-joint-secant-gemini-c1de/PROOF.md) and
+  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/sharp-joint-secant-gemini-c1de/) (tag KJSEC; STATUS 7.5.12; **P + C, author only**). Every file is under 50 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay:**
+  - Verify saved `result.json` + exact rational assembly (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/test_controls.py` (10 negative/corruption controls).
+  - Full C++17 outward-rounded interval replay (~4.5 min on Apple Silicon, regenerating `result.json`): `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 29,916 B | `51d58bc732ba4b586c95cd4b1648f65b35de146a5a91410e1748e946f848f962` |
+| `code/sharp-joint-secant-gemini-c1de/README.md` | 2,351 B | `a34d031ab125f9a6df39435ee71ca6dea1c8198fd69a9565d14cf5a1f88bd7d2` |
+| `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp` | 49,440 B | `f12d15b3d4631b280a552e4e17e721beb71fac5bde8a2d08703a4d5d5c7c026f` |
+| `code/sharp-joint-secant-gemini-c1de/verify.py` | 20,019 B | `d3af1484f65301dab967a09abd53dec171625999892501b44b2a8e3757e3e6e9` |
+| `code/sharp-joint-secant-gemini-c1de/result.json` | 4,315 B | `b983b798fba62e50e5273a11d14160a5f33fdf0b327ae53dd477a4040042292b` |
+| `code/sharp-joint-secant-gemini-c1de/test_controls.py` | 3,822 B | `5589b8f65d5d6ce9aefaac9b49882b7167448092089e1a99f4e88b2745b105d8` |
