@@ -59,7 +59,7 @@ they are stated with allowance 2.5·10⁻⁵, and the largest admissible allowan
 At ε = 94/125 = 0.752 everything outside the wider central interval (0.7515, 0.863) is proved [author only], and thirteen central rows (rows 1–7 off the peak box, reaching u/λ² ≤ 0.134) admit at
 least 1.021·10⁻⁴ > 10⁻⁴ on every row (> 3.36× the binding room at ε = 299/400, with Row 8 on [0.840, 0.847] inside the proved remote and retained A-core
 rectangles; at ε = 3/4 Lean's `Lower.ρ` alone closes the exterior outside (0.795, 0.864) with nine central rows
-admitting > 7.57·10⁻⁵). The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the open premises (P) and (P_Ψ)
+admitting > 7.57·10⁻⁵). The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the premises (P) (certified globally on ℂ³ in 7.4.16, author only; awaits review) and the open averaged odd-sector premise (P_Ψ)
 (2.8, 2.9): three times too large for the binding rows at ε = 299/400, and below the allowance of every row at ε = 94/125,
 but only at the peak profile; each of the thirteen rows needs its own all-sector bound (open; the profile transfer costs
 ≈ 7·10⁻⁴, 8.6). With the retained functional the A-shell uses 2·10⁻⁵ of the budget; the B-shell, the joint A/B interaction and
@@ -265,7 +265,7 @@ profiles [STATUS §15].
     through Λ̂ (enough for the bound, 1.6):
       remote cap (3.3)  →  retained A-core, S + 2·10⁻⁵ (11.51: tilt 11.12, remainder 11.39, gain 11.40, content 11.61)
         →  A + B core, S + 4.936·10⁻⁵ (7.4.10)            premise (P) certified globally on ℂ³ (7.4.16, author only; awaits review)
-        →  all six sectors, S + 9.9·10⁻⁵ (7.5.3)           needs (P) and the odd premise (P_Ψ): open
+        →  all six sectors, S + 9.9·10⁻⁵ (7.5.3)           (P) certified in 7.4.16 (author only); odd premise (P_Ψ): open
         →  consumer (8.1, 8.9–8.13)                        central rows and the Lean statement: open
 
     through Λ (Conjecture K itself):
@@ -931,7 +931,7 @@ the resulting cost widens the audited radius 1/8192 by a factor of 256 [P + C, a
 The origin, amplitude and directional exteriors also cover this radius over the 1,502 inherited boxes. Thus the
 condition ‖Im(A,B)‖₂ ≤ max(|Re A|,|Re B|)/32 suffices at **every shift and amplitude** in this frame. In particular
 the retained A+B bound S + 4936/10⁸ holds on the complex proportional-driver family described in the proof, under
-the energy caps of 7.4.10. Arbitrary phases and odd sectors over the joint core are open.
+the energy caps of 7.4.10. Arbitrary phases are certified in 7.4.16 below (author only); odd sectors over the joint core remain open.
 [Proof and replay](sources/central-aligned-codex-a7c4/COMPLEX_PHASES.md)
 
 **Global 4D complex closure of (P) [P + C, author only · gemini-c1de · 7.4.16].** By U(1) phase rotation and
@@ -1449,7 +1449,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.6, 6.3.19 |
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.62 |
-| 2.7–2.8 B-sector, joint form | 7.1.1–7.4.15 |
+| 2.7–2.8 B-sector, joint form | 7.1.1–7.4.16 |
 | 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.12 |
 | 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |

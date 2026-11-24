@@ -18,7 +18,12 @@ Python 3 standard library only (`python3 -I`, assertions required). Verifies:
      outer handoff to Part 1 (S_r >= 3/4), open_boxes == 0, worst_margin < 0.
   7. Optional `--replay-cpp`: recompiles certify_global_P.cpp with
      -O2 -ffp-contract=off -frounding-math -std=c++17 -pthread -Wall -Wextra -Werror,
-     runs the hotspot negative control, regenerates result.json, and re-audits.
+     runs the hotspot negative control, generates a temporary receipt, audits it,
+     and verifies exact equality against the committed `result.json` (pass
+     `--update-result` alongside `--replay-cpp` to overwrite `result.json` after
+     validating the temporary output). Note: `result.json` stores exact hexfloat
+     matrices for Parts 1–3 and summary counts/margins/handoffs for Parts 4–5;
+     certifying the Part 4/5 spatial covers requires running `--replay-cpp`.
 """
 import argparse
 import hashlib
@@ -155,6 +160,18 @@ def check_exact_analytic_foundations():
         + ((m25**2 + F(2) / t25**2) * F(4) / (F(9) * t25) + F(2) * m25 / (F(3) * t25**2)) * (F(5, 4) * t25)
     )
     assert coeff25 < 2
+
+    # 6. Exact six-sector corollary from 7.4.16 + 7.5.3 + 7.5.12(iv) (budget 49.64e-6 = 1241/25000000):
+    #    From (11/4)V - (1/200)W <= 1241/25000000  <=>  W >= 550*V - 1241/125000,
+    #    and  (823/200)V - (69/2500)W <= 1241/25000000  <=>  W >= (20575/138)*V - 1241/690000
+    #    (in particular W >= 150*V suffices since 20575/138 < 150).
+    budget = F(4964, 10**8)
+    assert budget == F(1241, 25000000)
+    assert F(11, 4) / F(1, 200) == F(550)
+    assert budget / F(1, 200) == F(1241, 125000)
+    assert F(823, 200) / F(69, 2500) == F(20575, 138)
+    assert budget / F(69, 2500) == F(1241, 690000)
+    assert F(20575, 138) < F(150)
     return {"tail_24_ub": float(tail_24), "w8_pot_ub": float(total_w8_ub)}
 
 
@@ -222,7 +239,9 @@ def verify_all(data: dict):
     p3 = data["part3_shift_curvature"]
     cap = parse_hex(p3["cap_max"])
     mass = parse_hex(p3["mass_sum"])
+    tail_m = parse_hex(p3["tail_mass"])
     assert p3["constant"] == 480
+    assert cap > 0 and mass > 0 and tail_m > 0
     assert cap < F(100) and mass < F(140) and F(16) * cap * mass < F(480) ** 2
 
     # Part 4: 3D ray-convexity cube shells on [0, 5/16]
@@ -239,11 +258,11 @@ def verify_all(data: dict):
         worst_3d = wm if worst_3d is None else max(worst_3d, wm)
         eta = F(int(s["eta"][0]), int(s["eta"][1]))
         rho = F(int(s["rho_max"][0]), int(s["rho_max"][1]))
-        assert eta > 0 and rho > 1
+        assert 0 < eta < 1 and rho > 1, f"Part 4 invalid eta={eta} or rho={rho}"
         # Exact ray-convexity discriminant condition: ((rho - 1)/(rho + 1))^2 <= eta
         assert ((rho - 1) / (rho + 1)) ** 2 <= eta
         radii = [parse_hex(r) for r in s["radii"]]
-        assert len(radii) >= 2
+        assert len(radii) >= 2 and radii[0] > 0
         for k in range(len(radii) - 1):
             assert radii[k] < radii[k + 1] <= radii[k] * rho
         # Inner handoff: ||v||_inf <= r_0 => ||v||_2 <= 2*r_0 <= s_0(w) (Part 2!)
@@ -251,8 +270,11 @@ def verify_all(data: dict):
         assert 2 * radii[0] <= s0_min, f"Part 4 inner gap: 2*{radii[0]} > {s0_min} on [{wl},{wh}]"
         # Outer handoff: ||v||_inf >= r_last => ||v||_2 >= r_last == 1/8
         assert radii[-1] == F(1, 8)
-        tot_3d += int(s["total_boxes"])
-    assert tot_3d == int(data["summary"]["total_3d_boxes"])
+        sb_boxes = int(s["total_boxes"])
+        # Each radius has 7 root 3D faces, so every certified slab has at least 7*len(radii) closed boxes
+        assert sb_boxes >= 7 * len(radii), f"Part 4 impossible box count {sb_boxes} < {7 * len(radii)} on [{wl},{wh}]"
+        tot_3d += sb_boxes
+    assert tot_3d > 0 and tot_3d == int(data["summary"]["total_3d_boxes"])
     assert worst_3d == parse_hex(data["summary"]["worst_3d_margin"])
 
     # Part 5: 4D adaptive WCS bulk cover on [0, 11/8]
@@ -267,6 +289,20 @@ def verify_all(data: dict):
         assert wm < 0, f"Part 5 non-negative margin {wm} on [{wl},{wh}]"
         worst_4d = wm if worst_4d is None else max(worst_4d, wm)
         sb = parse_hex(s["s_bulk"])
+        assert sb > 0, f"Part 5 non-positive s_bulk={sb} on [{wl},{wh}]"
+        # Positive base curvature bounds
+        assert parse_hex(s["n_up"]) > 0 and parse_hex(s["a2_up"]) > 0 and parse_hex(s["b2_up"]) > 0
+        # Exact closed-box count consistency (8 root octants -> total_boxes >= 8, sum(closed_wcs) > 0)
+        c_ext = int(s["closed_ext"])
+        c_ori = int(s["closed_ori"])
+        c_wcs = s["closed_wcs"]
+        assert isinstance(c_wcs, list) and len(c_wcs) == 4
+        c_wcs_ints = [int(x) for x in c_wcs]
+        assert c_ext >= 0 and c_ori >= 0 and all(x >= 0 for x in c_wcs_ints)
+        assert sum(c_wcs_ints) > 0, f"Part 5 zero WCS-closed boxes on [{wl},{wh}]"
+        sb_boxes = int(s["total_boxes"])
+        assert sb_boxes == c_ext + c_ori + sum(c_wcs_ints), f"Part 5 box-count mismatch on [{wl},{wh}]"
+        assert sb_boxes >= 8, f"Part 5 impossible box count {sb_boxes} < 8 on [{wl},{wh}]"
         # Inner handoff: on [0, 5/16], s_bulk <= 1/8 (outer radius of Part 4);
         # on [5/16, 11/8], s_bulk <= s_0(w) directly from Part 2!
         if wh <= w_ray_end:
@@ -275,8 +311,8 @@ def verify_all(data: dict):
             assert wl >= w_ray_end, f"Part 5 slab straddles 5/16: [{wl},{wh}]"
             s0_min = min_s0_on_interval(p2, wl, wh)
             assert sb <= s0_min, f"Part 5 inner gap on [{wl},{wh}]: {sb} > {s0_min}"
-        tot_4d += int(s["total_boxes"])
-    assert tot_4d == int(data["summary"]["total_4d_boxes"])
+        tot_4d += sb_boxes
+    assert tot_4d > 0 and tot_4d == int(data["summary"]["total_4d_boxes"])
     assert worst_4d == parse_hex(data["summary"]["worst_4d_margin"])
 
     return {
@@ -297,8 +333,14 @@ def verify_all(data: dict):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--result", type=Path, default=Path(__file__).with_name("result.json"))
-    parser.add_argument("--replay-cpp", action="store_true", help="Recompile and run certify_global_P.cpp")
+    parser.add_argument("--replay-cpp", action="store_true",
+                        help="Recompile and run certify_global_P.cpp into a temp file, audit it, and compare with --result")
+    parser.add_argument("--update-result", action="store_true",
+                        help="With --replay-cpp, overwrite --result after auditing the freshly generated output")
     args = parser.parse_args()
+
+    if args.update_result and not args.replay_cpp:
+        raise RuntimeError("--update-result requires --replay-cpp")
 
     cpp = Path(__file__).with_name("certify_global_P.cpp")
     cpp_sha = hashlib.sha256(cpp.read_bytes()).hexdigest()
@@ -317,16 +359,24 @@ def main():
             subprocess.run([str(exe), "--output", str(out_tmp)], check=True)
             data = json.loads(out_tmp.read_text(encoding="utf-8"))
             data["cpp_sha256"] = cpp_sha
-            args.result.write_text(
-                json.dumps(data, separators=(",", ":")) + "\n", encoding="utf-8"
-            )
+            summary = verify_all(data)
+            rendered = json.dumps(data, separators=(",", ":")) + "\n"
+            if args.update_result:
+                args.result.write_text(rendered, encoding="utf-8")
+            else:
+                saved_text = args.result.read_text(encoding="utf-8")
+                saved_data = json.loads(saved_text)
+                assert saved_data == data, (
+                    f"Replayed output differs from saved receipt {args.result}"
+                )
+                print(f"REPLAY EXACT MATCH against {args.result} (SHA-256 {hashlib.sha256(saved_text.encode('utf-8')).hexdigest()})")
     else:
         data = json.loads(args.result.read_text(encoding="utf-8"))
         assert data.get("cpp_sha256") == cpp_sha, (
             f"cpp_sha256 mismatch: result has {data.get('cpp_sha256')}, disk has {cpp_sha}"
         )
+        summary = verify_all(data)
 
-    summary = verify_all(data)
     print(json.dumps(summary, indent=2))
     print("ALL CHECKS PASSED: Global 4D complex premise (P) certified on all of C^3!")
 

@@ -2,7 +2,7 @@
 """Negative and corruption control suite for Global 4D Complex Premise (P) (#431).
 
 Agent-ID: gemini-c1de. Refs #431.
-Verifies 13 independent rejection controls:
+Verifies 19 independent rejection controls:
   1. Part 1 gap between amplitude exterior and shift exterior rejected.
   2. Part 1 potential matrix diagonal inflation breaking S_r >= 3/4 PSD rejected.
   3. Part 1 shift exterior matrix inflation breaking w >= 11/8 PSD rejected.
@@ -16,6 +16,12 @@ Verifies 13 independent rejection controls:
  11. Part 5 inner handoff gap (s_bulk > s_0(w)) rejected.
  12. CLI bad cpp_sha256 rejected AND CLI `-O` rejected.
  13. Live C++17 hotspot false-target control (`certify_global_P --control-false-hotspot`).
+ 14. Part 5 negative `s_bulk = -10` rejected.
+ 15. Part 4 invalid `eta = 2` (>= 1) rejected.
+ 16. Part 3 negative `cap_max = -1` rejected.
+ 17. Part 4 zeroed `total_boxes` (with matching zero summary) rejected.
+ 18. Part 5 inconsistent `closed_ext + closed_ori + sum(closed_wcs) != total_boxes` rejected.
+ 19. C++ `-DNDEBUG` compilation rejected at compile time.
 """
 import copy
 import json
@@ -135,7 +141,46 @@ def main():
         assert "CONTROL_HOTSPOT diff=" in r3.stdout
         print(f"CONTROL PASS (live C++ hotspot false-target): {r3.stdout.strip()}")
 
-    print("ALL 13 NEGATIVE/CORRUPTION CONTROLS PASSED")
+        # 14. Part 5 negative s_bulk = -10
+        d14 = copy.deepcopy(base)
+        d14["part5_bulk_4d"][0]["s_bulk"] = (-10.0).hex()
+        expect_fail("Part 5 negative s_bulk = -10", lambda: verify.verify_all(d14))
+
+        # 15. Part 4 eta >= 1 (eta = 2)
+        d15 = copy.deepcopy(base)
+        d15["part4_ray_shells"][0]["eta"] = [2, 1]
+        expect_fail("Part 4 invalid eta = 2", lambda: verify.verify_all(d15))
+
+        # 16. Part 3 negative cap_max = -1
+        d16 = copy.deepcopy(base)
+        d16["part3_shift_curvature"]["cap_max"] = (-1.0).hex()
+        expect_fail("Part 3 negative cap_max = -1", lambda: verify.verify_all(d16))
+
+        # 17. Part 4 all total_boxes zeroed (with summary zeroed to match)
+        d17 = copy.deepcopy(base)
+        for s in d17["part4_ray_shells"]:
+            s["total_boxes"] = 0
+        d17["summary"]["total_3d_boxes"] = 0
+        expect_fail("Part 4 zeroed total_boxes", lambda: verify.verify_all(d17))
+
+        # 18. Part 5 closed-box breakdown mismatch
+        d18 = copy.deepcopy(base)
+        d18["part5_bulk_4d"][0]["closed_ext"] += 1
+        expect_fail("Part 5 closed-box sum mismatch", lambda: verify.verify_all(d18))
+
+        # 19. C++ -DNDEBUG build rejected at compile time
+        r_ndebug = subprocess.run(
+            [
+                "clang++", "-O2", "-DNDEBUG", "-ffp-contract=off", "-frounding-math",
+                "-std=c++17", "-pthread", str(here / "certify_global_P.cpp"),
+                "-o", str(Path(td) / "should_fail"),
+            ],
+            capture_output=True, text=True,
+        )
+        assert r_ndebug.returncode != 0, "C++ -DNDEBUG build unexpectedly succeeded!"
+        print("CONTROL PASS (rejected as expected): C++ -DNDEBUG compile rejected")
+
+    print("ALL 19 NEGATIVE/CORRUPTION CONTROLS PASSED")
 
 
 if __name__ == "__main__":

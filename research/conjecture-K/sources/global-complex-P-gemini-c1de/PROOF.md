@@ -45,6 +45,13 @@ $$
 \widehat{\Lambda}(q + A + B) < S + \frac{4936}{10^8}.
 $$
 
+### Corollary 3 (Unconditional Six-Sector Cones via `7.5.3` + `7.5.12(iv)`) — `P + C, author only`
+As observed by `codex-a7c4` during the review of `#604`, combining Theorem 1 with the independently reviewed conditional six-sector assembly of `STATUS.md` `7.5.3` and the two exact affine bounds of `7.5.12(iv)` against the $49.64\cdot 10^{-6} = \frac{1241}{25000000}$ budget of $(P_\Psi)$ immediately makes the former conditional odd-dominance region unconditional on the admissible domain of `7.5.3` ($u \le 0.0463$, $u + V \le 0.080051$): whenever
+$$
+W \ge \min\!\left\{550\,V - \frac{1241}{125000},\; \frac{20575}{138}\,V - \frac{1241}{690000}\right\}
+$$
+(in particular for the full cone $W \ge 150\,V$, since $\frac{20575}{138} < 150$), we have $\widehat{\Lambda}(G) < S + 99\cdot 10^{-6}$ across all six sectors. The general moderate-$V$ odd-sector premise $(P_\Psi)$ remains open.
+
 **Scope and what remains open.** Theorem 1 closes Open Problem #1 (`#431`, `STATUS.md` §15 Part A.1) in full complex generality without any phase restriction, proportionality hypothesis, or driver-amplitude restriction. It does **not** by itself prove full Conjecture K or the full six-sector peak bound: the remaining open problems are (i) odd sectors over general $A/B$ cores at moderate shell energy $V > 11/100000$ (`STATUS.md` `7.5.3`, `7.5.6`, `7.5.12`), (ii) the multi-row consumer outside the peak tube and its Lean formalization (`STATUS.md` §8), and (iii) for raw Conjecture K without the retained trial, the raw $A$-content inequality at intermediate kurtosis (`STATUS.md` `6.3.18`).
 
 ---
@@ -132,11 +139,11 @@ $$
 $$
 Subtracting $A_k = \int_{Q_k} |L+w|\,d\mu$ and $B_k(v) = \int_{Q_k} \mathrm{Re}(\overline{\mathrm{ph}(L+w)}\,h)\,d\mu$, multiplying by $2$, and summing over $k$ yields the claim. $\square$
 
-**Remark (Asymptotic Sharpness).** As $v \to 0$, expanding $\Phi(A_k, B_k, C_k)$ gives
+**Remark (Finite-Partition Quadratic Expansion).** As $v \to 0$, expanding $\Phi(A_k, B_k, C_k)$ on a fixed finite partition $\{Q_k\}$ gives
 $$
-\sum_k \Phi(A_k, B_k(v), C_k(v)) = \sum_k v^\top\!\left(M_k - \frac{b_k b_k^\top}{A_k}\right) v + O(\|v\|^3).
+\sum_k \Phi(A_k, B_k(v), C_k(v)) = \sum_k v^\top\!\left(M_k - \frac{b_k b_k^\top}{A_k}\right) v + O(\|v\|^3),
 $$
-Since $\frac{b_k b_k^\top}{A_k}$ converges at rate $O(\delta^2)$ to $\int_{Q_k} \frac{(\mathrm{Re}(h\overline{\mathrm{ph}}))^2}{|L+w|}\,d\mu$, the quadratic limit matches the exact infinitesimal Hessian $K_w(v) = \int \frac{(\mathrm{Im}(h\overline{\mathrm{ph}}))^2}{|L+w|}\,d\mu$ to $O(\delta^2)$ across all of $\mathbb{R}^4$, while evaluating $(A_k, b_k, M_k)$ requires only **$O(1)$ arithmetic per cell** once the grid at $w$ is precomputed!
+with zero $O(1)$ and zero $O(\|v\|)$ gap relative to $\mathrm{Rem}(w, v)$. On the innermost radial ring $0 \le r \le \delta_0$ around $L + w = 0$, $d\mu = c r\,dr\,d\theta + O(r^3)\,dr\,d\theta$, so $b_k^2/A_k$ recovers $\frac{3}{4}$ of the exact radial projection on that ring (leaving a radial loss of order $\delta_0$, as pointed out by `codex-a7c4`); our graded radial mesh $r_j = 3.5\,(j/n_1)^{3/2}$ makes $\delta_0$ small ($O(n_1^{-3/2})$), while the proof uses only the **exact finite-partition Cauchy–Schwarz inequality** of Lemma 2.1 with explicit outward enclosures of every $(A_k, b_k, M_k)$. Evaluating $U_{\mathrm{WCS}}(w, v)$ requires only $O(1)$ arithmetic per cell once the grid at $w$ is precomputed.
 
 ### Lemma 2.2 (Exact Monotonicity of $\Phi$ for Outward Interval Arithmetic)
 On the domain $A > 0$, $C \ge 0$, $A + 2B + C > 0$:
@@ -255,7 +262,7 @@ $$
 ## 5. Part 3: Self-Contained Global and Per-Slab Shift Curvature
 
 ### 5.1 Global Shift Curvature $\partial_{ww}\mathrm{Rem}(w, v) \ge -480 S_r$
-Following `STATUS.md` `7.4.13` (re-derived and re-certified self-containedly inside `certify_global_P.cpp` and `verify.py`), write $N(w) = 2\mathbb{E}|L+w|$ and $g(r, \theta; w) = 2\mathrm{Re}(e^{-i\theta} h(r e^{i\theta} - w))$. Because $w \mapsto 2\mathbb{E}|L + w + h|$ is convex, differentiating $\mathrm{Rem}(w, v)$ twice in $w$ in shifted polar coordinates and applying the planar layer-cake rearrangement bound yields
+Following `STATUS.md` `7.4.13` — see [`sources/adaptive-cover-codex-a7c4/PROOF.md`](../adaptive-cover-codex-a7c4/PROOF.md) §1 for the distributional second derivative of the normalized remainder at zeros, which supplies the $O(S_r)$ lower bound (whereas convexity of the first norm alone gives only the $O(1) + O(\sqrt{S_r})$ base-curvature bound of §5.2 below) — re-certifying the scalar constants self-containedly inside `certify_global_P.cpp` and `verify.py` via the planar layer-cake rearrangement bound yields
 $$
 \partial_{ww}\mathrm{Rem}(w, v) \ge -4\sqrt{\mathrm{cap}\cdot\mathrm{mass}}\,S_r,
 $$
@@ -354,15 +361,15 @@ On each of the $54$ dyadic slabs covering $[0, 11/8]$ (width $1/64$ on $[0, 5/16
 ## 8. Computational Rigor, Certified Results, and Replay
 
 ### 8.1 Floating-Point and Arithmetic Discipline
-- Compiled strictly with `clang++ -O2 -ffp-contract=off -frounding-math -std=c++17 -pthread -Wall -Wextra -Werror`.
-- Every worker thread asserts `std::fesetround(FE_UPWARD) == 0` on entry (necessary on ARM64/macOS where FPCR is per-thread).
+- Compiled strictly with `clang++ -O2 -ffp-contract=off -frounding-math -std=c++17 -pthread -Wall -Wextra -Werror`; compiling with `-DNDEBUG` is rejected at compile time via `#ifdef NDEBUG #error ...`.
+- The main thread and every worker thread unconditionally call `set_fe_upward()` (invoking `std::fesetround(FE_UPWARD)` and `std::fegetround() == FE_UPWARD` outside `assert`, calling `std::abort()` on any failure — necessary on ARM64/macOS where FPCR is per-thread), and every numerical routine unconditionally checks `require_fe_upward()`.
 - Every interval arithmetic primitive enforces an inline compiler barrier (`asm volatile("" : "+w"(x))` on AArch64, `"+x"` on x86-64, `volatile` fallback) preventing compile-time constant folding.
 - Every transcendental function ($e^{-T}$, $\sin\theta$, $\cos\theta$) is computed via libm-independent outward-rounded Taylor series with explicit remainder bounds; `sqrt` uses IEEE-754 `std::sqrt` with strict `FE_UPWARD` + `nextafter` guard.
 - Startup self-tests verify `FE_UPWARD` rounding direction (including runtime `(-a)*b` vs `-(a*b)` under `-frounding-math`), `sqrt`, `expneg`, `sin`/`cos` identities, 18 `Jet2` finite-difference checks (including near $r = 0$ and $y = 0$), exact benchmark $2\mathbb{E}|L| = 387\sqrt{\pi}/500$, and agreement of the fast single-pass `eval_wcs_ub` with a naive `I`-interval reference evaluator on mixed-sign test vectors.
-- All numeric outputs in `result.json` are serialized as exact `std::hexfloat` strings and parsed in `verify.py` via `Fraction(float.fromhex(...))` for zero-float exact rational verification.
+- All numeric outputs in `result.json` are serialized as exact `std::hexfloat` strings and parsed in `verify.py` via `Fraction(float.fromhex(...))` for zero-float exact rational verification. Note that `result.json` stores exact interval matrices for Parts 1–3 and summary box counts/margins/handoffs for Parts 4–5; certifying the Part 4/5 spatial covers requires executing the C++ search (`--replay-cpp`).
 
 ### 8.2 Certified Run Summary (`result.json`)
-Full from-scratch replay (`python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py --replay-cpp`) completes in ~6.5 min on Apple Silicon (8 threads) and passes both the exact rational verifier and all 13 negative/corruption controls (`test_controls.py`):
+Full from-scratch replay (`python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py --replay-cpp`) completes in ~6.5 min on Apple Silicon (8 threads), verifies exact agreement against the committed `result.json`, and passes all 19 negative/corruption controls (`test_controls.py`):
 
 | Part | Region & Method | Slabs / Boxes | Certified Margin / Bound | Open |
 |---|---|---:|---|---:|
@@ -371,21 +378,21 @@ Full from-scratch replay (`python3 -I research/conjecture-K/code/global-complex-
 | Part 1 (Shift) | $w \in [11/8, 8]$, MVT potential slabs + rational Sylvester PSD | 208 slabs | $\min \lambda_{\min}(Q_0 + \frac{w_l^2}{2}I_2 - P) = +0.01272739$ | 0 |
 | Part 2 | 3-line switched origin profile on $[0, 11/8]$ ($s_0 \in [\frac{1}{512}, \frac{1}{4}]$) | 200 slabs | $\min \lambda_{\min}(Q_0 + \frac{w_l^2}{2}I_2 - K) = +0.00258301$ | 0 |
 | Part 3 | Self-contained shift curvature $\partial_{ww}\mathrm{Rem} \ge -480 S_r$ | 9,216 bins + $T \ge 36$ tail | `cap` $= 95.7982 < 100$, `mass` $= 132.3134 < 140$, $16\,\mathrm{cap}\cdot\mathrm{mass} < 480^2$ | 0 |
-| Part 4 | 3D ray-convexity cube shells on $[0, 5/16]$ ($s_0(w)$ to $\|v\|_\infty = 1/8$) | 56 slabs / 904,850 3D boxes | Worst closed box margin $-3.25003 \times 10^{-13} < 0$ | 0 |
-| Part 5 | 4D adaptive WCS bulk cover on $[0, 11/8]$ ($s_{\mathrm{bulk}}$ to $\sqrt{3/4}$) | 54 slabs / 271,520 4D boxes | Worst closed box margin $-2.82126 \times 10^{-9} < 0$ | 0 |
-| Controls | `test_controls.py` (Parts 1–5 tampering, `cpp_sha256`, `-O`, live C++ hotspot) | 13 controls | All 13 rejected/verified as expected (`CONTROL_HOTSPOT diff = -0.00252963`) | — |
+| Part 4 | 3D ray-convexity cube shells on $[0, 5/16]$ ($s_0(w)$ to $\|v\|_\infty = 1/8$) | 56 slabs / 904,850 3D boxes | Worst closed box margin $-3.25003 \times 10^{-13} < 0$ (`-0x1.6debcfb3ccp-42`) | 0 |
+| Part 5 | 4D adaptive WCS bulk cover on $[0, 11/8]$ ($s_{\mathrm{bulk}}$ to $\sqrt{3/4}$) | 54 slabs / 271,520 4D boxes | Worst closed box margin $-2.82126 \times 10^{-9} < 0$ (`-0x1.83c050066p-29`) | 0 |
+| Controls | `test_controls.py` (Parts 1–5 tampering, `cpp_sha256`, `-O`, `-DNDEBUG`, live C++ hotspot) | 19 controls | All 19 rejected/verified as expected (`CONTROL_HOTSPOT diff = -0.00252963`) | — |
 
 ### 8.3 Replay and Negative Controls
 From the repository root:
-1. **Verify saved certificate + exact rational audit (< 2 s, pure Python 3 stdlib, `-I`):**
+1. **Audit saved certificate + exact rational foundations/matrices/handoffs (< 2 s, pure Python 3 stdlib, `-I`):**
    ```bash
    python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py
    ```
-2. **Run all 13 negative/corruption controls (including live C++ hotspot false-target control and `-O` rejection):**
+2. **Run all 19 negative/corruption controls (including live C++ hotspot control, `-DNDEBUG` rejection, and `-O` rejection):**
    ```bash
    python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/test_controls.py
    ```
-3. **Full C++17 outward-rounded replay from scratch (recompiles, runs hotspot control, regenerates `result.json`, and re-audits):**
+3. **Full C++17 outward-rounded replay from scratch (recompiles, runs hotspot control, audits temporary output, and compares exact-for-exact against the committed `result.json` without overwriting it; pass `--update-result` to regenerate `result.json`):**
    ```bash
    python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py --replay-cpp
    ```

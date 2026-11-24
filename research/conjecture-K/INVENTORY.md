@@ -1648,14 +1648,14 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 - [Proof and replay instructions](sources/global-complex-P-gemini-c1de/PROOF.md) and
   [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/global-complex-P-gemini-c1de/) (tag KGCP; STATUS 7.4.10, 7.4.16; **P + C, author only**). All files are committed in the repository with zero external dependencies left outside.
 - **Replay:**
-  - Verify saved `result.json` + exact rational audit (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/test_controls.py` (13 negative/corruption controls including live C++ hotspot false-target control).
-  - Full C++17 outward-rounded interval replay (~6.5 min on Apple Silicon, 8 threads, regenerating `result.json`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py --replay-cpp`.
+  - Verify saved `result.json` + exact rational audit of Parts 1–3, handoffs, and Part 4–5 summaries (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/test_controls.py` (19 negative/corruption controls including live C++ hotspot false-target control and `-DNDEBUG` compile rejection).
+  - Full C++17 outward-rounded interval replay (~5–6.5 min on Apple Silicon, 8 threads; compiles/runs to a temporary file, audits all 5 parts, and verifies exact equality against committed `result.json` without overwriting it; pass `--replay-cpp --update-result` only to intentionally regenerate `result.json`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py --replay-cpp`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/global-complex-P-gemini-c1de/PROOF.md` | 32,911 B | `952cedf9b45eb444c2525196d648ee8c5920386362b559aa346358cc7ab5bd3e` |
-| `code/global-complex-P-gemini-c1de/README.md` | 1,880 B | `5036c72f0ba0c1754234a02826ed1b209713a628bf8fd7f978595d97ab41c98d` |
-| `code/global-complex-P-gemini-c1de/certify_global_P.cpp` | 82,393 B | `4a6e237c3dc32ac0bfd37a43a6b092e6c453a2d7c767ea92512745d763db8d45` |
-| `code/global-complex-P-gemini-c1de/verify.py` | 14,342 B | `925aa91219981dc5d46f447a0099cf7668783f9333166874d53005b337df3dcd` |
-| `code/global-complex-P-gemini-c1de/result.json` | 310,952 B | `bf4679ee6cf0aa96bcddafae2c8897555c8790dfabd67452927d8624473176b7` |
-| `code/global-complex-P-gemini-c1de/test_controls.py` | 6,004 B | `d5d83186ece953bad543a0dcfac01c0a98640769de35c89b83842a7f85e20841` |
+| `sources/global-complex-P-gemini-c1de/PROOF.md` | 34,991 B | `a51afd33db077279ad833260fdb15666831f8c5daa65920259951c98c781aa80` |
+| `code/global-complex-P-gemini-c1de/README.md` | 2,311 B | `d75ef4e6526a36013f26702e0421b4bc1821692321ce523b7ec67f0ea836335e` |
+| `code/global-complex-P-gemini-c1de/certify_global_P.cpp` | 82,627 B | `8f92945db425c7617f221b50f5ed49f6947081dd820da1d8d01a5e51a65677b0` |
+| `code/global-complex-P-gemini-c1de/verify.py` | 17,606 B | `f3185a6855870edd6502fcc0697f105154d16fdf6f91c70591c9cf85434d9a76` |
+| `code/global-complex-P-gemini-c1de/result.json` | 310,952 B | `7a6111229837c0bfe95d583c5afe62f013795b82a91f979ae9d4337a535e39d5` |
+| `code/global-complex-P-gemini-c1de/test_controls.py` | 8,114 B | `76484e70fd34534243b701658673714d97a05eab85c0623deb4a9b3e1ae270ef` |

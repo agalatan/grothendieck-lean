@@ -16,6 +16,10 @@
 
 #pragma STDC FP_CONTRACT OFF
 
+#ifdef NDEBUG
+#error "certify_global_P.cpp must not be compiled with -DNDEBUG (interval and rounding assertions are required)"
+#endif
+
 #include <algorithm>
 #include <array>
 #include <atomic>
@@ -43,6 +47,19 @@
 // ============================================================================
 // 1. Outward-rounded IEEE-754 interval arithmetic (requires FE_UPWARD per thread)
 // ============================================================================
+static inline void set_fe_upward() {
+  if (std::fesetround(FE_UPWARD) != 0 || std::fegetround() != FE_UPWARD) {
+    std::fprintf(stderr, "FATAL: failed to enable FE_UPWARD rounding mode\n");
+    std::abort();
+  }
+}
+static inline void require_fe_upward() {
+  if (std::fegetround() != FE_UPWARD) {
+    std::fprintf(stderr, "FATAL: rounding mode is not FE_UPWARD\n");
+    std::abort();
+  }
+}
+
 struct I {
   double l, h;
   I() : l(0.0), h(0.0) {}
@@ -573,7 +590,7 @@ static WcsCell integrate_wcs_cell(double r0, double r1, I th0, I th1, double w, 
 }
 
 static WcsGrid build_wcs_grid(double w, int nr, int nt, int nsub_r, int nsub_t) {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   WcsGrid g;
   g.w = w;
   g.nr = nr;
@@ -629,7 +646,7 @@ static inline double eval_phi_hi(double A, double Bl, double Bh, double C_hi) {
 
 // Rigorous outward-rounded upper bound on Rem(w, v) using WCS grid g (single pass for both ±(Ai, Bi) halves!).
 static double eval_wcs_ub(const WcsGrid& g, const double v[4]) {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   double S_up = add_up(add_up(mul_up(v[0], v[0]), mul_up(v[1], v[1])),
                        add_up(mul_up(v[2], v[2]), mul_up(v[3], v[3])));
   double total = mul_up(g.tail_coeff, S_up);
@@ -800,7 +817,7 @@ static std::vector<double> make_dense_r_edges(double r_cut, int n1, int n2, doub
 }
 
 static BlockPair integrate_potential_slab(I w_iv, double r_cut, int n1, int n2, int nt) {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   double tail = certified_tail_coeff(w_iv.h, r_cut);
   auto re = make_dense_r_edges(r_cut, n1, n2, 1.3);
   int nr = static_cast<int>(re.size()) - 1;
@@ -922,7 +939,7 @@ static BlockPair integrate_potential_slab(I w_iv, double r_cut, int n1, int n2, 
 }
 
 static BlockPair integrate_origin_slab(I w_iv, double s_max, int n1, int n2, int nt) {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   double tail = certified_tail_coeff(w_iv.h, 24.0);
   auto re = make_dense_r_edges(24.0, n1, n2, 2.0);
   int nr = static_cast<int>(re.size()) - 1;
@@ -1072,7 +1089,7 @@ struct ShiftCurvGlobal {
 };
 
 static ShiftCurvGlobal certify_global_shift_curvature_480() {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   // Exact envelope of STATUS 7.4.13 (re-derived in PROOF.md):
   // Bbar(T) = 2*M*q/a0^2*(1+6*b*T/a0) + 8*m*q*T*M/(a0*c0)
   //           + (1/2)*((m^2 + (b/a0)^2 + 9*(b/c0)^2)*4*T/c0^2 + 2*m/(a0*c0))*M^2
@@ -1127,7 +1144,7 @@ struct SlabCurv {
 // Tail r >= 24 (w <= 2 => T > 25): N''_tail <= exp(-25) / (a * 3b * 25) < 1e-11;
 // |C_A''|_tail, |C_B''|_tail <= (2/b^2) * exp(-25) < 2e-9 (checked explicitly via envelope on T >= 25).
 static SlabCurv compute_slab_base_curv(double wl, double wh) {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   I w_iv(wl, wh);
   // Check r >= 24 tail on T >= 25:
   I tt(25.0);
@@ -1222,7 +1239,7 @@ struct Slab3DResult {
 // Certify all 7 faces of partial([-r_m, r_m]^4) (Im A >= 0) for Rem(w, v) <= (1 - eta)*Q_w(v) on [wl, wh]!
 static ShellResult certify_3d_shell(double wl, double wh, double r_m, int eta_num, int eta_den,
                                     const std::vector<WcsGrid>& gl, const std::vector<WcsGrid>& gh) {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   I one_minus_eta = I(1.0) - rat(eta_num, eta_den);
   I dw = I(wh) - I(wl);
   I dw2_8 = sq(dw) / I(8.0);
@@ -1347,7 +1364,7 @@ struct Slab4DResult {
 // Certify all 4D v with s_bulk <= ||v||_2 <= sqrt(3/4) (Im A >= 0) on w in [wl, wh]!
 static Slab4DResult certify_4d_slab(double wl, double wh, double s_bulk, const SlabCurv& sc,
                                     const std::vector<WcsGrid>& gl, const std::vector<WcsGrid>& gh) {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   I dw = I(wh) - I(wl);
   I dw2_8 = sq(dw) / I(8.0);
   I q_diag[4] = {C.q_AA, C.q_BB, C.q_AA, C.q_BB};
@@ -1481,7 +1498,7 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_bulk, const S
 // 8. Startup Self-Tests (verify FE_UPWARD, trig, expneg, solve_T, Jet2 FD, WCS identity)
 // ============================================================================
 static void run_self_tests() {
-  assert(std::fegetround() == FE_UPWARD);
+  require_fe_upward();
   // 1. Rounding direction check: 1/3 downward < 1/3 upward, and raw (-x)*y vs -(x*y) under -frounding-math
   I one_third = rat(1, 3);
   assert(one_third.l < one_third.h);
@@ -1611,7 +1628,7 @@ static std::string sym2_json(const Sym2& m) {
 // 9. Main Driver (supports --output <path> and --control-false-hotspot negative test)
 // ============================================================================
 int main(int argc, char** argv) {
-  assert(std::fesetround(FE_UPWARD) == 0);
+  set_fe_upward();
   init_constants();
   run_self_tests();
 
@@ -1666,7 +1683,7 @@ int main(int argc, char** argv) {
     std::vector<std::thread> workers;
     for (unsigned t = 0; t < nthreads; ++t) {
       workers.emplace_back([&]() {
-        assert(std::fesetround(FE_UPWARD) == 0);
+        set_fe_upward();
         while (true) {
           size_t idx = next_i.fetch_add(1);
           if (idx >= pot_specs.size()) break;
@@ -1728,7 +1745,7 @@ int main(int argc, char** argv) {
     std::vector<std::thread> workers;
     for (unsigned t = 0; t < nthreads; ++t) {
       workers.emplace_back([&]() {
-        assert(std::fesetround(FE_UPWARD) == 0);
+        set_fe_upward();
         while (true) {
           size_t idx = next_i.fetch_add(1);
           if (idx >= ori_specs.size()) break;
@@ -1809,7 +1826,7 @@ int main(int argc, char** argv) {
     std::vector<std::thread> workers;
     for (unsigned t = 0; t < nthreads; ++t) {
       workers.emplace_back([&]() {
-        assert(std::fesetround(FE_UPWARD) == 0);
+        set_fe_upward();
         while (true) {
           size_t idx = next_i.fetch_add(1);
           if (idx >= s3_specs.size()) break;
@@ -1881,7 +1898,7 @@ int main(int argc, char** argv) {
     std::vector<std::thread> workers;
     for (unsigned t = 0; t < nthreads; ++t) {
       workers.emplace_back([&]() {
-        assert(std::fesetround(FE_UPWARD) == 0);
+        set_fe_upward();
         while (true) {
           size_t idx = next_i.fetch_add(1);
           if (idx >= s4_specs.size()) break;
