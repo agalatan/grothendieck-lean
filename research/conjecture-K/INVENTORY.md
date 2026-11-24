@@ -788,6 +788,8 @@ and results are kept in `/Users/alingalatan/workspaces/grothe/handoff/research-d
 `7e6fe7c54eb3e408772b351cf4497d02c4ea49318b4970f6736f7587d589ab0c`). The superseded run 43743242420 was cancelled
 by its author after finding the midpoint-enclosure gap; its outputs are not certificates.
 The working proof is `handoff/codex-a7c4-central-aligned/PROOF.md` in the author worktree.
+The [independent-phase estimate](sources/central-aligned-codex-a7c4/COMPLEX_PHASES.md) uses these same twenty
+receipts. Its [exact replay](code/central-aligned-codex-a7c4/phase_tubes.py) computes radius 1/32 over all 32,592 boxes.
 
 | file | size | SHA-256 |
 |---|---:|---|
@@ -1601,3 +1603,59 @@ file, the notes as delivered included.
 | `sources/near-gaussian-505-2026-11-21-gemini-2762/PROOF.md` | 39,228 B | `9b1aba951d6fd0c5fdf0728bab594ef5f2451b1804476eef017792b1df0e73a4` |
 | `code/near-gaussian-505-gemini-2762/verify_near_gaussian_505.py` | 33,563 B | `520af8aa5f7161b70ba99292527af286b7644a4f99e6f493b452b687dcc810bd` |
 | `code/near-gaussian-505-gemini-2762/REPLAY.log` | 2,000 B | `81df44fc756d0d5fe6a45ad542c13a57e12fa77b1d759112ed6557815112ed47` |
+
+## Smoothed two-step OU deficit remainder and near-Gaussian sliver closure (gemini-21d5, task #593)
+
+- [Proof and replay instructions](sources/sliver-closure-2026-11-24-gemini-21d5/PROOF.md) and
+  [exact zero-float verifier, receipt and replay log](code/sliver-closure-gemini-21d5/) (tag KSLIV; STATUS 3.18, 3.19, 3.29, 6.3.18, 6.3.43; author only). Every file is under 60 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations):** `python3 -I -O verify_sliver_closure.py` verifies via AST self-audit zero `float` literals/calls, Machin $\pi$ enclosure, exact polynomial discriminants + 3 Bernstein leaves for $|h_4(s) - 3| \le (17/4)\sqrt{s}$ on $[0, \infty)$, exact formal power series for $m_k = \mathbb{E}[V_L^{-k}] \in \mathbb{Q}$ ($k = 1 \dots 9$), exact polynomial-division certification of Markov–Krein Hermite/Radau envelopes $P_5, Q_{4,5}, Q_{4,7}, Q_{6,3}$ on $[0, \infty)$, 575 exact dyadic cells for $I_l(r)$ ($l \in \{0, 2, 4, 6, 8\}$), 29 Bernstein leaves certifying $Q_{10}(y) > 0$ on $y \in [0, 7/8]$ across 14 contiguous slabs of $(0, 463/10000]$ for both all-shapes ($\beta_{\mathrm{all}} = 2851/1000$, $\chi \in [0, 42]$) and near-Gaussian ($\beta \in \{27/20, 33/25\}$) caps, all `3.19` widenings and complete gap-free closure of the near-Gaussian sliver in `3.29` and `6.3.43`, and 7 adversarial negative controls (~5.6 s). [Replay log](code/sliver-closure-gemini-21d5/REPLAY.log)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/sliver-closure-2026-11-24-gemini-21d5/PROOF.md` | 32,737 B | `b1544fd7db47793b8028ac6890c88964b845442e374612f791ec7f598fe624f6` |
+| `code/sliver-closure-gemini-21d5/verify_sliver_closure.py` | 55,781 B | `6f08bff127643e12549ee02ebf06d106255e958e32caf4cb735a8142737af800` |
+| `code/sliver-closure-gemini-21d5/verify_sliver_closure_result.json` | 10,063 B | `2765ab827626f07c1a2d3c53a13cdfb07b37495a8dd6a740e1e18c233ab8bee2` |
+| `code/sliver-closure-gemini-21d5/REPLAY.log` | 10,063 B | `2765ab827626f07c1a2d3c53a13cdfb07b37495a8dd6a740e1e18c233ab8bee2` |
+
+### Peak remainder and low-energy deficit refinement (#599)
+
+The coefficient bounds and all three energy thresholds in ledger 3.19a follow from the KSLIV polynomial and moment formulas evaluated on finer intervals. The replay reads the numerical primitives from the committed KSLIV source and reconstructs both fourth-moment cases. Agent-ID: codex-a7c4. [Proof](sources/peak-energy-codex-a7c4/PROOF.md) · [Standard-library replay](code/peak-energy-codex-a7c4/verify.py).
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/peak-energy-codex-a7c4/PROOF.md` | 3,593 | `9aaa3a70a10e8fc3fdb85ae62e8dea21e98c9b0c748d73686aabad3577a3ba95` |
+| `code/peak-energy-codex-a7c4/verify.py` | 5,073 | `f41791e8a8859778a67771bdcc4d014533ef614372c640766b4fb9dc0f5efe4c` |
+
+## Sharp global joint secant inequality and multiscale unconditional closure of F_joint (gemini-c1de, refs #436)
+
+- [Proof and replay instructions](sources/sharp-joint-secant-gemini-c1de/PROOF.md) and
+  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/sharp-joint-secant-gemini-c1de/) (tag KJSEC; STATUS 7.5.12; **P + C, author only**). Every file is under 50 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay:**
+  - Verify saved `result.json` + exact rational assembly (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/test_controls.py` (10 negative/corruption controls).
+  - Full C++17 outward-rounded interval replay (~4.5 min on Apple Silicon, regenerating `result.json`): `python3 -I research/conjecture-K/code/sharp-joint-secant-gemini-c1de/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 29,916 B | `51d58bc732ba4b586c95cd4b1648f65b35de146a5a91410e1748e946f848f962` |
+| `code/sharp-joint-secant-gemini-c1de/README.md` | 2,351 B | `a34d031ab125f9a6df39435ee71ca6dea1c8198fd69a9565d14cf5a1f88bd7d2` |
+| `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp` | 49,440 B | `f12d15b3d4631b280a552e4e17e721beb71fac5bde8a2d08703a4d5d5c7c026f` |
+| `code/sharp-joint-secant-gemini-c1de/verify.py` | 20,019 B | `d3af1484f65301dab967a09abd53dec171625999892501b44b2a8e3757e3e6e9` |
+| `code/sharp-joint-secant-gemini-c1de/result.json` | 4,315 B | `b983b798fba62e50e5273a11d14160a5f33fdf0b327ae53dd477a4040042292b` |
+| `code/sharp-joint-secant-gemini-c1de/test_controls.py` | 3,822 B | `5589b8f65d5d6ce9aefaac9b49882b7167448092089e1a99f4e88b2745b105d8` |
+
+## Global 4D complex closure of premise (P) on ℂ³ (gemini-c1de, refs #431)
+
+- [Proof and replay instructions](sources/global-complex-P-gemini-c1de/PROOF.md) and
+  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/global-complex-P-gemini-c1de/) (tag KGCP; STATUS 7.4.10, 7.4.16; **P + C, author only**). All files are committed in the repository with zero external dependencies left outside.
+- **Replay:**
+  - Verify saved `result.json` + exact rational audit of Parts 1–3, handoffs, and Part 4–5 summaries (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/test_controls.py` (19 negative/corruption controls including live C++ hotspot false-target control and `-DNDEBUG` compile rejection).
+  - Full C++17 outward-rounded interval replay (~5–6.5 min on Apple Silicon, 8 threads; compiles/runs to a temporary file, audits all 5 parts, and verifies exact equality against committed `result.json` without overwriting it; pass `--replay-cpp --update-result` only to intentionally regenerate `result.json`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/global-complex-P-gemini-c1de/PROOF.md` | 34,991 B | `a51afd33db077279ad833260fdb15666831f8c5daa65920259951c98c781aa80` |
+| `code/global-complex-P-gemini-c1de/README.md` | 2,311 B | `d75ef4e6526a36013f26702e0421b4bc1821692321ce523b7ec67f0ea836335e` |
+| `code/global-complex-P-gemini-c1de/certify_global_P.cpp` | 82,627 B | `8f92945db425c7617f221b50f5ed49f6947081dd820da1d8d01a5e51a65677b0` |
+| `code/global-complex-P-gemini-c1de/verify.py` | 17,606 B | `f3185a6855870edd6502fcc0697f105154d16fdf6f91c70591c9cf85434d9a76` |
+| `code/global-complex-P-gemini-c1de/result.json` | 310,952 B | `7a6111229837c0bfe95d583c5afe62f013795b82a91f979ae9d4337a535e39d5` |
+| `code/global-complex-P-gemini-c1de/test_controls.py` | 8,114 B | `76484e70fd34534243b701658673714d97a05eab85c0623deb4a9b3e1ae270ef` |

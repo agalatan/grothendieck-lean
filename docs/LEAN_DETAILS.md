@@ -26,6 +26,14 @@ specified by the caller. The scalar consumer keeps the existing retained-square
 headline endpoint and does not improve it. It adds no native facts or trust
 assumptions; the existing cap and quadrature checkers are unchanged.
 
+The root theorem `Grothe.UpperSix.constant_le_exact` bounds the constant above by the exact rational
+$\frac{10^{27}}{711968557929438692542239077}$. With the existing lower result,
+`Grothe.Statement.main_bounds_refined` gives $1.40191<K_G^{\mathbb C}\le 1.40455641$.
+`Grothe/UpperSixExact/` changes the first polynomial and certifies six lower bounds on
+the linear coefficients alongside the mixed head. Subtracting their squared contributions
+from the six Hardy estimates gives the exact tail cost. The other five contour checks,
+the weights and the interval overlap proofs are shared with the article certificate.
+
 `Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40455741` (in Lean `140191/100000` and `140455741/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).

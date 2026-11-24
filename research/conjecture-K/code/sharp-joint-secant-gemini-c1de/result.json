@@ -1,0 +1,179 @@
+{
+  "partA": {
+    "w_lo": "0x1.6p+0",
+    "w_hi": "0x1p+3",
+    "slabs": "122",
+    "h756_lo": "-0x1.38839c72bbf66p-1",
+    "h756_hi": "-0x1.3628828baaa8fp-1",
+    "max_evK": "-0x1.5b10ac429p-6",
+    "max_evO_756": "-0x1.52c5b0827cp-5",
+    "max_evO_cstar": "-0x1.9a5b6a6a2p-8",
+    "max_errO": "0x1.cb9aa56743244p-5",
+    "PASS": "1"
+  },
+  "partBD": {
+    "3.25": {
+      "L": "3.25",
+      "max_cV_Fjoint": "0x1.86b7ecf55e2p+1",
+      "max_evO": "-0x1.4cfb1255ep-8",
+      "max_cV_recen": "0x1.5fe740a5513p+1",
+      "max_errK": "0x1.b54d1b9228e4dp-4",
+      "max_errO": "0x1.88dc782e9c45ap-5"
+    },
+    "5": {
+      "L": "5",
+      "max_cV_Fjoint": "0x1.3b647d617768p+2",
+      "max_evO": "-0x1.c4cbd093c8p-6",
+      "max_cV_recen": "0x1.074fa583462p+2",
+      "max_errK": "0x1.3a7c7249718a1p-3",
+      "max_errO": "0x1.8317e2e42f096p-5"
+    }
+  },
+  "partC": [
+    {
+      "s_milli": "6",
+      "K_num": "36",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.9c66c014ep-8",
+      "max_evO": "-0x1.b8cebdap-15",
+      "worst_w": "0x0p+0"
+    },
+    {
+      "s_milli": "8",
+      "K_num": "64",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.772ae18b9p-7",
+      "max_evO": "-0x1.28b90f4p-17",
+      "worst_w": "0x0p+0"
+    },
+    {
+      "s_milli": "10",
+      "K_num": "100",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.0e0bacbf6p-6",
+      "max_evO": "-0x1.4bacc2a8p-14",
+      "worst_w": "0x0p+0"
+    },
+    {
+      "s_milli": "11",
+      "K_num": "121",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.440199403p-6",
+      "max_evO": "-0x1.35acbbcp-17",
+      "worst_w": "0x0p+0"
+    },
+    {
+      "s_milli": "12",
+      "K_num": "144",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.63ade12168p-6",
+      "max_evO": "-0x1.4dc8fcp-19",
+      "worst_w": "0x0p+0"
+    },
+    {
+      "s_milli": "13",
+      "K_num": "169",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.754e7cc2d8p-5",
+      "max_evO": "-0x1.b279c08p-15",
+      "worst_w": "0x1.18p-1"
+    },
+    {
+      "s_milli": "14",
+      "K_num": "196",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.a9e00daf0dp-3",
+      "max_evO": "-0x1.1f93f56p-16",
+      "worst_w": "0x1.0cp-1"
+    },
+    {
+      "s_milli": "15",
+      "K_num": "225",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.605df8ad54p-2",
+      "max_evO": "-0x1.9fc294a8p-14",
+      "worst_w": "0x1.18p-1"
+    },
+    {
+      "s_milli": "16",
+      "K_num": "256",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.d7b4f1410f8p-2",
+      "max_evO": "-0x1.08edfd4cp-13",
+      "worst_w": "0x1.1cp-1"
+    },
+    {
+      "s_milli": "17",
+      "K_num": "289",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.2b0d890c89cp-1",
+      "max_evO": "-0x1.15e94d8p-18",
+      "worst_w": "0x1.2p-1"
+    },
+    {
+      "s_milli": "18",
+      "K_num": "324",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.75d73e0e948p-1",
+      "max_evO": "-0x1.b1b83938p-14",
+      "worst_w": "0x1.24p-1"
+    },
+    {
+      "s_milli": "19",
+      "K_num": "361",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.cce359b0a44p-1",
+      "max_evO": "-0x1.a84f075p-15",
+      "worst_w": "0x1.28p-1"
+    },
+    {
+      "s_milli": "20",
+      "K_num": "400",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.0fefef1ef42p+0",
+      "max_evO": "-0x1.4383e7ap-15",
+      "worst_w": "0x1.28p-1"
+    },
+    {
+      "s_milli": "22",
+      "K_num": "484",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.6bffb2ce1cap+0",
+      "max_evO": "-0x1.2420515p-13",
+      "worst_w": "0x1.2cp-1"
+    },
+    {
+      "s_milli": "24",
+      "K_num": "576",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.c05a90f87b2p+0",
+      "max_evO": "-0x1.8deceb48p-14",
+      "worst_w": "0x1.2cp-1"
+    },
+    {
+      "s_milli": "26",
+      "K_num": "676",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.011e88e2bafp+1",
+      "max_evO": "-0x1.249875ep-15",
+      "worst_w": "0x1.2cp-1"
+    },
+    {
+      "s_milli": "30",
+      "K_num": "900",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.2705e2ddd1ep+1",
+      "max_evO": "-0x1.37d73e5cp-13",
+      "worst_w": "0x1.0cp-1"
+    },
+    {
+      "s_milli": "36",
+      "K_num": "1296",
+      "K_den": "1000000",
+      "c_K_hi": "0x1.3b94f4eff54p+1",
+      "max_evO": "-0x1.21cf83f8p-13",
+      "worst_w": "0x1.6p-2"
+    }
+  ],
+  "cpp_sha256": "f12d15b3d4631b280a552e4e17e721beb71fac5bde8a2d08703a4d5d5c7c026f"
+}

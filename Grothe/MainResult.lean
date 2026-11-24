@@ -12,6 +12,7 @@ The double inequality of the repository's goal, stated for the constant `K_G^ℂ
   the witness `(191/250, 47/2000)` (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows (`tailNodeCaps_cert`).
 * `Grothe.UpperSix.bound`: **the upper bound, unconditional**: `V(A) ≤ 1.40455741 · C(A)` for every finite complex
   matrix `A` (`IsBound (140455741 / 100000000)`), from the six-channel proof.
+* `main_bounds_refined`: **`1.40191 < K_G^ℂ ≤ 1.40455641`**, from the refined six-channel proof.
 * `main_bounds`: **`1.40191 < K_G^ℂ ≤ 1.40455741`**, without hypotheses.
 -/
 
@@ -29,5 +30,13 @@ theorem main_bounds :
       complexGrothendieckConstant ≤ 140455741 / 100000000 := by
   have hlo := lt_constant_of_lowerAbove ⟨_, Grothe.UpperSix.bound⟩ lower_target
   exact ⟨by norm_num at hlo ⊢; exact hlo, Grothe.UpperSix.constant_le⟩
+
+/-- The root six-channel certificate rounded upward to eight decimals. -/
+theorem main_bounds_refined :
+    (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
+      complexGrothendieckConstant ≤ 140455641 / 100000000 := by
+  have hlo := lt_constant_of_lowerAbove ⟨_, Grothe.UpperSix.bound_exact⟩ lower_target
+  exact ⟨by norm_num at hlo ⊢; exact hlo,
+    Grothe.UpperSix.constant_le_exact.trans (by norm_num)⟩
 
 end Grothe.Statement

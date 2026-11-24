@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.40191\;<\;\KG\;\le\;1.40455741$\\[6pt]
+\Large $1.40191\;<\;\KG\;\le\;1.40455641$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
-(\lean{Grothe.Statement.main\_bounds}); the computer-assisted inputs are native finite checks listed in
+(\lean{Grothe.Statement.main\_bounds\_refined}); the computer-assisted inputs are native finite checks listed in
 the axiom report (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is \lean{lower\_target}, with the exact rational $140191/100000$; the upper bound is \lean{Grothe.UpperSix.constant\_le}, with the exact rational $140455741/100000000$, from six Gaussian rounding channels.\vspace{4pt}
+The lower bound is \lean{lower\_target}, with the exact rational $140191/100000$; the upper bound uses six Gaussian rounding channels, with $140455641/100000000$ rounded upward from the exact transfer value.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -42,6 +42,10 @@ The upper certificate mixes three smoothed cell channels, one phase channel and
 two reflected tiger channels. Its transfer theorem uses the signed sum of the
 first 251 coefficients together with a Hardy bound for each infinite tail.
 The standard finite-matrix theorem is \lean{Grothe.UpperSix.bound}.
+The root refinement \lean{Grothe.UpperSix.constant\_le\_exact} gives
+$K_G^{\mathbb C}\le 10^{27}/711968557929438692542239077<1.40455641$.
+It uses a different first polynomial and deducts the six linear energies from the Hardy budgets.
+
 The companion theorem \lean{Grothe.UpperSix.constant\_lt\_inv\_gammaDagger}
 compares the infimum with the reciprocal phase integral.
 
@@ -91,10 +95,10 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.40455741}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.40455641}$\\\bottomrule
 \end{tabular}
 \end{center}
-The upper bound of this work is $140455741/100000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
+The article upper bound is $140455741/100000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
 For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
 a separate estimate of the integral gives $1.40455741<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
