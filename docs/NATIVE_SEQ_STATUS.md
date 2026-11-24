@@ -9,7 +9,7 @@ check: the native runtime and compiler are part of the trust boundary, so a run
 that happens not to crash cannot establish that shared-state evaluation is sound.
 CI screens every project source tree (`Grothe/` and the four `Grothe*Kernel/` libraries) for forbidden escapes and
 task spawning. The rule covers every proof in the tree: the lower bound, the six-channel upper proof behind
-`main_bounds` (`K ≤ 1.40457588`) and the older single-channel upper proof.
+`main_bounds` (`K ≤ 1.40455742`) and the older single-channel upper proof.
 
 The canonical allowlist and report are `data/axioms/native.txt` and
 `scratch/Axioms.lean`; [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md)

@@ -8,6 +8,7 @@ set_option pp.fullNames true
 #print axioms Grothe.UpperSix.constant_lt_inv_gammaDagger
 #print axioms Haagerup.inv_gammaDagger_gt
 #print axioms Haagerup.isBound_cert
+#print axioms Haagerup.isBound_cert_exact
 #print axioms Haagerup.mem_bivarT_smoothed
 #print axioms Haagerup.mem_muTigOf
 #print axioms Haagerup.modeOverlapsAt_sound

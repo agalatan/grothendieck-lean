@@ -2294,6 +2294,7 @@ import Grothe
 #print axioms Haagerup.Data.tig_sos_ok
 #print axioms Haagerup.head_sum_ok
 #print axioms Haagerup.isBound_cert
+#print axioms Haagerup.isBound_cert_exact
 #print axioms Haagerup.mean0_ok
 #print axioms Haagerup.mean1_ok
 #print axioms Haagerup.mean2_ok

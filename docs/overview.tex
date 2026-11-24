@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.40191\;<\;\KG\;\le\;1.40457588$\\[6pt]
+\Large $1.40191\;<\;\KG\;\le\;1.40455742$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
 (\lean{Grothe.Statement.main\_bounds}); the computer-assisted inputs are native finite checks listed in
 the axiom report (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is \lean{lower\_target}, with the exact rational $140191/100000$; the upper bound is \lean{Grothe.UpperSix.constant\_le}, with the exact rational $140457588/100000000$, from six Gaussian rounding channels.\vspace{4pt}
+The lower bound is \lean{lower\_target}, with the exact rational $140191/100000$; the upper bound is \lean{Grothe.UpperSix.constant\_le}, with the exact rational $140455742/100000000$, from six Gaussian rounding channels.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -91,13 +91,14 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.40457588}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.40455742}$\\\bottomrule
 \end{tabular}
 \end{center}
-The upper bound of this work is exactly $140457588/100000000$ (six Gaussian rounding channels).
+The upper bound of this work is $140455742/100000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
 For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
-a separate estimate of the integral gives $1.40457588<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
+the certificate proves $1/(c-\delta)=1.4045574123\ldots$ and a separate estimate of the integral gives
+$1.40457588<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
 $1/\gamma^\dagger$, the value that Haagerup proposed for $\KG$ in 1987; this resolves that conjecture of Haagerup
 (\lean{Grothe.UpperSix.constant\_lt\_inv\_gammaDagger}).
 For the real constant the corresponding
@@ -1233,7 +1234,7 @@ plans). Three epics are closed: \#12 (unconditional lower bound: \lean{lower\_ta
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
  locate $\KG$ to about $10^{-4}$ using higher-degree games. A first search
  (\path{research/higher-degree/}, [N]) gives model values $1.403648$, $1.404113$ and $1.40430$ for the best games of
- degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.40457588$. No rounding built from the binding responses
+ degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.40455742$. No rounding built from the binding responses
  beats Haagerup's $\gamma_H$ within that family. The independent six-channel comparison is stated above.
 \item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
  appears to be open, and it is the largest single lever on the law side. The best proved constant is $0.93$; a constant

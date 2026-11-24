@@ -219,8 +219,10 @@ private lemma hChan_tail (p : Fin 6) :
       hp5 hq5 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg5_ok mean5_ok J
 
-/-- **Certified upper bound**: `K_G^ℂ ≤ 1.40457588`. -/
-theorem isBound_cert : Statement.IsBound (140457588 / 100000000 : ℝ) := by
+/-- **The bound of the certificate**: `1 / (c − δ)` is a Grothendieck bound, with `c = cCertQ` the linear
+coefficient of the mixture and `δ = deltaCertQ` its certified deviation; `1 / (c − δ) = 1.4045574123…`. -/
+theorem isBound_cert_exact :
+    Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ))) := by
   have hw0 : ∀ p : Fin 6, 0 ≤ (wQ p : ℝ) := fun p => by fin_cases p <;> norm_num [wQ, d12Q]
   have hw1 : ∑ p : Fin 6, (wQ p : ℝ) = 1 := by
     rw [← Rat.cast_sum, show ∑ p : Fin 6, wQ p = 1 by decide +kernel, Rat.cast_one]
@@ -228,12 +230,14 @@ theorem isBound_cert : Statement.IsBound (140457588 / 100000000 : ℝ) := by
     have hq : headCapCertQ + ∑ p : Fin 6, wQ p * tailQ p ≤ deltaCertQ := by decide +kernel
     simpa only [Rat.cast_add, Rat.cast_sum, Rat.cast_mul] using (Rat.cast_le (K := ℝ)).2 hq
   have hδc : (deltaCertQ : ℝ) < (cCertQ : ℝ) := by norm_num [deltaCertQ, cCertQ, d12Q]
-  have hB : Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ))) :=
-    convex_transfer_ival (K := 250) hw0 hw1 hChan_summable hChan_dominated
-      hChan_mem hChan_tail (of_decide_eq_true head_sum_ok) hδ hδc
+  exact convex_transfer_ival (K := 250) hw0 hw1 hChan_summable hChan_dominated
+    hChan_mem hChan_tail (of_decide_eq_true head_sum_ok) hδ hδc
+
+/-- **Certified upper bound**: `K_G^ℂ ≤ 1.40457588`. -/
+theorem isBound_cert : Statement.IsBound (140457588 / 100000000 : ℝ) := by
   have hle : 1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)) ≤ (140457588 / 100000000 : ℝ) := by
     norm_num [cCertQ, deltaCertQ, d12Q]
-  exact fun m n A => (hB m n A).trans (mul_le_mul_of_nonneg_right hle (Real.sSup_nonneg fun r ⟨_, _, _, _, hr⟩ => hr ▸ norm_nonneg _))
+  exact fun m n A => (isBound_cert_exact m n A).trans (mul_le_mul_of_nonneg_right hle (Real.sSup_nonneg fun r ⟨_, _, _, _, hr⟩ => hr ▸ norm_nonneg _))
 
 end
 

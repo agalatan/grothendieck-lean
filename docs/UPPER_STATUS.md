@@ -1,6 +1,6 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-This file documents the older single-channel upper proof (`K_G^ℂ < 1.404599395362`), which is still in the tree. The upper bound of the main theorem `main_bounds` comes from the six-channel proof in `Grothe/UpperSix/` instead: Lean proves `K_G^ℂ ≤ 1.40457588` (`140457588/100000000`, `Grothe.UpperSix.constant_le`), and a separate estimate of the phase integral shows that this rational is strictly below Haagerup's value `1/γ†` (`constant_lt_inv_gammaDagger`). [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../haagerup-article/anc/README.md).
+This file documents the older single-channel upper proof (`K_G^ℂ < 1.404599395362`), which is still in the tree. The upper bound of the main theorem `main_bounds` comes from the six-channel proof in `Grothe/UpperSix/` instead: Lean proves `K_G^ℂ ≤ 1.40455742` (`140455742/100000000`, `Grothe.UpperSix.constant_le`), and a separate estimate of the phase integral shows that this rational is strictly below Haagerup's value `1/γ†` (`constant_lt_inv_gammaDagger`). [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../haagerup-article/anc/README.md).
 
 ## Earlier single-channel construction
 

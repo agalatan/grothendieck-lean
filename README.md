@@ -3,7 +3,7 @@
 This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.40191 < K_G^{\mathbb C} \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots
+1.40191 < K_G^{\mathbb C} \le 1.40455742 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
@@ -16,10 +16,10 @@ value, which resolves this conjecture of Haagerup.
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
 | lower bound | $1.40191 < K_G^{\mathbb C}$ | `140191 / 100000` | `Grothe.Statement.main_bounds` (first part), `Grothe.Statement.lower_target` |
-| upper bound | $K_G^{\mathbb C} \le 1.40457588$ | `140457588 / 100000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSix.constant_le` |
+| upper bound | $K_G^{\mathbb C} \le 1.40455742$ | `140455742 / 100000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSix.constant_le` |
 | Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` |
 
-The two bounds are 0.00267 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
+The two bounds are 0.00265 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
 parameters behind it and the other numbers that appear in the repository (older bounds, thresholds, targets).
 Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's value](Grothe/UpperResult.lean) ·
 [the definitions they are stated with](Grothe/Statement.lean).
@@ -33,7 +33,7 @@ Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's v
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.40191 < K}$ | $\mathbf{K\le 1.40457588}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.40191 < K}$ | $\mathbf{K\le 1.40455742}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -87,11 +87,11 @@ definitions, so reading it is enough to know what the theorems say:
 
 **The theorems.**
 
-- `Grothe.Statement.main_bounds`: $1.40191 < K_G^{\mathbb C} \le 1.40457588$ (as the rationals `140191 / 100000`
-  and `140457588 / 100000000`).
-- `Grothe.UpperSix.bound : IsBound (140457588 / 100000000)`: for every finite complex matrix $A$,
-  $V(A) \le 1.40457588 \cdot C(A)$. This is what the upper bound means for a single matrix;
-  `Grothe.UpperSix.constant_le` restates it as $K_G^{\mathbb C} \le 1.40457588$.
+- `Grothe.Statement.main_bounds`: $1.40191 < K_G^{\mathbb C} \le 1.40455742$ (as the rationals `140191 / 100000`
+  and `140455742 / 100000000`).
+- `Grothe.UpperSix.bound : IsBound (140455742 / 100000000)`: for every finite complex matrix $A$,
+  $V(A) \le 1.40455742 \cdot C(A)$. This is what the upper bound means for a single matrix;
+  `Grothe.UpperSix.constant_le` restates it as $K_G^{\mathbb C} \le 1.40455742$.
 - `Grothe.UpperSix.constant_lt_inv_gammaDagger`: $K_G^{\mathbb C} < 1/\gamma^\dagger$. Lean proves
   $1.40457588 < 1/\gamma^\dagger$ from rational bounds on the integral $\gamma^\dagger$.
 - `Grothe.Statement.lower_target`: every $K$ with `IsBound K` is above $1.40191$.
@@ -134,7 +134,7 @@ $B_{\mathrm{env}} = 7064131/10^7$, for all unimodular $f$, $g$ and all $n \ge 2$
 
 The certificate mixes three preprocessed versions of a smoothed cell rounding, one phase rounding and two reflected tiger channels. Each of the six functions maps into the complex unit disk. The transfer theorem turns an approximately linear correlation kernel into a bound for the ratio of vector and scalar optima.
 
-Lean adds the signed channel coefficients through index 250, bounds their joint deviation from a linear kernel, and controls each infinite tail by a Hardy circle-mean estimate. The dyadic overlap tables have finite recomputation checks and mathematical enclosure proofs. The resulting bound is $K_G^{\mathbb C} \le 1.40457588$. [Transfer theorem](Grothe/UpperSix/Haagerup/Transfer.lean) · [Certificate](Grothe/UpperSix/Haagerup/CertCheck.lean).
+Lean adds the signed channel coefficients through index 250, bounds their joint deviation from a linear kernel, and controls each infinite tail by a Hardy circle-mean estimate. The dyadic overlap tables have finite recomputation checks and mathematical enclosure proofs. The certificate gives the bound $1/(c-\delta) = 1.4045574123\ldots$, with $c$ the linear coefficient of the mixture and $\delta$ its certified deviation; the theorem states it rounded up, $K_G^{\mathbb C} \le 1.40455742$. The article states the weaker round value $1.40457588$, chosen just below $1/\gamma^\dagger$. [Transfer theorem](Grothe/UpperSix/Haagerup/Transfer.lean) · [Certificate](Grothe/UpperSix/Haagerup/CertCheck.lean).
 
 An older proof with a single rounding channel is still in the repository. It is independent of the six-channel proof and gives the weaker bound $K_G^{\mathbb C}<1.404599395362$, which is above Haagerup's value. Its quadrature and energy-table construction are documented separately. [Single-channel proof](Grothe/UpperTightFinal.lean) · [Construction notes](docs/UPPER_STATUS.md).
 
