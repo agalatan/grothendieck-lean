@@ -112,6 +112,22 @@ class CheckConstants(unittest.TestCase):
             problems, ["Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound"]
         )
 
+    def test_refined_upper_rounding_and_scope(self):
+        main = MAIN + MAIN.replace("main_bounds", "main_bounds_refined").replace("140457588", "140455641")
+        exact = UPPER + ("theorem constant_le_exact : Statement.complexGrothendieckConstant ≤ "
+                         "(10 : ℝ) ^ 27 / 711968557929438692542239077 := by\\n")
+        docs = {name: GOOD + "The refined upper bound is 1.40455641.\\n"
+                for name in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex")}
+        docs["Grothe/UpperResult.lean"] = exact
+        _, problems = self.run_check(main=main, docs=docs)
+        self.assertEqual(problems, [])
+        _, problems = self.run_check(main=main.replace("140455641", "140455640"), docs=docs)
+        self.assertTrue(any("round constant_le_exact upward" in error for error in problems))
+        _, problems = self.run_check(main=main + "-- 140455641 / 100000000\\n", docs=docs)
+        self.assertTrue(any("not a current bound" in error for error in problems))
+        _, problems = self.run_check(main=main, docs={**docs, "Grothe/UpperResult.lean": UPPER})
+        self.assertTrue(any("needs both" in error for error in problems))
+
     def test_targets_disagree(self):
         with self.assertRaises(ValueError):
             self.run_check(statement="def LowerTarget : Prop := LowerAbove (14018 / 10000)\n")

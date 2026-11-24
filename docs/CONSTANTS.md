@@ -2,8 +2,7 @@
 
 This page states every bound on the complex Grothendieck constant $K = K_G^{\mathbb C}$ that this repository
 proves, exactly as Lean states it, and explains the other numbers that appear in the sources and documents.
-`scripts/check_constants.py` reads the two bounds from the Lean statement and checks that this page and the other
-documents quote them.
+`scripts/check_constants.py` reads both endpoints of `main_bounds`, verifies the upward rounding in `main_bounds_refined`, and checks that the technical references quote the refined upper bound.
 
 ## The current bounds
 

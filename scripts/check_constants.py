@@ -8,7 +8,7 @@ definition `LowerTarget` in Grothe/Statement.lean. The script then checks that
 * every document of QUOTING states the bounds asked of it, in decimal form;
 * docs/CONSTANTS.md also states both exact rationals as Lean writes them;
 * in the Lean files that state the theorems, every `IsBound (N / D)` is the upper bound, every `LowerAbove (N / D)`
-  the lower bound, and no other rational 14…/10^k is quoted (line breaks inside a fraction are ignored);
+  the lower bound, and main_bounds_refined rounds constant_le_exact upward. Elsewhere the original role checks apply;
 * no document of STRICT mentions a number of RETIRED (an older bound that readers must not take for the current one).
 
 Usage: python3 scripts/check_constants.py [--root DIR] [--print]
@@ -18,6 +18,7 @@ import argparse
 import re
 import sys
 from fractions import Fraction
+from math import ceil
 from pathlib import Path
 
 # documents that state the current bounds, and which of the two each must contain in decimal form
@@ -48,10 +49,15 @@ STRICT = ["README.md", ".claude/skills/lean-grothe/SKILL.md"]
 # older lower bounds of this repository
 RETIRED = ["1.4018", "1.401700322371"]
 
-MAIN_BOUNDS = re.compile(
-    r"theorem\s+main_bounds\s*:\s*"
+TWO_SIDED = (
     r"\(\s*(\d+)\s*/\s*(\d+)\s*:\s*ℝ\s*\)\s*<\s*complexGrothendieckConstant\s*∧\s*"
     r"complexGrothendieckConstant\s*≤\s*(\d+)\s*/\s*(\d+)"
+)
+MAIN_BOUNDS = re.compile(r"theorem\s+main_bounds\s*:\s*" + TWO_SIDED)
+REFINED_BOUNDS = re.compile(r"^\s*theorem\s+main_bounds_refined\s*:\s*" + TWO_SIDED, re.MULTILINE)
+EXACT_UPPER = re.compile(
+    r"^\s*theorem\s+constant_le_exact\s*:\s*Statement\.complexGrothendieckConstant\s*≤\s*"
+    r"\(\s*10\s*:\s*ℝ\s*\)\s*\^\s*(\d+)\s*/\s*(\d+)", re.MULTILINE
 )
 LOWER_TARGET = re.compile(r"def\s+LowerTarget\s*:\s*Prop\s*:=\s*LowerAbove\s*\(\s*(\d+)\s*/\s*(\d+)\s*\)")
 
@@ -99,6 +105,38 @@ def contains_number(text: str, number: str) -> bool:
     return re.search(r"(?<![\d.])" + re.escape(number) + r"(?!\d)", text) is not None
 
 
+def check_refined(root, main, lower, upper, problems):
+    """Validate the one supplementary upper endpoint at its declaration, including its rounding."""
+    source = root / "Grothe/UpperResult.lean"
+    upper_source = source.read_text(encoding="utf-8") if source.is_file() else ""
+    if "main_bounds_refined" not in main and "constant_le_exact" not in upper_source:
+        constants = root / "docs/CONSTANTS.md"
+        if constants.is_file() and "main_bounds_refined" in constants.read_text(encoding="utf-8"):
+            problems.append("docs/CONSTANTS.md names a missing main_bounds_refined theorem")
+        return None
+    refined = REFINED_BOUNDS.search(main)
+    exact = EXACT_UPPER.search(upper_source)
+    if refined is None or exact is None:
+        problems.append("the refined bound needs both main_bounds_refined and constant_le_exact")
+        return None
+    lo_num, lo_den, num, den = map(int, refined.groups())
+    power, exact_den = map(int, exact.groups())
+    if min(lo_den, den, exact_den) <= 0:
+        problems.append("the refined bound has a zero denominator")
+        return None
+    endpoint = Fraction(10**power, exact_den)
+    if Fraction(lo_num, lo_den) != Fraction(*lower) or not Fraction(*lower) < endpoint:
+        problems.append("main_bounds_refined must use LowerTarget below its exact upper bound")
+    if num != ceil(endpoint * den) or Fraction(num, den) >= Fraction(*upper):
+        problems.append("main_bounds_refined must round constant_le_exact upward and improve main_bounds")
+    value = decimal(num, den)
+    for rel in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex"):
+        path = root / rel
+        if path.is_file() and not contains_number(path.read_text(encoding="utf-8"), value):
+            problems.append(f"{rel}: does not state the refined upper bound {value}")
+    return refined.start(3), refined.end(4)
+
+
 def check(root: Path):
     """The list of problems found (empty iff everything agrees)."""
     lower, upper = read_bounds(root)
@@ -132,6 +170,7 @@ def check(root: Path):
         def line_of(pos):
             return text.count("\n", 0, pos) + 1
 
+        refined_span = check_refined(root, text, lower, upper, problems) if rel == "Grothe/MainResult.lean" else None
         for m in ROLE_CLAIM.finditer(text):  # \s matches line breaks: a wrapped claim is still read
             name, want = role[m[1]]
             if Fraction(int(m[2]), int(m[3])) != want:
@@ -139,6 +178,8 @@ def check(root: Path):
                     f"{rel}:{line_of(m.start())}: {m[1]} ({m[2]} / {m[3]}) is not the {name} bound of main_bounds"
                 )
         for m in BOUND_RATIONAL.finditer(text):
+            if m.span() == refined_span:
+                continue
             if Fraction(int(m[1]), int(m[2])) not in current:
                 problems.append(f"{rel}:{line_of(m.start())}: quotes {m[1]} / {m[2]}, which is not a current bound")
     for rel in STRICT:
@@ -162,6 +203,11 @@ def main() -> int:
             lower, upper = read_bounds(args.root)
             print(f"lower {lower[0]}/{lower[1]} = {decimal(*lower)}")
             print(f"upper {upper[0]}/{upper[1]} = {decimal(*upper)}")
+            main = (args.root / "Grothe/MainResult.lean").read_text(encoding="utf-8")
+            refined = REFINED_BOUNDS.search(main)
+            if refined:
+                num, den = int(refined[3]), int(refined[4])
+                print(f"refined upper {num}/{den} = {decimal(num, den)}")
             return 0
         (lo, up), problems = check(args.root)
     except ValueError as err:
