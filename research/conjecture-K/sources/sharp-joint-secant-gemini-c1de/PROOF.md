@@ -10,41 +10,43 @@ and an exact rational verifier to extend the proved regions of the centred joint
 defect $F_{\mathrm{joint}}$ (`STATUS.md` 7.5.6) and the averaged odd premise
 $(P_\Psi)$ (`STATUS.md` 7.5.3) at the peak row of Conjecture K:
 
-1. **Shift exterior (`Part A`).** For every $|q| \ge 7/5$, every shell energy
-   $S_r \ge 0$, and every odd amplitude $\omega \ge 0$ — with **no**
+1. **Shift exterior (`Part A`).** For every $|q| \ge 11/8 = 1.375$, every shell
+   energy $S_r \ge 0$, and every odd amplitude $\omega \ge 0$ — with **no**
    $|\nu|^2 \le 1/50$ cap — both the original centred joint defect $F_{\mathrm{joint}}$
    ($c = 0$, `7.5.6`) and the visibly shifted defect $F_{\mathrm{joint}}(c^*)$ are
    pointwise nonpositive ($F_{\mathrm{joint}} \le 0$ and $F_{\mathrm{joint}}(c^*) \le 0$).
-   This shrinks the shift exterior $|q| \ge 10$ of `7.5.6` by more than $7\times$.
+   This shrinks the shift exterior $|q| \ge 10$ of `7.5.6` by $7.27\times$.
 2. **Global unconditional cone and shell exterior (`Part B`).** For all
    $w, A, B, Q, P, \nu$ (with no $(P)$ assumption and no $|\nu|^2 \le 1/50$ cap),
    $F_{\mathrm{joint}}(c^*) \le c_V S_r - S_r^2 - c_W \omega'$ with exact certified
    constants at $L = 13/4$ and $L = 5$, yielding:
    - an unconditional large-shell exterior $S_r \ge 3.053$ (no $|\nu|^2 \le 1/50$
      cap);
-   - an unconditional odd-dominance cone $W \ge 192\,V$ (nearly $2\times$ wider
+   - an unconditional odd-dominance cone $W \ge 179\,V$ ($2.09\times$ wider
      than `7.5.8`'s $W \ge 375\,V$, and without assuming $(P)$);
    - an unconditional linear closure $\mathbb{E}[F_{\mathrm{joint}}(c^*)] \le 50\cdot 10^{-6}$
-     for $V \le 1.637\cdot 10^{-5}$ ($44\times$ larger than `7.5.10`'s
-     $3.67\cdot 10^{-7}$).
+     for $V \le 1/61060 \approx 1.6377\cdot 10^{-5}$ ($44.5\times$ larger than
+     `7.5.10`'s $3.67\cdot 10^{-7}$).
 3. **Multiscale unconditional closure (`Part C`).** Switching cellwise between
    Theorem 2 (on bulk cells where $\eta_K < \eta_{\mathrm{cut}}$) and Theorem 1
    (near the zero of $Y = L + w$) across an 18-level staircase in $S_r$, combined
    with an exact rational upper bound on the two-driver Gaussian tail expectation
    $\max_{\lambda_1 + \lambda_2 = V}\mathbb{E}[S_r\mathbf{1}\{S_r > K\}]$, proves
-   $\mathbb{E}[F_{\mathrm{joint}}(c^*)] \le 2360271/50000000000 \approx 4.720542\cdot 10^{-5} < 50\cdot 10^{-6}$
+   $\mathbb{E}[F_{\mathrm{joint}}(c^*)] \le 49711749/10^{12} \approx 4.971175\cdot 10^{-5} < 50\cdot 10^{-6}$
+   for all $0 \le V \le 11/100000 = 1.1\cdot 10^{-4}$ (and
+   $\le 38098983/10^{12} \approx 3.8099\cdot 10^{-5}$ for $V \le 10^{-4}$)
    — hence $\widehat{\Lambda}(G) < S + 99.36\cdot 10^{-6} < S + 10^{-4}$ for all
    six sectors with arbitrary sharing at the peak row, **without assuming $(P)$**
-   and with no $|\nu|^2 \le 1/50$ cap — for all $0 \le V \le 1/10000 = 10^{-4}$
-   ($272\times$ larger than `7.5.10`'s unconditional $3.67\cdot 10^{-7}$ and
-   $8.85\times$ larger than `7.5.8`'s conditional $1.13\cdot 10^{-5}$).
+   and with no $|\nu|^2 \le 1/50$ cap ($299\times$ larger than `7.5.10`'s
+   unconditional $3.67\cdot 10^{-7}$ and $9.73\times$ larger than `7.5.8`'s
+   conditional $1.13\cdot 10^{-5}$).
 4. **Sharpened recentred $(P_\Psi)$ cone (`Part D`).** Applying Theorem 1 to
-   the recentred split $X = (L + w) + H$ of `7.5.8` yields $W \ge 161\,V$
-   ($2.33\times$ stronger than `7.5.8`'s $W \ge 375\,V$) and linear small-shell
-   closure $V \le 1/54960 \approx 1.8195\cdot 10^{-5}$ under $(P)$.
+   the recentred split $X = (L + w) + H$ of `7.5.8` yields $W \ge 150\,V$
+   ($2.50\times$ stronger than `7.5.8`'s $W \ge 375\,V$) and linear small-shell
+   closure $V \le 1/55000 \approx 1.8182\cdot 10^{-5}$ under $(P)$.
 
 The full central region of $(P_\Psi)$ / $F_{\mathrm{joint}}$ at moderate
-$V \in (10^{-4}, 0.080051 - u]$, global $(P)$ in its complex interior, and the
+$V \in (11/100000, 0.080051 - u]$, global $(P)$ in its complex interior, and the
 row consumer remain **open**.
 
 ---
@@ -63,9 +65,9 @@ on $v_K^2$ drops from $L$ to $1$ (matching the infinitesimal second derivative
 at $K = O = 0$); and (ii) it bounds the **entire** centred joint remainder
 $R_{\mathrm{joint}}$ directly rather than only the odd increment over $Y + K$,
 so the even remainder $2(|Y+K| - |Y| - \operatorname{Re}(K\overline{\operatorname{ph}(Y)}))$
-is absorbed at zero extra cost. Every coefficient is sharp (for $u_K, v_K, v_O$
-in the infinitesimal and $K = -Y$ limits, and for $u_O$ at
-$1 + X_K \pm X_O = (2L-1)^{-1} \pm (2L-1)^{-1}$).
+is absorbed at zero extra cost. Every coefficient is sharp (for $v_K, v_O$ in the infinitesimal limit, and for
+both real coefficients $L$ and $\frac{L}{2L - 1}$ simultaneously at $Y = 1$,
+$K = -1/L$, $O = 2 - 1/L$, where both sides equal $2$ for every $L \ge 1$).
 
 *Proof.* Dividing by $|Y| > 0$ and rotating so $Y = 1$, write
 $K = X_K + i Y_K$, $O = X_O + i Y_O$, and set
@@ -97,26 +99,30 @@ $$R(a, b) := L X_K^2 + \frac{L}{2L - 1} X_O^2
   \;=\; \frac{(a - 1)^2}{2} + \frac{\big((1 - t)(a - 1) + (b - 1)\big)^2}{2t(2 - t)}$$
 and, by symmetry in $X_O \mapsto -X_O$, also
 $$R(a, b) = \frac{(b - 1)^2}{2} + \frac{\big((1 - t)(b - 1) + (a - 1)\big)^2}{2t(2 - t)}.$$
-Moreover, since $t \in (0, 1]$, $L = 1/t \ge 1$ and $\frac{1}{2 - t} \in [1/2, 1]$,
-so
-$$R(a, b) \ge X_K^2 + \frac{1}{2} X_O^2
-  = \frac{(a - 1)^2 + (b - 1)^2}{2} + \frac{(a + b - 2)^2}{8}
-  \ge \frac{(a - 1)^2 + (b - 1)^2}{2}.$$
+Moreover, using $X_K^2 + X_O^2 = \frac{(a - 1)^2 + (b - 1)^2}{2}$ and
+$X_K^2 - X_O^2 = (1 - a)(1 - b)$, we have
+$$R(a, b) - \frac{(a - 1)^2 + (b - 1)^2}{2}
+  \;=\; (L - 1)\left(X_K^2 - \frac{X_O^2}{2L - 1}\right)
+  \;\ge\; (L - 1)(X_K^2 - X_O^2) \;=\; (L - 1)(1 - a)(1 - b),$$
+because $L \ge 1 \implies 2L - 1 \ge 1$. Hence whenever **both $a \le 1$ and
+$b \le 1$**, $R(a, b) \ge \frac{(a - 1)^2 + (b - 1)^2}{2}$ (we thank
+`codex-a7c4` for spotting a faulty global lower bound in an earlier draft and
+pointing out this exact $(1 - a)(1 - b) \ge 0$ identity).
 We verify $\psi(a) + \psi(b) - (a + b) \le R(a, b)$ in all six cases (by symmetry
 assuming $a \ge b$):
 
 1. **$a > 1,\; b > 1$:** $\psi(a) + \psi(b) - (a + b) = 0 \le R(a, b)$.
-2. **$a > 1,\; |b| \le 1$:** $\psi(a) + \psi(b) - (a + b) = \frac{(b - 1)^2}{2} \le R(a, b)$.
-3. **$|a| \le 1,\; |b| \le 1$:** $\psi(a) + \psi(b) - (a + b) = \frac{(a - 1)^2 + (b - 1)^2}{2} \le R(a, b)$.
+2. **$a > 1,\; |b| \le 1$:** $\psi(a) + \psi(b) - (a + b) = \frac{(b - 1)^2}{2} \le R(a, b)$ (by the completed square in $b - 1$).
+3. **$|a| \le 1,\; |b| \le 1$:** both $a, b \le 1$, so $\psi(a) + \psi(b) - (a + b) = \frac{(a - 1)^2 + (b - 1)^2}{2} \le R(a, b)$.
 4. **$a > 1,\; b < -1$:** $\psi(a) + \psi(b) - (a + b) = -2b$. Set
-   $p = a - 1 > 0$, $q = -1 - b > 0$ (so $b - 1 = -(q + 2)$). Then
+   $p = a - 1 > 0$, $q = -1 - b > 0$ (so $b - 1 = -(q + 2)$). By the completed square in $b - 1$,
    $$R(a, b) - (-2b) = \frac{(q + 2)^2}{2} - 2(q + 1) + \frac{\big(p - (1 - t)(q + 2)\big)^2}{2t(2 - t)}
      = \frac{q^2}{2} + \frac{\big(p - (1 - t)(q + 2)\big)^2}{2t(2 - t)} \ge 0.$$
-5. **$|a| \le 1,\; b < -1$:** $\psi(a) + \psi(b) - (a + b) = \frac{(a - 1)^2}{2} - 2b$.
+5. **$|a| \le 1,\; b < -1$:** both $a, b \le 1$, and $\psi(a) + \psi(b) - (a + b) = \frac{(a - 1)^2}{2} - 2b$.
    Since $b < -1$, $-(2b) = 2|b| < \frac{(b - 1)^2}{2}$ (as
    $(b - 1)^2 + 4b = (b + 1)^2 > 0$), so
    $\frac{(a - 1)^2}{2} - 2b < \frac{(a - 1)^2 + (b - 1)^2}{2} \le R(a, b)$.
-6. **$a < -1,\; b < -1$:** $\psi(a) + \psi(b) - (a + b) = -2(a + b) < \frac{(a - 1)^2 + (b - 1)^2}{2} \le R(a, b)$
+6. **$a < -1,\; b < -1$:** both $a, b \le 1$, and $\psi(a) + \psi(b) - (a + b) = -2(a + b) < \frac{(a - 1)^2 + (b - 1)^2}{2} \le R(a, b)$
    because $(r - 1)^2 + 4r = (r + 1)^2 > 0$ for both $r = a$ and $r = b$. $\square$
 
 ---
@@ -203,7 +209,7 @@ the matrix is positive semidefinite throughout $x^2 + y^2 \le \eta^2$. $\square$
 
 ---
 
-## 3. Visible Shift $c^*$ and Zero-Mean Compensating Form
+## 3. Visible Shift $c^*$ and Phase-Invariant Zero-Mean Compensating Form
 
 At the peak row (`STATUS.md` 7.4.10, 7.5.3, 7.5.6), the exact rational constants are
 $$a = \frac{699}{1250}, \quad b = \frac{179}{1250}, \quad \rho = \frac{5053}{10000}, \quad
@@ -218,38 +224,49 @@ $Q' := Q - c^*$ (so $Q = Q' + c^*$), visible parity (`MONOGRAPH.md` §1.7) and
 the exact accounting of `7.5.6` yield, **without assuming $(P)$**,
 $$T_{(\xi_0, c^*)}(G) - S \;<\; 49\cdot 10^{-6} - \frac{1}{100}\|U\|^2 - \sigma(u) + D_-(q) + \mathbb{E}[F_{\mathrm{joint}}(c^*)],$$
 where
-$$F_{\mathrm{joint}}(c^*) := R_{\mathrm{joint}}(Y, K, O') + |c^*|^2 - B_P - p\omega - C(Q, P, \nu),$$
-$\omega = |Q|^2 + |P|^2 + |\nu|^2$, and $C(Q, P, \nu)$ is any fixed real bilinear
-form in $(Q, P)$ and the deterministic constant $\nu$:
-$$C(Q, P, \nu) := 2(c_1 Q_r \nu_r + c_2 Q_i \nu_i + c_3 P_r \nu_r + c_4 P_i \nu_i).$$
-Because $\mathbb{E}[Q] = \mathbb{E}[P] = 0$ (as $Q \in H_{1,1}$, $P \in H_{2,0}$)
-and $\nu \in \mathbb{C}$ is deterministic, $\mathbb{E}[C(Q, P, \nu)] = 0$
-unconditionally under arbitrary sharing, with **no** conditional centring
-assumption $\mathbb{E}[Q \mid q, A, B] = 0$.
+$$F_{\mathrm{joint}}(c^*) := R_{\mathrm{joint}}(Y, K, O') + |c^*|^2 - B_P - p\omega - C(Q, \nu),$$
+$\omega = |Q|^2 + |P|^2 + |\nu|^2$, and $C(Q, \nu)$ is a fixed real bilinear
+form in $(Q, \nu)$ alone (with **no** $P$–$\nu$ term, $c_3 = c_4 = 0$):
+$$C(Q, \nu) := 2(c_1 Q_r \nu_r + c_2 Q_i \nu_i).$$
+**Phase invariance under arbitrary sharing.** When rotating a complex remote
+shift $q = |q| e^{i\phi}$ to the real axis via $z_1 = e^{i\phi}\zeta$ and
+factoring out the common output phase $e^{i\phi}$ from $|L + q + K \pm O'|$,
+the odd coefficients transform as
+$$(Q',\; P,\; \nu) \;\longmapsto\; (Q',\; e^{-2i\phi} P,\; \nu).$$
+Both $Q'$ and $\nu$ are strictly invariant under this sample-dependent gauge
+rotation (whereas $e^{-2i\phi} P$ is not, and need not have zero expectation
+when $P$ shares remote coordinates with $q$; we thank `codex-a7c4` for catching
+this in review and supplying the phase-invariant constants below). Because
+$c_3 = c_4 = 0$, $C(Q, \nu)$ is unchanged in the rotated real-$w$ frame, and
+since $\mathbb{E}[Q] = 0$ ($Q \in H_{1,1}$) and $\nu \in \mathbb{C}$ is
+deterministic, $\mathbb{E}[C(Q, \nu)] = 0$ holds unconditionally under
+arbitrary sharing, with **no** conditional centring assumption
+$\mathbb{E}[Q \mid q, A, B] = 0$.
 
 Choose the global rational visible shift
-$$c^* := \alpha_r \nu_r + i \alpha_i \nu_i, \qquad \alpha_r = -\frac{11}{50}, \qquad \alpha_i = -\frac{17}{50},$$
+$$c^* := \alpha_r \nu_r + i \alpha_i \nu_i, \qquad \alpha_r = -\frac{31}{100}, \qquad \alpha_i = -\frac{7}{25},$$
 and choose
-$$k_1 = -\frac{1}{2}, \quad c_3 = -\frac{1}{5}, \quad k_2 = -\frac{4}{5}, \quad c_4 = \frac{3}{20}, \qquad
+$$k_1 = -\frac{73}{100}, \quad k_2 = -\frac{33}{50}, \quad c_3 = c_4 = 0, \qquad
   c_1 := k_1 - p\alpha_r, \quad c_2 := k_2 - p\alpha_i.$$
 Substituting $Q_r = Q'_r + \alpha_r \nu_r$ and $Q_i = Q'_i + \alpha_i \nu_i$
 gives the **exact pointwise quadratic identity** (verified in `verify.py:check_algebra_and_matrices`):
-$$p(|Q|^2 + |P|^2 + |\nu|^2) - |c^*|^2 + C(Q, P, \nu)
+$$p(|Q|^2 + |P|^2 + |\nu|^2) - |c^*|^2 + C(Q, \nu)
   \;=\; v_{\mathrm{re}}^\top B_{\mathrm{re}} v_{\mathrm{re}}
       + v_{\mathrm{im}}^\top B_{\mathrm{im}} v_{\mathrm{im}},$$
-where $v_{\mathrm{re}} = (Q'_r, P_r, \nu_r)^\top$,
-$v_{\mathrm{im}} = (Q'_i, P_i, \nu_i)^\top$, and
-$$B_{\mathrm{re}} = \begin{pmatrix} p & 0 & k_1 \\ 0 & p & c_3 \\ k_1 & c_3 & d_{\nu,r} \end{pmatrix}, \qquad
-  B_{\mathrm{im}} = \begin{pmatrix} p & 0 & k_2 \\ 0 & p & c_4 \\ k_2 & c_4 & d_{\nu,i} \end{pmatrix},$$
+where $v_{\mathrm{re}} = (Q'_r, \tilde{P}_r, \nu_r)^\top$,
+$v_{\mathrm{im}} = (Q'_i, \tilde{P}_i, \nu_i)^\top$ (with $\tilde{P} = e^{-2i\phi} P$,
+$|\tilde{P}| = |P|$), and
+$$B_{\mathrm{re}} = \begin{pmatrix} p & 0 & k_1 \\ 0 & p & 0 \\ k_1 & 0 & d_{\nu,r} \end{pmatrix}, \qquad
+  B_{\mathrm{im}} = \begin{pmatrix} p & 0 & k_2 \\ 0 & p & 0 \\ k_2 & 0 & d_{\nu,i} \end{pmatrix},$$
 with boosted diagonal $\nu$-entries
-$$d_{\nu,r} = p + 2 k_1 \alpha_r - (p + 1)\alpha_r^2 \approx p + 0.1076, \qquad
-  d_{\nu,i} = p + 2 k_2 \alpha_i - (p + 1)\alpha_i^2 \approx p + 0.2756.$$
+$$d_{\nu,r} = p + 2 k_1 \alpha_r - (p + 1)\alpha_r^2 \approx p + 0.2295, \qquad
+  d_{\nu,i} = p + 2 k_2 \alpha_i - (p + 1)\alpha_i^2 \approx p + 0.1875.$$
 Exact rational Sylvester minors (`verify.py`) certify
 $$B_{\mathrm{re}} \succ \frac{3}{5} I_3, \qquad B_{\mathrm{im}} \succ \frac{3}{5} I_3, \qquad
   B_{7.5.6} \succ \frac{3}{5} I_3 \quad (\text{for } |h_{7.5.6}| \le 62/100),$$
 and $Q_0 = \begin{pmatrix} Q_{A0} & Q_{AB0} \\ Q_{AB0} & Q_{B0} \end{pmatrix} \succ 0$,
 where $B_P = v_K^\top \big(Q_0 + \frac{w^2}{2} I\big) v_K + S_r^2$ in the real
-basis $(A_r, B_r)$ and $(A_i, B_i)$. Moreover,
+basis $(\tilde{A}_r, \tilde{B}_r)$ and $(\tilde{A}_i, \tilde{B}_i)$. Moreover,
 $\mathbb{E}[\|v_{\mathrm{re}}\|^2 + \|v_{\mathrm{im}}\|^2] = \mathbb{E}[|Q'|^2 + |P|^2 + |\nu|^2] = W + |c^*|^2 \ge W$,
 so any bound $-c_W (\|v_{\mathrm{re}}\|^2 + \|v_{\mathrm{im}}\|^2)$ with $c_W > 0$
 implies $-c_W W$ upon taking expectations.
@@ -279,18 +296,26 @@ block, rotating $O' \mapsto i O'$ swaps $(u_O, v_O) \mapsto (-v_O, u_O)$, yieldi
 the exact block symmetry $M^{(O,u)}_{\mathrm{im}} = M^{(O,v)}_{\mathrm{re}}$
 and $M^{(O,v)}_{\mathrm{im}} = M^{(O,u)}_{\mathrm{re}}$.
 
-The C++ certifier `certify_joint_secant.cpp` uses strictly outward-rounded
+The C++ certifier `certify_joint_secant.cpp` is compiled with `-ffp-contract=off`
+(disabling fused multiply-add contraction) and uses strictly outward-rounded
 IEEE-754 interval arithmetic (`std::nextafter` in verified `FE_TONEAREST` mode;
-every transcendental enclosure verified arithmetically without trusting `libm`):
+every transcendental enclosure verified arithmetically without trusting `libm`).
+All numeric outputs are printed in exact IEEE-754 hexadecimal floating-point
+format (`std::hexfloat`) and parsed bit-for-bit into exact dyadic `Fraction`
+objects in `verify.py` (`float.fromhex`), eliminating decimal rounding between
+C++ and Python. Every Part C threshold uses the outward-rounded upper bound
+`rat(sm, 1000).h >= sm / 1000` so the claimed rational $K = (sm/1000)^2$ is
+strictly enclosed.
 - **Factored 1D densities:** Every matrix integrand is factored into closed-form
   1D densities $f(s)$ of $s = x^2 + y^2$ (with exact derivatives $f'(s), f''(s)$
   from $T \mapsto s = T(a + bT)^2$) multiplied by low-degree polynomials in
   $(r, \cos\theta, \sin\theta, w)$. Built-in startup self-tests verify all 36
   second-derivative entries against central finite differences.
 - **2D midpoint rule + linear $w$-interpolation:** On each $(r, \theta)$ cell
-  and each $w$-slab $[w_l, w_h]$ of an exact rational 288-slab partition of
-  $[0, 8]$ (width $1/160$ on $[0.35, 0.65]$, $1/80$ on $[0, 0.35] \cup [0.65, 1.4]$,
-  $1/40$ on $[1.4, 2.4]$, $1/20$ on $[2.4, 8]$), Fubini bounds the 2D midpoint
+  and each $w$-slab $[w_l, w_h]$ of an exact dyadic IEEE-754 230-slab partition
+  of $[0, 8]$ (width $1/64$ on $[0, 3/8] \cup [11/16, 11/8]$, $1/128$ on
+  $[3/8, 11/16]$, $1/32$ on $[11/8, 19/8]$, $1/16$ on $[19/8, 8]$ — every
+  endpoint exact in binary64), Fubini bounds the 2D midpoint
   quadrature error by
   $\mathrm{area}\cdot\big(\frac{\Delta r^2}{24}\sup|F_{rr}| + \frac{\Delta\theta^2}{24}\sup|F_{\theta\theta}|\big)$,
   and linear interpolation in $w$ adds
@@ -300,7 +325,7 @@ every transcendental enclosure verified arithmetically without trusting `libm`):
   Gershgorin's theorem, and eigenvalue upper bounds are certified by interval
   Sylvester/Schur positive-definiteness (`pd2`, `pd3`).
 - **Radial tail $r \ge R_{\max}$:** With $R_{\max} - w_h \ge 20$ ($R_{\max} = 25$
-  on $[0, 7/5]$ and $R_{\max} = 29$ on $[7/5, 8]$), $|L| \ge 20 \implies T > 24$
+  on $[0, 11/8]$ and $R_{\max} = 29$ on $[11/8, 8]$), $|L| \ge 20 \implies T > 24$
   (verified by $\phi(24) < 400$). On $T \ge 24$:
   - $|K_{\mathrm{row}}|^2 = (T - 2/5)^2 + (c + T/\sqrt{2})^2 < \frac{3}{2} T^2$
     and $|H_{\mathrm{row}}|^2 = (T - 11/20)^2 + T^2/2 < \frac{3}{2} T^2$ (both
@@ -384,28 +409,30 @@ for **all** $0 \le V \le V_{\max}$.
 ## 7. Certified Results and Exact Replay
 
 All four parts are certified by `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp`
-(outward-rounded IEEE-754 intervals, 288 exact rational $w$-slabs on $[0, 8]$,
-full replay ~2 min on 8 cores) and audited in exact rational arithmetic by
+(compiled with `-ffp-contract=off`, outward-rounded IEEE-754 intervals, 230 exact
+dyadic binary64 $w$-slabs on $[0, 8]$, exact `std::hexfloat` output, full replay
+~2 min on 8 cores) and audited in exact rational arithmetic by
 `code/sharp-joint-secant-gemini-c1de/verify.py` (Python 3 standard library only,
 `python3 -I`, < 2 s on `result.json`):
 
 | Part | Region / Regime | Certified Bound (`P + C, author only`) | Comparison with Prior Ledger |
 |---|---|---|---|
-| **A** | Shift exterior $|q| \ge 7/5$, all $S_r \ge 0$, all $\omega \ge 0$ (no $\|\nu\|^2 \le 1/50$ cap) | $h_{7.5.6} \in [-0.61038, -0.60578]$; $\max\lambda_K \le -0.06993$, $\max\lambda_O(c=0) \le -0.04915$, $\max\lambda_O(c^*) \le -0.00735$; hence $F_{\mathrm{joint}} \le 0$ and $F_{\mathrm{joint}}(c^*) \le 0$ pointwise | Shrinks `7.5.6`'s $|q| \ge 10$ by $> 7\times$ |
+| **A** | Shift exterior $|q| \ge 11/8 = 1.375$, all $S_r \ge 0$, all $\omega \ge 0$ (no $\|\nu\|^2 \le 1/50$ cap) | $h_{7.5.6} \in [-0.61038, -0.60578]$; $\max\lambda_K \le -0.02118$, $\max\lambda_O(c=0) \le -0.04135$, $\max\lambda_O(c^*) \le -0.00626$; hence $F_{\mathrm{joint}} \le 0$ and $F_{\mathrm{joint}}(c^*) \le 0$ pointwise | Shrinks `7.5.6`'s $|q| \ge 10$ by $7.27\times$ |
 | **B1** | Global $L = 13/4$, all $w, A, B, Q, P, \nu$ (no $(P)$, no $\|\nu\|^2 \le 1/50$) | $F_{\mathrm{joint}}(c^*) \le \frac{3053}{1000} S_r - S_r^2 - \frac{1}{200}\omega'$; gives $F_{\mathrm{joint}}(c^*) \le 0$ for $S_r \ge 3.053$, and linear closure for $V \le \frac{1}{61060} \approx 1.6377\cdot 10^{-5}$ | $44.5\times$ larger linear closure than `7.5.10` ($3.67\cdot 10^{-7}$); removes $\|\nu\|^2 \le 1/50$ from large-$S_r$ exterior |
-| **B2** | Global $L = 5$, all $w, A, B, Q, P, \nu$ (no $(P)$) | $F_{\mathrm{joint}}(c^*) \le \frac{2457}{500} S_r - S_r^2 - \frac{16}{625}\omega'$; ratio $\frac{2457/500}{16/625} = 191.953125 < 192$, closing **unconditional** cone $W \ge 192\,V$ | Nearly $2\times$ wider than `7.5.8`'s $W \ge 375\,V$, and does **not** assume $(P)$ |
-| **C** | 18-level multiscale staircase on $w \in [0, 7/5]$ + Part A on $w \ge 7/5$ + Part B1 top $c_{\mathrm{top}} = 3053/1000$ | $\mathbb{E}[F_{\mathrm{joint}}(c^*)] \le \frac{2360271}{50000000000} \approx 4.720542\cdot 10^{-5} < 50\cdot 10^{-6}$ for **all** $0 \le V \le \frac{1}{10000} = 10^{-4}$; hence $\widehat{\Lambda}(G) < S + 99.36\cdot 10^{-6} < S + 10^{-4}$ unconditionally on the domain of `7.5.6` | **$272\times$** larger than `7.5.10`'s unconditional $3.67\cdot 10^{-7}$ and **$8.85\times$** larger than `7.5.8`'s conditional $1.13\cdot 10^{-5}$ |
-| **D** | Recentred $(P_\Psi)$ split of `7.5.8` at $L = 13/4$ and $L = 5$ | $\mathbb{E} D(X, O - c^* z_1) + |c^*|^2 - pW \le \frac{687}{250} V - \frac{1}{200} W$ (linear $V \le \frac{1}{54960} \approx 1.8195\cdot 10^{-5}$) and $\le \frac{514}{125} V - \frac{16}{625} W$ (ratio $160.625 < 161$, cone $W \ge 161\,V$) | $2.33\times$ wider cone than `7.5.8`'s $W \ge 375\,V$ |
+| **B2** | Global $L = 5$, all $w, A, B, Q, P, \nu$ (no $(P)$) | $F_{\mathrm{joint}}(c^*) \le \frac{4929}{1000} S_r - S_r^2 - \frac{69}{2500}\omega'$; ratio $\frac{4929/1000}{69/2500} = 178.587\ldots < 179$, closing **unconditional** cone $W \ge 179\,V$ | $2.09\times$ wider than `7.5.8`'s $W \ge 375\,V$, and does **not** assume $(P)$ |
+| **C** | 18-level multiscale staircase on $w \in [0, 11/8]$ + Part A on $w \ge 11/8$ + Part B1 top $c_{\mathrm{top}} = 3053/1000$ | $\mathbb{E}[F_{\mathrm{joint}}(c^*)] \le \frac{49711749}{10^{12}} \approx 4.971175\cdot 10^{-5} < 50\cdot 10^{-6}$ for **all** $0 \le V \le \frac{11}{100000} = 1.1\cdot 10^{-4}$ (and $\le \frac{38098983}{10^{12}} \approx 3.8099\cdot 10^{-5}$ for $V \le 10^{-4}$), giving $\widehat{\Lambda}(G) < S + 99.36\cdot 10^{-6} < S + 10^{-4}$ unconditionally on the domain of `7.5.6` | **$299\times$** larger than `7.5.10`'s unconditional $3.67\cdot 10^{-7}$ and **$9.73\times$** larger than `7.5.8`'s conditional $1.13\cdot 10^{-5}$ |
+| **D** | Recentred $(P_\Psi)$ split of `7.5.8` at $L = 13/4$ and $L = 5$ | $\mathbb{E} D(X, O - c^* z_1) + |c^*|^2 - pW \le \frac{11}{4} V - \frac{1}{200} W$ (linear $V \le \frac{1}{55000} \approx 1.8182\cdot 10^{-5}$) and $\le \frac{823}{200} V - \frac{69}{2500} W$ (ratio $149.094\ldots < 150$, cone $W \ge 150\,V$) | $2.50\times$ wider cone than `7.5.8`'s $W \ge 375\,V$ |
 
 ### Staircase levels (`Part C`, exact rational upper slopes $c_j$)
 
-$K_j = s_j^2 \cdot 10^{-6}$ for $s_j \in \{6, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 30, 36\}$,
-with certified `max_evO < 0` on every level and slopes rising from
-$c_1 = 283/50000 = 0.00566$ ($K_1 = 36\cdot 10^{-6}$) through
-$c_3 = 1583/100000 = 0.01583$ ($K_3 = 100\cdot 10^{-6}$),
-$c_4 = 239/12500 = 0.01912$ ($K_4 = 121\cdot 10^{-6}$),
-$c_5 = 8843/100000 = 0.08843$ ($K_5 = 144\cdot 10^{-6}$),
-up to $c_{18} = 265779/100000 = 2.65779$ ($K_{18} = 1296\cdot 10^{-6}$) and
+$K_j = s_j^2 \cdot 10^{-6}$ for $s_j \in \{6, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 30, 36\}$
+(each certified at outward-rounded threshold `rat(s_j, 1000).h`), with certified
+`max_evO < 0` on every level and slopes rising from
+$c_1 = 63/10000 = 0.0063$ ($K_1 = 36\cdot 10^{-6}$) through
+$c_3 = 1649/100000 = 0.01649$ ($K_3 = 100\cdot 10^{-6}$),
+$c_5 = 2171/100000 = 0.02171$ ($K_5 = 144\cdot 10^{-6}$),
+$c_6 = 4557/100000 = 0.04557$ ($K_6 = 169\cdot 10^{-6}$),
+up to $c_{18} = 246549/100000 = 2.46549$ ($K_{18} = 1296\cdot 10^{-6}$) and
 $c_{\mathrm{top}} = 3053/1000 = 3.053$.
 
 ### Replay commands

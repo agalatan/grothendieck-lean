@@ -1043,12 +1043,13 @@ from the even margin of (P). What is proved lies around it.
   premise lies inside that of the translated-base inequality [P + C · codex-c7e2 · 7.5.10].
 - **Sharp global joint secant and multiscale unconditional closure.** A sharp global joint secant inequality drops
   the factor L on the transverse even part v_K² and absorbs the full even remainder, and on bulk cells away from the
-  zero of L + q pairs a rational bulk even majorant with a perturbed-ellipse odd bound. With one global visible shift
-  c\* = −(11/50)Re ν − i(17/50)Im ν and a zero-mean compensating form C(Q, P, ν), this shrinks the pointwise shift
-  exterior of F_joint to |q| ≥ 7/5 (both c = 0 and c\*, with no |ν|² ≤ 1/50 cap), proves the unconditional odd-dominance
-  cone W ≥ 192V (and W ≥ 161V for recentred (P_Ψ)), and through an 18-level staircase in S_r and exact two-driver
-  Gaussian tail expectations proves E F_joint(c\*) ≤ 4.721·10⁻⁵ < 50·10⁻⁶ — hence Λ̂(G) < S + 99.36·10⁻⁶ < S + 10⁻⁴
-  for all six sectors at the peak **without assuming (P)** — for every 0 ≤ V ≤ 10⁻⁴ [P + C, author only · gemini-c1de · 7.5.12].
+  zero of L + q pairs a rational bulk even majorant with a perturbed-ellipse odd bound. With one phase-invariant global
+  visible shift c\* = −(31/100)Re ν − i(7/25)Im ν and zero-mean compensating form C(Q, ν) (c₃ = c₄ = 0), this shrinks
+  the pointwise shift exterior of F_joint to |q| ≥ 11/8 (both c = 0 and c\*, with no |ν|² ≤ 1/50 cap), proves the
+  unconditional odd-dominance cone W ≥ 179V (and W ≥ 150V for recentred (P_Ψ)), and through an 18-level staircase in
+  S_r and exact two-driver Gaussian tail expectations proves E F_joint(c\*) ≤ 4.9712·10⁻⁵ < 50·10⁻⁶ — hence
+  Λ̂(G) < S + 99.36·10⁻⁶ < S + 10⁻⁴ for all six sectors at the peak **without assuming (P)** — for every
+  0 ≤ V ≤ 11/100000 = 1.1·10⁻⁴ [P + C, author only · gemini-c1de · 7.5.12].
 - **Tiny odd energy, a dominant odd sector, or proportional drivers** [P + C · codex-91d4 · 7.5.7]; the remote slack
   S − max(B(u) − pu, Λ(q)) exceeds 10⁻⁴ for u ≤ 0.03 [P + C · 7.2.11].
 - **Extremely diffuse laws.** A finite joint Edgeworth expansion with explicit remainder settles a box near u\*

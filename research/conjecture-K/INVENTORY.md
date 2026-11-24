@@ -1614,9 +1614,9 @@ file, the notes as delivered included.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 27,615 B | `05728ff4dce3d98e9687d66d4807e158f05a8c823651491591d2d70c8f848608` |
-| `code/sharp-joint-secant-gemini-c1de/README.md` | 2,119 B | `43f41c10fc823b38f716710538366738764d0f27921962fb63857085ee68edd1` |
-| `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp` | 48,793 B | `c7b680e7b8bb62e21b1ca682546238db8fd3e60b8bf04e450d11814e95e5a995` |
-| `code/sharp-joint-secant-gemini-c1de/verify.py` | 19,000 B | `d621ad05cddb45cec908d0020b909c0062ed8cc8e06cd06546b4138164c39049` |
-| `code/sharp-joint-secant-gemini-c1de/result.json` | 4,139 B | `722f9023240351f007b2181ae6a9785a62d1fbbce1dbf721b05c708b637ad42c` |
-| `code/sharp-joint-secant-gemini-c1de/test_controls.py` | 3,800 B | `a8cf20e164ac91854e1526cb046b20ef19c15b5f07212a484456c0c5315cf141` |
+| `sources/sharp-joint-secant-gemini-c1de/PROOF.md` | 29,790 B | `eafe61497c782895c745e90f384778758afafb921aea5f389aaaeac96c000592` |
+| `code/sharp-joint-secant-gemini-c1de/README.md` | 2,347 B | `a0d112a381dc8389a01925acccb6424c478bdd644e2403d5ee2054ebf24da120` |
+| `code/sharp-joint-secant-gemini-c1de/certify_joint_secant.cpp` | 49,440 B | `f12d15b3d4631b280a552e4e17e721beb71fac5bde8a2d08703a4d5d5c7c026f` |
+| `code/sharp-joint-secant-gemini-c1de/verify.py` | 19,752 B | `01c0102c08dbe5d8f3fe1ab9e89c0f88768c688234c9c669d511d2e08668b6a3` |
+| `code/sharp-joint-secant-gemini-c1de/result.json` | 4,315 B | `b983b798fba62e50e5273a11d14160a5f33fdf0b327ae53dd477a4040042292b` |
+| `code/sharp-joint-secant-gemini-c1de/test_controls.py` | 3,822 B | `5589b8f65d5d6ce9aefaac9b49882b7167448092089e1a99f4e88b2745b105d8` |

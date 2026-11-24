@@ -11,17 +11,20 @@ documented in
 ## Files
 
 - `certify_joint_secant.cpp` — C++17 outward-rounded IEEE-754 interval
-  certifier (`std::nextafter` in verified `FE_TONEAREST` mode; arithmetic
-  enclosures for `sqrt`, `root_T`, `expneg`, `sincos`; startup finite-difference
-  self-tests across all 36 second-derivative entries; 288 exact rational
-  $w$-slabs on $[0, 8]$ covering Parts A, B, C, and D).
+  certifier (compiled with `-ffp-contract=off`, `std::nextafter` in verified
+  `FE_TONEAREST` mode; arithmetic enclosures for `sqrt`, `root_T`, `expneg`,
+  `sincos`; startup finite-difference self-tests across all 36 second-derivative
+  entries; 230 exact dyadic binary64 $w$-slabs on $[0, 8]$ covering Parts A, B,
+  C, and D; exact IEEE-754 `std::hexfloat` output and outward-rounded staircase
+  thresholds `rat(sm, 1000).h`).
 - `verify.py` — Python 3 standard-library exact rational verifier (`python3 -I`,
   assertions required): checks peak-row constants, $Q_0 \succ 0$, the exact
-  visible-shift + zero-mean compensating identity and
-  $B_{\mathrm{re}}, B_{\mathrm{im}}, B_{7.5.6} \succ \frac{3}{5} I_3$,
+  phase-invariant visible-shift + zero-mean compensating identity ($c_3 = c_4 = 0$)
+  and $B_{\mathrm{re}}, B_{\mathrm{im}}, B_{7.5.6} \succ \frac{3}{5} I_3$,
   Theorem 2(b) symbolic polynomial positivity, the $w \ge 8$ analytic tail,
-  `cpp_sha256` integrity, Parts A/B/D bounds, and the exact rational two-driver
-  Gaussian tail expectation + multiscale staircase assembly.
+  `cpp_sha256` integrity, exact `float.fromhex` parsing of `result.json`,
+  Parts A/B/D bounds, and the exact rational two-driver Gaussian tail
+  expectation + multiscale staircase assembly.
 - `result.json` — machine-readable output of `certify_joint_secant.cpp` with its
   matching `cpp_sha256`.
 - `test_controls.py` — 10 negative/corruption controls verifying that tampering

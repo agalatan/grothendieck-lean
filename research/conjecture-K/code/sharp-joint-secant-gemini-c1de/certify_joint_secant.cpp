@@ -15,7 +15,7 @@
 // polynomials in (r, cos(theta), sin(theta), w), avoiding interval wrapping.
 //
 // Build:
-//   clang++ -O2 -std=c++17 -pthread -Wall -Wextra -Werror certify_joint_secant.cpp -o certify_joint_secant
+//   clang++ -O2 -ffp-contract=off -std=c++17 -pthread -Wall -Wextra -Werror certify_joint_secant.cpp -o certify_joint_secant
 
 #include <algorithm>
 #include <array>
@@ -1068,12 +1068,14 @@ int main(int argc, char **argv) {
 
     const int nthreads = std::max(1u, std::thread::hardware_concurrency());
 
-    // Global rational visible shift c* = (-11/50)*Re(nu) + i*(-17/50)*Im(nu)
-    // and zero-mean compensating form C(Q, P, nu):
-    //   k1 = -1/2, c3 = -1/5, al_r = -11/50
-    //   k2 = -4/5, c4 =  3/20, al_i = -17/50
-    const I k1 = rat(-1, 2), c3 = rat(-1, 5), al_r = rat(-11, 50);
-    const I k2 = rat(-4, 5), c4 = rat(3, 20), al_i = rat(-17, 50);
+    // Phase-invariant global rational visible shift c* = (-31/100)*Re(nu) + i*(-7/25)*Im(nu)
+    // and phase-invariant zero-mean compensating form C(Q, nu) (c3 = c4 = 0, so E[C] = 0
+    // holds under arbitrary sharing after rotating q = |q|e^{i phi} to the real axis):
+    //   k1 = -73/100, c3 = 0, al_r = -31/100
+    //   k2 = -33/50,  c4 = 0, al_i = -7/25
+    // (Constants found by codex-a7c4 in review of PR #594.)
+    const I k1 = rat(-73, 100), c3 = I(0.0), al_r = rat(-31, 100);
+    const I k2 = rat(-33, 50),  c4 = I(0.0), al_i = rat(-7, 25);
     const I diag_nur = P_C + I(2.0) * k1 * al_r - (P_C + I(1.0)) * sq(al_r);
     const I diag_nui = P_C + I(2.0) * k2 * al_i - (P_C + I(1.0)) * sq(al_i);
     const std::array<I, 6> BO_re = {P_C, I(0.0), k1, P_C, c3, diag_nur};
@@ -1083,22 +1085,23 @@ int main(int argc, char **argv) {
     const std::array<I, 6> B756_re = {P_C, I(0.0), rat(11, 20) * h756, P_C, I(0.0), P_C};
     const std::array<I, 6> B756_im = {P_C, I(0.0), h756, P_C, I(0.0), P_C};
 
-    // Exact rational slab partition of [0, 8]:
-    //   [0, 0.35]:    28 slabs of width 1/80  = 0.0125
-    //   [0.35, 0.65]: 48 slabs of width 1/160 = 0.00625 (tight O-block peak near w ~ 0.47)
-    //   [0.65, 1.40]: 60 slabs of width 1/80  = 0.0125
-    //   [1.40, 2.40]: 40 slabs of width 1/40  = 0.025
-    //   [2.40, 8.00]: 112 slabs of width 1/20 = 0.05
+    // Exact dyadic IEEE-754 slab partition of [0, 8] (every endpoint is exact in binary64!):
+    //   [0, 3/8]:       24 slabs of width 1/64  = 0.015625
+    //   [3/8, 11/16]:   40 slabs of width 1/128 = 0.0078125 (tight O-block peak near w ~ 0.47)
+    //   [11/16, 11/8]:  44 slabs of width 1/64  = 0.015625  (11/8 = 1.375 < 7/5 = 1.4!)
+    //   [11/8, 19/8]:   32 slabs of width 1/32  = 0.03125
+    //   [19/8, 8]:      90 slabs of width 1/16  = 0.0625
     struct SlabSpec { double wl, wh, tol; int maxc; };
     std::vector<SlabSpec> specs_inner, specs_outer;
-    for (int i = 0; i < 28; i++) specs_inner.push_back({i / 80.0, (i + 1) / 80.0, 2e-3, 6000});
-    for (int i = 0; i < 48; i++) specs_inner.push_back({(56 + i) / 160.0, (57 + i) / 160.0, 1e-3, 18000});
-    for (int i = 0; i < 60; i++) specs_inner.push_back({(52 + i) / 80.0, (53 + i) / 80.0, 2e-3, 6000});
-    for (int i = 0; i < 40; i++) specs_outer.push_back({(56 + i) / 40.0, (57 + i) / 40.0, 4e-3, 5000});
-    for (int i = 0; i < 112; i++) specs_outer.push_back({(48 + i) / 20.0, (49 + i) / 20.0, 2e-2, 2500});
+    for (int i = 0; i < 24; i++) specs_inner.push_back({i / 64.0, (i + 1) / 64.0, 2e-3, 6000});
+    for (int i = 0; i < 40; i++) specs_inner.push_back({(48 + i) / 128.0, (49 + i) / 128.0, 1e-3, 18000});
+    for (int i = 0; i < 44; i++) specs_inner.push_back({(44 + i) / 64.0, (45 + i) / 64.0, 2e-3, 6000});
+    for (int i = 0; i < 32; i++) specs_outer.push_back({(44 + i) / 32.0, (45 + i) / 32.0, 4e-3, 5000});
+    for (int i = 0; i < 90; i++) specs_outer.push_back({(38 + i) / 16.0, (39 + i) / 16.0, 2e-2, 2500});
 
     std::string mode = (argc >= 2) ? argv[1] : "all";
-    std::cout << std::setprecision(12);
+    // Print exact IEEE-754 hexfloats so Python's float.fromhex -> Fraction is bit-for-bit exact!
+    std::cout << std::hexfloat;
 
     std::vector<SlabCache> inner_caches, outer_caches;
     if (mode == "all" || mode == "partBD" || mode == "partC") {
@@ -1127,7 +1130,9 @@ int main(int argc, char **argv) {
             maxO_cstar = std::max(maxO_cstar, r2.evO_hi);
             maxErrO = std::max(maxErrO, r1.errO);
         }
-        std::cout << "PART_A w_lo=1.4 w_hi=8.0 slabs=" << outer_caches.size()
+        std::cout << "PART_A w_lo=" << outer_caches.front().w_lo
+                  << " w_hi=" << outer_caches.back().w_hi
+                  << " slabs=" << outer_caches.size()
                   << " h756_lo=" << h756.l << " h756_hi=" << h756.h
                   << " max_evK=" << maxK << " max_evO_756=" << maxO_756
                   << " max_evO_cstar=" << maxO_cstar << " max_errO=" << maxErrO
@@ -1136,7 +1141,7 @@ int main(int argc, char **argv) {
     }
 
     if (mode == "all" || mode == "partBD") {
-        for (double L : {3.25, 5.0}) {
+        for (auto [L, L_tag] : std::vector<std::pair<double, const char*>>{{3.25, "3.25"}, {5.0, "5"}}) {
             double maxK = -1e9, maxO = -1e9, maxH = -1e9, maxErrO = 0.0, maxErrK = 0.0;
             for (const auto &sc : inner_caches) {
                 auto r = eval_const_L(sc, L, BO_re, BO_im);
@@ -1154,7 +1159,7 @@ int main(int argc, char **argv) {
                 maxErrO = std::max(maxErrO, r.errO);
                 maxErrK = std::max(maxErrK, r.errK);
             }
-            std::cout << "PART_BD L=" << L << " max_cV_Fjoint=" << maxK
+            std::cout << "PART_BD L=" << L_tag << " max_cV_Fjoint=" << maxK
                       << " max_evO=" << maxO << " max_cV_recen=" << maxH
                       << " max_errK=" << maxErrK << " max_errO=" << maxErrO << "\n";
             std::cout.flush();
@@ -1173,7 +1178,7 @@ int main(int argc, char **argv) {
             {4.0, 0.12}, {4.0, 0.07}
         };
         for (int sm : s_milli) {
-            double s_hi = sm / 1000.0;
+            double s_hi = rat(sm, 1000).h; // outward-rounded >= sm/1000 so K = (sm/1000)^2 is strictly enclosed!
             std::vector<double> slab_cK(inner_caches.size()), slab_evO(inner_caches.size());
             parallel_for(inner_caches.size(), nthreads, [&](size_t i) {
                 const auto &sc = inner_caches[i];

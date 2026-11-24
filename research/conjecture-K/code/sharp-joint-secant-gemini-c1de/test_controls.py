@@ -35,7 +35,7 @@ def main():
     base = json.loads(result_path.read_text(encoding="utf-8"))
 
     # Baseline must pass
-    verify.verify_all(base, target_V=F(1, 10000))
+    verify.verify_all(base, target_V=F(11, 100000))
 
     # Control 1: Part A PASS flag flipped
     d1 = copy.deepcopy(base)
@@ -47,10 +47,10 @@ def main():
     d2["partA"]["max_evO_cstar"] = "0.0001"
     expect_fail("Part A max_evO_cstar > 0", lambda: verify.verify_all(d2))
 
-    # Control 3: Part A w_lo altered from 7/5
+    # Control 3: Part A w_lo altered from 11/8
     d3 = copy.deepcopy(base)
     d3["partA"]["w_lo"] = "1.5"
-    expect_fail("Part A w_lo != 7/5", lambda: verify.verify_all(d3))
+    expect_fail("Part A w_lo != 11/8", lambda: verify.verify_all(d3))
 
     # Control 4: Part B/D L=3.25 max_evO made non-negative
     d4 = copy.deepcopy(base)
@@ -70,7 +70,7 @@ def main():
     # Control 7: Part C staircase inflated above 50e-6 budget
     d7 = copy.deepcopy(base)
     for row in d7["partC"]:
-        row["c_K_hi"] = str(float(row["c_K_hi"]) + 0.6)
+        row["c_K_hi"] = str(float(verify.parse_num(row["c_K_hi"])) + 0.6)
     expect_fail("Part C staircase inflated above budget", lambda: verify.verify_all(d7))
 
     # Control 8: target_V too large (1/5000 = 200e-6) must fail

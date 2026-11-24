@@ -38,10 +38,12 @@ QA0 = PC - F(67, 100) - F(2, 25) * RHO**2
 QB0 = PC - F(67, 100) * RHO**2 - F(2, 25)
 QAB0 = -F(59, 100) * RHO
 
-# Global rational visible shift c* = AL_R * Re(nu) + i * AL_I * Im(nu)
-# and zero-mean compensating form C(Q, P, nu) = 2*c1*Qr*nur + 2*c2*Qi*nui + 2*c3*Pr*nur + 2*c4*Pi*nui
-K1, C3, AL_R = F(-1, 2), F(-1, 5), F(-11, 50)
-K2, C4, AL_I = F(-4, 5), F(3, 20), F(-17, 50)
+# Phase-invariant global rational visible shift c* = AL_R * Re(nu) + i * AL_I * Im(nu)
+# and phase-invariant zero-mean compensating form C(Q, nu) = 2*c1*Qr*nur + 2*c2*Qi*nui
+# (c3 = c4 = 0 so C is invariant under rotating q = |q|e^{i phi} to the real axis;
+# constants found by codex-a7c4 in review of PR #594).
+K1, C3, AL_R = F(-73, 100), F(0), F(-31, 100)
+K2, C4, AL_I = F(-33, 50), F(0), F(-7, 25)
 C1 = K1 - P * AL_R
 C2 = K2 - P * AL_I
 DIAG_NUR = P + 2 * K1 * AL_R - (P + 1) * AL_R**2
@@ -322,9 +324,17 @@ def parse_cpp_output(text: str) -> dict:
     return res
 
 
+def parse_num(val_str: str) -> F:
+    """Parse exact IEEE-754 hexfloat (e.g. 0x1.8p+1) or decimal/rational string to exact Fraction."""
+    s = val_str.strip()
+    if s.startswith(("0x", "-0x", "+0x", "0X", "-0X", "+0X")):
+        return F(float.fromhex(s))
+    return F(s)
+
+
 def ceil_rat(val_str: str, den: int = 100000) -> F:
-    """Parse decimal float string as exact Fraction and round UP to 1/den."""
-    x = F(val_str)
+    """Parse exact binary/decimal string as exact Fraction and round UP to 1/den."""
+    x = parse_num(val_str)
     n = -(-(x.numerator * den) // x.denominator)
     out = F(n, den)
     assert out >= x
@@ -332,50 +342,54 @@ def ceil_rat(val_str: str, den: int = 100000) -> F:
 
 
 def floor_rat(val_str: str, den: int = 100000) -> F:
-    """Parse decimal float string as exact Fraction and round DOWN to 1/den."""
-    x = F(val_str)
+    """Parse exact binary/decimal string as exact Fraction and round DOWN to 1/den."""
+    x = parse_num(val_str)
     n = (x.numerator * den) // x.denominator
     out = F(n, den)
     assert out <= x
     return out
 
 
-def verify_all(data: dict, target_V: F = F(1, 10000)):
+def verify_all(data: dict, target_V: F = F(11, 100000)):
     check_algebra_and_matrices()
     check_theorem_2b_polynomial()
 
     # Part A verification
     pA = data["partA"]
     assert pA is not None and pA["PASS"] == "1", "Part A failed"
-    assert F(pA["w_lo"]) == F(7, 5) and F(pA["w_hi"]) == F(8)
-    assert F(pA["max_evK"]) < 0
-    assert F(pA["max_evO_756"]) < 0
-    assert F(pA["max_evO_cstar"]) < 0
-    assert F(-62, 100) < F(pA["h756_lo"]) < F(pA["h756_hi"]) < 0
+    assert parse_num(pA["w_lo"]) == F(11, 8) and parse_num(pA["w_hi"]) == F(8)
+    assert parse_num(pA["max_evK"]) < 0
+    assert parse_num(pA["max_evO_756"]) < 0
+    assert parse_num(pA["max_evO_cstar"]) < 0
+    assert F(-62, 100) < parse_num(pA["h756_lo"]) < parse_num(pA["h756_hi"]) < 0
 
     # Parts B & D verification (L = 3.25 and L = 5)
     b325 = data["partBD"]["3.25"]
     b5 = data["partBD"]["5"]
-    assert F(b325["max_evO"]) < 0, f"L=3.25 evO not negative: {b325['max_evO']}"
-    assert F(b5["max_evO"]) < 0, f"L=5 evO not negative: {b5['max_evO']}"
+    assert parse_num(b325["max_evO"]) < 0, f"L=3.25 evO not negative: {b325['max_evO']}"
+    assert parse_num(b5["max_evO"]) < 0, f"L=5 evO not negative: {b5['max_evO']}"
 
     cV_F325 = ceil_rat(b325["max_cV_Fjoint"], 1000)
-    cW_325 = floor_rat(str(-F(b325["max_evO"])), 10000)
+    neg_evO_325 = -parse_num(b325["max_evO"])
+    cW_325 = F((neg_evO_325.numerator * 10000) // neg_evO_325.denominator, 10000)
+    assert cW_325 <= neg_evO_325
     cV_H325 = ceil_rat(b325["max_cV_recen"], 1000)
 
     cV_F5 = ceil_rat(b5["max_cV_Fjoint"], 1000)
-    cW_5 = floor_rat(str(-F(b5["max_evO"])), 10000)
+    neg_evO_5 = -parse_num(b5["max_evO"])
+    cW_5 = F((neg_evO_5.numerator * 10000) // neg_evO_5.denominator, 10000)
+    assert cW_5 <= neg_evO_5
     cV_H5 = ceil_rat(b5["max_cV_recen"], 1000)
     assert cW_325 > 0 and cW_5 > 0
 
     o_tail, k_tail, h_tail = check_large_w_tail(cV_H325, cV_H5)
 
     # Part C staircase verification:
-    # Every level has K_j = K_num/K_den, certified evO < 0 on all w in [0, 7/5]
-    # (and w >= 7/5 already has F_joint(c*) <= 0 by Part A + w >= 8 tail!).
+    # Every level has K_j = K_num/K_den, certified evO < 0 on all w in [0, 11/8]
+    # (and w >= 11/8 already has F_joint(c*) <= 0 by Part A + w >= 8 tail!).
     levels = []
     for row in data["partC"]:
-        assert F(row["max_evO"]) < 0, f"Part C level {row} failed evO < 0"
+        assert parse_num(row["max_evO"]) < 0, f"Part C level {row} failed evO < 0"
         K = F(int(row["K_num"]), int(row["K_den"]))
         cK = max(F(0), ceil_rat(row["c_K_hi"], 100000))
         levels.append((K, cK))
@@ -428,7 +442,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--result", type=Path, default=Path(__file__).with_name("result.json"))
     parser.add_argument("--replay-cpp", action="store_true", help="Recompile and run certify_joint_secant.cpp")
-    parser.add_argument("--target-v", default="1/10000", help="Target V as rational p/q (default 1/10000)")
+    parser.add_argument("--target-v", default="11/100000", help="Target V as rational p/q (default 11/100000)")
     args = parser.parse_args()
 
     cpp = Path(__file__).with_name("certify_joint_secant.cpp")
@@ -437,7 +451,7 @@ def main():
     if args.replay_cpp:
         bin_path = Path("/tmp/certify_joint_secant_verify")
         subprocess.run(
-            ["clang++", "-O2", "-std=c++17", "-pthread", "-Wall", "-Wextra", "-Werror", str(cpp), "-o", str(bin_path)],
+            ["clang++", "-O2", "-ffp-contract=off", "-std=c++17", "-pthread", "-Wall", "-Wextra", "-Werror", str(cpp), "-o", str(bin_path)],
             check=True,
         )
         out = subprocess.check_output([str(bin_path), "all"], text=True)
