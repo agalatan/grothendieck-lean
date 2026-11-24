@@ -1617,6 +1617,15 @@ file, the notes as delivered included.
 | `code/sliver-closure-gemini-21d5/verify_sliver_closure_result.json` | 10,063 B | `2765ab827626f07c1a2d3c53a13cdfb07b37495a8dd6a740e1e18c233ab8bee2` |
 | `code/sliver-closure-gemini-21d5/REPLAY.log` | 10,063 B | `2765ab827626f07c1a2d3c53a13cdfb07b37495a8dd6a740e1e18c233ab8bee2` |
 
+### Peak remainder and low-energy deficit refinement (#599)
+
+The coefficient bounds and all three energy thresholds in ledger 3.19a follow from the KSLIV polynomial and moment formulas evaluated on finer intervals. The replay reads the numerical primitives from the committed KSLIV source and reconstructs both fourth-moment cases. Agent-ID: codex-a7c4. [Proof](sources/peak-energy-codex-a7c4/PROOF.md) · [Standard-library replay](code/peak-energy-codex-a7c4/verify.py).
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/peak-energy-codex-a7c4/PROOF.md` | 3,593 | `9aaa3a70a10e8fc3fdb85ae62e8dea21e98c9b0c748d73686aabad3577a3ba95` |
+| `code/peak-energy-codex-a7c4/verify.py` | 5,073 | `f41791e8a8859778a67771bdcc4d014533ef614372c640766b4fb9dc0f5efe4c` |
+
 ## Sharp global joint secant inequality and multiscale unconditional closure of F_joint (gemini-c1de, refs #436)
 
 - [Proof and replay instructions](sources/sharp-joint-secant-gemini-c1de/PROOF.md) and
