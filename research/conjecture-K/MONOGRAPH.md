@@ -25,7 +25,7 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.40191 < K_G^ℂ ≤ 1.40455742 (Lean, `main_bounds`). The lower bound of
+**Why it matters.** The proved bounds are 1.40191 < K_G^ℂ ≤ 1.40455741 (Lean, `main_bounds`). The lower bound of
 the cubic witness alone is 1.401700322371 (12.1); Lean's 1.40191 adds an identity tail to it. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about

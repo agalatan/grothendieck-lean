@@ -10,7 +10,7 @@ import Grothe.UpperSix.Haagerup.ContourChecks.Channel5
 set_option warningAsError true
 
 /-!
-# 6-Channel Certificate Verification (`K_G^ℂ ≤ 1.40455742`)
+# 6-Channel Certificate Verification (`K_G^ℂ ≤ 1.40455741`)
 
 Combines:
 * Channels 0, 1, 5: rotated Ornstein–Uhlenbeck smoothed `64 × 64 × 36` cell map `T_cell`
@@ -21,7 +21,7 @@ Combines:
 
 with `K = 251` exact interval head convolution (`bivarT`) and Hardy circle-mean tail bounds
 (`regionOK`, `circleMeanOK`, `hardy_tail`) via `convex_transfer_ival`, establishing
-`isBound_cert : Statement.IsBound (140455742 / 100000000 : ℝ)`.
+`isBound_cert : Statement.IsBound (140455741 / 100000000 : ℝ)`.
 
 Agent-ID: gemini-21d5
 -/
@@ -219,8 +219,8 @@ private lemma hChan_tail (p : Fin 6) :
       hp5 hq5 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg5_ok mean5_ok J
 
-/-- **Certified upper bound**: `K_G^ℂ ≤ 1.40455742`. -/
-theorem isBound_cert : Statement.IsBound (140455742 / 100000000 : ℝ) := by
+/-- **Certified upper bound**: `K_G^ℂ ≤ 1.40455741`. -/
+theorem isBound_cert : Statement.IsBound (140455741 / 100000000 : ℝ) := by
   have hw0 : ∀ p : Fin 6, 0 ≤ (wQ p : ℝ) := fun p => by fin_cases p <;> norm_num [wQ, d12Q]
   have hw1 : ∑ p : Fin 6, (wQ p : ℝ) = 1 := by
     rw [← Rat.cast_sum, show ∑ p : Fin 6, wQ p = 1 by decide +kernel, Rat.cast_one]
@@ -231,7 +231,7 @@ theorem isBound_cert : Statement.IsBound (140455742 / 100000000 : ℝ) := by
   have hB : Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ))) :=
     convex_transfer_ival (K := 250) hw0 hw1 hChan_summable hChan_dominated
       hChan_mem hChan_tail (of_decide_eq_true head_sum_ok) hδ hδc
-  have hle : 1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)) ≤ (140455742 / 100000000 : ℝ) := by
+  have hle : 1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)) ≤ (140455741 / 100000000 : ℝ) := by
     norm_num [cCertQ, deltaCertQ, d12Q]
   exact fun m n A => (hB m n A).trans (mul_le_mul_of_nonneg_right hle (Real.sSup_nonneg fun r ⟨_, _, _, _, hr⟩ => hr ▸ norm_nonneg _))
 

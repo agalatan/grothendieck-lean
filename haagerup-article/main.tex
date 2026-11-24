@@ -54,7 +54,7 @@ Let $\KGC$ denote the complex Grothendieck constant. In 1987, Haagerup proved th
 \]
 whose reciprocal he called ``a perhaps more plausible candidate'' for $\KGC$. We prove that $\KGC$ is strictly below Haagerup's value:
 \[
-  \KGC \;\le\; \frac{140455742}{10^8} \;=\; 1.40455742 \;<\; \frac{1}{\gd},
+  \KGC \;\le\; \frac{140455741}{10^8} \;=\; 1.40455741 \;<\; \frac{1}{\gd},
 \]
 thus resolving this conjecture of Haagerup.
 Our proof uses a six-channel mixture of Gaussian rounders. For a channel with radial coefficients $h_k$, the alternating sum $W(h)=\sum_{k\ge0}(-1)^k h_k$ bounds its guaranteed slope $D(h)=h_0-\sum_{k\ge1}|h_k|$ from above. Preprocessed scalar phase channels satisfy $W(h)\le\gd$. We use a reflected pair of two-coordinate Fourier-cell maps with $W(h)\approx0.712901>\gd$. Three channels based on a smoothed cell map and one scalar phase channel help cancel the higher coefficients of the two reflected channels. The mixture has total nonlinear distortion below $6.21\times10^{-6}$. The standalone Lean~4 package in \texttt{anc/} proves the displayed inequalities without hypotheses (Appendices~\ref{app:arb} and~\ref{app:lean}). Section~\ref{sec:found} describes the discovery of the construction.
@@ -100,8 +100,8 @@ In this paper we cross Haagerup's barrier $1/\gd$: his value is a strict upper b
 \begin{theorem}[Main Result]\label{thm:main}
 The complex Grothendieck constant satisfies
 \[
-  \KGC \;\le\; \frac{140455742}{10^8}
-  \;=\; 1.40455742
+  \KGC \;\le\; \frac{140455741}{10^8}
+  \;=\; 1.40455741
   \;<\; \frac{1}{\gd}
   \;=\; 1.404575934663\ldots
 \]
@@ -367,25 +367,26 @@ Every term on the right-hand side of \eqref{eq:budget-split} is enclosed in exac
     \begin{aligned}
       \mathrm{headCap}_{\mathrm{cert}} + \sum_{p=0}^5 w_p \tau_p
       &\;=\; 6.15785 \times 10^{-6} + 4.74648\ldots \times 10^{-8} \\
-      &\;=\; 6.2053148\ldots \times 10^{-6}
-      \;\le\; \delta_{\mathrm{cert}} \;:=\; \frac{621}{10^8}.
+      &\;=\; \frac{6205314847032059049}{10^{24}}
+      \;=:\; \delta_{\mathrm{cert}}
+      \;=\; 6.2053148\ldots \times 10^{-6}.
     \end{aligned}
   \]
-  By \eqref{eq:budget-split} and Lemma~\ref{lem:transfer}, $D(H) \ge c_{\mathrm{cert}} - \delta_{\mathrm{cert}} = \frac{711968048589}{10^{12}}$, whence
+  By \eqref{eq:budget-split} and Lemma~\ref{lem:transfer}, $D(H) \ge c_{\mathrm{cert}} - \delta_{\mathrm{cert}} = \frac{711968053274152967940951}{10^{24}}$, whence
   \[
     \KGC \;\le\; \frac{1}{c_{\mathrm{cert}} - \delta_{\mathrm{cert}}}
-    \;=\; \frac{10^{12}}{711968048589}
-    \;=\; 1.4045574123\ldots
-    \;\le\; \frac{140455742}{10^8}
-    \;=\; 1.40455742.
+    \;=\; \frac{10^{24}}{711968053274152967940951}
+    \;=\; 1.4045574031\ldots
+    \;\le\; \frac{140455741}{10^8}
+    \;=\; 1.40455741.
   \]
 \end{enumerate}
 
 \subsection{Algebraic Rational Enclosure of \texorpdfstring{$\gd$}{gamma-dagger}}
-To complete a self-contained proof that $\frac{140455742}{10^8} < 1/\gd$ without numerical quadrature, rewrite $1 + \sin^2 t = \frac{3}{2}(1 - x)$ with $x := \frac{1}{3}\cos(2t) \in [-\tfrac{1}{3}, \tfrac{1}{3}]$.
+To complete a self-contained proof that $\frac{140455741}{10^8} < 1/\gd$ without numerical quadrature, rewrite $1 + \sin^2 t = \frac{3}{2}(1 - x)$ with $x := \frac{1}{3}\cos(2t) \in [-\tfrac{1}{3}, \tfrac{1}{3}]$.
 
 \begin{lemma}[Two-Sided Rational Enclosure for $\gd$]\label{lem:gd-upper}
-Haagerup's constant satisfies $0.711958633 < \gd < 0.711958683$; in particular, $\frac{140455742}{10^8} < \frac{1}{\gd}$.
+Haagerup's constant satisfies $0.711958633 < \gd < 0.711958683$; in particular, $\frac{140455741}{10^8} < \frac{1}{\gd}$.
 \end{lemma}
 
 \begin{proof}
@@ -403,10 +404,10 @@ Expanding $\frac{1}{2}(1 + \cos 2t) P_{14}(\frac{1}{3}\cos 2t)$ in powers of $\c
 \[
   q_0 \;=\; \frac{40545758045051663}{73040694872113152}.
 \]
-Since $\sin(0) = \sin(\pi) = 0$, the Fundamental Theorem of Calculus gives $\int_0^{\pi/2} \cos^2 t\, P_{14}(\frac{1}{3}\cos 2t)\,dt = F(\pi/2) - F(0) = q_0 \frac{\pi}{2}$. Combining this with the standard $20$-digit rational enclosure $314159265358979323846 \times 10^{-20} < \pi < 314159265358979323847 \times 10^{-20}$ yields $0.711958633 < \gd < 0.711958683$. Finally, $\frac{140455742}{10^8} \times \frac{711958683}{10^9} = \frac{99999999369836604}{10^{17}} < 1$, whence $\frac{140455742}{10^8} < 1/\gd$.
+Since $\sin(0) = \sin(\pi) = 0$, the Fundamental Theorem of Calculus gives $\int_0^{\pi/2} \cos^2 t\, P_{14}(\frac{1}{3}\cos 2t)\,dt = F(\pi/2) - F(0) = q_0 \frac{\pi}{2}$. Combining this with the standard $20$-digit rational enclosure $314159265358979323846 \times 10^{-20} < \pi < 314159265358979323847 \times 10^{-20}$ yields $0.711958633 < \gd < 0.711958683$. Finally, $\frac{140455741}{10^8} \times \frac{711958683}{10^9} = \frac{99999999369836604}{10^{17}} < 1$, whence $\frac{140455741}{10^8} < 1/\gd$.
 \end{proof}
 
-Combining Lemma~\ref{lem:gd-upper} with $\KGC \le \frac{140455742}{10^8}$ completes the proof of Theorem~\ref{thm:main}.
+Combining Lemma~\ref{lem:gd-upper} with $\KGC \le \frac{140455741}{10^8}$ completes the proof of Theorem~\ref{thm:main}.
 
 \section{How This Result Was Found}\label{sec:found}
 
@@ -419,7 +420,7 @@ AI systems are not authors of this paper; the author takes full responsibility f
 
 \section{Ancillary Files}\label{app:arb}
 
-The ancillary directory \texttt{anc/} of the arXiv submission is a standalone Lean~4 package holding a complete, hypothesis-free proof of $\KGC \le 1.40455742 < 1/\gd$ (Appendix~\ref{app:lean}). All certificate data are Lean literals inside the source tree; there are no external binary files and no external verifier.
+The ancillary directory \texttt{anc/} of the arXiv submission is a standalone Lean~4 package holding a complete, hypothesis-free proof of $\KGC \le 1.40455741 < 1/\gd$ (Appendix~\ref{app:lean}). All certificate data are Lean literals inside the source tree; there are no external binary files and no external verifier.
 \begin{itemize}
   \item \texttt{lakefile.toml}, \texttt{lean-toolchain}, \texttt{lake-manifest.json}: the standalone Lake package configuration, with Lean and Mathlib pinned (Mathlib \texttt{v4.34.1}).
   \item \texttt{Grothe/UpperSix/Haagerup/Statement.lean}: the definitions of the theorem statement (scalar and vector optima of a finite complex matrix, admissible constants, $\KGC$ as their infimum, and $\gd$ as the integral \eqref{eq:gd-def}).
@@ -428,24 +429,24 @@ The ancillary directory \texttt{anc/} of the arXiv submission is a standalone Le
   \item \texttt{Grothe/UpperSix/HaagerupKernel/}: the Mathlib-free exact integer and interval checkers executed by the finite computations.
   \item \texttt{Axioms.lean} and \texttt{native.txt}: the axiom report of the main theorems and the list of $17$ finite boolean checks evaluated with \texttt{native\_decide}.
 \end{itemize}
-With the pinned toolchain installed, \texttt{lake exe cache get} fetches Mathlib's compiled artifacts, \texttt{lake build} checks the entire proof (about 30 minutes on four cores), and \texttt{lake env lean Axioms.lean} prints the axioms used. At the time of writing, these sources match \texttt{Grothe/UpperSix/} in \cite{Gal26}; they are archived here as a self-contained snapshot frozen at $1.40455742$.
+With the pinned toolchain installed, \texttt{lake exe cache get} fetches Mathlib's compiled artifacts, \texttt{lake build} checks the entire proof (about 30 minutes on four cores), and \texttt{lake env lean Axioms.lean} prints the axioms used. At the time of writing, these sources match \texttt{Grothe/UpperSix/} in \cite{Gal26}; they are archived here as a self-contained snapshot frozen at $1.40455741$.
 
 \section{The Lean Proof}\label{app:lean}
 
 The following declarations, exported by \path{Grothe/UpperSix/Haagerup.lean}, give the two comparisons and their consequence.
 \begin{quote}\small\ttfamily
 theorem Haagerup.isBound\_cert :\\
-\hspace*{2em}Haagerup.Statement.IsBound (140455742 / 100000000 : $\mathbb{R}$)\\[3pt]
+\hspace*{2em}Haagerup.Statement.IsBound (140455741 / 100000000 : $\mathbb{R}$)\\[3pt]
 theorem Haagerup.inv\_gammaDagger\_gt :\\
-\hspace*{2em}(140455742 / 100000000 : $\mathbb{R}$)\\
+\hspace*{2em}(140455741 / 100000000 : $\mathbb{R}$)\\
 \hspace*{4em}< 1 / Haagerup.Statement.gammaDagger\\[3pt]
 theorem Haagerup.constant\_lt\_inv\_gammaDagger :\\
 \hspace*{2em}Haagerup.Statement.complexGrothendieckConstant\\
 \hspace*{4em}< 1 / Haagerup.Statement.gammaDagger
 \end{quote}
-Here \texttt{IsBound K} states $V(A) \le K\,C(A)$ for every finite complex matrix $A$, where $C(A)$ is the supremum over unimodular scalars and $V(A)$ the supremum over unit vectors of $\C^\iota$ across every finite index type $\iota$ (equal to \eqref{eq:groth-def} by convexity and finite-dimensional span); \texttt{complexGrothendieckConstant} is the infimum of all such $K$; and \texttt{gammaDagger} is the integral \eqref{eq:gd-def}. Together they establish $\KGC \le 1.40455742 < 1/\gd$ with no hypotheses.
+Here \texttt{IsBound K} states $V(A) \le K\,C(A)$ for every finite complex matrix $A$, where $C(A)$ is the supremum over unimodular scalars and $V(A)$ the supremum over unit vectors of $\C^\iota$ across every finite index type $\iota$ (equal to \eqref{eq:groth-def} by convexity and finite-dimensional span); \texttt{complexGrothendieckConstant} is the infimum of all such $K$; and \texttt{gammaDagger} is the integral \eqref{eq:gd-def}. Together they establish $\KGC \le 1.40455741 < 1/\gd$ with no hypotheses.
 
-Lean checks every step of the proof: the radial Schur transfer from an interval-enclosed head and six tail bounds to an admissible constant, the Gaussian realization of each channel by a unit-disk-valued charge-$1$ rounding map, the soundness and verification of the Fej\'er--Riesz sum-of-squares witnesses and $1024$-bit Laguerre/Hermite overlap tables, the quadtree open-disk holomorphy and half-angle Schur circle-mean bounds for the six infinite tails, the six-channel rational assembly, and the inequality $\frac{140455742}{10^8} < 1/\gd$. Running \texttt{lake env lean Axioms.lean} reports only Lean's standard foundational axioms (\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}) together with the $17$ finite boolean computations listed in \texttt{native.txt} and evaluated via \texttt{native\_decide}: the two Fej\'er--Riesz norm checks (\texttt{tcell\_sos\_ok}, \texttt{tig\_sos\_ok}), the two overlap-table checks (\texttt{tcell\_rows\_ok}, \texttt{tig\_mu\_ok}), the six-channel head convolution (\texttt{head\_sum\_ok}), and the six open-disk and circle-mean checks (\texttt{reg0\_ok}--\texttt{reg5\_ok}, \texttt{mean0\_ok}--\texttt{mean5\_ok}). All rational weight, $\ell^1$-norm, and tail comparisons are verified directly inside Lean's kernel.
+Lean checks every step of the proof: the radial Schur transfer from an interval-enclosed head and six tail bounds to an admissible constant, the Gaussian realization of each channel by a unit-disk-valued charge-$1$ rounding map, the soundness and verification of the Fej\'er--Riesz sum-of-squares witnesses and $1024$-bit Laguerre/Hermite overlap tables, the quadtree open-disk holomorphy and half-angle Schur circle-mean bounds for the six infinite tails, the six-channel rational assembly, and the inequality $\frac{140455741}{10^8} < 1/\gd$. Running \texttt{lake env lean Axioms.lean} reports only Lean's standard foundational axioms (\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}) together with the $17$ finite boolean computations listed in \texttt{native.txt} and evaluated via \texttt{native\_decide}: the two Fej\'er--Riesz norm checks (\texttt{tcell\_sos\_ok}, \texttt{tig\_sos\_ok}), the two overlap-table checks (\texttt{tcell\_rows\_ok}, \texttt{tig\_mu\_ok}), the six-channel head convolution (\texttt{head\_sum\_ok}), and the six open-disk and circle-mean checks (\texttt{reg0\_ok}--\texttt{reg5\_ok}, \texttt{mean0\_ok}--\texttt{mean5\_ok}). All rational weight, $\ell^1$-norm, and tail comparisons are verified directly inside Lean's kernel.
 
 \begin{thebibliography}{99}
 

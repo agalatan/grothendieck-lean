@@ -6,7 +6,7 @@ finite-head and Hardy inputs used by the single-channel theorem
 approximately `1.4045993953612070749249`. The endpoint is
 `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean). The repository's upper bound
-K ≤ 1.40455742 (`Grothe.Statement.main_bounds`, six channels, [`Grothe/UpperResult.lean`](../../Grothe/UpperResult.lean))
+K ≤ 1.40455741 (`Grothe.Statement.main_bounds`, six channels, [`Grothe/UpperResult.lean`](../../Grothe/UpperResult.lean))
 is proved separately and uses none of this data.
 
 The byte-pinned data and generators retain historical intermediate endpoint
