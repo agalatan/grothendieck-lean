@@ -388,7 +388,7 @@ jobs:
         uses: leanprover/lean-action@v1
         with:
           use-mathlib-cache: true
-          use-github-cache: false     # no per-branch cache entries: they evict each other in the 10 GB quota
+          use-github-cache: false     # no per-branch cache entries: the cache limit (50 GB) is kept for the 14 GB builds
           build: false
 
       - name: Lean toolchain and the shared Mathlib packages (droplet)
@@ -566,9 +566,14 @@ jobs:
           path: .lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}
 
-      - name: Save the verified cache for this branch (droplet; and landing runs, so a re-check after master moved replays it)
-        # deleted with the branch (cancel-merged.yml), so it never outlives the delivery
-        if: env.LEAN == 'true' && github.ref_name != 'master' && (env.DROPLET == 'true' || inputs.land)
+      - name: Save the verified cache for this branch (droplet runs only)
+        # Only where hours of node-cap work would otherwise be lost. Hosted landing runs save nothing: each entry is
+        # about 14 GB, the repository's limit is 50 GB (three entries), GitHub evicts the least recently used entries
+        # every hour, and a burst of landings left three branch caches and evicted
+        # master's cache (#607). A landing re-check after master moved restores master's cache and rebuilds the
+        # branch's own modules; master's check gets the build through the tree handoff below.
+        # Deleted after the landing (finish job) or with the branch (cancel-merged.yml).
+        if: env.LEAN == 'true' && github.ref_name != 'master' && env.DROPLET == 'true'
         uses: actions/cache/save@v4
         with:
           path: .lake/build
@@ -674,6 +679,23 @@ jobs:
           CHECK_RUN: ${{ github.run_id }}
           INFO: landing-info/merge-info
         run: scripts/land_ready.sh
+
+      - name: Delete the build caches of the landed branch
+        # CI's own push starts no workflow, so cancel-merged.yml does not run for a branch that CI landed; without
+        # this step its caches would stay until GitHub evicts something (possibly master's cache, #607).
+        if: inputs.land
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+          PR: ${{ inputs.pr }}
+        run: |
+          if [ -z "$BRANCH" ] || [ "$BRANCH" = master ]; then exit 0; fi
+          state=$(gh pr view "$PR" --repo "${GITHUB_REPOSITORY}" --json state --jq .state 2>/dev/null || true)
+          if [ "$state" != MERGED ]; then echo "PR #$PR is ${state:-unknown}, not merged: its caches are kept"; exit 0; fi
+          gh api "repos/${GITHUB_REPOSITORY}/actions/caches?ref=refs/heads/${BRANCH}&per_page=100" --jq '.actions_caches[].id' |
+            while read -r id; do
+              gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/caches/${id}" >/dev/null && echo "deleted cache ${id} of ${BRANCH}" || true
+            done
 
 
   keepalive:
