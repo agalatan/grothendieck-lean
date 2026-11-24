@@ -27,7 +27,7 @@ on:
     # cloud/** are scratch branches for cloud jobs (cloud.yml, AGENTS.md section 11): no push check
     branches: ['**', '!cloud/**']
   schedule:
-    # weekly: restore (and so keep alive) the master cache; GitHub deletes cache entries unused for 7 days
+    # weekly: restore (and so keep alive) the master cache; GitHub deletes cache entries unused for 10 days (repository setting)
     - cron: '17 4 * * 1'
   workflow_dispatch:
     inputs:
@@ -388,7 +388,7 @@ jobs:
         uses: leanprover/lean-action@v1
         with:
           use-mathlib-cache: true
-          use-github-cache: false     # no per-branch cache entries: the cache limit (50 GB) is kept for the 14 GB builds
+          use-github-cache: false     # no per-branch cache entries: the cache limit (70 GB) is kept for the 14 GB builds
           build: false
 
       - name: Lean toolchain and the shared Mathlib packages (droplet)
@@ -568,7 +568,7 @@ jobs:
 
       - name: Save the verified cache for this branch (droplet runs only)
         # Only where hours of node-cap work would otherwise be lost. Hosted landing runs save nothing: each entry is
-        # about 14 GB, the repository's limit is 50 GB (three entries), GitHub evicts the least recently used entries
+        # about 14 GB, the repository's limit is 70 GB (four entries), GitHub evicts the least recently used entries
         # every hour, and a burst of landings left three branch caches and evicted
         # master's cache (#607). A landing re-check after master moved restores master's cache and rebuilds the
         # branch's own modules; master's check gets the build through the tree handoff below.
@@ -699,7 +699,7 @@ jobs:
 
 
   keepalive:
-    # the weekly schedule: restoring the master cache counts as a use and resets GitHub's 7-day expiry
+    # the weekly schedule: restoring the master cache counts as a use and resets GitHub's expiry (10 days, repository setting)
     if: github.event_name == 'schedule'
     runs-on: ${{ vars.FORCE_HEAVY == 'true' && fromJSON('["self-hosted","light"]') || 'ubuntu-24.04' }}   # light droplet slots when FORCE_HEAVY (GitHub's hosted queue can lag for many minutes)
     timeout-minutes: 30
