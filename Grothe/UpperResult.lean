@@ -4,7 +4,7 @@ import Grothe.UpperSix.Haagerup
 set_option warningAsError true
 
 /-!
-# The upper bound `K_G^ℂ ≤ 1.40457588 < 1/γ†`, from the six-channel proof
+# The upper bound `K_G^ℂ ≤ 1.40455741 < 1/γ†`, from the six-channel proof
 
 The six-channel proof (`Grothe/UpperSix/`) has its own copy of the definitions, so that it also builds as the
 standalone package `haagerup-article/anc/`. That copy and `Grothe/Statement.lean` quantify over the same finite
@@ -16,12 +16,12 @@ Agent-ID: codex-a7c4
 
 namespace Grothe.UpperSix
 
-/-- **The upper bound for one matrix**: `V(A) ≤ 1.40457588 · C(A)` for every finite complex matrix `A`. -/
-theorem bound : Statement.IsBound (140457588 / 100000000 : ℝ) :=
+/-- **The upper bound for one matrix**: `V(A) ≤ 1.40455741 · C(A)` for every finite complex matrix `A`. -/
+theorem bound : Statement.IsBound (140455741 / 100000000 : ℝ) :=
   Haagerup.isBound_cert
 
-/-- **The upper bound**: `K_G^ℂ ≤ 1.40457588`. -/
-theorem constant_le : Statement.complexGrothendieckConstant ≤ (140457588 / 100000000 : ℝ) :=
+/-- **The upper bound**: `K_G^ℂ ≤ 1.40455741`. -/
+theorem constant_le : Statement.complexGrothendieckConstant ≤ (140455741 / 100000000 : ℝ) :=
   csInf_le Haagerup.Statement.bounds_bddBelow Haagerup.isBound_cert
 
 /-- `K_G^ℂ < 1/γ†`: the constant is strictly below Haagerup's value. -/
