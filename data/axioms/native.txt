@@ -1,6 +1,5 @@
 # Each is a documented finite exact computation (README.md, docs/LEAN_NATIVE_INVENTORY.md).
 # native_decide facts allowed in the default axiom report (one per line, sorted; union-merged by git).
-Grothe.Lower.certMassRow._native.native_decide.ax_1_1
 Grothe.Lower.certRow01._native.native_decide.ax_1_1
 Grothe.Lower.certRow02._native.native_decide.ax_1_1
 Grothe.Lower.certRow03._native.native_decide.ax_1_1
@@ -2415,16 +2414,3 @@ Haagerup.Data.tig_sos_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.head_and_floors_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.mean_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.region_ok._native.native_decide.ax_1_1
-Haagerup.head_sum_ok._native.native_decide.ax_1_1
-Haagerup.mean0_ok._native.native_decide.ax_1_1
-Haagerup.mean1_ok._native.native_decide.ax_1_1
-Haagerup.mean2_ok._native.native_decide.ax_1_1
-Haagerup.mean3_ok._native.native_decide.ax_1_1
-Haagerup.mean4_ok._native.native_decide.ax_1_1
-Haagerup.mean5_ok._native.native_decide.ax_1_1
-Haagerup.reg0_ok._native.native_decide.ax_1_1
-Haagerup.reg1_ok._native.native_decide.ax_1_1
-Haagerup.reg2_ok._native.native_decide.ax_1_1
-Haagerup.reg3_ok._native.native_decide.ax_1_1
-Haagerup.reg4_ok._native.native_decide.ax_1_1
-Haagerup.reg5_ok._native.native_decide.ax_1_1
