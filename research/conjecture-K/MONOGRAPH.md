@@ -78,6 +78,11 @@ ph(z) = z/|z|.
 
 ### 1.2 The witness and the exact row
 
+K_G^ℂ is the complex Grothendieck constant: the infimum of the K with V(A) ≤ K·C(A) for every finite complex matrix A, where
+C(A) and V(A) are the suprema of |Σ a_ij·conj(ε_i)δ_j| over unimodular scalars and of |Σ a_ij⟨x_i, y_j⟩| over unit
+vectors of a complex Hilbert space (`docs/CONSTANTS.md`). The **cubic witness** is the operator T_ε = P₁,₀ − εP₂,₁ on
+L² of the Gaussian space, and a function f of z is **unimodular** if |f| = 1 pointwise.
+
 The lower bound is K_G^ℂ ≥ 1/‖T_ε‖ with ‖T_ε‖ = sup{Re⟨f, T_εg⟩ : |f| = |g| = 1}. For unimodular f, g put
 h = (f + g)/2, k = (f − g)/2, rotate so that P₁,₀h = t·z₁ with 0 ≤ t ≤ √π/2, and put G = εP₂,₁k ∈ H₂,₁. Then for
 every real ℓ and β
@@ -87,6 +92,11 @@ every real ℓ and β
 
 [P · audit of codex-a713 · 2.1] Three nonnegative terms are dropped: ‖P₁,₀k‖², ε‖P₂,₁h + B/ε‖² with B = βz₁(T − 2),
 and the pointwise phase slack. Everything below is about sup Λ.
+
+A choice of (ε, ℓ, β) is a **row**, and the G = εP₂,₁k of a unimodular pair, with its parameter t, is a **response**.
+A bound Re⟨f, T_εg⟩ ≤ c for every unimodular pair is a **cap**, and gives K_G^ℂ ≥ 1/c (the thresholds are in 1.5). A
+**consumer** is an argument that turns bounds on sup Λ (or sup Λ̂, 1.6) at finitely many rows into such a cap, by
+covering every t ∈ [0, √π/2] (2.10) [STATUS §8].
 
 ### 1.3 Conjecture K and its weak forms
 
@@ -196,7 +206,9 @@ Every G ∈ H₂,₁ decomposes by its dependence on z₁:
     G = q + (T − 1)·r_A + z₁²·conj(r_B)/√2 + z₁·Q + z̄₁·P + d·z₁(T − 2),
 
 with q a remote cubic, r_A and r_B remote linear forms (the **A shell** and the **B shell**), Q ∈ H₁,₁ and P ∈ H₂,₀
-of the remote coordinates, and d ∈ ℂ. The **core** is q + (T − 1)r_A. The sectors z₁Q, z̄₁P and d·z₁(T − 2) are the
+of the remote coordinates, and d ∈ ℂ. The **core** is q + (T − 1)r_A. The forms r_A and r_B are the **drivers** of
+the shells: *disjoint* when they are independent of q, *shared* when they involve the remote coordinates of q (any
+dependence is then allowed). The sectors z₁Q, z̄₁P and d·z₁(T − 2) are the
 **odd sectors** (odd under z₁ → −z₁); the October manuscript calls them "even sectors", after their even frequency.
 
 - **Frequency.** After factoring the phase of z₁, q and A carry frequency −1, B +1, z₁Q and d·z₁(T − 2) 0, z̄₁P −2;
@@ -224,7 +236,9 @@ of the same energy. A remote cap Λ(q) ≤ S + η_R does not say D(q) ≥ −η_
 The profiles are E_{z₁}ph(L + y) = y·j(|y|²) and E_{z₁}[(T − 1)ph(L + y)] = y·g(|y|²), with j(0) = j₀ and g(0) = g₀;
 −g and the B-kernel −g_B are completely monotone [P · 2.7a]. The **A-content** of q is
 C(q) = ‖Π₁[q·g(|q|²)]‖: the first-order term of Λ(q + (T − 1)U) in a remote linear U is 2Re⟨U, Π₁[q·g(|q|²)]⟩. The
-**content inequality** is C(q)² ≤ κ·D(q). The **B-content** c_B is defined in the same way with g_B, and the
+**content inequality** is C(q)² ≤ κ·D(q). The **B-content** is c_B(q) = Π₁[F_B(q)] with
+F_B(w) = E_{z₁}[(z₁²/√2)·conj(ph(L + w))] = w·g_B(|w|²) [7.1.6, 7.1.8]; c_A = Π₁[q·g(|q|²)] is the vector of norm
+C(q). The **Wick monomial** is the one-variable cubic X(|X|² − 2), up to a constant factor. The
 **tilted content** is
 
     c_s(q) = Π₁[q·h_s(|q|²)],   h_s = (g − g₀) − s(j₀ − j)
@@ -243,6 +257,32 @@ K_η must hold for every G, not only for the core. A proof has six layers:
 | L4 | the core on the residual region: cost plus content | K: families proved, general cubics open; Λ̂: closed at the peak | 2.5, 2.6 |
 | L5 | all sectors together | B cost and alignment proved; odd sectors over remote cores proved (peak); joint A/B and odd sectors over A/B cores open | 2.7–2.9 |
 | L6 | row envelope and consumption | peak central interval: proved conditionally on an all-sector bound; exterior proved outside (0.8165, 0.866) at ε = 299/400 and outside (0.7515, 0.863) at ε = 94/125 (author only, 13 central rows each with > 10⁻⁴ allowance); central all-sector bounds and Lean consumer open | 2.10 |
+
+**How the pieces depend on each other.** Two chains lead from the remote cap to a lower bound; each arrow uses
+everything before it, and both end in a consumer (L6), whose rows other than the peak need the same chain at their own
+profiles [STATUS §15].
+
+    through Λ̂ (enough for the bound, 1.6):
+      remote cap (3.3)  →  retained A-core, S + 2·10⁻⁵ (11.51: tilt 11.12, remainder 11.39, gain 11.40, content 11.61)
+        →  A + B core, S + 4.936·10⁻⁵ (7.4.10)            needs the premise (P): open
+        →  all six sectors, S + 9.9·10⁻⁵ (7.5.3)           needs (P) and the odd premise (P_Ψ): open
+        →  consumer (8.1, 8.9–8.13)                        central rows and the Lean statement: open
+
+    through Λ (Conjecture K itself):
+      remote sign D(q) ≥ 0 on the class handled  →  A-core by cost 6.2.1 and the content inequality
+        C(q)² ≤ κ·D(q) (6.2.3), which already forces D(q) ≥ 0 there                    content: open in general (6.3.18)
+        →  A + B core (7.4, with the constants of 7.4.2; B-content from A-content, 7.1.6)   joint bound: open
+        →  odd sectors over cores with A/B shells (7.2.4)                              open
+        →  consumer                                                                    open
+
+Outside both chains and proved: disjoint drivers (4.2), Theorems A and B (5.1, 5.2), the odd sectors over the zero core
+and over remote cores (5.4, 7.2.10), and the all-sector bound on an energy region around the zero core (7.5.1). The two
+chains use different remote inputs. The Λ̂ chain consumes the remote cap 3.3, Λ(q) < S + 3.6·10⁻⁷, whose positive
+allowance at zero driver is paid inside its displayed totals. The Λ chain needs Λ(q) ≤ S, so it cannot consume 3.3 as a
+sharp input: the strong content route 6.2.3 assumes C(q)² ≤ κ·D(q) on the class being handled, which contains D(q) ≥ 0
+there, and its weaker variant uses a priced slack η, with η = 0 for a sharp conclusion. These are premises on the class
+at hand. They are distinct from the all-energy, all-price sharp radius conjecture D(q) ≥ 0 for every q (3.5, 3.6),
+which is a separate open problem that neither chain needs in full.
 
 ## 2. What is proved
 
@@ -263,7 +303,7 @@ theorem, and it does not give same-variance domination D(q) ≥ 0.
 Around the peak:
 
 - **Tube.** With λ = ε/(1891/2500), Λ(q) < S + 8.1·10⁻⁵ for ε ∈ [0.74, 0.76] and
-  |a − λ·699/1250| + (3/2)|b − λ·179/1250| ≤ λ/50000 [P + C, author only · codex-a7c4 · 3.11].
+  |a − λ·699/1250| + (3/2)|b − λ·179/1250| ≤ λ/50000 [P author only + C · codex-a7c4 · 3.11].
 - **One-sided rectangle.** ε ∈ [0.74, 0.76], 0 ≤ a/λ − 0.5592 ≤ 1/2000 and 0 ≤ b/λ − 0.1432 ≤ 1/625 give
   Λ(q) < S + 9.934·10⁻⁵ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 3.15].
 - **Convex cells.** Caps at the vertices of a convex cell of profiles transfer to the cell through a concave lower
@@ -332,7 +372,12 @@ for every cubic of H₂,₁; the same bound with every Gaussian buffer, E|q + �
 a real chaos variable X of order k, the sign condition E[(Γ − σ²)e^{−sX²}] ≤ 0 for every s ≥ 0, with Γ = ‖DX‖²/k and
 σ² = E X² (BNC), implies E|X + √r·g| ≤ √(2/π)·√(σ² + r) for every r ≥ 0 and an independent standard real Gaussian g
 (real PVD); on the third chaos real PVD implies the complex one, and no converse is known
-[P · codex-a7c4, re-derived by claude-b9ee · 3.5]. Exact remote K is not needed for 1.402.
+[P · codex-a7c4, re-derived by claude-b9ee · 3.5]. Exact remote K is not needed for 1.402. A further route to the
+sharp radius bound is doubling monotonicity: if E|(X + X′)/√2| ≥ E|X| for every X ∈ H₂,₁ and an independent copy X′,
+iteration and the central limit theorem give the bound. It is a conjecture, supported on the cubics tested (smallest
+gain found +0.0065) [open; N · 3.20]; its real analogue is false, for He₃(G)/√6 (an exact rational certificate,
+replayed), so a proof must use the complex structure [3.20]. The radius over H₂,₁(ℂᵐ) is within 3/√m of the radius over all dimensions, a rate and not a
+bound [P · 3.28].
 
 **The radius.** The sharp radius bound is open; cases are proved for real BNC of order 2, one-variable H₃ at every
 scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. In every dimension, the sharp bound holds
@@ -871,9 +916,15 @@ density/mass potential estimate and retains the nonnegative singular Hessian of 
 on the perturbed norm. The remaining compact region has |w| ≤ 5/4 and 1/512 ≤ sqrt(S_r) ≤ sqrt(3)/2, outside the
 origin profile, the directional exterior 16 S_r²+3S_r ≥ 6|2A+B|², and the proved local boxes and tube. Its
 finite-amplitude cover remains **open** in general. On the real aligned plane (w, A, B real, that is every triple on
-one complex line through zero) it is proved, by a certified cover of 20 regions, with complex neighbourhoods of radius
-1/8192 around 31,090 of its boxes [P + C · codex-a7c4, re-derived and audited by claude-b9ee · 7.4.14]. Odd sectors
-over the joint core are a separate obligation; these partial interior results do not improve the lower bound.
+one complex line through zero) it is proved by a certified cover of 20 regions [P + C · 7.4.14]. On each of its
+31,090 direct boxes, let t be the largest absolute real coefficient after rotating the shift to the real axis.
+The normalized imaginary increment e in t(D+i e) may range over ‖e‖₂ ≤ 1/32. Pairing e and −e and integrating
+the resulting cost widens the audited radius 1/8192 by a factor of 256 [P + C, author only · 7.4.14].
+The origin, amplitude and directional exteriors also cover this radius over the 1,502 inherited boxes. Thus the
+condition ‖Im(A,B)‖₂ ≤ max(|Re A|,|Re B|)/32 suffices at **every shift and amplitude** in this frame. In particular
+the retained A+B bound S + 4936/10⁸ holds on the complex proportional-driver family described in the proof, under
+the energy caps of 7.4.10. Arbitrary phases and odd sectors over the joint core are open.
+[Proof and replay](sources/central-aligned-codex-a7c4/COMPLEX_PHASES.md)
 
 **A common cost at the A-tilt alone.** With the trial −(3/5)r_A only and h = (T − 2/5)α + z₁²·conj(β)/√2, a common
 cost 23/100 means E_{z₁}R(L + w, h) ≤ (p − 59/100)|α|² + (p − 23/100)|β|² for all complex w, α, β. It holds for |w| ≥
@@ -1051,7 +1102,7 @@ STATUS 8.9]. Ten central rows cover the rest: if their retained all-sector inequ
 [0.8465, 0.8615] needs an all-sector error about a third of what the peak results give under (P) and (P_Ψ). At
 ε = 1891/2500, four certified shoulder benchmarks leave allowances of 1.5–3.4·10⁻⁴ [STATUS 8.11].
 
-**The exterior at ε = 3/4 and ε = 94/125.** Pushing ε above 299/400 was blocked near t = 0 by the crude row t² + ερ².
+**The exterior at ε = 3/4 and ε = 94/125.** Above ε = 299/400 the crude row t² + ερ² fails near t = 0.
 Setting c(ε) = (2141/3150)ε makes the piecewise potential φ_{c(ε)}^{(ε)}(r) = max_{y∈[0,1]}(2εry − c(ε)y²) equal to
 (ε/ε₁)·φ_{c₁}^{(ε₁)}(r) identically on [0, ∞) (ε₁ = 25/31, c₁ = 2141/3906), so the 136-node pruned spectral Stein
 certificate `cert_mass_0.5_pruned.json` (`../identity-tail/STATUS.md` 5.5, fact (3); **Lean** at ε₁ since #525, `certMassRow` in `Grothe/Lower/Cert/MassRow.lean`,
@@ -1130,7 +1181,10 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.57·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`
    alone), with Row 8 on [0.840, 0.847] already inside the proved remote and retained A-core rectangles. Rows away from
    that peak rectangle still need remote, A-core and all-sector estimates on their own profiles and energy caps
-   (2.1, 2.6), with the weighted scaling of 1.6; the flank and upper rows are outside both. *Gives:* 1.402.
+   (2.1, 2.6), with the weighted scaling of 1.6; the flank and upper rows are outside both. At ε = 1891/2500 four
+   response intervals are uncovered, with certified benchmarks on parts of two of them (2.10 · 8.7, 8.11). Also open:
+   the corner σ\* = 0 if a cover uses it (1.4), and the unchecked external remote claims (2.1 · 11.7–11.11).
+   *Gives:* 1.402.
 4. **Numerics for Λ̂ with more than three remote variables** (chapter 5).
 
 **B. Conjecture K itself.**
@@ -1155,11 +1209,12 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    energy of a general cubic by its own deficit (2.6). The B-content of general cubics follows from the A-content by
    the peak alignment (2.7). *Gives:* the A-core of K, with item 5 the A + B core, and the B-sector with its cost.
 7. **Exact remote K** (2.1), which the peak row does not need: it is known on the classes named in 2.1. The routes are
-   the smoothing sign of the weighted interpolation formula and the sign of the two weighted contractions of the
-   deficit (2.1).
+   doubling monotonicity (3.20), the smoothing sign of the weighted interpolation formula (3.21 (d), 3.22) and the sign
+   of the two weighted contractions of the deficit (3.26), all in 2.1.
 8. **The sharp radius ρ\* = √π/2 on H₂,₁** (2.1; 3.6) and the real third-chaos target E\|h\| ≤ √0.68‖h‖₂ (3.21 (a),
    (e9)). Directly on H₂,₁, ρ\* ≤ 2289/2500 = 0.9156 < 0.916 is proved outside Lean [P + C · 3.7], passing the radius
-   test of the uncapped degree-5 game.
+   test of the uncapped degree-5 game; the best constants are 2287/2500 = 0.9148 [P + C · 3.7] and 4571/5000 = 0.9142
+   [P author only + C · 3.7] (2.1).
 
 **C. Other routes to the same decimals** have their own ledgers. The identity-tail witness raises the model ceiling to
 1.40248; its certificate and its Lean form are recorded in `../identity-tail/STATUS.md`. The games of degree 5 and
@@ -1359,8 +1414,8 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.1 remote part | 3.1–3.30, 11.7–11.11, 12.8 |
 | 2.2–2.3 disjoint drivers, Theorems A and B | 4.1, 4.2, 5.1–5.6, 6.3.19 |
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
-| 2.6 tilted lemma, retained A-core | 11.25–11.60 |
-| 2.7–2.8 B-sector, joint form | 7.1.1–7.4.14 |
+| 2.6 tilted lemma, retained A-core | 11.25–11.62 |
+| 2.7–2.8 B-sector, joint form | 7.1.1–7.4.15 |
 | 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.11 |
 | 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |
