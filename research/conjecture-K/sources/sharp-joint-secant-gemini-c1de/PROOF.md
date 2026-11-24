@@ -1,6 +1,6 @@
 # Sharp global joint secant inequalities for the odd sectors over A/B cores
 
-Agent-ID: gemini-c1de. Refs #436. **P + C, author only.**
+Agent-ID: gemini-c1de. Refs #436. **P + C.** Independently checked and replayed by codex-a7c4. [independent review of the corrected #594](https://github.com/agalatan/grothendieck-lean/pull/594#issuecomment-7142979900)
 
 This note establishes two elementary pointwise inequalities — a sharp global
 joint secant inequality (Theorem 1) and a paired bulk even/odd majorant
@@ -45,9 +45,9 @@ $(P_\Psi)$ (`STATUS.md` 7.5.3) at the peak row of Conjecture K:
    ($2.50\times$ stronger than `7.5.8`'s $W \ge 375\,V$) and linear small-shell
    closure $V \le 1241/68750000 \approx 1.8051\cdot 10^{-5}$ under $(P)$ (against the $49.64\cdot 10^{-6}$ budget of $(P_\Psi)$).
 
-The full central region of $(P_\Psi)$ / $F_{\mathrm{joint}}$ at moderate
-$V \in (11/100000, 0.080051 - u]$, global $(P)$ in its complex interior, and the
-row consumer remain **open**.
+The global $(P)$ proof makes Part D unconditional on the peak energy domain.
+The moderate-shell odd-sector estimate outside the proved regions and the multi-row
+consumer remain open. [Global proof, Corollary 3](../global-complex-P-gemini-c1de/PROOF.md)
 
 ---
 
@@ -415,7 +415,7 @@ dyadic binary64 $w$-slabs on $[0, 8]$, exact `std::hexfloat` output, full replay
 `code/sharp-joint-secant-gemini-c1de/verify.py` (Python 3 standard library only,
 `python3 -I`, < 2 s on `result.json`):
 
-| Part | Region / Regime | Certified Bound (`P + C, author only`) | Comparison with Prior Ledger |
+| Part | Region / Regime | Certified Bound (`P + C`) | Comparison with Prior Ledger |
 |---|---|---|---|
 | **A** | Shift exterior $|q| \ge 11/8 = 1.375$, all $S_r \ge 0$, all $\omega \ge 0$ (no $\|\nu\|^2 \le 1/50$ cap) | $h_{7.5.6} \in [-0.61038, -0.60578]$; $\max\lambda_K \le -0.02118$, $\max\lambda_O(c=0) \le -0.04135$, $\max\lambda_O(c^*) \le -0.00626$; hence $F_{\mathrm{joint}} \le 0$ and $F_{\mathrm{joint}}(c^*) \le 0$ pointwise | Shrinks `7.5.6`'s $|q| \ge 10$ by $7.27\times$ |
 | **B1** | Global $L = 13/4$, all $w, A, B, Q, P, \nu$ (no $(P)$, no $\|\nu\|^2 \le 1/50$) | $F_{\mathrm{joint}}(c^*) \le \frac{3053}{1000} S_r - S_r^2 - \frac{1}{200}\omega'$; gives $F_{\mathrm{joint}}(c^*) \le 0$ for $S_r \ge 3.053$, and linear closure for $V \le \frac{1}{61060} \approx 1.6377\cdot 10^{-5}$ | $44.5\times$ larger linear closure than `7.5.10` ($3.67\cdot 10^{-7}$); removes $\|\nu\|^2 \le 1/50$ from large-$S_r$ exterior |
