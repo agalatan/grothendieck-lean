@@ -1,0 +1,53 @@
+Outputs of the check scripts of this folder that have no log file of their own (copied from the runs of 25 Nov 2026,
+/usr/local/bin/python3 -I <script>; floating point, one author, not reviewed).
+
+== chk_rows.py (Gaussian value of four rational rows of kit/rows2b.json at their own t)
+0.700 Gaussian row at t: 0.6999095 sigma*,nu* 0.4231 0.003698  certified row at t: 0.7071542 u*=0.179028
+0.800 Gaussian row at t: 0.7112159 sigma*,nu* 0.2965 0.008363  certified row at t: 0.7115480 u*=0.087883
+0.850 Gaussian row at t: 0.7128653 sigma*,nu* 0.1949 0.011828  certified row at t: 0.7128824 u*=0.037968
+0.886 Gaussian row at t: 0.7117053 sigma*,nu* 0.0360 0.014833  certified row at t: 0.7117575 u*=0.001295
+
+== chk_sec2.py (tilt (0.4, 0.3); free search over (s, rho); fine grid 110 x 8 x 512 for the re-evaluation)
+t=0.800: lam_min(C-M(s)) at s=0,.02,.05,.1,.2,.5,.9: 0.3675 0.3545 0.3686 0.3721 0.3824 0.4161 0.4196
+   sup (Rem - rho^T C rho)/|rho|^2: coarse -0.2273, fine -0.2274 => mu_sec <= 0.2274; at s=0.717, rhoA=0.295, rhoB=0.268, |rho|=0.399
+   along the direction, (Rem - cost)/tau^2 at tau=.01,.05,.1,.2,.3,.5,.8,1.5: -0.5459 -0.5138 -0.4674 -0.3561 -0.2573 -0.2453 -0.3635 -0.5722
+t=0.820: 0.3997 0.3959 0.4007 0.4047 0.4144 0.4480 0.4636; mu_sec <= 0.2652 at s=0.741, rho=(0.311, 0.282)
+t=0.840: 0.4309 0.4312 0.4241 0.4350 0.4453 0.4787 0.5028; mu_sec <= 0.3011 at s=0.766, rho=(0.328, 0.297)
+t=0.850: 0.4460 0.4464 0.4472 0.4540 0.4604 0.4936 0.5248; mu_sec <= 0.3183 at s=0.763, rho=(0.345, 0.312)
+(the values at s = 0.02 and 0.05 scatter by 0.01: the quadrature does not resolve the zero of Y near z = 0 there)
+
+== chk_sec3.py (rows of the covering files; s: inf_rho (cost - Rem)/|rho|^2 [second-order value])
+row 0.79 (file mu 0.351): 0.00: 0.351 [0.351]; 0.20: 0.366 [0.370]; 0.40: 0.315 [0.387]; 0.60: 0.220 [0.421]; 0.75: 0.210 [0.470]; 0.90: 0.242 [0.397]; 1.20: 0.363 [0.382]; 1.60: 0.538 [0.538] => <= 0.210, ratio 0.60
+row 0.80 (file mu 0.367): 0.367; 0.382; 0.335; 0.241; 0.229; 0.256; 0.370; 0.537 => <= 0.229, ratio 0.62
+row 0.81 (file mu 0.384): 0.384; 0.399; 0.355; 0.262; 0.247; 0.271; 0.377; 0.538 => <= 0.247, ratio 0.64
+row 0.82 (file mu 0.400): 0.400; 0.415; 0.374; 0.282; 0.265; 0.286; 0.385; 0.535 => <= 0.265, ratio 0.66
+
+== chk_pc.py / chk_pc2.py (zero-core scalar Z, odd pair, A/B untilted, quintic majorants)
+t     | Z      | odd ratio s=0,.1,.2    | A/B untilted s=0,.2,.5 | quintic first-order majorant/p2 (max over s) | all 12 h-side /p2 (max, at s=0) | finite-amplitude odd, random search
+0.700 | 1.2062 | 1.2062 1.1823 1.1188   | 1.001 0.930 0.822      | 0.2406 (s=0.35) | 0.4822 | 1.1479
+0.780 | 1.0483 | 1.0483 1.0313 0.9853   | 0.881 0.821 0.715      | 0.211           |        |
+0.800 | 1.0121 | 1.0121 0.9966 0.9537   | 0.853 0.794 0.691      | 0.2039 (0.40)   | 0.4233 | 0.9855
+0.810 | 0.9944 | 0.9944 0.9795 0.9392   | 0.839 0.785 0.680      | 0.2005 (0.40)   | 0.4177 | 0.9025
+0.820 | 0.9770 | 0.9770 0.9626 0.9242   | 0.826 0.774 0.668      | 0.1972 (0.45)   | 0.4121 | 0.8753
+0.850 | 0.9262 | 0.9262 0.9138 0.8798   | 0.787 0.739 0.636      | 0.1878 (0.45)   | 0.3955 | 0.8861
+0.886 | 0.8688 | 0.8688 0.8582 0.8287   | 0.743 0.695 0.601      | 0.1768 (0.45)   | 0.3762 | 0.8159
+odd ratio: maximum over s in [0, 6] at s = 0 on every row.
+
+== chk_pc4.py / chk_pc5.py (secant form E[(u^2/2 + v^2)/|A+|] of the odd pair, lam_max/p1; s on [0,2], step 0.025)
+symmetry E|A- - O| = E|A+ - O| verified to 10 digits.
+row 0.810: s=0: 0.9944; max 1.0761 at s=0.500; >= 1 on [0.175, 0.750]
+row 0.820: 0.9770; 1.0574 at 0.500; [0.250, 0.725]      row 0.830: 0.9598; 1.0381 at 0.500; [0.325, 0.700]
+row 0.840: 0.9429; 1.0192 at 0.525; [0.400, 0.650]      row 0.845: 0.9345; 1.0099 at 0.525; [0.450, 0.625]
+row 0.850: 0.9262; 1.0014 at 0.525; [0.525, 0.550]      row 0.855: 0.9180; 0.9916 at 0.550; nowhere
+row 0.860: 0.9829   0.865: 0.9740   0.870: 0.9645   0.875: 0.9563   0.880: 0.9474   0.886: 0.9385 (maxima; nowhere >= 1)
+
+== chk_prof.py (profile tables against the definitions; 120 x 8 x 512 nodes)
+profiles_low/band_row_0.70.json (row 0.79): psi, GA, GB, G0 agree to 1.2e-5 at s = 0.02, 0.295, 0.67, 1.225, 3.4
+profiles/band_row_0.84.json: agree to 3.4e-5.  G_A(s)/s near 0: -0.483 (row 0.79), -0.462 (row 0.84); G_A(6) = 0.787, 0.783.
+
+== chk_p5.py (three-cluster model of P5, own code; piece 0.70; c = 4, a^2 = 0.052, |m| = (0.138, 0.141, 0.180),
+   arg m = (-0.11, -0.15, 0.25) pi, s_R = 0.663)
+sector A  1.612 u*  G = B_4: 0.1606 (second seed 0.1597), chi 1.768     1.449 u*: 0.1741
+sector A  G ~ Exp(1): 0.1293, 0.1403     H = 1 +- sqrt(0.2): 0.1342, 0.1456
+sector B  G = B_4: 0.1339, 0.1481        G ~ Exp(1): 0.1071, 0.1186
+junta limit (a = 1): 0.0407, 0.0461      X(S - c)/sqrt c, c = 4: ratio 0.0313, chi 6.984
