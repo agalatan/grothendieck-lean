@@ -25,9 +25,13 @@ if ! git -C "$root" cat-file -e "$EIGHTEEN^{commit}" 2>/dev/null; then
   fi
 fi
 git -C "$root" cat-file -e "$SIX^{commit}"; git -C "$root" cat-file -e "$EIGHTEEN^{commit}"
-rm -rf "$target/src6" "$target/src18"
+# Only the files listed below are written (each through a temporary file, then renamed); nothing else under the
+# target is touched or removed.
+put() {  # put <commit> <path in the repository> <destination>
+  mkdir -p "$(dirname "$3")"; git -C "$root" show "$1:$2" > "$3.tmp.$$"; mv -f "$3.tmp.$$" "$3"
+}
 for f in Grothe/UpperSix/Haagerup/Parameters.lean Grothe/UpperSix/Haagerup/Data/OverlapData.lean; do
-  mkdir -p "$target/src6/$(dirname "$f")"; git -C "$root" show "$SIX:$f" > "$target/src6/$f"
+  put "$SIX" "$f" "$target/src6/$f"
 done
 files=(data/upper-preprocess/certificate.json data/upper-replacement/exact-columns.json
        data/upper-replacement/manifest.json data/upper-replacement/cell-inputs.npz
@@ -35,7 +39,7 @@ files=(data/upper-preprocess/certificate.json data/upper-replacement/exact-colum
        Grothe/UpperReplacement/RootData.lean tools/replay_private_upper_budget.py)
 for g in 0 1 2 3 4 5 6 7; do files+=("Grothe/UpperReplacement/HeadWitnessFacts/Group0$g.lean"); done
 for f in "${files[@]}"; do
-  mkdir -p "$target/src18/$(dirname "$f")"; git -C "$root" show "$EIGHTEEN:$f" > "$target/src18/$f"
+  put "$EIGHTEEN" "$f" "$target/src18/$f"
 done
 sum="$(shasum -a 256 "$target/src18/data/upper-replacement/cell-inputs.npz" | cut -d' ' -f1)"
 if [ "$sum" != "$NPZ_SHA" ]; then echo "ERROR: cell-inputs.npz has SHA-256 $sum, expected $NPZ_SHA" >&2; exit 1; fi
