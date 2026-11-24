@@ -15,12 +15,11 @@ that is, `K_G^ℂ ≤ 1.40455741 < 1/γ†`, without hypotheses. Start with [`an
 
 ## The article: `main.tex`, `main.pdf`
 
-- Build with `latexmk -pdf main.tex` (pdflatex). The bibliography is inside the file. Sections: rounding, Hermite
-  games, and why mixtures win (2), two-coordinate cell rounders, reflection, and steering (3), the six-channel rational
-  certificate and proof of Theorem 1.1 (4), how the result was found (5), the ancillary files (Appendix A) and the Lean
-  proof (Appendix B).
-- Open items for the author: the author line and affiliation; the author's own account in Section 5 (a
-  `% TODO(author)` comment, to strip before arXiv).
+- Build with `latexmk -pdf main.tex` (pdflatex). The bibliography is inside the file. Sections: introduction and relation to
+  earlier work (1), the transfer lemma and the alternating ceiling (2), two-coordinate channels: cell maps, reflection
+  and smoothing (3), the six-channel rational certificate and proof of Theorem 1.1 (4), remarks and open questions
+  (5), the ancillary files (Appendix A) and the Lean proof (Appendix B).
+- Open items for the author before posting: the author line and affiliation.
 - `figures/make_figures.py` decodes `f_tig` and `tigMuList` directly from `anc/Grothe/UpperSix/Haagerup/Data/` and
   writes `figures/tiger_mu.pdf` (Figure 1) and `figures/tiger_phase.pdf`.
 - Run `python3 figures/check_alternating.py` here to reproduce the plotted endpoint and the full alternating-sum enclosures for channels 0 and 4 using integer arithmetic.

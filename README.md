@@ -51,8 +51,8 @@ thus resolving this conjecture of Haagerup (1987).
   sources are a byte-for-byte copy of [`Grothe/UpperSix/`](Grothe/UpperSix), the six-channel proof that also gives
   the upper bound of `main_bounds` ([`Grothe/UpperResult.lean`](Grothe/UpperResult.lean)). Its own CI job checks the
   copy, the build and the axioms. [Build instructions and trust](haagerup-article/anc/README.md).
-- **How it was found.** The construction was discovered with AI, at the end of this project; the article's last
-  section describes how.
+- **How it was found.** The construction was found by numerical optimisation with the assistance of AI systems,
+  at the end of this project; the search is not part of the proof.
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
