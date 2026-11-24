@@ -1,6 +1,7 @@
 import Grothe.UpperSixExact.Head
 import Grothe.UpperSixExact.Contour
 import Grothe.UpperSix.Haagerup.CellOverlap
+import Grothe.UpperSix.Haagerup.TaylorHardySound
 import Grothe.UpperSix.Haagerup.ContourChecks.Channel1
 import Grothe.UpperSix.Haagerup.ContourChecks.Channel2
 import Grothe.UpperSix.Haagerup.ContourChecks.Channel3
@@ -150,11 +151,11 @@ private lemma hChan_mem (p : Fin 6) (n : ℕ) (hn : n < 251) :
     rw [gSmoothedLp_eq_nat]
     exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [q0Q, ofListQ])
       (memB_ofListQ firstPolynomial 251) (memB_ofListQ q0Q 251) n hn
-  · dsimp only [hChan, headIntervals, headICert]
+  · dsimp only [hChan, headIntervals]
     rw [gSmoothedLp_eq_nat]
     exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [q1Q, ofListQ])
       (memB_ofListQ p1Q 251) (memB_ofListQ q1Q 251) n hn
-  · dsimp only [hChan, headIntervals, headICert]
+  · dsimp only [hChan, headIntervals]
     have heq : bivarKernel (ofListQ p2Q) (ofListQ []) (energy (memLp_phase2.toLp phase2)) n =
         bivarKernel (ofListQ p2Q) 0 (onedTable haagCoeff) n :=
       (phase_bivarKernel_eq (ofListQ p2Q) n).trans
@@ -162,15 +163,15 @@ private lemma hChan_mem (p : Fin 6) (n : ℕ) (hn : n < 251) :
     rw [heq]
     exact mem_bivarT_oned (Q := 0) (memB_ofListQ p2Q 251) haagCoeff
       (fun _ hk => mem_haagMuList hk) n hn
-  · dsimp only [hChan, headIntervals, headICert, gTigLp, memLp_fTig, fTig]
+  · dsimp only [hChan, headIntervals, gTigLp, memLp_fTig, fTig]
     rw [ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ r3Q) n]
     exact mem_bivarT_oned (Q := 0) (memB_ofListQ r3Q 251) (muTigOf tigCreArr tigCimArr)
       (fun _ hk => mem_muTigOf tig_mu_ok hk) n hn
-  · dsimp only [hChan, headIntervals, headICert, gTigLp, memLp_fTig, fTig]
+  · dsimp only [hChan, headIntervals, gTigLp, memLp_fTig, fTig]
     rw [ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ r4Q) n]
     exact mem_bivarT_oned (Q := 0) (memB_ofListQ r4Q 251) (muTigOf tigCreArr tigCimArr)
       (fun _ hk => mem_muTigOf tig_mu_ok hk) n hn
-  · dsimp only [hChan, headIntervals, headICert]
+  · dsimp only [hChan, headIntervals]
     rw [gSmoothedLp_eq_nat]
     exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [q5Q, ofListQ])
       (memB_ofListQ p5Q 251) (memB_ofListQ q5Q 251) n hn
@@ -208,25 +209,25 @@ private lemma hChan_tail (p : Fin 6) :
       (norm_cellFn_le tcell_sos_ok) (fun _ v hc => cellFn_rot2 tcellCreArr tcellCimArr hc v)
       hp0 hq0 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
       (by norm_num [jCertQ]) (by norm_num [circleBudget, budgetQ, d6Q]) region_ok mean_ok J
-  · exact hardy_smoothed_channel hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
+  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
       (norm_cellFn_le tcell_sos_ok) (fun _ v hc => cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hp1 hq1 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      hp1 hq1 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [circleBudget, budgetQ, d6Q]) reg1_ok mean1_ok J
-  · exact hardy_unsmoothed_channel measurable_phase2 norm_phase2_le
-      (fun _ u hc => phase2_rot2 hc u) memLp_phase2 hp2 hq_nil
-      (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+  · exact hardy_phase_channel_tm measurable_phase2 norm_phase2_le
+      (fun _ u hc => phase2_rot2 hc u) memLp_phase2 hp2
+      (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [circleBudget, budgetQ, d6Q]) reg2_ok mean2_ok J
-  · exact hardy_unsmoothed_channel (measurable_cellFn tigCreArr tigCimArr)
+  · exact hardy_anti_channel_tm (measurable_cellFn tigCreArr tigCimArr)
       (norm_cellFn_le tig_sos_ok) (fun _ u hc => cellFn_rot2 tigCreArr tigCimArr hc u)
-      memLp_fTig hp3 hq3 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      memLp_fTig hq3 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [circleBudget, budgetQ, d6Q]) reg3_ok mean3_ok J
-  · exact hardy_unsmoothed_channel (measurable_cellFn tigCreArr tigCimArr)
+  · exact hardy_anti_channel_tm (measurable_cellFn tigCreArr tigCimArr)
       (norm_cellFn_le tig_sos_ok) (fun _ u hc => cellFn_rot2 tigCreArr tigCimArr hc u)
-      memLp_fTig hp4 hq4 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      memLp_fTig hq4 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [circleBudget, budgetQ, d6Q]) reg4_ok mean4_ok J
-  · exact hardy_smoothed_channel hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
+  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
       (norm_cellFn_le tcell_sos_ok) (fun _ v hc => cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hp5 hq5 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      hp5 hq5 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [circleBudget, budgetQ, d6Q]) reg5_ok mean5_ok J
 
 /-- Admissibility at the exact transfer endpoint. -/

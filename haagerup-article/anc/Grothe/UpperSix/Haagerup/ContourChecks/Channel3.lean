@@ -1,19 +1,21 @@
 import Grothe.UpperSix.Haagerup.Parameters
-import Grothe.UpperSix.Haagerup.SchurHardy
+import Grothe.UpperSix.HaagerupKernel.TaylorHardy
 
 set_option warningAsError true
 
--- Agent-ID: gemini-21d5, codex-a7c4
+-- Agent-ID: gemini-21d5, codex-a7c4, gemini-1aa9
 namespace Haagerup
-open HaagerupKernel.Hardy
+open HaagerupKernel.TaylorHardy
 
-set_option maxRecDepth 10000 in
-theorem reg3_ok : regionOK (unsmoothedRData (r3Q.map (- ·)) r3Q) (regRQ 3) = true := by
-  native_decide
+def reg3Steps : List Nat := [1, 1, 2, 4, 8]
 
-set_option maxRecDepth 10000 in
+def mean3Steps : List Nat := [1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 8, 8, 8, 8]
+
+theorem reg3_ok : regQ1DiagOK r3Q (regRQ 3) 4 reg3Steps = true := by
+  decide +kernel
+
 theorem mean3_ok :
-    circleMeanOK (unsmoothedRData (r3Q.map (- ·)) r3Q) (rhoQ 3) (jCertQ 3) (budgetQ 3) 12 = true := by
-  native_decide
+    meanQ1AntiOK r3Q (rhoQ 3) (jCertQ 3) (budgetQ 3) 6 mean3Steps = true := by
+  decide +kernel
 
 end Haagerup

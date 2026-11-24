@@ -804,10 +804,18 @@ class, at every odd amplitude and sharing. These are separate subclasses;
 odd sectors over A/B cores remain open. Neither result is a premise of the Lean endpoint.
 
 \section{What exactly the computer checks}\label{sec:trust}
-The six-channel endpoint uses exact Boolean checks on the two bounded cell maps,
-their overlap data, the signed head, and the Hardy contours. Their soundness is
-proved in Lean. The rational tail comparisons use kernel reduction. The output of
-\path{haagerup-article/anc/Axioms.lean} lists the axioms of the endpoint itself.
+The six-channel article endpoint checks the signed head convolution
+(\lean{FastHeadSound.lean}, feeding \lean{convex\_transfer\_head} alongside
+\lean{Transfer.lean}), all six Hardy-space disk and circle-mean contours
+(\lean{TaylorHardySound.lean}), and the rational tail comparisons directly in
+Lean's kernel; \lean{native\_decide} is used only for the two bounded cell-map
+norm witnesses and their overlap tables. The sharpened root endpoint
+(\path{Grothe/UpperSixExact/}) reuses the five kernel-checked contours for
+channels 1--5 and adds native checks for its modified channel-0 contour and
+six-channel linear-floor head. Their soundness is proved in Lean. The output of
+\path{haagerup-article/anc/Axioms.lean} lists the axioms of the standalone
+article endpoint itself, and \path{scratch/UpperSixAxioms.lean} audits both
+six-channel endpoints together.
 The discussion below also records the independent single-channel proof and the
 lower certificates.
 \begin{center}\small

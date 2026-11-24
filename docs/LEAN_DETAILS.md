@@ -1554,10 +1554,14 @@ the merged tree before a pull request lands.
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
-complete list; the facts fall into the following groups. The six-channel upper proof
-uses the facts in the `Haagerup` namespace (`Haagerup.Data.tcell_rows_ok`, `tcell_sos_ok`,
-`tig_mu_ok`, `tig_sos_ok`, `Haagerup.head_sum_ok`, `Haagerup.mean0_ok`–`mean5_ok`,
-`Haagerup.reg0_ok`–`reg5_ok`; its own list is `data/axioms/modes/upper-six.native.txt`).
+complete list; the facts fall into the following groups. The six-channel article upper proof
+uses the `Haagerup.Data` cell-witness and overlap-table facts (`Haagerup.Data.tcell_rows_ok`,
+`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`), while its weighted head convolution (`Haagerup.head_sum_ok`),
+its six channel disk and circle checks (`Haagerup.reg0_ok`–`reg5_ok`, `Haagerup.mean0_ok`–`mean5_ok`),
+and its rational tail comparisons reduce directly in the kernel. The sharpened root endpoint
+(`Grothe/UpperSixExact/`) reuses the kernel-checked contours for channels 1–5 and adds
+`Haagerup.SixChannelExact.head_and_floors_ok`, `region_ok`, and `mean_ok` (the combined upper-six
+allowlist is `data/axioms/modes/upper-six.native.txt`).
 The single-channel upper proof uses `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.Upper.improved_high_mass_native` (the two complete high-band masses

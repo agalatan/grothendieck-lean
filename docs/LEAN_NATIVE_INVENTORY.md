@@ -7,8 +7,11 @@ required declarations in `data/axioms/required.txt`; CI checks it on every pushe
 a pull request lands.
 
 The proof-check workflow also audits `scratch/UpperSixAxioms.lean` against the required six-channel
-allowlist. It covers the two cell witnesses, both overlap-table checks, the weighted head, and each
-channel’s disk and circle checks. The rational tail comparisons reduce in the kernel.
+allowlist. For the standalone article proof it covers only the two cell witnesses and both
+overlap-table checks (its weighted head, each channel's disk and circle checks, and the rational
+tail comparisons reduce in the kernel); for the sharpened root endpoint (`Grothe/UpperSixExact/`)
+it also covers the modified channel-0 contour checks and the six-channel linear-floor head check
+while reusing the kernel-checked contours for channels 1–5.
 [Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
 
 Archived upper variants have separate preserved inventories under
