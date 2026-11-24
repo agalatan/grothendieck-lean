@@ -30,6 +30,8 @@ number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a blo
 | node caps: chord facts | `Grothe.LowerAnalytic.chordsOKRowKK` | `Grothe/LowerAnalytic/CapRowKK/Assembly.lean` | `chordOKLow`: the cap of every chord node of the row is above the chord of its two vertex nodes, at the vertex caps lowered by `10⁻¹²` | `capsRowKK`, through `nodeCaps_of_vertexCapsNu` |
 
 Lean kernel-checks the spectral polynomial majorants and scale chords for `Grothe.Lower.certMassRow`.
+The witness module took about four minutes to build on Linux with two CPUs available. The axiom
+audit restricts both the mass certificate and `mass_law_bound` to Lean's three standard axioms.
 `Grothe.Lower.certEnvelope` reduces `checkEnvCells` in the kernel on
 the 16 records of rational endpoints, row indices and weights. `tools/gen_lower_data.py` generates
 its cells and the row certificates. `tools/gen_tail_caps.py` generates the node-cap facts and lists them in

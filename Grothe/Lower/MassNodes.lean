@@ -3,8 +3,8 @@ import Grothe.Lower.MassRow
 /-!
 # Exact node values for the mass potential
 
-The mass row uses the tabulated radii and evaluates its potential at each radius.
-Both its spectral cell check and its analytic bound use this table.
+The table evaluates the mass potential at the original certificate's radii and supplies
+the node bounds in `massCaps`. The mass law uses the polynomial branches directly.
 -/
 
 namespace Grothe.Lower
