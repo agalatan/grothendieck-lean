@@ -1200,7 +1200,7 @@ ordered by what a proof of 1.402 through Λ̂ needs first; part B lists what K n
    representations give and cannot give: 6.3.23 to 6.3.39 with items 91, 93 and 98; zero-content classes: 11.31a, 11.56.
 7. **Exact remote K** (3.6), not needed at the peak (3.3): known on the classes named in 3.6 and proved, by their
    author only, on those of 3.24 and 3.25; routes 3.20, 3.21 (d), 3.26.
-8. **The sharp radius ρ\* = √π/2 on H₂,₁** (3.6; equivalent to PVD, 3.5, and implied by the sharp real third-chaos bound, 3.21 (e)) and the real weak target E\|h\| ≤ √0.68‖h‖₂ (3.21 (a), (e9)). Directly on H₂,₁, ρ\* ≤ 2289/2500 = 0.9156 < 0.916 is proved and certified outside Lean (3.7, **P + C**), passing the radius condition of the uncapped degree-5 game.
+8. **The sharp radius ρ\* = √π/2 on H₂,₁** (3.6; equivalent to PVD, 3.5, and implied by the sharp real third-chaos bound, 3.21 (e)) and the real weak target E\|h\| ≤ √0.68‖h‖₂ (3.21 (a), (e9)). Directly on H₂,₁, ρ\* ≤ 2287/2500 = 0.9148 < 0.916 is proved and certified outside Lean (3.7, **P + C**; 4571/5000 = 0.9142 is **P, author only + C**), passing the radius condition of the uncapped degree-5 game.
 
 **C. Other routes to the same decimals** have their own ledgers. The identity-tail witness, designed for a Lean bound above
 1.4018 (section 10; [`../identity-tail/STATUS.md`](../identity-tail/STATUS.md)): its integer
