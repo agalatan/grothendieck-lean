@@ -15,10 +15,12 @@ Certifies:
           integration E[z^p zbar^q] = delta_{p,q} prod(p_j!) against (b) the
           four-square defect formula across deterministic complex-rational tensors
           for c = 1..5, plus exact vanishing of all four defect squares on R_1, R_2, R_4.
-  Gate 3: Quantitative odd-c 3-frame Hurwitz inequality (max defect > 1/16 via
-          71/72 < 1) and explicit rational lower bound
-          kappa(R) >= 2c/(c+1) + floor(2c/3) / (2048 * c * (c+1)^3) for odd c >= 3,
-          with first-principles real Gaussian Wick verification on test tensors.
+  Gate 3: Quantitative odd-c 3-frame Hurwitz inequality (max defect > 1/13 via
+          618/625 < 1, using orthogonal contraction ||T|| <= 1) and all-triples
+          averaging yielding
+          kappa(R) >= 2c/(c+1) + 1 / (1014 * (c+1)^3) for odd c >= 3
+          (>= 97345/64896 = 3/2 + 1/64896 at c = 3), with first-principles real
+          Gaussian Wick verification on test tensors.
   Gate 4: Exact closed-form algebraic c = 3 construction
           R_3(a_0, b) = xbar_0(a_0 y_0 w_0 + y_1 w_1 + y_2 w_2)
                         + b x_1(ybar_0 w_1 - ybar_1 w_0) + b x_2(y_0 wbar_2 - y_2 wbar_0),
@@ -442,16 +444,20 @@ def run_gate2_four_square_identity() -> dict:
 # ============================================================================
 
 def check_polar_contradiction(eps: Q) -> tuple[bool, Q]:
-    """Check whether max{||E_j||, ||F_{jk}||} <= eps implies eta + tau*(2 + tau) < 1."""
+    """Check whether max{||E_j||, ||F_{jk}||} <= eps implies eta + 2*tau < 1
+    (using ||T|| <= 1 since T = (K_2 + J_1 K_2 J_1)/2 averages two orthogonal matrices)."""
     if eps <= 0 or eps >= 1:
         return False, Q(999)
-    # Use rational polynomial bounds valid on [0, 9/25]:
-    # (1 - (5/9)*eps)^2 <= 1 - eps  iff  eps <= 9/25
-    # (1 + (1/2)*eps)^2 >= 1 + eps  always
-    if eps > Q(9, 25):
+    # Rational bounds: for eps = 1/13, delta_ub = 1/25 satisfies (24/25)^2 <= 12/13;
+    # in general on (0, 9/25], delta_ub = max(Q(1, 25) if eps == Q(1, 13) else Q(5, 9)*eps)
+    if eps == Q(1, 13):
+        delta_ub = Q(1, 25)
+    elif eps <= Q(9, 25):
+        delta_ub = Q(5, 9) * eps
+    else:
         return False, Q(999)
-    delta_ub = Q(5, 9) * eps
-    require((Q(1) - delta_ub) ** 2 <= Q(1) - eps, "Invalid lower bound on sqrt(1 - eps)")
+    if (Q(1) - delta_ub) ** 2 > Q(1) - eps:
+        return False, Q(999)
     sqrt_plus_ub = Q(1) + Q(1, 2) * eps
     require(sqrt_plus_ub ** 2 >= Q(1) + eps, "Invalid upper bound on sqrt(1 + eps)")
 
@@ -465,7 +471,8 @@ def check_polar_contradiction(eps: Q) -> tuple[bool, Q]:
     require((Q(1) - y) ** 2 <= Q(1) - y, "Invalid 1 - sqrt(1 - y) <= y")
     j_minus_k_ub = y + eta_ub * Q(1, 2)
     tau_ub = eta_ub + j_minus_k_ub
-    lhs_ub = eta_ub + tau_ub * (Q(2) + tau_ub)
+    # Since K_2 and J_1 K_2 J_1 are in O(2c), ||T|| <= 1, so ||T^2 - K_2^2|| <= (||T|| + ||K_2||)*tau <= 2*tau!
+    lhs_ub = eta_ub + Q(2) * tau_ub
     return lhs_ub < Q(1), lhs_ub
 
 
@@ -519,9 +526,9 @@ def real_bilinear_wick_check(n_real: int, mats: list[list[list[Q]]]) -> tuple[Q,
 
 
 def run_gate3_hurwitz_gap() -> dict:
-    eps0 = Q(1, 16)
+    eps0 = Q(1, 13)
     ok, lhs_ub = check_polar_contradiction(eps0)
-    require(ok and lhs_ub < Q(71, 72) < Q(1), f"Polar contradiction failed at eps0=1/16: {lhs_ub}")
+    require(ok and lhs_ub == Q(618, 625) < Q(1), f"Polar contradiction failed at eps0=1/13: {lhs_ub}")
 
     # Verify the real Gaussian Wick inequality at c = 3 (n_real = 6) on a deterministic rational 6-frame
     n_real = 6
@@ -539,31 +546,43 @@ def run_gate3_hurwitz_gap() -> dict:
     exact_tot, lower_frob = real_bilinear_wick_check(n_real, mats)
     require(exact_tot >= lower_frob > 0, "Real Gaussian Wick lower bound failed")
 
-    # Verify exact gap constant assembly for odd c = 3, 5, 7, 9, 11:
-    # kappa(R) - 2c/(c+1) >= (c^5 / (2*(c+1))) * (1 / c^4) * (4 * floor(2c/3) * eps0^2) / (16 * c^2 * (c+1)^2)
-    #                     = floor(2c/3) * eps0^2 / (8 * c * (c+1)^3)
-    #                     = floor(2c/3) / (2048 * c * (c+1)^3).
+    # Verify all-triples combinatorial averaging & exact gap constant assembly for odd c = 3, 5, 7, 9, 11:
+    # With n = 2c >= 6:
+    # - Each diagonal ||E_r||^2 appears in binom(n-1, 2) = (n-1)(n-2)/2 triples;
+    # - Each pair ||F_{rs}||^2 appears in (n-2) triples;
+    # - Multiplying by 4 / binom(n-1, 2) = 8 / ((n-1)(n-2)) gives weight 4 on each ||E_r||^2
+    #   and weight 8 / (n-1) <= 8/5 < 2 on each ||F_{rs}||^2, yielding for each real map:
+    #   (4 / binom(n-1, 2)) * binom(n, 3) * eps0^2 = (4 * n / 3) * eps0^2 = (8 * c / 3) * eps0^2.
+    # - Summing both real maps (iota = 1, 2) gives (16 * c / 3) * eps0^2, and
+    #   kappa(R) - 2c/(c+1) >= (c / (2*(c+1))) * ((16 * c / 3) * eps0^2) / (16 * c^2 * (c+1)^2)
+    #                        = eps0^2 / (6 * (c+1)^3) = 1 / (1014 * (c+1)^3).
     odd_gaps = {}
     for c in (3, 5, 7, 9, 11):
-        n_triples = (2 * c) // 3
+        n = 2 * c
+        binom_n_3 = Q(n * (n - 1) * (n - 2), 6)
+        binom_nm1_2 = Q((n - 1) * (n - 2), 2)
+        scale_triples = Q(4) * Q(binom_nm1_2.denominator, binom_nm1_2.numerator)
+        require(scale_triples * binom_nm1_2 == Q(4), "Diagonal weight must equal 4")
+        require(scale_triples * Q(n - 2) == Q(8, n - 1) <= Q(2), "Pair weight must be <= 2")
+        per_map_lb = scale_triples * binom_n_3 * (eps0 * eps0)
+        require(per_map_lb == Q(8 * c, 3) * (eps0 * eps0), "All-triples sum mismatch")
         assembled = (
             Q(c ** 5, 2 * (c + 1))
             * Q(1, c ** 4)
-            * Q(4 * n_triples)
-            * (eps0 * eps0)
+            * (Q(2) * per_map_lb)
             * Q(1, 16 * c * c * ((c + 1) ** 2))
         )
-        formula = Q(n_triples, 2048 * c * ((c + 1) ** 3))
+        formula = Q(1, 1014 * ((c + 1) ** 3))
         require(assembled == formula and formula > 0, f"Gap assembly mismatch at odd c={c}")
         odd_gaps[f"c={c}"] = {
             "floor": q_str(Q(2 * c, c + 1)),
             "delta_c": q_str(formula),
             "certified_lower_bound": q_str(Q(2 * c, c + 1) + formula),
         }
-    require(odd_gaps["c=3"]["delta_c"] == "1/196608", "Unexpected delta_3")
-    require(odd_gaps["c=3"]["certified_lower_bound"] == "294913/196608", "Unexpected c=3 lower bound")
+    require(odd_gaps["c=3"]["delta_c"] == "1/64896", "Unexpected delta_3")
+    require(odd_gaps["c=3"]["certified_lower_bound"] == "97345/64896", "Unexpected c=3 lower bound")
 
-    print(f"[Gate 3] PASS: Quantitative odd-c 3-frame Hurwitz bound (lhs <= {q_str(lhs_ub)} < 71/72 < 1 at eps0=1/16) & delta_3 = 1/196608.")
+    print(f"[Gate 3] PASS: Quantitative odd-c 3-frame Hurwitz bound (lhs = {q_str(lhs_ub)} < 1 at eps0=1/13) & delta_c = 1/(1014*(c+1)^3) (delta_3 = 1/64896).")
     return {"eps0": q_str(eps0), "polar_lhs_upper_bound": q_str(lhs_ub), "odd_c_gaps": odd_gaps}
 
 
@@ -620,7 +639,20 @@ def run_gate4_c3_exact() -> dict:
             require(m2 == m2_form, f"R_3 m2 formula mismatch at a0={a0}, b={b}")
             require(e4 == e4_form, f"R_3 e4 formula mismatch at a0={a0}, b={b}")
 
-    # 2. Verify exact algebraic stationarity & rational reduction on 7 distinct rational a0 values
+    # 1b. Boundary q = 0 identity: kappa(R_3(a, 0)) == 9/4 + (9/8)*(a^2 - 1)^2 / (a^2 + 2)^2 >= 9/4,
+    #     attained at a = +-1 (value 9/4), and positivity of q*(a) numerator for ALL real a:
+    #     2*a^4 + a^3 + a^2 + 2*a + 6 == a^2*(2*(a + 1/4)^2 + 3/8) + (1/2)*(a + 2)^2 + 4 >= 4 > 0.
+    for t in (Q(-3), Q(-2), Q(-1), Q(0), Q(1, 2), Q(1), Q(2)):
+        kap_q0 = Q(27, 8) * (t ** 4 + Q(2) * t ** 2 + Q(3)) * Q(1, (t ** 2 + Q(2)) ** 2)
+        kap_q0_sos = Q(9, 4) + Q(9, 8) * ((t ** 2 - Q(1)) ** 2) * Q(1, (t ** 2 + Q(2)) ** 2)
+        require(kap_q0 == kap_q0_sos and kap_q0 >= Q(9, 4), "Boundary q=0 identity failed")
+        if t in (Q(-1), Q(1)):
+            require(kap_q0 == Q(9, 4), "Boundary q=0 minimum at a=+-1 must be 9/4")
+        num_qstar = Q(2) * t ** 4 + t ** 3 + t ** 2 + Q(2) * t + Q(6)
+        sos_qstar = (t ** 2) * (Q(2) * ((t + Q(1, 4)) ** 2) + Q(3, 8)) + Q(1, 2) * ((t + Q(2)) ** 2) + Q(4)
+        den_qstar = t ** 2 + Q(4) * t + Q(6)
+        sos_den = (t + Q(2)) ** 2 + Q(2)
+        require(num_qstar == sos_qstar >= Q(4) and den_qstar == sos_den >= Q(2), "q*(a) global SOS positivity failed")
     #    (proving polynomial identities in Q[a0] of degree <= 6):
     #    (i)   num(d/dq [e4 / m2^2]) = 16 * [ (a0^2 + 4*a0 + 6)*q - (2*a0^4 + a0^3 + a0^2 + 2*a0 + 6) ]
     #    (ii)  (2*a0^4 + a0^3 + a0^2 + 2*a0 + 6) - (a0^2 + 4*a0 + 6) == a0 * (2*a0^3 + a0^2 - 2)
@@ -694,13 +726,28 @@ def run_gate4_c3_exact() -> dict:
     kap3_hi = kap_reduced(hi)
     require(kap3_lo < kap3_hi and kap3_hi - kap3_lo < Q(1, 10 ** 33), "kappa_*(3) enclosure too wide")
 
-    # Also verify structural observables at [lo, hi] match claude-b9ee's comment #6:
-    # squared singular values 1/(a0^2 + 6) = 0.1484488753... and a0^2/(a0^2 + 6) = 0.1093067486...
-    # type energies (a0^2+2)/(a0^2+6) = 0.4062044994... and 2/(a0^2+6) = 0.2968977506...
+    # Also verify structural observables at [lo, hi] match claude-b9ee's comment #6,
+    # including exact multiplicity/trace conservation:
+    # M has spectrum (1, 1, a0^2)/(a0^2 + 6), N has (1, 1)/(a0^2 + 6), P has (1, 1)/(a0^2 + 6):
+    # SIX copies of 1/(a0^2 + 6) = 0.1484488752569... and ONE copy of a0^2/(a0^2 + 6) = 0.1093067484583...,
+    # summing to 6/(a0^2 + 6) + a0^2/(a0^2 + 6) == 1 identically;
+    # type energies ((a0^2+2)/(a0^2+6), 2/(a0^2+6), 2/(a0^2+6)) = (0.4062044989722..., 0.2968977505139..., 0.2968977505139...).
+    for t in (lo, hi):
+        denom_t = t * t + Q(6)
+        sv_eq_t = Q(denom_t.denominator, denom_t.numerator)
+        sv_sm_t = (t * t) * sv_eq_t
+        en_A_t = (t * t + Q(2)) * sv_eq_t
+        en_BC_t = Q(2) * sv_eq_t
+        require(Q(6) * sv_eq_t + sv_sm_t == Q(1), "Pooled singular value trace must equal 1")
+        require(en_A_t + Q(2) * en_BC_t == Q(1), "Type energies must sum to 1")
     sv_equal_lo = Q((hi * hi + Q(6)).denominator, (hi * hi + Q(6)).numerator)
     sv_equal_hi = Q((lo * lo + Q(6)).denominator, (lo * lo + Q(6)).numerator)
     sv_small_lo = (lo * lo) * Q((hi * hi + Q(6)).denominator, (hi * hi + Q(6)).numerator)
     sv_small_hi = (hi * hi) * Q((lo * lo + Q(6)).denominator, (lo * lo + Q(6)).numerator)
+    energy_A_lo = Q(1) - Q(4) * sv_equal_hi
+    energy_A_hi = Q(1) - Q(4) * sv_equal_lo
+    energy_BC_lo = Q(2) * sv_equal_lo
+    energy_BC_hi = Q(2) * sv_equal_hi
     require(Q(148448, 1000000) < sv_equal_lo and sv_equal_hi < Q(148449, 1000000), "Equal singular value mismatch")
     require(Q(109306, 1000000) < sv_small_lo and sv_small_hi < Q(109307, 1000000), "Small singular value mismatch")
 
@@ -730,6 +777,11 @@ def run_gate4_c3_exact() -> dict:
     return {
         "a0_dec16": [q_dec_floor(lo, 16), q_dec_ceil(hi, 16)],
         "kappa_star_3_dec16": [q_dec_floor(kap3_lo, 16), q_dec_ceil(kap3_hi, 16)],
+        "pooled_spectrum_multiplicities": {"sv_equal_count": 6, "sv_small_count": 1},
+        "sv_equal_dec16": [q_dec_floor(sv_equal_lo, 16), q_dec_ceil(sv_equal_hi, 16)],
+        "sv_small_dec16": [q_dec_floor(sv_small_lo, 16), q_dec_ceil(sv_small_hi, 16)],
+        "energy_A_dec16": [q_dec_floor(energy_A_lo, 16), q_dec_ceil(energy_A_hi, 16)],
+        "energy_BC_dec16": [q_dec_floor(energy_BC_lo, 16), q_dec_ceil(energy_BC_hi, 16)],
         "rational_witnesses": rat_witnesses,
     }
 
@@ -952,8 +1004,12 @@ def run_gate5_blocks_and_c8_breakthrough(kap3_lo: Q) -> dict:
         else:
             require(lhs < 0, f"k={k} must be strictly below 8/5")
 
-    # 8. Also check pure rational approximations for c=5 (265/153 ~ sqrt(3)) and c=6 (161/72 ~ sqrt(5))
-    # so even over Q (without sqrt(3), sqrt(5)) explicit integer polynomials match to < 10^-10!
+    # 8. Also check pure rational Pell approximations for c=5 (265/153 ~ sqrt(3), (265/153)^2 - 3 = -2/23409)
+    # and c=6 (2889/1292 ~ sqrt(5), (2889/1292)^2 - 5 = 1/1669264):
+    # coefficient errors are ~2.47e-5 and ~1.34e-7, while stationarity makes the resulting kurtosis
+    # errors quadratic (< 10^-10 and < 10^-12)!
+    require(Q(265, 153) ** 2 - Q(3) == Q(-2, 23409), "Pell residual for 265/153 mismatch")
+    require(Q(2889, 1292) ** 2 - Q(5) == Q(1, 1669264), "Pell residual for 2889/1292 mismatch")
     A5q, B5q, C5q = zero_tensors(5)
     for a in range(4):
         for b in range(4):
@@ -1040,11 +1096,18 @@ def run_gate6_negative_controls() -> dict:
     kap5_eq = (Q(5, 6) ** 3) * (Q(2) + Q(1, 4) * (Q(9, 8) + Q(6)))
     require(kap5_eq > Q(875, 513), "NC5 failed: equal weights at c=5 must be suboptimal")
 
-    # NC6: Single-type floor 2*(1 + 3/c)/(1 + 1/c)^3 at c=3 (27/16 = 1.6875) exceeds kappa_*(3)
-    require(Q(27, 16) > kap_sp, "NC6 failed: single-type c=3 floor must exceed mixed R_3")
+    # NC6: Single-type floor 2*(1 + 3/c)/(1 + 1/c)^3 at c=3 (27/16 = 1.6875) exceeds kappa_*(3),
+    #      and rank-1-in-x boundary q=0 minimum 9/4 strictly exceeds 27/16
+    require(Q(9, 4) > Q(27, 16) > kap_sp, "NC6 failed: 9/4 > 27/16 > kappa(R_3) chain broken")
 
-    print("[Gate 6] PASS: All 6 adversarial negative controls rejected tampered/suboptimal claims.")
-    return {"negative_controls_passed": 6}
+    # NC7: Pooled singular-value multiplicity 4 (instead of 6) violates unit trace
+    a0_test = Q(127, 148)
+    sv_eq_test = Q(1) * Q((a0_test * a0_test + Q(6)).denominator, (a0_test * a0_test + Q(6)).numerator)
+    sv_sm_test = (a0_test * a0_test) * sv_eq_test
+    require(Q(4) * sv_eq_test + sv_sm_test != Q(1) and Q(6) * sv_eq_test + sv_sm_test == Q(1), "NC7 failed")
+
+    print("[Gate 6] PASS: All 7 adversarial negative controls rejected tampered/suboptimal claims.")
+    return {"negative_controls_passed": 7}
 
 
 def main() -> None:
