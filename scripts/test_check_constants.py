@@ -8,18 +8,19 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import check_constants as cc  # noqa: E402
 
-MAIN = """theorem main_bounds :
+MAIN = """-- The main result: 1.40191 < K ≤ 1.40457588.
+theorem main_bounds :
     (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 140457588 / 100000000 := by
 """
-STATEMENT = "def LowerTarget : Prop := LowerAbove (140191 / 100000)\n"
+STATEMENT = "def LowerTarget : Prop := LowerAbove (140191 / 100000)  -- above 1.40191\n"
+UPPER = "theorem bound : IsBound (140457588 / 100000000) := sorry  -- 1.40457588\n"
 GOOD = "We prove 1.40191 < K ≤ 1.40457588, that is `140191 / 100000` and `140457588 / 100000000`.\n"
 
 
 def make(root: Path, main=MAIN, statement=STATEMENT, docs=None):
-    files = {"Grothe/MainResult.lean": main, "Grothe/Statement.lean": statement}
-    for rel in cc.QUOTING:
-        files[rel] = GOOD
+    files = {rel: GOOD for rel in cc.QUOTING}
+    files.update({"Grothe/MainResult.lean": main, "Grothe/Statement.lean": statement, "Grothe/UpperResult.lean": UPPER})
     files.update(docs or {})
     for rel, text in files.items():
         path = root / rel
@@ -66,6 +67,50 @@ class CheckConstants(unittest.TestCase):
         _, problems = self.run_check(docs={"docs/CONSTANTS.md": "1.40191 < K ≤ 1.40457588\n"})
         self.assertEqual(len(problems), 2)
         self.assertTrue(all(p.startswith("docs/CONSTANTS.md: does not state the exact") for p in problems))
+
+    def test_stale_rational_in_lean_docstring(self):
+        stale = STATEMENT + "-- The upper bound is `IsBound (140457999 / 100000000)`.\n"
+        _, problems = self.run_check(statement=stale)
+        self.assertEqual(
+            problems,
+            [
+                "Grothe/Statement.lean:2: IsBound (140457999 / 100000000) is not the upper bound of main_bounds",
+                "Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound",
+            ],
+        )
+
+    def test_lower_rational_claimed_as_upper(self):
+        wrong = STATEMENT + "-- The upper bound is stated as `IsBound (140191 / 100000)`.\n"
+        _, problems = self.run_check(statement=wrong)
+        self.assertEqual(
+            problems, ["Grothe/Statement.lean:2: IsBound (140191 / 100000) is not the upper bound of main_bounds"]
+        )
+
+    def test_upper_rational_claimed_as_lower(self):
+        wrong = STATEMENT + "-- `LowerAbove (140457588 / 100000000)` holds.\n"
+        _, problems = self.run_check(statement=wrong)
+        self.assertEqual(
+            problems,
+            ["Grothe/Statement.lean:2: LowerAbove (140457588 / 100000000) is not the lower bound of main_bounds"],
+        )
+
+    def test_stale_fraction_wrapped_after_the_slash(self):
+        wrapped = STATEMENT + "-- The upper bound is `IsBound (140457999 /\n-- 100000000)`.\n"
+        _, problems = self.run_check(statement=wrapped)
+        self.assertEqual(
+            problems,
+            [
+                "Grothe/Statement.lean:2: IsBound (140457999 / 100000000) is not the upper bound of main_bounds",
+                "Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound",
+            ],
+        )
+
+    def test_stale_bare_fraction_wrapped(self):
+        wrapped = STATEMENT + "-- formerly 140457999 /\n  100000000 here.\n"
+        _, problems = self.run_check(statement=wrapped)
+        self.assertEqual(
+            problems, ["Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound"]
+        )
 
     def test_targets_disagree(self):
         with self.assertRaises(ValueError):
