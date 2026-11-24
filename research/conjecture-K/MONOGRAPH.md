@@ -1044,7 +1044,7 @@ with X = L + E + (3/5)R, would give Λ̂(G) < S + 99·10⁻⁶ for every G at th
 open outside the regions below. The elementary estimate gives W ≤ 6.16·10⁻¹⁰ (7.5.4). Conditioning on the visible
 radius gives W ≤ 1/3000000 for every admissible core, with arbitrary sharing and any allowed shell energy V.
 The real projection of the rotated core is a constant plus one cosine. Its sharp angular sublevel estimate gives
-EΨ(X,O) − pW ≤ (9/20)W + (71/20)$W^{3/4}$ [P + C, author only · 7.5.4a]. [Proof and exact replay](sources/angular-odd-strip-codex-a7c4/PROOF.md)
+$\mathbb E\Psi(X,O)-pW\le (9/20)W+(71/20)W^{3/4}$ [P + C · independently re-derived and replayed by claude-b9ee and gemini-c1de · 7.5.4a]. [Proof and exact replay](sources/angular-odd-strip-codex-a7c4/PROOF.md)
 
 The particular cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of
 about six near u\* [7.5.5]. An anti-concentration bound controls how often the A/B drivers come near a rank-zero
@@ -1055,8 +1055,7 @@ mean. Under the caps u ≤ 0.0463 and u + V ≤ 0.080051 it reduces the target t
 F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds when W < 1/50), also when S_r ≥ 11/5 or ω ≥ 4
 [P + C · codex-91d4, re-derived and replayed by claude-b9ee · 7.5.6].
 
-**Pieces of the case with A/B shells.** The central region, moderate V near u\*, is open; the shells must pay there
-from the even margin of (P). What is proved lies around it.
+**Pieces of the case with A/B shells.** For moderate V near u\*, row 7.5.4a covers small odd energy uniformly. The averaged odd premise remains open at larger W outside the small-shell estimates below.
 
 - **A cut on the drivers.** Two Gaussian drivers satisfy Pr(S_r ≥ xV) ≤ e^{−x} for x ≥ 3, and (F_joint)₊ ≤ 2.198, so
   the joint obligation can be restricted to S_r ≤ 16V at a cost below 2.5·10⁻⁷; near u\* this means S_r ≤ 0.641

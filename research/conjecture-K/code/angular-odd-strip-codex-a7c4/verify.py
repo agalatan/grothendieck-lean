@@ -36,6 +36,9 @@ def verify():
     require(8 * integral**4 < fractional**4 * pi_lower**4 * a * b, "fractional coefficient")
     width = F(1, 3_000_000)
     odd_budget = F(50, 10**6) - F(36, 10**8)
+    remote_upper = F("1.373953883")
+    benchmark_lower = F("1.3739535256614")
+    require(remote_upper - benchmark_lower < F(36, 10**8), "remote cap of rows 3.3 and 3.14")
     residual = odd_budget - linear * width
     require(odd_budget == F(1241, 25_000_000), "remote error allowance")
     require(residual > 0 and fractional**4 * width**3 < residual**4, "uniform strip")
