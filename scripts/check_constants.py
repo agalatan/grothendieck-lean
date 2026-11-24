@@ -7,6 +7,7 @@ definition `LowerTarget` in Grothe/Statement.lean. The script then checks that
 * the two Lean statements agree with each other;
 * every document of QUOTING states the bounds asked of it, in decimal form;
 * docs/CONSTANTS.md also states both exact rationals as Lean writes them;
+* the Lean files that state the theorems quote no rational 14…/10^k other than the two bounds;
 * no document of STRICT mentions a number of RETIRED (an older bound that readers must not take for the current one).
 
 Usage: python3 scripts/check_constants.py [--root DIR] [--print]
@@ -30,7 +31,14 @@ QUOTING = {
     "research/higher-degree/README.md": BOTH,
     "research/identity-tail/README.md": ("lower",),
     ".claude/skills/lean-grothe/SKILL.md": BOTH,
+    # the docstrings of the Lean files that state the theorems
+    "Grothe/Statement.lean": ("lower",),
+    "Grothe/MainResult.lean": BOTH,
+    "Grothe/UpperResult.lean": ("upper",),
 }
+# files that must not quote any other rational of the form 14…/10^k as a bound (a stale statement in a docstring)
+LEAN_STATEMENT_FILES = ["Grothe/Statement.lean", "Grothe/MainResult.lean", "Grothe/UpperResult.lean"]
+BOUND_RATIONAL = re.compile(r"\b(14\d{3,})\s*/\s*(10{4,})\b")
 # documents in which an older bound may not appear at all (elsewhere it may, marked as history)
 STRICT = ["README.md", ".claude/skills/lean-grothe/SKILL.md"]
 # older lower bounds of this repository
@@ -108,6 +116,15 @@ def check(root: Path):
         for name, (num, den) in (("lower", lower), ("upper", upper)):
             if f"{num}/{den}" not in text:
                 problems.append(f"docs/CONSTANTS.md: does not state the exact {name} rational {num} / {den}")
+    current = {Fraction(*lower), Fraction(*upper)}
+    for rel in LEAN_STATEMENT_FILES:
+        path = root / rel
+        if not path.is_file():
+            continue
+        for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            for m in BOUND_RATIONAL.finditer(line):
+                if Fraction(int(m[1]), int(m[2])) not in current:
+                    problems.append(f"{rel}:{lineno}: quotes {m[1]} / {m[2]}, which is not a current bound")
     for rel in STRICT:
         path = root / rel
         if not path.is_file():
