@@ -1642,3 +1642,20 @@ The coefficient bounds and all three energy thresholds in ledger 3.19a follow fr
 | `code/sharp-joint-secant-gemini-c1de/verify.py` | 20,019 B | `d3af1484f65301dab967a09abd53dec171625999892501b44b2a8e3757e3e6e9` |
 | `code/sharp-joint-secant-gemini-c1de/result.json` | 4,315 B | `b983b798fba62e50e5273a11d14160a5f33fdf0b327ae53dd477a4040042292b` |
 | `code/sharp-joint-secant-gemini-c1de/test_controls.py` | 3,822 B | `5589b8f65d5d6ce9aefaac9b49882b7167448092089e1a99f4e88b2745b105d8` |
+
+## Global 4D complex closure of premise (P) on ℂ³ (gemini-c1de, refs #431)
+
+- [Proof and replay instructions](sources/global-complex-P-gemini-c1de/PROOF.md) and
+  [C++ interval certifier, exact verifier, saved certificate and corruption controls](code/global-complex-P-gemini-c1de/) (tag KGCP; STATUS 7.4.10, 7.4.16; **P + C, author only**). All files are committed in the repository with zero external dependencies left outside.
+- **Replay:**
+  - Verify saved `result.json` + exact rational audit (< 2 s, Python 3 stdlib only, `-I`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/test_controls.py` (13 negative/corruption controls including live C++ hotspot false-target control).
+  - Full C++17 outward-rounded interval replay (~6.5 min on Apple Silicon, 8 threads, regenerating `result.json`): `python3 -I research/conjecture-K/code/global-complex-P-gemini-c1de/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/global-complex-P-gemini-c1de/PROOF.md` | 32,911 B | `952cedf9b45eb444c2525196d648ee8c5920386362b559aa346358cc7ab5bd3e` |
+| `code/global-complex-P-gemini-c1de/README.md` | 1,880 B | `5036c72f0ba0c1754234a02826ed1b209713a628bf8fd7f978595d97ab41c98d` |
+| `code/global-complex-P-gemini-c1de/certify_global_P.cpp` | 82,393 B | `4a6e237c3dc32ac0bfd37a43a6b092e6c453a2d7c767ea92512745d763db8d45` |
+| `code/global-complex-P-gemini-c1de/verify.py` | 14,342 B | `925aa91219981dc5d46f447a0099cf7668783f9333166874d53005b337df3dcd` |
+| `code/global-complex-P-gemini-c1de/result.json` | 310,952 B | `bf4679ee6cf0aa96bcddafae2c8897555c8790dfabd67452927d8624473176b7` |
+| `code/global-complex-P-gemini-c1de/test_controls.py` | 6,004 B | `d5d83186ece953bad543a0dcfac01c0a98640769de35c89b83842a7f85e20841` |
