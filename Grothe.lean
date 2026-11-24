@@ -12,6 +12,7 @@ import Grothe.ListPoly
 import Grothe.Lower.Basic
 import Grothe.Lower.Cert.Envelope
 import Grothe.Lower.Cert.MassRow
+import Grothe.Lower.Cert.MassWitnesses
 import Grothe.Lower.Cert.Row01
 import Grothe.Lower.Cert.Row02
 import Grothe.Lower.Cert.Row03
@@ -33,9 +34,13 @@ import Grothe.Lower.EnvelopeData
 import Grothe.Lower.Gate
 import Grothe.Lower.Gram
 import Grothe.Lower.Law
+import Grothe.Lower.MassCover
 import Grothe.Lower.MassFacts
 import Grothe.Lower.MassNodes
+import Grothe.Lower.MassPotential
 import Grothe.Lower.MassRow
+import Grothe.Lower.MassWitness
+import Grothe.Lower.MassWitnessData
 import Grothe.Lower.Mixed
 import Grothe.Lower.Moment
 import Grothe.Lower.Poly

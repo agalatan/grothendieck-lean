@@ -24,14 +24,15 @@ number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a blo
 | family | facts | module | what is checked | used by |
 |---|---|---|---|---|
 | row checks | `Grothe.Lower.certRowSS` | `Grothe/Lower/Cert/RowSS.lean` | `checkRow rowSS` (Stein nodes) or, for the rows 0.4 and 0.6, `checkSpecRow rowSS` (spectral nodes) | `rowData_facts` |
-| mass row: cells | `Grothe.Lower.certMassRow` | `Grothe/Lower/Cert/MassRow.lean` | `checkSpecCells massRow massNodes` with the exact mass-potential values | `mass_law_bound` |
 | node caps: range facts | `Grothe.LowerAnalytic.rowKKAnchorRangeJJ` | `Grothe/LowerAnalytic/CapRowKK/AnchorRangeJJ.lean` | `rangeOKNu` over consecutive whole-fibre nodes (anchored and global) | `vertexCapsRowKK`, through `nodeCapNu_of_rangeOK` |
 | node caps: coverage facts | `Grothe.LowerAnalytic.pieceCover_KKx<i>` | `Grothe/LowerAnalytic/CapPieces/CKKx<i>.lean` | `pieceCoverFastOK`: the pieces of a localised node cover the fibre space up to the symmetries of the potential | `nodeCap_KKx<i>`, through `pieceCoverOK_of_fast` |
 | node caps: piece facts | `Grothe.LowerAnalytic.pieceRange_KKx<i>_<J>` | `Grothe/LowerAnalytic/CapPieces/RKKx<i>_<J>.lean` | `pieceRangeOKNu` over consecutive pieces of a localised node, on one grid | `nodeCap_KKx<i>`, through `pieceOneOKNu_of_range` |
 | node caps: chord facts | `Grothe.LowerAnalytic.chordsOKRowKK` | `Grothe/LowerAnalytic/CapRowKK/Assembly.lean` | `chordOKLow`: the cap of every chord node of the row is above the chord of its two vertex nodes, at the vertex caps lowered by `10⁻¹²` | `capsRowKK`, through `nodeCaps_of_vertexCapsNu` |
 
-The mass row pairs each radius with its exact potential value (`massNodes`). `Grothe.Lower.massCapsOK`
-proves the equality at each node by construction. `Grothe.Lower.certEnvelope` reduces `checkEnvCells` in the kernel on
+Lean kernel-checks the spectral polynomial majorants and scale chords for `Grothe.Lower.certMassRow`.
+The witness module took about four minutes to build on Linux with two CPUs available. The axiom
+audit restricts both the mass certificate and `mass_law_bound` to Lean's three standard axioms.
+`Grothe.Lower.certEnvelope` reduces `checkEnvCells` in the kernel on
 the 16 records of rational endpoints, row indices and weights. `tools/gen_lower_data.py` generates
 its cells and the row certificates. `tools/gen_tail_caps.py` generates the node-cap facts and lists them in
 `data/tail-caps/native.txt` ([CAPS.md](CAPS.md)). The node-cap facts take about 340 CPU-hours in all, dominated by the
