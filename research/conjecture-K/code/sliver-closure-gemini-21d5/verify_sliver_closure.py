@@ -915,7 +915,8 @@ def verify_all(quiet=False, write_result=False):
     slabs = [
         (Q(0),         Q(1, 1600)),   # [0, 0.000625] -- all shapes chi <= 42: D >= (9/50)delta & C_A^2 <= (6/25)D!
         (Q(1, 1600),   Q(1, 250)),    # [0.000625, 0.004]
-        (Q(1, 250),    Q(2, 250)),    # [0.004, 0.008]
+        (Q(1, 250),    Q(3, 500)),    # [0.004, 0.006]
+        (Q(3, 500),    Q(2, 250)),    # [0.006, 0.008]
         (Q(2, 250),    Q(1, 100)),    # [0.008, 0.010]
         (Q(1, 100),    Q(3, 250)),    # [0.010, 0.012] -- completes (0, 3/250] low-energy band!
         (Q(3, 250),    Q(9, 500)),    # [0.012, 0.018]
@@ -928,8 +929,8 @@ def verify_all(quiet=False, write_result=False):
         (Q(56, 1250),  Q(463, 10000)) # [0.0448, 0.0463] -- completes [3/250, 463/10000]!
     ]
     require(verify_slab_partition(slabs, Q(0), U_TOP), "Full band slab partition invalid")
-    require(verify_slab_partition(slabs[:5], Q(0), Q(3, 250)), "Low-energy slab partition invalid")
-    require(verify_slab_partition(slabs[5:], Q(3, 250), U_TOP), "Main-band slab partition invalid")
+    require(verify_slab_partition(slabs[:6], Q(0), Q(3, 250)), "Low-energy slab partition invalid")
+    require(verify_slab_partition(slabs[6:], Q(3, 250), U_TOP), "Main-band slab partition invalid")
 
     # Fourth-moment caps beta_ub >= (3 + (3/2)*chi_max)^{1/4}:
     BETA_ALL = Q(2851, 1000) # (2851/1000)^4 - 66 = 67651496401/10^12 > 0 (all shapes chi <= 42)
@@ -1025,6 +1026,7 @@ def verify_all(quiet=False, write_result=False):
 
     max_rcap_all = Q(0)
     max_rcap_beta = Q(0)
+    max_rcap_low_beta = Q(0)
 
     for idx, (u_lo, u_hi) in enumerate(slabs):
         # 1) Whole-domain all-shapes (chi in [0, 42], BETA_ALL = 2851/1000) remainder cap on every slab:
@@ -1042,6 +1044,8 @@ def verify_all(quiet=False, write_result=False):
         total_bern_leaves += lv_s
         if r_cap > max_rcap_beta:
             max_rcap_beta = r_cap
+        if is_low and r_cap > max_rcap_low_beta:
+            max_rcap_low_beta = r_cap
         # Also verify monotonicity in beta: since BETA_01 = 33/25 <= beta_use on every slab,
         # r_cap (<= max_rcap_beta = 299/2) holds on every slab for chi <= 9364/390625 as well!
         if is_low:
@@ -1107,6 +1111,7 @@ def verify_all(quiet=False, write_result=False):
     require(Q(slab_reports[0]["R_cap_all_shapes_exact"]) == R_cap_all0, "Slab 0 all-shapes cap consistency")
     require(max_rcap_all == Q(256), f"Expected max all-shapes R_cap = 256, got {max_rcap_all}")
     require(Q(slab_reports[-1]["R_cap_all_shapes_exact"]) == Q(349, 2), "Expected top-slab all-shapes R_cap = 349/2")
+    require(max_rcap_low_beta == Q(271, 2), f"Expected max low-band near-Gaussian R_cap = 271/2, got {max_rcap_low_beta}")
     require(max_rcap_beta == Q(299, 2), f"Expected max near-Gaussian R_cap = 299/2, got {max_rcap_beta}")
     require(Q(slab_reports[-1]["R_cap_beta_exact"]) == Q(109), "Expected top-slab near-Gaussian R_cap = 109")
 
@@ -1192,6 +1197,7 @@ def verify_all(quiet=False, write_result=False):
                 "domain_u": "(0, 463/10000]",
                 "domain_chi_band": "9364/390625",
                 "domain_chi_low_band_0_to_3_250": "17147/80000",
+                "R_cap_low_band_max": str(max_rcap_low_beta),
                 "R_cap_band_max": str(max_rcap_beta),
                 "R_cap_top_slab": str(slab_reports[-1]["R_cap_beta_exact"]),
             },

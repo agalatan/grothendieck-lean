@@ -6,8 +6,8 @@
   "h4_sqrt_constant": "17/4",
   "h4_bernstein_leaves": 3,
   "theta_cells": 575,
-  "energy_slabs": 13,
-  "total_contraction_bernstein_leaves": 27,
+  "energy_slabs": 14,
+  "total_contraction_bernstein_leaves": 29,
   "certified_regimes": {
     "all_shapes_band_remainder": {
       "domain_u": "(0, 463/10000]",
@@ -20,6 +20,7 @@
       "domain_u": "(0, 463/10000]",
       "domain_chi_band": "9364/390625",
       "domain_chi_low_band_0_to_3_250": "17147/80000",
+      "R_cap_low_band_max": "271/2",
       "R_cap_band_max": "299/2",
       "R_cap_top_slab": "109"
     },
@@ -91,20 +92,38 @@
     {
       "slab": [
         "1/250",
-        "1/125"
+        "3/500"
       ],
-      "minus_B2_quarter_lb": "0.75702307",
+      "minus_B2_quarter_lb": "0.77368437",
       "B3_ub": "37.879741",
-      "R_cap_all_shapes_exact": "251",
+      "R_cap_all_shapes_exact": "226",
       "all_shapes_bernstein_leaves": 1,
       "beta_use": "27/20",
       "chi_beta_cap_exact": "17147/80000",
       "chi_beta_cap_floor8": "0.21433750",
-      "R_cap_beta_exact": "136",
+      "R_cap_beta_exact": "118",
       "beta_bernstein_leaves": 1,
       "chi_max_D_pos_floor8": "0.21433750",
-      "chi_max_CA_unsmoothed_floor8": "0.19506899",
-      "chi_max_CA_smoothed_floor8": "0.19506899"
+      "chi_max_CA_unsmoothed_floor8": "0.21433750",
+      "chi_max_CA_smoothed_floor8": "0.21433750"
+    },
+    {
+      "slab": [
+        "3/500",
+        "1/125"
+      ],
+      "minus_B2_quarter_lb": "0.75702307",
+      "B3_ub": "35.765299",
+      "R_cap_all_shapes_exact": "469/2",
+      "all_shapes_bernstein_leaves": 1,
+      "beta_use": "27/20",
+      "chi_beta_cap_exact": "17147/80000",
+      "chi_beta_cap_floor8": "0.21433750",
+      "R_cap_beta_exact": "127",
+      "beta_bernstein_leaves": 1,
+      "chi_max_D_pos_floor8": "0.21433750",
+      "chi_max_CA_unsmoothed_floor8": "0.21433750",
+      "chi_max_CA_smoothed_floor8": "0.21433750"
     },
     {
       "slab": [
@@ -288,5 +307,5 @@
     }
   ],
   "negative_controls_passed": 7,
-  "elapsed_ms": 5442
+  "elapsed_ms": 4841
 }
