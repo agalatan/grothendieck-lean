@@ -72,6 +72,43 @@ class CheckConstants(unittest.TestCase):
         stale = STATEMENT + "-- The upper bound is `IsBound (140457999 / 100000000)`.\n"
         _, problems = self.run_check(statement=stale)
         self.assertEqual(
+            problems,
+            [
+                "Grothe/Statement.lean:2: IsBound (140457999 / 100000000) is not the upper bound of main_bounds",
+                "Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound",
+            ],
+        )
+
+    def test_lower_rational_claimed_as_upper(self):
+        wrong = STATEMENT + "-- The upper bound is stated as `IsBound (140191 / 100000)`.\n"
+        _, problems = self.run_check(statement=wrong)
+        self.assertEqual(
+            problems, ["Grothe/Statement.lean:2: IsBound (140191 / 100000) is not the upper bound of main_bounds"]
+        )
+
+    def test_upper_rational_claimed_as_lower(self):
+        wrong = STATEMENT + "-- `LowerAbove (140457588 / 100000000)` holds.\n"
+        _, problems = self.run_check(statement=wrong)
+        self.assertEqual(
+            problems,
+            ["Grothe/Statement.lean:2: LowerAbove (140457588 / 100000000) is not the lower bound of main_bounds"],
+        )
+
+    def test_stale_fraction_wrapped_after_the_slash(self):
+        wrapped = STATEMENT + "-- The upper bound is `IsBound (140457999 /\n-- 100000000)`.\n"
+        _, problems = self.run_check(statement=wrapped)
+        self.assertEqual(
+            problems,
+            [
+                "Grothe/Statement.lean:2: IsBound (140457999 / 100000000) is not the upper bound of main_bounds",
+                "Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound",
+            ],
+        )
+
+    def test_stale_bare_fraction_wrapped(self):
+        wrapped = STATEMENT + "-- formerly 140457999 /\n  100000000 here.\n"
+        _, problems = self.run_check(statement=wrapped)
+        self.assertEqual(
             problems, ["Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound"]
         )
 
