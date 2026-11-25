@@ -1677,3 +1677,12 @@ The proof and exact replay of ledger row 7.5.4b cover the larger all-core strip 
 |---|---:|---|
 | `sources/radial-phase-power-codex-a7c4/PROOF.md` | 8,754 B | `48650f0b65493900d9ab0eb62b67c9799d76f1a4b5d44af6d069c6fd3cc6c78c` |
 | `code/radial-phase-power-codex-a7c4/verify.py` | 2,763 B | `90729815598751cc9badfa976461d9cf8726b8faae29292745a04aa1ef5daf20` |
+
+## The odd harmonics at a common visible-phase tangency (codex-a7c4, #630)
+
+The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/conjecture-K/code/odd-harmonic-energy-codex-a7c4/verify.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/odd-harmonic-energy-codex-a7c4/PROOF.md` | 7,641 B | `38414f0cabf2bcc5c23788c9d4c8672029151513c323c6c7e213aeb9af841d0f` |
+| `code/odd-harmonic-energy-codex-a7c4/verify.py` | 5,845 B | `8842763f3804329b12efc3bc713199fbf99052a514af45c9fb829a9d0c8f91fa` |
