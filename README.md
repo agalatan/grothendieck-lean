@@ -149,7 +149,7 @@ An older proof with a single rounding channel is still in the repository. It is 
 ### What the computer checks and what is trusted
 
 - **The Lean kernel** checks every definition and every proof step, including the soundness theorems of the
-  checkers (for example `CoupledStein.profile_bound`, `pot_le_of_nodeOKNu`, `head_le_of_check`). Besides the facts of the next item,
+  checkers (for example `SparseEnvelope.profile_bound`, `pot_le_of_nodeOKNu`, `head_le_of_check`). Besides the facts of the next item,
   the axiom report allows only `propext`, `Classical.choice` and `Quot.sound`.
 - **Compiled code** evaluates the `native_decide` facts. Each fact is a decidable statement about committed data,
   usually that a checker program returns `true`; the programs do interval and exact rational arithmetic on finite
