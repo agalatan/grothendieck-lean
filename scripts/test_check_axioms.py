@@ -126,7 +126,7 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertIn("DISALLOWED AXIOM", stdout)
 
     def test_combined_report_rejects_native_envelope_and_mass_axioms(self):
-        for name in ("Grothe.Lower.certEnvelope", "Grothe.Lower.certMassRow", "Grothe.Lower.massCapsOK"):
+        for name in ("Grothe.Lower.SparseEnvelope.profile_bound", "Grothe.Lower.certMassRow", "Grothe.Lower.massCapsOK"):
             with self.subTest(name=name):
                 fact = f"{name}._native.native_decide.ax_1_1"
                 record = f"'{name}' depends on axioms: [{fact}]\n"
