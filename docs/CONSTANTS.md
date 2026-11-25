@@ -2,17 +2,20 @@
 
 This page states every bound on the complex Grothendieck constant $K = K_G^{\mathbb C}$ that this repository
 proves, exactly as Lean states it, and explains the other numbers that appear in the sources and documents.
-`scripts/check_constants.py` reads the two bounds from the Lean statement and checks that this page and the other
-documents quote them.
+`scripts/check_constants.py` reads the two endpoints of `main_bounds`. It checks strict downward rounding in `lower_bound_sharp` and `lower_bound_shared_gate`, upward rounding in `main_bounds_refined` and `main_bounds_phase`, and agreement with the technical references.
 
 ## The current bounds
 
-$$1.402 < K \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.402 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
 | lower bound (strict) | `1.402` | `1402 / 1000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
-| upper bound (weak, $\le$) | `1.40457588` | `140457588 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
+| shared-gate scalar-row lower bound (strict) | `1.4019156097` | `14019156097 / 10000000000` | `Grothe.Statement.lower_bound_shared_gate` | `Grothe/MainResult.lean` |
+| sharp scalar-row lower bound (strict) | `1.4019109461` | `14019109461 / 10000000000` | `Grothe.Statement.lower_bound_sharp` | `Grothe/MainResult.lean` |
+| root upper bound, rounded | `1.404556407` | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds_phase`, second part | `Grothe/MainResult.lean` |
+| previous root upper bound | `1.40455641` | `140455641 / 100000000` | `Grothe.Statement.main_bounds_refined`, second part | `Grothe/MainResult.lean` |
+| article upper bound (weak, $\le$) | `1.40455741` | `140455741 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
 `main_bounds` reads
@@ -20,7 +23,7 @@ $$1.402 < K \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots$$
 ```lean
 theorem main_bounds :
     (1402 / 1000 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant ≤ 140457588 / 100000000
+      complexGrothendieckConstant ≤ 140455741 / 100000000
 ```
 
 It has no hypotheses. Its axioms are Lean's three standard ones and the `native_decide` facts listed in
@@ -32,10 +35,25 @@ $\lvert\sum a_{ij}\langle x_i,y_j\rangle\rvert$ over unit vectors of a complex H
 (`scalarOpt`, `vectorOpt` in `Grothe/Statement.lean`). A number $K$ is a *Grothendieck bound* (`IsBound K`) if
 $V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds.
 
-- Upper bound: `Grothe.UpperSix.bound : IsBound (140457588 / 100000000)`. For every finite complex matrix,
-  $V(A) \le 1.40457588\,C(A)$.
+- For every finite complex matrix, `Grothe.UpperSix.bound_phase` gives $V(A)\le [10^{27}/711968558203721328194311213]\,C(A)$.
 - Lower bound: `lower_target : LowerAbove (1402 / 1000)`. Every Grothendieck bound is above $1.402$; for every
   $K \le 1.402$ some matrix has $V(A) > K\,C(A)$.
+
+### Stronger root certificate
+
+The six weights come from the article. The first channel uses a degree-20 polynomial and each
+Hardy budget deducts the energy carried by the linear coefficient. The five cell channels
+enclose coefficients 0 through 250. The phase channel encloses coefficients 0 through 320
+using exact Haagerup moments. The head cap is $4481751845/10^{15}$ and the weighted tail
+cost is $42466433671805688787/10^{27}$. The tails begin at indices 251 and 321 respectively.
+Thus `Grothe.UpperSix.constant_le_phase` gives
+$K\le 10^{27}/711968558203721328194311213=1.404556406989340536\ldots$.
+The two-sided theorem `Grothe.Statement.main_bounds_phase` rounds this up to $1.404556407$.
+
+At a common cutoff of 251 the weighted tail cost was $42740716307457760923/10^{27}$.
+The corresponding exact bound $10^{27}/711968557929438692542239077$ is available as
+`Grothe.UpperSix.constant_le_exact`. Its rounded form is $1.40455641$ in
+`Grothe.Statement.main_bounds_refined`.
 
 ## Haagerup's value
 
@@ -46,28 +64,61 @@ for $K$ in 1987.
 | fact | Lean |
 |---|---|
 | $0.711958633 < \gamma^\dagger < 0.711958683$ | `Haagerup.gammaDagger_bounds` (`Grothe/UpperSix/Haagerup/GammaDagger.lean`) |
-| $1.40457588 < 1/\gamma^\dagger$ | `Haagerup.inv_gammaDagger_gt` |
+| $1.40455741 < 1/\gamma^\dagger$ | `Haagerup.inv_gammaDagger_gt` |
 | $K < 1/\gamma^\dagger$ | `Grothe.UpperSix.constant_lt_inv_gammaDagger` |
 
-The upper bound is below Haagerup's value by about $5\cdot10^{-8}$. Haagerup's own 1987 theorem is the weaker
+The upper bound is below Haagerup's value by about $1.9\cdot10^{-5}$. Haagerup's own 1987 theorem is the weaker
 bound $K < 1.40490913\ldots$
 
 ## Behind the lower bound
+
+The common Gaussian gate sharpens this lower bound to $1.4019156097<K$. The theorem `Grothe.Statement.shared_gate_endpoint` gives the exact fraction
+
+```text
+909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
+648511116026975442270455246402044140272423714548613432977518646121820234278296395631
+```
+
+Its decimal expansion begins at $1.4019156097084731719682$. The two active rows constrain the same Gaussian variable. For residual scale $\tau\ge4649/20000$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For $\tau\le4649/20000$, a quadratic majorant saves $551/10^8$ on the first row. Pricing their common saving by the smaller of the two mixture weights lowers the uniform hat cap by $243/10^8$ across 16 cells. The row06/row07 cell uses weight $12/25$. On the row12/row13 cell the weight changes from $3/5$ to $22/25$ at $1758/2000$.
+
+The exact endpoint in `Grothe.Statement.sharp_lower_endpoint` gives $K \ge 1.401910946113565640\ldots$. Its value in Lean is
+
+```text
+909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
+648513273363107644808393943072300421164120888939497691860404687721820234278296395631
+```
+
+For the same Gaussian witness and the same certified rows, `SharpEnvelope.check` bounds the hat value by
+$\hat B_*=0.7064127708804130589\ldots$. On the central interval the weight of row 0.845 in its mixture with
+row 0.835 varies affinely with $t$. The maximum of the resulting quadratic gives the cap. The other fourteen
+intervals use fixed weights. The original witness cap is $(1-47/2000)\hat B_*+47/2000$, whose reciprocal is the
+fraction above. The following table gives the earlier fixed-weight certificate.
 
 | quantity | value | meaning |
 |---|---|---|
 | $\varepsilon$ | `191/250` | weight of the cubic chaos in the witness $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$ |
 | $\nu$ | `47/2000` | weight of the identity tail |
-| $B_{\mathrm{env}}$ | `353183/500000` $= 0.706366$ | bound of the kernel-checked tightened envelope certificate (`certEnvelopeTight`, 38 cells), replacing rows `0.835` and `0.845` by their antiholomorphic Stein certificates (`cap08Tight = 1675841/1250000`, `cap09Tight = 6809419/5000000`) with the certified cubic radius `93/100` |
+| $B_{\mathrm{env}}$ (tightened) | `353183/500000` $= 0.706366$ | bound of the kernel-checked tightened envelope certificate (`certEnvelopeTight`, 38 cells), replacing rows `0.835` and `0.845` by their antiholomorphic Stein certificates (`cap08Tight = 1675841/1250000`, `cap09Tight = 6809419/5000000`) with the certified cubic radius `93/100` |
 | $B = (1-\nu)B_{\mathrm{env}} + \nu$ | `713266399/1000000000` $= 0.713266399$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
-| $1/B$ | $1.4020007\ldots$ | what the certificate gives; the theorem states the rounded value $1.402 < 1/B$ |
+| $1/B$ | $1.4020007\ldots$ | what the tightened certificate gives; `lower_target` and `main_bounds` state the rounded value $1.402 < 1/B$ |
+| $B_{\mathrm{env}}$ (earlier 16-cell scalar envelope) | `7064131/10000000` | bound of the earlier 16-cell scalar-row envelope (`B = 14266247843/20000000000`, $1/B = 1.4019103\ldots > 1.40191$) |
 | $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
+
+The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
+At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine
+at $v=c\delta/(\hat\varepsilon\tau)$. Lean checks both branches in the kernel. [Mass-row certificate](../Grothe/Lower/Cert/MassRow.lean).
 
 ## Behind the upper bound
 
 The six-channel proof (`Grothe/UpperSix/`, copied byte for byte in `haagerup-article/anc/`) mixes six Gaussian
-rounding channels. `Haagerup.isBound_cert` proves `IsBound (140457588 / 100000000)`; the rational is the stated
-endpoint of that certificate, and the comparison with $1/\gamma^\dagger$ above is a separate theorem.
+rounding channels.
+
+| quantity | value | meaning |
+|---|---|---|
+| $c$ | `cCertQ = 711974258589 / 10^12` | the target linear slope: the rational that the mixed correlation kernel is compared with (the kernel's actual first coefficient differs from it by about $10^{-12}$, which the head bound counts) |
+| $\delta$ | `deltaCertQ = 6205314847032059049 / 10^24` | the certified deviation of the kernel from $c\,t$: head cap $6.15785\cdot10^{-6}$ plus weighted tail caps $4.746\ldots\cdot10^{-8}$, exactly |
+| $1/(c-\delta)$ | `10^24 / 711968053274152967940951` $= 1.4045574031\ldots$ | what the transfer theorem gives (an intermediate step of `Haagerup.isBound_cert`) |
+| stated bound | `140455741 / 100000000` | $1/(c-\delta)$ rounded up to eight decimals: `Haagerup.isBound_cert`, `Grothe.UpperSix.bound`, `main_bounds` |
 
 ## Other numbers you will meet
 
@@ -92,4 +143,5 @@ None of these is the current bound.
 3. Update this page, `README.md`, `docs/LEAN_DETAILS.md`, `docs/overview.tex`, the research ledgers that quote the
    bound and the project skill, until the script passes.
 
-The article in `haagerup-article/` is frozen at `1.40457588` on purpose and is not updated.
+The article in `haagerup-article/` states the bound of its own Lean package, `1.40455741`. It does not quote the
+repository's bounds, and is not updated when they change after it is posted.

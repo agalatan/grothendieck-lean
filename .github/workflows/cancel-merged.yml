@@ -2,7 +2,7 @@ name: Cancel checks of merged branches
 
 # When a pull request is merged (or a branch is deleted), the branch's own proof-check runs are redundant: master's
 # check verifies the merged tree and saves the cache. Cancel them at once to save runner minutes, and delete the
-# branch's build caches (only master's cache is reused afterwards; the 10 GB quota is shared). Master is never
+# branch's build caches (only master's cache is reused afterwards; the repository's cache limit, 70 GB, holds only four builds). Master is never
 # touched; neither are other branches.
 
 on:

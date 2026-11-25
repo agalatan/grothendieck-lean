@@ -27,7 +27,7 @@ on:
     # cloud/** are scratch branches for cloud jobs (cloud.yml, AGENTS.md section 11): no push check
     branches: ['**', '!cloud/**']
   schedule:
-    # weekly: restore (and so keep alive) the master cache; GitHub deletes cache entries unused for 7 days
+    # weekly: restore (and so keep alive) the master cache; GitHub deletes cache entries unused for 10 days (repository setting)
     - cron: '17 4 * * 1'
   workflow_dispatch:
     inputs:
@@ -341,6 +341,22 @@ jobs:
           # the merge record (data only; scripts/land_ready.sh parses it strictly)
           printf 'base=%s\nsource=%s\ntree=%s\nlean=%s\npr=%s\n' "$base" "${GITHUB_SHA}" "$(git rev-parse 'HEAD^{tree}')" "${LEAN}" "${{ inputs.pr }}" > merge-info
 
+      - name: Free the hosted runner's disk (the build cache needs more than the image leaves)
+        # Before the tree handoff: its 14 GB archive and the unpacked build do not fit on the image's free disk
+        # (run 45487837102 failed with "No space left on device" while unpacking, #607).
+        if: env.LEAN == 'true' && env.DROPLET != 'true'
+        run: |
+          df -h / | tail -1
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup /usr/share/swift \
+            /usr/local/share/powershell /opt/hostedtoolcache/CodeQL /usr/lib/jvm /usr/local/graalvm \
+            /usr/local/share/chromium /usr/local/lib/node_modules 2>/dev/null || true
+          sudo docker image prune -af >/dev/null 2>&1 || true
+          df -h / | tail -1
+          # Memory: the image has 16 GB RAM and 3 GB of swap; a full rebuild of the Upper modules on four cores has
+          # been killed at 15.5 GB used with the swap full (exit 143). Add 16 GB of swap on the freed disk.
+          sudo fallocate -l 16G /swapfile-lean && sudo chmod 600 /swapfile-lean && sudo mkswap -q /swapfile-lean \
+            && sudo swapon /swapfile-lean && free -g | awk '/Mem|Swap/{print $1, "total", $2, "GB"}' || echo "::warning::could not add swap"
+
       - name: Download the build of this exact tree (master, tree handoff from a green branch check)
         if: env.LEAN == 'true' && needs.route.outputs.handoff_run != ''
         uses: actions/download-artifact@v4
@@ -357,20 +373,6 @@ jobs:
           tar -I zstd -xf handoff-build/build.tar.zst -C .lake && rm -rf handoff-build
           echo "built by run ${{ needs.route.outputs.handoff_run }}: $(cat .lake/build/built-commit 2>/dev/null)"
 
-      - name: Free the hosted runner's disk (the build cache needs more than the image leaves)
-        if: env.LEAN == 'true' && env.DROPLET != 'true'
-        run: |
-          df -h / | tail -1
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup /usr/share/swift \
-            /usr/local/share/powershell /opt/hostedtoolcache/CodeQL /usr/lib/jvm /usr/local/graalvm \
-            /usr/local/share/chromium /usr/local/lib/node_modules 2>/dev/null || true
-          sudo docker image prune -af >/dev/null 2>&1 || true
-          df -h / | tail -1
-          # Memory: the image has 16 GB RAM and 3 GB of swap; a full rebuild of the Upper modules on four cores has
-          # been killed at 15.5 GB used with the swap full (exit 143). Add 16 GB of swap on the freed disk.
-          sudo fallocate -l 16G /swapfile-lean && sudo chmod 600 /swapfile-lean && sudo mkswap -q /swapfile-lean \
-            && sudo swapon /swapfile-lean && free -g | awk '/Mem|Swap/{print $1, "total", $2, "GB"}' || echo "::warning::could not add swap"
-
       - name: Restore the verified build cache (GitHub-hosted, or an empty droplet workspace)
         if: env.LEAN == 'true' && needs.route.outputs.handoff_run == '' && hashFiles('.lake/build/lib/lean/Grothe.olean') == ''
         uses: actions/cache/restore@v4
@@ -386,7 +388,7 @@ jobs:
         uses: leanprover/lean-action@v1
         with:
           use-mathlib-cache: true
-          use-github-cache: false     # no per-branch cache entries: they evict each other in the 10 GB quota
+          use-github-cache: false     # no per-branch cache entries: the cache limit (70 GB) is kept for the 14 GB builds
           build: false
 
       - name: Lean toolchain and the shared Mathlib packages (droplet)
@@ -564,9 +566,14 @@ jobs:
           path: .lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}
 
-      - name: Save the verified cache for this branch (droplet; and landing runs, so a re-check after master moved replays it)
-        # deleted with the branch (cancel-merged.yml), so it never outlives the delivery
-        if: env.LEAN == 'true' && github.ref_name != 'master' && (env.DROPLET == 'true' || inputs.land)
+      - name: Save the verified cache for this branch (droplet runs only)
+        # Only where hours of node-cap work would otherwise be lost. Hosted landing runs save nothing: each entry is
+        # about 14 GB, the repository's limit is 70 GB (four entries), GitHub evicts the least recently used entries
+        # every hour, and a burst of landings left three branch caches and evicted
+        # master's cache (#607). A landing re-check after master moved restores master's cache and rebuilds the
+        # branch's own modules; master's check gets the build through the tree handoff below.
+        # Deleted after the landing (finish job) or with the branch (cancel-merged.yml).
+        if: env.LEAN == 'true' && github.ref_name != 'master' && env.DROPLET == 'true'
         uses: actions/cache/save@v4
         with:
           path: .lake/build
@@ -673,9 +680,26 @@ jobs:
           INFO: landing-info/merge-info
         run: scripts/land_ready.sh
 
+      - name: Delete the build caches of the landed branch
+        # CI's own push starts no workflow, so cancel-merged.yml does not run for a branch that CI landed; without
+        # this step its caches would stay until GitHub evicts something (possibly master's cache, #607).
+        if: inputs.land
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+          PR: ${{ inputs.pr }}
+        run: |
+          if [ -z "$BRANCH" ] || [ "$BRANCH" = master ]; then exit 0; fi
+          state=$(gh pr view "$PR" --repo "${GITHUB_REPOSITORY}" --json state --jq .state 2>/dev/null || true)
+          if [ "$state" != MERGED ]; then echo "PR #$PR is ${state:-unknown}, not merged: its caches are kept"; exit 0; fi
+          gh api "repos/${GITHUB_REPOSITORY}/actions/caches?ref=refs/heads/${BRANCH}&per_page=100" --jq '.actions_caches[].id' |
+            while read -r id; do
+              gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/caches/${id}" >/dev/null && echo "deleted cache ${id} of ${BRANCH}" || true
+            done
+
 
   keepalive:
-    # the weekly schedule: restoring the master cache counts as a use and resets GitHub's 7-day expiry
+    # the weekly schedule: restoring the master cache counts as a use and resets GitHub's expiry (10 days, repository setting)
     if: github.event_name == 'schedule'
     runs-on: ${{ vars.FORCE_HEAVY == 'true' && fromJSON('["self-hosted","light"]') || 'ubuntu-24.04' }}   # light droplet slots when FORCE_HEAVY (GitHub's hosted queue can lag for many minutes)
     timeout-minutes: 30

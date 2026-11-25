@@ -30,18 +30,24 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.402\;<\;\KG\;\le\;1.40457588$\\[6pt]
-\normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
-(\lean{Grothe.Statement.main\_bounds}); the computer-assisted inputs are native finite checks listed in
-the axiom report (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is \lean{lower\_target}, with the exact rational $1402/1000$; the upper bound is \lean{Grothe.UpperSix.constant\_le}, with the exact rational $140457588/100000000$, from six Gaussian rounding channels.\vspace{4pt}
+\Large $1.402\;<\;\KG\;\le\;1.404556407$\\[6pt]
+\normalsize The Lean~4/Mathlib theorem \lean{Grothe.Statement.main\_bounds\_phase} proves these bounds without hypotheses
+(and \lean{Grothe.Statement.main\_bounds} proves $1.402<\KG\le 1.40455741$).
+Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
+The lower bound is \lean{lower\_target}, with the exact rational $1402/1000$, obtained by antiholomorphic Stein tightening on rows $0.835$ and $0.845$ with the certified cubic radius $93/100$.
+The six Gaussian rounding channels give the upper bound rounded up to $1404556407/1000000000$ (article upper bound $140455741/100000000$).\vspace{4pt}
 \end{minipage}}
 \end{center}
 
 The upper certificate mixes three smoothed cell channels, one phase channel and
-two reflected tiger channels. Its transfer theorem uses the signed sum of the
-first 251 coefficients together with a Hardy bound for each infinite tail.
-The standard finite-matrix theorem is \lean{Grothe.UpperSix.bound}.
+two reflected tiger channels. The signed head uses 251 coefficients in each cell channel
+and 321 exact Haagerup coefficients in the phase channel. The Hardy estimates pay for
+each tail beginning at its first omitted index. The root theorem \lean{Grothe.UpperSix.constant\_le\_phase} gives
+$K_G^{\mathbb C}\le 10^{27}/711968558203721328194311213<1.404556407$.
+The earlier uniform-cutoff theorem \lean{Grothe.UpperSix.constant\_le\_exact}
+gives $10^{27}/711968557929438692542239077<1.40455641$.
+Both refinements use a degree-20 first polynomial and deduct the six linear energies from the Hardy budgets.
+
 The companion theorem \lean{Grothe.UpperSix.constant\_lt\_inv\_gammaDagger}
 compares the infimum with the reciprocal phase integral.
 
@@ -91,13 +97,13 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.402}$ & $\mathbf{1.40457588}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.402}$ & $\mathbf{1.404556407}$\\\bottomrule
 \end{tabular}
 \end{center}
-The upper bound of this work is exactly $140457588/100000000$ (six Gaussian rounding channels).
+The article upper bound is $140455741/100000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
 For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
-a separate estimate of the integral gives $1.40457588<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
+a separate estimate of the integral gives $1.40455741<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
 $1/\gamma^\dagger$, the value that Haagerup proposed for $\KG$ in 1987; this resolves that conjecture of Haagerup
 (\lean{Grothe.UpperSix.constant\_lt\_inv\_gammaDagger}).
 For the real constant the corresponding
@@ -707,7 +713,17 @@ the identity on all the other chaoses (an \emph{identity tail}).
 \item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu=0.713266399$, with
  $\hat B=353183/500000=0.706366$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.4020007\ldots>1.402$.
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.4020007\ldots>1.402$ (\lean{lower\_target}).
+Before tightening rows $0.835$ and $0.845$ with the antiholomorphic Stein calculus and cubic radius $93/100$,
+the earlier scalar-row certificate gave $\hat B=7064131/10^7$ ($1/B=1.4019103\ldots>1.40191$).
+Allowing the weight of row $0.845$ in its mixture with row $0.835$ to vary affinely on
+$[1672/2000,1675/2000]$ gave $\hat B_*=0.7064127708804130589\ldots$ and
+$\KG\ge((1-\nu)\hat B_*+\nu)^{-1}=1.401910946113565640\ldots>1.4019109461$
+(\lean{sharp\_lower\_endpoint}, \lean{lower\_bound\_sharp}).
+Coupling the shared Gaussian gate of those two scalar rows saved at least $243/10^8$ on the active cells and gave
+$\KG\ge((1-\nu)(\hat B_*-243/10^8)+\nu)^{-1}
+=1.401915609708473171\ldots>1.4019156097$
+(\lean{lower\_bound\_shared\_gate}).
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
@@ -741,11 +757,16 @@ has four layers.
  needs no fibre reduction. With $q=P_{2,1}k$, $c=2\hat\nu+\lambda$ and $\varphi_c(r)=\max_{0\le y\le1}(2\hat\epsilon ry-cy^2)$,
  it combines $\|k\|^2\le1-t^2$, the bound $2\hat\epsilon\|q\|^2-c\|k\|^2\le\E\varphi_c(|q|)$ (from
  $\|q\|^2=\Re\langle k,q\rangle$ and $|k|\le1$) and a law bound
- $\E\varphi_c(|q|)-\hat\epsilon\|q\|^2\le S$, certified with spectral cuts like a row, into
+ $\E\varphi_c(|q|)-\hat\epsilon\|q\|^2\le S$ into
  $\hat V\le(1-\lambda)t^2+\lambda+S-\hat\epsilon\|P_{2,1}h\|^2$, $S=0.165606335315\ldots$; its tangents
- $(\ell,\beta,C)=(\lambda m,0,\lambda+S+\lambda m^2)$ are rows. An \emph{envelope} of $1{,}800$ cells of width $1/2000$
- covers $t\in[0,9/10]$: on each cell one row, a tangent of the mass row, or a mixture of two rows (the retained squares
- mix exactly) bounds $\hat V$ by $\hat B$. Its maximum is $0.7064129749\ldots$, near $t=0.837$.
+ $(\ell,\beta,C)=(\lambda m,0,\lambda+S+\lambda m^2)$ are rows. At each witness scale $\tau$, the majorant bounds the sum of the separate spectral cut and
+ the potential. Lean checks this on the quadratic and affine branches of $\varphi_c(\tau v/\delta)$ in $v=\sqrt U$, with $\delta=3/4$. Convexity gives the bounds
+ between witness scales. The kernel checks these polynomial inequalities and the cover of $0\le x\le31/4$.
+ The \emph{envelope} covers $t\in[0,9/10]$ with 16 intervals.
+ On each interval one row, a tangent of the mass row, or a fixed mixture bounds $\hat V$ by a convex quadratic in $t$.
+ Its maximum occurs at an endpoint. Lean's kernel checks the cover and the bound $\hat B$ directly on
+ the rational endpoints and weights of the selected rows.
+ The largest interval maximum is $0.7064129749\ldots$ on $[1673/2000,1675/2000]$.
 \item \textbf{The node caps.} The rows use each potential only through upper bounds at the nodes of its table,
  $\Psi_r(s_i)-10^{-11}\le c_i$ (\lean{TailNodeCaps}). Lean proves them. By convexity it suffices to treat the vertex
  nodes; $238$ of the $2{,}012$ table entries are chord nodes. At a vertex node a pointwise majorant of the pair potential
@@ -769,6 +790,13 @@ coefficients $c_m(\mu)$ and Hermite projection games $Q=\sum_m q_m\Pi_m$,
 The complex programme uses charge-one bidegrees. A global complex minimax identity is not established here;
 the two endpoint proofs use separate one-sided transfer theorems. An upper bound comes from a realizable kernel,
 and a lower bound from a game with a uniform scalar norm cap. Finite-pool duality alone does not certify either global claim.
+
+For a convex mixture with weights $w_p$ and coefficient sequences $h_p(n)$,
+each finite interval list may have its own length $m_p$.
+The signed sum uses the coefficients with $n<m_p$ and pads each list with zeros.
+The true mixture differs from this polynomial by at most
+$\sum_p w_p\sum_{n\ge m_p}|h_p(n)|$ in $\ell^1$.
+The resulting finite-matrix bound is \lean{convex\_transfer\_variable\_ival}.
 
 Separate paper results in the Conjecture K monograph strengthen the common-response
 energy ellipsoid and reduce a joint-sector estimate to a specified pointwise remainder
@@ -795,10 +823,18 @@ class, at every odd amplitude and sharing. These are separate subclasses;
 odd sectors over A/B cores remain open. Neither result is a premise of the Lean endpoint.
 
 \section{What exactly the computer checks}\label{sec:trust}
-The six-channel endpoint uses exact Boolean checks on the two bounded cell maps,
-their overlap data, the signed head, and the Hardy contours. Their soundness is
-proved in Lean. The rational tail comparisons use kernel reduction. The output of
-\path{haagerup-article/anc/Axioms.lean} lists the axioms of the endpoint itself.
+The six-channel article endpoint checks the signed head convolution
+(\lean{FastHeadSound.lean}, feeding \lean{convex\_transfer\_head} alongside
+\lean{Transfer.lean}), all six Hardy-space disk and circle-mean contours
+(\lean{TaylorHardySound.lean}), and the rational tail comparisons directly in
+Lean's kernel; \lean{native\_decide} is used only for the two bounded cell-map
+norm witnesses and their overlap tables. The sharpened root endpoint
+(\path{Grothe/UpperSixExact/}) reuses the five kernel-checked contours for
+channels 1--5 and adds native checks for its modified channel-0 contour and
+six-channel linear-floor head. Their soundness is proved in Lean. The output of
+\path{haagerup-article/anc/Axioms.lean} lists the axioms of the standalone
+article endpoint itself, and \path{scratch/UpperSixAxioms.lean} audits both
+six-channel endpoints together.
 The discussion below also records the independent single-channel proof and the
 lower certificates.
 \begin{center}\small
@@ -809,15 +845,14 @@ the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its 
 the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
 (frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and
 contraction-Gram inequalities for every circular cubic, including the sixth-cumulant Wick identity; the soundness of the
-row checkers (Stein and spectral nodes) and of the envelope with its mixtures of rows;
+row checkers (Stein and spectral nodes), the envelope mixture argument and the kernel check of its intervals;
 the node caps \lean{TailNodeCaps} (the 14 potentials $\Psi_r$ with the tail $\hat\nu$, defined in Lean, lie below their
 stored rational caps at the tabulated nodes): convexity of the potentials, the majorant of the pair potential with
 prices on a polar grid, verified interval tables, the exact $LDL^{\mathsf T}$ check, and for the localised nodes the
 coverage by constrained pieces and the S-lemma
 &
-the 14 rows; the cells and the node caps of the mass row; the envelope;
-for the node caps: the node ranges of every row, the coverage and the pieces of every localised node, and the chord
-nodes of every row.
+the checks of the 14 rows and their node caps, including the node ranges of each row, the coverage and pieces of
+every localised node, and the chord nodes of each row.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
 change, evaluates them on its own runner.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Earlier single-channel upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599395362$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders. The longer-prefix costs feed the actual comparison; \lean{Final.hclose\_final} supplies the head's table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
@@ -907,7 +942,7 @@ ellipse certificates.
 
 The repository-wide audit covers the native facts listed in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check, for the upper bound, the head, selected-band masses, the phase cover, the second, fourth and sixth phase moments and the squared radial phase tail, the Hardy region and circle, the stored expansions, the energy-table blocks, the port facts, the ellipse certificates and
 \lean{improved\_high\_mass\_native} for the longer-prefix high-band masses;
-for the lower bound, the row checks, the cells and node caps of the mass row, the envelope, and the node caps (the range facts of the whole-fibre nodes, the coverage and piece facts of the localised nodes, and the chord facts).
+for the lower bound, the row checks and the node caps (the range facts of the whole-fibre nodes, the coverage and piece facts of the localised nodes, and the chord facts).
 The report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
 No \lean{sorry}. CI builds the single target \lean{Grothe}, node caps included, and checks its one axiom report on every pushed branch; a change reaches \texttt{master} through a pull request, after the same check has passed on its merge with the current \texttt{master}.
 The node-cap facts take about 340 CPU-hours in all, and the energy-table facts about ten hours each, so CI replays them from a verified build cache.
@@ -1237,7 +1272,7 @@ plans). Three epics are closed: \#12 (unconditional lower bound: \lean{lower\_ta
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
  locate $\KG$ to about $10^{-4}$ using higher-degree games. A first search
  (\path{research/higher-degree/}, [N]) gives model values $1.403648$, $1.404113$ and $1.40430$ for the best games of
- degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.40457588$. No rounding built from the binding responses
+ degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.40455741$. No rounding built from the binding responses
  beats Haagerup's $\gamma_H$ within that family. The independent six-channel comparison is stated above.
 \item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
  appears to be open, and it is the largest single lever on the law side. The best proved constant is $0.93$; a constant

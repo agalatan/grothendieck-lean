@@ -206,3 +206,21 @@ All files of `D9ST` (STATUS 1.6, 1.8, 1.9, 2.6, 4.36–4.38) are committed in th
   - `python3 -I verify_t0_refutation_exact.py` (`verify_t0_refutation_exact.log`): exact `Fraction` universal `τ⁴`, `τ⁸` and `1/ℓ²` series plus outward integer interval enclosures (**C**, Python stdlib only) certifying `V₉(1/50) − V₉(0) ∈ [+1.399512·10⁻⁸, +1.431863·10⁻⁸] > 0` (`ℓ = 1`) and `V₉ ∈ [0.712140692470, 0.712141619442] > 0.71211` (`ℓ = 1600, τ = 1/20, α₃,₂ = 3/250`).
   - `python3 -I verify_small_t_and_wick.py` (`verify_small_t_and_wick.log`): exact outward-rational certificates (**C**, Python stdlib only) for the `SMALL_T` Parseval obstruction at degrees 7 (`≥ 0.75146`) and 9 (`≥ 0.72057`), the necessary radius caps (`≤ 0.899299` for two-chaos at `c₉`, `≤ 0.886359` and `≤ 0.899374` for dual `B < 250/351`, `≤ 0.94767` and `≤ 0.94044` for primal Parseval), the global diffuse Gaussian ideal `B₉*,Gauss = (181333/800000)π`, and the 2880-matching Wick classification of `‖R₉(q)‖₂²`.
   - `probe_multimode_hankel.py` (`probe_multimode_hankel.log`): multi-coordinate Hankel numerical probe (**N**; run with Python 3.12.3, NumPy and SciPy).
+
+## The four-square defect, odd-c Hurwitz gap, c = 3 construction and C_opt ≥ 1168/729 (gemini-21d5, 24 November 2026, #507)
+
+All files of `KSPH` (STATUS 4.30) are committed in the repository, with no external working-folder artefacts:
+- [`sources/kappa-spheres-2026-11-24-gemini-21d5/PROOF.md`](sources/kappa-spheres-2026-11-24-gemini-21d5/PROOF.md): complete proofs and dependency inventory for Theorems 1–4.
+- [`code/kappa-spheres-gemini-21d5/verify_kappa_spheres.py`](code/kappa-spheres-gemini-21d5/verify_kappa_spheres.py) ([`REPLAY.log`](code/kappa-spheres-gemini-21d5/REPLAY.log), [`verify_kappa_spheres_result.json`](code/kappa-spheres-gemini-21d5/verify_kappa_spheres_result.json)): pure Python stdlib verifier (`python3 -I -O verify_kappa_spheres.py`, AST-audited zero floats, **C**), checking the four-square defect identity from first-principles monomial Gaussian moments, the quantitative odd-c Hurwitz lower bound, the closed-form algebraic c = 3 construction and rational witnesses, the disjoint circular block harmonic-mean constructions for c = 5, 6, 8, 9, 10 (including C_opt ≥ 1168/729 > 8/5 at c = 8) plus the coupled rational c = 7 witness, and 7 adversarial negative controls.
+
+## The attack plan and problem statements of 25 November 2026 (STATUS 4.39, tag ATK)
+
+- `sources/degree5-attack-2026-11-25/PLAN.md` and `problems/P1`–`P6`: written from the ledger and its sources by a
+  research worker of claude-b9ee; in the repository in full. Only repository paths were substituted for the worker's
+  local paths.
+- `code/degree5-attack/`: `rows2b.json`, the search scripts `ref/` with the stored bulks, and the check scripts with
+  their outputs. The working copy, with nothing more in it, is
+  `/Users/alingalatan/workspaces/grothe/handoff/degree5-attack-2026-11-25/`.
+- Not in the repository: the certificate pipeline that P4 asks to replay,
+  `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/cert2b/`
+  (P4 embeds its 29 rows and says what a replay must reproduce).

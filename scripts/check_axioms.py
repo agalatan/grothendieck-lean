@@ -7,6 +7,7 @@ Diagnostics, malformed or truncated records, and unknown or conflicting modes fa
 Fails unless
 * every listed theorem uses only `propext`, `Classical.choice`, `Quot.sound` and the allowed `native_decide` facts
   (the finite exact computations documented in README.md and docs/LEAN_NATIVE_INVENTORY.md),
+* the mass-row certificate and law bound use only the three standard axioms in the default report,
 * every required theorem (the headline results) appears in the report,
 * the complete input consists of well-formed axiom reports and whitespace only.
 
@@ -21,6 +22,7 @@ import argparse, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXDIR = os.path.join(ROOT, "data", "axioms")
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
+MASS_ROW_THEOREMS = {"Grothe.Lower.certMassRow", "Grothe.Lower.mass_law_bound"}
 MODES = ("upper-six",)
 
 
@@ -97,7 +99,11 @@ def main(argv=None):
     except ValueError as error:
         print(f"invalid axiom report: {error}", file=sys.stderr)
         return 1
-    bad = [(n, a) for n, axioms in reports for a in axioms if a not in STANDARD | native]
+    allowed = STANDARD | native
+    bad = []
+    for name, axioms in reports:
+        theorem_allowed = STANDARD if args.mode == "default" and name in MASS_ROW_THEOREMS else allowed
+        bad.extend((name, axiom) for axiom in axioms if axiom not in theorem_allowed)
     for n, a in bad:
         print(f"DISALLOWED AXIOM in {n}: {a}")
     missing = required - {n for n, _ in reports}

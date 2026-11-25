@@ -4,12 +4,12 @@ This folder is a standalone Lean 4 package that proves the article's theorem, wi
 
 ```lean
 theorem Haagerup.isBound_cert :
-    Haagerup.Statement.IsBound (140457588 / 100000000 : ℝ)
+    Haagerup.Statement.IsBound (140455741 / 100000000 : ℝ)
 theorem Haagerup.constant_lt_inv_gammaDagger :
     Haagerup.Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger
 ```
 
-that is, `K_G^ℂ ≤ 1.40457588 < 1/γ† = 1.4045759346…`.
+that is, `K_G^ℂ ≤ 1.40455741 < 1/γ† = 1.4045759346…`.
 
 - `IsBound K` says `V(A) ≤ K · C(A)` for every finite complex matrix `A`, where `C(A)` is the optimum over unimodular
   scalars and `V(A)` the optimum over unit vectors of `ℂ^ι`, for every finite type `ι`.
@@ -41,25 +41,23 @@ with `native_decide`, which the compiled evaluator runs instead of the kernel; t
 |---|---|
 | norm bounds of the two cell maps | `tcell_sos_ok`, `tig_sos_ok` |
 | their overlap tables | `tcell_rows_ok`, `tig_mu_ok` |
-| the head sum of the six channels | `head_sum_ok` |
-| the Hardy-space contour estimates, per channel | `reg0_ok`…`reg5_ok`, `mean0_ok`…`mean5_ok` |
 
-Every other step, including the rational comparisons of the tails and the weights, is checked by the kernel.
+Every other step—including the six-channel head sum, the Hardy-space disk and circle-mean estimates, and the rational comparisons of the tails and the weights—is checked by the kernel.
 
 ## Files
 
 | proof | source |
 |---|---|
 | the matrix optima, admissible bounds, the constant and γ† | `Grothe/UpperSix/Haagerup/Statement.lean` |
-| convex transfer from the signed head and the six tail estimates | `Grothe/UpperSix/Haagerup/Transfer.lean` |
+| convex transfer from the signed head and the six tail estimates | `Grothe/UpperSix/Haagerup/Transfer.lean`, `FastHeadSound.lean` (`convex_transfer_head`) |
 | cell maps, Hermite energies and finite interval enclosures | `Grothe/UpperSix/Haagerup/CellHermite.lean`, `CellOverlap.lean`, `CellOverlapCore.lean` |
-| disk positivity, circle means and infinite tails | `Grothe/UpperSix/Haagerup/SchurHardy.lean`, `ContourChecks/` |
-| the six channels, weights, 251 head coefficients and the budget | `Grothe/UpperSix/Haagerup/CertCheck.lean` |
+| boundary disk positivity, circle means and infinite tails | `Grothe/UpperSix/Haagerup/SchurHardy.lean`, `TaylorHardySound.lean`, `ContourChecks/` |
+| the six-channel head sum, weights, 251 head coefficients and the budget | `Grothe/UpperSix/Haagerup/HeadCheck.lean`, `FastHeadSound.lean`, `CertCheck.lean` |
 | the strict comparison with `1/γ†` | `Grothe/UpperSix/Haagerup/GammaDagger.lean`, `Grothe/UpperSix/Haagerup.lean` |
-| the interval and table checkers | `Grothe/UpperSix/HaagerupKernel/` |
+| the exact integer, interval, Taylor-model and Kronecker checkers | `Grothe/UpperSix/HaagerupKernel/` |
 
 ## Provenance
 
 These files are copied byte for byte from the folder `Grothe/UpperSix/` of
 <https://github.com/agalatan/grothendieck-lean>, which keeps evolving; this package is a snapshot frozen at
-`1.40457588`. The repository's CI job `haagerup-article.yml` fails if the two copies differ.
+`1.40455741`. The repository's CI job `haagerup-article.yml` fails if the two copies differ.

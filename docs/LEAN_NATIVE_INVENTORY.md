@@ -7,8 +7,11 @@ required declarations in `data/axioms/required.txt`; CI checks it on every pushe
 a pull request lands.
 
 The proof-check workflow also audits `scratch/UpperSixAxioms.lean` against the required six-channel
-allowlist. It covers the two cell witnesses, both overlap-table checks, the weighted head, and each
-channel’s disk and circle checks. The rational tail comparisons reduce in the kernel.
+allowlist. For the standalone article proof it covers only the two cell witnesses and both
+overlap-table checks (its weighted head, each channel's disk and circle checks, and the rational
+tail comparisons reduce in the kernel); for the sharpened root endpoint (`Grothe/UpperSixExact/`)
+it also covers the modified channel-0 contour checks and the six-channel linear-floor head check
+while reusing the kernel-checked contours for channels 1–5.
 [Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
 
 Archived upper variants have separate preserved inventories under
@@ -19,30 +22,31 @@ Archived upper variants have separate preserved inventories under
 Every native fact of the lower bound is one sequential exact computation; most of them sit in modules of their own, so
 that Lake checks them in separate processes. All of them are reported by `scratch/Axioms.lean`. In `lower_target` and
 `main_bounds` (`LowerBoundTight.lean`), rows `08` and `09` and the tightened 38-cell envelope (`certEnvelopeTight`) are
-checked in Lean's kernel via `decide +kernel` with zero new `native_decide` axioms (so `certRow08`, `certRow09`, and
-`certEnvelope` remain in `native.txt` only for `rowData_facts` and the earlier `LowerBound.lean`). Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
+checked in Lean's kernel via `decide +kernel` with zero new `native_decide` axioms (so `certRow08` and `certRow09`
+remain in `native.txt` only for `rowData_facts` and the earlier `LowerBound.lean`). Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
 number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a block of consecutive nodes or pieces.
 
 | family | facts | module | what is checked | used by |
 |---|---|---|---|---|
 | row checks | `Grothe.Lower.certRowSS` | `Grothe/Lower/Cert/RowSS.lean` | `checkRow rowSS` (Stein nodes) or, for the rows 0.4 and 0.6, `checkSpecRow rowSS` (spectral nodes) | `rowData_facts` |
-| mass row: cells | `Grothe.Lower.certMassRow` | `Grothe/Lower/Cert/MassRow.lean` | `checkSpecCells massRow` | `mass_law_bound` |
-| mass row: node caps | `Grothe.Lower.massCapsOK` | `Grothe/Lower/MassFacts.lean` | `φ_c(s/δ) ≤ c` at every node `(s, c)` of the mass row's table | `massCaps` |
-| envelope | `Grothe.Lower.certEnvelope` | `Grothe/Lower/Cert/Envelope.lean` | `checkEnv rowData massS envB envCells` | `profile_bound` |
 | node caps: range facts | `Grothe.LowerAnalytic.rowKKAnchorRangeJJ` | `Grothe/LowerAnalytic/CapRowKK/AnchorRangeJJ.lean` | `rangeOKNu` over consecutive whole-fibre nodes (anchored and global) | `vertexCapsRowKK`, through `nodeCapNu_of_rangeOK` |
 | node caps: coverage facts | `Grothe.LowerAnalytic.pieceCover_KKx<i>` | `Grothe/LowerAnalytic/CapPieces/CKKx<i>.lean` | `pieceCoverFastOK`: the pieces of a localised node cover the fibre space up to the symmetries of the potential | `nodeCap_KKx<i>`, through `pieceCoverOK_of_fast` |
 | node caps: piece facts | `Grothe.LowerAnalytic.pieceRange_KKx<i>_<J>` | `Grothe/LowerAnalytic/CapPieces/RKKx<i>_<J>.lean` | `pieceRangeOKNu` over consecutive pieces of a localised node, on one grid | `nodeCap_KKx<i>`, through `pieceOneOKNu_of_range` |
 | node caps: chord facts | `Grothe.LowerAnalytic.chordsOKRowKK` | `Grothe/LowerAnalytic/CapRowKK/Assembly.lean` | `chordOKLow`: the cap of every chord node of the row is above the chord of its two vertex nodes, at the vertex caps lowered by `10⁻¹²` | `capsRowKK`, through `nodeCaps_of_vertexCapsNu` |
 
-The generators write these modules and their lines of `data/axioms/native.txt`: `tools/gen_lower_data.py` the row
-checks, the mass row's facts and the envelope; `tools/gen_tail_caps.py` the node-cap facts, which it also lists in
+Lean kernel-checks the spectral polynomial majorants and scale chords for `Grothe.Lower.certMassRow`.
+The witness module took about four minutes to build on Linux with two CPUs available. The axiom
+audit restricts both the mass certificate and `mass_law_bound` to Lean's three standard axioms.
+`Grothe.Lower.certEnvelope` reduces `checkEnvCells` in the kernel on
+the 16 records of rational endpoints, row indices and weights. `tools/gen_lower_data.py` generates
+its cells and the row certificates. `tools/gen_tail_caps.py` generates the node-cap facts and lists them in
 `data/tail-caps/native.txt` ([CAPS.md](CAPS.md)). The node-cap facts take about 340 CPU-hours in all, dominated by the
 piece facts; CI replays them from a verified build cache. No per-fact timing is recorded here.
 
 ## Upper bound
 
 This section covers the older single-channel upper proof (`Grothe/UpperTightFinal.lean`, `K < 1.404599395362`), which
-is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.40457588`, comes from the six-channel proof; its native
+is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.40455741`, comes from the six-channel proof; its native
 facts are those of the six-channel allowlist named above. The table below is not complete (the quadrature facts under
 `Grothe/UpperQuad/` are not in it); `data/axioms/native.txt` is the full list.
 

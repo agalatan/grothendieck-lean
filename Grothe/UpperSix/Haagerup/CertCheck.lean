@@ -1,5 +1,7 @@
 import Grothe.UpperSix.Haagerup.CellOverlap
 import Grothe.UpperSix.Haagerup.HeadCheck
+import Grothe.UpperSix.Haagerup.FastHeadSound
+import Grothe.UpperSix.Haagerup.TaylorHardySound
 import Grothe.UpperSix.Haagerup.ContourChecks.Channel0
 import Grothe.UpperSix.Haagerup.ContourChecks.Channel1
 import Grothe.UpperSix.Haagerup.ContourChecks.Channel2
@@ -10,26 +12,27 @@ import Grothe.UpperSix.Haagerup.ContourChecks.Channel5
 set_option warningAsError true
 
 /-!
-# 6-Channel Certificate Verification (`K_G^ℂ ≤ 1.40457588`)
+# 6-Channel Certificate Verification (`K_G^ℂ ≤ 1.40455741`)
 
 Combines:
 * Channels 0, 1, 5: rotated Ornstein–Uhlenbeck smoothed `64 × 64 × 36` cell map `T_cell`
   (`tcell_sos_ok`, `tcell_rows_ok`);
-* Channel 2: Haagerup's 1D phase rounding map `phase2` (`haagMuList 251`);
+* Channel 2: Haagerup's 1D phase rounding map `phase2` (`haagCoeff`);
 * Channels 3, 4: antisymmetric `(-R, R)` channels on the `64 × 64 × 36` cell map `f_tig`
   (`tig_sos_ok`, `tig_mu_ok`);
 
-with `K = 251` exact interval head convolution (`bivarT`) and Hardy circle-mean tail bounds
-(`regionOK`, `circleMeanOK`, `hardy_tail`) via `convex_transfer_ival`, establishing
-`isBound_cert : Statement.IsBound (140457588 / 100000000 : ℝ)`.
+with kernel-verified `K = 251` Kronecker-packed head convolution (`head_sum_ok`, `FastHeadSound`)
+and kernel-verified Taylor-model Hardy circle-mean tail bounds (`reg0_ok`–`reg5_ok`,
+`mean0_ok`–`mean5_ok`, `TaylorHardySound`) via `convex_transfer_head`, establishing
+`isBound_cert : Statement.IsBound (140455741 / 100000000 : ℝ)`.
 
-Agent-ID: gemini-21d5
+Agent-ID: gemini-21d5, gemini-1aa9
 -/
 
 namespace Haagerup
 
 open Finset Polynomial MeasureTheory
-open HaagerupKernel HaagerupKernel.Cell HaagerupKernel.Hardy Haagerup.Data
+open HaagerupKernel HaagerupKernel.Cell Haagerup.Data
 
 /-! ### 1. Rational certificate parameters -/
 
@@ -38,7 +41,7 @@ private theorem tails_rat_ok :
       decide (budgetQ p * (rhoQ p)⁻¹ ^ 1006 ≤ tailQ p ^ 2 * (1 - (rhoQ p)⁻¹ ^ 4))) = true := by
   decide +kernel
 
-/-! ### 3. Analytic channel assembly and `isBound_cert` -/
+/-! ### 2. Analytic channel assembly and `isBound_cert` -/
 
 noncomputable section
 
@@ -96,17 +99,18 @@ private lemma hdQ : ctQ ^ 2 + stQ ^ 2 = 1 := by norm_num [ctQ, stQ]
 private lemma heQ : seQ ^ 2 + ceQ ^ 2 = 1 := by norm_num [seQ, ceQ]
 
 private lemma gSmoothedLp_eq_nat :
-    gSmoothedLp = (memLp_smoothMap ((23187 : ℝ) / 24245) ((7084 : ℝ) / 24245)
-      ((87841 : ℝ) / 98209) ((43920 : ℝ) / 98209)
+    gSmoothedLp = (memLp_smoothMap (((23187 : ℕ) : ℝ) / (24245 : ℕ)) (((7084 : ℕ) : ℝ) / (24245 : ℕ))
+      (((87841 : ℕ) : ℝ) / (98209 : ℕ)) (((43920 : ℕ) : ℝ) / (98209 : ℕ))
       (measurable_cellFn tcellCreArr tcellCimArr) (norm_cellFn_le tcell_sos_ok)).toLp
-      (smoothMap ((23187 : ℝ) / 24245) ((7084 : ℝ) / 24245)
-        ((87841 : ℝ) / 98209) ((43920 : ℝ) / 98209) fTCell) := by
-  have hct : (ctQ : ℝ) = (23187 : ℝ) / 24245 := by norm_num [ctQ]
-  have hst : (stQ : ℝ) = (7084 : ℝ) / 24245 := by norm_num [stQ]
-  have hse : (seQ : ℝ) = (87841 : ℝ) / 98209 := by norm_num [seQ]
-  have hce : (ceQ : ℝ) = (43920 : ℝ) / 98209 := by norm_num [ceQ]
+      (smoothMap (((23187 : ℕ) : ℝ) / (24245 : ℕ)) (((7084 : ℕ) : ℝ) / (24245 : ℕ))
+        (((87841 : ℕ) : ℝ) / (98209 : ℕ)) (((43920 : ℕ) : ℝ) / (98209 : ℕ))
+        (cellFn tcellCreArr tcellCimArr)) := by
+  have hct : (ctQ : ℝ) = ((23187 : ℕ) : ℝ) / (24245 : ℕ) := by norm_num [ctQ]
+  have hst : (stQ : ℝ) = ((7084 : ℕ) : ℝ) / (24245 : ℕ) := by norm_num [stQ]
+  have hse : (seQ : ℝ) = ((87841 : ℕ) : ℝ) / (98209 : ℕ) := by norm_num [seQ]
+  have hce : (ceQ : ℝ) = ((43920 : ℕ) : ℝ) / (98209 : ℕ) := by norm_num [ceQ]
   refine toLp_congr_fn memLp_fSmoothed _ ?_
-  unfold fSmoothed
+  unfold fSmoothed fTCell
   rw [hct, hst, hse, hce]
 
 private lemma hp0 : l1 (ofListQ p0Q) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
@@ -121,6 +125,46 @@ private lemma hp4 : l1 (ofListQ (r4Q.map (- ·))) ≤ 1 := l1_ofListQ_le_one (by
 private lemma hq4 : l1 (ofListQ r4Q) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
 private lemma hp5 : l1 (ofListQ p5Q) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
 private lemma hq5 : l1 (ofListQ q5Q) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
+
+private lemma sparsePoly_p0 : sparsePoly p0Sparse d0Sparse = ofListQ p0Q := by
+  simp only [sparsePoly, p0Sparse, d0Sparse, ofListQ, p0Q, List.map, List.sum_cons, List.sum_nil,
+    ← Polynomial.C_mul_X_pow_eq_monomial, Rat.cast_div, Rat.cast_neg, Rat.cast_ofNat, Int.cast_neg,
+    Int.cast_ofNat, Nat.cast_ofNat]
+  ring
+
+private lemma sparsePoly_p1 : sparsePoly p1Sparse d1Sparse = ofListQ p1Q := by
+  simp only [sparsePoly, p1Sparse, d1Sparse, ofListQ, p1Q, List.map, List.sum_cons, List.sum_nil,
+    ← Polynomial.C_mul_X_pow_eq_monomial, Rat.cast_div, Rat.cast_neg, Rat.cast_ofNat, Rat.cast_one,
+    Int.cast_neg, Int.cast_ofNat, Int.cast_one, Nat.cast_ofNat]
+  ring
+
+private lemma sparsePoly_p2 : sparsePoly p2Sparse d12Sparse = ofListQ p2Q := by
+  simp only [sparsePoly, p2Sparse, d12Sparse, ofListQ, p2Q, d12Q, List.map, List.sum_cons,
+    List.sum_nil, ← Polynomial.C_mul_X_pow_eq_monomial, Rat.cast_div, Rat.cast_neg, Rat.cast_ofNat,
+    Rat.cast_zero, Int.cast_neg, Int.cast_ofNat, Nat.cast_ofNat, map_zero]
+  ring
+
+private lemma sparsePoly_r3 : sparsePoly r3Sparse d12Sparse = ofListQ r3Q := by
+  simp only [sparsePoly, r3Sparse, d12Sparse, ofListQ, r3Q, d12Q, List.map, List.sum_cons,
+    List.sum_nil, ← Polynomial.C_mul_X_pow_eq_monomial, Rat.cast_div, Rat.cast_neg, Rat.cast_ofNat,
+    Int.cast_neg, Int.cast_ofNat, Nat.cast_ofNat]
+  ring
+
+private lemma sparsePoly_r4 : sparsePoly r4Sparse d12Sparse = ofListQ r4Q := by
+  simp only [sparsePoly, r4Sparse, d12Sparse, ofListQ, r4Q, d12Q, List.map, List.sum_cons,
+    List.sum_nil, ← Polynomial.C_mul_X_pow_eq_monomial, Rat.cast_div, Rat.cast_neg, Rat.cast_ofNat,
+    Int.cast_neg, Int.cast_ofNat, Nat.cast_ofNat]
+  ring
+
+private lemma sparsePoly_p5 : sparsePoly p5Sparse d12Sparse = ofListQ p5Q := by
+  simp only [sparsePoly, p5Sparse, d12Sparse, ofListQ, p5Q, d12Q, List.map, List.sum_cons,
+    List.sum_nil, ← Polynomial.C_mul_X_pow_eq_monomial, Rat.cast_div, Rat.cast_neg, Rat.cast_ofNat,
+    Rat.cast_zero, Int.cast_neg, Int.cast_ofNat, Nat.cast_ofNat, map_zero]
+  ring
+
+private lemma ofListQ_q0 : ofListQ q0Q = -Polynomial.X := by simp [q0Q, ofListQ]
+private lemma ofListQ_q1 : ofListQ q1Q = -Polynomial.X := by simp [q1Q, ofListQ]
+private lemma ofListQ_q5 : ofListQ q5Q = -Polynomial.X := by simp [q5Q, ofListQ]
 
 private lemma hChan_summable (p : Fin 6) : Summable fun n => |hChan p n| := by
   fin_cases p
@@ -152,39 +196,41 @@ private lemma hChan_dominated (p : Fin 6) : DominatedKernel (radialKernel (hChan
       memLp_fTig hp4 hq4).dominated
   · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hp5 hq5).dominated
 
-private lemma hChan_mem (p : Fin 6) (n : ℕ) (hn : n < 251) :
-    mem (hChan p n) ((headICert p).getD n zeroI) := by
+private lemma hHead_res :
+    ∑ n ∈ range 251, |(∑ p : Fin 6, (wQ p : ℝ) * hChan p n) -
+      (if n = 0 then (cCertQ : ℝ) else 0)| ≤ (headCapCertQ : ℝ) := by
   have hdR : ((23187 : ℝ) / 24245) ^ 2 + ((7084 : ℝ) / 24245) ^ 2 = 1 := by norm_num
   have heR : ((87841 : ℝ) / 98209) ^ 2 + ((43920 : ℝ) / 98209) ^ 2 = 1 := by norm_num
-  fin_cases p
-  · dsimp only [hChan, headICert]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [q0Q, ofListQ])
-      (memB_ofListQ p0Q 251) (memB_ofListQ q0Q 251) n hn
-  · dsimp only [hChan, headICert]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [q1Q, ofListQ])
-      (memB_ofListQ p1Q 251) (memB_ofListQ q1Q 251) n hn
-  · dsimp only [hChan, headICert]
-    have heq : bivarKernel (ofListQ p2Q) (ofListQ []) (energy (memLp_phase2.toLp phase2)) n =
-        bivarKernel (ofListQ p2Q) 0 (onedTable haagCoeff) n :=
-      (phase_bivarKernel_eq (ofListQ p2Q) n).trans
-        (bivarKernel_oned_eq_head (ofListQ p2Q) 0 haagCoeff (Nat.lt_succ_self n)).symm
-    rw [heq]
-    exact mem_bivarT_oned (Q := 0) (memB_ofListQ p2Q 251) haagCoeff
-      (fun _ hk => mem_haagMuList hk) n hn
-  · dsimp only [hChan, headICert, gTigLp, memLp_fTig, fTig]
-    rw [ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ r3Q) n]
-    exact mem_bivarT_oned (Q := 0) (memB_ofListQ r3Q 251) (muTigOf tigCreArr tigCimArr)
-      (fun _ hk => mem_muTigOf tig_mu_ok hk) n hn
-  · dsimp only [hChan, headICert, gTigLp, memLp_fTig, fTig]
-    rw [ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ r4Q) n]
-    exact mem_bivarT_oned (Q := 0) (memB_ofListQ r4Q 251) (muTigOf tigCreArr tigCimArr)
-      (fun _ hk => mem_muTigOf tig_mu_ok hk) n hn
-  · dsimp only [hChan, headICert]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [q5Q, ofListQ])
-      (memB_ofListQ p5Q 251) (memB_ofListQ q5Q 251) n hn
+  obtain ⟨hpar, _, _, _, hrow⟩ := smoothedRowsCheck_table_sound tcell_sos_ok hdR heR tcell_rows_ok
+  rw [← gSmoothedLp_eq_nat] at hpar hrow
+  have hc_eq : ((cCertNum : ℝ) / (d12Sparse : ℝ)) = (cCertQ : ℝ) := by
+    norm_num [cCertNum, d12Sparse, cCertQ, d12Q]
+  have hcap_eq : ((headCapNum : ℝ) / (d12Sparse : ℝ)) = (headCapCertQ : ℝ) := by
+    norm_num [headCapNum, d12Sparse, headCapCertQ, d12Q]
+  rw [← hc_eq, ← hcap_eq]
+  refine head_residual_of_fastHeadOK head_sum_ok hpar
+    (fun r hr e he => ((hrow r hr).2 e he).2)
+    (fun k hk => mem_muTigOf tig_mu_ok hk)
+    ⟨by norm_num [wQ, w0Sparse, d12Sparse, d12Q],
+     by norm_num [wQ, w1Sparse, d12Sparse, d12Q],
+     by norm_num [wQ, w2Sparse, d12Sparse, d12Q],
+     by norm_num [wQ, w3Sparse, d12Sparse, d12Q],
+     by norm_num [wQ, w4Sparse, d12Sparse, d12Q],
+     by norm_num [wQ, w5Sparse, d12Sparse, d12Q]⟩
+    (fun n _ => by dsimp only [hChan]; rw [sparsePoly_p0, ofListQ_q0])
+    (fun n _ => by dsimp only [hChan]; rw [sparsePoly_p1, ofListQ_q1])
+    (fun n _ => by
+      dsimp only [hChan]
+      rw [sparsePoly_p2, show ofListQ [] = 0 from rfl]
+      exact (phase_bivarKernel_eq (ofListQ p2Q) n).trans
+        (bivarKernel_oned_eq_head (ofListQ p2Q) 0 haagCoeff (Nat.lt_succ_self n)).symm)
+    (fun n _ => by
+      dsimp only [hChan, gTigLp, memLp_fTig, fTig]
+      rw [sparsePoly_r3, ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ r3Q) n])
+    (fun n _ => by
+      dsimp only [hChan, gTigLp, memLp_fTig, fTig]
+      rw [sparsePoly_r4, ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ r4Q) n])
+    (fun n _ => by dsimp only [hChan]; rw [sparsePoly_p5, ofListQ_q5])
 
 private lemma hChan_tail (p : Fin 6) :
     ∑' n, |hChan p (n + 251)| ≤ (tailQ p : ℝ) := by
@@ -194,33 +240,33 @@ private lemma hChan_tail (p : Fin 6) :
     (tail_cmp_of_fin p)
   intro J
   fin_cases p
-  · exact hardy_smoothed_channel hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
+  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
       (norm_cellFn_le tcell_sos_ok) (fun _ v hc => cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hp0 hq0 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      hp0 hq0 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg0_ok mean0_ok J
-  · exact hardy_smoothed_channel hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
+  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
       (norm_cellFn_le tcell_sos_ok) (fun _ v hc => cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hp1 hq1 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      hp1 hq1 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg1_ok mean1_ok J
-  · exact hardy_unsmoothed_channel measurable_phase2 norm_phase2_le
-      (fun _ u hc => phase2_rot2 hc u) memLp_phase2 hp2 hq_nil
-      (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+  · exact hardy_phase_channel_tm measurable_phase2 norm_phase2_le
+      (fun _ u hc => phase2_rot2 hc u) memLp_phase2 hp2
+      (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg2_ok mean2_ok J
-  · exact hardy_unsmoothed_channel (measurable_cellFn tigCreArr tigCimArr)
+  · exact hardy_anti_channel_tm (measurable_cellFn tigCreArr tigCimArr)
       (norm_cellFn_le tig_sos_ok) (fun _ u hc => cellFn_rot2 tigCreArr tigCimArr hc u)
-      memLp_fTig hp3 hq3 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      memLp_fTig hq3 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg3_ok mean3_ok J
-  · exact hardy_unsmoothed_channel (measurable_cellFn tigCreArr tigCimArr)
+  · exact hardy_anti_channel_tm (measurable_cellFn tigCreArr tigCimArr)
       (norm_cellFn_le tig_sos_ok) (fun _ u hc => cellFn_rot2 tigCreArr tigCimArr hc u)
-      memLp_fTig hp4 hq4 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      memLp_fTig hq4 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg4_ok mean4_ok J
-  · exact hardy_smoothed_channel hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
+  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
       (norm_cellFn_le tcell_sos_ok) (fun _ v hc => cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hp5 hq5 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ]) (by norm_num [regRQ])
+      hp5 hq5 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg5_ok mean5_ok J
 
-/-- **Certified upper bound**: `K_G^ℂ ≤ 1.40457588`. -/
-theorem isBound_cert : Statement.IsBound (140457588 / 100000000 : ℝ) := by
+/-- **Certified upper bound**: `K_G^ℂ ≤ 1.40455741`. -/
+theorem isBound_cert : Statement.IsBound (140455741 / 100000000 : ℝ) := by
   have hw0 : ∀ p : Fin 6, 0 ≤ (wQ p : ℝ) := fun p => by fin_cases p <;> norm_num [wQ, d12Q]
   have hw1 : ∑ p : Fin 6, (wQ p : ℝ) = 1 := by
     rw [← Rat.cast_sum, show ∑ p : Fin 6, wQ p = 1 by decide +kernel, Rat.cast_one]
@@ -229,9 +275,9 @@ theorem isBound_cert : Statement.IsBound (140457588 / 100000000 : ℝ) := by
     simpa only [Rat.cast_add, Rat.cast_sum, Rat.cast_mul] using (Rat.cast_le (K := ℝ)).2 hq
   have hδc : (deltaCertQ : ℝ) < (cCertQ : ℝ) := by norm_num [deltaCertQ, cCertQ, d12Q]
   have hB : Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ))) :=
-    convex_transfer_ival (K := 250) hw0 hw1 hChan_summable hChan_dominated
-      hChan_mem hChan_tail (of_decide_eq_true head_sum_ok) hδ hδc
-  have hle : 1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)) ≤ (140457588 / 100000000 : ℝ) := by
+    convex_transfer_head (K := 250) hw0 hw1 hChan_summable hChan_dominated
+      hHead_res hChan_tail hδ hδc
+  have hle : 1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)) ≤ (140455741 / 100000000 : ℝ) := by
     norm_num [cCertQ, deltaCertQ, d12Q]
   exact fun m n A => (hB m n A).trans (mul_le_mul_of_nonneg_right hle (Real.sSup_nonneg fun r ⟨_, _, _, _, hr⟩ => hr ▸ norm_nonneg _))
 

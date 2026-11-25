@@ -23,7 +23,7 @@ Mathlib's inner product is conjugate-linear in the first slot, so the one-dimens
 The targets are stated directly in terms of Grothendieck bounds, so they do not depend on Lean's
 convention for the infimum of an empty or unbounded set: `UpperBelow c` says some bound is below `c`,
 `LowerAbove c` says every bound is above `c`; `LowerTarget` is `LowerAbove` at the repository's lower bound
-`1.402`. The upper bound is stated as `IsBound (140457588 / 100000000)` (`Grothe/UpperResult.lean`). The constant `K_G^ℂ` is defined as the infimum of all bounds for
+`1.402`. The upper bound is stated as `IsBound (140455741 / 100000000)` (`Grothe/UpperResult.lean`). The constant `K_G^ℂ` is defined as the infimum of all bounds for
 reference. `Grothe/StatementBridges.lean` proves what these targets say about it: `UpperBelow c`
 gives `K_G^ℂ < c`; `LowerAbove c` gives `c ≤ K_G^ℂ` once some bound exists, and then even `c < K_G^ℂ`,
 because the set of bounds is closed, so the infimum is itself a bound. Without a bound the set is
