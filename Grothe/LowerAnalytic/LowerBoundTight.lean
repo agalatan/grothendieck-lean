@@ -17,14 +17,11 @@ import Grothe.Lower.Cert.Row13
 import Grothe.Lower.Cert.Row14
 
 /-!
-# Tightened lower bound breaking `K_G^ℂ > 1.402` via antiholomorphic Stein calculus
+# Scalar rows and witness transfer for the circular Gaussian reduction
 
-Replaces the two bottleneck rows `row08` (`0.835`) and `row09` (`0.845`) with their kernel-checked
-antiholomorphic Stein certificates (`circularRowBound_row08`, `circularRowBound_row09`) and uses the
-certified cubic radius bound `‖p‖ ≤ 93/100` (`circularReductionHyp_of_nodeCaps`) together with the
-kernel-checked 38-cell tightened envelope (`certEnvelopeTight`, `envBTight = 353183/500000 = 0.706366`) to
-certify `1 / ((1 − 47/2000) envBTight + 47/2000) > 1.402` (`lower_bound_tight_of_tailNodeCaps`),
-with zero node-cap rebuild and zero new `native_decide` axioms.
+The two checked antiholomorphic Stein bounds supply rows 08 and 09. Together with
+the mass tangent and the twelve other rows they feed the joint envelope. A uniform
+profile bound then transfers to the identity-tail witness through the node caps.
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
@@ -109,14 +106,6 @@ theorem tight_scalar_rows (V t : ℝ) (Qh v : E)
     | 13 => simp [rowDataTight] at hr'; subst hr'; exact hplain row14 (by simp [rowData]) (rowFacts_of_checkRow _ certRow14)
     | k + 14 => simp [rowDataTight] at hr'
 
-/-- **Tightened envelope cap on the hat value**: combining the mass row, the 12 existing rows, and
-the two antiholomorphic Stein rows (`row08`, `row09`) gives `V ≤ envBTight` for `t ∈ [0, 9/10]`. -/
-theorem profile_bound_tight (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
-    (hmass : V ≤ (1 - 1 / 2) * t ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖Qh‖ ^ 2)
-    (hred : CircularSharedReduction rowData V t Qh v) : V ≤ (envBTight : ℝ) := by
-  exact envPure_bound envRowsTight massS envBTight envCellsTight certEnvelopeTight hv ht0 ht1
-    (tight_scalar_rows V t Qh v hmass hred)
-
 /-- Transfer any uniform bound on the simultaneous circular profile to the identity-tail witness. -/
 theorem witnessCap_of_circular_profile {B : ℝ}
     (hp : ∀ {F : Type} [NormedAddCommGroup F] [InnerProductSpace ℝ F] (V t : ℝ) (Qh v : F),
@@ -133,17 +122,6 @@ theorem witnessCap_of_circular_profile {B : ℝ}
   exact hp _ _ _ v hv (norm_nonneg _) (tOf_le (m + 1) hf hg)
     (massRow_frame (m + 1) (by omega) he hν hf hg) hshared
 
-/-- **Tightened scalar cap of the witness** `(191/250, 47/2000)`, modulo the unchanged node caps. -/
-theorem witnessCap_tight (hcaps : TailNodeCaps (nuHat (47 / 2000))) (n : ℕ) (hn : 2 ≤ n) :
-    WitnessCap n (191 / 250) (47 / 2000) ((1 - 47 / 2000) * (envBTight : ℝ) + 47 / 2000) :=
-  witnessCap_of_circular_profile (@profile_bound_tight) hcaps n hn
-
-/-- **Tightened lower bound, modulo the unchanged node caps**:
-`K ≥ 1 / ((1 − 47/2000) envBTight + 47/2000) > 1.402` for every Grothendieck bound `K`. -/
-theorem lower_bound_tight_of_tailNodeCaps (hcaps : TailNodeCaps (nuHat (47 / 2000))) {K : ℝ}
-    (hK : IsGrothendieckBound K) : 1 / ((1 - 47 / 2000) * (envBTight : ℝ) + 47 / 2000) ≤ K :=
-  transfer_lower (transferInputs_of_witnessCap (by norm_num) (by norm_num) 2
-    fun n hn => witnessCap_tight hcaps n hn) hK
 
 end
 

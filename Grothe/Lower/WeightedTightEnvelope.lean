@@ -1,4 +1,3 @@
-import Grothe.Lower.Cert.WeightedTight
 import Grothe.LowerAnalytic.WeightedSchurRows
 
 set_option warningAsError true
@@ -17,8 +16,6 @@ Agent-ID: codex-a7c4
 namespace Grothe.Lower.WeightedTight
 
 open LowerAnalytic
-open SharedGate.WeightedSchur (discount discountQ discount_rat discount_chord)
-
 structure Segment where
   base : EnvCell
   leftWeight : ℚ
@@ -53,8 +50,6 @@ def segments (varyOuter : Bool) (c : EnvCell) : List Segment :=
     | _, _ => []
   else [⟨c,c.θ,c.θ,false,mid⟩]
 
-private def cells := envCellsTight.flatMap (segments false)
-
 private def value (a b : EnvRow) (t w d : ℚ) : ℚ :=
   t^2 - 2*((1-w)*a.ell + w*b.ell)*t +
     ((1-w)*a.C + w*b.C - (2/ε)*w*(1-w)*(a.beta-b.beta)^2) - d
@@ -76,10 +71,6 @@ def segmentOK (cap : ℚ) (discountQ : ℚ → ℚ) (s : Segment) : Bool := deci
     match envRowAtPure envRowsTight massS m s.base.i, envRowAtPure envRowsTight massS m s.base.j with
     | some a, some b => decide (segmentCap a b s.base.lo s.base.hi s.leftWeight s.rightWeight 0 0 ≤ cap)
     | _, _ => false
-
-private theorem cells_ok :
-    chainTo (fun s : Segment ↦ s.base.lo) (fun s ↦ s.base.hi) 0 (9/10) cells = true ∧
-    cells.all (segmentOK cap discountQ) = true := by decide +kernel
 
 private theorem segment_majorant (a b : EnvRow) (l h w z dl dh : ℚ) (x : ℝ)
     (hx0 : 0 ≤ x) (hx1 : x ≤ 1) :
@@ -175,26 +166,5 @@ theorem profile_bound_of (cells : List Segment) (cap : ℚ) (disc : ℚ → ℚ)
           (by simpa only [sub_zero,RowOf] using hrows _ _ _ ha)
           (by simpa only [sub_zero,RowOf] using hrows _ _ _ hb) hθ0 hθ1
         simp
-/-- The unchanged tight rows and the weight-dependent joint deductions bound the full profile. -/
-theorem profile_bound (hv : ‖v‖^2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9/10)
-    (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
-    (hsave : ∀ θ : ℝ, 0 ≤ θ → θ ≤ 1 → ∃ d8 d9 : ℝ, discount θ ≤ (1-θ)*d8+θ*d9 ∧
-      RowHolds ε TightShared.row8.ell TightShared.row8.beta ((TightShared.row8.C : ℝ)-d8) V t Qh v ∧
-      RowHolds ε TightShared.row9.ell TightShared.row9.beta ((TightShared.row9.C : ℝ)-d9) V t Qh v) :
-    V ≤ (cap : ℝ) := by
-  apply profile_bound_of cells cap discountQ cells_ok hv ht0 ht1 hrows
-  intro s _ _ hw₀ hw₁ hz₀ hz₁ x hx₀ hx₁
-  have hw : (s.leftWeight : ℝ) ≤ 1 := by exact_mod_cast hw₁
-  have hz : (s.rightWeight : ℝ) ≤ 1 := by exact_mod_cast hz₁
-  have h0 : (0 : ℝ) ≤ s.leftWeight := Rat.cast_nonneg.mpr hw₀
-  have h1 : (0 : ℝ) ≤ s.rightWeight := Rat.cast_nonneg.mpr hz₀
-  have hx := sub_nonneg.mpr hx₁
-  have lo := add_nonneg (mul_nonneg hx h0) (mul_nonneg hx₀ h1)
-  have hi : (1-x)*(s.leftWeight : ℝ)+x*(s.rightWeight : ℝ) ≤ 1 := by
-    simpa using add_le_add (mul_le_mul_of_nonneg_left hw hx) (mul_le_mul_of_nonneg_left hz hx₀)
-  obtain ⟨d8,d9,hd,H8,H9⟩ := hsave _ lo hi
-  have hc := discount_chord h0 hw h1 hz hx₀ hx₁
-  rw [discount_rat,discount_rat] at hc
-  exact ⟨d8,d9,hc.trans hd,H8,H9⟩
 
 end Grothe.Lower.WeightedTight

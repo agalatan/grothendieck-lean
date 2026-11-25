@@ -8,21 +8,33 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import check_constants as cc  # noqa: E402
 
-MAIN = """-- The main result: 1.40191 < K ≤ 1.40457588.
+# A synthetic repository: exact upper value 10^6 / 711969 = 1.40455553…, rounded up to five decimals, and exact
+# lower endpoint 14019101 / 10^7, rounded strictly downward to five decimals.
+MAIN = """-- The main result: 1.40191 < K ≤ 1.40456.
 theorem main_bounds :
     (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant ≤ 140457588 / 100000000 := by
+      complexGrothendieckConstant ≤ 140456 / 100000 := by
+  simpa using (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt
 """
-STATEMENT = "def LowerTarget : Prop := LowerAbove (140191 / 100000)  -- above 1.40191\n"
-UPPER = "theorem bound : IsBound (140457588 / 100000000) := sorry  -- 1.40457588\n"
-GOOD = "We prove 1.40191 < K ≤ 1.40457588, that is `140191 / 100000` and `140457588 / 100000000`.\n"
+STATEMENT = "def LowerAbove (c : ℝ) : Prop := ∀ K, IsBound K → c < K\n"
+UPPER = """-- `K ≤ 1.40456`, the exact value 1.404555… rounded up.
+theorem bound : Statement.IsBound ((10 : ℝ) ^ 6 / 711969) :=
+theorem constant_le : Statement.complexGrothendieckConstant ≤ 140456 / 100000 := by
+"""
+ENDPOINT_FILE = "Grothe/Lower/Cert/SharpEnvelope.lean"
+ENDPOINT = "theorem endpoint_eq : endpoint = 14019101 / 10000000 := by decide\n"
+GOOD = ("We prove 1.40191 < K ≤ 1.40456, that is `140191 / 100000` and `140456 / 100000`; the exact values are "
+        "`14019101 / 10000000` and $10^{6}/711969$.\n")
 
 
-def make(root: Path, main=MAIN, statement=STATEMENT, docs=None):
+def make(root: Path, main=MAIN, statement=STATEMENT, upper=UPPER, endpoint=ENDPOINT, docs=None):
     files = {rel: GOOD for rel in cc.QUOTING}
-    files.update({"Grothe/MainResult.lean": main, "Grothe/Statement.lean": statement, "Grothe/UpperResult.lean": UPPER})
+    files.update({"Grothe/MainResult.lean": main, "Grothe/Statement.lean": statement,
+                  "Grothe/UpperResult.lean": upper, ENDPOINT_FILE: endpoint})
     files.update(docs or {})
     for rel, text in files.items():
+        if text is None:
+            continue
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
@@ -36,37 +48,64 @@ class CheckConstants(unittest.TestCase):
 
     def test_decimal(self):
         self.assertEqual(cc.decimal(140191, 100000), "1.40191")
-        self.assertEqual(cc.decimal(140457588, 100000000), "1.40457588")
+        self.assertEqual(cc.decimal(1404556407, 1000000000), "1.404556407")
         self.assertEqual(cc.decimal(14046, 10000), "1.4046")
         self.assertEqual(cc.decimal(3, 1), "3")
         with self.assertRaises(ValueError):
             cc.decimal(1, 3)
 
+    def test_truncated(self):
+        value = cc.Fraction(10**27, 711968558203721328194311213)
+        self.assertEqual(cc.truncated(value, 13), "1.4045564069893")
+        self.assertEqual(cc.truncated(cc.Fraction(1, 8), 2), "0.12")
+
     def test_good(self):
         (lo, up), problems = self.run_check()
-        self.assertEqual((lo, up), ("1.40191", "1.40457588"))
+        self.assertEqual((lo, up), ("1.40191", "1.40456"))
         self.assertEqual(problems, [])
 
     def test_missing_bound(self):
         _, problems = self.run_check(docs={"docs/LEAN_DETAILS.md": "We prove 1.40191 < K.\n"})
-        self.assertEqual(problems, ["docs/LEAN_DETAILS.md: does not state the upper bound 1.40457588"])
+        self.assertEqual(problems, ["docs/LEAN_DETAILS.md: does not state the upper bound 1.40456"])
 
     def test_longer_decimal_is_not_the_bound(self):
-        _, problems = self.run_check(docs={"docs/overview.tex": "1.401915 and 1.40457588\n"})
+        _, problems = self.run_check(docs={"docs/overview.tex": "1.401915 and 1.40456\n"})
         self.assertEqual(problems, ["docs/overview.tex: does not state the lower bound 1.40191"])
 
     def test_retired_in_strict(self):
-        _, problems = self.run_check(docs={"README.md": GOOD + "Formerly 1.4018 < K.\n"})
-        self.assertEqual(problems, ["README.md:2: mentions the older bound 1.4018"])
+        _, problems = self.run_check(docs={"README.md": GOOD + "Formerly 1.4018 < K ≤ 1.40455741.\n"})
+        self.assertEqual(problems, ["README.md:2: mentions the older bound 1.4018",
+                                    "README.md:2: mentions the older bound 1.40455741"])
+
+    def test_retired_list_covers_the_earlier_bounds(self):
+        for old in ("1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.40457588", "1.40455742", "1.40455741",
+                    "1.40455641"):
+            self.assertIn(old, cc.RETIRED)
+        # a current bound is never reported as retired, and a longer decimal is not an older one
+        _, problems = self.run_check(docs={"README.md": GOOD + "The exact endpoint is 1.4019101234.\n"})
+        self.assertEqual(problems, [])
 
     def test_retired_elsewhere_is_allowed(self):
         _, problems = self.run_check(docs={"research/README.md": GOOD + "The design target was 1.4018.\n"})
         self.assertEqual(problems, [])
 
     def test_constants_page_needs_rationals(self):
-        _, problems = self.run_check(docs={"docs/CONSTANTS.md": "1.40191 < K ≤ 1.40457588\n"})
-        self.assertEqual(len(problems), 2)
+        _, problems = self.run_check(docs={"docs/CONSTANTS.md": "1.40191 < K ≤ 1.40456\n"})
+        self.assertEqual(len(problems), 4)
         self.assertTrue(all(p.startswith("docs/CONSTANTS.md: does not state the exact") for p in problems))
+
+    def test_constants_page_needs_the_exact_values_digit_for_digit(self):
+        _, problems = self.run_check(docs={"docs/CONSTANTS.md": GOOD.replace("711969", "7119691")})
+        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSix.bound"])
+        _, problems = self.run_check(docs={"docs/CONSTANTS.md": GOOD.replace("14019101 /", "14019102 /")})
+        self.assertEqual(
+            problems, ["docs/CONSTANTS.md: does not state the exact lower endpoint (endpoint_eq)"]
+        )
+        frac = GOOD.replace("$10^{6}/711969$", r"$\frac{10^{6}}{711969}$")
+        _, problems = self.run_check(docs={"docs/CONSTANTS.md": frac})
+        self.assertEqual(problems, [])
+
+    # --- the Lean statement files: stale bounds in docstrings, roles, wrapped fractions -------------------------
 
     def test_stale_rational_in_lean_docstring(self):
         stale = STATEMENT + "-- The upper bound is `IsBound (140457999 / 100000000)`.\n"
@@ -79,6 +118,19 @@ class CheckConstants(unittest.TestCase):
             ],
         )
 
+    def test_stale_decimal_in_lean_docstring(self):
+        stale = MAIN + "-- formerly `1.40455741`, from the older certificate.\n"
+        _, problems = self.run_check(main=stale)
+        self.assertEqual(len(problems), 1)
+        self.assertTrue(problems[0].startswith("Grothe/MainResult.lean:6: quotes 1.40455741, which is neither"))
+
+    def test_truncated_exact_values_are_allowed_only_with_an_ellipsis(self):
+        _, problems = self.run_check(upper=UPPER + "-- exactly 1.40455553… and 1.4019101.\n")
+        self.assertEqual(len(problems), 1)
+        self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean:4: quotes 1.4019101, which is neither"))
+        _, problems = self.run_check(upper=UPPER + "-- exactly 1.40455554… here.\n")
+        self.assertEqual(len(problems), 1)
+
     def test_lower_rational_claimed_as_upper(self):
         wrong = STATEMENT + "-- The upper bound is stated as `IsBound (140191 / 100000)`.\n"
         _, problems = self.run_check(statement=wrong)
@@ -87,12 +139,27 @@ class CheckConstants(unittest.TestCase):
         )
 
     def test_upper_rational_claimed_as_lower(self):
-        wrong = STATEMENT + "-- `LowerAbove (140457588 / 100000000)` holds.\n"
+        wrong = STATEMENT + "-- `LowerAbove (140456 / 100000)` holds.\n"
         _, problems = self.run_check(statement=wrong)
         self.assertEqual(
-            problems,
-            ["Grothe/Statement.lean:2: LowerAbove (140457588 / 100000000) is not the lower bound of main_bounds"],
+            problems, ["Grothe/Statement.lean:2: LowerAbove (140456 / 100000) is not the lower bound of main_bounds"]
         )
+
+    def test_exact_form_of_the_upper_bound(self):
+        for good in ("`IsBound ((10 : ℝ) ^ 6 / 711969)`", "`IsBound (10 ^ 6 / 711969)`", "`IsBound (10^6 /\n-- 711969)`",
+                     "`IsBound (140456 / 100000)`", "`LowerAbove (140191 / 100000)`", "`IsBound K`, `IsBound (K : ℝ)`"):
+            with self.subTest(good=good):
+                _, problems = self.run_check(statement=STATEMENT + f"-- {good}\n")
+                self.assertEqual(problems, [])
+        _, problems = self.run_check(statement=STATEMENT + "-- `IsBound ((10 : ℝ) ^ 6 / 711968)`\n")
+        self.assertEqual(
+            problems,
+            ["Grothe/Statement.lean:2: IsBound (10 ^ 6 / 711968) is not the exact upper bound of Grothe.UpperSix.bound"],
+        )
+        _, problems = self.run_check(statement=STATEMENT + "-- `LowerAbove ((10 : ℝ) ^ 6 / 711969)`\n")
+        self.assertEqual(problems, ["Grothe/Statement.lean:2: the numeric argument of LowerAbove was not recognised"])
+        _, problems = self.run_check(statement=STATEMENT + "-- `IsBound (1.40456)`\n")
+        self.assertEqual(problems, ["Grothe/Statement.lean:2: the numeric argument of IsBound was not recognised"])
 
     def test_stale_fraction_wrapped_after_the_slash(self):
         wrapped = STATEMENT + "-- The upper bound is `IsBound (140457999 /\n-- 100000000)`.\n"
@@ -112,101 +179,165 @@ class CheckConstants(unittest.TestCase):
             problems, ["Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound"]
         )
 
-    def test_refined_upper_rounding_and_scope(self):
-        main = MAIN + MAIN.replace("main_bounds", "main_bounds_refined").replace("140457588", "140455641")
-        exact = UPPER + ("theorem constant_le_exact : Statement.complexGrothendieckConstant ≤ "
-                         "(10 : ℝ) ^ 27 / 711968557929438692542239077 := by\n")
-        docs = {name: GOOD + "The refined upper bound is 1.40455641.\n"
-                for name in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex")}
-        docs["docs/CONSTANTS.md"] += r"$\frac{10^{27}}{711968557929438692542239077}$"
-        docs["Grothe/UpperResult.lean"] = exact
+    # --- the two bounds are roundings of the exact values ------------------------------------------------------
+
+    def test_upper_bound_must_round_the_exact_value_up(self):
+        for wrong in ("140455", "140457"):
+            with self.subTest(wrong=wrong):
+                swap = {"140456 / 100000": f"{wrong} / 100000", "1.40456": cc.decimal(int(wrong), 100000)}
+                main, upper = MAIN, UPPER
+                docs = {rel: GOOD for rel in cc.QUOTING if not rel.endswith(".lean")}
+                for old, new in swap.items():
+                    main, upper = main.replace(old, new), upper.replace(old, new)
+                    docs = {rel: text.replace(old, new) for rel, text in docs.items()}
+                _, problems = self.run_check(main=main, upper=upper, docs=docs)
+                self.assertEqual(len(problems), 1)
+                self.assertIn("is not the exact bound 10^6 / 711969 rounded up", problems[0])
+
+    def test_constant_le_must_agree_with_main_bounds(self):
+        _, problems = self.run_check(upper=UPPER.replace("≤ 140456 / 100000", "≤ 14046 / 10000"))
+        self.assertEqual(
+            problems,
+            [
+                "Grothe/UpperResult.lean: constant_le states 14046 / 10000, main_bounds 140456 / 100000",
+                "Grothe/UpperResult.lean:3: quotes 14046 / 10000, which is not a current bound",
+            ],
+        )
+        _, problems = self.run_check(upper=UPPER.replace("theorem constant_le", "theorem constant_le'"))
+        self.assertEqual(len(problems), 1)
+        self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean: the statement of constant_le was not recognised"))
+
+    def test_exact_upper_bound_is_required(self):
+        _, problems = self.run_check(upper=UPPER.replace("theorem bound :", "theorem bound' :"))
+        self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean: the exact upper bound `theorem bound :"))
+        # without it, nothing in the file can be accepted as the exact value
+        self.assertEqual(len(problems), 3)
+
+    def test_lower_bound_must_round_the_endpoint_strictly_downward(self):
+        for endpoint in ("140191 / 100000", "1401909 / 1000000", "1401921 / 1000000"):
+            with self.subTest(endpoint=endpoint):
+                docs = {"docs/CONSTANTS.md": GOOD.replace("14019101 / 10000000", endpoint)}
+                _, problems = self.run_check(endpoint=ENDPOINT.replace("14019101 / 10000000", endpoint), docs=docs)
+                self.assertEqual(len(problems), 1)
+                self.assertIn("rounded strictly downward", problems[0])
+        # the largest admissible endpoint: exactly the next grid point
+        docs = {"docs/CONSTANTS.md": GOOD.replace("14019101 / 10000000", "140192 / 100000")}
+        _, problems = self.run_check(endpoint=ENDPOINT.replace("14019101 / 10000000", "140192 / 100000"), docs=docs)
+        self.assertEqual(problems, [])
+
+    def test_exact_lower_endpoint_is_required(self):
+        _, problems = self.run_check(endpoint=None)
+        self.assertEqual(len(problems), 1)
+        self.assertTrue(problems[0].startswith("Grothe/Lower/Cert/SharpEnvelope.lean: the exact lower endpoint"))
+        _, problems = self.run_check(main=MAIN.replace("SharpEnvelope.rounded_lt", "SharpEnvelope.other"))
+        self.assertEqual(len(problems), 1)
+        self.assertIn("must use exactly one rounding lemma", problems[0])
+
+    def test_the_lower_certificate_is_read_from_the_proof_of_main_bounds(self):
+        # another certificate: its own module, its own endpoint; nothing in the script names it
+        main = MAIN.replace("140191 / 100000", "140192 / 100000").replace("1.40191", "1.40192")
+        main = main.replace("SharpEnvelope.rounded_lt", "SharedGate.rounded_lt")
+        other = "theorem endpoint_eq : endpoint = 14019201 / 10000000 := by decide\n"
+        swap = lambda text: (text.replace("140191 / 100000", "140192 / 100000").replace("1.40191", "1.40192")  # noqa: E731
+                             .replace("14019101 / 10000000", "14019201 / 10000000"))
+        docs = {rel: swap(GOOD) for rel in cc.QUOTING if not rel.endswith(".lean")}
+        docs["Grothe/Lower/Cert/SharedGate.lean"] = other
         _, problems = self.run_check(main=main, docs=docs)
         self.assertEqual(problems, [])
-        _, problems = self.run_check(main=main.replace("140455641", "140455640"), docs=docs)
-        self.assertTrue(any("round constant_le_exact upward" in error for error in problems))
-        _, problems = self.run_check(main=main + "-- 140455641 / 100000000\n", docs=docs)
-        self.assertTrue(any("not a current bound" in error for error in problems))
-        _, problems = self.run_check(main=main, docs={**docs, "Grothe/UpperResult.lean": UPPER})
-        self.assertTrue(any("needs both" in error for error in problems))
+        # the endpoint of the certificate that the proof no longer uses is not accepted
+        _, problems = self.run_check(main=main, docs={**docs, "Grothe/Lower/Cert/SharedGate.lean": ENDPOINT})
+        self.assertTrue(any("rounded strictly downward" in p for p in problems))
 
-    def test_phase_bound_must_improve_the_previous_exact_endpoint(self):
-        uniform_denominator = "711968557929438692542239077"
-        phase_denominator = "711968558203721328194311213"
-        main = MAIN + MAIN.replace("main_bounds", "main_bounds_refined").replace("140457588", "140455641")
-        main += MAIN.replace("main_bounds", "main_bounds_phase").replace("140457588 / 100000000",
-                                                                          "1404556407 / 1000000000")
-        exact = "theorem constant_le_exact : Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / "
-        phase = exact.replace("constant_le_exact", "constant_le_phase")
-        upper = UPPER + exact + uniform_denominator + " := by\n" + phase + phase_denominator + " := by\n"
-        docs = {name: GOOD + "1.40455641 and 1.404556407\n"
-                for name in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex")}
-        docs["docs/CONSTANTS.md"] += f"$10^{{27}} / {uniform_denominator}$ and $10^{{27}} / {phase_denominator}$"
-        docs["Grothe/UpperResult.lean"] = upper
-        _, problems = self.run_check(main=main, docs=docs)
-        self.assertEqual(problems, [])
-        wrong_docs = {**docs, "docs/CONSTANTS.md": docs["docs/CONSTANTS.md"].replace(
-            phase_denominator, phase_denominator + "1")}
-        _, problems = self.run_check(main=main, docs=wrong_docs)
-        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact constant_le_phase fraction"])
-        wrong_upper = upper.replace(phase_denominator, uniform_denominator)
-        _, problems = self.run_check(main=main, docs={**docs, "Grothe/UpperResult.lean": wrong_upper})
-        self.assertTrue(any("round constant_le_phase upward" in error for error in problems))
-        _, problems = self.run_check(main=main.replace("1404556407", "1404556406"), docs=docs)
-        self.assertTrue(any("round constant_le_phase upward" in error for error in problems))
+    # --- each statement is read whole, up to its `:=`; the rounding lemma only in the proof of main_bounds -----
 
-    def test_sharp_lower_needs_strict_rounding_and_exact_documentation(self):
-        claim = "theorem lower_bound_sharp : (14019109461 / 10000000000 : ℝ) < complexGrothendieckConstant := by"
-        exact_path = "Grothe/Lower/Cert/SharpEnvelope.lean"
-        exact_line = "theorem endpoint_eq : endpoint = 1401910946101 / 1000000000000 := by decide"
-        numeric_docs = {rel: GOOD + "1.4019109461, exact 1401910946101 / 1000000000000."
-                        for rel in ("docs/CONSTANTS.md", "docs/overview.tex", "docs/LEAN_DETAILS.md")}
-        sources = {**numeric_docs, exact_path: exact_line}
-        _, problems = self.run_check(main=MAIN + claim, docs=sources)
-        self.assertEqual(problems, [])
-        _, problems = self.run_check(main=MAIN + claim, docs={**sources, exact_path: exact_line.replace("6101", "6100")})
-        self.assertTrue(any("strictly downward" in item for item in problems))
-        mismatched = {**sources, "docs/CONSTANTS.md": numeric_docs["docs/CONSTANTS.md"].replace("6101 /", "6102 /")}
-        _, problems = self.run_check(main=MAIN + claim, docs=mismatched)
-        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact sharp lower fraction"])
-
-    def test_shared_gate_lower_must_exceed_scalar_endpoint(self):
-        first = "theorem lower_bound_sharp : (140191001 / 100000000 : ℝ) < complexGrothendieckConstant := by"
-        second = first.replace("lower_bound_sharp", "lower_bound_shared_gate").replace("140191001", "140191004")
-        exact = "theorem endpoint_eq : endpoint = {} / 1000000000 := by decide"
-        docs = {name: GOOD + " 1.40191001, 1.40191004. 1401910018 / 1000000000, 1401910047 / 1000000000."
-                for name in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex")}
-        docs["Grothe/Lower/Cert/SharpEnvelope.lean"] = exact.format(1401910018)
-        docs["Grothe/Lower/Cert/SharedGate.lean"] = exact.format(1401910047)
-        _, problems = self.run_check(main=MAIN + first + "\n" + second, docs=docs)
-        self.assertEqual(problems, [])
-        regress = second.replace("140191004", "140191000")
-        docs["Grothe/Lower/Cert/SharedGate.lean"] = exact.format(1401910008)
-        _, problems = self.run_check(main=MAIN + first + "\n" + regress, docs=docs)
-        self.assertTrue(any("improve the preceding" in item for item in problems))
-
-    def test_headline_lower_can_exceed_scalar_refinements(self):
-        first = "theorem lower_bound_sharp : (140191001 / 100000000 : ℝ) < complexGrothendieckConstant := by"
-        second = first.replace("lower_bound_sharp", "lower_bound_shared_gate").replace("140191001", "140191004")
-        exact = "theorem endpoint_eq : endpoint = {} / 1000000000 := by decide"
-        stmt = STATEMENT.replace("140191 / 100000", "1402 / 1000").replace("1.40191", "1.402")
-        main = MAIN.replace("140191 / 100000", "1402 / 1000").replace("1.40191", "1.402")
-        base_doc = GOOD.replace("140191 / 100000", "1402 / 1000").replace("140191/100000", "1402/1000").replace("1.40191", "1.402")
-        docs = {name: base_doc + " 1.40191001, 1.40191004. 1401910018 / 1000000000, 1401910047 / 1000000000."
-                for name in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex")}
-        docs["README.md"] = base_doc
-        docs[".claude/skills/lean-grothe/SKILL.md"] = base_doc
-        docs["research/README.md"] = base_doc
-        docs["research/conjecture-K/README.md"] = base_doc
-        docs["research/higher-degree/README.md"] = base_doc
-        docs["research/identity-tail/README.md"] = base_doc
-        docs["Grothe/Lower/Cert/SharpEnvelope.lean"] = exact.format(1401910018)
-        docs["Grothe/Lower/Cert/SharedGate.lean"] = exact.format(1401910047)
-        _, problems = self.run_check(statement=stmt, main=main + first + "\n" + second, docs=docs)
-        self.assertEqual(problems, [])
-
-    def test_targets_disagree(self):
+    def test_main_bounds_with_a_longer_right_hand_side_is_refused(self):
+        for tail in (" + 1", " * 2", " / 2", " ∨ True", " ^ 2"):
+            with self.subTest(tail=tail):
+                with self.assertRaises(ValueError):
+                    self.run_check(main=MAIN.replace("≤ 140456 / 100000 :=", f"≤ 140456 / 100000{tail} :="))
         with self.assertRaises(ValueError):
-            self.run_check(statement="def LowerTarget : Prop := LowerAbove (14018 / 10000)\n")
+            self.run_check(main=MAIN.replace("(140191 / 100000 : ℝ) <", "(140191 / 100000 : ℝ) - 1 <"))
+        with self.assertRaises(ValueError):
+            self.run_check(main=MAIN.replace("theorem main_bounds :", "theorem main_bounds : True ∨"))
+        _, problems = self.run_check(main=MAIN.replace("≤ 140456 / 100000 :=", "≤ (140456 / 100000 : ℝ) :="))
+        self.assertEqual(problems, [])
+
+    def test_constant_le_with_a_longer_right_hand_side_is_refused(self):
+        for tail in (" + 1", " * 2", " ∨ True"):
+            with self.subTest(tail=tail):
+                weak = UPPER.replace("≤ 140456 / 100000 := by", f"≤ 140456 / 100000{tail} := by")
+                _, problems = self.run_check(upper=weak)
+                self.assertEqual(len(problems), 1)
+                self.assertIn("the statement of constant_le was not recognised", problems[0])
+
+    def test_exact_bound_with_a_longer_argument_is_refused(self):
+        for weak in ("Statement.IsBound ((10 : ℝ) ^ 6 / 711969 + 1) :=", "Statement.IsBound ((10 : ℝ) ^ 6 / 711969) ∨ True :="):
+            with self.subTest(weak=weak):
+                _, problems = self.run_check(upper=UPPER.replace("Statement.IsBound ((10 : ℝ) ^ 6 / 711969) :=", weak))
+                self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean: the exact upper bound `theorem bound :"))
+
+    def test_statements_in_comments_are_not_read(self):
+        hidden = "/- theorem constant_le : Statement.complexGrothendieckConstant ≤ 140456 / 100000 := by -/\n"
+        weak = UPPER.replace("≤ 140456 / 100000 := by", "≤ 140456 / 100000 + 1 := by") + hidden
+        _, problems = self.run_check(upper=weak)
+        self.assertTrue(any("the statement of constant_le was not recognised" in p for p in problems))
+        self.assertEqual(cc.strip_comments("a -- b\nc /- d /- e -/ f\n -/ g"), "a \nc \n g")
+
+    def test_rounding_lemma_only_in_a_comment_is_refused(self):
+        for comment in ("  -- uses Grothe.Lower.SharpEnvelope.rounded_lt\n",
+                        "  /- Grothe.Lower.SharpEnvelope.rounded_lt -/\n"):
+            with self.subTest(comment=comment):
+                main = MAIN.replace("  simpa using (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt\n",
+                                    "  sorry\n" + comment)
+                _, problems = self.run_check(main=main)
+                self.assertEqual(len(problems), 1)
+                self.assertIn("must use exactly one rounding lemma", problems[0])
+
+    def test_rounding_lemma_only_after_the_theorem_is_refused(self):
+        main = MAIN.replace("  simpa using (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt\n", "  sorry\n")
+        after = main + "\ntheorem other : True := by\n  have := Grothe.Lower.SharpEnvelope.rounded_lt\n  trivial\n"
+        _, problems = self.run_check(main=after)
+        self.assertEqual(len(problems), 1)
+        self.assertIn("must use exactly one rounding lemma", problems[0])
+        # and a lemma of another certificate below the theorem does not disturb the real one
+        below = MAIN + "\nend Grothe.Statement\n-- Grothe.Lower.Other.rounded_lt\ntheorem t : True := Grothe.Lower.Other.rounded_lt\n"
+        _, problems = self.run_check(main=below)
+        self.assertEqual(problems, [])
+
+    def test_rounding_lemma_only_in_an_indented_following_theorem_is_refused(self):
+        indented = "".join("  " + line if line.strip() else line for line in MAIN.splitlines(keepends=True))
+        gone = indented.replace("Grothe.Lower.SharpEnvelope.rounded_lt", "sorry_placeholder")
+        self.assertNotEqual(gone, indented)
+        after = ("namespace N\n" + gone
+                 + "\n  theorem other : True := by\n    have := Grothe.Lower.SharpEnvelope.rounded_lt\n    trivial\nend N\n")
+        _, problems = self.run_check(main=after)
+        self.assertEqual(len(problems), 1)
+        self.assertIn("must use exactly one rounding lemma", problems[0])
+
+    def test_rounding_lemma_only_in_a_following_command_of_any_kind_is_refused(self):
+        gone = MAIN.replace("Grothe.Lower.SharpEnvelope.rounded_lt", "sorry_placeholder")
+        for following in ('local notation "roundingFact" => Grothe.Lower.SharpEnvelope.rounded_lt\n',
+                          "alias roundingFact := Grothe.Lower.SharpEnvelope.rounded_lt\n",
+                          "some_future_command Grothe.Lower.SharpEnvelope.rounded_lt\n"):
+            _, problems = self.run_check(main=gone + "\n" + following)
+            self.assertEqual(len(problems), 1, following)
+            self.assertIn("must use exactly one rounding lemma", problems[0])
+            indented = "namespace N\n" + "".join("  " + l if l.strip() else l
+                                                 for l in (gone + "\n" + following).splitlines(keepends=True)) + "end N\n"
+            _, problems = self.run_check(main=indented)
+            self.assertEqual(len(problems), 1, following)
+
+    def test_bare_by_on_its_own_line_starts_the_proof(self):
+        main = MAIN.replace(":= by\n", ":=\nby\n", 1)
+        self.assertNotEqual(main, MAIN)
+        _, problems = self.run_check(main=main)
+        self.assertEqual(problems, [])
+
+    def test_proof_starting_on_the_statement_line_or_the_next_is_read(self):
+        for sep in (":=by", ":=\nby", ":= by"):
+            main = MAIN.replace(":= by", sep, 1)
+            _, problems = self.run_check(main=main)
+            self.assertEqual(problems, [], sep)
 
     def test_unrecognised_statement(self):
         with self.assertRaises(ValueError):

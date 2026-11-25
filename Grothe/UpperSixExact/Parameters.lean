@@ -18,7 +18,6 @@ def firstPolynomial : List ℚ := [
 
 def slope : ℚ := 711973082422 / 10 ^ 12
 def headCap : ℚ := 4481751845 / 10 ^ 15
-def residual : ℚ := 4524492561307457760923 / 10 ^ 27
 
 /-- Only channel zero needs a new circle budget. -/
 def circleBudget (p : Fin 6) : ℚ := if p = 0 then 13 / 5 else budgetQ p
