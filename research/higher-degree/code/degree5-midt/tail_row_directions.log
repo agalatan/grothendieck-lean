@@ -1,0 +1,67 @@
+t = 0.2528  (l, beta, sigma) = (0.1670, 0.0050, 0.6632)  diffuse value of the bracket 0.658466
+   e21 real                   sigma fixed: -0.00051 -0.00219 -0.01158 -0.06883   sigma re-optimised: -0.00051 -0.00217 -0.01131 -0.06522
+   e21 imag                   sigma fixed: -0.00054 -0.00241 -0.01284 -0.06474   sigma re-optimised: -0.00054 -0.00238 -0.01232 -0.05990
+   z1*H11 complex             sigma fixed: -0.00014 -0.00062 -0.00359 -0.02865   sigma re-optimised: -0.00013 -0.00057 -0.00285 -0.01962
+   z1*H11 real, in phase      sigma fixed: -0.00026 -0.00112 -0.00581 -0.03998   sigma re-optimised: -0.00026 -0.00108 -0.00523 -0.03373
+   z1*H11 real, transverse    sigma fixed: -0.00002 -0.00021 -0.00272 -0.03115   sigma re-optimised: -0.00001 -0.00015 -0.00191 -0.02293
+   conj(z1)*H20               sigma fixed: -0.00014 -0.00062 -0.00359 -0.02865   sigma re-optimised: -0.00013 -0.00057 -0.00285 -0.01962
+   e11 w                      sigma fixed: -0.00027 -0.00126 -0.00755 -0.05226   sigma re-optimised: -0.00026 -0.00122 -0.00705 -0.04713
+   e20 conj(w)                sigma fixed: -0.00027 -0.00122 -0.00708 -0.04998   sigma re-optimised: -0.00026 -0.00119 -0.00659 -0.04531
+   e11 w + e20 conj(w)        sigma fixed: -0.00041 -0.00176 -0.00944 -0.05927   sigma re-optimised: -0.00041 -0.00173 -0.00902 -0.05504
+   e11 w - e20 conj(w)        sigma fixed: -0.00013 -0.00088 -0.00702 -0.05358   sigma re-optimised: -0.00013 -0.00084 -0.00650 -0.04869
+t = 0.3500  (l, beta, sigma) = (0.2411, 0.0103, 0.6357)  diffuse value of the bracket 0.703006
+   e21 real                   sigma fixed: -0.00106 -0.00397 -0.01595 -0.07561   sigma re-optimised: -0.00106 -0.00397 -0.01583 -0.07288
+   e21 imag                   sigma fixed: -0.00060 -0.00263 -0.01282 -0.06649   sigma re-optimised: -0.00060 -0.00259 -0.01231 -0.06177
+   z1*H11 complex             sigma fixed: -0.00026 -0.00110 -0.00525 -0.03288   sigma re-optimised: -0.00026 -0.00106 -0.00467 -0.02526
+   z1*H11 real, in phase      sigma fixed: -0.00049 -0.00200 -0.00863 -0.04609   sigma re-optimised: -0.00049 -0.00198 -0.00828 -0.04117
+   z1*H11 real, transverse    sigma fixed: -0.00003 -0.00027 -0.00295 -0.03182   sigma re-optimised: -0.00003 -0.00021 -0.00215 -0.02372
+   conj(z1)*H20               sigma fixed: -0.00026 -0.00110 -0.00525 -0.03288   sigma re-optimised: -0.00026 -0.00106 -0.00467 -0.02526
+   e11 w                      sigma fixed: -0.00050 -0.00208 -0.00981 -0.05623   sigma re-optimised: -0.00050 -0.00206 -0.00945 -0.05185
+   e20 conj(w)                sigma fixed: -0.00051 -0.00212 -0.00980 -0.05580   sigma re-optimised: -0.00051 -0.00210 -0.00950 -0.05227
+   e11 w + e20 conj(w)        sigma fixed: -0.00078 -0.00308 -0.01262 -0.06472   sigma re-optimised: -0.00078 -0.00307 -0.01241 -0.06135
+   e11 w - e20 conj(w)        sigma fixed: -0.00023 -0.00122 -0.00800 -0.05570   sigma re-optimised: -0.00023 -0.00118 -0.00753 -0.05111
+t = 0.4500  (l, beta, sigma) = (0.3212, 0.0199, 0.5960)  diffuse value of the bracket 0.766500
+   e21 real                   sigma fixed: -0.00161 -0.00612 -0.02185 -0.08652   sigma re-optimised: -0.00161 -0.00612 -0.02180 -0.08503
+   e21 imag                   sigma fixed: -0.00074 -0.00311 -0.01401 -0.06858   sigma re-optimised: -0.00074 -0.00309 -0.01367 -0.06358
+   z1*H11 complex             sigma fixed: -0.00045 -0.00182 -0.00782 -0.03981   sigma re-optimised: -0.00045 -0.00180 -0.00743 -0.03424
+   z1*H11 real, in phase      sigma fixed: -0.00084 -0.00332 -0.01316 -0.05661   sigma re-optimised: -0.00083 -0.00331 -0.01305 -0.05397
+   z1*H11 real, transverse    sigma fixed: -0.00006 -0.00038 -0.00333 -0.03287   sigma re-optimised: -0.00006 -0.00032 -0.00256 -0.02502
+   conj(z1)*H20               sigma fixed: -0.00045 -0.00182 -0.00782 -0.03981   sigma re-optimised: -0.00045 -0.00180 -0.00743 -0.03424
+   e11 w                      sigma fixed: -0.00078 -0.00314 -0.01303 -0.06312   sigma re-optimised: -0.00078 -0.00312 -0.01277 -0.05947
+   e20 conj(w)                sigma fixed: -0.00084 -0.00336 -0.01392 -0.06571   sigma re-optimised: -0.00084 -0.00336 -0.01378 -0.06374
+   e11 w + e20 conj(w)        sigma fixed: -0.00124 -0.00476 -0.01809 -0.07438   sigma re-optimised: -0.00124 -0.00476 -0.01801 -0.07241
+   e11 w - e20 conj(w)        sigma fixed: -0.00038 -0.00173 -0.00952 -0.05900   sigma re-optimised: -0.00037 -0.00170 -0.00913 -0.05487
+t = 0.5500  (l, beta, sigma) = (0.4099, 0.0376, 0.5421)  diffuse value of the bracket 0.853040
+   e21 real                   sigma fixed: -0.00197 -0.00778 -0.02869 -0.10255   sigma re-optimised: -0.00197 -0.00778 -0.02869 -0.10193
+   e21 imag                   sigma fixed: -0.00095 -0.00386 -0.01559 -0.07172   sigma re-optimised: -0.00095 -0.00384 -0.01509 -0.06619
+   z1*H11 complex             sigma fixed: -0.00069 -0.00277 -0.01131 -0.05005   sigma re-optimised: -0.00069 -0.00276 -0.01111 -0.04659
+   z1*H11 real, in phase      sigma fixed: -0.00127 -0.00501 -0.01924 -0.07361   sigma re-optimised: -0.00127 -0.00500 -0.01923 -0.07295
+   z1*H11 real, transverse    sigma fixed: -0.00012 -0.00059 -0.00405 -0.03495   sigma re-optimised: -0.00011 -0.00053 -0.00333 -0.02751
+   conj(z1)*H20               sigma fixed: -0.00069 -0.00277 -0.01131 -0.05005   sigma re-optimised: -0.00069 -0.00276 -0.01111 -0.04659
+   e11 w                      sigma fixed: -0.00107 -0.00425 -0.01689 -0.07218   sigma re-optimised: -0.00107 -0.00424 -0.01670 -0.06890
+   e20 conj(w)                sigma fixed: -0.00122 -0.00487 -0.01931 -0.08034   sigma re-optimised: -0.00122 -0.00487 -0.01928 -0.07954
+   e11 w + e20 conj(w)        sigma fixed: -0.00168 -0.00656 -0.02409 -0.09010   sigma re-optimised: -0.00168 -0.00656 -0.02408 -0.08892
+   e11 w - e20 conj(w)        sigma fixed: -0.00057 -0.00244 -0.01168 -0.06403   sigma re-optimised: -0.00057 -0.00241 -0.01136 -0.06035
+t = 0.6000  (l, beta, sigma) = (0.4599, 0.0506, 0.5085)  diffuse value of the bracket 0.907908
+   e21 real                   sigma fixed: -0.00209 -0.00832 -0.03187 -0.11245   sigma re-optimised: -0.00209 -0.00832 -0.03187 -0.11222
+   e21 imag                   sigma fixed: -0.00103 -0.00415 -0.01632 -0.07363   sigma re-optimised: -0.00103 -0.00412 -0.01580 -0.06670
+   z1*H11 complex             sigma fixed: -0.00083 -0.00333 -0.01339 -0.05652   sigma re-optimised: -0.00083 -0.00332 -0.01326 -0.05406
+   z1*H11 real, in phase      sigma fixed: -0.00151 -0.00596 -0.02281 -0.08423   sigma re-optimised: -0.00151 -0.00596 -0.02279 -0.08409
+   z1*H11 real, transverse    sigma fixed: -0.00016 -0.00074 -0.00460 -0.03656   sigma re-optimised: -0.00015 -0.00069 -0.00391 -0.02941
+   conj(z1)*H20               sigma fixed: -0.00083 -0.00333 -0.01339 -0.05652   sigma re-optimised: -0.00083 -0.00332 -0.01326 -0.05406
+   e11 w                      sigma fixed: -0.00118 -0.00471 -0.01871 -0.07740   sigma re-optimised: -0.00118 -0.00470 -0.01851 -0.07409
+   e20 conj(w)                sigma fixed: -0.00142 -0.00565 -0.02232 -0.08922   sigma re-optimised: -0.00142 -0.00565 -0.02231 -0.08887
+   e11 w + e20 conj(w)        sigma fixed: -0.00186 -0.00732 -0.02745 -0.09892   sigma re-optimised: -0.00186 -0.00732 -0.02745 -0.09799
+   e11 w - e20 conj(w)        sigma fixed: -0.00068 -0.00284 -0.01298 -0.06723   sigma re-optimised: -0.00068 -0.00282 -0.01269 -0.06374
+t = 0.6490  (l, beta, sigma) = (0.5147, 0.0665, 0.4701)  diffuse value of the bracket 0.972069
+   e21 real                   sigma fixed: -0.00217 -0.00867 -0.03421 -0.12323   sigma re-optimised: -0.00217 -0.00867 -0.03421 -0.12319
+   e21 imag                   sigma fixed: -0.00111 -0.00444 -0.01712 -0.07533   sigma re-optimised: -0.00111 -0.00442 -0.01648 -0.06643
+   z1*H11 complex             sigma fixed: -0.00098 -0.00392 -0.01564 -0.06387   sigma re-optimised: -0.00098 -0.00391 -0.01557 -0.06227
+   z1*H11 real, in phase      sigma fixed: -0.00176 -0.00695 -0.02663 -0.09616   sigma re-optimised: -0.00176 -0.00694 -0.02655 -0.09615
+   z1*H11 real, transverse    sigma fixed: -0.00020 -0.00093 -0.00529 -0.03865   sigma re-optimised: -0.00020 -0.00088 -0.00462 -0.03177
+   conj(z1)*H20               sigma fixed: -0.00098 -0.00392 -0.01564 -0.06387   sigma re-optimised: -0.00098 -0.00391 -0.01557 -0.06227
+   e11 w                      sigma fixed: -0.00126 -0.00505 -0.02020 -0.08258   sigma re-optimised: -0.00126 -0.00504 -0.01994 -0.07859
+   e20 conj(w)                sigma fixed: -0.00161 -0.00642 -0.02534 -0.09925   sigma re-optimised: -0.00161 -0.00642 -0.02534 -0.09918
+   e11 w + e20 conj(w)        sigma fixed: -0.00199 -0.00789 -0.03009 -0.10756   sigma re-optimised: -0.00199 -0.00789 -0.03008 -0.10686
+   e11 w - e20 conj(w)        sigma fixed: -0.00079 -0.00326 -0.01437 -0.07081   sigma re-optimised: -0.00079 -0.00325 -0.01410 -0.06743
+largest change with sigma re-optimised: -1.42e-05 (amplitudes (0.05, 0.1, 0.2, 0.4))
