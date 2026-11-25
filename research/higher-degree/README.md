@@ -95,6 +95,8 @@ record.
 
 - **Visible quintic phase.** Optimizing its complex coefficient over a remote cubic buys less than $1.07\times10^{-7}$ over optimizing the real coefficient for the same law on all nineteen P6 rows. The gain from changing the prescribed real coefficient is a separate term in a fixed-profile proof (STATUS 4.16a).
 
+- **Odd and quintic pure-cost constants.** Across all nineteen rationalised degree-5 rows (`0.70`–`0.886`), the zero-core scalar $Z < 1$ and finite-amplitude odd ratio $\kappa_{\mathrm{odd}} < 1$ are certified on all thirteen rows $\ge 0.81$ (with $\sup_{s \ge 0} \lambda_{\max}(M_{\mathrm{odd}}(s)) = p_1 Z$ on every row), the odd excess $E_{\max}(s)$ is bounded by $2.499\times 10^{-3}$ on `0.79` and $1.143\times 10^{-3}$ on `0.80` (vanishing above $s = 0.3834$ and $0.1958$), and the elementary quintic matrices stay below $\frac{1}{4}p_2$ on $\mathbb{E}_1$ and $\frac{1}{2}p_2$ on $\mathbb{E}$ across all nineteen rows (**P + C, author only**; STATUS 4.16b).
+
 - **The design of the certificate.** With the radius 2287/2500 in the law layer the room is 3.7356·10⁻⁴ on plain
   covers alone (STATUS 4.42). The allowances of the content law rested on an A/B secant margin that fails at finite
   amplitude with the tilt (2/5, 3/10); a design with the tilt (2/5, 3/20) and the content law posed per (u, χ) cell

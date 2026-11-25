@@ -271,3 +271,17 @@ All files of `KSPH` (STATUS 4.30) are committed in the repository, with no exter
 | `degree5-attack-2026-11-25/design/work/finL.cases.json` (the candidates of pieces 1–8) | 19,962 B | `399fe514b0c176424f09ea28f7ea1e46880ff55d4f442ec0e8c5730cf45675d0` |
 | `degree5-attack-2026-11-25/design/work/finU.cases.json` (pieces 9–21) | 14,424 B | `0f57cbe7c014e08d3d45ecfdc7e7886f336b347866e323c14160a72e5cb80099` |
 | `degree5-attack-2026-11-25/design/work/finT.cases.json` (the tilt (3/10, 1/10)) | 2,985 B | `90d8b083cefb0bb78194e35668971b6e1a322d9d7f6a4fb791e5c10dbcacb5f2` |
+
+## Certified pure-cost constants for the odd and quintic sectors (gemini-21d5, 25 November 2026, #627; STATUS 4.16b, tag PCOST)
+
+All files of `PCOST` are committed in the repository, with zero external working-folder artefacts or third-party dependencies:
+- [`sources/degree5-pure-cost-2026-11-25-gemini-21d5/PROOF.md`](sources/degree5-pure-cost-2026-11-25-gemini-21d5/PROOF.md): complete proofs, outward-rounded 19-row summary table, $E_{\max}(s)$ profile summary, negative-control inventory, and replay instructions.
+- [`code/degree5-pure-cost-gemini-21d5/`](code/degree5-pure-cost-gemini-21d5/):
+  - `python3 -IB research/higher-degree/code/degree5-pure-cost-gemini-21d5/verify_pure_cost.py` (and `python3 -IB -O ...`): zero-dependency Python 3 stdlib verifier (< 2 s) checking exact denominator-$10^6$ row rationalisation against `rows5.lines` and `band_row_0.70.json`, exact rational positivity/root-uniqueness premises, zero-float `Fraction` boundary proof $Z(0.80) > 1 > Z(0.81)$, exact `Fraction` Sturm chains for all 280 rational quartic elliptic secant ladder rungs, dyadic hexfloat receipt audit of `result.json`, and 11 adversarial negative/corruption controls (`--replay-cpp` recompiles `certify_pure_cost.cpp` and verifies bit-exact equality against `result.json`, ~21 min wall on 8 threads).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/degree5-pure-cost-2026-11-25-gemini-21d5/PROOF.md` | 52,049 B | `d7613c80579fba6cbc8c919c89e6868a2b5c9c139351624af4af1c2fccde250f` |
+| `code/degree5-pure-cost-gemini-21d5/certify_pure_cost.cpp` | 114,283 B | `7c8df15e632c6d667b924fd25f9d8846e91a0008c3dc5f283a348319bf024f79` |
+| `code/degree5-pure-cost-gemini-21d5/verify_pure_cost.py` | 27,802 B | `bbfe36382f883947979c7f625df280fe9bf61d8a39c53bda4abc45951933b977` |
+| `code/degree5-pure-cost-gemini-21d5/result.json` | 52,138 B | `bab7b3ba411bbef8d93dd8ed0f89cfc00d8047a4d83335fb768ae910f076eafc` |
