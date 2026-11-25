@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.4020221627 (`main_bounds`) uses this witness. Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Fourteen transported ordinates for those rows and a joint gate for rows 0.82 and 0.83 give the [scalar cap](COUPLED_STEIN.md#transported-ordinates-and-the-outer-row-pair). It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.4020221627 (`main_bounds`) uses this witness. Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Fourteen transported ordinates, a joint gate for rows 0.82 and 0.83 and the curvature of the central Schur complement give the [scalar cap](CURVED_SCHUR.md). It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 

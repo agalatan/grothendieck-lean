@@ -70,7 +70,7 @@ gives $K \ge 1/B$ (`Grothe.Statement.sparse_stein_endpoint`).
 |---|---|---|
 | $\varepsilon,\nu$ | $191/250,\ 47/2000$ | cubic coefficient and identity-tail weight |
 | $\hat\varepsilon,\hat\nu$ | $25/31,\ 47/1953$ | normalized coefficients of the rows |
-| $\hat B$ | $8829435313/12500000000$ | scalar cap from the transported Stein cuts and two pairs of Gaussian gates |
+| $\hat B$ | $8829435313/12500000000$ | scalar cap from the transported Stein cuts, the two pairs of Gaussian gates and the curvature of the central Schur complement |
 | $B=(1-\nu)\hat B+\nu$ | $17831387166289/25000000000000$ | witness scalar cap |
 | $1/B$ | `25000000000000 / 17831387166289` | exact lower endpoint, $1.4020221627660897369\ldots$ |
 
