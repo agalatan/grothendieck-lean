@@ -28,7 +28,8 @@ T_cell: tables decoded from Haagerup/Data/TCellData.lean
 The reflected partner
 ---------------------
   g_tig(z_1, z_2) = f_tig(-z_1, z_2) replaces w by -w, i.e. multiplies the coefficient of the
-  harmonic m = l - 17 by (-1)^m; it has the same modulus, so the same bound.
+  harmonic m = l - 17 by (-1)^m; it has the same supremum norm (the modulus at a given point can
+  change), so the same bound.
   [ok] (floating point) f_tig(-z_1, z_2) = sum_m (-1)^m c_m ph(z_2) w^m at 500 random points, up to 1e-12
 
 RESULT: all 9 checks passed

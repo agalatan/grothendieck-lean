@@ -25,7 +25,7 @@ sys.dont_write_bytecode = True  # leave no __pycache__ next to the scripts
 from fractions import Fraction
 
 import common
-from common import Report, abs_sup, dec, sci
+from common import Report, abs_sup, dec, dec_dn, dec_up, sci, sci_dn, sci_up
 
 
 def main() -> int:
@@ -40,7 +40,7 @@ def main() -> int:
     rep.info(f"  E(d1, d2) of the smoothed map: {len(en)} intervals, largest width "
              f"{max(b - a for a, b in en.values())} / 2^128")
     total = sum(b for _, b in en.values())
-    rep.check("interval", f"the energies of the table sum to at most 1 (upper bound {dec(Fraction(total, common.SCALE), 12)})",
+    rep.check("interval", f"the energies of the table sum to at most 1 (upper bound {dec_up(Fraction(total, common.SCALE), 12)})",
               total <= common.SCALE and all(a >= 0 for a, _ in en.values()))
 
     rep.section("Per channel, at the midpoints of the intervals (exact arithmetic on the midpoints)")
@@ -56,17 +56,17 @@ def main() -> int:
     H = common.mixture_head("interval")
     width = max(b - a for a, b in H)
     rep.info(f"  largest width of an H_k interval: {sci(width, 3)}")
-    rep.info(f"  H_0 in [{dec(H[0][0], 30)},")
-    rep.info(f"          {dec(H[0][1], 30)}]")
+    rep.info(f"  H_0 in [{dec_dn(H[0][0], 30)},")
+    rep.info(f"          {dec_up(H[0][1], 30)}]")
     r0 = abs_sup(H[0][0] - c, H[0][1] - c)
     tail_abs = sum(abs_sup(a, b) for a, b in H[1:])
     tail_abs_lo = sum(min(abs(a), abs(b)) if a * b > 0 else 0 for a, b in H[1:])
     rep.info(f"  c                              = {dec(c, 12)}")
-    rep.info(f"  |H_0 - c|                     <= {sci(r0, 12)}")
-    rep.info(f"  sum_{{k=1..250}} |H_k|          in [{sci(tail_abs_lo, 16)}, {sci(tail_abs, 16)}]")
-    rep.info(f"  |H_0 - c| + sum |H_k|         <= {sci(r0 + tail_abs, 16)}")
+    rep.info(f"  |H_0 - c|                     <= {sci_up(r0, 12)}")
+    rep.info(f"  sum_{{k=1..250}} |H_k|          in [{sci_dn(tail_abs_lo, 16)}, {sci_up(tail_abs, 16)}]")
+    rep.info(f"  |H_0 - c| + sum |H_k|         <= {sci_up(r0 + tail_abs, 16)}")
     rep.info(f"  head cap                       = {sci(cap, 6)}")
-    rep.info(f"  head cap - (|H_0 - c| + sum)  >= {sci(cap - r0 - tail_abs, 6)}")
+    rep.info(f"  head cap - (|H_0 - c| + sum)  >= {sci_dn(cap - r0 - tail_abs, 6)}")
     rep.check("interval", "|H_0 - c| + sum_{k=1}^{250} |H_k| <= head cap", r0 + tail_abs <= cap)
 
     rep.section("The same at the midpoints")

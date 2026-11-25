@@ -128,6 +128,55 @@ def sci(x, digits: int) -> str:
     return f"{sign}{dec(a / Fraction(10) ** e, digits)}e{e:+03d}"
 
 
+def _scaled(x, digits: int, up: bool) -> int:
+    """floor (or ceiling, if `up`) of x * 10^digits, exactly."""
+    y = Fraction(x) * 10 ** digits
+    return -((-y).__floor__()) if up else y.__floor__()
+
+
+def _fixed(m: int, digits: int) -> str:
+    s = str(abs(m)).rjust(digits + 1, "0")
+    return ("-" if m < 0 else "") + (f"{s[:-digits]}.{s[-digits:]}" if digits else s)
+
+
+def dec_dn(x, digits: int) -> str:
+    """Decimal expansion rounded DOWN (toward minus infinity) to `digits` decimals: the printed number is <= x.
+    Use it for every printed lower bound."""
+    return _fixed(_scaled(x, digits, False), digits)
+
+
+def dec_up(x, digits: int) -> str:
+    """Decimal expansion rounded UP (toward plus infinity) to `digits` decimals: the printed number is >= x.
+    Use it for every printed upper bound."""
+    return _fixed(_scaled(x, digits, True), digits)
+
+
+def _sci_dir(x, digits: int, up: bool) -> str:
+    x = Fraction(x)
+    if x == 0:
+        return "0"
+    a = abs(x)
+    e = 0
+    while a >= Fraction(10) ** (e + 1):
+        e += 1
+    while a < Fraction(10) ** e:
+        e -= 1
+    m = _scaled(x / Fraction(10) ** e, digits, up)
+    if abs(m) == 10 ** (digits + 1):
+        m, e = m // 10, e + 1
+    return f"{_fixed(m, digits)}e{e:+03d}"
+
+
+def sci_dn(x, digits: int) -> str:
+    """Scientific notation with the mantissa rounded DOWN: the printed number is <= x (lower bounds)."""
+    return _sci_dir(x, digits, False)
+
+
+def sci_up(x, digits: int) -> str:
+    """Scientific notation with the mantissa rounded UP: the printed number is >= x (upper bounds)."""
+    return _sci_dir(x, digits, True)
+
+
 # --------------------------------------------------------------------------------------------------------------
 # Parameters.lean
 # --------------------------------------------------------------------------------------------------------------

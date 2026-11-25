@@ -28,7 +28,7 @@ sys.dont_write_bytecode = True  # leave no __pycache__ next to the scripts
 from fractions import Fraction
 
 import common
-from common import Report, dec
+from common import Report, dec, dec_dn, dec_up
 
 
 def part_a(rep: Report) -> None:
@@ -89,10 +89,10 @@ def part_b(rep: Report) -> None:
     rep.check("exact", "a^2 * (3/2) * (1 + 3^-15) <= 1 <= b^2 * (3/2) * (1 - 3^-15)",
               a * a * Fraction(3, 2) * (1 + eps) <= 1 <= b * b * Fraction(3, 2) * (1 - eps))
     pi_lo, pi_hi = common.pi_enclosure(20)
-    rep.info(f"  {dec(pi_lo, 20)} < pi < {dec(pi_hi, 20)}  (Machin's formula, exact arithmetic)")
+    rep.info(f"  {dec_dn(pi_lo, 20)} < pi < {dec_up(pi_hi, 20)}  (Machin's formula, exact arithmetic)")
     lo, hi = enc["lower"], enc["upper"]
-    rep.info(f"  a * q_0 * pi_lo / 2 = {dec(lo, 30)}   (lower bound)")
-    rep.info(f"  b * q_0 * pi_hi / 2 = {dec(hi, 30)}   (upper bound)")
+    rep.info(f"  a * q_0 * pi_lo / 2 >= {dec_dn(lo, 30)}   (lower bound of gamma-dagger, rounded down)")
+    rep.info(f"  b * q_0 * pi_hi / 2 <= {dec_up(hi, 30)}   (upper bound of gamma-dagger, rounded up)")
     rep.check("exact", "0.711958633 < a * q_0 * pi_lo / 2", Fraction(711958633, 10 ** 9) < lo)
     rep.check("exact", "b * q_0 * pi_hi / 2 < 0.711958683", hi < Fraction(711958683, 10 ** 9))
     head = common.HEADLINE

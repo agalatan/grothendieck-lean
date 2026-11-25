@@ -49,7 +49,7 @@ import math
 from fractions import Fraction
 
 import common
-from common import Report, dec, sci
+from common import Report, dec, dec_up, sci
 
 
 def r_matrix(np, p: int, t):
@@ -202,7 +202,7 @@ def main() -> int:
         head = common.channel_head(p, "interval")
         up = sum(common.abs_sup(lo, hi) ** 2 * rho[p] ** (4 * k + 2) for k, (lo, hi) in enumerate(head))
         last = common.abs_sup(*head[250]) ** 2 * rho[p] ** 1002
-        rep.info(f"  channel {p}: partial sum <= {dec(up, 9)}; its last term (k = 250) is {sci(last, 3)}; "
+        rep.info(f"  channel {p}: partial sum <= {dec_up(up, 9)}; its last term (k = 250) is {sci(last, 3)}; "
                  f"mean of 1/Lambda = {means[p]:.7f}; B_p = {dec(B[p], 6)}")
         rep.check("interval", f"channel {p}: the Parseval sum over the head is <= B_p", up <= B[p])
         rep.check("floating point", f"channel {p}: the Parseval sum over the head is <= the mean of 1/Lambda",

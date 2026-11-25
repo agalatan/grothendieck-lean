@@ -9,6 +9,7 @@ error unless
   * there is a report for each of the six public theorems, and for every `#print axioms` line of `Axioms.lean`;
   * every theorem depends only on Lean's standard axioms `propext`, `Classical.choice`, `Quot.sound` and on the
     `native_decide` facts listed in `native.txt`;
+  * `certificate_value` and `inv_gammaDagger_gt` depend on the standard axioms only (no `native_decide` fact);
   * every fact listed in `native.txt` is used by the main theorem.
 
 Standard library only.
@@ -28,6 +29,7 @@ PUBLIC = [
     "Haagerup.constant_lt_inv_gammaDagger",
 ]
 MAIN = "Haagerup.constant_lt_inv_gammaDagger"
+STANDARD_ONLY = ["Haagerup.certificate_value", "Haagerup.inv_gammaDagger_gt"]
 
 
 def parse(text):
@@ -63,6 +65,10 @@ def main():
         extra = sorted(axioms - STANDARD - native)
         if extra:
             errors.append(f"{name} depends on axioms outside the allowed list: {', '.join(extra)}")
+    for name in STANDARD_ONLY:
+        extra = sorted(reports.get(name, set()) - STANDARD)
+        if extra:
+            errors.append(f"{name} must depend on the standard axioms only, but depends on: {', '.join(extra)}")
     unused = sorted(native - reports.get(MAIN, set()))
     if unused:
         errors.append(f"listed in native.txt but not used by {MAIN}: {', '.join(unused)}")

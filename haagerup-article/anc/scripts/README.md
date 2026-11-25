@@ -19,6 +19,12 @@ Each result is labelled with the arithmetic that produced it:
 
 No script proves anything; a line `[ok]` means that the recomputation agrees.
 
+Rounding of the printed numbers. Where an exact or interval result is printed as a bound (after `<=`, `<`, `>=`, as
+an endpoint of `in [a, b]`, or labelled "upper bound"/"lower bound"), an upper bound is rounded up and a lower bound
+is rounded down at the printed precision (`dec_up`, `dec_dn`, `sci_up`, `sci_dn` in `common.py`), so the printed
+inequality holds as printed. Exact values printed after `=` are truncated: every digit shown is a digit of the
+value. Floating-point results are rounded to nearest and carry no guarantee.
+
 The article lists eight finite computations used in the proof. The scripts follow that list:
 
 | computation of the article | script | Lean |
@@ -209,13 +215,14 @@ Q = −X, h_k = Σ_{d₁+3d₂≤2k+1} (−1)^d₂ E(d₁, d₂) [X^(k−(d₁+3
 h_k = Σ_n μ_n [X^(k−n)] R^(2n+1); channel 2 as h_k = Σ_m r_m [X^(k−m)] P₂^(2m+1) with r_m = (π/4)·C(2m,m)²/(16^m (m+1))
 and 3.14159265358979323846 < π < 3.14159265358979323847. Then H_k = Σ_p w_p h_k^(p), and the quantity of the
 computation "Head", |H₀ − c| + Σ_{k=1}^{250} |H_k|, for all values in the intervals, against the head cap. Also, at
-the midpoints of the intervals: D₂₅₀ = h₀ − Σ_{k=1}^{250} |h_k| and 1/D₂₅₀ for each channel (the remark
+the midpoints of the intervals: D₂₅₀ = h₀ − Σ_{k=1}^{250} |h_k| and 1/D₂₅₀ for each channel (D₂₅₀ is an upper bound
+of the slope D of the channel, so 1/D₂₅₀ is a lower bound of the constant it can give; the remark
 "Cancellation across channels"), and the largest |H_k|.
 
 *Should print*: `1/D_250` = `1.407500`, `1.411619`, `1.566964`, `1.445990`, `1.526136` for channels 0, 1, 3, 4, 5
 and `D_250 = -0.760480358130` for channel 2; `H_0 = 0.711974258589983158243587861128`;
-`|H_0 - c| <= 9.831582435878e-13`; `sum |H_k| = 6.1578477290589133e-06`;
-`|H_0 - c| + sum |H_k| <= 6.1578487122171569e-06`, below the head cap `6.157850e-06` by `1.287782e-12`; the largest
+`|H_0 - c| <= 9.831582435879e-13`; `sum |H_k| = 6.1578477290589133e-06`;
+`|H_0 - c| + sum |H_k| <= 6.1578487122171570e-06`, below the head cap `6.157850e-06` by `1.287782e-12`; the largest
 coefficient `H_10 = 2.0117960057e-06`.
 
 *Lean*: `Haagerup.head_sum_ok` (`Haagerup/HeadCheck.lean`), `Haagerup.head_residual_of_fastHeadOK`
@@ -263,9 +270,11 @@ the mixture, both from these enclosures and from the article's three rounded bou
 These numbers explain the construction; the proof of the main theorem does not use them, and the Lean package
 does not state them.
 
-*Should print*: `S_250 = 0.712901574109461445113829`, `S_250 - gamma-dagger = 9.42914331e-04`;
-`D_250 = 0.60093809`, `1/D_250 = 1.664064`; W of channels 0, 1, 5 in `[0.711919829934, 0.711919929566]`, below
-0.7119200; W of channels 3, 4 in `[0.712901282238531, 0.712901282244531]`; `W(H) < 0.711975480275655`, below the
+*Should print*: `S_250 in [0.712901574109461445113829, 0.712901574109461445113830]`, `S_250 - gamma-dagger in [9.42914331e-04, 9.42914332e-04]`;
+`D_250 = 0.60093809`, `1/D_250 = 1.664064` at the midpoints, and `D_250 <= 0.60093810, hence 1/D_250 >= 1.66406`
+for all values in the intervals (D₂₅₀ bounds the slope D of the channel without preprocessor from above, so the
+transfer lemma cannot give a constant below that number from it; this is not a bound that the channel proves); W of channels 0, 1, 5 in `[0.711919829934, 0.711919929567]`, below
+0.7119200; W of channels 3, 4 in `[0.712901282238531, 0.712901282244532]`; `W(H) < 0.711975480275656`, below the
 article's 0.711975481; `c - delta = 0.711968053274152`; `1 / 0.712901282245 = 1.402718756`.
 
 *Lean*: none of these statements; they rest on `Haagerup.Data.tig_mu_ok`, `Haagerup.Data.tcell_rows_ok` and the

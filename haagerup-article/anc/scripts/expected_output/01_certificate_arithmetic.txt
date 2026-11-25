@@ -42,17 +42,17 @@ Tail inequalities  B_p * rho_p^-(4K+6) <= tau_p^2 * (1 - rho_p^-4),  K = 250, 4K
 -------------------------------------------------------------------------------------------
   (CertCheck.lean states it with the exponent 2*(2*251+1) = 1006: the tail starts at k = 251.)
   [ok] (exact) channel 0: rho = 1037/1000, B = 2.528814, tau = 5.002400e-08; lhs/rhs = 9.999034e-01
-        sqrt(B rho^-1006 / (1 - rho^-4)) <= 5.002158e-08 (rounded up)
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 5.002159e-08 (rounded up)
   [ok] (exact) channel 1: rho = 1037/1000, B = 2.507841, tau = 4.981600e-08; lhs/rhs = 9.999086e-01
-        sqrt(B rho^-1006 / (1 - rho^-4)) <= 4.981372e-08 (rounded up)
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 4.981373e-08 (rounded up)
   [ok] (exact) channel 2: rho = 103/100, B = 2.919013, tau = 1.785796e-06; lhs/rhs = 9.999976e-01
-        sqrt(B rho^-1006 / (1 - rho^-4)) <= 1.785793e-06 (rounded up)
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 1.785794e-06 (rounded up)
   [ok] (exact) channel 3: rho = 207/200, B = 1.692090, tau = 1.108350e-07; lhs/rhs = 9.999525e-01
-        sqrt(B rho^-1006 / (1 - rho^-4)) <= 1.108323e-07 (rounded up)
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 1.108324e-07 (rounded up)
   [ok] (exact) channel 4: rho = 109/100, B = 1.658129, tau = 3.000000e-12; lhs/rhs = 1.411136e-14
-        sqrt(B rho^-1006 / (1 - rho^-4)) <= 3.563737e-19 (rounded up)
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 3.563738e-19 (rounded up)
   [ok] (exact) channel 5: rho = 1037/1000, B = 3.355048, tau = 5.761900e-08; lhs/rhs = 9.999201e-01
-        sqrt(B rho^-1006 / (1 - rho^-4)) <= 5.761669e-08 (rounded up)
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 5.761670e-08 (rounded up)
   [ok] (exact) 1 < rho_p < r_reg,p and 0 < beta_p < 1 for every channel (beta_p is jCertQ in the Lean file)
 
 Assembly

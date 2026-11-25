@@ -98,7 +98,7 @@ where the first supremum is over scalars $\epsilon_r,\epsilon'_s\in\mathbb{F}$ a
 \end{equation}
 and the Grothendieck constant $K_G^{\mathbb{F}}$ is the least such $K$; see Pisier's survey~\cite{Pis12}. Both suprema in~\eqref{eq:CV-def} are suprema of convex functions of each variable separately, so they are unchanged if one restricts to $|\epsilon_r|=|\epsilon'_s|=1$ and $\|u_r\|=\|v_s\|=1$; and since only the span of the vectors matters, the Hilbert space may be taken to be $\C^N$ (respectively $\R^N$) with $N$ arbitrary.
 
-Over $\R$, Krivine~\cite{Kri79} proved $\KGR \le \pi / (2\ln(1 + \sqrt{2})) = 1.78221\ldots$ in 1979 and conjectured equality. Braverman, Makarychev, Makarychev, and Naor~\cite{BMMN11} proved that the inequality is strict, using a rounding of two Gaussian coordinates in place of Krivine's rounding of one.
+Over $\R$, Krivine proved $\KGR \le \pi / (2\ln(1 + \sqrt{2})) = 1.78221\ldots$ and conjectured equality; the bound was announced in 1977~\cite{Kri77}, and the proofs appeared in 1979~\cite{Kri79}. Braverman, Makarychev, Makarychev, and Naor~\cite{BMMN11} proved that the inequality is strict, using a rounding of two Gaussian coordinates in place of Krivine's rounding of one.
 
 \subsection{Haagerup's bound and Haagerup's value}
 In the complex case, after the bounds of Kaijser~\cite{Kai73} and Pisier~\cite{Pis78}, the latter being $\KGC \le e^{1-\gamma} = 1.5262\ldots$ with $\gamma$ Euler's constant, Haagerup~\cite{Haa87} adapted Krivine's method to complex Gaussian phase rounding. Write $\ph(z) := z/|z|$ for $z \ne 0$ and $\ph(0) := 0$. If $(X, Y)$ is a Gaussian pair with correlation $t \in [-1,1]$, that is, a pair of standard complex Gaussian variables with $\E[\overline{X} Y] = t$ in the sense of Definition~\ref{def:pair}, then
@@ -637,7 +637,7 @@ For channels~$3$ and~$4$ of the certificate the polynomial is $R(X)=a-bX$ with $
 \begin{equation}\label{eq:W-tig}
   0.712901282238\;<\;W\;<\;0.712901282245 ,
 \end{equation}
-so that $W-\gd=9.42622\ldots\times10^{-4}$. (The tail bound $\tau_3$ of channel~$3$ alone would only give $W<0.7129013931$.) On the other hand, the same enclosures give $\mu_0-\sum_{n=1}^{250}|\mu_n|\approx0.60094$, so that without preprocessing and mixing the channel proves nothing better than $\KGC\le1.6641$; the other channels of the certificate serve to cancel its higher coefficients. The numerical statements of this paragraph and~\eqref{eq:W-tig} are not used in the proof of Theorem~\ref{thm:main} and are not part of the Lean package; they are reproduced by the script \path{anc/scripts/07_alternating_sums.py}.
+so that $W-\gd=9.42622\ldots\times10^{-4}$. (The tail bound $\tau_3$ of channel~$3$ alone would only give $W<0.7129013931$.) On the other hand, the same enclosures give $\mu_0-\sum_{n=1}^{250}|\mu_n|\approx0.600938$. The slope $\mu_0-\sum_{n\ge1}|\mu_n|$ of the channel without preprocessing is at most this number, so that without preprocessing and mixing Lemma~\ref{lem:transfer} cannot give a constant below $1.66406$ from this channel (we do not bound its slope from below); the other channels of the certificate serve to cancel its higher coefficients. The numerical statements of this paragraph and~\eqref{eq:W-tig} are not used in the proof of Theorem~\ref{thm:main} and are not part of the Lean package; they are reproduced by the script \path{anc/scripts/07_alternating_sums.py}.
 
 \subsection{The smoothed map}\label{sec:smooth}
 The second two-coordinate map is obtained from the cell map $\Tcell$ by a rotation and a Gaussian average. Fix the rational numbers
@@ -769,7 +769,7 @@ Consequently
 \end{theorem}
 
 \begin{remark}[Cancellation across channels]\label{rem:cancel}
-For a single channel put $D_{250}(h)=h_0-\sum_{k=1}^{250}|h_k|$. The midpoints of the enclosures below give $1/D_{250}(h^{(p)})\approx1.40750$, $1.41162$, $1.56696$, $1.44599$, $1.52614$ for $p=0,1,3,4,5$, and $D_{250}(h^{(2)})\approx-0.76048$: no channel alone comes close to $1/\gd$. For the mixture they give $H_0=0.71197425858998\ldots$ and $\sum_{k=1}^{250}|H_k|\approx6.1578477\times10^{-6}$. The two reflected channels carry weight $w_3+w_4=0.056532\ldots$ and raise the alternating sum of the mixture above $\gd$; the other four channels reduce the higher coefficients. These figures are for orientation only; the proof uses the enclosures and bounds the tails.
+For a single channel put $D_{250}(h)=h_0-\sum_{k=1}^{250}|h_k|$. The midpoints of the enclosures below give $1/D_{250}(h^{(p)})\approx1.40750$, $1.41162$, $1.56696$, $1.44599$, $1.52614$ for $p=0,1,3,4,5$, and $D_{250}(h^{(2)})\approx-0.76048$. Since $D(h)\le D_{250}(h)$, no channel alone comes close to $1/\gd$. For the mixture they give $H_0=0.71197425858998\ldots$ and $\sum_{k=1}^{250}|H_k|\approx6.1578477\times10^{-6}$. The two reflected channels carry weight $w_3+w_4=0.056532\ldots$ and raise the alternating sum of the mixture above $\gd$; the other four channels reduce the higher coefficients. These figures are for orientation only; the proof uses the enclosures and bounds the tails.
 \end{remark}
 
 \subsection{Correlation matrices and Schur denominators}\label{sec:schur-def}
@@ -1090,7 +1090,7 @@ Replacing $\Gamma$ by $-\Gamma$ leaves $\sA$ unchanged and replaces $\sC$ by $-\
 \subsection{From a circle mean to the tail}
 
 \begin{lemma}[Hardy tail]\label{lem:hardy}
-Let $(h_k)_{k\ge0}$ be an absolutely summable real sequence, let $r>1$, and let $f$ be a holomorphic function on the disk $|t|<r$ such that $f(t)=\sum_{k\ge0}h_k t^{2k+1}$ for $0<t<1$. Then $f(t)=\sum_{k\ge0}h_kt^{2k+1}$ for all $|t|<r$. If moreover $1<\varrho<r$ and $\frac{1}{2\pi}\int_0^{2\pi}|f(\varrho e^{\ii\vartheta})|^2\,d\vartheta\le B$, then for every $K\ge0$,
+Let $(h_k)_{k\ge0}$ be an absolutely summable real sequence, let $r>1$, and let $f$ be a holomorphic function on the disk $|t|<r$ such that $f(t)=\sum_{k\ge0}h_k t^{2k+1}$ for $0<t<1$. Then $f(t)=\sum_{k\ge0}h_kt^{2k+1}$ for all $|t|<r$. If moreover $1<\varrho<r$ and $\frac{1}{2\pi}\int_0^{2\pi}|f(\varrho e^{\ii\vartheta})|^2\,d\vartheta\le B$, then for every integer $K\ge0$,
 \[
   \sum_{k>K}|h_k| \;\le\; \sqrt{\frac{B\,\varrho^{-(4K+6)}}{1-\varrho^{-4}}}.
 \]
@@ -1201,8 +1201,21 @@ So the certified slope is within $7.5\times10^{-6}$ of the alternating sum of th
   \item \emph{The value of $\KGC$.} Theorem~\ref{thm:main} and~\cite{HJM26} give $1.4<\KGC\le1.40456$. With $1/\gd$ excluded, we know of no conjectured closed form for $\KGC$.
   \item \emph{The supremum of the alternating sum.} Let $W^*_n$ be the supremum of $W(h)$ over the channel series of measurable charge-one maps $G:\C^n\to\overline{\D}$ with a polynomial of $\ell^1$ norm at most one in each coordinate (the series~\eqref{eq:bivar-kernel} when $n=2$). Phase rounding gives $W^*_1\ge\gd$, and the reflected pair gives $W^*_2\ge0.712901$. What are $W^*_1$ and $W^*_2$, and is $\sup_n W^*_n$ attained in finite dimension? Since $D\le W$, the method of Lemma~\ref{lem:transfer} cannot prove $\KGC<1/\sup_n W^*_n$.
   \item \emph{Linear kernels.} Is there, for each $\epsilon>0$, a mixture of channels with $D(H)\ge\sup_n W^*_n-\epsilon$? In the real case Naor and Regev~\cite{NR14} proved that schemes of Krivine type are optimal; we do not know a complex analogue adapted to the functional $D$.
-  \item \emph{Unimodular maps.} Our rounding maps take values in the closed unit disk. Can the bound of Theorem~\ref{thm:main} be attained with maps into the unit circle, as in~\cite{Haa87,HJM26}?
+  \item \emph{Unimodular maps.} Our rounding maps take values in the closed unit disk, whereas those of~\cite{Haa87,HJM26} are unimodular. With one auxiliary Gaussian coordinate on each side the difference disappears (Remark~\ref{rem:unimodular}). Can the bound of Theorem~\ref{thm:main} be attained without auxiliary coordinates, that is, by a mixture of channels $(G,P,Q)$ as in Proposition~\ref{prop:channel} whose maps $G:\C^2\to\overline{\D}$ satisfy $|G|=1$ almost everywhere?
 \end{enumerate}
+
+\begin{remark}[Unimodular maps with an auxiliary coordinate]\label{rem:unimodular}
+Let $G:\C^2\to\overline{\D}$ be measurable of charge one. For $z\in\C^2$ and $w\in\C$ put
+\[
+  \widetilde G(z,w)\;:=\;
+  \begin{cases}
+    \phantom{-}\ph(G(z)) & \text{if } G(z)\ne0 \text{ and } 1-e^{-|w|^2}\le\frac12\bigl(1+|G(z)|\bigr),\\[2pt]
+    -\ph(G(z)) & \text{if } G(z)\ne0 \text{ and } 1-e^{-|w|^2}>\frac12\bigl(1+|G(z)|\bigr),\\[2pt]
+    \phantom{-}\ph(w) & \text{if } G(z)=0 .
+  \end{cases}
+\]
+Then $\widetilde G$ is measurable, $\widetilde G(cz,cw)=c\,\widetilde G(z,w)$ for $|c|=1$, and $|\widetilde G(z,w)|=1$ unless $G(z)=0$ and $w=0$. If $W$ is a standard complex Gaussian variable, then $1-e^{-|W|^2}$ is uniformly distributed on $[0,1]$ and $\E[\ph(W)]=0$, so that $\E[\widetilde G(z,W)]=G(z)$ for every $z\in\C^2$. Now let $W_r$, $W'_s$ be standard complex Gaussian variables, independent of each other and of the vectors $g,g'$ in the proof of Proposition~\ref{prop:channel}(3), and replace $Z_r$, $Z'_s$ there by $\widetilde Z_r:=\widetilde G(\mathbf{X}_r,W_r)$ and $\widetilde Z'_s:=\widetilde G(\mathbf{Y}_s,W'_s)$. Conditionally on $(g,g')$ these variables are independent with means $Z_r$ and $Z'_s$, hence $\E[\overline{\widetilde Z_r}\,\widetilde Z'_s]=\E[\overline{Z_r}\,Z'_s]$ for all $r,s$, and $|\widetilde Z_r|=|\widetilde Z'_s|=1$ almost surely. So every channel series of Proposition~\ref{prop:channel}, and therefore the bound of Theorem~\ref{thm:main}, is also obtained from rounding maps that are unimodular almost everywhere, at the price of a third Gaussian coordinate on each side whose correlation between the two sides is zero. The restriction that matters in the question above is thus that the map be a function of the two correlated coordinates alone.
+\end{remark}
 
 \subsection{Computer assistance}
 The proof is computer-assisted in two ways. The certificate (the integer tables of the two cell maps, the sums-of-squares witnesses, the polynomials and the weights) was found by numerical optimization, with the assistance of AI systems; none of that search is part of the proof. The verification is the Lean~4 development of Appendix~\ref{app:lean}, which checks the whole proof of Theorem~\ref{thm:main}: the transfer lemma, the realization of each channel, the six-channel certificate with its finite computations, and the enclosure of $\gd$. AI systems are not authors of this paper; the author takes full responsibility for its content.
@@ -1574,6 +1587,11 @@ Preprint, \texttt{arXiv:2603.30039}, March 2026.
 S.~Kaijser,
 \emph{A note on the Grothendieck constant with an application to harmonic analysis},
 UUDM Report 1973:10, Uppsala University, 1973.
+
+\bibitem{Kri77}
+J.-L.~Krivine,
+\emph{Sur la constante de Grothendieck},
+C.~R.\ Acad.\ Sci.\ Paris S\'er.\ A-B \textbf{284} (1977), no.~8, A445--A446.
 
 \bibitem{Kri79}
 J.-L.~Krivine,

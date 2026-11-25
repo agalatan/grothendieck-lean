@@ -119,7 +119,8 @@ def main() -> int:
                   err_fft <= 0 and outside == 0)
     rep.section("The reflected partner")
     rep.info("  g_tig(z_1, z_2) = f_tig(-z_1, z_2) replaces w by -w, i.e. multiplies the coefficient of the")
-    rep.info("  harmonic m = l - 17 by (-1)^m; it has the same modulus, so the same bound.")
+    rep.info("  harmonic m = l - 17 by (-1)^m; it has the same supremum norm (the modulus at a given point can")
+    rep.info("  change), so the same bound.")
     tab = common.cell_tables("tig")
     rng = random.Random(7)
     err = 0.0

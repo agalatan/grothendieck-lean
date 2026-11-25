@@ -45,22 +45,22 @@
 (3) Parseval: sum_{k<=250} (h_k^(p))^2 rho_p^(4k+2) from the certified tables
 -----------------------------------------------------------------------------
   (a lower bound of the circle mean of |f_p|^2, which is at most the mean of 1/Lambda, hence at most B_p)
-  channel 0: partial sum <= 0.544934016; its last term (k = 250) is 3.674e-24; mean of 1/Lambda = 2.3163625; B_p = 2.528814
+  channel 0: partial sum <= 0.544934017; its last term (k = 250) is 3.674e-24; mean of 1/Lambda = 2.3163625; B_p = 2.528814
   [ok] (interval) channel 0: the Parseval sum over the head is <= B_p
   [ok] (floating point) channel 0: the Parseval sum over the head is <= the mean of 1/Lambda
-  channel 1: partial sum <= 0.543837875; its last term (k = 250) is 2.919e-25; mean of 1/Lambda = 2.2861955; B_p = 2.507841
+  channel 1: partial sum <= 0.543837876; its last term (k = 250) is 2.919e-25; mean of 1/Lambda = 2.2861955; B_p = 2.507841
   [ok] (interval) channel 1: the Parseval sum over the head is <= B_p
   [ok] (floating point) channel 1: the Parseval sum over the head is <= the mean of 1/Lambda
-  channel 2: partial sum <= 0.324738331; its last term (k = 250) is 6.612e-16; mean of 1/Lambda = 2.6601267; B_p = 2.919013
+  channel 2: partial sum <= 0.324738332; its last term (k = 250) is 6.612e-16; mean of 1/Lambda = 2.6601267; B_p = 2.919013
   [ok] (interval) channel 2: the Parseval sum over the head is <= B_p
   [ok] (floating point) channel 2: the Parseval sum over the head is <= the mean of 1/Lambda
-  channel 3: partial sum <= 0.616837283; its last term (k = 250) is 3.506e-16; mean of 1/Lambda = 1.2758698; B_p = 1.692090
+  channel 3: partial sum <= 0.616837284; its last term (k = 250) is 3.506e-16; mean of 1/Lambda = 1.2758698; B_p = 1.692090
   [ok] (interval) channel 3: the Parseval sum over the head is <= B_p
   [ok] (floating point) channel 3: the Parseval sum over the head is <= the mean of 1/Lambda
-  channel 4: partial sum <= 0.610982947; its last term (k = 250) is 3.089e-33; mean of 1/Lambda = 1.2377288; B_p = 1.658129
+  channel 4: partial sum <= 0.610982948; its last term (k = 250) is 3.089e-33; mean of 1/Lambda = 1.2377288; B_p = 1.658129
   [ok] (interval) channel 4: the Parseval sum over the head is <= B_p
   [ok] (floating point) channel 4: the Parseval sum over the head is <= the mean of 1/Lambda
-  channel 5: partial sum <= 0.516169493; its last term (k = 250) is 6.204e-35; mean of 1/Lambda = 3.0931913; B_p = 3.355048
+  channel 5: partial sum <= 0.516169494; its last term (k = 250) is 6.204e-35; mean of 1/Lambda = 3.0931913; B_p = 3.355048
   [ok] (interval) channel 5: the Parseval sum over the head is <= B_p
   [ok] (floating point) channel 5: the Parseval sum over the head is <= the mean of 1/Lambda
 

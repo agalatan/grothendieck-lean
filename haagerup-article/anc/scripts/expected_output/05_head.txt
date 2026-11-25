@@ -5,7 +5,7 @@ Inputs
 ------
   mu_n of the reflected pair: 251 intervals, largest width 8730 / 2^128
   E(d1, d2) of the smoothed map: 21168 intervals, largest width 126 / 2^128
-  [ok] (interval) the energies of the table sum to at most 1 (upper bound 0.998795520242)
+  [ok] (interval) the energies of the table sum to at most 1 (upper bound 0.998795520243)
 
 Per channel, at the midpoints of the intervals (exact arithmetic on the midpoints)
 ----------------------------------------------------------------------------------
@@ -22,11 +22,11 @@ The mixture H_k = sum_p w_p h_k^(p), interval arithmetic with exact endpoints
 -----------------------------------------------------------------------------
   largest width of an H_k interval: 1.931e-25
   H_0 in [0.711974258589983158243587851631,
-          0.711974258589983158243587887558]
+          0.711974258589983158243587887559]
   c                              = 0.711974258589
-  |H_0 - c|                     <= 9.831582435878e-13
-  sum_{k=1..250} |H_k|          in [6.1578477290589133e-06, 6.1578477290589133e-06]
-  |H_0 - c| + sum |H_k|         <= 6.1578487122171569e-06
+  |H_0 - c|                     <= 9.831582435879e-13
+  sum_{k=1..250} |H_k|          in [6.1578477290589133e-06, 6.1578477290589134e-06]
+  |H_0 - c| + sum |H_k|         <= 6.1578487122171570e-06
   head cap                       = 6.157850e-06
   head cap - (|H_0 - c| + sum)  >= 1.287782e-12
   [ok] (interval) |H_0 - c| + sum_{k=1}^{250} |H_k| <= head cap

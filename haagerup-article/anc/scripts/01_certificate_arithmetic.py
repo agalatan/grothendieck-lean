@@ -20,7 +20,7 @@ import math
 from fractions import Fraction
 
 import common
-from common import Report, dec, sci
+from common import Report, dec, sci, sci_up
 
 
 def main() -> int:
@@ -59,7 +59,7 @@ def main() -> int:
         # the tail bound that the budget gives, sqrt(B rho^-1006 / (1 - rho^-4)); the square root is rounded
         t2 = lhs / (1 - 1 / rho[p] ** 4)
         root = Fraction(math.isqrt(t2.numerator * 10 ** 80 // t2.denominator) + 1, 10 ** 40)
-        rep.info(f"        sqrt(B rho^-1006 / (1 - rho^-4)) <= {sci(root, 6)} (rounded up)")
+        rep.info(f"        sqrt(B rho^-1006 / (1 - rho^-4)) <= {sci_up(root, 6)} (rounded up)")
     rep.check("exact", "1 < rho_p < r_reg,p and 0 < beta_p < 1 for every channel (beta_p is jCertQ in the Lean file)",
               all(1 < rho[p] < par["regRQ"][p] and 0 < par["jCertQ"][p] < 1 for p in range(6)))
 
