@@ -3,8 +3,8 @@
 # optional sharding. See AGENTS.md section 11.
 #
 #   scripts/cloud.sh [options] lean   <Module> [<Module> ...]   build Lean modules (e.g. native_decide facts)
-# At most 2 CI jobs per agent at a time (AGENTS.md section 8): your running cloud shards plus the checks of --ref;
-# set AGENT_ID so the limit is counted for you.
+# At most 2 CI jobs per agent at a time (AGENTS.md section 8), including cloud shards and checks on your branches.
+# Set AGENT_ID so the limit is counted for you.
 #   scripts/cloud.sh [options] check                            the full proof check of the branch, no merge
 #   scripts/cloud.sh [options] script <path> [args ...]         a committed .py / .sh / .cpp
 #   scripts/cloud.sh fetch <run-id> [dir]                       download the results of an earlier run
@@ -87,7 +87,7 @@ if [ "$kind" = script ]; then
   git -C "$TOP" cat-file -e "origin/$ref:$path" 2>/dev/null || die "$path is not committed on origin/$ref"
 fi
 
-# at most 2 CI jobs per agent at a time (AGENTS.md section 8): your cloud shards and the checks of this branch
+# The supplied ref also covers a legacy unsigned branch. Signed checks are attributed by owner.
 agent="${AGENT_ID:-$(whoami)}"
 if ! CI_NEED="$shards" "$TOP/scripts/ci_active.sh" "$agent" "$ref"; then
   die "this job ($shards shard(s)) would exceed the limit of 2 CI jobs per agent; wait for one to finish (AGENT_ID=$agent)"
