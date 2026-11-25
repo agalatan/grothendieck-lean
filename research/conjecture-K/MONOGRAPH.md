@@ -483,6 +483,11 @@ of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C, both au
   Its conditional Gaussian law is explicit. The surrounding circle-weight subspace has zero first content,
   and a quantified neighbourhood satisfies $C^2\le D/10$ at the peak row (P + C, author only).
   [Proof of 3.24a and 6.3.26a](sources/cubic-shear-codex-a7c4/PROOF.md).
+  For every nonzero zero-contraction cubic in $n$ complex coordinates, the coordinate of the input along $F$
+  is standard Gaussian conditional on the field and the transverse base point. The transverse squared radius
+  has gamma shape $n-1$. This gives $\mathbb E|q|\le (\sqrt\pi/2)\sqrt{(n-1)/n}\,\Vert q\Vert_2$,
+  with equality for $q=x^2\bar w$ in two coordinates.
+  [Derivation and exact checks, 3.24b](sources/invariant-fibres-codex-a7c4/PROOF.md).
 - If q vanishes on a complex hyperplane {X = 0}, then for every Gaussian buffer σ ≥ 0,
   √π·√(σ² + u) − 2E|σW + q| ≥ |α|²a_σ + ‖ℓ‖²b_σ with a_σ, b_σ > 0, where α and ℓ are the coefficients of X(|X|² − 2)
   and of X². In particular E|q| ≤ (√π/2)·√(u − |α|²/4 − ‖ℓ‖²/2). The class contains every one-driver cubic, in every
@@ -656,6 +661,14 @@ A second, local form removes the field c₂ − u: E[ȳ_e q h(V)] = E[ȳ_e(∂_v
 F = ∂̄q and b = Σ_k conj(F_k)·(F·∇)F_k. The content is then linear in the pair (a, DF·F), whose budget is
 ‖P₂,₀(q²)‖² + ½‖P₃,₁(q²)‖² [P + C, both author only · 6.3.26]. Its Cauchy–Schwarz bound is 0.128·D at the cubic above and at
 least 0.162·D at its own worst cubic, still above 0.15 [N · item 93].
+
+The transverse radius in 3.24b gives $D(q)>u^2/[8(n-1)]$ for a zero-contraction core of energy $u$ below
+the maximum peak-row energy. At that row any cubic $r=q+h$ of admissible total energy satisfies
+$C(r)^2\le D(r)/10$ when $\mathbb E|h|^2\le D(q)/368$, in particular for $\mathbb E|h|^2\le u^2/[2944(n-1)]$.
+The conditional frequency $-1$ of a cubic is exactly one Gaussian coordinate times an invariant amplitude.
+The complementary frequencies have zero first variation, and the square root of the Gaussian-mixture deficit is Lipschitz in that amplitude.
+Only the core dimension enters this radius.
+[Peak-row perturbation estimate, P + C, author only · 6.3.26b](sources/invariant-fibres-codex-a7c4/PROOF.md).
 
 **The same-law content inequality on structured classes.** Write c[h] = Π₁[q·h(|q|²)] for the content of a profile h.
 The degree-5 certificate of `../higher-degree` uses, for the tilted profiles of the six rows of its content band

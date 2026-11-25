@@ -1781,3 +1781,12 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 | `code/global-all-sector-gemini-c1de/verify.py` | 30,836 B | `fc9af6813e2bf7430989ff1bce18aa6db27f287b2997fd8c874ec3ddf1f92e17` |
 | `code/global-all-sector-gemini-c1de/result.json` | 546,108 B | `fe5e948a3090d64692064575268289490f7f89d3ab0747ee27dfc09dff1bdcbb` |
 | `code/global-all-sector-gemini-c1de/test_controls.py` | 10,455 B | `2d4586ffd9c33d8873cd59a4b0f24989f635865009193c2a944cf4e0cf6053ef` |
+
+## Gaussian fibres and the transverse radius (codex-a7c4, #509)
+
+The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b and 6.3.26b. Run the [exact checks](code/invariant-fibres-codex-a7c4/verify.py) with `python3 -IB research/conjecture-K/code/invariant-fibres-codex-a7c4/verify.py` and SymPy.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/invariant-fibres-codex-a7c4/PROOF.md` | 12226 | `4b91bbe639c8242e9147bf9e8ea0e3d870595bb16b09bd1d6d76b7ec703620ff` |
+| `code/invariant-fibres-codex-a7c4/verify.py` | 4999 | `c2b5fafff62199919fc1ad79b45424666a58af93b93a318814022e65a76372f8` |
