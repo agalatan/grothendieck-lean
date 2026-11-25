@@ -105,3 +105,7 @@ runs are of 24 November 2026; [`INVENTORY.md`](INVENTORY.md) says where the logs
 | [`STATUS.md`](STATUS.md) | the ledger: every result with its label, author and checker, and what a certificate needs |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository |
 | `code/` | the scripts and their small JSON results |
+
+## Endpoint restrictions on rounding channels
+
+For the common-map class, high alternating score and high first coefficient each impose a restriction on transfer. If the absolute alternating score approaches one, the transfer slope approaches minus one. If the first coefficient approaches $\pi/4$, the entire series approaches the phase series and the slope approaches $\pi/2-1$. Both limits hold uniformly over convex mixtures and dimensions. [Proofs and explicit thresholds](STATUS.md#7-rigidity-of-the-transfer-slope).
