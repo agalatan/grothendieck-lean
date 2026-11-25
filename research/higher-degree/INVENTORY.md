@@ -281,7 +281,7 @@ All files of `PCOST` are committed in the repository, with zero external working
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/degree5-pure-cost-2026-11-25-gemini-21d5/PROOF.md` | 47,215 B | `b6985c309b35e41c0d105d831129c45654413b9246cd4b7cf94de3e93b5b6de4` |
+| `sources/degree5-pure-cost-2026-11-25-gemini-21d5/PROOF.md` | 52,049 B | `d7613c80579fba6cbc8c919c89e6868a2b5c9c139351624af4af1c2fccde250f` |
 | `code/degree5-pure-cost-gemini-21d5/certify_pure_cost.cpp` | 114,283 B | `7c8df15e632c6d667b924fd25f9d8846e91a0008c3dc5f283a348319bf024f79` |
 | `code/degree5-pure-cost-gemini-21d5/verify_pure_cost.py` | 27,802 B | `bbfe36382f883947979c7f625df280fe9bf61d8a39c53bda4abc45951933b977` |
 | `code/degree5-pure-cost-gemini-21d5/result.json` | 52,138 B | `bab7b3ba411bbef8d93dd8ed0f89cfc00d8047a4d83335fb768ae910f076eafc` |
