@@ -161,15 +161,7 @@ at 1.455u\* (0.74), 0.4000 at 1.492u\* (0.76), 0.5232 at 1.448u\* (0.78).
   Beta factor replaces the exponential law of |ζ|²/σ² by c·Beta(1, c − 1), a compactly supported law. This suggests
   writing the three functionals as integrals of explicit kernels against the law of (ξ², σ²) ∈ ℝ₊², a
   two-dimensional law determined by (a, m, s_R, c), plus the law of H.
-- **Convexity in the law of H.** At fixed parameters, c_X and δ are affine in the law of H (δ through κ) and Ω̂ is
-  concave in the law of V, hence in the law of H. By the arithmetic–geometric mean, |c_X|² ≤ θ·δ·Ω̂ holds iff
-  F_{λ,ψ} := 2Re(e^{iψ}c_X) − λ·δ − (θ/λ)·Ω̂ ≤ 0 for all λ > 0 and all phases ψ, and each F_{λ,ψ} is a convex
-  functional of the law of H. A convex functional on the laws on [0, 3c²] with E H = 1 is maximal at an extreme
-  point, and the extreme points are laws with at most two atoms. This reduces "every law of H"
-  to a two-parameter family per (c, parameters); it is in the record as a tool for a related family (P, author
-  only) and was not applied here. Note that two-point laws are *worse* than the truth by about 10 %: if the
-  two-point relaxation exceeds the allowance, restrict to laws from polynomials (non-increasing density of G, the
-  third-moment bound).
+- **Finite support for the law of H (P, author only).** With just the mean fixed, convexity reduces the test to two atoms. For the target in §2 the law must also pass the response gate at every amplitude. It suffices to check admissible laws on at most two scales and laws on three or four scales whose response touches the gate. At a four-scale extremizer the total mass, mean, response value and zero-slope condition form a nonsingular linear system for the weights. The allowance on these laws is open. [Proof and limitations](../../admissible-four-atom-codex-a7c4/PROOF.md)
 - **Uniformity in c.** For c ≥ c₀ compare with the limit c = ∞ (Gamma(c)/c → 1, B_c → Exp(1)) with explicit
   remainders in 1/c; for c < c₀ a certified cover of the compact parameter set {a² + cΣ|m_k|² + s_R = 1} × phases
   (seven real dimensions after removing a common phase of m) × the two-point family of H × the energy band. The
