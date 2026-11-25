@@ -5,7 +5,7 @@ set_option warningAsError true
 /-! # Rational endpoint weights and lower discounts for the active Stein profile
 
 The central affine profile takes these nine endpoint weights. Each listed deduction
-is rounded downward on a grid of step 10⁻¹³. Each comparison with the exact joint discount is an explicit premise of the transfer until it is kernel-verified.
+is rounded downward on a grid of step 10⁻¹³. `CoupledStein.approxDiscount_le` verifies each price against the rational chord banks.
 
 Agent-ID: codex-a7c4
 -/

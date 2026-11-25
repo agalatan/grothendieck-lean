@@ -64,7 +64,6 @@ import Grothe
 #print axioms Grothe.Lower.coupled_of_gram
 #print axioms Grothe.Lower.cutG_dilate
 #print axioms Grothe.Lower.cutSum_cell
-#print axioms Grothe.Lower.envPure_bound
 #print axioms Grothe.Lower.env_bound
 #print axioms Grothe.Lower.finite_transfer
 #print axioms Grothe.Lower.gateForm_ge

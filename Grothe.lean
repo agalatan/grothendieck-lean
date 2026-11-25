@@ -9,7 +9,6 @@ import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.HeadHardy
 import Grothe.ListPoly
-import Grothe.Lower.AffineEnvelope
 import Grothe.Lower.Basic
 import Grothe.Lower.Cert.CoupledStein
 import Grothe.Lower.Cert.Envelope
@@ -30,8 +29,7 @@ import Grothe.Lower.Cert.Row12
 import Grothe.Lower.Cert.Row13
 import Grothe.Lower.Cert.Row14
 import Grothe.Lower.Cert.Rows
-import Grothe.Lower.Cert.SharedGate
-import Grothe.Lower.Cert.SharpEnvelope
+import Grothe.Lower.Cert.SparseEnvelope
 import Grothe.Lower.CoupledSteinEnvelope
 import Grothe.Lower.CutDilation
 import Grothe.Lower.Cuts
@@ -75,7 +73,8 @@ import Grothe.Lower.RowParser
 import Grothe.Lower.RowParser.Single
 import Grothe.Lower.RowReduction
 import Grothe.Lower.Rows
-import Grothe.Lower.SharedGateSaving
+import Grothe.Lower.SparseNodePricing
+import Grothe.Lower.SparseSteinEnvelope
 import Grothe.Lower.SpecRows
 import Grothe.Lower.Stein
 import Grothe.Lower.Support
@@ -3447,6 +3446,18 @@ import Grothe.LowerAnalytic.Rows
 import Grothe.LowerAnalytic.SharpRadius
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.SixthMomentData
+import Grothe.LowerAnalytic.SparseOuterCaps
+import Grothe.LowerAnalytic.SparseOuterRows
+import Grothe.LowerAnalytic.SparseSteinBound
+import Grothe.LowerAnalytic.SparseSteinCover
+import Grothe.LowerAnalytic.SparseSteinPrices
+import Grothe.LowerAnalytic.SparseSteinRows
+import Grothe.LowerAnalytic.SparseSteinSlabs
+import Grothe.LowerAnalytic.SparseSteinWeights
+import Grothe.LowerAnalytic.SparseSteinWitness
+import Grothe.LowerAnalytic.SparseWitness08
+import Grothe.LowerAnalytic.SparseWitness09
+import Grothe.LowerAnalytic.SparseWitnessData
 import Grothe.LowerAnalytic.SpectralBudget
 import Grothe.LowerAnalytic.Tensor
 import Grothe.LowerAnalytic.WeightedSchurRows
