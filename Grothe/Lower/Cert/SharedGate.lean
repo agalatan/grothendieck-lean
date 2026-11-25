@@ -18,7 +18,7 @@ Agent-ID: codex-a7c4
 
 namespace Grothe.Lower.SharedGate
 
-def gain : ℚ := 2 / 1000000
+def gain : ℚ := 243 / 100000000
 
 def hatCap : ℚ := SharpEnvelope.hatCap - gain
 
@@ -26,19 +26,19 @@ def endpoint : ℚ := 1 / ((1 - 47 / 2000) * hatCap + 47 / 2000)
 
 theorem endpoint_eq : endpoint =
     909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
-    648511497777813650950008184495957803146263132239181429405354447721820234278296395631 := by
+    648511116026975442270455246402044140272423714548613432977518646121820234278296395631 := by
   decide +kernel
 
-theorem rounded_lt : (140191478 : ℚ) / 100000000 < endpoint := by
+theorem rounded_lt : (14019156097 : ℚ) / 10000000000 < endpoint := by
   rw [endpoint_eq]
   decide +kernel
 
-def smallCut : ℚ := 21 / 100
+def smallCut : ℚ := 4649 / 20000
 
-def smallSaving : ℚ := 1 / 50000
+def smallSaving : ℚ := 551 / 100000000
 
 def smallRect : Rect :=
-  ⟨0, row08.delta * smallCut, ⟨41869510279 / 31250000000 + 24 / 100000, 0, 113 / 100, 0, 0⟩⟩
+  ⟨0, row08.delta * smallCut, ⟨1339829981 / 1000000000, 0, 11331869 / 10000000, 0, 0⟩⟩
 
 section DecodedNodes
 
@@ -86,11 +86,13 @@ theorem pair_ok : gateOK (sumMatrix row08.N row09.N) = true ∧
 /-- Row intercept after a rational deduction. -/
 def discount (a : EnvRow) (d : ℚ) : EnvRow := { a with C := a.C - d }
 
-/-- Split the fixed row06/row07 interval at its midpoint to retain the stronger outer cap. -/
+/-- Reweight the row06/row07 cell and split the row12/row13 cell. -/
 def cells : List AffineEnvCell := SharpEnvelope.cells.flatMap fun c =>
   if c.lo == 1614 / 2000 && c.hi == 1642 / 2000 then
-    [{ c with hi := 1628 / 2000, offset := 1/4, slope := 0 },
-     { c with lo := 1628 / 2000, offset := 83/100, slope := 0 }]
+    [{ c with offset := 12 / 25, slope := 0 }]
+  else if c.lo == 1742 / 2000 && c.hi == 1774 / 2000 then
+    [{ c with hi := 1758 / 2000, offset := 3 / 5, slope := 0 },
+     { c with lo := 1758 / 2000, offset := 22 / 25, slope := 0 }]
   else [c]
 
 /-- Deduct the shared saving from either active row, whichever has smaller weight. -/

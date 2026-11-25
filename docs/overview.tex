@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.40191478\;<\;\KG\;\le\;1.404556407$\\[6pt]
+\Large $1.4019156097\;<\;\KG\;\le\;1.404556407$\\[6pt]
 \normalsize The Lean~4/Mathlib theorems \lean{lower\_bound\_shared\_gate} and
 \lean{Grothe.Statement.main\_bounds\_phase} prove these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The exact shared-gate lower endpoint is rounded down to $140191478/100000000$.
+The exact shared-gate lower endpoint is rounded down to $14019156097/10000000000$.
 The six Gaussian rounding channels give the upper bound rounded up to $1404556407/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -97,7 +97,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191478}$ & $\mathbf{1.404556407}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4019156097}$ & $\mathbf{1.404556407}$\\\bottomrule
 \end{tabular}
 \end{center}
 The article upper bound is $140455741/100000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
@@ -723,13 +723,13 @@ At $t=0.8366035304980132\ldots$ a single abstract profile satisfies every retain
 mass tangent at $\hat V=\hat B_*$. The scalar row system therefore attains this cap.
 The two active rows constrain the same Gaussian gate coordinates. At fixed first coordinate,
 completing their sum saves at least $1018\tau^2/10^7$ across the two rows.
-For $\tau\le21/100$ a quadratic majorant saves $1/50000$ on the first row.
-At every scale their nonnegative deductions sum to at least $H=(1018/10^7)(21/100)^2$.
+For $\tau\le4649/20000$ a quadratic majorant saves $551/10^8$ on the first row.
+At every scale their nonnegative deductions sum to at least $H=(1018/10^7)(4649/20000)^2$.
 A mixture with weights $1-\theta,\theta$ saves at least $H\min(\theta,1-\theta)$.
 Checking both assignments of $H$ on the active cells and the ordinary mixtures on the
 rest of a sixteen-cell cover gives
-$\KG\ge((1-\nu)(\hat B_*-2/10^6)+\nu)^{-1}
-=1.401914784461024301\ldots>1.40191478$
+$\KG\ge((1-\nu)(\hat B_*-243/10^8)+\nu)^{-1}
+=1.401915609708473171\ldots>1.4019156097$
 (\lean{lower\_bound\_shared\_gate}).
 
 
