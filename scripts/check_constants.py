@@ -2,13 +2,13 @@
 r"""Check that the documents quote the bounds that Lean states.
 
 The two bounds are read from the Lean sources: the theorem `main_bounds` in Grothe/MainResult.lean. Each is a
-rounding of an exact value that Lean also states: the upper bound of `Grothe.UpperSix.bound`
+rounding of an exact value that Lean also states: the upper bound of `Grothe.UpperSeven.bound`
 (Grothe/UpperResult.lean, `IsBound ((10 : ℝ) ^ p / D)`), and the lower endpoint `endpoint_eq` of the certificate
 whose rounding lemma the proof of `main_bounds` uses (`Grothe.Lower.<Name>.rounded_lt`, in
 Grothe/Lower/Cert/<Name>.lean; the script does not fix the name). The script checks that
 
 * the upper bound of `main_bounds` is the exact upper value rounded up to its number of decimals, and
-  `Grothe.UpperSix.constant_le` states the same rational;
+  `Grothe.UpperSeven.constant_le` states the same rational;
 * the lower bound of `main_bounds` is the exact lower endpoint rounded strictly downward;
 * every document of QUOTING states the bounds asked of it, in decimal form;
 * docs/CONSTANTS.md also states both rationals as Lean writes them, and both exact values;
@@ -289,7 +289,7 @@ def check_constants_page(root, lower, upper, exact_upper, exact_lower, problems)
         # A typo in a long denominator can leave the rounded bound unchanged: ask for the full fraction.
         numerator = rf"10\^(?:\{{{power}\}}|{power}(?!\d))"
         if re.search(rf"(?<!\d)(?:{numerator}/{den}(?!\d)|\\frac\{{{numerator}\}}\{{{den}\}})", text) is None:
-            problems.append("docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSix.bound")
+            problems.append("docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSeven.bound")
     if exact_lower is not None:
         p, q = exact_lower
         if re.search(rf"(?<!\d){p}/{q}(?!\d)", text) is None:
@@ -361,7 +361,7 @@ def check_lean_file(rel, text, lower, upper, exact_upper, exact_lower, problems)
         if m[1] == "IsBound" and power:
             shown = f"IsBound (10 ^ {power[1]} / {power[2]})"
             ok = int(power[2]) != 0 and Fraction(10 ** int(power[1]), int(power[2])) == exact_up
-            what = "the exact upper bound of Grothe.UpperSix.bound"
+            what = "the exact upper bound of Grothe.UpperSeven.bound"
         elif plain:
             shown = f"{m[1]} ({plain[1]} / {plain[2]})"
             want = up if m[1] == "IsBound" else lo
