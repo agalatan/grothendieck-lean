@@ -33,6 +33,7 @@ import Grothe
 #print axioms Grothe.Lower.SharpEnvelope.endpoint_eq
 #print axioms Grothe.Lower.SharpEnvelope.exact_scalar_cap
 #print axioms Grothe.Lower.SharpEnvelope.scalar_contact
+#print axioms Grothe.Lower.SteinCut.integral_cutG_dilate
 #print axioms Grothe.Lower.affineEnvelope_bound
 #print axioms Grothe.Lower.budget_of_bud
 #print axioms Grothe.Lower.certEnvelope
@@ -56,6 +57,7 @@ import Grothe
 #print axioms Grothe.Lower.checkSWit_sound
 #print axioms Grothe.Lower.chord_goal
 #print axioms Grothe.Lower.coupled_of_gram
+#print axioms Grothe.Lower.cutG_dilate
 #print axioms Grothe.Lower.cutSum_cell
 #print axioms Grothe.Lower.env_bound
 #print axioms Grothe.Lower.finite_transfer
