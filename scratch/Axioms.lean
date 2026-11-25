@@ -2284,6 +2284,9 @@ import Grothe
 #print axioms Grothe.UpperQuad.twist_j3_low_margin
 #print axioms Grothe.UpperQuad.twist_j3_whole_margin
 #print axioms Grothe.UpperQuad.unnormalise_represents
+#print axioms Grothe.UpperSeven.bound
+#print axioms Grothe.UpperSeven.constant_le
+#print axioms Grothe.UpperSeven.constant_lt_inv_gammaDagger
 #print axioms Grothe.UpperSix.bound
 #print axioms Grothe.UpperSix.constant_le
 #print axioms Grothe.UpperSix.constant_lt_inv_gammaDagger
@@ -2307,10 +2310,13 @@ import Grothe
 #print axioms Haagerup.AngularSelector.Certificate.production_sound
 #print axioms Haagerup.AngularSelector.Certificate.selectorColumn_sound
 #print axioms Haagerup.AngularSelector.FourierGrid.output_error_head
+#print axioms Haagerup.AngularSelector.NumericWitness.budgets_ok
+#print axioms Haagerup.AngularSelector.NumericWitness.reciprocal_eq
 #print axioms Haagerup.AngularSelector.RawRow.raw_wienerBound
 #print axioms Haagerup.AngularSelector.RawTable.rowsAndCharges_sound
 #print axioms Haagerup.AngularSelector.angularRow_truncation
 #print axioms Haagerup.AngularSelector.gridCoefficient_error
+#print axioms Haagerup.AngularSelector.isBound
 #print axioms Haagerup.AngularSelector.mixed_isBound
 #print axioms Haagerup.AngularSelector.phaseDyadic_error
 #print axioms Haagerup.AngularSelector.scalarGrade_truncation
@@ -2322,6 +2328,7 @@ import Grothe
 #print axioms Haagerup.Data.tcell_sos_ok
 #print axioms Haagerup.Data.tig_mu_ok
 #print axioms Haagerup.Data.tig_sos_ok
+#print axioms Haagerup.SixChannelExact.exists_certified_channels
 #print axioms Haagerup.SixChannelExact.isBound
 #print axioms Haagerup.head_sum_ok
 #print axioms Haagerup.isBound_cert

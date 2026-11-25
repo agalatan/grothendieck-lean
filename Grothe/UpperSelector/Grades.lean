@@ -28,9 +28,23 @@ def convNum (M J : ℕ) (a : Array ℕ) (raw : Array Int) (n : ℕ) : Int :=
 private def polyCharge (M : ℕ) (a : Array ℕ) : Int :=
   2^50 - (∑ i ∈ range M, (polyCount a i : Int)) * 2^22
 
+private def signedCounts (M : ℕ) (a : Array ℕ) : Array Int :=
+  Array.ofFn fun i : Fin M => signedCount a i
+
+private def preparedConv (M J : ℕ) (counts raw : Array Int) (n : ℕ) : Int :=
+  ∑ i ∈ range (min (n+1) M), counts.getD i 0 * (if n-i < J then raw.getD (n-i) 0 else 0)
+
+@[simp] private theorem preparedConv_signedCounts (M J : ℕ) (a : Array ℕ) (raw : Array Int) (n : ℕ) :
+    preparedConv M J (signedCounts M a) raw n = convNum M J a raw n := by
+  unfold preparedConv convNum
+  refine sum_congr rfl fun i hi => ?_
+  have h : i < M := (mem_range.mp hi).trans_le (min_le_right _ _)
+  simp [signedCounts, h]
+
 private def writeGrade (M J : ℕ) (a : Array ℕ) (mass : ℕ) (raw : Array Int × Int) : Grade :=
+  let counts := signedCounts M a
   { weight := mass / 2^30
-    row := Array.ofFn fun j : Fin (J + M) => convNum M J a raw.1 j
+    row := Array.ofFn fun j : Fin (J + M) => preparedConv M J counts raw.1 j
     error := raw.2 + polyCharge M a }
 
 private def stream {α : Type*} (M : ℕ) (emit : ℕ → Array ℕ → ℕ → α) : ℕ → (Array ℕ × ℕ) × Array α

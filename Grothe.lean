@@ -4744,6 +4744,7 @@ import Grothe.UpperQuad.WatsonSeed
 import Grothe.UpperResult
 import Grothe.UpperSelector.Aggregation
 import Grothe.UpperSelector.Binomial
+import Grothe.UpperSelector.Bound
 import Grothe.UpperSelector.Column
 import Grothe.UpperSelector.Cosine
 import Grothe.UpperSelector.Dyadic
@@ -4754,6 +4755,7 @@ import Grothe.UpperSelector.Grades
 import Grothe.UpperSelector.MixedPhysical
 import Grothe.UpperSelector.Mixture
 import Grothe.UpperSelector.NumericParameters
+import Grothe.UpperSelector.NumericWitness
 import Grothe.UpperSelector.Phase
 import Grothe.UpperSelector.PhaseMass
 import Grothe.UpperSelector.PhysicalColumn
@@ -4806,6 +4808,7 @@ import Grothe.UpperSixExact.Bound
 import Grothe.UpperSixExact.Contour
 import Grothe.UpperSixExact.Head
 import Grothe.UpperSixExact.Parameters
+import Grothe.UpperSixExact.Result
 import Grothe.UpperSixExact.VariableCutoff
 import Grothe.UpperTarget
 import Grothe.UpperTightBudget

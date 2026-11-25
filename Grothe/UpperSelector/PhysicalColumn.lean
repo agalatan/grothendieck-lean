@@ -28,9 +28,9 @@ theorem selectorColumn_sound {F K J M H : ℕ} (hF : F ≤ 220) (hJ : J ≤ 1600
     (fun _ hk => (grades_row_size hk).le)
     (fun _ hk => (grades_sound hk hF hJ).1) (fun _ hk => (grades_sound hk hF hJ).2)
 
-/-- The seven-channel checkpoint uses 1201 scalar grades, 60 folded frequencies, 300
-radial powers and 257 preprocessor powers. Its signed interval head has 251 entries. -/
-def production : Column := selectorColumn 60 1201 300 257 251
+/-- The seven-channel checkpoint uses 1856 scalar grades, 72 folded frequencies, 240
+radial powers and 296 preprocessor powers. Its signed interval head has 251 entries. -/
+def production : Column := selectorColumn 72 1856 240 296 251
 
 @[simp] theorem production_head_size : production.head.size = 251 :=
   selectorColumn_head_size _ _ _ _ _
@@ -38,6 +38,6 @@ def production : Column := selectorColumn 60 1201 300 257 251
 theorem production_sound :
     WienerBound (fun n => selectorCoeff linearPreprocessor (17/100) n - (production.head.getD n 0 : ℝ)/2^89)
       ((production.allowance : ℝ)/2^89) :=
-  selectorColumn_sound (by decide : 60 ≤ 220) (by decide : 300 ≤ 1600)
+  selectorColumn_sound (by decide : 72 ≤ 220) (by decide : 240 ≤ 1600)
 
 end Haagerup.AngularSelector.Certificate
