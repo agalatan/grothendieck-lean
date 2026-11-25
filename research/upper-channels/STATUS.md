@@ -85,7 +85,7 @@ for the statements about existing code), not a plan that was tried.
 
 ## 7. Rigidity of the transfer slope
 
-| Hypothesis on a convex mixture of common-map channels | Consequence | Evidence |
-|---|---|---|
-| $\lvert W(H)\rvert\to1$ | $H_0\to0$ and $D(H)\to-1$ uniformly over dimensions and polynomial preprocessors. At $\lvert W(H)\rvert\ge0.99$ the slope is below $-0.01$. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [Laguerre argument](sources/rounding-endpoint-rigidity-codex-a7c4/ALTERNATION.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
-| $H_0\to\pi/4$ | The complete coefficient sequence converges in $\ell^1$ to the phase kernel, and $D(H)\to\pi/2-1$. At $H_0\ge0.783$ the slope is below $0.70$. The exponent $2/3$ in the endpoint-correlation estimate is sharp. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [First-chaos argument](sources/rounding-endpoint-rigidity-codex-a7c4/FIRST_COEFFICIENT.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
+| # | Hypothesis on a convex mixture of common-map channels | Consequence | Evidence |
+|---|---|---|---|
+| 7.1 | $\lvert W(H)\rvert\to1$ | 7.2 | $H_0\to0$ and $D(H)\to-1$ uniformly over dimensions and polynomial preprocessors. At $\lvert W(H)\rvert\ge0.99$ the slope is below $-0.01$. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [Laguerre argument](sources/rounding-endpoint-rigidity-codex-a7c4/ALTERNATION.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
+| 7.2 | $H_0\to\pi/4$ | The complete coefficient sequence converges in $\ell^1$ to the phase kernel, and $D(H)\to\pi/2-1$. At $H_0\ge0.783$ the slope is below $0.70$. The exponent $2/3$ in the endpoint-correlation estimate is sharp. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [First-chaos argument](sources/rounding-endpoint-rigidity-codex-a7c4/FIRST_COEFFICIENT.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
