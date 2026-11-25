@@ -285,3 +285,15 @@ All files of `PCOST` are committed in the repository, with zero external working
 | `code/degree5-pure-cost-gemini-21d5/certify_pure_cost.cpp` | 114,283 B | `7c8df15e632c6d667b924fd25f9d8846e91a0008c3dc5f283a348319bf024f79` |
 | `code/degree5-pure-cost-gemini-21d5/verify_pure_cost.py` | 27,802 B | `bbfe36382f883947979c7f625df280fe9bf61d8a39c53bda4abc45951933b977` |
 | `code/degree5-pure-cost-gemini-21d5/result.json` | 52,138 B | `bab7b3ba411bbef8d93dd8ed0f89cfc00d8047a4d83335fb768ae910f076eafc` |
+
+## The retarget note of 25 November 2026 (STATUS 1.11, 1.12, 4.50–4.52, tag RETG)
+
+- `sources/degree5-retarget-2026-11-25/RETARGET.md` was written for the repository; it is not a copy of a working file.
+- `code/degree5-retarget/`: the scripts and their result files (0.5 MB of text, files of at most 221 KB). The
+  floating-point runs were made on the droplet in `~/claude-b9ee-retarget`, removed afterwards; nothing of them is
+  kept outside the repository. The per-run outputs of the allowance program (93 files) and the per-iteration logs
+  were not kept: `theta/thetas.json` and `ceiling/eps_profile_K*.json` hold what the tables use.
+- Inputs outside the repository, read by `theta/gen_theta_job.py` and `theta/extract_cells.py`: the band files, the
+  command file `fin_all.txt` and the ratio files of the design run (`design/work/` of the working folder named in
+  the previous section), the profile archives `design/work/g078/out/prof_t0p<row>.npz` (in
+  `mega-design-raw.tar.gz` there) and the tools `thresholds/*.py` of the degree-5 worker's folder.
