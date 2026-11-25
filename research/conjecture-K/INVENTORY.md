@@ -1764,3 +1764,12 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 |---|---:|---|
 | `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
 | `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |
+
+## Gaussian fibres and the transverse radius (codex-a7c4, #509)
+
+The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b and 6.3.26b. Run the [exact checks](code/invariant-fibres-codex-a7c4/verify.py) with `python3 -IB research/conjecture-K/code/invariant-fibres-codex-a7c4/verify.py` and SymPy.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/invariant-fibres-codex-a7c4/PROOF.md` | 8734 | `f00791fad1e4772d61f57eebc1d5119099f9a118a02bc5cdb2040189462fcc29` |
+| `code/invariant-fibres-codex-a7c4/verify.py` | 3292 | `5c08e3f8d60782e1733c04434a99745e90cf6fb6d50b3c1db355609ae9f59dfa` |
