@@ -1,0 +1,21 @@
+IDENTICAL  direct_bound_exact.log
+IDENTICAL  certB_const/out/assemble2c.log
+IDENTICAL  certB_const/out/rows2c_final.json
+IDENTICAL  certB_const/out/envelope_design.log
+IDENTICAL  certB_const/out/envelope_design.json
+IDENTICAL  certB_lin/out/assemble2c.log
+IDENTICAL  certB_lin/out/rows2c_final.json
+IDENTICAL  certB_lin/out/envelope_design.log
+IDENTICAL  certB_lin/out/envelope_design.json
+IDENTICAL  certB_const/out/envelope_design_fin.log (the 21 pieces of D*)
+IDENTICAL  certB_const/out/envelope_design_fin_table.json
+IDENTICAL  ASSEMBLY_CONSTANTS.md
+IDENTICAL  margins/MARGINS_TABLE.md (table from the stored scans; the scans are N)
+IDENTICAL  tables/THETA_TABLE.md (table from fin_table.json; the allowances are N)
+IDENTICAL  tables/ROWS_TABLE.md (the float rows of the design beside the rational rows)
+IDENTICAL  checks/zero_content_budget.log (the zero-content pairs on every piece; exact)
+IDENTICAL  tables/zero_content_budget.json
+IDENTICAL  tables/REPAIRS.md (summary of the stored outputs of the two repairs; N)
+IDENTICAL  tables/funded/THETA_TABLE_fundFull.md
+IDENTICAL  checks/rows_compare.log
+ALL IDENTICAL

@@ -1,0 +1,3 @@
+cd /home/agalatan/claude-b9ee-degree5/design/margins && OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 ../../venv/bin/python ../scripts/margin_scan.py rows078.lines 0.78 m078c_t0.78.json 0.3,0.1 0.78 > m078c_t0.78.log 2>&1
+cd /home/agalatan/claude-b9ee-degree5/design/margins && OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 ../../venv/bin/python ../scripts/margin_scan.py rows078.lines 0.76 m078c_t0.76.json 0.3,0.1 0.78 > m078c_t0.76.log 2>&1
+cd /home/agalatan/claude-b9ee-degree5/design/margins && OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 ../../venv/bin/python ../scripts/margin_scan.py rows078.lines 0.79 m078c_t0.79.json 0.3,0.1 0.78 > m078c_t0.79.log 2>&1

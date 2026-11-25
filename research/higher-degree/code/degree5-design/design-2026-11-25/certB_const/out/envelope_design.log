@@ -1,0 +1,32 @@
+game: T = P10 - (39/50) P21 + (779/10000) P32, radius input 2287/2500; radius 2287/2500
+target 500/701 = 1/1.40200: direct bound 9221/10000 t^2 + 0.655226506 < target for t <= 0.250885 (the end of the unconditional piece)
+target 20000/28039 = 1/1.40195: direct bound 9221/10000 t^2 + 0.655226506 < target for t <= 0.250940 (the end of the unconditional piece)
+target 10000/14021 = 1/1.40210: direct bound 9221/10000 t^2 + 0.655226506 < target for t <= 0.250775 (the end of the unconditional piece)
+min-envelope: direct bound on [0, 0.198816] (max 0.6916751), rows above; rooms at the targets 1/1.40200, 1/1.40195, 1/1.40210
+  row 0.250L  active on [0.19882, 0.32340]: max 0.691675248  rooms 2.1592e-02  2.1617e-02  2.1541e-02
+  row 0.300L  active on [0.32340, 0.39216]: max 0.685949321  rooms 2.7317e-02  2.7343e-02  2.7267e-02
+  row 0.400L  active on [0.39216, 0.48437]: max 0.688022383  rooms 2.5244e-02  2.5270e-02  2.5194e-02
+  row 0.500L  active on [0.48437, 0.53759]: max 0.689243255  rooms 2.4024e-02  2.4049e-02  2.3973e-02
+  row 0.550L  active on [0.53759, 0.58109]: max 0.692615565  rooms 2.0651e-02  2.0677e-02  2.0600e-02
+  row 0.600L  active on [0.58109, 0.64897]: max 0.700068888  rooms 1.3198e-02  1.3223e-02  1.3147e-02
+  row 0.700   active on [0.64897, 0.68123]: max 0.702686882  rooms 1.0580e-02  1.0605e-02  1.0529e-02
+  row 0.720   active on [0.68123, 0.70678]: max 0.704895823  rooms 8.3709e-03  8.3964e-03  8.3201e-03
+  row 0.740   active on [0.70678, 0.73184]: max 0.706960654  rooms 6.3061e-03  6.3315e-03  6.2552e-03
+  row 0.760   active on [0.73184, 0.75712]: max 0.708873540  rooms 4.3932e-03  4.4187e-03  4.3424e-03
+  row 0.780   active on [0.75712, 0.77589]: max 0.710005883  rooms 3.2609e-03  3.2863e-03  3.2100e-03
+  row 0.790   active on [0.77589, 0.78826]: max 0.710756892  rooms 2.5099e-03  2.5353e-03  2.4590e-03
+  row 0.800   active on [0.78826, 0.80136]: max 0.711475397  rooms 1.7914e-03  1.8168e-03  1.7405e-03
+  row 0.810   active on [0.80136, 0.81434]: max 0.712110496  rooms 1.1563e-03  1.1817e-03  1.1054e-03
+  row 0.820   active on [0.81434, 0.82483]: max 0.712526471  rooms 7.4029e-04  7.6573e-04  6.8942e-04
+  row 0.830   active on [0.82483, 0.83486]: max 0.712793289  rooms 4.7347e-04  4.9891e-04  4.2260e-04
+  row 0.840   active on [0.83486, 0.84234]: max 0.712866942  rooms 3.9982e-04  4.2526e-04  3.4895e-04
+  row 0.845   active on [0.84234, 0.84752]: max 0.712893198  rooms 3.7356e-04  3.9900e-04  3.2269e-04
+  row 0.850   active on [0.84752, 0.85240]: max 0.712893198  rooms 3.7356e-04  3.9900e-04  3.2269e-04
+  row 0.855   active on [0.85240, 0.85739]: max 0.712881076  rooms 3.8569e-04  4.1112e-04  3.3481e-04
+  row 0.860   active on [0.85739, 0.86304]: max 0.712828682  rooms 4.3808e-04  4.6352e-04  3.8721e-04
+  row 0.865   active on [0.86304, 0.86666]: max 0.712727575  rooms 5.3919e-04  5.6462e-04  4.8832e-04
+  row 0.870   active on [0.86666, 0.87238]: max 0.712629957  rooms 6.3681e-04  6.6224e-04  5.8593e-04
+  row 0.875   active on [0.87238, 0.87857]: max 0.712423068  rooms 8.4369e-04  8.6913e-04  7.9282e-04
+  row 0.880   active on [0.87857, 0.88414]: max 0.712156859  rooms 1.1099e-03  1.1353e-03  1.0590e-03
+  row 0.886   active on [0.88414, 0.88623]: max 0.711877183  rooms 1.3896e-03  1.4150e-03  1.3387e-03
+B = 0.7128931980; rooms 3.7356e-04  3.9900e-04  3.2269e-04; the largest K with positive room on this envelope: 1/B = 1.402735
