@@ -21,13 +21,10 @@ For a complex `m × n` matrix `A` (a function `Fin m → Fin n → ℂ`):
 Mathlib's inner product is conjugate-linear in the first slot, so the one-dimensional case of
 `⟪xᵢ, yⱼ⟫` is `conj(εᵢ) δⱼ`, exactly the scalar problem.
 
-The constant `K_G^ℂ` is defined as the infimum of all Grothendieck bounds. Two more predicates speak of the bounds
-directly, so they do not depend on Lean's convention for the infimum of an empty or unbounded set: `UpperBelow c`
-says some bound is below `c`, `LowerAbove c` says every bound is above `c`. `Grothe/StatementBridges.lean` proves what
-they say about the constant: `UpperBelow c` gives `K_G^ℂ < c`; `LowerAbove c` gives `c ≤ K_G^ℂ` once some bound
-exists, and then even `c < K_G^ℂ`, because the set of bounds is closed, so the infimum is itself a bound. Without a
-bound the set is empty and `LowerAbove c` holds vacuously, which is why those two bridges assume one. The suprema
-`C(A)`, `V(A)` are over nonempty bounded sets of reals.
+The constant `K_G^ℂ` is defined as the infimum of all Grothendieck bounds. `UpperBelow c` says directly that some
+bound is below `c`, so it does not depend on Lean's convention for the infimum of an empty or unbounded set;
+`Grothe/StatementBridges.lean` proves that `UpperBelow c` gives `K_G^ℂ < c`. The suprema `C(A)`, `V(A)` are over
+nonempty bounded sets of reals.
 -/
 
 namespace Grothe.Statement
@@ -62,9 +59,6 @@ def complexGrothendieckConstant : ℝ := sInf {K | IsBound K}
 
 /-- Some Grothendieck bound is below `c`. -/
 def UpperBelow (c : ℝ) : Prop := ∃ K, IsBound K ∧ K < c
-
-/-- Every Grothendieck bound is above `c`. -/
-def LowerAbove (c : ℝ) : Prop := ∀ K, IsBound K → c < K
 
 end
 

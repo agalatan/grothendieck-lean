@@ -42,7 +42,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 
 | path | what |
 |---|---|
-| `Grothe/Statement.lean` | definitions only (imports only Mathlib): `scalarOpt`, `vectorOpt`, `IsBound`, `complexGrothendieckConstant`, `UpperBelow`, `LowerAbove` |
+| `Grothe/Statement.lean` | definitions only (imports only Mathlib): `scalarOpt`, `vectorOpt`, `IsBound`, `complexGrothendieckConstant`, `UpperBelow` |
 | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorems |
 | `Grothe/Lower/` | lower certificate: exact rational checker, rows, Stein cuts, mass row, envelope, transfer to matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis for the lower bound; the node caps (`Cap*.lean`, `CapRowKK`, `CapPieces/`, `CapNodes`) |
