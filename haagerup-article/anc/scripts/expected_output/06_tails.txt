@@ -1,0 +1,84 @@
+06  Hardy tails: circle means, budgets and positivity (numerical illustration)
+==============================================================================
+
+(1) Positivity on the disk |t| <= r_reg,p (sample: 60 radii x 1440 angles)
+--------------------------------------------------------------------------
+  p   r_reg     min eig of I +- Re Gamma(t)    min |det(I -+ Gamma)|   min eig of Re (I -+ Gamma)^-1
+               on the disk    on |t| = r_reg
+  0   1.03800   0.000659       0.000659         0.001259                0.452036
+  [ok] (floating point) channel 0: I +- Re Gamma(t) positive definite, det(I -+ Gamma) != 0 and Re (I -+ Gamma)^-1 positive definite at every sample point; the minimum of the first is on the boundary circle
+  1   1.03825   0.002542       0.002542         0.004862                0.452119
+  [ok] (floating point) channel 1: I +- Re Gamma(t) positive definite, det(I -+ Gamma) != 0 and Re (I -+ Gamma)^-1 positive definite at every sample point; the minimum of the first is on the boundary circle
+  2   1.03600   0.029684       0.029684         0.030636                0.219955
+  [ok] (floating point) channel 2: I +- Re Gamma(t) positive definite, det(I -+ Gamma) != 0 and Re (I -+ Gamma)^-1 positive definite at every sample point; the minimum of the first is on the boundary circle
+  3   1.03600   0.005792       0.005792         0.011550                0.471208
+  [ok] (floating point) channel 3: I +- Re Gamma(t) positive definite, det(I -+ Gamma) != 0 and Re (I -+ Gamma)^-1 positive definite at every sample point; the minimum of the first is on the boundary circle
+  4   1.09100   0.074439       0.074439         0.143337                0.429955
+  [ok] (floating point) channel 4: I +- Re Gamma(t) positive definite, det(I -+ Gamma) != 0 and Re (I -+ Gamma)^-1 positive definite at every sample point; the minimum of the first is on the boundary circle
+  5   1.03825   0.043032       0.043032         0.084953                0.418266
+  [ok] (floating point) channel 5: I +- Re Gamma(t) positive definite, det(I -+ Gamma) != 0 and Re (I -+ Gamma)^-1 positive definite at every sample point; the minimum of the first is on the boundary circle
+
+(2) Mean over |t| = rho_p of the pointwise bound 1/Lambda, against the budget B_p
+---------------------------------------------------------------------------------
+  channel 0: rho = 1.0370, beta = 0.25: mean of 1/Lambda = 2.3163625, max = 2.92143, B_p = 2.528814, B_p / mean = 1.0917177
+  [ok] (floating point) channel 0: admissible on the circle (Z and T positive definite), the trapezoidal means with 4096 and 8192 points and the paper's integral over the first-quadrant arc agree to 1e-10, and the mean is <= B_p
+  [ok] (floating point) channel 0: Lambda agrees with its second form (through (I -+ Gamma)^-1, as the Lean checker evaluates it) to 1e-9 on the circle
+  channel 1: rho = 1.0370, beta = 0.25: mean of 1/Lambda = 2.2861955, max = 2.81367, B_p = 2.507841, B_p / mean = 1.0969495
+  [ok] (floating point) channel 1: admissible on the circle (Z and T positive definite), the trapezoidal means with 4096 and 8192 points and the paper's integral over the first-quadrant arc agree to 1e-10, and the mean is <= B_p
+  [ok] (floating point) channel 1: Lambda agrees with its second form (through (I -+ Gamma)^-1, as the Lean checker evaluates it) to 1e-9 on the circle
+  channel 2: rho = 1.0300, beta = 0.20: mean of 1/Lambda = 2.6601267, max = 4.50962, B_p = 2.919013, B_p / mean = 1.0973211
+  [ok] (floating point) channel 2: admissible on the circle (Z and T positive definite), the trapezoidal means with 4096 and 8192 points and the paper's integral over the first-quadrant arc agree to 1e-10, and the mean is <= B_p
+  [ok] (floating point) channel 2: Lambda agrees with its second form (through (I -+ Gamma)^-1, as the Lean checker evaluates it) to 1e-9 on the circle
+  [ok] (floating point) channel 2: Lambda agrees with the closed form for diagonal matrices, 16 beta^2 lambda(g1) lambda(g2), to 1e-9 on the circle
+  channel 3: rho = 1.0350, beta = 0.40: mean of 1/Lambda = 1.2758698, max = 1.48180, B_p = 1.692090, B_p / mean = 1.3262247
+  [ok] (floating point) channel 3: admissible on the circle (Z and T positive definite), the trapezoidal means with 4096 and 8192 points and the paper's integral over the first-quadrant arc agree to 1e-10, and the mean is <= B_p
+  [ok] (floating point) channel 3: Lambda agrees with its second form (through (I -+ Gamma)^-1, as the Lean checker evaluates it) to 1e-9 on the circle
+  [ok] (floating point) channel 3: Lambda agrees with the closed form for diagonal matrices, 16 beta^2 lambda(g1) lambda(g2), to 1e-9 on the circle
+  channel 4: rho = 1.0900, beta = 0.40: mean of 1/Lambda = 1.2377288, max = 1.44385, B_p = 1.658129, B_p / mean = 1.3396545
+  [ok] (floating point) channel 4: admissible on the circle (Z and T positive definite), the trapezoidal means with 4096 and 8192 points and the paper's integral over the first-quadrant arc agree to 1e-10, and the mean is <= B_p
+  [ok] (floating point) channel 4: Lambda agrees with its second form (through (I -+ Gamma)^-1, as the Lean checker evaluates it) to 1e-9 on the circle
+  [ok] (floating point) channel 4: Lambda agrees with the closed form for diagonal matrices, 16 beta^2 lambda(g1) lambda(g2), to 1e-9 on the circle
+  channel 5: rho = 1.0370, beta = 0.20: mean of 1/Lambda = 3.0931913, max = 3.75055, B_p = 3.355048, B_p / mean = 1.0846558
+  [ok] (floating point) channel 5: admissible on the circle (Z and T positive definite), the trapezoidal means with 4096 and 8192 points and the paper's integral over the first-quadrant arc agree to 1e-10, and the mean is <= B_p
+  [ok] (floating point) channel 5: Lambda agrees with its second form (through (I -+ Gamma)^-1, as the Lean checker evaluates it) to 1e-9 on the circle
+
+(3) Parseval: sum_{k<=250} (h_k^(p))^2 rho_p^(4k+2) from the certified tables
+-----------------------------------------------------------------------------
+  (a lower bound of the circle mean of |f_p|^2, which is at most the mean of 1/Lambda, hence at most B_p)
+  channel 0: partial sum <= 0.544934016; its last term (k = 250) is 3.674e-24; mean of 1/Lambda = 2.3163625; B_p = 2.528814
+  [ok] (interval) channel 0: the Parseval sum over the head is <= B_p
+  [ok] (floating point) channel 0: the Parseval sum over the head is <= the mean of 1/Lambda
+  channel 1: partial sum <= 0.543837875; its last term (k = 250) is 2.919e-25; mean of 1/Lambda = 2.2861955; B_p = 2.507841
+  [ok] (interval) channel 1: the Parseval sum over the head is <= B_p
+  [ok] (floating point) channel 1: the Parseval sum over the head is <= the mean of 1/Lambda
+  channel 2: partial sum <= 0.324738331; its last term (k = 250) is 6.612e-16; mean of 1/Lambda = 2.6601267; B_p = 2.919013
+  [ok] (interval) channel 2: the Parseval sum over the head is <= B_p
+  [ok] (floating point) channel 2: the Parseval sum over the head is <= the mean of 1/Lambda
+  channel 3: partial sum <= 0.616837283; its last term (k = 250) is 3.506e-16; mean of 1/Lambda = 1.2758698; B_p = 1.692090
+  [ok] (interval) channel 3: the Parseval sum over the head is <= B_p
+  [ok] (floating point) channel 3: the Parseval sum over the head is <= the mean of 1/Lambda
+  channel 4: partial sum <= 0.610982947; its last term (k = 250) is 3.089e-33; mean of 1/Lambda = 1.2377288; B_p = 1.658129
+  [ok] (interval) channel 4: the Parseval sum over the head is <= B_p
+  [ok] (floating point) channel 4: the Parseval sum over the head is <= the mean of 1/Lambda
+  channel 5: partial sum <= 0.516169493; its last term (k = 250) is 6.204e-35; mean of 1/Lambda = 3.0931913; B_p = 3.355048
+  [ok] (interval) channel 5: the Parseval sum over the head is <= B_p
+  [ok] (floating point) channel 5: the Parseval sum over the head is <= the mean of 1/Lambda
+
+(4) Tail bounds sqrt(B rho^-1006 / (1 - rho^-4)) for sum_{k>250} |h_k^(p)|
+--------------------------------------------------------------------------
+  p   from B_p        from the numerical mean          tau_p
+  0   5.002159e-08    4.787428e-08                     5.002400e-08
+  [ok] (floating point) channel 0: the tail bound from B_p is <= tau_p (01 checks this exactly)
+  1   4.981372e-08    4.756152e-08                     4.981600e-08
+  [ok] (floating point) channel 1: the tail bound from B_p is <= tau_p (01 checks this exactly)
+  2   1.785794e-06    1.704765e-06                     1.785796e-06
+  [ok] (floating point) channel 2: the tail bound from B_p is <= tau_p (01 checks this exactly)
+  3   1.108324e-07    9.624054e-08                     1.108350e-07
+  [ok] (floating point) channel 3: the tail bound from B_p is <= tau_p (01 checks this exactly)
+  4   3.563738e-19    3.078997e-19                     3.000000e-12
+  [ok] (floating point) channel 4: the tail bound from B_p is <= tau_p (01 checks this exactly)
+  5   5.761670e-08    5.532258e-08                     5.761900e-08
+  [ok] (floating point) channel 5: the tail bound from B_p is <= tau_p (01 checks this exactly)
+  weighted tail allowance sum_p w_p tau_p = 4.746484e-08
+
+RESULT: all 39 checks passed
