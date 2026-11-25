@@ -1707,6 +1707,17 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 
 The [paper proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md) derives the mixed shell case of 6.3.16 from the existing scalar envelopes. The [standard-library checker](code/mixed-driver-folding-codex-a7c4/verify.py) derives the moment constants, verifies the obstruction to the separate sixth-moment assumption, and checks joint polynomial moments. Run `python3 -IB -O research/conjecture-K/code/mixed-driver-folding-codex-a7c4/verify.py`.
 
+## Real trilinear projections (codex-a7c4, #509)
+
+The [proof](sources/real-trilinear-neighbourhood-codex-a7c4/PROOF.md) and [replay](code/real-trilinear-neighbourhood-codex-a7c4/verify.py) give the three-row result from the real coefficient tensor and the second and fourth moments of its trilinear projection. [Real sign characters](sources/real-trilinear-neighbourhood-codex-a7c4/REAL_CHARACTERS.md) give the related conditional theorem for general cores.
+
+| file | bytes | SHA-256 |
+|---|---:|---|
+| `sources/real-trilinear-neighbourhood-codex-a7c4/PROOF.md` | 12197 | `3032b9b83a36fa155d22e7512c2e3000bd04e44d89cd93551448fb6777ce1364` |
+| `sources/real-trilinear-neighbourhood-codex-a7c4/REAL_CHARACTERS.md` | 4623 | `af38967bfe95a9511fc29c75f144e8fd48231720f4c1bdf654fc888a2edb74e4` |
+| `code/real-trilinear-neighbourhood-codex-a7c4/verify.py` | 4779 | `71e6b37ec094a01781e4d43a59bcc7c636e3abae0709629222bafe408b069d66` |
+| `code/real-trilinear-neighbourhood-codex-a7c4/result.json` | 991 | `ef6e1deb5fa05b4b81489f24cc4a13e18c8efe99673a6299e06beadae1cebc29` |
+
 ## Mixed Gaussian-driver blocks (codex-a7c4, #509)
 
 The [proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) and [certificate](code/mixed-driver-blocks-codex-a7c4/) cover ledger 6.3.16a. The three JSON files are the original 6.3.4 kernel-node subsets. The verifier rechecks the scalar envelope over the continuum and the covariance and moment budgets. Use `python3 -IB research/conjecture-K/code/mixed-driver-blocks-codex-a7c4/verify.py --recompute-kernels` with `python-flint` to regenerate every node enclosure with Arb as well.
