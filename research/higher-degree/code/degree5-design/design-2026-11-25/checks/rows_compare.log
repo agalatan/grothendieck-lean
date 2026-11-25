@@ -1,0 +1,45 @@
+tables/g078/rows_all.lines
+  row 0.740: l +9.56e-06  beta -2.73e-06  bA +3.87e-06  bB +2.75e-06   max 9.56e-06   nu5 (float row) 0.0052459
+  row 0.760: l -5.60e-06  beta +7.73e-07  bA +7.46e-07  bB -2.93e-06   max 5.60e-06   nu5 (float row) 0.0061726
+  row 0.780: l +1.25e-08  beta -6.05e-07  bA +1.79e-06  bB -4.75e-06   max 4.75e-06   nu5 (float row) 0.0072093
+  row 0.790: l -1.09e-05  beta +3.78e-06  bA +1.21e-05  bB -4.70e-06   max 1.21e-05   nu5 (float row) 0.0077711
+  row 0.800: l -1.21e-05  beta -2.82e-06  bA +2.74e-06  bB -1.87e-06   max 1.21e-05   nu5 (float row) 0.0083647
+  row 0.810: l +1.48e-05  beta +1.48e-06  bA -6.52e-06  bB -2.02e-06   max 1.48e-05   nu5 (float row) 0.0089890
+  row 0.820: l +1.75e-05  beta +8.83e-06  bA -4.82e-06  bB +2.42e-06   max 1.75e-05   nu5 (float row) 0.0096464
+  row 0.830: l -3.90e-07  beta -2.17e-07  bA -1.90e-06  bB -7.01e-06   max 7.01e-06   nu5 (float row) 0.0103384
+  row 0.840: l -9.42e-06  beta +9.41e-07  bA -3.31e-06  bB +8.83e-07   max 9.42e-06   nu5 (float row) 0.0110648
+  row 0.845: l -4.23e-06  beta +1.04e-06  bA +4.04e-06  bB -2.33e-06   max 4.23e-06   nu5 (float row) 0.0114433
+  row 0.850: l +9.75e-06  beta +8.58e-06  bA +9.27e-06  bB -6.49e-06   max 9.75e-06   nu5 (float row) 0.0118303
+  row 0.855: l +1.75e-06  beta -3.59e-06  bA -7.17e-06  bB +2.18e-06   max 7.17e-06   nu5 (float row) 0.0122281
+  row 0.860: l +7.02e-06  beta +8.68e-06  bA +3.92e-06  bB -1.02e-05   max 1.02e-05   nu5 (float row) 0.0126351
+  largest difference over the rows within 1e-4: 1.75e-05 (13 rows); rows that differ by 1e-4 or more: none
+tables/g078hi/rows_all.lines
+  row 0.860: l +7.02e-06  beta +8.68e-06  bA +3.92e-06  bB -1.02e-05   max 1.02e-05   nu5 (float row) 0.0126351
+  row 0.865: l -5.05e-06  beta +3.23e-06  bA +2.02e-05  bB +4.25e-06   max 2.02e-05   nu5 (float row) 0.0130522
+  row 0.870: l -2.69e-06  beta -1.20e-06  bA -2.32e-07  bB -4.54e-06   max 4.54e-06   nu5 (float row) 0.0134802
+  row 0.875: l -8.70e-06  beta -7.16e-07  bA +2.84e-05  bB +6.19e-06   max 2.84e-05   nu5 (float row) 0.0139183
+  row 0.880: l -1.05e-06  beta +1.19e-06  bA +2.35e-05  bB -6.60e-06   max 2.35e-05   nu5 (float row) 0.0143682
+  row 0.886: l -1.07e-05  beta -1.13e-04  bA +7.29e-04  bB +1.38e-03   max 1.38e-03   nu5 (float row) 0.0149470
+  largest difference over the rows within 1e-4: 2.84e-05 (5 rows); rows that differ by 1e-4 or more: 0.886 (1.4e-03)
+margins/rows078.lines
+  row 0.740: l +9.56e-06  beta -2.73e-06  bA +3.87e-06  bB +2.75e-06   max 9.56e-06   nu5 (float row) 0.0052459
+  row 0.760: l -5.60e-06  beta +7.73e-07  bA +7.46e-07  bB -2.93e-06   max 5.60e-06   nu5 (float row) 0.0061726
+  row 0.780: l +1.25e-08  beta -6.05e-07  bA +1.79e-06  bB -4.75e-06   max 4.75e-06   nu5 (float row) 0.0072093
+  row 0.790: l -1.09e-05  beta +3.78e-06  bA +1.21e-05  bB -4.70e-06   max 1.21e-05   nu5 (float row) 0.0077711
+  row 0.800: l -1.21e-05  beta -2.82e-06  bA +2.74e-06  bB -1.87e-06   max 1.21e-05   nu5 (float row) 0.0083647
+  row 0.810: l +1.48e-05  beta +1.48e-06  bA -6.52e-06  bB -2.02e-06   max 1.48e-05   nu5 (float row) 0.0089890
+  row 0.820: l +1.75e-05  beta +8.83e-06  bA -4.82e-06  bB +2.42e-06   max 1.75e-05   nu5 (float row) 0.0096464
+  row 0.830: l -3.90e-07  beta -2.17e-07  bA -1.90e-06  bB -7.01e-06   max 7.01e-06   nu5 (float row) 0.0103384
+  row 0.840: l -9.42e-06  beta +9.41e-07  bA -3.31e-06  bB +8.83e-07   max 9.42e-06   nu5 (float row) 0.0110648
+  row 0.845: l -4.23e-06  beta +1.04e-06  bA +4.04e-06  bB -2.33e-06   max 4.23e-06   nu5 (float row) 0.0114433
+  row 0.850: l +9.75e-06  beta +8.58e-06  bA +9.27e-06  bB -6.49e-06   max 9.75e-06   nu5 (float row) 0.0118303
+  row 0.855: l +1.75e-06  beta -3.59e-06  bA -7.17e-06  bB +2.18e-06   max 7.17e-06   nu5 (float row) 0.0122281
+  row 0.860: l +7.02e-06  beta +8.68e-06  bA +3.92e-06  bB -1.02e-05   max 1.02e-05   nu5 (float row) 0.0126351
+  row 0.865: l -5.54e-03  beta +6.37e-03  bA -5.31e-02  bB -3.21e-02   max 5.31e-02   nu5 (float row) 0.0277450
+  row 0.870: l -7.46e-03  beta +6.43e-03  bA -5.38e-02  bB -3.26e-02   max 5.38e-02   nu5 (float row) 0.0286297
+  row 0.875: l -9.48e-03  beta +6.50e-03  bA -5.44e-02  bB -3.30e-02   max 5.44e-02   nu5 (float row) 0.0295362
+  row 0.880: l -1.16e-02  beta +6.57e-03  bA -5.50e-02  bB -3.34e-02   max 5.50e-02   nu5 (float row) 0.0304659
+  row 0.886: l -1.16e-02  beta +6.77e-03  bA -5.43e-02  bB -3.20e-02   max 5.43e-02   nu5 (float row) 0.0316592
+  largest difference over the rows within 1e-4: 1.75e-05 (13 rows); rows that differ by 1e-4 or more: 0.865 (5.3e-02), 0.870 (5.4e-02), 0.875 (5.4e-02), 0.880 (5.5e-02), 0.886 (5.4e-02)
+margin scans m078_t*.json, tilt (2/5, 3/10): rows that differ from the certificate row by 1e-4 or more: 0.865 (5.3e-02), 0.870 (5.4e-02), 0.875 (5.4e-02), 0.880 (5.5e-02), 0.886 (5.4e-02)
+margin scans m078b_t*.json, tilt (2/5, 3/20): rows that differ from the certificate row by 1e-4 or more: 0.886 (1.4e-03)

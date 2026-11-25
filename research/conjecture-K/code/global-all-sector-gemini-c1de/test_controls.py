@@ -69,13 +69,21 @@ def main():
             break
     expect_fail("Part 1 shift exterior even PSD failure", lambda: verify.verify_all(d3))
 
-    # 4. Part 1 shift exterior odd O_iso PSD failure
+    # 4. Part 1 shift exterior odd O_iso PSD failure & Jensen diagonal under-report failure
     d4 = copy.deepcopy(base)
     for s in d4["part1_potential_slabs"]:
         if s["shift_ext"]:
             s["O_iso"][0][1] = (2.0).hex()
             break
     expect_fail("Part 1 shift exterior odd O_iso PSD failure", lambda: verify.verify_all(d4))
+
+    d4b = copy.deepcopy(base)
+    for s in d4b["part1_potential_slabs"]:
+        if s["shift_ext"]:
+            s["O_iso"][0][0] = (0.40).hex()
+            s["O_iso"][0][1] = (0.41).hex()
+            break
+    expect_fail("Part 1 w=11/8 Jensen diagonal lower-bound violation", lambda: verify.verify_all(d4b))
 
     # 5. Part 2 missing origin slab
     d5 = copy.deepcopy(base)
@@ -87,10 +95,15 @@ def main():
     d6["part2_origin_strip"][0]["M_re"][0][1] = (2.0).hex()
     expect_fail("Part 2 M_re diagonal PSD failure", lambda: verify.verify_all(d6))
 
-    # 7. Part 2 M_im off-diagonal 3x3 Sylvester failure
+    # 7. Part 2 M_im off-diagonal 3x3 Sylvester failure & w=0 Jensen diagonal under-report failure
     d7 = copy.deepcopy(base)
     d7["part2_origin_strip"][0]["M_im"][1][1] = (2.0).hex()
     expect_fail("Part 2 M_im off-diagonal PSD failure", lambda: verify.verify_all(d7))
+
+    d7b = copy.deepcopy(base)
+    d7b["part2_origin_strip"][0]["M_im"][0][0] = (1.04).hex()
+    d7b["part2_origin_strip"][0]["M_im"][0][1] = (1.05).hex()
+    expect_fail("Part 2 w=0 Jensen diagonal lower-bound violation", lambda: verify.verify_all(d7b))
 
     # 8. Part 2 non-positive s_odd
     d8 = copy.deepcopy(base)
@@ -179,7 +192,7 @@ def main():
             check=True,
         )
         r3 = subprocess.run([str(exe), "--control-false-hotspot"], capture_output=True, text=True, check=True)
-        assert "CONTROL_ALL_SECTOR dp=" in r3.stdout
+        assert "CONTROL_ALL_SECTOR dp=" in r3.stdout and "false_odd_piv=-" in r3.stdout
         print(f"CONTROL PASS (live C++ false-target): {r3.stdout.strip()}")
 
         # 19. C++ -DNDEBUG build rejected at compile time
@@ -194,7 +207,7 @@ def main():
         assert r_ndebug.returncode != 0, "C++ -DNDEBUG build unexpectedly succeeded!"
         print("CONTROL PASS (rejected as expected): C++ -DNDEBUG compile rejected")
 
-    print("ALL 19 NEGATIVE/CORRUPTION CONTROLS PASSED")
+    print("ALL 21 NEGATIVE/CORRUPTION CONTROLS PASSED")
 
 
 if __name__ == "__main__":

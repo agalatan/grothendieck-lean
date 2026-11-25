@@ -1,0 +1,5 @@
+[   10s] job 2 done (exit 0) on core 30: cd /home/agalatan/claude-b9ee-degree5/design/smallt && OMP_NUM_THREADS=1 ST_E1=39/50 ST_ETA=779/10000 ST_RHO=2287/2500 /home/agalatan/claude-b9ee-degr
+[   10s] job 3 done (exit 0) on core 31: cd /home/agalatan/claude-b9ee-degree5/design/smallt && OMP_NUM_THREADS=1 ST_E1=39/50 ST_ETA=779/10000 ST_RHO=2287/2500 ST_RHO_TABLE=/home/agalatan/cla
+[  258s] job 0 done (exit 0) on core 28: cd /home/agalatan/claude-b9ee-degree5/design/smallt && OMP_NUM_THREADS=1 ST_E1=39/50 ST_ETA=779/10000 ST_RHO=2287/2500 /home/agalatan/claude-b9ee-degr
+[  306s] job 1 done (exit 0) on core 29: cd /home/agalatan/claude-b9ee-degree5/design/smallt && OMP_NUM_THREADS=1 ST_E1=39/50 ST_ETA=779/10000 ST_RHO=2287/2500 ST_RHO_TABLE=/home/agalatan/cla
+ALL DONE (306s)

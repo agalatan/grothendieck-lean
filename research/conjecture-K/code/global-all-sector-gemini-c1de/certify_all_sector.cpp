@@ -11,15 +11,16 @@
 //
 // via three self-contained parts + exact rational audit in verify.py:
 //   Part 1: Potential exteriors on [0, 8] (240 amplitude slabs on [0, 11/8] -> S_r >= 25/16 via
-//           constant pivot mu_0 = 61/50; 208 shift slabs on [11/8, 8] -> both even & odd L=1
+//           constant pivot mu_0 = 61/50; 272 shift slabs on [11/8, 8] -> both even & odd L=1
 //           potentials pass; w >= 8 proved analytically in zero-float exact rationals in verify.py).
-//   Part 2: Hybrid local-pullback + Theorem 2(b) origin strip on [0, 11/8] -> M_odd(w, v; 0) <= B_odd
-//           for all 0 <= ||v||_2 <= s_odd(w) (C_0 = 0 identically, closing via Global (P) of 7.4.16).
-//   Part 3: 4D adaptive bulk cover on w in [0, 11/8], s_odd(w) <= ||v||_2 <= 5/4 (Im A >= 0),
-//           pairing Weighted Cauchy-Schwarz U_WCS (for Rem(w, v)) with the Sharp Anisotropic Capped
-//           2-Sign Inequality (radial polynomial q(T) = sig2 + T*(c0 + 2*c1*f_nu + c2*f_nu^2) >= sig2)
-//           and 2nd-order cell-exact 2x2 factored integration of M_odd(w, v; q) (using the exact
-//           Bernstein-certified constants ||D_X A||_op <= 1/mu^2 and lambda_max(D_X^2 A[h,h]) <= 2/mu^3).
+//   Part 2: Smooth-Split H_{5,delta} + zero-overlap local pullback origin strip (244 exact-dyadic
+//           slabs on [0, 11/8]) -> M_odd(w, v; 0) <= B_odd for all 0 <= ||v||_2 <= s_odd(w)
+//           (C_0 = 0 identically, closing via Global (P) of 7.4.16).
+//   Part 3: Adaptive 5D Box5 bulk cover (98 exact-dyadic slabs on [0, 11/8], s_odd(w) <= ||v||_2 <= 5/4,
+//           Im A >= 0, with on-demand w-bisection near the origin shell), pairing Weighted Cauchy-Schwarz
+//           U_WCS (for Rem(w, v)) with the Sharp Anisotropic Capped 2-Sign Inequality (radial polynomial
+//           q(T) = sig2 + T*(c0 + 2*c1*f_nu + c2*f_nu^2) >= sig2) and 2nd-order cell-exact 2x2 factored
+//           integration of M_odd(w, v; q) (using ||D_X A||_op <= 1/mu^2 and lambda_max(D_X^2 A[h,h]) <= 2/mu^3).
 
 #pragma STDC FP_CONTRACT OFF
 
@@ -41,6 +42,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <map>
 #include <mutex>
 #include <sstream>
 #include <string>
@@ -347,7 +349,7 @@ static double exact_lip_shift_up(double r0_dn, double Delta_up, double q0_dn) {
 // 2. Peak-row & global odd-sector constants + Jet2 + solve_T
 // ============================================================================
 struct Constants {
-  I a, b, p, rho0, c1, d, inv_sqrt2, sqrt2, sqrt3;
+  I a, b, p, rho0, c1, d, inv_sqrt2, sqrt2, sqrt3, sqrt6;
   I p_minus_shift, q_AA, q_BB, q_AB;
   // Global phase-invariant isotropic odd shift & budget:
   // c* = -(7/25) nu, C_inv(Q, nu) = -(6801/18910) Re(Q conj(nu)) => k1 = k2 = -11/20,
@@ -366,6 +368,7 @@ static void init_constants() {
   C.sqrt2 = sqrt_iv(I(2.0));
   C.inv_sqrt2 = I(1.0) / C.sqrt2;
   C.sqrt3 = sqrt_iv(I(3.0));
+  C.sqrt6 = sqrt_iv(I(6.0));
   C.p_minus_shift = C.p - rat(463, 5000);
   I r2 = sq(C.rho0);
   C.q_AA = C.p_minus_shift - rat(67, 100) - rat(2, 25) * r2;
@@ -397,6 +400,13 @@ static inline Jet2 inv_j(const Jet2& x) {
   I u = I(1.0) / x.v;
   I u2 = sq(u);
   return {u, (-x.d) * u2, (I(2.0) * sq(x.d) * u - x.d2) * u2};
+}
+static inline Jet2 sqrt_j(const Jet2& x) {
+  assert(x.v.l > 0.0);
+  I s = sqrt_iv(x.v);
+  I inv_2s = I(0.5) / s;
+  I d = x.d * inv_2s;
+  return {s, d, (x.d2 - I(2.0) * sq(d)) * inv_2s};
 }
 static inline Jet2 expneg_j(const Jet2& x) {
   I e = expneg_iv(x.v);
@@ -491,7 +501,7 @@ static inline Sym3 sym3_scale(I c, const Sym3& A) {
 //   M_ub(i, j) = mid(M_iv(i, j)) for i != j,
 //   M_ub(i, i) = M_iv(i, i).h + sum_{j != i} (M_iv(i, j).h - M_iv(i, j).l) / 2.
 // Then check B_odd - M_ub > 0 via outward-rounded 6x6 Cholesky: returns min Cholesky pivot^2 (> 0 => PD!).
-static double check_Bodd_minus_M6_pd(const I M_iv[21]) {
+static double check_Bodd_minus_M6_pd(const I M_iv[21], double diag_shift = 0.0) {
   static const int idx6[6][6] = {
       {0, 1, 2, 3, 4, 5},
       {1, 6, 7, 8, 9, 10},
@@ -527,7 +537,11 @@ static double check_Bodd_minus_M6_pd(const I M_iv[21]) {
   }
 
   // Outward-rounded LDL^T / Cholesky: D = L diag(d) L^T.
-  // If all d[i].l > 0, then EVERY matrix in D (in particular B_odd - M_ub) is strictly positive definite!
+  // If all d[i].l > 0, then EVERY matrix in D (in particular B_odd - diag_shift*I_6 - M_ub) is strictly positive definite!
+  if (diag_shift != 0.0) {
+    I sh(diag_shift);
+    for (int i = 0; i < 6; ++i) D[i][i] = D[i][i] - sh;
+  }
   I L[6][6];
   I d[6];
   double min_piv = 1e30;
@@ -960,10 +974,11 @@ static Part1Slab certify_part1_slab(double wl, double wh, bool shift_ext, double
 
   Sym2 P_re{I(0.0), I(0.0), I(0.0)}, P_im{I(0.0), I(0.0), I(0.0)};
   // Odd L=1 isotropic potential O_iso (identical for Re and Im 3x3 blocks!):
-  // Integrand for (1/pi)*exp(-T)/(h*h3) * G_iso(z_1):
+  // Integrand for (2/pi)*exp(-T)/(h*h3) * G_iso(z_1) on theta in [0, pi]:
   //   (0,0) = (1,1) = T; (2,2) = T*f_nu^2; (0,2) = T*f_nu;
   //   (0,1) = Re(z_1^2) = Zr^2 - Zi^2; (1,2) = (Zr^2 - Zi^2)*f_nu.
-  // Note: dmu = (1/pi)*exp(-T)/(h*h3) * r dr dth on [0, pi], divided by r -> factor f = exp(-T)/(h*h3)!
+  // Note: full Gaussian density on [-pi, pi] is (1/pi)*exp(-T)/(h*h3) * r dr dth;
+  //   folding reflection-even integrands to [0, pi] multiplies by 2, and r cancels 1/r -> factor f2 = 2*exp(-T)/(h*h3)!
   Sym3 O_iso;
 
   auto eval_pt = [&](I r, I th, I w_p) {
@@ -984,12 +999,12 @@ static Part1Slab certify_part1_slab(double wl, double wh, bool shift_ext, double
     out.im = {out.re.a00, f2 * t0 * p_im1, f2 * (sq(p_im1) + sq(z2i))};
     if (shift_ext) {
       I fn = (T - I(2.0)) * C.inv_sqrt2;
-      I fT = f * T;
+      I fT = f2 * T;
       out.odd.e[0] = fT;
-      out.odd.e[1] = f * z2r_raw;
+      out.odd.e[1] = f2 * z2r_raw;
       out.odd.e[2] = fT * fn;
       out.odd.e[3] = fT;
-      out.odd.e[4] = f * z2r_raw * fn;
+      out.odd.e[4] = f2 * z2r_raw * fn;
       out.odd.e[5] = fT * sq(fn);
     }
     return out;
@@ -1012,12 +1027,12 @@ static Part1Slab certify_part1_slab(double wl, double wh, bool shift_ext, double
     o.i00 = o.r00; o.i01 = f2 * t0 * p_im1; o.i11 = f2 * (sq_j(p_im1) + sq_j(z2i));
     if (shift_ext) {
       Jet2 fn = C.inv_sqrt2 * (T - I(2.0));
-      Jet2 fT = f * T;
+      Jet2 fT = f2 * T;
       o.o[0] = fT;
-      o.o[1] = f * z2r_raw;
+      o.o[1] = f2 * z2r_raw;
       o.o[2] = fT * fn;
       o.o[3] = fT;
-      o.o[4] = f * z2r_raw * fn;
+      o.o[4] = f2 * z2r_raw * fn;
       o.o[5] = fT * sq_j(fn);
     }
     return o;
@@ -1109,67 +1124,82 @@ static Part1Slab certify_part1_slab(double wl, double wh, bool shift_ext, double
 // where M_0(w) = M_odd(w, 0; 0) is integrated by smooth shifted-polar Jet2 midpoint + MVT w-variation,
 // and all small nonnegative excess blocks are enclosed directly by outward interval Riemann sums.
 // Note: by conjugation symmetry th -> -th, ALL matrices decouple into 3x3 Re & Im blocks!
+static I gamma_tail_iv(int k, I t);
+
 struct Part2Slab {
-  double wl, wh, s_odd, delta, eps_cs;
+  double wl, wh, s_odd, delta, eps_cs, R_in, lam;
   Sym3 M_re, M_im;
   double margin;
 };
 
-static Part2Slab certify_part2_slab(double wl, double wh, double s_odd, double delta, double eps_cs) {
+static Part2Slab certify_part2_slab(double wl, double wh, double s_odd, double delta, double eps_cs,
+                                    double R_in_override = 0.0) {
   require_fe_upward();
+  assert(wl >= 0.0 && wl <= wh && wh <= 1.375);
+  assert(s_odd > 0.0 && s_odd <= 0.125 && delta > 0.0 && delta <= 0.5 && eps_cs > 0.0);
+  double R_in = (R_in_override > 0.0) ? R_in_override : (3.0 * delta);
+  assert(R_in > delta && R_in <= 2.0);
+
   I w_iv(wl, wh);
   I w_mid = I(0.5) * (I(wl) + I(wh));
   I half_dw = I(0.5) * (I(wh) - I(wl));
   I dw_sym(-half_dw.h, half_dw.h);
-  I s_iv(s_odd), del_iv(delta), eps_iv(eps_cs);
+  I s_iv(s_odd), del_iv(delta), del2_iv = sq(del_iv), eps_iv(eps_cs);
   I inv_pi = I(1.0) / PI_IV, inv_24 = rat(1, 24);
   double odd_tail = certified_odd_tail_coeff(wh, 24.0);
 
-  // Verify global injectivity on Omega = {|L(z) + w| <= delta} for all w in [wl, wh]:
-  // On Omega, |L(z)| <= wh + delta => T <= T_om_max = H^{-1}((wh + delta)^2).
-  I L_om_max = I(wh) + del_iv;
-  I L_om_min(std::max(0.0, sub_dn(wl, delta)), std::max(0.0, sub_up(wl, delta)));
-  I T_om_max_iv = solve_T_iv(sq(L_om_max));
-  I T_om_min_iv = (wl > delta) ? solve_T_iv(sq(I(wl) - del_iv)) : I(0.0);
-  double T_om_max = T_om_max_iv.h;
-  double T_om_min = T_om_min_iv.l;
-  I r_om_max = sqrt_iv(I(T_om_max));
-  // Global injectivity condition on disk |z| <= r_om_max: sqrt(6) * r_om_max * s < a!
-  I inj_lhs = sqrt_iv(I(6.0)) * r_om_max * s_iv;
-  assert(inj_lhs.h < C.a.l);
+  // ------------------------------------------------------------------------
+  // 0. Rigorous global disk enclosure |Phi(z)| <= R_in => |z|^2 <= T_glob
+  //    and global injectivity sqrt(6) * sqrt(T_glob) * s < a!
+  //    Since MK(T) = sqrt((T-2/5)^2 + (c1 + T/sqrt2)^2) <= (2/5+c1) + (1+1/sqrt2)*T < 3/4 + (7/4)*T:
+  // ------------------------------------------------------------------------
+  assert((C.d + C.c1).h < 0.75);
+  assert((I(1.0) + C.inv_sqrt2).h < 1.75);
+  double T_glob = std::max(1.0, solve_T_iv(sq(I(wh) + I(R_in) + I(0.5))).h);
+  for (int it = 0; it < 12; ++it) {
+    I sTg = sqrt_iv(I(T_glob));
+    I deriv_lo = C.b * sTg - rat(7, 4) * s_iv;
+    I lhs_lo = sTg * (C.a + C.b * I(T_glob)) - (rat(3, 4) + rat(7, 4) * I(T_glob)) * s_iv;
+    if (deriv_lo.l > 0.0 && lhs_lo.l > add_up(R_in, wh)) break;
+    T_glob = mul_up(T_glob, 1.35);
+  }
+  {
+    I sTg = sqrt_iv(I(T_glob));
+    assert((C.b * sTg - rat(7, 4) * s_iv).l > 0.0);
+    assert((sTg * (C.a + C.b * I(T_glob)) - (rat(3, 4) + rat(7, 4) * I(T_glob)) * s_iv).l > add_up(R_in, wh));
+    assert((C.sqrt6 * sTg * s_iv).h < C.a.l);
+  }
 
-  // Max |K(z)|/s on T in [T_om_min, T_om_max]:
-  I MK_om = sqrt_iv(sq(I(std::max(std::fabs(T_om_min - 0.4), std::fabs(T_om_max - 0.4))) + I(0.0, 1e-15))
-                    + sq(C.c1 + I(T_om_max) * C.inv_sqrt2));
-  // More rigorously via exact interval for T - d:
-  I T_om_iv(T_om_min, T_om_max);
-  MK_om = sqrt_iv(sq(T_om_iv - C.d) + sq(C.c1 + T_om_iv * C.inv_sqrt2));
-  double r_in_max = add_up(delta, mul_up(MK_om.h, s_odd));
-
-  // Verify tail r >= 24 also satisfies eta < 1/2 (in fact on T >= 25, MK(T) <= 1.5*T, |L+w| >= 0.1432*T^{3/2} - 2 > 0.1*T^{3/2},
-  // so eta <= 15*s / sqrt(T) <= 3*s < 0.15 => 1/(1 - eta) <= 1.25!). Let's verify explicitly!
-  // Actually for T >= 25: MK(T)/sqrt(T)^3 = sqrt((T-0.4)^2 + (c1 + T/sqrt2)^2) / T^{1.5} <= sqrt(1.6)*T / T^{1.5} = sqrt(1.6)/sqrt(T) <= 1.3/5 = 0.26;
-  // Wait: r = |L+w| >= |L| - w >= sqrt(T)*(a + b*T) - wh >= (b - wh/25^{1.5})*T^{1.5} >= 0.13*T^{1.5},
-  // so MK(T)*s / r <= (1.3 * T * s) / (0.13 * T^{1.5}) = 10*s / sqrt(T) <= 2*s!
-  I tail_eta_ub = (I(2.0) * s_iv);
-  assert(tail_eta_ub.h < 0.5);
-  I tail_factor = I(1.0) / (I(1.0) - tail_eta_ub);
-  double odd_tail_outer = mul_up(tail_factor.h, odd_tail);
+  // Exact r >= 24 (=> T >= 25) tails for M_0, D_k, E_H, E_tail:
+  // On T >= 25: |L+w| >= b*T^{3/2} >= 24, MK(T) <= (5/4)*T, MK*s/|L+w| <= 2*s < 1/2 => r_lo >= 12.
+  // Also G_iso <= T*(2 + (T-2)^2/2) = 4T - 2T^2 + (1/2)T^3 <= (1/2)T^3 on T >= 25!
+  // On r >= 24, delta <= 0.5: phi_d(r^2) < 2/r^3, |phi_d'(r^2)| < 2/r^5 => ||DH_5(y)||_op <= 10/r^2 <= 10/576!
+  // On r_lo >= 12, delta <= 0.5: phi_d(r_lo^2) <= (144 + 0.625)/144^{5/2} < 2/12^3!
+  assert((C.a * I(5.0) - I(wh)).l > 0.0);
+  I mk_slope_25 = sqrt_iv(I(1.0) + sq(C.c1 / I(25.0) + C.inv_sqrt2));
+  assert(mk_slope_25.h < 1.25);
+  assert((mk_slope_25 / (I(5.0) * C.b)).h < 2.0);
+  assert((I(2.0) * s_iv).h < 0.5);
+  I g3_25 = gamma_tail_iv(3, I(25.0));
+  I g4_25 = gamma_tail_iv(4, I(25.0));
+  I g5_25 = gamma_tail_iv(5, I(25.0));
+  I tail_D = (rat(10, 576) * rat(5, 4) * s_iv * rat(1, 2)) * g4_25;
+  I tail_EH = (rat(25, 16) * rat(2, 1728) * sq(s_iv) * rat(1, 2)) * g5_25;
+  I tail_chi = (rat(15, 8) * sq(del2_iv) / I(248832.0) * rat(1, 2)) * g3_25;
+  double odd_tail_tot = add_up(odd_tail, add_up(tail_D.h, add_up(tail_EH.h, tail_chi.h)));
 
   // ------------------------------------------------------------------------
   // Step 1: Unperturbed M_0(w) = M_odd(w, 0; 0) on r in [0, 24], th in [0, pi]
-  // Integrand on [0, pi] with measure dr dth / pi (factor 2 cancels 1/(2pi) -> 1/pi):
-  //   At y = L + w = r e^{i th}, unit vector e_th = (ct, st):
-  //   u_O for Q'_r, P_r, nu_r:  Re(z1 e^{-i th}) = Zr*ct + Zi*st; Re(conj(z1) e^{-i th}) = Zr*ct - Zi*st;
-  //   u_O for Q'_i, P_i, nu_i:  Re(i z1 e^{-i th}) = -Zi*ct + Zr*st; Re(i conj(z1) e^{-i th}) = Zi*ct + Zr*st;
-  //   And A(y, 0) = (1/r)*(G_iso - (1/2) u_O u_O^T), with 1/r cancelling r in r dr dth!
+  // Full Gaussian density on [-pi, pi] is (1/pi)*exp(-T)/(a0*c0) * r dr dth;
+  // folding reflection-even integrands onto [0, pi] gives (2/pi)*exp(-T)/(a0*c0) * r dr dth,
+  // and 1/r in A(y, 0) cancels r, leaving factor f2 = 2*exp(-T)/(a0*c0) with area = dr*dt/pi.
   // ------------------------------------------------------------------------
   auto eval_M0_pt = [&](I r, I th, I w_p) {
     I ct = cos_on_0_pi(th), st = sin_on_0_pi(th);
     I yr = r * ct - w_p, yi = r * st;
     I T = solve_T_iv(sq(r - w_p) + I(2.0) * r * w_p * (I(1.0) - ct));
     I a0 = C.a + C.b * T, c0 = C.a + I(3.0) * C.b * T;
-    I f = expneg_iv(T) / (a0 * c0);
+    I f = I(2.0) * expneg_iv(T) / (a0 * c0);
     I inv_a0 = I(1.0) / a0;
     I Zr = yr * inv_a0, Zi = yi * inv_a0;
     I z2r = sq(Zr) - sq(Zi);
@@ -1198,7 +1228,7 @@ static Part2Slab certify_part2_slab(double wl, double wh, double s_odd, double d
     Jet2 yr = r * ct - w_j, yi = r * st;
     Jet2 T = solve_T_j(sq_j(r - w_j) + I(2.0) * (r * (w_j * (Jet2(I(1.0)) - ct))));
     Jet2 a0 = Jet2(C.a) + C.b * T, c0 = Jet2(C.a) + (I(3.0) * C.b) * T;
-    Jet2 f = expneg_j(T) * inv_j(a0 * c0);
+    Jet2 f = I(2.0) * (expneg_j(T) * inv_j(a0 * c0));
     Jet2 inv_a0 = inv_j(a0);
     Jet2 Zr = yr * inv_a0, Zi = yi * inv_a0;
     Jet2 z2r = sq_j(Zr) - sq_j(Zi);
@@ -1225,8 +1255,8 @@ static Part2Slab certify_part2_slab(double wl, double wh, double s_odd, double d
 
   Sym3 M_re, M_im;
   {
-    auto re = make_dense_r_edges(24.0, 56, 24, 1.5);
-    int nr = static_cast<int>(re.size()) - 1, nt = 32;
+    auto re = make_dense_r_edges(24.0, 64, 24, 1.5);
+    int nr = static_cast<int>(re.size()) - 1, nt = 40;
     Jet2 w_mid_j(w_mid);
     for (int ir = 0; ir < nr; ++ir) {
       I a_r(re[ir]), b_r(re[ir + 1]);
@@ -1246,8 +1276,8 @@ static Part2Slab certify_part2_slab(double wl, double wh, double s_odd, double d
       }
     }
     if (half_dw.h > 0.0) {
-      auto re_d = make_dense_r_edges(24.0, 40, 16, 1.5);
-      int nr_d = static_cast<int>(re_d.size()) - 1, nt_d = 24;
+      auto re_d = make_dense_r_edges(24.0, 48, 20, 1.5);
+      int nr_d = static_cast<int>(re_d.size()) - 1, nt_d = 32;
       Jet2 w_der(w_iv, I(1.0), I(0.0));
       Sym3 dMr, dMi;
       for (int ir = 0; ir < nr_d; ++ir) {
@@ -1271,27 +1301,278 @@ static Part2Slab certify_part2_slab(double wl, double wh, double s_odd, double d
   }
 
   // ------------------------------------------------------------------------
-  // Step 2: Inner pullback excess on r in [0, r_in_max], th in [0, pi]
-  //   - On [0, delta]: adds ( (1 + eps_cs)*W_ratio - 1 ) * A(y, 0) + (1 + 1/eps_cs) * dE_term
-  //   - On [delta, r_in_max]: adds (1 + eps_cs)*W_ratio * A(y, 0) + (1 + 1/eps_cs) * dE_term
-  // (Notice on [0, delta], A(y,0) is already counted once in M_0(w); on [delta, r_in_max], it's
-  // an overlap ring so we add the full (1+eps_cs)*W_ratio safely!)
+  // Step 2: Smooth-split H_{5,delta}(y) = phi_d(|y|^2) * (|y|^2 I - (1/2) y y^T) on r in [0, 24], th in [0, pi]:
+  //   phi_d(R) = (R + 2.5*d^2) / (R + d^2)^{5/2},  chi_d(r) = 1 - r^3 * phi_d(r^2) in (0, 1].
+  //   By exact Bernstein-Mobius algebra: lambda_max(D^2 (u^T H_{5,d}(y) u)) <= 2 * phi_d(|y|^2) EVERYWHERE,
+  //   so H_{5,d}(y + K) <= H_{5,d}(y) + DH_{5,d}(y)[K] + |K|^2 * phi_d(r_lo^2) * I_2!
+  //   (a) Linear matrices D0..D3 integrated via smooth Jet2 midpoint + MVT w-variation (tight to ~1e-3!)
+  //   (b) Quadratic remainder E_H + outer singular tail E_tail (nonnegative PSD, direct interval sums).
+  // ------------------------------------------------------------------------
+  Sym3 S_re, S_im;
+  double lin_rad_add = 0.0;
+  {
+    I c25_d2 = rat(5, 2) * del2_iv;
+    I c525_d2 = rat(21, 4) * del2_iv;
+    I chi_tail_num = rat(15, 8) * sq(del2_iv);
+    I half = I(0.5);
+
+    struct DJetOut { Jet2 d0r[6], d0i[6], d1r[6], d1i[6], d2c[9], d3c[9]; };
+    auto eval_D_jet = [&](const Jet2& r, const Jet2& th, const Jet2& w_j) {
+      Jet2 ct = cos_j(th), st = sin_j(th);
+      Jet2 yr = r * ct - w_j, yi = r * st;
+      Jet2 T = solve_T_j(sq_j(r - w_j) + I(2.0) * (r * (w_j * (Jet2(I(1.0)) - ct))));
+      Jet2 a0 = Jet2(C.a) + C.b * T, c0 = Jet2(C.a) + (I(3.0) * C.b) * T;
+      Jet2 W = (I(2.0) * r) * (expneg_j(T) * inv_j(a0 * c0));
+      Jet2 inv_a0 = inv_j(a0);
+      Jet2 Zr = yr * inv_a0, Zi = yi * inv_a0;
+      Jet2 fn = C.inv_sqrt2 * (T - I(2.0));
+      Jet2 z2r = C.inv_sqrt2 * (sq_j(Zr) - sq_j(Zi));
+      Jet2 z2i = (I(2.0) * C.inv_sqrt2) * (Zr * Zi);
+      Jet2 Td = T - C.d;
+
+      Jet2 r2 = sq_j(r);
+      Jet2 s2 = r2 + del2_iv;
+      Jet2 inv_s2 = inv_j(s2);
+      Jet2 inv_s = sqrt_j(inv_s2);
+      Jet2 inv_s5 = sq_j(inv_s2) * inv_s;
+      Jet2 inv_s7 = inv_s5 * inv_s2;
+      Jet2 phi_v = (r2 + c25_d2) * inv_s5;
+      Jet2 dphi = (I(-1.0) * (rat(3, 2) * r2 + c525_d2)) * inv_s7;
+
+      Jet2 Xx = r * ct, Xy = r * st;
+      Jet2 h00_n = half * sq_j(Xx) + sq_j(Xy);
+      Jet2 h11_n = sq_j(Xx) + half * sq_j(Xy);
+      Jet2 h01_n = (-half) * (Xx * Xy);
+      Jet2 two_x_dp = (I(2.0) * Xx) * dphi, two_y_dp = (I(2.0) * Xy) * dphi;
+      Jet2 dh00_x = phi_v * Xx + two_x_dp * h00_n;
+      Jet2 dh00_y = phi_v * (I(2.0) * Xy) + two_y_dp * h00_n;
+      Jet2 dh11_x = phi_v * (I(2.0) * Xx) + two_x_dp * h11_n;
+      Jet2 dh11_y = phi_v * Xy + two_y_dp * h11_n;
+      Jet2 dh01_x = phi_v * ((-half) * Xy) + two_x_dp * h01_n;
+      Jet2 dh01_y = phi_v * ((-half) * Xx) + two_y_dp * h01_n;
+
+      Jet2 bx[6] = {Zr, Zr, Zr * fn, Jet2(I(0.0)) - Zi, Jet2(I(0.0)) - Zi, (Jet2(I(0.0)) - Zi) * fn};
+      Jet2 by[6] = {Zi, Jet2(I(0.0)) - Zi, Zi * fn, Zr, Jet2(I(0.0)) - Zr, Zr * fn};
+
+      DJetOut o;
+      auto fill_diag = [&](const Jet2& k00, const Jet2& k11, const Jet2& k01, Jet2 dr[6], Jet2 di[6]) {
+        Jet2 w00 = W * k00, w11 = W * k11, w01 = W * k01;
+        int idx = 0;
+        for (int i = 0; i < 3; ++i)
+          for (int j = i; j < 3; ++j) {
+            dr[idx] = w00 * (bx[i] * bx[j]) + w11 * (by[i] * by[j]) + w01 * (bx[i] * by[j] + by[i] * bx[j]);
+            di[idx] = w00 * (bx[i + 3] * bx[j + 3]) + w11 * (by[i + 3] * by[j + 3])
+                    + w01 * (bx[i + 3] * by[j + 3] + by[i + 3] * bx[j + 3]);
+            idx++;
+          }
+      };
+      auto fill_cross = [&](const Jet2& k00, const Jet2& k11, const Jet2& k01, Jet2 dc[9]) {
+        Jet2 w00 = W * k00, w11 = W * k11, w01 = W * k01;
+        for (int i = 0; i < 3; ++i)
+          for (int j = 0; j < 3; ++j) {
+            dc[3 * i + j] = w00 * (bx[i] * bx[j + 3]) + w11 * (by[i] * by[j + 3])
+                          + w01 * (bx[i] * by[j + 3] + by[i] * bx[j + 3]);
+          }
+      };
+      fill_diag(dh00_x * Td, dh11_x * Td, dh01_x * Td, o.d0r, o.d0i);
+      Jet2 u1x = z2r + C.c1, u1y = z2i;
+      fill_diag(dh00_x * u1x + dh00_y * u1y, dh11_x * u1x + dh11_y * u1y, dh01_x * u1x + dh01_y * u1y, o.d1r, o.d1i);
+      fill_cross(dh00_y * Td, dh11_y * Td, dh01_y * Td, o.d2c);
+      Jet2 u3x = z2i, u3y = Jet2(C.c1) - z2r;
+      fill_cross(dh00_x * u3x + dh00_y * u3y, dh11_x * u3x + dh11_y * u3y, dh01_x * u3x + dh01_y * u3y, o.d3c);
+      return o;
+    };
+
+    std::vector<double> r_sm;
+    double r1 = std::min(0.4, 3.0 * delta);
+    double r2 = 2.0, r3 = 6.5;
+    for (int i = 0; i <= 24; ++i) r_sm.push_back(r1 * std::pow(static_cast<double>(i) / 24.0, 1.3));
+    for (int i = 1; i <= 72; ++i) r_sm.push_back(r1 + (r2 - r1) * std::pow(static_cast<double>(i) / 72.0, 1.4));
+    for (int i = 1; i <= 56; ++i) r_sm.push_back(r2 + (r3 - r2) * std::pow(static_cast<double>(i) / 56.0, 1.4));
+    for (int i = 1; i <= 24; ++i) r_sm.push_back(r3 + (24.0 - r3) * std::pow(static_cast<double>(i) / 24.0, 1.8));
+    int nr_sm = static_cast<int>(r_sm.size()) - 1, nt_sm = 20;
+
+    Sym3 D0_re, D0_im, D1_re, D1_im;
+    I D2_c[3][3], D3_c[3][3];
+    Sym3 dD0_re, dD0_im, dD1_re, dD1_im;
+    I dD2_c[3][3], dD3_c[3][3];
+    for (int i = 0; i < 3; ++i)
+      for (int j = 0; j < 3; ++j) {
+        D2_c[i][j] = I(0.0); D3_c[i][j] = I(0.0);
+        dD2_c[i][j] = I(0.0); dD3_c[i][j] = I(0.0);
+      }
+
+    Jet2 w_mid_j(w_mid);
+    Jet2 w_der(w_iv, I(1.0), I(0.0));
+    for (int ir = 0; ir < nr_sm; ++ir) {
+      I a_r(r_sm[ir]), b_r(r_sm[ir + 1]);
+      I r_box(a_r.l, b_r.h), dr = b_r - a_r, dr2 = sq(dr), r_mid = I(0.5) * (a_r + b_r);
+      for (int it = 0; it < nt_sm; ++it) {
+        I a_t = PI_IV * rat(it, nt_sm), b_t = PI_IV * rat(it + 1, nt_sm);
+        I t_box(std::max(0.0, a_t.l), std::min(PI_IV.h, b_t.h));
+        I dt = b_t - a_t, dt2 = sq(dt), t_mid = I(0.5) * (a_t + b_t);
+        I area = dr * dt * inv_pi;
+
+        // (a) Smooth Jet2 midpoint + 2nd-order quadrature for D0..D3 at w_mid:
+        auto dm = eval_D_jet(Jet2(r_mid), Jet2(t_mid), w_mid_j);
+        auto dr_j = eval_D_jet(Jet2(r_box, I(1.0), I(0.0)), Jet2(t_box, I(0.0), I(0.0)), w_mid_j);
+        auto dt_j = eval_D_jet(Jet2(r_mid, I(0.0), I(0.0)), Jet2(t_box, I(1.0), I(0.0)), w_mid_j);
+        for (int k = 0; k < 6; ++k) {
+          D0_re.e[k] = D0_re.e[k] + area * (dm.d0r[k].v + inv_24 * (dr2 * dr_j.d0r[k].d2 + dt2 * dt_j.d0r[k].d2));
+          D0_im.e[k] = D0_im.e[k] + area * (dm.d0i[k].v + inv_24 * (dr2 * dr_j.d0i[k].d2 + dt2 * dt_j.d0i[k].d2));
+          D1_re.e[k] = D1_re.e[k] + area * (dm.d1r[k].v + inv_24 * (dr2 * dr_j.d1r[k].d2 + dt2 * dt_j.d1r[k].d2));
+          D1_im.e[k] = D1_im.e[k] + area * (dm.d1i[k].v + inv_24 * (dr2 * dr_j.d1i[k].d2 + dt2 * dt_j.d1i[k].d2));
+        }
+        for (int idx = 0; idx < 9; ++idx) {
+          int i = idx / 3, j = idx % 3;
+          D2_c[i][j] = D2_c[i][j] + area * (dm.d2c[idx].v + inv_24 * (dr2 * dr_j.d2c[idx].d2 + dt2 * dt_j.d2c[idx].d2));
+          D3_c[i][j] = D3_c[i][j] + area * (dm.d3c[idx].v + inv_24 * (dr2 * dr_j.d3c[idx].d2 + dt2 * dt_j.d3c[idx].d2));
+        }
+        if (half_dw.h > 0.0) {
+          auto dw_j = eval_D_jet(Jet2(r_box), Jet2(t_box), w_der);
+          for (int k = 0; k < 6; ++k) {
+            dD0_re.e[k] = dD0_re.e[k] + area * dw_j.d0r[k].d;
+            dD0_im.e[k] = dD0_im.e[k] + area * dw_j.d0i[k].d;
+            dD1_re.e[k] = dD1_re.e[k] + area * dw_j.d1r[k].d;
+            dD1_im.e[k] = dD1_im.e[k] + area * dw_j.d1i[k].d;
+          }
+          for (int idx = 0; idx < 9; ++idx) {
+            int i = idx / 3, j = idx % 3;
+            dD2_c[i][j] = dD2_c[i][j] + area * dw_j.d2c[idx].d;
+            dD3_c[i][j] = dD3_c[i][j] + area * dw_j.d3c[idx].d;
+          }
+        }
+
+        // (b) Quadratic remainder E_H + (c) Outer singular tail E_tail (both PSD multiples of G_iso!):
+        I ct = cos_on_0_pi(t_box), st = sin_on_0_pi(t_box);
+        I yr = r_box * ct - w_iv, yi = r_box * st;
+        I T = solve_T_iv(sq(r_box - w_iv) + I(2.0) * r_box * w_iv * (I(1.0) - ct));
+        I a0 = C.a + C.b * T, c0 = C.a + I(3.0) * C.b * T;
+        I f2 = I(2.0) * expneg_iv(T) / (a0 * c0);
+        I W_iv = area * r_box * f2;
+        I inv_a0 = I(1.0) / a0;
+        I Zr = yr * inv_a0, Zi = yi * inv_a0;
+        I z2r_iso = sq(Zr) - sq(Zi);
+        I fn = (T - I(2.0)) * C.inv_sqrt2;
+        I Td = T - C.d;
+        I MK = sqrt_iv(sq(Td) + sq(C.c1 + T * C.inv_sqrt2));
+        double r_lo = std::max(0.0, sub_dn(r_box.l, mul_up(MK.h, s_odd)));
+        I rlo2 = sq(I(r_lo));
+        I s2_lo = rlo2 + del2_iv;
+        I s5_lo = sq(s2_lo) * sqrt_iv(s2_lo);
+        double rem_H_hi = (sq(MK * s_iv) * (rlo2 + c25_d2) / s5_lo).h;
+        double chi_t_hi = 0.0;
+        if (add_up(r_box.h, mul_up(MK.h, s_odd)) > R_in) {
+          double r_eff = std::max(R_in, r_lo);
+          I r_eff_iv(r_eff);
+          I re5 = sq(sq(r_eff_iv)) * r_eff_iv;
+          chi_t_hi = (chi_tail_num / re5).h;
+        }
+        I fac_iso = W_iv * I(add_up(rem_H_hi, chi_t_hi));
+        Sym3 g;
+        g.e[0] = fac_iso * T;
+        g.e[1] = fac_iso * z2r_iso;
+        g.e[2] = fac_iso * T * fn;
+        g.e[3] = fac_iso * T;
+        g.e[4] = fac_iso * z2r_iso * fn;
+        g.e[5] = fac_iso * T * sq(fn);
+        M_re = sym3_add(M_re, g);
+        M_im = sym3_add(M_im, g);
+      }
+    }
+    if (half_dw.h > 0.0) {
+      for (int k = 0; k < 6; ++k) {
+        D0_re.e[k] = D0_re.e[k] + dw_sym * dD0_re.e[k];
+        D0_im.e[k] = D0_im.e[k] + dw_sym * dD0_im.e[k];
+        D1_re.e[k] = D1_re.e[k] + dw_sym * dD1_re.e[k];
+        D1_im.e[k] = D1_im.e[k] + dw_sym * dD1_im.e[k];
+      }
+      for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j) {
+          D2_c[i][j] = D2_c[i][j] + dw_sym * dD2_c[i][j];
+          D3_c[i][j] = D3_c[i][j] + dw_sym * dD3_c[i][j];
+        }
+    }
+
+    auto split_sym3 = [&](const Sym3& D, double mid[3][3], double& rad_sq_sum) {
+      static const int map[3][3] = {{0, 1, 2}, {1, 3, 4}, {2, 4, 5}};
+      for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j) {
+          const I& iv = D.e[map[i][j]];
+          double m = 0.5 * (iv.l + iv.h);
+          double r = std::max(sub_up(iv.h, m), sub_up(m, iv.l));
+          mid[i][j] = m;
+          rad_sq_sum = add_up(rad_sq_sum, mul_up(r, r));
+        }
+    };
+    auto add_sq_sym = [&](const double M[3][3], Sym3& dst) {
+      int idx = 0;
+      for (int i = 0; i < 3; ++i)
+        for (int j = i; j < 3; ++j) {
+          I s_acc(0.0);
+          for (int k = 0; k < 3; ++k) s_acc = s_acc + I(M[i][k]) * I(M[j][k]);
+          dst.e[idx] = dst.e[idx] + s_acc;
+          idx++;
+        }
+    };
+    auto add_sq_cross = [&](const double C_m[3][3], Sym3& dst_re, Sym3& dst_im) {
+      int idx = 0;
+      for (int i = 0; i < 3; ++i)
+        for (int j = i; j < 3; ++j) {
+          I sr(0.0), si(0.0);
+          for (int k = 0; k < 3; ++k) {
+            sr = sr + I(C_m[i][k]) * I(C_m[j][k]);
+            si = si + I(C_m[k][i]) * I(C_m[k][j]);
+          }
+          dst_re.e[idx] = dst_re.e[idx] + sr;
+          dst_im.e[idx] = dst_im.e[idx] + si;
+          idx++;
+        }
+    };
+    double m0r[3][3], m0i[3][3], m1r[3][3], m1i[3][3], m2c[3][3], m3c[3][3];
+    double r0sq = 0.0, r1sq = 0.0, r2sq = 0.0, r3sq = 0.0;
+    split_sym3(D0_re, m0r, r0sq); split_sym3(D0_im, m0i, r0sq);
+    split_sym3(D1_re, m1r, r1sq); split_sym3(D1_im, m1i, r1sq);
+    for (int i = 0; i < 3; ++i)
+      for (int j = 0; j < 3; ++j) {
+        double m2 = 0.5 * (D2_c[i][j].l + D2_c[i][j].h);
+        double r2 = std::max(sub_up(D2_c[i][j].h, m2), sub_up(m2, D2_c[i][j].l));
+        m2c[i][j] = m2; r2sq = add_up(r2sq, mul_up(2.0, mul_up(r2, r2)));
+        double m3 = 0.5 * (D3_c[i][j].l + D3_c[i][j].h);
+        double r3 = std::max(sub_up(D3_c[i][j].h, m3), sub_up(m3, D3_c[i][j].l));
+        m3c[i][j] = m3; r3sq = add_up(r3sq, mul_up(2.0, mul_up(r3, r3)));
+      }
+    add_sq_sym(m0r, S_re); add_sq_sym(m0i, S_im);
+    add_sq_sym(m1r, S_re); add_sq_sym(m1i, S_im);
+    add_sq_cross(m2c, S_re, S_im);
+    add_sq_cross(m3c, S_re, S_im);
+    lin_rad_add = mul_up(s_odd, sqrt_up_strict(add_up(add_up(r0sq, r1sq), add_up(r2sq, r3sq))));
+  }
+
+  // ------------------------------------------------------------------------
+  // Step 3: Exact Zero-Overlap Inner Pullback on |y| <= R_in, th in [0, pi]:
+  //   Domain {|Phi(z)| <= R_in} maps bijectively onto {|y| <= R_in} -> ZERO overlap ring!
+  //   Weighted by chi_{5,delta}(r) = 1 - r^3*(r^2+2.5*d^2)/(r^2+d^2)^{5/2} (strictly decreasing in r).
   // ------------------------------------------------------------------------
   {
-    int nr_in = 32, nt_in = 24;
-    // Partition [0, delta] into 24 steps and [delta, r_in_max] into 8 steps
-    std::vector<double> r_in_e;
-    for (int i = 0; i <= 24; ++i) r_in_e.push_back(delta * static_cast<double>(i) / 24.0);
-    for (int i = 1; i <= 8; ++i) r_in_e.push_back(delta + (r_in_max - delta) * static_cast<double>(i) / 8.0);
-    nr_in = static_cast<int>(r_in_e.size()) - 1;
-
+    int nr_in = 36, nt_in = 28;
+    std::vector<double> r_in_e(nr_in + 1);
+    for (int i = 0; i <= nr_in; ++i) {
+      double u = static_cast<double>(i) / static_cast<double>(nr_in);
+      r_in_e[i] = R_in * std::pow(u, 1.8);
+    }
     I one_p_eps = I(1.0) + eps_iv;
     I one_p_inveps = I(1.0) + I(1.0) / eps_iv;
+    I c25_d2 = rat(5, 2) * del2_iv;
 
     double d_QP_hi = 0.0, d_nu_hi = 0.0;
     for (int ir = 0; ir < nr_in; ++ir) {
-      bool in_overlap = (ir >= 24);
       I r_box(r_in_e[ir], r_in_e[ir + 1]), dr = I(r_in_e[ir + 1]) - I(r_in_e[ir]);
+      I rl_iv(r_box.l), rl2 = sq(rl_iv), s2l = rl2 + del2_iv;
+      I s5l = sq(s2l) * sqrt_iv(s2l);
+      double chi_hi = (I(1.0) - (rl_iv * rl2) * (rl2 + c25_d2) / s5l).h;
+      if (chi_hi <= 0.0) continue;
+
       for (int it = 0; it < nt_in; ++it) {
         I a_t = PI_IV * rat(it, nt_in), b_t = PI_IV * rat(it + 1, nt_in);
         I t_box(std::max(0.0, a_t.l), std::min(PI_IV.h, b_t.h));
@@ -1302,60 +1583,56 @@ static Part2Slab certify_part2_slab(double wl, double wh, double s_odd, double d
         I T_t = solve_T_iv(v);
         I h = C.a + C.b * T_t, h3 = C.a + I(3.0) * C.b * T_t;
 
-        // Exact [T_lo, T_hi] for z in Omega with L(z) + K(z, v) = L(z_tilde):
-        I L_lo(std::max(0.0, sub_dn(L_t.l, mul_up(MK_om.h, s_odd))),
-               std::max(0.0, sub_up(L_t.h, mul_dn(MK_om.l, s_odd))));
-        I L_hi(std::min(L_om_max.h, add_dn(L_t.l, mul_dn(MK_om.l, s_odd))),
-               std::min(L_om_max.h, add_up(L_t.h, mul_up(MK_om.h, s_odd))));
-        double T_lo = std::max(T_om_min, solve_T_iv(sq(I(L_lo.l))).l);
-        double T_hi = std::min(T_om_max, solve_T_iv(sq(I(L_hi.h))).h);
+        double T_hi = T_glob;
+        for (int fp = 0; fp < 6; ++fp) {
+          I T_rng(0.0, T_hi);
+          I MK_fp = sqrt_iv(sq(T_rng - C.d) + sq(C.c1 + T_rng * C.inv_sqrt2));
+          double L_hi_new = add_up(L_t.h, mul_up(MK_fp.h, s_odd));
+          double T_new = solve_T_iv(sq(I(L_hi_new))).h;
+          if (T_new < T_hi) T_hi = T_new;
+          else break;
+        }
+        I T_rng_hi(0.0, T_hi);
+        I MK_hi = sqrt_iv(sq(T_rng_hi - C.d) + sq(C.c1 + T_rng_hi * C.inv_sqrt2));
+        double L_lo_val = std::max(0.0, sub_dn(L_t.l, mul_up(MK_hi.h, s_odd)));
+        double T_lo = solve_T_iv(sq(I(L_lo_val))).l;
         if (T_lo > T_hi) T_lo = T_hi;
-        double r_lo = sqrt_dn_strict(T_lo), r_hi = sqrt_up_strict(T_hi);
+        double r_hi = sqrt_up_strict(T_hi);
 
         I T_loc(T_lo, T_hi);
         I MK_loc = sqrt_iv(sq(T_loc - C.d) + sq(C.c1 + T_loc * C.inv_sqrt2));
-        I delta_z = MK_loc * s_iv / (C.a + C.b * I(T_lo));
+        I delta_z = MK_loc * s_iv / (C.a + C.b * I(0.5) * (I(T_lo) + I(T_t.l)));
 
-        // Exact min of f1(r) = a + b*r^2 - (sqrt3+1)*s*r on [r_lo, r_hi]:
-        auto min_quad = [](double rl, double rh, I A, I B, I lin_coef) {
-          // A + B*r^2 - lin_coef*r = A + B*(r - lin/(2B))^2 - lin^2/(4B)
-          I f_l = A + B * sq(I(rl)) - lin_coef * I(rl);
-          I f_h = A + B * sq(I(rh)) - lin_coef * I(rh);
-          double mn = std::min(f_l.l, f_h.l);
-          I rstar = lin_coef / (I(2.0) * B);
-          if (rstar.h >= rl && rstar.l <= rh) {
-            I f_v = A - sq(lin_coef) / (I(4.0) * B);
-            mn = std::min(mn, f_v.l);
-          }
-          return mn;
-        };
-        double f1_min = min_quad(r_lo, r_hi, C.a, C.b, (C.sqrt3 + I(1.0)) * s_iv);
-        double f2_min = min_quad(r_lo, r_hi, C.a, I(3.0) * C.b, (C.sqrt3 - I(1.0)) * s_iv);
-        assert(f1_min > 0.0 && f2_min > 0.0);
-        double J_min = mul_dn(f1_min, f2_min);
+        double T_max_both = std::max(T_hi, T_t.h);
+        I rhop_min1 = sqrt_iv(I(3.0) * C.a * C.b);
+        I rhop_min2 = (C.a + I(3.0) * C.b * I(T_lo)) / (I(2.0) * sqrt_iv(I(T_max_both)));
+        double rhop_dn = std::max(rhop_min1.l, rhop_min2.l);
+        assert(rhop_dn > 0.0);
+        double dT_ub = div_up(mul_up(MK_loc.h, s_odd), rhop_dn);
 
-        double exp_diff_hi = (T_t.h > T_lo) ? exppos_iv(I(sub_up(T_t.h, T_lo))).h : 1.0;
-        I W_ratio(1.0, div_up(mul_up(exp_diff_hi, (h * h3).h), J_min));
-        I mult_A = in_overlap ? (one_p_eps * W_ratio) : (one_p_eps * W_ratio - I(1.0));
+        double r_over_h_hi = std::min((I(0.5) / sqrt_iv(C.a * C.b)).h,
+                                      (I(r_hi) / (C.a + C.b * I(T_lo))).h);
+        double r_over_h3_hi = std::min((I(0.5) / sqrt_iv(I(3.0) * C.a * C.b)).h,
+                                       (I(r_hi) / (C.a + I(3.0) * C.b * I(T_lo))).h);
+        double den1_dn = sub_dn(1.0, mul_up(mul_up((C.sqrt3 + I(1.0)).h, s_odd), r_over_h_hi));
+        double den2_dn = sub_dn(1.0, mul_up(mul_up(C.sqrt2.h, s_odd), r_over_h3_hi));
+        assert(den1_dn > 0.0 && den2_dn > 0.0);
+        double num1_up = add_up(1.0, (C.b * I(dT_ub) / (C.a + C.b * I(T_lo))).h);
+        double num2_up = add_up(1.0, (I(3.0) * C.b * I(dT_ub) / (C.a + I(3.0) * C.b * I(T_lo))).h);
+        double exp_diff_hi = exppos_iv(I(dT_ub)).h;
+        double W_hi = div_up(mul_up(exp_diff_hi, mul_up(num1_up, num2_up)), mul_dn(den1_dn, den2_dn));
+        I W_ratio(1.0, std::max(1.0, W_hi));
+        I mult_A = one_p_eps * W_ratio - I(1.0);
         assert(mult_A.l >= 0.0);
 
-        // Since mult_A >= 0 and E^T A(y,0) E >= 0 (PSD!), we can bound E^T A(y,0) E <= (1/r) G_iso OR exact M0 integrand!
-        // Use exact M0 integrand interval on cell (tight!):
         auto m0 = eval_M0_pt(r_box, t_box, w_iv);
-        // Wait: m0 already includes f = exp(-T_t)/(h*h3)! Multiply by area * mult_A.h:
-        // Careful: m0 is a symmetric interval matrix, so mult_A is scalar >= 0: use mult_A (interval!) on m0!
-        // Since A >= 0 and mult_A >= 0, we want an upper bound on mult_A * M0_integrand!
-        // Wait: M0_integrand is PSD at every point, so mult_A.h * M0_integrand >= mult_A * M0_integrand!
-        // Therefore integrating mult_A.h * m0 (interval enclosure of M0_integrand) encloses an exact PSD upper bound!
-        I fac = area * I(mult_A.h);
+        I fac = area * I(mul_up(chi_hi, mult_A.h));
         M_re = sym3_add(M_re, sym3_scale(fac, m0.re));
         M_im = sym3_add(M_im, sym3_scale(fac, m0.im));
 
-        // dE^T A dE <= (1/r) * delta_z^2 * (2 + Lip_nu) * diag(1, 1, Lip_nu):
-        // Note: area already cancelled r in (r dr dth / r = dr dth), so measure weight is area * exp(-T_t)/(h*h3) * W_ratio!
         I Lip_nu(std::max(((I(2.0) - I(T_lo)) * C.inv_sqrt2).h, ((I(3.0) * I(T_hi) - I(2.0)) * C.inv_sqrt2).h));
-        I f_w = expneg_iv(T_t) / (h * h3);
-        I dE_cell = area * f_w * I(W_ratio.h) * sq(delta_z) * (I(2.0) + Lip_nu);
+        I f_w = I(2.0) * expneg_iv(T_t) / (h * h3);
+        I dE_cell = area * I(chi_hi) * f_w * I(W_ratio.h) * sq(delta_z) * (I(2.0) + Lip_nu);
         d_QP_hi = add_up(d_QP_hi, dE_cell.h);
         d_nu_hi = add_up(d_nu_hi, (dE_cell * Lip_nu).h);
       }
@@ -1370,68 +1647,35 @@ static Part2Slab certify_part2_slab(double wl, double wh, double s_odd, double d
     M_im.e[5] = M_im.e[5] + I(0.0, add_nu);
   }
 
-  // ------------------------------------------------------------------------
-  // Step 3: Outer Theorem 2(b) excess on r in [delta, 24], th in [0, pi]:
-  //   Adds (eta / (1 - eta)) * f * G_iso(z_1) where eta = MK(T) * s / r < 1!
-  //   Since G_iso >= 0 and eta/(1-eta) >= 0, we bound (eta/(1-eta)) by its upper bound on each cell!
-  // ------------------------------------------------------------------------
-  {
-    int nr1 = 48, nr2 = 24, nt_o = 32;
-    std::vector<double> r_o;
-    for (int i = 0; i <= nr1; ++i) {
-      double t = static_cast<double>(i) / static_cast<double>(nr1);
-      r_o.push_back(delta + (5.0 - delta) * std::pow(t, 2.2));
-    }
-    for (int i = 1; i <= nr2; ++i) {
-      double t = static_cast<double>(i) / static_cast<double>(nr2);
-      r_o.push_back(5.0 + (24.0 - 5.0) * std::pow(t, 1.8));
-    }
-    int nr_o = static_cast<int>(r_o.size()) - 1;
-    for (int ir = 0; ir < nr_o; ++ir) {
-      I r_box(r_o[ir], r_o[ir + 1]), dr = I(r_o[ir + 1]) - I(r_o[ir]);
-      for (int it = 0; it < nt_o; ++it) {
-        I a_t = PI_IV * rat(it, nt_o), b_t = PI_IV * rat(it + 1, nt_o);
-        I t_box(std::max(0.0, a_t.l), std::min(PI_IV.h, b_t.h));
-        I area = dr * (b_t - a_t) * inv_pi;
-        I ct = cos_on_0_pi(t_box), st = sin_on_0_pi(t_box);
-        I yr = r_box * ct - w_iv, yi = r_box * st;
-        I T = solve_T_iv(sq(r_box - w_iv) + I(2.0) * r_box * w_iv * (I(1.0) - ct));
-        I a0 = C.a + C.b * T, c0 = C.a + I(3.0) * C.b * T;
-        I f = expneg_iv(T) / (a0 * c0);
-        I MK = sqrt_iv(sq(T - C.d) + sq(C.c1 + T * C.inv_sqrt2));
-        I eta = (MK * s_iv) / r_box;
-        assert(eta.h < 0.99);
-        double exc_hi = (eta / (I(1.0) - eta)).h;
-        I fac = area * I(exc_hi) * f;
-        I inv_a0 = I(1.0) / a0;
-        I Zr = yr * inv_a0, Zi = yi * inv_a0;
-        I z2r = sq(Zr) - sq(Zi);
-        I fn = (T - I(2.0)) * C.inv_sqrt2;
-        Sym3 g;
-        g.e[0] = fac * T;
-        g.e[1] = fac * z2r;
-        g.e[2] = fac * T * fn;
-        g.e[3] = fac * T;
-        g.e[4] = fac * z2r * fn;
-        g.e[5] = fac * T * sq(fn);
-        M_re = sym3_add(M_re, g);
-        M_im = sym3_add(M_im, g);
-      }
-    }
-  }
+  // Add r >= 24 outer tail + Frobenius radius of linear matrices D_k:
+  double diag_add = add_up(odd_tail_tot, lin_rad_add);
+  M_re.e[0] = M_re.e[0] + I(0.0, diag_add);
+  M_re.e[3] = M_re.e[3] + I(0.0, diag_add);
+  M_re.e[5] = M_re.e[5] + I(0.0, diag_add);
+  M_im.e[0] = M_im.e[0] + I(0.0, diag_add);
+  M_im.e[3] = M_im.e[3] + I(0.0, diag_add);
+  M_im.e[5] = M_im.e[5] + I(0.0, diag_add);
 
-  // Add r >= 24 outer tail:
-  M_re.e[0] = M_re.e[0] + I(0.0, odd_tail_outer);
-  M_re.e[3] = M_re.e[3] + I(0.0, odd_tail_outer);
-  M_re.e[5] = M_re.e[5] + I(0.0, odd_tail_outer);
-  M_im.e[0] = M_im.e[0] + I(0.0, odd_tail_outer);
-  M_im.e[3] = M_im.e[3] + I(0.0, odd_tail_outer);
-  M_im.e[5] = M_im.e[5] + I(0.0, odd_tail_outer);
+  // Step 4: Choose best AM-GM weight lambda > 0 for sum_k v_k D_hat_k <= (s/2)*(lam*I + (1/lam)*S):
+  static constexpr double lam_grid[14] = {0.02, 0.05, 0.1, 0.2, 0.35, 0.5, 0.75, 1.0, 1.35, 1.8, 2.5, 3.5, 5.0, 8.0};
+  double best_m = -1e30, best_lam = 1.0;
+  Sym3 best_re = M_re, best_im = M_im;
+  for (double lam : lam_grid) {
+    I c_id = I(0.5) * s_iv * I(lam);
+    I c_S = (I(0.5) * s_iv) / I(lam);
+    Sym3 Tr = sym3_add(M_re, sym3_scale(c_S, S_re));
+    Sym3 Ti = sym3_add(M_im, sym3_scale(c_S, S_im));
+    Tr.e[0] = Tr.e[0] + c_id; Tr.e[3] = Tr.e[3] + c_id; Tr.e[5] = Tr.e[5] + c_id;
+    Ti.e[0] = Ti.e[0] + c_id; Ti.e[3] = Ti.e[3] + c_id; Ti.e[5] = Ti.e[5] + c_id;
+    double m = std::min(check_B3_minus_M3_pd(Tr), check_B3_minus_M3_pd(Ti));
+    if (m > best_m) { best_m = m; best_lam = lam; best_re = Tr; best_im = Ti; }
+  }
 
   Part2Slab out;
   out.wl = wl; out.wh = wh; out.s_odd = s_odd; out.delta = delta; out.eps_cs = eps_cs;
-  out.M_re = M_re; out.M_im = M_im;
-  out.margin = std::min(check_B3_minus_M3_pd(M_re), check_B3_minus_M3_pd(M_im));
+  out.R_in = R_in; out.lam = best_lam;
+  out.M_re = best_re; out.M_im = best_im;
+  out.margin = best_m;
   return out;
 }
 
@@ -1905,7 +2149,7 @@ struct OddEvalRes {
 };
 
 static OddEvalRes eval_odd_box(const PolarGridLevel& gl, I w_iv, const I v_iv[4], const QPoly& q,
-                               int max_depth, double split_tol) {
+                               int max_depth, double split_tol, double diag_shift = 0.0) {
   require_fe_upward();
   I wc = I(0.5) * (I(w_iv.l) + I(w_iv.h));
   double rw = mul_up(0.5, sub_up(w_iv.h, w_iv.l));
@@ -2105,7 +2349,7 @@ static OddEvalRes eval_odd_box(const PolarGridLevel& gl, I w_iv, const I v_iv[4]
   static const int diag21[6] = {0, 6, 11, 15, 18, 20};
   for (int i = 0; i < 6; ++i) M_tot[diag21[i]] = M_tot[diag21[i]] + I(0.0, m_tail);
 
-  return {check_Bodd_minus_M6_pd(M_tot), C0_hi};
+  return {check_Bodd_minus_M6_pd(M_tot, diag_shift), C0_hi};
 }
 
 // ============================================================================
@@ -2310,7 +2554,7 @@ static SlabCurv compute_slab_base_curv(double wl, double wh) {
 
 struct Slab4DResult {
   double wl, wh, s_odd;
-  int closed_ext = 0, closed_ori = 0, closed_piv = 0;
+  int closed_ext = 0, closed_ori = 0, closed_piv = 0, w_splits = 0;
   int closed_g[3] = {0, 0, 0};  // boxes closed via 16-corner convexity (binned by worst corner grid level 0/1/2)
   int unique_corners = 0;
   int total_boxes = 0, open_boxes = 0;
@@ -2346,11 +2590,12 @@ struct PtVal {
   double f_ub;       // certified upper bound on sup_{Q,P,nu} F_joint(c*)(w_e, c; Q,P,nu)
   double odd_piv;    // certified min Cholesky pivot (> 0), or <= 0 if not yet closed
   int grid_lvl;      // 0 (coarse/analytic), 1 (med), 2 (fine)
-  int stage_done;    // -1=WCS only, 0=g0, 1=g1, 2=g2, 3=HEUR+g2, 4=g3+mdepth1 (exhausted)
+  int stage_done;    // -1=WCS only, 0=g0, 1=g1, 2=g2, 3=g2+md1, 4=g3+md1/g2+md2, 5=g2+md3, 6=g2+md4
   double dp_pt;      // best certified even slack B_P.l - U_WCS so far
   double bp_lo;      // exact lower bound B_P(w_e, c).l
   double s_warm;     // warm-started scale for prof_base
   uint8_t wcs_used;  // number of WCS grids already evaluated at this corner
+  double fail_req;   // req_f at which highest stage cut early via monotonicity (-1e30 if not cut)
 };
 
 // Exact 5D Convexity-Semiconvexity Point-Corner Certifier on [wl, wh] x {s_odd <= ||v||_2 <= 5/4, Im A >= 0}.
@@ -2372,14 +2617,7 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
   require_fe_upward();
   assert(p2_margin > 0.0);
 
-  I dw = I(wh) - I(wl);
-  I dw2_8 = sq(dw) / I(8.0);
   I q_diag[4] = {C.q_AA, C.q_BB, C.q_AA, C.q_BB};
-  I qw_l[4], qw_h[4];
-  for (int j = 0; j < 4; ++j) {
-    qw_l[j] = q_diag[j] + I(0.5) * sq(I(wl));
-    qw_h[j] = q_diag[j] + I(0.5) * sq(I(wh));
-  }
 
   // Exact constant-pivot rule (mu_0 = 61/50): C_0 <= 61/50 and M_odd <= (50/61)*I_6 < B_odd everywhere!
   double mu0_up = rat(61, 50).h;
@@ -2395,6 +2633,29 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
   if (cache_l.empty()) cache_l.reserve(4096);
   if (cache_h.empty()) cache_h.reserve(4096);
 
+  // Lazy interior w-slices for adaptive on-demand w-bisection near the origin shell:
+  struct MidSlice {
+    std::vector<WcsGrid> wcs;
+    CornerCache cache;
+    bool built_fine = false;
+  };
+  std::map<double, MidSlice> mid_slices;
+  auto get_slice = [&](double w_e, std::vector<WcsGrid>*& wcs_p, bool*& bf_p, CornerCache*& c_p) {
+    if (w_e == wl) { wcs_p = &wcs_l; bf_p = &built_fine_l; c_p = &cache_l; return; }
+    if (w_e == wh) { wcs_p = &wcs_h; bf_p = &built_fine_h; c_p = &cache_h; return; }
+    auto it = mid_slices.find(w_e);
+    if (it == mid_slices.end()) {
+      MidSlice ms;
+      ms.wcs.push_back(build_wcs_grid(w_e, 10, 8, 2, 2));
+      ms.wcs.push_back(build_wcs_grid(w_e, 22, 14, 2, 2));
+      ms.cache.reserve(512);
+      it = mid_slices.emplace(w_e, std::move(ms)).first;
+    }
+    wcs_p = &it->second.wcs;
+    bf_p = &it->second.built_fine;
+    c_p = &it->second.cache;
+  };
+
   auto eval_corner_pt = [&](double w_e, const double c[4], double req_f, int max_stage,
                             std::vector<WcsGrid>& wcs, bool& built_fine,
                             std::unordered_map<PtKey, PtVal, PtKeyHash>& cache) -> PtVal {
@@ -2402,7 +2663,8 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
     auto it = cache.find(key);
     if (it != cache.end()) {
       const PtVal& cv = it->second;
-      if ((cv.odd_piv > 0.0 && cv.f_ub < req_f) || cv.stage_done >= max_stage) return cv;
+      if (cv.odd_piv > 0.0 && cv.f_ub < req_f) return cv;
+      if (cv.stage_done >= max_stage && req_f <= cv.fail_req) return cv;
       // Fast WCS-only impossibility short-circuit: even C_0 = 0 cannot beat req_f if -dp_pt >= req_f!
       if (cv.wcs_used >= 3 && -cv.dp_pt >= req_f) return cv;
       if (max_stage <= 2 && cv.wcs_used >= 2 && -cv.dp_pt >= req_f) return cv;
@@ -2418,6 +2680,10 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
     bool existed = (it != cache.end());
     if (existed) {
       pv = it->second;
+      if (pv.stage_done >= max_stage && req_f > pv.fail_req) {
+        pv.stage_done = max_stage - 1;
+        pv.fail_req = -1e30;
+      }
     } else {
       double bp_lo = eval_BP_iv(w_e, c).l;
       double dp_p1 = (S_dn > 0.75) ? mul_dn(sub_dn(S_dn, 0.75), S_dn) : -1.0;
@@ -2425,7 +2691,7 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
       // Case 1: Part 2 origin strip ||c||_2 <= s_odd -> C_0 = 0 identically!
       if (S_up <= s_odd2_dn) {
         if (S_up == 0.0) {
-          pv = {0.0, 1e9, 0, 5, 0.0, bp_lo, 0.0, 3};
+          pv = {0.0, 1e9, 0, 6, 0.0, bp_lo, 0.0, 3, -1e30};
           cache.emplace(key, pv);
           return pv;
         }
@@ -2442,12 +2708,12 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
           if (cand > best_dp) best_dp = cand;
         }
         double f_c = -best_dp;
-        pv = {f_c, 1e9, 0, 5, best_dp, bp_lo, 0.0, 3};
+        pv = {f_c, 1e9, 0, 6, best_dp, bp_lo, 0.0, 3, -1e30};
         cache.emplace(key, pv);
         return pv;
       }
 
-      pv = {1e30, -1.0, 2, -1, dp_p1, bp_lo, 0.0, 0};
+      pv = {1e30, -1.0, 2, -1, dp_p1, bp_lo, 0.0, 0, -1e30};
       // Instant constant-pivot shortcut when Part 1 dp_p1 alone beats req_f!
       if (dp_p1 > mu0_up) {
         double f_piv = sub_up(mu0_up, dp_p1);
@@ -2511,13 +2777,15 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
     }
 
     if (pv.dp_pt <= 0.0) {
-      pv.stage_done = 5;
+      pv.stage_done = 6;
+      pv.fail_req = 1e30;
       cache[key] = pv;
       return pv;
     }
 
     // Demand-driven target: aim slightly below req_f so adjacent boxes also hit cache without re-escalating!
     double stop_goal = std::min(req_f - 1e-6, 1.10 * req_f);
+    double s_init_floor = std::max(1e-6, std::min(1.0, 0.25 * std::pow(pv.dp_pt, 0.65)));
     if (pv.s_warm <= 0.0) {
       pv.s_warm = std::max(1e-5, std::min(1.0, 0.45 * std::pow(pv.dp_pt, 0.65)));
     }
@@ -2535,6 +2803,7 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
       }
     };
 
+    bool cut_by_req = false;
     auto eval_ray_bisect = [&](int gl_idx, const QPoly& base_q, double& scale_warm,
                                int max_steps, double stop_target, int mdepth = 0, double stol = 1e-5) {
       int gl_bin = std::min(gl_idx, 2);
@@ -2548,7 +2817,8 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
         // Monotonicity shortcut: since psi(r, q) increases with s, if pd_piv <= 0 AND C0_hi - dp_pt >= req_f,
         // NO larger s (which is needed to get pd_piv > 0) can possibly beat req_f on this grid!
         if (r.pd_piv <= 0.0 && sub_up(r.C0_hi, pv.dp_pt) >= req_f) {
-          scale_warm = std::max(1e-6, s * 0.60);
+          scale_warm = std::max((mdepth == 0) ? s_init_floor : 1e-7, s * 0.65);
+          cut_by_req = true;
           break;
         }
         if (r.pd_piv <= 0.0) {
@@ -2558,7 +2828,7 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
         } else {
           hi_f = s;
           scale_warm = s;
-          s = (lo_f > 0.0) ? std::sqrt(lo_f * hi_f) : std::max(1e-6, s * 0.45);
+          s = (lo_f > 0.0) ? std::sqrt(lo_f * hi_f) : std::max(1e-7, s * 0.45);
           if (s >= hi_f * 0.99) break;
         }
       }
@@ -2570,54 +2840,82 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
 
     // Stage 0: Fast 1D profile on pgrids[0] (15x24, 3 super-cheap steps)
     if (pv.stage_done < 0 && max_stage >= 0 && (pv.odd_piv <= 0.0 || pv.f_ub >= req_f)) {
+      cut_by_req = false;
       eval_ray_bisect(0, prof_base, pv.s_warm, 3, stop_goal);
       pv.stage_done = 0;
+      pv.fail_req = cut_by_req ? req_f : -1e30;
     }
 
     // Stage 1: Upgrade WCS[1] if not yet done, then warm-started profile on pgrids[1] (27x40, 4 steps)
     if (pv.stage_done < 1 && max_stage >= 1 && (pv.odd_piv <= 0.0 || pv.f_ub >= req_f)) {
+      cut_by_req = false;
       if (pv.wcs_used < wcs.size()) upgrade_wcs(false);
       if (pv.odd_piv <= 0.0 || pv.f_ub >= req_f) {
         eval_ray_bisect(1, prof_base, pv.s_warm, 4, stop_goal);
       }
       pv.stage_done = 1;
+      pv.fail_req = cut_by_req ? req_f : -1e30;
     }
 
     // Stage 2: Warm-started profile on pgrids[2] (46x56, 4 steps)
     if (pv.stage_done < 2 && max_stage >= 2 && (pv.odd_piv <= 0.0 || pv.f_ub >= req_f)) {
+      cut_by_req = false;
       eval_ray_bisect(2, prof_base, pv.s_warm, 4, stop_goal);
       pv.stage_done = 2;
+      pv.fail_req = cut_by_req ? req_f : -1e30;
     }
 
     // Stage 3: Upgrade to fine WCS (44x24), then fast precomputed-subcell g2(mdepth=1, tol=5e-4)!
     if (pv.stage_done < 3 && max_stage >= 3 && (pv.odd_piv <= 0.0 || pv.f_ub >= req_f)) {
+      cut_by_req = false;
       upgrade_wcs(true);
       if (pv.odd_piv <= 0.0 || pv.f_ub >= req_f) {
         eval_ray_bisect(2, prof_base, pv.s_warm, 6, stop_goal, 1, 5e-4);
       }
       pv.stage_done = 3;
+      pv.fail_req = cut_by_req ? req_f : -1e30;
     }
 
-    // Stage 4: Precomputed-subcell g3(mdepth=1, tol=3e-4) with prof_base & HEUR EL!
+    // Stage 4: Precomputed-subcell g3(mdepth=1, tol=3e-4) + g2(mdepth=2, tol=2e-4) with prof_base & HEUR EL!
     if (pv.stage_done < 4 && max_stage >= 4 && (pv.odd_piv <= 0.0 || pv.f_ub >= req_f)) {
+      cut_by_req = false;
       eval_ray_bisect(3, prof_base, pv.s_warm, 6, stop_goal, 1, 3e-4);
+      if (pv.odd_piv <= 0.0 || pv.f_ub >= req_f) {
+        eval_ray_bisect(2, prof_base, pv.s_warm, 6, stop_goal, 2, 2e-4);
+      }
       if (pv.odd_piv <= 0.0 || pv.f_ub >= req_f) {
         QPoly el = HEUR.propose_q(w_e, c[0], c[1], c[2], c[3], pv.dp_pt, 0.0);
         double el_sc = 1.5;
         eval_ray_bisect(3, el, el_sc, 5, stop_goal, 1, 3e-4);
       }
       pv.stage_done = 4;
+      pv.fail_req = cut_by_req ? req_f : -1e30;
     }
 
-    // Stage 5: Deep 2D quadtree g2(mdepth=2, tol=2e-4) ONLY for ultra-tiny hotspot boxes (box_err <= 2.5e-5)!
+    // Stage 5: Deep 2D quadtree g2(mdepth=3, tol=2e-5) ONLY for tiny hotspot/near-origin boxes (box_err <= 2.5e-5)!
     if (pv.stage_done < 5 && max_stage >= 5 && (pv.odd_piv <= 0.0 || pv.f_ub >= req_f)) {
-      eval_ray_bisect(2, prof_base, pv.s_warm, 6, stop_goal, 2, 2e-4);
+      cut_by_req = false;
+      eval_ray_bisect(2, prof_base, pv.s_warm, 7, stop_goal, 3, 2e-5);
       if (pv.odd_piv <= 0.0 || pv.f_ub >= req_f) {
         QPoly el = HEUR.propose_q(w_e, c[0], c[1], c[2], c[3], pv.dp_pt, 0.0);
         double el_sc = 1.5;
-        eval_ray_bisect(2, el, el_sc, 5, stop_goal, 2, 2e-4);
+        eval_ray_bisect(2, el, el_sc, 6, stop_goal, 3, 2e-5);
       }
       pv.stage_done = 5;
+      pv.fail_req = cut_by_req ? req_f : -1e30;
+    }
+
+    // Stage 6: Ultra-local 2D quadtree g2(mdepth=4, tol=4e-6) ONLY right on s_odd boundary (box_err <= 6e-6)!
+    if (pv.stage_done < 6 && max_stage >= 6 && (pv.odd_piv <= 0.0 || pv.f_ub >= req_f)) {
+      cut_by_req = false;
+      eval_ray_bisect(2, prof_base, pv.s_warm, 8, stop_goal, 4, 4e-6);
+      if (pv.odd_piv <= 0.0 || pv.f_ub >= req_f) {
+        QPoly el = HEUR.propose_q(w_e, c[0], c[1], c[2], c[3], pv.dp_pt, 0.0);
+        double el_sc = 1.5;
+        eval_ray_bisect(2, el, el_sc, 6, stop_goal, 4, 4e-6);
+      }
+      pv.stage_done = 6;
+      pv.fail_req = cut_by_req ? req_f : -1e30;
     }
 
     cache[key] = pv;
@@ -2627,14 +2925,15 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
   Slab4DResult res;
   res.wl = wl; res.wh = wh; res.s_odd = s_odd;
 
-  struct Box4 { double c[4], hw[4]; int depth; };
-  std::vector<Box4> stack;
-  // Cover [-5/4, 5/4] x [-5/4, 5/4] x [0, 5/4] x [-5/4, 5/4] (Im A >= 0 by conjugation symmetry!)
+  struct Box5 { double bwl, bwh, c[4], hw[4]; int depth; };
+  std::vector<Box5> stack;
+  // Cover [wl, wh] x [-5/4, 5/4] x [-5/4, 5/4] x [0, 5/4] x [-5/4, 5/4] (Im A >= 0 by conjugation symmetry!)
   const double R0 = 1.25;
   for (int s0 = 0; s0 < 2; ++s0)
     for (int s1 = 0; s1 < 2; ++s1)
       for (int s3 = 0; s3 < 2; ++s3) {
-        Box4 b;
+        Box5 b;
+        b.bwl = wl; b.bwh = wh;
         b.c[0] = s0 ? 0.5 * R0 : -0.5 * R0;
         b.c[1] = s1 ? 0.5 * R0 : -0.5 * R0;
         b.c[2] = 0.5 * R0;
@@ -2646,14 +2945,14 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
 
   int visited = 0;
   while (!stack.empty()) {
-    Box4 b = stack.back();
+    Box5 b = stack.back();
     stack.pop_back();
     visited++;
     if (verbose && visited % 2000 == 0) {
-      std::fprintf(stderr, "  [prog vis=%d stk=%zu dep=%d ext=%d ori=%d piv=%d g=(%d,%d,%d) pts=%zu+%zu] c=(%.3f,%.3f,%.3f,%.3f) hw=(%.3f,%.3f,%.3f,%.3f)\n",
-                   visited, stack.size(), b.depth, res.closed_ext, res.closed_ori, res.closed_piv,
-                   res.closed_g[0], res.closed_g[1], res.closed_g[2], cache_l.size(), cache_h.size(),
-                   b.c[0], b.c[1], b.c[2], b.c[3], b.hw[0], b.hw[1], b.hw[2], b.hw[3]);
+      std::fprintf(stderr, "  [prog vis=%d stk=%zu dep=%d ext=%d ori=%d piv=%d ws=%d g=(%d,%d,%d) pts=%zu+%zu+%zu] w=[%.5f,%.5f] c=(%.3f,%.3f,%.3f,%.3f) hw=(%.3f,%.3f,%.3f,%.3f)\n",
+                   visited, stack.size(), b.depth, res.closed_ext, res.closed_ori, res.closed_piv, res.w_splits,
+                   res.closed_g[0], res.closed_g[1], res.closed_g[2], cache_l.size(), cache_h.size(), mid_slices.size(),
+                   b.bwl, b.bwh, b.c[0], b.c[1], b.c[2], b.c[3], b.hw[0], b.hw[1], b.hw[2], b.hw[3]);
     }
 
     double Smin = 0.0, Smax = 0.0;
@@ -2681,21 +2980,24 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
       }
     }
 
-    // 1. Exact O(1) shift-semiconvexity error for F_joint(c*) on [wl, wh] (valid for ALL Q, P, nu!):
+    // 1. Exact O(1) shift-semiconvexity error for F_joint(c*) on [b.bwl, b.bwh] (valid for ALL Q, P, nu!):
+    I dw_b = I(b.bwh) - I(b.bwl);
+    I dw2_8_b = sq(dw_b) / I(8.0);
     I mw = I(sc.n_up) + I(2.0) * I(ah[0]) * I(sc.a2_up) + I(2.0) * I(ah[1]) * I(sc.b2_up) + I(Smax);
-    double w_err = (dw2_8 * mw).h;
+    double w_err = (dw2_8_b * mw).h;
 
     // 2. Exact 4D cube concavity defect of -Q_{w_e}(v) - t*||v||^4 for any exact dyadic t in [0, 1]:
-    //    Since ||v||^4 >= t*||v||^4 + (1-t)*Smin^2 on B, for each face w_e and any t in {0, 1/4, 1/2, 3/4, 1}:
-    //      sup_{v in B} F_joint(w_e, v) <= max_m [F_joint(w_e, c^(m)) + (1-t)*(S(c^(m))^2 - Smin^2)]
-    //                                      + qsum(w_e) + t*quart_err!
+    I qw_bl[4], qw_bh[4];
+    I half_wl2 = I(0.5) * sq(I(b.bwl)), half_wh2 = I(0.5) * sq(I(b.bwh));
     I sum_hw2(0.0), sum_ah2_hw2(0.0), qsum_l(0.0), qsum_h(0.0);
     for (int j = 0; j < 4; ++j) {
+      qw_bl[j] = q_diag[j] + half_wl2;
+      qw_bh[j] = q_diag[j] + half_wh2;
       I hw2 = sq(I(b.hw[j]));
       sum_hw2 = sum_hw2 + hw2;
       sum_ah2_hw2 = sum_ah2_hw2 + sq(I(ah[j])) * hw2;
-      qsum_l = qsum_l + qw_l[j] * hw2;
-      qsum_h = qsum_h + qw_h[j] * hw2;
+      qsum_l = qsum_l + qw_bl[j] * hw2;
+      qsum_h = qsum_h + qw_bh[j] * hw2;
     }
     double qsl_hi = qsum_l.h, qsh_hi = qsum_h.h;
     double qrt_hi = (I(2.0) * I(Smax) * sum_hw2 + I(4.0) * sum_ah2_hw2).h;
@@ -2703,9 +3005,15 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
 
     // Skip evaluating corners when even the quadratic defect + w_err alone exceeds box upper bound on B_P:
     bool closed = false;
-    double bp_ub_l = (1.25 + 0.5 * wl * wl + Smax) * Smax;
-    double bp_ub_h = (1.25 + 0.5 * wh * wh + Smax) * Smax;
+    double bp_ub_l = (1.25 + 0.5 * b.bwl * b.bwl + Smax) * Smax;
+    double bp_ub_h = (1.25 + 0.5 * b.bwh * b.bwh + Smax) * Smax;
     if (std::max(qsl_hi, qsh_hi) <= 1.0 && add_up(qsl_hi, w_err) < bp_ub_l && add_up(qsh_hi, w_err) < bp_ub_h) {
+      std::vector<WcsGrid> *swl_wcs = nullptr, *swh_wcs = nullptr;
+      bool *swl_bf = nullptr, *swh_bf = nullptr;
+      CornerCache *swl_c = nullptr, *swh_c = nullptr;
+      get_slice(b.bwl, swl_wcs, swl_bf, swl_c);
+      get_slice(b.bwh, swh_wcs, swh_bf, swh_c);
+
       double corners[16][4];
       double dS2_up[16];
       double dS2_max = 0.0;
@@ -2725,17 +3033,14 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
       double box_min_piv = 1e30;
       int box_max_gl = 0;
       bool ok = true;
-      // Gate maximum odd grid stage by box error scale: never burn g2/g3/mdepth=1 on huge boxes that should split!
       double box_err = std::max(qsl_hi, qsh_hi) + std::min(dS2_max, qrt_hi);
-      int max_stage = (box_err > 0.04) ? 1 : (box_err > 0.0015) ? 2 : (box_err > 0.00015) ? 3 : (box_err > 2.5e-5) ? 4 : 5;
+      int max_stage = (box_err > 0.04) ? 1 : (box_err > 0.0015) ? 2 : (box_err > 0.00015) ? 3 : (box_err > 2.5e-5) ? 4 : (box_err > 6e-6) ? 5 : 6;
       for (int m = 0; m < 16; ++m) {
-        // Ask eval_corner_pt for the target of the better global t in {0, 1}, while only aborting
-        // if even the weakest possible t at this corner (min(dS2_up[m], qrt_hi)) fails!
         double qrt_ask = (qrt_hi <= dS2_max) ? qrt_hi : dS2_up[m];
         double qrt_min = std::min(dS2_up[m], qrt_hi);
         double req_l = -add_up(add_up(qsl_hi, qrt_ask), w_err);
         double lim_l = -add_up(add_up(qsl_hi, qrt_min), w_err);
-        PtVal pl = eval_corner_pt(wl, corners[m], req_l, max_stage, wcs_l, built_fine_l, cache_l);
+        PtVal pl = eval_corner_pt(b.bwl, corners[m], req_l, max_stage, *swl_wcs, *swl_bf, *swl_c);
         if (pl.odd_piv <= 0.0 || pl.f_ub >= lim_l) { ok = false; break; }
         double piv_l = (pl.odd_piv > 1e8) ? p2_margin : pl.odd_piv;
         if (piv_l < box_min_piv) box_min_piv = piv_l;
@@ -2743,7 +3048,7 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
 
         double req_h = -add_up(add_up(qsh_hi, qrt_ask), w_err);
         double lim_h = -add_up(add_up(qsh_hi, qrt_min), w_err);
-        PtVal ph = eval_corner_pt(wh, corners[m], req_h, max_stage, wcs_h, built_fine_h, cache_h);
+        PtVal ph = eval_corner_pt(b.bwh, corners[m], req_h, max_stage, *swh_wcs, *swh_bf, *swh_c);
         if (ph.odd_piv <= 0.0 || ph.f_ub >= lim_h) { ok = false; break; }
         double piv_h = (ph.odd_piv > 1e8) ? p2_margin : ph.odd_piv;
         if (piv_h < box_min_piv) box_min_piv = piv_h;
@@ -2783,10 +3088,23 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
 
     if (closed) continue;
 
-    if (b.depth >= 44) {
+    if (b.depth >= 48) {
       res.open_boxes++;
       std::fprintf(stderr, "OPEN BOX on [%.6f, %.6f]: c=(%.5f,%.5f,%.5f,%.5f) hw=(%.5f,%.5f,%.5f,%.5f) w_err=%.3e qsum=%.3e qrt=%.3e\n",
-                   wl, wh, b.c[0], b.c[1], b.c[2], b.c[3], b.hw[0], b.hw[1], b.hw[2], b.hw[3], w_err, std::max(qsl_hi, qsh_hi), qrt_hi);
+                   b.bwl, b.bwh, b.c[0], b.c[1], b.c[2], b.c[3], b.hw[0], b.hw[1], b.hw[2], b.hw[3], w_err, std::max(qsl_hi, qsh_hi), qrt_hi);
+      continue;
+    }
+    // Adaptive 5D bisection: bisect w whenever w_err dominates 4D box concavity error!
+    double max_qsum = std::max(qsl_hi, qsh_hi);
+    if (w_err > 0.35 * max_qsum && (b.bwh - b.bwl) > 1e-4) {
+      double wm = 0.5 * (b.bwl + b.bwh);
+      assert(wm > b.bwl && wm < b.bwh);
+      Box5 b1 = b, b2 = b;
+      b1.bwh = wm; b1.depth = b.depth + 1;
+      b2.bwl = wm; b2.depth = b.depth + 1;
+      res.w_splits++;
+      stack.push_back(b1);
+      stack.push_back(b2);
       continue;
     }
     int best_axis = 0;
@@ -2797,13 +3115,15 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
     }
     double nh = 0.5 * b.hw[best_axis];
     assert(nh > 1e-12);
-    Box4 b1 = b, b2 = b;
+    Box5 b1 = b, b2 = b;
     b1.hw[best_axis] = nh; b1.c[best_axis] = b.c[best_axis] - nh; b1.depth = b.depth + 1;
     b2.hw[best_axis] = nh; b2.c[best_axis] = b.c[best_axis] + nh; b2.depth = b.depth + 1;
     stack.push_back(b1);
     stack.push_back(b2);
   }
-  res.unique_corners = static_cast<int>(cache_l.size() + cache_h.size());
+  size_t tot_pts = cache_l.size() + cache_h.size();
+  for (const auto& kv : mid_slices) tot_pts += kv.second.cache.size();
+  res.unique_corners = static_cast<int>(tot_pts);
   res.total_boxes = res.closed_ext + res.closed_ori + res.closed_piv
                     + res.closed_g[0] + res.closed_g[1] + res.closed_g[2] + res.open_boxes;
   return res;
@@ -2882,11 +3202,13 @@ int main(int argc, char** argv) {
   std::string out_path = "result.json";
   int single_slab = -1;
   bool control_false_hotspot = false;
+  bool test_part1_only = false;
   bool test_part2_only = false;
   for (int i = 1; i < argc; ++i) {
     if (std::strcmp(argv[i], "--output") == 0 && i + 1 < argc) out_path = argv[++i];
     else if (std::strcmp(argv[i], "--test-slab") == 0 && i + 1 < argc) single_slab = std::atoi(argv[++i]);
     else if (std::strcmp(argv[i], "--control-false-hotspot") == 0) control_false_hotspot = true;
+    else if (std::strcmp(argv[i], "--test-part1") == 0) test_part1_only = true;
     else if (std::strcmp(argv[i], "--test-part2") == 0) test_part2_only = true;
   }
 
@@ -2913,23 +3235,35 @@ int main(int argc, char** argv) {
   }
 
   if (control_false_hotspot) {
-    // Live C++ negative control: at the global worst fold point w=0.2554, A=0.3243+0.1346i, B=0.2082+0.1569i,
-    // verify that true F_joint(c*) is strictly NEGATIVE (cannot certify false target F_joint <= -0.08)!
-    // Specifically test that at w=0.6004, A=0.3496, B=0.2023, shrinking B_P by 0.01 breaks U_WCS + C0 < B_P - 0.01!
+    // 1. Live even-budget false-target control: at w=0.6004, A=0.3496, B=0.2023,
+    //    true B_P - U_WCS > 0, while shrinking B_P by 0.01 fails!
     double v_pt[4] = {0.3496, 0.2023, 0.0, 0.0};
     WcsGrid g = build_wcs_grid(0.6004, 32, 20, 2, 2);
     double rem_ub = eval_wcs_ub(g, v_pt);
     I BP = eval_BP_iv(0.6004, v_pt);
     double dp = sub_dn(BP.l, rem_ub);
-    // Test false stronger target B_P - 0.01:
     double false_diff = sub_dn(BP.l - 0.01, rem_ub);
     assert(dp > 0.0 && false_diff < 0.0);
-    // Also verify false odd budget B_odd - 0.5*I_6 fails Cholesky at w=0, v=0!
+
+    // 2. Live odd-budget false-target control: at w=0, v=0, true B_odd - M_odd(0,0) > 0,
+    //    while weakened odd budget B_odd - 0.5*I_6 MUST be rejected (pd_piv < 0)!
     QPoly q0{1e-4, 0.0, 0.0, 0.0};
     I v0[4] = {I(0.0), I(0.0), I(0.0), I(0.0)};
-    auto oer = eval_odd_box(pgrids[1], I(0.0), v0, q0, 2, 1e-4);
-    assert(oer.pd_piv > 0.0);
-    std::printf("CONTROL_ALL_SECTOR dp=%.9g false_diff=%.9g origin_piv=%.9g\n", dp, false_diff, oer.pd_piv);
+    auto oer_true = eval_odd_box(pgrids[1], I(0.0), v0, q0, 2, 1e-4, 0.0);
+    auto oer_false = eval_odd_box(pgrids[1], I(0.0), v0, q0, 2, 1e-4, 0.5);
+    assert(oer_true.pd_piv > 0.0 && oer_false.pd_piv < 0.0);
+
+    // 3. Exact Jensen diagonal sanity checks independent of the numerical integrators:
+    //    (a) Part 1 at w = 11/8: O_iso[0,0] = E[T/|w+L|] >= 1/sqrt(99227833/25000000) > 1/2!
+    Part1Slab s_p1 = certify_part1_slab(1.375, 1.375 + 0.625 / 80.0, true, 30.0, 96, 48, 40);
+    assert(s_p1.O_iso.e[0].l > 0.5 && s_p1.O_iso.e[0].h > 0.5 && s_p1.odd_margin > 0.0);
+    //    (b) Part 2 at w = 0: M_im[0,0] >= E[sqrt(T)/(a+bT)] >= (250/387)*sqrt(pi) > 1.1!
+    Part2Slab s_p2 = certify_part2_slab(0.0, 1.0 / 128.0, 1.0 / 32.0, 0.04, 0.40);
+    assert(s_p2.M_im.e[0].l > 1.1 && s_p2.M_im.e[0].h > 1.1 && s_p2.margin > 0.0);
+
+    std::printf("CONTROL_ALL_SECTOR dp=%.9g false_diff=%.9g origin_piv=%.9g false_odd_piv=%.9g p1_O00=[%.6f,%.6f] p2_Mim00=[%.6f,%.6f]\n",
+                dp, false_diff, oer_true.pd_piv, oer_false.pd_piv,
+                s_p1.O_iso.e[0].l, s_p1.O_iso.e[0].h, s_p2.M_im.e[0].l, s_p2.M_im.e[0].h);
     return 0;
   }
 
@@ -2938,8 +3272,9 @@ int main(int argc, char** argv) {
   std::printf("[certify_all_sector] running with %u threads...\n", nthreads);
 
   // ------------------------------------------------------------------------
-  // Slab schedules for Part 2 (152 fine dyadic slabs, ~2s) & Part 3 (88 dyadic slabs) on [0, 11/8]:
-  // Each Part 3 slab is an exact union of 1 or 2 Part 2 slabs with identical s_odd(w)!
+  // Slab schedules for Part 2 (208 smooth-split H_5 slabs) & Part 3 (96 adaptive Box5 slabs) on [0, 11/8]:
+  // Every s_odd(w) is an exact dyadic binary64 rational, and each Part 3 slab is an exact union
+  // of Part 2 slabs with s_odd_p3 <= s_odd_p2!
   // ------------------------------------------------------------------------
   struct BulkSpec { double wl, wh, s_odd, delta, eps_cs; };
   std::vector<BulkSpec> p2_specs, bulk_specs;
@@ -2950,26 +3285,29 @@ int main(int argc, char** argv) {
       dst.push_back({wl, wh, s_odd, delta, eps_cs});
     }
   };
-  // Part 2 (152 fine slabs: dw=1/128 on [0, 1], dw=1/64 on [1, 11/8]) — keeps interval width tiny:
-  add_spec(p2_specs, 0.0,     0.0625,  8,  1.0 / 8.0,  0.125,  0.24);
-  add_spec(p2_specs, 0.0625,  0.1875,  16, 7.0 / 64.0, 0.125,  0.18);
-  add_spec(p2_specs, 0.1875,  0.28125, 12, 3.0 / 32.0, 0.125,  0.16);
-  add_spec(p2_specs, 0.28125, 0.375,   12, 5.0 / 64.0, 0.125,  0.12);
-  add_spec(p2_specs, 0.375,   0.5625,  24, 1.0 / 16.0, 0.125,  0.10);
-  add_spec(p2_specs, 0.5625,  0.75,    24, 3.0 / 64.0, 0.125,  0.06);
-  add_spec(p2_specs, 0.75,    1.0,     32, 3.0 / 64.0, 0.125,  0.06);
-  add_spec(p2_specs, 1.0,     1.375,   24, 3.0 / 64.0, 0.1875, 0.16);
+  // Part 2 (244 exact-dyadic smooth-split H_5 slabs on [0, 11/8]):
+  add_spec(p2_specs, 0.0,     0.0625,   8, 1.0 / 32.0,   0.04, 0.40);
+  add_spec(p2_specs, 0.0625,  0.125,    8, 3.0 / 128.0,  0.04, 0.30);
+  add_spec(p2_specs, 0.125,   0.1875,   8, 1.0 / 64.0,   0.05, 0.12);
+  add_spec(p2_specs, 0.1875,  0.28125, 24, 3.0 / 256.0,  0.05, 0.06);
+  add_spec(p2_specs, 0.28125, 0.375,   24, 1.0 / 128.0,  0.05, 0.04);
+  add_spec(p2_specs, 0.375,   0.59375, 56, 3.0 / 512.0,  0.05, 0.02);
+  add_spec(p2_specs, 0.59375, 0.71875, 32, 1.0 / 128.0,  0.05, 0.03);
+  add_spec(p2_specs, 0.71875, 0.8125,  12, 3.0 / 256.0,  0.07, 0.06);
+  add_spec(p2_specs, 0.8125,  1.0,     24, 1.0 / 64.0,   0.08, 0.08);
+  add_spec(p2_specs, 1.0,     1.375,   48, 1.0 / 64.0,   0.10, 0.12);
 
-  // Part 3 (96 slabs: dw=1/64 on [0, 7/16] & [3/4, 1], dw=1/128 on [7/16, 3/4] around fold valley, dw=1/32 on [1, 11/8]):
-  add_spec(bulk_specs, 0.0,     0.0625,  4,  1.0 / 8.0,  0.125,  0.24);
-  add_spec(bulk_specs, 0.0625,  0.1875,  8,  7.0 / 64.0, 0.125,  0.18);
-  add_spec(bulk_specs, 0.1875,  0.28125, 6,  3.0 / 32.0, 0.125,  0.16);
-  add_spec(bulk_specs, 0.28125, 0.375,   6,  5.0 / 64.0, 0.125,  0.12);
-  add_spec(bulk_specs, 0.375,   0.4375,  4,  1.0 / 16.0, 0.125,  0.10);
-  add_spec(bulk_specs, 0.4375,  0.5625,  16, 1.0 / 16.0, 0.125,  0.10);
-  add_spec(bulk_specs, 0.5625,  0.75,    24, 3.0 / 64.0, 0.125,  0.06);
-  add_spec(bulk_specs, 0.75,    1.0,     16, 3.0 / 64.0, 0.125,  0.06);
-  add_spec(bulk_specs, 1.0,     1.375,   12, 3.0 / 64.0, 0.1875, 0.16);
+  // Part 3 (98 exact-dyadic slabs with on-demand Box5 w-bisection near origin shell):
+  add_spec(bulk_specs, 0.0,     0.0625,   4, 1.0 / 32.0,   0.04, 0.40);
+  add_spec(bulk_specs, 0.0625,  0.125,    4, 3.0 / 128.0,  0.04, 0.30);
+  add_spec(bulk_specs, 0.125,   0.1875,   4, 1.0 / 64.0,   0.05, 0.12);
+  add_spec(bulk_specs, 0.1875,  0.28125,  6, 3.0 / 256.0,  0.05, 0.06);
+  add_spec(bulk_specs, 0.28125, 0.375,    6, 1.0 / 128.0,  0.05, 0.04);
+  add_spec(bulk_specs, 0.375,   0.59375, 28, 3.0 / 512.0,  0.05, 0.02);
+  add_spec(bulk_specs, 0.59375, 0.71875, 16, 1.0 / 128.0,  0.05, 0.03);
+  add_spec(bulk_specs, 0.71875, 0.8125,   6, 3.0 / 256.0,  0.07, 0.06);
+  add_spec(bulk_specs, 0.8125,  1.0,     12, 1.0 / 64.0,   0.08, 0.08);
+  add_spec(bulk_specs, 1.0,     1.375,   12, 1.0 / 64.0,   0.10, 0.12);
 
   if (test_part2_only) {
     std::vector<Part2Slab> p2_test(p2_specs.size());
@@ -3022,8 +3360,8 @@ int main(int argc, char** argv) {
     bool bfl = false, bfh = false;
     CornerCache cl, ch;
     Slab4DResult r4 = certify_4d_slab(sp.wl, sp.wh, sp.s_odd, p2_min_m, sc, gl, bfl, cl, gh, bfh, ch, pgrids, true);
-    std::printf("  Part 3 4D cover: total=%d (ext=%d ori=%d piv=%d g=[%d,%d,%d], uniq_pts=%d) open=%d worst_m=%.4e min_piv=%.4e\n",
-                r4.total_boxes, r4.closed_ext, r4.closed_ori, r4.closed_piv,
+    std::printf("  Part 3 4D cover: total=%d (ext=%d ori=%d piv=%d ws=%d g=[%d,%d,%d], uniq_pts=%d) open=%d worst_m=%.4e min_piv=%.4e\n",
+                r4.total_boxes, r4.closed_ext, r4.closed_ori, r4.closed_piv, r4.w_splits,
                 r4.closed_g[0], r4.closed_g[1], r4.closed_g[2], r4.unique_corners,
                 r4.open_boxes, r4.worst_even_c0_margin, r4.min_odd_piv);
     return (p2_min_m > 0 && r4.open_boxes == 0) ? 0 : 1;
@@ -3081,8 +3419,9 @@ int main(int argc, char** argv) {
   }
   std::printf("[Part 1] PASS potential exteriors (%zu slabs): amp_m=%.4e, shift_even_m=%.4e, shift_odd_m=%.4e\n",
               p1_res.size(), min_p1_amp, min_p1_se, min_p1_so);
+  if (test_part1_only) return 0;
 
-  // PART 2: Hybrid Origin Strip on all p2_specs slabs (152 fine dyadic slabs covering [0, 11/8])
+  // PART 2: Smooth-Split H_{5,delta} Origin Strip on all p2_specs slabs (244 exact-dyadic slabs covering [0, 11/8])
   std::vector<Part2Slab> p2_res(p2_specs.size());
   {
     std::atomic<size_t> next_i(0);
@@ -3108,7 +3447,7 @@ int main(int argc, char** argv) {
     }
     min_p2_m = std::min(min_p2_m, r.margin);
   }
-  std::printf("[Part 2] PASS hybrid origin strip (%zu slabs): min_piv=%.4e\n", p2_res.size(), min_p2_m);
+  std::printf("[Part 2] PASS smooth-split origin strip (%zu slabs): min_piv=%.4e\n", p2_res.size(), min_p2_m);
 
   // Precompute min Part 2 margin overlapping each Part 3 slab (guaranteed exact handoff s_odd_p3 <= s_odd_p2):
   std::vector<double> p3_p2_margin(bulk_specs.size(), 1e30);
@@ -3123,9 +3462,9 @@ int main(int argc, char** argv) {
     assert(p3_p2_margin[idx] > 0.0 && p3_p2_margin[idx] < 1e20);
   }
 
-  // PART 3: 4D Adaptive Bulk Cover on all bulk_specs slabs covering [0, 11/8]
+  // PART 3: Adaptive 5D Box5 Bulk Cover on all bulk_specs slabs covering [0, 11/8]
   // Deterministic LPT-ordered fixed contiguous chunks: adjacent slabs with identical s_odd share
-  // their endpoint WCS grids and CornerCache, while heavy fold slabs [28..64) launch first to
+  // their endpoint WCS grids and CornerCache, while heavy fold & low-w slabs launch first to
   // eliminate straggler tails. Each chunk starts fresh -> 100% bit-for-bit deterministic!
   std::vector<SlabCurv> p3_curv(bulk_specs.size());
   std::vector<Slab4DResult> p3_res(bulk_specs.size());
@@ -3135,10 +3474,12 @@ int main(int argc, char** argv) {
     auto push_range = [&](size_t a, size_t b, size_t step) {
       for (size_t s = a; s < b; s += step) chunks.push_back({s, std::min(s + step, b)});
     };
-    if (n_tot == 96) {
-      push_range(28, 64, 3);  // Heavy fold valley [0.4375, 0.71875] first (12 chunks of 3)
-      push_range(0,  28, 4);  // Low-w [0, 0.4375] next (7 chunks of 4)
-      push_range(64, 96, 4);  // High-w [0.71875, 1.375] last (8 chunks of 4)
+    if (n_tot == 98) {
+      push_range(24, 52, 2);  // Heavy fold valley [0.375, 0.59375] first (14 chunks of 2)
+      push_range(0,  12, 2);  // Low-w [0, 0.1875] second (6 chunks of 2)
+      push_range(52, 68, 2);  // Upper fold [0.59375, 0.71875] third (8 chunks of 2)
+      push_range(12, 24, 3);  // Mid-low-w [0.1875, 0.375] fourth (4 chunks of 3)
+      push_range(68, 98, 5);  // High-w [0.71875, 1.375] last (6 chunks of 5)
     } else {
       push_range(0, n_tot, 4);
     }
@@ -3232,6 +3573,8 @@ int main(int argc, char** argv) {
         << ",\"s_odd\":" << hex_d(r.s_odd)
         << ",\"delta\":" << hex_d(r.delta)
         << ",\"eps_cs\":" << hex_d(r.eps_cs)
+        << ",\"R_in\":" << hex_d(r.R_in)
+        << ",\"lam\":" << hex_d(r.lam)
         << ",\"M_re\":" << sym3_json(r.M_re)
         << ",\"M_im\":" << sym3_json(r.M_im)
         << ",\"margin\":" << hex_d(r.margin) << "}";
@@ -3245,7 +3588,7 @@ int main(int argc, char** argv) {
         << ",\"s_odd\":" << hex_d(r.s_odd)
         << ",\"n_up\":" << hex_d(sc.n_up) << ",\"a2_up\":" << hex_d(sc.a2_up) << ",\"b2_up\":" << hex_d(sc.b2_up)
         << ",\"closed_ext\":" << r.closed_ext << ",\"closed_ori\":" << r.closed_ori
-        << ",\"closed_piv\":" << r.closed_piv
+        << ",\"closed_piv\":" << r.closed_piv << ",\"w_splits\":" << r.w_splits
         << ",\"closed_g\":[" << r.closed_g[0] << "," << r.closed_g[1] << "," << r.closed_g[2] << "]"
         << ",\"total_boxes\":" << r.total_boxes << ",\"open_boxes\":" << r.open_boxes
         << ",\"worst_margin\":" << hex_d(r.worst_even_c0_margin)

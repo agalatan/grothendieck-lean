@@ -1,0 +1,54 @@
+rows to run: 0.250L, 0.300L, 0.400L, 0.500L, 0.550L, 0.600L, 0.700, 0.720, 0.740, 0.760, 0.780, 0.790, 0.800, 0.810, 0.820, 0.830, 0.840, 0.845, 0.850, 0.855, 0.860, 0.865, 0.870, 0.875, 0.880, 0.886
+[     0s] row 0.250L started (law, 4 processes)
+[     0s] row 0.300L started (law, 4 processes)
+[     0s] row 0.400L started (law, 4 processes)
+[   440s] row 0.400L done (exit 0); running 2, queued 23
+[   440s] row 0.500L started (law, 4 processes)
+[   475s] row 0.300L done (exit 0); running 2, queued 22
+[   475s] row 0.550L started (law, 4 processes)
+[   630s] row 0.250L done (exit 0); running 2, queued 21
+[   630s] row 0.600L started (law, 4 processes)
+[   850s] row 0.550L done (exit 0); running 2, queued 20
+[   850s] row 0.700 started (gaussian, 4 processes)
+[   910s] row 0.500L done (exit 0); running 2, queued 19
+[   910s] row 0.720 started (gaussian, 4 processes)
+[  1020s] row 0.600L done (exit 0); running 2, queued 18
+[  1020s] row 0.740 started (gaussian, 4 processes)
+[  1240s] row 0.700 done (exit 0); running 2, queued 17
+[  1240s] row 0.760 started (gaussian, 4 processes)
+[  1280s] row 0.720 done (exit 0); running 2, queued 16
+[  1280s] row 0.780 started (gaussian, 4 processes)
+[  1310s] row 0.740 done (exit 0); running 2, queued 15
+[  1310s] row 0.790 started (gaussian, 4 processes)
+[  1450s] row 0.760 done (exit 0); running 2, queued 14
+[  1450s] row 0.800 started (gaussian, 4 processes)
+[  1485s] row 0.780 done (exit 0); running 2, queued 13
+[  1485s] row 0.810 started (gaussian, 4 processes)
+[  1510s] row 0.790 done (exit 0); running 2, queued 12
+[  1510s] row 0.820 started (gaussian, 4 processes)
+[  1640s] row 0.800 done (exit 0); running 2, queued 11
+[  1640s] row 0.830 started (gaussian, 4 processes)
+[  1670s] row 0.810 done (exit 0); running 2, queued 10
+[  1670s] row 0.840 started (gaussian, 4 processes)
+[  1695s] row 0.820 done (exit 0); running 2, queued 9
+[  1695s] row 0.845 started (gaussian, 4 processes)
+[  1845s] row 0.830 done (exit 0); running 2, queued 8
+[  1845s] row 0.850 started (gaussian, 4 processes)
+[  1900s] row 0.840 done (exit 0); running 2, queued 7
+[  1900s] row 0.855 started (gaussian, 4 processes)
+[  1945s] row 0.845 done (exit 0); running 2, queued 6
+[  1945s] row 0.860 started (gaussian, 4 processes)
+[  2085s] row 0.850 done (exit 0); running 2, queued 5
+[  2085s] row 0.865 started (gaussian, 4 processes)
+[  2110s] row 0.855 done (exit 0); running 2, queued 4
+[  2110s] row 0.870 started (gaussian, 4 processes)
+[  2140s] row 0.860 done (exit 0); running 2, queued 3
+[  2140s] row 0.875 started (gaussian, 4 processes)
+[  2145s] row 0.875 done (exit 0); running 2, queued 2
+[  2145s] row 0.880 started (gaussian, 4 processes)
+[  2150s] row 0.880 done (exit 0); running 2, queued 1
+[  2150s] row 0.886 started (gaussian, 4 processes)
+[  2155s] row 0.886 done (exit 0); running 2, queued 0
+[  2275s] row 0.865 done (exit 0); running 1, queued 0
+[  2295s] row 0.870 done (exit 0); running 0, queued 0
+ALL ROWS DONE (2300s)

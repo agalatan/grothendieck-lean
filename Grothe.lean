@@ -3312,7 +3312,6 @@ import Grothe.LowerAnalytic.Reduction
 import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.Rows
 import Grothe.LowerAnalytic.SharedGateBound
-import Grothe.LowerAnalytic.SharpEnvelopeBound
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.SixthMomentData
 import Grothe.LowerAnalytic.SpectralBudget
@@ -3324,7 +3323,6 @@ import Grothe.LowerAnalytic.WickGraphData
 import Grothe.LowerAnalytic.WickSix
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
-import Grothe.LowerTarget
 import Grothe.MainResult
 import Grothe.Statement
 import Grothe.StatementBridges

@@ -7,11 +7,10 @@ required declarations in `data/axioms/required.txt`; CI checks it on every pushe
 a pull request lands.
 
 The proof-check workflow also audits `scratch/UpperSixAxioms.lean` against the required six-channel
-allowlist. For the standalone article proof it covers only the two cell witnesses and both
-overlap-table checks (its weighted head, each channel's disk and circle checks, and the rational
-tail comparisons reduce in the kernel); for the sharpened root endpoint (`Grothe/UpperSixExact/`)
-it also covers the modified channel-0 contour checks and the six-channel linear-floor head check
-while reusing the kernel-checked contours for channels 1–5.
+allowlist. It covers the two cell witnesses and both overlap-table checks of the library
+`Grothe/UpperSix/`, and from the certificate `Grothe/UpperSixExact/` the contour checks of the first
+channel and the head check with the six linear floors. The disk and circle checks of the other five
+channels and the rational tail comparisons reduce in the kernel.
 [Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
 
 Archived upper variants have separate preserved inventories under
@@ -20,7 +19,7 @@ Archived upper variants have separate preserved inventories under
 ## Lower bound
 
 Every native fact of the lower bound is one sequential exact computation; most of them sit in modules of their own, so
-that Lake checks them in separate processes. All of them are in the axiom closure of `lower_target` and `main_bounds`,
+that Lake checks them in separate processes. All of them are in the axiom closure of `shared_gate_endpoint` and `main_bounds`,
 which `scratch/Axioms.lean` reports. Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
 number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a block of consecutive nodes or pieces.
 
@@ -44,7 +43,7 @@ piece facts; CI replays them from a verified build cache. No per-fact timing is 
 ## Upper bound
 
 This section covers the older single-channel upper proof (`Grothe/UpperTightFinal.lean`, `K < 1.404599395362`), which
-is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.40455741`, comes from the six-channel proof; its native
+is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.404556407`, comes from the six-channel proof; its native
 facts are those of the six-channel allowlist named above. The table below is not complete (the quadrature facts under
 `Grothe/UpperQuad/` are not in it); `data/axioms/native.txt` is the full list.
 

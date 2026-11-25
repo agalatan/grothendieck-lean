@@ -13,19 +13,24 @@ Python 3 standard library only (`python3 -I`, assertions required). Verifies:
        -psi'(r) = q^2*(2*mu+r)/(mu^3*(mu+r)^2) > 0, psi''(r) = 3*q^2/mu^5 > 0.
      - Lemma L1 (||D_X A(X, q)[h]||_op <= 1/mu^2): exact 2D Bernstein certificates.
      - Lemma L2 (mu^3 D_X^2 A(X, q)[h, h] <= 2 I_2): exact 2D Bernstein certificates.
+     - Smooth-Split H_{5,delta} (Lemmas S1 & S2): exact C^2 matching, zero-overlap
+       decomposition 1/r = phi_delta(r) + chi_{5,delta}(r)/r, and exact Bernstein
+       bounds ||D_X H_{5,delta}||_op <= 35/(32*delta^2), ||D_X^2 H_{5,delta}||_op <= 665/(256*delta^3).
      - Exact rational w >= 8 analytic shift exterior for BOTH even (< 3/2 < 97/3)
        and odd (1/4 + 1/3 = 7/12 < 50/61 < lambda_min(B_odd)) sectors.
      - Exact rational r >= 24/30 even & odd tail bounds and T >= 25 base curvature tail.
+     - Independent analytic Jensen diagonal lower-bound controls on Part 1 (w=11/8)
+       and Part 2 (w=0).
   3. Part 1 (Potential exteriors on [0, 8]): exact contiguity and exact rational
      Sylvester PSD of Q_0 + shift*I_2 - P_re/P_im on [0, 11/8] (S_r >= 3/4) and
-     [11/8, 8] (w >= 11/8), plus B_3 - O_iso > 0 on [11/8, 8].
-  4. Part 2 (Hybrid local-pullback + Theorem 2(b) origin strip on [0, 11/8]):
+     [11/8, 8] (w >= 11/8), plus B_3 - O_iso > 0 on [11/8, 8] (true half-circle factor 2).
+  4. Part 2 (Zero-overlap Smooth-Split H_{5,delta} origin strip on [0, 11/8], 244 slabs):
      exact contiguity, positive s_odd/delta/eps_cs, exact rational Sylvester PSD
-     of B_3 - M_re > 0 and B_3 - M_im > 0 on every slab.
-  5. Part 3 (4D adaptive all-sector bulk cover on [0, 11/8] via 5D convexity-semiconvexity
-     point-corner theorem and flat-quartic convex combination): exact contiguity,
-     inner handoff s_odd_p3 <= s_odd_p2, positive curvature bounds, open_boxes == 0,
-     worst_margin < 0, min_odd_piv > 0, and exact leaf count consistency.
+     of B_3 - M_re > 0 and B_3 - M_im > 0 on every slab, and w=0 Jensen control.
+  5. Part 3 (5D adaptive Box5 all-sector bulk cover on [0, 11/8], 98 slabs, via 5D
+     convexity-semiconvexity point-corner theorem, w-bisection, and flat-quartic convex
+     combination): exact contiguity, inner handoff s_odd_p3 <= s_odd_p2, positive curvature
+     bounds, open_boxes == 0, worst_margin < 0, min_odd_piv > 0, and exact leaf count consistency.
   6. Unconditional six-sector corollary on u <= 0.0463, u + V <= 0.080051:
      Lambda_hat(G) < S + 4936/10^8 = S + 49.36e-6 < S + 99e-6.
   7. Optional `--replay-cpp`: recompiles certify_all_sector.cpp with
@@ -259,6 +264,64 @@ def check_bernstein_lemmas():
     rhs_d2 = poly_mul({(0, 0): F(3)}, poly_mul(Pq, Pq))
     assert poly_sub(lhs_d2, rhs_d2) == {}, "psi''(r) identity failed"
 
+    # Smooth-split H_{5,delta}(y) = phi_delta(|y|^2) * (|y|^2 I - (1/2) y y^T) exact rational proofs:
+    #   phi_delta(R) = (R + 5/2 d^2)/(R + d^2)^{5/2},  chi_5(r) = 1 - r^3 phi_delta(r^2).
+    # (a) Exact 2-line proof of 0 < chi_5(r) <= (15/8) (delta/r)^4 (with t = delta^2 / r^2 > 0):
+    #     (1+t)^5 - (1 + 5/2 t)^2 = 15/4 t^2 + 10 t^3 + 5 t^4 + t^5 > 0, and
+    #     (15/8) t^2 * ((1+t)^5 + (1 + 5/2 t)^2) - ((1+t)^5 - (1 + 5/2 t)^2) has all coeffs >= 0!
+    def upoly_mul(a, b):
+        res = [F(0)] * (len(a) + len(b) - 1)
+        for i, x in enumerate(a):
+            for j, y in enumerate(b):
+                res[i + j] += x * y
+        return res
+
+    def upoly_add(a, b):
+        n = max(len(a), len(b))
+        return [(a[i] if i < len(a) else F(0)) + (b[i] if i < len(b) else F(0)) for i in range(n)]
+
+    def upoly_sub(a, b):
+        n = max(len(a), len(b))
+        return [(a[i] if i < len(a) else F(0)) - (b[i] if i < len(b) else F(0)) for i in range(n)]
+
+    p_1pt5 = [F(1), F(5), F(10), F(10), F(5), F(1)]
+    p_lin2 = upoly_mul([F(1), F(5, 2)], [F(1), F(5, 2)])
+    chi_num = upoly_sub(p_1pt5, p_lin2)
+    assert chi_num == [F(0), F(0), F(15, 4), F(10), F(5), F(1)]
+    chi_den_lo = upoly_add(p_1pt5, p_lin2)
+    chi_gap = upoly_sub([F(0), F(0)] + [F(15, 8) * c for c in chi_den_lo], chi_num)
+    assert all(c >= 0 for c in chi_gap), f"chi_5 tail gap failed: {chi_gap}"
+
+    # (b) Exact Bernstein-Mobius proof of lambda_max(D^2 (u^T H_{5,1}(y) u)) <= 2 * phi_1(|y|^2)
+    #     on all of R^2 (with R = |y|^2 >= 0, S = R + 1, c = cos(2 alpha) in [-1, 1]):
+    #     Multiplying by S^{9/2}, B(R) = 2*S^3 + 3*S^2 = 5 + 12 R + 9 R^2 + 2 R^3:
+    #       2*B - tr(H) > 0 on [-1, 1] x [0, inf), and with c = (1 - t)/(1 + t) (t >= 0):
+    #       (1+t)^2 * ((B - h_xx)(B - h_yy) - h_xy^2) = P(+1) + 2*t*(Q0 - Q2) + t^2*P(-1) >= 0!
+    B_h5 = [F(5), F(12), F(9), F(2)]
+    p_xx0 = [F(15, 4), F(-243, 8), F(27, 4), F(3, 2)]
+    p_xx1 = [F(-5, 4), F(81, 8), F(-9, 4), F(-1, 2)]
+    p_yy0 = [F(15, 4), F(9, 8), F(-27, 8), F(-3, 4)]
+    p_yy1 = [F(5, 4), F(45, 8), F(45, 8), F(5, 4)]
+    p_xy = [F(-5, 4), F(9, 4), F(9, 2), F(1)]
+    tr0 = upoly_add(p_xx0, p_yy0)
+    tr1 = upoly_add(p_xx1, p_yy1)
+    assert all(c >= 0 for c in upoly_sub([2 * x for x in B_h5], upoly_sub(tr0, tr1)))
+    assert all(c >= 0 for c in upoly_sub([2 * x for x in B_h5], upoly_add(tr0, tr1)))
+    a0 = upoly_sub(B_h5, p_xx0)
+    a1 = [-x for x in p_xx1]
+    b0 = upoly_sub(B_h5, p_yy0)
+    b1 = [-x for x in p_yy1]
+    xy2 = upoly_mul(p_xy, p_xy)
+    Q0 = upoly_sub(upoly_mul(a0, b0), xy2)
+    Q1 = upoly_add(upoly_mul(a0, b1), upoly_mul(a1, b0))
+    Q2 = upoly_add(upoly_mul(a1, b1), xy2)
+    P_p1 = upoly_add(upoly_add(Q0, Q1), Q2)
+    P_m1 = upoly_add(upoly_sub(Q0, Q1), Q2)
+    Q0_m_Q2 = upoly_sub(Q0, Q2)
+    assert all(c >= 0 for c in P_p1), f"H5 Hessian P(+1) failed: {P_p1}"
+    assert all(c >= 0 for c in Q0_m_Q2), f"H5 Hessian Q0-Q2 failed: {Q0_m_Q2}"
+    assert all(c >= 0 for c in P_m1), f"H5 Hessian P(-1) failed: {P_m1}"
+
 
 def check_exact_analytic_foundations() -> dict:
     """Verify all exact zero-float algebraic, Bernstein, tail, and w >= 8 exterior theorems."""
@@ -298,8 +361,11 @@ def check_exact_analytic_foundations() -> dict:
     e25_hi = exp_neg_upper(F(25))
     even_tail_24 = F(1354, 24) * e25_hi
     assert even_tail_24 < F(1, 10**9)
-    # Odd tail on T >= 25: G_iso <= (1/2) T^3 I_6 (since T^3/2 - T*(1 + (T-2)^2/2) = T*(2T-3) > 0 for T >= 2),
+    # Odd tail on T >= 25: ||G_iso(z_1)||_op = T*(2 + (T-2)^2/2) <= (1/2) T^3
+    # (since (1/2) T^3 - T*(2 + (T-2)^2/2) = 2*T*(T - 2) >= 0 for all T >= 2),
     # and (1/2) Gamma(4, 25) = (1/2)*(25^3 + 3*25^2 + 6*25 + 6) e^{-25} = 8828 e^{-25}:
+    assert F(1, 2) * 25**3 - 25 * (2 + F(23**2, 2)) == 2 * 25 * 23 > 0
+    assert F(1, 2) * 6**3 - 6 * (2 + F(4**2, 2)) == 2 * 6 * 4 > 0
     odd_tail_24 = F(8828, 24) * e25_hi
     assert odd_tail_24 < F(1, 10**8)
     # Also check Part 2 tail_eta_ub: on T >= 25 and w <= 11/8, |L+w| >= b*T^{3/2} since a/5 - (11/8)/125 > 0,
@@ -414,21 +480,40 @@ def verify_all(data: dict) -> dict:
         check_psd_minus_interval_sym2(s["P_im"], shift)
         assert "O_iso" in s, f"Missing O_iso on shift exterior slab {wl}"
         check_b3_minus_interval_sym3(s["O_iso"])
+    # Independent exact Jensen diagonal check on first shift exterior slab (w = 11/8):
+    # O_iso[0,0](11/8) = E[T/|11/8 + L|] >= 1/sqrt(E[T|11/8 + L|^2]) = 1/sqrt(w^2 + 2a^2 + 12ab + 24b^2)
+    jensen_p1_denom = w_ext**2 + 2 * A**2 + 12 * A * B + 24 * B**2
+    assert jensen_p1_denom == F(99227833, 25000000)
+    o00_hi = parse_hex(p1_sh[0]["O_iso"][0][1])
+    assert o00_hi > 0 and o00_hi**2 * jensen_p1_denom > F(1), (
+        f"Part 1 w=11/8 Jensen diagonal control failed: O_iso[0,0].hi={float(o00_hi)}"
+    )
 
-    # Part 2: Hybrid origin strip on [0, 11/8]
+    # Part 2: Smooth-split H_{5,delta} origin strip on [0, 11/8]
     p2 = data["part2_origin_strip"]
     verify_contiguous(p2, F(0), w_ext)
     min_p2_det3 = None
     for s in p2:
         assert parse_hex(s["s_odd"]) > 0
-        assert parse_hex(s["delta"]) > 0
+        delta_s = parse_hex(s["delta"])
+        assert delta_s > 0
         assert parse_hex(s["eps_cs"]) > 0
+        assert parse_hex(s["R_in"]) > delta_s
+        assert parse_hex(s["lam"]) > 0
         d_re = check_b3_minus_interval_sym3(s["M_re"])
         d_im = check_b3_minus_interval_sym3(s["M_im"])
         d_min = min(d_re, d_im)
         min_p2_det3 = d_min if min_p2_det3 is None else min(min_p2_det3, d_min)
+    # Independent exact Jensen diagonal check on first origin slab (w = 0, Q' = i):
+    # M_im[0,0](0) = E[sqrt(T)/(a + bT)] >= (sqrt(pi)/2) / (a + 3b/2) = (250/387)*sqrt(pi) > (250/387)*sqrt(333/106)
+    jensen_p2_coef = F(1, 2) / (A + F(3, 2) * B)
+    assert jensen_p2_coef == F(250, 387)
+    mim00_hi = parse_hex(p2[0]["M_im"][0][1])
+    assert mim00_hi > 0 and mim00_hi**2 > jensen_p2_coef**2 * F(333, 106), (
+        f"Part 2 w=0 Jensen diagonal control failed: M_im[0,0].hi={float(mim00_hi)}"
+    )
 
-    # Part 3: 4D adaptive bulk cover on [0, 11/8]
+    # Part 3: 4D adaptive Box5 bulk cover on [0, 11/8]
     p3 = data["part3_bulk_4d"]
     verify_contiguous(p3, F(0), w_ext)
     tot_4d = 0
@@ -452,10 +537,11 @@ def verify_all(data: dict) -> dict:
         c_ext = int(s["closed_ext"])
         c_ori = int(s["closed_ori"])
         c_piv = int(s["closed_piv"])
+        c_ws = int(s["w_splits"])
         c_g = s["closed_g"]
         assert isinstance(c_g, list) and len(c_g) == 3
         c_g_ints = [int(x) for x in c_g]
-        assert c_ext >= 0 and c_ori >= 0 and c_piv >= 0 and all(x >= 0 for x in c_g_ints)
+        assert c_ext >= 0 and c_ori >= 0 and c_piv >= 0 and c_ws >= 0 and all(x >= 0 for x in c_g_ints)
         assert sum(c_g_ints) > 0, f"Part 3 zero grid-closed boxes on [{wl}, {wh}]"
         sb_boxes = int(s["total_boxes"])
         assert sb_boxes == c_ext + c_ori + c_piv + sum(c_g_ints), f"Part 3 box-count mismatch on [{wl}, {wh}]"

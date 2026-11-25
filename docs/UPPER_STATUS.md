@@ -1,6 +1,6 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-This file documents the older single-channel upper proof (`K_G^ℂ < 1.404599395362`), which is still in the tree. The upper bound of the main theorem `main_bounds` comes from the six-channel proof in `Grothe/UpperSix/` instead: Lean proves `K_G^ℂ ≤ 1.40455741` (`140455741/100000000`, `Grothe.UpperSix.constant_le`), and a separate estimate of the phase integral shows that this rational is strictly below Haagerup's value `1/γ†` (`constant_lt_inv_gammaDagger`). [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../haagerup-article/anc/README.md).
+This file documents the older single-channel upper proof (`K_G^ℂ < 1.404599395362`), which is still in the tree. The upper bound of the main theorem `main_bounds` comes from the six-channel proof in `Grothe/UpperSix/` and `Grothe/UpperSixExact/` instead: Lean proves `K_G^ℂ ≤ 1.404556407` (`1404556407/1000000000`, `Grothe.UpperSix.constant_le`), and a separate estimate of the phase integral shows that this rational is strictly below Haagerup's value `1/γ†` (`constant_lt_inv_gammaDagger`). [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../README.md#building).
 
 ## Earlier single-channel construction
 
@@ -245,9 +245,9 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   error targets must not be confused with established numerical enclosures.
   The omitted-input Hilbert–Schmidt route, archived in `abandonware/`, is a
   separate way to seek those bounds, not an assumption of `main_bounds`.
-* The lower endpoint is also closed: `lower_target` in `MainResult.lean`
-  gives `1.40191 < K_G^ℂ` from the certificate of the witness with an identity
-  tail (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows
+* The lower endpoint is also closed: `main_bounds` in `MainResult.lean`
+  gives the lower bound from the certificate of the witness with an identity
+  tail (`shared_gate_endpoint`) and the node caps of its rows
   (`tailNodeCaps_cert`); see [LEAN_DETAILS.md](LEAN_DETAILS.md) and
   [CAPS.md](CAPS.md).
 

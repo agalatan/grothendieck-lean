@@ -1,0 +1,8 @@
+rows to run: 0.875, 0.880, 0.886
+[     0s] row 0.875 started (gaussian, 4 processes)
+[     0s] row 0.880 started (gaussian, 4 processes)
+[     0s] row 0.886 started (gaussian, 4 processes)
+[   265s] row 0.880 done (exit 0); running 2, queued 0
+[   270s] row 0.875 done (exit 0); running 1, queued 0
+[   270s] row 0.886 done (exit 0); running 0, queued 0
+ALL ROWS DONE (275s)
