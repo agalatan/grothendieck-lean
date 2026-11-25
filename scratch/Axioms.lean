@@ -249,16 +249,11 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.wickL_mem_H21
 #print axioms Grothe.LowerAnalytic.witnessCap_of_VhatOf_le
 #print axioms Grothe.Statement.bounds_bddBelow
-#print axioms Grothe.Statement.constant_isBound
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
-#print axioms Grothe.Statement.isClosed_bounds
-#print axioms Grothe.Statement.le_constant_of_lowerAbove
-#print axioms Grothe.Statement.lt_constant_of_lowerAbove
 #print axioms Grothe.Statement.main_bounds
 #print axioms Grothe.Statement.sparse_stein_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
-#print axioms Grothe.Statement.upperBelow_of_constant_lt
 #print axioms Grothe.Statement.upper_below_tight
 #print axioms Grothe.Statement.upper_bound_tight
 #print axioms Grothe.Upper.BandComparison.compare
