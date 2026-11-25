@@ -574,13 +574,14 @@ driver, Y the other remote coordinates):
 |---|---|---|
 | q = X·P, P any centred variable independent of X with the moment bounds of 6.3.1; every complex quadratic P(Y) | 0.22 | P + C (audit) · 6.3.3 |
 | Gaussian-factor class Σ_j X_jP_j(Y), any number of drivers and coefficient matrices | 0.239 | P + C (audit) · 6.3.4 |
+| Mixed Gaussian drivers Σⱼ[XⱼPⱼ(Y) + X̄ⱼHⱼ(Y)], with arbitrary jointly dependent (1,1) and holomorphic (2,0) bath coefficients | 47/200 | P + C, author only · [6.3.16a](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) |
 | Complete one-driver self-interaction X[c(\|X\|² − 2) + P], arbitrary complex c ∈ ℂ and centred P ∈ L² independent of X, Wick share f = 2\|c\|²/u ∈ [1/16, 1] | 11/50 | P + C, author only · gemini-21d5 · 6.3.13 |
 | Small-Wick self-interaction X[c(\|X\|² − 2) + Y\*AY − tr A], arbitrary complex c ∈ ℂ and complex matrix A, f ∈ [0, 1/16] (hence all f ∈ [0, 1]) | 47/200 | P + C, author only · gemini-21d5 · 6.3.5, 6.3.14, 6.3.15 |
-| Mixed driver q = X[c(\|X\|² − 2) + P(Y)] + X̄H(Y), any complex centred (1,1) quadratic P and holomorphic quadratic H | 47/200 for every Wick share, 11/50 for f ≥ 1/16 | P, author only, from the P + C, author-only envelopes in 6.3.13–6.3.14 · 6.3.16 |
+| Mixed driver q = X[c(\|X\|² − 2) + P(Y)] + X̄H(Y), any complex centred (1,1) quadratic P and holomorphic quadratic H | 47/200 for every Wick share, 11/50 for f ≥ 1/16 | P (independent review of #664), from the P + C, author-only envelopes in 6.3.13–6.3.14 · 6.3.16 |
 | Wick neighbourhood X[c(\|X\|² − 2) + P], P centred independent of X, E\|P\|² ≤ u/5 | 9/40 | implications P (audit); scalar/cell premises C, author only · gemini-21d5 · 6.3.6 |
 | **peak row only:** p + h with p, h ∈ H₂,₁, p of charge one under rotation of a specified coordinate block, h with no component of that character, D(p) > 0, C(p)² ≤ (9/40)D(p), ‖p + h‖² ≤ 0.0463 and ‖h‖² ≤ D(p)/90 | 6/25 | P + C · 6.3.9b |
 
-The moment theorem behind the first and fourth rows is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y\*AY − tr A, any complex
+The moment theorem behind the scalar proper Gaussian-factor and small-Wick results is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y\*AY − tr A, any complex
 A, p = E|P|² [P + C · 6.3.1]. The self-interaction family has a deficit identity whose Wick term |c|²𝓚(u) is strictly positive across the band (𝓚(u) > 0.0307 at all three rows, and 𝓚(0.0463) ∈ [0.16678146, 0.16678220] at the peak)
 [identity P · second audit; bounds P + C, author only · gemini-21d5 · 6.3.7]. On f ∈ [1/16, 1] a linear-plus-quadratic envelope in (|z|², Re(c̄z)) avoids division by p = u − 2|c|² as f → 1 and holds without fourth- or sixth-moment hypotheses on P; on f ∈ [0, 1/16] the moment-polynomial envelope (†) with affine weight w(y) = 3/10 + (7/10)y closes the small-Wick strip, both certified in outward-rounded C++17 `Aff4` Taylor arithmetic with exact rational tails [P + C, author only · gemini-21d5 · 6.3.13–6.3.15; [Proof](sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md)]. The families do not add up: the cross terms between shells survive phase averaging
 (q = X̄Y² + (|X|² − 1)Y has energy 3 and E[X̄q|q|²] = 6) [P + C · 6.3.8].
@@ -596,9 +597,11 @@ this gives signed C(q)² ≤ (6/25)D(q) + 10⁻⁶ on [0, 0.0463] × [0, 841/100
 across the full connected domain [0, 0.0463] × [0, 49/625] ∪ [0, 7/10000] × [0, 42] ∪ [0, 3/250] × [0, 1/4] with no
 near-Gaussian sliver. The all-shapes extension to 7/10000 uses the unsmoothed raw A-content constant 5353/625 [P + C, author only · codex-a7c4 · 3.19a; gemini-5331, gemini-21d5 · 6.3.43].
 
-The opposite driver character X̄H(Y) can be included at arbitrary strength in the one-driver self-interaction. Replacing it by X·conj(H(Y)) preserves the joint law with X and all first-chaos content. The resulting complex quadratic of real Gaussians satisfies the combined small-Wick moment multiplier. With several drivers and no self-interaction the folded law is a proper Gaussian mixture. A common bath split making each Pⱼ block diagonal and each Hⱼ bilinear across the split gives C² ≤ (239/1000)D by 6.3.4. [Proof and scope](sources/mixed-driver-folding-codex-a7c4/PROOF.md)
+The opposite driver character X̄H(Y) can be included at arbitrary strength in the one-driver self-interaction. Replacing it by X·conj(H(Y)) preserves the joint law with X and all first-chaos content. The resulting complex quadratic of real Gaussians satisfies the combined small-Wick moment multiplier. [One-driver proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md)
 
-**Open in L4:** mixtures with (|X|² − 1)V(Y), X²W̄(Y) or R₀(Y) beyond the mixed-character neighbourhood of 6.3.9b [6.3.16]; several
+With several drivers and no self-interaction, the folded law is a proper Gaussian mixture. A bound on the directional real covariance gives C² ≤ (47/200)D for every choice of bath quadratics. In particular (|X|² − 1)U(Y) + X²·conj(V(Y)) is covered for arbitrary linear U,V by taking Y as the driver block. [Many-driver proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md)
+
+**Open in L4:** mixtures of the odd-X core with the even-X terms (|X|² − 1)V(Y), X²W̄(Y) or R₀(Y) beyond the mixed-character neighbourhood of 6.3.9b [6.3.16–6.3.16a]; several
 self-interacting drivers [6.3.17]; and the **raw content inequality for an arbitrary intermediate-kurtosis cubic on R**
 [open · 6.3.18].
 
