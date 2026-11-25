@@ -2,9 +2,9 @@
 
 **The problem.** Lean proves K_G^ℂ ≤ 1.40455741 (`Grothe.UpperSix.bound`, `main_bounds`) with a mixture of six
 rounding channels. Can a mixture with more, or other, channels give a smaller proved bound, and at what cost in
-Lean? This folder records a numerical experiment of 24 November 2026 on that question. Nothing here is a proof:
-every result is a model value (label **N** of [`../README.md`](../README.md)), by one author, not replayed by anyone
-else. The ledger is [`STATUS.md`](STATUS.md).
+Lean? The numerical experiment below has status **N**. The [ledger](STATUS.md) also records the following paper result.
+
+**What can one complex coordinate achieve?** Phase rounding maximizes the alternating coefficient sum over every charge-one disk map of one complex Gaussian coordinate and every contractive polynomial preprocessor. Its value is exactly Haagerup’s $\gamma^\dagger$. Thus beating that value by the mixture transfer requires a channel using at least two coordinates. The proof reduces the problem to a radial integral operator and certifies a spectral gap. [Proof and exact replay](sources/one-coordinate-ceiling-codex-a7c4/PROOF.md)
 
 **The result in one paragraph.** Adding to the six channels **one** new channel, the cell channel of the
 eighteen-channel certificate with the preprocessor R(X) = a − (1 − a)X at a = 93079/100000 instead of its committed
