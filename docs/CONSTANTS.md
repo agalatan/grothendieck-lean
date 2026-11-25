@@ -10,7 +10,7 @@ $$\frac{4000000000000}{2853044560237} \le K \le 1.404556407 < 1/\gamma^\dagger =
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| coupled Stein lower bound | `1.4020110501420713…` | `4000000000000 / 2853044560237` | `Grothe.Statement.coupled_stein_endpoint`, `Grothe.Lower.CoupledStein.endpoint_eq` | `Grothe/MainResult.lean`, `Grothe/Lower/Cert/CoupledStein.lean` |
+| coupled Stein lower bound | `1.4020110501420711708…` | `4000000000000 / 2853044560237` | `Grothe.Statement.coupled_stein_endpoint`, `Grothe.Lower.CoupledStein.endpoint_eq` | `Grothe/MainResult.lean`, `Grothe/Lower/Cert/CoupledStein.lean` |
 | weighted shared-gate lower bound | `1.4020063100946885…` | `500000000000 / 356631775763` | `Grothe.Statement.weighted_tight_endpoint`, `Grothe.Lower.WeightedTight.endpoint_eq` | `Grothe/MainResult.lean`, `Grothe/Lower/Cert/WeightedTight.lean` |
 | lower bound in `main_bounds` (strict) | `1.402` | `1402 / 1000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
 | shared-gate scalar-row lower bound (strict) | `1.4019156097` | `14019156097 / 10000000000` | `Grothe.Statement.lower_bound_shared_gate` | `Grothe/MainResult.lean` |
