@@ -8,11 +8,13 @@ For a row of data/tail-rows/plain, a scale sigma and a shape x (E U^2 = 2 + x^2)
          E G_z(U) >= 0 for every cut z in the committed banks of the row (all its cells),
          [E sqrt U <= r]
 
-over measures on a grid of v = sqrt U.  Psi_up is the chord interpolation of the row's node
-caps (the potential bound the Lean check uses).  This linear programme is the dual of
-"re-optimise the weights of a node certificate over the committed cut bank", so the value
-with the radius constraint minus the value without is what such a re-optimised node could
-gain from a radius r at that scale and shape (label N: floating point, measures on a grid).
+over measures on a grid of v = sqrt U (finite support).  Psi_up is the chord interpolation of
+the row's node caps (the potential bound the Lean check uses).  The cut bank is POOLED over
+all shape cells of the row, whereas a Lean node uses the bank of its own cell.  Each value is
+a lower bound of the supremum over all laws, so the difference of the value without and with
+the radius constraint is an indication only: it is not a one-sided bound on what a
+re-optimised node could gain, and it says nothing about shapes or scales outside the sampled
+grid (label N: floating point).
 With rounds > 1 eigenvector cuts of the full quadratic family are added (slow to converge;
 not used for the recorded numbers).  Needs numpy and scipy (HiGHS).
 Usage: node_sdp.py ROW SHARD NSHARDS OUT   (rows: 0.82 0.83 0.835 0.845 ...); the grids can be
