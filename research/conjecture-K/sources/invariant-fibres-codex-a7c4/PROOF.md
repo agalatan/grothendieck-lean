@@ -48,14 +48,49 @@ $$
  D(q)>\frac{\sqrt\pi\,u^2}{8d(m+u)^{3/2}}.
 $$
 
-For #509 take $L=z(a+b|z|^2)$, $a=699/1250$, $b=179/1250$, $z$ independent of the remote variables. Its Gaussian mixture representation is row 2.7. Here $m=a^2+4ab+6b^2$ and $m+463/10000<1$. For any remote cubic $r=q+h$ with $\operatorname{Re}\mathbb E[\bar qh]=0$, put $\eta=\mathbb E|h|^2$. Allow $h$ to depend on any finite number of additional remote coordinates. If $u+\eta$ is in the peak-row band $[551/100000,463/10000]$ and
-$$
- \eta\le\frac{u^3}{10000 d^2},
- \qquad\text{then}\qquad C(r)^2\le D(r)/10 .
-$$
-Here $C$ is the norm of the first projection of the raw response $\Psi(r)$, where $\Psi(y)=\mathbb E[(|z|^2-1)\operatorname{ph}(L+y)]$. Circularity makes $\Psi(y)$ a radial scalar times $y$, whence $C(q)=0$. Extra remote coordinates are independent of $q$ and have zero projection as well. The smoothed payoff $\Phi(y)=2\mathbb E|L+y|$ has gradient zero at the origin. The Lipschitz bounds for $\Psi$ and $\nabla\Phi$ are respectively $3/a<6$ and $6/a<12$, by integrating the inverse distance against the visible density and its weighted version. [Density estimate and differentiation, final section](../cubic-shear-codex-a7c4/PROOF.md)
+## The first angular mode controls arbitrary cubic perturbations
 
-Projection contraction gives $C(r)^2\le36\eta$. The Taylor upper bound on $\Phi(q+h)$, followed by Cauchy–Schwarz, gives $\mathbb E\Phi(r)\le\mathbb E\Phi(q)+12\sqrt{u\eta}+6\eta$. The Gaussian comparison term increases when its energy rises from $u$ to $u+\eta$. Thus $D(r)-10C(r)^2\ge D(q)-12\sqrt{u\eta}-366\eta$. The loss is at most $[12/100+366(463/10000)/10000]u^2/d<u^2/(8d)$, below the proved deficit. The residual may have the same circle weight as the core. The condition restricts its size; the content inequality outside this neighbourhood remains open.
+At the peak of [#509](https://github.com/agalatan/grothendieck-lean/issues/509), take $L=z(a+b|z|^2)$, $a=699/1250$, $b=179/1250$. Row 2.7 represents its law as $\sqrt v G$ with a nonnegative mixing variance $v$ independent of $G$ and all remote variables. Its mean is $m=a^2+4ab+6b^2$. The raw content $C(r)$ is the norm of the first-chaos projection of $\Psi(r)$ for $\Psi(y)=\mathbb E_z[(|z|^2-1)\operatorname{ph}(L+y)]$. Write $\Phi(y)=2\mathbb E_z|L+y|$. The Lipschitz constants for $\Psi$ and $\nabla\Phi$ are at most $3/a<6$ and $6/a<12$. [Visible density estimate and differentiation](../cubic-shear-codex-a7c4/PROOF.md)
+
+**Fibre criterion.** Choose any nonzero zero-contraction reference field as above and any remote Wick cubic $r$. Both may be embedded in a larger finite Gaussian space by adjoining the extra coordinates to $B$ and putting zeros in the extra components of $e$. With $F_r=\bar\partial r$, set
+$$
+ \alpha=e^*F_r(B),\qquad g=\alpha\bar\xi,\qquad k=r-g,\qquad E_\perp=\mathbb E|k|^2.
+$$
+Then $C(r)^2\le36 E_\perp$ and $D(r)\ge D(g)-6 E_\perp$. In particular $366 E_\perp\le D(g)$ suffices for $C(r)^2\le D(r)/10$. The mixing amplitude $\alpha$ can depend on the base point and have any phase and size.
+
+To prove the criterion, fix the invariant data $(F,B)$, including the extra coordinates. Rotate the independent coordinate $\xi$ alone. In $r(B+e\xi)=(B+e\xi)^*F_r(B+e\xi)-\operatorname{div}F_r(B+e\xi)$ there is at most one antiholomorphic factor. Thus the whole angular component of frequency $-1$ is exactly $g$, with no higher radial powers of $\xi$. Conditional angular orthogonality gives $\mathbb E[\bar g k]=0$ and $\mathbb E\langle\nabla\Phi(g),k\rangle_{\mathbb R}=0$, since $\Phi$ is radial and its gradient has the same frequency as $g$. Also $C(g)=0$. Indeed $\Psi(g)$ has frequency $-1$, and each component of $\bar Z$ is a sum of frequencies $0$ and $-1$. Projection contraction now gives $C(r)^2\le36E_\perp$. Taylor's inequality gives $\mathbb E\Phi(r)\le\mathbb E\Phi(g)+6E_\perp$. Orthogonality yields $\mathbb E|r|^2=\mathbb E|g|^2+E_\perp$ and the Gaussian benchmark is increasing, proving the deficit bound. The single antiholomorphic factor is essential to the formula for $g$. For instance the bidegree-$(3,2)$ Wick monomial $x^2\bar w(|w|^2-2)$ has a nonconstant radial multiplier in its frequency $-1$ component on the $w$ line.
+
+**Stability in every direction.** For a zero-contraction core $q$ as in the first section and any remote cubic $h$, write $r=q+h$, $u=\mathbb E|q|^2$ and $\eta=\mathbb E|h|^2$. Then
+$$
+ \eta\le D(q)/368\quad\Longrightarrow\quad C(r)^2\le D(r)/10 .
+$$
+In particular for $0<u\le463/10000$ one can use $\eta\le u^2/[2944(n-1)]$. Here $n$ counts the core coordinates only. These assertions hold in particular when $\mathbb E|r|^2$ lies in the #509 band $[551/100000,463/10000]$. There is no orthogonality condition between $q$ and $h$.
+
+The estimate uses the square root of the exact Gaussian-mixture deficit. For any complex square-integrable amplitude $A$ measurable in the invariant data, write $\mathcal D(A)=D(A\bar\xi)$ and $U=\mathbb E|A|^2$. Set $s=\sqrt{v+|A|^2}$ and $t=\sqrt{v+U}$. Conditional Gaussianity and the tangent identity give
+$$
+ \mathcal D(A)=\sqrt\pi\,\mathbb E(t-s)=\sqrt\pi\,\mathbb E\frac{(s-t)^2}{2t}.
+$$
+Here and below expectations include the independent mixing variance. For a perturbation amplitude $H$ consider $A_\theta=A+\theta H$ for real $\theta$, using $s,t,U$ at $A_\theta$. Differentiating gives
+$$
+ \frac{d}{d\theta}\mathcal D(A_\theta)
+ =\sqrt\pi\,\mathbb E\big[\operatorname{Re}(\bar A_\theta H)(1/t-1/s)\big].
+$$
+The Gaussian representation gives $\mathbb E v^{-1/2}=\mathbb E|L|^{-1}/\sqrt\pi\le 1/a$ because $|L|\ge a|z|$ and $\mathbb E|z|^{-1}=\sqrt\pi$. In particular $v>0$ almost surely. Differentiation is justified by the Lipschitz bound on a Euclidean norm, both pointwise for $s$ and in the Hilbert space of amplitudes for $t$. Using $|A_\theta|\le s$ and Cauchy–Schwarz on $|s-t|/\sqrt{2t}$ and $|H|\sqrt{2/t}$ gives
+$$
+ |\mathcal D'(A_\theta)|^2
+ \le 2\sqrt\pi\,\mathcal D(A_\theta)\,\mathbb E (v+U)^{-1/2}\,\|H\|_2^2
+ \le 8\,\mathcal D(A_\theta)\|H\|_2^2.
+$$
+In the middle term $H$ depends only on the invariant data, independently of $v$. The last inequality uses $a>1/2$ and $\pi<4$. Integrating the derivative of $\sqrt{\mathcal D(A_\theta)+\delta}$ for $\delta>0$ and then letting $\delta\downarrow0$ proves
+$$
+ |\sqrt{\mathcal D(A+H)}-\sqrt{\mathcal D(A)}|\le\sqrt 2\,\|H\|_2 .
+$$
+
+Apply this with $A=\sqrt V$ for the original core and $H=\alpha-\sqrt V$ for the perturbed cubic. Orthogonal projection onto the fibre mode gives $\eta=\|H\|_2^2+E_\perp$. Consequently
+$$
+ \sqrt2\,\|H\|_2+\sqrt{366E_\perp}\le\sqrt{368\eta}.
+$$
+If the right side is at most $\sqrt{D(q)}$, the Lipschitz estimate yields $\sqrt{D(g)}\ge\sqrt{366E_\perp}$, so the fibre criterion applies. Finally $m+463/10000<1$, and the transverse deficit gives $D(q)>u^2/[8(n-1)]$. This proves the explicit energy criterion. It leaves open cubics with large residual for which the fibre criterion also fails.
 
 ## Several cubics and one independent Gaussian vector
 
@@ -71,4 +106,4 @@ $$
 $$
 The right side is known given $H$. For the independent-vector surrogate the squared projection conditional on $H$ is exponential with mean $\lambda>0$, hence has strictly positive conditional variance. This distinguishes the two joint laws with $H$ included.
 
-Run the [exact replay](../../code/invariant-fibres-codex-a7c4/verify.py) with Python 3 and SymPy. It checks the field identities, Wick moments against the independent-vector law, the spectral obstruction and the perturbation margin. The disintegration and the estimates for all dimensions use the proofs above.
+Run the [exact replay](../../code/invariant-fibres-codex-a7c4/verify.py) with Python 3 and SymPy. It checks the field identities, Wick moments against the independent-vector law, the spectral obstruction and the cubic angular projection and the perturbation budget. The disintegration and the estimates for all dimensions use the proofs above.

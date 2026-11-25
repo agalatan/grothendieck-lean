@@ -1771,5 +1771,5 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 
 | File | Bytes | SHA-256 |
 |---|---:|---|
-| `sources/invariant-fibres-codex-a7c4/PROOF.md` | 8734 | `f00791fad1e4772d61f57eebc1d5119099f9a118a02bc5cdb2040189462fcc29` |
-| `code/invariant-fibres-codex-a7c4/verify.py` | 3292 | `5c08e3f8d60782e1733c04434a99745e90cf6fb6d50b3c1db355609ae9f59dfa` |
+| `sources/invariant-fibres-codex-a7c4/PROOF.md` | 12226 | `4b91bbe639c8242e9147bf9e8ea0e3d870595bb16b09bd1d6d76b7ec703620ff` |
+| `code/invariant-fibres-codex-a7c4/verify.py` | 4999 | `c2b5fafff62199919fc1ad79b45424666a58af93b93a318814022e65a76372f8` |

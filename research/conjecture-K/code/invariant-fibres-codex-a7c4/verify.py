@@ -56,11 +56,41 @@ def check_example():
     print(f"Opposite crossed contractions; mixed fourth moment {mixed}; spectral obstruction verified.")
 
 
+def check_fibre_projection():
+    # A genuinely complex unit direction and an orthogonal base point.
+    from itertools import combinations_with_replacement, product
+    from sympy import Rational
+    t, tb = symbols("t tb")
+    direction = Matrix([Rational(3,5), 4*I/5])
+    base = Matrix([4*I/5, Rational(3,5)])
+    equal(direction.conjugate().dot(direction), 1, "unit direction")
+    equal(direction.conjugate().dot(base), 0, "transverse base")
+    z = base + direction*t
+    bars = base.conjugate() + direction.conjugate()*tb
+    for (i,j), k in product(combinations_with_replacement(range(2), 2), range(2)):
+        cubic = z[i]*z[j]*bars[k] - int(i == k)*z[j] - int(j == k)*z[i]
+        terms = Poly(cubic, t, tb).terms()
+        mode = sum(c*t**a*tb**b for (a,b),c in terms if a-b == -1)
+        equal(mode.expand(), (tb*direction[k].conjugate()*base[i]*base[j]).expand(),
+              f"frequency -1 of Wick monomial {(i,j,k)}")
+    quintic_mode = tb*(t*tb-2)  # The independent x^2 factor is suppressed.
+    equal(Poly(quintic_mode, t, tb).coeff_monomial(t*tb**2), 1, "quintic control")
+    s, target = symbols("s target", positive=True)
+    gap = target + (s**2-target**2)/(2*target) - s
+    equal((gap-(s-target)**2/(2*target)).expand(), 0, "exact tangent gap")
+    # The two losses add in squares by projection; the first is the derivative
+    # bound on sqrt(D), the second is the total Taylor and raw-content cost.
+    slope_squared = Fraction(8,4)
+    transverse_cost = 6 + 10*36
+    equal(slope_squared + transverse_cost, 368, "dimension-free deficit ratio")
+    equal(8*(slope_squared + transverse_cost), 2944, "explicit energy denominator")
+    print("All six two-coordinate Wick monomials have the predicted fibre mode.")
+
+
 def check_budgets():
     a, b, upper = Fraction(699,1250), Fraction(179,1250), Fraction(463,10000)
     m = a*a + 4*a*b + 6*b*b
-    cost = Fraction(12,100) + 366*upper/10000
-    if not (a > Fraction(1,2) and m + upper < 1 and cost < Fraction(1,8)):
+    if not (a > Fraction(1,2) and m + upper < 1):
         raise ValueError("peak-row perturbation budget")
     # Beyond k=2, consecutive terms in exp(1) have ratio at most 1/4.
     if not 1 + 1 + Fraction(1,2) + Fraction(1,6)/(1-Fraction(1,4)) < 3:
@@ -72,9 +102,10 @@ def check_budgets():
         difference = gamma_tail_coefficient(d+2)-gamma_tail_coefficient(d)
         equal(difference, Fraction(d**d, factorial(d))*Fraction(2*d+1,d+1),
               "gamma tail with common exponential removed")
-    print(f"Mean variance {m}; perturbation cost {cost}; margin {Fraction(1,8)-cost}.")
+    print(f"Mean visible variance {m}; slack below one at maximum core energy {1-m-upper}.")
 
 
 if __name__ == "__main__":
     check_example()
+    check_fibre_projection()
     check_budgets()

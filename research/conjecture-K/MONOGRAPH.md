@@ -666,7 +666,9 @@ least 0.162·D at its own worst cubic, still above 0.15 [N · item 93].
 
 The transverse radius in 3.24b gives $D(q)>u^2/[8(n-1)]$ for a zero-contraction core of energy $u$ below
 the maximum peak-row energy. At that row any cubic $r=q+h$ of admissible total energy satisfies
-$C(r)^2\le D(r)/10$ when $h$ is real-orthogonal to $q$ and $\mathbb E|h|^2\le u^3/[10000(n-1)^2]$.
+$C(r)^2\le D(r)/10$ when $\mathbb E|h|^2\le D(q)/368$, in particular for $\mathbb E|h|^2\le u^2/[2944(n-1)]$.
+The conditional frequency $-1$ of a cubic is exactly one Gaussian coordinate times an invariant amplitude.
+The complementary frequencies have zero first variation, and the square root of the Gaussian-mixture deficit is Lipschitz in that amplitude.
 Only the core dimension enters this radius.
 [Peak-row perturbation estimate, P + C, author only · 6.3.26b](sources/invariant-fibres-codex-a7c4/PROOF.md).
 
