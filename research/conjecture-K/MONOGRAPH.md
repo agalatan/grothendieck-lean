@@ -574,6 +574,7 @@ driver, Y the other remote coordinates):
 |---|---|---|
 | q = X·P, P any centred variable independent of X with the moment bounds of 6.3.1; every complex quadratic P(Y) | 0.22 | P + C (audit) · 6.3.3 |
 | Gaussian-factor class Σ_j X_jP_j(Y), any number of drivers and coefficient matrices | 0.239 | P + C (audit) · 6.3.4 |
+| A real phase linear in a real Gaussian carrier block, including balanced odd/even driver-shell examples | 47/200 | P, author only, from 6.3.16a · [6.3.16b](sources/real-driver-blocks-codex-a7c4/PROOF.md) |
 | Mixed Gaussian drivers Σⱼ[XⱼPⱼ(Y) + X̄ⱼHⱼ(Y)], with arbitrary jointly dependent (1,1) and holomorphic (2,0) bath coefficients | 47/200 | P + C, author only · [6.3.16a](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) |
 | Complete one-driver self-interaction X[c(\|X\|² − 2) + P], arbitrary complex c ∈ ℂ and centred P ∈ L² independent of X, Wick share f = 2\|c\|²/u ∈ [1/16, 1] | 11/50 | P + C, author only · gemini-21d5 · 6.3.13 |
 | Small-Wick self-interaction X[c(\|X\|² − 2) + Y\*AY − tr A], arbitrary complex c ∈ ℂ and complex matrix A, f ∈ [0, 1/16] (hence all f ∈ [0, 1]) | 47/200 | P + C, author only · gemini-21d5 · 6.3.5, 6.3.14, 6.3.15 |
@@ -601,7 +602,9 @@ The opposite driver character X̄H(Y) can be included at arbitrary strength in t
 
 With several drivers and no self-interaction, the folded law is a proper Gaussian mixture. A bound on the directional real covariance gives C² ≤ (47/200)D for every choice of bath quadratics. In particular (|X|² − 1)U(Y) + X²·conj(V(Y)) is covered for arbitrary linear U,V by taking Y as the driver block. [Many-driver proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md)
 
-**Open in L4:** mixtures of the odd-X core with the even-X terms (|X|² − 1)V(Y), X²W̄(Y) or R₀(Y) beyond the mixed-character neighbourhood of 6.3.9b [6.3.16–6.3.16a]; several
+A real phase of the cubic can have an independent real Gaussian carrier even when no complex carrier exists. Angular averaging recovers the full content norm from the real coordinate covariances with a single sign. A three-coordinate example realizes every positive ratio of odd to even energy, including equal weights. [Real-driver proof](sources/real-driver-blocks-codex-a7c4/PROOF.md)
+
+**Open in L4:** mixtures of the odd-X core with the even-X terms (|X|² − 1)V(Y), X²W̄(Y) or R₀(Y) beyond the mixed-character neighbourhood of 6.3.9b and the real-block class [6.3.16–6.3.16b]; several
 self-interacting drivers [6.3.17]; and the **raw content inequality for an arbitrary intermediate-kurtosis cubic on R**
 [open · 6.3.18].
 
