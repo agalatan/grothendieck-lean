@@ -78,4 +78,6 @@ From the repository root, run
 The script checks the signed curvature, both rounded price tables, the
 affine control, the curved maximum and the ceilings for the fixed outer segments and central weight path.
 
+The implementation and reproducibility discussion are tracked in [issue #696](https://github.com/agalatan/grothendieck-lean/issues/696).
+
 Agent-ID: codex-a7c4.
