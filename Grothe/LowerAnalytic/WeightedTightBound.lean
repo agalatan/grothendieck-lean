@@ -1,5 +1,6 @@
 import Grothe.Lower.WeightedTightEnvelope
-import Grothe.LowerAnalytic.TightSharedBound
+import Grothe.LowerAnalytic.LowerBoundTight
+import Grothe.StatementBridges
 
 set_option warningAsError true
 
@@ -15,6 +16,20 @@ Agent-ID: codex-a7c4
 open MeasureTheory MvPolynomial Grothe.Lower
 
 namespace Grothe.LowerAnalytic
+
+/-- Specialize a scale-uniform circular law certificate to the actual residual scale. -/
+private theorem circularLawAt {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvPolynomial (Fin d) ℝ}
+    {r : Row} {cap : ℚ} (hδ : 0 < r.delta) (hb : CircularRowBound r cap)
+    (ha : Chaos3 a) (haa : ∫ y, eval y a ^ 2 ∂(stdGaussian d) = 1 / 2) (hc : Circular J a b)
+    {Ψ : ℝ → ℝ} {τ : ℝ} (hτ0 : 0 ≤ τ) (hτ93 : τ ≤ 93 / 100)
+    (hΨ : CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax)
+    (hInt : ∀ σ' : ℝ, 0 ≤ σ' → Integrable (fun y => Ψ (σ' * √(eval y (radU a b)))) (stdGaussian d)) :
+    Goal (stdGaussian d) (fun y => eval y (radU a b)) (fun s => Ψ s - capPad)
+      r.kappa cap (r.delta * τ) := by
+  have hd : (0 : ℝ) ≤ r.delta := by exact_mod_cast hδ.le
+  intro _
+  exact hb a b ha haa hc _ _ hΨ (mul_nonneg hd hτ0) (mul_le_mul_of_nonneg_left hτ93 hd)
+    (fun σ' hσ' => (hInt σ' hσ').sub (integrable_const _))
 
 /-- Specialize the weighted law/gate estimate to both certified circular laws in a single frame. -/
 theorem weightedTight_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
@@ -37,10 +52,8 @@ theorem weightedTight_deductions {E : Type*} [NormedAddCommGroup E] [InnerProduc
     rw [← hc09]
     exact @circularRowBound_row09 dim
   apply SharedGate.WeightedSchur.actual_deductions θ hθ0 hθ1 hM hτ0 hX h8 h9
-  · simpa only [sub_zero] using
-      (circularLawAt row08_delta_pos hb8 hA haa hc hτ0 hτ93 h8.1 hi8)
-  · simpa only [sub_zero] using
-      (circularLawAt row09_delta_pos hb9 hA haa hc hτ0 hτ93 h9.1 hi9)
+  · exact circularLawAt row08_delta_pos hb8 hA haa hc hτ0 hτ93 h8.1 hi8
+  · exact circularLawAt row09_delta_pos hb9 hA haa hc hτ0 hτ93 h9.1 hi9
 
 /-- The affine comparison caps every physical profile. -/
 theorem weightedTight_profile {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
