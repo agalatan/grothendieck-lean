@@ -8,8 +8,9 @@ Agent-ID: codex-a7c4
 from fractions import Fraction as Q
 from functools import lru_cache
 import json
-from math import ceil
+from math import ceil, floor
 from pathlib import Path
+import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -81,7 +82,7 @@ def load_bank(index, name):
 
 
 class SharedLaw:
-    def __init__(self, source, shared_excess=True):
+    def __init__(self, source, shared_excess=True, include_faces=False):
         self.gates = source.gates
         self.rows = [load_bank(8, "0.835"), load_bank(9, "0.845")]
         self.delta = self.rows[0][0]
@@ -89,13 +90,14 @@ class SharedLaw:
         self.pieces = []
         for sl, sh, left in self.rows[0][3]:
             for tl, th, right in self.rows[1][3]:
-                if shared_excess and max(sl, tl) >= min(sh, th):
+                shape_lo, shape_hi = max(sl, tl), min(sh, th)
+                if shared_excess and (shape_lo > shape_hi or (shape_lo == shape_hi and not include_faces)):
                     continue
-                # Closed segments of positive length cover all boundaries of both partitions.
+                # Including point intersections lets either row choose either adjacent cell at a knot.
                 for l, h, a, b in left:
                     for ll, hh, aa, bb in right:
                         lo, hi = max(l, ll), min(h, hh)
-                        if lo < hi:
+                        if lo < hi or (include_faces and lo == hi):
                             self.pieces.append((lo, hi, a, b, aa, bb))
 
     @lru_cache(maxsize=None)
@@ -168,6 +170,8 @@ def main():
     source = TestWeightedTightGate()
     law = SharedLaw(source)
     independent = SharedLaw(source, shared_excess=False)
+    closed = SharedLaw(source, include_faces=True)
+    checked(len(closed.pieces) == 1833, "closed intersections")
     half = Q(1, 2)
     checked(len(law.pieces) == 1051 and len(independent.pieces) == 7973, "wrong overlay")
     checked(law.discount(half) > independent.discount(half) > source.discount(half),
@@ -184,6 +188,21 @@ def main():
         checked(cap == expected and binding == cell, f"{label} cap or binding cell")
         transfer = 1/(Q(1953,2000)*cap+Q(47,2000))
         print(f"{label}: cell {binding}, t={float(amplitude):.12f}, cap={cap}, endpoint={transfer}")
+    checked(envelope(source, closed.discount, True) == (top, binding, amplitude),
+            "including all degenerate common faces changes the extremum")
+    # Check the small rounded Lean table without reusing its arithmetic.
+    weight_file = ROOT / "Grothe/LowerAnalytic/CoupledSteinWeights.lean"
+    table = weight_file.read_text().split("def prices :",1)[1].split("def approxDiscount",1)[0]
+    prices = [(Q(w.replace(" ","")), Q(d.replace(" ","")))
+              for w,d in re.findall(r"\(([0-9 /]+), ([0-9 /]+)\)", table)]
+    used = {p for lo,hi,i,j,fallback in source.cells if {i,j} <= {8,9}
+            for _,_,w,z in affine_pieces(source.rows,8,9,lo,hi,fallback) for p in (w,z)}
+    checked(len(used) == len(prices) == 9 and used == {w for w,_ in prices}, "price weights")
+    for w, saved in prices:
+        checked(saved == Q(floor(closed.discount(w)*10**13), 10**13),
+                f"rounded price at {w}")
+    priced_cap, priced_cell, _ = envelope(source,dict(prices).__getitem__,True)
+    checked(priced_cell == binding and Q(ceil(priced_cap*10**10),10**10) == cap, "rounded envelope")
     checked(transfer == Q(4000000000000,2853044560237), "transfer normalization")
 
 

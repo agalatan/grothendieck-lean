@@ -2624,8 +2624,9 @@ def CircularRowBound (r : Row) (cap : ℚ) : Prop :=
 private lemma chordMaxQ_eq (v0 v1 D s0 s1 : ℚ) :
     chordMaxQ v0 v1 D s0 s1 = chordMax v0 v1 D s0 s1 := rfl
 
-private lemma integral_convex_chord {d : ℕ} {Ψ : ℝ → ℝ} (hconv : ConvexOn ℝ (Set.Ici 0) Ψ)
-    (U : (Fin d → ℝ) → ℝ) (_hU : ∀ x, 0 ≤ U x) {s0 s1 v0 v1 kap cap : ℚ}
+/-- The affine expectation chord before taking the maximum over the residual scale. -/
+theorem integral_le_scale_chord {d : ℕ} {Ψ : ℝ → ℝ} (hconv : ConvexOn ℝ (Set.Ici 0) Ψ)
+    (U : (Fin d → ℝ) → ℝ) {s0 s1 v0 v1 : ℚ}
     (hs0 : 0 ≤ s0) (hlt : s0 < s1)
     (hI0 : Integrable (fun x ↦ Ψ ((s0 : ℝ) * √(U x))) (stdGaussian d) →
       ∫ x, Ψ ((s0 : ℝ) * √(U x)) ∂(stdGaussian d) ≤ (v0 : ℝ))
@@ -2633,10 +2634,10 @@ private lemma integral_convex_chord {d : ℕ} {Ψ : ℝ → ℝ} (hconv : Convex
       ∫ x, Ψ ((s1 : ℝ) * √(U x)) ∂(stdGaussian d) ≤ (v1 : ℝ))
     (hint0 : Integrable (fun x ↦ Ψ ((s0 : ℝ) * √(U x))) (stdGaussian d))
     (hint1 : Integrable (fun x ↦ Ψ ((s1 : ℝ) * √(U x))) (stdGaussian d))
-    (hch : chordMaxQ v0 v1 kap s0 s1 ≤ cap)
     {σ : ℝ} (h1 : (s0 : ℝ) ≤ σ) (h2 : σ ≤ (s1 : ℝ))
     (hintσ : Integrable (fun x ↦ Ψ (σ * √(U x))) (stdGaussian d)) :
-    ∫ x, Ψ (σ * √(U x)) ∂(stdGaussian d) - (kap : ℝ) * σ ^ 2 ≤ (cap : ℝ) := by
+    ∫ x, Ψ (σ * √(U x)) ∂(stdGaussian d) ≤
+      ((s1 : ℝ)-σ)/(s1-s0)*v0 + (σ-s0)/(s1-s0)*v1 := by
   have hd : (0 : ℝ) < (s1 : ℝ) - (s0 : ℝ) := sub_pos.2 (by exact_mod_cast hlt)
   set w0 : ℝ := ((s1 : ℝ) - σ) / ((s1 : ℝ) - (s0 : ℝ))
   set w1 : ℝ := (σ - (s0 : ℝ)) / ((s1 : ℝ) - (s0 : ℝ))
@@ -2657,10 +2658,26 @@ private lemma integral_convex_chord {d : ℕ} {Ψ : ℝ → ℝ} (hconv : Convex
   rw [integral_add (hint0.const_mul w0) (hint1.const_mul w1), integral_const_mul, integral_const_mul] at hmono
   have hv0 := mul_le_mul_of_nonneg_left (hI0 hint0) hw0
   have hv1 := mul_le_mul_of_nonneg_left (hI1 hint1) hw1
+  exact hmono.trans (add_le_add hv0 hv1)
+
+private lemma integral_convex_chord {d : ℕ} {Ψ : ℝ → ℝ} (hconv : ConvexOn ℝ (Set.Ici 0) Ψ)
+    (U : (Fin d → ℝ) → ℝ) (_hU : ∀ x, 0 ≤ U x) {s0 s1 v0 v1 kap cap : ℚ}
+    (hs0 : 0 ≤ s0) (hlt : s0 < s1)
+    (hI0 : Integrable (fun x ↦ Ψ ((s0 : ℝ) * √(U x))) (stdGaussian d) →
+      ∫ x, Ψ ((s0 : ℝ) * √(U x)) ∂(stdGaussian d) ≤ (v0 : ℝ))
+    (hI1 : Integrable (fun x ↦ Ψ ((s1 : ℝ) * √(U x))) (stdGaussian d) →
+      ∫ x, Ψ ((s1 : ℝ) * √(U x)) ∂(stdGaussian d) ≤ (v1 : ℝ))
+    (hint0 : Integrable (fun x ↦ Ψ ((s0 : ℝ) * √(U x))) (stdGaussian d))
+    (hint1 : Integrable (fun x ↦ Ψ ((s1 : ℝ) * √(U x))) (stdGaussian d))
+    (hch : chordMaxQ v0 v1 kap s0 s1 ≤ cap)
+    {σ : ℝ} (h1 : (s0 : ℝ) ≤ σ) (h2 : σ ≤ (s1 : ℝ))
+    (hintσ : Integrable (fun x ↦ Ψ (σ * √(U x))) (stdGaussian d)) :
+    ∫ x, Ψ (σ * √(U x)) ∂(stdGaussian d) - (kap : ℝ) * σ ^ 2 ≤ (cap : ℝ) := by
+  have h := integral_le_scale_chord hconv U hs0 hlt hI0 hI1 hint0 hint1 h1 h2 hintσ
   have hcm := chord_le_chordMax v0 v1 kap s0 s1 hlt σ h1 h2
   have hcapR : ((chordMax v0 v1 kap s0 s1 : ℚ) : ℝ) ≤ (cap : ℝ) := by
     rw [← chordMaxQ_eq]; exact_mod_cast hch
-  linarith only [hmono, hv0, hv1, hcm, hcapR]
+  linarith only [h, hcm, hcapR]
 
 private lemma sigmaNode_integral_le {d : ℕ} (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
@@ -2951,23 +2968,135 @@ private lemma checkSCellChain_sound :
       obtain ⟨c, hc, h1, h2⟩ := checkSCellChain_sound (c2 :: rest) c1.sHi stop h.2 s hs.le hhi
       exact ⟨c, List.mem_cons_of_mem _ hc, h1, h2⟩
 
-/-- **Main soundness theorem for tightened antiholomorphic Stein row certificates**:
-given a thinned node sublist `subNodes ⊆ r.nodeList`, a pre-verified `AntiNode` bank, a verified
-`quadBank`, and a verified `s`-cell cover `cells` of `s ∈ [0, 42]` and `σ ∈ [0, stop]` with
-`r.delta * (93/100) ≤ stop`, the row satisfies `CircularRowBound r cap`. -/
-theorem checkAntiCells_sound (r : Row) (subNodes : List (ℚ × ℚ)) (cap stop : ℚ)
+
+/-- Bracket a scale by two consecutive certified knots, retaining both endpoints. -/
+theorem checkSigmaChain_bracket (c0 sLo sHi kap cap stop : ℚ) {σ : ℝ}
+    (hstop : σ ≤ (stop : ℝ)) :
+    ∀ (tail : List RowSigmaNode) (n : RowSigmaNode), 0 ≤ n.sigma →
+      (n.sigma : ℝ) ≤ σ → tail ≠ [] →
+      checkSigmaChain c0 sLo sHi kap cap stop (n :: tail) = true →
+      ∃ p ∈ (n :: tail).zip tail,
+        0 ≤ p.1.sigma ∧ p.1.sigma < p.2.sigma ∧ (p.1.sigma : ℝ) ≤ σ ∧ σ ≤ (p.2.sigma : ℝ)
+  | [], _, _, _, hne, _ => (hne rfl).elim
+  | m :: rest, n, hn, hlo, _, hch => by
+    simp only [checkSigmaChain, Bool.and_eq_true, decide_eq_true_eq] at hch
+    obtain ⟨⟨hlt, _⟩, ht⟩ := hch
+    by_cases hmid : σ ≤ (m.sigma : ℝ)
+    · exact ⟨(n,m), List.mem_cons_self .., hn, hlt, hlo, hmid⟩
+    · cases rest with
+      | nil =>
+        simp only [checkSigmaChain, decide_eq_true_eq] at ht
+        exact (hmid (hstop.trans (by exact_mod_cast ht))).elim
+      | cons k ks =>
+        obtain ⟨p, hp, good⟩ := checkSigmaChain_bracket c0 sLo sHi kap cap stop hstop
+          (k :: ks) m (hn.trans hlt.le) (le_of_not_ge hmid) (List.cons_ne_nil _ _) ht
+        exact ⟨p, List.mem_cons_of_mem _ hp, good⟩
+
+/-- The actual fourth-excess cell and consecutive scale nodes selected by the checked bank. -/
+theorem checkAntiCells_bracket {nodes : List (ℚ × ℚ)} {smax kap cap stop : ℚ}
+    {qb : List QuadNode} {bank : List AntiNodeSummary} {cells : List AntiSCell}
+    (hc : checkAntiCells nodes smax kap cap stop qb bank cells = true)
+    {s σ : ℝ} (hs₀ : 0 ≤ s) (hs₁ : s ≤ 42) (hσ₀ : 0 ≤ σ) (hσ₁ : σ ≤ (stop : ℝ))
+    (hstop : 0 < stop) :
+    ∃ c ∈ cells, (c.sLo : ℝ) ≤ s ∧ s ≤ c.sHi ∧ ∃ p ∈ c.snodes.zip c.snodes.tail,
+      0 ≤ p.1.sigma ∧ p.1.sigma < p.2.sigma ∧ (p.1.sigma : ℝ) ≤ σ ∧ σ ≤ (p.2.sigma : ℝ) := by
+  simp only [checkAntiCells, Bool.and_eq_true, List.all_eq_true] at hc
+  obtain ⟨⟨_, hchain⟩, hcells⟩ := hc
+  obtain ⟨c, hmem, hlo, hhi⟩ := checkSCellChain_sound cells 0 42 hchain s
+    (by simpa using hs₀) (by simpa using hs₁)
+  refine ⟨c, hmem, hlo, hhi, ?_⟩
+  have hcheck := hcells c hmem
+  unfold checkAntiSCell at hcheck
+  cases he : c.snodes with
+  | nil => simp [he] at hcheck
+  | cons first tail =>
+    rw [he] at hcheck
+    cases first with
+    | zero =>
+      simp only [Bool.and_eq_true] at hcheck
+      have hch := hcheck.2.1
+      have hne : tail ≠ [] := by
+        intro hnil
+        subst tail
+        change decide (stop ≤ 0) = true at hch
+        exact (not_le_of_gt hstop) (of_decide_eq_true hch)
+      exact checkSigmaChain_bracket _ _ _ _ _ _ hσ₁ tail .zero le_rfl
+        (by simpa [RowSigmaNode.sigma] using hσ₀) hne hch
+    | quad | moment | anti => simp at hcheck
+
+
+/-- The checked expectation of each stored scale knot at the actual fourth excess of the
+circular cubic. This retains the shape and scale arguments for use with a second row. -/
+def CircularCellNodeBounds (r : Row) (c0 : ℚ) (cells : List AntiSCell) : Prop :=
+  ∀ {d : ℕ} (a b : MvPolynomial (Fin d) ℝ), Chaos3 a →
+    (∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) →
+    ∀ {J : Fin d → Fin d → ℝ}, Circular J a b →
+    ∀ (Ψ : ℝ → ℝ), CapsHold Ψ r.nodeList r.smax →
+    ∀ c ∈ cells, (c.sLo : ℝ) ≤ ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2 →
+      ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2 ≤ (c.sHi : ℝ) →
+    ∀ sn ∈ c.snodes,
+      Integrable (fun x ↦ Ψ ((sn.sigma : ℝ) * √(eval x (radU a b)))) (stdGaussian d) →
+      ∫ x, Ψ ((sn.sigma : ℝ) * √(eval x (radU a b))) ∂(stdGaussian d) ≤
+        (sn.val c0 c.sLo c.sHi : ℝ)
+
+/-- Interpolate any two certified knots in one admissible fourth-excess cell, keeping
+the given cubic and residual scale in the conclusion. -/
+theorem CircularCellNodeBounds.chord {r : Row} {c0 : ℚ} {cells : List AntiSCell}
+    (h : CircularCellNodeBounds r c0 cells)
+    {d : ℕ} {a b : MvPolynomial (Fin d) ℝ} (ha : Chaos3 a)
+    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1/2) {J : Fin d → Fin d → ℝ}
+    (hc : Circular J a b) {Ψ : ℝ → ℝ} (hΨ : CapsHold Ψ r.nodeList r.smax)
+    {c : AntiSCell} (hm : c ∈ cells)
+    (hl : (c.sLo : ℝ) ≤ ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2)
+    (hh : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2 ≤ (c.sHi : ℝ))
+    {p q : RowSigmaNode} (hp : p ∈ c.snodes) (hq : q ∈ c.snodes)
+    (h₀ : 0 ≤ p.sigma) (hlt : p.sigma < q.sigma) {σ : ℝ}
+    (hσ₀ : (p.sigma : ℝ) ≤ σ) (hσ₁ : σ ≤ (q.sigma : ℝ))
+    (hInt : ∀ z : ℝ, 0 ≤ z →
+      Integrable (fun x ↦ Ψ (z * √(eval x (radU a b)))) (stdGaussian d)) :
+    ∫ x, Ψ (σ * √(eval x (radU a b))) ∂(stdGaussian d) ≤
+      ((q.sigma : ℝ)-σ)/(q.sigma-p.sigma) * p.val c0 c.sLo c.sHi +
+        (σ-p.sigma)/(q.sigma-p.sigma) * q.val c0 c.sLo c.sHi := by
+  have h₀R : (0 : ℝ) ≤ p.sigma := by exact_mod_cast h₀
+  have h₁R : (0 : ℝ) ≤ q.sigma := by exact_mod_cast h₀.trans hlt.le
+  exact integral_le_scale_chord hΨ.convex _ h₀ hlt
+    (h a b ha haa hc Ψ hΨ c hm hl hh p hp) (h a b ha haa hc Ψ hΨ c hm hl hh q hq)
+    (hInt _ h₀R) (hInt _ h₁R) hσ₀ hσ₁ (hInt _ (h₀R.trans hσ₀))
+
+/-- Extract the individual knot bounds from the same certified cells and bank used for
+the uniform row cap. Both conclusions are valid for the same potential and cubic. -/
+theorem checkAntiCells_node_bounds (r : Row) (subNodes : List (ℚ × ℚ)) (cap stop : ℚ)
     (quadBank : List QuadNode) (bank : List AntiNode) (cells : List AntiSCell)
     (hsub : isSublistQ subNodes r.nodeList = true)
-    (hstop_pos : 0 < stop)
-    (hstop : r.delta * (93 / 100) ≤ stop)
     (hbank : bank.all (checkAntiNode subNodes r.smax) = true)
     (hcells : checkAntiCells subNodes r.smax r.kappa cap stop quadBank
       (bank.map AntiNode.summary) cells = true) :
-    CircularRowBound r cap := by
+    CircularCellNodeBounds r (subNodes.headD (0,0)).2 cells := by
+  intro d a b ha haa J hc Ψ hΨ c hmem hlo hhi sn hsn hint
   simp only [checkAntiCells, Bool.and_eq_true, List.all_eq_true] at hcells
-  obtain ⟨⟨⟨hnodesOK, hquadOK⟩, hchain⟩, hcellsOK⟩ := hcells
-  intro d a b ha haa J hc Ψ σ hΨ hσ0 hσ1 hInt
-  have hΨsub : CapsHold Ψ subNodes r.smax := capsHold_of_isSublistQ hΨ hsub
+  obtain ⟨⟨⟨hnodes, hquad⟩, _⟩, hall⟩ := hcells
+  have hcheck := hall c hmem
+  unfold checkAntiSCell at hcheck
+  simp only [Bool.and_eq_true, decide_eq_true_eq] at hcheck
+  obtain ⟨⟨hlo0, hlt⟩, htail⟩ := hcheck
+  have each : ∀ n ∈ c.snodes,
+      checkSigmaNode subNodes r.smax c.sLo c.sHi quadBank (bank.map AntiNode.summary) n = true := by
+    cases he : c.snodes with
+    | nil => simp
+    | cons first rest =>
+      rw [he] at htail
+      cases first with
+      | zero => exact List.all_eq_true.mp (Bool.and_eq_true_iff.mp htail).2
+      | quad | moment | anti => simp at htail
+  exact sigmaNode_integral_le a b ha haa hc (capsHold_of_isSublistQ hΨ hsub) hnodes
+    quadBank (List.all_eq_true.mpr hquad) bank hbank c.sLo c.sHi hlo0 hlt hlo hhi sn (each sn hsn) hint
+
+/-- The fourth excess of a normalized circular cubic lies in the domain of both Stein banks. -/
+theorem circular_fourth_excess_mem {d : ℕ} {a b : MvPolynomial (Fin d) ℝ}
+    (ha : Chaos3 a) (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1/2)
+    {J : Fin d → Fin d → ℝ} (hc : Circular J a b) :
+    let s := ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2
+    0 ≤ s ∧ s ≤ 42 := by
   have hE := gaussE_isGaussianExpectation d
   have haa' : gaussE d (a * a) = 1 / 2 := by
     rw [gaussE_apply, ← haa]
@@ -2986,6 +3115,29 @@ theorem checkAntiCells_sound (r : Row) (subNodes : List (ℚ × ℚ)) (cap stop 
   have hs42 : s ≤ 42 := by
     have hcap := hc.gaussian_fourth_moment_le_44 a b ha haa
     linarith
+  exact ⟨hs0, hs42⟩
+
+/-- **Main soundness theorem for tightened antiholomorphic Stein row certificates**:
+given a thinned node sublist `subNodes ⊆ r.nodeList`, a pre-verified `AntiNode` bank, a verified
+`quadBank`, and a verified `s`-cell cover `cells` of `s ∈ [0, 42]` and `σ ∈ [0, stop]` with
+`r.delta * (93/100) ≤ stop`, the row satisfies `CircularRowBound r cap`. -/
+theorem checkAntiCells_sound (r : Row) (subNodes : List (ℚ × ℚ)) (cap stop : ℚ)
+    (quadBank : List QuadNode) (bank : List AntiNode) (cells : List AntiSCell)
+    (hsub : isSublistQ subNodes r.nodeList = true)
+    (hstop_pos : 0 < stop)
+    (hstop : r.delta * (93 / 100) ≤ stop)
+    (hbank : bank.all (checkAntiNode subNodes r.smax) = true)
+    (hcells : checkAntiCells subNodes r.smax r.kappa cap stop quadBank
+      (bank.map AntiNode.summary) cells = true) :
+    CircularRowBound r cap := by
+  simp only [checkAntiCells, Bool.and_eq_true, List.all_eq_true] at hcells
+  obtain ⟨⟨⟨hnodesOK, hquadOK⟩, hchain⟩, hcellsOK⟩ := hcells
+  intro d a b ha haa J hc Ψ σ hΨ hσ0 hσ1 hInt
+  have hΨsub : CapsHold Ψ subNodes r.smax := capsHold_of_isSublistQ hΨ hsub
+  let s := ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2
+  obtain ⟨hs0, hs42⟩ := circular_fourth_excess_mem ha haa hc
+  change 0 ≤ s at hs0
+  change s ≤ 42 at hs42
   obtain ⟨c, hcMem, hsLo, hsHi⟩ := checkSCellChain_sound cells 0 42 hchain s
     (by simpa using hs0) (by simpa using hs42)
   have hσstop : σ ≤ (stop : ℝ) := by

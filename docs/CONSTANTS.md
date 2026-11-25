@@ -96,6 +96,8 @@ The two tightened law bounds leave a further deduction because both rows constra
 
 The stronger weighted bound completes the square after combining the two gate matrices at the actual mixture weight. The resulting Schur price is concave in that weight. The row08 quadratic law deduction and the weighted gate deduction hold simultaneously. Their uniform combined saving is bounded below by a chord between its two endpoint weights. On a central cell the mixing weight is affine until it reaches zero or one. Subtracting the chord leaves a quadratic in the cell parameter, so the checker tests its endpoints and any interior maximum. The hat cap is $176590771/250000000$, giving $500000000000/356631775763\le K$. The certificate proves the strict rounding $1.4020063100<K$. [Endpoint certificate](../Grothe/Lower/Cert/WeightedTight.lean) · [Weighted envelope](../Grothe/Lower/WeightedTightEnvelope.lean) · [Transfer](../Grothe/LowerAnalytic/WeightedTightBound.lean)
 
+The coupled Stein profile has a conditional lower endpoint of `4000000000000/2853044560237` (1.402011050142…). The matrix transfer in `Grothe.Statement.coupledSteinEndpoint_le_of_prices` requires the nine rational comparisons in `PricesHold`, the usual node caps, and existence of a Grothendieck bound. The exact rational replay verifies all nine, with their kernel certificates in progress. [Derivation and replay](../research/identity-tail/COUPLED_STEIN.md).
+
 ### Refinements of the earlier scalar-row certificate
 
 Before the antiholomorphic Stein replacement of `row08` and `row09`, two kernel-checked refinements sharpened the earlier 16-cell scalar-row certificate (`1.40191 < K`) on the original 14 scalar rows (`rowData`).

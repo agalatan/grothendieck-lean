@@ -154,7 +154,8 @@ def lawB : ℚ := (11331869/10000000 - row08.kappa) * row08.delta ^ 2
 noncomputable def discount (θ : ℝ) : ℝ :=
   min ((1-θ)*(lawA : ℝ)) (pairGain θ * ((lawA : ℝ)/(lawB : ℝ)))
 
-private theorem real_reserve {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+/-- A real-valued law deduction and the actual gate surplus lower the same row intercept. -/
+theorem real_reserve {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {Ω : Type} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]
     {U : Ω → ℝ} {τ V t : ℝ} {X1 X2 X3 : Ω → ℂ} {Qh v : E}
     (r : Row) (cap : ℚ) (reserve : ℝ) {Ψ : ℝ → ℝ}

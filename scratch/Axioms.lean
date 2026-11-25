@@ -13,6 +13,9 @@ import Grothe
 #print axioms Grothe.Haag.norm_phaseLaplaceKernel_le
 #print axioms Grothe.Haag.ph_eq_phaseLaplace
 #print axioms Grothe.Haag.phaseMoment_weighted
+#print axioms Grothe.Lower.CoupledStein.endpoint_eq
+#print axioms Grothe.Lower.CoupledStein.profile_bound
+#print axioms Grothe.Lower.CoupledStein.rounded_lt
 #print axioms Grothe.Lower.ResponsePenalty.a_block
 #print axioms Grothe.Lower.ResponsePenalty.complete_square
 #print axioms Grothe.Lower.ResponsePenalty.h_block
@@ -118,6 +121,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Circular.specV2_eq
 #print axioms Grothe.LowerAnalytic.Circular.specV4_eq
 #print axioms Grothe.LowerAnalytic.Circular.tensorFacts
+#print axioms Grothe.LowerAnalytic.CircularCellNodeBounds.chord
+#print axioms Grothe.LowerAnalytic.CoupledStein.actual_deductions
+#print axioms Grothe.LowerAnalytic.CoupledStein.discount_chord_le
+#print axioms Grothe.LowerAnalytic.CoupledStein.profile_of_prices
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
@@ -152,7 +159,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.capsRow13
 #print axioms Grothe.LowerAnalytic.chaos3_reW
 #print axioms Grothe.LowerAnalytic.chargeSplit_circular
+#print axioms Grothe.LowerAnalytic.checkAntiCells_bracket
 #print axioms Grothe.LowerAnalytic.checkAntiCells_sound
+#print axioms Grothe.LowerAnalytic.circularCellNodes_row08
+#print axioms Grothe.LowerAnalytic.circularCellNodes_row09
 #print axioms Grothe.LowerAnalytic.circularReductionHyp_of_nodeCaps
 #print axioms Grothe.LowerAnalytic.circularRowBound_row08
 #print axioms Grothe.LowerAnalytic.circularRowBound_row09
@@ -272,6 +282,7 @@ import Grothe
 #print axioms Grothe.Statement.constant_isBound
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
+#print axioms Grothe.Statement.coupledSteinEndpoint_le_of_prices
 #print axioms Grothe.Statement.isClosed_bounds
 #print axioms Grothe.Statement.le_constant_of_lowerAbove
 #print axioms Grothe.Statement.lowerTarget_of_tailNodeCaps

@@ -11,6 +11,7 @@ import Grothe.HeadHardy
 import Grothe.ListPoly
 import Grothe.Lower.AffineEnvelope
 import Grothe.Lower.Basic
+import Grothe.Lower.Cert.CoupledStein
 import Grothe.Lower.Cert.Envelope
 import Grothe.Lower.Cert.MassRow
 import Grothe.Lower.Cert.MassWitnesses
@@ -32,6 +33,7 @@ import Grothe.Lower.Cert.Rows
 import Grothe.Lower.Cert.SharedGate
 import Grothe.Lower.Cert.SharpEnvelope
 import Grothe.Lower.Cert.WeightedTight
+import Grothe.Lower.CoupledSteinEnvelope
 import Grothe.Lower.Cuts
 import Grothe.Lower.Envelope
 import Grothe.Lower.EnvelopeData
@@ -3378,6 +3380,11 @@ import Grothe.LowerAnalytic.CircularFourth
 import Grothe.LowerAnalytic.CircularTensor
 import Grothe.LowerAnalytic.ComplexGaussianCore
 import Grothe.LowerAnalytic.ComplexGaussianSymmetry
+import Grothe.LowerAnalytic.CoupledSteinBound
+import Grothe.LowerAnalytic.CoupledSteinCheck
+import Grothe.LowerAnalytic.CoupledSteinData
+import Grothe.LowerAnalytic.CoupledSteinRows
+import Grothe.LowerAnalytic.CoupledSteinWeights
 import Grothe.LowerAnalytic.Covariance
 import Grothe.LowerAnalytic.Fibre
 import Grothe.LowerAnalytic.FibreHermite

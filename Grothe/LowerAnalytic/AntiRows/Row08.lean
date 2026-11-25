@@ -64,17 +64,23 @@ theorem row08_gateOK : gateOK row08.N = true := by decide +kernel
 theorem row08_kappa_le : row08.kappa * row08.delta ^ 2 ≤ row08.delta + gatePrice row08.N row08.g1 row08.g2 row08.g3 := by
   decide +kernel
 
-/-- **Tightened antiholomorphic Stein bound for row `0.835` (`row08`)** up to `σ ≤ δ · 93/100`. -/
-theorem circularRowBound_row08 : CircularRowBound row08 row08CapTight := by
-  have hs : row08.smax = row08Smax := by decide +kernel
-  have hk : row08.kappa = row08Kappa := by decide +kernel
-  have hstop : row08.delta * (93 / 100) ≤ mkRat 3 4 := by decide +kernel
-  have hcells : checkAntiCells row08SubNodes row08.smax row08.kappa row08CapTight (mkRat 3 4)
+private theorem row08CheckedCells : checkAntiCells row08SubNodes row08.smax row08.kappa row08CapTight (mkRat 3 4)
       row08QuadBank (row08Bank.map AntiNode.summary) row08Cells = true := by
+    have hs : row08.smax = row08Smax := by decide +kernel
+    have hk : row08.kappa = row08Kappa := by decide +kernel
     rw [hs, hk, row08BankSums_eq]
     exact row08Cells_ok
+
+/-- Individual scale-knot expectations at the fourth excess of this cubic. -/
+theorem circularCellNodes_row08 : CircularCellNodeBounds row08 (row08SubNodes.headD (0, 0)).2 row08Cells :=
+  checkAntiCells_node_bounds row08 row08SubNodes row08CapTight (mkRat 3 4) row08QuadBank row08Bank row08Cells
+    row08SubNodes_sublist row08Bank_ok row08CheckedCells
+
+/-- **Tightened antiholomorphic Stein bound for row `0.835` (`row08`)** up to `σ ≤ δ · 93/100`. -/
+theorem circularRowBound_row08 : CircularRowBound row08 row08CapTight := by
+  have hstop : row08.delta * (93 / 100) ≤ mkRat 3 4 := by decide +kernel
   intro d
   exact checkAntiCells_sound row08 row08SubNodes row08CapTight (mkRat 3 4) row08QuadBank row08Bank row08Cells
-    row08SubNodes_sublist (by decide +kernel) hstop row08Bank_ok hcells
+    row08SubNodes_sublist (by decide +kernel) hstop row08Bank_ok row08CheckedCells
 
 end Grothe.LowerAnalytic
