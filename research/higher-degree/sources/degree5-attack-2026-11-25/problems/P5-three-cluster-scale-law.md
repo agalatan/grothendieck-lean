@@ -164,7 +164,7 @@ at 1.455u\* (0.74), 0.4000 at 1.492u\* (0.76), 0.5232 at 1.448u\* (0.78).
 - **Finite support for the law of H (P, author only).** With just the mean fixed, convexity reduces the test to two atoms. For the target in §2 the law must also pass the response gate at every amplitude. It suffices to check admissible laws on at most two scales and laws on three or four scales whose response touches the gate. At a four-scale extremizer the total mass, mean, response value and zero-slope condition form a nonsingular linear system for the weights. The allowance on these laws is open. [Proof and limitations](../../admissible-four-atom-codex-a7c4/PROOF.md)
 - **Uniformity in c.** For c ≥ c₀ compare with the limit c = ∞ (Gamma(c)/c → 1, B_c → Exp(1)) with explicit
   remainders in 1/c; for c < c₀ a certified cover of the compact parameter set {a² + cΣ|m_k|² + s_R = 1} × phases
-  (seven real dimensions after removing a common phase of m) × the two-point family of H × the energy band. The
+  (seven real dimensions after removing a common phase of m) × the admissible two-scale and contact families above × the energy band. The
   cover is large; exploit that the integrand is smooth in the parameters and that the maximisers found are
   isolated (m₁ ≈ m₂ with a negative phase, m₃ with a positive one, s_R ≈ 0.66, a² ≈ 0.05).
 - **Certified evaluation.** The profiles must be enclosed from their definitions (P1 §1.1). Interval arithmetic
