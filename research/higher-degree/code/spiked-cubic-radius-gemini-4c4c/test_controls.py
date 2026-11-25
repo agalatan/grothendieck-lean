@@ -6,12 +6,14 @@ Usage:  python3 -I test_controls.py [CERT.json]
 Implements all mandatory negative controls of `P7-symmetrised-spiked-radius.md` §6–§7 together
 with structural corruption controls on `cert_spiked.json`:
   1. AST zero-float & stdlib-only audit across `verify.py`, `check_identities_exact.py`, `test_controls.py`;
-  2. Mandatory Control A (`P7` §6): `r_1 = 0.88 = 22/25 < sqrt(pi)/2` (violating the diffuse equality
-     family) is proved false in exact Fraction arithmetic and rejected by `verify.py`;
+  2. Mandatory Control A (`P7` §6) & sign controls:
+       (i) `r_1 = 0.88 = 22/25 < sqrt(pi)/2` (violating the diffuse equality family) is proved false in
+           exact Fraction arithmetic and rejected by `verify.py`;
+       (ii) One-field sign mutation `claim = "-939/1000"` (and negative ray `R_j`) is rejected before squaring;
   3. Mandatory Control B (`P7` §6 & §7 item 5):
        (i) Exact Fraction proof that the unsymmetrised two-chaos witness
              F(z_1) = z_1 * (1 - (|z_1|^2 - 2)/4) in H_{1,0} + H_{2,1}
-           satisfies E|F| / ||F||_2 > 0.9429 > sqrt(9*pi/32) > 0.93998;
+           satisfies E|F| / ||F||_2 > 0.9430 > sqrt(9*pi/32) > 0.93998;
        (ii) `verify.py` rejects `claim = "47/50"` (0.94 > sqrt(9*pi/32));
        (iii) Zeroing the +/-G symmetrisation multipliers `q_sym = (q_0, q_1, q_2)` in `cert_spiked.json`
              is rejected by `verify.py`;
@@ -20,7 +22,11 @@ with structural corruption controls on `cert_spiked.json`:
   6. Perturbing a Sturm spline knot (`phi3` / `phi1`) so P_sh(r) loses positivity on a sub-interval
      between knots is caught by the exact integer Sturm chain and rejected;
   7. Breaking the support-polygon boundary (`t_right < sqrt(pi)/2` or disordered ray slopes) is rejected;
-  8. Inflating the degree-5 mid-t sector-free cutoff by +10^-7 past the tight threshold is rejected.
+  8. Theorem 2(2) binding controls:
+       (i) Inflating the degree-5 mid-t sector-free cutoff by +10^-7 past the envelope crossing is rejected;
+       (ii) Deleting only `degree5_midt.lean_mass` (or `degree5_midt`) is rejected by the default theorem-level
+            entry point (while `verify_radius_only` still certifies the narrower Theorem 1 radius result);
+       (iii) Lowering `degree5_midt.lean_mass.t_cutoff` below `9190839/25000000` is rejected.
 
 Agent-ID: gemini-4c4c
 """
@@ -125,11 +131,19 @@ def main():
     assert res_ok["ok"]
     print(f"  [PASS] Baseline valid certificate verified (claim = {cert['claim']})")
 
-    # 2. Mandatory Control A (P7 §6): r_1 = 0.88 = 22/25 < sqrt(pi)/2
+    # 2. Mandatory Control A (P7 §6): r_1 = 0.88 = 22/25 < sqrt(pi)/2 & negative radius sign controls
     assert Fr(22, 25) ** 2 < VF.PI_LO / 4
     c_88 = copy.deepcopy(cert)
     c_88["claim"] = "22/25"
-    expect_reject(c_88, "Control 2 (P7 §6: impossible claim r_1 = 22/25 = 0.88 < sqrt(pi)/2)")
+    expect_reject(c_88, "Control 2a (P7 §6: impossible claim r_1 = 22/25 = 0.88 < sqrt(pi)/2)")
+
+    c_neg = copy.deepcopy(cert)
+    c_neg["claim"] = "-939/1000"
+    expect_reject(c_neg, "Control 2b (one-field negative radius claim = -939/1000 rejected before squaring)")
+
+    c_negray = copy.deepcopy(cert)
+    c_negray["rays"][0]["R"] = "-582/625"
+    expect_reject(c_negray, "Control 2c (negative ray radius R_0 = -582/625 rejected)")
 
     # 3. Mandatory Control B (P7 §6 & §7): unsymmetrised barrier & disabling q_sym
     check_unsymmetrised_witness_exact()
@@ -167,14 +181,30 @@ def main():
     c_poly["t_slabs"][-1] = "88/100"
     expect_reject(c_poly, "Control 7 (t_right = 0.88 < sqrt(pi)/2 failing right boundary cover)")
 
-    # 8. Inflated degree-5 mid-t cutoff (+10^-7 past exact tight threshold)
-    if "degree5_midt" in cert and "lean_mass" in cert["degree5_midt"]:
-        c_midt = copy.deepcopy(cert)
-        t_cur = Fr(c_midt["degree5_midt"]["lean_mass"]["t_cutoff"])
-        t_bad = t_cur + Fr(1, 10**7)
-        c_midt["degree5_midt"]["lean_mass"]["t_cutoff"] = str(t_bad)
-        c_midt["degree5_midt"]["lean_mass"]["segments"][-1]["t_hi"] = str(t_bad)
-        expect_reject(c_midt, "Control 8 (inflated degree-5 mid-t cutoff +10^-7 past tight crossing)")
+    # 8. Theorem 2(2) binding controls: inflated cutoff, missing lean_mass key, and lowered cutoff
+    c_midt = copy.deepcopy(cert)
+    t_cur = Fr(c_midt["degree5_midt"]["lean_mass"]["t_cutoff"])
+    t_bad = t_cur + Fr(1, 10**7)
+    c_midt["degree5_midt"]["lean_mass"]["t_cutoff"] = str(t_bad)
+    c_midt["degree5_midt"]["lean_mass"]["segments"][-1]["t_hi"] = str(t_bad)
+    expect_reject(c_midt, "Control 8a (inflated degree-5 mid-t cutoff +10^-7 past envelope crossing)")
+
+    c_nolm = copy.deepcopy(cert)
+    del c_nolm["degree5_midt"]["lean_mass"]
+    expect_reject(c_nolm, "Control 8b (deleting degree5_midt.lean_mass rejected by Theorem 2(2) entry point)")
+
+    c_nod5 = copy.deepcopy(cert)
+    del c_nod5["degree5_midt"]
+    expect_reject(c_nod5, "Control 8c (deleting degree5_midt rejected by default entry point)")
+    res_ro = VF.verify_radius_only(c_nod5, quiet=True)
+    assert res_ro["ok"] and res_ro["radius_only"] and res_ro["midt"] == {}
+    print("  [PASS] Control 8d: verify_radius_only accepts certificate without degree5_midt as narrower result")
+
+    c_lowt = copy.deepcopy(cert)
+    t_short = VF.THEOREM2_LEAN_MASS_CUTOFF - Fr(1, 10**8)
+    c_lowt["degree5_midt"]["lean_mass"]["t_cutoff"] = str(t_short)
+    c_lowt["degree5_midt"]["lean_mass"]["segments"][-1]["t_hi"] = str(t_short)
+    expect_reject(c_lowt, "Control 8e (lowering lean_mass.t_cutoff below 9190839/25000000 rejected)")
 
     print("ALL NEGATIVE & CORRUPTION CONTROLS PASSED.")
 

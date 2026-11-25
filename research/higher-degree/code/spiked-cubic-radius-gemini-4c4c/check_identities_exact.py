@@ -648,6 +648,14 @@ def main():
     set_sym(t, 0, 1, 1, QComplex(0, 2))
     instances.append(("d=2 transverse i*z_1*H_11", t, 2, (8, 15, 17), 2, True))
 
+    t = empty_tensor(2)
+    set_sym(t, 0, 0, 1, QComplex(1, 0))
+    # Explicitly verify d_1 F_2 = 2 z_1 != 0 = d_2 F_1 while dbar_m a(G) == W_m and split Young holds:
+    G_ex = build_wick_cubic(t, 2)
+    F_ex = [pdiff(G_ex, 2 + j) for j in range(2)]
+    assert pdiff(F_ex[1], 0) != pdiff(F_ex[0], 1), "expected d_1 F_2 != d_2 F_1 on G = z_1^2 zb_2"
+    instances.append(("d=2 G=z_1^2*zb_2 (d_1F_2!=d_2F_1)", t, 2, (3, 4, 5), 2, True))
+
     t = empty_tensor(3)
     set_sym(t, 0, 0, 0, QComplex(1, 1))
     set_sym(t, 0, 1, 2, QComplex(2, -1))

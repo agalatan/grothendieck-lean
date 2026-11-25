@@ -34,7 +34,7 @@ $$
    $$
    0 \le t \le \frac{9190839}{25000000} = 0.36763356
    $$
-   (tight to $10^{-8}$, improving `0.35859076` of `4.18e` and `0.36495` of `4.18f` at the reviewed radius $\frac{2287}{2500}$, and also exceeding `0.36733` of `4.18f` at the unreviewed radius $\frac{4571}{5000}$; by Parseval alone without the mass inequality, `4.18e` already gives $0 \le t \le 0.34554022$ because the Stieltjes ellipsoid $B_{00}(c)(1-p) + B_T(c)p$ loosens for $p < 0.14$).
+   (where this 11-ray + Lean-mass upper envelope crosses $\frac{500}{701}$ on the next $10^{-8}$ grid point $t = 0.36763357$, establishing sharpness for this envelope while the cutoff for the physical game could extend further; improving `0.35859076` of `4.18e` and `0.36495` of `4.18f` at the reviewed radius $\frac{2287}{2500}$, and also exceeding `0.36733` of `4.18f` at the unreviewed radius $\frac{4571}{5000}$; by Parseval alone without the mass inequality, `4.18e` already gives $0 \le t \le 0.34554022$ because the Stieltjes ellipsoid $B_{00}(c)(1-p) + B_T(c)p$ loosens for $p < 0.14$).
 
 ### Dependency Inventory
 Every external input used in this proof is either a Lean theorem on `master` or an independently reviewed **P + C** result on `master`:
@@ -146,7 +146,7 @@ $$
 \tilde{\beta}_{3,\sigma} := \operatorname{Re}\bigl(\overline{Q}_\sigma(\sigma b_{\mathrm{loc}} + \ell\,\bar{\partial}_1 c_2)\bigr), \qquad
 \tilde{\beta}_{4,\sigma} := \operatorname{Re}\bigl(\overline{Q}_\sigma\,\sigma b_{\mathrm{loc}}\bigr).
 $$
-Notice that $F_k \in H_{2,0}(\mathbb{C}^n)$ is holomorphic ($\bar{\partial}_m F_k = 0$), while $\partial_j G \in H_{1,1}(\mathbb{C}^n)$ satisfies $\bar{\partial}_m(\partial_j G) = \partial_j F_m$, hence $\bar{\partial}_m a(G) = \sum_j (\partial_j F_m) F_j = W_m$ (since $\partial_j F_m = \partial_m F_j$ for $G = \sum t_{abc} :z_a z_b \bar{z}_c:$ with $t_{abc} = t_{bac}$; verified symbolically in `check_identities_exact.py`).
+Notice that each $F_j = \bar{\partial}_j G \in H_{2,0}(\mathbb{C}^n)$ is holomorphic ($\bar{\partial}_m F_j = 0$), while commuting $\bar{\partial}_m$ with $\partial_j$ gives $\bar{\partial}_m(\partial_j G) = \partial_j(\bar{\partial}_m G) = \partial_j F_m$; hence differentiating $a(G) = \sum_{j=1}^n (\partial_j G) F_j$ directly yields $\bar{\partial}_m a(G) = \sum_{j=1}^n F_j\,\partial_j F_m = W_m$ (note that in general $\partial_j F_m \ne \partial_m F_j$, e.g. for $G = z_1^2 \bar{z}_2$; verified symbolically in `check_identities_exact.py`).
 
 ### Lemma 3.1 (Spiked Stein Identities `(I')`–`(IV')`)
 Let $g_i \in C^1([0, \infty), \mathbb{R})$ ($i = 1, 2, 3, 4$) have polynomial growth together with $g_i'$, and set $G_i(v) := v g_i(v)$, $\phi_i(v) := G_i'(v) = g_i(v) + v g_i'(v)$, and $Y_i(v) := \phi_i(v) - g_i(v) = v g_i'(v)$. Then for each sign $\sigma \in \{+1, -1\}$:
@@ -191,7 +191,7 @@ Note $\partial_j Q_\sigma = \ell\delta_{j1} + \sigma\partial_j G$, $\bar{\partia
    Summing the real parts of the three terms gives $\alpha_{2,\sigma}\phi_4(V_\sigma) - \operatorname{Re}(\sigma\ell F_1 \overline{a}_{1,\sigma})\phi_4(V_\sigma) + c_2 \rho_\sigma Y_4(V_\sigma) + \tilde{\beta}_{4,\sigma} g_4(V_\sigma)$, proving `(IV')`. $\square$
 
 ### Regularity of the Piecewise-Linear Spline Family
-In every certificate row on knots $0 = u_0 < u_1 < \dots < u_K$ ($u_k = e_k^2$), $\phi_i(v)$ is continuous and piecewise linear on $[0, u_K]$, constant on $[u_K, \infty)$ for $i = 3, 4$ with $\phi_3(u_K) = \phi_4(u_K) = 0$, and equal to $\phi_i(u_K) + \mathrm{slope}_i\cdot v$ on $[u_K, \infty)$ for $i = 1, 2$ (specifically $\phi_i = \hat{\phi}_i + \mathrm{slope}_i\cdot v$ on all of $[0, \infty)$). Thus $G_i(v) = \int_0^v \phi_i(t)\,dt$ is $C^2$ off the knots and $C^1$ across every knot; on $[0, u_1]$, $\phi_i(v) = \alpha_i + \beta_i v$ gives $g_i(v) = G_i(v)/v = \alpha_i + \frac{1}{2}\beta_i v \in C^\infty([0, u_1])$, and for $v > 0$, $g_i'(v) = Y_i(v)/v$ is continuous across every knot $u_k > 0$. Hence $g_i \in C^1([0, \infty))$ with polynomial growth, and on $[u_K, \infty)$ both $G_3(v) \equiv G_3(u_K)$ and $G_4(v) \equiv G_4(u_K)$ are exact constants.
+In every certificate row on knots $0 = u_0 < u_1 < \dots < u_K$ ($u_k = e_k^2$), $\phi_i(v)$ is continuous and piecewise linear on $[0, u_K]$, constant on $[u_K, \infty)$ for $i = 3, 4$ with $\phi_3(u_K) = \phi_4(u_K) = 0$, and equal to $\phi_i(u_K) + \mathrm{slope}_i\cdot(v - u_K)$ on $[u_K, \infty)$ for $i = 1, 2$ (specifically $\phi_i(v) = \hat{\phi}_i(v) + \mathrm{slope}_i\cdot v$ on all of $[0, \infty)$, with $\hat{\phi}_i(v) \equiv \hat{\phi}_i(u_K)$ constant on $[u_K, \infty)$). Thus $G_i(v) = \int_0^v \phi_i(t)\,dt$ is $C^2$ off the knots and $C^1$ across every knot; on $[0, u_1]$, $\phi_i(v) = \alpha_i + \beta_i v$ gives $g_i(v) = G_i(v)/v = \alpha_i + \frac{1}{2}\beta_i v \in C^\infty([0, u_1])$, and for $v > 0$, $g_i'(v) = Y_i(v)/v$ is continuous across every knot $u_k > 0$. Hence $g_i \in C^1([0, \infty))$ with polynomial growth, and on $[u_K, \infty)$ both $G_3(v) \equiv G_3(u_K)$ and $G_4(v) \equiv G_4(u_K)$ are exact constants.
 
 ### Lemma 3.2 (Pointwise Zero-Mean $\pm G$ Symmetrisation)
 For any $q_0, q_1, q_2 \in \mathbb{R}$ and every $z \in \mathbb{C}^n$, since $c_2(z)$ and $k_1(z)$ are even in $G$ while $\delta_\Delta(z, -1) = -\delta_\Delta(z, +1)$,
@@ -217,7 +217,11 @@ At every $z \in \mathbb{C}^n$ and $\sigma \in \{+1, -1\}$ with $v = V_\sigma(z) 
    $$
    \xi_2(v) c_2 + \xi_{t1}(v)\tilde{k}_1 + \xi_a(v)\rho_\sigma \ge 0 \qquad\text{and}\qquad \xi_{k1}(v) k_1 \ge 0.
    $$
-3. **Split Young inequality on $(g_3 \tilde{\beta}_{3,\sigma} + g_4 \tilde{\beta}_{4,\sigma})$.** Since $\bar{\partial}_1 c_2 = \sum_k F_k \overline{\partial_1 F_k}$, Cauchy–Schwarz gives $|\tilde{\beta}_{3,\sigma} g_3 + \tilde{\beta}_{4,\sigma} g_4| = \bigl|\operatorname{Re}\bigl(\overline{Q}_\sigma \sum_k \overline{F}_k [(g_3 + g_4)\sigma W_k + g_3 \ell\,\overline{\partial_1 F_k}^*]\bigr)\bigr| \le \sqrt{v c_2}\bigl(|g_3 + g_4|\sqrt{w_G} + |g_3|\sqrt{p\sum_k |\partial_1 F_k|^2}\bigr)$. Hence for any $\mu_w > 0$, $\mu_{w1} > 0$ (and trivially when $v = 0$ since $G_3(0) = G_4(0) = 0$):
+3. **Split Young inequality on $(g_3 \tilde{\beta}_{3,\sigma} + g_4 \tilde{\beta}_{4,\sigma})$.** Expanding $g_3 \tilde{\beta}_{3,\sigma} + g_4 \tilde{\beta}_{4,\sigma} = (g_3 + g_4)\operatorname{Re}(\overline{Q}_\sigma \sigma b_{\mathrm{loc}}) + g_3 \ell\operatorname{Re}(\overline{Q}_\sigma \bar{\partial}_1 c_2)$ and applying the triangle inequality and Cauchy–Schwarz separately to the two original terms — using $|b_{\mathrm{loc}}| = \bigl|\sum_{k=1}^n \overline{F}_k W_k\bigr| \le \sqrt{c_2 w_G}$ on the first and $|\bar{\partial}_1 c_2| = \bigl|\sum_{k=1}^n F_k \overline{\partial_1 F_k}\bigr| \le \sqrt{c_2 \sum_{k=1}^n |\partial_1 F_k|^2}$ on the second — gives
+   $$
+   |g_3 \tilde{\beta}_{3,\sigma} + g_4 \tilde{\beta}_{4,\sigma}| \le |g_3 + g_4|\sqrt{v c_2 w_G} + |g_3|\sqrt{v c_2\,p\sum_{k=1}^n |\partial_1 F_k|^2}.
+   $$
+   Applying Young's inequality to each product (noting $v g_i(v)^2 = G_i(v)^2 / v$ for $v > 0$, while at $v = 0$ both sides vanish since $Q_\sigma = 0$ and $G_3(0) = G_4(0) = 0$) gives, for any $\mu_w > 0$, $\mu_{w1} > 0$:
    $$
    \mu_w w_G + \mu_{w1} p\sum_{k=1}^n |\partial_1 F_k|^2 - \bigl(g_3(v)\tilde{\beta}_{3,\sigma} + g_4(v)\tilde{\beta}_{4,\sigma}\bigr)
    \ge -\Bigl(\frac{(G_3(v) + G_4(v))^2}{4\mu_w v} + \frac{G_3(v)^2}{4\mu_{w1} v}\Bigr) c_2.
@@ -357,23 +361,24 @@ Both upper bounds have the form $V \le \alpha_0 + \alpha_2 t^2 + \beta_2 s^2$ wi
 $$
 V \le Q_j(t) := \alpha_0 + \alpha_2 t^2 + \beta_2 \max\Bigl(0,\, \frac{R_j - \ell_j t}{m_j}\Bigr)^2,
 $$
-which is convex in $t$ on $\mathbb{R}$ by the same convexity argument as Lemma 1.2. Therefore $\max_{t \in [t_A, t_B]} Q_j(t) = \max\bigl(Q_j(t_A), Q_j(t_B)\bigr)$. Checking $Q_j(t_A) < \frac{500}{701}$ and $Q_j(t_B) < \frac{500}{701}$ on the contiguous rational sub-segments from $t_{\mathrm{ell}}$ to $t_*$ (and checking $\min_j Q_j(t_* + 10^{-8}) > \frac{500}{701}$) in `verify.py` §4 proves $V < \frac{500}{701}$ for all $t \in [0, t_*]$. $\square$
+which is convex in $t$ on $\mathbb{R}$ by the same convexity argument as Lemma 1.2. Therefore $\max_{t \in [t_A, t_B]} Q_j(t) = \max\bigl(Q_j(t_A), Q_j(t_B)\bigr)$. Checking $Q_j(t_A) < \frac{500}{701}$ and $Q_j(t_B) < \frac{500}{701}$ on the contiguous rational sub-segments from $t_{\mathrm{ell}}$ to $t_*$ in `verify.py` §4 proves $V < \frac{500}{701}$ for all $t \in [0, t_*]$, while $\min_j Q_j(t_* + 10^{-8}) > \frac{500}{701}$ confirms that this 11-ray + Lean-mass upper envelope crosses $\frac{500}{701}$ on the next $10^{-8}$ grid step. $\square$
 
 ---
 
 ## 7. Verification Commands and Negative Controls
 
-From the repository root, all three verification scripts run under isolated Python 3 (`python3 -I`, standard library only, zero floating-point literals or calls, enforced via `ast` inspection in `test_controls.py`):
+From the repository root, all three verification scripts run under isolated Python 3 (`python3 -I`, standard library only, zero floating-point literals or calls, enforced via `ast` inspection in `test_controls.py`). By default `verify.py` binds both Theorem 1 and Theorem 2(2) (requiring `degree5_midt.lean_mass` coverage through $\frac{9190839}{25000000}$); passing `--radius-only` (or calling `verify_radius_only`) reports the narrower Theorem 1 radius result alone:
 
 ```sh
 python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/verify.py
+python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/verify.py --radius-only
 python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/check_identities_exact.py
 python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/test_controls.py
 ```
 
 ### Mandatory and Adversarial Controls Verified in `test_controls.py`
 1. **AST zero-float & stdlib-only audit (`Control 1`):** Parses `verify.py`, `check_identities_exact.py`, and `test_controls.py` via `ast` and rejects any `float` literal, `float(...)` call, or non-stdlib import.
-2. **Impossible claim below diffuse Gaussian limit (`Control 2`, `P7` §6):** Proves $(22/25)^2 < \pi/4$ in exact rationals (corresponding to the diffuse equality family $f = \operatorname{ph}(z_1 + c W)$, $g = \operatorname{ph}(z_1 - c W)$) and verifies that mutating `claim` to `"22/25"` (`0.88`) is rejected by `verify.py`.
+2. **Impossible claim below diffuse Gaussian limit and negative-radius sign controls (`Controls 2a–2c`, `P7` §6):** Proves $(22/25)^2 < \pi/4$ in exact rationals (corresponding to the diffuse equality family $f = \operatorname{ph}(z_1 + c W)$, $g = \operatorname{ph}(z_1 - c W)$) and verifies that mutating `claim` to `"22/25"` (`0.88`), mutating `claim` to `"-939/1000"` (rejected before squaring), or negating a ray radius `R_0` is rejected by `verify.py`.
 3. **Unsymmetrised two-chaos barrier and $\pm G$ symmetrisation necessity (`Control 3a–3c`, `P7` §6 & §7 item 5):**
    - For $F(z_1) = z_1\bigl(1 - \frac{T - 2}{4}\bigr) \in H_{1,0} \oplus H_{2,1}$ ($T = |z_1|^2$, $\|F\|_2^2 = \frac{9}{8}$), using $|6 - T| = (6 - T) + 2(T - 6)\mathbf{1}_{T > 6}$ and $\sqrt{T} \ge \sqrt{6} + (\sqrt{7} - \sqrt{6})\mathbf{1}_{T \ge 7}$ on $[6, \infty)$ gives
      $$
@@ -381,4 +386,4 @@ python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/test_con
      $$
      certifying in exact `Fraction` arithmetic that $\mathbb{E}|F|/\|F\|_2 > 0.9430 > \sqrt{9\pi/32} > 0.93998$.
    - Verifies that `verify.py` rejects `claim = "47/50"` (`0.94 > \sqrt{9\pi/32}`) and rejects `cert_spiked.json` when the odd-in-$G$ symmetrisation multipliers `q_sym = (q_0, q_1, q_2)` are zeroed.
-4. **Structural corruption controls (`Controls 4–8`):** Verifies rejection upon truncating the $s_G$ cover to $[0, 41] < 42$, making $\phi_4[K] \ne 0$ on $[u_K, \infty)$, perturbing an interior Sturm spline knot (`phi1[4]`), shrinking $t_{\mathrm{right}}$ below $\sqrt{\pi}/2$, or inflating the degree-5 mid-$t$ cutoff by $+10^{-7}$.
+4. **Structural corruption and Theorem 2(2) binding controls (`Controls 4–8e`):** Verifies rejection upon truncating the $s_G$ cover to $[0, 41] < 42$, making $\phi_4[K] \ne 0$ on $[u_K, \infty)$, perturbing an interior Sturm spline knot (`phi1[4]`), shrinking $t_{\mathrm{right}}$ below $\sqrt{\pi}/2$, inflating the degree-5 mid-$t$ cutoff by $+10^{-7}$ past the envelope crossing, deleting `degree5_midt.lean_mass` (or `degree5_midt`, while confirming `verify_radius_only` still certifies the narrower radius-only result), or lowering `lean_mass.t_cutoff` below $\frac{9190839}{25000000}$.

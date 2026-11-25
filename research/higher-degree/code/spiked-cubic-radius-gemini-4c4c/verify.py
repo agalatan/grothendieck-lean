@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Exact stdlib verifier for the symmetrised spiked cubic radius certificate (label C, zero floats).
 
-Usage:  python3 -I verify.py [CERT.json] [--quiet]
+Usage:  python3 -I verify.py [CERT.json] [--quiet] [--seq] [--radius-only]
 
 Only the Python standard library is used (fractions, json, math, os, sys, time). Every number read
 from the certificate is an exact integer or rational string, and every arithmetic operation and
@@ -64,6 +64,7 @@ HOLDER_K4 = [768, 192, 18, 12, 9260]
 
 C_ELL = Fr(431, 500)
 RHO0_REV = Fr(2287, 2500)
+THEOREM2_LEAN_MASS_CUTOFF = Fr(9190839, 25000000)
 
 
 def require(cond, msg="verification condition failed"):
@@ -739,9 +740,10 @@ def _verify_stein_ray_task(args):
 
 
 # ------------------------------------------------------------------ global polygon & mid-t payoff checks
-def verify_certificate(cert, quiet=False, jobs=None):
+def verify_certificate(cert, quiet=False, jobs=None, radius_only=False):
     t0 = perf_counter_ns()
     r1 = Fr(cert["claim"])
+    require(r1 > 0, "claim radius r_1 must be positive")
     # Check strictly below unsymmetrised barrier sqrt(9 * pi / 32) > sqrt(9 * PI_LO / 32):
     require(r1 * r1 < Fr(9, 32) * PI_LO, "claim does not beat unsymmetrised barrier sqrt(9*pi/32)")
 
@@ -760,7 +762,7 @@ def verify_certificate(cert, quiet=False, jobs=None):
             % (t_left, dec_ceil10(root_interval(lhs_left)[1]), r1)
         )
 
-    # Parse rays and check Pythagorean triples & strict slope ordering first:
+    # Parse rays and check Pythagorean triples, positive R_j & strict slope ordering first:
     certified_rays = []
     for idx, ray_entry in enumerate(cert["rays"]):
         abc = ray_entry["abc"]
@@ -768,7 +770,9 @@ def verify_certificate(cert, quiet=False, jobs=None):
         a_r, b_r, c_r = abc
         require(a_r * a_r + b_r * b_r == c_r * c_r, "non-Pythagorean ray %s" % (abc,))
         require(ray_entry["kind"] in ("stein", "analytic_418g"), "unknown ray kind: " + str(ray_entry["kind"]))
-        certified_rays.append((abc, Fr(a_r, c_r), Fr(b_r, c_r), Fr(ray_entry["R"])))
+        R_ray_j = Fr(ray_entry["R"])
+        require(R_ray_j > 0, "ray %d R_j must be positive" % idx)
+        certified_rays.append((abc, Fr(a_r, c_r), Fr(b_r, c_r), R_ray_j))
 
     M = len(certified_rays)
     require(M >= 1, "empty rays")
@@ -794,10 +798,15 @@ def verify_certificate(cert, quiet=False, jobs=None):
             if val_sq > worst_poly_sq:
                 worst_poly_sq = val_sq
 
-    # Check degree-5 sector-free mid-t cutoffs (if present in cert):
+    # Check degree-5 sector-free mid-t cutoffs (mandatory in default theorem-level entry point):
     midt_res = {}
-    if "degree5_midt" in cert:
-        d5 = cert["degree5_midt"]
+    if not radius_only:
+        require(
+            isinstance(cert.get("degree5_midt"), dict) and "lean_mass" in cert["degree5_midt"],
+            "missing required degree5_midt.lean_mass for Theorem 2(2) (use --radius-only for radius-only check)",
+        )
+    if not radius_only or "degree5_midt" in cert:
+        d5 = cert.get("degree5_midt") or {}
         e_g = Fr(39, 50)
         eta_g = Fr(779, 10000)
         target_g = Fr(500, 701)
@@ -821,6 +830,7 @@ def verify_certificate(cert, quiet=False, jobs=None):
             t_star = Fr(spec["t_cutoff"])
             t_next = t_star + Fr(1, 10**8)
             segs = spec["segments"]
+            require(len(segs) >= 1 or t_star == t_ell_end, "%s requires nonempty segments" % reg_name)
             prev_t = t_ell_end
             for seg in segs:
                 r_idx = seg["ray_idx"]
@@ -837,8 +847,14 @@ def verify_certificate(cert, quiet=False, jobs=None):
                 a0 + a2 * t_next * t_next + b2 * (max(Fr(0), (Rj - lj * t_next) / mj) ** 2)
                 for (_, lj, mj, Rj) in certified_rays
             )
-            require(min_V_next > target_g, "%s next 10^-8 step not tight" % reg_name)
+            require(min_V_next > target_g, "%s next 10^-8 step not above 500/701" % reg_name)
             midt_res[reg_name] = t_star
+        if not radius_only:
+            require(
+                midt_res.get("lean_mass", Fr(0)) >= THEOREM2_LEAN_MASS_CUTOFF,
+                "lean_mass cutoff %s does not cover Theorem 2(2) target %s"
+                % (midt_res.get("lean_mass"), THEOREM2_LEAN_MASS_CUTOFF),
+            )
 
     # 2. Verify every Pythagorean ray's bound R_j (Stein-covered or right-analytical 4.18g):
     stein_tasks = []
@@ -884,17 +900,34 @@ def verify_certificate(cert, quiet=False, jobs=None):
         )
         for reg_name, t_star in midt_res.items():
             print(
-                "[4] Degree-5 sector-free cutoff (%s): V < 500/701 for all t <= %s (tight at +10^-8)  PASS"
+                "[4] Degree-5 sector-free cutoff (%s): V < 500/701 for all t <= %s (envelope crosses >= 500/701 at +10^-8)  PASS"
                 % (reg_name, dec_floor8(t_star))
             )
 
     dt_cs = (perf_counter_ns() - t0) // 10_000_000
     if not quiet:
-        print(
-            "VERIFIED: rho_s <= %s (max <= %s < sqrt(9*pi/32)) across all dimensions n >= 1  [%d.%02ds]"
-            % (r1, dec_ceil10(worst_r1_hi), dt_cs // 100, dt_cs % 100)
-        )
-    return dict(ok=True, r1=r1, worst_r1_hi=worst_r1_hi, midt=midt_res)
+        if radius_only:
+            print(
+                "VERIFIED (radius-only): rho_s <= %s (max <= %s < sqrt(9*pi/32)) across all dimensions n >= 1  [%d.%02ds]"
+                % (r1, dec_ceil10(worst_r1_hi), dt_cs // 100, dt_cs % 100)
+            )
+        else:
+            print(
+                "VERIFIED: rho_s <= %s (max <= %s < sqrt(9*pi/32)) and degree-5 cutoff t <= %s (%s)  [%d.%02ds]"
+                % (
+                    r1,
+                    dec_ceil10(worst_r1_hi),
+                    midt_res["lean_mass"],
+                    dec_floor8(midt_res["lean_mass"]),
+                    dt_cs // 100,
+                    dt_cs % 100,
+                )
+            )
+    return dict(ok=True, r1=r1, worst_r1_hi=worst_r1_hi, midt=midt_res, radius_only=radius_only)
+
+
+def verify_radius_only(cert, quiet=False, jobs=None):
+    return verify_certificate(cert, quiet=quiet, jobs=jobs, radius_only=True)
 
 
 def main():
@@ -903,9 +936,10 @@ def main():
     path = args[0] if args else default_cert
     quiet = "--quiet" in sys.argv
     jobs = 1 if "--seq" in sys.argv else None
+    radius_only = "--radius-only" in sys.argv
     with open(path, encoding="utf-8") as fh:
         cert = json.load(fh)
-    verify_certificate(cert, quiet=quiet, jobs=jobs)
+    verify_certificate(cert, quiet=quiet, jobs=jobs, radius_only=radius_only)
 
 
 if __name__ == "__main__":
