@@ -1,0 +1,35 @@
+03  The cell maps f_tig and T_cell
+==================================
+
+f_tig: tables decoded from Haagerup/Data/TigerData.lean
+-------------------------------------------------------
+  4 tables of 36 x 4096 integers; largest absolute value 16776796 (2^24 = 16777216)
+  cells with a non-zero coefficient: 4096 of 4096
+  [ok] (exact) sum-of-squares bound <= 2^48 in all 4096 cells (cells failing: 0)
+  largest bound: 281470985224195 = 2^48 - 3991486461, in cell (i, j) = (63, 63); it gives |F| <= sqrt(bound) / 2^24 <= 1
+  sampled maximum of |F| over 4096 points of the circle in each cell: 0.999980344, in cell (58, 49)
+  [ok] (floating point) sampled maximum of |F| is <= 1
+  cells where the sampled maximum exceeds 0.999: 4096; smallest sampled minimum of |F| over the non-zero cells: 0.909001
+  [ok] (floating point) charge one: |F(u z_1, u z_2) - u F(z_1, z_2)| <= 1e-12 at 2000 random points
+  [ok] (floating point) |F| <= 1 at the same random points, and F = 0 for |z_1| >= 6
+
+T_cell: tables decoded from Haagerup/Data/TCellData.lean
+--------------------------------------------------------
+  4 tables of 36 x 4096 integers; largest absolute value 16777082 (2^24 = 16777216)
+  cells with a non-zero coefficient: 4096 of 4096
+  [ok] (exact) sum-of-squares bound <= 2^48 in all 4096 cells (cells failing: 0)
+  largest bound: 281474973488562 = 2^48 - 3222094, in cell (i, j) = (50, 54); it gives |F| <= sqrt(bound) / 2^24 <= 1
+  sampled maximum of |F| over 4096 points of the circle in each cell: 0.999995209, in cell (39, 38)
+  [ok] (floating point) sampled maximum of |F| is <= 1
+  cells where the sampled maximum exceeds 0.999: 4096; smallest sampled minimum of |F| over the non-zero cells: 0.001710
+  [ok] (floating point) charge one: |F(u z_1, u z_2) - u F(z_1, z_2)| <= 1e-12 at 2000 random points
+  [ok] (floating point) |F| <= 1 at the same random points, and F = 0 for |z_1| >= 6
+
+The reflected partner
+---------------------
+  g_tig(z_1, z_2) = f_tig(-z_1, z_2) replaces w by -w, i.e. multiplies the coefficient of the
+  harmonic m = l - 17 by (-1)^m; it has the same supremum norm (the modulus at a given point can
+  change), so the same bound.
+  [ok] (floating point) f_tig(-z_1, z_2) = sum_m (-1)^m c_m ph(z_2) w^m at 500 random points, up to 1e-12
+
+RESULT: all 9 checks passed

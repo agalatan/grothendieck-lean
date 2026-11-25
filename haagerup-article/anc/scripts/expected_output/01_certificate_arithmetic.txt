@@ -1,0 +1,73 @@
+01  Certificate arithmetic (exact rational arithmetic)
+======================================================
+
+Weights
+-------
+  w_0 = 171131264337/200000000000 = 0.855656321685
+  w_1 = 10913022959/125000000000 = 0.087304183672
+  w_2 = 19528667/125000000000 = 0.000156229336
+  w_3 = 23404211/200000000000 = 0.000117021055
+  w_4 = 28207685341/500000000000 = 0.056415370682
+  w_5 = 35087357/100000000000 = 0.000350873570
+  [ok] (exact) every weight is positive
+  [ok] (exact) the weights sum to 1 (sum = 1)
+  weight of the smoothed channels 0, 1, 5 : 0.943311378927
+  weight of the reflected channels 3, 4   : 0.056532391737
+
+Preprocessors: sum of the absolute values of the coefficients
+-------------------------------------------------------------
+  [ok] (exact) l1 norm of p0Q = 1 <= 1
+  [ok] (exact) l1 norm of q0Q = 1 <= 1
+  [ok] (exact) l1 norm of p1Q = 1 <= 1
+  [ok] (exact) l1 norm of q1Q = 1 <= 1
+  [ok] (exact) l1 norm of p2Q = 1 <= 1
+  [ok] (exact) l1 norm of r3Q = 1 <= 1
+  [ok] (exact) l1 norm of r4Q = 1 <= 1
+  [ok] (exact) l1 norm of p5Q = 1 <= 1
+  [ok] (exact) l1 norm of q5Q = 1 <= 1
+  value at X = -1 (used for the alternating sums):
+    p0Q(-1) = 1
+    p1Q(-1) = 1
+    p2Q(-1) = 499306938717/500000000000
+    r3Q(-1) = 1
+    r4Q(-1) = 1
+    p5Q(-1) = 1
+
+The two rotations of the smoothing
+----------------------------------
+  [ok] (exact) ctQ^2 + stQ^2 = 1
+  [ok] (exact) seQ^2 + ceQ^2 = 1
+
+Tail inequalities  B_p * rho_p^-(4K+6) <= tau_p^2 * (1 - rho_p^-4),  K = 250, 4K + 6 = 1006
+-------------------------------------------------------------------------------------------
+  (CertCheck.lean states it with the exponent 2*(2*251+1) = 1006: the tail starts at k = 251.)
+  [ok] (exact) channel 0: rho = 1037/1000, B = 2.528814, tau = 5.002400e-08; lhs/rhs = 9.999034e-01
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 5.002159e-08 (rounded up)
+  [ok] (exact) channel 1: rho = 1037/1000, B = 2.507841, tau = 4.981600e-08; lhs/rhs = 9.999086e-01
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 4.981373e-08 (rounded up)
+  [ok] (exact) channel 2: rho = 103/100, B = 2.919013, tau = 1.785796e-06; lhs/rhs = 9.999976e-01
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 1.785794e-06 (rounded up)
+  [ok] (exact) channel 3: rho = 207/200, B = 1.692090, tau = 1.108350e-07; lhs/rhs = 9.999525e-01
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 1.108324e-07 (rounded up)
+  [ok] (exact) channel 4: rho = 109/100, B = 1.658129, tau = 3.000000e-12; lhs/rhs = 1.411136e-14
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 3.563738e-19 (rounded up)
+  [ok] (exact) channel 5: rho = 1037/1000, B = 3.355048, tau = 5.761900e-08; lhs/rhs = 9.999201e-01
+        sqrt(B rho^-1006 / (1 - rho^-4)) <= 5.761670e-08 (rounded up)
+  [ok] (exact) 1 < rho_p < r_reg,p and 0 < beta_p < 1 for every channel (beta_p is jCertQ in the Lean file)
+
+Assembly
+--------
+  head cap            = 123157/20000000000 = 6.157850e-06
+  sum_p w_p tau_p     = 47464847032059049/1000000000000000000000000 = 4.746484e-08
+  delta (Parameters)  = 6205314847032059049/1000000000000000000000000 = 6.20531484e-06
+  [ok] (exact) head cap + sum_p w_p tau_p = delta, exactly
+  c                   = 711974258589/1000000000000 = 0.711974258589
+  c - delta           = 711968053274152967940951/1000000000000000000000000
+                      = 0.711968053274152967940951000000
+  1 / (c - delta)     = 1000000000000000000000000/711968053274152967940951
+                      = 1.404557403104344654205304924616
+  [ok] (exact) 0 < delta < c
+  1 / (c - delta) rounded up to 5 decimals = 1.40456
+  [ok] (exact) 1 / (c - delta) <= 1.40456 (the bound of the main theorem)
+
+RESULT: all 23 checks passed

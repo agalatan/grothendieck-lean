@@ -117,8 +117,8 @@ None of these is the current bound.
 | `1.40191` | an earlier lower bound of this repository, $1.40191 < K$: the same witness and rows with an envelope of fixed mixtures, $B_{\mathrm{env}} = 7064131/10^7$ and $1/B = 1.4019103\ldots$ | `envB`, `lower_bound_of_tailNodeCaps` (`Grothe/LowerAnalytic/LowerBound.lean`) |
 | `1.4018` | the design target of the lower certificate | `research/identity-tail/` |
 | `1.401700322371` | an earlier lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail | history in `research/` |
-| `1.40455741` | the upper bound of the article's Lean package (`140455741 / 100000000`, `Haagerup.isBound_cert`), and an earlier upper bound of this repository, from the same certificate: $1/(c-\delta) = 1.4045574031\ldots$ rounded up | `haagerup-article/`; `Grothe/UpperSix/Haagerup/CertCheck.lean` |
-| `1.40456` | the article's bound as `README.md` quotes it, rounded up to five decimals | `README.md` |
+| `1.40455741` | an earlier upper bound of this repository: the older certificate's value $1/(c-\delta) = 1.4045574031\ldots$ rounded up to eight decimals | `Grothe/UpperSix/Haagerup/CertCheck.lean` |
+| `1.40456` | the article's bound (`140456 / 100000`, `Haagerup.constant_le` in the article's own Lean package); the package also states its certificate's exact value $10^{24}/711968053274152967940951 = 1.4045574031\ldots$ (`Haagerup.isBound_cert`, `Haagerup.certificate_value`) | `haagerup-article/`, `haagerup-article/anc/Haagerup.lean` |
 | `1.404556407` | the six-channel root certificate before adding the angular selector | `Haagerup.SixChannelExact.isBound` |
 | `1.40455641` | an earlier upper bound of this repository: a six-channel certificate with a common cutoff of 251 | git history |
 | `1.40457588`, `1.40455742` | earlier upper bounds of this repository | git history |
