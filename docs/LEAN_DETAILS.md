@@ -1207,6 +1207,8 @@ denominators, proves byte equality with the original row, and proves that parsin
 rounded cap `envB = 7064131/10⁷` (`profile_bound`, `lower_bound_of_tailNodeCaps`); `main_bounds`
 does not use it.
 
+**Uniform six-column ceiling.** `Grothe/UpperSixExact/ScoreCeiling.lean` checks a single rational dual vector against all six fixed coefficient lists and their established tail caps. `paid_six_score_le` covers every convex vector of real weights and every independent assignment of enclosed coefficients. `exists_paid_six_values` verifies that the family of assignments is nonempty. Cube feasibility, interval support and weak duality are kernel proofs. One separate native comparison, `Haagerup.SixChannelExact.sixDual_check`, evaluates the six interval heads. The main upper theorem has independent imports. [Score comparison](../Grothe/UpperSixExact/ScoreCeiling.lean).
+
 The complete registry of native facts is `data/axioms/native.txt`; the default report
 is `scratch/Axioms.lean`, with its required declarations in
 `data/axioms/required.txt`. CI checks the report on every pushed branch, and on
