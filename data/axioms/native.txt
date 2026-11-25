@@ -2415,3 +2415,4 @@ Haagerup.Data.tig_sos_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.head_and_floors_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.mean_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.region_ok._native.native_decide.ax_1_1
+Haagerup.SixChannelExact.sixDual_check._native.native_decide.ax_1_1

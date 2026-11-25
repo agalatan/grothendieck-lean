@@ -127,6 +127,10 @@ None of these is the current bound.
 | `1.33807` | Davie's lower bound, 1984 | prior work |
 | `1.403`, `1.4023`, … | research targets and ceilings of methods, not theorems | `research/` |
 
+## Six fixed rounding channels
+
+For the six maps and preprocessors in `UpperSixExact`, retaining the same coefficient intervals, cutoffs and individual tail allowances, the transfer score of every convex mixture is at most `7119685648573 / 10^13`. The statement permits arbitrary real weights and arbitrary choices of enclosed coefficients. This is an upper bound on a certificate score. Its reciprocal is a limit on this fixed upper-certificate family. [Dual witness and theorem](../Grothe/UpperSixExact/ScoreCeiling.lean).
+
 ## When a bound changes
 
 1. Change the Lean statements (`Grothe/MainResult.lean`, `Grothe/UpperResult.lean`) and prove them.
