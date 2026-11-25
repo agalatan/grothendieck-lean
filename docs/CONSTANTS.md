@@ -4,7 +4,7 @@ This page states every bound on the complex Grothendieck constant $K = K_G^{\mat
 proves, exactly as Lean states it, and explains the other numbers that appear in the sources and documents.
 `scripts/check_constants.py` reads the two bounds from `main_bounds` and the exact values behind them from
 `Grothe.UpperSix.bound` and the `endpoint_eq` of the lower certificate that the proof of `main_bounds` uses. It checks that each bound is the outward rounding of its
-exact value, and that this page and the other documents state them.
+exact value, that displayed truncated decimal expansions match exact integer division, and that this page and the other documents state them.
 
 ## The current bounds
 
@@ -32,7 +32,7 @@ Each bound is the rounding of an exact value that Lean also states.
 
 | | exact value | decimal | theorem | rounding |
 |---|---|---|---|---|
-| lower endpoint ($\le K$) | `1000000000 / 713266399` (`TightEnvelope.endpoint`) | $1.402000713018307288\ldots$ | `Grothe.Statement.tight_lower_endpoint` | strictly downward (`TightEnvelope.rounded_lt`) |
+| lower endpoint ($\le K$) | `1000000000 / 713266399` (`TightEnvelope.endpoint`) | $1.402000713060366663\ldots$ | `Grothe.Statement.tight_lower_endpoint` | strictly downward (`TightEnvelope.rounded_lt`) |
 | upper bound ($K \le$) | $10^{27}/711968558203721328194311213$ | $1.404556406989340536\ldots$ | `Grothe.UpperSix.bound` | up to nine decimals (`Grothe.UpperSix.constant_le`) |
 
 **What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
@@ -76,7 +76,7 @@ $1/B$ in Lean (`TightEnvelope.endpoint_eq`, `Grothe/Lower/Cert/TightEnvelope.lea
 1000000000 / 713266399
 ```
 
-which is $1.402000713018307288\ldots$
+which is $1.402000713060366663\ldots$
 
 | quantity | value | meaning |
 |---|---|---|
