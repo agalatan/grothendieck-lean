@@ -2,15 +2,16 @@
 
 This page states every bound on the complex Grothendieck constant $K = K_G^{\mathbb C}$ that this repository
 proves, exactly as Lean states it, and explains the other numbers that appear in the sources and documents.
-`scripts/check_constants.py` reads both endpoints of `main_bounds`, checks the upward rounding of `main_bounds_refined` and `main_bounds_phase`, and verifies their values in the technical references.
+`scripts/check_constants.py` reads the two endpoints of `main_bounds`. It checks strict downward rounding in `lower_bound_sharp`, upward rounding in `main_bounds_refined` and `main_bounds_phase`, and agreement with the technical references.
 
 ## The current bounds
 
-$$1.40191 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4019109461 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
+| sharp lower bound (strict) | `1.4019109461` | `14019109461 / 10000000000` | `Grothe.Statement.lower_bound_sharp` | `Grothe/MainResult.lean` |
+| earlier lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
 | root upper bound, rounded | `1.404556407` | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds_phase`, second part | `Grothe/MainResult.lean` |
 | previous root upper bound | `1.40455641` | `140455641 / 100000000` | `Grothe.Statement.main_bounds_refined`, second part | `Grothe/MainResult.lean` |
 | article upper bound (weak, $\le$) | `1.40455741` | `140455741 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
@@ -69,6 +70,19 @@ The upper bound is below Haagerup's value by about $1.9\cdot10^{-5}$. Haagerup's
 bound $K < 1.40490913\ldots$
 
 ## Behind the lower bound
+
+The exact endpoint in `Grothe.Statement.sharp_lower_endpoint` gives $K \ge 1.401910946113565640\ldots$. Its value in Lean is
+
+```text
+909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
+648513273363107644808393943072300421164120888939497691860404687721820234278296395631
+```
+
+For the same Gaussian witness and the same certified rows, `SharpEnvelope.check` bounds the hat value by
+$\hat B_*=0.7064127708804130589\ldots$. On the central interval the weight of row 0.845 in its mixture with
+row 0.835 varies affinely with $t$. The maximum of the resulting quadratic gives the cap. The other fourteen
+intervals use fixed weights. The original witness cap is $(1-47/2000)\hat B_*+47/2000$, whose reciprocal is the
+fraction above. The following table gives the earlier fixed-weight certificate.
 
 | quantity | value | meaning |
 |---|---|---|

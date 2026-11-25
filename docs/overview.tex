@@ -30,11 +30,12 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.40191\;<\;\KG\;\le\;1.404556407$\\[6pt]
-\normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
-(\lean{Grothe.Statement.main\_bounds\_phase}); the computer-assisted inputs are native finite checks listed in
-the axiom report (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is \lean{lower\_target}, with the exact rational $140191/100000$; the upper bound uses six Gaussian rounding channels, with $1404556407/1000000000$ rounded upward from the exact transfer value.\vspace{4pt}
+\Large $1.4019109461\;<\;\KG\;\le\;1.404556407$\\[6pt]
+\normalsize The Lean~4/Mathlib theorems \lean{lower\_bound\_sharp} and
+\lean{Grothe.Statement.main\_bounds\_phase} prove these bounds without hypotheses.
+Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
+The exact scalar lower endpoint is rounded down to $14019109461/10000000000$.
+The six Gaussian rounding channels give the upper bound rounded up to $1404556407/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -96,7 +97,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.404556407}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4019109461}$ & $\mathbf{1.404556407}$\\\bottomrule
 \end{tabular}
 \end{center}
 The article upper bound is $140455741/100000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
@@ -713,6 +714,13 @@ the identity on all the other chaoses (an \emph{identity tail}).
  $\hat B=0.7064131$.
 \end{itemize}
 A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.4019103\ldots>1.40191$.
+Allowing the weight of row $0.845$ in its mixture with row $0.835$ to vary affinely on
+$[1672/2000,1675/2000]$ gives the smaller cap $\hat B_*=0.7064127708804130589\ldots$.
+The other fourteen intervals use fixed weights. With the same node caps, the transfer now gives
+$\KG\ge((1-\nu)\hat B_*+\nu)^{-1}=1.401910946113565640\ldots>1.4019109461$
+(\lean{sharp\_lower\_endpoint}, \lean{lower\_bound\_sharp}).
+At $t=0.8366035304980132\ldots$ a single abstract profile satisfies every retained-square row and every
+mass tangent at $\hat V=\hat B_*$. The scalar row system therefore attains this cap.
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
