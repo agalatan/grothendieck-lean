@@ -28,6 +28,11 @@ def main():
     mass_e = Q(25, 31)
     mass_c = Q(1, 2) + 2 * Q(47, 1953)
     mass_s = Q(3798855002922010337121170986221578569, 22939068096000000000000000000000000000)
+    # Even the family ceiling cannot certify t=.36 by the displayed mass-row majorant.
+    weight = e - eta * mass_e / mass_c
+    ceiling, radius, t = Q(4313, 5000), Q(2287, 2500), Q(36, 100)
+    value = eta*(1+mass_s/mass_c) + weight*radius**2 + (1-eta-weight*ceiling**2)*t**2
+    require(value > Q(500, 701), "Gaussian-axis tuning and the same mass row cannot certify .36")
     rows = [(Q(2287, 2500), 34554022, 35859076), (Q(4571, 5000), 34831349, 36096350)]
     for radius, expected_p, expected_m in rows:
         p = largest_strict_cutoff(radius, e - eta, eta)

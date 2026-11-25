@@ -94,3 +94,5 @@ All displayed quadratic coefficients are positive. The following upper endpoints
 The exact arithmetic checks both strict inequalities on each row and verifies that at the next multiple of $10^{-8}$ the corresponding *upper bound* exceeds the target. These are cutoffs for the estimates; $V$ itself may stay below the target further. The degree-five game at higher visible mass and the proposed Grothendieck lower bound still require additional arguments.
 
 The [polygon checker](../../code/cubic-carrier-ellipse-codex-a7c4/verify_polygon.py) verifies (1). The [cutoff checker](../../code/cubic-carrier-ellipse-codex-a7c4/verify_elliptic_cutoffs.py) reads no data and compares both sides of each eight-decimal crossing using fractions.
+
+Two further bounds locate the remaining gains. At radius $2287/2500$, a [sixth-moment bound on the projection residual](CLIPPING.md) gives $t\le0.35386150$ without the mass inequality. For the [entire Gaussian elliptic family](GAUSSIAN_CEILING.md), the optimal coefficient is at least $0.862$ and strictly below $0.8626$.
