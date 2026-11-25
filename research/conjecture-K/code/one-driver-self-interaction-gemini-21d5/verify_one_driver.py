@@ -40,6 +40,7 @@ import math
 import subprocess
 import sys
 import tempfile
+from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR, localcontext
 from fractions import Fraction
 from pathlib import Path
 from typing import Any, Dict
@@ -444,21 +445,47 @@ def main() -> int:
     if args.replay_cpp:
         replay_cpp(here, committed, cpp_sha)
 
+    def fmt_fixed_outward(hex_s: str, places: int, mode: str) -> str:
+        q = hex_to_frac(hex_s)
+        with localcontext() as ctx:
+            ctx.prec = 100
+            val = Decimal(q.numerator) / Decimal(q.denominator)
+            res = val.quantize(Decimal(f"1e-{places}"), rounding=mode)
+            require(
+                Fraction(res) <= q if mode == ROUND_FLOOR else Fraction(res) >= q,
+                "outward fixed rounding check",
+            )
+            return f"{res:.{places}f}"
+
+    def fmt_sci_floor(hex_s: str, frac_digits: int) -> str:
+        q = hex_to_frac(hex_s)
+        require(q > 0, "positive margin expected for fmt_sci_floor")
+        with localcontext() as ctx:
+            ctx.prec = 100
+            val = Decimal(q.numerator) / Decimal(q.denominator)
+            exp = val.adjusted()
+            unit = Decimal(f"1e{exp - frac_digits}")
+            res = val.quantize(unit, rounding=ROUND_FLOOR)
+            require(Fraction(res) <= q, "outward sci floor rounding check")
+            return f"{res:.{frac_digits}e}"
+
     print("[verify_one_driver] PASS:")
     print(f"  cpp_sha256          = {cpp_sha}")
     print(f"  rational_pi_bounds  = {rat_info['pi_rational_bounds']}")
     print(f"  |z|>=4 tail ratio   = {rat_info['tail_ratio_cap']} < {rat_info['env22_tail_lo']}")
     for r in committed["rows"]:
         nm = r["name"]
-        k0 = r["gate1_6_3_7"]["K_at_0_0463"]
-        g2r = r["gate2_6_3_6"]["max_certified_ratio"]
-        g3m = r["gate3_unified_1_16_to_1"]["min_margin"]
-        g4m = r["gate4_star_1_16_to_4_5"]["min_margin"]
-        g5m = r["gate5_small_wick_0_to_1_16"]["min_norm_margin"]
+        kmin_s = fmt_fixed_outward(r["gate1_6_3_7"]["K_u_min_on_band"]["lo_hex"], 7, ROUND_FLOOR)
+        k0_lo = fmt_fixed_outward(r["gate1_6_3_7"]["K_at_0_0463"]["lo_hex"], 8, ROUND_FLOOR)
+        k0_hi = fmt_fixed_outward(r["gate1_6_3_7"]["K_at_0_0463"]["hi_hex"], 8, ROUND_CEILING)
+        g2_s = fmt_fixed_outward(r["gate2_6_3_6"]["max_certified_ratio_hex"], 6, ROUND_CEILING)
+        g3_s = fmt_sci_floor(r["gate3_unified_1_16_to_1"]["min_margin_hex"], 2)
+        g4_s = fmt_sci_floor(r["gate4_star_1_16_to_4_5"]["min_margin_hex"], 2)
+        g5_s = fmt_sci_floor(r["gate5_small_wick_0_to_1_16"]["min_norm_margin_hex"], 2)
         print(
-            f"  row={nm:5s}: K(0.0463) in [{k0['lo']:.9f}, {k0['hi']:.9f}], "
-            f"G2_ratio<={g2r:.6f} (<0.225), G3_margin>={g3m:.3e}, "
-            f"G4_margin>={g4m:.3e}, G5_norm_margin>={g5m:.3e}"
+            f"  row={nm:5s}: K_min>={kmin_s}, K(0.0463) in [{k0_lo}, {k0_hi}], "
+            f"G2_ratio<={g2_s} (<0.225), G3_margin>={g3_s}, "
+            f"G4_margin>={g4_s}, G5_norm_margin>={g5_s}"
         )
     print(f"  negative_controls   = {n_neg} passed; replay_cpp = {args.replay_cpp}")
     return 0
