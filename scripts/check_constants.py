@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
-"""Check that the documents quote the bounds that Lean states.
+r"""Check that the documents quote the bounds that Lean states.
 
 The two bounds are read from the Lean sources: the theorem `main_bounds` in Grothe/MainResult.lean. Each is a
-rounding of an exact value that Lean also states: the upper bound of `Grothe.UpperSix.bound`
+rounding of an exact value that Lean also states: the upper bound of `Grothe.UpperSeven.bound`
 (Grothe/UpperResult.lean, `IsBound ((10 : ℝ) ^ p / D)`), and the lower endpoint `endpoint_eq` of the certificate
 whose rounding lemma the proof of `main_bounds` uses (`Grothe.Lower.<Name>.rounded_lt`, in
 Grothe/Lower/Cert/<Name>.lean; the script does not fix the name). The script checks that
 
 * the upper bound of `main_bounds` is the exact upper value rounded up to its number of decimals, and
-  `Grothe.UpperSix.constant_le` states the same rational;
+  `Grothe.UpperSeven.constant_le` states the same rational;
 * the lower bound of `main_bounds` is the exact lower endpoint rounded strictly downward;
 * every document of QUOTING states the bounds asked of it, in decimal form;
 * docs/CONSTANTS.md also states both rationals as Lean writes them, and both exact values;
+* truncated decimal expansions (`1.40…`, `1.40\ldots`) of the exact bounds in the current-bounds sections of the
+  documents, and explicit `p / q = 1.40…` rational expansions across QUOTING, match exact integer division;
 * in the Lean files that state the theorems, every `IsBound (…)` with a numeric argument is the upper bound (rounded
   or exact), every `LowerAbove (N / D)` the lower bound, no other rational 14…/10^k is quoted, and every decimal
   1.40… is one of the two bounds or a truncation of one of the two exact values;
@@ -56,6 +58,24 @@ UPPER_FILE = "Grothe/UpperResult.lean"
 ROUNDING_LEMMA = re.compile(r"\bGrothe\.Lower\.(\w+)\.rounded_lt\b")
 BOUND_RATIONAL = re.compile(r"(?<![\d.])(14\d{3,})\s*/\s*(10{4,})(?!\d)")
 BOUND_DECIMAL = re.compile(r"(?<![\d.])(1\.40\d+)(…|\.\.\.)?")
+DOC_ELLIPSIS_DECIMAL = re.compile(r"(?<![\d.])(1\.40\d+)(…|\.\.\.|\\ldots\b|\\dots\b)")
+SUPERSCRIPTS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
+_INT_OR_POW10 = r"(?:(?:\(\s*10\s*:\s*ℝ\s*\)|10)\s*\^\s*(?:\{(\d+)\}|(\d+))|10([⁰¹²³⁴⁵⁶⁷⁸⁹]+)|(\d+))"
+FRACTION_EQ_DECIMAL = re.compile(
+    r"(?<!\d)" + _INT_OR_POW10 + r"\s*/\s*" + _INT_OR_POW10
+    + r"[`$\s]*=[`$\s]*(?P<dec>1\.40\d+)(?P<ell>…|\.\.\.|\\ldots\b|\\dots\b)"
+)
+# prose/table files where bare ellipsis decimals `1.40…` (outside `## Other numbers` in CONSTANTS.md) name current
+# bounds or one of the fixed literature / single-channel constants below
+CURRENT_EXPANSION_DOCS = (
+    "README.md",
+    "docs/CONSTANTS.md",
+    "docs/LEAN_DETAILS.md",
+    "docs/overview.tex",
+    ".claude/skills/lean-grothe/SKILL.md",
+)
+# 1/γ† = 1.404575934663742…, Haagerup's 1987 bound 1.40490913…, and the archived single-channel bound 1.40459939536120707492…
+KNOWN_OTHER_EXPANSIONS = ("1.404575934663742", "1.40490913", "1.40459939536120707492")
 # the arguments of a claim `IsBound (…)` or `LowerAbove (…)` that starts with a number
 ROLE_CLAIM = re.compile(r"\b(IsBound|LowerAbove)\s*\(\s*(?=[(\d])")
 PLAIN = re.compile(r"(\d+)\s*/\s*(\d+)")
@@ -64,9 +84,9 @@ POWER = re.compile(r"(?:\(\s*10\s*:\s*ℝ\s*\)|10)\s*\^\s*(\d+)\s*/\s*(\d+)")
 # documents in which an older bound may not appear at all (elsewhere it may, named as what it is)
 STRICT = ["README.md", ".claude/skills/lean-grothe/SKILL.md"]
 # older bounds of this repository: the lower bounds 1.4018 (a design target), 1.401700322371, 1.40191,
-# 1.4019109461 and 1.40191478, and the upper bounds 1.40457588, 1.40455742, 1.40455741 and 1.40455641
-RETIRED = ["1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.40457588", "1.40455742",
-           "1.40455741", "1.40455641"]
+# 1.4019109461, 1.40191478 and 1.4019156097, and the upper bounds 1.40457588, 1.40455742, 1.40455741 and 1.40455641
+RETIRED = ["1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.4019156097", "1.40457588",
+           "1.40455742", "1.40455741", "1.40455641"]
 
 # Each statement is matched whole, from the name to the `:=` of the declaration, in the text without comments: a
 # right-hand side such as `N / D + 1` is not a bound that this script understands, and is refused.
@@ -269,11 +289,60 @@ def check_constants_page(root, lower, upper, exact_upper, exact_lower, problems)
         # A typo in a long denominator can leave the rounded bound unchanged: ask for the full fraction.
         numerator = rf"10\^(?:\{{{power}\}}|{power}(?!\d))"
         if re.search(rf"(?<!\d)(?:{numerator}/{den}(?!\d)|\\frac\{{{numerator}\}}\{{{den}\}})", text) is None:
-            problems.append("docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSix.bound")
+            problems.append("docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSeven.bound")
     if exact_lower is not None:
         p, q = exact_lower
         if re.search(rf"(?<!\d){p}/{q}(?!\d)", text) is None:
             problems.append("docs/CONSTANTS.md: does not state the exact lower endpoint (endpoint_eq)")
+
+
+def int_or_pow10(m, first: int) -> int:
+    """The integer matched by _INT_OR_POW10, whose four groups start at index `first`."""
+    if m[first] or m[first + 1]:
+        return 10 ** int(m[first] or m[first + 1])
+    if m[first + 2]:
+        return 10 ** int(m[first + 2].translate(SUPERSCRIPTS))
+    return int(m[first + 3])
+
+
+def check_displayed_expansions(rel, text, exact_upper, exact_lower, problems):
+    """Truncated `1.40…` expansions in non-Lean documents match exact integer division."""
+    def line_of(pos):
+        return text.count("\n", 0, pos) + 1
+
+    checked = set()
+    for m in FRACTION_EQ_DECIMAL.finditer(text):
+        num, den = int_or_pow10(m, 1), int_or_pow10(m, 5)
+        if den == 0:
+            continue
+        checked.add(m.start("dec"))
+        digits = len(m["dec"]) - 2
+        want = truncated(Fraction(num, den), digits)
+        if m["dec"] != want:
+            problems.append(
+                f"{rel}:{line_of(m.start('dec'))}: {num}/{den} starts {want}…, not {m['dec']}{m['ell']}"
+            )
+    if rel not in CURRENT_EXPANSION_DOCS:
+        return
+    exact = [
+        q for q in (
+            Fraction(10 ** exact_upper[0], exact_upper[1]) if exact_upper else None,
+            Fraction(*exact_lower) if exact_lower else None,
+        )
+        if q is not None
+    ]
+    current_text = text.split("\n## Other numbers", 1)[0] if rel == "docs/CONSTANTS.md" else text
+    for m in DOC_ELLIPSIS_DECIMAL.finditer(current_text):
+        if m.start(1) in checked:
+            continue
+        digits = len(m[1]) - 2
+        if any(truncated(q, digits) == m[1] for q in exact):
+            continue
+        if any(other.startswith(m[1]) for other in KNOWN_OTHER_EXPANSIONS):
+            continue
+        problems.append(
+            f"{rel}:{line_of(m.start(1))}: quotes {m[1]}{m[2]}, which is not a truncation of an exact bound"
+        )
 
 
 def check_lean_file(rel, text, lower, upper, exact_upper, exact_lower, problems):
@@ -292,7 +361,7 @@ def check_lean_file(rel, text, lower, upper, exact_upper, exact_lower, problems)
         if m[1] == "IsBound" and power:
             shown = f"IsBound (10 ^ {power[1]} / {power[2]})"
             ok = int(power[2]) != 0 and Fraction(10 ** int(power[1]), int(power[2])) == exact_up
-            what = "the exact upper bound of Grothe.UpperSix.bound"
+            what = "the exact upper bound of Grothe.UpperSeven.bound"
         elif plain:
             shown = f"{m[1]} ({plain[1]} / {plain[2]})"
             want = up if m[1] == "IsBound" else lo
@@ -335,6 +404,8 @@ def check(root: Path):
         for name in wanted:
             if not contains_number(text, values[name]):
                 problems.append(f"{rel}: does not state the {name} bound {values[name]}")
+        if not rel.endswith(".lean"):
+            check_displayed_expansions(rel, text, exact_upper, exact_lower, problems)
     check_constants_page(root, lower, upper, exact_upper, exact_lower, problems)
     for rel in LEAN_STATEMENT_FILES:
         path = root / rel
