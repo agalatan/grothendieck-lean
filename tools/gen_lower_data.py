@@ -7,8 +7,8 @@ Witness T = P₁,₀ − εP₂,₁ + ν(Id − P₁,₀ − P₂,₁) with (ε,
 ε̂ = 25/31 (`Grothe.Lower.ε`) and the node caps of their potentials are those of the hat tail ν̂ = 47/1953.
 
 Inputs (committed): data/tail-caps/row_set.json (the row set: per cap row its θ, δ, κ, smax, the row constant C; the mass
-row's λ and S), data/tail-caps/<t>/table.json (the cap tables), and data/tail-rows/ (the law certificates of the rows, the
-mass row and the envelope env_final_clean.json, with their sha256 in data/tail-rows/SHA256SUMS).
+row's λ and S), data/tail-caps/<t>/table.json (the cap tables), and data/tail-rows/ (the law certificates of the rows and of the
+mass row, with their sha256 in data/tail-rows/SHA256SUMS).
 
 Outputs (Grothe/Lower/):
   RowDataSS.lean       row SS = K + 1 (K the index of row_set.json): header (ℓ, β, δ, κ, smax, cap), even block, coupling,
@@ -18,15 +18,12 @@ Outputs (Grothe/Lower/):
   MassRow.lean         the mass row λ = 1/2 (`massRow`: the table of Ψ(s) = φ_c(s/δ), c = 2ν̂ + λ, its spectral cells; cap
                        S − capPad)
   RowGateData.lean     `rowGates` (ℓ, β, δ, R) and `rowR`;  RowGates.lean: their exact checks
-  EnvelopeData.lean    the envelope: `envB` and the cells `lo,hi,i,j,θ` of [0, 9/10] (scalar row 0 the mass row's tangent,
-                       k + 1 the row k)
-  Cert/RowSS.lean      the native row checks
+  Cert/RowSS.lean      the native row checks (none for the rows 0.835 and 0.845: the proof uses their antiholomorphic
+                       Stein rows, `tools/gen_antistein_rows.py`)
   MassWitnessData.lean, Cert/MassWitnesses.lean  the selected mass witnesses and their kernel checks
-  Cert/Envelope.lean   the kernel-checked envelope
-  Cert/Rows.lean       `RowFacts` of every row
 Before writing, the data are checked with exact fractions: the gates of every row at ε̂ (E ≻ 0, E ⪰ diag(−1, ε̂, ε̂),
 N = E − diag(ε̂ − δ, 0, 0) ≻ 0, R ≻ 0, R ⪰ diag(−1, ε̂), R ⪰ diag(ε̂, 0)), κ ≤ 1/δ − bᵀN⁻¹b, the Lipschitz header, the node
-caps of every row against its cap table, the mass row's table against φ_c, and every cell of the envelope against `envB`.
+caps of every row against its cap table, and the mass row's table against φ_c.
 The row cap is ⌈C − capPad − 2β²/ε̂⌉ at 10⁻¹⁵ (C of `row_set.json`), so the scalar row of a row is (ℓ, β, C') with
 C ≤ C' ≤ C + 10⁻¹⁵; the mass row's cap is S − capPad.
 """
@@ -40,7 +37,7 @@ import sys
 ROOT = Path(__file__).resolve().parent.parent
 EPSH = Q(25, 31)
 NUH = Q(47, 1953)
-ENV_B = Q(7064131, 10**7)        # the cap of the hat value checked by the envelope (its maximum is 0.7064129749…)
+ANTI_ROWS = ("0.835", "0.845")   # rows checked by their antiholomorphic Stein rows (tools/gen_antistein_rows.py)
 
 RHO = Q(973612157, 10**9)
 PAD = Q(1, 10**11)
@@ -296,7 +293,7 @@ def main(check=False):
                 ", ".join(map(q, b)) + ",\n   " + lean_str(nodes) + ",\n   " + lean_str(vs) + ",\n   [" +
                 ",\n    ".join(lean_str(c) for c in cells) + "]⟩\n\nend Grothe.Lower\n")
 
-    rows, gates, scal = [], [], {}
+    rows, gates = [], []
     for P in sorted((P for P in S["pieces"] if P.get("kind") == "caprow"), key=lambda P: P["index"]):
         K, t = P["index"], P["name"]
         assert K == len(rows)
@@ -327,29 +324,19 @@ def main(check=False):
                f"({nst} {'spectral' if spectral else 'Stein'} nodes)")
         files[f"RowData{SS}.lean"] = row_module(f"row{SS}", doc, (ell, beta, delta, kappa, smax, cap), E, b, nodes, mesh_vs(R), cells)
         chk = "checkSpecRow" if spectral else "checkRow"
-        files[f"Cert/Row{SS}.lean"] = (
-            ("import Grothe.Lower.SpecRows\n" if spectral else "import Grothe.Lower.Rows\n") +
-            f"import Grothe.Lower.RowData{SS}\n\n/-! # The check of row `{t}` {HEADER} -/\n\nnamespace Grothe.Lower\n\n"
-            f"theorem certRow{SS} : {chk} row{SS} = true := by native_decide\n\nend Grothe.Lower\n")
+        if t not in ANTI_ROWS:
+            files[f"Cert/Row{SS}.lean"] = (
+                ("import Grothe.Lower.SpecRows\n" if spectral else "import Grothe.Lower.Rows\n") +
+                f"import Grothe.Lower.RowData{SS}\n\n/-! # The check of row `{t}` {HEADER} -/\n\nnamespace Grothe.Lower\n\n"
+                f"theorem certRow{SS} : {chk} row{SS} = true := by native_decide\n\nend Grothe.Lower\n")
         rows.append(dict(t=t, SS=SS, spectral=spectral))
         gates.append((ell, beta, delta, Rm))
-        scal[t] = (ell, beta, 2 * beta * beta / EPSH + cap + PAD)
     n = len(rows)
     files["RowData.lean"] = ("".join(f"import Grothe.Lower.RowData{r['SS']}\n" for r in rows) +
         "\n/-!\n# The rows " + HEADER + "\n\n" +
         f"The {n} rows at the weight `ε = 25/31`, sorted by their nominal `t`: " + ", ".join(r["t"] for r in rows) + ".\n-/\n\n"
         "namespace Grothe.Lower\n\n/-- The rows of the certificate, sorted by their nominal `t`. -/\ndef rowData : List Row :=\n  [" +
         ", ".join(f"row{r['SS']}" for r in rows) + "]\n\nend Grothe.Lower\n")
-    # the facts of every row
-    alts = " | ".join("rfl" for _ in rows)
-    files["Cert/Rows.lean"] = ("".join(f"import Grothe.Lower.Cert.Row{r['SS']}\n" for r in rows) +
-        "import Grothe.Lower.RowData\n\n/-! # The rows hold: `RowFacts` of every row of `rowData` " + HEADER + " -/\n\n"
-        "namespace Grothe.Lower\n\n/-- **Every row of `rowData` is certified** (the plain rows by `checkRow`, the spectral rows by "
-        "`checkSpecRow`). -/\ntheorem rowData_facts : ∀ r ∈ rowData, RowFacts r := by\n"
-        "  intro r hr\n  simp only [rowData, List.mem_cons, List.not_mem_nil, or_false] at hr\n"
-        f"  rcases hr with {alts}\n" +
-        "\n".join(f"  · exact rowFacts_of_{'checkSpecRow' if r['spectral'] else 'checkRow'} _ certRow{r['SS']}" for r in rows) +
-        "\n\nend Grothe.Lower\n")
     # the gates
     files["RowGateData.lean"] = ("import Grothe.Lower.RowDataTypes\n\n/-!\n# The `R`-gates of the rows " + HEADER + "\n\n"
         "For each row, in the order of `rowData`: `(ℓ, β, δ)` and the `2×2` gate matrix `R` of the fibre potential (the block of\n"
@@ -392,81 +379,6 @@ def main(check=False):
     files["MassRow.lean"] = row_module("massRow", doc, (Q(0), Q(0), delta, kappa, smax, Sval - PAD),
                                        (Q(0),) * 6, (Q(0),) * 3, nodes, mesh_vs(R), cells)
     files.update(mass_witness_modules(R, Sval - PAD))
-    # the envelope
-    env = json.load(open(src / "env_final_clean.json"))
-    assert Q(env["eps"]) == EPSH and Q(env["step"]) == Q(1, 2000) and len(env["cells"]) == 1800
-    assert Q(env["target"]) > ENV_B and env["mass"] == {"mass_0.5": {"lam": qs(lam), "S": qs(Sval)}}
-    index = {r["t"]: k + 1 for k, r in enumerate(rows)}
-    index["mass_0.5"] = 0
-    for t, (l, bb, C) in scal.items():
-        e = env["rows"][t]
-        assert Q(e["ell"]) == l and Q(e["beta"]) == bb and Q(e["C"]) <= C <= Q(e["C"]) + Q(1, 10**15), t
-
-    step = Q(env["step"])
-    size = len(env["cells"])
-    assert lam == Q(1, 2) and step * size == Q(9, 10)
-
-    def scalar_row(i, midpoint):
-        if i == 0:
-            return lam * midpoint, Q(0), lam + Sval + lam * midpoint**2
-        return scal[rows[i - 1]["t"]]
-
-    def cell_max(mixture, start, end):
-        lo, hi = start * step, end * step
-        mid = (lo + hi) / 2
-        i, j, theta = mixture
-        la, ba, ca = scalar_row(i, mid)
-        lb, bb, cb = scalar_row(j, mid)
-        ell = (1 - theta) * la + theta * lb
-        cap = (1 - theta) * ca + theta * cb - 2 * (1 - theta) * theta * (ba - bb)**2 / EPSH
-        return cap + max(lo * (lo - 2 * ell), hi * (hi - 2 * ell))
-
-    mixtures = set()
-    fine_max = Q(0)
-    for k, (a, b, weight, val) in enumerate(env["cells"]):
-        i, j, theta = index[a], index[b], Q(weight)
-        assert 0 <= theta <= 1 and (i != 0 or (j == 0 and theta == 0))
-        mixture = (i, j, theta)
-        value = cell_max(mixture, k, k + 1)
-        assert value <= Q(val) + Q(1, 10**15) and value <= ENV_B, (k, value)
-        mixtures.add(mixture)
-        fine_max = max(fine_max, value)
-
-    def reach(start, mixture):
-        # For a fixed mixture the underlying quadratic is convex. At either endpoint a
-        # midpoint mass tangent adds the same nonnegative multiple of (hi - lo)^2.
-        # Thus the maximum on [start, end] is nondecreasing as end grows.
-        lo, hi = start, size + 1
-        while lo + 1 < hi:
-            mid = (lo + hi) // 2
-            if cell_max(mixture, start, mid) <= fine_max:
-                lo = mid
-            else:
-                hi = mid
-        return lo
-
-    ecells, worst = [], Q(0)
-    start = 0
-    while start < size:
-        end, mixture = max((reach(start, mix), mix) for mix in mixtures)
-        assert end > start, ("uncovered grid point", start)
-        value = cell_max(mixture, start, end)
-        assert value <= fine_max
-        worst = max(worst, value)
-        i, j, theta = mixture
-        ecells.append(f"  ⟨{q(start * step)}, {q(end * step)}, {i}, {j}, {q(theta)}⟩")
-        start = end
-    files["EnvelopeData.lean"] = ("import Grothe.Lower.Envelope\n\n/-!\n# The envelope of the rows " + HEADER + "\n\n"
-        f"From `data/tail-rows/env_final_clean.json`: a cover of `[0, 9/10]` by {len(ecells)} intervals, each with "
-        "the scalar rows `i`, `j` and the weight `θ` of\nits mixture (`0` the tangent of the mass row at the midpoint of the "
-        f"cell, `k + 1` the row `k`). Its maximum is {float(worst):.10f}.\n-/\n\n"
-        "namespace Grothe.Lower\n\n"
-        f"/-- The cap of the hat value checked by the envelope. -/\ndef envB : ℚ := {ENV_B.numerator} / {ENV_B.denominator}\n\n"
-        "/-- The cells `lo,hi,i,j,θ` of the envelope. -/\ndef envCells : List EnvCell := [\n" +
-        ",\n".join(ecells) + "]\n\nend Grothe.Lower\n")
-    files["Cert/Envelope.lean"] = ("import Grothe.Lower.EnvelopeData\nimport Grothe.Lower.MassNodes\n"
-        "import Grothe.Lower.RowData\n\n/-! # The check of the envelope " + HEADER + " -/\n\nnamespace Grothe.Lower\n\n"
-        "theorem certEnvelope : checkEnvCells rowData massS envB envCells = true := by\n  decide +kernel\n\nend Grothe.Lower\n")
     if check:
         bad = [k for k, v in files.items() if not (out / k).exists() or (out / k).read_text() != v]
         if bad:
@@ -478,7 +390,7 @@ def main(check=False):
         if not path.exists() or path.read_text() != v:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(v)
-    print(f"gen_lower_data: {len(files)} files of Grothe/Lower are current (envelope maximum {float(worst):.12f} <= envB = {float(ENV_B)})")
+    print(f"gen_lower_data: {len(files)} files of Grothe/Lower are current")
 
 
 if __name__ == "__main__":
