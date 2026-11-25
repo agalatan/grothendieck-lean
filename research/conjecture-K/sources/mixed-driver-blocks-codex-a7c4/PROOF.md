@@ -10,7 +10,7 @@ On each of peak, flank and upper with $551/100000\le u\le463/10000$, the raw A-c
 
 $$C(q)^2\le(47/200)D(q).$$
 
-This includes every cubic having a coordinate block in which each Wick monomial has exactly one factor, whether holomorphic or antiholomorphic. The number of drivers and their covariance are unrestricted. Terms within a block of three driver factors, or mixtures with two or zero such factors, require additional arguments. Several self-interacting drivers and arbitrary intermediate-kurtosis cubics remain open. The estimate gives the A-only implication of 6.2.3 on the domain of its shell-cost theorem.
+This includes every cubic having a coordinate block in which each Wick monomial has exactly one factor, whether holomorphic or antiholomorphic. The number of drivers and their covariance are unrestricted. For example, $(|X|^2-1)U(Y)+X^2\overline{V(Y)}$ with arbitrary linear $U,V$ is covered by taking $Y$ as the driver block. Mixing these even-$X$ shells with the odd-$X$ one-driver family generally destroys this representation. Terms with three, two or zero factors from the selected block require additional arguments. Several self-interacting drivers and arbitrary intermediate-kurtosis cubics remain open. The estimate gives the A-only implication of 6.2.3 on the domain of its shell-cost theorem.
 
 ## Scalar inputs and the directional content
 
