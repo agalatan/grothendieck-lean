@@ -166,43 +166,54 @@ def check_supplementary(root, main, lower, upper, problems):
     return spans
 
 
-SHARP_LOWER = re.compile(
-    r"^\s*theorem\s+lower_bound_sharp\s*:\s*\(\s*(\d+)\s*/\s*(\d+)\s*:\s*ℝ\s*\)"
-    r"\s*<\s*complexGrothendieckConstant", re.MULTILINE
+LOWER_REFINEMENTS = (
+    ("sharp", "lower_bound_sharp", "SharpEnvelope"),
+    ("shared-gate", "lower_bound_shared_gate", "SharedGate"),
 )
 EXACT_LOWER = re.compile(r"^\s*theorem\s+endpoint_eq\s*:\s*endpoint\s*=\s*(\d+)\s*/\s*(\d+)\s*:=", re.MULTILINE)
 
 
-def check_sharp_lower(root, main, lower, problems):
-    """Validate the strict lower endpoint against its exact Lean fraction."""
-    source = root / "Grothe/Lower/Cert/SharpEnvelope.lean"
-    if not source.is_file() and "lower_bound_sharp" not in main:
-        return set()
-    rounded = SHARP_LOWER.search(main)
-    exact = EXACT_LOWER.search(source.read_text(encoding="utf-8")) if source.is_file() else None
-    if rounded is None or exact is None:
-        problems.append("the sharp lower bound needs both lower_bound_sharp and SharpEnvelope.endpoint_eq")
-        return set()
-    num, den = map(int, rounded.groups())
-    p, q = map(int, exact.groups())
-    if den == 0 or q == 0:
-        problems.append("the sharp lower bound has a zero denominator")
-        return set()
-    endpoint = Fraction(p, q)
-    # For a strict claim the nearest grid point below p/q is (ceil(den*p/q) - 1) / den.
-    if not (Fraction(*lower) < Fraction(num, den) < endpoint <= Fraction(num + 1, den)):
-        problems.append("lower_bound_sharp must improve LowerTarget and round the exact endpoint strictly downward")
-    value = decimal(num, den)
-    for rel in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex"):
-        path = root / rel
-        if not path.is_file():
+def rounded_lower(main, theorem):
+    return re.search(
+        rf"^\s*theorem\s+{theorem}\s*:\s*\(\s*(\d+)\s*/\s*(\d+)\s*:\s*ℝ\s*\)"
+        r"\s*<\s*complexGrothendieckConstant", main, re.MULTILINE
+    )
+
+
+def checked_lower_spans(root, main, lower, problems):
+    """Check each strict lower bound against its own exact fraction and its predecessor."""
+    floor = Fraction(*lower)
+    spans = set()
+    for name, theorem, module in LOWER_REFINEMENTS:
+        source = root / f"Grothe/Lower/Cert/{module}.lean"
+        if not source.is_file() and theorem not in main:
             continue
-        contents = path.read_text(encoding="utf-8")
-        if not contains_number(contents, value):
-            problems.append(f"{rel}: does not state the sharp lower bound {value}")
-        if rel == "docs/CONSTANTS.md" and not re.search(rf"(?<!\d){p}\s*/\s*{q}(?!\d)", contents):
-            problems.append(f"{rel}: does not state the exact sharp lower fraction")
-    return {(rounded.start(1), rounded.end(2))}
+        rounded = rounded_lower(main, theorem)
+        exact = EXACT_LOWER.search(source.read_text(encoding="utf-8")) if source.is_file() else None
+        if rounded is None or exact is None:
+            problems.append(f"the {name} lower bound needs both {theorem} and {module}.endpoint_eq")
+            continue
+        num, den = map(int, rounded.groups())
+        p, q = map(int, exact.groups())
+        if den == 0 or q == 0:
+            problems.append(f"the {name} lower bound has a zero denominator")
+            continue
+        endpoint = Fraction(p, q)
+        if not (floor < Fraction(num, den) < endpoint <= Fraction(num + 1, den)):
+            problems.append(f"{theorem} must improve the preceding bound and round its exact endpoint strictly downward")
+        floor = max(floor, endpoint)
+        spans.add((rounded.start(1), rounded.end(2)))
+        value = decimal(num, den)
+        for rel in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex"):
+            path = root / rel
+            if not path.is_file():
+                continue
+            contents = path.read_text(encoding="utf-8")
+            if not contains_number(contents, value):
+                problems.append(f"{rel}: does not state the {name} lower bound {value}")
+            if rel == "docs/CONSTANTS.md" and not re.search(rf"(?<!\d){p}\s*/\s*{q}(?!\d)", contents):
+                problems.append(f"{rel}: does not state the exact {name} lower fraction")
+    return spans
 
 
 def check(root: Path):
@@ -241,7 +252,7 @@ def check(root: Path):
         supplementary_spans = set()
         if rel == "Grothe/MainResult.lean":
             supplementary_spans = check_supplementary(root, text, lower, upper, problems)
-            supplementary_spans.update(check_sharp_lower(root, text, lower, problems))
+            supplementary_spans.update(checked_lower_spans(root, text, lower, problems))
         for m in ROLE_CLAIM.finditer(text):  # \s matches line breaks: a wrapped claim is still read
             name, want = role[m[1]]
             if Fraction(int(m[2]), int(m[3])) != want:
@@ -276,7 +287,8 @@ def main() -> int:
             matched = combined_statement(combined_name).search(text)
             if matched:
                 supplementary.append((combined_name, int(matched[3]), int(matched[4])))
-        refined_lower = SHARP_LOWER.search(text)
+        lower_values = [(name, rounded) for name, theorem, _ in LOWER_REFINEMENTS
+                        if (rounded := rounded_lower(text, theorem))]
         if args.print:
             lower, upper = read_bounds(args.root)
             print(f"lower {lower[0]}/{lower[1]} = {decimal(*lower)}")
@@ -284,9 +296,9 @@ def main() -> int:
             for combined_name, num, den in supplementary:
                 label = combined_name.removeprefix("main_bounds_")
                 print(f"{label} upper {num}/{den} = {decimal(num, den)}")
-            if refined_lower:
-                num, den = map(int, refined_lower.groups())
-                print(f"sharp lower {num}/{den} = {decimal(num, den)}")
+            for name, rounded in lower_values:
+                num, den = map(int, rounded.groups())
+                print(f"{name} lower {num}/{den} = {decimal(num, den)}")
             return 0
         (lo, up), problems = check(args.root)
     except ValueError as err:
@@ -300,8 +312,8 @@ def main() -> int:
     if supplementary:
         _, num, den = supplementary[-1]
         up = decimal(num, den)
-    if refined_lower:
-        lo = decimal(*map(int, refined_lower.groups()))
+    if lower_values:
+        lo = decimal(*map(int, lower_values[-1][1].groups()))
     print(f"check_constants: OK, the documented strongest interval is {lo} < K ≤ {up}")
     return 0
 

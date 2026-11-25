@@ -169,6 +169,21 @@ class CheckConstants(unittest.TestCase):
         _, problems = self.run_check(main=MAIN + claim, docs=mismatched)
         self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact sharp lower fraction"])
 
+    def test_shared_gate_lower_must_exceed_scalar_endpoint(self):
+        first = "theorem lower_bound_sharp : (140191001 / 100000000 : ℝ) < complexGrothendieckConstant := by"
+        second = first.replace("lower_bound_sharp", "lower_bound_shared_gate").replace("140191001", "140191004")
+        exact = "theorem endpoint_eq : endpoint = {} / 1000000000 := by decide"
+        docs = {name: GOOD + " 1.40191001, 1.40191004. 1401910018 / 1000000000, 1401910047 / 1000000000."
+                for name in ("docs/CONSTANTS.md", "docs/LEAN_DETAILS.md", "docs/overview.tex")}
+        docs["Grothe/Lower/Cert/SharpEnvelope.lean"] = exact.format(1401910018)
+        docs["Grothe/Lower/Cert/SharedGate.lean"] = exact.format(1401910047)
+        _, problems = self.run_check(main=MAIN + first + "\n" + second, docs=docs)
+        self.assertEqual(problems, [])
+        regress = second.replace("140191004", "140191000")
+        docs["Grothe/Lower/Cert/SharedGate.lean"] = exact.format(1401910008)
+        _, problems = self.run_check(main=MAIN + first + "\n" + regress, docs=docs)
+        self.assertTrue(any("improve the preceding" in item for item in problems))
+
     def test_targets_disagree(self):
         with self.assertRaises(ValueError):
             self.run_check(statement="def LowerTarget : Prop := LowerAbove (14018 / 10000)\n")
