@@ -10,7 +10,6 @@ import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.HeadHardy
 import Grothe.ListPoly
 import Grothe.Lower.Basic
-import Grothe.Lower.Cert.CoupledStein
 import Grothe.Lower.Cert.Envelope
 import Grothe.Lower.Cert.MassRow
 import Grothe.Lower.Cert.MassWitnesses
@@ -30,7 +29,6 @@ import Grothe.Lower.Cert.Row13
 import Grothe.Lower.Cert.Row14
 import Grothe.Lower.Cert.Rows
 import Grothe.Lower.Cert.SparseEnvelope
-import Grothe.Lower.CoupledSteinEnvelope
 import Grothe.Lower.CutDilation
 import Grothe.Lower.Cuts
 import Grothe.Lower.Envelope
@@ -3378,12 +3376,9 @@ import Grothe.LowerAnalytic.CircularFourth
 import Grothe.LowerAnalytic.CircularTensor
 import Grothe.LowerAnalytic.ComplexGaussianCore
 import Grothe.LowerAnalytic.ComplexGaussianSymmetry
-import Grothe.LowerAnalytic.CoupledSteinBound
 import Grothe.LowerAnalytic.CoupledSteinCheck
 import Grothe.LowerAnalytic.CoupledSteinData
 import Grothe.LowerAnalytic.CoupledSteinGrid
-import Grothe.LowerAnalytic.CoupledSteinPrices
-import Grothe.LowerAnalytic.CoupledSteinRows
 import Grothe.LowerAnalytic.CoupledSteinWeights
 import Grothe.LowerAnalytic.Covariance
 import Grothe.LowerAnalytic.Fibre
@@ -4955,6 +4950,7 @@ import Grothe.UpperSixExact.Contour
 import Grothe.UpperSixExact.Head
 import Grothe.UpperSixExact.Parameters
 import Grothe.UpperSixExact.Result
+import Grothe.UpperSixExact.ScoreCeiling
 import Grothe.UpperSixExact.VariableCutoff
 import Grothe.UpperTarget
 import Grothe.UpperTightBudget

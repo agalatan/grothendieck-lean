@@ -799,6 +799,11 @@ The true mixture differs from this polynomial by at most
 $\sum_p w_p\sum_{n\ge m_p}|h_p(n)|$ in $\ell^1$.
 The resulting finite-matrix bound is \lean{convex\_transfer\_variable\_ival}.
 
+For the six established channels, a common rational vector in the 320-dimensional cube
+bounds the signed transfer score by $0.7119685648573$ for every real convex weight vector.
+The proof fixes each map, preprocessor, coefficient cutoff and tail allowance. Its finite
+comparison uses the actual dyadic enclosures (\path{Grothe/UpperSixExact/ScoreCeiling.lean}).
+
 Separate paper results in the Conjecture K monograph strengthen the common-response
 energy ellipsoid and reduce a joint-sector estimate to a specified pointwise remainder
 inequality. An exact rational checker verifies the conditional error budget, but

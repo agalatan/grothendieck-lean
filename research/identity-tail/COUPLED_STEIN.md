@@ -2,7 +2,7 @@
 
 The circular reduction supplies a normalized cubic Gaussian chaos to both active rows. Write U for its squared modulus. Write `s = E[U²] − 2` and `σ = δτ`. The fourth excess belongs to [0,42], and 0 ≤ τ ≤ 93/100. Rows 08 and 09 have exactly the same positive δ. Their potentials and their Stein test functions can differ. The common data are visible in `CircularSharedReduction` and in the definition of s inside `checkAntiCells_sound`.
 
-The last row gives the original coupled endpoint from #677. The final section records the stronger endpoint obtained with transported ordinates. The other rows show the effect of the outer weights.
+The last row gives the original coupled endpoint from #677. Its nine-price certificate and Lean declarations are archived at the [reviewed #677 commit](https://github.com/agalatan/grothendieck-lean/tree/e171e3a0f0d2e9f9e202aa0f48ce149031aa03e3/Grothe/LowerAnalytic). The final section records the stronger endpoint obtained with transported ordinates. The other rows show the effect of the outer weights.
 
 | scalar profile | largest cell (zero-based) | hat cap, rounded upward | reciprocal after transfer |
 |---|---|---|---|
