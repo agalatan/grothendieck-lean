@@ -1,6 +1,7 @@
 """Enclose two selector kernels in the absolutely summable coefficient norm. Agent-ID: codex-a7c4."""
 
 from fractions import Fraction
+from math import comb
 
 import numpy as np
 from flint import acb, arb, ctx
@@ -29,25 +30,26 @@ def floor(ball):
     return int(ball.floor().unique_fmpz())
 
 
-def frequency_moments():
-    """Enclose Re(c_t lambda_t^j) and upper-bound |lambda_t|^J for each frequency."""
-    moments = np.empty((FREQUENCIES, RADIAL_TERMS), dtype=np.int64)
+def frequency_moments(baths, strength, radial_terms):
+    """Enclose the negative-binomial Fourier atoms and their absolute tails."""
+    moments = np.empty((FREQUENCIES, radial_terms), dtype=np.int64)
     tails = np.empty(FREQUENCIES, dtype=np.int64)
     for frequency in range(FREQUENCIES):
-        t = arb(17 * (2 * frequency + 1)) / 100
+        t = arb(strength.numerator * (2 * frequency + 1)) / strength.denominator
         denominator = acb(1, -t) ** 2
         ratio = -t * t / denominator
-        first = acb(0, -2 * t).exp() / denominator
-        tail = (t * t / (1 + t * t)) ** RADIAL_TERMS
+        first = (acb(0, -2 * t).exp() / denominator) ** baths
+        q = t * t / (1 + t * t)
+        tail = q**radial_terms * sum(comb(radial_terms + i - 1, i) * (1 - q)**i for i in range(baths))
         tails[frequency] = -floor(-(tail * TAIL_SCALE).upper())
-        for j in range(RADIAL_TERMS):
+        for j in range(radial_terms):
             if j % 16 == 0:
-                current = first * ratio**j
+                current = first * ratio**j * comb(j + baths - 1, baths - 1)
             scaled = current.real * MOMENT_SCALE
             midpoint = floor(scaled.mid())
             require(abs(scaled - midpoint) < 2, "Arb moment enclosure")
             moments[frequency, j] = midpoint
-            current *= ratio
+            current *= ratio * (arb(j + baths) / (j + 1))
     require(np.max(np.abs(moments)) < 2 * MOMENT_SCALE, "moment range")
     require(np.min(tails) >= 0 and np.max(tails) <= TAIL_SCALE, "geometric-tail range")
     return moments, tails
@@ -70,28 +72,47 @@ def cosine_power_weights():
     return weights
 
 
-def selector_columns():
+def advance_binomial(coefficients, p):
+    """Floor the exact two-step recurrence without multiplying a 50-bit entry by p.denominator²."""
+    num, den = p.numerator, p.denominator
+    other = den - num
+    square = den**2
+    require(square**2 < 2**63, "denominator remainder range")
+
+    def twice(values):
+        following = num**2 * values
+        following[1:] += 2 * num * other * values[:-1]
+        following[2:] += other**2 * values[:-2]
+        return following
+
+    quotient, remainder = np.divmod(coefficients, square)
+    return twice(quotient) + twice(remainder) // square
+
+
+def selector_columns(baths=1, strength=Fraction(17, 100), radial_terms=RADIAL_TERMS,
+                     preprocessor=Fraction(23, 25)):
     """Return the two integer-derived heads and an allowance covering each head error and tail."""
     ctx.prec = 110
     # Each signed sum is bounded by its absolute sum, including intermediate integer partial sums.
     require(max(2 * FREQUENCY_SCALE * MOMENT_SCALE, 2 * ROW_SCALE * BINOMIAL_SCALE,
-                2 * ROW_SCALE * MASS_SCALE, 625 * WORK_SCALE) < 2**63,
+                2 * ROW_SCALE * MASS_SCALE, preprocessor.denominator * WORK_SCALE) < 2**63,
             "int64 product and accumulator budgets")
-    moments, geometric_tails = frequency_moments()
+    require(baths >= 1 and 0 < preprocessor < 1 and radial_terms > 0, "selector parameters")
+    moments, geometric_tails = frequency_moments(baths, strength, radial_terms)
     weights = cosine_power_weights()
     raw = (weights @ moments) // (FREQUENCY_SCALE * MOMENT_SCALE // ROW_SCALE)
     omitted_radial = weights @ geometric_tails
     require(np.max(np.abs(raw)) < 2 * ROW_SCALE, "signed raw coefficient range")
 
     names = ("unit", "linear")
-    length = LAST_PHASE + RADIAL_TERMS + PREPROCESS_DEGREE + 2
+    length = LAST_PHASE + radial_terms + PREPROCESS_DEGREE + 2
     columns = {name: np.zeros(length, dtype=np.int64) for name in names}
     losses = {name: Fraction(0) for name in names}
     phase_mass = arb.pi() / 4
     included_mass = 0
     binomial = np.zeros(PREPROCESS_DEGREE + 1, dtype=np.int64)
-    binomial[0] = 23 * WORK_SCALE // 25
-    binomial[1] = 2 * WORK_SCALE // 25
+    binomial[0] = preprocessor.numerator * WORK_SCALE // preprocessor.denominator
+    binomial[1] = (preprocessor.denominator - preprocessor.numerator) * WORK_SCALE // preprocessor.denominator
 
     for k in range(LAST_PHASE + 1):
         degree = 2 * k + 1
@@ -103,11 +124,11 @@ def selector_columns():
 
         missing = 1 - Fraction(int(weights[k].sum()), FREQUENCY_SCALE)
         radial_tail = Fraction(int(omitted_radial[k]), FREQUENCY_SCALE * TAIL_SCALE)
-        raw_loss = missing + radial_tail + Fraction(2 * RADIAL_TERMS, MOMENT_SCALE) + Fraction(RADIAL_TERMS, ROW_SCALE)
-        columns["unit"][k:k + RADIAL_TERMS] += mass * raw[k]
+        raw_loss = missing + radial_tail + Fraction(2 * radial_terms, MOMENT_SCALE) + Fraction(radial_terms, ROW_SCALE)
+        columns["unit"][k:k + radial_terms] += mass * raw[k]
         losses["unit"] += Fraction(mass, MASS_SCALE) * raw_loss
 
-        # R(x) = 23/25−(2/25)x. Its absolute coefficients are binomial probabilities.
+        # R(x) = p−(1−p)x. Its absolute coefficients are binomial probabilities.
         coeff = binomial[:min(degree, PREPROCESS_DEGREE) + 1] // (WORK_SCALE // BINOMIAL_SCALE)
         missed_polynomial = 1 - Fraction(int(coeff.sum()), BINOMIAL_SCALE)
         require(missed_polynomial >= 0 and coeff.min() >= 0, "preprocessor subprobabilities")
@@ -122,10 +143,7 @@ def selector_columns():
             raw_loss + missed_polynomial + Fraction(len(composed), ROW_SCALE)
         )
 
-        following = 529 * binomial
-        following[1:] += 92 * binomial[:-1]
-        following[2:] += 4 * binomial[:-2]
-        binomial = following // 625
+        binomial = advance_binomial(binomial, preprocessor)
 
     result = {}
     scale = ROW_SCALE * MASS_SCALE
