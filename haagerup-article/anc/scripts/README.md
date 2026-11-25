@@ -220,8 +220,8 @@ of the slope D of the channel, so 1/D₂₅₀ is a lower bound of the constant 
 "Cancellation across channels"), and the largest |H_k|.
 
 *Should print*: `1/D_250` = `1.407500`, `1.411619`, `1.566964`, `1.445990`, `1.526136` for channels 0, 1, 3, 4, 5
-and `D_250 = -0.760480358130` for channel 2; `H_0 = 0.711974258589983158243587861128`;
-`|H_0 - c| <= 9.831582435879e-13`; `sum |H_k| = 6.1578477290589133e-06`;
+and `D_250 = -0.760480358130` for channel 2; at the midpoints `H_0 = 0.711974258589983158243587861128`;
+`|H_0 - c| <= 9.831582435879e-13`; `sum_{k=1..250} |H_k| in [6.1578477290589133e-06, 6.1578477290589134e-06]`;
 `|H_0 - c| + sum |H_k| <= 6.1578487122171570e-06`, below the head cap `6.157850e-06` by `1.287782e-12`; the largest
 coefficient `H_10 = 2.0117960057e-06`.
 
@@ -272,8 +272,9 @@ does not state them.
 
 *Should print*: `S_250 in [0.712901574109461445113829, 0.712901574109461445113830]`, `S_250 - gamma-dagger in [9.42914331e-04, 9.42914332e-04]`;
 `D_250 = 0.60093809`, `1/D_250 = 1.664064` at the midpoints, and `D_250 <= 0.60093810, hence 1/D_250 >= 1.66406`
-for all values in the intervals (D₂₅₀ bounds the slope D of the channel without preprocessor from above, so the
-transfer lemma cannot give a constant below that number from it; this is not a bound that the channel proves); W of channels 0, 1, 5 in `[0.711919829934, 0.711919929567]`, below
+for all values in the intervals, and `D >= 2 mu_0 - 1 >= 0.540337 > 0.54` (the slope D of the channel without
+preprocessor is positive because Σ_n |μ_n| ≤ 1, and D ≤ D₂₅₀; so the transfer lemma cannot give a constant below
+1.66406 from this channel alone; this is not a bound that the channel proves); W of channels 0, 1, 5 in `[0.711919829934, 0.711919929567]`, below
 0.7119200; W of channels 3, 4 in `[0.712901282238531, 0.712901282244532]`; `W(H) < 0.711975480275656`, below the
 article's 0.711975481; `c - delta = 0.711968053274152`; `1 / 0.712901282245 = 1.402718756`.
 

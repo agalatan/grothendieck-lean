@@ -61,9 +61,13 @@ def main() -> int:
     # an upper bound of D_250 over the intervals: upper endpoint of mu_0, smallest |mu_n| of each interval
     d_hi = Fraction(mu[0][1] - sum(min(abs(a), abs(b)) if a * b > 0 else 0 for a, b in mu[1:]), common.SCALE)
     rep.info(f"  for all values in the intervals: D_250 <= {dec_up(d_hi, 8)}, hence 1/D_250 >= {dec_dn(1 / d_hi, 5)}")
-    rep.info("  (D_250 is an upper bound of the slope D = mu_0 - sum_{n>=1} |mu_n| of this channel, so 1/D >= 1/D_250:")
-    rep.info(f"   the transfer lemma cannot give a constant below {dec_dn(1 / d_hi, 5)} from it; D is not bounded from "
-             "below here.)")
+    # sum_n |mu_n| <= sum E(d1, d2) <= 1 (the paper's proposition "Channel series", part (1), for the channel
+    # (f_tig, -1, 1), whose series is h_k = mu_k), hence D >= mu_0 - (1 - mu_0) = 2 mu_0 - 1
+    d_lo = 2 * Fraction(mu[0][0], common.SCALE) - 1
+    rep.check("interval", f"the slope D = mu_0 - sum_{{n>=1}} |mu_n| of this channel is positive: D >= 2 mu_0 - 1 >= "
+                          f"{dec_dn(d_lo, 6)} > 0.54 (because sum_n |mu_n| <= 1)", d_lo > Fraction(54, 100))
+    rep.info(f"  (so 0 < D <= D_250 and 1/D >= 1/D_250 >= {dec_dn(1 / d_hi, 5)}: the transfer lemma cannot give a constant")
+    rep.info(f"   below {dec_dn(1 / d_hi, 5)} from this channel alone.)")
     rep.info(f"  mu_1 = {dec(mid[1], 12)}, mu_2 = {dec(mid[2], 12)}; signs of mu_0..mu_250 (midpoints): "
              f"{sum(1 for x in mid if x > 0)} positive, {sum(1 for x in mid if x < 0)} negative")
 
