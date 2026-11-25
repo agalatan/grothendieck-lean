@@ -91,7 +91,7 @@ record.
   3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). An independent Level A replay checks the row and envelope reductions (STATUS 4.40). On [1/4, 5/12], actual pairs force the sector comparison with their own remote cubic to spend more than the published row allowances. For the same pairs, row 0.25 of Claim 1 stays more than 0.172 below the target. A direct comparison with the law cap remains open for general pairs. The law-cap replay and several proof steps remain open (STATUS §5): the content lemma on every tuned row from t = 0.647 to
   0.886, whose binding rows are the lowest and need covering rows (STATUS 4.31, 4.32); whether the content
   inequality holds in every dimension (STATUS 4.28, 4.30); certified constants on t ≥ 0.86; the law rows between
-  the direct bound (through t = 0.36495 with the independently reviewed cubic radius and the fourth-excess and spectral mass estimates, STATUS 4.18f) and t = 0.647; and the other pieces of the gate (STATUS 4.16). At the upper end, a direct proof covers every pair from $t=0.88477644$ to the physical endpoint, and also covers pairs of remote cubic energy at most $3/5000$ from $t=0.81$ upward (STATUS 4.18d). The work runs under issue #453.
+  the direct bound (through t = 0.36495 with the independently reviewed cubic radius and the fourth-excess and spectral mass estimates, STATUS 4.18f) and t = 0.647; and the other pieces of the gate (STATUS 4.16). At the upper end, a direct proof covers every pair from $t=0.88425210$ to the physical endpoint, and also covers pairs of remote cubic energy at most $3/5000$ from $t=0.81$ upward (STATUS 4.18d). The work runs under issue #453.
 
 - **Visible quintic phase.** Optimizing its complex coefficient over a remote cubic buys less than $1.07\times10^{-7}$ over optimizing the real coefficient for the same law on all nineteen P6 rows. The gain from changing the prescribed real coefficient is a separate term in a fixed-profile proof (STATUS 4.16a).
 
@@ -102,7 +102,7 @@ record.
   sector is false on the eleven pieces below 0.835: explicit pairs with zero content need a part of the room for the
   visible quintic. With that part set aside the design has, numerically, a factor of at least 2.76 against every
   cubic tested, in at most 13 variables (STATUS 4.44). One conditional theorem assembles the certificate from
-  hypotheses H0–H9; the mid-t bound on (0.250885, 0.649), the secant inequality, the content law and the
+  hypotheses H0–H9. The direct bound in 4.18e covers the start of the mid-t interval through 0.35859076. The rest up to 0.649, the secant inequality, the content law and the
   other-sector statement are open (STATUS 4.45).
 
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the

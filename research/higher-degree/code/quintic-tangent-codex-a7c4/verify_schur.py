@@ -118,6 +118,7 @@ def main():
         if tag not in ('0.845','0.860') and not args.all_rows:
             continue
         ell,beta,ba,bb = map(F, multipliers.split(','))
+        require(ell > beta/2, tag+' intercept increases with mu')
         bounds = residuals(ell,beta,ba,bb,elo,ehi)
         q,A,V,Z,B = bounds
         require(q[0]>F('1.27') and V[1]<F('-.29') and B[1]<F('-.32'), tag+' universal signs')
