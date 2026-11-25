@@ -41,6 +41,7 @@ import Grothe
 #print axioms Grothe.Lower.TightShared.profile_bound
 #print axioms Grothe.Lower.WeightedTight.endpoint_eq
 #print axioms Grothe.Lower.WeightedTight.profile_bound
+#print axioms Grothe.Lower.WeightedTight.rounded_lt
 #print axioms Grothe.Lower.affineEnvelope_bound
 #print axioms Grothe.Lower.budget_of_bud
 #print axioms Grothe.Lower.certEnvelope

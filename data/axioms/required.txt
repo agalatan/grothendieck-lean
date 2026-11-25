@@ -30,6 +30,7 @@ Grothe.Lower.TightShared.endpoint_eq
 Grothe.Lower.TightShared.profile_bound
 Grothe.Lower.WeightedTight.endpoint_eq
 Grothe.Lower.WeightedTight.profile_bound
+Grothe.Lower.WeightedTight.rounded_lt
 Grothe.Lower.affineEnvelope_bound
 Grothe.Lower.certEnvelope
 Grothe.Lower.certEnvelopeTight
