@@ -12,7 +12,8 @@ python3 -I exact/retarget_exact.py "$T/exact.json" > "$T/exact.log";            
 chk "$T/exact.json" exact/retarget_exact.json "exact/retarget_exact.json"
 python3 -I exact/ridge_direct.py > "$T/ridge.log";                               chk "$T/ridge.log" exact/ridge_direct.log "exact/ridge_direct.log (the direct bound along the ridge of games; exact given the games)"
 cp ceiling/eps_profile_K2.json ceiling/eps_profile_K3.json "$T/"; python3 -I ceiling/rescore.py "$T/eps_profile_K2.json" "$T/eps_profile_K3.json" > /dev/null
-cmp -s "$T/eps_profile_K2.json" ceiling/eps_profile_K2.json && cmp -s "$T/eps_profile_K3.json" ceiling/eps_profile_K3.json && echo "IDENTICAL  ceiling/eps_profile_K*.json (re-scored on the final pool: no stored game is beaten by a pool row)" || { echo "DIFFERENT  ceiling/eps_profile_K*.json after rescore.py"; ok=0; }
+cmp -s "$T/eps_profile_K2.json" ceiling/eps_profile_K2.json && cmp -s "$T/eps_profile_K3.json" ceiling/eps_profile_K3.json && echo "IDENTICAL  ceiling/eps_profile_K*.json (selection on the final pool is stable: rescore.py changes nothing)" || { echo "DIFFERENT  ceiling/eps_profile_K*.json after rescore.py"; ok=0; }
+python3 -I ceiling/pool_certificate.py > "$T/pc.log";                             chk "$T/pc.log" ceiling/pool_certificate.log "ceiling/pool_certificate.log (the game-independent constants; exact on the stored decimals)"
 python3 -I ladder.py ceiling/eps_profile_K2.json ceiling/eps_profile_K3.json > "$T/ladder.md"; chk "$T/ladder.md" LADDER.md "LADDER.md (rooms by game and target; the norms are N)"
 python3 -I theta/collect_factors.py table > "$T/factors.md";                     chk "$T/factors.md" theta/FACTORS.md "theta/FACTORS.md (table from theta/thetas.json and theta/cells.json; N)"
 python3 -I ceiling/law_table.py > "$T/law.md";                                   chk "$T/law.md" ceiling/LAW_ROWS.md "ceiling/LAW_ROWS.md (table from ceiling/law_rows_*.json; N)"

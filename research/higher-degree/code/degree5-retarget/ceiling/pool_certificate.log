@@ -1,0 +1,4 @@
+no tail: rows [190, 277, 329] (W3, W3, Z2), weights 0.156304, 0.714676, 0.129019
+   every game has model norm >= 0.7124304399...  (> 0.7124304398), so no game certifies more than 1/0.7124304399 = 1.40364581; outward six-decimal ceiling 1.403646
+with an identity tail: rows [350, 460, 510, 530] (W3, W3, W3, W3), weights 0.832016, 0.012491, 0.137815, 0.017678
+   every game has model norm >= 0.7123823507...  (> 0.7123823506), so no game certifies more than 1/0.7123823507 = 1.40374056; outward six-decimal ceiling 1.403741

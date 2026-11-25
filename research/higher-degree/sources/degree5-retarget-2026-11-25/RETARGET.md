@@ -232,7 +232,11 @@ this norm to 2·10⁻⁶ (ledger 4.2; §2.3 below).
 - **The ceiling.** Without tail the pool bounds every degree-5 game by LB = 0.7124304: **no degree-5 game certifies
   more than 1.403646** in this model (ledger 1.2 has 1.403648 by Richardson extrapolation; `docs/overview.tex` has
   the [P, C] ceiling 1.4036705 for degree ≤ 5). With an identity tail LB = 0.7123823: **1.403741** (ledger 1.3:
-  1.40374). The tail buys 4.7·10⁻⁵ of value at the optimum and at most 2.5·10⁻⁵ for ε ≤ 0.84 (below 10⁻⁵ from 0.78 to 0.84).
+  1.40374; the best tail game saved has 1.403739). Both bounds have a short certificate in the stored score model:
+  positive weights on three pool rows (four with a tail) cancel the free coefficients and give the constants
+  0.7124304399 and 0.7123823507 for every game, with no bounds on its coefficients (codex-a7c4, review of PR #711;
+  `CODE/ceiling/pool_certificate.py`, exact Fractions on the stored decimals). What stays numerical is that the stored
+  coefficients are those of unimodular pairs. The tail buys 4.7·10⁻⁵ of value at the optimum and at most 2.5·10⁻⁵ for ε ≤ 0.84 (below 10⁻⁵ from 0.78 to 0.84).
 - **Sensitivity.** From ε = 0.78 to 0.82 the value falls by 7.6·10⁻⁵ per 0.01 of ε (1.5·10⁻⁴ in K), from 0.82 to 0.85
   by 4.4·10⁻⁵ per 0.01; the optimum is flat (0.84: 3.1·10⁻⁵ above the minimum). Past the optimum the plain phase binds
   and the value without tail rises steeply (0.86: 1.4·10⁻⁴ above). The best b follows b ≈ 2.94(ε − 0.752) to 0.006.
@@ -279,47 +283,66 @@ sharper direct treatment of the clipped quintic payoff. Item (c) estimates such 
 class of ledger 4.42 (moments and the radius 2287/2500; no Stein family, no energy-dependent radius), by a float
 program on grids (`CODE/ceiling/law_rows.py`): a **lower** estimate of the law-layer supremum.
 
-| game | t | Gaussian ideal | law layer ≥ (payoff of a stored law) | against 1/1.403 = 0.7127584 |
-|---|---|---|---|---|
-| (1, −0.78, 0.0779) | 0 | 0.6128536 | 0.6531911 | 0.0596 below (direct bound: 0.655271) |
-| (1, −0.82, 0.194) | 0 | 0.6442822 | 0.6874115 | 0.0253 below (direct bound: 0.700834) |
-| (1, −0.84896, 0.2818) | 0 | 0.6670361 | 0.7122732 | 4.85·10⁻⁴ below (7.39·10⁻⁴ below 1/1.4025; direct bound: 0.7407) |
-| (1, −0.78, 0.0779), row 0.845 | 0.845 | 0.7128559 | 0.7128580 | certified constant of the row: 0.7128737 |
+| game (ε, η) | t | Gaussian ideal | law layer ≥ (payoff of a stored law) | below 1/1.403 = 0.7127584 by | direct bound at t = 0 for this game |
+|---|---|---|---|---|---|
+| (39/50, 779/10000), the capped game | 0 | 0.6128536 | 0.6531911 | 0.0596 | 0.655227 |
+| (41/50, 97/500), the ridge game | 0 | 0.6442822 | 0.6874115 | 0.0253 | 0.700834 |
+| (0.84896, 0.2818), the game of ledger 1.2 | 0 | 0.6670361 | 0.7122732 | 4.85·10⁻⁴ | 0.740234 |
+| (0.8492868465, 0.2826657528), the optimum saved in §2.1 | 0 | — | 0.7125517 (the law of the line above, repriced) | **2.07·10⁻⁴** | 0.740680 |
+| (0.848, 0.2795) | 0 | — | 0.7114554 (the same law, repriced) | 1.30·10⁻³ | 0.738980 |
+| (39/50, 779/10000), row 0.845 | 0.845 | 0.7128559 | 0.7128580 | — | certified constant of the row: 0.7128737 |
+
+**These are different games and must not be mixed.** At t = 0 the row parameters vanish, so the response integral of
+a law does not depend on the game and the same stored law (σ = 0.775, ν = −0.024) can be repriced exactly: it pays
+σ²(1/ε − 1/ε′) + ν²(1/η − 1/η′) more for the game (ε′, η′) (codex-a7c4, review of PR #711; `CODE/ceiling/law_table.py`
+prints the lines). The t = 0 row moves by 0.83 per unit of ε: the 3.3·10⁻⁴ of ε between the game of ledger 1.2 and the
+saved optimum cost 2.8·10⁻⁴ of value there, while their model norms differ by 10⁻⁷ (0.7124305 and 0.7124306 on the pool).
 
 Each value is the payoff of an explicit law, stored with its atoms; `CODE/ceiling/law_table.py` replays the payoff and
 the constraints of each. (The first version of this table had 0.7132886 for the optimum: the refinement step of the
 program paired the response of one ν with the penalty of another. Found by codex-a7c4 and gemini-21d5 in the review
 of PR #711; the program now asserts one column of Ψ per ν.)
 
-- **At t = 0 the optimum is not excluded, and it is not shown to pass.** The law found keeps 12 % of its mass at
-  q = 0 (the phantom atom of ledger 4.18 (b), 4.35) and scores 0.71227: below the target value of 1.403 by
-  4.85·10⁻⁴ and below the game's own model norm by 1.6·10⁻⁴. This is a lower estimate of the supremum over the plain
-  law class (grids in σ, ν, E U² and U; codex-a7c4's independent search found 0.7122738), so **the room of the
-  optimum at t = 0 is at most 4.85·10⁻⁴ at 1.403**, where the capped game has 0.06 and (1, −0.82, 0.194) has 0.025:
-  for the optimum, small t is a second binding region of the size of the peak, with no hypothesis-free start (b)
-  and with the sector hypothesis in the range where its pure-cost premises fail for the capped game (ledger 4.16).
+- **At t = 0 the games near the optimum are not excluded and not shown to pass, and the saved optimum is bound
+  there, not at the peak.** The law found keeps 12 % of its mass at q = 0 (the phantom atom of ledger 4.18 (b),
+  4.35). For the saved optimum (ε = 0.8492868) it pays 0.7125517, above that game's model norm 0.7124306: **in this
+  law relaxation the saved optimum certifies at most 1/0.7125517 = 1.403407, with at most 2.07·10⁻⁴ of room at 1.403
+  and 4.61·10⁻⁴ at 1.4025**, before any sector cost. For (0.84896, 0.2818) the same row leaves at most 4.85·10⁻⁴ and
+  for (0.848, 0.2795) at most 1.30·10⁻³ (its model norm on the pool is 0.7124399, 9·10⁻⁶ above the optimum's). All
+  are lower estimates of a supremum over the plain law class (grids in σ, ν, E U² and U; a law optimised for one game
+  and repriced for another; codex-a7c4's independent search found 0.7122738 for the first). So a design candidate
+  near the optimum has ε at or below about 0.849, chosen with its t = 0 row; the capped game has 0.06 there and the
+  ridge game 0.025. For all of them near the optimum small t has no hypothesis-free start (b), and the sector
+  hypothesis is needed where its pure-cost premises fail for the capped game (ledger 4.16).
 - **At the peak** the control reproduces the capped game's row 0.845: the law program is 2.1·10⁻⁶ above the Gaussian
   value and the certified constant 1.6·10⁻⁵ above the program (the interval covers). The loss of the law layer and
   its covers at the peak is taken from the exact certificate of the capped game: **2.5·10⁻⁵ on the envelope against
   the model norm**. For the uncapped game the record has a law gap of 1.5·10⁻⁵ at the peak with moments only (4.3).
-- **Not computed**: the peak rows of the games (1, −0.82, 0.194) and (1, −0.84896, 0.2818) in the law layer, and any
-  row of theirs between t = 0 and the peak.
+- **Not computed**: the peak rows of the ridge game and of the games near the optimum in the law layer, any row of
+  theirs between t = 0 and the peak, and a law optimised for each repriced game (which could only pay more).
 
 ### 2.3 Degree 5 with the unavoidable losses
 
-| game | ideal 1/N (**N**) | ρ₀-relaxed t = 0 test (exact) | hypothesis-free start (exact) | t = 0 row, plain law class (**N**, lower estimate) | 1/N with 2.5·10⁻⁵ of loss at the peak (estimate) | room at 1.403 | room at 1.4025 |
-|---|---|---|---|---|---|---|---|
-| (1, −0.78, 0.0786), capped | 1.402785 | passes | t ≤ 0.250 | ≥ 0.65319 | 1/B₅ = 1.4027346 (exact) | none | 1.19·10⁻⁴ |
-| (1, −0.82, 0.1940) | 1.403385 | passes | t ≤ 0.122 | ≥ 0.68741 | 1.40334 | 1.7·10⁻⁴ | 4.2·10⁻⁴ |
-| (1, −0.8493, 0.2827), optimum | 1.403646 | passes (ε below 0.85171) | none | ≥ 0.71227: room ≤ 4.85·10⁻⁴ at 1.403 | 1.40360 | 3.0·10⁻⁴ | 5.6·10⁻⁴ |
-| with tail at ε = 0.85 | 1.403668 | passes | none | not computed | 1.40362 | 3.1·10⁻⁴ | 5.7·10⁻⁴ |
-| with tail, optimum ε = 0.865 | 1.403739 | fails (0.72389) | none | not computed | — | — | — |
-| degree 7 at ε = 0.85 (§3.2) | 1.403702 | passes | not computed | not computed | 1.40365 | 3.3·10⁻⁴ | 5.9·10⁻⁴ |
+Each line is one game with its own parameters. "1/N" is the reciprocal of the largest payoff of the pool of §2.1
+against that game; "at the peak" subtracts the 2.5·10⁻⁵ measured on the capped game (an estimate for the others);
+"t = 0 allows" is the reciprocal of the t = 0 payoff of §2.2 (c); the realistic value is the smaller of the two.
 
-The loss column transfers the loss measured on the capped game; it is not measured on the other games, and for them
-the rooms are upper estimates in a second way too: only the peak and t = 0 were looked at. **For a certificate of the
-present type the realistic ceiling of degree 5 is about 1.4036 (the optimum), with a room of 3.0·10⁻⁴ at 1.403 and
-5.6·10⁻⁴ at 1.4025; nothing computed here excludes the optimum as a design candidate.**
+| game (ε, η) | ideal 1/N (**N**) | ρ₀-relaxed t = 0 test (exact) | hypothesis-free start by 4.18 (a) at 1.403 (exact) | at the peak (estimate) | t = 0 allows at most (**N**) | realistic value | room at 1.403 | room at 1.4025 |
+|---|---|---|---|---|---|---|---|---|
+| (39/50, 779/10000), capped | 1.402785 | passes | t ≤ 0.2497 | 1/B₅ = 1.4027346 (exact, its design) | 1.5309 | below 1.402735 | none | 1.19·10⁻⁴ |
+| (41/50, 97/500), ridge | 1.403385 | passes | t ≤ 0.1216 | 1.40334 | 1.4547 | 1.40334 | 1.7·10⁻⁴ | 4.2·10⁻⁴ |
+| (0.848, 0.2795) | 1.403627 | passes | none | 1.40358 | 1.40557 | 1.40358 | 2.9·10⁻⁴ | 5.5·10⁻⁴ |
+| (0.84896, 0.2818), ledger 1.2 | 1.403646 | passes | none | 1.40360 | 1.40396 | 1.40360 | 3.0·10⁻⁴ | 5.6·10⁻⁴ |
+| (0.8492868, 0.2826658), saved optimum | 1.403646 | passes | none | 1.40360 | **1.403407** | **1.40341** | **≤ 2.07·10⁻⁴** | ≤ 4.61·10⁻⁴ |
+| with tail at ε = 0.85 (η = 0.2882, ν = −0.0052) | 1.403668 | passes | none | 1.40362 | not computed | — | ≤ 3.1·10⁻⁴ | ≤ 5.7·10⁻⁴ |
+| with tail, saved optimum ε = 0.865 | 1.403739 | fails (0.72389) | none | — | — | — | — | — |
+| degree 7 at ε = 0.85 (§3.2) | 1.403702 | passes | not computed | 1.40365 | not computed | — | ≤ 3.3·10⁻⁴ | ≤ 5.9·10⁻⁴ |
+
+For the games other than the capped one the rooms are upper estimates in a second way too: only the peak and t = 0
+were looked at. **For a certificate of the present type the realistic ceiling of degree 5 is about 1.4036, reached
+by games with ε between about 0.848 and 0.849 (room 2.9 to 3.0·10⁻⁴ at 1.403, 5.5 to 5.6·10⁻⁴ at 1.4025); the saved
+optimum itself is limited to 1.40341 by its t = 0 row. Nothing computed here excludes a game of that range as a
+design candidate.**
 
 ---
 
@@ -339,8 +362,8 @@ be enough), the targets would be 1.40286 at degree 5 (1.40295 with tail), 1.4033
 
 ### 3.2 Degree 7 under the t = 0 test (N for the games, exact for the test)
 
-The t = 0 test of §2.2 (a) does not depend on the degree (ledger 4.38 states it for the dual rows of degrees 7 and
-9). The degree-7 optimum has λ₁ = −0.9066: it passes at 1.403 only if ρ\* ≤ √((1/1.403)/0.906596) = 0.88668, that is
+The t = 0 test of §2.2 (a) applies to degree 7 as to degree 5: a degree-7 row at t = 0 that drops the non-positive
+terms (ledger 4.38 (i)) is bounded below by a₁ρ². The degree-7 optimum has λ₁ = −0.9066: it passes at 1.403 only if ρ\* ≤ √((1/1.403)/0.906596) = 0.88668, that is
 within 4.5·10⁻⁴ of the conjectured sharp radius √π/2 = 0.886227 (K 3.6, open); the best proved radius is 0.9142
 (K 3.7). So `CODE/ceiling/eps_profile.py` was run with `KDEG=3` at fixed ε (result `eps_profile_K3.json`, 18 minutes
 on two cores; oracles W3, Z2, h∘ρ, plain phase; W5 and W3 + W5, which end within 1.3·10⁻⁶ of W3 at the degree-7
@@ -352,22 +375,27 @@ optimum in ledger 1.4, were not run, and richer responses can only lower these v
 | 0.82 | (0.1962, −0.0063) | 0.7125628 | 1.403385 | 1.403385 | 0.93232 |
 | 0.85 | (0.3119, −0.0825) | 0.7124020 | 1.403702 | 1.403645 (1.403668 with tail) | 0.91572 |
 | 0.88 | (0.4286, −0.1550) | 0.7122766 | 1.403949 | 1.400603 (1.403378 with tail) | 0.89997 |
-| free: 0.9068 (the game saved) | (0.5424, −0.2549) | 0.7122040 | 1.404092 | — | 0.88657 |
+| free: 0.9067 | (0.5450, −0.2523) | 0.7121933 | 1.404113 | — | 0.88661 |
 
-(Every value is the largest payoff against the stored game over its oracle calls and over the final shared pool. For the
-free game without tail the first version had 0.7121927, 1.404114, its score when visited; a pair found later scores
-0.7122040 against it (review of PR #711; `CODE/ceiling/rescore.py`). That problem did not converge: the pool bounds
-every degree-7 game without tail by LB = 0.7121895, 1/LB = 1.404121, and ledger 1.4 has 1.404113 for a neighbouring
-game. With a tail the values change by at most 2·10⁻⁶ at fixed ε; the free optimum with tail is 0.7121876, 1.404125,
-as ledger 1.5.) **For a certificate whose law layer charges ρ₀ = 2287/2500 (ε ≤ 0.8517 at 1.403, §2.2 (a)), degree 7 is
+(Every game and value is selected on the final shared pool: among the games visited, the one with the smallest
+max(largest oracle payoff when visited, largest payoff over the final pool); `CODE/ceiling/rescore.py`, after the
+reviews of PR #711. Only the free problem without tail changed: its first incumbent, visited at 0.7121927, pays
+0.7122040 against a pair found later, and the game of iteration 9 is selected instead, with 0.7121933. That problem
+did not converge (gap 3.8·10⁻⁶): the pool bounds every degree-7 game without tail by LB = 0.7121895, 1/LB = 1.404121;
+ledger 1.4 has 1.404113. With a tail the values change by at most 2·10⁻⁶ at fixed ε; the free optimum with tail is
+0.7121876, 1.404125, as ledger 1.5.) **For a certificate whose law layer charges ρ₀ = 2287/2500 (ε ≤ 0.8517 at 1.403, §2.2 (a)), degree 7 is
 worth 1.4037, not 1.4041**: at ε = 0.85 it gains 2.9·10⁻⁵ of value over degree 5 (1.7·10⁻⁵ over degree 5 with tail),
 and at ε = 0.82 nothing. The step from degree 5 to degree 7 recorded in ledger 1.9 (2.4·10⁻⁴) is bought entirely with
 cubic weight above 0.85: in such a certificate it needs a proved radius of 0.900 for ε = 0.88 (1.40395) and 0.8866 for the optimum; the true
-test needs the same of ρ\* itself. The
-same holds a fortiori at degree 9 (λ₁ = −0.936; ledger 4.36, 4.38: ρ\* ≤ 0.8994 for its t = 0 rows).
+test needs the same of ρ\* itself. 
 
-**So degree 7 does not make 1.403 easier for a certificate of this type before the radius of the cubic chaos is
-proved below about 0.90**: with ρ₀ = 2287/2500 the best value at any degree up to 7 is 1.40365–1.40372, a room of
+*Degree 9 has its own condition.* There the necessary inequality of ledger 4.38 keeps the ninth-degree projection
+(the term −a₄‖P₅,₄f‖²): by Parseval ρ\*² ≤ (B + a₄)/(a₁ + a₄), which for λ₉ of ledger 1.6 (a₁ = 0.936, a₄ = 0.23468) and
+B = 1/1.403 is ρ\* ≤ 0.89961 (the ledger's 0.899374 is for B = 250/351); a certificate that drops the ninth-degree
+term at t = 0 needs the stronger √(B/a₁) = 0.87263. Neither is below a proved radius.
+
+**So degrees 7 and 9 do not make 1.403 easier for a certificate of this type before the radius of the cubic chaos
+is proved below about 0.90**: with ρ₀ = 2287/2500 the best value at any degree up to 7 is 1.40365–1.40372, a room of
 3.3–3.6·10⁻⁴ at 1.403.
 
 ---
@@ -376,20 +404,23 @@ proved below about 0.90**: with ρ₀ = 2287/2500 the best value at any degree u
 
 ### 4.1 Can we reach 1.403?
 
-**With the capped game: no** (exact: its envelope is 1.402734, its model norm 1.402785).
+**With the capped game: no.** Its design gives at most 1/B₅ < 1.402735 (exact from the row constants, **C**, author
+only); that no other design of the same game does better than 1.402785 rests on a numerical pair (**N**).
 
 **With a degree-5 game: not excluded, not supported; my judgement is that it is unlikely, and one computation
 would decide whether it deserves a design.** The evidence, with its level:
 
 1. *The ceiling* (**N**, one-sided: the pool bounds every game from below within its response families; [P, C] for
-   the bound 1.4036705 without tail): 1.403646 without tail, 1.403739 with one (1.40367 inside the ρ₀-relaxed cap).
-   The room at 1.403 for the law layer and **all** sectors on **all** t is 3.28·10⁻⁴ in the model and about 3.0·10⁻⁴
-   after the law-layer loss measured on the capped game (an estimate).
-2. *The optimum is a possible design candidate.* It passes the ρ₀-relaxed t = 0 test (exact), and its t = 0 row in
-   the plain law class is at least 0.71227, which leaves at most 4.85·10⁻⁴ there at 1.403 (**N**, lower estimate of a
-   supremum: the row is not shown to pass).
+   the bound 1.4036705 without tail): 1.403646 without tail and 1.403741 with one, for every game (pool certificate, §2.1);
+   1.40367 with a tail inside the ρ₀-relaxed cap. The room at 1.403 for the law layer and **all** sectors on **all** t
+   is 3.28·10⁻⁴ in the model and about 3.0·10⁻⁴ after the law-layer loss measured on the capped game (an estimate).
+2. *A game just below the optimum is a possible design candidate; the saved optimum is not the one.* All pass the
+   ρ₀-relaxed t = 0 test (exact). The t = 0 row in the plain law class moves by 0.83 per unit of ε (**N**, lower
+   estimates, §2.2 (c)): it leaves at most 2.07·10⁻⁴ at 1.403 for the saved optimum (ε = 0.8492868), which that row
+   limits to 1.40341; at most 4.85·10⁻⁴ for (0.84896, 0.2818); at most 1.30·10⁻³ for (0.848, 0.2795), whose peak
+   leaves 2.9·10⁻⁴. No row is shown to pass.
 3. *What could still fail for it.* (i) It has no hypothesis-free start (exact, §2.2 (b)): the range of small t that
-   is proved up to 0.365 for the capped game starts from nothing, with a room of at most 4.85·10⁻⁴ at t = 0 instead
+   is proved up to 0.365 for the capped game starts from nothing, with a room of at most 4.85·10⁻⁴ at t = 0 for (0.84896, 0.2818), instead
    of 0.06, and the sector hypothesis is needed exactly where its pure-cost premises fail for the capped game
    (ledger 4.16). (ii) Its sector costs are not measured. At the cap 0.81 (**N**, ledger 4.33) the band minimum of
    the content allowance is 0.42–0.44 of the capped game's, the quintic shells take 0.31 of the deficit at t = 0.80
@@ -403,13 +434,13 @@ would decide whether it deserves a design.** The evidence, with its level:
 
 So 1.403 at degree 5 asks for the sector costs of a game that is probably harder, on a longer range of t, to fit
 into 3.0·10⁻⁴, when 3.7·10⁻⁴ is not yet known to suffice for the easier game. That is a judgement from **N** evidence
-in both directions, not a theorem: no number computed here shows that the optimum fails. At 1.4025 the same game has
+in both directions, not a theorem: no number computed here shows that a game just below the optimum fails. At 1.4025 the same game has
 5.6·10⁻⁴ (1.5 times the present room).
 
-**The computation that would decide viability**: the gate of ledger 4.16 for the optimum (the coupled one-spike
+**The computation that would decide viability**: the gate of ledger 4.16 for a game just below the optimum (the coupled one-spike
 sector model on Gaussian-optimal rows for t from 0 to 0.886: the sharing constant θ, the shares of the quintic and
 A/B shells, the zero-core scalar) together with float law rows on the same values of t at ρ₀ = 2287/2500. If θ ≤ 0
-on the peak band and the law rows leave room on [0, 0.65], the optimum is a candidate with target 1.4025 to 1.403;
+on the peak band and the law rows leave room on [0, 0.65], that game is a candidate with target 1.4025 to 1.403;
 if the shares are those of the cap 0.81 or worse, it is not. Cost: rows and law layer about 10 CPU-hours (29 rows at
 20 minutes), the gate about as much again with the scripts of `../degree5-capped-2026-11-16/` adapted to the game:
 a day of four cores on yo, or two hours on a 48-core machine. It needs no certificate and no new mathematics.
@@ -433,9 +464,9 @@ The table reads the same data as targets: the largest K\* that leaves the model 
 | (1, −0.80, 0.1364) | 1.403117 | 1.40233 | 1.40155 |
 | (1, −0.82, 0.1940) | 1.403385 | 1.40260 | 1.40181 |
 | (1, −0.85, 0.2846) | 1.403645 | 1.40286 | 1.40207 |
-| degree 5 + tail, optimum | 1.403739 | 1.40295 | 1.40217 |
+| degree 5 + tail, saved optimum | 1.403739 | 1.40295 | 1.40217 |
 | degree 7, ε = 0.85 | 1.403702 | 1.40292 | 1.40213 |
-| degree 7, the free game saved (needs a radius 0.8866) | 1.404092 | 1.40331 | 1.40252 |
+| degree 7, free (needs a radius 0.8866) | 1.404113 | 1.40333 | 1.40254 |
 
 The Lean bound is 1.4020221627. **On these two assumptions a degree-5 certificate
 lands between 1.4012 and 1.4029**: at best 9·10⁻⁴ above the Lean bound, and below it if the costs are those that
@@ -445,9 +476,10 @@ ledger 4.33 suggests for the stronger games. Neither assumption is a measurement
 
 1. **Drop the capped game as the vehicle.** Its whole range above the Lean bound is 7.1·10⁻⁴ (to 1/B₅ < 1.402735,
    with zero cost), and the cubic family itself has 4.6·10⁻⁴ of unused model room above the Lean bound (1.402483).
-2. **Do not fix a target yet; run the gate for two games first**: the optimum (1, −0.8493, 0.2827) and the ridge game
-   (1, −41/50, 97/500). The optimum has the larger rooms (3.0·10⁻⁴ at 1.403, 5.6·10⁻⁴ at 1.4025, 6.6·10⁻⁴ at 1.4023,
-   after the estimated law-layer loss) and no hypothesis-free start; the ridge game has 1.7·10⁻⁴, 4.2·10⁻⁴,
+2. **Do not fix a target yet; run the gate for two games first**: a game just below the optimum, with ε between
+   0.848 and 0.849 chosen together with its t = 0 row (not the saved optimum, which that row limits to 1.40341), and
+   the ridge game (1, −41/50, 97/500). The first has the larger rooms (2.9 to 3.0·10⁻⁴ at 1.403, 5.5 to 5.6·10⁻⁴ at
+   1.4025, after the estimated law-layer loss) and no hypothesis-free start; the ridge game has 1.7·10⁻⁴, 4.2·10⁻⁴,
    5.3·10⁻⁴, a proved start on t ≤ 0.12 and 0.025 of room at t = 0. The gate (§4.1) decides between them: if the
    optimum's sector shares on the peak band are no worse than the capped game's and its small-t law rows have room,
    it is the game, with 1.4025 as the first target and 1.403 as the stretch; if they are those of the cap 0.81 or
