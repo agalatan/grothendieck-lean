@@ -314,6 +314,25 @@ class CheckConstants(unittest.TestCase):
         self.assertEqual(len(problems), 1)
         self.assertIn("must use exactly one rounding lemma", problems[0])
 
+    def test_rounding_lemma_only_in_a_following_command_of_any_kind_is_refused(self):
+        gone = MAIN.replace("Grothe.Lower.SharpEnvelope.rounded_lt", "sorry_placeholder")
+        for following in ('local notation "roundingFact" => Grothe.Lower.SharpEnvelope.rounded_lt\n',
+                          "alias roundingFact := Grothe.Lower.SharpEnvelope.rounded_lt\n",
+                          "some_future_command Grothe.Lower.SharpEnvelope.rounded_lt\n"):
+            _, problems = self.run_check(main=gone + "\n" + following)
+            self.assertEqual(len(problems), 1, following)
+            self.assertIn("must use exactly one rounding lemma", problems[0])
+            indented = "namespace N\n" + "".join("  " + l if l.strip() else l
+                                                 for l in (gone + "\n" + following).splitlines(keepends=True)) + "end N\n"
+            _, problems = self.run_check(main=indented)
+            self.assertEqual(len(problems), 1, following)
+
+    def test_bare_by_on_its_own_line_starts_the_proof(self):
+        main = MAIN.replace(":= by\n", ":=\nby\n", 1)
+        self.assertNotEqual(main, MAIN)
+        _, problems = self.run_check(main=main)
+        self.assertEqual(problems, [])
+
     def test_proof_starting_on_the_statement_line_or_the_next_is_read(self):
         for sep in (":=by", ":=\nby", ":= by"):
             main = MAIN.replace(":= by", sep, 1)

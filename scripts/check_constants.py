@@ -81,13 +81,6 @@ CONSTANT_LE = re.compile(
     r"^[ \t]*theorem\s+constant_le\s*:\s*Statement\.complexGrothendieckConstant\s*≤\s*" + RATIONAL + r"\s*:=",
     re.MULTILINE,
 )
-# the first token of a line that begins a new command, whatever its indentation
-NEXT_COMMAND = re.compile(
-    r"^[ \t]*(?:@\[|#|(?:theorem|lemma|def|abbrev|instance|example|structure|inductive|class|axiom|opaque|end|"
-    r"namespace|section|open|private|protected|noncomputable|unsafe|partial|attribute|variable|universe|"
-    r"set_option|macro|syntax|notation|elab|initialize|export|mutual)\b)",
-    re.MULTILINE,
-)
 EXACT_LOWER = re.compile(r"^[ \t]*theorem\s+endpoint_eq\s*:\s*endpoint\s*=\s*(\d+)\s*/\s*(\d+)\s*:=", re.MULTILINE)
 
 
@@ -162,19 +155,36 @@ def read_bounds(root: Path):
     return lower, upper
 
 
+def proof_body(code: str, m) -> str:
+    """The proof of the declaration matched by `m` (a match that ends at its `:=`), in comment-free source: the rest
+    of the `:=` line and the following lines that are indented more than the declaration. A bare `by` at any
+    indentation directly after the `:=` belongs to the proof. The first other line that is not indented more than
+    the declaration ends it, whatever it starts with: nothing after the proof is read."""
+    indent = len(re.match(r"[ \t]*", m.group(0))[0].expandtabs())
+    first, _, tail = code[m.end():].partition("\n")
+    body, started = [first], bool(first.strip())
+    for line in tail.split("\n"):
+        if not line.strip():
+            continue
+        if not started and line.strip() == "by":
+            started = True
+            continue
+        if len(line.expandtabs()) - len(line.expandtabs().lstrip()) <= indent:
+            break
+        started = True
+        body.append(line)
+    return "\n".join(body)
+
+
 def endpoint_file(root: Path):
     """The module (relative path) of the lower endpoint that main_bounds rounds, or None if it is not recognised.
 
-    The rounding lemma is looked for in the proof of main_bounds only: from the `:=` of its statement to the next
-    line that begins a command (a declaration, `end`, `namespace`, ..., at any indentation), comments removed. A
-    proof line that itself begins with such a keyword ends the search early, which can only refuse."""
+    The rounding lemma is looked for in the proof of main_bounds only (`proof_body`)."""
     main = lean_code(root / "Grothe/MainResult.lean")
     m = MAIN_BOUNDS.search(main)
     if not m:
         return None
-    rest = main[m.end():]
-    stop = NEXT_COMMAND.search(rest)
-    names = set(ROUNDING_LEMMA.findall(rest[:stop.start()] if stop else rest))
+    names = set(ROUNDING_LEMMA.findall(proof_body(main, m)))
     return f"Grothe/Lower/Cert/{names.pop()}.lean" if len(names) == 1 else None
 
 
