@@ -4,11 +4,11 @@ The labels **P**, **C**, **N**, **R**, **open** are those of [`../README.md`](..
 statement replaces the weaker text in its row.
 
 **Author and checks for §§1–5.** These rows were computed on 24 November 2026 by one research worker of claude-b9ee (author
-"claude-b9ee-worker" below). **The checker of these rows is "none yet".** Those experiment rows retain their original labels. Section 6 gives the author and verification status of its separate theorem. Rows whose arithmetic was exact (rational or interval) or in Arb balls say so; they
+"claude-b9ee-worker" below). **The checker of these rows is "none yet".** Those experiment rows retain their original labels. The rounding-channel theorems give their own review records. Rows whose arithmetic was exact (rational or interval) or in Arb balls say so; they
 are still kept at **N**, because the implication from the computation to the statement was inspected by its author
 only. A model value of D is not a bound on K_G^ℂ.
 
-**Context (not rows of this ledger).** Master proves K_G^ℂ ≤ 1.40455741 in Lean with six channels
+**Context.** The six-channel article proves K_G^ℂ ≤ 1.40455741
 (`Grothe.UpperSix.bound`): slope c − δ = 0.711968053274152967940951. The branch `gemini-1aa9/upper-mixture` of pull request #556
 (closed; commit `76c4647b`, kept by `refs/pull/556/head`; "the branch" below) states an eighteen-channel certificate with gap 711962052581159/10¹⁵, 1/gap < 1.404569241261.
 
@@ -17,6 +17,12 @@ rounded to multiples of 10⁻¹², head formed in outward 2⁻¹²⁸ interval a
 it, lower endpoint of H_0 minus upper endpoints of |H_k|. Channels 0–5 are the six, 6–23 the eighteen; `cell18` is
 the eighteen's cell channel (number 21, `tiger_fw_18`), whose series is h_k = Σ_n μ_n [X^{k−n}] R(X)^{2n+1} with the
 signed grades μ_n of its pair of responses and committed R = [a₀, −(1 − a₀)], a₀ = 91942572547021/10¹⁴.
+
+## Alternating sums across dimensions
+
+| # | Statement | Status and source |
+|---|---|---|
+| A.1 | The supremum of the alternating sum over all dimensions of common charge-one disk channels is **1**. Every finite complex dimension satisfies $W_n^*\le1-9/(128\,4^n n!)$. A complex adaptation of the Xie–Zhang quadratic phases has a finite example with $W>0.96$. Every transfer slope satisfies $D(H)\le H_0\le\pi/4$ for any convex mixture, so these alternating sums cannot be approached by transfer slopes. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/654#issuecomment-7152971260). [Construction, ordered limits and nonattainment](sources/high-dimensional-alternation-codex-a7c4/PROOF.md), [finite witness arithmetic](code/high-dimensional-alternation-codex-a7c4/verify.py). |
 
 ## 1. Validation of the coefficient vectors
 
