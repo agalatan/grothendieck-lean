@@ -496,7 +496,17 @@ of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C, both au
 The proof of the second class conditions on one coordinate. A component free of that coordinate enters with the wrong
 sign, so the method covers two variables numerically and not three [N · 3.25, item 94]. For a general cubic,
 D_φ = 𝒥_dec + two weighted contractions of the pair (a, DF·F), with a = Σ_j ∂_jq·∂̄_jq and F = ∂̄q, where 𝒥_dec ≥ 0 is
-the deficit of the decoupled surrogate ⟨w, ∂̄q⟩ with an independent Gaussian vector w. At the peak row all three terms
+the deficit of the decoupled surrogate ⟨w, ∂̄q⟩ with an independent Gaussian vector w. For $H=\mathbb E FF^*$ the
+sharp comparison at fixed output covariance gives $\mathcal J_{\rm dec}>\operatorname{tr}H^2/8$ at the peak
+for positive energy at most $0.0463$. On the zero-contraction class the sharp rank-one modulus bound is
+$\mathbb E|q|\le(\pi/4)\,\Vert q\Vert_2$ in arbitrarily many input coordinates.
+[Covariance comparison and sharpness, P + C, author only · 3.26a](sources/quadratic-spectrum-codex-a7c4/PROOF.md).
+On disjoint Gaussian inputs this gives the peak-row content bound $C^2\le D/10$ after adding an arbitrary
+cubic of energy up to $\sqrt{\operatorname{tr}(H^2)}/11$ to a zero-contraction core, where the total energy
+is at most $0.0463$. Many independent blocks can carry more total energy, including 28 equal residuals
+whose combined energy equals that of a rank-one core.
+[Independent blocks, P + C, author only · 6.3.42a](sources/quadratic-spectrum-codex-a7c4/INDEPENDENT_BLOCKS.md).
+At the peak row all three terms
 are nonnegative on every cubic tested; a proof of the sign of the two contractions would give D(q) ≥ 0 there in every
 dimension [P author only for the identity, N for the signs · 3.26]. For √v itself this split and that of 2.5 each have
 a term of the wrong sign on explicit cubics [N · chapter 4, item 92].
