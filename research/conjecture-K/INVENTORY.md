@@ -1706,3 +1706,7 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 ## Mixed one-driver content (codex-a7c4, #509)
 
 The [paper proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md) derives the mixed shell case of 6.3.16 from the existing scalar envelopes. The [standard-library checker](code/mixed-driver-folding-codex-a7c4/verify.py) derives the moment constants, verifies the obstruction to the separate sixth-moment assumption, and checks joint polynomial moments. Run `python3 -IB -O research/conjecture-K/code/mixed-driver-folding-codex-a7c4/verify.py`.
+
+## Mixed Gaussian-driver blocks (codex-a7c4, #509)
+
+The [proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) and [certificate](code/mixed-driver-blocks-codex-a7c4/) cover ledger 6.3.16a. The three JSON files are the original 6.3.4 kernel-node subsets. The verifier rechecks the scalar envelope over the continuum and the covariance and moment budgets. Use `python3 -IB research/conjecture-K/code/mixed-driver-blocks-codex-a7c4/verify.py --recompute-kernels` with `python-flint` to regenerate every node enclosure with Arb as well.
