@@ -3448,6 +3448,7 @@ import Grothe.LowerAnalytic.SparseWitness08
 import Grothe.LowerAnalytic.SparseWitness09
 import Grothe.LowerAnalytic.SparseWitnessData
 import Grothe.LowerAnalytic.SpectralBudget
+import Grothe.LowerAnalytic.StrongSchur
 import Grothe.LowerAnalytic.Tensor
 import Grothe.LowerAnalytic.WeightedSchurRows
 import Grothe.LowerAnalytic.WickChaos

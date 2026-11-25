@@ -12,9 +12,9 @@ version plus what the rulebook does not say.
 
 `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`), without hypotheses:
 
-    1.4020217618 < K_G^ℂ ≤ 1.404556392 < 1/γ† = 1.40457593…
+    1.4020221627 < K_G^ℂ ≤ 1.404556392 < 1/γ† = 1.40457593…
 
-- Lower bound: `14020217618 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
+- Lower bound: `14020221627 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
   (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
   The bound is the exact endpoint `sparse_stein_endpoint` rounded strictly downward.
 - Upper bound: `1404556392 / 1000000000`, weak (≤). Seven Gaussian rounding channels. The selector is in `Grothe/UpperSelector/`, on the six certified channels in `Grothe/UpperSix/` and `Grothe/UpperSixExact/`. `Grothe/UpperResult.lean` has exactly three theorems:

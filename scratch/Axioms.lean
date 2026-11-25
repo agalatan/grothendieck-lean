@@ -22,6 +22,8 @@ import Grothe
 #print axioms Grothe.Lower.ResponsePenalty.row_bound
 #print axioms Grothe.Lower.ResponsePenalty.row_bound_of_split
 #print axioms Grothe.Lower.ResponsePenalty.v_block
+#print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.pairGain_strongChord
+#print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.twoScale_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.gain_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 #print axioms Grothe.Lower.SparseEnvelope.endpoint_eq

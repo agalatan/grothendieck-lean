@@ -8,11 +8,11 @@ exact value, and that this page and the other documents state them.
 
 ## The current bounds
 
-$$1.4020217618 < K \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4020221627 < K \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.4020217618` | `14020217618 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
+| lower bound (strict) | `1.4020221627` | `14020221627 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
 | upper bound (weak, $\le$) | `1.404556392` | `1404556392 / 1000000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSeven.constant_le` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSeven.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -20,7 +20,7 @@ $$1.4020217618 < K \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 ```lean
 theorem main_bounds :
-    (14020217618 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
+    (14020221627 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404556392 / 1000000000
 ```
 
@@ -32,7 +32,7 @@ Each bound is the rounding of an exact value that Lean also states.
 
 | | exact value | decimal | theorem | rounding |
 |---|---|---|---|---|
-| lower endpoint ($\le K$) | the fraction `SparseEnvelope.endpoint` [below](#behind-the-lower-bound) | $1.402021761845880861\ldots$ | `Grothe.Statement.sparse_stein_endpoint` | strictly downward (`SparseEnvelope.rounded_lt`) |
+| lower endpoint ($\le K$) | the fraction `SparseEnvelope.endpoint` [below](#behind-the-lower-bound) | $1.402022162766089736\ldots$ | `Grothe.Statement.sparse_stein_endpoint` | strictly downward (`SparseEnvelope.rounded_lt`) |
 | upper bound ($K \le$) | $10^{27}/711968565817136711740669035$ | $1.404556391969756991\ldots$ | `Grothe.UpperSeven.bound` | up to nine decimals (`Grothe.UpperSeven.constant_le`) |
 
 **What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
@@ -70,15 +70,17 @@ gives $K \ge 1/B$ (`Grothe.Statement.sparse_stein_endpoint`).
 |---|---|---|
 | $\varepsilon,\nu$ | $191/250,\ 47/2000$ | cubic coefficient and identity-tail weight |
 | $\hat\varepsilon,\hat\nu$ | $25/31,\ 47/1953$ | normalized coefficients of the rows |
-| $\hat B$ | $70635503391/100000000000$ | scalar cap from the transported Stein cuts and two pairs of Gaussian gates |
-| $B=(1-\nu)\hat B+\nu$ | $142651138122623/200000000000000$ | witness scalar cap |
-| $1/B$ | `200000000000000 / 142651138122623` | exact lower endpoint, $1.4020217618458808614\ldots$ |
+| $\hat B$ | $8829435313/12500000000$ | scalar cap from the transported Stein cuts, the two pairs of Gaussian gates and the curvature of the central Schur complement |
+| $B=(1-\nu)\hat B+\nu$ | $17831387166289/25000000000000$ | witness scalar cap |
+| $1/B$ | `25000000000000 / 17831387166289` | exact lower endpoint, $1.4020221627660897369\ldots$ |
 
 In the central rows (0.835 and 0.845), a single circular cubic supplies the fourth excess and the residual scale.
 Dilating eleven plain Stein polynomials gives fourteen additional bounds for the row expectations. Lean checks
-the two expectations and their Gaussian gate on the same shape interval at each of nine mixture weights.
-Rows 0.82 and 0.83 use quadratic bounds for their potentials and the weighted gate for that pair.
-Taking the maximum on the 38-cell amplitude cover gives $\hat B$. [Exact endpoint](../Grothe/Lower/Cert/SparseEnvelope.lean) · [Proof and replay](../research/identity-tail/COUPLED_STEIN.md#transported-ordinates-and-the-outer-row-pair).
+the two expectations on each common shape interval at nine mixture weights, both globally and on scales
+up to 0.21. The Schur curvature floor $2019911/10^{10}$ and the small-scale prices yield a quadratic
+discount between the weights. Rows 0.82 and 0.83 use quadratic bounds for their potentials and their
+joint gate. The existing scalar rows 13 and 14 interpolate on the amplitude interval containing their crossover.
+Taking the maximum on the 38-cell amplitude cover gives $\hat B$. [Exact endpoint](../Grothe/Lower/Cert/SparseEnvelope.lean) · [Proof and replay](../research/identity-tail/CURVED_SCHUR.md).
 
 The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
 At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine

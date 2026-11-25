@@ -23,9 +23,8 @@ theorem profile {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (V t : ℝ) (Qh v : E) (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
     (hmass : V ≤ (1-1/2)*t^2+1/2+(massS : ℝ)-(ε : ℝ)*‖Qh‖^2)
     (hred : CircularSharedReduction rowData V t Qh v) : V ≤ (SparseEnvelope.cap : ℝ) := by
-  apply SparseEnvelope.profile_bound hv ht₀ ht₁ hred (tight_scalar_rows V t Qh v hmass hred)
-  intro w hw z hz hw₀ hw₁ hz₀ hz₁ x hx₀ hx₁
-  exact actual_deductions hred w z hw hz hw₀ hw₁ hz₀ hz₁ hx₀ hx₁
+  exact SparseEnvelope.profile_bound hv ht₀ ht₁ hred (tight_scalar_rows V t Qh v hmass hred)
+    (actual_deductions hred)
 
 theorem lower_of_nodeCaps (hcaps : TailNodeCaps (nuHat (47/2000))) {K : ℝ}
     (hK : IsGrothendieckBound K) : (SparseEnvelope.endpoint : ℝ) ≤ K := by
