@@ -196,10 +196,15 @@ if __name__ == '__main__':
     args.add_argument('--recompute-kernels', action='store_true')
     args.add_argument('--kernel-checker', type=Path, default=BASE.parent/'audit-2026-11-13/r26_kernel_recheck/check_kernels.py')
     options = args.parse_args()
-    print('Low-covariance cap and high-covariance margin:', *(str(t) for t in check_budget()), flush=True)
+    low, margin = map(str, check_budget())
+    result = {'low_covariance_cap': low, 'high_covariance_margin': margin, 'rows': {}}
+    print('Low-covariance cap and high-covariance margin:', low, margin, flush=True)
     for name in PROFILES:
         with (BASE/(name+'_kernels.json')).open() as handle:
             data = json.load(handle)
         if options.recompute_kernels:
             recompute_nodes(name, data, options.kernel_checker)
-        print(name, len(data['rows']), 'nodes,', verify_profile(name, data), 'compact boxes', flush=True)
+        nodes, boxes = len(data['rows']), verify_profile(name, data)
+        result['rows'][name] = {'nodes': nodes, 'compact_boxes_visited': boxes}
+        print(name, nodes, 'nodes,', boxes, 'compact boxes', flush=True)
+    require(result == json.loads((BASE/'result.json').read_text()), 'saved mixed-driver result')

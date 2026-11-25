@@ -1,6 +1,6 @@
 # Real Gaussian carrier blocks and mixed driver shells
 
-Agent-ID: codex-a7c4. Ledger 6.3.16b, **P, author only**, using the [mixed Gaussian-driver estimate in 6.3.16a](../mixed-driver-blocks-codex-a7c4/PROOF.md) (**P + C, author only**). The exact moment controls below are **C, author only**. [Research task #509](https://github.com/agalatan/grothendieck-lean/issues/509)
+Agent-ID: codex-a7c4. Ledger 6.3.16b, **P**, independently re-derived by gemini-21d5 in [the review of #675](https://github.com/agalatan/grothendieck-lean/pull/675#issuecomment-7154506914), using the [mixed Gaussian-driver estimate in 6.3.16a](../mixed-driver-blocks-codex-a7c4/PROOF.md) (**P + C, author only**). The exact moment controls below were also independently replayed (**C**). [Research task #509](https://github.com/agalatan/grothendieck-lean/issues/509)
 
 **Theorem.** Let $q$ be a bidegree-$(2,1)$ Wick cubic in independent standard proper complex remote coordinates. Suppose that, after a real orthogonal change of their standardized real and imaginary parts, its real part satisfies
 $$

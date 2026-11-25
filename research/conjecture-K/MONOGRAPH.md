@@ -574,13 +574,14 @@ driver, Y the other remote coordinates):
 |---|---|---|
 | q = X·P, P any centred variable independent of X with the moment bounds of 6.3.1; every complex quadratic P(Y) | 0.22 | P + C (audit) · 6.3.3 |
 | Gaussian-factor class Σ_j X_jP_j(Y), any number of drivers and coefficient matrices | 0.239 | P + C (audit) · 6.3.4 |
-| A real phase linear in a real Gaussian carrier block, including balanced odd/even driver-shell examples | 47/200 | P, author only, from 6.3.16a · [6.3.16b](sources/real-driver-blocks-codex-a7c4/PROOF.md) |
+| A real phase linear in a real Gaussian carrier block, including balanced odd/even driver-shell examples | 47/200 | P (independent review of #675), from the P + C, author-only inputs of 6.3.16a · [6.3.16b](sources/real-driver-blocks-codex-a7c4/PROOF.md) |
 | Mixed Gaussian drivers Σⱼ[XⱼPⱼ(Y) + X̄ⱼHⱼ(Y)], with arbitrary jointly dependent (1,1) and holomorphic (2,0) bath coefficients | 47/200 | P + C, author only · [6.3.16a](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) |
 | Complete one-driver self-interaction X[c(\|X\|² − 2) + P], arbitrary complex c ∈ ℂ and centred P ∈ L² independent of X, Wick share f = 2\|c\|²/u ∈ [1/16, 1] | 11/50 | P + C, author only · gemini-21d5 · 6.3.13 |
 | Small-Wick self-interaction X[c(\|X\|² − 2) + Y\*AY − tr A], arbitrary complex c ∈ ℂ and complex matrix A, f ∈ [0, 1/16] (hence all f ∈ [0, 1]) | 47/200 | P + C, author only · gemini-21d5 · 6.3.5, 6.3.14, 6.3.15 |
 | Mixed driver q = X[c(\|X\|² − 2) + P(Y)] + X̄H(Y), any complex centred (1,1) quadratic P and holomorphic quadratic H | 47/200 for every Wick share, 11/50 for f ≥ 1/16 | P (independent review of #664), from the P + C, author-only envelopes in 6.3.13–6.3.14 · 6.3.16 |
 | Wick neighbourhood X[c(\|X\|² − 2) + P], P centred independent of X, E\|P\|² ≤ u/5 | 9/40 | implications P (audit); scalar/cell premises C, author only · gemini-21d5 · 6.3.6 |
-| **peak row only:** p + h with p, h ∈ H₂,₁, p of charge one under rotation of a specified coordinate block, h with no component of that character, D(p) > 0, C(p)² ≤ (9/40)D(p), ‖p + h‖² ≤ 0.0463 and ‖h‖² ≤ D(p)/90 | 6/25 | P + C · 6.3.9b |
+| **peak row only:** p + h with p, h ∈ H₂,₁, p of charge one under rotation of a specified coordinate block, h with no component of that character, D(p) > 0, C(p)² ≤ (9/40)D(p), ‖p + h‖² ≤ 0.0463 and ‖h‖² ≤ D(p)/56 | 6/25 | P + C to D(p)/90 · 6.3.9b; P + C, author only to D(p)/56 · 6.3.9c |
+| Character core p under a compact unitary symmetry, h with zero component of that character. Includes opposite signs under negation of a driver block. D(p)>0, C(p)² ≤ κD(p), ‖p+h‖² ≤ 0.0463, ‖h‖² ≤ D(p)/n | 6/25 | For κ = 47/200, 9/40, 11/50 respectively, n = 167, 56, 42 on peak and flank and n = 160, 54, 40 on upper. P + C, author only · [6.3.9c](sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md) |
 
 The moment theorem behind the scalar proper Gaussian-factor and small-Wick results is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y\*AY − tr A, any complex
 A, p = E|P|² [P + C · 6.3.1]. The self-interaction family has a deficit identity whose Wick term |c|²𝓚(u) is strictly positive across the band (𝓚(u) > 0.0307 at all three rows, and 𝓚(0.0463) ∈ [0.16678146, 0.16678220] at the peak)
@@ -604,7 +605,7 @@ With several drivers and no self-interaction, the folded law is a proper Gaussia
 
 A real phase of the cubic can have an independent real Gaussian carrier even when no complex carrier exists. Angular averaging recovers the full content norm from the real coordinate covariances with a single sign. A three-coordinate example realizes every positive ratio of odd to even energy, including equal weights. Its normalized covariance is at most 2/3, giving C² ≤ (595896997819/3000000000000)D throughout this explicit family. [Real-driver proof](sources/real-driver-blocks-codex-a7c4/PROOF.md)
 
-**Open in L4:** mixtures of the odd-X core with the even-X terms (|X|² − 1)V(Y), X²W̄(Y) or R₀(Y) beyond the mixed-character neighbourhood of 6.3.9b and the real-block class [6.3.16–6.3.16b]; several
+**Open in L4:** mixtures of the odd-X core with the even-X terms (|X|² − 1)V(Y), X²W̄(Y) or R₀(Y) beyond the sign neighbourhood of 6.3.9c and the real-block class [6.3.16–6.3.16b]; several
 self-interacting drivers [6.3.17]; and the **raw content inequality for an arbitrary intermediate-kurtosis cubic on R**
 [open · 6.3.18].
 
@@ -1249,7 +1250,7 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    (χ ≤ 0.2809 across the band, τ_max ≤ 0.054), high excess χ ≥ 40.32, and independent blocks are covered (2.5 ·
    6.3.40–6.3.42), together with the complete one-driver self-interaction family across all shares and phases (2.5 · 6.3.13–6.3.15, author only) and bounded kurtosis against D (signed +10⁻⁶ on χ ≤ 841/10000, exact zero-slack across
    χ ≤ 49/625 with no near-Gaussian sliver; 2.5 · 6.3.43, author only). Open pieces at intermediate/high
-   kurtosis: the remaining even-character shells after folding X̄H(Y) (6.3.16) and several self-interacting drivers (6.3.17). By the
+   kurtosis: the remaining even-character shells beyond the sign neighbourhood (6.3.9c, 6.3.16) and several self-interacting drivers (6.3.17). By the
    local representation of 2.5, the content and
    the excess D − 𝒥_dec of the deficit over that of the decoupled surrogate (2.1) are linear in one pair of fields, so
    the target can be put as C² ≤ κ·(D − 𝒥_dec). Cauchy–Schwarz on either Stein pair falls short of the needed
