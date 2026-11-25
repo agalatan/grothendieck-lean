@@ -2,7 +2,8 @@
 """Repair (b) of the zero-content obstruction (checks/zero_content_budget.py): give a part eta_h of the room of a piece to the
 sectors other than A/B and recompute the allowances theta_j(u, chi) with the room that is left (N).  Standard library only.
 For each piece of D* that the obstruction hits, and each variant
-   fundMin :  eta_h = the lower bound of the eta_h needed by the zero-content pairs with the split of D* (kappa_h(10) = 1 - kappa_AB(10) - 1/50),
+   fundMin :  eta_h = the lower bound of the eta_h needed by the zero-content pairs with the split of D* (kappa_h(10) = 1 - kappa_AB(10) - 1/50);
+              a sensitivity calculation only: as an allocation it is false (checks/codex_a7c4_fundmin_test.py),
    fundFull:  eta_h = the whole gain F(nu') - F(nu5) at the upper end of the piece (upper bound), leaving kappa_h X for everything else,
    ctl     :  eta_h = 0 (control: must reproduce the allowances of tables/fin_table.json),
 it writes the band file of scripts/r4_theta6.py with the reduced room and the command line of the design run with only the band file

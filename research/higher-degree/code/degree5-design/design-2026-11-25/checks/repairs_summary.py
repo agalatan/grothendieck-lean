@@ -14,10 +14,12 @@ base = chosen(T('fin_table.json')); mn = chosen(T('funded', 'fin_table_fundMin.j
 rooms = {(r['j'], r['variant']): r for r in json.load(open(T('funded', 'rooms.json')))}
 print('### (b) A part eta_h of the room given to the sectors other than A/B; allowances recomputed with the room left (N)')
 print()
+print('fundMin is FALSE as an allocation (checks/codex_a7c4_fundmin_test.py: the same pairs at lambda = 10^-12 need more than it gives on each of the pieces 1-11); its columns are a sensitivity calculation only.')
+print('"not hit" = the zero-content pairs do not contradict eta_h = 0 on the piece; that eta_h = 0 suffices there is not shown.')
 print('fundMin: eta_h = the lower bound of the eta_h that the zero-content pairs force with the split of D*; fundFull: eta_h = the whole gain F(nu\') - F(nu5) at the upper end of the piece.')
 print('Per variant: eta_h (share of the room), the smallest allowance on the grid, the smallest factor allowance/ratio per cell, and with one constant per energy.')
 print()
-print('| j | piece | row | room | eta_h = 0: min theta, factor per cell, per energy | fundMin: eta_h (share) | min theta, per cell, per energy | fundFull: eta_h (share) | min theta, per cell, per energy |')
+print('| j | piece | row | room | eta_h = 0: min theta, factor per cell, per energy | fundMin (refuted allocation): eta_h (share) | min theta, per cell, per energy | fundFull: eta_h (share) | min theta, per cell, per energy |')
 print('|---|---|---|---|---|---|---|---|---|')
 f3 = lambda c: '%.3f, %.2f, %.2f' % (c['band_min'], c['factor_per_cell'], c['factor_one_constant'])
 for j, (b, m, f) in enumerate(zip(base, mn, fl), 1):
@@ -25,7 +27,7 @@ for j, (b, m, f) in enumerate(zip(base, mn, fl), 1):
     rm, rf = rooms.get((j, 'fundMin')), rooms.get((j, 'fundFull'))
     e = lambda r: ('%.4e (%.1f %%)' % (r['eta_h'], 100 * r['share_of_room'])) if r else '0 (not hit)'
     print('| %d | [%.6f, %.6f] | %s | %.4e | %s | %s | %s | %s | %s |' % (j, b['a'], b['b'], b['row_tag'], b['room'], f3(b), e(rm), f3(m), e(rf), f3(f)))
-for nm, cs in (('eta_h = 0', base), ('fundMin', mn), ('fundFull', fl)):
+for nm, cs in (('eta_h = 0 (false on pieces 1-11)', base), ('fundMin (false on pieces 1-11; sensitivity only)', mn), ('fundFull', fl)):
     w = min(cs, key=lambda c: c['factor_per_cell']); w1 = min(cs, key=lambda c: c['factor_one_constant'])
     print()
     print('%s: smallest factor per cell %.2f (piece [%.4f, %.4f], %s, u/cap %.2f, chi %.1f, ratio %.3f, allowance %.3f); with one constant per energy %.2f' % (

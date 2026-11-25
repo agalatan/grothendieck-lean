@@ -26,9 +26,10 @@ mu in [0.886226925452757, 0.886226925452759], gamma in [0.21650635094610962, 0.2
 | 21 | [0.884136, 0.886227] | 0.886 | 0.886000 | 0.0149470 | 0.0149431 | -1.8804e-10 | 5.3567e-05 | -0.0000 | 0.1600 | 0.1800 | -8.5724e-06 | -9.6438e-06 | 1.3896e-03 | no |
 
 pieces of D* on which the allocation eta_h = 0 with the split of D* is refuted (given H4, H5): 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+on the other pieces these pairs do not contradict eta_h = 0; that it suffices there is not shown
 
 ### The published pieces of ledger 4.17 (rows2b.json: row constants at 95133/100000; piece ends from A_reproduce/assemble2b_rerun.log)
-share needed = the smallest share of X = S5 - Lambda5(q) that the non-A/B sectors must have on that piece when no part of the room is given to them
+share needed = a lower bound of the share of X = S5 - Lambda5(q) that the non-A/B sectors must have on that piece when no part of the room is given to them (necessary, not sufficient)
 | row | piece | t | gain > | cap < | share needed > | eta_h needed > at kappa_h = 0.18 | room |
 |---|---|---|---|---|---|---|---|
 | 0.700 | [0.6470, 0.6715] | 0.6715 | 1.4562e-03 | 3.7340e-02 | 0.0390 | -5.2650e-03 | 9.60e-03 |

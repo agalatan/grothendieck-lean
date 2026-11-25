@@ -234,9 +234,11 @@ Three things are kept apart in this section.
 - **The allocation η_h = 0** gives the whole room of every piece to the A/B sector. The allowances and factors of the
   first columns of the table below were computed under it. **It is false on pieces 1–11** (§5.5): actual pairs with
   zero content need a part of the room for the visible quintic.
-- **The funded allocation** gives to the other sectors, on pieces 1–11, the part η_h,j of the room that those pairs
-  account for, and recomputes the allowances with the rest (§5.6; the last columns of the table). It is not refuted
-  by anything computed here; whether its η_h,j is enough is part of H8, which is open.
+- **The funded allocation** gives to the other sectors, on pieces 1–11, the whole gain of those pairs at the upper end
+  of the piece as η_h,j, and recomputes the allowances with the rest (§5.6, *fundFull*; the last columns of the table).
+  It is not refuted by anything computed here. Whether its η_h,j is enough on pieces 1–11, and whether η_h,j = 0 is
+  enough on pieces 12–21, is part of H8, which is open. (A second funding, with only the lower bound that those pairs
+  force, is false: §5.6.)
 
 Two changes against the record: the tilt (σ_A, σ_B) = (2/5, 3/20) on every row, and the content law posed per cell (u, χ) instead of one
 constant per energy. Sources: `CODE/tables/fin_table.md` and `fin_table.json` (`design_final.py`, `final_table.py`:
@@ -300,7 +302,8 @@ relaxation, and the factors there are 50 divided by the largest ratio found.
 **What the table shows (N).**
 - **Funded allocation** (last three columns; §5.6). Posed per cell, the weakest piece is the first, [0.649, 0.67] ←
   row 0.74, with factor 2.76 (a c = 4 cluster cubic with χ = 18.3 at 0.60u_cap: ratio 0.055 against allowance 0.151);
-  pieces 2–11 have 2.78 to 3.46 and pieces 12–21, which need no funding, at least 4.24.
+  pieces 2–11 have 2.78 to 3.46 and pieces 12–21 at least 4.24. (On pieces 12–21 η_h = 0 is kept because the pairs of
+  §5.5 do not contradict it there; that no funding suffices on those pieces is not shown.)
 - **Allocation η_h = 0** (false on pieces 1–11). The same quantities are 2.87 on piece 1, 2.99 to 3.44 on pieces 2–8,
   3.54, 3.52, 3.87 on pieces 9–11: funding the other sectors costs 4 to 11 % of the smallest factor of a piece.
 - With one constant per energy the design has, at η_h = 0, 0.84, 0.94, 0.98, 1.11, 1.23, 1.40, 1.66, 1.97 on pieces
@@ -548,9 +551,12 @@ The left side is the gain of moving the visible quintic from the row's ν₅ to 
 λ → 0, and the last two terms do. On the rows of the pieces below 0.835, ν₅ (tuned for the Gaussian response at the
 reference energy) is 0.0052 to 0.0103 and ν′ is 0.0113 to 0.0141.
 
-**The numbers** (exact bounds; at the upper end of each piece, λ = 10⁻⁹; "share needed" is gain/(G⁺ − F(ν₅)), the
-smallest κ_h that works with η_h = 0; κ_h(10) of D\* is 1 − κ_AB(10) − 1/50; the last column is the lower bound of
-the η_h that these pairs force with the split of D\*):
+**The numbers** (exact bounds; at the upper end of each piece, λ = 10⁻⁹). "Share needed" is gain/(G⁺ − F(ν₅)): with
+η_h = 0 no κ_h below it can work. It is a **necessary lower bound, not a sufficient share**: H4 gives only S₅ ≤ G⁺,
+and with the Gaussian benchmark S₅ itself in place of G⁺ the quotient is larger (0.0544 against 0.0482 on piece 1,
+0.0865 against 0.0858 on piece 11; N, `CODE/tables/nu_matched/zero_energy_deficit.log`). κ_h(10) of D\* is
+1 − κ_AB(10) − 1/50. The last column is a lower bound of the η_h that these pairs force with the split of D\*, at this
+λ; smaller λ force slightly more (§5.6), and other pairs may force more:
 
 | j | piece | row | ν₅ | ν′ | gain > | G⁺ − F(ν₅) < | share needed > | κ_h(10) of D\* | η_h needed > | room |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -565,8 +571,8 @@ the η_h that these pairs force with the split of D\*):
 | 9 | [0.810, 0.814337] | 0.81 | 0.00899 | 0.01373 | 4.3681·10⁻⁴ | 5.5383·10⁻³ | 0.0789 | 0.0293 | 2.7454·10⁻⁴ | 1.1563·10⁻³ |
 | 10 | [0.814337, 0.824827] | 0.82 | 0.00965 | 0.01391 | 3.4690·10⁻⁴ | 4.2099·10⁻³ | 0.0824 | 0.0367 | 1.9239·10⁻⁴ | 7.4029·10⁻⁴ |
 | 11 | [0.824827, 0.834856] | 0.83 | 0.01034 | 0.01408 | 2.6300·10⁻⁴ | 3.0647·10⁻³ | 0.0858 | 0.0293 | 1.7320·10⁻⁴ | 4.7347·10⁻⁴ |
-| 12–19 | 0.834856 to 0.878570 | 0.84–0.875 | | | 1.86·10⁻⁴ to 1.34·10⁻⁵ | | 0.089 to 0.102 | 0.133 to 0.160 | none | |
-| 20, 21 | 0.878570 to 0.886227 | 0.88, 0.886 | | | 4.3·10⁻⁶, < 0 | | 0.068, none | 0.160 | none | |
+| 12–19 | 0.834856 to 0.878570 | 0.84–0.875 | | | 1.86·10⁻⁴ to 1.34·10⁻⁵ | | 0.089 to 0.102 | 0.133 to 0.160 | none forced by these pairs | |
+| 20, 21 | 0.878570 to 0.886227 | 0.88, 0.886 | | | 4.3·10⁻⁶, < 0 | | 0.068, none | 0.160 | none forced by these pairs | |
 
 **What is false, and what is not.**
 - **False:** on each of the pieces 1–11, the conjunction of H4_j, H5_j and H8_j with the splits of D\* and η_h,j = 0
@@ -578,13 +584,16 @@ the η_h that these pairs force with the split of D\*):
 - **Its source** is the comparator: H8 measures every pair against the q-only value at the fixed ν₅ of the row, and
   the χ-dependent split of ledger 4.34 leaves to the other sectors a share of the deficit (0.029 at χ = 10) that was
   measured along the one-spike family only. The gain F(ν′) − F(ν₅) is not small against the deficit at zero energy:
-  it needs a share of 0.048 to 0.086.
+  it needs a share of at least 0.048 to 0.086.
 - **Not affected:** the exact pieces and rooms of D\* (they are scalar envelopes of row parabolas and do not depend on
   the allocation); the implication of §5.3 (a design with other splits or with η_h > 0 can satisfy its hypotheses);
-  pieces 12–21, where the constant splits leave κ_h = 0.13 to 0.16 against a needed 0.09 to 0.10; the conditional
-  certificate of ledger 4.17, whose hypothesis K₅ compares with the supremum over ν of the scalar value and has no
-  split (second table of `zero_content_budget.log`: on its published pieces the share needed is 0.039 to 0.102, so
-  the constant split κ_AB = 0.82 of ledger 4.29 passes this test too). Affected in the same way: every allowance of
+  the conditional certificate of ledger 4.17, whose hypothesis K₅ compares with the supremum over ν of the scalar
+  value and has no split.
+- **Not contradicted by these pairs, which is all that is shown:** pieces 12–21, where the constant splits leave
+  κ_h = 0.13 to 0.16 against the lower bound 0.09 to 0.10 (0.068 on piece 20, none on piece 21); and the constant split
+  κ_AB = 0.82 of ledger 4.29 on the published pieces of 4.17 (second table of `zero_content_budget.log`: lower bound
+  0.039 to 0.102 against 0.18). This family escapes there; that η_h = 0 suffices on those pieces would need a separate
+  argument and is not claimed. Affected in the same way: every allowance of
   the record computed with the χ-dependent split and the whole room (ledger 4.31, 4.32, 4.34).
 - The pairs have payoff far below the target; they refute an allocation, not the certificate route.
 
@@ -598,10 +607,16 @@ Scripts `CODE/checks/funded_rooms.py` (band files and command lines), `CODE/scri
 `final_table.py` (unchanged), `CODE/checks/repairs_summary.py`; outputs `CODE/tables/funded/` and `CODE/tables/REPAIRS.md`.
 - *fundFull* (the funded allocation of §4): η_h,j = the gain F(ν′) − F(ν₅) at the upper end of the piece (the column
   "gain" of §5.5, taken as an upper bound): 12.4 % of the room on piece 1, 21.8 % on piece 7, 37.8, 46.9 and 55.5 % on
-  pieces 9, 10, 11. With it the inequality of §5.5 holds for those pairs at every t of the piece once λ is small,
-  because X(q) → S₅ − F(ν₅) > 0 (1.9·10⁻² on piece 1 down to 3.0·10⁻³ on piece 11;
-  `CODE/tables/nu_matched/zero_energy_deficit.log`).
-- *fundMin*: η_h,j = the lower bound of §5.5 (last column): 4.9 % of the room on piece 1 up to 36.6 % on piece 11.
+  pieces 9, 10, 11. With it the necessary condition of §5.5 is met by those pairs at every t of the piece and every
+  small λ, with the slack κ_h(10)·X(q), where X(q) → S₅ − F(ν₅) > 0 as λ → 0 (1.9·10⁻² on piece 1 down to 3.0·10⁻³ on piece
+  11; N, `CODE/tables/nu_matched/zero_energy_deficit.log`). This removes one obstruction; it is not a proof of H8 for
+  those pairs at every λ, nor for any other pair.
+- *fundMin*, a sensitivity calculation, **false as an allocation**: η_h,j = the lower bound of §5.5 (last column): 4.9 %
+  of the room on piece 1 up to 36.6 % on piece 11. That number is a necessary lower bound computed at λ = 10⁻⁹, and
+  an allocation that spends exactly it is contradicted by the same family at smaller λ: at λ = 10⁻¹² the pairs need
+  more than fundMin gives by over 1.57·10⁻⁹ on each of the pieces 1–11 (exact; found by codex-a7c4 in the re-review
+  of PR #646, `CODE/checks/codex_a7c4_fundmin_test.py`, `.log`). Its allowances and factors are kept only to show
+  how the allowances move with the funding.
 - The allowances θ_j(u, χ) were recomputed with the room that is left (same program, margins, splits and grid). A
   control run with η_h = 0 reproduces the allowances of §4 to the tolerance 10⁻² of the program's bisection
   (`CODE/tables/funded/control.log`), so differences below 1 % mean nothing.
@@ -610,21 +625,24 @@ Scripts `CODE/checks/funded_rooms.py` (band files and command lines), `CODE/scri
   cell: 2.76, 2.78, 2.97, 2.98, 3.05, 3.13, 3.20, 3.23, 3.18, 3.17, 3.46 on pieces 1–11 (2.87, 2.99, 3.14, 3.18, 3.26,
   3.32, 3.38, 3.44, 3.54, 3.52, 3.87 at η_h = 0); pieces 12–21 are unchanged (at least 4.24). The allowances per cell
   are in `CODE/tables/funded/THETA_TABLE_fundFull.md`.
-- **fundMin:** 2.83, 2.90, 3.04, 3.07, 3.14, 3.21, 3.25, 3.32, 3.31, 3.34, 3.60.
-- The loss is small because on these pieces the allowance is carried by the share κ_AB·X of the deficit more than by
-  the room. What is not shown: that η_h,j is enough. It accounts for one family of pairs, at λ → 0; pairs that combine
-  a shift of the visible quintic with content, with the other sectors or with a larger remote energy may need more.
+- **fundMin (refuted allocation; sensitivity only):** 2.83, 2.90, 3.04, 3.07, 3.14, 3.21, 3.25, 3.32, 3.31, 3.34, 3.60.
+- The allowances move much less than the room (a funding of 12 to 56 % of the room lowers them by 12 to 30 %). What
+  is not shown: that the η_h,j of fundFull is enough on pieces 1–11, or that η_h,j = 0 is enough on pieces 12–21.
+  fundFull accounts for one family of pairs, as λ → 0; pairs that combine a shift of the visible quintic with
+  content, with the other sectors or with a larger remote energy may need more.
 
 **(a) Compare at the quintic coefficient of the pair instead of the fixed ν₅.**
 For real ν let r^ν be the row r with ν in place of ν₅, and Λ₅^ν, S₅^ν, X^ν, G_AB^ν, c_X^ν, Ω̂_X^ν the objects of §5.1 for
 r^ν. Two forms.
 - *ν-matched.* **H8ν_j:** for every pair with t ∈ I_j and u > 0 there is ν in an interval N_j with
   Λ̂₅^+(G₃, G₅) − Λ₅^ν(q) ≤ G_AB^ν(q) + κ_h,j(χ)·X^ν(q) + η_h,j. If H5_j, H6_j, H7_j hold for every row r_j^ν, ν ∈ N_j, the
-  proof of §5.3 goes through with ν in place of ν₅: step (3d) uses the supremum over ν that H4 already contains. For
-  the pairs of §5.5 take ν = ν′: the left side is at most G_AB^{ν′}(q) (the point r = 0 of its supremum), so H8ν holds
-  with η_h = 0 as soon as X^{ν′}(q) ≥ 0, which is the case for small λ since S₅^{ν′} − F(ν′) > 0 (1.76·10⁻² on piece 1
-  down to 2.6·10⁻³ on piece 11, N; same log). **The obstruction vanishes on every piece.** The price is H5–H7 on an
-  interval of ν containing at least [ν₅, ηγa_{j+1}].
+  proof of §5.3 goes through with ν in place of ν₅: step (3d) uses the supremum over ν that H4 already contains
+  (**P**, author only; not written out line by line). For the pairs of §5.5 take ν = ν′: the left side is at most
+  G_AB^{ν′}(q) (the point r = 0 of its supremum), so for such a pair H8ν holds with η_h = 0 as soon as X^{ν′}(q) ≥ 0.
+  **On pieces 1–11** this is the case for small λ, because there S₅^{ν′} − F(ν′) > 0 (1.76·10⁻² on piece 1 down to
+  2.6·10⁻³ on piece 11; N, same log): on those pieces the pairs of §5.5 no longer contradict η_h = 0. For pieces 12–21
+  the ν-matched quantities were not computed. Nothing is shown for other pairs. The price is H5–H7 on an interval
+  of ν containing at least [ν₅, ηγa_{j+1}].
 - *What that costs, at the far end ν = ν′ of the interval* (scripts `CODE/checks/nu_matched.py`, the profile program
   of the working folder, `margin_scan.py`, `r4_theta6.py`; outputs `CODE/tables/nu_matched/`, summary in
   `REPAIRS.md`), on pieces 1–11, with the whole room and η_h = 0:
@@ -639,14 +657,16 @@ r^ν. Two forms.
     outside it, although a pair's quintic coefficient is not confined to it.
 - *Max form.* **H8′_j:** Λ̂₅^+(G₃, G₅) ≤ max{sup_ν Λ₅^ν(q), Λ₅(q) + G_AB(q) + κ_h,j(χ)·X(q)} + η_h,j. It is implied by H8,
   it keeps H4–H7 as they are (the first branch is at most G⁺ by H4, the second is step (3c)), and every pair with
-  G₃ = q and G₅ a real multiple of e₃₂ satisfies it with η_h = 0 exactly (take ξ = 0 in Λ̂₅). So the pairs of §5.5
-  do not contradict it on any piece. It is untested for pairs that combine a shift of the visible quintic with an
+  G₃ = q and G₅ a real multiple of e₃₂ satisfies it with η_h = 0 exactly (take ξ = 0 in Λ̂₅; this argument is exact and
+  separate from the numerical gaps of the ν-matched form). So the pairs of §5.5 do not contradict it on any piece. It is untested for pairs that combine a shift of the visible quintic with an
   A/B or other-sector gain, where the two gains would have to fit under a maximum, not a sum; no claim is made.
 
 **What the two repairs show together.** The pairs of §5.5 refute a bookkeeping choice (fixed ν₅, no room for the
-other sectors, a share of the deficit read off one family), not the pieces, the rooms or the per-cell posing. Under
-either repair the content law keeps, numerically, allowances within about 30 % of those of §4, and under (b) a
-smallest factor of 2.76. H8 in whichever form is used remains open, with no written proof plan.
+other sectors, a share of the deficit read off one family), not the pieces, the rooms or the per-cell posing. With
+the funding fundFull the content law keeps, numerically, allowances within 30 % of those of §4 and a smallest factor
+of 2.76; in the ν-matched form, at the one value ν′ computed on pieces 1–11, the allowances are within 6 % of those
+of §4. These are statements about one family of pairs and about allowances; H8 in whichever form is used remains
+open, with no written proof plan, and the part of the room it needs is bounded only from below.
 
 ---
 
@@ -683,7 +703,7 @@ compares each with the committed output: all identical (`CODE/checks/replay_exac
 on 25 November 2026). The same script recomputes the exact table of §5.5 (`checks/zero_content_budget.py`) and the
 summary of §5.6 from the stored outputs. codex-a7c4's replay for piece 7 runs from the repository root
 (`checks/codex_a7c4_piece7_replay.py`; output `checks/codex_a7c4_piece7_replay.log`: required gain > 0.00041403,
-available < 0.00029072).
+available < 0.00029072), and so does its test that refutes fundMin (`checks/codex_a7c4_fundmin_test.py`).
 
 Run for §5.6 by the recording worker on the droplet (four cores, about 45 minutes in all, folder removed afterwards):
 33 runs of the allowance program (11 pieces × {η_h = 0 control, fundMin, fundFull}), and for the ν-matched rows 11
@@ -702,8 +722,10 @@ conic programs, ratio searches) other than the control of §5.6, whose programs 
   (everything to the A/B sector, the χ-dependent split, the comparator at the row's ν₅) is false on the eleven
   pieces below 0.835: actual pairs with zero content show it (§5.5). With the visible quintic funded from the room
   (§5.6 (b)) every piece has, against every cubic evaluated, a factor of at least 2.76 between the allowance and the
-  largest ratio found; with the comparator at the pair's own quintic coefficient (§5.6 (a)) the obstruction vanishes
-  and the allowances do not fall, at the price of the secant and content hypotheses on an interval of ν. Numerically
+  largest ratio found; with the comparator at the pair's own quintic coefficient (§5.6 (a)) those pairs no longer
+  contradict η_h = 0 on the eleven pieces and the allowances computed at ν′ are within 6 % of the original ones, at
+  the price of the secant and content hypotheses on an interval of ν. Neither repair is shown to be sufficient: the
+  funding covers one family of pairs, and a funding with only the lower bound that family forces is false. Numerically
   the A/B content part does not look like the place where the programme breaks. That is all the computation
   supports: the margins are scans (upper bounds of infima), the ratios are searches in at most 13 variables (lower
   bounds of suprema, and the record shows growth with the number of variables), the allowances are float programs on

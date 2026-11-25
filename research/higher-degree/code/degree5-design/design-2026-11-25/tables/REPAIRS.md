@@ -1,9 +1,11 @@
 ### (b) A part eta_h of the room given to the sectors other than A/B; allowances recomputed with the room left (N)
 
+fundMin is FALSE as an allocation (checks/codex_a7c4_fundmin_test.py: the same pairs at lambda = 10^-12 need more than it gives on each of the pieces 1-11); its columns are a sensitivity calculation only.
+"not hit" = the zero-content pairs do not contradict eta_h = 0 on the piece; that eta_h = 0 suffices there is not shown.
 fundMin: eta_h = the lower bound of the eta_h that the zero-content pairs force with the split of D*; fundFull: eta_h = the whole gain F(nu') - F(nu5) at the upper end of the piece.
 Per variant: eta_h (share of the room), the smallest allowance on the grid, the smallest factor allowance/ratio per cell, and with one constant per energy.
 
-| j | piece | row | room | eta_h = 0: min theta, factor per cell, per energy | fundMin: eta_h (share) | min theta, per cell, per energy | fundFull: eta_h (share) | min theta, per cell, per energy |
+| j | piece | row | room | eta_h = 0: min theta, factor per cell, per energy | fundMin (refuted allocation): eta_h (share) | min theta, per cell, per energy | fundFull: eta_h (share) | min theta, per cell, per energy |
 |---|---|---|---|---|---|---|---|---|
 | 1 | [0.649000, 0.670000] | 0.740 | 8.3445e-03 | 0.108, 2.87, 0.84 | 4.0643e-04 (4.9 %) | 0.106, 2.83, 0.83 | 1.0374e-03 (12.4 %) | 0.104, 2.76, 0.81 |
 | 2 | [0.670000, 0.690000] | 0.760 | 5.5987e-03 | 0.128, 2.99, 0.94 | 3.8348e-04 (6.8 %) | 0.126, 2.90, 0.93 | 8.4770e-04 (15.1 %) | 0.124, 2.78, 0.91 |
@@ -27,9 +29,9 @@ Per variant: eta_h (share of the room), the smallest allowance on the grid, the 
 | 20 | [0.878570, 0.884136] | 0.880 | 1.1099e-03 | 50.000, 36.52, 36.52 | 0 (not hit) | 50.000, 36.52, 36.52 | 0 (not hit) | 50.000, 36.52, 36.52 |
 | 21 | [0.884136, 0.886227] | 0.886 | 1.3896e-03 | 50.000, 32.80, 32.80 | 0 (not hit) | 50.000, 32.80, 32.80 | 0 (not hit) | 50.000, 32.80, 32.80 |
 
-eta_h = 0: smallest factor per cell 2.87 (piece [0.6490, 0.6700], c=4 clusters, u/cap 0.60, chi 27.6, ratio 0.043, allowance 0.122); with one constant per energy 0.84
+eta_h = 0 (false on pieces 1-11): smallest factor per cell 2.87 (piece [0.6490, 0.6700], c=4 clusters, u/cap 0.60, chi 27.6, ratio 0.043, allowance 0.122); with one constant per energy 0.84
 
-fundMin: smallest factor per cell 2.83 (piece [0.6490, 0.6700], c=4 clusters, u/cap 0.60, chi 27.6, ratio 0.043, allowance 0.121); with one constant per energy 0.83
+fundMin (false on pieces 1-11; sensitivity only): smallest factor per cell 2.83 (piece [0.6490, 0.6700], c=4 clusters, u/cap 0.60, chi 27.6, ratio 0.043, allowance 0.121); with one constant per energy 0.83
 
 fundFull: smallest factor per cell 2.76 (piece [0.6490, 0.6700], c=4 clusters, u/cap 0.60, chi 18.3, ratio 0.055, allowance 0.151); with one constant per energy 0.81
 

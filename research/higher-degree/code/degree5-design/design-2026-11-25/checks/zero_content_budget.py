@@ -13,10 +13,12 @@ and S_5 <= G+ = C - 2 beta^2/eps (H4).  Given G_AB(q) <= 0 (zero contents and a 
 and the room share eta_h needs
     gain(t) := F(nu') - F(nu5)  <=  kappa_h (G+ - F(nu5)) + eta_h + 2 ||D||_2 sqrt(u) + kappa_h k_q u.
 Printed per piece, at the upper end t = b of the piece (gain increases with t while nu' < eta mu gamma) and lam = 10^-9:
-  gain (lower bound), cap = G+ - F(nu5) (upper bound), share needed = gain/cap (the smallest kappa_h that works with eta_h = 0),
+  gain (lower bound), cap = G+ - F(nu5) (upper bound), share needed = gain/cap (with eta_h = 0 no kappa_h below it can work: a necessary lower bound, not a sufficient share, since H4 gives only S5 <= G+),
   the design's kappa_h(10) = 1 - kappa_AB(10) - 1/50 and the largest unassigned share over chi, max_chi (1 - kappa_AB(chi)),
   eta_h needed (lower bound) with the design's kappa_h(10), and the room of the piece.
-A positive "eta_h needed" refutes the allocation eta_h = 0 on that piece (given H4 and H5).
+A positive "eta_h needed" refutes the allocation eta_h = 0 on that piece (given H4 and H5).  "eta_h needed" is a lower bound at this lambda:
+a smaller lambda forces slightly more (checks/codex_a7c4_fundmin_test.py), and a non-positive value shows only that these pairs do not
+contradict eta_h = 0 on the piece, not that eta_h = 0 suffices there.
 With a file name as argument it also writes the numbers of the first table as JSON (exact fractions as strings), the input of
 checks/funded_rooms.py.
 usage (from design-2026-11-25/):  python3 -I checks/zero_content_budget.py [tables/zero_content_budget.json] > checks/zero_content_budget.log"""
@@ -79,10 +81,11 @@ for c in ft['cases']:
         float(need[0]), float(need[1]), float(F(c['room_exact'])), verdict))
 print()
 print('pieces of D* on which the allocation eta_h = 0 with the split of D* is refuted (given H4, H5): %s' % (', '.join(map(str, hit)) or 'none'))
+print('on the other pieces these pairs do not contradict eta_h = 0; that it suffices there is not shown')
 if len(sys.argv) > 1: json.dump(dump, open(sys.argv[1], 'w'), indent=1)
 print()
 print('### The published pieces of ledger 4.17 (rows2b.json: row constants at 95133/100000; piece ends from A_reproduce/assemble2b_rerun.log)')
-print('share needed = the smallest share of X = S5 - Lambda5(q) that the non-A/B sectors must have on that piece when no part of the room is given to them')
+print('share needed = a lower bound of the share of X = S5 - Lambda5(q) that the non-A/B sectors must have on that piece when no part of the room is given to them (necessary, not sufficient)')
 print('| row | piece | t | gain > | cap < | share needed > | eta_h needed > at kappa_h = 0.18 | room |')
 print('|---|---|---|---|---|---|---|---|')
 r2 = json.load(open(os.path.join(here, '..', '..', 'degree5-attack', 'rows2b.json')))['rows']; Cs = {r['tag']: r for r in r2}

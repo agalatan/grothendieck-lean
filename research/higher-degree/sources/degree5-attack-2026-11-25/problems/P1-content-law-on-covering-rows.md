@@ -418,7 +418,8 @@ Energies outside the band; one constant for all energies (false, §4); in Case I
     With one constant per energy this design is still contradicted on its pieces 1–3 (last column of the table of
     §2.0: 0.81, 0.91, 0.95); the per-cell form is what leaves room.
   - *What Case I does not guarantee.* The part η_h,j of the room left to the other sectors is what one family of
-    pairs accounts for (12 to 56 % of the room on the pieces 1–11, none above); if those sectors need more, the
+    pairs accounts for (12 to 56 % of the room on the pieces 1–11, none above: a lower bound of what they need, on
+    every piece, not a value known to suffice); if those sectors need more, the
     allowances fall further (with half of the whole room they are 9 to 44 % below the values at η_h,j = 0 on the
     three pieces computed, 1, 4 and 13). The profiles are those of float rows
     that differ from the rational rows of the certificate by up to 3·10⁻⁵. The ratios were searched in at most 13
