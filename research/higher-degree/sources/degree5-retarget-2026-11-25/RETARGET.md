@@ -387,7 +387,7 @@ ledger 1.4 has 1.404113. With a tail the values change by at most 2·10⁻⁶ at
 worth 1.4037, not 1.4041**: at ε = 0.85 it gains 2.9·10⁻⁵ of value over degree 5 (1.7·10⁻⁵ over degree 5 with tail),
 and at ε = 0.82 nothing. The step from degree 5 to degree 7 recorded in ledger 1.9 (2.4·10⁻⁴) is bought entirely with
 cubic weight above 0.85: in such a certificate it needs a proved radius of 0.900 for ε = 0.88 (1.40395) and 0.8866 for the optimum; the true
-test needs the same of ρ\* itself. 
+test needs the same of ρ\* itself.
 
 *Degree 9 has its own condition.* There the necessary inequality of ledger 4.38 keeps the ninth-degree projection
 (the term −a₄‖P₅,₄f‖²): by Parseval ρ\*² ≤ (B + a₄)/(a₁ + a₄), which for λ₉ of ledger 1.6 (a₁ = 0.936, a₄ = 0.23468) and
