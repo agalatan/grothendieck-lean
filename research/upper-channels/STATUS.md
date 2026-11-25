@@ -8,8 +8,8 @@ statement replaces the weaker text in its row.
 are still kept at **N**, because the implication from the computation to the statement was inspected by its author
 only. A model value of D is not a bound on K_G^ℂ.
 
-**Context (not rows of this ledger).** Master proves K_G^ℂ ≤ 1.404556407 in Lean with six channels
-(`Grothe.UpperSix.constant_le`): slope c − δ = 0.711968558203721328194311213 (`Grothe/UpperSixExact/`). The rows below
+**Context (not rows of this ledger).** The seven-channel root theorem gives $K_G^{\mathbb C}\le 1.404556392$
+(`Grothe.UpperSeven.constant_le`, `Grothe/UpperSelector/`). Its transfer slope is `711968565817136711740669035/10^27`. The original six-channel theorem has slope `711968558203721328194311213/10^27`. The early rows below
 read the six channels at commit `f6620f3b`, in the form of certificate of that commit (the same head length 251 for
 every channel, the tail budgets without removing the linear energy): slope c − δ = 0.711968053274152967940951,
 1/(c − δ) = 1.4045574031. The model values of the ledger are in that form; the refinements of the current

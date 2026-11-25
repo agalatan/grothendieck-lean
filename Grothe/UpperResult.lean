@@ -1,46 +1,37 @@
-import Grothe.Statement
 import Grothe.UpperSix.Haagerup.GammaDagger
-import Grothe.UpperSixExact.Bound
+import Grothe.UpperSixExact.Result
+import Grothe.UpperSelector.Bound
+
+/-! # The upper bound for the complex Grothendieck constant
+
+The seven-channel transfer gives a factor of `10^27 / 711968565817136711740669035` for each finite
+complex matrix. The rounded bound is `1.404556392`. The six original channels use their
+certified heads and Hardy tails. The seventh uses a Gaussian angular selector and a signed
+linear preprocessor. Its complete Wiener approximation is proved in `UpperSelector/PhysicalColumn.lean`.
+-/
 
 set_option warningAsError true
 
-/-!
-# The upper bound: `K_G^ℂ ≤ 1.404556407 < 1/γ†`
+namespace Grothe.UpperSeven
 
-The six-channel proof (`Grothe/UpperSixExact/Bound.lean`, on the library `Grothe/UpperSix/`) gives, for every finite
-complex matrix `A`, `V(A) ≤ (10^27 / 711968558203721328194311213) · C(A)`; the factor is `1.4045564069893…`.
+/-- Admissibility at the exact seven-channel transfer endpoint, for every finite complex matrix. -/
+theorem bound : Statement.IsBound ((10 : ℝ) ^ 27 / 711968565817136711740669035) :=
+  Haagerup.AngularSelector.isBound
 
-* `bound`: that inequality, as `IsBound` at the certificate's exact value;
-* `constant_le`: `K_G^ℂ ≤ 1.404556407` (`1404556407 / 1000000000`), the exact value rounded up to nine decimals;
-* `constant_lt_inv_gammaDagger`: `K_G^ℂ < 1/γ†`, Haagerup's value, from `constant_le` and `γ† < 0.711958683`.
-
-The six-channel library has its own copy of the definitions (`Haagerup.Statement`,
-`Grothe/UpperSix/Haagerup/Statement.lean`). That copy and `Grothe/Statement.lean` quantify over the same finite
-matrices, unimodular scalars and complex unit vectors, and agree by reduction; the theorems below are stated with
-the definitions of `Grothe/Statement.lean`.
--/
-
-namespace Grothe.UpperSix
-
-/-- **The upper bound for one matrix**: `V(A) ≤ 1.4045564069893… · C(A)` for every finite complex matrix `A`; the
-factor is the certificate's exact value `10^27 / 711968558203721328194311213`. -/
-theorem bound : Statement.IsBound ((10 : ℝ) ^ 27 / 711968558203721328194311213) :=
-  Haagerup.SixChannelExact.isBound
-
-/-- **The upper bound**: `K_G^ℂ ≤ 1.404556407`, the exact value of `bound` rounded up to nine decimals. -/
-theorem constant_le : Statement.complexGrothendieckConstant ≤ 1404556407 / 1000000000 := by
-  have h : Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / 711968558203721328194311213 :=
+/-- The seven-channel bound rounded upward to nine decimal places. -/
+theorem constant_le : Statement.complexGrothendieckConstant ≤ 1404556392 / 1000000000 := by
+  have h : Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / 711968565817136711740669035 :=
     csInf_le Haagerup.Statement.bounds_bddBelow bound
   exact h.trans (by norm_num)
 
-/-- `K_G^ℂ < 1/γ†`: the constant is strictly below Haagerup's value. -/
+/-- The seven-channel bound also implies the strict comparison with Haagerup's proposed value. -/
 theorem constant_lt_inv_gammaDagger :
     Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger := by
   refine constant_le.trans_lt ?_
   rw [lt_div_iff₀ Haagerup.gammaDagger_pos]
-  calc (1404556407 / 1000000000 : ℝ) * Haagerup.Statement.gammaDagger
-      < (1404556407 / 1000000000 : ℝ) * (711958683 / 1000000000) := by
+  calc (1404556392 / 1000000000 : ℝ) * Haagerup.Statement.gammaDagger
+      < (1404556392 / 1000000000 : ℝ) * (711958683 / 1000000000) := by
         gcongr; exact Haagerup.gammaDagger_bounds.2
     _ < 1 := by norm_num
 
-end Grothe.UpperSix
+end Grothe.UpperSeven
