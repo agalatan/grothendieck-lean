@@ -219,7 +219,7 @@ Range for the two radii of interest (rounded downward; each fails 10⁻⁴ furth
   *diffuse limiting Gaussian* of the cubic chaos (a standard complex Gaussian independent of z₁, the limit in law
   of N^{−1/2}Σ_{j ≤ N} e₂₁(y_j); it is not itself an element of H₂,₁ in finitely many variables), t = (√π/2)/√(1 + c²)
   and ‖Qk‖ = (√π/2)c/√(1 + c²), so t² + A = π/4 for every c in the limit (**P**). For finite N the pairs
-  ph(z₁ ± c·N^{−1/2}Σe₂₁(y_j)) approach these values; the value π/4 is a limit, not attained by a polynomial G.
+  ph(z₁ ± c·N^{−1/2}Σe₂₁(y_j)) approach these values. For c > 0 this construction uses a diffuse Gaussian limit.
 - φ(ℓ, G) ≤ ρ\*√(ℓ² + ‖G‖²) when G does not depend on z₁ (**P**: z₁ may then be replaced by a normalised sum of
   cubics in fresh variables, as in the buffer argument of ledger 4.18).
 - φ(ℓ, G) ≤ ρ\*√((π/2)ℓ² + ‖G‖²) for every G (Theorem A), and with 1/c₀² = 1.346 in place of π/2 = 1.571 (§3, **N**).
