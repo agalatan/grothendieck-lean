@@ -312,6 +312,8 @@ Around the peak:
 
 The flank and upper rows are outside all of these.
 
+For any normalized circular cubic q of fourth excess s, the total-variation distance of its complex law from a standard complex Gaussian is at most ((√74+8)/18)√s. This controls all bounded tests, including the residual left after a polynomial with known moments is subtracted from a Stein majorant. The coefficient is sharp for the relaxed variance calculation. The signed payoff requires further estimates [P, author only + C · 3.31]. [Proof and scope](sources/radial-gram-comparison-codex-a7c4/PROOF.md).
+
 **Near the Gaussian.** Every nonzero remote cubic with 0 < χ ≤ χ₀ := 1/72000 (or 0 < χ ≤ 1/73500 via U(1) phase
 averaging) satisfies E|q| ≤ (√π/2)√u·(1 − χ/32), buffered PVD E|q + √v·W| ≤ (√π/2)√(u + v) (v ≥ 0), and
 D(q) ≥ −B″(u)δ/8 > 0 at every energy, every price and every profile a > 0, b ≥ 0; strict unbuffered domination
