@@ -105,6 +105,20 @@ def main():
                     for _,_,a,b in affine_pieces(src.rows,8,9,lo,hi,w) for p in (a,b)})
     checked(len(weights)==9,"wrong mixture weights")
     law=sparse.law(src,True)
+    # A single amplitude and its exact worst admissible chord price limit this method.
+    l,h,i,j,weight=src.cells[23]
+    checked({i,j} <= {8,9}, "the obstruction must lie in the central cells")
+    segment,=affine_pieces(src.rows,8,9,l,h,weight)
+    l,h,w,z=segment
+    u=Q(497,1000)
+    t,v=l+(h-l)*u,w+(z-w)*u
+    left,beta_left,cap_left=src.rows[8]
+    right,beta_right,cap_right=src.rows[9]
+    required_cap=(t*t-2*((1-v)*left+v*right)*t+(1-v)*cap_left+v*cap_right
+                  -(2/EPS)*(beta_left-beta_right)**2*v*(1-v)-law.discount(v))
+    ceiling=1/(Q(47,2000)+Q(1953,2000)*required_cap)
+    checked(t==Q(17149473,20480000) and Q("1.402022188813") < ceiling < Q("1.402022188814"),
+            "fixed central weight-path ceiling changed")
     cut=Q(21,100)
     small=copy(law)
     small.pieces=[(l,min(h,cut),a,b,c,d) for l,h,a,b,c,d in law.pieces if l<=cut]
@@ -122,6 +136,7 @@ def main():
             "affine interpolation control changed")
     print("certified curvature",coeff,"shape pieces",len(law.pieces),"weights",len(weights))
     print("curved",result,"affine control",control)
+    print("fixed central path ceiling at amplitude",t,"< 1.402022188814")
 
 
 if __name__=="__main__":

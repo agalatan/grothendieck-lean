@@ -10,6 +10,8 @@ set_option warningAsError true
 
 The mass tangent stays at the midpoint of its parent cell. Rows 06/07 and
 08/09 each use their own physical deductions at the two endpoint weights.
+The central interval keeps its quadratic curvature gain, and the ordinary
+scalar rows 13 and 14 interpolate through their crossover.
 
 Agent-ID: codex-a7c4
 -/

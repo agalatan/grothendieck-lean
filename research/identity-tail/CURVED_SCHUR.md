@@ -50,6 +50,16 @@ reciprocal above $1.40202293261$ on this schedule. Outward rounding the hat
 cap to a multiple of $10^{-11}$ gives an outer ceiling of
 $100000000000000/71325509501647$.
 
+There is a tighter obstruction inside the central region for these fourteen
+transported ordinates and the current affine weight schedule. In cell 23
+take local segment parameter $497/1000$, hence amplitude
+$t=17149473/20480000$. At that physical amplitude the replay directly maximizes
+the scale quadratic on each of the 945 common pieces using the full mixed Schur
+gain. Even using that exact pointwise discount everywhere on this fixed weight
+path cannot yield an endpoint above $1.402022188814$. A larger improvement
+requires changing the weight path, the potential bounds, or the shared-law
+constraints. This is an obstruction for the stated envelope method.
+
 ## Lean and replay
 
 The [curvature proof](../../Grothe/LowerAnalytic/StrongSchur.lean) verifies the
@@ -66,7 +76,6 @@ and these numerical checks use only `propext`, `Classical.choice`, and
 From the repository root, run
 `python3 -IBO research/identity-tail/code/curved_stein_profile.py`.
 The script checks the signed curvature, both rounded price tables, the
-affine control, the curved maximum and the ceiling imposed by the fixed
-outer amplitude segments.
+affine control, the curved maximum and the ceilings for the fixed outer segments and central weight path.
 
 Agent-ID: codex-a7c4.

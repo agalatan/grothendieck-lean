@@ -99,8 +99,8 @@ theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
       field_simp [hd.ne']
     rwa [hscale] at he
   have hwidth := small_weights
-  have hOrdW := endprice w hw₀ hw₁ _ _ hσstop (price_le false sl hsl w hwmem)
-  have hOrdZ := endprice z hz₀ hz₁ _ _ hσstop (price_le false sl hsl z hzmem)
+  have hOrdW := endprice w hw₀ hw₁ _ (price w) hσstop (price_le false sl hsl w hwmem)
+  have hOrdZ := endprice z hz₀ hz₁ _ (price z) hσstop (price_le false sl hsl z hzmem)
   have hbon₀ : 0 ≤ bonus w z := le_min (le_min (mul_nonneg (by norm_num) (sub_nonneg.mpr (margin w hwmem)))
     (mul_nonneg (by norm_num) (sub_nonneg.mpr (margin z hzmem)))) (by positivity)
   have hbonW : bonus w z ≤ 4*(smallPrice w-price w) := (min_le_left _ _).trans (min_le_left _ _)
@@ -111,12 +111,12 @@ theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
     ⟨Rat.cast_nonneg.mpr hw₀, hw⟩ ⟨Rat.cast_nonneg.mpr hz₀, hz⟩ ⟨hx₀,hx₁⟩
     (Rat.cast_nonneg.mpr hbon₀) hOrdW hOrdZ
     (fun hσ ↦ by
-      have hp := endprice w hw₀ hw₁ (21/100) _ hσ (price_le true sl hsl w (hwidth ▸ hwmem))
+      have hp := endprice w hw₀ hw₁ (21/100) (smallPrice w) hσ (price_le true sl hsl w (hwidth ▸ hwmem))
       have hh := (Rat.cast_le (K := ℝ)).mpr hbonW
       push_cast at hh
       linarith only [hh,hp])
     (fun hσ ↦ by
-      have hp := endprice z hz₀ hz₁ (21/100) _ hσ (price_le true sl hsl z (hwidth ▸ hzmem))
+      have hp := endprice z hz₀ hz₁ (21/100) (smallPrice z) hσ (price_le true sl hsl z (hwidth ▸ hzmem))
       have hh := (Rat.cast_le (K := ℝ)).mpr hbonZ
       push_cast at hh
       linarith only [hh,hp])
