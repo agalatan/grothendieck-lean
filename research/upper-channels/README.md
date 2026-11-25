@@ -2,8 +2,7 @@
 
 **The problem.** Lean proves K_G^ℂ ≤ 1.40455741 (`Grothe.UpperSix.bound`, `main_bounds`) with a mixture of six
 rounding channels. Can a mixture with more, or other, channels give a smaller proved bound, and at what cost in
-Lean? This folder records a numerical experiment of 24 November 2026 on that question. Nothing here is a proof:
-every result is a model value (label **N** of [`../README.md`](../README.md)), by one author, not replayed by anyone
+Lean? This folder records a numerical experiment of 24 November 2026 on that question. The results of that experiment are model values (label **N** of [`../README.md`](../README.md)), by one author, not replayed by anyone
 else. The ledger is [`STATUS.md`](STATUS.md).
 
 **The result in one paragraph.** Adding to the six channels **one** new channel, the cell channel of the
@@ -102,3 +101,7 @@ runs are of 24 November 2026; [`INVENTORY.md`](INVENTORY.md) says where the logs
 | [`STATUS.md`](STATUS.md) | the ledger: every result with its label, author and checker, and what a certificate needs |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository |
 | `code/` | the scripts and their small JSON results |
+
+## Endpoint restrictions on rounding channels
+
+For the common-map class, high alternating score and high first coefficient each impose a restriction on transfer. If the absolute alternating score approaches one, the transfer slope approaches minus one. If the first coefficient approaches $\pi/4$, the entire series approaches the phase series and the slope approaches $\pi/2-1$. Both limits hold uniformly over convex mixtures and dimensions. [Proofs and explicit thresholds](STATUS.md#6-rigidity-of-the-transfer-slope).
