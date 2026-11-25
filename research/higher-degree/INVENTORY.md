@@ -234,7 +234,7 @@ All files of `KSPH` (STATUS 4.30) are committed in the repository, with no exter
   constants, the exact envelopes, the margin scans, the tables and `RESULTS.txt`, copied unedited from the working
   folder; `checks/` and `README.md` there were written when the computation was recorded. `RESULTS.txt` and the logs
   under `A_reproduce/`, `certB_const/out/`, `certB_lin/out/` and `smallt/` are kept because the note cites them as its
-  record (the exception of [`../README.md`](../README.md)); the folder holds 1.4 MB of text in files of at most 152 KB.
+  record (the exception of [`../README.md`](../README.md)); the folder holds 2.0 MB of text in files of at most 152 KB.
 - The working folder is `/Users/alingalatan/workspaces/grothe/handoff/degree5-attack-2026-11-25/design/` (45 MB). Not
   in the repository:
   - the 52 cover files `certB_const/out/cover_<row>.json` and `certB_lin/out/cover_<row>.json` (31,936,823 B in all;
@@ -249,6 +249,15 @@ All files of `KSPH` (STATUS 4.30) are committed in the repository, with no exter
 - `/Users/alingalatan/workspaces/grothe/handoff/degree5-attack-2026-11-25/mega-design-raw.tar.gz`: the raw outputs as
   copied from the droplet (`design/work/`, `design/certB_*/out/`, the scan logs, and the logs of the replay of
   STATUS 4.17 under `runA/`).
+
+- The repairs of DSGN §5.6 (STATUS 4.44) were run by the recording worker on the droplet in a folder that was removed
+  afterwards. In the repository: the generators and the summary script under `checks/`, and under
+  `tables/funded/` and `tables/nu_matched/` the outputs that the tables use (the factor tables of `final_table.py`,
+  the margin scans and the allowance outputs of the ν-matched rows). Not kept anywhere: the per-run logs, the
+  allowance outputs of the 33 funded and control runs other than through the factor tables, and the eleven profile
+  archives of the ν-matched rows (they are reproduced by `prof2.py` of the working folder's `thresholds/` from
+  `tables/nu_matched/rows5.lines`). The profile archives `prof_t0p<row>.npz` of the design run that these runs used
+  are in `mega-design-raw.tar.gz` under `design/work/g078/out/`.
 
 | file | size | SHA-256 |
 |---|---:|---|

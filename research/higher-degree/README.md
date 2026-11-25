@@ -95,9 +95,11 @@ record.
 - **The design of the certificate.** With the radius 2287/2500 in the law layer the room is 3.7356·10⁻⁴ on plain
   covers alone (STATUS 4.42). The allowances of the content law rested on an A/B secant margin that fails at finite
   amplitude with the tilt (2/5, 3/10); a design with the tilt (2/5, 3/20) and the content law posed per (u, χ) cell
-  has exact positive rooms on 21 pieces from t = 0.649 and, numerically, a factor of at least 2.87 against every
-  cubic tested, in at most 13 variables (STATUS 4.43, 4.44). One conditional theorem assembles the certificate from
-  hypotheses H0–H9; the mid-t bound between the end of the direct bound (STATUS 4.18c) and t = 0.649, the secant inequality, the content law and the
+  has exact positive rooms on 21 pieces from t = 0.649 (STATUS 4.43, 4.44). Giving those rooms entirely to the A/B
+  sector is false on the eleven pieces below 0.835: explicit pairs with zero content need a part of the room for the
+  visible quintic. With that part set aside the design has, numerically, a factor of at least 2.76 against every
+  cubic tested, in at most 13 variables (STATUS 4.44). One conditional theorem assembles the certificate from
+  hypotheses H0–H9; the mid-t bound on (0.250885, 0.649), the secant inequality, the content law and the
   other-sector statement are open (STATUS 4.45).
 
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the

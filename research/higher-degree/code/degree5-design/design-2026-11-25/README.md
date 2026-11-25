@@ -18,7 +18,7 @@ the row constants themselves are outputs of interval covers (**C**, author only)
     bash checks/replay_exact.sh        # from this folder; Python 3 standard library only; about 2 seconds
 
 It runs, on copies in a temporary directory, the commands below and compares each output byte for byte with the
-committed file. Expected: sixteen lines `IDENTICAL …`, then `ALL IDENTICAL` (`checks/replay_exact.log`).
+committed file. Expected: twenty lines `IDENTICAL …`, then `ALL IDENTICAL` (`checks/replay_exact.log`).
 
 | command (from this folder) | output | what it is |
 |---|---|---|
@@ -30,6 +30,10 @@ committed file. Expected: sixteen lines `IDENTICAL …`, then `ALL IDENTICAL` (`
 | `python3 -I scripts/margins_table.py margins` | `margins/MARGINS_TABLE.md` | the table of the stored margin scans |
 | `python3 -I checks/theta_table.py` | `tables/THETA_TABLE.md` | the allowances θ_j(u, χ) of D\* per piece, from `tables/fin_table.json` (written when the computation was recorded; problem P1 embeds it) |
 | `python3 -I checks/rows_table.py` | `tables/ROWS_TABLE.md` | the eighteen float rows of D\* beside the rational rows (problems P1 and P2 embed it) |
+| `python3 -I checks/zero_content_budget.py tables/zero_content_budget.json` | `checks/zero_content_budget.log`, `tables/zero_content_budget.json` | exact: the zero-content pairs of codex-a7c4's review on every piece of D\* and on the published pieces of ledger 4.17: gain, cap, share needed, the part of the room the other sectors need (pieces 1–11 are hit) |
+| `python3 -I checks/repairs_summary.py` | `tables/REPAIRS.md` | the two repairs from the stored outputs (N) |
+| `python3 -I checks/theta_table.py tables/funded/fin_table_fundFull.json` | `tables/funded/THETA_TABLE_fundFull.md` | the allowances of the funded allocation (problem P1 embeds them) |
+| from the repository root: `python3 -I research/higher-degree/code/degree5-design/design-2026-11-25/checks/codex_a7c4_piece7_replay.py` | `checks/codex_a7c4_piece7_replay.log` | codex-a7c4's exact replay of the obstruction on piece 7 (it reads the commit 8de915680 with `git show`; not part of `replay_exact.sh`) |
 | `python3 -I checks/rows_compare.py` | `checks/rows_compare.log` | float rows of the profiles and scans against the rational rows of the certificate (written when the computation was recorded) |
 
 ## Contents
@@ -47,9 +51,12 @@ committed file. Expected: sixteen lines `IDENTICAL …`, then `ALL IDENTICAL` (`
 | `smallt/` | float law-class bounds at small t with ρ₀ = 2287/2500 (`nscan_*.log`, the command lines) | N |
 | `margins/` | `m078_t*.json` (tilt (2/5, 3/10)), `m078b_t*.json` (tilt (2/5, 3/20)), `m078c_t*.json` (tilt (3/10, 1/10)), `m077*_t*.json` (game (1, −0.77, 0.05)), `tilt078_*`, `tiltfine078_*` (tilt grids), the rows scanned (`rows078.lines`, `rows077.lines`), the command lines, `MARGINS_TABLE.md` | N |
 | `tables/` | `fin_table.md`, `fin_table.json` (candidates, allowances θ_j(u, χ), ratios and factors of D\*), `fin_table.design.json` (the 21 pieces), `finT_table.*` (tilt (3/10, 1/10)), `half_table.txt` (half of the room), `g078b_table.txt`, `g077b_table.txt` (three narrow pieces, two games), `table_g078*.md`, `table_g077.md` (three margin models at the record's tilt), `g078/rows_all.lines`, `g078hi/rows_all.lines` (the float tuned rows), `THETA_TABLE.md`, `ROWS_TABLE.md` | N; rooms exact |
-| `ASSEMBLY_CONSTANTS.md` | the table of D\* | rooms exact, C_j C (author only), the rest N |
+| `ASSEMBLY_CONSTANTS.md` | the table of D\*; its allowance and factor columns, like `tables/fin_table.*` and `tables/THETA_TABLE.md`, are those of the allocation η_h = 0, which is false on pieces 1–11 (note §5.5); the funded allocation is in `tables/funded/` | rooms exact, C_j C (author only), the rest N |
 | `scripts/` | the design worker's scripts (below) | |
-| `checks/` | `replay_exact.sh`, `rows_compare.py`, `theta_table.py`, `rows_table.py` and their logs | |
+| `tables/funded/` | repair (b): `rooms.json` (the part η_h of each room, two variants and the control), `fin_table_fundMin.*`, `fin_table_fundFull.*` (allowances and factors with the room left; `final_table.py`), `fin_table_ctl.md` and `control.log` (the control re-run at η_h = 0), `THETA_TABLE_fundFull.md` | N |
+| `tables/nu_matched/` | repair (a): `rows5.lines` (the row of each piece with ν₅ replaced by ν′), `mnu_<k>.json` (margin scans), `r4_theta6_1<name>_Mnu.json` (allowances), `zero_energy_deficit.log` | N |
+| `tables/REPAIRS.md`, `tables/zero_content_budget.json` | the summary of both repairs; the exact numbers of the obstruction | N; exact |
+| `checks/` | `replay_exact.sh`, `rows_compare.py`, `theta_table.py`, `rows_table.py`; `codex_a7c4_piece7_replay.py` (the reviewer's replay), `zero_content_budget.py` (the same on every piece); `funded_rooms.py`, `nu_matched.py`, `zero_energy_deficit.py` (generators and a helper of the repair runs), `repairs_summary.py`; their logs | |
 
 ## The floating-point scripts
 
@@ -68,3 +75,18 @@ droplet's paths.
 
 Raw outputs (per-case JSON files and logs of the conic programs and searches, the cover files, the larger tables)
 are outside the repository: [`../../../INVENTORY.md`](../../../INVENTORY.md).
+
+## The repair runs (N)
+
+The allowance program was re-run on a droplet for the two repairs of the note's §5.6 (33 + 11 runs of
+`scripts/r4_theta6.py`, 11 profile runs, 11 margin scans; about 45 minutes on four cores). The job folder held
+`scripts/r4_theta6.py`, `scripts/margin_scan.py`, the tools `thresh/` of the working folder, and the profile archives
+`g078/out/prof_t0p<row>.npz` of the design run (INVENTORY):
+
+    python3 -I checks/funded_rooms.py tables/zero_content_budget.json WORK/g078 WORK/fin_all.txt JOB PYTHON      # band files, JOB/cmds.txt
+    python3 -I checks/nu_matched.py rows  tables/zero_content_budget.json tables/g078/rows_all.lines JOB PYTHON   # JOB/gnu/rows5.lines, JOB/cmds_a1.txt
+    python3 -I checks/nu_matched.py bands tables/zero_content_budget.json WORK/g078 WORK/fin_all.txt JOB PYTHON   # after the scans: JOB/cmds_a2.txt
+    python3 -I scripts/final_table.py WORK/g078 WORK/finL.cases.json,WORK/finU.cases.json fundFull OUT "a:t',..."  # the factor tables (rows forced to those of D*)
+
+Each command line of `cmds*.txt` is run from JOB. The per-run logs were not kept; the outputs that the tables use
+are under `tables/funded/` and `tables/nu_matched/`.

@@ -135,11 +135,25 @@ value of the table below, certify a number μ ≥ μ₀ − 0.005 with
 | μ₀ (N) | 0.4283 | 0.4358 | 0.4398 | 0.4493 | 0.4578 | 0.4650 | 0.4721 | 0.4792 | 0.4870 |
 
 The binding rows are the lowest: the design uses the rows 0.74–0.82 on pieces of t below their tuning points, where
-the safety factors downstream are smallest (2.87 to 3.44), so the first seven rows matter most. The second-order part
+the safety factors downstream are smallest (2.76 to 3.23), so the first seven rows matter most. The second-order part
 (T0) below, at this tilt, is a sub-statement of (T\*): μ₀ = inf_s λ_min(C − M(s)) ≥ the table value minus 0.005.
 
 If (T\*) is false on some row (the scans bound the infimum from above only), the largest constant that does hold,
 or a refined form as in (T2) with certified (μ₀′, b), is the result wanted.
+
+**(T\*ν) The same on an interval of the quintic coefficient (wanted for the rows 0.74–0.83).** The coefficient ν₅ of
+e₃₂ in L′ is a parameter of the certificate too: one way to make its sector bookkeeping consistent compares each
+response at its own quintic coefficient (DESIGN.md §5.6 (a)), and then (T\*) is needed with ν₅ replaced by every ν
+in an interval [ν₅, ν′], where ν′ = η·t·√3/8 at the upper end t of the piece of the design that the row serves:
+
+| piece | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| row | 0.74 | 0.76 | 0.76 | 0.78 | 0.79 | 0.80 | 0.81 | 0.82 | 0.81 | 0.82 | 0.83 |
+| ν′ | 0.0113001 | 0.0116374 | 0.0119747 | 0.0123121 | 0.0126494 | 0.0129867 | 0.0133240 | 0.0136613 | 0.0137345 | 0.0139114 | 0.0140805 |
+| μ₀ at ν′ (N) | 0.2551 | 0.2915 | 0.2917 | 0.3264 | 0.3433 | 0.3598 | 0.3759 | 0.3916 | 0.3760 | 0.3917 | 0.4071 |
+
+A certified constant within 0.005 of the smaller of the two end values, valid for all ν of the interval, is the
+target. (All other constants of the row are unchanged.)
 
 ### Case II: tilt (2/5, 3/10)
 
@@ -172,7 +186,7 @@ cost: E[|q|²|r|²] ≤ 4·E|q|²·E|r|² is the only general bound, so a|w|²|�
 between 0.03 and 0.2; a must then be well below 0.1 to be useful, and the table of §3 suggests it cannot be.
 
 **Allowance.** In the application the admissible error is relative: every 1 % lost in μ is about 1 % lost in an
-allowance. In Case I the smallest known safety factor of the design is 2.87 (per cell of energy and fourth excess;
+allowance. In Case I the smallest known safety factor of the design is 2.76 (per cell of energy and fourth excess;
 problem P1, Case I), so a certified μ at 97 % of μ₀ is fully satisfactory. In Case II the allowances with one
 constant per energy have smallest known safety factor 1.30 when computed with μ₀, and with the constant margin
 μ_glob they fall below the largest ratios found on the pieces t ≤ 0.74 (0.86, 0.79, 0.65; ledger 4.43): there (T1)
@@ -217,7 +231,12 @@ grid of τ, Nelder–Mead over the direction of ρ; then a free polish over (s, 
   there is a loss already at σ_B = 0.15. So (2/5, 3/20) is near the edge of the region without loss: a proof of
   (T\*) cannot have much slack in σ_B, and a tilt such as (3/10, 1/10) (second-order value 0.351 and 0.400, no loss
   found) is an easier target for the method, although the design's allowances are smaller there (per-cell safety
-  factors 1.75, 1.95, 2.04 on three low pieces against 2.46, 2.73, 2.82 for the same rows at (2/5, 3/20); N).
+  factors 1.75, 1.95, 2.04 on three low pieces against 2.46, 2.73, 2.82 for the same rows at (2/5, 3/20), all with
+  the whole room given to the A/B sector; N).
+- **At the other end ν′ of the interval of (T\*ν)** the same scans (`DSGN/tables/nu_matched/mnu_<piece>.json`, rows
+  `DSGN/tables/nu_matched/rows5.lines`) give the second-order values of the table of §2, 1.6 to 2.9·10⁻³ above those at
+  ν₅, and again no smaller value at any amplitude (the smallest m/|ρ|² found exceeds the second-order value by at most
+  3·10⁻⁴). Nothing was scanned for ν between the ends or outside the interval.
 - Nothing at this tilt is certified, and no independent program has repeated the scans.
 
 ### Case II: tilt (2/5, 3/10)

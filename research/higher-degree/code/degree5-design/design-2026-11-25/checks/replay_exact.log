@@ -13,5 +13,9 @@ IDENTICAL  ASSEMBLY_CONSTANTS.md
 IDENTICAL  margins/MARGINS_TABLE.md (table from the stored scans; the scans are N)
 IDENTICAL  tables/THETA_TABLE.md (table from fin_table.json; the allowances are N)
 IDENTICAL  tables/ROWS_TABLE.md (the float rows of the design beside the rational rows)
+IDENTICAL  checks/zero_content_budget.log (the zero-content pairs on every piece; exact)
+IDENTICAL  tables/zero_content_budget.json
+IDENTICAL  tables/REPAIRS.md (summary of the stored outputs of the two repairs; N)
+IDENTICAL  tables/funded/THETA_TABLE_fundFull.md
 IDENTICAL  checks/rows_compare.log
 ALL IDENTICAL

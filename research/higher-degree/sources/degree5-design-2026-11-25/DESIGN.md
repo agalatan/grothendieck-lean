@@ -2,12 +2,14 @@
 
 Design computation of 25 November 2026 (Bucharest time) by a design worker of claude-b9ee, for issue #453; recorded
 for issue #644 by a second worker of claude-b9ee, who wrote this note from the script outputs and replayed the exact
-parts (§7). Nobody outside claude-b9ee has checked anything here.
+parts (§7). codex-a7c4 reviewed the note in PR #646 and found the obstruction of §5.5; nothing else here has been
+checked outside claude-b9ee.
 
 **Nothing in this note is a bound on K_G^ℂ.** It records (A) an exact reproduction of the conditional certificate of
 ledger 4.17, (B) its law layer recomputed with the radius 2287/2500, (C) the A/B secant margins at finite amplitude,
-(D) a repaired design D\* of the tuned part of the certificate, and (E) one conditional theorem that assembles the
-certificate from named hypotheses H0–H9, of which H2, H5, H6 and H8 are open.
+(D) a design D\* of the tuned part of the certificate (exact pieces and rooms; an allocation of the room that is
+refuted on eleven pieces by actual pairs; a funded allocation that passes the same numerical tests), and (E) one
+conditional theorem that assembles the certificate from named hypotheses H0–H9, of which H2, H5, H6 and H8 are open.
 
 **Labels** as in [`../../../README.md`](../../../README.md): **P** proof on paper, **C** exact or interval computation,
 **N** floating point, **open**; "author only" when nobody but the author's side has re-derived or replayed it.
@@ -224,9 +226,19 @@ record (ledger 4.32):
 
 ---
 
-## 4. (D) The repaired design D\*
+## 4. (D) The design D\*
 
-Two changes: the tilt (σ_A, σ_B) = (2/5, 3/20) on every row, and the content law posed per cell (u, χ) instead of one
+Three things are kept apart in this section.
+- **The pieces and their rooms** are exact scalar envelopes of row parabolas (given the row constants of §2.2). They
+  do not depend on how a room is shared between the sectors.
+- **The allocation η_h = 0** gives the whole room of every piece to the A/B sector. The allowances and factors of the
+  first columns of the table below were computed under it. **It is false on pieces 1–11** (§5.5): actual pairs with
+  zero content need a part of the room for the visible quintic.
+- **The funded allocation** gives to the other sectors, on pieces 1–11, the part η_h,j of the room that those pairs
+  account for, and recomputes the allowances with the rest (§5.6; the last columns of the table). It is not refuted
+  by anything computed here; whether its η_h,j is enough is part of H8, which is open.
+
+Two changes against the record: the tilt (σ_A, σ_B) = (2/5, 3/20) on every row, and the content law posed per cell (u, χ) instead of one
 constant per energy. Sources: `CODE/tables/fin_table.md` and `fin_table.json` (`design_final.py`, `final_table.py`:
 candidates, allowances, factors; **N**), `CODE/certB_const/out/envelope_design_fin.log` and
 `envelope_design_fin_table.json` (`envelope_design.py`: pieces and rooms, **exact** from the row constants of §2.2),
@@ -248,7 +260,7 @@ targets).
   0.82 has its own, 0.9110 to 0.9609); constants 0.8472, 0.8441, 0.8406, 0.8372 on the rows 0.84, 0.845, 0.85, 0.855
   and 0.82 on the rows 0.86–0.886 (inputs of `gen_final.sh`; not recomputed here).
 - **Allowance.** θ_j(u, χ) = the largest θ for which the conic program of `r4_theta6.py` keeps the row inside its room
-  in the cell, with the whole room given to the A/B sector, on the grid u/u_cap ∈ {0.60, 0.70, 0.78, 0.85, 0.92},
+  in the cell, with the whole room given to the A/B sector (the allocation η_h = 0), on the grid u/u_cap ∈ {0.60, 0.70, 0.78, 0.85, 0.92},
   χ ∈ {1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 20, 24, 30, 36, 42} (field `theta` of each chosen case of `fin_table.json`,
   printed per piece in `CODE/tables/THETA_TABLE.md`; the value 50 means that no bound is needed in the cell, and a
   cell without a value has no possible law in the law class).
@@ -256,29 +268,29 @@ targets).
   family (13 variables) maximised in ten bins of χ and the stored maximisers in 4, 5 and 6 variables of the content
   study re-evaluated at this tilt, possible responses only, sector A.
 
-| j | piece | row | C_j | room | μ_j (N) | min θ_j on the grid (at u/u_cap, χ) | factor per cell | factor, one constant per energy |
-|---|---|---|---|---|---|---|---|---|
-| 1 | [0.649, 0.670] | 0.74 | 1.1639184731 | 8.3445·10⁻³ | 0.2522 | 0.108 (0.70, 42) | **2.87** | 0.84 |
-| 2 | [0.670, 0.690] | 0.76 | 1.2056656335 | 5.5987·10⁻³ | 0.2889 | 0.128 (0.78, 42) | 2.99 | 0.94 |
-| 3 | [0.690, 0.710] | 0.76 | 1.2056656335 | 6.6643·10⁻³ | 0.2889 | 0.142 (0.78, 42) | 3.14 | 0.98 |
-| 4 | [0.710, 0.730] | 0.78 | 1.2506550803 | 4.1301·10⁻³ | 0.3240 | 0.183 (0.78, 42) | 3.18 | 1.11 |
-| 5 | [0.730, 0.750] | 0.79 | 1.2744812135 | 3.3748·10⁻³ | 0.3410 | 0.226 (0.78, 42) | 3.26 | 1.23 |
-| 6 | [0.750, 0.770] | 0.80 | 1.2992072747 | 2.6430·10⁻³ | 0.3577 | 0.290 (0.78, 42) | 3.32 | 1.40 |
-| 7 | [0.770, 0.790] | 0.81 | 1.3248331512 | 1.9357·10⁻³ | 0.3740 | 0.385 (0.85, 24) | 3.38 | 1.66 |
-| 8 | [0.790, 0.810] | 0.82 | 1.3515075611 | 1.2639·10⁻³ | 0.3899 | 0.501 (0.85, 30) | 3.44 | 1.97 |
-| 9 | [0.810, 0.814337] | 0.81 | 1.3248331512 | 1.1563·10⁻³ | 0.3740 | 0.620 (0.85, 36) | 3.54 | 2.13 |
-| 10 | [0.814337, 0.824827] | 0.82 | 1.3515075611 | 7.4029·10⁻⁴ | 0.3899 | 0.705 (0.92, 12) | 3.52 | 2.39 |
-| 11 | [0.824827, 0.834856] | 0.83 | 1.3791920640 | 4.7347·10⁻⁴ | 0.4055 | 0.929 (0.92, 14) | 3.87 | 2.88 |
-| 12 | [0.834856, 0.842337] | 0.84 | 1.4078042318 | 3.9982·10⁻⁴ | 0.4208 | 1.177 (0.92, 16) | 4.24 | 3.19 |
-| 13 | [0.842337, 0.847521] | 0.845 | 1.4224996439 | 3.7356·10⁻⁴ | 0.4283 | 1.642 (0.92, 14) | 5.10 | 4.39 |
-| 14 | [0.847521, 0.852400] | 0.85 | 1.4374261913 | 3.7356·10⁻⁴ | 0.4358 | 2.226 (0.92, 14) | 5.84 | 5.48 |
-| 15 | [0.852400, 0.857393] | 0.855 | 1.4526670999 | 3.8569·10⁻⁴ | 0.4398 | 3.158 (0.92, 12) | 7.29 | 6.77 |
-| 16 | [0.857393, 0.863036] | 0.86 | 1.4681516177 | 4.3808·10⁻⁴ | 0.4493 | 5.101 (0.92, 10) | 10.28 | 9.97 |
-| 17 | [0.863036, 0.866656] | 0.865 | 1.4839589869 | 5.3919·10⁻⁴ | 0.4578 | 12.834 (0.92, 6) | 22.33 | 22.18 |
-| 18 | [0.866656, 0.872379] | 0.87 | 1.5000094483 | 6.3681·10⁻⁴ | 0.4650 | none needed | 60.64 | 60.64 |
-| 19 | [0.872379, 0.878570] | 0.875 | 1.5163805139 | 8.4369·10⁻⁴ | 0.4721 | none needed | 51.46 | 51.46 |
-| 20 | [0.878570, 0.884136] | 0.88 | 1.5330803751 | 1.1099·10⁻³ | 0.4792 | none needed | 36.52 | 36.52 |
-| 21 | [0.884136, 0.886227] | 0.886 | 1.5519938087 | 1.3896·10⁻³ | 0.4870 | none needed | 32.80 | 32.80 |
+| j | piece | row | C_j | room | μ_j (N) | η_h = 0: min θ_j on the grid (at u/u_cap, χ) | factor per cell | factor, one constant per energy | funded: η_h,j | min θ_j | factor per cell |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | [0.649, 0.670] | 0.74 | 1.1639184731 | 8.3445·10⁻³ | 0.2522 | 0.108 (0.70, 42) | **2.87** | 0.84 | 1.0374·10⁻³ | 0.104 | 2.76 |
+| 2 | [0.670, 0.690] | 0.76 | 1.2056656335 | 5.5987·10⁻³ | 0.2889 | 0.128 (0.78, 42) | 2.99 | 0.94 | 8.4770·10⁻⁴ | 0.124 | 2.78 |
+| 3 | [0.690, 0.710] | 0.76 | 1.2056656335 | 6.6643·10⁻³ | 0.2889 | 0.142 (0.78, 42) | 3.14 | 0.98 | 8.7490·10⁻⁴ | 0.137 | 2.97 |
+| 4 | [0.710, 0.730] | 0.78 | 1.2506550803 | 4.1301·10⁻³ | 0.3240 | 0.183 (0.78, 42) | 3.18 | 1.11 | 6.7945·10⁻⁴ | 0.177 | 2.98 |
+| 5 | [0.730, 0.750] | 0.79 | 1.2744812135 | 3.3748·10⁻³ | 0.3410 | 0.226 (0.78, 42) | 3.26 | 1.23 | 5.9326·10⁻⁴ | 0.219 | 3.05 |
+| 6 | [0.750, 0.770] | 0.80 | 1.2992072747 | 2.6430·10⁻³ | 0.3577 | 0.290 (0.78, 42) | 3.32 | 1.40 | 5.0686·10⁻⁴ | 0.280 | 3.13 |
+| 7 | [0.770, 0.790] | 0.81 | 1.3248331512 | 1.9357·10⁻³ | 0.3740 | 0.385 (0.85, 24) | 3.38 | 1.66 | 4.2187·10⁻⁴ | 0.368 | 3.20 |
+| 8 | [0.790, 0.810] | 0.82 | 1.3515075611 | 1.2639·10⁻³ | 0.3899 | 0.501 (0.85, 30) | 3.44 | 1.97 | 3.3945·10⁻⁴ | 0.481 | 3.23 |
+| 9 | [0.810, 0.814337] | 0.81 | 1.3248331512 | 1.1563·10⁻³ | 0.3740 | 0.620 (0.85, 36) | 3.54 | 2.13 | 4.3681·10⁻⁴ | 0.581 | 3.18 |
+| 10 | [0.814337, 0.824827] | 0.82 | 1.3515075611 | 7.4029·10⁻⁴ | 0.3899 | 0.705 (0.92, 12) | 3.52 | 2.39 | 3.4690·10⁻⁴ | 0.649 | 3.17 |
+| 11 | [0.824827, 0.834856] | 0.83 | 1.3791920640 | 4.7347·10⁻⁴ | 0.4055 | 0.929 (0.92, 14) | 3.87 | 2.88 | 2.6300·10⁻⁴ | 0.858 | 3.46 |
+| 12 | [0.834856, 0.842337] | 0.84 | 1.4078042318 | 3.9982·10⁻⁴ | 0.4208 | 1.177 (0.92, 16) | 4.24 | 3.19 | 0 | 1.177 | 4.24 |
+| 13 | [0.842337, 0.847521] | 0.845 | 1.4224996439 | 3.7356·10⁻⁴ | 0.4283 | 1.642 (0.92, 14) | 5.10 | 4.39 | 0 | 1.642 | 5.10 |
+| 14 | [0.847521, 0.852400] | 0.85 | 1.4374261913 | 3.7356·10⁻⁴ | 0.4358 | 2.226 (0.92, 14) | 5.84 | 5.48 | 0 | 2.226 | 5.84 |
+| 15 | [0.852400, 0.857393] | 0.855 | 1.4526670999 | 3.8569·10⁻⁴ | 0.4398 | 3.158 (0.92, 12) | 7.29 | 6.77 | 0 | 3.158 | 7.29 |
+| 16 | [0.857393, 0.863036] | 0.86 | 1.4681516177 | 4.3808·10⁻⁴ | 0.4493 | 5.101 (0.92, 10) | 10.28 | 9.97 | 0 | 5.101 | 10.28 |
+| 17 | [0.863036, 0.866656] | 0.865 | 1.4839589869 | 5.3919·10⁻⁴ | 0.4578 | 12.834 (0.92, 6) | 22.33 | 22.18 | 0 | 12.834 | 22.33 |
+| 18 | [0.866656, 0.872379] | 0.87 | 1.5000094483 | 6.3681·10⁻⁴ | 0.4650 | none needed | 60.64 | 60.64 | 0 | none needed | 60.64 |
+| 19 | [0.872379, 0.878570] | 0.875 | 1.5163805139 | 8.4369·10⁻⁴ | 0.4721 | none needed | 51.46 | 51.46 | 0 | none needed | 51.46 |
+| 20 | [0.878570, 0.884136] | 0.88 | 1.5330803751 | 1.1099·10⁻³ | 0.4792 | none needed | 36.52 | 36.52 | 0 | none needed | 36.52 |
+| 21 | [0.884136, 0.886227] | 0.886 | 1.5519938087 | 1.3896·10⁻³ | 0.4870 | none needed | 32.80 | 32.80 | 0 | none needed | 32.80 |
 
 C_j is the decimal of an exact rational; the piece ends are rationals whose decimals are printed (exact values:
 fields `piece`, `C` of `fin_table.json` and `rooms_exact` of `envelope_design_fin_table.json`). On pieces 18–21 the
@@ -286,17 +298,20 @@ program needs no content bound on the grid: the proved bound (F) alone keeps the
 relaxation, and the factors there are 50 divided by the largest ratio found.
 
 **What the table shows (N).**
-- Posed per cell, the weakest piece is the first, [0.649, 0.67] ← row 0.74, with factor 2.87 (a c = 4 cluster cubic
-  with χ = 27.6 at 0.60u_cap: ratio 0.043 against allowance 0.122); pieces 2–8 have 2.99 to 3.44, and every piece from
-  0.81 up at least 3.52.
-- With one constant per energy the same design has 0.84, 0.94, 0.98, 1.11, 1.23, 1.40, 1.66, 1.97 on pieces 1–8: that
-  form is contradicted by the cubics found on pieces 1–3 (within the relaxation) and has no useful room below
-  t = 0.75. The change of tilt alone does not repair the design; the per-cell posing is needed too.
+- **Funded allocation** (last three columns; §5.6). Posed per cell, the weakest piece is the first, [0.649, 0.67] ←
+  row 0.74, with factor 2.76 (a c = 4 cluster cubic with χ = 18.3 at 0.60u_cap: ratio 0.055 against allowance 0.151);
+  pieces 2–11 have 2.78 to 3.46 and pieces 12–21, which need no funding, at least 4.24.
+- **Allocation η_h = 0** (false on pieces 1–11). The same quantities are 2.87 on piece 1, 2.99 to 3.44 on pieces 2–8,
+  3.54, 3.52, 3.87 on pieces 9–11: funding the other sectors costs 4 to 11 % of the smallest factor of a piece.
+- With one constant per energy the design has, at η_h = 0, 0.84, 0.94, 0.98, 1.11, 1.23, 1.40, 1.66, 1.97 on pieces
+  1–8 (0.81, 0.91, 0.95, 1.08, 1.19, 1.35, 1.60, 1.89 funded): that form is contradicted by the cubics found on pieces
+  1–3 (within the relaxation) and has no useful room below t = 0.75. The change of tilt alone does not repair the
+  design; the per-cell posing is needed too.
 - **The choice of rows.** For each of the pieces 1–8 two or three covering rows were compared (`fin_table.md`), and
-  the chosen row is the one with the largest per-cell factor among those with a room of at least 2·10⁻⁴ (on piece
+  the chosen row is the one with the largest per-cell factor, at η_h = 0, among those with a room of at least 2·10⁻⁴ (on piece
   1 the row 0.76 has 2.46 against 2.87; on piece 2 the row 0.78 has 1.89 against 2.99; on piece 8 the row 0.81 has
   3.19 against 3.44).
-- **Other tilts and games.** At the tilt (3/10, 1/10) the pieces [0.649, 0.67] ← 0.76, [0.69, 0.71] ← 0.78 and
+- **Other tilts and games** (all at η_h = 0). At the tilt (3/10, 1/10) the pieces [0.649, 0.67] ← 0.76, [0.69, 0.71] ← 0.78 and
   [0.71, 0.73] ← 0.79 have per-cell factors 1.75, 1.95, 2.04 (`finT_table.md`), against 2.46, 2.73, 2.82 for the same
   rows at the tilt (2/5, 3/20). On three narrow pieces of the record, [0.695, 0.705] ← 0.79, [0.735, 0.745] ← 0.80,
   [0.795, 0.805] ← 0.82, the tilt (2/5, 3/20) gives 2.60, 3.14, 3.56 per cell (1.07, 1.29, 2.04 with one constant per
@@ -312,7 +327,9 @@ relaxation, and the factors there are 50 divided by the largest ratio found.
 - θ_j(u, χ) is computed on a grid of 5 × 15 cells, by a floating-point conic program, with float rooms inside the
   program; no dual certificates, no cover of the (u, χ) plane, and nothing below 0.60u_cap or above 0.92u_cap.
 - The margins μ_j are the largest constants H5 can have, not constants it is known to have (§3.2).
-- The splits κ_AB(χ) come from one family of cubics; using them needs the quintic lemma of ledger 4.34 (part of H8).
+- The splits κ_AB(χ) come from one family of cubics; using them needs the quintic lemma of ledger 4.34 (part of H8),
+  and §5.5 shows that outside that family the share they leave to the other sectors is too small by itself.
+- The funded η_h,j is what one family of pairs accounts for. Nothing shows that it is enough for every pair.
 
 ---
 
@@ -329,7 +346,9 @@ H2, H5, H6 and H8 are open.
 **Game and target.** T = P₁,₀ − ε₁P₂,₁ + ηP₃,₂ on L²(ℂⁿ, γ), 0 < η < ε₁ < 1, p₁ = 1/ε₁. Target value τ (τ = 500/701
 for 1.402). For unimodular f, g: V = Re⟨f, Tg⟩, h = (f + g)/2, k = (f − g)/2, t = ‖P₁,₀h‖₂, and after a rotation
 P₁,₀h = t·z (z the visible coordinate, y the remote ones). G₃ = ε₁P₂,₁k, G₅ = ηP₃,₂h, and q = the part of G₃ that
-does not depend on z (q ∈ H₂,₁(y)); u = E|q|², δ = E|q|⁴ − 2u², χ = δ/u².
+does not depend on z (q ∈ H₂,₁(y)); u = E|q|², δ = E|q|⁴ − 2u², and, **when u > 0**, χ = δ/u² and U = |q|²/u. The
+fourth excess χ, the law of U, the functionals Ω̂_X, the splits κ(χ) and the allowances θ(u, χ) are defined for u > 0
+only; hypotheses H6–H9 and step 3 of the proof concern pairs with u > 0, and step 4 removes the restriction.
 
 **A row** r = (ℓ, β, b_A, b_B, ν₅; σ_A, σ_B) (real numbers; (σ_A, σ_B) is the tilt). With T = |z|², e₁₁ = T − 1,
 e₂₀ = z²/√2, e₃₂ = z(T² − 6T + 6)/√12:
@@ -376,7 +395,9 @@ u ≤ u_cap(t_lo) = 4ε₁²·0.432306903·(0.886762780 − t_lo) (the two decim
 
 A design 𝒟 consists of: the game, τ, a number t₁, a switch point t_s, and for j = 1, …, J a piece I_j = [a_j, a_{j+1}]
 of [t_s, 886227/10⁶] with a row r_j, a row constant C_j, numbers η_AB,j, η_h,j ≥ 0, functions κ_AB,j(χ), κ_h,j(χ) ≥ 0 with
-κ_AB,j + κ_h,j ≤ 1, margin constants (μ₀,j, b_j, μ_g,j) with b_j ≥ 0, and an allowance θ_j(u, χ) ∈ (0, ∞].
+κ_AB,j + κ_h,j ≤ 1, margin constants (μ₀,j, b_j, μ_g,j) with **0 < μ_g,j ≤ μ₀,j** and b_j ≥ 0, and an allowance
+θ_j(u, χ) ∈ (0, ∞]. (With μ_g > 0 the function G_j of H7 is finite, continuous and strictly increasing from G_j(0) = 0,
+so G_j⁻¹ and Φ_j exist on [0, ∞); μ_g ≤ μ₀ gives c²/(4μ₀) ≤ G_j(c) ≤ c²/(4μ_g).)
 
 | | hypothesis | status |
 |---|---|---|
@@ -386,9 +407,9 @@ of [t_s, 886227/10⁶] with a row r_j, a row constant C_j, numbers η_AB,j, η_h
 | **H3** | Row inequality: for every pair and every row, V ≤ t² − 2ℓt + 2β²/ε₁ + Λ̂₅^+(G₃, G₅) (DES R1–R2 with the tilt step kept, CONT5 §3.1) | **P**, author only |
 | **H4_j** | Law layer: the supremum over σ ≥ 0, ν ∈ ℝ and laws in ℒ of [E Ψ₅(σ√U; ν) − k_q σ² − ν²/η] is at most G⁺_j, and C_j = 2β²/ε₁ + G⁺_j | **C**, author only: §2.2 for the rows of D\* at ρ₀ = 2287/2500 (inputs: the Lean moments and H1; no Stein family, no libm assumption); ledger 4.17 and §1 at ρ = 95133/10⁵ |
 | **H5_j** | Secant: m(w, ρ) ≥ max(μ₀,j − b_j\|ρ\|, μ_g,j)·\|ρ\|² for all (w, ρ) ∈ ℂ³, for the row r_j | **open** (problem P2). **N** evidence only: the constants of D\* are read off scans, which bound infima from above (§3.2) |
-| **H6_j** | Content law: for every n, every q ∈ H₂,₁(ℂⁿ) whose law is in ℒ(a_j), and X = A, B: ‖c_X‖² ≤ θ_j(u, χ)·δ·Ω̂_X | **open** (problem P1) |
+| **H6_j** | Content law: for every n, every q ∈ H₂,₁(ℂⁿ) with u > 0 whose law is in ℒ(a_j), and X = A, B: ‖c_X‖² ≤ θ_j(u, χ)·δ·Ω̂_X | **open** (problem P1) |
 | **H7_j** | The law program: for every law in ℒ(a_j), with its energy u and fourth excess χ: min(F_A, θ_jδΩ̂_A) + min(F_B, θ_jδΩ̂_B) ≤ Φ_j(κ_AB,j(χ)·X + η_AB,j), where Φ_j(g) = (G_j⁻¹(g))², G_j(c) = sup_{x ≥ 0}[c·x − max(μ₀,j − c₃b_j x, μ_g,j)x²], c₃ = Γ(5/2) | **N**: the conic programs of `r4_theta6.py` on the grid of §4. A certificate needs dual solutions and a cover of the (u, χ) plane |
-| **H8_j** | The other sectors and the additivity: for every pair with t ∈ I_j, Λ̂₅^+(G₃, G₅) − Λ₅(q) ≤ G_AB(q) + κ_h,j(χ)·X(q) + η_h,j | **open**. It contains CAPG §6 items 3–8 (quintic shells, odd sector, pure-cost statements), the couplings between driver groups, and the real and imaginary e₃₂ components of G₅; the record measures it in the exact coupled one-spike model only (ledger 4.16, 4.34) |
+| **H8_j** | The other sectors and the additivity: for every pair with t ∈ I_j and u > 0, Λ̂₅^+(G₃, G₅) − Λ₅(q) ≤ G_AB(q) + κ_h,j(χ)·X(q) + η_h,j | **open** in general; **false** for the design D\* with η_h,j = 0 on its pieces 1–11, given H4 and H5 (§5.5). It contains CAPG §6 items 3–8 (quintic shells, odd sector, pure-cost statements), the couplings between driver groups, and the real and imaginary e₃₂ components of G₅; the record measures it in the exact coupled one-spike model only (ledger 4.16, 4.34) |
 | **H9** | Possible responses: the Rice family and the cap of §5.1 | **P**, author only (CONT5 §8.2–8.3) |
 
 Remarks.
@@ -398,6 +419,8 @@ Remarks.
   deliver H8 as stated or change this assembly.
 - H6 is posed per cell (u, χ). Ledger 4.29–4.32 pose it with one constant per energy, the minimum over χ of
   θ_j(u, χ): a special case and a stronger hypothesis.
+- H8 compares every pair with the q-only value at the row's fixed ν₅. Pairs whose visible quintic sits elsewhere pay
+  the difference out of κ_h·X + η_h; §5.5 computes it and §5.6 gives two other forms of H8.
 - H5 with b_j = 0 is the constant-margin secant (μ₀ = μ_g). The record's allowances assume it at the tilt (2/5, 3/10)
   with the second-order value, which the scans of §3.1 exclude.
 - In H7 the argument κ_AB(χ)·X + η_AB of Φ_j must be non-negative for the statement to make sense; H7 asserts this
@@ -414,7 +437,7 @@ Remarks.
     (E3)  the pieces I_j cover [t_s, √π/2].
 
 If H1–H3 and H9 hold, and H4_j–H8_j hold for every j, then V(f, g) ≤ τ for every n and every unimodular pair (f, g) on
-ℂⁿ; with H0, K_G^ℂ ≥ 1/τ.
+ℂⁿ; with H0, K_G^ℂ ≥ 1/τ. (H6–H9 are assumed for pairs with u > 0 only.)
 
 **Proof.** Fix a pair; by DES R1 it may be taken of charge one, and t ∈ [0, √π/2] (t = Re⟨h, z⟩ ≤ E|z|).
 
@@ -423,7 +446,7 @@ increases with t, so by (E1) V ≤ τ.
 
 *Step 2: t₁ < t < t_s.* H2.
 
-*Step 3: t ∈ I_j.* Write r = r_j and drop the index j.
+*Step 3: t ∈ I_j and u > 0.* Write r = r_j and drop the index j.
 
 (3a) *The A/B gain is bounded by the content.* Let r_A, r_B be remote linear forms and put ξ = −σ_A r_A − σ_B r_B in
 the definition of Λ̂₅ at G₃ = q + e₁₁r_A + e₂₀r̄_B, G₅ = ν₅e₃₂. Then G₃ − C(q) − ξ = q(1 − b_A e₁₁) − b_B q̄ e₂₀ + d(z; r), so
@@ -463,7 +486,13 @@ G(c) ≤ κ_AB(χ)·X(q) + η_AB. With (3a): **G_AB(q) ≤ κ_AB(χ)X(q) + η_AB
 
 (3e) *The row.* By H3, (3c), (3d): V ≤ t² − 2ℓt + 2β²/ε₁ + G⁺ + η₅ = t² − 2ℓt + C_j + η₅ ≤ τ by (E2).
 
-By (E3) the three steps cover [0, √π/2]. ∎
+*Step 4: u = 0 (the density argument of codex-a7c4's review).* Steps 1–3 and (E3) give V ≤ τ for every pair with
+u > 0. Let (f, g) have u = 0, in its visible frame. Take fresh independent standard Gaussians y, w, an event Γ = {|w| > R}
+of probability λ, and put f_λ = f, g_λ = g off Γ and f_λ = ph(y), g_λ = −ph(y) on Γ. The pair is unimodular and of charge
+one. The centred indicator of Γ is a radial function of w, with chaos components of bidegree (m, m), m ≥ 1, only; so
+P₁,₀h_λ = (1 − λ)·t·z, and the coefficient of e₂₁(y) = y(|y|² − 2)/√2 in the remote cubic of the new pair is
+ε₁λ·E[ph(y)·conj(e₂₁(y))] = −ε₁λμ/(2√2) ≠ 0 (no other term contains e₂₁(y)), so u_λ > 0. Hence V(f_λ, g_λ) ≤ τ. As λ → 0
+the pairs converge in L² and T is bounded, so V(f, g) ≤ τ. ∎
 
 **What each step uses from the record.** Step 1: ledger 4.18 (a). (3a): CONT5 §3.1 (tilt identity), §3.2 (the
 integration of the pointwise inequality, there with a constant margin), and the third-moment bound above.
@@ -477,12 +506,147 @@ hypothesis. (iv) The room is split, η_AB + η_h ≤ room; the record's allowanc
 ### 5.4 The theorem applied to D\*
 
 - (E1): t₁ = 0.250885 (§2.1; exact). (E3): the 21 pieces are contiguous from 649/1000 to 886227/10⁶ > √π/2 (exact).
-- (E2): holds with η_AB,j + η_h,j = the room of piece j in the table of §4 (exact, given H4_j). In the computed
-  allowances η_AB,j is the whole room and η_h,j = 0; any η_h,j > 0 lowers θ_j (§4, sensitivity to the room).
-- H5_j: b_j = 0, μ₀,j = μ_g,j = μ_j of §4. H6_j, H7_j: θ_j(u, χ) on the grid of §4, with the value at the next grid χ
-  above for χ between grid points. Between the grid energies, below 0.60u_cap and above 0.92u_cap nothing is
+- (E2): holds with η_AB,j + η_h,j = the room of piece j in the table of §4 (exact, given H4_j), for every way of
+  sharing the room. Two ways were computed: η_h,j = 0 on every piece, which is false on pieces 1–11 (§5.5), and the
+  funded allocation of §5.6.
+- H5_j: b_j = 0, μ₀,j = μ_g,j = μ_j of §4 (so 0 < μ_g,j ≤ μ₀,j). H6_j, H7_j: θ_j(u, χ) of the allocation on the grid of
+  §4, with the value at the next grid χ above for χ between grid points. Between the grid energies, below 0.60u_cap and above 0.92u_cap nothing is
   computed.
-- H2 on (0.250885, 0.649), H5, H6, H8: open.
+- H2 on (0.250885, 0.649), H5, H6, H8: open; H8 with η_h,j = 0: false on pieces 1–11, given H4 and H5.
+
+### 5.5 Zero-content pairs: the allocation η_h = 0 of D\* is false on pieces 1–11
+
+Found by codex-a7c4 in the review of PR #646, for piece 7 at t = 0.78, with an exact replay
+(`CODE/checks/codex_a7c4_piece7_replay.py`, `.log`); re-derived step by step by the recording worker, who extended the
+computation to every piece (`CODE/checks/zero_content_budget.py`, `.log`; exact rational interval arithmetic).
+
+**The pairs.** Fix t ∈ (0, μ), μ = √π/2, and 0 < λ < 1 − t/μ. Let z, y₁, y₂, U, V be independent standard complex
+Gaussians and split the uniform angle 6(arg U − arg V) mod 2π into three events of probabilities (1 − λ + t/μ)/2,
+(1 − λ − t/μ)/2 and λ. Put f = g = ph(z) on the first, f = g = −ph(z) on the second and f = −g = ph(y₁²ȳ₂) on the third.
+- f and g are unimodular and of charge one. A centred indicator of an event has angular frequencies (6k, −6k) in
+  (U, V) with k ≠ 0, hence no component of degree below 12: in every projection of degree at most five the indicators
+  act through their means.
+- h = (f + g)/2 has P₁,₀h = (t/μ)·E|z|·z = t·z, so the visible mass is exactly t; and G₅ = ηP₃,₂h = ν′e₃₂ with
+  ν′ = ηtγ, γ = E[|z|(T² − 6T + 6)]/(μ√12) = √3/8.
+- k = (f − g)/2 gives G₃ = ελ·P₂,₁ph(y₁²ȳ₂). The function ph(y₁²ȳ₂) has the character (2, −1) in (y₁, y₂), and y₁²ȳ₂ is
+  the only element of H₂,₁ with it, so G₃ = q = c·y₁²ȳ₂ with c > 0: a remote cubic with 0 < √u ≤ ελ and
+  χ = E|y₁|⁸E|y₂|⁴/(E|y₁|⁴E|y₂|²)² − 2 = 10.
+- Both contents vanish: q·h_X(|q|²) has the character (2, −1) and is orthogonal to the first chaos. So by step (3a) and
+  H5 with a positive margin, G_AB(q) ≤ 0.
+
+**The chain.** Let F(v) = 2μ(ℓ − β/2 + γv) − v²/η; it is 2E|L + ve₃₂| − v²/η when the radial factor
+ℓ + β(T − 2) + v(T² − 6T + 6)/√12 is positive on T ≥ 0 (checked for v = ν′ and v = ν₅ on every piece), and it increases
+up to v = ημγ = 0.01495. Since |X + D′| + |X − D′| ≥ 2|X| pointwise,
+
+    Λ̂₅^+(q, ν′e₃₂) ≥ F(ν′) − k_q u,        F(ν₅) − k_q u ≤ Λ₅(q) ≤ F(ν₅) + 2‖D‖₂√u − k_q u,        S₅ ≤ G⁺ = C_j − 2β²/ε₁   (H4).
+
+With G_AB(q) ≤ 0, H8_j for this pair would need
+
+    F(ν′) − F(ν₅) ≤ κ_h(10)·(G⁺ − F(ν₅)) + η_h + 2‖D‖₂√u + κ_h(10)·k_q u.
+
+The left side is the gain of moving the visible quintic from the row's ν₅ to the pair's ν′; it does not vanish as
+λ → 0, and the last two terms do. On the rows of the pieces below 0.835, ν₅ (tuned for the Gaussian response at the
+reference energy) is 0.0052 to 0.0103 and ν′ is 0.0113 to 0.0141.
+
+**The numbers** (exact bounds; at the upper end of each piece, λ = 10⁻⁹; "share needed" is gain/(G⁺ − F(ν₅)), the
+smallest κ_h that works with η_h = 0; κ_h(10) of D\* is 1 − κ_AB(10) − 1/50; the last column is the lower bound of
+the η_h that these pairs force with the split of D\*):
+
+| j | piece | row | ν₅ | ν′ | gain > | G⁺ − F(ν₅) < | share needed > | κ_h(10) of D\* | η_h needed > | room |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | [0.649, 0.670] | 0.74 | 0.00525 | 0.01130 | 1.0374·10⁻³ | 2.1534·10⁻² | 0.0482 | 0.0293 | 4.0643·10⁻⁴ | 8.3445·10⁻³ |
+| 2 | [0.670, 0.690] | 0.76 | 0.00617 | 0.01164 | 8.4770·10⁻⁴ | 1.5844·10⁻² | 0.0535 | 0.0293 | 3.8348·10⁻⁴ | 5.5987·10⁻³ |
+| 3 | [0.690, 0.710] | 0.76 | 0.00617 | 0.01197 | 8.7490·10⁻⁴ | 1.5844·10⁻² | 0.0552 | 0.0293 | 4.1068·10⁻⁴ | 6.6643·10⁻³ |
+| 4 | [0.710, 0.730] | 0.78 | 0.00721 | 0.01231 | 6.7945·10⁻⁴ | 1.1036·10⁻² | 0.0616 | 0.0293 | 3.5610·10⁻⁴ | 4.1301·10⁻³ |
+| 5 | [0.730, 0.750] | 0.79 | 0.00777 | 0.01265 | 5.9326·10⁻⁴ | 8.9632·10⁻³ | 0.0662 | 0.0293 | 3.3063·10⁻⁴ | 3.3748·10⁻³ |
+| 6 | [0.750, 0.770] | 0.80 | 0.00836 | 0.01299 | 5.0686·10⁻⁴ | 7.1201·10⁻³ | 0.0712 | 0.0293 | 2.9824·10⁻⁴ | 2.6430·10⁻³ |
+| 7 | [0.770, 0.790] | 0.81 | 0.00899 | 0.01332 | 4.2187·10⁻⁴ | 5.5383·10⁻³ | 0.0762 | 0.0293 | 2.5960·10⁻⁴ | 1.9357·10⁻³ |
+| 8 | [0.790, 0.810] | 0.82 | 0.00965 | 0.01366 | 3.3945·10⁻⁴ | 4.2099·10⁻³ | 0.0806 | 0.0367 | 1.8494·10⁻⁴ | 1.2639·10⁻³ |
+| 9 | [0.810, 0.814337] | 0.81 | 0.00899 | 0.01373 | 4.3681·10⁻⁴ | 5.5383·10⁻³ | 0.0789 | 0.0293 | 2.7454·10⁻⁴ | 1.1563·10⁻³ |
+| 10 | [0.814337, 0.824827] | 0.82 | 0.00965 | 0.01391 | 3.4690·10⁻⁴ | 4.2099·10⁻³ | 0.0824 | 0.0367 | 1.9239·10⁻⁴ | 7.4029·10⁻⁴ |
+| 11 | [0.824827, 0.834856] | 0.83 | 0.01034 | 0.01408 | 2.6300·10⁻⁴ | 3.0647·10⁻³ | 0.0858 | 0.0293 | 1.7320·10⁻⁴ | 4.7347·10⁻⁴ |
+| 12–19 | 0.834856 to 0.878570 | 0.84–0.875 | | | 1.86·10⁻⁴ to 1.34·10⁻⁵ | | 0.089 to 0.102 | 0.133 to 0.160 | none | |
+| 20, 21 | 0.878570 to 0.886227 | 0.88, 0.886 | | | 4.3·10⁻⁶, < 0 | | 0.068, none | 0.160 | none | |
+
+**What is false, and what is not.**
+- **False:** on each of the pieces 1–11, the conjunction of H4_j, H5_j and H8_j with the splits of D\* and η_h,j = 0
+  (§5.4). H4_j is certified (author only) and the design cannot do without H5_j, so the allocation of D\* that gives
+  the whole room to the A/B sector fails there: the other sectors need a part of the room of at least the last
+  column (5 % of the room on piece 1, 13 % on piece 7, 24 to 37 % on pieces 9–11). The allowances θ_j and the factors
+  of §4 on pieces 1–11 belong to the refuted allocation. With even the largest unassigned share over χ
+  (1 − κ_AB(1) = 0.078 or 0.089, which the design does not offer at χ = 10) pieces 9 and 11 still fail.
+- **Its source** is the comparator: H8 measures every pair against the q-only value at the fixed ν₅ of the row, and
+  the χ-dependent split of ledger 4.34 leaves to the other sectors a share of the deficit (0.029 at χ = 10) that was
+  measured along the one-spike family only. The gain F(ν′) − F(ν₅) is not small against the deficit at zero energy:
+  it needs a share of 0.048 to 0.086.
+- **Not affected:** the exact pieces and rooms of D\* (they are scalar envelopes of row parabolas and do not depend on
+  the allocation); the implication of §5.3 (a design with other splits or with η_h > 0 can satisfy its hypotheses);
+  pieces 12–21, where the constant splits leave κ_h = 0.13 to 0.16 against a needed 0.09 to 0.10; the conditional
+  certificate of ledger 4.17, whose hypothesis K₅ compares with the supremum over ν of the scalar value and has no
+  split (second table of `zero_content_budget.log`: on its published pieces the share needed is 0.039 to 0.102, so
+  the constant split κ_AB = 0.82 of ledger 4.29 passes this test too). Affected in the same way: every allowance of
+  the record computed with the χ-dependent split and the whole room (ledger 4.31, 4.32, 4.34).
+- The pairs have payoff far below the target; they refute an allocation, not the certificate route.
+
+### 5.6 Two repairs, tested numerically (N)
+
+Both were suggested in the review. Neither is certified, and for neither is H8 proved: the tests below say only that
+the pairs of §5.5 no longer contradict the design and what the content law is then allowed.
+
+**(b) Fund the visible quintic: H8 as stated, with η_h,j > 0 on pieces 1–11.**
+Scripts `CODE/checks/funded_rooms.py` (band files and command lines), `CODE/scripts/r4_theta6.py` and
+`final_table.py` (unchanged), `CODE/checks/repairs_summary.py`; outputs `CODE/tables/funded/` and `CODE/tables/REPAIRS.md`.
+- *fundFull* (the funded allocation of §4): η_h,j = the gain F(ν′) − F(ν₅) at the upper end of the piece (the column
+  "gain" of §5.5, taken as an upper bound): 12.4 % of the room on piece 1, 21.8 % on piece 7, 37.8, 46.9 and 55.5 % on
+  pieces 9, 10, 11. With it the inequality of §5.5 holds for those pairs at every t of the piece once λ is small,
+  because X(q) → S₅ − F(ν₅) > 0 (1.9·10⁻² on piece 1 down to 3.0·10⁻³ on piece 11;
+  `CODE/tables/nu_matched/zero_energy_deficit.log`).
+- *fundMin*: η_h,j = the lower bound of §5.5 (last column): 4.9 % of the room on piece 1 up to 36.6 % on piece 11.
+- The allowances θ_j(u, χ) were recomputed with the room that is left (same program, margins, splits and grid). A
+  control run with η_h = 0 reproduces the allowances of §4 to the tolerance 10⁻² of the program's bisection
+  (`CODE/tables/funded/control.log`), so differences below 1 % mean nothing.
+- **fundFull:** the allowances fall by at most 12 to 19 % on pieces 1–8 and 26 to 30 % on pieces 9–11 (smallest
+  quotient per piece 0.881, 0.862, 0.879, 0.856, 0.846, 0.843, 0.830, 0.808, 0.739, 0.708, 0.699). Smallest factor per
+  cell: 2.76, 2.78, 2.97, 2.98, 3.05, 3.13, 3.20, 3.23, 3.18, 3.17, 3.46 on pieces 1–11 (2.87, 2.99, 3.14, 3.18, 3.26,
+  3.32, 3.38, 3.44, 3.54, 3.52, 3.87 at η_h = 0); pieces 12–21 are unchanged (at least 4.24). The allowances per cell
+  are in `CODE/tables/funded/THETA_TABLE_fundFull.md`.
+- **fundMin:** 2.83, 2.90, 3.04, 3.07, 3.14, 3.21, 3.25, 3.32, 3.31, 3.34, 3.60.
+- The loss is small because on these pieces the allowance is carried by the share κ_AB·X of the deficit more than by
+  the room. What is not shown: that η_h,j is enough. It accounts for one family of pairs, at λ → 0; pairs that combine
+  a shift of the visible quintic with content, with the other sectors or with a larger remote energy may need more.
+
+**(a) Compare at the quintic coefficient of the pair instead of the fixed ν₅.**
+For real ν let r^ν be the row r with ν in place of ν₅, and Λ₅^ν, S₅^ν, X^ν, G_AB^ν, c_X^ν, Ω̂_X^ν the objects of §5.1 for
+r^ν. Two forms.
+- *ν-matched.* **H8ν_j:** for every pair with t ∈ I_j and u > 0 there is ν in an interval N_j with
+  Λ̂₅^+(G₃, G₅) − Λ₅^ν(q) ≤ G_AB^ν(q) + κ_h,j(χ)·X^ν(q) + η_h,j. If H5_j, H6_j, H7_j hold for every row r_j^ν, ν ∈ N_j, the
+  proof of §5.3 goes through with ν in place of ν₅: step (3d) uses the supremum over ν that H4 already contains. For
+  the pairs of §5.5 take ν = ν′: the left side is at most G_AB^{ν′}(q) (the point r = 0 of its supremum), so H8ν holds
+  with η_h = 0 as soon as X^{ν′}(q) ≥ 0, which is the case for small λ since S₅^{ν′} − F(ν′) > 0 (1.76·10⁻² on piece 1
+  down to 2.6·10⁻³ on piece 11, N; same log). **The obstruction vanishes on every piece.** The price is H5–H7 on an
+  interval of ν containing at least [ν₅, ηγa_{j+1}].
+- *What that costs, at the far end ν = ν′ of the interval* (scripts `CODE/checks/nu_matched.py`, the profile program
+  of the working folder, `margin_scan.py`, `r4_theta6.py`; outputs `CODE/tables/nu_matched/`, summary in
+  `REPAIRS.md`), on pieces 1–11, with the whole room and η_h = 0:
+  - margin: the second-order value at ν′ is 0.2551, 0.2915, 0.2917, 0.3264, 0.3433, 0.3598, 0.3759, 0.3916, 0.3760,
+    0.3917, 0.4071, above the value at ν₅ by 1.6 to 2.9·10⁻³, and the scans find no smaller m/|ρ|² at any amplitude (the
+    smallest value found exceeds it by at most 3·10⁻⁴);
+  - allowances: θ at ν′ divided by θ at ν₅, cell by cell, lies between 1.02 and 1.09 on pieces 1–8 and between 0.94
+    and 1.06 on pieces 9–11 (medians 1.025 to 1.050); the smallest allowance of each piece rises (0.108 → 0.111 on
+    piece 1, 0.929 → 0.973 on piece 11).
+  - Not computed: the profiles change with ν, so the content ratios of the cubics change too; they were not searched
+    again, so no factors are given. Only the two ends ν₅ and ν′ of the interval were computed, and nothing for ν
+    outside it, although a pair's quintic coefficient is not confined to it.
+- *Max form.* **H8′_j:** Λ̂₅^+(G₃, G₅) ≤ max{sup_ν Λ₅^ν(q), Λ₅(q) + G_AB(q) + κ_h,j(χ)·X(q)} + η_h,j. It is implied by H8,
+  it keeps H4–H7 as they are (the first branch is at most G⁺ by H4, the second is step (3c)), and every pair with
+  G₃ = q and G₅ a real multiple of e₃₂ satisfies it with η_h = 0 exactly (take ξ = 0 in Λ̂₅). So the pairs of §5.5
+  do not contradict it on any piece. It is untested for pairs that combine a shift of the visible quintic with an
+  A/B or other-sector gain, where the two gains would have to fit under a maximum, not a sum; no claim is made.
+
+**What the two repairs show together.** The pairs of §5.5 refute a bookkeeping choice (fixed ν₅, no room for the
+other sectors, a share of the deficit read off one family), not the pieces, the rooms or the per-cell posing. Under
+either repair the content law keeps, numerically, allowances within about 30 % of those of §4, and under (b) a
+smallest factor of 2.76. H8 in whichever form is used remains open, with no written proof plan.
 
 ---
 
@@ -516,28 +680,42 @@ Found while recording; `CODE/checks/rows_compare.log` prints the numbers.
 constants, the direct bound, both exact assemblies, the three exact envelopes (the 26 rows at the constant radius,
 the variant, and the 21 pieces of D\*), the table of constants and the margins table from the stored scans, and
 compares each with the committed output: all identical (`CODE/checks/replay_exact.log`; run by the recording worker
-on 25 November 2026).
+on 25 November 2026). The same script recomputes the exact table of §5.5 (`checks/zero_content_budget.py`) and the
+summary of §5.6 from the stored outputs. codex-a7c4's replay for piece 7 runs from the repository root
+(`checks/codex_a7c4_piece7_replay.py`; output `checks/codex_a7c4_piece7_replay.log`: required gain > 0.00041403,
+available < 0.00029072).
+
+Run for §5.6 by the recording worker on the droplet (four cores, about 45 minutes in all, folder removed afterwards):
+33 runs of the allowance program (11 pieces × {η_h = 0 control, fundMin, fundFull}), and for the ν-matched rows 11
+profile runs, 11 margin scans and 11 runs of the allowance program.
 
 Not replayed by the recording worker: the node caps and the cover replays of §1 and §2.2 (interval arithmetic;
 1118 s, 1296 s and 760 s of wall time in the design worker's runs; the cover files, 32 MB, are outside the repository:
 `CODE/COVERS.sha256` and `../../INVENTORY.md`); every floating-point computation of §2.3, §3 and §4 (margin scans,
-conic programs, ratio searches), whose programs need the tools of the working folder named in the inventory.
+conic programs, ratio searches) other than the control of §5.6, whose programs need the tools of the working folder named in the inventory.
 
 ---
 
 ## 8. Judgement
 
-- **The tuned part.** With the tilt (2/5, 3/20) and the content law posed per cell, every piece of [0.649, 0.886227]
-  has an exact positive room and, against every cubic evaluated, a factor of at least 2.87 between the allowance and
-  the largest ratio found. Numerically the A/B content part no longer looks like the place where the programme
-  breaks. That is all the computation supports: the margins are scans (upper bounds of infima), the ratios are
-  searches in at most 13 variables (lower bounds of suprema, and the record shows growth with the number of
-  variables), the allowances are float programs on a grid, and the per-cell posing needs H6 for each (u, χ)
-  separately, which no proof technique of the record delivers yet.
+- **The tuned part.** Every piece of [0.649, 0.886227] has an exact positive room. The first allocation of that room
+  (everything to the A/B sector, the χ-dependent split, the comparator at the row's ν₅) is false on the eleven
+  pieces below 0.835: actual pairs with zero content show it (§5.5). With the visible quintic funded from the room
+  (§5.6 (b)) every piece has, against every cubic evaluated, a factor of at least 2.76 between the allowance and the
+  largest ratio found; with the comparator at the pair's own quintic coefficient (§5.6 (a)) the obstruction vanishes
+  and the allowances do not fall, at the price of the secant and content hypotheses on an interval of ν. Numerically
+  the A/B content part does not look like the place where the programme breaks. That is all the computation
+  supports: the margins are scans (upper bounds of infima), the ratios are searches in at most 13 variables (lower
+  bounds of suprema, and the record shows growth with the number of variables), the allowances are float programs on
+  a grid, the per-cell posing needs H6 for each (u, χ) separately, which no proof technique of the record delivers
+  yet, and the share of the room that the other sectors need is known only from below.
 - **1.402 is not reachable with what is proved.** Nothing covers t ∈ (0.250885, 0.649) (H2 = problem P3; PR #640
   reports that K₅ as formulated fails for actual pairs on [1/4, 5/12], so the law rows are not a route there), and
-  H5 (P2), H6 (P1) and H8 are open on all 21 pieces. H8 has no written proof plan beyond the group statements.
+  H5 (P2), H6 (P1) and H8 are open on all 21 pieces. H8 has no written proof plan beyond the group statements, and
+  §5.5 shows that its constants cannot be read off the one-spike family.
 - **A smaller target removes no hypothesis.** At 1/1.40195 the rooms grow by 2.5·10⁻⁵ and t₁ by 5.5·10⁻⁵
   (`ASSEMBLY_CONSTANTS.md`); the same hypotheses are needed on the same pieces.
 - **What to pose next.** P2 at the tilt (2/5, 3/20), where the claim is that the constant second-order margin holds
-  globally (its Case I); P1 per (u, χ) cell with the allowances of D\* (its Case I); H8 as one statement.
+  globally (its Case I); P1 per (u, χ) cell with the allowances of the funded allocation (its Case I); H8 as one
+  statement, in the form with η_h > 0 or in one of the forms of §5.6 (a), tested first on pairs that combine a shift of
+  the visible quintic with content.

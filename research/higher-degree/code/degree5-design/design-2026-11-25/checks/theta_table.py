@@ -4,10 +4,10 @@
 Per piece: t_lo = a_j, the cap u_cap, the row, the margin, the room, and theta at the grid energies u/u_cap and the grid chi;
 "-" = no value in the file for that cell (no possible law there, or the energy was not computed); "none" = no bound needed (50 in the file).
 Last column: the largest ratio found at that energy over the cubics evaluated (possible responses only), with its chi.
-usage (from design-2026-11-25/):  python3 -I checks/theta_table.py > tables/THETA_TABLE.md"""
-import json, os
+usage (from design-2026-11-25/):  python3 -I checks/theta_table.py [TABLE.json] > tables/THETA_TABLE.md      (default tables/fin_table.json)"""
+import json, os, sys
 here = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
-ft = json.load(open(os.path.join(here, 'tables', 'fin_table.json')))
+ft = json.load(open(sys.argv[1] if len(sys.argv) > 1 else os.path.join(here, 'tables', 'fin_table.json')))
 chosen = {(tuple(c['piece']), c['row_tag']) for c in ft['chosen']}
 CH = ['1', '2', '3', '4', '6', '8', '10', '12', '14', '16', '20', '24', '30', '36', '42']
 def fmt(v):
