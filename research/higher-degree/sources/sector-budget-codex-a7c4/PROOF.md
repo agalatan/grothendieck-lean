@@ -59,7 +59,7 @@ $$
 $$
 when $H$ is chosen as an upper enclosure of the square root of the middle expression. The verifier uses $0.288676$ as an upper bound on $1/\sqrt{12}$, rounds the square root upward to a multiple of $10^{-6}$, and uses $\mu_0=0.8862$. It verifies these directions with integer arithmetic and the classical $333/106<\pi<355/113$.
 
-For each row minimize $t^2-2\ell_r t+C_r+d_r-500/701$ on $[1/4,2/5]$ by projecting $\ell_r$ onto the interval. The least of these 29 rational minima occurs on row 0.50 at $t=2/5$ for $m=48$. The script prints every row's necessary loss and excess. Discarding the loss makes the test fail, as does extrapolating these estimates to $t=0.41$. Thus the obstruction reaches well beyond the reviewed direct estimate through $0.2508$. Existing failures of *sufficient* sector estimates in the attack plan concern related fields. Here (1) tests the unrestricted sector inequality itself at the scalar optimizer.
+For each row minimize $t^2-2\ell_r t+C_r+d_r-500/701$ on $[1/4,2/5]$ by projecting $\ell_r$ onto the interval. The least of these 29 rational minima occurs on row 0.50 at $t=2/5$ for $m=48$. The script prints every row's necessary loss and excess. Discarding the loss makes the test fail, as does extrapolating these estimates to $t=0.41$. Thus the obstruction reaches well beyond the reviewed sector-free estimate through $0.25282$ (ledger 4.18c). Existing failures of *sufficient* sector estimates in the attack plan concern related fields. Here (1) tests the unrestricted sector inequality itself at the scalar optimizer.
 
 ### The sector loss on the response fields of actual unimodular pairs
 
