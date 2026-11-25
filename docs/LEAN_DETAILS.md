@@ -1222,7 +1222,7 @@ and the node-cap facts in `Grothe.LowerAnalytic`: the range facts `rowKKAnchorRa
 of the whole-fibre nodes, the coverage facts `pieceCover_KKx<i>` and the piece facts
 `pieceRange_KKx<i>_<J>` of the localised nodes, and the chord facts `chordsOKRowKK`.
 Every native check is single-threaded (no `Task.spawn`). All
-other accepted finite computations (the envelope `certEnvelope`, the polynomial norms, the moment covers, the positivity of
+other accepted finite computations (the polynomial norms, the moment covers, the positivity of
 the row blocks `psdRowKK`) use proof-producing kernel reduction, including the canonical
 continuation-block checks.
 The report is `lake env lean scratch/Axioms.lean`, checked in CI;

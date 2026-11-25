@@ -18,7 +18,7 @@ sixteenth-power check uses `decide +kernel`, so its scalar-tail consequences
 use only standard axioms.
 
 The native checks of the lower bound are the row checks `Grothe/Lower/Cert/RowSS.lean`, the cells and the node
-caps of the mass row, the envelope (`Grothe/Lower/Cert/Envelope.lean`) and the node-cap facts: the range facts of
+caps of the mass row and the node-cap facts: the range facts of
 the whole-fibre nodes, the coverage and piece facts of the localised nodes and the chord facts of every row
 ([CAPS.md](CAPS.md)). Each is one sequential computation; the node caps are split into many modules, so that Lake
 checks them in separate processes.
