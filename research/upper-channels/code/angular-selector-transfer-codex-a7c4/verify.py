@@ -90,7 +90,7 @@ def six_dual(rows, caps, witness):
                for row, cap in zip(rows[:6], caps[:6]))
 
 
-def check_low_grades(head, p):
+def check_low_grades(head, p, baths=1, strength=Fraction(17, 100)):
     """Independent binomial/power calculation, avoiding the verifier's three row recurrences."""
     ctx.prec = 150
     ab = lambda x: arb(x.numerator) / x.denominator
@@ -100,10 +100,11 @@ def check_low_grades(head, p):
     for k in range(size):
         degree = 2 * k + 1
         for f in range(k + 1):
-            t = arb(17 * (2 * f + 1)) / 100
+            t = arb(strength.numerator * (2 * f + 1)) / strength.denominator
             freq_weight = Fraction(comb(degree, k - f), 4**k)
             for j in range(size - k):
-                value = (acb(0, -2 * t).exp() * (-t * t)**j / acb(1, -t)**(2 * j + 2)).real
+                value = (acb(0, -2 * t * baths).exp() * comb(j + baths - 1, baths - 1)
+                         * (-t * t)**j / acb(1, -t)**(2 * j + 2 * baths)).real
                 for d in range(min(degree, size - k - j - 1) + 1):
                     coefficient = comb(degree, d) * p**(degree - d) * (p - 1)**d
                     reference[k + j + d] += r * ab(freq_weight * coefficient) * value
