@@ -194,7 +194,11 @@ For any smoothing scale $\delta > 0$, define $\phi_\delta(R) := \frac{R + \frac{
    \[
      \chi_{5,\delta}(r) \;\le\; \frac{15}{8}\,\frac{\delta^4}{r^4}.
    \]
-   *Proof:* Put $t = \delta^2/r^2 > 0$. Then $\chi_{5,\delta}(r) = 1 - \frac{1 + \frac{5}{2}t}{(1+t)^{5/2}} = \frac{(1+t)^5 - (1 + \frac{5}{2}t)^2}{(1+t)^{5/2}((1+t)^{5/2} + 1 + \frac{5}{2}t)}$. Expanding $(1+t)^5 - (1 + \frac{5}{2}t)^2 = \frac{15}{4}t^2 + 10 t^3 + 5 t^4 + t^5 > 0$ proves $\chi_{5,\delta}(r) > 0$, while $(1+t)^{5/2}((1+t)^{5/2} + 1 + \frac{5}{2}t) \ge \frac{1}{2}((1+t)^5 + (1 + \frac{5}{2}t)^2)$ (since $a(a+b) - \frac{1}{2}(a^2+b^2) = \frac{1}{2}(a^2 - b^2) + ab > 0$ for $a > b > 0$) reduces $\chi_{5,\delta}(r) \le \frac{15}{8} t^2$ to nonnegativity of $\frac{15}{8} t^2((1+t)^5 + (1+\frac{5}{2}t)^2) - ((1+t)^5 - (1+\frac{5}{2}t)^2)$, whose exact polynomial coefficients in $t \ge 0$ are all $\ge 0$ (verified in zero-float `Fraction` arithmetic in `verify.py`). $\square$
+   *Proof:* Put $t = \delta^2/r^2 > 0$ and $f(t) := 1 - \frac{1 + \frac{5}{2}t}{(1+t)^{5/2}}$, so $f(0) = 0$ and $\chi_{5,\delta}(r) = f(t)$. Differentiating gives
+   \[
+     f'(t) = \frac{-\frac{5}{2}(1+t) + \frac{5}{2}\bigl(1 + \frac{5}{2}t\bigr)}{(1+t)^{7/2}} = \frac{15 t}{4(1+t)^{7/2}} > 0.
+   \]
+   Since $0 < f'(s) < \frac{15}{4}s$ for all $s > 0$ (and $f(t) < 1$ as $t \to \infty$), integrating from $0$ to $t$ yields $0 < \chi_{5,\delta}(r) = \int_0^t f'(s)\,ds \le \int_0^t \frac{15}{4}s\,ds = \frac{15}{8}t^2 = \frac{15}{8}\frac{\delta^4}{r^4}$ directly (verified in zero-float `Fraction` arithmetic in `verify.py`, both via the exact derivative identity and via an exact 1D Bernstein certificate on $t \in [0, 3/4]$ together with $\frac{15}{8}(3/4)^2 = \frac{135}{128} > 1$). $\square$
 
 2. **Lemma S2 (Sharp Global Hessian Bound for $H_{5,\delta}$).**
    For every $y \in \mathbb{R}^2$ and every unit $u \in \mathbb{R}^2$, $\lambda_{\max}\bigl(D_y^2(u^T H_{5,\delta}(y) u)\bigr) \le 2\phi_\delta(|y|^2)$. Consequently, for ALL $y, K \in \mathbb{R}^2$,
@@ -215,7 +219,14 @@ For any smoothing scale $\delta > 0$, define $\phi_\delta(R) := \frac{R + \frac{
 4. **Zero-Overlap Perturbed-Domain Split at $|\Phi(z)| = R_{\mathrm{in}} := 3\delta$.**
    Splitting the remaining positive term $\chi_{5,\delta}(|\Phi(z)|) A(\Phi(z), 0)$ directly in the perturbed variable $y = \Phi(z) := L(z) + w + K(z; v)$ eliminates any overlap ring:
    - *Outer singular tail $\{|\Phi(z)| > R_{\mathrm{in}}\}$:* Since $r \mapsto \chi_{5,\delta}(r)/r$ is strictly decreasing, $\chi_{5,\delta}(|\Phi|) A(\Phi, 0) \preceq \frac{\chi_{5,\delta}(r_{\mathrm{eff}})}{r_{\mathrm{eff}}} I_2$ with $r_{\mathrm{eff}} = \max\bigl(R_{\mathrm{in}}, |L(z) + w| - M_K(T) s_{\mathrm{odd}}\bigr)$ (bounded by $\frac{15}{8}\delta^4 / r_{\mathrm{eff}}^5$), integrated smoothly over $r \in [0, 24], \theta \in [0, \pi]$.
-   - *Inner zero-overlap pullback $\{|\Phi(z)| \le R_{\mathrm{in}}\}$:* Defining $T_{\mathrm{glob}}$ via rigorous fixed-point enclosure of $\sqrt{H(T)} \le w_h + R_{\mathrm{in}} + M_K(T) s_{\mathrm{odd}}$ and asserting $\sqrt{6}\sqrt{T_{\mathrm{glob}}} s_{\mathrm{odd}} < a$ guarantees global injectivity of $\Phi$ onto $\{|y| \le R_{\mathrm{in}}\}$, with exact Jacobian minorant $J_\Phi = |\partial_z\Phi|^2 - |\partial_{\bar z}\Phi|^2 \ge f_1(r) f_2(r)$ where $f_1(r) = a + b r^2 - (\sqrt{3}+1)s_{\mathrm{odd}} r$ and $f_2(r) = a + 3b r^2 - \sqrt{2} s_{\mathrm{odd}} r$ (since $|\partial_z K| - |\partial_{\bar z} K| = |\bar z A + \sqrt{2} z\bar B| - |z A| \le \sqrt{2} r |B| \le \sqrt{2} r s_{\mathrm{odd}}$). Pulling back to $\tilde{z} = L^{-1}(y - w)$ on $|y| \le R_{\mathrm{in}}, \theta \in [0, \pi]$ (`36×28` grid) uses 6-step local monotone contraction $[T_{\mathrm{lo}}, T_{\mathrm{hi}}]$, cell-width-free density ratio $W_{\mathrm{ratio}} = 1 + O(s_{\mathrm{odd}})$, Young/Cauchy–Schwarz parameter $\varepsilon_{\mathrm{CS}} > 0$ for $\Delta E = E(z) - E(\tilde{z})$, and exact decreasing weight $\chi_{5,\delta}(|y|)$.
+   - *Inner zero-overlap pullback $\{|\Phi(z)| \le R_{\mathrm{in}}\}$:* Defining $T_{\mathrm{glob}}$ via rigorous fixed-point enclosure of $\sqrt{H(T)} \le w_h + R_{\mathrm{in}} + M_K(T) s_{\mathrm{odd}}$ and asserting $\sqrt{6}\sqrt{T_{\mathrm{glob}}} s_{\mathrm{odd}} < a$ guarantees global injectivity of $\Phi$ onto $\{|y| \le R_{\mathrm{in}}\}$. Moreover, setting $f_1(r) := a + b r^2 - (\sqrt{3}+1)s_{\mathrm{odd}} r$ and $f_2(r) := a + 3b r^2 - \sqrt{2} s_{\mathrm{odd}} r$, the checked positivity $f_1(r) > 0$ and $f_2(r) > 0$ (`den1_dn > 0`, `den2_dn > 0`) implies $|\partial_z L| - |\partial_z K| \ge |\partial_{\bar z} L| + |\partial_{\bar z} K| + f_1(r) > 0$ (since $|\partial_z L| = a + 2b r^2$, $|\partial_{\bar z} L| = b r^2$, $|\partial_z K| + |\partial_{\bar z} K| = |\bar z A + \sqrt{2} z\bar B| + |z A| \le (\sqrt{3}+1)s_{\mathrm{odd}} r$, and $|\partial_z K| - |\partial_{\bar z} K| \le \sqrt{2} r |B| \le \sqrt{2} s_{\mathrm{odd}} r$). Squaring and multiplying the positive factors is therefore legitimate and yields the exact Jacobian minorant
+     \[
+       J_\Phi = |\partial_z\Phi|^2 - |\partial_{\bar z}\Phi|^2
+       \;\ge\; \bigl(|\partial_z L| - |\partial_z K|\bigr)^2 - \bigl(|\partial_{\bar z} L| + |\partial_{\bar z} K|\bigr)^2
+       = \bigl(|\partial_z L| - |\partial_{\bar z} L| - |\partial_z K| - |\partial_{\bar z} K|\bigr)\bigl(|\partial_z L| + |\partial_{\bar z} L| - |\partial_z K| + |\partial_{\bar z} K|\bigr)
+       \;\ge\; f_1(r)\,f_2(r) > 0.
+     \]
+     Pulling back to $\tilde{z} = L^{-1}(y - w)$ on $|y| \le R_{\mathrm{in}}, \theta \in [0, \pi]$ (`36×28` grid) uses 6-step local monotone contraction $[T_{\mathrm{lo}}, T_{\mathrm{hi}}]$, cell-width-free density ratio $W_{\mathrm{ratio}} = 1 + O(s_{\mathrm{odd}})$, Young/Cauchy–Schwarz parameter $\varepsilon_{\mathrm{CS}} > 0$ for $\Delta E = E(z) - E(\tilde{z})$, and exact decreasing weight $\chi_{5,\delta}(|y|)$.
    - *Outer $r \ge 24$ ($T \ge 25$) tails:* Exact $\Gamma(k+1, 25)$ tails bound the $r \ge 24$ contributions to $M_0$, $D_k$, $|K|^2 \phi_\delta$, and $\chi_{5,\delta}/|\Phi|$ (total $< 10^{-8} I_6$).
    - Every slab's resulting $3\times 3$ interval matrices $M_{\mathrm{re}}, M_{\mathrm{im}}$ are verified strictly below $B_3$ across all 8 extreme off-diagonal sign corners by exact rational Sylvester determinants in `verify.py`, alongside **two independent analytic Jensen diagonal lower-bound controls** checked both live in C++ (`--control-false-hotspot`) and in exact rationals in `verify.py`:
      \[
@@ -261,26 +272,26 @@ At every cached corner point $(w_e, c^{(m)})$ (zero box radius $r_w = r_v = 0$),
 
 ## 6. Certification Summary, Replay, and Negative Controls
 
-The full 8-thread certification (`verify.py --replay-cpp --update-result`) compiled `certify_all_sector.cpp` with `clang++ -O2 -ffp-contract=off -frounding-math -std=c++17 -pthread -Wall -Wextra -Werror` and completed with **zero open boxes** (`33,786` CPU-s, `10,620` s wall on 8 threads):
+The full 8-thread certification (`verify.py --replay-cpp --update-result`) compiled `certify_all_sector.cpp` with `clang++ -O2 -ffp-contract=off -frounding-math -std=c++17 -pthread -Wall -Wextra -Werror` and completed with **zero open boxes** (`33,684` CPU-s, `11,701` s wall on 8 threads):
 
 | Part | Coverage | Slabs / Leaves | Certified Margin / Pivot |
 |---|---|---:|---|
 | Exact foundations (`verify.py`) | $B_{\mathrm{odd}} \succ \frac{50}{61}I_6$, Lemmas L1/L2 & Smooth-Split $H_{5,\delta}$ (S1/S2, 2D Bernstein), $\psi$ calculus, $w \ge 8$ even+odd analytic exteriors, Jensen controls | zero-float exact $\mathbb{Q}$ | $O_{\mathrm{iso}}(w) \preceq \frac{7}{12}I_6 \prec \frac{50}{61}I_6$; $4 M_0 m_0 \approx 0.1092 < \frac{1}{9}$ |
 | Part 1 (Amplitude exterior) | $w \in [0, 11/8]$, $S_r \ge 25/16$ | 240 dyadic slabs | $\min\mathrm{even\_margin} = 1.7000\cdot 10^{-3} > 0$ |
 | Part 1 (Shift exterior) | $w \in [11/8, 8]$, all $S_r, \omega \ge 0$ (true half-circle factor $2$) | 272 dyadic slabs | $\min\mathrm{even\_m} = 2.4830\cdot 10^{-2}$, $\min\mathrm{odd\_m} = 1.1921\cdot 10^{-1} > 0$ |
-| Part 2 (Zero-overlap $H_{5,\delta}$ origin strip) | $w \in [0, 11/8]$, $\|v\|_2 \le s_{\mathrm{odd}}(w)$ (exact Jacobian minorant $f_1 f_2$) | 244 dyadic slabs | $\min\mathrm{piv} = 5.4662\cdot 10^{-3}$, exact $\min\det_3 = 1.2580\cdot 10^{-3} > 0$ |
+| Part 2 (Zero-overlap $H_{5,\delta}$ origin strip) | $w \in [0, 11/8]$, $\|v\|_2 \le s_{\mathrm{odd}}(w)$ (exact Jacobian minorant $f_1 f_2$) | 244 dyadic slabs | $\min\mathrm{piv} = 5.4663\cdot 10^{-3}$, exact $\min\det_3 = 1.2580\cdot 10^{-3} > 0$ |
 | Part 3 (`Box5` all-sector bulk) | $w \in [0, 11/8]$, $s_{\mathrm{odd}}(w) \le \|v\|_2 \le 5/4$, $\Im A \ge 0$ | 98 dyadic slabs, **1,272,687** `Box5` leaves (`0` open, `108,071` $w$-splits) | $\max\mathrm{margin} = -1.7521\cdot 10^{-12} < 0$ (`[3/32, 7/64]`), $\min\mathrm{odd\_piv} = 1.4799\cdot 10^{-7} > 0$ (`[1/16, 5/64]`) |
 
 Part 3 leaf breakdown across all 98 slabs (`1,272,687` total leaves, `108,071` interior $w$-splits): `14,817` amplitude-exterior (`S_min >= 25/16`), `41,577` origin-strip (`S_max <= s_odd^2`), `0` constant-pivot shortcut, `15,474` `g0`, `152,612` `g1`, `1,048,207` `g2+`.
 
 ### Replay and Negative Controls
 - **Exact rational audit (`< 1 s`):** `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py`
-- **21 negative/corruption controls (`~3 s`):** `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/test_controls.py` — **21/21 PASS** (Part 1–3 discontinuities, Sylvester PSD failures, Part 1 $w = 11/8$ & Part 2 $w = 0$ Jensen diagonal under-reporting, handoff gap `s_odd_p3 > s_odd_p2`, non-negative margin / non-positive pivot, box-count tampering, bad `cpp_sha256`, `python3 -O`, live C++ even & odd false-target controls `CONTROL_ALL_SECTOR dp=0.00224986661 false_diff=-0.00775013339 origin_piv=0.115919695 false_odd_piv=-0.0860711487 p1_O00=[0.798513,0.818529] p2_Mim00=[1.186519,1.255100]`, and compile-time `-DNDEBUG` rejection).
+- **23 negative/corruption controls (`~3 s`):** `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/test_controls.py` — **23/23 PASS** (Part 1–3 discontinuities, Sylvester PSD failures, Part 1 $w = 11/8$ & Part 2 $w = 0$ Jensen diagonal under-reporting, handoff gap `s_odd_p3 > s_odd_p2`, non-negative margin / non-positive pivot, box-count tampering, Part 3 `RingGeom` `hT` (`2^-51`) and `AngGeom` `df` (`1501199875790165/2^55 < 1/24`) inward-rounding regressions, bad `cpp_sha256`, `python3 -O`, live C++ even & odd false-target and rounding-gap controls `CONTROL_ALL_SECTOR dp=0.00224986661 false_diff=-0.00775013339 origin_piv=0.115919695 false_odd_piv=-0.0860711487 p1_O00=[0.798513,0.818529] p2_Mim00=[1.186519,1.255100] hT_gap=4.441e-16 df_gap=1.388e-17`, and compile-time `-DNDEBUG` rejection).
 - **Full bit-for-bit C++17 replay:** `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py --replay-cpp`
 
 ### File Digests (`code/global-all-sector-gemini-c1de/`)
-- `certify_all_sector.cpp` (`160,288` bytes): `806769a94fa11b7058a1017e4c391242ae2d49d23b2b652535541a49caa7cd1e`
-- `verify.py` (`29,124` bytes): `7cc26a5d02d7c58c6f193b8ab39dcffb3a9038c836f2e06a45344bf6f405db81`
-- `result.json` (`545,907` bytes): `c4334020b5af5e7838d3b69213dc053ab74480795b3e8881684e74b7e01ecf38`
-- `test_controls.py` (`8,927` bytes): `a3cad194d355c8e50b9a017c23f24b4723e290f7a52e57fc24188e400e381ddb`
-- `README.md` (`2,937` bytes): `3711945aa699ed57ee39ff53bdc70e0f2241115c6ade32bc51b77c22f1eb2b10`
+- `certify_all_sector.cpp` (`162,100` bytes): `2186d7971f9693cc2440fe794eab29ffb80a0ca3b775f916583cb903eab0705c`
+- `verify.py` (`30,836` bytes): `fc9af6813e2bf7430989ff1bce18aa6db27f287b2997fd8c874ec3ddf1f92e17`
+- `result.json` (`546,108` bytes): `fe5e948a3090d64692064575268289490f7f89d3ab0747ee27dfc09dff1bdcbb`
+- `test_controls.py` (`10,455` bytes): `2d4586ffd9c33d8873cd59a4b0f24989f635865009193c2a944cf4e0cf6053ef`
+- `README.md` (`3,008` bytes): `194c99e54a6901d354f84e10ab710f92524fe358fe5e5b3275393d062203f2ae`

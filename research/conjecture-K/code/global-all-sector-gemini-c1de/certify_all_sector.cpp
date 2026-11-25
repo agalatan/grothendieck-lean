@@ -776,9 +776,9 @@ static WcsGrid build_wcs_grid(double w, int nr, int nt, int nsub_r, int nsub_t) 
 // Exact outward upper bound on Phi(A, B, C) = 2*(sqrt(A*(A + 2B + C)) - A - B) for B in [Bl, Bh], C <= C_hi.
 static inline double eval_phi_hi(double A, double Bl, double Bh, double C_hi) {
   if (C_hi <= 0.0) return 0.0;
-  double neg_half_C = -0.5 * C_hi;
-  if (Bl <= neg_half_C && neg_half_C <= Bh) return C_hi;
-  double B_pt = (Bh < neg_half_C) ? Bh : Bl;
+  double nhc_lo = mul_dn(-0.5, C_hi), nhc_hi = mul_up(-0.5, C_hi);
+  if (Bl <= nhc_hi && nhc_lo <= Bh) return C_hi;
+  double B_pt = (Bh < nhc_lo) ? Bh : Bl;
   double AB_lo = add_dn(A, B_pt);
   if (AB_lo > 0.0) {
     // Rationalized form: 2 * (A*C - B^2) / (sqrt(A*(A + 2B + C)) + A + B)
@@ -1709,8 +1709,7 @@ struct RingGeom {
 };
 
 struct AngGeom {
-  double pl_frac, ph_frac;  // exact fractions of 2*pi: pl = 2*pi * pl_frac
-  I df;                     // exact (num_h - num_l) / den
+  I df;                     // exact outward-rounded (num_h - num_l) / den
   I pl, ph, pm, hp;
   I wt_p2;                  // (1/(2pi)) int_{-hp}^{hp} v^2 dv = hp^3 / (3*pi)
   I cp, sp, c2p, s2p;       // cos(pm), sin(pm), cos(2*pm), sin(2*pm)
@@ -1722,8 +1721,9 @@ struct AngGeom {
 static RingGeom make_ring_geom(double Tl, double Th) {
   RingGeom g;
   g.Tl = Tl; g.Th = Th;
-  g.Tm = 0.5 * (Tl + Th);
-  g.hT = 0.5 * (Th - Tl);
+  g.Tm = 0.5 * add_up(Tl, Th);
+  g.hT = std::max(sub_up(g.Tm, Tl), sub_up(Th, g.Tm));
+  assert(sub_dn(g.hT, sub_up(g.Tm, Tl)) >= 0.0 && sub_dn(g.hT, sub_up(Th, g.Tm)) >= 0.0);
   I Tli(Tl), Thi(Th), Tmi(g.Tm);
   g.rl = sqrt_iv(Tli); g.rh = sqrt_iv(Thi); g.rm = sqrt_iv(Tmi);
   g.L_l = g.rl * (C.a + C.b * Tli);
@@ -1764,10 +1764,9 @@ static RingGeom make_ring_geom(double Tl, double Th) {
 
 static AngGeom make_ang_geom_rat(int64_t num_l, int64_t num_h, int64_t den) {
   AngGeom g;
-  g.pl_frac = static_cast<double>(num_l) / static_cast<double>(den);
-  g.ph_frac = static_cast<double>(num_h) / static_cast<double>(den);
   I fl = rat(num_l, den), fh = rat(num_h, den), fm = rat(num_l + num_h, 2 * den);
   I df = rat(num_h - num_l, den);
+  assert(df.l <= df.h && mul_up(df.h, static_cast<double>(den)) >= static_cast<double>(num_h - num_l));
   g.df = df;
   g.pl = TWO_PI_IV * fl;
   g.ph = TWO_PI_IV * fh;
@@ -1933,7 +1932,7 @@ static inline double eval_c0_cell_ub(const RingGeom& rg, const AngGeom& ag, bool
                                      double XT_max, double Xp_max,
                                      double XTT_max, double XTp_max, double Xpp_max,
                                      double alpha, double beta) {
-  double df_hi = sub_up(ag.ph_frac, ag.pl_frac);
+  double df_hi = ag.df.h;
   double wt_cell_hi = mul_up(rg.wt_T.h, df_hi);
   double mu_b_dn = (same_q && dX_box == 0.0) ? mu_c_dn_in : sqrt_dn_strict(add_dn(mul_dn(rl_box, rl_box), q_hi));
   double smr_b = add_dn(mu_b_dn, rl_box);
@@ -2042,7 +2041,7 @@ static void eval_odd_subcell(const RingGeom& rg, const AngGeom& ag,
 
   double err_eff = std::min(err_avg, inv_mu_box_up);
   // Adaptive 2D split if cell error * cell mass is above split_tol:
-  double wt_cell_hi = mul_up(rg.wt_T.h, sub_up(ag.ph_frac, ag.pl_frac));
+  double wt_cell_hi = mul_up(rg.wt_T.h, ag.df.h);
   if (depth < max_depth && !first_ring) {
     double fmax = std::max(std::fabs(rg.fl.l), std::fabs(rg.fh.h));
     double weight_G = mul_up(wt_cell_hi, mul_up(rg.Th, add_up(2.0, mul_up(0.5, mul_up(fmax, fmax)))));
@@ -2239,7 +2238,7 @@ static OddEvalRes eval_odd_box(const PolarGridLevel& gl, I w_iv, const I v_iv[4]
       }
 
       double err_eff = std::min(err_avg, inv_mu_box_up);
-      double wt_cell_hi = mul_up(rg.wt_T.h, sub_up(ag.ph_frac, ag.pl_frac));
+      double wt_cell_hi = mul_up(rg.wt_T.h, ag.df.h);
       if (max_depth > 0 && !first_ring && mul_up(mul_up(wt_cell_hi, G_fac), err_eff) > split_tol) {
         // Delegate ONLY this singular cell using precomputed mdepth=1 sub_rings & sub_angs (zero trig/exp rebuild!)
         const RingGeom& rg0 = gl.sub_rings[2 * j];
@@ -3020,6 +3019,8 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
       for (int m = 0; m < 16; ++m) {
         double sc_up = 0.0;
         for (int j = 0; j < 4; ++j) {
+          assert(add_up(b.c[j], b.hw[j]) == add_dn(b.c[j], b.hw[j]) &&
+                 sub_up(b.c[j], b.hw[j]) == sub_dn(b.c[j], b.hw[j]));
           corners[m][j] = b.c[j] + ((m & (1 << j)) ? b.hw[j] : -b.hw[j]);
           sc_up = add_up(sc_up, mul_up(corners[m][j], corners[m][j]));
         }
@@ -3099,6 +3100,7 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
     if (w_err > 0.35 * max_qsum && (b.bwh - b.bwl) > 1e-4) {
       double wm = 0.5 * (b.bwl + b.bwh);
       assert(wm > b.bwl && wm < b.bwh);
+      assert(sub_up(wm, b.bwl) == sub_dn(wm, b.bwl) && sub_up(b.bwh, wm) == sub_dn(b.bwh, wm));
       Box5 b1 = b, b2 = b;
       b1.bwh = wm; b1.depth = b.depth + 1;
       b2.bwl = wm; b2.depth = b.depth + 1;
@@ -3118,6 +3120,10 @@ static Slab4DResult certify_4d_slab(double wl, double wh, double s_odd, double p
     Box5 b1 = b, b2 = b;
     b1.hw[best_axis] = nh; b1.c[best_axis] = b.c[best_axis] - nh; b1.depth = b.depth + 1;
     b2.hw[best_axis] = nh; b2.c[best_axis] = b.c[best_axis] + nh; b2.depth = b.depth + 1;
+    assert(add_up(b1.c[best_axis], nh) == b.c[best_axis] &&
+           sub_dn(b1.c[best_axis], nh) == sub_dn(b.c[best_axis], b.hw[best_axis]) &&
+           add_up(b2.c[best_axis], nh) == add_up(b.c[best_axis], b.hw[best_axis]) &&
+           sub_dn(b2.c[best_axis], nh) == b.c[best_axis]);
     stack.push_back(b1);
     stack.push_back(b2);
   }
@@ -3261,9 +3267,22 @@ int main(int argc, char** argv) {
     Part2Slab s_p2 = certify_part2_slab(0.0, 1.0 / 128.0, 1.0 / 32.0, 0.04, 0.40);
     assert(s_p2.M_im.e[0].l > 1.1 && s_p2.M_im.e[0].h > 1.1 && s_p2.margin > 0.0);
 
-    std::printf("CONTROL_ALL_SECTOR dp=%.9g false_diff=%.9g origin_piv=%.9g false_odd_piv=%.9g p1_O00=[%.6f,%.6f] p2_Mim00=[%.6f,%.6f]\n",
+    // 4. Exact Part 3 binary64 outward-rounding regression controls (codex-a7c4):
+    //    (a) First T2 ring after 4.0 (ring index 24): hT >= max(Tm - Tl, Th - Tm) > 0.5*(Th - Tl) by 2^-51!
+    const RingGeom& rg24 = pgrids[2].rings[24];
+    double naive_hT = mul_up(0.5, sub_up(rg24.Th, rg24.Tl));
+    assert(rg24.Tl == 4.0 && rg24.hT >= sub_up(rg24.Tm, rg24.Tl) && rg24.hT >= sub_up(rg24.Th, rg24.Tm));
+    assert(sub_dn(rg24.hT, naive_hT) == std::ldexp(1.0, -51));
+    //    (b) Coarse sector 2 of 24: ag.df encloses 1/24 (24 * df.l <= 1 <= 24 * df.h),
+    //        whereas sub_up(div_up(3,24), div_up(2,24)) = 1501199875790165 / 2^55 < 1/24!
+    const AngGeom& ag2 = pgrids[0].angs[2];
+    double naive_df = sub_up(div_up(3.0, 24.0), div_up(2.0, 24.0));
+    assert(mul_dn(ag2.df.l, 24.0) <= 1.0 && mul_up(ag2.df.h, 24.0) >= 1.0 && ag2.df.h > naive_df);
+
+    std::printf("CONTROL_ALL_SECTOR dp=%.9g false_diff=%.9g origin_piv=%.9g false_odd_piv=%.9g p1_O00=[%.6f,%.6f] p2_Mim00=[%.6f,%.6f] hT_gap=%.3e df_gap=%.3e\n",
                 dp, false_diff, oer_true.pd_piv, oer_false.pd_piv,
-                s_p1.O_iso.e[0].l, s_p1.O_iso.e[0].h, s_p2.M_im.e[0].l, s_p2.M_im.e[0].h);
+                s_p1.O_iso.e[0].l, s_p1.O_iso.e[0].h, s_p2.M_im.e[0].l, s_p2.M_im.e[0].h,
+                sub_dn(rg24.hT, naive_hT), sub_dn(ag2.df.h, naive_df));
     return 0;
   }
 
@@ -3553,6 +3572,13 @@ int main(int argc, char** argv) {
   out << "\"shift_exterior_cutoff\":" << hex_d(1.375) << ",";
   out << "\"analytic_tail_cutoff\":" << hex_d(8.0) << ",";
   out << "\"amplitude_exterior_S_min\":" << hex_d(25.0 / 16.0) << ",";
+  {
+    const RingGeom& rg24 = pgrids[2].rings[24];
+    const AngGeom& ag2 = pgrids[0].angs[2];
+    out << "\"rounding_controls\":{\"t2_ring24\":{\"Tl\":" << hex_d(rg24.Tl)
+        << ",\"Th\":" << hex_d(rg24.Th) << ",\"Tm\":" << hex_d(rg24.Tm)
+        << ",\"hT\":" << hex_d(rg24.hT) << "},\"t0_sector2\":{\"df\":" << iv_json(ag2.df) << "}},";
+  }
   out << "\"part1_potential_slabs\":[";
   for (size_t i = 0; i < p1_res.size(); ++i) {
     const auto& r = p1_res[i];

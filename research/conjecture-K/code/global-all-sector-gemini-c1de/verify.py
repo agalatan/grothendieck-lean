@@ -13,9 +13,11 @@ Python 3 standard library only (`python3 -I`, assertions required). Verifies:
        -psi'(r) = q^2*(2*mu+r)/(mu^3*(mu+r)^2) > 0, psi''(r) = 3*q^2/mu^5 > 0.
      - Lemma L1 (||D_X A(X, q)[h]||_op <= 1/mu^2): exact 2D Bernstein certificates.
      - Lemma L2 (mu^3 D_X^2 A(X, q)[h, h] <= 2 I_2): exact 2D Bernstein certificates.
-     - Smooth-Split H_{5,delta} (Lemmas S1 & S2): exact C^2 matching, zero-overlap
-       decomposition 1/r = phi_delta(r) + chi_{5,delta}(r)/r, and exact Bernstein
-       bounds ||D_X H_{5,delta}||_op <= 35/(32*delta^2), ||D_X^2 H_{5,delta}||_op <= 665/(256*delta^3).
+     - Smooth-Split H_{5,delta} (Lemmas S1 & S2): algebraic smoothing kernel
+       phi_delta(R) = (R + (5/2) delta^2) / (R + delta^2)^{5/2},
+       H_{5,delta}(y) = phi_delta(|y|^2) (|y|^2 I_2 - (1/2) y y^T),
+       exact singular tail chi_{5,delta}(r) = 1 - r^3 phi_delta(r^2) <= (15/8)(delta/r)^4,
+       and exact Bernstein-Mobius Hessian bound lambda_max(D_y^2(u^T H_{5,delta}(y) u)) <= 2 phi_delta(|y|^2).
      - Exact rational w >= 8 analytic shift exterior for BOTH even (< 3/2 < 97/3)
        and odd (1/4 + 1/3 = 7/12 < 50/61 < lambda_min(B_odd)) sectors.
      - Exact rational r >= 24/30 even & odd tail bounds and T >= 25 base curvature tail.
@@ -266,9 +268,12 @@ def check_bernstein_lemmas():
 
     # Smooth-split H_{5,delta}(y) = phi_delta(|y|^2) * (|y|^2 I - (1/2) y y^T) exact rational proofs:
     #   phi_delta(R) = (R + 5/2 d^2)/(R + d^2)^{5/2},  chi_5(r) = 1 - r^3 phi_delta(r^2).
-    # (a) Exact 2-line proof of 0 < chi_5(r) <= (15/8) (delta/r)^4 (with t = delta^2 / r^2 > 0):
-    #     (1+t)^5 - (1 + 5/2 t)^2 = 15/4 t^2 + 10 t^3 + 5 t^4 + t^5 > 0, and
-    #     (15/8) t^2 * ((1+t)^5 + (1 + 5/2 t)^2) - ((1+t)^5 - (1 + 5/2 t)^2) has all coeffs >= 0!
+    # (a) Exact proof of 0 < chi_5(r) <= (15/8) (delta/r)^4 (with t = delta^2 / r^2 > 0):
+    #     Let f(t) = 1 - (1 + 5/2 t)/(1+t)^{5/2}. Then f(0) = 0, and
+    #     f'(t) = [-(5/2)(1+t) + (5/2)(1 + 5/2 t)] / (1+t)^{7/2} = (15/4) t / (1+t)^{7/2}.
+    #     For t > 0, 0 < f'(t) < (15/4) t, so integrating from 0 to t gives 0 < f(t) <= (15/8) t^2!
+    #     Independently, for t >= 3/4 we have (15/8) t^2 >= 135/128 > 1 > f(t), while on t in [0, 3/4]
+    #     (1 + 5/2 t)^2 - (1 - 15/8 t^2)^2 (1+t)^5 >= 0 is certified by exact 1D Bernstein coefficients!
     def upoly_mul(a, b):
         res = [F(0)] * (len(a) + len(b) - 1)
         for i, x in enumerate(a):
@@ -288,9 +293,16 @@ def check_bernstein_lemmas():
     p_lin2 = upoly_mul([F(1), F(5, 2)], [F(1), F(5, 2)])
     chi_num = upoly_sub(p_1pt5, p_lin2)
     assert chi_num == [F(0), F(0), F(15, 4), F(10), F(5), F(1)]
-    chi_den_lo = upoly_add(p_1pt5, p_lin2)
-    chi_gap = upoly_sub([F(0), F(0)] + [F(15, 8) * c for c in chi_den_lo], chi_num)
-    assert all(c >= 0 for c in chi_gap), f"chi_5 tail gap failed: {chi_gap}"
+    # Derivative numerator: -(5/2)(1+t) + (5/2)(1 + 5/2 t) == (15/4) t
+    fprime_num = upoly_add([F(-5, 2), F(-5, 2)], [F(5, 2), F(25, 4)])
+    assert fprime_num == [F(0), F(15, 4)]
+    assert F(15, 4) / F(2) == F(15, 8)
+    # Direct algebraic Bernstein check on t = (3/4)*u, u in [0, 1] (and (15/8)*(3/4)^2 = 135/128 > 1):
+    assert F(15, 8) * F(3, 4) ** 2 == F(135, 128) > F(1)
+    p_rhs_bound = upoly_mul([F(1), F(0), F(-15, 8)], [F(1), F(0), F(-15, 8)])
+    chi_sq_diff = upoly_sub(p_lin2, upoly_mul(p_rhs_bound, p_1pt5))
+    chi_sq_u = {(k, 0): c * (F(3, 4) ** k) for k, c in enumerate(chi_sq_diff) if c != 0}
+    assert bernstein_2d_min(chi_sq_u, len(chi_sq_diff) - 1, 0) >= 0, "chi_5 Bernstein check on [0, 3/4] failed"
 
     # (b) Exact Bernstein-Mobius proof of lambda_max(D^2 (u^T H_{5,1}(y) u)) <= 2 * phi_1(|y|^2)
     #     on all of R^2 (with R = |y|^2 >= 0, S = R + 1, c = cos(2 alpha) in [-1, 1]):
@@ -459,6 +471,25 @@ def verify_all(data: dict) -> dict:
     w_tail = parse_hex(data["analytic_tail_cutoff"])
     S_ext = parse_hex(data["amplitude_exterior_S_min"])
     assert w_ext == F(11, 8) and w_tail == F(8) and S_ext == F(25, 16)
+
+    # Exact rational verification of Part 3 binary64 outward-rounding regression controls:
+    rc = data["rounding_controls"]
+    t2 = rc["t2_ring24"]
+    rc_Tl, rc_Th, rc_Tm, rc_hT = (
+        parse_hex(t2["Tl"]),
+        parse_hex(t2["Th"]),
+        parse_hex(t2["Tm"]),
+        parse_hex(t2["hT"]),
+    )
+    assert rc_Tl == F(4) and rc_Th > rc_Tl and rc_Tl <= rc_Tm <= rc_Th
+    assert rc_hT >= max(rc_Tm - rc_Tl, rc_Th - rc_Tm), (
+        f"Part 3 RingGeom hT fails to enclose midpoint radius: hT={rc_hT} < max={max(rc_Tm - rc_Tl, rc_Th - rc_Tm)}"
+    )
+    s2 = rc["t0_sector2"]["df"]
+    df_l, df_h = parse_hex(s2[0]), parse_hex(s2[1])
+    assert df_l <= F(1, 24) <= df_h, (
+        f"Part 3 AngGeom df fails to enclose 1/24: [{df_l}, {df_h}]"
+    )
 
     foundations = check_exact_analytic_foundations()
 

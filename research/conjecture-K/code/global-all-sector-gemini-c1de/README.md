@@ -15,7 +15,7 @@ See [`../../sources/global-all-sector-gemini-c1de/PROOF.md`](../../sources/globa
 - `certify_all_sector.cpp`: Self-contained C++17 outward-rounded (`FE_UPWARD` enforced per thread) certifier for Parts 1–3. Rejects `-DNDEBUG` at compile time, compiles cleanly with `-O2 -ffp-contract=off -frounding-math -std=c++17 -pthread -Wall -Wextra -Werror`, runs startup self-tests, and writes exact `std::hexfloat` intervals to `result.json`.
 - `result.json`: Exact `std::hexfloat` certificate pinned to `certify_all_sector.cpp` by `cpp_sha256`.
 - `verify.py`: Pure-Python standard-library verifier (`python3 -I`, rejects `-O`). Runs all zero-float algebraic, 2D Bernstein (Lemmas L1 & L2), Smooth-Split $H_{5,\delta}$ (Lemmas S1 & S2), $\psi(r, q)$ calculus, $w \ge 8$ even+odd analytic exterior proofs, independent analytic Jensen diagonal lower-bound checks, exact rational Sylvester PSD & continuity audits of Parts 1–3, and optional `--replay-cpp`.
-- `test_controls.py`: 21 negative/corruption controls covering Parts 1–3 discontinuities, PSD failures, Part 1 & Part 2 Jensen diagonal under-reporting, handoff gaps, negative parameters, box-count tampering, bad `cpp_sha256`, `python3 -O`, live C++ even & odd false-target controls (`--control-false-hotspot`), and C++ `-DNDEBUG` compile rejection.
+- `test_controls.py`: 23 negative/corruption controls covering Parts 1–3 discontinuities, PSD failures, Part 1 & Part 2 Jensen diagonal under-reporting, handoff gaps, negative parameters, box-count tampering, Part 3 `RingGeom` `hT` and `AngGeom` `df` inward-rounding regressions, bad `cpp_sha256`, `python3 -O`, live C++ even & odd false-target controls (`--control-false-hotspot`), and C++ `-DNDEBUG` compile rejection.
 
 ## Replay Instructions
 
@@ -23,7 +23,7 @@ See [`../../sources/global-all-sector-gemini-c1de/PROOF.md`](../../sources/globa
 # 1. Exact rational audit of committed certificate + all zero-float symbolic/Bernstein proofs (~0.5 s):
 python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py
 
-# 2. Full 21-test negative/corruption control suite (~3 s):
+# 2. Full 23-test negative/corruption control suite (~3 s):
 python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/test_controls.py
 
 # 3. Full non-destructive C++17 recompilation + live control + full 8-thread replay + exact-match check:
