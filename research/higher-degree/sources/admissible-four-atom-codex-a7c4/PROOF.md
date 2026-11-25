@@ -33,6 +33,25 @@ Here the expected constant is zero since the pointwise limit of the difference i
 
 For a violating admissible $\nu$, fix this $\lambda_*$. Keep the mean of $H$ and the two quantities $g_\nu(\lambda_*)$, $g'_\nu(\lambda_*)$ fixed. Every replacement law with these three moments is admissible. Its derivative at $\lambda_*$ is zero and its convex response curve takes the same value there. Freezing only the value at the old minimum would allow the minimizing amplitude to move.
 
+## Eliminate the energy from the contact search
+
+Fix a nonzero driver and a candidate law. Write $W=V/u$, which has mean one and is independent of the choice of energy. Set $r=\lambda\sqrt{u}$, $M(r)=\mathbb E\rho(r^2W)$, $t=t_{\rm lo}$, and $\gamma=\sqrt\pi/2$. For the P5 thresholds $0<t<\gamma$. The continuum of gate inequalities is equivalent to
+\[
+ \sqrt{u}/\epsilon_1\le \inf_{r>0} (M(r)-t)/r .
+\]
+For this family the infimum has a unique positive minimizer $r_t$, which is independent of $u$. It solves a scalar equation with a bounded decreasing integrand:
+\[
+ \mathbb E K(r_t^2W)=t,\qquad
+ K(x)=\gamma e^{-x/2}I_0(x/2)
+ =\frac{\gamma}{\pi}\int_0^\pi e^{-x(1-\cos v)/2}\,dv .
+\]
+Indeed $K(x)=\rho(x)-2x\rho'(x)$ by the Rice formula in P5 (use $I_0'=I_1$ and $(zI_1)'=zI_0$). Thus $M-rM'=\mathbb E K(r^2W)$. The norm representation justifies differentiating $M$ under the integral, with derivative bounded by $\sqrt W$. The angular formula gives strict decrease from $\gamma$ to zero for $K$. Because $W>0$ almost surely in the nonzero-driver case, the same endpoints and strict decrease hold after averaging. The derivative of $(M(r)-t)/r$ has the sign of $t-\mathbb E K(r^2W)$, proving the claim. In particular
+\[
+ u_{\max}=\epsilon_1^2 M'(r_t)^2,
+ \qquad u\text{ is admissible precisely when }0<u\le u_{\max}.
+\]
+Here $M'(r_t)>0$ by strict convexity and $M'(0)=0$. For a three- or four-scale witness at exact contact one may set $u=u_{\max}$ and test the allowance at this energy. One still has to check the admissible energy interval for the two-scale family. A universal lower bracket for the scalar solve is $r_t^2\ge 2\log(\gamma/t)$ by Jensen applied to the angular formula and $\mathbb EW=1$. The objective and the profile may still depend on $u$; only response feasibility has been eliminated analytically.
+
 ## Preserve a strict violation using one linear objective
 
 Set $B_\nu=\mathbb E[V k'(V)]$ and $A_\nu=\mathbb E[V k'(V)^2]$, so $\widehat\Omega_\nu=3A_\nu/2-3B_\nu^2/(4u)$. The quantities $c_X,\delta,A_\nu,B_\nu$ are affine in $\nu$. Choose a phase $\psi$ and $p>0$ such that
