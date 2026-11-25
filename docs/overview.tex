@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.40191\;<\;\KG\;\le\;1.40457588$\\[6pt]
+\Large $1.402\;<\;\KG\;\le\;1.40457588$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
 (\lean{Grothe.Statement.main\_bounds}); the computer-assisted inputs are native finite checks listed in
 the axiom report (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is \lean{lower\_target}, with the exact rational $140191/100000$; the upper bound is \lean{Grothe.UpperSix.constant\_le}, with the exact rational $140457588/100000000$, from six Gaussian rounding channels.\vspace{4pt}
+The lower bound is \lean{lower\_target}, with the exact rational $1402/1000$; the upper bound is \lean{Grothe.UpperSix.constant\_le}, with the exact rational $140457588/100000000$, from six Gaussian rounding channels.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -91,7 +91,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.40457588}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.402}$ & $\mathbf{1.40457588}$\\\bottomrule
 \end{tabular}
 \end{center}
 The upper bound of this work is exactly $140457588/100000000$ (six Gaussian rounding channels).
@@ -704,10 +704,10 @@ the projection onto linear functions minus a multiple of the projection onto the
 the identity on all the other chaoses (an \emph{identity tail}).
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+e)/(n+1)\to1$.
-\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu=0.71331239215$, with
- $\hat B=0.7064131$.
+\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu=0.713266399$, with
+ $\hat B=353183/500000=0.706366$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.4019103\ldots>1.40191$.
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.4020007\ldots>1.402$.
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
@@ -755,10 +755,10 @@ has four layers.
  argument: a cover of the parameter space by pieces cut out by one to three linear constraints, up to two symmetries of
  the potential, with one S-lemma certificate per piece.
 \end{enumerate}
-\lean{profile\_bound} assembles the rows, the mass row and the envelope into $\hat V\le\hat B$ for $t\in[0,9/10]$, and
-$t\le\sqrt\pi/2<9/10$ is proved. \lean{witnessCap\_cert} turns this into the scalar cap $B$ of the witness, and the
-transfer gives $K\ge1/B$ for every Grothendieck bound $K$ (\lean{lower\_bound\_of\_tailNodeCaps}). Its only hypothesis
-is the node caps, which \lean{tailNodeCaps\_cert} discharges. No form of Conjecture~K is assumed.
+\lean{profile\_bound\_tight} assembles the twelve existing rows, the two kernel-checked antiholomorphic Stein rows ($0.835$ and $0.845$, with the certified cubic radius bound $\E|q|\le\frac{93}{100}\|q\|_2$), the mass row, and the kernel-checked $38$-cell tightened envelope (\lean{certEnvelopeTight}) into $\hat V\le\hat B=353183/500000$ for $t\in[0,9/10]$, and
+$t\le\sqrt\pi/2<9/10$ is proved. \lean{witnessCap\_tight} turns this into the scalar cap $B=713266399/10^9$ of the witness, and the
+transfer gives $K\ge1/B>1.402$ for every Grothendieck bound $K$ (\lean{lower\_bound\_tight\_of\_tailNodeCaps}). Its only hypothesis
+is the unchanged node caps, which \lean{tailNodeCaps\_cert} discharges. No form of Conjecture~K is assumed.
 
 \subsection{The primal/dual viewpoint}
 For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
@@ -804,7 +804,7 @@ lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.40191$, without hypotheses. The intermediate theorem \lean{lower\_bound\_of\_tailNodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_target}: every Grothendieck bound is above $1.402$, without hypotheses. The intermediate theorem \lean{lower\_bound\_tight\_of\_tailNodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the unchanged node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
 the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices;
 the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
 (frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and

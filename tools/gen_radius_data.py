@@ -20,9 +20,7 @@ from fractions import Fraction as Fr
 from math import comb, gcd
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CERT_DIR = os.path.join(
-    REPO, "research", "conjecture-K", "code", "radius-relaxation", "cert_N_final"
-)
+CERT_DIR = os.path.join(REPO, "data", "cubic-radius", "cert_N_final")
 OUT_DIR = os.path.join(REPO, "Grothe", "LowerAnalytic", "RadiusRows")
 EXPECTED_SHA256 = "fb7d22b8bf268bc2960d5f5ffa522d0dddf8b4daa6a95110afd8a13ba321df44"
 

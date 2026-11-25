@@ -18,7 +18,9 @@ follow by `Circular.chaos3_right`, `Circular.gaussian_sq_eq`, `Circular.gaussian
 assembles the shared reduction from the scale, gate variable and row inequalities.
 
 * `moments_of_three`: `E √U ≤ ρ` and the integrability of `√U` are consequences of the other
-  fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments.
+  fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments; for a
+  circular cubic Gaussian chaos, `gaussian_moments` discharges `mh` directly from the sharper
+  certified bound `first_moment_lt_93` (`SharpRadius.lean`).
 * `gaussian_moments`: for the Gaussian law, `E U = 1`, `E U² ≥ 2` (from the fluctuation bound),
   the sharp cap `E U² ≤ 44 ≤ 2 + xMax²` (`Circular.gaussian_fourth_moment_le_44`) and
   integrability are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment

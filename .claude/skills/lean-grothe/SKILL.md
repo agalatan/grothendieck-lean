@@ -12,10 +12,10 @@ version plus what the rulebook does not say.
 
 `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`), without hypotheses:
 
-    1.40191 < K_G^ℂ ≤ 1.40457588 < 1/γ† = 1.40457593…
+    1.402 < K_G^ℂ ≤ 1.40457588 < 1/γ† = 1.40457593…
 
-- Lower bound: `140191 / 100000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
-  (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
+- Lower bound: `1402 / 1000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
+  (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis, antiholomorphic Stein rows and node caps in `Grothe/LowerAnalytic/`.
 - Upper bound: `140457588 / 100000000`, weak (≤). Six Gaussian rounding channels, `Grothe/UpperSix/`
   (`Grothe.UpperSix.bound`, `constant_le`, `constant_lt_inv_gammaDagger` in `Grothe/UpperResult.lean`).
 - `1/γ†` is Haagerup's proposed value; K is strictly below it.

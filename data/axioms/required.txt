@@ -12,7 +12,9 @@ Grothe.Haag.norm_phaseLaplaceKernel_le
 Grothe.Haag.ph_eq_phaseLaplace
 Grothe.Haag.phaseMoment_weighted
 Grothe.Lower.certEnvelope
+Grothe.Lower.certEnvelopeTight
 Grothe.Lower.certMassRow
+Grothe.Lower.envPure_bound
 Grothe.Lower.certRow01
 Grothe.Lower.certRow02
 Grothe.Lower.certRow03
@@ -61,7 +63,17 @@ Grothe.LowerAnalytic.gaussian_gramInputs
 Grothe.LowerAnalytic.gaussian_steinInputs
 Grothe.LowerAnalytic.integral_norm_le_93_mul_norm_of_mem_H21
 Grothe.LowerAnalytic.integral_norm_le_93_of_mem_H21
+Grothe.LowerAnalytic.checkAntiCells_sound
+Grothe.LowerAnalytic.circularReductionHyp_of_nodeCaps
+Grothe.LowerAnalytic.circularRowBound_row08
+Grothe.LowerAnalytic.circularRowBound_row09
 Grothe.LowerAnalytic.lower_bound_of_tailNodeCaps
+Grothe.LowerAnalytic.lower_bound_tight_of_tailNodeCaps
+Grothe.LowerAnalytic.nodeList_eq_of_capsChars
+Grothe.LowerAnalytic.norm_pres_le_93
+Grothe.LowerAnalytic.profile_bound_tight
+Grothe.LowerAnalytic.rowOf_of_circular
+Grothe.LowerAnalytic.witnessCap_tight
 Grothe.LowerAnalytic.massRow_frame
 Grothe.LowerAnalytic.normQk_le_93
 Grothe.LowerAnalytic.normQk_le_rho

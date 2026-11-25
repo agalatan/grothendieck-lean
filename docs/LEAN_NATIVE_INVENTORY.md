@@ -17,8 +17,10 @@ Archived upper variants have separate preserved inventories under
 ## Lower bound
 
 Every native fact of the lower bound is one sequential exact computation; most of them sit in modules of their own, so
-that Lake checks them in separate processes. All of them are in the axiom closure of `lower_target` and `main_bounds`,
-which `scratch/Axioms.lean` reports. Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
+that Lake checks them in separate processes. All of them are reported by `scratch/Axioms.lean`. In `lower_target` and
+`main_bounds` (`LowerBoundTight.lean`), rows `08` and `09` and the tightened 38-cell envelope (`certEnvelopeTight`) are
+checked in Lean's kernel via `decide +kernel` with zero new `native_decide` axioms (so `certRow08`, `certRow09`, and
+`certEnvelope` remain in `native.txt` only for `rowData_facts` and the earlier `LowerBound.lean`). Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
 number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a block of consecutive nodes or pieces.
 
 | family | facts | module | what is checked | used by |

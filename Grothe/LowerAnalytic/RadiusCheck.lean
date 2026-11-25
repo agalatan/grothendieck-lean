@@ -1154,7 +1154,7 @@ private lemma checkPiecesAux_head_cone {r : RadiusRow} {mAll m1 m2 m3 m4 m5 : In
                             simp only [checkPiecesAux, Bool.and_eq_true] at hok
                             exact hok.1.1.2
 
-private lemma coneAtOK_real {x2 x1 xa : Int} (h : coneAtOK x2 x1 xa = true) :
+lemma coneAtOK_real {x2 x1 xa : Int} (h : coneAtOK x2 x1 xa = true) :
     0 ≤ (x2 : ℝ) / (arrScale : ℝ) ∧ 0 ≤ (x1 : ℝ) / (arrScale : ℝ) ∧
       ((xa : ℝ) / (arrScale : ℝ)) ^ 2
         ≤ 4 * ((x1 : ℝ) / (arrScale : ℝ)) * ((x2 : ℝ) / (arrScale : ℝ)) := by
@@ -1325,7 +1325,7 @@ private lemma checkPiecesAux_tail_sound (r : RadiusRow)
 
 /-- Factor `W * u ^ 2 > 0` out of the scaled piece-polynomial inequality without
 unfolding local `set`-bound variables inside `ring`. -/
-private lemma factor_u2_bracket {W u A b1 b2 b3 b4 b5 m5 r : ℝ}
+lemma factor_u2_bracket {W u A b1 b2 b3 b4 b5 m5 r : ℝ}
     (h : 0 ≤ W * (u ^ 2 * (A - (b1 + b2 + b3 + b4)) - u ^ 2 * b5 / m5) - W * u ^ 2 * r)
     (hWu : 0 < W * u ^ 2) :
     r ≤ A - (b1 + b2 + b3 + b4 + b5 / m5) := by
@@ -2092,7 +2092,7 @@ lemma cutLin5_nonneg {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvPolynomial
 
 /-- Infimum over `α > 0` of `Circular.joint_sixth`: eliminates the Young parameter `α` cleanly so
 the bound is a single nonnegative multiple of `s^{3/2}` at fixed normalized scalars `p`. -/
-private lemma joint_sixth_inf {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvPolynomial (Fin d) ℝ}
+lemma joint_sixth_inf {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvPolynomial (Fin d) ℝ}
     (ha : Chaos3 a) (haa : gaussE d (a * a) = 1 / 2) (hc : Circular J a b) (young : Bool) :
     let t := gramT J a b
     let s := gaussE d (radU a b ^ 2) - 2
@@ -2165,7 +2165,7 @@ private lemma joint_sixth_inf {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvP
       rw [h1, h2]; ring
 
 /-- AM-GM: `2 √(X Y) ≤ α X + Y / α` for `X, Y ≥ 0` and `α > 0`. -/
-private lemma two_sqrt_mul_le {X Y α : ℝ} (hX : 0 ≤ X) (hY : 0 ≤ Y) (hα : 0 < α) :
+lemma two_sqrt_mul_le {X Y α : ℝ} (hX : 0 ≤ X) (hY : 0 ≤ Y) (hα : 0 < α) :
     2 * √(X * Y) ≤ α * X + Y / α := by
   have h := sq_nonneg (√α * √X - √Y / √α)
   have hαs : √α ≠ 0 := (Real.sqrt_pos.2 hα).ne'
@@ -2177,7 +2177,7 @@ private lemma two_sqrt_mul_le {X Y α : ℝ} (hX : 0 ≤ X) (hY : 0 ≤ Y) (hα 
   linarith
 
 /-- Weak-duality fold step: accumulating `cuts` into `resid`. -/
-private lemma foldl_cuts_eval {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvPolynomial (Fin d) ℝ}
+lemma foldl_cuts_eval {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvPolynomial (Fin d) ℝ}
     (hc : Circular J a b) (pn ph pb py pz : ℝ) {s : ℝ} (hs : 0 < s)
     (hpn : pn = gramN (gramT J a b) / s) (hph : ph = gramH (gramT J a b) / s)
     (hpb : pb = gramB (gramT J a b) / s) (hpy : py = gramY (gramT J a b) / s)
@@ -2416,11 +2416,11 @@ private lemma checkEndpoint_sound {d : ℕ} {J : Fin d → Fin d → ℝ} {a b :
 
 /-! ### Main row soundness theorem -/
 
-private lemma integrable_add_fn {α : Type*} [MeasurableSpace α] {μ : Measure α} {f g : α → ℝ}
+lemma integrable_add_fn {α : Type*} [MeasurableSpace α] {μ : Measure α} {f g : α → ℝ}
     (hf : Integrable f μ) (hg : Integrable g μ) : Integrable (fun x ↦ f x + g x) μ :=
   hf.add hg
 
-private lemma eval_pow_integrable' {d : ℕ} (P : MvPolynomial (Fin d) ℝ) (k : ℕ) :
+lemma eval_pow_integrable' {d : ℕ} (P : MvPolynomial (Fin d) ℝ) (k : ℕ) :
     Integrable (fun x ↦ eval x P ^ k) (stdGaussian d) :=
   (integrable_eval (P ^ k)).congr (Filter.Eventually.of_forall fun x ↦ by simp)
 

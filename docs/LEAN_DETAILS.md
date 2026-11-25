@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40457588` (in Lean `140191/100000` and `140457588/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.402 < K_G^ℂ ≤ 1.40457588` (in Lean `1402/1000` and `140457588/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
 
@@ -1159,18 +1159,23 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   formal verification.
 
 **Lower bound.** `lower_target : LowerTarget` (`Grothe/MainResult.lean`) is
-`lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `140191/100000 = 1.40191`.
-`lowerTarget_of_tailNodeCaps` (`Grothe/LowerTarget.lean`) applies `lower_bound_of_tailNodeCaps`
-(`Grothe/LowerAnalytic/LowerBound.lean`): for every Grothendieck bound `K`, `1/((1 − ν)·envB + ν) ≤ K` with
-`ν = 47/2000` and `envB = 7064131/10⁷`, given the node caps `TailNodeCaps (nuHat (47/2000))`; the reciprocal is
-`1.4019103… > 1.40191`. **The node caps are the only hypothesis of `lower_bound_of_tailNodeCaps`**: the bounds
-Ψ_r(s_i) − 10⁻¹¹ ≤ c_i of the potentials of the 14 rows with the tail ν̂ at the nodes of their tables.
+`lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `1402/1000 = 1.402`.
+`lowerTarget_of_tailNodeCaps` (`Grothe/LowerTarget.lean`) applies `lower_bound_tight_of_tailNodeCaps`
+(`Grothe/LowerAnalytic/LowerBoundTight.lean`): for every Grothendieck bound `K`, `1/((1 − ν)·envBTight + ν) ≤ K` with
+`ν = 47/2000` and `envBTight = 353183/500000 = 0.706366`, given the unchanged node caps `TailNodeCaps (nuHat (47/2000))`;
+the reciprocal is `1.4020007… > 1.402`. **The node caps are the only hypothesis of `lower_bound_tight_of_tailNodeCaps`**:
+the bounds Ψ_r(s_i) − 10⁻¹¹ ≤ c_i of the potentials of the 14 rows with the tail ν̂ at the nodes of their tables.
 `tailNodeCaps_cert` (`Grothe/LowerAnalytic/CapNodes.lean`) proves them ([CAPS.md](CAPS.md)), so `lower_target` has
 no hypothesis. The chain: `transfer_lower` gives `1/B ≤ K` from `TransferInputsL2 B`;
 `transferInputs_of_witnessCap` supplies `TransferInputsL2 B` from the scalar caps of the witness in every dimension
-`n ≥ 2` (`witnessCap_cert`, with `B = (1 − ν)·envB + ν`); `witnessCap_cert` combines the phase reduction
-`witnessCap_of_VhatOf_le`, the shared reduction `reductionHyp_of_nodeCaps`, the mass row `massRow_frame` and the
-envelope bound `profile_bound`. `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an
+`n ≥ 2` (`witnessCap_tight`, with `B = (1 − ν)·envBTight + ν = 713266399/10⁹`); `witnessCap_tight` combines the phase
+reduction `witnessCap_of_VhatOf_le`, the circular shared reduction `circularReductionHyp_of_nodeCaps` (carrying the
+circular cubic representation `Circular J A B` and the certified cubic radius bound `‖p‖ ≤ 93/100`, `norm_pres_le_93`),
+the mass row `massRow_frame`, the 12 existing row certificates (`certRow01`–`certRow07`, `certRow10`–`certRow14`), the
+two kernel-checked antiholomorphic Stein tightened rows `circularRowBound_row08` (`cap08Tight = 1675841/1250000`) and
+`circularRowBound_row09` (`cap09Tight = 6809419/5000000`), and the kernel-checked 38-cell tightened envelope
+`certEnvelopeTight` (`profile_bound_tight`, `envPure_bound`, zero new `native_decide` axioms). `TransferInputsL2 B`
+asks, for every δ > 0, for a finite measure space with an
 operator T on L², a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with
 Σₗ|uₗ|² ≤ 1 and Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
 
@@ -1405,8 +1410,9 @@ certificates, the generated modules, their data and their cost are described in 
   sectors against the blocks of S²), all through a real charge calculus (slot operators of J,
   the derivation δ with δf = −g, δg = f for the kernels of a, b, and the tetrahedral
   contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is.
-  `reductionHyp_of_nodeCaps` (`Reduction.lean`) constructs the gate variable
-  and per-row `RowShared` reduction from the node caps. The mass row uses the
+  `reductionHyp_of_nodeCaps` and `circularReductionHyp_of_nodeCaps` (`Reduction.lean`) construct the gate variable
+  and per-row `RowShared` / `CircularSharedReduction` reductions from the node caps (with `norm_pres_le_93` supplying
+  `τ ≤ 93/100`). The mass row uses the
   proved bound `normQk_le_rho` in `WitnessCap.lean`. The certified cubic radius upper bound
   E|q| ≤ (93/100) ‖q‖₂ (strict for q ≠ 0) is formalized in `AntiStein.lean` (the two radial forms of the
   antiholomorphic Stein identity `antiStein_I`, `antiStein_II`, the Cauchy–Schwarz cone
@@ -1416,11 +1422,18 @@ certificates, the generated modules, their data and their cost are described in 
   (`radiusRow_sound`), `RadiusRows/Row00.lean`–`Row22.lean` (all 23 rows generated by
   `tools/gen_radius_data.py` and verified by `decide +kernel` with zero `native_decide` axioms),
   and `SharpRadius.lean` (`first_moment_lt_93`, `first_moment_le_93`), wired into `Bridge.lean`
-  (`gaussian_moments`) and `WitnessCap.lean` (`integral_norm_le_93_of_mem_H21`,
-  `integral_norm_le_93_mul_norm_of_mem_H21`, `norm_starProjection_H21_le_93`, `normQk_le_93`).
-* Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
-  scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and
-  cumulant hypotheses), and the exact form of
+  (`gaussian_moments`, superseding the older three-moment first-moment certificate) and `WitnessCap.lean`
+  (`integral_norm_le_93_of_mem_H21`, `integral_norm_le_93_mul_norm_of_mem_H21`, `norm_starProjection_H21_le_93`,
+  `normQk_le_93`). The same antiholomorphic Stein calculus is lifted to convex row potentials `Ψ(σ√U)` in
+  `AntiSteinRowCheck.lean`, `AntiSteinRowSound.lean` (`checkAntiCells_sound`), `NodeListParse.lean` (pure-kernel
+  evaluation of `Row.nodeList` via `String.ofList`), and the generated shards `AntiRows/Row08*` and `AntiRows/Row09*`
+  (`tools/gen_antistein_rows.py`, verified by `decide +kernel` with zero `native_decide` axioms), tightening rows
+  `0.835` and `0.845` to `cap08Tight = 1675841/1250000` and `cap09Tight = 6809419/5000000`; paired with the
+  kernel-checked 38-cell envelope `Grothe/Lower/EnvelopePure.lean` + `EnvelopeTight.lean` (`certEnvelopeTight`,
+  `envBTight = 353183/500000`), `LowerBoundTight.lean` proves `K_G^ℂ > 1.402` with zero node-cap rebuild.
+* Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma (`ThreeMoment.lean`), the
+  scalar sixth-moment (`SixthMoment.lean`) and earlier first-moment (`FirstMoment.lean`) certificates (superseded in
+  `Bridge.lean` by `first_moment_lt_93`), and the exact form of
   the fluctuation bound (`Influence.lean`): for a circular cubic chaos q = a + ib the slack in
   Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3 equals (2‖Π₂,₂|q|²‖² + ‖Π₃,₁q²‖²)/18, with the quartic identity
   3κ = 4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² + 2‖Π₂,₂|q|²‖² + ‖Π₃,₁q²‖², the influence inequality

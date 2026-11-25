@@ -7,11 +7,11 @@ documents quote them.
 
 ## The current bounds
 
-$$1.40191 < K \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.402 < K \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
+| lower bound (strict) | `1.402` | `1402 / 1000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
 | upper bound (weak, $\le$) | `1.40457588` | `140457588 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -19,7 +19,7 @@ $$1.40191 < K \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 ```lean
 theorem main_bounds :
-    (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
+    (1402 / 1000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 140457588 / 100000000
 ```
 
@@ -34,8 +34,8 @@ $V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Gro
 
 - Upper bound: `Grothe.UpperSix.bound : IsBound (140457588 / 100000000)`. For every finite complex matrix,
   $V(A) \le 1.40457588\,C(A)$.
-- Lower bound: `lower_target : LowerAbove (140191 / 100000)`. Every Grothendieck bound is above $1.40191$; for every
-  $K \le 1.40191$ some matrix has $V(A) > K\,C(A)$.
+- Lower bound: `lower_target : LowerAbove (1402 / 1000)`. Every Grothendieck bound is above $1.402$; for every
+  $K \le 1.402$ some matrix has $V(A) > K\,C(A)$.
 
 ## Haagerup's value
 
@@ -58,9 +58,9 @@ bound $K < 1.40490913\ldots$
 |---|---|---|
 | $\varepsilon$ | `191/250` | weight of the cubic chaos in the witness $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$ |
 | $\nu$ | `47/2000` | weight of the identity tail |
-| $B_{\mathrm{env}}$ | `7064131/10000000` | bound of the envelope certificate (1,800 cells) |
-| $B = (1-\nu)B_{\mathrm{env}} + \nu$ | `14266247843/20000000000` $= 0.71331239215$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
-| $1/B$ | $1.4019103\ldots$ | what the certificate gives; the theorem states the rounded value $1.40191 < 1/B$ |
+| $B_{\mathrm{env}}$ | `353183/500000` $= 0.706366$ | bound of the kernel-checked tightened envelope certificate (`certEnvelopeTight`, 38 cells), replacing rows `0.835` and `0.845` by their antiholomorphic Stein certificates (`cap08Tight = 1675841/1250000`, `cap09Tight = 6809419/5000000`) with the certified cubic radius `93/100` |
+| $B = (1-\nu)B_{\mathrm{env}} + \nu$ | `713266399/1000000000` $= 0.713266399$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
+| $1/B$ | $1.4020007\ldots$ | what the certificate gives; the theorem states the rounded value $1.402 < 1/B$ |
 | $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
 
 ## Behind the upper bound
@@ -76,13 +76,14 @@ None of these is the current bound.
 | number | what it is | where |
 |---|---|---|
 | `1.404599395362` | the bound of the older single-channel upper proof, $K < 1.404599395362$. Still proved and independent of the six-channel proof, but weaker, and above Haagerup's value | `Grothe.Statement.upper_below_tight`, `constant_lt_tight_upper` (`Grothe/UpperTightFinal.lean`); `docs/UPPER_STATUS.md` |
-| `1.4018` | the design target of the lower certificate. The certificate reached $1/B = 1.4019103\ldots$, and the theorem states $1.40191$ | `research/identity-tail/` |
-| `1.401700322371` | the previous lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail. No longer the statement | history in `research/` |
+| `1.40191` | the previous lower bound of the same identity-tail witness before antiholomorphic Stein tightening of rows `0.835` and `0.845` (1,800-cell envelope `envB = 7064131/10000000`, $1/B = 1.4019103\ldots$) | `Grothe/LowerAnalytic/LowerBound.lean`; `research/identity-tail/` |
+| `1.4018` | the original design target of the identity-tail lower certificate | `research/identity-tail/` |
+| `1.401700322371` | the earlier lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail. No longer the statement | history in `research/` |
 | `1.40490913…` | Haagerup's 1987 upper bound | prior work |
 | `1.404898554746`, `1.4` | Heilman–Jones–Malavolta's bounds, September 2026 | prior work |
 | `1.35584631827168` | Guo–Fang–Lu's lower bound, September 2026 | prior work |
 | `1.33807` | Davie's lower bound, 1984 | prior work |
-| `1.402`, `1.403`, `1.4023`, … | research targets and ceilings of methods, not theorems | `research/` |
+| `1.4022`, `1.4023`, `1.403`, … | research targets and ceilings of methods, not theorems | `research/` |
 
 ## When a bound changes
 

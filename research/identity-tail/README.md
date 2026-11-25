@@ -1,17 +1,17 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.40191 = 140191/100000 (`main_bounds`) comes from this witness. The certificate was designed for the target 1.4018, which PR #525 stated; #553 states the 1.40191 that the same certificate gives. It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.402 = 1402/1000 (`main_bounds`) comes from this witness. The initial certificate was designed for the target 1.4018 (#525) and reached 1.40191 (#553) with its 1,800-cell envelope (`envB = 7064131/10⁷`, `1/B = 1.4019103…`). Tightening only the two bottleneck rows `0.835` and `0.845` via antiholomorphic Stein calculus and the certified cubic radius `93/100` (with zero node-cap rebuild and a kernel-checked 38-cell envelope `envBTight = 353183/500000`, `B = 713266399/10⁹ = 0.713266399`, `1/B = 1.4020007…`) passes 1.402. It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 
     T = P₁,₀ − ε·P₂,₁ + ν·(Id − P₁,₀ − P₂,₁),      (ε, ν) = (191/250, 47/2000).
 
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
-K ≈ 1.40212 (ledger 3.1). **The integer certificate is complete** (ledger 5.1): an exact envelope over t ∈ [0, 0.9]
-stays below the design target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵; its exact maximum gives
-1/B = 1.4019105…. Lean checks the envelope against the rounded cap B̂ ≤ 7064131/10⁷, that is
-B = 14266247843/20000000000 = 0.71331239215 and 1/B = 1.4019103…, and states K > 1.40191. Three other workers re-checked its node caps, its spectral rows and 31 of its cap pieces with code of their own,
-and 5.1 lists what is checked by one hand only. It does not reach 1.402. The whole certificate is now in Lean
+K ≈ 1.40212 (ledger 3.1). **The integer certificate is complete** (ledger 5.1): the original exact envelope over t ∈ [0, 0.9]
+stayed below the design target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵ (1/B = 1.4019105…; Lean checked
+B̂ ≤ 7064131/10⁷, 1/B = 1.4019103…), and antiholomorphic Stein tightening of rows 0.835 and 0.845 on the unchanged
+node-cap tables lowers the envelope to B̂ ≤ 353183/500000 (`envBTight`), giving B = 713266399/10⁹ and 1/B = 1.4020007… > 1.402. Three other workers re-checked the original node caps, spectral rows and 31 cap pieces with code of their own,
+and 5.1 lists what is checked by one hand only. The whole certificate and the kernel-checked antiholomorphic Stein tightening are in Lean
 (`lower_target`, `Grothe/MainResult.lean`; ledger §6 records the port).
 
 It is research material: nothing here is imported by Lean or checked by CI. The Lean proof itself lives in `Grothe/`

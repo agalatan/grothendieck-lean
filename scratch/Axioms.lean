@@ -24,6 +24,7 @@ import Grothe
 #print axioms Grothe.Lower.ResponsePenalty.v_block
 #print axioms Grothe.Lower.budget_of_bud
 #print axioms Grothe.Lower.certEnvelope
+#print axioms Grothe.Lower.certEnvelopeTight
 #print axioms Grothe.Lower.certMassRow
 #print axioms Grothe.Lower.certRow01
 #print axioms Grothe.Lower.certRow02
@@ -45,6 +46,7 @@ import Grothe
 #print axioms Grothe.Lower.chord_goal
 #print axioms Grothe.Lower.coupled_of_gram
 #print axioms Grothe.Lower.cutSum_cell
+#print axioms Grothe.Lower.envPure_bound
 #print axioms Grothe.Lower.env_bound
 #print axioms Grothe.Lower.finite_transfer
 #print axioms Grothe.Lower.gateForm_ge
@@ -128,6 +130,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.capsRow12
 #print axioms Grothe.LowerAnalytic.capsRow13
 #print axioms Grothe.LowerAnalytic.chaos3_reW
+#print axioms Grothe.LowerAnalytic.checkAntiCells_sound
+#print axioms Grothe.LowerAnalytic.circularReductionHyp_of_nodeCaps
+#print axioms Grothe.LowerAnalytic.circularRowBound_row08
+#print axioms Grothe.LowerAnalytic.circularRowBound_row09
 #print axioms Grothe.LowerAnalytic.chargeSplit_circular
 #print axioms Grothe.LowerAnalytic.coupled_circular
 #print axioms Grothe.LowerAnalytic.covariance_order
@@ -172,6 +178,12 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.joint_scalar
 #print axioms Grothe.LowerAnalytic.kside
 #print axioms Grothe.LowerAnalytic.lower_bound_of_tailNodeCaps
+#print axioms Grothe.LowerAnalytic.lower_bound_tight_of_tailNodeCaps
+#print axioms Grothe.LowerAnalytic.nodeList_eq_of_capsChars
+#print axioms Grothe.LowerAnalytic.norm_pres_le_93
+#print axioms Grothe.LowerAnalytic.profile_bound_tight
+#print axioms Grothe.LowerAnalytic.rowOf_of_circular
+#print axioms Grothe.LowerAnalytic.witnessCap_tight
 #print axioms Grothe.LowerAnalytic.majEll_le_psiT_of_le
 #print axioms Grothe.LowerAnalytic.massRow_frame
 #print axioms Grothe.LowerAnalytic.moment_lemma

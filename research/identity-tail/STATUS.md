@@ -90,8 +90,4 @@ worker's.
 Done in #525 (19 Nov 2026): Lean stage 2 (6.3), with the caps run and the switch to ε̂ = 25/31, and the second
 implementation of the plain row check (Lean's `checkRow` facts beside `verify_cert.py`).
 
-1. **1.402 is not reachable with these tables.** The certified maximum is 4.55·10⁻⁵ above 500/701 = 0.7132668 (3.2),
-   and spectral nodes on the binding plateau rows would gain at most 4·10⁻⁵ in hat units (**N**), against the
-   4.66·10⁻⁵ needed. The Stein layer costs 5.4 to 5.7·10⁻⁵ and the cap tables 2 to 3·10⁻⁵ over the model of 3.1 (3.2);
-   both would have to be recovered, with localised caps also in three odd directions and in the block-0 region, at the
-   Lean cost of 4.2.
+1. **1.402 is now reached on the unchanged node-cap tables via antiholomorphic Stein tightening.** While plain and spectral scalar cuts left the certified maximum 4.55·10⁻⁵ above 500/701 = 0.7132668 (3.2), replacing the law layer on only the two binding rows `0.835` (`row08`) and `0.845` (`row09`) with two-test antiholomorphic Stein calculus (`AntiStein.lean`, `AntiSteinRowSound.lean`) and the certified cubic radius `93/100` (`first_moment_lt_93`, `norm_pres_le_93`) lowers `cap08` from `1.340727277…` to `1675841/1250000 = 1.3406728` and `cap09` from `1.361923313…` to `6809419/5000000 = 1.3618838`, reducing the kernel-checked 38-cell envelope to `envBTight = 353183/500000 = 0.706366` (`B = 713266399/10⁹ = 0.713266399`, `1/B = 1.4020007… > 1.402`) with zero node-cap rebuild and zero new `native_decide` axioms (`LowerBoundTight.lean`, `main_bounds`). Further gains toward the witness model ceiling (~1.40212) would need either tighter node-cap tables (4.2) or higher-degree witnesses (`../higher-degree/`).

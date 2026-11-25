@@ -5,9 +5,9 @@ relies on.** The proved results are the Lean theorems under `Grothe/` (see the t
 `docs/LEAN_DETAILS.md`); this folder records what is known, conjectured, tried and refuted about statements that are
 still open, so that a worker (human or AI) can start from an organised record instead of a pile of session files.
 
-**The bounds the research starts from.** Lean proves $1.40191 < K_G^{\mathbb C} \le 1.40457588 < 1/\gamma^\dagger$
+**The bounds the research starts from.** Lean proves $1.402 < K_G^{\mathbb C} \le 1.40457588 < 1/\gamma^\dagger$
 (`Grothe.Statement.main_bounds`; every constant is stated exactly in [`docs/CONSTANTS.md`](../docs/CONSTANTS.md)).
-Numbers such as 1.402 or 1.403 in this folder are research targets or ceilings of methods, not theorems.
+Numbers such as 1.4022 or 1.403 in this folder are research targets or ceilings of methods, not theorems.
 
 - **Not built, not checked.** No Lean module imports anything from here, `tools/gen_root_imports.py` does not scan
   it, and CI neither builds nor tests it. A change that touches only `research/` gets the status
@@ -68,6 +68,6 @@ one, follows AGENTS.md for branches, pull requests and review, and these rules f
 
 | folder | subject |
 |---|---|
-| [`conjecture-K/`](conjecture-K/README.md) | Conjecture K: the supremum of the gate-free row functional Λ over the cubic chaos H₂,₁ is its value S at the diffuse Gaussian adversary independent of z₁ (approached over increasing dimensions). Open. Proved up to an error of 10⁻⁴ it would give about 1.402 with the cubic witness (the Lean lower bound is 1.40191, from the identity-tail witness); proved exactly, about 1.4022. Start with its book, [`MONOGRAPH.md`](conjecture-K/MONOGRAPH.md). |
+| [`conjecture-K/`](conjecture-K/README.md) | Conjecture K: the supremum of the gate-free row functional Λ over the cubic chaos H₂,₁ is its value S at the diffuse Gaussian adversary independent of z₁ (approached over increasing dimensions). Open. Proved up to an error of 10⁻⁴ it would give about 1.402 with the cubic witness; proved exactly, about 1.4022 (the Lean lower bound is 1.402, from the identity-tail witness with antiholomorphic Stein tightening on rows 0.835 and 0.845). Start with its book, [`MONOGRAPH.md`](conjecture-K/MONOGRAPH.md). |
 | [`higher-degree/`](higher-degree/README.md) | Complex games of degree ≥ 5: the best games of degree 5, 7 and 9 and their model values (1.403648, 1.404113, 1.40430), the responses that bind them, a first test of roundings, and the degree-5 certificate programme for 1.402: a conditional certificate for a capped game, by one author and not yet replayed, whose hypothesis, a sector inequality on each row, is open in several parts. The game values are numerical; the certificate rows carry their own labels. Start with its ledger, [`STATUS.md`](higher-degree/STATUS.md). |
-| [`identity-tail/`](identity-tail/README.md) | The witness P₁,₀ − εP₂,₁ + ν(Id − P₁,₀ − P₂,₁) at (ε, ν) = (191/250, 47/2000): the witness of the proved lower bound. Model value 1.40212. Its integer certificate (an exact envelope over t ∈ [0, 0.9], designed for the target 1.4018 and below that target's cap with a margin of 5.6·10⁻⁵) is in Lean since #525 and gives the proved lower bound 1.40191 (`main_bounds`; the cap checked in Lean is B = 0.71331239215, 1/B = 1.4019103…); it does not reach 1.402. Start with its ledger, [`STATUS.md`](identity-tail/STATUS.md). |
+| [`identity-tail/`](identity-tail/README.md) | The witness P₁,₀ − εP₂,₁ + ν(Id − P₁,₀ − P₂,₁) at (ε, ν) = (191/250, 47/2000): the witness of the proved lower bound. Model value 1.40212. Its integer certificate (1,800 cells, designed for 1.4018) gave 1.40191 in Lean (#525, #553); tightening the two bottleneck rows 0.835 and 0.845 via antiholomorphic Stein calculus and the certified cubic radius 93/100 (zero node-cap rebuild, 38-cell kernel-checked envelope `envBTight = 353183/500000`, `B = 713266399/10⁹`, `1/B = 1.4020007…`) gives the proved Lean lower bound 1.402 (`main_bounds`). Start with its ledger, [`STATUS.md`](identity-tail/STATUS.md). |

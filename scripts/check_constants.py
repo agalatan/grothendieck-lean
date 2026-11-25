@@ -34,7 +34,7 @@ QUOTING = {
 # documents in which an older bound may not appear at all (elsewhere it may, marked as history)
 STRICT = ["README.md", ".claude/skills/lean-grothe/SKILL.md"]
 # older lower bounds of this repository
-RETIRED = ["1.4018", "1.401700322371"]
+RETIRED = ["1.40191", "1.4018", "1.401700322371"]
 
 MAIN_BOUNDS = re.compile(
     r"theorem\s+main_bounds\s*:\s*"

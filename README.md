@@ -3,7 +3,7 @@
 This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.40191 < K_G^{\mathbb C} \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots
+1.402 < K_G^{\mathbb C} \le 1.40457588 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
@@ -15,11 +15,11 @@ value, which resolves this conjecture of Haagerup.
 
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
-| lower bound | $1.40191 < K_G^{\mathbb C}$ | `140191 / 100000` | `Grothe.Statement.main_bounds` (first part), `Grothe.Statement.lower_target` |
+| lower bound | $1.402 < K_G^{\mathbb C}$ | `1402 / 1000` | `Grothe.Statement.main_bounds` (first part), `Grothe.Statement.lower_target` |
 | upper bound | $K_G^{\mathbb C} \le 1.40457588$ | `140457588 / 100000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSix.constant_le` |
 | Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` |
 
-The two bounds are 0.00267 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
+The two bounds are 0.00258 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
 parameters behind it and the other numbers that appear in the repository (older bounds, thresholds, targets).
 Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's value](Grothe/UpperResult.lean) ·
 [the definitions they are stated with](Grothe/Statement.lean).
@@ -33,7 +33,7 @@ Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's v
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.40191 < K}$ | $\mathbf{K\le 1.40457588}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.402 < K}$ | $\mathbf{K\le 1.40457588}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -87,14 +87,14 @@ definitions, so reading it is enough to know what the theorems say:
 
 **The theorems.**
 
-- `Grothe.Statement.main_bounds`: $1.40191 < K_G^{\mathbb C} \le 1.40457588$ (as the rationals `140191 / 100000`
+- `Grothe.Statement.main_bounds`: $1.402 < K_G^{\mathbb C} \le 1.40457588$ (as the rationals `1402 / 1000`
   and `140457588 / 100000000`).
 - `Grothe.UpperSix.bound : IsBound (140457588 / 100000000)`: for every finite complex matrix $A$,
   $V(A) \le 1.40457588 \cdot C(A)$. This is what the upper bound means for a single matrix;
   `Grothe.UpperSix.constant_le` restates it as $K_G^{\mathbb C} \le 1.40457588$.
 - `Grothe.UpperSix.constant_lt_inv_gammaDagger`: $K_G^{\mathbb C} < 1/\gamma^\dagger$. Lean proves
   $1.40457588 < 1/\gamma^\dagger$ from rational bounds on the integral $\gamma^\dagger$.
-- `Grothe.Statement.lower_target`: every $K$ with `IsBound K` is above $1.40191$.
+- `Grothe.Statement.lower_target`: every $K$ with `IsBound K` is above $1.402$.
 
 [Statement](Grothe/Statement.lean) · [Upper bound](Grothe/UpperResult.lean) · [Both bounds](Grothe/MainResult.lean).
 
@@ -106,7 +106,7 @@ projections onto the linear functions of $z$ and onto the cubic Wick chaos of bi
 an identity tail on the complement of the two chaoses (`witness`,
 [`Grothe/LowerAnalytic/Witness.lean`](Grothe/LowerAnalytic/Witness.lean)). The proof shows that
 $\lvert \langle f, Tg \rangle \rvert \le B = (1-\nu)\,B_{\mathrm{env}} + \nu$, with $\nu = 47/2000$ and
-$B_{\mathrm{env}} = 7064131/10^7$, for all unimodular $f$, $g$ and all $n \ge 2$; $1/B = 1.4019103\ldots > 1.40191$.
+$B_{\mathrm{env}} = 353183/500000$, for all unimodular $f$, $g$ and all $n \ge 2$; $1/B = 1.4020007\ldots > 1.402$.
 
 1. **Transfer.** For $u_\ell = z_\ell / \lVert z \rVert$ the sum $\sum_\ell \langle u_\ell, T u_\ell \rangle$ has
    modulus at least $1 - (1+e)/(n+1)$ with $e = 191/250$ (`norm_pairVal_witness`), so every Grothendieck bound is
@@ -114,17 +114,21 @@ $B_{\mathrm{env}} = 7064131/10^7$, for all unimodular $f$, $g$ and all $n \ge 2$
 2. **Reduction.** With $h = (f+g)/2$, $k = (f-g)/2$ and $t = \lVert P_{1,0} h \rVert \le 9/10$, the polarisation
    identity gives $\mathrm{Re} \langle f, Tg \rangle = (1-\nu)\hat V + \nu$, where $\hat V$ has the weights
    $\hat\varepsilon = 25/31$ and $\hat\nu = 47/1953$ (`VOf_eq_hat`). From the hypothesis `TailNodeCaps` of step 4,
-   `reductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 14 inequalities for $\hat V$, the
+   `circularReductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 14 inequalities for $\hat V$, the
    rows. Row $r$ contains a convex function $\Psi_r$ of one real variable, the fibre potential with the tail
    $\hat\nu$: a supremum over real parameters of an explicit integral against one complex Gaussian variable minus a
    quadratic form (`pot`, `Grothe/LowerAnalytic/FibreSup.lean`). Lean proves the facts it uses about the law of a
    cubic chaos of bidegree $(2,1)$ in any number of variables: $\mathbb{E}\,\lvert q\rvert^4 \le 44\,(\mathbb{E}\,\lvert q\rvert^2)^2$,
-   the sixth-moment inequality, and the Stein cuts from Gaussian integration by parts. A mass row bounds the
+   the sixth-moment inequality, the certified cubic radius bound $\mathbb{E}\,\lvert q\rvert \le (93/100)\,\lVert q\rVert_2$
+   (`first_moment_lt_93`, `norm_pres_le_93`), and both the scalar Stein cuts and the two-test antiholomorphic Stein
+   calculus (`AntiStein.lean`) that tightens the two bottleneck rows `0.835` and `0.845` (`circularRowBound_row08`,
+   `circularRowBound_row09`, verified in Lean's kernel via `decide +kernel`). A mass row bounds the
    cubic part $\lVert P_{2,1} k \rVert$ (`massRow`, `Grothe/Lower/MassRow.lean`).
-3. **The envelope.** Two scalar rows mix with a weight $\theta \in [0,1]$ into a row (`RowHolds.mix`). The envelope
-   has 1,800 cells covering $t \in [0, 9/10]$; on each a row, the tangent of the mass row or a mixture of two of them
-   is at most $B_{\mathrm{env}}$ (`certEnvelope`, soundness `env_bound`, `Grothe/Lower/Envelope.lean`).
-   `profile_bound` (`Grothe/LowerAnalytic/LowerBound.lean`) applies it to the rows of the reduction.
+3. **The envelope.** Two scalar rows mix with a weight $\theta \in [0,1]$ into a row (`RowHolds.mix`). The tightened
+   envelope has 38 pure rational cells covering $t \in [0, 9/10]$; on each a row, the tangent of the mass row or a
+   mixture of two of them is at most $B_{\mathrm{env}} = 353183/500000$ (`certEnvelopeTight`, checked by
+   `decide +kernel`, soundness `envPure_bound`, `Grothe/Lower/EnvelopePure.lean`).
+   `profile_bound_tight` (`Grothe/LowerAnalytic/LowerBoundTight.lean`) applies it to the rows of the reduction.
 4. **The node caps.** `TailNodeCaps` says that each $\Psi_r$, less $10^{-11}$, lies below a stored rational at each
    stored node. `tailNodeCaps_cert` (`Grothe/LowerAnalytic/CapNodes.lean`) proves them with the checker
    `GrotheCapsKernel/CapCheckNu.lean` ([CAPS.md](docs/CAPS.md)), and `lower_target` is
