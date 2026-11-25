@@ -118,7 +118,7 @@ $\nu = 47/2000$ and an exact rational $\hat B$ (`SparseEnvelope.cap`); $1/B$ is 
 2. **Reduction.** With $h = (f+g)/2$, $k = (f-g)/2$ and $t = \lVert P_{1,0} h \rVert \le 9/10$, the polarisation
    identity gives $\mathrm{Re} \langle f, Tg \rangle = (1-\nu)\hat V + \nu$, where $\hat V$ has the weights
    $\hat\varepsilon = 25/31$ and $\hat\nu = 47/1953$ (`VOf_eq_hat`). From the hypothesis `TailNodeCaps` of step 4,
-   `reductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 14 inequalities for $\hat V$, the
+   `circularReductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 14 inequalities for $\hat V$, the
    rows. Row $r$ contains a convex function $\Psi_r$ of one real variable, the fibre potential with the tail
    $\hat\nu$: a supremum over real parameters of an explicit integral against one complex Gaussian variable minus a
    quadratic form (`pot`, `Grothe/LowerAnalytic/FibreSup.lean`). Lean proves the facts it uses about the law of a
@@ -149,7 +149,7 @@ An older proof with a single rounding channel is still in the repository. It is 
 ### What the computer checks and what is trusted
 
 - **The Lean kernel** checks every definition and every proof step, including the soundness theorems of the
-  checkers (for example `affineEnvelope_bound`, `pot_le_of_nodeOKNu`, `head_le_of_check`). Besides the facts of the next item,
+  checkers (for example `CoupledStein.profile_bound`, `pot_le_of_nodeOKNu`, `head_le_of_check`). Besides the facts of the next item,
   the axiom report allows only `propext`, `Classical.choice` and `Quot.sound`.
 - **Compiled code** evaluates the `native_decide` facts. Each fact is a decidable statement about committed data,
   usually that a checker program returns `true`; the programs do interval and exact rational arithmetic on finite
