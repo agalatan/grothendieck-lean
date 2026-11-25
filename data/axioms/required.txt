@@ -1518,3 +1518,8 @@ Haagerup.AngularSelector.selectorCoeff_wiener
 Haagerup.AngularSelector.selectorKernel_eq_radial
 Haagerup.AngularSelector.transfer_of_approximate_heads
 Haagerup.SixChannelExact.exists_certified_channels
+Haagerup.SixChannelExact.exists_paid_six_values
+Haagerup.SixChannelExact.mixture_score_le_dual
+Haagerup.SixChannelExact.paid_six_score_le
+Haagerup.SixChannelExact.paid_six_score_lt_seven
+Haagerup.SixChannelExact.sixDual_check

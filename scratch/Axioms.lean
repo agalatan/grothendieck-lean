@@ -2327,7 +2327,12 @@ import Grothe
 #print axioms Haagerup.Data.tig_mu_ok
 #print axioms Haagerup.Data.tig_sos_ok
 #print axioms Haagerup.SixChannelExact.exists_certified_channels
+#print axioms Haagerup.SixChannelExact.exists_paid_six_values
 #print axioms Haagerup.SixChannelExact.isBound
+#print axioms Haagerup.SixChannelExact.mixture_score_le_dual
+#print axioms Haagerup.SixChannelExact.paid_six_score_le
+#print axioms Haagerup.SixChannelExact.paid_six_score_lt_seven
+#print axioms Haagerup.SixChannelExact.sixDual_check
 #print axioms Haagerup.head_sum_ok
 #print axioms Haagerup.isBound_cert
 #print axioms Haagerup.mean0_ok
