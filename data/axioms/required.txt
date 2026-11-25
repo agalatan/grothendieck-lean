@@ -16,18 +16,6 @@ Grothe.Lower.CoupledStein.profile_bound
 Grothe.Lower.CoupledStein.rounded_lt
 Grothe.Lower.SharedGate.WeightedSchur.gain_chord
 Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
-Grothe.Lower.SharedGate.availableSaving
-Grothe.Lower.SharedGate.cell_bound
-Grothe.Lower.SharedGate.check
-Grothe.Lower.SharedGate.endpoint_eq
-Grothe.Lower.SharedGate.pair_ok
-Grothe.Lower.SharedGate.rounded_lt
-Grothe.Lower.SharedGate.smallRectangle_ok
-Grothe.Lower.SharpEnvelope.check
-Grothe.Lower.SharpEnvelope.endpoint_eq
-Grothe.Lower.SharpEnvelope.exact_scalar_cap
-Grothe.Lower.SharpEnvelope.scalar_contact
-Grothe.Lower.affineEnvelope_bound
 Grothe.Lower.certEnvelope
 Grothe.Lower.certMassRow
 Grothe.Lower.certRow01
@@ -44,7 +32,6 @@ Grothe.Lower.certRow11
 Grothe.Lower.certRow12
 Grothe.Lower.certRow13
 Grothe.Lower.certRow14
-Grothe.Lower.envPure_bound
 Grothe.Lower.gram_joint_of_scalars
 Grothe.Lower.mass_law_bound
 Grothe.Lower.rowData_facts

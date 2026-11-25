@@ -1,4 +1,4 @@
-import Grothe.Lower.SharedGateSaving
+import Grothe.Lower.Rows
 
 set_option warningAsError true
 
@@ -14,7 +14,15 @@ Agent-ID: codex-a7c4
 open MeasureTheory
 open scoped BigOperators
 
-namespace Grothe.Lower.SharedGate.WeightedSchur
+namespace Grothe.Lower.SharedGate
+
+def baseline (r : Row) : ℚ := r.kappa * r.delta ^ 2 - r.delta
+
+/-- The part of the expected row gate above its original scalar price. -/
+noncomputable def surplus {Ω : Type*} [MeasurableSpace Ω] (r : Row) (μ : Measure Ω) (X1 X2 X3 : Ω → ℂ) (τ : ℝ) : ℝ :=
+  (∫ ω, r.gate (X1 ω) (X2 ω) (X3 ω) ∂μ) - (baseline r : ℝ) * τ ^ 2
+
+namespace WeightedSchur
 
 /-- First quadratic coefficient, two cross coefficients, and the trailing symmetric block. -/
 structure Gate where
@@ -243,4 +251,6 @@ theorem gain_chord (w z : ι → ℝ) (r : ι → Row) (hw : ∀ i, 0 ≤ w i) (
       dsimp [m]
       ring
 
-end Grothe.Lower.SharedGate.WeightedSchur
+end WeightedSchur
+
+end Grothe.Lower.SharedGate

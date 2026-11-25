@@ -9,7 +9,6 @@ import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.HeadHardy
 import Grothe.ListPoly
-import Grothe.Lower.AffineEnvelope
 import Grothe.Lower.Basic
 import Grothe.Lower.Cert.CoupledStein
 import Grothe.Lower.Cert.Envelope
@@ -30,8 +29,6 @@ import Grothe.Lower.Cert.Row12
 import Grothe.Lower.Cert.Row13
 import Grothe.Lower.Cert.Row14
 import Grothe.Lower.Cert.Rows
-import Grothe.Lower.Cert.SharedGate
-import Grothe.Lower.Cert.SharpEnvelope
 import Grothe.Lower.CoupledSteinEnvelope
 import Grothe.Lower.Cuts
 import Grothe.Lower.Envelope
@@ -74,7 +71,6 @@ import Grothe.Lower.RowParser
 import Grothe.Lower.RowParser.Single
 import Grothe.Lower.RowReduction
 import Grothe.Lower.Rows
-import Grothe.Lower.SharedGateSaving
 import Grothe.Lower.SpecRows
 import Grothe.Lower.Stein
 import Grothe.Lower.Support

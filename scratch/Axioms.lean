@@ -27,18 +27,6 @@ import Grothe
 #print axioms Grothe.Lower.ResponsePenalty.v_block
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.gain_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
-#print axioms Grothe.Lower.SharedGate.availableSaving
-#print axioms Grothe.Lower.SharedGate.cell_bound
-#print axioms Grothe.Lower.SharedGate.check
-#print axioms Grothe.Lower.SharedGate.endpoint_eq
-#print axioms Grothe.Lower.SharedGate.pair_ok
-#print axioms Grothe.Lower.SharedGate.rounded_lt
-#print axioms Grothe.Lower.SharedGate.smallRectangle_ok
-#print axioms Grothe.Lower.SharpEnvelope.check
-#print axioms Grothe.Lower.SharpEnvelope.endpoint_eq
-#print axioms Grothe.Lower.SharpEnvelope.exact_scalar_cap
-#print axioms Grothe.Lower.SharpEnvelope.scalar_contact
-#print axioms Grothe.Lower.affineEnvelope_bound
 #print axioms Grothe.Lower.budget_of_bud
 #print axioms Grothe.Lower.certEnvelope
 #print axioms Grothe.Lower.certMassRow
@@ -62,7 +50,6 @@ import Grothe
 #print axioms Grothe.Lower.chord_goal
 #print axioms Grothe.Lower.coupled_of_gram
 #print axioms Grothe.Lower.cutSum_cell
-#print axioms Grothe.Lower.envPure_bound
 #print axioms Grothe.Lower.env_bound
 #print axioms Grothe.Lower.finite_transfer
 #print axioms Grothe.Lower.gateForm_ge
