@@ -3,7 +3,7 @@
 This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.4019156097 < K_G^{\mathbb C} \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots
+1.4020110501 < K_G^{\mathbb C} \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
@@ -15,11 +15,11 @@ value, which resolves this conjecture of Haagerup.
 
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
-| lower bound | $1.4019156097 < K_G^{\mathbb C}$ | `14019156097 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
+| lower bound | $1.4020110501 < K_G^{\mathbb C}$ | `14020110501 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
 | upper bound | $K_G^{\mathbb C} \le 1.404556407$ | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSix.constant_le` |
 | Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` |
 
-The two bounds are 0.00264 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
+The two bounds are about 0.00255 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
 parameters behind it and the other numbers that appear in the repository (earlier bounds, thresholds, targets).
 Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's value](Grothe/UpperResult.lean) ·
 [the definitions they are stated with](Grothe/Statement.lean).
@@ -33,7 +33,7 @@ Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's v
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4019156097 < K}$ | $\mathbf{K\le 1.404556407}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020110501 < K}$ | $\mathbf{K\le 1.404556407}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -96,7 +96,7 @@ definitions, so reading it is enough to know what the theorems say:
   `Grothe.UpperSix.constant_le` restates it, rounded up to nine decimals, as $K_G^{\mathbb C} \le 1.404556407$.
 - `Grothe.UpperSix.constant_lt_inv_gammaDagger`: $K_G^{\mathbb C} < 1/\gamma^\dagger$. Lean proves
   $\gamma^\dagger < 0.711958683$ from rational bounds on the integral, and $1.404556407 \cdot 0.711958683 < 1$.
-- `Grothe.Statement.shared_gate_endpoint`: $K_G^{\mathbb C}$ is at least an exact rational, the reciprocal of the
+- `Grothe.Statement.coupled_stein_endpoint`: $K_G^{\mathbb C}$ is at least an exact rational, the reciprocal of the
   bound $B$ below; the lower bound of `main_bounds` is this rational rounded strictly downward.
 
 [Statement](Grothe/Statement.lean) · [Upper bound](Grothe/UpperResult.lean) · [Both bounds](Grothe/MainResult.lean).
@@ -109,8 +109,8 @@ projections onto the linear functions of $z$ and onto the cubic Wick chaos of bi
 an identity tail on the complement of the two chaoses (`witness`,
 [`Grothe/LowerAnalytic/Witness.lean`](Grothe/LowerAnalytic/Witness.lean)). The proof shows that
 $\lvert \langle f, Tg \rangle \rvert \le B = (1-\nu)\,\hat B + \nu$ for all unimodular $f$, $g$ and all $n \ge 2$, with
-$\nu = 47/2000$ and an exact rational $\hat B$ (`SharedGate.hatCap`); $1/B$ is the exact endpoint
-(`SharedGate.endpoint`). [`docs/CONSTANTS.md`](docs/CONSTANTS.md#behind-the-lower-bound) gives their values.
+$\nu = 47/2000$ and an exact rational $\hat B$ (`CoupledStein.cap`); $1/B$ is the exact endpoint
+(`CoupledStein.endpoint`). [`docs/CONSTANTS.md`](docs/CONSTANTS.md#behind-the-lower-bound) gives their values.
 
 1. **Transfer.** For $u_\ell = z_\ell / \lVert z \rVert$ the sum $\sum_\ell \langle u_\ell, T u_\ell \rangle$ has
    modulus at least $1 - (1+e)/(n+1)$ with $e = 191/250$ (`norm_pairVal_witness`), so every Grothendieck bound is
@@ -118,29 +118,26 @@ $\nu = 47/2000$ and an exact rational $\hat B$ (`SharedGate.hatCap`); $1/B$ is t
 2. **Reduction.** With $h = (f+g)/2$, $k = (f-g)/2$ and $t = \lVert P_{1,0} h \rVert \le 9/10$, the polarisation
    identity gives $\mathrm{Re} \langle f, Tg \rangle = (1-\nu)\hat V + \nu$, where $\hat V$ has the weights
    $\hat\varepsilon = 25/31$ and $\hat\nu = 47/1953$ (`VOf_eq_hat`). From the hypothesis `TailNodeCaps` of step 4,
-   `reductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 14 inequalities for $\hat V$, the
+   `circularReductionHyp_of_nodeCaps` (`Grothe/LowerAnalytic/Reduction.lean`) proves 14 inequalities for $\hat V$, the
    rows. Row $r$ contains a convex function $\Psi_r$ of one real variable, the fibre potential with the tail
    $\hat\nu$: a supremum over real parameters of an explicit integral against one complex Gaussian variable minus a
    quadratic form (`pot`, `Grothe/LowerAnalytic/FibreSup.lean`). Lean proves the facts it uses about the law of a
    cubic chaos of bidegree $(2,1)$ in any number of variables: $\mathbb{E}\,\lvert q\rvert^4 \le 44\,(\mathbb{E}\,\lvert q\rvert^2)^2$,
    the sixth-moment inequality, and the Stein cuts from Gaussian integration by parts. A mass row bounds the
    cubic part $\lVert P_{2,1} k \rVert$ (`massRow`, `Grothe/Lower/MassRow.lean`).
-3. **The envelope and the shared gate.** Two scalar rows mix with a weight $\theta \in [0,1]$ into a row
-   (`RowHolds.mix`). Fifteen intervals cover $t \in [0, 9/10]$. On fourteen of them a row, the tangent of the mass
-   row or a fixed mixture of two of them is at most a rational $\hat B_*$. On $[1672/2000, 1675/2000]$ the weight of
-   the row 0.845 in its mixture with the row 0.835 is affine in $t$, the mixed bound is a quadratic in $t$, and
-   $\hat B_*$ is its maximum (`SharpEnvelope.check`, `Grothe/Lower/Cert/SharpEnvelope.lean`). No better mixture
-   exists: $\hat B_*$ is the greatest value that the scalar inequalities of the rows permit
-   (`SharpEnvelope.exact_scalar_cap`). The two rows 0.835 and 0.845 are bounded through the same Gaussian gate
-   variables, and completing their two gate forms together saves a fixed amount, which lowers the cap to
-   a smaller rational $\hat B$ (`SharedGate.check`, `Grothe/Lower/Cert/SharedGate.lean`; soundness
-   `SharedGate.cell_bound`, `Grothe/Lower/SharedGateSaving.lean`). Both checks reduce in the kernel.
-   `sharedGate_lower_of_tailNodeCaps` (`Grothe/LowerAnalytic/SharedGateBound.lean`) applies them to the rows of the
-   reduction.
+3. **The two coupled Stein rows.** Rows 0.835 and 0.845 come from the same normalized cubic. Its
+   fourth moment and the scale of its residual therefore agree across the two rows. At these same
+   values, the two Stein certificates bound the expected fibre potentials. Completing the square
+   for the weighted Gaussian gate gives an additional deduction on the same realization.
+   The theorem `CoupledStein.actual_deductions` supplies both row inequalities together.
+   The amplitude envelope interpolates the checked deductions between rational row weights
+   and takes the maximum of a quadratic on each segment. The cap is
+   $\hat B=1412721229/2000000000$. [Row deductions](Grothe/LowerAnalytic/CoupledSteinRows.lean) ·
+   [Envelope](Grothe/Lower/CoupledSteinEnvelope.lean) · [Transfer](Grothe/LowerAnalytic/CoupledSteinBound.lean).
 4. **The node caps.** `TailNodeCaps` says that each $\Psi_r$, less $10^{-11}$, lies below a stored rational at each
    stored node. `tailNodeCaps_cert` (`Grothe/LowerAnalytic/CapNodes.lean`) proves them with the checker
-   `GrotheCapsKernel/CapCheckNu.lean` ([CAPS.md](docs/CAPS.md)), and `shared_gate_endpoint` is
-   `sharedGateEndpoint_le_of_tailNodeCaps tailNodeCaps_cert`, applied with the Grothendieck bound of the upper proof
+   `GrotheCapsKernel/CapCheckNu.lean` ([CAPS.md](docs/CAPS.md)), and `coupled_stein_endpoint` is
+   `coupledSteinEndpoint_le_of_tailNodeCaps tailNodeCaps_cert`, applied with the Grothendieck bound of the upper proof
    (`Grothe/MainResult.lean`).
 
 ### The upper bound
@@ -154,7 +151,7 @@ An older proof with a single rounding channel is still in the repository. It is 
 ### What the computer checks and what is trusted
 
 - **The Lean kernel** checks every definition and every proof step, including the soundness theorems of the
-  checkers (for example `affineEnvelope_bound`, `pot_le_of_nodeOKNu`, `head_le_of_check`). Besides the facts of the next item,
+  checkers (for example `CoupledStein.profile_bound`, `pot_le_of_nodeOKNu`, `head_le_of_check`). Besides the facts of the next item,
   the axiom report allows only `propext`, `Classical.choice` and `Quot.sound`.
 - **Compiled code** evaluates the `native_decide` facts. Each fact is a decidable statement about committed data,
   usually that a checker program returns `true`; the programs do interval and exact rational arithmetic on finite
