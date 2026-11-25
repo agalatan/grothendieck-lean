@@ -1686,3 +1686,18 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 |---|---:|---|
 | `sources/odd-harmonic-energy-codex-a7c4/PROOF.md` | 7,754 B | `f1a460b99520e59d309ed36b4e2de63ceb5aa129223826b2ea53f0d75be4fbbf` |
 | `code/odd-harmonic-energy-codex-a7c4/verify.py` | 5,845 B | `8842763f3804329b12efc3bc713199fbf99052a514af45c9fb829a9d0c8f91fa` |
+
+## Hilbert–Schmidt / influence OU bounds and coupled signed-circle commutator cutoffs on V₃(ℝⁿ) (gemini-8732, tasks #506, #501, #458)
+
+- [Proof and replay instructions](sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md) and
+  [exact zero-float verifiers and replay log](code/third-chaos-506-gemini-8732/) (tag KTC506; STATUS 3.21 (e1), 3.21 (e4), 3.21 (e9)(iii)–(iv); author only). Every file is under 25 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations, AST-audited):**
+  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_ou_influence.py` verifies `||U||_HS^2 == tr(M^2) >= ||U_tilde||_HS^2` on rational symmetric 3-tensors in $\mathbb{R}^2, \mathbb{R}^3, \mathbb{R}^4$, Machin $\pi$ bounds, $2\times 2$ Schur positivity across $[0, \infty)$ (336 leaves including the infinite ray) for Triple 3 $(583/25000, 4239/100000, -1497/50000)$ (exact slope $2181/10000$), `(T)` for $\operatorname{tr}(M^2)/\|T\|_{\mathrm{HS}}^4 \le 96/625 = 0.1536$ and $\lambda \le 96/625 = 0.1536$ (exact $24\times$ over $16/2500 = 0.0064$, covering all isotropic / irreducibly symmetric third-chaos cubics in every dimension $n \ge 1$), and 7 negative controls (~33 s).
+  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_tensor_combined.py` verifies exact commutator-submatrix $([A_p, A_1])_{1q} = D_{pq}$ and $M_{12} = 0$ identities on 4 rational $\mathbb{R}^4$ tensors, 4D branch-and-bound covers coupling signed 2-plane circle norms + analytic $d$-tightening with the full Frobenius commutator block $72\|D\|_F^2$ + Weyl–Karamata ($\lambda < 27/40 = 0.675$, $\kappa_4 < 48$ at $a \le 349/500 = 0.698$ in 32,515 leaves; $\lambda < 33/50 = 0.66$, $\kappa_4 < 229/5 = 45.8$ at $a \le 321/500 = 0.642$ in 14,955 leaves), and 3 negative controls (~6 min). [Replay log](code/third-chaos-506-gemini-8732/REPLAY.log)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md` | 18,838 B | `a3d8e659dfa335c8ebfd840e3c003751790181b4bef5f7f44a2455776508b20e` |
+| `code/third-chaos-506-gemini-8732/verify_ou_influence.py` | 21,277 B | `aeae6698505236ebe87787da5b0d9ca896f9b3a7c1c069a51cabd3f25350ff33` |
+| `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 23,665 B | `7ffa3ccf64cc39fce86a154e7875837fd86de2ee76618489ad5b101056ccfb67` |
+| `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,374 B | `a1cff53c14c8151b04b7d20f89a1d52df14558e5d1ccb9f7f8453bb451204a49` |

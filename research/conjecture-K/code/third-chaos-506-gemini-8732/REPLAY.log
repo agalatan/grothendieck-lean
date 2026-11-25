@@ -1,0 +1,15 @@
+=== Exact Hilbert-Schmidt & Influence OU Verifier [zero floats] ===
+1. Foundations & exact Sym^3(R^n) contraction checks (R^2, R^3, R^4): PASS; pi in [3.1415926535, 3.1415926536]
+2. Triple 3 [tr(M^2) & lambda]: (583/25000, 4239/100000, -1497/50000) certified on [0, oo) in 336 leaves
+   min d_1 = 0.0008048135, min d_2 = 0.0007233333, min Schur det margin = 0.0000000021
+   Exact slope: 72*al_3 + 54*be_3 - 15/4 = 2181/10000 = 0.2181000000
+   At tr(M^2) <= 96/625 = 0.1536 (and lambda <= 96/625 = 0.1536, exact 24x > 16/2500 = 0.0064):
+   (1 + (2181/10000)*(96/625))^2 = 1.0681225808 < (17/50)*pi_lo = 1.0681415022  ==> (T) PASS!
+3. Isotropic / irreducibly symmetric cubics (M = I_n / n): 1/n <= 1/7 < 96/625 for all n >= 7 (overlaps n <= 15 on 7..15) ==> (T) PASS for all n >= 1!
+4. Negative controls & AST zero-float audit: 7 adversarial checks ALL REJECTED (33222 ms).
+
+=== Exact Combined 4D Tensor & Commutator Verifier [zero floats] ===
+1. Exact R^4 matrix/slot/commutator controls: 4 non-commuting rational tensors PASS
+2. Sharp regime  a(T) <= 349/500 = 0.698: lambda(T) < 27/40 = 0.675, kappa_4(F) < 48          (leaves=32515, pruned=15054) PASS
+3. Practical (T) a(T) <= 321/500 = 0.642: lambda(T) < 33/50 = 0.660, kappa_4(F) < 229/5 = 45.8 (leaves=14955, pruned=4376) PASS
+4. Negative controls & AST zero-float audit: 3 adversarial checks ALL REJECTED (365842 ms).
