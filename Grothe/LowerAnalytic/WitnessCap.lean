@@ -561,6 +561,63 @@ theorem normQk_le_rho {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
     (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖QkOf n f g‖ ≤ ρ :=
   norm_starProjection_H21_le_rho n (norm_kOf_le n hf hg)
 
+/-- **Certified first-moment upper bound on `H₂,₁`**: `E|ψ| ≤ 93/100` for every unit `ψ ∈ H₂,₁`
+(from the antiholomorphic Stein calculus and kernel-verified 23-row certificate
+`first_moment_le_93`). -/
+theorem integral_norm_le_93_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n)
+    (h1 : ‖ψ‖ = 1) : ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) ≤ 93 / 100 := by
+  obtain ⟨c, rfl⟩ := exists_wick_repr n hψ
+  have h93 := first_moment_le_93 _ _ (chaos3_reP n c) (integral_reP_sq_eq_half n c h1)
+    (circular_reP_imP n c)
+  refine le_trans (le_of_eq ?_) h93
+  refine integral_congr_ae ((repr_ae n c).mono fun x hx ↦ ?_)
+  simp only at hx ⊢
+  rw [hx, Complex.norm_def, Complex.normSq_mk, radU]
+  simp only [map_add, map_mul]
+
+/-- **Homogeneous certified first-moment upper bound on `H₂,₁`**: `E|ψ| ≤ (93/100) ‖ψ‖` for
+every `ψ ∈ H₂,₁` (including `ψ = 0`). -/
+theorem integral_norm_le_93_mul_norm_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n) :
+    ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) ≤ (93 / 100) * ‖ψ‖ := by
+  rcases (norm_nonneg ψ).eq_or_lt with h0 | h0
+  · have hψ0 : ψ = 0 := norm_eq_zero.1 h0.symm
+    rw [hψ0, norm_zero, mul_zero]
+    refine le_of_eq (integral_eq_zero_of_ae ?_)
+    filter_upwards [Lp.coeFn_zero ℂ 2 (stdGaussian (n + n))] with x hx
+    rw [hx]; simp
+  · have hu : ‖((‖ψ‖ : ℂ))⁻¹ • ψ‖ = 1 := by
+      rw [norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm,
+        inv_mul_cancel₀ h0.ne']
+    have h3 := integral_norm_le_93_of_mem_H21 n (Submodule.smul_mem _ ((‖ψ‖ : ℂ)⁻¹) hψ) hu
+    have h4 : ∫ x, ‖(((‖ψ‖ : ℂ))⁻¹ • ψ : L2G n) x‖ ∂(stdGaussian (n + n))
+        = ‖ψ‖⁻¹ * ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) := by
+      rw [← integral_const_mul]
+      refine integral_congr_ae ?_
+      filter_upwards [Lp.coeFn_smul ((‖ψ‖ : ℂ)⁻¹) ψ] with x hx
+      rw [hx, Pi.smul_apply, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm]
+    rw [h4, inv_mul_le_iff₀ h0] at h3
+    linarith
+
+/-- **Certified projection duality on `H₂,₁`**: the projection of a function bounded by one has
+norm at most `93/100`, since `‖Πc‖² = Re⟪c, Πc⟫ ≤ E|Πc| ≤ (93/100) ‖Πc‖`. -/
+theorem norm_starProjection_H21_le_93 {c : L2G n}
+    (hc : ∀ᵐ x ∂(stdGaussian (n + n)), ‖c x‖ ≤ 1) :
+    ‖(H21 n).starProjection c‖ ≤ 93 / 100 := by
+  obtain ⟨w, hw⟩ : ∃ w : L2G n, w = (H21 n).starProjection c := ⟨_, rfl⟩
+  have hmem : w ∈ H21 n := hw ▸ (H21 n).starProjection_apply_mem c
+  rw [← hw]
+  rcases (norm_nonneg w).eq_or_lt with h0 | h0
+  · rw [← h0]; norm_num
+  · have h3 := integral_norm_le_93_mul_norm_of_mem_H21 n hmem
+    have hw2 : ‖w‖ ^ 2 ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) :=
+      hw ▸ norm_sq_starProjection_le_integral n (H21 n) hc
+    nlinarith
+
+/-- **Certified cubic projection upper bound** `‖P₂,₁ k‖ ≤ 93/100` for a unimodular pair. -/
+theorem normQk_le_93 {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
+    (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖QkOf n f g‖ ≤ 93 / 100 :=
+  norm_starProjection_H21_le_93 n (norm_kOf_le n hf hg)
+
 /-! ### The remaining hypotheses and the scalar cap -/
 
 /-- **The remaining input of the scalar cap for one pair** (`V ≥ 0` after the phase): a coupling

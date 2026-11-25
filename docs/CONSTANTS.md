@@ -8,11 +8,11 @@ exact value, and that this page and the other documents state them.
 
 ## The current bounds
 
-$$1.4019156097 < K \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4020110501 < K \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.4019156097` | `14019156097 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
+| lower bound (strict) | `1.4020110501` | `14020110501 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
 | upper bound (weak, $\le$) | `1.404556392` | `1404556392 / 1000000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSeven.constant_le` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSeven.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -20,7 +20,7 @@ $$1.4019156097 < K \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 ```lean
 theorem main_bounds :
-    (14019156097 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
+    (14020110501 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404556392 / 1000000000
 ```
 
@@ -32,7 +32,7 @@ Each bound is the rounding of an exact value that Lean also states.
 
 | | exact value | decimal | theorem | rounding |
 |---|---|---|---|---|
-| lower endpoint ($\le K$) | the fraction `SharedGate.endpoint` [below](#behind-the-lower-bound) | $1.401915609708473171\ldots$ | `Grothe.Statement.shared_gate_endpoint` | strictly downward (`SharedGate.rounded_lt`) |
+| lower endpoint ($\le K$) | the fraction `CoupledStein.endpoint` [below](#behind-the-lower-bound) | $1.402011050142071170\ldots$ | `Grothe.Statement.coupled_stein_endpoint` | strictly downward (`CoupledStein.rounded_lt`) |
 | upper bound ($K \le$) | $10^{27}/711968565817136711740669035$ | $1.404556391969756991\ldots$ | `Grothe.UpperSeven.bound` | up to nine decimals (`Grothe.UpperSeven.constant_le`) |
 
 **What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
@@ -64,37 +64,22 @@ bound $K < 1.40490913\ldots$
 
 The witness is $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$. Lean bounds
 $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ by $B = (1-\nu)\hat B + \nu$, and the transfer to matrices
-gives $K \ge 1/B$ (`Grothe.Statement.shared_gate_endpoint`). The value of $1/B$ in Lean
-(`SharedGate.endpoint_eq`, `Grothe/Lower/Cert/SharedGate.lean`) is
+gives $K \ge 1/B$ (`Grothe.Statement.coupled_stein_endpoint`).
 
-```text
-909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
-648511116026975442270455246402044140272423714548613432977518646121820234278296395631
-```
-
-which is $1.401915609708473171\ldots$
-
-| quantity | value | meaning |
+| Quantity | Exact value | Role |
 |---|---|---|
-| $\varepsilon$ | `191/250` | weight of the cubic chaos in the witness |
-| $\nu$ | `47/2000` | weight of the identity tail |
-| $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
-| $\hat B_*$ | `SharpEnvelope.hatCap` $= 0.7064127708804130589\ldots$ | the maximum of the sharp envelope of the certified rows (`SharpEnvelope.check`); an exact rational, the maximum of a quadratic |
-| gain | `SharedGate.gain = 243 / 100000000` | what the Gaussian gate shared by the two active rows takes off the cap (`SharedGate.check`) |
-| $\hat B = \hat B_* - \text{gain}$ | `SharedGate.hatCap` $= 0.7064103408804\ldots$ | bound of the hat value |
-| $B = (1-\nu)\hat B + \nu$ | $0.7133096978\ldots$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
-| $1/B$ | `SharedGate.endpoint`, the fraction above | the lower endpoint; `main_bounds` states it rounded strictly downward |
+| $\varepsilon,\nu$ | $191/250,\ 47/2000$ | cubic coefficient and identity-tail weight |
+| $\hat\varepsilon,\hat\nu$ | $25/31,\ 47/1953$ | normalized coefficients of the rows |
+| $\hat B$ | $1412721229/2000000000$ | scalar cap from the common fourth excess and scale |
+| $B=(1-\nu)\hat B+\nu$ | $2853044560237/4000000000000$ | witness scalar cap |
+| $1/B$ | `4000000000000 / 2853044560237` | exact lower endpoint, $1.4020110501420711708\ldots$ |
 
-**The sharp envelope.** Fifteen intervals cover the profile parameter $t\in[0,9/10]$. On fourteen of them a fixed
-mixture of two rows is at most $\hat B_*$. On the central interval $[1672/2000, 1675/2000]$ the weight of row 0.845 in
-its mixture with row 0.835 varies affinely with $t$, and the maximum of the resulting quadratic is $\hat B_*$. It is
-the greatest value that the scalar inequalities of the rows permit (`SharpEnvelope.exact_scalar_cap`).
-
-**The shared gate.** The two active rows (0.835 and 0.845) constrain the same Gaussian variable. For residual scale
-$\tau\ge4649/20000$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For
-$\tau\le4649/20000$, a quadratic majorant saves $551/10^8$ on the first row. Pricing their common saving by the smaller
-of the two mixture weights lowers the cap by the gain, on a cover of sixteen intervals. The row06/row07 interval uses
-the weight $12/25$; on the row12/row13 interval the weight changes from $3/5$ to $22/25$ at $1758/2000$.
+The active rows (0.835 and 0.845) bound the same circular Gaussian cubic. For its actual fourth excess,
+each Stein bank gives an affine upper bound in the residual scale. At each mixture weight the proof
+combines the two bounds with the gain from the shared Gaussian gate before maximizing over scale.
+Lean checks the quadratic on every closed intersection of the banks, including singletons and interior
+extrema. Chord interpolation between the nine certified mixture weights and a 38-cell amplitude cover
+give the stated $\hat B$. [Exact endpoint](../Grothe/Lower/Cert/CoupledStein.lean) · [Proof and independent replay](../research/identity-tail/COUPLED_STEIN.md).
 
 The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
 At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine
@@ -124,8 +109,9 @@ None of these is the current bound.
 
 | number | what it is | where |
 |---|---|---|
+| `1.4019156097` | an earlier lower bound of this repository: the sharp envelope of the scalar rows with the common Gaussian gate of rows `0.835` and `0.845` (gain $243/10^8$, $1/B = 1.401915609708473171\ldots$) | [archived Lean certificate](https://github.com/agalatan/grothendieck-lean/blob/8c08cc4285123b688dbc5f6a796c0fe78a0509b1/Grothe/Lower/Cert/SharedGate.lean) |
 | `1.40191478` | an earlier lower bound of this repository: the shared gate with its first parameters (gain $2/10^6$) | git history |
-| `1.4019109461` | an earlier lower bound of this repository: the sharp envelope alone, $1/((1-\nu)\hat B_*+\nu) = 1.401910946113565640\ldots$ | `SharpEnvelope.endpoint`, `SharpEnvelope.rounded_lt` (`Grothe/Lower/Cert/SharpEnvelope.lean`) |
+| `1.4019109461` | an earlier lower bound of this repository: the sharp envelope alone, $1/((1-\nu)\hat B_*+\nu) = 1.401910946113565640\ldots$ | [archived Lean certificate](https://github.com/agalatan/grothendieck-lean/blob/8c08cc4285123b688dbc5f6a796c0fe78a0509b1/Grothe/Lower/Cert/SharpEnvelope.lean) |
 | `1.40191` | an earlier lower bound of this repository, $1.40191 < K$: the same witness and rows with an envelope of fixed mixtures, $B_{\mathrm{env}} = 7064131/10^7$ and $1/B = 1.4019103\ldots$ | `envB`, `lower_bound_of_tailNodeCaps` (`Grothe/LowerAnalytic/LowerBound.lean`) |
 | `1.4018` | the design target of the lower certificate | `research/identity-tail/` |
 | `1.401700322371` | an earlier lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail | history in `research/` |
@@ -139,7 +125,7 @@ None of these is the current bound.
 | `1.404898554746`, `1.4` | Heilman–Jones–Malavolta's bounds, September 2026 | prior work |
 | `1.35584631827168` | Guo–Fang–Lu's lower bound, September 2026 | prior work |
 | `1.33807` | Davie's lower bound, 1984 | prior work |
-| `1.402`, `1.403`, `1.4023`, … | research targets and ceilings of methods, not theorems | `research/` |
+| `1.403`, `1.4023`, … | research targets and ceilings of methods, not theorems | `research/` |
 
 ## Six fixed rounding channels
 

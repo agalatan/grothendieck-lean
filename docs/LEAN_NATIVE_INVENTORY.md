@@ -19,8 +19,9 @@ Archived upper variants have separate preserved inventories under
 ## Lower bound
 
 Every native fact of the lower bound is one sequential exact computation; most of them sit in modules of their own, so
-that Lake checks them in separate processes. All of them are in the axiom closure of `shared_gate_endpoint` and `main_bounds`,
-which `scratch/Axioms.lean` reports. Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
+that Lake checks them in separate processes. The coupled endpoint uses the native scalar certificates for
+rows 01–07 and 10–14. The two active rows use kernel-checked antiholomorphic Stein bounds. The shared witness
+also uses the node-cap facts below. The exact dependencies are reported in `scratch/Axioms.lean`. Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
 number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a block of consecutive nodes or pieces.
 
 | family | facts | module | what is checked | used by |

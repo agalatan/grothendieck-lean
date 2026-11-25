@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4019156097\;<\;\KG\;\le\;1.404556392$\\[6pt]
+\Large $1.4020110501\;<\;\KG\;\le\;1.404556392$\\[6pt]
 \normalsize The Lean~4/Mathlib theorem
 \lean{Grothe.Statement.main\_bounds} proves these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The exact shared-gate lower endpoint is rounded down to $14019156097/10000000000$.
+The exact coupled Stein lower endpoint is rounded down to $14020110501/10000000000$.
 The seven Gaussian rounding channels give the upper bound rounded up to $1404556392/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -95,7 +95,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4019156097}$ & $\mathbf{1.404556392}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020110501}$ & $\mathbf{1.404556392}$\\\bottomrule
 \end{tabular}
 \end{center}
 The upper bound is $1404556392/1000000000$ (the seven-channel transfer factor $1/(c-\delta)$ rounded up).
@@ -711,25 +711,14 @@ the identity on all the other chaoses (an \emph{identity tail}).
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+e)/(n+1)\to1$.
 \item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu$, with
- $\hat B=\hat B_*-243/10^8$ and $\hat B_*=0.7064127708804130589\ldots$ an exact rational.
+ $\hat B=1412721229/2000000000$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so
-$\KG\ge1/B=1.401915609708473171\ldots$, and \lean{main\_bounds} states this endpoint rounded down
-(\lean{shared\_gate\_endpoint}).
-The number $\hat B_*$ is the maximum of an envelope of the certified rows over fifteen intervals of the profile
-parameter. On $[1672/2000,1675/2000]$ the weight of row $0.845$ in its mixture with row $0.835$ varies affinely;
-the other fourteen intervals use fixed weights.
-At $t=0.8366035304980132\ldots$ a single abstract profile satisfies every retained-square row and every
-mass tangent at $\hat V=\hat B_*$. The scalar row system therefore attains $\hat B_*$; going below it needs more than
-the scalar rows.
-The two active rows constrain the same Gaussian gate coordinates. At fixed first coordinate,
-completing their sum saves at least $1018\tau^2/10^7$ across the two rows.
-For $\tau\le4649/20000$ a quadratic majorant saves $551/10^8$ on the first row.
-At every scale their nonnegative deductions sum to at least $H=(1018/10^7)(4649/20000)^2$.
-A mixture with weights $1-\theta,\theta$ saves at least $H\min(\theta,1-\theta)$.
-Checking both assignments of $H$ on the active cells and the ordinary mixtures on the
-rest of a sixteen-cell cover gives $\hat V\le\hat B_*-243/10^8=\hat B$ (\lean{SharedGate.check}).
-
+The finite-partition transfer gives $\KG\ge 1/B=4000000000000/2853044560237$.
+The lower half of \lean{main\_bounds} rounds this exact value strictly down.
+The two active rows use the same circular cubic, fourth excess and residual scale.
+For each mixture weight we combine their two Stein expectation chords and the Gaussian
+gate gain at those common parameters. Lean checks all nine prices on every closed
+intersection of the two banks. Concavity gives the saving at intermediate weights.
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
@@ -768,13 +757,11 @@ has four layers.
  $(\ell,\beta,C)=(\lambda m,0,\lambda+S+\lambda m^2)$ are rows. At each witness scale $\tau$, the majorant bounds the sum of the separate spectral cut and
  the potential. Lean checks this on the quadratic and affine branches of $\varphi_c(\tau v/\delta)$ in $v=\sqrt U$, with $\delta=3/4$. Convexity gives the bounds
  between witness scales. The kernel checks these polynomial inequalities and the cover of $0\le x\le31/4$.
- The \emph{envelope} covers $t\in[0,9/10]$ with 15 intervals.
- On fourteen of them one row, a tangent of the mass row, or a fixed mixture of two rows bounds $\hat V$ by a convex
- quadratic in $t$, whose maximum occurs at an endpoint. On $[1672/2000,1675/2000]$ the weight of the mixture of the
- rows $0.835$ and $0.845$ is affine in $t$; the bound is again a quadratic in $t$, and its maximum, inside the
- interval at $t=0.8366035304980132\ldots$, is $\hat B_*$. Lean's kernel checks the cover and the bound $\hat B_*$ in exact
- rational arithmetic (\lean{SharpEnvelope.check}). The gate that the rows $0.835$ and $0.845$ share then lowers the
- cap to $\hat B$ on a cover of sixteen intervals (\lean{SharedGate.check}).
+ The amplitude cover has 38 base intervals. In the active intervals the mixing weight is
+ a clipped affine function of $t$. The discount is bounded below by the chord between its
+ endpoint weights. Subtracting it leaves a quadratic in the segment parameter, whose
+ maximum is checked at the endpoints and at an interior vertex when one is present.
+ The other intervals use the tightened scalar rows or a mass tangent.
 \item \textbf{The node caps.} The rows use each potential only through upper bounds at the nodes of its table,
  $\Psi_r(s_i)-10^{-11}\le c_i$ (\lean{TailNodeCaps}). Lean proves them. By convexity it suffices to treat the vertex
  nodes; $238$ of the $2{,}012$ table entries are chord nodes. At a vertex node a pointwise majorant of the pair potential
@@ -784,10 +771,12 @@ has four layers.
  argument: a cover of the parameter space by pieces cut out by one to three linear constraints, up to two symmetries of
  the potential, with one S-lemma certificate per piece.
 \end{enumerate}
-\lean{sharedGate\_profile} assembles the rows, the mass row, the envelope and the shared gate into $\hat V\le\hat B$ for $t\in[0,9/10]$, and
-$t\le\sqrt\pi/2<9/10$ is proved. \lean{witnessCap\_of\_profile\_upper} turns this into the scalar cap $B$ of the witness, and the
-transfer gives $K\ge1/B$ for every Grothendieck bound $K$ (\lean{sharedGate\_lower\_of\_tailNodeCaps}). Its only hypothesis
-is the node caps, which \lean{tailNodeCaps\_cert} discharges. No form of Conjecture~K is assumed.
+\lean{CoupledStein.profile} combines the rows and the mass bound for $0\le t\le9/10$.
+The cubic first-moment inequality bounds the residual scale $\tau$ by $93/100$.
+Rows $0.835$ and $0.845$ share that scale, their fourth excess and the Gaussian gate.
+The resulting cap passes through \lean{witnessCap\_of\_circular\_profile} to the matrix transfer
+\lean{CoupledStein.lower\_of\_nodeCaps}. The certified node caps \lean{tailNodeCaps\_cert}
+then give $4000000000000/2853044560237\le\KG$ independently of Conjecture~K.
 
 \subsection{The primal/dual viewpoint}
 For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
@@ -850,7 +839,7 @@ lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{main\_bounds}, first part: the lower bound for $\KG$, hence for every Grothendieck bound, without hypotheses. The intermediate theorem \lean{sharedGate\_lower\_of\_tailNodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{main\_bounds}, first part: the lower bound for $\KG$, hence for every Grothendieck bound, without hypotheses. The intermediate theorem \lean{CoupledStein.lower\_of\_nodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
 the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices;
 the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
 (frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and
@@ -861,8 +850,9 @@ stored rational caps at the tabulated nodes): convexity of the potentials, the m
 prices on a polar grid, verified interval tables, the exact $LDL^{\mathsf T}$ check, and for the localised nodes the
 coverage by constrained pieces and the S-lemma
 &
-the checks of the 14 rows and their node caps, including the node ranges of each row, the coverage and pieces of
-every localised node, and the chord nodes of each row.
+the inherited scalar and spectral row checks for rows 01--07 and 10--14, and the node-cap checks
+for all fourteen potentials, including localised pieces and chord nodes. The kernel checks the
+two tightened row laws and the joint prices.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
 change, evaluates them on its own runner.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Earlier single-channel upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599395362$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders. The longer-prefix costs feed the actual comparison; \lean{Final.hclose\_final} supplies the head's table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]

@@ -1,6 +1,6 @@
 # Higher-degree games: start here
 
-The proved lower bound K_G^ℂ > 1.4019156097 comes from the cubic witness P₁,₀ − (191/250)P₂,₁ with an identity tail
+The proved lower bound K_G^ℂ > 1.4020110501 comes from the cubic witness P₁,₀ − (191/250)P₂,₁ with an identity tail
 ([`../identity-tail/`](../identity-tail/README.md)). Even a perfect evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
 ledger 12.2). Larger lower bounds need games of higher degree. In particular, the third decimal of K_G^ℂ needs a
 certified 1.404, because the upper bound 1.404556392 is already below 1.4046.
