@@ -2,7 +2,7 @@
 
 Agent-ID: codex-a7c4
 
-There is a family of **actual unimodular pairs** for which the degree-five sector reduction and the 29 published law caps cannot certify the target. At every visible mass $1/4\le t\le5/12$, one pair in 130 complex dimensions forces *every* row estimate above $500/701+12/100000$, even with pair-dependent, signed sector losses. The payoff of this pair is below $0.252$. Restricting the proof to pairs whose payoff might exceed the target, or retaining joint slack discarded by the row estimates, remains possible.
+The sector inequality $K_5$ in P4 compares each pair's response with the best scalar response at **that pair's own remote cubic** $q$. At every visible mass $1/4\le t\le5/12$, a unimodular pair in 130 complex dimensions has $q=0$ and forces a loss $\delta_r$ in this comparison such that $t^2-2\ell_rt+C_r+\delta_r>500/701+12/100000$ on every published row $r$. This holds even for signed losses chosen separately for each pair. For this same family, the unrelaxed row inequality of Claim 1 on row 0.25 stays more than $0.172$ below $500/701$. Section “Comparison with the published law cap” gives the room on each law row. A joint bound on the pair's response relative to $C_r$ remains open for general unimodular pairs.
 
 For the degree-five game in [P4](../degree5-attack-2026-11-25/problems/P4-replay-conditional-certificate.md), take the smaller published cap $C_r$ on each of the 29 rows. Write $\delta_r$ for any loss for which that row's **unrestricted** sector inequality holds. On the entire interval $1/4\le t\le2/5$ we obtain
 $$
@@ -125,7 +125,40 @@ The actual pair has $\|P_{2,1}h\|^2=t^2/8$, by $\mathbb E_*(T-2)=-1/2$, and $\|P
 $$
  V\le (1-e/8+3\eta/64)t^2+a^2/e < 0.252 .
 $$
-This last estimate locates the obstruction in the proof: this pair challenges the additive row budget while lying far below the target payoff.
+### Comparison with the published law cap
+
+For the constructed pairs let $S_r(0)=\sup_\nu F(\nu)$. The sector inequality of P4 asks for $\Lambda_5\le S_r(0)+\delta_r$. The estimate above bounds the amount $\delta_r$ this comparison needs. Replacing the scalar response by the global law cap in the next step also adds the difference $C_r-2\beta^2/e-S_r(0)$. That difference can exceed the necessary sector loss.
+
+For example, on the four rows below the scalar maximization already proved gives
+$$
+S_r(0)=2\mu(\ell-\beta/2)+\eta\mu^2\gamma^2 .
+$$
+For the actual response, the two moduli coincide. Cauchy–Schwarz in the joint law of the biased $T$ and the independent $Q$, followed by $\mathbb E Q^2=1$, gives
+$$
+\Lambda_5
+=2\mu\,\mathbb E_{*,Q}\sqrt{g_{\nu'}(T)^2+a^2Q^2}-a^2/e-(\nu')^2/\eta
+\le 2\mu\sqrt{\mathbb E_*g_{\nu'}^2+a^2}-a^2/e .
+$$
+The second-moment enclosures above and $0.8862<\mu<0.8863$ yield the following bounds throughout $[1/4,5/12]$. The table uses the smaller published $C_r$ when a row has two caps.
+
+| Row | $C_r-2\beta^2/e-S_r(0)$ | $C_r-2\beta^2/e-\Lambda_5$ |
+|---|---|---|
+| 0.25 | $(0.2620,0.2621)$ | $>0.167$ |
+| 0.30 | $(0.1890,0.1892)$ | $>0.119$ |
+| 0.40 | $(0.1142,0.1144)$ | $>0.069$ |
+| 0.50 | $(0.0617,0.0619)$ | $>0.033$ |
+
+In fact $C_r-2\beta^2/e-\Lambda_5>0.019$ for this family on **all nine law-aware rows**. On row 0.25, maximizing the convex term $t^2-2\ell t$ at the endpoints in each interval above proves
+$$
+t^2-2\ell t+2\beta^2/e+\Lambda_5 < 500/701-0.172.
+$$
+The verifier checks these inequalities by rational arithmetic. The independent [numerical review](https://github.com/agalatan/grothendieck-lean/pull/640#issuecomment-7150978486) also evaluated the unrelaxed row at individual masses.
+
+For general $q$, Claim 1 would suffice with a direct bound
+$$
+\Lambda_5+(b_A^2+b_B^2)\|q\|^2/\eta\le C_r-2\beta^2/e+\operatorname{room}(r)
+$$
+on each row's active cell. The examples above satisfy this comparison with zero allowance on the law-aware rows. Whether it holds for all relevant pairs, or follows from a joint sector and law estimate, remains open.
 
 
 ## The row inequality and the law reduction (P4, Claim 1)

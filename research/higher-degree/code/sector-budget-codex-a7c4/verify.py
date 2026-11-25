@@ -120,6 +120,15 @@ def response_checks(rows):
     invroot = F(288676, 10**6)
     require(F(17,10)**2 < 3 < F(7,4)**2 and 12 < F(7,2)**2
             and mu_lo*(F(17,80) - F(2,25)) > F(1,16), "scalar derivative signs")
+    # Each triple brackets the zero-core scalar slack and bounds the actual-response slack below.
+    slack_table = {
+        "0.250L": ("0.2620", "0.2621", "0.167"),
+        "0.300L": ("0.1890", "0.1892", "0.119"),
+        "0.400L": ("0.1142", "0.1144", "0.069"),
+        "0.500L": ("0.0617", "0.0619", "0.033"),
+    }
+    law_tags = {row["tag"] for row in rows if row["kind"] == "law-aware"}
+    require(len(law_tags) == 9 and slack_table.keys() <= law_tags, "comparison row coverage")
     for left, right in [(LO, F(3,8)), (F(3,8), F(5,12))]:
         margins = {}
         for row in rows:
@@ -151,7 +160,25 @@ def response_checks(rows):
                     lower = ell+beta-3*ETA*invroot-beta*beta*F(7,2)/(4*ETA/16)
                 require(lower > 0, "positive profile for nu >= eta/16")
                 mismatch = 3*ETA*(mu_hi-left)**2/64
-            margins[row["tag"]] = row_margin(row, increment-mismatch, left, right)
+            tag = row["tag"]
+            if tag in law_tags:
+                cap = F(row.get("C_stein", row["C_plain"]))
+                # Upper bound 2 beta^2/e + Lambda at the pair's actual fields by biased Cauchy.
+                actual = 2*beta**2/EPS + 2*mu_hi*sqrt_upper(h2+a*a) - a*a/EPS
+                require(cap - actual > F("0.019"), f"{tag}: cap-relative comparison")
+                if tag in slack_table:
+                    lo, hi, actual_room = map(F, slack_table[tag])
+                    require(ell-beta/2 > 0, "scalar monotonicity in Gaussian mean")
+                    scalar_lo = 2*mu_lo*(ell-beta/2) + 3*ETA*mu_lo**2/64
+                    scalar_hi = 2*mu_hi*(ell-beta/2) + 3*ETA*mu_hi**2/64
+                    allowance = cap - 2*beta**2/EPS
+                    require(lo < allowance-scalar_hi <= allowance-scalar_lo < hi,
+                            f"{tag}: zero-core scalar slack")
+                    require(cap - actual > actual_room, f"{tag}: actual-response slack")
+                if tag == "0.250L":
+                    worst = max(t*t-2*ell*t for t in (left, right))
+                    require(TARGET - (worst + actual) > F("0.172"), "actual Claim 1 upper bound")
+            margins[tag] = row_margin(row, increment-mismatch, left, right)
         gap = min(margins.values())
         require(gap > F(12,100000), "response-field obstruction")
         print(f"Actual pairs on [{left}, {right}]: least certified excess {gap} "

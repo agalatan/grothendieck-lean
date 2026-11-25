@@ -88,7 +88,7 @@ record.
 - **The degree-5 programme.** At t = 0 a row bound is at least λ₁ρ\*², so the proved radius bound caps the cubic
   weight λ₁ (STATUS 4.12; the games per cap are in 1.10 and 4.33). For the game (1, −39/50, 779/10000), model value
   1.402785, a certificate for 1.402 is computed over all t, conditional on a sector inequality K₅ on each row, with
-  3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). An independent Level A replay checks the row and envelope reductions (STATUS 4.40). On $[1/4,5/12]$, actual pairs force the sector costs above the published row budgets. The law-cap replay and several proof steps remain open (STATUS §5): the content lemma on every tuned row from t = 0.647 to
+  3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). An independent Level A replay checks the row and envelope reductions (STATUS 4.40). On [1/4, 5/12], actual pairs force the sector comparison with their own remote cubic to spend more than the published row allowances. For the same pairs, row 0.25 of Claim 1 stays more than 0.172 below the target. A direct comparison with the law cap remains open for general pairs. The law-cap replay and several proof steps remain open (STATUS §5): the content lemma on every tuned row from t = 0.647 to
   0.886, whose binding rows are the lowest and need covering rows (STATUS 4.31, 4.32); whether the content
   inequality holds in every dimension (STATUS 4.28, 4.30); certified constants on t ≥ 0.86; the law rows between
   the direct bound (proved up to t = 0.2508 by the reviewed Gaussian-buffer estimate:

@@ -1,8 +1,6 @@
 # P4. An independent replay of the conditional degree-5 certificate
 
-**Summary.** A computer-assisted statement "if a sector inequality K₅ holds on each of 29 rows, then
-Re⟨f, Tg⟩ ≤ 500/701 for all unimodular pairs" has an independent Level A replay. The law-cap verification in Claim 2 remains open.
-The [independent replay and sector obstruction](../../sector-budget-codex-a7c4/PROOF.md) checks Claims 1, 3 and 4 and tests the sector premises on actual pairs. Recompute the 29 law caps with independent programs to complete the audit.
+**Summary.** Independently replay the conditional statement that, if the sector inequality K₅ holds within the allowance on each of 29 rows, then Re⟨f, Tg⟩ ≤ 500/701 for all unimodular pairs. The replay includes the 29 law caps in Claim 2. The sector premise compares a pair with the scalar response at its own remote cubic. A direct estimate relative to the law cap would also suffice. [Level A replay and comparison of the two premises](../../sector-budget-codex-a7c4/PROOF.md)
 
 Source record (not needed to do the work): ledger rows 4.17, 4.18 and §5 item 1 of
 `research/higher-degree/STATUS.md`; reports `research/higher-degree/sources/degree5-progress-2026-11-16/CERT_STAGE1.md`,
