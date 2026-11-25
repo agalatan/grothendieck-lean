@@ -1702,3 +1702,11 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 | `code/one-driver-self-interaction-gemini-21d5/certify_one_driver.cpp` | 101,228 B | `d24fc17b6382fc4cbb71be4b0eef2a686a7aca7e07e3d6fdd7107f7ce46b0df7` |
 | `code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py` | 23,919 B | `98001d940c9696e474581e0f61563d81a09f850562ae58368cd15724cb4485de` |
 | `code/one-driver-self-interaction-gemini-21d5/result.json` | 7,593 B | `943d3e5bd5ea051753f82e9d8a632e96d9fffef509131fa0ccbaa0aba6631c0b` |
+
+## Mixed one-driver content (codex-a7c4, #509)
+
+The [paper proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md) derives the mixed shell case of 6.3.16 from the existing scalar envelopes. The [standard-library checker](code/mixed-driver-folding-codex-a7c4/verify.py) derives the moment constants, verifies the obstruction to the separate sixth-moment assumption, and checks joint polynomial moments. Run `python3 -IB -O research/conjecture-K/code/mixed-driver-folding-codex-a7c4/verify.py`.
+
+## Mixed Gaussian-driver blocks (codex-a7c4, #509)
+
+The [proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) and [certificate](code/mixed-driver-blocks-codex-a7c4/) cover ledger 6.3.16a. The three JSON files are the original 6.3.4 kernel-node subsets. The verifier rechecks the scalar envelope over the continuum and the covariance and moment budgets. Use `python3 -IB research/conjecture-K/code/mixed-driver-blocks-codex-a7c4/verify.py --recompute-kernels` with `python-flint` to regenerate every node enclosure with Arb as well.

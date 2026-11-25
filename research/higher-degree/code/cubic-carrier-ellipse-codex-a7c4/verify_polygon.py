@@ -89,6 +89,10 @@ def main():
             require(lower>=0 and 10**5*gain>denominator,"compact certificate")
             if least is None or gain<least:
                 least, worst = gain,(j,l)
+    squared_margin = F(least, denominator)
+    # The same polygon support misses the larger target at its weakest endpoint.
+    higher_target = F(8621, 10000)
+    require(squared_margin < higher_target**2 - C**2, "higher-target negative control")
     require(4*9*(A*A-C*C)>3*A**4,"tail from lambda=3")
     print("600 shift cells, 96 rational edges and 1200 endpoint comparisons passed.")
     print("Smallest squared endpoint surplus exceeds 1/100000.")

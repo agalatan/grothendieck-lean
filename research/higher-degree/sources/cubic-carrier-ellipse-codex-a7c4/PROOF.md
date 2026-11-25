@@ -60,3 +60,9 @@ In particular, if $\delta=0$, all cubic laws obey the payoff target through $t=0
 ## Exact arithmetic
 
 The accompanying Python checker uses rational arithmetic, Machin's formula and alternating arctangent bounds for $\pi$. It checks all four cutoffs and the next higher grid points, the finite-$m$ examples in (2), and the failure of the majorant at $t=0.30$ if the joint term is deleted. A further control checks that (3) still exceeds $500/701$ at $t=0.65$ even with the stronger radius. This result improves an interval for the capped game. A full proof of its payoff bound, and hence the proposed lower bound $1.402$ for the Grothendieck constant, requires coverage of the remaining masses.
+
+From the repository root run
+
+```sh
+python3 -IB research/higher-degree/code/cubic-carrier-ellipse-codex-a7c4/verify.py
+```
