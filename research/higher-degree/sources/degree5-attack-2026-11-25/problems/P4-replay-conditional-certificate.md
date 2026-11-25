@@ -1,9 +1,8 @@
 # P4. An independent replay of the conditional degree-5 certificate
 
 **Summary.** A computer-assisted statement "if a sector inequality K₅ holds on each of 29 rows, then
-Re⟨f, Tg⟩ ≤ 500/701 for all unimodular pairs" has one author and has only been replayed with the author's own code.
-You are asked to check it independently: re-derive its paper steps, recompute its 29 row constants with your own
-programs, and report every discrepancy.
+Re⟨f, Tg⟩ ≤ 500/701 for all unimodular pairs" has an independent Level A replay. The law-cap verification in Claim 2 remains open.
+The [independent replay and sector obstruction](../../sector-budget-codex-a7c4/PROOF.md) checks Claims 1, 3 and 4 and tests the sector premises on actual pairs. Recompute the 29 law caps with independent programs to complete the audit.
 
 Source record (not needed to do the work): ledger rows 4.17, 4.18 and §5 item 1 of
 `research/higher-degree/STATUS.md`; reports `research/higher-degree/sources/degree5-progress-2026-11-16/CERT_STAGE1.md`,
@@ -74,7 +73,7 @@ B = β√2·e₂₁ ∈ H₂,₁, ‖B‖² = 2β²; note L = ℓz₁ + B); (ii)
 (v) Re⟨X, f⟩ ≤ E|X| for |f| = 1, applied to f and g after writing h and k in terms of f and g; and
 t² = t² − 2ℓt + 2ℓ·Re⟨z₁, h⟩ since ⟨z₁, h⟩ = t. The two norms then arise from
 2Re⟨L + G₅, h⟩ + 2Re⟨G₃ − C, k⟩ = Re⟨L + G₅ + G₃ − C, f⟩ + Re⟨L + G₅ − G₃ + C, g⟩. Starting point: V = t² − ε₁‖P₂,₁h‖² + η‖P₃,₂h‖² − ‖P₁,₀k‖² + ε₁‖P₂,₁k‖² − η‖P₃,₂k‖²
-(T is self-adjoint and real).
+(T is self-adjoint).
 
 **Claim 2 (law layer; C, author only).** For each of the 29 rows of §3,
 
@@ -89,7 +88,7 @@ the row r, V ≤ t² − 2ℓ_r·t + C_r + η₅(r) for every pair.
 
     max over t ∈ [0, t₁] of (2/5)t² + 7058083/10⁷, and max over t ∈ [t₁, 886227/10⁶] of min_r [t² − 2ℓ_r·t + C_r],
 
-are both at most B₅ = 0.7128940126…, attained at t = 0.847596 where the rows 0.845 and 0.85 cross. Hence, under
+are both at most B₅ = 0.7128940126…, attained at t ≈ 0.847596 where the rows 0.845 and 0.85 cross. Hence, under
 K₅(η₅(r)) with η₅(r) ≤ room(r) on every row, V ≤ 500/701 for every pair, and K_G^ℂ ≥ 701/500.
 
 **What counts as the certificate being confirmed.** Claims 1 and 3 re-derived; every C_r of §3 confirmed as an upper
@@ -141,7 +140,7 @@ one; the room 500/701 − (maximum of the row on its piece). Rows 0.125–0.3 us
 | 0.886 | 458587/500000 | 172683/1000000 | −28847/500000 | −31607/1000000 | 1.5519938248 | [0.8841, 0.8862] | 1.39·10⁻³ |
 
 The intervals and rooms of this table were recomputed for this file from the exact C_r (they agree with the
-author's `assemble2b.log` to the digits shown). The decimals of C_r are truncations: use the file for exact work.
+author's `assemble2b.log` to the digits shown). The displayed decimals are approximations. Use the exact row constants and round each allowable loss downward. Treating the displayed rooms as exact allowances already exceeds the target at $t=0.847596$.
 
 ---
 
