@@ -2,8 +2,7 @@
 
 **The problem.** Lean proves K_G^ℂ ≤ 1.40455741 (`Grothe.UpperSix.bound`, `main_bounds`) with a mixture of six
 rounding channels. Can a mixture with more, or other, channels give a smaller proved bound, and at what cost in
-Lean? This folder records a numerical experiment of 24 November 2026 on that question. Nothing here is a proof:
-every result is a model value (label **N** of [`../README.md`](../README.md)), by one author, not replayed by anyone
+Lean? This folder records a numerical experiment of 24 November 2026 on that question. Every result of that experiment is a model value (label **N** of [`../README.md`](../README.md)), by one author, not replayed by anyone
 else. The ledger is [`STATUS.md`](STATUS.md).
 
 **The result in one paragraph.** Adding to the six channels **one** new channel, the cell channel of the
@@ -33,6 +32,8 @@ where a_p bounds everything of channel p that the head does not contain: its tai
 lemma: a bound B on the mean square on a circle of radius ρ > 1 inside the disk of analyticity gives
 Σ_{k>K} |h_k| ≤ √(B ρ^{−(4K+6)}/(1 − ρ^{−4}))), and any comparison or truncation error of its head. The signs of the
 h_k^{(p)} cancel across channels before the absolute value is taken, so the best weights solve a linear programme.
+
+**The alternating sum in large dimension.** For this class of maps the supremum of $W=\sum_k(-1)^k H_k$ over all dimensions is one. Every fixed dimension has a strict gap. A charge-one version of Xie and Zhang’s quadratic-phase construction gives a finite example above $0.96$, while the transferable slope satisfies $D(H)\le\pi/4$ in every dimension. This answers the article's finite-attainment and slope-approximation questions. [Proof and finite witness](sources/high-dimensional-alternation-codex-a7c4/PROOF.md)
 
 ## The two families of channels
 
