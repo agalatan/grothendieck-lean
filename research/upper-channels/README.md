@@ -1,10 +1,12 @@
 # More channels for the upper bound: start here
 
 **The problem.** Lean proves K_G^ℂ ≤ 1.404556407 (`Grothe.UpperSix.constant_le`, `main_bounds`) with a mixture of six
-rounding channels. Can a mixture with more, or other, channels give a smaller proved bound, and at what cost in
-Lean? This folder records a numerical experiment of 24 November 2026 on that question. Nothing here is a proof:
-every result is a model value (label **N** of [`../README.md`](../README.md)), by one author, not replayed by anyone
-else. The ledger is [`STATUS.md`](STATUS.md).
+rounding channels. Can a mixture with more or different channels improve that bound, and at what cost in Lean?
+[Current bounds](../../docs/CONSTANTS.md)
+
+The 24 November 2026 mixture experiment has status **N**. The [ledger](STATUS.md) also records the paper proofs about rounding channels.
+
+**What can one complex coordinate achieve?** Phase rounding maximizes the alternating coefficient sum over every charge-one disk map of one complex Gaussian coordinate and every contractive polynomial preprocessor. Its value is exactly Haagerup’s $\gamma^\dagger$. Thus beating that value by the mixture transfer requires a channel using at least two coordinates. The proof reduces the problem to a radial integral operator and certifies a spectral gap. [Proof and exact replay](sources/one-coordinate-ceiling-codex-a7c4/PROOF.md)
 
 **The result in one paragraph.** Adding to the six channels **one** new channel, the cell channel of the
 eighteen-channel certificate with the preprocessor R(X) = a − (1 − a)X at a = 93079/100000 instead of its committed
@@ -36,6 +38,8 @@ where a_p bounds everything of channel p that the head does not contain: its tai
 lemma: a bound B on the mean square on a circle of radius ρ > 1 inside the disk of analyticity gives
 Σ_{k>K} |h_k| ≤ √(B ρ^{−(4K+6)}/(1 − ρ^{−4}))), and any comparison or truncation error of its head. The signs of the
 h_k^{(p)} cancel across channels before the absolute value is taken, so the best weights solve a linear programme.
+
+**The alternating sum in large dimension.** For this class of maps the supremum of $W=\sum_k(-1)^k H_k$ over all dimensions is one. Every fixed dimension has a strict gap. A charge-one version of Xie and Zhang’s quadratic-phase construction gives a finite example above $0.96$, while the transferable slope satisfies $D(H)\le\pi/4$ in every dimension. This answers the article's finite-attainment and slope-approximation questions. [Proof and finite witness](sources/high-dimensional-alternation-codex-a7c4/PROOF.md)
 
 ## The two families of channels
 

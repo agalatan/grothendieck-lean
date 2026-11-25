@@ -1,11 +1,10 @@
 # More channels for the upper bound: status ledger
 
-The labels **N**, **R**, **open** are those of [`../README.md`](../README.md). Rows keep their IDs; a strengthened
+The labels **P**, **C**, **N**, **R**, **open** are those of [`../README.md`](../README.md). Rows keep their IDs; a strengthened
 statement replaces the weaker text in its row.
 
-**Author and checks.** Every row was computed on 24 November 2026 by one research worker of claude-b9ee (author
-"claude-b9ee-worker" below). **Nobody else has replayed anything: the checker of every row is "none yet".** Nothing
-here is **P**, **C** or **Lean**. Rows whose arithmetic was exact (rational or interval) or in Arb balls say so; they
+**Author and checks for §§1–5.** These rows were computed on 24 November 2026 by one research worker of claude-b9ee (author
+"claude-b9ee-worker" below). **The checker of these rows is "none yet".** Those experiment rows retain their original labels. The rounding-channel theorems give their own review records. Rows whose arithmetic was exact (rational or interval) or in Arb balls say so; they
 are still kept at **N**, because the implication from the computation to the statement was inspected by its author
 only. A model value of D is not a bound on K_G^ℂ.
 
@@ -22,6 +21,12 @@ rounded to multiples of 10⁻¹², head formed in outward 2⁻¹²⁸ interval a
 it, lower endpoint of H_0 minus upper endpoints of |H_k|. Channels 0–5 are the six, 6–23 the eighteen; `cell18` is
 the eighteen's cell channel (number 21, `tiger_fw_18`), whose series is h_k = Σ_n μ_n [X^{k−n}] R(X)^{2n+1} with the
 signed grades μ_n of its pair of responses and committed R = [a₀, −(1 − a₀)], a₀ = 91942572547021/10¹⁴.
+
+## Alternating sums across dimensions
+
+| # | Statement | Status and source |
+|---|---|---|
+| A.1 | The supremum of the alternating sum over all dimensions of common charge-one disk channels is **1**. Every finite complex dimension satisfies $W_n^*\le1-9/(128\,4^n n!)$. A complex adaptation of the Xie–Zhang quadratic phases has a finite example with $W>0.96$. Every transfer slope satisfies $D(H)\le H_0\le\pi/4$ for any convex mixture, so these alternating sums cannot be approached by transfer slopes. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/654#issuecomment-7152971260). [Construction, ordered limits and nonattainment](sources/high-dimensional-alternation-codex-a7c4/PROOF.md), [finite witness arithmetic](code/high-dimensional-alternation-codex-a7c4/verify.py). |
 
 ## 1. Validation of the coefficient vectors
 
@@ -80,3 +85,10 @@ for the statements about existing code), not a plan that was tried.
 | 5.5 | **Glue that is proof work, not computation.** The candidate of 4.7 has exactly six positive weights (they sum to 10¹² with channel 4 at zero), so **no seven-channel assembly is needed**: the six's assembly (`convex_transfer_ival`, generic in the number of channels, applied in `CertCheck.lean` to `hChan : Fin 6 → ℕ → ℝ`) keeps its index set, with the series of the cell pair in slot 4. That slot then needs four things in the six's terms. (a) *Summability and domination* of the pair's radial series: a bridge from the branch's `pair_radial_dominated` and `summable_abs_bivarKernel` to `Haagerup.DominatedKernel` and `Haagerup.radialKernel` (the two developments state domination, the radial kernel and their interval types separately: `Haagerup.*` with `HaagerupKernel.Ival`, standalone on purpose and byte-identical to the article's ancillary files; `Grothe.Upper*` with `GrotheKernel.Ival`). (b) *Head membership*: `convex_transfer_ival` asks that every coefficient h_n, n ≤ 250, lies in the channel's head interval, and the cell head stops at 125. Either the lemma gets a per-channel head-error term (the branch's `Production.channel_head_error` is that statement), or its hypothesis is met as it stands with the intervals [−T, T] at the indices 126–250, T the Hardy tail from 126: this costs 125·w·T in D, that is 6.1·10⁻⁹ with the contour of 4.5 (ρ = 109/100, budget 2) and less than 10⁻¹³ with a contour at ρ = 1.15 (4.4). (c) *The tail hypothesis* from index 251 by the Hardy lemma, from the contour fact of 5.4(a) through the branch's `hardy_of_symmetric_pair_curve`. (d) The interval conversion between the two kernels inside the head fact of 5.4(b). Then the documents | **open** |
 | 5.6 | **Decisions for the user.** Whether the upper bound of master should depend on the eighteen-channel branch's cell tree at all (it lands 25 or so modules and a 19 MB data module for a gain of 1.1·10⁻⁵ against the proved bound); whether to take a = 93079/100000 or the six's own R_4 coefficient (loses 5.6·10⁻⁹ in D); whether the union with all 24 (1/D = 1.40454389, a further 1.6·10⁻⁶) is worth the GT and phase channels' comparison machinery | **open** |
 | 5.7 | **Not explored.** Other shapes of R for the cell copy beyond a + (±)(1 − a)X^d and the two-term variants of 3.1; re-optimising the six's own preprocessors jointly with the copy; a head of 251 coefficients for the cell channel (it would need Lean enclosures of the grades 126–250 and gains nothing: 4.3); the residual H_10 = 2.05·10⁻⁶, which still carries 39 % of the nonlinear head of 4.7 | **open** |
+
+
+## 6. The alternating-sum ceiling
+
+| # | Statement | Status and source |
+|---|---|---|
+| 6.1 | For one complex Gaussian coordinate, $W_1^*=\gamma^\dagger$ over all measurable charge-one disk responses and contractive real polynomial preprocessors. Equality requires phase rounding up to a unit scalar and $P(-1)=1$. The normalized radial Hankel operator has eigenvalue 1 in the phase direction and norm less than $5/8$ on its orthogonal complement. A mixture of one-coordinate channels therefore has transfer slope at most $\gamma^\dagger$. | **P + C, author only** (codex-a7c4). [Proof and stability estimate](sources/one-coordinate-ceiling-codex-a7c4/PROOF.md), [exact verifier](code/one-coordinate-ceiling-codex-a7c4/verify.py). |
