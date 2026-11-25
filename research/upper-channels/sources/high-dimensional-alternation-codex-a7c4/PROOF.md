@@ -1,6 +1,6 @@
 # The large-dimensional alternating ceiling for complex charge-one channels
 
-Agent-ID: codex-a7c4. Paper proof and rational check, author only. The problem is the [alternating-sum question in the Haagerup article](https://github.com/agalatan/grothendieck-lean/blob/993f838205907bdcde328961b43febff1adb2885/haagerup-article/main.tex#L1202). Its high-dimensional construction adapts the quadratic phases of Xinyuan Xie and Haonan Zhang, *The König constant is one*, §§2–5. Their theorem concerns real Boolean functions. The choice of complex carriers and the pairing of real phase blocks below enforce the complex manuscript's common-map and charge requirements. [Xie–Zhang, arXiv:2608.14817](https://arxiv.org/html/2608.14817v1)
+Agent-ID: codex-a7c4. Paper proof and rational check. [Independent review by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/654#issuecomment-7152971260). The problem is the [alternating-sum question in the Haagerup article](https://github.com/agalatan/grothendieck-lean/blob/993f838205907bdcde328961b43febff1adb2885/haagerup-article/main.tex#L1202). Its high-dimensional construction adapts the quadratic phases of Xinyuan Xie and Haonan Zhang, *The König constant is one*, §§2–5. Their theorem concerns real Boolean functions. The choice of complex carriers and the pairing of real phase blocks below enforce the complex manuscript's common-map and charge requirements. [Xie–Zhang, arXiv:2608.14817](https://arxiv.org/html/2608.14817v1)
 
 **Theorem.** For common charge-one disk maps with contractive real polynomial preprocessing separately in each complex coordinate,
 
@@ -108,12 +108,6 @@ The actual transfer slopes of the examples in (9) tend to $-1$ in the iterated l
 $$ h_0=\frac\pi4(1+\varepsilon^2/4)^{-2D\binom{m-1}2}. $$
 
 For every $m\ge3$, $h_0\to0$ as $D\to\infty$, since $D\varepsilon^2$ tends to infinity. For every finite channel in this construction $h_0\ge0$, $\sum|h_k|\le1$, and $-1\le D(h)\le h_0-|W(h)-h_0|$. Together with (9) this gives diagonal channels with $W(h)\to1$ and $D(h)\to-1$ (equivalently, both iterated upper and lower limits for $D(h)$ are $-1$ after $m\to\infty$).
-
-For the explicit channels in (2)–(3) the separation is stronger. Condition on the auxiliary variables. The first-chaos coefficients on the carriers are $(\sqrt\pi/2)\mathbb E a_{s,b}$, and those on the auxiliary coordinates vanish because the conditional carrier phase has mean zero. The expectation of a single $e^{i\varepsilon\operatorname{Re}(\bar UV)}$ for independent standard complex $U,V$ is $(1+\varepsilon^2/4)^{-1}$, by conditioning on $U$ and using its exponential squared radius. For fixed $s$ there are $D\binom{m-1}2$ independent terms in $\theta_s$. Thus the sine averages vanish and the constant coefficient is
-$$
- h_0=\frac\pi4(1+\varepsilon^2/4)^{-2D\binom{m-1}{2}}.
-$$
-At fixed $m\ge3$ it tends to zero as $D\to\infty$ because $D\varepsilon^2\to\infty$. Choose a diagonal sequence realizing (9) and $h_0\to0$. Along that sequence $-1\le D(h)\le h_0-|W(h)-h_0|\to-1$, using the norm bound $\sum|h_k|\le1$. Thus a single channel can have its alternating sum tending to one while its transferable slope tends to minus one.
 
 ## Replay
 
