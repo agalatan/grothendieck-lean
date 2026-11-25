@@ -1,14 +1,14 @@
 # More channels for the upper bound: status ledger
 
-The labels **N**, **R**, **open** are those of [`../README.md`](../README.md). Rows keep their IDs; a strengthened
+The labels **P**, **C**, **N**, **R**, **open** are those of [`../README.md`](../README.md). Rows keep their IDs; a strengthened
 statement replaces the weaker text in its row.
 
-**Author and checks for sections 1–5.** The rows in sections 1–5 were computed on 24 November 2026 by one research worker of claude-b9ee (author
-"claude-b9ee-worker" below). The checker of each of those numerical rows is "none yet". The numerical experiment in sections 1–5 has no **P**, **C** or **Lean** rows. Rows whose arithmetic was exact (rational or interval) or in Arb balls say so; they
+**Author and checks for §§1–5.** These rows were computed on 24 November 2026 by one research worker of claude-b9ee (author
+"claude-b9ee-worker" below). **The checker of these rows is "none yet".** Those experiment rows retain their original labels. The rounding-channel theorems give their own review records. Rows whose arithmetic was exact (rational or interval) or in Arb balls say so; they
 are still kept at **N**, because the implication from the computation to the statement was inspected by its author
 only. A model value of D is not a bound on K_G^ℂ.
 
-**Context (not rows of this ledger).** Master proves K_G^ℂ ≤ 1.40455741 in Lean with six channels
+**Context.** The six-channel article proves K_G^ℂ ≤ 1.40455741
 (`Grothe.UpperSix.bound`): slope c − δ = 0.711968053274152967940951. The branch `gemini-1aa9/upper-mixture` of pull request #556
 (closed; commit `76c4647b`, kept by `refs/pull/556/head`; "the branch" below) states an eighteen-channel certificate with gap 711962052581159/10¹⁵, 1/gap < 1.404569241261.
 
@@ -76,9 +76,16 @@ for the statements about existing code), not a plan that was tried.
 | 5.6 | **Decisions for the user.** Whether the upper bound of master should depend on the eighteen-channel branch's cell tree at all (it lands 25 or so modules and a 19 MB data module for a gain of 1.2·10⁻⁵); whether to take a = 93079/100000 or the six's own R_4 coefficient (loses 5.6·10⁻⁹ in D); whether the union with all 24 (1/D = 1.40454389, a further 1.6·10⁻⁶) is worth the GT and phase channels' comparison machinery | **open** |
 | 5.7 | **Not explored.** Other shapes of R for the cell copy beyond a + (±)(1 − a)X^d and the two-term variants of 3.1; re-optimising the six's own preprocessors jointly with the copy; a head of 251 coefficients for the cell channel (it would need Lean enclosures of the grades 126–250 and gains nothing: 4.3); the residual H_10 = 2.05·10⁻⁶, which still carries 39 % of the nonlinear head of 4.7 | **open** |
 
-## 6. Rigidity of the transfer slope
+
+## 6. The alternating-sum ceiling
+
+| # | Statement | Status and source |
+|---|---|---|
+| 6.1 | For one complex Gaussian coordinate, $W_1^*=\gamma^\dagger$ over all measurable charge-one disk responses and contractive real polynomial preprocessors. Equality requires phase rounding up to a unit scalar and $P(-1)=1$. The normalized radial Hankel operator has eigenvalue 1 in the phase direction and norm less than $5/8$ on its orthogonal complement. A mixture of one-coordinate channels therefore has transfer slope at most $\gamma^\dagger$. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/653#issuecomment-7152969899). [Proof and stability estimate](sources/one-coordinate-ceiling-codex-a7c4/PROOF.md), [exact verifier](code/one-coordinate-ceiling-codex-a7c4/verify.py). |
+
+## 7. Rigidity of the transfer slope
 
 | Hypothesis on a convex mixture of common-map channels | Consequence | Evidence |
 |---|---|---|
-| $\lvert W(H)\rvert\to1$ | $H_0\to0$ and $D(H)\to-1$ uniformly over dimensions and polynomial preprocessors. At $\lvert W(H)\rvert\ge0.99$ the slope is below $-0.01$. | **P + C, author only** (codex-a7c4). [Laguerre argument](sources/rounding-endpoint-rigidity-codex-a7c4/ALTERNATION.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
-| $H_0\to\pi/4$ | The complete coefficient sequence converges in $\ell^1$ to the phase kernel, and $D(H)\to\pi/2-1$. At $H_0\ge0.783$ the slope is below $0.70$. The exponent $2/3$ in the endpoint-correlation estimate is sharp. | **P + C, author only** (codex-a7c4). [First-chaos argument](sources/rounding-endpoint-rigidity-codex-a7c4/FIRST_COEFFICIENT.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
+| $\lvert W(H)\rvert\to1$ | $H_0\to0$ and $D(H)\to-1$ uniformly over dimensions and polynomial preprocessors. At $\lvert W(H)\rvert\ge0.99$ the slope is below $-0.01$. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [Laguerre argument](sources/rounding-endpoint-rigidity-codex-a7c4/ALTERNATION.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
+| $H_0\to\pi/4$ | The complete coefficient sequence converges in $\ell^1$ to the phase kernel, and $D(H)\to\pi/2-1$. At $H_0\ge0.783$ the slope is below $0.70$. The exponent $2/3$ in the endpoint-correlation estimate is sharp. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [First-chaos argument](sources/rounding-endpoint-rigidity-codex-a7c4/FIRST_COEFFICIENT.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |

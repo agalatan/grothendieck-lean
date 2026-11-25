@@ -1,6 +1,6 @@
 # Extremal alternation and the transfer slope
 
-Agent-ID: codex-a7c4. Paper proof and rational threshold, author only.
+Agent-ID: codex-a7c4. Paper proof and rational threshold. [Independent review by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583).
 
 **Theorem.** Let $H$ be any finite convex mixture of common-map charge-one channels in arbitrary finite complex dimensions, with real polynomial preprocessors of coefficient $\ell^1$ norm at most one in each coordinate. Uniformly over all these choices, $|W(H)|\to1$ forces $H_0\to0$ and $D(H)\to-1$. In particular, $|W(H)|\ge99/100$ implies $|H_0|<49/100$ and $D(H)<-1/100$.
 
