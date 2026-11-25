@@ -1,0 +1,92 @@
+row 0.125L: caps 10194 PASS | plain 1190 boxes (0 Stein) PASS, C 0.7275506600 matches | stein 917 boxes (188 Stein) PASS, C 0.7198461172 matches (75s)
+row 0.150L: caps 10194 PASS | plain 1230 boxes (0 Stein) PASS, C 0.7381431690 matches | stein 969 boxes (230 Stein) PASS, C 0.7285392979 matches (80s)
+row 0.200L: caps 10194 PASS | plain 1188 boxes (0 Stein) PASS, C 0.7580299530 matches | stein 1026 boxes (289 Stein) PASS, C 0.7452906265 matches (86s)
+row 0.250L: caps 10194 PASS | plain 1286 boxes (0 Stein) PASS, C 0.7865587579 matches | stein 953 boxes (211 Stein) PASS, C 0.7754995951 matches (85s)
+row 0.300L: caps 10194 PASS | plain 1254 boxes (0 Stein) PASS, C 0.8194945484 matches | stein 857 boxes (147 Stein) PASS, C 0.8104403381 matches (74s)
+row 0.400L: caps 10194 PASS | plain 1233 boxes (0 Stein) PASS, C 0.8745008819 matches (33s)
+row 0.500L: caps 10194 PASS | plain 1251 boxes (0 Stein) PASS, C 0.9409623028 matches (34s)
+row 0.550L: caps 10194 PASS | plain 1226 boxes (0 Stein) PASS, C 0.9631741123 matches (33s)
+row 0.600L: caps 10194 PASS | plain 1193 boxes (0 Stein) PASS, C 1.0081647603 matches (34s)
+row 0.700: caps 10194 PASS | plain 1187 boxes (0 Stein) PASS, C 1.0914821679 matches (33s)
+row 0.720: caps 10194 PASS | plain 1189 boxes (0 Stein) PASS, C 1.1267388059 matches (33s)
+row 0.740: caps 10194 PASS | plain 1191 boxes (0 Stein) PASS, C 1.1649592272 matches (33s)
+row 0.760: caps 10194 PASS | plain 1146 boxes (0 Stein) PASS, C 1.2063498374 matches (32s)
+row 0.780: caps 10194 PASS | plain 1141 boxes (0 Stein) PASS, C 1.2510358768 matches (32s)
+row 0.790: caps 10194 PASS | plain 1161 boxes (0 Stein) PASS, C 1.2747449871 matches (33s)
+row 0.800: caps 10194 PASS | plain 1137 boxes (0 Stein) PASS, C 1.2993703835 matches (32s)
+row 0.810: caps 10194 PASS | plain 1132 boxes (0 Stein) PASS, C 1.3249154874 matches (31s)
+row 0.820: caps 10194 PASS | plain 1115 boxes (0 Stein) PASS, C 1.3515094893 matches (29s)
+row 0.830: caps 10194 PASS | plain 1100 boxes (0 Stein) PASS, C 1.3791944507 matches (27s)
+row 0.840: caps 10194 PASS | plain 1096 boxes (0 Stein) PASS, C 1.4078042318 matches (27s)
+row 0.845: caps 10194 PASS | plain 1088 boxes (0 Stein) PASS, C 1.4224996910 matches (27s)
+row 0.850: caps 10194 PASS | plain 1088 boxes (0 Stein) PASS, C 1.4374275477 matches (27s)
+row 0.855: caps 10194 PASS | plain 1100 boxes (0 Stein) PASS, C 1.4526671860 matches (27s)
+row 0.860: caps 10194 PASS | plain 1101 boxes (0 Stein) PASS, C 1.4681517089 matches (27s)
+row 0.865: caps 10194 PASS | plain 1107 boxes (0 Stein) PASS, C 1.4839589869 matches (27s)
+row 0.870: caps 10194 PASS | plain 1104 boxes (0 Stein) PASS, C 1.5000094483 matches (27s)
+row 0.875: caps 10194 PASS | plain 1131 boxes (0 Stein) PASS, C 1.5163805139 matches (27s)
+row 0.880: caps 10194 PASS | plain 1152 boxes (0 Stein) PASS, C 1.5330803916 matches (27s)
+row 0.886: caps 10194 PASS | plain 1178 boxes (0 Stein) PASS, C 1.5519938248 matches (27s)
+envelope, moments + radius (plain covers): B = 0.7128940126 (rows) at t = 0.84760; room 500/701 - B = 3.7275e-04
+  small-t bound 2/5 t^2 + 7058083/10000000 on [0, 0.114594]: max 0.711061014  room 2.2057e-03
+  row t=0.125L active on [0.11459, 0.13994]: max 0.711061042  room 2.2057e-03
+  row t=0.150L active on [0.13994, 0.17375]: max 0.710960821  room 2.3059e-03
+  row t=0.200L active on [0.17375, 0.22048]: max 0.710268115  room 2.9986e-03
+  row t=0.250L active on [0.22048, 0.27520]: max 0.707725702  room 5.5411e-03
+  row t=0.300L active on [0.27520, 0.35184]: max 0.703218748  room 1.0048e-02
+  row t=0.400L active on [0.35184, 0.45847]: max 0.697802931  room 1.5464e-02
+  row t=0.500L active on [0.45847, 0.52720]: max 0.693138703  room 2.0128e-02
+  row t=0.550L active on [0.52720, 0.56862]: max 0.694486738  room 1.8780e-02
+  row t=0.600L active on [0.56862, 0.64701]: max 0.701962960  room 1.1304e-02
+  row t=0.700 active on [0.64701, 0.67148]: max 0.703662017  room 9.6047e-03
+  row t=0.720 active on [0.67148, 0.69886]: max 0.705545260  room 7.7215e-03
+  row t=0.740 active on [0.69886, 0.72559]: max 0.707368886  room 5.8979e-03
+  row t=0.760 active on [0.72559, 0.75201]: max 0.709068339  room 4.1984e-03
+  row t=0.780 active on [0.75201, 0.77208]: max 0.710099824  room 3.1669e-03
+  row t=0.790 active on [0.77208, 0.78505]: max 0.710796359  room 2.4704e-03
+  row t=0.800 active on [0.78505, 0.79883]: max 0.711473275  room 1.7935e-03
+  row t=0.810 active on [0.79883, 0.81188]: max 0.712046866  room 1.2199e-03
+  row t=0.820 active on [0.81188, 0.82484]: max 0.712529084  room 7.3768e-04
+  row t=0.830 active on [0.82484, 0.83479]: max 0.712793130  room 4.7363e-04
+  row t=0.840 active on [0.83479, 0.84234]: max 0.712866989  room 3.9977e-04
+  row t=0.845 active on [0.84234, 0.84760]: max 0.712894013  room 3.7275e-04
+  row t=0.850 active on [0.84760, 0.85233]: max 0.712894013  room 3.7275e-04
+  row t=0.855 active on [0.85233, 0.85739]: max 0.712882268  room 3.8449e-04
+  row t=0.860 active on [0.85739, 0.86303]: max 0.712828766  room 4.3800e-04
+  row t=0.865 active on [0.86303, 0.86666]: max 0.712727728  room 5.3903e-04
+  row t=0.870 active on [0.86666, 0.87238]: max 0.712629957  room 6.3681e-04
+  row t=0.875 active on [0.87238, 0.87857]: max 0.712423068  room 8.4369e-04
+  row t=0.880 active on [0.87857, 0.88414]: max 0.712156827  room 1.1099e-03
+  row t=0.886 active on [0.88414, 0.88623]: max 0.711877201  room 1.3896e-03
+envelope, final (Stein on the law rows): B = 0.7128940126 (rows) at t = 0.84760; room 500/701 - B = 3.7275e-04
+  small-t bound 2/5 t^2 + 7058083/10000000 on [0, 0.063736]: max 0.707433211  room 5.8336e-03
+  row t=0.125L active on [0.06374, 0.11485]: max 0.707433276  room 5.8335e-03
+  row t=0.150L active on [0.11485, 0.14636]: max 0.703349081  room 9.9177e-03
+  row t=0.200L active on [0.14636, 0.23346]: max 0.701049834  room 1.2217e-02
+  row t=0.250L active on [0.23346, 0.29196]: max 0.695055196  room 1.8212e-02
+  row t=0.300L active on [0.29196, 0.40975]: max 0.692448087  room 2.0819e-02
+  row t=0.400L active on [0.40975, 0.45847]: max 0.693138703  room 2.0128e-02
+  row t=0.500L active on [0.45847, 0.52720]: max 0.693138703  room 2.0128e-02
+  row t=0.550L active on [0.52720, 0.56862]: max 0.694486738  room 1.8780e-02
+  row t=0.600L active on [0.56862, 0.64701]: max 0.701962960  room 1.1304e-02
+  row t=0.700 active on [0.64701, 0.67148]: max 0.703662017  room 9.6047e-03
+  row t=0.720 active on [0.67148, 0.69886]: max 0.705545260  room 7.7215e-03
+  row t=0.740 active on [0.69886, 0.72559]: max 0.707368886  room 5.8979e-03
+  row t=0.760 active on [0.72559, 0.75201]: max 0.709068339  room 4.1984e-03
+  row t=0.780 active on [0.75201, 0.77208]: max 0.710099824  room 3.1669e-03
+  row t=0.790 active on [0.77208, 0.78505]: max 0.710796359  room 2.4704e-03
+  row t=0.800 active on [0.78505, 0.79883]: max 0.711473275  room 1.7935e-03
+  row t=0.810 active on [0.79883, 0.81188]: max 0.712046866  room 1.2199e-03
+  row t=0.820 active on [0.81188, 0.82484]: max 0.712529084  room 7.3768e-04
+  row t=0.830 active on [0.82484, 0.83479]: max 0.712793130  room 4.7363e-04
+  row t=0.840 active on [0.83479, 0.84234]: max 0.712866989  room 3.9977e-04
+  row t=0.845 active on [0.84234, 0.84760]: max 0.712894013  room 3.7275e-04
+  row t=0.850 active on [0.84760, 0.85233]: max 0.712894013  room 3.7275e-04
+  row t=0.855 active on [0.85233, 0.85739]: max 0.712882268  room 3.8449e-04
+  row t=0.860 active on [0.85739, 0.86303]: max 0.712828766  room 4.3800e-04
+  row t=0.865 active on [0.86303, 0.86666]: max 0.712727728  room 5.3903e-04
+  row t=0.870 active on [0.86666, 0.87238]: max 0.712629957  room 6.3681e-04
+  row t=0.875 active on [0.87238, 0.87857]: max 0.712423068  room 8.4369e-04
+  row t=0.880 active on [0.87857, 0.88414]: max 0.712156827  room 1.1099e-03
+  row t=0.886 active on [0.88414, 0.88623]: max 0.711877201  room 1.3896e-03
+ALL PASS (1118s)

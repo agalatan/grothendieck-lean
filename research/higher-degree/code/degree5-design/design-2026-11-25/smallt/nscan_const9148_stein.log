@@ -1,0 +1,38 @@
+   eta'=0.0779 s=0.5: 0.654683 at sigma=0.7135
+   eta'=0.0779 s=1.0: 0.656150 at sigma=0.7135
+   eta'=0.0779 s=2.0: 0.657594 at sigma=0.7135
+   eta'=0.0779 s=3.0: 0.658262 at sigma=0.7135
+   eta'=0.0779 s=4.0: 0.658310 at sigma=0.7135
+   eta'=0.0779 s=5.0: 0.657960 at sigma=0.7135
+   eta'=0.0779 s=6.0: 0.657383 at sigma=0.7135
+   eta'=0.0779 s=7.0: 0.656650 at sigma=0.7135
+   eta'=0.0779 s=8.0: 0.655806 at sigma=0.7135
+   eta'=0.0779 s=10.0: 0.653864 at sigma=0.7135
+   eta'=0.0779 s=14.0: 0.625258 at sigma=0.6984
+eta'=0.0779 stein=1: N=0.658310 (e1 rho^2 = 0.652750) sigma=0.7135 s=4.0 ER=0.91480 minR=0.000 P(sigma R<eta')=0.0714  room 5.496e-02  t0=0.2441
+   eta'=0.2000 s=0.5: 0.657853 at sigma=0.7130
+   eta'=0.2000 s=1.0: 0.661519 at sigma=0.7132
+   eta'=0.2000 s=2.0: 0.665187 at sigma=0.7135
+   eta'=0.2000 s=3.0: 0.666902 at sigma=0.7135
+   eta'=0.2000 s=4.0: 0.667024 at sigma=0.7135
+   eta'=0.2000 s=5.0: 0.666125 at sigma=0.7135
+   eta'=0.2000 s=6.0: 0.664644 at sigma=0.7135
+   eta'=0.2000 s=7.0: 0.662762 at sigma=0.7135
+   eta'=0.2000 s=8.0: 0.660596 at sigma=0.7135
+   eta'=0.2000 s=10.0: 0.655609 at sigma=0.7135
+   eta'=0.2000 s=14.0: 0.625258 at sigma=0.6984
+eta'=0.2000 stein=1: N=0.667024 (e1 rho^2 = 0.652750) sigma=0.7135 s=4.0 ER=0.91480 minR=0.000 P(sigma R<eta')=0.0714  room 4.624e-02  t0=0.2404
+/home/agalatan/claude-b9ee-degree5/degree5-newcap-2026-11-16/smallt/explore/nfun.py:31: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver='CLARABEL', max_threads=1)
+   eta'=0.3000 s=0.5: 0.661494 at sigma=0.7111
+   eta'=0.3000 s=1.0: 0.666734 at sigma=0.7117
+   eta'=0.3000 s=2.0: 0.671756 at sigma=0.7124
+   eta'=0.3000 s=3.0: 0.674113 at sigma=0.7129
+   eta'=0.3000 s=4.0: 0.674225 at sigma=0.7131
+   eta'=0.3000 s=5.0: 0.672814 at sigma=0.7135
+   eta'=0.3000 s=6.0: 0.670591 at sigma=0.7135
+   eta'=0.3000 s=7.0: 0.667768 at sigma=0.7135
+   eta'=0.3000 s=8.0: 0.664519 at sigma=0.7135
+   eta'=0.3000 s=10.0: 0.657039 at sigma=0.7135
+   eta'=0.3000 s=14.0: 0.625258 at sigma=0.6984
+eta'=0.3000 stein=1: N=0.674225 (e1 rho^2 = 0.652750) sigma=0.7131 s=4.0 ER=0.91480 minR=0.000 P(sigma R<eta')=0.0750  room 3.904e-02  t0=0.2362
