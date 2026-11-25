@@ -12,20 +12,22 @@ operations in acceptance):
   3. Self-contained zero-float exact rational proof of Shift Exterior |x| >= 29/10 at all
      three rows and all amplitudes: r_x(alpha, beta) <= (187/200)*S_0 < min(Q_diag, Q_{s,+}).
   4. Self-contained zero-float exact rational proof of Amplitude Exterior ||v||_inf >= 4 at
-     all shifts x in C and all three rows: orthonormal Bessel inequality on {T-1, z_1^2/sqrt(2), zbar_1^2/sqrt(2)}
-     gives r_x(alpha, beta) < (94/25)*sqrt(S_0) <= (47/50)*S_0 < min(Q_diag, Q_{s,+}).
-  5. Part 1 (continuous rational-secant origin matrices on [0, 3]): contiguous dyadic slab
-     coverage overlapping [29/10, 3] and exact rational Sylvester PSD of Q_{s,+} - K_re/im
+     all shifts x in C and all three rows: |c_1| <= E|T - 1| = 2/e and circle total-variation
+     integration by parts |c_2| <= E[T]/(2*sqrt(2)) = 1/(2*sqrt(2)) give 4/e^2 + 1/8 < (22/25)^2,
+     hence r_x(alpha, beta) < (94/25)*sqrt(S_0) <= (47/50)*S_0 < min(Q_diag, Q_{s,+}).
+  5. Part 1 (continuous rational-secant origin matrices on [0, 3], 88 slabs/row): contiguous
+     dyadic slab coverage overlapping [29/10, 3] and exact rational Sylvester PSD of Q_{s,+} - K_re/im
      and Q_diag - K_re/im across every slab of every row.
   6. Part 2 (global shift curvature 680): 16 * cap_max * mass_sum < 680^2 plus exact rational
      verification of the T >= 36 and T >= 25 tail coefficients.
-  7. Part 3 (3D ray-convexity cube shells on [0, 3]): contiguous dyadic slab coverage,
+  7. Part 3 (3D ray-convexity cube shells on [0, 3], 144 slabs/row): contiguous dyadic slab coverage,
      exact ray-convexity discriminant ((rho - 1)/(rho + 1))^2 <= eta, inner handoff
      2*r_0 <= s_0(x) to Part 1, outer handoff r_M == 4 to the Amplitude Exterior, exact
      integer shell count over DEN = 262144, open_boxes == 0, worst_S < 0, worst_D < 0.
-  8. Exact rational assembly corollaries for STATUS.md 7.4.2 (upgrading the sufficient raw
-     A-content constant for unrestricted diagonal A+B gain at peak from 0.15 to 11/50 = 0.22,
-     and improving the signed Q_{s,+} excess bound without amplitude or Gaussian caps).
+  8. Exact rational assembly corollaries for STATUS.md 7.4.2 across all first-chaos driver
+     amplitudes: upgrading the sufficient strong A-content constant under Target D from 0.15
+     to 11/50 = 0.22, proving the strong, additive-slack (6.3.43), and weak-allowance
+     (6.3.40, 6.3.42 via 3.3) bounds under Target S with Schur complement 6697/31250.
 """
 
 import argparse
@@ -209,17 +211,22 @@ def verify_exteriors_and_helpers() -> dict:
     assert tail_25 < F(1, 10**9)
 
     # 3. Amplitude exterior ||v||_inf >= 4 (all x = w >= 0, hence all x in C by U(1) gauge):
-    # {e_A = T - 1, e_B = z_1^2/sqrt(2), e_C = zbar_1^2/sqrt(2)} are orthonormal in L^2(z_1), so:
+    # {e_A = T - 1, e_B = z_1^2/sqrt(2)} are orthonormal in L^2(z_1), so:
     #   (i)  2 E|h| <= 2 sqrt(E|h|^2) = 2 sqrt(S_0),
-    #   (ii) for phi = ph(L + w) (|phi| <= 1, conj(phi(zbar_1)) = phi(z_1)), |<phi, e_C>| = |<phi, e_B>| = |c_2|,
-    #        so Bessel gives |c_1|^2 + 2|c_2|^2 <= 1, while |c_1| <= E|T - 1| = 2/e < 1440/1957 (e > 1957/720).
-    #        Hence |c_1|^2 + |c_2|^2 <= 1/2 + |c_1|^2 / 2 < 1/2 + 2/(1957/720)^2 < (22/25)^2,
+    #   (ii) for phi = ph(L + w) (|phi| <= 1), c_1 = E[(T - 1)*conj(phi)] satisfies |c_1| <= E|T - 1| = 2/e
+    #        < 1440/1957 (since e > sum_{k=0}^6 1/k! = 1957/720), and on each circle z_1 = sqrt(T)*e^{i*theta}
+    #        with R = sqrt(H(T)) != w (w > 0), psi(theta) = conj(ph(w + R*e^{i*theta})) has total variation
+    #        2*pi (for R > w) or 4*arcsin(R/w) < 2*pi (for R < w), so integration by parts bounds
+    #        |(2*pi)^{-1} int_0^{2*pi} e^{2*i*theta} psi(theta) dtheta| <= (4*pi)^{-1} * 2*pi = 1/2,
+    #        giving |c_2| = |E[(z_1^2/sqrt(2))*conj(phi)]| <= E[T]/(2*sqrt(2)) = 1/(2*sqrt(2)), |c_2|^2 <= 1/8.
+    #        Hence |c_1|^2 + |c_2|^2 < 4/(1957/720)^2 + 1/8 = 20418649/30638792 < (22/25)^2,
     #        giving r_w(alpha, beta) < (2 + 44/25)*sqrt(S_0) = (94/25)*sqrt(S_0).
     # For ||v||_inf >= 4, sqrt(S_0) = ||v||_2 >= ||v||_inf >= 4, so r_w(alpha, beta) < (47/50)*S_0!
     e_lo = sum(F(1, factorial(k)) for k in range(7))
     assert e_lo == F(1957, 720)
-    bessel_sq_hi = F(1, 2) + F(2) / (e_lo * e_lo)
-    assert bessel_sq_hi < F(22, 25) ** 2
+    c1_c2_sq_hi = F(4) / (e_lo * e_lo) + F(1, 8)
+    assert c1_c2_sq_hi == F(20418649, 30638792)
+    assert c1_c2_sq_hi < F(22, 25) ** 2
     amp_ext_coeff = F(47, 50)
     potential_cap = F(187, 200)
     max_ext_cap = max(amp_ext_coeff, potential_cap)  # 47/50 = 0.94
@@ -358,18 +365,35 @@ def verify_assembly_corollaries() -> dict:
     # Whenever A_coeff < 0, max_{C >= 0} (A_coeff * C^2 + B_coeff * C * sqrt(u) + C_coeff * u)
     #   = (C_coeff - B_coeff^2 / (4 * A_coeff)) * u, increasing in u, maximized at u = u_max!
 
-    # Case 1: Global Target S (Q_{s,+} = Q_s - (1/100)*S_0 => kA = 1/4, kB = 27/100, m = +59/500) with gamma = 6/25 = 0.24:
+    # Case 1a: Global Target S (Q_{s,+} = Q_s - (1/100)*S_0 => kA = 1/4, kB = 27/100, m = +59/500)
+    # under strong content premise C^2 <= (6/25) * D(q):
     kA_S, kB_S, m_S, gam_S = F(1, 4), F(27, 100), F(59, 500), F(6, 25)
     D_S = kB_S - m_S * m_S / kA_S
-    assert D_S > 0
+    assert D_S == F(6697, 31250) and D_S > 0
     lam_S = rho - m_S / kA_S
-    assert lam_S > 0
+    assert lam_S == F(333, 10000) and lam_S > 0
     A_S = F(1) / kA_S + lam_S * lam_S / D_S - F(1) / gam_S
-    assert A_S < 0
+    assert A_S == F(-280609, 1737600) and A_S < 0
     B_S = 2 * lam_S * err / D_S
     C_S = err * err / D_S
     excess_S = (C_S - B_S * B_S / (4 * A_S)) * u_max
-    assert excess_S < F(11, 1000000)  # < 1.1e-5 << 10^-4!
+    assert excess_S == F(3241, 1186575200) and excess_S < F(274, 10**8)  # < 2.74e-6 << 10^-4!
+
+    # Case 1b: Global Target S under additive-slack premise C^2 <= (6/25)*D(q) + eta_c (6.3.43(c) has eta_c = 10^-6):
+    eta_c_6343 = F(1, 10**6)
+    excess_S_slack = (F(1) / gam_S) * eta_c_6343 + excess_S
+    assert excess_S_slack < F(69, 10**7)  # < 6.90e-6 << 10^-4!
+
+    # Case 1c: Global Target S under weak allowance premise C^2 <= (6/25)*(S + 10^-4 - Lambda(q))
+    # (rows 6.3.40 and the equal-block conclusion of 6.3.42):
+    # By STATUS.md 3.3, Lambda(q) < S + 9/25000000, so T := S + 10^-4 - Lambda(q) > 2491/25000000 > 0,
+    # giving u / T < (463/10000) / (2491/25000000) = 1157500/2491 < (539/25)^2, and sqrt(6/25) < 49/100:
+    T_allow_min = F(1, 10**4) - F(9, 25000000)
+    assert T_allow_min == F(2491, 25000000)
+    assert u_max / T_allow_min == F(1157500, 2491) < F(539, 25) ** 2
+    assert F(49, 100) ** 2 > gam_S
+    weak_gain_ratio = F(4) * gam_S + (F(1) / D_S) * (lam_S * F(49, 100) + err * F(539, 25)) ** 2
+    assert weak_gain_ratio == F(214154857729, 214304000000) and weak_gain_ratio < F(1)
 
     # Case 2: Global Target D (kA = kB = 7/25 = 0.28, m = 0) with gamma = 11/50 = 0.22 (consuming 6.3.3 & 6.3.13!):
     k_D, gam_D = F(7, 25), F(11, 50)
@@ -378,18 +402,20 @@ def verify_assembly_corollaries() -> dict:
     B_D = 2 * rho * err / k_D
     C_D = err * err / k_D
     excess_D = (C_D - B_D * B_D / (4 * A_D)) * u_max
-    assert excess_D < F(35, 1000000)  # < 3.5e-5 << 10^-4!
+    assert excess_D == F(9723, 306225616) and excess_D < F(318, 10**7)  # < 3.18e-5 << 10^-4!
 
     # Also check gamma = 3/20 = 0.15 under k_D = 7/25:
     A_D15 = (F(1) + rho * rho) / k_D - F(20, 3)
     assert A_D15 < 0
     excess_D15 = (C_D - B_D * B_D / (4 * A_D15)) * u_max
-    assert excess_D15 < F(3, 1000000)  # < 3.0e-6!
+    assert excess_D15 == F(42133, 14672125840) and excess_D15 < F(3, 1000000)  # < 2.88e-6!
 
     return {
-        "target_S_gamma_024_excess_max": str(excess_S),
-        "target_D_gamma_022_excess_max": str(excess_D),
-        "target_D_gamma_015_excess_max": str(excess_D15),
+        "target_S_strong_gamma_024_excess_max": str(excess_S),
+        "target_S_slack_1e6_excess_max": str(excess_S_slack),
+        "target_S_weak_allowance_gain_ratio": str(weak_gain_ratio),
+        "target_D_strong_gamma_022_excess_max": str(excess_D),
+        "target_D_strong_gamma_015_excess_max": str(excess_D15),
     }
 
 
