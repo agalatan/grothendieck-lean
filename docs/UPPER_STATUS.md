@@ -1,6 +1,6 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-This file documents the older single-channel upper proof (`K_G^ℂ < 1.404599395362`), which is still in the tree. The upper bound of the main theorem `main_bounds` comes from the seven-channel proof in `Grothe/UpperSelector/` instead: Lean proves `K_G^ℂ ≤ 1.404556392` (`1404556392/1000000000`, `Grothe.UpperSeven.constant_le`), and a separate estimate of the phase integral shows that this rational is strictly below Haagerup's value `1/γ†` (`constant_lt_inv_gammaDagger`). [Upper result](../Grothe/UpperResult.lean) · [Six-channel build and audit](../README.md#building).
+This file documents the older single-channel upper proof (`K_G^ℂ < 1.404599395362`), which is still in the tree. The upper bound of the main theorem `main_bounds` comes from the seven-channel proof in `Grothe/UpperSelector/` instead: Lean proves `K_G^ℂ ≤ 1.404556392` (`1404556392/1000000000`, `Grothe.UpperSeven.constant_le`), and a separate estimate of the phase integral shows that this rational is strictly below Haagerup's value `1/γ†` (`constant_lt_inv_gammaDagger`). [Upper result](../Grothe/UpperResult.lean) · [Upper-proof build and audit](../README.md#building).
 
 ## Earlier single-channel construction
 
@@ -19,7 +19,7 @@ all proved, and the energy-table discrepancy bound `6847009/(5·10^17)`, which
 The single-channel proof uses six certified low-band and whole-source estimates,
 tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `117/100`) with a linear-energy
 deduction. Its entrypoint is `upper_below_tight`, and the energy-table accuracy
-`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). The generated root includes this proof alongside the six-channel proof used by
+`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). The generated root includes this proof alongside the seven-channel proof used by
 `MainResult.lean`. Alternative single-channel formulations are in [the committed archive](../miscellaneous/other-bounds/README.md)
 and in [`abandonware/`](../abandonware/README.md).
 
