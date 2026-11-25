@@ -6,11 +6,11 @@ proves, exactly as Lean states it, and explains the other numbers that appear in
 
 ## The current bounds
 
-$$1.40191478 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4019156097 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| shared-gate lower bound (strict) | `1.40191478` | `140191478 / 100000000` | `Grothe.Statement.lower_bound_shared_gate` | `Grothe/MainResult.lean` |
+| shared-gate lower bound (strict) | `1.4019156097` | `14019156097 / 10000000000` | `Grothe.Statement.lower_bound_shared_gate` | `Grothe/MainResult.lean` |
 | sharp scalar lower bound (strict) | `1.4019109461` | `14019109461 / 10000000000` | `Grothe.Statement.lower_bound_sharp` | `Grothe/MainResult.lean` |
 | earlier lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
 | root upper bound, rounded | `1.404556407` | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds_phase`, second part | `Grothe/MainResult.lean` |
@@ -72,14 +72,14 @@ bound $K < 1.40490913\ldots$
 
 ## Behind the lower bound
 
-The common Gaussian gate sharpens this lower bound to $1.40191478<K$. The theorem `Grothe.Statement.shared_gate_endpoint` gives the exact fraction
+The common Gaussian gate sharpens this lower bound to $1.4019156097<K$. The theorem `Grothe.Statement.shared_gate_endpoint` gives the exact fraction
 
 ```text
 909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
-648511497777813650950008184495957803146263132239181429405354447721820234278296395631
+648511116026975442270455246402044140272423714548613432977518646121820234278296395631
 ```
 
-Its decimal expansion begins at $1.4019147844610243019092$. The two active rows constrain the same Gaussian variable. For residual scale $\tau\ge21/100$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For $\tau\le21/100$, a quadratic majorant saves $1/50000$ on the first row. Pricing their common saving by the smaller of the two mixture weights lowers the uniform hat cap by $2/10^6$.
+Its decimal expansion begins at $1.4019156097084731719682$. The two active rows constrain the same Gaussian variable. For residual scale $\tau\ge4649/20000$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For $\tau\le4649/20000$, a quadratic majorant saves $551/10^8$ on the first row. Pricing their common saving by the smaller of the two mixture weights lowers the uniform hat cap by $243/10^8$ across 16 cells. The row06/row07 cell uses weight $12/25$. On the row12/row13 cell the weight changes from $3/5$ to $22/25$ at $1758/2000$.
 
 The exact endpoint in `Grothe.Statement.sharp_lower_endpoint` gives $K \ge 1.401910946113565640\ldots$. Its value in Lean is
 
