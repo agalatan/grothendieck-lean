@@ -1,6 +1,6 @@
 # Global All-Amplitude Closure of the Raw Conjecture K Joint A/B Bounds (`7.4`, `7.4.5`, `7.4.17`)
 
-**Agent-ID:** `gemini-4c4c` · **Task:** Closes `#706`, Refs `#177` · **Status:** **P + C, author only**
+**Agent-ID:** `gemini-4c4c` · **Task:** Closes `#706`, Refs `#177` · **Status:** **P + C** · [independent review](https://github.com/agalatan/grothendieck-lean/pull/708#issuecomment-7169354017) by codex-a7c4 · [full C++ replay](https://github.com/agalatan/grothendieck-lean/pull/708#issuecomment-7169160883)
 
 Code and exact certificate: [`../../code/raw-joint-ab-gemini-4c4c/`](../../code/raw-joint-ab-gemini-4c4c/) (`certify_raw_joint_ab.cpp`, `result.json`, `verify.py`, `test_controls.py`).
 
@@ -33,7 +33,7 @@ $$Q_r(\alpha, \beta) = \left(p - \frac{6}{25}\right)|\alpha|^2 + \left(p - \frac
 >    $$r_x(\alpha, \beta) \le Q_{\mathrm{diag}}(\alpha, \beta) := (p - \kappa_{\mathrm{diag}})(|\alpha|^2 + |\beta|^2),$$
 >    where $\kappa_{\mathrm{diag}} = \frac{7}{25} = 0.28$ (`peak`), $\frac{3}{10} = 0.30$ (`flank`), and $\frac{31}{100} = 0.31$ (`upper`).
 
-Why does the raw joint remainder satisfy pure quadratic costs globally at **every** amplitude, whereas the tilted remainder `(P)` at $s = 3/5$ (`7.4.10`) required a quartic correction $(|w|^2/2 + S_r)S_r$? Because at zero tilt ($s = 0$), the A-shell profile $T - 1$ vanishes identically on the circle $T = 1$ (`|L| = a + b \approx 0.702`), whereas $T - 2/5 = +0.6$ does not: at finite amplitudes along $x \approx a + b$, the raw shell never creates a concentrated cusp against the mode of $T \sim \mathrm{Exp}(1)$, and the pointwise cost actually *increases* with amplitude away from the zero-core quadratic limit `7.4.9`.
+The raw A-shell profile $T-1$ vanishes at $T=1$, the mean of $T\sim\mathrm{Exp}(1)$. The tilted profile $T-2/5$ takes the value $3/5$ there. The proof below bounds the raw remainder uniformly in the amplitude.
 
 ### Immediate Corollaries
 
@@ -103,7 +103,7 @@ $$\frac{1}{2\pi}\int_{-\pi}^{\pi} \frac{d\psi}{\sqrt{R^2 + w^2 + 2 R w \cos\psi}
 Splitting at $T_{\mathrm{split}} = \frac{97}{20} = 4.85$ (where $H(97/20)/(29/10)^2 < 1$ at all three rows):
 - On $[0, 97/20]$, partitioning into $200$ equal intervals $[T_j, T_{j+1}]$ and using monotonicity of $z(T)$ together with the 24-term hypergeometric sum plus geometric tail $\binom{48}{24}^2 16^{-24} z^{24}/(1 - z)$ bounds $\mathbb{E}[\mathbf{1}_{T \le 97/20}|h|^2/|L + w|]$ in exact rational arithmetic (`inner`).
 - On $T \ge 97/20$, $\frac{3}{2}T^2 - 2T + 1$ divided by $H'(T)$ times $e^{-T}$ is decreasing for $T \ge 3$ (its pushforward planar density on $L(z_1)$ is bounded by $\pi^{-1} d_{\mathrm{tail}}$ with $d_{\mathrm{tail}} = e^{-T_{\mathrm{split}}}(\frac{3}{2}T_{\mathrm{split}}^2 - 2T_{\mathrm{split}} + 1)/H'(T_{\mathrm{split}})$), so the planar bathtub/rearrangement inequality $\int_{\mathbb{R}^2} |y + w|^{-1}\rho(y)\,dy \le 2\sqrt{\pi \|\rho\|_\infty \|\rho\|_1}$ bounds $\mathbb{E}[\mathbf{1}_{T > 97/20}|h|^2/|L + w|] \le 2\sqrt{M(T_{\mathrm{split}}) d_{\mathrm{tail}}}\,S_0$ (`outer`).
-In `verify.py`, `inner + outer < 187/200 = 0.935` is verified at all three rows in exact `Fraction` arithmetic, and Sylvester's criterion verifies both $(p - \kappa_{\mathrm{diag}}) - \frac{187}{200} > \frac{1}{10} > 0$ and $\det(Q_{s,+} - \frac{187}{200}I_2) > 0$. $\square$
+In `verify.py`, `inner + outer < 187/200 = 0.935` is verified at all three rows in exact `Fraction` arithmetic, and Sylvester's criterion verifies both $(p - \kappa_{\mathrm{diag}}) - \frac{187}{200} > \frac{7}{100} > 0$ and $\det(Q_{s,+} - \frac{187}{200}I_2) > 0$. $\square$
 
 **Proposition 3.2 (Amplitude Exterior $\|v\|_\infty \ge 4$, All Shifts $w \in \mathbb{C}$).**
 For every $w \in \mathbb{C}$ and every $v = (\alpha_r, \beta_r, \alpha_i, \beta_i) \in \mathbb{R}^4$ with $\|v\|_\infty \ge 4$:
