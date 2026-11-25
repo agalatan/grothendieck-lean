@@ -1,3 +1,4 @@
+import Grothe.LowerAnalytic.StrongSchur
 import Grothe.LowerAnalytic.SparseSteinCover
 import Grothe.LowerAnalytic.SparseSteinPrices
 import Grothe.LowerAnalytic.SparseWitness08
@@ -31,6 +32,10 @@ private theorem extras_of_plans {Ω : Type*} [MeasurableSpace Ω] {μ : Measure 
   obtain ⟨p,hp,rfl⟩ := List.mem_map.mp he
   exact p.sound sparseMesh_ok hcap (checks p hp) (List.all_eq_true.mp priced p hp) hM hC hr hl hh hi
 
+private theorem margin (w : ℚ) (hw : w ∈ prices.map Prod.fst) : price w ≤ smallPrice w := by
+  have h : (prices.map Prod.fst).all (fun y ↦ decide (price y ≤ smallPrice y)) := by decide +kernel
+  exact of_decide_eq_true (List.all_eq_true.mp h w hw)
+
 /-- The interpolated endpoint discounts apply to the two actual rows simultaneously. -/
 theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {V t : ℝ} {Qh v : E} (hred : CircularSharedReduction rowData V t Qh v)
@@ -38,7 +43,7 @@ theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
     (hw₀ : 0 ≤ w) (hw₁ : w ≤ 1) (hz₀ : 0 ≤ z) (hz₁ : z ≤ 1)
     {x : ℝ} (hx₀ : 0 ≤ x) (hx₁ : x ≤ 1) :
     let θ := (1-x)*(w : ℝ)+x*(z : ℝ)
-    ∃ d8 d9 : ℝ, (1-x)*(price w : ℝ)+x*(price z : ℝ) ≤ (1-θ)*d8+θ*d9 ∧
+    ∃ d8 d9 : ℝ, (1-x)*(price w : ℝ)+x*(price z : ℝ)+(bonus w z : ℝ)*x*(1-x) ≤ (1-θ)*d8+θ*d9 ∧
       RowHolds ε TightShared.row8.ell TightShared.row8.beta ((TightShared.row8.C : ℝ)-d8) V t Qh v ∧
       RowHolds ε TightShared.row9.ell TightShared.row9.beta ((TightShared.row9.C : ℝ)-d9) V t Qh v := by
   dsimp only
@@ -76,25 +81,54 @@ theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
     (mul_nonneg hx₀ (Rat.cast_nonneg.mpr hz₀))
   have hθ₁ : θ ≤ 1 := by
     simpa [θ] using add_le_add (mul_le_mul_of_nonneg_left hw hx) (mul_le_mul_of_nonneg_left hz hx₀)
-  have hgain := pairGain_chord (Rat.cast_nonneg.mpr hw₀) hw (Rat.cast_nonneg.mpr hz₀) hz hx₀ hx₁
-  rw [pairGain_rat,pairGain_rat] at hgain
-  have joint := discount_chord_le hl hr hlc hrc hσstop hlaw rlaw w z row08.kappa row09.kappa
-    cap08Tight cap09Tight row08.delta _ _ hw₀ hw₁ hz₀ hz₁ hx₀ hx₁ hgain
-  have hwprice : (price w : ℝ) ≤ _ := Rat.cast_le.mpr (price_le sl hsl w hwmem)
-  have hzprice : (price z : ℝ) ≤ _ := Rat.cast_le.mpr (price_le sl hsl z hzmem)
-  have hded := (add_le_add (mul_le_mul_of_nonneg_left hwprice hx)
-    (mul_le_mul_of_nonneg_left hzprice hx₀)).trans joint
   let F := fun P : ℝ → ℝ ↦ ∫ y, (P (σ*√(eval y (radU A B)))-capPad) ∂(stdGaussian d)
   let a8 := (cap08Tight : ℝ)+row08.kappa*σ^2-F P8
   let a9 := (cap09Tight : ℝ)+row09.kappa*σ^2-F P9
   let s8 := surplus row08 (stdGaussian d) X1 X2 X3 τ
   let s9 := surplus row09 (stdGaussian d) X1 X2 X3 τ
-  change (1-x)*(price w : ℝ)+x*(price z : ℝ) ≤
-    (1-θ)*a8+θ*a9+pairGain θ/(row08.delta : ℝ)^2*σ^2 at hded
-  have hscale : pairGain θ/(row08.delta : ℝ)^2*σ^2 = pairGain θ*τ^2 := by
-    dsimp [σ]
-    field_simp [hd.ne']
-  rw [hscale] at hded
+  have endprice (y : ℚ) (hy₀ : 0 ≤ y) (hy₁ : y ≤ 1) (st d : ℚ) (hst : σ ≤ st)
+      (hdisc : d ≤ CoupledStein.discount (CoupledStein.overlay st (CoupledStein.rowChords c08 [sl.left])
+        (CoupledStein.rowChords c09 [sl.right])) y row08.kappa row09.kappa cap08Tight cap09Tight row08.delta (pairGainQ y)) :
+      (d : ℝ) ≤ (1-(y:ℝ))*a8+(y:ℝ)*a9+pairGain (y:ℝ)*τ^2 := by
+    have he := ((Rat.cast_le (K := ℝ)).mpr hdisc).trans (CoupledStein.discount_le hl hr hlc hrc hst
+      hlaw rlaw y row08.kappa row09.kappa cap08Tight cap09Tight row08.delta (pairGainQ y) hy₀ hy₁)
+    change _ ≤ (1-(y:ℝ))*a8+(y:ℝ)*a9+(pairGainQ y:ℝ)/(row08.delta:ℝ)^2*σ^2 at he
+    rw [← pairGain_rat] at he
+    have hscale : pairGain (y:ℝ)/(row08.delta:ℝ)^2*σ^2 = pairGain (y:ℝ)*τ^2 := by
+      dsimp [σ]
+      field_simp [hd.ne']
+    rwa [hscale] at he
+  have hwidth := small_weights
+  have hOrdW := endprice w hw₀ hw₁ _ _ hσstop (price_le false sl hsl w hwmem)
+  have hOrdZ := endprice z hz₀ hz₁ _ _ hσstop (price_le false sl hsl z hzmem)
+  have hbon₀ : 0 ≤ bonus w z := le_min (le_min (mul_nonneg (by norm_num) (sub_nonneg.mpr (margin w hwmem)))
+    (mul_nonneg (by norm_num) (sub_nonneg.mpr (margin z hzmem)))) (by positivity)
+  have hbonW : bonus w z ≤ 4*(smallPrice w-price w) := (min_le_left _ _).trans (min_le_left _ _)
+  have hbonZ : bonus w z ≤ 4*(smallPrice z-price z) := (min_le_left _ _).trans (min_le_right _ _)
+  have hbonB : bonus w z ≤ (2019911/10^10)*(w-z)^2*((21/100)/row08.delta)^2 := min_le_right _ _
+  have hded := SharedGate.WeightedSchur.Strong.twoScale_chord
+    (w := (w:ℝ)) (z := (z:ℝ)) (τ := τ) (σ := σ) (cut := (21/100:ℚ))
+    ⟨Rat.cast_nonneg.mpr hw₀, hw⟩ ⟨Rat.cast_nonneg.mpr hz₀, hz⟩ ⟨hx₀,hx₁⟩
+    (Rat.cast_nonneg.mpr hbon₀) hOrdW hOrdZ
+    (fun hσ ↦ by
+      have hp := endprice w hw₀ hw₁ (21/100) _ hσ (price_le true sl hsl w (hwidth ▸ hwmem))
+      have hh := (Rat.cast_le (K := ℝ)).mpr hbonW
+      push_cast at hh
+      linarith only [hh,hp])
+    (fun hσ ↦ by
+      have hp := endprice z hz₀ hz₁ (21/100) _ hσ (price_le true sl hsl z (hwidth ▸ hzmem))
+      have hh := (Rat.cast_le (K := ℝ)).mpr hbonZ
+      push_cast at hh
+      linarith only [hh,hp])
+    (fun hσ ↦ by
+      have hh := (Rat.cast_le (K := ℝ)).mpr hbonB
+      push_cast at hh hσ
+      apply hh.trans
+      apply mul_le_mul_of_nonneg_left _ (by positivity)
+      apply pow_le_pow_left₀ (by positivity)
+      exact (div_le_iff₀ hd).mpr (by simpa [σ,mul_comm] using hσ))
+  change (1-x)*(price w : ℝ)+x*(price z : ℝ)+(bonus w z : ℝ)*x*(1-x) ≤
+    (1-θ)*a8+θ*a9+pairGain θ*τ^2 at hded
   have hg := pair_surplus θ hθ₀ hθ₁ hM hX h8.2.2.1 h9.2.2.1
   change pairGain θ*τ^2 ≤ (1-θ)*s8+θ*s9 at hg
   refine ⟨a8+s8,a9+s9, ?_, ?_, ?_⟩

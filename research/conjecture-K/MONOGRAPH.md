@@ -25,7 +25,7 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.4020217618 < K_G^ℂ ≤ 1.404556407 (Lean, `main_bounds`; exact values in `docs/CONSTANTS.md`). The lower bound of
+**Why it matters.** The proved bounds are 1.4020221627 < K_G^ℂ ≤ 1.404556407 (Lean, `main_bounds`; exact values in `docs/CONSTANTS.md`). The lower bound of
 the cubic witness alone is 1.401700322371 (12.1); Lean's lower bound uses an identity tail, transported Stein cuts and joint Gaussian gates. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
@@ -145,7 +145,7 @@ not, and it matters only if a row cover uses it [R · 2.5].
 - 1.4018 needs a row cap below 5000/7009 = 0.7133685261…; the cover of the cubic witness does not reach it. Lean
   proves K_G^ℂ > 1.402 with the identity-tail witness instead (#525, designed for 1.4018, tightened above 1.402 via
   a common-scale Stein profile, transported cuts and the 93/100 cubic radius; `main_bounds`; `../identity-tail/`), so a consumer of K at the
-  cubic witness improves the proved bound only if it exceeds 200000000000000/142651138122623 = 1.402021761845… (row cap below 142651138122623/200000000000000).
+  cubic witness improves the proved bound only if it exceeds 25000000000000/17831387166289 = 1.402022162766… (row cap below 17831387166289/25000000000000).
 - 1.402 needs a row cap below 500/701 = 0.7132667617…; 1.4022 below 5000/7011 = 0.7131650263….
 - At the peak row an all-sector bound Λ ≤ S + η with η ≤ 10⁻⁴ covers the response interval t ∈ [0.84, 0.851] for
   1.402, with the cap more than 6.12·10⁻⁷ below 500/701; the largest admissible allowance on that interval is
