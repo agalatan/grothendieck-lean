@@ -1,0 +1,6 @@
+t=0.800: kappa_h 0.403  kappa_AB(exact) 0.234  one inequality 0.418  theta -0.0415  largest excess -5.29e-06  (151s)
+t=0.820: kappa_h 0.462  kappa_AB(exact) 0.230  one inequality 0.476  theta -0.0465  largest excess -2.83e-06  (145s)
+t=0.840: kappa_h 0.536  kappa_AB(exact) 0.226  one inequality 0.549  theta -0.0535  largest excess -1.18e-06  (151s)
+t=0.845: kappa_h 0.555  kappa_AB(exact) 0.225  one inequality 0.567  theta -0.0559  largest excess -9.09e-07  (152s)
+t=0.850: kappa_h 0.576  kappa_AB(exact) 0.224  one inequality 0.587  theta -0.0584  largest excess -6.68e-07  (145s)
+t=0.855: kappa_h 0.601  kappa_AB(exact) 0.222  one inequality 0.612  theta -0.0615  largest excess -4.65e-07  (146s)

@@ -297,3 +297,19 @@ All files of `PCOST` are committed in the repository, with zero external working
   command file `fin_all.txt` and the ratio files of the design run (`design/work/` of the working folder named in
   the previous section), the profile archives `design/work/g078/out/prof_t0p<row>.npz` (in
   `mega-design-raw.tar.gz` there) and the tools `thresholds/*.py` of the degree-5 worker's folder.
+
+## The gate of two other degree-5 games, 25–26 November 2026 (STATUS 4.53–4.55, tag D5GATE)
+
+- `sources/degree5-gate-2026-11-25/GATE.md` was written for the repository; it is not a copy of a working file.
+- `code/degree5-gate/`: `pipeline/` (the scripts and command lists that ran on the droplet yo in `~/claude-b9ee-gate/pkg`,
+  removed afterwards), `results/` (the small outputs the note uses, copied by `collect.sh`), `summary.py` and its output
+  `SUMMARY.md`, `exact/ranges.py` and `exact/ranges.log`.
+- Outside the repository, in `handoff/degree5-gate-2026-11-25/` of the main checkout (git-ignored): `pkg/` (the droplet
+  folder as it was at the end: 1,005 files, 11 MB, with the per-row gate outputs `gate_*/out/`, the profiles
+  `thresholds/games/*/out/prof_*.npz`, the allowance logs and the law-bundle logs `law/*.err`), the same folder as one
+  archive, and the package list of the Python environment used.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `handoff/degree5-gate-2026-11-25/pkg.tar.gz` | 5,052,854 B | `058e375a4b31272dae597447516c86343484c1bd380913a419e7ffcab9c22965` |
+| `handoff/degree5-gate-2026-11-25/venv-freeze.txt` | 247 B | `9ad57a22603315ad85c065d7f137c2f67f5e45a423ec1ec0503720ced0f23a6a` |
