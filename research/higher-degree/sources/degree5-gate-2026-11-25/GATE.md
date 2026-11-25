@@ -34,7 +34,8 @@ profiles, logs) are in the handoff archive listed in [`../../INVENTORY.md`](../.
 
 What each stage computed, per game: Gaussian-optimal rows at 20 values of t in [0.70, 0.886] (`rows/rowscan.py`);
 plain law rows (moments and the radius 2287/2500, ledger 4.42) by a bundle method at t = 0, 0.05, …, 0.70 and on
-0.80–0.886, each small-t row re-evaluated with the scalar Stein family (`rows/lawbundle.py`, `rows/lawscan.sh`); the
+0.80–0.886, and at each small t a second row re-tuned for the law class with the scalar Stein family (`rows/lawbundle.py`
+with `STEIN_OPT=1`, `rows/lawscan.sh`); the
 band table of ledger 4.33/4.34 on the rows 0.80–0.855 (own rows, tilt (2/5, 3/10), own constant split
 κ_AB = 1 − κ_h − 1/50; `thresholds/band5.py`); the exact coupled one-spike gate of ledger 4.16 on all 20 rows
 (`gate/run_gate_all.sh`, `gate/collect_gate.py`); the A/B secant margin at the working tilt (2/5, 3/20) on ten rows
@@ -69,33 +70,45 @@ Targets 1/1.4025 = 0.7130125 and 1/1.403 = 0.7127584 (and 500/701 = 0.7132668 fo
 | maximum of the Gaussian envelope, t ∈ [0.70, 0.886] (at t) | 0.7128775 (0.8475) | 0.7125706 (0.8475) | 0.7124640 (0.8812)¹ |
 | room at 1.4025 / 1.403 at that maximum | 1.35·10⁻⁴ / −1.19·10⁻⁴ | 4.42·10⁻⁴ / 1.88·10⁻⁴ | 5.48·10⁻⁴ / 2.94·10⁻⁴ |
 | plain law rows on [0.70, 0.86], envelope maximum | – | 0.7125684 | 0.7125447 |
-| law row at t = 0 (plain; with the Stein family) | 0.6530107; 0.6527273 | 0.6874003; 0.6866736 | 0.7125551; 0.7114360 |
-| largest plain law row on t ∈ [0.05, 0.65] (at t) | 0.6934640 (0.6) | **0.7132942 (0.25)** | **0.7364982 (0.25)** |
-| the same rows re-evaluated with the Stein family, largest (at t) | 0.6870289 (0.6) | 0.7018371 (0.65) | **0.7217968 (0.2)** |
+| law row at t = 0 (plain; zero row with the Stein family) | 0.6530107; 0.6527273 | 0.6874003; 0.6866736 | 0.7125551; 0.7114360 |
+| largest plain law row on t ∈ [0.05, 0.70] (at t) | 0.6934640 (0.6) | **0.7132942 (0.25)** | **0.7364982 (0.25)** |
+| rows re-tuned for the Stein class, largest on t ∈ [0.05, 0.70] (at t) | 0.6870289 (0.6) | 0.7052759 (0.70) | **0.7217968 (0.2)** |
 | smallest room at 1.4025 over all t, plain law class | ≥ 1.35·10⁻⁴ (peak) | **−2.82·10⁻⁴** (t = 0.25) | **−2.35·10⁻²** (t = 0.25) |
 | smallest room at 1.403 over all t, plain law class | −1.19·10⁻⁴ (peak) | **−5.36·10⁻⁴** (t = 0.25) | **−2.37·10⁻²** (t = 0.25) |
-| smallest room at 1.4025 / 1.403, Stein family at small t | 1.35·10⁻⁴ / −1.19·10⁻⁴ | 4.42·10⁻⁴ / 1.88·10⁻⁴ (peak) | **−8.78·10⁻³ / −9.04·10⁻³** (t = 0.2) |
+| smallest room at 1.4025 / 1.403, Stein-class rows at small t | 1.35·10⁻⁴ / −1.19·10⁻⁴ | 4.42·10⁻⁴ / 1.88·10⁻⁴ (peak) | **−8.78·10⁻³ / −9.04·10⁻³** (t = 0.2) |
 
 ¹ gA's Gaussian rows at t ≥ 0.865 did not converge in their tuning (they fall on the plain branch with gradients up to
 3·10⁻²; band5's own envelope of the same rows gives 0.7124782 at 0.8789). They are upper bounds of the row values
 there, so the envelope maximum is an upper estimate; the model norm of ledger 1.11 is 0.7124306.
 
 The row values at their own t are the primary numbers (`SUMMARY.md` §1); the bundle method stops when its master value
-(a lower bound of the best row against the laws found) meets the row value, within 5·10⁻⁶ for gB and gC and 1·10⁻⁴ for
-the gA family at small t. So, up to that gap and the grid of the law class (both on the side of the estimate being
-low), the plain rows are lower estimates of the best row at each t:
+(a lower bound of the best row against the laws found) meets the row value. Every plain-class run on t ∈ [0.05, 0.70]
+converged with a gap of at most 1.7·10⁻⁶ (1.3·10⁻⁶ for gA and gB; gemini-21d5 re-evaluated the plain rows of gA and gB
+at t = 0.25 by an independent LP, agreeing to 2.4·10⁻⁹). So, up to that gap and the grid of the law class (both on the
+side of the estimate being low), the plain rows are lower estimates of the best row at each t.
+
+The Stein-class numbers come from a second bundle run per row (`STEIN_OPT=1`): starting from the plain row, up to 8
+rounds against an oracle that searches a local window around the plain maximiser (σ within ±0.06, ν at the
+neighbouring grid points, s ∈ {2, …, 6}) with the row parameters in the trust box (0.05, 0.03, 0.03, 0.03), and then
+a wider scan of the final row (7 values of σ, every ν, s = 1, …, 8). On every row with t ≥ 0.10 the parameters moved (ℓ
+by up to 0.0585; gA at t = 0.2: the plain row gives 0.7233115 in the Stein class, the re-tuned row 0.7217968); at
+t = 0 the zero row is kept, and at t = 0.05 the run stalled at its starting row (gap 1.0·10⁻⁴). These values are not
+one-sided: the oracle is local (and on t ≥ 0.50 the final scan found its maximum at s = 1, outside the oracle's list),
+so the true Stein-class value of a row may be larger, and a row found by a global search could be lower. The bundle
+gaps of the converged Stein runs are at most 5·10⁻⁶.
 
 - **gA, gA1, gA2** exceed 500/701 (so also 1/1.4025 and 1/1.403) in the plain class at every t from 0.1 to 0.5 by
   4·10⁻³ to 2.3·10⁻² (gA: 0.7205314 at 0.1, 0.7364982 at 0.25, 0.7179443 at 0.5; gA1 and gA2 within 1.2·10⁻³ of gA).
   These games have no certificate of the type of ledger 4.1 with the plain law class at any target from 1.402 up
-  (**N**, one-sided as stated). The rows re-evaluated with the Stein family still exceed 1/1.402 on t = 0.05–0.35 by up to
-  8.5·10⁻³ (gA 0.7217968 at 0.2; gA2 0.7207245 at 0.2), but those rows were optimised for the plain class only, so
-  that statement is not one-sided: a row re-tuned for the Stein class could be lower. At t = 0 the gA family has room
+  (**N**, one-sided as stated). The rows re-tuned for the Stein class still exceed 1/1.402 on t = 0.05–0.35 by up to
+  8.5·10⁻³ (gA 0.7217968 at 0.2; gA2 0.7207245 at 0.2): re-tuning lowered the Stein-class value of the
+  starting row by at most 2.3·10⁻³ on any row of any game, far less than the excess, which strengthens the negative evidence on
+  [0.10, 0.35]; it is not one-sided, for the reasons above. At t = 0 the gA family has room
   2.0·10⁻⁴ (gA), 4.9·10⁻⁴ (gA1) and 1.3·10⁻³ (gA2) at 1.403 in the plain class; the obstruction is the range
   t ∈ [0.05, 0.55], which the t = 0 test of ledger 4.52 did not see.
 - **gB** exceeds 1/1.4025 in the plain class at t = 0.25 and 0.3 (0.7132942, 0.7131723) and even 500/701, by 2.7·10⁻⁵
-  at t = 0.25 (gap 5·10⁻⁶): it needs the Stein family (or another small-t argument) on about [0.2, 0.35]; with the
-  Stein family its small-t rows have room ≥ 1.09·10⁻² at 1.403.
+  at t = 0.25 (gap 1.2·10⁻⁶): it needs the Stein family (or another small-t argument) on about [0.2, 0.35]; its rows
+  re-tuned for the Stein class have room ≥ 7.5·10⁻³ at 1.403 on [0, 0.70] (largest 0.7052759 at t = 0.70).
 - On t ≥ 0.86 the law grid falls below the Gaussian row (gA 0.7086 against 0.7124 at 0.87) and the bundle gap is up to
   3.4·10⁻⁴: the large-t law rows are **not resolved** there, and only the Gaussian rows count.
 
@@ -207,7 +220,8 @@ design of D\* at 1.402 and cannot pass 1.402735, ledger 4.50). It does not bear 
 - gA's Gaussian rows at t ≥ 0.865: the tuning did not converge (note ¹); the planned rerun was not made. The gate,
   the margins at 0.87 and 0.88 and the envelope of gA there use these rows.
 - The large-t law rows (t ≥ 0.86, all games run): unresolved (below the Gaussian value; bundle gap up to 3.4·10⁻⁴).
-- The Stein-family values are the plain rows re-evaluated, not rows optimised for the Stein class.
+- The Stein-class rows were re-tuned by a local bundle method (§2.1): not one-sided; at t = 0.05 the run stalled at
+  the plain row.
 - The content ratios of gA's and gB's own cubics were not computed; §2.5 uses the capped game's recorded ratios.
 - The band table of gA and gB used the room at 1.4025, the comparators the room at 1.402; the quintic shares and the
   gate do not depend on the target.
