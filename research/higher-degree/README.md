@@ -3,7 +3,7 @@
 The proved lower bound K_G^ℂ > 1.402 comes from the cubic witness P₁,₀ − (191/250)P₂,₁ with an identity tail
 ([`../identity-tail/`](../identity-tail/README.md)). Even a perfect evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
 ledger 12.2). Larger lower bounds need games of higher degree. In particular, the third decimal of K_G^ℂ needs a
-certified 1.404, because the upper bound 1.404556407 is already below 1.4046.
+certified 1.404, because the upper bound 1.404556392 is already below 1.4046.
 
 This folder records what is known about higher-degree games:
 - their numerical values and the responses that bind them;
@@ -82,8 +82,8 @@ record.
 | 7 | (1, −0.906596, 0.541570, −0.242531) | 1.404113 |
 | 9 | (1, −0.93600, 0.72057, −0.59202, 0.23468) | < 1.404218 (**P + C**, author only), 1.4041781 (**N**) against t = 0 multi-spike pairs (1.40430 in the PD2 pool; at most 1.40430 after retuning, open; STATUS 1.6, 1.8, 2.6) |
 
-- **Bracket.** Upper bound K_G^ℂ ≤ 1.404556407 < 1/γ† = 1.404575934663742 (**Lean**: `Grothe.Statement.main_bounds`, `Grothe.UpperSix.constant_lt_inv_gammaDagger`); heuristic lower end at most 1.40430, open after STATUS 2.6 (λ₉ of STATUS 1.6 itself is below 1.404218 certified and ≈ 1.4041781 numerically against mesoscopic t = 0 multi-spike pairs, and a degree-9 game retuned against the larger pool is at most 1.40430; STATUS 1.6, 1.8, 2.6). Its left end is a model estimate, not a bound
-  (STATUS 1.8). Haagerup's 1/γ† lies above the proved six-channel upper bound. No rounding built from the degree-9 binding responses
+- **Bracket.** Upper bound K_G^ℂ ≤ 1.404556392 < 1/γ† = 1.404575934663742 (**Lean**: `Grothe.Statement.main_bounds`, `Grothe.UpperSeven.constant_lt_inv_gammaDagger`); heuristic lower end at most 1.40430, open after STATUS 2.6 (λ₉ of STATUS 1.6 itself is below 1.404218 certified and ≈ 1.4041781 numerically against mesoscopic t = 0 multi-spike pairs, and a degree-9 game retuned against the larger pool is at most 1.40430; STATUS 1.6, 1.8, 2.6). Its left end is a model estimate, not a bound
+  (STATUS 1.8). Haagerup's 1/γ† lies above the proved seven-channel upper bound. No rounding built from the degree-9 binding responses
   beats Haagerup's γ_H (STATUS 3.3).
 - **The degree-5 programme.** At t = 0 a row bound is at least λ₁ρ\*², so the proved radius bound caps the cubic
   weight λ₁ (STATUS 4.12; the games per cap are in 1.10 and 4.33). For the game (1, −39/50, 779/10000), model value

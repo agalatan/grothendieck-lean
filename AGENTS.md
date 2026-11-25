@@ -184,7 +184,8 @@ especially a re-push after a CI failure, a review or a conflict):
    - sorted one-entry-per-line lists (`scratch/Axioms.lean`, `data/axioms/*.txt`, `data/root-imports-exclude.txt`)
      are union-merged by git (`.gitattributes`); keep them sorted and duplicate-free (CI checks);
    - shared scripts: take master's version and re-apply only your intended change;
-   - `README.md` is frozen (§7, step 4): a PR that still touches it drops its README change in the merge.
+   - `README.md` is frozen (§7, step 4) except for the places that state the bounds: a PR that touches anything else
+     there drops that change in the merge; if both sides changed a bound, the README states the merged `main_bounds`.
 5. **Quick local checks only (seconds to minutes):** `python3 tools/gen_root_imports.py --check`, the script tests
    (`python3 scripts/test_*.py`) if you touched scripts, the document checks (`python3 scripts/check_constants.py`
    and `python3 scripts/check_md_links.py`) if you touched documents or a bound, and the Lean modules you are
@@ -214,8 +215,13 @@ without a PR (`RFC`/`WIP` labels for early feedback).
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
 4. **Documentation:** **do not write in `README.md` for now** (user, 3 November 2026): every concurrent PR used to
    add its paragraph there and they conflicted on every merge. The PR description and its comments carry the
-   context of a change. `README.md` was revised in one pass on 15 November 2026 (#374); the freeze still holds for
-   every other PR. Never write counts of the axiom report or of native facts into documents (they conflict with
+   context of a change. `README.md` was revised in one pass on 15 November 2026 (#374) and again with the single
+   main theorem on 25 November 2026 (#638); the freeze still holds for every other PR, **with one exception: a PR
+   that changes a bound of `main_bounds` updates the places of `README.md` that state it** (the headline, the table
+   of constants, the row of this repository in the history table, the theorem names and exact values in "What is
+   proved", and the sentences that describe the proof it replaces), and nothing else there. The user asked on
+   25 November 2026 that the README always state the current bounds; `scripts/check_constants.py` refuses a README
+   that does not, and lists the lines. Never write counts of the axiom report or of native facts into documents (they conflict with
    every concurrent PR; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a bound, a
    hypothesis or the axiom report changed, update
    `docs/CONSTANTS.md` (the page that states every constant exactly), `docs/overview.tex` and

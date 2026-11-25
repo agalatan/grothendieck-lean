@@ -25,7 +25,7 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.402 < K_G^ℂ ≤ 1.404556407 (Lean, `main_bounds`; exact values in `docs/CONSTANTS.md`). The lower bound of
+**Why it matters.** The proved bounds are 1.402 < K_G^ℂ ≤ 1.404556392 (Lean, `main_bounds`; exact values in `docs/CONSTANTS.md`). The lower bound of
 the cubic witness alone is 1.401700322371 (12.1); Lean's lower bound adds an identity tail and antiholomorphic Stein tightening to it. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
@@ -479,6 +479,12 @@ of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C, both au
 - If P₃,₁(q²) = 0 (equivalently Σ_j ∂_jq·∂̄_jq ≡ 0; every decoupled cubic), then |q|² is exponential conditionally
   on |∂̄q|². So D_φ(q) ≥ 0 for every concave profile, and every content of q vanishes
   [P + C, both author only · 3.24].
+  Fixed unitary decoupling requires the stronger two-point identity $DF(z)F(z')=0$.
+  In at most four complex coordinates the two conditions agree. In five,
+  $q=x^2\bar u+xy\bar v+(xv-yu)\bar w$ satisfies the diagonal identity and violates the two-point one.
+  Its conditional Gaussian law is explicit. The surrounding circle-weight subspace has zero first content,
+  and a quantified neighbourhood satisfies $C^2\le D/10$ at the peak row (P + C, author only).
+  [Proof of 3.24a and 6.3.26a](sources/cubic-shear-codex-a7c4/PROOF.md).
 - If q vanishes on a complex hyperplane {X = 0}, then for every Gaussian buffer σ ≥ 0,
   √π·√(σ² + u) − 2E|σW + q| ≥ |α|²a_σ + ‖ℓ‖²b_σ with a_σ, b_σ > 0, where α and ℓ are the coefficients of X(|X|² − 2)
   and of X². In particular E|q| ≤ (√π/2)·√(u − |α|²/4 − ‖ℓ‖²/2). The class contains every one-driver cubic, in every
