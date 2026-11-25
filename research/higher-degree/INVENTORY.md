@@ -224,3 +224,41 @@ All files of `KSPH` (STATUS 4.30) are committed in the repository, with no exter
 - Not in the repository: the certificate pipeline that P4 asks to replay,
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/cert2b/`
   (P4 embeds its 29 rows and says what a replay must reproduce).
+
+## The recomputed design of 25 November 2026 (STATUS 4.41–4.45, tag DSGN)
+
+- `sources/degree5-design-2026-11-25/DESIGN.md` was written for the repository from the design worker's script
+  outputs and its note `ASSEMBLY.md` (the assembly theorem and its proof); it is not a verbatim copy of a working
+  file.
+- `code/degree5-design/design-2026-11-25/`: the design worker's scripts, the cover pipeline, the certified row
+  constants, the exact envelopes, the margin scans, the tables and `RESULTS.txt`, copied unedited from the working
+  folder; `checks/` and `README.md` there were written when the computation was recorded. `RESULTS.txt` and the logs
+  under `A_reproduce/`, `certB_const/out/`, `certB_lin/out/` and `smallt/` are kept because the note cites them as its
+  record (the exception of [`../README.md`](../README.md)); the folder holds 1.4 MB of text in files of at most 152 KB.
+- The working folder is `/Users/alingalatan/workspaces/grothe/handoff/degree5-attack-2026-11-25/design/` (45 MB). Not
+  in the repository:
+  - the 52 cover files `certB_const/out/cover_<row>.json` and `certB_lin/out/cover_<row>.json` (31,936,823 B in all;
+    one line each with SHA-256 and size in `code/degree5-design/design-2026-11-25/COVERS.sha256`), and the per-row
+    logs `certB_*/out/logs/`;
+  - `work/`: the per-case outputs of the conic programs and searches (`g078/`, 7.9 MB; `g078lap/`, 1.2 MB; `g077/`,
+    0.9 MB; `g078hi/`), their command files and logs, and the JSON forms of the tables of §3.3 of the note;
+  - `margins/`: the logs of the scans and the two re-scans `m078hi_t0.86.json`, `m078hi_t0.865.json`;
+  - the node caps of the 29 rows (those of the stage-2b certificate, `degree5-cert/cert2b/` of the working folder of
+    15–17 November, as for STATUS 4.17) and the tools that the allowance and re-evaluation programs import
+    (`thresholds/` of the degree-5 worker's folder named in the section on 17 November above).
+- `/Users/alingalatan/workspaces/grothe/handoff/degree5-attack-2026-11-25/mega-design-raw.tar.gz`: the raw outputs as
+  copied from the droplet (`design/work/`, `design/certB_*/out/`, the scan logs, and the logs of the replay of
+  STATUS 4.17 under `runA/`).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `degree5-attack-2026-11-25/mega-design-raw.tar.gz` | 51,993,411 B | `3961b48d3dd97911f769f2b4001c02fa57b36bc56d16f9f7f5c61303a14c378b` |
+| `degree5-attack-2026-11-25/design/ASSEMBLY.md` (the source of §5 of the note) | 16,966 B | `9d15595b0492f331609290ea78556e7f39e5b7b27415eae8122d8dd0553f17ef` |
+| `degree5-attack-2026-11-25/design/RESULTS.txt` (copied) | 66,963 B | `613a6133ce919afda9f00ed4b4ef97add4ca929107cda3d89a4202b989dd1bb5` |
+| `degree5-attack-2026-11-25/design/work/table_g078.json` | 508,211 B | `532624de6304efba9a3c12091330cb6f59c4620787f358756005ed1704c9d7c1` |
+| `degree5-attack-2026-11-25/design/work/table_g078pub.json` | 274,585 B | `471add239caad7113425986a864cd739922674a3ef3a94f0764f3372ce3270b8` |
+| `degree5-attack-2026-11-25/design/work/table_g078lap.json` | 112,751 B | `d6983a57437494d3f1becaa5bf46d583a6a843ca2ea242e44fe602a909d5f928` |
+| `degree5-attack-2026-11-25/design/work/table_g077.json` | 63,528 B | `0ce52fc524a54432d44b1a357f743f4f7e87fc2b8d4c53f960b3b557867e7689` |
+| `degree5-attack-2026-11-25/design/work/finL.cases.json` (the candidates of pieces 1–8) | 19,962 B | `399fe514b0c176424f09ea28f7ea1e46880ff55d4f442ec0e8c5730cf45675d0` |
+| `degree5-attack-2026-11-25/design/work/finU.cases.json` (pieces 9–21) | 14,424 B | `0f57cbe7c014e08d3d45ecfdc7e7886f336b347866e323c14160a72e5cb80099` |
+| `degree5-attack-2026-11-25/design/work/finT.cases.json` (the tilt (3/10, 1/10)) | 2,985 B | `90d8b083cefb0bb78194e35668971b6e1a322d9d7f6a4fb791e5c10dbcacb5f2` |
