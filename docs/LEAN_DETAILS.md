@@ -2,9 +2,11 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-`Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) proves `1.4020110501 < K_G^ℂ ≤ 1.404556407` (in Lean `14020110501/10000000000` and `1404556407/1000000000`), without hypotheses. The lower half is the exact endpoint `coupled_stein_endpoint` rounded strictly downward; the upper half is `Grothe.UpperSix.constant_le`. The upper-only module `Grothe/UpperResult.lean` has three theorems: `Grothe.UpperSix.bound` ($V(A)\le[10^{27}/711968558203721328194311213]\,C(A)$ for every finite complex matrix $A$; the factor is $1.4045564069893\ldots$), `constant_le` (the same, rounded up to nine decimals, for the constant) and `constant_lt_inv_gammaDagger` ($K_G^{\mathbb C}<1/\gamma^\dagger$). The scalar and vector suprema of the six-channel library are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) proves `1.4020110501 < K_G^ℂ ≤ 1.404556392` (in Lean `14020110501/10000000000` and `1404556392/1000000000`), without hypotheses. The lower half is the exact endpoint `coupled_stein_endpoint` rounded strictly downward; the upper half is `Grothe.UpperSeven.constant_le`. The upper-only module `Grothe/UpperResult.lean` has three theorems: `Grothe.UpperSeven.bound` ($V(A)\le[10^{27}/711968565817136711740669035]\,C(A)$ for every finite complex matrix $A$; the factor is $1.4045563919697\ldots$), `constant_le` (the same, rounded up to nine decimals, for the constant) and `constant_lt_inv_gammaDagger` ($K_G^{\mathbb C}<1/\gamma^\dagger$). The scalar and vector suprema of the six-channel library are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
-The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The certificate of the bound is `Grothe/UpperSixExact/`. `Parameters.lean` holds the polynomial of the first channel, the target slope and the caps. `Head.lean` checks the weighted head together with six lower bounds on the linear coefficients: the phase channel contributes 321 coefficients, from exact Haagerup moments, and each of the five cell channels 251. `Contour.lean` checks disk positivity and the circle mean for the first channel. `Bound.lean` subtracts the squared contributions of the linear coefficients from the Hardy estimates, which gives the tail caps, and proves `Haagerup.SixChannelExact.isBound`.
+The seventh channel and its proof are in `Grothe/UpperSelector/`. The Gaussian field gives a dominated radial kernel in `Transfer.lean`. The recurrence for signed Fourier moments, the clipped binomial preprocessor and the phase masses feed `PhysicalColumn.lean`, which bounds error in the whole Wiener series. `NumericWitness.lean` evaluates the mixed head and selector allowance from Lean definitions in one native comparison. `Bound.lean` combines this with the six analytic tail bounds and proves `Haagerup.AngularSelector.isBound`.
+
+The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The certificate for these six channels is `Grothe/UpperSixExact/`. `Parameters.lean` holds the polynomial of the first channel, the target slope and the caps. `Head.lean` checks the weighted head together with six lower bounds on the linear coefficients: the phase channel contributes 321 coefficients, from exact Haagerup moments, and each of the five cell channels 251. `Contour.lean` checks disk positivity and the circle mean for the first channel. `Bound.lean` subtracts the squared contributions of the linear coefficients from the Hardy estimates, which gives the tail caps, and proves `Haagerup.SixChannelExact.isBound`.
 
 The article `haagerup-article/` is frozen and has its own Lean package under `haagerup-article/anc`, which proves the article's statement; they do not quote the bounds of this repository. [Article's Lean package](../haagerup-article/anc/README.md).
 
@@ -13,7 +15,7 @@ The earlier `upper_below_tight` proof (`Grothe/UpperTightFinal.lean`, `K_G^ℂ <
 **Reading this inventory.** Most paragraphs describe one module or one result.
 Where a paragraph says that a result takes an estimate as a hypothesis, or that
 it gives no numerical bound, this describes that result; it is not an open
-input of the main theorems, which have no hypotheses. The generated root imports both the six-channel proof used by
+input of the main theorems, which have no hypotheses. The generated root imports both the seven-channel proof used by
 `Grothe/MainResult.lean` and the independent single-channel proof. A module called
 *archived* below is kept outside the libraries, in `abandonware/`
 (`abandonware/README.md`) unless the text names `miscellaneous/`; it is not
@@ -1194,7 +1196,8 @@ uses the `Haagerup.Data` cell-witness and overlap-table facts (`Haagerup.Data.tc
 the linear floors and the contour checks of the first channel (`Haagerup.SixChannelExact.head_and_floors_ok`,
 `region_ok`, `mean_ok`). The disk and circle checks of the other five channels (`Haagerup.reg1_ok`–`reg5_ok`,
 `Haagerup.mean1_ok`–`mean5_ok`) and the rational tail comparisons reduce directly in the kernel. The upper-six
-allowlist is `data/axioms/modes/upper-six.native.txt`.
+allowlist is `data/axioms/modes/upper-six.native.txt`. The seven-channel root theorem adds the native
+comparison `Haagerup.AngularSelector.NumericWitness.budgets_ok` for the signed mixed head and the full selector allowance.
 The single-channel upper proof uses `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.Upper.improved_high_mass_native` (the two complete high-band masses
