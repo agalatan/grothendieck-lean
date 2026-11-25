@@ -33,6 +33,7 @@ import Grothe.Lower.Cert.Rows
 import Grothe.Lower.Cert.SharedGate
 import Grothe.Lower.Cert.SharpEnvelope
 import Grothe.Lower.CoupledSteinEnvelope
+import Grothe.Lower.CutDilation
 import Grothe.Lower.Cuts
 import Grothe.Lower.Envelope
 import Grothe.Lower.EnvelopeData
