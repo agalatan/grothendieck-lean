@@ -31,7 +31,8 @@ private theorem tightSmallRect_ok :
   simp only [checkRect, Bool.and_eq_true] at old ⊢
   exact ⟨⟨⟨old.1.1.1, by decide +kernel⟩, old.1.2⟩, by decide +kernel⟩
 
-private theorem circularLawAt {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvPolynomial (Fin d) ℝ}
+/-- Specialize a scale-uniform circular law certificate to the actual residual scale. -/
+theorem circularLawAt {d : ℕ} {J : Fin d → Fin d → ℝ} {a b : MvPolynomial (Fin d) ℝ}
     {r : Row} {cap : ℚ} (hδ : 0 < r.delta) (hb : CircularRowBound r cap)
     (ha : Chaos3 a) (haa : ∫ y, eval y a ^ 2 ∂(stdGaussian d) = 1 / 2) (hc : Circular J a b)
     {Ψ : ℝ → ℝ} {τ : ℝ} (hτ0 : 0 ≤ τ) (hτ93 : τ ≤ 93 / 100)

@@ -22,6 +22,10 @@ import Grothe
 #print axioms Grothe.Lower.ResponsePenalty.row_bound
 #print axioms Grothe.Lower.ResponsePenalty.row_bound_of_split
 #print axioms Grothe.Lower.ResponsePenalty.v_block
+#print axioms Grothe.Lower.SharedGate.WeightedSchur.actual_deductions
+#print axioms Grothe.Lower.SharedGate.WeightedSchur.discount_chord
+#print axioms Grothe.Lower.SharedGate.WeightedSchur.gain_chord
+#print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 #print axioms Grothe.Lower.SharedGate.availableSaving
 #print axioms Grothe.Lower.SharedGate.cell_bound
 #print axioms Grothe.Lower.SharedGate.check
@@ -35,6 +39,8 @@ import Grothe
 #print axioms Grothe.Lower.SharpEnvelope.scalar_contact
 #print axioms Grothe.Lower.TightShared.endpoint_eq
 #print axioms Grothe.Lower.TightShared.profile_bound
+#print axioms Grothe.Lower.WeightedTight.endpoint_eq
+#print axioms Grothe.Lower.WeightedTight.profile_bound
 #print axioms Grothe.Lower.affineEnvelope_bound
 #print axioms Grothe.Lower.budget_of_bud
 #print axioms Grothe.Lower.certEnvelope
@@ -256,6 +262,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.trace3_circular
 #print axioms Grothe.LowerAnalytic.trace4_circular
 #print axioms Grothe.LowerAnalytic.transferInputs_of_witnessCap
+#print axioms Grothe.LowerAnalytic.weightedTight_deductions
 #print axioms Grothe.LowerAnalytic.wickL_mem_H21
 #print axioms Grothe.LowerAnalytic.witnessCap_cert
 #print axioms Grothe.LowerAnalytic.witnessCap_of_VhatOf_le
@@ -283,6 +290,8 @@ import Grothe
 #print axioms Grothe.Statement.upperBelow_of_constant_lt
 #print axioms Grothe.Statement.upper_below_tight
 #print axioms Grothe.Statement.upper_bound_tight
+#print axioms Grothe.Statement.weightedTightEndpoint_le_of_tailNodeCaps
+#print axioms Grothe.Statement.weighted_tight_endpoint
 #print axioms Grothe.Upper.BandComparison.compare
 #print axioms Grothe.Upper.BandComparison.quadratic_sum_le_grouped
 #print axioms Grothe.Upper.BandComparison.quadratic_sum_le_overlap

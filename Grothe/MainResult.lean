@@ -4,7 +4,7 @@ import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.SharpEnvelopeBound
 import Grothe.LowerAnalytic.SharedGateBound
-import Grothe.LowerAnalytic.TightSharedBound
+import Grothe.LowerAnalytic.WeightedTightBound
 
 /-!
 # The main result: `1.402 < K_G^ℂ ≤ 1.40455741`
@@ -52,6 +52,11 @@ theorem shared_gate_endpoint :
 theorem tight_shared_endpoint :
     (Grothe.Lower.TightShared.endpoint : ℝ) ≤ complexGrothendieckConstant :=
   tightSharedEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
+
+/-- Exact endpoint from pricing the Gaussian gate at the affine mixture weight. -/
+theorem weighted_tight_endpoint :
+    (Grothe.Lower.WeightedTight.endpoint : ℝ) ≤ complexGrothendieckConstant :=
+  weightedTightEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
 
 /-- The common-gate lower endpoint rounded strictly downward to ten decimals. -/
 theorem lower_bound_shared_gate :

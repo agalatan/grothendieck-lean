@@ -1514,7 +1514,10 @@ The Gaussian weighted Gram instantiation and a certificate that tracks `D`
 remain unformalized (the rows and the envelope of the lower bound do not track
 it); these lemmas do not strengthen `main_bounds`.
 
-The strongest lower endpoint is `Grothe.Statement.tight_shared_endpoint`. The two tightened antiholomorphic Stein rows also obey a common Gaussian gate. `tightShared_deductions` proves a uniform joint deduction using their actual shared variables. `TightShared.profile_bound` checks all 38 cells at hat cap `70636501/100000000`, and `tightShared_lower_of_tailNodeCaps` transfers that cap to matrices. The exact endpoint is `200000000000/142653086453`. The envelope and the new gate arithmetic use kernel reduction. [Analytic proof](../Grothe/LowerAnalytic/TightSharedBound.lean) · [Finite envelope](../Grothe/Lower/TightSharedEnvelope.lean)
+The fixed-weight gate gives `Grothe.Statement.tight_shared_endpoint`. The two tightened antiholomorphic Stein rows also obey a common Gaussian gate. `tightShared_deductions` proves a uniform joint deduction using their actual shared variables. `TightShared.profile_bound` checks all 38 cells at hat cap `70636501/100000000`, and `tightShared_lower_of_tailNodeCaps` transfers that cap to matrices. The exact endpoint is `200000000000/142653086453`. The envelope and the new gate arithmetic use kernel reduction. [Analytic proof](../Grothe/LowerAnalytic/TightSharedBound.lean) · [Finite envelope](../Grothe/Lower/TightSharedEnvelope.lean)
+
+The weighted endpoint is `Grothe.Statement.weighted_tight_endpoint`. For any finite nonnegative family of row weights, `WeightedSchur.weighted_surplus_nonneg_weights` bounds the sum of the actual integrated gate surpluses. The Schur gain is concave along positive-total weight segments. Applying this to the two active rows yields a chord on each affine-weight segment. The full cover gives hat cap `176590771/250000000` and endpoint `500000000000/356631775763`. The finite calculation uses kernel reduction. [Finite-family inequality](../Grothe/Lower/WeightedSchur.lean) · [Actual Gaussian row deductions](../Grothe/LowerAnalytic/WeightedSchurRows.lean) · [Envelope](../Grothe/Lower/WeightedTightEnvelope.lean)
+
 
 ## Module map (selected groups)
 

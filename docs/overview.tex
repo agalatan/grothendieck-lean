@@ -30,14 +30,15 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $\frac{200000000000}{142653086453}\;\le\;\KG\;\le\;1.404556407$\\[6pt]
-\normalsize The Lean~4/Mathlib theorems \lean{Grothe.Statement.tight\_shared\_endpoint}
+\Large $\frac{500000000000}{356631775763}\;\le\;\KG\;\le\;1.404556407$\\[6pt]
+\normalsize The Lean~4/Mathlib theorems \lean{Grothe.Statement.weighted\_tight\_endpoint}
 and \lean{Grothe.Statement.main\_bounds\_phase} supply the lower and upper inequalities.
 The latter theorem states the rounded lower bound $1.402<\KG$.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-At residual scale $\tau\ge9/40$, the common gate improves the sum of the two tightened row bounds
-by at least $(1018/10^7)(9/40)^2$. At smaller scales the row08 quadratic majorant supplies the same
-saving. The 38-cell envelope gives a witness cap with reciprocal $1.402002613283\ldots$.
+The quadratic majorant for row08 and the common gate for rows 08 and 09
+can be used simultaneously. Pricing their joint gate at an affine mixture weight gives a
+concave saving in that weight. A lower chord for the saving and an exact quadratic maximum
+on each segment give a hat cap of $176590771/250000000$.
 The six Gaussian rounding channels give the upper bound rounded up to $1404556407/1000000000$ (article upper bound $140455741/100000000$).\vspace{4pt}
 \end{minipage}}
 \end{center}
