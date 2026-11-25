@@ -96,4 +96,4 @@ implementation of the plain row check (Lean's `checkRow` facts beside `verify_ce
 
 ## Joint Stein profile of the active rows
 
-An exact rational replay keeps the fourth excess and residual scale common to both Stein rows before optimizing their weighted sum. On the same witness it gives a candidate endpoint of 4000000000000/2853044560237 (1.402011050142…); Lean integration is open in #674. [Argument, controls and reproduction](COUPLED_STEIN.md).
+The coupled Stein proof keeps the fourth excess and residual scale common to both rows before optimizing their weighted sum. Lean checks all nine prices at the resulting closed intersections and transfers the scalar cap to the exact lower endpoint 4000000000000/2853044560237 (1.402011050142…). [Argument, controls and reproduction](COUPLED_STEIN.md).

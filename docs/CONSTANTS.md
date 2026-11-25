@@ -6,10 +6,11 @@ proves, exactly as Lean states it, and explains the other numbers that appear in
 
 ## The current bounds
 
-$$\frac{500000000000}{356631775763} \le K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$\frac{4000000000000}{2853044560237} \le K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
+| coupled Stein lower bound | `1.4020110501420713…` | `4000000000000 / 2853044560237` | `Grothe.Statement.coupled_stein_endpoint`, `Grothe.Lower.CoupledStein.endpoint_eq` | `Grothe/MainResult.lean`, `Grothe/Lower/Cert/CoupledStein.lean` |
 | weighted shared-gate lower bound | `1.4020063100946885…` | `500000000000 / 356631775763` | `Grothe.Statement.weighted_tight_endpoint`, `Grothe.Lower.WeightedTight.endpoint_eq` | `Grothe/MainResult.lean`, `Grothe/Lower/Cert/WeightedTight.lean` |
 | fixed-weight shared-gate lower bound | `1.402002613283…` | `200000000000 / 142653086453` | `Grothe.Statement.tight_shared_endpoint`, `Grothe.Lower.TightShared.endpoint_eq` | `Grothe/MainResult.lean`, `Grothe/Lower/TightSharedEnvelope.lean` |
 | lower bound in `main_bounds` (strict) | `1.402` | `1402 / 1000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
@@ -96,7 +97,7 @@ The two tightened law bounds leave a further deduction because both rows constra
 
 The stronger weighted bound completes the square after combining the two gate matrices at the actual mixture weight. The resulting Schur price is concave in that weight. The row08 quadratic law deduction and the weighted gate deduction hold simultaneously. Their uniform combined saving is bounded below by a chord between its two endpoint weights. On a central cell the mixing weight is affine until it reaches zero or one. Subtracting the chord leaves a quadratic in the cell parameter, so the checker tests its endpoints and any interior maximum. The hat cap is $176590771/250000000$, giving $500000000000/356631775763\le K$. The certificate proves the strict rounding $1.4020063100<K$. [Endpoint certificate](../Grothe/Lower/Cert/WeightedTight.lean) · [Weighted envelope](../Grothe/Lower/WeightedTightEnvelope.lean) · [Transfer](../Grothe/LowerAnalytic/WeightedTightBound.lean)
 
-The coupled Stein profile has a conditional lower endpoint of `4000000000000/2853044560237` (1.402011050142…). The matrix transfer in `Grothe.Statement.coupledSteinEndpoint_le_of_prices` requires the nine rational comparisons in `PricesHold`, the usual node caps, and existence of a Grothendieck bound. The exact rational replay verifies all nine, with their kernel certificates in progress. [Derivation and replay](../research/identity-tail/COUPLED_STEIN.md).
+The coupled Stein profile has exact lower endpoint `4000000000000/2853044560237`. Lean proves the nine price comparisons from the two original chord banks on all closed intersections. `Grothe.Statement.coupled_stein_endpoint` combines the resulting transfer with the witness node caps and the six-channel upper bound. [Derivation and replay](../research/identity-tail/COUPLED_STEIN.md).
 
 ### Refinements of the earlier scalar-row certificate
 

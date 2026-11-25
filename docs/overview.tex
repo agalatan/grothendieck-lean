@@ -30,19 +30,16 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $\frac{500000000000}{356631775763}\;\le\;\KG\;\le\;1.404556407$\\[6pt]
-\normalsize The Lean~4/Mathlib theorems \lean{Grothe.Statement.weighted\_tight\_endpoint}
+\Large $\frac{4000000000000}{2853044560237}\;\le\;\KG\;\le\;1.404556407$\\[6pt]
+\normalsize The Lean~4/Mathlib theorems \lean{Grothe.Statement.coupled\_stein\_endpoint}
 and \lean{Grothe.Statement.main\_bounds\_phase} supply the lower and upper inequalities.
-The latter theorem states the rounded lower bound $1.402<\KG$.
-The weighted endpoint also gives $1.4020063100<\KG$ by \lean{WeightedTight.rounded\_lt}.
+The lower endpoint gives $1.4020110501<\KG$ by \lean{CoupledStein.rounded\_lt}.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The quadratic majorant for row08 and the common gate for rows 08 and 09
-can be used simultaneously. Pricing their joint gate at an affine mixture weight gives a
-concave saving in that weight. A lower chord for the saving and an exact quadratic maximum
-on each segment give a hat cap of $176590771/250000000$.
-Keeping the common fourth excess and residual scale in both Stein laws gives a conditional
-endpoint $4000000000000/2853044560237$. The matrix transfer requires nine finite price
-comparisons (\lean{PricesHold}), independently replayed in rational arithmetic.
+Both Stein rows see the same fourth excess and residual scale. Lean verifies their
+joint deduction at nine mixture weights on every closed intersection of the two
+chord tables, including the interior extrema in the scale variable.
+Interpolating the deductions over the amplitude cover gives the scalar cap
+$1412721229/2000000000$.
 
 The six Gaussian rounding channels give the upper bound rounded up to $1404556407/1000000000$ (article upper bound $140455741/100000000$).\vspace{4pt}
 \end{minipage}}

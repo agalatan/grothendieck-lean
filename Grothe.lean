@@ -3383,6 +3383,8 @@ import Grothe.LowerAnalytic.ComplexGaussianSymmetry
 import Grothe.LowerAnalytic.CoupledSteinBound
 import Grothe.LowerAnalytic.CoupledSteinCheck
 import Grothe.LowerAnalytic.CoupledSteinData
+import Grothe.LowerAnalytic.CoupledSteinGrid
+import Grothe.LowerAnalytic.CoupledSteinPrices
 import Grothe.LowerAnalytic.CoupledSteinRows
 import Grothe.LowerAnalytic.CoupledSteinWeights
 import Grothe.LowerAnalytic.Covariance

@@ -2,6 +2,7 @@
 import Grothe.LowerTarget
 import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
+import Grothe.LowerAnalytic.CoupledSteinBound
 import Grothe.LowerAnalytic.SharpEnvelopeBound
 import Grothe.LowerAnalytic.SharedGateBound
 import Grothe.LowerAnalytic.WeightedTightBound
@@ -57,6 +58,11 @@ theorem tight_shared_endpoint :
 theorem weighted_tight_endpoint :
     (Grothe.Lower.WeightedTight.endpoint : ℝ) ≤ complexGrothendieckConstant :=
   weightedTightEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
+
+/-- Exact lower endpoint from the two Stein rows at their shared fourth excess and scale. -/
+theorem coupled_stein_endpoint :
+    (Grothe.Lower.CoupledStein.endpoint : ℝ) ≤ complexGrothendieckConstant :=
+  coupledSteinEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
 
 /-- The common-gate lower endpoint rounded strictly downward to ten decimals. -/
 theorem lower_bound_shared_gate :

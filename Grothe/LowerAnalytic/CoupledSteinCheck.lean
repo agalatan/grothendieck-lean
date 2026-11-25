@@ -89,10 +89,8 @@ theorem overlay_member {stop : ℚ} {left right : List Chord} {p : Piece}
         l.intercept,l.slope,r.intercept,r.slope⟩ := by
   obtain ⟨l,hl,hrs⟩ := List.mem_flatMap.mp hp
   obtain ⟨r,hr,he⟩ := List.mem_filterMap.mp hrs
-  unfold intersection at he
-  split at he
-  next h => exact ⟨l,hl,r,hr,h.1,h.2,(Option.some.inj he).symm⟩
-  next => contradiction
+  simp only [intersection, Option.ite_none_right_eq_some, Option.some.injEq] at he
+  exact ⟨l,hl,r,hr,he.1.1,he.1.2,he.2.symm⟩
 
 private theorem piece_mem {stop : ℚ} {left right : List Chord} {l r : Chord}
     (hl : l ∈ left) (hr : r ∈ right) {s σ : ℝ}

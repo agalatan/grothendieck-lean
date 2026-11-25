@@ -122,9 +122,11 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Circular.specV4_eq
 #print axioms Grothe.LowerAnalytic.Circular.tensorFacts
 #print axioms Grothe.LowerAnalytic.CircularCellNodeBounds.chord
+#print axioms Grothe.LowerAnalytic.CoupledStein.Grid.worst_le
 #print axioms Grothe.LowerAnalytic.CoupledStein.actual_deductions
+#print axioms Grothe.LowerAnalytic.CoupledStein.approxDiscount_le
 #print axioms Grothe.LowerAnalytic.CoupledStein.discount_chord_le
-#print axioms Grothe.LowerAnalytic.CoupledStein.profile_of_prices
+#print axioms Grothe.LowerAnalytic.CoupledStein.profile
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
@@ -282,7 +284,8 @@ import Grothe
 #print axioms Grothe.Statement.constant_isBound
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
-#print axioms Grothe.Statement.coupledSteinEndpoint_le_of_prices
+#print axioms Grothe.Statement.coupledSteinEndpoint_le_of_tailNodeCaps
+#print axioms Grothe.Statement.coupled_stein_endpoint
 #print axioms Grothe.Statement.isClosed_bounds
 #print axioms Grothe.Statement.le_constant_of_lowerAbove
 #print axioms Grothe.Statement.lowerTarget_of_tailNodeCaps
