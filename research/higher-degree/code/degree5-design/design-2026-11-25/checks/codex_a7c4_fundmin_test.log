@@ -1,0 +1,12 @@
+piece  1: eta_h needed at lambda = 10^-12 > 4.064344769951e-04; fundMin gives 4.064329029707e-04; shortfall > 1.574e-09
+piece  2: eta_h needed at lambda = 10^-12 > 3.834772269746e-04; fundMin gives 3.834756529502e-04; shortfall > 1.574e-09
+piece  3: eta_h needed at lambda = 10^-12 > 4.106779972735e-04; fundMin gives 4.106764232491e-04; shortfall > 1.574e-09
+piece  4: eta_h needed at lambda = 10^-12 > 3.560993059792e-04; fundMin gives 3.560977319548e-04; shortfall > 1.574e-09
+piece  5: eta_h needed at lambda = 10^-12 > 3.306339037683e-04; fundMin gives 3.306323297439e-04; shortfall > 1.574e-09
+piece  6: eta_h needed at lambda = 10^-12 > 2.982397498142e-04; fundMin gives 2.982381757898e-04; shortfall > 1.574e-09
+piece  7: eta_h needed at lambda = 10^-12 > 2.595990235482e-04; fundMin gives 2.595974495238e-04; shortfall > 1.574e-09
+piece  8: eta_h needed at lambda = 10^-12 > 1.849436340969e-04; fundMin gives 1.849420600725e-04; shortfall > 1.574e-09
+piece  9: eta_h needed at lambda = 10^-12 > 2.745390372589e-04; fundMin gives 2.745374632345e-04; shortfall > 1.574e-09
+piece 10: eta_h needed at lambda = 10^-12 > 1.923951152579e-04; fundMin gives 1.923935412335e-04; shortfall > 1.574e-09
+piece 11: eta_h needed at lambda = 10^-12 > 1.732048824629e-04; fundMin gives 1.732033084385e-04; shortfall > 1.574e-09
+all assertions passed: fundMin is short by more than 1.57e-9 on each of the pieces 1-11

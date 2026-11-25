@@ -3,6 +3,8 @@ import Grothe.LowerAnalytic.MassRowFrame
 import Grothe.LowerAnalytic.AntiRows.Row08
 import Grothe.LowerAnalytic.AntiRows.Row09
 import Grothe.Lower.EnvelopeTight
+import Grothe.Lower.Cert.TightEnvelope
+import Grothe.StatementBridges
 import Grothe.Lower.Cert.Row01
 import Grothe.Lower.Cert.Row02
 import Grothe.Lower.Cert.Row03
@@ -129,6 +131,25 @@ theorem lower_bound_tight_of_tailNodeCaps (hcaps : TailNodeCaps (nuHat (47 / 200
   transfer_lower (transferInputs_of_witnessCap (by norm_num) (by norm_num) 2
     fun n hn => witnessCap_tight hcaps n hn) hK
 
+/-- Exact rational endpoint form of `lower_bound_tight_of_tailNodeCaps`:
+`(TightEnvelope.endpoint : ℝ) ≤ K` for every Grothendieck bound `K`. -/
+theorem tight_lower_of_tailNodeCaps (hcaps : TailNodeCaps (nuHat (47 / 2000))) {K : ℝ}
+    (hK : IsGrothendieckBound K) : (TightEnvelope.endpoint : ℝ) ≤ K := by
+  simpa only [TightEnvelope.endpoint, Rat.cast_div, Rat.cast_one, Rat.cast_sub, Rat.cast_mul,
+    Rat.cast_add, Rat.cast_ofNat] using lower_bound_tight_of_tailNodeCaps hcaps hK
+
 end
 
 end Grothe.LowerAnalytic
+
+namespace Grothe.Statement
+
+/-- The exact tightened lower endpoint `1000000000 / 713266399 ≤ K_G^ℂ`, modulo the node caps
+and existence of a Grothendieck bound. -/
+theorem tightEndpoint_le_of_tailNodeCaps
+    (hcaps : LowerAnalytic.TailNodeCaps (LowerAnalytic.nuHat (47 / 2000)))
+    (hne : ∃ K, IsBound K) :
+    (Grothe.Lower.TightEnvelope.endpoint : ℝ) ≤ complexGrothendieckConstant :=
+  le_csInf hne fun _ hK => LowerAnalytic.tight_lower_of_tailNodeCaps hcaps (isBound_iff.mp hK)
+
+end Grothe.Statement

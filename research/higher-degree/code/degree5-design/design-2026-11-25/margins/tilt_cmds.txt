@@ -1,0 +1,2 @@
+cd /home/agalatan/claude-b9ee-degree5/design/margins && OMP_NUM_THREADS=1 ../../venv/bin/python ../scripts/margin_tilt.py rows078.lines 0.79 tilt078_t0.79.json 0.78 0,0.2,0.4,0.6,0.8 0,0.15,0.3,0.45,0.6 > tilt078_t0.79.log 2>&1
+cd /home/agalatan/claude-b9ee-degree5/design/margins && OMP_NUM_THREADS=1 ../../venv/bin/python ../scripts/margin_tilt.py rows078.lines 0.82 tilt078_t0.82.json 0.78 0,0.2,0.4,0.6,0.8 0,0.15,0.3,0.45,0.6 > tilt078_t0.82.log 2>&1

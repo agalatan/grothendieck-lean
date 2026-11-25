@@ -25,8 +25,8 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.40191 < K_G^ℂ ≤ 1.40455741 (Lean, `main_bounds`). The lower bound of
-the cubic witness alone is 1.401700322371 (12.1); Lean's 1.40191 adds an identity tail to it. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
+**Why it matters.** The proved bounds are 1.402 < K_G^ℂ ≤ 1.404556407 (Lean, `main_bounds`; exact values in `docs/CONSTANTS.md`). The lower bound of
+the cubic witness alone is 1.401700322371 (12.1); Lean's lower bound adds an identity tail and antiholomorphic Stein tightening to it. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
 1.4022; no certificate with this witness exceeds 1.4022581233.
@@ -143,9 +143,9 @@ not, and it matters only if a row cover uses it [R · 2.5].
 - The complete lower cover of the cubic witness gives K_G^ℂ ≥ 1250000000/891774069 > 1.401700322371, with row cap
   891774069/1250000000 = 0.7134192552 [Lean until #525 · 12.1]; master no longer carries it.
 - 1.4018 needs a row cap below 5000/7009 = 0.7133685261…; the cover of the cubic witness does not reach it. Lean
-  proves 1.40191 with the identity-tail witness instead (#525, whose design target was 1.4018; `main_bounds`;
-  `../identity-tail/`), so a consumer of K at the cubic witness improves the proved bound only if it gives more than
-  1.40191 (row cap below 100000/140191 = 0.7133125…).
+  proves K_G^ℂ > 1.402 with the identity-tail witness instead (#525, designed for 1.4018, tightened above 1.402 via
+  antiholomorphic Stein cuts and the 93/100 cubic radius; `main_bounds`; `../identity-tail/`), so a consumer of K at the
+  cubic witness improves the proved bound only if it exceeds 10⁹/713266399 = 1.4020007… (row cap below 713266399/10⁹).
 - 1.402 needs a row cap below 500/701 = 0.7132667617…; 1.4022 below 5000/7011 = 0.7131650263….
 - At the peak row an all-sector bound Λ ≤ S + η with η ≤ 10⁻⁴ covers the response interval t ∈ [0.84, 0.851] for
   1.402, with the cap more than 6.12·10⁻⁷ below 500/701; the largest admissible allowance on that interval is
@@ -154,7 +154,7 @@ not, and it matters only if a row cover uses it [R · 2.5].
 - No certificate with T_ε exceeds 1.4022581233, for any multiplier and dimension [R here · 12.2]; at ε = 149/200 the
   witness cannot reach 1.402 at all [R · 8.3]. A witness with an identity tail, (1, −ε, ν, ν, …), has the model
   ceiling 1.40248 at ε ≈ 0.768, ν ≈ 0.0235 [N · STATUS §10]; its certificate, at (ε, ν) = (191/250, 47/2000), designed for the
-  target 1.4018 and proving 1.40191 in Lean, is the subject of `../identity-tail/STATUS.md`. The degree-5 analogue of K fails numerically at its
+  target 1.4018 and giving the Lean lower bound, is the subject of `../identity-tail/STATUS.md`. The degree-5 analogue of K fails numerically at its
   flank rows and at its peak row (chapter 4, item 12.3).
 
 ### 1.6 The retained functional Λ̂
@@ -574,12 +574,15 @@ driver, Y the other remote coordinates):
 |---|---|---|
 | q = X·P, P any centred variable independent of X with the moment bounds of 6.3.1; every complex quadratic P(Y) | 0.22 | P + C (audit) · 6.3.3 |
 | Gaussian-factor class Σ_j X_jP_j(Y), any number of drivers and coefficient matrices | 0.239 | P + C (audit) · 6.3.4 |
+| Mixed Gaussian drivers Σⱼ[XⱼPⱼ(Y) + X̄ⱼHⱼ(Y)], with arbitrary jointly dependent (1,1) and holomorphic (2,0) bath coefficients | 47/200 | P + C, author only · [6.3.16a](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) |
 | Complete one-driver self-interaction X[c(\|X\|² − 2) + P], arbitrary complex c ∈ ℂ and centred P ∈ L² independent of X, Wick share f = 2\|c\|²/u ∈ [1/16, 1] | 11/50 | P + C, author only · gemini-21d5 · 6.3.13 |
 | Small-Wick self-interaction X[c(\|X\|² − 2) + Y\*AY − tr A], arbitrary complex c ∈ ℂ and complex matrix A, f ∈ [0, 1/16] (hence all f ∈ [0, 1]) | 47/200 | P + C, author only · gemini-21d5 · 6.3.5, 6.3.14, 6.3.15 |
+| Mixed driver q = X[c(\|X\|² − 2) + P(Y)] + X̄H(Y), any complex centred (1,1) quadratic P and holomorphic quadratic H | 47/200 for every Wick share, 11/50 for f ≥ 1/16 | P (independent review of #664), from the P + C, author-only envelopes in 6.3.13–6.3.14 · 6.3.16 |
 | Wick neighbourhood X[c(\|X\|² − 2) + P], P centred independent of X, E\|P\|² ≤ u/5 | 9/40 | implications P (audit); scalar/cell premises C, author only · gemini-21d5 · 6.3.6 |
-| **peak row only:** p + h with p, h ∈ H₂,₁, p of charge one under rotation of a specified coordinate block, h with no component of that character, D(p) > 0, C(p)² ≤ (9/40)D(p), ‖p + h‖² ≤ 0.0463 and ‖h‖² ≤ D(p)/90 | 6/25 | P + C · 6.3.9b |
+| **peak row only:** p + h with p, h ∈ H₂,₁, p of charge one under rotation of a specified coordinate block, h with no component of that character, D(p) > 0, C(p)² ≤ (9/40)D(p), ‖p + h‖² ≤ 0.0463 and ‖h‖² ≤ D(p)/56 | 6/25 | P + C to D(p)/90 · 6.3.9b; P + C, author only to D(p)/56 · 6.3.9c |
+| Character core p under a compact unitary symmetry, h with zero component of that character. Includes opposite signs under negation of a driver block. D(p)>0, C(p)² ≤ κD(p), ‖p+h‖² ≤ 0.0463, ‖h‖² ≤ D(p)/n | 6/25 | For κ = 47/200, 9/40, 11/50 respectively, n = 167, 56, 42 on peak and flank and n = 160, 54, 40 on upper. P + C, author only · [6.3.9c](sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md) |
 
-The moment theorem behind the first and fourth rows is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y\*AY − tr A, any complex
+The moment theorem behind the scalar proper Gaussian-factor and small-Wick results is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y\*AY − tr A, any complex
 A, p = E|P|² [P + C · 6.3.1]. The self-interaction family has a deficit identity whose Wick term |c|²𝓚(u) is strictly positive across the band (𝓚(u) > 0.0307 at all three rows, and 𝓚(0.0463) ∈ [0.16678146, 0.16678220] at the peak)
 [identity P · second audit; bounds P + C, author only · gemini-21d5 · 6.3.7]. On f ∈ [1/16, 1] a linear-plus-quadratic envelope in (|z|², Re(c̄z)) avoids division by p = u − 2|c|² as f → 1 and holds without fourth- or sixth-moment hypotheses on P; on f ∈ [0, 1/16] the moment-polynomial envelope (†) with affine weight w(y) = 3/10 + (7/10)y closes the small-Wick strip, both certified in outward-rounded C++17 `Aff4` Taylor arithmetic with exact rational tails [P + C, author only · gemini-21d5 · 6.3.13–6.3.15; [Proof](sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md)]. The families do not add up: the cross terms between shells survive phase averaging
 (q = X̄Y² + (|X|² − 1)Y has energy 3 and E[X̄q|q|²] = 6) [P + C · 6.3.8].
@@ -595,7 +598,11 @@ this gives signed C(q)² ≤ (6/25)D(q) + 10⁻⁶ on [0, 0.0463] × [0, 841/100
 across the full connected domain [0, 0.0463] × [0, 49/625] ∪ [0, 7/10000] × [0, 42] ∪ [0, 3/250] × [0, 1/4] with no
 near-Gaussian sliver. The all-shapes extension to 7/10000 uses the unsmoothed raw A-content constant 5353/625 [P + C, author only · codex-a7c4 · 3.19a; gemini-5331, gemini-21d5 · 6.3.43].
 
-**Open in L4:** the mixed one-driver shells X̄B(Y), (|X|² − 1)V(Y), X²W̄(Y), R₀(Y) beyond the mixed-character neighbourhood of 6.3.9b [6.3.16]; several
+The opposite driver character X̄H(Y) can be included at arbitrary strength in the one-driver self-interaction. Replacing it by X·conj(H(Y)) preserves the joint law with X and all first-chaos content. The resulting complex quadratic of real Gaussians satisfies the combined small-Wick moment multiplier. [One-driver proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md)
+
+With several drivers and no self-interaction, the folded law is a proper Gaussian mixture. A bound on the directional real covariance gives C² ≤ (47/200)D for every choice of bath quadratics. In particular (|X|² − 1)U(Y) + X²·conj(V(Y)) is covered for arbitrary linear U,V by taking Y as the driver block. [Many-driver proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md)
+
+**Open in L4:** mixtures of the odd-X core with the even-X terms (|X|² − 1)V(Y), X²W̄(Y) or R₀(Y) beyond the sign neighbourhood of 6.3.9c [6.3.16–6.3.16a]; several
 self-interacting drivers [6.3.17]; and the **raw content inequality for an arbitrary intermediate-kurtosis cubic on R**
 [open · 6.3.18].
 
@@ -1124,7 +1131,7 @@ omitted response region; an error ledger with exact thresholds; a single witness
 which replaced that witness by the identity-tail witness and its 14 rows). These rows
 and the crude row already cover every response t except [0.84, 0.8555]. One new row M = (149/200, 0.84775, 0.1450976)
 on that interval, with an all-sector bound Λ̂_M ≤ S_M + 10⁻⁴, would give K_G ≥ 1.40171 [C, P author only · codex-8d2f,
-replayed by claude-b9ee · STATUS 8.5]. This is below the 1.40191 that Lean now proves, so the consumer no longer
+replayed by claude-b9ee · STATUS 8.5]. This is below the lower bound that Lean now proves, so the consumer no longer
 improves the bound; it stays the cheapest test of K at one row. The responses there fit the peak energy box after the weighted scaling, but the
 tested triangle/support transfer of the peak results exceeds the allowance: the profile change alone costs 7·10⁻⁴
 against 1.04·10⁻⁴ [STATUS 8.6]. One route is new component estimates at M (remote cap, joint premise, odd premise); a
@@ -1215,7 +1222,7 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 3. **A consumer whose rows these bounds fit** (2.10): cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. The peak bound covers t ∈ [0.84, 0.851] only. A simple
    first step is one new row at ε = 149/200 with an all-sector bound there, which gives 1.40171 (below the proved
-   1.40191, so a test of K only). At ε = 299/400 only
+   lower bound, so a test of K only). At ε = 299/400 only
    the central interval (0.8165, 0.866) is left, as ten explicit all-sector inequalities; their binding rows admit
    3.0–4.4·10⁻⁵, less than the 9.9·10⁻⁵ of item 2. At ε = 94/125 only (0.7515, 0.863) is left (author only), as
    thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.57·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`
@@ -1240,7 +1247,7 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    (χ ≤ 0.2809 across the band, τ_max ≤ 0.054), high excess χ ≥ 40.32, and independent blocks are covered (2.5 ·
    6.3.40–6.3.42), together with the complete one-driver self-interaction family across all shares and phases (2.5 · 6.3.13–6.3.15, author only) and bounded kurtosis against D (signed +10⁻⁶ on χ ≤ 841/10000, exact zero-slack across
    χ ≤ 49/625 with no near-Gaussian sliver; 2.5 · 6.3.43, author only). Open pieces at intermediate/high
-   kurtosis: the mixed shells (6.3.16) and several self-interacting drivers (6.3.17). By the
+   kurtosis: the remaining even-character shells beyond the sign neighbourhood (6.3.9c, 6.3.16) and several self-interacting drivers (6.3.17). By the
    local representation of 2.5, the content and
    the excess D − 𝒥_dec of the deficit over that of the decoupled surrogate (2.1) are linear in one pair of fields, so
    the target can be put as C² ≤ κ·(D − 𝒥_dec). Cauchy–Schwarz on either Stein pair falls short of the needed

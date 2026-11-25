@@ -31,6 +31,7 @@ import Grothe.Lower.Cert.Row14
 import Grothe.Lower.Cert.Rows
 import Grothe.Lower.Cert.SharedGate
 import Grothe.Lower.Cert.SharpEnvelope
+import Grothe.Lower.Cert.TightEnvelope
 import Grothe.Lower.Cuts
 import Grothe.Lower.Envelope
 import Grothe.Lower.EnvelopeData
@@ -3432,8 +3433,6 @@ import Grothe.LowerAnalytic.RadiusRows.Row22
 import Grothe.LowerAnalytic.Reduction
 import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.Rows
-import Grothe.LowerAnalytic.SharedGateBound
-import Grothe.LowerAnalytic.SharpEnvelopeBound
 import Grothe.LowerAnalytic.SharpRadius
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.SixthMomentData
@@ -3446,7 +3445,6 @@ import Grothe.LowerAnalytic.WickGraphData
 import Grothe.LowerAnalytic.WickSix
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
-import Grothe.LowerTarget
 import Grothe.MainResult
 import Grothe.Statement
 import Grothe.StatementBridges

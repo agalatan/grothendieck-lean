@@ -1,0 +1,13 @@
+Control of the re-runs of scripts/r4_theta6.py on the droplet (25 November 2026): the eleven pieces re-run with the room of the design (eta_h = 0),
+against tables/fin_table.json.  The program finds each allowance by bisection with relative tolerance 0.01 (R4_TOL).
+piece  1: largest relative difference of an allowance 2.19e-03 over 52 cells; factor per cell 2.872 (design run) and 2.872 (re-run); with one constant per energy 0.842 and 0.842
+piece  2: largest relative difference of an allowance 9.79e-03 over 54 cells; factor per cell 2.990 (design run) and 2.990 (re-run); with one constant per energy 0.944 and 0.944
+piece  3: largest relative difference of an allowance 9.80e-03 over 55 cells; factor per cell 3.136 (design run) and 3.106 (re-run); with one constant per energy 0.983 and 0.983
+piece  4: largest relative difference of an allowance 9.70e-03 over 56 cells; factor per cell 3.178 (design run) and 3.178 (re-run); with one constant per energy 1.114 and 1.114
+piece  5: largest relative difference of an allowance 8.46e-03 over 58 cells; factor per cell 3.260 (design run) and 3.260 (re-run); with one constant per energy 1.230 and 1.230
+piece  6: largest relative difference of an allowance 9.02e-03 over 61 cells; factor per cell 3.322 (design run) and 3.322 (re-run); with one constant per energy 1.399 and 1.399
+piece  7: largest relative difference of an allowance 8.03e-03 over 63 cells; factor per cell 3.384 (design run) and 3.384 (re-run); with one constant per energy 1.663 and 1.661
+piece  8: largest relative difference of an allowance 9.63e-03 over 64 cells; factor per cell 3.441 (design run) and 3.441 (re-run); with one constant per energy 1.967 and 1.967
+piece  9: largest relative difference of an allowance 6.52e-03 over 67 cells; factor per cell 3.536 (design run) and 3.536 (re-run); with one constant per energy 2.127 and 2.127
+piece 10: largest relative difference of an allowance 9.02e-03 over 68 cells; factor per cell 3.523 (design run) and 3.523 (re-run); with one constant per energy 2.390 and 2.390
+piece 11: largest relative difference of an allowance 8.25e-03 over 69 cells; factor per cell 3.870 (design run) and 3.870 (re-run); with one constant per energy 2.880 and 2.880

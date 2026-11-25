@@ -1702,3 +1702,30 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 | `code/one-driver-self-interaction-gemini-21d5/certify_one_driver.cpp` | 101,228 B | `d24fc17b6382fc4cbb71be4b0eef2a686a7aca7e07e3d6fdd7107f7ce46b0df7` |
 | `code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py` | 23,919 B | `98001d940c9696e474581e0f61563d81a09f850562ae58368cd15724cb4485de` |
 | `code/one-driver-self-interaction-gemini-21d5/result.json` | 7,593 B | `943d3e5bd5ea051753f82e9d8a632e96d9fffef509131fa0ccbaa0aba6631c0b` |
+
+## Mixed one-driver content (codex-a7c4, #509)
+
+The [paper proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md) derives the mixed shell case of 6.3.16 from the existing scalar envelopes. The [standard-library checker](code/mixed-driver-folding-codex-a7c4/verify.py) derives the moment constants, verifies the obstruction to the separate sixth-moment assumption, and checks joint polynomial moments. Run `python3 -IB -O research/conjecture-K/code/mixed-driver-folding-codex-a7c4/verify.py`.
+
+## Mixed Gaussian-driver blocks (codex-a7c4, #509)
+
+The [proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) and [certificate](code/mixed-driver-blocks-codex-a7c4/) cover ledger 6.3.16a. The three JSON files are the original 6.3.4 kernel-node subsets. The verifier rechecks the scalar envelope over the continuum and the covariance and moment budgets. Use `python3 -IB research/conjecture-K/code/mixed-driver-blocks-codex-a7c4/verify.py --recompute-kernels` with `python-flint` to regenerate every node enclosure with Arb as well.
+
+| file | bytes | SHA-256 |
+|---|---:|---|
+| `sources/mixed-driver-blocks-codex-a7c4/PROOF.md` | 10237 | `577c0bf0cbb7ff7244d08e3466fc80b4198f0a9762871efe5f1dc936817a6133` |
+| `code/mixed-driver-blocks-codex-a7c4/verify.py` | 8640 | `f903f41371ca29cbae8abf939e04a42e2e44a68f4ede0adb5c7ef31e6b686c8a` |
+| `code/mixed-driver-blocks-codex-a7c4/flank_kernels.json` | 9548 | `92c8928e5edc1b1d2288da3c3445f80d229cab7784f8ce161d9f32a160325387` |
+| `code/mixed-driver-blocks-codex-a7c4/peak_kernels.json` | 9551 | `1b3fc13512463d81c4f245540b99744dfab31492541834450aaed4d3d9c9e30c` |
+| `code/mixed-driver-blocks-codex-a7c4/result.json` | 351 | `c4417a59c18734890e29597e78d7efd960a25070ab37908d17107c0b71fe49a9` |
+| `code/mixed-driver-blocks-codex-a7c4/upper_kernels.json` | 9543 | `d08d5ba8842987f919ea33c7b3ed14f7e226175ffb2cc618444f9eaa396ec7dd` |
+
+## Character perturbations of a cubic core (codex-a7c4, #509)
+
+The [proof](sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md) gives the three-row sign and circle neighbourhoods of 6.3.9c. The [replay](code/mixed-driver-sign-perturbation-codex-a7c4/verify.py) checks the outward budget at each of three core constants using the derivative data of 6.3.9b.
+
+| file | bytes | SHA-256 |
+|---|---:|---|
+| `sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md` | 8315 | `da4791af2f4704b269701995fc19b23580e385b24f9c0ca83d02936c4c5a5d33` |
+| `code/mixed-driver-sign-perturbation-codex-a7c4/verify.py` | 3122 | `8d3e0d60cc98185e5b51f1dd13986f48113afa5719c041878f70766cb421e182` |
+| `code/mixed-driver-sign-perturbation-codex-a7c4/result.json` | 1257 | `63baa832b5fe3706183decd7552e1f7745d2623e3d11c1e3755bf371e972af77` |

@@ -2,24 +2,11 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The upper theorem `Grothe.UpperSix.constant_le_phase` proves
-$K_G^{\mathbb C}\le 10^{27}/711968558203721328194311213$. With `lower_target`,
-`Grothe.Statement.main_bounds_phase` gives $1.402<K_G^{\mathbb C}\le 1.404556407$.
-`Grothe/UpperSixExact/` changes the first polynomial and certifies six lower bounds on the linear
-coefficients alongside the mixed head. Subtracting their squared contributions from the Hardy estimates
-gives the tail cost. The phase channel uses 321 coefficients from exact Haagerup moments.
-Each of the five cell channels uses 251. The previous common-cutoff endpoint gives
-$K_G^{\mathbb C}\le 1.40455641$ in `Grothe.Statement.main_bounds_refined`.
+`Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) proves `1.402 < K_G^ℂ ≤ 1.404556407` (in Lean `1402/1000` and `1404556407/1000000000`), without hypotheses. The lower half is the exact endpoint `tight_lower_endpoint` (`1000000000 / 713266399`) rounded strictly downward (`TightEnvelope.rounded_lt`); the upper half is `Grothe.UpperSix.constant_le`. The upper-only module `Grothe/UpperResult.lean` has three theorems: `Grothe.UpperSix.bound` ($V(A)\le[10^{27}/711968558203721328194311213]\,C(A)$ for every finite complex matrix $A$; the factor is $1.4045564069893\ldots$), `constant_le` (the same, rounded up to nine decimals, for the constant) and `constant_lt_inv_gammaDagger` ($K_G^{\mathbb C}<1/\gamma^\dagger$). The scalar and vector suprema of the six-channel library are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
-`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses, from `Grothe/LowerAnalytic/LowerBoundTight.lean` using antiholomorphic Stein tightening on `row08` and `row09` and the certified cubic radius bound `93/100`) and the six-channel upper proof to give `1.402 < K_G^ℂ ≤ 1.40455741` (in Lean `1402/1000` and `140455741/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The certificate of the bound is `Grothe/UpperSixExact/`. `Parameters.lean` holds the polynomial of the first channel, the target slope and the caps. `Head.lean` checks the weighted head together with six lower bounds on the linear coefficients: the phase channel contributes 321 coefficients, from exact Haagerup moments, and each of the five cell channels 251. `Contour.lean` checks disk positivity and the circle mean for the first channel. `Bound.lean` subtracts the squared contributions of the linear coefficients from the Hardy estimates, which gives the tail caps, and proves `Haagerup.SixChannelExact.isBound`.
 
-The earlier scalar-row refinements in the same module remain exported: `lower_bound_sharp` gives `1.4019109461 < K_G^ℂ`, and `Grothe.Statement.lower_bound_shared_gate` gives $1.4019156097<K_G^{\mathbb C}$.
-The two active rows share the residual scale $\tau$ and all three complex gate coordinates.
-Completing their summed gate with the first coordinate fixed saves at least $1018\tau^2/10^7$ before weighting. For $\tau\le4649/20000$, a single quadratic majorizes the row08 potential on every node chord and the terminal Lipschitz ray, saving $551/10^8$ on that row. At every scale the two nonnegative intercept deductions therefore sum to at least $H=(1018/10^7)(4649/20000)^2$. For weights $1-\theta,\theta$, it suffices to check both assignments of $H$ to one intercept. A 16-cell cover then gives $\hat V\le\hat B_*-243/10^8$. The row06/row07 interval uses the constant weight $12/25$. The row12/row13 interval splits at $1758/2000$, with weights $3/5$ and $22/25$.
-The kernel checks the small-scale quadratic against all 171 row08 nodes. The decimal decoder re-encodes the proposed numerators and denominators, proves byte equality with the original row, and proves that parsing recovers every rational. The rectangle inequalities and the shared-gate checks are kernel proofs.
-The exact endpoint and proof are exposed as `shared_gate_endpoint`, `SharedGate.smallRectangle_ok`, `SharedGate.pair_ok`, `SharedGate.cell_bound` and `SharedGate.check`.
-
-The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
+The article `haagerup-article/` is frozen and has its own Lean package under `haagerup-article/anc`, which proves the article's statement; they do not quote the bounds of this repository. [Article's Lean package](../haagerup-article/anc/README.md).
 
 The earlier `upper_below_tight` proof (`Grothe/UpperTightFinal.lean`, `K_G^ℂ < 1.404599395362`) uses one Gaussian rounding and imports the shared Gaussian phase identity and Laplace modules under `Grothe/Haagerup/`. Its budgets, quadrature, and auxiliary refinements are documented below.
 
@@ -1175,421 +1162,39 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Lower bound.** `lower_target : LowerTarget` (`Grothe/MainResult.lean`) is
-`lowerTarget_of_tailNodeCaps tailNodeCaps_cert`: every Grothendieck bound is above `1402/1000 = 1.402`.
-`lowerTarget_of_tailNodeCaps` (`Grothe/LowerTarget.lean`) applies `lower_bound_tight_of_tailNodeCaps`
-(`Grothe/LowerAnalytic/LowerBoundTight.lean`): for every Grothendieck bound `K`, `1/((1 − ν)·envBTight + ν) ≤ K` with
-`ν = 47/2000` and `envBTight = 353183/500000 = 0.706366`, given the unchanged node caps `TailNodeCaps (nuHat (47/2000))`;
-the reciprocal is `1.4020007… > 1.402`. **The node caps are the only hypothesis of `lower_bound_tight_of_tailNodeCaps`**:
-the bounds Ψ_r(s_i) − 10⁻¹¹ ≤ c_i of the potentials of the 14 rows with the tail ν̂ at the nodes of their tables.
-`tailNodeCaps_cert` (`Grothe/LowerAnalytic/CapNodes.lean`) proves them ([CAPS.md](CAPS.md)), so `lower_target` has
-no hypothesis. The chain: `transfer_lower` gives `1/B ≤ K` from `TransferInputsL2 B`;
+**Lower bound.** `tight_lower_endpoint` (`Grothe/MainResult.lean`) is
+`tightEndpoint_le_of_tailNodeCaps tailNodeCaps_cert`, applied with the Grothendieck bound of the upper proof:
+$K_G^{\mathbb C}$ is at least the exact rational `TightEnvelope.endpoint = 1000000000 / 713266399`. `main_bounds` states
+that rational rounded strictly downward (`TightEnvelope.rounded_lt`; the values are in [CONSTANTS.md](CONSTANTS.md)).
+`tightEndpoint_le_of_tailNodeCaps` (`Grothe/LowerAnalytic/LowerBoundTight.lean`) applies
+`tight_lower_of_tailNodeCaps` / `lower_bound_tight_of_tailNodeCaps`: for every Grothendieck bound `K`,
+`1/((1 − ν)·B̂ + ν) ≤ K` with `ν = 47/2000` and `B̂ = envBTight = 353183/500000`, given the node caps
+`TailNodeCaps (nuHat (47/2000))`.
+**The node caps are the only hypothesis of `tight_lower_of_tailNodeCaps`**: the
+bounds Ψ_r(s_i) − 10⁻¹¹ ≤ c_i of the potentials of the 14 rows with the tail ν̂ at the nodes of their tables.
+`tailNodeCaps_cert` (`Grothe/LowerAnalytic/CapNodes.lean`) proves them ([CAPS.md](CAPS.md)), so
+`tight_lower_endpoint` has no hypothesis. The chain: `transfer_lower` gives `1/B ≤ K` from `TransferInputsL2 B`;
 `transferInputs_of_witnessCap` supplies `TransferInputsL2 B` from the scalar caps of the witness in every dimension
-`n ≥ 2` (`witnessCap_tight`, with `B = (1 − ν)·envBTight + ν = 713266399/10⁹`); `witnessCap_tight` combines the phase
-reduction `witnessCap_of_VhatOf_le`, the circular shared reduction `circularReductionHyp_of_nodeCaps` (carrying the
-circular cubic representation `Circular J A B` and the certified cubic radius bound `‖p‖ ≤ 93/100`, `norm_pres_le_93`),
-the mass row `massRow_frame`, the 12 existing row certificates (`certRow01`–`certRow07`, `certRow10`–`certRow14`), the
-two kernel-checked antiholomorphic Stein tightened rows `circularRowBound_row08` (`cap08Tight = 1675841/1250000`) and
-`circularRowBound_row09` (`cap09Tight = 6809419/5000000`), and the kernel-checked 38-cell tightened envelope
-`certEnvelopeTight` (`profile_bound_tight`, `envPure_bound`, zero new `native_decide` axioms). `TransferInputsL2 B`
-asks, for every δ > 0, for a finite measure space with an
+`n ≥ 2` (`witnessCap_tight`, with `B = (1 − ν)·envBTight + ν = 713266399/10⁹`); `witnessCap_tight`
+(`Grothe/LowerAnalytic/LowerBoundTight.lean`) combines the phase reduction `witnessCap_of_VhatOf_le`, the circular shared
+reduction `circularReductionHyp_of_nodeCaps` (using the certified cubic radius bound `‖p‖ ≤ 93/100` from
+`Grothe/LowerAnalytic/SharpRadius.lean`), the mass row `massRow_frame`, and `profile_bound_tight` (38-cell kernel-checked
+envelope `certEnvelopeTight`, `Grothe/Lower/EnvelopeTight.lean`, with `circularRowBound_row08` and
+`circularRowBound_row09` from `Grothe/LowerAnalytic/AntiRows/Row08.lean` and `Row09.lean`). `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an
 operator T on L², a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with
 Σₗ|uₗ|² ≤ 1 and Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
 
-**Sharp lower endpoint.** `Grothe.Statement.sharp_lower_endpoint` gives $K_G^{\mathbb C}\ge
-1.401910946113565640\ldots$ and `lower_bound_sharp` gives the strict decimal bound $1.4019109461<K_G^{\mathbb C}$.
-In `Grothe/Lower/Cert/SharpEnvelope.lean` the fifteen intervals cover $[0,9/10]$. On
-$[1672/2000,1675/2000]$ the weight on row 0.845 is affine in $t$, and the resulting quadratic attains its maximum
-inside the interval. `affineEnvelope_bound` includes the vertex in the rational maximum.
-`sharp_lower_bound_of_tailNodeCaps` applies the scalar cap to the same Gaussian witness.
-The chain and its arithmetic use Lean kernel reduction. The existing row and node verifications supply the input inequalities.
+**Antiholomorphic Stein calculus and `93/100` cubic radius.** `Grothe/LowerAnalytic/AntiStein.lean` proves the two
+radial antiholomorphic Stein identities (`antiStein_I`, `antiStein_II`), the Cauchy–Schwarz cone inequality
+(`radAB_sq_le_radC1_mul_radC2`) and the exact contraction second-moment identities for circular cubics in $H_{2,1}$.
+`Grothe/LowerAnalytic/RadiusRowCheck.lean`, `RadiusCheck.lean`, `RadiusRows/Row00.lean`–`Row22.lean` and
+`SharpRadius.lean` certify $\mathbb{E}|q| \le (93/100)\|q\|_2$ (`first_moment_lt_93`, `norm_pres_le_93`) by 23
+kernel-checked integer-Bernstein rows generated by `tools/gen_radius_data.py` from `data/cubic-radius/cert_N_final/`.
+`Grothe/LowerAnalytic/AntiSteinRowCheck.lean`, `AntiSteinChunk.lean`, `AntiSteinRowSound.lean` and `NodeListParse.lean`
+check and prove the soundness (`checkAntiCells_sound`) of the two tightened rows `0.835` and `0.845` generated by
+`tools/gen_antistein_rows.py` from `data/antistein-rows/`, with zero new `native_decide` axioms.
 
-`SharpEnvelope.scalar_contact` exhibits a simultaneous solution of the reduced row inequalities at
-$t=0.8366035304980132\ldots$ and $\hat V=\hat B_*$. It satisfies all fourteen inequalities with their norm
-penalties and all mass tangents. Any improvement beyond this exact endpoint requires further information from the
-Gaussian witness, stronger input rows or a different witness.
-
-**How the two halves fit.** The Gaussian witness is defined in Lean
-(`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,
-H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics
-zₐz_b z̄_c − 2δ_ac z_b − 2δ_bc zₐ, which lie in it by the complex Wick identity
-E[z̄ᵢzₐz_b z̄_c] = 4(δ_ia δ_bc + δ_ib δ_ac), `WickCubic.lean`),
-and `witness n e ν = P₁,₀ − eP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` (orthogonal projections; a weight e ≥ 0 of
-the third chaos and an identity tail ν ≥ 0 on the complement of the two chaoses). The certified
-witness is (e, ν) = (191/250, 47/2000). The **value half** of
-`TransferInputsL2` is proved for every e ≥ 0 and ν ≥ 0: for uₗ = zₗ/‖z‖,
-`norm_pairVal_witness : 1 − (1+e)/(n+1) ≤ ‖Σₗ⟨uₗ, T uₗ⟩‖`
-(from E‖z‖² = 2n, E‖z‖⁴ = 4n(n+1), E‖z‖ ≥ 2n/√(2(n+1)), the orthogonality of the two chaos
-ranges, and the positivity of the tail), and
-`transferInputs_of_witnessCap : 0 ≤ e → 0 ≤ ν → (∀ n ≥ N, WitnessCap n e ν B) → TransferInputsL2 B`,
-where `WitnessCap n e ν B` is the scalar cap ‖⟨f, T g⟩‖ ≤ B of `witness n e ν` over a.e. unimodular
-f, g.
-The **scalar-cap half** is reduced to the certificate (`WitnessCap.lean`): for unimodular f, g
-with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity `VOf_eq` is proved for every
-(e, ν); at ν = 0 it reads Re⟨f, Tg⟩ = t² − e‖P₂,₁h‖² − ‖P₁,₀k‖² + e‖P₂,₁k‖² (`VOf_zero`), and in hat
-units ε̂ = (e+ν)/(1−ν), ν̂ = ν/(1−ν) it reads Re⟨f, Tg⟩ = (1−ν)V̂ + ν with
-V̂ = t² − ε̂‖P₂,₁h‖² − ‖P₁,₀k‖² + ε̂‖P₂,₁k‖² − 2ν̂‖k‖² (`VOf_eq_hat`), so that a cap c of V̂ gives the
-scalar cap (1−ν)c + ν (`witnessCap_of_VhatOf_le`). The rows bound the hat value of every witness
-whose hat weight is their constant, ε̂ = ε (hypothesis `epsHat e ν = ε`); for the certified witness
-ε̂ = 25/31, the weight `ε` of the rows (`Grothe/Lower/RowDataTypes.lean`), and ν̂ = 47/1953.
-`witnessCap_cert` applies `profile_bound` to V̂ (after a phase), with the bound t ≤ 9/10 proved
-(`tOf_le`: P₁,₀h is a complex Gaussian, so ‖P₁,₀h‖² = Re⟨h, P₁,₀h⟩ ≤ E|P₁,₀h| = (√π/2)‖P₁,₀h‖, by the
-rotation invariance of the Gaussian measure and E√(x²+y²) = √(π/2) in `GaussianRadial.lean`) and the
-mass row (`massRow_frame`, below), whose law bound uses ‖P₂,₁k‖ ≤ ρ, which is proved
-(`normQk_le_rho`, L3): P₂,₁k ∈ H₂,₁ is a
-combination of Wick cubics (`exists_wick_repr`), its real and imaginary parts are polynomials a, b with
-`Chaos3 a` and `Circular Jstd a b` for the standard complex structure (`WickChaos.lean`), so the
-certified first-moment bound E√(a² + b²) ≤ ρ of `gaussian_moments` applies to P₂,₁k/‖P₂,₁k‖, and
-‖P₂,₁k‖² = Re⟨k, P₂,₁k⟩ ≤ E|P₂,₁k| since |k| ≤ 1. That first-moment bound rests on the sixth-moment
-inequality, which is proved for every circular cubic (all tensor facts, `Circular.tensorFacts`).
-`ReductionHyp n e ν f g` (a coupling vector v with ‖v‖² = 2 and `SharedReduction rowData V̂ t (P₂,₁h) v`)
-is proved for n ≥ 2 from the node caps of the fibre potentials of the rows with the tail ν̂ alone
-(`TailNodeCaps (nuHat ν)`; `reductionHyp_of_nodeCaps`, L4, `Grothe/LowerAnalytic/{Fibre,FibreRot,FibreHermite,FibrePotential,FibreSup,
-PotentialReg,Tensor,Pieces,KSide,FibreIntegral,RowGaussian,Frame,Reduction}.lean`): a unitary frame moves
-P₁,₀h to the visible coordinate ζ₀ = z₀/√2 (`exists_Cop_eq`); the Gaussian measure splits as
-γ_ℂ ⊗ γ_{remote} (`split2`); the fibre potential of a row with an identity tail ν is
-`pot E R ℓ β a ν s` = sup_y [∫(Ψ_ν(L + p, L − p) − ν) − yᵀMy] with p = B·(My + sa) (basis
-B = (1, |z|²−1, z²/√2, z, z(|z|²−2)/√2, z̄), M = diag(E,E,R,R,εI₂)), where
-Ψ_ν(A, B) = sup_{|f|=|g|=1} Re(f̄A) + Re(ḡB) + ν·Re(f̄g) is the pair potential `psiT` of
-`CapMajorant.lean` (Ψ_0(A, B) = |A| + |B|, `psiT_zero`). For every ν the potential
-bounds every fibre expression at a complex coupling u by Ψ_r(|u|) (`fibreExprC_le_pot`, rotation
-invariance; integrated over the remote coordinates in `fibre_integrated`). There the fibre expression
-carries the tail as ν·(Re∫conj(f₀)g₀ − 1), which is −2ν∫|k₀|² for unimodular responses; in this form its
-integrand is an affine piece of Ψ_ν, and the bound holds for all responses with |f₀|, |g₀| ≤ 1
-(`majEll_le_psiT_of_le`), so that no unimodularity of the fibre sections is needed. The row reduction
-uses it at the tail ν̂ of the witness: the tail −2ν̂‖k‖² of V̂ (`VhatOf_frame`) is the integrated tail
-of the fibre bound, because Re⟨f, g⟩ − 1 = −2‖k‖² for a unimodular pair (`re_inner_sub_one`).
-For every ν the potential is convex, even and Lipschitz with the header constant
-smax via E||z|²−1| = 2/e (`pot_convexOn`, `pot_neg`, `pot_lip`, `capsHold_pot`); ‖P₂,₁k‖² is
-bounded by the six remote projections of the fibre coefficients (the six mixed pieces B_j ⊗ K_j of
-H₂,₁(n+1), `norm_sq_starProjection_H21_le`), ‖P₁,₀k‖² splits exactly,
-and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(ε,0) (checked exactly, `rowData_gatesOK`,
-`rowGates_ok`) give the k-side inequality (`kside`); the integrated fibre bound and the k-side
-inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
-variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`rowSharedWith_frame`, `sharedReduction_frame`).
-
-**The rows.** `rowData` (`Grothe/Lower/RowData.lean`) lists 14 rows, with nominal t = 0.4, 0.6, 0.7, 0.78, 0.8,
-0.82, 0.83, 0.835, 0.845, 0.85, 0.86, 0.87, 0.885, 0.8875 (`RowData01`–`RowData14`, generated by
-`tools/gen_lower_data.py`); the row 0.8875 has its own parametrisation, with ℓ = 2. A row (`Row`,
-`RowDataTypes.lean`) holds the forcing parameters (ℓ, β), the penalty δ, the price κ, the Lipschitz constant smax,
-its cap, the even block E, the coupling b, its node table (the table of its node caps, [CAPS.md](CAPS.md)), a mesh
-and its x-cells; its odd gate block R is in `RowGateData.lean` (`rowGates`, `rowR`; exact checks in `RowGates.lean`).
-`RowFacts r` (`SpecRows.lean`) is the gate, the price κδ² ≤ δ + gatePrice and the row bound `RowBound`: a cap on
-E Ψ(σ√U) − κσ² for every admissible law (`Moments`, `SteinCut`) and every 0 ≤ σ ≤ δρ, on x-cells covering
-[0, 31/4]. Twelve rows are checked by `checkRow` (`Rows.lean`: moment rectangles and chords between Stein nodes,
-`rowFacts_of_checkRow`), the rows 0.4 and 0.6 by `checkSpecRow` (`SpecRows.lean`: the same cells with spectral
-nodes, `rowFacts_of_checkSpecRow`); `rowData_facts` (`Lower/Cert/Rows.lean`) collects their native checks
-`certRowSS`. In the shared reduction a certified row gives the scalar row
-V̂ ≤ t² − 2ℓt + C − ε̂‖Qh + (β/ε̂)v‖², C = 2β²/ε̂ + cap + capPad (`rowOf_of_shared`, `Lower/Support.lean`; `RowOf`,
-`Row.env`).
-
-**The mass row.** `massRow_frame` (`Grothe/LowerAnalytic/MassRowFrame.lean`) proves, for a unimodular pair and
-λ = 1/2, V̂ ≤ (1 − λ)t² + λ + S − ε̂‖Qh‖² with S = `massS` = 0.165606335315… (`Grothe/Lower/MassNodes.lean`), from
-three facts: ‖k‖² ≤ 1 − t² (`normSq_kOf_le`); 2ε̂‖q‖² − c‖k‖² ≤ E φ_c(|q|) for q = P₂,₁k and c = 2ν̂ + λ (`massC`),
-where φ_c(r) = ε̂²r²/c for r ≤ c/ε̂ and 2ε̂r − c beyond is the supremum of 2ε̂ry − cy² over 0 ≤ y ≤ 1
-(`twice_normSq_QkOf_le`, `phiMass_ge`); and the law bound E φ_c(|q|) − ε̂‖q‖² ≤ S (`integral_phiMass_QkOf_le`).
-At witness scale τ, the mass potential is Ψ(τv) = φ_c(τv/δ), with δ = 3/4 and v = √U.
-It is quadratic up to v = cδ/(ε̂τ) and affine beyond. On each interval of the spectral mesh,
-`massWitOK` checks a polynomial majorant against the applicable branch and the polynomial for the
-separate spectral cut. It splits the interval at the breakpoint when needed and checks the last
-half-line with a Taylor bound. `massWit_tb` integrates each checked majorant using the spectral
-Stein inequality. The 24 witnesses are shared across 21 bands covering the fourth-moment parameter
-0 ≤ x ≤ 31/4. Within each band, convexity bounds the expectation at intermediate scales by chords.
-Lean checks the witnesses and the chord cover in its kernel. Since κδ² ≤ ε̂, the row bound
-at δσ gives `mass_law_bound` for every 0 ≤ σ ≤ ρ, and ‖q‖ ≤ ρ (`normQk_le_rho`). The tangents of the mass row are scalar rows: (λm, 0, λ + S + λm²) for every m
-(`massTangent`, `rowOf_massTangent`, `Grothe/Lower/Envelope.lean`).
-
-**The envelope.** A scalar row (ℓ, β, C) is the retained-square inequality V ≤ t² − 2ℓt + C − ε‖Qh + (β/ε)v‖²
-(`RowHolds`, `Grothe/LowerAnalytic/Rows.lean`); two scalar rows mix with a weight θ ∈ [0, 1] into the row of the
-mixed parameters with C = (1−θ)Cᵢ + θCⱼ − (2/ε)θ(1−θ)(βᵢ − βⱼ)² (`RowHolds.mix`). The generator takes row pairs and weights from the
-1,800 search cells in `data/tail-rows/env_final_clean.json` and emits `envCells : List EnvCell` in
-`Grothe/Lower/EnvelopeData.lean`. Its 16 consecutive intervals cover t ∈ [0, 9/10]. Each record stores the
-rational endpoints and weight θ together with the two row indices. Row index 0 selects the mass
-tangent at the interval midpoint, and index k + 1 selects row k. For a fixed mixture the bound is a convex
-quadratic in t, so its maximum on the interval occurs at an endpoint. `certEnvelope` (`Lower/Cert/Envelope.lean`)
-reduces `checkEnvCells rowData massS envB envCells` in the kernel. The checker verifies coverage and
-`capVal ≤ envB = 7064131/10⁷` directly on the rational records. The maximum is
-0.7064129749… on [1673/2000, 1675/2000], where the rows 0.835 and 0.845 have equal weight. `profile_bound`
-(`LowerBound.lean`) applies `env_bound_of_cells` to the scalar rows of the shared reduction and to the mass
-row. For callers supplying `List String`, `checkEnv` parses the cells and `env_bound` gives the corresponding
-soundness theorem.
-
-**The node caps.** `TailNodeCaps (nuHat (47/2000))` (`RowGaussian.lean`): at every node (s, c) of every row,
-Ψ(s) − 10⁻¹¹ ≤ c for the fibre potential of the row with the tail ν̂. `tailNodeCaps_cert` assembles the caps
-`capsRowKK` of the 14 rows through the bridges `capBridgeKK` (the cap data of a row is its Stein row, by `rfl`) and
-`tailNodeCaps_nuHat`. The checker with the tail (`GrotheCapsKernel/CapCheckNu.lean`), the kinds of node
-certificates, the generated modules, their data and their cost are described in [CAPS.md](CAPS.md).
-
-* Proved: positivity certificates in integer arithmetic; the gates and the price of every row (trailing gate
-  block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their
-  analytic inputs, by completions of squares, and their polynomial pieces; the majorant sweeps of the nodes
-  (`Sweep.lean`); the moment-rectangle covers; the integration against the law of |q|²; the chords in σ; the bound
-  of every row from its Gaussian reduction; the three facts of the mass row; the mixtures of rows (the retained gate
-  square mixes by an exact identity) and the envelope. Lean also checks the endpoint and proves the Gaussian witness
-  on L²(γ_n) with its value on z/‖z‖, the orthogonality of the chaos ranges, the polarisation identity in hat
-  units, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1 (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2))
-  and the transfer inputs from the scalar caps. The single-threaded native computations cover
-  the row checks `certRowSS` (`Grothe/Lower/Cert/`) and the node-cap facts. The complete allowlist is `data/axioms/native.txt`. [Node-cap certificates](CAPS.md).
-* Inputs of `profile_bound` (all of them are derived in Lean: the shared reduction by `reductionHyp_of_nodeCaps`
-  from the node caps, which `tailNodeCaps_cert` proves, and the mass row by `massRow_frame`): ‖v‖² = 2 and
-  0 ≤ t ≤ 9/10; the mass row V̂ ≤ (1 − λ)t² + λ + S − ε̂‖Qh‖² (`hmass`); the simultaneous Gaussian reduction of the
-  rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law U = |p|²/τ²
-  satisfying the moment bounds and the Stein inputs, one gate variable X = Q_w(c₁, c_A, conj c_B) with X₁ = p, and
-  for every row its potential Ψ_r with the row inequality retaining the gate square,
-  V̂ ≤ t² − 2ℓt + 2β²/ε̂ + E Ψ_r(δ_r τ√U) − δ_r τ² − E[X*N_r X + 2Re(conj p (g_r·X))] − ε̂‖Qh + βv/ε̂‖²; the node
-  caps, convexity and Lipschitz bound of each potential (`CapsHold`; the node caps are `TailNodeCaps`, with slack
-  10⁻¹¹); the moment bounds on the law of U = |q|²; the analytic inputs of the Stein cuts for that law. The
-  transfer itself (finite partitions, phase choices on cells, L² approximation by ball-valued simple functions,
-  passage to the limit), the witness, its value ≥ 1 − (1+e)/(n+1) on u(z) = z/‖z‖, the polarisation identity, the
-  bound t ≤ √π/2 < 9/10, the identification of H₂,₁ with the circular cubic polynomials and the bound ‖P₂,₁k‖ ≤ ρ
-  from the certified first-moment bound are proved in Lean (`Grothe/Lower/Transfer*.lean`,
-  `Grothe/LowerAnalytic/{GaussianRadial,Witness,WitnessCap,WickCubic,WickChaos}.lean`).
-* The analytic inputs of the Stein cuts (`GramInputs`, extending `SteinInputs`) are, with
-  w = Γ(q, q̄)/3, c = Γ(q, q)/3, X = w − 1, r = Re(c q̄²)/U, P = E[XU] and Q = E[rU]: E w = 1; the
-  separate spectral budgets E X² ≤ (2/3)P and E r² ≤ (2/3)Q (gaps ‖U₄‖²/9 and ‖(q²)₄‖²/9 + E(|c|² − r²));
-  the energy identity 2P + Q = E|q|⁴ − 2; the covariance order Q ≤ (E|q|⁴ − 2)/3, i.e. Q ≤ P; the
-  integration by parts E[Φ(U) − φ(U)] = E[(w−1)φ(U) + r·(φ(U) − Φ(U)/U)] for piecewise-linear tests φ
-  with primitive Φ; and the two universal law budgets of genuine circular cubics q ∈ H₂,₁ that a spectral
-  node may cite (`Gram.lean`; the spectral nodes of the rows of the certificate cite only the separate
-  budgets): for the coefficient tensor t of q = Σ t_abc :Z_a Z_b Z̄_c: with
-  contractions N, H, B, W, Y and n = ‖N‖², h = ‖H‖², b = ‖B‖², y = ‖Y‖², z = tr(N Hᵀ), one has
-  P = 16n + 4h + 16b/3 + 32y, Q = 64b/3 + 32y, E X² = (80n + 20h + 16b + 96y + 32z)/9,
-  E|c|² = (128b + 96y)/9, the Gram matrices G₀ = Gram(N, Hᵀ) = [[n, z], [z, h]] and
-  G₁ = Gram(D, C₊₊) = [[h, T], [T, (n + b + 2T)/4]], T = (3y − z)/2, are positive semidefinite, b ≤ n and
-  y ≤ z; the *contraction-Gram budget* λ E X² + μ E r² ≤ a P + b₀ Q holds whenever rational node data
-  (a, b₀, two PSD 2×2 matrices M₀, M₁, α, β ≥ 0) satisfy coefficientwise in (n, h, b, y, z)
-  aP + b₀Q − λ E X² − μ E|c|² = tr(M₀G₀) + tr(M₁G₁) + α(n − b) + β(z − y) + Σ eⱼvⱼ with eⱼ ≥ 0
-  (`gramCert`; simplest instance E X² + E r²/10 ≤ 34P/45 − Q/18), and the *coupled family*
-  E X² ≤ a_s P − b_s Q, a_s = (s + 5)/9, b_s = (s + 1/2 − 3/s)/9, s ≥ 2, which is the instance
-  λ = 9s, M₀ = (64, −16s, 4s²), α = 16(s² − 4) (`coupled_of_gram`).
-  From them `steinCut_of_inputs` proves the summed cuts (the budgets added), the spectral cuts
-  E[f²/λ + g²/μ + Φ − φ + (ν/3 − 2t)(U² − 2)] ≥ 0, f = −(φ+β)/2 + (2t + λ/3)U,
-  g = −(φ − Φ/U)/2 + (t + μ/3 − ν/2)U, λ, μ > 0, ν ≥ 0, which equal a sum of squares plus
-  λ((2/3)P − E X²) + μ((2/3)Q − E r²) + ν(χ/3 − Q), and the general spectral cuts of a node citing a
-  budget, with the coefficients of U shifted by af = a/2 − λ/3 and ag = μ/3 − b₀/2 (or by the sums
-  Σ ηⱼ(sⱼ − 1)/18, Σ ηⱼ(sⱼ + 1/2 − 3/sⱼ)/18 of the coupled family), whose expectation is the squares plus
-  aP + b₀Q − λ E X² − μ E r². The inputs of `SteinInputs` are proved in Lean for the Gaussian law: for
-  real polynomials a, b in the third Gaussian chaos with E a² = E b² = ½ and E ab = 0, the law of
-  U = a² + b² under the standard Gaussian measure satisfies them
-  (`Grothe.LowerAnalytic.gaussian_steinInputs`; the budgets from Ornstein–Uhlenbeck ladders in
-  `SpectralBudget.lean`, the covariance order `covariance_order` in `Covariance.lean`, where
-  P − Q = Σ Var(Γ(∂ᵢa, ∂ₖb) − Γ(∂ₖa, ∂ᵢb)) + ½‖T − Tᵀ‖² for the matrix T = Σᵢ ∂ᵢ∇²a ⊗ ∂ᵢ∇²b). The
-  contraction-Gram budgets are derived in `GramBudget.lean` (`gaussian_gramInputs`) for every
-  circular cubic: with the complex coefficient tensor t = 3P₊P₊P₋(f + ig) of
-  the real kernels f = ∂³a/6, g = ∂³b/6 (P± = (1 ∓ iJ)/2 the projections of the complex structure J)
-  and its contractions defined in Lean, the **proved** part is the spectral layer E X² = (4u₂ + u₄)/9,
-  P = (2u₂ + u₄)/3, E|c|² = (4v₂ + v₄)/9, Q = (2v₂ + v₄)/3 for the chaos energies u₂ = ‖U₂‖²,
-  u₄ = ‖U₄‖² of U − 1 and v₂, v₄ of q² (orthogonality of the chaos projections of `Influence.lean`),
-  r² ≤ |c|², the Cauchy–Schwarz bound z² ≤ nh (G₀ ⪰ 0), the soundness of an accepted certificate
-  on any scalars with these properties (`gram_budget_of_scalars`), and, in `GramTensor.lean` by
-  finite sum manipulations for every tensor symmetric in its first two slots, the inequalities
-  b ≤ n (Schatten–Hölder: b = Re Σ M_x M_{σx} ≤ ‖M‖² = n for the Gram matrix M of the slices
-  t_{a·d}), y ≤ z (z = ‖W‖², y = ‖Sym W‖² = (z + 2T)/3 with T = Re⟨W^{(23)}, W⟩ ≤ z) and G₁ ⪰ 0
-  (G₁ = Gram(D, C₊₊) with ‖D‖² = h, ⟨D, C₊₊⟩ = T, ‖C₊₊‖² = (n + b + 2T)/4, 2T = 3y − z);
-  and, in `GramSpectral.lean`, the second-chaos identities u₂ = 16n + 4h + 16z and v₂ = 32b
-  (`Circular.specU2_eq`, `Circular.specV2_eq`: a complex charge calculus on the slots of t — the
-  kernel τ = f + ig of a circular pair has δτ = iτ, so τ = Sym t with t = 3P₊P₊P₋τ, and every
-  contraction of two slots whose J-eigenvalues do not cancel vanishes — reduces the second
-  derivatives ∂²Π₂|q|² = 36 Re Σ τ τ̄ and ∂²Π₂q² = 36 Σ τ τ to (H + 2N)/9 and 2B/9, and the
-  Ornstein–Uhlenbeck ladder E X² = ½ Σ (∂²X)² gives the energies) and the fourth-chaos identities
-  u₄ = 16n + 4h + 16b + 96y − 32z and v₄ = 96y (`Circular.specU4_eq`, `Circular.specV4_eq`:
-  ∂⁴Π₄ = 108(Sym(f⋆g) + Sym(g⋆f)), the ladder E X² = (1/24) Σ (∂⁴X)², the sector expansions
-  τ⋆τ = (W + W^{(34)} + W^{swP} + W^{swP(34)})/9 and τ⋆τ̄ = (D + 4 C^σ)/9, and a charge count of the
-  pairings of permuted W, D, C: three of twelve survive for v₄, ten of sixty for u₄, each a Gram
-  identity of `GramTensor.lean` up to reindexing); so **every tensor fact of the contraction-Gram
-  budget is proved** and `gaussian_gramInputs` has no hypothesis beyond circularity;
-  `tools/check_gram_facts.py` checks the identities numerically with the exact Lean definitions.
-  `Grothe.LowerAnalytic.sharedReduction_of_gaussian` packages this law in
-  `SharedReduction`: it discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 44 ≤ 2 + (31/4)²
-  (`Circular.gaussian_fourth_moment_le_44`, using the circular contraction identities),
-  E√U < 93/100 ≤ ρ (derived via `first_moment_lt_93` in `SharpRadius.lean`) and all Stein inputs (including the spectral budgets and the covariance order). The
-  residual q = a + ib is required to be *circular* (`Circular J a b`: J a complex structure on ℝ^d
-  and D_J a = −b, D_J b = a for the rotation generator D_J = Σ Jⱼᵢ xⱼ∂ᵢ, i.e. D_J q = iq, the
-  bidegree (2,1) condition); E b² = E a² and E ab = 0 follow. The sixth-moment bound
-  E U³ ≤ 9m − 12 + C₆(m − 2)^{3/2} is **false** for general real third-chaos pairs with
-  E a² = E b² = ½, E ab = 0 (a = He₃(x₀)/√12, b = He₃(x₁)/√12 gives m = 47, E U³ = 13506 >
-  12622.55); for circular q it is derived in `Circular.lean` (`sixth_moment_circular`,
-  `Circular.gaussian_sixth`) from the scalar certificate `cumulant_bound`: the real cumulants of
-  a are converted with E a⁴ = (3/8) E U², E a⁶ = (5/16) E U³ (from E D_J P = 0), E a² = 6‖f‖²
-  for the kernel f = ∂³a/6, and the Cauchy–Schwarz inputs ‖SF‖² ≤ √s √T₄, ⟨FG, SF⟩ ≤ √V ‖SF‖ are
-  proved. All thirteen tensor facts `TensorFacts` of the paper proof are proved
-  (`Circular.tensorFacts`): the Wick identity κ₄ = 1296(s + 3h/2) for every cubic chaos
-  (`Chaos3.wick4`), the Wick identity
-  κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖² for every cubic chaos
-  (`Chaos3.wick6`, `WickSix.lean`: E F², E F⁴, E F⁶ are sums over closed cubic multigraphs,
-  obtained by Gaussian integration by parts one edge at a time — `gval_step_cert` in
-  `WickGraph.lean`, k·val(G) = Σ_t val(G + v₀t) with k = 3 − deg v₀ the chaos order of ∂_{w}F —
-  along 69 + 15 + 3 certified steps on canonical partial graphs, `WickGraphData.lean`; the
-  disconnected graphs factor and cancel in κ₆, and the five contractions expand through
-  S = (C₀ + C₁ + C₂)/3 into 43 multigraph sums, each matched to one of the six connected cubic
-  multigraphs on six vertices by a `decide`-checked relabelling; generated by
-  `tools/gen_wick_graphs.py`, `tools/gen_wick_six.py`), and, in `CircularTensor.lean`, ‖G_anti‖² ≤ s/2 (`tenGa_le_half`), the charge-two block tt = h/6 − ‖M‖²/24
-  ≤ h/6 (`tenTT_le_sixth`), the cubic trace V = tr G³ ≤ (s + 2η)√((s − η)/2), η = ‖G_anti‖²
-  (`cubicTrace_circular`: G = G₀ + G₂ with G₀ commuting with J, the mixed traces vanish and
-  2‖G₀u‖² ≤ ‖G₀‖²‖u‖² is Bessel's inequality for the pair u, Ju), the two sector quantities
-  A₀ = ‖C₀ − θS₀‖² ≥ 0, A₂ = ‖C₂ − θS₂‖² ≥ 0 (`A0nn_circular`, `A2nn_circular`), and the two
-  sums of squares h ≤ 37s/39 and 27h − 5s + 8η ≤ 216 tt (`sos1_circular`, `sos2_circular`: with
-  B = (J₃f) ⋆ f the charge-one relation K₁₂C = C − (J₁ + J₂)B identifies the real avatars
-  x₁ = (1 + K₁₃)(C₀ − J₁B₀)/2 and y = (1 − K₁₂)C₀ of the complex sectors (+,−,−,+) and (+,+,−,−);
-  37s − 39h = (45/8)‖(1 − H)(1 − V)x₁‖² + 6‖sw24 y − (1 + H)(1 + V)x₁/4‖² + 12‖C₂ − VC₂‖² and
-  216tt − 27h + 5s − 8η = 3‖(1 − H)x₁‖² + ‖G₀ − 3JM₀‖²/2, H, V the slot swaps (14), (23), the
-  entries reduced to ‖C₀‖², ⟨C₀, K₁₂C₀⟩, ‖C₂‖², η and the tetrahedral Q(f,f,f,f)), and the
-  block trace T₄ = ‖S²‖² ≤ h²/2 + 8h·tt − 48tt² (`trace4_circular`: S acts on pairs with the
-  charge blocks S₀₀, S₀₂, S₂₀, S₂₂ of norms² 4tt, (h − 6tt)/2, (h − 6tt)/2, 2tt, S₂₂ commutes
-  with the complex structure J ⊗ 1 since S has no charge four, and Hilbert–Schmidt
-  submultiplicativity gains a factor 2 on the J-linear products), the block trace
-  T₃ = ⟨S², S⟩ ≤ √tt (9h/2 − 17tt) (`trace3_circular`, the same block walks), the coupled G test
-  Q = ⟨vec G, S vec G⟩ ≤ (2s − η)√tt + √(2η(s − η)(h − 6tt)) (`coupled_circular`: vec G splits
-  into its J ⊗ J charge parts G₀, G_anti of norms² s − η, η, and S acts blockwise) and the
-  charge split ‖U‖² = ⟨S², C⟩ ≤ θT₃ + √(A₀(3h²/8 + h·tt/2 + 3tt²/2)) + √(A₂(9h·tt − 54tt²))
-  (`chargeSplit_circular`: C − θS has no charge four, so Cauchy–Schwarz in the two charge
-  sectors against the blocks of S²), all through a real charge calculus (slot operators of J,
-  the derivation δ with δf = −g, δg = f for the kernels of a, b, and the tetrahedral
-  contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is.
-  `reductionHyp_of_nodeCaps` and `circularReductionHyp_of_nodeCaps` (`Reduction.lean`) construct the gate variable
-  and per-row `RowShared` / `CircularSharedReduction` reductions from the node caps (with `norm_pres_le_93` supplying
-  `τ ≤ 93/100`). The mass row uses the
-  proved bound `normQk_le_rho` in `WitnessCap.lean`. The certified cubic radius upper bound
-  E|q| ≤ (93/100) ‖q‖₂ (strict for q ≠ 0) is formalized in `AntiStein.lean` (the two radial forms of the
-  antiholomorphic Stein identity `antiStein_I`, `antiStein_II`, the Cauchy–Schwarz cone
-  `radAB_sq_le_radC1_mul_radC2`, and the exact contraction variances `Circular.gE_radC1_sub_two_sq`,
-  `Circular.gE_radC2_sub_one_sq`, `Circular.gE_radD_sub_one_sq`, `Circular.fourth_moment_antistein`),
-  `RadiusRowCheck.lean` (pure-integer Bernstein/de Casteljau row checker), `RadiusCheck.lean`
-  (`radiusRow_sound`), `RadiusRows/Row00.lean`–`Row22.lean` (all 23 rows generated by
-  `tools/gen_radius_data.py` and verified by `decide +kernel` with zero `native_decide` axioms),
-  and `SharpRadius.lean` (`first_moment_lt_93`, `first_moment_le_93`), wired into `Bridge.lean`
-  (`gaussian_moments`, superseding the older three-moment first-moment certificate) and `WitnessCap.lean`
-  (`integral_norm_le_93_of_mem_H21`, `integral_norm_le_93_mul_norm_of_mem_H21`, `norm_starProjection_H21_le_93`,
-  `normQk_le_93`). The same antiholomorphic Stein calculus is lifted to convex row potentials `Ψ(σ√U)` in
-  `AntiSteinRowCheck.lean`, `AntiSteinRowSound.lean` (`checkAntiCells_sound`), `NodeListParse.lean` (pure-kernel
-  evaluation of `Row.nodeList` via `String.ofList`), and the generated shards `AntiRows/Row08*` and `AntiRows/Row09*`
-  (`tools/gen_antistein_rows.py`, verified by `decide +kernel` with zero `native_decide` axioms), tightening rows
-  `0.835` and `0.845` to `cap08Tight = 1675841/1250000` and `cap09Tight = 6809419/5000000`; paired with the
-  kernel-checked 38-cell envelope `Grothe/Lower/EnvelopePure.lean` + `EnvelopeTight.lean` (`certEnvelopeTight`,
-  `envBTight = 353183/500000`), `LowerBoundTight.lean` proves `K_G^ℂ > 1.402` with zero node-cap rebuild.
-* Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma (`ThreeMoment.lean`), the
-  scalar sixth-moment (`SixthMoment.lean`) and earlier first-moment (`FirstMoment.lean`) certificates (superseded in
-  `Bridge.lean` by `first_moment_lt_93`), and the exact form of
-  the fluctuation bound (`Influence.lean`): for a circular cubic chaos q = a + ib the slack in
-  Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3 equals (2‖Π₂,₂|q|²‖² + ‖Π₃,₁q²‖²)/18, with the quartic identity
-  3κ = 4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² + 2‖Π₂,₂|q|²‖² + ‖Π₃,₁q²‖², the influence inequality
-  4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
-  along any direction by the influence of that direction.
-
-Separate Conjecture K research in
-`research/conjecture-K/sources/progress-2026-11-15-codex-a7c4/` strengthens
-common-response energy constraints and gives an exactly checked conditional
-joint-sector budget. The matrix certificates in
-`research/conjecture-K/code/directional-matrix-codex-a7c4/` cover every direction
-at the peak research profile when |w|≥5/4 or sqrt(|A|²+|B|²)≤1/512, as well as
-a directional exterior. They also give an unconditional restricted-family
-retained joint error below 19/10⁶ for r_B=-2r_A under the monograph's energy caps,
-at the explicit remote trial ξ₀=−.6(r_A+.5053r_B), with visible coefficient c=0.
-These paper/interval results were independently re-derived and replayed in
-review #444; they are not
-premises of the Lean lower bound. Full (P) and the odd averaged premise
-remain open, and the proved lower endpoint is unchanged.
-
-The scalar Edgeworth argument in `research/conjecture-K/code/edgeworth-codex-a7c4/`
-also gives a dimension-free same-variance deficit `D(q)>=(7/50)delta` for remote
-cubics at the peak profile with `0<u<=.0463` and `chi=delta/u²<=10^-10`.
-It also gives `D(q)>=(11/100)delta` for every cubic shape at `u<=10^-5`.
-On the central-energy small-chi class, the reviewed tilted A-shell bound gives
-`LambdaHat(q+(T-1)r)<=S-.019delta` for arbitrary shared remote linear r.
-With no A/B shells, the reviewed remote-core odd cost separately gives
-`Lambda(q+O)<=S-.14delta-(1988/47275)||O||²` on the small-chi class,
-with arbitrary sharing and odd amplitude.
-Its remainder constant is explicit and its rational arithmetic is checked;
-the analytic proof was re-derived by claude-b9ee in the review of #445. This small
-neighborhood does not cover odd sectors over A/B cores and does not change the Lean endpoint.
-
-**Response penalties (task #432).** `Lower/ResponsePenalty.lean` proves the
-Hilbert-space square completions, the penalty under an explicit weighted Gram
-budget, and its composition with a row using complementary square allocations.
-`LowerAnalytic.VOf_frame_with_penalty` connects that composition to the actual
-witness-frame identity. The h-only allocation leaves the first-chaos square to
-the retained dual; `peak_h_only_region` checks its scalar cost above `10⁻⁴` for
-`t ≥ 0.8456` and weighted sector energy `D ≥ 0.04` at the research peak profile.
-The Gaussian weighted Gram instantiation and a certificate that tracks `D`
-remain unformalized (the rows and the envelope of the lower bound do not track
-it); these lemmas do not strengthen `main_bounds`.
-
-## Module map (selected groups)
-
-**`Grothe/UpperChaos/`: the upper bound for the concrete rounding**
-
-| modules | content |
-|---|---|
-| `ComplexMoments`, `ComplexHermite`, `Mehler`, `Completeness`, `HermiteComplete`, `HermiteBasis`, `Charge` | one complex coordinate: E[zᵃz̄ᵇ] = δ a!, Hermite polynomials and orthogonality, Mehler for polynomials, density of polynomials in L²(stdGaussian d), Hilbert basis and Parseval, charge selection |
-| `ProductComplete`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: tensor completeness from one-coordinate completeness by Fubini, Gaussian mixing law by characteristic functions, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
-| `Realise2`, `Structural` | two-channel rounding with tensor-realised preprocessors (`rounding_diskKernel`); the structural fields (validity, summability, parity) as theorems |
-| `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
-| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one`: \|φ\| < 1; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field; used by `upper_below_tight` |
-| `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
-| `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
-| `Gauss2`, `Sym2R`, `SchurTest`, `LstarL`, `SchurKernel`, `SchurBound`, `SchurIntegrability`, `SchurMain` | Gaussian integrals, weighted Schur test and kernel factorization; the Gaussian Schur bound for every measurable disk-valued response pair under its positive-definiteness gates (`norm_HholPair_sq_le`) |
-
-The pair interface needs measurability and the pointwise disk bound on both
-responses. Holomorphy uses the same open covariance-decay region (`KerPos`)
-and does not need charge or conjugation symmetry. `hardy_of_pair_inputs`
-additionally requires summable real odd coefficients, their identification
-with the pair kernel for real correlations, and the pair's circle mean bound
-at radius `4149/4000`. It concludes the existing partial weighted-square
-inequality with budget `7/4`. These proofs introduce no numerical axioms.
-The incumbent `differentiableOn_Hhol_Rt` and `hardy_of_inputs` retain their
-statements and specialize the pair results. The Gaussian density/covariance
-identification and the contour inputs are hypotheses of the pair interface;
-for the incumbent rounding they are proved (`HardyReal.hreal_GT` and the checks below).
-`SchurMain.norm_HholPair_sq_le` proves the Gaussian Schur bound for the same
-response pairs under `j > 0`, `Z ≻ 0` and `T ≻ 0`. These structural theorems
-alone do not discharge `hardy` for a changed rounding or improve an endpoint.
-The region and circle inputs are checked in Lean with the precompiled interval
-evaluator `GrotheKernel.HardyArc` (interval soundness `HardyArcSound`, circle
-charts `HardyArcCircle`, data `HardyArcData`): `hardy_region_check` proves
-`KerPos` on the disc of radius `51863/50000` (`HardyArcRegion`), and
-`HardyGaussianCheck.charts_checked` bounds the Gaussian-amplitude expression by
-`(513 + 297cos²θ − 204cos⁴θ)/500` on all four closed halves of the two charts of the circle
-`|t| = 4149/4000` (soundness `HardyGaussianSound`). `HardyGaussian.hmean`
-integrates the squared correlation `HardyArcCover.gF` over both charts, and
-`HardyGaussian.hardy_of_real` (budget `117/100`) retains coefficient summability
-(`hs`) and the real identification (`hreal`) as explicit inputs;
-`HardyReal.lean` supplies both for G_T, giving `HardyReal.hardy_GT_gaussian`.
-
-**`Grothe/Lower/`: the rows, the mass row and the envelope**
-
-| modules | content |
-|---|---|
-| `RowDataTypes`, `RowData01`–`RowData14`, `RowData`, `RowGateData`, `RowGates` | the weight `ε = 25/31`, the slack `capPad`, the row type; the 14 rows and their `R`-gates (generated by `tools/gen_lower_data.py`) with the exact gate checks |
-| `Law`, `Moment`, `Stein`, `Cuts`, `Gram`, `Poly`, `Basic` | the law of the normalised residual (`Moments`, `SteinCut`); the summed, spectral and budget-shifted Stein cuts, their test functions and polynomial pieces; the law budgets a spectral node may cite (`GBud`); exact polynomial arithmetic and Bernstein positivity |
-| `Sweep`, `Rows`, `Mixed`, `SpecRows` | the majorant sweeps of a capped convex potential; the row checker with Stein nodes (`checkRow`, `rowBound_of_check`); spectral witnesses (`SWit`, `checkSWit`); the row checker with spectral nodes (`checkSpecCells`, `checkSpecRow`) and `RowFacts` |
-| `Gate`, `RowReduction`, `Support` | the retained gate square and its completion with a fixed first coordinate; the per-row Gaussian reduction (`VhatOf_frame`); `SharedReduction` and `rowOf_of_shared` |
-| `MassRow`, `MassNodes`, `MassPotential` | the mass-row parameters, the explicit potential (`phiMass`) and its convexity |
-| `MassWitnessData`, `MassWitness`, `MassCover`, `MassFacts` | the shared spectral witnesses, the polynomial majorants, the cover by chords and the integrated bound `mass_law_bound` |
-| `Envelope`, `EnvelopeData` | scalar rows and their mixtures, the typed cell checker `checkEnvCells` and its soundness theorem `env_bound_of_cells`, generated `envCells` and `envB` |
-| `Cert/Row01`–`Cert/Row14`, `Cert/Rows` | native row checks `certRowSS` and their assembly `rowData_facts` |
-| `Cert/MassWitnesses`, `Cert/MassRow`, `Cert/Envelope` | kernel checks of the spectral witnesses and their chord cover (`certMassRow`), and of the final envelope (`certEnvelope`) |
-| `TransferFinite`, `TransferL2`, `Transfer` | the transfer from the Gaussian witness to finite matrices (`transfer_lower`) |
-
-**`Grothe/Lower/SpecRows`: rows with spectral nodes.** The row checker of `Rows.lean` with spectral witnesses
-(`SWit`, checked by `checkSWit` against the row's node table) and the zero node in place of Stein nodes; chords and
-prices as in `checkRow`. `rowBound_of_specCells` turns `checkSpecCells` into `RowBound`.
-`checkSpecRow` adds the gate and the price of `checkRow`, and `RowFacts` (gate, price,
-`RowBound`) follows from either check (`rowFacts_of_checkRow`, `rowFacts_of_checkSpecRow`). Cells are strings
-`xlo#xhi#rects#nodes`, a node `0` or a witness string. A witness may cite a contraction-Gram, coupled or joint
-budget (`GBud`; the joint kind is checked by `jointCert` and connected to the actual cubic by
-`Circular.joint_sixth`, `JointContractions.lean`, and is accepted only in cells with `xhi ≤ x_*`); the witnesses of
-the rows 0.4 and 0.6 and of the mass row cite only the separate budgets.
-
-**`Grothe/LowerAnalytic/Cap*`: the node caps** ([CAPS.md](CAPS.md))
-
-| modules | content |
-|---|---|
-| `CapCoord`, `CapLinAlgDefs`, `CapLinAlg`, `CapMajorant`, `CapPolar` | real coordinates of the fibre variable; exact quadratic-form checks (Loewner bound, LDLᵀ); the pointwise majorant of the pair potential with the tail (`anchored_pair_nu`, `psiT_le_majPoly`); polar cells of the complex Gaussian |
-| `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesData`, `CapTablesMk`, `CapCheckSound`, `CapPieceDefs`, `CapPiece`, `CapNodeDefs` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids; verified interval tables (`tablesOK_mk`); the checker without a tail (`GrotheCapsKernel/CapCheck.lean`) and its soundness, whose integration and `LDLᵀ` steps hold for any enclosed matrix (`Jpot_le_of_qfN_of_le`) |
-| `CapCheckNuSound`, `CapGridTNu`, `CapCheckNuMat`, `CapPieceNu`, `CapNodeNuDefs`, `CapNodeNu` | the checker with the tail (`GrotheCapsKernel/CapCheckNu.lean`): the cell check gives the majorant (`psiT_le_majPoly_of_cellOKNu`, `gridOKNu_mkGridNu`), the exact cell decomposition (`TintNu_grid`), its enclosure by the kernel matrix (`bounds_matINu`), the integrated majorant (`Jpot_le_qfNu`), the node and piece checks (`pot_le_of_nodeOKNu`, `Jpot_le_of_nodeOKcNu`) |
-| `CapSymmetry`, `CapCoverDefs`, `CapCover`, `CapCoverFast`, `CapConstrDefs`, `CapConstr`, `CapPieceRange`, `CapPieceNodes` | the symmetries S_c, S_- of the fibre integral; coverage of the fibre space by constrained pieces (`capCover_sound`, `capCoverFastOK_eq`); the S-lemma bound on a piece (`Jpot_le_of_pieceOKc_of_le`) |
-| `CapChords`, `CapRangeDefs`, `CapRangeNuDefs`, `CapRowsNu` | the computable checks of the native facts (`rangeOKNu`, `pieceRangeOKNu`, `chordOKLow`) and their soundness up to `TailNodeCaps` (`nodeCapNu_of_rangeOK`, `nodeCapNu_of_ranges`, `nodeCaps_of_vertexCapsNu`, `tailNodeCaps_nuHat`) |
-| `CapCommon`, `CapCommonFacts`, `CapRow00/`–`CapRow13/` (`Data`, `AnchorRangeJJ`, `Assembly`, `Bridge`), `CapPieces/` (`D`, `C`, `R`, `N` per localised node), `CapNodes` | generated by `tools/gen_tail_caps.py` from `data/tail-caps/`: the tail `capNu = 47/1953` and the grid; per row its cap data, range facts, assembly `capsRowKK` and bridge to its Stein row; per localised node its pieces, coverage fact, piece facts and node theorem; `tailNodeCaps_cert` |
+**Auxiliary scalar-envelope and shared-gate building blocks.** In `Grothe/Lower/Cert/SharpEnvelope.lean` fifteen intervals cover $[0,9/10]$ for the original 14 scalar rows (`SharpEnvelope.check`, `exact_scalar_cap`). `Grothe/Lower/Cert/SharedGate.lean` and `Grothe/Lower/SharedGateSaving.lean` prove the kernel-checked common-gate Schur saving (`SharedGate.smallRectangle_ok`, `SharedGate.pair_ok`, `SharedGate.cell_bound`, `SharedGate.check`). `Grothe/LowerAnalytic/LowerBound.lean` also keeps `profile_bound` and `lower_bound_of_tailNodeCaps` for `envB = 7064131/10⁷`; `main_bounds` uses `tight_lower_endpoint` instead.
 
 The complete registry of native facts is `data/axioms/native.txt`; the default report
 is `scratch/Axioms.lean`, with its required declarations in
@@ -1599,14 +1204,13 @@ the merged tree before a pull request lands.
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
-complete list; the facts fall into the following groups. The six-channel article upper proof
+complete list; the facts fall into the following groups. The six-channel upper proof
 uses the `Haagerup.Data` cell-witness and overlap-table facts (`Haagerup.Data.tcell_rows_ok`,
-`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`), while its weighted head convolution (`Haagerup.head_sum_ok`),
-its six channel disk and circle checks (`Haagerup.reg0_ok`–`reg5_ok`, `Haagerup.mean0_ok`–`mean5_ok`),
-and its rational tail comparisons reduce directly in the kernel. The sharpened root endpoint
-(`Grothe/UpperSixExact/`) reuses the kernel-checked contours for channels 1–5 and adds
-`Haagerup.SixChannelExact.head_and_floors_ok`, `region_ok`, and `mean_ok` (the combined upper-six
-allowlist is `data/axioms/modes/upper-six.native.txt`).
+`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`) and, from its certificate `Grothe/UpperSixExact/`, the weighted head with
+the linear floors and the contour checks of the first channel (`Haagerup.SixChannelExact.head_and_floors_ok`,
+`region_ok`, `mean_ok`). The disk and circle checks of the other five channels (`Haagerup.reg1_ok`–`reg5_ok`,
+`Haagerup.mean1_ok`–`mean5_ok`) and the rational tail comparisons reduce directly in the kernel. The upper-six
+allowlist is `data/axioms/modes/upper-six.native.txt`.
 The single-channel upper proof uses `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.Upper.improved_high_mass_native` (the two complete high-band masses
