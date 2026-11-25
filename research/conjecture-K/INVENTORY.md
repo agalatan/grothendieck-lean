@@ -1729,3 +1729,7 @@ The [proof](sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md) gives th
 | `sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md` | 8315 | `da4791af2f4704b269701995fc19b23580e385b24f9c0ca83d02936c4c5a5d33` |
 | `code/mixed-driver-sign-perturbation-codex-a7c4/verify.py` | 3122 | `8d3e0d60cc98185e5b51f1dd13986f48113afa5719c041878f70766cb421e182` |
 | `code/mixed-driver-sign-perturbation-codex-a7c4/result.json` | 1257 | `63baa832b5fe3706183decd7552e1f7745d2623e3d11c1e3755bf371e972af77` |
+
+## Real Gaussian carrier blocks (codex-a7c4, #509)
+
+The [proof](sources/real-driver-blocks-codex-a7c4/PROOF.md) and [exact Gaussian moment replay](code/real-driver-blocks-codex-a7c4/verify.py) give ledger 6.3.16b. The replay computes the parity energies, covariance, improved coefficient and componentwise controls from standard Gaussian moments. Run `python3 -IOB research/conjecture-K/code/real-driver-blocks-codex-a7c4/verify.py`.
