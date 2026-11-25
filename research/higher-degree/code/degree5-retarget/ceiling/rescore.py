@@ -14,6 +14,8 @@ for fn in sys.argv[1:]:
         def pmax(x):
             sc = [sum(xi * ci for xi, ci in zip(x, r[1:K + 3])) for r in pool]; i = max(range(len(sc)), key=sc.__getitem__); return sc[i], i
         if 'U_at_visit' not in p: p['U_at_visit'] = p['U']; p['best_at_visit'] = dict(lam=p['best']['lam'], nu=p['best']['nu'])
+        if 'best_at_visit' not in p:            # records migrated by the first version: the incumbent is the logged game whose U is U_at_visit
+            e0 = min(p['log'], key=lambda e: (abs(e['U'] - p['U_at_visit']), e['it'])); p['best_at_visit'] = dict(lam=[1.0] + e0['x'][:K], nu=e0['x'][K], iteration=e0['it'])
         # every logged candidate (its game x and the largest oracle payoff U found when it was visited), scored on the final pool
         cands = []
         for e in p['log']:

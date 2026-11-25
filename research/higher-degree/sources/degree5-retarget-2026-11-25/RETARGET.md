@@ -52,7 +52,8 @@ to quote as a ceiling; exact given the row constants, **C**, author only). The m
 0.7128677, 1/N = 1.402785 (ledger 1.10, **N**; 0.7128679 in §2.1), so the law layer and the interval covers cost
 2.5·10⁻⁵ of value at the binding rows. That no certificate for this game, of any design, proves more than 1.402785
 rests on the numerical pair behind that norm (**N**), not on the exact envelope.
-**1.403 is out of reach of the capped game** by 1.35·10⁻⁴ of value on these rows (1.09·10⁻⁴ in the model).
+**1.403 is out of reach of this design of the capped game** by 1.35·10⁻⁴ of value on these rows (exact), and of the
+game itself by 1.09·10⁻⁴ if the numerical pair behind its model norm is accepted (**N**).
 
 ### 1.2 The rooms of D\* at the targets 1.4021, 1.4023, 1.4025, 1.4027
 
@@ -233,8 +234,8 @@ this norm to 2·10⁻⁶ (ledger 4.2; §2.3 below).
   more than 1.403646** in this model (ledger 1.2 has 1.403648 by Richardson extrapolation; `docs/overview.tex` has
   the [P, C] ceiling 1.4036705 for degree ≤ 5). With an identity tail LB = 0.7123823: **1.403741** (ledger 1.3:
   1.40374; the best tail game saved has 1.403739). Both bounds have a short certificate in the stored score model:
-  positive weights on three pool rows (four with a tail) cancel the free coefficients and give the constants
-  0.7124304399 and 0.7123823507 for every game, with no bounds on its coefficients (codex-a7c4, review of PR #711;
+  positive weights on three pool rows (four with a tail) cancel the free coefficients and give constants
+  above 0.7124304398 and 0.7123823506 for every game, with no bounds on its coefficients (codex-a7c4, review of PR #711;
   `CODE/ceiling/pool_certificate.py`, exact Fractions on the stored decimals). What stays numerical is that the stored
   coefficients are those of unimodular pairs. The tail buys 4.7·10⁻⁵ of value at the optimum and at most 2.5·10⁻⁵ for ε ≤ 0.84 (below 10⁻⁵ from 0.78 to 0.84).
 - **Sensitivity.** From ε = 0.78 to 0.82 the value falls by 7.6·10⁻⁵ per 0.01 of ε (1.5·10⁻⁴ in K), from 0.82 to 0.85
@@ -274,10 +275,11 @@ certificate. With ρ₀ = 2287/2500 (K 3.7, **P + C**): λ₁ ≤ 0.85189 at 1.4
 | 0.83 | 0.2241 | 0.694593 | 0.713853 | none | none | none |
 | 0.85 | 0.2846 | 0.711330 | 0.741662 | none | none | none |
 
-**From ε = 0.83 on, the direct bound is above every target at t = 0**: those games have no hypothesis-free start, and
-none of the proofs of ledger 4.18 (a)–(f), 4.46 applies to them as written (all are for the capped game; (a) is the
-only one stated for every game). Their small t needs either law rows with a sector hypothesis from t = 0, or a
-sharper direct treatment of the clipped quintic payoff. Item (c) estimates such a law row at t = 0.
+**From ε = 0.83 on, this Gaussian-buffer estimate is above every target at t = 0**, so it gives those games no
+hypothesis-free start. It is an upper estimate of the payoff: that it exceeds the target does not show that no
+hypothesis-free bound exists, only that this one does not provide it. The other proofs of ledger 4.18 (b)–(f) and
+4.46 are written for the capped game and were not re-derived for these games here. As things stand their small t
+needs either law rows with a sector hypothesis from t = 0, or a sharper direct treatment of the clipped quintic payoff. Item (c) estimates such a law row at t = 0.
 
 **(c) The law layer at the binding rows (N; `CODE/ceiling/LAW_ROWS.md`).** The row bound with zero sector cost (K₅ with zero allowance assumed), in the Gaussian ideal and in the plain law
 class of ledger 4.42 (moments and the radius 2287/2500; no Stein family, no energy-dependent radius), by a float
@@ -312,7 +314,7 @@ of PR #711; the program now asserts one column of Ψ per ν.)
   are lower estimates of a supremum over the plain law class (grids in σ, ν, E U² and U; a law optimised for one game
   and repriced for another; codex-a7c4's independent search found 0.7122738 for the first). So a design candidate
   near the optimum has ε at or below about 0.849, chosen with its t = 0 row; the capped game has 0.06 there and the
-  ridge game 0.025. For all of them near the optimum small t has no hypothesis-free start (b), and the sector
+  ridge game 0.025. For all of them near the optimum the direct bound gives no hypothesis-free start (b), and the sector
   hypothesis is needed where its pure-cost premises fail for the capped game (ledger 4.16).
 - **At the peak** the control reproduces the capped game's row 0.845: the law program is 2.1·10⁻⁶ above the Gaussian
   value and the certified constant 1.6·10⁻⁵ above the program (the interval covers). The loss of the law layer and
@@ -327,7 +329,7 @@ Each line is one game with its own parameters. "1/N" is the reciprocal of the la
 against that game; "at the peak" subtracts the 2.5·10⁻⁵ measured on the capped game (an estimate for the others);
 "t = 0 allows" is the reciprocal of the t = 0 payoff of §2.2 (c); the realistic value is the smaller of the two.
 
-| game (ε, η) | ideal 1/N (**N**) | ρ₀-relaxed t = 0 test (exact) | hypothesis-free start by 4.18 (a) at 1.403 (exact) | at the peak (estimate) | t = 0 allows at most (**N**) | realistic value | room at 1.403 | room at 1.4025 |
+| game (ε, η) | ideal 1/N (**N**) | ρ₀-relaxed t = 0 test (exact) | start given by the direct bound 4.18 (a) at 1.403 (exact) | at the peak (estimate) | t = 0 allows at most (**N**) | realistic value | room at 1.403 | room at 1.4025 |
 |---|---|---|---|---|---|---|---|---|
 | (39/50, 779/10000), capped | 1.402785 | passes | t ≤ 0.2497 | 1/B₅ = 1.4027346 (exact, its design) | 1.5309 | below 1.402735 | none | 1.19·10⁻⁴ |
 | (41/50, 97/500), ridge | 1.403385 | passes | t ≤ 0.1216 | 1.40334 | 1.4547 | 1.40334 | 1.7·10⁻⁴ | 4.2·10⁻⁴ |
@@ -392,11 +394,16 @@ test needs the same of ρ\* itself.
 *Degree 9 has its own condition.* There the necessary inequality of ledger 4.38 keeps the ninth-degree projection
 (the term −a₄‖P₅,₄f‖²): by Parseval ρ\*² ≤ (B + a₄)/(a₁ + a₄), which for λ₉ of ledger 1.6 (a₁ = 0.936, a₄ = 0.23468) and
 B = 1/1.403 is ρ\* ≤ 0.89961 (the ledger's 0.899374 is for B = 250/351); a certificate that drops the ninth-degree
-term at t = 0 needs the stronger √(B/a₁) = 0.87263. Neither is below a proved radius.
+term at t = 0 needs the stronger √(B/a₁) = 0.87263. Both thresholds are below the best proved upper bound of the
+radius (0.9142), so the proved bound gives neither. This is for the one degree-9 coefficient vector λ₉; no other
+degree-9 game was tested.
 
-**So degrees 7 and 9 do not make 1.403 easier for a certificate of this type before the radius of the cubic chaos
-is proved below about 0.90**: with ρ₀ = 2287/2500 the best value at any degree up to 7 is 1.40365–1.40372, a room of
-3.3–3.6·10⁻⁴ at 1.403.
+**So for a certificate of this type that charges ρ₀ = 2287/2500, degree 7 does not make 1.403 easier**: in the stored
+score model every degree-7 game with ε ≤ (1/1.403)/ρ₀² = 0.85171 has norm above 0.7123933909 without tail and
+0.7123931399 with one, that is at most 1.403719 and 1.403720 (exact weights on three and four pool rows that cancel
+the free higher coefficients, the weighted cubic coefficient being positive; codex-a7c4, review of PR #711;
+`CODE/ceiling/pool_certificate.py`), against 1.403646 and 1.403741 for degree 5 without that cap: a room of at most
+3.6·10⁻⁴ at 1.403. For the tested λ₉ the same holds; other degree-9 games were not examined.
 
 ---
 
@@ -419,7 +426,7 @@ would decide whether it deserves a design.** The evidence, with its level:
    estimates, §2.2 (c)): it leaves at most 2.07·10⁻⁴ at 1.403 for the saved optimum (ε = 0.8492868), which that row
    limits to 1.40341; at most 4.85·10⁻⁴ for (0.84896, 0.2818); at most 1.30·10⁻³ for (0.848, 0.2795), whose peak
    leaves 2.9·10⁻⁴. No row is shown to pass.
-3. *What could still fail for it.* (i) It has no hypothesis-free start (exact, §2.2 (b)): the range of small t that
+3. *What could still fail for it.* (i) No bound computed here gives it a hypothesis-free start (§2.2 (b)): the range of small t that
    is proved up to 0.365 for the capped game starts from nothing, with a room of at most 4.85·10⁻⁴ at t = 0 for (0.84896, 0.2818), instead
    of 0.06, and the sector hypothesis is needed exactly where its pure-cost premises fail for the capped game
    (ledger 4.16). (ii) Its sector costs are not measured. At the cap 0.81 (**N**, ledger 4.33) the band minimum of
@@ -448,7 +455,7 @@ a day of four cores on yo, or two hours on a 48-core machine. It needs no certif
 **With degree 7 or 9: no advantage before a sharper radius** (§3.2; **N** for the games, exact for the test). In a
 certificate that charges the proved radius the degree-7 value is 1.4037; its ideal 1.4041 needs a radius 0.8866 and
 1.40395 needs 0.900. The ideal
-rooms at 1.403 (5.65·10⁻⁴ at degree 7, 5.98·10⁻⁴ at degree 9) are 1.4 to 1.5 times the present model room; the
+rooms at 1.403 (5.65·10⁻⁴ at degree 7, 5.98·10⁻⁴ at degree 9) are 1.4 to 1.5 times the present model room (ideal values of single games, λ₉ being the only degree-9 vector tested); the
 sector structure of those games (18 sectors at degree 5; three- and four-grade responses at degree 9, ledger 2.4,
 2.6) is not designed.
 
@@ -479,7 +486,7 @@ ledger 4.33 suggests for the stronger games. Neither assumption is a measurement
 2. **Do not fix a target yet; run the gate for two games first**: a game just below the optimum, with ε between
    0.848 and 0.849 chosen together with its t = 0 row (not the saved optimum, which that row limits to 1.40341), and
    the ridge game (1, −41/50, 97/500). The first has the larger rooms (2.9 to 3.0·10⁻⁴ at 1.403, 5.5 to 5.6·10⁻⁴ at
-   1.4025, after the estimated law-layer loss) and no hypothesis-free start; the ridge game has 1.7·10⁻⁴, 4.2·10⁻⁴,
+   1.4025, after the estimated law-layer loss) and no hypothesis-free start from the bounds computed; the ridge game has 1.7·10⁻⁴, 4.2·10⁻⁴,
    5.3·10⁻⁴, a proved start on t ≤ 0.12 and 0.025 of room at t = 0. The gate (§4.1) decides between them: if the
    optimum's sector shares on the peak band are no worse than the capped game's and its small-t law rows have room,
    it is the game, with 1.4025 as the first target and 1.403 as the stretch; if they are those of the cap 0.81 or
