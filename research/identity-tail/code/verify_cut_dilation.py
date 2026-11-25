@@ -18,22 +18,27 @@ RADIUS = Q(93, 100)
 SIXTH = Q(4045313, 100000)
 
 
+def check(condition, message):
+    if not condition:
+        raise ValueError(message)
+
+
 def price(node, bank, target):
     scale = Q(node["sigma"])
     radius_ratio = target / scale
     k = radius_ratio**2
     # tools/gen_lower_data.py reorders y when producing a plain Lean SNode.
     a0, a2, a4, a6, a1 = map(Q, node["y"])
-    assert a1 >= 0 and a6 >= 0
+    check(a1 >= 0 and a6 >= 0, "negative majorant coefficient")
     offset = Q(0)
     for index, numerator in zip(node["cuts"], node["mu"], strict=True):
         weight = Q(numerator, 10**10)
         beta, alpha = (Q(n, 10**7) for n in bank[index][-2:])
-        assert weight >= 0
+        check(weight >= 0, "negative cut weight")
         new_beta = beta + (k - 1) * alpha
         offset += weight * (beta**2 - new_beta**2 + 2 * alpha**2 * (k**2 - 1) / 3)
     if scale == target:
-        assert offset == 0
+        check(offset == 0, "nonzero offset at the source scale")
     # Convexity of the cost in s gives its maximum over the closed slab.
     return max(
         a0
@@ -48,7 +53,7 @@ def price(node, bank, target):
 
 def main():
     row = json.loads((ROOT / "data/tail-rows/plain/row_0.835.json").read_text())
-    assert all(s == r**2 for s, r in ENDS)
+    check(all(s == r**2 for s, r in ENDS), "incorrect endpoint square root")
     stored = {Q(0): Q(row["caps"][0])}
     transported = []
     for cell in row["cells"]:
@@ -65,10 +70,10 @@ def main():
         if u <= TARGET <= v and u < v
     )
     improved, source = min(transported)
-    assert source == Q(11, 50)
-    assert ceil(control * 10**9) == 1390416898
-    assert ceil(improved * 10**9) == 1390342005
-    assert control - improved > Q(7489, 10**8)
+    check(source == Q(11, 50), "unexpected minimizing source")
+    check(ceil(control * 10**9) == 1390416898, "original chord bound changed")
+    check(ceil(improved * 10**9) == 1390342005, "transported price changed")
+    check(control - improved > Q(7489, 10**8), "transport gain below target")
     print(f"row 0.835, shape [9/100, 4/25], scale {source} → {TARGET}")
     print(f"stored chords ≤ {ceil(control * 10**9)}/10^9")
     print(f"transported bound ≤ {ceil(improved * 10**9)}/10^9")
