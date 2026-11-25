@@ -1493,8 +1493,6 @@ Grothe.UpperSeven.bound
 Grothe.UpperSeven.constant_le
 Grothe.UpperSeven.constant_lt_inv_gammaDagger
 Grothe.UpperSix.bound
-Grothe.UpperSix.constant_le
-Grothe.UpperSix.constant_lt_inv_gammaDagger
 Grothe.hardy_budget_after_linear
 Grothe.head_residual_le
 Grothe.linear_lower

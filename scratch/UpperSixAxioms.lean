@@ -1,11 +1,10 @@
+import Grothe.UpperSix.Haagerup.GammaDagger
 import Grothe.UpperSixExact.Result
 
 -- Agent-ID: codex-a7c4
 set_option pp.fullNames true
 
 #print axioms Grothe.UpperSix.bound
-#print axioms Grothe.UpperSix.constant_le
-#print axioms Grothe.UpperSix.constant_lt_inv_gammaDagger
 #print axioms Haagerup.inv_gammaDagger_gt
 #print axioms Haagerup.mem_bivarT_smoothed
 #print axioms Haagerup.mem_muTigOf

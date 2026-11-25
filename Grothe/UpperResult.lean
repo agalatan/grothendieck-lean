@@ -1,3 +1,4 @@
+import Grothe.UpperSix.Haagerup.GammaDagger
 import Grothe.UpperSixExact.Result
 import Grothe.UpperSelector.Bound
 

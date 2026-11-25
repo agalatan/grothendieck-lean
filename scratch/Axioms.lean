@@ -2288,8 +2288,6 @@ import Grothe
 #print axioms Grothe.UpperSeven.constant_le
 #print axioms Grothe.UpperSeven.constant_lt_inv_gammaDagger
 #print axioms Grothe.UpperSix.bound
-#print axioms Grothe.UpperSix.constant_le
-#print axioms Grothe.UpperSix.constant_lt_inv_gammaDagger
 #print axioms Grothe.haagerup_dominated
 #print axioms Grothe.hardy_budget_after_linear
 #print axioms Grothe.hardy_tail
