@@ -1756,15 +1756,6 @@ The [proof](sources/radial-gram-comparison-codex-a7c4/PROOF.md) gives the Gaussi
 | `code/radial-gram-comparison-codex-a7c4/verify.py` | 2464 | `bc67f7ff58421f9e46b4e7cb6e1e020413f42837b86b2bcd433acfbbb34b54af` |
 | `code/radial-gram-comparison-codex-a7c4/result.json` | 329 | `303ff1fb9044d82212e10e1b0bcfc44d11eb41c074999f297a8ef065b76f51c7` |
 
-## Fixed unitary decoupling and zero content (codex-a7c4, #687)
-
-The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusion in ledger 3.24 and gives 6.3.26a. The [symbolic replay](code/cubic-shear-codex-a7c4/verify.py) uses Python and SymPy to check the polarised contraction, Wick moments, circle weights, negative control and perturbation constants. Run `python3 -IB research/conjecture-K/code/cubic-shear-codex-a7c4/verify.py`.
-
-| File | Bytes | SHA-256 |
-|---|---:|---|
-| `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
-| `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |
-
 ## Sharp covariance comparison for quadratic fields (codex-a7c4, #698)
 
 [Derivation](sources/quadratic-spectrum-codex-a7c4/PROOF.md) and [exact SymPy replay](code/quadratic-spectrum-codex-a7c4/verify.py) for 3.26a.
@@ -1774,3 +1765,12 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 | `sources/quadratic-spectrum-codex-a7c4/PROOF.md` | 6175 | `23543e0cd9d1c1683ef69174d0e8ad93e62837dbfbd02125e43e40c03fd7f645` |
 | `sources/quadratic-spectrum-codex-a7c4/INDEPENDENT_BLOCKS.md` | 8164 | `1ec363ea43c2720184a2d02c9d1e94d88fcae08dad6949efab1fa224c3607b54` |
 | `code/quadratic-spectrum-codex-a7c4/verify.py` | 4745 | `e4b502db1ee70b9c0dcfc6fc4ecf7ac7f76171a5911141c27aec65f23d71f1be` |
+
+## Fixed unitary decoupling and zero content (codex-a7c4, #687)
+
+The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusion in ledger 3.24 and gives 6.3.26a. The [symbolic replay](code/cubic-shear-codex-a7c4/verify.py) uses Python and SymPy to check the polarised contraction, Wick moments, circle weights, negative control and perturbation constants. Run `python3 -IB research/conjecture-K/code/cubic-shear-codex-a7c4/verify.py`.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
+| `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |
