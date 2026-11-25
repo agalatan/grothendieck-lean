@@ -52,7 +52,8 @@ require(Benv == B, 'the maximum of D* is the maximum of the min-envelope of all 
 Kmax = 1 / B; k6 = (Kmax * 10 ** 6).__floor__()
 print('1. THE ENVELOPE (exact, from the row constants of ledger 4.42)')
 print('   B5 = max over the pieces of D* = %s at the ends of piece %d (row %s on [%s, %s])' % (fl(B, 13), jB + 1, pieces[jB][2], fl(pieces[jB][0], 6), fl(pieces[jB][1], 6)))
-print('   K_max = 1/B5 = %s: with zero sector cost on every row the design proves K > x only for x < 1/B5; %d/10^6 < 1/B5 < %d/10^6' % (fl(Kmax, 10), k6, k6 + 1))
+print('   1/B5 = %s...: with zero sector cost on every row THIS DESIGN (these 26 row constants) proves K > x only for x < 1/B5;' % fl(Kmax, 10))
+print('   %d/10^6 < 1/B5 < %d/10^6: six-decimal floor 1.%d, six-decimal (outward) ceiling 1.%d' % (k6, k6 + 1, k6 - 10 ** 6, k6 + 1 - 10 ** 6))
 require(F(k6, 10 ** 6) < Kmax < F(k6 + 1, 10 ** 6), 'bracket of 1/B5')
 out['B5'] = str(B); out['B5_float'] = float(B); out['Kmax_floor6'] = k6
 budget = {b['j']: b for b in json.load(open(os.path.join(DSGN, 'tables', 'zero_content_budget.json'))) if 'j' in b and str(b.get('name', '')).startswith('_fin')}
@@ -60,7 +61,7 @@ fund = {j: F(budget[j]['gain_hi']) for j in budget if F(budget[j]['eta_h_needed_
 require(sorted(fund) == list(range(1, 12)), 'the funded pieces are 1-11')
 print('   rooms of the 21 pieces (target value minus the maximum of the row on the piece), in units 1e-4; in brackets: the room left after the')
 print('   funded part eta_h of ledger 4.44 (the whole gain of the zero-content pairs at the upper end of the piece; pieces 1-11)')
-print('   piece        row     eta_h   ' + '   '.join('%-15s' % n for n, _ in TARGETS))
+print(('   piece        row     eta_h   ' + '   '.join('%-15s' % n for n, _ in TARGETS)).rstrip())
 out['pieces'] = []
 for j, (a, b, tag) in enumerate(pieces, 1):
     rm = [tg - pmax[j - 1] for _, tg in TARGETS]; eh = fund.get(j, F(0))

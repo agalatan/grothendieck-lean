@@ -1,9 +1,10 @@
 1. THE ENVELOPE (exact, from the row constants of ledger 4.42)
    B5 = max over the pieces of D* = 0.7128931980346 at the ends of piece 13 (row 0.845 on [0.842337, 0.847521])
-   K_max = 1/B5 = 1.4027346631: with zero sector cost on every row the design proves K > x only for x < 1/B5; 1402734/10^6 < 1/B5 < 1402735/10^6
+   1/B5 = 1.4027346631...: with zero sector cost on every row THIS DESIGN (these 26 row constants) proves K > x only for x < 1/B5;
+   1402734/10^6 < 1/B5 < 1402735/10^6: six-decimal floor 1.402734, six-decimal (outward) ceiling 1.402735
    rooms of the 21 pieces (target value minus the maximum of the row on the piece), in units 1e-4; in brackets: the room left after the
    funded part eta_h of ledger 4.44 (the whole gain of the zero-content pairs at the upper end of the piece; pieces 1-11)
-   piece        row     eta_h   1.402             1.4021            1.4023            1.4025            1.4027         
+   piece        row     eta_h   1.402             1.4021            1.4023            1.4025            1.4027
     1 [0.6490,0.6700] 0.740  10.374    83.445 [73.071]    82.936 [72.562]    81.919 [71.545]    80.902 [70.528]    79.885 [69.511]
     2 [0.6700,0.6900] 0.760   8.477    55.987 [47.510]    55.479 [47.002]    54.461 [45.984]    53.444 [44.967]    52.428 [43.951]
     3 [0.6900,0.7100] 0.760   8.749    66.643 [57.894]    66.135 [57.386]    65.117 [56.368]    64.100 [55.351]    63.084 [54.335]

@@ -29,6 +29,7 @@ def psi(row, nus=None):
 def kappa(row): return 1 / eps - (row.bA ** 2 + row.bB ** 2) / eta
 def gauss_grid(row, P, nus, sig):
     """max over the grids nus x sig of E_{U~Exp(1)} Psi - kappa sigma^2 - nu^2/eta."""
+    assert P.shape == (len(SG), len(nus)), 'one column of Psi per nu'
     kap = kappa(row); best = (-9, 0, 0)
     for j, nu in enumerate(nus):
         sp = CubicSpline(SG, P[:, j]); f = np.array([(WL * sp(np.minimum(s * np.sqrt(UL), 40.0))).sum() for s in sig]) - kap * sig ** 2 - nu * nu / eta
@@ -43,6 +44,7 @@ def gauss_value(row, P=None, fine=True):
     b2 = gauss_grid(row, psi(row, nus), nus, sig); return b2 if b2[0] > b[0] else b
 U_ = np.concatenate([[0.0], np.linspace(0, 20, 601)[1:], np.linspace(20, 600, 120)[1:]]); AEQ = np.vstack([np.ones_like(U_), U_, U_ ** 2]); AUB = [U_ ** 3, np.sqrt(U_)]
 def law_grid(row, P, nus, sigs, ms):
+    assert P.shape == (len(SG), len(nus)), 'one column of Psi per nu'
     kap = kappa(row); best = (-9, None)
     for j, nu in enumerate(nus):
         sp = CubicSpline(SG, P[:, j])
@@ -51,16 +53,19 @@ def law_grid(row, P, nus, sigs, ms):
             for m in ms:
                 r = linprog(-fu, A_ub=AUB, b_ub=[9 * m - 12 + C6 * (m - 2) ** 1.5, rho0], A_eq=AEQ, b_eq=[1, 1, m], bounds=(0, None), method='highs')
                 if r.status == 0 and -r.fun - kap * sig * sig - nu * nu / eta > best[0]:
-                    x = r.x; best = (float(-r.fun - kap * sig * sig - nu * nu / eta), dict(sigma=round(float(sig), 4), nu=round(float(nu), 4), m=float(m), mass_at_0=float(x[0]), mean_sqrtU=float(np.sqrt(U_) @ x)))
+                    x = r.x; k = np.nonzero(x > 1e-12)[0]; best = (float(-r.fun - kap * sig * sig - nu * nu / eta), dict(sigma=float(sig), nu=float(nu), m=float(m), mass_at_0=float(x[0]), mean_sqrtU=float(np.sqrt(U_) @ x),
+                                 atoms=[[float(U_[i]), float(x[i]), float(fu[i])] for i in k], kappa=float(kap)))
     return best
 def law_value(row, P):
-    """two stages as gauss_value: coarse (NU, sigma-step 0.025, 12 values of m = E U^2), then nu-step 0.001, sigma-step 0.0025 and
-    a finer list of m around the best point."""
+    """two stages as gauss_value: coarse (NU, sigma-step 0.025, 12 values of m = E U^2), then nu-step 0.002, sigma-step 0.005 and
+    a finer list of m around the best point.  The SAME array of nu builds the columns of Psi and is
+    charged in the penalty (law_grid asserts one column per nu).  The best law is stored with its atoms [U, weight, Psi(sigma sqrt U; nu)]
+    so that its payoff sum w Psi - kappa sigma^2 - nu^2/eta and its moments can be replayed (law_table.py does)."""
     M0 = [2.0, 2.05, 2.2, 2.5, 3.0, 3.5, 4.0, 5.0, 7.0, 10.0, 20.0, 44.0]
     b = law_grid(row, P, NU, np.arange(0.0, 1.3, 0.025), M0); a = b[1]
-    nus = a['nu'] + np.linspace(-0.01, 0.01, 21); sigs = np.clip(a['sigma'] + np.linspace(-0.025, 0.025, 21), 0, None)
+    nus = a['nu'] + np.linspace(-0.01, 0.01, 11); sigs = np.clip(a['sigma'] + np.linspace(-0.025, 0.025, 11), 0, None)
     k = M0.index(a['m']); ms = np.unique(np.concatenate([np.linspace(M0[max(k - 1, 0)], M0[min(k + 1, len(M0) - 1)], 9), [a['m']]]))
-    b2 = law_grid(row, psi(row, nus), nus[::2], sigs[::2], ms); return b2 if b2[0] > b[0] else b
+    b2 = law_grid(row, psi(row, nus), nus, sigs, ms); return b2 if b2[0] > b[0] else b
 res = []
 for item in sys.argv[5].split():
     t0 = time.time(); fixed = '=' in item; ts, _, ps = item.replace('=', ':').partition(':'); t = float(ts)

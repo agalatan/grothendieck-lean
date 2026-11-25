@@ -10,7 +10,7 @@ the graded models W3 (one remote cubic) and Z2 (one more coordinate) of ../../pr
 What the two numbers of a problem mean:
   LB = the LP value over the pool: every game of that problem has model norm >= LB, so within the oracle families (and up to the
        quadrature error of the pair coefficients, about 1e-6) NO game of the problem certifies more than 1/LB;
-  U  = the largest oracle value at the best game visited: a lower estimate of that game's norm from a local best-response search,
+  U  = the largest payoff against the best game visited, over its oracle calls AND over every pair of the final pool: a lower estimate of that game's norm from a local best-response search,
        so 1/U is an upper estimate of what THAT game certifies.  Neither is a certified bound; richer responses can only raise them.
 usage: eps_profile.py OUT.json WORKERS ITERS "eps,eps,...|free"     (needs numpy, scipy and the folder ../../primal-dual)"""
 import sys, os, json, time, numpy as np
@@ -78,8 +78,11 @@ def main():
             if p['U'] - LB < float(os.environ.get('GAP', 1e-6)): p['done'] = True
             else: p['x'] = xt
         C = np.array(pool)
-        for p in probs:                       # the pool has grown: refresh the LP value of the finished problems too
+        for p in probs:                       # the pool has grown: refresh BOTH numbers of every problem on the common pool
             p['LB'] = lp(pool, p['eps'], p['tail'])[0]
+            if p['best'] is not None:         # the stored game scores at least the pool maximum, also against pairs found later for other problems
+                xb = np.array(p['best']['lam'][1:] + [p['best']['nu']]); pv = float((C[:, 0] + C[:, 1:K + 2] @ xb).max())
+                p['best']['pool_max'] = pv; p['U'] = max(p['U'], pv)
         rec = [dict(eps=p['eps'], tail=p['tail'], best=p['best'], U=p['U'], LB=p['LB'], gap=p['U'] - p['LB'], K_of_U=1 / p['U'], K_of_LB=1 / p['LB'], done=bool(p.get('done')), log=p['log']) for p in probs]
         json.dump(dict(iters=it + 1, secs=round(time.time() - t0), pool_size=len(pool), problems=rec, pool=[[tg] + [float(v) for v in r] for tg, r in zip(tags, pool)]), open(out, 'w'), indent=0)
         print('it %d  %ds  pool %d  open %d  max gap %.2e' % (it, time.time() - t0, len(pool), sum(1 for p in probs if not p.get('done')), max(p['U'] - p['LB'] for p in probs)), flush=True)

@@ -1,0 +1,3 @@
+eps_profile_K2.json: 32 problems, 549 pool rows, 0 scores raised
+eps_profile_K3.json eps None tail False: U 0.7121926660 -> 0.7122039600 (pool row 476, W3), 1/U 1.404114 -> 1.404092, gap 1.45e-05
+eps_profile_K3.json: 10 problems, 496 pool rows, 1 scores raised
