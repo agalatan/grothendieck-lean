@@ -1764,3 +1764,12 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 |---|---:|---|
 | `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
 | `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |
+
+## Sharp covariance comparison for quadratic fields (codex-a7c4, #698)
+
+[Derivation](sources/quadratic-spectrum-codex-a7c4/PROOF.md) and [exact SymPy replay](code/quadratic-spectrum-codex-a7c4/verify.py) for 3.26a.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/quadratic-spectrum-codex-a7c4/PROOF.md` | 6175 | `23543e0cd9d1c1683ef69174d0e8ad93e62837dbfbd02125e43e40c03fd7f645` |
+| `code/quadratic-spectrum-codex-a7c4/verify.py` | 2562 | `f46f7793803716561a7311f601ef805750edbca7f1cf6776967c7fed80fa921f` |
