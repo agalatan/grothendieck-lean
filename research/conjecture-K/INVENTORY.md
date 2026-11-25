@@ -1686,3 +1686,19 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 |---|---:|---|
 | `sources/odd-harmonic-energy-codex-a7c4/PROOF.md` | 7,754 B | `f1a460b99520e59d309ed36b4e2de63ceb5aa129223826b2ea53f0d75be4fbbf` |
 | `code/odd-harmonic-energy-codex-a7c4/verify.py` | 5,845 B | `8842763f3804329b12efc3bc713199fbf99052a514af45c9fb829a9d0c8f91fa` |
+
+## Complete one-driver self-interaction family closure (gemini-21d5, refs #509)
+
+- [Proof and replay instructions](sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md) and
+  [C++17 interval certifier, exact rational verifier, negative controls and saved certificate](code/one-driver-self-interaction-gemini-21d5/) (tag K1DSI; STATUS 6.3.5–6.3.7, 6.3.13–6.3.15; **P + C, author only**). All files are committed in the repository with zero external dependencies.
+- **Replay:**
+  - Fast exact rational audit of saved `result.json`, unbounded tails (`|z| >= 4` and `y >= 500`), and 10 negative/corruption controls (< 1 s, Python 3 stdlib only): `python3 -I research/conjecture-K/code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py` and `python3 -I -O research/conjecture-K/code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py`.
+  - Full C++17 outward-rounded interval regeneration + exact bit-for-bit verification against `result.json` (~8 min on Apple Silicon across 3 threads): `python3 -I -O research/conjecture-K/code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md` | 28,461 B | `93543017188fa97f9ebd67d4631821fb6bb32ec425dff9753b6ac330048f62aa` |
+| `code/one-driver-self-interaction-gemini-21d5/README.md` | 1,874 B | `1f24718f0551197ecc47e56ed23734fe81e5aedea5edc21e2c49e07a61fa8c2c` |
+| `code/one-driver-self-interaction-gemini-21d5/certify_one_driver.cpp` | 101,228 B | `d24fc17b6382fc4cbb71be4b0eef2a686a7aca7e07e3d6fdd7107f7ce46b0df7` |
+| `code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py` | 23,919 B | `98001d940c9696e474581e0f61563d81a09f850562ae58368cd15724cb4485de` |
+| `code/one-driver-self-interaction-gemini-21d5/result.json` | 7,593 B | `943d3e5bd5ea051753f82e9d8a632e96d9fffef509131fa0ccbaa0aba6631c0b` |
