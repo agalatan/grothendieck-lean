@@ -77,19 +77,19 @@ Every external input used in this proof is either a Lean theorem on `master` or 
   $$
 
 ### Lemma 1.2 (Exact Convex-Quadratic Slab Cover)
-Suppose:
+Let $r_1 > 0$, and suppose:
 1. $t_{\mathrm{left}} \in \mathbb{Q}_{>0}$ satisfies $\rho_0^2 + \bigl(1 - c_{\mathrm{ell}}^2\bigr) t_{\mathrm{left}}^2 < r_1^2$, where $c_{\mathrm{ell}} = \frac{431}{500}$ and $\rho_0 = \frac{2287}{2500}$;
 2. $t_{\mathrm{right}} \in \mathbb{Q}_{>0}$ satisfies $t_{\mathrm{right}}^2 \ge \frac{\pi}{4}$;
 3. $(\ell_j, m_j, R_j)_{j=0}^{M-1}$ are certified half-planes $\ell_j t + m_j s \le R_j$ ($\ell_j, m_j > 0$), and $t_{\mathrm{left}} = \tau_0 \le \tau_1 \le \dots \le \tau_M = t_{\mathrm{right}}$ are rationals such that at every slab endpoint $t_e \in \{\tau_j, \tau_{j+1}\}$ ($0 \le j < M$),
    $$
    \Phi_j(t_e) := t_e^2 + \max\Bigl(0,\, \frac{R_j - \ell_j t_e}{m_j}\Bigr)^2 < r_1^2.
    $$
-Then every unimodular pair $(f, g)$ in every dimension satisfies $t^2 + s^2 < r_1^2$, hence $\rho_s \le r_1$.
+Then every unimodular pair $(f, g)$ in every dimension satisfies $t^2 + s^2 < r_1^2$; since $r_1 > 0$, taking square roots gives $\sqrt{t^2 + s^2} < r_1$, hence $\rho_s \le r_1$ by Lemma 1.1(1).
 
 **Proof.**
 For any unimodular pair, $|h| \le 1$ pointwise and $P_{1,0} h = t\zeta$ for a unit linear form $\zeta \sim \mathcal{CN}(0, 1)$ give $t = |\langle \zeta, h\rangle| \le \mathbb{E}|\zeta| = \frac{\sqrt{\pi}}{2} \le t_{\mathrm{right}}$, so $t \in [0, t_{\mathrm{right}}]$.
 - If $t \in [0, t_{\mathrm{left}}]$, Theorem `4.18e` (`ELLIPTIC.md` eq. (5)) gives $c_{\mathrm{ell}}^2 t^2 + s^2 \le \rho_0^2$, so $t^2 + s^2 \le \rho_0^2 + (1 - c_{\mathrm{ell}}^2) t_{\mathrm{left}}^2 < r_1^2$.
-- Otherwise $t \in [\tau_j, \tau_{j+1}]$ for some $0 \le j < M$. Since $s \ge 0$ and $\ell_j t + m_j s \le R_j$ with $m_j > 0$, we have $0 \le s \le \max\bigl(0, (R_j - \ell_j t)/m_j\bigr)$, hence $t^2 + s^2 \le \Phi_j(t)$. The function $x \mapsto \max(0, x)^2$ is convex on $\mathbb{R}$ (its derivative $2\max(0, x)$ is continuous and nondecreasing), so its composition with the affine map $t \mapsto (R_j - \ell_j t)/m_j$ is convex on $\mathbb{R}$. Adding the strictly convex function $t^2$ shows that $\Phi_j$ is strictly convex on $[\tau_j, \tau_{j+1}]$, hence $\Phi_j(t) \le \max\bigl(\Phi_j(\tau_j), \Phi_j(\tau_{j+1})\bigr) < r_1^2$. $\square$
+- Otherwise $t \in [\tau_j, \tau_{j+1}]$ for some $0 \le j < M$. Since $s \ge 0$ and $\ell_j t + m_j s \le R_j$ with $m_j > 0$, we have $0 \le s \le \max\bigl(0, (R_j - \ell_j t)/m_j\bigr)$, hence $t^2 + s^2 \le \Phi_j(t)$. The function $x \mapsto \max(0, x)^2$ is convex on $\mathbb{R}$ (its derivative $2\max(0, x)$ is continuous and nondecreasing), so its composition with the affine map $t \mapsto (R_j - \ell_j t)/m_j$ is convex on $\mathbb{R}$. Adding the strictly convex function $t^2$ shows that $\Phi_j$ is strictly convex on $[\tau_j, \tau_{j+1}]$, hence $\Phi_j(t) \le \max\bigl(\Phi_j(\tau_j), \Phi_j(\tau_{j+1})\bigr) < r_1^2$. Since $r_1 > 0$, $\sqrt{t^2 + s^2} < r_1$, and Lemma 1.1(1) yields $\rho_s \le r_1$. $\square$
 
 ---
 
@@ -367,7 +367,7 @@ which is convex in $t$ on $\mathbb{R}$ by the same convexity argument as Lemma 1
 
 ## 7. Verification Commands and Negative Controls
 
-From the repository root, all three verification scripts run under isolated Python 3 (`python3 -I`, standard library only, zero floating-point literals or calls, enforced via `ast` inspection in `test_controls.py`). By default `verify.py` binds both Theorem 1 and Theorem 2(2) (requiring `degree5_midt.lean_mass` coverage through $\frac{9190839}{25000000}$); passing `--radius-only` (or calling `verify_radius_only`) reports the narrower Theorem 1 radius result alone:
+From the repository root, all three verification scripts run under isolated Python 3 (`python3 -I`, standard library only, zero floating-point literals or calls, enforced via `ast` inspection in `test_controls.py`). By default `verify.py` binds both Theorem 1 (`0 < r_1 <= 939/1000` and `worst_poly_sq < (939/1000)^2`) and Theorem 2(2) (requiring `degree5_midt.lean_mass` coverage through $\frac{9190839}{25000000}$); passing `--radius-only` (or calling `verify_radius_only`) ignores `degree5_midt` and reports whatever generic positive radius bound the certificate establishes:
 
 ```sh
 python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/verify.py
@@ -378,7 +378,7 @@ python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/test_con
 
 ### Mandatory and Adversarial Controls Verified in `test_controls.py`
 1. **AST zero-float & stdlib-only audit (`Control 1`):** Parses `verify.py`, `check_identities_exact.py`, and `test_controls.py` via `ast` and rejects any `float` literal, `float(...)` call, or non-stdlib import.
-2. **Impossible claim below diffuse Gaussian limit and negative-radius sign controls (`Controls 2a–2c`, `P7` §6):** Proves $(22/25)^2 < \pi/4$ in exact rationals (corresponding to the diffuse equality family $f = \operatorname{ph}(z_1 + c W)$, $g = \operatorname{ph}(z_1 - c W)$) and verifies that mutating `claim` to `"22/25"` (`0.88`), mutating `claim` to `"-939/1000"` (rejected before squaring), or negating a ray radius `R_0` is rejected by `verify.py`.
+2. **Impossible claim below diffuse Gaussian limit, sign controls, and Theorem 1 target binding (`Controls 2a–2d`, `P7` §6):** Proves $(22/25)^2 < \pi/4$ in exact rationals (corresponding to the diffuse equality family $f = \operatorname{ph}(z_1 + c W)$, $g = \operatorname{ph}(z_1 - c W)$) and verifies that mutating `claim` to `"22/25"` (`0.88`), mutating `claim` to `"-939/1000"` (rejected before squaring), negating a ray radius `R_0`, or weakening `claim` to `"9399/10000"` with `t_slabs[3] = "3101391/5000000"` is rejected by `verify.py` in theorem mode.
 3. **Unsymmetrised two-chaos barrier and $\pm G$ symmetrisation necessity (`Control 3a–3c`, `P7` §6 & §7 item 5):**
    - For $F(z_1) = z_1\bigl(1 - \frac{T - 2}{4}\bigr) \in H_{1,0} \oplus H_{2,1}$ ($T = |z_1|^2$, $\|F\|_2^2 = \frac{9}{8}$), using $|6 - T| = (6 - T) + 2(T - 6)\mathbf{1}_{T > 6}$ and $\sqrt{T} \ge \sqrt{6} + (\sqrt{7} - \sqrt{6})\mathbf{1}_{T \ge 7}$ on $[6, \infty)$ gives
      $$
@@ -386,4 +386,4 @@ python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/test_con
      $$
      certifying in exact `Fraction` arithmetic that $\mathbb{E}|F|/\|F\|_2 > 0.9430 > \sqrt{9\pi/32} > 0.93998$.
    - Verifies that `verify.py` rejects `claim = "47/50"` (`0.94 > \sqrt{9\pi/32}`) and rejects `cert_spiked.json` when the odd-in-$G$ symmetrisation multipliers `q_sym = (q_0, q_1, q_2)` are zeroed.
-4. **Structural corruption and Theorem 2(2) binding controls (`Controls 4–8e`):** Verifies rejection upon truncating the $s_G$ cover to $[0, 41] < 42$, making $\phi_4[K] \ne 0$ on $[u_K, \infty)$, perturbing an interior Sturm spline knot (`phi1[4]`), shrinking $t_{\mathrm{right}}$ below $\sqrt{\pi}/2$, inflating the degree-5 mid-$t$ cutoff by $+10^{-7}$ past the envelope crossing, deleting `degree5_midt.lean_mass` (or `degree5_midt`, while confirming `verify_radius_only` still certifies the narrower radius-only result), or lowering `lean_mass.t_cutoff` below $\frac{9190839}{25000000}$.
+4. **Structural corruption and Theorem 2(2) binding controls (`Controls 4–8f`):** Verifies rejection upon truncating the $s_G$ cover to $[0, 41] < 42$, making $\phi_4[K] \ne 0$ on $[u_K, \infty)$, perturbing an interior Sturm spline knot (`phi1[4]`), shrinking $t_{\mathrm{right}}$ below $\sqrt{\pi}/2$, inflating the degree-5 mid-$t$ cutoff by $+10^{-7}$ past the envelope crossing, deleting `degree5_midt.lean_mass` or `degree5_midt` (while confirming `verify_radius_only` ignores an invalid `degree5_midt` block and certifies the generic radius claim `9399/10000`), or lowering `lean_mass.t_cutoff` below $\frac{9190839}{25000000}$.

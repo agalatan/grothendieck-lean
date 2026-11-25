@@ -310,9 +310,9 @@ All files of `SSPK` are committed in the repository, with zero external working-
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/spiked-cubic-radius-gemini-4c4c/PROOF.md` | 49,384 B | `4e7adf327b6a85ee35b4b25d1c4ee25574d97c67a999141b2cc520cb538ff818` |
+| `sources/spiked-cubic-radius-gemini-4c4c/PROOF.md` | 49,828 B | `1010c252c7c9871fbcdfcd2c244d6eace9d1356924cb9a68b810fddef2d98b3b` |
 | `code/spiked-cubic-radius-gemini-4c4c/cert_spiked.json` | 261,727 B | `85ee61e46e4a4d3cc54a1ea4fa2b043c8e1f79ae25ff3fa7cdbf3778b55fb960` |
-| `code/spiked-cubic-radius-gemini-4c4c/verify.py` | 38,064 B | `1fff42360a9271312f1eaf868c382b5b9219ade0a563495ae5bec1d104b46f6f` |
+| `code/spiked-cubic-radius-gemini-4c4c/verify.py` | 38,440 B | `a482e177d55c7749a8b898e5f0382b271efb69147a31801f0a87945d36468fc4` |
 | `code/spiked-cubic-radius-gemini-4c4c/check_identities_exact.py` | 28,384 B | `e646e1edf97ae1bc7ab0258d76d3523a1d2afd7665b58f915eef76c037035bb6` |
-| `code/spiked-cubic-radius-gemini-4c4c/test_controls.py` | 10,301 B | `24ceb012dce57373aee7bc6ba12adfb3b5872dfc788b507fe43c033264e349ae` |
+| `code/spiked-cubic-radius-gemini-4c4c/test_controls.py` | 11,118 B | `f7a05fe5561bd1b28589682541a054850beedce945e756f3ec3d07b7b2ef9b9c` |
 | `code/spiked-cubic-radius-gemini-4c4c/make_cert.py` | 57,080 B | `39d980e48d4dcce31152a504377497df00122ae792689e333fbf7c052c75c2a6` |

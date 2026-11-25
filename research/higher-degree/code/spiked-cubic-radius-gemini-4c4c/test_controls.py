@@ -6,10 +6,12 @@ Usage:  python3 -I test_controls.py [CERT.json]
 Implements all mandatory negative controls of `P7-symmetrised-spiked-radius.md` §6–§7 together
 with structural corruption controls on `cert_spiked.json`:
   1. AST zero-float & stdlib-only audit across `verify.py`, `check_identities_exact.py`, `test_controls.py`;
-  2. Mandatory Control A (`P7` §6) & sign controls:
+  2. Mandatory Control A (`P7` §6), sign controls & Theorem 1 target binding:
        (i) `r_1 = 0.88 = 22/25 < sqrt(pi)/2` (violating the diffuse equality family) is proved false in
            exact Fraction arithmetic and rejected by `verify.py`;
        (ii) One-field sign mutation `claim = "-939/1000"` (and negative ray `R_j`) is rejected before squaring;
+       (iii) Two-field weakening mutation `claim = "9399/10000"`, `t_slabs[3] = "3101391/5000000"` is rejected
+             in default Theorem 1 mode;
   3. Mandatory Control B (`P7` §6 & §7 item 5):
        (i) Exact Fraction proof that the unsymmetrised two-chaos witness
              F(z_1) = z_1 * (1 - (|z_1|^2 - 2)/4) in H_{1,0} + H_{2,1}
@@ -145,6 +147,14 @@ def main():
     c_negray["rays"][0]["R"] = "-582/625"
     expect_reject(c_negray, "Control 2c (negative ray radius R_0 = -582/625 rejected)")
 
+    c_twofield = copy.deepcopy(cert)
+    c_twofield["claim"] = "9399/10000"
+    c_twofield["t_slabs"][3] = "3101391/5000000"
+    expect_reject(
+        c_twofield,
+        "Control 2d (two-field weakening claim=9399/10000, t_slabs[3]=3101391/5000000 rejected in theorem mode)",
+    )
+
     # 3. Mandatory Control B (P7 §6 & §7): unsymmetrised barrier & disabling q_sym
     check_unsymmetrised_witness_exact()
 
@@ -196,15 +206,22 @@ def main():
     c_nod5 = copy.deepcopy(cert)
     del c_nod5["degree5_midt"]
     expect_reject(c_nod5, "Control 8c (deleting degree5_midt rejected by default entry point)")
-    res_ro = VF.verify_radius_only(c_nod5, quiet=True)
-    assert res_ro["ok"] and res_ro["radius_only"] and res_ro["midt"] == {}
-    print("  [PASS] Control 8d: verify_radius_only accepts certificate without degree5_midt as narrower result")
+
+    c_badd5 = copy.deepcopy(c_twofield)
+    c_badd5["degree5_midt"] = {"lean_mass": {"t_cutoff": "99/100", "segments": []}}
+    expect_reject(c_badd5, "Control 8d (invalid degree5_midt / weaker claim rejected in theorem mode)")
+    res_ro = VF.verify_radius_only(c_badd5, quiet=True)
+    assert res_ro["ok"] and res_ro["radius_only"] and res_ro["midt"] == {} and res_ro["r1"] == Fr(9399, 10000)
+    print(
+        "  [PASS] Control 8e: verify_radius_only ignores invalid degree5_midt and certifies generic claim=%s (max <= %s)"
+        % (res_ro["r1"], VF.dec_ceil10(res_ro["worst_r1_hi"]))
+    )
 
     c_lowt = copy.deepcopy(cert)
     t_short = VF.THEOREM2_LEAN_MASS_CUTOFF - Fr(1, 10**8)
     c_lowt["degree5_midt"]["lean_mass"]["t_cutoff"] = str(t_short)
     c_lowt["degree5_midt"]["lean_mass"]["segments"][-1]["t_hi"] = str(t_short)
-    expect_reject(c_lowt, "Control 8e (lowering lean_mass.t_cutoff below 9190839/25000000 rejected)")
+    expect_reject(c_lowt, "Control 8f (lowering lean_mass.t_cutoff below 9190839/25000000 rejected)")
 
     print("ALL NEGATIVE & CORRUPTION CONTROLS PASSED.")
 

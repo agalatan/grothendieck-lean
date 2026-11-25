@@ -64,6 +64,7 @@ HOLDER_K4 = [768, 192, 18, 12, 9260]
 
 C_ELL = Fr(431, 500)
 RHO0_REV = Fr(2287, 2500)
+THEOREM1_RADIUS_CLAIM = Fr(939, 1000)
 THEOREM2_LEAN_MASS_CUTOFF = Fr(9190839, 25000000)
 
 
@@ -744,6 +745,12 @@ def verify_certificate(cert, quiet=False, jobs=None, radius_only=False):
     t0 = perf_counter_ns()
     r1 = Fr(cert["claim"])
     require(r1 > 0, "claim radius r_1 must be positive")
+    if not radius_only:
+        require(
+            r1 <= THEOREM1_RADIUS_CLAIM,
+            "claim %s exceeds Theorem 1 target %s (use --radius-only for generic radius mode)"
+            % (r1, THEOREM1_RADIUS_CLAIM),
+        )
     # Check strictly below unsymmetrised barrier sqrt(9 * pi / 32) > sqrt(9 * PI_LO / 32):
     require(r1 * r1 < Fr(9, 32) * PI_LO, "claim does not beat unsymmetrised barrier sqrt(9*pi/32)")
 
@@ -798,15 +805,20 @@ def verify_certificate(cert, quiet=False, jobs=None, radius_only=False):
             if val_sq > worst_poly_sq:
                 worst_poly_sq = val_sq
 
-    # Check degree-5 sector-free mid-t cutoffs (mandatory in default theorem-level entry point):
+    if not radius_only:
+        require(
+            worst_poly_sq < THEOREM1_RADIUS_CLAIM * THEOREM1_RADIUS_CLAIM,
+            "worst polygon bound exceeds Theorem 1 target (939/1000)^2",
+        )
+
+    # Check degree-5 sector-free mid-t cutoffs (mandatory in theorem mode; skipped completely in --radius-only):
     midt_res = {}
     if not radius_only:
         require(
             isinstance(cert.get("degree5_midt"), dict) and "lean_mass" in cert["degree5_midt"],
             "missing required degree5_midt.lean_mass for Theorem 2(2) (use --radius-only for radius-only check)",
         )
-    if not radius_only or "degree5_midt" in cert:
-        d5 = cert.get("degree5_midt") or {}
+        d5 = cert["degree5_midt"]
         e_g = Fr(39, 50)
         eta_g = Fr(779, 10000)
         target_g = Fr(500, 701)
@@ -849,12 +861,11 @@ def verify_certificate(cert, quiet=False, jobs=None, radius_only=False):
             )
             require(min_V_next > target_g, "%s next 10^-8 step not above 500/701" % reg_name)
             midt_res[reg_name] = t_star
-        if not radius_only:
-            require(
-                midt_res.get("lean_mass", Fr(0)) >= THEOREM2_LEAN_MASS_CUTOFF,
-                "lean_mass cutoff %s does not cover Theorem 2(2) target %s"
-                % (midt_res.get("lean_mass"), THEOREM2_LEAN_MASS_CUTOFF),
-            )
+        require(
+            midt_res.get("lean_mass", Fr(0)) >= THEOREM2_LEAN_MASS_CUTOFF,
+            "lean_mass cutoff %s does not cover Theorem 2(2) target %s"
+            % (midt_res.get("lean_mass"), THEOREM2_LEAN_MASS_CUTOFF),
+        )
 
     # 2. Verify every Pythagorean ray's bound R_j (Stein-covered or right-analytical 4.18g):
     stein_tasks = []
