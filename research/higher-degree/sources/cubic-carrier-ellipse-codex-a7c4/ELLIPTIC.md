@@ -96,3 +96,10 @@ The exact arithmetic checks both strict inequalities on each row and verifies th
 The [polygon checker](../../code/cubic-carrier-ellipse-codex-a7c4/verify_polygon.py) verifies (1). The [cutoff checker](../../code/cubic-carrier-ellipse-codex-a7c4/verify_elliptic_cutoffs.py) reads no data and compares both sides of each eight-decimal crossing using fractions.
 
 Two further bounds locate the remaining gains. At radius $2287/2500$, a [sixth-moment bound on the projection residual](CLIPPING.md) gives $t\le0.35386150$ without the mass inequality. For the [entire Gaussian elliptic family](GAUSSIAN_CEILING.md), the optimal coefficient is at least $0.862$ and strictly below $0.8626$.
+
+From the repository root run
+
+```sh
+python3 -IB research/higher-degree/code/cubic-carrier-ellipse-codex-a7c4/verify_polygon.py
+python3 -IB research/higher-degree/code/cubic-carrier-ellipse-codex-a7c4/verify_elliptic_cutoffs.py
+```
