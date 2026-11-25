@@ -2302,6 +2302,13 @@ import Grothe
 #print axioms Grothe.transfer
 #print axioms Grothe.transfer_of_head_hardy
 #print axioms GrotheKernel.HardyArc.schurValue_eq_spec
+#print axioms Haagerup.AngularSelector.angularRow_truncation
+#print axioms Haagerup.AngularSelector.gridCoefficient_error
+#print axioms Haagerup.AngularSelector.phaseDyadic_error
+#print axioms Haagerup.AngularSelector.scalarGrade_truncation
+#print axioms Haagerup.AngularSelector.selectorCoeff_dominated
+#print axioms Haagerup.AngularSelector.selectorCoeff_wiener
+#print axioms Haagerup.AngularSelector.selectorKernel_eq_radial
 #print axioms Haagerup.Data.tcell_rows_ok
 #print axioms Haagerup.Data.tcell_sos_ok
 #print axioms Haagerup.Data.tig_mu_ok

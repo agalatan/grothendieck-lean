@@ -4742,6 +4742,16 @@ import Grothe.UpperQuad.TwistTail
 import Grothe.UpperQuad.TwistYEnvelope
 import Grothe.UpperQuad.WatsonSeed
 import Grothe.UpperResult
+import Grothe.UpperSelector.Aggregation
+import Grothe.UpperSelector.Cosine
+import Grothe.UpperSelector.Dyadic
+import Grothe.UpperSelector.Gaussian
+import Grothe.UpperSelector.Phase
+import Grothe.UpperSelector.Projection
+import Grothe.UpperSelector.Radial
+import Grothe.UpperSelector.Realization
+import Grothe.UpperSelector.Transfer
+import Grothe.UpperSelector.Wiener
 import Grothe.UpperSix.Haagerup
 import Grothe.UpperSix.Haagerup.CellHermite
 import Grothe.UpperSix.Haagerup.CellMap
