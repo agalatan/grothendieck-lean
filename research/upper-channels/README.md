@@ -1,14 +1,15 @@
 # More channels for the upper bound: start here
 
-**The problem.** Lean proves K_G^ℂ ≤ 1.40455741 (`Grothe.UpperSix.bound`, `main_bounds`) with a mixture of six
-rounding channels. Can a mixture with more, or other, channels give a smaller proved bound, and at what cost in
-Lean? The numerical experiment below has status **N**. The [ledger](STATUS.md) also records the following paper result.
+**The problem.** The six-channel article proves K_G^ℂ ≤ 1.40455741 (`Grothe.UpperSix.bound`, `main_bounds`).
+The root theorem gives K_G^ℂ ≤ 1.404556407. Can a mixture with more or different channels improve that bound, and at what cost in Lean? [Current bounds](../../docs/CONSTANTS.md)
+
+The 24 November 2026 mixture experiment has status **N**. The [ledger](STATUS.md) also records the paper proofs about rounding channels.
 
 **What can one complex coordinate achieve?** Phase rounding maximizes the alternating coefficient sum over every charge-one disk map of one complex Gaussian coordinate and every contractive polynomial preprocessor. Its value is exactly Haagerup’s $\gamma^\dagger$. Thus beating that value by the mixture transfer requires a channel using at least two coordinates. The proof reduces the problem to a radial integral operator and certifies a spectral gap. [Proof and exact replay](sources/one-coordinate-ceiling-codex-a7c4/PROOF.md)
 
 **The result in one paragraph.** Adding to the six channels **one** new channel, the cell channel of the
 eighteen-channel certificate with the preprocessor R(X) = a − (1 − a)X at a = 93079/100000 instead of its committed
-a = 0.9194…, gives the model slope D = 0.711974083612, that is 1/D = 1.404545507 against the proved
+a = 0.9194…, gives the model slope D = 0.711974083612, that is 1/D = 1.404545507 against the article’s
 1/D = 1.404557403 (ledger 4.7). The new channel takes the place of the six's channel 4, whose weight drops to zero.
 The head of the new channel is an exact interval composition of grades that Lean already verifies on the
 eighteen-channel branch, and its allowance (8.9·10⁻¹⁰) is the one that branch already pays for the same channel type;
@@ -34,12 +35,14 @@ lemma: a bound B on the mean square on a circle of radius ρ > 1 inside the disk
 Σ_{k>K} |h_k| ≤ √(B ρ^{−(4K+6)}/(1 − ρ^{−4}))), and any comparison or truncation error of its head. The signs of the
 h_k^{(p)} cancel across channels before the absolute value is taken, so the best weights solve a linear programme.
 
+**The alternating sum in large dimension.** For this class of maps the supremum of $W=\sum_k(-1)^k H_k$ over all dimensions is one. Every fixed dimension has a strict gap. A charge-one version of Xie and Zhang’s quadratic-phase construction gives a finite example above $0.96$, while the transferable slope satisfies $D(H)\le\pi/4$ in every dimension. This answers the article's finite-attainment and slope-approximation questions. [Proof and finite witness](sources/high-dimensional-alternation-codex-a7c4/PROOF.md)
+
 ## The two families of channels
 
 | | six channels | eighteen channels |
 |---|---|---|
 | where | master, `Grothe/UpperSix/` (article: `haagerup-article/main.tex`); read here at commit `f6620f3b` | the branch `gemini-1aa9/upper-mixture` of pull request #556 (closed, the branch deleted): `Grothe/UpperReplacement/`, its `docs/UPPER_CERTIFICATE.md`; read here at commit `76c4647b`, which `refs/pull/556/head` keeps |
-| certified D, 1/D | 0.711968053274, 1.4045574031 (the Lean bound of master) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
+| certified D, 1/D | 0.711968053274, 1.4045574031 (the pinned six-channel certificate) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
 | channel types | smoothed 64×64×36 cell map with (P, Q = −X): channels 0, 1, 5; phase with a degree-14 preprocessor: 2; reflected cell map with (−R, R): 3, 4 | ten GT channels, seven phase channels, one cell channel (a pair of responses on 64 angular × 128 × 128 radial cells, both coordinates preprocessed by R) |
 | head data | `Haagerup/Data/OverlapData.lean` (interval tables at scale 2⁻¹²⁸), `Haagerup/Parameters.lean` | `data/upper-replacement/exact-columns.json`, `cell-inputs.npz`, `Grothe/Upper/Data.lean`, `HeadWitnessFacts/Group00`–`07` (cell grades), `RootData.lean` |
 | head length | 251 coefficients per channel | 251 (GT, phase); 126 for the cell channel, which pays a truncation allowance for the rest |
