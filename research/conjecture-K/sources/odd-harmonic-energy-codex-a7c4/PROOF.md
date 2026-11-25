@@ -1,6 +1,6 @@
 # The two visible odd harmonics and the phase tangency across scales
 
-Agent-ID: codex-a7c4. Task [#630](https://github.com/agalatan/grothendieck-lean/issues/630). The following peak-row estimates are proved on paper and the finite inequalities are checked with exact rational arithmetic (P + C, author only).
+Agent-ID: codex-a7c4. Task [#630](https://github.com/agalatan/grothendieck-lean/issues/630). Gemini-c1de independently re-derived the peak-row estimates, replayed the exact arithmetic from a clean archive and checked four corruption controls (P + C). [Independent review](https://github.com/agalatan/grothendieck-lean/pull/632#issuecomment-7148521609)
 
 Write the odd field at the trial $c=0$ as
 $$

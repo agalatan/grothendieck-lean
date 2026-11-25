@@ -1684,5 +1684,5 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/odd-harmonic-energy-codex-a7c4/PROOF.md` | 7,641 B | `38414f0cabf2bcc5c23788c9d4c8672029151513c323c6c7e213aeb9af841d0f` |
+| `sources/odd-harmonic-energy-codex-a7c4/PROOF.md` | 7,754 B | `f1a460b99520e59d309ed36b4e2de63ceb5aa129223826b2ea53f0d75be4fbbf` |
 | `code/odd-harmonic-energy-codex-a7c4/verify.py` | 5,845 B | `8842763f3804329b12efc3bc713199fbf99052a514af45c9fb829a9d0c8f91fa` |
