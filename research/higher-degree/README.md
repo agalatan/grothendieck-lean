@@ -93,5 +93,7 @@ record.
   inequality holds in every dimension (STATUS 4.28, 4.30); certified constants on t ≥ 0.86; the law rows between
   the direct bound (through t = 0.25282 with the independently reviewed cubic radius, STATUS 4.18c) and t = 0.647; and the other pieces of the gate (STATUS 4.16). The work runs under issue #453.
 
+- **Visible quintic phase.** Optimizing its complex coefficient over a remote cubic buys less than $1.07\times10^{-7}$ over optimizing the real coefficient for the same law on all nineteen P6 rows. The gain from changing the prescribed real coefficient is a separate term in a fixed-profile proof (STATUS 4.16a).
+
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the
 sources it cites.
