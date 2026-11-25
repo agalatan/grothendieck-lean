@@ -1,51 +1,46 @@
 import Grothe.Statement
-import Grothe.UpperSix.Haagerup
+import Grothe.UpperSix.Haagerup.GammaDagger
 import Grothe.UpperSixExact.Bound
 
 set_option warningAsError true
 
 /-!
-# The six-channel finite-matrix and constant upper bounds
+# The upper bound: `K_G^ℂ ≤ 1.404556407 < 1/γ†`
 
-The six-channel proof (`Grothe/UpperSix/`) has its own copy of the definitions, so that it also builds as the
-standalone package `haagerup-article/anc/`. That copy and `Grothe/Statement.lean` quantify over the same finite
+The six-channel proof (`Grothe/UpperSixExact/Bound.lean`, on the library `Grothe/UpperSix/`) gives, for every finite
+complex matrix `A`, `V(A) ≤ (10^27 / 711968558203721328194311213) · C(A)`; the factor is `1.4045564069893…`.
+
+* `bound`: that inequality, as `IsBound` at the certificate's exact value;
+* `constant_le`: `K_G^ℂ ≤ 1.404556407` (`1404556407 / 1000000000`), the exact value rounded up to nine decimals;
+* `constant_lt_inv_gammaDagger`: `K_G^ℂ < 1/γ†`, Haagerup's value, from `constant_le` and `γ† < 0.711958683`.
+
+The six-channel library has its own copy of the definitions (`Haagerup.Statement`,
+`Grothe/UpperSix/Haagerup/Statement.lean`). That copy and `Grothe/Statement.lean` quantify over the same finite
 matrices, unimodular scalars and complex unit vectors, and agree by reduction; the theorems below are stated with
 the definitions of `Grothe/Statement.lean`.
-
-Agent-ID: codex-a7c4
 -/
 
 namespace Grothe.UpperSix
 
-/-- **The upper bound for one matrix**: `V(A) ≤ 1.40455741 · C(A)` for every finite complex matrix `A`. -/
-theorem bound : Statement.IsBound (140455741 / 100000000 : ℝ) :=
-  Haagerup.isBound_cert
+/-- **The upper bound for one matrix**: `V(A) ≤ 1.4045564069893… · C(A)` for every finite complex matrix `A`; the
+factor is the certificate's exact value `10^27 / 711968558203721328194311213`. -/
+theorem bound : Statement.IsBound ((10 : ℝ) ^ 27 / 711968558203721328194311213) :=
+  Haagerup.SixChannelExact.isBound
 
-/-- **The upper bound**: `K_G^ℂ ≤ 1.40455741`. -/
-theorem constant_le : Statement.complexGrothendieckConstant ≤ (140455741 / 100000000 : ℝ) :=
-  csInf_le Haagerup.Statement.bounds_bddBelow Haagerup.isBound_cert
+/-- **The upper bound**: `K_G^ℂ ≤ 1.404556407`, the exact value of `bound` rounded up to nine decimals. -/
+theorem constant_le : Statement.complexGrothendieckConstant ≤ 1404556407 / 1000000000 := by
+  have h : Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / 711968558203721328194311213 :=
+    csInf_le Haagerup.Statement.bounds_bddBelow bound
+  exact h.trans (by norm_num)
 
 /-- `K_G^ℂ < 1/γ†`: the constant is strictly below Haagerup's value. -/
 theorem constant_lt_inv_gammaDagger :
-    Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger :=
-  Haagerup.constant_lt_inv_gammaDagger
-
-/-- Finite-matrix upper bound after subtracting the six certified linear energies. -/
-theorem bound_exact : Statement.IsBound ((10 : ℝ) ^ 27 / 711968557929438692542239077) :=
-  Haagerup.SixChannelExact.isBound_exact
-
-/-- The stronger root certificate gives an upper bound of 1.404556407530439478… . -/
-theorem constant_le_exact :
-    Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / 711968557929438692542239077 :=
-  csInf_le Haagerup.Statement.bounds_bddBelow bound_exact
-
-/-- Admissibility for every finite matrix with the phase head extended through index 320. -/
-theorem bound_phase : Statement.IsBound ((10 : ℝ) ^ 27 / 711968558203721328194311213) :=
-  Haagerup.SixChannelExact.isBound_phase
-
-/-- The unequal phase cutoff gives the exact upper endpoint 1.404556406989340536… . -/
-theorem constant_le_phase :
-    Statement.complexGrothendieckConstant ≤ (10 : ℝ) ^ 27 / 711968558203721328194311213 :=
-  csInf_le Haagerup.Statement.bounds_bddBelow bound_phase
+    Statement.complexGrothendieckConstant < 1 / Haagerup.Statement.gammaDagger := by
+  refine constant_le.trans_lt ?_
+  rw [lt_div_iff₀ Haagerup.gammaDagger_pos]
+  calc (1404556407 / 1000000000 : ℝ) * Haagerup.Statement.gammaDagger
+      < (1404556407 / 1000000000 : ℝ) * (711958683 / 1000000000) := by
+        gcongr; exact Haagerup.gammaDagger_bounds.2
+    _ < 1 := by norm_num
 
 end Grothe.UpperSix

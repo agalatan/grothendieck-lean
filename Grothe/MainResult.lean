@@ -1,63 +1,47 @@
 -- Grothe/MainResult.lean
-import Grothe.LowerTarget
 import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.SharpEnvelopeBound
 
 /-!
-# The main result: `1.40191 < K_G^ℂ ≤ 1.40455741`
+# The main result: `1.4019109461 < K_G^ℂ ≤ 1.404556407`
 
-The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`.
+The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`, without
+hypotheses: `main_bounds`.
 
-* `lower_bound_sharp` proves **`1.4019109461 < K_G^ℂ`** from the affine mixture of the same certified rows.
-* `lower_target`: **the lower bound, unconditional**: every Grothendieck bound is above `1.40191`, from the certificate of
-  the witness `(191/250, 47/2000)` (`lowerTarget_of_tailNodeCaps`) and the node caps of its rows (`tailNodeCaps_cert`).
-* `Grothe.UpperSix.bound`: **the upper bound, unconditional**: `V(A) ≤ 1.40455741 · C(A)` for every finite complex
-  matrix `A` (`IsBound (140455741 / 100000000)`), from the six-channel proof.
-* `main_bounds_phase`: **`1.40191 < K_G^ℂ ≤ 1.404556407`**, from the longer phase head.
-* `main_bounds_refined`: **`1.40191 < K_G^ℂ ≤ 1.40455641`**, from the refined six-channel proof.
-* `main_bounds`: **`1.40191 < K_G^ℂ ≤ 1.40455741`**, without hypotheses.
+* **The lower bound** `14019109461 / 10000000000 < K_G^ℂ` comes from the Gaussian witness with an identity tail
+  `(191/250, 47/2000)`. The sharp envelope of its certified rows caps the scalar value of the witness
+  (`Grothe/Lower/Cert/SharpEnvelope.lean`), the node caps of the rows hold (`tailNodeCaps_cert`,
+  `Grothe/LowerAnalytic/CapNodes.lean`), and the transfer to matrices gives `sharp_lower_endpoint`: the reciprocal of
+  the cap, an exact rational `1.4019109461135…`, is at most `K_G^ℂ`. The stated bound is that rational rounded
+  strictly downward to ten decimals (`SharpEnvelope.rounded_lt`).
+* **The upper bound** `K_G^ℂ ≤ 1404556407 / 1000000000` is `Grothe.UpperSix.constant_le` (`Grothe/UpperResult.lean`),
+  from the six-channel proof: `Grothe.UpperSix.bound` gives `V(A) ≤ 1.4045564069893… · C(A)` for every finite complex
+  matrix `A`. That bound also supplies the Grothendieck bound whose existence the lower half needs (without one the
+  set of bounds is empty and its infimum says nothing).
+
+The upper bound is below Haagerup's value `1/γ†` (`Grothe.UpperSix.constant_lt_inv_gammaDagger`).
 -/
 
 namespace Grothe.Statement
 
 open Grothe.LowerAnalytic
 
-/-- **The lower bound**: every Grothendieck bound is above `1.40191`. -/
-theorem lower_target : LowerTarget :=
-  lowerTarget_of_tailNodeCaps tailNodeCaps_cert
-
-/-- Exact lower endpoint from the sharp envelope of the fourteen rows and the mass bound. -/
+/-- The exact lower endpoint: the reciprocal of the scalar cap of the witness, from the sharp envelope of its rows,
+the mass bound and the node caps. -/
 theorem sharp_lower_endpoint :
     (Grothe.Lower.SharpEnvelope.endpoint : ℝ) ≤ complexGrothendieckConstant :=
   sharpEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
 
-/-- The sharp lower endpoint rounded strictly downward to ten decimal places. -/
-theorem lower_bound_sharp :
-    (14019109461 / 10000000000 : ℝ) < complexGrothendieckConstant := by
-  refine lt_of_lt_of_le ?_ sharp_lower_endpoint
-  simpa only [Rat.cast_div, Rat.cast_ofNat] using
-    (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt
-
-/-- **The main result** `1.40191 < K_G^ℂ ≤ 1.40455741`. -/
+/-- **The main result** `1.4019109461 < K_G^ℂ ≤ 1.404556407`: the exact lower endpoint rounded strictly downward to
+ten decimals, and the six-channel upper bound rounded up to nine. -/
 theorem main_bounds :
-    (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant ≤ 140455741 / 100000000 := by
-  have hlo := lt_constant_of_lowerAbove ⟨_, Grothe.UpperSix.bound⟩ lower_target
-  exact ⟨by norm_num at hlo ⊢; exact hlo, Grothe.UpperSix.constant_le⟩
-
-/-- The root six-channel certificate rounded upward to eight decimals. -/
-theorem main_bounds_refined :
-    (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant ≤ 140455641 / 100000000 := by
-  have hlo := lt_constant_of_lowerAbove ⟨_, Grothe.UpperSix.bound_exact⟩ lower_target
-  exact ⟨by norm_num at hlo ⊢; exact hlo,
-    Grothe.UpperSix.constant_le_exact.trans (by norm_num)⟩
-
-/-- Two-sided bound using 321 phase coefficients and 251 coefficients in each cell channel. -/
-theorem main_bounds_phase :
-    (140191 / 100000 : ℝ) < complexGrothendieckConstant ∧
+    (14019109461 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404556407 / 1000000000 := by
-  exact ⟨main_bounds_refined.1, Grothe.UpperSix.constant_le_phase.trans (by norm_num)⟩
+  have hlo : (14019109461 / 10000000000 : ℝ) < complexGrothendieckConstant := by
+    refine lt_of_lt_of_le ?_ sharp_lower_endpoint
+    simpa only [Rat.cast_div, Rat.cast_ofNat] using
+      (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt
+  exact ⟨hlo, Grothe.UpperSix.constant_le⟩
 
 end Grothe.Statement

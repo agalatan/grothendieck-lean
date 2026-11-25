@@ -1,6 +1,6 @@
 # More channels for the upper bound: start here
 
-**The problem.** Lean proves K_G^ℂ ≤ 1.40455741 (`Grothe.UpperSix.bound`, `main_bounds`) with a mixture of six
+**The problem.** Lean proves K_G^ℂ ≤ 1.404556407 (`Grothe.UpperSix.constant_le`, `main_bounds`) with a mixture of six
 rounding channels. Can a mixture with more, or other, channels give a smaller proved bound, and at what cost in
 Lean? This folder records a numerical experiment of 24 November 2026 on that question. Nothing here is a proof:
 every result is a model value (label **N** of [`../README.md`](../README.md)), by one author, not replayed by anyone
@@ -8,8 +8,11 @@ else. The ledger is [`STATUS.md`](STATUS.md).
 
 **The result in one paragraph.** Adding to the six channels **one** new channel, the cell channel of the
 eighteen-channel certificate with the preprocessor R(X) = a − (1 − a)X at a = 93079/100000 instead of its committed
-a = 0.9194…, gives the model slope D = 0.711974083612, that is 1/D = 1.404545507 against the proved
-1/D = 1.404557403 (ledger 4.7). The new channel takes the place of the six's channel 4, whose weight drops to zero.
+a = 0.9194…, gives the model slope D = 0.711974083612, that is 1/D = 1.404545507 (ledger 4.7). The experiment compared it with
+the certificate of the six channels at the commit it read, 1/D = 1.404557403: 1.19·10⁻⁵ more. Lean now proves
+1.404556407 with a sharper certificate of the same six channels (another polynomial in the first channel, the linear
+energy removed from the tail budgets, 321 head coefficients of the phase channel); the model value is 1.09·10⁻⁵
+below that bound. Whether those refinements also gain for the candidate was not examined. The new channel takes the place of the six's channel 4, whose weight drops to zero.
 The head of the new channel is an exact interval composition of grades that Lean already verifies on the
 eighteen-channel branch, and its allowance (8.9·10⁻¹⁰) is the one that branch already pays for the same channel type;
 both were re-derived here independently (ledger §4). The cell channel cannot be written inside the six-channel
@@ -39,7 +42,7 @@ h_k^{(p)} cancel across channels before the absolute value is taken, so the best
 | | six channels | eighteen channels |
 |---|---|---|
 | where | master, `Grothe/UpperSix/` (article: `haagerup-article/main.tex`); read here at commit `f6620f3b` | the branch `gemini-1aa9/upper-mixture` of pull request #556 (closed, the branch deleted): `Grothe/UpperReplacement/`, its `docs/UPPER_CERTIFICATE.md`; read here at commit `76c4647b`, which `refs/pull/556/head` keeps |
-| certified D, 1/D | 0.711968053274, 1.4045574031 (the Lean bound of master) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
+| certified D, 1/D | 0.711968053274, 1.4045574031 (the certificate at that commit; master now proves 1.404556407 with the certificate of `Grothe/UpperSixExact/`) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
 | channel types | smoothed 64×64×36 cell map with (P, Q = −X): channels 0, 1, 5; phase with a degree-14 preprocessor: 2; reflected cell map with (−R, R): 3, 4 | ten GT channels, seven phase channels, one cell channel (a pair of responses on 64 angular × 128 × 128 radial cells, both coordinates preprocessed by R) |
 | head data | `Haagerup/Data/OverlapData.lean` (interval tables at scale 2⁻¹²⁸), `Haagerup/Parameters.lean` | `data/upper-replacement/exact-columns.json`, `cell-inputs.npz`, `Grothe/Upper/Data.lean`, `HeadWitnessFacts/Group00`–`07` (cell grades), `RootData.lean` |
 | head length | 251 coefficients per channel | 251 (GT, phase); 126 for the cell channel, which pays a truncation allowance for the rest |
