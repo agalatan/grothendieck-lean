@@ -27,7 +27,6 @@ Grothe.Lower.SharpEnvelope.check
 Grothe.Lower.SharpEnvelope.endpoint_eq
 Grothe.Lower.SharpEnvelope.exact_scalar_cap
 Grothe.Lower.SharpEnvelope.scalar_contact
-Grothe.Lower.SteinCut.integral_cutG_dilate
 Grothe.Lower.affineEnvelope_bound
 Grothe.Lower.certEnvelope
 Grothe.Lower.certMassRow
