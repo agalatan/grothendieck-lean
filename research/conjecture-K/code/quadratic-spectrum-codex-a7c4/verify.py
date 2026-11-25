@@ -1,6 +1,7 @@
 """Exact Gaussian-moment and covariance checks for task #698. Agent-ID: codex-a7c4."""
 from fractions import Fraction
-from math import factorial, prod
+from itertools import product
+from math import comb, factorial, prod
 
 from sympy import Matrix, Poly, Rational, eye, symbols, zeros
 
@@ -57,6 +58,50 @@ def check_spectral_budget():
     print(f"Weighted-exponential moments and peak margin {slack} verified.")
 
 
+def check_independent_blocks():
+    # Coefficients of J(sqrt(x)) and A(sqrt(x)) from circle and disk moments.
+    def circle_coefficient(k):
+        return Fraction((-1)**k * comb(2*k,k), 4**k * factorial(2*k))
+
+    for k in range(7):
+        disk = circle_coefficient(k)/(k+1)
+        equal((k+1)*circle_coefficient(k+1), -disk/4, "circle derivative")
+    equal(abs(circle_coefficient(1)/2), Fraction(1,8), "disk derivative at zero")
+    # For a planar frequency with coordinate variance 2 lambda, E|omega|^4 / lambda^2.
+    equal(2*3*4 + 2*4,32,"radial frequency fourth moment")
+    limit = Fraction(463,10000)
+    a, b = Fraction(699,1250), Fraction(179,1250)
+    m = a*a+4*a*b+6*b*b
+    protected = Fraction(7,25)
+    if not (m+limit < Fraction(9,10)**2 and m+2*limit < Fraction(17,20)
+            and (protected*8*Fraction(9,10)*Fraction(17,20))**2 < 3):
+        raise ValueError("buffered spectral coefficient")
+    curvature, response = Fraction(17,20), 40*Fraction(11,5)**2*43
+    one = (curvature+response*limit/12)/121
+    many = curvature/28 + response*limit/(2*28**2)
+    def lower(a):
+        if a <= 2:
+            return 1-a+a*a/4-a**3/36
+        return max(-Fraction(1,2), -Fraction(2,9)-(a-2)/3)
+
+    equal(lower(Fraction(2)), -Fraction(2,9), "tangent value")
+    equal(lower(Fraction(17,6)), -Fraction(1,2), "constant junction")
+    cutoff = Fraction(5,4)
+    if not (lower(cutoff)>0 and 1/(1+cutoff+cutoff**2/2)<cutoff**2/4):
+        raise ValueError("negative factor cutoff")
+    examples = [(a,x) for a in map(Fraction,[0,Fraction(1,4),1,Fraction(5,4),2,3])
+                for x in (lower(a),Fraction(1))]
+    for pairs in product(examples, repeat=3):
+        total = sum(a for a,x in pairs)
+        upper = 1/sum(total**k/factorial(k) for k in range(6))
+        if upper-prod(x for a,x in pairs) > sum(a*a/4 for a,x in pairs):
+            raise ValueError("independent product sign budget")
+    if not (one < protected and many < protected):
+        raise ValueError("independent perturbation budgets")
+    print(f"Protected {protected}; worst costs {one} (one block), {many} (28 blocks).")
+
+
 if __name__ == "__main__":
     check_fourier_probe()
     check_spectral_budget()
+    check_independent_blocks()

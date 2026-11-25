@@ -1772,4 +1772,5 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 | File | Bytes | SHA-256 |
 |---|---:|---|
 | `sources/quadratic-spectrum-codex-a7c4/PROOF.md` | 6175 | `23543e0cd9d1c1683ef69174d0e8ad93e62837dbfbd02125e43e40c03fd7f645` |
-| `code/quadratic-spectrum-codex-a7c4/verify.py` | 2562 | `f46f7793803716561a7311f601ef805750edbca7f1cf6776967c7fed80fa921f` |
+| `sources/quadratic-spectrum-codex-a7c4/INDEPENDENT_BLOCKS.md` | 8164 | `1ec363ea43c2720184a2d02c9d1e94d88fcae08dad6949efab1fa224c3607b54` |
+| `code/quadratic-spectrum-codex-a7c4/verify.py` | 4745 | `e4b502db1ee70b9c0dcfc6fc4ecf7ac7f76171a5911141c27aec65f23d71f1be` |
