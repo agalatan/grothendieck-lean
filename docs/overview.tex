@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4020110501\;<\;\KG\;\le\;1.404556392$\\[6pt]
+\Large $1.4020217618\;<\;\KG\;\le\;1.404556392$\\[6pt]
 \normalsize The Lean~4/Mathlib theorem
 \lean{Grothe.Statement.main\_bounds} proves these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The exact coupled Stein lower endpoint is rounded down to $14020110501/10000000000$.
+The exact transported Stein lower endpoint is rounded down to $14020217618/10000000000$.
 The seven Gaussian rounding channels give the upper bound rounded up to $1404556392/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -52,7 +52,7 @@ compares the infimum with the reciprocal phase integral.
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
-first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0028$, and verify
+first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0025346452$, and verify
 the arguments in Lean. This note explains the problem, the two constructions, exactly what the computer checks, the new inequalities and
 obstructions found along the way, and why the remaining gap is hard: the two sides are dual optimisation problems, and the obstruction on both is the nonlinear (cubic and
 higher) structure of bounded functions of Gaussian vectors.
@@ -95,7 +95,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020110501}$ & $\mathbf{1.404556392}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020217618}$ & $\mathbf{1.404556392}$\\\bottomrule
 \end{tabular}
 \end{center}
 The upper bound is $1404556392/1000000000$ (the seven-channel transfer factor $1/(c-\delta)$ rounded up).
@@ -711,14 +711,16 @@ the identity on all the other chaoses (an \emph{identity tail}).
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+e)/(n+1)\to1$.
 \item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu$, with
- $\hat B=1412721229/2000000000$.
+ $\hat B=70635503391/100000000000$.
 \end{itemize}
-The finite-partition transfer gives $\KG\ge 1/B=4000000000000/2853044560237$.
+The finite-partition transfer gives $\KG\ge 1/B=200000000000000/142651138122623$.
 The lower half of \lean{main\_bounds} rounds this exact value strictly down.
-The two active rows use the same circular cubic, fourth excess and residual scale.
-For each mixture weight we combine their two Stein expectation chords and the Gaussian
-gate gain at those common parameters. Lean checks all nine prices on every closed
-intersection of the two banks. Concavity gives the saving at intermediate weights.
+The two central rows use the same circular cubic, fourth excess and residual scale.
+Dilating eleven plain Stein polynomials to four target scales gives fourteen new
+bounds on their expectations. Within each of nineteen common shape intervals, Lean
+checks nine mixture prices on the closed intersections of the two scale chords.
+A second pair of rows combines two quadratic majorants with its shared Gaussian gate.
+The 38 amplitude intervals then cover the full range of the witness.
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
@@ -771,12 +773,12 @@ has four layers.
  argument: a cover of the parameter space by pieces cut out by one to three linear constraints, up to two symmetries of
  the potential, with one S-lemma certificate per piece.
 \end{enumerate}
-\lean{CoupledStein.profile} combines the rows and the mass bound for $0\le t\le9/10$.
+\lean{SparseStein.profile} combines the rows and the mass bound for $0\le t\le9/10$.
 The cubic first-moment inequality bounds the residual scale $\tau$ by $93/100$.
 Rows $0.835$ and $0.845$ share that scale, their fourth excess and the Gaussian gate.
 The resulting cap passes through \lean{witnessCap\_of\_circular\_profile} to the matrix transfer
-\lean{CoupledStein.lower\_of\_nodeCaps}. The certified node caps \lean{tailNodeCaps\_cert}
-then give $4000000000000/2853044560237\le\KG$ independently of Conjecture~K.
+\lean{SparseStein.lower\_of\_nodeCaps}. The certified node caps \lean{tailNodeCaps\_cert}
+then give $200000000000000/142651138122623\le\KG$ independently of Conjecture~K.
 
 \subsection{The primal/dual viewpoint}
 For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
@@ -839,7 +841,7 @@ lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{main\_bounds}, first part: the lower bound for $\KG$, hence for every Grothendieck bound, without hypotheses. The intermediate theorem \lean{CoupledStein.lower\_of\_nodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{main\_bounds}, first part: the lower bound for $\KG$, hence for every Grothendieck bound, without hypotheses. The intermediate theorem \lean{SparseStein.lower\_of\_nodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
 the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices;
 the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
 (frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and

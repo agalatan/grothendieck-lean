@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.4020110501 (`main_bounds`) uses this witness. Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Pricing their joint Gaussian gate gives the [coupled scalar cap](COUPLED_STEIN.md). It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.4020217618 (`main_bounds`) uses this witness. Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Fourteen transported ordinates for those rows and a joint gate for rows 0.82 and 0.83 give the [scalar cap](COUPLED_STEIN.md#transported-ordinates-and-the-outer-row-pair). It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 
@@ -9,7 +9,7 @@ records how the new witness was found and certified:
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
 K ≈ 1.40212 (ledger 3.1). **The integer certificate is complete** (ledger 5.1): an exact envelope over t ∈ [0, 0.9]
 stays below the design target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵; its exact maximum gives
-1/B = 1.4019105…. The coupled proof retains the same node caps. It combines the two Stein laws before taking the maximum on the 38-cell amplitude cover. The exact lower endpoint is 4000000000000/2853044560237 (`coupled_stein_endpoint` in `Grothe/MainResult.lean`). Ledger §6 records the node-cap port.
+1/B = 1.4019105…. The current proof uses the same node caps. The central rows share nineteen fourth-excess intervals, and the final amplitude cover has 38 cells. The exact lower endpoint is 200000000000000/142651138122623 (`sparse_stein_endpoint` in `Grothe/MainResult.lean`). Ledger §6 records the node-cap port.
 
 It is research material: nothing here is imported by Lean or checked by CI. The Lean proof itself lives in `Grothe/`
 (the witness, the rows, the envelope and the tail node caps; `docs/LEAN_DETAILS.md`), ported as ledger §6 describes.

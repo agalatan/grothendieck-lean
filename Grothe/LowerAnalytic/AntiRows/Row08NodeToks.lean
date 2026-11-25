@@ -195,8 +195,13 @@ private theorem row08NodeToks_range : row08NodeToks.all capTokInRange = true := 
 private theorem row08NodeToks_sub : isSublistQ row08SubNodes (row08NodeToks.map evalCapTok) = true := by
   decide +kernel
 
+def row08FullNodes : List (ℚ × ℚ) := row08NodeToks.map evalCapTok
+
+theorem row08FullNodes_eq : row08.nodeList = row08FullNodes :=
+  nodeList_eq_of_capsChars row08 row08NodeToks (by decide) row08NodeToks_range row08NodeToks_str
+
 theorem row08SubNodes_sublist : isSublistQ row08SubNodes row08.nodeList = true := by
-  rw [nodeList_eq_of_capsChars row08 row08NodeToks (by decide) row08NodeToks_range row08NodeToks_str]
+  rw [row08FullNodes_eq]
   exact row08NodeToks_sub
 
 end Grothe.LowerAnalytic

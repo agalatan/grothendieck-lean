@@ -1,0 +1,27 @@
+import Grothe.LowerAnalytic.CoupledSteinWeights
+
+/-! # Weights and lower discounts for the sparse dilation profile
+
+Six of the nine affine endpoint weights receive a stronger price from the
+transported plain nodes. The other three carry their original prices. Each
+ordered pair is a proposed lower discount certified by the finite row checker.
+-/
+
+namespace Grothe.LowerAnalytic.SparseStein
+
+def prices : List (ℚ × ℚ) := [
+  (0, 19063 / 5000000000000),
+  (1110254088270166463714389523729 / 13412622789067932927021702497500, 25169263 / 10000000000000),
+  (3235903980204317476544802323729 / 13412622789067932927021702497500, 665315 / 100000000000),
+  (5361553872138468489375215123729 / 13412622789067932927021702497500, 1049499 / 100000000000),
+  (6424378818105543995790421523729 / 13412622789067932927021702497500, 1055327 / 100000000000),
+  (7487203764072619502205627923729 / 13412622789067932927021702497500, 1081547 / 100000000000),
+  (8550028710039695008620834323729 / 13412622789067932927021702497500, 986298 / 100000000000),
+  (9612853656006770515036040723729 / 13412622789067932927021702497500, 898852 / 100000000000),
+  (1, 58479 / 10000000000000)]
+
+def price (w : ℚ) : ℚ := (prices.lookup w).getD 0
+
+theorem price_weights : prices.map Prod.fst = CoupledStein.prices.map Prod.fst := by rfl
+
+end Grothe.LowerAnalytic.SparseStein

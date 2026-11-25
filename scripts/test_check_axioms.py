@@ -41,11 +41,11 @@ class CheckAxiomsTests(unittest.TestCase):
 
     def test_existing_policy_headlines_and_native_restrictions(self):
         headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
-                     "Grothe.Statement.coupled_stein_endpoint", "Grothe.UpperSix.bound",
+                     "Grothe.Statement.sparse_stein_endpoint", "Grothe.UpperSix.bound",
                      "Grothe.UpperSeven.bound", "Grothe.UpperSeven.constant_le",
                      "Grothe.UpperSeven.constant_lt_inv_gammaDagger",
                      "Grothe.LowerAnalytic.tailNodeCaps_cert",
-                     "Grothe.LowerAnalytic.CoupledStein.lower_of_nodeCaps"}
+                     "Grothe.LowerAnalytic.SparseStein.actual_deductions"}
         self.assertTrue(headlines <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
         self.assertNotIn("Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1", CHECKER.NATIVE)
