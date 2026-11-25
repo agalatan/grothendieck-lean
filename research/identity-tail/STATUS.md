@@ -93,3 +93,7 @@ Done in #525 (19 Nov 2026): Lean stage 2 (6.3), with the caps run and the switch
 implementation of the plain row check (Lean's `checkRow` facts beside `verify_cert.py`).
 
 1. **1.402 is now reached on the unchanged node-cap tables via antiholomorphic Stein tightening.** While plain and spectral scalar cuts left the certified maximum 4.55·10⁻⁵ above 500/701 = 0.7132668 (3.2), replacing the law layer on only the two binding rows `0.835` (`row08`) and `0.845` (`row09`) with two-test antiholomorphic Stein calculus (`AntiStein.lean`, `AntiSteinRowSound.lean`) and the certified cubic radius `93/100` (`first_moment_lt_93`, `norm_pres_le_93`) lowers `cap08` from `1.340727277…` to `1675841/1250000 = 1.3406728` and `cap09` from `1.361923313…` to `6809419/5000000 = 1.3618838`, reducing the kernel-checked 38-cell envelope to `envBTight = 353183/500000 = 0.706366` (`B = 713266399/10⁹ = 0.713266399`, `1/B = 1.4020007… > 1.402`) with zero node-cap rebuild and zero new `native_decide` axioms (`LowerBoundTight.lean`, `main_bounds`). Further gains toward the witness model ceiling (~1.40212) would need either tighter node-cap tables (4.2) or higher-degree witnesses (`../higher-degree/`).
+
+## Joint Stein profile of the active rows
+
+An exact rational replay keeps the fourth excess and residual scale common to both Stein rows before optimizing their weighted sum. On the same witness it gives a candidate endpoint of 4000000000000/2853044560237 (1.402011050142…); Lean integration is open in #674. [Argument, controls and reproduction](COUPLED_STEIN.md).
