@@ -1,0 +1,24 @@
+row03 t=0.7    cap-worst(rho)=8.92e-16 binding chord at sigma=0.4127 (tau=0.5117) x_lo=0.000
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row04 t=0.78   cap-worst(rho)=3.44e-16 binding chord at sigma=0.3872 (tau=0.4802) x_lo=0.100
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row05 t=0.8    cap-worst(rho)=8.65e-17 binding chord at sigma=0.3507 (tau=0.4349) x_lo=0.100
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row06 t=0.82   cap-worst(rho)=5.89e-16 binding chord at sigma=0.3102 (tau=0.3846) x_lo=0.200
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row07 t=0.83   cap-worst(rho)=2.08e-16 binding chord at sigma=0.2745 (tau=0.3403) x_lo=0.400
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row08 t=0.835  cap-worst(rho)=6.61e-16 binding chord at sigma=0.2740 (tau=0.3398) x_lo=0.400
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row09 t=0.845  cap-worst(rho)=3.87e-16 binding chord at sigma=0.2350 (tau=0.2914) x_lo=0.400
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row10 t=0.85   cap-worst(rho)=1.13e-16 binding chord at sigma=0.2160 (tau=0.2678) x_lo=0.650
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row11 t=0.86   cap-worst(rho)=7.85e-16 binding chord at sigma=0.2232 (tau=0.2768) x_lo=0.600
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row12 t=0.87   cap-worst(rho)=5.95e-16 binding chord at sigma=0.2098 (tau=0.2602) x_lo=0.600
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row13 t=0.885  cap-worst(rho)=8.14e-16 binding chord at sigma=0.2139 (tau=0.2652) x_lo=0.500
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+row14 t=0.8875 cap-worst(rho)=1.77e-09 binding rect at sigma=0.0022 (tau=0.0028) x_lo=2.500
+    saving for r = rho, .93, .9148, .9142, .9, .88623: 0.000e+00 5.024e-07 6.766e-07 6.827e-07 8.281e-07 9.691e-07
