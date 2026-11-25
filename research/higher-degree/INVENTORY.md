@@ -297,3 +297,22 @@ All files of `PCOST` are committed in the repository, with zero external working
   command file `fin_all.txt` and the ratio files of the design run (`design/work/` of the working folder named in
   the previous section), the profile archives `design/work/g078/out/prof_t0p<row>.npz` (in
   `mega-design-raw.tar.gz` there) and the tools `thresholds/*.py` of the degree-5 worker's folder.
+
+## Unconditional symmetrised spiked cubic radius and angle-dependent envelope (gemini-4c4c, 25 November 2026, #628; STATUS 4.48, tag SSPK)
+
+All files of `SSPK` are committed in the repository, with zero external working-folder artefacts:
+- [`sources/spiked-cubic-radius-gemini-4c4c/PROOF.md`](sources/spiked-cubic-radius-gemini-4c4c/PROOF.md): complete proofs, dependency inventory, 11-ray Pythagorean half-plane table, sector-free capped degree-5 cutoff derivation (`t ≤ 9190839/25000000 = 0.36763356`), and negative-control inventory.
+- [`code/spiked-cubic-radius-gemini-4c4c/`](code/spiked-cubic-radius-gemini-4c4c/):
+  - `python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/verify.py` (and `python3 -IB -O ...`): zero-float Python 3 stdlib verifier (**C**) checking Machin π brackets, `4.18g` Stieltjes-Laguerre ellipsoids and radial envelopes, `4.18e` left closure on `[0, 7/20]`, all 56 Sturm-certified third-order spiked Stein rows across 7 interior rays and 4 right-analytical `4.18g` rays, convex-quadratic slab cover (`sup √(t² + s²) ≤ 0.9389788947 < 939/1000 < √(9π/32)`), and exact sector-free degree-5 cutoff `t ≤ 0.36763356`.
+  - `python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/check_identities_exact.py`: zero-float Python 3 stdlib polynomial checker verifying spiked Stein identities `(I′)`–`(IV′)`, zero-mean `±G` symmetrisation, pointwise cones, `z₁` integration-by-parts Hölder `(4/3, 4)` + 4-term AM-GM sixth-moment bounds, and `5 × 5` cofactor determinants against Leibniz determinants over `ℚ` (~26 s).
+  - `python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/test_controls.py`: zero-float Python 3 stdlib AST audit and adversarial negative/corruption control suite (`r₁ = 22/25 = 0.88`, exact `Fraction` proof `E|F|/‖F‖₂ > 0.9430 > √(9π/32)` on unsymmetrised `F = z₁(1 − (|z₁|² − 2)/4)`, `r₁ = 47/50 = 0.94`, disabling `q_sym = 0`, truncated `s_G`, tail `φ₄[K] ≠ 0`, Sturm knot corruption, `t_right < √π/2`, and `+10⁻⁷` mid-`t` cutoff inflation).
+  - `make_cert.py`: standalone Clarabel + HiGHS rational certificate generator reproducing `cert_spiked.json` from scratch.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/spiked-cubic-radius-gemini-4c4c/PROOF.md` | 47,655 B | `9620f10305d94c5f7e0d44b2ec308df1e60260bd129ac6dc4edd872af0b1b9d4` |
+| `code/spiked-cubic-radius-gemini-4c4c/cert_spiked.json` | 261,727 B | `85ee61e46e4a4d3cc54a1ea4fa2b043c8e1f79ae25ff3fa7cdbf3778b55fb960` |
+| `code/spiked-cubic-radius-gemini-4c4c/verify.py` | 36,349 B | `326949b9fb90dbe82e69f1fdce154a6bf1e33cc536a39ae461d00b4d1e6c3053` |
+| `code/spiked-cubic-radius-gemini-4c4c/check_identities_exact.py` | 27,947 B | `3eacd41c611c3d7f37b29b0b0bb613286a5d4ce16ae530669256419fda7ad96a` |
+| `code/spiked-cubic-radius-gemini-4c4c/test_controls.py` | 8,559 B | `751501dc10106395d69ecb4fc6a99461338b716666da2f980829685697fb5cd9` |
+| `code/spiked-cubic-radius-gemini-4c4c/make_cert.py` | 57,080 B | `39d980e48d4dcce31152a504377497df00122ae792689e333fbf7c052c75c2a6` |
