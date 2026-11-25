@@ -17,6 +17,11 @@ Grothe/Lower/Cert/<Name>.lean; the script does not fix the name). The script che
   1.40… is one of the two bounds or a truncation of one of the two exact values;
 * no document of STRICT mentions a number of RETIRED (an older bound that readers must not take for the current one).
 
+The script reads source text. It is a check of the documents against the statements, and a guard against an
+edit that changes a statement without its documents; it is not a proof check. Which lemmas the proof of
+`main_bounds` really uses is established by Lean (the build, and `#print axioms` in scratch/Axioms.lean); the
+rounding lemma is located by the layout of the proof's source, which Lean does not constrain.
+
 Usage: python3 scripts/check_constants.py [--root DIR] [--print]
 Exit status 0 iff every check passes. `--print` only prints the bounds read from Lean.
 """
@@ -159,7 +164,11 @@ def proof_body(code: str, m) -> str:
     """The proof of the declaration matched by `m` (a match that ends at its `:=`), in comment-free source: the rest
     of the `:=` line and the following lines that are indented more than the declaration. A bare `by` at any
     indentation directly after the `:=` belongs to the proof. The first other line that is not indented more than
-    the declaration ends it, whatever it starts with: nothing after the proof is read."""
+    the declaration ends it, whatever it starts with.
+
+    This is a reading of the source layout, not of the proof term: Lean accepts a further command indented under
+    the proof, and such a command would be read as part of it. The dependency of `main_bounds` on its lemmas is
+    what `#print axioms` and the build establish; this function only finds which certificate to compare with."""
     indent = len(re.match(r"[ \t]*", m.group(0))[0].expandtabs())
     first, _, tail = code[m.end():].partition("\n")
     body, started = [first], bool(first.strip())
@@ -179,7 +188,8 @@ def proof_body(code: str, m) -> str:
 def endpoint_file(root: Path):
     """The module (relative path) of the lower endpoint that main_bounds rounds, or None if it is not recognised.
 
-    The rounding lemma is looked for in the proof of main_bounds only (`proof_body`)."""
+    The rounding lemma is looked for in the source text of the proof of main_bounds (`proof_body`, a layout
+    heuristic)."""
     main = lean_code(root / "Grothe/MainResult.lean")
     m = MAIN_BOUNDS.search(main)
     if not m:

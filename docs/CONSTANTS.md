@@ -24,8 +24,9 @@ theorem main_bounds :
       complexGrothendieckConstant ≤ 1404556407 / 1000000000
 ```
 
-It has no hypotheses. Its axioms are Lean's three standard ones and the `native_decide` facts listed in
-`data/axioms/native.txt`.
+It has no hypotheses. Its axioms are Lean's three standard ones and `native_decide` facts that are all among those
+listed in `data/axioms/native.txt` (the list covers every headline theorem of the repository); the set for this
+theorem is what `#print axioms Grothe.Statement.main_bounds` prints (`scratch/Axioms.lean`).
 
 Each bound is the rounding of an exact value that Lean also states.
 
