@@ -122,8 +122,8 @@ private theorem schur_surplus {Ω : Type} [MeasurableSpace Ω] {μ : Measure Ω}
     fin_cases i
     · exact h6
     · exact h7
-  have hprice : gain (twoWeights (w : ℝ)) rs = (schurQ w : ℝ) := by
-    simp [rs, schurQ, mixQ, gain, SharedGate.WeightedSchur.price, det, mix,
+  have hprice : SharedGate.WeightedSchur.gain (twoWeights (w : ℝ)) rs = (schurQ w : ℝ) := by
+    simp [rs, schurQ, mixQ, SharedGate.WeightedSchur.gain, SharedGate.WeightedSchur.price, det, mix,
       Fin.sum_univ_two, twoWeights, ofRow]
   have hg := weighted_surplus (twoWeights (w : ℝ)) rs hw hsum hr hM hX hint
   rw [hprice] at hg

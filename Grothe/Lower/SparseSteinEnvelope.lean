@@ -1,3 +1,4 @@
+import Grothe.Lower.Cert.SparseEnvelope
 import Grothe.Lower.WeightedTightEnvelope
 import Grothe.LowerAnalytic.SparseOuterRows
 import Grothe.LowerAnalytic.SparseSteinWeights
@@ -17,8 +18,6 @@ namespace Grothe.Lower.SparseEnvelope
 
 open WeightedTight (Segment)
 open LowerAnalytic
-
-def cap : ℚ := 70635503391/100000000000
 
 private def segments (c : EnvCell) : List Segment :=
   if (c.i = 6 ∨ c.i = 7) ∧ (c.j = 6 ∨ c.j = 7) then
