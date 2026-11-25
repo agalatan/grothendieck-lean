@@ -15,7 +15,6 @@ Grothe.Lower.SharedGate.WeightedSchur.gain_chord
 Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 Grothe.Lower.SparseEnvelope.endpoint_eq
 Grothe.Lower.SparseEnvelope.profile_bound
-Grothe.Lower.certEnvelope
 Grothe.Lower.certMassRow
 Grothe.Lower.certRow01
 Grothe.Lower.certRow02
@@ -24,8 +23,6 @@ Grothe.Lower.certRow04
 Grothe.Lower.certRow05
 Grothe.Lower.certRow06
 Grothe.Lower.certRow07
-Grothe.Lower.certRow08
-Grothe.Lower.certRow09
 Grothe.Lower.certRow10
 Grothe.Lower.certRow11
 Grothe.Lower.certRow12
@@ -34,7 +31,6 @@ Grothe.Lower.certRow14
 Grothe.Lower.cutG_dilate
 Grothe.Lower.gram_joint_of_scalars
 Grothe.Lower.mass_law_bound
-Grothe.Lower.rowData_facts
 Grothe.LowerAnalytic.Circular.fourth_moment_antistein
 Grothe.LowerAnalytic.Circular.fourth_moment_le_variance
 Grothe.LowerAnalytic.Circular.gE_radC1_sub_two_sq
@@ -78,7 +74,6 @@ Grothe.LowerAnalytic.gaussian_gramInputs
 Grothe.LowerAnalytic.gaussian_steinInputs
 Grothe.LowerAnalytic.integral_norm_le_93_mul_norm_of_mem_H21
 Grothe.LowerAnalytic.integral_norm_le_93_of_mem_H21
-Grothe.LowerAnalytic.lower_bound_of_tailNodeCaps
 Grothe.LowerAnalytic.massRow_frame
 Grothe.LowerAnalytic.nodeList_eq_of_capsChars
 Grothe.LowerAnalytic.normQk_le_93

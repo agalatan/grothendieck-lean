@@ -7,8 +7,6 @@ Grothe.Lower.certRow04._native.native_decide.ax_1_1
 Grothe.Lower.certRow05._native.native_decide.ax_1_1
 Grothe.Lower.certRow06._native.native_decide.ax_1_1
 Grothe.Lower.certRow07._native.native_decide.ax_1_1
-Grothe.Lower.certRow08._native.native_decide.ax_1_1
-Grothe.Lower.certRow09._native.native_decide.ax_1_1
 Grothe.Lower.certRow10._native.native_decide.ax_1_1
 Grothe.Lower.certRow11._native.native_decide.ax_1_1
 Grothe.Lower.certRow12._native.native_decide.ax_1_1

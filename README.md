@@ -3,7 +3,7 @@
 This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.4020217618 < K_G^{\mathbb C} \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots
+1.4020221627 < K_G^{\mathbb C} \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
@@ -15,7 +15,7 @@ value, which resolves this conjecture of Haagerup.
 
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
-| lower bound | $1.4020217618 < K_G^{\mathbb C}$ | `14020217618 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
+| lower bound | $1.4020221627 < K_G^{\mathbb C}$ | `14020221627 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
 | upper bound | $K_G^{\mathbb C} \le 1.404556392$ | `1404556392 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSeven.constant_le` |
 | Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperSeven.constant_lt_inv_gammaDagger` |
 
@@ -33,7 +33,7 @@ Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's v
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020217618 < K}$ | $\mathbf{K\le 1.404556392}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020221627 < K}$ | $\mathbf{K\le 1.404556392}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -127,9 +127,10 @@ $\nu = 47/2000$ and an exact rational $\hat B$ (`SparseEnvelope.cap`); $1/B$ is 
    cubic part $\lVert P_{2,1} k \rVert$ (`massRow`, `Grothe/Lower/MassRow.lean`).
 3. **The common scale and the amplitude envelope.** Rows 0.835 and 0.845 use a single circular cubic.
    Its fourth excess selects one of nineteen common shape intervals. Dilating eleven ordinary Stein polynomials
-   provides fourteen further bounds on the row expectations. Within each interval nine mixture prices combine
-   the two expectations and their common Gaussian gate at the actual scale. Rows 0.82 and 0.83 combine
-   quadratic potential bounds with their joint gate. The kernel checks the resulting upper bound on the
+   provides fourteen further bounds on the row expectations. Nine mixture weights have separate discounts for
+   the whole scale range and for scales up to 0.21. The curvature of their common Schur complement gives
+   an additional quadratic discount between the weights. Two outer rows combine quadratic potential bounds
+   with their joint gate. The existing scalar rows 13 and 14 interpolate across their crossover. The kernel checks the resulting upper bound on the
    scalar value throughout 38 amplitude cells. [Central row inequalities](Grothe/LowerAnalytic/SparseSteinRows.lean) ·
    [Outer rows](Grothe/LowerAnalytic/SparseOuterRows.lean) · [Amplitude bound](Grothe/Lower/SparseSteinEnvelope.lean).
 4. **The node caps.** `TailNodeCaps` says that each $\Psi_r$, less $10^{-11}$, lies below a stored rational at each

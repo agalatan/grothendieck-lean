@@ -22,6 +22,8 @@ import Grothe
 #print axioms Grothe.Lower.ResponsePenalty.row_bound
 #print axioms Grothe.Lower.ResponsePenalty.row_bound_of_split
 #print axioms Grothe.Lower.ResponsePenalty.v_block
+#print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.pairGain_strongChord
+#print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.twoScale_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.gain_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 #print axioms Grothe.Lower.SparseEnvelope.endpoint_eq
@@ -32,7 +34,6 @@ import Grothe
 #print axioms Grothe.Lower.SparseOuter.cap7
 #print axioms Grothe.Lower.SteinCut.integral_cutG_dilate
 #print axioms Grothe.Lower.budget_of_bud
-#print axioms Grothe.Lower.certEnvelope
 #print axioms Grothe.Lower.certMassRow
 #print axioms Grothe.Lower.certRow01
 #print axioms Grothe.Lower.certRow02
@@ -41,8 +42,6 @@ import Grothe
 #print axioms Grothe.Lower.certRow05
 #print axioms Grothe.Lower.certRow06
 #print axioms Grothe.Lower.certRow07
-#print axioms Grothe.Lower.certRow08
-#print axioms Grothe.Lower.certRow09
 #print axioms Grothe.Lower.certRow10
 #print axioms Grothe.Lower.certRow11
 #print axioms Grothe.Lower.certRow12
@@ -73,7 +72,6 @@ import Grothe
 #print axioms Grothe.Lower.reserved_gram_budget
 #print axioms Grothe.Lower.rowBound_of_check
 #print axioms Grothe.Lower.rowBound_of_specCells
-#print axioms Grothe.Lower.rowData_facts
 #print axioms Grothe.Lower.rowData_gatesOK
 #print axioms Grothe.Lower.rowFacts_of_checkRow
 #print axioms Grothe.Lower.rowFacts_of_checkSpecRow
@@ -193,7 +191,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.integral_two_linear
 #print axioms Grothe.LowerAnalytic.joint_scalar
 #print axioms Grothe.LowerAnalytic.kside
-#print axioms Grothe.LowerAnalytic.lower_bound_of_tailNodeCaps
 #print axioms Grothe.LowerAnalytic.majEll_le_psiT_of_le
 #print axioms Grothe.LowerAnalytic.massRow_frame
 #print axioms Grothe.LowerAnalytic.moment_lemma
@@ -213,7 +210,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.pieceCoverOK_of_fast
 #print axioms Grothe.LowerAnalytic.pot_le_of_nodeOKNu
 #print axioms Grothe.LowerAnalytic.pot_le_of_pieceBoundsNu
-#print axioms Grothe.LowerAnalytic.profile_bound
 #print axioms Grothe.LowerAnalytic.psiT_le_majPoly
 #print axioms Grothe.LowerAnalytic.psiT_le_majPoly_of_cellOKNu
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
@@ -253,19 +249,13 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.trace4_circular
 #print axioms Grothe.LowerAnalytic.transferInputs_of_witnessCap
 #print axioms Grothe.LowerAnalytic.wickL_mem_H21
-#print axioms Grothe.LowerAnalytic.witnessCap_cert
 #print axioms Grothe.LowerAnalytic.witnessCap_of_VhatOf_le
 #print axioms Grothe.Statement.bounds_bddBelow
-#print axioms Grothe.Statement.constant_isBound
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
-#print axioms Grothe.Statement.isClosed_bounds
-#print axioms Grothe.Statement.le_constant_of_lowerAbove
-#print axioms Grothe.Statement.lt_constant_of_lowerAbove
 #print axioms Grothe.Statement.main_bounds
 #print axioms Grothe.Statement.sparse_stein_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
-#print axioms Grothe.Statement.upperBelow_of_constant_lt
 #print axioms Grothe.Statement.upper_below_tight
 #print axioms Grothe.Statement.upper_bound_tight
 #print axioms Grothe.Upper.BandComparison.compare
@@ -2359,9 +2349,6 @@ import Grothe
 #print axioms Haagerup.SixChannelExact.paid_six_score_le
 #print axioms Haagerup.SixChannelExact.paid_six_score_lt_seven
 #print axioms Haagerup.SixChannelExact.sixDual_check
-#print axioms Haagerup.head_sum_ok
-#print axioms Haagerup.isBound_cert
-#print axioms Haagerup.mean0_ok
 #print axioms Haagerup.mean1_ok
 #print axioms Haagerup.mean2_ok
 #print axioms Haagerup.mean3_ok
@@ -2370,10 +2357,8 @@ import Grothe
 #print axioms Haagerup.mem_bivarT_smoothed
 #print axioms Haagerup.mem_muTigOf
 #print axioms Haagerup.modeOverlapsAt_sound
-#print axioms Haagerup.reg0_ok
 #print axioms Haagerup.reg1_ok
 #print axioms Haagerup.reg2_ok
 #print axioms Haagerup.reg3_ok
 #print axioms Haagerup.reg4_ok
 #print axioms Haagerup.reg5_ok
-#print axioms Haagerup.upper_below_haagerup

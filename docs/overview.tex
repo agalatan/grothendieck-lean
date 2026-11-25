@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4020217618\;<\;\KG\;\le\;1.404556392$\\[6pt]
+\Large $1.4020221627\;<\;\KG\;\le\;1.404556392$\\[6pt]
 \normalsize The Lean~4/Mathlib theorem
 \lean{Grothe.Statement.main\_bounds} proves these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The exact transported Stein lower endpoint is rounded down to $14020217618/10000000000$.
+The exact transported Stein lower endpoint is rounded down to $14020221627/10000000000$.
 The seven Gaussian rounding channels give the upper bound rounded up to $1404556392/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -95,7 +95,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020217618}$ & $\mathbf{1.404556392}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020221627}$ & $\mathbf{1.404556392}$\\\bottomrule
 \end{tabular}
 \end{center}
 The upper bound is $1404556392/1000000000$ (the seven-channel transfer factor $1/(c-\delta)$ rounded up).
@@ -711,15 +711,17 @@ the identity on all the other chaoses (an \emph{identity tail}).
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+e)/(n+1)\to1$.
 \item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu$, with
- $\hat B=70635503391/100000000000$.
+ $\hat B=8829435313/12500000000$.
 \end{itemize}
-The finite-partition transfer gives $\KG\ge 1/B=200000000000000/142651138122623$.
+The finite-partition transfer gives $\KG\ge 1/B=25000000000000/17831387166289$.
 The lower half of \lean{main\_bounds} rounds this exact value strictly down.
 The two central rows use the same circular cubic, fourth excess and residual scale.
 Dilating eleven plain Stein polynomials to four target scales gives fourteen new
 bounds on their expectations. Within each of nineteen common shape intervals, Lean
-checks nine mixture prices on the closed intersections of the two scale chords.
-A second pair of rows combines two quadratic majorants with its shared Gaussian gate.
+checks nine mixture prices on the closed intersections of the two scale chords, globally and up to scale $21/100$.
+The Schur complement has curvature $-g''/2\ge2019911/10^{10}$, giving a quadratic saving at
+intermediate weights. A second pair combines two quadratic majorants with its shared Gaussian gate.
+The ordinary rows 13 and 14 interpolate across their crossover on amplitude cell 34.
 The 38 amplitude intervals then cover the full range of the witness.
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
@@ -778,7 +780,7 @@ The cubic first-moment inequality bounds the residual scale $\tau$ by $93/100$.
 Rows $0.835$ and $0.845$ share that scale, their fourth excess and the Gaussian gate.
 The resulting cap passes through \lean{witnessCap\_of\_circular\_profile} to the matrix transfer
 \lean{SparseStein.lower\_of\_nodeCaps}. The certified node caps \lean{tailNodeCaps\_cert}
-then give $200000000000000/142651138122623\le\KG$ independently of Conjecture~K.
+then give $25000000000000/17831387166289\le\KG$ independently of Conjecture~K.
 
 \subsection{The primal/dual viewpoint}
 For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
