@@ -77,9 +77,9 @@ audit() {
   local prs=""
   command -v gh >/dev/null 2>&1 && prs=$(gh pr list --state open --limit 200 \
     --json number,headRefName,isDraft,labels,headRefOid \
-    --jq '.[] | "\(.headRefName) \(.number) \(.isDraft) \([.labels[].name] | join(",") | if . == "" then "-" else . end) \(.headRefOid)"' \
+    --jq '.[] | [.headRefName, .number, .isDraft, ([.labels[].name] | join(",") | if . == "" then "-" else . end), .headRefOid] | @tsv' \
     2>/dev/null || true)
-  local found=0 todo=0 b own line state behind conflict sha st concl id created tip todo_b action hours pr prn prd prl prsha rev
+  local found=0 todo=0 b own line state behind conflict sha st concl id created tip action hours pr prn prd prl prsha rev summary
   while read -r b; do
     [ -z "$b" ] && continue
     own=$(owner_of "$b")
@@ -99,14 +99,17 @@ audit() {
     fi
     line=$(echo "$runs" | awk -v b="$b" '$1 == b' | head -1)
     action=""
-    pr=$(echo "$prs" | awk -v b="$b" '$1 == b' | head -1); prn=""
-    [ -n "$pr" ] && read -r _ prn prd prl prsha <<< "$pr"
+    pr=$(echo "$prs" | awk -F '\t' -v b="$b" '$1 == b' | head -1); prn=""
+    [ -n "$pr" ] && IFS=$'\t' read -r _ prn prd prl prsha <<< "$pr"
+    sha=""; st=""; concl=""
     if [[ "$b" == cloud/* ]]; then
       state="cloud job branch (no proof check)"
       action="delete it once its cloud jobs are done and their results saved (§11, §14)"
     elif [ -z "$line" ]; then
       state="no proof check found"
-      action="a pushed branch should have a check: push again, or delete it if abandoned"
+      if [ -z "$prn" ]; then
+        action="a pushed branch should have a check: push again, or delete it if abandoned"
+      fi
     else
       read -r _ sha st concl id created <<< "$line"
       hours=$(( ($(date +%s) - created) / 3600 ))
@@ -127,14 +130,24 @@ audit() {
       action="old-style branch name: rename it to ${own:-<agent-id>}/<topic> and open a pull request to land it (AGENTS.md §3, §7)"
     elif [ -n "$prn" ]; then
       rev=$(gh api "repos/{owner}/{repo}/commits/${prsha}/statuses?per_page=100" \
-        --jq '[.[] | select(.context == "Independent review")] | first | "\(.state) \(.description)" // "none"' 2>/dev/null || echo none)
-      state="$state; PR #$prn${prl:+ [$prl]}; review: ${rev:0:60}"
+        --jq '[.[] | select(.context == "Independent review")] | first // empty | "\(.state)\t\(.description)"' 2>/dev/null || echo unavailable)
+      summary=${rev/$'\t'/ }
+      summary=${summary:-none}
+      state="$state; PR #$prn${prl:+ [$prl]}; review: ${summary:0:60}"
       if [[ ",$prl," == *,RFC,* ]] || [[ ",$prl," == *,WIP,* ]] || [ "$prd" = true ]; then
         [ -z "$action" ] && action="PR #$prn is RFC/WIP/draft: answer its review comments; remove the label when it is ready to land"
-      elif [[ "$rev" == success* ]] && [[ "$state" == GREEN* ]]; then
-        action="PR #$prn is green and approved: land it with a comment '/land ${own}' (AGENTS.md §7)"
-      elif [[ "$rev" == failure* ]]; then
+      elif [ "$prsha" != "$tip" ]; then
+        action="PR #$prn moved after the fetch: sync again before acting"
+      elif [ "$rev" = unavailable ]; then
+        action="PR #$prn review status could not be read: retry the audit"
+      elif [[ "$rev" == failure$'\t'* ]]; then
         action="PR #$prn is blocked by review: answer every comment, fix, push, ask for a new review"
+      elif [ "$sha" != "$prsha" ]; then
+        action="PR #$prn has no reported check for its current head: run 'gh workflow run lean.yml --ref $b' when a CI slot is available"
+      elif approved_reviewer "$own" "$rev" >/dev/null; then
+        if [ "$st" = completed ] && [ "$concl" = success ]; then
+          action="PR #$prn is green and approved: land it with a comment '/land ${own}' (AGENTS.md §7)"
+        fi
       elif [ -z "$action" ]; then
         action="PR #$prn waits for a review by a different agent family (AGENTS.md §7a); answer any comments"
       fi
