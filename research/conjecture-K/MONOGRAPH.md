@@ -59,11 +59,9 @@ they are stated with allowance 2.5·10⁻⁵, and the largest admissible allowan
 At ε = 94/125 = 0.752 everything outside the wider central interval (0.7515, 0.863) is proved [author only], and thirteen central rows (rows 1–7 off the peak box, reaching u/λ² ≤ 0.134) admit at
 least 1.021·10⁻⁴ > 10⁻⁴ on every row (> 3.36× the binding room at ε = 299/400, with Row 8 on [0.840, 0.847] inside the proved remote and retained A-core
 rectangles; at ε = 3/4 Lean's `Lower.ρ` alone closes the exterior outside (0.795, 0.864) with nine central rows
-admitting > 7.57·10⁻⁵). The best all-sector bound for Λ̂ at the peak is S + 9.9·10⁻⁵, conditional on the averaged odd-sector premise (P_Ψ) outside the certified regions
-(2.8, 2.9): three times too large for the binding rows at ε = 299/400, and below the allowance of every row at ε = 94/125,
-but only at the peak profile; each of the thirteen rows needs its own all-sector bound (open; the profile transfer costs
-≈ 7·10⁻⁴, 8.6). With the retained functional the A-shell uses 2·10⁻⁵ of the budget; the B-shell, the joint A/B interaction and
-the shared odd-sector interactions remain missing. With the raw functional of K the content inequality is also
+admitting > 7.57·10⁻⁵). At the peak row, the best independently checked all-sector bound for Λ̂ is S + 9.9·10⁻⁵, conditional on the averaged odd-sector premise (P_Ψ) outside the certified regions (2.8, 2.9), while row 7.5.13 [P + C, author only] certifies $F_{\mathrm{joint}}(c^*) \le 0$ pointwise on all of $\mathbb{C}^6$, giving unconditional six-sector $\widehat{\Lambda}(G) < S + 4936/10^8 = S + 49.36\cdot 10^{-6}$ on $u \le 0.0463, u + V \le 0.080051$ (pending independent review): below half the allowance of every row at ε = 94/125,
+but still only at the peak profile; each of the thirteen rows needs its own all-sector bound (open; the profile transfer costs
+≈ 7·10⁻⁴, 8.6). With the retained functional the A-shell uses 2·10⁻⁵ of the budget, and global (P) + $F_{\mathrm{joint}}(c^*) \le 0$ [7.4.16; 7.5.13 author only] close the remaining peak-row sector assembly. With the raw functional of K the content inequality is also
 missing. The gain at stake is about 3·10⁻⁴ on the constant.
 
 ## 1. Setting
@@ -265,7 +263,7 @@ profiles [STATUS §15].
     through Λ̂ (enough for the bound, 1.6):
       remote cap (3.3)  →  retained A-core, S + 2·10⁻⁵ (11.51: tilt 11.12, remainder 11.39, gain 11.40, content 11.61)
         →  A + B core, S + 4.936·10⁻⁵ (7.4.10)            unconditional on the peak energy domain (7.4.16)
-        →  all six sectors, S + 9.9·10⁻⁵ (7.5.3)           odd premise (P_Ψ) open outside the proved regions (7.4.16, 7.5.12)
+        →  all six sectors, S + 4.936·10⁻⁵ (7.5.13, author only; S + 9.9·10⁻⁵ under (P_Ψ) in 7.5.3, proved on strips/regions 7.5.4c, 7.5.12)
         →  consumer (8.1, 8.9–8.13)                        central rows and the Lean statement: open
 
     through Λ (Conjecture K itself):
@@ -1100,6 +1098,22 @@ F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds whe
   S_r and exact two-driver Gaussian tail expectations proves E F_joint(c\*) ≤ 4.9712·10⁻⁵ < 50·10⁻⁶ — hence
   Λ̂(G) < S + 99.36·10⁻⁶ < S + 10⁻⁴ for all six sectors at the peak **without assuming (P)** — for every
   0 ≤ V ≤ 11/100000 = 1.1·10⁻⁴ [P + C · gemini-c1de, independently checked by codex-a7c4 · 7.5.12].
+- **Global all-sector pointwise closure $F_{\mathrm{joint}}(c^*) \le 0$ on $\mathbb{C}^6$.** Choosing the global
+  $U(1)$-invariant visible shift $c^* = -(7/25)\nu$ and global zero-mean compensating form
+  $C_{\mathrm{inv}}(Q, \nu) = -(6801/18910)\Re(Q\bar{\nu})$ ($\mathbb{E}C_{\mathrm{inv}} = 0$ identically, centered
+  odd budget $B_{\mathrm{odd}} \succ \frac{50}{61}I_6$), exact $U(1)$ and conjugation symmetry reduce to $q = w \ge 0$,
+  $\Im A \ge 0$. A sharp anisotropic capped 2-sign inequality
+  $|X + O'| + |X - O'| - 2|X| \le \psi(|X|, q) + (O')^T A(X, q) O'$ (Theorem 1, confocal ellipses; with zero-float 2D
+  Bernstein proofs of $\|D_X A[h]\|_{\mathrm{op}} \le 1/\mu^2$ and $\mu^3 D_X^2 A[h, h] \preceq 2 I_2$) combines with
+  three outward-rounded C++17 parts audited in exact rational arithmetic: (1) potential exteriors on $[0, 8]$ (512 slabs,
+  closing $S_r \ge 25/16$ and $w \ge 11/8$, with true half-circle factor $2$ on $O_{\mathrm{iso}}$ and analytic Jensen diagonal check) plus an exact $w \ge 8$ even+odd analytic exterior; (2) a zero-overlap Smooth-Split $H_{5,\delta}$
+  origin strip on $[0, 11/8]$ (244 slabs, exact Jacobian minorant $f_1(r)f_2(r)$, min pivot $5.47\cdot 10^{-3}$, exact $\min\det_3 = 1.26\cdot 10^{-3}$) certifying unregularized $M_{\mathrm{odd}}(w, v; 0) \prec B_{\mathrm{odd}}$ for
+  $\|v\|_2 \le s_{\mathrm{odd}}(w)$ (closing inner boxes via global `(P)` of 7.4.16); and (3) a 5D convexity–semiconvexity
+  point-corner and flat-quartic `Box5` adaptive bulk cover on $[0, 11/8]$ (98 slabs, 1,272,687 leaves, 0 open, 108,071 $w$-splits, worst margin
+  $-1.752\cdot 10^{-12}$, min 6×6 odd pivot $1.480\cdot 10^{-7}$). This certifies $F_{\mathrm{joint}}(c^*) \le 0$ on all
+  of $\mathbb{C}^6$ (no $|\nu|^2 \le 1/50$ cap), giving unconditional six-sector
+  $\widehat{\Lambda}(G) < S + 4936/10^8 = S + 49.36\cdot 10^{-6}$ across $u \le 0.0463, u + V \le 0.080051$ for all
+  $W \ge 0$ and arbitrary sharing [P + C, author only · gemini-c1de · 7.5.13]. [Proof and replay](sources/global-all-sector-gemini-c1de/PROOF.md)
 - **Tiny odd energy, a dominant odd sector, or proportional drivers** [P + C · codex-91d4 · 7.5.7]; the remote slack
   S − max(B(u) − pu, Λ(q)) exceeds 10⁻⁴ for u ≤ 0.03 [P + C · 7.2.11].
 - **Extremely diffuse laws.** A finite joint Edgeworth expansion with explicit remainder settles a box near u\*
@@ -1225,12 +1239,13 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    u + V ≤ 0.080051, with arbitrary sharing and phases (2.8). A second target, with no
    caps on the driver energies but with content premises that are open, is the common cost 23/100 at the A-tilt alone
    (2.8).
-2. **The odd sectors over a core with A/B shells**: remote cores are done at the peak (2.9). With A/B shells the base
-   can vanish quadratically at fixed remote values, so an argument must average over the Gaussian drivers; the
-   compensation of 2.9, which keeps both Q/ν channels in the conditional inequality and removes them by E Q = 0, is
-   the model. The target is the averaged premise (P_Ψ) of 2.9, or the compact averaged bound of its centred joint
-   form, outside the small-energy and odd-dominance regions of 7.4.16 and 7.5.12. *Gives:* with item 1, Λ̂(G) < S + 9.9·10⁻⁵ for every G within
-   the response caps at the peak (2.9).
+2. **The odd sectors over a core with A/B shells**: remote cores are done at the peak (2.9). Independently reviewed
+   pieces establish $(P_\Psi)$ and $F_{\mathrm{joint}}(c^*)$ on the small-$W$ strips (7.5.4c) and small-$V$/odd-dominance
+   regions (7.4.16, 7.5.12). **Row 7.5.13 [P + C, author only]** now certifies $F_{\mathrm{joint}}(c^*) \le 0$ pointwise
+   on all of $\mathbb{C}^6$ at the peak row (with $c^* = -(7/25)\nu$, no $|\nu|^2 \le 1/50$ cap), giving unconditional
+   six-sector $\widehat{\Lambda}(G) < S + 4936/10^8 = S + 49.36\cdot 10^{-6}$ throughout $u \le 0.0463, u + V \le 0.080051$
+   for all $W \ge 0$ and arbitrary sharing; independent proof re-derivation and full C++ replay remain required before
+   marking item 2 independently verified.
 3. **A consumer whose rows these bounds fit** (2.10): cover the complementary t regions with a fixed ε, using the
    t-dependent energy caps, and state the consumer in Lean. The peak bound covers t ∈ [0.84, 0.851] only. A simple
    first step is one new row at ε = 149/200 with an all-sector bound there, which gives 1.40171 (below the proved
@@ -1475,7 +1490,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.62 |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.16 |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.12 |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.13 |
 | 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |
 | 4 false statements | section 13 (and 14) |

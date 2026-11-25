@@ -1764,3 +1764,20 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 |---|---:|---|
 | `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
 | `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |
+
+## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
+
+- [Proof and replay instructions](sources/global-all-sector-gemini-c1de/PROOF.md) and
+  [C++17 interval certifier, exact rational verifier, saved certificate and 23 corruption controls](code/global-all-sector-gemini-c1de/) (tag KGAS; STATUS 7.5.13; **P + C, author only**). All files are committed in the repository with zero external dependencies left outside.
+- **Replay:**
+  - Exact rational audit of saved `result.json`, zero-float 2D Bernstein proofs of Lemmas L1/L2 and Smooth-Split $H_{5,\delta}$ (Lemmas S1/S2), $\psi(r, q)$ calculus, $w \ge 8$ even+odd analytic exteriors, analytic Jensen diagonal lower-bound controls, and Parts 1–3 contiguity/PSD/handoffs (< 1 s, Python 3 stdlib only, `-I`, rejects `-O`): `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/test_controls.py` (23 negative/corruption controls including Part 3 `RingGeom` `hT` and `AngGeom` `df` inward-rounding regressions, live C++ even & odd false-target controls, and `-DNDEBUG` compile rejection).
+  - Full C++17 outward-rounded (`FE_UPWARD`) 8-thread interval replay (`33,684` CPU-s / `11,701` s wall; compiles/runs to a temporary file, audits all 3 parts, and verifies exact bit-for-bit equality against committed `result.json` without overwriting it; pass `--replay-cpp --update-result` only to intentionally regenerate `result.json`): `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/global-all-sector-gemini-c1de/PROOF.md` | 31,333 B | `e98ee17b947fa8792d47a5a72c93383ac83a84c0881c9d8531fc8b533e2e0b22` |
+| `code/global-all-sector-gemini-c1de/README.md` | 3,008 B | `194c99e54a6901d354f84e10ab710f92524fe358fe5e5b3275393d062203f2ae` |
+| `code/global-all-sector-gemini-c1de/certify_all_sector.cpp` | 162,100 B | `2186d7971f9693cc2440fe794eab29ffb80a0ca3b775f916583cb903eab0705c` |
+| `code/global-all-sector-gemini-c1de/verify.py` | 30,836 B | `fc9af6813e2bf7430989ff1bce18aa6db27f287b2997fd8c874ec3ddf1f92e17` |
+| `code/global-all-sector-gemini-c1de/result.json` | 546,108 B | `fe5e948a3090d64692064575268289490f7f89d3ab0747ee27dfc09dff1bdcbb` |
+| `code/global-all-sector-gemini-c1de/test_controls.py` | 10,455 B | `2d4586ffd9c33d8873cd59a4b0f24989f635865009193c2a944cf4e0cf6053ef` |
