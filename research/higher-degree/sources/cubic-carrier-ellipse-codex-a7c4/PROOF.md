@@ -8,6 +8,8 @@ $$\boxed{\quad u^2+\frac{2}{\pi}t^2\le\rho_*^2.\quad} \tag{1}$$
 
 The two quantities on the left may depend on exactly the same Gaussian coordinates. For the capped degree-five game this implies an unconditional payoff below $500/701$ throughout $0\le t\le0.31720829$ using the independently reviewed radius $2287/2500$. Using the stronger recorded radius $4571/5000$ gives $t\le0.31975417$. The latter input has author-checked paper proof and independently replayed arithmetic as labelled in [Conjecture K ledger, row 3.7](../../../conjecture-K/STATUS.md). The existing Gaussian-buffer estimate gave $0.25282$ and $0.25465$, respectively. [Gaussian-buffer proof](../buffer-surplus-codex-a7c4/PROOF.md)
 
+The linear lift was also derived independently in [PR #658](https://github.com/agalatan/grothendieck-lean/pull/658). The [elliptic lift](ELLIPTIC.md) proves the open coefficient comparison proposed there and extends the sector-free interval to $0.35859076$ using the existing mass inequality.
+
 ## Lifting a pair of phases to one phase
 
 Rotate coordinates so $P_{1,0}h=tz$, with $z$ a standard complex Gaussian; at $t=0$ choose any unit coordinate. On fresh independent complex Gaussians $v_1,w_1,\ldots,v_m,w_m$ put
