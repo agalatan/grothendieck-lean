@@ -56,6 +56,28 @@ Under the single-driver reflection $y\mapsto-y$, the three odd Wick monomials ha
 
 At the balanced example $s=1$, exact Gaussian moments give $u=12$, normalized fourth excess $31/3$, and $\mathbb E[\bar z_j q|q|^2]=(48,4,44)_j$. The example lies between the unconditional low- and high-excess regimes in §6.3.43 and §6.3.41 at the upper end of the energy band.
 
+### A content coefficient below one fifth for this family
+
+For the displayed $A_s$ family, the real coefficients of the surrogate have covariance
+$$
+ M=\begin{pmatrix}1+2s^2&s&0\\s&4+s^2&-2s\\0&-2s&1+3s^2\end{pmatrix}.
+$$
+Indeed these coefficients are $-H_2H_3+s(H_3^2-1)$, $2H_1H_3-sH_2H_3$, and
+$-H_1H_2-sH_1H_3+s(H_2^2-1)$, with independent standard normal $H_j$.
+For any $v=(h,k,l)\in\mathbb R^3$ we have
+$$
+ 4(1+s^2)\|v\|^2-v^\top Mv
+ =3(h-sk/3)^2+3(l+2sk/3)^2+(4/3)s^2k^2+2s^2h^2+s^2l^2.
+$$
+Thus $\tau=\|M\|_{\rm op}/\operatorname{tr} M\le 2/3$, since its trace is $6(1+s^2)$.
+This ratio is invariant under scaling the cubic to a prescribed energy. Take $t=2/3$ in the small-covariance proof of 6.3.16a. Its scalar coefficients $(c_0,c_1,c_3,\gamma)$ are
+$(57244599935,-1501543759,3157217,213543031787)/10^{12}$. The coefficient of the upper bound on the second moment is positive since $(37/3)(1+4t)>100/3$. The resulting uniform coefficient is
+$$
+ c_0+c_1+\gamma t+c_3\left(15[(37/3)(1+4t)-100/3]-34/3\right)
+ =\frac{595896997819}{3000000000000}<\frac15.
+$$
+Therefore $C(q_s)^2\le (595896997819/3000000000000)D(q_s)$ at all three rows for every $s>0$ and all normalized energies in the band.
+
 ### Excluding prior complex-block presentations
 
 It suffices to exclude these presentations for the leading homogeneous cubic, since Wick corrections only add linear terms. A complex linear carrier of dimension at least two with exactly one factor in each monomial would have $F(b)=0$ for all b in it, by taking the second holomorphic directional derivative. But $F(b)=0$ means b is zero or an eigenvector of $A_s$. Its three distinct eigenlines cannot contain a two-plane.

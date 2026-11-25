@@ -602,7 +602,7 @@ The opposite driver character X̄H(Y) can be included at arbitrary strength in t
 
 With several drivers and no self-interaction, the folded law is a proper Gaussian mixture. A bound on the directional real covariance gives C² ≤ (47/200)D for every choice of bath quadratics. In particular (|X|² − 1)U(Y) + X²·conj(V(Y)) is covered for arbitrary linear U,V by taking Y as the driver block. [Many-driver proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md)
 
-A real phase of the cubic can have an independent real Gaussian carrier even when no complex carrier exists. Angular averaging recovers the full content norm from the real coordinate covariances with a single sign. A three-coordinate example realizes every positive ratio of odd to even energy, including equal weights. [Real-driver proof](sources/real-driver-blocks-codex-a7c4/PROOF.md)
+A real phase of the cubic can have an independent real Gaussian carrier even when no complex carrier exists. Angular averaging recovers the full content norm from the real coordinate covariances with a single sign. A three-coordinate example realizes every positive ratio of odd to even energy, including equal weights. Its normalized covariance is at most 2/3, giving C² ≤ (595896997819/3000000000000)D throughout this explicit family. [Real-driver proof](sources/real-driver-blocks-codex-a7c4/PROOF.md)
 
 **Open in L4:** mixtures of the odd-X core with the even-X terms (|X|² − 1)V(Y), X²W̄(Y) or R₀(Y) beyond the mixed-character neighbourhood of 6.3.9b and the real-block class [6.3.16–6.3.16b]; several
 self-interacting drivers [6.3.17]; and the **raw content inequality for an arbitrary intermediate-kurtosis cubic on R**

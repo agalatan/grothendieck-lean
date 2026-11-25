@@ -87,6 +87,9 @@ def check(s):
 
     real_coeffs = quadrics(*(variable(3, i) for i in range(3)), s)
     a = [add(constant(3, real_moment(p)), scale(p, -1)) for p in real_coeffs]
+    covariance = tuple(tuple(real_moment(multiply(left, right)) for right in a) for left in a)
+    require(covariance == ((1 + 2*s**2, s, 0), (s, 4 + s**2, -2*s), (0, -2*s, 1 + 3*s**2)),
+            "covariance of the explicit family")
     variance = add(*(multiply(p, p) for p in a))
     require(all(real_moment(p) == 0 for p in a), "centered quadratic coefficients")
     require(real_moment(variance) == odd_norm + even_norm, "law energy")
@@ -111,5 +114,14 @@ def check(s):
 
 
 if __name__ == "__main__":
+    # The positive-square identity in the note bounds ||M||/tr(M) for every s.
+    t = Fraction(2, 3)
+    c0, c1, c3, gamma = (Fraction(x, 10**12) for x in
+                          (57244599935, -1501543759, 3157217, 213543031787))
+    coeff = Fraction(37, 3) * (1 + 4*t) - Fraction(100, 3)
+    cap = c0 + c1 + gamma*t + c3 * (15*coeff - Fraction(34, 3))
+    require(coeff > 0 and cap == Fraction(595896997819, 3000000000000) < Fraction(1, 5),
+            "scalar envelope at normalized covariance 2/3")
+    print(f"all-ratio explicit-family content coefficient {cap} < 1/5")
     for s in (Fraction(1), Fraction(1, 3), Fraction(2)):
         check(s)
