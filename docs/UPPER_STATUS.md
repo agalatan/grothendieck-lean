@@ -247,7 +247,7 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   separate way to seek those bounds, not an assumption of `main_bounds`.
 * The lower endpoint is also closed: `main_bounds` in `MainResult.lean`
   gives the lower bound from the certificate of the witness with an identity
-  tail (`coupled_stein_endpoint`) and the node caps of its rows
+  tail (`sparse_stein_endpoint`) and the node caps of its rows
   (`tailNodeCaps_cert`); see [LEAN_DETAILS.md](LEAN_DETAILS.md) and
   [CAPS.md](CAPS.md).
 
