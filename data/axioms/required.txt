@@ -26,8 +26,6 @@ Grothe.Lower.SharpEnvelope.check
 Grothe.Lower.SharpEnvelope.endpoint_eq
 Grothe.Lower.SharpEnvelope.exact_scalar_cap
 Grothe.Lower.SharpEnvelope.scalar_contact
-Grothe.Lower.TightShared.endpoint_eq
-Grothe.Lower.TightShared.profile_bound
 Grothe.Lower.WeightedTight.endpoint_eq
 Grothe.Lower.WeightedTight.profile_bound
 Grothe.Lower.WeightedTight.rounded_lt
@@ -112,7 +110,6 @@ Grothe.LowerAnalytic.sharp_lower_bound_of_tailNodeCaps
 Grothe.LowerAnalytic.tailNodeCaps_cert
 Grothe.LowerAnalytic.tenH_le_tenS
 Grothe.LowerAnalytic.tenS_le_sq_sum
-Grothe.LowerAnalytic.tightShared_deductions
 Grothe.LowerAnalytic.transferInputs_of_witnessCap
 Grothe.LowerAnalytic.weightedTight_deductions
 Grothe.LowerAnalytic.witnessCap_tight
@@ -127,8 +124,6 @@ Grothe.Statement.main_bounds_refined
 Grothe.Statement.sharedGateEndpoint_le_of_tailNodeCaps
 Grothe.Statement.shared_gate_endpoint
 Grothe.Statement.sharp_lower_endpoint
-Grothe.Statement.tightSharedEndpoint_le_of_tailNodeCaps
-Grothe.Statement.tight_shared_endpoint
 Grothe.Statement.upper_below_tight
 Grothe.Statement.upper_bound_tight
 Grothe.Statement.weightedTightEndpoint_le_of_tailNodeCaps

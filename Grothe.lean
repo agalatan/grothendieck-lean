@@ -78,7 +78,6 @@ import Grothe.Lower.SpecRows
 import Grothe.Lower.Stein
 import Grothe.Lower.Support
 import Grothe.Lower.Sweep
-import Grothe.Lower.TightSharedEnvelope
 import Grothe.Lower.Transfer
 import Grothe.Lower.TransferFinite
 import Grothe.Lower.TransferL2
@@ -3443,7 +3442,6 @@ import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.SixthMomentData
 import Grothe.LowerAnalytic.SpectralBudget
 import Grothe.LowerAnalytic.Tensor
-import Grothe.LowerAnalytic.TightSharedBound
 import Grothe.LowerAnalytic.WeightedSchurRows
 import Grothe.LowerAnalytic.WeightedTightBound
 import Grothe.LowerAnalytic.WickChaos

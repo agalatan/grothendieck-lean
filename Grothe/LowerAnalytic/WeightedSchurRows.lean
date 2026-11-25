@@ -1,5 +1,5 @@
 import Grothe.Lower.WeightedSchur
-import Grothe.Lower.TightSharedEnvelope
+import Grothe.Lower.EnvelopeTight
 
 set_option warningAsError true
 
@@ -14,6 +14,16 @@ Agent-ID: codex-a7c4
 
 open MeasureTheory
 open scoped BigOperators
+
+namespace Grothe.Lower.TightShared
+
+open LowerAnalytic
+
+def row8 : EnvRow := ({ row08 with cap := cap08Tight } : Row).env
+
+def row9 : EnvRow := ({ row09 with cap := cap09Tight } : Row).env
+
+end Grothe.Lower.TightShared
 
 namespace Grothe.Lower.SharedGate.WeightedSchur
 

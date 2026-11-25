@@ -48,11 +48,6 @@ theorem shared_gate_endpoint :
     (Grothe.Lower.SharedGate.endpoint : ℝ) ≤ complexGrothendieckConstant :=
   sharedGateEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
 
-/-- The tightened circular rows, coupled at their common gate, give this exact lower endpoint. -/
-theorem tight_shared_endpoint :
-    (Grothe.Lower.TightShared.endpoint : ℝ) ≤ complexGrothendieckConstant :=
-  tightSharedEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
-
 /-- Exact endpoint from pricing the Gaussian gate at the affine mixture weight. -/
 theorem weighted_tight_endpoint :
     (Grothe.Lower.WeightedTight.endpoint : ℝ) ≤ complexGrothendieckConstant :=
