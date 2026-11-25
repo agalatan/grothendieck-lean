@@ -2407,6 +2407,7 @@ Grothe.UpperQuad.TwistEllCheck.Facts.j3Range18._native.native_decide.ax_1_1
 Grothe.UpperQuad.TwistEllCheck.Facts.j3Range19._native.native_decide.ax_1_1
 Grothe.UpperQuad.TwistEllCheck.Facts.j3Range20._native.native_decide.ax_1_1
 Grothe.head_check._native.native_decide.ax_1_1
+Haagerup.AngularSelector.NumericWitness.budgets_ok._native.native_decide.ax_1_1
 Haagerup.Data.tcell_rows_ok._native.native_decide.ax_1_1
 Haagerup.Data.tcell_sos_ok._native.native_decide.ax_1_1
 Haagerup.Data.tig_mu_ok._native.native_decide.ax_1_1
@@ -2414,3 +2415,4 @@ Haagerup.Data.tig_sos_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.head_and_floors_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.mean_ok._native.native_decide.ax_1_1
 Haagerup.SixChannelExact.region_ok._native.native_decide.ax_1_1
+Haagerup.SixChannelExact.sixDual_check._native.native_decide.ax_1_1

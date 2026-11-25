@@ -263,6 +263,15 @@ theorem norm_pres_le_rho : ‖pres hfm hgm hfb hgb‖ ≤ ρ := by
   rw [cK, hy, ← cbound_zero]
   exact norm_cf_le (norm_kt_le hfb hgb) 0 y
 
+include hfm hgm hfb hgb in
+/-- **Certified sharp scale bound `τ = ‖p‖ ≤ 93/100`**, from `‖p‖² = ⟪c₀, p⟫ ≤ E|p|` (`|c₀| ≤ 1`)
+and the certified cubic radius bound `norm_starProjection_H21_le_93`. -/
+theorem norm_pres_le_93 : ‖pres hfm hgm hfb hgb‖ ≤ 93 / 100 := by
+  refine norm_starProjection_H21_le_93 n ?_
+  filter_upwards [cfL_ae (measurable_kt hfm hgm) (norm_kt_le hfb hgb) 0] with y hy
+  rw [cK, hy, ← cbound_zero]
+  exact norm_cf_le (norm_kt_le hfb hgb) 0 y
+
 end shared
 
 /-- **The node caps of the potentials of the rows with an identity tail `ν`** (in hat units): at
@@ -319,6 +328,97 @@ theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e
   exact ⟨_, rowSharedWith_frame hfm hgm hfb hgb (rowData[k]) (rowR k) hg'.1.1 hg'.1.2
     (hRk ▸ hRg.1.1) (hRk ▸ hRg.1.2) (hRk ▸ hRg.2) he hcaps' (by exact_mod_cast hδ.le) f g hf hg hfa
     hga hP X1 hpA (fun y => eval y (radU A B)) hX (fun y => eval_radU_nonneg A B y)⟩
+
+/-- Simultaneous Gaussian reduction exposing the normalized circular cubic `(A, B)` of the residual,
+the certified sharp scale bound `τ ≤ 93/100`, and integrability of each row potential at every
+nonnegative scale `σ'`. -/
+def CircularSharedReduction {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    (rows : List Row) (V t : ℝ) (Qh v : E) : Prop :=
+  ∃ (d : ℕ) (J : Fin d → Fin d → ℝ) (A B : MvPolynomial (Fin d) ℝ)
+    (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ x : ℝ),
+    Chaos3 A ∧ ∫ y, eval y A ^ 2 ∂(stdGaussian d) = 1 / 2 ∧ Circular J A B ∧
+    Moments (stdGaussian d) (fun y => eval y (radU A B)) x ∧
+    GramInputs (stdGaussian d) (fun y => eval y (radU A B)) ∧
+    0 ≤ τ ∧ τ ≤ 93 / 100 ∧ τ ≤ ρ ∧
+    (∀ y, ‖X1 y‖ ^ 2 = τ ^ 2 * eval y (radU A B)) ∧
+    ∀ r ∈ rows, ∃ Ψ : ℝ → ℝ,
+      RowSharedWith r Ψ (stdGaussian d) (fun y => eval y (radU A B)) X1 X2 X3 τ V t Qh v ∧
+      ∀ σ' : ℝ, 0 ≤ σ' → Integrable (fun y => Ψ (σ' * √(eval y (radU A B)))) (stdGaussian d)
+
+lemma circularSharedReduction_congr {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {rows : List Row} {V t : ℝ} {Qh₁ v₁ Qh₂ v₂ : E}
+    (h : CircularSharedReduction rows V t Qh₁ v₁)
+    (hn : ∀ c : ℝ, ‖Qh₁ + c • v₁‖ = ‖Qh₂ + c • v₂‖) :
+    CircularSharedReduction rows V t Qh₂ v₂ := by
+  obtain ⟨d, J, A, B, X1, X2, X3, τ, x, hA, haa, hc, hM, hG, h0, h93, hρ, hX, hrows⟩ := h
+  refine ⟨d, J, A, B, X1, X2, X3, τ, x, hA, haa, hc, hM, hG, h0, h93, hρ, hX, fun r hr => ?_⟩
+  obtain ⟨Ψ, ⟨hcap, hi, hg, hV⟩, hInt⟩ := hrows r hr
+  exact ⟨Ψ, ⟨hcap, hi, hg, by rw [← hn]; exact hV⟩, hInt⟩
+
+/-- **The simultaneous circular Gaussian reduction in the coordinate frame**, sharpening
+`sharedReduction_frame` with the certified cubic radius bound `‖p‖ ≤ 93/100` and exposing the
+circular cubic law `(A, B)` so tightened rows can invoke antiholomorphic Stein certificates. -/
+theorem circularSharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e ν = ε)
+    (f g : L2G (n + 1))
+    (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
+    (hg : g ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
+    (hP : (H10 (n + 1)).starProjection (hOf (n + 1) f g) = ((tOf (n + 1) f g : ℝ) : ℂ) • zeta0 n)
+    (hcaps : TailNodeCaps (nuHat ν)) :
+    CircularSharedReduction rowData (VhatOf (n + 1) e ν f g) (tOf (n + 1) f g) (QhOf (n + 1) f g)
+      (vL (n + 1) 0) := by
+  have hfm : Measurable (trunc ⇑f) := measurable_trunc (Lp.stronglyMeasurable f).measurable
+  have hgm : Measurable (trunc ⇑g) := measurable_trunc (Lp.stronglyMeasurable g).measurable
+  have hfb := norm_trunc_le ⇑f
+  have hgb := norm_trunc_le ⇑g
+  have hfa : ⇑f =ᵐ[stdGaussian ((n + 1) + (n + 1))] trunc ⇑f := trunc_ae hf
+  have hga : ⇑g =ᵐ[stdGaussian ((n + 1) + (n + 1))] trunc ⇑g := trunc_ae hg
+  set p := pres hfm hgm hfb hgb with hp
+  obtain ⟨A, B, hA, hc, haa, hpA⟩ := poly_rep_H21 n hn (pres_mem hfm hgm hfb hgb)
+  set X1 : (Fin (n + n) → ℝ) → ℂ := fun y => (‖p‖ : ℂ) * (⟨eval y A, eval y B⟩ : ℂ) with hX1def
+  have hX : ∀ y, ‖X1 y‖ ^ 2 = ‖p‖ ^ 2 * eval y (radU A B) := fun y => by
+    rw [hX1def, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Complex.sq_norm,
+      Complex.normSq_mk, radU]
+    simp only [map_add, map_mul]
+  have hP_norm : ∀ y, ‖(⟨eval y A, eval y B⟩ : ℂ)‖ = √(eval y (radU A B)) := fun y => by
+    rw [← Real.sqrt_sq (norm_nonneg _), Complex.sq_norm, Complex.normSq_mk, radU]
+    simp only [map_add, map_mul]
+  have hP_meas : AEStronglyMeasurable (fun y : Fin (n + n) → ℝ => (⟨eval y A, eval y B⟩ : ℂ))
+      (stdGaussian (n + n)) := by
+    have heq : (fun y : Fin (n + n) → ℝ => (⟨eval y A, eval y B⟩ : ℂ))
+        = fun y : Fin (n + n) → ℝ => ((eval y A : ℝ) : ℂ) + ((eval y B : ℝ) : ℂ) * Complex.I := by
+      funext y; apply Complex.ext <;> simp
+    rw [heq]
+    exact (Complex.continuous_ofReal.comp_aestronglyMeasurable (integrable_eval A).aestronglyMeasurable).add
+      ((Complex.continuous_ofReal.comp_aestronglyMeasurable (integrable_eval B).aestronglyMeasurable).mul_const _)
+  have hP_int : Integrable (fun y : Fin (n + n) → ℝ => ‖(⟨eval y A, eval y B⟩ : ℂ)‖)
+      (stdGaussian (n + n)) := by
+    simp_rw [hP_norm]
+    exact integrable_sqrt (eval_radU_nonneg A B) (integrable_eval _)
+  refine ⟨n + n, Jstd n, A, B, X1, ⇑(X2e hfm hgm hfb hgb), ⇑(X3e hfm hgm hfb hgb), ‖p‖, _,
+    hA, haa, hc, gaussian_moments A B hA haa hc, gaussian_gramInputs A B hA haa hc,
+    norm_nonneg _, norm_pres_le_93 hfm hgm hfb hgb, norm_pres_le_rho hfm hgm hfb hgb, hX, ?_⟩
+  intro r hr
+  obtain ⟨k, hk, rfl⟩ := List.mem_iff_getElem.1 hr
+  have hkr : rowData.getD k row01 = rowData[k] := List.getD_eq_getElem _ _ hk
+  have hg' := List.all_eq_true.1 rowData_gatesOK _ hr
+  simp only [rowGatesOK, Bool.and_eq_true] at hg'
+  have hlen := rowGates_consistent.1
+  have hk' : k < rowGates.length := hlen ▸ hk
+  have hRg := List.all_eq_true.1 rowGates_ok _ (List.getElem_mem hk')
+  simp only [Bool.and_eq_true] at hRg
+  have hRk : rowR k = (rowGates[k]).2.2.2 := by unfold rowR; rw [List.getD_eq_getElem _ _ hk']
+  have hδ := List.all_eq_true.1 rowData_delta_pos _ hr
+  simp only [decide_eq_true_eq] at hδ
+  have hcaps' := capsHold_rowPot (nuHat ν) k hk (hcaps k hk)
+  rw [hkr] at hcaps'
+  refine ⟨_, rowSharedWith_frame hfm hgm hfb hgb (rowData[k]) (rowR k) hg'.1.1 hg'.1.2
+    (hRk ▸ hRg.1.1) (hRk ▸ hRg.1.2) (hRk ▸ hRg.2) he hcaps' (by exact_mod_cast hδ.le) f g hf hg hfa
+    hga hP X1 hpA (fun y => eval y (radU A B)) hX (fun y => eval_radU_nonneg A B y), ?_⟩
+  intro σ' hσ'
+  have hi := integrable_pot_comp (E := (rowData[k]).E) (R := rowR k) (ℓ := (rowData[k]).ell)
+    (β := (rowData[k]).beta) (a := aFib (rowData[k]).b1 (rowData[k]).b2 (rowData[k]).b3)
+    (ν := nuHat ν) hg'.1.1 (hRk ▸ hRg.1.1) hP_meas hP_int σ' hσ'
+  simpa only [hP_norm] using hi
 
 end
 

@@ -12,14 +12,13 @@ version plus what the rulebook does not say.
 
 `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`), without hypotheses:
 
-    1.4019156097 < K_G^ℂ ≤ 1.404556407 < 1/γ† = 1.40457593…
+    1.4020110501 < K_G^ℂ ≤ 1.404556392 < 1/γ† = 1.40457593…
 
-- Lower bound: `14019156097 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
+- Lower bound: `14020110501 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
   (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
-  The bound is the exact endpoint `shared_gate_endpoint` rounded strictly downward.
-- Upper bound: `1404556407 / 1000000000`, weak (≤). Six Gaussian rounding channels: the library `Grothe/UpperSix/`,
-  the certificate `Grothe/UpperSixExact/`. `Grothe/UpperResult.lean` has exactly three theorems:
-  `Grothe.UpperSix.bound` (the exact value, for every finite matrix), `constant_le` (rounded up) and
+  The bound is the exact endpoint `coupled_stein_endpoint` rounded strictly downward.
+- Upper bound: `1404556392 / 1000000000`, weak (≤). Seven Gaussian rounding channels. The selector is in `Grothe/UpperSelector/`, on the six certified channels in `Grothe/UpperSix/` and `Grothe/UpperSixExact/`. `Grothe/UpperResult.lean` has exactly three theorems:
+  `Grothe.UpperSeven.bound` (the exact value, for every finite matrix), `constant_le` (rounded up) and
   `constant_lt_inv_gammaDagger`.
 - `1/γ†` is Haagerup's proposed value; K is strictly below it.
 - An older, independent single-channel upper proof (`Grothe/UpperTightFinal.lean`, K < 1.404599395362) is still built.
@@ -47,6 +46,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorems |
 | `Grothe/Lower/` | lower certificate: exact rational checker, rows, Stein cuts, mass row, envelope, transfer to matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis for the lower bound; the node caps (`Cap*.lean`, `CapRowKK`, `CapPieces/`, `CapNodes`) |
+| `Grothe/UpperSelector/` | the angular selector, seven-channel mixed head and transfer |
 | `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six-channel upper proof: the library, and the certificate of the bound |
 | `Grothe/Upper/`, `Grothe/UpperChaos/`, `Grothe/UpperQuad/`, `Grothe/UpperTight*.lean` | the older single-channel upper proof |
 | `GrotheKernel/`, `GrotheCapsKernel/`, `GrotheQuadKernel/`, `GrotheQuadExtKernel/` | Mathlib-free checker programs, precompiled libraries |

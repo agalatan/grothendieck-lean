@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.4019156097 (`main_bounds`) comes from this witness. The certificate was designed for the target 1.4018; the sharp envelope of its rows (ledger 5.7), lowered by the gate that the two binding rows share (ledger 5.8), gives the bound that Lean states. It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.4020110501 (`main_bounds`) uses this witness. Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Pricing their joint Gaussian gate gives the [coupled scalar cap](COUPLED_STEIN.md). It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 
@@ -9,11 +9,7 @@ records how the new witness was found and certified:
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
 K ≈ 1.40212 (ledger 3.1). **The integer certificate is complete** (ledger 5.1): an exact envelope over t ∈ [0, 0.9]
 stays below the design target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵; its exact maximum gives
-1/B = 1.4019105…. Lean uses the sharp envelope of the same rows (ledger 5.7), in which the weight of the mixture of the two
-binding rows varies with t, and then the common Gaussian gate of those two rows (ledger 5.8), which lowers the cap
-further; `main_bounds` states the reciprocal of the resulting cap, rounded down. Three other workers re-checked its node caps, its spectral rows and 31 of its cap pieces with code of their own,
-and 5.1 lists what is checked by one hand only. It does not reach 1.402. The whole certificate is now in Lean
-(`shared_gate_endpoint` and `main_bounds`, `Grothe/MainResult.lean`; ledger §6 records the port).
+1/B = 1.4019105…. The coupled proof retains the same node caps. It combines the two Stein laws before taking the maximum on the 38-cell amplitude cover. The exact lower endpoint is 4000000000000/2853044560237 (`coupled_stein_endpoint` in `Grothe/MainResult.lean`). Ledger §6 records the node-cap port.
 
 It is research material: nothing here is imported by Lean or checked by CI. The Lean proof itself lives in `Grothe/`
 (the witness, the rows, the envelope and the tail node caps; `docs/LEAN_DETAILS.md`), ported as ledger §6 describes.

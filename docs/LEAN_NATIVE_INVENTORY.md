@@ -19,8 +19,9 @@ Archived upper variants have separate preserved inventories under
 ## Lower bound
 
 Every native fact of the lower bound is one sequential exact computation; most of them sit in modules of their own, so
-that Lake checks them in separate processes. All of them are in the axiom closure of `shared_gate_endpoint` and `main_bounds`,
-which `scratch/Axioms.lean` reports. Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
+that Lake checks them in separate processes. The coupled endpoint uses the native scalar certificates for
+rows 01–07 and 10–14. The two active rows use kernel-checked antiholomorphic Stein bounds. The shared witness
+also uses the node-cap facts below. The exact dependencies are reported in `scratch/Axioms.lean`. Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
 number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a block of consecutive nodes or pieces.
 
 | family | facts | module | what is checked | used by |
@@ -43,8 +44,8 @@ piece facts; CI replays them from a verified build cache. No per-fact timing is 
 ## Upper bound
 
 This section covers the older single-channel upper proof (`Grothe/UpperTightFinal.lean`, `K < 1.404599395362`), which
-is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.404556407`, comes from the six-channel proof; its native
-facts are those of the six-channel allowlist named above. The table below is not complete (the quadrature facts under
+is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.404556392`, comes from the seven-channel proof. It uses the six-channel native comparisons and
+`Haagerup.AngularSelector.NumericWitness.budgets_ok` for the final mixed computation. The table below is not complete (the quadrature facts under
 `Grothe/UpperQuad/` are not in it); `data/axioms/native.txt` is the full list.
 
 **Exact production phase moments (#40(b)).** `PhaseMomentEval` integrates the

@@ -78,8 +78,8 @@ class CheckConstants(unittest.TestCase):
                                     "README.md:2: mentions the older bound 1.40455741"])
 
     def test_retired_list_covers_the_earlier_bounds(self):
-        for old in ("1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.40457588", "1.40455742", "1.40455741",
-                    "1.40455641"):
+        for old in ("1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.4019156097",
+                    "1.40457588", "1.40455742", "1.40455741", "1.40455641"):
             self.assertIn(old, cc.RETIRED)
         # a current bound is never reported as retired, and a longer decimal is not an older one
         _, problems = self.run_check(docs={"README.md": GOOD + "The exact endpoint is 1.4019101234.\n"})
@@ -96,7 +96,7 @@ class CheckConstants(unittest.TestCase):
 
     def test_constants_page_needs_the_exact_values_digit_for_digit(self):
         _, problems = self.run_check(docs={"docs/CONSTANTS.md": GOOD.replace("711969", "7119691")})
-        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSix.bound"])
+        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSeven.bound"])
         _, problems = self.run_check(docs={"docs/CONSTANTS.md": GOOD.replace("14019101 /", "14019102 /")})
         self.assertEqual(
             problems, ["docs/CONSTANTS.md: does not state the exact lower endpoint (endpoint_eq)"]
@@ -104,6 +104,45 @@ class CheckConstants(unittest.TestCase):
         frac = GOOD.replace("$10^{6}/711969$", r"$\frac{10^{6}}{711969}$")
         _, problems = self.run_check(docs={"docs/CONSTANTS.md": frac})
         self.assertEqual(problems, [])
+
+    def test_displayed_exact_expansions_checked_from_integers(self):
+        # Exact integer division: (10**9 * 10**18) // 713266399 == 1402000713060366663
+        self.assertEqual(cc.truncated(cc.Fraction(10**9, 713266399), 18), "1.402000713060366663")
+        good_docs = {
+            "docs/CONSTANTS.md": (
+                GOOD
+                + r"| lower | `14019101 / 10000000` | $1.4019101\ldots$ |" + "\n"
+                + r"which is $1.401910100\ldots$, and $10^{6}/711969 = 1.40455553\ldots$" + "\n"
+                + "## Other numbers you will meet\n"
+                + r"| `1.40191` | earlier $1/B = 1.4019103\ldots$ |" + "\n"
+            ),
+            "docs/overview.tex": GOOD + r"$\KG\ge 10^9/713266399=1.402000713060366663\ldots$" + "\n",
+            "research/identity-tail/README.md": GOOD + "1/B = 10⁹/713266399 = 1.402000713…\n",
+        }
+        _, problems = self.run_check(docs=good_docs)
+        self.assertEqual(problems, [])
+        # Float64 drift in table cell / prose (no `=` adjacent) or in `p/q = 1.40…` is rejected
+        bad_constants = (
+            GOOD
+            + r"| lower | `14019101 / 10000000` | $1.4019102\ldots$ |" + "\n"
+            + r"which is $1.402000713018307288\ldots$" + "\n"
+        )
+        bad_overview = GOOD + r"$\KG\ge 10^9/713266399=1.402000713018307288\ldots$" + "\n"
+        bad_research = GOOD + "1/B = 10⁹/713266399 = 1.402000713018307288…\n"
+        _, problems = self.run_check(docs={
+            "docs/CONSTANTS.md": bad_constants,
+            "docs/overview.tex": bad_overview,
+            "research/identity-tail/README.md": bad_research,
+        })
+        self.assertEqual(
+            problems,
+            [
+                r"docs/CONSTANTS.md:2: quotes 1.4019102\ldots, which is not a truncation of an exact bound",
+                r"docs/CONSTANTS.md:3: quotes 1.402000713018307288\ldots, which is not a truncation of an exact bound",
+                r"docs/overview.tex:2: 1000000000/713266399 starts 1.402000713060366663…, not 1.402000713018307288\ldots",
+                "research/identity-tail/README.md:2: 1000000000/713266399 starts 1.402000713060366663…, not 1.402000713018307288…",
+            ],
+        )
 
     # --- the Lean statement files: stale bounds in docstrings, roles, wrapped fractions -------------------------
 
@@ -154,7 +193,7 @@ class CheckConstants(unittest.TestCase):
         _, problems = self.run_check(statement=STATEMENT + "-- `IsBound ((10 : ℝ) ^ 6 / 711968)`\n")
         self.assertEqual(
             problems,
-            ["Grothe/Statement.lean:2: IsBound (10 ^ 6 / 711968) is not the exact upper bound of Grothe.UpperSix.bound"],
+            ["Grothe/Statement.lean:2: IsBound (10 ^ 6 / 711968) is not the exact upper bound of Grothe.UpperSeven.bound"],
         )
         _, problems = self.run_check(statement=STATEMENT + "-- `LowerAbove ((10 : ℝ) ^ 6 / 711969)`\n")
         self.assertEqual(problems, ["Grothe/Statement.lean:2: the numeric argument of LowerAbove was not recognised"])
