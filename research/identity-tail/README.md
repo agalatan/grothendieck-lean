@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.402 = 1402/1000 (`main_bounds`) comes from this witness. The initial certificate was designed for the target 1.4018 (#525) and reached 1.40191 (#553) with its 1,800-cell envelope (`envB = 7064131/10⁷`, `1/B = 1.4019103…`). Tightening only the two bottleneck rows `0.835` and `0.845` via antiholomorphic Stein calculus and the certified cubic radius `93/100` (with zero node-cap rebuild and a kernel-checked 38-cell envelope `envBTight = 353183/500000`, `B = 713266399/10⁹ = 0.713266399`, `1/B = 1.4020007…`) passes 1.402. It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.402 = 1402/1000 (`main_bounds`) comes from this witness. The initial certificate was designed for the target 1.4018 (#525) and reached 1.40191 (#553) with its 16-cell Lean envelope (`envCells` in `Grothe/Lower/EnvelopeData.lean`, merged from the 1,800-step stage-0 grid, `envB = 7064131/10⁷`, `1/B = 1.4019103…`). Tightening only the two bottleneck rows `0.835` and `0.845` via antiholomorphic Stein calculus and the certified cubic radius `93/100` (with zero node-cap rebuild and a kernel-checked 38-cell envelope `envBTight = 353183/500000`, `B = 713266399/10⁹ = 0.713266399`, `1/B = 1.4020007…`) passes 1.402. It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 

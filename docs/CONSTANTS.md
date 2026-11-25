@@ -72,7 +72,37 @@ bound $K < 1.40490913\ldots$
 
 ## Behind the lower bound
 
-The common Gaussian gate sharpens this lower bound to $1.4019156097<K$. The theorem `Grothe.Statement.shared_gate_endpoint` gives the exact fraction
+The witness is $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$ on $L^2(\mathbb C^n,\gamma)$ with $(\varepsilon,\nu) = (191/250, 47/2000)$. Replacing the law certificates of the two binding rows `0.835` (`row08`, original `row08.cap = 1340727277285011 / 1000000000000000 = 1.340727277285011`) and `0.845` (`row09`, original `row09.cap = 1361923312769063 / 1000000000000000 = 1.361923312769063`) on the unchanged node-cap tables by two-test antiholomorphic Stein certificates (`Grothe/LowerAnalytic/AntiRows/`) and restricting the residual cubic scale via the certified cubic radius bound `93/100` (`norm_pres_le_93`) tightens their caps to `cap08Tight = 1675841 / 1250000 = 1.3406728` and `cap09Tight = 6809419 / 5000000 = 1.3618838`, giving $1/B = 10^9 / 713266399 = 1.402000713\ldots > 1.402$.
+
+| quantity | value | meaning |
+|---|---|---|
+| $\varepsilon$ | `191/250` | weight of the cubic chaos in the witness $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$ |
+| $\nu$ | `47/2000` | weight of the identity tail |
+| $B_{\mathrm{env}}$ (tightened) | `353183/500000` $= 0.706366$ | bound of the kernel-checked tightened envelope certificate (`certEnvelopeTight`, 38 cells), replacing `row08.cap = 1.340727277285011` and `row09.cap = 1.361923312769063` by their antiholomorphic Stein caps `cap08Tight = 1675841/1250000` (`1.3406728`) and `cap09Tight = 6809419/5000000` (`1.3618838`) with the certified cubic radius `93/100` |
+| $B = (1-\nu)B_{\mathrm{env}} + \nu$ | `713266399/1000000000` $= 0.713266399$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
+| $1/B$ | $1.4020007\ldots$ | what the tightened certificate gives; `lower_target` and `main_bounds` state the rounded value $1.402 < 1/B$ |
+| $B_{\mathrm{env}}$ (earlier 16-cell scalar envelope) | `7064131/10000000` | bound of the earlier 16-cell scalar-row envelope (`envCells` in `Grothe/Lower/EnvelopeData.lean`, `B = 14266247843/20000000000`, $1/B = 1.4019103\ldots > 1.40191$) |
+| $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
+
+The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
+At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine
+at $v=c\delta/(\hat\varepsilon\tau)$. Lean checks both branches in the kernel. [Mass-row certificate](../Grothe/Lower/Cert/MassRow.lean).
+
+### Refinements of the earlier scalar-row certificate
+
+Before the antiholomorphic Stein replacement of `row08` and `row09`, two kernel-checked refinements sharpened the earlier 16-cell scalar-row certificate (`1.40191 < K`) on the original 14 scalar rows (`rowData`).
+
+First, for the same Gaussian witness and the original 14 scalar rows, `SharpEnvelope.check` bounds the hat value by
+$\hat B_*=0.7064127708804130589\ldots$. On the central interval the weight of row `0.845` in its mixture with
+row `0.835` varies affinely with $t$. The maximum of the resulting quadratic gives the cap, and the other fourteen
+intervals use fixed weights. The witness cap is $(1-47/2000)\hat B_*+47/2000$; its reciprocal in `Grothe.Statement.sharp_lower_endpoint` gives $K \ge 1.401910946113565640\ldots$ (`lower_bound_sharp` states $1.4019109461 < K$), with exact value in Lean
+
+```text
+909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
+648513273363107644808393943072300421164120888939497691860404687721820234278296395631
+```
+
+Second, the common Gaussian gate sharpens that scalar-row lower bound further to $1.4019156097<K$ (`lower_bound_shared_gate`). The theorem `Grothe.Statement.shared_gate_endpoint` gives the exact fraction
 
 ```text
 909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
@@ -80,33 +110,6 @@ The common Gaussian gate sharpens this lower bound to $1.4019156097<K$. The theo
 ```
 
 Its decimal expansion begins at $1.4019156097084731719682$. The two active rows constrain the same Gaussian variable. For residual scale $\tau\ge4649/20000$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For $\tau\le4649/20000$, a quadratic majorant saves $551/10^8$ on the first row. Pricing their common saving by the smaller of the two mixture weights lowers the uniform hat cap by $243/10^8$ across 16 cells. The row06/row07 cell uses weight $12/25$. On the row12/row13 cell the weight changes from $3/5$ to $22/25$ at $1758/2000$.
-
-The exact endpoint in `Grothe.Statement.sharp_lower_endpoint` gives $K \ge 1.401910946113565640\ldots$. Its value in Lean is
-
-```text
-909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
-648513273363107644808393943072300421164120888939497691860404687721820234278296395631
-```
-
-For the same Gaussian witness and the same certified rows, `SharpEnvelope.check` bounds the hat value by
-$\hat B_*=0.7064127708804130589\ldots$. On the central interval the weight of row 0.845 in its mixture with
-row 0.835 varies affinely with $t$. The maximum of the resulting quadratic gives the cap. The other fourteen
-intervals use fixed weights. The original witness cap is $(1-47/2000)\hat B_*+47/2000$, whose reciprocal is the
-fraction above. The following table gives the earlier fixed-weight certificate.
-
-| quantity | value | meaning |
-|---|---|---|
-| $\varepsilon$ | `191/250` | weight of the cubic chaos in the witness $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$ |
-| $\nu$ | `47/2000` | weight of the identity tail |
-| $B_{\mathrm{env}}$ (tightened) | `353183/500000` $= 0.706366$ | bound of the kernel-checked tightened envelope certificate (`certEnvelopeTight`, 38 cells), replacing rows `0.835` and `0.845` by their antiholomorphic Stein certificates (`cap08Tight = 1675841/1250000`, `cap09Tight = 6809419/5000000`) with the certified cubic radius `93/100` |
-| $B = (1-\nu)B_{\mathrm{env}} + \nu$ | `713266399/1000000000` $= 0.713266399$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
-| $1/B$ | $1.4020007\ldots$ | what the tightened certificate gives; `lower_target` and `main_bounds` state the rounded value $1.402 < 1/B$ |
-| $B_{\mathrm{env}}$ (earlier 16-cell scalar envelope) | `7064131/10000000` | bound of the earlier 16-cell scalar-row envelope (`B = 14266247843/20000000000`, $1/B = 1.4019103\ldots > 1.40191$) |
-| $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
-
-The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
-At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine
-at $v=c\delta/(\hat\varepsilon\tau)$. Lean checks both branches in the kernel. [Mass-row certificate](../Grothe/Lower/Cert/MassRow.lean).
 
 ## Behind the upper bound
 
@@ -127,7 +130,7 @@ None of these is the current bound.
 | number | what it is | where |
 |---|---|---|
 | `1.404599395362` | the bound of the older single-channel upper proof, $K < 1.404599395362$. Still proved and independent of the six-channel proof, but weaker, and above Haagerup's value | `Grothe.Statement.upper_below_tight`, `constant_lt_tight_upper` (`Grothe/UpperTightFinal.lean`); `docs/UPPER_STATUS.md` |
-| `1.40191` | the previous lower bound of the same identity-tail witness before antiholomorphic Stein tightening of rows `0.835` and `0.845` (1,800-cell envelope `envB = 7064131/10000000`, $1/B = 1.4019103\ldots$) | `Grothe/LowerAnalytic/LowerBound.lean`; `research/identity-tail/` |
+| `1.40191` | the previous lower bound of the same identity-tail witness before antiholomorphic Stein tightening of rows `0.835` and `0.845` (16-cell scalar-row envelope `envCells`, `envB = 7064131/10000000`, $1/B = 1.4019103\ldots$) | `Grothe/LowerAnalytic/LowerBound.lean`; `Grothe/Lower/EnvelopeData.lean`; `research/identity-tail/` |
 | `1.4018` | the original design target of the identity-tail lower certificate | `research/identity-tail/` |
 | `1.401700322371` | the earlier lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail. No longer the statement | history in `research/` |
 | `1.40490913…` | Haagerup's 1987 upper bound | prior work |
