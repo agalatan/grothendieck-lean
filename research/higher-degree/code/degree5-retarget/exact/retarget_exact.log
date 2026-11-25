@@ -1,0 +1,61 @@
+1. THE ENVELOPE (exact, from the row constants of ledger 4.42)
+   B5 = max over the pieces of D* = 0.7128931980346 at the ends of piece 13 (row 0.845 on [0.842337, 0.847521])
+   K_max = 1/B5 = 1.4027346631: with zero sector cost on every row the design proves K > x only for x < 1/B5; 1402734/10^6 < 1/B5 < 1402735/10^6
+   rooms of the 21 pieces (target value minus the maximum of the row on the piece), in units 1e-4; in brackets: the room left after the
+   funded part eta_h of ledger 4.44 (the whole gain of the zero-content pairs at the upper end of the piece; pieces 1-11)
+   piece        row     eta_h   1.402             1.4021            1.4023            1.4025            1.4027         
+    1 [0.6490,0.6700] 0.740  10.374    83.445 [73.071]    82.936 [72.562]    81.919 [71.545]    80.902 [70.528]    79.885 [69.511]
+    2 [0.6700,0.6900] 0.760   8.477    55.987 [47.510]    55.479 [47.002]    54.461 [45.984]    53.444 [44.967]    52.428 [43.951]
+    3 [0.6900,0.7100] 0.760   8.749    66.643 [57.894]    66.135 [57.386]    65.117 [56.368]    64.100 [55.351]    63.084 [54.335]
+    4 [0.7100,0.7300] 0.780   6.794    41.301 [34.507]    40.792 [33.998]    39.775 [32.981]    38.758 [31.964]    37.742 [30.947]
+    5 [0.7300,0.7500] 0.790   5.933    33.748 [27.816]    33.240 [27.307]    32.223 [26.290]    31.206 [25.273]    30.189 [24.256]
+    6 [0.7500,0.7700] 0.800   5.069    26.430 [21.361]    25.921 [20.853]    24.904 [19.835]    23.887 [18.818]    22.870 [17.802]
+    7 [0.7700,0.7900] 0.810   4.219    19.357 [15.139]    18.849 [14.630]    17.831 [13.613]    16.814 [12.596]    15.798 [11.579]
+    8 [0.7900,0.8100] 0.820   3.394    12.639 [ 9.245]    12.130 [ 8.736]    11.113 [ 7.719]    10.096 [ 6.702]     9.080 [ 5.685]
+    9 [0.8100,0.8143] 0.810   4.368    11.563 [ 7.195]    11.054 [ 6.686]    10.037 [ 5.669]     9.020 [ 4.652]     8.003 [ 3.635]
+   10 [0.8143,0.8248] 0.820   3.469     7.403 [ 3.934]     6.894 [ 3.425]     5.877 [ 2.408]     4.860 [ 1.391]     3.843 [ 0.374]
+   11 [0.8248,0.8349] 0.830   2.630     4.735 [ 2.105]     4.226 [ 1.596]     3.209 [ 0.579]     2.192 [-0.438]     1.175 [-1.455]
+   12 [0.8349,0.8423] 0.840   0.000     3.998 [ 3.998]     3.489 [ 3.489]     2.472 [ 2.472]     1.455 [ 1.455]     0.439 [ 0.439]
+   13 [0.8423,0.8475] 0.845   0.000     3.736 [ 3.736]     3.227 [ 3.227]     2.210 [ 2.210]     1.193 [ 1.193]     0.176 [ 0.176]
+   14 [0.8475,0.8524] 0.850   0.000     3.736 [ 3.736]     3.227 [ 3.227]     2.210 [ 2.210]     1.193 [ 1.193]     0.176 [ 0.176]
+   15 [0.8524,0.8574] 0.855   0.000     3.857 [ 3.857]     3.348 [ 3.348]     2.331 [ 2.331]     1.314 [ 1.314]     0.297 [ 0.297]
+   16 [0.8574,0.8630] 0.860   0.000     4.381 [ 4.381]     3.872 [ 3.872]     2.855 [ 2.855]     1.838 [ 1.838]     0.821 [ 0.821]
+   17 [0.8630,0.8667] 0.865   0.000     5.392 [ 5.392]     4.883 [ 4.883]     3.866 [ 3.866]     2.849 [ 2.849]     1.832 [ 1.832]
+   18 [0.8667,0.8724] 0.870   0.000     6.368 [ 6.368]     5.859 [ 5.859]     4.842 [ 4.842]     3.825 [ 3.825]     2.809 [ 2.809]
+   19 [0.8724,0.8786] 0.875   0.000     8.437 [ 8.437]     7.928 [ 7.928]     6.911 [ 6.911]     5.894 [ 5.894]     4.877 [ 4.877]
+   20 [0.8786,0.8841] 0.880   0.000    11.099 [11.099]    10.590 [10.590]     9.573 [ 9.573]     8.556 [ 8.556]     7.540 [ 7.540]
+   21 [0.8841,0.8862] 0.886   0.000    13.896 [13.896]    13.387 [13.387]    12.370 [12.370]    11.353 [11.353]    10.336 [10.336]
+   target 1.402 : smallest room 3.7356e-04 (piece 13, row 0.845); smallest room left after funding 2.1047e-04 (piece 11, row 0.830); pieces without room left: none
+   target 1.4021: smallest room 3.2269e-04 (piece 13, row 0.845); smallest room left after funding 1.5960e-04 (piece 11, row 0.830); pieces without room left: none
+   target 1.4023: smallest room 2.2097e-04 (piece 13, row 0.845); smallest room left after funding 5.7878e-05 (piece 11, row 0.830); pieces without room left: none
+   target 1.4025: smallest room 1.1928e-04 (piece 13, row 0.845); smallest room left after funding -4.3813e-05 (piece 11, row 0.830); pieces without room left: [11]
+   target 1.4027: smallest room 1.7617e-05 (piece 13, row 0.845); smallest room left after funding -1.4548e-04 (piece 11, row 0.830); pieces without room left: [11]
+
+2. SMALL t: the largest t with V < target and no sector hypothesis, per target (radius 2287/2500)
+   target   4.18a direct   4.18c buffer   4.18e Parseval   4.18e mass     4.18f spectral (boxes from)   width of H2 = (4.18f end, 0.649)
+   1.402    0.250885       0.25282        0.34554022       0.35859076     0.36495 (0.358)             0.28405
+   1.4021   0.250775       0.25271        0.34535633       0.35842487     0.36478 (0.358)             0.28422
+   1.4023   0.250555       0.25249        0.34498834       0.35809294     0.36443 (0.358)             0.28457
+   1.4025   0.250335       0.25227        0.34462006       0.35776078     0.36409 (0.357)             0.28491
+   1.4027   0.250115       0.25205        0.34425149       0.35742842     0.36375 (0.357)             0.28525
+   (each cutoff passes its inequality and the next grid point fails it; the 4.18f search is a bisection on the 10^-5 grid of an
+    adaptive box proof, so its cutoff is "the largest found with a failing neighbour", not a proved maximum of that method;
+    at 500/701 the same search gives 0.36495, the verifier certifies 0.36495)
+
+3. LARGE t: the sector-free range [t_d, sqrt(pi)/2] of ledger 4.18d, rows not retuned
+   coupled tangent (PR #661)  1.402: 0.88425210   1.4021: 0.88431581   1.4023: 0.88444323   1.4025: 0.88457065   1.4027: 0.88469808
+   split tangent              1.402: 0.88477644   1.4021: 0.88482322   1.4023: 0.88491677   1.4025: 0.88501031   1.4027: 0.88510385
+   plain tangent              1.402: 0.88527103   1.4021: 0.88530225   1.4023: 0.88536468   1.4025: 0.88542710   1.4027: 0.88548951
+   the absorption conditions of these rows do not involve the target; the last piece of D* (row 0.886) ends at 0.886227 >= sqrt(pi)/2,
+   so H-free coverage at the top is [t_d, sqrt(pi)/2] and the pieces of D* reaching above t_d are covered twice
+   small remote cubic energy u (verifier of 4.18d, rows 0.845 on [0.81, 0.86] and 0.860 on [0.86, 0.886227]): margin at u = 0 and the largest u allowed
+   row 0.845: 1.402: margin 8.681e-04, u <= 6.072e-04   1.4021: margin 8.173e-04, u <= 5.716e-04   1.4023: margin 7.155e-04, u <= 5.005e-04   1.4025: margin 6.138e-04, u <= 4.293e-04   1.4027: margin 5.122e-04, u <= 3.582e-04
+   row 0.860: 1.402: margin 9.123e-04, u <= 6.642e-04   1.4021: margin 8.614e-04, u <= 6.271e-04   1.4023: margin 7.597e-04, u <= 5.531e-04   1.4025: margin 6.580e-04, u <= 4.790e-04   1.4027: margin 5.563e-04, u <= 4.050e-04
+
+4. THE t = 0 TEST lambda_1 rho0^2 <= 1/K (necessary for every row certificate of this type; ledger 4.12), rho0 = 2287/2500
+   K = 1.402 : lambda_1 <= 3125000000/3666488669 = 0.8523141
+   K = 1.4027: lambda_1 <= 62500000000/73366385963 = 0.8518888
+   K = 1.403 : lambda_1 <= 6250000000/7338207707 = 0.8517066
+   K = 1.4035: lambda_1 <= 12500000000/14681645783 = 0.8514032
+   K = 1.4036: lambda_1 <= 15625000000/18353364821 = 0.8513425
+   K = 1.404 : lambda_1 <= 1562500000/1835859519 = 0.8511000

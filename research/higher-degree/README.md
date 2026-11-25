@@ -19,7 +19,7 @@ numerical (N)**, apart from the **P** or **C** parts of `STATUS.md` rows 1.6, 1.
 | `README.md` | this file: notation, the state in brief, reading order |
 | [`STATUS.md`](STATUS.md) | **the ledger**: every statement with its scope, status, author and source |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository (logs, numerical archives, downloaded sources), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, the attack plan of 25 November with its six problem statements, the design computation of 25 November with the assembly theorem, and the note of 25 November on the middle range of t) |
+| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, the attack plan of 25 November with its six problem statements, the design computation of 25 November with the assembly theorem, the note of 25 November on the middle range of t, and the note of 25 November on targets above 1.402) |
 | `code/` | the scripts behind them and the small result files the ledger cites |
 
 **Living documents.** `STATUS.md` is edited in place by every PR that changes the state of knowledge; copies under
@@ -106,6 +106,8 @@ record.
   cubic tested, in at most 13 variables (STATUS 4.44). One conditional theorem assembles the certificate from
   hypotheses H0–H9. The direct bound in 4.18e covers the start of the mid-t interval through 0.35859076. The rest up to 0.649, the secant inequality, the content law and the
   other-sector statement are open (STATUS 4.45).
+
+- **Above 1.402** (issue #702). The target 500/701 is below the Lean bound. The capped game cannot give more than 1.402734 (exact from its row constants); raising its target to 1.4023 leaves 59 % of the rooms and the same numerical factors, and from 1.4025 on the funded allocation has no room on one piece (STATUS 4.50, 4.51). In the model no degree-5 game certifies more than 1.403646 (1.403741 with an identity tail); the optimum fails its t = 0 row in the plain law class, and the largest game that passes the tests computed, (1, −0.82, 0.194), leaves 1.7·10⁻⁴ at 1.403. With the proved radius of the cubic chaos, degree 7 is worth 1.4037 (STATUS 1.11, 1.12, 4.52).
 
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the
 sources it cites.
