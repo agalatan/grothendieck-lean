@@ -79,20 +79,15 @@ theorem residual_of_channel_cutoffs {k N : ℕ} {w : Fin k → ℝ} {h : Fin k �
   rw [hsum.tsum_eq_zero_add] at htotal
   simpa using htotal
 
-/-- Compute the signed-head budget with interval lists of their actual lengths, then charge
-each channel's true tail starting at the first index outside its list. -/
-theorem convex_transfer_variable_ival {k N : ℕ} {wQ : Fin k → ℚ} {h : Fin k → ℕ → ℝ}
-    {headI : Fin k → List Ival} {tl : Fin k → ℝ} {cQ headCapQ : ℚ} {δ : ℝ}
-    (hw0 : ∀ p, 0 ≤ (wQ p : ℝ)) (hw1 : ∑ p, (wQ p : ℝ) = 1)
-    (hs : ∀ p, Summable fun n => |h p n|)
-    (hdom : ∀ p, DominatedKernel (radialKernel (h p)))
-    (hlen : ∀ p, (headI p).length ≤ N + 1)
+/-- An interval check bounds the zero-padded, weighted head even when exact coefficients
+of some channels are obtained by a separate full-series approximation. -/
+theorem variable_interval_head {k N : ℕ} {wQ : Fin k → ℚ} {h : Fin k → ℕ → ℝ}
+    {headI : Fin k → List Ival} {cQ headCapQ : ℚ}
     (hmem : ∀ p n, n < (headI p).length → mem (h p n) ((headI p).getD n zeroI))
-    (htail : ∀ p, ∑' n, |h p (n + (headI p).length)| ≤ tl p)
     (hhead : absSum (addL (sumL ((List.finRange k).map fun p =>
-        (headI p).map (mulI (ofRatI (wQ p))))) [negI (ofRatI cQ)]) ≤ ofRatLo headCapQ)
-    (hδ : (headCapQ : ℝ) + ∑ p, (wQ p : ℝ) * tl p ≤ δ)
-    (hδc : δ < (cQ : ℝ)) : IsBound (1 / ((cQ : ℝ) - δ)) := by
+        (headI p).map (mulI (ofRatI (wQ p))))) [negI (ofRatI cQ)]) ≤ ofRatLo headCapQ) :
+    ∑ n ∈ range (N + 1), |(∑ p, (wQ p : ℝ) * (if n < (headI p).length then h p n else 0)) -
+      (if n = 0 then (cQ : ℝ) else 0)| ≤ (headCapQ : ℝ) := by
   let w (p : Fin k) : ℝ := (wQ p : ℝ)
   let g (p : Fin k) (n : ℕ) := if n < (headI p).length then h p n else 0
   let P (p : Fin k) : ℝ[X] := ∑ n ∈ range (N + 1), monomial n (g p n)
@@ -112,17 +107,33 @@ theorem convex_transfer_variable_ival {k N : ℕ} {wQ : Fin k → ℚ} {h : Fin 
   have hsumB := memB_add (memB_sumL _ _ (List.finRange k) hp)
     (memB_single (N := N + 1) (mem_neg (mem_ofRatI cQ)))
   have hinterval := (absSum_le hsumB).trans ((Int.cast_le.2 hhead).trans (ofRatLo_le headCapQ))
-  have hheadReal : ∑ n ∈ range (N + 1),
-      |(∑ p, w p * g p n) - (if n = 0 then (cQ : ℝ) else 0)| ≤ (headCapQ : ℝ) := by
-    refine le_of_mul_le_mul_right ((le_of_eq ?_).trans hinterval) D_pos
-    congr 1
-    refine sum_congr rfl fun n hn => ?_
-    rw [coeff_add, coeff_C, ← Fin.sum_univ_def, finsetSum_coeff]
-    have he : ∑ p : Fin k, (C (w p) * P p).coeff n = ∑ p, w p * g p n :=
-      sum_congr rfl fun p _ => by rw [coeff_C_mul, hcoeff p n (mem_range.mp hn)]
-    rw [he]
-    congr 1
-    split_ifs <;> ring
+  change ∑ n ∈ range (N + 1), |(∑ p, w p * g p n) - (if n = 0 then (cQ : ℝ) else 0)| ≤ _
+  refine le_of_mul_le_mul_right ((le_of_eq ?_).trans hinterval) D_pos
+  congr 1
+  refine sum_congr rfl fun n hn => ?_
+  rw [coeff_add, coeff_C, ← Fin.sum_univ_def, finsetSum_coeff]
+  have he : ∑ p : Fin k, (C (w p) * P p).coeff n = ∑ p, w p * g p n :=
+    sum_congr rfl fun p _ => by rw [coeff_C_mul, hcoeff p n (mem_range.mp hn)]
+  rw [he]
+  congr 1
+  split_ifs <;> ring
+
+/-- Compute the signed-head budget with interval lists of their actual lengths, then charge
+each channel's true tail starting at the first index outside its list. -/
+theorem convex_transfer_variable_ival {k N : ℕ} {wQ : Fin k → ℚ} {h : Fin k → ℕ → ℝ}
+    {headI : Fin k → List Ival} {tl : Fin k → ℝ} {cQ headCapQ : ℚ} {δ : ℝ}
+    (hw0 : ∀ p, 0 ≤ (wQ p : ℝ)) (hw1 : ∑ p, (wQ p : ℝ) = 1)
+    (hs : ∀ p, Summable fun n => |h p n|)
+    (hdom : ∀ p, DominatedKernel (radialKernel (h p)))
+    (hlen : ∀ p, (headI p).length ≤ N + 1)
+    (hmem : ∀ p n, n < (headI p).length → mem (h p n) ((headI p).getD n zeroI))
+    (htail : ∀ p, ∑' n, |h p (n + (headI p).length)| ≤ tl p)
+    (hhead : absSum (addL (sumL ((List.finRange k).map fun p =>
+        (headI p).map (mulI (ofRatI (wQ p))))) [negI (ofRatI cQ)]) ≤ ofRatLo headCapQ)
+    (hδ : (headCapQ : ℝ) + ∑ p, (wQ p : ℝ) * tl p ≤ δ)
+    (hδc : δ < (cQ : ℝ)) : IsBound (1 / ((cQ : ℝ) - δ)) := by
+  let w (p : Fin k) : ℝ := (wQ p : ℝ)
+  have hheadReal := variable_interval_head (N := N) hmem hhead
   refine transfer _ (summable_convex_comb w hs) ?_ hδc ?_
   · exact dominatedKernel_congr_ball (dominatedKernel_convex_comb hw0 hw1 hdom) fun _ hz =>
       (radialKernel_convex_comb w hs hz).symm

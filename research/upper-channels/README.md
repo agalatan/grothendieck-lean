@@ -1,8 +1,6 @@
 # More channels for the upper bound: start here
 
-**The problem.** Lean proves K_G^ℂ ≤ 1.404556407 (`Grothe.UpperSix.constant_le`, `main_bounds`) with a mixture of six
-rounding channels. Can a mixture with more or different channels improve that bound, and at what cost in Lean?
-[Current bounds](../../docs/CONSTANTS.md)
+**The proved selector improvement.** Lean proves $K_G^{\mathbb C}\le 1.404556392$ by adding a Gaussian angular selector to the six established rounding channels. Its signed scalar and matrix expansions, full Wiener error, and mixture with the six certified heads are formalized in `Grothe/UpperSelector/`. The seven-column transfer slope is `711968565817136711740669035/10^27`. An independently replayable rational dual puts every six-column slope below `0.7119685648573` with those same maps, preprocessors, cutoffs and tail allowances. [Root theorem](../../Grothe/UpperResult.lean) · [Uniform six-column comparison](sources/angular-selector-transfer-codex-a7c4/PROOF.md) · [Current bounds](../../docs/CONSTANTS.md).
 
 The 24 November 2026 mixture experiment has status **N**. The [ledger](STATUS.md) also records the paper proofs about rounding channels.
 
@@ -11,8 +9,8 @@ The 24 November 2026 mixture experiment has status **N**. The [ledger](STATUS.md
 **The result in one paragraph.** Adding to the six channels **one** new channel, the cell channel of the
 eighteen-channel certificate with the preprocessor R(X) = a − (1 − a)X at a = 93079/100000 instead of its committed
 a = 0.9194…, gives the model slope D = 0.711974083612, that is 1/D = 1.404545507 (ledger 4.7). The experiment compared it with
-the certificate of the six channels at the commit it read, 1/D = 1.404557403: 1.19·10⁻⁵ more. Lean now proves
-1.404556407 with a sharper certificate of the same six channels (another polynomial in the first channel, the linear
+the certificate of the six channels at the commit it read, 1/D = 1.404557403: 1.19·10⁻⁵ more. The six-channel Lean theorem proves
+1.404556407 with a sharper certificate of those channels (another polynomial in the first channel, the linear
 energy removed from the tail budgets, 321 head coefficients of the phase channel); the model value is 1.09·10⁻⁵
 below that bound. Whether those refinements also gain for the candidate was not examined. The new channel takes the place of the six's channel 4, whose weight drops to zero.
 The head of the new channel is an exact interval composition of grades that Lean already verifies on the
@@ -46,7 +44,7 @@ h_k^{(p)} cancel across channels before the absolute value is taken, so the best
 | | six channels | eighteen channels |
 |---|---|---|
 | where | master, `Grothe/UpperSix/` (article: `haagerup-article/main.tex`); read here at commit `f6620f3b` | the branch `gemini-1aa9/upper-mixture` of pull request #556 (closed, the branch deleted): `Grothe/UpperReplacement/`, its `docs/UPPER_CERTIFICATE.md`; read here at commit `76c4647b`, which `refs/pull/556/head` keeps |
-| certified D, 1/D | 0.711968053274, 1.4045574031 (the certificate at that commit; master now proves 1.404556407 with the certificate of `Grothe/UpperSixExact/`) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
+| certified D, 1/D | 0.711968053274, 1.4045574031 (the certificate at that commit; the six-channel theorem proves 1.404556407 with the certificate of `Grothe/UpperSixExact/`) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
 | channel types | smoothed 64×64×36 cell map with (P, Q = −X): channels 0, 1, 5; phase with a degree-14 preprocessor: 2; reflected cell map with (−R, R): 3, 4 | ten GT channels, seven phase channels, one cell channel (a pair of responses on 64 angular × 128 × 128 radial cells, both coordinates preprocessed by R) |
 | head data | `Haagerup/Data/OverlapData.lean` (interval tables at scale 2⁻¹²⁸), `Haagerup/Parameters.lean` | `data/upper-replacement/exact-columns.json`, `cell-inputs.npz`, `Grothe/Upper/Data.lean`, `HeadWitnessFacts/Group00`–`07` (cell grades), `RootData.lean` |
 | head length | 251 coefficients per channel | 251 (GT, phase); 126 for the cell channel, which pays a truncation allowance for the rest |

@@ -231,6 +231,18 @@ private lemma hChan_tail (p : Fin 6) :
       hp5 hq5 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [circleBudget, budgetQ, d6Q]) reg5_ok mean5_ok J
 
+/-- The six analytic channels, their certified interval heads, and their individual tail
+bounds are available for convex mixtures with additional dominated kernels. -/
+theorem exists_certified_channels :
+    ∃ h : Fin 6 → ℕ → ℝ, (∀ p, Summable fun n => |h p n|) ∧
+      (∀ p, DominatedKernel (radialKernel (h p))) ∧
+      (∀ p n, n < (headIntervals p).length → mem (h p n) ((headIntervals p).getD n zeroI)) ∧
+      ∀ p, ∑' n, |h p (n + (headIntervals p).length)| ≤ (phaseTailCap p : ℝ) := by
+  refine ⟨hChan, hChan_summable, hChan_dominated, fun p n hn => ?_, fun p => ?_⟩
+  · exact hChan_mem p n ((head_length p) ▸ hn)
+  · rw [head_length]
+    exact hChan_tail p
+
 /-- Admissibility at the exact transfer endpoint. -/
 private theorem transfer_bound : Statement.IsBound (1 / ((slope : ℝ) - (phaseResidual : ℝ))) := by
   have hw0 : ∀ p : Fin 6, 0 ≤ (wQ p : ℝ) := fun p => by fin_cases p <;> norm_num [wQ, d12Q]
