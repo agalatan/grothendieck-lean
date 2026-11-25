@@ -25,7 +25,7 @@ structure Segment where
 
 /-- When the uncorrected quadratic in the row weight has curvature, its clipped
 minimizer is affine between its crossings of zero and one. -/
-private def affineSegments (a b : EnvRow) (c : EnvCell) (active : Bool) : List Segment :=
+def affineSegments (a b : EnvRow) (c : EnvCell) (active : Bool) : List Segment :=
   let mid := (c.lo+c.hi)/2
   let k := 2 / ε * (a.beta-b.beta)^2
   if k = 0 then [⟨c,c.θ,c.θ,active,mid⟩] else
@@ -55,7 +55,7 @@ private def value (a b : EnvRow) (t w d : ℚ) : ℚ :=
     ((1-w)*a.C + w*b.C - (2/ε)*w*(1-w)*(a.beta-b.beta)^2) - d
 
 /-- The endpoint and midpoint values determine the quadratic in the unit segment parameter. -/
-private def segmentCap (a b : EnvRow) (l h w z dl dh : ℚ) : ℚ :=
+def segmentCap (a b : EnvRow) (l h w z dl dh : ℚ) : ℚ :=
   let q0 := value a b l w dl
   let q1 := value a b h z dh
   let qm := value a b ((l+h)/2) ((w+z)/2) ((dl+dh)/2)
@@ -93,7 +93,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 variable {V t : ℝ} {Qh v : E}
 
 /-- Both valid rows and a lower bound on their weighted deduction imply the cell cap. -/
-private theorem segment_bound {cap : ℚ} (a b : EnvRow) (l h w z dl dh : ℚ) (x : ℝ)
+theorem segment_bound {cap : ℚ} (a b : EnvRow) (l h w z dl dh : ℚ) (x : ℝ)
     (hx0 : 0 ≤ x) (hx1 : x ≤ 1) (hv : ‖v‖^2 = 2) (ht : t = (1-x)*(l : ℝ)+x*(h : ℝ))
     (hcap : segmentCap a b l h w z dl dh ≤ cap)
     (d₁ d₂ : ℝ)
