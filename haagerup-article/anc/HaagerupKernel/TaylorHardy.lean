@@ -16,7 +16,6 @@ Provides kernel-reducible (`decide +kernel`) checkers for the six-channel Hardy 
    * `meanQ1PhaseOK` (singularity-free 1D scalar `R = diag(r, 0)`, channel `2`),
    * `meanQ1AntiOK` (singularity-free 1D diagonal `R = diag(-r, r)`, channels `3, 4`).
 
-Agent-ID: gemini-1aa9
 -/
 
 namespace HaagerupKernel.TaylorHardy
@@ -85,7 +84,6 @@ structure TM2 where
   q : Int
   r : Nat
 
-@[inline] def tmExact (x : Int) : TM2 := ⟨x, 0, 0, 0⟩
 @[inline] def tmZero : TM2 := ⟨0, 0, 0, 0⟩
 @[inline] def tmOne : TM2 := ⟨D64, 0, 0, 0⟩
 
@@ -167,20 +165,11 @@ def tmcHorner (x : TMC) : List TM2 → TMC
   | [] => ⟨tmZero, tmZero⟩
   | c :: cs => tmcAdd (tmcOfR c) (tmcMul x (tmcHorner x cs))
 
-/-- Real symmetric `2 × 2` Taylor model. -/
-structure SRT where
-  a : TM2
-  b : TM2
-  c : TM2
-
 /-- Complex symmetric `2 × 2` Taylor model. -/
 structure SCT where
   a : TMC
   b : TMC
   c : TMC
-
-@[inline] def srtDet (S : SRT) : TM2 := tmSub (tmMul S.a S.c) (tmMul S.b S.b)
-@[inline] def srtPD (S : SRT) : Bool := iPos (tmLo S.a) && iPos (tmLo (srtDet S))
 
 /-- Pre-converted smoothed covariance parameters `(m00², m01², m00 m01, m01 m11, m11², P, Q)`. -/
 structure SmoothedTMData where

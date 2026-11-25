@@ -2,7 +2,6 @@ import Haagerup.SmoothedEnergy
 
 /-! The two finite dot products and their midpoint error estimates.
 
-Agent-ID: codex-a7c4
 -/
 
 set_option warningAsError true

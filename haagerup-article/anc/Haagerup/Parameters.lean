@@ -2,7 +2,6 @@ import Mathlib.Data.Rat.Defs
 
 set_option warningAsError true
 
--- Agent-ID: gemini-21d5, codex-a7c4
 namespace Haagerup
 
 def d12Q : ℚ := 1000000000000

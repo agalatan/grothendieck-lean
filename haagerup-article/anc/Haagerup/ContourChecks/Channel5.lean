@@ -3,7 +3,6 @@ import HaagerupKernel.TaylorHardy
 
 set_option warningAsError true
 
--- Agent-ID: gemini-21d5, codex-a7c4, gemini-1aa9
 namespace Haagerup
 open HaagerupKernel.TaylorHardy
 

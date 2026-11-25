@@ -13,9 +13,8 @@ algebraic identity `(1 - x) P₁₄(x)² = 1 - ∑_{m=15}^{29} d_m x^m` with `d_
 so `|1 - (1 - x) P₁₄(x)²| ≤ 3⁻¹⁵` on `|x| ≤ 1/3`. Integrating the explicit trigonometric primitive
 `q₀ t + sin(2t) Q(cos(2t))` of `cos² t * P₁₄(cos(2t)/3)` on `[0, π / 2]` certifies
 
-  `(140455741 : ℝ) / 10^8 < 1 / gammaDagger`.
+  `711958633 / 10^9 < gammaDagger < 711958683 / 10^9`   (`gammaDagger_bounds`).
 
-Agent-ID: gemini-21d5
 -/
 
 namespace Haagerup
@@ -258,6 +257,7 @@ private lemma integrable_haagerup :
   refine (Continuous.div (by fun_prop) (by fun_prop) fun _ => ?_).intervalIntegrable (μ := volume) _ _
   exact (Real.sqrt_pos.2 (by positivity)).ne'
 
+/-- Haagerup's integral to seven decimals: `0.711958633 < γ† < 0.711958683`. -/
 theorem gammaDagger_bounds :
     (711958633 / 1000000000 : ℝ) < gammaDagger ∧ gammaDagger < (711958683 / 1000000000 : ℝ) := by
   have hcont_P : Continuous (fun t : ℝ => Real.cos t ^ 2 * binomPoly14 (Real.cos (2 * t) / 3)) := by
@@ -291,16 +291,9 @@ theorem gammaDagger_bounds :
             (40545758045051663 / 73040694872113152 * ((314159265358979323847 / 10 ^ 20 : ℝ) / 2)) := by gcongr
       _ < (711958683 / 1000000000 : ℝ) := by norm_num
 
+/-- `γ† > 0`. -/
 theorem gammaDagger_pos : 0 < gammaDagger :=
   lt_trans (by norm_num) gammaDagger_bounds.1
-
-/-- Certified rational lower bound `(140455741 / 10^8) < 1 / γ†`. -/
-theorem inv_gammaDagger_gt : (140455741 / 100000000 : ℝ) < 1 / gammaDagger := by
-  rw [lt_div_iff₀ gammaDagger_pos]
-  calc (140455741 / 100000000 : ℝ) * gammaDagger
-      < (140455741 / 100000000 : ℝ) * (711958683 / 1000000000) := by
-        gcongr; exact gammaDagger_bounds.2
-    _ < 1 := by norm_num
 
 end
 

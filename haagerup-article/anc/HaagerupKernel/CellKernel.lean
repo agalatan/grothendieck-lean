@@ -1,11 +1,11 @@
-import HaagerupKernel.Table
+import HaagerupKernel.Basic
 
 set_option warningAsError true
 
 /-!
 # Mathlib-free Fejér–Riesz SOS, 1024-bit Laguerre table, and Hermite overlap kernels
 
-Pure `Init` + `HaagerupKernel.Table` module (precompiled to native C):
+Imports only `Init` and `HaagerupKernel.Basic`:
 1. Compact 5-char base-64 ASCII decoder for `36 × 64 × 64` integer Fourier tables;
 2. Exact integer Fejér–Riesz Sum-of-Squares unit-disk checker `sosAllOK` (`SH = 24`, `CAP = 2⁴⁸`);
 3. Square-root-free, `π`-free, `Γ`-free 1024-bit integer-interval Laguerre cell integral table
@@ -15,7 +15,6 @@ Pure `Init` + `HaagerupKernel.Table` module (precompiled to native C):
    * `computeSmoothedRows` / `smoothedRowsCheck` (`headIdx 501` bivariate energy table `List RowI`
      for the smoothed `64 × 64 × 36` cell rounding map, with zero square roots).
 
-Agent-ID: gemini-21d5
 -/
 
 namespace HaagerupKernel.Cell
@@ -87,7 +86,6 @@ def sosAllOK (creArr cimArr qreArr qimArr : Array Int) : Bool :=
 
 /-! ### 2. 1024-bit integer-interval Laguerre cell integrals (`s_i = 9 i² / 1024`) -/
 
-def kLag : Nat := 1024
 def dLag : Int := (2 : Int) ^ 1024
 
 @[inline] def ivAddL (a b : Int × Int) : Int × Int := (a.1 + b.1, a.2 + b.2)

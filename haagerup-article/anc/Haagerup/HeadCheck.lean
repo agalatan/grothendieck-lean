@@ -10,7 +10,6 @@ Verifies the 251-term 6-channel weighted head residual bound directly inside Lea
 (`decide +kernel`) via `HaagerupKernel.FastHead.fastHeadOK` (Kronecker-packed 80-bit exact
 integer polynomial arithmetic at base `2^224`).
 
-Agent-ID: gemini-21d5, codex-a7c4, gemini-1aa9
 -/
 
 namespace Haagerup

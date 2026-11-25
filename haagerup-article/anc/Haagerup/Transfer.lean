@@ -1,5 +1,5 @@
 import Haagerup.Statement
-import HaagerupKernel.Table
+import HaagerupKernel.Basic
 import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Algebra.Order.Field.GeomSum
 import Mathlib.Topology.Algebra.InfiniteSum.Real
@@ -7,23 +7,21 @@ import Mathlib.Topology.Algebra.InfiniteSum.Real
 set_option warningAsError true
 
 /-!
-# Transfer inequality, Hardy tail, bivariate composition, and interval-head soundness
+# Transfer inequality, Hardy tail, bivariate composition, and convex combinations of channels
 
 Self-contained development connecting unimodular rounding kernels to upper bounds on the complex
 Grothendieck constant `Haagerup.Statement.complexGrothendieckConstant`:
 
-1. **Domination and tensor powers**: valid unimodular kernels are dominated (`ValidKernel.dominated`),
+1. **Domination and tensor powers**: dominated kernels (`DominatedKernel`),
    monomials `z |z|^{2n}` are realised by unit tensor powers (`inner_tpow`, `norm_tpow`), and
    `transfer` bounds `IsBound (1 / (c - δ))` from the `ℓ¹` residual of `radialKernel h` against `c z`.
-2. **Residual split and Hardy tail**: `residual_split`, `hardy_budget_after_linear`, and `hardy_tail`
+2. **Residual split and Hardy tail**: `residual_split` and `hardy_tail`
    bound the tail `∑_{n > K} |hₙ|` by Cauchy–Schwarz from a circle mean-square budget at radius `r > 1`.
 3. **Wiener `ℓ¹` algebra and bivariate kernels**: `l1`, `termOf`, `bivarKernel`, `bivarKernel_eq_head`,
    and `onedTable` (`bivarKernel_oned_eq_head`).
-4. **128-bit interval soundness and multi-channel transfer**: `mem`, `memB`, `memB_bivarT_real`, and
-   `convex_transfer_ival` (which certifies a convex combination of channels directly from interval
-   head enclosures + Hardy tail bounds).
+4. **Intervals and convex combinations**: membership `mem` in a 128-bit interval, rational polynomials `ofListQ`,
+   and convex combinations of channels (`summable_convex_comb`, `radialKernel_convex_comb`).
 
-Agent-ID: gemini-21d5
 -/
 
 namespace Haagerup
@@ -86,43 +84,6 @@ def DominatedKernel (Q : ℂ → ℂ) : Prop :=
     (x : Fin m → EuclideanSpace ℂ ι) (y : Fin n → EuclideanSpace ℂ ι),
     (∀ i, ‖x i‖ = 1) → (∀ j, ‖y j‖ = 1) →
     ‖∑ i, ∑ j, A i j * Q (inner ℂ (x i) (y j))‖ ≤ scalarOpt A
-
-/-- A kernel realised by jointly distributed unimodular random variables `E[conj(εᵢ) δⱼ] = Q(⟪xᵢ, yⱼ⟫)`. -/
-def ValidKernel (Q : ℂ → ℂ) : Prop :=
-  ∀ (m n : ℕ) (ι : Type) [Fintype ι]
-    (x : Fin m → EuclideanSpace ℂ ι) (y : Fin n → EuclideanSpace ℂ ι),
-    (∀ i, ‖x i‖ = 1) → (∀ j, ‖y j‖ = 1) →
-    ∃ (Ω : Type) (_ : MeasurableSpace Ω) (μ : Measure Ω) (_ : IsProbabilityMeasure μ)
-      (ε : Ω → Fin m → ℂ) (δ : Ω → Fin n → ℂ),
-      (∀ i, AEStronglyMeasurable (fun ω => ε ω i) μ) ∧
-      (∀ j, AEStronglyMeasurable (fun ω => δ ω j) μ) ∧
-      (∀ ω i, ‖ε ω i‖ = 1) ∧ (∀ ω j, ‖δ ω j‖ = 1) ∧
-      ∀ i j, ∫ ω, conj (ε ω i) * δ ω j ∂μ = Q (inner ℂ (x i) (y j))
-
-theorem ValidKernel.dominated {Q : ℂ → ℂ} (hQ : ValidKernel Q) : DominatedKernel Q := by
-  intro m n A ι _ x y hx hy
-  obtain ⟨Ω, _, μ, _, ε, δ, hεm, hδm, hε1, hδ1, hint⟩ := hQ m n ι x y hx hy
-  have hmeas : ∀ i j, AEStronglyMeasurable (fun ω => conj (ε ω i) * δ ω j) μ := fun i j =>
-    (Complex.continuous_conj.comp_aestronglyMeasurable (hεm i)).mul (hδm j)
-  have hint' : ∀ i j, Integrable (fun ω => conj (ε ω i) * δ ω j) μ := fun i j =>
-    Integrable.mono' (integrable_const (1 : ℝ)) (hmeas i j)
-      (Filter.Eventually.of_forall fun ω => by simp [hε1, hδ1])
-  have e : ∫ ω, ∑ i, ∑ j, A i j * (conj (ε ω i) * δ ω j) ∂μ
-      = ∑ i, ∑ j, A i j * Q (inner ℂ (x i) (y j)) := by
-    rw [integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => (hint' i j).const_mul _]
-    refine sum_congr rfl fun i _ => ?_
-    rw [integral_finsetSum _ fun j _ => (hint' i j).const_mul _]
-    refine sum_congr rfl fun j _ => ?_
-    rw [integral_const_mul, hint]
-  rw [← e]
-  calc ‖∫ ω, ∑ i, ∑ j, A i j * (conj (ε ω i) * δ ω j) ∂μ‖
-      ≤ ∫ ω, ‖∑ i, ∑ j, A i j * (conj (ε ω i) * δ ω j)‖ ∂μ := norm_integral_le_integral_norm _
-    _ ≤ ∫ _ω, scalarOpt A ∂μ := by
-        apply integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _)
-          (integrable_const _)
-        exact Filter.Eventually.of_forall fun ω =>
-          le_scalarOpt A (fun i => hε1 ω i) (fun j => hδ1 ω j)
-    _ = scalarOpt A := by simp
 
 theorem dominatedKernel_congr_ball {Q Q' : ℂ → ℂ} (hQ : DominatedKernel Q)
     (heq : ∀ z : ℂ, ‖z‖ ≤ 1 → Q z = Q' z) : DominatedKernel Q' := by
@@ -287,27 +248,6 @@ theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ
     sum_congr rfl fun _ _ => by simp
   have e2 : ∑' n, |h (n + K + 1)| = ∑' n, |h (n + (K + 1))| := tsum_congr fun _ => by rw [add_assoc]
   rw [e1, e2]; simp only [ite_true]; ring
-
-theorem hardy_budget_after_linear (h : ℕ → ℝ) (r B L : ℝ) (hr : 0 < r)
-    (hL : 0 ≤ L) (h0 : L ≤ h 0)
-    (hB : ∀ J, ∑ n ∈ range J, h n ^ 2 * r ^ (2 * (2 * n + 1)) ≤ B) :
-    ∀ J, ∑ n ∈ range J, h (n + 1) ^ 2 * r ^ (2 * (2 * n + 1))
-      ≤ (B - L ^ 2 * r ^ 2) / r ^ 4 := by
-  intro J
-  have hsq : L ^ 2 ≤ h 0 ^ 2 := by nlinarith
-  have he : ∀ n : ℕ, r ^ (2 * (2 * (n + 1) + 1)) = r ^ 4 * r ^ (2 * (2 * n + 1)) := fun n => by
-    rw [← pow_add]; congr 1; omega
-  have hb := hB (J + 1)
-  rw [sum_range_succ'] at hb
-  simp only [Nat.mul_zero, zero_add, Nat.mul_one] at hb
-  simp_rw [he] at hb
-  have he' : (∑ n ∈ range J, h (n + 1) ^ 2 * (r ^ 4 * r ^ (2 * (2 * n + 1)))) =
-      r ^ 4 * ∑ n ∈ range J, h (n + 1) ^ 2 * r ^ (2 * (2 * n + 1)) := by
-    rw [mul_sum]; exact sum_congr rfl fun _ _ => by ring
-  rw [he'] at hb
-  apply (le_div_iff₀ (pow_pos hr 4)).2
-  have hsq' := mul_le_mul_of_nonneg_right hsq (sq_nonneg r)
-  nlinarith only [hb, hsq']
 
 theorem hardy_tail (h : ℕ → ℝ) (r : ℝ) (hr : 1 < r) (B : ℝ)
     (hB : ∀ J, ∑ n ∈ range J, h n ^ 2 * r ^ (2 * (2 * n + 1)) ≤ B) (K : ℕ) (T : ℝ) (hT : 0 ≤ T)
@@ -486,21 +426,6 @@ def onedTable (ν : ℕ → ℝ) : ℕ × ℕ → ℝ
   | (n, 0) => if n % 2 = 1 then ν (n / 2) else 0
   | (_, _ + 1) => 0
 
-theorem summable_onedTable {ν : ℕ → ℝ} (hν : Summable fun k => |ν k|) :
-    Summable fun p : ℕ × ℕ => |onedTable ν p| := by
-  have heq : (fun k : ℕ => |onedTable ν (2 * k + 1, 0)|) = fun k => |ν k| := by
-    funext k; simp [onedTable, Nat.mul_add_div]
-  have hinj : Function.Injective (fun k : ℕ => ((2 * k + 1, 0) : ℕ × ℕ)) := fun a b h => by
-    injection h with h1 _; omega
-  refine (Function.Injective.summable_iff hinj ?_).1 (by rwa [Function.comp_def, heq])
-  rintro ⟨n, m⟩ hnm
-  cases m with
-  | succ m => simp [onedTable]
-  | zero =>
-    by_cases hn : n % 2 = 1
-    · exfalso; exact hnm ⟨n / 2, by ext <;> simp; omega⟩
-    · simp [onedTable, hn]
-
 theorem bivarKernel_oned_eq_head (P Q : ℝ[X]) (ν : ℕ → ℝ) {K j : ℕ} (hj : j < K) :
     bivarKernel P Q (onedTable ν) j =
       ∑ k ∈ range K, ν k * (X ^ k * P ^ (2 * k + 1)).coeff j := by
@@ -527,10 +452,9 @@ theorem bivarKernel_oned_eq_head (P Q : ℝ[X]) (ν : ℕ → ℝ) {K j : ℕ} (
   have h2 : (2 * k + 1) / 2 = k := by omega
   simp [onedTable, termOf, shiftOf, h1, h2]
 
-/-! ### 5. Soundness of 128-bit interval arithmetic and `bivarT` -/
+/-! ### 5. Membership in 128-bit intervals; rational polynomials -/
 
 lemma D_pos : (0 : ℝ) < (D : ℝ) := by unfold D K; positivity
-lemma D_pos_int : (0 : ℤ) < D := by unfold D K; positivity
 
 def mem (x : ℝ) (I : Ival) : Prop := (I.lo : ℝ) ≤ x * D ∧ x * D ≤ I.hi
 
@@ -543,187 +467,10 @@ lemma mem_zero : mem 0 zeroI := (mem_zeroI_iff 0).2 rfl
 lemma mem_add {x y : ℝ} {a b : Ival} (hx : mem x a) (hy : mem y b) : mem (x + y) (addI a b) := by
   unfold mem addI at *; push_cast; constructor <;> linarith [hx.1, hx.2, hy.1, hy.2]
 
-lemma mem_neg {x : ℝ} {a : Ival} (hx : mem x a) : mem (-x) (negI a) := by
-  unfold mem negI at *; push_cast; constructor <;> linarith [hx.1, hx.2]
-
-lemma shDown_le {m : ℤ} {r : ℝ} (h : (m : ℝ) ≤ r * D) : (shDown m : ℝ) ≤ r := by
-  have : ((m / D : ℤ) : ℝ) * D ≤ m := by exact_mod_cast Int.ediv_mul_le m D_pos_int.ne'
-  exact le_of_mul_le_mul_right (this.trans h) D_pos
-
-lemma le_shUp {m : ℤ} {r : ℝ} (h : r * D ≤ m) : r ≤ (shUp m : ℝ) := by
-  have : (((-m) / D : ℤ) : ℝ) * D ≤ -(m : ℝ) := by
-    exact_mod_cast Int.ediv_mul_le (-m) D_pos_int.ne'
-  unfold shUp; push_cast
-  exact le_of_mul_le_mul_right (by linarith) D_pos
-
-lemma mul_bounds {x y a b c d : ℝ} (hx : a ≤ x ∧ x ≤ b) (hy : c ≤ y ∧ y ≤ d) :
-    min (min (a * c) (a * d)) (min (b * c) (b * d)) ≤ x * y ∧
-      x * y ≤ max (max (a * c) (a * d)) (max (b * c) (b * d)) := by
-  have h1 : min (a * y) (b * y) ≤ x * y ∧ x * y ≤ max (a * y) (b * y) := by
-    rcases le_total 0 y with hy0 | hy0
-    · exact ⟨(min_le_left _ _).trans (mul_le_mul_of_nonneg_right hx.1 hy0),
-        (mul_le_mul_of_nonneg_right hx.2 hy0).trans (le_max_right _ _)⟩
-    · exact ⟨(min_le_right _ _).trans (mul_le_mul_of_nonpos_right hx.2 hy0),
-        (mul_le_mul_of_nonpos_right hx.1 hy0).trans (le_max_left _ _)⟩
-  have h2 : ∀ e : ℝ, min (e * c) (e * d) ≤ e * y ∧ e * y ≤ max (e * c) (e * d) := fun e => by
-    rcases le_total 0 e with he | he
-    · exact ⟨(min_le_left _ _).trans (mul_le_mul_of_nonneg_left hy.1 he),
-        (mul_le_mul_of_nonneg_left hy.2 he).trans (le_max_right _ _)⟩
-    · exact ⟨(min_le_right _ _).trans (mul_le_mul_of_nonpos_left hy.2 he),
-        (mul_le_mul_of_nonpos_left hy.1 he).trans (le_max_left _ _)⟩
-  exact ⟨(min_le_min (h2 a).1 (h2 b).1).trans h1.1, h1.2.trans (max_le_max (h2 a).2 (h2 b).2)⟩
-
-lemma mem_mul {x y : ℝ} {a b : Ival} (hx : mem x a) (hy : mem y b) : mem (x * y) (mulI a b) := by
-  have hb := mul_bounds hx hy
-  rw [show x * D * (y * D) = x * y * D * D by ring] at hb
-  exact ⟨shDown_le (by push_cast; exact hb.1), le_shUp (by push_cast; exact hb.2)⟩
-
-lemma abs_le_absUpper {x : ℝ} {a : Ival} (hx : mem x a) : |x| * D ≤ absUpper a := by
-  have h : |x * D| ≤ max (-(a.lo : ℝ)) a.hi := abs_le.2
-    ⟨by linarith [hx.1, le_max_left (-(a.lo : ℝ)) a.hi], hx.2.trans (le_max_right _ _)⟩
-  rw [abs_mul, abs_of_pos D_pos] at h
-  unfold absUpper; push_cast
-  exact h.trans (le_max_left _ _)
-
-lemma ofRatLo_le (q : ℚ) : (ofRatLo q : ℝ) ≤ (q : ℝ) * D := by
-  have h : ((ofRatLo q : ℤ) : ℚ) ≤ q * (D : ℚ) := Rat.le_floor_iff.1 le_rfl
-  exact_mod_cast h
-
-lemma le_ofRatHi (q : ℚ) : (q : ℝ) * D ≤ (ofRatHi q : ℝ) := by
-  have h : ((Rat.floor (-(q * (D : ℚ))) : ℤ) : ℚ) ≤ -(q * (D : ℚ)) := Rat.le_floor_iff.1 le_rfl
-  have h' : ((Rat.floor (-(q * (D : ℚ))) : ℤ) : ℝ) ≤ -((q : ℝ) * D) := by exact_mod_cast h
-  unfold ofRatHi; push_cast; linarith
-
-lemma mem_ofRatI (q : ℚ) : mem (q : ℝ) (ofRatI q) := ⟨ofRatLo_le q, le_ofRatHi q⟩
-lemma ofRatI_zero : ofRatI 0 = zeroI := by simp [ofRatI, ofRatLo, ofRatHi, zeroI, Rat.floor]
-
-def memB (N : ℕ) (p : ℝ[X]) (L : List Ival) : Prop :=
-  ∀ n, n < N → mem (p.coeff n) (L.getD n zeroI)
-
-lemma memB_mono {N M : ℕ} {p : ℝ[X]} {L : List Ival} (h : memB N p L) (hM : M ≤ N) :
-    memB M p L := fun n hn => h n (lt_of_lt_of_le hn hM)
-
-lemma memB_zero (N : ℕ) : memB N 0 [] := fun _ _ => by simpa using mem_zero
-
-lemma getD_addL (l m : List Ival) (n : ℕ) :
-    (addL l m).getD n zeroI = addI (l.getD n zeroI) (m.getD n zeroI) := by
-  have z1 : ∀ a, addI zeroI a = a := fun ⟨_, _⟩ => by simp [addI, zeroI]
-  have z2 : ∀ a, addI a zeroI = a := fun ⟨_, _⟩ => by simp [addI, zeroI]
-  induction l generalizing m n with
-  | nil => simp [addL, z1]
-  | cons a l ih =>
-    cases m with
-    | nil => simp [addL, z2]
-    | cons b m =>
-      cases n with
-      | zero => rfl
-      | succ n => simp only [addL, List.getD_cons_succ]; exact ih m n
-
-lemma memB_add {N : ℕ} {p q : ℝ[X]} {L M : List Ival} (hp : memB N p L) (hq : memB N q M) :
-    memB N (p + q) (addL L M) := fun n hn => by
-  rw [getD_addL, coeff_add]; exact mem_add (hp n hn) (hq n hn)
-
-private lemma list_getD_map {α β : Type*} (f : α → β) (l : List α) (d : α) (n : ℕ) :
-    (l.map f).getD n (f d) = f (l.getD n d) := by
-  induction l generalizing n with
-  | nil => simp
-  | cons _ _ ih =>
-    cases n with
-    | zero => rfl
-    | succ n => exact ih n
-
-lemma memB_C_mul {N : ℕ} {a : ℝ} {I : Ival} {q : ℝ[X]} {M : List Ival}
-    (ha : mem a I) (hq : memB N q M) : memB N (C a * q) (M.map (mulI I)) := fun n hn => by
-  have hz : mulI I zeroI = zeroI := by simp [mulI, zeroI, shDown, shUp]
-  rw [← hz, list_getD_map, coeff_C_mul]; exact mem_mul ha (hq n hn)
-
-lemma memB_X_mul {N : ℕ} {r : ℝ[X]} {R : List Ival} (hr : memB N r R) :
-    memB (N + 1) (X * r) (zeroI :: R) := fun n hn => by
-  cases n with
-  | zero => simpa using mem_zero
-  | succ n => rw [coeff_X_mul, List.getD_cons_succ]; exact hr n (by omega)
-
-lemma memB_take {N : ℕ} {p : ℝ[X]} {L : List Ival} (h : memB N p L) : memB N p (L.take N) :=
-  fun n hn => by
-    rw [List.getD_eq_getElem?_getD, List.getElem?_take_of_lt hn, ← List.getD_eq_getElem?_getD]
-    exact h n hn
-
-lemma memB_conv {L : List Ival} : ∀ {N : ℕ} {p q : ℝ[X]} {M : List Ival},
-    memB N p L → memB N q M → memB N (p * q) (convI L M) := by
-  induction L with
-  | nil =>
-    intro N p q _ hp _ n hn
-    simp only [convI, List.getD_nil, mem_zeroI_iff, coeff_mul]
-    refine sum_eq_zero fun ij hij => ?_
-    have hzero : p.coeff ij.1 = 0 :=
-      (mem_zeroI_iff _).1 (by simpa using hp ij.1 (by simp at hij; omega))
-    rw [hzero, zero_mul]
-  | cons a L ih =>
-    intro N p q M hp hq
-    cases N with
-    | zero => intro _ hn; omega
-    | succ N =>
-      have h0 : mem (p.coeff 0) a := by simpa using hp 0 (Nat.succ_pos N)
-      have hXm := memB_X_mul (ih (p := divX p) (fun n hn => by
-        simpa [coeff_divX] using hp (n + 1) (by omega)) (memB_mono hq (Nat.le_succ N)))
-      have hpq : p * q = C (p.coeff 0) * q + X * (divX p * q) := by
-        conv_lhs => rw [← X_mul_divX_add p]
-        ring
-      rw [hpq]; simp only [convI]; split_ifs with hz
-      · obtain ⟨lo, hi⟩ := a
-        simp only [Bool.and_eq_true, beq_iff_eq] at hz
-        obtain ⟨rfl, rfl⟩ := hz
-        rw [show (⟨0, 0⟩ : Ival) = zeroI from rfl, mem_zeroI_iff] at h0
-        rw [h0, map_zero, zero_mul, zero_add]; exact hXm
-      · exact memB_add (memB_C_mul h0 hq) hXm
-
-lemma memB_single {N : ℕ} {a : ℝ} {I : Ival} (ha : mem a I) : memB N (C a) [I] := fun n _ => by
-  cases n with
-  | zero => simpa using ha
-  | succ n => simpa [coeff_C_succ] using mem_zero
-
-lemma memB_sumL {α : Type*} {N : ℕ} (f : α → ℝ[X]) (g : α → List Ival) :
-    ∀ (l : List α), (∀ a ∈ l, memB N (f a) (g a)) →
-      memB N (l.map f).sum (sumL (l.map g))
-  | [], _ => by simpa [sumL] using memB_zero N
-  | a :: l, hl => by
-    simp only [List.map_cons, List.sum_cons, sumL]
-    exact memB_add (hl a List.mem_cons_self)
-      (memB_sumL f g l fun b hb => hl b (List.mem_cons_of_mem _ hb))
-
-lemma absSum_le {N : ℕ} {p : ℝ[X]} {L : List Ival} (h : memB N p L) :
-    (∑ n ∈ range N, |p.coeff n|) * D ≤ (absSum L : ℝ) := by
-  have h1 : (∑ n ∈ range N, |p.coeff n|) * D
-      ≤ ∑ n ∈ range N, (absUpper (L.getD n zeroI) : ℝ) := by
-    rw [sum_mul]; exact sum_le_sum fun n hn => abs_le_absUpper (h n (mem_range.1 hn))
-  refine h1.trans ?_
-  have hz : absUpper zeroI = 0 := by simp [absUpper, zeroI]
-  have key : ∀ (L : List Ival) (N : ℕ),
-      ∑ n ∈ range N, absUpper (L.getD n zeroI) ≤ (L.map absUpper).sum := by
-    intro L; induction L with
-    | nil => intro N; simp [hz]
-    | cons a l ih =>
-      intro N; cases N with
-      | zero =>
-        simp only [range_zero, sum_empty, List.map_cons, List.sum_cons]
-        exact add_nonneg (le_max_right _ _) (List.sum_nonneg fun x hx => by
-          obtain ⟨_, _, rfl⟩ := List.mem_map.1 hx; exact le_max_right _ _)
-      | succ N => rw [sum_range_succ']; simpa [add_comm] using ih N
-  exact_mod_cast key L N
-
 /-- Polynomial with rational coefficients `c₀ + X (c₁ + …)`. -/
 def ofListQ : List ℚ → ℝ[X]
   | [] => 0
   | a :: l => C (a : ℝ) + X * ofListQ l
-
-lemma coeff_ofListQ (l : List ℚ) (n : ℕ) : (ofListQ l).coeff n = ((l.getD n 0 : ℚ) : ℝ) := by
-  induction l generalizing n with
-  | nil => simp [ofListQ]
-  | cons a l ih =>
-    cases n with
-    | zero => simp [ofListQ]
-    | succ n =>
-      simp only [ofListQ, coeff_add, coeff_C_succ, coeff_X_mul, zero_add, ih, List.getD_cons_succ]
 
 lemma l1_ofListQ_le (l : List ℚ) : l1 (ofListQ l) ≤ (((l.map fun q => |q|).sum : ℚ) : ℝ) := by
   induction l with
@@ -738,164 +485,11 @@ lemma l1_ofListQ_le (l : List ℚ) : l1 (ofListQ l) ≤ (((l.map fun q => |q|).s
           rw [l1_X, one_mul]; gcongr
       _ = _ := by push_cast; rfl
 
-lemma memB_ofListQ (l : List ℚ) (N : ℕ) : memB N (ofListQ l) (l.map ofRatI) := fun n _ => by
-  rw [coeff_ofListQ, ← ofRatI_zero, list_getD_map]; exact mem_ofRatI _
-
-private lemma getD_iterL (f : List Ival → List Ival) :
-    ∀ (n : ℕ) (L : List Ival) (k : ℕ), k < n → (iterL f n L).getD k [] = f^[k] L
-  | 0, _, _, hk => absurd hk (Nat.not_lt_zero _)
-  | _ + 1, _, 0, _ => rfl
-  | n + 1, L, k + 1, hk => by
-    rw [iterL, List.getD_cons_succ, getD_iterL f n (f L) k (by omega), Function.iterate_succ_apply]
-
-lemma memB_pow {P : ℝ[X]} {PI : List Ival} {K : ℕ} (hP : memB K P PI) (N n : ℕ) (hn : n ≤ N) :
-    memB K (P ^ n) ((powsT K PI N).getD n []) := by
-  rw [powsT, getD_iterL _ _ _ _ (by omega)]
-  induction n with
-  | zero => simpa using memB_single (N := K) (mem_ofRatI 1)
-  | succ n ih =>
-    rw [Function.iterate_succ_apply', pow_succ']
-    exact memB_take (memB_conv hP (ih (by omega)))
-
-private lemma getD_shiftX (k : ℕ) (R : List Ival) (n : ℕ) :
-    (shiftX k R).getD n zeroI = if k ≤ n then R.getD (n - k) zeroI else zeroI := by
-  unfold shiftX
-  induction k generalizing n with
-  | zero => simp
-  | succ k ih =>
-    cases n with
-    | zero => simp [List.replicate_succ]
-    | succ n =>
-      rw [List.replicate_succ, List.cons_append, List.getD_cons_succ, ih]
-      simp only [Nat.add_le_add_iff_right, Nat.add_sub_add_right]
-
-lemma memB_shiftX {K k : ℕ} {r : ℝ[X]} {R : List Ival} (h : memB (K - k) r R) :
-    memB K (X ^ k * r) (shiftX k R) := fun n _ => by
-  rw [coeff_X_pow_mul', getD_shiftX]
-  split_ifs with hk
-  · exact h _ (by omega)
-  · exact mem_zero
-
-/-- Exact real polynomial corresponding to the index positions of an interval table `rows`. -/
-def rowPolyReal (P : ℝ[X]) (μ : ℕ × ℕ → ℝ) (m : ℕ) (es : List (ℕ × Ival)) : ℝ[X] :=
-  (es.map fun e => C (μ (e.1, m)) * (X ^ (e.1 / 2) * P ^ e.1)).sum
-
-def tabPolyReal (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) (rows : List RowI) : ℝ[X] :=
-  (rows.map fun r => X ^ (r.1 / 2) * (Q ^ r.1 * rowPolyReal P μ r.1 r.2)).sum
-
-lemma memB_rowSumT_real {P : ℝ[X]} {PI : List Ival} {K : ℕ} (hP : memB K P PI) (NZ m : ℕ)
-    (μ : ℕ × ℕ → ℝ) :
-    ∀ {es : List (ℕ × Ival)}, (∀ e ∈ es, e.1 ≤ NZ ∧ mem (μ (e.1, m)) e.2) →
-      memB K (rowPolyReal P μ m es) (rowSumT K (powsT K PI NZ) es)
-  | [], _ => by simpa [rowPolyReal, rowSumT] using memB_zero K
-  | (n, I) :: rest, hb => by
-    obtain ⟨hn, hI⟩ := hb (n, I) List.mem_cons_self
-    have h1 : memB K (C (μ (n, m)) * (X ^ (n / 2) * P ^ n))
-        (shiftX (n / 2) ((((powsT K PI NZ).getD n []).take (K - n / 2)).map (mulI I))) := by
-      rw [mul_left_comm]
-      exact memB_shiftX (memB_C_mul hI (memB_take
-        (memB_mono (memB_pow hP NZ n hn) (Nat.sub_le _ _))))
-    exact memB_add h1 (memB_rowSumT_real hP NZ m μ fun e he => hb e (List.mem_cons_of_mem _ he))
-
-/-- **Direct interval-table soundness for `bivarT`.** -/
-theorem memB_bivarT_real {P Q : ℝ[X]} {PI QI : List Ival} {K : ℕ} (hP : memB K P PI)
-    (hQ : memB K Q QI) (μ : ℕ × ℕ → ℝ) {rows : List RowI} {NZ MW : ℕ}
-    (hb : ∀ r ∈ rows, r.1 ≤ MW ∧ ∀ e ∈ r.2, e.1 ≤ NZ ∧ mem (μ (e.1, r.1)) e.2) :
-    memB K (tabPolyReal P Q μ rows) (bivarT K rows PI QI NZ MW) := by
-  change memB K _ (sumL (rows.map (rowTermT K (powsT K PI NZ) (powsT K QI MW))))
-  unfold tabPolyReal
-  refine memB_sumL _ _ rows fun r hr => ?_
-  obtain ⟨hm, hes⟩ := hb r hr
-  exact memB_take (memB_shiftX (memB_mono (memB_conv (memB_pow hQ MW r.1 hm)
-    (memB_rowSumT_real hP NZ r.1 μ hes)) (Nat.sub_le _ _)))
-
 /-- Flattened list of index pairs `(n, m)` appearing in `rows`. -/
 def flatIdx (rows : List RowI) : List (ℕ × ℕ) :=
   rows.flatMap fun r => r.2.map fun e => (e.1, r.1)
 
-lemma tabPolyReal_eq_flatIdx (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) :
-    ∀ rows : List RowI,
-      tabPolyReal P Q μ rows = ((flatIdx rows).map fun p => C (μ p) * termOf P Q p).sum
-  | [] => rfl
-  | r :: rest => by
-    have ih := tabPolyReal_eq_flatIdx P Q μ rest
-    simp only [tabPolyReal, flatIdx, List.map_cons, List.sum_cons, List.flatMap_cons,
-      List.map_append, List.sum_append] at ih ⊢
-    rw [ih, rowPolyReal, ← List.sum_map_mul_left, ← List.sum_map_mul_left, List.map_map]
-    congr 2
-    refine List.map_congr_left fun _ _ => ?_
-    simp only [Function.comp, termOf, shiftOf, pow_add]; ring
-
-/-- When `rows` lists distinct pairs covering `headIdx N` (outside which `μ = 0` on `headIdx N`),
-`bivarT` encloses the exact `bivarKernel P Q μ` up to index `K` (`2 K ≤ N + 1`, `Q(0) = 0`). -/
-theorem mem_bivarT_of_table {P Q : ℝ[X]} {PI QI : List Ival} {N K NZ MW : ℕ}
-    (hK : 2 * K ≤ N + 1) (hQ0 : Q.coeff 0 = 0)
-    (hP : memB K P PI) (hQ : memB K Q QI)
-    (μ : ℕ × ℕ → ℝ) (hpar : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → μ p = 0)
-    {rows : List RowI} (hnodup : (flatIdx rows).Nodup)
-    (hsub : ∀ p ∈ flatIdx rows, p ∈ headIdx N)
-    (hcover : ∀ p ∈ headIdx N, p ∉ flatIdx rows → μ p = 0)
-    (hb : ∀ r ∈ rows, r.1 ≤ MW ∧ ∀ e ∈ r.2, e.1 ≤ NZ ∧ mem (μ (e.1, r.1)) e.2) :
-    ∀ j < K, mem (bivarKernel P Q μ j) ((bivarT K rows PI QI NZ MW).getD j zeroI) := by
-  have hB := memB_bivarT_real hP hQ μ hb
-  intro j hj
-  suffices heq : bivarKernel P Q μ j = (tabPolyReal P Q μ rows).coeff j by
-    rw [heq]; exact hB j hj
-  rw [bivarKernel_eq_head P Q hQ0 μ hpar (N := N) (by omega),
-    tabPolyReal_eq_flatIdx, ← List.sum_toFinset _ hnodup, finsetSum_coeff]
-  symm
-  refine (sum_subset (fun p hp => hsub p (List.mem_toFinset.1 hp)) fun p hp hnp => ?_).trans ?_
-  · rw [hcover p hp (fun hm => hnp (List.mem_toFinset.2 hm)), map_zero, zero_mul, coeff_zero]
-  · exact sum_congr rfl fun _ _ => coeff_C_mul _
-
-/-- 1D interval table `[(0, [(2k + 1, nuI[k])_{k < K}])]`. -/
-def onedRowsI (K : Nat) (nuI : List Ival) : List RowI :=
-  [(0, (List.range K).map fun k => (2 * k + 1, nuI.getD k zeroI))]
-
-/-- `bivarT` on `onedRowsI` encloses `bivarKernel P Q (onedTable ν)` for `j < K`. -/
-theorem mem_bivarT_oned {P Q : ℝ[X]} {PI : List Ival} {K : ℕ} (hP : memB K P PI)
-    (ν : ℕ → ℝ) {nuI : List Ival} (hν : ∀ k < K, mem (ν k) (nuI.getD k zeroI)) :
-    ∀ j < K, mem (bivarKernel P Q (onedTable ν) j)
-      ((bivarT K (onedRowsI K nuI) PI [] (2 * K + 1) 0).getD j zeroI) := by
-  have hB : memB K (tabPolyReal P 0 (onedTable ν) (onedRowsI K nuI))
-      (bivarT K (onedRowsI K nuI) PI [] (2 * K + 1) 0) := by
-    refine memB_bivarT_real hP (memB_zero K) (onedTable ν) (rows := onedRowsI K nuI) ?_
-    rintro r hr
-    simp only [onedRowsI, List.mem_singleton] at hr
-    subst hr
-    refine ⟨le_rfl, ?_⟩
-    rintro e he
-    obtain ⟨k, hk, rfl⟩ := List.mem_map.1 he
-    have hk' : k < K := List.mem_range.1 hk
-    refine ⟨by omega, ?_⟩
-    have h1 : (2 * k + 1) % 2 = 1 := by omega
-    have h2 : (2 * k + 1) / 2 = k := by omega
-    simpa [onedTable, h1, h2] using hν k hk'
-  intro j hj
-  suffices heq : bivarKernel P Q (onedTable ν) j =
-      (tabPolyReal P 0 (onedTable ν) (onedRowsI K nuI)).coeff j by
-    rw [heq]; exact hB j hj
-  rw [bivarKernel_oned_eq_head P Q ν hj]
-  have hpoly : tabPolyReal P 0 (onedTable ν) (onedRowsI K nuI) =
-      ∑ k ∈ range K, C (ν k) * (X ^ k * P ^ (2 * k + 1)) := by
-    simp only [onedRowsI, tabPolyReal, rowPolyReal, List.map_singleton, List.sum_singleton,
-      Nat.zero_div, pow_zero, one_mul, List.map_map]
-    have hfn : ((fun e : ℕ × Ival => C (onedTable ν (e.1, 0)) * (X ^ (e.1 / 2) * P ^ e.1)) ∘
-        fun k : ℕ => (2 * k + 1, nuI.getD k zeroI)) =
-        fun k => C (ν k) * (X ^ k * P ^ (2 * k + 1)) := by
-      funext k
-      have h1 : (2 * k + 1) % 2 = 1 := by omega
-      have h2 : (2 * k + 1) / 2 = k := by omega
-      simp [Function.comp, onedTable, h1, h2]
-    rw [hfn]
-    clear hfn hB hP hν hj
-    induction K with
-    | zero => simp
-    | succ k ih => rw [List.range_succ, List.map_append, List.sum_append, sum_range_succ, ih]; simp
-  rw [hpoly, finsetSum_coeff]
-  exact sum_congr rfl fun _ _ => (coeff_C_mul _).symm
-
-/-! ### 6. Multi-channel interval-head convex transfer -/
+/-! ### 6. Convex combinations of channels -/
 
 theorem summable_convex_comb {k : ℕ} {h : Fin k → ℕ → ℝ} (w : Fin k → ℝ)
     (hs : ∀ p, Summable fun n => |h p n|) :
@@ -921,66 +515,6 @@ theorem radialKernel_convex_comb {k : ℕ} {h : Fin k → ℕ → ℝ} (w : Fin 
     exact sum_congr rfl fun _ _ => by push_cast; ring
   rw [heq, Summable.tsum_finsetSum (fun p _ => hterm p)]
   exact sum_congr rfl fun _ _ => tsum_mul_left
-
-/-- **Multi-channel convex transfer directly from `Ival` head lists + Hardy tail bounds.** -/
-theorem convex_transfer_ival {k : ℕ} {wQ : Fin k → ℚ} {h : Fin k → ℕ → ℝ}
-    {headI : Fin k → List Ival} {tl : Fin k → ℝ} {K : ℕ} {cQ headCapQ : ℚ} {δ : ℝ}
-    (hw0 : ∀ p, 0 ≤ (wQ p : ℝ)) (hw1 : ∑ p, (wQ p : ℝ) = 1)
-    (hs : ∀ p, Summable fun n => |h p n|)
-    (hdom : ∀ p, DominatedKernel (radialKernel (h p)))
-    (hmem : ∀ p n, n < K + 1 → mem (h p n) ((headI p).getD n zeroI))
-    (htail : ∀ p, ∑' n, |h p (n + (K + 1))| ≤ tl p)
-    (hhead : absSum (addL (sumL ((List.finRange k).map fun p =>
-        (headI p).map (mulI (ofRatI (wQ p))))) [negI (ofRatI cQ)]) ≤ ofRatLo headCapQ)
-    (hδ : (headCapQ : ℝ) + ∑ p, (wQ p : ℝ) * tl p ≤ δ)
-    (hδc : δ < (cQ : ℝ)) :
-    IsBound (1 / ((cQ : ℝ) - δ)) := by
-  let w : Fin k → ℝ := fun p => (wQ p : ℝ)
-  let H : ℕ → ℝ := fun n => ∑ p, w p * h p n
-  have hsH : Summable fun n => |H n| := summable_convex_comb w hs
-  have hdomH : DominatedKernel (radialKernel H) :=
-    dominatedKernel_congr_ball (dominatedKernel_convex_comb hw0 hw1 hdom) fun _ hz =>
-      (radialKernel_convex_comb w hs hz).symm
-  refine transfer H hsH hdomH hδc ?_
-  rw [residual_split H hsH (cQ : ℝ) K]
-  -- 1. Interval head bound
-  let chPoly : Fin k → ℝ[X] := fun p => ∑ n ∈ range (K + 1), monomial n (h p n)
-  have hch_coeff : ∀ p n, n < K + 1 → (chPoly p).coeff n = h p n := fun p n hn => by
-    simp only [chPoly, finsetSum_coeff, coeff_monomial]
-    rw [sum_eq_single n (fun b _ hbn => by simp [hbn]) (fun hnp => absurd (mem_range.2 hn) hnp)]
-    simp
-  have hmem_ch : ∀ p ∈ List.finRange k,
-      memB (K + 1) (C (w p) * chPoly p) ((headI p).map (mulI (ofRatI (wQ p)))) :=
-    fun p _ => memB_C_mul (mem_ofRatI (wQ p)) fun n hn => by
-      rw [hch_coeff p n hn]; exact hmem p n hn
-  have hsumB := memB_add (memB_sumL _ _ (List.finRange k) hmem_ch)
-    (memB_single (N := K + 1) (mem_neg (mem_ofRatI cQ)))
-  have h1 := absSum_le hsumB
-  have h2 : (absSum (addL (sumL ((List.finRange k).map fun p =>
-      (headI p).map (mulI (ofRatI (wQ p))))) [negI (ofRatI cQ)]) : ℝ) ≤ (headCapQ : ℝ) * D :=
-    (Int.cast_le.2 hhead).trans (ofRatLo_le headCapQ)
-  have hH_head : ∑ n ∈ range (K + 1), |H n - if n = 0 then (cQ : ℝ) else 0| ≤ (headCapQ : ℝ) := by
-    refine le_of_mul_le_mul_right ((le_of_eq ?_).trans (h1.trans h2)) D_pos
-    congr 1
-    refine sum_congr rfl fun n hn => ?_
-    rw [coeff_add, coeff_C, ← Fin.sum_univ_def, finsetSum_coeff]
-    have hsum_eq : ∑ x : Fin k, (C (w x) * chPoly x).coeff n = H n :=
-      sum_congr rfl fun p _ => by rw [coeff_C_mul, hch_coeff p n (mem_range.1 hn)]
-    rw [hsum_eq]; congr 1; split_ifs <;> ring
-  -- 2. Tail bound
-  have hH_tail : ∑' n, |H (n + (K + 1))| ≤ ∑ p, w p * tl p := by
-    refine Real.tsum_le_of_sum_range_le (fun _ => abs_nonneg _) fun J => ?_
-    calc ∑ n ∈ range J, |H (n + (K + 1))|
-        ≤ ∑ n ∈ range J, ∑ p, w p * |h p (n + (K + 1))| :=
-          sum_le_sum fun n _ => (abs_sum_le_sum_abs _ _).trans
-            (le_of_eq (sum_congr rfl fun p _ => by rw [abs_mul, abs_of_nonneg (hw0 p)]))
-      _ = ∑ p, w p * ∑ n ∈ range J, |h p (n + (K + 1))| := by
-          rw [sum_comm]; exact sum_congr rfl fun _ _ => (mul_sum _ _ _).symm
-      _ ≤ ∑ p, w p * tl p :=
-          sum_le_sum fun p _ => mul_le_mul_of_nonneg_left
-            ((((summable_nat_add_iff (K + 1)).2 (hs p)).sum_le_tsum (range J)
-              fun _ _ => abs_nonneg _).trans (htail p)) (hw0 p)
-  linarith
 
 end
 

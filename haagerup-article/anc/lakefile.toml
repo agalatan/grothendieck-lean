@@ -1,12 +1,19 @@
-# The Lean proof of the article, as a standalone Lake package (the arXiv ancillary files).
+# Lean proof that the complex Grothendieck constant is strictly below Haagerup's value 1/γ†.
 #
-# The sources in  are byte-identical to the folder of the same name in the repository
-# https://github.com/agalatan/grothendieck-lean (the CI job .github/workflows/haagerup-article.yml checks this), where
-# they also prove the upper bound of Grothe.Statement.main_bounds. They import only Mathlib.
+# A self-contained Lake package: it depends on Mathlib only, at the version pinned below and in
+# `lake-manifest.json`, with the Lean version of `lean-toolchain`.
 #
-# Build: `lake exe cache get && lake build`; axioms: `lake env lean Axioms.lean`.
-name = "haagerupArticle"
-defaultTargets = ["HaagerupArticle"]
+#   lake exe cache get              # Mathlib's compiled files
+#   lake build                      # every module of the two libraries below
+#   lake env lean Axioms.lean       # the axioms of the six public theorems
+#
+# `HaagerupKernel` holds the executable checkers (integer and interval arithmetic; no Mathlib import);
+# `Haagerup` holds the mathematics, the certificate data and the theorems (`Haagerup.lean`).
+# The checkers are ordinary modules, not `precompileModules`: the kernel evaluates them in the `decide +kernel`
+# checks, and the four `native_decide` facts (`native.txt`) run them in Lean's own evaluator, so the build needs no
+# C compiler.
+name = "haagerup"
+defaultTargets = ["HaagerupKernel", "Haagerup"]
 
 [[require]]
 name = "mathlib"
@@ -15,5 +22,9 @@ git = "https://github.com/leanprover-community/mathlib4"
 rev = "v4.34.1"
 
 [[lean_lib]]
-name = "HaagerupArticle"
-globs = ["+"]
+name = "HaagerupKernel"
+globs = ["HaagerupKernel.*"]
+
+[[lean_lib]]
+name = "Haagerup"
+globs = ["Haagerup.*"]

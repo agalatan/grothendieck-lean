@@ -1073,9 +1073,6 @@ theorem hermite_complete {f : ℂ → ℂ} (hf : MemLp f 2 gaussC)
 
 def nrm (p q : ℕ) : ℝ := (√((p.factorial * q.factorial : ℕ) : ℝ))⁻¹
 
-lemma nrm_pos (p q : ℕ) : 0 < nrm p q := by
-  unfold nrm; have := Nat.factorial_pos p; have := Nat.factorial_pos q; positivity
-
 lemma nrm_sq_mul (p q : ℕ) : nrm p q * nrm p q * ((p.factorial * q.factorial : ℕ) : ℝ) = 1 := by
   have h : (0 : ℝ) < ((p.factorial * q.factorial : ℕ) : ℝ) := by
     have := Nat.factorial_pos p; have := Nat.factorial_pos q; positivity

@@ -14,7 +14,6 @@ set_option warningAsError true
 4. Proves `smoothed_energy_eq` expressing `energy (toLp (smoothMap ct st se ce (cellFn ...))) (d₁, d₂)`
    for odd `d₁ + d₂ = 2k + 1` via `gScaled`, `bCoeff`, and binomial coefficients with zero square roots.
 
-Agent-ID: gemini-21d5
 -/
 
 namespace Haagerup

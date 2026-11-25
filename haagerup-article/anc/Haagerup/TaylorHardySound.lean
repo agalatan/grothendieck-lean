@@ -20,7 +20,6 @@ to the master Hardy tail budgets required by `CertCheck.lean`:
 4. Master Hardy channel theorems `hardy_smoothed_channel_tm`, `hardy_phase_channel_tm`, and
    `hardy_anti_channel_tm`.
 
-Agent-ID: gemini-1aa9
 -/
 
 namespace Haagerup
@@ -139,9 +138,6 @@ def memTM2 (f : ℝ → ℝ) (a : TM2) : Prop :=
   ∀ u : ℝ, |u| ≤ 1 →
     |f u - ((a.c : ℝ) + (a.d : ℝ) * u + (a.q : ℝ) * u ^ 2) / (D64 : ℝ)| ≤
       (a.r : ℝ) / (D64 : ℝ)
-
-private lemma memTM2_exact (x : ℤ) : memTM2 (fun _ => (x : ℝ) / (D64 : ℝ)) (tmExact x) := by
-  intro u _; simp [tmExact]
 
 private lemma memTM2_zero : memTM2 (fun _ => (0 : ℝ)) tmZero := by
   intro u _; simp [tmZero]

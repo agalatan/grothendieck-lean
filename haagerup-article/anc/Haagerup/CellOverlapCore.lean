@@ -7,7 +7,7 @@ set_option maxRecDepth 2000
 set_option exponentiation.threshold 2048
 
 /-!
-# Soundness of `lagTable1024`, `computeTigMu`, `computeSmoothedRows`, and `haagMuList`
+# Soundness of `lagTable1024`, `computeTigMu` and the smoothed row checker
 
 Proves:
 1. Soundness of 1024-bit integer interval arithmetic (`ivAddL`, `ivSubL`, `ivMulIntL`, `ivDivPosL`),
@@ -15,18 +15,15 @@ Proves:
 2. Soundness of `binomArr251`, `bTable1024`, `extractBMids`, `modeOverlapsAt`, and `dotMidErr`;
 3. `mem_muTigOf`: `computeTigMu creArr cimArr = (true, tigMuList)` implies
    `∀ k < 251, mem (muTigOf creArr cimArr k) (tigMuList.getD k zeroI)`;
-4. `mem_smoothedRows`: `computeSmoothedRows creArr cimArr cn sn chyp se ce ehyp = (true, rows)` implies
-   every entry `(d₁, iv)` in row `d₂` encloses `energy G (d₁, d₂)`, and `bivarT 251 rows PI QI 501 167`
-   encloses `bivarKernel P Q (energy G)` for all `j < 251`;
-5. `mem_haagMuList`: `haagMuList 251` encloses `haagCoeff k` for all `k < 251`.
+4. The ingredients of the smoothed row checker `computeSmoothedRows` (`flatIdx_ofFn_props`, `bTable1024_sound`,
+   `extractBMids_sound`, `t1Cell_sound`, `dotT1_sound`), assembled in `SmoothedRows.lean` and `CellOverlap.lean`.
 
-Agent-ID: gemini-21d5
 -/
 
 namespace Haagerup
 
 open Finset Polynomial Real
-open HaagerupKernel HaagerupKernel.Cell HaagerupKernel.Hardy
+open HaagerupKernel HaagerupKernel.Cell
 
 noncomputable section
 
@@ -1289,7 +1286,7 @@ theorem modeOverlapsAt_sound {bLag : ℕ} (hbLag : bLag ≤ 1024)
 
 end
 
-/-! ### 5. Soundness of `computeTigMu` (`mem_muTigOf`) and `haagMuList` -/
+/-! ### 5. Soundness of `computeTigMu` (`mem_muTigOf`) -/
 
 theorem mem_muTigOf {creArr cimArr : Array Int} {tigMuList : List Ival}
     (hcheck : tigMuCheck creArr cimArr tigMuList = true) {k : ℕ} (hk : k < 251) :
@@ -1375,43 +1372,6 @@ theorem mem_muTigOf {creArr cimArr : Array Int} {tigMuList : List Ival}
         rw [ite_eq_right hev, hb_ev]
         simp only [Bool.false_eq_true, ↓reduceIte, neg_one_mul, mem, Int.cast_neg]
         exact ⟨by linarith [hvIv.2], by linarith [hvIv.1]⟩
-
-/-- Rational upper bound for `π` (`Real.pi_lt_d20`). -/
-def piHi20Q : ℚ := (314159265358979323847 : ℤ) / ((10 : ℤ) ^ 20)
-
-/-- Interval enclosure of `π / 4` from `Real.pi_gt_d20` and `Real.pi_lt_d20`. -/
-def piQuarterI : Ival := ⟨ofRatLo (piLo20Q / 4), ofRatHi (piHi20Q / 4)⟩
-
-/-- On-the-fly interval list enclosing `haagCoeff k = (π / 4) * haagR k` for `k < K`. -/
-def haagMuList (K : ℕ) : List Ival :=
-  (List.range K).map fun k => mulI piQuarterI (ofRatI (haagR k))
-
-theorem mem_haagMuList {K k : ℕ} (hk : k < K) :
-    mem (haagCoeff k) ((haagMuList K).getD k zeroI) := by
-  have hpi_lo : (piLo20Q : ℝ) / 4 ≤ Real.pi / 4 := by
-    have := Real.pi_gt_d20
-    have hq : (piLo20Q : ℝ) = 3.14159265358979323846 := by norm_num [piLo20Q]
-    linarith
-  have hpi_hi : Real.pi / 4 ≤ (piHi20Q : ℝ) / 4 := by
-    have := Real.pi_lt_d20
-    have hq : (piHi20Q : ℝ) = 3.14159265358979323847 := by norm_num [piHi20Q]
-    linarith
-  have hpiI : mem (Real.pi / 4) piQuarterI := by
-    unfold mem piQuarterI
-    dsimp only
-    refine ⟨(ofRatLo_le (piLo20Q / 4)).trans ?_, ?_⟩
-    · push_cast; exact mul_le_mul_of_nonneg_right hpi_lo D_pos.le
-    · refine (mul_le_mul_of_nonneg_right hpi_hi D_pos.le).trans ?_
-      have hhi := le_ofRatHi (piHi20Q / 4)
-      push_cast at hhi
-      exact hhi
-  rw [haagMuList, list_getD_lt _ k zeroI (by simp; exact hk), List.getElem_map, List.getElem_range]
-  unfold haagCoeff
-  exact mem_mul hpiI (mem_ofRatI (haagR k))
-
-lemma match_triple_fst {α β γ δ ε : Type*} (x : α × β × γ) (a : δ) (f : β → γ → ε) :
-    (match x with | (_, b, c) => (a, f b c)).1 = a := by
-  rcases x with ⟨_, _, _⟩; rfl
 
 lemma flatIdx_ofFn_props {M : ℕ} (hM : M = 168) {entryFn : (m : Fin M) → Fin ((501 - 3 * m.val - (1 - m.val % 2)) / 2 + 1) → ℕ × Ival}
     {rows : List RowI}
@@ -1836,7 +1796,6 @@ lemma dotT1_sound {k : ℕ} {b1F : ℕ → ℝ} {innerF : ℕ → ℂ}
     (fun j1 => b1Row.getD j1 0) (fun j1 => iArr.getD j1 0) hb1 (fun j1 hj1 => (hpt j1 hj1).2)
   rw [← hsb1] at hd_re hd_im
   exact ⟨hd_re, hd_im⟩
-
 
 end
 end Haagerup

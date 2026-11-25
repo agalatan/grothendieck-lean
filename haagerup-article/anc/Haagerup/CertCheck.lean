@@ -12,7 +12,7 @@ import Haagerup.ContourChecks.Channel5
 set_option warningAsError true
 
 /-!
-# 6-Channel Certificate Verification (`K_G^ℂ ≤ 1.40455741`)
+# The six-channel certificate: `K_G^ℂ ≤ 1 / (c − δ)`
 
 Combines:
 * Channels 0, 1, 5: rotated Ornstein–Uhlenbeck smoothed `64 × 64 × 36` cell map `T_cell`
@@ -24,9 +24,9 @@ Combines:
 with kernel-verified `K = 251` Kronecker-packed head convolution (`head_sum_ok`, `FastHeadSound`)
 and kernel-verified Taylor-model Hardy circle-mean tail bounds (`reg0_ok`–`reg5_ok`,
 `mean0_ok`–`mean5_ok`, `TaylorHardySound`) via `convex_transfer_head`, establishing
-`isBound_cert : Statement.IsBound (140455741 / 100000000 : ℝ)`.
+`isBound_cert : Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)))`, with the centre `cCertQ` and the error
+budget `deltaCertQ` of `Parameters.lean` (`1 / (c − δ) = 1.4045574031…`).
 
-Agent-ID: gemini-21d5, gemini-1aa9
 -/
 
 namespace Haagerup
@@ -265,8 +265,10 @@ private lemma hChan_tail (p : Fin 6) :
       hp5 hq5 (by norm_num [rhoQ]) (by norm_num [rhoQ, regRQ])
       (by norm_num [jCertQ]) (by norm_num [budgetQ, d6Q]) reg5_ok mean5_ok J
 
-/-- **Certified upper bound**: `K_G^ℂ ≤ 1.40455741`. -/
-theorem isBound_cert : Statement.IsBound (140455741 / 100000000 : ℝ) := by
+/-- **The certificate's bound.** `1 / (c − δ)` is a complex Grothendieck bound: `V(A) ≤ (c − δ)⁻¹ · C(A)` for every
+finite complex matrix `A`, where `c = cCertQ` is the centre of the six-channel kernel and `δ = deltaCertQ` is the head
+cap plus the weighted tail caps (`Parameters.lean`). The value is `1.4045574031…` (`Haagerup.certificate_value`). -/
+theorem isBound_cert : Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ))) := by
   have hw0 : ∀ p : Fin 6, 0 ≤ (wQ p : ℝ) := fun p => by fin_cases p <;> norm_num [wQ, d12Q]
   have hw1 : ∑ p : Fin 6, (wQ p : ℝ) = 1 := by
     rw [← Rat.cast_sum, show ∑ p : Fin 6, wQ p = 1 by decide +kernel, Rat.cast_one]
@@ -274,12 +276,8 @@ theorem isBound_cert : Statement.IsBound (140455741 / 100000000 : ℝ) := by
     have hq : headCapCertQ + ∑ p : Fin 6, wQ p * tailQ p ≤ deltaCertQ := by decide +kernel
     simpa only [Rat.cast_add, Rat.cast_sum, Rat.cast_mul] using (Rat.cast_le (K := ℝ)).2 hq
   have hδc : (deltaCertQ : ℝ) < (cCertQ : ℝ) := by norm_num [deltaCertQ, cCertQ, d12Q]
-  have hB : Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ))) :=
-    convex_transfer_head (K := 250) hw0 hw1 hChan_summable hChan_dominated
-      hHead_res hChan_tail hδ hδc
-  have hle : 1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)) ≤ (140455741 / 100000000 : ℝ) := by
-    norm_num [cCertQ, deltaCertQ, d12Q]
-  exact fun m n A => (hB m n A).trans (mul_le_mul_of_nonneg_right hle (Real.sSup_nonneg fun r ⟨_, _, _, _, hr⟩ => hr ▸ norm_nonneg _))
+  exact convex_transfer_head (K := 250) hw0 hw1 hChan_summable hChan_dominated
+    hHead_res hChan_tail hδ hδc
 
 end
 

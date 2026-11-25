@@ -15,10 +15,10 @@ Self-standing definitions of:
 * Haagerup's integral `gammaDagger = ∫₀^{π/2} cos² t (1 + sin² t)^{-1/2} dt` (`≈ 0.711958659778`),
   so Haagerup's proposed value for the constant is `1 / gammaDagger ≈ 1.404575934664`.
 
-Also proves `constant_lt_of_upperBelow : UpperBelow c → complexGrothendieckConstant < c` without
-any external dependencies.
+The file imports only Mathlib and can be read alone. Besides the definitions it proves three elementary facts about
+bounds: every bound is at least `1` (`one_le_of_isBound`), so the set of bounds is bounded below
+(`bounds_bddBelow`), and a number above a bound is a bound (`IsBound.mono`).
 
-Agent-ID: gemini-21d5
 -/
 
 namespace Haagerup.Statement
@@ -53,9 +53,6 @@ def IsBound (K : ℝ) : Prop :=
 /-- The complex Grothendieck constant `K_G^ℂ = inf {K | IsBound K}`. -/
 def complexGrothendieckConstant : ℝ := sInf {K | IsBound K}
 
-/-- Some Grothendieck bound is strictly below `c`. -/
-def UpperBelow (c : ℝ) : Prop := ∃ K, IsBound K ∧ K < c
-
 /-- Haagerup's integral `γ† = ∫₀^{π/2} cos² t (1 + sin² t)^{-1/2} dt`. -/
 def gammaDagger : ℝ :=
   ∫ t in (0 : ℝ)..(Real.pi / 2), Real.cos t ^ 2 / √(1 + Real.sin t ^ 2)
@@ -86,14 +83,14 @@ theorem one_le_of_isBound {K : ℝ} (hK : IsBound K) : 1 ≤ K := by
     linarith
   nlinarith [mul_le_mul_of_nonneg_left hS_le hK0]
 
+/-- The set of Grothendieck bounds is bounded below (by `0`), so its infimum is the greatest lower bound. -/
 theorem bounds_bddBelow : BddBelow {K | IsBound K} :=
   ⟨0, fun _ hK => zero_le_one.trans (one_le_of_isBound hK)⟩
 
-/-- `UpperBelow c` implies `complexGrothendieckConstant < c`. -/
-theorem constant_lt_of_upperBelow {c : ℝ} (h : UpperBelow c) :
-    complexGrothendieckConstant < c := by
-  obtain ⟨K, hK, hlt⟩ := h
-  exact lt_of_le_of_lt (csInf_le bounds_bddBelow hK) hlt
+/-- A number above a Grothendieck bound is a Grothendieck bound. -/
+theorem IsBound.mono {K K' : ℝ} (hK : IsBound K) (h : K ≤ K') : IsBound K' :=
+  fun m n A => (hK m n A).trans
+    (mul_le_mul_of_nonneg_right h (Real.sSup_nonneg fun _ ⟨_, _, _, _, hr⟩ => hr ▸ norm_nonneg _))
 
 end
 

@@ -2,7 +2,6 @@ import Haagerup.SmoothedRows
 
 /-! The smoothed row checker encloses the signed head of the actual rounding kernel.
 
-Agent-ID: codex-a7c4
 -/
 
 set_option warningAsError true
@@ -22,7 +21,6 @@ private theorem smoothedEntry_eq (bt : MidTable) (ks : Array KBlock) (d1 d2 : Na
       (d1,sumIval (d2+1) (smoothedTerm binomArr251 bt b.2.1 b.2.2 k d2)) := by
   unfold smoothedRowEntry
   dsimp only
-
 
 private theorem entry_mem {cr ci qr qi : Array Int} {ct st se ce : ℝ}
     (hd : ct^2 + st^2 = 1) (he : se^2 + ce^2 = 1) (hsos : sosAllOK cr ci qr qi = true)
@@ -137,25 +135,6 @@ theorem smoothedRowsCheck_table_sound {creArr cimArr qreArr qimArr : Array Int}
   have ho : (d1+d2)%2 = 1 := by dsimp only [d1]; omega
   exact entry_mem hd he hsos hdeg ho
     (fun _ hk _ ha _ hb => gammaLookup_sound hv hg hk (by omega) (by omega)) bs.1 bs.2 hk
-
-/-- The checked rows enclose every smoothed-channel head coefficient through index 250. -/
-theorem mem_bivarT_smoothed {creArr cimArr qreArr qimArr : Array Int}
-    (hsos : sosAllOK creArr cimArr qreArr qimArr = true)
-    {cn sn chyp se ce ehyp : ℕ}
-    (hd : ((cn : ℝ) / chyp) ^ 2 + ((sn : ℝ) / chyp) ^ 2 = 1)
-    (he : ((se : ℝ) / ehyp) ^ 2 + ((ce : ℝ) / ehyp) ^ 2 = 1)
-    {rows : List RowI}
-    (hcheck : smoothedRowsCheck creArr cimArr cn sn chyp se ce ehyp rows = true)
-    {P Q : ℝ[X]} {PI QI : List Ival}
-    (hQ0 : Q.coeff 0 = 0) (hP : memB 251 P PI) (hQ : memB 251 Q QI) :
-    let ct := (cn : ℝ) / chyp; let st := (sn : ℝ) / chyp
-    let seR := (se : ℝ) / ehyp; let ceR := (ce : ℝ) / ehyp
-    let G := (memLp_smoothMap ct st seR ceR (measurable_cellFn creArr cimArr)
-      (norm_cellFn_le hsos)).toLp (smoothMap ct st seR ceR (cellFn creArr cimArr))
-    ∀ j < 251, mem (bivarKernel P Q (energy G) j) ((bivarT 251 rows PI QI 501 167).getD j zeroI) := by
-  obtain ⟨hpar, hnod, hsub, hcov, hrow⟩ := smoothedRowsCheck_table_sound hsos hd he hcheck
-  exact mem_bivarT_of_table (N := 501) (K := 251) (NZ := 501) (MW := 167)
-    (by omega) hQ0 hP hQ _ hpar hnod hsub hcov hrow
 
 end
 end Haagerup

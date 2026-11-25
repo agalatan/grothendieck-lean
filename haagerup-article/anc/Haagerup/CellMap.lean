@@ -15,7 +15,6 @@ scale `2⁻²⁴` on `r₁, r₂ ∈ [0, 6)` cut into `64` bins of width `3 / 32
 * `norm_cellFn_le : sosAllOK creArr cimArr qreArr qimArr = true → ‖cellFn creArr cimArr u‖ ≤ 1`;
 * `memLp_cellFn : sosAllOK creArr cimArr qreArr qimArr = true → MemLp (cellFn creArr cimArr) 2 mu2`.
 
-Agent-ID: gemini-21d5
 -/
 
 namespace Haagerup

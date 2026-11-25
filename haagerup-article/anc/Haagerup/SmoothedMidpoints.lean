@@ -1,7 +1,6 @@
 import Haagerup.CellOverlapCore
 import HaagerupKernel.SmoothedStages
 
--- Agent-ID: codex-a7c4
 
 set_option warningAsError true
 set_option maxRecDepth 4096

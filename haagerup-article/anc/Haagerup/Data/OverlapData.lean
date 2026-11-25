@@ -9,7 +9,6 @@ set_option warningAsError true
 
 Verified bit-for-bit against `computeTigMu` and `computeSmoothedRows` via `native_decide`.
 
-Agent-ID: gemini-21d5
 -/
 
 namespace Haagerup.Data

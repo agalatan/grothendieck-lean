@@ -23,7 +23,6 @@ Architecture:
    the algebraic identity equating `bivarKernel P (-X) μ` on `n < 251` to the `E`/`O` split.
 5. Master theorems `head_residual_of_fastHeadOK` and `convex_transfer_head`.
 
-Agent-ID: gemini-1aa9
 -/
 
 namespace Haagerup

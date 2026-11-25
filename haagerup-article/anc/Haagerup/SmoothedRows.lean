@@ -3,7 +3,6 @@ import Haagerup.SmoothedContraction
 
 /-! From the two dot products to the interval for one smoothed energy row.
 
-Agent-ID: codex-a7c4
 -/
 
 set_option warningAsError true

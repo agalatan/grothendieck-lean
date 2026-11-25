@@ -1,4 +1,5 @@
 import HaagerupKernel.Basic
-import HaagerupKernel.Table
-import HaagerupKernel.Hardy
 import HaagerupKernel.CellKernel
+import HaagerupKernel.SmoothedStages
+import HaagerupKernel.FastHead
+import HaagerupKernel.TaylorHardy

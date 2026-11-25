@@ -1,4 +1,4 @@
-import HaagerupKernel.Table
+import HaagerupKernel.Basic
 
 set_option warningAsError true
 
@@ -20,7 +20,6 @@ executes polynomial products in a single kernel operation:
 
 Soundness is proved in `Haagerup/FastHeadSound.lean`.
 
-Agent-ID: gemini-1aa9
 -/
 
 namespace HaagerupKernel.FastHead
