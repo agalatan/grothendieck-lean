@@ -19,7 +19,7 @@ numerical (N)**, apart from the **P** or **C** parts of `STATUS.md` rows 1.6, 1.
 | `README.md` | this file: notation, the state in brief, reading order |
 | [`STATUS.md`](STATUS.md) | **the ledger**: every statement with its scope, status, author and source |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository (logs, numerical archives, downloaded sources), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, and the attack plan of 25 November with its six problem statements) |
+| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, the attack plan of 25 November with its six problem statements, and the design computation of 25 November with the assembly theorem) |
 | `code/` | the scripts behind them and the small result files the ledger cites |
 
 **Living documents.** `STATUS.md` is edited in place by every PR that changes the state of knowledge; copies under
@@ -94,6 +94,16 @@ record.
   the direct bound (through t = 0.36495 with the independently reviewed cubic radius and the fourth-excess and spectral mass estimates, STATUS 4.18f) and t = 0.647; and the other pieces of the gate (STATUS 4.16). At the upper end, a direct proof covers every pair from $t=0.88477644$ to the physical endpoint, and also covers pairs of remote cubic energy at most $3/5000$ from $t=0.81$ upward (STATUS 4.18d). The work runs under issue #453.
 
 - **Visible quintic phase.** Optimizing its complex coefficient over a remote cubic buys less than $1.07\times10^{-7}$ over optimizing the real coefficient for the same law on all nineteen P6 rows. The gain from changing the prescribed real coefficient is a separate term in a fixed-profile proof (STATUS 4.16a).
+
+- **The design of the certificate.** With the radius 2287/2500 in the law layer the room is 3.7356·10⁻⁴ on plain
+  covers alone (STATUS 4.42). The allowances of the content law rested on an A/B secant margin that fails at finite
+  amplitude with the tilt (2/5, 3/10); a design with the tilt (2/5, 3/20) and the content law posed per (u, χ) cell
+  has exact positive rooms on 21 pieces from t = 0.649 (STATUS 4.43, 4.44). Giving those rooms entirely to the A/B
+  sector is false on the eleven pieces below 0.835: explicit pairs with zero content need a part of the room for the
+  visible quintic. With that part set aside the design has, numerically, a factor of at least 2.76 against every
+  cubic tested, in at most 13 variables (STATUS 4.44). One conditional theorem assembles the certificate from
+  hypotheses H0–H9; the mid-t bound on (0.250885, 0.649), the secant inequality, the content law and the
+  other-sector statement are open (STATUS 4.45).
 
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the
 sources it cites.
