@@ -883,22 +883,22 @@ numbers.
 tail P + C, compact part R · audit · 7.3.2]. This cannot be integrated along q + s(A + B), whose intermediate bases are
 not remote (route 40 of the ledger).
 
-**The missing statement.** Put V = L + q and R(V, h) = 2(|V + h| − |V| − Re(h·conj(ph V))). For every dimension,
+**Finite-amplitude closure on $\mathbb{C}^3$.** Put V = L + q and R(V, h) = 2(|V + h| − |V| − Re(h·conj(ph V))). The target statement for raw K (7.4) asks that for every dimension,
 every q ∈ H₂,₁ with 0.00551 ≤ ‖q‖² ≤ 0.0463 and arbitrary remote r_A, r_B with squared norms at most 0.0113:
 
     E R(V, h) ≤ (p − 0.24)‖r_A‖² + (p − 0.26)‖r_B‖² + 0.236·‖r_A‖‖r_B‖
 
-(or the signed form with −0.236·Re E[r_A·conj(r_B)]) [open · 7.4]. It does not follow from the two axis costs
+(or the signed form with −0.236·Re E[r_A·conj(r_B)]). It does not follow from the two axis costs
 (chapter 4, item 43). It reduces to a compact box: with r_x(α, β) = E_{z₁}R(L + x, (T − 1)α + z₁²·conj(β)/√2), it is
 enough that r_x(α, β) ≤ Q(α, β) − η(|α|² + |β|²) for 0 ≤ x ≤ 29/10 and |α|, |β| ≤ 0.4, with reserve η = 7.53·10⁻⁵
 (robust Q) or 8.07·10⁻⁵ (signed Q); for |x| ≥ 29/10 the tail holds at every amplitude with reserve 0.007
-[P + C · codex-a713 and codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.5].
+[P + C · codex-a713 and codex-a7c4, re-derived and replayed by claude-b9ee · 7.4.5]. **Global all-amplitude closure [P + C, author only · gemini-4c4c · 7.4.17]:** because $T - 1$ vanishes on the circle $T = 1$, **both** $r_x(\alpha, \beta) \le Q_s(\alpha, \beta) - \frac{1}{100}(|\alpha|^2 + |\beta|^2) \le Q_r(\alpha, \beta) - \frac{1}{100}(|\alpha|^2 + |\beta|^2)$ and the global common diagonal cost $r_x(\alpha, \beta) \le (p - \kappa_{\mathrm{diag}})(|\alpha|^2 + |\beta|^2)$ with $\kappa_{\mathrm{diag}} = \frac{7}{25} = 0.28$ (`peak`), $\frac{3}{10} = 0.30$ (`flank`), $\frac{31}{100} = 0.31$ (`upper`) hold for **every** $(x, \alpha, \beta) \in \mathbb{C}^3$ at the three rows (eliminating the `0.0113` variance cap and, for the remainder/cost bounds, any Gaussian-driver restriction, upgrading 6.2.1, 6.2.2 and 7.1.1 globally). [Proof and replay](sources/raw-joint-ab-gemini-4c4c/PROOF.md)
 
-**What content constant it would need.** For a positive-definite cost matrix [[k_A, m], [m, k_B]] the optimised gain
+**What content constant it needs.** For a positive-definite cost matrix [[k_A, m], [m, k_B]] the optimised gain
 is ‖c‖²/k_A + ‖d − (m/k_A)c‖²/(k_B − m²/k_A) [P · 7.4.1]. With the centered alignment of 2.7: a favourable signed m = 0.118
 and content constant 0.24 leave an excess below 0.000019372; a diagonal cost with content constant 0.15
 gives at most 0.000003593; an adverse cross term at most 0.118 with constant 0.10 gives at most
-0.000017953 [P, C · 7.4.2]. These are conditional on the joint bound.
+0.000017953 [P, C · 7.4.2]. With the global bounds of 7.4.17 (for first-chaos drivers $r_A, r_B \in H_{1,0}$, with no variance caps): under Target S ($k_A' = 1/4, k_B' = 27/100, m = 59/500$, Schur complement $6697/31250$), strong $C(q)^2 \le (6/25)D(q)$ leaves $< 2.74\cdot 10^{-6}$, carrying the $+10^{-6}$ slack of 6.3.43 leaves $< 6.90\cdot 10^{-6}$, and the weak allowance $C(q)^2 \le (6/25)(S + 10^{-4} - \Lambda(q))$ of 6.3.40 and 6.3.42 gives $\Lambda(q + A + B) < S + 10^{-4}$ via 3.3 ($\mathrm{gain}/\mathrm{allowance} \le 214154857729/214304000000 < 1$); under Target D ($\kappa_{\mathrm{diag}} = 7/25 = 0.28$), strong $C(q)^2 \le (11/50)D(q)$ leaves $< 3.18\cdot 10^{-5}$ ($< 2.88\cdot 10^{-6}$ at $0.15$), raising the sufficient constant for diagonal closure to **$11/50 = 0.22$** and consuming 6.3.3 and 6.3.13 directly across all driver amplitudes [P + C, author only · 7.4.2, 7.4.17].
 
 **A retained joint target.** Set ρ = 0.5053, s = 3/5, r_+ = α + ρβ, r_− = β − ρα, S_r = |α|² + |β|² and
 h = (T − 1 + s)α + sρβ + z₁²·conj(β)/√2. A sufficient pointwise premise, called (P) from here on, is
@@ -1286,17 +1286,9 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 
 **B. Conjecture K itself.**
 
-5. **The joint A/B remainder bound at finite amplitude** (2.8), first at the peak row. Enough: the compact box
-   0 ≤ x ≤ 29/10, |α|, |β| ≤ 0.4 with reserve 7.53·10⁻⁵ (robust) or 8.07·10⁻⁵ (signed). Alternative: a global
-   pointwise cost m for A and B together. Any such m lies below 0.29836…, the local value at the origin, attained
-   along a genuine cubic direction (2.8), so a candidate such as 0.29 must be tested away from the origin before any
-   certificate. With such an m the A + B gain is a quadratic form in the contents at every amplitude, as step 2 of 2.6
-   is for the tilted A-sector. *Gives:* the A + B core of K from content bounds.
-6. **The raw L4 content inequality** for general cubics on 0.00551 ≤ u ≤ 0.0463, with the constant fixed by item 5
-   (0.10 under the adverse joint hypothesis). For the A-only constant 6/25, the staircase and small-influence class
-   (χ ≤ 0.2809 across the band, τ_max ≤ 0.054), high excess χ ≥ 40.32, and independent blocks are covered (2.5 ·
-   6.3.40–6.3.42), together with the complete one-driver self-interaction family across all shares and phases (2.5 · 6.3.13–6.3.15, author only) and bounded kurtosis against D (signed +10⁻⁶ on χ ≤ 841/10000, exact zero-slack across
-   χ ≤ 49/625 with no near-Gaussian sliver; 2.5 · 6.3.43, author only). Open pieces at intermediate/high
+5. **The joint A/B remainder bound at finite amplitude** (2.8): **certified globally on all of $\mathbb{C}^3$ at the three rows [P + C, author only · 7.4.17]**, awaiting independent verification. Both $r_x(\alpha, \beta) \le Q_s(\alpha, \beta) - \frac{1}{100}S_0 \le Q_r(\alpha, \beta) - \frac{1}{100}S_0$ and the global common diagonal costs $\kappa_{\mathrm{diag}} = \frac{7}{25} = 0.28$ (`peak`), $\frac{3}{10} = 0.30$ (`flank`), $\frac{31}{100} = 0.31$ (`upper`) (below the zero-core obstructions 0.29836…, 0.32315…, 0.32771… of 7.4.9) hold at every shift and amplitude for arbitrary $L^2$ drivers, making the A + B gain for first-chaos drivers a pure quadratic form in the contents at every amplitude. *Gives:* the A + B core of K from content bounds, once independently verified.
+6. **The raw L4 content inequality** for general cubics on 0.00551 ≤ u ≤ 0.0463, with the constant fixed by item 5 for first-chaos drivers
+   ($11/50 = 0.22$ under Target D of 7.4.17, or $6/25 = 0.24$ under signed Target S; 0.10 without 7.4.17). Under 7.4.17, strong $C^2 \le \gamma D$ covers 6.3.3, 6.3.4, high excess χ ≥ 40.32 (6.3.41), the complete one-driver self-interaction family across all shares and phases (2.5 · 6.3.13–6.3.15, author only), and exact zero-slack bounded kurtosis χ ≤ 49/625 with no near-Gaussian sliver (6.3.43, author only); carrying $(25/6)\eta_c$ covers signed $+10^{-6}$ on χ ≤ 841/10000 ($< S + 6.90\cdot 10^{-6}$; 6.3.43, author only); and combining Target S with 3.3 covers the weak-allowance staircase and small-influence class (χ ≤ 0.2809 across the band, τ_max ≤ 0.054; 6.3.40) and equal independent blocks (6.3.42) to $< S + 10^{-4}$. Open pieces at intermediate/high
    kurtosis: the remaining even-character shells beyond the sign neighbourhood (6.3.9c, 6.3.16) and several self-interacting drivers (6.3.17). By the
    local representation of 2.5, the content and
    the excess D − 𝒥_dec of the deficit over that of the decoupled surrogate (2.1) are linear in one pair of fields, so

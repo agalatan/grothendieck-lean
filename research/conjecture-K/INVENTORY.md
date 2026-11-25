@@ -1800,3 +1800,20 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 |---|---:|---|
 | `sources/invariant-fibres-codex-a7c4/PROOF.md` | 12226 | `4b91bbe639c8242e9147bf9e8ea0e3d870595bb16b09bd1d6d76b7ec703620ff` |
 | `code/invariant-fibres-codex-a7c4/verify.py` | 4999 | `c2b5fafff62199919fc1ad79b45424666a58af93b93a318814022e65a76372f8` |
+
+## Global raw joint A/B bounds and common diagonal costs (gemini-4c4c, #706)
+
+- [Proof and replay instructions](sources/raw-joint-ab-gemini-4c4c/PROOF.md) and
+  [C++17 interval certifier, exact rational verifier, saved certificate and 21 corruption controls](code/raw-joint-ab-gemini-4c4c/) (tag KRJAB; STATUS 7.4, 7.4.2, 7.4.5, 7.4.17; **P + C, author only**). All files are committed in the repository (`result.json` is 232,931 B < 300 KB) with zero external dependencies left outside.
+- **Replay:**
+  - Exact rational audit of saved `result.json`, zero-float proofs of the $|x| \ge 29/10$ shift exterior (`< 187/200 S_0`), $\|v\|_\infty \ge 4$ circle total-variation amplitude exterior (`< 47/50 S_0`), and 7.4.2 assembly corollaries (`gamma = 11/50 = 0.22` diagonal, plus strong, additive-slack, and weak-allowance `gamma = 6/25 = 0.24` signed bounds with Schur complement `6697/31250`), plus all 21 corruption and compiler/hotspot controls (< 2 s, Python 3 stdlib only, `-I`, rejects `-O`): `python3 -I research/conjecture-K/code/raw-joint-ab-gemini-4c4c/verify.py` and `python3 -I research/conjecture-K/code/raw-joint-ab-gemini-4c4c/test_controls.py`.
+  - Full C++17 outward-rounded (`FE_UPWARD`) 8-thread interval replay (~670 s wall / ~1,725 CPU-s; compiles/runs to a temporary file and verifies exact bit-for-bit equality against committed `result.json`): `python3 -I research/conjecture-K/code/raw-joint-ab-gemini-4c4c/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/raw-joint-ab-gemini-4c4c/PROOF.md` | 35,182 B | `7f2065a6079553900080b613bd5b735984566c729a5c736305865a43ef36b42f` |
+| `code/raw-joint-ab-gemini-4c4c/README.md` | 2,438 B | `cb27c021206d66b684aabd8b43c8043be2a37e015713e3a0f71525c5d733d7b8` |
+| `code/raw-joint-ab-gemini-4c4c/certify_raw_joint_ab.cpp` | 62,998 B | `2612df3565e2a457f561b7886dd620898796119c3ae326a8c731511e4b782a20` |
+| `code/raw-joint-ab-gemini-4c4c/result.json` | 232,931 B | `35d811ade8a309dc9fbcc1ad93f1f9e00d43b4e998e005c428db39d6716fcdaa` |
+| `code/raw-joint-ab-gemini-4c4c/verify.py` | 31,106 B | `2686c1c4590af4248d9480d802551bd22944ddf4ca91c728bed79d18581355ab` |
+| `code/raw-joint-ab-gemini-4c4c/test_controls.py` | 7,391 B | `43115a2cd974a5e9c29ae75c3979656e174474926882402130471d89ac2f0714` |
