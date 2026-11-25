@@ -1697,8 +1697,8 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md` | 26,476 B | `e5f51d76ee073e94c946db37dcc6966f2d78ffa660f786d28b61aea0b0a840ef` |
+| `sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md` | 28,324 B | `7627a27dd6636e97a2fe93d98020993aca17c5bdac59f21cc22bcb1681270950` |
 | `code/one-driver-self-interaction-gemini-21d5/README.md` | 1,874 B | `1f24718f0551197ecc47e56ed23734fe81e5aedea5edc21e2c49e07a61fa8c2c` |
-| `code/one-driver-self-interaction-gemini-21d5/certify_one_driver.cpp` | 100,035 B | `d662446ffcdf5b464aec011424443436596a9fbeb358b312cee19e3d607130d9` |
+| `code/one-driver-self-interaction-gemini-21d5/certify_one_driver.cpp` | 101,228 B | `d24fc17b6382fc4cbb71be4b0eef2a686a7aca7e07e3d6fdd7107f7ce46b0df7` |
 | `code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py` | 22,448 B | `5b6c460fe45b9447513c78353bc1dd970150b7f3220f72d18f6b0cfec5edce62` |
-| `code/one-driver-self-interaction-gemini-21d5/result.json` | 7,594 B | `771781fef4db81f8e937f4efe41cead1ffee41ad4a4fbbdc208b5985494d1503` |
+| `code/one-driver-self-interaction-gemini-21d5/result.json` | 7,593 B | `943d3e5bd5ea051753f82e9d8a632e96d9fffef509131fa0ccbaa0aba6631c0b` |

@@ -574,8 +574,12 @@ struct RowKernels {
   std::vector<I> P_n;    // Phi'(v) > 0
   std::vector<I> nPp_n;  // -Phi''(v) > 0
 
-  // R-panel mesh on [0, 36]: (midpoint rm, half-width dr)
-  std::vector<std::pair<I, I>> r_panels;
+  // Disjoint R-panel mesh on [0, 36]: exact binary64 endpoints (lo, hi) + enclosed midpoint/half-width (rm, dr)
+  struct RPanel {
+    double lo, hi;
+    I rm, dr;
+  };
+  std::vector<RPanel> r_panels;
   std::array<I, 5> E_tail36;  // int_{36}^inf R^p e^{-R} dR for p=0..4
 
   // Exact local-exponential-moment bins on [0, 36] for fast 11-digit u-integrals
@@ -844,10 +848,8 @@ struct RowKernels {
 
       for (int ib = 0; ib < NB; ++ib) {
         double blo = b_edges[ib], bhi = b_edges[ib + 1];
-        double bm_d = 0.5 * (blo + bhi);
-        double db_h = up(std::max(bm_d - blo, bhi - bm_d));
-        I bm(bm_d);
-        I dbeta_half(db_h);
+        I bm = I(0.5) * (I(blo) + I(bhi));
+        I dbeta_half = I(0.5) * (I(bhi) - I(blo));
         I b_box = make_i(blo, bhi);
 
         auto eval_b = [&](I b_arg, Jet<4>& jH, Jet<4>& jnHp, Jet<4>& jP, Jet<4>& jnPp) {
@@ -941,7 +943,7 @@ struct RowKernels {
       I h = I(v_nodes[i + 1]) - I(v_nodes[i]);
       I h2 = sq(h);
       I h5_720 = h2 * h2 * h / I(720.0);
-      double err4 = (h5_720 * P_cap[3]).h;
+      double err4 = (h5_720 * P_cap[4]).h;
       double d_nPp = std::max(0.0, up(nPp_n[i].h - nPp_n[i + 1].l));
       double err2 = (rat_i(1, 12) * h2 * I(0.0, d_nPp)).h;
       double err_min = std::min(err4, err2);
@@ -957,23 +959,23 @@ struct RowKernels {
                             std::min(raw.h, std::min(hi_lem1.h, hi_lem2.h)));
     }
 
-    // Step D: Build 176-panel R-mesh on [0, 36] + closed-form tail moments at R=36
+    // Step D: Build disjoint dyadic R-mesh on [0, 36] + closed-form tail moments at R=36
     r_panels.clear();
     auto add_r_segment = [&](double r0, double r1, int np) {
       double h = (r1 - r0) / double(np);
       for (int i = 0; i < np; ++i) {
-        double lo = r0 + i * h;
+        double lo = (i == 0) ? r0 : (r0 + i * h);
         double hi = (i + 1 == np) ? r1 : (r0 + (i + 1) * h);
-        double m = 0.5 * (lo + hi);
-        r_panels.push_back({I(m), rat_i(int64_t(std::llround((r1 - r0) * 1000)), int64_t(2 * np * 1000))});
-        // Ensure exact coverage [lo, hi] subset [m - dr, m + dr]:
-        double dr_exact = std::max(m - lo, hi - m);
-        r_panels.back().second = I(dn(dr_exact), up(dr_exact));
+        require(lo < hi, "r_panel ordering");
+        if (!r_panels.empty()) require(r_panels.back().hi == lo, "r_panel disjointness");
+        I rm = I(0.5) * (I(lo) + I(hi));
+        I dr = I(0.5) * (I(hi) - I(lo));
+        r_panels.push_back({lo, hi, rm, dr});
       }
     };
-    add_r_segment(0.0, 2.4, 64);    // h = 0.0375
-    add_r_segment(2.4, 12.0, 128);  // h = 0.075
-    add_r_segment(12.0, 36.0, 96);  // h = 0.25
+    add_r_segment(0.0, 2.5, 80);    // exact dyadic h = 1/32
+    add_r_segment(2.5, 12.0, 152);  // exact dyadic h = 1/16
+    add_r_segment(12.0, 36.0, 96);  // exact dyadic h = 1/4
 
     I e36 = expneg(I(36.0));
     I r36(36.0);
@@ -1624,8 +1626,8 @@ void run_gate2(const RowKernels& rk, const USlabTable& utab, RowReport& rep) {
     I s_i(s_grid[i]);
     I Bp_s(0.0);
     for (const auto& pan : rk.r_panels) {
-      I rm = pan.first, dr = pan.second;
-      I r_box = make_i(std::max(0.0, rm.l - dr.h), rm.h + dr.h);
+      I rm = pan.rm, dr = pan.dr;
+      I r_box = make_i(pan.lo, pan.hi);
       if (s_grid[i] <= 0.06) {
         auto ev = [&](I ra) {
           Jet<4> R = Jet<4>::var(ra);
@@ -1637,8 +1639,8 @@ void run_gate2(const RowKernels& rk, const USlabTable& utab, RowReport& rep) {
         Jet<4> jm = ev(rm), jx = ev(r_box);
         Bp_s = Bp_s + panel_int_jet4(jm, jx.c[4], dr);
       } else {
-        // Monotone decreasing P(sR) on exact Gamma(2,1) panel mass!
-        double a0 = std::max(0.0, rm.l - dr.h), a1 = rm.h + dr.h;
+        // Monotone decreasing P(sR) on exact disjoint Gamma(2,1) panel mass!
+        double a0 = pan.lo, a1 = pan.hi;
         I m1 = (I(a0) + I(1.0))*expneg(I(a0)) - (I(a1) + I(1.0))*expneg(I(a1));
         m1.l = std::max(0.0, m1.l);
         KEval klo = rk.eval_kernels(s_i * I(a0));
@@ -2204,6 +2206,29 @@ void run_startup_selftests() {
   // c[4] = f^(4)(0.5)/24 = exp(-1.5)/24:
   I want4 = em15 / I(24.0);
   require(fx.c[4].l <= want4.h && fx.c[4].h >= want4.l, "Jet4 c4");
+
+  // Regression self-test on successive non-dyadic panels (angular mesh & Gate 2 quadrature):
+  // Verify that integrating constant 1 over non-dyadic partitions [0, b_end] encloses b_end!
+  for (double b_end : {p.l * 0.5, 2.4}) {
+    const int NP = 64;
+    I acc4(0.0), acc0(0.0), acc2(0.0);
+    for (int i = 0; i < NP; ++i) {
+      double blo = (i == 0) ? 0.0 : (b_end * double(i) / double(NP));
+      double bhi = (i + 1 == NP) ? b_end : (b_end * double(i + 1) / double(NP));
+      I dh = I(0.5) * (I(bhi) - I(blo));
+      Jet<4> jm(I(1.0)), jx(I(1.0));
+      I q4 = panel_int_jet4(jm, jx.c[4], dh);
+      I q0 = (I(2.0) * dh) * jx.c[0];
+      I q2 = (I(2.0) * dh) * jm.c[0] + (rat_i(2, 3) * sq(dh) * dh) * jx.c[2];
+      acc4 = acc4 + q4;
+      acc0 = acc0 + q0;
+      acc2 = acc2 + make_i(std::max(q4.l, std::max(q0.l, q2.l)),
+                           std::min(q4.h, std::min(q0.h, q2.h)));
+    }
+    require(acc4.l <= b_end && b_end <= acc4.h, "non-dyadic constant integral q4 enclosure");
+    require(acc0.l <= b_end && b_end <= acc0.h, "non-dyadic constant integral q0 enclosure");
+    require(acc2.l <= b_end && b_end <= acc2.h, "non-dyadic constant integral intersected enclosure");
+  }
 }
 
 void write_json_iv(std::ostream& os, const I& v) {

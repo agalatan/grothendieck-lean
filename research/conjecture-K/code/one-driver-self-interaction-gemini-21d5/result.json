@@ -1,7 +1,7 @@
 {
   "agent_id": "gemini-21d5",
   "issue": 509,
-  "cpp_sha256": "d662446ffcdf5b464aec011424443436596a9fbeb358b312cee19e3d607130d9",
+  "cpp_sha256": "d24fc17b6382fc4cbb71be4b0eef2a686a7aca7e07e3d6fdd7107f7ce46b0df7",
   "energy_band": {"u_min": "551/100000", "u_max": "463/10000"},
   "constants": {
     "gate2_wick_20pct": "9/40",
@@ -16,129 +16,129 @@
       "name": "peak",
       "params": {"eps": "1891/2500", "a": "699/1250", "b": "179/1250", "b4": "37/1000"},
       "B0": {"lo":1.371879280600848,"hi":1.3718792806008915,"lo_hex":"0x1.5f337b043d9b3p+0","hi_hex":"0x1.5f337b043da77p+0"},
-      "g0": {"lo":-0.83513593267802144,"hi":-0.83513593255085039,"lo_hex":"-0x1.ab96efdd22142p-1","hi_hex":"-0x1.ab96efdc0a6d3p-1"},
-      "gp0": {"lo":2.1591808641881798,"hi":2.159180865731201,"lo_hex":"0x1.146009deeb2bp+1","hi_hex":"0x1.146009e23b73fp+1"},
-      "Phi_p0": {"lo":1.4319737910718897,"hi":1.4319737915071264,"lo_hex":"0x1.6e95d5996205fp+0","hi_hex":"0x1.6e95d59b40923p+0"},
+      "g0": {"lo":-0.83513593267801678,"hi":-0.83513593255084428,"lo_hex":"-0x1.ab96efdd22118p-1","hi_hex":"-0x1.ab96efdc0a69cp-1"},
+      "gp0": {"lo":2.1591808641881642,"hi":2.1591808657311899,"lo_hex":"0x1.146009deeb28dp+1","hi_hex":"0x1.146009e23b726p+1"},
+      "Phi_p0": {"lo":1.4319737910718837,"hi":1.4319737915071229,"lo_hex":"0x1.6e95d59962044p+0","hi_hex":"0x1.6e95d59b40913p+0"},
       "gate1_6_3_7": {
-        "K_u_min_on_band": {"lo":0.032795215333130942,"hi":0.16758171288920717,"lo_hex":"0x1.0ca88d2a463f6p-5","hi_hex":"0x1.573514c2226b7p-3"},
-        "K_at_0_0463": {"lo":0.16678146238469324,"hi":0.16678219892659696,"lo_hex":"0x1.559184f42ba57p-3","hi_hex":"0x1.5591e7cf8ebfp-3"},
-        "Bp_on_band": {"lo":1.3088628712493582,"hi":1.4141556496357386,"lo_hex":"0x1.4f11a31af6f37p+0","hi_hex":"0x1.6a061acaa39e2p+0"},
-        "A0_on_band": {"lo":2.1510341009505267,"hi":3.1319985393929146,"lo_hex":"0x1.135515de14e63p+1","hi_hex":"0x1.90e55400e7faap+1"},
-        "abs_lambda_max": {"lo":0.81234102427354105,"hi":0.81234102455875856,"lo_hex":"0x1.9feb29a8e872dp-1","hi_hex":"0x1.9feb29ab5ba6p-1"}
+        "K_u_min_on_band": {"lo":0.032795215332981381,"hi":0.16758171288958001,"lo_hex":"0x1.0ca88d2a40fc4p-5","hi_hex":"0x1.573514c225b3p-3"},
+        "K_at_0_0463": {"lo":0.16678146238432179,"hi":0.16678219892696897,"lo_hex":"0x1.559184f42861p-3","hi_hex":"0x1.5591e7cf9204bp-3"},
+        "Bp_on_band": {"lo":1.3088628712491814,"hi":1.4141556496357757,"lo_hex":"0x1.4f11a31af6c1bp+0","hi_hex":"0x1.6a061acaa3a89p+0"},
+        "A0_on_band": {"lo":2.1510341009500933,"hi":3.1319985393931318,"lo_hex":"0x1.135515de14a93p+1","hi_hex":"0x1.90e55400e8193p+1"},
+        "abs_lambda_max": {"lo":0.81234102427349797,"hi":0.81234102455879065,"lo_hex":"0x1.9feb29a8e85a9p-1","hi_hex":"0x1.9feb29ab5bb81p-1"}
       },
       "gate2_6_3_6": {
-        "vt_leaves": 121,
-        "vt_max_excess": -7.8648637246936368e-05,
-        "vt_max_excess_hex": "-0x1.49e054ca59fffp-14",
+        "vt_leaves": 120,
+        "vt_max_excess": -1.2275110649984792e-05,
+        "vt_max_excess_hex": "-0x1.9be265c8a67ffp-17",
         "c_cells": 512,
-        "min_deficit_after_loss": 0.00036543102790101168,
-        "max_certified_ratio": 0.20627422869486992,
-        "max_certified_ratio_hex": "0x1.a6731a5204485p-3"
+        "min_deficit_after_loss": 0.00036543065002584454,
+        "max_certified_ratio": 0.20627638330900863,
+        "max_certified_ratio_hex": "0x1.a6743b81feac7p-3"
       },
       "gate3_unified_1_16_to_1": {
-        "leaves": 797666,
-        "mid3d_evals": 126459,
-        "min_H_certified": 5.6469261401734779e-06,
-        "min_margin": 2.993236535754383e-08,
-        "min_margin_hex": "0x1.011df7af0ec2fp-25"
+        "leaves": 797669,
+        "mid3d_evals": 126461,
+        "min_H_certified": 5.6469261401477256e-06,
+        "min_margin": 1.497734824166614e-08,
+        "min_margin_hex": "0x1.014f12fd735b3p-26"
       },
       "gate4_star_1_16_to_4_5": {
-        "leaves": 809856,
-        "mid3d_evals": 13751,
-        "min_margin": 2.2020793293486228e-08,
-        "min_margin_hex": "0x1.7a50791e24002p-26"
+        "leaves": 809858,
+        "mid3d_evals": 13749,
+        "min_margin": 9.4517689715653568e-08,
+        "min_margin_hex": "0x1.95f34c82eef36p-24"
       },
       "gate5_small_wick_0_to_1_16": {
         "leaves": 2117123,
         "mid3d_evals": 256080,
-        "min_norm_margin": 2.307709295862816e-08,
-        "min_norm_margin_hex": "0x1.8c7620cff412ep-26"
+        "min_norm_margin": 2.2700586232856047e-08,
+        "min_norm_margin_hex": "0x1.85fe3becc2aep-26"
       }
     },
     {
       "name": "flank",
       "params": {"eps": "149/200", "a": "14/25", "b": "1467/10000", "b4": "37/1000"},
       "B0": {"lo":1.3826026263988263,"hi":1.38260262639887,"lo_hex":"0x1.61f23ee7bf257p+0","hi_hex":"0x1.61f23ee7bf31cp+0"},
-      "g0": {"lo":-0.83421931232016966,"hi":-0.83421931219151479,"lo_hex":"-0x1.ab1ecb3036a67p-1","hi_hex":"-0x1.ab1ecb2f1bbc3p-1"},
-      "gp0": {"lo":2.1557832395510905,"hi":2.1557832411254121,"lo_hex":"0x1.13f0b4879184ep+1","hi_hex":"0x1.13f0b48af302fp+1"},
-      "Phi_p0": {"lo":1.4272065917674275,"hi":1.4272065922122152,"lo_hex":"0x1.6d5d694446d76p+0","hi_hex":"0x1.6d5d69462fe4p+0"},
+      "g0": {"lo":-0.83421931232016511,"hi":-0.83421931219150924,"lo_hex":"-0x1.ab1ecb3036a3ep-1","hi_hex":"-0x1.ab1ecb2f1bb91p-1"},
+      "gp0": {"lo":2.1557832395510745,"hi":2.1557832411254014,"lo_hex":"0x1.13f0b4879182ap+1","hi_hex":"0x1.13f0b48af3017p+1"},
+      "Phi_p0": {"lo":1.4272065917674222,"hi":1.4272065922122121,"lo_hex":"0x1.6d5d694446d5ep+0","hi_hex":"0x1.6d5d69462fe32p+0"},
       "gate1_6_3_7": {
-        "K_u_min_on_band": {"lo":0.032774338511307656,"hi":0.16690607570837979,"lo_hex":"0x1.0c7cc501bb2f5p-5","hi_hex":"0x1.55d2da455e998p-3"},
-        "K_at_0_0463": {"lo":0.16610541917792393,"hi":0.16610616876069495,"lo_hex":"0x1.542f13f875df2p-3","hi_hex":"0x1.542f7893eda74p-3"},
-        "Bp_on_band": {"lo":1.3042836215330846,"hi":1.4093865978815121,"lo_hex":"0x1.4de5880b316b1p+0","hi_hex":"0x1.68cd8f6152615p+0"},
-        "A0_on_band": {"lo":2.1445017954677352,"hi":3.1312220579972219,"lo_hex":"0x1.127f08eadfa46p+1","hi_hex":"0x1.90cbe267ce523p+1"},
-        "abs_lambda_max": {"lo":0.81146836096312414,"hi":0.81146836125229116,"lo_hex":"0x1.9f78c7f026932p-1","hi_hex":"0x1.9f78c7f2a275bp-1"}
+        "K_u_min_on_band": {"lo":0.032774338511159448,"hi":0.16690607570874932,"lo_hex":"0x1.0c7cc501b5f86p-5","hi_hex":"0x1.55d2da4561d9ap-3"},
+        "K_at_0_0463": {"lo":0.16610541917755478,"hi":0.16610616876106504,"lo_hex":"0x1.542f13f8729fep-3","hi_hex":"0x1.542f7893f0e8ap-3"},
+        "Bp_on_band": {"lo":1.3042836215329143,"hi":1.4093865978815503,"lo_hex":"0x1.4de5880b313b2p+0","hi_hex":"0x1.68cd8f61526c1p+0"},
+        "A0_on_band": {"lo":2.1445017954673071,"hi":3.1312220579974368,"lo_hex":"0x1.127f08eadf682p+1","hi_hex":"0x1.90cbe267ce707p+1"},
+        "abs_lambda_max": {"lo":0.81146836096307984,"hi":0.81146836125232558,"lo_hex":"0x1.9f78c7f0267a3p-1","hi_hex":"0x1.9f78c7f2a2891p-1"}
       },
       "gate2_6_3_6": {
         "vt_leaves": 121,
-        "vt_max_excess": -8.1087171505157801e-06,
-        "vt_max_excess_hex": "-0x1.10155996307ffp-17",
+        "vt_max_excess": -5.5512307328284959e-05,
+        "vt_max_excess_hex": "-0x1.d1abc5b2311ffp-15",
         "c_cells": 512,
-        "min_deficit_after_loss": 0.00036441607757657879,
-        "max_certified_ratio": 0.20626142696265667,
-        "max_certified_ratio_hex": "0x1.a66c6419d8e3bp-3"
+        "min_deficit_after_loss": 0.00036441569671987389,
+        "max_certified_ratio": 0.20626358230464559,
+        "max_certified_ratio_hex": "0x1.a66d8562d584cp-3"
       },
       "gate3_unified_1_16_to_1": {
-        "leaves": 791165,
+        "leaves": 791166,
         "mid3d_evals": 125260,
-        "min_H_certified": 5.6433314124157812e-06,
-        "min_margin": 4.4276178536897514e-08,
-        "min_margin_hex": "0x1.7c5458a5200a6p-25"
+        "min_H_certified": 5.6433314123902618e-06,
+        "min_margin": 4.37843699770771e-08,
+        "min_margin_hex": "0x1.781ad90a0781cp-25"
       },
       "gate4_star_1_16_to_4_5": {
-        "leaves": 800747,
+        "leaves": 800748,
         "mid3d_evals": 12371,
-        "min_margin": 1.0779572005990653e-08,
-        "min_margin_hex": "0x1.72621e3c15115p-27"
+        "min_margin": 9.8171212039251673e-09,
+        "min_margin_hex": "0x1.51504fb2ab28ep-27"
       },
       "gate5_small_wick_0_to_1_16": {
-        "leaves": 2090329,
+        "leaves": 2090330,
         "mid3d_evals": 251305,
-        "min_norm_margin": 2.1101391228736053e-09,
-        "min_norm_margin_hex": "0x1.2203eb88f2488p-29"
+        "min_norm_margin": 1.6613061919430784e-09,
+        "min_norm_margin_hex": "0x1.c8a807c9b5f32p-30"
       }
     },
     {
       "name": "upper",
       "params": {"eps": "1891/2500", "a": "573/1000", "b": "19/125", "b4": "7/200"},
       "B0": {"lo":1.4197355345752962,"hi":1.4197355345753411,"lo_hex":"0x1.6b73c9b9f8504p+0","hi_hex":"0x1.6b73c9b9f85cep+0"},
-      "g0": {"lo":-0.81543768508120662,"hi":-0.81543768496170488,"lo_hex":"-0x1.a1810c5ab30fcp-1","hi_hex":"-0x1.a1810c59ac464p-1"},
-      "gp0": {"lo":2.0154185761553971,"hi":2.0154185775403488,"lo_hex":"0x1.01f93c642b4dfp+1","hi_hex":"0x1.01f93c6724b09p+1"},
-      "Phi_p0": {"lo":1.393342694384089,"hi":1.3933426947879941,"lo_hex":"0x1.64b21b58800c2p+0","hi_hex":"0x1.64b21b5a3c255p+0"},
+      "g0": {"lo":-0.81543768508120251,"hi":-0.81543768496169911,"lo_hex":"-0x1.a1810c5ab30d7p-1","hi_hex":"-0x1.a1810c59ac43p-1"},
+      "gp0": {"lo":2.015418576155382,"hi":2.0154185775403382,"lo_hex":"0x1.01f93c642b4bdp+1","hi_hex":"0x1.01f93c6724af1p+1"},
+      "Phi_p0": {"lo":1.3933426943840839,"hi":1.3933426947879901,"lo_hex":"0x1.64b21b58800abp+0","hi_hex":"0x1.64b21b5a3c243p+0"},
       "gate1_6_3_7": {
-        "K_u_min_on_band": {"lo":0.030786987242640902,"hi":0.15901617198543347,"lo_hex":"0x1.f869fbd65e672p-6","hi_hex":"0x1.45aa4551b34c7p-3"},
-        "K_at_0_0463": {"lo":0.15826682269639061,"hi":0.15826749054330169,"lo_hex":"0x1.4421655c2ec09p-3","hi_hex":"0x1.4421beff3a4e8p-3"},
-        "Bp_on_band": {"lo":1.277478352151558,"hi":1.3766435058154389,"lo_hex":"0x1.4708d23fd6c3p+0","hi_hex":"0x1.606bb573ba648p+0"},
-        "A0_on_band": {"lo":2.0336336383755063,"hi":2.9376038779281193,"lo_hex":"0x1.044e1b686f242p+1","hi_hex":"0x1.7803676426eb1p+1"},
-        "abs_lambda_max": {"lo":0.79413378366797305,"hi":0.79413378392896528,"lo_hex":"0x1.9698b40b015fbp-1","hi_hex":"0x1.9698b40d3f4d4p-1"}
+        "K_u_min_on_band": {"lo":0.03078698724249854,"hi":0.1590161719857974,"lo_hex":"0x1.f869fbd654629p-6","hi_hex":"0x1.45aa4551b67ffp-3"},
+        "K_at_0_0463": {"lo":0.15826682269602363,"hi":0.15826749054366729,"lo_hex":"0x1.4421655c2b863p-3","hi_hex":"0x1.4421beff3d85cp-3"},
+        "Bp_on_band": {"lo":1.2774783521513924,"hi":1.3766435058154742,"lo_hex":"0x1.4708d23fd6946p+0","hi_hex":"0x1.606bb573ba6e7p+0"},
+        "A0_on_band": {"lo":2.0336336383750981,"hi":2.937603877928332,"lo_hex":"0x1.044e1b686eeabp+1","hi_hex":"0x1.780367642709p+1"},
+        "abs_lambda_max": {"lo":0.79413378366792897,"hi":0.7941337839289988,"lo_hex":"0x1.9698b40b0146ep-1","hi_hex":"0x1.9698b40d3f602p-1"}
       },
       "gate2_6_3_6": {
-        "vt_leaves": 80,
-        "vt_max_excess": -9.537987917047212e-06,
-        "vt_max_excess_hex": "-0x1.400ab13da27ffp-17",
+        "vt_leaves": 79,
+        "vt_max_excess": -4.9352767040700817e-05,
+        "vt_max_excess_hex": "-0x1.9e00429cb19ffp-15",
         "c_cells": 512,
-        "min_deficit_after_loss": 0.00034541016341168565,
-        "max_certified_ratio": 0.2048357745870672,
-        "max_certified_ratio_hex": "0x1.a380f04737df6p-3"
+        "min_deficit_after_loss": 0.00034540980201024378,
+        "max_certified_ratio": 0.20483798582223611,
+        "max_certified_ratio_hex": "0x1.a3821910ae1ccp-3"
       },
       "gate3_unified_1_16_to_1": {
-        "leaves": 788508,
-        "mid3d_evals": 121953,
-        "min_H_certified": 5.3011343658422243e-06,
-        "min_margin": 6.4943026920809268e-08,
-        "min_margin_hex": "0x1.16ed9cfd7432cp-24"
+        "leaves": 788510,
+        "mid3d_evals": 121955,
+        "min_H_certified": 5.301134365817712e-06,
+        "min_margin": 5.9212045303579969e-08,
+        "min_margin_hex": "0x1.fca0aa2548121p-25"
       },
       "gate4_star_1_16_to_4_5": {
-        "leaves": 787027,
+        "leaves": 787028,
         "mid3d_evals": 8310,
-        "min_margin": 8.2864388233492994e-08,
-        "min_margin_hex": "0x1.63e65bbf87c12p-24"
+        "min_margin": 7.5684625104007343e-08,
+        "min_margin_hex": "0x1.45102016a846dp-24"
       },
       "gate5_small_wick_0_to_1_16": {
-        "leaves": 2088339,
+        "leaves": 2088340,
         "mid3d_evals": 241678,
-        "min_norm_margin": 8.681833745245909e-10,
-        "min_norm_margin_hex": "0x1.dd49f29373cbdp-31"
+        "min_norm_margin": 2.6087202570674885e-11,
+        "min_norm_margin_hex": "0x1.caee50d6b95ffp-36"
       }
     }
   ]

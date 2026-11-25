@@ -579,7 +579,7 @@ driver, Y the other remote coordinates):
 | Wick neighbourhood X[c(\|X\|² − 2) + P], P centred independent of X, E\|P\|² ≤ u/5 | 9/40 | implications P (audit); scalar/cell premises C, author only · gemini-21d5 · 6.3.6 |
 | **peak row only:** p + h with p, h ∈ H₂,₁, p of charge one under rotation of a specified coordinate block, h with no component of that character, D(p) > 0, C(p)² ≤ (9/40)D(p), ‖p + h‖² ≤ 0.0463 and ‖h‖² ≤ D(p)/90 | 6/25 | P + C · 6.3.9b |
 
-The moment theorem behind the first and third rows is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y\*AY − tr A, any complex
+The moment theorem behind the first and fourth rows is E|P|⁶ ≤ 37p·E|P|⁴ − 68p³ and E|P|⁴ ≥ 2p² for P = Y\*AY − tr A, any complex
 A, p = E|P|² [P + C · 6.3.1]. The self-interaction family has a deficit identity whose Wick term |c|²𝓚(u) is strictly positive across the band (𝓚(u) > 0.0307 at all three rows, and 𝓚(0.0463) ∈ [0.16678146, 0.16678220] at the peak)
 [identity P · second audit; bounds P + C, author only · gemini-21d5 · 6.3.7]. On f ∈ [1/16, 1] a linear-plus-quadratic envelope in (|z|², Re(c̄z)) avoids division by p = u − 2|c|² as f → 1 and holds without fourth- or sixth-moment hypotheses on P; on f ∈ [0, 1/16] the moment-polynomial envelope (†) with affine weight w(y) = 3/10 + (7/10)y closes the small-Wick strip, both certified in outward-rounded C++17 `Aff4` Taylor arithmetic with exact rational tails [P + C, author only · gemini-21d5 · 6.3.13–6.3.15; [Proof](sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md)]. The families do not add up: the cross terms between shells survive phase averaging
 (q = X̄Y² + (|X|² − 1)Y has energy 3 and E[X̄q|q|²] = 6) [P + C · 6.3.8].
