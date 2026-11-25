@@ -2,16 +2,19 @@
 
 This page states every bound on the complex Grothendieck constant $K = K_G^{\mathbb C}$ that this repository
 proves, exactly as Lean states it, and explains the other numbers that appear in the sources and documents.
-`scripts/check_constants.py` reads both endpoints of `main_bounds`, verifies the upward rounding in `main_bounds_refined`, and checks that the technical references quote the refined upper bound.
+`scripts/check_constants.py` reads the two endpoints of `main_bounds`. It checks strict downward rounding in `lower_bound_sharp` and `lower_bound_shared_gate`, upward rounding in `main_bounds_refined` and `main_bounds_phase`, and agreement with the technical references.
 
 ## The current bounds
 
-$$1.40191 < K \le 1.40455641 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4019156097 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
-| root upper bound, rounded | `1.40455641` | `140455641 / 100000000` | `Grothe.Statement.main_bounds_refined`, second part | `Grothe/MainResult.lean` |
+| shared-gate lower bound (strict) | `1.4019156097` | `14019156097 / 10000000000` | `Grothe.Statement.lower_bound_shared_gate` | `Grothe/MainResult.lean` |
+| sharp scalar lower bound (strict) | `1.4019109461` | `14019109461 / 10000000000` | `Grothe.Statement.lower_bound_sharp` | `Grothe/MainResult.lean` |
+| earlier lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
+| root upper bound, rounded | `1.404556407` | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds_phase`, second part | `Grothe/MainResult.lean` |
+| previous root upper bound | `1.40455641` | `140455641 / 100000000` | `Grothe.Statement.main_bounds_refined`, second part | `Grothe/MainResult.lean` |
 | article upper bound (weak, $\le$) | `1.40455741` | `140455741 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -32,20 +35,25 @@ $\lvert\sum a_{ij}\langle x_i,y_j\rangle\rvert$ over unit vectors of a complex H
 (`scalarOpt`, `vectorOpt` in `Grothe/Statement.lean`). A number $K$ is a *Grothendieck bound* (`IsBound K`) if
 $V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds.
 
-- Upper bound: `Grothe.UpperSix.bound : IsBound (140455741 / 100000000)`. For every finite complex matrix,
-  $V(A) \le 1.40455741\,C(A)$.
+- For every finite complex matrix, `Grothe.UpperSix.bound_phase` gives $V(A)\le [10^{27}/711968558203721328194311213]\,C(A)$.
 - Lower bound: `lower_target : LowerAbove (140191 / 100000)`. Every Grothendieck bound is above $1.40191$; for every
   $K \le 1.40191$ some matrix has $V(A) > K\,C(A)$.
 
 ### Stronger root certificate
 
-The root theorem `Grothe.UpperSix.constant_le_exact` gives
-$K\le 10^{27}/711968557929438692542239077 = 1.404556407530439478\ldots$.
-Its finite-matrix form is `Grothe.UpperSix.bound_exact`. Rounding upward gives
-$1.40191 < K \le 1.40455641$ in `Grothe.Statement.main_bounds_refined`.
-The six weights are those of the article. The first channel uses a degree-20 polynomial
-and each tail budget deducts the energy forced by its linear coefficient. The exact head
-cap is $4481751845/10^{15}$ and the weighted tail cost is $42740716307457760923/10^{27}$.
+The six weights come from the article. The first channel uses a degree-20 polynomial and each
+Hardy budget deducts the energy carried by the linear coefficient. The five cell channels
+enclose coefficients 0 through 250. The phase channel encloses coefficients 0 through 320
+using exact Haagerup moments. The head cap is $4481751845/10^{15}$ and the weighted tail
+cost is $42466433671805688787/10^{27}$. The tails begin at indices 251 and 321 respectively.
+Thus `Grothe.UpperSix.constant_le_phase` gives
+$K\le 10^{27}/711968558203721328194311213=1.404556406989340536\ldots$.
+The two-sided theorem `Grothe.Statement.main_bounds_phase` rounds this up to $1.404556407$.
+
+At a common cutoff of 251 the weighted tail cost was $42740716307457760923/10^{27}$.
+The corresponding exact bound $10^{27}/711968557929438692542239077$ is available as
+`Grothe.UpperSix.constant_le_exact`. Its rounded form is $1.40455641$ in
+`Grothe.Statement.main_bounds_refined`.
 
 ## Haagerup's value
 
@@ -63,6 +71,28 @@ The upper bound is below Haagerup's value by about $1.9\cdot10^{-5}$. Haagerup's
 bound $K < 1.40490913\ldots$
 
 ## Behind the lower bound
+
+The common Gaussian gate sharpens this lower bound to $1.4019156097<K$. The theorem `Grothe.Statement.shared_gate_endpoint` gives the exact fraction
+
+```text
+909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
+648511116026975442270455246402044140272423714548613432977518646121820234278296395631
+```
+
+Its decimal expansion begins at $1.4019156097084731719682$. The two active rows constrain the same Gaussian variable. For residual scale $\tau\ge4649/20000$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For $\tau\le4649/20000$, a quadratic majorant saves $551/10^8$ on the first row. Pricing their common saving by the smaller of the two mixture weights lowers the uniform hat cap by $243/10^8$ across 16 cells. The row06/row07 cell uses weight $12/25$. On the row12/row13 cell the weight changes from $3/5$ to $22/25$ at $1758/2000$.
+
+The exact endpoint in `Grothe.Statement.sharp_lower_endpoint` gives $K \ge 1.401910946113565640\ldots$. Its value in Lean is
+
+```text
+909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
+648513273363107644808393943072300421164120888939497691860404687721820234278296395631
+```
+
+For the same Gaussian witness and the same certified rows, `SharpEnvelope.check` bounds the hat value by
+$\hat B_*=0.7064127708804130589\ldots$. On the central interval the weight of row 0.845 in its mixture with
+row 0.835 varies affinely with $t$. The maximum of the resulting quadratic gives the cap. The other fourteen
+intervals use fixed weights. The original witness cap is $(1-47/2000)\hat B_*+47/2000$, whose reciprocal is the
+fraction above. The following table gives the earlier fixed-weight certificate.
 
 | quantity | value | meaning |
 |---|---|---|

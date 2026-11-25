@@ -30,21 +30,23 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.40191\;<\;\KG\;\le\;1.40455641$\\[6pt]
-\normalsize Both bounds are theorems of a Lean~4/Mathlib development without hypotheses
-(\lean{Grothe.Statement.main\_bounds\_refined}); the computer-assisted inputs are native finite checks listed in
-the axiom report (Section~\ref{sec:trust}).\\[4pt]
-The lower bound is \lean{lower\_target}, with the exact rational $140191/100000$; the upper bound uses six Gaussian rounding channels, with $140455641/100000000$ rounded upward from the exact transfer value.\vspace{4pt}
+\Large $1.4019156097\;<\;\KG\;\le\;1.404556407$\\[6pt]
+\normalsize The Lean~4/Mathlib theorems \lean{lower\_bound\_shared\_gate} and
+\lean{Grothe.Statement.main\_bounds\_phase} prove these bounds without hypotheses.
+Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
+The exact shared-gate lower endpoint is rounded down to $14019156097/10000000000$.
+The six Gaussian rounding channels give the upper bound rounded up to $1404556407/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
 The upper certificate mixes three smoothed cell channels, one phase channel and
-two reflected tiger channels. Its transfer theorem uses the signed sum of the
-first 251 coefficients together with a Hardy bound for each infinite tail.
-The standard finite-matrix theorem is \lean{Grothe.UpperSix.bound}.
-The root refinement \lean{Grothe.UpperSix.constant\_le\_exact} gives
-$K_G^{\mathbb C}\le 10^{27}/711968557929438692542239077<1.40455641$.
-It uses a different first polynomial and deducts the six linear energies from the Hardy budgets.
+two reflected tiger channels. The signed head uses 251 coefficients in each cell channel
+and 321 exact Haagerup coefficients in the phase channel. The Hardy estimates pay for
+each tail beginning at its first omitted index. The root theorem \lean{Grothe.UpperSix.constant\_le\_phase} gives
+$K_G^{\mathbb C}\le 10^{27}/711968558203721328194311213<1.404556407$.
+The earlier uniform-cutoff theorem \lean{Grothe.UpperSix.constant\_le\_exact}
+gives $10^{27}/711968557929438692542239077<1.40455641$.
+Both refinements use a degree-20 first polynomial and deduct the six linear energies from the Hardy budgets.
 
 The companion theorem \lean{Grothe.UpperSix.constant\_lt\_inv\_gammaDagger}
 compares the infimum with the reciprocal phase integral.
@@ -95,7 +97,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191}$ & $\mathbf{1.40455641}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4019156097}$ & $\mathbf{1.404556407}$\\\bottomrule
 \end{tabular}
 \end{center}
 The article upper bound is $140455741/100000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
@@ -712,6 +714,24 @@ the identity on all the other chaoses (an \emph{identity tail}).
  $\hat B=0.7064131$.
 \end{itemize}
 A finite-partition transfer turns this into matrices, so $\KG\ge1/B=1.4019103\ldots>1.40191$.
+Allowing the weight of row $0.845$ in its mixture with row $0.835$ to vary affinely on
+$[1672/2000,1675/2000]$ gives the smaller cap $\hat B_*=0.7064127708804130589\ldots$.
+The other fourteen intervals use fixed weights. With the same node caps, the transfer now gives
+$\KG\ge((1-\nu)\hat B_*+\nu)^{-1}=1.401910946113565640\ldots>1.4019109461$
+(\lean{sharp\_lower\_endpoint}, \lean{lower\_bound\_sharp}).
+At $t=0.8366035304980132\ldots$ a single abstract profile satisfies every retained-square row and every
+mass tangent at $\hat V=\hat B_*$. The scalar row system therefore attains this cap.
+The two active rows constrain the same Gaussian gate coordinates. At fixed first coordinate,
+completing their sum saves at least $1018\tau^2/10^7$ across the two rows.
+For $\tau\le4649/20000$ a quadratic majorant saves $551/10^8$ on the first row.
+At every scale their nonnegative deductions sum to at least $H=(1018/10^7)(4649/20000)^2$.
+A mixture with weights $1-\theta,\theta$ saves at least $H\min(\theta,1-\theta)$.
+Checking both assignments of $H$ on the active cells and the ordinary mixtures on the
+rest of a sixteen-cell cover gives
+$\KG\ge((1-\nu)(\hat B_*-243/10^8)+\nu)^{-1}
+=1.401915609708473171\ldots>1.4019156097$
+(\lean{lower\_bound\_shared\_gate}).
+
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
@@ -778,6 +798,13 @@ coefficients $c_m(\mu)$ and Hermite projection games $Q=\sum_m q_m\Pi_m$,
 The complex programme uses charge-one bidegrees. A global complex minimax identity is not established here;
 the two endpoint proofs use separate one-sided transfer theorems. An upper bound comes from a realizable kernel,
 and a lower bound from a game with a uniform scalar norm cap. Finite-pool duality alone does not certify either global claim.
+
+For a convex mixture with weights $w_p$ and coefficient sequences $h_p(n)$,
+each finite interval list may have its own length $m_p$.
+The signed sum uses the coefficients with $n<m_p$ and pads each list with zeros.
+The true mixture differs from this polynomial by at most
+$\sum_p w_p\sum_{n\ge m_p}|h_p(n)|$ in $\ell^1$.
+The resulting finite-matrix bound is \lean{convex\_transfer\_variable\_ival}.
 
 Separate paper results in the Conjecture K monograph strengthen the common-response
 energy ellipsoid and reduce a joint-sector estimate to a specified pointwise remainder

@@ -2,15 +2,22 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The root theorem `Grothe.UpperSix.constant_le_exact` bounds the constant above by the exact rational
-$\frac{10^{27}}{711968557929438692542239077}$. With the existing lower result,
-`Grothe.Statement.main_bounds_refined` gives $1.40191<K_G^{\mathbb C}\le 1.40455641$.
-`Grothe/UpperSixExact/` changes the first polynomial and certifies six lower bounds on
-the linear coefficients alongside the mixed head. Subtracting their squared contributions
-from the six Hardy estimates gives the exact tail cost. The other five contour checks,
-the weights and the interval overlap proofs are shared with the article certificate.
+The upper theorem `Grothe.UpperSix.constant_le_phase` proves
+$K_G^{\mathbb C}\le 10^{27}/711968558203721328194311213$. With the existing lower result,
+`Grothe.Statement.main_bounds_phase` gives $1.40191<K_G^{\mathbb C}\le 1.404556407$.
+`Grothe/UpperSixExact/` changes the first polynomial and certifies six lower bounds on the linear
+coefficients alongside the mixed head. Subtracting their squared contributions from the Hardy estimates
+gives the tail cost. The phase channel uses 321 coefficients from exact Haagerup moments.
+Each of the five cell channels uses 251. The previous common-cutoff endpoint gives
+$K_G^{\mathbb C}\le 1.40455641$ in `Grothe.Statement.main_bounds_refined`.
 
-`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40455741` (in Lean `140191/100000` and `140455741/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` combines the lower bound (`lower_target`, a theorem without hypotheses) and the six-channel upper proof to give `1.40191 < K_G^ℂ ≤ 1.40455741` (in Lean `140191/100000` and `140455741/100000000`). The upper-only module exports `Grothe.UpperSix.bound`, `constant_le` and `constant_lt_inv_gammaDagger`. The scalar and vector suprema in the standalone package are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean). The scalar lower theorem in the same module gives `1.4019109461 < K_G^ℂ`.
+
+The stronger theorem `Grothe.Statement.lower_bound_shared_gate` gives $1.4019156097<K_G^{\mathbb C}$.
+The two active rows share the residual scale $\tau$ and all three complex gate coordinates.
+Completing their summed gate with the first coordinate fixed saves at least $1018\tau^2/10^7$ before weighting. For $\tau\le4649/20000$, a single quadratic majorizes the row08 potential on every node chord and the terminal Lipschitz ray, saving $551/10^8$ on that row. At every scale the two nonnegative intercept deductions therefore sum to at least $H=(1018/10^7)(4649/20000)^2$. For weights $1-\theta,\theta$, it suffices to check both assignments of $H$ to one intercept. A 16-cell cover then gives $\hat V\le\hat B_*-243/10^8$. The row06/row07 interval uses the constant weight $12/25$. The row12/row13 interval splits at $1758/2000$, with weights $3/5$ and $22/25$.
+The kernel checks the small-scale quadratic against all 171 row08 nodes. The decimal decoder re-encodes the proposed numerators and denominators, proves byte equality with the original row, and proves that parsing recovers every rational. The rectangle inequalities and the shared-gate checks are kernel proofs.
+The exact endpoint and proof are exposed as `shared_gate_endpoint`, `SharedGate.smallRectangle_ok`, `SharedGate.pair_ok`, `SharedGate.cell_bound` and `SharedGate.check`.
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. Their finite enclosures feed the signed head through index 250. Disk coverage and Hardy circle means bound the tails. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The article's ancillary package `haagerup-article/anc` is a byte-for-byte copy of these sources with its own Lake files and CI job. [Article's Lean package](../haagerup-article/anc/README.md).
 
@@ -29,6 +36,8 @@ target the rounding was designed for. The conditional theorem towards it,
 1.404598148840, from fourteen finite-band Gaussian estimates that are not
 proved), is archived; the theorem without hypotheses exhibits a bound below
 `1.404599395362`.
+
+**Different head lengths in a mixture.** A channel with a list of length $m$ encloses its true coefficients up to index $m-1$. The finite head sum pads that list with zeros. The error between the polynomial and the true kernel costs at most the channel’s absolute tail from $m$, multiplied by its mixture weight. The theorem also covers an empty list. [Lean transfer theorem](../Grothe/UpperSixExact/VariableCutoff.lean).
 
 **Tight certified upper budget.** `UpperTightPanelTotals` checks the existing panel-cap sums
 in Lean's kernel against `8·10⁻¹⁵`, `16·10⁻¹⁵` and `1131·10⁻¹⁵`. The same accepted
@@ -1181,6 +1190,19 @@ no hypothesis. The chain: `transfer_lower` gives `1/B ≤ K` from `TransferInput
 envelope bound `profile_bound`. `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an
 operator T on L², a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with
 Σₗ|uₗ|² ≤ 1 and Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
+
+**Sharp lower endpoint.** `Grothe.Statement.sharp_lower_endpoint` gives $K_G^{\mathbb C}\ge
+1.401910946113565640\ldots$ and `lower_bound_sharp` gives the strict decimal bound $1.4019109461<K_G^{\mathbb C}$.
+In `Grothe/Lower/Cert/SharpEnvelope.lean` the fifteen intervals cover $[0,9/10]$. On
+$[1672/2000,1675/2000]$ the weight on row 0.845 is affine in $t$, and the resulting quadratic attains its maximum
+inside the interval. `affineEnvelope_bound` includes the vertex in the rational maximum.
+`sharp_lower_bound_of_tailNodeCaps` applies the scalar cap to the same Gaussian witness.
+The chain and its arithmetic use Lean kernel reduction. The existing row and node verifications supply the input inequalities.
+
+`SharpEnvelope.scalar_contact` exhibits a simultaneous solution of the reduced row inequalities at
+$t=0.8366035304980132\ldots$ and $\hat V=\hat B_*$. It satisfies all fourteen inequalities with their norm
+penalties and all mass tangents. Any improvement beyond this exact endpoint requires further information from the
+Gaussian witness, stronger input rows or a different witness.
 
 **How the two halves fit.** The Gaussian witness is defined in Lean
 (`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,

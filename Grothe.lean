@@ -9,6 +9,7 @@ import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.HeadHardy
 import Grothe.ListPoly
+import Grothe.Lower.AffineEnvelope
 import Grothe.Lower.Basic
 import Grothe.Lower.Cert.Envelope
 import Grothe.Lower.Cert.MassRow
@@ -28,6 +29,8 @@ import Grothe.Lower.Cert.Row12
 import Grothe.Lower.Cert.Row13
 import Grothe.Lower.Cert.Row14
 import Grothe.Lower.Cert.Rows
+import Grothe.Lower.Cert.SharedGate
+import Grothe.Lower.Cert.SharpEnvelope
 import Grothe.Lower.Cuts
 import Grothe.Lower.Envelope
 import Grothe.Lower.EnvelopeData
@@ -63,8 +66,11 @@ import Grothe.Lower.RowData14
 import Grothe.Lower.RowDataTypes
 import Grothe.Lower.RowGateData
 import Grothe.Lower.RowGates
+import Grothe.Lower.RowParser
+import Grothe.Lower.RowParser.Single
 import Grothe.Lower.RowReduction
 import Grothe.Lower.Rows
+import Grothe.Lower.SharedGateSaving
 import Grothe.Lower.SpecRows
 import Grothe.Lower.Stein
 import Grothe.Lower.Support
@@ -3305,6 +3311,8 @@ import Grothe.LowerAnalytic.RadialParts
 import Grothe.LowerAnalytic.Reduction
 import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.Rows
+import Grothe.LowerAnalytic.SharedGateBound
+import Grothe.LowerAnalytic.SharpEnvelopeBound
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.SixthMomentData
 import Grothe.LowerAnalytic.SpectralBudget
@@ -4778,6 +4786,7 @@ import Grothe.UpperSixExact.Bound
 import Grothe.UpperSixExact.Contour
 import Grothe.UpperSixExact.Head
 import Grothe.UpperSixExact.Parameters
+import Grothe.UpperSixExact.VariableCutoff
 import Grothe.UpperTarget
 import Grothe.UpperTightBudget
 import Grothe.UpperTightComparison
