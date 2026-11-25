@@ -12,6 +12,8 @@ What the two numbers of a problem mean:
        quadrature error of the pair coefficients, about 1e-6) NO game of the problem certifies more than 1/LB;
   U  = the largest payoff against the best game visited, over its oracle calls AND over every pair of the final pool: a lower estimate of that game's norm from a local best-response search,
        so 1/U is an upper estimate of what THAT game certifies.  Neither is a certified bound; richer responses can only raise them.
+The incumbent of a problem is the game with the smallest U among those visited so far; ceiling/rescore.py makes the final selection
+on the final pool (smallest max(U when visited, largest payoff over the final pool)) and sets done = (U - LB < 1e-6).
 usage: eps_profile.py OUT.json WORKERS ITERS "eps,eps,...|free"     (needs numpy, scipy and the folder ../../primal-dual)"""
 import sys, os, json, time, numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.environ.get('PD_DIR', os.path.join(HERE, '..', '..', 'primal-dual')))

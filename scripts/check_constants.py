@@ -15,8 +15,8 @@ Grothe/Lower/Cert/<Name>.lean; the script does not fix the name). The script che
 * truncated decimal expansions (`1.40…`, `1.40\ldots`) of the exact bounds in the current-bounds sections of the
   documents, and explicit `p / q = 1.40…` rational expansions across QUOTING, match exact integer division;
 * in the Lean files that state the theorems, every `IsBound (…)` with a numeric argument is the upper bound (rounded
-  or exact), every `LowerAbove (N / D)` the lower bound, no other rational 14…/10^k is quoted, and every decimal
-  1.40… is one of the two bounds or a truncation of one of the two exact values;
+  or exact), no other rational 14…/10^k is quoted, and every decimal 1.40… is one of the two bounds or a truncation
+  of one of the two exact values;
 * no document of STRICT mentions a number of RETIRED (an older bound that readers must not take for the current one).
 
 The script reads source text. It is a check of the documents against the statements, and a guard against an
@@ -76,8 +76,8 @@ CURRENT_EXPANSION_DOCS = (
 )
 # 1/γ† = 1.404575934663742…, Haagerup's 1987 bound 1.40490913…, and the archived single-channel bound 1.40459939536120707492…
 KNOWN_OTHER_EXPANSIONS = ("1.404575934663742", "1.40490913", "1.40459939536120707492")
-# the arguments of a claim `IsBound (…)` or `LowerAbove (…)` that starts with a number
-ROLE_CLAIM = re.compile(r"\b(IsBound|LowerAbove)\s*\(\s*(?=[(\d])")
+# the arguments of a claim `IsBound (…)` that starts with a number
+ROLE_CLAIM = re.compile(r"\b(IsBound)\s*\(\s*(?=[(\d])")
 PLAIN = re.compile(r"(\d+)\s*/\s*(\d+)")
 # the exact form of the upper bound: `(10 : ℝ) ^ 27 / D`, in prose also `10 ^ 27 / D` or `10^27 / D`
 POWER = re.compile(r"(?:\(\s*10\s*:\s*ℝ\s*\)|10)\s*\^\s*(\d+)\s*/\s*(\d+)")
@@ -363,10 +363,9 @@ def check_lean_file(rel, text, lower, upper, exact_upper, exact_lower, problems)
             ok = int(power[2]) != 0 and Fraction(10 ** int(power[1]), int(power[2])) == exact_up
             what = "the exact upper bound of Grothe.UpperSeven.bound"
         elif plain:
-            shown = f"{m[1]} ({plain[1]} / {plain[2]})"
-            want = up if m[1] == "IsBound" else lo
-            ok = int(plain[2]) != 0 and Fraction(int(plain[1]), int(plain[2])) == want
-            what = f"the {'upper' if m[1] == 'IsBound' else 'lower'} bound of main_bounds"
+            shown = f"IsBound ({plain[1]} / {plain[2]})"
+            ok = int(plain[2]) != 0 and Fraction(int(plain[1]), int(plain[2])) == up
+            what = "the upper bound of main_bounds"
         else:
             problems.append(f"{rel}:{line_of(m.start())}: the numeric argument of {m[1]} was not recognised")
             continue

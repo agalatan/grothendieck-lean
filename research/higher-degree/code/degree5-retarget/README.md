@@ -15,7 +15,7 @@ optimum; a law program on a grid is a lower estimate of its supremum.
     bash replay.sh        # from this folder; Python 3 standard library only; about 15 seconds
 
 It runs the exact script and rebuilds each table from the committed result files, comparing byte for byte. Expected:
-seven lines `IDENTICAL …`, then `ALL IDENTICAL`.
+eight lines `IDENTICAL …`, then `ALL IDENTICAL`.
 
 | path | what | label |
 |---|---|---|
@@ -23,7 +23,8 @@ seven lines `IDENTICAL …`, then `ALL IDENTICAL`.
 | `exact/ridge_direct.py`, `.log` | the t = 0 test and the direct bound of ledger 4.18 (a) for the best game found at each cubic weight | exact given the games |
 | `ladder.py`, `LADDER.md` | rooms 1/K\* − N by game and target, from the recorded norms and from `ceiling/eps_profile_K*.json` | arithmetic on N values |
 | `ceiling/eps_profile.py`, `eps_profile_K2.json`, `eps_profile_K3.json` | the model norm of the best game of degree 5 (`KDEG=3`: degree 7) at each fixed cubic weight, without and with an identity tail: a cutting plane with one shared pool of explicit pairs (oracles W3, Z2, h∘ρ, plain phase; the engine of `../primal-dual/`). The JSON files keep the pool, so the linear programs can be re-solved | N |
-| `ceiling/rescore.py`, `rescore.log` | re-scores the stored best game of every problem on the final shared pool (U = the largest payoff over the pool; one degree-7 value changed: 1.404114 → 1.404092); `eps_profile.py` now does this itself | arithmetic on the stored pool |
+| `ceiling/rescore.py`, `rescore.log` | selects the game of every problem on the final shared pool: among the games visited, the smallest max(payoff when visited, largest payoff over the pool); one degree-7 selection changed (free, without tail: 1.404113) | arithmetic on the stored pool |
+| `ceiling/pool_certificate.py`, `.log` | exact Fractions: positive weights on pool rows that cancel the free coefficients, so that in the stored score model every degree-5 game has norm above 0.7124304398 (0.7123823506 with a tail), and every degree-7 game with ε ≤ (1/1.403)/ρ₀² norm above 0.7123933909 (0.7123931399 with a tail); the rows are codex-a7c4's (reviews of PR #711) | exact on the stored decimals |
 | `ceiling/law_rows.py`, `law_rows_*.json`, `law_table.py`, `LAW_ROWS.md` | row bounds with zero sector cost, Gaussian ideal against the plain law layer (moments and the radius 2287/2500), at t = 0 for three games and at the peak for the capped one (engine `../degree5-design/d5eng.py`) | N |
 | `theta/gen_theta_job.py`, `extract_cells.py`, `collect_factors.py`, `thetas.json`, `cells.json`, `FACTORS.md` | the allowances θ_j(u, χ) of the funded design of ledger 4.44 recomputed with the room left at each target (the allowance program `scripts/r4_theta6.py` of `../degree5-design/design-2026-11-25/`, only the room changed), and the factors against the content ratios of the design run | N |
 

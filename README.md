@@ -84,7 +84,7 @@ definitions, so reading it is enough to know what the theorems say:
 - `scalarOpt A` and `vectorOpt A` are $C(A)$ and $V(A)$ above, for a finite complex matrix $A$;
 - `IsBound K` says that $V(A) \le K \cdot C(A)$ for every finite complex matrix $A$ of every size;
 - `complexGrothendieckConstant` is the infimum of all such $K$, that is, $K_G^{\mathbb C}$;
-- `LowerAbove c` says that every such $K$ is above $c$, and `UpperBelow c` that some such $K$ is below $c$.
+- `UpperBelow c` says that some such $K$ is below $c$.
 
 **The theorems.**
 

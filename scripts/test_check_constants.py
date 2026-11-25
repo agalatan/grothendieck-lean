@@ -16,7 +16,7 @@ theorem main_bounds :
       complexGrothendieckConstant ≤ 140456 / 100000 := by
   simpa using (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt
 """
-STATEMENT = "def LowerAbove (c : ℝ) : Prop := ∀ K, IsBound K → c < K\n"
+STATEMENT = "def UpperBelow (c : ℝ) : Prop := ∃ K, IsBound K ∧ K < c\n"
 UPPER = """-- `K ≤ 1.40456`, the exact value 1.404555… rounded up.
 theorem bound : Statement.IsBound ((10 : ℝ) ^ 6 / 711969) :=
 theorem constant_le : Statement.complexGrothendieckConstant ≤ 140456 / 100000 := by
@@ -177,16 +177,9 @@ class CheckConstants(unittest.TestCase):
             problems, ["Grothe/Statement.lean:2: IsBound (140191 / 100000) is not the upper bound of main_bounds"]
         )
 
-    def test_upper_rational_claimed_as_lower(self):
-        wrong = STATEMENT + "-- `LowerAbove (140456 / 100000)` holds.\n"
-        _, problems = self.run_check(statement=wrong)
-        self.assertEqual(
-            problems, ["Grothe/Statement.lean:2: LowerAbove (140456 / 100000) is not the lower bound of main_bounds"]
-        )
-
     def test_exact_form_of_the_upper_bound(self):
         for good in ("`IsBound ((10 : ℝ) ^ 6 / 711969)`", "`IsBound (10 ^ 6 / 711969)`", "`IsBound (10^6 /\n-- 711969)`",
-                     "`IsBound (140456 / 100000)`", "`LowerAbove (140191 / 100000)`", "`IsBound K`, `IsBound (K : ℝ)`"):
+                     "`IsBound (140456 / 100000)`", "`IsBound K`, `IsBound (K : ℝ)`"):
             with self.subTest(good=good):
                 _, problems = self.run_check(statement=STATEMENT + f"-- {good}\n")
                 self.assertEqual(problems, [])
@@ -195,8 +188,6 @@ class CheckConstants(unittest.TestCase):
             problems,
             ["Grothe/Statement.lean:2: IsBound (10 ^ 6 / 711968) is not the exact upper bound of Grothe.UpperSeven.bound"],
         )
-        _, problems = self.run_check(statement=STATEMENT + "-- `LowerAbove ((10 : ℝ) ^ 6 / 711969)`\n")
-        self.assertEqual(problems, ["Grothe/Statement.lean:2: the numeric argument of LowerAbove was not recognised"])
         _, problems = self.run_check(statement=STATEMENT + "-- `IsBound (1.40456)`\n")
         self.assertEqual(problems, ["Grothe/Statement.lean:2: the numeric argument of IsBound was not recognised"])
 

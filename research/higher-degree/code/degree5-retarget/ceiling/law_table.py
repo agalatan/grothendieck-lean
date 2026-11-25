@@ -20,3 +20,14 @@ for fn in sorted(glob.glob(os.path.join(HERE, 'law_rows_*.json'))):
         else: desc = 'the Gaussian law'
         print('| (%g, %g) | %g | (%s)%s | %.7f | %.7f | %.7f | %.2e | %s |' % (r['eps'], r['eta'], r['t'], ', '.join('%.5f' % x for x in r['row']), ' opt.' if r['optimised'] else '', r['gauss'], r['law_lp'], r['law'], r['law'] - r['gauss'], desc))
 print('\nevery stored law replayed: payoff and constraints agree')
+# The t = 0 row has the zero row parameters, so its response integral does not depend on the game: the SAME stored law, repriced for
+# another game (eps', eta'), pays  payoff + sigma^2 (1/eps - 1/eps') + nu^2 (1/eta - 1/eta')  (codex-a7c4, review of PR #711).  Also
+# the direct bound of ledger 4.18 (a) at t = 0, eps rho0^2 + eta^2/(pi eps), for the game named on each line.
+import math
+K2 = json.load(open(os.path.join(HERE, 'eps_profile_K2.json'))); opt = next(p for p in K2['problems'] if p['eps'] is None and not p['tail'])['best']['lam']
+src = next(r for r in json.load(open(os.path.join(HERE, 'law_rows_0849.json'))) if r['t'] == 0 and not any(r['row'])); a = src['law_at']
+print('\n| game (eps, eta) | t = 0 row: payoff of the law stored for (0.84896, 0.2818) | 1/payoff | below 1/1.403 | below 1/1.4025 | direct bound at t = 0 |'); print('|---|---|---|---|---|---|')
+for nm, e, h in (('(0.84896, 0.2818), ledger 1.2', src['eps'], src['eta']), ('(%.10f, %.10f), the optimum saved in eps_profile_K2.json' % (-opt[1], opt[2]), -opt[1], opt[2]), ('(0.8493, 0.2827)', 0.8493, 0.2827), ('(0.849, 0.2824)', 0.849, 0.2824), ('(0.848, 0.2795)', 0.848, 0.2795)):
+    v = src['law_lp'] + a['sigma'] ** 2 * (1 / src['eps'] - 1 / e) + a['nu'] ** 2 / src['eta'] - a['nu'] ** 2 / h
+    print('| %s | %.8f | %.6f | %.3e | %.3e | %.6f |' % (nm, v, 1 / v, 1 / 1.403 - v, 1 / 1.4025 - v, e * src['rho0'] ** 2 + h * h / (math.pi * e)))
+print('\ndirect bound at t = 0 for the other games of the table: ' + '; '.join('(%g, %g): %.6f' % (e, h, e * 0.9148 ** 2 + h * h / (math.pi * e)) for e, h in ((0.78, 0.0779), (0.82, 0.194))))
