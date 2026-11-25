@@ -42,7 +42,7 @@ def affineCellCap (a b : EnvRow) (c : AffineEnvCell) : ℚ :=
   let q := mixQuadratic a b c.offset c.slope
   quadMax q.constant q.linear q.quadratic c.lo c.hi
 
-private theorem mix_le_affineCellCap (a b : EnvRow) (c : AffineEnvCell) (t : ℝ)
+theorem mix_le_affineCellCap (a b : EnvRow) (c : AffineEnvCell) (t : ℝ)
     (hlo : (c.lo : ℝ) ≤ t) (hhi : t ≤ c.hi) :
     let θ := (c.offset : ℝ) + c.slope * t
     t ^ 2 - 2 * ((1 - θ) * a.ell + θ * b.ell) * t +
@@ -68,15 +68,11 @@ def checkAffineEnvelope (rows : List Row) (S B : ℚ) (cells : List AffineEnvCel
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
-/-- A checked chain of affine mixtures caps all scalar profiles on the closed interval. -/
-theorem affineEnvelope_bound (rows : List Row) (S B : ℚ) (cells : List AffineEnvCell)
-    (h : checkAffineEnvelope rows S B cells = true) {V t : ℝ} {Qh v : E}
-    (hv : ‖v‖ ^ 2 = 2) (h0 : 0 ≤ t) (h9 : t ≤ 9 / 10)
+/-- Either of the rows used in a checked cell may come from the mass tangent. -/
+theorem affineCell_bound (rows : List Row) (S B : ℚ) (c : AffineEnvCell)
+    (hok : affineCellOK rows S B c = true) {V t : ℝ} {Qh v : E}
+    (hv : ‖v‖ ^ 2 = 2) (hlo : (c.lo : ℝ) ≤ t) (hhi : t ≤ c.hi)
     (hrows : ∀ k m a, envRowAt rows S m k = some a → RowOf a V t Qh v) : V ≤ B := by
-  obtain ⟨hchain, hcells⟩ := Bool.and_eq_true_iff.mp h
-  obtain ⟨c, hc, hlo, hhi⟩ := chainTo_sound AffineEnvCell.lo AffineEnvCell.hi cells
-    0 (9 / 10) hchain t (by simpa using h0) (by push_cast; exact h9)
-  have hok := List.all_eq_true.mp hcells c hc
   let m := (c.lo + c.hi) / 2
   unfold affineCellOK at hok
   cases ha : envRowAt rows S m c.i with
@@ -100,5 +96,15 @@ theorem affineEnvelope_bound (rows : List Row) (S B : ℚ) (cells : List AffineE
       have hmix := RowHolds.mix hε hv (hrows c.i m a ha) (hrows c.j m b hb)
         ((c.offset : ℝ) + c.slope * t) hθ0 hθ1
       exact (hmix.le hε.le).trans ((mix_le_affineCellCap a b c t hlo hhi).trans (by exact_mod_cast hcap))
+
+/-- A checked chain of affine mixtures caps all scalar profiles on the closed interval. -/
+theorem affineEnvelope_bound (rows : List Row) (S B : ℚ) (cells : List AffineEnvCell)
+    (h : checkAffineEnvelope rows S B cells = true) {V t : ℝ} {Qh v : E}
+    (hv : ‖v‖ ^ 2 = 2) (h0 : 0 ≤ t) (h9 : t ≤ 9 / 10)
+    (hrows : ∀ k m a, envRowAt rows S m k = some a → RowOf a V t Qh v) : V ≤ B := by
+  obtain ⟨hchain, hcells⟩ := Bool.and_eq_true_iff.mp h
+  obtain ⟨c, hc, hlo, hhi⟩ := chainTo_sound AffineEnvCell.lo AffineEnvCell.hi cells
+    0 (9 / 10) hchain t (by simpa using h0) (by push_cast; exact h9)
+  exact affineCell_bound rows S B c (List.all_eq_true.mp hcells c hc) hv hlo hhi hrows
 
 end Grothe.Lower

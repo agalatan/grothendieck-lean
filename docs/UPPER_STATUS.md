@@ -246,8 +246,8 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   The omitted-input Hilbert–Schmidt route, archived in `abandonware/`, is a
   separate way to seek those bounds, not an assumption of `main_bounds`.
 * The lower endpoint is also closed: `main_bounds` in `MainResult.lean`
-  gives `1.4019109461 < K_G^ℂ` from the certificate of the witness with an identity
-  tail (`sharp_lower_endpoint`) and the node caps of its rows
+  gives the lower bound from the certificate of the witness with an identity
+  tail (`shared_gate_endpoint`) and the node caps of its rows
   (`tailNodeCaps_cert`); see [LEAN_DETAILS.md](LEAN_DETAILS.md) and
   [CAPS.md](CAPS.md).
 

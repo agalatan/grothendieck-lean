@@ -3,16 +3,16 @@
 This page states every bound on the complex Grothendieck constant $K = K_G^{\mathbb C}$ that this repository
 proves, exactly as Lean states it, and explains the other numbers that appear in the sources and documents.
 `scripts/check_constants.py` reads the two bounds from `main_bounds` and the exact values behind them from
-`Grothe.UpperSix.bound` and `SharpEnvelope.endpoint_eq`. It checks that each bound is the outward rounding of its
+`Grothe.UpperSix.bound` and the `endpoint_eq` of the lower certificate that the proof of `main_bounds` uses. It checks that each bound is the outward rounding of its
 exact value, and that this page and the other documents state them.
 
 ## The current bounds
 
-$$1.4019109461 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.40191478 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.4019109461` | `14019109461 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
+| lower bound (strict) | `1.40191478` | `140191478 / 100000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
 | upper bound (weak, $\le$) | `1.404556407` | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -20,7 +20,7 @@ $$1.4019109461 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 ```lean
 theorem main_bounds :
-    (14019109461 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
+    (140191478 / 100000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404556407 / 1000000000
 ```
 
@@ -31,7 +31,7 @@ Each bound is the rounding of an exact value that Lean also states.
 
 | | exact value | decimal | theorem | rounding |
 |---|---|---|---|---|
-| lower endpoint ($\le K$) | the fraction `SharpEnvelope.endpoint` [below](#behind-the-lower-bound) | $1.401910946113565640\ldots$ | `Grothe.Statement.sharp_lower_endpoint` | strictly downward to ten decimals (`SharpEnvelope.rounded_lt`) |
+| lower endpoint ($\le K$) | the fraction `SharedGate.endpoint` [below](#behind-the-lower-bound) | $1.401914784461024301\ldots$ | `Grothe.Statement.shared_gate_endpoint` | strictly downward (`SharedGate.rounded_lt`) |
 | upper bound ($K \le$) | $10^{27}/711968558203721328194311213$ | $1.404556406989340536\ldots$ | `Grothe.UpperSix.bound` | up to nine decimals (`Grothe.UpperSix.constant_le`) |
 
 **What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
@@ -42,8 +42,8 @@ $V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Gro
 
 - Upper bound: `Grothe.UpperSix.bound : IsBound ((10 : ℝ) ^ 27 / 711968558203721328194311213)`. For every finite
   complex matrix, $V(A)\le [10^{27}/711968558203721328194311213]\,C(A)$.
-- Lower bound: every Grothendieck bound is at least the lower endpoint, hence above $1.4019109461$; for every
-  $K \le 1.4019109461$ some matrix has $V(A) > K\,C(A)$.
+- Lower bound: every Grothendieck bound is at least the lower endpoint; for every $K$ below the endpoint some
+  matrix has $V(A) > K\,C(A)$.
 
 ## Haagerup's value
 
@@ -63,29 +63,36 @@ bound $K < 1.40490913\ldots$
 
 The witness is $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$. Lean bounds
 $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ by $B = (1-\nu)\hat B + \nu$, and the transfer to matrices
-gives $K \ge 1/B$ (`Grothe.Statement.sharp_lower_endpoint`). The value of $1/B$ in Lean
-(`SharpEnvelope.endpoint_eq`, `Grothe/Lower/Cert/SharpEnvelope.lean`) is
+gives $K \ge 1/B$ (`Grothe.Statement.shared_gate_endpoint`). The value of $1/B$ in Lean
+(`SharedGate.endpoint_eq`, `Grothe/Lower/Cert/SharedGate.lean`) is
 
 ```text
 909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
-648513273363107644808393943072300421164120888939497691860404687721820234278296395631
+648511497777813650950008184495957803146263132239181429405354447721820234278296395631
 ```
 
-which is $1.401910946113565640\ldots$
+which is $1.401914784461024301\ldots$
 
 | quantity | value | meaning |
 |---|---|---|
 | $\varepsilon$ | `191/250` | weight of the cubic chaos in the witness |
 | $\nu$ | `47/2000` | weight of the identity tail |
 | $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
-| $\hat B$ | `SharpEnvelope.hatCap` $= 0.7064127708804130589\ldots$ | bound of the hat value by the sharp envelope of the certified rows (`SharpEnvelope.check`); an exact rational, the maximum of a quadratic |
-| $B = (1-\nu)\hat B + \nu$ | $0.71331207\ldots$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
-| $1/B$ | `SharpEnvelope.endpoint`, the fraction above | the lower endpoint; `main_bounds` states it rounded strictly downward, $1.4019109461 < 1/B$ |
+| $\hat B_*$ | `SharpEnvelope.hatCap` $= 0.7064127708804130589\ldots$ | the maximum of the sharp envelope of the certified rows (`SharpEnvelope.check`); an exact rational, the maximum of a quadratic |
+| gain | `SharedGate.gain = 2 / 1000000` | what the Gaussian gate shared by the two active rows takes off the cap (`SharedGate.check`) |
+| $\hat B = \hat B_* - \text{gain}$ | `SharedGate.hatCap` $= 0.7064107708804\ldots$ | bound of the hat value |
+| $B = (1-\nu)\hat B + \nu$ | $0.7133101177\ldots$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
+| $1/B$ | `SharedGate.endpoint`, the fraction above | the lower endpoint; `main_bounds` states it rounded strictly downward |
 
-Fifteen intervals cover the profile parameter $t\in[0,9/10]$. On fourteen of them a fixed mixture of two rows is at
-most $\hat B$. On the central interval $[1672/2000, 1675/2000]$ the weight of row 0.845 in its mixture with row 0.835
-varies affinely with $t$, and the maximum of the resulting quadratic is $\hat B$. It is the greatest value that the
-scalar inequalities of the rows permit (`SharpEnvelope.exact_scalar_cap`).
+**The sharp envelope.** Fifteen intervals cover the profile parameter $t\in[0,9/10]$. On fourteen of them a fixed
+mixture of two rows is at most $\hat B_*$. On the central interval $[1672/2000, 1675/2000]$ the weight of row 0.845 in
+its mixture with row 0.835 varies affinely with $t$, and the maximum of the resulting quadratic is $\hat B_*$. It is
+the greatest value that the scalar inequalities of the rows permit (`SharpEnvelope.exact_scalar_cap`).
+
+**The shared gate.** The two active rows (0.835 and 0.845) constrain the same Gaussian variable. For residual scale
+$\tau\ge21/100$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For
+$\tau\le21/100$, a quadratic majorant saves $1/50000$ on the first row. Pricing their common saving by the smaller
+of the two mixture weights lowers the cap by the gain, on a cover of sixteen intervals.
 
 The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
 At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine
@@ -115,6 +122,7 @@ None of these is the current bound.
 
 | number | what it is | where |
 |---|---|---|
+| `1.4019109461` | an earlier lower bound of this repository: the sharp envelope alone, $1/((1-\nu)\hat B_*+\nu) = 1.401910946113565640\ldots$ | `SharpEnvelope.endpoint`, `SharpEnvelope.rounded_lt` (`Grothe/Lower/Cert/SharpEnvelope.lean`) |
 | `1.40191` | an earlier lower bound of this repository, $1.40191 < K$: the same witness and rows with an envelope of fixed mixtures, $B_{\mathrm{env}} = 7064131/10^7$ and $1/B = 1.4019103\ldots$ | `envB`, `lower_bound_of_tailNodeCaps` (`Grothe/LowerAnalytic/LowerBound.lean`) |
 | `1.4018` | the design target of the lower certificate | `research/identity-tail/` |
 | `1.401700322371` | an earlier lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail | history in `research/` |

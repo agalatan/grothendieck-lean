@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.4019109461 = 14019109461/10000000000 (`main_bounds`) comes from this witness. The certificate was designed for the target 1.4018; the sharp envelope of its rows (ledger 5.7) gives the bound that Lean states. It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.40191478 (`main_bounds`) comes from this witness. The certificate was designed for the target 1.4018; the sharp envelope of its rows (ledger 5.7), lowered by the gate that the two binding rows share (ledger 5.8), gives the bound that Lean states. It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 
@@ -10,10 +10,10 @@ The third term is an "identity tail": it acts pointwise, so it needs no truncati
 K ≈ 1.40212 (ledger 3.1). **The integer certificate is complete** (ledger 5.1): an exact envelope over t ∈ [0, 0.9]
 stays below the design target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵; its exact maximum gives
 1/B = 1.4019105…. Lean uses the sharp envelope of the same rows (ledger 5.7), in which the weight of the mixture of the two
-binding rows varies with t: its exact maximum B̂ = 0.7064127708804… gives B = 0.71331207… and 1/B = 1.4019109461135…, and Lean
-states K > 1.4019109461. Three other workers re-checked its node caps, its spectral rows and 31 of its cap pieces with code of their own,
+binding rows varies with t, and then the common Gaussian gate of those two rows (ledger 5.8), which lowers the cap
+further; `main_bounds` states the reciprocal of the resulting cap, rounded down. Three other workers re-checked its node caps, its spectral rows and 31 of its cap pieces with code of their own,
 and 5.1 lists what is checked by one hand only. It does not reach 1.402. The whole certificate is now in Lean
-(`sharp_lower_endpoint` and `main_bounds`, `Grothe/MainResult.lean`; ledger §6 records the port).
+(`shared_gate_endpoint` and `main_bounds`, `Grothe/MainResult.lean`; ledger §6 records the port).
 
 It is research material: nothing here is imported by Lean or checked by CI. The Lean proof itself lives in `Grothe/`
 (the witness, the rows, the envelope and the tail node caps; `docs/LEAN_DETAILS.md`), ported as ledger §6 describes.
@@ -56,7 +56,6 @@ record), `sources/stage0c-2026-11-16/STAGE0C.md` (the verdict and the numbers of
 - Hat units: T = (1 − ν)·[P₁,₀ − ε̂P₂,₁ + ν̂·Id] with ε̂ = (ε + ν)/(1 − ν) = 25/31 and ν̂ = ν/(1 − ν) = 47/1953. A row value
   in original units is N = (1 − ν)·cap_hat + ν.
 - Targets: 5000/7009 = 0.713368526 (K > 1.4018, the design target) and 500/701 = 0.713266762 (K > 1.402, not reached).
-  The Lean statement K > 1.4019109461 needs B < 10000000000/14019109461 = 0.713312071; the sharp envelope gives
-  B = 0.7133120707647…
+  The sharp envelope gives B = 0.7133120707647… (5.7); the shared gate lowers B̂ by a further 2·10⁻⁶ (5.8).
 - Prices d₂, d₃ of a cell; e_i = d_i − ν̂, σ = e₂ + e₃, δ = e₃ − e₂, Δ = d₂d₃ − ν̂².
 - Route M: the localised node caps of the previous certificate (its rows 12–15), as opposed to anchored caps.

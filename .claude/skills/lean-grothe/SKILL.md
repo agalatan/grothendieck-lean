@@ -12,11 +12,11 @@ version plus what the rulebook does not say.
 
 `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`), without hypotheses:
 
-    1.4019109461 < K_G^ℂ ≤ 1.404556407 < 1/γ† = 1.40457593…
+    1.40191478 < K_G^ℂ ≤ 1.404556407 < 1/γ† = 1.40457593…
 
-- Lower bound: `14019109461 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
+- Lower bound: `140191478 / 100000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
   (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
-  The bound is the exact endpoint `sharp_lower_endpoint` rounded strictly downward.
+  The bound is the exact endpoint `shared_gate_endpoint` rounded strictly downward.
 - Upper bound: `1404556407 / 1000000000`, weak (≤). Six Gaussian rounding channels: the library `Grothe/UpperSix/`,
   the certificate `Grothe/UpperSixExact/`. `Grothe/UpperResult.lean` has exactly three theorems:
   `Grothe.UpperSix.bound` (the exact value, for every finite matrix), `constant_le` (rounded up) and

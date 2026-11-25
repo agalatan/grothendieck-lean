@@ -58,9 +58,10 @@ PLAIN = re.compile(r"(\d+)\s*/\s*(\d+)")
 POWER = re.compile(r"(?:\(\s*10\s*:\s*ℝ\s*\)|10)\s*\^\s*(\d+)\s*/\s*(\d+)")
 # documents in which an older bound may not appear at all (elsewhere it may, named as what it is)
 STRICT = ["README.md", ".claude/skills/lean-grothe/SKILL.md"]
-# older bounds of this repository: the lower bounds 1.4018 (a design target), 1.401700322371 and 1.40191, and the
-# upper bounds 1.40457588, 1.40455742, 1.40455741 and 1.40455641
-RETIRED = ["1.4018", "1.401700322371", "1.40191", "1.40457588", "1.40455742", "1.40455741", "1.40455641"]
+# older bounds of this repository: the lower bounds 1.4018 (a design target), 1.401700322371, 1.40191 and
+# 1.4019109461, and the upper bounds 1.40457588, 1.40455742, 1.40455741 and 1.40455641
+RETIRED = ["1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40457588", "1.40455742", "1.40455741",
+           "1.40455641"]
 
 MAIN_BOUNDS = re.compile(
     r"theorem\s+main_bounds\s*:\s*"

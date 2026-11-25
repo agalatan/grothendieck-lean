@@ -19,7 +19,7 @@ Archived upper variants have separate preserved inventories under
 ## Lower bound
 
 Every native fact of the lower bound is one sequential exact computation; most of them sit in modules of their own, so
-that Lake checks them in separate processes. All of them are in the axiom closure of `sharp_lower_endpoint` and `main_bounds`,
+that Lake checks them in separate processes. All of them are in the axiom closure of `shared_gate_endpoint` and `main_bounds`,
 which `scratch/Axioms.lean` reports. Below, `KK` is the index of a cap row in `rowData` (`00`–`13`), `SS = KK + 1` the
 number of its Stein row (`01`–`14`), `i` a node of its cap table and `J` a block of consecutive nodes or pieces.
 

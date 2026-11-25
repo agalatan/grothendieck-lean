@@ -29,9 +29,9 @@ these are theorems. The node caps are the remaining finite information:
 * `TailNodeCaps ν` (`Grothe/LowerAnalytic/RowGaussian.lean`): for every row `k` of `rowData` and every node `(s, c)` of its
   cap table, `Ψ_k(s) − capPad ≤ c`, with `capPad = 10⁻¹¹`;
 * `tailNodeCaps_cert : TailNodeCaps (nuHat (47/2000))` (`Grothe/LowerAnalytic/CapNodes.lean`) proves it for the 14 rows;
-* `sharp_lower_endpoint` (`Grothe/MainResult.lean`), from which `main_bounds` takes its lower bound, is
-  `sharpEndpoint_le_of_tailNodeCaps tailNodeCaps_cert`, applied with the Grothendieck bound of the upper proof. The
-  hypothesis enters through `sharp_lower_bound_of_tailNodeCaps`, `witnessCap_of_profile_upper` and the shared reduction
+* `shared_gate_endpoint` (`Grothe/MainResult.lean`), from which `main_bounds` takes its lower bound, is
+  `sharedGateEndpoint_le_of_tailNodeCaps tailNodeCaps_cert`, applied with the Grothendieck bound of the upper proof. The
+  hypothesis enters through `sharedGate_lower_of_tailNodeCaps`, `witnessCap_of_profile_upper` and the shared reduction
   `reductionHyp_of_nodeCaps`.
 
 The mass row uses the explicit quadratic and affine branches of its potential. Lean checks the spectral
