@@ -19,7 +19,7 @@ numerical (N)**, apart from the **P** or **C** parts of `STATUS.md` rows 1.6, 1.
 | `README.md` | this file: notation, the state in brief, reading order |
 | [`STATUS.md`](STATUS.md) | **the ledger**: every statement with its scope, status, author and source |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository (logs, numerical archives, downloaded sources), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, the attack plan of 25 November with its six problem statements, and the design computation of 25 November with the assembly theorem) |
+| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, the attack plan of 25 November with its six problem statements, the design computation of 25 November with the assembly theorem, and the note of 25 November on the middle range of t) |
 | `code/` | the scripts behind them and the small result files the ledger cites |
 
 **Living documents.** `STATUS.md` is edited in place by every PR that changes the state of knowledge; copies under
