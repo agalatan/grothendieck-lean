@@ -1,3 +1,4 @@
+import Grothe.Lower.Cert.WeightedTight
 import Grothe.LowerAnalytic.WeightedSchurRows
 
 set_option warningAsError true
@@ -17,12 +18,6 @@ namespace Grothe.Lower.WeightedTight
 
 open LowerAnalytic
 open SharedGate.WeightedSchur (discount discountQ discount_rat discount_chord)
-
-def cap : ℚ := 176590771 / 250000000
-
-def endpoint : ℚ := 1 / ((1 - 47 / 2000) * cap + 47 / 2000)
-
-theorem endpoint_eq : endpoint = 500000000000 / 356631775763 := by decide +kernel
 
 private structure Segment where
   base : EnvCell

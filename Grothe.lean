@@ -31,6 +31,7 @@ import Grothe.Lower.Cert.Row14
 import Grothe.Lower.Cert.Rows
 import Grothe.Lower.Cert.SharedGate
 import Grothe.Lower.Cert.SharpEnvelope
+import Grothe.Lower.Cert.WeightedTight
 import Grothe.Lower.Cuts
 import Grothe.Lower.Envelope
 import Grothe.Lower.EnvelopeData
