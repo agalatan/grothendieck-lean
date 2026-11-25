@@ -81,6 +81,13 @@ CONSTANT_LE = re.compile(
     r"^[ \t]*theorem\s+constant_le\s*:\s*Statement\.complexGrothendieckConstant\s*≤\s*" + RATIONAL + r"\s*:=",
     re.MULTILINE,
 )
+# the first token of a line that begins a new command, whatever its indentation
+NEXT_COMMAND = re.compile(
+    r"^[ \t]*(?:@\[|#|(?:theorem|lemma|def|abbrev|instance|example|structure|inductive|class|axiom|opaque|end|"
+    r"namespace|section|open|private|protected|noncomputable|unsafe|partial|attribute|variable|universe|"
+    r"set_option|macro|syntax|notation|elab|initialize|export|mutual)\b)",
+    re.MULTILINE,
+)
 EXACT_LOWER = re.compile(r"^[ \t]*theorem\s+endpoint_eq\s*:\s*endpoint\s*=\s*(\d+)\s*/\s*(\d+)\s*:=", re.MULTILINE)
 
 
@@ -159,13 +166,14 @@ def endpoint_file(root: Path):
     """The module (relative path) of the lower endpoint that main_bounds rounds, or None if it is not recognised.
 
     The rounding lemma is looked for in the proof of main_bounds only: from the `:=` of its statement to the next
-    line that starts in the first column (the next declaration or `end`), comments removed."""
+    line that begins a command (a declaration, `end`, `namespace`, ..., at any indentation), comments removed. A
+    proof line that itself begins with such a keyword ends the search early, which can only refuse."""
     main = lean_code(root / "Grothe/MainResult.lean")
     m = MAIN_BOUNDS.search(main)
     if not m:
         return None
     rest = main[m.end():]
-    stop = re.search(r"^\S", rest, re.MULTILINE)
+    stop = NEXT_COMMAND.search(rest)
     names = set(ROUNDING_LEMMA.findall(rest[:stop.start()] if stop else rest))
     return f"Grothe/Lower/Cert/{names.pop()}.lean" if len(names) == 1 else None
 

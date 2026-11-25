@@ -304,6 +304,22 @@ class CheckConstants(unittest.TestCase):
         _, problems = self.run_check(main=below)
         self.assertEqual(problems, [])
 
+    def test_rounding_lemma_only_in_an_indented_following_theorem_is_refused(self):
+        indented = "".join("  " + line if line.strip() else line for line in MAIN.splitlines(keepends=True))
+        gone = indented.replace("Grothe.Lower.SharpEnvelope.rounded_lt", "sorry_placeholder")
+        self.assertNotEqual(gone, indented)
+        after = ("namespace N\n" + gone
+                 + "\n  theorem other : True := by\n    have := Grothe.Lower.SharpEnvelope.rounded_lt\n    trivial\nend N\n")
+        _, problems = self.run_check(main=after)
+        self.assertEqual(len(problems), 1)
+        self.assertIn("must use exactly one rounding lemma", problems[0])
+
+    def test_proof_starting_on_the_statement_line_or_the_next_is_read(self):
+        for sep in (":=by", ":=\nby", ":= by"):
+            main = MAIN.replace(":= by", sep, 1)
+            _, problems = self.run_check(main=main)
+            self.assertEqual(problems, [], sep)
+
     def test_unrecognised_statement(self):
         with self.assertRaises(ValueError):
             self.run_check(main="theorem main_bounds : True := trivial\n")
