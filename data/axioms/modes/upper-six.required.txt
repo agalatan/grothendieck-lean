@@ -1,7 +1,9 @@
 Grothe.UpperSix.bound
 Grothe.UpperSix.bound_exact
+Grothe.UpperSix.bound_phase
 Grothe.UpperSix.constant_le
 Grothe.UpperSix.constant_le_exact
+Grothe.UpperSix.constant_le_phase
 Grothe.UpperSix.constant_lt_inv_gammaDagger
 Haagerup.inv_gammaDagger_gt
 Haagerup.isBound_cert

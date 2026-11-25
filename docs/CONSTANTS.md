@@ -2,18 +2,19 @@
 
 This page states every bound on the complex Grothendieck constant $K = K_G^{\mathbb C}$ that this repository
 proves, exactly as Lean states it, and explains the other numbers that appear in the sources and documents.
-`scripts/check_constants.py` reads both endpoints of `main_bounds`, verifies the upward rounding in `main_bounds_refined`, verifies the strict downward rounding of both lower refinements, and checks the values quoted in the technical references.
+`scripts/check_constants.py` reads the two endpoints of `main_bounds`. It checks strict downward rounding in `lower_bound_sharp` and `lower_bound_shared_gate`, upward rounding in `main_bounds_refined` and `main_bounds_phase`, and agreement with the technical references.
 
 ## The current bounds
 
-$$1.40191478 < K \le 1.40455641 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.40191478 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
 | shared-gate lower bound (strict) | `1.40191478` | `140191478 / 100000000` | `Grothe.Statement.lower_bound_shared_gate` | `Grothe/MainResult.lean` |
 | sharp scalar lower bound (strict) | `1.4019109461` | `14019109461 / 10000000000` | `Grothe.Statement.lower_bound_sharp` | `Grothe/MainResult.lean` |
 | earlier lower bound (strict) | `1.40191` | `140191 / 100000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
-| root upper bound, rounded | `1.40455641` | `140455641 / 100000000` | `Grothe.Statement.main_bounds_refined`, second part | `Grothe/MainResult.lean` |
+| root upper bound, rounded | `1.404556407` | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds_phase`, second part | `Grothe/MainResult.lean` |
+| previous root upper bound | `1.40455641` | `140455641 / 100000000` | `Grothe.Statement.main_bounds_refined`, second part | `Grothe/MainResult.lean` |
 | article upper bound (weak, $\le$) | `1.40455741` | `140455741 / 100000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le`; `Grothe.UpperSix.bound` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -34,20 +35,25 @@ $\lvert\sum a_{ij}\langle x_i,y_j\rangle\rvert$ over unit vectors of a complex H
 (`scalarOpt`, `vectorOpt` in `Grothe/Statement.lean`). A number $K$ is a *Grothendieck bound* (`IsBound K`) if
 $V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds.
 
-- Upper bound: `Grothe.UpperSix.bound : IsBound (140455741 / 100000000)`. For every finite complex matrix,
-  $V(A) \le 1.40455741\,C(A)$.
+- For every finite complex matrix, `Grothe.UpperSix.bound_phase` gives $V(A)\le [10^{27}/711968558203721328194311213]\,C(A)$.
 - Lower bound: `lower_target : LowerAbove (140191 / 100000)`. Every Grothendieck bound is above $1.40191$; for every
   $K \le 1.40191$ some matrix has $V(A) > K\,C(A)$.
 
 ### Stronger root certificate
 
-The root theorem `Grothe.UpperSix.constant_le_exact` gives
-$K\le 10^{27}/711968557929438692542239077 = 1.404556407530439478\ldots$.
-Its finite-matrix form is `Grothe.UpperSix.bound_exact`. Rounding upward gives
-$1.40191 < K \le 1.40455641$ in `Grothe.Statement.main_bounds_refined`.
-The six weights are those of the article. The first channel uses a degree-20 polynomial
-and each tail budget deducts the energy forced by its linear coefficient. The exact head
-cap is $4481751845/10^{15}$ and the weighted tail cost is $42740716307457760923/10^{27}$.
+The six weights come from the article. The first channel uses a degree-20 polynomial and each
+Hardy budget deducts the energy carried by the linear coefficient. The five cell channels
+enclose coefficients 0 through 250. The phase channel encloses coefficients 0 through 320
+using exact Haagerup moments. The head cap is $4481751845/10^{15}$ and the weighted tail
+cost is $42466433671805688787/10^{27}$. The tails begin at indices 251 and 321 respectively.
+Thus `Grothe.UpperSix.constant_le_phase` gives
+$K\le 10^{27}/711968558203721328194311213=1.404556406989340536\ldots$.
+The two-sided theorem `Grothe.Statement.main_bounds_phase` rounds this up to $1.404556407$.
+
+At a common cutoff of 251 the weighted tail cost was $42740716307457760923/10^{27}$.
+The corresponding exact bound $10^{27}/711968557929438692542239077$ is available as
+`Grothe.UpperSix.constant_le_exact`. Its rounded form is $1.40455641$ in
+`Grothe.Statement.main_bounds_refined`.
 
 ## Haagerup's value
 

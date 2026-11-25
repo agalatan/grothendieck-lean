@@ -241,6 +241,7 @@ import Grothe
 #print axioms Grothe.Statement.lower_target
 #print axioms Grothe.Statement.lt_constant_of_lowerAbove
 #print axioms Grothe.Statement.main_bounds
+#print axioms Grothe.Statement.main_bounds_phase
 #print axioms Grothe.Statement.main_bounds_refined
 #print axioms Grothe.Statement.sharedGateEndpoint_le_of_tailNodeCaps
 #print axioms Grothe.Statement.shared_gate_endpoint
@@ -2293,8 +2294,10 @@ import Grothe
 #print axioms Grothe.UpperQuad.unnormalise_represents
 #print axioms Grothe.UpperSix.bound
 #print axioms Grothe.UpperSix.bound_exact
+#print axioms Grothe.UpperSix.bound_phase
 #print axioms Grothe.UpperSix.constant_le
 #print axioms Grothe.UpperSix.constant_le_exact
+#print axioms Grothe.UpperSix.constant_le_phase
 #print axioms Grothe.UpperSix.constant_lt_inv_gammaDagger
 #print axioms Grothe.haagerup_dominated
 #print axioms Grothe.hardy_budget_after_linear
