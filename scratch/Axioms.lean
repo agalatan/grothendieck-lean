@@ -38,6 +38,12 @@ import Grothe
 #print axioms Grothe.Lower.SharpEnvelope.endpoint_eq
 #print axioms Grothe.Lower.SharpEnvelope.exact_scalar_cap
 #print axioms Grothe.Lower.SharpEnvelope.scalar_contact
+#print axioms Grothe.Lower.SparseEnvelope.endpoint_eq
+#print axioms Grothe.Lower.SparseEnvelope.profile_bound
+#print axioms Grothe.Lower.SparseEnvelope.rounded_lt
+#print axioms Grothe.Lower.SparseOuter.actual_deductions
+#print axioms Grothe.Lower.SparseOuter.cap6
+#print axioms Grothe.Lower.SparseOuter.cap7
 #print axioms Grothe.Lower.SteinCut.integral_cutG_dilate
 #print axioms Grothe.Lower.affineEnvelope_bound
 #print axioms Grothe.Lower.budget_of_bud
@@ -125,6 +131,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
+#print axioms Grothe.LowerAnalytic.SparseStein.actual_deductions
+#print axioms Grothe.LowerAnalytic.SparseStein.lower_of_nodeCaps
 #print axioms Grothe.LowerAnalytic.TintNu_grid
 #print axioms Grothe.LowerAnalytic.VOf_eq
 #print axioms Grothe.LowerAnalytic.VOf_eq_hat
@@ -271,11 +279,11 @@ import Grothe
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
 #print axioms Grothe.Statement.coupledSteinEndpoint_le_of_tailNodeCaps
-#print axioms Grothe.Statement.coupled_stein_endpoint
 #print axioms Grothe.Statement.isClosed_bounds
 #print axioms Grothe.Statement.le_constant_of_lowerAbove
 #print axioms Grothe.Statement.lt_constant_of_lowerAbove
 #print axioms Grothe.Statement.main_bounds
+#print axioms Grothe.Statement.sparse_stein_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upperBelow_of_constant_lt
 #print axioms Grothe.Statement.upper_below_tight
