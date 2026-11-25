@@ -18,6 +18,12 @@ it, lower endpoint of H_0 minus upper endpoints of |H_k|. Channels 0–5 are the
 the eighteen's cell channel (number 21, `tiger_fw_18`), whose series is h_k = Σ_n μ_n [X^{k−n}] R(X)^{2n+1} with the
 signed grades μ_n of its pair of responses and committed R = [a₀, −(1 − a₀)], a₀ = 91942572547021/10¹⁴.
 
+## Alternating sums across dimensions
+
+| # | Statement | Status and source |
+|---|---|---|
+| A.1 | The supremum of the alternating sum over all dimensions of common charge-one disk channels is **1**. Every finite complex dimension satisfies $W_n^*\le1-9/(128\,4^n n!)$. A complex adaptation of the Xie–Zhang quadratic phases has a finite example with $W>0.96$. Every transfer slope satisfies $D(H)\le H_0\le\pi/4$ for any convex mixture, so these alternating sums cannot be approached by transfer slopes. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/654#issuecomment-7152971260). [Construction, ordered limits and nonattainment](sources/high-dimensional-alternation-codex-a7c4/PROOF.md), [finite witness arithmetic](code/high-dimensional-alternation-codex-a7c4/verify.py). |
+
 ## 1. Validation of the coefficient vectors
 
 | # | statement | label | author | checker | where |
@@ -87,5 +93,5 @@ for the statements about existing code), not a plan that was tried.
 
 | # | Hypothesis on a convex mixture of common-map channels | Consequence | Evidence |
 |---|---|---|---|
-| 7.1 | $\lvert W(H)\rvert\to1$ | 7.2 | $H_0\to0$ and $D(H)\to-1$ uniformly over dimensions and polynomial preprocessors. At $\lvert W(H)\rvert\ge0.99$ the slope is below $-0.01$. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [Laguerre argument](sources/rounding-endpoint-rigidity-codex-a7c4/ALTERNATION.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
+| 7.1 | $\lvert W(H)\rvert\to1$ | $H_0\to0$ and $D(H)\to-1$ uniformly over dimensions and polynomial preprocessors. At $\lvert W(H)\rvert\ge0.99$ the slope is below $-0.01$. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [Laguerre argument](sources/rounding-endpoint-rigidity-codex-a7c4/ALTERNATION.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
 | 7.2 | $H_0\to\pi/4$ | The complete coefficient sequence converges in $\ell^1$ to the phase kernel, and $D(H)\to\pi/2-1$. At $H_0\ge0.783$ the slope is below $0.70$. The exponent $2/3$ in the endpoint-correlation estimate is sharp. | **P + C**, codex-a7c4, [reviewed by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/659#issuecomment-7152972583). [First-chaos argument](sources/rounding-endpoint-rigidity-codex-a7c4/FIRST_COEFFICIENT.md), [rational thresholds](code/rounding-endpoint-rigidity-codex-a7c4/verify.py). |
