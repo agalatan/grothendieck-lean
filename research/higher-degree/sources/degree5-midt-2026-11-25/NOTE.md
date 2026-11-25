@@ -10,6 +10,11 @@ Labels as in [`research/README.md`](../../../README.md): **P** proved on paper, 
 **N** floating point, **open**. Everything here is by one author and unreviewed ("author only"). A search bounds a
 supremum from below only.
 
+**Rounding.** Every range "t ≤ …" is rounded downward and every radius or bound that is *required* is rounded
+downward, so that the statement holds at the number printed; `verify_lift_bound.py` checks each of them in exact
+arithmetic together with its failure one step (10⁻⁴) further. Lower bounds are rounded downward, upper bounds
+upward. Values labelled **N** are floating point and rounded to nearest.
+
 **The problem.** T = P₁,₀ − ε·P₂,₁ + η·P₃,₂ with ε = 39/50, η = 779/10000. For unimodular f, g put h = (f + g)/2,
 k = (f − g)/2, t = ‖P₁,₀h‖, V = Re⟨f, Tg⟩. Wanted: V ≤ 500/701 = 0.7132668 for t between the end of the direct bound
 (0.25282, ledger 4.18c) and the first tuned row (t_s = 0.649, ledger 4.44), with no sector hypothesis.
@@ -20,10 +25,10 @@ k = (f − g)/2, t = ‖P₁,₀h‖, V = Re⟨f, Tg⟩. Wanted: V ≤ 500/701 =
 |---|---|---|
 | R1 | **Theorem A.** For every unimodular pair in every dimension, (2/π)·‖P₁,₀h‖² + ‖P₂,₁k‖² ≤ ρ₀², for every ρ₀ that bounds the radius of the cubic chaos (§2) | **P**, author only |
 | R2 | **V < 500/701 for all t ≤ 0.3172** from Theorem A and ρ₀ = 2287/2500 alone, and **for all t ≤ 0.3321** with the Lean mass fact added (0.3197 and 0.3343 with ρ₀ = 4571/5000) (§2.3) | **P + C**, author only; the radius 2287/2500 is **P + C**, reviewed; the mass fact is a Lean theorem |
-| R3 | The coefficient 2/π improves to c₀² with c₀ = 0.862 by an elliptic, non-linear lift; with c₀ = 43/50 the ranges become t ≤ 0.3445 and t ≤ 0.3576 (§3) | construction **P**, author only; the constant **N** |
-| R4 | The statement that would carry the method further is a **symmetrised spiked radius** of the cubic chaos, ρ_s: ‖P₁,₀h‖² + ‖P₂,₁k‖² ≤ ρ_s² for every pair. ρ_s ≤ 2287/2500 would give t ≤ 0.4662, ρ_s = √π/2 gives t ≤ 0.6177. Nothing found exceeds √π/2 (§4) | reductions **P**, author only; evidence **N**; the bound **open** (problem P7) |
-| R5 | A row with the quintic terms replaced by an identity tail (§5) has diffuse value below the target by 0.080, 0.048, 0.029, 0.019, 0.011 at t = 0.2528, 0.45, 0.55, 0.60, 0.649; in the diffuse one-spike model every sector depending on z₁ lowers it. It is the row of a cubic identity-tail game, the kind certified in Lean with its gate | inequality **P**, author only; values **N** |
-| R6 | What does not work (§6): an unsymmetrised two-chaos radius (it is at least 0.93999, 0.9460 found; the application needs 0.9407 at t = 0.2528); bounds that forget the phase (same number); the Lean rows of the cubic witness as black boxes (they miss the target by 1.6·10⁻³ to 9.2·10⁻³ on [0.35, 0.65]); the Gaussian buffer on top of the lift (no gain) | **P** / **N** as stated there |
+| R3 | The coefficient 2/π improves to c₀² with c₀ = 0.862 by an elliptic, non-linear lift; if c₀ ≥ 43/50 the ranges become t ≤ 0.3445 and t ≤ 0.3576 (§3) | construction **P**, author only; the constant **N** here. A certified coefficient (431/500 at the same a = 179/200, range t ≤ 0.35859076) is the subject of codex-a7c4's PR #660, its ledger row 4.18e; it is not re-proved here |
+| R4 | The statement that would carry the method further is a **symmetrised spiked radius** of the cubic chaos, ρ_s: ‖P₁,₀h‖² + ‖P₂,₁k‖² ≤ ρ_s² for every pair. ρ_s ≤ 2287/2500 would give t ≤ 0.4661, ρ_s = √π/2 would give t ≤ 0.6176. No ratio found in the searches exceeds √π/2 (§4) | reductions **P**, author only; evidence **N**; the bound **open** (problem P7) |
+| R5 | A row with the quintic terms replaced by an identity tail (§5) has diffuse value below the target by 0.080, 0.048, 0.029, 0.019, 0.011 at t = 0.2528, 0.45, 0.55, 0.60, 0.649; in the diffuse one-spike model no search started above it and every sector direction tested lowers it. It is the row of a cubic identity-tail game, the kind certified in Lean with its gate | inequality **P**, author only; values **N** |
+| R6 | What does not work (§6): an unsymmetrised two-chaos radius (it is at least √(9π/32) > 0.93998, 0.9460 found; the application needs a radius of at most 0.94071 already at t = 0.2528); bounds that forget the phase (same number); the Lean rows of the cubic witness as black boxes (they miss the target by 1.6·10⁻³ to 9.2·10⁻³ on [0.35, 0.65]); the Gaussian buffer on top of the lift (no gain) | **P** / **N** as stated there |
 
 The range (0.3321, 0.649) is still open. §7 has the tests against the pairs of ledger 4.40, §8 the recommendation.
 
@@ -46,7 +51,7 @@ The last four terms are ≤ 0. Dropping them and using K ≥ A:
 
 **What stops the direct bound of ledger 4.18 at t = 0.2528.** It bounds εA − ηK by a constant (ερ₀² + η²/(πε) − η −
 9/10000) that does not depend on t: its only use of t is the coefficient 1 − η of t² in (1.3). The radius ρ₀ is
-not the lossy input (with ρ₀ = √π/2 the same bound ends at 0.3263). What is lost is the trade-off between the
+not the lossy input (with ρ₀ = √π/2 the formula of ledger 4.18(a) holds for t ≤ 0.3263 and fails at 0.3264). What is lost is the trade-off between the
 visible mass and the cubic energy of k: for the driver pairs t² + A = π/4 exactly (§4.2), so A falls by t² while
 the direct bound keeps A at ρ₀². A trade-off A ≤ r² − c²t² turns the coefficient 1 − η into 1 − η − c²(ε − η):
 0.9221 for the direct bound, 0.4751 with c² = 2/π (Theorem A), 0.2200 with c² = 1 (§4).
@@ -105,7 +110,7 @@ For every unimodular pair in every dimension m > 0 (`Grothe.LowerAnalytic.twice_
 
     ε̂·A − c·K ≤ S,       ε̂ = 25/31,  c = 2·(47/1953) + 1/2 = 2141/3906,  S = massS = 0.165606335…           (2.3)
 
-It is stronger than K ≥ A when A ≥ S/(ε̂ − c) = 0.6411.
+It is stronger than K ≥ A when A ≥ S/(ε̂ − c) = 0.64108…
 
 ### 2.3 The range of t (P + C, author only)
 
@@ -129,14 +134,14 @@ series; the upper bound of each right-hand side is compared with 500/701):
 | (B) | 4571/5000 | 0.498501·t² + 0.657541 | t ≤ 0.3343 | 1.5·10⁻⁵ | 0.3344 |
 
 "Fails at": the lower bound of the right-hand side exceeds 500/701 there (negative control). Both bounds hold for
-every pair; (B) is the smaller one where ρ₀² − (2/π)t² ≥ 0.6411, which includes its whole range (checked). The
+every pair; (B) is the smaller one where ρ₀² − (2/π)t² ≥ S/(ε̂ − c), which includes its whole range (checked). The
 inputs of (A) are the radius alone; (B) adds one Lean theorem. Neither uses a sector hypothesis, an interval cover or libm. Together with ledger 4.18c
 (t ≤ 0.25282) this proves V < 500/701 for all t ≤ 0.3321 with reviewed inputs, pending review of this note.
 
-With the conjectured sharp radius √π/2 the same formulas reach t ≤ 0.4203 (A) and 0.4231 (B): the method is
-limited by the coefficient 2/π, not by the radius.
+If the radius were √π/2 (a conjecture), the same formulas would hold for t ≤ 0.4203 (A) and t ≤ 0.4230 (B) and fail
+10⁻⁴ further (exact, same script): the method is limited by the coefficient 2/π, not by the radius.
 
-## 3. An elliptic lift (construction P, author only; constant N)
+## 3. An elliptic lift (construction P, author only; constant N here, certified separately in PR #660)
 
 The linear lift F = s·h + k is the only one that is linear in (h, k) (a unimodular a(y)h + b(y)k for all admissible
 (h, k) forces a = ±b, |a| = 1). A non-linear one does better.
@@ -163,15 +168,23 @@ At a = 1 this is Theorem A: r(λ) increases from √(2/π) to 1. At a = 1/√2 (
 |---|---|---|---|---|---|---|
 | inf r | 0.85959 | 0.86172 | **0.86204** (λ = 0.56) | 0.86180 | 0.86091 | 0.85936 (λ = 0) |
 
-With c₀ = 43/50 (a = 179/200) the bounds (A) and (B) of §2.3 with c₀² in place of 2/π give t ≤ 0.3445 and
-t ≤ 0.3576 at ρ₀ = 2287/2500 (0.3473 and 0.3600 at 4571/5000; floating point, last block of
-`verify_lift_bound.log`).
+*If* c₀(179/200) ≥ 43/50 (**N** here), the bounds (A) and (B) of §2.3 with (43/50)² in place of 2/π hold for t ≤ 0.3445
+and t ≤ 0.3576 at ρ₀ = 2287/2500, and for t ≤ 0.3472 and t ≤ 0.3600 at 4571/5000 (the implication is exact:
+`verify_lift_bound.py`, each with its failure 10⁻⁴ further; the hypothesis is not proved in this note).
 
-**What is not done.** (i) A certified lower bound of r(λ) over λ ∈ [0, ∞) at a = 179/200: a one-parameter family
-of two-dimensional Gaussian integrals, smooth in polar coordinates centred at −iλ, with limit a at infinity.
-(ii) The passage from the Gaussian M to elements of H₁,₁ in finitely many variables (κ and c then depend on N; a
-constant below c₀ absorbs this). Both are routine; they are sub-problem (b) of P7. At k = 0 the coefficient is
-E|M|, at most √π/2 for a Gaussian M, so with Gaussian M the method ends below c₀² = π/4, that is t ≤ 0.371 with (B).
+**The certified constant is elsewhere.** codex-a7c4 (review of this note, PR #658) observed that the scalar
+*support inequality* E|M + iλ| ≥ √(c² + λ²) for every real λ suffices: with A(λ) = E|M + iλ| and κ = A′(λ), convex
+duality gives A(λ) − λκ ≥ c·√(1 − κ²), which is c(λ) ≥ c·√(1 − κ(λ)²) in the notation above. It reports a rational
+certificate of this inequality with c = 431/500 at a = 179/200 and the range t ≤ 0.35859076 at ρ₀ = 2287/2500 with
+the Lean mass fact; proof, replay and ledger row (4.18e) are in its PR #660, not on master when this was written.
+This section records the construction and the floating-point survey only; the certified statement is that row.
+
+**What is not done here.** (i) A certified lower bound of r(λ) over λ ∈ [0, ∞) at a = 179/200. (ii) The passage
+from the Gaussian M to elements of H₁,₁ in finitely many variables (pass the radius inequality for E|ℓζM_N + G| to
+its Gaussian limit at fixed (ℓ, ζ, G), by joint convergence and uniform integrability). Both were sub-problem (b)
+of P7 and are what PR #660 addresses. At k = 0 the coefficient is E|M|, at most √π/2 for a Gaussian M, so with
+Gaussian M the coefficient c₀² stays below π/4; even with c₀² = π/4, (B) at ρ₀ = 2287/2500 would hold only for
+t ≤ 0.3710 (it fails at 0.3711).
 
 ## 4. The symmetrised spiked radius
 
@@ -187,14 +200,26 @@ For ℓ ≥ 0 and G ∈ H₂,₁(ℂⁿ) (G may depend on z₁):
 
     ρ_s ≤ r₁  ⟹  V ≤ (1 − ε)t² + η + (ε − η)r₁².                                                          (4.1)
 
-| r₁ | 0.9407 | 0.9363 | 0.9329 | 0.9246 | 2287/2500 | 0.9092 | 0.9001 | 0.8900 | √π/2 |
-|---|---|---|---|---|---|---|---|---|---|
-| (4.1) < 500/701 for t ≤ | 0.2528 | 0.300 | 0.3321 | 0.400 | **0.4662** | 0.500 | 0.550 | 0.600 | **0.6177** |
+The right-hand side of (4.1) increases in t and in r₁. Radius that suffices at a given t (rounded downward; each
+entry passes at the t of its column and fails with r₁ + 10⁻⁴; exact, `verify_lift_bound.py`):
+
+| (4.1) < 500/701 on [0, t] for t = | 0.2528 | 0.3000 | 0.3321 | 0.4000 | 0.5000 | 0.5500 | 0.6000 |
+|---|---|---|---|---|---|---|---|
+| if ρ_s ≤ r₁ = | 0.9407 | 0.9363 | 0.9329 | 0.9245 | 0.9091 | 0.9000 | 0.8900 |
+
+Range for the two radii of interest (rounded downward; each fails 10⁻⁴ further):
+
+| r₁ | 2287/2500 | √π/2 |
+|---|---|---|
+| (4.1) < 500/701 for t ≤ | **0.4661** (to eight decimals 0.46616437; it fails at 0.4662) | **0.6176** (it fails at 0.6177) |
 
 ### 4.2 What is known
 
-- √π/2 ≤ ρ_s, with **equality along a whole family**: for f = ph(z₁ + cW), g = ph(z₁ − cW) (W a diffuse cubic
-  Gaussian independent of z₁), t = (√π/2)/√(1 + c²) and ‖Qk‖ = (√π/2)c/√(1 + c²), so t² + A = π/4 for every c (**P**).
+- √π/2 ≤ ρ_s, with **equality along a whole limiting family**: for f = ph(z₁ + cW), g = ph(z₁ − cW), where W is the
+  *diffuse limiting Gaussian* of the cubic chaos (a standard complex Gaussian independent of z₁, the limit in law
+  of N^{−1/2}Σ_{j ≤ N} e₂₁(y_j); it is not itself an element of H₂,₁ in finitely many variables), t = (√π/2)/√(1 + c²)
+  and ‖Qk‖ = (√π/2)c/√(1 + c²), so t² + A = π/4 for every c in the limit (**P**). For finite N the pairs
+  ph(z₁ ± c·N^{−1/2}Σe₂₁(y_j)) approach these values; the value π/4 is a limit, not attained by a polynomial G.
 - φ(ℓ, G) ≤ ρ\*√(ℓ² + ‖G‖²) when G does not depend on z₁ (**P**: z₁ may then be replaced by a normalised sum of
   cubics in fresh variables, as in the buffer argument of ledger 4.18).
 - φ(ℓ, G) ≤ ρ\*√((π/2)ℓ² + ‖G‖²) for every G (Theorem A), and with 1/c₀² = 1.346 in place of π/2 = 1.571 (§3, **N**).
@@ -225,7 +250,8 @@ H₂,₁(ℂ²), c_i complex. Largest ratios found (re-evaluated on a 48 × 48 �
 (√π/2 = 0.8862269; log `spiked_radius_junta.log`. Without a bath the grid error is of the order of 10⁻², as the
 check line of the log shows.)
 
-**Reading.** In both families the supremum found is the diffuse value. The families contain the sectors that make
+**Reading.** In both families the largest value found is the diffuse value (a search from finitely many starts
+gives a lower bound of the supremum, not the supremum). The families contain the sectors that make
 the sector inequality K₅ fail in form at small t (the odd sector z₁·H₁,₁ and the A/B sectors), non-Gaussian cubics
 in z₁ and one remote coordinate, and the transverse cubic of ledger 4.40. They do not contain cubics in three or
 more coordinates without a bath, or the clustered cubics of ledger 4.28–4.30 (those are remote, where the
@@ -292,8 +318,10 @@ at a time (ten directions, amplitudes 0.05 to 0.4, σ fixed and re-optimised). E
 largest is −1.4·10⁻⁵, for the transverse sector i·z₁·(real H₁,₁) at amplitude 0.05, which is marginal to second
 order (§4.2) and costs at fourth order (log `tail_row_directions.log`).
 
-So in this model the supremum in (5.1) is its diffuse value: the sectors that depend on z₁ are pure cost *at the
-diffuse optimum*, although the same sectors have second-variation ratios above 1 relative to the pair's own q at
+So in this model the largest value of the bracket in (5.1) *observed* is its diffuse value, and in each direction
+and amplitude tested the sectors that depend on z₁ lower it. Two to three starts and ten directions at four
+amplitudes do not determine the supremum; the evidence is that the sectors are pure cost *near the diffuse
+optimum*, although the same sectors have second-variation ratios above 1 relative to the pair's own q at
 q = 0 (ledger 4.16, 4.40). This is the cap-relative statement that ledger 4.40 leaves open, in the form: bound
 N(ℓ, β) by its diffuse value plus an allowance, the allowance being the room of the table minus the loss of the law
 layer.
@@ -320,11 +348,12 @@ Ledger 4.40 (codex-a7c4). Nothing in §§2–5 uses such a comparison.
 ### 6.2 An unsymmetrised radius, and bounds that forget the phase (P; one number N)
 
 F = (P₁,₀ + P₂,₁)(z₁/|z₁|) = (√π/2)·z₁(1 − (|z₁|² − 2)/4) has E|F| ≥ ‖F‖₂² and ‖F‖₂² = π/4 + π/32, so
-sup E|ℓz₁ + G|/√(ℓ² + ‖G‖²) ≥ √(9π/32) = 0.93999 (the ratio of this F is 0.9433, and 0.9460 at the coefficient
-0.345: **N**). The bound φ(ℓ, G) ≤ E√(ℓ²|z₁|² + |G|²) has the value Γ(5/2)/√2 = 0.93999 at ℓ = ‖G‖ for a diffuse
-remote G. (4.1) needs r₁ ≤ 0.9407 at t = 0.2528 and r₁ ≤ 0.93999 at t = 0.2612. So a two-chaos radius without the
-symmetrisation, or any bound through the moduli alone, gives at most t ≤ 0.2612, and with the value 0.9460 nothing
-beyond ledger 4.18c. This is the precise form of "a direct argument needs phase information" (ledger 4.18).
+sup E|ℓz₁ + G|/√(ℓ² + ‖G‖²) ≥ √(9π/32) = 0.939985… > 0.93998 (the ratio of this F is 0.9433, and 0.9460 at the
+coefficient 0.345: **N**). The bound φ(ℓ, G) ≤ E√(ℓ²|z₁|² + |G|²) has the same value Γ(5/2)/√2 = √(9π/32) at
+ℓ = ‖G‖ for a diffuse remote G. (4.1) with r₁² = 9π/32 holds for t ≤ 0.2612 and fails at t = 0.2613 (exact). So a
+two-chaos radius without the symmetrisation, or any bound through the moduli alone, cannot give (4.1) at
+t = 0.2613 or beyond, and with the value 0.9460 (**N**) nothing beyond ledger 4.18c (the radius must be at most
+0.94071 already at t = 0.2528). This is the precise form of "a direct argument needs phase information" (ledger 4.18).
 
 ### 6.3 The Lean rows of the cubic witness as black boxes (P for the inequalities; table N)
 
@@ -345,8 +374,8 @@ Up to t = 0.33 only (ii) acts (this is (B)). Beyond, the existing Lean rows miss
 whole range (full table in `lean_rows_blackbox.log`). They were tuned to pass their own target, with margins
 2.9·10⁻³ to 9.5·10⁻³ at mid t (`../../../identity-tail/sources/stage0d-2026-11-17/PROGRESS.md`), not to be tight,
 and only two of them are tuned inside the range. With the hat tail ν̂′ = η/(2r) = 0.04027 in place of 47/1953 the
-K-term of (i) vanishes: V ≤ r·V̂′ + η + (1 − r − η)t², and the hat bounds needed are 0.6627, 0.6643, 0.6686,
-0.6737, 0.6768 at t = 0.35, 0.4, 0.5, 0.6, 0.65. The diffuse rooms of that game are those of §5.2 divided by r, up
+K-term of (i) vanishes: V ≤ r·V̂′ + η + (1 − r − η)t², and a hat bound of at most 0.6626, 0.6643, 0.6685,
+0.6737, 0.6766 suffices at t = 0.35, 0.4, 0.5, 0.6, 0.65 (rounded downward; exact, `verify_lift_bound.py`). The diffuse rooms of that game are those of §5.2 divided by r, up
 to the difference between the weights ε + η and ε on the h side.
 
 A sharper cap on A as a function of K does not close the gap: the linear program over the proved law class
@@ -363,18 +392,20 @@ improve §2.3. Applying the Lean mass fact to k̃ loses: (E[cm])² ≤ E[c²] an
 ## 7. Tests against the recorded families
 
 - **The pairs of ledger 4.40** (130 coordinates, t ∈ [1/4, 5/12], q = 0, G₃ = i·a·z₁·Q with a = 27/100):
-  A = a²/ε² = 0.1198, so (2/π)t² + A ≤ 0.2303 against ρ₀² = 0.8369 (exact, in `verify_lift_bound.py`), and
-  t² + A ≤ 0.2934 against π/4. For this G, φ(ℓ, G) = (√π/2)·E√(ℓ² + a²Q²) ≤ (√π/2)√(ℓ² + a²) by Jensen: the ratio of
+  A = a²/ε² = 0.1198…, so (2/π)t² + A < 0.2304 against ρ₀² > 0.8368, and t² + A < 0.2935 against π/4 (both exact, in
+  `verify_lift_bound.py`). For this G, φ(ℓ, G) = (√π/2)·E√(ℓ² + a²Q²) ≤ (√π/2)√(ℓ² + a²) by Jensen: the ratio of
   §4 is below √π/2 for every transverse cubic (**P**). (5.1) at this pair is far below its diffuse value (V < 0.252).
   The 49- and 19-coordinate fields of 4.40 are of the same form. So the pairs that defeat the own-q comparison are
   harmless for every statement of this note, with margins 0.3 or more.
-- **Driver pairs** (P3 §7): t² + A = π/4 exactly (§4.2): zero margin for the conjecture ρ_s = √π/2, margin 0.0515
-  in ρ_s² for ρ_s ≤ 2287/2500, and (2/π)t² + A ≤ π/4 − (1 − 2/π)t² for Theorem A.
+- **Driver pairs** (P3 §7): t² + A = π/4 exactly (§4.2): zero margin (in the diffuse limit) for the conjecture ρ_s = √π/2, margin
+  at least 0.0514 in ρ_s² for ρ_s ≤ 2287/2500, and (2/π)t² + A ≤ π/4 − (1 − 2/π)t² for Theorem A.
 - **Low-dimensional optimisation:** §4.3 (ratio) and §5.2 (tail row).
-- **Margins over t ∈ [0.25, 0.65].** (A) and (B) are proved bounds; their margin to 500/701 is 0.0181 and 0.0238
-  at t = 0.25, zero at 0.3172 and 0.3321, and negative beyond ((A) is 0.7415 at t = 0.4). For the conjectured
-  (4.1) with r₁ = √π/2 the margin is 0.0702, 0.0487, 0.0289, 0.0047 at t = 0.25, 0.40, 0.50, 0.60 and zero at
-  0.6177; with r₁ = 2287/2500 it is 0.0341, 0.0126 at t = 0.25, 0.40 and zero at 0.4662. For (5.1) the diffuse
+- **Margins over t ∈ [0.25, 0.65].** (A) and (B) are proved bounds; their margin to 500/701 is at least 0.0181 and
+  0.0238 at t = 0.25, positive up to t = 0.3172 and t = 0.3321 respectively, and negative from 0.3173 and 0.3322 on
+  ((A) exceeds 0.7414 at t = 0.4). For the conjectured (4.1) with r₁ = √π/2 the margin is at least 0.0701, 0.0487,
+  0.0289, 0.0047 at t = 0.25, 0.40, 0.50, 0.60, positive up to 0.6176 and negative at 0.6177; with r₁ = 2287/2500 it
+  is at least 0.0340, 0.0126 at t = 0.25, 0.40, positive up to 0.4661 and negative at 0.4662 (all rounded downward;
+  exact, same script). For (5.1) the diffuse
   margins are in §5.2.
 
 ## 8. Recommendation
@@ -384,8 +415,9 @@ improve §2.3. Applying the Lean mass fact to k̃ loses: (E[cm])² ≤ E[c²] an
    (0.3321, 0.649).
 2. **Next lemma: P7**, the symmetrised spiked radius with the constant of the unspiked radius. It is a statement
    of the same kind as the radius theorem (one functional on H₁,₀ ⊕ H₂,₁, every dimension), it survives every test
-   made here with the diffuse value as supremum, and r₁ = 2287/2500 gives t ≤ 0.4662. Sub-problem (b) of P7
-   (certify c₀ = 43/50) is a finite computation that gives t ≤ 0.3576 at once.
+   made here with the diffuse value as the largest value found, and r₁ = 2287/2500 would give t ≤ 0.4661.
+   Sub-problem (b) of P7 (certify the constant of §3) is addressed by PR #660 (coefficient 431/500, t ≤ 0.35859076);
+   once that row is reviewed it replaces 0.3321 as the end of the hypothesis-free piece.
 3. **Beyond P7's range**: the tail row (5.1) is the right object up to t ≈ 0.55 (diffuse room 0.029 or more), and
    it is a cubic identity-tail row. The proved technique for it is the
    gated reduction of the Lean lower bound. **Next computation:** run the cubic row pipeline of
@@ -393,8 +425,8 @@ improve §2.3. Applying the Lean mass fact to k̃ loses: (E[cm])² ≤ E[c²] an
    t = 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, with the targets of §6.3; the existing rows 0.4 and 0.6 of the other tail
    miss by 2·10⁻³ to 9·10⁻³ when used on the whole range. Part of the miss comes from covering the range with two
    rows (the row 0.4 is 0.006 higher at t = 0.47 than at t = 0.4); the rest has to come from tighter caps.
-4. **The last piece, t from about 0.55 to 0.649,** has diffuse room 0.029 to 0.011 in (5.1) and none in (4.1) beyond
-   0.6177, before any law-layer loss. Either the switch point moves down (tuned rows below 0.649 lose the A/B
+4. **The last piece, t from about 0.55 to 0.649,** has diffuse room 0.029 to 0.011 in (5.1) and none in (4.1) from
+   0.6177 on, before any law-layer loss. Either the switch point moves down (tuned rows below 0.649 lose the A/B
    premise, ledger 4.43), or this piece needs rows with G₅, Stein cuts in the law layer and a gate of degree 5. It
    is the part of H2 for which this note has no route with room to spare.
 
@@ -403,7 +435,7 @@ improve §2.3. Applying the Lean mass fact to k̃ loses: (E[cm])² ≤ E[c²] an
 From the repository root (the exact script needs only the standard library; the others numpy and scipy):
 
 ```sh
-python3 -I -O research/higher-degree/code/degree5-midt/verify_lift_bound.py      # exact: section 2.3, controls
+python3 -I -O research/higher-degree/code/degree5-midt/verify_lift_bound.py      # exact: every stated interval, controls
 python3 research/higher-degree/code/degree5-midt/lift_check_mc.py                # N: the lift on explicit pairs
 python3 research/higher-degree/code/degree5-midt/second_order_checks.py          # N: sections 4.2, 6.2
 python3 research/higher-degree/code/degree5-midt/lean_rows_blackbox.py           # section 6.3

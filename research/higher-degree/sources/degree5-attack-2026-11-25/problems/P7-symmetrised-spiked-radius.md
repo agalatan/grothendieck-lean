@@ -9,7 +9,7 @@ with an explicit constant r₁ < 0.94. Equivalently: for every pair of unimodula
 and k = (f − g)/2, ‖P₁,₀h‖² + ‖P₂,₁k‖² ≤ r₁². The conjectured best constant is √π/2 = 0.8862. For G independent of
 z₁ the bound holds with the radius of the cubic chaos (0.9148 is proved), and for general G it is proved with the
 spike discounted by √(2/π). Each value of r₁ below 0.9329 extends the range of the degree-5 certificate that needs
-no sector hypothesis: r₁ = 0.9148 gives t ≤ 0.466, and r₁ = √π/2 gives t ≤ 0.617.
+no sector hypothesis: r₁ = 0.9148 gives t ≤ 0.4661, and r₁ = √π/2 gives t ≤ 0.6176 (both rounded downward).
 
 Source record (not needed to do the work): `research/higher-degree/sources/degree5-midt-2026-11-25/NOTE.md` §§2–4
 and ledger rows 4.46–4.49 of `research/higher-degree/STATUS.md`; problem P3 of this folder (the range of t it
@@ -59,25 +59,32 @@ the supremum attained at f = ph(ℓz₁ + G), g = ph(ℓz₁ − G) (ph(a) = a/|
   ℓ·Re⟨z₁, h⟩ + Re⟨G, k⟩ ≤ ℓ·‖P₁,₀h‖ + ‖G‖·‖P₂,₁k‖ ≤ √(ℓ² + ‖G‖²)·r₁.)
 - **What the application needs.** For the operator T = P₁,₀ − ε·P₂,₁ + η·P₃,₂ with ε = 39/50, η = 779/10000 and a
   unimodular pair with t = ‖P₁,₀h‖: V = Re⟨f, Tg⟩ ≤ (1 − η)t² + η + (ε − η)‖P₂,₁k‖² (**P**: drop three negative
-  terms and use ‖P₃,₂h‖² ≤ 1 − ‖k‖² − t² and ‖k‖² ≥ ‖P₂,₁k‖²). With (1): V ≤ (1 − ε)t² + η + (ε − η)r₁², which is
-  below the target 500/701 for
+  terms and use ‖P₃,₂h‖² ≤ 1 − ‖k‖² − t² and ‖k‖² ≥ ‖P₂,₁k‖²). With (1): V ≤ (1 − ε)t² + η + (ε − η)r₁², which
+  increases in t and in r₁. It is below the target 500/701 on [0, t] if r₁ is at most (rounded downward; exact
+  arithmetic, each entry fails with r₁ + 10⁻⁴; `research/higher-degree/code/degree5-midt/verify_lift_bound.py`):
 
-  | r₁ | 0.9329 | 0.9246 | 2287/2500 | 0.9092 | 0.9001 | 0.8900 | √π/2 |
-  |---|---|---|---|---|---|---|---|
-  | t ≤ | 0.3321 (already proved otherwise) | 0.400 | 0.4662 | 0.500 | 0.550 | 0.600 | 0.6177 |
+  | t = | 0.3321 (already proved otherwise) | 0.4000 | 0.5000 | 0.5500 | 0.6000 |
+  |---|---|---|---|---|---|
+  | r₁ ≤ | 0.9329 | 0.9245 | 0.9091 | 0.9000 | 0.8900 |
+
+  For r₁ = 2287/2500 it is below the target for t ≤ 0.4661 (to eight decimals 0.46616437; it fails at 0.4662), and
+  for r₁ = √π/2 for t ≤ 0.6176 (it fails at 0.6177).
 
   A bound that depends on the angle, ρ_s(θ) = sup over ℓ = cos θ·s, ‖G‖ = sin θ·s, is equally useful: at visible
   mass t only the angles with tan θ = ‖P₂,₁k‖/t matter.
-- **A weaker version that still helps:** (1) with a coefficient c² ∈ (0.743, 1] on the first term,
-  c²·‖P₁,₀h‖² + ‖P₂,₁k‖² ≤ ρ₀² (§3 item 3 has c² = 2/π).
+- **A weaker version that still helps:** (1) with a coefficient c² ∈ ((431/500)², 1] on the first term,
+  c²·‖P₁,₀h‖² + ‖P₂,₁k‖² ≤ ρ₀² (§3 item 3 has c² = 2/π proved and c² = (431/500)² = 0.743044 as the coefficient
+  treated in PR #660).
 
 ---
 
 ## 3. What is known
 
-1. **ρ_s ≥ √π/2**, with equality in (1) along a whole family (**P**): for f = ph(z₁ + cW), g = ph(z₁ − cW), W the
-   diffuse cubic Gaussian independent of z₁, t = (√π/2)/√(1 + c²) and ‖P₂,₁k‖ = (√π/2)·c/√(1 + c²), so
-   t² + ‖P₂,₁k‖² = π/4 for every c ≥ 0.
+1. **ρ_s ≥ √π/2**, with equality in (1) along a whole limiting family (**P**): for f = ph(z₁ + cW),
+   g = ph(z₁ − cW), where W is the *diffuse limiting Gaussian* of the cubic chaos (a standard complex Gaussian
+   independent of z₁, the limit in law of N^{−1/2}·Σ_{j≤N} e₂₁(y_j) of §1; not an element of H₂,₁ in finitely many
+   variables), t = (√π/2)/√(1 + c²) and ‖P₂,₁k‖ = (√π/2)·c/√(1 + c²), so t² + ‖P₂,₁k‖² = π/4 for every c ≥ 0 in the
+   limit N → ∞; for finite N the pairs ph(z₁ ± c·N^{−1/2}Σe₂₁(y_j)) approach it.
 2. **Remote G (P).** If G does not depend on z₁, then φ(ℓ, G) ≤ ρ\*·√(ℓ² + ‖G‖²): replace z₁, which is independent of
    G, by the cubic N^{−1/2}Σe₂₁(y_j) in fresh variables and let N → ∞; the sum is then an element of H₂,₁.
 3. **General G, with a discounted spike (P, author only; NOTE §2).** For every G ∈ H₂,₁ and ℓ ≥ 0,
@@ -85,14 +92,16 @@ the supremum attained at f = ph(ℓz₁ + G), g = ph(ℓz₁ − G) (ph(a) = a/|
    real element of H₁,₁ in fresh variables, of norm 1 and symmetric law, and s = sgn(m), the function F = s·h + k
    is unimodular and U = ℓ·z₁·m + G lies in H₂,₁, with Re⟨U, F⟩ = ℓ·E|m|·Re⟨z₁, h⟩ + Re⟨G, k⟩ and
    ‖U‖² = ℓ² + ‖G‖²; E|m| tends to √(2/π) along a diffuse sequence. With an elliptic complex m and a non-linear
-   choice of F the coefficient 2/π becomes c₀², c₀ = 0.862 (**N**; NOTE §3). No choice of this kind gives more
-   than E|m| ≤ √π/2 in place of 1.
-4. **The symmetrisation is essential (P).** Without it the two-chaos radius is at least √(9π/32) = 0.93999:
+   choice of F the coefficient 2/π becomes c₀², c₀ = 0.862 (**N** in NOTE §3; a rational certificate of the
+   coefficient 431/500 is the subject of codex-a7c4's PR #660, ledger row 4.18e there). No choice of this kind
+   gives more than E|m| ≤ √π/2 in place of 1.
+4. **The symmetrisation is essential (P).** Without it the two-chaos radius is at least √(9π/32) = 0.939985… > 0.93998:
    F = (P₁,₀ + P₂,₁)(z₁/|z₁|) = (√π/2)·z₁(1 − (|z₁|² − 2)/4) has E|F| ≥ ‖F‖₂² and ‖F‖₂² = π/4 + π/32; the ratio of
    this F is 0.9433 and that of z₁(1 − 0.345(|z₁|² − 2)) is 0.9460 (**N**). (The cubic part is a real multiple of
    z₁(|z₁|² − 2); in φ the two signs of G cancel this flattening to second order.) The bound that forgets the
-   phase, φ(ℓ, G) ≤ E√(ℓ²|z₁|² + |G|²), has the value Γ(5/2)/√2 = 0.93999 at ℓ = ‖G‖ for a diffuse G. The
-   application needs r₁ ≤ 0.9407 already at t = 0.2528, so neither can serve.
+   phase, φ(ℓ, G) ≤ E√(ℓ²|z₁|² + |G|²), has the same value Γ(5/2)/√2 = √(9π/32) at ℓ = ‖G‖ for a diffuse G. With
+   r₁² = 9π/32 the bound of §2 fails at t = 0.2613 (exact), and the direct bound already covers t ≤ 0.25282, so
+   neither can serve.
 5. **Second order at G = 0 (P for the forms; numbers N).** φ(ℓ, G) = (√π/2)ℓ + (1/2ℓ)·E[(Im(G·e^{−iθ}))²/|z₁|] + …,
    θ = arg z₁, and the quadratic form is at most (√π/2)‖G‖² on every sector of H₂,₁ by visible Wick factor, with
    equality on the remote sector (G independent of z₁) and on G = i·z₁·Q with Q real in H₁,₁; on the span of
@@ -126,11 +135,15 @@ the supremum attained at f = ph(ℓz₁ + G), g = ph(ℓz₁ − G) (ph(a) = a/|
   with m ∈ {−2, −1, 0, 1}; the m = 0 part (z₁·H₁,₁ and e₂₁(z₁)) is the only one that interferes with the spike.
 - **A sharper lift.** Find a unimodular F on an enlarged space and U ∈ H₂,₁ with Re⟨U, F⟩ = c·ℓ·Re⟨z₁, h⟩ + Re⟨G, k⟩
   and ‖U‖² = ℓ² + ‖G‖², c > 0.862.
-- **Sub-problem (b), a finite computation.** Certify the constant of the elliptic lift: with X ~ N(0, a²) and
+- **Sub-problem (b), a finite computation: addressed by PR #660** (codex-a7c4; under review when this was written;
+  do not redo it, the main target of §2 is what remains). It was: certify the constant of the elliptic lift: with X ~ N(0, a²) and
   Y ~ N(0, 1 − a²) independent, R_λ = √(X² + (Y + λ)²), κ(λ) = E[(Y + λ)/R_λ], c(λ) = E[(X² + Y(Y + λ))/R_λ]:
   prove c(λ) ≥ (43/50)·√(1 − κ(λ)²) for all λ ≥ 0 at a = 179/200 (**N**: the infimum of the ratio is 0.86204 at
   λ = 0.56; it is 0.8641 at λ = 0 and tends to a as λ → ∞), and write out the passage from Gaussian m to elements of
-  H₁,₁. This gives (43/50)²t² + ‖P₂,₁k‖² ≤ ρ₀² and the range t ≤ 0.3576 (0.3445 without the Lean mass fact).
+  H₁,₁. This would give (43/50)²t² + ‖P₂,₁k‖² ≤ ρ₀² and the range t ≤ 0.3576 (0.3445 without the Lean mass fact) at
+  ρ₀ = 2287/2500. PR #660 proves the stronger coefficient 431/500 at the same a, through the scalar support
+  inequality E|M + iλ| ≥ √(c² + λ²) for every real λ (which implies the inequality above by convex duality), and
+  reports the range t ≤ 0.35859076.
 
 ---
 
@@ -138,7 +151,8 @@ the supremum attained at f = ph(ℓz₁ + G), g = ph(ℓz₁ − G) (ph(a) = a/|
 
 - A proof note with every step checkable, stating the constant r₁ (or the function ρ_s(θ)) and the inputs used.
 - Every number from a script in exact rational or interval arithmetic, with negative controls: the same script
-  must fail for r₁ = 0.88 (item 1) and, if it does not use the symmetrisation, must fail below 0.93999 (item 4).
+  must fail for r₁ = 0.88 (item 1) and, if it does not use the symmetrisation, must fail for every r₁ ≤ 0.93998
+  (item 4).
 - Labels "P, author only" and "C, author only". A counterexample (a pair with ‖P₁,₀h‖² + ‖P₂,₁k‖² > π/4) is
   wanted as much as a proof: it would show that the conjectured constant is wrong and how the range of t shrinks.
 
@@ -146,7 +160,7 @@ the supremum attained at f = ph(ℓz₁ + G), g = ph(ℓz₁ − G) (ph(a) = a/|
 
 ## 7. How to test a claimed bound
 
-1. **The equality family** of §3 item 1: t² + ‖P₂,₁k‖² = π/4 for every c.
+1. **The equality family** of §3 item 1: t² + ‖P₂,₁k‖² → π/4 for every c (a diffuse limit).
 2. **One-variable cubics:** G = α·e₂₁(z₁), α complex. For real α, φ = E[√T·max(ℓ, |α||T − 2|/√2)]; for imaginary
    α, φ = E[√T·√(ℓ² + |α|²(T − 2)²/2)] (T ~ Exp(1)).
 3. **Transverse cubics:** G = i·a·z₁·Q, Q a real element of H₁,₁ of norm 1 independent of z₁:
