@@ -1702,3 +1702,20 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 | `code/one-driver-self-interaction-gemini-21d5/certify_one_driver.cpp` | 101,228 B | `d24fc17b6382fc4cbb71be4b0eef2a686a7aca7e07e3d6fdd7107f7ce46b0df7` |
 | `code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py` | 23,919 B | `98001d940c9696e474581e0f61563d81a09f850562ae58368cd15724cb4485de` |
 | `code/one-driver-self-interaction-gemini-21d5/result.json` | 7,593 B | `943d3e5bd5ea051753f82e9d8a632e96d9fffef509131fa0ccbaa0aba6631c0b` |
+
+## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
+
+- [Proof and replay instructions](sources/global-all-sector-gemini-c1de/PROOF.md) and
+  [C++17 interval certifier, exact rational verifier, saved certificate and 19 corruption controls](code/global-all-sector-gemini-c1de/) (tag KGAS; STATUS 7.5.13; **P + C, author only**). All files are committed in the repository with zero external dependencies left outside.
+- **Replay:**
+  - Exact rational audit of saved `result.json`, zero-float 2D Bernstein proofs of Lemmas L1/L2, $\psi(r, q)$ calculus, $w \ge 8$ even+odd analytic exteriors, and Parts 1–3 contiguity/PSD/handoffs (< 1 s, Python 3 stdlib only, `-I`, rejects `-O`): `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/test_controls.py` (19 negative/corruption controls including live C++ hotspot false-target control and `-DNDEBUG` compile rejection).
+  - Full C++17 outward-rounded (`FE_UPWARD`) 8-thread interval replay (`10,326` CPU-s; compiles/runs to a temporary file, audits all 3 parts, and verifies exact bit-for-bit equality against committed `result.json` without overwriting it; pass `--replay-cpp --update-result` only to intentionally regenerate `result.json`): `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/global-all-sector-gemini-c1de/PROOF.md` | 23,475 B | `aafa3f1d4a64033e796037789db91d0d2535adeb39ed53fa88768c75cc2777cb` |
+| `code/global-all-sector-gemini-c1de/README.md` | 2,773 B | `ebb5f22597066c84458a0b1cd4e7997d2e2206cd59198a5075485556eb582ef7` |
+| `code/global-all-sector-gemini-c1de/certify_all_sector.cpp` | 144,483 B | `acd3a10ca5a1c33ccb35a62c926800735c1240abcf81c91a80b974c351dc045a` |
+| `code/global-all-sector-gemini-c1de/verify.py` | 24,242 B | `4036dee32d282afda8f89eb9d6488a6dacb9b0d080ad679eb37b4e10a7e2119b` |
+| `code/global-all-sector-gemini-c1de/result.json` | 461,437 B | `169701514d1e18149e0ae1b35412c92c3e4f5a7ffd23a2862037414a134cae27` |
+| `code/global-all-sector-gemini-c1de/test_controls.py` | 8,245 B | `53648495dae751f32368f1d4f3de956e50897238138127a7d61ed0bf85e77c37` |
