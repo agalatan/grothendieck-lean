@@ -5,7 +5,7 @@ relies on.** The proved results are the Lean theorems under `Grothe/` (see the t
 `docs/LEAN_DETAILS.md`); this folder records what is known, conjectured, tried and refuted about statements that are
 still open, so that a worker (human or AI) can start from an organised record instead of a pile of session files.
 
-**The bounds the research starts from.** Lean proves $1.40191478 < K_G^{\mathbb C} \le 1.404556407 < 1/\gamma^\dagger$
+**The bounds the research starts from.** Lean proves $1.4019156097 < K_G^{\mathbb C} \le 1.404556407 < 1/\gamma^\dagger$
 (`Grothe.Statement.main_bounds`; every constant is stated exactly in [`docs/CONSTANTS.md`](../docs/CONSTANTS.md)).
 Numbers such as 1.402 or 1.403 in this folder are research targets or ceilings of methods, not theorems.
 

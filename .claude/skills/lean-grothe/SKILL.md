@@ -12,9 +12,9 @@ version plus what the rulebook does not say.
 
 `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`), without hypotheses:
 
-    1.40191478 < K_G^ℂ ≤ 1.404556407 < 1/γ† = 1.40457593…
+    1.4019156097 < K_G^ℂ ≤ 1.404556407 < 1/γ† = 1.40457593…
 
-- Lower bound: `140191478 / 100000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
+- Lower bound: `14019156097 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
   (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
   The bound is the exact endpoint `shared_gate_endpoint` rounded strictly downward.
 - Upper bound: `1404556407 / 1000000000`, weak (≤). Six Gaussian rounding channels: the library `Grothe/UpperSix/`,
@@ -55,7 +55,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | `tools/` | generators and replay scripts; `scripts/` CI helpers and checks |
 | `docs/` | `CONSTANTS.md`, `LEAN_DETAILS.md` (module inventory), `overview.tex` (source of `OVERVIEW.pdf`), notes |
 | `research/` | ledgers of open problems (Conjecture K, higher-degree games, identity tail); nothing built; rules in `research/README.md` |
-| `haagerup-article/` | the article and its Lean package `anc/`, a **frozen**, independent work with its own CI job: it never quotes the repository's current bounds |
+| `haagerup-article/` | the article, **frozen**, with its own Lean package under `anc/`: it never quotes the repository's current bounds |
 | `sign/` | separate Lake package GrotheSign; not part of `Grothe` or of CI |
 | `handoff/` (git-ignored), `miscellaneous/`, `abandonware/` | archives; never built or imported |
 

@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.40191478 (`main_bounds`) comes from this witness. The certificate was designed for the target 1.4018; the sharp envelope of its rows (ledger 5.7), lowered by the gate that the two binding rows share (ledger 5.8), gives the bound that Lean states. It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.4019156097 (`main_bounds`) comes from this witness. The certificate was designed for the target 1.4018; the sharp envelope of its rows (ledger 5.7), lowered by the gate that the two binding rows share (ledger 5.8), gives the bound that Lean states. It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 
@@ -56,6 +56,6 @@ record), `sources/stage0c-2026-11-16/STAGE0C.md` (the verdict and the numbers of
 - Hat units: T = (1 − ν)·[P₁,₀ − ε̂P₂,₁ + ν̂·Id] with ε̂ = (ε + ν)/(1 − ν) = 25/31 and ν̂ = ν/(1 − ν) = 47/1953. A row value
   in original units is N = (1 − ν)·cap_hat + ν.
 - Targets: 5000/7009 = 0.713368526 (K > 1.4018, the design target) and 500/701 = 0.713266762 (K > 1.402, not reached).
-  The sharp envelope gives B = 0.7133120707647… (5.7); the shared gate lowers B̂ by a further 2·10⁻⁶ (5.8).
+  The sharp envelope gives B = 0.7133120707647… (5.7); the shared gate lowers B̂ by a further 2.43·10⁻⁶ (5.8).
 - Prices d₂, d₃ of a cell; e_i = d_i − ν̂, σ = e₂ + e₃, δ = e₃ − e₂, Δ = d₂d₃ − ν̂².
 - Route M: the localised node caps of the previous certificate (its rows 12–15), as opposed to anchored caps.

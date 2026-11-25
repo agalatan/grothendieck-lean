@@ -58,25 +58,61 @@ PLAIN = re.compile(r"(\d+)\s*/\s*(\d+)")
 POWER = re.compile(r"(?:\(\s*10\s*:\s*ℝ\s*\)|10)\s*\^\s*(\d+)\s*/\s*(\d+)")
 # documents in which an older bound may not appear at all (elsewhere it may, named as what it is)
 STRICT = ["README.md", ".claude/skills/lean-grothe/SKILL.md"]
-# older bounds of this repository: the lower bounds 1.4018 (a design target), 1.401700322371, 1.40191 and
-# 1.4019109461, and the upper bounds 1.40457588, 1.40455742, 1.40455741 and 1.40455641
-RETIRED = ["1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40457588", "1.40455742", "1.40455741",
-           "1.40455641"]
+# older bounds of this repository: the lower bounds 1.4018 (a design target), 1.401700322371, 1.40191,
+# 1.4019109461 and 1.40191478, and the upper bounds 1.40457588, 1.40455742, 1.40455741 and 1.40455641
+RETIRED = ["1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.40457588", "1.40455742",
+           "1.40455741", "1.40455641"]
 
+# Each statement is matched whole, from the name to the `:=` of the declaration, in the text without comments: a
+# right-hand side such as `N / D + 1` is not a bound that this script understands, and is refused.
+RATIONAL = r"(?:\(\s*(\d+)\s*/\s*(\d+)\s*:\s*ℝ\s*\)|(\d+)\s*/\s*(\d+))"
 MAIN_BOUNDS = re.compile(
-    r"theorem\s+main_bounds\s*:\s*"
+    r"^[ \t]*theorem\s+main_bounds\s*:\s*"
     r"\(\s*(\d+)\s*/\s*(\d+)\s*:\s*ℝ\s*\)\s*<\s*complexGrothendieckConstant\s*∧\s*"
-    r"complexGrothendieckConstant\s*≤\s*\(?\s*(\d+)\s*/\s*(\d+)"
+    r"complexGrothendieckConstant\s*≤\s*" + RATIONAL + r"\s*:=",
+    re.MULTILINE,
 )
 EXACT_UPPER = re.compile(
-    r"^\s*theorem\s+bound\s*:\s*Statement\.IsBound\s*\(\s*\(\s*10\s*:\s*ℝ\s*\)\s*\^\s*(\d+)\s*/\s*(\d+)\s*\)",
+    r"^[ \t]*theorem\s+bound\s*:\s*Statement\.IsBound\s*"
+    r"\(\s*\(\s*10\s*:\s*ℝ\s*\)\s*\^\s*(\d+)\s*/\s*(\d+)\s*\)\s*:=",
     re.MULTILINE,
 )
 CONSTANT_LE = re.compile(
-    r"^\s*theorem\s+constant_le\s*:\s*Statement\.complexGrothendieckConstant\s*≤\s*\(?\s*(\d+)\s*/\s*(\d+)",
+    r"^[ \t]*theorem\s+constant_le\s*:\s*Statement\.complexGrothendieckConstant\s*≤\s*" + RATIONAL + r"\s*:=",
     re.MULTILINE,
 )
-EXACT_LOWER = re.compile(r"^\s*theorem\s+endpoint_eq\s*:\s*endpoint\s*=\s*(\d+)\s*/\s*(\d+)\s*:=", re.MULTILINE)
+EXACT_LOWER = re.compile(r"^[ \t]*theorem\s+endpoint_eq\s*:\s*endpoint\s*=\s*(\d+)\s*/\s*(\d+)\s*:=", re.MULTILINE)
+
+
+def strip_comments(text: str) -> str:
+    """Lean source without its comments (`--` to the end of the line, nested `/- … -/`); line breaks are kept."""
+    out, i, depth = [], 0, 0
+    while i < len(text):
+        two = text[i:i + 2]
+        if two == "/-":
+            depth, i = depth + 1, i + 2
+        elif depth and two == "-/":
+            depth, i = depth - 1, i + 2
+        elif depth:
+            if text[i] == "\n":
+                out.append("\n")
+            i += 1
+        elif two == "--":
+            while i < len(text) and text[i] != "\n":
+                i += 1
+        else:
+            out.append(text[i])
+            i += 1
+    return "".join(out)
+
+
+def lean_code(path: Path) -> str:
+    return strip_comments(path.read_text(encoding="utf-8"))
+
+
+def rational(m, first: int):
+    """The (numerator, denominator) matched by RATIONAL, whose four groups start at index `first`."""
+    return (int(m[first] or m[first + 2]), int(m[first + 1] or m[first + 3]))
 
 
 def decimal(num: int, den: int) -> str:
@@ -107,20 +143,30 @@ def truncated(q: Fraction, digits: int) -> str:
 
 def read_bounds(root: Path):
     """((lower num, lower den), (upper num, upper den)) from main_bounds."""
-    main = (root / "Grothe/MainResult.lean").read_text(encoding="utf-8")
-    m = MAIN_BOUNDS.search(main)
+    m = MAIN_BOUNDS.search(lean_code(root / "Grothe/MainResult.lean"))
     if not m:
-        raise ValueError("Grothe/MainResult.lean: the statement of main_bounds was not recognised")
-    if int(m[2]) == 0 or int(m[4]) == 0:
+        raise ValueError(
+            "Grothe/MainResult.lean: the statement of main_bounds was not recognised (it must read "
+            "`(N / D : ℝ) < complexGrothendieckConstant ∧ complexGrothendieckConstant ≤ N' / D' :=`, nothing more)"
+        )
+    lower, upper = (int(m[1]), int(m[2])), rational(m, 3)
+    if lower[1] == 0 or upper[1] == 0:
         raise ValueError("Grothe/MainResult.lean: main_bounds has a zero denominator")
-    return (int(m[1]), int(m[2])), (int(m[3]), int(m[4]))
+    return lower, upper
 
 
 def endpoint_file(root: Path):
-    """The module (relative path) of the lower endpoint that main_bounds rounds, or None if it is not recognised."""
-    main = (root / "Grothe/MainResult.lean").read_text(encoding="utf-8")
+    """The module (relative path) of the lower endpoint that main_bounds rounds, or None if it is not recognised.
+
+    The rounding lemma is looked for in the proof of main_bounds only: from the `:=` of its statement to the next
+    line that starts in the first column (the next declaration or `end`), comments removed."""
+    main = lean_code(root / "Grothe/MainResult.lean")
     m = MAIN_BOUNDS.search(main)
-    names = set(ROUNDING_LEMMA.findall(main[m.end():])) if m else set()
+    if not m:
+        return None
+    rest = main[m.end():]
+    stop = re.search(r"^\S", rest, re.MULTILINE)
+    names = set(ROUNDING_LEMMA.findall(rest[:stop.start()] if stop else rest))
     return f"Grothe/Lower/Cert/{names.pop()}.lean" if len(names) == 1 else None
 
 
@@ -129,12 +175,12 @@ def read_exact(root: Path):
     upper = lower = None
     path = root / UPPER_FILE
     if path.is_file():
-        m = EXACT_UPPER.search(path.read_text(encoding="utf-8"))
+        m = EXACT_UPPER.search(lean_code(path))
         if m and int(m[2]) != 0:
             upper = (int(m[1]), int(m[2]))
     rel = endpoint_file(root)
     if rel and (root / rel).is_file():
-        m = EXACT_LOWER.search((root / rel).read_text(encoding="utf-8"))
+        m = EXACT_LOWER.search(lean_code(root / rel))
         if m and int(m[2]) != 0:
             lower = (int(m[1]), int(m[2]))
     return upper, lower
@@ -148,7 +194,7 @@ def contains_number(text: str, number: str) -> bool:
 def check_rounding(root, lower, upper, exact_upper, exact_lower, problems):
     """The two bounds of main_bounds are the outward roundings of the exact values, and constant_le agrees."""
     if exact_upper is None:
-        problems.append(f"{UPPER_FILE}: the exact upper bound `theorem bound : Statement.IsBound ((10 : ℝ) ^ p / D)` "
+        problems.append(f"{UPPER_FILE}: the exact upper bound `theorem bound : Statement.IsBound ((10 : ℝ) ^ p / D) :=` "
                         "was not recognised")
     else:
         if upper[0] != ceil(Fraction(10 ** exact_upper[0], exact_upper[1]) * upper[1]):
@@ -157,11 +203,13 @@ def check_rounding(root, lower, upper, exact_upper, exact_lower, problems):
                 f"bound 10^{exact_upper[0]} / {exact_upper[1]} rounded up"
             )
     path = root / UPPER_FILE
-    m = CONSTANT_LE.search(path.read_text(encoding="utf-8")) if path.is_file() else None
+    m = CONSTANT_LE.search(lean_code(path)) if path.is_file() else None
     if m is None:
-        problems.append(f"{UPPER_FILE}: the statement of constant_le was not recognised")
-    elif (int(m[1]), int(m[2])) != upper:
-        problems.append(f"{UPPER_FILE}: constant_le states {m[1]} / {m[2]}, main_bounds {upper[0]} / {upper[1]}")
+        problems.append(f"{UPPER_FILE}: the statement of constant_le was not recognised (it must read "
+                        "`Statement.complexGrothendieckConstant ≤ N / D :=`, nothing more)")
+    elif rational(m, 1) != upper:
+        num, den = rational(m, 1)
+        problems.append(f"{UPPER_FILE}: constant_le states {num} / {den}, main_bounds {upper[0]} / {upper[1]}")
     if exact_lower is None:
         rel = endpoint_file(root)
         problems.append(

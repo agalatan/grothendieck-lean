@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.40191478\;<\;\KG\;\le\;1.404556407$\\[6pt]
+\Large $1.4019156097\;<\;\KG\;\le\;1.404556407$\\[6pt]
 \normalsize The Lean~4/Mathlib theorem
 \lean{Grothe.Statement.main\_bounds} proves these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The exact shared-gate lower endpoint is rounded down to $140191478/100000000$.
+The exact shared-gate lower endpoint is rounded down to $14019156097/10000000000$.
 The six Gaussian rounding channels give the upper bound rounded up to $1404556407/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -96,7 +96,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.40191478}$ & $\mathbf{1.404556407}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4019156097}$ & $\mathbf{1.404556407}$\\\bottomrule
 \end{tabular}
 \end{center}
 The upper bound is $1404556407/1000000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
@@ -127,8 +127,8 @@ after mixing the signed coefficients. Each infinite tail is controlled by a
 mean on its own circle. The advertised rational bound follows from the reciprocal
 gap in the transfer theorem. The production theorem applies to every finite
 complex matrix and uses the scalar and vector optima in \path{Grothe/Statement.lean}.
-The article in \path{haagerup-article/} and its ancillary Lean package
-\path{haagerup-article/anc} are a separate, frozen work with a bound of their own.
+The article in \path{haagerup-article/} is frozen; it has its own Lean package under
+\path{haagerup-article/anc} and states a bound of its own.
 
 \subsubsection*{Earlier single-channel construction}
 
@@ -710,10 +710,10 @@ the identity on all the other chaoses (an \emph{identity tail}).
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+e)/(n+1)\to1$.
 \item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu$, with
- $\hat B=\hat B_*-2/10^6$ and $\hat B_*=0.7064127708804130589\ldots$ an exact rational.
+ $\hat B=\hat B_*-243/10^8$ and $\hat B_*=0.7064127708804130589\ldots$ an exact rational.
 \end{itemize}
 A finite-partition transfer turns this into matrices, so
-$\KG\ge1/B=1.401914784461024301\ldots$, and \lean{main\_bounds} states this endpoint rounded down
+$\KG\ge1/B=1.401915609708473171\ldots$, and \lean{main\_bounds} states this endpoint rounded down
 (\lean{shared\_gate\_endpoint}).
 The number $\hat B_*$ is the maximum of an envelope of the certified rows over fifteen intervals of the profile
 parameter. On $[1672/2000,1675/2000]$ the weight of row $0.845$ in its mixture with row $0.835$ varies affinely;
@@ -723,11 +723,11 @@ mass tangent at $\hat V=\hat B_*$. The scalar row system therefore attains $\hat
 the scalar rows.
 The two active rows constrain the same Gaussian gate coordinates. At fixed first coordinate,
 completing their sum saves at least $1018\tau^2/10^7$ across the two rows.
-For $\tau\le21/100$ a quadratic majorant saves $1/50000$ on the first row.
-At every scale their nonnegative deductions sum to at least $H=(1018/10^7)(21/100)^2$.
+For $\tau\le4649/20000$ a quadratic majorant saves $551/10^8$ on the first row.
+At every scale their nonnegative deductions sum to at least $H=(1018/10^7)(4649/20000)^2$.
 A mixture with weights $1-\theta,\theta$ saves at least $H\min(\theta,1-\theta)$.
 Checking both assignments of $H$ on the active cells and the ordinary mixtures on the
-rest of a sixteen-cell cover gives $\hat V\le\hat B_*-2/10^6=\hat B$ (\lean{SharedGate.check}).
+rest of a sixteen-cell cover gives $\hat V\le\hat B_*-243/10^8=\hat B$ (\lean{SharedGate.check}).
 
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.

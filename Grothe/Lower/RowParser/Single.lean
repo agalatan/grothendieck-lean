@@ -10,7 +10,9 @@ import Mathlib.Tactic
 
 The row data use Lean's legacy `String.splitOn`. For a single delimiter its
 output agrees with a structural pass over the character list. This identity
-allows verified evaluation without repeatedly seeking from the start of the string.
+allows verified evaluation without repeatedly seeking from the start of the string. The proof uses
+`import all Init.Data.String.Legacy` to unfold `String.splitOnAux` and `String.splitAux`.
+Recheck their recursion equations on toolchain upgrades.
 
 Agent-ID: codex-a7c4
 -/

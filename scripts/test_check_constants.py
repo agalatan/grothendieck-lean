@@ -78,7 +78,7 @@ class CheckConstants(unittest.TestCase):
                                     "README.md:2: mentions the older bound 1.40455741"])
 
     def test_retired_list_covers_the_earlier_bounds(self):
-        for old in ("1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40457588", "1.40455742", "1.40455741",
+        for old in ("1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.40457588", "1.40455742", "1.40455741",
                     "1.40455641"):
             self.assertIn(old, cc.RETIRED)
         # a current bound is never reported as retired, and a longer decimal is not an older one
@@ -204,7 +204,8 @@ class CheckConstants(unittest.TestCase):
             ],
         )
         _, problems = self.run_check(upper=UPPER.replace("theorem constant_le", "theorem constant_le'"))
-        self.assertEqual(problems, ["Grothe/UpperResult.lean: the statement of constant_le was not recognised"])
+        self.assertEqual(len(problems), 1)
+        self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean: the statement of constant_le was not recognised"))
 
     def test_exact_upper_bound_is_required(self):
         _, problems = self.run_check(upper=UPPER.replace("theorem bound :", "theorem bound' :"))
@@ -246,6 +247,62 @@ class CheckConstants(unittest.TestCase):
         # the endpoint of the certificate that the proof no longer uses is not accepted
         _, problems = self.run_check(main=main, docs={**docs, "Grothe/Lower/Cert/SharedGate.lean": ENDPOINT})
         self.assertTrue(any("rounded strictly downward" in p for p in problems))
+
+    # --- each statement is read whole, up to its `:=`; the rounding lemma only in the proof of main_bounds -----
+
+    def test_main_bounds_with_a_longer_right_hand_side_is_refused(self):
+        for tail in (" + 1", " * 2", " / 2", " ∨ True", " ^ 2"):
+            with self.subTest(tail=tail):
+                with self.assertRaises(ValueError):
+                    self.run_check(main=MAIN.replace("≤ 140456 / 100000 :=", f"≤ 140456 / 100000{tail} :="))
+        with self.assertRaises(ValueError):
+            self.run_check(main=MAIN.replace("(140191 / 100000 : ℝ) <", "(140191 / 100000 : ℝ) - 1 <"))
+        with self.assertRaises(ValueError):
+            self.run_check(main=MAIN.replace("theorem main_bounds :", "theorem main_bounds : True ∨"))
+        _, problems = self.run_check(main=MAIN.replace("≤ 140456 / 100000 :=", "≤ (140456 / 100000 : ℝ) :="))
+        self.assertEqual(problems, [])
+
+    def test_constant_le_with_a_longer_right_hand_side_is_refused(self):
+        for tail in (" + 1", " * 2", " ∨ True"):
+            with self.subTest(tail=tail):
+                weak = UPPER.replace("≤ 140456 / 100000 := by", f"≤ 140456 / 100000{tail} := by")
+                _, problems = self.run_check(upper=weak)
+                self.assertEqual(len(problems), 1)
+                self.assertIn("the statement of constant_le was not recognised", problems[0])
+
+    def test_exact_bound_with_a_longer_argument_is_refused(self):
+        for weak in ("Statement.IsBound ((10 : ℝ) ^ 6 / 711969 + 1) :=", "Statement.IsBound ((10 : ℝ) ^ 6 / 711969) ∨ True :="):
+            with self.subTest(weak=weak):
+                _, problems = self.run_check(upper=UPPER.replace("Statement.IsBound ((10 : ℝ) ^ 6 / 711969) :=", weak))
+                self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean: the exact upper bound `theorem bound :"))
+
+    def test_statements_in_comments_are_not_read(self):
+        hidden = "/- theorem constant_le : Statement.complexGrothendieckConstant ≤ 140456 / 100000 := by -/\n"
+        weak = UPPER.replace("≤ 140456 / 100000 := by", "≤ 140456 / 100000 + 1 := by") + hidden
+        _, problems = self.run_check(upper=weak)
+        self.assertTrue(any("the statement of constant_le was not recognised" in p for p in problems))
+        self.assertEqual(cc.strip_comments("a -- b\nc /- d /- e -/ f\n -/ g"), "a \nc \n g")
+
+    def test_rounding_lemma_only_in_a_comment_is_refused(self):
+        for comment in ("  -- uses Grothe.Lower.SharpEnvelope.rounded_lt\n",
+                        "  /- Grothe.Lower.SharpEnvelope.rounded_lt -/\n"):
+            with self.subTest(comment=comment):
+                main = MAIN.replace("  simpa using (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt\n",
+                                    "  sorry\n" + comment)
+                _, problems = self.run_check(main=main)
+                self.assertEqual(len(problems), 1)
+                self.assertIn("must use exactly one rounding lemma", problems[0])
+
+    def test_rounding_lemma_only_after_the_theorem_is_refused(self):
+        main = MAIN.replace("  simpa using (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharpEnvelope.rounded_lt\n", "  sorry\n")
+        after = main + "\ntheorem other : True := by\n  have := Grothe.Lower.SharpEnvelope.rounded_lt\n  trivial\n"
+        _, problems = self.run_check(main=after)
+        self.assertEqual(len(problems), 1)
+        self.assertIn("must use exactly one rounding lemma", problems[0])
+        # and a lemma of another certificate below the theorem does not disturb the real one
+        below = MAIN + "\nend Grothe.Statement\n-- Grothe.Lower.Other.rounded_lt\ntheorem t : True := Grothe.Lower.Other.rounded_lt\n"
+        _, problems = self.run_check(main=below)
+        self.assertEqual(problems, [])
 
     def test_unrecognised_statement(self):
         with self.assertRaises(ValueError):

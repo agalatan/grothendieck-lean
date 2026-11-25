@@ -2,11 +2,11 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-`Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) proves `1.40191478 < K_G^ℂ ≤ 1.404556407` (in Lean `140191478/100000000` and `1404556407/1000000000`), without hypotheses. The lower half is the exact endpoint `shared_gate_endpoint` rounded strictly downward; the upper half is `Grothe.UpperSix.constant_le`. The upper-only module `Grothe/UpperResult.lean` has three theorems: `Grothe.UpperSix.bound` ($V(A)\le[10^{27}/711968558203721328194311213]\,C(A)$ for every finite complex matrix $A$; the factor is $1.4045564069893\ldots$), `constant_le` (the same, rounded up to nine decimals, for the constant) and `constant_lt_inv_gammaDagger` ($K_G^{\mathbb C}<1/\gamma^\dagger$). The scalar and vector suprema of the six-channel library are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) proves `1.4019156097 < K_G^ℂ ≤ 1.404556407` (in Lean `14019156097/10000000000` and `1404556407/1000000000`), without hypotheses. The lower half is the exact endpoint `shared_gate_endpoint` rounded strictly downward; the upper half is `Grothe.UpperSix.constant_le`. The upper-only module `Grothe/UpperResult.lean` has three theorems: `Grothe.UpperSix.bound` ($V(A)\le[10^{27}/711968558203721328194311213]\,C(A)$ for every finite complex matrix $A$; the factor is $1.4045564069893\ldots$), `constant_le` (the same, rounded up to nine decimals, for the constant) and `constant_lt_inv_gammaDagger` ($K_G^{\mathbb C}<1/\gamma^\dagger$). The scalar and vector suprema of the six-channel library are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
 
 The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The certificate of the bound is `Grothe/UpperSixExact/`. `Parameters.lean` holds the polynomial of the first channel, the target slope and the caps. `Head.lean` checks the weighted head together with six lower bounds on the linear coefficients: the phase channel contributes 321 coefficients, from exact Haagerup moments, and each of the five cell channels 251. `Contour.lean` checks disk positivity and the circle mean for the first channel. `Bound.lean` subtracts the squared contributions of the linear coefficients from the Hardy estimates, which gives the tail caps, and proves `Haagerup.SixChannelExact.isBound`.
 
-The article `haagerup-article/` and its Lean package `haagerup-article/anc` are a frozen, independent work, with their own Lake files and CI job; they do not quote the bounds of this repository. [Article's Lean package](../haagerup-article/anc/README.md).
+The article `haagerup-article/` is frozen and has its own Lean package under `haagerup-article/anc`, which proves the article's statement; they do not quote the bounds of this repository. [Article's Lean package](../haagerup-article/anc/README.md).
 
 The earlier `upper_below_tight` proof (`Grothe/UpperTightFinal.lean`, `K_G^ℂ < 1.404599395362`) uses one Gaussian rounding and imports the shared Gaussian phase identity and Laplace modules under `Grothe/Haagerup/`. Its budgets, quadrature, and auxiliary refinements are documented below.
 
@@ -1188,14 +1188,14 @@ fixed mixture of two rows is at most `SharpEnvelope.hatCap` ($\hat B_*$). On $[1
 $\hat B_*$ is the greatest value that the scalar inequalities of the rows permit, so a smaller cap needs more than the
 scalar rows.
 
-**The shared gate.** `SharedGate.hatCap` is $\hat B_*-2/10^6$ (`Grothe/Lower/Cert/SharedGate.lean`,
+**The shared gate.** `SharedGate.hatCap` is $\hat B_*-243/10^8$ (`Grothe/Lower/Cert/SharedGate.lean`,
 `Grothe/Lower/SharedGateSaving.lean`). The two active rows, row08 and row09 (0.835 and 0.845), share the residual
 scale $\tau$ and all three complex gate coordinates. Completing their summed gate with the first coordinate fixed
-saves at least $1018\tau^2/10^7$ before weighting. For $\tau\le21/100$, a single quadratic majorizes the row08
-potential on every node chord and the terminal Lipschitz ray, saving $1/50000$ on that row. At every scale the two
-nonnegative intercept deductions therefore sum to at least $H=(1018/10^7)(21/100)^2$. For weights $1-\theta,\theta$,
-it suffices to check both assignments of $H$ to one intercept. A 16-cell cover then gives $\hat V\le\hat B_*-2/10^6$
-(`SharedGate.check`; the cells are those of the sharp envelope with one of them split). The kernel checks the
+saves at least $1018\tau^2/10^7$ before weighting. For $\tau\le4649/20000$, a single quadratic majorizes the row08
+potential on every node chord and the terminal Lipschitz ray, saving $551/10^8$ on that row. At every scale the two
+nonnegative intercept deductions therefore sum to at least $H=(1018/10^7)(4649/20000)^2$. For weights $1-\theta,\theta$,
+it suffices to check both assignments of $H$ to one intercept. A 16-cell cover then gives $\hat V\le\hat B_*-243/10^8$
+(`SharedGate.check`). Its cells are those of the sharp envelope, except that the row06/row07 interval uses the constant weight $12/25$ and the row12/row13 interval splits at $1758/2000$, with weights $3/5$ and $22/25$. The kernel checks the
 small-scale quadratic against all 171 row08 nodes. The decimal decoder re-encodes the proposed numerators and
 denominators, proves byte equality with the original row, and proves that parsing recovers every rational
 (`Grothe/Lower/RowParser.lean`). The rectangle inequalities and the shared-gate checks are kernel proofs:

@@ -8,11 +8,11 @@ exact value, and that this page and the other documents state them.
 
 ## The current bounds
 
-$$1.40191478 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4019156097 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.40191478` | `140191478 / 100000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
+| lower bound (strict) | `1.4019156097` | `14019156097 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
 | upper bound (weak, $\le$) | `1.404556407` | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperSix.constant_le` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -20,7 +20,7 @@ $$1.40191478 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 ```lean
 theorem main_bounds :
-    (140191478 / 100000000 : ℝ) < complexGrothendieckConstant ∧
+    (14019156097 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404556407 / 1000000000
 ```
 
@@ -31,7 +31,7 @@ Each bound is the rounding of an exact value that Lean also states.
 
 | | exact value | decimal | theorem | rounding |
 |---|---|---|---|---|
-| lower endpoint ($\le K$) | the fraction `SharedGate.endpoint` [below](#behind-the-lower-bound) | $1.401914784461024301\ldots$ | `Grothe.Statement.shared_gate_endpoint` | strictly downward (`SharedGate.rounded_lt`) |
+| lower endpoint ($\le K$) | the fraction `SharedGate.endpoint` [below](#behind-the-lower-bound) | $1.401915609708473171\ldots$ | `Grothe.Statement.shared_gate_endpoint` | strictly downward (`SharedGate.rounded_lt`) |
 | upper bound ($K \le$) | $10^{27}/711968558203721328194311213$ | $1.404556406989340536\ldots$ | `Grothe.UpperSix.bound` | up to nine decimals (`Grothe.UpperSix.constant_le`) |
 
 **What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
@@ -68,10 +68,10 @@ gives $K \ge 1/B$ (`Grothe.Statement.shared_gate_endpoint`). The value of $1/B$ 
 
 ```text
 909157856627679665006951532318493526757143019079598080000000000000000000000000000000 /
-648511497777813650950008184495957803146263132239181429405354447721820234278296395631
+648511116026975442270455246402044140272423714548613432977518646121820234278296395631
 ```
 
-which is $1.401914784461024301\ldots$
+which is $1.401915609708473171\ldots$
 
 | quantity | value | meaning |
 |---|---|---|
@@ -79,9 +79,9 @@ which is $1.401914784461024301\ldots$
 | $\nu$ | `47/2000` | weight of the identity tail |
 | $\hat\varepsilon$, $\hat\nu$ | `25/31`, `47/1953` | the same weights after dividing by $1-\nu$ (the "hat" normalisation of the rows) |
 | $\hat B_*$ | `SharpEnvelope.hatCap` $= 0.7064127708804130589\ldots$ | the maximum of the sharp envelope of the certified rows (`SharpEnvelope.check`); an exact rational, the maximum of a quadratic |
-| gain | `SharedGate.gain = 2 / 1000000` | what the Gaussian gate shared by the two active rows takes off the cap (`SharedGate.check`) |
-| $\hat B = \hat B_* - \text{gain}$ | `SharedGate.hatCap` $= 0.7064107708804\ldots$ | bound of the hat value |
-| $B = (1-\nu)\hat B + \nu$ | $0.7133101177\ldots$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
+| gain | `SharedGate.gain = 243 / 100000000` | what the Gaussian gate shared by the two active rows takes off the cap (`SharedGate.check`) |
+| $\hat B = \hat B_* - \text{gain}$ | `SharedGate.hatCap` $= 0.7064103408804\ldots$ | bound of the hat value |
+| $B = (1-\nu)\hat B + \nu$ | $0.7133096978\ldots$ | bound on $\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ |
 | $1/B$ | `SharedGate.endpoint`, the fraction above | the lower endpoint; `main_bounds` states it rounded strictly downward |
 
 **The sharp envelope.** Fifteen intervals cover the profile parameter $t\in[0,9/10]$. On fourteen of them a fixed
@@ -90,9 +90,10 @@ its mixture with row 0.835 varies affinely with $t$, and the maximum of the resu
 the greatest value that the scalar inequalities of the rows permit (`SharpEnvelope.exact_scalar_cap`).
 
 **The shared gate.** The two active rows (0.835 and 0.845) constrain the same Gaussian variable. For residual scale
-$\tau\ge21/100$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For
-$\tau\le21/100$, a quadratic majorant saves $1/50000$ on the first row. Pricing their common saving by the smaller
-of the two mixture weights lowers the cap by the gain, on a cover of sixteen intervals.
+$\tau\ge4649/20000$, completing the joint gate gives a saving of at least $1018\tau^2/10^7$ across the two rows. For
+$\tau\le4649/20000$, a quadratic majorant saves $551/10^8$ on the first row. Pricing their common saving by the smaller
+of the two mixture weights lowers the cap by the gain, on a cover of sixteen intervals. The row06/row07 interval uses
+the weight $12/25$; on the row12/row13 interval the weight changes from $3/5$ to $22/25$ at $1758/2000$.
 
 The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
 At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine
@@ -122,6 +123,7 @@ None of these is the current bound.
 
 | number | what it is | where |
 |---|---|---|
+| `1.40191478` | an earlier lower bound of this repository: the shared gate with its first parameters (gain $2/10^6$) | git history |
 | `1.4019109461` | an earlier lower bound of this repository: the sharp envelope alone, $1/((1-\nu)\hat B_*+\nu) = 1.401910946113565640\ldots$ | `SharpEnvelope.endpoint`, `SharpEnvelope.rounded_lt` (`Grothe/Lower/Cert/SharpEnvelope.lean`) |
 | `1.40191` | an earlier lower bound of this repository, $1.40191 < K$: the same witness and rows with an envelope of fixed mixtures, $B_{\mathrm{env}} = 7064131/10^7$ and $1/B = 1.4019103\ldots$ | `envB`, `lower_bound_of_tailNodeCaps` (`Grothe/LowerAnalytic/LowerBound.lean`) |
 | `1.4018` | the design target of the lower certificate | `research/identity-tail/` |
@@ -146,5 +148,5 @@ None of these is the current bound.
    bound and the project skill, until the script passes. Add the old value to the table above and, if it must not
    reappear in `README.md` or the skill, to `RETIRED` in the script.
 
-The article in `haagerup-article/` and its Lean package are a frozen, independent work. The article states the
+The article in `haagerup-article/` is frozen and has its own Lean package under `haagerup-article/anc/`. The article states the
 bound of its own package. It does not quote the repository's bounds, and is not updated when they change.

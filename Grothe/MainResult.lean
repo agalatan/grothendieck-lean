@@ -4,7 +4,7 @@ import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.SharedGateBound
 
 /-!
-# The main result: `1.40191478 < K_G^ℂ ≤ 1.404556407`
+# The main result: `1.4019156097 < K_G^ℂ ≤ 1.404556407`
 
 The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`, without
 hypotheses: `main_bounds`.
@@ -37,9 +37,9 @@ theorem shared_gate_endpoint :
 /-- **The main result**: the exact lower endpoint rounded strictly downward, and the six-channel upper bound
 rounded up. -/
 theorem main_bounds :
-    (140191478 / 100000000 : ℝ) < complexGrothendieckConstant ∧
+    (14019156097 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404556407 / 1000000000 := by
-  have hlo : (140191478 / 100000000 : ℝ) < complexGrothendieckConstant := by
+  have hlo : (14019156097 / 10000000000 : ℝ) < complexGrothendieckConstant := by
     refine lt_of_lt_of_le ?_ shared_gate_endpoint
     simpa only [Rat.cast_div, Rat.cast_ofNat] using
       (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SharedGate.rounded_lt

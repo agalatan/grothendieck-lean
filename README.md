@@ -3,7 +3,7 @@
 This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.40191478 < K_G^{\mathbb C} \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots
+1.4019156097 < K_G^{\mathbb C} \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
@@ -15,7 +15,7 @@ value, which resolves this conjecture of Haagerup.
 
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
-| lower bound | $1.40191478 < K_G^{\mathbb C}$ | `140191478 / 100000000` | `Grothe.Statement.main_bounds` (first part) |
+| lower bound | $1.4019156097 < K_G^{\mathbb C}$ | `14019156097 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
 | upper bound | $K_G^{\mathbb C} \le 1.404556407$ | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSix.constant_le` |
 | Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperSix.constant_lt_inv_gammaDagger` |
 
@@ -33,7 +33,7 @@ Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's v
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.40191478 < K}$ | $\mathbf{K\le 1.404556407}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4019156097 < K}$ | $\mathbf{K\le 1.404556407}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -47,10 +47,10 @@ thus resolving this conjecture of Haagerup (1987).
 - **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
   rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
 - **The Lean proof.** The article's ancillary folder [`haagerup-article/anc/`](haagerup-article/anc) is a
-  standalone Lean package that proves the article's bound without hypotheses. The article and its package are a
-  frozen, independent work: the package has its own Lake files and its own CI job (build and axioms), and neither
-  is updated when the bounds of this repository change. The upper bound of `main_bounds` is stronger; it comes
-  from a sharper certificate for the same six channels ([the upper bound](#the-upper-bound)).
+  Lean package of its own that proves the article's bound without hypotheses. The article is frozen: it states
+  its own bound and is not updated when the bounds of this repository change. The upper bound of `main_bounds`
+  is stronger; it comes from a sharper certificate for the same six channels
+  ([the upper bound](#the-upper-bound)).
   [Build instructions and trust](haagerup-article/anc/README.md) · [The article's exact bound](docs/CONSTANTS.md#other-numbers-you-will-meet).
 - **How it was found.** The construction was found by numerical optimisation with the assistance of AI systems,
   at the end of this project; the search is not part of the proof.
@@ -186,7 +186,7 @@ An older proof with a single rounding channel is still in the repository. It is 
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
 | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorem `main_bounds` with both bounds; the six-channel upper bound and the comparison with Haagerup's value |
 | `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six-channel upper proof: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
-| `haagerup-article/` | the article and its standalone Lean package `anc/`: a frozen, independent work with its own CI job |
+| `haagerup-article/` | the article, frozen, with its own Lean package under `anc/` |
 | `Grothe/UpperClose.lean` | certified energy-table accuracy `hclose_final` |
 | `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |
 | `Grothe/UpperTightBudget.lean`, `Grothe/UpperTightComparison.lean` | single-channel budgets and the comparison with independent reference mass and error radii |
