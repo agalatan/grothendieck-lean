@@ -6,11 +6,12 @@ proves, exactly as Lean states it, and explains the other numbers that appear in
 
 ## The current bounds
 
-$$1.402 < K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$\frac{200000000000}{142653086453} \le K \le 1.404556407 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.402` | `1402 / 1000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
+| tight shared-gate lower bound | `1.402002613283…` | `200000000000 / 142653086453` | `Grothe.Statement.tight_shared_endpoint`, `Grothe.Lower.TightShared.endpoint_eq` | `Grothe/MainResult.lean`, `Grothe/Lower/TightSharedEnvelope.lean` |
+| lower bound in `main_bounds` (strict) | `1.402` | `1402 / 1000` | `Grothe.Statement.main_bounds`, first part; `Grothe.Statement.lower_target` | `Grothe/MainResult.lean` |
 | shared-gate scalar-row lower bound (strict) | `1.4019156097` | `14019156097 / 10000000000` | `Grothe.Statement.lower_bound_shared_gate` | `Grothe/MainResult.lean` |
 | sharp scalar-row lower bound (strict) | `1.4019109461` | `14019109461 / 10000000000` | `Grothe.Statement.lower_bound_sharp` | `Grothe/MainResult.lean` |
 | root upper bound, rounded | `1.404556407` | `1404556407 / 1000000000` | `Grothe.Statement.main_bounds_phase`, second part | `Grothe/MainResult.lean` |
@@ -87,6 +88,10 @@ The witness is $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$ 
 The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
 At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine
 at $v=c\delta/(\hat\varepsilon\tau)$. Lean checks both branches in the kernel. [Mass-row certificate](../Grothe/Lower/Cert/MassRow.lean).
+
+### Pricing the same gate on the tightened rows
+
+The two tightened law bounds leave a further deduction because both rows constrain the same Gaussian coefficients. At residual scale $\tau\ge9/40$, completing the square for the sum of their gates saves at least $S=(1018/10^7)(9/40)^2=41229/8000000000$ across the two rows. At smaller scales the existing quadratic majorant of row08 saves at least $S$ relative to its tightened cap. Each of the seven cells mixing rows 08 and 09 can therefore deduct $\min(\theta,1-\theta)S$. Checking all 38 cells gives $\hat B\le70636501/10^8$. With identity-tail weight $47/2000$, the reciprocal of the resulting witness cap is exactly $200000000000/142653086453$. [Envelope](../Grothe/Lower/TightSharedEnvelope.lean) · [Gaussian reduction and transfer](../Grothe/LowerAnalytic/TightSharedBound.lean)
 
 ### Refinements of the earlier scalar-row certificate
 

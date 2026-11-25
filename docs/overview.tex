@@ -30,11 +30,14 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.402\;<\;\KG\;\le\;1.404556407$\\[6pt]
-\normalsize The Lean~4/Mathlib theorem \lean{Grothe.Statement.main\_bounds\_phase} proves these bounds without hypotheses
-(and \lean{Grothe.Statement.main\_bounds} proves $1.402<\KG\le 1.40455741$).
+\Large $\frac{200000000000}{142653086453}\;\le\;\KG\;\le\;1.404556407$\\[6pt]
+\normalsize The Lean~4/Mathlib theorems \lean{Grothe.Statement.tight\_shared\_endpoint}
+and \lean{Grothe.Statement.main\_bounds\_phase} supply the lower and upper inequalities.
+The latter theorem states the rounded lower bound $1.402<\KG$.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The lower bound is \lean{lower\_target}, with the exact rational $1402/1000$, obtained by antiholomorphic Stein tightening on rows $0.835$ and $0.845$ with the certified cubic radius $93/100$.
+At residual scale $\tau\ge9/40$, the common gate improves the sum of the two tightened row bounds
+by at least $(1018/10^7)(9/40)^2$. At smaller scales the row08 quadratic majorant supplies the same
+saving. The 38-cell envelope gives a witness cap with reciprocal $1.402002613283\ldots$.
 The six Gaussian rounding channels give the upper bound rounded up to $1404556407/1000000000$ (article upper bound $140455741/100000000$).\vspace{4pt}
 \end{minipage}}
 \end{center}

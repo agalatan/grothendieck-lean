@@ -67,15 +67,13 @@ theorem rowOf_of_circular (r : Row) (cap : ℚ)
   push_cast
   nlinarith [hV, hG, hsq, hbd]
 
-/-- **Tightened envelope cap on the hat value**: combining the mass row, the 12 existing rows, and
-the two antiholomorphic Stein rows (`row08`, `row09`) gives `V ≤ envBTight` for `t ∈ [0, 9/10]`. -/
-theorem profile_bound_tight (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
+/-- All tight scalar rows and the mass tangent, before pricing a cell of the envelope. -/
+theorem tight_scalar_rows (V t : ℝ) (Qh v : E)
     (hmass : V ≤ (1 - 1 / 2) * t ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖Qh‖ ^ 2)
-    (hred : CircularSharedReduction rowData V t Qh v) : V ≤ (envBTight : ℝ) := by
+    (hred : CircularSharedReduction rowData V t Qh v) :
+    ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v := by
   obtain ⟨d, J, A, B, X1, X2, X3, τ, x, hA, haa, hc, hM, hGI, hτ0, hτ93, hτρ, hX, hshared⟩ := hred
   have hS : SteinCut (stdGaussian d) (fun y => eval y (radU A B)) := steinCut_of_inputs _ hM hGI
-  refine envPure_bound envRowsTight massS envBTight envCellsTight certEnvelopeTight
-    (Qh := Qh) hv ht0 ht1 ?_
   rintro (_ | k) m a h
   · cases h
     exact rowOf_massTangent hmass m v
@@ -111,16 +109,34 @@ theorem profile_bound_tight (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 :
     | 13 => simp [rowDataTight] at hr'; subst hr'; exact hplain row14 (by simp [rowData]) (rowFacts_of_checkRow _ certRow14)
     | k + 14 => simp [rowDataTight] at hr'
 
-/-- **Tightened scalar cap of the witness** `(191/250, 47/2000)`, modulo the unchanged node caps. -/
-theorem witnessCap_tight (hcaps : TailNodeCaps (nuHat (47 / 2000))) (n : ℕ) (hn : 2 ≤ n) :
-    WitnessCap n (191 / 250) (47 / 2000) ((1 - 47 / 2000) * (envBTight : ℝ) + 47 / 2000) := by
+/-- **Tightened envelope cap on the hat value**: combining the mass row, the 12 existing rows, and
+the two antiholomorphic Stein rows (`row08`, `row09`) gives `V ≤ envBTight` for `t ∈ [0, 9/10]`. -/
+theorem profile_bound_tight (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
+    (hmass : V ≤ (1 - 1 / 2) * t ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖Qh‖ ^ 2)
+    (hred : CircularSharedReduction rowData V t Qh v) : V ≤ (envBTight : ℝ) := by
+  exact envPure_bound envRowsTight massS envBTight envCellsTight certEnvelopeTight hv ht0 ht1
+    (tight_scalar_rows V t Qh v hmass hred)
+
+/-- Transfer any uniform bound on the simultaneous circular profile to the identity-tail witness. -/
+theorem witnessCap_of_circular_profile {B : ℝ}
+    (hp : ∀ {F : Type} [NormedAddCommGroup F] [InnerProductSpace ℝ F] (V t : ℝ) (Qh v : F),
+      ‖v‖ ^ 2 = 2 → 0 ≤ t → t ≤ 9 / 10 →
+      V ≤ (1 - 1 / 2) * t ^ 2 + 1 / 2 + (massS : ℝ) - (ε : ℝ) * ‖Qh‖ ^ 2 →
+      CircularSharedReduction rowData V t Qh v → V ≤ B)
+    (hcaps : TailNodeCaps (nuHat (47 / 2000))) (n : ℕ) (hn : 2 ≤ n) :
+    WitnessCap n (191 / 250) (47 / 2000) ((1 - 47 / 2000) * B + 47 / 2000) := by
   have he : epsHat (191 / 250) (47 / 2000) = ε := by norm_num [epsHat, ε]
   have hν : 2 * nuHat (47 / 2000) + 1 / 2 = (massC : ℝ) := by norm_num [nuHat, massC]
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
   refine witnessCap_of_VhatOf_le (m + 1) (by norm_num) fun f g hf hg _ => ?_
   obtain ⟨v, hv, hshared⟩ := circularReductionHyp_of_nodeCaps he hcaps (n := m) (by omega) f g hf hg
-  exact profile_bound_tight _ _ _ v hv (norm_nonneg _) (tOf_le (m + 1) hf hg)
+  exact hp _ _ _ v hv (norm_nonneg _) (tOf_le (m + 1) hf hg)
     (massRow_frame (m + 1) (by omega) he hν hf hg) hshared
+
+/-- **Tightened scalar cap of the witness** `(191/250, 47/2000)`, modulo the unchanged node caps. -/
+theorem witnessCap_tight (hcaps : TailNodeCaps (nuHat (47 / 2000))) (n : ℕ) (hn : 2 ≤ n) :
+    WitnessCap n (191 / 250) (47 / 2000) ((1 - 47 / 2000) * (envBTight : ℝ) + 47 / 2000) :=
+  witnessCap_of_circular_profile (@profile_bound_tight) hcaps n hn
 
 /-- **Tightened lower bound, modulo the unchanged node caps**:
 `K ≥ 1 / ((1 − 47/2000) envBTight + 47/2000) > 1.402` for every Grothendieck bound `K`. -/

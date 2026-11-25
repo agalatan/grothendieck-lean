@@ -33,6 +33,8 @@ import Grothe
 #print axioms Grothe.Lower.SharpEnvelope.endpoint_eq
 #print axioms Grothe.Lower.SharpEnvelope.exact_scalar_cap
 #print axioms Grothe.Lower.SharpEnvelope.scalar_contact
+#print axioms Grothe.Lower.TightShared.endpoint_eq
+#print axioms Grothe.Lower.TightShared.profile_bound
 #print axioms Grothe.Lower.affineEnvelope_bound
 #print axioms Grothe.Lower.budget_of_bud
 #print axioms Grothe.Lower.certEnvelope
@@ -250,6 +252,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.tenS_eq_gram
 #print axioms Grothe.LowerAnalytic.tenS_le_sq_sum
 #print axioms Grothe.LowerAnalytic.tenTT_le_sixth
+#print axioms Grothe.LowerAnalytic.tightShared_deductions
 #print axioms Grothe.LowerAnalytic.trace3_circular
 #print axioms Grothe.LowerAnalytic.trace4_circular
 #print axioms Grothe.LowerAnalytic.transferInputs_of_witnessCap
@@ -274,6 +277,8 @@ import Grothe
 #print axioms Grothe.Statement.sharedGateEndpoint_le_of_tailNodeCaps
 #print axioms Grothe.Statement.shared_gate_endpoint
 #print axioms Grothe.Statement.sharp_lower_endpoint
+#print axioms Grothe.Statement.tightSharedEndpoint_le_of_tailNodeCaps
+#print axioms Grothe.Statement.tight_shared_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upperBelow_of_constant_lt
 #print axioms Grothe.Statement.upper_below_tight

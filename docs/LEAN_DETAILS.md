@@ -1514,6 +1514,8 @@ The Gaussian weighted Gram instantiation and a certificate that tracks `D`
 remain unformalized (the rows and the envelope of the lower bound do not track
 it); these lemmas do not strengthen `main_bounds`.
 
+The strongest lower endpoint is `Grothe.Statement.tight_shared_endpoint`. The two tightened antiholomorphic Stein rows also obey a common Gaussian gate. `tightShared_deductions` proves a uniform joint deduction using their actual shared variables. `TightShared.profile_bound` checks all 38 cells at hat cap `70636501/100000000`, and `tightShared_lower_of_tailNodeCaps` transfers that cap to matrices. The exact endpoint is `200000000000/142653086453`. The envelope and the new gate arithmetic use kernel reduction. [Analytic proof](../Grothe/LowerAnalytic/TightSharedBound.lean) · [Finite envelope](../Grothe/Lower/TightSharedEnvelope.lean)
+
 ## Module map (selected groups)
 
 **`Grothe/UpperChaos/`: the upper bound for the concrete rounding**

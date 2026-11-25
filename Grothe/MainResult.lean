@@ -4,6 +4,7 @@ import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.SharpEnvelopeBound
 import Grothe.LowerAnalytic.SharedGateBound
+import Grothe.LowerAnalytic.TightSharedBound
 
 /-!
 # The main result: `1.402 < K_G^ℂ ≤ 1.40455741`
@@ -46,6 +47,11 @@ theorem lower_bound_sharp :
 theorem shared_gate_endpoint :
     (Grothe.Lower.SharedGate.endpoint : ℝ) ≤ complexGrothendieckConstant :=
   sharedGateEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
+
+/-- The tightened circular rows, coupled at their common gate, give this exact lower endpoint. -/
+theorem tight_shared_endpoint :
+    (Grothe.Lower.TightShared.endpoint : ℝ) ≤ complexGrothendieckConstant :=
+  tightSharedEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
 
 /-- The common-gate lower endpoint rounded strictly downward to ten decimals. -/
 theorem lower_bound_shared_gate :

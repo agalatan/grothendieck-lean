@@ -24,7 +24,8 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 variable {Ω : Type} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]
 variable {U : Ω → ℝ} {X1 X2 X3 : Ω → ℂ} {τ x V t : ℝ} {Qh v : E}
 
-private noncomputable def surplus (r : Row) (μ : Measure Ω) (X1 X2 X3 : Ω → ℂ) (τ : ℝ) : ℝ :=
+/-- The part of the expected row gate above its original scalar price. -/
+noncomputable def surplus (r : Row) (μ : Measure Ω) (X1 X2 X3 : Ω → ℂ) (τ : ℝ) : ℝ :=
   (∫ ω, r.gate (X1 ω) (X2 ω) (X3 ω) ∂μ) - (baseline r : ℝ) * τ ^ 2
 
 private theorem gate_sum (a b : Row) (z u v : ℂ) :
@@ -34,18 +35,20 @@ private theorem gate_sum (a b : Row) (z u v : ℂ) :
   ring
 
 omit [IsProbabilityMeasure μ] in
-private theorem surplus_nonneg (r : Row) (hr : RowFacts r) (hM : Moments μ U x)
+theorem surplus_nonneg (r : Row) (hok : gateOK r.N = true)
+    (hk : r.kappa * r.delta ^ 2 ≤ r.delta + gatePrice r.N r.g1 r.g2 r.g3)
+    (hM : Moments μ U x)
     (hX : ∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω)
     (hg : Integrable (fun ω => r.gate (X1 ω) (X2 ω) (X3 ω)) μ) :
     0 ≤ surplus r μ X1 X2 X3 τ := by
   have hp : baseline r ≤ gatePrice r.N r.g1 r.g2 r.g3 := by
     unfold baseline
-    linarith only [hr.2.2.1]
+    linarith only [hk]
   exact sub_nonneg.mpr ((mul_le_mul_of_nonneg_right ((Rat.cast_le (K := ℝ)).mpr hp) (sq_nonneg τ)).trans
-    (gate_integral_ge r.N r.g1 r.g2 r.g3 hr.2.1 X1 X2 X3 τ hX hM hg))
+    (gate_integral_ge r.N r.g1 r.g2 r.g3 hok X1 X2 X3 τ hX hM hg))
 
 omit [IsProbabilityMeasure μ] in
-private theorem pair_surplus (hM : Moments μ U x) (hX : ∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω)
+theorem pair_surplus (hM : Moments μ U x) (hX : ∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω)
     (h8 : Integrable (fun ω => row08.gate (X1 ω) (X2 ω) (X3 ω)) μ)
     (h9 : Integrable (fun ω => row09.gate (X1 ω) (X2 ω) (X3 ω)) μ) :
     (gateExcess : ℝ) * τ ^ 2 ≤ surplus row08 μ X1 X2 X3 τ + surplus row09 μ X1 X2 X3 τ := by
@@ -61,16 +64,23 @@ private theorem pair_surplus (hM : Moments μ U x) (hX : ∀ ω, ‖X1 ω‖ ^ 2
   unfold surplus
   nlinarith only [hpoint, mul_le_mul_of_nonneg_right hp (sq_nonneg τ)]
 
-private theorem saved_row (r : Row) (reserve : ℚ) {Ψ : ℝ → ℝ}
+/-- Keep the gate surplus when the law layer supplies a new cap for the same row. -/
+theorem saved_row_with_cap (r : Row) (cap reserve : ℚ) {Ψ : ℝ → ℝ}
     (hr : RowSharedWith r Ψ μ U X1 X2 X3 τ V t Qh v)
-    (hlaw : Goal μ U (fun s => Ψ s - capPad) r.kappa (r.cap - reserve) (r.delta * τ)) :
-    RowHolds ε r.ell r.beta ((r.env.C : ℝ) - ((reserve : ℝ) + surplus r μ X1 X2 X3 τ)) V t Qh v := by
+    (hlaw : Goal μ U (fun s => Ψ s - capPad) r.kappa (cap - reserve) (r.delta * τ)) :
+    RowHolds ε r.ell r.beta ((({ r with cap := cap } : Row).env.C : ℝ) - ((reserve : ℝ) + surplus r μ X1 X2 X3 τ)) V t Qh v := by
   obtain ⟨_, hf, _, hV⟩ := hr
   have hb := hlaw (hf.sub (integrable_const _))
   rw [integral_sub hf (integrable_const _), integral_const, probReal_univ, one_smul] at hb
   unfold RowHolds Row.env surplus baseline
   push_cast at hb ⊢
   nlinarith only [hV, hb]
+
+private theorem saved_row (r : Row) (reserve : ℚ) {Ψ : ℝ → ℝ}
+    (hr : RowSharedWith r Ψ μ U X1 X2 X3 τ V t Qh v)
+    (hlaw : Goal μ U (fun s => Ψ s - capPad) r.kappa (r.cap - reserve) (r.delta * τ)) :
+    RowHolds ε r.ell r.beta ((r.env.C : ℝ) - ((reserve : ℝ) + surplus r μ X1 X2 X3 τ)) V t Qh v :=
+  saved_row_with_cap r r.cap reserve hr hlaw
 
 private theorem full_law (r : Row) (hr : RowFacts r) (hM : Moments μ U x) (hS : SteinCut μ U)
     (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ) {Ψ : ℝ → ℝ}
@@ -105,8 +115,8 @@ private theorem active_rows (hred : SharedReduction rowData V t Qh v) :
   have f9 := rowData_facts row09 mem9
   let s8 := surplus row08 μ X1 X2 X3 τ
   let s9 := surplus row09 μ X1 X2 X3 τ
-  have z8 : 0 ≤ s8 := surplus_nonneg row08 f8 hM hX h8.2.2.1
-  have z9 : 0 ≤ s9 := surplus_nonneg row09 f9 hM hX h9.2.2.1
+  have z8 : 0 ≤ s8 := surplus_nonneg row08 f8.2.1 f8.2.2.1 hM hX h8.2.2.1
+  have z9 : 0 ≤ s9 := surplus_nonneg row09 f9.2.1 f9.2.2.1 hM hX h9.2.2.1
   have H9 : RowHolds ε row09.ell row09.beta ((row09.env.C : ℝ) - s9) V t Qh v := by
     simpa only [Rat.cast_zero, zero_add] using saved_row row09 0 h9 (full_law row09 f9 hM hS hτ0 hτ1 h9.1)
   by_cases hcut : τ ≤ (smallCut : ℝ)
