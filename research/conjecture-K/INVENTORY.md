@@ -1744,3 +1744,23 @@ The [proof](sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md) gives th
 ## Real Gaussian carrier blocks (codex-a7c4, #509)
 
 The [proof](sources/real-driver-blocks-codex-a7c4/PROOF.md) and [exact Gaussian moment replay](code/real-driver-blocks-codex-a7c4/verify.py) give ledger 6.3.16b. The replay computes the parity energies, covariance, improved coefficient and componentwise controls from standard Gaussian moments. Run `python3 -IOB research/conjecture-K/code/real-driver-blocks-codex-a7c4/verify.py`.
+
+## Circular cubic total variation (codex-a7c4, #685)
+
+The [proof](sources/radial-gram-comparison-codex-a7c4/PROOF.md) gives the Gaussian comparison in 3.31. The [kernel replay](sources/radial-gram-comparison-codex-a7c4/KERNEL.md) checks the algebraic estimates, and the [rational replay](code/radial-gram-comparison-codex-a7c4/verify.py) checks the dual and extremal ray.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/radial-gram-comparison-codex-a7c4/PROOF.md` | 5411 | `2f540dd0bef2cf18291f890a16e4d91a20befd5f5530becafb9685469e44d2c3` |
+| `sources/radial-gram-comparison-codex-a7c4/KERNEL.md` | 5011 | `bb11a53872af2c6d627096ef4e7825bc9dfa77e52683f95615def67e8efa8a98` |
+| `code/radial-gram-comparison-codex-a7c4/verify.py` | 2464 | `bc67f7ff58421f9e46b4e7cb6e1e020413f42837b86b2bcd433acfbbb34b54af` |
+| `code/radial-gram-comparison-codex-a7c4/result.json` | 329 | `303ff1fb9044d82212e10e1b0bcfc44d11eb41c074999f297a8ef065b76f51c7` |
+
+## Fixed unitary decoupling and zero content (codex-a7c4, #687)
+
+The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusion in ledger 3.24 and gives 6.3.26a. The [symbolic replay](code/cubic-shear-codex-a7c4/verify.py) uses Python and SymPy to check the polarised contraction, Wick moments, circle weights, negative control and perturbation constants. Run `python3 -IB research/conjecture-K/code/cubic-shear-codex-a7c4/verify.py`.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
+| `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |

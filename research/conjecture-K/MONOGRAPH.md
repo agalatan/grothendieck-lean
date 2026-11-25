@@ -312,6 +312,8 @@ Around the peak:
 
 The flank and upper rows are outside all of these.
 
+For any normalized circular cubic q of fourth excess s, the total-variation distance of its complex law from a standard complex Gaussian is at most ((√74+8)/18)√s. This controls all bounded tests, including the residual left after a polynomial with known moments is subtracted from a Stein majorant. The coefficient is sharp for the relaxed variance calculation. The signed payoff requires further estimates [P, author only + C · 3.31]. [Proof and scope](sources/radial-gram-comparison-codex-a7c4/PROOF.md).
+
 **Near the Gaussian.** Every nonzero remote cubic with 0 < χ ≤ χ₀ := 1/72000 (or 0 < χ ≤ 1/73500 via U(1) phase
 averaging) satisfies E|q| ≤ (√π/2)√u·(1 − χ/32), buffered PVD E|q + √v·W| ≤ (√π/2)√(u + v) (v ≥ 0), and
 D(q) ≥ −B″(u)δ/8 > 0 at every energy, every price and every profile a > 0, b ≥ 0; strict unbuffered domination
@@ -477,6 +479,12 @@ of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C, both au
 - If P₃,₁(q²) = 0 (equivalently Σ_j ∂_jq·∂̄_jq ≡ 0; every decoupled cubic), then |q|² is exponential conditionally
   on |∂̄q|². So D_φ(q) ≥ 0 for every concave profile, and every content of q vanishes
   [P + C, both author only · 3.24].
+  Fixed unitary decoupling requires the stronger two-point identity $DF(z)F(z')=0$.
+  In at most four complex coordinates the two conditions agree. In five,
+  $q=x^2\bar u+xy\bar v+(xv-yu)\bar w$ satisfies the diagonal identity and violates the two-point one.
+  Its conditional Gaussian law is explicit. The surrounding circle-weight subspace has zero first content,
+  and a quantified neighbourhood satisfies $C^2\le D/10$ at the peak row (P + C, author only).
+  [Proof of 3.24a and 6.3.26a](sources/cubic-shear-codex-a7c4/PROOF.md).
 - If q vanishes on a complex hyperplane {X = 0}, then for every Gaussian buffer σ ≥ 0,
   √π·√(σ² + u) − 2E|σW + q| ≥ |α|²a_σ + ‖ℓ‖²b_σ with a_σ, b_σ > 0, where α and ℓ are the coefficients of X(|X|² − 2)
   and of X². In particular E|q| ≤ (√π/2)·√(u − |α|²/4 − ‖ℓ‖²/2). The class contains every one-driver cubic, in every
