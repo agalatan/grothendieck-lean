@@ -399,7 +399,7 @@ radius (0.9142), so the proved bound gives neither. This is for the one degree-9
 degree-9 game was tested.
 
 **So for a certificate of this type that charges ρ₀ = 2287/2500, degree 7 does not make 1.403 easier**: in the stored
-score model every degree-7 game with ε ≤ (1/1.403)/ρ₀² = 0.85171 has norm above 0.7123933909 without tail and
+score model every degree-7 game with ε ≤ (1/1.403)/ρ₀² = 6250000000/7338207707 ≈ 0.851707 has norm above 0.7123933909 without tail and
 0.7123931399 with one, that is at most 1.403719 and 1.403720 (exact weights on three and four pool rows that cancel
 the free higher coefficients, the weighted cubic coefficient being positive; codex-a7c4, review of PR #711;
 `CODE/ceiling/pool_certificate.py`), against 1.403646 and 1.403741 for degree 5 without that cap: a room of at most
