@@ -1497,3 +1497,8 @@ Grothe.head_residual_le
 Grothe.linear_lower
 Grothe.tail_le
 Grothe.tail_numeric
+Haagerup.SixChannelExact.exists_paid_six_values
+Haagerup.SixChannelExact.mixture_score_le_dual
+Haagerup.SixChannelExact.paid_six_score_le
+Haagerup.SixChannelExact.paid_six_score_lt_seven
+Haagerup.SixChannelExact.sixDual_check

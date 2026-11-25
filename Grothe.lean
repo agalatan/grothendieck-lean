@@ -4784,6 +4784,7 @@ import Grothe.UpperSixExact.Bound
 import Grothe.UpperSixExact.Contour
 import Grothe.UpperSixExact.Head
 import Grothe.UpperSixExact.Parameters
+import Grothe.UpperSixExact.ScoreCeiling
 import Grothe.UpperSixExact.VariableCutoff
 import Grothe.UpperTarget
 import Grothe.UpperTightBudget

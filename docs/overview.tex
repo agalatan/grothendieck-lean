@@ -99,7 +99,7 @@ Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
 Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4019156097}$ & $\mathbf{1.404556407}$\\\bottomrule
 \end{tabular}
 \end{center}
-The upper bound is $1404556407/1000000000$ (six Gaussian rounding channels; the certificate's value $1/(c-\delta)$ rounded up).
+The upper bound is $1404556407/1000000000$ (the transfer factor $1/(c-\delta)$ rounded up).
 For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
 a separate estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404556407<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
@@ -804,6 +804,11 @@ The signed sum uses the coefficients with $n<m_p$ and pads each list with zeros.
 The true mixture differs from this polynomial by at most
 $\sum_p w_p\sum_{n\ge m_p}|h_p(n)|$ in $\ell^1$.
 The resulting finite-matrix bound is \lean{convex\_transfer\_variable\_ival}.
+
+For the six established channels, a common rational vector in the 320-dimensional cube
+bounds the signed transfer score by $0.7119685648573$ for every real convex weight vector.
+The proof fixes each map, preprocessor, coefficient cutoff and tail allowance. Its finite
+comparison uses the actual dyadic enclosures (\path{Grothe/UpperSixExact/ScoreCeiling.lean}).
 
 Separate paper results in the Conjecture K monograph strengthen the common-response
 energy ellipsoid and reduce a joint-sector estimate to a specified pointwise remainder
