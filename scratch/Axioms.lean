@@ -118,6 +118,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.CoupledStein.actual_deductions
 #print axioms Grothe.LowerAnalytic.CoupledStein.approxDiscount_le
 #print axioms Grothe.LowerAnalytic.CoupledStein.discount_chord_le
+#print axioms Grothe.LowerAnalytic.CoupledStein.lower_of_nodeCaps
 #print axioms Grothe.LowerAnalytic.CoupledStein.profile
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
@@ -238,8 +239,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.rowOf_of_circular
 #print axioms Grothe.LowerAnalytic.rowSharedWith_frame
 #print axioms Grothe.LowerAnalytic.scalar_sixth
-#print axioms Grothe.LowerAnalytic.sharedGate_lower_of_tailNodeCaps
-#print axioms Grothe.LowerAnalytic.sharedGate_profile
 #print axioms Grothe.LowerAnalytic.sharedReduction_frame
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
 #print axioms Grothe.LowerAnalytic.sixth_moment_circular
@@ -276,7 +275,6 @@ import Grothe
 #print axioms Grothe.Statement.le_constant_of_lowerAbove
 #print axioms Grothe.Statement.lt_constant_of_lowerAbove
 #print axioms Grothe.Statement.main_bounds
-#print axioms Grothe.Statement.sharedGateEndpoint_le_of_tailNodeCaps
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upperBelow_of_constant_lt
 #print axioms Grothe.Statement.upper_below_tight

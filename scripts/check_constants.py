@@ -64,9 +64,9 @@ POWER = re.compile(r"(?:\(\s*10\s*:\s*ℝ\s*\)|10)\s*\^\s*(\d+)\s*/\s*(\d+)")
 # documents in which an older bound may not appear at all (elsewhere it may, named as what it is)
 STRICT = ["README.md", ".claude/skills/lean-grothe/SKILL.md"]
 # older bounds of this repository: the lower bounds 1.4018 (a design target), 1.401700322371, 1.40191,
-# 1.4019109461 and 1.40191478, and the upper bounds 1.40457588, 1.40455742, 1.40455741 and 1.40455641
-RETIRED = ["1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.40457588", "1.40455742",
-           "1.40455741", "1.40455641"]
+# 1.4019109461, 1.40191478 and 1.4019156097, and the upper bounds 1.40457588, 1.40455742, 1.40455741 and 1.40455641
+RETIRED = ["1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.4019156097", "1.40457588",
+           "1.40455742", "1.40455741", "1.40455641"]
 
 # Each statement is matched whole, from the name to the `:=` of the declaration, in the text without comments: a
 # right-hand side such as `N / D + 1` is not a bound that this script understands, and is refused.

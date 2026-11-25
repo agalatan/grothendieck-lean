@@ -3443,7 +3443,6 @@ import Grothe.LowerAnalytic.RadiusRows.Row22
 import Grothe.LowerAnalytic.Reduction
 import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.Rows
-import Grothe.LowerAnalytic.SharedGateBound
 import Grothe.LowerAnalytic.SharpRadius
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.SixthMomentData

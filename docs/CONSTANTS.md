@@ -109,6 +109,7 @@ None of these is the current bound.
 
 | number | what it is | where |
 |---|---|---|
+| `1.4019156097` | an earlier lower bound of this repository: the sharp envelope of the scalar rows with the common Gaussian gate of rows `0.835` and `0.845` (gain $243/10^8$, $1/B = 1.401915609708473171\ldots$) | `SharedGate.endpoint`, `SharedGate.rounded_lt` (`Grothe/Lower/Cert/SharedGate.lean`) |
 | `1.40191478` | an earlier lower bound of this repository: the shared gate with its first parameters (gain $2/10^6$) | git history |
 | `1.4019109461` | an earlier lower bound of this repository: the sharp envelope alone, $1/((1-\nu)\hat B_*+\nu) = 1.401910946113565640\ldots$ | `SharpEnvelope.endpoint`, `SharpEnvelope.rounded_lt` (`Grothe/Lower/Cert/SharpEnvelope.lean`) |
 | `1.40191` | an earlier lower bound of this repository, $1.40191 < K$: the same witness and rows with an envelope of fixed mixtures, $B_{\mathrm{env}} = 7064131/10^7$ and $1/B = 1.4019103\ldots$ | `envB`, `lower_bound_of_tailNodeCaps` (`Grothe/LowerAnalytic/LowerBound.lean`) |

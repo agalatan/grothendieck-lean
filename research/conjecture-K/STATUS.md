@@ -203,7 +203,7 @@ P = p − 9/25 = 0.962052, 𝒥(q, r) = 2E\|L + q + A·r\| − P‖r‖² − F(
    thirteen central rows at ε = 94/125 then admit > 10⁻⁴ on every row (minimum > 1.021·10⁻⁴, Row 8 inside 3.15 and
    11.53; 8.13, benchmarks **C, author only**, premises open).
 10. **What K would give.** K_η with η ≤ 10⁻⁴ gives about 1.402; exact K about 1.4022; no certificate with the cubic
-   witness exceeds 1.4022581233 (12.2). The cubic witness without K gives 1.401700322371 (12.1); the Lean lower bound, a little above 1.4019, comes from the identity-tail witness (`research/identity-tail/`).
+   witness exceeds 1.4022581233 (12.2). The cubic witness without K gives 1.401700322371 (12.1); the Lean lower bound K_G^ℂ > 1.402 (`main_bounds`) comes from the identity-tail witness (`research/identity-tail/`).
 
 ## 2. The statement and its reductions
 
@@ -1222,6 +1222,6 @@ ordered by what a proof of 1.402 through Λ̂ needs first; part B lists what K n
 
 **C. Other routes to the same decimals** have their own ledgers. The identity-tail witness, designed for a Lean bound above
 1.4018 (section 10; [`../identity-tail/STATUS.md`](../identity-tail/STATUS.md)): its integer
-certificate, with a margin of 5.6·10⁻⁵ to 5000/7009, is in Lean since #525 and gives, with the sharp envelope of its rows and their shared gate, the proved lower bound (`main_bounds`). The games of degree 5 and higher ([`../higher-degree/STATUS.md`](../higher-degree/STATUS.md)): the open steps
+certificate, with a margin of 5.6·10⁻⁵ to 5000/7009, is in Lean since #525 and gives, after antiholomorphic Stein tightening of its two binding rows and the 93/100 cubic radius, the proved lower bound K_G^ℂ > 1.402 (`main_bounds`). The games of degree 5 and higher ([`../higher-degree/STATUS.md`](../higher-degree/STATUS.md)): the open steps
 are listed in section 5 of that ledger; the one that uses rows of this ledger (6.3.23 to 6.3.39 and 11.31a) is a
 content lemma on a band of energies, on the rows t ∈ [0.80, 0.855], open in both directions (4.28 there).

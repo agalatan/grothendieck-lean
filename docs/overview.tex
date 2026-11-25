@@ -770,10 +770,12 @@ has four layers.
  argument: a cover of the parameter space by pieces cut out by one to three linear constraints, up to two symmetries of
  the potential, with one S-lemma certificate per piece.
 \end{enumerate}
-\lean{sharedGate\_profile} assembles the rows, the mass row, the envelope and the shared gate into $\hat V\le\hat B$ for $t\in[0,9/10]$, and
-$t\le\sqrt\pi/2<9/10$ is proved. \lean{witnessCap\_of\_profile\_upper} turns this into the scalar cap $B$ of the witness, and the
-transfer gives $K\ge1/B$ for every Grothendieck bound $K$ (\lean{sharedGate\_lower\_of\_tailNodeCaps}). Its only hypothesis
-is the node caps, which \lean{tailNodeCaps\_cert} discharges. No form of Conjecture~K is assumed.
+\lean{CoupledStein.profile} combines the rows and the mass bound for $0\le t\le9/10$.
+The cubic first-moment inequality bounds the residual scale $\tau$ by $93/100$.
+Rows $0.835$ and $0.845$ share that scale, their fourth excess and the Gaussian gate.
+The resulting cap passes through \lean{witnessCap\_of\_circular\_profile} to the matrix transfer
+\lean{CoupledStein.lower\_of\_nodeCaps}. The certified node caps \lean{tailNodeCaps\_cert}
+then give $4000000000000/2853044560237\le\KG$ independently of Conjecture~K.
 
 \subsection{The primal/dual viewpoint}
 For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
@@ -829,7 +831,7 @@ lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{main\_bounds}, first part: the lower bound for $\KG$, hence for every Grothendieck bound, without hypotheses. The intermediate theorem \lean{sharedGate\_lower\_of\_tailNodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{main\_bounds}, first part: the lower bound for $\KG$, hence for every Grothendieck bound, without hypotheses. The intermediate theorem \lean{CoupledStein.lower\_of\_nodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
 the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices;
 the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
 (frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and
@@ -840,8 +842,9 @@ stored rational caps at the tabulated nodes): convexity of the potentials, the m
 prices on a polar grid, verified interval tables, the exact $LDL^{\mathsf T}$ check, and for the localised nodes the
 coverage by constrained pieces and the S-lemma
 &
-the checks of the 14 rows and their node caps, including the node ranges of each row, the coverage and pieces of
-every localised node, and the chord nodes of each row.
+the inherited scalar and spectral row checks for rows 01--07 and 10--14, and the node-cap checks
+for all fourteen potentials, including localised pieces and chord nodes. The kernel checks the
+two tightened row laws and the joint prices.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
 change, evaluates them on its own runner.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Earlier single-channel upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599395362$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders. The longer-prefix costs feed the actual comparison; \lean{Final.hclose\_final} supplies the head's table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
