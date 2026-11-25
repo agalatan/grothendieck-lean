@@ -256,20 +256,12 @@ private theorem transfer_bound : Statement.IsBound (1 / ((slope : ℝ) - (phaseR
   · exact hδc
 
 /-- Admissibility for every finite complex matrix at the exact rational endpoint. -/
-theorem isBound_phase :
+theorem isBound :
     Statement.IsBound ((10 : ℝ) ^ 27 / 711968558203721328194311213) := by
   have hv : 1 / ((slope : ℝ) - (phaseResidual : ℝ)) = (10 : ℝ) ^ 27 / 711968558203721328194311213 := by
     norm_num [slope, phaseResidual_eq]
   rw [← hv]
   exact transfer_bound
-
-/-- The previous exact finite-matrix bound follows from the stronger phase-channel bound. -/
-theorem isBound_exact :
-    Statement.IsBound ((10 : ℝ) ^ 27 / 711968557929438692542239077) := by
-  intro m n A
-  have hnonneg : 0 ≤ Statement.scalarOpt A :=
-    Real.sSup_nonneg fun r ⟨_, _, _, _, hr⟩ => hr ▸ norm_nonneg _
-  exact (isBound_phase m n A).trans (mul_le_mul_of_nonneg_right (by norm_num) hnonneg)
 
 end
 

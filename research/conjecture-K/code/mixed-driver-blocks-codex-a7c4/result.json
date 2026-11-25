@@ -1,0 +1,18 @@
+{
+  "low_covariance_cap": "70167789027883/300000000000000",
+  "high_covariance_margin": "79607/7500",
+  "rows": {
+    "peak": {
+      "nodes": 127,
+      "compact_boxes_visited": 3429
+    },
+    "flank": {
+      "nodes": 127,
+      "compact_boxes_visited": 1869
+    },
+    "upper": {
+      "nodes": 127,
+      "compact_boxes_visited": 585
+    }
+  }
+}

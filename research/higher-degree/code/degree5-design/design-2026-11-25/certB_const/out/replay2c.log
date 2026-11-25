@@ -1,0 +1,58 @@
+game: eps1 = 39/50, eta = 779/10000, radius input rho = 2287/2500, target 500/701
+direct small-t bound V <= 9221/10000 t^2 + 51107667483736967/78000000000000000: NOT replayed in this run (use --smallt)
+row 0.250L: caps 0 PASS | plain 1179 boxes (0 Stein) PASS, C 0.7670698543 matches (56s)
+row 0.300L: caps 0 PASS | plain 1200 boxes (0 Stein) PASS, C 0.8057742241 matches (58s)
+row 0.400L: caps 0 PASS | plain 1160 boxes (0 Stein) PASS, C 0.8670851850 matches (54s)
+row 0.500L: caps 0 PASS | plain 1172 boxes (0 Stein) PASS, C 0.9373005148 matches (47s)
+row 0.550L: caps 0 PASS | plain 1204 boxes (0 Stein) PASS, C 0.9599500733 matches (43s)
+row 0.600L: caps 0 PASS | plain 1279 boxes (0 Stein) PASS, C 1.0059267052 matches (36s)
+row 0.700: caps 0 PASS | plain 1171 boxes (0 Stein) PASS, C 1.0894961929 matches (31s)
+row 0.720: caps 0 PASS | plain 1190 boxes (0 Stein) PASS, C 1.1252648070 matches (28s)
+row 0.740: caps 0 PASS | plain 1160 boxes (0 Stein) PASS, C 1.1639184731 matches (43s)
+row 0.760: caps 0 PASS | plain 1127 boxes (0 Stein) PASS, C 1.2056656335 matches (46s)
+row 0.780: caps 0 PASS | plain 1135 boxes (0 Stein) PASS, C 1.2506550803 matches (56s)
+row 0.790: caps 0 PASS | plain 1173 boxes (0 Stein) PASS, C 1.2744812135 matches (53s)
+row 0.800: caps 0 PASS | plain 1145 boxes (0 Stein) PASS, C 1.2992072747 matches (53s)
+row 0.810: caps 0 PASS | plain 1115 boxes (0 Stein) PASS, C 1.3248331512 matches (49s)
+row 0.820: caps 0 PASS | plain 1104 boxes (0 Stein) PASS, C 1.3515075611 matches (49s)
+row 0.830: caps 0 PASS | plain 1098 boxes (0 Stein) PASS, C 1.3791920640 matches (51s)
+row 0.840: caps 0 PASS | plain 1097 boxes (0 Stein) PASS, C 1.4078042318 matches (50s)
+row 0.845: caps 0 PASS | plain 1102 boxes (0 Stein) PASS, C 1.4224996439 matches (55s)
+row 0.850: caps 0 PASS | plain 1102 boxes (0 Stein) PASS, C 1.4374261913 matches (50s)
+row 0.855: caps 0 PASS | plain 1101 boxes (0 Stein) PASS, C 1.4526670999 matches (54s)
+row 0.860: caps 0 PASS | plain 1101 boxes (0 Stein) PASS, C 1.4681516177 matches (54s)
+row 0.865: caps 0 PASS | plain 1107 boxes (0 Stein) PASS, C 1.4839589869 matches (53s)
+row 0.870: caps 0 PASS | plain 1104 boxes (0 Stein) PASS, C 1.5000094483 matches (56s)
+row 0.875: caps 0 PASS | plain 1131 boxes (0 Stein) PASS, C 1.5163805139 matches (57s)
+row 0.880: caps 0 PASS | plain 1153 boxes (0 Stein) PASS, C 1.5330803751 matches (58s)
+row 0.886: caps 0 PASS | plain 1181 boxes (0 Stein) PASS, C 1.5519938087 matches (54s)
+envelope (final constants): B = 0.7128931980 (rows) at t = 0.84752; room 500/701 - B = 3.7356e-04
+  small-t bound 9221/10000 t^2 + 51107667483736967/78000000000000000 on [0, 0.198816]: max 0.691675092  room 2.1592e-02
+  row 0.250L active on [0.19882, 0.32340]: max 0.691675248  room 2.1592e-02
+  row 0.300L active on [0.32340, 0.39216]: max 0.685949321  room 2.7317e-02
+  row 0.400L active on [0.39216, 0.48437]: max 0.688022383  room 2.5244e-02
+  row 0.500L active on [0.48437, 0.53759]: max 0.689243255  room 2.4024e-02
+  row 0.550L active on [0.53759, 0.58109]: max 0.692615565  room 2.0651e-02
+  row 0.600L active on [0.58109, 0.64897]: max 0.700068888  room 1.3198e-02
+  row 0.700 active on [0.64897, 0.68123]: max 0.702686882  room 1.0580e-02
+  row 0.720 active on [0.68123, 0.70678]: max 0.704895823  room 8.3709e-03
+  row 0.740 active on [0.70678, 0.73184]: max 0.706960654  room 6.3061e-03
+  row 0.760 active on [0.73184, 0.75712]: max 0.708873540  room 4.3932e-03
+  row 0.780 active on [0.75712, 0.77589]: max 0.710005883  room 3.2609e-03
+  row 0.790 active on [0.77589, 0.78826]: max 0.710756892  room 2.5099e-03
+  row 0.800 active on [0.78826, 0.80136]: max 0.711475397  room 1.7914e-03
+  row 0.810 active on [0.80136, 0.81434]: max 0.712110496  room 1.1563e-03
+  row 0.820 active on [0.81434, 0.82483]: max 0.712526471  room 7.4029e-04
+  row 0.830 active on [0.82483, 0.83486]: max 0.712793289  room 4.7347e-04
+  row 0.840 active on [0.83486, 0.84234]: max 0.712866942  room 3.9982e-04
+  row 0.845 active on [0.84234, 0.84752]: max 0.712893198  room 3.7356e-04
+  row 0.850 active on [0.84752, 0.85240]: max 0.712893198  room 3.7356e-04
+  row 0.855 active on [0.85240, 0.85739]: max 0.712881076  room 3.8569e-04
+  row 0.860 active on [0.85739, 0.86304]: max 0.712828682  room 4.3808e-04
+  row 0.865 active on [0.86304, 0.86666]: max 0.712727575  room 5.3919e-04
+  row 0.870 active on [0.86666, 0.87238]: max 0.712629957  room 6.3681e-04
+  row 0.875 active on [0.87238, 0.87857]: max 0.712423068  room 8.4369e-04
+  row 0.880 active on [0.87857, 0.88414]: max 0.712156859  room 1.1099e-03
+  row 0.886 active on [0.88414, 0.88623]: max 0.711877183  room 1.3896e-03
+B < target: True
+ALL PASS (1296s)

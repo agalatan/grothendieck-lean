@@ -4,9 +4,10 @@ import Mathlib
 /-!
 # The statement: what this repository proves about the complex Grothendieck constant
 
-This file is the whole claim. It imports only Mathlib and contains only definitions, no proofs:
-reading it is enough to know what the theorems `Grothe.Statement.main_bounds` and `Grothe.UpperSix.bound`
-assert, without reading any of the proof modules.
+This file holds the definitions of the claim. It imports only Mathlib and contains only definitions, no proofs:
+reading it is enough to know what the theorems `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) and
+`Grothe.UpperSix.bound` (`Grothe/UpperResult.lean`) assert, without reading any of the proof modules. The numbers
+are in those two theorems, not here.
 
 For a complex `m × n` matrix `A` (a function `Fin m → Fin n → ℂ`):
 
@@ -20,14 +21,12 @@ For a complex `m × n` matrix `A` (a function `Fin m → Fin n → ℂ`):
 Mathlib's inner product is conjugate-linear in the first slot, so the one-dimensional case of
 `⟪xᵢ, yⱼ⟫` is `conj(εᵢ) δⱼ`, exactly the scalar problem.
 
-The targets are stated directly in terms of Grothendieck bounds, so they do not depend on Lean's
-convention for the infimum of an empty or unbounded set: `UpperBelow c` says some bound is below `c`,
-`LowerAbove c` says every bound is above `c`; `LowerTarget` is `LowerAbove` at the repository's lower bound
-`1.40191`. The upper bound is stated as `IsBound (140455741 / 100000000)` (`Grothe/UpperResult.lean`). The constant `K_G^ℂ` is defined as the infimum of all bounds for
-reference. `Grothe/StatementBridges.lean` proves what these targets say about it: `UpperBelow c`
-gives `K_G^ℂ < c`; `LowerAbove c` gives `c ≤ K_G^ℂ` once some bound exists, and then even `c < K_G^ℂ`,
-because the set of bounds is closed, so the infimum is itself a bound. Without a bound the set is
-empty and `LowerAbove c` holds vacuously, which is why those two bridges assume one. The suprema
+The constant `K_G^ℂ` is defined as the infimum of all Grothendieck bounds. Two more predicates speak of the bounds
+directly, so they do not depend on Lean's convention for the infimum of an empty or unbounded set: `UpperBelow c`
+says some bound is below `c`, `LowerAbove c` says every bound is above `c`. `Grothe/StatementBridges.lean` proves what
+they say about the constant: `UpperBelow c` gives `K_G^ℂ < c`; `LowerAbove c` gives `c ≤ K_G^ℂ` once some bound
+exists, and then even `c < K_G^ℂ`, because the set of bounds is closed, so the infimum is itself a bound. Without a
+bound the set is empty and `LowerAbove c` holds vacuously, which is why those two bridges assume one. The suprema
 `C(A)`, `V(A)` are over nonempty bounded sets of reals.
 -/
 
@@ -66,9 +65,6 @@ def UpperBelow (c : ℝ) : Prop := ∃ K, IsBound K ∧ K < c
 
 /-- Every Grothendieck bound is above `c`. -/
 def LowerAbove (c : ℝ) : Prop := ∀ K, IsBound K → c < K
-
-/-- **The lower-bound target:** every Grothendieck bound is above `1.40191`. -/
-def LowerTarget : Prop := LowerAbove (140191 / 100000)
 
 end
 

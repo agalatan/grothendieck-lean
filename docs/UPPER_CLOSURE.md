@@ -1,6 +1,6 @@
 # Closing the upper half: the six Gaussian hypotheses of the three-band comparison
 
-This file describes the older single-channel upper proof, which is still in the tree. The upper bound of the main theorem `main_bounds` does not come from it: it is `K_G^ℂ ≤ 1.40455741`, from the six-channel proof in `Grothe/UpperSix/` ([upper result](../Grothe/UpperResult.lean)).
+This file describes the older single-channel upper proof, which is still in the tree. The upper bound of the main theorem `main_bounds` does not come from it: it is `K_G^ℂ ≤ 1.404556407`, from the six-channel proof in `Grothe/UpperSix/` and `Grothe/UpperSixExact/` ([upper result](../Grothe/UpperResult.lean)).
 
 **Single-channel result (15 November 2026).** This construction gives
 `K_G^ℂ < 1.404599395362`, proved by `Grothe.Statement.upper_below_tight` in

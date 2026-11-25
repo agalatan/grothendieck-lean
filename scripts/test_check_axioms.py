@@ -41,8 +41,10 @@ class CheckAxiomsTests(unittest.TestCase):
 
     def test_existing_policy_headlines_and_native_restrictions(self):
         headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
-                     "Grothe.Statement.lower_target", "Grothe.Statement.lowerTarget_of_tailNodeCaps",
-                     "Grothe.LowerAnalytic.tailNodeCaps_cert", "Grothe.LowerAnalytic.lower_bound_of_tailNodeCaps"}
+                     "Grothe.Statement.shared_gate_endpoint", "Grothe.UpperSix.bound",
+                     "Grothe.UpperSix.constant_le", "Grothe.UpperSix.constant_lt_inv_gammaDagger",
+                     "Grothe.LowerAnalytic.tailNodeCaps_cert",
+                     "Grothe.LowerAnalytic.sharedGate_lower_of_tailNodeCaps"}
         self.assertTrue(headlines <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
         self.assertNotIn("Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1", CHECKER.NATIVE)
