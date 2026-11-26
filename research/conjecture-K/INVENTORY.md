@@ -1822,14 +1822,14 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 ## Multi-driver self-interaction content inequality and sharpened character perturbations (gemini-21d5, #726)
 
 - [Proof and replay instructions](sources/multi-driver-self-interaction-gemini-21d5/PROOF.md) and
-  [pure-stdlib 640-bit zero-float verifier, rational receipt, and 12 built-in adversarial controls](code/multi-driver-self-interaction-gemini-21d5/) (tag KMDSI; STATUS 6.3.9c, 6.3.9d, 6.3.10, 6.3.17, 6.3.18, 6.4.2; **P + C, author only**). All files are committed in the repository (`result.json` is 9,416 B) with zero external dependencies.
+  [pure-stdlib 640-bit zero-float verifier, rational receipt, and 15 built-in adversarial controls](code/multi-driver-self-interaction-gemini-21d5/) (tag KMDSI; STATUS 6.3.9c, 6.3.9d, 6.3.10, 6.3.17, 6.3.18, 6.4.2; **P + C, author only**). All files are committed in the repository (`result.json` is 9,421 B) with zero external dependencies.
 - **Replay:**
-  - Fast zero-float audit + from-scratch 640-bit recomputation of single-pole integrals, $M_0^A, M_1^A$, $\varphi'(0)$, $-\varphi''(0)$, Theorem 3 shared-bath budgets, Theorem 4 sharp integer denominators, 7.4.17 joint A+B corollaries, `result.json` contiguity/bound audit, and 12 adversarial controls (< 2.5 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py`.
-  - Full 640-bit zero-float continuum recomputation of all Bessel-moment tables, `(0, 4]` positivity cover, $\tau$-panel midpoint-tangent and convexity-secant quadratures, and all 355 $u$-slabs across all 3 rows (~114 s on Apple Silicon): `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py --recompute`.
+  - Fast zero-float audit + from-scratch 640-bit recomputation of single-pole integrals, $M_0^A, M_1^A$, $\varphi'(0)$, $-\varphi''(0)$, Theorem 3 shared-bath budgets, Theorem 4 sharp integer denominators, 7.4.17 joint A+B corollaries, `result.json` contiguity/bound audit, and 15 adversarial controls (< 3 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py`.
+  - Full 640-bit zero-float continuum recomputation of all Bessel-moment tables, `(0, 4]` positivity cover, $\tau$-panel midpoint-tangent and convexity-secant quadratures, and all 355 $u$-slabs across all 3 rows (~118 s on Apple Silicon): `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py --recompute`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/multi-driver-self-interaction-gemini-21d5/PROOF.md` | 47,404 B | `99fb1e414b857746097ebefe265fec946a0bcd584b16e0943cfebb685151e483` |
-| `code/multi-driver-self-interaction-gemini-21d5/README.md` | 1,398 B | `90a71dea89393610537e0221ea6c49f4250e43ef8942aae126f59994ced14926` |
-| `code/multi-driver-self-interaction-gemini-21d5/verify.py` | 56,870 B | `f8f70ac3f7ca1555e90cc3c6894e3193cdd2736615896696b7fad91698546ebd` |
-| `code/multi-driver-self-interaction-gemini-21d5/result.json` | 9,416 B | `23386e67bcedfd740520a52f2ebbc201e53b395174bfe317c523273fe004388c` |
+| `sources/multi-driver-self-interaction-gemini-21d5/PROOF.md` | 52,445 B | `048e354e820c8d0a3dd5a0d4defaf4ac16ecfc0b9f0d4ff09567fcd314dfe80b` |
+| `code/multi-driver-self-interaction-gemini-21d5/README.md` | 1,400 B | `1d6524eb0dbed914172be7d3b795a7c7cfc684fef0ed30213288b99788334ce2` |
+| `code/multi-driver-self-interaction-gemini-21d5/verify.py` | 62,418 B | `72cf943f34dab39d2a6cec6744201e6be2898ca549413e250e436b4b4b3108ff` |
+| `code/multi-driver-self-interaction-gemini-21d5/result.json` | 9,421 B | `3614df20314af9e5c570b0d38f72ac271d591853b16094da64073627d4e713ef` |

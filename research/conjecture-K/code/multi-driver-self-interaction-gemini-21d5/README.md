@@ -13,7 +13,7 @@ Pure-Python standard-library zero-float verifier and certified rational receipt 
 
 From the repository root:
 
-1. **Fast zero-float audit + from-scratch scalar/perturbation recomputation + 12 adversarial controls (< 2 s):**
+1. **Fast zero-float audit + from-scratch scalar/perturbation recomputation + 15 adversarial controls (< 3.5 s):**
    ```sh
    python3 -IB research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py
    python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py

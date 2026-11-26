@@ -12,7 +12,7 @@ Modes:
       (cross-checked against SHA-256-pinned content_kernels_exact_result.json),
       phi'(0), -phi''(0), Theorem 3 shared-bath budgets, Theorem 4 sharp integer
       denominators, 7.4.17 joint A+B corollaries, full contiguity/bound audit and
-      640-bit binding-slab spot-verification of result.json, plus 12 adversarial
+      640-bit binding-slab spot-verification of result.json, plus 15 adversarial
       negative/corruption controls.
   python3 -IB -O verify.py --recompute [--write-result]
       Full (~105 s) zero-float recomputation of all Jet1 Bessel-moment tables,
@@ -560,6 +560,51 @@ class WickBesselContext:
         return c_l, c_a
 
 
+def taylor_curv_delta(z0: Q, za: Q, zb: Q, m2_override=None) -> Q:
+    """Decreasing upper bound min(23, 1/zeta + 1) on |Delta_Wick''(zeta)| over hull({z0}, [za, zb])."""
+    require(z0 >= 0 and 0 <= za <= zb, "invalid Taylor segment endpoints for Delta_Wick")
+    z_seg_lo = min(z0, za)
+    req = min(Q(23), Q(1) / z_seg_lo + 1) if z_seg_lo > 0 else Q(23)
+    if m2_override is not None:
+        require(
+            m2_override >= req,
+            f"Delta_Wick Taylor curvature {m2_override} < segment supremum {req} on [{z_seg_lo}, {max(z0, zb)}]",
+        )
+        return m2_override
+    return req
+
+
+def taylor_curv_m(z0: Q, za: Q, zb: Q, m2_override=None) -> Q:
+    """Decreasing upper bound min(453, 12/zeta) on |M_Wick''(zeta)| over hull({z0}, [za, zb])."""
+    require(z0 >= 0 and 0 <= za <= zb, "invalid Taylor segment endpoints for M_Wick")
+    z_seg_lo = min(z0, za)
+    req = min(Q(453), Q(12) / z_seg_lo) if z_seg_lo > 0 else Q(453)
+    if m2_override is not None:
+        require(
+            m2_override >= req,
+            f"M_Wick Taylor curvature {m2_override} < segment supremum {req} on [{z_seg_lo}, {max(z0, zb)}]",
+        )
+        return m2_override
+    return req
+
+
+def mono_panel_c_lo_contrib(za: Q, zb: Q, alp_lo: int, bet_lo: int, wc_2, wc_4) -> int:
+    """Panel contribution to lower bound on int tau^2 chi_A(tau^2) (-M_Wick(u_max tau^2)) dtau.
+    Whenever the affine minorant is negative at an endpoint of [za, zb], clamping to 0 requires
+    -M_Wick(zeta) >= 0 throughout [za, zb], certified by M_Wick(0) = 0, M_Wick'(0) = -8, and
+    |M_Wick''| <= 453 => -M_Wick(zeta) >= zeta * (8 - 453 * zeta / 2) >= 0 for 0 <= za <= zb <= 16/453.
+    """
+    va_lo = alp_lo + iv_mul((bet_lo, bet_lo), q_to_iv(za))[0]
+    vb_lo = alp_lo + iv_mul((bet_lo, bet_lo), q_to_iv(zb))[0]
+    if va_lo >= 0 and vb_lo >= 0:
+        return max(0, iv_add(iv_mul((alp_lo,) * 2, wc_2), iv_mul((bet_lo,) * 2, iv_mul(q_to_iv(U_MAX), wc_4)))[0])
+    require(
+        0 <= za <= zb and Q(16) - Q(453) * zb >= 0,
+        f"unjustified zero clamp on monomial C_lo panel [{za}, {zb}] (zb > 16/453)",
+    )
+    return 0
+
+
 def recompute_theorem2_full(ctx: WickBesselContext):
     """Full zero-float continuum certification of Theorem 2 across all 3 rows + peak monomial enclosure."""
     n_fine = 400
@@ -570,20 +615,24 @@ def recompute_theorem2_full(ctx: WickBesselContext):
     dz = Q(123, 20) / n_tab
     tab_jet = [ctx.eval_wick_jet1(i * dz) for i in range(n_tab + 1)]
 
-    # Certify Delta_Wick(zeta) > 0 strictly across (0, 4]:
-    min_pos_margin = ctx.c2_small_lo - iv_div_int((ctx.c3_small_hi,) * 2, 50)[1]
-    require(min_pos_margin > 0, "positivity on (0, 1/50]")
+    # Certify Delta_Wick(zeta) >= c_pos * min(zeta^2, 1) > 0 strictly across (0, 4]:
+    # - On (0, 1/50]: Delta_Wick(zeta) / zeta^2 >= c2_small_lo - c3_small_hi / 50 > 0;
+    # - On [1/50, 4]: Delta_Wick(zeta) >= compact_pos_min > 0, and min(zeta^2, 1) <= 1.
+    pos_small_z2_coef = ctx.c2_small_lo - iv_div_int((ctx.c3_small_hi,) * 2, 50)[1]
+    require(pos_small_z2_coef > 0, "positivity of Delta_Wick(zeta)/zeta^2 on (0, 1/50]")
+    compact_pos_min = pos_small_z2_coef
     for i in range(20, n_fine + 1):
         zb = i * dz_fine + dz_fine / 2
         mrg = tab_fine[i][0][0] - q_to_iv(Q(23) * zb * (dz_fine / 2))[1]
         require(mrg > 0, f"positivity fine {i}")
-        min_pos_margin = min(min_pos_margin, mrg)
+        compact_pos_min = min(compact_pos_min, mrg)
     for i in range(40, 401):
         zb = i * dz + dz / 2
         lip_z = min(Q(2), Q(23) * zb)
         mrg = tab_jet[i][0][0] - q_to_iv(lip_z * (dz / 2))[1]
         require(mrg > 0, f"positivity coarse {i}")
-        min_pos_margin = min(min_pos_margin, mrg)
+        compact_pos_min = min(compact_pos_min, mrg)
+    min_pos_scaled = min(pos_small_z2_coef, compact_pos_min)
 
     def delta_affine_lb(za: Q, zb: Q):
         zm = (za + zb) / 2
@@ -596,7 +645,7 @@ def recompute_theorem2_full(ctx: WickBesselContext):
             z0 = idx * dz
             d_iv, dd_iv, _, _ = tab_jet[idx]
         rad = max(abs(za - z0), abs(zb - z0))
-        m2 = min(Q(23), Q(1) / za + 1) if za > 0 else Q(23)
+        m2 = taylor_curv_delta(z0, za, zb)
         quad_rem = q_to_iv(Q(1, 2) * m2 * rad * rad)[1]
         beta = (dd_iv[0] + dd_iv[1]) // 2
         slope_rad = (dd_iv[1] - dd_iv[0] + 1) // 2
@@ -622,7 +671,7 @@ def recompute_theorem2_full(ctx: WickBesselContext):
             z0 = idx * dz
             _, _, m_iv, dm_iv = tab_jet[idx]
         rad = max(abs(za - z0), abs(zb - z0))
-        m2_m = min(Q(453), Q(12) / za) if za > 0 else Q(453)
+        m2_m = taylor_curv_m(z0, za, zb)
         quad_rem = q_to_iv(Q(1, 2) * m2_m * rad * rad)[1]
         dm_mid = (dm_iv[0] + dm_iv[1]) // 2
         dm_rad = (dm_iv[1] - dm_iv[0] + 1) // 2
@@ -927,7 +976,7 @@ def recompute_theorem2_full(ctx: WickBesselContext):
                     z0 = idx * dz
                     d_iv, dd_iv, _, _ = tab_jet[idx]
                 rad = max(abs(za - z0), abs(zb - z0))
-                m2 = min(Q(23), Q(1) / za + 1)
+                m2 = taylor_curv_delta(z0, za, zb)
                 qrem = q_to_iv(Q(1, 2) * m2 * rad * rad)[1]
                 dd_mid = (dd_iv[0] + dd_iv[1]) // 2
                 dd_rad = (dd_iv[1] - dd_iv[0] + 1) // 2
@@ -962,7 +1011,8 @@ def recompute_theorem2_full(ctx: WickBesselContext):
                 z0 = idx * dz
                 _, _, m_iv, dm_iv = tab_jet[idx]
                 rad = max(abs(za - z0), abs(zb - z0))
-                qrem = q_to_iv(Q(1, 2) * (Q(12) / za) * rad * rad)[1]
+                m2_tail = taylor_curv_m(z0, za, zb)
+                qrem = q_to_iv(Q(1, 2) * m2_tail * rad * rad)[1]
                 ua = m_iv[1] + iv_mul(dm_iv, q_to_iv(za - z0))[1] + qrem
                 ub = m_iv[1] + iv_mul(dm_iv, q_to_iv(zb - z0))[1] + qrem
                 require(max(ua, ub) <= 0, f"M_Wick <= 0 check failed on tail panel {k}")
@@ -986,19 +1036,14 @@ def recompute_theorem2_full(ctx: WickBesselContext):
                     z0 = idx * dz
                     _, _, m_iv, dm_iv = tab_jet[idx]
                 rad = max(abs(za - z0), abs(zb - z0))
-                m2_m = min(Q(453), Q(12) / za) if za > 0 else Q(453)
+                m2_m = taylor_curv_m(z0, za, zb)
                 qrem = q_to_iv(Q(1, 2) * m2_m * rad * rad)[1]
                 dm_mid = (dm_iv[0] + dm_iv[1]) // 2
                 dm_rad = (dm_iv[1] - dm_iv[0] + 1) // 2
                 lrem = iv_mul((0, dm_rad), q_to_iv(rad))[1]
                 alp_lo = -m_iv[1] + iv_mul((dm_mid, dm_mid), q_to_iv(z0))[0] - lrem - qrem
                 bet_lo = -dm_mid
-                va_lo = alp_lo + iv_mul((bet_lo, bet_lo), q_to_iv(za))[0]
-                vb_lo = alp_lo + iv_mul((bet_lo, bet_lo), q_to_iv(zb))[0]
-                if va_lo >= 0 and vb_lo >= 0:
-                    c_mono_lo += max(0, iv_add(iv_mul((alp_lo,) * 2, wc_2), iv_mul((bet_lo,) * 2, iv_mul(q_to_iv(U_MAX), wc_4)))[0])
-                else:
-                    c_mono_lo += iv_mul((max(0, min(va_lo, vb_lo)),) * 2, wc_2)[0]
+                c_mono_lo += mono_panel_c_lo_contrib(za, zb, alp_lo, bet_lo, wc_2, wc_4)
             c_mono_lo = max(0, c_mono_lo - tail_c_cst_iv[1])
             csq_mono_lo = iv_mul(q_to_iv(U_MAX / 2), iv_mul((c_mono_lo,) * 2, (c_mono_lo,) * 2))[0]
 
@@ -1039,19 +1084,19 @@ def recompute_theorem2_full(ctx: WickBesselContext):
             )
             peak_mono_enclosure = [q_str(r_lo_dec), q_str(r_hi_dec)]
 
-    pos_floor_q = Q((min_pos_margin * (10 ** 9)) >> P, 10 ** 9)
-    require(pos_floor_q > 0, "positive min_pos_margin")
+    pos_floor_q = Q((min_pos_scaled * (10 ** 9)) >> P, 10 ** 9)
+    require(pos_floor_q >= Q(2509689, 10 ** 9) > 0, "positive scaled min_pos_margin")
     return {
         "slab_edges_count": len(edges),
         "slab_u_range": [q_str(edges[0]), q_str(edges[-1])],
-        "psi_wick_minus_exp_min_margin_on_0_4": q_str(pos_floor_q),
+        "psi_wick_minus_exp_scaled_lb_min_zeta2_1_on_0_4": q_str(pos_floor_q),
         "peak_wick_monomial_u0463_ratio_enclosure": peak_mono_enclosure,
         "rows": thm2_rows,
     }
 
 
 # ---------------------------------------------------------------------------
-# 5. Fast (< 2 s) audit of saved result.json + 12 adversarial controls
+# 5. Fast (< 2 s) audit of saved result.json + 15 adversarial controls
 # ---------------------------------------------------------------------------
 
 def audit_result_dict(res: dict, up_sha: str, scalars: dict, thm3: dict, thm4: dict, spot_ctx=None) -> None:
@@ -1071,8 +1116,9 @@ def audit_result_dict(res: dict, up_sha: str, scalars: dict, thm3: dict, thm4: d
         require(edges[idx] < edges[idx + 1], f"non-increasing slab edge at {idx}")
     require(edges[0] == U_SMALL and edges[-1] == U_MAX, "slab endpoints do not cover [1/2000, 463/10000]")
 
-    pos_mrg = Q(t2.get("psi_wick_minus_exp_min_margin_on_0_4", "0"))
-    require(pos_mrg > 0, "positivity margin on (0, 4] must be > 0")
+    require("psi_wick_minus_exp_min_margin_on_0_4" not in t2, "legacy unscaled positivity key forbidden")
+    pos_mrg = Q(t2.get("psi_wick_minus_exp_scaled_lb_min_zeta2_1_on_0_4", "0"))
+    require(pos_mrg >= Q(2509689, 10 ** 9) > 0, "scaled positivity coefficient on (0, 4] must be >= 2509689/10^9")
 
     mono_enc = [Q(x) for x in t2.get("peak_wick_monomial_u0463_ratio_enclosure", ["0", "0"])]
     require(Q(83, 1000) < mono_enc[0] < mono_enc[1] < Q(9, 100), "invalid peak Wick monomial enclosure")
@@ -1100,10 +1146,11 @@ def audit_result_dict(res: dict, up_sha: str, scalars: dict, thm3: dict, thm4: d
         require(exact_bind_ratio <= max_r < Q(9, 100), f"{row}: binding ratio exceeds max_slab_ratio_upper")
 
     if spot_ctx is not None:
-        # Spot-verify positivity at zeta = 2 andzeta = 4 in 640-bit arithmetic:
-        for z_test in [Q(1, 5), Q(2), Q(4)]:
+        # Spot-verify Delta_Wick(zeta) >= pos_mrg * min(zeta^2, 1) and M_Wick(zeta) < 0 in 640-bit arithmetic:
+        for z_test in [Q(1, 1000), Q(1, 50), Q(1, 5), Q(2), Q(4)]:
             d_iv, _, m_iv, _ = spot_ctx.eval_wick_jet1(z_test)
-            require(d_iv[0] > 0, f"spot positivity failed at zeta={z_test}")
+            req_lb = q_to_iv(pos_mrg * min(z_test * z_test, Q(1)))[1]
+            require(d_iv[0] >= req_lb > 0, f"spot scaled positivity failed at zeta={z_test}")
             require(m_iv[1] < 0, f"spot M_Wick < 0 failed at zeta={z_test}")
 
 
@@ -1170,7 +1217,55 @@ def run_adversarial_controls(res: dict, up_sha: str, scalars: dict, thm3: dict, 
     bad_bind["theorem2_multi_driver_wick"]["rows"]["flank"]["binding_slab_D_lb_scaled"] = "1"
     expect_failure(lambda: audit_result_dict(bad_bind, up_sha, scalars, thm3, thm4), "ctrl12_binding_slab_tamper")
 
-    return 12
+    # 13. Jet node z0 below panel left endpoint za (slab 113, deficit panel 179 & mark panel 224 + 1/zeta witness):
+    edges = build_slab_edges()
+    ulo_113, uhi_113 = edges[113], edges[114]
+    dtau_d = Q(17, 2) / 340
+    dtau_c = Q(23, 2) / 575
+    za_179, zb_179 = (179 * dtau_d) ** 2 * ulo_113, (180 * dtau_d) ** 2 * uhi_113
+    dz_coarse = Q(123, 20) / 615
+    z0_179 = max(1, min(400, int((((za_179 + zb_179) / 2) / dz_coarse).__round__()))) * dz_coarse
+    require(z0_179 == Q(2, 5) < za_179 == Q(32041, 80000), "ctrl13: slab 113 deficit panel 179 has z0 < za")
+    require(taylor_curv_delta(z0_179, za_179, zb_179) == Q(7, 2) > Q(1) / za_179 + 1, "ctrl13: full-segment Delta curvature > za curvature")
+    expect_failure(
+        lambda: taylor_curv_delta(z0_179, za_179, zb_179, m2_override=Q(1) / za_179 + 1),
+        "ctrl13_naive_za_curv_delta",
+    )
+    za_224, zb_224 = (224 * dtau_c) ** 2 * ulo_113, (225 * dtau_c) ** 2 * uhi_113
+    z0_224 = max(1, min(615, int((((za_224 + zb_224) / 2) / dz_coarse).__round__()))) * dz_coarse
+    require(z0_224 == Q(2, 5) < za_224, "ctrl13: slab 113 mark panel 224 has z0 < za")
+    require(taylor_curv_m(z0_224, za_224, zb_224) == Q(30) > Q(12) / za_224, "ctrl13: full-segment M curvature > za curvature")
+    expect_failure(
+        lambda: taylor_curv_m(z0_224, za_224, zb_224, m2_override=Q(12) / za_224),
+        "ctrl13_naive_za_curv_m",
+    )
+    # Exact convex witness g(z) = 1/z (g''(z) = 2/z^3) with z0 = 1/2 < za = 1 <= zb = 2:
+    z0_w, za_w = Q(1, 2), Q(1)
+    g_za_true = Q(1) / za_w
+    g_lin_at_za = (Q(1) / z0_w) + (-Q(1) / (z0_w * z0_w)) * (za_w - z0_w)
+    g_ub_naive_za = g_lin_at_za + Q(1, 2) * (Q(2) / (za_w ** 3)) * ((za_w - z0_w) ** 2)
+    g_ub_seg_min = g_lin_at_za + Q(1, 2) * (Q(2) / (min(z0_w, za_w) ** 3)) * ((za_w - z0_w) ** 2)
+    require(g_ub_naive_za < g_za_true <= g_ub_seg_min, "ctrl13: 1/z witness breaks under za curvature and holds under min(z0, za)")
+
+    # 14. Monomial C_lo zero-clamp endpoint check rejects negative-endpoint panels beyond zb = 16/453:
+    require(
+        mono_panel_c_lo_contrib(Q(0), Q(463, 25_000_000), -ONE, 0, (ONE, ONE), (ONE, ONE)) == 0,
+        "ctrl14: k=0 panel [0, 463/25000000] <= 16/453 validly clamps to 0",
+    )
+    expect_failure(
+        lambda: mono_panel_c_lo_contrib(Q(16, 453), Q(17, 453), -ONE, 0, (ONE, ONE), (ONE, ONE)),
+        "ctrl14_unjustified_zero_clamp_above_16_453",
+    )
+
+    # 15. Unscaled positivity infimum on (0, 4] is 0 (Delta_Wick(1/1000) < pos_mrg), and legacy unscaled key is rejected:
+    pos_c = Q(res["theorem2_multi_driver_wick"]["psi_wick_minus_exp_scaled_lb_min_zeta2_1_on_0_4"])
+    d_tiny, _, _, _ = ctx.eval_wick_jet1(Q(1, 1000))
+    require(d_tiny[1] < q_to_iv(pos_c)[0], "ctrl15: unscaled Delta_Wick(1/1000) < pos_c confirms min(zeta^2, 1) scaling is essential")
+    bad_pos_key = copy.deepcopy(res)
+    bad_pos_key["theorem2_multi_driver_wick"]["psi_wick_minus_exp_min_margin_on_0_4"] = q_str(pos_c)
+    expect_failure(lambda: audit_result_dict(bad_pos_key, up_sha, scalars, thm3, thm4), "ctrl15_legacy_unscaled_pos_key")
+
+    return 15
 
 
 def main(argv: list[str]) -> int:
