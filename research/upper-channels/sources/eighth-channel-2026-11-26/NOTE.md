@@ -3,8 +3,10 @@
 Agent-ID: claude-b9ee (worker), 26 November 2026. Issue [#723](https://github.com/agalatan/grothendieck-lean/issues/723).
 Everything here has label **N** unless a row says otherwise: the LP optima are floating point. The values printed
 at fixed weights are exact rational or interval evaluations of the given heads and allowances. The heads and
-allowances are rigorous with one exception: the circle budget of a new cell copy rests on a float Schur mean
-(ledger 4.4). A model value of D is not a bound on K_G^ℂ.
+allowances are rigorous, with one qualification. The circle budget 2 of a new cell copy at ρ = 109/100 was first
+taken from a float Schur mean (ledger 4.4). It is now checked by exact Bernstein positivity
+(`contour_check.py`, §3), but the step from those polynomial facts to the circle bound is the derivation of
+`CELL_TAIL.md` (**P + C**, author only). A model value of D is not a bound on K_G^ℂ.
 
 ## Verdict
 
@@ -16,20 +18,24 @@ six's channel 4 both get weight zero.** The candidate therefore has exactly six 
 0, 1, 2, 3, 5 and the cell copy in slot 4. It needs no seven-channel assembly and no selector column.
 
 No other candidate comes close. The four further selector columns of #681 gain 4.2·10⁻⁸ without the copy and 1.9·10⁻⁹
-with it. The reflected cubic of #670 gains less than 10⁻⁹ in both settings (§2b). The eighteen GT and phase
-channels of #556 add 6.4·10⁻⁷ beyond the copy (1/D = 1.404544028), but they need the GT comparison machinery.
+with it. For the reflected cubic of #670, none of the seven sampled ε values gets
+positive weight in the truncated LP (§2b). The eighteen GT and phase channels of #556 add 6.4·10⁻⁷ beyond the
+93079/100000 copy (5.6·10⁻⁷ beyond the best copy 23277/25000; 1/D = 1.404544028), but they need the GT comparison machinery.
 
 ## 1. Control
 
 `columns.py` rebuilds master's six columns from the committed tables. It uses the replay of the angular-selector note
 (`verify.six_columns`): the degree-20 first preprocessor, phase cutoff 320, other cutoffs 250 and the Lean tail caps.
 It also rebuilds the selector column (17/100, R = 23/25 − (2/25)X) with `selector.py`. Master's weights
-(`NumericParameters.weight`) and Lean's selector budget 162464451464/10¹⁵ give
+(`Haagerup.AngularSelector.NumericWitness.weight`, declared in `Grothe/UpperSelector/NumericParameters.lean`) and Lean's selector budget 162464451464/10¹⁵ give
 
     D = 0.711968565814489862,   1/D = 1.404556391975,
 
-that is 2.6·10⁻¹² below the certified slope 711968565817136711740669035/10²⁷ (1/D = 1.404556391970). The research head of
-the selector (`selector.py`, 2⁻³¹·2⁻³⁰ scale) and the Lean head (2⁻⁸⁹) differ by less than that. The LP re-weighting
+that is 2.6·10⁻¹² below the certified slope 711968565817136711740669035/10²⁷ (1/D = 1.404556391970). This is a comparison of
+the mixed value only. It does not bound the difference between the research head of the selector (`selector.py`,
+scale 2⁻⁶¹) and the Lean head (scale 2⁻⁸⁹) coefficient by coefficient. Those differ by about 4.27·10⁻¹¹ already at
+index 0 (202414694667121719/2⁵⁸ against 54335280867376597037396859/2⁸⁶; codex-a7c4, PR #724); both lie
+within their own Wiener allowances. The LP re-weighting
 of the seven gains nothing: it loses 4·10⁻¹² after rounding. The research allowance 4.83·10⁻⁵ instead of Lean's
 1.62·10⁻⁴ would give 1/D = 1.404556372 (the eight-channel note's seven-channel value).
 
@@ -71,10 +77,13 @@ gains 2.9·10⁻¹⁰.
 **What is truncation, what is exact.** The six heads, the selector heads and the copies' heads are exact intervals
 (2⁻¹²⁸ or exact rationals). Every allowance pays for its whole tail: the six's Lean caps, the selectors' full Wiener
 errors and the copies' Hardy tails from index 126. So the value at the printed weights is a lower bound on the model
-D of those channels, up to the copy's circle budget. That budget is 2 against a float Schur mean of 1.18
-(ledger 4.4). Even an allowance 2·10⁴ times larger (ρ = 1.05, budget 3: 1.8·10⁻⁵ per copy) costs only
+D of those channels, given the copy's circle budget (§3: exact polynomial checks, derivation author-only). Even an allowance 2·10⁴ times larger (ρ = 1.05, budget 3: 1.8·10⁻⁵ per copy) costs only
 1.0·10⁻⁶ in D at weight 0.055. Outward rounding of the weights costs < 10⁻¹². Only the LP optimality is
-floating point: the dual feasibility tolerance is 10⁻¹⁰, and the float LP and the exact values agree to 4·10⁻¹³.
+floating point: the dual feasibility tolerance is 10⁻¹⁰. Over the 24 LP rows of `eighth.json` the float objective
+and the exact value at the rounded weights differ by at most 1.06·10⁻¹² (the two rows with the eighteen channels and
+the copy). The next largest is 6.05·10⁻¹³ (copy with the research selector allowance). Such agreement only shows
+that the rounded weights are feasible and nearly as good as the float optimum; it does not certify that the float
+optimum is the LP optimum. No dual certificate was computed.
 
 ### 2b. The reflected cubic
 
@@ -96,12 +105,17 @@ column takes six_2's allowance, which is an assumption.
 | 0.3 | 2.73·10⁻¹ | 0.696356504 | −0.59360 | 0 | 0 |
 
 (The rows ε = 0.02 and 0.15 are in `refl_lp.log`. The truncated W first rises, then falls: the ε⁴ gain of #670 is
-real, but energy moves to degrees above 121.) **No reflected-cubic column enters either LP**, singly or all seven
-together. The float D is unchanged to 10⁻¹⁶ (seven: 0.7119685658149; seven + copy 23277/25000: 0.7119745484003).
-The grades above degree 121 were not computed. Since |μ_n| is at most the energy at degree n, they change the column
-by at most (1 − E_ε) + (1 − E_0) ≤ 9.1·10⁻³ in ℓ¹ (E: the energy to degree 121 in the log). At the phase channel's
-weight of 1.6·10⁻⁴ this is at most 1.5·10⁻⁶ in D. That is a crude bound, not an observed effect. The finding stands
-for the computed part: the perturbation moves the column along directions the LP does not use. A different
+real, but energy moves to degrees above 121.) **None of the seven sampled positive ε values gets positive weight in
+the truncated LP**, singly or all seven together. The float D is unchanged to 10⁻¹⁶ (seven: 0.7119685658149; seven +
+copy 23277/25000: 0.7119745484003). This says nothing about ε between the samples or about other preprocessors.
+
+The grades above degree 121 were not computed. The analytic inequality, in the true energies, is this. |μ_n| is at
+most the energy at degree n, and ‖p₂‖₁ = 1 gives ‖compose(p₂, ν)‖₁ ≤ Σ|ν_n|. So the omitted grades change the column
+by at most (1 − E_ε) + (1 − E_0) in ℓ¹, where E is the true energy to degree 121. The numerical estimate of that
+quantity from the quadrature energies in `refl.json` is 9.14·10⁻³ at ε = 0.3 (2 − E₀ − E₀.₃ = 0.0091377). It is
+not a proved bound: the quadrature is not directed. At the phase channel's present weight of 1.6·10⁻⁴ it
+corresponds to about 1.5·10⁻⁶ in D. That price at a fixed weight does not bound what re-optimising the weight of a
+correctly completed reflected column could give. A different
 preprocessor pair might change that; it was not explored.
 
 ## 3. What a certificate would take (candidate (a), a = 23277/25000 or 93079/100000)
@@ -112,35 +126,49 @@ Lean tail caps. Slot 4 becomes the cell pair of #556 with R = [a, −(1 − a)].
 K_G^ℂ ≤ 1.40454459 (a = 23277/25000) or 1.40454467 (a = 93079/100000). The selector tree `Grothe/UpperSelector/`
 would no longer be needed for the root.
 
+- **The tail of the cell copy: what is already proved, and what is new.** At a = 93079/100000, master's research
+  record already contains an all-orders tail for this cell pair: Σ_{k≥126}|h_k| < 3·10⁻¹⁹ ([CELL_TAIL.md](../cell-contour/CELL_TAIL.md),
+  codex-a7c4, #589, **P + C** author only). It comes from the analytic disk of radius 6/5, the Gaussian Schur bound
+  |H|² ≤ 144 on |z| = 1197/1000 with j = 3/20, five Bernstein certificates (`code/cell_tail.py`) and the Lean replay
+  `sources/cell-contour/CellContour.lean` of the polynomial inequalities and the tail step. That replay is a scratch
+  file, not part of `Grothe`. It is far below the allowance 889686/10¹⁵ charged in this note, so at that a the tail
+  costs nothing. The best parameter 23277/25000 is new. There the 1197/1000 certificate fails, but
+  `contour_check.py` (the same Bernstein test, parameterised) proves |H|² ≤ 144 on |z| = 119/100 with j = 1/10 inside
+  the disk 6/5, giving a tail < 1.31·10⁻¹⁸. It also proves the radius-1.09 test with budget 2 exactly (R = 11/10,
+  j = 17/40, 16 subintervals) at 23277/25000, 93079/100000, 931/1000 and 1863/2000, as gemini-21d5 found. So the
+  copy's tail needs **no native contour fact**: it can be proved by `ring_nf; positivity`-style polynomial
+  inequalities as in `CellContour.lean`, plus the specialisation of `SchurMainGaussian.norm_HholPair_sq_le` to the
+  cell pair. That specialisation is the derivation of CELL_TAIL.md §2 and is not in Lean.
 - **Head and cutoff.** The cell head has 126 coefficients (indices 0–125). `convex_transfer_variable_ival` of
-  `UpperSixExact` already takes a per-channel cutoff, so slot 4 takes cutoff 125 and its cap is the Hardy tail from
-  126: 889686/10¹⁵ by the rational inequality the branch checks with `decide`. This removes the 6·10⁻⁹ cost that
-  ledger 5.5(b) assumed for padding the head to 250.
+  `UpperSixExact` already takes a per-channel cutoff, so slot 4 takes cutoff 125 and its cap is the tail from 126
+  (< 1.31·10⁻¹⁸ with the contour above). This removes the 6·10⁻⁹ cost that ledger 5.5(b) assumed for padding the head
+  to 250. The finite head (the 126 composed cell coefficients from the grade witnesses) and its identification with
+  the kernel of the transfer theorem remain the outstanding work, together with the bridge below.
 - **What exists on the #556 branch** (commit `76c4647b`, kept by `refs/pull/556/head`; ledger 5.2). The cell tree is 26
   modules of `Grothe/UpperReplacement/`, about 0.53 MB of Lean plus the generated `CellData.lean` (19.0 MB). Then come
   the eight grade witnesses `HeadWitnessFacts/Group00`–`07` (native facts independent of R; about 35–40 CPU-minutes
   by the branch's document) and the root-table checks they use. Their imports outside that tree are on master today
   (`UpperChaos/Realise2`, `HardyHolo`, `HardyGaussianSound`, `SchurMainGaussian`, `HardyArcRegion`, `HardyReal`,
   `Haagerup/PhaseCoefficients`, `Upper/Residual`). The whole tree is 74 files (20.2 MB).
-- **New native facts: two** (ledger 5.4). (a) One contour fact for the new R: `tubeQuarterOK` at radius 1.09001 and
-  `quarterMeanOK` at ρ = 109/100, budget 2. Its float mean (`schur_tail.budget`, 2¹⁶ points, j = 0.425) is 1.1776 at 93079/100000
-  and 1.1783 at 23277/25000. r_reg is 1.2042 and 1.2028. (b) One signed-head fact replacing the six's head fact. It
+- **New native facts: one** (ledger 5.4(b); the contour fact 5.4(a) is replaced by the exact polynomial
+  certificates above). For the record, the float Schur means at ρ = 109/100 (`schur_tail.budget`, 2¹⁶ points,
+  j = 0.425) are 1.1776 at 93079/100000 and 1.1783 at 23277/25000. The one new fact is a signed-head fact replacing the six's head fact. It
   covers the five six-type heads (`bivarT`, `HaagerupKernel` intervals) and the composed cell head
   (`HeadCompute.compose 126`, `GrotheKernel` intervals) against c and headCap.
 - **Proof glue** (ledger 5.5). Summability and domination of the pair's radial series must be stated in the six's
-  `Haagerup.DominatedKernel` terms. The tail hypothesis must come from the contour fact. The two interval kernels must
+  `Haagerup.DominatedKernel` terms. The tail hypothesis must come from the polynomial contour certificate through the Schur specialisation. The two interval kernels must
   be converted into each other. The new slot needs this bridge between the two developments, which state domination
   and intervals separately.
 - **Honest size.** A PR of 30-odd added modules, about 0.6 MB of hand or generated Lean besides the 19 MB data
-  module, two new native facts and a bridge of a few hundred lines. The cell tree was written and built on the
+  module. It needs one new native fact (the mixed head), a kernel-checked polynomial contour certificate with the
+  Schur specialisation, and a bridge of a few hundred lines. The cell tree was written and built on the
   branch, not on master, so the porting work is mostly re-import and the bridge.
 - **Risks.** (1) `CellData.lean` at 19 MB must elaborate within a hosted runner's 16 GB. The branch's own build
-  record should be checked first; if it does not fit, the check needs the heavy runner. (2) The contour fact for the
-  new R has not been run in Lean: the float mean 1.18 leaves 70 % headroom, but the adaptive box enclosures have cost
-  10–34 % over the float mean on the committed channels. (3) Since #645 the article's ancillary package
+  record should be checked first; if it does not fit, the check needs the heavy runner. (2) The Schur specialisation
+  to the cell pair (CELL_TAIL.md §2) is a paper derivation, author-checked only, and has not been formalised. (3) Since #645 the article's ancillary package
   is decoupled from the repository, so the six's interval kernel `HaagerupKernel` may be changed; a bridge on the
-  `Grothe` side still keeps the kernel library small (a change to a precompiled library rebuilds every importer). (4) The decision of ledger 5.6 stands: master's upper bound would depend on the cell tree of
-  a closed PR.
+  `Grothe` side still keeps the kernel library small (a change to a precompiled library rebuilds every importer). (4) Ledger 5.6 records as an open decision whether master's upper bound should depend on the cell
+  tree of a closed PR; no decision has been made.
 
 ## Replay
 
@@ -155,7 +183,8 @@ python3 eighth-channel/columns.py SRC out COLUMNS.json          # six + five sel
 python3 eighth-channel/eighth.py SRC COLUMNS.json eighth-channel/eighth.json   # control, (a), (c), (d) (1 min)
 python3 eighth-channel/refl_cubic.py eighth-channel/refl.json 121 120 0 0.01 0.02 0.05 0.1 0.15 0.2 0.3   # (b)
 python3 eighth-channel/refl_lp.py SRC COLUMNS.json eighth-channel/refl.json eighth-channel/refl_lp.json
+python3 eighth-channel/contour_check.py     # exact contour certificates, standard library only (< 1 s)
 ```
 
-`COLUMNS.json` (0.96 MB) is not kept: it is rebuilt in two minutes. The logs `eighth.log`, `refl.log` and
-`refl_lp.log` are kept next to the JSON files.
+`COLUMNS.json` (0.96 MB) is not kept: it is rebuilt in two minutes. The logs `eighth.log`, `refl.log`,
+`refl_lp.log` and `contour_check.log` are kept next to the JSON files.
