@@ -1,0 +1,28 @@
+bash stage1.sh gC 0.78 0.0779 all 0.70,0.72,0.74,0.76,0.78,0.79,0.80,0.81,0.82,0.83,0.84,0.845,0.85,0.855,0.86,0.865,0.87,0.875,0.88,0.886 && cp thresholds/games/gC/rows_all.lines thresholds/games/gC/rows_all.lines.bak; cd thresholds && ALLOW_PY=/home/agalatan/claude-b9ee-gate/venv/bin/python ALLOW_TS=0.70,0.72,0.74,0.76,0.78,0.79,0.80,0.81,0.82,0.83,0.84,0.845,0.85,0.855,0.86,0.865,0.87,0.875,0.88,0.886 D5_TARGET=500/701 /home/agalatan/claude-b9ee-gate/venv/bin/python band5.py gC 0.78 0.0779 0.80,0.82,0.84,0.845,0.85,0.855 > games/gC/band5.out 2>&1
+cd thresholds && ALLOW_PY=/home/agalatan/claude-b9ee-gate/venv/bin/python ALLOW_TS=0.70,0.72,0.74,0.76,0.78,0.79,0.80,0.81,0.82,0.83,0.84,0.845,0.85,0.855,0.86,0.865,0.87,0.875,0.88,0.886 D5_TARGET=10000/14025 /home/agalatan/claude-b9ee-gate/venv/bin/python band5.py gA 0.8493 0.2827 0.80,0.82,0.84,0.845,0.85,0.855 > games/gA/band5.out 2>&1
+cd gate_gA && D5_E1=0.8493 D5_ETA=0.2827 bash run_gate_all.sh /home/agalatan/claude-b9ee-gate/venv/bin/python - '11 12 13 14 15 16 17 18 19 20' spike
+cd gate_gA && D5_E1=0.8493 D5_ETA=0.2827 bash run_gate_all.sh /home/agalatan/claude-b9ee-gate/venv/bin/python - '7 9 5 3 1 2 4 6 8 10' spike
+cd thresholds && ALLOW_PY=/home/agalatan/claude-b9ee-gate/venv/bin/python ALLOW_TS=0.70,0.72,0.74,0.76,0.78,0.79,0.80,0.81,0.82,0.83,0.84,0.845,0.85,0.855,0.86,0.865,0.87,0.875,0.88,0.886 D5_TARGET=10000/14025 /home/agalatan/claude-b9ee-gate/venv/bin/python band5.py gB 0.82 0.194 0.80,0.82,0.84,0.845,0.85,0.855 > games/gB/band5.out 2>&1
+cd gate_gB && D5_E1=0.82 D5_ETA=0.194 bash run_gate_all.sh /home/agalatan/claude-b9ee-gate/venv/bin/python - '11 12 13 14 15 16 17 18 19 20' spike
+cd gate_gB && D5_E1=0.82 D5_ETA=0.194 bash run_gate_all.sh /home/agalatan/claude-b9ee-gate/venv/bin/python - '7 9 5 3 1 2 4 6 8 10' spike
+cd gate_gA && D5_E1=0.8493 D5_ETA=0.2827 bash run_gate_all.sh /home/agalatan/claude-b9ee-gate/venv/bin/python - '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20'
+LAW_NUS=0,0.005,0.01,0.015,0.02,0.025,0.03,0.04 bash rows/lawscan.sh /home/agalatan/claude-b9ee-gate/venv/bin/python 0.8493 0.2827 2287/2500 ../law/law_gA.lines 0 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 0.55 0.6 0.65 0.7 > law/law_gA.out 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gA/rows5.lines 0.82 margins/gA_t0.82.json 0.4,0.15 0.8493 > margins/gA_t0.82.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gA/rows5.lines 0.85 margins/gA_t0.85.json 0.4,0.15 0.8493 > margins/gA_t0.85.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gA/rows5.lines 0.80 margins/gA_t0.80.json 0.4,0.15 0.8493 > margins/gA_t0.80.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gA/rows5.lines 0.84 margins/gA_t0.84.json 0.4,0.15 0.8493 > margins/gA_t0.84.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gA/rows5.lines 0.86 margins/gA_t0.86.json 0.4,0.15 0.8493 > margins/gA_t0.86.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gA/rows5.lines 0.87 margins/gA_t0.87.json 0.4,0.15 0.8493 > margins/gA_t0.87.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gA/rows5.lines 0.76 margins/gA_t0.76.json 0.4,0.15 0.8493 > margins/gA_t0.76.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gA/rows5.lines 0.88 margins/gA_t0.88.json 0.4,0.15 0.8493 > margins/gA_t0.88.log 2>&1
+cd gate_gB && D5_E1=0.82 D5_ETA=0.194 bash run_gate_all.sh /home/agalatan/claude-b9ee-gate/venv/bin/python - '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20'
+LAW_NUS=0,0.005,0.01,0.015,0.02,0.025,0.03,0.04 bash rows/lawscan.sh /home/agalatan/claude-b9ee-gate/venv/bin/python 0.82 0.194 2287/2500 ../law/law_gB.lines 0 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 0.55 0.6 0.65 0.7 > law/law_gB.out 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gB/rows5.lines 0.82 margins/gB_t0.82.json 0.4,0.15 0.82 > margins/gB_t0.82.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gB/rows5.lines 0.85 margins/gB_t0.85.json 0.4,0.15 0.82 > margins/gB_t0.85.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gB/rows5.lines 0.80 margins/gB_t0.80.json 0.4,0.15 0.82 > margins/gB_t0.80.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gB/rows5.lines 0.84 margins/gB_t0.84.json 0.4,0.15 0.82 > margins/gB_t0.84.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gB/rows5.lines 0.86 margins/gB_t0.86.json 0.4,0.15 0.82 > margins/gB_t0.86.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gB/rows5.lines 0.87 margins/gB_t0.87.json 0.4,0.15 0.82 > margins/gB_t0.87.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gB/rows5.lines 0.76 margins/gB_t0.76.json 0.4,0.15 0.82 > margins/gB_t0.76.log 2>&1
+OMP_NUM_THREADS=1 /home/agalatan/claude-b9ee-gate/venv/bin/python design/margin_scan.py gate_gB/rows5.lines 0.88 margins/gB_t0.88.json 0.4,0.15 0.82 > margins/gB_t0.88.log 2>&1
+bash rows/lawscan.sh /home/agalatan/claude-b9ee-gate/venv/bin/python 0.78 0.0779 2287/2500 ../law/law_gC.lines 0 0.1 0.25 0.3 0.4 0.5 0.6 > law/law_gC.out 2>&1

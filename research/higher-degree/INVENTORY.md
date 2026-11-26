@@ -316,3 +316,19 @@ All files of `SSPK` are committed in the repository, with zero external working-
 | `code/spiked-cubic-radius-gemini-4c4c/check_identities_exact.py` | 28,384 B | `e646e1edf97ae1bc7ab0258d76d3523a1d2afd7665b58f915eef76c037035bb6` |
 | `code/spiked-cubic-radius-gemini-4c4c/test_controls.py` | 11,118 B | `f7a05fe5561bd1b28589682541a054850beedce945e756f3ec3d07b7b2ef9b9c` |
 | `code/spiked-cubic-radius-gemini-4c4c/make_cert.py` | 57,080 B | `39d980e48d4dcce31152a504377497df00122ae792689e333fbf7c052c75c2a6` |
+
+## The gate of two other degree-5 games, 25–26 November 2026 (STATUS 4.53–4.55, tag D5GATE)
+
+- `sources/degree5-gate-2026-11-25/GATE.md` was written for the repository; it is not a copy of a working file.
+- `code/degree5-gate/`: `pipeline/` (the scripts and command lists that ran on the droplet yo in `~/claude-b9ee-gate/pkg`,
+  removed afterwards), `results/` (the small outputs the note uses, copied by `collect.sh`), `summary.py` and its output
+  `SUMMARY.md`, `exact/ranges.py` and `exact/ranges.log`.
+- Outside the repository, in `handoff/degree5-gate-2026-11-25/` of the main checkout (git-ignored): `pkg/` (the droplet
+  folder as it was at the end: 1,005 files, 11 MB, with the per-row gate outputs `gate_*/out/`, the profiles
+  `thresholds/games/*/out/prof_*.npz`, the allowance logs and the law-bundle logs `law/*.err`), the same folder as one
+  archive, and the package list of the Python environment used.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `handoff/degree5-gate-2026-11-25/pkg.tar.gz` | 5,052,854 B | `058e375a4b31272dae597447516c86343484c1bd380913a419e7ffcab9c22965` |
+| `handoff/degree5-gate-2026-11-25/venv-freeze.txt` | 247 B | `9ad57a22603315ad85c065d7f137c2f67f5e45a423ec1ec0503720ced0f23a6a` |
