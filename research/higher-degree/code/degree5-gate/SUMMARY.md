@@ -2,22 +2,22 @@
 
 | game | rows used | maximum of the envelope | at t (binding row) | room at 1.402 | at 1.4025 | at 1.403 |
 |---|---|---|---|---|---|---|
-| gC (0.78, 0.0779) | Gaussian rows, t in [0.70, 0.886] (20 rows) | 0.7128775 | 0.8475 (G0.845) | 3.89e-04 | 1.35e-04 | -1.19e-04 |
-| gC (0.78, 0.0779) | law rows, plain class, small t in [0, 0.60] (7 rows) | 0.6934640 | 0.6000 (L0.600) | 1.98e-02 | 1.95e-02 | 1.93e-02 |
-| gC (0.78, 0.0779) | law rows re-tuned for the Stein class, small t in [0, 0.60] (7 rows) | 0.6870289 | 0.6000 (S0.600) | 2.62e-02 | 2.60e-02 | 2.57e-02 |
-| gB (0.82, 0.194) | Gaussian rows, t in [0.70, 0.886] (20 rows) | 0.7125706 | 0.8475 (G0.845) | 6.96e-04 | 4.42e-04 | 1.88e-04 |
-| gB (0.82, 0.194) | law rows, plain class, tuned t in [0.70, 0.886] (15 rows) | 0.7125684 | 0.8532 (L0.850) | 6.98e-04 | 4.44e-04 | 1.90e-04 |
-| gB (0.82, 0.194) | law rows, plain class, small t in [0, 0.70] (15 rows) | 0.7145599 | 0.2748 (L0.300) | -1.29e-03 | -1.55e-03 | -1.80e-03 |
-| gB (0.82, 0.194) | law rows re-tuned for the Stein class, small t in [0, 0.70] (15 rows) | 0.7052759 | 0.7000 (S0.700) | 7.99e-03 | 7.74e-03 | 7.48e-03 |
-| gA (0.8493, 0.2827) | Gaussian rows, t in [0.70, 0.886] (20 rows) | 0.7124640 | 0.8812 (G0.875) | 8.03e-04 | 5.48e-04 | 2.94e-04 |
-| gA (0.8493, 0.2827) | law rows, plain class, tuned t in [0.70, 0.886] (15 rows) | 0.7125447 | 0.8306 (L0.820) | 7.22e-04 | 4.68e-04 | 2.14e-04 |
-| gA (0.8493, 0.2827) | law rows, plain class, small t in [0, 0.70] (15 rows) | 0.7372982 | 0.2748 (L0.250) | -2.40e-02 | -2.43e-02 | -2.45e-02 |
-| gA (0.8493, 0.2827) | law rows re-tuned for the Stein class, small t in [0, 0.70] (15 rows) | 0.7230297 | 0.1747 (S0.150) | -9.76e-03 | -1.00e-02 | -1.03e-02 |
-| gA1 (0.84896, 0.2818) | law rows, plain class, small t in [0, 0.60] (9 rows) | 0.7403167 | 0.2500 (L0.200) | -2.70e-02 | -2.73e-02 | -2.76e-02 |
-| gA1 (0.84896, 0.2818) | law rows re-tuned for the Stein class, small t in [0, 0.60] (9 rows) | 0.7227482 | 0.1747 (S0.200) | -9.48e-03 | -9.74e-03 | -9.99e-03 |
-| gA2 (0.848, 0.2795) | law rows, plain class, tuned t in [0.80, 0.886] (8 rows) | 0.7125427 | 0.8304 (L0.820) | 7.24e-04 | 4.70e-04 | 2.16e-04 |
-| gA2 (0.848, 0.2795) | law rows, plain class, small t in [0, 0.60] (9 rows) | 0.7395379 | 0.2502 (L0.200) | -2.63e-02 | -2.65e-02 | -2.68e-02 |
-| gA2 (0.848, 0.2795) | law rows re-tuned for the Stein class, small t in [0, 0.60] (9 rows) | 0.7221818 | 0.2471 (S0.200) | -8.92e-03 | -9.17e-03 | -9.42e-03 |
+| gC (0.78, 0.0779) | Gaussian rows, t in [0.70, 0.886] (20 rows) | 0.712877551259 | 0.847502 (G0.845) | 3.89e-04 | 1.35e-04 | -1.19e-04 |
+| gC (0.78, 0.0779) | law rows, plain class, small t in [0, 0.60] (7 rows) | 0.693463990215 | 0.600000 (L0.600) | 1.98e-02 | 1.95e-02 | 1.93e-02 |
+| gC (0.78, 0.0779) | law rows re-tuned for the Stein class, small t in [0, 0.60] (7 rows) | 0.687028948120 | 0.600000 (S0.600) | 2.62e-02 | 2.60e-02 | 2.57e-02 |
+| gB (0.82, 0.194) | Gaussian rows, t in [0.70, 0.886] (20 rows) | 0.712570628912 | 0.847501 (G0.845) | 6.96e-04 | 4.42e-04 | 1.88e-04 |
+| gB (0.82, 0.194) | law rows, plain class, tuned t in [0.70, 0.886] (15 rows) | 0.712568514521 | 0.853248 (L0.850) | 6.98e-04 | 4.44e-04 | 1.90e-04 |
+| gB (0.82, 0.194) | law rows, plain class, small t in [0, 0.70] (15 rows) | 0.714561143240 | 0.274787 (L0.250) | -1.29e-03 | -1.55e-03 | -1.80e-03 |
+| gB (0.82, 0.194) | law rows re-tuned for the Stein class, small t in [0, 0.70] (15 rows) | 0.705275871564 | 0.700000 (S0.700) | 7.99e-03 | 7.74e-03 | 7.48e-03 |
+| gA (0.8493, 0.2827) | Gaussian rows, t in [0.70, 0.886] (20 rows) | 0.712464042528 | 0.881166 (G0.875) | 8.03e-04 | 5.48e-04 | 2.94e-04 |
+| gA (0.8493, 0.2827) | law rows, plain class, tuned t in [0.70, 0.886] (15 rows) | 0.712544835716 | 0.830653 (L0.820) | 7.22e-04 | 4.68e-04 | 2.14e-04 |
+| gA (0.8493, 0.2827) | law rows, plain class, small t in [0, 0.70] (15 rows) | 0.737299764550 | 0.274830 (L0.250) | -2.40e-02 | -2.43e-02 | -2.45e-02 |
+| gA (0.8493, 0.2827) | law rows re-tuned for the Stein class, small t in [0, 0.70] (15 rows) | 0.723031438550 | 0.174746 (S0.150) | -9.76e-03 | -1.00e-02 | -1.03e-02 |
+| gA1 (0.84896, 0.2818) | law rows, plain class, small t in [0, 0.60] (9 rows) | 0.740319046560 | 0.250048 (L0.200) | -2.71e-02 | -2.73e-02 | -2.76e-02 |
+| gA1 (0.84896, 0.2818) | law rows re-tuned for the Stein class, small t in [0, 0.60] (9 rows) | 0.722748206818 | 0.174746 (S0.150) | -9.48e-03 | -9.74e-03 | -9.99e-03 |
+| gA2 (0.848, 0.2795) | law rows, plain class, tuned t in [0.80, 0.886] (8 rows) | 0.712542781965 | 0.830361 (L0.820) | 7.24e-04 | 4.70e-04 | 2.16e-04 |
+| gA2 (0.848, 0.2795) | law rows, plain class, small t in [0, 0.60] (9 rows) | 0.739543239985 | 0.250201 (L0.200) | -2.63e-02 | -2.65e-02 | -2.68e-02 |
+| gA2 (0.848, 0.2795) | law rows re-tuned for the Stein class, small t in [0, 0.60] (9 rows) | 0.722182918422 | 0.247136 (S0.200) | -8.92e-03 | -9.17e-03 | -9.42e-03 |
 
 Between the tuning points of the law rows (a grid of step 0.05 or 0.1 at small t) the envelope uses the neighbouring rows, so its small-t maxima
 are upper estimates; the row values at their own t below are the primary numbers. On t >= 0.86 the law grid falls BELOW the Gaussian row

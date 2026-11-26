@@ -28,7 +28,7 @@ profiles, logs) are in the handoff archive listed in [`../../INVENTORY.md`](../.
 |---|---|---|
 | gC | (1, −0.78, 0.0779) = (1, −39/50, 779/10000) | the capped game: the control |
 | gA | (1, −0.8493, 0.2827) | the degree-5 optimum of the model (ledger 1.11), rounded |
-| gA1, gA2 | (1, −0.84896, 0.2818), (1, −0.848, 0.2795) | neighbours of gA (small-t law rows and, for gA2, large-t law rows only) |
+| gA1, gA2 | (1, −0.84896, 0.2818), (1, −0.848, 0.2795) | neighbours of gA (small-t law rows and, for gA2, large-t law rows only; their gates, band tables and margins were not measured) |
 | gB | (1, −0.82, 0.194) = (1, −41/50, 97/500) | the ridge game at the cap 0.82 (ledger 4.33, 4.52) |
 | cap-0.81 | (1, −0.81, 0.165) | the comparator of the decision rule (ledger 4.33; NEWCAP) |
 
@@ -67,7 +67,7 @@ Targets 1/1.4025 = 0.7130125 and 1/1.403 = 0.7127584 (and 500/701 = 0.7132668 fo
 
 | | gC (control) | gB | gA |
 |---|---|---|---|
-| maximum of the Gaussian envelope, t ∈ [0.70, 0.886] (at t) | 0.7128775 (0.8475) | 0.7125706 (0.8475) | 0.7124640 (0.8812)¹ |
+| maximum of the Gaussian envelope, t ∈ [0.70, 0.8862] (at t) | 0.712877551 (0.8475) | 0.712570629 (0.8475) | 0.712464043 (0.8812)¹ |
 | room at 1.4025 / 1.403 at that maximum | 1.35·10⁻⁴ / −1.19·10⁻⁴ | 4.42·10⁻⁴ / 1.88·10⁻⁴ | 5.48·10⁻⁴ / 2.94·10⁻⁴ |
 | plain law rows on [0.70, 0.86], envelope maximum | – | 0.7125684 | 0.7125447 |
 | law row at t = 0 (plain; zero row with the Stein family) | 0.6530107; 0.6527273 | 0.6874003; 0.6866736 | 0.7125551; 0.7114360 |
@@ -81,11 +81,16 @@ Targets 1/1.4025 = 0.7130125 and 1/1.403 = 0.7127584 (and 500/701 = 0.7132668 fo
 3·10⁻²; band5's own envelope of the same rows gives 0.7124782 at 0.8789). They are upper bounds of the row values
 there, so the envelope maximum is an upper estimate; the model norm of ledger 1.11 is 0.7124306.
 
-The row values at their own t are the primary numbers (`SUMMARY.md` §1); the bundle method stops when its master value
-(a lower bound of the best row against the laws found) meets the row value. Every plain-class run on t ∈ [0.05, 0.70]
-converged with a gap of at most 1.7·10⁻⁶ (1.3·10⁻⁶ for gA and gB; gemini-21d5 re-evaluated the plain rows of gA and gB
-at t = 0.25 by an independent LP, agreeing to 2.4·10⁻⁹). So, up to that gap and the grid of the law class (both on the
-side of the estimate being low), the plain rows are lower estimates of the best row at each t.
+The envelope maxima are the exact maxima of the stored rows (endpoints and all pairwise crossings; between switches the
+smallest row is convex), not of a grid. The row values at their own t are the primary numbers (`SUMMARY.md` §1). The
+bundle method stops when its master value meets the row value; every plain-class run on t ∈ [0.05, 0.70] converged
+with a gap of at most 1.7·10⁻⁶ (1.3·10⁻⁶ for gA and gB; gemini-21d5 re-evaluated the plain rows of gA and gB at
+t = 0.25 by an independent LP, agreeing to 2.4·10⁻⁹). The master is not a global lower bound: it minimises, by SLSQP
+without a check of its success or a dual bound, over a trust box around the incumbent row that shrinks when a round
+makes no progress, against the laws found so far (`rows/lawbundle.py`, `master` and `optimise`). Restricting the laws
+lowers the value, restricting the rows raises it. So the values below are **numerical obstructions for the rows
+searched**: each is, up to the grid of the law class, a lower estimate of the supremum of its own row, and the
+search found no better row near it; they do not exclude every row of the type.
 
 The Stein-class numbers come from a second bundle run per row (`STEIN_OPT=1`): starting from the plain row, up to 8
 rounds against an oracle that searches a local window around the plain maximiser (σ within ±0.06, ν at the
@@ -99,8 +104,8 @@ gaps of the converged Stein runs are at most 5·10⁻⁶.
 
 - **gA, gA1, gA2** exceed 500/701 (so also 1/1.4025 and 1/1.403) in the plain class at every t from 0.1 to 0.5 by
   4·10⁻³ to 2.3·10⁻² (gA: 0.7205314 at 0.1, 0.7364982 at 0.25, 0.7179443 at 0.5; gA1 and gA2 within 1.2·10⁻³ of gA).
-  These games have no certificate of the type of ledger 4.1 with the plain law class at any target from 1.402 up
-  (**N**, one-sided as stated). The rows re-tuned for the Stein class still exceed 1/1.402 on t = 0.05–0.35 by up to
+  With the rows searched, these games have no certificate of the type of ledger 4.1 in the plain law class at any
+  target from 1.402 up (**N**: a numerical obstruction, not an exclusion of every row). The rows re-tuned for the Stein class still exceed 1/1.402 on t = 0.05–0.35 by up to
   8.5·10⁻³ (gA 0.7217968 at 0.2; gA2 0.7207245 at 0.2): re-tuning lowered the Stein-class value of the
   starting row by at most 2.3·10⁻³ on any row of any game, far less than the excess, which strengthens the negative evidence on
   [0.10, 0.35]; it is not one-sided, for the reasons above. At t = 0 the gA family has room
@@ -121,9 +126,15 @@ gaps of the converged Stein runs are at most 5·10⁻⁶.
 | 4.18e with Parseval | 0.34462006 / – | none (0.717874 at t = 0) | none |
 | 4.18f, the box verifier run with the game replaced (**R**: its steps are not re-derived for other games) | 0.36409 / – | 0.17948 / 0.17771 | not run (no start) |
 | large t, 4.18d (verify.py, verify_coupled.py with ε, η, target replaced) | fails at 1.4025 (ledger 4.50) | fails ("full quintic margin") | fails ("full quintic margin") |
+| large t, the endpoint tangent (2)–(3) of `../quintic-tangent-codex-a7c4/PROOF.md` with b_A = b_B = ξ = 0, ℓ = 9/5: V < target for every pair with t ≥ … at 1.4025 / 1.403 | 0.88542710 / – (ℓ, β = 17/10, 17/100; 0.88527103 at 1.402) | 0.88569350 / 0.88583247 (β = 0.182) | gA 0.88590616 / 0.88604516; gA1 0.88590627 / 0.88604527; gA2 0.88591151 / 0.88605051 (β = 0.188) |
 
-The verifiers of 4.18c/d were fitted to the capped game: their failure for gA and gB is a statement about those
-verifiers, not a proof that no large-t bound exists. Neither game has a hypothesis-free large-t range today.
+The fitted verifiers of 4.18c/d fail for gA and gB, but the plain endpoint tangent does not need them: with
+b_A = b_B = ξ = 0 and β ≥ 3ημ/8 the floor of g\* is m = ℓ − 2β + 3ημ/8, and when √π/m ≤ 1/ε and √π/m < 1/η both the
+cubic and the quintic quadratic forms are absorbed, leaving the decreasing parabola (3) (its derivation uses only
+ε, η > 0). `exact/ranges.py` checks the premises and the parabola with the directed bounds of μ = √π/2 from
+`mu_bounds()` of `../../code/quintic-tangent-codex-a7c4/verify.py`, with controls: the capped game reproduces PROOF.md's
+0.88527103 at 500/701, each t₀ − 10⁻⁸ fails even at the lower bound of μ, and two premise violations are rejected. These intervals (pointed out by codex-a7c4 in the review of PR #719) are exact but short: they end at
+μ = 0.88622693, about 3·10⁻⁴ above their start.
 
 ### 2.3 Sector shares on the peak band (the decision rule)
 
@@ -152,11 +163,18 @@ The gate of ledger 4.16 (`CODE/results/gate.md`; θ = the sharing constant, ≤ 
 
 | | gC | cap-0.81 (outputs of 16 Nov, re-collected) | gB | gA |
 |---|---|---|---|---|
-| θ on the rows 0.70–0.886 | −0.037 … −0.203 | −0.031 … −0.111 | −0.030 … −0.069: **passes** | **positive on 0.82–0.875** (+0.009 to +0.075): **fails** |
+| θ on the rows 0.70–0.886, over the points where the sampled test is finite | −0.037 … −0.203 | −0.031 … −0.111 | −0.030 … −0.069 | **positive on 0.82–0.875** (+0.009 to +0.075): **fails** |
+| points where the sampled test is infinite (H11 not concave: D > 0, H11 = ∞), dropped from θ | 2 (t = 0.70) | 7 (t = 0.70–0.78) | **11** (t = 0.70–0.80) | 19 (t = 0.70–0.845) |
 | sum of the κ\*_g at t = 0.80 / 0.85 | 0.38 / 0.35 | 0.72 / 0.73 | 0.72 / 0.94 | 1.25 / 2.38 |
 | one inequality at t = 0.80 / 0.85 | 0.23 / 0.21 | 0.32 / 0.43 | 0.42 / 0.59 | 0.86 / 1.57 |
 
-gA's gate rows at t ≥ 0.865 use the non-converged rows of note ¹.
+gA's gate rows at t ≥ 0.865 use the non-converged rows of note ¹. `collect_gate.py` drops a point from θ when a group is
+not finite (it counts them in its last column, "non-concave points"). For gB these are the 11 points c = 0.1 at
+t = 0.70, 0.72, 0.74, 0.76, 0.78, 0.79, 0.80 and c = 0.3 at t = 0.70–0.76, all at σ = σ\*/2 (e.g. t = 0.70, c = 0.1,
+σ = 0.2226: D = 4.18·10⁻⁶, V_sl = 0.0136, H11 = ∞; t = 0.80, c = 0.1, σ = 0.15606). There the sampled quadratic test of
+4.16 fails: a failure of the test, not a counterexample to the game. So **gB passes the sampled gate only on its finite
+points**; the capped game has the same defect at two points of t = 0.70 (c = 0.1, 0.3), which the record of 4.16, made with
+the same collector, also leaves out of θ.
 
 ### 2.4 A/B secant margins at the working tilt (2/5, 3/20)
 
@@ -197,9 +215,10 @@ the capped game's; on the rows 0.80–0.84 one constant per energy is below 1 ag
 
 ## 3. Verdict
 
-By the rule of #713: **neither game is taken, and degree 5 stops** (**N**, with the one-sided statements of §2.1).
+By the rule of #713: **neither game is taken, and degree 5 stops** (**N**; the law rows are numerical obstructions for the rows searched, §2.1).
 
-- **gB** passes the gate of 4.16 (θ ≤ −0.030 on every row), but its quintic share is 0.40–0.60 on the peak band,
+- **gB** has θ ≤ −0.030 on every row over the points where the sampled gate of 4.16 is finite (it is infinite at 11
+  points on t = 0.70–0.80, §2.3), but its quintic share is 0.40–0.60 on the peak band,
   above the cap-0.81 game's 0.31–0.42 on every row compared, and its band minima (0.146, 0.213 at 1.4025) are below
   the cap-0.81 game's (0.217, 0.333 at 1.402) and 30 % and 27 % of the capped game's. Its secant margin loses up to
   27 % at finite amplitude, its allowances against the recorded ratios are 0.73–0.96 with one constant per energy on
@@ -209,7 +228,10 @@ By the rule of #713: **neither game is taken, and degree 5 stops** (**N**, with 
   sharing constant is positive on 0.82–0.875, the quintic shells alone take more than the whole deficit from t = 0.82
   on (κ_h = 1.04–1.68), so no split is left for the A/B shells. Independently of the sectors, its plain law rows
   exceed every target from 1.402 up by 4·10⁻³ to 2.3·10⁻² on t ∈ [0.1, 0.5]: the larger scalar room at the peak is
-  paid for at small t, where the t = 0 test of 4.52 did not look.
+  paid for at small t, where the t = 0 test of 4.52 did not look (an obstruction for the rows searched, §2.1). The gates
+  of gA1 and gA2 were not measured.
+- Both games keep a short hypothesis-free interval at the top, t ≥ 0.8858 (gB) and t ≥ 0.8860 (gA) at 1.403 (§2.2);
+  it does not touch the binding band.
 
 What this does not exclude: a certificate of another type (rows with a richer law class re-optimised for it, other
 sector decompositions, a different small-t argument), and degree 5 with the capped game itself (which stays the
@@ -220,6 +242,8 @@ design of D\* at 1.402 and cannot pass 1.402735, ledger 4.50). It does not bear 
 - gA's Gaussian rows at t ≥ 0.865: the tuning did not converge (note ¹); the planned rerun was not made. The gate,
   the margins at 0.87 and 0.88 and the envelope of gA there use these rows.
 - The large-t law rows (t ≥ 0.86, all games run): unresolved (below the Gaussian value; bundle gap up to 3.4·10⁻⁴).
+- The plain law rows are minimised over a trust box around the incumbent (§2.1): no global optimality certificate.
+- The gates, band tables and margins of gA1 and gA2 were not measured.
 - The Stein-class rows were re-tuned by a local bundle method (§2.1): not one-sided; at t = 0.05 the run stalled at
   the plain row.
 - The content ratios of gA's and gB's own cubics were not computed; §2.5 uses the capped game's recorded ratios.

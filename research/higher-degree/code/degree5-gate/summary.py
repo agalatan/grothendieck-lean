@@ -21,11 +21,19 @@ def lawrows(g):
     """the small-t and large-t law rows of game g, without the duplicate t = 0.70 of the large-t scan."""
     lw = lines(os.path.join(R, g, 'law.lines')); ts = {round(r['t'], 4) for r in lw}
     return lw, [r for r in lines(os.path.join(R, g, 'lawhi.lines')) if round(r['t'], 4) not in ts]
-def env(rows, t0, t1, n=8863):
-    """max over a grid of t in [t0, t1] of the smallest row bound; rows = [(label, l, C)]."""
+def env(rows, t0, t1):
+    """max over t in [t0, t1] of the smallest row bound; rows = [(label, l, C)].  The smallest bound is t^2 plus a concave piecewise
+    linear function, so it is convex between switches of the binding row and its maximum is at t0, t1 or a crossing of two rows."""
+    cand = {t0, t1}
+    for i in range(len(rows)):
+        for j in range(i):
+            dl = rows[i][1] - rows[j][1]
+            if dl != 0:
+                t = (rows[i][2] - rows[j][2]) / (2 * dl)
+                if t0 <= t <= t1: cand.add(t)
     best = (-9, None, None)
-    for i in range(n):
-        t = t0 + (t1 - t0) * i / (n - 1); v, lab = min((t * t - 2 * l * t + C, lab) for lab, l, C in rows)
+    for t in sorted(cand):
+        v, lab = min((t * t - 2 * l * t + C, lab) for lab, l, C in rows)
         if v > best[0]: best = (v, t, lab)
     return best
 print('## 1. Envelopes (float)\n')
@@ -42,7 +50,7 @@ for g in ('gC', 'gB', 'gA', 'gA1', 'gA2'):
                            ('law rows re-tuned for the Stein class, small t in [0, %.2f]' % t1, [x for x in st if float(x[0][1:]) <= 0.701], 0.0, t1)):
         if len(rows) < 2: continue
         v, t, lab = env(rows, a, b)
-        print('| %s (%g, %g) | %s (%d rows) | %.7f | %.4f (%s) | %s |' % (g, GAMES[g][0], GAMES[g][1], nm, len(rows), v, t, lab, ' | '.join('%.2e' % (T - v) for _, T in TG)))
+        print('| %s (%g, %g) | %s (%d rows) | %.12f | %.6f (%s) | %s |' % (g, GAMES[g][0], GAMES[g][1], nm, len(rows), v, t, lab, ' | '.join('%.2e' % (T - v) for _, T in TG)))
 print('\nBetween the tuning points of the law rows (a grid of step 0.05 or 0.1 at small t) the envelope uses the neighbouring rows, so its small-t maxima\nare upper estimates; the row values at their own t below are the primary numbers. On t >= 0.86 the law grid falls BELOW the Gaussian row\n(it does not resolve the Gaussian point there), so only the Gaussian value counts on those rows.')
 print('The small-t scan (law.lines, t = 0 to 0.70) and the large-t scan (lawhi.lines, t = 0.70 or 0.80 to 0.886) both ran t = 0.70 for gA and gB;\nthe row of the small-t scan (which has the Stein value) is used and the other dropped (they differ by at most 1.8e-5). The row 0.70 is the\nright end of the small-t slice [0, 0.70] and the left end of the tuned slice.')
 print('\nrow values at their own t (Gaussian ideal | plain law class | re-tuned for the Stein class, with the change of l and the s of the final scan):\n')
