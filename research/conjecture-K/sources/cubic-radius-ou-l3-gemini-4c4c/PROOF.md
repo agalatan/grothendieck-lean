@@ -1,0 +1,251 @@
+# Tied $U(1)$-Averaged Ornstein–Uhlenbeck Resolvent, Self-Contained Damped Level-3 Stein Cover, and Global Complex Cubic Radius $\rho_* \le \frac{114}{125} = 0.912$ (Issue #720)
+
+*Author: `gemini-4c4c` (26 November 2026). Task: Closes [#720](https://github.com/agalatan/grothendieck-lean/issues/720), Refs [#453](https://github.com/agalatan/grothendieck-lean/issues/453), [#458](https://github.com/agalatan/grothendieck-lean/issues/458).*
+*Ledger status of all new claims in this note: **`P + C, author only`** (every step proved on paper below on top of independently reviewed **P + C** inputs [`KNG505`](../near-gaussian-505-2026-11-21-gemini-2762/PROOF.md), [`K3R`](../complex-radius-2026-11-17-gemini-2762/PROOF.md), `4.18a`, `4.18e`, `4.18f` and Lean theorems in `Grothe/LowerAnalytic/`; dual-verified in pure Python 3 stdlib exact arithmetic with **zero floating-point operations** by [`verify.py`](../../code/cubic-radius-ou-l3-gemini-4c4c/verify.py), [`verify_bernstein.py`](../../code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py), [`check_identities_exact.py`](../../code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py), and [`test_controls.py`](../../code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py)).*
+
+---
+
+## 0. Main Results and Overview
+
+Let $z = (z_1, \dots, z_n)$ be independent standard complex Gaussians ($\mathbb{E}|z_j|^2 = 1$, $\mathbb{E}[z_j^2] = 0$), let $H_{p,q}(\mathbb{C}^n)$ denote the complex Wick chaos of bidegree $(p, q)$, and for nonzero $q \in H_{2,1}(\mathbb{C}^n)$ write $u := \|q\|_2^2 = \mathbb{E}|q|^2$ and $\chi(q) := \frac{\mathbb{E}|q|^4}{\|q\|_2^4} - 2 \in [0, 42]$ (`Circular.gaussian_fourth_moment_le_44`).
+
+Previously ([`STATUS.md`](../../STATUS.md) `3.7`):
+- Combining $U(1)$ phase-averaging of the real $V_3(\mathbb{R}^{2n})$ Ornstein–Uhlenbeck resolvent bound $\mathbb{E}|q| \le \frac{\sqrt{\pi}}{2}\|q\|_2\big(1 + \frac{26449}{5000000}\chi(q)\big)$ ([`KNG505`](../near-gaussian-505-2026-11-21-gemini-2762/PROOF.md), **P + C**) on $\chi \in [0, 6]$ with the Level-2 flank rows of `cert_916.json` ([`K3R`](../complex-radius-2026-11-17-gemini-2762/PROOF.md), **P + C**) gave the independently reviewed bound **$\rho_* \le \frac{2287}{2500} = 0.9148$**.
+- Combining `KNG505` on $\chi \in [0, \frac{11}{2}]$ with Rows 7–13 of `cert_915.json` ([`KSR`](../sharp-radius-2026-11-17-gemini-2762/PROOF.md), where Row 7's damped Level-3 proof was author only) gave **$\rho_* \le \frac{4571}{5000} = 0.9142$** (**P, author only + C**), while `cert_915.json` alone gave $\frac{1829}{2000} = 0.9145$ and $\le \frac{443}{500}$ on $\chi \in [26, 42]$.
+
+Notice why `KNG505`'s real-slice phase average left room on $H_{2,1}(\mathbb{C}^n)$: applying the $2\times 2$ pointwise Schur envelope separately on each real slice $F_\theta = \sqrt{2}\operatorname{Re}(e^{-i\theta}q)$ requires positivity at the worst real zero/extremum of $F_\theta$ for every $\theta$ independently, ignoring that as $\theta$ varies over $[0, 2\pi)$, $F_{\phi+\alpha} = \sqrt{2V}\cos\alpha$ sweeps a circular orbit at fixed $V = |q|^2$ while the Malliavin variance $U_{\phi+\alpha} = \|\nabla_{\mathbb{R}}F_{\phi+\alpha}\|^2 - 3$ carries only angular frequencies $0$ and $\pm 2$.
+
+We sharpen both mechanisms and provide a **100% self-contained paper proof and sub-300 KB dual-verified certificate [`cert_912.json`](../../code/cubic-radius-ou-l3-gemini-4c4c/cert_912.json)** (so independent review promotes all statements below directly to full **P + C** without depending on unreviewed `KSR`):
+
+> [!IMPORTANT]
+> ### Theorem 1 (Tied $U(1)$-Averaged Ornstein–Uhlenbeck Resolvent Bound on $H_{2,1}(\mathbb{C}^n)$)
+> *For every $n \ge 1$ and every $q \in H_{2,1}(\mathbb{C}^n)$,*
+> $$\mathbb{E}|q| \le \frac{\sqrt{\pi}}{2}\,\|q\|_2\left(1 + \frac{3299}{625000}\,\chi(q)\right), \qquad \frac{3299}{625000} = 0.0052784 < \frac{26449}{5000000} = 0.0052898.$$
+> *In particular, across the entire low- and mid-kurtosis regime $\chi(q) \in [0, \frac{11}{2}] = [0, 5.5]$,*
+> $$\mathbb{E}|q| \le \frac{\sqrt{\pi}}{2}\,\|q\|_2\left(1 + \frac{3299}{625000}\cdot\frac{11}{2}\right) < \frac{91196}{100000}\,\|q\|_2 = 0.91196\,\|q\|_2 < \frac{114}{125}\,\|q\|_2 = 0.912\,\|q\|_2$$
+> *(certified across all $V \in [0, \infty)$ in $361$ adaptive cells by sequential $1\times 1$ interval $LDL^\top$ pivots in `verify.py` and independently by $2\times 2$ block Schur complements in `verify_bernstein.py`).*
+
+> [!IMPORTANT]
+> ### Theorem 2 (Global Complex Cubic Radius $\rho_* \le \frac{114}{125} = 0.912$ and Sharp High-Kurtosis Regime $\chi \in [25, 42]$)
+> 1. **Global unconditional radius:** *Combining Theorem 1 on $\chi \in [0, \frac{11}{2}]$ with the 10 contiguous Compactly-Supported Damped Level-3 ($\varepsilon \in \{\frac{1}{6}, \frac{1}{25}\}$) and Level-2 Stein rows of [`cert_912.json`](../../code/cubic-radius-ou-l3-gemini-4c4c/cert_912.json) on $\chi \in [\frac{11}{2}, 42]$, for every $n \ge 1$ and every $q \in H_{2,1}(\mathbb{C}^n)$:*
+>    $$\mathbb{E}|q| \le \frac{114}{125}\,\|q\|_2 = 0.912\,\|q\|_2$$
+>    *(strict whenever $q \ne 0$).*
+> 2. **Expanded sharp high-kurtosis regime $\chi \in [25, 42]$:** *For every $n \ge 1$ and every $q \in H_{2,1}(\mathbb{C}^n)$ with $\chi(q) \in [25, 42]$ (widening `KSR`'s $[26, 42]$ down to $25$),*
+>    $$\mathbb{E}|q| \le \frac{443}{500}\,\|q\|_2 = 0.886\,\|q\|_2 < \frac{\sqrt{\pi}}{2}\,\|q\|_2.$$
+
+### Corollary 3 (Exact Downstream Consequences for Degree 5 and Degree 7)
+
+Substituting $\rho_0 = \frac{114}{125} = 0.912$ and $S_{\mathrm{cplx}} = \frac{3299}{625000}$ into the reviewed downstream reductions of [`higher-degree/STATUS.md`](../../../higher-degree/STATUS.md) (`1.12`, `4.12`, `4.18a`, `4.18e`, `4.18f`) yields the following exact rational thresholds (every cutoff together with its strict next-step failure control verified in zero-float arithmetic by `verify.verify_downstream()`):
+
+| Ledger Row | Quantity | Previous (`2287/2500`, **P+C**) | Previous (`4571/5000`, **P,ao+C**) | **New (`114/125 = 0.912`, `KOUL3`)** |
+|---|---|---|---|---|
+| `1.12` | Degree-7 `1.403` necessary $t=0$ cap $(1000/1403)/\rho_0^2$ | $\frac{6250000000}{7338207707} \approx 0.85171$ | $0.85283$ | **$\frac{3906250}{4558347} = 0.85694441\dots > 0.85694$** |
+| `4.12` | Degree-5 `1.402` necessary $t=0$ cap $(500/701)/\rho_0^2$ | $\frac{3125000000}{3666488669} \approx 0.85231$ | $\frac{12500000000}{14646722741} \approx 0.85343$ | **$\frac{1953125}{2277549} = 0.85755564\dots > 0.85755$** |
+| `4.18a` | Direct Gaussian-buffer 6-decimal cutoff | $0.250885$ (`0.2508`) | $0.2527$ | **$\frac{51873}{200000} = 0.259365$** (`0.259366` fails; exceeds `4.18c`'s $0.25465$) |
+| `4.18e` | Elliptic Parseval 8-decimal cutoff | $0.34554022$ | $0.34831349$ | **$\frac{8957087}{25000000} = 0.35828348$** (`0.35828349` fails) |
+| `4.18e` | Elliptic sixth-moment 8-decimal cutoff | $0.35386150$ | $0.35649797$ | **$\frac{36598729}{100000000} = 0.36598729$** ($d = \frac{2181}{1250}$; `0.36598730` fails) |
+| `4.18e` | Elliptic Lean-mass 8-decimal cutoff | $0.35859076$ | $0.36096350$ | **$\frac{4619003}{12500000} = 0.36952024$** (`0.36952025` fails) |
+| `4.18f` | Joint fourth-excess + 24 Lean spectral-mass 5-decimal cutoff | $0.36495$ | $0.36733$ | **$\frac{37589}{100000} = 0.37589 > \frac{3}{8}$** (`195` boxes, breaking $0.375 = \frac{3}{8}$) |
+
+*(Note on `4.18c`: `buffer-surplus-codex-a7c4/verify.py` hardcodes an intermediate premise `MEAN_LO = 181/200 = 0.905` in its outer-scale completion of the square, which does not apply at $\rho_0 = 0.912$; accordingly we leave `4.18c` untouched, and note that `4.18a` alone at $0.259365$ already surpasses `4.18c`'s $0.25465$.)*
+
+---
+
+## 1. Proof of Theorem 1: Tied $U(1)$-Averaged Ornstein–Uhlenbeck Resolvent
+
+### 1.1 Complex-to-Real Wirtinger Decomposition and Chaos Orthogonality
+
+Identify $\mathbb{C}^n \cong \mathbb{R}^{2n}$ via $z_j = \frac{x_j + i y_j}{\sqrt{2}}$ with $(x_1, \dots, x_n, y_1, \dots, y_n) \sim \gamma_{2n}$ standard real Gaussians ($\mathbb{E}[x_j^2] = \mathbb{E}[y_j^2] = 1$, $\mathbb{E}|z_j|^2 = 1$). Let $\partial_j := \frac{\partial}{\partial z_j} = \frac{1}{\sqrt{2}}(\partial_{x_j} - i\partial_{y_j})$ and $\bar\partial_j := \frac{\partial}{\partial\bar z_j} = \frac{1}{\sqrt{2}}(\partial_{x_j} + i\partial_{y_j})$ denote the Wirtinger operators. For any real-valued $F : \mathbb{C}^n \to \mathbb{R}$, $\partial_{x_j} F = \sqrt{2}\operatorname{Re}(\partial_j F)$ and $\partial_{y_j} F = -\sqrt{2}\operatorname{Im}(\partial_j F)$, so $(\partial_{x_j}F)^2 + (\partial_{y_j}F)^2 = 2|\partial_j F|^2$.
+
+Fix $q \in H_{2,1}(\mathbb{C}^n)$ with $\|q\|_2^2 = \mathbb{E}|q|^2 = 1$, and write $V := |q|^2$, $F_j := \bar\partial_j q \in H_{2,0}(\mathbb{C}^n)$,
+$$c_1 := \sum_{j=1}^n |\partial_j q|^2, \qquad c_2 := \sum_{j=1}^n |F_j|^2, \qquad a := \sum_{j=1}^n (\partial_j q)F_j.$$
+For each $\theta \in [0, 2\pi)$, define $F_\theta := \sqrt{2}\operatorname{Re}(e^{-i\theta}q) = \frac{1}{\sqrt{2}}(e^{-i\theta}q + e^{i\theta}\bar q) \in V_3(\mathbb{R}^{2n})$. By $U(1)$-invariance of $\gamma_{2n}$, $\mathbb{E}[F_\theta^2] = 1$ and $\kappa_4(F_\theta) = \mathbb{E}[F_\theta^4] - 3 = \frac{3}{2}\chi(q)$ (`KNG505` §5).
+
+**Lemma 1.1 (Wirtinger Gradient and Six-Component Chaos Split).** *For every unit $q \in H_{2,1}(\mathbb{C}^n)$ and every $\theta \in [0, 2\pi)$:*
+1. *Pointwise on $\mathbb{C}^n$,*
+   $$U_\theta := \|\nabla_{\mathbb{R}} F_\theta\|^2 - 3 = (c_1 + c_2 - 3) + 2\operatorname{Re}(e^{-2i\theta} a). \tag{1.1}$$
+2. *Let $S_2 := \Pi_{1,1}(c_1 + c_2 - 3) \in H_{1,1}(\mathbb{C}^n)$, $S_4 := \Pi_{2,2}(c_1 + c_2 - 3) \in H_{2,2}(\mathbb{C}^n)$, $A_2 := \Pi_{2,0}(a) \in H_{2,0}(\mathbb{C}^n)$, and $A_4 := \Pi_{3,1}(a) \in H_{3,1}(\mathbb{C}^n)$. Then $c_1 + c_2 - 3 = S_2 + S_4$ ($S_2, S_4$ real-valued), $a = A_2 + A_4$, and the unique real Wiener-chaos decomposition $U_\theta = U_{2,\theta} + U_{4,\theta} \in V_2(\mathbb{R}^{2n}) \oplus V_4(\mathbb{R}^{2n})$ is*
+   $$U_{2,\theta} = S_2 + 2\operatorname{Re}(e^{-2i\theta}A_2), \qquad U_{4,\theta} = S_4 + 2\operatorname{Re}(e^{-2i\theta}A_4). \tag{1.2}$$
+3. *The six variables $(S_2, S_4, A_2, \overline{A_2}, A_4, \overline{A_4})$ are pairwise orthogonal in $L^2(\gamma_{2n})$, $\mathbb{E}[S_2 S_4] = 0$, $\mathbb{E}[\operatorname{Re}(A_2\overline{A_4})] = 0$, and for every $\theta \in [0, 2\pi)$,*
+   $$\|U_{2,\theta}\|_2^2 = \|S_2\|_2^2 + 2\|A_2\|_2^2, \qquad \|U_{4,\theta}\|_2^2 = \|S_4\|_2^2 + 2\|A_4\|_2^2, \qquad \frac{1}{2}\big(\|S_2\|_2^2 + 2\|A_2\|_2^2\big) + \big(\|S_4\|_2^2 + 2\|A_4\|_2^2\big) = \frac{3}{2}\chi(q). \tag{1.3}$$
+
+*Proof.*
+(1) Since $\partial_j\bar q = \overline{\bar\partial_j q} = \overline{F_j}$, $\partial_j F_\theta = \frac{1}{\sqrt{2}}(e^{-i\theta}\partial_j q + e^{i\theta}\overline{F_j})$, so $2|\partial_j F_\theta|^2 = |\partial_j q|^2 + |F_j|^2 + 2\operatorname{Re}(e^{-2i\theta}(\partial_j q)F_j)$. Summing over $j = 1, \dots, n$ gives (1.1).
+(2) Because $\partial_j q \in H_{1,1}$ and $F_j \in H_{2,0}$ have degree $2$ and $U(1)$ charges $0$ and $+2$, $c_1 + c_2$ has charge $0$ and degree $\le 4$ with $\mathbb{E}[c_1 + c_2] = 2\|q\|_2^2 + \|q\|_2^2 = 3$ (`K3R` Lemma 2), so $c_1 + c_2 - 3 \in H_{1,1} \oplus H_{2,2}$. Similarly, $a = \sum_j (\partial_j q)F_j$ has charge $+2$ and degree $\le 4$, so $a \in H_{2,0} \oplus H_{3,1}$. Since $H_{p,r}(\mathbb{C}^n) \subset V_{p+r}(\mathbb{R}^{2n})$, $S_2 + 2\operatorname{Re}(e^{-2i\theta}A_2) \in V_2(\mathbb{R}^{2n})$ and $S_4 + 2\operatorname{Re}(e^{-2i\theta}A_4) \in V_4(\mathbb{R}^{2n})$, proving (1.2).
+(3) Distinct complex Wick chaoses $(1,1), (2,2), (2,0), (0,2), (3,1), (1,3)$ are pairwise orthogonal in $L^2(\gamma_{2n})$. Expanding $U_{k,\theta}^2 = S_k^2 + 2S_k(e^{-2i\theta}A_k + e^{2i\theta}\overline{A_k}) + e^{-4i\theta}A_k^2 + 2|A_k|^2 + e^{4i\theta}\overline{A_k}^2$, every $\theta$-dependent term has nonzero $U(1)$ charge ($\pm 2$ or $\pm 4$) and hence zero expectation, giving $\|U_{k,\theta}\|_2^2 = \|S_k\|_2^2 + 2\|A_k\|_2^2$. Substituting into `KNG505` Lemma 1.1 ($\frac{1}{2}\|U_{2,\theta}\|_2^2 + \|U_{4,\theta}\|_2^2 = \kappa_4(F_\theta) = \frac{3}{2}\chi(q)$) gives (1.3). (Machine-checked symbolically in `check_identities_exact.py` Part 1.) $\square$
+
+---
+
+### 1.2 Exact Positive Sum/Difference Kernel Factorization and Folded $[0, \pi/4]$ Reduction
+
+By Proposition 2.2 of [`KNG505`](../near-gaussian-505-2026-11-21-gemini-2762/PROOF.md) (**P + C**), for each $\theta \in [0, 2\pi)$:
+$$\frac{\mathbb{E}|F_\theta|}{\sqrt{2/\pi}} - 1 = -\frac{\chi(q)}{16} - \frac{1}{9}\,\mathbb{E}\big[\hat g_2(F_\theta) U_\theta U_{2,\theta} + \hat g_4(F_\theta) U_\theta U_{4,\theta}\big], \tag{1.4}$$
+where
+$$\hat g_2(x) = -\frac{3}{16} + \int_0^1 \frac{9w - w^{-1/3}}{16}(1 - w)^{-1/2} e^{-\frac{w x^2}{2(1 - w)}}\,dw, \qquad \hat g_4(x) = -\frac{3}{8} + \int_0^1 \frac{9w + w^{-2/3}}{20}(1 - w)^{-1/2} e^{-\frac{w x^2}{2(1 - w)}}\,dw.$$
+
+**Lemma 1.2 (Positive Sum/Difference Kernel Basis).** *Define on $x \in \mathbb{R}$:*
+$$G_{\mathrm{sum}}(x) := \hat g_2(x) + \hat g_4(x) + \frac{9}{16} = \int_0^1 K_{\mathrm{sum}}(w)(1 - w)^{-1/2} e^{-\frac{w x^2}{2(1 - w)}}\,dw,$$
+$$G_{\mathrm{diff}}(x) := \hat g_4(x) - \hat g_2(x) + \frac{3}{16} = \int_0^1 K_{\mathrm{diff}}(w)(1 - w)^{-1/2} e^{-\frac{w x^2}{2(1 - w)}}\,dw.$$
+*For $u := w^{1/3} \in (0, 1)$, the weights $K_{\mathrm{sum}}(w)$ and $K_{\mathrm{diff}}(w)$ satisfy the exact polynomial identities:*
+$$K_{\mathrm{sum}}(w) = u^{-2}\left[\frac{1}{30} + \frac{1}{80}(3u - 1)^2\left(9u^3 + 6u^2 + 3u + \frac{4}{3}\right)\right] > 0, \tag{1.5}$$
+$$K_{\mathrm{diff}}(w) = \frac{1}{80}u^{-2}(1 - u)\big(4 + 9u + 9u^2 + 9u^3 + 9u^4\big) > 0. \tag{1.6}$$
+*Consequently, for $m \in \{\mathrm{sum}, \mathrm{diff}\}$, $\widetilde G_m(z) := G_m(\sqrt{z})$ is strictly positive, strictly decreasing, and **strictly convex** on $z \in [0, \infty)$ with $\lim_{z\to\infty}\widetilde G_m(z) = 0$; moreover, $\hat g_2 = -\frac{3}{16} + \frac{G_{\mathrm{sum}} - G_{\mathrm{diff}}}{2}$, $\hat g_4 = -\frac{3}{8} + \frac{G_{\mathrm{sum}} + G_{\mathrm{diff}}}{2}$, and for all $(U_2, U_4) \in \mathbb{R}^2$ ($U = U_2 + U_4$):*
+$$\frac{1}{9}\big(\hat g_2 U U_2 + \hat g_4 U U_4\big) = -\frac{1}{48}U_2^2 - \frac{1}{16}U_2 U_4 - \frac{1}{24}U_4^2 + \frac{1}{18}\Big[G_{\mathrm{sum}} U^2 + G_{\mathrm{diff}}(U_4^2 - U_2^2)\Big]. \tag{1.7}$$
+
+*Proof.* Equation (1.5) is `KNG505` Lemma 3.1; expanding $(1 - u)(4 + 9u + 9u^2 + 9u^3 + 9u^4) = 4 + 5u - 9u^5 = 80 u^2\big(\frac{9u^3 + u^{-2}}{20} - \frac{9u^3 - u^{-1}}{16}\big)$ proves (1.6) (both verified at 6 rational nodes in `verify_ou_foundations()`, and note that $K_{\mathrm{diff}}(1) = 0$ cancels the $(1 - w)^{-1/2}$ integrable blowup at $w = 1$). Because $K_m(w)(1 - w)^{-1/2} > 0$ on $w \in (0, 1)$ and $z \mapsto e^{-\frac{w}{2(1-w)}z}$ is positive, strictly decreasing, and strictly convex on $[0, \infty)$, $\widetilde G_m(z)$ inherits positivity, strict decrease, strict convexity, and $\lim_{z\to\infty}\widetilde G_m(z) = 0$ by Dominated Convergence. Substituting $\hat g_2, \hat g_4$ into $\frac{1}{9}(\hat g_2 U U_2 + \hat g_4 U U_4)$ and using $U(U_2 + U_4) = U^2$ and $U(U_4 - U_2) = U_4^2 - U_2^2$ gives (1.7). $\square$
+
+**Proposition 1.3 (Block Diagonalization of the Tied $U(1)$-Averaged OU Form).** *Fix real parameters $(\alpha, \gamma_S, \gamma_A)$ with $\alpha > \frac{1}{48}$. For each $V \ge 0$ and $m \in \{\mathrm{sum}, \mathrm{diff}\}$, define the four folded phase moments on $\alpha \in [0, \pi/4]$:*
+$$I_0(G_m; V) := \frac{2}{\pi}\int_0^{\pi/4}\big[G_m(\sqrt{2V}\cos\alpha) + G_m(\sqrt{2V}\sin\alpha)\big]d\alpha,$$
+$$I_c(G_m; V) := -\frac{2}{\pi}\int_0^{\pi/4}\big[G_m(\sqrt{2V}\sin\alpha) - G_m(\sqrt{2V}\cos\alpha)\big]\cos 2\alpha\,d\alpha \le 0,$$
+$$I_{cc}(G_m; V) := \frac{2}{\pi}\int_0^{\pi/4}\big[G_m(\sqrt{2V}\cos\alpha) + G_m(\sqrt{2V}\sin\alpha)\big]\cos^2 2\alpha\,d\alpha,$$
+$$I_{ss}(G_m; V) := \frac{2}{\pi}\int_0^{\pi/4}\big[G_m(\sqrt{2V}\cos\alpha) + G_m(\sqrt{2V}\sin\alpha)\big]\sin^2 2\alpha\,d\alpha.$$
+*Define the symmetric $2\times 2$ sine-mode matrix $M_2(V)$ and $4\times 4$ cosine-mode matrix $M_4(V)$ by:*
+$$M_2(V) := \begin{pmatrix} \frac{\alpha}{2} - \frac{1}{96} + \frac{I_{ss}(G_{\mathrm{sum}}; V) - I_{ss}(G_{\mathrm{diff}}; V)}{18} & -\frac{\gamma_A}{2} - \frac{1}{64} + \frac{I_{ss}(G_{\mathrm{sum}}; V)}{18} \\ -\frac{\gamma_A}{2} - \frac{1}{64} + \frac{I_{ss}(G_{\mathrm{sum}}; V)}{18} & \alpha - \frac{1}{48} + \frac{I_{ss}(G_{\mathrm{sum}}; V) + I_{ss}(G_{\mathrm{diff}}; V)}{18} \end{pmatrix}, \tag{1.8}$$
+$$u^\top M_4(V) u := u^\top M_\infty u + \frac{1}{18}\Big[I_0(G_{\mathrm{sum}}; V)s_0^2 + 2 I_c(G_{\mathrm{sum}}; V)s_0 s_1 + I_{cc}(G_{\mathrm{sum}}; V)s_1^2 + I_0(G_{\mathrm{diff}}; V)(u_2^2 - u_0^2) + 2 I_c(G_{\mathrm{diff}}; V)(u_2 u_3 - u_0 u_1) + I_{cc}(G_{\mathrm{diff}}; V)(u_3^2 - u_1^2)\Big], \tag{1.9}$$
+*for $u = (u_0, u_1, u_2, u_3)^\top \in \mathbb{R}^4$ ($s_0 = u_0 + u_2$, $s_1 = u_1 + u_3$), where*
+$$M_\infty := \begin{pmatrix} \alpha - \frac{1}{48} & 0 & -\gamma_S - \frac{1}{32} & 0 \\ 0 & \frac{\alpha}{2} - \frac{1}{96} & 0 & -\frac{\gamma_A}{2} - \frac{1}{64} \\ -\gamma_S - \frac{1}{32} & 0 & 2\alpha - \frac{1}{24} & 0 \\ 0 & -\frac{\gamma_A}{2} - \frac{1}{64} & 0 & \alpha - \frac{1}{48} \end{pmatrix}.$$
+*If $M_2(V) \succeq 0$ and $M_4(V) \succeq 0$ for all $V \in [0, \infty)$, then for every $n \ge 1$ and every $q \in H_{2,1}(\mathbb{C}^n)$,*
+$$\mathbb{E}|q| \le \frac{\sqrt{\pi}}{2}\,\|q\|_2\left(1 + \left(3\alpha - \frac{1}{16}\right)\chi(q)\right). \tag{1.10}$$
+
+*Proof.* By homogeneity we may assume $\|q\|_2 = 1$ (if $q = 0$, (1.10) is $0 \le 0$). Since $\frac{1}{2\pi}\int_0^{2\pi}\frac{|F_\theta|}{\sqrt{2/\pi}}\,d\theta = \frac{|q|}{\sqrt{\pi}/2}$ and $|\hat g_k| \le \frac{1}{2}$, averaging (1.4) over $\theta \in [0, 2\pi)$ via Fubini's theorem gives
+$$\frac{\mathbb{E}|q|}{\sqrt{\pi}/2} - 1 = -\frac{\chi(q)}{16} - \mathbb{E}\!\left[\frac{1}{2\pi}\int_0^{2\pi}\frac{1}{9}\big(\hat g_2(F_\theta)U_\theta U_{2,\theta} + \hat g_4(F_\theta)U_\theta U_{4,\theta}\big)\,d\theta\right]. \tag{1.11}$$
+At any point $z \in \mathbb{C}^n$, write $q(z) = \sqrt{V}e^{i\phi}$ ($\phi = 0$ if $V = 0$) and $e^{-2i\phi}A_k(z) = A_{k,\parallel} + i A_{k,\perp}$ ($A_{k,\parallel}, A_{k,\perp} \in \mathbb{R}$), and set $u := (S_2,\, 2A_{2,\parallel},\, S_4,\, 2A_{4,\parallel})^\top \in \mathbb{R}^4$, $v_{\sin} := (2A_{2,\perp},\, 2A_{4,\perp})^\top \in \mathbb{R}^2$. Shifting $\theta = \phi + \alpha$ ($\alpha \in [0, 2\pi)$) by $2\pi$-periodicity gives $F_{\phi+\alpha} = \sqrt{2V}\cos\alpha$ and $U_{2,\phi+\alpha} = u_0 + u_1\cos 2\alpha + v_0\sin 2\alpha$, $U_{4,\phi+\alpha} = u_2 + u_3\cos 2\alpha + v_1\sin 2\alpha$. Since $\hat g_k(\sqrt{2V}\cos\alpha)$ is invariant under $\alpha \mapsto -\alpha$ and $\alpha \mapsto \pi - \alpha$:
+1. Oddness of $\sin 2\alpha$ under $\alpha \mapsto -\alpha$ annihilates all cross terms between $u$ and $v_{\sin}$, and reduces $\frac{1}{2\pi}\int_0^{2\pi}$ on even integrands to $\frac{2}{\pi}\int_0^{\pi/2}$.
+2. Folding $[0, \pi/2]$ at $\frac{\pi}{4}$ via $\tilde\alpha = \frac{\pi}{2} - \alpha$ ($\cos\tilde\alpha = \sin\alpha$, $\cos 2\tilde\alpha = -\cos 2\alpha$, $\cos^2 2\tilde\alpha = \cos^2 2\alpha$, $\sin^2 2\tilde\alpha = \sin^2 2\alpha$) converts the four trigonometric integrals of $G_m(\sqrt{2V}\cos\alpha)$ into $I_0, I_c, I_{cc}, I_{ss}$.
+3. Substituting (1.7) and adding the pointwise budget-minus-cross-multiplier expression
+   $$\alpha S_2^2 + 2\alpha|A_2|^2 + 2\alpha S_4^2 + 4\alpha|A_4|^2 - 2\gamma_S S_2 S_4 - 4\gamma_A\operatorname{Re}(A_2\overline{A_4}) = \alpha u_0^2 + \frac{\alpha}{2}(u_1^2 + v_0^2) + 2\alpha u_2^2 + \alpha(u_3^2 + v_1^2) - 2\gamma_S u_0 u_2 - \gamma_A(u_1 u_3 + v_0 v_1)$$
+   (using $|A_k|^2 = A_{k,\parallel}^2 + A_{k,\perp}^2$ and $\operatorname{Re}(A_2\overline{A_4}) = A_{2,\parallel}A_{4,\parallel} + A_{2,\perp}A_{4,\perp}$) yields the exact pointwise identity:
+   $$\alpha S_2^2 + 2\alpha|A_2|^2 + 2\alpha S_4^2 + 4\alpha|A_4|^2 - 2\gamma_S S_2 S_4 - 4\gamma_A\operatorname{Re}(A_2\overline{A_4}) + \frac{1}{2\pi}\int_0^{2\pi}\frac{1}{9}\big(\hat g_2(F_\theta)U_\theta U_{2,\theta} + \hat g_4(F_\theta)U_\theta U_{4,\theta}\big)d\theta = u^\top M_4(V)u + v_{\sin}^\top M_2(V)v_{\sin} \ge 0.$$
+Taking expectations under $\gamma_{2n}$ and applying Lemma 1.1(3) ($\mathbb{E}[S_2 S_4] = \mathbb{E}[\operatorname{Re}(A_2\overline{A_4})] = 0$ and $\alpha\|S_2\|_2^2 + 2\alpha\|A_2\|_2^2 + 2\alpha\|S_4\|_2^2 + 4\alpha\|A_4\|_2^2 = 2\alpha\cdot\frac{3}{2}\chi(q) = 3\alpha\chi(q)$) bounds the integral term in (1.11) from above by $3\alpha\chi(q)$, yielding $\frac{\mathbb{E}|q|}{\sqrt{\pi}/2} - 1 \le (3\alpha - \frac{1}{16})\chi(q)$. $\square$
+
+---
+
+### 1.3 Rigorous Zero-Float Outward Quadrature, Convexity Chords, and Congruence Certification
+
+Set $(\alpha, \gamma_S, \gamma_A) = \left(\frac{28241}{1250000},\; -\frac{28811}{1000000},\; -\frac{1443}{50000}\right)$, so $S_{\mathrm{cplx}} = 3\alpha - \frac{1}{16} = \frac{3299}{625000}$. Every step of the positivity check of $M_2(V), M_4(V)$ on $V \in [0, \infty)$ in `verify.py` and `verify_bernstein.py` is backed by elementary analytic remainder bounds:
+
+1. **Outward exponential and Machin $\pi$ enclosures (`verify_ou_foundations`, `exp_neg_bounds_S`):** Identical to `KNG505` §4 ($S = 10^{15}$, $e^{42} \ge (149/128)^{256} > 10^{15}$, halving to $y \le \frac{1}{16}$ with alternating partial sums $S_9(y) \le e^{-y} \le S_8(y)$ at scale $10^{20}$, and Machin bounds $3.1415926535 < \pi_{\mathrm{lo}} < \pi < \pi_{\mathrm{hi}} < 3.1415926536$).
+2. **Midpoint $w$-quadrature error bounds (`make_sum_diff_tables`):** Split $w \in (0, 1)$ at $w = \frac{1}{2}$ using $u_{\mathrm{top}} = \lfloor S\cdot 2^{-1/3}\rfloor/S$ and $v_{\mathrm{top}} = \lfloor S\cdot 2^{-1/2}\rfloor/S$.
+   - On $u \in [0, u_{\mathrm{top}}] \subset [0, 2^{-1/3}]$ ($w = u^3 \le \frac{1}{2}$, $g(u) := (1 - u^3)^{-1/2} \le \sqrt{2}$, $g'(u) \le 3\cdot 2^{-1/6} < 2.68$, $g''(u) \le \frac{39}{4}2^{7/6} < 21.9$): $\psi_{\mathrm{sum}}(u) = P_s(u)g(u)$ ($P_s(u) = \frac{3}{20} - \frac{3}{16}u + \frac{243}{80}u^5 \in (0, 1.11]$, $|P_s'| < 6.03$, $|P_s''| \le \frac{243}{8}$) satisfies $|\psi_{\mathrm{sum}}''(u)| \le |P_s''|g + 2|P_s'||g'| + |P_s||g''| < 100 < 240$, and $\psi_{\mathrm{diff}}(u) = \frac{3}{80}(4 + 5u - 9u^5)g(u)$ satisfies $|\psi_{\mathrm{diff}}''(u)| < 15 < 240$. Hence on every segment $[u_a, u_b]$ of width $\Delta u$, midpoint quadrature has error $\le \frac{240}{24}\Delta u^3 = 10\Delta u^3$ (`err_u`), while $e^{-\frac{w x^2}{2(1-w)}}$ is enclosed at the segment endpoints $w_a, w_b$.
+   - On $v \in [0, v_{\mathrm{top}}] \subset [0, 2^{-1/2}]$ ($w = 1 - v^2 \in [\frac{1}{2}, 1]$): writing $f_\beta(v) := (1 - v^2)^{-\beta}$, $f_\beta''(v) = 2\beta w^{-\beta-2}(1 + (2\beta + 1)v^2)$ gives $0 < f_{2/3}''(v) \le \frac{26}{9}2^{8/3} < 18.4$ and $0 < f_{1/3}''(v) \le \frac{11}{9}2^{7/3} < 6.2$. Hence $h_{\mathrm{sum}}(v) = \frac{1}{10}f_{2/3} - \frac{1}{8}f_{1/3} + \frac{81}{40}(1 - v^2)$ has $|h_{\mathrm{sum}}''(v)| < 1.84 + 0.78 + 4.05 = 6.67 < 24$ and $h_{\mathrm{diff}}(v) = \frac{1}{10}f_{2/3} + \frac{1}{8}f_{1/3} - \frac{9}{40}(1 - v^2)$ has $|h_{\mathrm{diff}}''(v)| < 3.07 < 24$, so midpoint quadrature on $[v_a, v_b]$ has error $\le \frac{24}{24}\Delta v^3 = \Delta v^3$ (`err_v`).
+   - On the tiny gap $[u_{\mathrm{top}}^3, 1 - v_{\mathrm{top}}^2] \subset (\frac{1}{4}, \frac{3}{4})$ of width $\Delta w_1 + \Delta w_2 < 2\times 10^{-14}$, $(1 - w)^{-1/2} \le 2$ and $w^{-2/3} < 3$ give $0 < K_m(w)(1 - w)^{-1/2} < 4$, padded upward by `gap_pad = int(4*(dw1 + dw2)*S) + 5`.
+3. **Convexity secant chords in $z = x^2$ (`build_ou_evaluator`):** By Lemma 1.2, $\widetilde G_m(z) = G_m(\sqrt{z})$ is strictly decreasing and strictly convex on $z \in [0, \infty)$. Evaluating outward intervals $[\mathrm{lo}_i, \mathrm{hi}_i]$ at a grid $0 = z_0 < z_1 < \dots < z_{K_z}$ (scaled at $S_Z = 10^{40}$ up to $x_{K_z} = 1000\cdot 2^{30} > 10^{12}$) yields valid upper bounds via the secant chord on $[z_i, z_{i+1}]$ (and $\mathrm{hi}_{K_z}$ for $z \ge z_{K_z}$) and valid lower bounds via the supporting secant chords from $(z_{i-s}, \mathrm{hi}_{i-s})$ through $(z_i, \mathrm{lo}_i)$ ($s \in \{1, 3, 7, 15\}$) and from $(z_{i+s}, \mathrm{hi}_{i+s})$ through $(z_{i+1}, \mathrm{lo}_{i+1})$ ($s \in \{2, 4, 8, 16\}$), plus $0$ on $z > z_{K_z}$ (including $V_b = \infty$).
+4. **Folded $[0, \pi/4]$ rational quadrature (`t = \tan(\alpha/2) \in [0, \sqrt{2}-1]`):** Substituting $\alpha = 2\arctan t$ turns $\frac{2}{\pi}d\alpha$ into $w(t)\,dt := \frac{4}{\pi(1 + t^2)}\,dt$. On $t \in [0, \sqrt{2}-1]$:
+   - $q(t) := \frac{4}{1 + t^2}$ has $q''(t) = \frac{8(3t^2 - 1)}{(1 + t^2)^3}$, so $|q''(t)| \le 8$ and $|\int_{t_a}^{t_b} q(t)\,dt - h q(t_m)| \le \frac{8}{24}h^3 = \frac{1}{3}h^3$ (`err_q`).
+   - For $f(t) \in \{\cos 2\alpha(t),\, \cos^2 2\alpha(t),\, \sin^2 2\alpha(t)\}$, $\alpha'(t) = \frac{2}{1+t^2} \le 2$ gives $\|f'\|_\infty \le 4$ and $\|f''\|_\infty \le 32$ ($\le 16$ for $\cos 2\alpha$, $\le 32$ for $\frac{1 \pm \cos 4\alpha}{2}$ since $|-32\cos 4\alpha + 8t\sin 4\alpha| = 8\sqrt{16 + t^2} \le 32(1 + t^2)^2$), while $\|w\|_\infty \le \frac{4}{\pi}$ and $\|w'\|_\infty \le \frac{8(\sqrt{2}-1)}{\pi} < 1.06$. Decomposing $f - \frac{f(t_a)+f(t_b)}{2} = (f - f_L) + \frac{f(t_b)-f(t_a)}{h}(t - t_m)$ where $f_L$ is the linear interpolant on $[t_a, t_b]$ gives
+     $$\left|\int_{t_a}^{t_b} f(t)w(t)\,dt - \mu([t_a, t_b])\frac{f(t_a) + f(t_b)}{2}\right| \le \frac{\|f''\|_\infty\|w\|_\infty + \|f'\|_\infty\|w'\|_\infty}{12}\,h^3 < \frac{32(4/\pi) + 4(1.06)}{12}\,h^3 < 3.75\,h^3 < 4\,h^3 \quad (\text{`err\_tr`}),$$
+     and the top gap $[t_{\star,\mathrm{lo}}, t_{\star,\mathrm{hi}}]$ of width $10^{-11}$ around $\sqrt{2}-1$ is padded outward by `gap_mu_hi`. Since $G_m \ge 0$ is decreasing, across any cell $V \in [V_a, V_b] \subset [0, \infty]$ ($V_b$ possibly $+\infty$) and $t \in [t_a, t_b]$, $G_m(\sqrt{2V}\cos\alpha) \in [G_{m,\mathrm{lo}}(2 V_b \cos^2\alpha_a),\, G_{m,\mathrm{hi}}(2 V_a \cos^2\alpha_b)]$ and $G_m(\sqrt{2V}\sin\alpha) \in [G_{m,\mathrm{lo}}(2 V_b \sin^2\alpha_b),\, G_{m,\mathrm{hi}}(2 V_a \sin^2\alpha_a)]$, enclosing all 8 moments $(I_0, I_c, I_{cc}, I_{ss})$ for $G_{\mathrm{sum}}, G_{\mathrm{diff}}$.
+5. **Nonsingular rational congruence and dual PD certification:** On each $V$-cell $[V_a, V_b]$, we check $M_2(V) \succ 0$ directly by $M_{2,00,\mathrm{lo}} > 0$, $M_{2,11,\mathrm{lo}} > 0$, and $M_{2,00,\mathrm{lo}} M_{2,11,\mathrm{lo}} > \max(M_{2,01,\mathrm{lo}}^2, M_{2,01,\mathrm{hi}}^2)$. For $M_4(V)$, we form an approximate rational eigenbasis $R \in \mathbb{Q}^{4\times 4}$ of the midpoint matrix (`build_rotated_H_iv`), verify $\det R \ne 0$ in exact `Fraction` arithmetic (`scalar_det(R) != 0`), enclose $H(V) := R^\top M_4(V) R \in H_{\mathrm{iv}}$ directly from (1.9) using `sd_quad_coeffs_18(R_{\cdot a}, R_{\cdot b})` so cancellation along near-null directions occurs **before** interval radii are added, and certify $H(V) \succ 0$ across all $H \in H_{\mathrm{iv}}$ by:
+   - **Method A (`verify.py`):** Sequential $1\times 1$ interval $LDL^\top$ elimination (`certify_ldlt`: $d_k > 0$ for $k = 0, 1, 2, 3$), which implies $H \succ 0$ by Sylvester's law of inertia;
+   - **Method B (`verify_bernstein.py`):** $2\times 2$ block Schur complement (`certify_block2_schur`: $H_{11} \succ 0$ and $S_{22} := H_{22} - H_{12}^\top H_{11}^{-1} H_{12} \succ 0$).
+   Since $R \in GL_4(\mathbb{Q})$ is nonsingular, $R^\top M_4(V) R \succ 0 \implies M_4(V) \succ 0$ for every $V \in [V_a, V_b]$. Both verifiers cover $[0, \infty)$ (including $[100\cdot 2^{44}, \infty)$) in $361$ leaves (`max_depth = 8`), and verify $\frac{\pi_{\mathrm{hi}}}{4}(1 + \frac{11}{2}\cdot\frac{3299}{625000})^2 < (\frac{91196}{100000})^2 < (\frac{114}{125})^2$ with explicit positivity guards before squaring. $\square$
+
+---
+
+## 2. Self-Contained Proof of Theorem 2: Compactly-Supported Damped Level-3 Stein Cover on $[\frac{11}{2}, 42]$
+
+To make the entire bound $\rho_* \le \frac{114}{125} = 0.912$ and the sharp high-kurtosis bound $\le \frac{443}{500}$ on $[25, 42]$ completely independent of unreviewed `KSR`, we record the self-contained proof of the Damped Level-3 Stein hierarchy for general rational $\varepsilon > 0$ ($\varepsilon = \frac{1}{6}$ on $[\frac{11}{2}, 9]$ and $\varepsilon = \frac{1}{25}$ on $[25, 26]$ in `cert_912.json`, alongside Level-2 rows of reviewed `K3R` on $[9, 25] \cup [26, 42]$).
+
+### 2.1 Reviewed Level-2 Inputs (`K3R`, **P + C**, and Lean)
+
+Let $q \in H_{2,1}(\mathbb{C}^n)$ satisfy $u = \|q\|_2^2 = 1$, $V = |q|^2$, $r = \sqrt{V}$, $s = \chi(q) = \mathbb{E}[V^2] - 2 \in [0, 42]$, $F_k = \bar\partial_k q \in H_{2,0}$, $c_1 = \sum_j|\partial_j q|^2$, $c_2 = \sum_k|F_k|^2$, $a = \sum_j(\partial_j q)F_j$, $\alpha_2 = |a|^2$, $\rho = \operatorname{Re}(\bar q^2 a)/V$ on $\{V > 0\}$ ($0$ on $\{V = 0\}$), $W_k = \bar\partial_k a = \sum_j F_j(\partial_j F_k) \in H_{3,0}$, $w = \sum_k|W_k|^2$, $b_{\mathrm{loc}} = \sum_k \overline{F_k}W_k$, and $\tilde\beta = \operatorname{Re}(\bar q\,b_{\mathrm{loc}})$. By reviewed [`K3R`](../complex-radius-2026-11-17-gemini-2762/PROOF.md) §§1–2 (**P + C**) and Lean theorems (`Circular.lean`, `SixthMoment.lean`, `GramBudget.lean`):
+1. **Pointwise cones:** $c_1, c_2 \ge 0$, $\rho^2 \le \alpha_2 \le c_1 c_2$, $\tilde\beta^2 \le V|b_{\mathrm{loc}}|^2 \le V c_2 w$, and for any $\xi_1, \xi_2 \ge 0$ with $\xi_a^2 \le 4\xi_1\xi_2$, $\xi_2 c_2 + \xi_1 c_1 + \xi_a\rho \ge 0$.
+2. **Gram-scalar moments and sixth-moment inequalities:** In terms of the five nonnegative Gram invariants $(n, h, b, y, z)$ of the cubic tensor (`32n + 8h + 32b + 96y = s`, `b <= n`, `y <= z`, `h_0 >= 0`, `m = n + b + 3y - z >= 0`, `theta*n + h/theta - 2z >= 0`, `theta*h + m/theta +- 2(3y - z) >= 0` for all $\theta > 0$, and $p_i = (n, h, b, y, z)_i / s \le P_{\max,i} = (\frac{1}{32}, \frac{1}{8}, \frac{1}{32}, \frac{1}{96}, \frac{3}{64})_i$):
+   $$\operatorname{Var}(c_2) = 16n + 4h, \quad \operatorname{Var}(c_1) = 32n + 16h + 16b + 48y + 16z, \quad 2\operatorname{Cov}(c_2, c_1) = 32n - 16b + 48y + 16z,$$
+   $$\mathbb{E}[\alpha_2] = 32b + 24y, \qquad \mathbb{E}[V\rho] = 32b + 48y, \qquad \mathbb{E}[w] = 24y,$$
+   and $\mathbb{E}[V^3] \le 6 + 9s + C_6 s^{3/2}$ ($C_6 = \frac{4045313}{100000}$), plus the two `joint_sixth` bounds $\mathbb{E}[V^3] \le 6 + 9s + s^{3/2}(150\alpha_0 S_0 + (198 + \frac{150}{\alpha_0})H_0)$ and $\mathbb{E}[V^3] \le 6 + 9s + s^{3/2}(\frac{135}{2}\alpha_1 S_0 + (\frac{11781}{32} + \frac{135}{2\alpha_1})H_0)$ ($\alpha_0, \alpha_1 > 0$).
+3. **Level-2 radial Stein brackets (`K3R` Theorem 1):** For piecewise-$C^1$ functions $G_i(v) = \int_0^v \phi_i(t)\,dt = v g_i(v)$ ($i = 1, 2, 3, 4$) of polynomial growth with $Y_i(v) = \phi_i(v) - g_i(v)$, each of
+   $$\mathrm{Br}_1 = G_1(V) - c_2\phi_1(V) - \rho Y_1(V), \qquad \mathrm{Br}_2 = G_2(V) - \tfrac{1}{2}c_1\phi_2(V) - \tfrac{1}{2}\rho Y_2(V),$$
+   $$\mathrm{Br}_3 = c_2(c_2 - 1)\phi_3(V) - (c_2 - 1)G_3(V) + (c_2 - 1)\rho Y_3(V) + \tilde\beta g_3(V), \qquad \mathrm{Br}_4 = \alpha_2\phi_4(V) + \rho\big(c_2 Y_4(V) - G_4(V)\big) + \tilde\beta g_4(V)$$
+   has $\mathbb{E}[\mathrm{Br}_i] = 0$.
+
+---
+
+### 2.2 Gram-Phase Decomposition and Damped Fourth/Fifth-Order Stein Identities `(V_eps)`–`(VII_eps)`
+
+Define the fifth-order mixed scalar $\tau_{ab} := \operatorname{Re}(\bar q\,a\,\overline{b_{\mathrm{loc}}}) = \operatorname{Re}(q\,\bar a\,b_{\mathrm{loc}})$, and on $\{V > 0\}$ set $\rho_\perp := \operatorname{Im}(\bar q^2 a)/V$ and $\tilde\beta_\perp := \operatorname{Im}(\bar q\,b_{\mathrm{loc}})$ ($0$ on $\{V = 0\}$).
+
+**Lemma 2.1 (Exact Gram-Phase Decomposition).** *At every point of $\mathbb{C}^n$, $\rho^2 + \rho_\perp^2 = \alpha_2$, $\tilde\beta^2 + \tilde\beta_\perp^2 = V|b_{\mathrm{loc}}|^2 \le V c_2 w$, and*
+$$\tau_{ab} = \rho\tilde\beta + \rho_\perp\tilde\beta_\perp. \tag{2.1}$$
+
+*Proof.* On $\{V = 0\}$, $q = 0$ and both sides vanish. On $\{V > 0\}$, $q^2\bar a = V(\rho - i\rho_\perp)$ and $\bar q\,b_{\mathrm{loc}} = \tilde\beta + i\tilde\beta_\perp$, so $V(q\,\bar a\,b_{\mathrm{loc}}) = (q^2\bar a)(\bar q\,b_{\mathrm{loc}}) = V(\rho - i\rho_\perp)(\tilde\beta + i\tilde\beta_\perp)$. Cancelling $V > 0$ and taking real parts yields (2.1). $\square$
+
+Fix a rational damping parameter $\varepsilon > 0$, an interior knot $u_{K_0} = e_{K_0}^2 > 0$, and continuous piecewise-linear functions $\phi_5, \phi_6, \phi_7$ supported on $[0, u_{K_0}]$ ($\phi_5 = \phi_6 = \phi_7 \equiv 0$ on $[u_{K_0}, \infty)$) satisfying the **exact compact-support integral conditions**
+$$h_5(u_{K_0}) = h_{5,0} + \int_0^{u_{K_0}} \phi_5(t)\,dt = 0, \qquad G_6(u_{K_0}) = \int_0^{u_{K_0}} \phi_6(t)\,dt = 0, \qquad G_7(u_{K_0}) = \int_0^{u_{K_0}} \phi_7(t)\,dt = 0, \tag{2.2}$$
+so $h_5(v), G_6(v) = v g_6(v), Y_6(v) = \phi_6(v) - g_6(v), G_7(v) = v g_7(v), Y_7(v) = \phi_7(v) - g_7(v)$ all vanish identically for $v \ge u_{K_0}$. Set
+$$s_{\mathrm{rat}} := \frac{1}{1 + \varepsilon c_2} \in (0, 1], \qquad \tilde\rho := s_{\mathrm{rat}}\rho, \qquad \Psi_6(x) := \frac{(x - 1)^2}{1 + \varepsilon x}, \qquad \Psi_7(x) := \frac{x - 1}{1 + \varepsilon x}.$$
+
+**Lemma 2.2 (Damped Level-3 Antiholomorphic Stein Identities).** *For every $q \in H_{2,1}(\mathbb{C}^n)$ ($\|q\|_2 = 1$) and every rational $\varepsilon > 0$, each of the three brackets*
+$$\mathrm{Br}_{5,\varepsilon} := s_{\mathrm{rat}}w\,h_5(V) - \varepsilon s_{\mathrm{rat}}^2|b_{\mathrm{loc}}|^2 h_5(V) + \big(c_2\phi_5(V) - h_5(V)\big)s_{\mathrm{rat}}\tilde\beta + \phi_5(V)s_{\mathrm{rat}}\tau_{ab}, \tag{V$_\varepsilon$}$$
+$$\mathrm{Br}_{6,\varepsilon} := c_2\Psi_6(c_2)\phi_6(V) - \Psi_6(c_2)G_6(V) + \Psi_6(c_2)\rho Y_6(V) + \Psi_6'(c_2)\tilde\beta\,g_6(V), \tag{VI$_\varepsilon$}$$
+$$\mathrm{Br}_{7,\varepsilon} := \Psi_7(c_2)\alpha_2\phi_7(V) + \Psi_7(c_2)\rho\big(c_2 Y_7(V) - G_7(V)\big) + \Psi_7(c_2)\tilde\beta\,g_7(V) + \Psi_7'(c_2)\tau_{ab}\,g_7(V), \tag{VII$_\varepsilon$}$$
+*where $\Psi_6'(c_2) = \frac{1}{\varepsilon}\big(1 - (1 + \varepsilon)^2 s_{\mathrm{rat}}^2\big)$ and $\Psi_7'(c_2) = (1 + \varepsilon)s_{\mathrm{rat}}^2$, satisfies $\mathbb{E}[\mathrm{Br}_{5,\varepsilon}] = \mathbb{E}[\mathrm{Br}_{6,\varepsilon}] = \mathbb{E}[\mathrm{Br}_{7,\varepsilon}] = 0$.*
+
+*Proof.* By the antiholomorphic integration-by-parts identity (`KAS` Lemma 1 / `K3R` Lemma 1, **P + C**), for any piecewise-$C^1$ field $H(z)$ of polynomial growth on $\mathbb{C}^n$, $\mathbb{E}[H q] = \sum_{j=1}^n \mathbb{E}[(\partial_j H)F_j]$ because $q \in H_{2,1}$ has $\bar\partial_j q = F_j$ and zero trace contraction $\sum_j \partial_j F_j = 0$. Note the Wirtinger derivatives:
+- $\partial_j V = \bar q(\partial_j q) + q\overline{F_j}$, so $\sum_j (\partial_j V)F_j = \bar q a + q c_2$;
+- Because $F_k \in H_{2,0}$ is holomorphic, $\partial_j\overline{F_k} = \overline{\bar\partial_j F_k} = 0$, so $\partial_j c_2 = \sum_k (\partial_j F_k)\overline{F_k}$ and $\sum_j (\partial_j c_2)F_j = \sum_{j,k}\overline{F_k} F_j(\partial_j F_k) = \sum_k \overline{F_k} W_k = b_{\mathrm{loc}}$;
+- Because $W_k \in H_{3,0}$ is holomorphic, $\partial_j\overline{W_k} = \overline{\bar\partial_j W_k} = 0$, so applying $\partial_j$ to $\overline{b_{\mathrm{loc}}} = \sum_k F_k\overline{W_k}$ gives $\partial_j\overline{b_{\mathrm{loc}}} = \sum_k (\partial_j F_k)\overline{W_k}$ and hence $\sum_j (\partial_j\overline{b_{\mathrm{loc}}})F_j = \sum_k |W_k|^2 = w$ identically without fourth-order derivatives;
+- Similarly, $\partial_j\bar a = \overline{\bar\partial_j a} = \overline{W_j}$, so $\sum_j (\partial_j\bar a)F_j = \sum_j F_j\overline{W_j} = \overline{b_{\mathrm{loc}}}$.
+
+Now apply $\operatorname{Re}\mathbb{E}\big[\sum_j(\partial_j H)F_j - H q\big] = 0$ (noting $1 + \varepsilon c_2 \ge 1$ everywhere so $s_{\mathrm{rat}} \in (0, 1]$ is smooth and bounded, and $h_5, g_6, g_7$ are compactly supported with bounded piecewise-constant derivatives, whose jump set $\{V = u_k\}$ has Lebesgue measure zero when $q \ne 0$):
+1. **$H_{5,\varepsilon} := s_{\mathrm{rat}}\overline{b_{\mathrm{loc}}}\,h_5(V)$:** Using $\partial_j s_{\mathrm{rat}} = -\varepsilon s_{\mathrm{rat}}^2\partial_j c_2$,
+   $$\sum_j(\partial_j H_{5,\varepsilon})F_j - H_{5,\varepsilon}q = -\varepsilon s_{\mathrm{rat}}^2 b_{\mathrm{loc}}\overline{b_{\mathrm{loc}}}\,h_5(V) + s_{\mathrm{rat}}w\,h_5(V) + s_{\mathrm{rat}}\overline{b_{\mathrm{loc}}}\phi_5(V)(\bar q a + q c_2) - s_{\mathrm{rat}}\overline{b_{\mathrm{loc}}}\,q\,h_5(V),$$
+   whose real part is $\mathrm{Br}_{5,\varepsilon}$ since $\operatorname{Re}(q\overline{b_{\mathrm{loc}}}) = \tilde\beta$ and $\operatorname{Re}(\bar q a\overline{b_{\mathrm{loc}}}) = \tau_{ab}$.
+2. **$H_{6,\varepsilon} := \bar q\,\Psi_6(c_2)g_6(V)$:** Since $\partial_j\bar q = \overline{F_j}$ and $g_6(V) + V g_6'(V) = \phi_6(V)$, $V g_6'(V) = Y_6(V)$, $V g_6(V) = G_6(V)$:
+   $$\sum_j(\partial_j H_{6,\varepsilon})F_j - H_{6,\varepsilon}q = c_2\Psi_6(c_2)g_6(V) + \bar q\Psi_6'(c_2)b_{\mathrm{loc}}g_6(V) + \bar q\Psi_6(c_2)g_6'(V)(\bar q a + q c_2) - V\Psi_6(c_2)g_6(V),$$
+   whose real part combines $c_2(g_6 + V g_6') = c_2\phi_6$, $\operatorname{Re}(\bar q^2 a)g_6' = \rho(V g_6') = \rho Y_6$, and $-V g_6 = -G_6$ into $\mathrm{Br}_{6,\varepsilon}$; writing $\Psi_6(x) = \frac{1 + \varepsilon x}{\varepsilon} - \frac{2(1 + \varepsilon)}{\varepsilon} + \frac{(1 + \varepsilon)^2}{\varepsilon(1 + \varepsilon x)}$ gives $\Psi_6'(x) = \frac{1}{\varepsilon} - \frac{(1 + \varepsilon)^2}{(1 + \varepsilon x)^2} = \frac{1}{\varepsilon}\big(1 - (1 + \varepsilon)^2 s_{\mathrm{rat}}^2\big)$.
+3. **$H_{7,\varepsilon} := q\bar a\,\Psi_7(c_2)g_7(V)$:** Using $\sum_j(\partial_j(q\bar a))F_j = \bar a a + q\overline{b_{\mathrm{loc}}} = \alpha_2 + q\overline{b_{\mathrm{loc}}}$ and $\Psi_7'(x) = \frac{1 + \varepsilon}{(1 + \varepsilon x)^2} = (1 + \varepsilon)s_{\mathrm{rat}}^2$:
+   $$\sum_j(\partial_j H_{7,\varepsilon})F_j - H_{7,\varepsilon}q = (\alpha_2 + q\overline{b_{\mathrm{loc}}})\Psi_7(c_2)g_7(V) + q\bar a b_{\mathrm{loc}}\,\Psi_7'(c_2)g_7(V) + q\bar a\Psi_7(c_2)g_7'(V)(\bar q a + q c_2) - q^2\bar a\Psi_7(c_2)g_7(V).$$
+   Taking real parts combines $\alpha_2(g_7 + V g_7') = \alpha_2\phi_7$, $\operatorname{Re}(q\overline{b_{\mathrm{loc}}}) = \tilde\beta$, $\operatorname{Re}(q\bar a b_{\mathrm{loc}}) = \tau_{ab}$, and $\operatorname{Re}(q^2\bar a)(c_2 g_7' - g_7) = \rho(c_2 V g_7' - V g_7) = \rho(c_2 Y_7 - G_7)$ into $\mathrm{Br}_{7,\varepsilon}$. (Checked symbolically across $\varepsilon \in \{\frac{1}{6}, \frac{1}{25}, \frac{1}{40}\}$ in `check_identities_exact.py` Part 4.) $\square$
+
+---
+
+### 2.3 Pointwise Block-PSD Reduction and Soundness of `cert_912.json`
+
+Given multiplier scalars $(\lambda_0, \lambda_1, \lambda_2, \lambda_3 = \sum_{m=0}^2\ell_{3,m} > 0)$, $M_{\mathrm{ker}} = \begin{pmatrix} m_{00} & m_{01} \\ m_{01} & m_{11} \end{pmatrix} \succeq 0$ ($m_{11} > 0$), $\mu_a \ge 0$, $\mu_\rho > 0$, $\mu_w > 0$, $\sigma \in \mathbb{Q}$, and continuous piecewise-linear functions $\xi_2, \xi_1 \ge 0$, $\xi_a^2 \le 4\xi_1\xi_2$ (which satisfies $\xi_2(v)c_2 + \xi_1(v)c_1 + \xi_a(v)\rho \ge 0$ for every $v \in [u_k, u_{k+1}]$ by convexity of the second-order cone $\{(x, y, z) : x, y \ge 0,\, z^2 \le 4xy\}$), define the pointwise majorant functional:
+$$\mathrm{RHS}_{\mathrm{L3}} := \lambda_0 + \lambda_1 V + \lambda_2 V^2 + \lambda_3 V^3 + (c_2 - 1,\, c_1 - 2)M_{\mathrm{ker}}(c_2 - 1,\, c_1 - 2)^\top + \mu_a\alpha_2 + \mu_\rho\rho^2 + \mu_w w + \sigma V\rho$$
+$$\qquad\qquad - (\xi_2(V)c_2 + \xi_1(V)c_1 + \xi_a(V)\rho) + \mathrm{Br}_1 + \mathrm{Br}_2 - \mathrm{Br}_3 - \mathrm{Br}_4 - \mathrm{Br}_{5,\varepsilon} - \mathrm{Br}_{6,\varepsilon} - \mathrm{Br}_{7,\varepsilon}. \tag{2.3}$$
+
+**Proposition 2.3 (Soundness of the Damped Level-3 & Level-2 Verifiers).** *Suppose a row of `cert_912.json` passes `verify_row()` in `verify.py` (or `verify_row_bernstein()` in `verify_bernstein.py`) on $[s_{\mathrm{lo}}, s_{\mathrm{hi}}]$. Then for every $q \in H_{2,1}(\mathbb{C}^n)$ with $\|q\|_2 = 1$ and $\chi(q) \in [s_{\mathrm{lo}}, s_{\mathrm{hi}}]$, $\mathrm{RHS}_{\mathrm{L3}} > |q|$ holds pointwise everywhere on $\mathbb{C}^n$, and $\mathbb{E}|q| < \max(B_{\mathrm{lo}}, B_{\mathrm{hi}})$.*
+
+*Proof.*
+1. **On $V \in [u_{K_0}, \infty)$ (and all of $[0, \infty)$ for Level-2 rows where $K_0 = 0$):** By the exact compact-support checks (2.2), $\mathrm{Br}_{5,\varepsilon} = \mathrm{Br}_{6,\varepsilon} = \mathrm{Br}_{7,\varepsilon} \equiv 0$. Completing the square in $\tilde\beta$ ($\tilde\beta^2 \le V c_2 w$) against $\mu_w w > 0$ replaces $\mu_w w - (g_3 + g_4)\tilde\beta \ge -\frac{(G_3 + G_4)^2}{4 V \mu_w}c_2$, and subtracting $\psi_a(V)(c_1 c_2 - \alpha_2) \ge 0$ ($\psi_a \ge 0$) leaves the exact $4\times 4$ quadratic form $(c_2, c_1, \rho, 1)P(r)(c_2, c_1, \rho, 1)^\top$ of reviewed `K3R` Theorem 4 (`verify.py` lines 962–1010, checked by positive principal minors $m_{11} > 0$, $D_2 > 0$, $D_3 > 0$, $D_4 > 0$; and checked independently as `det_mat(P_mat)` via Bernstein subdivision in `verify_bernstein.py` lines 520–555). Note at $V = 0$ ($k = 0$), $\rho = 0$ and $(G_3 + G_4)(v)$ is divisible by $v$, so the factored $P(r)$ is strictly positive at $r = 0$ as well.
+2. **On $V \in [0, u_{K_0}]$ for Damped Level-3 rows ($K_0 > 0$):**
+   - **$(w, |b_{\mathrm{loc}}|^2)$ margin:** Since $0 \le |b_{\mathrm{loc}}|^2 \le c_2 w$ and $1 - \varepsilon s_{\mathrm{rat}}c_2 = s_{\mathrm{rat}} \in (0, 1]$, we have $0 \le s_{\mathrm{rat}}^2 w \le s_{\mathrm{rat}}w - \varepsilon s_{\mathrm{rat}}^2|b_{\mathrm{loc}}|^2 \le s_{\mathrm{rat}}w \le w$. Because $D_w(v) > 0$ at knots ($k = 0 \dots K_0$), $D_w(u_k) \le \mu_w$, and $\mu_w - h_5(v) - D_w(v) > 0$ on every piece $[u_k, u_{k+1}]$, we have $0 < D_w(v) \le \min(\mu_w,\, \mu_w - h_5(v))$ everywhere on $[0, u_{K_0}]$. Whether $h_5(v) \ge 0$ (where $\mu_w w - (s_{\mathrm{rat}}w - \varepsilon s_{\mathrm{rat}}^2|b_{\mathrm{loc}}|^2)h_5 \ge (\mu_w - w^{-1}(s_{\mathrm{rat}}w)h_5)w \ge (\mu_w - h_5)w \ge D_w w$) or $h_5(v) < 0$ (where LHS $= \mu_w w + |h_5|(s_{\mathrm{rat}}w - \varepsilon s_{\mathrm{rat}}^2|b_{\mathrm{loc}}|^2) \ge \mu_w w \ge D_w w$), we obtain $\mu_w w - s_{\mathrm{rat}}w h_5 + \varepsilon s_{\mathrm{rat}}^2|b_{\mathrm{loc}}|^2 h_5 \ge D_w(V)w$.
+   - **Cauchy–Schwarz in $(\tilde\beta, \tilde\beta_\perp)$ and $5\times 5$ knot matrix $T(v)$:** Using $\tau_{ab} = \rho\tilde\beta + \rho_\perp\tilde\beta_\perp$ (Lemma 2.1) and $c_2 s_{\mathrm{rat}} = \varepsilon^{-1}(1 - s_{\mathrm{rat}})$, the linear terms in $(\tilde\beta, \tilde\beta_\perp)$ on $V = v > 0$ equal $-v^{-1}(V(v)^\top\xi)\tilde\beta - v^{-1}(V_3(v)s_{\mathrm{rat}} + V_4(v)s_{\mathrm{rat}}^2)\rho_\perp\tilde\beta_\perp$ with $\xi = (1, s_{\mathrm{rat}}, s_{\mathrm{rat}}^2, \tilde\rho, s_{\mathrm{rat}}\tilde\rho)^\top$ and
+     $$V(v) = \Big(G_3 + G_4 + \varepsilon^{-1}(v\phi_5 + G_6 + G_7),\; -\varepsilon^{-1}v\phi_5 - v h_5 - (1 + \varepsilon)\varepsilon^{-1}G_7,\; -(1 + \varepsilon)^2\varepsilon^{-1}G_6,\; v\phi_5,\; (1 + \varepsilon)G_7\Big)^\top$$
+     (verified symbolically in $\mathbb{Q}[v, c_2]$ on every piece by `verify_bernstein.py` lines 660–671). Under $\tilde\beta^2 + \tilde\beta_\perp^2 \le v c_2 w$, Cauchy–Schwarz against $D_w(v)w > 0$ bounds $D_w(v)w - \text{linear}(\tilde\beta, \tilde\beta_\perp) \ge -\frac{c_2}{4 v D_w(v)}\big[(V^\top\xi)^2 + (V_3 s_{\mathrm{rat}} + V_4 s_{\mathrm{rat}}^2)^2(\alpha_2 - \rho^2)\big]$. Because $T(u_k) \succ 0$ at every knot $k = 0 \dots K_0$, $T(v) \succ 0$ on $[0, u_{K_0}]$ by convexity of the PD cone, and $4 v D_w(v)\det T(v) - V(v)^\top\operatorname{adj}(T(v))V(v) > 0$ (`ok_tv` / `M6_mat`, divided by $v$ on $[0, u_1]$) implies $T(v) \succ (4 v D_w(v))^{-1}V(v)V(v)^\top$ (and likewise on the bottom-right $\{3, 4\}$ principal block) by Schur's complement. Note at $V = 0$, $\tilde\beta = \tau_{ab} = 0$ while $-c_2\big[\xi^\top T(0)\xi + (s_{\mathrm{rat}}, s_{\mathrm{rat}}^2)T_{\mathrm{bot}}(0)(s_{\mathrm{rat}}, s_{\mathrm{rat}}^2)^\top(\alpha_2 - \rho^2)\big] \le 0$, so replacing $(4 v D_w(v))^{-1}V V^\top$ by $T(v)$ is valid at $V = 0$ too!
+   - **Exact rational-basis SOS decomposition:** Using $c_2 s_{\mathrm{rat}} = \varepsilon^{-1}(1 - s_{\mathrm{rat}})$ and $c_2\tilde\rho = \varepsilon^{-1}(\rho - \tilde\rho)$, `verify_bernstein.py` (lines 673–734) verifies coefficient-by-coefficient in $\mathbb{Q}[v, c_2][c_1, \rho, \alpha_2]$ on every single piece $k = 0 \dots K_0 - 1$ of `cert_912.json` that after clearing $(1 + \varepsilon c_2)^4$, $\mathrm{RHS}_{\mathrm{post}\text{-}T} - r$ equals the sum of nonnegative terms:
+     $$\alpha_2\Big[(1, s_{\mathrm{rat}}, s_{\mathrm{rat}}^2)A_0(v)(1, s_{\mathrm{rat}}, s_{\mathrm{rat}}^2)^\top + s_{\mathrm{rat}}(1 - s_{\mathrm{rat}})(1, s_{\mathrm{rat}})A_1(v)(1, s_{\mathrm{rat}})^\top\Big]$$
+     $$+ (\psi_a + \mu_a - \phi_4 - d_{\mathrm{al}})(\alpha_2 - \rho^2) + \psi_a(c_1 c_2 - \alpha_2) + \xi^\top P_s(v)\xi + s_{\mathrm{rat}}(1 - s_{\mathrm{rat}})(1, s_{\mathrm{rat}})B_1(v)(1, s_{\mathrm{rat}})^\top$$
+     $$+ \mathrm{trt}_1(v)(\rho^2 - \tilde\rho^2) + \mathrm{trt}_2(v)(\rho^2 - s_{\mathrm{rat}}^2\tilde\rho^2) + (c_2, c_1, \rho, 1)P^{(0)}(r)(c_2, c_1, \rho, 1)^\top,$$
+     where $A_1(v), B_1(v) \succeq 0$ and $\psi_a + \mu_a - \phi_4 - d_{\mathrm{al}} \ge 0$, $\mathrm{trt}_1, \mathrm{trt}_2 > 0$ hold by knot convexity, while $A_0(v) \succ 0$, $P_s(v) \succ 0$, and $P^{(0)}(r) \succ 0$ are certified on every piece by both Sturm chains (`verify.py`) and Bernstein subdivision (`verify_bernstein.py`).
+3. **Expectation and convexity in $s = \chi(q) \in [s_{\mathrm{lo}}, s_{\mathrm{hi}}]$:** Taking expectations of $|q| < \mathrm{RHS}_{\mathrm{L3}}$ using $\mathbb{E}[\mathrm{Br}_i] = \mathbb{E}[\mathrm{Br}_{j,\varepsilon}] = 0$, $\mathbb{E}[\rho^2] \le \mathbb{E}[\alpha_2]$, and dual LP weak duality over $P_1 = \{p = (n,h,b,y,z)/s : 32n+8h+32b+96y = 1\}$ (`K3R` Theorem 4) bounds $\mathbb{E}|q|$ on $[s_{\mathrm{lo}}, s_{\mathrm{hi}}]$ by a function of the form $A + B s + C s^{3/2}$ with $C \ge 0$ (`l3 >= 0`), which is convex in $s \ge 0$ and therefore bounded on $[s_{\mathrm{lo}}, s_{\mathrm{hi}}]$ by $\max(B_{\mathrm{lo}}, B_{\mathrm{hi}})$ (evaluating $\sqrt{s_e} \le \mathrm{sqrt\_ub}$ at the two endpoints). Contiguity from $\chi_{\mathrm{hi}} = \frac{11}{2}$ through $42$ completes Theorem 2. $\square$
+
+---
+
+## 3. Proof of Corollary 3: Exact Downstream Consequences (`1.12`, `4.12`, `4.18a`, `4.18e`, `4.18f`)
+
+All 7 rational consequences are checked in `verify.verify_downstream()` (`verify.py` lines 1198–1353) and locked in default theorem mode:
+1. **`1.12` and `4.12` ($t = 0$ caps):** At $\rho_0 = \frac{114}{125} = 0.912$, $\rho_0^2 = \frac{12996}{15625}$, so $(1000/1403)/\rho_0^2 = \frac{3906250}{4558347} = 0.8569444142\dots > 0.85694$ and $(500/701)/\rho_0^2 = \frac{1953125}{2277549} = 0.8575556442\dots > 0.85755$.
+2. **`4.18a` (Direct Gaussian-buffer cutoff):** With $(\varepsilon, \eta) = (\frac{39}{50}, \frac{779}{10000})$, $\frac{9221}{10000}t^2 + \varepsilon\rho_0^2 + \frac{\eta^2}{\pi_{\mathrm{lo}}\varepsilon} < \frac{500}{701}$ holds at $t = \frac{51873}{200000} = 0.259365$, while at $t = 0.259366$ even the lower bound with $\pi_{\mathrm{hi}}$ exceeds $\frac{500}{701}$.
+3. **`4.18e` (Elliptic Parseval, sixth-moment, and Lean-mass cutoffs):** By `ELLIPTIC.md` and `CLIPPING.md` (`codex-a7c4`, **P + C**), $\|P_{2,1}k\|_2^2 + (\frac{431}{500})^2 t^2 \le \rho_*^2 \le \rho_0^2$:
+   - Parseval ($\eta + (\varepsilon - \eta)x + (1 - \eta)t^2 < \frac{500}{701}$ at $x = \rho_0^2 - (\frac{431}{500})^2 t^2$): holds through $t = \frac{8957087}{25000000} = 0.35828348$ and fails at $0.35828349$.
+   - Sixth-moment clipping (`CLIPPING.md` Lemma 4 with tangent slope $d = \frac{2181}{1250} > 0$, checking unsquared $d_0 > 0, d_1 > 0$ and positivity of the quartic on $y \in [0, \infty)$ by BOTH Sturm in `verify.py` and Bernstein in `verify_bernstein.py`): holds through $t = \frac{36598729}{100000000} = 0.36598729$, while $0.36598730$ fails at $s = \frac{1317}{1250}$.
+   - Lean global mass (`integral_phiMass_QkOf_le`): holds through $t = \frac{4619003}{12500000} = 0.36952024$ and fails at $0.36952025$.
+4. **`4.18f` (Joint fourth-excess + 24 Lean spectral-mass witnesses):** By `joint-spectral-cubic-lift-codex-a7c4/PROOF.md` (**P + C**, Eq. (2)), Theorem 1 supplies **both** $\rho_0 = \frac{114}{125}$ and the sharper fourth-excess slope $\gamma = S_{\mathrm{cplx}} = \frac{3299}{625000}$ on the lifted cubic $Q = P_{2,1}k + c_0\zeta M_m$, giving $\|P_{2,1}k\|_2^2 + c_0^2 t^2 \le \min\big(\rho_0^2,\, \frac{\pi}{4}(1 + S_{\mathrm{cplx}} s_Q)^2\big)$. Parsing all 24 spectral witnesses directly from `Grothe/Lower/MassWitnessData.lean`, recursive rational box subdivision on $[0.369, 0.37589] \times [0, \frac{13}{2}]$ closes in **`195` certified boxes**, proving $V < \frac{500}{701}$ unconditionally for all $t \le \frac{37589}{100000} = 0.37589 > \frac{3}{8}$. $\square$
+
+---
+
+## 4. Exact Replay Instructions
+
+All four verification scripts use **only the Python 3 standard library** with **zero floating-point operations** (`float` is absent from all four ASTs) and run identically under `python3 -IB` and `python3 -IB -O`:
+
+```sh
+python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify.py
+python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py
+python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py
+python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py
+```
+
+*(Pass `--generic` to `verify.py` or `verify_bernstein.py` to verify arbitrary candidate certificates without pinning the theorem constants `114/125`, `3299/625000`, `443/500`, and `downstream`.)*
