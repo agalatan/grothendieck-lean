@@ -332,3 +332,17 @@ All files of `SSPK` are committed in the repository, with zero external working-
 |---|---:|---|
 | `handoff/degree5-gate-2026-11-25/pkg.tar.gz` | 5,052,854 B | `058e375a4b31272dae597447516c86343484c1bd380913a419e7ffcab9c22965` |
 | `handoff/degree5-gate-2026-11-25/venv-freeze.txt` | 247 B | `9ad57a22603315ad85c065d7f137c2f67f5e45a423ec1ec0503720ced0f23a6a` |
+
+## Independent Level C clean-room replay of the degree-5 law layer and small-t bound (gemini-21d5, 26 November 2026, #625; STATUS 4.17, 4.18(b), 4.40, 4.42, 4.45, tag LAWREP)
+
+All files of `LAWREP` are committed in the repository, with zero external working-folder artefacts and zero third-party dependencies:
+- [`sources/degree5-law-replay-2026-11-25-gemini-21d5/PROOF.md`](sources/degree5-law-replay-2026-11-25-gemini-21d5/PROOF.md): complete proofs of Claim 1 and Claim 3 (both zero-`arcsin` cover and elementary Lean-constant proof), outward-rounded tables of all 29 rows of `rows2b.json` and all 26 rows of `rows2c_final.json`, exact envelope/room verification (including all 21 pieces of Design `D*`), sanity checks, and 12 negative controls.
+- [`code/degree5-law-replay-gemini-21d5/`](code/degree5-law-replay-gemini-21d5/):
+  - `python3 -IB research/higher-degree/code/degree5-law-replay-gemini-21d5/verify_law_caps.py` (and `python3 -IB -O ...`): zero-dependency Python 3 stdlib verifier (< 2 s) auditing SHA-256 provenance, static zero-`libm`-transcendental C++ source check, Claim 1 outer-domain premises, P4 §§4, 8 sanity checks in pure `Fraction` arithmetic, all 60 certified covers (`29` `rows2b` plain + `5` zero-`arcsin` Stein + `26` `rows2c` plain at `ρ₀ = 2287/2500`), all 55 exact rational multi-atom primal lower-bound witnesses in `ℒ = (L1)–(L4)` on the plain covers, pure-`Fraction` box-bound replays of exported binding plain and Stein boxes, both proofs of Claim 3 (`40` `σ`-nodes / `39` intervals and cover-free Lean deduction), exact rational envelopes and rooms (`rows2b`, `rows2c_final`, and all 21 `D*` pieces at `500/701`, `1/1.40195` and `1/1.40210`), and 12 adversarial negative/corruption controls (`--replay-cpp` recompiles `certify_law_caps.cpp` and checks deterministic equality across `rows`, `claim3_small_t`, `sample_boxes`, `sanity_checks`, and `negative_controls`, ~37 min wall on 8 threads).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/degree5-law-replay-2026-11-25-gemini-21d5/PROOF.md` | 50,807 B | `479c3a6c1bcfd4083271b4a8fb93b4bc8581adbd3fc956dceb06b1e7d1917366` |
+| `code/degree5-law-replay-gemini-21d5/certify_law_caps.cpp` | 160,431 B | `2168deca284b95a01c496e6277505cbe62193ee44c4f97a05735fb99cf14868f` |
+| `code/degree5-law-replay-gemini-21d5/verify_law_caps.py` | 48,423 B | `c0bdb9f51080cee3ec1ffc74e98f4e6ffa7cd4d18b0f58e42495c5291cc7ed3e` |
+| `code/degree5-law-replay-gemini-21d5/result.json` | 85,055 B | `0020b02c426d0bd9e9b9e15573db7d70bcf7a46f57d02fe14e4313e0ad388571` |
