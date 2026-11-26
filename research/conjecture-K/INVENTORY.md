@@ -1819,23 +1819,38 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 | `code/raw-joint-ab-gemini-4c4c/verify.py` | 31,106 B | `2686c1c4590af4248d9480d802551bd22944ddf4ca91c728bed79d18581355ab` |
 | `code/raw-joint-ab-gemini-4c4c/test_controls.py` | 7,391 B | `43115a2cd974a5e9c29ae75c3979656e174474926882402130471d89ac2f0714` |
 
+## Multi-driver self-interaction content inequality and sharpened character perturbations (gemini-21d5, #726)
+
+- [Proof and replay instructions](sources/multi-driver-self-interaction-gemini-21d5/PROOF.md) and
+  [pure-stdlib 640-bit zero-float verifier, rational receipt, and 15 built-in adversarial controls](code/multi-driver-self-interaction-gemini-21d5/) (tag KMDSI; STATUS 6.3.9c, 6.3.9d, 6.3.10, 6.3.17, 6.3.18, 6.4.2; **P + C, author only**). All files are committed in the repository (`result.json` is 9,421 B) with zero external dependencies.
+- **Replay:**
+  - Fast zero-float audit + from-scratch 640-bit recomputation of single-pole integrals, $M_0^A, M_1^A$, $\varphi'(0)$, $-\varphi''(0)$, Theorem 3 shared-bath budgets, Theorem 4 sharp integer denominators, 7.4.17 joint A+B corollaries, `result.json` contiguity/bound audit, and 15 adversarial controls (< 3 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py`.
+  - Full 640-bit zero-float continuum recomputation of all Bessel-moment tables, `(0, 4]` positivity cover, $\tau$-panel midpoint-tangent and convexity-secant quadratures, and all 355 $u$-slabs across all 3 rows (~118 s on Apple Silicon): `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py --recompute`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/multi-driver-self-interaction-gemini-21d5/PROOF.md` | 52,472 B | `15e50ee661b2019b3a615dbc18b5eae1281e9c44562c502543b280764300dfd8` |
+| `code/multi-driver-self-interaction-gemini-21d5/README.md` | 1,400 B | `1d6524eb0dbed914172be7d3b795a7c7cfc684fef0ed30213288b99788334ce2` |
+| `code/multi-driver-self-interaction-gemini-21d5/verify.py` | 62,494 B | `7508bc2bfc3bf163f8f33ef25f9281bb5f46419dc6f07b57c0b83d7fc73624b3` |
+| `code/multi-driver-self-interaction-gemini-21d5/result.json` | 9,421 B | `3614df20314af9e5c570b0d38f72ac271d591853b16094da64073627d4e713ef` |
+
 ## Tied U(1)-averaged OU resolvent and self-contained Damped Level-3 cubic radius 114/125 = 0.912 (gemini-4c4c, #720)
 
 - [Self-contained proof and replay instructions](sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md) and
-  [exact rational certificate, two independent zero-float stdlib verifiers, symbolic identity checks, 97 negative/corruption controls, and generator](code/cubic-radius-ou-l3-gemini-4c4c/) (tag KOUL3; STATUS 3.6, 3.7, 3.21; `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C, author only**). Every file is strictly below 300 KB (`cert_912.json` is 229,130 B) with zero external dependencies left outside.
-- **Replay (pure Python 3 standard library only, zero floating-point operations, `-IB` and `-IB -O` identical):**
+  [exact rational certificate, two zero-float stdlib verifiers, symbolic identity & zero-set checks, 97 negative/corruption controls, and generator](code/cubic-radius-ou-l3-gemini-4c4c/) (tag KOUL3; STATUS 3.6, 3.7, 3.21; `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C, author only**). Every file is strictly below 300 KB (`cert_912.json` is 229,130 B) with zero external dependencies left outside.
+- **Replay (pure Python 3 standard library only, zero floating-point operations or float clocks, `-IB` and `-IB -O` identical):**
   - Primary $LDL^\top$ + Sturm + downstream verifier (~60 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify.py`
-  - Second independent Block2-Schur + Bernstein + symbolic $\mathbb{Q}[v, c_2]$ verifier (~54 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py`
-  - Exact symbolic & interval identity checks (~13 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py`
+  - Second verifier — independent on all 10 Stein rows and `4.18e` (Block2-Schur + Bernstein + symbolic $\mathbb{Q}[v, c_2]$ raw bracket check) and applying $2\times 2$ Block Schur complements to the shared OU quadrature/congruence enclosures (~54 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py`
+  - Exact symbolic & interval identity checks including traced Wick identity ($d = 1, 2, 3$) and $z = \sqrt{2}$ zero-set regression (~18 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py`
   - AST zero-float self-audit + 97 negative & corruption controls (~138 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py`
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 49,613 B | `1d1a5bebddf13c31f0f3159b0ddbbd502c5d91ac8fa95e5917405c2eae0c41db` |
-| `code/cubic-radius-ou-l3-gemini-4c4c/README.md` | 2,695 B | `112eda3a3867af0748edfbf215a5516d31a57467197621927e255980773221ac` |
+| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,574 B | `d58499b89dae1c386efc04028a0f8a985cc8f7b9c8eb0701697a204d2b26005f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/README.md` | 2,990 B | `24e96c9ddcd29789e49c78872f6f1d746b287502bedac72e943e84d56de6c14a` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/cert_912.json` | 229,130 B | `5fd94b4b1bda430344388013009b18e8fc00077ec4e67ec993a5755c85b0ba04` |
-| `code/cubic-radius-ou-l3-gemini-4c4c/verify.py` | 65,348 B | `f1c64041e4818fdc64dd3779c16db1820fc3116d3e4db0d96947b0ef6f496052` |
-| `code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py` | 40,553 B | `c6aa541635c9b392a556c880b6bce4163fe183c9e1a8710ec4352410ca4f10e5` |
-| `code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py` | 40,985 B | `9f9cacc50fbbf935e24a19c27ea16a2075503709aa381259edc26e12e0ceb54e` |
-| `code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py` | 12,611 B | `979786b624cc52147e1c232ecb9eea1829bdc1866fc65dd04d40eb6c0fd7f1fd` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/verify.py` | 65,398 B | `9b5a2d83166006db93de6d59201a98ae3506088290095d43a0ccfbd0dd1cf70f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py` | 40,901 B | `53cfd31eabe3f4ff77bf5800a705b3b99daf7debf5773e5f35deef6de4bdd86f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py` | 46,642 B | `242bd78e49dafe996222f788b047782ac14e0b4d0784aa3eeccd5f6c76f52553` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py` | 12,889 B | `bb9e8fc43d8a49bb8b29907b762d142bfde143aa462487c1bad4dfdb50757d6e` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/make_cert.py` | 64,325 B | `2f83919cc3e5dfd31e61283660b047edd5933daf5770ba078f4b3a3979570675` |

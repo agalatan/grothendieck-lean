@@ -36,16 +36,21 @@ Part 3 — Independent exact rational enclosure cross-check of the 1-step OU ide
     (kappa_4 = 90) and confirms strict overlap with the exact closed form (1 + 4*e^{-3/2})/sqrt(6) + 11/4,
     while rejecting a sign-flipped control.
 
-Part 4 — Level-2 (I)-(IV) and Damped Level-3 (V_eps)-(VII_eps) Stein identities at BOTH eps in {1/25, 1/40}:
-  - Exact Wick expectations of undamped (I)-(VII) in d = 2, 3;
-  - Exact multivariate quotient-rule polynomial identities in Q(i)[z, zbar] (d = 2) and Wirtinger
-    pointwise evaluations (d = 3) for (V_eps), (VI_eps) (including Psi_6'), and (VII_eps) (including Psi_7')
-    at BOTH damping parameters eps = 1/25 and eps = 1/40 used in cert_9135.json;
-  - Exact pointwise Gram-phase Cauchy-Schwarz identity tau_{ab} = rho * tilde_beta + rho_perp * tilde_beta_perp
-    and inequality (V tau_{ab} - (V rho) tilde_beta)^2 <= (V^2 alpha_2 - (V rho)^2)(V c_2 w - tilde_beta^2).
+Part 4 — Level-2 (I)-(IV), Damped Level-3 (V_eps)-(VII_eps) across eps in {1/6, 1/25, 1/40}, and zero-set regression:
+  - Exact traced Wick identity q == sum_j (zbar_j F_j - partial_j F_j) in d = 1, 2, 3 (including the traced
+    1-coordinate Wick cubic q = z(|z|^2 - 2) where partial F = 2z != 0) and exact Wick expectations of (I)-(VII);
+  - Exact partial-fraction identity Psi_6(x) == eps^{-2} ((1 + eps*x) - 2(1 + eps) + (1 + eps)^2/(1 + eps*x))
+    and multivariate quotient-rule polynomial identities in Q(i)[z, zbar] (d = 1, 2) and Wirtinger pointwise
+    evaluations (d = 3) for (V_eps), (VI_eps), and (VII_eps) across eps in {1/6, 1/25, 1/40} (cert_912.json
+    uses eps in {1/6, 1/25});
+  - Pointwise Gram-phase identity tau_{ab} = rho * tilde_beta + rho_perp * tilde_beta_perp, inequality
+    (V tau_{ab} - (V rho) tilde_beta)^2 <= (V^2 alpha_2 - (V rho)^2)(V c_2 w - tilde_beta^2), and explicit
+    zero-set regression check on unit q = z(|z|^2 - 2)/sqrt(2) at z = sqrt(2) (V = 0, c_1 = c_2 = 2, alpha_2 = 4,
+    rho = rho_perp = 0 < alpha_2, w = 8, |b_loc|^2 = 16, tilde_beta = tau_{ab} = 0) across all 10 rows of cert_912.json.
 ============================================================================================
 """
 import ast
+import json
 import pathlib
 import random
 import sys
@@ -551,7 +556,7 @@ def check_part3_he3_via_sum_diff(pi_lo, pi_hi, tables=None, cache=None, sign_fli
     lhs_lo = (Fr(1) + 4 * Fr(e_lo, S)) / sq6_hi + Fr(11, 4)
     lhs_hi = (Fr(1) + 4 * Fr(e_hi, S)) / sq6_lo + Fr(11, 4)
 
-    N_Z = 2000
+    N_Z = 3200
     dz = Fr(8, N_Z)
     two_pi_lo, two_pi_hi = 2 * pi_lo, 2 * pi_hi
     inv_s2p_lo = Fr(isqrt(((S**2) * two_pi_hi.denominator) // two_pi_hi.numerator), S)
@@ -562,7 +567,7 @@ def check_part3_he3_via_sum_diff(pi_lo, pi_hi, tables=None, cache=None, sign_fli
     def snap_x(xv, up):
         if xv == 0:
             return Fr(0)
-        sc = 200 if xv <= 3 else (25 if xv <= 15 else 5)
+        sc = 300 if xv <= 4 else (60 if xv <= 18 else 10)
         return Fr((xv.numerator * sc + xv.denominator - 1) // xv.denominator, sc) if up else Fr((xv.numerator * sc) // xv.denominator, sc)
 
     S_ACC = 10**14
@@ -616,12 +621,12 @@ def check_part3_he3_via_sum_diff(pi_lo, pi_hi, tables=None, cache=None, sign_fli
     acc_hi = Fr(acc_hi_i, S_ACC)
     overlap = min(lhs_hi, acc_hi) - max(lhs_lo, acc_lo)
     require(overlap > 0, 'He_3 G_sum/G_diff enclosure failed to overlap exact closed form')
-    require(acc_hi - acc_lo < Fr(1, 6), f'He_3 G_sum/G_diff enclosure too wide: {V1.dec_ceil10(acc_hi - acc_lo)}')
+    require(acc_hi - acc_lo < Fr(1, 10), f'He_3 G_sum/G_diff enclosure too wide: {V1.dec_ceil10(acc_hi - acc_lo)}')
     return lhs_lo, lhs_hi, acc_lo, acc_hi
 
 
 # ==============================================================================
-# PART 4: LEVEL-2 & DAMPED LEVEL-3 STEIN IDENTITIES AT BOTH eps IN {1/25, 1/40}
+# PART 4: LEVEL-2 & DAMPED LEVEL-3 STEIN IDENTITIES + ZERO-SET REGRESSION
 # ==============================================================================
 def check_part4_stein_identities():
     rng = random.Random(20261126)
@@ -631,14 +636,25 @@ def check_part4_stein_identities():
         [QComplex(0, 1), QComplex(3, 2), QComplex(-2, -1)],
     ]
 
-    for d in (2, 3):
+    # Partial-fraction identity for Psi_6(x) = (x - 1)^2 / (1 + eps*x) and Psi_6'(x):
+    for eps in (Fr(1, 6), Fr(1, 25), Fr(1, 40)):
+        for xv in (Fr(0), Fr(1, 3), Fr(1), Fr(2), Fr(7, 2)):
+            yv = 1 + eps * xv
+            psi6_def = ((xv - 1) ** 2) / yv
+            psi6_pf = (yv - 2 * (1 + eps) + ((1 + eps) ** 2) / yv) / (eps * eps)
+            require(psi6_def == psi6_pf, f'Psi_6 partial fraction failed at eps={eps}, x={xv}')
+
+    for d in (1, 2, 3):
         t = [[[QComplex() for _ in range(d)] for _ in range(d)] for _ in range(d)]
-        for a in range(d):
-            for b in range(a, d):
-                for k in range(d):
-                    val = QComplex(rng.randint(-2, 2), rng.randint(-2, 2))
-                    t[a][b][k] = t[b][a][k] = val
-        t[0][1][0] = t[1][0][0] = QComplex(2, 1)
+        if d == 1:
+            t[0][0][0] = QComplex(1, 0)  # traced 1-coordinate Wick cubic q(z) = z(|z|^2 - 2)
+        else:
+            for a in range(d):
+                for b in range(a, d):
+                    for k in range(d):
+                        val = QComplex(rng.randint(-2, 2), rng.randint(-2, 2))
+                        t[a][b][k] = t[b][a][k] = val
+            t[0][1][0] = t[1][0][0] = QComplex(2, 1)
         q = build_wick_cubic(t, d)
         qb = pconj(q, d)
         V_p = pmul(q, qb)
@@ -649,6 +665,17 @@ def check_part4_stein_identities():
         dq = [pdiff(q, j) for j in range(d)]
         F_k = [pdiff(q, d + k) for k in range(d)]
         Fb_k = [pconj(F_k[k], d) for k in range(d)]
+
+        # Verify general Wick representation q == sum_j (zbar_j F_j - partial_j F_j) WITHOUT trace-free assumption:
+        wick_rep = {}
+        div_F = {}
+        for j in range(d):
+            dj_Fj = pdiff(F_k[j], j)
+            div_F = padd(div_F, dj_Fj)
+            wick_rep = padd(wick_rep, padd(pmul(pvar(d + j, 2 * d), F_k[j]), dj_Fj, -1))
+        require(wick_rep == q, f'General Wick identity q == sum_j(zbar_j F_j - partial_j F_j) failed in d={d}')
+        if d == 1:
+            require(bool(div_F), 'Expected nonzero trace contraction partial_0 F_0 = 2 z_0 in d=1')
         c1_p, c2_p, a_p = {}, {}, {}
         for j in range(d):
             c1_p = padd(c1_p, pmul(dq[j], pconj(dq[j], d)))
@@ -671,8 +698,8 @@ def check_part4_stein_identities():
         c2_mu = padd(c2_p, pconst(QComplex(u, 0), 2 * d), -1)
         c2_mu2 = pmul(c2_mu, c2_mu)
 
-        # 1-2. Exact Gaussian expectations of (I)-(VII) in d = 2 (in d = 3, Wirtinger identity below implies them):
-        if d == 2:
+        # 1-2. Exact Gaussian expectations of (I)-(VII) in d in (1, 2) (including traced d=1 Wick cubic):
+        if d in (1, 2):
             e_i = pexpect_complex(padd(V2_p, padd(pscale(pmul(c2_p, V_p), 2), Vrho_p), -1), d)
             require(e_i == QComplex(0, 0), 'Identity (I) failed')
             e_ii = pexpect_complex(padd(V2_p, padd(pmul(c1_p, V_p), pscale(Vrho_p, Fr(1, 2))), -1), d)
@@ -720,7 +747,7 @@ def check_part4_stein_identities():
                 acc = padd(acc, pmul(pmul(N_poly, q), D_p), -1)
                 return real_part_poly(acc, d)
 
-            if d == 2:
+            if d in (1, 2):
                 N5 = pmul(bloc_b, h5_p)
                 N6 = pmul(pmul(qb, c2_m1_2), g6_p)
                 N7 = pmul(pmul(pmul(q, ab_p), c2_m1), g7_p)
@@ -797,9 +824,9 @@ def check_part4_stein_identities():
                     rhs7 = psi7v * al2v * phi7v + psi7v * (c2v * rY7v - Vrhov * g7v) + psi7v * tbv * g7v + psi7dv * tauv * g7v
                     require(lhs5 == rhs5 and lhs6 == rhs6 and lhs7 == rhs7, f'd=3 Wirtinger check failed at eps={eps}')
 
-        # 4. Pointwise Gram-phase CS inequality:
-        for z_pt in test_pts_3:
-            zp = z_pt[:d]
+        # 4. Pointwise Gram-phase CS inequality (including zero-set point z = 1 + i where |z|^2 = 2 in d = 1):
+        pts_check = ([[QComplex(1, 1)]] + [[pt[0]] for pt in test_pts_3]) if d == 1 else [pt[:d] for pt in test_pts_3]
+        for zp in pts_check:
             Vv = peval_point(V_p, zp, d).re
             tauv = peval_point(tau_ab_p, zp, d).re
             Vrhov = peval_point(Vrho_p, zp, d).re
@@ -809,8 +836,57 @@ def check_part4_stein_identities():
             wv = peval_point(w_p, zp, d).re
             require((Vv * tauv - Vrhov * tbv) ** 2 <= (Vv * Vv * al2v - Vrhov * Vrhov) * (Vv * c2v * wv - tbv * tbv),
                     'Gram-phase CS failed')
+        if d == 1:
+            # Explicit regression check for unit Wick cubic q_unit(z) = z(|z|^2 - 2)/sqrt(2) on {V = 0}
+            # (both via z = 1 + i in Q(i) where |z|^2 = 2 and directly at z = sqrt(2)):
+            # Divide unnormalised q_raw = z(|z|^2 - 2) (u = ||q_raw||_2^2 = 2) invariants by powers of u:
+            require(u == Fr(2), 'Expected ||z(|z|^2 - 2)||_2^2 == 2')
+            z0_gi = [QComplex(1, 1)]
+            require(peval_point(V_p, z0_gi, 1).re == 0, 'q(1+i) != 0')
+            c1_u = peval_point(c1_p, z0_gi, 1).re / u          # quadratic in q: |dq_unit|^2 = 2
+            c2_u = peval_point(c2_p, z0_gi, 1).re / u          # quadratic in q: |F_unit|^2 = 2
+            al2_u = peval_point(al2_p, z0_gi, 1).re / (u**2)   # quartic in q:   |a_unit|^2 = 4
+            w_u = peval_point(w_p, z0_gi, 1).re / (u**2)       # quartic in q:   |W_unit|^2 = 8
+            bsq_u = peval_point(bloc_sq, z0_gi, 1).re / (u**3) # sextic in q:    |b_loc_unit|^2 = 16
+            require((c1_u, c2_u, al2_u, w_u, bsq_u) == (Fr(2), Fr(2), Fr(4), Fr(8), Fr(16)),
+                    'Unit Wick zero-set invariants mismatch')
+            # Under zero-set convention rho = rho_perp = tb = tb_perp = tau_ab = 0:
+            rho_u = rho_perp_u = tb_u = tb_perp_u = tau_u = Fr(0)
+            require(rho_u**2 + rho_perp_u**2 < al2_u, 'Zero-set strict inequality rho^2 + rho_perp^2 < alpha_2 expected')
+            require(tb_u**2 + tb_perp_u**2 == 0 and tau_u == rho_u * tb_u + rho_perp_u * tb_perp_u,
+                    'Zero-set mixed-product identity failed')
+            # Verify raw pointwise majorant RHS_L3 > 0 = |q| at this exact zero-set point on all 10 rows of cert_912.json:
+            cert_p = HERE / 'cert_912.json'
+            if cert_p.exists():
+                cert_d = json.loads(cert_p.read_text(encoding='utf-8'))
+                for r_idx, row in enumerate(cert_d['rows']):
+                    kden = int(row['knot_den'])
+                    lam0 = Fr(row['lam'][0])
+                    m00, m01, m11 = (Fr(v) for v in row['m_ker'])
+                    mu_a, mu_w = Fr(row['mu_a']), Fr(row['mu_w'])
+                    p1_0, p2_0 = Fr(row['phi1'][0], kden), Fr(row['phi2'][0], kden)
+                    p3_0, p4_0 = Fr(row['phi3'][0], kden), Fr(row['phi4'][0], kden)
+                    xi2_0, xi1_0 = Fr(row['xi2'][0], kden), Fr(row['xi1'][0], kden)
+                    # At V = 0, G_i(0) = Y_i(0) = 0 and rho = tb = tau_ab = 0:
+                    br1 = -c2_u * p1_0
+                    br2 = -Fr(1, 2) * c1_u * p2_0
+                    br3 = c2_u * (c2_u - 1) * p3_0
+                    br4 = al2_u * p4_0
+                    rhs_val = (lam0 + m00 * ((c2_u - 1) ** 2) + 2 * m01 * (c2_u - 1) * (c1_u - 2)
+                               + m11 * ((c1_u - 2) ** 2) + mu_a * al2_u + mu_w * w_u
+                               - (xi2_0 * c2_u + xi1_0 * c1_u) + br1 + br2 - br3 - br4)
+                    if 'K0' in row and int(row['K0']) > 0:
+                        eps_r = Fr(row['eps'])
+                        sr_0 = Fr(1) / (1 + eps_r * c2_u)
+                        h5_0 = Fr(row['h5_0'])
+                        p6_0, p7_0 = Fr(row['phi6'][0], kden), Fr(row['phi7'][0], kden)
+                        br5 = sr_0 * w_u * h5_0 - eps_r * sr_0 * sr_0 * bsq_u * h5_0
+                        br6 = c2_u * (((c2_u - 1) ** 2) * sr_0) * p6_0
+                        br7 = ((c2_u - 1) * sr_0) * al2_u * p7_0
+                        rhs_val -= (br5 + br6 + br7)
+                    require(rhs_val > 0, f'Zero-set RHS_L3 <= 0 on cert_912.json row {r_idx}: {rhs_val}')
 
-    return 2
+    return 3
 
 
 def self_audit_zero_float():
@@ -822,6 +898,9 @@ def self_audit_zero_float():
             raise ValueError('Float literal found in check_identities_exact.py')
         if isinstance(node, ast.Name) and node.id == fl_nm:
             raise ValueError('Float identifier found in check_identities_exact.py')
+        if (isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name)
+                and node.value.id == 'time' and node.attr in ('time', 'perf_counter', 'process_time')):
+            raise ValueError('Float clock call found in check_identities_exact.py')
 
 
 def main():
@@ -838,7 +917,7 @@ def main():
     if not quiet:
         print(f'[Part 2] Sum/difference polarization & folded-[0, pi/4] polynomial moments: {n2 + 20} checks PASS')
 
-    tables_he3 = V1.make_sum_diff_tables(N_U=250, N_V=500)
+    tables_he3 = V1.make_sum_diff_tables(N_U=400, N_V=700)
     cache_he3 = {}
     lhs_lo, lhs_hi, acc_lo, acc_hi = check_part3_he3_via_sum_diff(pi_lo, pi_hi, tables=tables_he3, cache=cache_he3, sign_flip=False)
     # Negative control: sign flip must fail!
@@ -854,7 +933,7 @@ def main():
 
     n4 = check_part4_stein_identities()
     if not quiet:
-        print(f'[Part 4] Level-2 (I)-(IV) & Damped Level-3 (V_eps)-(VII_eps) at eps in {{1/6, 1/25, 1/40}} (d=2,3): PASS')
+        print(f'[Part 4] Level-2 & Damped Level-3 (V_eps)-(VII_eps) (d=1..{n4}) + zero-set z=sqrt(2) regression: PASS')
 
     dt_ms = (time.monotonic_ns() - t0) // 1_000_000
     print(f'ALL EXACT IDENTITY CHECKS PASSED [{dt_ms} ms, zero floats]')

@@ -1450,18 +1450,18 @@ def main(argv=None):
     require(len(pos_args) <= 1, 'Usage: verify.py [CERT.json] [--quiet] [--generic]')
     cert_path = pathlib.Path(pos_args[0]) if pos_args else DEFAULT_CERT
 
-    t0 = time.time()
+    t0 = time.monotonic_ns()
     cert = json.loads(cert_path.read_text(encoding='utf-8'))
     out = verify_certificate_dict(cert, generic=generic, quiet=quiet)
-    dt = time.time() - t0
+    dt_ms = (time.monotonic_ns() - t0) // 1_000_000
 
     print('OU resolvent [0, %s]: S_cplx = %s, LDL^T leaves = %d (max_depth = %d), bound < %s' % (
         out['ou']['chi_hi'], out['ou']['S_cplx'], out['ou']['leaves'], out['ou']['max_depth'],
         cert['ou_resolvent']['bound_at_chi_hi']))
     print('Stein Sturm [%s, 42]: all %d rows PASS, worst row = %d, max Stein bound <= %s' % (
         out['ou']['chi_hi'], len(cert['rows']), out['worst_idx'], dec_ceil10(out['worst_stein'])))
-    print('GLOBAL CLAIM  E|q| <= %s ||q||_2  for every q in H_{2,1}(C^n):  VERIFIED  [%.2fs]' % (
-        cert['claim'], dt))
+    print('GLOBAL CLAIM  E|q| <= %s ||q||_2  for every q in H_{2,1}(C^n):  VERIFIED  [%d ms, zero floats]' % (
+        cert['claim'], dt_ms))
     if out['worst_hi'] is not None:
         print('SHARP HIGH-CHI CLAIM  E|q| <= %s ||q||_2 < (sqrt(pi)/2)||q||_2  on chi in [%s, 42]:  VERIFIED (max <= %s)' % (
             cert['sharp_hi_claim'], out['sharp_hi_s'], dec_ceil10(out['worst_hi'])))

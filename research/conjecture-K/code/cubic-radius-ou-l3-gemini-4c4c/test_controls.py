@@ -54,6 +54,9 @@ def audit_zero_floats():
                 raise ValueError(f'Float literal found in {nm}')
             if isinstance(node, ast.Name) and node.id == fl_nm:
                 raise ValueError(f'Identifier float found in {nm}')
+            if (isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name)
+                    and node.value.id == 'time' and node.attr in ('time', 'perf_counter', 'process_time')):
+                raise ValueError(f'Float clock call time.{node.attr} found in {nm}')
     return len(scripts)
 
 

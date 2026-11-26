@@ -6,9 +6,12 @@ Usage:  python3 -IB verify_bernstein.py [CERT.json] [--quiet] [--generic]
 Only the Python standard library is used (bisect, fractions, json, math, pathlib, re, sys, time).
 Zero floating-point operations occur anywhere in this file (`float` is never called); `-O`-safe `require(...)`.
 
-Independent of `verify.py` in five ways:
-  1. OU resolvent 4x4 matrix positivity on V in [0, oo) is certified by the 2x2 block Schur complement
-     H_11 > 0 and S_22 := H_22 - H_12^T H_11^{-1} H_12 > 0 (instead of sequential 1x1 LDL^T pivots).
+Independent of `verify.py` on all Stein rows and on the `4.18e` sixth-moment ray (while sharing
+`verify.py`'s outward OU quadrature & rational congruence `build_ou_evaluator` / `build_rotated_H_iv`
+and scalar formula checks `verify_downstream` before applying an independent 2x2 block Schur PD test):
+  1. OU resolvent 4x4 matrix positivity on V in [0, oo) is certified on the shared rotated enclosures
+     by the 2x2 block Schur complement H_11 > 0 and S_22 := H_22 - H_12^T H_11^{-1} H_12 > 0 (instead of
+     sequential 1x1 LDL^T pivots).
   2. Univariate polynomial positivity on segments [a, b] and rays [a, oo) is decided by exact integer
      Bernstein coefficients and de Casteljau subdivision (no Sturm chains).
   3. Knot primitives G_1, ..., G_7 at knots u_k are computed independently by the exact trapezoid rule
@@ -884,15 +887,15 @@ def main(argv=None):
     require(len(pos_args) <= 1, 'Usage: verify_bernstein.py [CERT.json] [--quiet] [--generic]')
     cert_path = pathlib.Path(pos_args[0]) if pos_args else DEFAULT_CERT
 
-    t0 = time.time()
+    t0 = time.monotonic_ns()
     cert = json.loads(cert_path.read_text(encoding='utf-8'))
     out = verify_certificate_dict_bernstein(cert, generic=generic, quiet=quiet)
-    dt = time.time() - t0
+    dt_ms = (time.monotonic_ns() - t0) // 1_000_000
 
     print('OU resolvent [0, %s] (Block2-Schur): leaves=%d, max_depth=%d, bound < %s' % (
         out['ou']['chi_hi'], out['ou']['leaves'], out['ou']['max_depth'], cert['ou_resolvent']['bound_at_chi_hi']))
-    print('Bernstein Stein [%s, 42]: total_leaves=%d, max_depth=%d, worst_row=%d, max_bound <= %s [%.2fs]' % (
-        out['ou']['chi_hi'], out['tot_leaves'], out['max_depth'], out['worst_idx'], dec_ceil10(out['worst_stein']), dt))
+    print('Bernstein Stein [%s, 42]: total_leaves=%d, max_depth=%d, worst_row=%d, max_bound <= %s [%d ms, zero floats]' % (
+        out['ou']['chi_hi'], out['tot_leaves'], out['max_depth'], out['worst_idx'], dec_ceil10(out['worst_stein']), dt_ms))
     print('GLOBAL CLAIM  E|q| <= %s ||q||_2  for every q in H_{2,1}(C^n):  VERIFIED (Bernstein + Block2-Schur)' % cert['claim'])
     if out['worst_hi'] is not None:
         print('SHARP HIGH-CHI CLAIM  E|q| <= %s ||q||_2 < (sqrt(pi)/2)||q||_2  on chi in [%s, 42]:  VERIFIED (max <= %s)' % (
