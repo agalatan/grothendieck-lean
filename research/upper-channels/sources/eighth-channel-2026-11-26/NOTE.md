@@ -137,9 +137,9 @@ would no longer be needed for the root.
 - **Risks.** (1) `CellData.lean` at 19 MB must elaborate within a hosted runner's 16 GB. The branch's own build
   record should be checked first; if it does not fit, the check needs the heavy runner. (2) The contour fact for the
   new R has not been run in Lean: the float mean 1.18 leaves 70 % headroom, but the adaptive box enclosures have cost
-  10–34 % over the float mean on the committed channels. (3) The six's interval kernel `HaagerupKernel` is kept
-  standalone and byte-identical to the article's ancillary files (frozen article, `anc/`), so the bridge must live
-  on the `Grothe` side. (4) The decision of ledger 5.6 stands: master's upper bound would depend on the cell tree of
+  10–34 % over the float mean on the committed channels. (3) Since #645 the article's ancillary package
+  is decoupled from the repository, so the six's interval kernel `HaagerupKernel` may be changed; a bridge on the
+  `Grothe` side still keeps the kernel library small (a change to a precompiled library rebuilds every importer). (4) The decision of ledger 5.6 stands: master's upper bound would depend on the cell tree of
   a closed PR.
 
 ## Replay
