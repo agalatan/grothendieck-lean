@@ -47,3 +47,7 @@ Inputs that live in git, not in this folder:
   and `tools/replay_private_upper_budget.py`, whose interval routines the scripts import.
 
 No log is kept in the repository.
+
+**Eighth channel (26 November 2026, #723).** The run was on the droplet `yo`, in the folder
+`~/claude-b9ee-eighth`, which is deleted. Its logs and small JSON results are in `code/eighth-channel/`. Only the
+intermediate `columns.json` (0.96 MB) was not kept: `columns.py` rebuilds it in two minutes.
