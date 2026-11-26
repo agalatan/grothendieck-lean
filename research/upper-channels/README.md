@@ -17,6 +17,7 @@ The head of the new channel is an exact interval composition of grades that Lean
 eighteen-channel branch, and its allowance (8.9·10⁻¹⁰) is the one that branch already pays for the same channel type;
 both were re-derived here independently (ledger §4). The cell channel cannot be written inside the six-channel
 framework: a certificate needs the cell machinery of the eighteen-channel branch, which is not on master.
+Against master's seven channels the same copy still gains 1.18·10⁻⁵ (1/D = 1.404544590 at a = 23277/25000), and the selector then drops out ([eighth-channel note](sources/eighth-channel-2026-11-26/NOTE.md), ledger §9).
 The candidate has exactly six channels with positive weight, so the six-channel assembly of master keeps its
 shape: the new cell pair takes the slot of channel 4 (ledger §5).
 
