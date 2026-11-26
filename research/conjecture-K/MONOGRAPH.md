@@ -356,7 +356,7 @@ or (265/2)δ^(3/2) for χ≤9364/390625. Nine low-energy intervals give the last
 The smoothed expansion gives D(q)>0 on (0,3/250] × (0,1/9] and on [3/250,0.0463] × (0,1/125].
 The 79 Stein duals and the Stieltjes–Maclaurin estimate cover the adjoining larger shapes in 3.29.
 Together these give strict positivity on (0,0.0463] × (0,49/100] ∪ (0,83/100000] × (0,42].
-The remaining shapes in this peak positivity problem have χ>49/100 and u>83/100000 [3.19a, 3.29].
+Averaging the Rice curvature over the visible variance mixture extends strict positivity to all shapes through u = 7/500. Within the peak energy band the remaining region has χ > 49/100 and u > 7/500. [P + C, author only · 3.29a · proof](sources/buffered-rice-codex-a7c4/PEAK.md)
 
 For 0.03≤u≤0.0463 and χ≤10⁻⁴ (9/2000, author only), the content coefficient 3/80 of 2.6 gives
 ‖c₍₃/₅₎(q)‖²≤0.3D(q), without additive error. With k=59009/189100, the global tilted
@@ -1168,6 +1168,8 @@ threshold in t no such cap holds (chapter 4, item 69). The October manuscript ha
 penalties that spend the same square cannot be added.
 
 The Rice mean has a quantitative Jensen gap on remote cubic fields. If X is a positive multiple of |q|² and m = EX ≤ 1/9, the gap is at least (√π/32)e^(−m/2)m²/(1+3m/4). The fourth and sixth moment bounds in 3.4 control the variance term left by the curvature. Applying this estimate before 2.12b gives peak-normalized remote energy below 0.0458 and total energy below 0.08005 already at t ≥ 0.83992. [P + C, author only · 2.12g · proof](sources/rice-response-gap-codex-a7c4/PROOF.md)
+
+For √(3π/14) ≤ t ≤ √π/2 the exact remote energy supremum is ε²(π/4 − t²). The upper bound follows by comparing the cubic with a Gaussian of the same variance when independent Gaussian noise has at least six times that variance. Finite sums of cubic monomials realize every strict interior point, also for unimodular responses. [P + C, author only · 3.5a · proof](sources/buffered-rice-codex-a7c4/PROOF.md)
 
 **Central component.** At the single peak row, an all-sector bound Λ ≤ S + η (for Λ or Λ̂) with η ≤ 10⁻⁴ covers
 t ∈ [0.84, 0.851] with cap margin above 6.12·10⁻⁷ below 500/701; separately, the largest admissible allowance there is
