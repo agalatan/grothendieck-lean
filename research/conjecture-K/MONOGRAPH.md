@@ -1163,6 +1163,8 @@ threshold in t no such cap holds (chapter 4, item 69). The October manuscript ha
 [R · 2.12]. These cuts apply to responses only: inserting them inside a supremum over all G is invalid, and two
 penalties that spend the same square cannot be added.
 
+The Rice mean has a quantitative Jensen gap on remote cubic fields. If X is a positive multiple of |q|² and m = EX ≤ 1/9, the gap is at least (√π/32)e^(−m/2)m²/(1+3m/4). The fourth and sixth moment bounds in 3.4 control the variance term left by the curvature. Applying this estimate before 2.12b gives peak-normalized remote energy below 0.0458 and total energy below 0.08005 already at t ≥ 0.83992. [P + C, author only · 2.12g · proof](sources/rice-response-gap-codex-a7c4/PROOF.md)
+
 **Central component.** At the single peak row, an all-sector bound Λ ≤ S + η (for Λ or Λ̂) with η ≤ 10⁻⁴ covers
 t ∈ [0.84, 0.851] with cap margin above 6.12·10⁻⁷ below 500/701; separately, the largest admissible allowance there is
 η_max = 166713115892493/1656988750000000000 = 0.0001006120988404375…, with no reserve [P + C · 8.1]. The premise is
