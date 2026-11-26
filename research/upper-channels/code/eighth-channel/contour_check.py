@@ -23,6 +23,8 @@ import cell_tail as ct  # noqa: E402
 
 
 def check(a, R, rho, j, budget, cells):
+    if not 0 < a < 1:
+        return False
     b = 1 - a
     if not (a - 9 * b * R ** 2 > 0 and 0 < a * R - b * R ** 3 < 1 and 1 < rho < R and 0 < j < Q(1, 2)):
         return False
@@ -40,10 +42,25 @@ def check(a, R, rho, j, budget, cells):
     return ct.positive(ct.minus(ct.scale(ct.square(lhs), budget), ct.square(B)), cells)
 
 
+def tail_square(rho, budget, start=126):
+    return budget * rho ** (-(4 * start + 2)) / (1 - rho ** -4)
+
+
 def tail(rho, budget, start=126):
-    sq = budget * rho ** (-(4 * start + 2)) / (1 - rho ** -4)
-    scale = 10 ** 30
-    return Q(isqrt(int(sq * scale ** 2)) + 1, scale)
+    """Upward decimal with 4 significant digits, as a string, for the square root of tail_square (exact check)."""
+    sq = tail_square(rho, budget, start)
+    e = 0
+    while Q(10) ** (2 * e) > sq:
+        e -= 1
+    while Q(10) ** (2 * (e + 1)) <= sq:
+        e += 1
+    unit = Q(10) ** (e - 3)                      # 4 significant digits: m * 10^(e-3), 1000 <= m < 10000
+    m = isqrt(int(sq / unit ** 2)) + 1
+    while (m * unit) ** 2 <= sq:
+        m += 1
+    up = m * unit
+    assert up ** 2 > sq, "printed upper bound"
+    return f"{m / 1000:.3f}e{e}"
 
 
 if __name__ == "__main__":
@@ -54,7 +71,7 @@ if __name__ == "__main__":
     for a, R, rho, j, budget, cells in cases:
         ok = check(a, R, rho, j, budget, cells)
         print(f"a = {a}: disk R = {R}, contour rho = {rho}, j = {j}, |H|^2 <= {budget} on {cells} cells: "
-              f"{'PROVED' if ok else 'not certified'}" + (f"; tail from 126 < {float(tail(rho, budget)):.3e}" if ok else ""))
+              f"{'PROVED' if ok else 'not certified'}" + (f"; tail from 126 < {tail(rho, budget)}" if ok else ""))
     # a wider contour for the new parameter 23277/25000 (the 1197/1000 certificate of CELL_TAIL.md fails there)
     a = Q(23277, 25000)
     for rho in (Q(119, 100), Q(118, 100), Q(117, 100), Q(115, 100)):
@@ -67,6 +84,6 @@ if __name__ == "__main__":
             if found:
                 break
         print(f"a = {a}: disk 6/5, contour rho = {rho}: " + (f"PROVED with j = {found[0]}, |H|^2 <= {found[1]}; tail from 126 < "
-              f"{float(tail(rho, found[1])):.3e}" if found else "no certificate in the small grid"))
+              f"{tail(rho, found[1])}" if found else "no certificate in the small grid"))
         if found:
             break

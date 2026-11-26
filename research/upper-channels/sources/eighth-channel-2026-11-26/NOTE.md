@@ -52,8 +52,8 @@ The selector allowance is Lean's.
 | (a) cell copy a = 9311/10000 | 1.404544595538 | 1.180·10⁻⁵ | | six_4, selector |
 | (a) **cell copy a = 23277/25000** | **1.404544589757** | **1.180·10⁻⁵** | six_0 867218468355, six_1 76803977897, cell 55394070035, six_5 285433355, six_3 142219992, six_2 155830366 | six_4, selector |
 | (a) cell copy at the six's own R₄ coefficient | 1.404544685501 | 1.171·10⁻⁵ | | six_4, selector |
-| (a) 101 copies, 0.90 ≤ a ≤ 0.95 (step 1/2000) | 1.404544589102 | 1.180·10⁻⁵ | uses 931/1000 and 1863/2000 only | six_4, selector |
-| (b) reflected cubic, preprocessors (p₂, −p₂), 0.01 ≤ ε ≤ 0.3 | see §2b | < 10⁻⁹ | | |
+| (a) 101 copies, 0.90 ≤ a ≤ 0.95 (step 1/2000; budget 2 of the copies other than the four exactly checked values rests on the float means of ledger 4.4) | 1.404544589102 | 1.180·10⁻⁵ | uses 931/1000 and 1863/2000 only | six_4, selector |
+| (b) reflected cubic, preprocessors (p₂, −p₂), seven sampled ε in [0.01, 0.3] | unchanged (§2b) | 0 observed (zero weight in the truncated LP) | | every sample |
 | (c) four selector columns of #681 (d = 1 unit, d = 3 twice, d = 4) | 1.404556349482 | 4.25·10⁻⁸ | the six, d = 3 (two columns), d = 4 | selector d = 1 (both) |
 | (c) one d = 3 selector (3/20, 197/200) | 1.404556351700 | 4.03·10⁻⁸ | | selector d = 1 |
 | (a)+(c) copy 93079/100000 + four selectors | 1.404544663627 | 1.173·10⁻⁵ | the d = 3 column with 39/40 at 4.7·10⁻⁶ | six_4, every other selector |
@@ -63,9 +63,11 @@ The selector allowance is Lean's.
 
 **The scan over a** (seven + one copy, float LP) is sharply peaked. D = 0.7119685677 at a = 0.90,
 0.7119690370 at 0.925, 0.7119739621 at 0.93, 0.7119731739 at 0.9325, 0.7119691109 at 0.935 and 0.7119685658 at 0.95.
-The continuous optimum is a = 0.9310836 with D = 0.7119745488700 (1/D = 1.404544588830). Ledger 4.4 shows that the
-committed contour (ρ = 109/100, budget 2) applies throughout 0.90 ≤ a ≤ 0.95. Every copy therefore carries the
-allowance 889686/10¹⁵ of the eighteen-channel certificate (Hardy tail from index 126 plus the ceiling from 251).
+The continuous optimum is a = 0.9310836 with D = 0.7119745488700 (1/D = 1.404544588830; float). Every copy carries
+the allowance 889686/10¹⁵ of the eighteen-channel certificate (Hardy tail from index 126 with budget 2 at
+ρ = 109/100, plus the ceiling from 251). That budget is checked exactly only at the four values 23277/25000,
+93079/100000, 931/1000 and 1863/2000 (`contour_check.py`, §3). For the rest of the scan range 0.90 ≤ a ≤ 0.95 and
+for the continuous optimum it rests on the floating-point Schur means of ledger 4.4 (label N).
 
 **Replacement.** In the seven + copy LP the two zero weights are six_4 and the selector. Dropping any other channel
 loses a lot. Without six_0 the LP falls to 1/D = 1.40495592. Without six_2 it falls to 1.40458766. Without six_1,
@@ -130,18 +132,18 @@ would no longer be needed for the root.
   record already contains an all-orders tail for this cell pair: Σ_{k≥126}|h_k| < 3·10⁻¹⁹ ([CELL_TAIL.md](../cell-contour/CELL_TAIL.md),
   codex-a7c4, #589, **P + C** author only). It comes from the analytic disk of radius 6/5, the Gaussian Schur bound
   |H|² ≤ 144 on |z| = 1197/1000 with j = 3/20, five Bernstein certificates (`code/cell_tail.py`) and the Lean replay
-  `sources/cell-contour/CellContour.lean` of the polynomial inequalities and the tail step. That replay is a scratch
+  `scratch/CellContour.lean` of the polynomial inequalities and the tail step. That replay is a scratch
   file, not part of `Grothe`. It is far below the allowance 889686/10¹⁵ charged in this note, so at that a the tail
   costs nothing. The best parameter 23277/25000 is new. There the 1197/1000 certificate fails, but
   `contour_check.py` (the same Bernstein test, parameterised) proves |H|² ≤ 144 on |z| = 119/100 with j = 1/10 inside
-  the disk 6/5, giving a tail < 1.31·10⁻¹⁸. It also proves the radius-1.09 test with budget 2 exactly (R = 11/10,
+  the disk 6/5, giving a tail < 1.306·10⁻¹⁸. It also proves the radius-1.09 test with budget 2 exactly (R = 11/10,
   j = 17/40, 16 subintervals) at 23277/25000, 93079/100000, 931/1000 and 1863/2000, as gemini-21d5 found. So the
   copy's tail needs **no native contour fact**: it can be proved by `ring_nf; positivity`-style polynomial
   inequalities as in `CellContour.lean`, plus the specialisation of `SchurMainGaussian.norm_HholPair_sq_le` to the
   cell pair. That specialisation is the derivation of CELL_TAIL.md §2 and is not in Lean.
 - **Head and cutoff.** The cell head has 126 coefficients (indices 0–125). `convex_transfer_variable_ival` of
   `UpperSixExact` already takes a per-channel cutoff, so slot 4 takes cutoff 125 and its cap is the tail from 126
-  (< 1.31·10⁻¹⁸ with the contour above). This removes the 6·10⁻⁹ cost that ledger 5.5(b) assumed for padding the head
+  (< 1.306·10⁻¹⁸ with the contour above). This removes the 6·10⁻⁹ cost that ledger 5.5(b) assumed for padding the head
   to 250. The finite head (the 126 composed cell coefficients from the grade witnesses) and its identification with
   the kernel of the transfer theorem remain the outstanding work, together with the bridge below.
 - **What exists on the #556 branch** (commit `76c4647b`, kept by `refs/pull/556/head`; ledger 5.2). The cell tree is 26
