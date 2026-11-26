@@ -23,8 +23,8 @@ Verifies:
       and independent pure-`Fraction` box-bound replay of exported binding plain
       and Stein boxes (`plain_085` and `stein_0125`).
   V4. Claim 3 (`SMALL_T.md`: `V <= (2/5) t^2 + 7058083/10^7`): pure-`Fraction`
-      chord-and-tail assembly over `[0, inf)` from the 39 zero-arcsin certified
-      `sigma`-nodes, plus the elementary Lean-constant proof.
+      chord-and-tail assembly over `[0, inf)` from the 40 zero-arcsin certified
+      `sigma`-nodes (39 interpolation intervals), plus the elementary Lean-constant proof.
   V5. Claim 4 exact rational envelopes and rooms for `rows2b.json` (both Stein
       `t_1 = 7967/125000` and plain `t_1 = 57297/500000`), `rows2c_final.json`
       (`t_1 = 6213/31250`, reproducing `B` and `room` digit-for-digit), and all
@@ -431,7 +431,7 @@ def verify_claim3(c3: Dict[str, Any]) -> Fraction:
     target_n = Fraction(c3["target_N"])
     require(target_n == Fraction(7058083, 10000000), "Claim 3 target_N == 7058083/10^7")
     nodes = c3["nodes"]
-    require(isinstance(nodes, list) and len(nodes) >= 38, "Claim 3 >= 38 sigma nodes")
+    require(isinstance(nodes, list) and len(nodes) == 40, "Claim 3 expected 40 sigma nodes (39 intervals)")
 
     sigs = [hex_to_frac(nd["sig_hex"]) for nd in nodes]
     fhats = [hex_to_frac(nd["F_hat_hex"]) for nd in nodes]
@@ -665,8 +665,8 @@ def verify_all(here: Path, result: Dict[str, Any]) -> Dict[str, Any]:
         gap_lo = hex_to_frac(gb["law_gap_lo_hex"])
         require(gap_lo > 0, f"Gaussian law gap <= 0 on {tg}")
         # Negative Control 1 (P4 §6): lowering C_r by its Gaussian law gap is rejected by the cover certifier on all 4 rows,
-        # and strictly exceeded by an explicit rational law in L on 0.700, 0.800, 0.850 (on 0.886, sigma* = 0.036 so C_r - C_gauss
-        # is ~5.0e-5 of Stage-2b cover slack while C_lb >= C_gauss - 5e-6):
+        # and strictly exceeded by an explicit rational law in L on 0.700, 0.800, 0.850 (on 0.886, C_lb lies inside the
+        # C_gauss enclosure while the certified bracket on C_* - C_gauss is [0, C_cert - C_gauss_lo]):
         require(gb.get("cover_rejected_minus_gap") is True, f"cover must reject C_r - law_gap on {tg}")
         c_tgt = Fraction(rows_by_tag[tg]["plain_2b"]["C_target"])
         if tg != "0.886":
@@ -774,7 +774,13 @@ def verify_all(here: Path, result: Dict[str, Any]) -> Dict[str, Any]:
     require(len(dstar_pieces) == 21, "expected 21 D* pieces")
     require(Fraction(dstar_pieces[0][0]) == Fraction(649, 1000), "D* starts at 649/1000")
     require(Fraction(dstar_pieces[-1][1]) == T_MAX_ENV, "D* ends at 886227/10^6")
-    min_dstar_room_cert = TARGET
+    dstar_targets = {
+        "500/701": TARGET,
+        "1/1.40195": Fraction(20000, 28039),
+        "1/1.40210": Fraction(10000, 14021),
+    }
+    dstar_min_rooms_cert: Dict[str, Fraction] = dict(dstar_targets)
+    dstar_min_rooms_pub: Dict[str, Fraction] = dict(dstar_targets)
     for j_idx, (pa_s, pb_s, rtag) in enumerate(dstar_pieces):
         pa, pb = Fraction(pa_s), Fraction(pb_s)
         require(pa < pb, f"D* piece {j_idx} pa < pb")
@@ -782,15 +788,18 @@ def verify_all(here: Path, result: Dict[str, Any]) -> Dict[str, Any]:
             require(pa == Fraction(dstar_pieces[j_idx - 1][1]), f"D* piece {j_idx} contiguity")
         rr = rows_by_tag[rtag]
         ell_r = parse_row_q4(rr["row"])[0]
-        for c_val in (Fraction(rr["plain_2c"]["C_target"]), hex_to_frac(rr["plain_2c"]["C_cert_hex"])):
-            pmax = max(pa * pa - 2 * ell_r * pa + c_val, pb * pb - 2 * ell_r * pb + c_val)
-            require(TARGET - pmax > 0, f"D* piece {j_idx+1} room at 500/701")
-            require(Fraction(20000, 28039) - pmax > 0, f"D* piece {j_idx+1} room at 1/1.40195")
-            require(Fraction(10000, 14021) - pmax > 0, f"D* piece {j_idx+1} room at 1/1.40210")
+        c_pub_j = Fraction(rr["plain_2c"]["C_target"])
         c_cert_j = hex_to_frac(rr["plain_2c"]["C_cert_hex"])
-        room_cert_j = TARGET - max(pa * pa - 2 * ell_r * pa + c_cert_j, pb * pb - 2 * ell_r * pb + c_cert_j)
-        if room_cert_j < min_dstar_room_cert:
-            min_dstar_room_cert = room_cert_j
+        pmax_pub = max(pa * pa - 2 * ell_r * pa + c_pub_j, pb * pb - 2 * ell_r * pb + c_pub_j)
+        pmax_cert = max(pa * pa - 2 * ell_r * pa + c_cert_j, pb * pb - 2 * ell_r * pb + c_cert_j)
+        for tname, tval in dstar_targets.items():
+            rm_pub = tval - pmax_pub
+            rm_cert = tval - pmax_cert
+            require(rm_pub > 0 and rm_cert > 0, f"D* piece {j_idx+1} room <= 0 at {tname}")
+            if rm_pub < dstar_min_rooms_pub[tname]:
+                dstar_min_rooms_pub[tname] = rm_pub
+            if rm_cert < dstar_min_rooms_cert[tname]:
+                dstar_min_rooms_cert[tname] = rm_cert
 
     # V6. C++ Negative-control flags & rho = sqrt(pi)/2 refutation on all 9 rows t <= 0.6:
     nc = result["negative_controls"]
@@ -829,7 +838,8 @@ def verify_all(here: Path, result: Dict[str, Any]) -> Dict[str, Any]:
         "b5_cert": b5_cert,
         "b2c_tgt": b2c_tgt,
         "b2c_cert": b2c_cert,
-        "min_dstar_room_cert": min_dstar_room_cert,
+        "dstar_min_rooms_cert": dstar_min_rooms_cert,
+        "dstar_min_rooms_pub": dstar_min_rooms_pub,
         "n_c3_exact": n_c3_exact,
         "pieces_2b_tgt": pieces_2b_tgt,
         "pieces_2c_tgt": pieces_2c_tgt,
@@ -897,7 +907,7 @@ def replay_cpp_binary(here: Path, expected_result_bytes: bytes) -> None:
         )
         replayed = json.loads(out_path.read_text(encoding="utf-8"))
         orig = json.loads(expected_result_bytes.decode("utf-8"))
-        for k in ("rows", "claim3_small_t", "sanity_checks", "negative_controls"):
+        for k in ("rows", "claim3_small_t", "sample_boxes", "sanity_checks", "negative_controls"):
             require(replayed[k] == orig[k], f"--replay-cpp deterministic output mismatch on key {k!r}")
 
 
@@ -924,13 +934,21 @@ def main() -> None:
     b5_cert = summary["b5_cert"]
     b2c_tgt = summary["b2c_tgt"]
     b2c_cert = summary["b2c_cert"]
+    dstar_c = summary["dstar_min_rooms_cert"]
+    dstar_p = summary["dstar_min_rooms_pub"]
     print("ALL CHECKS PASSED (#625 Level C clean-room law-cap & Claim 3 replay):")
     print(f"  - C++ source zero-libm-transcendental audit: PASS (SHA-256 {result['meta']['cpp_sha256'][:16]}...)")
     print(f"  - Certified covers: 60/60 PASS (29 rows2b plain + 5 zero-arcsin Stein + 26 rows2c plain)")
-    print(f"  - Admissible primal rational witnesses in L: 55/55 PASS")
-    print(f"  - Claim 3 (zero-arcsin): N(3/5) <= {fmt_fixed_outward(summary['n_c3_exact'], 10, ROUND_CEILING)} <= 0.7058083000")
+    print(f"  - Admissible primal rational witnesses in L = (L1)-(L4) on plain covers: 55/55 PASS")
+    print(f"  - Claim 3 (zero-arcsin, 40 nodes / 39 intervals): N(3/5) <= {fmt_fixed_outward(summary['n_c3_exact'], 10, ROUND_CEILING)} <= 0.7058083000")
     print(f"  - Claim 4 (rows2b, rho=95133/100000): B5_cert <= {fmt_fixed_outward(b5_cert, 10, ROUND_CEILING)} <= B5_pub <= {fmt_fixed_outward(b5_tgt, 10, ROUND_CEILING)} (room >= {fmt_sci_outward(TARGET - b5_tgt, 4, ROUND_FLOOR)})")
-    print(f"  - STATUS 4.42 / H4 (rows2c, rho0=2287/2500): B_cert <= {fmt_fixed_outward(b2c_cert, 10, ROUND_CEILING)} <= B_pub <= {fmt_fixed_outward(b2c_tgt, 10, ROUND_CEILING)} (room >= {fmt_sci_outward(TARGET - b2c_tgt, 4, ROUND_FLOOR)}; D* 21-piece min room >= {fmt_sci_outward(summary['min_dstar_room_cert'], 4, ROUND_FLOOR)})")
+    print(f"  - STATUS 4.42 / H4 (rows2c, rho0=2287/2500): B_cert <= {fmt_fixed_outward(b2c_cert, 10, ROUND_CEILING)} <= B_pub <= {fmt_fixed_outward(b2c_tgt, 10, ROUND_CEILING)} (room >= {fmt_sci_outward(TARGET - b2c_tgt, 4, ROUND_FLOOR)})")
+    print(
+        "  - Design D* 21-piece min rooms (certified / published, outward floor): "
+        f"500/701: {fmt_sci_outward(dstar_c['500/701'], 4, ROUND_FLOOR)} / {fmt_sci_outward(dstar_p['500/701'], 4, ROUND_FLOOR)}; "
+        f"1/1.40195: {fmt_sci_outward(dstar_c['1/1.40195'], 4, ROUND_FLOOR)} / {fmt_sci_outward(dstar_p['1/1.40195'], 4, ROUND_FLOOR)}; "
+        f"1/1.40210: {fmt_sci_outward(dstar_c['1/1.40210'], 4, ROUND_FLOOR)} / {fmt_sci_outward(dstar_p['1/1.40210'], 4, ROUND_FLOOR)}"
+    )
     print(f"  - Negative controls: {7 + n_mut}/12 suites PASS (law-gap, rho=sqrt(pi)/2 on 9 rows, cap-1e-6, 3 Stein controls, rounded-rooms trap, + {n_mut} corruption tests)")
 
     if args.print_tables:

@@ -652,9 +652,19 @@ struct GL3PolarEngine {
         for (int q = 0; q < 3; ++q) sincos_0_pi(tq[q], p.sq_v[q], p.cq[q]);
       }
     }
-    t_strip.dt = I(0.5) * (I(pi_v.h) - I(pi_lo));
-    t_strip.dt.l = std::max(0.0, t_strip.dt.l);
+    // Uncovered angular strip [pi_lo, pi] has true half-width (pi - pi_lo)/2 in [0, (pi_v.h - pi_lo)/2]:
+    double strip_dt_hi = std::max(0.0, (I(0.5) * (I(pi_v.h) - I(pi_lo))).h);
+    t_strip.dt = I(0.0, strip_dt_hi);
     sincos_0_pi(I(pi_lo, pi_v.h), t_strip.sbox, t_strip.cbox);
+  }
+
+  I eval_angular_const_one(int d) const {
+    I acc(0.0);
+    for (const auto& tp : ttree[size_t(d)]) {
+      acc = acc + I(2.0) * tp.dt;
+    }
+    I strip_hi = I(2.0) * t_strip.dt;
+    return acc + I(0.0, std::max(0.0, strip_hi.h));
   }
 
   struct Row {
@@ -790,10 +800,11 @@ struct GL3PolarEngine {
         I Pbox = rp.rbox * (c0 + c1 * Tbox + c2 * sq(Tbox));
         I Up_c = (rw.a0 + rw.a2 * Tbox) * t_strip.cbox;
         I Um_s = (rw.a0 + rw.d2 * Tbox) * t_strip.sbox;
-        I w_area = I(4.0) * rp.dr * t_strip.dt * rp.w_j6.c[0];
+        I w_area_hi = I(4.0) * rp.dr * t_strip.dt * rp.w_j6.c[0];
         for (size_t k = 0; k < n_pts; ++k) {
           I sk(s_pts[i_beg + k]);
-          acc[k] = acc[k] + w_area * sqrti(sq(Pbox + sk * Up_c) + sq(sk * Um_s));
+          I strip_val = w_area_hi * sqrti(sq(Pbox + sk * Up_c) + sq(sk * Um_s));
+          acc[k] = acc[k] + I(0.0, std::max(0.0, strip_val.h));
         }
       }
       for (int jt = 0; jt < BASE_T; ++jt)
@@ -1130,6 +1141,16 @@ struct BoxEval {
   double sig_osc;
 };
 
+inline double max_nu_slab_quad(double u0, double u1, I K_nu) {
+  if (K_nu.h == 0.0) return std::max(u0, u1);
+  require(K_nu.l > 0.0, "max_nu_slab_quad requires K_nu.l > 0");
+  I diff = I(u1) - I(u0);
+  if (diff.h <= -K_nu.h) return u0;
+  if (diff.l >= K_nu.h)  return u1;
+  I mid_val = I(0.5) * (I(u0) + I(u1)) + I(0.25) * K_nu + sq(diff) / (I(4.0) * K_nu);
+  return std::max({u0, u1, mid_val.h});
+}
+
 inline BoxEval certify_box_bound_full(const PolyMaj& p0, const PolyMaj& p1, double nu0, double nu1,
                                       I rho_iv, I kap_iv, I eta_iv, double sig_a, double sig_b, double x_a, double x_b,
                                       double M0 = 0.0, double M1 = 0.0) {
@@ -1141,7 +1162,10 @@ inline BoxEval certify_box_bound_full(const PolyMaj& p0, const PolyMaj& p1, doub
 
   auto eval_sigma_sub = [&](double sa, double sb, double xe) -> double {
     I sig(sa, sb);
-    I sm(0.5 * (sa + sb)), dsig(0.5 * (sb - sa));
+    double sm_d = (sa == sb) ? sa : (0.5 * (sa + sb));
+    double rad_hi = (sa == sb) ? 0.0 : std::max(up(sm_d - sa), up(sb - sm_d));
+    I sm(sm_d);
+    I sym_d(-rad_hi, rad_hi);
     I x_iv(xe), x2 = sq(x_iv), x3 = x2 * x_iv;
     I m2 = I(2.0) + x2;
     I m3 = I(6.0) + I(9.0) * x2 + C6 * x3;
@@ -1167,7 +1191,6 @@ inline BoxEval certify_box_bound_full(const PolyMaj& p0, const PolyMaj& p1, doub
     };
     Jet<2> j0_box = eval_F_jet2(p0, pen0, st0);
     auto [f0m, d0m] = eval_pt(p0, pen0, st0, sm);
-    I sym_d(-dsig.h, dsig.h);
     I U0_iv = f0m + sym_d * d0m + sq(sym_d) * j0_box.c[2];
     double u0 = std::min(j0_box.c[0].h, U0_iv.h);
     if (nu0 == nu1) return u0;
@@ -1176,12 +1199,7 @@ inline BoxEval certify_box_bound_full(const PolyMaj& p0, const PolyMaj& p1, doub
     auto [f1m, d1m] = eval_pt(p1, pen1, st1, sm);
     I U1_iv = f1m + sym_d * d1m + sq(sym_d) * j1_box.c[2];
     double u1 = std::min(j1_box.c[0].h, U1_iv.h);
-    if (K_nu.h == 0.0) return std::max(u0, u1);
-    I diff = I(u1) - I(u0);
-    if (diff.h <= -K_nu.l) return u0;
-    if (diff.l >= K_nu.l)  return u1;
-    I mid_val = I(0.5)*(I(u0) + I(u1)) + rat_i(1, 4)*K_nu + sq(diff) / (I(4.0) * K_nu);
-    return std::max({u0, u1, mid_val.h});
+    return max_nu_slab_quad(u0, u1, K_nu);
   };
 
   const int NS = 16;
@@ -3124,8 +3142,64 @@ inline void run_startup_self_tests() {
     I sv_lo, cv_lo, sv_hi, cv_hi;
     sincos_0_pi(I(a.l), sv_lo, cv_lo);
     sincos_0_pi(I(a.h), sv_hi, cv_hi);
+    if (k <= 750) {
+      require((a.l == 0.0 || sv_lo.h <= u) && sv_hi.l >= u, "asin direct monotone bracket at k=" + std::to_string(k));
+    }
     require(sv_lo.l <= u && sv_hi.h >= u && a.width() < 5e-14, "asin roundtrip at k=" + std::to_string(k));
   }
+
+  // 4. Near-equality nu-slab quadratic maximum test (codex-a7c4 review counterexample:
+  //    dnu = 1/2048, eta = 779/10000 => true K = 625/204210176 > u1 = 0x1.9ac8764e368d1p-19 >= K_nu.l;
+  //    true interior maximum u1 + (K - u1)^2/(4K) > u1, so outward upper bound MUST strictly exceed u1):
+  {
+    I eta_ce = rat_i(779, 10000);
+    I K_ce = sq(I(1.0 / 2048.0)) / eta_ce;
+    I K_exact = rat_str_to_iv("625/204210176");
+    double u1_ce = 0x1.9ac8764e368d1p-19;
+    require(K_ce.l <= u1_ce && u1_ce <= K_exact.l && K_exact.l < K_exact.h, "counterexample bracket setup");
+    double ub_pos = max_nu_slab_quad(0.0, u1_ce, K_ce);
+    double ub_neg = max_nu_slab_quad(u1_ce, 0.0, K_ce);
+    require(ub_pos >= up(u1_ce) && ub_neg >= up(u1_ce), "max_nu_slab_quad must strictly cover interior gain > u1");
+  }
+}
+
+inline void run_engine_self_tests(const GL3PolarEngine& eng) {
+  // Constant-integrand 1 control on angular grid [0, pi_lo] + [pi_lo, pi] across all depths,
+  // tested against a 128-bit fixed-point Machin enclosure of pi (< 1e-15 width),
+  // and on the full 2D polar engine (4/pi * int_0^pi int_0^inf r e^{-r^2} * 1 dr dtheta = 2):
+  auto atan_inv_q104 = [](uint64_t q) -> std::pair<__int128, __int128> {
+    const __int128 ONE = (__int128(1) << 104);
+    __int128 p_lo = ONE / __int128(q), p_hi = p_lo + 1;
+    __int128 s_lo = 0, s_hi = 0;
+    const __int128 q2 = __int128(q) * __int128(q);
+    for (int k = 0; k < 24; ++k) {
+      __int128 d = 2 * k + 1;
+      __int128 t_lo = p_lo / d, t_hi = (p_hi + d - 1) / d;
+      if (k % 2 == 0) { s_lo += t_lo; s_hi += t_hi; }
+      else            { s_lo -= t_hi; s_hi -= t_lo; }
+      p_lo = p_lo / q2;
+      p_hi = (p_hi + q2 - 1) / q2;
+    }
+    __int128 rem = (p_hi + 48) / 49;
+    return {s_lo - rem, s_hi + rem};
+  };
+  auto [a5_lo, a5_hi] = atan_inv_q104(5);
+  auto [a239_lo, a239_hi] = atan_inv_q104(239);
+  __int128 pi_q_lo = 16 * a5_lo - 4 * a239_hi;
+  __int128 pi_q_hi = 16 * a5_hi - 4 * a239_lo;
+  uint64_t m_lo = uint64_t(pi_q_lo >> 53);
+  uint64_t m_hi = uint64_t((pi_q_hi + ((__int128(1) << 53) - 1)) >> 53);
+  I pi_tight(std::ldexp(double(m_lo), -51), std::ldexp(double(m_hi), -51));
+  require(pi_tight.width() < 1e-15, "pi_tight 1-ulp width");
+  for (int d = 0; d <= GL3PolarEngine::MAX_D; ++d) {
+    I ang = eng.eval_angular_const_one(d);
+    require(ang.l <= pi_tight.l && ang.h >= pi_tight.h, "angular constant-1 enclosure at depth " + std::to_string(d));
+  }
+  GL3PolarEngine::Row rw_zero(I(0.0), I(0.0), I(0.0), I(0.0));
+  std::vector<double> s_one = {1.0};
+  std::vector<I> psi_one(1);
+  eng.eval_psi5_batch(rw_zero, 0.0, s_one, 0, 1, psi_one, 1e-11, true);
+  require(psi_one[0].l <= 2.0 && 2.0 <= psi_one[0].h, "2D polar constant-1 enclosure of exact value 2.0");
 }
 
 // Builds per-row nu-grid (includes all 14 Stein nu-nodes + dense 2/2048 window around row's LP peak!):
@@ -3188,6 +3262,7 @@ int main(int argc, char** argv) {
   std::cout << "[init] Self-tests OK. Loaded 29 rows2b + 26 rows2c. Building GL3PolarEngine..." << std::endl;
 
   GL3PolarEngine eng;
+  run_engine_self_tests(eng);
   const I rho_2b = rat_i(95133, 100000);
   const I rho_2c = rat_i(2287, 2500);
   const I rho_sqrtpi2 = I(0.5) * sqrti(verified_pi());
@@ -3414,8 +3489,8 @@ int main(int argc, char** argv) {
     I c_iv = rat_str_to_iv(sp.C_plain_2b);
     auto gb = eval_gaussian_benchmark(eng, sp.tag, sp.t_val, rw, sgo, nuo, c_iv);
     // Negative control (P4 §6): lowering C_r by its Gaussian law gap (to C_gauss) is rejected by the cover certifier on all 4 rows,
-    // and strictly exceeded by an explicit rational law in L on 0.700, 0.800, 0.850 (while on 0.886, sigma* = 0.036 so C_r - C_gauss
-    // is ~5.2e-5 of Stage-2b cover slack and C_lb >= C_gauss - 2e-6):
+    // and strictly exceeded by an explicit rational law in L on 0.700, 0.800, 0.850 (on 0.886, C_lb lies inside the C_gauss
+    // enclosure while the certified bracket on C_* - C_gauss is [0, C_cert - C_gauss_lo] <= 5.0e-5):
     double c_minus_gap = (c_iv - I(gb.law_gap_lo)).h;
     std::vector<NuSliceCaps> sl_gb;
     if (saved_gb_slices.count(ridx)) {
