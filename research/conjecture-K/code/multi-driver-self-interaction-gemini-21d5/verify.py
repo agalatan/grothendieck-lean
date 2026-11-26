@@ -440,7 +440,8 @@ class WickBesselContext:
             w3_s0 = iv_add(w3_s0, (c * iv[0], c * iv[1]) if c >= 0 else (c * iv[1], c * iv[0]))
         self.c2_small_lo = w2_s0[0] // 16 - (ONE >> 1)
         self.c3_small_hi = -((-w3_s0[1]) // 288)
-        require(self.c2_small_lo - iv_div_int((self.c3_small_hi,) * 2, 50)[1] > 0, "positivity on (0, 1/50]")
+        self.pos_small_z2_coef = self.c2_small_lo - iv_div_int((self.c3_small_hi,) * 2, 50)[1]
+        require(100 * self.pos_small_z2_coef > 505 * ONE, "positivity > 505/100 on (0, 1/50]")
 
         self.S = 18
         self.max_k = 410
@@ -616,10 +617,10 @@ def recompute_theorem2_full(ctx: WickBesselContext):
     tab_jet = [ctx.eval_wick_jet1(i * dz) for i in range(n_tab + 1)]
 
     # Certify Delta_Wick(zeta) >= c_pos * min(zeta^2, 1) > 0 strictly across (0, 4]:
-    # - On (0, 1/50]: Delta_Wick(zeta) / zeta^2 >= c2_small_lo - c3_small_hi / 50 > 0;
+    # - On (0, 1/50]: Delta_Wick(zeta) / zeta^2 >= c2_small_lo - c3_small_hi / 50 > 505/100 > 0;
     # - On [1/50, 4]: Delta_Wick(zeta) >= compact_pos_min > 0, and min(zeta^2, 1) <= 1.
-    pos_small_z2_coef = ctx.c2_small_lo - iv_div_int((ctx.c3_small_hi,) * 2, 50)[1]
-    require(pos_small_z2_coef > 0, "positivity of Delta_Wick(zeta)/zeta^2 on (0, 1/50]")
+    pos_small_z2_coef = ctx.pos_small_z2_coef
+    require(100 * pos_small_z2_coef > 505 * ONE, "positivity of Delta_Wick(zeta)/zeta^2 > 505/100 on (0, 1/50]")
     compact_pos_min = pos_small_z2_coef
     for i in range(20, n_fine + 1):
         zb = i * dz_fine + dz_fine / 2
