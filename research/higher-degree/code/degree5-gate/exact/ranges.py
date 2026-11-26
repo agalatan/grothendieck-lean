@@ -34,11 +34,15 @@ GAMES = [('capped (39/50, 779/10000)', F(39, 50), F(779, 10000), [('1.402', F(50
          ('A2 (106/125, 559/2000) = (0.848, 0.2795)', F(106, 125), F(559, 2000), [('1.4025', F(10000, 14025)), ('1.403', F(1000, 1403))]),
          ('A1 (0.84896, 0.2818)', F('0.84896'), F('0.2818'), [('1.4025', F(10000, 14025)), ('1.403', F(1000, 1403))]),
          ('A (8493/10000, 2827/10000)', F(8493, 10000), F(2827, 10000), [('1.4025', F(10000, 14025)), ('1.403', F(1000, 1403))])]
+class Fail(ArithmeticError):
+    """a failed requirement; the message names the requirement (checked by the negative controls)."""
+def require(cond, msg):
+    if not cond: raise Fail(msg)
 def cut(intercept, slope, tg, digits):
     """largest n/10^digits with intercept + slope t^2 < tg (slope > 0); None if intercept >= tg."""
     if intercept >= tg: return None
     s = 10 ** digits; sq = (tg - intercept) * s * s / slope; n = isqrt((sq.numerator - 1) // sq.denominator)
-    assert intercept + slope * F(n, s) ** 2 < tg <= intercept + slope * F(n + 1, s) ** 2
+    require(intercept + slope * F(n, s) ** 2 < tg <= intercept + slope * F(n + 1, s) ** 2, 'cut bracket')
     return F(n, s)
 def load(path, name):
     sp = importlib.util.spec_from_file_location(name, path); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); return m
@@ -80,10 +84,12 @@ tq = load(os.path.join(CODE, 'quintic-tangent-codex-a7c4', 'verify.py'), 'tq'); 
 TANGENT = {'capped': (F(17, 10), F(17, 100)), 'ridge B': (F(9, 5), F(182, 1000)), 'A2': (F(9, 5), F(188, 1000)), 'A1': (F(9, 5), F(188, 1000)), 'A (': (F(9, 5), F(188, 1000))}
 def tangent(eps, eta, l, beta, tg):
     """smallest 8-decimal t0 with P(t) < tg on [t0, mu], or None; checks the premises with directed bounds for mu."""
-    assert beta >= 3 * eta * MU_HI / 8, 'floor of g* not at T = 0'
+    require(beta >= 3 * eta * MU_HI / 8, 'floor of g* not at T = 0')
     m = l - 2 * beta + 3 * eta * MU_LO / 8                     # smallest value of the floor over the mu interval
-    assert m > 0 and 2 * MU_HI <= m / eps and 2 * MU_HI < m / eta, 'absorption premises'
-    assert l > MU_HI
+    require(m > 0, 'floor of g* not positive')
+    require(2 * MU_HI <= m / eps, 'cubic form not absorbed')
+    require(2 * MU_HI < m / eta, 'quintic square not absorbed')
+    require(l > MU_HI, 'parabola not decreasing on [0, mu]')
     P = lambda t, mu: t * t - 2 * l * t + 2 * beta * beta / eps + 2 * mu * (l - beta / 2) + 3 * eta * mu * mu / 64
     if P(MU_LO, MU_HI) >= tg: return None
     lo, hi = 0, int(MU_LO * 10 ** 8)                             # P(hi/1e8, MU_HI) < tg; bisect the first passing grid point
@@ -92,14 +98,14 @@ def tangent(eps, eta, l, beta, tg):
         mid = (lo + hi) // 2
         if P(F(mid, 10 ** 8), MU_HI) < tg: hi = mid
         else: lo = mid
-    t0 = F(hi, 10 ** 8); assert P(t0, MU_HI) < tg and P(t0 - F(1, 10 ** 8), MU_LO) >= tg, 'negative control'
+    t0 = F(hi, 10 ** 8); require(P(t0, MU_HI) < tg, 'endpoint passes'); require(P(t0 - F(1, 10 ** 8), MU_LO) >= tg, 'negative control: t0 - 1e-8 fails')
     return t0
 for name, eps, eta, tgs in GAMES:
     print(name)
     for tn, tg in tgs:
         a = cut(eps * RHO ** 2 + eta ** 2 / eps * INVPI_UP, 1 - eta, tg, 6)
-        wp, wm = eps - eta, eps - eta * ME / MC; assert wp > 0 and wm > 0
-        sp = 1 - eta - wp * F(431, 500) ** 2; sm = 1 - eta - wm * F(431, 500) ** 2; assert sp > 0 and sm > 0
+        wp, wm = eps - eta, eps - eta * ME / MC; require(wp > 0 and wm > 0, '4.18e weights')
+        sp = 1 - eta - wp * F(431, 500) ** 2; sm = 1 - eta - wm * F(431, 500) ** 2; require(sp > 0 and sm > 0, '4.18e slopes')
         p = cut(eta + wp * RHO ** 2, sp, tg, 8); m = cut(eta * (1 + MS / MC) + wm * RHO ** 2, sm, tg, 8)
         f = spectral(eps, eta, tg, F((m * 1000).__floor__(), 1000)) if m is not None else None
         fmt = lambda x, d: ('%.*f' % (d, float(x))) if x is not None else 'none (above the target at t = 0)'
@@ -110,9 +116,13 @@ for name, eps, eta, tgs in GAMES:
         print('    (t) endpoint tangent (l, beta) = (%s, %s): V < target for every pair with t >= %s' % (l, beta, ('%.8f' % t0) if t0 is not None else 'none'))
     if name.startswith('capped'):
         print('  control: 0.250885, 0.34554022, 0.35859076, 0.36495 at 1.402 are the certified endpoints of ledger 4.18a, e, f')
-        c = tangent(eps, eta, F(17, 10), F(17, 100), F(500, 701)); assert c == F(88527103, 10 ** 8), c
+        c = tangent(eps, eta, F(17, 10), F(17, 100), F(500, 701)); require(c == F(88527103, 10 ** 8), 'control (t): %s' % c)
         print('  control (t): the capped game with (17/10, 17/100) at 500/701 gives %.8f, as PROOF.md after (3)' % c)
-        try: tangent(eps, eta, F(17, 10), F(1, 100), F(500, 701)); raise SystemExit('negative control failed: beta below 3 eta mu/8 accepted')
-        except AssertionError: print('  negative control (t): beta = 1/100 (floor of g* not at T = 0) is rejected')
-        try: tangent(F(9, 10), F(3, 5), F(9, 5), F(188, 1000), F(1000, 1403)); raise SystemExit('negative control failed: eta above m/sqrt(pi) accepted')
-        except AssertionError: print('  negative control (t): (e, eta) = (9/10, 3/5) (quintic square not absorbed) is rejected')
+        for args, why, label in (((eps, eta, F(17, 10), F(1, 100)), 'floor of g* not at T = 0', 'beta = 1/100'),
+                                 ((F(1, 2), F(9, 10), F(9, 5), F(32, 100)), 'quintic square not absorbed', '(e, eta, l, beta) = (1/2, 9/10, 9/5, 8/25)'),
+                                 ((F(9, 10), F(1, 10), F(9, 5), F(66, 100)), 'cubic form not absorbed', '(e, eta, l, beta) = (9/10, 1/10, 9/5, 33/50)')):
+            try:
+                tangent(*args, F(1000, 1403)); raise Fail('negative control accepted: ' + label)
+            except Fail as e:
+                if str(e) != why: raise SystemExit('negative control %s failed for the wrong reason: %s' % (label, e))
+            print('  negative control (t): %s is rejected (%s)' % (label, why))

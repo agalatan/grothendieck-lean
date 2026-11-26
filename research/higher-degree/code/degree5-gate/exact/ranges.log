@@ -9,8 +9,9 @@ capped (39/50, 779/10000)
     (t) endpoint tangent (l, beta) = (17/10, 17/100): V < target for every pair with t >= 0.88542710
   control: 0.250885, 0.34554022, 0.35859076, 0.36495 at 1.402 are the certified endpoints of ledger 4.18a, e, f
   control (t): the capped game with (17/10, 17/100) at 500/701 gives 0.88527103, as PROOF.md after (3)
-  negative control (t): beta = 1/100 (floor of g* not at T = 0) is rejected
-  negative control (t): (e, eta) = (9/10, 3/5) (quintic square not absorbed) is rejected
+  negative control (t): beta = 1/100 is rejected (floor of g* not at T = 0)
+  negative control (t): (e, eta, l, beta) = (1/2, 9/10, 9/5, 8/25) is rejected (quintic square not absorbed)
+  negative control (t): (e, eta, l, beta) = (9/10, 1/10, 9/5, 33/50) is rejected (cubic form not absorbed)
 ridge B (41/50, 97/500)
   target 1.4025 (a) direct: t <= 0.122921 | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= 0.17858605 | (f) verifier accepts: t <= 0.17948
     values at t = 0: direct 0.700834, Parseval 0.717874, mass 0.699975; target value 0.713012

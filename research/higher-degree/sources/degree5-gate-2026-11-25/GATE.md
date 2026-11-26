@@ -69,13 +69,14 @@ Targets 1/1.4025 = 0.7130125 and 1/1.403 = 0.7127584 (and 500/701 = 0.7132668 fo
 |---|---|---|---|
 | maximum of the Gaussian envelope, t ∈ [0.70, 0.8862] (at t) | 0.712877551 (0.8475) | 0.712570629 (0.8475) | 0.712464043 (0.8812)¹ |
 | room at 1.4025 / 1.403 at that maximum | 1.35·10⁻⁴ / −1.19·10⁻⁴ | 4.42·10⁻⁴ / 1.88·10⁻⁴ | 5.48·10⁻⁴ / 2.94·10⁻⁴ |
-| plain law rows on [0.70, 0.86], envelope maximum | – | 0.7125684 | 0.7125447 |
+| plain law rows tuned on [0.70, 0.886], maximum of their envelope (at an interior crossing) | – | 0.712568514521 (0.8532) | 0.712544835716 (0.8307) |
 | law row at t = 0 (plain; zero row with the Stein family) | 0.6530107; 0.6527273 | 0.6874003; 0.6866736 | 0.7125551; 0.7114360 |
 | largest plain law row on t ∈ [0.05, 0.70] (at t) | 0.6934640 (0.6) | **0.7132942 (0.25)** | **0.7364982 (0.25)** |
 | rows re-tuned for the Stein class, largest on t ∈ [0.05, 0.70] (at t) | 0.6870289 (0.6) | 0.7052759 (0.70) | **0.7217968 (0.2)** |
-| smallest room at 1.4025 over all t, plain law class | ≥ 1.35·10⁻⁴ (peak) | **−2.82·10⁻⁴** (t = 0.25) | **−2.35·10⁻²** (t = 0.25) |
-| smallest room at 1.403 over all t, plain law class | −1.19·10⁻⁴ (peak) | **−5.36·10⁻⁴** (t = 0.25) | **−2.37·10⁻²** (t = 0.25) |
-| smallest room at 1.4025 / 1.403, Stein-class rows at small t | 1.35·10⁻⁴ / −1.19·10⁻⁴ | 4.42·10⁻⁴ / 1.88·10⁻⁴ (peak) | **−8.78·10⁻³ / −9.04·10⁻³** (t = 0.2) |
+| smallest observed room at 1.4025, plain law rows at their own sampled tuning points | ≥ 1.35·10⁻⁴ (peak) | **−2.82·10⁻⁴** (t = 0.25) | **−2.35·10⁻²** (t = 0.25) |
+| the same at 1.403 | −1.19·10⁻⁴ (peak) | **−5.36·10⁻⁴** (t = 0.25) | **−2.37·10⁻²** (t = 0.25) |
+| room at 1.4025 / 1.403 at the maximum of the stored plain small-t envelope (a crossing between tuning points) | 1.95·10⁻² / 1.93·10⁻² (t = 0.60) | **−1.55·10⁻³ / −1.80·10⁻³** (t ≈ 0.27479) | **−2.43·10⁻² / −2.45·10⁻²** (t ≈ 0.27483) |
+| smallest observed room at 1.4025 / 1.403, Stein-class rows at their own sampled tuning points | 1.35·10⁻⁴ / −1.19·10⁻⁴ (peak) | 4.42·10⁻⁴ / 1.88·10⁻⁴ (peak) | **−8.78·10⁻³ / −9.04·10⁻³** (t = 0.2) |
 
 ¹ gA's Gaussian rows at t ≥ 0.865 did not converge in their tuning (they fall on the plain branch with gradients up to
 3·10⁻²; band5's own envelope of the same rows gives 0.7124782 at 0.8789). They are upper bounds of the row values
@@ -102,7 +103,7 @@ one-sided: the oracle is local (and on t ≥ 0.50 the final scan found its maxim
 so the true Stein-class value of a row may be larger, and a row found by a global search could be lower. The bundle
 gaps of the converged Stein runs are at most 5·10⁻⁶.
 
-- **gA, gA1, gA2** exceed 500/701 (so also 1/1.4025 and 1/1.403) in the plain class at every t from 0.1 to 0.5 by
+- **gA, gA1, gA2** exceed 500/701 (so also 1/1.4025 and 1/1.403) in the plain class at every sampled t from 0.1 to 0.5 by
   4·10⁻³ to 2.3·10⁻² (gA: 0.7205314 at 0.1, 0.7364982 at 0.25, 0.7179443 at 0.5; gA1 and gA2 within 1.2·10⁻³ of gA).
   With the rows searched, these games have no certificate of the type of ledger 4.1 in the plain law class at any
   target from 1.402 up (**N**: a numerical obstruction, not an exclusion of every row). The rows re-tuned for the Stein class still exceed 1/1.402 on t = 0.05–0.35 by up to
@@ -133,7 +134,9 @@ b_A = b_B = ξ = 0 and β ≥ 3ημ/8 the floor of g\* is m = ℓ − 2β + 3η�
 cubic and the quintic quadratic forms are absorbed, leaving the decreasing parabola (3) (its derivation uses only
 ε, η > 0). `exact/ranges.py` checks the premises and the parabola with the directed bounds of μ = √π/2 from
 `mu_bounds()` of `../../code/quintic-tangent-codex-a7c4/verify.py`, with controls: the capped game reproduces PROOF.md's
-0.88527103 at 500/701, each t₀ − 10⁻⁸ fails even at the lower bound of μ, and two premise violations are rejected. These intervals (pointed out by codex-a7c4 in the review of PR #719) are exact but short: they end at
+0.88527103 at 500/701, each t₀ − 10⁻⁸ fails even at the lower bound of μ, and three inputs that
+violate one premise each (the floor of g\*, the cubic absorption, the quintic absorption) are rejected, each checked for
+its own reason; the checks are not `assert`s, so `python3 -O` runs them too. These intervals (pointed out by codex-a7c4 in the review of PR #719) are exact but short: they end at
 μ = 0.88622693, about 3·10⁻⁴ above their start.
 
 ### 2.3 Sector shares on the peak band (the decision rule)
@@ -224,13 +227,14 @@ By the rule of #713: **neither game is taken, and degree 5 stops** (**N**; the l
   27 % at finite amplitude, its allowances against the recorded ratios are 0.73–0.96 with one constant per energy on
   the rows 0.80–0.84, and its plain small-t rows exceed even 500/701 at t = 0.25. Its scalar room at the peak
   (4.4·10⁻⁴ at 1.4025, 1.9·10⁻⁴ at 1.403) is not the binding constraint: the sector budget is.
-- **gA** (and with it its neighbours gA1, gA2, whose small-t law rows are within 1.2·10⁻³ of gA's) fails the gate: the
+- **gA** fails the gate (the gates of its neighbours gA1, gA2 were not measured; their small-t law rows are within
+  1.2·10⁻³ of gA's): the
   sharing constant is positive on 0.82–0.875, the quintic shells alone take more than the whole deficit from t = 0.82
   on (κ_h = 1.04–1.68), so no split is left for the A/B shells. Independently of the sectors, its plain law rows
-  exceed every target from 1.402 up by 4·10⁻³ to 2.3·10⁻² on t ∈ [0.1, 0.5]: the larger scalar room at the peak is
+  exceed every target from 1.402 up by 4·10⁻³ to 2.3·10⁻² at the sampled t in [0.1, 0.5]: the larger scalar room at the peak is
   paid for at small t, where the t = 0 test of 4.52 did not look (an obstruction for the rows searched, §2.1). The gates
   of gA1 and gA2 were not measured.
-- Both games keep a short hypothesis-free interval at the top, t ≥ 0.8858 (gB) and t ≥ 0.8860 (gA) at 1.403 (§2.2);
+- Both games keep a short hypothesis-free interval at the top, t ≥ 0.88583247 (gB) and t ≥ 0.88604516 (gA) at 1.403 (§2.2);
   it does not touch the binding band.
 
 What this does not exclude: a certificate of another type (rows with a richer law class re-optimised for it, other
