@@ -13,7 +13,7 @@ Full mathematical derivations and verification statistics are in [PROOF.md](../.
 | `dual_certs.json`, `dual_certs_1.json`..`dual_certs_7.json` | Manifest and 7 `< 220 KB` shards containing the `109` dyadic-rational continuous-law `JM1` and `(R1)` infeasibility dual certificates across Pieces 1–17 of `fin_table_fundFull.json` plus the own-row `0.70` and $u = 1/128$ negative controls. |
 | `result.json` | Machine-generated receipt from `certify_content_cells --verify-all`. |
 | `verify.py` | Pure Python 3 stdlib `Fraction` verifier (`python3 -IB verify.py` and `python3 -IB -O verify.py`; `--replay-cpp` recompiles and replays the C++17 binary from scratch). |
-| `test_controls.py` | 14-check negative and corruption control suite against both `verify.py` and the live C++17 binary (`python3 -IB test_controls.py` and `python3 -IB -O test_controls.py`). |
+| `test_controls.py` | 18-check positive-fixture, mathematical negative, and targeted corruption control suite against both `verify.py` (preserving `< 220 KB` shards and asserting specific error diagnostics) and the live C++17 binary (`python3 -IB test_controls.py` and `python3 -IB -O test_controls.py`). |
 
 ## Reproduction
 

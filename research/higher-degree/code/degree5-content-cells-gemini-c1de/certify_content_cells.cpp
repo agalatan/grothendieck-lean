@@ -989,25 +989,31 @@ void integrate_hp_polar_cell(
         }
         Ival dUm_dr = (c0 + Ival::pt(3.0) * c1 * r2_b + Ival::pt(5.0) * c2 * r4_b) * (mode_eps ? p_iv : Ival::pt(1.0))
                     - st_b * (Ival::pt(2.0) * a2_C * r_iv) * gam_b;
-        if (dUm_dr.lo <= 0.0 || Rp_b.lo <= 0.0) {
-            std::fprintf(stderr, "FATAL: root fallback precondition failed (dUm_dr.lo=%g, Rp.lo=%g)\n", dUm_dr.lo, Rp_b.lo);
+        if (dUm_dr.lo <= 0.0 || Rp_b.lo <= 0.0 || S_b.lo <= 0.0 || st_b.lo <= 0.0 || (Up_b + Rp_b).lo <= 0.0) {
+            std::fprintf(stderr,
+                         "FATAL: root fallback precondition failed (dUm_dr.lo=%g, Rp.lo=%g, S.lo=%g, st.lo=%g, Up+Rp.lo=%g)\n",
+                         dUm_dr.lo, Rp_b.lo, S_b.lo, st_b.lo, (Up_b + Rp_b).lo);
             std::exit(2);
         }
         double mr = dUm_dr.lo;
         double dr_len = r_iv.width(), dt_len = th_iv.width();
         double area = mul_up(dr_len, dt_len);
-        double int_W2_Rm3 = div_up(mul_up(2.0, dt_len), mr);
+        // Freeze denominator at W_min(theta) = st_min * S_min * sin(theta) per angle and price numerator variation
+        // by ((st_max * S_max) / (st_min * S_min))^2 with directed rounding:
+        double w_rat = div_up(mul_up(st_b.hi, S_b.hi), mul_dn(st_b.lo, S_b.lo));
+        double int_W2_Rm3 = mul_up(mul_up(w_rat, w_rat), div_up(mul_up(2.0, dt_len), mr));
         Ival Rsum_b = Rp_b + Rm_b;
+        Ival abs_b = ival_abs(b_b), abs_c = ival_abs(c_b);
         double rp_lo2 = mul_dn(Rp_b.lo, Rp_b.lo);
-        double rp_lo4 = mul_dn(rp_lo2, rp_lo2);
+        double rp_lo3 = mul_dn(rp_lo2, Rp_b.lo);
 
-        double du_t1 = mul_up((Ival::pt(2.0) * st_b * ival_sqr(at_b) * b_b * gam_b).hi,
-                              add_up(div_up(int_W2_Rm3, rp_lo2), div_up(area, rp_lo4)));
-        double du_t2 = mul_up(((st_b * b_b * gam_b * ival_sqr(Rsum_b + Ival::pt(2.0) * at_b)) /
+        double du_t1 = mul_up((Ival::pt(2.0) * st_b * ival_sqr(at_b) * abs_b * gam_b).hi,
+                              add_up(div_up(int_W2_Rm3, rp_lo2), div_up(area, rp_lo3)));
+        double du_t2 = mul_up(((st_b * abs_b * gam_b * ival_sqr(Rsum_b + Ival::pt(2.0) * at_b)) /
                                (Rp_b * Rsum_b * (Up_b + Rp_b))).hi, area);
-        double dw_p1 = mul_up(((st_b * st_b * st_b * sig_b * c_b * (ival_sqr(b_b) + ival_sqr(c_b))) /
+        double dw_p1 = mul_up(((st_b * st_b * st_b * sig_b * abs_c * (ival_sqr(b_b) + ival_sqr(c_b))) /
                                (Ival::pt(2.0) * Rp_b * Rp_b * Rp_b)).hi, area);
-        double dw_p2 = mul_up((Ival::pt(0.5) * st_b * sig_b * c_b).hi, int_W2_Rm3);
+        double dw_p2 = mul_up((Ival::pt(0.5) * st_b * sig_b * abs_c).hi, int_W2_Rm3);
         double dw_p3 = mul_up(((st_b * ival_sqr(b_b) * ((Ival::pt(2.0) * Rp_b + Rm_b) * Rp_b * Rsum_b + Ival::pt(4.0) * ival_sqr(at_b) * Rm_b)) /
                                (Ival::pt(2.0) * S_b * Rp_b * Rp_b * Rp_b * Rsum_b)).hi, area);
         double tot_ker = add_up(add_up(du_t1, du_t2), add_up(dw_p1, add_up(dw_p2, dw_p3)));
@@ -1872,31 +1878,30 @@ Ival eval_h_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
 struct FastKTable {
     const RowProfileEnclosure* enc;
     bool is_B;
-    double u;
+    Ival u_iv;
     std::vector<Ival> KP_nodes;
     Ival G_inf_ival;
     Ival P_inf_ival;
 };
 
-FastKTable build_k_table(const RowProfileEnclosure& enc, bool is_B, double u_val) {
+FastKTable build_k_table(const RowProfileEnclosure& enc, bool is_B, const Ival& u_iv) {
     FastKTable kt;
     kt.enc = &enc;
     kt.is_B = is_B;
-    kt.u = u_val;
+    kt.u_iv = u_iv;
     kt.G_inf_ival = is_B ? enc.GB_inf : enc.GA_inf;
     kt.P_inf_ival = is_B ? enc.PB_inf : enc.PA_inf;
 
     const auto& hp_pan = is_B ? enc.hpB_pan : enc.hpA_pan;
     int NW = static_cast<int>(hp_pan.size());
     kt.KP_nodes.resize(NW + 1, {0.0, 0.0});
-    double inv_rt_hi = div_dn(1.0, sqrt_up(add_up(256.0, mul_up(40.0, u_val))));
-    double inv_rt3_lo = mul_dn(inv_rt_hi, mul_dn(inv_rt_hi, inv_rt_hi));
+    double inv_rt_lo = div_dn(1.0, sqrt_up(add_up(256.0, mul_up(40.0, u_iv.hi))));
+    double inv_rt3_lo = mul_dn(inv_rt_lo, mul_dn(inv_rt_lo, inv_rt_lo));
     double inv_rt3_hi = 1.0 / 4096.0; // 16^{-3}
     Ival kp_top = kt.P_inf_ival * Ival{inv_rt3_lo, inv_rt3_hi};
     double tail40 = 1.0e-16;
     kt.KP_nodes[NW] = {sub_dn(kp_top.lo, tail40), add_up(kp_top.hi, tail40)};
 
-    Ival u_iv = Ival::pt(u_val);
     for (int j = NW - 1; j >= 0; --j) {
         Ival dw = Ival::pt(enc.w_edges[j + 1]) - Ival::pt(enc.w_edges[j]);
         Ival r_j = ival_exp(-(dw / u_iv));
@@ -1943,7 +1948,7 @@ void eval_psi_g1_ival(const FastKTable& kt, const Ival& v_iv, Ival& psi_out, Iva
 
     if (v_iv.hi > 256.0) {
         Ival sub_v{std::max(v_iv.lo, 256.0), v_iv.hi};
-        double inv_rt_lo = (sub_v.hi >= 1e150) ? 0.0 : div_dn(1.0, sqrt_up(add_up(sub_v.hi, mul_up(40.0, kt.u))));
+        double inv_rt_lo = (sub_v.hi >= 1e150) ? 0.0 : div_dn(1.0, sqrt_up(add_up(sub_v.hi, mul_up(40.0, kt.u_iv.hi))));
         double inv_rt_hi = div_up(1.0, sqrt_dn(sub_v.lo));
         double pmax = add_up(ival_abs(kt.P_inf_ival).hi, 1.0e-12);
         double psi_hi = div_up(mul_up(pmax, pmax), mul_dn(sub_v.lo, sub_v.lo));
@@ -2192,9 +2197,10 @@ struct SliceCert {
 
 struct CellCert {
     int piece_idx;
+    int u_idx;
     std::string row_tag;
     std::string kind; // "JM1_BOUND" or "INFEAS_R1"
-    double u_val, t_lo, chi_lo, chi_hi;
+    double u_lo, u_hi, t_lo, chi_lo, chi_hi;
     double theta_allow; // <= 0 if benchmark only or infeas
     double F_claimed;
     // For INFEAS_R1: 1 slice with F_claimed=0, beta=gamma=lamK=0, proving 1 <= 0!
@@ -2245,7 +2251,7 @@ GlobalDualConfig load_dual_stream(std::istream& in) {
     };
     for (size_t i = 0; i < ncells; ++i) {
         auto& c = cfg.cells[i];
-        in >> c.piece_idx >> c.row_tag >> c.kind >> c.u_val >> c.t_lo >> c.chi_lo >> c.chi_hi >> c.theta_allow >> c.F_claimed;
+        in >> c.piece_idx >> c.u_idx >> c.row_tag >> c.kind >> c.u_lo >> c.u_hi >> c.t_lo >> c.chi_lo >> c.chi_hi >> c.theta_allow >> c.F_claimed;
         read_slices(c.slicesA);
         read_slices(c.slicesB);
     }
@@ -2253,11 +2259,11 @@ GlobalDualConfig load_dual_stream(std::istream& in) {
 }
 
 // Outward-rounded M_{Lambda(chi_hi)}(c1, c2) = max_{(d1,d2) in [0,2u]x[0,u], d1^2+d2^2 <= (chi_hi/2) u^2} (c1 d1 + c2 d2)
-Ival eval_M_lambda_ival(const Ival& c1, const Ival& c2, double u_val, double chi_hi) {
+Ival eval_M_lambda_ival(const Ival& c1, const Ival& c2, const Ival& u_iv_in, double chi_hi) {
     Ival a1 = ival_max(Ival::pt(0.0), c1);
     Ival a2 = ival_max(Ival::pt(0.0), c2);
     if (a1.hi <= 0.0 && a2.hi <= 0.0) return {0.0, 0.0};
-    Ival u_iv = Ival::pt(u_val);
+    Ival u_iv = Ival::pt(u_iv_in.hi);
     // Note: since M_{Lambda}(a1, a2) is monotone increasing in a1 >= 0 and a2 >= 0, we only need its UPPER bound at (a1.hi, a2.hi)
     // and LOWER bound at (a1.lo, a2.lo)!
     auto eval_pt_up = [&](double x1, double x2) -> double {
@@ -2340,7 +2346,9 @@ double verify_slice_continuous(
     const GlobalDualConfig& cfg, const CellCert& cell, const SliceCert& sc,
     const FastKTable* kt, bool is_infeas
 ) {
-    // 1. Check structural sign conditions on multipliers:
+    // 1. Check structural sign conditions on multipliers and energy interval:
+    if (cell.u_lo <= 0.0 || cell.u_hi < cell.u_lo) return +1e99;
+    Ival u_iv{cell.u_lo, cell.u_hi};
     if (sc.mu_u2_lo < 0 || sc.mu_u2_hi < 0 || sc.mu_u3 <= 0 || sc.nu_plus < 0 || sc.nu_minus < 0 ||
         sc.mu_sx_sep < 0 || sc.mu_sr_sep <= 0 || sc.mu_rad < 0 || sc.eta_sl_lo < 0 || sc.eta_sl_hi < 0) {
         return +1e99;
@@ -2356,8 +2364,7 @@ double verify_slice_continuous(
     Ival lam_S_iv = Ival::pt(sc.mu_sx_sep);
     for (double e : sc.eta_gram) lam_S_iv = lam_S_iv + Ival::pt(e);
     if (lam_S_iv.lo <= 0.0) return +1e99;
-    double lam_S_lo = lam_S_iv.lo; // Wait: Psi_K is DECREASING in lam_S > 0 and mu_S > 0! Using lam_S_iv.lo gives a STRICT UPPER BOUND on Psi_K!
-    // Wait: lam_S ALSO appears inside A(U) as +(lam_S/3) U! Keep the full interval lam_S_iv inside A(U), and use lam_S_lo in denominator of Psi_K!
+    double lam_S_lo = lam_S_iv.lo;
     double mu_S = sc.mu_sr_sep;
 
     // Coupled Gram shifts af, ag:
@@ -2382,7 +2389,7 @@ double verify_slice_continuous(
         Ival beta_iv = Ival::pt(sc.beta), gamma_iv = Ival::pt(sc.gamma), lamK_iv = Ival::pt(sc.lamK);
         Ival c1 = ival_sqr(beta_iv) / Ival::pt(3.0) + lamK_iv;
         Ival c2 = (sc.beta > 0.0) ? (ival_sqr(beta_iv) / (Ival::pt(4.0) * gamma_iv) + lamK_iv) : lamK_iv;
-        Ival M_lam = eval_M_lambda_ival(c1, c2, cell.u_val, cell.chi_hi);
+        Ival M_lam = eval_M_lambda_ival(c1, c2, u_iv, cell.chi_hi);
 
         std::vector<Ival> exp_t(cfg.t_knots.size());
         for (size_t m = 0; m < cfg.t_knots.size(); ++m) {
@@ -2399,8 +2406,8 @@ double verify_slice_continuous(
             kant_offsets[m] = kant_offsets[m - 1] + dt * Ival::pt(sc.xs[m - 1]);
         }
 
-        Ival C_JM1 = c1 * Ival::pt(cell.u_val) + M_lam + c_kant;
-        const_offset = C_JM1 - Ival::pt(cell.F_claimed) * (Ival::pt(0.75) * Ival::pt(sc.a_r) * Ival::pt(sc.b_r) / Ival::pt(cell.u_val));
+        Ival C_JM1 = c1 * u_iv + M_lam + c_kant;
+        const_offset = C_JM1 - Ival::pt(cell.F_claimed) * (Ival::pt(0.75) * Ival::pt(sc.a_r) * Ival::pt(sc.b_r) / u_iv);
     }
 
     // M3_hi = 6 + 9 chi_hi + (4045313/100000) chi_hi^{3/2}
@@ -2417,7 +2424,7 @@ double verify_slice_continuous(
                   - Ival::pt(sc.eta_sl_hi) * Ival::pt(sc.b_r);
     for (size_t k = 0; k < cfg.lams_rice.size(); ++k) {
         Ival lk = Ival::pt(cfg.lams_rice[k]);
-        Ival br_k = Ival::pt(cell.t_lo) + (lk * Ival::pt(cell.u_val)) / (Ival::pt(39.0) / Ival::pt(50.0));
+        Ival br_k = Ival::pt(cell.t_lo) + (lk * u_iv) / (Ival::pt(39.0) / Ival::pt(50.0));
         rhs_dual = rhs_dual + Ival::pt(sc.mu_rice[k]) * br_k;
     }
 
@@ -2430,7 +2437,7 @@ double verify_slice_continuous(
 
         double Jg1_hi = 0.0;
         if (!is_infeas) {
-            Ival c_g1_tot = c_g1 + Ival::pt(cell.F_claimed) * (Ival::pt(0.75) * (Ival::pt(sc.a_r) + Ival::pt(sc.b_r)) / Ival::pt(cell.u_val));
+            Ival c_g1_tot = c_g1 + Ival::pt(cell.F_claimed) * (Ival::pt(0.75) * (Ival::pt(sc.a_r) + Ival::pt(sc.b_r)) / u_iv);
             auto eval_piece = [&](const Ival& sub_v, const Ival& psi_p, const Ival& g1_p) -> double {
                 Ival H_iv = (Ival::pt(1.5) + Ival::pt(sc.gamma)) * psi_p - Ival::pt(sc.beta) * g1_p - Ival::pt(sc.lamK) * sub_v;
                 double pl_hi = 0.0;
@@ -2444,7 +2451,7 @@ double verify_slice_continuous(
                 double t1 = sub_up(phi_hi, mul_dn(cell.F_claimed, mul_dn(1.5, psi_p.lo)));
                 return add_up(t1, (c_g1_tot * g1_p).hi);
             };
-            Ival V_iv = Ival::pt(cell.u_val) * U_iv;
+            Ival V_iv = u_iv * U_iv;
             const auto& w_edges = kt->enc->w_edges;
             int NW = static_cast<int>(w_edges.size()) - 1;
             int j0 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), std::max(0.0, std::min(V_iv.lo, 256.0))) - w_edges.begin()) - 1;
@@ -2505,7 +2512,7 @@ double verify_slice_continuous(
         Ival rice_sum{0.0, 0.0};
         for (size_t k = 0; k < cfg.lams_rice.size(); ++k) {
             if (sc.mu_rice[k] == 0.0) continue;
-            Ival x_iv = ival_sqr(Ival::pt(cfg.lams_rice[k])) * Ival::pt(cell.u_val) * U_iv;
+            Ival x_iv = ival_sqr(Ival::pt(cfg.lams_rice[k])) * u_iv * U_iv;
             double r_hi = 1e300;
             for (size_t j = 0; j < cfg.rho_a.size(); ++j) {
                 double vj = add_up(cfg.rho_a[j], mul_up(cfg.rho_b[j], x_iv.hi));
@@ -2525,8 +2532,8 @@ double verify_slice_continuous(
         return total_hi;
     };
 
-    // Adaptive branch-and-bound cover of U in [0, U0], where U0 >= 8192 and u*U0 >= 64:
-    const double U0 = std::max(8192.0, div_up(64.0, cell.u_val));
+    // Adaptive branch-and-bound cover of U in [0, U0], where U0 >= 8192 and u_lo*U0 >= 64:
+    const double U0 = std::max(8192.0, div_up(64.0, cell.u_lo));
     double worst_hi = -1e300;
     struct Seg { double a, b; int d; };
     std::vector<Seg> stk;
@@ -2548,7 +2555,7 @@ double verify_slice_continuous(
         }
     }
 
-    // Analytic tail U in [U0, inf) (where v = u*U >= 64 => |h_X'(w)| <= P_max / w^{3/2} for all w >= v):
+    // Analytic tail U in [U0, inf) (where v = u*U >= u_lo*U0 >= 64 => |h_X'(w)| <= P_max / w^{3/2} for all w >= v):
     // Hence |k_X'(v)| <= P_max / v^{3/2}, so psi(u U) <= P_max^2 / 4096 and |g1(u U)| <= P_max / 8!
     {
         Ival inv_U = {0.0, div_up(1.0, U0)};
@@ -2565,13 +2572,20 @@ double verify_slice_continuous(
             double psi_tail_hi = div_up(mul_up(P_max, P_max), 4096.0);
             g1_tail_hi = div_up(P_max, 8.0);
             double C_H0 = add_up(mul_up(add_up(1.5, sc.gamma), psi_tail_hi), mul_up(sc.beta, g1_tail_hi));
-            double C_H1_eff = mul_up(std::max(0.0, -sc.lamK), cell.u_val);
+            double C_H1_eff = mul_up(std::max(0.0, -sc.lamK), cell.u_hi);
+            double neg_K_hi = 0.0;
+            for (size_t m = 1; m < kant_offsets.size(); ++m) {
+                if (-kant_offsets[m].lo > neg_K_hi) neg_K_hi = -kant_offsets[m].lo;
+            }
             double tM = cfg.t_knots.back();
-            double pl_u3 = mul_up(tM, add_up(div_up(C_H0, U0_3), div_up(C_H1_eff, U0_2)));
+            double pl_u3 = add_up(
+                mul_up(tM, add_up(div_up(C_H0, U0_3), div_up(C_H1_eff, U0_2))),
+                div_up(neg_K_hi, U0_3)
+            );
             double d0 = std::max(0.0, sub_up(C_H0, sc.xs.back()));
             double s_u = add_up(div_up(d0, U0), C_H1_eff);
             double q_u3 = div_up(mul_up(0.5 * cfg.eps_K, mul_up(s_u, s_u)), U0);
-            double om_neg_u3 = div_up(mul_up(cell.F_claimed, mul_up(div_up(mul_up(0.75, std::fabs(sc.a_r + sc.b_r)), cell.u_val), g1_tail_hi)), U0_3);
+            double om_neg_u3 = div_up(mul_up(cell.F_claimed, mul_up(div_up(mul_up(0.75, std::fabs(sc.a_r + sc.b_r)), cell.u_lo), g1_tail_hi)), U0_3);
             J_over_U3_hi = add_up(add_up(pl_u3, q_u3), om_neg_u3);
         }
 
@@ -2595,7 +2609,7 @@ double verify_slice_continuous(
         for (size_t k = 0; k < cfg.lams_rice.size(); ++k) {
             if (sc.mu_rice[k] == 0.0) continue;
             double aL = cfg.rho_a.back(), bL = cfg.rho_b.back();
-            double x_over_U = mul_up(mul_up(cfg.lams_rice[k], cfg.lams_rice[k]), cell.u_val);
+            double x_over_U = mul_up(mul_up(cfg.lams_rice[k], cfg.lams_rice[k]), cell.u_hi);
             double term_u3 = add_up(mul_up(aL, inv_U3.hi), mul_up(mul_up(bL, x_over_U), inv_U2.hi));
             rice_u3 = add_up(rice_u3, mul_up(sc.mu_rice[k], term_u3));
         }
@@ -2741,8 +2755,8 @@ int main(int argc, char** argv) {
                         verdicts[idx] = cv;
                         continue;
                     }
-                    FastKTable ktA = build_k_table(renc, false, cell.u_val);
-                    FastKTable ktB = build_k_table(renc, true, cell.u_val);
+                    FastKTable ktA = build_k_table(renc, false, {cell.u_lo, cell.u_hi});
+                    FastKTable ktB = build_k_table(renc, true, {cell.u_lo, cell.u_hi});
 
                     // Verify slice intervals [a_r, b_r] contiguously cover the global range of g1(v) on [0, inf)!
                     auto global_g1_bounds = [&](const FastKTable& kt) -> Ival {
@@ -2781,8 +2795,8 @@ int main(int argc, char** argv) {
                     bool okB = check_sector(cell.slicesB, ktB, cv.g1_range_B, cv.worst_M_B);
                     cv.ok = okA && okB;
                     if (!cv.ok) {
-                        std::fprintf(stderr, "  FAIL cell %zu (pc=%d, row=%s, u=%g, chi=[%g,%g]): okA=%d (%.4e) okB=%d (%.4e)\n",
-                                     idx, cell.piece_idx, cell.row_tag.c_str(), cell.u_val, cell.chi_lo, cell.chi_hi,
+                        std::fprintf(stderr, "  FAIL cell %zu (pc=%d, row=%s, u=[%.17g,%.17g], chi=[%g,%g]): okA=%d (%.4e) okB=%d (%.4e)\n",
+                                     idx, cell.piece_idx, cell.row_tag.c_str(), cell.u_lo, cell.u_hi, cell.chi_lo, cell.chi_hi,
                                      okA ? 1 : 0, cv.worst_M_A, okB ? 1 : 0, cv.worst_M_B);
                         failures.fetch_add(1);
                     }
@@ -2811,12 +2825,21 @@ int main(int argc, char** argv) {
         return 2;
     }
 
-    // Precompute hA(0), hB(0) under FE_UPWARD, then switch to FE_TONEAREST for exact IEEE-754 decimal round-trip formatting!
+    // Precompute hA(0), hB(0), hA'(0), hB'(0) under FE_UPWARD, verify hA'(0) != 0 and hB'(0) != 0 on every row,
+    // then switch to FE_TONEAREST for exact IEEE-754 decimal round-trip formatting!
     std::fesetround(FE_UPWARD);
     std::vector<Ival> hA0_vec(row_encs.size()), hB0_vec(row_encs.size());
+    std::vector<Ival> hpA0_vec(row_encs.size()), hpB0_vec(row_encs.size());
     for (size_t i = 0; i < row_encs.size(); ++i) {
         hA0_vec[i] = eval_h_ival(row_encs[i], false, {0.0, 0.0});
         hB0_vec[i] = eval_h_ival(row_encs[i], true, {0.0, 0.0});
+        hpA0_vec[i] = eval_hp_ival(row_encs[i], false, {0.0, 0.0});
+        hpB0_vec[i] = eval_hp_ival(row_encs[i], true, {0.0, 0.0});
+        if ((hpA0_vec[i].lo <= 0.0 && hpA0_vec[i].hi >= 0.0) ||
+            (hpB0_vec[i].lo <= 0.0 && hpB0_vec[i].hi >= 0.0)) {
+            std::fprintf(stderr, "FATAL: row %s hX'(0) enclosure contains 0!\n", row_encs[i].spec.tag.c_str());
+            return 2;
+        }
     }
     std::fesetround(FE_TONEAREST);
 
@@ -2832,8 +2855,12 @@ int main(int argc, char** argv) {
         const auto& r = row_encs[i];
         const Ival& hA0 = hA0_vec[i];
         const Ival& hB0 = hB0_vec[i];
+        const Ival& hpA0 = hpA0_vec[i];
+        const Ival& hpB0 = hpB0_vec[i];
         out << "    {\"tag\": \"" << r.spec.tag << "\", \"hA0\": [" << hA0.lo << ", " << hA0.hi
             << "], \"hB0\": [" << hB0.lo << ", " << hB0.hi
+            << "], \"hpA0\": [" << hpA0.lo << ", " << hpA0.hi
+            << "], \"hpB0\": [" << hpB0.lo << ", " << hpB0.hi
             << "], \"PA_inf\": [" << r.PA_inf.lo << ", " << r.PA_inf.hi
             << "], \"PB_inf\": [" << r.PB_inf.lo << ", " << r.PB_inf.hi << "]}" << (i + 1 < row_encs.size() ? "," : "") << "\n";
     }
@@ -2852,8 +2879,10 @@ int main(int argc, char** argv) {
     for (size_t i = 0; i < cfg.cells.size(); ++i) {
         const auto& c = cfg.cells[i];
         const auto& v = verdicts[i];
-        out << "    {\"piece\": " << c.piece_idx << ", \"row\": \"" << c.row_tag << "\", \"kind\": \"" << c.kind
-            << "\", \"u\": " << c.u_val << ", \"chi_lo\": " << c.chi_lo << ", \"chi_hi\": " << c.chi_hi
+        out << "    {\"piece\": " << c.piece_idx << ", \"u_idx\": " << c.u_idx
+            << ", \"row\": \"" << c.row_tag << "\", \"kind\": \"" << c.kind
+            << "\", \"u_lo\": " << c.u_lo << ", \"u_hi\": " << c.u_hi << ", \"t_lo\": " << c.t_lo
+            << ", \"chi_lo\": " << c.chi_lo << ", \"chi_hi\": " << c.chi_hi
             << ", \"theta_allow\": " << c.theta_allow << ", \"F_certified\": " << c.F_claimed
             << ", \"worst_M_A\": " << v.worst_M_A << ", \"worst_M_B\": " << v.worst_M_B << "}"
             << (i + 1 < cfg.cells.size() ? "," : "") << "\n";

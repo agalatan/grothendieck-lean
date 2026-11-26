@@ -6,6 +6,7 @@ Works identically under `python3 -IB verify.py` and `python3 -IB -O verify.py` (
 Pass `--replay-cpp` to recompile `certify_content_cells.cpp` and replay the full 2D Gaussian + 1D
 continuous-law C++17 certification from scratch (add `--update-result` to overwrite `result.json`).
 """
+from decimal import Decimal
 from fractions import Fraction
 import json
 import math
@@ -225,8 +226,8 @@ def emit_dat_from_json(cfg, dat_path):
         f.write(f"{len(cells)}\n")
         for c in cells:
             f.write(
-                f"{c['piece_idx']} {c['row_tag']} {c['kind']} "
-                f"{c['u_val']:.17g} {c['t_lo']:.17g} {c['chi_lo']:.17g} {c['chi_hi']:.17g} "
+                f"{c['piece_idx']} {c['u_idx']} {c['row_tag']} {c['kind']} "
+                f"{c['u_lo']:.17g} {c['u_hi']:.17g} {c['t_lo']:.17g} {c['chi_lo']:.17g} {c['chi_hi']:.17g} "
                 f"{c['theta_allow']:.17g} {c['F_claimed']:.17g}\n"
             )
             for key in ("slicesA", "slicesB"):
@@ -314,7 +315,8 @@ def verify_slice_rational_tail_and_signs(sc, cell_q, cfg_q, exp_t_bounds, is_inf
     check(lam_S > 0, "nonpositive lam_S")
     mu_S = mu_sr_sep
 
-    u_q = cell_q["u_q"]
+    u_lo_q = cell_q["u_lo_q"]
+    u_hi_q = cell_q["u_hi_q"]
     chi_lo_q = cell_q["chi_lo_q"]
     chi_hi_q = cell_q["chi_hi_q"]
     t_lo_q = cell_q["t_lo_q"]
@@ -323,7 +325,7 @@ def verify_slice_rational_tail_and_signs(sc, cell_q, cfg_q, exp_t_bounds, is_inf
     b_r = Fraction(sc["b_r"])
     check(a_r <= b_r, f"slice a_r > b_r: {a_r} > {b_r}")
 
-    U0 = max(Fraction(8192), Fraction(64) / u_q)
+    U0 = max(Fraction(8192), Fraction(64) / u_lo_q)
     inv_U0 = dyadic_hi(Fraction(1) / U0)
     inv_U0_2 = dyadic_hi(inv_U0 * inv_U0)
     inv_U0_3 = dyadic_hi(inv_U0_2 * inv_U0)
@@ -343,7 +345,7 @@ def verify_slice_rational_tail_and_signs(sc, cell_q, cfg_q, exp_t_bounds, is_inf
             check(xs[m] >= xs[m - 1], "xs not nondecreasing")
         c1_hi = dyadic_hi((beta * beta) / 3 + lamK)
         c2_hi = dyadic_hi(((beta * beta) / (4 * gamma) + lamK) if beta > 0 else lamK)
-        M_lam_hi = dyadic_hi(M_lambda_rational_hi(c1_hi, c2_hi, u_q, chi_hi_q))
+        M_lam_hi = dyadic_hi(M_lambda_rational_hi(c1_hi, c2_hi, u_hi_q, chi_hi_q))
         c_kant_hi = Fraction(0)
         for m in range(len(xs) - 1):
             wt_lo = exp_t_bounds[m][0] - exp_t_bounds[m + 1][1]
@@ -352,21 +354,29 @@ def verify_slice_rational_tail_and_signs(sc, cell_q, cfg_q, exp_t_bounds, is_inf
         xm = xs[-1]
         c_kant_hi += dyadic_hi(xm * (exp_t_bounds[-2][1] if xm >= 0 else exp_t_bounds[-2][0]))
         c_kant_hi += dyadic_hi(exp_t_bounds[-1][1] / cfg_q["eps_K"])
-        C_JM1_hi = dyadic_hi(c1_hi * u_q) + M_lam_hi + c_kant_hi
-        const_off_hi = C_JM1_hi + dyadic_hi(-F_q * Fraction(3, 4) * a_r * b_r / u_q)
+        c1_u_hi = dyadic_hi(c1_hi * (u_hi_q if c1_hi >= 0 else u_lo_q))
+        ab_prod = a_r * b_r
+        om_off_hi = dyadic_hi(-F_q * Fraction(3, 4) * ab_prod / (u_hi_q if ab_prod >= 0 else u_lo_q))
+        const_off_hi = c1_u_hi + M_lam_hi + c_kant_hi + om_off_hi
 
-        # Tail bound on U >= U0 (v = u*U >= 64 => |h_X'(w)| <= P_max / w^{3/2} => |k_X'(v)| <= P_max / v^{3/2}):
+        # Tail bound on U >= U0 (v = u*U >= u_lo*U0 >= 64 => |h_X'(w)| <= P_max / w^{3/2} => |k_X'(v)| <= P_max / v^{3/2}):
         P_max = cell_q["P_max_q"]
         psi_tail_hi = (P_max * P_max) / 4096
         g1_tail_hi = P_max / 8
         C_H0 = dyadic_hi((Fraction(3, 2) + gamma) * psi_tail_hi + beta * g1_tail_hi)
-        C_H1_eff = dyadic_hi(max(Fraction(0), -lamK) * u_q)
+        C_H1_eff = dyadic_hi(max(Fraction(0), -lamK) * u_hi_q)
+        K_m = Fraction(0)
+        neg_K_hi = Fraction(0)
+        for m in range(len(xs)):
+            K_m += (cfg_q["t_knots"][m + 1] - cfg_q["t_knots"][m]) * xs[m]
+            if -K_m > neg_K_hi:
+                neg_K_hi = -K_m
         tM = cfg_q["t_knots"][-1]
-        pl_u3 = dyadic_hi(tM * (C_H0 * inv_U0_3 + C_H1_eff * inv_U0_2))
+        pl_u3 = dyadic_hi(tM * (C_H0 * inv_U0_3 + C_H1_eff * inv_U0_2) + neg_K_hi * inv_U0_3)
         d0 = max(Fraction(0), C_H0 - xs[-1])
         s_u = dyadic_hi(d0 * inv_U0 + C_H1_eff)
         q_u3 = dyadic_hi(Fraction(1, 2) * cfg_q["eps_K"] * (s_u * s_u) * inv_U0)
-        om_neg_u3 = dyadic_hi(F_q * (Fraction(3, 4) * abs(a_r + b_r) / u_q) * g1_tail_hi * inv_U0_3)
+        om_neg_u3 = dyadic_hi(F_q * (Fraction(3, 4) * abs(a_r + b_r) / u_lo_q) * g1_tail_hi * inv_U0_3)
         J_u3_hi = pl_u3 + q_u3 + om_neg_u3
 
     af_lo = sum(dyadic_lo(eta_gram[j] * (cfg_q["s_gram"][j] - 1) / 18) for j in range(len(eta_gram)))
@@ -387,7 +397,7 @@ def verify_slice_rational_tail_and_signs(sc, cell_q, cfg_q, exp_t_bounds, is_inf
     aL = cfg_q["rho_a"][-1]
     bL = cfg_q["rho_b"][-1]
     rice_u3 = sum(
-        dyadic_hi(mu_rice[k] * (aL * inv_U0_3 + dyadic_hi(bL * (cfg_q["lams_rice"][k] ** 2) * u_q) * inv_U0_2))
+        dyadic_hi(mu_rice[k] * (aL * inv_U0_3 + dyadic_hi(bL * (cfg_q["lams_rice"][k] ** 2) * u_hi_q) * inv_U0_2))
         for k in range(len(mu_rice)) if mu_rice[k] > 0
     )
 
@@ -399,7 +409,7 @@ def verify_slice_rational_tail_and_signs(sc, cell_q, cfg_q, exp_t_bounds, is_inf
         - dyadic_hi(mu_u3 * M3_hi) + dyadic_lo(nu_plus * Fraction(2, 3))
         - dyadic_hi(mu_rad * Fraction(2287, 2500))
         + eta_sl_lo * a_r - eta_sl_hi * b_r
-        + sum(dyadic_lo(mu_rice[k] * (t_lo_q + cfg_q["lams_rice"][k] * u_q / Fraction(39, 50)))
+        + sum(dyadic_lo(mu_rice[k] * (t_lo_q + cfg_q["lams_rice"][k] * u_lo_q / Fraction(39, 50)))
               for k in range(len(mu_rice)) if mu_rice[k] > 0)
     )
     c_U2_hi = yeq[3] + mu_u2_lo - mu_u2_hi + dyadic_hi(nu_plus / 3)
@@ -496,6 +506,11 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
         for k_inf in ("PA_inf", "PB_inf"):
             lo_p, hi_p = Fraction(rs_entry[k_inf][0]), Fraction(rs_entry[k_inf][1])
             check(abs(lo_p) <= 2 and abs(hi_p) <= 2, f"{rs_entry['tag']} {k_inf} exceeds P_max=2")
+        for k_hp0 in ("hpA0", "hpB0"):
+            check(k_hp0 in rs_entry, f"{rs_entry['tag']} missing {k_hp0} derivative enclosure")
+            hp_lo, hp_hi = Fraction(rs_entry[k_hp0][0]), Fraction(rs_entry[k_hp0][1])
+            check(hp_lo <= hp_hi and (hp_lo > 0 or hp_hi < 0),
+                  f"{rs_entry['tag']} {k_hp0}=[{hp_lo}, {hp_hi}] does not strictly exclude 0")
 
     # 4. Global config & exact rational audit of all slices
     t_knots_q = [Fraction(v) for v in cfg["t_knots"]]
@@ -523,9 +538,12 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
 
     for idx, (c_cfg, c_res) in enumerate(zip(cfg["cells"], res["cells"])):
         check(c_cfg["piece_idx"] == c_res["piece"], f"cell {idx} piece mismatch")
+        check(c_cfg["u_idx"] == c_res["u_idx"], f"cell {idx} u_idx mismatch")
         check(c_cfg["row_tag"] == c_res["row"], f"cell {idx} row mismatch")
         check(c_cfg["kind"] == c_res["kind"], f"cell {idx} kind mismatch")
-        check(Fraction(c_cfg["u_val"]) == Fraction(c_res["u"]), f"cell {idx} u mismatch")
+        check(Fraction(c_cfg["u_lo"]) == Fraction(c_res["u_lo"]), f"cell {idx} u_lo mismatch")
+        check(Fraction(c_cfg["u_hi"]) == Fraction(c_res["u_hi"]), f"cell {idx} u_hi mismatch")
+        check(Fraction(c_cfg["t_lo"]) == Fraction(c_res["t_lo"]), f"cell {idx} t_lo mismatch")
         check(Fraction(c_cfg["chi_lo"]) == Fraction(c_res["chi_lo"]), f"cell {idx} chi_lo mismatch")
         check(Fraction(c_cfg["chi_hi"]) == Fraction(c_res["chi_hi"]), f"cell {idx} chi_hi mismatch")
         check(Fraction(c_cfg["F_claimed"]) == Fraction(c_res["F_certified"]), f"cell {idx} F mismatch")
@@ -533,15 +551,20 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
               f"cell {idx} C++ continuous supremum not strictly negative: {c_res['worst_M_A']}, {c_res['worst_M_B']}")
 
         cell_q = {
-            "u_q": Fraction(c_cfg["u_val"]),
+            "u_lo_q": Fraction(c_cfg["u_lo"]),
+            "u_hi_q": Fraction(c_cfg["u_hi"]),
             "t_lo_q": Fraction(c_cfg["t_lo"]),
             "chi_lo_q": Fraction(c_cfg["chi_lo"]),
             "chi_hi_q": Fraction(c_cfg["chi_hi"]),
             "F_q": Fraction(c_cfg["F_claimed"]),
             "P_max_q": Fraction(2),  # |P_X(s)| <= 2 for all s >= 8 on all 15 rows (checked above)
         }
-        check(cell_q["u_q"] > 0 and cell_q["chi_lo_q"] >= 0 and cell_q["chi_hi_q"] >= cell_q["chi_lo_q"],
-              f"cell {idx} invalid (u, chi) bounds")
+        check(
+            0 < cell_q["u_lo_q"] <= cell_q["u_hi_q"]
+            and cell_q["chi_lo_q"] >= 0
+            and cell_q["chi_hi_q"] >= cell_q["chi_lo_q"],
+            f"cell {idx} invalid (u, chi) bounds"
+        )
 
         if c_cfg["kind"] == "INFEAS_R1":
             check(len(c_cfg["slicesA"]) == 1, f"INFEAS_R1 cell {idx} must have 1 Farkas slice")
@@ -559,36 +582,80 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
         else:
             raise ValueError(f"unknown cell kind: {c_cfg['kind']}")
 
-    # 5. Cross-check against fin_table_fundFull.json: 100% continuous closure of Pieces 16 and 17!
+    # 5. Exact rational binding to fin_table_fundFull.json across ALL piece cells (1..17)
+    #    and 100% continuous closure of Pieces 16 and 17!
     ft_path = os.path.join(
         REPO, "research/higher-degree/code/degree5-design/design-2026-11-25/tables/funded/fin_table_fundFull.json"
     )
-    ft = json.load(open(ft_path))
+    ft = json.load(open(ft_path), parse_float=Decimal)
     chosen_keys = {(tuple(c["piece"]), c["row_tag"]) for c in ft["chosen"]}
-    pieces = sorted([c for c in ft["cases"] if (tuple(c["piece"]), c["row_tag"]) in chosen_keys], key=lambda c: c["a"])
+    pieces = sorted(
+        [c for c in ft["cases"] if (tuple(c["piece"]), c["row_tag"]) in chosen_keys],
+        key=lambda c: Fraction(c["piece"][0])
+    )
+    check(len(pieces) == 21, f"expected 21 funded pieces in fin_table_fundFull.json, got {len(pieces)}")
     chi_list = [1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 20, 24, 30, 36, 42]
+
+    for idx, c in enumerate(cfg["cells"]):
+        pc_idx = c["piece_idx"]
+        if pc_idx == 0:
+            check(c["u_idx"] == -1, f"control cell {idx} must have u_idx == -1")
+            continue
+        check(1 <= pc_idx <= 17, f"cell {idx} out-of-range piece_idx={pc_idx}")
+        p = pieces[pc_idx - 1]
+        rtag = f"{float(p['tprime']):.3f}"
+        check(c["row_tag"] == rtag, f"cell {idx} Piece {pc_idx} row_tag mismatch: {c['row_tag']} != {rtag}")
+        t_exact = Fraction(p["piece"][0])
+        t_lo_q = Fraction(c["t_lo"])
+        check(
+            t_lo_q <= t_exact < t_lo_q + Fraction(1, 10 ** 15),
+            f"cell {idx} Piece {pc_idx} t_lo={c['t_lo']!r} not downward-rounded from exact piece[0]={p['piece'][0]}"
+        )
+        u_idx = c["u_idx"]
+        check(0 <= u_idx < len(p["theta"]), f"cell {idx} Piece {pc_idx} invalid u_idx={u_idx}")
+        te = p["theta"][u_idx]
+        u_exact = Fraction(te["u"])
+        u_lo_q = Fraction(c["u_lo"])
+        u_hi_q = Fraction(c["u_hi"])
+        check(
+            u_lo_q <= u_exact <= u_hi_q and (u_hi_q - u_lo_q) <= Fraction(1, 10 ** 15),
+            f"cell {idx} Piece {pc_idx} [u_lo, u_hi] does not tightly enclose exact table energy node u={te['u']}"
+        )
+        if c["kind"] == "JM1_BOUND" and 0 < c["theta_allow"] < 49.999:
+            chi_hi_q = Fraction(c["chi_hi"])
+            col_cks = [ck for ck in chi_list if Fraction(ck) >= chi_hi_q]
+            check(len(col_cks) >= 1, f"cell {idx} chi_hi={c['chi_hi']} > 42")
+            th_dec = te["theta_chi"].get(str(col_cks[0]), "MISSING")
+            check(isinstance(th_dec, (int, Decimal)), f"cell {idx} Piece {pc_idx} active cell points to non-numeric allowance")
+            th_exact = Fraction(th_dec)
+            th_allow_q = Fraction(c["theta_allow"])
+            check(
+                th_allow_q <= th_exact < th_allow_q + Fraction(1, 10 ** 12),
+                f"cell {idx} Piece {pc_idx} theta_allow={c['theta_allow']} exceeds exact allowance {th_dec}"
+            )
+            if Fraction(c["F_claimed"]) <= th_allow_q:
+                check(Fraction(c["F_claimed"]) <= th_exact, f"cell {idx} F_claimed exceeds exact allowance")
 
     for pc_idx in (16, 17):
         p = pieces[pc_idx - 1]
-        rtag = f"{p['tprime']:.3f}"
-        for te in p["theta"]:
-            u_v = te["u"]
+        rtag = f"{float(p['tprime']):.3f}"
+        for u_idx, te in enumerate(p["theta"]):
+            u_exact = Fraction(te["u"])
             prev_c = Fraction(0)
             has_miss = False
             for ck in chi_list:
                 th_v = te["theta_chi"].get(str(ck), "MISSING")
                 if th_v == "MISSING":
                     has_miss = True
-                elif th_v is not None and th_v < 49.999:
-                    # Check JM1_BOUND subintervals contiguously partition [prev_c, ck] with F_claimed <= th_v!
+                elif th_v is not None and Fraction(th_v) < Fraction(49999, 1000):
+                    th_exact = Fraction(th_v)
                     subs = sorted(
                         [c for c in cfg["cells"]
-                         if c["piece_idx"] == pc_idx and c["kind"] == "JM1_BOUND"
-                         and abs(c["u_val"] - u_v) < 1e-12
+                         if c["piece_idx"] == pc_idx and c["u_idx"] == u_idx and c["kind"] == "JM1_BOUND"
                          and Fraction(c["chi_lo"]) >= prev_c and Fraction(c["chi_hi"]) <= Fraction(ck)],
                         key=lambda c: Fraction(c["chi_lo"])
                     )
-                    check(len(subs) >= 1, f"Piece {pc_idx} u={u_v} missing JM1 cover on [{prev_c}, {ck}]")
+                    check(len(subs) >= 1, f"Piece {pc_idx} u={te['u']} missing JM1 cover on [{prev_c}, {ck}]")
                     check(Fraction(subs[0]["chi_lo"]) == prev_c, f"Piece {pc_idx} gap at {prev_c}")
                     check(Fraction(subs[-1]["chi_hi"]) == Fraction(ck), f"Piece {pc_idx} gap at {ck}")
                     for si in range(len(subs) - 1):
@@ -596,31 +663,33 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
                               f"Piece {pc_idx} internal chi gap")
                     for sub_c in subs:
                         check(sub_c["row_tag"] == rtag, f"Piece {pc_idx} row_tag mismatch")
-                        check(Fraction(sub_c["F_claimed"]) <= Fraction(str(th_v)),
-                              f"Piece {pc_idx} u={u_v} chi=[{sub_c['chi_lo']},{sub_c['chi_hi']}]: "
+                        check(Fraction(sub_c["u_lo"]) <= u_exact <= Fraction(sub_c["u_hi"]),
+                              f"Piece {pc_idx} energy node enclosure mismatch")
+                        check(Fraction(sub_c["F_claimed"]) <= th_exact,
+                              f"Piece {pc_idx} u={te['u']} chi=[{sub_c['chi_lo']},{sub_c['chi_hi']}]: "
                               f"F_claimed={sub_c['F_claimed']} > theta={th_v}")
                     prev_c = Fraction(ck)
             # Also verify seamless tail coverage of [prev_c, 42] via JM1_BOUND (<= 50) + optional INFEAS_R1!
             if prev_c < Fraction(42):
                 tail_cells = sorted(
                     [c for c in cfg["cells"]
-                     if c["piece_idx"] == pc_idx and abs(c["u_val"] - u_v) < 1e-12
+                     if c["piece_idx"] == pc_idx and c["u_idx"] == u_idx
                      and Fraction(c["chi_lo"]) >= prev_c and Fraction(c["chi_hi"]) <= Fraction(42)],
                     key=lambda c: Fraction(c["chi_lo"])
                 )
-                check(len(tail_cells) >= 1, f"Piece {pc_idx} u={u_v} missing [prev_c, 42] tail cover")
-                check(Fraction(tail_cells[0]["chi_lo"]) == prev_c, f"Piece {pc_idx} u={u_v} tail gap at {prev_c}")
-                check(Fraction(tail_cells[-1]["chi_hi"]) == Fraction(42), f"Piece {pc_idx} u={u_v} tail stops < 42")
+                check(len(tail_cells) >= 1, f"Piece {pc_idx} u={te['u']} missing [prev_c, 42] tail cover")
+                check(Fraction(tail_cells[0]["chi_lo"]) == prev_c, f"Piece {pc_idx} u={te['u']} tail gap at {prev_c}")
+                check(Fraction(tail_cells[-1]["chi_hi"]) == Fraction(42), f"Piece {pc_idx} u={te['u']} tail stops < 42")
                 for si in range(len(tail_cells) - 1):
                     check(Fraction(tail_cells[si]["chi_hi"]) == Fraction(tail_cells[si + 1]["chi_lo"]),
-                          f"Piece {pc_idx} u={u_v} internal tail gap")
+                          f"Piece {pc_idx} u={te['u']} internal tail gap")
                 for tc in tail_cells:
                     if tc["kind"] == "JM1_BOUND":
                         check(tc["row_tag"] == rtag and Fraction(tc["F_claimed"]) <= Fraction(50),
-                              f"Piece {pc_idx} u={u_v} tail JM1_BOUND exceeds 50")
+                              f"Piece {pc_idx} u={te['u']} tail JM1_BOUND exceeds 50")
                 if has_miss:
                     check(any(tc["kind"] == "INFEAS_R1" for tc in tail_cells),
-                          f"Piece {pc_idx} u={u_v} missing INFEAS_R1 tail certificate")
+                          f"Piece {pc_idx} u={te['u']} missing INFEAS_R1 tail certificate")
 
     # 6. Verify negative controls in result.json & dual_certs.json:
     j_ctrls = {jc["row"]: jc for jc in res["junta_low_u_controls"]}

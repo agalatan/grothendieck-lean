@@ -6,6 +6,7 @@ Usage:
   python3 generate_certificates.py /tmp/rows_cache.json dual_certs.json /tmp/dual_certs.dat [--smoke]
 """
 import concurrent.futures
+from decimal import Decimal
 import json
 import math
 import os
@@ -86,6 +87,25 @@ def r_num(val, sig=6):
         return 0
     out = float(f"{v:.{sig}g}")
     return 0 if out == 0.0 else out
+
+
+def floor_binary64(q_frac):
+    """Round rational q_frac strictly DOWNWARD (or exact if dyadic) to IEEE binary64."""
+    val = float(q_frac)
+    while Fraction(val) > q_frac:
+        val = math.nextafter(val, -math.inf)
+    return val
+
+
+def enclose_binary64(q_frac):
+    """Enclose rational q_frac in a tight 0-or-1-ULP IEEE binary64 interval [u_lo, u_hi]."""
+    lo = float(q_frac)
+    while Fraction(lo) > q_frac:
+        lo = math.nextafter(lo, -math.inf)
+    hi = float(q_frac)
+    while Fraction(hi) < q_frac:
+        hi = math.nextafter(hi, math.inf)
+    return lo, hi
 
 
 X_TANG_FRACS = [
@@ -537,8 +557,11 @@ def check_tail_coeff_float(sc, F_val, u_val, t_lo, chi_lo, chi_hi, rho_a, rho_b,
         g1_tail_hi = P_max / 8.0
         C_H0 = (1.5 + gamma) * psi_tail_hi + beta * g1_tail_hi
         C_H1_eff = max(0.0, -lamK) * u_val
+        dt_k = np.diff(T_KNOTS)
+        K_offs = np.cumsum(dt_k * np.array(xs, dtype=float))
+        neg_K_hi = max(0.0, float(-np.min(K_offs))) if len(K_offs) > 0 else 0.0
         tM = float(T_KNOTS[-1])
-        pl_u3 = tM * (C_H0 * (inv_U0 ** 3) + C_H1_eff * (inv_U0 ** 2))
+        pl_u3 = tM * (C_H0 * (inv_U0 ** 3) + C_H1_eff * (inv_U0 ** 2)) + neg_K_hi * (inv_U0 ** 3)
         d0 = max(0.0, C_H0 - xs[-1])
         s_u = d0 * inv_U0 + C_H1_eff
         q_u3 = 0.5 * EPS_K * (s_u * s_u) * inv_U0
@@ -934,8 +957,8 @@ def emit_dat(cfg_json, dat_path):
         f.write(f"{len(cells)}\n")
         for c in cells:
             f.write(
-                f"{c['piece_idx']} {c['row_tag']} {c['kind']} "
-                f"{float(c['u_val']):.17g} {float(c['t_lo']):.17g} "
+                f"{c['piece_idx']} {c['u_idx']} {c['row_tag']} {c['kind']} "
+                f"{float(c['u_lo']):.17g} {float(c['u_hi']):.17g} {float(c['t_lo']):.17g} "
                 f"{float(c['chi_lo']):.17g} {float(c['chi_hi']):.17g} "
                 f"{float(c['theta_allow']):.17g} {float(c['F_claimed']):.17g}\n"
             )
@@ -973,7 +996,8 @@ def _init_worker(rows_cache_path):
     _G_RHO_A, _G_RHO_B = build_verified_rice_polygon()
 
 
-def _solve_jm1_pair(pc_idx, rtag, u_v, tlo, chi_lo, chi_hi, th_allow):
+def _solve_jm1_pair(pc_idx, u_idx, rtag, u_lo, u_hi, tlo, chi_lo, chi_hi, th_allow):
+    u_v = 0.5 * (u_lo + u_hi)
     reval = _G_ROW_EVALS[rtag]
     FA, slA0 = certify_sector_jm1(reval, False, _G_RHO_A, _G_RHO_B, u_v, tlo, chi_lo, chi_hi, th_allow)
     FB, slB0 = certify_sector_jm1(reval, True, _G_RHO_A, _G_RHO_B, u_v, tlo, chi_lo, chi_hi, th_allow)
@@ -984,7 +1008,7 @@ def _solve_jm1_pair(pc_idx, rtag, u_v, tlo, chi_lo, chi_hi, th_allow):
         F_both = float(r_num(min(0.5 * (F_raw + th_allow), F_raw + 0.02), 7))
     else:
         F_both = float(r_num(F_raw + 0.25, 6))
-    _, U_base, U_test = make_u_grids(u_v)
+    _, U_base, U_test = make_u_grids(u_lo)
     psi_l_tA, psi_u_tA, g1_l_tA, g1_u_tA = reval.eval_psi_g1_bounds(False, u_v, u_v * U_test)
     psi_l_tB, psi_u_tB, g1_l_tB, g1_u_tB = reval.eval_psi_g1_bounds(True, u_v, u_v * U_test)
     sup_tol = -1.0e-4 if (2.0 < th_allow < 5.15) else -3.0e-4
@@ -1007,8 +1031,8 @@ def _solve_jm1_pair(pc_idx, rtag, u_v, tlo, chi_lo, chi_hi, th_allow):
             step_b = 0.60
         F_both = float(r_num(F_both + step_b, 7))
     return {
-        "piece_idx": pc_idx, "row_tag": rtag, "kind": "JM1_BOUND",
-        "u_val": u_v, "t_lo": tlo, "chi_lo": chi_lo, "chi_hi": chi_hi,
+        "piece_idx": pc_idx, "u_idx": u_idx, "row_tag": rtag, "kind": "JM1_BOUND",
+        "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo, "chi_lo": chi_lo, "chi_hi": chi_hi,
         "theta_allow": th_allow, "F_claimed": F_both,
         "slicesA": slA, "slicesB": slB
     }
@@ -1017,13 +1041,16 @@ def _solve_jm1_pair(pc_idx, rtag, u_v, tlo, chi_lo, chi_hi, th_allow):
 def _solve_cell_task(task):
     kind = task["kind"]
     if kind == "INFEAS_R1_SCAN":
-        pc_idx, rtag, u_v, tlo, cks = task["piece_idx"], task["row_tag"], task["u_val"], task["t_lo"], task["cks"]
+        pc_idx, u_idx, rtag, u_lo, u_hi, tlo, cks = (
+            task["piece_idx"], task["u_idx"], task["row_tag"],
+            task["u_lo"], task["u_hi"], task["t_lo"], task["cks"]
+        )
         for ck in cks:
-            sc_inf = certify_infeas_r1(_G_RHO_A, _G_RHO_B, u_v, tlo, float(ck), 42.0)
+            sc_inf = certify_infeas_r1(_G_RHO_A, _G_RHO_B, u_hi, tlo, float(ck), 42.0)
             if sc_inf is not None:
                 return [{
-                    "piece_idx": pc_idx, "row_tag": rtag, "kind": "INFEAS_R1",
-                    "u_val": u_v, "t_lo": tlo, "chi_lo": float(ck), "chi_hi": 42.0,
+                    "piece_idx": pc_idx, "u_idx": u_idx, "row_tag": rtag, "kind": "INFEAS_R1",
+                    "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo, "chi_lo": float(ck), "chi_hi": 42.0,
                     "theta_allow": -1.0, "F_claimed": 0.0, "slicesA": [sc_inf], "slicesB": []
                 }]
         return []
@@ -1031,31 +1058,32 @@ def _solve_cell_task(task):
     if kind == "TAIL_COVER_42":
         # Seamlessly cover [prev_c, 42.0] by finding the earliest INFEAS_R1 cutoff ck_inf in cks (if any)
         # and certifying JM1_BOUND on [prev_c, ck_inf] (or [prev_c, 42.0] if feasible up to 42)!
-        pc_idx, rtag, u_v, tlo, prev_c, cks = (
-            task["piece_idx"], task["row_tag"], task["u_val"], task["t_lo"], task["prev_c"], task["cks"]
+        pc_idx, u_idx, rtag, u_lo, u_hi, tlo, prev_c, cks = (
+            task["piece_idx"], task["u_idx"], task["row_tag"],
+            task["u_lo"], task["u_hi"], task["t_lo"], task["prev_c"], task["cks"]
         )
         out = []
         ck_inf = None
         sc_inf_found = None
         for ck in cks:
-            sc_inf = certify_infeas_r1(_G_RHO_A, _G_RHO_B, u_v, tlo, float(ck), 42.0)
+            sc_inf = certify_infeas_r1(_G_RHO_A, _G_RHO_B, u_hi, tlo, float(ck), 42.0)
             if sc_inf is not None:
                 ck_inf = float(ck)
                 sc_inf_found = sc_inf
                 break
         jm1_top = ck_inf if ck_inf is not None else 42.0
         if jm1_top > prev_c:
-            out.append(_solve_jm1_pair(pc_idx, rtag, u_v, tlo, prev_c, jm1_top, 50.0))
+            out.append(_solve_jm1_pair(pc_idx, u_idx, rtag, u_lo, u_hi, tlo, prev_c, jm1_top, 50.0))
         if sc_inf_found is not None:
             out.append({
-                "piece_idx": pc_idx, "row_tag": rtag, "kind": "INFEAS_R1",
-                "u_val": u_v, "t_lo": tlo, "chi_lo": ck_inf, "chi_hi": 42.0,
+                "piece_idx": pc_idx, "u_idx": u_idx, "row_tag": rtag, "kind": "INFEAS_R1",
+                "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo, "chi_lo": ck_inf, "chi_hi": 42.0,
                 "theta_allow": -1.0, "F_claimed": 0.0, "slicesA": [sc_inf_found], "slicesB": []
             })
         return out
 
     return [_solve_jm1_pair(
-        task["piece_idx"], task["row_tag"], task["u_val"],
+        task["piece_idx"], task["u_idx"], task["row_tag"], task["u_lo"], task["u_hi"],
         task["t_lo"], task["chi_lo"], task["chi_hi"], task["theta_allow"]
     )]
 
@@ -1068,73 +1096,85 @@ def main():
     smoke = "--smoke" in sys.argv[4:]
 
     rho_a, rho_b = build_verified_rice_polygon()
-    ft = json.load(open(os.path.join(
-        REPO, "research/higher-degree/code/degree5-design/design-2026-11-25/tables/funded/fin_table_fundFull.json"
-    )))
+    ft = json.load(
+        open(os.path.join(
+            REPO, "research/higher-degree/code/degree5-design/design-2026-11-25/tables/funded/fin_table_fundFull.json"
+        )),
+        parse_float=Decimal
+    )
     chosen_keys = {(tuple(c["piece"]), c["row_tag"]) for c in ft["chosen"]}
-    pieces = sorted([c for c in ft["cases"] if (tuple(c["piece"]), c["row_tag"]) in chosen_keys], key=lambda c: c["a"])
+    pieces = sorted(
+        [c for c in ft["cases"] if (tuple(c["piece"]), c["row_tag"]) in chosen_keys],
+        key=lambda c: Fraction(c["piece"][0])
+    )
     CHI_LIST = [1, 2, 3, 4, 6, 8, 10, 12, 14, 16, 20, 24, 30, 36, 42]
 
     tasks = []
     if smoke:
         p16 = pieces[15]
         p17 = pieces[16]
+        u16_lo, u16_hi = enclose_binary64(Fraction(p16["theta"][-1]["u"]))
+        u17_lo, u17_hi = enclose_binary64(Fraction(p17["theta"][-1]["u"]))
+        u_own_lo, u_own_hi = enclose_binary64(Fraction("0.1572"))
         tasks = [
-            {"kind": "JM1_BOUND", "piece_idx": 16, "row_tag": "0.860",
-             "u_val": p16["theta"][-1]["u"], "t_lo": p16["a"], "chi_lo": 10.0, "chi_hi": 10.25,
-             "theta_allow": float(p16["theta"][-1]["theta_chi"]["12"])},
-            {"kind": "TAIL_COVER_42", "piece_idx": 17, "row_tag": "0.865",
-             "u_val": p17["theta"][-1]["u"], "t_lo": p17["a"], "prev_c": 8.0, "cks": [30, 36, 40, 41, 42]},
-            {"kind": "JM1_BOUND", "piece_idx": 0, "row_tag": "0.700_own",
-             "u_val": 0.1572, "t_lo": 0.6949, "chi_lo": 12.0, "chi_hi": 12.0, "theta_allow": 0.085},
-            {"kind": "JM1_BOUND", "piece_idx": 0, "row_tag": "0.800",
-             "u_val": 0.0078125, "t_lo": 0.785440, "chi_lo": 36.0, "chi_hi": 42.0, "theta_allow": 1.139},
+            {"kind": "JM1_BOUND", "piece_idx": 16, "u_idx": len(p16["theta"]) - 1, "row_tag": "0.860",
+             "u_lo": u16_lo, "u_hi": u16_hi, "t_lo": floor_binary64(Fraction(p16["piece"][0])),
+             "chi_lo": 10.0, "chi_hi": 10.25, "theta_allow": float(p16["theta"][-1]["theta_chi"]["12"])},
+            {"kind": "TAIL_COVER_42", "piece_idx": 17, "u_idx": len(p17["theta"]) - 1, "row_tag": "0.865",
+             "u_lo": u17_lo, "u_hi": u17_hi, "t_lo": floor_binary64(Fraction(p17["piece"][0])),
+             "prev_c": 8.0, "cks": [30, 36, 40, 41, 42]},
+            {"kind": "JM1_BOUND", "piece_idx": 0, "u_idx": -1, "row_tag": "0.700_own",
+             "u_lo": u_own_lo, "u_hi": u_own_hi, "t_lo": floor_binary64(Fraction("0.6949")),
+             "chi_lo": 12.0, "chi_hi": 12.0, "theta_allow": 0.085},
+            {"kind": "JM1_BOUND", "piece_idx": 0, "u_idx": -1, "row_tag": "0.800",
+             "u_lo": 0.0078125, "u_hi": 0.0078125, "t_lo": floor_binary64(Fraction("0.785440")),
+             "chi_lo": 36.0, "chi_hi": 42.0, "theta_allow": 1.139},
         ]
     else:
         # 1. Piece 17: 100% continuous [0, 42] cover across all 5 energies!
         p17 = pieces[16]
-        tlo17 = p17["a"]
-        rtag17 = f"{p17['tprime']:.3f}"
-        for te in p17["theta"]:
-            u_v = te["u"]
+        tlo17 = floor_binary64(Fraction(p17["piece"][0]))
+        rtag17 = f"{float(p17['tprime']):.3f}"
+        for u_idx, te in enumerate(p17["theta"]):
+            u_lo, u_hi = enclose_binary64(Fraction(te["u"]))
             prev_c = 0.0
             has_miss = False
             for ck in CHI_LIST:
                 th_v = te["theta_chi"].get(str(ck), "MISSING")
                 if th_v == "MISSING":
                     has_miss = True
-                elif th_v is not None and th_v < 49.999:
+                elif th_v is not None and float(th_v) < 49.999:
                     tasks.append({
-                        "kind": "JM1_BOUND", "piece_idx": 17, "row_tag": rtag17,
-                        "u_val": u_v, "t_lo": tlo17, "chi_lo": prev_c, "chi_hi": float(ck),
-                        "theta_allow": float(th_v)
+                        "kind": "JM1_BOUND", "piece_idx": 17, "u_idx": u_idx, "row_tag": rtag17,
+                        "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo17, "chi_lo": prev_c, "chi_hi": float(ck),
+                        "theta_allow": floor_binary64(Fraction(th_v))
                     })
                     prev_c = float(ck)
             if has_miss:
                 tasks.append({
-                    "kind": "TAIL_COVER_42", "piece_idx": 17, "row_tag": rtag17,
-                    "u_val": u_v, "t_lo": tlo17, "prev_c": prev_c, "cks": [24, 30, 36, 39, 40, 41, 42]
+                    "kind": "TAIL_COVER_42", "piece_idx": 17, "u_idx": u_idx, "row_tag": rtag17,
+                    "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo17, "prev_c": prev_c, "cks": [24, 30, 36, 39, 40, 41, 42]
                 })
             elif prev_c < 42.0:
                 tasks.append({
-                    "kind": "JM1_BOUND", "piece_idx": 17, "row_tag": rtag17,
-                    "u_val": u_v, "t_lo": tlo17, "chi_lo": prev_c, "chi_hi": 42.0, "theta_allow": 50.0
+                    "kind": "JM1_BOUND", "piece_idx": 17, "u_idx": u_idx, "row_tag": rtag17,
+                    "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo17, "chi_lo": prev_c, "chi_hi": 42.0, "theta_allow": 50.0
                 })
 
         # 2. Piece 16: 100% continuous [0, 42] cover across all 5 energies!
         p16 = pieces[15]
-        tlo16 = p16["a"]
-        rtag16 = f"{p16['tprime']:.3f}"
-        for te in p16["theta"]:
-            u_v = te["u"]
-            uf = te["ucapfrac"]
+        tlo16 = floor_binary64(Fraction(p16["piece"][0]))
+        rtag16 = f"{float(p16['tprime']):.3f}"
+        for u_idx, te in enumerate(p16["theta"]):
+            u_lo, u_hi = enclose_binary64(Fraction(te["u"]))
+            uf = float(te["ucapfrac"])
             prev_c = 0.0
             has_miss = False
             for ck in CHI_LIST:
                 th_v = te["theta_chi"].get(str(ck), "MISSING")
                 if th_v == "MISSING":
                     has_miss = True
-                elif th_v is not None and th_v < 49.999:
+                elif th_v is not None and float(th_v) < 49.999:
                     if uf > 0.90 and 10.0 <= prev_c < 12.0:
                         sub_ed = [10.0, 10.25, 10.5, 10.75, 11.0, 11.25, 11.5, 11.625, 11.75, 11.875, 12.0]
                     else:
@@ -1142,67 +1182,71 @@ def main():
                         sub_ed = list(np.linspace(prev_c, float(ck), n_sub + 1))
                     for si_sub in range(len(sub_ed) - 1):
                         tasks.append({
-                            "kind": "JM1_BOUND", "piece_idx": 16, "row_tag": rtag16,
-                            "u_val": u_v, "t_lo": tlo16, "chi_lo": float(sub_ed[si_sub]),
-                            "chi_hi": float(sub_ed[si_sub + 1]), "theta_allow": float(th_v)
+                            "kind": "JM1_BOUND", "piece_idx": 16, "u_idx": u_idx, "row_tag": rtag16,
+                            "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo16, "chi_lo": float(sub_ed[si_sub]),
+                            "chi_hi": float(sub_ed[si_sub + 1]), "theta_allow": floor_binary64(Fraction(th_v))
                         })
                     prev_c = float(ck)
             if has_miss:
                 tasks.append({
-                    "kind": "TAIL_COVER_42", "piece_idx": 16, "row_tag": rtag16,
-                    "u_val": u_v, "t_lo": tlo16, "prev_c": prev_c, "cks": [24, 30, 36, 39, 40, 41, 42]
+                    "kind": "TAIL_COVER_42", "piece_idx": 16, "u_idx": u_idx, "row_tag": rtag16,
+                    "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo16, "prev_c": prev_c, "cks": [24, 30, 36, 39, 40, 41, 42]
                 })
             elif prev_c < 42.0:
                 tasks.append({
-                    "kind": "JM1_BOUND", "piece_idx": 16, "row_tag": rtag16,
-                    "u_val": u_v, "t_lo": tlo16, "chi_lo": prev_c, "chi_hi": 42.0, "theta_allow": 50.0
+                    "kind": "JM1_BOUND", "piece_idx": 16, "u_idx": u_idx, "row_tag": rtag16,
+                    "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo16, "chi_lo": prev_c, "chi_hi": 42.0, "theta_allow": 50.0
                 })
 
-        # 3. Pieces 1..15: representative closed small/moderate-chi cells (theta >= 2.40 at f=0.78),
+        # 3. Pieces 1..15: representative closed small/moderate-chi cells (theta >= 2.45 at f=0.78),
         #    all (R1)-infeasible '-' tails, and 1 benchmark cell per piece on Pieces 1..11!
         for idx_p in range(15, 0, -1):
             p = pieces[idx_p - 1]
-            tlo = p["a"]
-            rtag = f"{p['tprime']:.3f}"
-            for te in p["theta"]:
-                u_v = te["u"]
-                uf = te["ucapfrac"]
+            tlo = floor_binary64(Fraction(p["piece"][0]))
+            rtag = f"{float(p['tprime']):.3f}"
+            for u_idx, te in enumerate(p["theta"]):
+                u_lo, u_hi = enclose_binary64(Fraction(te["u"]))
+                uf = float(te["ucapfrac"])
                 miss_cks = [ck for ck in CHI_LIST if te["theta_chi"].get(str(ck), "MISSING") == "MISSING"]
                 if miss_cks:
                     scan_cks = sorted(set(miss_cks + [39, 40, 41, 42]))
                     tasks.append({
-                        "kind": "INFEAS_R1_SCAN", "piece_idx": idx_p, "row_tag": rtag,
-                        "u_val": u_v, "t_lo": tlo, "cks": [c for c in scan_cks if c >= min(miss_cks)]
+                        "kind": "INFEAS_R1_SCAN", "piece_idx": idx_p, "u_idx": u_idx, "row_tag": rtag,
+                        "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo, "cks": [c for c in scan_cks if c >= min(miss_cks)]
                     })
                 if abs(uf - 0.78) < 0.02:
                     closed_cks = [
                         ck for ck in CHI_LIST
-                        if isinstance(te["theta_chi"].get(str(ck)), (int, float))
-                        and 2.45 <= te["theta_chi"][str(ck)] < 49.999
+                        if isinstance(te["theta_chi"].get(str(ck)), (int, float, Decimal))
+                        and 2.45 <= float(te["theta_chi"][str(ck)]) < 49.999
                     ]
                     picks = sorted(set([closed_cks[0], closed_cks[-1]])) if closed_cks else []
                     for ck_c in picks:
                         tasks.append({
-                            "kind": "JM1_BOUND", "piece_idx": idx_p, "row_tag": rtag,
-                            "u_val": u_v, "t_lo": tlo, "chi_lo": 0.0 if ck_c == 1 else float(ck_c),
-                            "chi_hi": float(ck_c), "theta_allow": float(te["theta_chi"][str(ck_c)])
+                            "kind": "JM1_BOUND", "piece_idx": idx_p, "u_idx": u_idx, "row_tag": rtag,
+                            "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo, "chi_lo": 0.0 if ck_c == 1 else float(ck_c),
+                            "chi_hi": float(ck_c), "theta_allow": floor_binary64(Fraction(te["theta_chi"][str(ck_c)]))
                         })
                     if idx_p <= 11:
                         th_b = te["theta_chi"].get("2", None)
-                        if th_b is not None and th_b < 2.45:
+                        if th_b is not None and float(th_b) < 2.45:
                             tasks.append({
-                                "kind": "JM1_BOUND", "piece_idx": idx_p, "row_tag": rtag,
-                                "u_val": u_v, "t_lo": tlo, "chi_lo": 2.0, "chi_hi": 2.0, "theta_allow": float(th_b)
+                                "kind": "JM1_BOUND", "piece_idx": idx_p, "u_idx": u_idx, "row_tag": rtag,
+                                "u_lo": u_lo, "u_hi": u_hi, "t_lo": tlo, "chi_lo": 2.0, "chi_hi": 2.0,
+                                "theta_allow": floor_binary64(Fraction(th_b))
                             })
 
         # 4. Negative Controls (piece_idx = 0):
+        u_own_lo, u_own_hi = enclose_binary64(Fraction("0.1572"))
         tasks.append({
-            "kind": "JM1_BOUND", "piece_idx": 0, "row_tag": "0.700_own",
-            "u_val": 0.1572, "t_lo": 0.6949, "chi_lo": 12.0, "chi_hi": 12.0, "theta_allow": 0.085
+            "kind": "JM1_BOUND", "piece_idx": 0, "u_idx": -1, "row_tag": "0.700_own",
+            "u_lo": u_own_lo, "u_hi": u_own_hi, "t_lo": floor_binary64(Fraction("0.6949")),
+            "chi_lo": 12.0, "chi_hi": 12.0, "theta_allow": 0.085
         })
         tasks.append({
-            "kind": "JM1_BOUND", "piece_idx": 0, "row_tag": "0.800",
-            "u_val": 0.0078125, "t_lo": 0.785440, "chi_lo": 36.0, "chi_hi": 42.0, "theta_allow": 1.139
+            "kind": "JM1_BOUND", "piece_idx": 0, "u_idx": -1, "row_tag": "0.800",
+            "u_lo": 0.0078125, "u_hi": 0.0078125, "t_lo": floor_binary64(Fraction("0.785440")),
+            "chi_lo": 36.0, "chi_hi": 42.0, "theta_allow": 1.139
         })
 
     print(f"Dispatching {len(tasks)} cell tasks across 4 workers...", flush=True)
@@ -1223,7 +1267,7 @@ def main():
     for res in cells_out:
         if res["piece_idx"] in (16, 17, 0):
             print(
-                f"[Pc {res['piece_idx']:2d}] {res['kind']:9s} row={res['row_tag']} u={res['u_val']:.6f} "
+                f"[Pc {res['piece_idx']:2d}] {res['kind']:9s} row={res['row_tag']} u={res['u_lo']:.6f} "
                 f"chi=[{res['chi_lo']},{res['chi_hi']}]: F_cert={res['F_claimed']:.4f} (theta={res['theta_allow']:.3f})",
                 flush=True
             )

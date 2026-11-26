@@ -350,25 +350,25 @@ All files of `LAWREP` are committed in the repository, with zero external workin
 ## Certified continuous-law first-chaos content bounds per (u, χ) cell (gemini-c1de, 26 November 2026, #623; STATUS 4.56, tag CONTCELL)
 
 All files of `CONTCELL` are committed in the repository (< 220 KB per file), with zero external working-folder artefacts:
-- [`sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md`](sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md): proofs of the minimax linearized joint-Kantorovich bound (`JM1`), exponential Kantorovich duality, Cone-𝒦 + Coupled-Gram rational Stein + Kummer/Cauchy–Schwarz Rice continuous-law duality, outward-rounded 2D Gaussian polar + centered vortex row profile enclosures and dependency-free backward `k_X'` contraction recurrence, verification summary across Pieces 1–17 of `fin_table_fundFull.json`, exact `256/63` low-energy Wick junta and own-row `0.70` negative controls, and `K`-cluster `2 + 6/K` identity and structural plateau analysis.
+- [`sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md`](sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md): proofs of the minimax linearized joint-Kantorovich bound (`JM1`), exponential Kantorovich duality (including piecewise-linear prefix-intercept accounting), Cone-𝒦 + Coupled-Gram rational Stein + Kummer/Cauchy–Schwarz Rice continuous-law duality, outward-rounded 2D Gaussian polar + centered vortex row profile enclosures and dependency-free backward `k_X'` contraction recurrence, verification summary across Pieces 1–17 of `fin_table_fundFull.json`, non-divergent shifted-vortex proof of the `256/63` low-energy Wick junta limit with certified `h_X'(0) > 0` and own-row `0.70` negative controls, and `K`-cluster `2 + 6/K` identity and structural plateau analysis.
 - [`code/degree5-content-cells-gemini-c1de/`](code/degree5-content-cells-gemini-c1de/):
-  - `python3 -IB research/higher-degree/code/degree5-content-cells-gemini-c1de/verify.py` (and `python3 -IB -O ...`): zero-dependency Python 3 stdlib `Fraction` verifier (< 2 s) auditing `< 300 KB` file bounds, Kummer + Cauchy–Schwarz rational Rice tangents, algebraic Wick/cluster moment identities, multiplier signs, Coupled-Gram hypotheses, asymptotic `U³` cubic dominance across all slices of all `109` certificates, continuous `[0, 42]` χ-coverage of Pieces 16 & 17 against `fin_table_fundFull.json`, and negative controls (`--replay-cpp` recompiles `certify_content_cells.cpp` with `-ffp-contract=off` and replays the full 15-row 2D Gaussian + 109-cell continuous-law certification from scratch).
-  - `python3 -IB research/higher-degree/code/degree5-content-cells-gemini-c1de/test_controls.py` (and `python3 -IB -O ...`): 14-check negative and corruption control suite against both `verify.py` and the live C++17 binary.
+  - `python3 -IB research/higher-degree/code/degree5-content-cells-gemini-c1de/verify.py` (and `python3 -IB -O ...`): zero-dependency Python 3 stdlib `Fraction`/`Decimal` verifier (< 2 s) auditing `< 300 KB` file bounds, Kummer + Cauchy–Schwarz rational Rice tangents, algebraic Wick/cluster moment identities, multiplier signs, Coupled-Gram hypotheses, asymptotic `U³` cubic dominance (including negative Kantorovich prefix intercepts) across all 1,485 slices of all `109` certificates, certified `h_A'(0) > 0` and `h_B'(0) > 0` on all 15 rows, exact downward-rounded `t_lo` and tight `[u_lo, u_hi]` energy-node binding across all piece cells, continuous `[0, 42]` χ-coverage of Pieces 16 & 17 against `fin_table_fundFull.json`, and negative controls (`--replay-cpp` recompiles `certify_content_cells.cpp` with `-ffp-contract=off` and replays the full 15-row 2D Gaussian + 109-cell continuous-law certification from scratch).
+  - `python3 -IB research/higher-degree/code/degree5-content-cells-gemini-c1de/test_controls.py` (and `python3 -IB -O ...`): 18-check positive-fixture, mathematical negative-control, and field-specific corruption control suite (preserving `< 220 KB` shards) against both `verify.py` and the live C++17 binary.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md` | 22,275 B | `5a4191d8bdc48c74e89d8351854409f1e2e867461d2457874c1b5d36c7508196` |
-| `code/degree5-content-cells-gemini-c1de/README.md` | 3,046 B | `96104101c1dca57cc0708741079aedc891c0f5b7b898352b24b6f107411e9a08` |
-| `code/degree5-content-cells-gemini-c1de/certify_content_cells.cpp` | 140,403 B | `dc0a70334e2e9e8e443271e9bb268425f109b05588e40173a813c808bfd39e20` |
-| `code/degree5-content-cells-gemini-c1de/generate_certificates.py` | 58,312 B | `094b0463ddbe742d6f4e384b1a6dfb0f5de149180a3975b21bf6c8e1516c973d` |
-| `code/degree5-content-cells-gemini-c1de/verify.py` | 33,279 B | `1930adfcf86c2016e86d2b15601ba0011eb5fb58c68fcd0a90bde898c110b4bd` |
-| `code/degree5-content-cells-gemini-c1de/test_controls.py` | 7,743 B | `c5487bed5b32587157024aa9b5cda813f7dfdc83c5a3d6453d35c2e942e9af9e` |
+| `sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md` | 28,054 B | `74baedd441dcab784c996e2fd678a5d4d8e6564551dec7fc31f4cba70d63affb` |
+| `code/degree5-content-cells-gemini-c1de/README.md` | 3,159 B | `dfb23b9dc14c6c9700d9c95a721b80b845bc6c2cd280b899444bb9a39d18bed7` |
+| `code/degree5-content-cells-gemini-c1de/certify_content_cells.cpp` | 141,950 B | `a6fb1060f8b0e3f95ec7cdba21ea9db3d4a267f766c617639cbe2b1e472de04f` |
+| `code/degree5-content-cells-gemini-c1de/generate_certificates.py` | 60,974 B | `037db9afd0aaa5f9994e2b0d2b399d023aa5c2c6b2bda0df2163f877c7164590` |
+| `code/degree5-content-cells-gemini-c1de/verify.py` | 37,082 B | `de71e8d58704c9311a0b8667043876f82d3556aa174e8605dc4641d1bae023b1` |
+| `code/degree5-content-cells-gemini-c1de/test_controls.py` | 11,858 B | `549dab5136ad38a47b107757c390b4e20342ee1e79b583b3fb38fe5304ddc242` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs.json` | 1,735 B | `3ac783ea4065bfb3e19ad31fa980992564a5b430e921361afe30368b65dd2c50` |
-| `code/degree5-content-cells-gemini-c1de/dual_certs_1.json` | 212,372 B | `6f3a55285f0ebccdc3ef91b8774c106901fc52d4c2f8490e587bbc5cbae7e8dd` |
-| `code/degree5-content-cells-gemini-c1de/dual_certs_2.json` | 219,046 B | `a42120c3ad3d8f3d751246b5a995c3e7767b641b25bc69a0444d9b7b3ac6f7b6` |
-| `code/degree5-content-cells-gemini-c1de/dual_certs_3.json` | 197,771 B | `38811b3e5f9e3fce060c9dbc1cd1e9c038f8a2719d94e47121463c06b12fe966` |
-| `code/degree5-content-cells-gemini-c1de/dual_certs_4.json` | 181,721 B | `a2460da82c69f53c094f3fd657b3f7ef2b317c00c34f61c51173f6de93a4df7c` |
-| `code/degree5-content-cells-gemini-c1de/dual_certs_5.json` | 210,623 B | `11fa9fc4a24fd4b24e094893d385795b67179c9be612b879c33d326561164693` |
-| `code/degree5-content-cells-gemini-c1de/dual_certs_6.json` | 211,487 B | `c03838e0efe75d09cafa931d92de387eeb26b7163a7dd149b05d11940299377f` |
-| `code/degree5-content-cells-gemini-c1de/dual_certs_7.json` | 161,681 B | `e404fea493159379dcfc0024377fd807cca7250d099f0274f5e0ab223b44d049` |
-| `code/degree5-content-cells-gemini-c1de/result.json` | 31,052 B | `495d8f79ee53016864dc15779fba3c4ed85dec0d72727981e838683f01c0db4f` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_1.json` | 213,360 B | `8ea096c5d2c7d6db8b4bfb96cc6dbb3b3e0c919307660d413f3472b072bb2057` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_2.json` | 219,824 B | `1227be0f609a04d131725b83a369d38577f9338346bf709f94e360446a25c258` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_3.json` | 198,073 B | `46217af702c926513397bc632689bc89d7a5cea0de327d480e91e6455f27c0a1` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_4.json` | 181,911 B | `a1a3233f9cd8dc76a7423286559c378b913b57f205289f88a060cc756d2ab750` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_5.json` | 210,811 B | `bf6f184bda076e499e1520f963cb4beda0a86f0aee9737517c649ecb39e78710` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_6.json` | 212,073 B | `ae4eddaa67df26decdbb906df5d644772cd8820c823837047750a9a02853aecd` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_7.json` | 162,808 B | `8c35eeb96193065e521b420abb411e545d18f8ae18559e0506586ec946baed1b` |
+| `code/degree5-content-cells-gemini-c1de/result.json` | 40,536 B | `0dfd0f1077158340f45341443401fcc6d10316b93943523766ad3be7431ab8af` |
