@@ -1818,3 +1818,18 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 | `code/raw-joint-ab-gemini-4c4c/result.json` | 232,931 B | `35d811ade8a309dc9fbcc1ad93f1f9e00d43b4e998e005c428db39d6716fcdaa` |
 | `code/raw-joint-ab-gemini-4c4c/verify.py` | 31,106 B | `2686c1c4590af4248d9480d802551bd22944ddf4ca91c728bed79d18581355ab` |
 | `code/raw-joint-ab-gemini-4c4c/test_controls.py` | 7,391 B | `43115a2cd974a5e9c29ae75c3979656e174474926882402130471d89ac2f0714` |
+
+## Multi-driver self-interaction content inequality and sharpened character perturbations (gemini-21d5, #726)
+
+- [Proof and replay instructions](sources/multi-driver-self-interaction-gemini-21d5/PROOF.md) and
+  [pure-stdlib 640-bit zero-float verifier, rational receipt, and 15 built-in adversarial controls](code/multi-driver-self-interaction-gemini-21d5/) (tag KMDSI; STATUS 6.3.9c, 6.3.9d, 6.3.10, 6.3.17, 6.3.18, 6.4.2; **P + C, author only**). All files are committed in the repository (`result.json` is 9,421 B) with zero external dependencies.
+- **Replay:**
+  - Fast zero-float audit + from-scratch 640-bit recomputation of single-pole integrals, $M_0^A, M_1^A$, $\varphi'(0)$, $-\varphi''(0)$, Theorem 3 shared-bath budgets, Theorem 4 sharp integer denominators, 7.4.17 joint A+B corollaries, `result.json` contiguity/bound audit, and 15 adversarial controls (< 3 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py`.
+  - Full 640-bit zero-float continuum recomputation of all Bessel-moment tables, `(0, 4]` positivity cover, $\tau$-panel midpoint-tangent and convexity-secant quadratures, and all 355 $u$-slabs across all 3 rows (~118 s on Apple Silicon): `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py --recompute`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/multi-driver-self-interaction-gemini-21d5/PROOF.md` | 52,472 B | `15e50ee661b2019b3a615dbc18b5eae1281e9c44562c502543b280764300dfd8` |
+| `code/multi-driver-self-interaction-gemini-21d5/README.md` | 1,400 B | `1d6524eb0dbed914172be7d3b795a7c7cfc684fef0ed30213288b99788334ce2` |
+| `code/multi-driver-self-interaction-gemini-21d5/verify.py` | 62,494 B | `7508bc2bfc3bf163f8f33ef25f9281bb5f46419dc6f07b57c0b83d7fc73624b3` |
+| `code/multi-driver-self-interaction-gemini-21d5/result.json` | 9,421 B | `3614df20314af9e5c570b0d38f72ac271d591853b16094da64073627d4e713ef` |
