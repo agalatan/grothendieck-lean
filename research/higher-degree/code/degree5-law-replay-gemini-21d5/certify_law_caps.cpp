@@ -663,8 +663,7 @@ struct GL3PolarEngine {
     for (const auto& tp : ttree[size_t(d)]) {
       acc = acc + I(2.0) * tp.dt;
     }
-    I strip_hi = I(2.0) * t_strip.dt;
-    return acc + I(0.0, std::max(0.0, strip_hi.h));
+    return acc + I(2.0) * t_strip.dt;
   }
 
   struct Row {
@@ -3153,7 +3152,7 @@ inline void run_startup_self_tests() {
   //    true interior maximum u1 + (K - u1)^2/(4K) > u1, so outward upper bound MUST strictly exceed u1):
   {
     I eta_ce = rat_i(779, 10000);
-    I K_ce = sq(I(1.0 / 2048.0)) / eta_ce;
+    I K_ce = sq(I(1.0 / 2048.0) - I(0.0)) / eta_ce;
     I K_exact = rat_str_to_iv("625/204210176");
     double u1_ce = 0x1.9ac8764e368d1p-19;
     require(K_ce.l <= u1_ce && u1_ce <= K_exact.l && K_exact.l < K_exact.h, "counterexample bracket setup");
@@ -3191,6 +3190,9 @@ inline void run_engine_self_tests(const GL3PolarEngine& eng) {
   uint64_t m_hi = uint64_t((pi_q_hi + ((__int128(1) << 53) - 1)) >> 53);
   I pi_tight(std::ldexp(double(m_lo), -51), std::ldexp(double(m_hi), -51));
   require(pi_tight.width() < 1e-15, "pi_tight 1-ulp width");
+  I half = I(0.5) * (pi_tight - I(eng.pi_v.l));
+  require(eng.t_strip.dt.l <= half.l && eng.t_strip.dt.h >= half.h,
+          "angular strip encloses the independent half-width");
   for (int d = 0; d <= GL3PolarEngine::MAX_D; ++d) {
     I ang = eng.eval_angular_const_one(d);
     require(ang.l <= pi_tight.l && ang.h >= pi_tight.h, "angular constant-1 enclosure at depth " + std::to_string(d));

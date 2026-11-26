@@ -343,6 +343,6 @@ All files of `LAWREP` are committed in the repository, with zero external workin
 | file | size | SHA-256 |
 |---|---:|---|
 | `sources/degree5-law-replay-2026-11-25-gemini-21d5/PROOF.md` | 50,807 B | `479c3a6c1bcfd4083271b4a8fb93b4bc8581adbd3fc956dceb06b1e7d1917366` |
-| `code/degree5-law-replay-gemini-21d5/certify_law_caps.cpp` | 160,294 B | `ced1a11c57d52a888dc39021b3e6ebeeb440d198c654148043c390dad7db8d1f` |
+| `code/degree5-law-replay-gemini-21d5/certify_law_caps.cpp` | 160,431 B | `2168deca284b95a01c496e6277505cbe62193ee44c4f97a05735fb99cf14868f` |
 | `code/degree5-law-replay-gemini-21d5/verify_law_caps.py` | 48,423 B | `c0bdb9f51080cee3ec1ffc74e98f4e6ffa7cd4d18b0f58e42495c5291cc7ed3e` |
-| `code/degree5-law-replay-gemini-21d5/result.json` | 85,055 B | `b5934cb715a5bd060b77dca4ea6fb41e4aee036cd1b7d5fc51afe3af10703192` |
+| `code/degree5-law-replay-gemini-21d5/result.json` | 85,055 B | `0020b02c426d0bd9e9b9e15573db7d70bcf7a46f57d02fe14e4313e0ad388571` |
