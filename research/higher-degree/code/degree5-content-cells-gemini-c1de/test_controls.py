@@ -7,6 +7,7 @@ certificate/receipt corruptions (checking specific diagnostics, never masked by 
 against BOTH `verify.py` and the C++17 `certify_content_cells` binary.
 """
 import copy
+from fractions import Fraction
 import json
 import math
 import os
@@ -218,7 +219,45 @@ def main():
         check(proc2.returncode != 0, "C++ certifier accepted false energy-independent F_claimed = 1.139 at u=1/128 on row 0.800!")
         print(f"  [PASS] Control 16 (live C++17 binary test): rejected false F=1.139 at u=1/128 on row 0.800 (rc={proc2.returncode})")
 
-    print("ALL 18 NEGATIVE, POSITIVE-FIXTURE, AND CORRUPTION CONTROLS PASSED!")
+        # Control 17: Rounded-midpoint quadratic Taylor regression (f(r) = (r - m)^2 on 1-ULP & 112 radial panels)
+        proc_st = subprocess.run([bin_path, "--self-test-only"],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        check(proc_st.returncode == 0, f"C++ --self-test-only failed: {proc_st.stderr}")
+        # Also verify in Python IEEE-754 arithmetic that old 0.5*width under FE_UPWARD under-encloses 51/112 radial panels
+        # whereas max(m - lo, hi - m) encloses all 112/112 panels + {1.0, nextafter(1.0, 2.0)}:
+        def add_up_py(a, b):
+            s = a + b
+            # exact check via Fraction:
+            if Fraction(s) < Fraction(a) + Fraction(b):
+                s = math.nextafter(s, math.inf)
+            return s
+
+        def sub_up_py(a, b):
+            return add_up_py(a, -b)
+
+        v_lo, v_hi = 1.0, math.nextafter(1.0, 2.0)
+        m_up = 0.5 * add_up_py(v_lo, v_hi)
+        old_hi = (0.5 * sub_up_py(v_hi, v_lo)) ** 2
+        new_hi = max(sub_up_py(m_up, v_lo), sub_up_py(v_hi, m_up)) ** 2
+        f_at_lo = float((Fraction(v_lo) - Fraction(m_up)) ** 2)
+        check(old_hi < f_at_lo and new_hi >= f_at_lo,
+              f"1-ULP regression mismatch: old_hi={old_hi.hex()}, new_hi={new_hi.hex()}, exact={f_at_lo.hex()}")
+        n_old_fail = 0
+        prev = 0.0
+        for i in range(1, 113):
+            cur = 7.0 if i == 112 else 7.0 * ((i / 112.0) ** 1.5)
+            mp = 0.5 * add_up_py(prev, cur)
+            old_r = 0.5 * sub_up_py(cur, prev)
+            new_r = max(sub_up_py(mp, prev), sub_up_py(cur, mp))
+            exact_max = max((Fraction(mp) - Fraction(prev)) ** 2, (Fraction(cur) - Fraction(mp)) ** 2)
+            if Fraction(old_r) ** 2 < exact_max:
+                n_old_fail += 1
+            check(Fraction(new_r) ** 2 >= exact_max, f"new Taylor radius failed on panel {i}")
+            prev = cur
+        check(n_old_fail >= 40, f"expected old 0.5*width formula to fail on >=40 radial panels, got {n_old_fail}")
+        print(f"  [PASS] Control 17 (rounded-midpoint Taylor radius): live C++ self-test passed & caught {n_old_fail}/112 old-radius panel failures")
+
+    print("ALL 19 NEGATIVE, POSITIVE-FIXTURE, AND CORRUPTION CONTROLS PASSED!")
 
 
 if __name__ == "__main__":

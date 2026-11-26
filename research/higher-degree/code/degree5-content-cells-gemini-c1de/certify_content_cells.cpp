@@ -245,22 +245,21 @@ struct Aff3 {
         return {m, 0.0, 0.0, 0.0, r};
     }
     static Aff3 var1(const Ival& v) {
-        double m = v.mid();
-        double h = 0.5 * sub_up(v.hi, v.lo);
-        double err = std::max(sub_up(v.hi, add_dn(m, h)), sub_up(sub_up(m, h), v.lo));
-        return {m, h, 0.0, 0.0, std::max(0.0, err)};
+        double m_lo = mul_dn(0.5, add_dn(v.lo, v.hi)), m_hi = mul_up(0.5, add_up(v.lo, v.hi));
+        double h_lo = mul_dn(0.5, sub_dn(v.hi, v.lo)), h_hi = mul_up(0.5, sub_up(v.hi, v.lo));
+        double err = add_up(sub_up(m_hi, m_lo), sub_up(h_hi, h_lo));
+        return {m_hi, h_hi, 0.0, 0.0, std::max(0.0, err)};
     }
     static Aff3 var2(const Ival& v) {
-        double m = v.mid();
-        double h = 0.5 * sub_up(v.hi, v.lo);
-        double err = std::max(sub_up(v.hi, add_dn(m, h)), sub_up(sub_up(m, h), v.lo));
-        return {m, 0.0, h, 0.0, std::max(0.0, err)};
+        double m_lo = mul_dn(0.5, add_dn(v.lo, v.hi)), m_hi = mul_up(0.5, add_up(v.lo, v.hi));
+        double h_lo = mul_dn(0.5, sub_dn(v.hi, v.lo)), h_hi = mul_up(0.5, sub_up(v.hi, v.lo));
+        double err = add_up(sub_up(m_hi, m_lo), sub_up(h_hi, h_lo));
+        return {m_hi, 0.0, h_hi, 0.0, std::max(0.0, err)};
     }
     static Aff3 var3(const Ival& v) {
-        double m = v.mid();
-        double h = 0.5 * sub_up(v.hi, v.lo);
-        double err = std::max(sub_up(v.hi, add_dn(m, h)), sub_up(sub_up(m, h), v.lo));
-        return {m, 0.0, 0.0, h, std::max(0.0, err)};
+        double m = mul_up(0.5, add_up(v.lo, v.hi));
+        double h = std::max(sub_up(m, v.lo), sub_up(v.hi, m));
+        return {m, 0.0, 0.0, h, 0.0};
     }
 
     double l1_lin() const {
@@ -328,12 +327,21 @@ inline Aff3 aff_mul(const Aff3& a, const Aff3& b) {
     return {m0, m1, m2, m3, r};
 }
 
+inline double taylor_rad(const Ival& v, double m) {
+    return std::max(sub_up(m, v.lo), sub_up(v.hi, m));
+}
+
+inline void param_mid_rad(double lo, double hi, double& m_out, double& h_out) {
+    m_out = mul_up(0.5, add_up(lo, hi));
+    h_out = std::max(sub_up(m_out, lo), sub_up(hi, m_out));
+}
+
 inline void aff_sincos_theta(const Ival& th_iv, Aff3& sin_a, Aff3& cos_a) {
     double t0 = th_iv.mid();
     Ival s0, c0;
     ival_sincos_0_pi(Ival::pt(t0), s0, c0);
-    Aff3 dt = Aff3::var2(th_iv - Ival::pt(t0));
-    double ht = 0.5 * th_iv.width();
+    Aff3 dt = aff_sub(Aff3::var2(th_iv), Aff3::cst(Ival::pt(t0)));
+    double ht = taylor_rad(th_iv, t0);
     double rem = mul_up(0.5, mul_up(ht, ht));  // |sin''|, |cos''| <= 1 => (1/2)*1*ht^2
     sin_a = aff_add(Aff3::cst(s0), aff_scale(c0, dt));
     sin_a.rad = add_up(sin_a.rad, rem);
@@ -344,7 +352,10 @@ inline void aff_sincos_theta(const Ival& th_iv, Aff3& sin_a, Aff3& cos_a) {
 struct RowSpec {
     std::string tag;
     double l, beta, bA, bB, nu5;
-    double sigA, sigB;
+    int sigA_num, sigA_den;
+    int sigB_num, sigB_den;
+    Ival sigA_iv() const { return Ival::pt(static_cast<double>(sigA_num)) / Ival::pt(static_cast<double>(sigA_den)); }
+    Ival sigB_iv() const { return Ival::pt(static_cast<double>(sigB_num)) / Ival::pt(static_cast<double>(sigB_den)); }
 };
 
 struct RowProfileEnclosure {
@@ -393,9 +404,10 @@ struct Aff2 {
         return {m, 0.0, 0.0, std::max(sub_up(v.hi, m), sub_up(m, v.lo))};
     }
     static Aff2 var1(const Ival& v) {
-        double m = v.mid(), h = 0.5 * sub_up(v.hi, v.lo);
-        double err = std::max(0.0, std::max(sub_up(v.hi, add_dn(m, h)), sub_up(sub_up(m, h), v.lo)));
-        return {m, h, 0.0, err};
+        double m_lo = mul_dn(0.5, add_dn(v.lo, v.hi)), m_hi = mul_up(0.5, add_up(v.lo, v.hi));
+        double h_lo = mul_dn(0.5, sub_dn(v.hi, v.lo)), h_hi = mul_up(0.5, sub_up(v.hi, v.lo));
+        double err = add_up(sub_up(m_hi, m_lo), sub_up(h_hi, h_lo));
+        return {m_hi, h_hi, 0.0, std::max(0.0, err)};
     }
     double l1() const { return add_up(std::fabs(c1), std::fabs(c2)); }
     double max_dev() const { return add_up(l1(), rad); }
@@ -540,14 +552,15 @@ struct Poly3Q {
         return {m, 0,0,0, 0,0,0,0,0,0, std::max(sub_up(v.hi, m), sub_up(m, v.lo))};
     }
     static Poly3Q var1(const Ival& v) {
-        double m = v.mid(), h = 0.5 * sub_up(v.hi, v.lo);
-        double err = std::max(0.0, std::max(sub_up(v.hi, add_dn(m, h)), sub_up(sub_up(m, h), v.lo)));
-        return {m, h,0,0, 0,0,0,0,0,0, err};
+        double m_lo = mul_dn(0.5, add_dn(v.lo, v.hi)), m_hi = mul_up(0.5, add_up(v.lo, v.hi));
+        double h_lo = mul_dn(0.5, sub_dn(v.hi, v.lo)), h_hi = mul_up(0.5, sub_up(v.hi, v.lo));
+        double err = add_up(sub_up(m_hi, m_lo), sub_up(h_hi, h_lo));
+        return {m_hi, h_hi,0,0, 0,0,0,0,0,0, std::max(0.0, err)};
     }
     static Poly3Q var3(const Ival& v) {
-        double m = v.mid(), h = 0.5 * sub_up(v.hi, v.lo);
-        double err = std::max(0.0, std::max(sub_up(v.hi, add_dn(m, h)), sub_up(sub_up(m, h), v.lo)));
-        return {m, 0,0,h, 0,0,0,0,0,0, err};
+        double m = mul_up(0.5, add_up(v.lo, v.hi));
+        double h = std::max(sub_up(m, v.lo), sub_up(v.hi, m));
+        return {m, 0,0,h, 0,0,0,0,0,0, 0.0};
     }
     double l1_lin() const { return add_up(add_up(std::fabs(c1), std::fabs(c2)), std::fabs(c3)); }
     double l1_quad() const {
@@ -652,18 +665,21 @@ inline Poly3Q p3_exp_neg(const Poly3Q& T, double T_lo) {
     double M = T.max_dev(), m3 = mul_up(M, mul_up(M, M)), emax = ival_exp(-Ival::pt(dom_lo)).hi;
     return p3_compose_quad(T, e0, -e0, Ival::pt(0.5)*e0, div_up(mul_up(emax, m3), 6.0));
 }
-// Exact psi(e2) = pi * (u0 + hu * e2) for u in [u_lo, u_hi] subset [0, 1] (bit-exact u0, hu in binary64!):
+// Exact psi(e2) = pi * (u0 + hu * e2) for u in [u_lo, u_hi] subset [0, 1] with rounded-center error + cubic remainder:
 inline void p3_sincos_unit(double u_lo, double u_hi, Poly3Q& sin_p, Poly3Q& cos_p, Ival& sin_b, Ival& cos_b) {
-    double u0 = 0.5 * (u_lo + u_hi), hu = 0.5 * (u_hi - u_lo);
+    double u0_lo = mul_dn(0.5, add_dn(u_lo, u_hi)), u0 = mul_up(0.5, add_up(u_lo, u_hi));
+    double hu_lo = mul_dn(0.5, sub_dn(u_hi, u_lo)), hu = mul_up(0.5, sub_up(u_hi, u_lo));
+    double u_err = add_up(sub_up(u0, u0_lo), sub_up(hu, hu_lo));
     Ival th0 = PI_IVAL * Ival::pt(u0), eta = PI_IVAL * Ival::pt(hu);
     Ival eta2_half = Ival::pt(0.5) * ival_sqr(eta);
-    double eh = eta.hi, rem3 = div_up(mul_up(eh, mul_up(eh, eh)), 6.0);
+    double eh = mul_up(PI_IVAL.hi, taylor_rad({u_lo, u_hi}, u0));
+    double rem3 = add_up(mul_up(PI_IVAL.hi, u_err), div_up(mul_up(eh, mul_up(eh, eh)), 6.0));
     Ival s0, c0; ival_sincos_0_pi(th0, s0, c0);
     sin_p = {}; sin_p.rad = rem3;
     sp_iv(s0, sin_p.c0, sin_p.rad); sp_iv(eta * c0, sin_p.c2, sin_p.rad); sp_iv(-(eta2_half * s0), sin_p.c22, sin_p.rad);
     cos_p = {}; cos_p.rad = rem3;
     sp_iv(c0, cos_p.c0, cos_p.rad); sp_iv(-(eta * s0), cos_p.c2, cos_p.rad); sp_iv(-(eta2_half * c0), cos_p.c22, cos_p.rad);
-    ival_sincos_0_pi({PI_IVAL.lo * u_lo, PI_IVAL.hi * u_hi}, sin_b, cos_b);
+    ival_sincos_0_pi({mul_dn(PI_IVAL.lo, u_lo), mul_up(PI_IVAL.hi, u_hi)}, sin_b, cos_b);
 }
 
 struct Quad1D {
@@ -780,13 +796,13 @@ void integrate_vortex_cell(
 
     Poly3Q wg = p3_mul(p3_exp_neg(T, T_lo), rho);
     // Sector A:
-    Poly3Q wA = p3_add(T, Poly3Q::cst(Ival::pt(ctx.row.sigA - 1.0)));
+    Poly3Q wA = p3_add(T, Poly3Q::cst(ctx.row.sigA_iv() - Ival::pt(1.0)));
     Poly3Q ig_GA = p3_mul(wg, p3_mul(wA, ph_x));
     Poly3Q ig_DGA = p3_mul(wg, p3_add(p3_mul(dT, p3_mul(p3_sub(Poly3Q::cst(Ival::pt(1.0)), wA), ph_x)), p3_mul(wA, dph_x)));
     Poly3Q numA = p3_sub(p3_mul(ctx.s_over_ds, ig_DGA), ig_GA);
 
     // Sector B:
-    Poly3Q uB = p3_add(p3_scale(ctx.inv_s2, p3_sub(p3_mul(zx, zx), p3_mul(zy, zy))), Poly3Q::cst(Ival::pt(ctx.row.sigB)));
+    Poly3Q uB = p3_add(p3_scale(ctx.inv_s2, p3_sub(p3_mul(zx, zx), p3_mul(zy, zy))), Poly3Q::cst(ctx.row.sigB_iv()));
     Poly3Q vB = p3_scale(Ival::pt(2.0) * ctx.inv_s2, p3_mul(zx, zy));
     Poly3Q Bre = p3_add(p3_mul(uB, ph_x), p3_mul(vB, ph_y));
     Poly3Q ig_GB = p3_mul(wg, Bre);
@@ -863,13 +879,13 @@ struct PrecompAngular {
     Aff3 sin_a, cos_a;
 };
 
-// Direct 1D midpoint-Taylor Aff3 on r_iv = [ra, rb] with exact (1/2) sup|f''| hr^2 remainder:
+// Direct 1D midpoint-Taylor Aff3 on r_iv = [ra, rb] around rounded r0 = r_iv.mid() with exact hr = max(r0-ra, rb-r0):
 inline Aff3 make_rad_1d(const Ival& r_iv, const Ival& f0, const Ival& fp0, double fpp_bound) {
     double r0 = r_iv.mid();
-    Aff3 dr = Aff3::var1(r_iv - Ival::pt(r0));
+    Aff3 dr = aff_sub(Aff3::var1(r_iv), Aff3::cst(Ival::pt(r0)));
     Aff3 lin = aff_add(Aff3::cst(f0), aff_scale(fp0, dr));
-    double hr = 0.5 * r_iv.width();
-    lin.rad = add_up(lin.rad, mul_up(0.5 * fpp_bound, mul_up(hr, hr)));
+    double hr = taylor_rad(r_iv, r0);
+    lin.rad = add_up(lin.rad, mul_up(0.5, mul_up(fpp_bound, mul_up(hr, hr))));
     return lin;
 }
 
@@ -907,7 +923,7 @@ PrecompRadial make_radial(const RowSpec& row, const Ival& r_iv) {
     double g1_pp = mul_up(ival_abs(Ival::pt(4.0) * r3_iv - Ival::pt(6.0) * r_iv).hi, exp_ra);
     double g3_pp = mul_up(ival_abs(Ival::pt(6.0) * r_iv - Ival::pt(14.0) * r3_iv + Ival::pt(4.0) * r5_iv).hi, exp_ra);
 
-    Ival al = Ival::pt(row.sigA) - Ival::pt(1.0);
+    Ival al = row.sigA_iv() - Ival::pt(1.0);
     Ival wA_0  = (r0_3 + al * r0_iv) * e0;
     Ival wA_p0 = (Ival::pt(-2.0) * r0_4 + (Ival::pt(3.0) - Ival::pt(2.0) * al) * r0_2 + al) * e0;
     double wA_pp = add_up(g3_pp, mul_up(ival_abs(al).hi, g1_pp));
@@ -919,8 +935,8 @@ PrecompRadial make_radial(const RowSpec& row, const Ival& r_iv) {
 
     Ival g1_0  = r0_iv * e0;
     Ival g1_p0 = (Ival::pt(1.0) - Ival::pt(2.0) * r0_2) * e0;
-    Ival sB = Ival::pt(row.sigB);
-    Aff3 wBp_rad = make_rad_1d(r_iv, sB * g1_0, sB * g1_p0, mul_up(std::fabs(row.sigB), g1_pp));
+    Ival sB = row.sigB_iv();
+    Aff3 wBp_rad = make_rad_1d(r_iv, sB * g1_0, sB * g1_p0, mul_up(ival_abs(sB).hi, g1_pp));
 
     return {r_iv, rPL_a, C_a, S_a, wA_rad, wBm_rad, wBp_rad};
 }
@@ -1019,8 +1035,8 @@ void integrate_hp_polar_cell(
         double tot_ker = add_up(add_up(du_t1, du_t2), add_up(dw_p1, add_up(dw_p2, dw_p3)));
 
         Ival exp_b = ival_exp(-r2_b);
-        Ival wA_b = ival_abs((r2_b * r_iv + (Ival::pt(row.sigA) - Ival::pt(1.0)) * r_iv) * exp_b);
-        Ival wB_b = ((r2_b * r_iv) * inv_sqrt2 + Ival::pt(std::fabs(row.sigB)) * r_iv) * exp_b;
+        Ival wA_b = ival_abs((r2_b * r_iv + (row.sigA_iv() - Ival::pt(1.0)) * r_iv) * exp_b);
+        Ival wB_b = ((r2_b * r_iv) * inv_sqrt2 + ival_abs(row.sigB_iv()) * r_iv) * exp_b;
         double fac4pi = (Ival::pt(4.0) / PI_IVAL).hi;
         acc.intA.rad = add_up(acc.intA.rad, mul_up(fac4pi, mul_up(wA_b.hi, tot_ker)));
         acc.intB.rad = add_up(acc.intB.rad, mul_up(fac4pi, mul_up(wB_b.hi, tot_ker)));
@@ -1176,8 +1192,8 @@ void integrate_polar_cell(
         double fb_mult = mode_eps ? 1.0 : 2.0;
         Ival area = pr.r_iv.len_ival() * pa.th_iv.len_ival();
         Ival wt = Ival::pt(fb_mult) * (Ival::pt(4.0) / PI_IVAL) * pr.r_iv * ival_exp(-(pr.r_iv * pr.r_iv)) * area;
-        Ival ampA = ival_abs((pr.r_iv * pr.r_iv - Ival::pt(1.0)) + Ival::pt(row.sigA));
-        Ival ampB = (pr.r_iv * pr.r_iv) * inv_sqrt2 + Ival::pt(std::fabs(row.sigB));
+        Ival ampA = ival_abs((pr.r_iv * pr.r_iv - Ival::pt(1.0)) + row.sigA_iv());
+        Ival ampB = (pr.r_iv * pr.r_iv) * inv_sqrt2 + ival_abs(row.sigB_iv());
         acc.intA.rad = add_up(acc.intA.rad, (wt * ampA).hi);
         acc.intB.rad = add_up(acc.intB.rad, (wt * ampB).hi);
         return;
@@ -1252,7 +1268,7 @@ void self_test_fpu();
 Ival eval_hp_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv);
 
 RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 1) {
-    // 1. Verify row global positivity & outer-tail preconditions:
+    // 1. Verify row global positivity & quantitative outer-tail preconditions in Ival:
     const Ival inv_sqrt2  = Ival::pt(1.0) / ival_sqrt(Ival::pt(2.0));
     const Ival inv_sqrt12 = Ival::pt(1.0) / ival_sqrt(Ival::pt(12.0));
     Ival c2 = Ival::pt(row.nu5) * inv_sqrt12;
@@ -1260,12 +1276,18 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
     Ival c0 = Ival::pt(row.l) - Ival::pt(2.0) * Ival::pt(row.beta) + Ival::pt(6.0) * c2;
     Ival a0_D = Ival::pt(1.0) + Ival::pt(row.bA);
     Ival a2_C = -(Ival::pt(row.bA) + Ival::pt(row.bB) * inv_sqrt2);
+    Ival a2_S = -(Ival::pt(row.bA) - Ival::pt(row.bB) * inv_sqrt2);
     Ival bB_s2 = Ival::pt(row.bB) * inv_sqrt2;
+    Ival sigA_iv = row.sigA_iv(), sigB_iv = row.sigB_iv();
     Ival min_PL = (c1.lo >= 0.0) ? c0 : ival_min(c0, c0 - (c1 * c1) / (Ival::pt(4.0) * c2));
     Ival L_out = Ival::pt(6.25) * (c0 + c1 * Ival::pt(39.0625) + c2 * Ival::pt(39.0625 * 39.0625));
     Ival D_out = (Ival::pt(1.0) + Ival::pt(std::fabs(row.bA)))
                + (Ival::pt(std::fabs(row.bA)) + Ival::pt(std::fabs(row.bB)) * inv_sqrt2) * Ival::pt(39.0625);
-    if (min_PL.lo <= 0.45 || row.bA >= 0.0 || a2_C.lo <= 0.0 || L_out.lo <= mul_up(1.2, mul_up(8.2, D_out.hi))) {
+    if (min_PL.lo <= 0.45 || c0.lo <= 0.45 || c1.lo <= 0.0 || c2.lo <= 0.0 ||
+        (c2 * Ival::pt(39.0625 * 39.0625) - c0).lo <= 0.0 ||
+        row.bA >= 0.0 || a0_D.lo <= 0.9 || a2_C.lo <= 0.0 || a2_S.lo <= 0.0 ||
+        sigA_iv.lo < 0.0 || sigA_iv.hi > 1.0 || sigB_iv.lo < 0.0 || sigB_iv.hi > 1.0 ||
+        L_out.lo <= mul_up(1.2, mul_up(8.2, D_out.hi))) {
         std::fprintf(stderr, "FATAL: row %s failed positivity/tail preconditions (min_PL.lo=%g, L_out.lo=%g)\n",
                      row.tag.c_str(), min_PL.lo, L_out.lo);
         std::exit(2);
@@ -1275,73 +1297,232 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
     enc.spec = row;
     enc.s1 = std::ldexp(1.0, -14); // s1 = 2^{-14} = 6.103515625e-5
 
-    // Precompute radial (NR=96) and angular (NT=80) Aff3 arrays for h_X(v) enclosure across [s1, inf):
+    // Precompute contiguous radial (NR=96 on [0, 7]) and angular (NT=80 on [0, pi_lo]) Aff3 arrays for G_X(s):
     const int NR = 96, NT = 80;
+    std::vector<double> r_pol_ed(NR + 1), th_pol_ed(NT + 1);
+    r_pol_ed[0] = 0.0; r_pol_ed[NR] = 7.0;
+    for (int i = 1; i < NR; ++i) r_pol_ed[i] = 7.0 * std::pow(static_cast<double>(i) / NR, 2.1);
+    th_pol_ed[0] = 0.0;
+    for (int j = 1; j <= NT; ++j) th_pol_ed[j] = mul_dn(PI_IVAL.lo, static_cast<double>(j) / NT);
     std::vector<PrecompRadial> rad_grid(NR);
     std::vector<PrecompAngular> ang_grid(NT);
-    for (int i = 0; i < NR; ++i) {
-        double ra = 7.0 * std::pow(static_cast<double>(i) / NR, 2.1);
-        double rb = 7.0 * std::pow(static_cast<double>(i + 1) / NR, 2.1);
-        rad_grid[i] = make_radial(row, {ra, rb});
-    }
-    for (int j = 0; j < NT; ++j) {
-        double ta = PI_IVAL.hi * (static_cast<double>(j) / NT);
-        double tb = PI_IVAL.hi * (static_cast<double>(j + 1) / NT);
-        ang_grid[j] = make_angular({ta, tb});
-    }
+    for (int i = 0; i < NR; ++i) rad_grid[i] = make_radial(row, {r_pol_ed[i], r_pol_ed[i + 1]});
+    for (int j = 0; j < NT; ++j) ang_grid[j] = make_angular({th_pol_ed[j], th_pol_ed[j + 1]});
 
-    const double R7_TAIL = 1.0e-14;
-
-    // 2. Uniform enclosure of h_X(v) = G_X(s)/s for ALL s in [0, s1] (v in [0, s1^2]):
+    // Quantitative outer-tail + pi-endpoint sliver bounds in Ival (PROOF.md §2.4):
+    // 1) For G_X: |G_X^{r>=7}| <= 204 e^{-49} and theta in [pi_lo, pi] sliver <= (8/pi)*(pi_hi - pi_lo):
+    const double dpi_hi = sub_up(PI_IVAL.hi, PI_IVAL.lo);
+    const double R7_G_TAIL = add_up(
+        (Ival::pt(204.0) * ival_exp(Ival::pt(-49.0))).hi,
+        ((Ival::pt(8.0) / PI_IVAL) * Ival::pt(dpi_hi)).hi
+    );
+    // 2) For exterior P_X(eps) on eps in [0, 1/8]: |P_X^{r>=7}(eps)| <= (102 + 14700*pi)*e^{-49} uniformly across
+    //    the moving vortex r_*(1/eps), plus theta in [pi_lo/2, pi/2] sliver <= (2/pi)*(pi_hi - pi_lo):
     {
-        double r_cut = 2.5 * enc.s1;
-        double inner_err = mul_up(25.0, enc.s1);
-        Ival sumA{0.0, 0.0}, sumB{0.0, 0.0};
-        std::vector<double> r0_ed;
-        const int NG0 = 48, NL0 = 192, NT0 = 384;
-        for (int i = 0; i <= NG0; ++i) r0_ed.push_back(r_cut * std::pow(0.25 / r_cut, static_cast<double>(i) / NG0));
-        for (int i = 1; i <= NL0; ++i) r0_ed.push_back(0.25 + (7.0 - 0.25) * (static_cast<double>(i) / NL0));
+        Ival s_sliv, c_sliv;
+        ival_sincos_0_pi({mul_dn(0.5, PI_IVAL.lo), mul_up(0.5, PI_IVAL.hi)}, s_sliv, c_sliv);
+        double C49_dth = mul_up((a0_D + a2_C * Ival::pt(49.0)).hi, mul_up(0.5, dpi_hi));
+        double W_sliv_lo = mul_dn(a0_D.lo, s_sliv.lo);
+        if (W_sliv_lo <= 0.5 || C49_dth >= 0.25 * W_sliv_lo) {
+            std::fprintf(stderr, "FATAL: pi/2 sliver precondition failed on row %s\n", row.tag.c_str());
+            std::exit(2);
+        }
+    }
+    const double R7_HP_TAIL = add_up(
+        ((Ival::pt(102.0) + Ival::pt(14700.0) * PI_IVAL) * ival_exp(Ival::pt(-49.0))).hi,
+        ((Ival::pt(2.0) / PI_IVAL) * Ival::pt(dpi_hi)).hi
+    );
 
-        std::vector<Ival> st_arr(NT0), ct_arr(NT0);
-        for (int j = 0; j < NT0; ++j) {
-            ival_sincos_0_pi({PI_IVAL.lo * j / NT0, PI_IVAL.hi * (j + 1) / NT0}, st_arr[j], ct_arr[j]);
+    // 2. Vortex-centered Odd-Taylor origin cap for F_X(r_*) = G_X(psi(r_*)) on r_* in [0, rs_cap = 0.065]
+    //    with Cauchy-disk holomorphic tail bound at rho >= Rmax0 = 8.5, plus exact zero-tube h_X([0, s1^2]):
+    auto s_pt_ival = [&](double r) -> Ival {
+        Ival rv = Ival::pt(r), t2 = ival_sqr(rv);
+        return (rv * (c0 + c1 * t2 + c2 * ival_sqr(t2))) / (a0_D + a2_C * t2);
+    };
+    enc.rs_cap = 0.065;
+    enc.s_cap_lo = s_pt_ival(enc.rs_cap).lo;
+    {
+        // Holomorphic Cauchy-disk bound on |r_*| <= R_star = rs_cap + delta (delta = 1/3) for rho >= Rmax0 = 8.5:
+        const double Rmax0 = 8.5;
+        const Ival delta_iv = Ival::pt(1.0) / Ival::pt(3.0);
+        const Ival R_star = Ival::pt(enc.rs_cap) + delta_iv;
+        const Ival R_star2 = ival_sqr(R_star), R_star4 = ival_sqr(R_star2);
+        const Ival C_min_star = a0_D - a2_C * R_star2;
+        if (C_min_star.lo <= 0.5) {
+            std::fprintf(stderr, "FATAL: Cauchy disk C_min_star.lo=%g on row %s\n", C_min_star.lo, row.tag.c_str());
+            std::exit(2);
+        }
+        const Ival S_star = (R_star * (c0 + c1 * R_star2 + c2 * R_star4)) / C_min_star;
+        const Ival R0_iv = Ival::pt(Rmax0);
+        const Ival rat_R = R_star / R0_iv;
+        const Ival one_p_rat = Ival::pt(1.0) + rat_R;
+        const Ival one_p_rat2 = ival_sqr(one_p_rat);
+        const Ival q_term1 = rat_R * ival_sqr(one_p_rat2);
+        const Ival q_term2 = (Ival::pt(2.0) * rat_R + ival_sqr(rat_R)) * (Ival::pt(1.0) + one_p_rat2);
+        const Ival D_coef = (Ival::pt(1.0) + Ival::pt(std::fabs(row.bA)))
+                          + (Ival::pt(std::fabs(row.bA)) + Ival::pt(std::fabs(row.bB)) * inv_sqrt2) * ival_sqr(R0_iv + R_star);
+        const Ival PL_R0 = c0 + c1 * ival_sqr(R0_iv) + c2 * ival_sqr(ival_sqr(R0_iv));
+        const Ival q_term3 = (S_star * D_coef) / (R0_iv * PL_R0);
+        const double q_max = (q_term1 + q_term2 + q_term3).hi;
+        const double kappa_max = add_up(mul_up(2.0, q_max), mul_up(q_max, q_max));
+        if (kappa_max >= 0.85) {
+            std::fprintf(stderr, "FATAL: Cauchy disk kappa_max=%g >= 0.85 on row %s\n", kappa_max, row.tag.c_str());
+            std::exit(2);
+        }
+        const Ival sqrt2_iv = ival_sqrt(Ival::pt(2.0));
+        const double M_ph = div_up(mul_up(sqrt2_iv.hi, add_up(1.0, q_max)), sqrt_dn(sub_dn(1.0, kappa_max)));
+        const Ival u0_iv = R0_iv - R_star;
+        const Ival u0_2 = ival_sqr(u0_iv);
+        const Ival K_poly = sqrt2_iv * ((u0_iv + R_star) * ival_sqr(u0_iv + Ival::pt(2.0) * R_star)) / u0_2
+                          + (u0_iv + R_star) / (u0_2 * u0_iv);
+        const Ival cauchy_base = Ival::pt(4.0) * Ival::pt(M_ph) * ival_exp(Ival::pt(2.0) * R_star2)
+                               * K_poly * (Ival::pt(0.5) * (u0_2 + Ival::pt(1.0)) * ival_exp(-u0_2));
+        const double tail_j1 = mul_up(3.0, cauchy_base.hi);
+        const double tail_j3 = mul_up(27.0, cauchy_base.hi);
+        const double tail_j5 = mul_up(243.0, cauchy_base.hi);
+
+        // Exact c_1(0) = F'(0) and c_3(0) = F'''(0)/6 via Jet1D<Aff2, 3> at r_* = 0:
+        // At r_* = 0, |A_-(z; 0)| = rho P_L(rho^2) is independent of psi, so [r_*^1] and [r_*^3] are exact
+        // even trigonometric polynomials in psi of degree <= 9! By discrete Fourier orthogonality, the 16-point
+        // midpoint rule on (0, pi) (8 angles psi_j = pi*(2j+1)/32 in (0, pi/2) paired with pi - psi_j via sgn=+-1)
+        // integrates every harmonic cos(m*psi) for 1 <= m <= 31 to ZERO identically (zero angular quadrature error)!
+        using J3A = Jet1D<Aff2, 3>;
+        const int NR0_J = 1152, NP0_HALF = 8;
+        J3A rs0 = J3A::var(Aff2::cst({0.0, 0.0}), Aff2::cst({1.0, 1.0}));
+        J3A Ts0 = rs0 * rs0;
+        J3A Ps0 = J3A::cst(Aff2::cst(c0)) + J3A::cst(Aff2::cst(c1)) * Ts0;
+        J3A Cs0 = J3A::cst(Aff2::cst(a0_D)) + J3A::cst(Aff2::cst(a2_C)) * Ts0;
+        J3A s0_j = rs0 * (Ps0 * j3a_inv(Cs0, a0_D.lo));
+
+        std::vector<Aff2> a_sin(NP0_HALF), a_cos(NP0_HALF);
+        for (int j = 0; j < NP0_HALF; ++j) {
+            Ival th0 = PI_IVAL * Ival::pt((2.0 * j + 1.0) / (4.0 * NP0_HALF));
+            Ival s_t, c_t; ival_sincos_0_pi(th0, s_t, c_t);
+            a_sin[j] = Aff2::cst(s_t);
+            a_cos[j] = Aff2::cst(c_t);
         }
 
-        for (size_t i = 0; i + 1 < r0_ed.size(); ++i) {
-            double ra = r0_ed[i], rb = r0_ed[i + 1];
-            Ival riv{ra, rb};
-            Ival r2 = ival_sqr(riv);
-            Ival r4 = ival_sqr(r2);
-            Ival PL = Ival::pt(row.l) + Ival::pt(row.beta) * (r2 - Ival::pt(2.0)) + c2 * (r4 - Ival::pt(6.0) * r2 + Ival::pt(6.0));
-            Ival a_iv = riv * PL;
-            Ival eta_iv = Ival{0.0, enc.s1} / a_iv;
-            Ival baseD = Ival::pt(1.0) - Ival::pt(row.bA) * (r2 - Ival::pt(1.0));
-            Ival Cr = baseD - Ival::pt(row.bB) * inv_sqrt2 * r2;
-            Ival Sr = baseD + Ival::pt(row.bB) * inv_sqrt2 * r2;
-            Ival w_rad = (ival_exp(-(r2)) / PL) * riv.len_ival();
-            Ival facA = (r2 - Ival::pt(1.0)) + Ival::pt(row.sigA);
-            Ival r2_s2 = r2 * inv_sqrt2;
-            Ival wt = (Ival::pt(4.0) / PI_IVAL) * w_rad * (PI_IVAL / Ival::pt(static_cast<double>(NT0)));
+        std::vector<double> rho0_ed(NR0_J + 1);
+        rho0_ed[0] = 0.0; rho0_ed[NR0_J] = Rmax0;
+        for (int i = 1; i < NR0_J; ++i) rho0_ed[i] = Rmax0 * (static_cast<double>(i) / NR0_J);
 
-            for (int j = 0; j < NT0; ++j) {
-                const Ival& st = st_arr[j];
-                const Ival& ct = ct_arr[j];
-                Ival b_iv = Cr * ct;
-                Ival c_iv = Sr * st;
-                Ival one_p_be = Ival::pt(1.0) + b_iv * eta_iv;
-                Ival N_tilde = ival_sqr(one_p_be) + ival_sqr(c_iv * eta_iv);
-                Ival Nt32 = N_tilde * ival_sqrt(N_tilde);
-                Ival r_du = -(ival_sqr(c_iv) * eta_iv) / Nt32;
-                Ival r_dw =  (c_iv * one_p_be) / Nt32;
-                Ival ph_p = r_du * ct + r_dw * st;
-                Ival ph_m = r_du * ct - r_dw * st;
-                sumA = sumA + wt * facA * ph_p;
-                sumB = sumB + wt * (r2_s2 * ph_m + Ival::pt(row.sigB) * ph_p);
+        const Ival sigA_m1 = sigA_iv - Ival::pt(1.0);
+        Ival accA1{0, 0}, accA3{0, 0}, accB1{0, 0}, accB3{0, 0};
+        double pl2_min = mul_dn(min_PL.lo, min_PL.lo);
+        for (int i = 0; i < NR0_J; ++i) {
+            Ival rho_iv{rho0_ed[i], rho0_ed[i + 1]};
+            double tlo_cell = mul_dn(rho_iv.lo, rho_iv.lo);
+            J3A rho = J3A::cst(Aff2::var1(rho_iv));
+            J3A rho2 = rho * rho;
+            for (int j = 0; j < NP0_HALF; ++j) {
+                J3A sumA = J3A::cst({0, 0, 0, 0}), sumB = J3A::cst({0, 0, 0, 0});
+                for (int sgn : {+1, -1}) {
+                    J3A gam = J3A::cst(sgn > 0 ? a_cos[j] : -a_cos[j]);
+                    J3A sig = J3A::cst(a_sin[j]);
+                    J3A zx = rs0 + rho * gam, zy = rho * sig;
+                    J3A T = Ts0 + J3A::cst(Aff2::cst({2.0, 2.0})) * rs0 * rho * gam + rho2;
+                    J3A Delta = J3A::cst(Aff2::cst({2.0, 2.0})) * rs0 * gam + rho;
+                    J3A QL = J3A::cst(Aff2::cst(c1)) + J3A::cst(Aff2::cst(c2)) * (J3A::cst(Aff2::cst({2.0, 2.0})) * Ts0 + rho * Delta);
+                    J3A Bx = Ps0 + (rho + rs0 * gam) * (Delta * QL)
+                           + s0_j * (J3A::cst(Aff2::cst(Ival::pt(row.bA))) * Delta * gam
+                                   + J3A::cst(Aff2::cst(bB_s2)) * (J3A::cst(Aff2::cst({2.0, 2.0})) * rs0 + rho * gam));
+                    J3A By = (J3A::cst({0, 0, 0, 0}) - rs0 * sig) * (Delta * QL)
+                           + s0_j * (J3A::cst(Aff2::cst(Ival::pt(-row.bA))) * Delta * sig + J3A::cst(Aff2::cst(bB_s2)) * (rho * sig));
+                    J3A invB = j3a_inv(j3a_sqrt(Bx * Bx + By * By, pl2_min), min_PL.lo);
+                    J3A qhx = Bx * invB, qhy = By * invB;
+                    J3A phx = gam * qhx - sig * qhy, phy = sig * qhx + gam * qhy;
+                    J3A wg = j3a_exp_neg(T, tlo_cell) * rho;
+                    J3A wA = T + J3A::cst(Aff2::cst(sigA_m1));
+                    J3A uB = (Ts0 + J3A::cst(Aff2::cst({2.0, 2.0})) * rs0 * rho * gam
+                            + rho2 * (J3A::cst(Aff2::cst({2.0, 2.0})) * gam * gam - J3A::cst(Aff2::cst({1.0, 1.0}))))
+                           * J3A::cst(Aff2::cst(inv_sqrt2)) + J3A::cst(Aff2::cst(sigB_iv));
+                    J3A vB = J3A::cst(Aff2::cst(Ival::pt(2.0) * inv_sqrt2)) * zx * zy;
+                    sumA = sumA + wg * wA * phx;
+                    sumB = sumB + wg * (uB * phx + vB * phy);
+                }
+                Ival sc = Ival::pt(-4.0 / (2.0 * NP0_HALF)) * rho_iv.len_ival();
+                accA1 = accA1 + sc * sumA.c[1].integral();
+                accA3 = accA3 + sc * sumA.c[3].integral();
+                accB1 = accB1 + sc * sumB.c[1].integral();
+                accB3 = accB3 + sc * sumB.c[3].integral();
             }
         }
-        double tot_err = add_up(inner_err, R7_TAIL);
-        enc.hA_zero_tube = {sub_dn(sumA.lo, tot_err), add_up(sumA.hi, tot_err)};
-        enc.hB_zero_tube = {sub_dn(sumB.lo, tot_err), add_up(sumB.hi, tot_err)};
+        enc.c1_A0 = {sub_dn(accA1.lo, tail_j1), add_up(accA1.hi, tail_j1)};
+        enc.c3_A0 = {sub_dn(accA3.lo, tail_j3), add_up(accA3.hi, tail_j3)};
+        enc.c1_B0 = {sub_dn(accB1.lo, tail_j1), add_up(accB1.hi, tail_j1)};
+        enc.c3_B0 = {sub_dn(accB3.lo, tail_j3), add_up(accB3.hi, tail_j3)};
+
+        // Enclose C_5 = F^{(5)}([0, rs_cap]) / 120 via Jet1D<Ival, 5> up to Rmax0 = 8.5:
+        using J5I = Jet1D<Ival, 5>;
+        const int NR5_J = 112, NP5_J = 32;
+        Ival rs_cap_iv{0.0, enc.rs_cap};
+        J5I rs5 = J5I::var(rs_cap_iv, {1.0, 1.0});
+        J5I Ts5 = rs5 * rs5, Ts5_2 = Ts5 * Ts5;
+        J5I Ps5 = J5I::cst(c0) + J5I::cst(c1) * Ts5 + J5I::cst(c2) * Ts5_2;
+        J5I Cs5 = J5I::cst(a0_D) + J5I::cst(a2_C) * Ts5;
+        J5I s5_j = rs5 * Ps5 * j5i_inv(Cs5);
+        std::vector<double> rho5_ed(NR5_J + 1);
+        rho5_ed[0] = 0.0; rho5_ed[NR5_J] = Rmax0;
+        for (int i = 1; i < NR5_J; ++i) rho5_ed[i] = Rmax0 * std::pow(static_cast<double>(i) / NR5_J, 1.3);
+        Ival accC5A{0, 0}, accC5B{0, 0};
+        for (int i = 0; i < NR5_J; ++i) {
+            Ival rho_iv{rho5_ed[i], rho5_ed[i + 1]};
+            J5I rho = J5I::cst(rho_iv), rho2 = rho * rho;
+            for (int j = 0; j < NP5_J; ++j) {
+                Ival psi_iv{mul_dn(0.5, mul_dn(PI_IVAL.lo, static_cast<double>(j) / NP5_J)),
+                            mul_up(0.5, mul_up(PI_IVAL.hi, static_cast<double>(j + 1) / NP5_J))}, sb, cb;
+                ival_sincos_0_pi(psi_iv, sb, cb); cb.lo = std::max(0.0, cb.lo);
+                J5I sumA = J5I::cst({0, 0}), sumB = J5I::cst({0, 0});
+                for (int sgn : {+1, -1}) {
+                    J5I gam = J5I::cst(sgn > 0 ? cb : -cb), sig = J5I::cst(sb);
+                    J5I zx = rs5 + rho * gam, zy = rho * sig;
+                    J5I T = Ts5 + J5I::cst({2.0, 2.0}) * rs5 * rho * gam + rho2;
+                    J5I Delta = J5I::cst({2.0, 2.0}) * rs5 * gam + rho;
+                    J5I QL = J5I::cst(c1) + J5I::cst(c2) * (J5I::cst({2.0, 2.0}) * Ts5 + rho * Delta);
+                    J5I Bx = Ps5 + (rho + rs5 * gam) * (Delta * QL)
+                           + s5_j * (J5I::cst(Ival::pt(row.bA)) * Delta * gam
+                                   + J5I::cst(bB_s2) * (J5I::cst({2.0, 2.0}) * rs5 + rho * gam));
+                    J5I By = (J5I::cst({0, 0}) - rs5 * sig) * (Delta * QL)
+                           + s5_j * (J5I::cst(Ival::pt(-row.bA)) * Delta * sig + J5I::cst(bB_s2) * (rho * sig));
+                    J5I B2 = Bx * Bx + By * By;
+                    if (B2.c[0].lo <= 0.0) { std::fprintf(stderr, "FATAL: J5I B2.lo=%g\n", B2.c[0].lo); std::exit(2); }
+                    J5I invB = j5i_inv(j5i_sqrt(B2));
+                    J5I qhx = Bx * invB, qhy = By * invB;
+                    J5I phx = gam * qhx - sig * qhy, phy = sig * qhx + gam * qhy;
+                    J5I wg = j5i_exp_neg(T) * rho;
+                    J5I wA = T + J5I::cst(sigA_m1);
+                    J5I uB = (Ts5 + J5I::cst({2.0, 2.0}) * rs5 * rho * gam
+                            + rho2 * (J5I::cst({2.0, 2.0}) * gam * gam - J5I::cst({1.0, 1.0})))
+                           * J5I::cst(inv_sqrt2) + J5I::cst(sigB_iv);
+                    J5I vB = J5I::cst(Ival::pt(2.0) * inv_sqrt2) * zx * zy;
+                    sumA = sumA + wg * wA * phx;
+                    sumB = sumB + wg * (uB * phx + vB * phy);
+                }
+                Ival sc = Ival::pt(-4.0 / (2.0 * NP5_J)) * rho_iv.len_ival();
+                accC5A = accC5A + sc * sumA.c[5];
+                accC5B = accC5B + sc * sumB.c[5];
+            }
+        }
+        enc.C5_A = {sub_dn(accC5A.lo, tail_j5), add_up(accC5A.hi, tail_j5)};
+        enc.C5_B = {sub_dn(accC5B.lo, tail_j5), add_up(accC5B.hi, tail_j5)};
+
+        // Direct division-free enclosure of h_X(v) = F_X(r_*) / psi(r_*) = (c1 + c3 r_*^2 + C5 r_*^4) / Q(r_*^2)
+        // on s in [0, s1] subset [0, s_cap_lo):
+        if (enc.s1 >= enc.s_cap_lo) {
+            std::fprintf(stderr, "FATAL: s1=%g >= s_cap_lo=%g on row %s\n", enc.s1, enc.s_cap_lo, row.tag.c_str());
+            std::exit(2);
+        }
+        Ival r_s1{0.0, enc.rs_cap};
+        for (int it = 0; it < 4; ++it) {
+            Ival Ts = ival_sqr(r_s1);
+            Ival Q = (c0 + c1 * Ts + c2 * ival_sqr(Ts)) / (a0_D + a2_C * Ts);
+            Ival rn = Ival{0.0, enc.s1} / Q;
+            r_s1 = {0.0, std::min(enc.rs_cap, rn.hi)};
+        }
+        Ival Ts1 = ival_sqr(r_s1);
+        Ival Qs1 = (c0 + c1 * Ts1 + c2 * ival_sqr(Ts1)) / (a0_D + a2_C * Ts1);
+        enc.hA_zero_tube = (enc.c1_A0 + enc.c3_A0 * Ts1 + enc.C5_A * ival_sqr(Ts1)) / Qs1;
+        enc.hB_zero_tube = (enc.c1_B0 + enc.c3_B0 * Ts1 + enc.C5_B * ival_sqr(Ts1)) / Qs1;
     }
 
     // 3. Dyadic s_edges on [s1, 8.0] and compactified exterior eps in [0, 0.125] for G_X(s):
@@ -1371,8 +1552,8 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
                 integrate_polar_cell(row, rad_grid[i], ang_grid[j], s_iv, false, 0, acc);
             }
         }
-        enc.GA_c0[m] = acc.intA.c0; enc.GA_cs[m] = acc.intA.c3; enc.GA_rad[m] = add_up(acc.intA.rad, R7_TAIL);
-        enc.GB_c0[m] = acc.intB.c0; enc.GB_cs[m] = acc.intB.c3; enc.GB_rad[m] = add_up(acc.intB.rad, R7_TAIL);
+        enc.GA_c0[m] = acc.intA.c0; enc.GA_cs[m] = acc.intA.c3; enc.GA_rad[m] = add_up(acc.intA.rad, R7_G_TAIL);
+        enc.GB_c0[m] = acc.intB.c0; enc.GB_cs[m] = acc.intB.c3; enc.GB_rad[m] = add_up(acc.intB.rad, R7_G_TAIL);
     }
 
     const int NE = 24;
@@ -1388,140 +1569,11 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
                 integrate_polar_cell(row, rad_grid[i], ang_grid[j], eps_iv, true, 0, acc);
             }
         }
-        enc.GA_eps_c0[m] = acc.intA.c0; enc.GA_eps_cs[m] = acc.intA.c3; enc.GA_eps_rad[m] = add_up(acc.intA.rad, R7_TAIL);
-        enc.GB_eps_c0[m] = acc.intB.c0; enc.GB_eps_cs[m] = acc.intB.c3; enc.GB_eps_rad[m] = add_up(acc.intB.rad, R7_TAIL);
+        enc.GA_eps_c0[m] = acc.intA.c0; enc.GA_eps_cs[m] = acc.intA.c3; enc.GA_eps_rad[m] = add_up(acc.intA.rad, R7_G_TAIL);
+        enc.GB_eps_c0[m] = acc.intB.c0; enc.GB_eps_cs[m] = acc.intB.c3; enc.GB_eps_rad[m] = add_up(acc.intB.rad, R7_G_TAIL);
     }
 
-    // 4a. Vortex-centered Odd-Taylor origin cap for h_X'(v) on r_* in [0, rs_cap = 0.08]:
-    auto s_pt_ival = [&](double r) -> Ival {
-        Ival rv = Ival::pt(r), t2 = ival_sqr(rv);
-        return (rv * (c0 + c1 * t2 + c2 * ival_sqr(t2))) / (a0_D + a2_C * t2);
-    };
-    enc.rs_cap = 0.065;
-    enc.s_cap_lo = s_pt_ival(enc.rs_cap).lo;
-    {
-        // Exact c_1(0) = F'(0) and c_3(0) = F'''(0)/6 via Jet1D<Aff2, 3> at r_* = 0:
-        // At r_* = 0, |A_-(z; 0)| = rho P_L(rho^2) is independent of psi, so [r_*^1] and [r_*^3] are exact
-        // even trigonometric polynomials in psi of degree <= 9! By discrete Fourier orthogonality, the 16-point
-        // midpoint rule on (0, pi) (8 angles psi_j = pi*(2j+1)/32 in (0, pi/2) paired with pi - psi_j via sgn=+-1)
-        // integrates every harmonic cos(m*psi) for 1 <= m <= 31 to ZERO identically (zero angular quadrature error)!
-        using J3A = Jet1D<Aff2, 3>;
-        const int NR0_J = 1024, NP0_HALF = 8;
-        J3A rs0 = J3A::var(Aff2::cst({0.0, 0.0}), Aff2::cst({1.0, 1.0}));
-        J3A Ts0 = rs0 * rs0;
-        J3A Ps0 = J3A::cst(Aff2::cst(c0)) + J3A::cst(Aff2::cst(c1)) * Ts0;
-        J3A Cs0 = J3A::cst(Aff2::cst(a0_D)) + J3A::cst(Aff2::cst(a2_C)) * Ts0;
-        J3A s0_j = rs0 * (Ps0 * j3a_inv(Cs0, a0_D.lo));
-
-        std::vector<Aff2> a_sin(NP0_HALF), a_cos(NP0_HALF);
-        for (int j = 0; j < NP0_HALF; ++j) {
-            Ival th0 = PI_IVAL * Ival::pt((2.0 * j + 1.0) / (4.0 * NP0_HALF));
-            Ival s_t, c_t; ival_sincos_0_pi(th0, s_t, c_t);
-            a_sin[j] = Aff2::cst(s_t);
-            a_cos[j] = Aff2::cst(c_t);
-        }
-
-        Ival accA1{0, 0}, accA3{0, 0}, accB1{0, 0}, accB3{0, 0};
-        double Rmax0 = 7.5, dr0 = Rmax0 / NR0_J;
-        double pl2_min = mul_dn(min_PL.lo, min_PL.lo);
-        for (int i = 0; i < NR0_J; ++i) {
-            Ival rho_iv{dr0 * i, dr0 * (i + 1)};
-            double tlo_cell = mul_dn(rho_iv.lo, rho_iv.lo);
-            J3A rho = J3A::cst(Aff2::var1(rho_iv));
-            J3A rho2 = rho * rho;
-            for (int j = 0; j < NP0_HALF; ++j) {
-                J3A sumA = J3A::cst({0, 0, 0, 0}), sumB = J3A::cst({0, 0, 0, 0});
-                for (int sgn : {+1, -1}) {
-                    J3A gam = J3A::cst(sgn > 0 ? a_cos[j] : -a_cos[j]);
-                    J3A sig = J3A::cst(a_sin[j]);
-                    J3A zx = rs0 + rho * gam, zy = rho * sig;
-                    J3A T = Ts0 + J3A::cst(Aff2::cst({2.0, 2.0})) * rs0 * rho * gam + rho2;
-                    J3A Delta = J3A::cst(Aff2::cst({2.0, 2.0})) * rs0 * gam + rho;
-                    J3A QL = J3A::cst(Aff2::cst(c1)) + J3A::cst(Aff2::cst(c2)) * (J3A::cst(Aff2::cst({2.0, 2.0})) * Ts0 + rho * Delta);
-                    J3A Bx = Ps0 + (rho + rs0 * gam) * (Delta * QL)
-                           + s0_j * (J3A::cst(Aff2::cst(Ival::pt(row.bA))) * Delta * gam
-                                   + J3A::cst(Aff2::cst(bB_s2)) * (J3A::cst(Aff2::cst({2.0, 2.0})) * rs0 + rho * gam));
-                    J3A By = (J3A::cst({0, 0, 0, 0}) - rs0 * sig) * (Delta * QL)
-                           + s0_j * (J3A::cst(Aff2::cst(Ival::pt(-row.bA))) * Delta * sig + J3A::cst(Aff2::cst(bB_s2)) * (rho * sig));
-                    J3A invB = j3a_inv(j3a_sqrt(Bx * Bx + By * By, pl2_min), min_PL.lo);
-                    J3A qhx = Bx * invB, qhy = By * invB;
-                    J3A phx = gam * qhx - sig * qhy, phy = sig * qhx + gam * qhy;
-                    J3A wg = j3a_exp_neg(T, tlo_cell) * rho;
-                    J3A wA = T + J3A::cst(Aff2::cst(Ival::pt(row.sigA - 1.0)));
-                    J3A uB = (Ts0 + J3A::cst(Aff2::cst({2.0, 2.0})) * rs0 * rho * gam
-                            + rho2 * (J3A::cst(Aff2::cst({2.0, 2.0})) * gam * gam - J3A::cst(Aff2::cst({1.0, 1.0}))))
-                           * J3A::cst(Aff2::cst(inv_sqrt2)) + J3A::cst(Aff2::cst(Ival::pt(row.sigB)));
-                    J3A vB = J3A::cst(Aff2::cst(Ival::pt(2.0) * inv_sqrt2)) * zx * zy;
-                    sumA = sumA + wg * wA * phx;
-                    sumB = sumB + wg * (uB * phx + vB * phy);
-                }
-                Ival sc = Ival::pt(-4.0 / (2.0 * NP0_HALF)) * rho_iv.len_ival();
-                accA1 = accA1 + sc * sumA.c[1].integral();
-                accA3 = accA3 + sc * sumA.c[3].integral();
-                accB1 = accB1 + sc * sumB.c[1].integral();
-                accB3 = accB3 + sc * sumB.c[3].integral();
-            }
-        }
-        double tail_j0 = 1.0e-13;
-        enc.c1_A0 = {sub_dn(accA1.lo, tail_j0), add_up(accA1.hi, tail_j0)};
-        enc.c3_A0 = {sub_dn(accA3.lo, tail_j0), add_up(accA3.hi, tail_j0)};
-        enc.c1_B0 = {sub_dn(accB1.lo, tail_j0), add_up(accB1.hi, tail_j0)};
-        enc.c3_B0 = {sub_dn(accB3.lo, tail_j0), add_up(accB3.hi, tail_j0)};
-
-        // Enclose C_5 = F^{(5)}([0, rs_cap]) / 120 via Jet1D<Ival, 5>:
-        using J5I = Jet1D<Ival, 5>;
-        const int NR5_J = 96, NP5_J = 32;
-        Ival rs_cap_iv{0.0, enc.rs_cap};
-        J5I rs5 = J5I::var(rs_cap_iv, {1.0, 1.0});
-        J5I Ts5 = rs5 * rs5, Ts5_2 = Ts5 * Ts5;
-        J5I Ps5 = J5I::cst(c0) + J5I::cst(c1) * Ts5 + J5I::cst(c2) * Ts5_2;
-        J5I Cs5 = J5I::cst(a0_D) + J5I::cst(a2_C) * Ts5;
-        J5I s5_j = rs5 * Ps5 * j5i_inv(Cs5);
-        Ival accC5A{0, 0}, accC5B{0, 0};
-        for (int i = 0; i < NR5_J; ++i) {
-            Ival rho_iv{7.5 * std::pow(static_cast<double>(i) / NR5_J, 1.3),
-                        7.5 * std::pow(static_cast<double>(i + 1) / NR5_J, 1.3)};
-            J5I rho = J5I::cst(rho_iv), rho2 = rho * rho;
-            for (int j = 0; j < NP5_J; ++j) {
-                Ival psi_iv{0.5 * PI_IVAL.lo * j / NP5_J, 0.5 * PI_IVAL.hi * (j + 1) / NP5_J}, sb, cb;
-                ival_sincos_0_pi(psi_iv, sb, cb); cb.lo = std::max(0.0, cb.lo);
-                J5I sumA = J5I::cst({0, 0}), sumB = J5I::cst({0, 0});
-                for (int sgn : {+1, -1}) {
-                    J5I gam = J5I::cst(sgn > 0 ? cb : -cb), sig = J5I::cst(sb);
-                    J5I zx = rs5 + rho * gam, zy = rho * sig;
-                    J5I T = Ts5 + J5I::cst({2.0, 2.0}) * rs5 * rho * gam + rho2;
-                    J5I Delta = J5I::cst({2.0, 2.0}) * rs5 * gam + rho;
-                    J5I QL = J5I::cst(c1) + J5I::cst(c2) * (J5I::cst({2.0, 2.0}) * Ts5 + rho * Delta);
-                    J5I Bx = Ps5 + (rho + rs5 * gam) * (Delta * QL)
-                           + s5_j * (J5I::cst(Ival::pt(row.bA)) * Delta * gam
-                                   + J5I::cst(bB_s2) * (J5I::cst({2.0, 2.0}) * rs5 + rho * gam));
-                    J5I By = (J5I::cst({0, 0}) - rs5 * sig) * (Delta * QL)
-                           + s5_j * (J5I::cst(Ival::pt(-row.bA)) * Delta * sig + J5I::cst(bB_s2) * (rho * sig));
-                    J5I B2 = Bx * Bx + By * By;
-                    if (B2.c[0].lo <= 0.0) { std::fprintf(stderr, "FATAL: J5I B2.lo=%g\n", B2.c[0].lo); std::exit(2); }
-                    J5I invB = j5i_inv(j5i_sqrt(B2));
-                    J5I qhx = Bx * invB, qhy = By * invB;
-                    J5I phx = gam * qhx - sig * qhy, phy = sig * qhx + gam * qhy;
-                    J5I wg = j5i_exp_neg(T) * rho;
-                    J5I wA = T + J5I::cst(Ival::pt(row.sigA - 1.0));
-                    J5I uB = (Ts5 + J5I::cst({2.0, 2.0}) * rs5 * rho * gam
-                            + rho2 * (J5I::cst({2.0, 2.0}) * gam * gam - J5I::cst({1.0, 1.0})))
-                           * J5I::cst(inv_sqrt2) + J5I::cst(Ival::pt(row.sigB));
-                    J5I vB = J5I::cst(Ival::pt(2.0) * inv_sqrt2) * zx * zy;
-                    sumA = sumA + wg * wA * phx;
-                    sumB = sumB + wg * (uB * phx + vB * phy);
-                }
-                Ival sc = Ival::pt(-4.0 / (2.0 * NP5_J)) * rho_iv.len_ival();
-                accC5A = accC5A + sc * sumA.c[5];
-                accC5B = accC5B + sc * sumB.c[5];
-            }
-        }
-        double tail_j5 = 1.0e-12;
-        enc.C5_A = {sub_dn(accC5A.lo, tail_j5), add_up(accC5A.hi, tail_j5)};
-        enc.C5_B = {sub_dn(accC5B.lo, tail_j5), add_up(accC5B.hi, tail_j5)};
-    }
-
-    // 4b. Vortex-centered Poly3Q slabs on r_* in [0.04, rs_max] covering s in [s(0.04), 8.05]:
+    // 4b. Vortex-centered Poly3Q slabs on r_* in [0.035, rs_max] covering s in [s(0.035), 8.05]:
     double rs_lo_b = 2.0, rs_hi_b = 10.0;
     for (int it = 0; it < 60; ++it) {
         double mid = 0.5 * (rs_lo_b + rs_hi_b);
@@ -1561,11 +1613,14 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
         p3_sincos_unit(static_cast<double>(j) / NP_V_COARSE, static_cast<double>(j + 1) / NP_V_COARSE,
                        v_sin_c[j], v_cos_c[j], v_sin_bc[j], v_cos_bc[j]);
     }
-    const double R_VORTEX_TAIL = 1.0e-12;
+    const double exp_mT0_hi = ival_exp(Ival::pt(-39.0625)).hi;
 
     auto run_slab = [&](int m) {
         Ival rs_iv{enc.rs_edges[m], enc.rs_edges[m + 1]};
-        Ival smid_iv = s_pt_ival(0.5 * (rs_iv.lo + rs_iv.hi));
+        double r_mid, r_rad_unused;
+        param_mid_rad(rs_iv.lo, rs_iv.hi, r_mid, r_rad_unused);
+        (void)r_rad_unused;
+        Ival smid_iv = s_pt_ival(r_mid);
         enc.s_rs_mid_lo[m] = smid_iv.lo;
         enc.s_rs_mid_hi[m] = smid_iv.hi;
 
@@ -1573,12 +1628,21 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
         Ival dPs_b = Ival::pt(2.0) * rs_iv * (c1 + Ival::pt(2.0) * c2 * Ts_b), dCs_b = Ival::pt(2.0) * a2_C * rs_iv;
         Ival s_b = (rs_iv * Ps_b) / Cs_b;
         Ival ds_b = ((Ps_b + rs_iv * dPs_b) * Cs_b - rs_iv * Ps_b * dCs_b) / ival_sqr(Cs_b);
-        if (ds_b.lo <= 0.0) {
-            std::fprintf(stderr, "FATAL: nonpositive ds/dr* on slab %d of row %s (ds.lo=%g)\n", m, row.tag.c_str(), ds_b.lo);
+        if (ds_b.lo <= 0.0 || s_b.hi > 8.2) {
+            std::fprintf(stderr, "FATAL: invalid ds/dr* or s_b.hi on slab %d of row %s (ds.lo=%g, s.hi=%g)\n",
+                         m, row.tag.c_str(), ds_b.lo, s_b.hi);
             std::exit(2);
         }
         enc.ds_rs_lo[m] = ds_b.lo;
         enc.ds_rs_hi[m] = ds_b.hi;
+        double S_rat = div_up(s_b.hi, ds_b.lo);
+        double T0_v = 39.0625;
+        double mom2 = add_up(mul_up(T0_v, T0_v), add_up(mul_up(4.0, T0_v), 4.0));
+        double mom1 = add_up(T0_v, 2.0);
+        double vortex_tail_hi = mul_up(
+            add_up(mul_up(div_up(mul_up(2.0, S_rat), 6.25), mom2), mul_up(add_up(mul_up(6.4, S_rat), 6.0), mom1)),
+            exp_mT0_hi
+        );
 
         Poly3Q rs = Poly3Q::var3(rs_iv), Ts = p3_mul(rs, rs), Ts2 = p3_mul(Ts, Ts);
         Poly3Q Ps = p3_add(Poly3Q::cst(c0), p3_add(p3_scale(c1, Ts), p3_scale(c2, Ts2)));
@@ -1604,20 +1668,20 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
 
         double Rmid = rs_iv.hi + 3.25;
         double Rmax = std::ceil((rs_iv.hi + 6.25) * 4.0) * 0.25;
+        std::vector<double> rv_ed(nr1 + nr2 + 1);
+        rv_ed[0] = 0.0; rv_ed[nr1] = Rmid; rv_ed[nr1 + nr2] = Rmax;
+        for (int i = 1; i < nr1; ++i) rv_ed[i] = Rmid * (static_cast<double>(i) / nr1);
+        for (int i = 1; i < nr2; ++i) rv_ed[nr1 + i] = Rmid + (Rmax - Rmid) * (static_cast<double>(i) / nr2);
         Quad1D accPA{0, 0, 0, 0}, accPB{0, 0, 0, 0};
         for (int i = 0; i < nr1 + nr2; ++i) {
-            double ra = (i < nr1) ? (Rmid * static_cast<double>(i) / nr1)
-                                  : (Rmid + (Rmax - Rmid) * static_cast<double>(i - nr1) / nr2);
-            double rb = (i + 1 <= nr1) ? (Rmid * static_cast<double>(i + 1) / nr1)
-                                       : (Rmid + (Rmax - Rmid) * static_cast<double>(i + 1 - nr1) / nr2);
-            Ival rho_iv{ra, rb};
+            Ival rho_iv{rv_ed[i], rv_ed[i + 1]};
             for (int j = 0; j < npv; ++j) {
                 integrate_vortex_cell(ctx, rho_iv, static_cast<double>(j) / npv, static_cast<double>(j + 1) / npv,
                                       vsin[j], vcos[j], vsin_b[j], vcos_b[j], 0, accPA, accPB);
             }
         }
-        enc.PA_q0[m] = accPA.q0; enc.PA_q1[m] = accPA.q1; enc.PA_q2[m] = accPA.q2; enc.PA_rad[m] = add_up(accPA.rad, R_VORTEX_TAIL);
-        enc.PB_q0[m] = accPB.q0; enc.PB_q1[m] = accPB.q1; enc.PB_q2[m] = accPB.q2; enc.PB_rad[m] = add_up(accPB.rad, R_VORTEX_TAIL);
+        enc.PA_q0[m] = accPA.q0; enc.PA_q1[m] = accPA.q1; enc.PA_q2[m] = accPA.q2; enc.PA_rad[m] = add_up(accPA.rad, vortex_tail_hi);
+        enc.PB_q0[m] = accPB.q0; enc.PB_q1[m] = accPB.q1; enc.PB_q2[m] = accPB.q2; enc.PB_rad[m] = add_up(accPB.rad, vortex_tail_hi);
     };
 
     if (inner_threads <= 1) {
@@ -1640,18 +1704,15 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
 
     // 4c. Exterior folded polar slabs on eps = 1/s in [0, 0.125] (s >= 8.0, v >= 64.0):
     const int NR_HP = 112, NT_HP = 64;
+    std::vector<double> r_hp_ed(NR_HP + 1), th_hp_ed(NT_HP + 1);
+    r_hp_ed[0] = 0.0; r_hp_ed[NR_HP] = 7.0;
+    for (int i = 1; i < NR_HP; ++i) r_hp_ed[i] = 7.0 * std::pow(static_cast<double>(i) / NR_HP, 1.5);
+    th_hp_ed[0] = 0.0;
+    for (int j = 1; j <= NT_HP; ++j) th_hp_ed[j] = mul_dn(0.5, mul_dn(PI_IVAL.lo, static_cast<double>(j) / NT_HP));
     std::vector<PrecompRadial> rad_hp_grid(NR_HP);
     std::vector<PrecompAngular> ang_hp_grid(NT_HP);
-    for (int i = 0; i < NR_HP; ++i) {
-        double ra = 7.0 * std::pow(static_cast<double>(i) / NR_HP, 1.5);
-        double rb = 7.0 * std::pow(static_cast<double>(i + 1) / NR_HP, 1.5);
-        rad_hp_grid[i] = make_radial(row, {ra, rb});
-    }
-    for (int j = 0; j < NT_HP; ++j) {
-        double ta = 0.5 * PI_IVAL.lo * (static_cast<double>(j) / NT_HP);
-        double tb = 0.5 * PI_IVAL.hi * (static_cast<double>(j + 1) / NT_HP);
-        ang_hp_grid[j] = make_angular({ta, tb});
-    }
+    for (int i = 0; i < NR_HP; ++i) rad_hp_grid[i] = make_radial(row, {r_hp_ed[i], r_hp_ed[i + 1]});
+    for (int j = 0; j < NT_HP; ++j) ang_hp_grid[j] = make_angular({th_hp_ed[j], th_hp_ed[j + 1]});
     enc.PA_eps_c0.resize(NE); enc.PA_eps_cs.resize(NE); enc.PA_eps_rad.resize(NE);
     enc.PB_eps_c0.resize(NE); enc.PB_eps_cs.resize(NE); enc.PB_eps_rad.resize(NE);
     for (int m = 0; m < NE; ++m) {
@@ -1662,8 +1723,8 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
                 integrate_hp_polar_cell(row, rad_hp_grid[i], ang_hp_grid[j], eps_iv, true, 0, acc);
             }
         }
-        enc.PA_eps_c0[m] = acc.intA.c0; enc.PA_eps_cs[m] = acc.intA.c3; enc.PA_eps_rad[m] = add_up(acc.intA.rad, R7_TAIL);
-        enc.PB_eps_c0[m] = acc.intB.c0; enc.PB_eps_cs[m] = acc.intB.c3; enc.PB_eps_rad[m] = add_up(acc.intB.rad, R7_TAIL);
+        enc.PA_eps_c0[m] = acc.intA.c0; enc.PA_eps_cs[m] = acc.intA.c3; enc.PA_eps_rad[m] = add_up(acc.intA.rad, R7_HP_TAIL);
+        enc.PB_eps_c0[m] = acc.intB.c0; enc.PB_eps_cs[m] = acc.intB.c3; enc.PB_eps_rad[m] = add_up(acc.intB.rad, R7_HP_TAIL);
     }
 
     // 4d. Build row-level w_edges in [0, 256.0] and precompute division-free h_X' panel enclosures:
@@ -1746,10 +1807,12 @@ Ival eval_hp_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
             double s_hi_eff = std::min(sub_s.hi, enc.s_rs_pt_hi[m + 1]);
             if (s_hi_eff < s_lo_eff) continue;
             Ival s_eff{s_lo_eff, s_hi_eff};
-            double rs_rad = 0.5 * sub_dn(enc.rs_edges[m + 1], enc.rs_edges[m]);
+            double rs_mid_unused, rs_rad;
+            param_mid_rad(enc.rs_edges[m], enc.rs_edges[m + 1], rs_mid_unused, rs_rad);
+            (void)rs_mid_unused;
             Ival S_mid{enc.s_rs_mid_lo[m], enc.s_rs_mid_hi[m]};
             Ival ds_iv{enc.ds_rs_lo[m], enc.ds_rs_hi[m]};
-            Ival e3_sub = (s_eff - S_mid) / (ds_iv * Ival::pt(rs_rad));
+            Ival e3_sub = (rs_rad > 0.0) ? ((s_eff - S_mid) / (ds_iv * Ival::pt(rs_rad))) : Ival{0.0, 0.0};
             e3_sub.lo = std::max(-1.0, e3_sub.lo);
             e3_sub.hi = std::min(1.0, e3_sub.hi);
             Quad1D q{
@@ -1793,8 +1856,9 @@ Ival eval_hp_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
             double e0 = enc.eps_edges[m], e1 = enc.eps_edges[m + 1];
             if (e1 < eps_lo || e0 > eps_hi) continue;
             Ival sub_eps{std::max(eps_lo, e0), std::min(eps_hi, e1)};
-            double emid = 0.5 * (e0 + e1), erad = 0.5 * (e1 - e0);
-            Ival e3_sub = (sub_eps - Ival::pt(emid)) / Ival::pt(erad);
+            double emid, erad;
+            param_mid_rad(e0, e1, emid, erad);
+            Ival e3_sub = (erad > 0.0) ? ((sub_eps - Ival::pt(emid)) / Ival::pt(erad)) : Ival{0.0, 0.0};
             e3_sub.lo = std::max(-1.0, e3_sub.lo);
             e3_sub.hi = std::min(1.0, e3_sub.hi);
             double c0_e = is_B ? enc.PB_eps_c0[m] : enc.PA_eps_c0[m];
@@ -1831,8 +1895,9 @@ Ival eval_h_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
             double sub_lo = std::max(a, e0), sub_hi = std::min(b, e1);
             if (sub_hi < sub_lo) continue;
             Ival sub_s{sub_lo, sub_hi};
-            double smid = 0.5 * (e0 + e1), srad = 0.5 * (e1 - e0);
-            Ival e3_sub = (sub_s - Ival::pt(smid)) / Ival::pt(srad);
+            double smid, srad;
+            param_mid_rad(e0, e1, smid, srad);
+            Ival e3_sub = (srad > 0.0) ? ((sub_s - Ival::pt(smid)) / Ival::pt(srad)) : Ival{0.0, 0.0};
             e3_sub.lo = std::max(-1.0, e3_sub.lo);
             e3_sub.hi = std::min(1.0, e3_sub.hi);
             double c0 = is_B ? enc.GB_c0[m] : enc.GA_c0[m];
@@ -1852,8 +1917,9 @@ Ival eval_h_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
             if (e1 < eps_lo || e0 > eps_hi) continue;
             double sub_elo = std::max(eps_lo, e0), sub_ehi = std::min(eps_hi, e1);
             Ival sub_eps{sub_elo, sub_ehi};
-            double emid = 0.5 * (e0 + e1), erad = 0.5 * (e1 - e0);
-            Ival e3_sub = (sub_eps - Ival::pt(emid)) / Ival::pt(erad);
+            double emid, erad;
+            param_mid_rad(e0, e1, emid, erad);
+            Ival e3_sub = (erad > 0.0) ? ((sub_eps - Ival::pt(emid)) / Ival::pt(erad)) : Ival{0.0, 0.0};
             e3_sub.lo = std::max(-1.0, e3_sub.lo);
             e3_sub.hi = std::min(1.0, e3_sub.hi);
             double c0 = is_B ? enc.GB_eps_c0[m] : enc.GA_eps_c0[m];
@@ -1895,11 +1961,13 @@ FastKTable build_k_table(const RowProfileEnclosure& enc, bool is_B, const Ival& 
     const auto& hp_pan = is_B ? enc.hpB_pan : enc.hpA_pan;
     int NW = static_cast<int>(hp_pan.size());
     kt.KP_nodes.resize(NW + 1, {0.0, 0.0});
+    Ival e40 = ival_exp(Ival::pt(-40.0));
+    Ival one_m_e40 = Ival::pt(1.0) - e40;
     double inv_rt_lo = div_dn(1.0, sqrt_up(add_up(256.0, mul_up(40.0, u_iv.hi))));
     double inv_rt3_lo = mul_dn(inv_rt_lo, mul_dn(inv_rt_lo, inv_rt_lo));
     double inv_rt3_hi = 1.0 / 4096.0; // 16^{-3}
-    Ival kp_top = kt.P_inf_ival * Ival{inv_rt3_lo, inv_rt3_hi};
-    double tail40 = 1.0e-16;
+    Ival kp_top = kt.P_inf_ival * Ival{inv_rt3_lo, inv_rt3_hi} * one_m_e40;
+    double tail40 = mul_up(div_up(ival_abs(kt.P_inf_ival).hi, 4096.0), e40.hi);
     kt.KP_nodes[NW] = {sub_dn(kp_top.lo, tail40), add_up(kp_top.hi, tail40)};
 
     for (int j = NW - 1; j >= 0; --j) {
@@ -1948,34 +2016,40 @@ void eval_psi_g1_ival(const FastKTable& kt, const Ival& v_iv, Ival& psi_out, Iva
 
     if (v_iv.hi > 256.0) {
         Ival sub_v{std::max(v_iv.lo, 256.0), v_iv.hi};
-        double inv_rt_lo = (sub_v.hi >= 1e150) ? 0.0 : div_dn(1.0, sqrt_up(add_up(sub_v.hi, mul_up(40.0, kt.u_iv.hi))));
+        Ival e40 = ival_exp(Ival::pt(-40.0));
+        Ival one_m_e40 = Ival::pt(1.0) - e40;
+        double c_tau_hi = mul_up(40.0, kt.u_iv.hi);
+        double inv_rt_lo = (sub_v.hi >= 1e150) ? 0.0
+            : mul_dn(div_dn(sub_v.lo, add_up(sub_v.lo, c_tau_hi)),
+                     div_dn(1.0, sqrt_up(add_up(sub_v.hi, c_tau_hi))));
         double inv_rt_hi = div_up(1.0, sqrt_dn(sub_v.lo));
-        double pmax = add_up(ival_abs(kt.P_inf_ival).hi, 1.0e-12);
+        double pmax = ival_abs(kt.P_inf_ival).hi;
         double psi_hi = div_up(mul_up(pmax, pmax), mul_dn(sub_v.lo, sub_v.lo));
-        Ival g1_tail = kt.P_inf_ival * Ival{inv_rt_lo, inv_rt_hi};
-        g1_tail = {sub_dn(g1_tail.lo, 1.0e-14), add_up(g1_tail.hi, 1.0e-14)};
+        Ival g1_tail = kt.P_inf_ival * Ival{inv_rt_lo, inv_rt_hi} * one_m_e40;
+        double g1_rem = mul_up(mul_up(pmax, inv_rt_hi), e40.hi);
+        g1_tail = {sub_dn(g1_tail.lo, g1_rem), add_up(g1_tail.hi, g1_rem)};
         merge_pg({0.0, psi_hi}, g1_tail);
     }
 }
 
 std::vector<RowSpec> get_all_15_rows() {
-    // 14 Case I rows (tilt 0.4, 0.15) from P1 §1.1 / rows_all.lines + own-row 0.70 (tilt 0.4, 0.30) + band_row_0.84 check!
+    // 14 Case I rows (exact rational tilt 2/5, 3/20) from P1 §1.1 / rows_all.lines + own-row 0.70 (tilt 2/5, 3/10)!
     return {
-        {"0.700_own", 0.6245096553001263, 0.07904908421224786, -0.03518753810410364, -0.02017063635664792, 0.0036971895674154077, 0.4, 0.30},
-        {"0.740", 0.6781275617095309, 0.09539327050603977, -0.03937313202352518, -0.022174245012128353, 0.005245866309529529, 0.4, 0.15},
-        {"0.760", 0.7066343985897735, 0.10431377279347073, -0.041548253781079215, -0.023197930806220953, 0.006172649707780391, 0.4, 0.15},
-        {"0.780", 0.7363510124950496, 0.11373939453568198, -0.04377920822595397, -0.024235746896916818, 0.007209291146524148, 0.4, 0.15},
-        {"0.790", 0.7516941249996238, 0.1186447826270958, -0.04491892457253125, -0.024761704512558748, 0.007771064402320817, 0.4, 0.15},
-        {"0.800", 0.7673768889125988, 0.12367717725246688, -0.046082257981661004, -0.02529487327562145, 0.008364651085775717, 0.4, 0.15},
-        {"0.810", 0.783392836934038, 0.12884448465913795, -0.04725552388339392, -0.02583202245238701, 0.008988977623549207, 0.4, 0.15},
-        {"0.820", 0.7997734630974279, 0.13414383378358785, -0.048451815387690556, -0.026377577658754977, 0.009646421658694632, 0.4, 0.15},
-        {"0.830", 0.8165376104297967, 0.1395777827978554, -0.0496759046433095, -0.02693100916457022, 0.010338438615358537, 0.4, 0.15},
-        {"0.840", 0.8336645769796259, 0.1451519411882082, -0.050913306939498776, -0.027495117153251914, 0.011064787509303698, 0.4, 0.15},
-        {"0.845", 0.842392772582138, 0.14799004056880435, -0.05154996067972087, -0.02777932673325344, 0.01144329376046891, 0.4, 0.15},
-        {"0.850", 0.8512127524942481, 0.15086558015734544, -0.05218273153479364, -0.028067485693355317, 0.011830334695139898, 0.4, 0.15},
-        {"0.855", 0.8601447482675636, 0.15377540703893833, -0.052838171869459966, -0.028359822411707876, 0.012228120747279888, 0.4, 0.15},
-        {"0.860", 0.8691800227081347, 0.15672367813654822, -0.0534880791349209, -0.028652156319431955, 0.012635130402384913, 0.4, 0.15},
-        {"0.865", 0.8783259514041781, 0.1597092307190024, -0.05414284751003532, -0.028951745258042246, 0.013052163374299502, 0.4, 0.15}
+        {"0.700_own", 0.6245096553001263, 0.07904908421224786, -0.03518753810410364, -0.02017063635664792, 0.0036971895674154077, 2, 5, 3, 10},
+        {"0.740", 0.6781275617095309, 0.09539327050603977, -0.03937313202352518, -0.022174245012128353, 0.005245866309529529, 2, 5, 3, 20},
+        {"0.760", 0.7066343985897735, 0.10431377279347073, -0.041548253781079215, -0.023197930806220953, 0.006172649707780391, 2, 5, 3, 20},
+        {"0.780", 0.7363510124950496, 0.11373939453568198, -0.04377920822595397, -0.024235746896916818, 0.007209291146524148, 2, 5, 3, 20},
+        {"0.790", 0.7516941249996238, 0.1186447826270958, -0.04491892457253125, -0.024761704512558748, 0.007771064402320817, 2, 5, 3, 20},
+        {"0.800", 0.7673768889125988, 0.12367717725246688, -0.046082257981661004, -0.02529487327562145, 0.008364651085775717, 2, 5, 3, 20},
+        {"0.810", 0.783392836934038, 0.12884448465913795, -0.04725552388339392, -0.02583202245238701, 0.008988977623549207, 2, 5, 3, 20},
+        {"0.820", 0.7997734630974279, 0.13414383378358785, -0.048451815387690556, -0.026377577658754977, 0.009646421658694632, 2, 5, 3, 20},
+        {"0.830", 0.8165376104297967, 0.1395777827978554, -0.0496759046433095, -0.02693100916457022, 0.010338438615358537, 2, 5, 3, 20},
+        {"0.840", 0.8336645769796259, 0.1451519411882082, -0.050913306939498776, -0.027495117153251914, 0.011064787509303698, 2, 5, 3, 20},
+        {"0.845", 0.842392772582138, 0.14799004056880435, -0.05154996067972087, -0.02777932673325344, 0.01144329376046891, 2, 5, 3, 20},
+        {"0.850", 0.8512127524942481, 0.15086558015734544, -0.05218273153479364, -0.028067485693355317, 0.011830334695139898, 2, 5, 3, 20},
+        {"0.855", 0.8601447482675636, 0.15377540703893833, -0.052838171869459966, -0.028359822411707876, 0.012228120747279888, 2, 5, 3, 20},
+        {"0.860", 0.8691800227081347, 0.15672367813654822, -0.0534880791349209, -0.028652156319431955, 0.012635130402384913, 2, 5, 3, 20},
+        {"0.865", 0.8783259514041781, 0.1597092307190024, -0.05414284751003532, -0.028951745258042246, 0.013052163374299502, 2, 5, 3, 20}
     };
 }
 
@@ -2000,11 +2074,39 @@ void self_test_fpu() {
         std::fprintf(stderr, "FATAL: ival_sincos(pi/6) self-test failed: [%.17g, %.17g]\n", s6.lo, s6.hi);
         std::exit(2);
     }
+    // Live regression test for rounded-midpoint Taylor radius on f(r) = (r - m)^2:
+    {
+        Ival v_ulp{1.0, std::nextafter(1.0, 2.0)};
+        double m_ulp = v_ulp.mid();
+        Ival b_ulp = make_rad_1d(v_ulp, {0.0, 0.0}, {0.0, 0.0}, 2.0).bounds();
+        double exact_end = mul_dn(sub_dn(m_ulp, v_ulp.lo), sub_dn(m_ulp, v_ulp.lo)); // 0x1p-104
+        if (!(b_ulp.lo <= 0.0 && b_ulp.hi >= exact_end && exact_end >= std::ldexp(1.0, -104))) {
+            std::fprintf(stderr, "FATAL: make_rad_1d 1-ULP quadratic enclosure failed: hi=%a < %a!\n", b_ulp.hi, exact_end);
+            std::exit(2);
+        }
+        for (int n_pan : {96, 112}) {
+            double p_exp = (n_pan == 112) ? 1.5 : 2.1;
+            double prev = 0.0;
+            for (int i = 1; i <= n_pan; ++i) {
+                double cur = (i == n_pan) ? 7.0 : (7.0 * std::pow(static_cast<double>(i) / n_pan, p_exp));
+                Ival vp{prev, cur};
+                double mp = vp.mid();
+                Ival bp = make_rad_1d(vp, {0.0, 0.0}, {0.0, 0.0}, 2.0).bounds();
+                double dl = sub_up(mp, vp.lo), dr = sub_up(vp.hi, mp);
+                double fl = mul_up(dl, dl), fr = mul_up(dr, dr);
+                if (!(bp.lo <= 0.0 && bp.hi >= std::max(fl, fr))) {
+                    std::fprintf(stderr, "FATAL: make_rad_1d panel %d/%d quadratic enclosure failed!\n", i, n_pan);
+                    std::exit(2);
+                }
+                prev = cur;
+            }
+        }
+    }
 }
 
-// Negative Control 1 (P1 §6): At u = 1e-4, certify on the 1D Wick junta q_u(X) = sqrt(u) X(|X|^2 - 2)/sqrt(2)
+// Negative Control 1 (P1 §6): At u = 1e-6, certify on the 1D Wick junta q_u(X) = sqrt(u) X(|X|^2 - 2)/sqrt(2)
 // that (R1) holds strictly for ALL lambda > 0 (min_{lambda > 0} [E rho(lambda^2 V) - lambda u / e1] > 0.880 > t_lo
-// on all 17 pieces!) AND r_{h_A}(q_u) > 3.95 on row 0.865 and row 0.800 (rejecting one constant across all energies!).
+// on all 17 pieces!) AND r_{h_A}(q_u) > 3.60 on row 0.865 and row 0.800 (rejecting one constant across all energies!).
 struct JuntaLowUResult {
     std::string row_tag;
     double u_val;
@@ -2026,22 +2128,37 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
     const Ival u_iv = Ival::pt(u_val);
 
     // Center both h_A'(w) - m0 and k_A'(v) - m0 around m0 = midpoint(h_A'(0)) so m0^2 cancels cleanly!
+    double hp_abs_max = div_up(ival_abs(enc.PA_inf).hi, 4096.0);
     std::vector<Ival> dh_rem_nodes(NW + 1, {0.0, 0.0});
     for (int j = 0; j < NW; ++j) {
         Ival w_iv{w_edges[j], w_edges[j + 1]};
         dh_rem_nodes[j + 1] = dh_rem_nodes[j] + w_iv.len_ival() * (enc.hpA_pan[j] - m0_iv);
+        hp_abs_max = std::max(hp_abs_max, ival_abs(enc.hpA_pan[j]).hi);
     }
+    const double dkp_abs_max = add_up(hp_abs_max, std::fabs(m0));
 
     std::vector<Ival> DKP_nodes(NW + 1, {0.0, 0.0});
     {
+        Ival e40 = ival_exp(Ival::pt(-40.0));
+        Ival one_m_e40 = Ival::pt(1.0) - e40;
         double inv_rt_hi = div_dn(1.0, sqrt_up(add_up(256.0, mul_up(40.0, u_val))));
         double inv_rt3_lo = mul_dn(inv_rt_hi, mul_dn(inv_rt_hi, inv_rt_hi));
-        Ival kp_top = enc.PA_inf * Ival{inv_rt3_lo, 1.0 / 4096.0};
-        DKP_nodes[NW] = Ival{sub_dn(kp_top.lo, 1.0e-16), add_up(kp_top.hi, 1.0e-16)} - m0_iv;
+        Ival kp_top = enc.PA_inf * Ival{inv_rt3_lo, 1.0 / 4096.0} * one_m_e40;
+        double tail40 = mul_up(div_up(ival_abs(enc.PA_inf).hi, 4096.0), e40.hi);
+        DKP_nodes[NW] = Ival{sub_dn(kp_top.lo, tail40), add_up(kp_top.hi, tail40)} - m0_iv;
         for (int j = NW - 1; j >= 0; --j) {
             Ival dw = Ival::pt(w_edges[j + 1]) - Ival::pt(w_edges[j]);
             Ival r_j = ival_exp(-(dw / u_iv));
-            DKP_nodes[j] = (Ival::pt(1.0) - r_j) * (enc.hpA_pan[j] - m0_iv) + r_j * DKP_nodes[j + 1];
+            double r_lo = std::max(0.0, r_j.lo), r_hi = std::min(1.0, r_j.hi);
+            Ival h = enc.hpA_pan[j] - m0_iv;
+            const Ival& K = DKP_nodes[j + 1];
+            double dkp_lo = (K.lo >= h.lo)
+                ? add_dn(h.lo, mul_dn(r_lo, sub_dn(K.lo, h.lo)))
+                : add_dn(K.lo, mul_dn(std::max(0.0, sub_dn(1.0, r_hi)), sub_dn(h.lo, K.lo)));
+            double dkp_hi = (K.hi >= h.hi)
+                ? add_up(h.hi, mul_up(r_hi, sub_up(K.hi, h.hi)))
+                : add_up(K.hi, mul_up(sub_up(1.0, r_lo), sub_up(h.hi, K.hi)));
+            DKP_nodes[j] = {dkp_lo, dkp_hi};
         }
     }
 
@@ -2084,8 +2201,7 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
             }
         }
         if (v_iv.hi > 256.0) {
-            double pmax = add_up(ival_abs(enc.PA_inf).hi, 1.0e-12);
-            double bnd = div_up(pmax, 4096.0);
+            double bnd = div_up(ival_abs(enc.PA_inf).hi, 4096.0);
             out = ival_join(out, Ival{-bnd, bnd} - m0_iv);
         }
         return out;
@@ -2094,10 +2210,12 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
     // Integrate over T = |X|^2 in [0, 56] using exact Gaussian Wick identities:
     //   int_0^inf e^{-T} p(T) dT = 1,  int_0^inf e^{-T} (T(T-2)/sqrt(2)) p(T) dT = 8 sqrt(2).
     const int NPAN = 32768;
+    std::vector<double> t_junta_ed(NPAN + 1);
+    t_junta_ed[0] = 0.0; t_junta_ed[NPAN] = 56.0;
+    for (int i = 1; i < NPAN; ++i) t_junta_ed[i] = 56.0 * std::pow(static_cast<double>(i) / NPAN, 1.5);
     Ival c_rem_int{0.0, 0.0}, D1_int{0.0, 0.0}, D2_int{0.0, 0.0}, sqrt_p_int{0.0, 0.0};
     for (int i = 0; i < NPAN; ++i) {
-        double ta = 56.0 * std::pow(static_cast<double>(i) / NPAN, 1.5);
-        double tb = 56.0 * std::pow(static_cast<double>(i + 1) / NPAN, 1.5);
+        double ta = t_junta_ed[i], tb = t_junta_ed[i + 1];
         auto do_sub = [&](double a, double b) {
             if (b <= a) return;
             Ival T{a, b};
@@ -2119,10 +2237,17 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
             do_sub(ta, tb);
         }
     }
-    double tail = 1.0e-10;
-    c_rem_int = {sub_dn(c_rem_int.lo, tail), add_up(c_rem_int.hi, tail)};
-    D1_int = {sub_dn(D1_int.lo, tail), add_up(D1_int.hi, tail)};
-    D2_int = {std::max(0.0, sub_dn(D2_int.lo, tail)), add_up(D2_int.hi, tail)};
+    // Quantitative T >= 56 Gaussian Gamma-moment tails in Ival (int_{56}^inf T^5 e^{-T} dT < 2 * 56^5 * e^{-56}):
+    const double e56_hi = ival_exp(Ival::pt(-56.0)).hi;
+    const double mom5_56 = mul_up(2.0, mul_up(56.0 * 56.0 * 56.0 * 56.0 * 56.0, e56_hi));
+    const double tail_c  = mul_up(dkp_abs_max, mul_up(u_val, mom5_56));
+    const double tail_d1 = mul_up(dkp_abs_max, mul_up(u_val, mom5_56));
+    const double tail_d2 = mul_up(mul_up(dkp_abs_max, dkp_abs_max), mul_up(u_val, mom5_56));
+    const double tail_sp = mul_up(56.0 * 56.0 + 114.0, e56_hi);
+    c_rem_int = {sub_dn(c_rem_int.lo, tail_c), add_up(c_rem_int.hi, tail_c)};
+    D1_int = {sub_dn(D1_int.lo, tail_d1), add_up(D1_int.hi, tail_d1)};
+    D2_int = {std::max(0.0, sub_dn(D2_int.lo, tail_d2)), add_up(D2_int.hi, tail_d2)};
+    sqrt_p_int.hi = add_up(sqrt_p_int.hi, tail_sp);
 
     Ival c_int = Ival::pt(8.0) * sqrt2_iv * m0_iv * u_iv + c_rem_int;
     Ival c_sq_del = ival_sqr(c_int) / (Ival::pt(42.0) * u_iv);
@@ -2646,6 +2771,8 @@ int main(int argc, char** argv) {
         } else if (s == "--dump-rows" && i + 1 < argc) {
             mode = "dump";
             arg1 = argv[++i];
+        } else if (s == "--self-test-only") {
+            return 0;
         } else if (s == "--verify-all" && i + 2 < argc) {
             mode = "verify";
             arg1 = argv[++i];

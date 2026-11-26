@@ -490,7 +490,7 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
                 check=True
             )
             subprocess.run(
-                [bin_path, "--verify-all", dat_path, out_res, "--threads", str(min(4, os.cpu_count() or 2))],
+                [bin_path, "--verify-all", dat_path, out_res, "--threads", str(min(8, os.cpu_count() or 2))],
                 check=True
             )
             if not update_result:
