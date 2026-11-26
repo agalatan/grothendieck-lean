@@ -1833,3 +1833,21 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 | `code/multi-driver-self-interaction-gemini-21d5/README.md` | 1,400 B | `1d6524eb0dbed914172be7d3b795a7c7cfc684fef0ed30213288b99788334ce2` |
 | `code/multi-driver-self-interaction-gemini-21d5/verify.py` | 62,494 B | `7508bc2bfc3bf163f8f33ef25f9281bb5f46419dc6f07b57c0b83d7fc73624b3` |
 | `code/multi-driver-self-interaction-gemini-21d5/result.json` | 9,421 B | `3614df20314af9e5c570b0d38f72ac271d591853b16094da64073627d4e713ef` |
+
+## Sharpened retained six-sector peak bounds, profile transfer, and central consumer slabs (gemini-c1de, #728)
+
+- [Proof and replay instructions](sources/all-sector-transfer-gemini-c1de/PROOF.md) and
+  [zero-float stdlib verifier, rational certificate, generator, and 17-check control suite](code/all-sector-transfer-gemini-c1de/) (tag KAST; STATUS 7.4.10, 7.4.16, 7.5.3, 7.5.13, 8.1, 8.7, 8.10, 8.13, 11.47, 11.53; **P + C, author only**). All files are committed in the repository (`all_sector_transfer_cert.json` is 250,090 B < 300 KB) with zero external dependencies.
+- **Replay:**
+  - Zero-float, zero-`assert` exact rational verification of Machin $\pi$, $\sqrt{\pi}$, the `2.12a–b` Rice tangent at $u = 1/10$, all 8 2D `(u, V)` covers (`peak`, `7.5.3` `0.01‖U‖²` cession, and `11.53` scaled profile covers in both `D_+` and signed `11.61` modes), direct Row 8 (`[0.840, 0.847]`) closure of `8.13(ii)`, and all 5 subdivided central consumer $t$-slab covers (< 2 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py`.
+  - Positive-fixture, mathematical negative-control (including forbidden signed `11.61` below $u = 2/125$ and omitted $(\lambda - 1)(49/625)|\nu_0|^2$ on $\lambda > 1$ six-sector transfer), and corruption control suite (17 checks, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py`.
+  - Certificate regeneration from scratch (~15 s): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/generate_certs.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/all-sector-transfer-gemini-c1de/PROOF.md` | 21,694 B | `233f65d92e014b73e9bea301cd047b8ee078e5eb107e1c36221d1c7e50324690` |
+| `code/all-sector-transfer-gemini-c1de/README.md` | 2,455 B | `02cc0b362954c317054f4437a476166875a9ba80146788339085b3164707cb92` |
+| `code/all-sector-transfer-gemini-c1de/generate_certs.py` | 20,902 B | `b31c8542e10acc34b8d9b6d6ab45d1c962979b973fbfde9daf32ccf8369bc474` |
+| `code/all-sector-transfer-gemini-c1de/verify.py` | 32,585 B | `b672f1e1dbbed4c537300943cbed01bb9974bc70cf718129623bebfc35592e15` |
+| `code/all-sector-transfer-gemini-c1de/test_controls.py` | 7,354 B | `192ea7ed6a85fe1a54f3b7339094fdd016a8078a0eed94e81fd014f3ff8876cb` |
+| `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 250,090 B | `49c5d4e50027e152e31e8a3d618c9ce0368b5a191f5b0e3f22ab7101680f4654` |
