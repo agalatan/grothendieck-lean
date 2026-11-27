@@ -8,9 +8,8 @@ The standard complex Gaussian `gaussC` is invariant under the maps `z ↦ z̄` a
 sign changes of the two real coordinates of the planar Gaussian (`stdGaussian_two_map_coord`,
 `gaussC_map_of`).
 
-This module imports `ComplexGaussianCore` only.  It is used by the lower bound (the symmetries of
-the fibre potential, `CapSymmetry.lean`) and by the upper bound (`UpperChaos/F0ConditionalReality.lean`),
-and it keeps the upper-bound modules independent of the witness and fibre chain of the lower bound.
+This module imports `ComplexGaussianCore` only.  It is used by the symmetries of the fibre potential
+(`CapSymmetry.lean`).
 -/
 
 open MeasureTheory ProbabilityTheory Real Set

@@ -68,7 +68,7 @@ class Plan(unittest.TestCase):
 
 
 class Repository(unittest.TestCase):
-    """The real tree: the node caps and the upper-bound trees are skipped, the lower chain is built."""
+    """The real tree: the node caps and the heavy six-channel modules are skipped, the lower chain is built."""
 
     def test_repository(self):
         root = Path(__file__).resolve().parent.parent
@@ -80,7 +80,7 @@ class Repository(unittest.TestCase):
             self.assertIn(needed, t)
         for skipped in ['Grothe.LowerAnalytic.CapNodes', 'Grothe.MainResult']:
             self.assertNotIn(skipped, t)
-        self.assertFalse([m for m in targets if '.CapPieces.' in m or m.startswith('Grothe.UpperChaos.')])
+        self.assertFalse([m for m in targets if '.CapPieces.' in m or m.startswith('Grothe.UpperSix.Haagerup.ContourChecks.')])
         self.assertLess(len(targets), 1000)
 
 

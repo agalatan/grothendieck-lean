@@ -24,8 +24,7 @@ The other caps modules hold data (CapCommon, CapRowKK/Data, CapPieces/D<tag>) or
 CapPieces/N<tag>, CapRowKK/Bridge, and the theorems of the row assemblies).
 
 The hash covers, in this order:
- (a) the Lean sources of the import closure of the leaves AnchorRange, C and R, of the rows' Data modules and of the
-     quadrature-checker facts (QUAD_TOPS: Grothe/UpperQuad/Facts GradeBlock00-11, Even, Omitted);
+ (a) the Lean sources of the import closure of the leaves AnchorRange, C and R and of the rows' Data modules;
  (b) directly, without following their imports: CapNodes.lean, GrotheCapsKernel.lean, lean-toolchain,
      lake-manifest.json, lakefile.toml, and the caps' proof modules (CapCommonFacts, CapPieces/N*, CapRowKK/Assembly,
      CapRowKK/Bridge);
@@ -63,12 +62,8 @@ from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
-PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.", "GrotheQuadKernel.", "GrotheQuadExtKernel.")
-PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel", "GrotheQuadExtKernel")
-# The quadrature checker's native facts (Grothe/UpperQuad/Facts): one block of the energy table each, about ten hours
-# single-threaded; built once on a heavy runner and cached like the node caps. Hashed with them, not registered.
-QUAD_TOPS = [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + ["Grothe.UpperQuad.Facts.Even",
-                                                                             "Grothe.UpperQuad.Facts.Omitted"]
+PROJECT_PREFIXES = ("Grothe.", "GrotheCapsKernel.")
+PROJECT_ROOTS = ("Grothe", "GrotheCapsKernel")
 NS = "Grothe.LowerAnalytic"
 KERNEL = "GrotheCapsKernel"
 CAP_NODES = "Grothe/LowerAnalytic/CapNodes.lean"
@@ -594,7 +589,7 @@ def write_registry(root=ROOT, costs=None, rel=REGISTRY):
 def hashed_files(src, view):
     """(a) the computation closure, (b) the extras and the caps' proof modules, (c) the registry, in hash order."""
     roots = set(view["assembly_roots"])
-    tops = QUAD_TOPS + [module_of(r) for r in view["compute_roots"] if r not in roots] + \
+    tops = [module_of(r) for r in view["compute_roots"] if r not in roots] + \
         [f"{NS}.CapRow{row:02d}.Data" for row in view["rows"]]
     files = [path_of(m) for m in closure(tops, src=src)]
     seen = set(files)

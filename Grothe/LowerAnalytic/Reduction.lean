@@ -7,7 +7,7 @@ import Grothe.LowerAnalytic.Frame
 (rotate `P₁,₀h` to the visible coordinate by a unitary frame, then `sharedReduction_frame`), for
 every witness with weight `e` and tail `ν` whose hat weight is the constant `ε` of the rows, given
 `TailNodeCaps (nuHat ν)` (`RowGaussian.lean`), the node caps of the potentials of the rows with the identity tail.
-The envelope converts this reduction into the lower endpoint (`LowerBound.lean`).
+The envelope converts this reduction into the lower endpoint (`LowerBoundTight.lean`, `SparseSteinBound.lean`).
 -/
 
 open MeasureTheory Grothe.Lower

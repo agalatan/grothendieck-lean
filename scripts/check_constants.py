@@ -66,7 +66,7 @@ FRACTION_EQ_DECIMAL = re.compile(
     + r"[`$\s]*=[`$\s]*(?P<dec>1\.40\d+)(?P<ell>…|\.\.\.|\\ldots\b|\\dots\b)"
 )
 # prose/table files where bare ellipsis decimals `1.40…` (outside `## Other numbers` in CONSTANTS.md) name current
-# bounds or one of the fixed literature / single-channel constants below
+# bounds or one of the fixed constants below
 CURRENT_EXPANSION_DOCS = (
     "README.md",
     "docs/CONSTANTS.md",
@@ -74,7 +74,7 @@ CURRENT_EXPANSION_DOCS = (
     "docs/overview.tex",
     ".claude/skills/lean-grothe/SKILL.md",
 )
-# 1/γ† = 1.404575934663742…, Haagerup's 1987 bound 1.40490913…, and the archived single-channel bound 1.40459939536120707492…
+# 1/γ† = 1.404575934663742…, Haagerup's 1987 bound 1.40490913…, and the bound 1.40459939536120707492… of the removed single-channel proof
 KNOWN_OTHER_EXPANSIONS = ("1.404575934663742", "1.40490913", "1.40459939536120707492")
 # the arguments of a claim `IsBound (…)` that starts with a number
 ROLE_CLAIM = re.compile(r"\b(IsBound)\s*\(\s*(?=[(\d])")

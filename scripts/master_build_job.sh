@@ -5,8 +5,8 @@
 # changes sources under a running build. Each round:
 #   1. check out the current origin/master in $BUILDER;
 #   2. build there (incremental) the modules that scripts/local_build_targets.py lists: every import of the root
-#      Grothe except the node caps (rows, localised pieces, assembly) and the upper-bound trees UpperChaos and
-#      UpperQuad (data/local-build-exclude.txt), and except what imports them. Those take hundreds of CPU-hours cold
+#      Grothe except the node caps (rows, localised pieces, assembly) and the six-channel overlap table and contour
+#      checks (data/local-build-exclude.txt), and except what imports them. The caps take hundreds of CPU-hours cold
 #      and are verified by CI only; an agent's lower-bound modules outside them start warm;
 #   3. on success, record the commit in $BUILDER/.lake/build/built-commit and publish a consistent snapshot
 #      $MAIN/.lake/master-cache: an APFS copy-on-write clone (instant; shares disk blocks until later builds change

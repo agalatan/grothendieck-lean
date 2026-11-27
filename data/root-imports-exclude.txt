@@ -1,8 +1,3 @@
-#
-#   Grothe.lean, not through the GrotheKernel root).
-# * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
-# Header comments only: `tools/gen_root_imports.py` keeps this file sorted. Current entries:
-# Modules that tools/gen_root_imports.py must NOT import in the root files Grothe.lean / GrotheKernel.lean.
+# Modules that tools/gen_root_imports.py must NOT import in the root files Grothe.lean / GrotheCapsKernel.lean:
 # One module per line, sorted; `#` starts a comment. Union-merged by git (.gitattributes).
-GrotheKernel.BandMass
-GrotheKernel.HeadWeight
+# generated research modules that no proof uses yet. No entries at present.

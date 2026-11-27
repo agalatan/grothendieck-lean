@@ -40,7 +40,7 @@ class CheckAxiomsTests(unittest.TestCase):
                        for name in sorted(required))
 
     def test_existing_policy_headlines_and_native_restrictions(self):
-        headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
+        headlines = {"Grothe.Statement.main_bounds",
                      "Grothe.Statement.sparse_stein_endpoint", "Grothe.UpperSix.bound",
                      "Grothe.UpperSeven.bound", "Grothe.UpperSeven.constant_le",
                      "Grothe.UpperSeven.constant_lt_inv_gammaDagger",
@@ -48,8 +48,8 @@ class CheckAxiomsTests(unittest.TestCase):
                      "Grothe.LowerAnalytic.SparseStein.actual_deductions"}
         self.assertTrue(headlines <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
-        self.assertNotIn("Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1", CHECKER.NATIVE)
-        self.assertIn("Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1",
+        self.assertFalse([name for name in CHECKER.NATIVE if name.startswith("Grothe.UpperChaos.")])
+        self.assertIn("Haagerup.AngularSelector.NumericWitness.budgets_ok._native.native_decide.ax_1_1",
                       CHECKER.NATIVE)
 
     def test_data_registries_preserve_topic_modes_and_local_native_facts(self):
