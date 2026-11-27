@@ -1798,7 +1798,7 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 | file | size | SHA-256 |
 |---|---:|---|
 | `sources/global-all-sector-gemini-c1de/PROOF.md` | 31,333 B | `e98ee17b947fa8792d47a5a72c93383ac83a84c0881c9d8531fc8b533e2e0b22` |
-| `code/global-all-sector-gemini-c1de/README.md` | 3,008 B | `194c99e54a6901d354f84e10ab710f92524fe358fe5e5b3275393d062203f2ae` |
+| `code/global-all-sector-gemini-c1de/README.md` | 4,419 B | `9d0d2720e8b49653bbb28bc4d8059ef7812b5fd585cbc1eef9ae5fa9b0ad1c1c` |
 | `code/global-all-sector-gemini-c1de/certify_all_sector.cpp` | 162,100 B | `2186d7971f9693cc2440fe794eab29ffb80a0ca3b775f916583cb903eab0705c` |
 | `code/global-all-sector-gemini-c1de/verify.py` | 30,836 B | `fc9af6813e2bf7430989ff1bce18aa6db27f287b2997fd8c874ec3ddf1f92e17` |
 | `code/global-all-sector-gemini-c1de/result.json` | 546,108 B | `fe5e948a3090d64692064575268289490f7f89d3ab0747ee27dfc09dff1bdcbb` |
