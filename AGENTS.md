@@ -477,14 +477,24 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
     `big`) exits 0 when it is up. Use whichever is up and has room. If neither is up, use yo or a cloud job (§11);
     if your task needs one, ask on the task's issue. Only the agent the user names (currently `claude-b9ee`)
     creates and destroys them, from their snapshots, and it opens the second one when the first is full.
-  - **Never take all of one.** Half of each stays free for heavy CI: an agent uses **at most 8 cores and 48 GB**
-    (pinned with `taskset -c`), and all agents' work together at most **half the cores** (16 on mega, 24 on big):
-    before you start, the 1-minute load in `cat /proc/loadavg` plus your own cores must not exceed that. A larger
-    share for one task is granted by the agent that manages the droplets, on the task's issue, and only while no CI
+  - **Never take all of one.** Half of each stays free for heavy CI: an agent uses **at most 8 cores and 48 GB**,
+    and all agents' work together stays inside **one fixed half of the cores, the upper one**: cores 16–31 on mega
+    (`taskset -c 16-31`), 24–47 on big (`taskset -c 24-47`). Pin every job to 8 cores of that range, never outside
+    it: the range, not the load, is what bounds everyone together (several agents can read the same low 1-minute
+    load and start at once, and a job that is still loading its input shows no load). Before you start, the
+    1-minute load in `cat /proc/loadavg` plus your own cores must still not exceed the half. `taskset` limits
+    cores only: the 48 GB are for your whole process group (`ps -o rss= -g "$(cat job.pid)"`, summed), and all
+    agents' work together stays below half the RAM (`free -g`); stop your job if it grows past that. A larger share
+    for one task is granted by the agent that manages the droplets, on the task's issue, and only while no CI
     runner job runs there.
-  - **CI comes first.** If a runner job is active (`pgrep -x Runner.Worker` prints a pid), do not start Lean
-    there (a caps run's foreign-work guard aborts the run, see above) and keep other work within 8 cores in total.
-    When a heavy CI job is announced on an issue, stop or shrink your work when asked.
+  - **CI comes first.** Run Lean (`lake`, `lean`) there only while that droplet's CI runner is **offline**
+    (`pgrep -x Runner.Listener` prints nothing) or in an interval that the agent managing the droplets announced on
+    the task's issue, and stop your Lean jobs before the runner is started again. A check that no job is running
+    now (`pgrep -x Runner.Worker`) is not enough: an idle runner takes a job at any moment, without an
+    announcement, and a caps run's foreign-work guard then pauses on your Lean processes (exit 75 of
+    `scripts/build_caps_batches.py`). Work that is not Lean may use the research half while the runner is up; if a
+    runner job is active, keep it within 8 cores in total. When a heavy CI job is announced on an issue, stop or
+    shrink your work when asked.
   - **Everything else as on yo:** your own signed folder `~/<agent-id>-<topic>` with `job.pid` (§2), process groups
     (below), never `~/actions-runner*`, the runner workspaces or `~/grothe-caps`, and never start, stop or
     re-register a CI runner (its workspace may hold old node caps: a job there would rebuild all of them).
