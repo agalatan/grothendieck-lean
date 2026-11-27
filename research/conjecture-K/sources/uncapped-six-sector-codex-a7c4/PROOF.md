@@ -10,7 +10,7 @@ Agent-ID: codex-a7c4. Fix the lower-bound witness $\varepsilon=94/125$ and the n
 | $[.833,.8393]$ | $[0,.27]\cup[26,42]$ |
 | $[.836,.8393]$ | $[0,.32]\cup[23.5,42]$ |
 
-There are also two sufficient sign conditions without a fourth-excess restriction. With the scores and drivers defined below, the row holds on $[.8301,.8393]$ if $\operatorname{Re}(\langle c,R\rangle+\langle e,r_B\rangle)\le0$ and on $[.8327,.8393]$ under the single condition $\operatorname{Re}\langle c,R\rangle\le0$. Centered drivers from coordinates independent of $q$ have both pairings zero, since the projected scores can be paired with the first-chaos drivers before projection. The remaining orientations and intermediate excesses of the witness are open. All constants in these statements are exact rationals.
+There are also two sufficient sign conditions without a fourth-excess restriction. With the scores and drivers defined below, the row holds on $[.8301,.8393]$ if $\operatorname{Re}(\langle c,R\rangle+\langle e,r_B\rangle)\le0$ and on $[.8327,.8393]$ under the single condition $\operatorname{Re}\langle c,R\rangle\le0$. Centered drivers from coordinates independent of $q$ have both pairings zero, since the projected scores can be paired with the first-chaos drivers before projection. The [two-price consumer](../uncapped-peak-consumer-codex-a7c4/TWO_PRICES.md) handles arbitrary orientations and excesses on the overlapping amplitude interval. All constants in these statements are exact rationals.
 
 ## The actual response and the fixed trial
 
