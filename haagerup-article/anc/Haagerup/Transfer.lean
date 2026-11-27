@@ -1,28 +1,58 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.Statement
 import HaagerupKernel.Basic
 import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Algebra.Order.Field.GeomSum
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 
-set_option warningAsError true
-
 /-!
-# Transfer inequality, Hardy tail, bivariate composition, and convex combinations of channels
+# Dominated kernels, the transfer lemma, the Hardy tail, and channel series
 
-Self-contained development connecting unimodular rounding kernels to upper bounds on the complex
-Grothendieck constant `Haagerup.Statement.complexGrothendieckConstant`:
+This file contains the elementary part of Section 3 (General theory) of the article: it connects kernels
+`Q : ℂ → ℂ` on the closed unit disc to upper bounds for the complex Grothendieck constant
+`Haagerup.Statement.complexGrothendieckConstant`. No measure theory is used here.
 
-1. **Domination and tensor powers**: dominated kernels (`DominatedKernel`),
-   monomials `z |z|^{2n}` are realised by unit tensor powers (`inner_tpow`, `norm_tpow`), and
-   `transfer` bounds `IsBound (1 / (c - δ))` from the `ℓ¹` residual of `radialKernel h` against `c z`.
-2. **Residual split and Hardy tail**: `residual_split` and `hardy_tail`
-   bound the tail `∑_{n > K} |hₙ|` by Cauchy–Schwarz from a circle mean-square budget at radius `r > 1`.
-3. **Wiener `ℓ¹` algebra and bivariate kernels**: `l1`, `termOf`, `bivarKernel`, `bivarKernel_eq_head`,
-   and `onedTable` (`bivarKernel_oned_eq_head`).
-4. **Intervals and convex combinations**: membership `mem` in a 128-bit interval, rational polynomials `ofListQ`,
-   and convex combinations of channels (`summable_convex_comb`, `radialKernel_convex_comb`).
+## Main definitions
 
+* `DominatedKernel Q`: for every matrix `A` and all unit vectors `xᵢ`, `yⱼ`,
+  `‖∑ᵢⱼ Aᵢⱼ Q ⟪xᵢ, yⱼ⟫‖ ≤ scalarOpt A`. A real sequence `h` is dominated in the sense of Definition 3.1
+  (dominated sequences) exactly when `radialKernel h`, the kernel `z ↦ ∑ₖ hₖ z |z|^(2k)`, is dominated.
+* `tpow n x`: the tensor power `x^{⊗(n+1)} ⊗ conj(x)^{⊗n}`, called `Ψₙ(x)` in the proof of Lemma 3.2 (Transfer).
+* `l1 P`: the `ℓ¹` norm `∑ⱼ |[Xʲ] P|` of a real polynomial (Section 2.1, Conventions).
+* `termOf P Q (d₁, d₂)` and `bivarKernel P Q μ`: the polynomial `X^(⌊d₁/2⌋ + ⌊d₂/2⌋) P^d₁ Q^d₂` and the series
+  `hₖ = ∑ μ(d₁, d₂) [Xᵏ] termOf P Q (d₁, d₂)` of equation (3.3) of Proposition 3.7 (Channel series), for an
+  arbitrary table `μ` in place of the energies.
+* `headIdx N`: the finite set of pairs `(d₁, d₂)` with `d₁ + 3 d₂ ≤ N`.
+* `mem x I`: the real number `x` lies in the fixed-point interval `I` of scale `2⁻¹²⁸`.
+
+## Main results
+
+* `inner_tpow`, `norm_tpow`: equation (3.2), `⟪Ψₙ x, Ψₙ y⟫ = ⟪x, y⟫ |⟪x, y⟫|^(2n)`, and `‖Ψₙ x‖ = 1` for unit `x`.
+* `dominatedKernel_convex_comb`: convex combinations of dominated kernels are dominated; this is the convexity
+  assertion of Lemma 3.2 (Transfer).
+* `transfer`: if `radialKernel h` is dominated and `|h₀ - c| + ∑_{k ≥ 1} |hₖ| ≤ δ < c`, then
+  `IsBound (1 / (c - δ))`. This is Lemma 3.2 (Transfer) combined with the estimate (8.1) of Section 8
+  (Proof of the main theorem): the hypothesis gives `D(h) ≥ c - δ`.
+* `residual_split`: the residual `|h₀ - c| + ∑_{k ≥ 1} |hₖ|` is the sum of its part with `k ≤ K` and the tail
+  `∑_{k > K} |hₖ|`, as in (8.1).
+* `hardy_tail`: the Cauchy–Schwarz step of Lemma 7.10 (Hardy tail): a bound `∑ₙ hₙ² r^(2(2n+1)) ≤ B` with `r > 1`
+  bounds the tail `∑_{n ≥ K} |hₙ|`.
+* `l1_mul_le`, `l1_pow_le`, `summable_abs_bivarKernel`: submultiplicativity of the `ℓ¹` norm and the absolute
+  summability of the channel series, Proposition 3.7 (Channel series), part (1).
+* `bivarKernel_eq_head`: for `Q` without constant term, the coefficients `hⱼ` with `2j + 1 ≤ N` are finite sums
+  over `headIdx N`; with `Q = -X` this is Lemma 4.11 (Banded head).
+* `bivarKernel_oned_eq_head`: for a table supported on the pairs `(2k + 1, 0)` (`onedTable`), the series is
+  `hⱼ = ∑ₖ νₖ [Xʲ] (Xᵏ P^(2k+1))`, the form of the series in Lemma 3.8 (energies of the phase map) and Lemma 4.5
+  (Antisymmetric preprocessing).
+* `summable_convex_comb`, `radialKernel_convex_comb`: the radial kernel of a finite linear combination of
+  absolutely summable sequences is the combination of the radial kernels (used for the mixture of the six
+  channels in Section 5, The certificate).
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -78,7 +108,9 @@ lemma vectorOpt_nonneg (A : Fin m → Fin n → ℂ) : 0 ≤ vectorOpt A :=
 
 end Optima
 
-/-- A kernel `Q : ℂ → ℂ` is dominated if `‖∑ᵢⱼ aᵢⱼ Q(⟪xᵢ, yⱼ⟫)‖ ≤ scalarOpt A` on unit vectors. -/
+/-- A kernel `Q : ℂ → ℂ` is *dominated* if `‖∑ᵢⱼ Aᵢⱼ Q(⟪xᵢ, yⱼ⟫)‖ ≤ scalarOpt A` for every complex matrix `A`
+and all unit vectors `xᵢ`, `yⱼ` of a finite-dimensional space `ℂ^ι`. A sequence `h` is dominated in the sense of
+Definition 3.1 of the article when `radialKernel h` is. -/
 def DominatedKernel (Q : ℂ → ℂ) : Prop :=
   ∀ (m n : ℕ) (A : Fin m → Fin n → ℂ) (ι : Type) [Fintype ι]
     (x : Fin m → EuclideanSpace ℂ ι) (y : Fin n → EuclideanSpace ℂ ι),
@@ -93,6 +125,7 @@ theorem dominatedKernel_congr_ball {Q Q' : ℂ → ℂ} (hQ : DominatedKernel Q)
   simp_rw [hpt]
   exact hQ m n A ι x y hx hy
 
+/-- A convex combination of dominated kernels is dominated (the convexity assertion of Lemma 3.2, Transfer). -/
 theorem dominatedKernel_convex_comb {k : ℕ} {Q : Fin k → ℂ → ℂ} {w : Fin k → ℝ}
     (hw0 : ∀ p, 0 ≤ w p) (hw1 : ∑ p, w p = 1) (hQ : ∀ p, DominatedKernel (Q p)) :
     DominatedKernel (fun z => ∑ p, (w p : ℂ) * Q p z) := by
@@ -121,10 +154,14 @@ theorem dominatedKernel_convex_comb {k : ℕ} {Q : Fin k → ℂ → ℂ} {w : F
     _ = (∑ p, w p) * scalarOpt A := (sum_mul _ _ _).symm
     _ = scalarOpt A := by rw [hw1, one_mul]
 
-/-! ### 2. Tensor powers and the single-channel transfer inequality -/
+/-! ### 2. Tensor powers and the transfer lemma -/
 
+/-- Index type of the tensor power `tpow n`: a pair of multi-indices, `n + 1` indices for the factors `x` and
+`n` indices for the conjugated factors. -/
 abbrev TIdx (ι : Type) (n : ℕ) : Type := (Fin (n + 1) → ι) × (Fin n → ι)
 
+/-- The tensor power `Ψₙ(x) = x^{⊗(n+1)} ⊗ conj(x)^{⊗n}` of the proof of Lemma 3.2 (Transfer), as a vector of
+`EuclideanSpace ℂ (TIdx ι n)`: its coordinate at `(f, g)` is `(∏ₖ x (f k)) * ∏ₖ conj (x (g k))`. -/
 def tpow {ι : Type} [Fintype ι] (n : ℕ) (x : EuclideanSpace ℂ ι) :
     EuclideanSpace ℂ (TIdx ι n) :=
   WithLp.toLp 2 fun p => (∏ k, x (p.1 k)) * ∏ k, conj (x (p.2 k))
@@ -139,6 +176,7 @@ private lemma inner_eq_sum {ι : Type} [Fintype ι] (x y : EuclideanSpace ℂ ι
     inner ℂ x y = ∑ a, conj (x a) * y a := by
   simp only [PiLp.inner_apply, RCLike.inner_apply']
 
+/-- Equation (3.2) of the article: `⟪Ψₙ x, Ψₙ y⟫ = ⟪x, y⟫ * |⟪x, y⟫|^(2n)`. -/
 theorem inner_tpow {ι : Type} [Fintype ι] (n : ℕ) (x y : EuclideanSpace ℂ ι) :
     inner ℂ (tpow n x) (tpow n y) = inner ℂ x y * ((‖inner ℂ x y‖ : ℝ) : ℂ) ^ (2 * n) := by
   rw [inner_eq_sum]
@@ -163,6 +201,7 @@ theorem inner_tpow {ι : Type} [Fintype ι] (n : ℕ) (x y : EuclideanSpace ℂ 
     _ = inner ℂ x y * ((‖inner ℂ x y‖ : ℝ) : ℂ) ^ (2 * n) := by
         rw [Complex.mul_conj', ← pow_mul]
 
+/-- The tensor power of a unit vector is a unit vector. -/
 theorem norm_tpow {ι : Type} [Fintype ι] (n : ℕ) (x : EuclideanSpace ℂ ι) (hx : ‖x‖ = 1) :
     ‖tpow n x‖ = 1 := by
   have h1 : inner ℂ (tpow n x) (tpow n x) = ((‖tpow n x‖ : ℝ) : ℂ) ^ 2 :=
@@ -182,10 +221,15 @@ theorem norm_tensor_value_le {m n : ℕ} (A : Fin m → Fin n → ℂ) {ι : Typ
     (x := fun i => tpow k (x i)) (y := fun j => tpow k (y j))
     (fun i => norm_tpow k (x i) (hx i)) (fun j => norm_tpow k (y j) (hy j))
 
-/-- Radial kernel `z ↦ ∑' n, hₙ z |z|^{2n}`. -/
+/-- The radial kernel `z ↦ ∑ₙ hₙ z |z|^(2n)` of a real sequence `h`. -/
 def radialKernel (h : ℕ → ℝ) (z : ℂ) : ℂ :=
   ∑' n, (h n : ℂ) * (z * ((‖z‖ : ℝ) : ℂ) ^ (2 * n))
 
+/-- **Transfer lemma** (Lemma 3.2 of the article, combined with the estimate (8.1)). Let `h` be an absolutely
+summable real sequence whose radial kernel `z ↦ ∑ₖ hₖ z |z|^(2k)` is dominated. If
+`|h₀ - c| + ∑_{k ≥ 1} |hₖ| ≤ δ < c`, then `vectorOpt A ≤ (c - δ)⁻¹ * scalarOpt A` for every complex matrix `A`.
+The hypothesis implies `D(h) = h₀ - ∑_{k ≥ 1} |hₖ| ≥ c - δ > 0`, so this is the conclusion `K ≤ 1 / D(h)` of the
+lemma in the form in which it is applied. -/
 theorem transfer (h : ℕ → ℝ) (hs : Summable fun n => |h n|)
     (hdom : DominatedKernel (radialKernel h)) {c δ : ℝ} (hδ : δ < c)
     (hres : |h 0 - c| + ∑' n, |h (n + 1)| ≤ δ) : IsBound (1 / (c - δ)) := by
@@ -239,6 +283,8 @@ theorem transfer (h : ℕ → ℝ) (hs : Summable fun n => |h n|)
 
 /-! ### 3. Residual split and Hardy tail -/
 
+/-- The residual `|h₀ - c| + ∑_{k ≥ 1} |hₖ|` of `transfer` is the sum of the head
+`|h₀ - c| + ∑_{1 ≤ k ≤ K} |hₖ|` and the tail `∑_{k > K} |hₖ|`. -/
 theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ) (K : ℕ) :
     |h 0 - c| + ∑' n, |h (n + 1)|
       = ∑ n ∈ range (K + 1), |h n - if n = 0 then c else 0| + ∑' n, |h (n + (K + 1))| := by
@@ -249,6 +295,10 @@ theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ
   have e2 : ∑' n, |h (n + K + 1)| = ∑' n, |h (n + (K + 1))| := tsum_congr fun _ => by rw [add_assoc]
   rw [e1, e2]; simp only [ite_true]; ring
 
+/-- The Cauchy–Schwarz step of Lemma 7.10 (Hardy tail). If every partial sum of `∑ₙ hₙ² r^(2(2n+1))` is at most
+`B`, where `r > 1` (by Parseval's identity, `B` may be any bound for the mean of `|f|²` on the circle of radius
+`r`, where `f(t) = ∑ₙ hₙ t^(2n+1)`), and `B * r^(-2(2K+1)) ≤ T² * (1 - r⁻⁴)` with `T ≥ 0`, then
+`∑_{n ≥ K} |hₙ| ≤ T`. With `K + 1` in place of `K` and the least such `T` this is the bound of the lemma. -/
 theorem hardy_tail (h : ℕ → ℝ) (r : ℝ) (hr : 1 < r) (B : ℝ)
     (hB : ∀ J, ∑ n ∈ range J, h n ^ 2 * r ^ (2 * (2 * n + 1)) ≤ B) (K : ℕ) (T : ℝ) (hT : 0 ≤ T)
     (hcmp : B * r⁻¹ ^ (2 * (2 * K + 1)) ≤ T ^ 2 * (1 - r⁻¹ ^ 4)) :
@@ -298,8 +348,9 @@ theorem hardy_tail (h : ℕ → ℝ) (r : ℝ) (hr : 1 < r) (B : ℝ)
   rwa [sum_Ico_eq_sum_range, Nat.add_sub_cancel_left,
     show (fun k => |h (K + k)|) = fun k => |h (k + K)| from funext fun _ => by rw [add_comm]] at this
 
-/-! ### 4. Polynomial Wiener `ℓ¹` norm and bivariate kernels -/
+/-! ### 4. The `ℓ¹` norm of polynomials and the series of a table over pairs -/
 
+/-- The `ℓ¹` norm `∑ⱼ |[Xʲ] p|` of a real polynomial `p` (written `‖p‖₁` in the article). -/
 def l1 (p : ℝ[X]) : ℝ := p.sum fun _ a => |a|
 
 lemma l1_def (p : ℝ[X]) : l1 p = ∑ n ∈ p.support, |p.coeff n| := rfl
@@ -359,8 +410,12 @@ lemma l1_pow_le (p : ℝ[X]) (n : ℕ) : l1 (p ^ n) ≤ l1 p ^ n := by
     rw [pow_succ, pow_succ]
     exact (l1_mul_le _ _).trans (mul_le_mul_of_nonneg_right ih (l1_nonneg _))
 
+/-- The exponent `⌊d₁/2⌋ + ⌊d₂/2⌋` of a pair `p = (d₁, d₂)`; it equals `(d₁ + d₂ - 1) / 2` when `d₁ + d₂` is
+odd. -/
 def shiftOf (p : ℕ × ℕ) : ℕ := p.1 / 2 + p.2 / 2
 
+/-- The polynomial `X^(shiftOf p) * P^d₁ * Q^d₂` attached to a pair `p = (d₁, d₂)`; for `d₁ + d₂` odd it is the
+polynomial `X^((d₁+d₂-1)/2) P^d₁ Q^d₂` of equation (3.3) of the article. -/
 def termOf (P Q : ℝ[X]) (p : ℕ × ℕ) : ℝ[X] := X ^ shiftOf p * (P ^ p.1 * Q ^ p.2)
 
 lemma l1_termOf_le_one {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (p : ℕ × ℕ) :
@@ -379,8 +434,14 @@ lemma coeff_termOf_eq_zero (P Q : ℝ[X]) (hQ : Q.coeff 0 = 0) (p : ℕ × ℕ) 
   rw [e, coeff_X_pow_mul']
   exact ite_eq_right (by omega)
 
+/-- The series of equation (3.3) of the article for a table `μ` indexed by pairs `(d₁, d₂)`:
+`bivarKernel P Q μ j = ∑_{(d₁, d₂)} μ (d₁, d₂) * [Xʲ] (X^(⌊d₁/2⌋ + ⌊d₂/2⌋) P^d₁ Q^d₂)`. When `μ` is the table of
+energies of a map `G` (which vanishes for `d₁ + d₂` even), this is the channel series of `(G, P, Q)` of
+Proposition 3.7 (Channel series). -/
 def bivarKernel (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) (j : ℕ) : ℝ := ∑' p, μ p * (termOf P Q p).coeff j
 
+/-- If `‖P‖₁ ≤ 1`, `‖Q‖₁ ≤ 1` and `μ` is absolutely summable, then `bivarKernel P Q μ` is absolutely summable
+(Proposition 3.7 (Channel series), part (1)). -/
 theorem summable_abs_bivarKernel (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
     (hμ : Summable fun p => |μ p|) : Summable fun j => |bivarKernel P Q μ j| := by
   have hterm : ∀ j, Summable fun p => |μ p * (termOf P Q p).coeff j| := fun j =>
@@ -403,6 +464,7 @@ theorem summable_abs_bivarKernel (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤
         exact (Summable.of_nonneg_of_le (fun _ => sum_nonneg fun _ _ => abs_nonneg _) hb hμ).tsum_le_tsum
           hb hμ
 
+/-- The finite set of pairs `(d₁, d₂)` of natural numbers with `d₁ + 3 d₂ ≤ N`. -/
 def headIdx (N : ℕ) : Finset (ℕ × ℕ) :=
   (range (N + 1) ×ˢ range (N + 1)).filter fun p => p.1 + 3 * p.2 ≤ N
 
@@ -411,6 +473,9 @@ lemma mem_headIdx {N : ℕ} {p : ℕ × ℕ} : p ∈ headIdx N ↔ p.1 + 3 * p.2
   rw [mem_filter, mem_product, mem_range, mem_range]
   exact ⟨fun h => h.2, fun h => ⟨⟨by omega, by omega⟩, h⟩⟩
 
+/-- If `Q` has no constant term and `μ` vanishes on the pairs with `d₁ + d₂` even, then for `2j + 1 ≤ N` the
+coefficient `bivarKernel P Q μ j` is the finite sum over the pairs with `d₁ + 3 d₂ ≤ N`. For `Q = -X` this is
+Lemma 4.11 (Banded head) of the article. -/
 theorem bivarKernel_eq_head (P Q : ℝ[X]) (hQ : Q.coeff 0 = 0) (μ : ℕ × ℕ → ℝ)
     (hpar : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → μ p = 0) {N j : ℕ} (hj : 2 * j + 1 ≤ N) :
     bivarKernel P Q μ j = ∑ p ∈ headIdx N, μ p * (termOf P Q p).coeff j := by
@@ -421,11 +486,13 @@ theorem bivarKernel_eq_head (P Q : ℝ[X]) (hQ : Q.coeff 0 = 0) (μ : ℕ × ℕ
   · rw [mem_headIdx] at hp
     rw [coeff_termOf_eq_zero P Q hQ p (by unfold shiftOf; omega), mul_zero]
 
-/-- Embed a 1D radial moment sequence `ν k` at `(2k + 1, 0)`. -/
+/-- The table on pairs `(d₁, d₂)` that takes the value `ν k` at `(2k + 1, 0)` and `0` elsewhere. -/
 def onedTable (ν : ℕ → ℝ) : ℕ × ℕ → ℝ
   | (n, 0) => if n % 2 = 1 then ν (n / 2) else 0
   | (_, _ + 1) => 0
 
+/-- For a table supported on the pairs `(2k + 1, 0)`, the series does not depend on `Q`, and for `j < K`
+`bivarKernel P Q (onedTable ν) j = ∑_{k < K} ν k * [Xʲ] (Xᵏ P^(2k+1))`. -/
 theorem bivarKernel_oned_eq_head (P Q : ℝ[X]) (ν : ℕ → ℝ) {K j : ℕ} (hj : j < K) :
     bivarKernel P Q (onedTable ν) j =
       ∑ k ∈ range K, ν k * (X ^ k * P ^ (2 * k + 1)).coeff j := by
@@ -456,6 +523,8 @@ theorem bivarKernel_oned_eq_head (P Q : ℝ[X]) (ν : ℕ → ℝ) {K j : ℕ} (
 
 lemma D_pos : (0 : ℝ) < (D : ℝ) := by unfold D K; positivity
 
+/-- `mem x I`: the real number `x` lies in the fixed-point interval `I`, that is, `I.lo ≤ x * 2¹²⁸ ≤ I.hi`
+(`D = 2¹²⁸` is the scale of `HaagerupKernel.Ival`). -/
 def mem (x : ℝ) (I : Ival) : Prop := (I.lo : ℝ) ≤ x * D ∧ x * D ≤ I.hi
 
 lemma mem_zeroI_iff (x : ℝ) : mem x zeroI ↔ x = 0 := by
@@ -467,7 +536,7 @@ lemma mem_zero : mem 0 zeroI := (mem_zeroI_iff 0).2 rfl
 lemma mem_add {x y : ℝ} {a b : Ival} (hx : mem x a) (hy : mem y b) : mem (x + y) (addI a b) := by
   unfold mem addI at *; push_cast; constructor <;> linarith [hx.1, hx.2, hy.1, hy.2]
 
-/-- Polynomial with rational coefficients `c₀ + X (c₁ + …)`. -/
+/-- The real polynomial `c₀ + c₁ X + c₂ X² + …` with the rational coefficients `[c₀, c₁, c₂, …]`. -/
 def ofListQ : List ℚ → ℝ[X]
   | [] => 0
   | a :: l => C (a : ℝ) + X * ofListQ l
@@ -485,12 +554,13 @@ lemma l1_ofListQ_le (l : List ℚ) : l1 (ofListQ l) ≤ (((l.map fun q => |q|).s
           rw [l1_X, one_mul]; gcongr
       _ = _ := by push_cast; rfl
 
-/-- Flattened list of index pairs `(n, m)` appearing in `rows`. -/
+/-- The list of the index pairs `(n, m)` of a table of rows `(m, [(n, I_{n,m}), …])`, in order. -/
 def flatIdx (rows : List RowI) : List (ℕ × ℕ) :=
   rows.flatMap fun r => r.2.map fun e => (e.1, r.1)
 
 /-! ### 6. Convex combinations of channels -/
 
+/-- A finite linear combination of absolutely summable sequences is absolutely summable. -/
 theorem summable_convex_comb {k : ℕ} {h : Fin k → ℕ → ℝ} (w : Fin k → ℝ)
     (hs : ∀ p, Summable fun n => |h p n|) :
     Summable fun n => |∑ p, w p * h p n| := by
@@ -499,6 +569,8 @@ theorem summable_convex_comb {k : ℕ} {h : Fin k → ℕ → ℝ} (w : Fin k �
     (summable_sum fun p (_ : p ∈ univ) => (hs p).mul_left |w p|)
   exact le_of_eq (sum_congr rfl fun p _ => abs_mul (w p) (h p n))
 
+/-- On the closed unit disc, the radial kernel of a finite linear combination `∑ₚ wₚ h⁽ᵖ⁾` of absolutely summable
+sequences is the combination `∑ₚ wₚ * radialKernel h⁽ᵖ⁾` of the radial kernels. -/
 theorem radialKernel_convex_comb {k : ℕ} {h : Fin k → ℕ → ℝ} (w : Fin k → ℝ)
     (hs : ∀ p, Summable fun n => |h p n|) {z : ℂ} (hz : ‖z‖ ≤ 1) :
     radialKernel (fun n => ∑ p, w p * h p n) z = ∑ p, (w p : ℂ) * radialKernel (h p) z := by

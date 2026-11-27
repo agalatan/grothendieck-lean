@@ -1,19 +1,42 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.GaussianCore
 
-set_option warningAsError true
-
 /-!
-# Fixed-amplitude Gaussian Schur determinant bound for the holomorphic kernel
+# The pointwise bound for Gaussian correlations
 
-Self-contained proof of the determinant bound on the continued Gaussian correlation `HholPair F G R`
-for arbitrary measurable disk-valued maps `F, G : ℂ × ℂ → ℂ` (`‖F‖, ‖G‖ ≤ 1`):
-* Real symmetric `2 × 2` forms `Sym2R` and complex symmetric `2 × 2` forms `Sym2C`, together with
-  the circular holomorphic Gaussian kernel `kHol` and correlation `HholPair`;
-* The `L*L` operator identity (`LstarL.integral_norm_sq_le`), single-copy Gaussian modulus `norm_M1`,
-  and triple-product integrability `integrable_tri`;
-* Exact integration of the prescribed Gaussian amplitude (`GaussianAmplitude.lintegral_P4_phih`) and
-  the resulting determinant estimate `SchurMainGaussian.norm_HholPair_sq_le`.
+This file proves Lemma 7.8 (pointwise bound) of the article: for measurable maps `F, G : ℂ × ℂ → ℂ` with
+`‖F‖, ‖G‖ ≤ 1`, a complex symmetric `2 × 2` matrix `R` and `j > 0` such that the matrices `𝖹` and `𝖳` of
+Definition 5.3 (Schur denominator) are positive definite,
+`‖HholPair F G R‖ ^ 2 ≤ 1 / Λ_j(R)` (`SchurMainGaussian.norm_HholPair_sq_le`).
+Here `HholPair F G R` is the functional `Θ_{F,G}[R]` of Definition 7.2, and the denominator, written out in the
+statement, is the Schur denominator
+`Λ_j(R) = 16 j² |det (I - R²)|² det 𝖹 det (𝖳 + j I) det (𝖳 + 2𝖤 + j I)` (it is named `gaussDenominator` in
+`SchurHardy.lean`). The article writes `Γ` for `R` and `β` for `j`.
+
+## Contents
+
+1. `Sym2R`: real symmetric `2 × 2` matrices, given by three entries, with the quadratic form `Sym2R.q`, the
+   determinant and positive definiteness `Sym2R.PD` (Sylvester's criterion).
+2. `Sym2C`: complex symmetric `2 × 2` matrices; `Sym2C.Amat` and `Sym2C.Cmat` are `𝖠 = (I - R²)⁻¹` and
+   `𝖢 = R (I - R²)⁻¹`; `kHol` is the Gaussian kernel and `HholPair` the functional of Definition 7.2.
+3. `LstarL.integral_norm_sq_le`: for a kernel `L` and a function `g`,
+   `∫ ‖∫ L x y g y dy‖² dx ≤ ∫∫ ‖g y‖ ‖g y'‖ ‖∫ conj (L x y) L x y' dx‖ dy dy'`.
+4. `SchurKernel`: the matrices `𝖹`, `𝖪_r`, `𝖪_i`, `𝖳`, `𝖤` of the proof of Lemma 7.8, the kernel `L1` in one pair of
+   real coordinates, and the modulus of `∫ conj (L1 x y) L1 x y' dx` (`SchurKernel.norm_M1`; Step 1 of the proof).
+   `SchurBound`: the product of two copies.
+5. `SchurIntegrability.integrable_tri`: the integrability that Fubini's theorem needs in Step 3.
+6. `GaussianAmplitude`: the Gaussian integral of Step 2 (`integral_pairGaussian`, `lintegral_P4_phih`).
+7. `SchurMain`, `SchurMainGaussian`: the factorisation of the kernel through the weight `φ_j` (`kHol_eq`), the
+   Cauchy–Schwarz step and the theorem `norm_HholPair_sq_le`.
+
+Unlike Lemma 7.8, the theorem does not use Lemma 7.7: it assumes only `0 < j` and the positive definiteness of `𝖹`
+and `𝖳`, and every integrability statement is proved from these.
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -24,6 +47,7 @@ noncomputable section
 
 /-! ### 1. Real symmetric `2 × 2` matrices (`Sym2R`) -/
 
+/-- A real symmetric `2 × 2` matrix `!![a, b; b, c]`, given by its three entries. -/
 structure Sym2R where
   a : ℝ
   b : ℝ
@@ -31,21 +55,31 @@ structure Sym2R where
 
 namespace Sym2R
 
+/-- The bilinear form `xᵀ S y` of a real symmetric matrix. -/
 def bil (S : Sym2R) (x y : ℝ × ℝ) : ℝ :=
   S.a * x.1 * y.1 + S.b * (x.1 * y.2 + x.2 * y.1) + S.c * x.2 * y.2
 
+/-- The quadratic form `yᵀ S y`. -/
 def q (S : Sym2R) (y : ℝ × ℝ) : ℝ := S.bil y y
+/-- The determinant `a c - b²`. -/
 def det (S : Sym2R) : ℝ := S.a * S.c - S.b ^ 2
+/-- The adjugate matrix `!![c, -b; -b, a]`, equal to `det S • S⁻¹` when `S` is invertible. -/
 def adj (S : Sym2R) : Sym2R := ⟨S.c, -S.b, S.a⟩
+/-- The matrix-vector product `S y`. -/
 def app (S : Sym2R) (y : ℝ × ℝ) : ℝ × ℝ := (S.a * y.1 + S.b * y.2, S.b * y.1 + S.c * y.2)
+/-- The sum `S + T`. -/
 def add (S T : Sym2R) : Sym2R := ⟨S.a + T.a, S.b + T.b, S.c + T.c⟩
+/-- The scalar multiple `r • S`. -/
 def smul (r : ℝ) (S : Sym2R) : Sym2R := ⟨r * S.a, r * S.b, r * S.c⟩
 
+/-- Positive definiteness, in the form of Sylvester's criterion: `0 < a` and `0 < det S`
+(`q_pos_of_PD`, `PD_of_q_pos`). -/
 def PD (S : Sym2R) : Prop := 0 < S.a ∧ 0 < S.det
+/-- Positive semidefiniteness: `0 ≤ yᵀ S y` for all `y`. -/
 def PSD (S : Sym2R) : Prop := ∀ y, 0 ≤ S.q y
 
 lemma dot_app (S : Sym2R) (x y : ℝ × ℝ) : x.1 * (S.app y).1 + x.2 * (S.app y).2 = S.bil x y := by
-  simp [app, bil]; ring
+  simp only [app, bil]; ring
 
 lemma q_nonneg_of_PD {S : Sym2R} (h : S.PD) (y : ℝ × ℝ) : 0 ≤ S.q y := by
   obtain ⟨ha, hd⟩ := h
@@ -116,6 +150,8 @@ end Sym2R
 
 /-! ### 2. Complex symmetric `2 × 2` matrices (`Sym2C`) and `HholPair` -/
 
+/-- A complex symmetric `2 × 2` matrix `!![a, b; b, c]`, given by its three entries. The matrices `Γ` of Section 7
+of the article are of this type. -/
 structure Sym2C where
   a : ℂ
   b : ℂ
@@ -123,37 +159,52 @@ structure Sym2C where
 
 namespace Sym2C
 
+/-- The four entries of the matrix square `R²`, in the order `(11, 12, 21, 22)`. -/
 def sq (R : Sym2C) : ℂ × ℂ × ℂ × ℂ :=
   (R.a * R.a + R.b * R.b, R.a * R.b + R.b * R.c, R.b * R.a + R.c * R.b, R.b * R.b + R.c * R.c)
 
+/-- The determinant `det (I - R²)`. -/
 def detIm (R : Sym2C) : ℂ :=
   let s := R.sq
   (1 - s.1) * (1 - s.2.2.2) - s.2.1 * s.2.2.1
 
+/-- The matrix `𝖠 = (I - R²)⁻¹` of Definition 5.3, by the adjugate formula (meaningful when `R.detIm ≠ 0`). -/
 def Amat (R : Sym2C) : Sym2C :=
   let s := R.sq
   ⟨(1 - s.2.2.2) / R.detIm, s.2.1 / R.detIm, (1 - s.1) / R.detIm⟩
 
+/-- The matrix `𝖢 = R (I - R²)⁻¹` of Definition 5.3. -/
 def Cmat (R : Sym2C) : Sym2C :=
   let A := R.Amat
   ⟨R.a * A.a + R.b * A.b, R.a * A.b + R.b * A.c, R.b * A.b + R.c * A.c⟩
 
+/-- The complex bilinear form `xᵀ S y` of a complex symmetric matrix on real vectors. -/
 def form (S : Sym2C) (x y : ℝ × ℝ) : ℂ :=
   S.a * x.1 * y.1 + S.b * (x.1 * y.2 + x.2 * y.1) + S.c * x.2 * y.2
 
 end Sym2C
 
+/-- The exponent `-½ xᵀ𝖠x - ½ yᵀ𝖠y + xᵀ𝖢y = -½ q_R(x, y)` of the Gaussian kernel in one pair of real coordinates
+(`q_Γ` is defined at the beginning of Section 7). -/
 def kExp (R : Sym2C) (x y : ℝ × ℝ) : ℂ :=
   -(R.Amat.form x x) / 2 - R.Amat.form y y / 2 + R.Cmat.form x y
 
+/-- The kernel `(2π)⁻⁴ det (I - R²)⁻¹ exp (-½ q_R(x, y) - ½ q_R(ξ, η))` of Definition 7.2. For a real matrix `R` with
+`I ± R` positive definite it is the joint density of two pairs of real Gaussian vectors with cross-covariance `R`
+(`HardyReal.kHol_real` in `SchurHardy.lean`). -/
 def kHol (R : Sym2C) (x ξ y η : ℝ × ℝ) : ℂ :=
   (((2 * Real.pi) ^ 4 : ℝ) : ℂ)⁻¹ * R.detIm⁻¹ * Complex.exp (kExp R x y + kExp R ξ η)
 
+/-- The point `(x + i ξ) / √2` of `ℂ²` with real part `x / √2` and imaginary part `ξ / √2`. -/
 def toC2 (x ξ : ℝ × ℝ) : ℂ × ℂ :=
   (((x.1 : ℂ) + ξ.1 * I) / ((√2 : ℝ) : ℂ), ((x.2 : ℂ) + ξ.2 * I) / ((√2 : ℝ) : ℂ))
 
+/-- The space `(ℝ²)⁴` of the integration variables `((x, ξ), (y, η))` of Definition 7.2. -/
 abbrev Pt8 := ((ℝ × ℝ) × (ℝ × ℝ)) × ((ℝ × ℝ) × (ℝ × ℝ))
 
+/-- The functional `Θ_{F,G}[R]` of Definition 7.2: the integral of
+`conj (F ((x + iξ) / √2)) * G ((y + iη) / √2)` against the kernel `kHol R` over `(ℝ²)⁴`. For a real covariance `R`
+it is the Gaussian correlation `𝔼 [conj (F X) * G Y]` (Lemma 7.3 (real covariances)). -/
 def HholPair (F G : ℂ × ℂ → ℂ) (R : Sym2C) : ℂ :=
   ∫ q : Pt8, conj (F (toC2 q.1.1 q.1.2)) * G (toC2 q.2.1 q.2.2) *
     kHol R q.1.1 q.1.2 q.2.1 q.2.2
@@ -165,6 +216,7 @@ namespace LstarL
 variable {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] {μ : Measure X} {ν : Measure Y}
   [SFinite μ] [SFinite ν]
 
+/-- The integrand `conj (L x y * g y) * (L x y' * g y')` at the point `p = (x, (y, y'))`. -/
 def tri (L : X → Y → ℂ) (g : Y → ℂ) (p : X × (Y × Y)) : ℂ :=
   conj (L p.1 p.2.1 * g p.2.1) * (L p.1 p.2.2 * g p.2.2)
 
@@ -190,6 +242,9 @@ theorem integral_norm_sq_eq (L : X → Y → ℂ) (g : Y → ℂ)
   rw [← integral_const_mul]
   congr 1; ext x; simp only [map_mul]; ring
 
+/-- The `L² → L²` estimate behind the Schur test:
+`∫ ‖∫ L x y g y dy‖² dx ≤ ∫∫ ‖g y‖ ‖g y'‖ ‖∫ conj (L x y) L x y' dx‖ dy dy'`, if the triple integrand `tri L g` is
+integrable. -/
 theorem integral_norm_sq_le (L : X → Y → ℂ) (g : Y → ℂ)
     (hint : Integrable (tri L g) (μ.prod (ν.prod ν))) :
     ∫ x, ‖∫ y, L x y * g y ∂ν‖ ^ 2 ∂μ ≤
@@ -206,21 +261,31 @@ namespace SchurKernel
 
 open Sym2R
 
+/-- The product `S N S` of real symmetric matrices (`q_sand`). -/
 def sand (S N : Sym2R) : Sym2R :=
   ⟨N.a * S.a ^ 2 + 2 * N.b * S.a * S.b + N.c * S.b ^ 2,
    N.a * S.a * S.b + N.b * (S.a * S.c + S.b ^ 2) + N.c * S.b * S.c,
    N.a * S.b ^ 2 + 2 * N.b * S.b * S.c + N.c * S.c ^ 2⟩
 
+/-- The entrywise real part of a complex symmetric matrix. -/
 def re (S : Sym2C) : Sym2R := ⟨S.a.re, S.b.re, S.c.re⟩
+/-- The entrywise imaginary part of a complex symmetric matrix. -/
 def im (S : Sym2C) : Sym2R := ⟨S.a.im, S.b.im, S.c.im⟩
 
+/-- The matrix `𝖹 = Re 𝖡`. In the application `𝖡 = 𝖠 - j I` (`SchurMain.Bj`), so this is `𝖹` of Definition 5.3. -/
 def Z (B : Sym2C) : Sym2R := re B
+/-- The matrix `𝖪_r = 𝖢_r 𝖹⁻¹ 𝖢_r` with `𝖢_r = Re 𝖢`, written with the adjugate of `𝖹`. -/
 def Kr (B C : Sym2C) : Sym2R := smul (Z B).det⁻¹ (sand (re C) (Z B).adj)
+/-- The matrix `𝖪_i = 𝖢_i 𝖹⁻¹ 𝖢_i` with `𝖢_i = Im 𝖢`, written with the adjugate of `𝖹`. -/
 def Ki (B C : Sym2C) : Sym2R := smul (Z B).det⁻¹ (sand (im C) (Z B).adj)
+/-- The matrix `𝖳 = 𝖹 - 𝖢_r 𝖹⁻¹ 𝖢_r` of Definition 5.3. -/
 def T (B C : Sym2C) : Sym2R := add (Z B) (smul (-1) (Kr B C))
+/-- The matrix `𝖤 = ½ (𝖢_r 𝖹⁻¹ 𝖢_r + 𝖢_i 𝖹⁻¹ 𝖢_i)` of Definition 5.3. -/
 def E (B C : Sym2C) : Sym2R := smul (1 / 2) (add (Kr B C) (Ki B C))
+/-- The matrix `𝖳 + 𝖤`, the diagonal block of the quadratic form in the exponent of `P1`. -/
 def Dr (B C : Sym2C) : Sym2R := add (T B C) (E B C)
 
+/-- The kernel `𝔨(x, y) = exp (-½ xᵀ𝖡x - ½ yᵀ𝖡y + xᵀ𝖢y)` in one pair of real coordinates (proof of Lemma 7.8). -/
 def L1 (B C : Sym2C) (x y : ℝ × ℝ) : ℂ :=
   cexp (-(B.form x x) / 2 - B.form y y / 2 + C.form x y)
 
@@ -263,6 +328,9 @@ theorem integral_M1 (B C : Sym2C) (hZ : (Z B).PD) (y y' : ℝ × ℝ) :
   · congr 1; field_simp
   · congr 2; simp only [Z, re, det]; push_cast; ring
 
+/-- Step 1 of the proof of Lemma 7.8: if `𝖹` is positive definite, the modulus of
+`𝔪(y, y') = ∫ conj (𝔨(x, y)) 𝔨(x, y') dx` is
+`π / √(det 𝖹) * exp (-½ yᵀ(𝖳 + 𝖤)y - ½ y'ᵀ(𝖳 + 𝖤)y' + yᵀ𝖤y')`. -/
 theorem norm_M1 (B C : Sym2C) (hZ : (Z B).PD) (y y' : ℝ × ℝ) :
     ‖∫ x : ℝ × ℝ, conj (L1 B C x y) * L1 B C x y'‖ =
       π / √(Z B).det * Real.exp (-(Dr B C).q y / 2 - (Dr B C).q y' / 2 + (E B C).bil y y') := by
@@ -294,6 +362,8 @@ lemma E_PSD (B C : Sym2C) (hZ : (Z B).PD) : (E B C).PSD := fun y => by
   have := q_nonneg_of_PD hA ((im C).app y)
   positivity
 
+/-- The modulus `|𝔪(y, y')| = π / √(det 𝖹) * exp (-½ yᵀ(𝖳 + 𝖤)y - ½ y'ᵀ(𝖳 + 𝖤)y' + yᵀ𝖤y')` of Step 1 of the proof of
+Lemma 7.8 (`norm_M1`). -/
 def P1 (B C : Sym2C) (y y' : ℝ × ℝ) : ℝ :=
   π / √(Z B).det * Real.exp (-(Dr B C).q y / 2 - (Dr B C).q y' / 2 + (E B C).bil y y')
 
@@ -303,8 +373,11 @@ namespace SchurBound
 
 open SchurKernel Sym2R
 
+/-- The space `ℝ² × ℝ² = ℝ⁴` of a pair `(x, ξ)`: real and imaginary parts (times `√2`) of a point of `ℂ²`. -/
 abbrev V := (ℝ × ℝ) × (ℝ × ℝ)
 
+/-- The kernel `c * 𝔨(x, y) * 𝔨(ξ, η)` on `ℝ⁴ × ℝ⁴`, for `X = (x, ξ)` and `Y = (y, η)`: the kernel `𝔎` of the proof of
+Lemma 7.8, times a constant `c`. -/
 def L4 (B C : Sym2C) (c : ℂ) (X Y : V) : ℂ := c * (L1 B C X.1 Y.1 * L1 B C X.2 Y.2)
 
 theorem integral_M4 (B C : Sym2C) (c : ℂ) (Y Y' : V) :
@@ -332,6 +405,7 @@ theorem norm_M4 (B C : Sym2C) (hZ : (Z B).PD) (c : ℂ) (Y Y' : V) :
 
 lemma P1_nonneg (B C : Sym2C) (y y' : ℝ × ℝ) : 0 ≤ P1 B C y y' := by simp only [P1]; positivity
 
+/-- The product `|𝔪(y, y')| * |𝔪(η, η')|` for `Y = (y, η)`, `Y' = (y', η')`, as an extended non-negative real. -/
 def P4 (B C : Sym2C) (Y Y' : V) : ℝ≥0∞ :=
   ENNReal.ofReal (P1 B C Y.1 Y'.1 * P1 B C Y.2 Y'.2)
 
@@ -411,6 +485,8 @@ lemma integral_norm_L1_mul_le (B C : Sym2C) (hZ : (Z B).PD) (hT : (T B C).PD) (y
       ≤ π / √(Z B).det * Real.exp 0 := by gcongr; linarith
     _ = π / √(Z B).det := by simp
 
+/-- The Gaussian weight `φ_j(Y) = (j / π) exp (-j |Y|² / 2)` on `ℝ⁴`; its square has integral one
+(`SchurMain.integral_phih_sq`). -/
 def phih (j : ℝ) (Y : V) : ℝ :=
   j / π * Real.exp (-(j * (Y.1.1 ^ 2 + Y.1.2 ^ 2 + Y.2.1 ^ 2 + Y.2.2 ^ 2)) / 2)
 
@@ -425,6 +501,7 @@ lemma integrable_phih (j : ℝ) (hj : 0 < j) : Integrable (phih j) (volume : Mea
   refine h.congr (Filter.Eventually.of_forall fun _ => ?_)
   simp only [phih, Gauss2.gR]; rw [mul_assoc, ← Real.exp_add]; congr 2; ring
 
+/-- The weighted function `Y = (y, η) ↦ G ((y + iη) / √2) * φ_j(Y)` of the proof of Lemma 7.8. -/
 def gw (j : ℝ) (G : ℂ × ℂ → ℂ) (Y : V) : ℂ := G (toC2 Y.1 Y.2) * (phih j Y : ℂ)
 
 lemma norm_gw_le (j : ℝ) {G : ℂ × ℂ → ℂ} (hG : ∀ u, ‖G u‖ ≤ 1) (hj : 0 < j) (Y : V) :
@@ -446,6 +523,9 @@ lemma norm_tri (B C : Sym2C) (j : ℝ) (c : ℂ) (G : ℂ × ℂ → ℂ) (X : V
         (‖L1 B C X.2 q.1.2‖ * ‖L1 B C X.2 q.2.2‖)) := by
   simp only [LstarL.tri, L4, norm_mul, Complex.norm_conj]; ring
 
+/-- The triple integrand `conj (𝔎(X, Y) g(Y)) * (𝔎(X, Y') g(Y'))` with `g = gw j G` is integrable on `ℝ⁴ × ℝ⁴ × ℝ⁴` if
+`𝖹` and `𝖳` are positive definite, `j > 0` and `G` is measurable and bounded by one (Step 3 of the proof of
+Lemma 7.8). -/
 theorem integrable_tri (B C : Sym2C) (j : ℝ) (hZ : (Z B).PD) (hT : (T B C).PD) (hj : 0 < j)
     {G : ℂ × ℂ → ℂ} (hGm : Measurable G) (hG : ∀ u, ‖G u‖ ≤ 1) (c : ℂ) :
     Integrable (LstarL.tri (L4 B C c) (gw j G))
@@ -506,6 +586,7 @@ namespace GaussianAmplitude
 
 open Sym2R SchurKernel SchurBound SchurIntegrability
 
+/-- The matrix `A + j I`. -/
 def shifted (A : Sym2R) (j : ℝ) : Sym2R := ⟨A.a + j, A.b, A.c + j⟩
 
 lemma shifted_q (A : Sym2R) (j : ℝ) (y : ℝ × ℝ) :
@@ -523,6 +604,7 @@ lemma add_PD_PSD {A E : Sym2R} (hA : A.PD) (hE : E.PSD) : (add A E).PD :=
   PD_of_q_pos fun y hy => by
     rw [q_add]; exact add_pos_of_pos_of_nonneg (q_pos_of_PD hA hy) (hE y)
 
+/-- The product `S N S` of real symmetric matrices (`q_congruence`); the same matrix as `SchurKernel.sand S N`. -/
 def congruence (S N : Sym2R) : Sym2R :=
   ⟨N.a * S.a ^ 2 + 2 * N.b * S.a * S.b + N.c * S.b ^ 2,
    N.a * S.a * S.b + N.b * (S.a * S.c + S.b ^ 2) + N.c * S.b * S.c,
@@ -531,6 +613,7 @@ def congruence (S N : Sym2R) : Sym2R :=
 lemma q_congruence (S N : Sym2R) (y : ℝ × ℝ) : (congruence S N).q y = N.q (S.app y) := by
   simp only [congruence, q, bil, app]; ring
 
+/-- The Schur complement `A - E A⁻¹ E`, written with the adjugate of `A`. -/
 def complement (A E : Sym2R) : Sym2R :=
   add A (smul (-A.det⁻¹) (congruence E A.adj))
 
@@ -570,6 +653,7 @@ lemma determinant_complement_add (Vm E : Sym2R) (hA : (add Vm E).det ≠ 0) :
   rw [determinant_complement _ _ hA]
   congr 1 <;> simp only [add, smul, det] <;> ring
 
+/-- The Gaussian `exp (-½ yᵀAy - ½ y'ᵀAy' + yᵀEy')` in the pair `(y, y')`. -/
 def pairGaussian (A E : Sym2R) (y y' : ℝ × ℝ) : ℝ :=
   Real.exp (-A.q y / 2 - A.q y' / 2 + E.bil y y')
 
@@ -606,6 +690,8 @@ lemma integrable_pairGaussian {A : Sym2R} (hA : A.PD) (E : Sym2R) (hS : (complem
   refine hg.congr (Filter.Eventually.of_forall fun _ => ?_)
   simp only [Gauss2.gR, q, bil]; congr 2; ring
 
+/-- The integral of `pairGaussian A E` over `ℝ² × ℝ²` is `4π² / √(det A * det (A - E A⁻¹ E))`, if `A` and its Schur
+complement are positive definite. -/
 theorem integral_pairGaussian {A : Sym2R} (hA : A.PD) (E : Sym2R) (hS : (complement A E).PD) :
     ∫ y, ∫ y', pairGaussian A E y y' = 4 * Real.pi ^ 2 / √(A.det * (complement A E).det) := by
   simp_rw [integral_pairGaussian_inner hA]
@@ -631,8 +717,10 @@ theorem lintegral_product_kernel (k : (ℝ × ℝ) → (ℝ × ℝ) → ℝ≥0�
   simp_rw [hin]
   rw [Measure.volume_eq_prod, lintegral_prod_mul hki.aemeasurable hki.aemeasurable, ← sq]
 
+/-- The Gaussian weight `exp (-j |y|² / 2)` on `ℝ²`. -/
 def weight (j : ℝ) (y : ℝ × ℝ) : ℝ := Real.exp (-j * (y.1 ^ 2 + y.2 ^ 2) / 2)
 
+/-- The weighted kernel `exp (-j |y|² / 2) * |𝔪(y, y')| * exp (-j |y'|² / 2)` of Step 2 of the proof of Lemma 7.8. -/
 def weightedP1 (B C : Sym2C) (j : ℝ) (y y' : ℝ × ℝ) : ℝ :=
   P1 B C y y' * weight j y * weight j y'
 
@@ -690,6 +778,9 @@ lemma lintegral_weightedP1 (B C : Sym2C) {j : ℝ} (hj : 0 < j)
         (Filter.Eventually.of_forall fun p => weightedP1_nonneg B C j p.1 p.2)).symm
     _ = _ := by rw [integral_prod _ hi, integral_P1_gaussian B C hj hZ hT]
 
+/-- The number `16 j² π⁴ / (det 𝖹 * det (𝖳 + j I) * det (𝖳 + 2𝖤 + j I))`: the value of the double integral of
+`φ_j(Y) * |𝔪(y, y')| * |𝔪(η, η')| * φ_j(Y')` over `ℝ⁴ × ℝ⁴` (`lintegral_P4_phih`); in the notation of the article it
+is `(j / π)² 𝓘²`. -/
 def mass (B C : Sym2C) (j : ℝ) : ℝ :=
   16 * j ^ 2 * Real.pi ^ 4 / ((Z B).det * (shifted (T B C) j).det *
     (shifted (add (T B C) (smul 2 (E B C))) j).det)
@@ -707,6 +798,8 @@ lemma phih_factor (j : ℝ) (Y : V) :
     phih j Y = (j / Real.pi) * weight j Y.1 * weight j Y.2 := by
   simp only [phih, weight, mul_assoc, ← Real.exp_add]; congr 2; ring
 
+/-- Step 2 of the proof of Lemma 7.8: the double integral of `φ_j(Y) * φ_j(Y') * P4 B C Y Y'` over `ℝ⁴ × ℝ⁴` equals
+`mass B C j`, if `j > 0` and `𝖹`, `𝖳` are positive definite. -/
 theorem lintegral_P4_phih (B C : Sym2C) {j : ℝ} (hj : 0 < j)
     (hZ : (Z B).PD) (hT : (T B C).PD) :
     ∫⁻ Y : V, ∫⁻ Y' : V,
@@ -748,8 +841,11 @@ namespace SchurMain
 
 open SchurKernel SchurBound SchurIntegrability Sym2R
 
+/-- The matrix `𝖡 = 𝖠 - j I` of the proof of Lemma 7.8, with `𝖠 = (I - R²)⁻¹`. -/
 def Bj (R : Sym2C) (j : ℝ) : Sym2C := ⟨R.Amat.a - j, R.Amat.b, R.Amat.c - j⟩
 
+/-- The constant `𝔠_j = (π / j)² / ((2π)⁴ det (I - R²))` of the proof of Lemma 7.8, for which
+`kHol R = φ_j(X) * (𝔠_j 𝔎(X, Y)) * φ_j(Y)` (`kHol_eq`). -/
 def cst (R : Sym2C) (j : ℝ) : ℂ :=
   (((2 * π) ^ 4 : ℝ) : ℂ)⁻¹ * R.detIm⁻¹ * (((π / j) ^ 2 : ℝ) : ℂ)
 
@@ -793,7 +889,9 @@ lemma integral_phih_sq (j : ℝ) (hj : 0 < j) : ∫ Y : V, phih j Y ^ 2 = 1 := b
   rw [h4, Real.sqrt_sq (by linarith)]
   have hπ : (π : ℝ) ≠ 0 := Real.pi_ne_zero
   have : j ≠ 0 := hj.ne'
-  simp; field_simp
+  simp only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, sub_self, add_zero, zero_div,
+    Real.exp_zero, mul_one]
+  field_simp
 
 lemma le_sqrt_of_amgm {x A Bv K : ℝ} (hA : A ≤ 1) (hB : Bv ≤ K) (hK : 0 ≤ K)
     (h : ∀ t : ℝ, 0 < t → x ≤ (t * A + Bv / t) / 2) : x ≤ √K := by
@@ -871,6 +969,8 @@ lemma integral_norm_Lg_sq_le {R : Sym2C} {j : ℝ} (hj : 0 < j)
     rw [ENNReal.ofReal_mul (sq_nonneg _)]; exact mul_le_mul' le_rfl hmass
   exact ENNReal.toReal_le_of_le_ofReal (mul_nonneg (sq_nonneg _) (mass_nonneg B C hj hZ hT)) hfin
 
+/-- The bound of Lemma 7.8 before squaring: `‖HholPair F G R‖ ≤ √(‖𝔠_j‖² * mass)`, by the Cauchy–Schwarz inequality (in
+the form of the inequality of arithmetic and geometric means) and `integral_norm_Lg_sq_le`. -/
 theorem norm_HholPair_le {R : Sym2C} {j : ℝ} (hj : 0 < j)
     (hZ : (Z (Bj R j)).PD) (hT : (T (Bj R j) R.Cmat).PD)
     {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Measurable G)
@@ -912,6 +1012,10 @@ theorem norm_HholPair_le {R : Sym2C} {j : ℝ} (hj : 0 < j)
       rw [integral_div, integral_add (hf2.const_mul t) (hLg2.div_const t),
         integral_const_mul, integral_div]
 
+/-- **Lemma 7.8 (pointwise bound).** Let `F, G : ℂ × ℂ → ℂ` be measurable with `‖F‖, ‖G‖ ≤ 1`, let `j > 0`, and let
+the matrices `𝖹 = Re 𝖠 - j I` and `𝖳 = 𝖹 - 𝖢_r 𝖹⁻¹ 𝖢_r` be positive definite. Then
+`‖Θ_{F,G}[R]‖² ≤ 1 / (16 j² |det (I - R²)|² det 𝖹 det (𝖳 + j I) det (𝖳 + 2𝖤 + j I))`,
+the reciprocal of the Schur denominator `Λ_j(R)` of Definition 5.3. -/
 theorem norm_HholPair_sq_le (R : Sym2C) (j : ℝ) (hj : 0 < j)
     (hZ : (Z (Bj R j)).PD) (hT : (T (Bj R j) R.Cmat).PD)
     {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Measurable G)

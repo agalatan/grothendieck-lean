@@ -1,29 +1,48 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import HaagerupKernel.Basic
 
-set_option warningAsError true
-
 /-!
-# Mathlib-free Fejér–Riesz SOS, 1024-bit Laguerre table, and Hermite overlap kernels
+# The checkers of the cell maps: sums of squares, Laguerre integrals, overlaps and energies
 
-Imports only `Init` and `HaagerupKernel.Basic`:
-1. Compact 5-char base-64 ASCII decoder for `36 × 64 × 64` integer Fourier tables;
-2. Exact integer Fejér–Riesz Sum-of-Squares unit-disk checker `sosAllOK` (`SH = 24`, `CAP = 2⁴⁸`);
-3. Square-root-free, `π`-free, `Γ`-free 1024-bit integer-interval Laguerre cell integral table
-   `lagTable1024` (`s_i = 9 i² / 1024`, `i ≤ 64`, `a ≤ 18`, `n ≤ 250`);
-4. Shared midpoint-radius mode-overlap evaluator `modeOverlapsAt`, feeding both:
-   * `computeTigMu` / `tigMuCheck` (`251` radial moments for `f_tig`), and
-   * `computeSmoothedRows` / `smoothedRowsCheck` (`headIdx 501` bivariate energy table `List RowI`
-     for the smoothed `64 × 64 × 36` cell rounding map, with zero square roots).
+Executable integer and integer-interval programs; the file imports only `HaagerupKernel.Basic` (no Mathlib). These
+are the programs that the four `native_decide` facts of `Haagerup/Data/` evaluate (Computations 1–3 of the article).
+A *cell table* is an array of `36 × 64 × 64` integers, entry `(ℓ, i, j)` at position `4096 ℓ + 64 i + j`
+(Definition 4.1 of the article); a cell map has a table of real parts and a table of imaginary parts, at scale `2⁻²⁴`.
+
+1. `decodeTable36`: the decoder of the cell tables, which are stored as strings (5 characters per integer).
+2. `sosAllOK`: the integer inequality (4.3) of Lemma 4.3 (sum-of-squares bound) for all `4096` cells, in exact integer
+   arithmetic (Computation 1).
+3. `lagTable1024`: enclosures at scale `2⁻¹⁰²⁴` of the Laguerre integrals `I_{n,α,i}` of (A.2) over the cells
+   `[s_i, s_{i+1}]`, `s_i = (3i/32)²`, for `α ≤ 18`, `n ≤ 250`, `i < 64` (Appendix A.2). Only rational operations
+   occur: no square roots, no `π`, no Gamma function.
+4. `modeOverlapsAt`: enclosures of the sums `∑_{i,j} c_{m+17,i,j} I_{n₁,|m|,i} I_{n₂,|1−m|,j}`, from midpoints of the
+   Laguerre integrals and an explicit error term (steps (1)–(3) of Appendix A.3). It feeds
+   * `computeTigMu` / `tigMuCheck`: the `251` overlaps `μ₀, …, μ₂₅₀` of the reflected pair (Computation 2,
+     Appendix A.3), and
+   * `computeSmoothedRows` / `smoothedRowsCheck`: the energies `E(d₁, d₂)` of the smoothed map for `d₁ + d₂` odd,
+     `d₁ + 3 d₂ ≤ 501` (Computation 3, Appendix A.4).
+
+Each checker returns a Boolean; that `true` implies the mathematical statement is proved in `Haagerup/CellMap.lean`
+(`norm_cellFn_le`), `Haagerup/CellOverlapCore.lean` (`lagTable1024_sound`, `mem_muTigOf`) and
+`Haagerup/CellOverlap.lean` (`smoothedRowsCheck_table_sound`).
 
 -/
 
+set_option warningAsError true
+
 namespace HaagerupKernel.Cell
 
+/-- The base-64 digit of an ASCII code: the codes `48`–`91` are the digits `0`–`43` and the codes `93`–`112` the
+digits `44`–`63` (the backslash, code `92`, is not used, so the strings need no escape sequences). -/
 @[inline] def decByte64 (b : UInt8) : Nat :=
   let r := b.toNat
   if r > 92 then r - 49 else r - 48
 
-/-- Decode one signed 26-bit integer `x ∈ [-2²⁵, 2²⁵)` from 5 safe ASCII chars. -/
+/-- Decode one integer from the 5 characters at offset `off`: the base-64 digits, least significant first, give
+`x + 2²⁵`. -/
 @[inline] def decodeInt26 (ba : ByteArray) (off : Nat) : Int :=
   let b0 := decByte64 (ba.get! off)
   let b1 := decByte64 (ba.get! (off + 1))
@@ -60,10 +79,14 @@ def maxAbsInt : Nat → (Nat → Int) → Int
 @[inline] def mulSkipZero (g b : Int) : Int :=
   if g == 0 then 0 else g * b
 
-/-! ### 1. Exact Fejér–Riesz Sum-of-Squares unit-disk check (`SH = 24`, `CAP = 2⁴⁸`) -/
+/-! ### 1. The sum-of-squares check of Lemma 4.3 (exact integers, tables at scale `2⁻²⁴`, bound `2⁴⁸`) -/
 
+/-- The bound `2⁴⁸` of the sum-of-squares inequality (4.3): the tables are at scale `2⁻²⁴`. -/
 def sosCap : Int := (2 : Int) ^ 48
 
+/-- The left-hand side of the inequality (4.3) of Lemma 4.3 for one cell: with `c_ℓ` the entries of the cell table
+`(creArr, cimArr)` and `s_ℓ` those of the witness table `(qreArr, qimArr)` in this cell, and
+`κ_m = ∑_d (c_{d+m} conj c_d + s_{d+m} conj s_d)`, the integer `κ₀ + 2 ∑_{m=1}^{35} (|Re κ_m| + |Im κ_m|)`. -/
 def sosCellTot (creArr cimArr qreArr qimArr : Array Int) (cell : Nat) : Int :=
   let cr := fun k => getCoeff creArr k cell
   let ci := fun k => getCoeff cimArr k cell
@@ -80,18 +103,26 @@ def sosCellTot (creArr cimArr qreArr qimArr : Array Int) (cell : Nat) : Int :=
     2 * (Int.ofNat re_m.natAbs + Int.ofNat im_m.natAbs)
   e0 + tail
 
+/-- The sum-of-squares check (Computation 1): the inequality (4.3) holds in each of the `4096` cells. By Lemma 4.3
+the cell map of `(creArr, cimArr)` then takes values in the closed unit disk (`norm_cellFn_le`). -/
 def sosAllOK (creArr cimArr qreArr qimArr : Array Int) : Bool :=
   (List.range 4096).all fun cell =>
     decide (sosCellTot creArr cimArr qreArr qimArr cell ≤ sosCap)
 
 /-! ### 2. 1024-bit integer-interval Laguerre cell integrals (`s_i = 9 i² / 1024`) -/
 
+/-- The scale `2¹⁰²⁴` of the interval arithmetic of this file: a pair `(lo, hi)` of integers encloses the real
+number `x` if `lo ≤ 2¹⁰²⁴ x ≤ hi` (Appendix A.1). -/
 def dLag : Int := (2 : Int) ^ 1024
 
+/-- Sum of two enclosures. -/
 @[inline] def ivAddL (a b : Int × Int) : Int × Int := (a.1 + b.1, a.2 + b.2)
+/-- Difference of two enclosures. -/
 @[inline] def ivSubL (a b : Int × Int) : Int × Int := (a.1 - b.2, a.2 - b.1)
+/-- Product of an enclosure with an integer. -/
 @[inline] def ivMulIntL (a : Int × Int) (c : Int) : Int × Int :=
   if 0 ≤ c then (a.1 * c, a.2 * c) else (a.2 * c, a.1 * c)
+/-- Quotient of an enclosure by a positive integer, the lower endpoint rounded down and the upper one rounded up. -/
 @[inline] def ivDivPosL (a : Int × Int) (d : Int) : Int × Int :=
   (a.1 / d, -((-a.2) / d))
 
@@ -118,6 +149,7 @@ def expNegS (i : Nat) : Int × Int :=
     let accHi := acc.2 + remHi
     ((dLag * dLag) / accHi, -((-(dLag * dLag)) / acc.1))
 
+/-- The enclosures `expNegS i` of `exp (-s_i)` for `i ≤ 64`. -/
 def expNegSArr : Array (Int × Int) :=
   Array.ofFn fun (i : Fin 65) => expNegS i.val
 
@@ -177,7 +209,7 @@ def lagTable1024 : Array (Array (Array (Int × Int))) :=
     let bdym1 := Array.replicate 65 (0, 0)
     lagRecLoop a 250 0 j0 bdym1 bdy0 #[j0]
 
-/-! ### 3. Combinatorial & `bCoeff` tables and shared `modeOverlapsAt` -/
+/-! ### 3. Binomial coefficients, rising factorials, and the shared evaluator `modeOverlapsAt` -/
 
 /-- Rising factorial `∏_{r=1}^a (n + r) = (n + a)! / n!`. -/
 def risingFact (n : Nat) : Nat → Nat
@@ -203,6 +235,7 @@ def binomNextRow (prev : Array Nat) : Array Nat :=
     else if j.val == d then 1
     else prev.getD (j.val - 1) 0 + prev.getD j.val 0
 
+/-- Append the next `n` rows of Pascal's triangle to `acc`, `cur` being the last row computed. -/
 def binomRowsLoop : Nat → Array Nat → Array (Array Nat) → Array (Array Nat)
   | 0, _, acc => acc
   | rem + 1, cur, acc =>
@@ -213,6 +246,7 @@ def binomRowsLoop : Nat → Array Nat → Array (Array Nat) → Array (Array Nat
 def binomArr251 : Array (Array Nat) :=
   binomRowsLoop 251 #[1] #[#[1]]
 
+/-- The entry `(n, k)` of a table of binomial coefficients, `0` outside the table. -/
 @[inline] def getBinom (tbl : Array (Array Nat)) (n k : Nat) : Nat :=
   (tbl.getD n #[]).getD k 0
 
@@ -275,12 +309,19 @@ def modeOverlapsAt (shLag shDot : Int) (creArr cimArr : Array Int)
            ivDivPosL (pim - errIm, pim + errIm) shDot)
   (widthOK, out)
 
-/-! ### 4. 192-bit `computeTigMu` & `tigMuCheck` for `f_tig` -/
+/-! ### 4. The overlaps of the reflected pair: `computeTigMu` and `tigMuCheck` (Appendix A.3) -/
 
+/-- `2⁸³²`: reduces the Laguerre integrals from scale `2⁻¹⁰²⁴` to midpoints at scale `2⁻¹⁹²` (Appendix A.3, step 1). -/
 def sh832 : Int := (2 : Int) ^ 832
+/-- `2²¹⁶`: reduces the sums of products from scale `2⁻³⁸⁴` to scale `2⁻¹⁶⁸` (Appendix A.3, step 3). -/
 def sh216 : Int := (2 : Int) ^ 216
+/-- `2²⁵⁶`: reduces the squared moduli from scale `2⁻³³⁶` to `2⁻⁴⁸` times scale `2⁻¹²⁸` (Appendix A.3, step 4). -/
 def sh256 : Int := (2 : Int) ^ 256
 
+/-- The algorithm of Appendix A.3 for the cell table `(creArr, cimArr)`. The result is `(ok, μ)`: `μ` is the list of
+`251` intervals at scale `2⁻¹²⁸` computed for the overlaps `μ₀, …, μ₂₅₀` (the sum (4.6) over the modes `m` and the
+indices `n₁ + n₂ = n − k₀(m)`, with the signs `(-1)^m`), and `ok` says that every reduction to a midpoint succeeded.
+If `ok = true`, the `n`-th interval contains `μ_n` (`mem_muTigOf` in `Haagerup/CellOverlapCore.lean`). -/
 def computeTigMu (creArr cimArr : Array Int) : Bool × List Ival :=
   let (widthOK, ov) := modeOverlapsAt sh832 sh216 creArr cimArr lagTable1024
   let muList := List.ofFn fun (kkIdx : Fin 251) =>
@@ -305,10 +346,12 @@ def computeTigMu (creArr cimArr : Array Int) : Bool × List Ival :=
           if evenM then ⟨vIv.1, vIv.2⟩ else ⟨-vIv.2, -vIv.1⟩
   (widthOK, muList)
 
+/-- Computation 2: `computeTigMu` succeeds and returns exactly the table `expected`. -/
 def tigMuCheck (creArr cimArr : Array Int) (expected : List Ival) : Bool :=
   let res := computeTigMu creArr cimArr
   res.1 && ivalListEq res.2 expected
 
+/-- `tigMuCheck` returns `true` exactly when `computeTigMu` returns `(true, expected)`. -/
 theorem tigMuCheck_iff (creArr cimArr : Array Int) (expected : List Ival) :
     tigMuCheck creArr cimArr expected = true ↔ computeTigMu creArr cimArr = (true, expected) := by
   unfold tigMuCheck
@@ -316,16 +359,24 @@ theorem tigMuCheck_iff (creArr cimArr : Array Int) (expected : List Ival) :
   | mk b l =>
     simp only [Bool.and_eq_true, ivalListEq_iff, Prod.mk.injEq]
 
-/-! ### 5. Square-root-free `computeSmoothedRows` & `smoothedRowsCheck` for `smoothMap` -/
+/-! ### 5. The energies of the smoothed map: `computeSmoothedRows` and `smoothedRowsCheck` (Appendix A.4) -/
 
+/-- `2⁴⁸`: with the division by the binomial coefficient and the rising factorial, reduces the sums of products from
+scale `2⁻⁵⁶⁰` to midpoints at scale `2⁻⁵¹²` (Appendix A.4, step 2). -/
 def sh48 : Int := (2 : Int) ^ 48
+/-- `2⁴¹⁶`: reduces the Laguerre integrals from scale `2⁻¹⁰²⁴` to midpoints at scale `2⁻⁶⁰⁸` (Appendix A.4, step 2). -/
 def sh416 : Int := (2 : Int) ^ 416
+/-- `2⁴⁴⁸`: reduces the weighted squared moduli from scale `2⁻⁵⁷⁶` to scale `2⁻¹²⁸` (Appendix A.4, step 5). -/
 def sh448 : Int := (2 : Int) ^ 448
+/-- `2⁵¹²`: reduces scale `2⁻¹⁰²⁴` to scale `2⁻⁵¹²`, and scale `2⁻⁸⁰⁰` to scale `2⁻²⁸⁸` (Appendix A.4, steps 1, 4). -/
 def sh512 : Int := (2 : Int) ^ 512
+/-- `2⁶²⁴`: reduces scale `2⁻¹⁰²⁴` to midpoints at scale `2⁻⁴⁰⁰` (Appendix A.4, steps 1 and 3). -/
 def sh624 : Int := (2 : Int) ^ 624
+/-- `2⁶⁸⁰`: reduces the sums of products from scale `2⁻¹²¹⁶` to `2⁻²⁴` times scale `2⁻⁵⁶⁰` (Appendix A.4, step 2). -/
 def sh680 : Int := (2 : Int) ^ 680
 
-/-- One recurrence step `(c0N * prev[j-1] + c1N * prev[j]) / denM` for `bCoeff` at scale `dLag`. -/
+/-- One step `(c0N * prev[j-1] + c1N * prev[j]) / denM` of the recurrences of the numbers `χ` of Appendix A.4, step 1
+(`bCoeff` in `Haagerup/ChaosRealise.lean`), on enclosures at scale `2⁻¹⁰²⁴`. -/
 def bStepRow (c0N c1N denM : Int) (prev : Array (Int × Int)) : Array (Int × Int) :=
   let d := prev.size - 1
   Array.ofFn fun (jIdx : Fin (d + 2)) =>
@@ -334,6 +385,7 @@ def bStepRow (c0N c1N denM : Int) (prev : Array (Int × Int)) : Array (Int × In
     let t1 := if d < j then (0, 0) else ivMulIntL (prev.getD j (0, 0)) c1N
     ivDivPosL (ivAddL t0 t1) denM
 
+/-- Append to `acc` the next `n` rows obtained from `cur` by repeated `bStepRow`. -/
 def bRowsLoop (c0N c1N denM : Int) :
     Nat → Array (Int × Int) → Array (Array (Int × Int)) → Array (Array (Int × Int))
   | 0, _, acc => acc
@@ -341,7 +393,9 @@ def bRowsLoop (c0N c1N denM : Int) :
     let nxt := bStepRow c0N c1N denM cur
     bRowsLoop c0N c1N denM rem nxt (acc.push nxt)
 
-/-- 1024-bit enclosure table `bTable1024[b][a][j]` for `bCoeff (u0N/denM) (u1N/denM) (v0N/denM) (v1N/denM) a b j`
+/-- The table `bTable1024[b][a][j]` of enclosures at scale `2⁻¹⁰²⁴` of the numbers `χ(a, b; j)` of
+Appendix A.4, that is, of
+`bCoeff (u0N/denM) (u1N/denM) (v0N/denM) (v1N/denM) a b j`
 covering `b ≤ 167`, `a ≤ 251 - b`, `j ≤ a + b`. -/
 def bTable1024 (u0N u1N v0N v1N denM : Int) : Array (Array (Array (Int × Int))) :=
   let row0s := bRowsLoop v0N v1N denM 167 #[(dLag, dLag)] #[#[(dLag, dLag)]]
@@ -350,7 +404,9 @@ def bTable1024 (u0N u1N v0N v1N denM : Int) : Array (Array (Array (Int × Int)))
     let base := row0s.getD b #[]
     bRowsLoop u0N u1N denM (251 - b) base #[base]
 
-/-- Extract `(allWidthOK, rows512, rows400)` where each entry is `(midRow, sumAbs)` for `bTable1024`. -/
+/-- Reduce every row of `bTable1024` to midpoints at scale `2⁻⁵¹²` and at scale `2⁻⁴⁰⁰`: the result is
+`(ok, rows512, rows400)`, each row being the array of midpoints with the sum of their absolute values, and `ok`
+saying that every enclosure had width at most `2` after the reduction. -/
 def extractBMids (bt : Array (Array (Array (Int × Int)))) :
     Bool × Array (Array (Array Int × Int)) × Array (Array (Array Int × Int)) :=
   let p512 : Array (Array (Bool × Array Int × Int)) :=
@@ -393,7 +449,9 @@ def extractBMids (bt : Array (Array (Array (Int × Int)))) :
       ((p400.getD b #[]).getD aIdx.val (false, #[], 0)).2
   (ok512 && ok400, m512, m400)
 
-/-- Look up `(gRe512, gIm512)` at `(k, j₁, j₂)` (`0` outside Fourier band `[-17, 18]`). -/
+/-- The midpoint (real part, imaginary part; scale `2⁻⁵¹²`) of the number `g_{j₁,j₂}` of Appendix A.4 for `n = k`:
+the entry of `gMid` with mode `m = j₁ − j₂`, `n₁ = min j₁ j₂`, `n₂ = min (k + 1 − j₁) (k − j₂)`, and `0` if `m` is
+outside `[-17, 18]`. -/
 @[inline] def gLookup704 (gMid : Array (Array (Array (Int × Int)))) (k j1 j2 : Nat) : Int × Int :=
   let mSigned : Int := Int.ofNat j1 - Int.ofNat j2
   if decide (-17 ≤ mSigned ∧ mSigned ≤ 18) then
@@ -403,7 +461,12 @@ def extractBMids (bt : Array (Array (Array (Int × Int)))) :
     ((gMid.getD idxM #[]).getD n1 #[]).getD n2 (0, 0)
   else (0, 0)
 
-/-- Compute `(allOK, rows)` enclosing `energy (toLp (smoothMap ct st se ce fTCell))` on `headIdx 501`. -/
+/-- The algorithm of Appendix A.4 for the cell table `(creArr, cimArr)` and the smoothing parameters
+`c_θ = cn / chyp`, `s_θ = sn / chyp`, `s_η = se / ehyp` (the argument `_ce` is not used: `c_η` does not occur in the
+formula). The result is `(ok, rows)`: `rows` has one row `(d₂, [(d₁, I_{d₁,d₂}), …])` for each `d₂ ≤ 167`, with `d₁`
+of the parity opposite to `d₂` and `d₁ + 3 d₂ ≤ 501`, and `ok` says that every reduction to a midpoint succeeded. If
+`ok = true`, the interval `I_{d₁,d₂}` (scale `2⁻¹²⁸`) contains the energy `E(d₁, d₂)` of the smoothed cell map
+(`smoothedRowsCheck_table_sound` in `Haagerup/CellOverlap.lean`). -/
 def computeSmoothedRows (creArr cimArr : Array Int) (cn sn chyp se _ce ehyp : Nat) :
     Bool × List RowI :=
   let binom := binomArr251
@@ -560,11 +623,13 @@ theorem rowListEq_iff : ∀ l m : List RowI, rowListEq l m = true ↔ l = m
       List.cons.injEq, Prod.mk.injEq, and_assoc]
     rw [rowListEq_iff l m]
 
+/-- Computation 3: `computeSmoothedRows` succeeds and returns exactly the table `expected`. -/
 def smoothedRowsCheck (creArr cimArr : Array Int) (cn sn chyp se ce ehyp : Nat)
     (expected : List RowI) : Bool :=
   let res := computeSmoothedRows creArr cimArr cn sn chyp se ce ehyp
   res.1 && rowListEq res.2 expected
 
+/-- `smoothedRowsCheck` returns `true` exactly when `computeSmoothedRows` returns `(true, expected)`. -/
 theorem smoothedRowsCheck_iff (creArr cimArr : Array Int) (cn sn chyp se ce ehyp : Nat)
     (expected : List RowI) :
     smoothedRowsCheck creArr cimArr cn sn chyp se ce ehyp expected = true ↔
