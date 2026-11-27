@@ -105,4 +105,4 @@ Haagerup.AngularSelector.selectorCoeff_dominated
 Haagerup.AngularSelector.selectorCoeff_wiener
 Haagerup.AngularSelector.selectorKernel_eq_radial
 Haagerup.AngularSelector.transfer_of_approximate_heads
-Haagerup.SixChannelExact.exists_certified_channels
+Haagerup.SixChannel.exists_certified_channels

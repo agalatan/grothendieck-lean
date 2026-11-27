@@ -35,12 +35,12 @@ def six_columns(sources):
     require((ROOT / overlap).read_bytes() == (channels.R6 / overlap).read_bytes(), "current six overlap table")
     common = Path("Grothe/UpperSix/Haagerup/Parameters.lean")
     require((ROOT / common).read_bytes() == (channels.R6 / common).read_bytes(), "current six preprocessors")
-    params = (ROOT / "Grothe/UpperSixExact/Parameters.lean").read_text()
+    params = (ROOT / "Grothe/UpperSix/Certificate/Parameters.lean").read_text()
     first = params.split("def firstPolynomial : List ℚ := [", 1)[1].split("]", 1)[0]
     first_poly = [Fraction(int(x.strip().removesuffix(" / d12Q")), 10**12) for x in first.split(",")]
     tail_block = params.partition("def tailCap : Fin 6 → ℚ")[2]
     caps = [int(x) for x in re.findall(r"\| [0-5] => (\d+) / 10 \^ 15", tail_block)]
-    variable = (ROOT / "Grothe/UpperSixExact/Head.lean").read_text()
+    variable = (ROOT / "Grothe/UpperSix/Certificate/Head.lean").read_text()
     phase = re.search(r"if p = 2 then (\d+) / 10 \^ 15 else tailCap p", variable)
     require(len(caps) == 6 and phase is not None, "Lean root tail-cap declarations")
     caps[2] = int(phase.group(1))

@@ -182,7 +182,7 @@ An older proof with a single rounding channel is still in the repository. It is 
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
 | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorem `main_bounds` with both bounds; the seven-channel upper bound and the comparison with Haagerup's value |
-| `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six-channel upper proof: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
+| `Grothe/UpperSix/`, `Grothe/UpperSix/Certificate/` | the six-channel upper proof: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
 | `haagerup-article/` | the article, frozen, with its own Lean package under `anc/` |
 | `Grothe/UpperClose.lean` | certified energy-table accuracy `hclose_final` |
 | `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |

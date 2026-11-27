@@ -3,12 +3,12 @@ import Grothe.UpperSix.Haagerup.Parameters
 set_option warningAsError true
 
 /-!
-# Exact six-channel certificate parameters
+# Six-channel certificate parameters
 
 Agent-ID: codex-a7c4
 -/
 
-namespace Haagerup.SixChannelExact
+namespace Haagerup.SixChannel
 
 /-- First-coordinate preprocessor in channel zero. -/
 def firstPolynomial : List ℚ := [
@@ -40,4 +40,4 @@ def tailCap : Fin 6 → ℚ
   | 4 => 1 / 10 ^ 15
   | 5 => 53006658 / 10 ^ 15
 
-end Haagerup.SixChannelExact
+end Haagerup.SixChannel

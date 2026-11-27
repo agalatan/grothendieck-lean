@@ -269,8 +269,8 @@ import Grothe
 #print axioms Haagerup.Data.tcell_sos_ok
 #print axioms Haagerup.Data.tig_mu_ok
 #print axioms Haagerup.Data.tig_sos_ok
-#print axioms Haagerup.SixChannelExact.exists_certified_channels
-#print axioms Haagerup.SixChannelExact.isBound
+#print axioms Haagerup.SixChannel.exists_certified_channels
+#print axioms Haagerup.SixChannel.isBound
 #print axioms Haagerup.mean1_ok
 #print axioms Haagerup.mean2_ok
 #print axioms Haagerup.mean3_ok

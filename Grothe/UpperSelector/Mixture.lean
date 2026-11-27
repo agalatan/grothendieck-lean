@@ -1,5 +1,5 @@
 import Grothe.UpperSelector.Aggregation
-import Grothe.UpperSixExact.VariableCutoff
+import Grothe.UpperSix.Certificate.VariableCutoff
 
 /-! # Mixed interval heads with full Wiener error allowances -/
 

@@ -9,7 +9,7 @@ set_option warningAsError true
 # Soundness of `HaagerupKernel.TaylorHardy`: TM-2 arithmetic, Maximum Principle, and Q1 Simpson quadrature
 
 Connects the Mathlib-free 64-bit degree-2 Taylor-model checkers in `HaagerupKernel.TaylorHardy`
-to the master Hardy tail budgets required by `CertCheck.lean`:
+to the master Hardy tail budgets required by the six-channel bound (`Grothe/UpperSix/Certificate/Bound.lean`):
 1. Soundness of 64-bit degree-2 Taylor-model arithmetic (`memTM2`, `tmMul`, residual-certified
    `tmInvPos`, complex `TMC`, Horner evaluation, and half-angle circle chart `circleTM`);
 2. Harmonic Maximum Principle for complex symmetric `KerPos`: if `I ± Re(R(t)) ≻ 0` on the

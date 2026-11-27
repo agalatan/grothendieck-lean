@@ -1,6 +1,6 @@
 import Grothe.UpperSelector.MixedPhysical
 import Grothe.UpperSelector.NumericWitness
-import Grothe.UpperSixExact.Bound
+import Grothe.UpperSix.Certificate.Bound
 
 /-! # Complex Grothendieck bound with a seventh Gaussian angular selector -/
 
@@ -8,7 +8,7 @@ set_option warningAsError true
 
 namespace Haagerup.AngularSelector
 
-open SixChannelExact NumericWitness
+open SixChannel NumericWitness
 
 /-- The complete seven-channel bound for every finite complex matrix. -/
 theorem isBound : Statement.IsBound ((10 : ℝ)^27 / 711968565817136711740669035) := by

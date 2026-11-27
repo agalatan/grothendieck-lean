@@ -1,4 +1,4 @@
-import Grothe.UpperSixExact.Parameters
+import Grothe.UpperSix.Certificate.Parameters
 import Grothe.UpperSix.Haagerup.SchurHardy
 
 set_option warningAsError true
@@ -9,7 +9,7 @@ set_option warningAsError true
 Agent-ID: codex-a7c4
 -/
 
-namespace Haagerup.SixChannelExact
+namespace Haagerup.SixChannel
 
 open HaagerupKernel.Hardy
 
@@ -22,4 +22,4 @@ theorem mean_ok :
     circleMeanOK (smoothedRData ctQ stQ seQ firstPolynomial q0Q) (rhoQ 0) (jCertQ 0) (circleBudget 0) 16 = true := by
   native_decide
 
-end Haagerup.SixChannelExact
+end Haagerup.SixChannel

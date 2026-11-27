@@ -88,7 +88,7 @@ at $v=c\delta/(\hat\varepsilon\tau)$. Lean checks both branches in the kernel. [
 
 ## Behind the upper bound
 
-The certificate mixes six established Gaussian rounding channels with an angular selector. The original channels are three smoothed cell roundings, one phase rounding, and two reflected tiger roundings. Their certified heads contain 321 terms for the phase channel and 251 for each of the three smoothed cell channels and the two reflected tiger channels. Their individual Hardy tail caps carry over from `Grothe/UpperSixExact/`.
+The certificate mixes six established Gaussian rounding channels with an angular selector. The original channels are three smoothed cell roundings, one phase rounding, and two reflected tiger roundings. Their certified heads contain 321 terms for the phase channel and 251 for each of the three smoothed cell channels and the two reflected tiger channels. Their individual Hardy tail caps carry over from `Grothe/UpperSix/Certificate/`.
 
 The seventh channel uses angle parameter `17/100` and polynomial `23/25 − (2/25)X`. Lean computes its first 251 signed coefficients at denominator `2^89` from 1,856 scalar phase grades, 72 folded frequencies, 240 radial terms and 296 binomial coefficients. Its full Wiener error pays for every omitted coefficient, rounding step and tail. Taking absolute values after mixing all seven heads preserves signed cancellation.
 
@@ -119,7 +119,7 @@ None of these is the current bound.
 | `1.401700322371` | an earlier lower bound, from the witness $\varepsilon = 1891/2500$ without identity tail | history in `research/` |
 | `1.40455741` | an earlier upper bound of this repository: the older certificate's value $1/(c-\delta) = 1.4045574031\ldots$ rounded up to eight decimals | [archived Lean certificate](https://github.com/agalatan/grothendieck-lean/blob/9c82551ea8d4c744be71ff29999d547cb2adcb84/Grothe/UpperSix/Haagerup/CertCheck.lean) |
 | `1.40456` | the article's bound (`140456 / 100000`, `Haagerup.constant_le` in the article's own Lean package); the package also states its certificate's exact value $10^{24}/711968053274152967940951 = 1.4045574031\ldots$ (`Haagerup.isBound_cert`, `Haagerup.certificate_value`) | `haagerup-article/`, `haagerup-article/anc/Haagerup.lean` |
-| `1.404556407` | the six-channel root certificate before adding the angular selector | `Haagerup.SixChannelExact.isBound` |
+| `1.404556407` | the six-channel root certificate before adding the angular selector | `Haagerup.SixChannel.isBound` |
 | `1.40455641` | an earlier upper bound of this repository: a six-channel certificate with a common cutoff of 251 | git history |
 | `1.40457588`, `1.40455742` | earlier upper bounds of this repository | git history |
 | `1.404599395362` | the bound of the older single-channel upper proof, $K < 1.404599395362$. Still proved and independent of the six-channel proof, but weaker, and above Haagerup's value | `Grothe.Statement.upper_below_tight`, `constant_lt_tight_upper` (`Grothe/UpperTightFinal.lean`); `docs/UPPER_STATUS.md` |
@@ -131,7 +131,7 @@ None of these is the current bound.
 
 ## Six fixed rounding channels
 
-For the six maps and preprocessors in `UpperSixExact`, retaining the same coefficient intervals, cutoffs and individual tail allowances, the transfer score of every convex mixture is at most `7119685648573 / 10^13`. The statement permits arbitrary real weights and arbitrary choices of enclosed coefficients. This is an upper bound on a certificate score. Its reciprocal is a limit on this fixed upper-certificate family. [Dual witness and theorem](../Grothe/UpperSixExact/ScoreCeiling.lean).
+For the six maps and preprocessors in `UpperSixExact`, retaining the same coefficient intervals, cutoffs and individual tail allowances, the transfer score of every convex mixture is at most `7119685648573 / 10^13`. The statement permits arbitrary real weights and arbitrary choices of enclosed coefficients. This is an upper bound on a certificate score. Its reciprocal is a limit on this fixed upper-certificate family. [Dual witness and theorem](../Grothe/UpperSix/Certificate/ScoreCeiling.lean).
 
 ## When a bound changes
 

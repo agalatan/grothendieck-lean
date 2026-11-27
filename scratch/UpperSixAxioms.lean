@@ -1,5 +1,5 @@
 import Grothe.UpperSix.Haagerup.GammaDagger
-import Grothe.UpperSixExact.Result
+import Grothe.UpperSix.Result
 
 -- Agent-ID: codex-a7c4
 set_option pp.fullNames true

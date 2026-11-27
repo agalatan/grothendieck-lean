@@ -1,5 +1,5 @@
 import Grothe.UpperSix.Haagerup.GammaDagger
-import Grothe.UpperSixExact.Result
+import Grothe.UpperSix.Result
 import Grothe.UpperSelector.Bound
 
 /-! # The upper bound for the complex Grothendieck constant

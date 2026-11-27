@@ -45,7 +45,7 @@ h_k^{(p)} cancel across channels before the absolute value is taken, so the best
 | | six channels | eighteen channels |
 |---|---|---|
 | where | master, `Grothe/UpperSix/` (article: `haagerup-article/main.tex`); read here at commit `f6620f3b` | the branch `gemini-1aa9/upper-mixture` of pull request #556 (closed, the branch deleted): `Grothe/UpperReplacement/`, its `docs/UPPER_CERTIFICATE.md`; read here at commit `76c4647b`, which `refs/pull/556/head` keeps |
-| certified D, 1/D | 0.711968053274, 1.4045574031 (the certificate at that commit; the six-channel theorem proves 1.404556407 with the certificate of `Grothe/UpperSixExact/`) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
+| certified D, 1/D | 0.711968053274, 1.4045574031 (the certificate at that commit; the six-channel theorem proves 1.404556407 with the certificate of `Grothe/UpperSix/Certificate/`) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
 | channel types | smoothed 64×64×36 cell map with (P, Q = −X): channels 0, 1, 5; phase with a degree-14 preprocessor: 2; reflected cell map with (−R, R): 3, 4 | ten GT channels, seven phase channels, one cell channel (a pair of responses on 64 angular × 128 × 128 radial cells, both coordinates preprocessed by R) |
 | head data | `Haagerup/Data/OverlapData.lean` (interval tables at scale 2⁻¹²⁸), `Haagerup/Parameters.lean` | `data/upper-replacement/exact-columns.json`, `cell-inputs.npz`, `Grothe/Upper/Data.lean`, `HeadWitnessFacts/Group00`–`07` (cell grades), `RootData.lean` |
 | head length | 251 coefficients per channel | 251 (GT, phase); 126 for the cell channel, which pays a truncation allowance for the rest |

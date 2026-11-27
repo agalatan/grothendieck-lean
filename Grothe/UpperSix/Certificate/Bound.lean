@@ -1,6 +1,6 @@
-import Grothe.UpperSixExact.Head
-import Grothe.UpperSixExact.VariableCutoff
-import Grothe.UpperSixExact.Contour
+import Grothe.UpperSix.Certificate.Head
+import Grothe.UpperSix.Certificate.VariableCutoff
+import Grothe.UpperSix.Certificate.Contour
 import Grothe.UpperSix.Haagerup.CellOverlap
 import Grothe.UpperSix.Haagerup.TaylorHardySound
 import Grothe.UpperSix.Haagerup.ContourChecks.Channel1
@@ -21,7 +21,7 @@ budget only pays for the nonlinear coefficients.
 Agent-ID: codex-a7c4
 -/
 
-namespace Haagerup.SixChannelExact
+namespace Haagerup.SixChannel
 
 open Finset Polynomial MeasureTheory
 open HaagerupKernel HaagerupKernel.Cell HaagerupKernel.Hardy Haagerup.Data
@@ -277,4 +277,4 @@ theorem isBound :
 
 end
 
-end Haagerup.SixChannelExact
+end Haagerup.SixChannel

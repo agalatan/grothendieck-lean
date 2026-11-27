@@ -1,4 +1,4 @@
-import Grothe.UpperSixExact.Parameters
+import Grothe.UpperSix.Certificate.Parameters
 import Grothe.UpperSix.Haagerup.CellOverlapCore
 import Grothe.UpperSix.Haagerup.Data.OverlapData
 
@@ -10,7 +10,7 @@ set_option warningAsError true
 Agent-ID: codex-a7c4, gemini-1aa9
 -/
 
-namespace Haagerup.SixChannelExact
+namespace Haagerup.SixChannel
 
 open HaagerupKernel HaagerupKernel.Cell Haagerup.Data
 
@@ -60,4 +60,4 @@ theorem head_sum_ok :
       ofRatLo headCap) = true :=
   decide_eq_true (of_decide_eq_true head_and_floors_ok).1
 
-end Haagerup.SixChannelExact
+end Haagerup.SixChannel

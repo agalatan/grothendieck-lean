@@ -1,5 +1,5 @@
 import Grothe.UpperSelector.NumericParameters
-import Grothe.UpperSixExact.Head
+import Grothe.UpperSix.Certificate.Head
 
 /-!
 # Finite verification of the seven-channel upper witness
@@ -16,12 +16,12 @@ open HaagerupKernel
 
 set_option maxRecDepth 10000 in
 /-- The compiled computation covers both expensive finite comparisons. -/
-theorem budgets_ok : withinBudgets SixChannelExact.headIntervals Certificate.production = true := by
+theorem budgets_ok : withinBudgets SixChannel.headIntervals Certificate.production = true := by
   native_decide
 
 theorem head_ok :
     absSum (addL (sumL ((List.finRange 7).map fun i =>
-      (heads SixChannelExact.headIntervals Certificate.production i).map (mulI (ofRatI (weight i)))))
+      (heads SixChannel.headIntervals Certificate.production i).map (mulI (ofRatI (weight i)))))
       [negI (ofRatI center)]) ≤ ofRatLo headBudget :=
   (of_decide_eq_true budgets_ok).1
 
@@ -29,7 +29,7 @@ theorem selector_budget_ok : (Certificate.production.allowance : ℚ) / 2^89 ≤
   (of_decide_eq_true budgets_ok).2
 
 /-- Sum of the head budget and the seven nonnegative weighted tail/error budgets. -/
-def residual : ℚ := headBudget + ∑ i, weight i * caps SixChannelExact.phaseTailCap selectorBudget i
+def residual : ℚ := headBudget + ∑ i, weight i * caps SixChannel.phaseTailCap selectorBudget i
 
 theorem residual_eq : residual = 288031434182863288259330965 / 10^27 := by decide +kernel
 

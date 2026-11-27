@@ -3,7 +3,7 @@
 
 Columns, each a list of exact head intervals (lo, hi) as fraction strings plus an exact allowance that pays for
 everything the head does not contain (tail, truncation, rounding):
-  six_0 .. six_5   master's six root channels (Grothe/UpperSixExact: degree-20 first preprocessor, phase cutoff 320,
+  six_0 .. six_5   master's six root channels (Grothe/UpperSix/Certificate: degree-20 first preprocessor, phase cutoff 320,
                    other cutoffs 250, the Lean tail caps), via the replay of the angular-selector note (verify.six_columns)
   sel_d1           master's seventh channel: one angular selector, angle 17/100, R = 23/25 - (2/25)X, research
                    allowance (selector.py; Lean pays the larger 162464451464/10^15, see eighth.py)

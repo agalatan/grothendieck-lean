@@ -119,7 +119,7 @@ independently of the lower row certificates.
 \subsection{Upper bounds by rounding}
 
 The six original channels, their data and their checker are in
-\path{Grothe/UpperSix/}, and their certificate is in \path{Grothe/UpperSixExact/}. Cell-map energies for the three smoothed channels
+\path{Grothe/UpperSix/}, and their certificate is in \path{Grothe/UpperSix/Certificate/}. Cell-map energies for the three smoothed channels
 and the two reflected channels feed interval coefficients. The phase channel
 uses its analytic Hermite coefficients. The finite check takes absolute values
 after mixing the signed coefficients. Each infinite tail is controlled by a
@@ -802,7 +802,7 @@ The resulting finite-matrix bound is \lean{convex\_transfer\_variable\_ival}.
 For the six established channels, a common rational vector in the 320-dimensional cube
 bounds the signed transfer score by $0.7119685648573$ for every real convex weight vector.
 The proof fixes each map, preprocessor, coefficient cutoff and tail allowance. Its finite
-comparison uses the actual dyadic enclosures (\path{Grothe/UpperSixExact/ScoreCeiling.lean}).
+comparison uses the actual dyadic enclosures (\path{Grothe/UpperSix/Certificate/ScoreCeiling.lean}).
 
 Separate paper results in the Conjecture K monograph strengthen the common-response
 energy ellipsoid and reduce a joint-sector estimate to a specified pointwise remainder
@@ -834,7 +834,7 @@ The six-channel proof checks the Hardy-space disk and circle-mean contours of fi
 Lean's kernel. \lean{native\_decide} is used for the two bounded cell-map
 norm witnesses and their overlap tables, for the weighted head with the six
 lower bounds of the linear coefficients, and for the contour of the first channel
-(\path{Grothe/UpperSixExact/}). Their soundness is proved in Lean.
+(\path{Grothe/UpperSix/Certificate/}). Their soundness is proved in Lean.
 The seven-channel proof adds one \lean{native\_decide} comparison for the mixed head and selector allowance.
 The physical meaning and the error budget of each integer are proved in the kernel.
 The six-channel report is in \path{scratch/UpperSixAxioms.lean}.

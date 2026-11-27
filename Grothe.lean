@@ -3478,6 +3478,11 @@ import Grothe.UpperSelector.RawTable
 import Grothe.UpperSelector.Realization
 import Grothe.UpperSelector.Transfer
 import Grothe.UpperSelector.Wiener
+import Grothe.UpperSix.Certificate.Bound
+import Grothe.UpperSix.Certificate.Contour
+import Grothe.UpperSix.Certificate.Head
+import Grothe.UpperSix.Certificate.Parameters
+import Grothe.UpperSix.Certificate.VariableCutoff
 import Grothe.UpperSix.Haagerup.CellHermite
 import Grothe.UpperSix.Haagerup.CellMap
 import Grothe.UpperSix.Haagerup.CellOverlap
@@ -3509,9 +3514,4 @@ import Grothe.UpperSix.HaagerupKernel.Hardy
 import Grothe.UpperSix.HaagerupKernel.SmoothedStages
 import Grothe.UpperSix.HaagerupKernel.Table
 import Grothe.UpperSix.HaagerupKernel.TaylorHardy
-import Grothe.UpperSixExact.Bound
-import Grothe.UpperSixExact.Contour
-import Grothe.UpperSixExact.Head
-import Grothe.UpperSixExact.Parameters
-import Grothe.UpperSixExact.Result
-import Grothe.UpperSixExact.VariableCutoff
+import Grothe.UpperSix.Result

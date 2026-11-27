@@ -1,5 +1,5 @@
 import Grothe.Statement
-import Grothe.UpperSixExact.Bound
+import Grothe.UpperSix.Certificate.Bound
 
 /-! # Existence of a complex Grothendieck bound from the six established channels
 
@@ -13,6 +13,6 @@ namespace Grothe.UpperSix
 
 /-- The exact six-channel bound used to witness nonemptiness in the lower-bound argument. -/
 theorem bound : Statement.IsBound ((10 : ℝ) ^ 27 / 711968558203721328194311213) :=
-  Haagerup.SixChannelExact.isBound
+  Haagerup.SixChannel.isBound
 
 end Grothe.UpperSix
