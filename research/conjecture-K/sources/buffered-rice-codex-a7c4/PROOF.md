@@ -55,7 +55,7 @@ The rational checker proves strict positivity on every rectangle of a closed cov
 
 For $x\ge0$, subtract $\rho(x)$ from its tangent at $s$. The integral for $\rho'$ expresses this difference as $(R/2)\mathbb E[e^{-sT}(e^{-z}-1+z)/T]$, where $z=T(x-s)$. For all real $z$,
 $$e^{-z}-1+z\ge\frac{z^2}{2(1+z_+/2)}.$$
-For $z\le0$ use the quadratic Taylor lower bound. For $z\ge2$ the inequality follows using $e^{-z}\ge0$. For $0\le z<2$ it is equivalent to $e^{-z}\ge(2-z)/(2+z)$, which follows by differentiating $\log((2+z)/(2-z))$. Under the $T$-weighted law, $T\sim\operatorname{Beta}(3/2,3/2)$ with mean $1/2$. Jensen for the positive log-convex function $t\mapsto e^{-st}/(1+t(x-s)_+/2)$ bounds the tangent difference below by $(R/16)e^{-s/2}(x-s)^2/(1+x/4)$.
+For $z\le0$ use the quadratic Taylor lower bound. For $z\ge2$ the inequality follows using $e^{-z}\ge0$. For $0\le z<2$ it is equivalent to $e^{-z}\ge(2-z)/(2+z)$, which follows by differentiating $\log((2+z)/(2-z))$. Under the $T$-weighted law, $T\sim\operatorname{Beta}(3/2,3/2)$ with mean $1/2$. Jensen for the positive log-convex function $t\mapsto e^{-st}/(1+t(x-s)_+/2)$ gives the denominator $1+(x-s)_+/4$. Since $(x-s)_+\le x$, the tangent difference is at least $(R/16)e^{-s/2}(x-s)^2/(1+x/4)$.
 
 Take $x=sU$ and expectations. The linear tangent term cancels. Cauchy–Schwarz with the weight $1+sU/4$ gives $\mathbb E[(U-1)^2/(1+sU/4)]\ge (1+y^2)^2/[1+y^2+(s/4)(3+7y^2+Cy^3)]$. Using $e^{-s/2}\ge1-s/2$ yields
 $$
@@ -84,6 +84,6 @@ Both responses are invariant under block permutations and under independent rota
 
 For unimodular responses adjoin one independent complex Gaussian of angle $\theta$ and replace $c$ by $c+i\sqrt{1-c^2}\operatorname{sgn}(\sin4\theta)$. The multiplier has modulus one almost surely and mean $c$. Its centered angular modes have order at least four, so its centered part is orthogonal to every polynomial of total degree at most three in the extra coordinate. Independence preserves both displayed chaos projections. For the zero target the same multiplier with $c=0$ applied to any of the unit phase pairs gives zero projections.
 
-The construction determines the energy supremum. Conditional on $S_N$, the remote cubic has Gaussian variance $eS_N$, so its independent-visible, linearly priced radial payoff is an average of Gaussian-variance payoffs.
+The construction determines the energy supremum. Conditional on $S_N$, the remote cubic has Gaussian variance $eS_N$, and $\mathbb E S_N=1$. At price $p$ its raw remote payoff is $\mathbb E[B(eS_N)-peS_N]\le\sup_{v\ge0}(B(v)-pv)$, where $B(v)=2\mathbb E|L+\sqrt v W|$. Thus attaining the energy pair is compatible with the Gaussian payoff bound.
 
 At the endpoint $t=R$, taking both responses equal to the visible phase realizes zero remote energy. The [peak-mixture calculation](PEAK.md) separately applies the same Rice curvature estimate to the remote payoff.
