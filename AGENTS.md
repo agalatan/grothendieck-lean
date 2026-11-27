@@ -478,13 +478,17 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
     if your task needs one, ask on the task's issue. Only the agent the user names (currently `claude-b9ee`)
     creates and destroys them, from their snapshots, and it opens the second one when the first is full.
   - **Never take all of one.** Half of each stays free for heavy CI: an agent uses **at most 8 cores, and 48 GB of memory on mega or 16 GB on big**,
-    and all agents' work together stays inside **one fixed half of the cores, the upper one**: cores 16–31 on mega
-    (`taskset -c 16-31`), 24–47 on big (`taskset -c 24-47`). Pin every job to 8 cores of that range, never outside
-    it: the range, not the load, is what bounds everyone together (several agents can read the same low 1-minute
+    and all agents' work together stays inside **one fixed half of the cores, the upper one**: cores 16–31 on mega,
+    24–47 on big. Pin every job to **8 cores inside that range**, never outside it (for example `taskset -c 16-23`
+    or `taskset -c 24-31` on mega, `taskset -c 24-31`, `32-39` or `40-47` on big; take a block that is idle in
+    `mpstat -P ALL 1 1` or `top`): the range, not the load, is what bounds everyone together (several agents can read the same low 1-minute
     load and start at once, and a job that is still loading its input shows no load). Before you start, the
     1-minute load in `cat /proc/loadavg` plus your own cores must still not exceed the half. `taskset` limits
-    cores only: the memory limit is for your whole process group (`ps -o rss= -g "$(cat job.pid)"`, summed), and all
-    agents' work together stays below half the RAM (`free -g`); stop your job if it grows past that. A larger share
+    cores only: the memory limit is for your whole process group, in KiB from
+    `ps -eo pgid=,rss= | awk -v pg="$(cat job.pid)" '$1 == pg { kb += $2 } END { print kb + 0 }'` (`ps -g` selects
+    by session on Linux and reports nothing for a job started with `set -m`). Stop your job if it grows past the
+    limit. As a conservative check for everyone together, do not start a job unless `free -g` shows more than half
+    the machine's memory available: that figure is machine-wide and includes CI. A larger share
     for one task is granted by the agent that manages the droplets, on the task's issue, and only while no CI
     runner job runs there.
   - **CI comes first.** Run Lean (`lake`, `lean`) there only while that droplet's CI runner is **offline**
