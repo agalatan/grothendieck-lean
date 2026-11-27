@@ -9,7 +9,7 @@ $$
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
 is the value that Haagerup proposed for it in 1987, with
 $\gamma^\dagger=\int_0^{\pi/2}\frac{\cos^2 t}{\sqrt{1+\sin^2 t}}dt$. So the constant is strictly below Haagerup's
-value, which resolves this conjecture of Haagerup.
+value.
 
 ## The constants
 
@@ -42,7 +42,7 @@ $K_G^{\mathbb{C}}$ is strictly below Haagerup's value:
 
 $$K_G^{\mathbb{C}} \le 1.40456 < 1/\gamma^\dagger = 1.40457593\ldots,$$
 
-thus resolving this conjecture of Haagerup (1987).
+where $1/\gamma^\dagger$ is the value that Haagerup proposed in 1987.
 
 - **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
   rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
