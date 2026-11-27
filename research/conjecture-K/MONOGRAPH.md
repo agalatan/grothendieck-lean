@@ -628,6 +628,8 @@ The proof controls the sixth cumulant and the first-chaos projection by the same
 
 These four disjoint-block cores also permit a perturbation $h$ involving a single Gaussian bath shared by all blocks. If each Wick term of $h$ has total bath degree at least two, the first variations of the payoff and of the projected response both vanish. The signed bound holds for $p+h$ whenever $E\lvert h\rvert^2\le u\chi/16000$ and $u+E\lvert h\rvert^2\le0.0463$, with $u,\chi$ measured on the unperturbed core. [Shared-bath proof and larger local allowances, 6.3.45](sources/shared-bath-perturbation-codex-a7c4/PROOF.md).
 
+More generally, let $E[h\mid X]=0$ and let $e_1$ be the energy of the terms linear in the fresh Gaussian bath. Their first variation can survive, but it lies in the bath coordinates and is orthogonal to the original core content. For $e=E\lvert h\rvert^2$, the signed bound holds throughout $u+e\le0.0463$ whenever $16000e+11000e_1\le u\chi$. Thus a purely bath-linear perturbation can use $u\chi/27000$, while higher bath degrees keep the allowance $u\chi/16000$. [First variation, four local allowances and a nonzero example, 6.3.46](sources/positive-bath-codex-a7c4/PROOF.md).
+
 The opposite driver character X̄H(Y) can be included at arbitrary strength in the one-driver self-interaction. Replacing it by X·conj(H(Y)) preserves the joint law with X and all first-chaos content. The resulting complex quadratic of real Gaussians satisfies the combined small-Wick moment multiplier. [One-driver proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md)
 
 With several drivers and no self-interaction, the folded law is a proper Gaussian mixture. A bound on the directional real covariance gives C² ≤ (47/200)D for every choice of bath quadratics. In particular (|X|² − 1)U(Y) + X²·conj(V(Y)) is covered for arbitrary linear U,V by taking Y as the driver block. [Many-driver proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md)
@@ -910,6 +912,8 @@ gives at most 0.000003593; an adverse cross term at most 0.118 with constant 0.1
 
 For the peak raw functional, the Gaussian variance loss pays the signed Schur cost throughout the general staircase of 6.3.44. On the four disjoint-block classes, a sharper margin near the Gaussian optimum and a smoothed B-response estimate give $\Lambda(q+A+B)\le S$ across $0\le u\le0.0463$, with arbitrary first-chaos shell amplitudes. The same smoothing leaves $3D(q)/200$ of the same-variance deficit for every cubic with $\chi\le0.0784$ throughout the band. [Proof and larger small-energy domains, 7.4.18](sources/strong-content-blocks-codex-a7c4/JOINT.md).
 
+The same two-shell conclusion holds after all shared-bath perturbations of 6.3.46. On the critical total-energy interval $[0.03875,0.04194]$, the perturbed moment estimate pays the signed Schur cost. The small-excess edge uses the smoothed two-score estimate of 7.4.18. The three odd shells are zero. [Perturbed two-shell proof and exact margins, 7.4.19](sources/positive-bath-codex-a7c4/PROOF.md).
+
 **A retained joint target.** Set ρ = 0.5053, s = 3/5, r_+ = α + ρβ, r_− = β − ρα, S_r = |α|² + |β|² and
 h = (T − 1 + s)α + sρβ + z₁²·conj(β)/√2. A sufficient pointwise premise, called (P) from here on, is
 
@@ -1004,6 +1008,8 @@ claude-b9ee · 7.4.15]. No common cost above 0.24772, the least eigenvalue of th
 hold. Integrated, it would bound the gain by (‖c_{3/5}(q)‖² + ‖c_B(q)‖²)/(23/100) with no cap on the driver energies;
 with the coefficient 7/25 of 2.6 that is not below S, so it needs deficit bounds for both contents with coefficients
 of sum below 23/100.
+
+**Same-variance comparison at the peak [P + C · 7.5.14].** The raw A and B angular scores share a positive Laplace measure after convolution. At the retained alignment this makes the squared first-chaos projection of their difference at most $0.03\delta^{3/2}$. For a sum on disjoint blocks the estimate uses $0.03\sum_j\delta_j^{3/2}$. On the staircase and block classes of 6.3.44 and the three base rectangles of 7.4.18, the raw two-shell payoff retains at least $0.037D(q)$ of the same-variance remote deficit at the peak price, with arbitrary driver energies. At every price $p\ge p_0-0.0085$ it retains at least $0.001D(q)$ relative to the corresponding Gaussian benchmark. [Proof and price interval](sources/signed-score-coupling-codex-a7c4/PROOF.md)
 
 ### 2.9 The odd sectors
 
@@ -1155,6 +1161,8 @@ F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds whe
   66 times smaller in size; its power χ^{1/4} is attained (a cubic with one heavy block), with a constant at least 167
   times smaller than the bound's [N · 7.5.11]. What limits this route is that constant and the two-sided form of the
   bound.
+
+**Strict six-sector peak comparison [P + C · 7.5.14].** On the same classes of remote cubics as the signed-score comparison in §2.8, completing the two coupled content squares in 7.5.13 gives $\widehat\Lambda(G)\le B_G(u)-p_0u-(41/125)D(q)<S$. This permits arbitrary odd energy and sharing, with $u\le0.0463$ and $u+V\le0.080051$. The same strict comparison with $S$ holds on these energy ranges whenever the stabilizer of the cubic has no fixed vector in first chaos, since both gains vanish. [Proof, precise classes and energy caps](sources/signed-score-coupling-codex-a7c4/SIX.md)
 
 ### 2.10 Response domains and the central consumer
 
@@ -1514,7 +1522,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.62 |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.17 |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.13 |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.14 |
 | 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |
 | 4 false statements | section 13 (and 14) |
