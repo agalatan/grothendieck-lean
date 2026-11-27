@@ -167,14 +167,44 @@ def main():
         "Rice slope upper bound",
     )
 
-    # Control 15: zero-float & zero-assert static hygiene audit of verify.py
+    # Control 15: dropping trailing consumer slabs (even when updating t_covered[1] to match!)
+    def c15():
+        b = copy.deepcopy(base)
+        cobj = b["consumer_slabs"]["eps_1891_2500_signed"]
+        cobj["slabs"] = cobj["slabs"][:1]
+        cobj["t_covered"][1] = cobj["slabs"][-1]["t_hi"]
+        verify.verify_bundle(b)
+    expect_reject("Control 15 (dropped trailing consumer slabs)", c15, "promised t-interval")
+
+    # Control 16: inflated headline worst_ub_1e10 exceeding published threshold (e.g. 29.37e-6 >= 29.36e-6)
+    def c16():
+        b = copy.deepcopy(base)
+        b["covers"]["peak_dplus"]["worst_ub_1e10"] = 293_700
+        verify.verify_bundle(b)
+    expect_reject("Control 16 (headline peak_dplus threshold pin)", c16, ">= 29.36e-6")
+
+    # Control 17: inflated peak_signed worst_ub_1e10 >= 27.00e-6
+    def c17():
+        b = copy.deepcopy(base)
+        b["covers"]["peak_signed"]["worst_ub_1e10"] = 270_000
+        verify.verify_bundle(b)
+    expect_reject("Control 17 (headline peak_signed < 27e-6 pin)", c17, ">= 27.00e-6")
+
+    # Control 18: mathematical negative control — attempting to spend sigma(u)/remote slack in (P_Psi) cession
+    def c18():
+        b = copy.deepcopy(base)
+        b["covers"]["cession_dplus"]["pure_dplus_cession"] = False
+        verify.verify_bundle(b)
+    expect_reject("Control 18 ((P_Psi) cession double-spending sigma(u) forbidden)", c18, "pure_dplus_cession")
+
+    # Control 19: zero-float & zero-assert static hygiene audit of verify.py
     with open(os.path.join(HERE, "verify.py"), "r") as f:
         src = f.read()
     for bad_tok in ("float(", "assert "):
         check(bad_tok not in src, f"Forbidden token {bad_tok!r} found in verify.py")
-    print("  [PASS] Control 15 (static hygiene): verify.py has zero float() and zero assert statements")
+    print("  [PASS] Control 19 (static hygiene): verify.py has zero float() and zero assert statements")
 
-    print("ALL 17 KAST POSITIVE-FIXTURE, MATHEMATICAL, AND CORRUPTION CONTROLS PASSED!")
+    print("ALL 21 KAST POSITIVE-FIXTURE, MATHEMATICAL, AND CORRUPTION CONTROLS PASSED!")
 
 
 if __name__ == "__main__":

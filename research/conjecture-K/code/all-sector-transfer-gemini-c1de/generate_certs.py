@@ -168,6 +168,8 @@ def opt_lam(a0, b0, A0, B0, dV_lo, dV_hi, c_lo, c_hi, q_coeff):
     if lo_lam < 0:
         for t in range(5, 100, 5):
             cands.append(lo_lam * (t / 100.0))
+        for k in range(28):
+            cands.append(-1e-6 * (1.5 ** k))
     for lf in cands:
         if lf > lo_lam:
             v = eval_l(lf)
@@ -195,8 +197,11 @@ def opt_lam(a0, b0, A0, B0, dV_lo, dV_hi, c_lo, c_hi, q_coeff):
 
 def build_2d_cover(
     u_max, u_tot, x_pen=Fraction(0), y_cess=Fraction(0), nu_pen=Fraction(0),
-    use_signed_1161=False, response_ellipsoid_34=None, nu_grid=32, nv_grid=18, fine_u=False
+    use_signed_1161=False, response_ellipsoid_34=None, nu_grid=32, nv_grid=18,
+    fine_u=False, pure_dplus_cession=False
 ):
+    if pure_dplus_cession and use_signed_1161:
+        raise ValueError("pure_dplus_cession incompatible with use_signed_1161")
     special_u = [
         Fraction(0), Fraction(551, 100000), Fraction(1, 100), Fraction(2, 125),
         Fraction(2, 100), Fraction(25, 1000), Fraction(3, 100),
@@ -205,18 +210,21 @@ def build_2d_cover(
     if fine_u:
         special_u.extend([
             Fraction(353, 10000), Fraction(354, 10000),
+            Fraction(4047, 100000), Fraction(4049, 100000), Fraction(4051, 100000),
             Fraction(454, 10000), Fraction(455, 10000), Fraction(4625, 10000),
         ])
     u_base = [u_max * i / nu_grid for i in range(nu_grid + 1)]
     u_extra = (
-        [Fraction(392 + 2 * k, 10000) for k in range(16)]
+        [Fraction(398 + 2 * k, 10000) for k in range(9)]
+        + [Fraction(2021 + k, 50000) for k in range(18)]
         + [Fraction(450 + 2 * k, 10000) for k in range(7)]
     ) if fine_u else [Fraction(400, 10000), Fraction(407, 10000)]
     u_edges = sorted(set(u for u in (u_base + special_u + u_extra) if 0 <= u <= u_max))
 
     v_tiny = [
-        Fraction(0), Fraction(1, 10**7), Fraction(3, 10**6),
-        Fraction(2, 10**5), Fraction(1, 10**4), Fraction(6, 10**4),
+        Fraction(0), Fraction(1, 10**7), Fraction(1, 10**6), Fraction(5, 10**6),
+        Fraction(12, 10**6), Fraction(2, 10**5), Fraction(32, 10**6), Fraction(5, 10**5),
+        Fraction(72, 10**6), Fraction(1, 10**4), Fraction(25, 10**5), Fraction(6, 10**4),
     ] if fine_u else [Fraction(0), Fraction(1, 10**6), Fraction(5, 10**5), Fraction(4, 10**4)]
     v_edges = sorted(set([v for v in v_tiny if v <= u_tot] + [u_tot * j / nv_grid for j in range(nv_grid + 1)]))
 
@@ -228,10 +236,14 @@ def build_2d_cover(
 
     for iu in range(len(u_edges) - 1):
         ul, uh = u_edges[iu], u_edges[iu + 1]
-        sig_lo = sigma_lo_iv(ul, uh)
-        r_rem = rho_rem_hi(ul, uh)
-        e_int = rat_sqrt_hi_int(Fraction(49, 4000000) * uh, 10**8)
-        E_cell = Fraction(e_int, 10**8)
+        if pure_dplus_cession:
+            sig_lo = Fraction(0)
+            r_rem = Fraction(0)
+        else:
+            sig_lo = sigma_lo_iv(ul, uh)
+            r_rem = rho_rem_hi(ul, uh)
+        e_int = rat_sqrt_hi_int(Fraction(49, 4000000) * uh, 10**10)
+        E_cell = Fraction(e_int, 10**10)
         a_cell = RHO0 * E_cell / D_RHO
         b_cell = E_cell / D_RHO
         g_best = best_gamma(ul)
@@ -337,6 +349,7 @@ def build_2d_cover(
         "y_cess": str(y_cess),
         "nu_pen": str(nu_pen),
         "use_signed_1161": use_signed_1161,
+        "pure_dplus_cession": bool(pure_dplus_cession),
         "resp_ell34": None if response_ellipsoid_34 is None else str(response_ellipsoid_34),
         "u_edges": [str(u) for u in u_edges],
         "v_edges": [str(v) for v in v_edges],
@@ -464,15 +477,22 @@ def build_scaled_peak_consumer_slabs(eps, target_cap, t_center_hint, use_signed=
 
 def main():
     print("Building Part 1 & Part 2 2D exact rational covers...")
-    c_peak_dplus = build_2d_cover(E0, U_TOT0, Fraction(0), Fraction(0), Fraction(0), False, None, 26, 15, True)
-    c_peak_signed = build_2d_cover(E0, U_TOT0, Fraction(0), Fraction(0), Fraction(0), True, None, 26, 15, True)
-    c_cess_dplus = build_2d_cover(E0, U_TOT0, Fraction(0), Fraction(1, 100), Fraction(0), False, None, 28, 16, True)
-    c_cess_signed = build_2d_cover(E0, U_TOT0, Fraction(0), Fraction(1, 100), Fraction(0), True, None, 28, 16, True)
+    c_peak_dplus = build_2d_cover(
+        E0, U_TOT0, Fraction(0), Fraction(0), Fraction(0),
+        False, None, 26, 15, fine_u=True, pure_dplus_cession=False
+    )
+    c_peak_signed = build_2d_cover(
+        E0, U_TOT0, Fraction(0), Fraction(0), Fraction(0),
+        True, None, 26, 15, fine_u=True, pure_dplus_cession=False
+    )
+    c_cess_dplus = build_2d_cover(
+        E0, U_TOT0, Fraction(0), Fraction(1, 100), Fraction(0),
+        False, None, 26, 15, fine_u=True, pure_dplus_cession=True
+    )
 
     print(f"  peak_dplus:    {c_peak_dplus['worst_ub_1e10']/1e4:.4f}e-6")
     print(f"  peak_signed:   {c_peak_signed['worst_ub_1e10']/1e4:.4f}e-6")
-    print(f"  cess_dplus:    {c_cess_dplus['worst_ub_1e10']/1e4:.4f}e-6")
-    print(f"  cess_signed:   {c_cess_signed['worst_ub_1e10']/1e4:.4f}e-6")
+    print(f"  cess_dplus:    {c_cess_dplus['worst_ub_1e10']/1e4:.4f}e-6  (J_AB + 0.01||U||^2 - D_+)")
 
     print("Building Part 3 scaled profile covers (lam <= 1900/1891 => x = 9/1891)...")
     x_hi = Fraction(9, 1891)
@@ -519,7 +539,6 @@ def main():
             "peak_dplus": c_peak_dplus,
             "peak_signed": c_peak_signed,
             "cession_dplus": c_cess_dplus,
-            "cession_signed": c_cess_signed,
             "scale_even_dplus": c_scale_even_dplus,
             "scale_even_signed": c_scale_even_signed,
             "scale_all6_dplus": c_scale_all6_dplus,

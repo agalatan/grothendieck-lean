@@ -1834,20 +1834,41 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 | `code/multi-driver-self-interaction-gemini-21d5/verify.py` | 62,494 B | `7508bc2bfc3bf163f8f33ef25f9281bb5f46419dc6f07b57c0b83d7fc73624b3` |
 | `code/multi-driver-self-interaction-gemini-21d5/result.json` | 9,421 B | `3614df20314af9e5c570b0d38f72ac271d591853b16094da64073627d4e713ef` |
 
+## Tied U(1)-averaged OU resolvent and self-contained Damped Level-3 cubic radius 114/125 = 0.912 (gemini-4c4c, #720)
+
+- [Self-contained proof and replay instructions](sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md) and
+  [exact rational certificate, two zero-float stdlib verifiers, symbolic identity & zero-set checks, 97 negative/corruption controls, and generator](code/cubic-radius-ou-l3-gemini-4c4c/) (tag KOUL3; STATUS 3.6, 3.7, 3.21; `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C, author only**). Every file is strictly below 300 KB (`cert_912.json` is 229,130 B) with zero external dependencies left outside.
+- **Replay (pure Python 3 standard library only, zero floating-point operations or float clocks, `-IB` and `-IB -O` identical):**
+  - Primary $LDL^\top$ + Sturm + downstream verifier (~60 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify.py`
+  - Second verifier — independent on all 10 Stein rows and `4.18e` (Block2-Schur + Bernstein + symbolic $\mathbb{Q}[v, c_2]$ raw bracket check) and applying $2\times 2$ Block Schur complements to the shared OU quadrature/congruence enclosures (~54 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py`
+  - Exact symbolic & interval identity checks including traced Wick identity ($d = 1, 2, 3$) and $z = \sqrt{2}$ zero-set regression (~18 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py`
+  - AST zero-float self-audit + 97 negative & corruption controls (~138 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py`
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,574 B | `d58499b89dae1c386efc04028a0f8a985cc8f7b9c8eb0701697a204d2b26005f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/README.md` | 2,990 B | `24e96c9ddcd29789e49c78872f6f1d746b287502bedac72e943e84d56de6c14a` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/cert_912.json` | 229,130 B | `5fd94b4b1bda430344388013009b18e8fc00077ec4e67ec993a5755c85b0ba04` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/verify.py` | 65,398 B | `9b5a2d83166006db93de6d59201a98ae3506088290095d43a0ccfbd0dd1cf70f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py` | 40,901 B | `53cfd31eabe3f4ff77bf5800a705b3b99daf7debf5773e5f35deef6de4bdd86f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py` | 46,642 B | `242bd78e49dafe996222f788b047782ac14e0b4d0784aa3eeccd5f6c16f52553` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py` | 12,889 B | `bb9e8fc43d8a49bb8b29907b762d142bfde143aa462487c1bad4dfdb50757d6e` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/make_cert.py` | 64,325 B | `2f83919cc3e5dfd31e61283660b047edd5733daf5770ba078f4b3a3979570675` |
+
 ## Sharpened retained six-sector peak bounds, profile transfer, and central consumer slabs (gemini-c1de, #728)
 
 - [Proof and replay instructions](sources/all-sector-transfer-gemini-c1de/PROOF.md) and
-  [zero-float stdlib verifier, rational certificate, generator, and 17-check control suite](code/all-sector-transfer-gemini-c1de/) (tag KAST; STATUS 7.4.10, 7.4.16, 7.5.3, 7.5.13, 8.1, 8.7, 8.10, 8.13, 11.47, 11.53; **P + C, author only**). All files are committed in the repository (`all_sector_transfer_cert.json` is 250,090 B < 300 KB) with zero external dependencies.
+  [zero-float stdlib verifier, rational certificate, generator, and 21-check control suite](code/all-sector-transfer-gemini-c1de/) (tag KAST; STATUS 7.4.10, 7.4.16, 7.5.3, 7.5.13, 8.1, 8.7, 8.10, 8.13, 11.47, 11.53; **P + C, author only**). All files are committed in the repository (`all_sector_transfer_cert.json` is 267,846 B < 300 KB) with zero external dependencies.
 - **Replay:**
-  - Zero-float, zero-`assert` exact rational verification of Machin $\pi$, $\sqrt{\pi}$, the `2.12a–b` Rice tangent at $u = 1/10$, all 8 2D `(u, V)` covers (`peak`, `7.5.3` `0.01‖U‖²` cession, and `11.53` scaled profile covers in both `D_+` and signed `11.61` modes), direct Row 8 (`[0.840, 0.847]`) closure of `8.13(ii)`, and all 5 subdivided central consumer $t$-slab covers (< 2 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py`.
-  - Positive-fixture, mathematical negative-control (including forbidden signed `11.61` below $u = 2/125$ and omitted $(\lambda - 1)(49/625)|\nu_0|^2$ on $\lambda > 1$ six-sector transfer), and corruption control suite (17 checks, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py`.
+  - Zero-float, zero-`assert` exact rational verification of Machin $\pi$, $\sqrt{\pi}$, the `2.12a–b` Rice tangent at $u = 1/10$, all 7 2D `(u, V)` covers (`peak_dplus`, `peak_signed`, pure-`D_+` `7.5.3` `cession_dplus` with `sig_lo = r_rem = 0` and scalar `(P_Psi)` control, and `11.53` scaled profile covers `scale_even_*` and `scale_all6_*`), direct Row 8 (`[0.840, 0.847]`) closure of `8.13(ii)`, and all 5 pinned central consumer $t$-slab covers (< 2 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py`.
+  - Positive-fixture, mathematical negative-control (including forbidden signed `11.61` below $u = 2/125$, forbidden double-spending of $\sigma(u)$ on `(P_Psi)` cession, omitted $(\lambda - 1)(49/625)|\nu_0|^2$ on $\lambda > 1$ six-sector transfer, pinned `< 29.36e-6` / `< 27.00e-6` headline thresholds, and truncated consumer slabs), and corruption control suite (21 checks, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py`.
   - Certificate regeneration from scratch (~15 s): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/generate_certs.py`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/all-sector-transfer-gemini-c1de/PROOF.md` | 21,694 B | `233f65d92e014b73e9bea301cd047b8ee078e5eb107e1c36221d1c7e50324690` |
-| `code/all-sector-transfer-gemini-c1de/README.md` | 2,455 B | `02cc0b362954c317054f4437a476166875a9ba80146788339085b3164707cb92` |
-| `code/all-sector-transfer-gemini-c1de/generate_certs.py` | 20,902 B | `b31c8542e10acc34b8d9b6d6ab45d1c962979b973fbfde9daf32ccf8369bc474` |
-| `code/all-sector-transfer-gemini-c1de/verify.py` | 32,585 B | `b672f1e1dbbed4c537300943cbed01bb9974bc70cf718129623bebfc35592e15` |
-| `code/all-sector-transfer-gemini-c1de/test_controls.py` | 7,354 B | `192ea7ed6a85fe1a54f3b7339094fdd016a8078a0eed94e81fd014f3ff8876cb` |
-| `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 250,090 B | `49c5d4e50027e152e31e8a3d618c9ce0368b5a191f5b0e3f22ab7101680f4654` |
+| `sources/all-sector-transfer-gemini-c1de/PROOF.md` | 22,983 B | `2ac57ee4572443930818fc737939dead00a625595bc892c9c30fe3c11d67f01f` |
+| `code/all-sector-transfer-gemini-c1de/README.md` | 2,922 B | `87d02d2a96ca6100f46cd9cc32fc7967ff8be97f2ac107d9c7a539637b41cc48` |
+| `code/all-sector-transfer-gemini-c1de/generate_certs.py` | 21,536 B | `b82930d3bcbf56c28b0672f866552efb441cbc5918550528408bde8e7b033416` |
+| `code/all-sector-transfer-gemini-c1de/verify.py` | 35,916 B | `c681031fa6ccf8e685a11b990b9dd65992369e68a9353b3a7b320b497d23d65b` |
+| `code/all-sector-transfer-gemini-c1de/test_controls.py` | 8,784 B | `c6afbdb43aef19aa7d05043739ee5dba069a3710c5142095786924e7f021cbdf` |
+| `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 267,846 B | `c0464da7a116c1f7cb459191227185f8e3c631d0ca7f4ad9594750e82bb90f47` |

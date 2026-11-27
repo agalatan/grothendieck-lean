@@ -182,7 +182,8 @@ def verify_elementary_foundations(rice_slope_override=None):
     check(sp_lo * sp_lo <= pi_lo and pi_hi <= sp_hi * sp_hi <= SQRT_PI_HI * SQRT_PI_HI,
           "sqrt(pi) enclosure failed")
 
-    # Rice tangent rho(u) = (sqrt(pi)/2) e^{-u/2} [(1+u) I_0(u/2) + u I_1(u/2)] at u = 1/10 (x = 1/20):
+    # Rice tangent rho(u) <= [rho(u_0) - u_0 rho'(u_0)] + u rho'(u_0) at u_0 = 1/10 (x = 1/20):
+    # Here tan_a_hi bounds the tangent intercept rho(u_0) - u_0 rho'(u_0), and tan_b_hi bounds rho'(u_0).
     x = Q(1, 20)
     i0_lo, i0_hi = bessel_i_bounds(0, x, 20)
     i1_lo, i1_hi = bessel_i_bounds(1, x, 20)
@@ -214,7 +215,31 @@ def verify_elementary_foundations(rice_slope_override=None):
     check(rem_err + gain_abs > (Q(1) - kap_a) * rem_err + eta_a_cost,
           "Scalar countermodel non-attenuation check failed")
 
-    return {"pi_lo": pi_lo, "pi_hi": pi_hi, "tan_a_hi": tan_a_hi, "tan_b_hi": tan_b_hi}
+    # Verify (P_Psi) cession scalar control (codex-a7c4): u = 463/10000, D = 0, C = 2449/1000000,
+    # ||e|| = 3/4000, R = 888/100000, U = 855/100000 give J_AB + 0.01||U||^2 - D_+ > 29.539e-6 > 27.55e-6
+    # before subtracting sigma(u), showing (P_Psi) cession cannot spend sigma(u) a second time:
+    u_sc = E0
+    c_sc = Q(2449, 1000000)
+    e_sc = Q(3, 4000)
+    r_sc = Q(888, 100000)
+    uo_sc = Q(855, 100000)
+    v_sc = (r_sc * r_sc + uo_sc * uo_sc) / D_RHO
+    check(c_sc * c_sc <= ETA_A and e_sc * e_sc <= Q(49, 4000000) * u_sc and u_sc + v_sc <= U_TOT0,
+          "(P_Psi) scalar control violated domain/content/alignment hypotheses")
+    jab_plus_cess_sc = (
+        Q(2) * r_sc * (c_sc + (RHO0 / D_RHO) * e_sc)
+        + Q(2) * uo_sc * (e_sc / D_RHO)
+        - Q(31, 100) * r_sc * r_sc
+        - Q(7, 100) * uo_sc * uo_sc
+        + Q(2) * (u_sc + v_sc - E0) * v_sc
+    )
+    check(jab_plus_cess_sc > Q(29539, 10**9),
+          f"(P_Psi) scalar control {jab_plus_cess_sc} did not exceed 29.539e-6")
+
+    return {
+        "pi_lo": pi_lo, "pi_hi": pi_hi, "tan_a_hi": tan_a_hi, "tan_b_hi": tan_b_hi,
+        "ppsi_scalar_control": jab_plus_cess_sc,
+    }
 
 
 def best_gamma(u_lo):
@@ -285,6 +310,7 @@ def verify_2d_cover(name, cov, expected):
     y_cess = Q(cov["y_cess"])
     nu_pen = Q(cov["nu_pen"])
     use_signed = bool(cov["use_signed_1161"])
+    pure_cess = bool(cov.get("pure_dplus_cession", False))
     resp_ell34 = None if cov["resp_ell34"] is None else Q(cov["resp_ell34"])
 
     check(u_max == expected["u_max"], f"{name}: u_max mismatch ({u_max} != {expected['u_max']})")
@@ -292,6 +318,11 @@ def verify_2d_cover(name, cov, expected):
     check(x_pen == expected["x_pen"], f"{name}: x_pen mismatch")
     check(y_cess == expected["y_cess"], f"{name}: y_cess mismatch")
     check(use_signed == expected["use_signed_1161"], f"{name}: use_signed_1161 mismatch")
+    check(pure_cess == bool(expected.get("pure_dplus_cession", False)),
+          f"{name}: pure_dplus_cession mismatch")
+    if y_cess > 0:
+        check(pure_cess and not use_signed,
+              f"{name}: y_cess > 0 under (P_Psi) requires pure_dplus_cession=True and use_signed=False")
     check(resp_ell34 == expected["resp_ell34"], f"{name}: resp_ell34 mismatch")
     if expected.get("require_all6_nu_pen", False) and x_pen > 0:
         check(nu_pen >= x_pen * Q(49, 625),
@@ -322,12 +353,18 @@ def verify_2d_cover(name, cov, expected):
     worst_all = None
     for iu, strip in enumerate(strips):
         ul, uh = u_edges[iu], u_edges[iu + 1]
-        sig_lo = sigma_lo_iv(ul, uh)
-        r_rem = rho_rem_hi(ul, uh)
+        if pure_cess:
+            # Under (P_Psi) of 7.5.3, Lambda(q) - S + sigma(u) - D_-(q) = -D_+(q) already spent sigma(u)
+            # and remote slack, so J_AB + y_cess ||U||^2 - D_+(q) must evaluate with sig_lo = r_rem = 0.
+            sig_lo = Q(0)
+            r_rem = Q(0)
+        else:
+            sig_lo = sigma_lo_iv(ul, uh)
+            r_rem = rho_rem_hi(ul, uh)
 
         check(isinstance(strip["e"], int) and isinstance(strip["c"], int) and isinstance(strip["ub"], int),
               f"{name} strip {iu}: strip header fields must be integers")
-        E_cell = Q(strip["e"], 10**8)
+        E_cell = Q(strip["e"], 10**10)
         C_max = Q(strip["c"], 10**8)
         check(E_cell >= 0 and E_cell * E_cell >= Q(49, 4000000) * uh,
               f"{name} strip {iu}: E_cell^2 < (7/2000)^2 u_hi (7.1.6 violation)")
@@ -473,31 +510,37 @@ def verify_bundle(bundle, cert_path=None, row8_override=None, rice_slope_overrid
     found = verify_elementary_foundations(rice_slope_override=rice_slope_override)
     covers = bundle["covers"]
 
+    expected_cover_keys = {
+        "peak_dplus", "peak_signed", "cession_dplus",
+        "scale_even_dplus", "scale_even_signed", "scale_all6_dplus", "scale_all6_signed",
+    }
+    check(set(covers.keys()) == expected_cover_keys, "covers keys mismatch")
+
     # 1. Part 1 & Part 2 covers on the peak abstract domain u <= 0.0463, u + V <= 0.080051:
     x_hi = Q(9, 1891)
     nu_hi = x_hi * Q(49, 625)
 
     peak_dp_ub, u_dp, strips_dp = verify_2d_cover("peak_dplus", covers["peak_dplus"], {
         "u_max": E0, "u_tot": U_TOT0, "x_pen": Q(0), "y_cess": Q(0), "nu_pen": Q(0),
-        "use_signed_1161": False, "resp_ell34": None,
+        "use_signed_1161": False, "pure_dplus_cession": False, "resp_ell34": None,
     })
     peak_sg_ub, u_sg, strips_sg = verify_2d_cover("peak_signed", covers["peak_signed"], {
         "u_max": E0, "u_tot": U_TOT0, "x_pen": Q(0), "y_cess": Q(0), "nu_pen": Q(0),
-        "use_signed_1161": True, "resp_ell34": None,
+        "use_signed_1161": True, "pure_dplus_cession": False, "resp_ell34": None,
     })
     cess_dp_ub, _, _ = verify_2d_cover("cession_dplus", covers["cession_dplus"], {
         "u_max": E0, "u_tot": U_TOT0, "x_pen": Q(0), "y_cess": Q(1, 100), "nu_pen": Q(0),
-        "use_signed_1161": False, "resp_ell34": None,
+        "use_signed_1161": False, "pure_dplus_cession": True, "resp_ell34": None,
     })
-    cess_sg_ub, _, _ = verify_2d_cover("cession_signed", covers["cession_signed"], {
-        "u_max": E0, "u_tot": U_TOT0, "x_pen": Q(0), "y_cess": Q(1, 100), "nu_pen": Q(0),
-        "use_signed_1161": True, "resp_ell34": None,
-    })
+    cess_total_dp = cess_dp_ub + Q(50, 10**6)
 
-    check(peak_dp_ub < Q(295, 10**7), f"peak_dplus {peak_dp_ub} >= 29.5e-6")
-    check(peak_sg_ub < Q(272, 10**7), f"peak_signed {peak_sg_ub} >= 27.2e-6")
-    check(cess_dp_ub < Q(302, 10**7), f"cession_dplus {cess_dp_ub} >= 30.2e-6")
-    check(cess_sg_ub < Q(277, 10**7), f"cession_signed {cess_sg_ub} >= 27.7e-6")
+    # Pin exact published headline thresholds:
+    check(peak_dp_ub < Q(2936, 10**8), f"peak_dplus {peak_dp_ub} >= 29.36e-6")
+    check(peak_sg_ub < Q(27, 10**6), f"peak_signed {peak_sg_ub} >= 27.00e-6")
+    check(cess_dp_ub < Q(2971, 10**8), f"cession_dplus {cess_dp_ub} >= 29.71e-6")
+    check(cess_total_dp < Q(7971, 10**8), f"cession_total_dp {cess_total_dp} >= 79.71e-6")
+    check(found["ppsi_scalar_control"] < cess_dp_ub,
+          "cession_dplus upper bound below (P_Psi) scalar control witness")
 
     # Verify strict exact retained K (< 0) sub-bands at the peak row:
     saw_dp_zero = False
@@ -541,21 +584,26 @@ def verify_bundle(bundle, cert_path=None, row8_override=None, rice_slope_overrid
 
     rect_even_dp = lam_hi * (se_dp_ub + bench_gap + ca * da_max + cb * db_max)
     rect_even_sg = lam_hi * (se_sg_ub + bench_gap + ca * da_max + cb * db_max)
+    rect_all6_le1_dp = Q(1) * (peak_dp_ub + bench_gap + ca * da_max + cb * db_max)
+    rect_all6_le1_sg = Q(1) * (peak_sg_ub + bench_gap + ca * da_max + cb * db_max)
     rect_all6_dp = lam_hi * (sa_dp_ub + bench_gap + ca * da_max + cb * db_max)
     rect_all6_sg = lam_hi * (sa_sg_ub + bench_gap + ca * da_max + cb * db_max)
 
-    check(rect_even_dp < Q(1083, 10**7), f"rect_even_dp {rect_even_dp} >= 1.083e-4")
-    check(rect_even_sg < Q(1075, 10**7), f"rect_even_sg {rect_even_sg} >= 1.075e-4")
-    check(rect_all6_dp < Q(1225, 10**7), f"rect_all6_dp {rect_all6_dp} >= 1.225e-4")
-    check(rect_all6_sg < Q(1219, 10**7), f"rect_all6_sg {rect_all6_sg} >= 1.219e-4")
+    # Pin exact published rectangle thresholds:
+    check(rect_even_dp < Q(1078, 10**7), f"rect_even_dp {rect_even_dp} >= 1.078e-4")
+    check(rect_even_sg < Q(1070, 10**7), f"rect_even_sg {rect_even_sg} >= 1.070e-4")
+    check(rect_all6_le1_dp < Q(1072, 10**7), f"rect_all6_le1_dp {rect_all6_le1_dp} >= 1.072e-4")
+    check(rect_all6_le1_sg < Q(1048, 10**7), f"rect_all6_le1_sg {rect_all6_le1_sg} >= 1.048e-4")
+    check(rect_all6_dp < Q(1220, 10**7), f"rect_all6_dp {rect_all6_dp} >= 1.220e-4")
+    check(rect_all6_sg < Q(1214, 10**7), f"rect_all6_sg {rect_all6_sg} >= 1.214e-4")
 
     # Sub-rectangles with total error strictly < 10^-4:
     rect_even_sub_dp = lam_hi * (se_dp_ub + bench_gap + ca * da_max + cb * Q(1, 1000))
     rect_even_sub_sg = lam_hi * (se_sg_ub + bench_gap + ca * da_max + cb * Q(1, 970))
-    rect_all6_le1_sg = Q(1) * (peak_sg_ub + bench_gap + ca * da_max + cb * Q(1, 950))
+    rect_all6_le1_sub_sg = Q(1) * (peak_sg_ub + bench_gap + ca * da_max + cb * Q(1, 950))
     check(rect_even_sub_dp < Q(1, 10000), "even D_+ sub-rectangle db <= 1/1000 failed < 1e-4")
     check(rect_even_sub_sg < Q(1, 10000), "even signed sub-rectangle db <= 1/970 failed < 1e-4")
-    check(rect_all6_le1_sg < Q(1, 10000), "all-6 lambda <= 1 sub-rectangle db <= 1/950 failed < 1e-4")
+    check(rect_all6_le1_sub_sg < Q(1, 10000), "all-6 lambda <= 1 sub-rectangle db <= 1/950 failed < 1e-4")
 
     # Verify flank and upper lie outside 11.53 profile rectangle:
     for pname, (peps, paa, pbb) in {
@@ -605,22 +653,23 @@ def verify_bundle(bundle, cert_path=None, row8_override=None, rice_slope_overrid
     err_r8_sg = lam_8 * (peak_sg_ub + bench_gap + ca * da_8 + cb * db_8)
     check(err_r8_dp < Q(635, 10**7) < Q(1, 10000) < eta8_max,
           f"Row 8 D_+ error {err_r8_dp} failed < 6.35e-5 < 10^-4 < eta8_max")
-    check(err_r8_sg < Q(612, 10**7) < Q(1, 10000) < eta8_max,
-          f"Row 8 signed error {err_r8_sg} failed < 6.12e-5 < 10^-4 < eta8_max")
+    check(err_r8_sg < Q(611, 10**7) < Q(1, 10000) < eta8_max,
+          f"Row 8 signed error {err_r8_sg} failed < 6.11e-5 < 10^-4 < eta8_max")
 
-    # 4. Part 4 consumer subdivided t-slab covers via scaled peak row (lam * ell_0, lam * beta_0):
+    # 4. Part 4 consumer subdivided t-slab covers via scaled peak row (lam * ell_0, lam * beta_0),
+    # pinning the exact promised [t_lo, t_hi] endpoints for each named consumer:
     cons_specs = {
-        "eps_1891_2500_dplus": (EPS0, Q(500, 701), False),
-        "eps_1891_2500_signed": (EPS0, Q(500, 701), True),
-        "eps_94_125_signed": (Q(94, 125), Q(500, 701), True),
-        "eps_3_4_signed": (Q(3, 4), Q(500, 701), True),
-        "eps_299_400_signed": (Q(299, 400), Q(713263, 1000000), True),
+        "eps_1891_2500_dplus": (EPS0, Q(500, 701), False, Q(21, 25), Q(21399, 25000)),
+        "eps_1891_2500_signed": (EPS0, Q(500, 701), True, Q(21, 25), Q(8661, 10000)),
+        "eps_94_125_signed": (Q(94, 125), Q(500, 701), True, Q(21, 25), Q(8547, 10000)),
+        "eps_3_4_signed": (Q(3, 4), Q(500, 701), True, Q(21, 25), Q(5323, 6250)),
+        "eps_299_400_signed": (Q(299, 400), Q(713263, 1000000), True, Q(21, 25), Q(21237, 25000)),
     }
     cons_map = bundle["consumer_slabs"]
     check(set(cons_map.keys()) == set(cons_specs.keys()), "consumer_slabs keys mismatch")
 
     cons_summary = {}
-    for cname, (ceps, ctarget, csigned) in cons_specs.items():
+    for cname, (ceps, ctarget, csigned, exp_t_lo, exp_t_hi) in cons_specs.items():
         cobj = cons_map[cname]
         check(Q(cobj["eps"]) == ceps, f"{cname}: eps mismatch")
         clam = Q(cobj["lam"])
@@ -630,6 +679,8 @@ def verify_bundle(bundle, cert_path=None, row8_override=None, rice_slope_overrid
 
         slabs = cobj["slabs"]
         check(len(slabs) >= 1, f"{cname}: empty slabs")
+        check(Q(slabs[0]["t_lo"]) == exp_t_lo and Q(slabs[-1]["t_hi"]) == exp_t_hi,
+              f"{cname}: slab cover [{slabs[0]['t_lo']}, {slabs[-1]['t_hi']}] != promised t-interval [{exp_t_lo}, {exp_t_hi}]")
         ell_s = clam * ELL0
         beta_s = clam * BETA0
 
@@ -650,7 +701,8 @@ def verify_bundle(bundle, cert_path=None, row8_override=None, rice_slope_overrid
 
             slab_ub, _, _ = verify_2d_cover(f"{cname}[{idx}]", sl["cover"], {
                 "u_max": u0_c, "u_tot": utot_c, "x_pen": Q(0), "y_cess": Q(0),
-                "nu_pen": Q(0), "use_signed_1161": csigned, "resp_ell34": e34,
+                "nu_pen": Q(0), "use_signed_1161": csigned, "pure_dplus_cession": False,
+                "resp_ell34": e34,
             })
             qa = ta * ta - Q(2) * ell_s * ta + Q(2) * beta_s * beta_s / ceps
             qb = tb * tb - Q(2) * ell_s * tb + Q(2) * beta_s * beta_s / ceps
@@ -663,8 +715,8 @@ def verify_bundle(bundle, cert_path=None, row8_override=None, rice_slope_overrid
                 worst_cap = cap_stored
 
         t_cov = [Q(cobj["t_covered"][0]), Q(cobj["t_covered"][1])]
-        check(t_cov == [Q(slabs[0]["t_lo"]), Q(slabs[-1]["t_hi"])],
-              f"{cname}: t_covered endpoint mismatch")
+        check(t_cov == [exp_t_lo, exp_t_hi],
+              f"{cname}: t_covered {t_cov} != promised t-interval [{exp_t_lo}, {exp_t_hi}]")
         check(isinstance(cobj["max_cap_1e10"], int), f"{cname}: max_cap_1e10 must be int")
         max_cap_stored = Q(cobj["max_cap_1e10"], 10**10)
         check(worst_cap <= max_cap_stored < ctarget, f"{cname}: max_cap_1e10 >= target_cap")
@@ -681,9 +733,11 @@ def verify_bundle(bundle, cert_path=None, row8_override=None, rice_slope_overrid
         "peak_dplus": peak_dp_ub,
         "peak_signed": peak_sg_ub,
         "cession_dplus": cess_dp_ub,
-        "cession_signed": cess_sg_ub,
+        "cession_total_dp": cess_total_dp,
         "rect_even_dp": rect_even_dp,
         "rect_even_sg": rect_even_sg,
+        "rect_all6_le1_dp": rect_all6_le1_dp,
+        "rect_all6_le1_sg": rect_all6_le1_sg,
         "rect_all6_dp": rect_all6_dp,
         "rect_all6_sg": rect_all6_sg,
         "row8_dp": err_r8_dp,
@@ -700,15 +754,15 @@ def main():
     res = verify_bundle(bundle, cert_path=cert_path)
 
     print("ALL KAST ZERO-FLOAT EXACT RATIONAL CHECKS PASSED!")
-    print(f"  Part 1 (Peak A+B 7.4.16 [P+C] & all-6 7.5.13 [author-only]):")
+    print(f"  Part 1 (Peak A+B 7.4.16 & all-6 7.5.13 [author-only]):")
     print(f"    D_+ 11.61 only:    < {fmt_micro_ceil(res['peak_dplus'])}  (strict < 0 on u in [0, 3/100])")
     print(f"    Signed 11.61:      < {fmt_micro_ceil(res['peak_signed'])}  (strict < 0 on [0, 177/5000] U [57/1250, 463/10000])")
-    print(f"  Part 2 (7.5.3 (P_Psi) 0.01||U||^2 cession [P+C]):")
-    print(f"    D_+ 11.61 only:    < {fmt_micro_ceil(res['cession_dplus'])}  (down from 48.39e-6; total 7.5.3 < 80.1e-6)")
-    print(f"    Signed 11.61:      < {fmt_micro_ceil(res['cession_signed'])}  (total 7.5.3 < 77.6e-6)")
+    print(f"  Part 2 (7.5.3 (P_Psi) J_AB + 0.01||U||^2 - D_+ cession):")
+    print(f"    D_+ 11.61 only:    < {fmt_micro_ceil(res['cession_dplus'])}  (total 7.5.3 < {fmt_micro_ceil(res['cession_total_dp'])}; scalar control = {fmt_dec(res['foundations']['ppsi_scalar_control'] * 10**6, 5)}e-6)")
     print(f"  Part 3 (11.53 profile rectangle eps in [37/50, 19/25]):")
-    print(f"    Even A+B [P+C]:    < {fmt_micro_ceil(res['rect_even_dp'])} (D_+), < {fmt_micro_ceil(res['rect_even_sg'])} (signed)")
-    print(f"    All-6 [7.5.13]:    < {fmt_micro_ceil(res['rect_all6_dp'])} (D_+), < {fmt_micro_ceil(res['rect_all6_sg'])} (signed)")
+    print(f"    Even A+B:          < {fmt_micro_ceil(res['rect_even_dp'])} (D_+), < {fmt_micro_ceil(res['rect_even_sg'])} (signed)")
+    print(f"    All-6 (lam <= 1):  < {fmt_micro_ceil(res['rect_all6_le1_dp'])} (D_+), < {fmt_micro_ceil(res['rect_all6_le1_sg'])} (signed)")
+    print(f"    All-6 (lam > 1):   < {fmt_micro_ceil(res['rect_all6_dp'])} (D_+), < {fmt_micro_ceil(res['rect_all6_sg'])} (signed)")
     print(f"  Part 4a (8.13(ii) Row 8 [21/25, 847/1000] direct closure vs eta_max = {fmt_micro_ceil(res['row8_eta_max'])}):")
     print(f"    Row 8 error:       < {fmt_micro_ceil(res['row8_dp'])} (D_+), < {fmt_micro_ceil(res['row8_sg'])} (signed) < 100e-6")
     print(f"  Part 4b (Subdivided central consumer slabs via scaled peak row):")
