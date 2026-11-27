@@ -310,11 +310,11 @@ All files of `SSPK` are committed in the repository, with zero external working-
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/spiked-cubic-radius-gemini-4c4c/PROOF.md` | 49,828 B | `1010c252c7c9871fbcdfcd2c244d6eace9d1356924cb9a68b810fddef2d98b3b` |
+| `sources/spiked-cubic-radius-gemini-4c4c/PROOF.md` | 50,106 B | `219f672f474306e5e106c041960edd6cf22b4269d5f20b7c0dbad9ca82f18deb` |
 | `code/spiked-cubic-radius-gemini-4c4c/cert_spiked.json` | 261,727 B | `85ee61e46e4a4d3cc54a1ea4fa2b043c8e1f79ae25ff3fa7cdbf3778b55fb960` |
 | `code/spiked-cubic-radius-gemini-4c4c/verify.py` | 38,440 B | `a482e177d55c7749a8b898e5f0382b271efb69147a31801f0a87945d36468fc4` |
 | `code/spiked-cubic-radius-gemini-4c4c/check_identities_exact.py` | 28,384 B | `e646e1edf97ae1bc7ab0258d76d3523a1d2afd7665b58f915eef76c037035bb6` |
-| `code/spiked-cubic-radius-gemini-4c4c/test_controls.py` | 11,118 B | `f7a05fe5561bd1b28589682541a054850beedce945e756f3ec3d07b7b2ef9b9c` |
+| `code/spiked-cubic-radius-gemini-4c4c/test_controls.py` | 11,899 B | `ba51f27cf2ad710590497acddd444b21ad295628559d85ffe20a857201849ec9` |
 | `code/spiked-cubic-radius-gemini-4c4c/make_cert.py` | 57,080 B | `39d980e48d4dcce31152a504377497df00122ae792689e333fbf7c052c75c2a6` |
 
 ## The gate of two other degree-5 games, 25–26 November 2026 (STATUS 4.53–4.55, tag D5GATE)
@@ -346,3 +346,24 @@ All files of `LAWREP` are committed in the repository, with zero external workin
 | `code/degree5-law-replay-gemini-21d5/certify_law_caps.cpp` | 160,431 B | `2168deca284b95a01c496e6277505cbe62193ee44c4f97a05735fb99cf14868f` |
 | `code/degree5-law-replay-gemini-21d5/verify_law_caps.py` | 48,423 B | `c0bdb9f51080cee3ec1ffc74e98f4e6ffa7cd4d18b0f58e42495c5291cc7ed3e` |
 | `code/degree5-law-replay-gemini-21d5/result.json` | 85,055 B | `0020b02c426d0bd9e9b9e15573db7d70bcf7a46f57d02fe14e4313e0ad388571` |
+
+## The fifth-chaos projection of 23 October 2026, moved from the archive (claude-b9ee, #764)
+
+`sources/quintic-projection-2026-10-23/` and `code/quintic-projection-2026-10-23/` hold the study that
+`sources/literature-2026-11-16/HIGHER_DEGREE.md` cites for the tail-priced separation banks of the upper side. The
+files were in the archive folder `miscellaneous/` until master `bfb5961e3` (removed by #764) and are verbatim, with one
+provenance line added at the top of each note. Their endpoints are those of 23 October 2026.
+
+| file | size | what it holds |
+|---|---:|---|
+| `sources/quintic-projection-2026-10-23/EXACT_QUINTIC_PROJECTION_2026-10-23.md` | 18 KB | A written proof: the U(m)-invariant part of H₃,₂ over ℂ ⊕ ℂᵐ ⊕ Sym²(ℂᵐ) has dimension 13 (10 at m = 1); the exact fifth cross coefficient s5_m of the phase pair ph(Z + cH₂,₁(Z) ± bG) by a conditional Mehler identity, with \|s5_m − s5_∞\| ≤ 4/m. |
+| `sources/quintic-projection-2026-10-23/MEHLER_AUDIT.md` | 16 KB | The audit of that identity and of what the scripts do not prove. |
+| `sources/quintic-projection-2026-10-23/QUINTIC_REASSESSMENT_2026-10-23.md` | 18 KB | The experiment: the sign of the fifth coefficient, a cancellation bank, and a tail-priced oracle whose best diagnostic 0.71160976 stayed below the net score 0.71194718 of that day's rounding (numerical). |
+| `sources/quintic-projection-2026-10-23/REPLAY.md` | 5 KB | The replay instructions of the original folder `research/quintic_projection_20261023/` (its `README.md`). |
+| `code/quintic-projection-2026-10-23/` | 72 KB | The four scripts of the endpoint replay (python-flint) with their input and replay JSON files. From a current checkout, `python3 -IB research/higher-degree/code/quintic-projection-2026-10-23/verify_bank_constants.py` runs directly; the paths in `REPLAY.md` are those of the original folder. |
+
+Not kept: the folders `numerics/` and `production_replays/` of the original (0.3 MB of search results and logs), at
+`miscellaneous/research/research/quintic_projection_20261023/` of master `bfb5961e3`; the production verifiers
+`tools/verify_quintic_*.py`, `tools/check_quintic_certificates.py` and `tools/tail_priced_phase_oracle.py`, deleted
+from `tools/` by commit `d84c3fdfc` (`git show 8115260f8:tools/<name>`); and the Lean algebra
+`miscellaneous/research/Grothe/LowerAnalytic/QuinticTransferAudit.lean` of master `bfb5961e3`.

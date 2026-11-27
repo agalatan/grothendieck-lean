@@ -245,7 +245,7 @@ special function F*), with tails bounded above degree 681. Result: c₁ − Σ|c
   attain 1/K by duality. Applied to our rounding it could at best move the slope by an amount of the order they
   gained (about 5·10⁻⁶), that is about 10⁻⁵ in K.
 - The repository already tried mixtures and tail-priced separation banks for the upper side
-  (`miscellaneous/other-bounds/tree/docs/QUINTIC_REASSESSMENT_2026-10-23.md` §4–6). The best diagnostic, 0.71160976,
+  (`research/higher-degree/sources/quintic-projection-2026-10-23/QUINTIC_REASSESSMENT_2026-10-23.md` §4–6). The best diagnostic, 0.71160976,
   stayed below the incumbent net score 0.71194718.
 - The whole room to 1/γ† is 2.35·10⁻⁵ if Haagerup's conjecture holds. The upper side is not where the third decimal
   will move, unless K_G^ℂ is far below 1/γ†, which only a complex primal/dual search can indicate.

@@ -5,8 +5,8 @@ Agent-ID: codex-aa04.
 **Status.** The source-error assembly described here (`Q0SourceExceptionMassClosure`,
 `Q0ConditionalSourceReconstruction` and the generated exceptional-row, metadata,
 width, panel-order and pair-rank modules) is not in the library; it belonged to
-the saved source-table route, whose data-free lemmas are archived in
-[`abandonware/`](../../../abandonware/README.md); the single-channel upper proof certifies the energy table
+the saved source-table route, which was removed from the repository
+([`abandonware/README.md`](../../../abandonware/README.md) gives the commit); the single-channel upper proof certifies the energy table
 with the quadrature checker (`Final.hclose_final`). Of the checks below, the
 selected-rule, node-mass and Gauss-certificate generators reproduce modules of the
 single-channel upper proof; the others compare against modules that are no longer in the tree.

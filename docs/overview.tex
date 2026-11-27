@@ -69,11 +69,9 @@ the first over unimodular scalars, the second over unit vectors in any complex H
 Grothendieck proved in 1953 that $V(A)\le K\,C(A)$ for a constant $K$ independent of $m$, $n$ and the dimension. The smallest
 such $K$ is the \emph{complex Grothendieck constant} $\KG$.
 
-Further general results about these optima and comparison budgets (a transfer
+Two further general results about these optima (a transfer
 of Grothendieck bounds to unit vectors of any complex inner product space,
-attained optima in dimension $\min(m,n)$, a quadratic dual with overlapping
-error budgets, a polarized Gram bound, and a rational support-defect correction
-with a quartic Newton contraction) are archived in \path{abandonware/} and are
+and attained optima in dimension $\min(m,n)$) are kept in \path{abandonware/} and are
 not built.
 
 \paragraph{Why it matters.}
@@ -324,8 +322,10 @@ interfaces that take numerical estimates as hypotheses, and the text says which.
 The earlier single-channel theorem has discharged its Gaussian hypotheses: \lean{upper\_below\_tight}
 has no hypotheses, and it obtains its six Gaussian estimates and the accuracy of
 the energy table from the quadrature above. Other ways of certifying these inputs
-are archived in \path{abandonware/} and are not built; the text mentions them
-briefly.
+were removed from the libraries; the text mentions them briefly. Throughout,
+\emph{archived} means removed from the libraries and not built: a few modules that
+later work would reuse are kept in \path{abandonware/}, and the others are in git
+history only (\path{abandonware/README.md} lists both, with the commits).
 
 A second route to the energy table, through a saved table of binary64
 conditional Hermite values with its source-error assembly, exceptional-row
@@ -977,19 +977,22 @@ holomorphic kernel at the real cross covariance (Cholesky substitution). Togethe
 circle check, this proves \lean{hardy\_GT\_gaussian}, the Hardy input used by the single-channel bound.
 Thirteen algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms, and the generic response and quintic-transfer lemmas, which add no
-native facts, were proved in Lean. Their modules are now archived in \path{miscellaneous/research/}: they are not built
+native facts, were proved in Lean. Their modules are archived: they are not built
 or checked by CI, and neither bound depends on them.
 
 \section{Discoveries along the way}\label{sec:discoveries}
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
 exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
-The Lean modules that serve neither bound have been moved to \path{miscellaneous/research/}. They were part of the
-build when these results were recorded; they are no longer built or checked by CI. Results whose Lean part lives there
-are marked \textbf{[Lean, archived]}.
+The Lean modules that serve neither bound have left the libraries. They were part of the
+build when these results were recorded; they are no longer built or checked by CI. Results whose Lean part is among them
+are marked \textbf{[Lean, archived]}: the modules on the fourth moment, the joint sixth moment, the fused Stein cuts and
+the arithmetic of the cubic ceiling are kept in \path{abandonware/}, and the others are in git history
+(\path{abandonware/README.md} gives the commit and the path). The written proofs of the cubic ceiling, of the
+fifth-chaos projection and of the separator for cubic preprocessors are in \path{research/}, under the
+\path{sources/} folders of \path{conjecture-K/}, \path{higher-degree/} and \path{upper-channels/}.
 
-Other upper-bound variants and their verification records are preserved outside the active build
-in \path{miscellaneous/other-bounds/}. Shared Gaussian phase identities and Laplace
-representations are part of the active build.
+Other upper-bound variants and their verification records are in git history only. Shared Gaussian phase identities
+and Laplace representations are part of the active build.
 
 \subsection{Common responses, common tails, and an architecture separator}
 \textbf{[P; supporting algebra in Lean, archived]} A symmetry-closed family of actual cubic responses has an exact
@@ -1215,7 +1218,7 @@ leave its endpoint unchanged.
  shared drivers; the numerical bounds are unchanged. The dual operator can then be truncated with a rigorous error: the
  cubic multiplier tail and the signed cap assembly are proved in Lean (\lean{SphericalTransfer.cubic\_tail\_32\_12},
  \lean{global\_cap\_from\_truncation}; archived module); the analytic bridge is a written proof
- (\path{miscellaneous/research/docs/SPHERICAL_TRANSFER.md}). But
+ (\path{research/conjecture-K/sources/manuscript/legacy/global-response/spherical-dual-transfer.tex}). But
  the operator has no square-integrable kernel: its multiplicity-weighted squared coefficients grow like $r^7$. So no
  Hilbert--Schmidt-type certificate can control it, and direct coefficient optimisation is impractical (about
  $8\cdot10^{20}$ coefficients in the tested truncation). A useful norm cap must bound the signed action on bounded
