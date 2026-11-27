@@ -9,7 +9,7 @@ here is author only. Master at the time: `0a5445866`.*
 
 **Replacing the Lean radius 93/100 by 2287/2500 (or by 4571/5000, 9/10, or the conjectured √π/2) leaves the lower
 endpoint exactly where it is: with the committed tables the gain is 0 (exact).** The radius does not bind in the
-envelope: of the fourteen rows only the cap of row 14 depends on it (exactly, by 6.62·10⁻⁷ at 2287/2500), and that
+envelope: among the rows replayed (the central rows 08/09 and the plain rows 03–14) only the cap of row 14 depends on it (exactly, by 6.62·10⁻⁷ at 2287/2500), and that
 row's cells lie 6.1·10⁻⁶ and more below the top. What re-optimised row tables could gain from a sharper radius is not bounded
 here; the sampled figures of (d) are the only evidence. It is not worth formalising for `main_bounds`. (Its use for the higher-degree programme, #711, is a different consumer and is
 not assessed here.)
@@ -21,6 +21,7 @@ not assessed here.)
 | 4571/5000 | 8829435313/12500000000 | 25000000000000/17831387166289 | 0 | C | the same |
 | 9/10 | 8829435313/12500000000 | 25000000000000/17831387166289 | 0 | C | the same |
 | 88623/100000 (√π/2 rounded up) | 8829435313/12500000000 | 25000000000000/17831387166289 | 0 | C | the same |
+| 44311/50000 = 0.88622 (√π/2 rounded down) | 8829435313/12500000000 | 25000000000000/17831387166289 | 0 | C | the same |
 
 Nothing was re-optimised in these rows. The effect of re-optimised node certificates is unknown beyond the sampled
 linear programmes of (d).
