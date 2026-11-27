@@ -160,7 +160,7 @@ These need **per-coefficient enclosures** of `a_j(i)` of width ≈ `1e-13` (j = 
 need the archived centers to be that close to the true coefficients: the inherited pipeline claims
 far better (§3), but this is the fact the prototype must establish or refute.
 
-The archived mesh route (`abandonware/`, not built) turns per-coefficient enclosures into the band
+The mesh route (removed from the repository; `abandonware/README.md` gives the commit) turns per-coefficient enclosures into the band
 statement: `norm_band_error_le_cap`
 (`SmallProfileBandEnclosure.lean`; stated for codex's mesh representation of the coefficient) and
 `ConcreteRetainedBands.first_error/second_error/third_error`, with the rational energy check

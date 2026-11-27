@@ -12,9 +12,8 @@ is proved separately and uses none of this data.
 The byte-pinned data and generators retain historical intermediate endpoint
 metadata for reproducibility. The single-channel numerical ledger is
 [`Grothe/UpperTightBudget.lean`](../../Grothe/UpperTightBudget.lean).
-The smaller endpoint `1.404598148840` is conditional on stronger comparison inputs and
-archived, as explained below. Previous endpoint documentation is preserved
-in `miscellaneous/other-bounds/snapshot/data/upper-preprocess/README.md`.
+The smaller endpoint `1.404598148840` was conditional on stronger comparison inputs and
+its route was removed, as explained below.
 
 ## Mathematical assembly and trust boundary
 
@@ -64,9 +63,9 @@ axioms and the existing permitted `native_decide` facts, recorded in
 The route to the smaller rational bound
 `500000000000000000/355973699960428191 < 1.404598148840` (`fresh_upper_rounder`,
 with grouped comparison allowance `groupedCompareQ = 851922301/10^15` and tail
-`303362486/10^16`) is archived in [`abandonware/`](../../abandonware/README.md) and
-not built: its `ComparisonInputs` need the finer component error bounds, which are
-not proved. See `../localized-comparison/PROOF.md` for the comparison interface.
+`303362486/10^16`) was removed from the repository
+([`abandonware/README.md`](../../abandonware/README.md) gives the commit): its `ComparisonInputs` need the finer
+component error bounds, which are not proved, and the seven-channel bound `1.404556392` of `main_bounds` is smaller. See `../localized-comparison/PROOF.md` for the comparison interface.
 
 ### Frozen contour replay metadata
 
@@ -122,5 +121,5 @@ build selected supporting modules; they do not by themselves build the current
 unconditional endpoint. Full GitHub Lean CI checks `Grothe`, including
 `UpperTightFinal`, `MainResult`, the axiom report and the heavy cap stamp.
 Temporary targeted Lean receipts from 23 October were cleared before collection
-and are not claimed as current validation. Historical verification receipts are preserved under
-`miscellaneous/other-bounds/tree/data/upper-preprocess/verification/`; their original scope is unchanged.
+and are not claimed as current validation. Historical verification receipts are in git history
+(`miscellaneous/other-bounds/tree/data/upper-preprocess/verification/` at commit `bfb5961e3`).
