@@ -52,6 +52,7 @@ def m6(x):
     return 6+9*x+C6*x*sqrt_hi(x)
 
 def read_inputs(repo):
+    require(__debug__, "enable Python assertions for the upstream Rice certificates")
     code = repo/'research/conjecture-K/code'
     window = load('window', code/'peak-window-codex-a7c4/verify.py')
     raw, caps, _ = window.read_public_inputs(repo)
@@ -116,7 +117,8 @@ def shell_gain(a, b, k0, left, right):
             gain = min(gain, a*a/ar+b*b/au+m*DEN*(right if m>=0 else left))
     return gain
 
-def prove(polys, nodes, target=TARGET):
+def make_radial_bound(polys, nodes):
+    """Return a verified upper price on a closed energy and fourth-excess cell."""
     node_energies = sorted(nodes)
     @cache
     def node_price(u, x, y):
@@ -125,6 +127,7 @@ def prove(polys, nodes, target=TARGET):
             return max(a+b+c*(2+z)+e*m6(z)-PRICE*u for z in (x,y))
         return min(map(endpoint_price,nodes[u]))
 
+    @cache
     def radial(l,h,x,y):
         mid, shape = (l+h)/2, (x+y)/2
         def midpoint(p):
@@ -150,6 +153,12 @@ def prove(polys, nodes, target=TARGET):
             bound = min(bound,chord+Q('1.673')*(2+y)*(z-a)*(b-z)/2)
         return bound
 
+    return radial
+
+
+def prove(polys, nodes, target=TARGET):
+    node_energies = sorted(nodes)
+    radial = make_radial_bound(polys, nodes)
     reserve = (target-max(constant(LOW),constant(HIGH)))/MU
     require(MU<1 and LOW**2>=3*PI_HI/14 and S<reserve, 'old capped row misses target')
     def margin(l,h,x,y):
@@ -189,7 +198,6 @@ def prove(polys, nodes, target=TARGET):
     return count, MU*smallest
 
 def main():
-    require(__debug__,'the upstream verifiers require assertions')
     repo = Path(sys.argv[1]).resolve() if len(sys.argv)>1 else HERE.parents[3]
     polys,nodes = read_inputs(repo)
     count,spare = prove(polys,nodes)
