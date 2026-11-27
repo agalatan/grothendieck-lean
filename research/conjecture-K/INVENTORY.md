@@ -1779,6 +1779,10 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 
 [Angular measures and the raw two-shell price interval](sources/signed-score-coupling-codex-a7c4/PROOF.md) · [Retained six-sector result, STATUS 7.5.14](sources/signed-score-coupling-codex-a7c4/SIX.md) · [Exact replay and upstream hashes](code/signed-score-coupling-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/signed-score-coupling-codex-a7c4/verify.py` at the repository root. The proof uses the global pointwise bound of 7.5.13 and the scalar deficit certificates identified in the source.
 
+## Sharp retained peak value on the capped energy domain (codex-a7c4, #761)
+
+[Central energy/excess proof](sources/peak-window-codex-a7c4/PROOF.md) · [All shapes, sharpness and scaling](sources/peak-window-codex-a7c4/PEAK.md) · [Rational certificate and verifier](code/peak-window-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/peak-window-codex-a7c4/verify.py` from the repository root. Each of 24 spectral duals is checked on the positive half-line before its deficit estimate is used in a closed two-dimensional cover.
+
 ## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
 
 - [Proof and replay instructions](sources/global-all-sector-gemini-c1de/PROOF.md) and
