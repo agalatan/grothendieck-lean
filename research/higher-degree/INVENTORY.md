@@ -367,3 +367,29 @@ Not kept: the folders `numerics/` and `production_replays/` of the original (0.3
 `tools/verify_quintic_*.py`, `tools/check_quintic_certificates.py` and `tools/tail_priced_phase_oracle.py`, deleted
 from `tools/` by commit `d84c3fdfc` (`git show 8115260f8:tools/<name>`); and the Lean algebra
 `miscellaneous/research/Grothe/LowerAnalytic/QuinticTransferAudit.lean` of master `bfb5961e3`.
+
+## Certified continuous-law first-chaos content bounds per (u, χ) cell (gemini-c1de, 26 November 2026, #623; STATUS 4.56, tag CONTCELL)
+
+All files of `CONTCELL` are committed in the repository (< 220 KB per file), with zero external working-folder artefacts:
+- [`sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md`](sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md): proofs of the minimax linearized joint-Kantorovich bound (`JM1`), exponential Kantorovich duality (including piecewise-linear prefix-intercept accounting), Cone-𝒦 + Coupled-Gram rational Stein + Kummer/Cauchy–Schwarz Rice continuous-law duality, outward-rounded 2D Gaussian polar + centered vortex row profile enclosures with rounded-center Taylor radii, guaranteed moving-vortex overlap start, closed singleton mesh seams, quantitative `Ival` Gaussian/moving-vortex tail bounds, exact rational tilts, and dependency-free backward `k_X'` contraction recurrence, verification summary across Pieces 1–17 of `fin_table_fundFull.json`, non-divergent shifted-vortex proof of the `256/63` low-energy Wick junta limit with certified `h_X'(0) > 0`, enclosed `u = 1/10^6` (`ε₁ = 39/50`) and own-row `0.70` negative controls, and `K`-cluster `2 + 6/K` identity and structural plateau analysis.
+- [`code/degree5-content-cells-gemini-c1de/`](code/degree5-content-cells-gemini-c1de/):
+  - `python3 -IB research/higher-degree/code/degree5-content-cells-gemini-c1de/verify.py` (and `python3 -IB -O ...`): zero-dependency Python 3 stdlib `Fraction`/`Decimal` receipt & tail auditor (< 2 s) checking `< 300 KB` file bounds, SHA-256 cryptographic binding of `result.json` to `dual_certs.json`, all 7 shards, `dual_certs.dat`, and `certify_content_cells.cpp`, Kummer + Cauchy–Schwarz rational Rice tangents, algebraic Wick/cluster moment identities, multiplier signs, Coupled-Gram hypotheses, contiguous slice coverage of exported `g1_range_A` / `g1_range_B`, asymptotic `U³` cubic dominance (including negative Kantorovich prefix intercepts) across all 1,485 slices of all `109` certificates, certified `h_A'(0) > 0` and `h_B'(0) > 0` on all 15 binary64 rows, exact downward-rounded `t_lo` and tight `[u_lo, u_hi]` binding to the 5 discrete grid energies per piece, continuous `[0, 42]` χ-coverage of Pieces 16 & 17 at those 5 energies against `fin_table_fundFull.json`, and negative controls (`--replay-cpp` recompiles `certify_content_cells.cpp` with `-ffp-contract=off` and replays the full 15-row 2D Gaussian + 109-cell `[0, U₀]` continuous-law certification from scratch).
+  - `python3 -IB research/higher-degree/code/degree5-content-cells-gemini-c1de/test_controls.py` (and `python3 -IB -O ...`): 24-check positive-fixture, mathematical negative-control, rounded-midpoint Taylor & mixed-sign `FE_UPWARD` magnitude regression, moving-vortex join & singleton mesh-seam regression, outward-rounded C++ console vs receipt consistency, `g_1` slice-cover, SHA-256 receipt binding, and field-specific corruption control suite against both `verify.py` and the live C++17 binary.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md` | 37,592 B | `cdbb3ed041e94b7496518ac38f482a3257ed0ed06f897512c6a3b51c798dd72f` |
+| `code/degree5-content-cells-gemini-c1de/README.md` | 3,803 B | `ec39f2c1bbc44aefb1c2106b15e8d35ca4ebc7746d695a27874a26580c3dc1d2` |
+| `code/degree5-content-cells-gemini-c1de/certify_content_cells.cpp` | 166,692 B | `6b301b218eb075fb365cc6fab6732a249021eb73d6e145078bd641290323723e` |
+| `code/degree5-content-cells-gemini-c1de/generate_certificates.py` | 60,974 B | `037db9afd0aaa5f9994e2b0d2b399d023aa5c2c6b2bda0df2163f877c7164590` |
+| `code/degree5-content-cells-gemini-c1de/verify.py` | 43,203 B | `5c031c5d75c7534264793d47580b9cd254c7c7550cbf3161390dbc30b1d75e97` |
+| `code/degree5-content-cells-gemini-c1de/test_controls.py` | 23,107 B | `5b794948a6ce206f7abdc2eddb3c0b2c769c8abd48f8c76077d0819d88afdead` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs.json` | 1,735 B | `3ac783ea4065bfb3e19ad31fa980992564a5b430e921361afe30368b65dd2c50` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_1.json` | 213,360 B | `8ea096c5d2c7d6db8b4bfb96cc6dbb3b3e0c919307660d413f3472b072bb2057` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_2.json` | 219,824 B | `1227be0f609a04d131725b83a369d38577f9338346bf709f94e360446a25c258` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_3.json` | 198,073 B | `46217af702c926513397bc632689bc89d7a5cea0de327d480e91e6455f27c0a1` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_4.json` | 181,911 B | `a1a3233f9cd8dc76a7423286559c378b913b57f205289f88a060cc756d2ab750` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_5.json` | 210,811 B | `bf6f184bda076e499e1520f963cb4beda0a86f0aee9737517c649ecb39e78710` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_6.json` | 212,073 B | `ae4eddaa67df26decdbb906df5d644772cd8820c823837047750a9a02853aecd` |
+| `code/degree5-content-cells-gemini-c1de/dual_certs_7.json` | 162,808 B | `8c35eeb96193065e521b420abb411e545d18f8ae18559e0506586ec946baed1b` |
+| `code/degree5-content-cells-gemini-c1de/result.json` | 52,299 B | `142a0604f6c9dff42a09cf8d6e0aba1a66957c68ce5da940a4ba68bfeead2e8b` |
