@@ -34,6 +34,11 @@ proof (a module that `Grothe.MainResult` does not import is removed again).
 
 ## What was removed, and where it is
 
+[`RETIRED.txt`](RETIRED.txt) lists the declarations of the removed modules that were once in the axiom report or
+the axiom lists, and the removed modules. `tools/gen_root_imports.py` reads it: if a union merge with an old branch
+brings such a line back into `scratch/Axioms.lean` or `data/axioms/`, the generator drops it, as it does for the
+modules still in this folder (`scripts/test_gen_root_imports.py`).
+
 `git show <commit>:<path>` reads any of it; `git log --diff-filter=D -- <path>` finds the removal.
 
 | material | last present at | path at that commit |
