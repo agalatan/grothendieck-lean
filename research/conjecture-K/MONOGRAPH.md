@@ -390,11 +390,15 @@ bound [P · 3.28].
 **The radius.** The sharp radius bound is open; cases are proved for real BNC of order 2, one-variable H₃ at every
 scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. In every dimension, the sharp bound holds
 with every Gaussian buffer for 0 < χ ≤ 1/72000 (3.18), strictly without a buffer for 0 < χ ≤ 1/18000 and across the
-high-kurtosis regime χ ∈ [26, 42], where **E|q| ≤ (443/500)‖q‖₂ = 0.886‖q‖₂ < (√π/2)‖q‖₂** [P + C, author only ·
-gemini-2762 · 3.6, 3.7], as well as on hyperplane-vanishing cubics and on P₃,₁(q²) = 0 [P, author only · 3.25, 3.24].
+high-kurtosis regime χ ∈ [25, 42] ([26, 42] in `cert_915.json`, widened to [25, 42] in `cert_912.json`), where **E|q| ≤ (443/500)‖q‖₂ = 0.886‖q‖₂ < (√π/2)‖q‖₂** [P + C, author only ·
+gemini-4c4c, gemini-2762 · 3.6, 3.7], as well as on hyperplane-vanishing cubics and on P₃,₁(q²) = 0 [P, author only · 3.25, 3.24].
 Without a buffer, (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer,
 radius domination holds for one two-variable family around the known counterexample to the stronger Laplace comparison
-[author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (4571/5000)‖q‖₂ =
+[author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (114/125)‖q‖₂ =
+0.912‖q‖₂** (combining the tied H₂,₁ U(1)-averaged OU resolvent bound E|q| ≤ (√π/2)‖q‖₂(1 + (3299/625000)χ) < 0.91196‖q‖₂
+on χ ∈ [0, 11/2] with 10 self-contained Compactly-Supported Damped Level-3 (`ε = 1/6` on `[11/2, 9]`, `ε = 1/25` on `[25, 26]`)
+and Level-2 Stein rows in `cert_912.json` on χ ∈ [11/2, 42], largest row bound ≤ 0.9118551) [P + C, author only ·
+gemini-4c4c · 3.7], **E|q| ≤ (4571/5000)‖q‖₂ =
 0.9142‖q‖₂** (combining the universal phase-averaged linear bound E|q| ≤ (√π/2)‖q‖₂(1 + (26449/5000000)χ) < 0.9121‖q‖₂
 on χ ∈ [0, 11/2] with rows 7–13 of `cert_915.json` on χ ∈ [11/2, 42], whose Sturm and Bernstein checkers were replayed
 by codex-062a while Row 7's damped Level-3 proof remains author only; `cert_915.json` alone gives **1829/2000 = 0.9145**
@@ -1163,6 +1167,8 @@ threshold in t no such cap holds (chapter 4, item 69). The October manuscript ha
 [R · 2.12]. These cuts apply to responses only: inserting them inside a supremum over all G is invalid, and two
 penalties that spend the same square cannot be added.
 
+The Rice mean has a quantitative Jensen gap on remote cubic fields. If X is a positive multiple of |q|² and m = EX ≤ 1/9, the gap is at least (√π/32)e^(−m/2)m²/(1+3m/4). The fourth and sixth moment bounds in 3.4 control the variance term left by the curvature. Applying this estimate before 2.12b gives peak-normalized remote energy below 0.0458 and total energy below 0.08005 already at t ≥ 0.83992. [P + C, author only · 2.12g · proof](sources/rice-response-gap-codex-a7c4/PROOF.md)
+
 **Central component.** At the single peak row, an all-sector bound Λ ≤ S + η (for Λ or Λ̂) with η ≤ 10⁻⁴ covers
 t ∈ [0.84, 0.851] with cap margin above 6.12·10⁻⁷ below 500/701; separately, the largest admissible allowance there is
 η_max = 166713115892493/1656988750000000000 = 0.0001006120988404375…, with no reserve [P + C · 8.1]. The premise is
@@ -1299,8 +1305,8 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    of the two weighted contractions of the deficit (3.26), all in 2.1.
 8. **The sharp radius ρ\* = √π/2 on H₂,₁** (2.1; 3.6) and the real third-chaos target E\|h\| ≤ √0.68‖h‖₂ (3.21 (a),
    (e9)). Directly on H₂,₁, ρ\* ≤ 2289/2500 = 0.9156 < 0.916 is proved outside Lean [P + C · 3.7], passing the radius
-   test of the uncapped degree-5 game; the best constants are 2287/2500 = 0.9148 [P + C · 3.7] and 4571/5000 = 0.9142
-   [P author only + C · 3.7] (2.1).
+   test of the uncapped degree-5 game; the best constants are 2287/2500 = 0.9148 [P + C · 3.7], 114/125 = 0.912
+   [P + C, author only · 3.7], and 4571/5000 = 0.9142 [P, author only + C · 3.7] (2.1).
 
 **C. Other routes to the same decimals** have their own ledgers. The identity-tail witness raises the model ceiling to
 1.40248; its certificate and its Lean form are recorded in `../identity-tail/STATUS.md`. The games of degree 5 and
