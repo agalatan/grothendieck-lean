@@ -34,7 +34,7 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
 **Where things stand.** Conjecture K is open, and no violation is known. A proof splits into six layers (1.9).
 
 - **Proved** (at the peak row unless the section says three rows or the whole box): the remote part,
-  Λ(q) < S + 3.6·10⁻⁷ for every cubic q independent of z₁ (2.1); the A-shell with independent drivers, on the whole
+  sup Λ(q) = S over cubics independent of z₁ at the peak (2.1, 3.3a, paper proof with exact arithmetic); the A-shell with independent drivers, on the whole
   box (2.2); explicit regions of the shared-driver core (2.4); the content inequality for several structured families
   (2.5); the B-shell cost and the alignment of B- and A-contents (2.7); the local joint A/B form, the global finite-amplitude raw joint A/B bounds and common diagonal costs at the three rows (2.8, 7.4.17), and the retained
   joint premise (P) for all complex shifts and both complex drivers (2.8, 7.4.16); the odd sectors over the zero core and over every remote core,
@@ -247,7 +247,7 @@ K_η must hold for every G, not only for the core. A proof has six layers:
 
 | layer | statement | status | here |
 |---|---|---|---|
-| L1 | remote part: Λ(q) ≤ S + η for q independent of z₁ | peak row and a neighbourhood: proved; other rows open | 2.1 |
+| L1 | remote part: Λ(q) ≤ S + η for q independent of z₁ | exact at the peak, quantitative in a profile neighbourhood; other rows open | 2.1 |
 | L2 | the core with drivers independent of q | proved on the whole box | 2.2 |
 | L3 | the core with shared drivers: explicit regions | proved regions at the peak; one region **R** | 2.4 |
 | L4 | the core on the residual region: cost plus content | K: families proved, general cubics open; Λ̂: closed at the peak | 2.5, 2.6 |
@@ -272,20 +272,16 @@ profiles [STATUS §15].
         →  consumer                                                                    open
 
 Outside both chains and proved: disjoint drivers (4.2), Theorems A and B (5.1, 5.2), the odd sectors over the zero core
-and over remote cores (5.4, 7.2.10), and the all-sector bound on an energy region around the zero core (7.5.1). The two
-chains use different remote inputs. The Λ̂ chain consumes the remote cap 3.3, Λ(q) < S + 3.6·10⁻⁷, whose positive
-allowance at zero driver is paid inside its displayed totals. The Λ chain needs Λ(q) ≤ S, so it cannot consume 3.3 as a
-sharp input: the strong content route 6.2.3 assumes C(q)² ≤ κ·D(q) on the class being handled, which contains D(q) ≥ 0
-there, and its weaker variant uses a priced slack η, with η = 0 for a sharp conclusion. These are premises on the class
-at hand. They are distinct from the all-energy, all-price sharp radius conjecture D(q) ≥ 0 for every q (3.5, 3.6),
-which is a separate open problem that neither chain needs in full.
+and over remote cores (5.4, 7.2.10), and the all-sector bound on an energy region around the zero core (7.5.1). The earlier retained estimates budgeted the positive allowance from 3.3. Row 3.3a supplies exact remote K at the peak and the same-variance sign throughout its response band. The raw A/B argument still needs a quantitative comparison of the content with the deficit. The universal sharp-radius question across all profiles and prices remains open (3.5–3.6).
 
 ## 2. What is proved
 
 ### 2.1 The remote part (L1)
 
 Remote K reduces to a moment problem for U = |q|²/u: two-point extremal laws, cubic Hermite majorants of the profile,
-a secant envelope in the variance [P · audit · 3.1]. At the peak row:
+a secant envelope in the variance [P · audit · 3.1]. At the peak visible profile and every price p ≥ 1.317, the exact remote supremum in all finite dimensions is S(p). On the response band 0 < u ≤ 0.0463 every nonzero remote cubic gives strictly smaller mean modulus than the Gaussian of equal variance. At higher energies the priced payoff is strictly below an explicit Gaussian competitor. Independent cubic blocks approach the Gaussian supremum. With both linear drivers absent the same supremum holds after adding all three odd sectors, with a loss of at least (p − 32/25)‖O‖². [P + C, author only · 3.3a · proof](sources/peak-remote-deficit-codex-a7c4/PRICE.md)
+
+The independently replayed absolute cap of 3.3 was
 
     Λ(q) < 1.373953883 < S + 3.6·10⁻⁷     for every remote cubic q, in every finite dimension, at every variance.
 
@@ -355,7 +351,8 @@ or (265/2)δ^(3/2) for χ≤9364/390625. Nine low-energy intervals give the last
 The smoothed expansion gives D(q)>0 on (0,3/250] × (0,1/9] and on [3/250,0.0463] × (0,1/125].
 The 79 Stein duals and the Stieltjes–Maclaurin estimate cover the adjoining larger shapes in 3.29.
 Together these give strict positivity on (0,0.0463] × (0,49/100] ∪ (0,83/100000] × (0,42].
-The remaining shapes in this peak positivity problem have χ>49/100 and u>83/100000 [3.19a, 3.29].
+Averaging the Rice curvature over the visible variance mixture extends strict positivity to all shapes through u = 7/500. [P + C · 3.29a · proof](sources/buffered-rice-codex-a7c4/PEAK.md)
+Ten global radial majorants cover the complementary shapes. Strict positivity now holds for every nonzero remote cubic on 0 < u ≤ 0.0463. [P + C, author only · 3.3a · proof](sources/peak-remote-deficit-codex-a7c4/PROOF.md)
 
 For 0.03≤u≤0.0463 and χ≤10⁻⁴ (9/2000, author only), the content coefficient 3/80 of 2.6 gives
 ‖c₍₃/₅₎(q)‖²≤0.3D(q), without additive error. With k=59009/189100, the global tilted
@@ -781,7 +778,9 @@ and therefore
 
     Λ̂(q + (T − 1)r) < S + 5778430967237/295045000000000000 < S + 2·10⁻⁵.
 
-*Proof of the second line.* By the tilt, Λ̂(q + (T − 1)r) ≤ Λ(q) + κD₊(q) + η. If D(q) ≥ 0 this is
+The exact peak comparison in 3.3a sharpens this consequence to Λ̂ ≤ S + η on the same energy band, since D₊(q) = D(q) there. [Derivation](sources/peak-remote-deficit-codex-a7c4/PRICE.md)
+
+*Proof using the earlier cap.* By the tilt, Λ̂(q + (T − 1)r) ≤ Λ(q) + κD₊(q) + η. If D(q) ≥ 0 this is
 B(u) − pu − (1 − κ)D(q) + η ≤ S + η. If D(q) < 0 it is Λ(q) + η < 1.373953883 + η by the remote cap of 2.1. ∎ With D₊
 in the lemma the remote error is not attenuated by 1 − κ (chapter 4, item 87). The bound is at most S once
 D(q) ≥ η/(1 − κ) = 5673/30305000 ≈ 1.87·10⁻⁴. [lemma P + C · codex-6e2b, reviewed by claude-b9ee; its κ from step 3
@@ -1168,6 +1167,8 @@ threshold in t no such cap holds (chapter 4, item 69). The October manuscript ha
 penalties that spend the same square cannot be added.
 
 The Rice mean has a quantitative Jensen gap on remote cubic fields. If X is a positive multiple of |q|² and m = EX ≤ 1/9, the gap is at least (√π/32)e^(−m/2)m²/(1+3m/4). The fourth and sixth moment bounds in 3.4 control the variance term left by the curvature. Applying this estimate before 2.12b gives peak-normalized remote energy below 0.0458 and total energy below 0.08005 already at t ≥ 0.83992. [P + C, author only · 2.12g · proof](sources/rice-response-gap-codex-a7c4/PROOF.md)
+
+For √(3π/14) ≤ t ≤ √π/2 the exact remote energy supremum is ε²(π/4 − t²). The upper bound follows by comparing the cubic with a Gaussian of the same variance when independent Gaussian noise has at least six times that variance. Finite sums of cubic monomials realize every strict interior point, also for unimodular responses. [P + C, author only · 3.5a · proof](sources/buffered-rice-codex-a7c4/PROOF.md)
 
 **Central component.** At the single peak row, an all-sector bound Λ ≤ S + η (for Λ or Λ̂) with η ≤ 10⁻⁴ covers
 t ∈ [0.84, 0.851] with cap margin above 6.12·10⁻⁷ below 500/701; separately, the largest admissible allowance there is
