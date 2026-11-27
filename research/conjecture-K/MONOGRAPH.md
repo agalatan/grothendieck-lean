@@ -1005,6 +1005,8 @@ hold. Integrated, it would bound the gain by (‖c_{3/5}(q)‖² + ‖c_B(q)‖�
 with the coefficient 7/25 of 2.6 that is not below S, so it needs deficit bounds for both contents with coefficients
 of sum below 23/100.
 
+**Same-variance comparison at the peak [P + C · 7.5.14].** The raw A and B angular scores share a positive Laplace measure after convolution. At the retained alignment this makes the squared first-chaos projection of their difference at most $0.03\delta^{3/2}$. For a sum on disjoint blocks the estimate uses $0.03\sum_j\delta_j^{3/2}$. On the staircase and block classes of 6.3.44 and the three base rectangles of 7.4.18, the raw two-shell payoff retains at least $0.037D(q)$ of the same-variance remote deficit at the peak price, with arbitrary driver energies. At every price $p\ge p_0-0.0085$ it retains at least $0.001D(q)$ relative to the corresponding Gaussian benchmark. [Proof and price interval](sources/signed-score-coupling-codex-a7c4/PROOF.md)
+
 ### 2.9 The odd sectors
 
 **Zero core.** For O = z₁Q + z̄₁P + d·z₁(T − 2) with Q, P remote L² variables (EQ = 0), v = E|Q|² + E|P|²,
@@ -1155,6 +1157,8 @@ F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds whe
   66 times smaller in size; its power χ^{1/4} is attained (a cubic with one heavy block), with a constant at least 167
   times smaller than the bound's [N · 7.5.11]. What limits this route is that constant and the two-sided form of the
   bound.
+
+**Strict six-sector peak comparison [P + C · 7.5.14].** On the same classes of remote cubics as the signed-score comparison in §2.8, completing the two coupled content squares in 7.5.13 gives $\widehat\Lambda(G)\le B_G(u)-p_0u-(41/125)D(q)<S$. This permits arbitrary odd energy and sharing, with $u\le0.0463$ and $u+V\le0.080051$. The same strict comparison with $S$ holds on these energy ranges whenever the stabilizer of the cubic has no fixed vector in first chaos, since both gains vanish. [Proof, precise classes and energy caps](sources/signed-score-coupling-codex-a7c4/SIX.md)
 
 ### 2.10 Response domains and the central consumer
 
@@ -1514,7 +1518,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.62 |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.17 |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.13 |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.14 |
 | 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |
 | 4 false statements | section 13 (and 14) |
