@@ -1,0 +1,215 @@
+# Quantitative Buffered PVD, Sharp Complex Radius, All-Profile Exact Remote K, and Step-by-Step CLT & Doubling Monotonicity (`KWPVD`)
+
+**Agent-ID:** `gemini-21d5` · **Task:** Closes `#730`, Refs `#177` (part of `#34`) · **Status:** **`P + C, author only`**
+
+Code and exact rational certificate: [`../../code/wick-pvd-doubling-gemini-21d5/`](../../code/wick-pvd-doubling-gemini-21d5/) (`verify.py`, `result.json`, `README.md`).
+
+---
+
+## 1. Statements and Ledger Impact (`3.5`, `3.6`, `3.20`, `3.25`, `2.2`)
+
+Let $X_1, \dots, X_m \sim \mathcal{CN}(0, 1)$ be independent standard proper complex Gaussians (planar density $\pi^{-1}e^{-|z|^2}$, radial law $R_j = |X_j|^2 \sim \mathrm{Exp}(1)$), and let
+$$H(Z) := \frac{1}{\sqrt{2}}Z(|Z|^2 - 2)$$
+be the unit-variance complex $(2, 1)$ Wick cubic ($\mathbb{E}|H(Z)|^2 = 1$, $\mathbb{E}|H(Z)|^4 = 44$). For any dimension $m \ge 1$ and nonzero complex coefficients $(c_1, \dots, c_m) \in \mathbb{C}^m \setminus \{0\}$, define the multi-driver Wick sum and its equal-weight specialization:
+$$q_0(X) := \sum_{j=1}^m c_j H(X_j), \qquad u_j := |c_j|^2 \ge 0, \qquad u := \sum_{j=1}^m u_j = \mathbb{E}|q_0(X)|^2 > 0, \qquad q_m := \frac{1}{\sqrt{m}}\sum_{j=1}^m H(X_j).$$
+Let $W \sim \mathcal{CN}(0, 1)$ be an independent standard complex Gaussian ($\mathbb{E}|W| = \frac{\sqrt{\pi}}{2}$). Every numerical enclosure below is certified from scratch in 1088-bit outward-rounded fixed-point integer arithmetic (`0` floating-point literals/calls and `0` `assert` statements, enforced by AST self-audit in [`verify.py`](../../code/wick-pvd-doubling-gemini-21d5/verify.py)).
+
+1. **Global Algebraic Envelope and Scale-Matched Positivity (Lemma 1):**
+   Let $\psi_{\mathrm{Wick}}(\zeta) := \mathbb{E}\big[e^{i\operatorname{Re}(\bar{\eta} H(Z))}\big]\big|_{|\eta| = 2\sqrt{\zeta}} = \int_0^\infty J_0\!\big(\sqrt{2\zeta R}\,|R - 2|\big)e^{-R}\,dR$ ($\zeta \ge 0$) and $\Delta_{\mathrm{Wick}}(\zeta) := \psi_{\mathrm{Wick}}(\zeta) - e^{-\zeta}$. Then:
+   - **Self-contained Bessel & Schläfli–Watson decay:** For all $x > 0$, $|J_0(x)| < \sqrt{\frac{2}{\pi x}}$ (proved in Proposition 2.1 by an elementary ODE/Wronskian identity with zero external special-function citations), whence $|\psi_{\mathrm{Wick}}(\zeta)| \le C_{1/4}\zeta^{-1/4}$ for all $\zeta > 0$ with
+     $$C_{1/4} := \frac{2^{1/4}}{\sqrt{\pi}}\int_0^\infty R^{-1/4}|R - 2|^{-1/2}e^{-R}\,dR \in \left(\frac{84}{100},\, \frac{17}{20}\right).$$
+   - **Global non-oscillatory algebraic majorant:** For **every** $\zeta \in [0, \infty)$,
+     $$|\psi_{\mathrm{Wick}}(\zeta)| \le \left(1 + \frac{19}{5}\zeta\right)^{-1/5}$$
+     (with strict inequality for all $\zeta > 0$; adversarial Control 7 verifies that replacing $\frac{19}{5}$ by $\frac{21}{5}$ fails at $\zeta = \frac{1}{10}$).
+   - **Scale-matched positivity on $(0, 4]$:** For all $\zeta \in (0, 4]$,
+     $$\Delta_{\mathrm{Wick}}(\zeta) = \psi_{\mathrm{Wick}}(\zeta) - e^{-\zeta} \ge \frac{13137}{5000000}\min(\zeta^2, 1) > \frac{2509689}{10^9}\min(\zeta^2, 1) > 0$$
+     (adversarial Control 4 verifies $\Delta_{\mathrm{Wick}}(\frac{49}{10}) < 0$, so positivity does not extend to $(0, \infty)$).
+
+2. **Quantitative Buffered PVD, Gaussian-Mixture Closure, Sharp Complex Radius, and All-Profile Exact Remote K (Theorem 2; closes `3.5`, `3.6`, `3.25` on this family):**
+   - **Buffered PVD (`3.5`):** For **every** $m \ge 1$, **every** $(c_1, \dots, c_m) \in \mathbb{C}^m \setminus \{0\}$, and **every** Gaussian buffer variance $v \ge 0$,
+     $$\frac{\sqrt{\pi}}{2}\sqrt{u + v} - \mathbb{E}\big|q_0(X) + \sqrt{v}\,W\big| \ge \frac{1}{20}\frac{\sum_{j=1}^m u_j^2}{(u + v)^{3/2}} > 0.$$
+   - **Sharp complex first-moment radius (`3.6`):** Setting $v = 0$ yields $\mathbb{E}|q_0(X)| \le \sqrt{u}\left(\frac{\sqrt{\pi}}{2} - \frac{1}{20}\frac{\sum_{j=1}^m u_j^2}{u^2}\right) < \frac{\sqrt{\pi}}{2}\sqrt{u}$ for every nonzero multi-driver Wick sum, so $\sup_{m, c \ne 0} \mathbb{E}|q_0(X)| / \|q_0\|_2 = \frac{\sqrt{\pi}}{2}$ (attained in the $m \to \infty$ CLT limit $q_m \Rightarrow \mathcal{CN}(0, 1)$, whereas at $m = 1$ we enclose $\mathbb{E}|H(X_1)| \in (0.69082, 0.69083)$ with gap $\frac{\sqrt{\pi}}{2} - \mathbb{E}|H(X_1)| > \frac{39}{200}$).
+   - **Gaussian-mixture closure (`3.24`, `6.3.16b`):** Let $Q_{\mathrm{mix}} \stackrel{d}{=} \sqrt{V_{\mathrm{mix}}}\,W$ ($V_{\mathrm{mix}} \ge 0$ arbitrary integrable, $\mathbb{E}[V_{\mathrm{mix}}] = v_{\mathrm{mix}} < \infty$) be any circular Gaussian scale mixture independent of $X$ — including arbitrary disjoint zero-contraction cubics (`3.24`, e.g. $X_a X_b \bar{Y}$, $X_a^2 \bar{Y}$, or bipartite/tripartite cubics) and real-driver blocks (`6.3.16b`). Conditioning on $V_{\mathrm{mix}}$ and applying Jensen's inequality to the convex map $s \mapsto (u + s)^{-3/2}$ gives
+     $$\mathbb{E}\big|\sqrt{u}\,W' + Q_{\mathrm{mix}}\big| - \mathbb{E}\big|q_0(X) + Q_{\mathrm{mix}}\big| \ge \frac{1}{20}\left(\sum_{j=1}^m u_j^2\right)\mathbb{E}\!\left[(u + V_{\mathrm{mix}})^{-3/2}\right] \ge \frac{1}{20}\frac{\sum_{j=1}^m u_j^2}{(u + v_{\mathrm{mix}})^{3/2}} > 0$$
+     for an independent $W' \sim \mathcal{CN}(0, 1)$, and $\mathbb{E}|\sqrt{u}\,W' + Q_{\mathrm{mix}}| = \frac{\sqrt{\pi}}{2}\mathbb{E}\sqrt{u + V_{\mathrm{mix}}} \le \frac{\sqrt{\pi}}{2}\sqrt{u + v_{\mathrm{mix}}}$ yields $\frac{\sqrt{\pi}}{2}\sqrt{u + v_{\mathrm{mix}}} - \mathbb{E}|q_0(X) + Q_{\mathrm{mix}}| \ge \frac{1}{20}\frac{\sum_{j=1}^m u_j^2}{(u + v_{\mathrm{mix}})^{3/2}} > 0$.
+   - **All-profile, all-price exact remote Conjecture K (`3.25`):** For **every** visible profile $L(z_1) = z_1(a + b|z_1|^2)$ with $a > 0, b \ge 0$, **every** price $p > 0$, **every** $m \ge 1$ and $(c_1, \dots, c_m) \ne 0$, and **every** independent circular Gaussian scale mixture $Q_{\mathrm{mix}}$ ($q := q_0(X) + Q_{\mathrm{mix}}$, total energy $u_{\mathrm{tot}} = u + v_{\mathrm{mix}}$):
+     $$D_{a,b}(q) := B_{a,b}(u_{\mathrm{tot}}) - 2\mathbb{E}|L(z_1) + q| \ge \frac{1}{10}\left(\sum_{j=1}^m u_j^2\right)\big(a^2 + 4ab + 6b^2 + u_{\mathrm{tot}}\big)^{-3/2} > 0,$$
+     and therefore $\Lambda_{a,b,p}(q) = B_{a,b}(u_{\mathrm{tot}}) - p u_{\mathrm{tot}} - D_{a,b}(q) < S_{a,b}(p)$ across **all** profiles $(a, b) \in (0, \infty) \times [0, \infty)$ and **all** prices $p > 0$.
+
+3. **Step-by-Step CLT Monotonicity, Doubling Monotonicity, and Real $\operatorname{He}_3/\sqrt{6}$ Failure (Lemma 3 & Theorem 4; `3.20`, `2.2`):**
+   - **Step-by-step equal-weight CLT monotonicity (`3.20`):** For **every** integer $m \ge 1$,
+     $$\mathbb{E}|q_{m+1}| > \mathbb{E}|q_m|$$
+     (with $\mathbb{E}|q_2| - \mathbb{E}|q_1| \in (0.0160, 0.0164)$ certified by a non-oscillatory Parseval $\lambda$-series + separate-convexity Jensen/Edmundson–Madansky 1D reduction in Lemma 3, $m = 2, \dots, 12$ certified directly via Hankel quadrature + $C_{1/4}$ tails, and all $m \ge 13$ certified analytically with $\mathbb{E}|q_{m+1}| - \mathbb{E}|q_m| \ge \frac{1}{25 m(m+1)} > 0$). Iterating $m \to m + 1 \to \dots \to 2m$ proves $\mathbb{E}|q_{2m}| > \mathbb{E}|q_m|$ for **every** $m \ge 1$.
+   - **Real $\operatorname{He}_3/\sqrt{6}$ doubling failure (`3.20`, `2.2`):** For the unit-variance real third Hermite polynomial $h_3(G) = (G^3 - 3G)/\sqrt{6}$ ($G_1, G_2 \sim \mathcal{N}(0, 1)$ i.i.d.), exact closed-form reduction yields $\mathbb{E}|h_3(G_1)| \in (0.616460, 0.616461)$, $\mathbb{E}|(h_3(G_1)+h_3(G_2))/\sqrt{2}| \in (0.603810, 0.603811)$, and
+     $$\mathbb{E}\left|\frac{h_3(G_1) + h_3(G_2)}{\sqrt{2}}\right| - \mathbb{E}|h_3(G_1)| \in (-0.012650, -0.012649) < -\frac{1}{80} < 0,$$
+     proving analytically that real third-chaos $L^1$ doubling **strictly fails** and that complex circular structure is essential in `3.20`.
+   - **Diffuse unequal-weight doubling monotonicity (`3.20`):** For any $q_0(X) = \sum_{j=1}^m c_j H(X_j)$ and independent copy $q_0'(X')$ satisfying $\max_{1 \le j \le m} u_j \le \frac{1}{7} u$ ($u = \sum_{j=1}^m u_j > 0$, hence $m \ge 7$),
+     $$\mathbb{E}\left|\frac{q_0(X) + q_0'(X')}{\sqrt{2}}\right| - \mathbb{E}|q_0(X)| \ge \frac{1}{40}\frac{\sum_{j=1}^m u_j^2}{u^{3/2}} > 0.$$
+
+---
+
+## 2. Radial Euclidean Norm Identity and Proof of Lemma 1
+
+### 2.1 Radial Hankel Representation of $\mathbb{E}|Z|$
+
+For any $z \in \mathbb{C}$, $J_0(s) = \frac{1}{2\pi}\int_0^{2\pi} \cos(s\cos\theta)\,d\theta$ satisfies $1 - J_0(s) \ge 0$, and Tonelli's theorem with $\int_0^\infty \frac{1 - \cos(a s)}{s^2}\,ds = |a|\int_0^\infty \frac{1 - \cos u}{u^2}\,du = \frac{\pi}{2}|a|$ and $\frac{1}{2\pi}\int_0^{2\pi}|\cos\theta|\,d\theta = \frac{2}{\pi}$ gives $\int_0^\infty \frac{1 - J_0(s)}{s^2}\,ds = 1$. Substituting $s = 2\sqrt{\xi}|z|$ ($\xi = \frac{s^2}{4|z|^2}$, $\frac{1}{4}\xi^{-3/2}\,d\xi = |z|\frac{ds}{s^2}$) yields for every $z \in \mathbb{C}$:
+$$|z| = \frac{1}{4}\int_0^\infty \big(1 - J_0(2\sqrt{\xi}|z|)\big)\,\xi^{-3/2}\,d\xi.$$
+For any circular random variable $Z \in L^1(\mathbb{C})$ ($e^{i\alpha}Z \stackrel{d}{=} Z$), $\mathbb{E}[e^{i\operatorname{Re}(\bar{\eta} Z)}]\big|_{|\eta|=2\sqrt{\xi}} = \mathbb{E}[J_0(2\sqrt{\xi}|Z|)] =: \psi_Z(\xi)$. Subtracting two integrable circular laws $Z_1, Z_2$ (justified by Tonelli/Fubini since $0 \le 1 - J_0(s) \le \min(\frac{s^2}{2}, 2)$ makes $(1 - J_0(2\sqrt{\xi}|Z_i|))\xi^{-3/2}$ integrable on $(0, \infty) \times \Omega$ whenever $\mathbb{E}|Z_i| < \infty$) gives the exact Parseval–Hankel identity:
+$$\mathbb{E}|Z_1| - \mathbb{E}|Z_2| = \frac{1}{4}\int_0^\infty \big(\psi_{Z_2}(\xi) - \psi_{Z_1}(\xi)\big)\,\xi^{-3/2}\,d\xi. \tag{2.1}$$
+
+### 2.2 Elementary Zero-Dependency Proof of $|J_0(x)| < \sqrt{\frac{2}{\pi x}}$ ($x > 0$) and $C_{1/4} < \frac{17}{20}$
+
+**Proposition 2.1.** *For every $x > 0$, $|J_0(x)| < \sqrt{\frac{2}{\pi x}}$.*
+
+*Proof.* For $s > 0$, let $\phi(s) := s^{-1/2}(2 + i s)^{-1/2}$, using the principal square root on $\{\operatorname{Re} w > 0\}$. For $x > 0$, set
+$$g(x) := \int_0^\infty e^{x(i - s)}\phi(s)\,ds, \qquad H(x) := \frac{2}{\pi}e^{-i\pi/4} g(x), \qquad y(x) := \operatorname{Re} H(x).$$
+1. *Pointwise bound:* Since $|2 + i s| = \sqrt{4 + s^2} > 2$ for all $s > 0$, $|\phi(s)| < (2s)^{-1/2}$, hence
+   $$|y(x)| \le |H(x)| < \frac{2}{\pi}\int_0^\infty e^{-x s}\frac{ds}{\sqrt{2s}} = \frac{\sqrt{2}}{\pi}\sqrt{\frac{\pi}{x}} = \sqrt{\frac{2}{\pi x}}.$$
+2. *Bessel ODE:* On any $[x_0, \infty)$ ($x_0 > 0$), differentiating under the integral sign is justified by $|(i - s)^k e^{x(i - s)}\phi(s)| \le (1 + s)^k s^{-1/2} e^{-x_0 s} \in L^1(0, \infty)$. Using $(i - s)^2 + 1 = s^2 - 2 i s = -i s(2 + i s)$ and $\frac{d}{ds}\big[s^{1/2}(2 + i s)^{1/2}\big] = (1 + i s)\phi(s)$, integrating by parts with $u(s) = e^{-x s}$ ($u'(s) = -x e^{-x s}$, boundary terms vanishing as $O(s^{1/2})$ at $0$ and exponentially at $\infty$) gives
+   $$x g''(x) + x g(x) = \int_0^\infty (-x e^{-x s})\,i e^{i x} s^{1/2}(2 + i s)^{1/2}\,ds = -\int_0^\infty e^{-x s}\,i e^{i x}(1 + i s)\phi(s)\,ds = -\int_0^\infty (i - s)e^{x(i - s)}\phi(s)\,ds = -g'(x).$$
+   Taking the real part of $\frac{2}{\pi}e^{-i\pi/4}(x g'' + g' + x g) = 0$ shows $x y''(x) + y'(x) + x y(x) = 0$ for all $x > 0$.
+3. *Wronskian identification $y(x) \equiv J_0(x)$:* Both $J_0$ and $y$ solve $x w'' + w' + x w = 0$ on $(0, \infty)$, so $W(x) := x\big(J_0(x)y'(x) - J_0'(x)y(x)\big)$ has $W'(x) = 0$ and is constant on $(0, \infty)$. Write $x H'(x) = i x H(x) - \frac{2}{\pi}e^{i(x - \pi/4)}\int_0^\infty x s e^{-x s}\phi(s)\,ds$. Substituting $u = x s$ transforms the integral into $\int_0^\infty \frac{\sqrt{u}\,e^{-u}}{\sqrt{2x + i u}}\,du$; since $|\frac{\sqrt{u}\,e^{-u}}{\sqrt{2x + i u}}| \le e^{-u} \in L^1(0, \infty)$ and $\sqrt{2x + i u} \to e^{i\pi/4}\sqrt{u}$ as $x \downarrow 0^+$, Dominated Convergence gives
+   $$\lim_{x \downarrow 0^+} x H'(x) = 0 - \frac{2}{\pi}e^{-i\pi/4}\cdot e^{-i\pi/4}\int_0^\infty e^{-u}\,du = -\frac{2 i}{\pi}, \qquad \lim_{x \downarrow 0^+} x y'(x) = \operatorname{Re}\!\left(-\frac{2 i}{\pi}\right) = 0.$$
+   Since $J_0(0) = 1$, $J_0'(x) = O(x)$, and $|y(x)| = O(x^{-1/2})$, $\lim_{x \downarrow 0^+} W(x) = 0$, so $W(x) \equiv 0$. On $(0, 2)$ where $J_0(x) \ge 1 - \frac{x^2}{4} > 0$, $(y / J_0)' = W / (x J_0^2) = 0$, hence $y(x) = c J_0(x)$ on $(0, \infty)$ by ODE uniqueness. Finally, setting $s = 2\tan\alpha$ ($\alpha \in (0, \frac{\pi}{2})$), $\beta = \frac{\pi}{2} - \alpha$, and $w = \tan(\beta/2) \in (0, 1)$ transforms $\frac{2}{\pi}\operatorname{Re}[e^{-i\pi/4}\phi(s)]\,ds = \frac{2}{\pi}\frac{dw}{\sqrt{1 - w^2}} \ge 0$ with integral $1$; since $|\sin x|\int_0^\infty e^{-x s}|\phi(s)|\,ds = O(x\ln(1/x)) \to 0$ as $x \downarrow 0^+$, Monotone Convergence gives $c = \lim_{x \downarrow 0^+} y(x) = 1$. $\square$
+
+Applying Proposition 2.1 inside $\psi_{\mathrm{Wick}}(\zeta) = \int_0^\infty J_0(\sqrt{2\zeta R}\,|R - 2|)e^{-R}\,dR$ yields immediately for all $\zeta > 0$:
+$$|\psi_{\mathrm{Wick}}(\zeta)| < \int_0^\infty \sqrt{\frac{2}{\pi\sqrt{2\zeta R}\,|R - 2|}}\,e^{-R}\,dR = C_{1/4}\,\zeta^{-1/4}, \qquad C_{1/4} = \frac{2^{1/4}}{\sqrt{\pi}}\int_0^\infty R^{-1/4}|R - 2|^{-1/2}e^{-R}\,dR.$$
+In `compute_schlaefli_watson_and_real_he3()`, `verify.py` splits $[0, \infty)$ into $[0, 1]$ ($R = t^4$, 1500 monotone panels), $[1, 2]$ ($2 - R = t^2$, 1000 monotone panels), $[2, 3]$ ($R - 2 = t^2$, 800 monotone panels), $[3, 9]$ (600 monotone panels), and $[9, \infty)$ ($\le 9^{-1/4}7^{-1/2}e^{-9}$), certifying $C_{1/4} \in [\frac{1690847}{2000000}, \frac{1695909}{2000000}] \subset (\frac{84}{100}, \frac{17}{20})$ and at $\zeta_0 = \frac{19}{2}$:
+$$C_{1/4}^5\left(\zeta_0^{-5/4} + \frac{19}{5}\zeta_0^{-1/4}\right) \le \frac{9751741}{10^7} < 1.$$
+Because $\zeta \mapsto \zeta^{-5/4} + \frac{19}{5}\zeta^{-1/4}$ is strictly decreasing on $(0, \infty)$, this proves $|\psi_{\mathrm{Wick}}(\zeta)|^5(1 + \frac{19}{5}\zeta) < 1$ for **all** $\zeta \ge \frac{19}{2}$.
+
+### 2.3 Compact Envelope on $[0, \frac{19}{2}]$ and Scale-Matched Positivity on $(0, 4]$
+
+1. **Truncated Bessel-moment series and exact second-derivative envelopes:** Writing $J_0(x) = \sum_{k=0}^\infty \frac{(-1)^k}{(k!)^2}(x/2)^{2k}$ on $R \in [0, S]$ ($S = 23$, radial tails $e^{-23}$ for $\psi_{\mathrm{Wick}}$ and $\frac{1}{2}\Gamma(4, 23)$ for $\psi_{\mathrm{Wick}}'$) expresses $\psi_{\mathrm{Wick}}(\zeta)$ and $\psi_{\mathrm{Wick}}'(\zeta)$ via nonnegative incomplete-gamma moments $w_{k,S} = \int_0^{23} R^k(R - 2)^{2k}e^{-R}\,dR \ge 0$ (`WickEngine.eval_psi_and_delta_jet1`, with power-series tail bounded via $\max_{R \in [0, 23]} R(R - 2)^2 = 23 \cdot 21^2 = 10143$). At $S = \infty$, $w_0 = 1$, $w_1 = 2$, $w_2 = 176$, $w_3 = 90816$, so $\psi_{\mathrm{Wick}}(\zeta) = 1 - \zeta + 11\zeta^2 - \frac{946}{3}\zeta^3 + \cdots$.
+   For any $a = \sqrt{2R}|R - 2| \ge 0$ and $F(\zeta) := J_0(a\sqrt{\zeta}) = \mathbb{E}_\theta[\cos(a\sqrt{\zeta}\cos\theta)]$:
+   - Writing $g(\zeta) = \cos(b\sqrt{\zeta})$ ($b = a\cos\theta$), $g''(\zeta) = \frac{b^4}{4}\frac{\sin u - u\cos u}{u^3}$ ($u = b\sqrt{\zeta}$) satisfies $|g''(\zeta)| \le \frac{b^4}{12}$ since $|\sin u - u\cos u| \le \frac{u^3}{3}$ for all $u \ge 0$; averaging over $\theta$ ($\mathbb{E}_\theta[\cos^4\theta] = \frac{3}{8}$) and $R$ ($\mathbb{E}[a^4] = 4 w_2 = 704$) gives $|\psi_{\mathrm{Wick}}''(\zeta)| \le \frac{1}{12}\cdot\frac{3}{8}\cdot 704 = 22$ for all $\zeta \ge 0$.
+   - Simultaneously, for $\zeta > 0$ ($w = a\sqrt{\zeta}$), integrating $\frac{J_1(w)}{w} = \frac{1}{2\pi}\int_0^{2\pi}\sin^2\theta\cos(w\cos\theta)\,d\theta$ against $J_0''(w) = -\frac{1}{2\pi}\int_0^{2\pi}\cos^2\theta\cos(w\cos\theta)\,d\theta$ gives
+     $$F''(\zeta) = \frac{a^2}{4\zeta}\left(J_0''(w) - \frac{1}{w}J_0'(w)\right) = -\frac{a^2}{4\zeta}\cdot\frac{1}{2\pi}\int_0^{2\pi}\cos(2\theta)\cos(w\cos\theta)\,d\theta, \qquad |F''(\zeta)| \le \frac{a^2}{4\zeta}.$$
+     Averaging over $R$ ($\mathbb{E}[a^2] = 2 w_1 = 4$) gives $|\psi_{\mathrm{Wick}}''(\zeta)| \le \frac{1}{\zeta}$ for all $\zeta > 0$. Combining both bounds proves
+     $$|\psi_{\mathrm{Wick}}''(\zeta)| \le \min\!\left(22,\, \frac{1}{\zeta}\right), \qquad |\Delta_{\mathrm{Wick}}''(\zeta)| \le \min\!\left(23,\, \frac{1}{\zeta} + 1\right) \qquad (\zeta > 0),$$
+     implemented in `taylor_curv_psi` and `taylor_curv_delta` (and guarded against endpoint misuse by adversarial Control 8).
+
+2. **Near-zero interval $[0, \frac{1}{50}]$ and 1,292 `Jet1` cells on $[\frac{1}{50}, \frac{19}{2}]$:**
+   - By alternating-series bounds on $\cos(b\sqrt{\zeta}) \le 1 - \frac{b^2}{2}\zeta + \frac{b^4}{24}\zeta^2$ and $\cos(b\sqrt{\zeta}) \ge 1 - \frac{b^2}{2}\zeta$, $0 < 1 - \zeta \le \psi_{\mathrm{Wick}}(\zeta) \le 1 - \zeta + 11\zeta^2$ for $\zeta \in [0, \frac{1}{50}]$. Expanding $(1 - \zeta + 11\zeta^2)^5(1 + \frac{19}{5}\zeta) = 1 - \frac{6}{5}\zeta + \sum_{k=2}^{11} a_k \zeta^k$ in `verify_fast_analytic_lemmas()` certifies $\sum_{k=2}^{11} |a_k|(1/50)^{k-1} < \frac{6}{5}$, proving $|\psi_{\mathrm{Wick}}(\zeta)| < (1 + \frac{19}{5}\zeta)^{-1/5}$ on $(0, \frac{1}{50}]$.
+   - On $[\frac{1}{50}, \frac{2}{5}]$ (`381` fine cells of width $10^{-3}$) and $[\frac{2}{5}, \frac{19}{2}]$ (`911` main cells of width $10^{-2}$), `enclose_jet1_on_interval` certifies $\max_{\zeta \in [z_a, z_b]} |\psi_{\mathrm{Wick}}(\zeta)| < (1 + \frac{19}{5} z_b)^{-1/5}$ across all `1,292` cells (`max_compact_ratio_upper = 1248569/1250000 < 1`).
+   - For $\Delta_{\mathrm{Wick}}(\zeta) = \psi_{\mathrm{Wick}}(\zeta) - e^{-\zeta}$: on $(0, \frac{1}{50}]$, truncating at $k = 3$ gives $\Delta_{\mathrm{Wick}}(\zeta) \ge \left(\frac{w_{2,14}}{16} - \frac{1}{2} - \frac{\lceil w_{3,14}/288\rceil}{50}\right)\zeta^2 > \frac{505}{100}\zeta^2$ (`WickEngine.__init__`), while `Jet1` enclosures across $[\frac{1}{50}, 4]$ certify $\Delta_{\mathrm{Wick}}(\zeta) \ge \frac{13137}{5000000}\min(\zeta^2, 1) > \frac{2509689}{10^9}\min(\zeta^2, 1) > 0$ for all $\zeta \in (0, 4]$.
+
+---
+
+## 3. Proof of Theorem 2: Quantitative Buffered PVD, Mixtures, and All-Profile Remote K
+
+Fix $m \ge 1$, $(c_1, \dots, c_m) \ne 0$ ($u_j = |c_j|^2$, $u = \sum_{j=1}^m u_j > 0$), and $v \ge 0$. Set total variance $U := u + v > 0$, block shares $\tilde{w}_j := \frac{u_j}{U} \in [0, 1]$ ($1 \le j \le m$), Gaussian buffer share $\tilde{w}_0 := \frac{v}{U} \ge 0$ ($\tilde{w}_0 + \sum_{j=1}^m \tilde{w}_j = 1$), and maximum Wick block share
+$$M := \max_{1 \le j \le m} \tilde{w}_j \in (0, 1].$$
+Rescaling $\xi \mapsto \xi / U$ in (2.1) with $Z_1 = \sqrt{U}\,W$ ($\psi_{Z_1}(\xi/U) = e^{-\xi}$) and $Z_2 = q_0(X) + \sqrt{v}\,W$ ($\psi_{Z_2}(\xi/U) = e^{-\tilde{w}_0\xi}\prod_{j=1}^m \psi_{\mathrm{Wick}}(\tilde{w}_j\xi)$) yields
+$$\frac{\sqrt{\pi}}{2}\sqrt{U} - \mathbb{E}\big|q_0(X) + \sqrt{v}\,W\big| = \frac{\sqrt{U}}{4}\int_0^\infty \left(e^{-\tilde{w}_0\xi}\prod_{j=1}^m \psi_{\mathrm{Wick}}(\tilde{w}_j\xi) - e^{-\xi}\right)\xi^{-3/2}\,d\xi. \tag{3.1}$$
+Split the integral at $\xi_*(M) := \frac{4}{M}$:
+
+1. **Telescoping positive main region $\xi \in (0, \frac{4}{M}]$:**
+   For every $\xi \in (0, \frac{4}{M}]$ and every $1 \le j \le m$, $\tilde{w}_j\xi \le M\xi \le 4$, so Lemma 1 gives $\psi_{\mathrm{Wick}}(\tilde{w}_j\xi) \ge e^{-\tilde{w}_j\xi} > 0$. Writing $A_j = \psi_{\mathrm{Wick}}(\tilde{w}_j\xi) \ge B_j = e^{-\tilde{w}_j\xi} > 0$, the exact telescoping identity $\prod_{j=1}^m A_j - \prod_{j=1}^m B_j = \sum_{j=1}^m (\prod_{i<j} A_i)(A_j - B_j)(\prod_{i>j} B_i) \ge \sum_{j=1}^m (A_j - B_j)\prod_{i \ne j} B_i$ multiplied by $e^{-\tilde{w}_0\xi}$ gives
+   $$e^{-\tilde{w}_0\xi}\prod_{j=1}^m \psi_{\mathrm{Wick}}(\tilde{w}_j\xi) - e^{-\xi} \ge \sum_{j=1}^m e^{-(1 - \tilde{w}_j)\xi}\,\Delta_{\mathrm{Wick}}(\tilde{w}_j\xi) \qquad \forall \xi \in \left(0, \frac{4}{M}\right].$$
+   Moreover, since $\xi_*(M) = \frac{4}{M} \ge 4$, integrating each summand only over the fixed sub-interval $\xi \in (0, 4] \subset (0, \frac{4}{M}]$ drops a nonnegative integral on $(4, \frac{4}{M}]$ and yields
+   $$\frac{1}{4}\int_0^{4/M}\left(e^{-\tilde{w}_0\xi}\prod_{j=1}^m \psi_{\mathrm{Wick}}(\tilde{w}_j\xi) - e^{-\xi}\right)\xi^{-3/2}\,d\xi \ge \frac{1}{2}\sum_{j=1}^m F_{\mathrm{pos}}(\tilde{w}_j), \qquad F_{\mathrm{pos}}(w) := \frac{1}{2}\int_0^4 e^{-(1 - w)\xi}\Delta_{\mathrm{Wick}}(w\xi)\,\xi^{-3/2}\,d\xi.$$
+   - For $w \in (0, \frac{1}{50}]$, $w\xi \le \frac{2}{25}$ on $\xi \in [0, 1]$, where $\Delta_{\mathrm{Wick}}(w\xi) \ge \frac{505}{100}w^2\xi^2$ and $e^{-(1-w)\xi} \ge e^{-\xi}$, so $F_{\mathrm{pos}}(w)/w^2 \ge \frac{505}{200}\int_0^1 \sqrt{\xi}\,e^{-\xi}\,d\xi > \frac{19}{50}$ (`verify_fast_analytic_lemmas()`).
+   - For $w \in [\frac{1}{50}, 1]$, substituting $\xi = \tau^2$ ($\tau \in [0, 2]$, $\frac{1}{2}\xi^{-3/2}d\xi = \tau^{-2}d\tau$) across `160` slabs $[w_{\mathrm{lo}}, w_{\mathrm{hi}}]$ and `200` $\tau$-panels certifies $F_{\mathrm{pos}}(w)/w^2 \ge \frac{1911937}{5000000} > \frac{19}{50}$ for all $w \in (0, 1]$.
+
+2. **All-buffer algebraic tail factorization on $\xi \in (\frac{4}{M}, \infty)$:**
+   By Lemma 1, $|\psi_{\mathrm{Wick}}(\tilde{w}_j\xi)| \le (1 + \frac{19}{5}\tilde{w}_j\xi)^{-1/5}$. Because $y \mapsto \ln(1 + y)$ is concave with $\ln(1 + 0) = 0$ and $\tilde{w}_j / M \in [0, 1]$ for every $1 \le j \le m$:
+   $$\frac{1}{5}\ln\!\left(1 + \frac{19}{5}\tilde{w}_j\xi\right) \ge \frac{\tilde{w}_j}{5M}\ln\!\left(1 + \frac{19}{5}M\xi\right) \qquad (1 \le j \le m).$$
+   Meanwhile, for the Gaussian buffer factor $e^{-\tilde{w}_0\xi}$ (even when $\tilde{w}_0 > M$), $\ln(1 + y) \le y$ gives
+   $$\frac{\tilde{w}_0}{5M}\ln\!\left(1 + \frac{19}{5}M\xi\right) \le \frac{\tilde{w}_0}{5M}\cdot\frac{19}{5}M\xi = \frac{19}{25}\tilde{w}_0\xi \le \tilde{w}_0\xi.$$
+   Summing $\tilde{w}_0 + \sum_{j=1}^m \tilde{w}_j = 1$ proves the **universal all-buffer tail bound**
+   $$\left|e^{-\tilde{w}_0\xi}\prod_{j=1}^m \psi_{\mathrm{Wick}}(\tilde{w}_j\xi) - e^{-\xi}\right| \le \left(1 + \frac{19}{5}M\xi\right)^{-1/(5M)} + e^{-\xi} \qquad \forall \xi > 0, \; \forall v \ge 0.$$
+   Setting $z = M\xi \ge 4$ ($\xi^{-3/2}d\xi = \sqrt{M}\,z^{-3/2}dz$) bounds the tail loss in $\frac{1}{2}(\cdots)$ by
+   $$\frac{1}{2}T_{\mathrm{PVD}}(M) := \frac{\sqrt{M}}{4}\int_4^\infty \left[\left(1 + \frac{19}{5}z\right)^{-1/(5M)} + e^{-z/M}\right] z^{-3/2}\,dz.$$
+   - On $M \in (0, \frac{1}{5}]$, $\frac{d}{dM}\big[M^{-3/2}(1 + \frac{19}{5}z)^{-1/(5M)}\big] > 0$ for all $z \ge 4$ since $\frac{1}{5}\ln(1 + \frac{76}{5}) = \frac{1}{5}\ln(\frac{81}{5}) > \frac{3}{10} \ge \frac{3}{2}M$, and similarly $z/M \ge 20 > \frac{3}{2}M$, so $T_{\mathrm{PVD}}(M)/M^2 \le T_{\mathrm{PVD}}(1/5)/(1/5)^2 < \frac{7}{25}$ (`verify_fast_analytic_lemmas()`).
+   - On $M \in [\frac{1}{5}, 1]$, `320` uniform $M$-slabs of width $\frac{1}{400}$ and `500` octave-dyadic $z$-panels on $[4, 4096]$ plus the exact $[4096, \infty)$ tail certify $T_{\mathrm{PVD}}(M)/M^2 \le \frac{2703531}{10^7} < \frac{7}{25}$ across all $M \in (0, 1]$.
+
+3. **Combining main region and tail:**
+   Since $M^2 = \max_{1 \le j \le m} \tilde{w}_j^2 \le \sum_{j=1}^m \tilde{w}_j^2$, substituting both bounds into (3.1) yields
+   $$\frac{\sqrt{\pi}}{2}\sqrt{U} - \mathbb{E}\big|q_0(X) + \sqrt{v}\,W\big| \ge \frac{\sqrt{U}}{2}\left(\frac{19}{50}\sum_{j=1}^m \tilde{w}_j^2 - \frac{7}{25}M^2\right) \ge \frac{\sqrt{U}}{2}\left(\frac{19}{50} - \frac{14}{50}\right)\sum_{j=1}^m \tilde{w}_j^2 = \frac{1}{20}\frac{\sum_{j=1}^m u_j^2}{(u + v)^{3/2}}.$$
+   - **Single Wick monomial enclosure (`m = 1, v = 0`):** Direct integration of $|H(Z)| = \sqrt{R/2}|R - 2|$ against $e^{-R}\,dR$ ($R = 2t^2$) gives $\mathbb{E}|H(Z)| = 16\int_0^1 t^2(1 - t^2)e^{-2t^2}\,dt - \frac{\sqrt{\pi}}{4\sqrt{2}} = \sum_{k=0}^\infty \frac{(-1)^k 32\cdot 2^k}{k!(2k+3)(2k+5)} - \frac{\sqrt{\pi}}{4\sqrt{2}} \in \big(\frac{69082}{100000}, \frac{69083}{100000}\big)$, with unbuffered gap $\frac{\sqrt{\pi}}{2} - \mathbb{E}|H(Z)| > \frac{39}{200} = 0.195 > \frac{1}{20}$.
+   - **All-profile exact remote K (`3.25`):** By `STATUS.md` `2.7` (`CONTENT_KERNELS.md` Eq. (3)), for every $a > 0, b \ge 0$, the visible law $L(z_1) = z_1(a + b|z_1|^2)$ is a circular Gaussian scale mixture $L(z_1) \stackrel{d}{=} \sqrt{V_L}\,W_L$ with $\mathbb{E}[V_L] = a^2 + 4ab + 6b^2$. For $q = q_0(X) + Q_{\mathrm{mix}}$ ($Q_{\mathrm{mix}} \stackrel{d}{=} \sqrt{V_{\mathrm{mix}}}\,W_{\mathrm{mix}}$ independent of $X$ and $z_1$, $\mathbb{E}[V_{\mathrm{mix}}] = v_{\mathrm{mix}}$, $u_{\mathrm{tot}} = u + v_{\mathrm{mix}}$), $L(z_1) + Q_{\mathrm{mix}} \stackrel{d}{=} \sqrt{V_L + V_{\mathrm{mix}}}\,W$, while $B_{a,b}(u_{\mathrm{tot}}) = 2\mathbb{E}|L(z_1) + \sqrt{u_{\mathrm{tot}}}\,W'| \ge 2\mathbb{E}|L(z_1) + \sqrt{u}\,W' + Q_{\mathrm{mix}}|$ (since conditioned on $V_L$, $v \mapsto \mathbb{E}\sqrt{V_L + u + v}$ is concave so $\mathbb{E}_{V_{\mathrm{mix}}}\sqrt{V_L + u + V_{\mathrm{mix}}} \le \sqrt{V_L + u + v_{\mathrm{mix}}}$). Conditioning on $V_L + V_{\mathrm{mix}}$ and applying Jensen to $s \mapsto (u + s)^{-3/2}$ gives
+     $$D_{a,b}(q) \ge 2\left(\mathbb{E}\big|\sqrt{u + V_L + V_{\mathrm{mix}}}\,W\big| - \mathbb{E}\big|q_0(X) + \sqrt{V_L + V_{\mathrm{mix}}}\,W\big|\right) \ge \frac{1}{10}\left(\sum_{j=1}^m u_j^2\right)\big(a^2 + 4ab + 6b^2 + u_{\mathrm{tot}}\big)^{-3/2} > 0.$$
+
+---
+
+## 4. Proof of Lemma 3: $m = 1 \to 2$ Wick Doubling vs Real $\operatorname{He}_3/\sqrt{6}$ Failure
+
+### 4.1 Non-Oscillatory Parseval $\lambda$-Series and Separate-Convexity 1D Reduction (`m = 1 -> 2`)
+
+For $q_2 = (H(X_1) + H(X_2))/\sqrt{2}$, conditioning on the two independent radii $R_1, R_2 \sim \mathrm{Exp}(1)$ ($u_i = |H(X_i)| = \sqrt{R_i/2}|R_i - 2| \ge 0$) leaves independent uniform phases $\theta_1, \theta_2 \in [0, 2\pi)$, so $\mathbb{E}|q_2| = \frac{1}{\sqrt{2}}\mathbb{E}[\Phi(u_1, u_2)]$ where
+$$\Phi(a, b) := \frac{1}{2\pi}\int_0^{2\pi}\sqrt{a^2 + b^2 + 2ab\cos\theta}\,d\theta \qquad (a, b \ge 0).$$
+1. **Separate convexity and non-oscillatory Parseval series:**
+   - For fixed $b$ and $\theta$, $a \mapsto |a + b e^{i\theta}|$ is convex on $\mathbb{R}$, so $\Phi(a, b)$ is **separately convex** in $a \ge 0$ and in $b \ge 0$ (and continuous, homogeneous of degree $1$, with $\Phi(a, 0) = a$ and $\Phi(a, a) = \frac{4}{\pi}a$).
+   - Setting $\mu := \frac{a - b}{a + b} \in [-1, 1]$ and $\lambda := 1 - \mu^2 = \frac{4ab}{(a + b)^2} \in [0, 1]$ ($a + b > 0$), write $|a + b e^{i\theta}| = \frac{a + b}{2}|1 + e^{i\theta} + \mu(1 - e^{i\theta})|$? Even simpler: let $r := \min(a, b)/\max(a, b) \in [0, 1]$, or expand in $\lambda = \frac{4ab}{(a+b)^2}$ via Gauss's quadratic transformation! Specifically, for $|\zeta| < 1$ ($\zeta = \frac{\sqrt{1 - \lambda}}{1 + \sqrt{1 - \lambda}}$? Let's verify the exact Parseval identity directly!):
+     Write $a^2 + b^2 + 2ab\cos\theta = (a + b)^2\big(1 - \lambda\sin^2(\theta/2)\big)$. Using the binomial series $(1 - x)^{1/2} = 1 - \sum_{n=1}^\infty \frac{1}{2n - 1}\frac{\binom{2n}{n}}{4^n} x^n$ for $x \in [0, 1]$ (all coefficients $\frac{1}{2n-1}\frac{\binom{2n}{n}}{4^n} > 0$, converging uniformly on $[0, 1]$ since $\sqrt{1 - 1} = 0 \implies \sum_{n=1}^\infty \frac{1}{2n-1}\frac{\binom{2n}{n}}{4^n} = 1$) and integrating $\frac{1}{2\pi}\int_0^{2\pi}\sin^{2n}(\theta/2)\,d\theta = \frac{\binom{2n}{n}}{4^n}$ term-by-term by Monotone Convergence yields for **all** $a, b \ge 0$ ($a + b > 0$):
+     $$\Phi(a, b) = (a + b)\left(1 - \sum_{n=1}^\infty d_n \lambda^n\right), \qquad d_n := \frac{1}{2n - 1}\left(\frac{\binom{2n}{n}}{4^n}\right)^2 > 0, \qquad \lambda = \frac{4ab}{(a + b)^2} \in [0, 1],$$
+     with exact endpoint sum $\sum_{n=1}^\infty d_n = 1 - \frac{\Phi(1, 1)}{2} = 1 - \frac{2}{\pi}$! Because every $d_n > 0$ and $\lambda \in [0, 1]$, truncating at $N$ gives both a monotonic upper bound $1 - \sum_{n=1}^N d_n \lambda^n$ and a monotonic lower bound $1 - \sum_{n=1}^N d_n \lambda^n - \big(1 - \frac{2}{\pi} - \sum_{n=1}^N d_n\big)\lambda^{N+1}$.
+
+2. **1D Jensen lower bound and Edmundson–Madansky upper bound:**
+   Set $R = 2t^2$ ($t \ge 0$, density $4t e^{-2t^2}\,dt$), so $g(t) := |H(Z)| = 2t|t^2 - 1|$ and $M(t) := \int_0^t 8s^2(1 - s^2)e^{-2s^2}\,ds$ satisfies $\int_{t_a}^{t_b} g(s)\cdot 4s e^{-2s^2}\,ds = |M(t_b) - M(t_a)|$ whenever $[t_a, t_b]$ does not straddle $t = 1$. Partition $[0, \frac{16}{5}]$ ($R \in [0, \frac{512}{25}]$) into `600` cells $[t_k, t_{k+1}]$ with an exact knot at $t = 1$, probability $p_k = e^{-2t_k^2} - e^{-2t_{k+1}^2}$, cell moment $m_k = |M(t_{k+1}) - M(t_k)|$, conditional mean $\bar{u}_k = m_k / p_k$, and exact cell range $[u_{k,0}, u_{k,1}] = g([t_k, t_{k+1}])$ (noting $\max_{t \in [0, 1]} g(t) = g(1/\sqrt{3}) = \frac{4}{3\sqrt{3}}$):
+   - *Lower bound:* Iterated conditional Jensen's inequality in $u_1$ then $u_2$ (using separate convexity and nonnegativity of $\Phi$) gives $\mathbb{E}[\Phi(u_1, u_2)] \ge \sum_{k,\ell=0}^{599} p_k p_\ell\,\Phi(\bar{u}_k, \bar{u}_\ell)$.
+   - *Upper bound:* On $[0, \frac{16}{5}]^2$, applying the 1D Edmundson–Madansky barycentric inequality $f(u) \le \frac{u_{k,1} - u}{u_{k,1} - u_{k,0}}f(u_{k,0}) + \frac{u - u_{k,0}}{u_{k,1} - u_{k,0}}f(u_{k,1})$ separately in $u_1$ and $u_2$ (with outward probability-preserving weights since $\Phi$ is nondecreasing in each variable) plus the $[512/25, \infty)$ radial tail $2\,\mathbb{E}\big[\mathbf{1}_{R_1 > 512/25}(u_1 + u_2)\big] \le 444\sqrt{2}\,e^{-20}$ (since $\frac{512}{25} = 20.48 > 20$) certifies in `compute_m1_wick_doubling_enclosure()`:
+     $$\mathbb{E}|q_2| - \mathbb{E}|q_1| \in \left[\frac{16083}{1000000},\, \frac{4057}{250000}\right] \subset (0.0160, 0.0164).$$
+
+### 4.2 Closed-Form Proof that Real $\operatorname{He}_3/\sqrt{6}$ Doubling Strictly Fails
+
+Let $G_1, G_2 \sim \mathcal{N}(0, 1)$ be i.i.d. real Gaussians and $h_3(x) = \frac{x^3 - 3x}{\sqrt{6}}$ ($\mathbb{E}[h_3(G_1)^2] = 1$). First, splitting $|x^3 - 3x|$ at $|x| = \sqrt{3}$ gives $\mathbb{E}|h_3(G_1)| = \frac{1 + 4e^{-3/2}}{\sqrt{3\pi}} \in [\frac{3082301}{5000000}, \frac{6164603}{10000000}]$. Second, rotate to $U = \frac{G_1 + G_2}{\sqrt{2}}, V = \frac{G_1 - G_2}{\sqrt{2}} \sim \mathcal{N}(0, 1)$ i.i.d.: since $G_1^3 + G_2^3 = (G_1 + G_2)(G_1^2 - G_1 G_2 + G_2^2) = \sqrt{2}\,U\cdot\frac{U^2 + 3V^2}{2}$,
+$$\frac{h_3(G_1) + h_3(G_2)}{\sqrt{2}} = \frac{U(U^2 + 3V^2 - 6)}{2\sqrt{6}}.$$
+On $(|U|, |V|) = (u, v) \in [0, \infty)^2$ with density $\frac{2}{\pi}e^{-(u^2 + v^2)/2}\,du\,dv$, substituting $w = u^2/2$ ($u e^{-u^2/2}\,du = e^{-w}\,dw$) evaluates the inner $u$-integral in elementary closed form (setting $w_0 := 3 - \frac{3}{2}v^2$ for $0 \le v < \sqrt{2}$, where $2\int_0^\infty |w - w_0|e^{-w}\,dw = 2(w_0 - 1 + 2e^{-w_0}) = 4 - 3v^2 + 4e^{-3 + 3v^2/2}$):
+$$\int_0^\infty |2w + 3v^2 - 6|e^{-w}\,dw = \begin{cases} 3v^2 - 4, & v \ge \sqrt{2}, \\ 4 - 3v^2 + 4e^{-3 + 3v^2/2}, & 0 \le v < \sqrt{2}. \end{cases}$$
+Writing $\int_0^{\sqrt{2}}(4 - 3v^2)e^{-v^2/2}\,dv + \int_{\sqrt{2}}^\infty(3v^2 - 4)e^{-v^2/2}\,dv = \int_0^\infty(3v^2 - 4)e^{-v^2/2}\,dv + 2\int_0^{\sqrt{2}}(4 - 3v^2)e^{-v^2/2}\,dv$ and using $(4 - 3v^2)e^{-v^2/2} = 3\frac{d}{dv}(v e^{-v^2/2}) + e^{-v^2/2}$ together with $\int_0^\infty (3v^2 - 4)e^{-v^2/2}\,dv = -\sqrt{\frac{\pi}{2}}$ and $-3 + \frac{3}{2}v^2 - \frac{1}{2}v^2 = -3 + v^2$ gives the exact identity
+$$\mathbb{E}\left|\frac{h_3(G_1) + h_3(G_2)}{\sqrt{2}}\right| = \frac{1}{\pi\sqrt{6}}\left(6\sqrt{2}\,e^{-1} + 2\sqrt{2}\int_0^1 e^{-t^2}\,dt + 4e^{-3}\int_0^{\sqrt{2}} e^{v^2}\,dv - \sqrt{\frac{\pi}{2}}\right) \in (0.603810, 0.603811),$$
+where $\int_0^1 e^{-t^2}\,dt = \sum_{k=0}^\infty \frac{(-1)^k}{k!(2k+1)}$ and $\int_0^{\sqrt{2}} e^{v^2}\,dv = \sqrt{2}\sum_{k=0}^\infty \frac{2^k}{k!(2k+1)}$. Subtracting $\mathbb{E}|h_3(G_1)|$ certifies $\mathbb{E}|(h_3(G_1)+h_3(G_2))/\sqrt{2}| - \mathbb{E}|h_3(G_1)| \in (-0.012650, -0.012649) < -\frac{1}{80} < 0$.
+
+---
+
+## 5. Proof of Theorem 4: Step-by-Step CLT Monotonicity (`m >= 1`) and Diffuse Doubling
+
+### 5.1 Log-Slope Monotonicity $g'(\zeta) > 0$ on $(0, \frac{6}{5}]$ and CLT Monotonicity for All $m \ge 1$
+
+On $(0, \frac{6}{5}]$ where $\psi_{\mathrm{Wick}}(\zeta) > 0$, define the log-slope function
+$$g(\zeta) := \frac{\ln \psi_{\mathrm{Wick}}(\zeta)}{\zeta}, \qquad g'(\zeta) = \frac{K(\zeta)}{\zeta^2}, \qquad K(\zeta) := \zeta\,\frac{\psi_{\mathrm{Wick}}'(\zeta)}{\psi_{\mathrm{Wick}}(\zeta)} - \ln\psi_{\mathrm{Wick}}(\zeta).$$
+Notice that for any $m \ge 1$ and $\xi > 0$ with $\zeta := \frac{\xi}{m} \le \frac{6}{5}$ (so $\frac{\xi}{m+1} = \frac{m}{m+1}\zeta < \zeta \le \frac{6}{5}$), strict increase of $g$ on $(0, \frac{6}{5}]$ implies $\frac{\ln\psi_{\mathrm{Wick}}(\xi/m)}{\xi/m} > \frac{\ln\psi_{\mathrm{Wick}}(\xi/(m+1))}{\xi/(m+1)}$, i.e., $\psi_{\mathrm{Wick}}(\xi/m)^m > \psi_{\mathrm{Wick}}(\xi/(m+1))^{m+1}$! More quantitatively, by the Mean Value Theorem on $[\frac{m}{m+1}\zeta, \zeta]$:
+$$m\ln\psi_{\mathrm{Wick}}(\zeta) - (m + 1)\ln\psi_{\mathrm{Wick}}\!\left(\frac{m}{m+1}\zeta\right) = m\zeta\left[g(\zeta) - g\!\left(\frac{m}{m+1}\zeta\right)\right] \ge \frac{m\zeta^2}{m + 1}\inf_{\big[\frac{m}{m+1}\zeta,\, \zeta\big]} g'.$$
+1. **Certifying $g'(\zeta) \ge \frac{3}{2}$ on $(0, \frac{1}{12}]$ and $g'(\zeta) > 0$ on $[\frac{1}{12}, \frac{6}{5}]$:**
+   - *Near zero $(0, \frac{1}{200}]$:* Since $|\psi_{\mathrm{Wick}}'''(\zeta)| \le \frac{w_3}{48} = \frac{90816}{48} = 1892$, Taylor's theorem gives $\psi_{\mathrm{Wick}}'(\zeta) \ge -1 + 22\zeta - 946\zeta^2$ and $t := 1 - \psi_{\mathrm{Wick}}(\zeta) \in [\zeta - 11\zeta^2, \zeta]$. Using $-(1 - t)\ln(1 - t) = t - \sum_{n=2}^\infty \frac{t^n}{n(n-1)} \ge t - \frac{t^2}{2} - \frac{t^3}{2}$ ($t \in (0, 1)$) gives $\zeta\psi_{\mathrm{Wick}}'(\zeta) - \psi_{\mathrm{Wick}}(\zeta)\ln\psi_{\mathrm{Wick}}(\zeta) \ge \frac{21}{2}\zeta^2 - \frac{1893}{2}\zeta^3$, so $g'(\zeta) \ge \frac{21}{2} - \frac{1893}{2}\zeta \ge \frac{2307}{400} > \frac{3}{2}$ on $(0, \frac{1}{200}]$.
+   - *Interval cover $[\frac{1}{200}, \frac{6}{5}]$:* Using $K'(\zeta) = \zeta\,\frac{\psi_{\mathrm{Wick}}''(\zeta)\psi_{\mathrm{Wick}}(\zeta) - \psi_{\mathrm{Wick}}'(\zeta)^2}{\psi_{\mathrm{Wick}}(\zeta)^2}$, `check_gp_subcell` evaluates $K(z_0)$ free of interval dependency and encloses $K$ via $|K'(\zeta)|$ on `4`-subcell splits of $[\frac{1}{200}, \frac{2}{5}]$ and `20`-subcell splits of $[\frac{2}{5}, \frac{6}{5}]$ (splitting cleanly at $\frac{1}{12}$), certifying $g'(\zeta) \ge \frac{15129}{10000} > \frac{3}{2}$ on $(0, \frac{1}{12}]$ and $g'(\zeta) \ge \frac{2317}{10^6} > 0$ on $[\frac{1}{12}, \frac{6}{5}]$ (while Control 6 verifies $g'(\frac{3}{2}) < 0$).
+
+2. **Direct verification for $m = 1, \dots, 12$ and asymptotic bound for all $m \ge 13$:**
+   By (2.1), setting $\xi = m\zeta$,
+   $$\mathbb{E}|q_{m+1}| - \mathbb{E}|q_m| = \frac{1}{4\sqrt{m}}\int_0^\infty \left[\psi_{\mathrm{Wick}}(\zeta)^m - \psi_{\mathrm{Wick}}\!\left(\frac{m}{m+1}\zeta\right)^{m+1}\right]\zeta^{-3/2}\,d\zeta.$$
+   - *$m = 1$:* Certified in Lemma 3 ($\in [\frac{16083}{10^6}, \frac{4057}{250000}]$).
+   - *$m = 2, \dots, 12$:* Substituting $\zeta = \tau^2$ up to $\tau_{\max} = \frac{19}{5}$ ($m \le 4$) or $\tau_{\max} = 3$ ($5 \le m \le 12$) with step $\Delta\tau = \frac{1}{200}$ (using $0 \le H_m(\zeta) \le \frac{m(21+m)}{2}\zeta^2$ on $\tau \in [0, \frac{1}{20}]$, midpoint + derivative MVT on $[\frac{1}{20}, \tau_{\max}]$, and sign-aware $C_{1/4}$ Hankel tails on $[\tau_{\max}^2, \infty)$) certifies strict positivity for every $m = 2, \dots, 12$ (from $[\frac{13869}{10^6}, \frac{32719}{10^6}]$ at $m = 2$ down to $[\frac{3043}{10^6}, \frac{29}{5000}]$ at $m = 12$).
+   - *All $m \ge 13$:* Split at $\zeta_0 = \frac{6}{5}$ ($\xi_0 = \frac{6}{5}m \ge \frac{78}{5} > 1$). On $\xi \in (0, \frac{6}{5}m]$, the integrand is everywhere $> 0$, and on the sub-interval $\xi \in (0, 1]$ ($\zeta = \xi/m \le \frac{1}{13} < \frac{1}{12}$), $g' \ge \frac{3}{2}$ and $e^x - 1 \ge x$ with $\psi_{\mathrm{Wick}}(\frac{\xi}{m+1})^{m+1} \ge (1 - \frac{\xi}{m+1})^{m+1}$? Even simpler: by Lemma 1, on $\frac{\xi}{m+1} \le \frac{1}{14} < 4$, $\psi_{\mathrm{Wick}}(\frac{\xi}{m+1})^{m+1} \ge (e^{-\xi/(m+1)})^{m+1} = e^{-\xi}$, so
+     $$\psi_{\mathrm{Wick}}\!\left(\frac{\xi}{m}\right)^m - \psi_{\mathrm{Wick}}\!\left(\frac{\xi}{m+1}\right)^{m+1} \ge e^{-\xi}\left[\exp\!\left(\frac{\xi^2}{m(m+1)}\cdot\frac{3}{2}\right) - 1\right] \ge \frac{3}{2}\frac{\xi^2 e^{-\xi}}{m(m+1)} \qquad (\xi \in (0, 1]),$$
+     contributing $\ge \frac{1}{4}\cdot\frac{3}{2 m(m+1)}\int_0^1 \sqrt{\xi}\,e^{-\xi}\,d\xi > \frac{14}{100\,m(m+1)}$ (`verify_fast_analytic_lemmas()`). On $\zeta > \zeta_0 = \frac{6}{5}$, for $m \ge 13$ we have $\frac{m}{m+1} \ge \frac{13}{14}$, so Lemma 1 bounds $|\psi_{\mathrm{Wick}}(\zeta)|^m + |\psi_{\mathrm{Wick}}(\frac{m}{m+1}\zeta)|^{m+1} \le (1 + c_1\zeta)^{-m/5} + (1 + c_2\zeta)^{-(m+1)/5}$ with $c_1 = \frac{19}{5}$, $c_2 = \frac{19}{5}\cdot\frac{13}{14} = \frac{247}{70}$. By weighted AM–GM $1 + c\zeta = (1 + c\zeta_0)\big(\frac{1}{1+c\zeta_0} + \frac{c\zeta_0}{1+c\zeta_0}\frac{\zeta}{\zeta_0}\big) \ge (1 + c\zeta_0)(\zeta/\zeta_0)^\theta$ ($\theta = \frac{c\zeta_0}{1+c\zeta_0}$) for all $\zeta \ge \zeta_0$, $\int_{\zeta_0}^\infty \zeta^{-3/2}(1 + c\zeta)^{-a}\,d\zeta \le \frac{\zeta_0^{-1/2}(1 + c\zeta_0)^{-a}}{a\theta + 1/2}$. Because $1 + c_2\zeta_0 = \frac{916}{175} > 5$ and $\frac{1}{5}\ln 5 > \frac{2}{13} \ge \frac{2}{m}$ for all $m \ge 13$, $m(m+1)$ times this tail bound is strictly decreasing in $m \ge 13$, and evaluating at $m = 13$ certifies $13\cdot 14\cdot T_{\mathrm{step}}(13) < \frac{1}{10}$, proving
+     $$\mathbb{E}|q_{m+1}| - \mathbb{E}|q_m| \ge \frac{14/100 - 10/100}{m(m+1)} = \frac{1}{25\,m(m + 1)} > 0 \qquad \forall m \ge 13.$$
+
+### 5.2 Diffuse Unequal-Weight Doubling Monotonicity (`max_j u_j <= (1/7) u`)
+
+Let $q_0(X) = \sum_{j=1}^m c_j H(X_j)$, $q_0'(X')$ an independent copy, $w_j := u_j / u \in [0, 1]$ ($\sum_{j=1}^m w_j = 1$), and suppose $M := \max_{1 \le j \le m} w_j \le \frac{1}{7}$. Rescaling $\xi \mapsto \xi / u$ in (2.1) yields
+$$\mathbb{E}\left|\frac{q_0(X) + q_0'(X')}{\sqrt{2}}\right| - \mathbb{E}|q_0(X)| = \frac{\sqrt{u}}{4}\int_0^\infty \left[\prod_{j=1}^m \psi_{\mathrm{Wick}}(w_j\xi) - \prod_{j=1}^m \psi_{\mathrm{Wick}}\!\left(\frac{w_j\xi}{2}\right)^2\right]\xi^{-3/2}\,d\xi.$$
+1. **Positivity of $D_{\mathrm{doub}}(\zeta) := \psi_{\mathrm{Wick}}(\zeta) - \psi_{\mathrm{Wick}}(\zeta/2)^2$ on $(0, \frac{169}{100}]$:**
+   - Near zero $\zeta \in (0, \frac{1}{100}]$: $\psi_{\mathrm{Wick}}(\zeta) \ge 1 - \zeta + \mathrm{brk}_{1/100}\zeta^2$ ($\mathrm{brk}_{1/100} = \frac{w_{2,14}}{16} - \frac{\lceil w_{3,14}/288\rceil}{100}$) and $0 < \psi_{\mathrm{Wick}}(\zeta/2) \le 1 - \frac{\zeta}{2} + \frac{11}{4}\zeta^2 + e^{-23}$, certifying $D_{\mathrm{doub}}(\zeta) \ge \frac{9}{2}\zeta^2 > 0$ on $(0, \frac{1}{100}]$.
+   - On $[\frac{1}{100}, \frac{169}{100}] = [\frac{1}{100}, (\frac{13}{10})^2]$: `eval_ddoub_lb` encloses $D_{\mathrm{doub}}$ via midpoint + derivative MVT $D_{\mathrm{doub}}'(\zeta) = \psi_{\mathrm{Wick}}'(\zeta) - \psi_{\mathrm{Wick}}(\zeta/2)\psi_{\mathrm{Wick}}'(\zeta/2)$ across `391` fine cells and `1,300` main subcells, certifying $D_{\mathrm{doub}}(\zeta) > 0$ on all of $(0, \frac{169}{100}]$ (while Control 5 verifies $D_{\mathrm{doub}}(\frac{19}{10}) < 0$).
+
+2. **Splitting at $\xi_*(M) := \frac{169}{100 M}$:**
+   - *Main region $\xi \in (0, \frac{169}{100 M}]$:* For every $1 \le j \le m$, $w_j\xi \le M\xi \le \frac{169}{100}$, so $\psi_{\mathrm{Wick}}(w_j\xi) \ge \psi_{\mathrm{Wick}}(w_j\xi/2)^2 \ge e^{-w_j\xi}$ (since $w_j\xi/2 \le 0.845 < 4$). Telescoping as in §3 gives $\prod_j \psi_{\mathrm{Wick}}(w_j\xi) - \prod_j \psi_{\mathrm{Wick}}(w_j\xi/2)^2 \ge \sum_{j=1}^m e^{-(1 - w_j)\xi} D_{\mathrm{doub}}(w_j\xi) \ge 0$ on $(0, \frac{169}{100 M}]$. Because $M \le \frac{1}{7}$, $\frac{169}{100 M} \ge \frac{1183}{100} > \left(\frac{17}{5}\right)^2 = \frac{289}{25}$, so integrating each summand over the fixed interval $\xi \in (0, (\frac{17}{5})^2]$ ($\tau = \sqrt{\xi} \in [0, \frac{17}{5}]$, `340` panels of width $\frac{1}{100}$) across $(0, \frac{1}{100}]$ and `121` slabs covering $[\frac{1}{100}, \frac{1}{7}]$ certifies
+     $$F_{\mathrm{doub}}(w) := \frac{1}{4}\int_0^{(17/5)^2} e^{-(1 - w)\xi} D_{\mathrm{doub}}(w\xi)\,\xi^{-3/2}\,d\xi > \frac{7}{40}w^2 \qquad \forall w \in \left(0, \frac{1}{7}\right].$$
+   - *Algebraic tail $\xi \in (\frac{169}{100 M}, \infty)$:* Concavity of $\ln(1 + y)$ as in §3 bounds $|\prod_j \psi_{\mathrm{Wick}}(w_j\xi)| + \prod_j \psi_{\mathrm{Wick}}(w_j\xi/2)^2 \le (1 + \frac{19}{5}M\xi)^{-1/(5M)} + (1 + \frac{19}{10}M\xi)^{-2/(5M)}$. Setting $z = M\xi \ge z_d := \frac{169}{100}$ gives tail loss
+     $$T_{\mathrm{doub}}(M) := \frac{\sqrt{M}}{4}\int_{169/100}^\infty \left[\left(1 + \frac{19}{5}z\right)^{-1/(5M)} + \left(1 + \frac{19}{10}z\right)^{-2/(5M)}\right]z^{-3/2}\,dz.$$
+     Because $\frac{1}{5}\ln(1 + \frac{19}{5}\cdot\frac{169}{100}) > \frac{3}{14}$ and $\frac{2}{5}\ln(1 + \frac{19}{10}\cdot\frac{169}{100}) > \frac{3}{14} \ge \frac{3}{2}M$ for **all** $M \in (0, \frac{1}{7}]$, $M \mapsto T_{\mathrm{doub}}(M)/M^2$ is strictly increasing on $(0, \frac{1}{7}]$, attaining its supremum at $M = \frac{1}{7}$, where `550` $z$-panels on $[\frac{169}{100}, 4096]$ plus the exact $[4096, \infty)$ tail certify $\sup_{M \in (0, 1/7]} T_{\mathrm{doub}}(M)/M^2 = T_{\mathrm{doub}}(1/7)/(1/7)^2 < \frac{3}{20}$.
+   - *Conclusion:* Subtracting $T_{\mathrm{doub}}(M) \le \frac{3}{20}M^2 \le \frac{3}{20}\sum_{j=1}^m w_j^2$ from $\sum_{j=1}^m F_{\mathrm{doub}}(w_j) \ge \frac{7}{40}\sum_{j=1}^m w_j^2$ yields $\big(\frac{7}{40} - \frac{6}{40}\big)\sqrt{u}\sum_{j=1}^m w_j^2 = \frac{1}{40}\frac{\sum_{j=1}^m u_j^2}{u^{3/2}} > 0$.
+
+---
+
+## 6. Verification Replay and Adversarial Controls
+
+From the repository root:
+```sh
+python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py
+python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py
+python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute
+```
+Both standard (`-IB`) and optimized (`-IB -O`) invocations execute identically because `verify.py` uses `require(...)` exclusively (`0` `assert`s and `0` floats, verified by AST self-audit) and runs 15 adversarial controls covering float/`assert` injection, real $\operatorname{He}_3/\sqrt{6}$ negativity, high-$\zeta$ sign reversals of $\Delta_{\mathrm{Wick}}(4.9)$, $D_{\mathrm{doub}}(1.9)$, and $g'(1.5)$, false algebraic envelope failure ($c_1 = 21/5$), Taylor curvature guardrails, $\min(\zeta^2, 1)$ scaling necessity, and tampered certificate rejections.
