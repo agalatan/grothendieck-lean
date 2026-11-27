@@ -57,7 +57,7 @@ Every external input used in this proof is either a Lean theorem on `master` or 
    $$
    \phi(\ell, G) = \sup\bigl\{\ell\operatorname{Re}\langle z_1, h\rangle + \operatorname{Re}\langle G, k\rangle : f, g\text{ unimodular},\; h = \tfrac{1}{2}(f+g),\; k = \tfrac{1}{2}(f-g)\bigr\}.
    $$
-   Consequently $\rho_s \le r_1$ if and only if $\|P_{1,0} h\|_2^2 + \|P_{2,1} k\|_2^2 \le r_1^2$ for every unimodular pair $(f, g)$ in every dimension $n \ge 1$.
+   Consequently, for every real $r_1 \ge 0$, $\rho_s \le r_1$ if and only if $\|P_{1,0} h\|_2^2 + \|P_{2,1} k\|_2^2 \le r_1^2$ for every unimodular pair $(f, g)$ in every dimension $n \ge 1$.
 2. Let $(a, b, c) \in \mathbb{Z}_{>0}^3$ satisfy $a^2 + b^2 = c^2$, and set $\ell = a/c$, $m = b/c$, $p = \ell^2$, $u = m^2 = 1 - p$. Suppose $\phi(\ell, G) \le R$ holds for every $n \ge 1$ and every $G \in H_{2,1}(\mathbb{C}^n)$ with $\|G\|_2^2 = u$. Then every unimodular pair $(f, g)$ in every dimension $N \ge 1$, with $t := \|P_{1,0} h\|_2$ and $s := \|P_{2,1} k\|_2$, satisfies
    $$
    \ell t + m s \le R.
@@ -367,7 +367,7 @@ which is convex in $t$ on $\mathbb{R}$ by the same convexity argument as Lemma 1
 
 ## 7. Verification Commands and Negative Controls
 
-From the repository root, all three verification scripts run under isolated Python 3 (`python3 -I`, standard library only, zero floating-point literals or calls, enforced via `ast` inspection in `test_controls.py`). By default `verify.py` binds both Theorem 1 (`0 < r_1 <= 939/1000` and `worst_poly_sq < (939/1000)^2`) and Theorem 2(2) (requiring `degree5_midt.lean_mass` coverage through $\frac{9190839}{25000000}$); passing `--radius-only` (or calling `verify_radius_only`) ignores `degree5_midt` and reports whatever generic positive radius bound the certificate establishes:
+From the repository root, all three verification scripts run under isolated Python 3 (`python3 -I`, standard library only, zero floating-point literals or calls, enforced via `ast` inspection in `test_controls.py`). By default `verify.py` binds both Theorem 1 (`0 < r_1 <= 939/1000` and `worst_poly_sq < (939/1000)^2`) and Theorem 2(2) (requiring `degree5_midt.lean_mass` coverage through $\frac{9190839}{25000000}$); passing `--radius-only` (or calling `verify_radius_only`) ignores `degree5_midt` and reports whatever generic positive radius bound the certificate establishes (the claim must still be positive and beat the unsymmetrised barrier, `claim^2 < 9π/32`; the sharper 0.9389788947 of Theorem 1 is the output of the shipped certificate, while the default acceptance target for a replacement certificate is 939/1000):
 
 ```sh
 python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/verify.py
@@ -386,4 +386,4 @@ python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/test_con
      $$
      certifying in exact `Fraction` arithmetic that $\mathbb{E}|F|/\|F\|_2 > 0.9430 > \sqrt{9\pi/32} > 0.93998$.
    - Verifies that `verify.py` rejects `claim = "47/50"` (`0.94 > \sqrt{9\pi/32}`) and rejects `cert_spiked.json` when the odd-in-$G$ symmetrisation multipliers `q_sym = (q_0, q_1, q_2)` are zeroed.
-4. **Structural corruption and Theorem 2(2) binding controls (`Controls 4–8f`):** Verifies rejection upon truncating the $s_G$ cover to $[0, 41] < 42$, making $\phi_4[K] \ne 0$ on $[u_K, \infty)$, perturbing an interior Sturm spline knot (`phi1[4]`), shrinking $t_{\mathrm{right}}$ below $\sqrt{\pi}/2$, inflating the degree-5 mid-$t$ cutoff by $+10^{-7}$ past the envelope crossing, deleting `degree5_midt.lean_mass` or `degree5_midt` (while confirming `verify_radius_only` ignores an invalid `degree5_midt` block and certifies the generic radius claim `9399/10000`), or lowering `lean_mass.t_cutoff` below $\frac{9190839}{25000000}$.
+4. **Structural corruption and Theorem 2(2) binding controls (`Controls 4–8g`):** Verifies rejection upon truncating the $s_G$ cover to $[0, 41] < 42$, making $\phi_4[K] \ne 0$ on $[u_K, \infty)$, perturbing an interior Sturm spline knot (`phi1[4]`), shrinking $t_{\mathrm{right}}$ below $\sqrt{\pi}/2$, inflating the degree-5 mid-$t$ cutoff by $+10^{-7}$ past the envelope crossing, deleting `degree5_midt.lean_mass` or `degree5_midt` (while confirming `verify_radius_only` ignores an invalid `degree5_midt` block and certifies the generic radius claim `9399/10000`), or lowering `lean_mass.t_cutoff` below $\frac{9190839}{25000000}$.
