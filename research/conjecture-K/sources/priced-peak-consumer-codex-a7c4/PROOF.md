@@ -38,7 +38,7 @@ Endpoint evaluation follows by convexity in t. All outward square roots, quadrat
 
 ## Remaining lower-central intervals
 
-The public 8.12 exterior grid evaluated at the stricter cap .713245 covers 1,548/1,773 cells and leaves [.751,.8635]. With these three slabs only [.751,.8393] remains. The sufficient remaining estimates are the profile 3 envelope on [.751,.8205] and the profile 7 envelope on [.8205,.8393], with respective admissible errors of 144.035 and 156.451 millionths above the Gaussian benchmarks. A uniform 75 millionths would suffice for each. Together with the remaining estimates the reciprocal would yield a lower bound of 10⁶/713245 = 1.402042776325… . This application belongs to Track B of #760. The two lower-central profile estimates and the resulting global bound remain open.
+The public 8.12 exterior grid evaluated at the stricter cap .713245 covers 1,548/1,773 cells and leaves [.751,.8635]. With these three slabs only [.751,.8393] remains. The sufficient remaining estimates are the profile 3 envelope on [.751,.8205] and the profile 7 envelope on [.8205,.8393], with respective admissible errors of 144.035 and 156.451 millionths above the Gaussian benchmarks. Together with the remaining estimates the reciprocal would yield a lower bound of 10⁶/713245 = 1.402042776325… . This application belongs to Track B of #760. The two lower-central profile estimates and the resulting global bound remain open.
 
 The exterior input is row 8.12 with its original nineteen-row manifest, transferred mass row and radius .93462 from 3.7. The conditional row allowances use the certified Gaussian benchmarks of 8.13(ii).
 

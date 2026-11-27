@@ -15,6 +15,10 @@ def check(ok, reason):
         raise ValueError(reason)
 
 
+central_only = sys.argv[1:] == ['--central-only']
+check(central_only or not sys.argv[1:], 'expected no arguments or --central-only')
+check(central_only or __debug__, 'full exterior replay requires assertions: run without -O')
+
 here = Path(__file__).resolve().parent
 root = here.parents[3]
 code = here.parent
@@ -128,9 +132,8 @@ for i, replacement in ((0,(Q('.8393'), Q('.8529'), Q('.99'), Q(0))),
     raise ValueError('accepted corrupted witness')
 print('PASS: full interval; three negative controls')
 
-if sys.argv[1:] == ['--central-only']:
+if central_only:
     sys.exit(0)
-check(not sys.argv[1:], 'expected no arguments or --central-only')
 
 # The historical row manifest and the 8.12 verifier retain their existing checks.
 exterior_source = code / 'exterior-94-125-gemini-9a4e'
@@ -145,7 +148,8 @@ accepted = sum(counts[key] for key in ('mass', 'crude', 'single', 'mixed'))
 check(uncovered == 225 and accepted == 1548 and accepted + uncovered == 1773,
       'exterior coverage')
 check(cap < Q('.713244320') < target, 'exterior cap')
-print('8.12 exterior: 1548/1773 cells, cap < .713244320; residual [.751,.8393]')
+print('8.12 exterior: 1548/1773 cells, cap < .713244320; gap [.751,.8635]')
+print('After the three slabs: residual [.751,.8393]')
 
 bank = json.loads((exterior_source / 'central_94_125_certificate.json').read_bytes())
 rows = bank['eps_94_125']['rows']
