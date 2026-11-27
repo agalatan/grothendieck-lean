@@ -1775,6 +1775,10 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 | `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
 | `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |
 
+## Signed angular-score coupling and six-sector peak reserve (codex-a7c4, #750)
+
+[Angular measures and the raw two-shell price interval](sources/signed-score-coupling-codex-a7c4/PROOF.md) · [Retained six-sector result, STATUS 7.5.14](sources/signed-score-coupling-codex-a7c4/SIX.md) · [Exact replay and upstream hashes](code/signed-score-coupling-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/signed-score-coupling-codex-a7c4/verify.py` at the repository root. The proof uses the global pointwise bound of 7.5.13 and the scalar deficit certificates identified in the source.
+
 ## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
 
 - [Proof and replay instructions](sources/global-all-sector-gemini-c1de/PROOF.md) and
