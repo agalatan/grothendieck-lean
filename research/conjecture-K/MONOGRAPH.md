@@ -381,14 +381,19 @@ a real chaos variable X of order k, the sign condition E[(Γ − σ²)e^{−sX²
 (real PVD); on the third chaos real PVD implies the complex one, and no converse is known
 [P · codex-a7c4, re-derived by claude-b9ee · 3.5]. Exact remote K is not needed for 1.402. A further route to the
 sharp radius bound is doubling monotonicity: if E|(X + X′)/√2| ≥ E|X| for every X ∈ H₂,₁ and an independent copy X′,
-iteration and the central limit theorem give the bound. It is a conjecture, supported on the cubics tested (smallest
-gain found +0.0065) [open; N · 3.20]; its real analogue is false, for He₃(G)/√6 (an exact rational certificate,
-replayed), so a proof must use the complex structure [3.20]. The radius over H₂,₁(ℂᵐ) is within 3/√m of the radius over all dimensions, a rate and not a
+iteration and the central limit theorem give the bound. In general it is open, supported on the cubics tested (smallest
+gain found +0.0065) [open; N · 3.20], while strict step-by-step CLT monotonicity E|q_{m+1}| > E|q_m| and equal-weight
+doubling E|q_{2m}| > E|q_m| are now proved for every m ≥ 1 on q_m = m^{−1/2}Σ_{j=1}^m H(X_j) (together with quantitative
+unequal-weight doubling ≥ (1/40)(Σ u_j²)/u^{3/2} for max_j u_j ≤ u/7) [P + C, author only · gemini-21d5 · 3.20]; its real
+analogue is false, for He₃(G)/√6 (gain < −1/80, certified by an exact rational certificate and closed-form 1088-bit
+enclosure), so a proof must use the complex structure [3.20]. The radius over H₂,₁(ℂᵐ) is within 3/√m of the radius over all dimensions, a rate and not a
 bound [P · 3.28].
 
 **The radius.** The sharp radius bound is open; cases are proved for real BNC of order 2, one-variable H₃ at every
 scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R · 3.6]. In every dimension, the sharp bound holds
-with every Gaussian buffer for 0 < χ ≤ 1/72000 (3.18), strictly without a buffer for 0 < χ ≤ 1/18000 and across the
+with every Gaussian buffer for 0 < χ ≤ 1/72000 (3.18), for all multi-driver complex Wick sums q₀(X) = Σ_{j=1}^m c_j H(X_j)
+(m ≥ 1) plus any independent circular Gaussian scale mixture Q_mix with quantitative margin ≥ (1/20)(Σ u_j²)/(u + v_mix + v)^{3/2}
+[P + C, author only · gemini-21d5 · 3.5, 3.6, 3.25], strictly without a buffer for 0 < χ ≤ 1/18000 and across the
 high-kurtosis regime χ ∈ [25, 42] ([26, 42] in `cert_915.json`, widened to [25, 42] in `cert_912.json`), where **E|q| ≤ (443/500)‖q‖₂ = 0.886‖q‖₂ < (√π/2)‖q‖₂** [P + C, author only ·
 gemini-4c4c, gemini-2762 · 3.6, 3.7], as well as on hyperplane-vanishing cubics and on P₃,₁(q²) = 0 [P, author only · 3.25, 3.24].
 Without a buffer, (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer,
@@ -496,7 +501,11 @@ of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C, both au
   dimension [P author only · 3.25].
 
 The proof of the second class conditions on one coordinate. A component free of that coordinate enters with the wrong
-sign, so the method covers two variables numerically and not three [N · 3.25, item 94]. For a general cubic,
+sign, so that conditioning method covers two variables numerically and not three [N · 3.25, item 94]; for arbitrary m ≥ 1
+independent Wick drivers q₀(X) = Σ_{j=1}^m c_j X_j(|X_j|² − 2)/√2 plus any circular Gaussian scale mixture Q_mix independent of X
+(with visible z₁ independent of (X, Q_mix)), 2D Bessel–Hankel telescoping on (0, 4] paired with the certified algebraic characteristic-function envelope
+|ψ_Wick(ζ)| ≤ (1 + (19/5)ζ)^{−1/5} proves quantitative buffered PVD and D_{a,b}(q₀ + Q_mix) ≥ (1/10)(Σ u_j²)(a² + 4ab + 6b² + u_tot)^{−3/2} > 0
+across all profiles a > 0, b ≥ 0 and prices p > 0 [P + C, author only · gemini-21d5 · 3.25]. For a general cubic,
 D_φ = 𝒥_dec + two weighted contractions of the pair (a, DF·F), with a = Σ_j ∂_jq·∂̄_jq and F = ∂̄q, where 𝒥_dec ≥ 0 is
 the deficit of the decoupled surrogate ⟨w, ∂̄q⟩ with an independent Gaussian vector w. For $H=\mathbb E FF^*$ the
 sharp comparison at fixed output covariance gives $\mathcal J_{\rm dec}>\operatorname{tr}H^2/8$ at the peak
