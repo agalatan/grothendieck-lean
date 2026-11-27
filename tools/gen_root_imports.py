@@ -78,7 +78,12 @@ def declarations(paths):
                     continue
                 m = DECL.match(line)
                 if m:
-                    names.add(".".join(stack + [m.group(1)]))
+                    name = m.group(1)
+                    if name.startswith("_root_."):
+                        # `theorem _root_.A.b` declares `A.b` whatever the open namespaces are
+                        names.add(name[len("_root_."):])
+                    else:
+                        names.add(".".join(stack + [name]))
     return names
 
 
