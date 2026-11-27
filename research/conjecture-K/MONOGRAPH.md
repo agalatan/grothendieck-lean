@@ -1249,6 +1249,8 @@ retained errors are below 144.035 and 156.451 millionths on [.751,.8205] and [.8
 respectively. Their conditional reciprocal is 200000/142649. [8.13a, **P + C, author only**;
 [proof and exact replay](sources/priced-peak-consumer-codex-a7c4/PROOF.md)].
 
+At the same target .713245, repricing the peak remote cubic at 32/25 pays for all three odd sectors at arbitrary energy. With both even drivers zero, this proves the witness row throughout [.7923,.8393]. Two lower prices and a common even/odd trial cover the entire remaining interval [.751,.8393] whenever physical even-driver energy is at most 5·10⁻⁷ and physical odd energy is at most .01. On [.795,.8393] even energy at most 10⁻⁷ suffices with unrestricted odd energy. A signed cone on [.8205,.8393] also admits drivers of unrestricted feasible size. Conversely, for every t ≤ .8368 finite disjoint-triple responses show that peak homotheties forced into the normalized remote cap .0463 cannot deliver this target on their own. [8.13b, **P + C, author only**, proof and exact replay](sources/repriced-cubic-sectors-codex-a7c4/PROOF.md)
+
 ### 2.11 Charging response feasibility to the discarded squares
 
 Let H=z₁(T−2)/√2 and Σ=‖P₁,₀k‖²+ε‖P₂,₁h+(√2β/ε)H‖². For every actual bounded response, in every finite dimension and
