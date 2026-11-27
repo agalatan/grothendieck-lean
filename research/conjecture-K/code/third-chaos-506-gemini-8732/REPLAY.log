@@ -3,13 +3,13 @@
 2. Triple 3 [tr(M^2) & lambda]: (583/25000, 4239/100000, -1497/50000) certified on [0, oo) in 336 leaves
    min d_1 = 0.0008048135, min d_2 = 0.0007233333, min Schur det margin = 0.0000000021
    Exact slope: 72*al_3 + 54*be_3 - 15/4 = 2181/10000 = 0.2181000000
-   At tr(M^2) <= 3841/25000 = 0.15364 (and <= 96/625 = 0.1536, vs KNG505 373/2800 ~ 0.13321):
+   At tr(M^2) <= 3841/25000 = 0.15364 (and <= 96/625 = 0.1536, vs 373/2800 ~ 0.13321 from Var(tau) <= 14*m <= 373/200):
    (1 + (2181/10000)*(3841/25000))^2 = 1.0681406134 < (17/50)*pi_lo = 1.0681415022  ==> (T) PASS!
 3. Isotropic / irreducibly symmetric cubics (M = I_n / n): 1/n <= 1/7 < 96/625 for all n >= 7 (overlaps n <= 15 on 7..15) ==> (T) PASS for all n >= 1!
-4. Full-depth negative controls (max_depth=12) & AST zero-float audit: 7 adversarial checks ALL REJECTED (39467 ms).
+4. Full-depth negative controls (max_depth=12) & AST zero-float audit: 7 adversarial checks ALL REJECTED (112996 ms).
 
 === Exact Combined 4D Tensor & Commutator Verifier [zero floats] ===
 1. Exact R^4 matrix/slot/commutator controls: 4 non-commuting rational tensors PASS
 2. Sharp regime  a(T) <= 349/500 = 0.698: lambda(T) < 27/40 = 0.675, kappa_4(F) < 48          (leaves=32515, pruned=15054) PASS
 3. Practical (T) a(T) <= 321/500 = 0.642: lambda(T) < 33/50 = 0.660, kappa_4(F) < 229/5 = 45.8 (leaves=14955, pruned=4376) PASS
-4. Sturm-verified rational witnesses & full-depth (max_depth=46) negative controls + AST audit: 5 checks ALL REJECTED (235451 ms).
+4. Sturm-verified rational witnesses & full-depth (max_depth=46) negative controls + AST audit: 5 checks ALL REJECTED (330139 ms).

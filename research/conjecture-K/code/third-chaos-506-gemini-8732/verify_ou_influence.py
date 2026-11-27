@@ -19,8 +19,10 @@ WHAT THIS SCRIPT PROVES AND CERTIFIES:
    Combined with U = ||DF||^2 - 3 = U_2 + U_4 in V_2 (+) V_4 where
      ||U_2||_2^2 = 72*m,   ||U_4||_2^2 = 54*u,   kappa_4(F) = 36*m + 54*u,
    every 2x2 Schur-admissible triple (alpha_hat, beta_hat, gamma_hat) for the one-step OU
-   resolvent identity (KNG505, STATUS.md 3.21 (e9)(iv)) satisfies beta_hat > 1/24 (from x -> oo),
-   hence 54*beta_hat - 9/4 > 0 and therefore
+   resolvent identity (KNG505, STATUS.md 3.21 (e9)(iv)) satisfies alpha_hat - 1/48 >= 0 and
+   beta_hat - 1/24 >= 0 (from x -> oo, where g_hat_2 -> -3/16 and g_hat_4 -> -3/8), hence
+   72*alpha_hat - 3/2 >= 0 and 54*beta_hat - 9/4 >= 0 (both strict for Triple 3 below by direct
+   rational arithmetic) and therefore
      E|F| / sqrt(2/pi) - 1 <= (72*alpha_hat - 3/2)*m + (54*beta_hat - 9/4)*u
                            <= (72*alpha_hat + 54*beta_hat - 15/4)*m
                            <= (72*alpha_hat + 54*beta_hat - 15/4)*lambda.
@@ -34,8 +36,10 @@ WHAT THIS SCRIPT PROVES AND CERTIFIES:
             <= sqrt(2/pi) * ||F||_2 * (1 + (2181/10000) * ||M||_op / ||T||_HS^2).
    - Strict practical target (T) (E|F| < sqrt(17/25) * ||F||_2) whenever
        tr(M^2) / ||T||_HS^4 <= 3841/25000 = 0.15364   (in particular <= 96/625 = 0.1536),
-     hence whenever lambda / ||T||_HS^2 <= 3841/25000 = 0.15364 (extending KNG505's Var(tau)
-     consequence tr(M^2) <= 373/2800 ~ 0.13321 and #519's quartic-Huber lambda <= 16/2500 = 0.0064).
+     and in particular whenever lambda / ||T||_HS^2 <= 3841/25000 = 0.15364 since lambda <= c
+     implies tr(M^2) / ||T||_HS^4 <= c (for comparison, at unit variance, lambda <= 373/2800
+     => tr(M^2) <= 373/2800 ~ 0.13321 => Var(tau) <= 14*tr(M^2) <= 373/200 => (T) by KNG505,
+     while #519 certified (T) for lambda <= 16/2500 = 0.0064).
 
 3. Isotropic / irreducibly symmetric corollary in every dimension n >= 1:
    Whenever M = (||T||_HS^2 / n) * I_n (e.g. by Schur's lemma whenever F is invariant up to sign
@@ -454,7 +458,7 @@ def main():
 
     m_thresh_full = Fr(3841, 25000)   # 0.15364
     m_thresh = Fr(96, 625)            # 0.1536
-    m_kng_prev = Fr(373, 2800)        # ~0.133214 (direct consequence of KNG505 Var(tau) <= 373/200)
+    m_kng_prev = Fr(373, 2800)        # ~0.133214 (m <= 373/2800 => Var(tau) <= 14*m <= 373/200 => (T) by KNG505)
     require(m_kng_prev < m_thresh < m_thresh_full, 'threshold ordering failed')
     lhs_sq_full = (1 + M_hat_3 * m_thresh_full) ** 2
     lhs_sq = (1 + M_hat_3 * m_thresh) ** 2
@@ -473,7 +477,7 @@ def main():
         print(f'2. Triple 3 [tr(M^2) & lambda]: ({al3}, {be3}, {gm3}) certified on [0, oo) in {leaves3} leaves')
         print(f'   min d_1 = {dec_floor10(min_d1)}, min d_2 = {dec_floor10(min_d2)}, min Schur det margin = {dec_floor10(min_det)}')
         print(f'   Exact slope: 72*al_3 + 54*be_3 - 15/4 = {M_hat_3} = {dec_ceil10(M_hat_3)}')
-        print(f'   At tr(M^2) <= 3841/25000 = 0.15364 (and <= 96/625 = 0.1536, vs KNG505 373/2800 ~ 0.13321):')
+        print('   At tr(M^2) <= 3841/25000 = 0.15364 (and <= 96/625 = 0.1536, vs 373/2800 ~ 0.13321 from Var(tau) <= 14*m <= 373/200):')
         print(f'   (1 + (2181/10000)*(3841/25000))^2 = {dec_ceil10(lhs_sq_full)} < (17/50)*pi_lo = {dec_floor10(rhs_sq_target)}  ==> (T) PASS!')
         print('3. Isotropic / irreducibly symmetric cubics (M = I_n / n): 1/n <= 1/7 < 96/625 for all n >= 7 (overlaps n <= 15 on 7..15) ==> (T) PASS for all n >= 1!')
         print(f'4. Full-depth negative controls (max_depth=12) & AST zero-float audit: {n_rej} adversarial checks ALL REJECTED ({elapsed_ms} ms).')
