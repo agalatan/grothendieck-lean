@@ -1,13 +1,25 @@
 #!/usr/bin/env python3
-"""Independent pure-stdlib Fraction verifier for Problem P1 (Issue #623):
+"""Pure-stdlib Fraction receipt & analytic-tail auditor + C++17 replay driver for Problem P1 (Issue #623):
 First-chaos content of a cubic chaos element against its fourth cumulant, per (u, chi) cell.
 
-Works identically under `python3 -IB verify.py` and `python3 -IB -O verify.py` (zero bare `assert`s).
-Pass `--replay-cpp` to recompile `certify_content_cells.cpp` and replay the full 2D Gaussian + 1D
-continuous-law C++17 certification from scratch (add `--update-result` to overwrite `result.json`).
+Default mode (`python3 -IB verify.py` and `python3 -IB -O verify.py`, zero bare `assert`s) verifies:
+  1) SHA-256 cryptographic binding of `result.json` to `dual_certs.json`, all 7 certificate shards,
+     the canonical serialized `dual_certs.dat` stream, and `certify_content_cells.cpp`;
+  2) Exact rational Kummer + Cauchy-Schwarz Rice tangents, Wick/cluster moment identities, multiplier
+     signs, Coupled-Gram hypotheses (`s_j >= 2`), Kantorovich threshold monotonicity, asymptotic
+     U >= U0 cubic dominance across all 1,485 slices, and contiguous slice coverage of the exported
+     `g1_range_A` / `g1_range_B` enclosures;
+  3) Exact rational binding of `t_lo <= piece[0]` and `[u_lo, u_hi]` to the 5 discrete grid energies of
+     `fin_table_fundFull.json`, continuous `[0, 42]` chi-coverage of Pieces 16 & 17 at those 5 energies,
+     and outward-rounded junta / own-row 0.70 negative-control enclosures.
+Pass `--replay-cpp` to recompile `certify_content_cells.cpp` and replay the full 2D Gaussian row
+enclosures, `P_max`, `g_1` range enclosures, and compact-interval `sup_{U in [0, U0]} M(U) < 0`
+checks from scratch (add `--update-result` to overwrite `result.json`).
 """
 from decimal import Decimal
 from fractions import Fraction
+import hashlib
+import io
 import json
 import math
 import os
@@ -211,45 +223,55 @@ def verify_exact_algebraic_witnesses():
 
 
 # ==================== 3. EXACT RATIONAL AUDIT OF DUAL CERTIFICATES & RECEIPT ====================
+def emit_dat_bytes(cfg):
+    buf = io.StringIO()
+
+    def wvec(v):
+        buf.write(f"{len(v)} " + " ".join(f"{x:.17g}" for x in v) + "\n")
+
+    wvec(cfg["t_knots"])
+    buf.write(f"{cfg['eps_K']:.17g}\n")
+    wvec(cfg["c_rat"])
+    wvec(cfg["s_gram"])
+    wvec(cfg["rho_a"])
+    wvec(cfg["rho_b"])
+    wvec(cfg["lams_rice"])
+    cells = cfg["cells"]
+    buf.write(f"{len(cells)}\n")
+    for c in cells:
+        buf.write(
+            f"{c['piece_idx']} {c['u_idx']} {c['row_tag']} {c['kind']} "
+            f"{c['u_lo']:.17g} {c['u_hi']:.17g} {c['t_lo']:.17g} {c['chi_lo']:.17g} {c['chi_hi']:.17g} "
+            f"{c['theta_allow']:.17g} {c['F_claimed']:.17g}\n"
+        )
+        for key in ("slicesA", "slicesB"):
+            sls = c[key]
+            buf.write(f"{len(sls)}\n")
+            for sc in sls:
+                buf.write(
+                    f"{sc['a_r']:.17g} {sc['b_r']:.17g} "
+                    f"{sc['beta']:.17g} {sc['gamma']:.17g} {sc['lamK']:.17g}\n"
+                )
+                wvec(sc["xs"])
+                yeq = sc["yeq"]
+                buf.write(f"{yeq[0]:.17g} {yeq[1]:.17g} {yeq[2]:.17g} {yeq[3]:.17g}\n")
+                wvec(sc["w_stein"])
+                buf.write(f"{sc['mu_u2_lo']:.17g} {sc['mu_u2_hi']:.17g} {sc['mu_u3']:.17g}\n")
+                buf.write(
+                    f"{sc['nu_plus']:.17g} {sc['nu_minus']:.17g} "
+                    f"{sc['mu_sx_sep']:.17g} {sc['mu_sr_sep']:.17g} {sc['mu_rad']:.17g}\n"
+                )
+                wvec(sc["eta_gram"])
+                wvec(sc["mu_rice"])
+                buf.write(f"{sc['eta_sl_lo']:.17g} {sc['eta_sl_hi']:.17g}\n")
+    return buf.getvalue().encode("utf-8")
+
+
 def emit_dat_from_json(cfg, dat_path):
-    with open(dat_path, "w") as f:
-        def wvec(v):
-            f.write(f"{len(v)} " + " ".join(f"{x:.17g}" for x in v) + "\n")
-        wvec(cfg["t_knots"])
-        f.write(f"{cfg['eps_K']:.17g}\n")
-        wvec(cfg["c_rat"])
-        wvec(cfg["s_gram"])
-        wvec(cfg["rho_a"])
-        wvec(cfg["rho_b"])
-        wvec(cfg["lams_rice"])
-        cells = cfg["cells"]
-        f.write(f"{len(cells)}\n")
-        for c in cells:
-            f.write(
-                f"{c['piece_idx']} {c['u_idx']} {c['row_tag']} {c['kind']} "
-                f"{c['u_lo']:.17g} {c['u_hi']:.17g} {c['t_lo']:.17g} {c['chi_lo']:.17g} {c['chi_hi']:.17g} "
-                f"{c['theta_allow']:.17g} {c['F_claimed']:.17g}\n"
-            )
-            for key in ("slicesA", "slicesB"):
-                sls = c[key]
-                f.write(f"{len(sls)}\n")
-                for sc in sls:
-                    f.write(
-                        f"{sc['a_r']:.17g} {sc['b_r']:.17g} "
-                        f"{sc['beta']:.17g} {sc['gamma']:.17g} {sc['lamK']:.17g}\n"
-                    )
-                    wvec(sc["xs"])
-                    yeq = sc["yeq"]
-                    f.write(f"{yeq[0]:.17g} {yeq[1]:.17g} {yeq[2]:.17g} {yeq[3]:.17g}\n")
-                    wvec(sc["w_stein"])
-                    f.write(f"{sc['mu_u2_lo']:.17g} {sc['mu_u2_hi']:.17g} {sc['mu_u3']:.17g}\n")
-                    f.write(
-                        f"{sc['nu_plus']:.17g} {sc['nu_minus']:.17g} "
-                        f"{sc['mu_sx_sep']:.17g} {sc['mu_sr_sep']:.17g} {sc['mu_rad']:.17g}\n"
-                    )
-                    wvec(sc["eta_gram"])
-                    wvec(sc["mu_rice"])
-                    f.write(f"{sc['eta_sl_lo']:.17g} {sc['eta_sl_hi']:.17g}\n")
+    data = emit_dat_bytes(cfg)
+    with open(dat_path, "wb") as f:
+        f.write(data)
+    return data
 
 
 def M_lambda_rational_hi(c1_q, c2_q, u_q, chi_hi_q):
@@ -438,7 +460,7 @@ def load_full_cfg(certs_path):
     return cfg
 
 
-def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_result=False):
+def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_result=False, check_hashes=True):
     default_paths = (certs_path is None and result_path is None)
     if certs_path is None:
         certs_path = os.path.join(HERE, "dual_certs.json")
@@ -453,6 +475,9 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
 
     # 1. Constants & Kummer + Cauchy-Schwarz Rice tangents
     _, _, rt_pi_lo, rt_pi_hi = verify_pi_and_sqrt_pi()
+    raw_manifest = json.load(open(certs_path))
+    manifest_shards = list(raw_manifest.get("shards", []))
+    certs_dir = os.path.dirname(os.path.abspath(certs_path))
     cfg = load_full_cfg(certs_path)
 
     x_tangs = [Fraction(num, den) for num, den in cfg["x_tang_num_den"]]
@@ -477,8 +502,8 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
     verify_exact_algebraic_witnesses()
 
     # 3. Optional C++17 recompilation & replay
+    cpp_src = os.path.join(HERE, "certify_content_cells.cpp")
     if replay_cpp:
-        cpp_src = os.path.join(HERE, "certify_content_cells.cpp")
         with tempfile.TemporaryDirectory() as tmpd:
             bin_path = os.path.join(tmpd, "certify_content_cells")
             dat_path = os.path.join(tmpd, "dual_certs.dat")
@@ -489,10 +514,14 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
                  "-Wno-unknown-pragmas", "-pthread", cpp_src, "-o", bin_path],
                 check=True
             )
-            subprocess.run(
-                [bin_path, "--verify-all", dat_path, out_res, "--threads", str(min(8, os.cpu_count() or 2))],
-                check=True
-            )
+            cmd = [
+                bin_path, "--verify-all", dat_path, out_res,
+                "--cpp-src", cpp_src, "--manifest", os.path.abspath(certs_path),
+                "--threads", str(min(8, os.cpu_count() or 2)),
+            ]
+            for sh in manifest_shards:
+                cmd.extend(["--shard", sh, os.path.join(certs_dir, sh)])
+            subprocess.run(cmd, check=True)
             if not update_result:
                 r_disk = json.load(open(result_path))
                 r_rep = json.load(open(out_res))
@@ -500,6 +529,24 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
 
     res = json.load(open(result_path))
     check(res.get("status") == "CERTIFIED", f"result.json status != CERTIFIED: {res.get('status')}")
+    if check_hashes:
+        exp_dat_sha = hashlib.sha256(emit_dat_bytes(cfg)).hexdigest()
+        check(res.get("dat_sha256") == exp_dat_sha,
+              f"result.json dat_sha256 mismatch against dual certificates ({res.get('dat_sha256')} != {exp_dat_sha})")
+        exp_cpp_sha = hashlib.sha256(open(cpp_src, "rb").read()).hexdigest()
+        check(res.get("cpp_sha256") == exp_cpp_sha,
+              f"result.json cpp_sha256 mismatch against certify_content_cells.cpp ({res.get('cpp_sha256')} != {exp_cpp_sha})")
+        exp_man_sha = hashlib.sha256(open(certs_path, "rb").read()).hexdigest()
+        check(res.get("manifest_sha256") == exp_man_sha,
+              f"result.json manifest_sha256 mismatch against {os.path.basename(certs_path)}")
+        if manifest_shards:
+            rec_shards = res.get("shard_sha256s")
+            check(isinstance(rec_shards, dict) and list(rec_shards.keys()) == manifest_shards,
+                  "result.json shard_sha256s keys do not match manifest shards")
+            for sh in manifest_shards:
+                sh_sha = hashlib.sha256(open(os.path.join(certs_dir, sh), "rb").read()).hexdigest()
+                check(rec_shards[sh] == sh_sha,
+                      f"result.json shard_sha256s[{sh!r}] mismatch against shard file on disk")
     check(res.get("rows_enclosed") == 15, f"expected 15 enclosed rows, got {res.get('rows_enclosed')}")
     check(len(res["cells"]) == len(cfg["cells"]), "cell count mismatch between dual_certs.json and result.json")
     for rs_entry in res["row_summaries"]:
@@ -571,9 +618,21 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
             verify_slice_rational_tail_and_signs(c_cfg["slicesA"][0], cell_q, cfg_q, exp_t_bounds, True)
         elif c_cfg["kind"] == "JM1_BOUND":
             check(cell_q["F_q"] > 0, f"JM1_BOUND cell {idx} nonpositive F_claimed")
-            for key in ("slicesA", "slicesB"):
+            for key, g1_key in (("slicesA", "g1_range_A"), ("slicesB", "g1_range_B")):
                 sls = c_cfg[key]
                 check(len(sls) >= 1, f"empty {key} in cell {idx}")
+                g1_iv = c_res.get(g1_key)
+                check(
+                    isinstance(g1_iv, list) and len(g1_iv) == 2
+                    and all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in g1_iv),
+                    f"missing/invalid {g1_key} in result.json cell {idx}",
+                )
+                g1_lo_q, g1_hi_q = Fraction(g1_iv[0]), Fraction(g1_iv[1])
+                check(g1_lo_q <= 0 <= g1_hi_q, f"{g1_key} in cell {idx} does not enclose g1(0)=0: {g1_iv}")
+                check(Fraction(sls[0]["a_r"]) <= g1_lo_q,
+                      f"first slice a_r={sls[0]['a_r']} > {g1_key}[0]={g1_iv[0]} in {key} of cell {idx}")
+                check(Fraction(sls[-1]["b_r"]) >= g1_hi_q,
+                      f"last slice b_r={sls[-1]['b_r']} < {g1_key}[1]={g1_iv[1]} in {key} of cell {idx}")
                 for s_i in range(len(sls) - 1):
                     check(Fraction(sls[s_i]["b_r"]) >= Fraction(sls[s_i + 1]["a_r"]),
                           f"gap between slices {s_i} and {s_i+1} in {key} of cell {idx}")
@@ -691,15 +750,50 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
                     check(any(tc["kind"] == "INFEAS_R1" for tc in tail_cells),
                           f"Piece {pc_idx} u={te['u']} missing INFEAS_R1 tail certificate")
 
-    # 6. Verify negative controls in result.json & dual_certs.json:
-    j_ctrls = {jc["row"]: jc for jc in res["junta_low_u_controls"]}
-    for r_need in ("0.800", "0.865"):
-        check(r_need in j_ctrls, f"missing junta control on {r_need}")
-        check("u_ival" in j_ctrls[r_need], f"missing enclosed u_ival on {r_need}")
-        u_lo_j, u_hi_j = Fraction(j_ctrls[r_need]["u_ival"][0]), Fraction(j_ctrls[r_need]["u_ival"][1])
-        check(u_lo_j <= Fraction(1, 1_000_000) <= u_hi_j, f"junta u_ival on {r_need} does not enclose 1/1000000")
-        check(j_ctrls[r_need]["ratio_ival"][0] > 3.30, f"junta ratio on {r_need} not > 3.30")
-        check(j_ctrls[r_need]["r1_min_lb"] > 0.866656, f"junta R1 lower bound on {r_need} not > 0.866656")
+    # 6. Verify negative controls in result.json & dual_certs.json (all 3 reported rows, ordered finite intervals,
+    #    containment in published outward 6-decimal enclosures, and Rice lower bounds >= 0.883545):
+    j_list = res.get("junta_low_u_controls")
+    check(isinstance(j_list, list) and len(j_list) == 3,
+          "junta_low_u_controls must contain all 3 advertised rows (0.700_own, 0.800, 0.865)")
+    j_ctrls = {jc.get("row"): jc for jc in j_list if isinstance(jc, dict)}
+    published_junta = {
+        "0.700_own": (Fraction("3.711627"), Fraction("4.438574"), Fraction("0.883545")),
+        "0.800": (Fraction("3.673118"), Fraction("4.483822"), Fraction("0.883545")),
+        "0.865": (Fraction("3.648618"), Fraction("4.512955"), Fraction("0.883545")),
+    }
+    check(set(j_ctrls.keys()) == set(published_junta.keys()),
+          "junta_low_u_controls row set mismatch against (0.700_own, 0.800, 0.865)")
+    for r_need, (pub_lo, pub_hi, pub_r1) in published_junta.items():
+        jc = j_ctrls[r_need]
+        u_iv = jc.get("u_ival")
+        r_iv = jc.get("ratio_ival")
+        r1_raw = jc.get("r1_min_lb")
+        check(
+            isinstance(u_iv, list) and len(u_iv) == 2
+            and all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in u_iv),
+            f"invalid u_ival on {r_need}",
+        )
+        check(
+            isinstance(r_iv, list) and len(r_iv) == 2
+            and all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in r_iv),
+            f"invalid ratio_ival on {r_need}",
+        )
+        check(
+            isinstance(r1_raw, (int, float)) and not isinstance(r1_raw, bool) and math.isfinite(r1_raw),
+            f"invalid r1_min_lb on {r_need}",
+        )
+        u_lo_j, u_hi_j = Fraction(u_iv[0]), Fraction(u_iv[1])
+        check(u_lo_j <= Fraction(1, 1_000_000) <= u_hi_j and u_hi_j - u_lo_j <= Fraction(1, 10**18),
+              f"junta u_ival on {r_need} does not tightly enclose 1/1000000")
+        r_lo_q, r_hi_q = Fraction(r_iv[0]), Fraction(r_iv[1])
+        r_lo_dec, r_hi_dec = Fraction(str(r_iv[0])), Fraction(str(r_iv[1]))
+        check(r_lo_q <= r_hi_q and r_lo_dec <= r_hi_dec,
+              f"empty/inverted junta ratio_ival on {r_need}: {r_iv}")
+        check(pub_lo <= r_lo_q <= r_hi_q <= pub_hi and pub_lo <= r_lo_dec <= r_hi_dec <= pub_hi,
+              f"junta ratio_ival on {r_need} outside published outward enclosure [{pub_lo}, {pub_hi}]")
+        r1_q, r1_dec = Fraction(r1_raw), Fraction(str(r1_raw))
+        check(r1_q >= pub_r1 and r1_dec >= pub_r1,
+              f"junta r1_min_lb on {r_need} below published 0.883545")
 
     own_cells = [c for c in cfg["cells"] if c["row_tag"] == "0.700_own"]
     check(len(own_cells) >= 1, "missing own-row 0.700_own negative control cell")
@@ -718,10 +812,15 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
         if c["kind"] == "JM1_BOUND" and c["piece_idx"] >= 1 and 0 < c["theta_allow"] < 49.999
         and c["F_claimed"] <= c["theta_allow"]
     )
+    mode_desc = (
+        "recompiled C++17 2D row integrals + [0, U0] interval suprema replayed and matched receipt; "
+        if replay_cpp else
+        "SHA-256 receipt binding to dual_certs shards + C++ source, g1 slice covers, and rational U >= U0 tails audited (pass --replay-cpp to replay C++ [0, U0] & 2D integrals); "
+    )
     print(
-        f"ALL CHECKS PASSED: {len(cfg['cells'])} continuous-law certificates verified "
-        f"({n_jm1} JM1 bounds, {n_inf} (R1) infeasibility certificates; "
-        f"Pieces 16 & 17 100% continuously closed; {n_closed_active} closed subcells total; "
+        f"ALL CHECKS PASSED: {mode_desc}"
+        f"{len(cfg['cells'])} cells ({n_jm1} JM1 bounds, {n_inf} (R1) infeasibility certificates; "
+        f"Pieces 16 & 17 100% continuously closed in chi at all 5 grid energies; {n_closed_active} closed subcells total; "
         f"junta 256/63 & own-row 0.70 negative controls verified)."
     )
 

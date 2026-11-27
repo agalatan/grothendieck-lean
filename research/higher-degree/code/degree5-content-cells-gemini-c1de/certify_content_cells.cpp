@@ -29,6 +29,73 @@
 
 namespace {
 
+// Self-contained FIPS 180-4 SHA-256 for cryptographic receipt binding (zero external dependencies).
+static std::string sha256_bytes_hex(const uint8_t* data, size_t len) {
+    static const uint32_t K[64] = {
+        0x428a2f98u, 0x71374491u, 0xb5c0fbcfu, 0xe9b5dba5u, 0x3956c25bu, 0x59f111f1u, 0x923f82a4u, 0xab1c5ed5u,
+        0xd807aa98u, 0x12835b01u, 0x243185beu, 0x550c7dc3u, 0x72be5d74u, 0x80deb1feu, 0x9bdc06a7u, 0xc19bf174u,
+        0xe49b69c1u, 0xefbe4786u, 0x0fc19dc6u, 0x240ca1ccu, 0x2de92c6fu, 0x4a7484aau, 0x5cb0a9dcu, 0x76f988dau,
+        0x983e5152u, 0xa831c66du, 0xb00327c8u, 0xbf597fc7u, 0xc6e00bf3u, 0xd5a79147u, 0x06ca6351u, 0x14292967u,
+        0x27b70a85u, 0x2e1b2138u, 0x4d2c6dfcu, 0x53380d13u, 0x650a7354u, 0x766a0abbu, 0x81c2c92eu, 0x92722c85u,
+        0xa2bfe8a1u, 0xa81a664bu, 0xc24b8b70u, 0xc76c51a3u, 0xd192e819u, 0xd6990624u, 0xf40e3585u, 0x106aa070u,
+        0x19a4c116u, 0x1e376c08u, 0x2748774cu, 0x34b0bcb5u, 0x391c0cb3u, 0x4ed8aa4au, 0x5b9cca4fu, 0x682e6ff3u,
+        0x748f82eeu, 0x78a5636fu, 0x84c87814u, 0x8cc70208u, 0x90befffau, 0xa4506cebu, 0xbef9a3f7u, 0xc67178f2u
+    };
+    auto rotr = [](uint32_t x, int n) -> uint32_t { return (x >> n) | (x << (32 - n)); };
+    uint32_t h[8] = {
+        0x6a09e667u, 0xbb67ae85u, 0x3c6ef372u, 0xa54ff53au,
+        0x510e527fu, 0x9b05688cu, 0x1f83d9abu, 0x5be0cd19u
+    };
+    uint64_t bit_len = static_cast<uint64_t>(len) * 8ULL;
+    size_t pad_len = ((len + 9 + 63) / 64) * 64;
+    std::vector<uint8_t> msg(pad_len, 0);
+    if (len > 0) std::memcpy(msg.data(), data, len);
+    msg[len] = 0x80u;
+    for (int i = 0; i < 8; ++i) {
+        msg[pad_len - 1 - i] = static_cast<uint8_t>((bit_len >> (8 * i)) & 0xffu);
+    }
+    for (size_t off = 0; off < pad_len; off += 64) {
+        uint32_t w[64];
+        for (int i = 0; i < 16; ++i) {
+            w[i] = (static_cast<uint32_t>(msg[off + 4 * i]) << 24)
+                 | (static_cast<uint32_t>(msg[off + 4 * i + 1]) << 16)
+                 | (static_cast<uint32_t>(msg[off + 4 * i + 2]) << 8)
+                 | static_cast<uint32_t>(msg[off + 4 * i + 3]);
+        }
+        for (int i = 16; i < 64; ++i) {
+            uint32_t s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >> 3);
+            uint32_t s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >> 10);
+            w[i] = w[i - 16] + s0 + w[i - 7] + s1;
+        }
+        uint32_t a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], hh = h[7];
+        for (int i = 0; i < 64; ++i) {
+            uint32_t S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+            uint32_t ch = (e & f) ^ ((~e) & g);
+            uint32_t t1 = hh + S1 + ch + K[i] + w[i];
+            uint32_t S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+            uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
+            uint32_t t2 = S0 + maj;
+            hh = g; g = f; f = e; e = d + t1; d = c; c = b; b = a; a = t1 + t2;
+        }
+        h[0] += a; h[1] += b; h[2] += c; h[3] += d;
+        h[4] += e; h[5] += f; h[6] += g; h[7] += hh;
+    }
+    char hex[65];
+    for (int i = 0; i < 8; ++i) std::snprintf(hex + 8 * i, 9, "%08x", h[i]);
+    hex[64] = '\0';
+    return std::string(hex);
+}
+
+static std::string sha256_file_hex(const std::string& path) {
+    std::ifstream in(path, std::ios::binary);
+    if (!in) {
+        std::fprintf(stderr, "FATAL: cannot open %s for SHA-256\n", path.c_str());
+        std::exit(2);
+    }
+    std::vector<uint8_t> buf((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    return sha256_bytes_hex(buf.data(), buf.size());
+}
+
 // Force compiler barriers around directed-rounded operations so -O3 never folds or reorders signs.
 inline double keep(double x) {
     asm volatile("" : "+r"(x));
@@ -2224,6 +2291,22 @@ void self_test_fpu() {
             }
         }
     }
+    // Live regression test for mixed-sign inexact-sum magnitude under FE_UPWARD + FIPS 180-4 SHA-256 vectors:
+    {
+        double ar = -0.09668002, br = 0.02559663;
+        double bad_abs = std::fabs(add_up(ar, br));
+        double good_abs = ival_abs(Ival::pt(ar) + Ival::pt(br)).hi;
+        if (!(good_abs > bad_abs && good_abs >= -add_dn(ar, br))) {
+            std::fprintf(stderr, "FATAL: mixed-sign ival_abs self-test failed: good=%a bad=%a!\n", good_abs, bad_abs);
+            std::exit(2);
+        }
+        const uint8_t abc[3] = {'a', 'b', 'c'};
+        if (sha256_bytes_hex(nullptr, 0) != "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" ||
+            sha256_bytes_hex(abc, 3) != "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad") {
+            std::fprintf(stderr, "FATAL: SHA-256 self-test failed!\n");
+            std::exit(2);
+        }
+    }
 }
 
 // Negative Control 1 (P1 §6): At u = 1e-6, certify on the 1D Wick junta q_u(X) = sqrt(u) X(|X|^2 - 2)/sqrt(2)
@@ -2832,7 +2915,7 @@ double verify_slice_continuous(
             double d0 = std::max(0.0, sub_up(C_H0, sc.xs.back()));
             double s_u = add_up(div_up(d0, U0), C_H1_eff);
             double q_u3 = div_up(mul_up(0.5 * cfg.eps_K, mul_up(s_u, s_u)), U0);
-            double om_neg_u3 = div_up(mul_up(cell.F_claimed, mul_up(div_up(mul_up(0.75, std::fabs(sc.a_r + sc.b_r)), cell.u_lo), g1_tail_hi)), U0_3);
+            double om_neg_u3 = div_up(mul_up(cell.F_claimed, mul_up(div_up(mul_up(0.75, ival_abs(Ival::pt(sc.a_r) + Ival::pt(sc.b_r)).hi), cell.u_lo), g1_tail_hi)), U0_3);
             J_over_U3_hi = add_up(add_up(pl_u3, q_u3), om_neg_u3);
         }
 
@@ -2876,6 +2959,40 @@ double verify_slice_continuous(
     return worst_hi;
 }
 
+static std::string fmt_outward_6(double x, bool round_up) {
+    if (!std::isfinite(x)) return "nan";
+    const int prev_rm = std::fegetround();
+    std::fesetround(round_up ? FE_UPWARD : FE_DOWNWARD);
+    volatile double scaled = x * 1000000.0;
+    const double bound = round_up ? std::ceil(scaled) : std::floor(scaled);
+    std::fesetround(prev_rm);
+    const long long n = static_cast<long long>(bound);
+    char buf[64];
+    if (n < 0) {
+        const unsigned long long an = static_cast<unsigned long long>(-(n + 1)) + 1ULL;
+        std::snprintf(buf, sizeof(buf), "-%llu.%06llu", an / 1000000ULL, an % 1000000ULL);
+    } else {
+        const unsigned long long an = static_cast<unsigned long long>(n);
+        std::snprintf(buf, sizeof(buf), "%llu.%06llu", an / 1000000ULL, an % 1000000ULL);
+    }
+    return std::string(buf);
+}
+
+static std::string format_junta_console_line(const JuntaLowUResult& jc, bool with_target_note) {
+    const std::string lo_s = fmt_outward_6(jc.ratio.lo, false);
+    const std::string hi_s = fmt_outward_6(jc.ratio.hi, true);
+    const std::string r1_s = fmt_outward_6(jc.r1_min_lb, false);
+    char buf[384];
+    std::snprintf(
+        buf, sizeof(buf),
+        "  junta u=1e-6 on %s: ratio in [%s, %s] ([%a, %a]), R1_min >= %s (%a)%s\n",
+        jc.row_tag.c_str(), lo_s.c_str(), hi_s.c_str(),
+        jc.ratio.lo, jc.ratio.hi, r1_s.c_str(), jc.r1_min_lb,
+        with_target_note ? " (> 0.866656)" : ""
+    );
+    return std::string(buf);
+}
+
 } // namespace
 
 int main(int argc, char** argv) {
@@ -2883,22 +3000,45 @@ int main(int argc, char** argv) {
 
     int nthreads = 2;
     std::string mode;
-    std::string arg1, arg2, only_row;
+    std::string arg1, arg2, only_row, cpp_src_path, manifest_path;
+    std::vector<std::pair<std::string, std::string>> shard_paths;
     for (int i = 1; i < argc; ++i) {
         std::string s = argv[i];
         if (s == "--threads" && i + 1 < argc) {
             nthreads = std::max(1, std::atoi(argv[++i]));
         } else if (s == "--only-row" && i + 1 < argc) {
             only_row = argv[++i];
+        } else if (s == "--cpp-src" && i + 1 < argc) {
+            cpp_src_path = argv[++i];
+        } else if (s == "--manifest" && i + 1 < argc) {
+            manifest_path = argv[++i];
+        } else if (s == "--shard" && i + 2 < argc) {
+            std::string sh_name = argv[++i];
+            std::string sh_file = argv[++i];
+            shard_paths.emplace_back(sh_name, sh_file);
         } else if (s == "--dump-rows" && i + 1 < argc) {
             mode = "dump";
             arg1 = argv[++i];
         } else if (s == "--self-test-only") {
+            std::fesetround(FE_UPWARD);
+            if (fmt_outward_6(3.6731184288272809, false) != "3.673118" ||
+                fmt_outward_6(4.4838217366393893, true) != "4.483822" ||
+                fmt_outward_6(0.88354592372096086, false) != "0.883545" ||
+                fmt_outward_6(-1.2345671, false) != "-1.234568" ||
+                fmt_outward_6(-1.2345671, true) != "-1.234567") {
+                std::fprintf(stderr, "FATAL: fmt_outward_6 self-test failed under FE_UPWARD!\n");
+                return 2;
+            }
             auto all_sp = get_all_15_rows();
             for (const auto& sp : all_sp) {
                 if (sp.tag == "0.865") {
                     RowProfileEnclosure enc0865 = enclose_row_profile(sp, nthreads);
                     verify_row_seam_and_vortex_join_controls(enc0865);
+                    std::fesetround(FE_UPWARD);
+                    const Ival u_1e6_iv = Ival::pt(1.0) / Ival::pt(1000000.0);
+                    JuntaLowUResult j_0865_st = certify_junta_low_u(enc0865, u_1e6_iv);
+                    const std::string line = format_junta_console_line(j_0865_st, true);
+                    std::fputs(line.c_str(), stdout);
                 }
             }
             return 0;
@@ -2962,8 +3102,10 @@ int main(int argc, char** argv) {
         verify_row_seam_and_vortex_join_controls(r);
         Ival hA0 = eval_h_ival(r, false, {0.0, 0.0});
         Ival hB0 = eval_h_ival(r, true, {0.0, 0.0});
-        std::fprintf(stderr, "  row %-9s: hA(0)=[%.6f, %.6f] (w=%.1e), hB(0)=[%.6f, %.6f] (w=%.1e)\n",
-                     r.spec.tag.c_str(), hA0.lo, hA0.hi, hA0.width(), hB0.lo, hB0.hi, hB0.width());
+        std::fprintf(stderr, "  row %-9s: hA(0)=[%s, %s] (w=%.1e), hB(0)=[%s, %s] (w=%.1e)\n",
+                     r.spec.tag.c_str(),
+                     fmt_outward_6(hA0.lo, false).c_str(), fmt_outward_6(hA0.hi, true).c_str(), hA0.width(),
+                     fmt_outward_6(hB0.lo, false).c_str(), fmt_outward_6(hB0.hi, true).c_str(), hB0.width());
     }
 
     if (mode == "dump") {
@@ -3071,9 +3213,9 @@ int main(int argc, char** argv) {
     JuntaLowUResult j_080 = certify_junta_low_u(find_row("0.800"), u_1e6_iv);
     JuntaLowUResult j_0865 = certify_junta_low_u(find_row("0.865"), u_1e6_iv);
     JuntaLowUResult j_070 = certify_junta_low_u(find_row("0.700_own"), u_1e6_iv);
-    std::fprintf(stderr, "  junta u=1e-6 on 0.800: ratio in [%.6f, %.6f], R1_min >= %.6f (> 0.866656)\n", j_080.ratio.lo, j_080.ratio.hi, j_080.r1_min_lb);
-    std::fprintf(stderr, "  junta u=1e-6 on 0.865: ratio in [%.6f, %.6f], R1_min >= %.6f (> 0.866656)\n", j_0865.ratio.lo, j_0865.ratio.hi, j_0865.r1_min_lb);
-    std::fprintf(stderr, "  junta u=1e-6 on 0.700_own: ratio in [%.6f, %.6f], R1_min >= %.6f\n", j_070.ratio.lo, j_070.ratio.hi, j_070.r1_min_lb);
+    std::fputs(format_junta_console_line(j_080, true).c_str(), stderr);
+    std::fputs(format_junta_console_line(j_0865, true).c_str(), stderr);
+    std::fputs(format_junta_console_line(j_070, false).c_str(), stderr);
 
     if (j_080.ratio.lo <= 3.30 || j_0865.ratio.lo <= 3.30 || j_080.r1_min_lb <= 0.866656) {
         std::fprintf(stderr, "FATAL: low-energy junta negative control failed!\n");
@@ -3102,11 +3244,33 @@ int main(int argc, char** argv) {
     }
     std::fesetround(FE_TONEAREST);
 
-    // Write result.json receipt!
+    // Write result.json receipt (including cryptographic SHA-256 digests and per-cell g1 ranges)!
+    const std::string dat_sha256 = sha256_file_hex(arg1);
+    const std::string cpp_sha256 = cpp_src_path.empty() ? "" : sha256_file_hex(cpp_src_path);
+    const std::string manifest_sha256 = manifest_path.empty() ? "" : sha256_file_hex(manifest_path);
+    std::vector<std::pair<std::string, std::string>> shard_digests;
+    for (const auto& sp : shard_paths) {
+        shard_digests.emplace_back(sp.first, sha256_file_hex(sp.second));
+    }
     std::ofstream out(arg2);
     out << std::setprecision(17);
     out << "{\n";
     out << "  \"status\": \"CERTIFIED\",\n";
+    out << "  \"dat_sha256\": \"" << dat_sha256 << "\",\n";
+    if (!cpp_sha256.empty()) {
+        out << "  \"cpp_sha256\": \"" << cpp_sha256 << "\",\n";
+    }
+    if (!manifest_sha256.empty()) {
+        out << "  \"manifest_sha256\": \"" << manifest_sha256 << "\",\n";
+    }
+    if (!shard_digests.empty()) {
+        out << "  \"shard_sha256s\": {\n";
+        for (size_t k = 0; k < shard_digests.size(); ++k) {
+            out << "    \"" << shard_digests[k].first << "\": \"" << shard_digests[k].second << "\""
+                << (k + 1 < shard_digests.size() ? "," : "") << "\n";
+        }
+        out << "  },\n";
+    }
     out << "  \"rows_enclosed\": " << row_encs.size() << ",\n";
     out << "  \"cells_verified\": " << cfg.cells.size() << ",\n";
     out << "  \"row_summaries\": [\n";
@@ -3143,8 +3307,12 @@ int main(int argc, char** argv) {
             << "\", \"u_lo\": " << c.u_lo << ", \"u_hi\": " << c.u_hi << ", \"t_lo\": " << c.t_lo
             << ", \"chi_lo\": " << c.chi_lo << ", \"chi_hi\": " << c.chi_hi
             << ", \"theta_allow\": " << c.theta_allow << ", \"F_certified\": " << c.F_claimed
-            << ", \"worst_M_A\": " << v.worst_M_A << ", \"worst_M_B\": " << v.worst_M_B << "}"
-            << (i + 1 < cfg.cells.size() ? "," : "") << "\n";
+            << ", \"worst_M_A\": " << v.worst_M_A << ", \"worst_M_B\": " << v.worst_M_B;
+        if (c.kind == "JM1_BOUND") {
+            out << ", \"g1_range_A\": [" << v.g1_range_A.lo << ", " << v.g1_range_A.hi
+                << "], \"g1_range_B\": [" << v.g1_range_B.lo << ", " << v.g1_range_B.hi << "]";
+        }
+        out << "}" << (i + 1 < cfg.cells.size() ? "," : "") << "\n";
     }
     out << "  ]\n}\n";
     std::fprintf(stderr, "ALL %zu CONTINUOUS-LAW CERTIFICATES AND NEGATIVE CONTROLS PASSED!\n", cfg.cells.size());

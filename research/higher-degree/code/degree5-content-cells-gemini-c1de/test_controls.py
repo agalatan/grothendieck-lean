@@ -65,11 +65,11 @@ def write_sharded_fixture(cfg_mut, res_mut, tmpd):
     return cp, rp
 
 
-def expect_verify_reject(cfg_mut, res_mut, expected_substr, label):
+def expect_verify_reject(cfg_mut, res_mut, expected_substr, label, check_hashes=False):
     with tempfile.TemporaryDirectory() as tmpd:
         cp, rp = write_sharded_fixture(cfg_mut, res_mut, tmpd)
         try:
-            verify.verify_all(certs_path=cp, result_path=rp, replay_cpp=False)
+            verify.verify_all(certs_path=cp, result_path=rp, replay_cpp=False, check_hashes=check_hashes)
         except ValueError as e:
             msg = str(e)
             check("exceeds 300 KB" not in msg, f"{label} hit 300 KB size guard instead of field check: {msg}")
@@ -90,14 +90,14 @@ def main():
 
     print("Running Problem P1 negative & corruption control suite...")
 
-    # Control 0a: Baseline passes cleanly
-    verify.verify_all(certs_path=certs_path, result_path=result_path, replay_cpp=False)
-    print("  [PASS] Control 0a (baseline): clean dual_certs.json + result.json accepted")
+    # Control 0a: Baseline passes cleanly (with full default SHA-256 cryptographic binding!)
+    verify.verify_all(certs_path=certs_path, result_path=result_path, replay_cpp=False, check_hashes=True)
+    print("  [PASS] Control 0a (baseline + SHA-256 binding): clean dual_certs.json + shards + result.json accepted")
 
-    # Control 0b: Unmodified sharded fixture round-trip passes cleanly through identical test path!
+    # Control 0b: Unmodified sharded fixture round-trip passes cleanly through field-audit test path!
     with tempfile.TemporaryDirectory() as tmpd0:
         cp0, rp0 = write_sharded_fixture(copy.deepcopy(cfg0), copy.deepcopy(res0), tmpd0)
-        verify.verify_all(certs_path=cp0, result_path=rp0, replay_cpp=False)
+        verify.verify_all(certs_path=cp0, result_path=rp0, replay_cpp=False, check_hashes=False)
     print("  [PASS] Control 0b (sharded fixture positive control): unmodified sharded fixture accepted")
 
     # Control 1: Mathematical Negative Control 1 — Low-energy junta u = 1/1000000 & certified h_X'(0) != 0
@@ -200,12 +200,13 @@ def main():
              "-Wno-unknown-pragmas", "-pthread", cpp_src, "-o", bin_path],
             check=True
         )
+        n_thr = str(min(8, max(2, os.cpu_count() or 2)))
         c_false = copy.deepcopy(cfg0)
         own_cell = copy.deepcopy(own)
         own_cell["F_claimed"] = 0.085  # False claim on own-row 0.70!
         c_false["cells"] = [own_cell]
         verify.emit_dat_from_json(c_false, dat_false)
-        proc = subprocess.run([bin_path, "--verify-all", dat_false, res_false, "--threads", "2"],
+        proc = subprocess.run([bin_path, "--verify-all", dat_false, res_false, "--threads", n_thr],
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         check(proc.returncode != 0, "C++ certifier accepted false F_claimed = 0.085 on own-row 0.70!")
         print(f"  [PASS] Control 15 (live C++17 binary test): rejected false F=0.085 on own-row 0.70 (rc={proc.returncode})")
@@ -217,7 +218,7 @@ def main():
         c_false2["cells"] = [lowu_cell]
         dat_false2 = os.path.join(tmpd, "false_lowu080.dat")
         verify.emit_dat_from_json(c_false2, dat_false2)
-        proc2 = subprocess.run([bin_path, "--verify-all", dat_false2, res_false, "--threads", "2"],
+        proc2 = subprocess.run([bin_path, "--verify-all", dat_false2, res_false, "--threads", n_thr],
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         check(proc2.returncode != 0, "C++ certifier accepted false energy-independent F_claimed = 1.139 at u=1/128 on row 0.800!")
         print(f"  [PASS] Control 16 (live C++17 binary test): rejected false F=1.139 at u=1/128 on row 0.800 (rc={proc2.returncode})")
@@ -277,9 +278,119 @@ def main():
         s_probe_q = Fraction(0.021522191494256774)
         check(s_probe_q < Fraction(2152219149425678, 10 ** 17) < psi_035_lo,
               f"s_probe={float(s_probe_q):.20g} not strictly below psi(0.035)>={float(psi_035_lo):.20g}")
-        print("  [PASS] Control 18 (singleton mesh joins & vortex-join probe): C++ --self-test-only verified [0,0], s_edges, [64,64], [256,256] & s_probe < psi(0.035)")
+        # Verify live C++ console output outward-encloses result.json across both --self-test-only (stdout)
+        # and --verify-all (proc.stderr from Control 15, which runs all 3 junta controls):
+        res_j_map = {jc["row"]: jc for jc in res0["junta_low_u_controls"]}
+        check("ratio in [3.648618, 4.512955]" in proc_st.stdout and "R1_min >= 0.883545" in proc_st.stdout,
+              f"C++ --self-test-only printed inward-rounded bounds: {proc_st.stdout!r}")
+        for r_tag, exp_lo, exp_hi, exp_r1 in (
+            ("0.800", "3.673118", "4.483822", "0.883545"),
+            ("0.865", "3.648618", "4.512955", "0.883545"),
+            ("0.700_own", "3.711627", "4.438574", "0.883545"),
+        ):
+            sub = f"junta u=1e-6 on {r_tag}: ratio in [{exp_lo}, {exp_hi}]"
+            check(sub in proc.stderr and f"R1_min >= {exp_r1}" in proc.stderr,
+                  f"C++ live console stderr missing outward-rounded '{sub}' / '{exp_r1}': {proc.stderr!r}")
+            jc = res_j_map[r_tag]
+            check(Fraction(exp_lo) <= Fraction(jc["ratio_ival"][0]) <= Fraction(jc["ratio_ival"][1]) <= Fraction(exp_hi),
+                  f"Printed [{exp_lo}, {exp_hi}] does not outward-enclose receipt {jc['ratio_ival']} on {r_tag}")
+            check(Fraction(exp_r1) <= Fraction(jc["r1_min_lb"]),
+                  f"Printed {exp_r1} exceeds receipt r1_min_lb {jc['r1_min_lb']} on {r_tag}")
+        print("  [PASS] Control 18 (singleton mesh joins, vortex-join probe & outward C++ console bounds): verified against result.json")
 
-    print("ALL 20 NEGATIVE, POSITIVE-FIXTURE, SEAM, AND CORRUPTION CONTROLS PASSED!")
+        # Control 19: Missing advertised 0.700_own row in result.json junta_low_u_controls -> rejected
+        c19, r19 = copy.deepcopy(cfg0), copy.deepcopy(res0)
+        r19["junta_low_u_controls"] = [jc for jc in r19["junta_low_u_controls"] if jc["row"] != "0.700_own"]
+        expect_verify_reject(c19, r19, "0.700_own", "Control 19 (missing 0.700_own junta control)")
+
+        # Control 20: Inverted/empty ratio_ival [3.5, 3.4], out-of-enclosure ratio_ival, and low r1_min_lb -> all rejected
+        for sub_lbl, mut_fn, exp_sub in (
+            ("inverted [3.5, 3.4]", lambda jc: jc.__setitem__("ratio_ival", [3.5, 3.4]), "empty/inverted junta ratio_ival"),
+            ("below published 3.648618", lambda jc: jc.__setitem__("ratio_ival", [3.648617, 4.50]), "outside published outward enclosure"),
+            ("below published r1_min_lb 0.883545", lambda jc: jc.__setitem__("r1_min_lb", 0.883544), "below published 0.883545"),
+        ):
+            c20, r20 = copy.deepcopy(cfg0), copy.deepcopy(res0)
+            for jc in r20["junta_low_u_controls"]:
+                if jc["row"] == "0.865":
+                    mut_fn(jc)
+            expect_verify_reject(c20, r20, exp_sub, f"Control 20 ({sub_lbl})")
+
+        # Control 21: Mixed-sign inexact-sum magnitude regression (-0.09668002, 0.02559663) + g1_range slice-cover check
+        ar_test, br_test = -0.09668002, 0.02559663
+        up_sum = add_up_py(ar_test, br_test)
+        dn_sum = -add_up_py(-ar_test, -br_test)
+        exact_abs_q = abs(Fraction(ar_test) + Fraction(br_test))
+        check(Fraction(abs(up_sum)) < exact_abs_q <= Fraction(max(-dn_sum, up_sum)),
+              "mixed-sign inexact-sum test did not reproduce FE_UPWARD fabs shortfall")
+        c21, r21 = copy.deepcopy(cfg0), copy.deepcopy(res0)
+        jm1_multi_idx = next(i for i, x in enumerate(c21["cells"]) if x["kind"] == "JM1_BOUND" and len(x["slicesA"]) >= 2)
+        c21["cells"][jm1_multi_idx]["slicesA"] = c21["cells"][jm1_multi_idx]["slicesA"][1:]
+        expect_verify_reject(c21, r21, "first slice a_r=", "Control 21 (dropped first m1-slice caught by g1_range_A cover)")
+
+        # Control 22: All 8 reviewer-reported certificate/receipt corruptions against default verify_all (check_hashes=True)
+        # Copy the real shards + manifest + result.json into tmpd so shard_sha256s / manifest_sha256 / dat_sha256 are active:
+        raw_man0 = json.load(open(certs_path))
+
+        def run_default_corruption(mut_fn, exp_substr, sub_label):
+            with tempfile.TemporaryDirectory() as ctmp:
+                for fn in [os.path.basename(certs_path), os.path.basename(result_path)] + list(raw_man0["shards"]):
+                    with open(os.path.join(HERE, fn), "rb") as fsrc, open(os.path.join(ctmp, fn), "wb") as fdst:
+                        fdst.write(fsrc.read())
+                mut_fn(ctmp)
+                try:
+                    verify.verify_all(
+                        certs_path=os.path.join(ctmp, "dual_certs.json"),
+                        result_path=os.path.join(ctmp, "result.json"),
+                        replay_cpp=False,
+                        check_hashes=True,
+                    )
+                except ValueError as err:
+                    check(exp_substr in str(err), f"{sub_label} unexpected error: {err}")
+                    return
+                raise ValueError(f"CONTROL FAILURE: {sub_label} accepted by default verify.verify_all!")
+
+        def mutate_shard1(fn_cell):
+            def _m(ctmp):
+                p = os.path.join(ctmp, "dual_certs_1.json")
+                d = json.load(open(p))
+                j = next(i for i, x in enumerate(d["cells"]) if x["kind"] == "JM1_BOUND" and len(x["slicesA"]) >= 2)
+                fn_cell(d["cells"][j])
+                json.dump(d, open(p, "w"), separators=(",", ":"))
+            return _m
+
+        def mutate_manifest(fn_man):
+            def _m(ctmp):
+                p = os.path.join(ctmp, "dual_certs.json")
+                d = json.load(open(p))
+                fn_man(d)
+                json.dump(d, open(p, "w"), separators=(",", ":"))
+            return _m
+
+        def mutate_f_both(ctmp):
+            p = os.path.join(ctmp, "dual_certs_1.json")
+            d = json.load(open(p))
+            j = next(i for i, x in enumerate(d["cells"]) if x["kind"] == "JM1_BOUND")
+            d["cells"][j]["F_claimed"] = 1.0
+            json.dump(d, open(p, "w"), separators=(",", ":"))
+            rp2 = os.path.join(ctmp, "result.json")
+            rd = json.load(open(rp2))
+            rd["cells"][j]["F_certified"] = 1.0
+            json.dump(rd, open(rp2, "w"))
+
+        for lbl8, mfn8 in (
+            ("beta * 1.5", mutate_shard1(lambda cell: cell["slicesA"][0].__setitem__("beta", cell["slicesA"][0]["beta"] * 1.5 + 0.1))),
+            ("Rice multipliers halved", mutate_shard1(lambda cell: cell["slicesA"][0].__setitem__("mu_rice", [0.5 * v for v in cell["slicesA"][0]["mu_rice"]]))),
+            ("yeq0 + 0.01", mutate_shard1(lambda cell: cell["slicesA"][0]["yeq"].__setitem__(0, cell["slicesA"][0]["yeq"][0] + 0.01))),
+            ("Stein pole 0.25 -> 0.3", mutate_manifest(lambda man: man["c_rat"].__setitem__(man["c_rat"].index(0.25), 0.3))),
+            ("Rice scale changed", mutate_manifest(lambda man: man["lams_rice"].__setitem__(0, man["lams_rice"][0] + 0.05))),
+            ("E[U^2] multipliers zeroed", mutate_shard1(lambda cell: (cell["slicesA"][0].__setitem__("mu_u2_lo", 0.0), cell["slicesA"][0].__setitem__("mu_u2_hi", 0.0)))),
+            ("first m1-slice dropped", mutate_shard1(lambda cell: cell.__setitem__("slicesA", cell["slicesA"][1:]))),
+            ("F_claimed & F_certified -> 1.0", mutate_f_both),
+        ):
+            run_default_corruption(mfn8, "sha256", f"Control 22 ({lbl8})")
+        print("  [PASS] Control 22 (8/8 reviewer certificate/receipt corruptions): all rejected by default verify.py")
+
+    print("ALL 24 NEGATIVE, POSITIVE-FIXTURE, SEAM, SHA-256, AND CORRUPTION CONTROLS PASSED!")
 
 
 if __name__ == "__main__":
