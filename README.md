@@ -203,7 +203,6 @@ An older proof with a single rounding channel is still in the repository. It is 
 | `scratch/Axioms.lean`, `scratch/UpperSixAxioms.lean`, `scripts/check_axioms.py` | repository-wide and six-channel axiom reports and their checker |
 | `scripts/`, `.github/workflows/`, `AGENTS.md` | CI, its helper scripts, and the working rules of the agents that maintain the repository |
 | `docs/` | `LEAN_DETAILS.md` (inventory), `overview.tex` (source of `OVERVIEW.pdf`), and design and status notes, each describing the state at its date |
-| `sign/` | GrotheSign, a separate Lake package: independent work on the coefficient signs of inverse kernel series. Not part of `Grothe`, of its axiom report or of CI; see [`sign/README.md`](sign/README.md) |
 | `research/` | organised records of the open problems behind the bounds (Conjecture K, higher-degree games), with their status ledgers; not built or checked |
 | `miscellaneous/`, `abandonware/` | archives: research modules and notes, removed code. Outside the Lake libraries: never built or imported. `handoff/` is a git-ignored local folder for research files |
 
@@ -232,8 +231,6 @@ lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --up
 ### Full proof check
 
 CI runs `lake build Grothe` for the combined development, then checks the generated imports, the sources and both axiom reports. The combined build includes all lower node caps and the single-channel energy facts. A cold build takes several CPU-days. The upper-only command above is the local build for the seven-channel theorem. [Proof workflow](.github/workflows/lean.yml) · [Pinned dependencies and build costs](lakefile.toml).
-
-The `sign/` directory builds GrotheSign as a separate Lake package. [GrotheSign build instructions](sign/README.md).
 
 ## Related work
 
