@@ -1,5 +1,5 @@
 import Grothe.Upper.Bivariate
-import Grothe.Upper.IntervalSound
+import Grothe.LowerAnalytic.IntervalSound
 import GrotheKernel.Table
 
 /-!

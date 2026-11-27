@@ -1,5 +1,5 @@
 import Grothe.LowerAnalytic.CapGridT
-import Grothe.Upper.IntervalSound
+import Grothe.LowerAnalytic.IntervalSound
 
 /-!
 # Interval lemmas of the cap checker (`GrotheCapsKernel`)

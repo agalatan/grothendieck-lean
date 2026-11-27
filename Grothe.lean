@@ -3390,6 +3390,7 @@ import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.GramSpectral
 import Grothe.LowerAnalytic.GramTensor
 import Grothe.LowerAnalytic.Influence
+import Grothe.LowerAnalytic.IntervalSound
 import Grothe.LowerAnalytic.JointContractions
 import Grothe.LowerAnalytic.JointSixthCore
 import Grothe.LowerAnalytic.KSide
@@ -3480,7 +3481,6 @@ import Grothe.Upper.ImprovedHeadMass
 import Grothe.Upper.ImprovedHeadWeight
 import Grothe.Upper.ImprovedHeadWeightData
 import Grothe.Upper.ImprovedHeadWeightFacts
-import Grothe.Upper.IntervalSound
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.PolynomialHeadTail
 import Grothe.Upper.Realise

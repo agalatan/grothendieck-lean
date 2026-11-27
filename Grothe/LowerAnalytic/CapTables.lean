@@ -1,6 +1,6 @@
 import Grothe.LowerAnalytic.CapGrid
 import Grothe.LowerAnalytic.CapTablesData
-import Grothe.Upper.IntervalSound
+import Grothe.LowerAnalytic.IntervalSound
 
 /-!
 # Rational enclosures of the shared moment tables of the cap certificates (PLAN_CAPS L-e)

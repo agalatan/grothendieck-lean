@@ -5,7 +5,7 @@ import GrotheQuadKernel.Basic
 # Soundness of the floating dyadic interval kernel (obligation S1 of #303)
 
 `mem x a` means `a.lo · 2^a.e ≤ x ≤ a.hi · 2^a.e`.  Every operation of `GrotheQuadKernel.Basic`
-is shown to preserve membership (outward rounding), in the style of `Grothe/Upper/IntervalSound.lean`
+is shown to preserve membership (outward rounding), in the style of `Grothe/LowerAnalytic/IntervalSound.lean`
 for the fixed-point caps kernel.  The exponential's series tail is proved
 (`exp_tail_bounds`); its validity flag `expPosValid` (the enclosure decides `x < N + 2`) is a
 hypothesis of `mem_expPosI`, as the kernel returns the information-free interval otherwise.

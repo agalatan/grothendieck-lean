@@ -1,4 +1,4 @@
-import Grothe.Upper.IntervalSound
+import Grothe.LowerAnalytic.IntervalSound
 import GrotheKernel.HardyArc
 import Grothe.UpperChaos.HardyArcData
 import Grothe.UpperChaos.SchurMain
