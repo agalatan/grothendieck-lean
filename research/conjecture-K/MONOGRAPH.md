@@ -431,7 +431,7 @@ integration, the whole third chaos in at most eleven coordinates [P + C · 3.21 
 most twelve [P + C author only · 3.21 (e3)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
 inequality [P + C author only · 3.21 (e2)]; the normalised elementary symmetric cubic e₃ in any number of variables
 [P author only · 3.21 (e4)]; every h whose correlation with some He₃(⟨v, X⟩)/√6 is at least 0.698,
-for maximal tensor influence at least 0.692, and every h with κ₄ ≥ 49 [P + C · 3.21 (e4)]; four-partite cubics and, in the chaos of every order
+for maximal tensor influence at least 0.692, and every h with κ₄ ≥ 49 [P + C · 3.21 (e4)] (and for maximal tensor influence at least 27/40 = 0.675 and κ₄ ≥ 48 via coupled signed 2-plane circle norms and the full Frobenius commutator block [P + C, author only · gemini-8732 · 3.21 (e4)]); four-partite cubics and, in the chaos of every order
 d ≥ 2, the (d + 1)-partite elements [P + C author only · 3.21 (e5)]; and the
 limit family a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard
 Gaussians; equality only when a = b = 0), also with any independent Gaussian scale mixture added
@@ -445,10 +445,10 @@ cumulant bounds cannot give even the constant √0.68 there, the real form of 0.
 and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 is also proved in at most
 fifteen coordinates, for correlation at least 0.642, for κ₄ ≥ 46.6, for maximal tensor influence at least 0.66502 or at most 0.0064,
 for Var(‖∇h‖²/3) ≤ 89/2250 when E h² = 1, and for κ₄ ≤ 91/500 = 0.182
-[P + C · 3.21 (e9)(ii)–(iv)], and extended via a one-step Ornstein–Uhlenbeck resolvent identity with a V₂ ⊥ V₄
-cross-multiplier to **Var(‖∇h‖²/3) ≤ 373/200 = 1.865** when E h² = 1 and **κ₄ ≤ 19/2 = 9.5** (covering all four Cartan
+[P + C · 3.21 (e9)(ii)–(iv)]; via a one-step Ornstein–Uhlenbeck resolvent identity with a V₂ ⊥ V₄
+cross-multiplier, for **Var(‖∇h‖²/3) ≤ 373/200 = 1.865** when E h² = 1 and **κ₄ ≤ 19/2 = 9.5** (covering all four Cartan
 isoparametric cubics, from universal linear bounds E|h| ≤ √(2/π)‖h‖₂(1 + (26449/7500000)κ₄) and E|h| ≤ √(2/π)‖h‖₂(1 +
-(717/40000)Var(‖∇h‖²/3)/‖h‖₂⁴)) [P + C · gemini-2762, re-derived and replayed by codex-062a · 3.21 (e9)(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
+(717/40000)Var(‖∇h‖²/3)/‖h‖₂⁴)) [P + C · gemini-2762, re-derived and replayed by codex-062a · 3.21 (e9)(iv)]; and via contraction domination ‖Ũ‖²_HS ≤ tr(M²) ≤ ‖M‖_op‖T‖_HS² (under which maximal tensor influence ≤ 373/2800 implies tr(M²)/‖T‖_HS⁴ ≤ 373/2800 ≈ 0.13321, which in turn gives Var(‖∇h‖²/3)/‖h‖₂⁴ ≤ 14·tr(M²)/‖T‖_HS⁴ ≤ 373/200 and hence √0.68) together with a dedicated Schur triple, for **tr(M²)/‖T‖_HS⁴ ≤ 3841/25000 = 0.15364** (in particular ≤ 96/625 = 0.1536, and in particular whenever **maximal tensor influence ≤ 3841/25000 = 0.15364** since ‖M‖_op/‖T‖_HS² ≤ c implies tr(M²)/‖T‖_HS⁴ ≤ c, covering all isotropic cubics M = (‖T‖_HS²/n)Iₙ, such as cubics invariant under an irreducible subgroup of O(n), in every dimension, from E|h| ≤ √(2/π)‖h‖₂(1 + (2181/10000)tr(M²)/‖T‖_HS⁴)), as well as **maximal tensor influence ≥ 33/50 = 0.66** or **κ₄ ≥ 229/5 = 45.8** [P + C, author only · gemini-8732 · 3.21 (e4), (e9)(iii)–(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
 conjectured to be √55/8 = 0.9270, attained by the hemisphere: it is
 proved for zonal sign patterns, and the hemisphere is a strict local maximum [P · 3.21 (e3)]. The largest ratio
 E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates [N · 3.21 (e8)].
