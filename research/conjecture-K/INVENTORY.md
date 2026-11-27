@@ -1885,6 +1885,15 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 | `code/all-sector-transfer-gemini-c1de/test_controls.py` | 8,784 B | `c6afbdb43aef19aa7d05043739ee5dba069a3710c5142095786924e7f021cbdf` |
 | `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 267,846 B | `c0464da7a116c1f7cb459191227185f8e3c631d0ca7f4ad9594750e82bb90f47` |
 
+## Energy-dependent six-sector witness profiles (codex-a7c4, #790)
+
+Row 8.13c uses the public KAST certificate pinned by 8.13a. Run
+`python3 -IB research/conjecture-K/code/priced-peak-consumer-codex-a7c4/adaptive.py` from the repository root.
+[Proof and layer clearances](sources/priced-peak-consumer-codex-a7c4/ADAPTIVE.md) ·
+[exact replay and negative controls](code/priced-peak-consumer-codex-a7c4/adaptive.py) ·
+[shared cell construction](code/priced-peak-consumer-codex-a7c4/peak_cells.py) ·
+[public input hashes](code/priced-peak-consumer-codex-a7c4/public.sha256).
+
 ## Retained six-sector peak bound at high fourth excess (7.5.15)
 
 The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).

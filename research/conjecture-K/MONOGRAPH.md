@@ -265,7 +265,7 @@ profiles [STATUS §15].
         →  A + B core, S + 4.936·10⁻⁵ (7.4.10; < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ in KAST)   unconditional on the peak energy domain (7.4.16)
         →  all six sectors, < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ (7.5.13 + KAST; < S + 7.971·10⁻⁵ conditional on open (P_Ψ) in 7.5.3 + KAST, proved on strips/regions 7.5.4c, 7.5.12)
         →  consumer (8.1, 8.7, 8.9–8.13)                    [0.8400, 0.8661] at peak ε and [0.8400, 0.8547] at 94/125, cap 500/701 (7.5.13 + KAST, P + C)
-        →  tighter consumer (8.13a)                          [0.8393, 0.8635] at 94/125, cap .713245 (also 3.3a and 3.5a, P + C, author only)
+        →  tighter consumer (8.13a, 8.13c)                          [0.8372, 0.8635] at 94/125, cap .713245 (also 3.3a and 3.5a, P + C, author only)
 
     through Λ (Conjecture K itself):
       remote sign D(q) ≥ 0 on the class handled  →  A-core by cost 6.2.1 and the content inequality
@@ -1240,14 +1240,17 @@ Outward-rounded integer Rice enclosures certify nine central rows on [0.795, 0.8
 remote and retained rectangles of 2.1 and 2.6 with u/λ² < 0.0463 and λ = 1880/1891 < 1, closing directly at **`< 6.35·10⁻⁵` (`D_+`) and `< 6.11·10⁻⁵` (signed) `< 10⁻⁴ < η_{max,8}`** across all six sectors using 7.5.13 and Row 8's benchmark (8.13, author only) (and giving the same bound for `q + A + B` on Row 8's profile via 7.4.16), while zero-profile-loss subdivided $t$-slabs of the exact scaled peak row $(\lambda\ell_0, \lambda\beta_0)$ close **`[0.8400, 0.8547]`** (Rows 8–10 + into Row 11, 11 slabs) at ε = 94/125, **`[0.84000, 0.85168]`** (Rows 4–6 + into Row 7, 10 slabs) at ε = 3/4, and **`[0.84000, 0.84948]`** (9 slabs below `713263/10⁶`) at ε = 299/400 by 7.5.13 [P + C; remaining central premises open ·
 STATUS 8.10, 8.13; `KAST`].
 
-At the tighter cap 0.713245 and ε = 94/125, three scaled peak profiles cover [.8393,.8635].
-The effective price μ/ε pays for the retained shift at μ > 1, while the positive same-variance deficit
-in 3.3a lets the fixed trial spend the Gaussian buffer and tilted content together. At this cap the 8.12
-exterior covers 1,548 of 1,773 cells and leaves [.751,.8635]. The three slabs reduce that gap to
-[.751,.8393]. Profiles 3 and 7 would complete this consumer if their
-retained errors are below 144.035 and 156.451 millionths on [.751,.8205] and [.8205,.8393],
-respectively. Their conditional reciprocal is 200000/142649. [8.13a, **P + C, author only**;
-[proof and exact replay](sources/priced-peak-consumer-codex-a7c4/PROOF.md)].
+At the tighter cap 0.713245 and ε = 94/125, the six-sector row covers [.8372,.8635] for every actual response.
+On [.8372,.8393], the remote and even-shell energies determine which of seven nested scaled peak profiles applies.
+The least clearance on these layers exceeds 5.05 millionths. Three further profiles cover [.8393,.8635], with
+clearances above 2.6466, 2.3606 and 10.2803 millionths. The effective price μ/ε pays for the retained shift
+when μ > 1. The positive same-variance deficit of 3.3a lets the fixed trial use both the Gaussian buffer and
+the tilted content estimate. The 8.12 exterior covers 1,548 of 1,773 cells and leaves
+[.751,.8372] after the central estimates. Profiles 3 and 7 would complete this consumer with retained errors below
+144.035 and 156.451 millionths on [.751,.8205] and [.8205,.8372], respectively. The resulting conditional
+reciprocal is 200000/142649. [8.13a, 8.13c, **P + C, author only**;
+[energy-dependent profiles](sources/priced-peak-consumer-codex-a7c4/ADAPTIVE.md) and
+[three upper profiles](sources/priced-peak-consumer-codex-a7c4/PROOF.md)].
 
 ### 2.11 Charging response feasibility to the discarded squares
 
