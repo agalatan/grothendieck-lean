@@ -56,7 +56,6 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | `docs/` | `CONSTANTS.md`, `LEAN_DETAILS.md` (module inventory), `overview.tex` (source of `OVERVIEW.pdf`), notes |
 | `research/` | ledgers of open problems (Conjecture K, higher-degree games, identity tail); nothing built; rules in `research/README.md` |
 | `haagerup-article/` | the article, **frozen**, with its own Lean package under `anc/`: it never quotes the repository's current bounds |
-| `sign/` | separate Lake package GrotheSign; not part of `Grothe` or of CI |
 | `handoff/` (git-ignored), `miscellaneous/`, `abandonware/` | archives; never built or imported |
 
 ## Building
@@ -79,7 +78,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 ## Never touch
 
 - `lakefile.toml`, `lake-manifest.json`, `lean-toolchain`: pinned by the node-cap registry; any change asks for a
-  rebuild of all node caps. A new target goes in its own Lake package (like `sign/`).
+  rebuild of all node caps. A new target goes in its own Lake package.
 - The caps closure (`python3 scripts/caps_stamp.py --list`) unless that is the task; after touching it,
   `python3 scripts/caps_stamp.py --digest` must print a `sha256` line.
 - `GrotheCapsKernel/` and `GrotheQuadKernel/`: frozen precompiled libraries; a change recompiles everything that

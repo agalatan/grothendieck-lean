@@ -34,7 +34,7 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
 **Where things stand.** Conjecture K is open, and no violation is known. A proof splits into six layers (1.9).
 
 - **Proved** (at the peak row unless the section says three rows or the whole box): the remote part,
-  sup Λ(q) = S over cubics independent of z₁ at the peak (2.1, 3.3a, paper proof with exact arithmetic); the A-shell with independent drivers, on the whole
+  sup Λ(q) = S over all energies and finite dimensions for cubics independent of z₁ at the peak, flank and upper profiles (2.1, 3.3a, 3.15a, paper proofs with exact arithmetic); the A-shell with independent drivers, on the whole
   box (2.2); explicit regions of the shared-driver core (2.4); the content inequality for several structured families
   (2.5); the B-shell cost and the alignment of B- and A-contents (2.7); the local joint A/B form, the global finite-amplitude raw joint A/B bounds and common diagonal costs at the three rows (2.8, 7.4.17), and the retained
   joint premise (P) for all complex shifts and both complex drivers (2.8, 7.4.16); the odd sectors over the zero core and over every remote core,
@@ -47,10 +47,9 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   every dimension and at every amplitude, and the same with error below 9.8·10⁻⁵ on a profile rectangle around the
   peak (2.6); the A + B core at the peak row, Λ̂(q + A + B) < S + 4936/10⁸ across u ≤ 0.0463 and u + V ≤ 0.080051 (2.8, 7.4.16), with `< S + 29.36·10⁻⁶` (`D_+` 11.61) and `< S + 27.00·10⁻⁶` (signed 11.61, strictly `< S` on u ∈ [0, 0.0354] ∪ [0.0456, 0.0463]), plus `< S + 1.078·10⁻⁴` / `< S + 1.070·10⁻⁴` for u ≤ λ²·0.0463, u + V ≤ λ²·0.080051 across the 11.53 profile rectangle [author only, `KAST`]; all six sectors together below S + 10⁻⁴ on an energy region around the zero core and on explicit odd/shell strips (7.5.1, 7.5.4c, 7.5.12), at most
   2E|L| < S for every G without a remote cubic (attained at G = 0; 2.9, 7.5.1), and across the full peak domain `< S + 29.36·10⁻⁶` / `< S + 27.00·10⁻⁶` (strict `< S` on u ∈ [0, 0.0354] ∪ [0.0456, 0.0463]) [author only, 2.9, 7.5.13, `KAST`].
-- **Open:** the raw content inequality of L4 for general cubics (and with it the raw B-content of general cubics); odd sectors over a core containing A/B shells for raw K, the general averaged odd premise (P_Ψ) of 7.5.3, and independent review of 7.5.13 for Λ̂; the remote part away from the
-  peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
+- **Open:** the raw content inequality of L4 for general cubics (and with it the raw B-content of general cubics); odd sectors over a core containing A/B shells for raw K, the general averaged odd premise (P_Ψ) of 7.5.3, and independent review of 7.5.13 for Λ̂; the remote bound over the full profile box; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
 
-**How far.** Apart from L2, Theorems A and B, the one-coordinate results and the three-row sector costs, the finished
+**How far.** Apart from L2, Theorems A and B, the one-coordinate results, the three named remote profiles and their sector costs, the finished
 pieces hold at the peak row or near it. Three single-witness routes to 1.402 are mapped (2.10). At ε = 1891/2500 an all-sector bound
 with error at most 1.006·10⁻⁴ at the peak row covers t ∈ [0.84, 0.851], and 6 subdivided peak-row $t$-slabs widen this conditionally on 7.5.13 to `[0.8400, 0.8661]` (`KAST`, closing the upper shoulder gap `[0.851, 0.863]` of 8.7 and leaving three lower response intervals uncovered). At
 ε = 299/400 everything outside (0.8165, 0.866) is proved, and ten all-sector inequalities at other profiles remain
@@ -247,7 +246,7 @@ K_η must hold for every G, not only for the core. A proof has six layers:
 
 | layer | statement | status | here |
 |---|---|---|---|
-| L1 | remote part: Λ(q) ≤ S + η for q independent of z₁ | exact at the peak, quantitative in a profile neighbourhood; other rows open | 2.1 |
+| L1 | remote part: Λ(q) ≤ S + η for q independent of z₁ | exact at the peak, flank and upper profiles, with quantitative estimates in the peak tube and one-sided rectangle. The full profile box remains open | 2.1 |
 | L2 | the core with drivers independent of q | proved on the whole box | 2.2 |
 | L3 | the core with shared drivers: explicit regions | proved regions at the peak; one region **R** | 2.4 |
 | L4 | the core on the residual region: cost plus content | K: families proved, general cubics open; Λ̂: closed at the peak | 2.5, 2.6 |
@@ -279,7 +278,7 @@ and over remote cores (5.4, 7.2.10), and the all-sector bound on an energy regio
 ### 2.1 The remote part (L1)
 
 Remote K reduces to a moment problem for U = |q|²/u: two-point extremal laws, cubic Hermite majorants of the profile,
-a secant envelope in the variance [P · audit · 3.1]. At the peak visible profile and every price p ≥ 1.317, the exact remote supremum in all finite dimensions is S(p). On the response band 0 < u ≤ 0.0463 every nonzero remote cubic gives strictly smaller mean modulus than the Gaussian of equal variance. At higher energies the priced payoff is strictly below an explicit Gaussian competitor. Independent cubic blocks approach the Gaussian supremum. With both linear drivers absent the same supremum holds after adding all three odd sectors, with a loss of at least (p − 32/25)‖O‖². [P + C, author only · 3.3a · proof](sources/peak-remote-deficit-codex-a7c4/PRICE.md)
+a secant envelope in the variance [P · audit · 3.1]. At the peak visible profile and every price p ≥ 1.317, the supremum over remote cubics of arbitrary finite dimension is S(p). On the response band 0 < u ≤ 0.0463 every nonzero remote cubic gives strictly smaller mean modulus than the Gaussian of equal variance. At higher energies the priced payoff is strictly below an explicit Gaussian competitor. Independent cubic blocks approach the Gaussian supremum. With both linear drivers absent the same supremum holds after adding all three odd sectors, with a loss of at least (p − 32/25)‖O‖². [P + C, author only · 3.3a · proof](sources/peak-remote-deficit-codex-a7c4/PRICE.md)
 
 The independently replayed absolute cap of 3.3 was
 
@@ -302,7 +301,7 @@ Around the peak:
   bound of S, such as the supporting plane of the Gaussian benchmark [P · 3.13]. No cell is certified: remote caps
   exist at the peak only.
 
-The flank and upper rows are outside all of these.
+The named flank and upper rows have separate exact all-energy proofs. At (a,b,ε) = (0.56,0.1467,0.745) and (0.573,0.152,0.7564), the supremum over remote cubics equals the corresponding Gaussian benchmark S. The proof recomputes the radial majorants for each visible law and uses its own signed estimate for the central energy and small fourth excess. At fixed visible parameters these certificates cover prices 1.34201 ≤ p ≤ 1.34239 at the flank and 1.3214 ≤ p ≤ 1.3225 at the upper profile. The mixed sectors at these rows require additional bounds. [P + C, author only · 3.15a · proof](sources/named-remote-k-codex-a7c4/PROOF.md) · [Price intervals and local stability](sources/named-remote-k-codex-a7c4/STABILITY.md)
 
 For any normalized circular cubic q of fourth excess s, the total-variation distance of its complex law from a standard complex Gaussian is at most ((√74+8)/18)√s. This controls all bounded tests, including the residual left after a polynomial with known moments is subtracted from a Stein majorant. The coefficient is sharp for the relaxed variance calculation. The signed payoff requires further estimates [P, author only + C · 3.31]. [Proof and scope](sources/radial-gram-comparison-codex-a7c4/PROOF.md).
 
@@ -621,6 +620,11 @@ at the peak). Combined with the Edgeworth bounds of 2.1, spectral Stein duals an
 this gives signed C(q)² ≤ (6/25)D(q) + 10⁻⁶ on [0, 0.0463] × [0, 841/10000] and exact zero-slack C(q)² ≤ (6/25)D(q)
 across the full connected domain [0, 0.0463] × [0, 49/625] ∪ [0, 7/10000] × [0, 42] ∪ [0, 3/250] × [0, 1/4] with no
 near-Gaussian sliver. The all-shapes extension to 7/10000 uses the unsmoothed raw A-content constant 5353/625 [P + C, author only · codex-a7c4 · 3.19a; gemini-5331, gemini-21d5 · 6.3.43].
+
+At the peak, the signed estimate $C^2\le(6/25)D$ holds for every cubic up to $u=0.002$.
+The allowable fourth excess then decreases with energy, from $\chi\le10$ at $u\le0.004$ to $\chi\le0.09$ at $u\le0.035$.
+For a sum of cubics on disjoint Gaussian coordinate blocks the same estimate holds throughout $u\le0.0463$ whenever every block carries at most $1/41$ of the energy or at most $1/28$ of the total fourth excess. The latter case includes 28 iid blocks.
+The proof controls the sixth cumulant and the first-chaos projection by the same sum $\sum_j\delta_j^{3/2}$ and gives a broader criterion for unequal excesses. [Proof and full staircase, 6.3.44](sources/strong-content-blocks-codex-a7c4/PROOF.md).
 
 The opposite driver character X̄H(Y) can be included at arbitrary strength in the one-driver self-interaction. Replacing it by X·conj(H(Y)) preserves the joint law with X and all first-chaos content. The resulting complex quadratic of real Gaussians satisfies the combined small-Wick moment multiplier. [One-driver proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md)
 
@@ -1274,14 +1278,14 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    for all $W \ge 0$ and arbitrary sharing; independent proof re-derivation and full C++ replay remain required before
    marking item 2 independently verified.
 3. **A consumer whose rows these bounds fit** (2.10): cover the complementary t regions with a fixed ε, using the
-   t-dependent energy caps, and state the consumer in Lean. The single peak row covers t ∈ [0.84, 0.851] at η = 10⁻⁴, and 6 subdivided peak-row $t$-slabs widen this conditionally on 7.5.13 to **`[0.8400, 0.8661]`** (`KAST`, closing the upper shoulder gap `[0.851, 0.863]` of 8.7 at ε = 1891/2500 and leaving three lower response intervals uncovered). A simple
+   t-dependent energy caps, and state the consumer in Lean. The single peak row covers t ∈ [0.84, 0.851] at η = 10⁻⁴, and 6 subdivided peak-row $t$-slabs widen this conditionally on 7.5.13 to **`[0.8400, 0.8661]`** (`KAST`, closing the upper shoulder gap `[0.851, 0.863]` of 8.7 at ε = 1891/2500 and leaving three lower response intervals uncovered, with certified benchmarks on parts of one of them, 2.10 · 8.7, 8.11). A simple
    first step is one new row at ε = 149/200 with an all-sector bound there, which gives 1.40171 (below the proved
    lower bound, so a test of K only). At ε = 299/400 only
    the central interval (0.8165, 0.866) is left, as ten explicit all-sector inequalities (binding rows 3.0–4.4·10⁻⁵; `[0.84000, 0.84948]` closed via the scaled peak row conditionally on 7.5.13 in `KAST`). At ε = 94/125 only (0.7515, 0.863) is left (author only), as
    thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.57·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`
-   alone), with Row 8 on [0.840, 0.847] directly closed `< 6.35·10⁻⁵` / `< 6.11·10⁻⁵ < 10⁻⁴` and subdivided scaled-peak slabs closing **`[0.8400, 0.8547]`** (Rows 8–10) at ε = 94/125 and **`[0.84000, 0.85168]`** (Rows 4–6) at ε = 3/4 conditionally on 7.5.13 (`KAST`). Rows away from
-   those intervals still need remote, A-core and all-sector estimates on their own profiles and energy caps
-   (2.1, 2.6), with the weighted scaling of 1.6; the flank and upper rows are outside both. Also open:
+   alone), with Row 8 on [0.840, 0.847] directly closed `< 6.35·10⁻⁵` / `< 6.11·10⁻⁵ < 10⁻⁴` and subdivided scaled-peak slabs closing **`[0.8400, 0.8547]`** (Rows 8–10) at ε = 94/125 and **`[0.84000, 0.85168]`** (Rows 4–6) at ε = 3/4 conditionally on 7.5.13 (`KAST`). For rows away from
+   those intervals, apply the weighted scaling of 1.6 and check their profiles and energy caps against the remote, A-core and all-sector estimates
+   (2.1, 2.6); the named flank and upper rows have their own exact remote bounds (3.15a) and lie outside the peak retained A-core rectangle. Also open:
    the corner σ\* = 0 if a cover uses it (1.4), and the unchecked external remote claims (2.1 · 11.7–11.11).
    *Gives:* 1.402.
 4. **Numerics for Λ̂ with more than three remote variables** (chapter 5).
@@ -1290,7 +1294,7 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 
 5. **The joint A/B remainder bound at finite amplitude** (2.8): **certified globally on all of $\mathbb{C}^3$ at the three rows [P + C · 7.4.17]**. Both $r_x(\alpha, \beta) \le Q_s(\alpha, \beta) - \frac{1}{100}S_0 \le Q_r(\alpha, \beta) - \frac{1}{100}S_0$ and the global common diagonal costs $\kappa_{\mathrm{diag}} = \frac{7}{25} = 0.28$ (`peak`), $\frac{3}{10} = 0.30$ (`flank`), $\frac{31}{100} = 0.31$ (`upper`) (below the zero-core obstructions 0.29836…, 0.32315…, 0.32771… of 7.4.9) hold at every shift and amplitude for arbitrary $L^2$ drivers, making the A + B gain for first-chaos drivers a pure quadratic form in the contents at every amplitude. *Gives:* the A + B core of K wherever the stated content bounds hold.
 6. **The raw L4 content inequality** for general cubics on 0.00551 ≤ u ≤ 0.0463, with the constant fixed by item 5 for first-chaos drivers
-   ($11/50 = 0.22$ under Target D of 7.4.17, or $6/25 = 0.24$ under signed Target S; 0.10 without 7.4.17). Under 7.4.17, strong $C^2 \le \gamma D$ covers 6.3.3, 6.3.4, high excess χ ≥ 40.32 (6.3.41), the complete one-driver self-interaction family across all shares and phases (2.5 · 6.3.13–6.3.16, author only), pure and bounded-ratio shared-bath multi-driver self-interactions (2.5 · 6.3.10, 6.3.17, author only, with $9/100 < 1/10$ on pure $q_0$), and exact zero-slack bounded kurtosis χ ≤ 49/625 with no near-Gaussian sliver (6.3.43, author only); carrying $(25/6)\eta_c$ covers signed $+10^{-6}$ on χ ≤ 841/10000 ($< S + 6.90\cdot 10^{-6}$; 6.3.43, author only); and combining Target S with 3.3 covers the weak-allowance staircase and small-influence class (χ ≤ 0.2809 across the band, τ_max ≤ 0.054; 6.3.40) and equal independent blocks (6.3.42) to $< S + 10^{-4}$. Open pieces at intermediate/high
+   ($11/50 = 0.22$ under Target D of 7.4.17, or $6/25 = 0.24$ under signed Target S; 0.10 without 7.4.17). Under 7.4.17, strong $C^2 \le \gamma D$ covers 6.3.3, 6.3.4, high excess χ ≥ 40.32 (6.3.41), the complete one-driver self-interaction family across all shares and phases (2.5 · 6.3.13–6.3.16, author only), pure and bounded-ratio shared-bath multi-driver self-interactions (2.5 · 6.3.10, 6.3.17, author only, with $9/100 < 1/10$ on pure $q_0$), and exact zero-slack bounded kurtosis χ ≤ 49/625 with no near-Gaussian sliver (6.3.43, author only); carrying $(25/6)\eta_c$ covers signed $+10^{-6}$ on χ ≤ 841/10000 ($< S + 6.90\cdot 10^{-6}$; 6.3.43, author only); and combining Target S with 3.3 covers the weak-allowance staircase and small-influence class (χ ≤ 0.2809 across the band, τ_max ≤ 0.054; 6.3.40) and equal independent blocks (6.3.42) to $< S + 10^{-4}$. Row 6.3.44 gives the signed strong bound on the larger staircase and the disjoint-block classes in §2.5. Open pieces at intermediate/high
    kurtosis: comparable-energy even-character shells beyond the sign neighbourhood and real-block class (6.3.9c, 6.3.16–6.3.16b) and arbitrary O(1) bath shares on many self-interacting drivers beyond 6.3.17(b). By the
    local representation of 2.5, the content and
    the excess D − 𝒥_dec of the deficit over that of the decoupled surrogate (2.1) are linear in one pair of fields, so
