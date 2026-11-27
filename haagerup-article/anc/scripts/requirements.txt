@@ -1,0 +1,5 @@
+# Third-party packages of the reproduction scripts (see README.md, "Requirements").
+# 01, 05 and 07 need none of them.  The minimum versions are the oldest ones tested.
+mpmath>=1.3.0
+numpy>=1.26.4
+matplotlib>=3.8.4

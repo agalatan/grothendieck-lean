@@ -30,7 +30,7 @@ Encodings (copied from the Lean definitions that decode them, HaagerupKernel/Cel
     |z_1| in [3i/32, 3(i+1)/32), |z_2| in [3j/32, 3(j+1)/32).  The map uses the value divided by 2^24.
   * an interval <lo, hi> stands for [lo / 2^128, hi / 2^128].
 
-Python >= 3.10, standard library only.
+Python >= 3.9, standard library only.
 """
 from __future__ import annotations
 
@@ -131,10 +131,11 @@ def sci(x, digits: int) -> str:
 def _scaled(x, digits: int, up: bool) -> int:
     """floor (or ceiling, if `up`) of x * 10^digits, exactly."""
     y = Fraction(x) * 10 ** digits
-    return -((-y).__floor__()) if up else y.__floor__()
+    return math.ceil(y) if up else math.floor(y)
 
 
 def _fixed(m: int, digits: int) -> str:
+    """The integer m, read as m / 10^digits, as a decimal string."""
     s = str(abs(m)).rjust(digits + 1, "0")
     return ("-" if m < 0 else "") + (f"{s[:-digits]}.{s[-digits:]}" if digits else s)
 
@@ -265,10 +266,33 @@ def channel_polys(p: int):
 
 
 def poly_eval(coeffs, x):
+    """Value at x of the polynomial with the coefficient list `coeffs` (constant term first)."""
     acc = 0
     for c in reversed(coeffs):
         acc = acc * x + c
     return acc
+
+
+def poly_str(coeffs, den: int = 0) -> str:
+    """A rational polynomial as text, `(a_0 + a_1 X + a_2 X^2 ...) / den` with integers a_j (the form in which
+    the paper's table of the six channels states the preprocessors).  `den` is the least common denominator
+    unless a multiple of it is given."""
+    num, lcd = _common_den([Fraction(c) for c in coeffs])
+    if den:
+        if den % lcd:
+            raise ValueError("den is not a common denominator")
+        num = [a * (den // lcd) for a in num]
+    else:
+        den = lcd
+    terms = []
+    for j, a in enumerate(num):
+        if a == 0:
+            continue
+        power = "" if j == 0 else " X" if j == 1 else f" X^{j}"
+        body = power.strip() if abs(a) == 1 and j > 0 else f"{abs(a)}{power}"
+        terms.append((" - " if a < 0 else " + ") + body if terms else ("-" if a < 0 else "") + body)
+    text = "".join(terms) or "0"
+    return text if den == 1 else f"({text}) / {den}"
 
 
 # --------------------------------------------------------------------------------------------------------------
@@ -276,6 +300,7 @@ def poly_eval(coeffs, x):
 # --------------------------------------------------------------------------------------------------------------
 
 def _section(text: str, name: str) -> str:
+    """The text of the Lean definition `name`, up to the next definition, theorem or `end`."""
     m = re.search(rf"^(?:private\s+)?def\s+{re.escape(name)}\b", text, flags=re.M)
     if not m:
         raise DataError(f"definition {name} not found")
@@ -397,6 +422,7 @@ def haag_rational(m: int) -> Fraction:
 # --------------------------------------------------------------------------------------------------------------
 
 def _common_den(coeffs):
+    """(integer numerators, common denominator) of a list of Fractions."""
     den = 1
     for c in coeffs:
         den = den * c.denominator // math.gcd(den, c.denominator)
@@ -440,6 +466,7 @@ def _horner(blocks, unum, uden, k_max):
 
 
 def _mul_exact(lo, hi, pnum, k_max):
+    """Product, truncated at degree k_max, of the interval polynomial [lo, hi] with the integer polynomial pnum."""
     size = k_max + 1
     nlo = [0] * size
     nhi = [0] * size
@@ -457,6 +484,7 @@ def _mul_exact(lo, hi, pnum, k_max):
 
 
 def _poly_mul_int(a, b, k_max):
+    """Product of two integer polynomials, truncated at degree k_max."""
     out = [0] * min(len(a) + len(b) - 1, k_max + 1)
     for i, x in enumerate(a):
         if x:
@@ -510,7 +538,6 @@ def channel_head(p: int, mode: str = "interval", k_max: int = HEAD):
     """
     if not 0 <= k_max <= HEAD:
         raise ValueError("k_max must be in 0..250")
-    par = parameters()
     P, Q = channel_polys(p)
     if p in SMOOTHED:
         if Q != [0, -1]:

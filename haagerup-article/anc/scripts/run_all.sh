@@ -2,16 +2,17 @@
 # Run the reproduction scripts 01-07 in order; stop at the first failure.
 #
 #   ./run_all.sh                 everything, with the long option of 04 (--all: about 12 minutes on one core)
-#   ./run_all.sh --quick         the default options only (about 3 minutes)
+#   ./run_all.sh --quick         the default options only (1 to 2 minutes)
 #   ./run_all.sh --jobs 4        worker processes for 04 (the output does not depend on it)
 #   ./run_all.sh --save          also write each output to expected_output/ (overwrites the reference outputs)
 #   PYTHON=/path/to/python ./run_all.sh     choose the interpreter (default: python3)
 #
 # Prints one PASS/FAIL line per script and the total time.  The output of each script is compared with
 # expected_output/; a difference is reported but is not a failure (see README.md, "Comparing with the
-# reference outputs").  The scripts are not part of the proof and the Lean package does not use them.
-set -u
-cd "$(dirname "$0")" || exit 2
+# reference outputs").  Exit status: 0 if every script passed, 1 if one failed, 2 for a wrong invocation.
+# The scripts are not part of the proof and the Lean package does not use them.
+set -euo pipefail
+cd "$(dirname "$0")"
 PY="${PYTHON:-python3}"
 export PYTHONDONTWRITEBYTECODE=1
 QUICK=0
@@ -21,26 +22,34 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --quick) QUICK=1 ;;
     --save) SAVE=1 ;;
-    --jobs) shift; JOBS="${1:?--jobs needs a number}" ;;
+    --jobs)
+      if [ $# -lt 2 ]; then echo "--jobs needs a number" >&2; exit 2; fi
+      shift
+      JOBS="$1"
+      case "$JOBS" in ''|*[!0-9]*) echo "--jobs needs a number" >&2; exit 2 ;; esac
+      ;;
     -h|--help) sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
-    *) echo "unknown option: $1" >&2; exit 2 ;;
+    *) echo "unknown option: $1 (try --help)" >&2; exit 2 ;;
   esac
   shift
 done
+if ! command -v "$PY" > /dev/null 2>&1; then
+  echo "interpreter not found: $PY (set PYTHON=/path/to/python)" >&2
+  exit 2
+fi
 
 total_start=$(date +%s)
-status=0
 
-run() {  # run <reference name> <script> [arguments...]
-  local ref="$1"; shift
-  local script="$1"; shift
-  local start out code secs note=""
+run() {  # run <reference name> <script> [arguments...]; returns the script's exit status
+  local ref="$1" script="$2"
+  shift 2
+  local start out code=0 secs note="no reference output"
   start=$(date +%s)
-  out=$("$PY" "$script" "$@")
-  code=$?
+  out=$("$PY" "$script" "$@") || code=$?
   secs=$(( $(date +%s) - start ))
   if [ "$SAVE" = 1 ] && [ "$code" = 0 ]; then
-    mkdir -p expected_output && printf '%s\n' "$out" > "expected_output/$ref.txt"
+    mkdir -p expected_output
+    printf '%s\n' "$out" > "expected_output/$ref.txt"
   fi
   if [ -f "expected_output/$ref.txt" ]; then
     if printf '%s\n' "$out" | diff -q - "expected_output/$ref.txt" > /dev/null; then
@@ -54,11 +63,11 @@ run() {  # run <reference name> <script> [arguments...]
   else
     printf '%s\n' "$out"
     printf 'FAIL  %-28s %4ds  (exit status %s)\n' "$script $*" "$secs" "$code"
-    status=1
   fi
   return "$code"
 }
 
+status=0
 {
   run 01_certificate_arithmetic 01_certificate_arithmetic.py &&
   run 02_gamma_dagger 02_gamma_dagger.py &&
