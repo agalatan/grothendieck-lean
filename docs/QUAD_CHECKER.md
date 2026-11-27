@@ -175,8 +175,9 @@ Notation: `x ∈ a` means `a.lo ≤ x · 2^K ≤ a.hi` for an `Ival a` at precis
   `ξ ∈ [r−ε, r+ε]` certified (`ProfileRootScreen`/`ProfileRootSound`), `|vprof′| ≤ D` on `W`,
   `κ = √(1+a²)`, `a = r − w`: the signed linear model `1 + (t/2)(w − w̄)`, `t = κ v(s)/√s`,
   has squared L² residual ≤ `(25 κ⁴ D⁴ e^{−a}/a²)(2w⁵/5 + 4w³ε² + 2wε⁴)` over the window
-  (archived in `abandonware/`: `ZeroProfilePhaseLinearization.norm_phaseSliceLp_sub_linear`,
-  `Q0ConditionalLinearError.coefficient_linear_error_sq_le`); the retained modes integrate in
+  (the lemmas `ZeroProfilePhaseLinearization.norm_phaseSliceLp_sub_linear` and
+  `Q0ConditionalLinearError.coefficient_linear_error_sq_le` are no longer in the repository: git history,
+  `abandonware/README.md`); the retained modes integrate in
   closed form against the radial basis; the replacement theorem connects the window model to
   the saved table.
 - **S9 (assembly).** On master: `original_energy_of_retained_source`, the smoothing matrices

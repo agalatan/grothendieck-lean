@@ -17,7 +17,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 # records of past work: kept as they were received, links included
-ARCHIVES = ("miscellaneous/", "abandonware/", "handoff/", "outputs/")
+ARCHIVES = ("abandonware/", "handoff/", "outputs/")
 ARCHIVE_PARTS = ("/sources/",)
 
 LINK = re.compile(r"(?<!\\)\[(?:[^\]\\]|\\.)*\]\(\s*<?([^)\s>]+)>?(?:\s+\"[^\"]*\")?\s*\)")

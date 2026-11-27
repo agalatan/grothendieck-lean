@@ -13,7 +13,7 @@ Without --check it also re-sorts and de-duplicates the union-merged list files (
 sides' new lines out of order). So after any merge: rerun it, and a conflict in a root file is resolved too.
 
 Union merges can also revive entries that another delivery removed. Entries naming theorems, native facts or modules
-that exist only under miscellaneous/ or abandonware/ (archived, not built) are dropped from the axiom lists and
+that exist only under abandonware/ (archived, not built) are dropped from the axiom lists and
 scratch/Axioms.lean, and --check reports any that remain.
 
 --check also checks the list files that git union-merges (.gitattributes): data/root-imports-exclude.txt,
@@ -79,10 +79,10 @@ def declarations(paths):
 
 
 def archived():
-    """(names, modules) that exist only under miscellaneous/ or abandonware/: archived, not built."""
+    """(names, modules) that exist only under abandonware/: archived, not built."""
     active_files = [p for lib in LIBS
                     for p in glob.glob(os.path.join(ROOT, lib, "**", "*.lean"), recursive=True)]
-    archive_files = [p for folder in ("miscellaneous", "abandonware")
+    archive_files = [p for folder in ("abandonware",)
                      for p in glob.glob(os.path.join(ROOT, folder, "**", "*.lean"), recursive=True)]
     active_mods = {os.path.relpath(p, ROOT)[:-5].replace(os.sep, ".") for p in active_files}
     archive_mods = set()
@@ -122,7 +122,7 @@ def list_problems():
             with open(os.path.join(ROOT, path), encoding="utf-8") as f:
                 stale = [l.strip() for l in f if l.strip() and is_archived(l, names, mods)]
             if stale:
-                problems.append(f"{path}: archived (only under miscellaneous/ or abandonware/) {stale[:3]}")
+                problems.append(f"{path}: archived (only under abandonware/) {stale[:3]}")
     for path in AXIOM_REPORTS:
         with open(os.path.join(ROOT, path), encoding="utf-8") as f:
             lines = [l.rstrip("\n") for l in f if l.strip()]

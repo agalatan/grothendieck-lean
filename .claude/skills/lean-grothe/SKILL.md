@@ -56,7 +56,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | `docs/` | `CONSTANTS.md`, `LEAN_DETAILS.md` (module inventory), `overview.tex` (source of `OVERVIEW.pdf`), notes |
 | `research/` | ledgers of open problems (Conjecture K, higher-degree games, identity tail); nothing built; rules in `research/README.md` |
 | `haagerup-article/` | the article, **frozen**, with its own Lean package under `anc/`: it never quotes the repository's current bounds |
-| `handoff/` (git-ignored), `miscellaneous/`, `abandonware/` | archives; never built or imported |
+| `handoff/` (git-ignored), `abandonware/` | archives; never built or imported (`abandonware/README.md` lists the few kept modules) |
 
 ## Building
 
