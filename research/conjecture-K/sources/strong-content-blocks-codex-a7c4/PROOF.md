@@ -84,6 +84,8 @@ To show the two means have modulus below one, the checker brackets \(1.55<r<1.56
 
 By construction \(E[\bar X q]=t-t=0\) and \(E[\bar Xqg(|q|^2)]=t\Delta\). Both pairings against \(W\) vanish by angular symmetry. The function has charge one under simultaneous rotation and the announced squared content follows. It also meets the ordinary explicit caps \((58/125)u^2\) and \(\sqrt{13/15}(9/2)u^3\) at this energy. The latter is the published numerical OU cap, with \(9/2\) bounding the smoothed kernel functional.
 
+The Gaussian variance loss and the smoothed B-response estimate give exact joint raw A+B on the staircase and all four block classes. [Joint proof, 7.4.18](JOINT.md)
+
 ## Exact replay
 
 From the repository root run
