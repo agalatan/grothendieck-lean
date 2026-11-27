@@ -45,7 +45,7 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
   every dimension and at every amplitude, and the same with error below 9.8·10⁻⁵ on a profile rectangle around the
-  peak (2.6); the A + B core at the peak row, Λ̂(q + A + B) < S + 4936/10⁸ across u ≤ 0.0463 and u + V ≤ 0.080051 (2.8, 7.4.16), with `< S + 29.36·10⁻⁶` (`D_+` 11.61) and `< S + 27.00·10⁻⁶` (signed 11.61, strictly `< S` on u ∈ [0, 0.0354] ∪ [0.0456, 0.0463]), plus `< S + 1.078·10⁻⁴` / `< S + 1.070·10⁻⁴` across the 11.53 profile rectangle [author only, `KAST`]; all six sectors together below S + 10⁻⁴ on an energy region around the zero core and on explicit odd/shell strips (7.5.1, 7.5.4c, 7.5.12), at most
+  peak (2.6); the A + B core at the peak row, Λ̂(q + A + B) < S + 4936/10⁸ across u ≤ 0.0463 and u + V ≤ 0.080051 (2.8, 7.4.16), with `< S + 29.36·10⁻⁶` (`D_+` 11.61) and `< S + 27.00·10⁻⁶` (signed 11.61, strictly `< S` on u ∈ [0, 0.0354] ∪ [0.0456, 0.0463]), plus `< S + 1.078·10⁻⁴` / `< S + 1.070·10⁻⁴` for u ≤ λ²·0.0463, u + V ≤ λ²·0.080051 across the 11.53 profile rectangle [author only, `KAST`]; all six sectors together below S + 10⁻⁴ on an energy region around the zero core and on explicit odd/shell strips (7.5.1, 7.5.4c, 7.5.12), at most
   2E|L| < S for every G without a remote cubic (attained at G = 0; 2.9, 7.5.1), and across the full peak domain `< S + 29.36·10⁻⁶` / `< S + 27.00·10⁻⁶` (strict `< S` on u ∈ [0, 0.0354] ∪ [0.0456, 0.0463]) [author only, 2.9, 7.5.13, `KAST`].
 - **Open:** the raw content inequality of L4 for general cubics (and with it the raw B-content of general cubics); odd sectors over a core containing A/B shells for raw K, the general averaged odd premise (P_Ψ) of 7.5.3, and independent review of 7.5.13 for Λ̂; the remote part away from the
   peak; the response regions outside the central one; the consumer and its Lean statement (chapter 3).
@@ -799,7 +799,7 @@ author only + C · 11.48].
 using the weighted scaling of 1.6 with the cost k_λ = 59009/189100 − (λ − 1)·9/25. The exact budget is
 9.7888442057·10⁻⁵: a profile loss of 7.8·10⁻⁵, η, and the 3.6·10⁻⁷ between the remote cap and a lower bound of S; at
 the peak it reproduces the lemma's budget within 3·10⁻⁹ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee;
-it inherits step 3 · 11.53]. Under u + V ≤ λ²·0.080051, `KAST` extends this profile rectangle (via 7.4.16) to joint `q + A + B` at `< S + 1.078·10⁻⁴` (`D_+` 11.61) and `< S + 1.070·10⁻⁴` (signed 11.61; `< S + 10⁻⁴` for 0 ≤ b/λ − 0.1432 ≤ 1/970), and conditionally on 7.5.13 across all six sectors at `< S + 1.072·10⁻⁴` / `< S + 1.048·10⁻⁴` for ε ≤ 1891/2500 (λ ≤ 1, arbitrary W ≥ 0) and `< S + 1.220·10⁻⁴` / `< S + 1.214·10⁻⁴` for ε ∈ (1891/2500, 19/25] under ‖G‖² ≤ λ²·0.080051 (accounting for (λ − 1)(49/625)|ν₀|²) [P + C, author only · gemini-c1de · 11.53]. The flank and upper rows are outside this rectangle.
+it inherits step 3 · 11.53]. Under u ≤ λ²·0.0463, `KAST` extends this profile rectangle (via 7.4.16, for u + V ≤ λ²·0.080051) to joint `q + A + B` at `< S + 1.078·10⁻⁴` (`D_+` 11.61) and `< S + 1.070·10⁻⁴` (signed 11.61; `< S + 10⁻⁴` for 0 ≤ b/λ − 0.1432 ≤ 1/970), and conditionally on 7.5.13 across all six sectors at `< S + 1.072·10⁻⁴` / `< S + 1.048·10⁻⁴` for ε ≤ 1891/2500 (λ ≤ 1, u + V ≤ λ²·0.080051, arbitrary W ≥ 0) and `< S + 1.220·10⁻⁴` / `< S + 1.214·10⁻⁴` for ε ∈ (1891/2500, 19/25] under ‖G‖² ≤ λ²·0.080051 (accounting for (λ − 1)(49/625)|ν₀|²) [P + C, author only · gemini-c1de · 11.53]. The flank and upper rows are outside this rectangle.
 
 This closes the A-shell of Λ̂ at the peak row, at every amplitude. It does not touch the B-shell, the odd sectors, the
 other rows, or K itself: for Λ (the tilt s = 0) the remainder and content steps are unproved; numerically the global
@@ -1263,7 +1263,7 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
 
 1. **Completed.** At the peak row the joint remainder premise (P) holds on all of ℂ³ (7.4.16, **P + C**).
    With the bridge of 7.4.10 this gives Λ̂(q + A + B) < S + 0.00004936 (**P + C**) and `< S + 29.36·10⁻⁶` (`D_+` 11.61) / `< S + 27.00·10⁻⁶` (signed 11.61, strictly `< S` on u ∈ [0, 0.0354] ∪ [0.0456, 0.0463]; **P + C, author only**, `KAST`) throughout u ≤ 0.0463,
-   u + V ≤ 0.080051, with arbitrary sharing and phases (2.8), plus `< S + 1.078·10⁻⁴` / `< S + 1.070·10⁻⁴` on the 11.53 profile rectangle (2.6). A second target, with no
+   u + V ≤ 0.080051, with arbitrary sharing and phases (2.8), plus `< S + 1.078·10⁻⁴` / `< S + 1.070·10⁻⁴` for u ≤ λ²·0.0463, u + V ≤ λ²·0.080051 on the 11.53 profile rectangle (2.6). A second target, with no
    caps on the driver energies but with content premises that are open, is the common cost 23/100 at the A-tilt alone
    (2.8).
 2. **The odd sectors over a core with A/B shells**: remote cores are done at the peak (2.9). Independently reviewed

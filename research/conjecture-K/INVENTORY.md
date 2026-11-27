@@ -1866,9 +1866,9 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/all-sector-transfer-gemini-c1de/PROOF.md` | 22,983 B | `2ac57ee4572443930818fc737939dead00a625595bc892c9c30fe3c11d67f01f` |
-| `code/all-sector-transfer-gemini-c1de/README.md` | 2,922 B | `87d02d2a96ca6100f46cd9cc32fc7967ff8be97f2ac107d9c7a539637b41cc48` |
+| `sources/all-sector-transfer-gemini-c1de/PROOF.md` | 23,362 B | `caa00cc8c6938135219506c6c16c91f8f21cf9495a46a502c5f148f261a73244` |
+| `code/all-sector-transfer-gemini-c1de/README.md` | 2,922 B | `ca959b115951666c445ec100476857a0a4caf035da915388610e8a1e45723074` |
 | `code/all-sector-transfer-gemini-c1de/generate_certs.py` | 21,536 B | `b82930d3bcbf56c28b0672f866552efb441cbc5918550528408bde8e7b033416` |
-| `code/all-sector-transfer-gemini-c1de/verify.py` | 35,916 B | `c681031fa6ccf8e685a11b990b9dd65992369e68a9353b3a7b320b497d23d65b` |
+| `code/all-sector-transfer-gemini-c1de/verify.py` | 36,010 B | `65fea8844b793b2333d77a5a29a832c2a158bb6e5d7b5e8abf7dc611910f191b` |
 | `code/all-sector-transfer-gemini-c1de/test_controls.py` | 8,784 B | `c6afbdb43aef19aa7d05043739ee5dba069a3710c5142095786924e7f021cbdf` |
 | `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 267,846 B | `c0464da7a116c1f7cb459191227185f8e3c631d0ca7f4ad9594750e82bb90f47` |
