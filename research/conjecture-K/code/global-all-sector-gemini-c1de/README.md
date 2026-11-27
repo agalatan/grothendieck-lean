@@ -29,3 +29,9 @@ python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/test_control
 # 3. Full non-destructive C++17 recompilation + live control + full 8-thread replay + exact-match check:
 python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py --replay-cpp
 ```
+
+## Reuse Precondition on `eval_c0_cell_ub` (Singleton Parameter Boxes Only)
+
+`eval_c0_cell_ub` (`certify_all_sector.cpp:1928–1973`) requires **singleton point parameter boxes** (`rw = 0`, `rv = 0`, hence `dX_box = 0`). The sole production caller (`certify_all_sector.cpp:2813`, `eval_odd_box(pgrids[gl_idx], w_pt, v_pt, ...)`) evaluates point corners of each `Box5` leaf under the 5D convexity–semiconvexity theorem, so `dX_box == 0.0` identically and the `if (dX_box > 0.0)` branch at lines `1965–1970` is never reached (`STATUS.md` `7.5.13` is unaffected).
+
+Do **not** call `eval_odd_box` / `eval_c0_cell_ub` as written on non-singleton interval parameter boxes (`dX_box > 0`): when `rl_cell < dX_box` (`rl_box = 0`), a point at initial radius `dX_box` can shift to the origin with true maximum increase `psi(0, q_hi) - psi(dX_box, q_hi)`, whereas lines `1966–1968` evaluate `psi_cell_dn` at `rl_cell` (`psi(0, q_hi) - psi(rl_cell, q_hi)`, which is smaller and vanishes at `rl_cell = 0`). Because `certify_all_sector.cpp` is hash-pinned by `cpp_sha256` in `result.json`, `INVENTORY.md`, and `REPLAY.md`, do not edit it in place; any future reuse with interval parameter boxes (for instance, a multi-row consumer in `STATUS.md` §8) must start from a fixed copy in its own folder (replacing `rl_cell` by `std::max(rl_cell, dX_box)` in `psi_cell_dn` at `1966–1968`) with its own regenerated receipt.

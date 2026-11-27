@@ -1785,7 +1785,7 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 
 ## Sharp retained peak value on the capped energy domain (codex-a7c4, #761)
 
-[Central energy/excess proof](sources/peak-window-codex-a7c4/PROOF.md) · [All shapes, sharpness and scaling](sources/peak-window-codex-a7c4/PEAK.md) · [Rational certificate and verifier](code/peak-window-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/peak-window-codex-a7c4/verify.py` from the repository root. Each of 24 spectral duals is checked on the positive half-line before its deficit estimate is used in a closed two-dimensional cover.
+[Central energy/excess proof](sources/peak-window-codex-a7c4/PROOF.md) · [All shapes, sharpness and scaling](sources/peak-window-codex-a7c4/PEAK.md) · [Rational certificate and verifier](code/peak-window-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/peak-window-codex-a7c4/verify.py` from the repository root. Each of 24 spectral duals is checked on the positive half-line before its deficit estimate is used in a closed two-dimensional cover. The [Arb cap replay](code/peak-window-codex-a7c4/replay_caps.py) checks the 78 cubic caps and the tangent at 64. A [second optimization replay](code/peak-window-codex-a7c4/replay_window.py) checks the radial and shell prices.
 
 ## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
 
@@ -1798,7 +1798,7 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 | file | size | SHA-256 |
 |---|---:|---|
 | `sources/global-all-sector-gemini-c1de/PROOF.md` | 31,333 B | `e98ee17b947fa8792d47a5a72c93383ac83a84c0881c9d8531fc8b533e2e0b22` |
-| `code/global-all-sector-gemini-c1de/README.md` | 3,008 B | `194c99e54a6901d354f84e10ab710f92524fe358fe5e5b3275393d062203f2ae` |
+| `code/global-all-sector-gemini-c1de/README.md` | 4,419 B | `9d0d2720e8b49653bbb28bc4d8059ef7812b5fd585cbc1eef9ae5fa9b0ad1c1c` |
 | `code/global-all-sector-gemini-c1de/certify_all_sector.cpp` | 162,100 B | `2186d7971f9693cc2440fe794eab29ffb80a0ca3b775f916583cb903eab0705c` |
 | `code/global-all-sector-gemini-c1de/verify.py` | 30,836 B | `fc9af6813e2bf7430989ff1bce18aa6db27f287b2997fd8c874ec3ddf1f92e17` |
 | `code/global-all-sector-gemini-c1de/result.json` | 546,108 B | `fe5e948a3090d64692064575268289490f7f89d3ab0747ee27dfc09dff1bdcbb` |
@@ -1885,6 +1885,15 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 | `code/all-sector-transfer-gemini-c1de/test_controls.py` | 8,784 B | `c6afbdb43aef19aa7d05043739ee5dba069a3710c5142095786924e7f021cbdf` |
 | `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 267,846 B | `c0464da7a116c1f7cb459191227185f8e3c631d0ca7f4ad9594750e82bb90f47` |
 
+## Energy-dependent six-sector witness profiles (codex-a7c4, #790)
+
+Row 8.13c uses the public KAST certificate pinned by 8.13a. Run
+`python3 -IB research/conjecture-K/code/priced-peak-consumer-codex-a7c4/adaptive.py` from the repository root.
+[Proof and layer clearances](sources/priced-peak-consumer-codex-a7c4/ADAPTIVE.md) ·
+[exact replay and negative controls](code/priced-peak-consumer-codex-a7c4/adaptive.py) ·
+[shared cell construction](code/priced-peak-consumer-codex-a7c4/peak_cells.py) ·
+[public input hashes](code/priced-peak-consumer-codex-a7c4/public.sha256).
+
 ## Retained six-sector peak bound at high fourth excess (7.5.15)
 
 The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).
@@ -1933,6 +1942,22 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 | `code/third-chaos-506-gemini-8732/verify_ou_influence.py` | 22,109 B | `b1d4698c3a2a2f3880451c5c4b5e9897701bbfd5f9aa3b9a94afdbbea7135572` |
 | `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 26,097 B | `bac8b53f16a859b0b7e6327a3b736db77c46ae6b1e48b12b4ec639953fe1e0e0` |
 | `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,468 B | `be10b7a0d585008cf660de0a6540803b033bf13f3fd085b8c67d5bc5cda01de8` |
+
+## Quantitative buffered PVD, sharp complex radius, and step-by-step CLT & doubling monotonicity (gemini-21d5, #730)
+
+- [Proof and mathematical derivations](sources/wick-pvd-doubling-gemini-21d5/PROOF.md) and
+  [1088-bit zero-float stdlib verifier, exact rational certificate, and 19 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
+  (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 85 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
+- **Replay:**
+  - Default audit (~85 s, Python 3 stdlib only, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds and 19 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
+  - Full 1088-bit continuum recomputation from scratch (~6 min, verifying `saved == fresh` byte-for-byte across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 19 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,148 B | `a919ffc8762e19c047877f70469d4a586d995f49837c71034f2c5bdfad6a621e` |
+| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,706 B | `1ecb9a0f3ef939dafbfa52eff4464634694cb6e829f80b2a5f0da63bd732b525` |
+| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 83,736 B | `b37eb6953bfcb04ad276c3ddd4c26324936253c51cdd05e2c7c1e0c5145e8523` |
+| `code/wick-pvd-doubling-gemini-21d5/result.json` | 2,684 B | `8b5730d0f20fcf407c950228b0c253af6cd8396485e794ad0cfc7ad8c801c205` |
 
 ## Free-homothety peak-ray transfer, exempt-box-free retained bounds, and end-to-end consumer closures (gemini-c1de, #760)
 

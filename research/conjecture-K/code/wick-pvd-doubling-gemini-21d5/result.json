@@ -1,0 +1,109 @@
+{
+  "agent_id": "gemini-21d5",
+  "analytic_lemmas": {
+    "asymptotic_clt_m13_net_scaled_lower": "1/25",
+    "small_z_ddoub_over_z2_min_on_0_1_100": "1019237/480000",
+    "wick_monomial_E_abs_H_enclosure": [
+      "690821/1000000",
+      "345411/500000"
+    ],
+    "wick_monomial_unbuffered_gap_lower": "39081/200000"
+  },
+  "continuum_certificates": {
+    "algebraic_envelope": {
+      "alpha": "1/5",
+      "c1": "19/5",
+      "compact_zeta_cap": "19/2",
+      "max_compact_ratio_upper": "1248569/1250000",
+      "num_compact_cells": 1292,
+      "psi_wick_minus_exp_scaled_lb_min_zeta2_1_on_0_4": "13137/5000000"
+    },
+    "buffered_pvd": {
+      "F_pos_over_w2_lower": "1911937/5000000",
+      "M_slab_count": 320,
+      "T_PVD_over_M2_upper": "2703531/10000000",
+      "certified_net_gap_coef": "1/20",
+      "w_slab_count": 160
+    },
+    "clt_and_doubling": {
+      "F_doub_over_w2_lower": "10841/62500",
+      "T_doub_over_M2_upper": "36557/250000",
+      "certified_diffuse_doubling_coef": "1/40",
+      "clt_step_gains_m_1_to_12": {
+        "1": [
+          "16083/1000000",
+          "4057/250000"
+        ],
+        "10": [
+          "3943/1000000",
+          "3263/500000"
+        ],
+        "11": [
+          "863/250000",
+          "6121/1000000"
+        ],
+        "12": [
+          "3043/1000000",
+          "29/5000"
+        ],
+        "2": [
+          "13869/1000000",
+          "32719/1000000"
+        ],
+        "3": [
+          "4901/500000",
+          "8933/500000"
+        ],
+        "4": [
+          "5209/500000",
+          "6951/500000"
+        ],
+        "5": [
+          "7859/1000000",
+          "5717/500000"
+        ],
+        "6": [
+          "3589/500000",
+          "491/50000"
+        ],
+        "7": [
+          "6009/1000000",
+          "4263/500000"
+        ],
+        "8": [
+          "2613/500000",
+          "241/31250"
+        ],
+        "9": [
+          "563/125000",
+          "3523/500000"
+        ]
+      },
+      "diffuse_doubling_M_over_u_cap": "1/7",
+      "log_slope_g_prime_min_on_0_1_12": "15129/10000",
+      "log_slope_g_prime_min_on_1_12_to_6_5": "2317/1000000"
+    }
+  },
+  "precision_bits": 1088,
+  "schema": "wick-pvd-doubling-v1",
+  "schlaefli_watson_and_real_he3": {
+    "C_quarter_enclosure": [
+      "1690847/2000000",
+      "1695909/2000000"
+    ],
+    "real_he3_doubled_enclosure": [
+      "6038107/10000000",
+      "1509527/2500000"
+    ],
+    "real_he3_doubling_gain_enclosure": [
+      "-25299/2000000",
+      "-63247/5000000"
+    ],
+    "real_he3_single_enclosure": [
+      "3082301/5000000",
+      "6164603/10000000"
+    ],
+    "zeta_cross_19_2_power5_product_upper": "9751741/10000000"
+  },
+  "task_issue": 730
+}
