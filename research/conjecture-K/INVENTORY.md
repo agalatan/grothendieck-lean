@@ -1779,6 +1779,10 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 
 [Angular measures and the raw two-shell price interval](sources/signed-score-coupling-codex-a7c4/PROOF.md) · [Retained six-sector result, STATUS 7.5.14](sources/signed-score-coupling-codex-a7c4/SIX.md) · [Exact replay and upstream hashes](code/signed-score-coupling-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/signed-score-coupling-codex-a7c4/verify.py` at the repository root. The proof uses the global pointwise bound of 7.5.13 and the scalar deficit certificates identified in the source.
 
+## Sharp retained peak value on the capped energy domain (codex-a7c4, #761)
+
+[Central energy/excess proof](sources/peak-window-codex-a7c4/PROOF.md) · [All shapes, sharpness and scaling](sources/peak-window-codex-a7c4/PEAK.md) · [Rational certificate and verifier](code/peak-window-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/peak-window-codex-a7c4/verify.py` from the repository root. Each of 24 spectral duals is checked on the positive half-line before its deficit estimate is used in a closed two-dimensional cover.
+
 ## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
 
 - [Proof and replay instructions](sources/global-all-sector-gemini-c1de/PROOF.md) and
@@ -1886,12 +1890,12 @@ The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certi
 - [Proof and replay instructions](sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md) and
   [exact zero-float verifiers and replay log](code/third-chaos-506-gemini-8732/) (tag KTC506; STATUS 3.21 (e1), 3.21 (e4), 3.21 (e9)(iii)–(iv); **P + C, author only**). Every file is under 30 KB and committed in the repository; no external files or dependencies were left outside.
 - **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations, AST-audited):**
-  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_ou_influence.py` verifies `||U||_HS^2 == tr(M^2) >= ||U_tilde||_HS^2` on rational symmetric 3-tensors in $\mathbb{R}^2, \mathbb{R}^3, \mathbb{R}^4$, Machin $\pi$ bounds, $2\times 2$ Schur positivity across $[0, \infty)$ (336 leaves including the infinite ray) for the dedicated Triple 3 $(583/25000, 4239/100000, -1497/50000)$ (exact slope $2181/10000$), `(T)` for $\operatorname{tr}(M^2)/\|T\|_{\mathrm{HS}}^4 \le 3841/25000 = 0.15364$ (in particular $\le 96/625 = 0.1536$, vs `KNG505` $373/2800 \approx 0.13321$) and $\lambda \le 3841/25000 = 0.15364$ (covering all isotropic / irreducibly $O(n)$-symmetric third-chaos cubics $M = (\|T\|_{\mathrm{HS}}^2/n)I_n$ in every dimension $n \ge 1$), and 7 negative controls at full production depth `max_depth = 12` (~39 s).
+  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_ou_influence.py` verifies `||U||_HS^2 == tr(M^2) >= ||U_tilde||_HS^2` on rational symmetric 3-tensors in $\mathbb{R}^2, \mathbb{R}^3, \mathbb{R}^4$, Machin $\pi$ bounds, $2\times 2$ Schur positivity across $[0, \infty)$ (336 leaves including the infinite ray) for the dedicated Triple 3 $(583/25000, 4239/100000, -1497/50000)$ (exact slope $2181/10000$), `(T)` for $\operatorname{tr}(M^2)/\|T\|_{\mathrm{HS}}^4 \le 3841/25000 = 0.15364$ (in particular $\le 96/625 = 0.1536$, vs $373/2800 \approx 0.13321$ from Lemma 1.1 + `KNG505`) and $\lambda \le 3841/25000 = 0.15364$ (covering all isotropic / irreducibly $O(n)$-symmetric third-chaos cubics $M = (\|T\|_{\mathrm{HS}}^2/n)I_n$ in every dimension $n \ge 1$), and 7 negative controls at full production depth `max_depth = 12` (~39 s).
   - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_tensor_combined.py` verifies exact commutator-submatrix $([A_p, A_1])_{1q} = D_{pq}$ and $M_{12} = 0$ identities on 4 rational $\mathbb{R}^4$ tensors, 4D branch-and-bound covers coupling signed 2-plane circle norms + analytic $d$-tightening with the full Frobenius commutator block $72\|D\|_F^2$ + Weyl–Karamata ($\lambda < 27/40 = 0.675$, $\kappa_4 < 48$ at $a \le 349/500 = 0.698$ in 32,515 leaves; $\lambda < 33/50 = 0.66$, $\kappa_4 < 229/5 = 45.8$ at $a \le 321/500 = 0.642$ in 14,955 leaves), exact rational Sturm-sequence proofs on $\mathbb{R}$ for 4 planar cubic witnesses, and 5 negative controls at full production depth `max_depth = 46` (~4 min). [Replay log](code/third-chaos-506-gemini-8732/REPLAY.log)
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md` | 23,415 B | `e01b771f51a90d05539b2b14c6729eabd826b57dbb7b99fb4d8547c6d06c035f` |
+| `sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md` | 23,740 B | `e58074a1b181fa8bf7e55e404a3efe2fb53728d7a6892675b38865214ea4a14a` |
 | `code/third-chaos-506-gemini-8732/verify_ou_influence.py` | 21,736 B | `42d0860f6c3eaaea6570c1f6b0c8b1b5a1229048c98838307f776cea27a2467c` |
 | `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 26,097 B | `bac8b53f16a859b0b7e6327a3b736db77c46ae6b1e48b12b4ec639953fe1e0e0` |
 | `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,441 B | `8d3550e85f838938824a055e47a60943cf655e19072ef2ad621e2729b5596577` |

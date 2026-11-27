@@ -41,6 +41,7 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   with arbitrary sharing (2.9); the central part of the consumer on [0.84, 0.851] conditional on an all-sector bound (2.10, 8.1; supplied for Λ̂ by 7.5.13), at
   ε = 299/400 the whole consumer outside (0.8165, 0.866), and by homothety transfer of the spectral mass row the
   whole consumer outside (0.795, 0.864) at ε = 3/4 and outside (0.7515, 0.863) at ε = 94/125 [author only] (2.10).
+- **Sharp retained value on the capped peak domain [P + C · 7.5.16, author only].** On the capped peak domain $u\le0.0463$, $u+V\le0.080051$, the sharp supremum of the retained functional over finite dimensions is $S$. Each finite cubic satisfies $\widehat\Lambda(G)<S$, with arbitrary odd energy and sharing. The intermediate-excess estimate in 7.5.16 joins the low- and high-excess results of 7.5.14–15 to the two exterior energy intervals in 7.5.13. A sequence approaches $S$ exactly when its remote energy tends to the Gaussian optimizer, its normalized fourth excess tends to zero and its other five sector energies vanish. The optimal finite-dimensional gap has order $1/m$ in $m$ remote complex coordinates, with a limiting coefficient given by a quartic tensor minimum. [Maximizing sequences and dimension dependence](sources/peak-window-codex-a7c4/RIGIDITY.md) · [Proof and exact hypotheses](sources/peak-window-codex-a7c4/PEAK.md)
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
@@ -442,9 +443,9 @@ and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, it
 fifteen coordinates, for correlation at least 0.642, for κ₄ ≥ 46.6, for maximal tensor influence at least 0.66502 or at most 0.0064,
 for Var(‖∇h‖²/3) ≤ 89/2250 when E h² = 1, and for κ₄ ≤ 91/500 = 0.182
 [P + C · 3.21 (e9)(ii)–(iv)]; via a one-step Ornstein–Uhlenbeck resolvent identity with a V₂ ⊥ V₄
-cross-multiplier, for **Var(‖∇h‖²/3) ≤ 373/200 = 1.865** when E h² = 1 (hence tr(M²), λ ≤ 373/2800 ≈ 0.13321) and **κ₄ ≤ 19/2 = 9.5** (covering all four Cartan
+cross-multiplier, for **Var(‖∇h‖²/3) ≤ 373/200 = 1.865** when E h² = 1 and **κ₄ ≤ 19/2 = 9.5** (covering all four Cartan
 isoparametric cubics, from universal linear bounds E|h| ≤ √(2/π)‖h‖₂(1 + (26449/7500000)κ₄) and E|h| ≤ √(2/π)‖h‖₂(1 +
-(717/40000)Var(‖∇h‖²/3)/‖h‖₂⁴)) [P + C · gemini-2762, re-derived and replayed by codex-062a · 3.21 (e9)(iv)]; and for **tr(M²)/‖T‖_HS⁴ ≤ 3841/25000 = 0.15364** (in particular ≤ 96/625 = 0.1536) and **maximal tensor influence ≤ 3841/25000 = 0.15364** (covering all isotropic cubics M = (‖T‖_HS²/n)Iₙ, such as cubics invariant under an irreducible subgroup of O(n), in every dimension, from E|h| ≤ √(2/π)‖h‖₂(1 + (2181/10000)tr(M²)/‖T‖_HS⁴)), as well as **maximal tensor influence ≥ 33/50 = 0.66** or **κ₄ ≥ 229/5 = 45.8** [P + C, author only · gemini-8732 · 3.21 (e4), (e9)(iii)–(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
+(717/40000)Var(‖∇h‖²/3)/‖h‖₂⁴)) [P + C · gemini-2762, re-derived and replayed by codex-062a · 3.21 (e9)(iv)]; and via contraction domination ‖Ũ‖²_HS ≤ tr(M²) ≤ ‖M‖_op‖T‖_HS² (which with Var(‖∇h‖²/3) ≤ 373/200 gives tr(M²)/‖T‖_HS⁴ ≤ 373/2800 ≈ 0.13321 and hence maximal tensor influence ≤ 373/2800) together with a dedicated Schur triple, for **tr(M²)/‖T‖_HS⁴ ≤ 3841/25000 = 0.15364** (in particular ≤ 96/625 = 0.1536, and hence **maximal tensor influence ≤ 3841/25000 = 0.15364**, covering all isotropic cubics M = (‖T‖_HS²/n)Iₙ, such as cubics invariant under an irreducible subgroup of O(n), in every dimension, from E|h| ≤ √(2/π)‖h‖₂(1 + (2181/10000)tr(M²)/‖T‖_HS⁴)), as well as **maximal tensor influence ≥ 33/50 = 0.66** or **κ₄ ≥ 229/5 = 45.8** [P + C, author only · gemini-8732 · 3.21 (e4), (e9)(iii)–(iv)]. On the 2-sphere the L¹/L² constant of odd cubics is
 conjectured to be √55/8 = 0.9270, attained by the hemisphere: it is
 proved for zonal sign patterns, and the hemisphere is a strict local maximum [P · 3.21 (e3)]. The largest ratio
 E|h|/(√(2/π)‖h‖₂) found numerically is 0.9051, in ten coordinates [N · 3.21 (e8)].
@@ -1165,6 +1166,8 @@ F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds whe
 
 **Strict six-sector peak comparison [P + C · 7.5.14].** On the same classes of remote cubics as the signed-score comparison in §2.8, completing the two coupled content squares in 7.5.13 gives $\widehat\Lambda(G)\le B_G(u)-p_0u-(41/125)D(q)<S$. This permits arbitrary odd energy and sharing, with $u\le0.0463$ and $u+V\le0.080051$. The same strict comparison with $S$ holds on these energy ranges whenever the stabilizer of the cubic has no fixed vector in first chaos, since both gains vanish. [Proof, precise classes and energy caps](sources/signed-score-coupling-codex-a7c4/SIX.md)
 
+**Exact retained peak K on the capped domain [P + C · 7.5.16, author only].** Twenty-four spectral Stein duals bound the actual same-variance deficit throughout the central energy interval for $0.0784\le\chi\le3$. A separate finite cover prices both even shells while the global odd-sector estimate permits arbitrary odd energy. This completes the peak comparison across all fourth excesses. The exact homothetic profiles with $0<\lambda\le1$ inherit the strict upper comparison on the scaled caps. [Central certificate](sources/peak-window-codex-a7c4/PROOF.md) · [Sharp supremum and homothetic rows](sources/peak-window-codex-a7c4/PEAK.md)
+
 ### 2.10 Response domains and the central consumer
 
 Only G that come from actual responses enter the row. Let E_q, E_A, E_B, E_Q, E_P, E_ν be the
@@ -1523,7 +1526,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.62 |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.17 |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.14 |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.16 |
 | 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |
 | 4 false statements | section 13 (and 14) |
