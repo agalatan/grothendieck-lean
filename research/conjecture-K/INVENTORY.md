@@ -1876,3 +1876,33 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 | `code/all-sector-transfer-gemini-c1de/verify.py` | 36,010 B | `65fea8844b793b2333d77a5a29a832c2a158bb6e5d7b5e8abf7dc611910f191b` |
 | `code/all-sector-transfer-gemini-c1de/test_controls.py` | 8,784 B | `c6afbdb43aef19aa7d05043739ee5dba069a3710c5142095786924e7f021cbdf` |
 | `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 267,846 B | `c0464da7a116c1f7cb459191227185f8e3c631d0ca7f4ad9594750e82bb90f47` |
+
+## The notes of 23 October 2026 on the cubic witness, moved from the archive (claude-b9ee, #764)
+
+Six notes of the Codex sessions of 23 October 2026 were in the archive folder `miscellaneous/` until master
+`bfb5961e3`; the folder was removed by #764 and the notes whose conclusions the manuscript chapters under
+`sources/manuscript/` do not contain were moved here, verbatim (one provenance line added at the top of each). Their
+targets are those of their date: the cubic witness at ε = 149/200, under the interval
+1.401697049825 < K_G^ℂ < 1.404598149218 of that day. Lean now proves 1.4020221627 < K_G^ℂ ≤ 1.404556392.
+
+| folder | files | what they hold |
+|---|---|---|
+| `sources/cubic-witness-ceiling-2026-10-23/` | `CUBIC_FAMILY_CEILING_2026-10-23.md` (18 KB), `GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md` (12 KB), `GENUINE_CUBIC_OBSTRUCTION_2026-10-23.md` (16 KB) | The written proofs behind `STATUS.md` 12.2 and 8.3, which cite the summary in `docs/overview.tex`: the genuine response pair built on q_m ∈ H₂,₁ over Sym²(ℂᵐ), the closure of its U(m)-invariant first and cubic image, the floor 0.71313546585 for every complex multiplier (ceiling 1.4022581233 of the cubic witness family) and the value above 0.71329 at ε = 149/200. |
+| `sources/response-lift-fibre-2026-10-23/` | `RESPONSE_LIFT_EXPERIMENT_2026-10-23.md` (15 KB), `JOINT_FIBRE_EXPERIMENT_2026-10-23.md` (28 KB), `JOINT_ROW_UNIFORMITY_2026-10-23.md` (13 KB) | Negative results on two relaxations of the row certificate at ε = 149/200. The finite multiplication-compression lifts have exact minimum zero for the selected projection penalties at all twelve audited contacts; an actual bounded response pair matches the selected moments of the saved radial law 7234. The fixed-law joint model has a bounded randomized response with relaxed score near 0.7131527 (a lower bound on that relaxed supremum) and a certified upper cap 178315341/250000000 at the fixed contact. The third note states which uniform extensions remain meaningful. These statements concern abstract radial laws of a finite cut bank, not Gaussian cubics. |
+
+Not in the repository: the verifiers and certificate files that these notes name (`tools/verify_cubic_family_floor.py`,
+`tools/verify_diffuse_cubic_limit.py`, `tools/verify_joint_fibre_*.py`, `tools/verify_response_lift*.py`,
+`tools/verify_abstract_response_*.py` and their JSON files) were deleted from `tools/` by commit `d84c3fdfc` and are
+read with `git show 8115260f8:tools/<name>`. The replay wrappers `run_genuine_cubic_checks.py` and
+`run_joint_fibre_checks.py` and the list of input hashes were at `miscellaneous/research/tools/` and
+`miscellaneous/research/research/response_geometry_inputs/README.md` of master `bfb5961e3`. The source laws
+(`radial-complete-*-exact.json`, 7 to 9 MB each) were never in the repository: they are in the delivered bundles
+`joint-fibre-20261023` and `genuine-cubic-obstruction-20261023` and in
+`grothendieck-common-stein-reassessment-20261023.zip` (7.5 MB, `git show bfb5961e3:miscellaneous/deliveries/grothendieck-common-stein-reassessment-20261023.zip`).
+The Lean arithmetic of the ceiling is `abandonware/Grothe/LowerAnalytic/ScalarCubicFamilyCeiling.lean` (not built);
+the other Lean modules the notes name (`DiffuseCubicObstruction`, `ProjectionGateCeiling`, `JointRowRepricing`,
+`ResponseCompression`) are at `miscellaneous/research/Grothe/LowerAnalytic/` of master `bfb5961e3`.
+
+The other notes of that day in the archive were deleted, because `sources/manuscript/` holds their content as
+chapters: the binding audit, the common Stein kernel and the table floor, the joint response lift, the symmetric
+response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/symmetric-response-replicas-20261023.tex`).
