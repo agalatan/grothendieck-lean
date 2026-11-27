@@ -145,8 +145,6 @@ The certificate mixes seven Gaussian rounding channels. Three smoothed cell chan
 
 Lean computes the selector’s 251-entry signed head and a bound on the total absolute coefficient error. The transfer takes absolute values after summing all seven heads, then adds their weighted allowances. The resulting factor is `10^27 / 711968565817136711740669035`. [Selector and mixture](Grothe/UpperSelector/Bound.lean) · [Exact parameters and budgets](docs/CONSTANTS.md#behind-the-upper-bound).
 
-An older proof with a single rounding channel is still in the repository. It is independent of the six-channel proof and gives the weaker bound $K_G^{\mathbb C}<1.404599395362$, which is above Haagerup's value. Its quadrature and energy-table construction are documented separately. [Single-channel proof](Grothe/UpperTightFinal.lean) · [Construction notes](docs/UPPER_STATUS.md).
-
 ### What the computer checks and what is trusted
 
 - **The Lean kernel** checks every definition and every proof step, including the soundness theorems of the
@@ -173,7 +171,7 @@ An older proof with a single rounding channel is still in the repository. It is 
   soundness proof holds for every choice (`gridOK_mkGrid`).
 - **Caches.** CI does not evaluate every fact in every run. It restores the build of an earlier CI run, and Lake
   reuses a stored module only if the hashes of its source, its imports and the toolchain match. For the heaviest
-  facts, the node caps and the energy table, CI also checks a source digest before using the cache. A run marked
+  facts, the node caps, CI also checks a source digest before using the cache. A run marked
   “no proof change” inherits the parent’s proof result. The workflow log records whether it ran the Lean build and axiom audits. [Cache check](scripts/caps_stamp.py) · [Proof workflow](.github/workflows/lean.yml).
 
 ## Layout
@@ -184,20 +182,11 @@ An older proof with a single rounding channel is still in the repository. It is 
 | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorem `main_bounds` with both bounds; the seven-channel upper bound and the comparison with Haagerup's value |
 | `Grothe/UpperSix/`, `Grothe/UpperSix/Certificate/` | the six-channel upper proof: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
 | `haagerup-article/` | the article, frozen, with its own Lean package under `anc/` |
-| `Grothe/UpperClose.lean` | certified energy-table accuracy `hclose_final` |
-| `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |
-| `Grothe/UpperTightBudget.lean`, `Grothe/UpperTightComparison.lean` | single-channel budgets and the comparison with independent reference mass and error radii |
-| `Grothe/UpperTightSix.lean`, `Grothe/UpperTightPanelTotals.lean` | six Gaussian error estimates; kernel checks of tighter totals of the existing panel caps |
-| `Grothe/Transfer.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality used by the single-channel proof |
+| `Grothe/Transfer.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality |
 | `Grothe/Lower/` | the lower certificate: its checker in exact rational arithmetic with the soundness of rows, Stein cuts, the mass row and the envelope; the generated row data; the transfer to finite matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis of the lower bound: the witness, chaos projections, the law of cubic chaos (moments, spectral and Gram budgets, Wick expansions), the potentials $\Psi_r$ and the row reduction; the node caps (`Cap*.lean`, the generated rows `CapRowKK` and pieces `CapPieces/`) |
-| `Grothe/Haagerup/` | the phase $z/\lvert z \rvert$ of a complex Gaussian: Hermite coefficients, kernel, Laplace representation |
-| `Grothe/Upper/` | the single-channel upper proof apart from Gaussian analysis: two-coordinate kernels, disk-valued roundings, tensor realisation of the preprocessors, soundness of the head computation, residual and tail arithmetic, comparison budgets; `Data.lean` holds the rounding parameters, the preprocessors and the energy table |
-| `Grothe/UpperChaos/` | chaos calculus on $\mathbb{C}^2$ (Hermite basis, Mehler formula, charge, energies), the rounding, the phase cover, the Hardy tail, the comparison with $X$, the stored Hermite expansions, and generated certificate modules |
-| `Grothe/UpperQuad/` | the quadrature: soundness of its checkers, the energy, port and ellipse facts, the Gauss–Legendre remainder on Bernstein ellipses |
-| `GrotheKernel/`, `GrotheCapsKernel/`, `GrotheQuadKernel/`, `GrotheQuadExtKernel/` | checker programs that do not import Mathlib, precompiled by Lake: kernel head, phase cover and Hardy arcs; node caps; quadrature of the energy table; its extension to the $h_j$ and the omitted pairs |
-| `Grothe.lean`, `Grothe*Kernel.lean` | the root import files, generated by `tools/gen_root_imports.py` |
-| `QuadRun.lean` | `quadrun`, a diagnostic driver of the quadrature checker; not a default target, not built by CI |
+| `GrotheCapsKernel/` | the checker program of the node caps: it does not import Mathlib and is precompiled by Lake |
+| `Grothe.lean`, `GrotheCapsKernel.lean` | the root import files, generated by `tools/gen_root_imports.py` |
 | `data/` | inputs of the generated modules (certificates, recipes, plans, tables); `data/axioms/` holds the lists read by the axiom check |
 | `tools/` | generators of the data modules, replay scripts and numerical cross-checks |
 | `scratch/Axioms.lean`, `scratch/UpperSixAxioms.lean`, `scripts/check_axioms.py` | repository-wide and six-channel axiom reports and their checker |
@@ -230,7 +219,7 @@ lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --up
 
 ### Full proof check
 
-CI runs `lake build Grothe` for the combined development, then checks the generated imports, the sources and both axiom reports. The combined build includes all lower node caps and the single-channel energy facts. A cold build takes several CPU-days. The upper-only command above is the local build for the seven-channel theorem. [Proof workflow](.github/workflows/lean.yml) · [Pinned dependencies and build costs](lakefile.toml).
+CI runs `lake build Grothe` for the combined development, then checks the generated imports, the sources and both axiom reports. The combined build includes all lower node caps. A cold build takes several CPU-days. The upper-only command above is the local build for the seven-channel theorem. [Proof workflow](.github/workflows/lean.yml) · [Pinned dependencies and build costs](lakefile.toml).
 
 ## Related work
 

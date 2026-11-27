@@ -144,7 +144,7 @@ check on a shared runner) or starting a cloud job. Push for a full check at a mi
 build: Lake then compiles only what your branch changes.
 - **Where:** `/Users/alingalatan/workspaces/grothe/.lake/master-cache`, a consistent snapshot of a *successful*
   master build of the modules that `scripts/local_build_targets.py` lists: every module except the node caps
-  (rows, localised pieces, `CapNodes`), the upper-bound trees `UpperChaos` and `UpperQuad`
+  (rows, localised pieces, `CapNodes`), the six-channel overlap table and contour checks
   (`data/local-build-exclude.txt`), and whatever imports them. Its `built-commit` file names the master
   commit. It is produced in the dedicated worktree `/Users/alingalatan/workspaces/grothe-master-build` (detached):
   never edit, build in or remove that worktree, and never clone its live `.lake/build`.
@@ -155,8 +155,8 @@ build: Lake then compiles only what your branch changes.
 - **Keep it current:** `scripts/sync_master.sh --build` starts the one master build job (`scripts/master_build_job.sh`:
   background, niced, incremental) unless the snapshot is current or the job already runs. Each round builds one
   master commit, publishes the snapshot (swapped in by rename), and starts another round if master moved.
-- **Why not download CI's build?** CI builds on Linux. Every module that imports a precompiled library
-  (`GrotheKernel`, `GrotheCapsKernel`) records the hash of the compiled library file (`.so` on Linux, `.dylib` on
+- **Why not download CI's build?** CI builds on Linux. Every module that imports the precompiled library
+  `GrotheCapsKernel` records the hash of the compiled library file (`.so` on Linux, `.dylib` on
   macOS), so Lake would rebuild them on the Mac anyway. A downloaded Linux build saves nothing that matters.
 - **Never write into the main checkout's `.lake/`:** no `lake build` there, no copying files back, no plain
   `cp`/`rsync` of a build (about 2 GB per copy).
@@ -178,8 +178,8 @@ especially a re-push after a CI failure, a review or a conflict):
    - after **every** merge run `python3 tools/gen_root_imports.py` (not only `--check`): it regenerates the roots
      and re-sorts the union-merged lists, which a merge can leave unsorted (CI also does this after its own merge
      when it lands a PR);
-   - generated files are regenerated, never hand-merged: `python3 tools/gen_root_imports.py` rewrites `Grothe.lean`,
-     `GrotheKernel.lean` and `GrotheCapsKernel.lean` (every module under their folders, except those listed in
+   - generated files are regenerated, never hand-merged: `python3 tools/gen_root_imports.py` rewrites `Grothe.lean`
+     and `GrotheCapsKernel.lean` (every module under their folders, except those listed in
      `data/root-imports-exclude.txt`);
    - sorted one-entry-per-line lists (`scratch/Axioms.lean`, `data/axioms/*.txt`, `data/root-imports-exclude.txt`)
      are union-merged by git (`.gitattributes`); keep them sorted and duplicate-free (CI checks);
@@ -322,8 +322,8 @@ Also:
   either: hours of work.
 - **Where a check runs:** GitHub-hosted (4 vCPUs, 16 GB) unless it needs the heavy runners (`self-hosted, heavy`:
   the droplet and, when they exist, the big and mega droplets, §12): the node caps must be built (no verified cache), `-f mode=caps`, the
-  change **modifies or deletes** existing files under the kernel-heavy trees (`Grothe/UpperChaos/`, `Grothe/Upper/`,
-  `GrotheKernel/`, `GrotheCapsKernel/`, the lake files: rebuilding the big kernel-checked modules kills a 16 GB VM),
+  change **modifies or deletes** existing files of the cap checker `GrotheCapsKernel/` or the lake files (everything
+  that imports them is rebuilt, which a 16 GB VM cannot hold),
   or the repository variable `FORCE_HEAVY` is `true` (emergency switch: everything heavy). A change that only adds
   modules runs hosted: the restored cache replays everything else. Keep the heavy slots for what needs them.
 - **Merged branches are cleaned automatically** (`.github/workflows/cancel-merged.yml`): when a pull request is merged
@@ -421,7 +421,7 @@ Use GitHub Actions as a compute cloud instead of the laptop (shared by every age
 a time). Every job runs a **pushed** commit, so it is reproducible, and its results come back as files.
 
 ```sh
-scripts/cloud.sh lean Grothe.UpperChaos.HardyGaussianFacts Grothe.UpperChaos.HardyArcRegionCheck   # build modules
+scripts/cloud.sh lean Grothe.UpperSix.Haagerup.ContourChecks.Channel1 Grothe.UpperSelector.NumericWitness   # build modules
 scripts/cloud.sh --shards 2 lean M0 M1 M2 M3                # modules dealt over 2 parallel jobs (e.g. native_decide facts)
 scripts/cloud.sh check                                      # the full proof check of the branch, without merging
 scripts/cloud.sh --shards 2 script tools/sweep.py --grid 64 # a committed .py/.sh/.cpp, 2 shards (SHARD, NSHARDS)
@@ -550,9 +550,9 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose (a change to a precompiled library invalidates every
   module that imports it): never import other kernel modules into it.
-- The same holds for the quadrature checker `GrotheQuadKernel/`: the 13 energy-table facts import it, and any module
-  added to or changed in it recompiles all of them (about ten hours each). Keep it frozen; new kernel code for the
-  upper bound (the port's twisted kernel, the omitted pairs, ...) goes in `GrotheQuadExtKernel/`.
+- `GrotheCapsKernel` is the only precompiled library. A new checker program that `native_decide` must run at
+  native speed gets its own precompiled library, never a module added to `GrotheCapsKernel/` (and a new library is a
+  change of `lakefile.toml`: a planned operation, see below).
 - **The lake files are pinned.** The node-cap registry (`source_sha256` in
   `data/tail-caps/build.json`) records the hash of every file in the caps closure, and that
   closure contains `lakefile.toml`, `lake-manifest.json` and `lean-toolchain` besides the Lean sources. If one of them

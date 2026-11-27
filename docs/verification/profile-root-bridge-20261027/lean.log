@@ -1,2 +1,0 @@
-'Grothe.UpperChaos.ProfileRootScreen.profile_inner' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Grothe.UpperChaos.ProfileRootScreen.profile_outer' depends on axioms: [propext, Classical.choice, Quot.sound]

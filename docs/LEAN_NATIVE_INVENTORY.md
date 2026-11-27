@@ -1,7 +1,7 @@
 # Native source inventory
 
 This inventory describes the native facts (`native_decide`) allowed for the single `Grothe` target: those of the lower
-bound by family and module pattern, and the evidence recorded for upper-bound facts. The complete allowlist is
+bound by family and module pattern, and those of the upper bound. The complete allowlist is
 `data/axioms/native.txt`, read by `scripts/check_axioms.py`. The default report is `scratch/Axioms.lean`, with its
 required declarations in `data/axioms/required.txt`; CI checks it on every pushed branch, and on the merged tree before
 a pull request lands.
@@ -41,55 +41,7 @@ piece facts; CI replays them from a verified build cache. No per-fact timing is 
 
 ## Upper bound
 
-This section covers the older single-channel upper proof (`Grothe/UpperTightFinal.lean`, `K < 1.404599395362`), which
-is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.404556392`, comes from the seven-channel proof. It uses the six-channel native comparisons and
-`Haagerup.AngularSelector.NumericWitness.budgets_ok` for the final mixed computation. The table below is not complete (the quadrature facts under
-`Grothe/UpperQuad/` are not in it); `data/axioms/native.txt` is the full list.
-
-**Exact production phase moments (#40(b)).** `PhaseMomentEval` integrates the
-integer polynomial obtained by clearing arbitrary rational denominators.
-`integral_phiT_pow_even` in `ConcretePhaseMoments` binds the result to the actual
-phase for every even power, with no phase-cover premise. Three separate native
-leaves, `phase_moment2_check`, `phase_moment4_check`, and `phase_moment6_check`,
-compare the exact moments with rational targets. `integral_phiT_sq`,
-`integral_phiT_pow_four`, and `integral_phiT_pow_six` supply the Gaussian
-interpretation; `PhaseMomentNorms` gives the three Taylor-source total energies.
-The second-moment module previously built in 4.8 seconds in
-[run 40468150361](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361).
-This is whole-module time, not isolated native evaluation. The fourth- and sixth-moment modules built in 31 s and 175 s respectively in
-[run 40471192509](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509),
-which passed the full build and axiom audit. This addition does
-not discharge `ComparisonInputs` or `energy_close` and changes no headline bound.
-
-**Production phase radial tail.** `phase_cutoff_factor_check` evaluates
-`cutPhasePowerMoment phaseTerms phaseEpsQ 50 1` in exact rational arithmetic.
-The restricted Gaussian integration theorem binds this computation directly
-to the actual phase. `integral_phiT_sq_radial_tail_lt` combines it with a
-kernel proof of `exp(-155) < 148⁻³¹`, giving the squared tail bound
-`(5/10^15)^2`. No external radial coefficient table is imported. The numerical
-module and its positive Taylor-source L² consequence passed a focused local
-replay and the full build and axiom audit in
-[delivery run 40581194949](https://github.com/agalatan/grothendieck-lean/actions/runs/40581194949).
-The phase-tail module built in 6.8 seconds; this includes the analytic transfer
-and is not an isolated timing of the native computation.
-
-| Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
-|---|---|---|---|---|
-| `Grothe.UpperChaos.phase_cutoff_factor_check` | `Grothe/UpperChaos/PhaseRadialTail.lean` | yes | Direct #print axioms; also used by integral_phiT_sq_radial_tail_lt | [Run 40581194949](https://github.com/agalatan/grothendieck-lean/actions/runs/40581194949): full build and axiom audit passed; 6.8 s whole-module build |
-| `Grothe.Upper.comparison_check` | `Grothe/Upper/ComparisonMass.lean:52` | yes | Direct #print axioms in scratch/Axioms.lean | Unmeasured per fact at audited commit |
-| `Grothe.UpperChaos.phase_moment2_check` | `Grothe/UpperChaos/PhaseMoment2.lean:20` | yes | Direct #print axioms in scratch/Axioms.lean; also used by integral_phiT_sq | [Delivery run 40468150361](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361): 4.8 s whole-module build, not isolated native evaluation |
-| `Grothe.UpperChaos.phase_moment4_check` | `Grothe/UpperChaos/PhaseMoment4.lean:20` | yes | Direct #print axioms; also used by integral_phiT_pow_four and PhaseMomentNorms | [Run 40471192509](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509): 31 s whole-module build |
-| `Grothe.UpperChaos.phase_moment6_check` | `Grothe/UpperChaos/PhaseMoment6.lean:20` | yes | Direct #print axioms; also used by integral_phiT_pow_six and PhaseMomentNorms | [Run 40471192509](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509): 175 s whole-module build |
-| `Grothe.UpperChaos.rounding_energy_check` | `Grothe/UpperChaos/TaylorRounding.lean:45` | yes | Direct #print axioms; Actual graded integer rounding energy | [Run40490363431](https://github.com/agalatan/grothendieck-lean/actions/runs/40490363431): 12s whole-module compilation; run failed later in the tail adapter |
-| `Grothe.UpperChaos.firstCenter_band_energy_check` | `Grothe/UpperChaos/TaylorFirstBandNorms.lean:30` | yes | Direct #print axioms; actual projected integer energy of the preserved center | [Run40490363431](https://github.com/agalatan/grothendieck-lean/actions/runs/40490363431): 7.1s whole-module compilation; run failed later in the tail adapter |
-| `Grothe.UpperChaos.secondCenter_band_energy_check` | `Grothe/UpperChaos/TaylorSecondBandNorms.lean:30` | yes | Direct #print axioms; actual projected integer energy of the preserved center | [Run40490363431](https://github.com/agalatan/grothendieck-lean/actions/runs/40490363431): 5.7s whole-module compilation; run failed later in the tail adapter |
-| `Grothe.UpperChaos.taylor_centers_decode_check` | `Grothe/UpperChaos/TaylorRounding.lean:60` | yes | Direct #print axioms; First/second parsing and sizes; frozen size uses the standard source proof | [Run40490363431](https://github.com/agalatan/grothendieck-lean/actions/runs/40490363431): 12s whole-module compilation; run failed later in the tail adapter |
-| `Grothe.head_check` | `Grothe/Upper/Final.lean:44` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 62 s; not isolated native/current-commit measurement |
-| `Grothe.UpperChaos.phi_cover_check_0` | `Grothe/UpperChaos/PhiCoverCheck0.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.UpperChaos.phi_cover_check_1` | `Grothe/UpperChaos/PhiCoverCheck1.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.UpperChaos.phi_cover_check_2` | `Grothe/UpperChaos/PhiCoverCheck2.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.UpperChaos.phi_cover_check_3` | `Grothe/UpperChaos/PhiCoverCheck3.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.UpperChaos.phi_cover_check_4` | `Grothe/UpperChaos/PhiCoverCheck4.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.UpperChaos.phi_cover_check_5` | `Grothe/UpperChaos/PhiCoverCheck5.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
-| `Grothe.UpperChaos.HardyGaussianCheck.charts_checked` | `Grothe/UpperChaos/HardyGaussianFacts.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No per-fact timing established here |
-| `Grothe.UpperChaos.hardy_region_check` | `Grothe/UpperChaos/HardyArcRegionCheck.lean:10` | yes | Indirect via scratch/Axioms.lean HardyGaussian.hardy_of_real, HardyReal.hardy_GT_gaussian | GitHub-hosted module build 8.7 s |
+The upper bound of `main_bounds`, `K ≤ 1.404556392`, comes from the seven-channel proof. It uses the six-channel
+native comparisons listed above (`data/axioms/modes/upper-six.native.txt`) and
+`Haagerup.AngularSelector.NumericWitness.budgets_ok` (`Grothe/UpperSelector/NumericWitness.lean`), which evaluates
+the signed mixed head and the selector allowance in one comparison.

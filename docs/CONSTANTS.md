@@ -122,16 +122,12 @@ None of these is the current bound.
 | `1.404556407` | the six-channel root certificate before adding the angular selector | `Haagerup.SixChannel.isBound` |
 | `1.40455641` | an earlier upper bound of this repository: a six-channel certificate with a common cutoff of 251 | git history |
 | `1.40457588`, `1.40455742` | earlier upper bounds of this repository | git history |
-| `1.404599395362` | the bound of the older single-channel upper proof, $K < 1.404599395362$. Still proved and independent of the six-channel proof, but weaker, and above Haagerup's value | `Grothe.Statement.upper_below_tight`, `constant_lt_tight_upper` (`Grothe/UpperTightFinal.lean`); `docs/UPPER_STATUS.md` |
+| `1.404599395362` | the bound of the removed single-channel upper proof, $K < 1.404599395362$ (one Gaussian rounding channel; weaker than the current bound, and above Haagerup's value $1/\gamma^\dagger$) | `Grothe.Statement.upper_below_tight` at commit `460c76731` (`Grothe/UpperTightFinal.lean`), the last one that holds it |
 | `1.40490913…` | Haagerup's 1987 upper bound | prior work |
 | `1.404898554746`, `1.4` | Heilman–Jones–Malavolta's bounds, September 2026 | prior work |
 | `1.35584631827168` | Guo–Fang–Lu's lower bound, September 2026 | prior work |
 | `1.33807` | Davie's lower bound, 1984 | prior work |
 | `1.403`, `1.4023`, … | research targets and ceilings of methods, not theorems | `research/` |
-
-## Six fixed rounding channels
-
-For the six maps and preprocessors in `UpperSixExact`, retaining the same coefficient intervals, cutoffs and individual tail allowances, the transfer score of every convex mixture is at most `7119685648573 / 10^13`. The statement permits arbitrary real weights and arbitrary choices of enclosed coefficients. This is an upper bound on a certificate score. Its reciprocal is a limit on this fixed upper-certificate family. [Dual witness and theorem](../Grothe/UpperSix/Certificate/ScoreCeiling.lean).
 
 ## When a bound changes
 
