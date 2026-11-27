@@ -241,6 +241,8 @@ C(q). The **Wick monomial** is the one-variable cubic X(|X|² − 2), up to a co
 
 (subtracting the constants changes nothing because Π₁q = 0).
 
+For $m$ remote complex coordinates the influence matrix gives $m\chi\ge12$, and the radial projection of the fourth-order contraction strengthens this to $m\chi\ge12+12/(m+1)$ for every nonzero cubic. A 26-coordinate example attains $m\chi=91813293/7123561<12.889$. Two thirteen-coordinate copies supply its real part before a mixed cubic in the two driver variables lowers the fourth moment to first order. [Construction and dimension bound, 6.3.32a](sources/paired-cubic-codex-a7c4/PROOF.md)
+
 ### 1.9 The six layers of a proof
 
 K_η must hold for every G, not only for the core. A proof has six layers:
