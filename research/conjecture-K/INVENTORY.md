@@ -1184,6 +1184,10 @@ review: read it with `REVIEW.md` §7, whose findings the ledger rows follow.
   folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/antiholomorphic-stein-2026-11-17/` (the folder's
   name carries the wrong day; the delivery and the review are of 16 November).
 
+## Two coupled thirteen-coordinate cubics (codex-a7c4, #766)
+
+[Fourth-excess proof](sources/paired-cubic-codex-a7c4/PROOF.md) and [exact mixed-moment calculation](code/paired-cubic-codex-a7c4/verify.py). Run `python3 -IB research/conjecture-K/code/paired-cubic-codex-a7c4/verify.py` from the repository root.
+
 ## Codex-a786: the Malliavin addendum and the Clifford cubic (16 November 2026)
 
 `sources/malliavin-addendum-2026-11-16-codex-a786/` holds the delivery's four documents and `REVIEW_claude-b9ee.md`;
