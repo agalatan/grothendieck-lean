@@ -56,7 +56,7 @@ LEAN_STATEMENT_FILES = ["Grothe/Statement.lean", "Grothe/MainResult.lean", "Grot
 UPPER_FILE = "Grothe/UpperResult.lean"
 # the certificate of the lower endpoint: the proof of main_bounds names its rounding lemma
 ROUNDING_LEMMA = re.compile(r"\bGrothe\.Lower\.(\w+)\.rounded_lt\b")
-BOUND_RATIONAL = re.compile(r"(?<![\d.])(14\d{3,})\s*/\s*(10{4,})(?!\d)")
+BOUND_RATIONAL = re.compile(r"(?<![\d.])(14\d{2,})\s*/\s*(10{3,})(?!\d)")
 BOUND_DECIMAL = re.compile(r"(?<![\d.])(1\.40\d+)(…|\.\.\.)?")
 DOC_ELLIPSIS_DECIMAL = re.compile(r"(?<![\d.])(1\.40\d+)(…|\.\.\.|\\ldots\b|\\dots\b)")
 SUPERSCRIPTS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")

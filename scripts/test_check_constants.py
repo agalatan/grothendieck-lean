@@ -209,6 +209,32 @@ class CheckConstants(unittest.TestCase):
             problems, ["Grothe/Statement.lean:2: quotes 140457999 / 100000000, which is not a current bound"]
         )
 
+    def test_stale_four_digit_bare_fraction(self):
+        _, problems = self.run_check(statement=STATEMENT + "-- formerly 1403 / 1000 here.\n")
+        self.assertEqual(
+            problems, ["Grothe/Statement.lean:2: quotes 1403 / 1000, which is not a current bound"]
+        )
+        wrapped = MAIN + "-- formerly 1403 /\n-- 1000 here.\n"
+        _, problems = self.run_check(main=wrapped)
+        self.assertEqual(
+            problems, ["Grothe/MainResult.lean:6: quotes 1403 / 1000, which is not a current bound"]
+        )
+        # When main_bounds itself states a four-digit bound (e.g. 1402 / 1000), quoting it is allowed while 1403 / 1000 fails:
+        main4 = MAIN.replace("140191 / 100000", "1402 / 1000").replace("1.40191", "1.402")
+        end4 = "theorem endpoint_eq : endpoint = 140201 / 100000 := by decide\n"
+        docs4 = {
+            rel: GOOD.replace("140191 / 100000", "1402 / 1000")
+            .replace("1.40191", "1.402")
+            .replace("14019101 / 10000000", "140201 / 100000")
+            for rel in cc.QUOTING if not rel.endswith(".lean")
+        }
+        _, problems = self.run_check(main=main4 + "-- proves 1402 / 1000 < K.\n", endpoint=end4, docs=docs4)
+        self.assertEqual(problems, [])
+        _, problems = self.run_check(main=main4 + "-- formerly 1403 / 1000.\n", endpoint=end4, docs=docs4)
+        self.assertEqual(
+            problems, ["Grothe/MainResult.lean:6: quotes 1403 / 1000, which is not a current bound"]
+        )
+
     # --- the two bounds are roundings of the exact values ------------------------------------------------------
 
     def test_upper_bound_must_round_the_exact_value_up(self):
