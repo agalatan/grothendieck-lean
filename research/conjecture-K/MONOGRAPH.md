@@ -248,7 +248,7 @@ K_η must hold for every G, not only for the core. A proof has six layers:
 
 | layer | statement | status | here |
 |---|---|---|---|
-| L1 | remote part: Λ(q) ≤ S + η for q independent of z₁ | peak row and a neighbourhood: proved; other rows open | 2.1 |
+| L1 | remote part: Λ(q) ≤ S + η for q independent of z₁ | quantitative at the peak and in its neighbourhood; exact at the named flank and upper rows; other profiles open | 2.1 |
 | L2 | the core with drivers independent of q | proved on the whole box | 2.2 |
 | L3 | the core with shared drivers: explicit regions | proved regions at the peak; one region **R** | 2.4 |
 | L4 | the core on the residual region: cost plus content | K: families proved, general cubics open; Λ̂: closed at the peak | 2.5, 2.6 |
@@ -307,7 +307,7 @@ Around the peak:
   bound of S, such as the supporting plane of the Gaussian benchmark [P · 3.13]. No cell is certified: remote caps
   exist at the peak only.
 
-The flank and upper rows are outside all of these.
+The named flank and upper rows have separate exact all-energy proofs. At (a,b,ε) = (0.56,0.1467,0.745) and (0.573,0.152,0.7564), the supremum over remote cubics equals the corresponding Gaussian benchmark S. The proof recomputes the radial majorants for each visible law and uses its own signed estimate for the central energy and small fourth excess. The mixed sectors at these rows require additional bounds. [P + C, author only · 3.15a · proof](sources/named-remote-k-codex-a7c4/PROOF.md)
 
 For any normalized circular cubic q of fourth excess s, the total-variation distance of its complex law from a standard complex Gaussian is at most ((√74+8)/18)√s. This controls all bounded tests, including the residual left after a polynomial with known moments is subtracted from a Stein majorant. The coefficient is sharp for the relaxed variance calculation. The signed payoff requires further estimates [P, author only + C · 3.31]. [Proof and scope](sources/radial-gram-comparison-codex-a7c4/PROOF.md).
 
