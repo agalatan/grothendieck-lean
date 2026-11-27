@@ -1151,6 +1151,7 @@ F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds whe
   $\widehat{\Lambda}(G) < S + 29.36\cdot 10^{-6}$ (`D_+` 11.61; strict $< S$ on $u \in [0, 0.03]$) and
   $\widehat{\Lambda}(G) < S + 27.00\cdot 10^{-6}$ (signed 11.61; strict $< S$ on $u \in [0, 0.0354] \cup [0.0456, 0.0463]$) across $u \le 0.0463, u + V \le 0.080051$ for all
   $W \ge 0$ and arbitrary sharing [P + C · gemini-c1de · 7.5.13; `KAST`]. [Proof and replay](sources/global-all-sector-gemini-c1de/PROOF.md) · [Sharpened scalar bridge](sources/all-sector-transfer-gemini-c1de/PROOF.md) · [independent full replay](code/global-all-sector-gemini-c1de/REPLAY.md)
+- For $3\le\chi\le42$, on the full capped peak band the retained six-sector payoff is strictly below $S$. On $0.0354\le u\le0.0456$, the radial deficit pays both even-shell gains with clearance greater than $146939/10^{12}$, allowing arbitrary odd energy and sharing. The all-shapes energy tails follow from the peak transfer above. This includes the sum of 14 equal-energy independent one-coordinate Wick cubics at the Gaussian optimizing energy ($\chi=3$). [Proof and exact replay, 7.5.15](sources/peak-high-excess-codex-a7c4/PROOF.md)
 - **Tiny odd energy, a dominant odd sector, or proportional drivers** [P + C · codex-91d4 · 7.5.7]; the remote slack
   S − max(B(u) − pu, Λ(q)) exceeds 10⁻⁴ for u ≤ 0.03 [P + C · 7.2.11].
 - **Extremely diffuse laws.** A finite joint Edgeworth expansion with explicit remainder settles a box near u\*
