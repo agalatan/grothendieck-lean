@@ -150,7 +150,7 @@ def worst_piece(r, w):
 if __name__ == "__main__":
     print("quadratic nodes (count, with a1 != 0, max a1):", quad_dependence())
     master = Q(25000000000000, 17831387166289)
-    rs = [Q(93, 100), Q(2287, 2500), Q(4571, 5000), Q(9, 10), Q(88623, 100000)]
+    rs = [Q(93, 100), Q(2287, 2500), Q(4571, 5000), Q(9, 10), Q(88623, 100000), Q(88622, 100000)]
     for r in rs:
         o = run(r)
         if r == OLD:

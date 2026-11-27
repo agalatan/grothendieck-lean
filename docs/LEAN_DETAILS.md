@@ -17,9 +17,9 @@ Where a paragraph says that a result takes an estimate as a hypothesis, or that
 it gives no numerical bound, this describes that result; it is not an open
 input of the main theorems, which have no hypotheses. The generated root imports both the seven-channel proof used by
 `Grothe/MainResult.lean` and the independent single-channel proof. A module called
-*archived* below is kept outside the libraries, in `abandonware/`
-(`abandonware/README.md`) unless the text names `miscellaneous/`; it is not
-built or checked. The value `1.404598149141` is the
+*archived* below has left the libraries and is not built or checked: a few
+modules that later work would reuse are kept in `abandonware/`, and the others
+are in git history only (`abandonware/README.md` lists both, with the commits). The value `1.404598149141` is the
 target the rounding was designed for. The conditional theorem towards it,
 `fresh_upper_rounder` (K_G^ℂ ≤ 500000000000000000/355973699960428191 <
 1.404598148840, from fourteen finite-band Gaussian estimates that are not
@@ -286,14 +286,13 @@ The law cells of the rows of the lower bound cover the larger range `x ≤ 31/4`
 cubic-trace, completed-square and scalar Young estimates, followed by the
 circular J2/J3 inequalities. `JointContractions.lean` retains the general
 tensor-to-Gram identities and specializes this core for `Circular.joint_sixth`.
-`JointSixth.lean`, archived under `miscellaneous/research/Grothe/LowerAnalytic/`
+`JointSixth.lean`, archived under `abandonware/Grothe/LowerAnalytic/`
 and not built, uses the same identities and core for its invariant adapters
 and capped/η refinements. No positivity of the symmetrized contraction
 operator is assumed.
 
 Weaker upper-bound variants, their data and their historical verification records
-are preserved in [the committed archive](../miscellaneous/other-bounds/README.md).
-They are outside the active build and current axiom policy.
+are in git history only ([`abandonware/README.md`](../abandonware/README.md) gives the commit).
 
 **Source-node error ledger.** `Q0NodeMassLedger` holds only the shared scalar
 inputs; `Q0NodeMassLedgerSharp` is the single norm-dependent ledger, at `26/25`.
@@ -872,13 +871,10 @@ floating reconstruction and table agreement are not part of this module.
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-Archived: the extension of every `IsGrothendieckBound` inequality to unit
+Archived, in `abandonware/`: the extension of every `IsGrothendieckBound` inequality to unit
 vectors of any complex inner-product space (`TransferHilbert`); the attained
 optima and the fixed-dimension test `isGrothendieckBound_iff_fixed_dim`
-(`ScalarOpt`, `VectorOpt`); a quadratic dual with overlapping error budgets
-(`QuadraticDual`); a Gram bound that keeps the imaginary correlation
-(`PolarizedGram`); and a rational support-defect correction with its quartic
-Newton contraction (`LowerAnalytic/JointDefect`, `LowerAnalytic/QuarticNewton`).
+(`ScalarOpt`, `VectorOpt`).
 
 **Single-channel upper bound.** The theorem `upper_below_tight` uses the
 assembly described above. The sharper value that the rounding was
@@ -1150,9 +1146,8 @@ the disk map with its sixth-moment kernel ceiling (`RadialRepair`,
   `28153/10¹²` (1.83%), the Hardy tail `219549168/10¹⁶` (1.42%) and the table error
   `6847009/(5·10¹⁷)` (about 0.00089%).
   These percentages describe allowances, not fractions of the proof left
-  unformalized. Full scope, source bindings and reproduction commands are in
-  `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
-  the mathematical argument.
+  unformalized. Full scope, the mathematical argument, source bindings and reproduction commands are in
+  `data/localized-comparison/PROOF.md`.
 * The certified weighted head bound forces `h₀ ≥ slopeQ − tightHeadResidualQ`.
   `HeadHardy` uses `hardy_budget_after_linear` to deduct its weighted square
   from the Gaussian-amplitude budget `117/100`; exact kernel arithmetic proves
@@ -1227,7 +1222,7 @@ the row blocks `psdRowKK`) use proof-producing kernel reduction, including the c
 continuation-block checks.
 The report is `lake env lean scratch/Axioms.lean`, checked in CI;
 the node caps are in the same report. The generic response, cubic-ceiling
-and quintic-transfer lemmas are archived under `miscellaneous/research/Grothe/`
+and quintic-transfer lemmas are archived
 and are not part of the build. No `sorry`,
 no warnings.
 
