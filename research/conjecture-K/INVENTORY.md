@@ -1889,17 +1889,47 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 
 The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).
 
+## The notes of 23 October 2026 on the cubic witness, moved from the archive (claude-b9ee, #764)
+
+Six notes of the Codex sessions of 23 October 2026 were in the archive folder `miscellaneous/` until master
+`bfb5961e3`; the folder was removed by #764 and the notes whose conclusions the manuscript chapters under
+`sources/manuscript/` do not contain were moved here, verbatim (one provenance line added at the top of each). Their
+targets are those of their date: the cubic witness at ε = 149/200, under the interval
+1.401697049825 < K_G^ℂ < 1.404598149218 of that day. Lean now proves 1.4020221627 < K_G^ℂ ≤ 1.404556392.
+
+| folder | files | what they hold |
+|---|---|---|
+| `sources/cubic-witness-ceiling-2026-10-23/` | `CUBIC_FAMILY_CEILING_2026-10-23.md` (18 KB), `GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md` (12 KB), `GENUINE_CUBIC_OBSTRUCTION_2026-10-23.md` (16 KB) | The written proofs behind `STATUS.md` 12.2 and 8.3, which cite the summary in `docs/overview.tex`: the genuine response pair built on q_m ∈ H₂,₁ over Sym²(ℂᵐ), the closure of its U(m)-invariant first and cubic image, the floor 0.71313546585 for every complex multiplier (ceiling 1.4022581233 of the cubic witness family) and the value above 0.71329 at ε = 149/200. |
+| `sources/response-lift-fibre-2026-10-23/` | `RESPONSE_LIFT_EXPERIMENT_2026-10-23.md` (15 KB), `JOINT_FIBRE_EXPERIMENT_2026-10-23.md` (28 KB), `JOINT_ROW_UNIFORMITY_2026-10-23.md` (13 KB) | Negative results on two relaxations of the row certificate at ε = 149/200. The finite multiplication-compression lifts have exact minimum zero for the selected projection penalties at all twelve audited contacts; an actual bounded response pair matches the selected moments of the saved radial law 7234. The fixed-law joint model has a bounded randomized response with relaxed score near 0.7131527 (a lower bound on that relaxed supremum) and a certified upper cap 178315341/250000000 at the fixed contact. The third note states which uniform extensions remain meaningful. These statements concern abstract radial laws of a finite cut bank, not Gaussian cubics. |
+
+Not in the repository: the verifiers and certificate files that these notes name (`tools/verify_cubic_family_floor.py`,
+`tools/verify_diffuse_cubic_limit.py`, `tools/verify_joint_fibre_*.py`, `tools/verify_response_lift*.py`,
+`tools/verify_abstract_response_*.py` and their JSON files) were deleted from `tools/` by commit `d84c3fdfc` and are
+read with `git show 8115260f8:tools/<name>`. The replay wrappers `run_genuine_cubic_checks.py` and
+`run_joint_fibre_checks.py` and the list of input hashes were at `miscellaneous/research/tools/` and
+`miscellaneous/research/research/response_geometry_inputs/README.md` of master `bfb5961e3`. The source laws
+(`radial-complete-*-exact.json`, 7 to 9 MB each) were never in the repository: they are in the delivered bundles
+`joint-fibre-20261023` and `genuine-cubic-obstruction-20261023` and in
+`grothendieck-common-stein-reassessment-20261023.zip` (7.5 MB, `git show bfb5961e3:miscellaneous/deliveries/grothendieck-common-stein-reassessment-20261023.zip`).
+The Lean arithmetic of the ceiling is `abandonware/Grothe/LowerAnalytic/ScalarCubicFamilyCeiling.lean` (not built);
+the other Lean modules the notes name (`DiffuseCubicObstruction`, `ProjectionGateCeiling`, `JointRowRepricing`,
+`ResponseCompression`) are at `miscellaneous/research/Grothe/LowerAnalytic/` of master `bfb5961e3`.
+
+The other notes of that day in the archive were deleted, because `sources/manuscript/` holds their content as
+chapters: the binding audit, the common Stein kernel and the table floor, the joint response lift, the symmetric
+response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/symmetric-response-replicas-20261023.tex`).
+
 ## Hilbert–Schmidt / influence OU bounds and coupled signed-circle commutator cutoffs on V₃(ℝⁿ) (gemini-8732, tasks #506, #501, #458)
 
 - [Proof and replay instructions](sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md) and
   [exact zero-float verifiers and replay log](code/third-chaos-506-gemini-8732/) (tag KTC506; STATUS 3.21 (e1), 3.21 (e4), 3.21 (e9)(iii)–(iv); **P + C, author only**). Every file is under 30 KB and committed in the repository; no external files or dependencies were left outside.
 - **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations, AST-audited):**
-  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_ou_influence.py` verifies `||U||_HS^2 == tr(M^2) >= ||U_tilde||_HS^2` on rational symmetric 3-tensors in $\mathbb{R}^2, \mathbb{R}^3, \mathbb{R}^4$, Machin $\pi$ bounds, $2\times 2$ Schur positivity across $[0, \infty)$ (336 leaves including the infinite ray) for the dedicated Triple 3 $(583/25000, 4239/100000, -1497/50000)$ (exact slope $2181/10000$), `(T)` for $\operatorname{tr}(M^2)/\|T\|_{\mathrm{HS}}^4 \le 3841/25000 = 0.15364$ (in particular $\le 96/625 = 0.1536$, vs $m \le 373/2800 \approx 0.13321 \implies \operatorname{Var}(\tau) \le 14m \le 373/200$ via Lemma 1.1 + `KNG505`) and in particular whenever $\lambda \le 3841/25000 = 0.15364$ (covering all isotropic / irreducibly $O(n)$-symmetric third-chaos cubics $M = (\|T\|_{\mathrm{HS}}^2/n)I_n$ in every dimension $n \ge 1$), and 7 negative controls at full production depth `max_depth = 12` (~39 s).
+  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_ou_influence.py` verifies `||U||_HS^2 == tr(M^2) >= ||U_tilde||_HS^2` on rational symmetric 3-tensors in $\mathbb{R}^2, \mathbb{R}^3, \mathbb{R}^4$, Machin $\pi$ bounds, $2\times 2$ Schur positivity across $[0, \infty)$ (336 leaves including the infinite ray) for the dedicated Triple 3 $(583/25000, 4239/100000, -1497/50000)$ (exact slope $2181/10000$), `(T)` for $\operatorname{tr}(M^2)/\|T\|_{\mathrm{HS}}^4 \le 3841/25000 = 0.15364$ (in particular $\le 96/625 = 0.1536$, vs $m \le 373/2800 \approx 0.13321 \implies \operatorname{Var}(\tau) \le 14m \le 373/200$ via Lemma 1.1 + `KNG505`) and in particular whenever $\lambda/\|T\|_{\mathrm{HS}}^2 \le 3841/25000 = 0.15364$ (covering all isotropic / irreducibly $O(n)$-symmetric third-chaos cubics $M = (\|T\|_{\mathrm{HS}}^2/n)I_n$ in every dimension $n \ge 1$), and 7 negative controls at full production depth `max_depth = 12` (~39 s).
   - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_tensor_combined.py` verifies exact commutator-submatrix $([A_p, A_1])_{1q} = D_{pq}$ and $M_{12} = 0$ identities on 4 rational $\mathbb{R}^4$ tensors, 4D branch-and-bound covers coupling signed 2-plane circle norms + analytic $d$-tightening with the full Frobenius commutator block $72\|D\|_F^2$ + Weyl–Karamata ($\lambda < 27/40 = 0.675$, $\kappa_4 < 48$ at $a \le 349/500 = 0.698$ in 32,515 leaves; $\lambda < 33/50 = 0.66$, $\kappa_4 < 229/5 = 45.8$ at $a \le 321/500 = 0.642$ in 14,955 leaves), exact rational Sturm-sequence proofs on $\mathbb{R}$ for 4 planar cubic witnesses, and 5 negative controls at full production depth `max_depth = 46` (~4 min). [Replay log](code/third-chaos-506-gemini-8732/REPLAY.log)
 
 | file | size | SHA-256 |
 |---|---:|---|
 | `sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md` | 24,122 B | `f39f3132fd9e555663b171cb40c731beec6691c66fe46147c84a0b404d47896a` |
-| `code/third-chaos-506-gemini-8732/verify_ou_influence.py` | 22,096 B | `76e41e199c325ff4e9695b1437f2b381948007c6018c5a2876dc591411a82512` |
+| `code/third-chaos-506-gemini-8732/verify_ou_influence.py` | 22,109 B | `b1d4698c3a2a2f3880451c5c4b5e9897701bbfd5f9aa3b9a94afdbbea7135572` |
 | `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 26,097 B | `bac8b53f16a859b0b7e6327a3b736db77c46ae6b1e48b12b4ec639953fe1e0e0` |
 | `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,468 B | `be10b7a0d585008cf660de0a6540803b033bf13f3fd085b8c67d5bc5cda01de8` |

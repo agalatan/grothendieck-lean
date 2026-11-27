@@ -204,7 +204,7 @@ An older proof with a single rounding channel is still in the repository. It is 
 | `scripts/`, `.github/workflows/`, `AGENTS.md` | CI, its helper scripts, and the working rules of the agents that maintain the repository |
 | `docs/` | `LEAN_DETAILS.md` (inventory), `overview.tex` (source of `OVERVIEW.pdf`), and design and status notes, each describing the state at its date |
 | `research/` | organised records of the open problems behind the bounds (Conjecture K, higher-degree games), with their status ledgers; not built or checked |
-| `miscellaneous/`, `abandonware/` | archives: research modules and notes, removed code. Outside the Lake libraries: never built or imported. `handoff/` is a git-ignored local folder for research files |
+| `abandonware/` | archive: a few removed Lean modules that later work would reuse. Outside the Lake libraries: never built or imported. `handoff/` is a git-ignored local folder for research files |
 
 Most modules are generated: certificate data, and small modules that each check one part of it, in the kernel or
 as a `native_decide` fact, so that Lake runs the checks in separate processes. The generators are in `tools/`;
@@ -257,5 +257,5 @@ al., *New lower and upper bounds for the Grothendieck constant*, [arXiv:2608.111
 
 The numerical constructions and certificates were produced in a collaboration between several AI research
 systems; this Lean development checks them. The six-channel cell arrays and overlap tables are Lean literals in `Grothe/UpperSix/Haagerup/Data/`.
-Other certificates have inputs in `data/` and generators and replay scripts in `tools/`; both folders hold only what an existing Lean module was generated from. Search records are archived in `miscellaneous/` and in git history. No step of
+Other certificates have inputs in `data/` and generators and replay scripts in `tools/`; both folders hold only what an existing Lean module was generated from. Search records are in `research/` and in git history. No step of
 the two proofs rests on a certificate that is checked outside Lean.

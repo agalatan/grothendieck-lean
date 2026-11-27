@@ -36,10 +36,10 @@ WHAT THIS SCRIPT PROVES AND CERTIFIES:
             <= sqrt(2/pi) * ||F||_2 * (1 + (2181/10000) * ||M||_op / ||T||_HS^2).
    - Strict practical target (T) (E|F| < sqrt(17/25) * ||F||_2) whenever
        tr(M^2) / ||T||_HS^4 <= 3841/25000 = 0.15364   (in particular <= 96/625 = 0.1536),
-     and in particular whenever lambda / ||T||_HS^2 <= 3841/25000 = 0.15364 since lambda <= c
-     implies tr(M^2) / ||T||_HS^4 <= c (for comparison, at unit variance, lambda <= 373/2800
-     => tr(M^2) <= 373/2800 ~ 0.13321 => Var(tau) <= 14*tr(M^2) <= 373/200 => (T) by KNG505,
-     while #519 certified (T) for lambda <= 16/2500 = 0.0064).
+     and in particular whenever lambda / ||T||_HS^2 <= 3841/25000 = 0.15364 since
+     lambda / ||T||_HS^2 <= c implies tr(M^2) / ||T||_HS^4 <= c (for comparison, at unit variance,
+     lambda <= 373/2800 => tr(M^2) <= 373/2800 ~ 0.13321 => Var(tau) <= 14*tr(M^2) <= 373/200 => (T)
+     by KNG505, while #519 certified (T) for lambda <= 16/2500 = 0.0064).
 
 3. Isotropic / irreducibly symmetric corollary in every dimension n >= 1:
    Whenever M = (||T||_HS^2 / n) * I_n (e.g. by Schur's lemma whenever F is invariant up to sign

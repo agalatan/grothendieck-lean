@@ -13,9 +13,6 @@ channel and the head check with the six linear floors. The disk and circle check
 channels and the rational tail comparisons reduce in the kernel.
 [Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
 
-Archived upper variants have separate preserved inventories under
-`miscellaneous/other-bounds/snapshot/data/axioms/`; they are not active permissions.
-
 ## Lower bound
 
 Every native fact of the lower bound is one sequential exact computation; most of them sit in modules of their own, so
