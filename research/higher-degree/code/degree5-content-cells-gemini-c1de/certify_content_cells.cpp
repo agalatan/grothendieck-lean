@@ -1760,6 +1760,36 @@ RowProfileEnclosure enclose_row_profile(const RowSpec& row, int inner_threads = 
     return enc;
 }
 
+// Evaluate origin-collar enclosure alone on s = sqrt(v) in [0, s_cap_lo]
+Ival eval_hp_origin_only_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
+    Ival sub_s = ival_sqrt(v_iv);
+    const Ival inv_sqrt2  = Ival::pt(1.0) / ival_sqrt(Ival::pt(2.0));
+    const Ival inv_sqrt12 = Ival::pt(1.0) / ival_sqrt(Ival::pt(12.0));
+    Ival c2 = Ival::pt(enc.spec.nu5) * inv_sqrt12;
+    Ival c1 = Ival::pt(enc.spec.beta) - Ival::pt(6.0) * c2;
+    Ival c0 = Ival::pt(enc.spec.l) - Ival::pt(2.0) * Ival::pt(enc.spec.beta) + Ival::pt(6.0) * c2;
+    Ival a0_D = Ival::pt(1.0) + Ival::pt(enc.spec.bA);
+    Ival a2_C = -(Ival::pt(enc.spec.bA) + Ival::pt(enc.spec.bB) * inv_sqrt2);
+
+    Ival r_iv{0.0, enc.rs_cap};
+    for (int it = 0; it < 4; ++it) {
+        Ival Ts = ival_sqr(r_iv);
+        Ival Q = (c0 + c1 * Ts + c2 * ival_sqr(Ts)) / (a0_D + a2_C * Ts);
+        Ival rn = sub_s / Q;
+        r_iv = {std::max(0.0, rn.lo), std::min(enc.rs_cap, rn.hi)};
+    }
+    Ival Ts = ival_sqr(r_iv), Ps = c0 + c1 * Ts + c2 * ival_sqr(Ts), Cs = a0_D + a2_C * Ts;
+    Ival Q = Ps / Cs, Q3 = Q * ival_sqr(Q);
+    Ival Qp = ((c1 + Ival::pt(2.0) * c2 * Ts) * Cs - Ps * a2_C) / ival_sqr(Cs);
+    Ival sp = Q + Ival::pt(2.0) * Ts * Qp;
+    const Ival& c1_0 = is_B ? enc.c1_B0 : enc.c1_A0;
+    const Ival& c3_0 = is_B ? enc.c3_B0 : enc.c3_A0;
+    const Ival& C5   = is_B ? enc.C5_B  : enc.C5_A;
+    Ival num = (c3_0 + (Ival::pt(2.5) * C5 - Ival::pt(0.5) * C5) * Ts)
+             - (Qp / sp) * (c1_0 + Ival::pt(3.0) * c3_0 * Ts + Ival::pt(5.0) * C5 * ival_sqr(Ts));
+    return num / Q3;
+}
+
 // Evaluate h_X'(v) directly on ANY v-interval [va, vb] subset [0, inf) with ZERO 1/s^3 or 1/R^3 blowup!
 Ival eval_hp_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
     Ival s_iv = ival_sqrt(v_iv);
@@ -1828,12 +1858,14 @@ Ival eval_hp_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
         return out;
     };
 
-    double s0_v = enc.s_rs_pt_lo.front();
+    // Guaranteed start of the moving-vortex physical domain is s_rs_pt_hi.front() >= psi(0.035)
+    // (line 1594 certifies s_rs_pt_hi.front() < s_cap_lo). Below s_rs_pt_hi.front(), only the origin enclosure applies!
+    double s0_v = enc.s_rs_pt_hi.front();
     double s1_v = enc.s_cap_lo;
-    if (s_iv.lo <= s0_v) {
+    if (s_iv.lo <= s0_v && (s_iv.lo < s0_v || s_iv.hi <= s0_v)) {
         merge(eval_origin_cap({s_iv.lo, std::min(s_iv.hi, s0_v)}));
     }
-    if (s_iv.hi >= s0_v && s_iv.lo <= s1_v) {
+    if (s_iv.hi > s0_v && s_iv.lo <= s1_v) {
         Ival sub_ov{std::max(s_iv.lo, s0_v), std::min(s_iv.hi, s1_v)};
         Ival h_cap = eval_origin_cap(sub_ov);
         Ival h_vor = eval_vortex_slabs(sub_ov);
@@ -1845,7 +1877,7 @@ Ival eval_hp_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
         }
         merge(inter);
     }
-    if (s_iv.hi > s1_v && s_iv.lo < 8.0) {
+    if (s_iv.hi > s1_v && s_iv.lo <= 8.0 && (s_iv.lo < 8.0 || s_iv.hi <= 8.0)) {
         merge(eval_vortex_slabs({std::max(s_iv.lo, s1_v), std::min(s_iv.hi, 8.0)}));
     }
     if (s_iv.hi > 8.0) {
@@ -1869,6 +1901,11 @@ Ival eval_hp_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
             merge(P_sub * (sub_eps * ival_sqr(sub_eps)));
         }
     }
+    if (!(res.lo <= res.hi && std::isfinite(res.lo) && std::isfinite(res.hi) && res.lo > -1e200 && res.hi < 1e200)) {
+        std::fprintf(stderr, "FATAL: eval_hp_ival returned invalid/empty interval [%g, %g] on v=[%.17g, %.17g]\n",
+                     res.lo, res.hi, v_iv.lo, v_iv.hi);
+        std::exit(2);
+    }
     return res;
 }
 
@@ -1881,17 +1918,18 @@ Ival eval_h_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
         res.hi = std::max(res.hi, piece.hi);
     };
 
-    if (s_iv.lo <= enc.s1) {
+    if (s_iv.lo <= enc.s1 && (s_iv.lo < enc.s1 || s_iv.hi <= enc.s1)) {
         merge(is_B ? enc.hB_zero_tube : enc.hA_zero_tube);
     }
-    if (s_iv.hi > enc.s1 && s_iv.lo < 8.0) {
+    if (s_iv.hi > enc.s1 && s_iv.lo <= 8.0 && (s_iv.lo < 8.0 || s_iv.hi <= 8.0)) {
         double a = std::max(s_iv.lo, enc.s1);
         double b = std::min(s_iv.hi, 8.0);
-        int m_start = static_cast<int>(std::upper_bound(enc.s_edges.begin(), enc.s_edges.end(), a) - enc.s_edges.begin()) - 1;
+        int m_start = static_cast<int>(std::lower_bound(enc.s_edges.begin(), enc.s_edges.end(), a) - enc.s_edges.begin()) - 1;
         m_start = std::max(0, std::min(m_start, static_cast<int>(enc.s_edges.size()) - 2));
         for (int m = m_start; m + 1 < static_cast<int>(enc.s_edges.size()); ++m) {
             double e0 = enc.s_edges[m], e1 = enc.s_edges[m + 1];
-            if (e0 >= b) break;
+            if (e0 > b) break;
+            if (e1 < a) continue;
             double sub_lo = std::max(a, e0), sub_hi = std::min(b, e1);
             if (sub_hi < sub_lo) continue;
             Ival sub_s{sub_lo, sub_hi};
@@ -1929,6 +1967,11 @@ Ival eval_h_ival(const RowProfileEnclosure& enc, bool is_B, const Ival& v_iv) {
             G_sub = {sub_dn(G_sub.lo, rd), add_up(G_sub.hi, rd)};
             merge(G_sub * sub_eps);
         }
+    }
+    if (!(res.lo <= res.hi && std::isfinite(res.lo) && std::isfinite(res.hi) && res.lo > -1e200 && res.hi < 1e200)) {
+        std::fprintf(stderr, "FATAL: eval_h_ival returned invalid/empty interval [%g, %g] on v=[%.17g, %.17g]\n",
+                     res.lo, res.hi, v_iv.lo, v_iv.hi);
+        std::exit(2);
     }
     return res;
 }
@@ -1998,9 +2041,9 @@ void eval_psi_g1_ival(const FastKTable& kt, const Ival& v_iv, Ival& psi_out, Iva
     const auto& w_edges = kt.enc->w_edges;
     int NW = static_cast<int>(w_edges.size()) - 1;
 
-    if (v_iv.lo < 256.0) {
+    if (v_iv.lo <= 256.0 && (v_iv.lo < 256.0 || v_iv.hi <= 256.0)) {
         double a = std::max(0.0, v_iv.lo), b = std::min(v_iv.hi, 256.0);
-        int idx0 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), a) - w_edges.begin()) - 1;
+        int idx0 = static_cast<int>(std::lower_bound(w_edges.begin(), w_edges.end(), a) - w_edges.begin()) - 1;
         idx0 = std::max(0, std::min(idx0, NW - 1));
         int idx1 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), b) - w_edges.begin()) - 1;
         idx1 = std::max(idx0, std::min(idx1, NW - 1));
@@ -2029,6 +2072,85 @@ void eval_psi_g1_ival(const FastKTable& kt, const Ival& v_iv, Ival& psi_out, Iva
         double g1_rem = mul_up(mul_up(pmax, inv_rt_hi), e40.hi);
         g1_tail = {sub_dn(g1_tail.lo, g1_rem), add_up(g1_tail.hi, g1_rem)};
         merge_pg({0.0, psi_hi}, g1_tail);
+    }
+    if (!(psi_out.lo <= psi_out.hi && g1_out.lo <= g1_out.hi &&
+          std::isfinite(psi_out.lo) && std::isfinite(psi_out.hi) &&
+          std::isfinite(g1_out.lo) && std::isfinite(g1_out.hi) &&
+          psi_out.lo > -1e200 && psi_out.hi < 1e200 && g1_out.lo > -1e200 && g1_out.hi < 1e200)) {
+        std::fprintf(stderr, "FATAL: eval_psi_g1_ival returned invalid/empty interval on v=[%.17g, %.17g]\n",
+                     v_iv.lo, v_iv.hi);
+        std::exit(2);
+    }
+}
+
+void verify_row_seam_and_vortex_join_controls(const RowProfileEnclosure& enc) {
+    std::fesetround(FE_UPWARD);
+    FastKTable ktA = build_k_table(enc, false, {1e-3, 2e-3});
+    FastKTable ktB = build_k_table(enc, true, {1e-3, 2e-3});
+
+    auto check_singleton_v = [&](double v) {
+        Ival viv{v, v};
+        for (bool is_B : {false, true}) {
+            Ival hp = eval_hp_ival(enc, is_B, viv);
+            Ival h  = eval_h_ival(enc, is_B, viv);
+            if (!(hp.lo <= hp.hi && h.lo <= h.hi && hp.lo > -1e100 && hp.hi < 1e100 && h.lo > -1e100 && h.hi < 1e100)) {
+                std::fprintf(stderr, "FATAL: singleton seam test failed on row %s at v=%.17g\n", enc.spec.tag.c_str(), v);
+                std::exit(2);
+            }
+        }
+        Ival pa, ga, pb, gb;
+        eval_psi_g1_ival(ktA, viv, pa, ga);
+        eval_psi_g1_ival(ktB, viv, pb, gb);
+        if (!(pa.lo <= pa.hi && ga.lo <= ga.hi && pb.lo <= pb.hi && gb.lo <= gb.hi &&
+              pa.hi < 1e100 && pb.hi < 1e100 && std::fabs(ga.hi) < 1e100 && std::fabs(gb.hi) < 1e100)) {
+            std::fprintf(stderr, "FATAL: eval_psi_g1_ival singleton seam test failed on row %s at v=%.17g\n",
+                         enc.spec.tag.c_str(), v);
+            std::exit(2);
+        }
+    };
+
+    // Test v = 0, every dyadic s_edges[m]^2 (including s1^2, all internal mesh joins, and v = 64),
+    // key w_edges joins (including v = 256), and exterior v = 512:
+    check_singleton_v(0.0);
+    for (double se : enc.s_edges) {
+        check_singleton_v(se * se); // exact binary64 square since se is an integer multiple of 2^{-16} <= 8
+    }
+    check_singleton_v(64.0);
+    check_singleton_v(256.0);
+    check_singleton_v(512.0);
+    if (!enc.w_edges.empty()) {
+        check_singleton_v(enc.w_edges[1]);
+        check_singleton_v(enc.w_edges[enc.w_edges.size() / 2]);
+        check_singleton_v(enc.w_edges.back());
+    }
+
+    // Point control strictly between s_rs_pt_lo.front() and true psi(0.035) (< s_rs_pt_hi.front()):
+    // Verify that on row 0.865 at s_probe = 0.021522191494256774 (where s_rs_pt_lo.front() < s_probe < psi(0.035)),
+    // eval_hp_ival uses ONLY the origin enclosure (never intersecting with an out-of-domain vortex slab)!
+    if (enc.spec.tag == "0.865") {
+        const double s_probe = 0.021522191494256774;
+        const Ival v_probe{mul_dn(s_probe, s_probe), mul_up(s_probe, s_probe)};
+        const Ival s_chk = ival_sqrt(v_probe);
+        if (!(enc.s_rs_pt_lo.front() < s_chk.lo && s_chk.hi < 0.021522191494256780 &&
+              0.021522191494256780 < enc.s_rs_pt_hi.front())) {
+            std::fprintf(stderr, "FATAL: row 0.865 vortex-join probe [%.20g, %.20g] outside (s_lo=%.20g, psi~...7816, s_hi=%.20g)\n",
+                         s_chk.lo, s_chk.hi, enc.s_rs_pt_lo.front(), enc.s_rs_pt_hi.front());
+            std::exit(2);
+        }
+        for (bool is_B : {false, true}) {
+            Ival hp_got = eval_hp_ival(enc, is_B, v_probe);
+            Ival hp_ori = eval_hp_origin_only_ival(enc, is_B, v_probe);
+            if (!(hp_got.lo == hp_ori.lo && hp_got.hi == hp_ori.hi)) {
+                std::fprintf(stderr, "FATAL: row 0.865 probe below psi(0.035) did not use pure origin enclosure!\n");
+                std::exit(2);
+            }
+            Ival hp_pt_got = eval_hp_ival(enc, is_B, {v_probe.lo, v_probe.lo});
+            Ival hp_pt_ori = eval_hp_origin_only_ival(enc, is_B, {v_probe.lo, v_probe.lo});
+            if (!(hp_pt_got.lo == hp_pt_ori.lo && hp_pt_got.hi == hp_pt_ori.hi)) {
+                std::fprintf(stderr, "FATAL: row 0.865 singleton probe below psi(0.035) did not use pure origin enclosure!\n");
+                std::exit(2);
+            }
+        }
     }
 }
 
@@ -2109,14 +2231,14 @@ void self_test_fpu() {
 // on all 17 pieces!) AND r_{h_A}(q_u) > 3.60 on row 0.865 and row 0.800 (rejecting one constant across all energies!).
 struct JuntaLowUResult {
     std::string row_tag;
-    double u_val;
+    Ival u_iv;
     Ival c_sq_over_delta;
     Ival omega_hat;
     Ival ratio;
     double r1_min_lb;
 };
 
-JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val) {
+JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, const Ival& u_iv) {
     std::fesetround(FE_UPWARD);
     const Ival inv_sqrt2 = Ival::pt(1.0) / ival_sqrt(Ival::pt(2.0));
     const Ival sqrt2_iv = ival_sqrt(Ival::pt(2.0));
@@ -2125,7 +2247,6 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
     Ival hA0 = eval_h_ival(enc, false, {0.0, 0.0});
     const double m0 = enc.hpA_pan[0].mid();
     const Ival m0_iv = Ival::pt(m0);
-    const Ival u_iv = Ival::pt(u_val);
 
     // Center both h_A'(w) - m0 and k_A'(v) - m0 around m0 = midpoint(h_A'(0)) so m0^2 cancels cleanly!
     double hp_abs_max = div_up(ival_abs(enc.PA_inf).hi, 4096.0);
@@ -2141,7 +2262,7 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
     {
         Ival e40 = ival_exp(Ival::pt(-40.0));
         Ival one_m_e40 = Ival::pt(1.0) - e40;
-        double inv_rt_hi = div_dn(1.0, sqrt_up(add_up(256.0, mul_up(40.0, u_val))));
+        double inv_rt_hi = div_dn(1.0, sqrt_up(add_up(256.0, mul_up(40.0, u_iv.hi))));
         double inv_rt3_lo = mul_dn(inv_rt_hi, mul_dn(inv_rt_hi, inv_rt_hi));
         Ival kp_top = enc.PA_inf * Ival{inv_rt3_lo, 1.0 / 4096.0} * one_m_e40;
         double tail40 = mul_up(div_up(ival_abs(enc.PA_inf).hi, 4096.0), e40.hi);
@@ -2171,7 +2292,7 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
         }
         Ival out{1e300, -1e300};
         double a = std::max(0.0, v_iv.lo), b = std::min(v_iv.hi, 256.0);
-        int j0 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), a) - w_edges.begin()) - 1;
+        int j0 = static_cast<int>(std::lower_bound(w_edges.begin(), w_edges.end(), a) - w_edges.begin()) - 1;
         j0 = std::max(0, std::min(j0, NW - 1));
         int j1 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), b) - w_edges.begin()) - 1;
         j1 = std::max(j0, std::min(j1, NW - 1));
@@ -2190,9 +2311,9 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
 
     auto eval_dkp = [&](const Ival& v_iv) -> Ival {
         Ival out{1e300, -1e300};
-        if (v_iv.lo < 256.0) {
+        if (v_iv.lo <= 256.0 && (v_iv.lo < 256.0 || v_iv.hi <= 256.0)) {
             double a = std::max(0.0, v_iv.lo), b = std::min(v_iv.hi, 256.0);
-            int j0 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), a) - w_edges.begin()) - 1;
+            int j0 = static_cast<int>(std::lower_bound(w_edges.begin(), w_edges.end(), a) - w_edges.begin()) - 1;
             j0 = std::max(0, std::min(j0, NW - 1));
             int j1 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), b) - w_edges.begin()) - 1;
             j1 = std::max(j0, std::min(j1, NW - 1));
@@ -2240,9 +2361,9 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
     // Quantitative T >= 56 Gaussian Gamma-moment tails in Ival (int_{56}^inf T^5 e^{-T} dT < 2 * 56^5 * e^{-56}):
     const double e56_hi = ival_exp(Ival::pt(-56.0)).hi;
     const double mom5_56 = mul_up(2.0, mul_up(56.0 * 56.0 * 56.0 * 56.0 * 56.0, e56_hi));
-    const double tail_c  = mul_up(dkp_abs_max, mul_up(u_val, mom5_56));
-    const double tail_d1 = mul_up(dkp_abs_max, mul_up(u_val, mom5_56));
-    const double tail_d2 = mul_up(mul_up(dkp_abs_max, dkp_abs_max), mul_up(u_val, mom5_56));
+    const double tail_c  = mul_up(dkp_abs_max, mul_up(u_iv.hi, mom5_56));
+    const double tail_d1 = mul_up(dkp_abs_max, mul_up(u_iv.hi, mom5_56));
+    const double tail_d2 = mul_up(mul_up(dkp_abs_max, dkp_abs_max), mul_up(u_iv.hi, mom5_56));
     const double tail_sp = mul_up(56.0 * 56.0 + 114.0, e56_hi);
     c_rem_int = {sub_dn(c_rem_int.lo, tail_c), add_up(c_rem_int.hi, tail_c)};
     D1_int = {sub_dn(D1_int.lo, tail_d1), add_up(D1_int.hi, tail_d1)};
@@ -2257,12 +2378,13 @@ JuntaLowUResult certify_junta_low_u(const RowProfileEnclosure& enc, double u_val
             - (Ival::pt(0.75) * ival_sqr(D1_int)) / u_iv;
     Ival rat = c_sq_del / om;
 
+    const Ival eps1_iv = Ival::pt(39.0) / Ival::pt(50.0);
     Ival half_rt_pi = Ival::pt(0.5) * ival_sqrt(PI_IVAL);
-    double L0 = half_rt_pi.lo / std::max(1.0e-12, mul_up(sqrt_up(u_val), sqrt_p_int.hi));
-    double slope_hi = sub_dn(mul_dn(sqrt_dn(u_val), sqrt_p_int.lo), div_up(u_val, 0.78));
-    double lb1 = sub_dn(half_rt_pi.lo, div_up(mul_up(L0, u_val), 0.78));
-    double lb2 = (slope_hi > 0.0) ? mul_dn(L0, slope_hi) : -1e9;
-    return {enc.spec.tag, u_val, c_sq_del, om, rat, std::min(lb1, lb2)};
+    double L0 = div_dn(half_rt_pi.lo, std::max(1.0e-12, mul_up(sqrt_up(u_iv.hi), sqrt_p_int.hi)));
+    Ival slope_iv = ival_sqrt(u_iv) * Ival::pt(sqrt_p_int.lo) - u_iv / eps1_iv;
+    Ival lb1_iv = Ival::pt(half_rt_pi.lo) - (Ival::pt(L0) * u_iv) / eps1_iv;
+    double lb2 = (slope_iv.lo > 0.0) ? mul_dn(L0, slope_iv.lo) : -1e9;
+    return {enc.spec.tag, u_iv, c_sq_del, om, rat, std::min(lb1_iv.lo, lb2)};
 }
 
 // Dump all 15 row precomputed enclosures to JSON for generate_certificates.py
@@ -2579,13 +2701,13 @@ double verify_slice_continuous(
             Ival V_iv = u_iv * U_iv;
             const auto& w_edges = kt->enc->w_edges;
             int NW = static_cast<int>(w_edges.size()) - 1;
-            int j0 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), std::max(0.0, std::min(V_iv.lo, 256.0))) - w_edges.begin()) - 1;
+            int j0 = static_cast<int>(std::lower_bound(w_edges.begin(), w_edges.end(), std::max(0.0, std::min(V_iv.lo, 256.0))) - w_edges.begin()) - 1;
             j0 = std::max(0, std::min(j0, NW - 1));
             int j1 = static_cast<int>(std::upper_bound(w_edges.begin(), w_edges.end(), std::max(0.0, std::min(V_iv.hi, 256.0))) - w_edges.begin()) - 1;
             j1 = std::max(j0, std::min(j1, NW - 1));
             if (j1 - j0 <= 8) {
                 Jg1_hi = -1e300;
-                if (V_iv.lo < 256.0) {
+                if (V_iv.lo <= 256.0 && (V_iv.lo < 256.0 || V_iv.hi <= 256.0)) {
                     double a = std::max(0.0, V_iv.lo), b = std::min(V_iv.hi, 256.0);
                     for (int j = j0; j <= j1; ++j) {
                         double slo = std::max(a, w_edges[j]), shi = std::min(b, w_edges[j + 1]);
@@ -2772,6 +2894,13 @@ int main(int argc, char** argv) {
             mode = "dump";
             arg1 = argv[++i];
         } else if (s == "--self-test-only") {
+            auto all_sp = get_all_15_rows();
+            for (const auto& sp : all_sp) {
+                if (sp.tag == "0.865") {
+                    RowProfileEnclosure enc0865 = enclose_row_profile(sp, nthreads);
+                    verify_row_seam_and_vortex_join_controls(enc0865);
+                }
+            }
             return 0;
         } else if (s == "--verify-all" && i + 2 < argc) {
             mode = "verify";
@@ -2830,6 +2959,7 @@ int main(int argc, char** argv) {
         for (auto& th : pool) th.join();
     }
     for (const auto& r : row_encs) {
+        verify_row_seam_and_vortex_join_controls(r);
         Ival hA0 = eval_h_ival(r, false, {0.0, 0.0});
         Ival hB0 = eval_h_ival(r, true, {0.0, 0.0});
         std::fprintf(stderr, "  row %-9s: hA(0)=[%.6f, %.6f] (w=%.1e), hB(0)=[%.6f, %.6f] (w=%.1e)\n",
@@ -2934,11 +3064,13 @@ int main(int argc, char** argv) {
         for (auto& th : pool) th.join();
     }
 
-    // [Part 3] Negative Control 1: Junta at u = 1e-6 on rows 0.800 and 0.865 (rejects one constant for all energies!)
-    std::fprintf(stderr, "[Part 3] Certifying low-energy junta negative controls at u = 1e-6...\n");
-    JuntaLowUResult j_080 = certify_junta_low_u(find_row("0.800"), 1.0e-6);
-    JuntaLowUResult j_0865 = certify_junta_low_u(find_row("0.865"), 1.0e-6);
-    JuntaLowUResult j_070 = certify_junta_low_u(find_row("0.700_own"), 1.0e-6);
+    // [Part 3] Negative Control 1: Junta at exact rational u = 1/1000000 = 1e-6 on rows 0.800 and 0.865 (rejects one constant for all energies!)
+    std::fprintf(stderr, "[Part 3] Certifying low-energy junta negative controls at u = 1/1000000...\n");
+    std::fesetround(FE_UPWARD);
+    const Ival u_1e6_iv = Ival::pt(1.0) / Ival::pt(1000000.0);
+    JuntaLowUResult j_080 = certify_junta_low_u(find_row("0.800"), u_1e6_iv);
+    JuntaLowUResult j_0865 = certify_junta_low_u(find_row("0.865"), u_1e6_iv);
+    JuntaLowUResult j_070 = certify_junta_low_u(find_row("0.700_own"), u_1e6_iv);
     std::fprintf(stderr, "  junta u=1e-6 on 0.800: ratio in [%.6f, %.6f], R1_min >= %.6f (> 0.866656)\n", j_080.ratio.lo, j_080.ratio.hi, j_080.r1_min_lb);
     std::fprintf(stderr, "  junta u=1e-6 on 0.865: ratio in [%.6f, %.6f], R1_min >= %.6f (> 0.866656)\n", j_0865.ratio.lo, j_0865.ratio.hi, j_0865.r1_min_lb);
     std::fprintf(stderr, "  junta u=1e-6 on 0.700_own: ratio in [%.6f, %.6f], R1_min >= %.6f\n", j_070.ratio.lo, j_070.ratio.hi, j_070.r1_min_lb);
@@ -2994,8 +3126,8 @@ int main(int argc, char** argv) {
     out << "  ],\n";
     out << "  \"junta_low_u_controls\": [\n";
     auto write_jc = [&](const JuntaLowUResult& jc, bool comma) {
-        out << "    {\"row\": \"" << jc.row_tag << "\", \"u\": " << jc.u_val
-            << ", \"ratio_ival\": [" << jc.ratio.lo << ", " << jc.ratio.hi
+        out << "    {\"row\": \"" << jc.row_tag << "\", \"u_ival\": [" << jc.u_iv.lo << ", " << jc.u_iv.hi
+            << "], \"ratio_ival\": [" << jc.ratio.lo << ", " << jc.ratio.hi
             << "], \"r1_min_lb\": " << jc.r1_min_lb << "}" << (comma ? "," : "") << "\n";
     };
     write_jc(j_070, true);

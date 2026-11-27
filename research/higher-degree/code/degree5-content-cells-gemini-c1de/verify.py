@@ -695,6 +695,9 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
     j_ctrls = {jc["row"]: jc for jc in res["junta_low_u_controls"]}
     for r_need in ("0.800", "0.865"):
         check(r_need in j_ctrls, f"missing junta control on {r_need}")
+        check("u_ival" in j_ctrls[r_need], f"missing enclosed u_ival on {r_need}")
+        u_lo_j, u_hi_j = Fraction(j_ctrls[r_need]["u_ival"][0]), Fraction(j_ctrls[r_need]["u_ival"][1])
+        check(u_lo_j <= Fraction(1, 1_000_000) <= u_hi_j, f"junta u_ival on {r_need} does not enclose 1/1000000")
         check(j_ctrls[r_need]["ratio_ival"][0] > 3.30, f"junta ratio on {r_need} not > 3.30")
         check(j_ctrls[r_need]["r1_min_lb"] > 0.866656, f"junta R1 lower bound on {r_need} not > 0.866656")
 

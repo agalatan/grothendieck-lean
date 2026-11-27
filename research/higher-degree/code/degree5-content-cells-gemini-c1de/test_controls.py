@@ -100,12 +100,15 @@ def main():
         verify.verify_all(certs_path=cp0, result_path=rp0, replay_cpp=False)
     print("  [PASS] Control 0b (sharded fixture positive control): unmodified sharded fixture accepted")
 
-    # Control 1: Mathematical Negative Control 1 — Low-energy junta u = 1e-6 & certified h_X'(0) != 0
+    # Control 1: Mathematical Negative Control 1 — Low-energy junta u = 1/1000000 & certified h_X'(0) != 0
     j_map = {jc["row"]: jc for jc in res0["junta_low_u_controls"]}
+    for rk in ("0.700_own", "0.800", "0.865"):
+        u_lo_q, u_hi_q = Fraction(j_map[rk]["u_ival"][0]), Fraction(j_map[rk]["u_ival"][1])
+        check(u_lo_q < Fraction(1, 1_000_000) < u_hi_q, f"junta u_ival on {rk} does not strictly bracket 1/1000000")
     check(j_map["0.800"]["ratio_ival"][0] > 3.30 and j_map["0.865"]["ratio_ival"][0] > 3.30,
-          "low-energy junta ratio at u=1e-6 did not exceed 3.30")
+          "low-energy junta ratio at u=1/1000000 did not exceed 3.30")
     check(j_map["0.800"]["r1_min_lb"] > 0.866656, "low-energy junta did not strictly satisfy (R1) across all 17 pieces")
-    print("  [PASS] Control 1 (P1 §6 low-energy junta): u=1e-6 ratio > 3.30 with R1_min > 0.866656 and h_X'(0) != 0")
+    print("  [PASS] Control 1 (P1 §6 low-energy junta): enclosed u=1/10^6 ratio > 3.30 with R1_min > 0.866656 and h_X'(0) != 0")
 
     # Control 2: Mathematical Negative Control 2 — Own-row 0.70 refuses 0.085
     own = [c for c in cfg0["cells"] if c["row_tag"] == "0.700_own"][0]
@@ -257,7 +260,26 @@ def main():
         check(n_old_fail >= 40, f"expected old 0.5*width formula to fail on >=40 radial panels, got {n_old_fail}")
         print(f"  [PASS] Control 17 (rounded-midpoint Taylor radius): live C++ self-test passed & caught {n_old_fail}/112 old-radius panel failures")
 
-    print("ALL 19 NEGATIVE, POSITIVE-FIXTURE, AND CORRUPTION CONTROLS PASSED!")
+        # Control 18: Exact Fraction check of row 0.865 vortex-join probe s_probe < psi(0.035) + singleton seam self-test
+        r0865 = (Fraction(0.8783259514041781), Fraction(0.1597092307190024),
+                 Fraction(-0.05414284751003532), Fraction(-0.028951745258042246),
+                 Fraction(0.013052163374299502))
+        l_q, beta_q, bA_q, bB_q, nu5_q = r0865
+        rt2_lo, rt2_hi = verify.frac_sqrt_bounds(Fraction(2))
+        rt12_lo, rt12_hi = verify.frac_sqrt_bounds(Fraction(12))
+        rs_q = Fraction(0.035)
+        Ts_q = rs_q * rs_q
+        # Lower bound on true psi(0.035) on row 0.865:
+        c2_lo, c2_hi = nu5_q / rt12_hi, nu5_q / rt12_lo
+        Ps_lo = (l_q - 2 * beta_q + 6 * c2_lo) + (beta_q - 6 * c2_hi) * Ts_q + c2_lo * Ts_q * Ts_q
+        Cs_hi = (1 + bA_q) + (-bA_q + (-bB_q) / rt2_lo) * Ts_q
+        psi_035_lo = rs_q * Ps_lo / Cs_hi
+        s_probe_q = Fraction(0.021522191494256774)
+        check(s_probe_q < Fraction(2152219149425678, 10 ** 17) < psi_035_lo,
+              f"s_probe={float(s_probe_q):.20g} not strictly below psi(0.035)>={float(psi_035_lo):.20g}")
+        print("  [PASS] Control 18 (singleton mesh joins & vortex-join probe): C++ --self-test-only verified [0,0], s_edges, [64,64], [256,256] & s_probe < psi(0.035)")
+
+    print("ALL 20 NEGATIVE, POSITIVE-FIXTURE, SEAM, AND CORRUPTION CONTROLS PASSED!")
 
 
 if __name__ == "__main__":
