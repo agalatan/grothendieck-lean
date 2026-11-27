@@ -360,7 +360,7 @@ provenance line added at the top of each note. Their endpoints are those of 23 O
 | `sources/quintic-projection-2026-10-23/MEHLER_AUDIT.md` | 16 KB | The audit of that identity and of what the scripts do not prove. |
 | `sources/quintic-projection-2026-10-23/QUINTIC_REASSESSMENT_2026-10-23.md` | 18 KB | The experiment: the sign of the fifth coefficient, a cancellation bank, and a tail-priced oracle whose best diagnostic 0.71160976 stayed below the net score 0.71194718 of that day's rounding (numerical). |
 | `sources/quintic-projection-2026-10-23/REPLAY.md` | 5 KB | The replay instructions of the original folder `research/quintic_projection_20261023/` (its `README.md`). |
-| `code/quintic-projection-2026-10-23/` | 72 KB | The four scripts of the endpoint replay (python-flint) with their input and replay JSON files. |
+| `code/quintic-projection-2026-10-23/` | 72 KB | The four scripts of the endpoint replay (python-flint) with their input and replay JSON files. From a current checkout, `python3 -IB research/higher-degree/code/quintic-projection-2026-10-23/verify_bank_constants.py` runs directly; the paths in `REPLAY.md` are those of the original folder. |
 
 Not kept: the folders `numerics/` and `production_replays/` of the original (0.3 MB of search results and logs), at
 `miscellaneous/research/research/quintic_projection_20261023/` of master `bfb5961e3`; the production verifiers
