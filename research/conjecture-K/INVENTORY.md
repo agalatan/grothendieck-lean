@@ -1918,3 +1918,21 @@ the other Lean modules the notes name (`DiffuseCubicObstruction`, `ProjectionGat
 The other notes of that day in the archive were deleted, because `sources/manuscript/` holds their content as
 chapters: the binding audit, the common Stein kernel and the table floor, the joint response lift, the symmetric
 response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/symmetric-response-replicas-20261023.tex`).
+
+## Free-homothety peak-ray transfer, exempt-box-free retained bounds, and end-to-end consumer closures (gemini-c1de, #760)
+
+- [Proof and replay instructions](sources/homothety-consumers-gemini-c1de/PROOF.md) and
+  [zero-float stdlib verifier, single-file rational certificate, generator, and 18-check AST/corruption control suite](code/homothety-consumers-gemini-c1de/) (tag KHOM; STATUS 7.4.10, 8.1, 8.5, 8.6, 8.7, 8.10, 8.13; **P + C, author only**). All files are committed in the repository (`homothety_consumers_cert.json` is 268,246 B < 300 KB) with zero external dependencies.
+- **Replay:**
+  - Zero-float, zero-`assert` exact rational verification of 220-bit Machin $\pi$, $\sqrt{\pi}$, the `2.12a–b` Rice tangent, exact $\mathbb{Q}[T]$ partial-fraction identities and positive peak deficit Laplace moments $M_D[0..7]$, algebraic Cholesky-SOS proof of $U_7(y) \ge \sqrt{1 + y}$ and $B_{\mathrm{hi}}(u_0) \ge B_0(u_0)$ joined to `2.7` Jensen concavity, exempt-box-free peak retained covers (`mode == 2` enforced on $u_0 < 3/2000$), complete 1,773-cell `[0, \sqrt{\pi}/2]` verification of `8.5` (`K_G^ℂ > 1.40171`), and all 10 Track A / Track B consumer covers cross-checked against SHA-256-pinned `inherited_rows.json`, `central_94_125_certificate.json`, and `central_7475_certificate.json` (< 3 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/verify.py` and `python3 -IB -O research/conjecture-K/code/homothety-consumers-gemini-c1de/verify.py`.
+  - Static `ast` zero-float/zero-`assert` self-audit + 17 mathematical/corruption controls (`-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/test_controls.py` and `python3 -IB -O research/conjecture-K/code/homothety-consumers-gemini-c1de/test_controls.py`.
+  - Certificate regeneration from scratch: `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/generate_certs.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/homothety-consumers-gemini-c1de/PROOF.md` | 22,014 B | `b91ee4657b1bdb51d346b0ba3a40bb7751ee6d364f3c456fff68cffc237b0de3` |
+| `code/homothety-consumers-gemini-c1de/README.md` | 4,730 B | `491b5dc8f49d06e934ea322be3e888442e747236b38479b5da7fe44123223b95` |
+| `code/homothety-consumers-gemini-c1de/generate_certs.py` | 28,581 B | `3a83012fed9cf639c5c63c91e348fbe707cc40aa677527247d12fd6006cb7338` |
+| `code/homothety-consumers-gemini-c1de/verify.py` | 42,011 B | `03e91f43ddadcd0a070a305be26f983baac05d5b2babadd6c3eb14d0143ee856` |
+| `code/homothety-consumers-gemini-c1de/test_controls.py` | 10,195 B | `bde165065f4c467e8095a59e30eef58cc0600627a149fcccecb257b58a517099` |
+| `code/homothety-consumers-gemini-c1de/homothety_consumers_cert.json` | 268,246 B | `cb7027d95f1caa16c2b56493d3793a16f86e0dd1f83d36cbd080bb847fae156e` |
